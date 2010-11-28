@@ -52,6 +52,8 @@ END-INFO-DIR-ENTRY
 @sp 10
 @center @titlefont{Maxima Manual}
 @center Version 5.22
+@sp 2
+@center Deutsche @"Ubersetzung
 @page
 @vskip 0pt plus 1filll
 
@@ -79,6 +81,24 @@ von DOE Macsyma gepflegt. Im Jahr 1998 erhielt Schelter vom Department of Energy
 die Erlaubnis, den Quellcode von DOE Macsyma unter der GNU Public Lizenz zu 
 ver@"offentlichen. Im Jahr 2000 initiierte Schelter das Maxima Projekt bei 
 SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
+@sp 2
+
+Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
+die deutsche Sprache. Das Manual ist noch nicht vollst@"andig @"ubersetzt. 
+Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
+Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13 
+vollst@"andig und Teile der Kapitel 15, 16 und 18 @"ubersetzt.
+
+Dieses Manual ist nicht nur eine @"Ubersetzung, sondern auch der Versuch, die
+Inhalte neu zu organisieren und zu @"uberarbeiten. Ziel ist ein besser lesbares
+und @"ubersichtlicheres Manual zu erhalten. Diese Arbeit soll auch in das 
+englische Original einflie@ss{}en.
+
+Die Arbeit an dem Manual ist noch nicht abgeschlossen. Die jeweils aktuelle 
+Version ist unter @url{http://crategus.users.sourceforge.net/maxima.html} 
+verf@"ugbar.
+
+Dr. Dieter Kaiser, 28.11.2010
 @end titlepage
 
 @summarycontents
@@ -112,6 +132,25 @@ von DOE Macsyma gepflegt. Im Jahr 1998 erhielt Schelter vom Department of Energy
 die Erlaubnis, den Quellcode von DOE Macsyma unter der GNU Public Lizenz zu 
 ver@"offentlichen. Im Jahr 2000 initiierte Schelter das Maxima Projekt bei 
 SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
+@sp 2
+
+Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
+die deutsche Sprache. Das Manual ist noch nicht vollst@"andig @"ubersetzt. 
+Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
+Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13 
+vollst@"andig und Teile der Kapitel 15, 16 und 18 @"ubersetzt.
+
+Dieses Manual ist nicht nur eine @"Ubersetzung, sondern auch der Versuch, die
+Inhalte neu zu organisieren und zu @"uberarbeiten. Ziel ist ein besser lesbares
+und @"ubersichtlicheres Manual zu erhalten. Diese Arbeit soll auch in das 
+englische Original einflie@ss{}en.
+
+Die Arbeit an dem Manual ist noch nicht abgeschlossen. Die jeweils aktuelle 
+Version ist unter @url{http://crategus.users.sourceforge.net/maxima.html} 
+verf@"ugbar.
+
+Dr. Dieter Kaiser, 28.11.2010
+@sp 2
 @end ifnottex
 
 @c includes
@@ -138,7 +177,7 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 
 Spezifische Gebiete der Mathematik
 
-* Mengen::                      Behandlung von Mengen.
+* Mengen::                      Mengen.
 * Summen Produkte und Reihen::  Summen, Produkte, Tayolorreihen, Poisson Reihen.
 * Analysis::                    Grenzwerte, Differentiation, Integration,
                                 Differentialgleichungen.
@@ -175,6 +214,7 @@ Zus@"atzliche Packete
 * diag::                        Jordan matrices.
 * Package distrib::             Probability distributions.
 * draw::                        A Maxima-Gnuplot interface.
+* drawdf::                      Direction fields with Gnuplot.
 * dynamics::                    Graphics for dynamical systems and fractals.
 * ezunits::                     Dimensional quantities.
 * f90::                         Maxima to fortran translator.
@@ -371,10 +411,10 @@ Regeln und Muster
 * Functions and Variables for Rules and Patterns::  
 
 Funktionsdefinitionen
-* Introduction to Function Definition:: 
-* Function::                    
-* Macros::                      
-* Functions and Variables for Function Definition::
+* Einf@"uhrung in Funktionsdefinitionen::
+* Funktionen::                    
+* Makros::                      
+* Funktionen und Variablen f@"ur Funktionsdefinitionen::
 
 Programmierung
 * Lisp und Maxima::
@@ -437,6 +477,10 @@ draw
 * Functions and Variables for draw::
 * Functions and Variables for pictures::
 * Functions and Variables for worldmap::
+
+drawdf
+* Introduction to drawdf::
+* Functions and Variables for drawdf::
 
 dynamics
 * Introduction to dynamics::
@@ -733,11 +777,15 @@ Glossar
 @chapter Package distrib
 @include distrib.de.texi
 
-@node draw, dynamics, distrib, Top
+@node draw, drawdf, Package distrib, Top
 @chapter draw
 @include draw.de.texi
 
-@node dynamics, ezunits, draw, Top
+@node drawdf, dynamics, draw, Top
+@chapter drawdf
+@include drawdf.de.texi
+
+@node dynamics, ezunits, drawdf, Top
 @chapter dynamics
 @include dynamics.de.texi
 

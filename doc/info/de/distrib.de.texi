@@ -17,11 +17,13 @@
 @node Introduction to distrib, Functions and Variables for continuous distributions, distrib, Package distrib
 @section Introduction to distrib
 
-Package @code{distrib} contains a set of functions for making probability computations on both discrete and continuous univariate models. 
+Package @code{distrib} contains a set of functions for making probability 
+computations on both discrete and continuous univariate models. 
 
 What follows is a short reminder of basic probabilistic related definitions.
 
-Let @math{f(x)} be the @var{density function} of an absolute continuous random variable @math{X}. The @var{distribution function} is defined as
+Let @math{f(x)} be the @var{density function} of an absolute continuous random 
+variable @math{X}. The @var{distribution function} is defined as
 @ifnottex
 @example
                        x
@@ -70,7 +72,9 @@ The @var{variance} is a measure of variation,
 $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
  -E\left[X\right]\right)^2\;dx}$$
 @end tex
-which is a positive real number. The square root of the variance is the @var{standard deviation}, @math{D[X]=sqrt(V[X])}, and it is another measure of variation.
+which is a positive real number. The square root of the variance is the 
+@var{standard deviation}, @math{D[X]=sqrt(V[X])}, and it is another measure 
+of variation.
 
 The @var{skewness coefficient} is a measure of non-symmetry,
 @ifnottex
@@ -105,9 +109,13 @@ And the @var{kurtosis coefficient} measures the peakedness of the distribution,
 $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
 @end tex
-If @math{X} is gaussian, @math{KU[X]=0}. In fact, both skewness and kurtosis are shape parameters used to measure the non--gaussianity of a distribution.
+If @math{X} is gaussian, @math{KU[X]=0}. In fact, both skewness and kurtosis 
+are shape parameters used to measure the non--gaussianity of a distribution.
 
-If the random variable @math{X} is discrete, the density, or @var{probability}, function @math{f(x)} takes positive values within certain countable set of numbers @math{x_i}, and zero elsewhere. In this case, the distribution function is
+If the random variable @math{X} is discrete, the density, or @var{probability}, 
+function @math{f(x)} takes positive values within certain countable set of 
+numbers @math{x_i}, and zero elsewhere. In this case, the distribution function 
+is
 @ifnottex
 @example
                        ====
@@ -123,7 +131,8 @@ If the random variable @math{X} is discrete, the density, or @var{probability}, 
 $$F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)}$$
 @end tex
 
-The mean, variance, standard deviation, skewness coefficient and kurtosis coefficient take the form
+The mean, variance, standard deviation, skewness coefficient and kurtosis 
+coefficient take the form
 @ifnottex
 @example
                        ====
@@ -196,7 +205,9 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-There is a naming convention in package @code{distrib}. Every function name has two parts, the first one makes reference to the function or parameter we want to calculate,
+There is a naming convention in package @code{distrib}. Every function name has 
+two parts, the first one makes reference to the function or parameter we want 
+to calculate,
 @example
 Functions:
    Density function            (pdf_*)
@@ -241,18 +252,24 @@ Discrete distributions:
    Negative binomial    (*negative_binomial)
 @end example
 
-For example, @code{pdf_student_t(x,n)} is the density function of the Student distribution with @var{n} degrees of freedom, @code{std_pareto(a,b)} is the standard deviation of the Pareto distribution with parameters @var{a} and @var{b} and @code{kurtosis_poisson(m)} is the kurtosis coefficient of the Poisson distribution with mean @var{m}.
+For example, @code{pdf_student_t(x,n)} is the density function of the Student 
+distribution with @var{n} degrees of freedom, @code{std_pareto(a,b)} is the 
+standard deviation of the Pareto distribution with parameters @var{a} and 
+@var{b} and @code{kurtosis_poisson(m)} is the kurtosis coefficient of the 
+Poisson distribution with mean @var{m}.
 
 
-In order to make use of package @code{distrib} you need first to load it by typing
+In order to make use of package @code{distrib} you need first to load it by 
+typing
 @example
 (%i1) load(distrib)$
 @end example
 
-For comments, bugs or suggestions, please contact the author at @var{'mario AT edu DOT xunta DOT es'}.
+For comments, bugs or suggestions, please contact the author at 
+@var{'mario AT edu DOT xunta DOT es'}.
 
 @c @opencatbox
-@c @category{Statistical functions} @c @category{Share packages} @c @category{Package distrib}
+@c @category{Statistical functions} @category{Share packages} @category{Package distrib}
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -260,8 +277,12 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 @section Functions and Variables for continuous distributions
 
 @c -----------------------------------------------------------------------------
+@anchor{pdf_normal}
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a @math{Normal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the value at @var{x} of the density function of a @math{Normal(m,s)} 
+random variable, with @math{s>0}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
@@ -269,8 +290,12 @@ Returns the value at @var{x} of the density function of a @math{Normal(m,s)} ran
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{cdf_normal}
 @deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a @math{Normal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+
+Returns the value at @var{x} of the distribution function of a 
+@math{Normal(m,s)} random variable, with @math{s>0}. This function is defined 
+in terms of Maxima's built-in error function @code{erf}.
 
 @c ===beg===
 @c load (distrib)$
@@ -294,8 +319,13 @@ See also @code{erf}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{quantile_normal}
 @deffn {Function} quantile_normal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_normal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with 
+@math{s>0}; in other words, this is the inverse of @code{cdf_normal}. Argument 
+@var{q} must be an element of @math{[0,1]}. To make use of this function, write 
+first @code{load(distrib)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -318,8 +348,11 @@ Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{mean_normal}
 @deffn {Function} mean_normal (@var{m},@var{s})
-Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{m}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, 
+namely @var{m}. To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
@@ -327,8 +360,12 @@ Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namel
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{var_normal}
 @deffn {Function} var_normal (@var{m},@var{s})
-Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s^2}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, 
+namely @var{s^2}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
@@ -336,8 +373,12 @@ Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, n
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{std_normal}
 @deffn {Function} std_normal (@var{m},@var{s})
-Returns the standard deviation of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the standard deviation of a @math{Normal(m,s)} random variable, with 
+@math{s>0}, namely @var{s}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
@@ -345,53 +386,70 @@ Returns the standard deviation of a @math{Normal(m,s)} random variable, with @ma
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{skewness_normal}
 @deffn {Function} skewness_normal (@var{m},@var{s})
-Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
+
+Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with 
+@math{s>0}, which is always equal to 0. To make use of this function, write 
+first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{kurtois_normal}
 @deffn {Function} kurtosis_normal (@var{m},@var{s})
-Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
+
+Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with 
+@math{s>0}, which is always equal to 0. To make use of this function, write 
+first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
-@deffn {Function} random_normal (@var{m},@var{s})
+@c -----------------------------------------------------------------------------
+@anchor{random_norml}
+@deffn  {Function} random_normal (@var{m},@var{s})
 @deffnx {Function} random_normal (@var{m},@var{s},@var{n})
-Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-This is an implementation of the Box-Mueller algorithm, as described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
+Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling 
+@code{random_normal} with a third argument @var{n}, a random sample of size 
+@var{n} will be simulated.
+
+This is an implementation of the Box-Mueller algorithm, as described in Knuth, 
+D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} 
+Addison-Wesley.
 
 To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
-@c @category{Package distrib} @c @category{Random numbers}
+@c @category{Package distrib} @category{Random numbers}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{pdf_student_t}
 @deffn {Function} pdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom. To make use of this function, write first @code{load(distrib)}.
+
+Returns the value at @var{x} of the density function of a Student random 
+variable @math{t(n)}, with @math{n>0} degrees of freedom. To make use of this 
+function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{cdf_student_t}
 @deffn {Function} cdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom.
+
+Returns the value at @var{x} of the distribution function of a Student random 
+variable @math{t(n)}, with @math{n>0} degrees of freedom.
 
 @c ===beg===
 @c load (distrib)$
@@ -413,31 +471,39 @@ Returns the value at @var{x} of the distribution function of a Student random va
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{quantile_student_t}
 @deffn {Function} quantile_student_t (@var{q},@var{n})
-Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with 
+@math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. 
+Argument @var{q} must be an element of @math{[0,1]}. To make use of this 
+function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{mean_student_t}
 @deffn {Function} mean_student_t (@var{n})
-Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
+
+Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, 
+which is always equal to 0. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{var_student_t}
 @deffn {Function} var_student_t (@var{n})
+
 Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
 
 @c ===beg===
@@ -455,45 +521,57 @@ Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{std_student_t}
 @deffn {Function} std_student_t (@var{n})
-Returns the standard deviation of a Student random variable @math{t(n)}, with @math{n>2}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the standard deviation of a Student random variable @math{t(n)}, with 
+@math{n>2}. To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{skewness_student_t}
 @deffn {Function} skewness_student_t (@var{n})
-Returns the skewness coefficient of a Student random variable @math{t(n)}, with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
+
+Returns the skewness coefficient of a Student random variable @math{t(n)}, with 
+@math{n>3}, which is always equal to 0. To make use of this function, write 
+first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{kurtois_student_t}
 @deffn {Function} kurtosis_student_t (@var{n})
-Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with @math{n>4}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with 
+@math{n>4}. To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
-@deffn {Function} random_student_t (@var{n})
+@c -----------------------------------------------------------------------------
+@anchor{random_student_t}
+@deffn  {Function} random_student_t (@var{n})
 @deffnx {Function} random_student_t (@var{n},@var{m})
-Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
-The implemented algorithm is based on the fact that if @var{Z} is a normal random variable @math{N(0,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
+Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling 
+@code{random_student_t} with a second argument @var{m}, a random sample of size 
+@var{m} will be simulated.
+
+The implemented algorithm is based on the fact that if @var{Z} is a normal 
+random variable @math{N(0,1)} and @math{S^2} is a chi square random variable 
+with @var{n} degrees of freedom, @math{Chi^2(n)}, then
 @ifnottex
 @example
                            Z
@@ -512,14 +590,18 @@ is a Student random variable with @var{n} degrees of freedom, @math{t(n)}.
 To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
-@c @category{Package distrib} @c @category{Random numbers}
+@c @category{Package distrib} @category{Random numbers}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{pdf_noncentral_student_t}
 @deffn {Function} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the density function of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the value at @var{x} of the density function of a noncentral Student 
+random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and 
+noncentrality parameter @math{ncp}. To make use of this function, write first 
+@code{load(distrib)}.
 
 Sometimes an extra work is necessary to get the final result.
 
@@ -547,12 +629,18 @@ Sometimes an extra work is necessary to get the final result.
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{cdf_noncentral_student_t}
 @deffn {Function} cdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}. This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true} or at least one of the arguments is a float,  otherwise it returns a nominal expression.
+
+Returns the value at @var{x} of the distribution function of a noncentral 
+Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom 
+and noncentrality parameter @math{ncp}. This function has no closed form and it 
+is numerically computed if the global variable @code{numer} equals @code{true} 
+or at least one of the arguments is a float,  otherwise it returns a nominal 
+expression.
 
 @c ===beg===
 @c load (distrib)$
@@ -570,22 +658,30 @@ Returns the value at @var{x} of the distribution function of a noncentral Studen
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{quantile_noncentral_student_t}
 @deffn {Function} quantile_noncentral_student_t (@var{q},@var{n},@var{ncp})
-Returns the @var{q}-quantile of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality parameter @math{ncp}; in other words, this is the inverse of @code{cdf_noncentral_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the @var{q}-quantile of a noncentral Student random variable 
+@math{nc_t(n,ncp)}, with @math{n>0} degrees of freedom and noncentrality 
+parameter @math{ncp}; in other words, this is the inverse of 
+@code{cdf_noncentral_student_t}. Argument @var{q} must be an element of 
+@math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{mean_noncentral_student_t}
 @deffn {Function} mean_noncentral_student_t (@var{n},@var{ncp})
-Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, 
+with @math{n>1} degrees of freedom and noncentrality parameter @math{ncp}. To 
+make use of this function, write first @code{load(distrib)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -606,55 +702,76 @@ Returns the mean of a noncentral Student random variable @math{nc_t(n,ncp)}, wit
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{var_noncentral_student_t}
 @deffn {Function} var_noncentral_student_t (@var{n},@var{ncp})
-Returns the variance of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the variance of a noncentral Student random variable 
+@math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality 
+parameter @math{ncp}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{std_noncentral_student_t}
 @deffn {Function} std_noncentral_student_t (@var{n},@var{ncp})
-Returns the standard deviation of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the standard deviation of a noncentral Student random variable 
+@math{nc_t(n,ncp)}, with @math{n>2} degrees of freedom and noncentrality 
+parameter @math{ncp}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{skewness_noncentral_student_t}
 @deffn {Function} skewness_noncentral_student_t (@var{n},@var{ncp})
-Returns the skewness coefficient of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>3} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the skewness coefficient of a noncentral Student random variable 
+@math{nc_t(n,ncp)}, with @math{n>3} degrees of freedom and noncentrality 
+parameter @math{ncp}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{kurtois_noncentral_student_t}
 @deffn {Function} kurtosis_noncentral_student_t (@var{n},@var{ncp})
-Returns the kurtosis coefficient of a noncentral Student random variable @math{nc_t(n,ncp)}, with @math{n>4} degrees of freedom and noncentrality parameter @math{ncp}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the kurtosis coefficient of a noncentral Student random variable 
+@math{nc_t(n,ncp)}, with @math{n>4} degrees of freedom and noncentrality 
+parameter @math{ncp}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
-@deffn {Function} random_noncentral_student_t (@var{n},@var{ncp})
+@c -----------------------------------------------------------------------------
+@anchor{random_noncentral_t}
+@deffn  {Function} random_noncentral_student_t (@var{n},@var{ncp})
 @deffnx {Function} random_noncentral_student_t (@var{n},@var{ncp},@var{m})
-Returns a noncentral Student random variate @math{nc_t(n,ncp)}, with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
+Returns a noncentral Student random variate @math{nc_t(n,ncp)}, with @math{n>0}.
+Calling @code{random_noncentral_student_t} with a third argument @var{m}, a 
+random sample of size @var{m} will be simulated.
+
+The implemented algorithm is based on the fact that if @var{X} is a normal 
+random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable 
+with @var{n} degrees of freedom, @math{Chi^2(n)}, then
 @ifnottex
 @example
                            X
@@ -668,21 +785,26 @@ The implemented algorithm is based on the fact that if @var{X} is a normal rando
 @tex
 $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-is a noncentral Student random variable with @var{n} degrees of freedom and noncentrality parameter @math{ncp}, @math{nc_t(n,ncp)}.
+is a noncentral Student random variable with @var{n} degrees of freedom and 
+noncentrality parameter @math{ncp}, @math{nc_t(n,ncp)}.
 
 To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib} @c @category{Random numbers}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{pdf_chi2}
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma density is returned.
+Returns the value at @var{x} of the density function of a Chi-square random 
+variable @math{Chi^2(n)}, with @math{n>0}.
+
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, 
+therefore when Maxima has not enough information to get the result, a noun form 
+based on the gamma density is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -707,12 +829,14 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{cdf_chi2}
 @deffn {Function} cdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
+
+Returns the value at @var{x} of the distribution function of a Chi-square 
+random variable @math{Chi^2(n)}, with @math{n>0}.
 
 @c ===beg===
 @c load (distrib)$
@@ -732,14 +856,20 @@ Returns the value at @var{x} of the distribution function of a Chi-square random
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{quantile_chi2}
 @deffn {Function} quantile_chi2 (@var{q},@var{n})
-Returns the @var{q}-quantile of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
-This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression based on the gamma quantile function, since the @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
+Returns the @var{q}-quantile of a Chi-square random variable @math{Chi^2(n)}, 
+with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. 
+Argument @var{q} must be an element of @math{[0,1]}.
+
+This function has no closed form and it is numerically computed if the global 
+variable @code{numer} equals @code{true},  otherwise it returns a nominal 
+expression based on the gamma quantile function, since the @math{Chi^2(n)} 
+random variable is equivalent to the @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -759,14 +889,18 @@ This function has no closed form and it is numerically computed if the global va
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{mean_chi2}
 @deffn {Function} mean_chi2 (@var{n})
-Returns the mean of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma mean is returned.
+Returns the mean of a Chi-square random variable @math{Chi^2(n)}, with 
+@math{n>0}.
+
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, 
+therefore when Maxima has not enough information to get the result, a noun 
+form based on the gamma mean is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -786,14 +920,18 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{var_chi2}
 @deffn {Function} var_chi2 (@var{n})
-Returns the variance of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma variance is returned.
+Returns the variance of a Chi-square random variable @math{Chi^2(n)}, with 
+@math{n>0}.
+
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, 
+therefore when Maxima has not enough information to get the result, a noun 
+form based on the gamma variance is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -813,14 +951,18 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{std_chi2}
 @deffn {Function} std_chi2 (@var{n})
-Returns the standard deviation of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma standard deviation is returned.
+Returns the standard deviation of a Chi-square random variable @math{Chi^2(n)}, 
+with @math{n>0}.
+
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, 
+therefore when Maxima has not enough information to get the result, a noun 
+form based on the gamma standard deviation is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -840,14 +982,18 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{skewness_chi2}
 @deffn {Function} skewness_chi2 (@var{n})
-Returns the skewness coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma skewness coefficient is returned.
+Returns the skewness coefficient of a Chi-square random variable 
+@math{Chi^2(n)}, with @math{n>0}.
+
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, 
+therefore when Maxima has not enough information to get the result, a noun 
+form based on the gamma skewness coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -869,14 +1015,18 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{kurtois_chi2}
 @deffn {Function} kurtosis_chi2 (@var{n})
-Returns the kurtosis coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma kurtosis coefficient is returned.
+Returns the kurtosis coefficient of a Chi-square random variable 
+@math{Chi^2(n)}, with @math{n>0}.
+
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, 
+therefore when Maxima has not enough information to get the result, a noun 
+form based on the gamma kurtosis coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -898,42 +1048,53 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{random_chi2}
 @deffn {Function} random_chi2 (@var{n})
 @deffnx {Function} random_chi2 (@var{n},@var{m})
-Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
-The simulation is based on the Ahrens-Cheng algorithm. See @code{random_gamma} for details.
+Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling 
+@code{random_chi2} with a second argument @var{m}, a random sample of size 
+@var{m} will be simulated.
+
+The simulation is based on the Ahrens-Cheng algorithm. See @code{random_gamma} 
+for details.
 
 To make use of this function, write first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib} @c @category{Random numbers}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{pdf_noncentral_chi2}
 @deffn {Function} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the density function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the value at @var{x} of the density function of a noncentral Chi-square 
+random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality 
+parameter @math{ncp>=0}. To make use of this function, write first 
+@code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{cdf_noncentral_chi2}
 @deffn {Function} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
-Returns the value at @var{x} of the distribution function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load(distrib)}.
+
+Returns the value at @var{x} of the distribution function of a noncentral 
+Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and 
+noncentrality parameter @math{ncp>=0}. To make use of this function, write 
+first @code{load(distrib)}.
 
 @c @opencatbox
 @c @category{Package distrib}
 @c @closecatbox
-
 @end deffn
 
 
@@ -3449,4 +3610,6 @@ To make use of this function, write first @code{load(distrib)}.
 @c @closecatbox
 
 @end deffn
+
+@c --- End of file distrib.de.texi ---------------------------------------------
 

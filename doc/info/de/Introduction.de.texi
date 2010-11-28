@@ -2,6 +2,7 @@
 @c File        : Introduction.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Introduction.texi revision 1.10
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
 @c 
@@ -190,10 +191,10 @@ Maxima kann nichtlineare Gleichungssysteme l@"osen. Wird eine Eingabe mit
 Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
 
 @c ===beg===
-@c plot2d (sin(x)/x, [x, -20, 20]);
+@c plot2d(sin(x)/x, [x, -20, 20]);
 @c ===end===
 @example
-(%i1) plot2d (sin(x)/x, [x, -20, 20])$
+(%i1) plot2d(sin(x)/x, [x, -20, 20])$
 @end example
 
 @ifnotinfo
@@ -201,10 +202,10 @@ Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
 @end ifnotinfo
 
 @c ===beg===
-@c plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
+@c plot2d([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @c ===end===
 @example
-(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5])$
+(%i2) plot2d([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
 
 @ifnotinfo
@@ -212,11 +213,11 @@ Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
 @end ifnotinfo
 
 @c ===beg==
-@c plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
+@c plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
 @c    [x, -12, 12], [y, -12, 12])$
 @c ===end===
 @example
-(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
+(%i3) plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
          [x, -12, 12], [y, -12, 12])$
 @end example
 

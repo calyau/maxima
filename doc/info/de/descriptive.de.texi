@@ -19,16 +19,19 @@
 @node Introduction to descriptive, Functions and Variables for data manipulation, Package descriptive, Package descriptive
 @section Introduction to descriptive
 
-Package @code{descriptive} contains a set of functions for 
-making descriptive statistical computations and graphing. 
-Together with the source code there are three data sets in 
-your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}.
+Package @code{descriptive} contains a set of functions for making descriptive 
+statistical computations and graphing. Together with the source code there are 
+three data sets in your Maxima tree: @code{pidigits.data}, @code{wind.data} and 
+@code{biomed.data}.
 
-Any statistics manual can be used as a reference to the functions in package @code{descriptive}.
+Any statistics manual can be used as a reference to the functions in package 
+@code{descriptive}.
 
-For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
+For comments, bugs or suggestions, please contact me at 
+@var{'mario AT edu DOT xunta DOT es'}.
 
-Here is a simple example on how the descriptive functions in @code{descriptive} do they work, depending on the nature of their arguments, lists or matrices,
+Here is a simple example on how the descriptive functions in @code{descriptive} 
+do they work, depending on the nature of their arguments, lists or matrices,
 
 @c ===beg===
 @c load (descriptive)$
@@ -62,7 +65,8 @@ Here is a simple example on how the descriptive functions in @code{descriptive} 
 
 Note that in multivariate samples the mean is calculated for each column.
 
-In case of several samples with possible different sizes, the Maxima function @code{map} can be used to get the desired results for each sample,
+In case of several samples with possible different sizes, the Maxima function 
+@code{map} can be used to get the desired results for each sample,
 
 @c ===beg===
 @c load (descriptive)$
@@ -116,9 +120,12 @@ and multivariate samples in matrices as in
 @end group
 @end example
 
-In this case, the number of columns equals the random variable dimension and the number of rows is the sample size.
+In this case, the number of columns equals the random variable dimension and 
+the number of rows is the sample size.
 
-Data can be introduced by hand, but big samples are usually stored in plain text files. For example, file @code{pidigits.data} contains the first 100 digits of number @code{%pi}:
+Data can be introduced by hand, but big samples are usually stored in plain 
+text files. For example, file @code{pidigits.data} contains the first 100 
+digits of number @code{%pi}:
 @example
 @group
       3
@@ -148,7 +155,13 @@ In order to load these digits in Maxima,
 @end group
 @end example
 
-On the other hand, file @code{wind.data} contains daily average wind speeds at 5 meteorological stations in the Republic of Ireland (This is part of a data set taken at 12 meteorological stations. The original file is freely downloadable from the StatLib Data Repository and its analysis is discused in Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). This loads the data:
+On the other hand, file @code{wind.data} contains daily average wind speeds at 
+5 meteorological stations in the Republic of Ireland (This is part of a data 
+set taken at 12 meteorological stations. The original file is freely 
+downloadable from the StatLib Data Repository and its analysis is discused in 
+Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory 
+Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied 
+Statistics 38, 1-50). This loads the data:
 
 @c ===beg===
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -167,7 +180,10 @@ On the other hand, file @code{wind.data} contains daily average wind speeds at 5
 @end group
 @end example
 
-Some samples contain non numeric data. As an example, file @code{biomed.data} (which is part of another bigger one downloaded from the StatLib Data Repository) contains four blood measures taken from two groups of patients, @code{A} and @code{B}, of different ages,
+Some samples contain non numeric data. As an example, file @code{biomed.data} 
+(which is part of another bigger one downloaded from the StatLib Data 
+Repository) contains four blood measures taken from two groups of patients, 
+@code{A} and @code{B}, of different ages,
 
 @c ===beg===
 @c s3 : read_matrix (file_search ("biomed.data"))$
@@ -186,9 +202,12 @@ Some samples contain non numeric data. As an example, file @code{biomed.data} (w
 @end group
 @end example
 
-The first individual belongs to group @code{A}, is 30 years old and his/her blood measures were 167.0, 89.0, 25.6 and 364.
+The first individual belongs to group @code{A}, is 30 years old and his/her 
+blood measures were 167.0, 89.0, 25.6 and 364.
 
-One must take care when working with categorical data. In the next example, symbol @code{a} is asigned a value in some previous moment and then a sample with categorical value @code{a} is taken,
+One must take care when working with categorical data. In the next example, 
+symbol @code{a} is asigned a value in some previous moment and then a sample 
+with categorical value @code{a} is taken,
 
 @c ===beg===
 @c a : 1$
@@ -213,10 +232,14 @@ One must take care when working with categorical data. In the next example, symb
 @section Functions and Variables for data manipulation
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} continuous_freq (@var{list})
+@anchor{continous_freq}
+@deffn  {Function} continuous_freq (@var{list})
 @deffnx {Function} continuous_freq (@var{list}, @var{m})
 
-The argument of @code{continuous_freq} must be a list of numbers, which will be then grouped in intervals and counted how many of them belong to each group. Optionally, function @code{continuous_freq} admits a second argument indicating the number of classes, 10 is default,
+The argument of @code{continuous_freq} must be a list of numbers, which will be 
+then grouped in intervals and counted how many of them belong to each group. 
+Optionally, function @code{continuous_freq} admits a second argument indicating 
+the number of classes, 10 is default,
 
 @c ===beg===
 @c load (descriptive)$
@@ -233,8 +256,8 @@ The argument of @code{continuous_freq} must be a list of numbers, which will be 
 @end example
 
 The first list contains the interval limits and the second the corresponding
-counts: there are 16 digits inside the interval @code{[0, 1.8]}, 
-that is 0's and 1's, 24 digits in @code{(1.8, 3.6]}, that is 2's and 3's, and so on.
+counts: there are 16 digits inside the interval @code{[0, 1.8]}, that is 0's 
+and 1's, 24 digits in @code{(1.8, 3.6]}, that is 2's and 3's, and so on.
 
 @c @opencatbox
 @c @category{Package descriptive}
@@ -242,8 +265,11 @@ that is 0's and 1's, 24 digits in @code{(1.8, 3.6]}, that is 2's and 3's, and so
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{discrete_freq}
 @deffn {Function} discrete_freq (@var{list})
-Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
+
+Counts absolute frequencies in discrete samples, both numeric and categorical. 
+Its unique argument is a list,
 
 @c ===beg===
 @c load (descriptive)$
@@ -260,7 +286,9 @@ Counts absolute frequencies in discrete samples, both numeric and categorical. I
 @end group
 @end example
 
-The first list gives the sample values and the second their absolute frequencies. Commands @code{? col} and @code{? transpose} should help you to understand the last input.
+The first list gives the sample values and the second their absolute 
+frequencies. Commands @code{? col} and @code{? transpose} should help you to 
+understand the last input.
 
 @c @opencatbox
 @c @category{Package descriptive}
@@ -268,18 +296,18 @@ The first list gives the sample values and the second their absolute frequencies
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} subsample (@var{data_matrix}, @var{predicate_function})
+@anchor{subsample}
+@deffn  {Function} subsample (@var{data_matrix}, @var{predicate_function})
 @deffnx {Function} subsample (@var{data_matrix}, @var{predicate_function}, @var{col_num1}, @var{col_num2}, ...)
 
-This is a sort of variant of the Maxima @code{submatrix} function.
-The first argument is the data matrix, the second is a predicate function
-and optional additional arguments are the numbers of the columns to be taken.
-Its behaviour is better understood with examples.
+This is a sort of variant of the Maxima @code{submatrix} function. The first 
+argument is the data matrix, the second is a predicate function and optional 
+additional arguments are the numbers of the columns to be taken. Its behaviour 
+is better understood with examples.
 
-These are multivariate records in which the wind speed
-in the first meteorological station were greater than 18.
-See that in the lambda expression the @var{i}-th component is
-refered to as @code{v[i]}.
+These are multivariate records in which the wind speed in the first 
+meteorological station were greater than 18. See that in the lambda expression 
+the @var{i}-th component is refered to as @code{v[i]}.
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -300,11 +328,11 @@ refered to as @code{v[i]}.
 @end group
 @end example
 
-In the following example, we request only the first, second and fifth
-components of those records with wind speeds greater or equal than 16
-in station number 1 and less than 25 knots in station number 4. The sample
-contains only data from stations 1, 2 and 5. In this case,
-the predicate function is defined as an ordinary Maxima function.
+In the following example, we request only the first, second and fifth 
+components of those records with wind speeds greater or equal than 16 in 
+station number 1 and less than 25 knots in station number 4. The sample
+contains only data from stations 1, 2 and 5. In this case, the predicate 
+function is defined as an ordinary Maxima function.
 
 @c ===beg===
 @c load (descriptive)$
@@ -415,7 +443,13 @@ This is the multivariate mean of @code{s3},
 @end group
 @end example
 
-Here, the first component is meaningless, since @code{A} and @code{B} are categorical, the second component is the mean age of individuals in rational form, and the fourth and last values exhibit some strange behaviour. This is because symbol @code{NA} is used here to indicate @var{non available} data, and the two means are nonsense. A possible solution would be to take out from the matrix those rows with @code{NA} symbols, although this deserves some loss of information.
+Here, the first component is meaningless, since @code{A} and @code{B} are 
+categorical, the second component is the mean age of individuals in rational 
+form, and the fourth and last values exhibit some strange behaviour. This is 
+because symbol @code{NA} is used here to indicate @var{non available} data, 
+and the two means are nonsense. A possible solution would be to take out from 
+the matrix those rows with @code{NA} symbols, although this deserves some 
+loss of information.
 
 @c ===beg===
 @c load (descriptive)$
@@ -446,7 +480,8 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @section Functions and Variables for descriptive statistics
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} mean (@var{list})
+@anchor{mean}
+@deffn  {Function} mean (@var{list})
 @deffnx {Function} mean (@var{matrix})
 
 This is the sample mean, defined as
@@ -501,6 +536,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{var}
 @deffn  {Function} var (@var{list})
 @deffnx {Function} var (@var{matrix})
 
@@ -546,7 +582,8 @@ See also function @code{var1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} var1 (@var{list})
+@anchor{var1}
+@deffn  {Function} var1 (@var{list})
 @deffnx {Function} var1 (@var{matrix})
 
 This is the sample variance, defined as
@@ -599,9 +636,12 @@ See also function @code{var}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{std}
 @deffn  {Function} std (@var{list})
 @deffnx {Function} std (@var{matrix})
-This is the the square root of function @code{var}, the variance with denominator @math{n}.
+
+This is the the square root of function @code{var}, the variance with 
+denominator @math{n}.
 
 Example:
 
@@ -635,7 +675,8 @@ See also functions @code{var} and @code{std1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} std1 (@var{list})
+@anchor{std1}
+@deffn  {Function} std1 (@var{list})
 @deffnx {Function} std1 (@var{matrix})
 
 This is the the square root of function @code{var1}, the variance with 
@@ -673,7 +714,8 @@ See also functions @code{var1} and @code{std}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} noncentral_moment (@var{list}, @var{k})
+@anchor{noncentral_moment}
+@deffn  {Function} noncentral_moment (@var{list}, @var{k})
 @deffnx {Function} noncentral_moment (@var{matrix}, @var{k})
 
 The non central moment of order @math{k}, defined as
@@ -728,8 +770,10 @@ See also function @code{central_moment}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} central_moment (@var{list}, @var{k})
+@anchor{central_moment}
+@deffn  {Function} central_moment (@var{list}, @var{k})
 @deffnx {Function} central_moment (@var{matrix}, @var{k})
+
 The central moment of order @math{k}, defined as
 @ifnottex
 @example
@@ -780,9 +824,12 @@ See also functions @code{central_moment} and @code{mean}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cv (@var{list})
+@anchor{cv}
+@deffn  {Function} cv (@var{list})
 @deffnx {Function} cv (@var{matrix})
-The variation coefficient is the quotient between the sample standard deviation (@code{std}) and the @code{mean},
+
+The variation coefficient is the quotient between the sample standard deviation 
+(@code{std}) and the @code{mean},
 
 @c ===beg===
 @c load (descriptive)$
@@ -814,8 +861,10 @@ See also functions @code{std} and @code{mean}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} mini (@var{list})
+@anchor{mini}
+@deffn  {Function} mini (@var{list})
 @deffnx {Function} mini (@var{matrix})
+
 This is the minimum value of the sample @var{list},
 
 @c ===beg===
@@ -847,8 +896,10 @@ See also function @code{maxi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} maxi (@var{list})
+@anchor{maxi}
+@deffn  {Function} maxi (@var{list})
 @deffnx {Function} maxi (@var{matrix})
+
 This is the maximum value of the sample @var{list},
 
 @c ===beg===
@@ -880,8 +931,10 @@ See also function @code{mini}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} range (@var{list})
+@anchor{range}
+@deffn  {Function} range (@var{list})
 @deffnx {Function} range (@var{matrix})
+
 The range is the difference between the extreme values.
 
 Example:
@@ -913,11 +966,15 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} quantile (@var{list}, @var{p})
+@anchor{quantile}
+@deffn  {Function} quantile (@var{list}, @var{p})
 @deffnx {Function} quantile (@var{matrix}, @var{p})
 
-This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
-Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
+This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the 
+sample @var{list}. Although there are several definitions for the sample 
+quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical 
+packages}. American Statistician, 50, 361-365), the one based on linear 
+interpolation is implemented in package @code{descriptive}.
 
 Example:
 
@@ -950,9 +1007,12 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} median (@var{list})
+@anchor{median}
+@deffn  {Function} median (@var{list})
 @deffnx {Function} median (@var{matrix})
-Once the sample is ordered, if the sample size is odd the median is the central value, otherwise it is the mean of the two central values.
+
+Once the sample is ordered, if the sample size is odd the median is the central 
+value, otherwise it is the mean of the two central values.
 
 Example:
 
@@ -989,7 +1049,8 @@ See also function @code{quantile}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} qrange (@var{list})
+@anchor{qrange}
+@deffn  {Function} qrange (@var{list})
 @deffnx {Function} qrange (@var{matrix})
 
 The interquartilic range is the difference between the third and first 
@@ -1027,7 +1088,8 @@ See also function @code{quantile}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} mean_deviation (@var{list})
+@anchor{mean_deviation}
+@deffn  {Function} mean_deviation (@var{list})
 @deffnx {Function} mean_deviation (@var{matrix})
 
 The mean deviation, defined as
@@ -1082,7 +1144,8 @@ See also function @code{mean}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} median_deviation (@var{list})
+@anchor{median_deviation}
+@deffn  {Function} median_deviation (@var{list})
 @deffnx {Function} median_deviation (@var{matrix})
 
 The median deviation, defined as
@@ -1137,7 +1200,8 @@ See also function @code{mean}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} harmonic_mean (@var{list})
+@anchor{harmonic_mean}
+@deffn  {Function} harmonic_mean (@var{list})
 @deffnx {Function} harmonic_mean (@var{matrix})
 
 The harmonic mean, defined as
@@ -1192,8 +1256,10 @@ See also functions @code{mean} and @code{geometric_mean}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} geometric_mean (@var{list})
+@anchor{geometric_mean}
+@deffn  {Function} geometric_mean (@var{list})
 @deffnx {Function} geometric_mean (@var{matrix})
+
 The geometric mean, defined as
 @ifnottex
 @example
@@ -1244,8 +1310,10 @@ See also functions @code{mean} and @code{harmonic_mean}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} kurtosis (@var{list})
+@anchor{kurtois}
+@deffn  {Function} kurtosis (@var{list})
 @deffnx {Function} kurtosis (@var{matrix})
+
 The kurtosis coefficient, defined as
 @ifnottex
 @example
@@ -1296,8 +1364,10 @@ See also functions @code{mean}, @code{var} and @code{skewness}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} skewness (@var{list})
+@anchor{skewness}
+@deffn  {Function} skewness (@var{list})
 @deffnx {Function} skewness (@var{matrix})
+
 The skewness coefficient, defined as
 @ifnottex
 @example
@@ -1348,8 +1418,10 @@ See also functions @code{mean}, @code{var} and @code{kurtosis}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} pearson_skewness (@var{list})
+@anchor{pearson_skewness}
+@deffn  {Function} pearson_skewness (@var{list})
 @deffnx {Function} pearson_skewness (@var{matrix})
+
 Pearson's skewness coefficient, defined as 
 @ifnottex
 @example
@@ -1398,6 +1470,7 @@ See also functions @code{mean}, @code{var} and @code{median}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{quarile_skewness}
 @deffn  {Function} quartile_skewness (@var{list})
 @deffnx {Function} quartile_skewness (@var{matrix})
 
@@ -1455,7 +1528,9 @@ See also function @code{quantile}.
 @section Functions and Variables for specific multivariate descriptive statistics
 
 @c -----------------------------------------------------------------------------
+@anchor{cov}
 @deffn {Function} cov (@var{matrix})
+
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
 @example
@@ -1508,9 +1583,10 @@ See also function @code{cov1}.
 @c @closecatbox
 @end deffn
 
-
 @c -----------------------------------------------------------------------------
+@anchor{cov1}
 @deffn {Function} cov1 (@var{matrix})
+
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
 @example
@@ -1563,8 +1639,8 @@ See also function @code{cov}.
 @c @closecatbox
 @end deffn
 
-
 @c -----------------------------------------------------------------------------
+@anchor{global_variance}
 @deffn  {Function} global_variances (@var{matrix})
 @deffnx {Function} global_variances (@var{matrix}, @var{logical_value})
 Function @code{global_variances} returns a list of global variance measures:
@@ -1579,11 +1655,13 @@ Function @code{global_variances} returns a list of global variance measures:
 @item
 @var{generalized standard deviation}: @code{sqrt(determinant(S_1))},
 @item
-@var{efective variance} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@var{efective variance} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. 
+(2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
 @var{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
-where @var{p} is the dimension of the multivariate random variable and @math{S_1} the covariance matrix returned by @code{cov1}.
+where @var{p} is the dimension of the multivariate random variable and 
+@math{S_1} the covariance matrix returned by @code{cov1}.
 
 Example:
 
@@ -1602,7 +1680,11 @@ Example:
 @end group
 @end example
 
-Function @code{global_variances} has an optional logical argument: @code{global_variances(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{global_variances(x)}. On the other hand, @code{global_variances(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+Function @code{global_variances} has an optional logical argument: 
+@code{global_variances(x,true)} tells Maxima that @code{x} is the data matrix, 
+making the same as @code{global_variances(x)}. On the other hand, 
+@code{global_variances(x,false)} means that @code{x} is not the data matrix, 
+but the covariance matrix, avoiding its recalculation,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1628,10 +1710,11 @@ See also @code{cov} and @code{cov1}.
 @c @closecatbox
 @end deffn
 
-
 @c -----------------------------------------------------------------------------
-@deffn {Function} cor (@var{matrix})
+@anchor{cor}
+@deffn  {Function} cor (@var{matrix})
 @deffnx {Function} cor (@var{matrix}, @var{logical_value})
+
 The correlation matrix of the multivariate sample.
 
 Example:
@@ -1660,7 +1743,10 @@ Example:
 @end group
 @end example
 
-Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells 
+Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On 
+the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, 
+but the covariance matrix, avoiding its recalculation,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1697,8 +1783,10 @@ See also @code{cov} and @code{cov1}.
 
 
 @c -----------------------------------------------------------------------------
+@anchor{list_correlations}
 @deffn  {Function} list_correlations (@var{matrix})
 @deffnx {Function} list_correlations (@var{matrix}, @var{logical_value})
+
 Function @code{list_correlations} returns a list of correlation measures:
 
 @itemize @bullet
@@ -1734,7 +1822,8 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @tex
 $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 @end tex
-being an indicator of the goodness of fit of the linear multivariate regression model on @math{X_i} when the rest of variables are used as regressors.
+being an indicator of the goodness of fit of the linear multivariate regression 
+model on @math{X_i} when the rest of variables are used as regressors.
 
 @item
 @var{partial correlation matrix}: with element @math{(i, j)} being
@@ -1802,7 +1891,11 @@ Example:
 @end group
 @end example
 
-Function @code{list_correlations} also has an optional logical argument: @code{list_correlations(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{list_correlations(x)}. On the other hand, @code{list_correlations(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
+Function @code{list_correlations} also has an optional logical argument: 
+@code{list_correlations(x,true)} tells Maxima that @code{x} is the data matrix, 
+making the same as @code{list_correlations(x)}. On the other hand, 
+@code{list_correlations(x,false)} means that @code{x} is not the data matrix, 
+but the covariance matrix, avoiding its recalculation.
 
 See also @code{cov} and @code{cov1}.
 
@@ -1816,14 +1909,16 @@ See also @code{cov} and @code{cov1}.
 @section Functions and Variables for statistical graphs
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} histogram (@var{list})
+@anchor{histogram}
+@deffn  {Function} histogram (@var{list})
 @deffnx {Function} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} histogram (@var{one_column_matrix})
 @deffnx {Function} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} histogram (@var{one_row_matrix})
 @deffnx {Function} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
-This function plots an histogram from a continuous sample.
-Sample data must be stored in a list of numbers or a one dimensional matrix.
+
+This function plots an histogram from a continuous sample. Sample data must be 
+stored in a list of numbers or a one dimensional matrix.
 
 Available options are:
 
@@ -1874,10 +1969,12 @@ A simple histogram with eight classes.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{scatterplot}
 @deffn  {Function} scatterplot (@var{list})
 @deffnx {Function} scatterplot (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} scatterplot (@var{matrix})
 @deffnx {Function} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
+
 Plots scatter diagrams both for univariate (@var{list}) and multivariate 
 (@var{matrix}) samples.
 
@@ -1993,13 +2090,15 @@ See also @code{histogram}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{barsplot}
 @deffn {Function} barsplot (@var{data1}, @var{data2}, ..., @var{option_1}, @var{option_2}, ...)
-Plots bars diagrams for discrete statistical variables,
-both for one or multiple samples.
 
-@var{data} can be a list of outcomes representing one sample, or a 
-matrix of @var{m} rows and @var{n} columns, representing @var{n} samples of size 
-@var{m} each.
+Plots bars diagrams for discrete statistical variables, both for one or 
+multiple samples.
+
+@var{data} can be a list of outcomes representing one sample, or a matrix of 
+@var{m} rows and @var{n} columns, representing @var{n} samples of size @var{m} 
+each.
 
 Available options are:
 
@@ -2031,8 +2130,8 @@ indicating how statistical outcomes should be ordered on the @var{x}-axis.
 Default value is @code{orderlessp}.
 
 @item
-@var{sample_keys}: a list with the strings to be used in the legend. Defaults to
-the empty list @code{[]}. When the list length is other than 0 or the number
+@var{sample_keys}: a list with the strings to be used in the legend. Defaults 
+to the empty list @code{[]}. When the list length is other than 0 or the number
 of samples, an error message is returned.
 
 @end itemize
@@ -2187,12 +2286,14 @@ See also functions @code{histogram} and @code{piechart}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{piechart}
 @deffn  {Function} piechart (@var{list})
 @deffnx {Function} piechart (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} piechart (@var{one_column_matrix})
 @deffnx {Function} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} piechart (@var{one_row_matrix})
 @deffnx {Function} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+
 Similar to @code{barsplot}, but plots sectors instead of rectangles.
 
 Available options are:
@@ -2247,11 +2348,12 @@ See also function @code{barsplot}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} boxplot (@var{data})
+@anchor{boxplot}
+@deffn  {Function} boxplot (@var{data})
 @deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
 
-This function plots box-and-whishker diagrams. Argument @var{data} can be a list,
-which is not of great interest, since these diagrams are mainly used for
+This function plots box-and-whishker diagrams. Argument @var{data} can be a 
+list, which is not of great interest, since these diagrams are mainly used for
 comparing different samples, or a matrix, so it is possible to compare
 two or more components of a multivariate statistical variable. 
 But it is also allowed @var{data} to be a list of samples with 

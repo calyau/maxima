@@ -2,8 +2,6 @@ MAKEINFOFLAGS = --enable-encoding --force --no-validate
 
 langsdir = /de
 
-fcharset = UTF-8
-
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = include-maxima.de.texi category-macros.de.texi \
 Introduction.de.texi Bugs.de.texi Help.de.texi Command.de.texi \
@@ -16,14 +14,15 @@ Runtime.de.texi Rules.de.texi Function.de.texi Program.de.texi \
 Debugging.de.texi Miscellaneous.de.texi \
 affine.de.texi asympa.de.texi augmented_lagrangian.de.texi bode.de.texi \
 cobyla.de.texi contrib_ode.de.texi descriptive.de.texi diag.de.texi \
-distrib.de.texi draw.de.texi dynamics.de.texi ezunits.de.texi f90.de.texi \
-ggf.de.texi graphs.de.texi grobner.de.texi groups.de.texi impdiff.de.texi \
-interpol.de.texi lapack.de.texi lbfgs.de.texi lindstedt.de.texi \
-linearalgebra.de.texi lsquares.de.texi makeOrders.de.texi minpack.de.texi \
-mnewton.de.texi numericalio.de.texi opsubst.de.texi orthopoly.de.texi \
-plotdf.de.texi romberg.de.texi simplex.de.texi simplifications.de.texi \
-solve_rec.de.texi stats.de.texi stirling.de.texi stringproc.de.texi \
-symmetries.de.texi unit.de.texi zeilberger.de.texi Glossary.de.texi
+distrib.de.texi draw.de.texi drawdf.de.texi dynamics.de.texi \
+ezunits.de.texi f90.de.texi ggf.de.texi graphs.de.texi grobner.de.texi \
+groups.de.texi impdiff.de.texi interpol.de.texi lapack.de.texi lbfgs.de.texi \
+lindstedt.de.texi linearalgebra.de.texi lsquares.de.texi makeOrders.de.texi \
+minpack.de.texi mnewton.de.texi numericalio.de.texi opsubst.de.texi \
+orthopoly.de.texi plotdf.de.texi romberg.de.texi simplex.de.texi \
+simplifications.de.texi solve_rec.de.texi stats.de.texi stirling.de.texi \
+stringproc.de.texi symmetries.de.texi unit.de.texi zeilberger.de.texi \
+Glossary.de.texi
 
 
 all-local: maxima-index.lisp maxima.html contents.hhc
@@ -61,4 +60,3 @@ clean-html:
 EXTRA_DIST = maxima-index.lisp $(genericdirDATA)
 
 include ../common-lang.mk
-
