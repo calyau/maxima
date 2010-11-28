@@ -1,4 +1,4 @@
-@c english version 1.70
+@c english version 1.71
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -13,7 +13,8 @@
 @node Introducci@'on a las expresiones, Expresiones complejas, Expresiones, Expresiones
 @section Introducci@'on a las expresiones
 
-Existe un cierto n@'umero de palabras reservadas que no deber@'{@dotless{i}}an
+Existe un cierto n@'umero de palabras reservadas@item @code{nonscalar}
+ que no deber@'{@dotless{i}}an
 utilizarse como nombres de variables. Su uso podr@'{@dotless{i}}a causar 
 errores sint@'acticos. 
 
@@ -703,6 +704,10 @@ Hace que Maxima considere a @var{a_i} como una variable escalar.
 Hace que Maxima considere a @var{a_i} como una variable no escalar.
 Se aplica com@'unmente para declarar una variable como un vector simb@'olico
 o una matriz simb@'olica.
+
+@item @code{nonarray}
+Indica que Maxima no debe considerar @var{a_i} como un array. Esta declaraci@'on
+evita la evaluaci@'on m@'ultiple de variables subindicadas.
 
 @item @code{mainvar}
 Hace que Maxima considere a @var{a_i} como una "variable principal",
@@ -1664,6 +1669,36 @@ La llamada @code{multthru (@var{expr_1}, @var{expr_2})} multiplica cada t@'ermin
 @end example
 
 @end deffn
+
+
+@deffn {Propiedad} nonarray
+
+La instrucci@'on @code{declare(a, nonarray)} le indica a Maxima que
+no considere @var{a} como un array. Esta declaraci@'on evita la 
+evaluaci@'on m@'ultiple de @var{a}, si @'esta es una variable subindicada.
+
+Ejemplo:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
+@end example
+@end deffn
+
 
 @c NEEDS WORK
 @deffn {Funci@'on} nounify (@var{f})

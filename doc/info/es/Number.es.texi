@@ -1,4 +1,4 @@
-@c english version 1.34
+@c english version 1.35
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -101,21 +101,27 @@ Ejemplos:
 @end deffn
 
 @deffn {Funci@'on} burn (@var{n})
-Devuelve el @var{n}-@'esimo n@'umero de Bernoulli del entero @var{n}. La funci@'on @code{burn} puede ser m@'as eficiente que @code{bern} para @var{n} grande (mayor que 105, por ejemplo), pues @code{bern} calcula todos los n@'umeros de Bernoulli hasta @var{n} antes de devolver el resultado.
+Siendo @var{n} entero, Devuelve un n@'umero racional que aproxima el 
+@var{n}-@'esimo n@'umero de Bernoulli. La funci@'on @code{burn} aprovecha
+el hecho de que los n@'umeros de Bernoulli racionales se pueden aproximar
+con notable precisi@'on gracias a 
 
-@c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
-@c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
-@c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
-@c The time to compute @code{bern} is approximately exponential,
-@c while the time to compute @code{burn} is approximately cubic.
-@c But if next you do BERN(404), it only takes 12 secs,
-@c since BERN remembers all in an array, whereas BURN(404) will take
-@c maybe 14 secs or maybe 25, depending on whether Maxima needs to
-@c BFLOAT a better value of %PI.)
+@example
+                   n - 1  1 - 2 n
+              (- 1)      2        zeta(2 n) (2 n)!
+     B(2 n) = ------------------------------------
+                                2 n
+                             %pi
+@end example
 
-La funci@'on @code{burn} se beneficia del hecho de que los n@'umeros racionales de Bernoulli pueden aproximarse por funciones zeta con una eficiencia aceptable.
+La funci@'on @code{burn} puede ser m@'as eficiente que @code{bern} cuando 
+@var{n} es un n@'umero grande, ya que @code{bern} calcula todos los n@'umeros
+de Bernoulli hasta el @var{n}-@'esimo. Por el contrario, @code{burn} hace 
+uso de la aproximaci@'on para enteros pares @var{n} > 255. En caso de
+enteros impares y @var{n} <= 255, se hace uso de la funci@'on @code{bern}.
 
-Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
+Para utilizar esta funci@'on hay que cargarla antes en memoria escribiendo
+@code{load ("bffac")}. V@'ease tambi@'en @code{bern}.
 
 @end deffn
 

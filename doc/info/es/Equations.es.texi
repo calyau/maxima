@@ -1,4 +1,4 @@
-@c english version 1.33
+@c english version 1.34
 @menu
 * Funciones y variable para las ecuaciones::
 @end menu
@@ -1041,6 +1041,18 @@ y = - .1535675710019696]]
 (%i12) ev (%th(2), %[1]);
 (%o12)                          0
 @end example
+
+Los @'{@dotless{i}} @code{%r} se utilizan para indicar par@'ametros en
+las soluciones.
+
+@example
+(%i1) solve([x+y=1,2*x+2*y=2],[x,y]);
+
+solve: dependent equations eliminated: (2)
+(%o1)                      [[x = 1 - %r1, y = %r1]]
+@end example
+
+V@'eanse @code{algsys} y @code{%rnum_list} para m@'as informaci@'on.
 
 @end deffn
 
