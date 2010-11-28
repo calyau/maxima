@@ -909,9 +909,107 @@ Matrix entered.
 @c @closecatbox
 @end deffn
 
-@deffn {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{express}
+@deffn {Funktion} express (@var{expr})
+
+@c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? 
+@c I'M NOT GETTING IT
+@c The result uses the noun form of any
+@c derivatives arising from expansion of the vector differential
+@c operators.  To force evaluation of these derivatives, the built-in @code{ev}
+@c function can be used together with the @code{diff} evflag, after using the
+@c built-in @code{depends} function to establish any new implicit dependencies.
+
+Expands differential operator nouns into expressions in terms of partial 
+derivatives. @code{express} recognizes the operators @code{grad}, @code{div}, 
+@code{curl}, @code{laplacian}. @code{express} also expands the cross product 
+@code{~}.
+
+Symbolic derivatives (that is, @code{diff} nouns) in the return value of express
+may be evaluated by including @code{diff} in the @code{ev} function call or 
+command line. In this context, @code{diff} acts as an @code{evfun}.
+
+@code{load ("vect")} loads this function.
+@c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN 
+@c WHICH DOES ALL THE WORK
+
+Beispiele:
+
+@c ===beg===
+@c load ("vect")$
+@c grad (x^2 + y^2 + z^2);
+@c express (%);
+@c ev (%, diff);
+@c div ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c curl ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c laplacian (x^2 * y^2 * z^2);
+@c express (%);
+@c ev (%, diff);
+@c [a, b, c] ~ [x, y, z];
+@c express (%);
+@c ===end===
+@example
+(%i1) load ("vect")$
+(%i2) grad (x^2 + y^2 + z^2);
+                              2    2    2
+(%o2)                  grad (z  + y  + x )
+(%i3) express (%);
+       d    2    2    2   d    2    2    2   d    2    2    2
+(%o3) [-- (z  + y  + x ), -- (z  + y  + x ), -- (z  + y  + x )]
+       dx                 dy                 dz
+(%i4) ev (%, diff);
+(%o4)                    [2 x, 2 y, 2 z]
+(%i5) div ([x^2, y^2, z^2]);
+                              2   2   2
+(%o5)                   div [x , y , z ]
+(%i6) express (%);
+                   d    2    d    2    d    2
+(%o6)              -- (z ) + -- (y ) + -- (x )
+                   dz        dy        dx
+(%i7) ev (%, diff);
+(%o7)                    2 z + 2 y + 2 x
+(%i8) curl ([x^2, y^2, z^2]);
+                               2   2   2
+(%o8)                   curl [x , y , z ]
+(%i9) express (%);
+       d    2    d    2   d    2    d    2   d    2    d    2
+(%o9) [-- (z ) - -- (y ), -- (x ) - -- (z ), -- (y ) - -- (x )]
+       dy        dz       dz        dx       dx        dy
+(%i10) ev (%, diff);
+(%o10)                      [0, 0, 0]
+(%i11) laplacian (x^2 * y^2 * z^2);
+                                  2  2  2
+(%o11)                laplacian (x  y  z )
+(%i12) express (%);
+         2                2                2
+        d     2  2  2    d     2  2  2    d     2  2  2
+(%o12)  --- (x  y  z ) + --- (x  y  z ) + --- (x  y  z )
+          2                2                2
+        dz               dy               dx
+(%i13) ev (%, diff);
+                      2  2      2  2      2  2
+(%o13)             2 y  z  + 2 x  z  + 2 x  y
+(%i14) [a, b, c] ~ [x, y, z];
+(%o14)                [a, b, c] ~ [x, y, z]
+(%i15) express (%);
+(%o15)          [b z - c y, c x - a z, a y - b x]
+@end example
+
+@c @opencatbox
+@c @category{Differential calculus} @category{Vectors} @category{Operators}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
 @deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
 @deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+
 Returns a matrix generated from @var{a},
 taking element @code{@var{a}[@var{i_1},@var{j_1}]}
 as the upper-left element and @code{@var{a}[@var{i_2},@var{j_2}]}
@@ -987,7 +1085,8 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@deffn {Function} gramschmidt (@var{x})
+@c -----------------------------------------------------------------------------
+@deffn  {Function} gramschmidt (@var{x})
 @deffnx {Function} gramschmidt (@var{x}, @var{F})
 
 Carries out the Gram-Schmidt orthogonalization algorithm on @var{x},
@@ -1608,6 +1707,26 @@ equivalent to zero is indeed so.
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} potential (@var{givengradient})
+
+The calculation makes use of the global variable @code{potentialzeroloc[0]}
+which must be @code{nonlist} or of the form
+
+@example
+[indeterminatej=expressionj, indeterminatek=expressionk, ...]
+@end example
+
+the
+former being equivalent to the nonlist expression for all right-hand
+sides in the latter.  The indicated right-hand sides are used as the
+lower limit of integration.  The success of the integrations may
+depend upon their values and order. @code{potentialzeroloc} is initially set
+to 0.
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} ratmx
 Default value: @code{false}
 
@@ -1625,7 +1744,6 @@ which might not always be desired.
 @c @opencatbox
 @c @category{Matrices} @c @category{Rational expressions}
 @c @closecatbox
-
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
