@@ -43,7 +43,7 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi O
   bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\
   implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
   contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
-  asympa.texi Deleted.texi minpack.texi cobyla.texi
+  asympa.texi Deleted.texi minpack.texi cobyla.texi drawdf.texi
 
 figurefiles = \
 figures/introduction1.gif\

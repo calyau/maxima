@@ -148,6 +148,7 @@ Additional packages
 * diag::                        Jordan matrices.
 * distrib::                     Probability distributions.
 * draw::                        A Maxima-Gnuplot interface.
+* drawdf::                      Direction fields with Gnuplot.
 * dynamics::                    Graphics for dynamical systems and fractals.
 * ezunits::                     Dimensional quantities.
 * f90::                         Maxima to fortran translator.
@@ -461,6 +462,11 @@ draw
 * Functions and Variables for draw::
 * Functions and Variables for pictures::
 * Functions and Variables for worldmap::
+
+drawdf
+
+* Introduction to drawdf::
+* Functions and Variables for drawdf::
 
 dynamics
 
@@ -821,11 +827,15 @@ zeilberger
 @chapter distrib
 @include distrib.texi
 
-@node draw, dynamics, distrib, Top
+@node draw, drawdf, distrib, Top
 @chapter draw
 @include draw.texi
 
-@node dynamics, ezunits, draw, Top
+@node drawdf, dynamics, draw, Top
+@chapter drawdf
+@include drawdf.texi
+
+@node dynamics, ezunits, drawdf, Top
 @chapter dynamics
 @include dynamics.texi
 
