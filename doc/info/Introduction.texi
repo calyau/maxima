@@ -169,7 +169,7 @@ Maxima can generate plots of one or more functions:
 @image{figures/introduction1, 10cm}
 @end ifnotinfo
 @example
-(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5])$
+(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
 @ifnotinfo
 @image{figures/introduction2, 10cm}
