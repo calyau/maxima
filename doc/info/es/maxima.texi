@@ -151,6 +151,7 @@ Paquetes adicionales
 * diag::                        Matrices de Jordan.
 * distrib::                     Distribuciones de probabilidad.
 * draw::                        Un interfaz Maxima-Gnuplot.
+* drawdf::                      Dibuja campos de direcciones con Gnuplot.
 * dynamics::                    Gr@'aficas de sistemas din@'amicos y fractales.
 * ezunits::                     Magnitudes dimensionales.
 * f90::                         Traductor de Maxima fortran.
@@ -170,7 +171,7 @@ Paquetes adicionales
 * numericalio::                 Lectura y escritura de ficheros.
 * opsubst::                     Utilidad para sustituciones.
 * orthopoly::                   Polinomios ortogonales.
-* plotdf::                      Gr@'aficos de campos vectoriales.
+* plotdf::                      Dibuja campos de direcciones con Openmath.
 * romberg::                     Integraci@'on num@'erica por el m@'etodo de Romberg.
 * simplex::                     Programaci@'on lineal.
 * simplification::              Reglas y funciones de simplificaci@'on.
@@ -453,6 +454,11 @@ draw
 * Funciones y variables para draw::
 * Funciones y variables para picture::
 * Funciones y variables para worldmap::
+
+drawdf
+
+* Introducci@'on drawdf::
+* Funciones y variables para drawdf::
 
 dynamics
 
@@ -794,11 +800,15 @@ zeilberger
 @chapter distrib
 @include distrib.texi
 
-@node draw, dynamics, distrib, Top
+@node draw, drawdf, distrib, Top
 @chapter draw
 @include draw.texi
 
-@node dynamics, ezunits, draw, Top
+@node drawdf, dynamics, draw, Top
+@chapter drawdf
+@include drawdf.texi
+
+@node dynamics, ezunits, drawdf, Top
 @chapter dynamics
 @include dynamics.texi
 

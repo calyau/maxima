@@ -24,7 +24,7 @@ numericalio.texi    opsubst.texi                   orthopoly.texi      plotdf.te
 romberg.texi        minpack.texi                   stirling.texi       cobyla.texi  \
 simplex.texi        simplifications.texi           solve_rec.texi      stats.texi \
 stringproc.texi     unit.texi                      zeilberger.texi     dynamics.texi \
-lbfgs.texi
+lbfgs.texi          drawdf.texi
 
 
 all-local: maxima-index.lisp maxima.html contents.hhc
