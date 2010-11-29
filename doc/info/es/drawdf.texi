@@ -1,11 +1,11 @@
 @c english version 1.1
 @menu
-* Introducci@'on drawdf::
+* Introducci@'on a drawdf::
 * Funciones y variables para drawdf::
 @end menu
 
-@node Introducci@'on drawdf, Funciones y variables para drawdf, drawdf, drawdf
-@section Introducci@'on drawdf
+@node Introducci@'on a drawdf, Funciones y variables para drawdf, drawdf, drawdf
+@section Introducci@'on a drawdf
 
 La funci@'on @code{drawdf} dibuja el campo de direcciones de una ecuaci@'on
 diferencial ordinaria de primer orden (EDO) o de un sistema de dos ecuaciones
@@ -64,7 +64,7 @@ aut@'onoma en un sistema de dos ecuaciones aut@'onomas.
 
 
 
-@node Funciones y variables para drawdf,  , Introducci@'on drawdf, drawdf
+@node Funciones y variables para drawdf,  , Introducci@'on a drawdf, drawdf
 @section Funciones y variables para drawdf
 
 @subsection Funciones

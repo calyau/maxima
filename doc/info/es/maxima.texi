@@ -457,7 +457,7 @@ draw
 
 drawdf
 
-* Introducci@'on drawdf::
+* Introducci@'on a drawdf::
 * Funciones y variables para drawdf::
 
 dynamics
