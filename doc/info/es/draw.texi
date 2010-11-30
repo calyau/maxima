@@ -1,4 +1,4 @@
-@c version 1.52
+@c version 1.53
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -180,7 +180,7 @@ V@'eanse tambi@'en @code{draw} y @code{gr3d}.
 
 Almacena el gr@'afico actual en un fichero. Las opciones gr@'aficas que
 acepta son: @code{terminal}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height}, @code{file_name} y @code{file_bgcolor}. 
+@code{eps_width}, @code{eps_height}, @code{file_name} y @code{background_color}. 
 
 Ejemplo:
 
@@ -388,6 +388,18 @@ Ejemplo:
 @end example
 
 V@'eanse tambi@'en @code{axis_bottom},  @code{axis_left}, @code{axis_right} y @code{axis_3d}.
+@end defvr
+
+
+
+
+@defvr {Opci@'on gr@'afica} background_color
+Valor por defecto: @code{white}
+
+Establece el color de fondo en los terminales @code{gif}, @code{png}, @code{jpg}
+y @code{gif}. El color de fondo por defecto es blanco.
+
+V@'ease tambi@'en @code{color}.
 @end defvr
 
 
@@ -989,19 +1001,6 @@ verticales, o ambas. Si @code{error_type=boxes}, se dibujar@'an cajas en lugar d
 
 V@'ease tambi@'en @code{errors}.
 @end defvr
-
-
-
-
-@defvr {Opci@'on gr@'afica} file_bgcolor
-Valor por defecto: @code{"xffffff"}
-
-Establece el color de fondo en los terminales @code{gif}, @code{png}, @code{jpg}
-y @code{gif}. Los colores deben definirse en c@'odigo hexadecimal @i{rgb}.
-Nombres de colores no est@'an permitidos. El color de fondo
-por defecto es blanco.
-@end defvr
-
 
 
 
@@ -2037,59 +2036,6 @@ Multiplot.
 
 
 
-@defvr {Opci@'on gr@'afica} rot_horizontal
-Valor por defecto: 30
-
-@code{rot_horizontal} es el @'angulo (en grados) de la rotaci@'on horizontal
-(alrededor del eje @var{z}) para situar el punto del observador en las
-escenas 3d.
-
-El @'angulo debe pertenecer al intervalo @math{[0, 360]}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(rot_vertical = 170,
-             rot_horizontal = 360,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
-
-V@'ease tambi@'en @code{rot_vertical}.
-@end defvr
-
-
-
-
-@defvr {Opci@'on gr@'afica} rot_vertical
-Valor por defecto: 60
-
-@code{rot_vertical} es el @'angulo (en grados) de la rotaci@'on vertical
-(alrededor del eje @var{x}) para situar el punto del observador en las
-escenas 3d.
-
-El @'angulo debe pertenecer al intervalo @math{[0, 180]}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(rot_vertical = 170,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
-
-V@'ease tambi@'en @code{rot_horizontal}.
-@end defvr
-
-
-
-
 @defvr {Opci@'on gr@'afica} surface_hide
 Valor por defecto: @code{false}
 
@@ -2364,6 +2310,28 @@ pero es posible activarlo haciendo uso de la opci@'on @code{user_preamble},
 @end example
 @end defvr
 
+
+
+@defvr {Opci@'on gr@'afica} view
+Valor por defecto: @code{[60,30]}
+
+Un par de @'angulos, medidos en grados, indicando la dirección del 
+observador en una escena 3D. El primer @'angulo es la rotaci@'on 
+vertical alrededor del eje @var{x}, dentro del intervalo @math{[0, 180]}.
+El segundo es la rotaci@'on horizontal alrededor del eje @var{z}, dentro
+del intervalo @math{[0, 360]}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(view = [170, 360],
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+@end defvr
 
 
 
@@ -3877,8 +3845,7 @@ Ejemplo:
 (%i2) draw3d(title          = "Sea shell",
              xu_grid        = 100,
              yv_grid        = 25,
-             rot_vertical   = 100,
-             rot_horizontal = 20,
+             view           = [100,20],
              surface_hide   = true,
              parametric_surface(0.5*u*cos(u)*(cos(v)+1),
                            0.5*u*sin(u)*(cos(v)+1),

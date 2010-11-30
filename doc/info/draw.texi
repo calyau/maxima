@@ -202,7 +202,7 @@ See also @code{draw} and @code{gr3d}.
 
 Saves the current plot into a file. Accepted graphics options are:
 @code{terminal}, @code{pic_width}, @code{pic_height}, @code{eps_width}, 
-@code{eps_height}, @code{file_name} and @code{file_bgcolor}. 
+@code{eps_height}, @code{file_name} and @code{background_color}. 
 
 Example:
 
@@ -435,6 +435,22 @@ Example:
 @end example
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} background_color
+Default value: @code{white}
+
+Sets the background color for terminals @code{gif}, @code{png}, @code{jpg},
+and @code{gif}. Default background color is white.
+
+See also @code{color}.
 
 @opencatbox
 @category{Package draw}
@@ -1073,22 +1089,6 @@ or both, error bars. When @code{error_type=boxes}, boxes will be drawn
 instead of crosses.
 
 See also @code{errors}.
-@end defvr
-
-
-
-
-@defvr {Graphic option} file_bgcolor
-Default value: @code{"xffffff"}
-
-Sets the background color for terminals @code{gif}, @code{png}, @code{jpg},
-and @code{gif}. Colors must be given in hexadecimal @i{rgb} code. Color names
-are not allowed. Default background color is white.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
 @end defvr
 
 
@@ -2242,65 +2242,6 @@ Multiplot.
 
 
 
-@defvr {Graphic option} rot_horizontal
-Default value: 30
-
-@code{rot_horizontal} is the angle (in degrees) of horizontal rotation (around 
-the @var{z} axis) to set the view point in 3d scenes.
-
-The angle is bounded to the @math{[0, 360]} interval.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(rot_vertical = 170,
-             rot_horizontal = 360,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
-
-See also @code{rot_vertical}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} rot_vertical
-Default value: 60
-
-@code{rot_vertical} is the angle (in degrees) of vertical rotation (around 
-the @var{x} axis) to set the view point in 3d scenes.
-
-The angle is bounded to the @math{[0, 180]} interval.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(rot_vertical = 170,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
-
-See also @code{rot_horizontal}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
 @defvr {Graphic option} surface_hide
 Default value: @code{false}
 
@@ -2600,6 +2541,35 @@ but it is possible to set it by making use of option @code{user_preamble},
 @closecatbox
 
 @end defvr
+
+
+
+
+@defvr {Graphic option} view
+Default value: @code{[60,30]}
+
+A pair of angles, measured in degrees, indicating the view direction in a 
+3D scene. The first angle is the vertical rotation around the @var{x} axis, in 
+the range @math{[0, 180]}. The second one is the horizontal rotation around
+the @var{z} axis, in the range @math{[0, 360]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(view = [170, 360],
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
 
 
 
@@ -4329,8 +4299,7 @@ Example:
 (%i2) draw3d(title          = "Sea shell",
              xu_grid        = 100,
              yv_grid        = 25,
-             rot_vertical   = 100,
-             rot_horizontal = 20,
+             view           = [100,20],
              surface_hide   = true,
              parametric_surface(0.5*u*cos(u)*(cos(v)+1),
                            0.5*u*sin(u)*(cos(v)+1),
