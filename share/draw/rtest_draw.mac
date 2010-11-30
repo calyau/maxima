@@ -230,8 +230,7 @@ draw3d(
 
 /* Polar coordinates */
 draw2d(
-  pic_width     = 400,
-  pic_height    = 400,
+  dimensions    = [400, 400],
   file_name     = "polargrid",
   user_preamble = "set grid polar",
   nticks        = 200,
@@ -419,8 +418,7 @@ rgb: apply('matrix,
            makelist(
              makelist(
                [random(300),random(300),random(300)],i,1,30),i,1,30))$
-draw2d(
-  image(rgb,0,0,30,30))$
+draw2d(image(rgb,0,0,30,30))$
 
 /* European Union */
 load("worldmap")$
@@ -429,23 +427,18 @@ draw2d(
   fill_color=cyan,
   rectangle([-28.80,27.53],[34.79,70.26]),
   line_width = 3,
-  color       = "dark-violet",
+  color      = dark_violet,
   geomap(European_Union)  )$
 
-/* Defining new graphics objects */
-se_transform(expr) :=
-  if atom(expr)
-    then [expr]
-    else if op(expr)=shadow_explicit 
-           then [line_width = 8,
-                 color      = grey,
-                 apply(explicit, args(expr)),
-                 line_width = 1,
-                 color      = blue,
-                 color      = yellow,
-                 apply(explicit, args(expr))]
-           else [expr]$
-put(shadow_explicit, se_transform, draw2d_transform)$
+/* Lists of options and objects are valid arguments */
+shadow_explicit(expr, var, vmin, vmax) :=
+     [line_width = 8,
+      color      = grey,
+      explicit(expr, var, vmin, vmax),
+      line_width = 1,
+      color      = blue,
+      color      = yellow,
+      explicit(expr, var, vmin, vmax) ] $
 draw2d(shadow_explicit(sin(x),x,0,10))$
 
 /* Testing Postscript file */
@@ -464,4 +457,4 @@ draw2d(
 
 
 "END OF DRAW TESTS" $
-"--- -- ---- -----" $
+

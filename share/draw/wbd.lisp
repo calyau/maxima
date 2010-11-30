@@ -29504,7 +29504,7 @@
                      (format nil " t '' w l lw ~a lt ~a lc ~a"
                              (get-option '$line_width)
                              (get-option '$line_type)
-                             (get-option '$color)))
+                             (hex-to-rgb (get-option '$color))))
       :groups (make-list (length lis) :initial-element '(2 0)) ; numbers are sent to gnuplot in groups of 2
       :points (cond ((or (null proj)
                          (and (equal (cadr proj) '$longitude_latitude_projection)
@@ -29689,7 +29689,7 @@
                      (format nil " t '' w l lw ~a lt ~a lc ~a"
                              (get-option '$line_width)
                              (get-option '$line_type)
-                             (get-option '$color)))
+                             (hex-to-rgb (get-option '$color))))
       :groups (make-list (length lis) :initial-element '(3 0)) ; numbers are sent to gnuplot in groups of 3
                                                                ; without blank lines
       :points (cond ((null proj)   ; default: spherical projection with r=1 and center (0,0,0)
