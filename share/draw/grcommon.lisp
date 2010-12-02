@@ -311,8 +311,7 @@
   (concatenate 'string "x" (subseq str 1)))
 
 (defun update-color (opt val)
-  (let ((str (atom-to-downcased-string val))
-        num-code)
+  (let ((str (atom-to-downcased-string val)))
     (unless (correct-color str)
       (merror "model3d: unknown color ~M" val))
     (when (correct-color-name str)
@@ -549,7 +548,7 @@
       ((and ($listp val)
             (= ($length val) 2))
          (setf cls (rest val))
-         (if (every #'(lambda (z) (and (integerp z) (> z 0))) cls)
+         (if (every #'(lambda (z) (> z 0)) cls)
              (setf (gethash '$dimensions *gr-options*) cls)
              (merror "draw: illegal width specification ~M" val)))
       (t

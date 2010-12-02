@@ -1,4 +1,4 @@
-@c version 1.53
+@c version 1.54
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -97,8 +97,7 @@ Representa gr@'aficamente una serie de escenas; sus argumentos son objetos
 Por defecto, las escenas se representan en una columna.
 
 La funci@'on @code{draw} acepta las siguientes opciones globales: @code{terminal},
-@code{columns}, @code{pic_width}, @code{pic_height}, @code{eps_width},
-@code{eps_height}, @code{file_name} y @code{delay}.
+@code{columns}, @code{dimensions}, @code{file_name} y @code{delay}.
 
 Las funciones @code{draw2d} y @code{draw3d} son atajos a utilizar
 cuando se quiere representar una @'unica escena en dos o tres
@@ -179,8 +178,8 @@ V@'eanse tambi@'en @code{draw} y @code{gr3d}.
 @deffn {Funci@'on} draw_file (@var{Opci@'on gr@'afica}, ..., @var{Opci@'on gr@'afica}, ...)
 
 Almacena el gr@'afico actual en un fichero. Las opciones gr@'aficas que
-acepta son: @code{terminal}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height}, @code{file_name} y @code{background_color}. 
+acepta son: @code{terminal}, @code{dimensions},
+@code{file_name} y @code{background_color}. 
 
 Ejemplo:
 
@@ -188,10 +187,9 @@ Ejemplo:
 (%i1) load(draw)$
 (%i2) /* dibujo en pantalla */
       draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)))$
-(%i3) /* mismo dibujo en formato eps */
+(%i3) /* same plot in eps format */
       draw_file(terminal  = eps,
-                eps_width = 5,
-                eps_height = 5) $
+                dimensions = [5,5]) $
 @end example
 @end deffn
 
@@ -779,7 +777,60 @@ End of animation sequence
 La opci@'ob @code{delay} s@'olo se activa en caso de gifs animados; se ignora en
 cualquier otro caso.
 
-V@'eanse tambi@'en @code{terminal}, @code{pic_width} y @code{pic_height}.
+V@'eanse tambi@'en @code{terminal}, @code{dimensions}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} dimensions
+Valor por defecto: @code{[600,500]}
+
+Dimensiones del terminal de salida. Su valor es una lista formada
+por el ancho y el alto. El significado de estos dos n@'umeros
+depende del terminal con el que se est@'e trabajando.
+
+Con los terminales @code{gif}, @code{animated_gif}, @code{png}, @code{jpg},
+@code{svg}, @code{screen}, @code{wxt} y @code{aquaterm}, los enteros
+representan n@'umeros de puntos en cada direcci@'on. Si no son enteros
+se redondean.
+
+Con los terminales @code{eps}, @code{eps_color}, @code{pdf} y
+@code{pdfcairo}, los n@'umeros representan cent@'esimas de cm,
+lo que significa que, por defecto, las im@'agenes en estos
+formatos tienen 6 cm de ancho por 5 cm de alto.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplos:
+
+La opci@'on @code{dimensions} aplicada a un fichero de salida y al
+lienzo wxt.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        dimensions = [300,300],
+        terminal   = 'png,
+        explicit(x^4,x,-1,1)) $
+(%i3) draw2d(
+        dimensions = [300,300],
+        terminal   = 'wxt,
+        explicit(x^4,x,-1,1)) $
+@end example
+
+La opci@'on @code{dimensions} aplicada a una salida eps.
+En este caso queremos un fichero eps con dimensiones A4.
+
+@example
+(%i1) load(draw)$
+(%i2) A4portrait: 100*[21, 29.7]$
+(%i3) draw3d(
+        dimensions = A4portrait,
+        terminal   = 'eps,
+        explicit(x^2-y^2,x,-2,2,y,-2,2)) $
+@end example
 @end defvr
 
 
@@ -936,58 +987,6 @@ el modelo @code{[f(k), k]}, siendo @code{k} un par@'ametro de orden.
          points_joined = true,
          points(m)) $
 @end example
-
-@end defvr
-
-
-
-@defvr {Opci@'on gr@'afica} eps_height
-Valor por defecto: 8
-
-@code{eps_height} es la altura (medida en cm) del archivo Postscript
-generado por los terminales @code{eps} y @code{eps_color}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia. Tambi@'en puede
-usarse como argumento de la funci@'on @code{draw}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'eps,
-             eps_width  = 3,
-             eps_height = 3,
-             explicit(x^2,x,-1,1))$
-@end example
-
-V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_width}.
-@end defvr
-
-
-
-
-@defvr {Opci@'on gr@'afica} eps_width
-Valor por defecto: 12
-
-@code{eps_width} es el ancho (medido en cm) del archivo Postscript
-generado por los terminales @code{eps} y @code{eps_color}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia. Tambi@'en puede
-usarse como argumento de la funci@'on @code{draw}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'eps,
-             eps_width  = 3,
-             eps_height = 3,
-             explicit(x^2,x,-1,1))$
-@end example
-
-V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_height}.
 @end defvr
 
 
@@ -1024,7 +1023,7 @@ Ejemplo:
              terminal  = 'png)$
 @end example
 
-V@'eanse tambi@'en @code{terminal}, @code{pic_width} y @code{pic_height}.
+V@'eanse tambi@'en @code{terminal}, @code{dimensions}.
 @end defvr
 
 
@@ -1765,109 +1764,6 @@ V@'ease tambi@'en @code{colorbox}.
 
 
 
-@defvr {Opci@'on gr@'afica} pdf_height
-Valor por defecto: 29.7 (alto A4)
-
-Es el alto (medida en cm) del documento PDF generado por los
-terminales @code{pdf} y @code{pdfcairo}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia. Tambi@'en puede
-usarse como argumento de la funci@'on @code{draw}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'pdf,
-             pdf_width  = 3.0,
-             pdf_height = 3.0,
-             explicit(x^2,x,-1,1))$
-@end example
-
-V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pdf_width}.
-@end defvr
-
-
-
-@defvr {Opci@'on gr@'afica} pdf_width
-Valor por defecto: 21.0 (ancho A4)
-
-Es el ancho (medida en cm) del documento PDF generado por los
-terminales @code{pdf} y @code{pdfcairo}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia. Tambi@'en puede
-usarse como argumento de la funci@'on @code{draw}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'pdf,
-             pdf_width  = 3.0,
-             pdf_height = 3.0,
-             explicit(x^2,x,-1,1))$
-@end example
-
-V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pdf_height}.
-@end defvr
-
-
-
-
-@defvr {Opci@'on gr@'afica} pic_height
-Valor por defecto: 640
-
-@code{pic_height} es la altura del fichero de imagen de bits generado por
-los terminales @code{gif}, @code{png}, @code{jpg} y @code{svg}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia. Tambi@'en puede
-usarse como argumento de la funci@'on @code{draw}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'png,
-             pic_width  = 300,
-             pic_height = 300,
-             explicit(x^2,x,-1,1))$
-@end example
-
-V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pic_width}.
-@end defvr
-
-
-
-
-@defvr {Opci@'on gr@'afica} pic_width
-Valor por defecto: 640
-
-@code{pic_width} es la anchura del fichero de imagen de bits generado por
-los terminales @code{gif}, @code{png}, @code{jpg} y @code{svg}.
-
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia. Tambi@'en puede
-usarse como argumento de la funci@'on @code{draw}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'png,
-             pic_width  = 300,
-             pic_height = 300,
-             explicit(x^2,x,-1,1))$
-@end example
-
-V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pic_height}.
-@end defvr
-
-
-
-
 @defvr {Opci@'on gr@'afica} point_size
 Valor por defecto: 1
 
@@ -2089,12 +1985,10 @@ Ejemplos:
       draw2d(explicit(x^2,x,-1,1))$
 (%i3) /* png file */
       draw2d(terminal  = 'png,
-             pic_width = 300,
              explicit(x^2,x,-1,1))$
 (%i4) /* jpg file */
       draw2d(terminal   = 'jpg,
-             pic_width  = 300,
-             pic_height = 300,
+             dimensions = [300,300],
              explicit(x^2,x,-1,1))$
 (%i5) /* eps file */
       draw2d(file_name = "myfile",
@@ -2102,8 +1996,7 @@ Ejemplos:
              terminal  = 'eps)$
 (%i6) /* pdf file */
       draw2d(file_name = "mypdf",
-             pdf_width = 12.0,
-             pdf_height = 8.0,
+             dimensions = 100*[12.0,8.0],
              explicit(x^2,x,-1,1),
              terminal  = 'pdf)$
 (%i7) /* wxwidgets window */

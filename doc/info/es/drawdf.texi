@@ -124,7 +124,7 @@ otros soportados por @code{draw2d} y @code{gr2d}.
 @code{point_type}, @code{point_size}, @code{line_width},
 @code{line_type}, @code{key}, @code{title}, @code{xlabel},
 @code{ylabel}, @code{user_preamble}, @code{terminal},
-@code{eps_width}, @code{eps_height}, @code{file_name} y cualesquiera
+@code{dimensions}, @code{file_name} y cualesquiera
 otros soportados por @code{draw2d} y @code{gr2d}.
 
 V@'ease tambi@'en @code{draw2d}. 

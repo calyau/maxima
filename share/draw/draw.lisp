@@ -3147,8 +3147,8 @@
     (case (get-option '$terminal)
         ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name) ) )
         ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
@@ -3173,51 +3173,51 @@
                            (get-option '$file_name)))
         ($jpg (format cmdstorage "set terminal jpeg enhanced ~a size ~a, ~a ~a~%set out '~a.jpg'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name)))
         ($gif (format cmdstorage "set terminal gif enhanced ~a size ~a, ~a ~a~%set out '~a.gif'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name)))
         ($svg (format cmdstorage "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (get-option '$file_name)))
         ($animated_gif (format cmdstorage "set terminal gif enhanced animate ~a size ~a, ~a delay ~a ~a~%set out '~a.gif'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (get-option '$delay)
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name)))
         ($aquaterm (format cmdstorage "set terminal aqua enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))))
         ($wxt (format cmdstorage "set terminal wxt enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))))
         (otherwise ; default screen output
           (cond
             (*windows-OS*  ; running on windows operating system
               (format cmdstorage "set terminal windows enhanced ~a size ~a, ~a~%"
                           (write-font-type)
-                          (first (get-option '$dimensions))
-                          (second (get-option '$dimensions))))
+                          (round (first (get-option '$dimensions)))
+                          (round (second (get-option '$dimensions)))))
             (t  ; other platforms
               (format cmdstorage "set terminal x11 enhanced ~a ~a size ~a, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions)))))) ))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions))))))) ))
 
     ; compute some parameters for multiplot
     (when (not isanimatedgif)
@@ -3375,48 +3375,48 @@
    (case (get-option '$terminal)
       ($png (setf str (format nil "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name) ) ))
       ($eps (setf str (format nil "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
       ($eps_color (setf str (format nil "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
       ($pdf (setf str (format nil "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
       ($pdfcairo (setf str (format nil "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
       ($jpg (setf str (format nil "set terminal jpeg ~a size ~a, ~a ~a~%set out '~a.jpg'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name))))
       ($gif (setf str (format nil "set terminal gif ~a size ~a, ~a ~a~%set out '~a.gif'"
                            (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name))))
       ($svg (setf str (format nil "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
 			   (write-font-type)
-                           (first (get-option '$dimensions))
-                           (second (get-option '$dimensions))
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (get-option '$file_name))))
-      (otherwise (merror "draw: unknown file format" )))
+      (otherwise (merror "draw: not a file format" )))
    (send-gnuplot-command (format nil "~a~%replot" str)) ))
 
 
