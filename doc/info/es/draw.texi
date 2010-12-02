@@ -1,4 +1,4 @@
-@c version 1.54
+@c version 1.55
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -3919,6 +3919,18 @@ Array bidimensional coloreado,
          points(xyz)) $
 @end example
 
+N@'umeros de colores especificados expl@'{@dotless{i}}citamente
+por el usuario.
+@example
+(%i1) load(draw)$
+(%i2) pts: makelist([t,t^2,cos(t)], t, 0, 15)$
+(%i3) col_num: makelist(k, k, 1, length(pts))$
+(%i4) draw3d(
+        enhanced3d = ['part(col_num,k),k],
+        point_size = 3,
+        point_type = filled_circle,
+        points(pts))$
+@end example
 @end deffn
 
 

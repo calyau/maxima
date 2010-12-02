@@ -4360,6 +4360,18 @@ Bidimensional colored array,
          points(xyz)) $
 @end example
 
+Color numbers explicitly specified by the user.
+@example
+(%i1) load(draw)$
+(%i2) pts: makelist([t,t^2,cos(t)], t, 0, 15)$
+(%i3) col_num: makelist(k, k, 1, length(pts))$
+(%i4) draw3d(
+        enhanced3d = ['part(col_num,k),k],
+        point_size = 3,
+        point_type = filled_circle,
+        points(pts))$
+@end example
+
 @opencatbox
 @category{Package draw}
 @closecatbox
