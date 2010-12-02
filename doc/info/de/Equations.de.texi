@@ -16,7 +16,7 @@
 @node Funktionen und Variablen f@"ur Gleichungen,  , Gleichungen, Gleichungen
 @section Funktionen und Variablen f@"ur Gleichungen
 
-@c TODO: %RNUM IST NICHT IM ENGLISCHEN MANUAL DOKUMENTIERT.
+@c TODO: %RNUM IST IM ENGLISCHEN MANUAL NICHT DOKUMENTIERT.
 
 @c --- 14.11.2010 DK -----------------------------------------------------------
 @anchor{%rnum}
@@ -913,8 +913,10 @@ Beispiele:
 (%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)),
        lhs (notequal (aa, bb))];
 (%o5)                   [aa, aa, aa, aa]
+@group
 (%i6) e1: '(foo(x) := 2*x);
 (%o6)                     foo(x) := 2 x
+@end group
 (%i7) e2: '(bar(y) ::= 3*y);
 (%o7)                    bar(y) ::= 3 y
 (%i8) e3: '(x : y);
@@ -1354,8 +1356,10 @@ Beispiele:
 (%o8)                         x : y
 (%i9) e4: '(x :: y);
 (%o9)                        x :: y
+@group
 (%i10) [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
 (%o10)                  [2 x, 3 y, y, y]
+@end group
 (%i11) infix ("][");
 (%o11)                         ][
 (%i12) rhs (aa ][ bb);
@@ -1471,9 +1475,11 @@ Beispiele:
 (%i4) rootsconmode: true$
 (%i5) rootscontract (x^(1/2)*y^(1/4));
 (%o5)                    sqrt(x sqrt(y))
+@group
 (%i6) rootscontract (x^(1/2)*y^(1/3));
                                    1/3
 (%o6)                     sqrt(x) y
+@end group
 (%i7) rootsconmode: all$
 (%i8) rootscontract (x^(1/2)*y^(1/4));
                               2   1/4
@@ -1515,8 +1521,6 @@ der Funktion @code{realroots} gefundenen Wurzeln festsetzt.
 
 @c NEEDS WORK
 
-@c TODO: BIS HIER UEBERSETZT
-
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{solve}
 @deffn  {Funktion} solve (@var{expr}, @var{x})
@@ -1531,14 +1535,13 @@ der Funktion @code{realroots} gefundenen Wurzeln festsetzt.
 @c @var{expr} may be a rational expression, and may contain trigonometric 
 @c functions, exponentials, etc. The following method is used:
 
-L@"ost eine algebraische Gleichung @var{expr} nach der Variable @var{x} auf und 
-gibt eine Liste mit trivial l@"osbaren Gleichungen in @var{x} zur@"uck. Wenn 
-@var{expr} keine Gleichung ist, wird statt dessen die Gleichung 
-@code{@var{expr} = 0} angenommen. @var{x} kann eine Funktion sein (z.B. 
-@code{f(x)}), oder au@ss{}er einer Summe oder einem Produkt ein anderer 
-nichtatomarer Ausdruck. @var{x} kann entfallen, wenn @var{expr} nur eine 
-Variable enth@"alt. @var{expr} kann ein rationaler Ausdruck sein und 
-trigonometrische Funktionen, Exponentiale, etc. enthalten. Zur L@"osung wird die
+L@"ost eine algebraische Gleichung @var{expr} nach der Variable @var{x} auf.
+Wenn @var{expr} keine Gleichung ist, wird die Gleichung @code{@var{expr} = 0} 
+angenommen. @var{x} kann eine Funktion wie zum Beispiel @code{f(x)}) sein oder
+ein allgemeiner Ausdruck. Ausgenommen sind Summen und Produkte. Hat die 
+Gleichung nur eine Variable, braucht diese nicht angegeben zu werden. @var{expr}
+kann ein rationaler Ausdruck sein und trigonometrische Funktionen, 
+Exponentialfunktionen und andre Funktionen enthalten. Zur L@"osung wird die
 folgende Methode verwendet:
 
 @c Let @var{E} be the expression and @var{X} be the variable.  If @var{E} is 
@@ -1547,8 +1550,8 @@ folgende Methode verwendet:
 @c times the @code{N}'th roots of unity.
 
 Sei @var{E} ein Ausdruck und @var{X} die Variable. Ist @var{E} linear in 
-@var{X}, dann ist es trivialer Weise nach @var{X} aufl@"osbar. Wenn andernfalls 
-@var{E} von der Form @code{A*X^N + B} ist, dann ist das Ergebnis 
+@var{X}, dann kann die Gleichung sofort nach der Variablen @code{X} aufgelöst 
+werden. Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis 
 @code{(-B/A)^1/N)} mal die @code{N}-te Einheitswurzel.
 
 @c If @var{E} is not linear in @var{X} then the gcd of the exponents of @var{X} 
@@ -1558,34 +1561,31 @@ Sei @var{E} ein Ausdruck und @var{X} die Variable. Ist @var{E} linear in
 @c factors.  Finally @code{solve} will use the quadratic, cubic, or quartic 
 @c formulas where necessary.
 
-Ist @var{E} nicht linear in @var{X}, wird mit Hilfe des ggT der Exponenten von 
-@var{X} in @var{E} ermittelt, ob eine Potenz von @var{X} in allen Termen 
-enthalten ist. Ist dies der Fall, wird sie durch eine neue Variable ersetzt und 
-@code{solve} unter Ber@"ucksichtigung der entsprechend angepassten Vielfachheit 
-auf den vereinfachten Ausdruck angewandt. Wenn @var{E} faktorisiert werden kann, 
-wird @code{solve} auf jeden Faktor angewandt. Schlie@ss{}lich wird @code{solve}, 
-wenn n@"otig, quadratische, kubische oder quartische Formeln verwenden. 
+Ist @var{E} nicht linear in @var{X}, wird der größte gemeinsame Teiler @var{N} 
+der Exponenten der Variable @var{X} bestimmt. Die Exponenten der Variablen
+werden durch @var{N} dividiert und die Multiplizität der Lösungen mit @var{N}
+multipliziert. @code{solve} wird erneut für den Ausdruck aufgerufen. Kann
+@var{E} faktorisiert werden, wird @code{solve} für jeden Faktor aufgerufen.
+Zuletzt prüft @code{solve}, ob einer der Algorithmen für quadratische,
+kubische oder quartische Gleichungen angewendet werden kann.
 
 @c In the case where @var{E} is a polynomial in some function of the variable
 @c to be solved for, say @code{F(X)}, then it is first solved for @code{F(X)} 
 @c (call the result @var{C}), then the equation @code{F(X)=C} can be solved for 
 @c @var{X} provided the inverse of the function @var{F} is known.
 
-In dem Fall, dass @var{E} ein Polynom in einer Funktion von der Variable ist, 
-f@"ur die eine L@"osung gesucht wird, sagen wir @code{F(X)}, dann wird zuerst 
-nach @code{F(X)} aufgel@"ost (nennen wir das Ergebnis @var{C}), und 
-anschlie@ss{}end wird die Gleichung @code{F(X)=C} nach @var{X} aufgel@"ost, 
-vorausgesetzt, dass die Inverse der Funktion @var{F} bekannt ist. 
+Ist @var{E} ein Polynom in einer Funktion @code{F(X)} mit @var{X} als der
+Variablen, wird zunächst die Lösung des Polynoms für @code{F(X)} gesucht.
+Ist @var{C} eine solche Lösung, kann die Gleichung @code{F(X)=C} gelöst werden,
+wenn die Umkehrfunktion zu @code{F(X)} bekannt ist.
 
 @c @code{breakup} if @code{false} will cause @code{solve} to express the 
 @c solutions of cubic or quartic equations as single expressions rather than as 
 @c made up of several common subexpressions which is the default.
 
-@code{breakup} bewirkt, wenn @code{false}, dass @code{solve} die L@"osungen von 
-kubischen oder quartischen Gleichungen jeweils als einen geschlossenen Ausdruck 
-ausgibt, statt sie aus mehreren gemeinsamen Teilausdr@"ucken bestehen zu lassen, 
-was die Standardeinstellung ist. Die Einstellung von @code{breakup} wirkt sich 
-jedoch nur dann aus, wenn @code{programmode} @code{false} ist.
+Haben die Optionsvariablen @code{programmode} und @code{breakup} den Wert 
+@code{true}, werden Zwischenmarken f@"ur gemeinsame Terme in L@"osungen von 
+kubischen und quartischen Gleichungen erzeugt.
 
 @c @code{multiplicities} - will be set to a list of the multiplicities of the 
 @c individual solutions returned by @code{solve}, @code{realroots}, or 
@@ -1593,12 +1593,8 @@ jedoch nur dann aus, wenn @code{programmode} @code{false} ist.
 @c @code{solve}.  @code{describe} may then by used on the individual switch 
 @c names if their purpose is not clear.
 
-@code{multiplicities} - ist die Liste der Vielfachheiten der individuellen 
-L@"osungen, die von @code{solve}, @code{realroots} oder @code{allroots} 
-zur@"uckgegeben werden. Um Informationen @"uber die Schalter zu erhalten, die 
-@code{solve} beeinflussen, gib @code{apropos (solve)} ein. @code{describe} kann 
-dann f@"ur die Namen der einzelnen Schalter verwendet werden, falls ihre 
-Bedeutung nicht klar ist. 
+@code{multiplicities} ist eine Liste mit den Vielfachheiten der einzelnen 
+L@"osungen.
 
 @c @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 @c solves a system of simultaneous (linear or non-linear) polynomial equations 
@@ -1610,18 +1606,13 @@ Bedeutung nicht klar ist.
 @c the equations is equal to the number of equations, the second argument-list 
 @c may be omitted.
 
-@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])} 
-l@"ost ein System zusammenh@"angender (linearer oder nichtlinearer) 
-Polynomgleichungen durch einen Aufruf von @code{linsolve} oder @code{algsys} und
-gibt eine Liste von L@"osungslisten in diesen Variablen zur@"uck. Im Falle von 
-@code{linsolve} enth@"alt diese Liste eine einzige Liste mit L@"osungen. Beide 
-Argumente sind Listen. Die erste Liste stellt die zu l@"osenden Gleichungen dar; 
-die zweite ist eine Liste mit den zu bestimmenden Unbekannten. Sollte die 
-gesamte Anzahl an Variablen in den Gleichungen gleich der Anzahl der Gleichungen 
-sein, kann die zweite Argumentliste entfallen. Bei linearen Systemen wird die 
-Meldung "Inconsistent equations" angezeigt, wenn die Gleichungen inkompatibel 
-sind (siehe auch @code{solve_inconsistent_error}); wenn keine einzige L@"osung 
-existiert, wird "Singular" angezeigt. 
+@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
+l@"ost ein Gleichungssystem mit den Polynomen @var{eqn_1}, ..., @var{eqn_n} 
+f@"ur die Variablen @var{x_1}, ..., @var{x_n}. Die Polynome können linear oder 
+nichtlinear sein. Um das System zu lösen, werden die Funktionen @code{linsolve} 
+oder @code{algsys} aufgerufen. Das Ergebnis ist eine Liste mit den Lösungen.
+Ist die Anzahl der Gleichungen gleich der Anzahl der Variablen des Systems,
+kann die Liste mit den Variablen entfallen.
 
 @c When @code{programmode} is @code{false}, @code{solve} displays solutions with
 @c intermediate expression (@code{%t}) labels, and returns the list of labels.
@@ -1629,13 +1620,17 @@ existiert, wird "Singular" angezeigt.
 Wenn @code{programmode} @code{false} ist, zeigt @code{solve} die L@"osungen mit 
 Hilfe von Zwischenmarken (@code{%t}) an und gibt die Liste der Marken zur@"uck. 
 
+Hat @code{programmode} den Wert @code{false}, werden die L@"osungen 
+Zwischenmarken @code{%t} zugewiesen. Die R@"uckgabe ist in diesem Fall eine 
+Liste der Zwischenmarken.
+
 @c When @code{globalsolve} is @code{true} and the problem is to solve two or 
 @c more linear equations, each solved-for variable is bound to its value in the 
 @c solution of the equations.
 
-Wenn @code{globalsolve} @code{true} ist, werden bei der L@"osung von zwei oder 
-mehr linearen Gleichungen die Variablen, f@"ur die eine L@"osung gesucht wurde,
-an die L@"osungen der Gleichungen gebunden.
+Hat @code{globalsolve} den Wert @code{true}, werden den unbekannten Variablen
+eines linearen Gleichungssystems die Werte der L@"osung der Funktionen
+@code{linsolve} und @code{solve} zugewiesen.
 
 Beispiele:
 
@@ -1775,8 +1770,8 @@ Standardwert: @code{true}
 @c OTHERWISE WHAT HAPPENS - CAN'T SOLVE POLYNOMIALS, 
 @c OR SOME OTHER METHOD IS USED ??
 
-Wenn @code{solvedecomposes} @code{true} ist, ruft @code{solve} 
-@code{polydecomp} auf, wenn es beauftragt wird, Polynome zu l@"osen.
+Hat @code{solvedecomposes} den Wert @code{true}, ruft @code{solve} die Funktion
+@code{polydecomp} auf, um Polynome zu lösen.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1793,9 +1788,8 @@ Standardwert: @code{false}
 @c where @code{F} is some function.
 @c NEED AN EXAMPLE HERE
 
-Wenn @code{solveexplicit} @code{true} ist, verbietet dies @code{solve}, 
-implizite L@"osungen zur@"uckzugeben, d.h. L@"osungen der Form @code{F(x) = 0}, 
-wobei @code{F} irgendeine Funktion ist.
+Hat @code{solveexplicit} den Wert @code{true}, gibt @code{solve} keine 
+impliziten L@"osungen der Form @code{F(x) = 0} zurück.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1813,9 +1807,8 @@ Standardwert: @code{true}
 @c where factoring is not necessary.
 @c NEED AN EXAMPLE HERE
 
-Wenn @code{solvefactors} @code{false} ist, versucht @code{solve} nicht, den 
-Ausdruck zu faktorisieren. Dies kann in manchen F@"allen w@"unschenswert sein, 
-wenn Faktorisierung nicht notwendig ist.
+Hat @code{solvefactors} den Wert @code{false}, versucht @code{solve} nicht, den 
+Ausdruck zu faktorisieren.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1832,10 +1825,9 @@ Standardwert: @code{true}
 @c For example, @code{solve ([], [])} would print two warning messages and 
 @c return @code{[]}.
 
-Wenn @code{solvenullwarn} @code{true} ist, gibt @code{solve} eine Warnmeldung 
-aus, wenn es von einer Liste mit null Gleichungen oder null Variablen aufgerufen 
-wird. Zum Beispiel w@"urde @code{solve ([], [])} zwei Warnmeldungen ausgeben und 
-@code{[]} zur@"uckgeben.
+Hat @code{solvenullwarn} den Wert @code{true}, gibt @code{solve} eine 
+Warnmeldung aus, wenn keine Gleichungen oder keine Variablen als Argument
+übergeben wurden.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1852,9 +1844,8 @@ Standardwert: @code{false}
 @c containing exponentials and logarithms to be solved.
 @c NEED AN EXAMPLE HERE
 
-Wenn @code{solveradcan} @code{true} ist, ruft @code{solve} @code{radcan} auf, 
-was @code{solve} langsamer macht, aber erlaubt, bestimmte Probleme, die 
-Exponentiale und Logarithmen enthalten, zu l@"osen.
+Hat @code{solveradcan} den Wert @code{true}, ruft @code{solve} die Funktion 
+@code{radcan} auf, um Ausdrücke zu vereinfachen.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1872,9 +1863,9 @@ Standardwert: @code{true}
 @c equation, and thereby losing solutions.
 @c NEED AN EXAMPLE HERE
 
-Wenn @code{solvetrigwarn} @code{true} ist, wird @code{solve} gegebenenfalls 
-eine Meldung ausgeben, die besagt, dass inverse trigonometrische Funktionen 
-verwendet wurden und dadurch L@"osungen verloren gingen. 
+Hat @code{solvetrigwarn} den Wert @code{true}, gibt @code{solve} eine Warnung
+aus, wenn inverse trigonometrische Funktionen genutzt werden, um Lösungen zu
+finden. In diesem Fall können Lösungen verloren gehen.
 
 @c @opencatbox
 @c @category{Algebraic equations}
