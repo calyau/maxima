@@ -1837,3 +1837,12 @@ dependencies;
 [f(y,x)];
 kill(f);
 done;
+
+/* Bug ID:  3118770 - %edispflag:true causes a bug
+ */
+%edispflag:true;
+true;
+integrate(x/(%e)^(2*x), x, 0, 1);
+1/4-3/(4*%e^2);
+reset(%edispflag);
+[%edispflag];
