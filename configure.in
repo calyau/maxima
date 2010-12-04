@@ -397,6 +397,17 @@ AC_ARG_ENABLE(gettext,
 AM_CONDITIONAL(ENABLE_GETTEXT, test x$enable_gettext = xtrue)
 
 dnl languages
+AC_ARG_ENABLE(lang-de,
+	[  --enable-lang-de             German language support],
+     	[case "${enableval}" in
+       		yes) lang_de=true  ;;
+       		no)  lang_de=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-de) ;;
+     	esac],
+	[lang_de=false])
+
+AM_CONDITIONAL(LANG_DE, test x$lang_de = xtrue)
+
 AC_ARG_ENABLE(lang-es,
 	[  --enable-lang-es             Spanish language support],
      	[case "${enableval}" in
@@ -462,7 +473,6 @@ AC_ARG_ENABLE(lang-pt_BR-utf8,
 	[lang_pt_br_utf8=false])
 
 AM_CONDITIONAL(LANG_PT_BR_UTF8, test x$lang_pt_br_utf8 = xtrue)
-
 
 AC_ARG_ENABLE(recode,
 	[  --enable-recode              Use recode for charset conversion],
