@@ -156,7 +156,7 @@
 ;; Some objects can only appear at the top level of a legal simplified
 ;; expression: CRE forms and equations in particular.
 
-(defmfun trisplit (el)			;Top level of risplit
+(defun trisplit (el) ; Top level of risplit
   (cond ((atom el) (risplit el))
 	((specrepp el) (trisplit (specdisrep el)))
 	((eq (caar el) 'mequal) (dot-sp-ri (cdr el) '(mequal simp)))
