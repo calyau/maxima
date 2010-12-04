@@ -2,7 +2,7 @@
 @c File     : drawdf.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : drawdf.texi revision 1.1
+@c Original : drawdf.texi revision 1.2
 @c Date     : 28.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -141,7 +141,7 @@ package include: @code{points_joined}, @code{color},
 @code{point_type}, @code{point_size}, @code{line_width},
 @code{line_type}, @code{key}, @code{title}, @code{xlabel},
 @code{ylabel}, @code{user_preamble}, @code{terminal},
-@code{eps_width}, @code{eps_height}, @code{file_name}, and all
+@code{dimensions}, @code{file_name}, and all
 others supported by @code{draw2d} and @code{gr2d}.
 
 See also @code{draw2d}. 
