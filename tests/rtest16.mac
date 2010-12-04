@@ -13,9 +13,9 @@ limit(7^(n^2)/8^n,n,inf);
 inf$
 limit((10^n+9^n+8^n)^(1/n),n,inf);
 10$
-
 limit(4^n/2^(2*n),n,inf);
 1$
+
 /* Test from Bug 1052308 */
 /* Fixed in limit.lisp rev 1.11 */
 assume(equal(zz,0));
@@ -1846,3 +1846,14 @@ integrate(x/(%e)^(2*x), x, 0, 1);
 1/4-3/(4*%e^2);
 reset(%edispflag);
 [%edispflag];
+
+/* Bug ID: 3067098 - The command timer for a Lisp function
+ * Check that the function trisplit does not go away, when we collect
+ * timing statistics for this function and call later kill(all).
+ */
+timer(?trisplit);
+[?trisplit];
+kill(all);
+done;
+rectform(1+%i);
+1+%i;
