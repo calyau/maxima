@@ -74,9 +74,9 @@ symbol /T/ follows the line label of such expressions.
 @c Returns the lowest exponent of @var{x} which explicitly appears in 
 @c @var{expr}.  Thus
 
-gibt den kleinsten Exponenten von @var{x} zurück, der im Ausdruck @var{expr}
+gibt den kleinsten Exponenten von @var{x} zur@"uck, der im Ausdruck @var{expr}
 auftritt. Treten symbolische Exponententen auf, wird ein Ausdruck mit @code{min}
-zurückgegeben.
+zur@"uckgegeben.
 
 @example
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
@@ -84,7 +84,7 @@ zurückgegeben.
 @end example
 
 @c @opencatbox
-@c @category{Ausdrücke}
+@c @category{Ausdr@"ucke}
 @c @closecatbox
 @end deffn
 
@@ -98,13 +98,13 @@ zurückgegeben.
 @c Converts the polynomial @var{p} to a modular representation with respect to 
 @c the current modulus which is the value of the variable @code{modulus}.
 
-Konvertiert das Polynom @var{p} in eine modulare Darstellung bezüglich dem
+Konvertiert das Polynom @var{p} in eine modulare Darstellung bez@"uglich dem
 aktuellen Modul. Das Modul ist der Wert der Variablen @code{modulus}.
 
 @c @code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
 @c instead of the current value of @code{modulus}.
 
-@code{polymod(@var{p}, @var{m}} konvertiert das Polynom bezüglich dem Modul 
+@code{polymod(@var{p}, @var{m}} konvertiert das Polynom bez@"uglich dem Modul 
 @var{m}, anstatt dem aktuellen Modul @code{modulus}.
 
 @c See @code{modulus}.
@@ -1884,7 +1884,7 @@ Standardwert: @code{false}
 @c substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
 Hat @code{radsubstflag} den Wert @code{true}, wird verhindert, dass die Funktion
-@code{ratsubst} z. B. @code{u} für @code{sqrt(x)} in @code{x} substituiert.
+@code{ratsubst} z. B. @code{u} f@"ur @code{sqrt(x)} in @code{x} substituiert.
 
 @c @opencatbox
 @c @category{Vereinfachungsflags und Variablen}

@@ -8,7 +8,7 @@
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-Das Glossar stellt den deutschen Übersetzungen die englischen Begriffe 
+Das Glossar stellt den deutschen @"Ubersetzungen die englischen Begriffe 
 gegen@"uber und erl@"autert die Begriffe.
 
 @table @emph
@@ -69,7 +69,7 @@ gegen@"uber und erl@"autert die Begriffe.
        @sp 1
        
 @item  Pipe - pipe
-       Eine Pipe (englisch für Rohr, Röhre) bezeichnet einen gepufferten uni- 
+       Eine Pipe (englisch f@"ur Rohr, R@"ohre) bezeichnet einen gepufferten uni- 
        oder bidirektionalen Datenstrom zwischen zwei Prozessen nach dem „FIFO“ 
        (First In - First Out)-Prinzip.
 

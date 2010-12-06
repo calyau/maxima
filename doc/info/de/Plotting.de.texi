@@ -18,7 +18,7 @@
 @end menu
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
-@node Einf@"uhrung in die grafische Darstellung, Funktionen und Variablen f@"ur die grafische Darstellung, Grafische Darstellung
+@node Einf@"uhrung in die grafische Darstellung, Grafikformate, Grafische Darstellung, Grafische Darstellung
 @section Einf@"uhrung in die grafische Darstellung
 @c -----------------------------------------------------------------------------
 
@@ -764,7 +764,7 @@ von zwei Variablen oder in parametrischer Form definiert sind.
 @c from different sides.
 
 Die zu zeichnenden Funktionen werden als Ausdr@"ucke oder mit ihrem Namen als 
-Argumente übergeben. Mit der Maus kann der Graph rotiert werden, 
+Argumente @"ubergeben. Mit der Maus kann der Graph rotiert werden, 
 um die Fl@"ache aus verschiedenen Blickwinkeln zu betrachten.
 
 @c See also the section about Plotting Options.

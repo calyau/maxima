@@ -18,7 +18,7 @@ Bug Detection and Reporting            Programmfehler
   -> NEW: INTRODUCTION ...               Einfuehrung in Programmfehler
   -> NEW: FUNCTIONS AND VAR...           Funktionen und Variablen für Program...
   run_testsuite                            run_testsuite
-  testsuite_files                          testsuitefiles
+  testsuite_files                          testsuite_files
   bug_report                               bug_report
   build_info                               build_info
 

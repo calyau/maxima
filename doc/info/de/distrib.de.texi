@@ -14,7 +14,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to distrib, Functions and Variables for continuous distributions, distrib, Package distrib
+@node Introduction to distrib, Functions and Variables for continuous distributions, Package distrib, Package distrib
 @section Introduction to distrib
 
 Package @code{distrib} contains a set of functions for making probability 

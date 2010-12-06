@@ -2,7 +2,7 @@
 @c File        : Introduction.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Introduction.texi revision 1.10
+@c Original    : Introduction.texi revision 1.11
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
 @c 

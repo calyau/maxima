@@ -17,7 +17,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Summen und Produkte, Einf@"uhrung in Reihen, Summen Produkte und Reihen
+@node Summen und Produkte, Einf@"uhrung in Reihen, Summen Produkte und Reihen, Summen Produkte und Reihen
 @section Summen und Produkte
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -174,7 +174,7 @@ wird diese Vereinfachung r@"uckg@"angig gemacht.
 @c In some cases, a @code{scanmap (multthru, @var{expr})} may be necessary 
 @c before the @code{intosum}.
 
-@c TODO: WAS SIND DAS FÜR FÄLLE ?
+@c TODO: WAS SIND DAS FUER FAELLE ?
 
 In einigen F@"allen kann die Vereinfachung @code{scanmap(multthru, @var{expr})} 
 vor einem Aufruf von @code{intosum} notwendig sein.
@@ -738,7 +738,7 @@ Beispiele:
 @anchor{sumcontract}
 @deffn {Funktion} sumcontract (@var{expr})
 
-@c TODO: ÜBERSETZUNG FEHLT
+@c TODO: UEBERSETZUNG FEHLT
 
 Combines all sums of an addition that have upper and lower bounds that differ
 by constants. The result is an expression containing one summation for each 
@@ -812,7 +812,7 @@ Beispiele:
 @anchor{unsum}
 @deffn {Funktion} unsum (@var{f}, @var{n})
 
-@c TODO: ÜBERESETZUNG FEHLT
+@c TODO: UEBERESETZUNG FEHLT
 
 Returns the first backward difference @code{@var{f}(@var{n}) - 
 @var{f}(@var{n} - 1)}. Thus @code{unsum} in a sense is the inverse of 

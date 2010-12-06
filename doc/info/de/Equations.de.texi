@@ -1550,7 +1550,7 @@ folgende Methode verwendet:
 @c times the @code{N}'th roots of unity.
 
 Sei @var{E} ein Ausdruck und @var{X} die Variable. Ist @var{E} linear in 
-@var{X}, dann kann die Gleichung sofort nach der Variablen @code{X} aufgelöst 
+@var{X}, dann kann die Gleichung sofort nach der Variablen @code{X} aufgel@"ost 
 werden. Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis 
 @code{(-B/A)^1/N)} mal die @code{N}-te Einheitswurzel.
 
@@ -1561,12 +1561,12 @@ werden. Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis
 @c factors.  Finally @code{solve} will use the quadratic, cubic, or quartic 
 @c formulas where necessary.
 
-Ist @var{E} nicht linear in @var{X}, wird der größte gemeinsame Teiler @var{N} 
+Ist @var{E} nicht linear in @var{X}, wird der gr@"o@ss{}te gemeinsame Teiler @var{N} 
 der Exponenten der Variable @var{X} bestimmt. Die Exponenten der Variablen
-werden durch @var{N} dividiert und die Multiplizität der Lösungen mit @var{N}
-multipliziert. @code{solve} wird erneut für den Ausdruck aufgerufen. Kann
-@var{E} faktorisiert werden, wird @code{solve} für jeden Faktor aufgerufen.
-Zuletzt prüft @code{solve}, ob einer der Algorithmen für quadratische,
+werden durch @var{N} dividiert und die Multiplizit@"at der L@"osungen mit @var{N}
+multipliziert. @code{solve} wird erneut f@"ur den Ausdruck aufgerufen. Kann
+@var{E} faktorisiert werden, wird @code{solve} f@"ur jeden Faktor aufgerufen.
+Zuletzt pr@"uft @code{solve}, ob einer der Algorithmen f@"ur quadratische,
 kubische oder quartische Gleichungen angewendet werden kann.
 
 @c In the case where @var{E} is a polynomial in some function of the variable
@@ -1575,8 +1575,8 @@ kubische oder quartische Gleichungen angewendet werden kann.
 @c @var{X} provided the inverse of the function @var{F} is known.
 
 Ist @var{E} ein Polynom in einer Funktion @code{F(X)} mit @var{X} als der
-Variablen, wird zunächst die Lösung des Polynoms für @code{F(X)} gesucht.
-Ist @var{C} eine solche Lösung, kann die Gleichung @code{F(X)=C} gelöst werden,
+Variablen, wird zun@"achst die L@"osung des Polynoms f@"ur @code{F(X)} gesucht.
+Ist @var{C} eine solche L@"osung, kann die Gleichung @code{F(X)=C} gel@"ost werden,
 wenn die Umkehrfunktion zu @code{F(X)} bekannt ist.
 
 @c @code{breakup} if @code{false} will cause @code{solve} to express the 
@@ -1608,9 +1608,9 @@ L@"osungen.
 
 @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 l@"ost ein Gleichungssystem mit den Polynomen @var{eqn_1}, ..., @var{eqn_n} 
-f@"ur die Variablen @var{x_1}, ..., @var{x_n}. Die Polynome können linear oder 
-nichtlinear sein. Um das System zu lösen, werden die Funktionen @code{linsolve} 
-oder @code{algsys} aufgerufen. Das Ergebnis ist eine Liste mit den Lösungen.
+f@"ur die Variablen @var{x_1}, ..., @var{x_n}. Die Polynome k@"onnen linear oder 
+nichtlinear sein. Um das System zu l@"osen, werden die Funktionen @code{linsolve} 
+oder @code{algsys} aufgerufen. Das Ergebnis ist eine Liste mit den L@"osungen.
 Ist die Anzahl der Gleichungen gleich der Anzahl der Variablen des Systems,
 kann die Liste mit den Variablen entfallen.
 
@@ -1771,7 +1771,7 @@ Standardwert: @code{true}
 @c OR SOME OTHER METHOD IS USED ??
 
 Hat @code{solvedecomposes} den Wert @code{true}, ruft @code{solve} die Funktion
-@code{polydecomp} auf, um Polynome zu lösen.
+@code{polydecomp} auf, um Polynome zu l@"osen.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1789,7 +1789,7 @@ Standardwert: @code{false}
 @c NEED AN EXAMPLE HERE
 
 Hat @code{solveexplicit} den Wert @code{true}, gibt @code{solve} keine 
-impliziten L@"osungen der Form @code{F(x) = 0} zurück.
+impliziten L@"osungen der Form @code{F(x) = 0} zur@"uck.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1827,7 +1827,7 @@ Standardwert: @code{true}
 
 Hat @code{solvenullwarn} den Wert @code{true}, gibt @code{solve} eine 
 Warnmeldung aus, wenn keine Gleichungen oder keine Variablen als Argument
-übergeben wurden.
+@"ubergeben wurden.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1845,7 +1845,7 @@ Standardwert: @code{false}
 @c NEED AN EXAMPLE HERE
 
 Hat @code{solveradcan} den Wert @code{true}, ruft @code{solve} die Funktion 
-@code{radcan} auf, um Ausdrücke zu vereinfachen.
+@code{radcan} auf, um Ausdr@"ucke zu vereinfachen.
 
 @c @opencatbox
 @c @category{Algebraic equations}
@@ -1864,8 +1864,8 @@ Standardwert: @code{true}
 @c NEED AN EXAMPLE HERE
 
 Hat @code{solvetrigwarn} den Wert @code{true}, gibt @code{solve} eine Warnung
-aus, wenn inverse trigonometrische Funktionen genutzt werden, um Lösungen zu
-finden. In diesem Fall können Lösungen verloren gehen.
+aus, wenn inverse trigonometrische Funktionen genutzt werden, um L@"osungen zu
+finden. In diesem Fall k@"onnen L@"osungen verloren gehen.
 
 @c @opencatbox
 @c @category{Algebraic equations}

@@ -263,7 +263,6 @@ Einf@"uhrung
 * Einf@"uhrung in Maxima::
 
 Programmfehler
-* Programmfehler::
 * Einf@"uhrung in Programmfehler::
 * Funktionen und Variablen f@"ur Programmfehler::
 
@@ -272,7 +271,7 @@ Hilfe
 * Funktionen und Variablen der Hilfe::
 
 Kommandozeile
-* Kommandozeile::
+* Einf@"uhrung in die Kommandozeile::
 * Funktionen und Variablen der Eingabe::
 * Funktionen und Variablen der Ausgabe::
 
@@ -287,7 +286,6 @@ Datentypen und -strukturen
 * Funktionen und Variablen f@"ur Listen::
 
 Ausdr@"ucke
-* Ausdr@"ucke::
 * Einf@"uhrung in Ausdr@"ucke::
 * Substantive und Verben::
 * Bezeichner:: 
@@ -302,16 +300,13 @@ Operatoren
 * Benutzerdefinierte Operatoren::
 
 Auswertung
-* Auswertung::
 * Funktionen und Variablen f@"ur die Auswertung::
 
 Vereinfachung
-* Vereinfachung::
 * Einf@"uhrung in die Vereinfachung::
 * Funktionen und Variablen f@"ur die Vereinfachung::
 
 Mathematische Funktionen
-* Mathematische Funktionen::
 * Funktionen f@"ur Zahlen::
 * Funktionen f@"ur komplexe Zahlen::
 * Funktionen der Kombinatorik::
@@ -677,7 +672,7 @@ Glossar
 @chapter Mengen
 @include Nset.de.texi
 
-@node Summen Produkte und Reihen, Analysis, Eingabe und Ausgabe, Top
+@node Summen Produkte und Reihen, Analysis, Mengen, Top
 @chapter Summen, Produkte und Reihen
 @include Series.de.texi
 
@@ -693,7 +688,7 @@ Glossar
 @chapter Gleichungen
 @include Equations.de.texi
 
-@node Lineare Algebra, Spezielle Funktionen, Gleichungen, Top
+@node Lineare Algebra, Tensoren, Gleichungen, Top
 @chapter Lineare Algebra
 @include Matrices.de.texi
 
@@ -703,7 +698,7 @@ Glossar
 @include Ctensor.de.texi
 @include Atensor.de.texi
 
-@node Spezielle Funktionen, Fouriertransformationen, Lineare Algebra, Top
+@node Spezielle Funktionen, Fouriertransformationen, Tensoren, Top
 @chapter Spezielle Funktionen
 @include Special.de.texi
 
@@ -741,11 +736,11 @@ Glossar
 
 @c --- LOAD ADDITIONAL PACKAGES ------------------------------------------------
 
-@node affine, Glossar, Fouriertransformationen, Top
+@node affine, asympa, Verschiedene Optionen, Top
 @chapter affine
 @include affine.de.texi
 
-@node asympa, augmented_lagrangian, Analysis, Top
+@node asympa, augmented_lagrangian, affine, Top
 @chapter asympa
 @include asympa.de.texi
 
@@ -761,7 +756,7 @@ Glossar
 @chapter cobyla
 @include cobyla.de.texi
 
-@node contrib_ode, Package descriptive, bode, Top
+@node contrib_ode, Package descriptive, cobyla, Top
 @chapter contrib_ode
 @include contrib_ode.de.texi
 
@@ -805,7 +800,7 @@ Glossar
 @chapter graphs
 @include graphs.de.texi
 
-@node grobner, impdiff, graphs, Top
+@node grobner, groups, graphs, Top
 @chapter grobner
 @include grobner.de.texi
 
@@ -813,7 +808,7 @@ Glossar
 @chapter groups
 @include groups.de.texi
 
-@node impdiff, interpol, grobner, Top
+@node impdiff, interpol, groups, Top
 @chapter impdiff
 @include impdiff.de.texi
 
@@ -893,7 +888,7 @@ Glossar
 @chapter stirling
 @include stirling.de.texi
 
-@node stringproc, unit, stirling, Top
+@node stringproc, symmetries, stirling, Top
 @chapter stringproc
 @include stringproc.de.texi
 
@@ -901,7 +896,7 @@ Glossar
 @chapter symmetries
 @include symmetries.de.texi
 
-@node unit, zeilberger, stringproc, Top
+@node unit, zeilberger, symmetries, Top
 @chapter unit
 @include unit.de.texi
 

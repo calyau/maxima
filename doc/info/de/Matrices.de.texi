@@ -1232,7 +1232,7 @@ Standardwert: @code{[}
 @c @code{lmxchar} is the character displayed as the left delimiter of a matrix.
 @c See also @code{rmxchar}.
 
-@code{lmxchar} ist das Zeichen, das für die linke Seite einer Matrix ausgegeben
+@code{lmxchar} ist das Zeichen, das f@"ur die linke Seite einer Matrix ausgegeben
 wird. Siehe auch @code{rmxchar}.
 
 Beispiel:
@@ -1752,7 +1752,7 @@ Standardwert: @code{]}
 
 @c @code{rmxchar} is the character drawn on the right-hand side of a matrix.
 
-@code{rmxchar} ist das Zeichen, das für die rechte Seite einer Matrix ausgegeben
+@code{rmxchar} ist das Zeichen, das f@"ur die rechte Seite einer Matrix ausgegeben
 wird. Siehe auch @code{lmxchar}.
 
 @c @opencatbox

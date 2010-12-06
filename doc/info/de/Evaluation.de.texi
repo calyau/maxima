@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Evaluation.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 17.10.2010
+@c File        : Evaluation.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 17.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Auswertung, , Auswertung, Top
+@node Funktionen und Variablen f@"ur die Auswertung, , Auswertung, Auswertung
 @section Funktionen und Variablen f@"ur die Auswertung
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
@@ -1177,8 +1177,8 @@ Beispiele:
 
 Die Variablen @code{x_1}, ..., @code{x_n} erhalten die numerischen Werte
 @code{expr_1}, ..., @code{expr_n}. Die numerischen Werte werden immer dann
-für die Variablen in Ausdr@"ucke eingesetzt, wenn das Flag @code{numer} den Wert
-@code{true} hat. Siehe auch @code{ev}.
+f@"ur die Variablen in Ausdr@"ucke eingesetzt, wenn das Flag @code{numer} den 
+Wert @code{true} hat. Siehe auch @code{ev}.
 
 @c The expressions @code{expr_1}, ..., @code{expr_n} can be any expressions, not
 @c necessarily numeric.

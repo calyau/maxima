@@ -14,7 +14,7 @@
 @c @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to ctensor, Functions and Variables for ctensor, Tensoren, Tensoren
+@node Introduction to ctensor, Functions and Variables for ctensor, Functions and Variables for itensor, Tensoren
 @section Introduction to ctensor
 
 @code{ctensor} is a component tensor manipulation package.  To use the @code{ctensor}
@@ -136,7 +136,7 @@ y;
 @c end concepts ctensor
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for ctensor,  , Introduction to ctensor, Tensoren
+@node Functions and Variables for ctensor, Introduction to atensor, Introduction to ctensor, Tensoren
 @section Functions and Variables for ctensor
 @subsection Initialization and setup
 

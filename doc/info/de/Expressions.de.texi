@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Expressions.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 17.10.2010
+@c File        : Expressions.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 17.10.2010
 @c 
 @c This file contains documentation about the following symbols:
 @c 
@@ -33,7 +33,7 @@
 @end menu
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Einf@"uhrung in Ausdr@"ucke, Substantive und Verben, Ausdr@"ucke, Top
+@node Einf@"uhrung in Ausdr@"ucke, Substantive und Verben, Ausdr@"ucke, Ausdr@"ucke
 @section Einf@"uhrung in Ausdr@"ucke
 
 @c Most things in Maxima are expressions.   A sequence of expressions can be 
@@ -660,16 +660,16 @@ Beispiele:
                                  """"""
 (%o6)                     1729 - "1729"
                                  """"""
-(%i7) boxchar: "-";
-(%o7)                           -
-(%i8) box (sin(x) + cos(y));
-                        -----------------
-(%o8)                   -cos(y) + sin(x)-
-                        -----------------
+@c (%i7) boxchar: "-";
+@c (%o7)                           -
+@c (%i8) box (sin(x) + cos(y));
+@c                         -----------------
+@c (%o8)                   -cos(y) + sin(x)-
+@c                         -----------------
 @end example
 
 @c @opencatbox
-@c @category{Ausdr@"ucke}
+@c @category{Ausdruecke}
 @c @closecatbox
 @end deffn
 
@@ -693,7 +693,7 @@ Das Zeichen @code{boxchar} wird nicht zusammen mit dem eingerahmten Ausdruck
 gespeichert.
 
 @c @opencatbox
-@c @category{Ausdr@"ucke} @category{Optionsvariablen}
+@c @category{Ausdruecke} @category{Optionsvariablen}
 @c @closecatbox
 @end defvr
 
@@ -980,12 +980,12 @@ Die Funktion @code{freeof} wertet ihre Argumente aus.
 (%o3)                         false
 @end example
 
-@c @code{freeof} does not consider equivalent expressions. Simplification may 
+@c @code{freeof} does not consider equivalent expressions. Simplification may
 @c yield an equivalent but different expression.
 
-@code{freeof} betrachtet keine @"aquivalenten Ausdr@"ucke. Vereinfachungen k@"onnen
-einen @"aquivalenten Ausdruck liefern, der jedoch den Teilausdruck nicht mehr
-enth@"alt.
+@code{freeof} betrachtet keine @"aquivalenten Ausdr@"ucke. Vereinfachungen 
+k@"onnen einen @"aquivalenten Ausdruck liefern, der jedoch den Teilausdruck 
+nicht mehr enth@"alt.
 
 @c === beg ===
 @c expr: (a+b)^5$
@@ -1004,9 +1004,9 @@ enth@"alt.
 (%o4)                         false
 @end example
 
-Die Exponentialfunktion @code{exp(x)} wird von Maxima sofort zu 
-@code{%e^x} vereinfacht. Der Name der Exponentialfunktion ist daher nicht in
-einem Ausdruck enthalten.
+Die Exponentialfunktion @code{exp(x)} wird von Maxima sofort zu @code{%e^x} 
+vereinfacht. Der Name der Exponentialfunktion ist daher nicht in einem Ausdruck 
+enthalten.
 
 @c === beg ===
 @c exp(x);
@@ -1494,7 +1494,7 @@ Beispiel:
 @end example
 
 @c @opencatbox
-@c @category{Deklarationen und Inferenzen} @category{Ausdrücke}
+@c @category{Deklarationen und Inferenzen} @category{Ausdr@"ucke}
 @c @closecatbox
 @end defvr
 
@@ -1716,7 +1716,7 @@ zusammengefasst.
 
 Siehe auch die Funktion @code{collapse}.
 
-@c TODO: HIER EIN BEISPIEL ERGÄNZEN.
+@c TODO: HIER EIN BEISPIEL ERGAENZEN.
 
 @code{example(optimize)} zeigt ein Beispiel.
 

@@ -66,7 +66,7 @@ Weitere Eigenschaften, die Variablen und Funktionen erhalten k@"onnen, sind:
 @end verbatim
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Eigenschaften, Funktionen und Variablen f@"ur Fakten, Maximas Datenbank
+@node Funktionen und Variablen f@"ur Eigenschaften, Funktionen und Variablen f@"ur Fakten, Einf@"uhrung in Maximas Datenbank, Maximas Datenbank
 @section Funktionen und Variablen f@"ur Eigenschaften
 
 @c --- 22.10.2010 DK -----------------------------------------------------------

@@ -274,7 +274,7 @@ specify the name of the metric, and perform some simple calculations.
 @c end concepts itensor
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for itensor,  , Introduction to itensor, Tensoren
+@node Functions and Variables for itensor, Introduction to ctensor, Introduction to itensor, Tensoren
 @section Functions and Variables for itensor
 @subsection Managing indexed objects
 

@@ -631,7 +631,7 @@ Beispiele:
 @c @closecatbox
 @end defvr
 
-@c INFOLISTS ENTHÄLT NOCH DIE LISTEN STRUCTURES UND NAMESPACES
+@c INFOLISTS ENTHAELT NOCH DIE LISTEN STRUCTURES UND NAMESPACES
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{infolists}
@@ -844,7 +844,7 @@ der Informationsliste @var{infolist}.
 @c value of a symbol,one unbinds the output label which shows the bound value, 
 @c as well as unbinding the symbol itself.
 
-@c TODO: NICHT ÜBERSETZT.
+@c TODO: NICHT UEBERSETZT.
 
 @c @code{kill (@var{symbol})} unbinds all properties of @var{symbol}. In 
 @c contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and 

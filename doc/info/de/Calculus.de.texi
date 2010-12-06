@@ -16,7 +16,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Grenzwerte, Funktionen und Variablen der Differentiation, Analysis
+@node Funktionen und Variablen f@"ur Grenzwerte, Funktionen und Variablen der Differentiation, Analysis, Analysis
 @section Funktionen und Variablen f@"ur Grenzwerte
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -1153,7 +1153,7 @@ wurde.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Integration, Einf@"uhrung in die Integration, Funktionen und Variablen der Differentiation, Analysis
+@node Integration, Differentialgleichungen, Funktionen und Variablen der Differentiation, Analysis
 @section Integration
 
 @c -----------------------------------------------------------------------------
@@ -1164,8 +1164,10 @@ wurde.
 * Funktionen und Variablen f@"ur QUADPACK::
 @end menu
 
+
+
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration
+@node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Integration, Integration
 @subsection Einf@"uhrung in die Integration
 
 @c Maxima has several routines for handling integration. The @code{integrate}
@@ -3201,7 +3203,7 @@ pos;
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Differentialgleichungen, Integration, , Analysis
+@node Differentialgleichungen, Einf@"uhrung in Differentialgleichungen, Integration, Analysis
 @section Differentialgleichungen
 
 @c -----------------------------------------------------------------------------
@@ -3211,7 +3213,7 @@ pos;
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Differentialgleichungen, Funktionen und Variablen f@"ur Differentialgleichungen, Differentialgleichungen
+@node Einf@"uhrung in Differentialgleichungen, Funktionen und Variablen f@"ur Differentialgleichungen, Differentialgleichungen, Differentialgleichungen
 @subsection Einf@"uhrung in Differentialgleichungen
 
 This section describes the functions available in Maxima to obtain

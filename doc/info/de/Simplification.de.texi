@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Simplification.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 17.10.2010
+@c File        : Simplification.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 17.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in die Vereinfachung, Funktionen und Variablen f@"ur die Vereinfachung, Vereinfachung
+@node Einf@"uhrung in die Vereinfachung, Funktionen und Variablen f@"ur die Vereinfachung, Vereinfachung, Vereinfachung
 @section Einf@"uhrung in die Vereinfachung
 
 Einem Operator oder einer Funktion k@"onnen Eigenschaften wie linear, 
@@ -36,7 +36,7 @@ k@"onnen:
    rassociative    evenfun         oddfun
 @end verbatim
 
-@c TODO: EVENFUN, ODDFUN, NARY SIND IM FOLGENDEN NICHT ERl@"AUTERT
+@c TODO: EVENFUN, ODDFUN, NARY SIND IM FOLGENDEN NICHT ERLAEUTERT
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur die Vereinfachung, , Einf@"uhrung in die Vereinfachung, Vereinfachung
@@ -149,7 +149,7 @@ gleichzeitig den Wert @code{true} haben.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
-@anchor{distrib}
+@anchor{function_distrib}
 @deffn {Funktion} distrib (@var{expr})
 
 @c Distributes sums over products.  It differs from @code{expand} in that it 
@@ -887,7 +887,7 @@ Eigenschaft @code{outative}.
 @anchor{radcan}
 @deffn {Funktion} radcan (@var{expr})
 
-@c TODO: ÜBERSETZUNG FEHLT
+@c TODO: UEBERSETZUNG FEHLT
 
 Simplifies @var{expr}, which can contain logs, exponentials, and radicals, by 
 converting it into a form which is canonical over a large class of expressions 

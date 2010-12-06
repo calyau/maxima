@@ -1407,7 +1407,7 @@ Siehe auch @mref{zeroa} und @mrefdot{limit}
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Arrays, , Funktionen und Variablen f@"ur Konstante, Datentypen und -strukturen
+@node Funktionen und Variablen f@"ur Arrays, Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Konstante, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Arrays
 
 @c --- 12.11.2010 DK -----------------------------------------------------------

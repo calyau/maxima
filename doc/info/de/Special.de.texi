@@ -379,7 +379,7 @@ Probably Gradshteyn & Ryzhik 8.570.1.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Airyfunktionen, Gammafunktionen und verwandte Funktionen, Besselfunktionen, Spezielle Funktionen
+@node Airyfunktionen, Struvefunktionen, Besselfunktionen, Spezielle Funktionen
 @section Airyfunktionen
 
 The Airy functions Ai(x) and Bi(x) are defined in Abramowitz and Stegun,
@@ -445,7 +445,7 @@ See @code{airy_ai} and @code{airy_bi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Struvefunktionen, Gammafunktionen und verwandte Funktionen, Fehlerfunktionen, Spezielle Funktionen
+@node Struvefunktionen, Gammafunktionen und verwandte Funktionen, Airyfunktionen, Spezielle Funktionen
 @section Struvefunktionen
 
 The Struve functions are defined in Abramowitz and Stegun,
@@ -1680,7 +1680,7 @@ representation for fresnel_s and fresnel_c
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Elliptische Funktionen und Integrale, Funktionen und Variablen f@"ur Elliptische Funktionen, Elliptische Funktionen und Integrale
+@node Einf@"uhrung in Elliptische Funktionen und Integrale, Funktionen und Variablen f@"ur Elliptische Funktionen, Elliptische Funktionen und Integrale, Elliptische Funktionen und Integrale
 @subsection Einf@"uhrung in Elliptische Funktionen und Integrale
 
 Maxima includes support for Jacobian elliptic functions and for
@@ -2318,16 +2318,16 @@ $${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
 @c @code{li [1]} is @code{- log (1 - z)}. @code{li [2]} and @code{li [3]} are 
 @c the dilogarithm and trilogarithm functions, respectively.
 
-Für @var{s=1} geht der Polylogarithmus in die gewöhnliche Logarithmusfunktion 
-über und man erhält @code{-log(1-z)}. Für @var{s=2} oder @var{s=3} spricht man
+F@"ur @var{s=1} geht der Polylogarithmus in die gew@"ohnliche Logarithmusfunktion 
+@"uber und man erh@"alt @code{-log(1-z)}. F@"ur @var{s=2} oder @var{s=3} spricht man
 vom Dilogarithmus oder Trilogarithmus.
 
 @c When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)},
 @c which in turn simplifies to a numerical value if @var{z} is a real or complex
 @c floating point number or the @code{numer} evaluation flag is present.
 
-Maxima vereinfacht für @var{s=1} sofort zum gewöhnlichen Logarithmus. 
-Für negative ganze Zahlen @var{s} einschließlich der Null vereinfacht Maxima
+Maxima vereinfacht f@"ur @var{s=1} sofort zum gew@"ohnlichen Logarithmus. 
+F@"ur negative ganze Zahlen @var{s} einschlie@ss{}lich der Null vereinfacht Maxima
 den Polylogarithmus zu einer rationalen Funktion.
 
 @c When the order is 2 or 3, the polylogarithm simplifies to a numerical value

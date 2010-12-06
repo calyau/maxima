@@ -14,7 +14,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Symmetries, Functions and Variables for Symmetries, symmetries
+@node Introduction to Symmetries, Functions and Variables for Symmetries, symmetries, symmetries
 @section Introduction to Symmetries
 
 @code{sym} is a package for working with symmetric groups of polynomials.

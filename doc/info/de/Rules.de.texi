@@ -772,7 +772,7 @@ Standardwert: 10000
 @c @code{maxapplyheight} is the maximum height to which @code{applyb1} will 
 @c reach before giving up.
 
-@code{maxapplyheigt} ist die maximale Größe die @code{applyb1} erreichen kann,
+@code{maxapplyheigt} ist die maximale Gr@"o@ss{}e die @code{applyb1} erreichen kann,
 bevor die Funktion aufgibt.
 
 @c @opencatbox

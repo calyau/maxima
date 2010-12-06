@@ -831,7 +831,7 @@ auftreten.
 
 Die Funktion @code{is} wertet @code{=} zu einem boolschen Wert aus. 
 @code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}} zum 
-Wert @code{true} aus, wenn @var{a} and @var{b} identische Ausdrücke sind. Das 
+Wert @code{true} aus, wenn @var{a} and @var{b} identische Ausdr@"ucke sind. Das 
 trifft zu, wenn @var{a} und @var{b} identische Atome sind, oder wenn ihre 
 Operatoren sowie die Argumente identisch sind. In jedem anderen Fall ist das 
 Ergebnis @code{false}. Das Ergebnis der Auswertung ist nie @code{unkown}. Hat 

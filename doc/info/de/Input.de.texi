@@ -170,7 +170,7 @@ der Befehl @code{run_testsuite}. Siehe auch @mrefdot{run_testsuite}
 @c A suitable input file may be created by a text editor or by the 
 @c @code{stringout} function.
 
-Die Maxima-Ausdrücke in der Datei werden wie auf der Konsoloe mit den 
+Die Maxima-Ausdr@"ucke in der Datei werden wie auf der Konsoloe mit den 
 Zeichen @code{;} oder @code{$} beendet. Die Systemvariable @code{%} und die
 Funktion @code{%th} beziehen sich auf vorhergende Zeilen in der Datei. Die
 Datei kann @code{:lisp}-Breakkommandos enthalten. Leerzeichen, Tabulatoren,

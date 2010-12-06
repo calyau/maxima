@@ -20,7 +20,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Funktionen f@"ur Zahlen, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen
+@node Funktionen f@"ur Zahlen, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen, Mathematische Funktionen
 @section Funktionen f@"ur Zahlen
 @c -----------------------------------------------------------------------------
 
@@ -440,7 +440,7 @@ zum Beispiel @code{signum(-x)} zu @code{-signum(x)} vereinfacht.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen f@"ur komplexe Zahlen, Funktionen der Kombinatorik, Funktionen f@"ur Zahlen
+@node Funktionen f@"ur komplexe Zahlen, Funktionen der Kombinatorik, Funktionen f@"ur Zahlen, Mathematische Funktionen
 @section Funktionen f@"ur komplexe Zahlen
 @c -----------------------------------------------------------------------------
 
@@ -624,7 +624,7 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen der Kombinatorik, Algebraische Funktionen, Funktionen f@"ur komplexe Zahlen
+@node Funktionen der Kombinatorik, Algebraische Funktionen, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen
 @section Funktionen der Kombinatorik
 @c -----------------------------------------------------------------------------
 
@@ -1774,7 +1774,7 @@ Beispiele:
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Algebraische Funktionen, Exponential- und Logarithmusfunktion, Funktionen der Kombinatorik
+@node Algebraische Funktionen, Exponential- und Logarithmusfunktion, Funktionen der Kombinatorik, Mathematische Funktionen
 @section Algebraische Funktionen
 @c -----------------------------------------------------------------------------
 
@@ -1819,7 +1819,7 @@ wenn @code{radexpand} den Wert @code{true} hat.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Exponential- und Logarithmusfunktion, Winkelfunktionen, Algebraische Funktionen
+@node Exponential- und Logarithmusfunktion, Winkelfunktionen, Algebraische Funktionen, Mathematische Funktionen
 @section Exponential- und Logarithmusfunktion
 @c -----------------------------------------------------------------------------
 
@@ -2254,7 +2254,7 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Winkelfunktionen, Einf@"uhrung in Winkelfunktionen, Exponential- und Logarithmusfunktion
+@node Winkelfunktionen, Hyperbelfunktionen, Exponential- und Logarithmusfunktion, Mathematische Funktionen
 @section Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
@@ -2264,7 +2264,7 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Winkelfunktionen, Funktionen und Variablen f@"ur Winkelfunktionen, Winkelfunktionen
+@node Einf@"uhrung in Winkelfunktionen, Funktionen und Variablen f@"ur Winkelfunktionen, Winkelfunktionen, Winkelfunktionen
 @subsection Einf@"uhrung in Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
@@ -2307,7 +2307,7 @@ Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Winkelfunktionen, , Einf@"uhrung in Winkelfunktionen
+@node Funktionen und Variablen f@"ur Winkelfunktionen, , Einf@"uhrung in Winkelfunktionen, Winkelfunktionen
 @subsection Funktionen und Variablen f@"ur Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
@@ -3133,7 +3133,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Hyperbelfunktionen, Einf@"uhrung in Hyperbelfunktionen, Winkelfunktionen
+@node Hyperbelfunktionen, Zufallszahlen, Winkelfunktionen, Mathematische Funktionen
 @section Hyperbelfunktionen
 @c -----------------------------------------------------------------------------
 
@@ -3143,14 +3143,14 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Hyperbelfunktionen, Funktionen und Variablen f@"ur Hyperbelfunktionen, Hyperbelfunktionen
+@node Einf@"uhrung in Hyperbelfunktionen, Funktionen und Variablen f@"ur Hyperbelfunktionen, Hyperbelfunktionen, Hyperbelfunktionen
 @subsection Einf@"uhrung in Hyperbelfunktionen
 @c -----------------------------------------------------------------------------
 
 
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Hyperbelfunktionen, Zufallszahlen, Einf@"uhrung in Hyperbelfunktionen
+@node Funktionen und Variablen f@"ur Hyperbelfunktionen, , Einf@"uhrung in Hyperbelfunktionen, Hyperbelfunktionen
 @subsection Funktionen und Variablen f@"ur Hyperbelfunktionen
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -3262,7 +3262,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Zufallszahlen, , Funktionen und Variablen f@"ur Hyperbelfunktionen, Mathematische Funktionen
+@node Zufallszahlen, , Hyperbelfunktionen, Mathematische Funktionen
 @section Zufallszahlen
 
 @c -----------------------------------------------------------------------------
