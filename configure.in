@@ -408,6 +408,17 @@ AC_ARG_ENABLE(lang-de,
 
 AM_CONDITIONAL(LANG_DE, test x$lang_de = xtrue)
 
+AC_ARG_ENABLE(lang-de-utf8,
+	[  --enable-lang-de-utf8        German language support (UTF-8)],
+     	[case "${enableval}" in
+       		yes) lang_de_utf8=true  ;;
+       		no)  lang_de_utf8=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-de-utf8) ;;
+     	esac],
+	[lang_de_utf8=false])
+
+AM_CONDITIONAL(LANG_DE_UTF8, test x$lang_de_utf8 = xtrue)
+
 AC_ARG_ENABLE(lang-es,
 	[  --enable-lang-es             Spanish language support],
      	[case "${enableval}" in
@@ -870,7 +881,7 @@ AC_OUTPUT(Makefile maxima.spec maxima.iss \
 src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
-doc/info/de/Makefile \
+doc/info/de/Makefile doc/info/de.utf8/Makefile \
 doc/info/es/Makefile doc/info/es.utf8/Makefile \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \
