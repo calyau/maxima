@@ -29,7 +29,7 @@
 ;;; mario @@@ edu DOT xunta DOT es
 
 
-($put '$draw 1 '$version)
+($put '$draw 2 '$version)
 
 (when
   (null ($get '$grcommon '$version))
@@ -3205,7 +3205,7 @@
                            (get-option '$delay)
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name)))
-        ($aquaterm (format cmdstorage "set terminal aqua enhanced ~a ~a size ~a, ~a~%"
+        ($aquaterm (format cmdstorage "set terminal aqua enhanced ~a ~a size ~a ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
