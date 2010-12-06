@@ -1,4 +1,4 @@
-MAKEINFOFLAGS = --enable-encoding --force --no-validate
+MAKEINFOFLAGS = --enable-encoding
 
 langsdir = /de
 
@@ -38,12 +38,12 @@ contents.hhc: maxima.html
 	perl ../create_index
 
 include $(top_srcdir)/common.mk
-genericdir = $(dochtmldir)/es
+genericdir = $(dochtmldir)/de
 genericdirDATA = \
 contents.hhc index.hhk header.hhp maxima.hhp
 
 htmlname = maxima
-htmlinstdir = $(dochtmldir)/es
+htmlinstdir = $(dochtmldir)/de
 include $(top_srcdir)/common-html.mk
 
 clean-local: clean-info clean-html
