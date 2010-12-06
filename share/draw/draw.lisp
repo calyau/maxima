@@ -3118,6 +3118,16 @@
                 ($data_file_name    (update-gr-option '$data_file_name ($rhs x)))
                 ($background_color  (update-gr-option '$background_color ($rhs x)))
                 ($delay             (update-gr-option '$delay ($rhs x)))
+
+                ; deprecated global options
+                ($file_bgcolor      (update-gr-option '$file_bgcolor ($rhs x)))
+                ($pic_width         (update-gr-option '$pic_width ($rhs x)))
+                ($pic_height        (update-gr-option '$pic_height ($rhs x)))
+                ($eps_width         (update-gr-option '$eps_width ($rhs x)))
+                ($eps_height        (update-gr-option '$eps_height ($rhs x)))
+                ($pdf_width         (update-gr-option '$pdf_width ($rhs x)))
+                ($pdf_height        (update-gr-option '$pdf_height ($rhs x)))
+
                 (otherwise (merror "draw: unknown global option ~M " ($lhs x)))))
             ((equal (caar x) '$gr3d)
               (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
