@@ -340,4 +340,5 @@
   :components
   (
    (:file "eigensys")
-   (:file "dgesv")))
+   (:file "dgesv")
+   (:file "dgemm")))

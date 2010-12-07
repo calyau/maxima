@@ -353,3 +353,129 @@ that is, the square root of the sum of squares of the matrix elements.
 @closecatbox
 
 @end deffn
+
+@deffn {Function} dgemm (@var{A}, @var{B})
+@deffnx {Function} dgemm (@var{A}, @var{B}, @var{options})
+Compute the product of two matrices and optionally add the product to
+a third matrix.
+
+In the simplest form, @code{dgemm(@var{A}, @var{B})} computes the
+product of the two real matrices, @var{A} and @var{B}.
+
+In the second form, @code{dgemm} computes the @math{@var{alpha} *
+@var{A} * @var{B} + @var{beta} * @var{C}} where @var{A}, @var{B},
+@var{C} are real matrices of the appropriate sizes and @var{alpha} and
+@var{beta} are real numbers.  Optionally, @var{A} and/or @var{B} can
+be transposed before computing the product.  The extra parameters are
+specifed by optional keyword arguments: The keyword arguments are
+optional and may be specified in any order.  They all take the form
+@code{key=val}.  The keyword arguments are:
+
+@table @var
+@item C
+The matrix @var{C} that should be added.  The default is @code{false},
+which means no matrix is added.
+@item alpha
+The product of @var{A} and @var{B} is multiplied by this value.  The
+default is 1.
+@item beta
+If a matrix @var{C} is given, this value multiplies @var{C} before it
+is added.  The default value is 0, which implies that @var{C} is not
+added, even if @var{C} is given.  Hence, be sure to specify a non-zero
+value for @var{beta}.
+@item transpose_a
+If @code{true}, the transpose of @var{A} is used instead of @var{A}
+for the product.  The default is @code{false}.
+@item transpose_b
+If @code{true}, the transpose of @var{B} is used instead of @var{B}
+for the product.  The default is @code{false}.
+@end table
+
+@c ===beg===
+@c load (lapack)$
+@c A : matrix([1,2,3],[4,5,6],[7,8,9]);
+@c B : matrix([-1,-2,-3],[-4,-5,-6],[-7,-8,-9]);
+@c C : matrix([3,2,1],[6,5,4],[9,8,7]);
+@c dgemm(A,B);
+@c A . B;
+@c dgemm(A,B,transpose_a=true);
+@c transpose(A) . B;
+@c dgemm(A,B,c=C,beta=1);
+@c A . B + C;
+@c dgemm(A,B,c=C,beta=1, alpha=-1);
+@c -A . B + C
+@example
+(%i1) load (lapack)$
+(%i2) A : matrix([1,2,3],[4,5,6],[7,8,9]);
+                                  [ 1  2  3 ]
+                                  [         ]
+(%o2)                             [ 4  5  6 ]
+                                  [         ]
+                                  [ 7  8  9 ]
+(%i3) B : matrix([-1,-2,-3],[-4,-5,-6],[-7,-8,-9]);
+                               [ - 1  - 2  - 3 ]
+                               [               ]
+(%o3)                          [ - 4  - 5  - 6 ]
+                               [               ]
+                               [ - 7  - 8  - 9 ]
+(%i4) C : matrix([3,2,1],[6,5,4],[9,8,7]);
+                                  [ 3  2  1 ]
+                                  [         ]
+(%o4)                             [ 6  5  4 ]
+                                  [         ]
+                                  [ 9  8  7 ]
+(%i5) dgemm(A,B);
+                         [ - 30.0   - 36.0   - 42.0  ]
+                         [                           ]
+(%o5)                    [ - 66.0   - 81.0   - 96.0  ]
+                         [                           ]
+                         [ - 102.0  - 126.0  - 150.0 ]
+(%i6) A . B;
+                            [ - 30   - 36   - 42  ]
+                            [                     ]
+(%o6)                       [ - 66   - 81   - 96  ]
+                            [                     ]
+                            [ - 102  - 126  - 150 ]
+(%i7) dgemm(A,B,transpose_a=true);
+                         [ - 66.0  - 78.0   - 90.0  ]
+                         [                          ]
+(%o7)                    [ - 78.0  - 93.0   - 108.0 ]
+                         [                          ]
+                         [ - 90.0  - 108.0  - 126.0 ]
+(%i8) transpose(A) . B;
+                           [ - 66  - 78   - 90  ]
+                           [                    ]
+(%o8)                      [ - 78  - 93   - 108 ]
+                           [                    ]
+                           [ - 90  - 108  - 126 ]
+(%i9) dgemm(A,B,c=C,beta=1);
+                         [ - 27.0  - 34.0   - 41.0  ]
+                         [                          ]
+(%o9)                    [ - 60.0  - 76.0   - 92.0  ]
+                         [                          ]
+                         [ - 93.0  - 118.0  - 143.0 ]
+(%i10) A . B + C;
+                            [ - 27  - 34   - 41  ]
+                            [                    ]
+(%o10)                      [ - 60  - 76   - 92  ]
+                            [                    ]
+                            [ - 93  - 118  - 143 ]
+(%i11) dgemm(A,B,c=C,beta=1, alpha=-1);
+                            [ 33.0   38.0   43.0  ]
+                            [                     ]
+(%o11)                      [ 72.0   86.0   100.0 ]
+                            [                     ]
+                            [ 111.0  134.0  157.0 ]
+(%i12) -A . B + C;
+                               [ 33   38   43  ]
+                               [               ]
+(%o12)                         [ 72   86   100 ]
+                               [               ]
+                               [ 111  134  157 ]
+
+@end example
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn
