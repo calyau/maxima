@@ -187,7 +187,7 @@ MAIN:
 {
    if (not $dump_pl_in) {
       get_info_files \%info_files,$main_info;
-      get_node_offsets \%info_files,$separator;
+      get_node_offsets \%info_files,$separator_re,$file_node_re;
       get_index_topics \%info_files,$file_node_item_re,$menu_item_re,$appendix_re;
       get_byte_offsets_for_topics \%info_files,$info_item_re;
       get_node_items_and_offsets \%info_files,$node_item_re,$node_title_re;
@@ -212,6 +212,21 @@ sub slurp(@)
    return $contents;
 }
 
+=pod
+
+=over 5
+
+=item B<get_info_files( \%info_files, $main_info )>
+
+Slurps the main info file named by C<$main_info>, splits it at \037
+bytes, extracts the other info names, then slurps these remaining
+files. All contents are stored in C<%info_files>
+
+=back
+
+
+=cut
+
 sub get_info_files(@)
 {
    my ($info_files,$main_info)=@_;
@@ -227,9 +242,23 @@ sub get_info_files(@)
    return %$info_files;
 }
 
+=pod
+
+=over 5
+
+=item B<get_node_offsets( \%info_files, $separator_re, $file_node_re )>
+
+Looks for occurences of $separator, records its position as an offset,
+and then records occurences of info Nodes. Morally, C<$separator_re> is
+\037.
+
+=back
+
+=cut
+
 sub get_node_offsets(@)
 {
-   my ($info_files,$separator)=@_;
+   my ($info_files,$separator_re,$file_node_re)=@_;
    my @filenames=@{$info_files->{'filenames'}};
    #print Dumper(@filenames);
    my ($node_name,$offset);
@@ -249,25 +278,13 @@ sub get_node_offsets(@)
 
 =pod
 
-=over
+=over 5
 
-=item *
+=item B<get_index_topics( \%info_files,$file_node_re,$menu_item_re,$appendix_re )>
 
-get_index_topics( $info_files,$file_node_regexp,$menu_item_regexp )
-
-=over
-
-=item - $info_files is a hash reference containing the info filenames and
-the file contents.
-
-=item - $file_node_regexp is a regexp that identifies each appendix item.
-
-=item - $menu_item_regexp is a regexp that identifies breaks in the
-info file.
-
-=back
-
-Scans the final info file for appendix nodes.
+Scans the final info file for appendix/topic nodes. The node name and
+line offset are indexed by the topic name in the 'topics' hash inside
+C<%info_files>.
 
 =back
 
@@ -295,6 +312,21 @@ sub get_index_topics(@)
    $info_files->{'topics'}=$topic_locator;
    return %$info_files;
 }
+
+=pod
+
+=over 5
+
+=item B<get_byte_offsets_for_topics( \%info_files,$info_item_re )>
+
+For each topic in 'topics', we determine the byte offset and length of
+that topic item. This requires numerous reads from the info files,
+which we accomplish by opening their contents in the C<%info_files>
+hash as filehandles.
+
+=back
+
+=cut
 
 sub get_byte_offsets_for_topics(@)
 {
@@ -355,6 +387,22 @@ sub get_byte_offsets_for_topics(@)
    return %$info_files;
 }
 
+=pod
+
+=over 5
+
+=item B<get_node_items_and_offsets( \%info_files,$node_item_re,$node_title_re )>
+
+Scans each info file for info items and computes their byte offsets
+and lengths. Again, we open the info file contents in memory (as a
+character string/file), and use the C<tell> function to give the byte
+offset of each item. The results are stored in the 'items' hash in
+C<%info_files>.
+
+=back
+
+=cut
+
 sub get_node_items_and_offsets(@)
 {
    my ($info_files,$node_item_re,$node_title_re)=@_;
@@ -393,6 +441,21 @@ sub get_node_items_and_offsets(@)
    $info_files->{'items'}=\%items;
    return %$info_files;
 }
+
+=pod
+
+=over 5
+
+=item B<write_lisp_code( \%info_files )>
+
+The 'topics' hash in C<%info_files> is written out to create the
+C<*info-deffn-defvr-pairs*> Lisp list. The 'items' hash in
+C<%info_files> is written out to create the C<*info-section-pairs*>
+Lisp list.
+
+=back
+
+=cut
 
 sub write_lisp_code($)
 {
