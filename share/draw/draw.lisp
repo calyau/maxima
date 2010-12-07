@@ -282,7 +282,7 @@
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
                  (get-option '$line_type)
-                 (get-option '$color)
+                 (hex-to-rgb (get-option '$color))
                  (axes-to-plot))))) )
 
 (defun points-array-2d (arg)
