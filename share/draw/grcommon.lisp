@@ -548,11 +548,11 @@
       ((and ($listp val)
             (= ($length val) 2))
          (setf cls (rest val))
-         (if (every #'(lambda (z) (> z 0)) cls)
+         (if (every #'(lambda (z) (and (numberp z) (> z 0))) cls)
              (setf (gethash '$dimensions *gr-options*) cls)
-             (merror "draw: illegal width specification ~M" val)))
+             (merror "draw: illegal dimensions")))
       (t
-         (merror "draw: illegal height specification ~M" val)))))
+         (merror "draw: illegal dimensions format ~M" val)))))
 
 
 
