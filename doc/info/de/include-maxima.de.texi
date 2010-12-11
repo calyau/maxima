@@ -364,11 +364,11 @@ Gleichungen
 * Funktionen und Variablen f@"ur Gleichungen::
 
 Lineare Algebra
-* Introduction to Matrices and Linear Algebra::
-* Dot::
-* Vectors::
-* eigen::
-* Functions and Variables for Matrices and Linear Algebra::
+* Einf@"uhrung in die lineare Algebra::
+* Nichtkommutative Multiplikation::
+* Vektoren::
+* Eigenwerte::
+* Funktionen und Variablen der linearen Algebra::
 
 Tensoren
 * Introduction to itensor::

@@ -29,7 +29,7 @@ Maxima wird st@"andig weiterentwickelt. Der Funktionsumfang wird erweitert und
 Fehler, die bei einem Programm dieser Komplexit@"at kaum zu vermeiden sind, 
 werden korrigiert. Fehler k@"onnen berichtet werden. Werden ausreichend
 Informationen mitgeteilt, k@"onnen die Entwickler Maxima weiter verbessern.
-Ein aktueller Link zur Website zum Berichten von Fehlern sowie die notwendigen 
+Ein aktueller Link zur Webseite zum Berichten von Fehlern sowie die notwendigen 
 Informationen @"uber die Maxima-Installation werden mit dem Befehl 
 @code{bug_report()} angezeigt. Um die Installation auf dem Rechner zu testen, 
 kann die Maxima-Testsuite ausgef@"uhrt werden. Die folgende @"Ubersicht zeigt 
@@ -157,7 +157,7 @@ The above information is also reported by the function 'build_info'
 @anchor{build_info}
 @deffn {Funktion} build_info ()
 
-Zeigt eine @"ubersicht mit Angaben zur installierten Version von Maxima.
+Zeigt eine @"Ubersicht mit Angaben zur installierten Version von Maxima.
 @code{build_info} gibt eine leere Zeichenkette @code{""} zur@"uck.
 
 Beispiel:

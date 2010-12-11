@@ -46,12 +46,23 @@ gegen@"uber und erl@"autert die Begriffe.
 @item  Dateieingabe - file input
        @sp 1
 
+@item  Dreiecksmatrix - triangular matrix
+       @sp 1
+
 @item  Fehlersuche - debugging
        @sp 1
 
 @item  Flag - flag
        Boolsche Variablen mit den Werten @code{true} oder @code{false}, die zur
        Steuerung des Programms vom Nutzer gesetzt werden k@"onnen.
+
+@item  Koeffizientenmatrix, erweitert - augmented coefficient matrix
+       Die erweiterte Koeffizientenmatrix entsteht, wenn an die 
+       Koeffizientenmatrix eines Gleichungssystems eine Spalte mit der rechten
+       Seite des Gleichungssystems angefügt wird.
+
+@item  Kommandozeile - command line
+       @sp 1
 
 @item  Konsole Ein- und Ausgabe - console interaction
        @sp 1
@@ -62,7 +73,7 @@ gegen@"uber und erl@"autert die Begriffe.
        @code{%t} f@"ur Zwischenergebnisse abgelegt. Die Marken werden 
        fortlaufend numeriert.
 
-@item  Kommandozeile - command line
+@item  Matrix, schwachbesetzt - sparse matrix
        @sp 1
        
 @item  Optionsvariable - option variable
@@ -89,6 +100,9 @@ gegen@"uber und erl@"autert die Begriffe.
        @sp 1
 
 @item  Standardwert - default value
+       @sp 1
+
+@item  Stufenmatrix - echelon matrix
        @sp 1
 
 @item  Substantivform - noun form
