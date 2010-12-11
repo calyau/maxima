@@ -2,6 +2,7 @@
 @c File     : Polynomials.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : Polynomials.texi revision 1.34
 @c Date     : 15.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -68,77 +69,8 @@ symbol /T/ follows the line label of such expressions.
 @node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynome
 @section Functions and Variables for Polynomials
 
-@c -----------------------------------------------------------------------------
-@deffn {Funktion} lopow (@var{expr}, @var{x})
-
-@c Returns the lowest exponent of @var{x} which explicitly appears in 
-@c @var{expr}.  Thus
-
-gibt den kleinsten Exponenten von @var{x} zur@"uck, der im Ausdruck @var{expr}
-auftritt. Treten symbolische Exponententen auf, wird ein Ausdruck mit @code{min}
-zur@"uckgegeben.
-
-@example
-(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
-(%o1)                       min(a, 2)
-@end example
-
-@c @opencatbox
-@c @category{Ausdr@"ucke}
-@c @closecatbox
-@end deffn
-
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
-
-@c -----------------------------------------------------------------------------
-@deffn {Funktion} polymod (@var{p})
-@deffnx {Function} polymod (@var{p}, @var{m})
-
-@c Converts the polynomial @var{p} to a modular representation with respect to 
-@c the current modulus which is the value of the variable @code{modulus}.
-
-Konvertiert das Polynom @var{p} in eine modulare Darstellung bez@"uglich dem
-aktuellen Modul. Das Modul ist der Wert der Variablen @code{modulus}.
-
-@c @code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
-@c instead of the current value of @code{modulus}.
-
-@code{polymod(@var{p}, @var{m}} konvertiert das Polynom bez@"uglich dem Modul 
-@var{m}, anstatt dem aktuellen Modul @code{modulus}.
-
-@c See @code{modulus}.
-
-Siehe @code{modulus}.
-
-@c @opencatbox
-@c @category{Polynome}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} powers (@var{expr}, @var{x})
-Gives the powers of @var{x} occuring in @var{expr}.
-
-@code{load (powers)} loads this function.
-@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
-@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
-
-@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
-@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
-@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
-@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
-@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
-@c 
-@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
-@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
-@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
-@c AND MANY OTHER SIMILAR USEFUL HACKS.
-
-@c @opencatbox
-@c @category{Expressions} @category{Polynomials}
-@c @closecatbox
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @defvr {Option variable} algebraic
@@ -422,6 +354,22 @@ Note that @code{y} is the main variable in the second example.
 @c @category{Polynomials}
 @c @closecatbox
 @end deffn
+
+@c --- 09.12.2010 DK -----------------------------------------------------------
+@anchor{dontfactor}
+@defvr {Optionsvariable} dontfactor
+Standardwert: @code{[]}
+
+@code{dontfactor} may be set to a list of variables with respect to which 
+factoring is not to occur.  (The list is initially empty.) Factoring also 
+will not take place with respect to any variables which are less important, 
+according the variable ordering assumed for canonical rational expression 
+(CRE) form, than those on the @code{dontfactor} list.
+
+@c @opencatbox
+@c @category{Expressions}
+@c @closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
@@ -1109,6 +1057,26 @@ Examples:
 @c @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@deffn {Funktion} lopow (@var{expr}, @var{x})
+
+@c Returns the lowest exponent of @var{x} which explicitly appears in 
+@c @var{expr}.  Thus
+
+gibt den kleinsten Exponenten von @var{x} zur@"uck, der im Ausdruck @var{expr}
+auftritt. Treten symbolische Exponententen auf, wird ein Ausdruck mit @code{min}
+zur@"uckgegeben.
+
+@example
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
+@end example
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
 @c DESCRIBE lratsubst INDEPENDENTLY OF subst
 @c THIS ITEM NEEDS MORE WORK
 
@@ -1332,6 +1300,55 @@ necessarily return @code{[@var{p_1}, ..., @var{p_n}]}:
 
 @c @opencatbox
 @c @category{Polynomials}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {Funktion} polymod (@var{p})
+@deffnx {Function} polymod (@var{p}, @var{m})
+
+@c Converts the polynomial @var{p} to a modular representation with respect to 
+@c the current modulus which is the value of the variable @code{modulus}.
+
+Konvertiert das Polynom @var{p} in eine modulare Darstellung bez@"uglich dem
+aktuellen Modul. Das Modul ist der Wert der Variablen @code{modulus}.
+
+@c @code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
+@c instead of the current value of @code{modulus}.
+
+@code{polymod(@var{p}, @var{m}} konvertiert das Polynom bez@"uglich dem Modul 
+@var{m}, anstatt dem aktuellen Modul @code{modulus}.
+
+@c See @code{modulus}.
+
+Siehe @code{modulus}.
+
+@c @opencatbox
+@c @category{Polynome}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} powers (@var{expr}, @var{x})
+Gives the powers of @var{x} occuring in @var{expr}.
+
+@code{load (powers)} loads this function.
+@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
+@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
+
+@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
+@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
+@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
+@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
+@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
+@c 
+@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
+@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
+@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
+@c AND MANY OTHER SIMILAR USEFUL HACKS.
+
+@c @opencatbox
+@c @category{Expressions} @category{Polynomials}
 @c @closecatbox
 @end deffn
 
