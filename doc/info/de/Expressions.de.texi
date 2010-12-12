@@ -2,6 +2,7 @@
 @c File        : Expressions.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Expressions.texi revision 1.71
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
 @c 
@@ -53,7 +54,8 @@ Operators k@"onnen Atome oder wiederum Operatoren mit Argumenten sein.
 
 Da Maxima in Lisp programmiert ist, wird ein Ausdruck intern als eine Liste 
 dargestellt, die die Gestalt @code{((op) a_1 a_2 ... a_n)} hat. Die 
-arithmetischen Operatoren "+" und "*" haben zum Beispiel die interne Darstellung:
+arithmetischen Operatoren "+" und "*" haben zum Beispiel die interne 
+Darstellung:
 
 @example
 x+y+10  -> ((mplus) 10 $x $y)
@@ -70,8 +72,8 @@ log(y)          -> ((%log) $y)
 2*sin(x)+log(y) -> ((mplus) ((mtimes) 2 ((%sin) $x)) ((%log) $y)) 
 @end example
 
-Mehrere Ausdr@"ucke k@"onnen zusammengefa@ss{}t werden, indem die Ausdr@"ucke durch 
-Kommata getrennt und mit runden Klammern umgeben werden.
+Mehrere Ausdr@"ucke k@"onnen zusammengefa@ss{}t werden, indem die Ausdr@"ucke 
+durch Kommata getrennt und mit runden Klammern umgeben werden.
 
 @c === beg ===
 @c x: 3$
@@ -156,8 +158,8 @@ Funktionen und Variablen f@"ur Substantive und Verben:
 @end verbatim
 
 @noindent
-Funktionen und Variablen, um zu pr@"ufen, ob ein Teilausdruck enthalten ist und um
-eine Liste der Variablen eines Ausdrucks zu erstellen:
+Funktionen und Variablen, um zu pr@"ufen, ob ein Teilausdruck enthalten ist und 
+um eine Liste der Variablen eines Ausdrucks zu erstellen:
 
 @verbatim
    freeof       lfreeof
@@ -321,11 +323,11 @@ Beispiel @code{is5}.
 @c alphabetic characters are initially @code{A} through @code{Z}, @code{a} 
 @c through @code{z}, @code{%}, and @code{_}.
 
-Sonderzeichen k@"onnen mit der Funktion @code{declare} als alphabetisch erkl@"art 
-werden. In diesem Fall muss dem Sonderzeichen kein Backslash vorangestellt 
-werden, wenn es in einem Bezeichner genutzt wird. Die Zeichen @code{A} bis
-@code{Z}, @code{a} bis @code{z} und @code{0} bis @code{9} sowie die Zeichen 
-@code{%} und @code{_} haben bereits die Eigenschaft alphabetisch.
+Sonderzeichen k@"onnen mit der Funktion @code{declare} als alphabetisch 
+erkl@"art werden. In diesem Fall muss dem Sonderzeichen kein Backslash 
+vorangestellt werden, wenn es in einem Bezeichner genutzt wird. Die Zeichen 
+@code{A} bis @code{Z}, @code{a} bis @code{z} und @code{0} bis @code{9} sowie die
+Zeichen @code{%} und @code{_} haben bereits die Eigenschaft alphabetisch.
 
 @c Maxima is case-sensitive. The identifiers @code{foo}, @code{FOO}, and 
 @c @code{Foo} are distinct. See @ref{Lisp and Maxima} for more on this point.
@@ -334,11 +336,12 @@ werden, wenn es in einem Bezeichner genutzt wird. Die Zeichen @code{A} bis
 @c @code{$}. Any other Lisp symbol is preceded by a question mark @code{?} when 
 @c it appears in Maxima. See @ref{Lisp and Maxima} for more on this point.
 
-Maxima unterscheidet Gro@ss{}- und Kleinschreibung. So werden von Maxima @code{foo},
-@code{FOO} oder @code{Foo} unterschieden. Ein Maxima-Bezeichner ist ein 
-Lisp-Symbol, dem ein Dollarzeichen @code{$} vorangestellt ist. Lisp-Symbolen, 
-die in Maxima verwendet werden sollen, ist ein Fragezeichen @code{?} 
-vorangestellt. Siehe @ref{Lisp und Maxima} f@"ur eine ausf@"uhrlichere Beschreibung.
+Maxima unterscheidet Gro@ss{}- und Kleinschreibung. So werden von Maxima 
+@code{foo}, @code{FOO} oder @code{Foo} unterschieden. Ein Maxima-Bezeichner ist 
+ein Lisp-Symbol, dem ein Dollarzeichen @code{$} vorangestellt ist. 
+Lisp-Symbolen, die in Maxima verwendet werden sollen, ist ein Fragezeichen 
+@code{?} vorangestellt. Siehe das Kapitel @nref{Lisp und Maxima} f@"ur eine 
+ausf@"uhrlichere Beschreibung.
 
 Beispiele:
 
@@ -415,7 +418,7 @@ das bereits einen Alias-Namen hat, einen neuen Alias-Namen zu geben, bricht
 Symbole, die einen Alias-Namen erhalten haben, werden in die Systemvariable 
 @code{aliases} eingetragen. Siehe die Systemvariable @mrefdot{aliases}
 
-Der Alias-Name kann mit der Funktion @code{kill} entfernt werden.
+Der Alias-Name kann mit der Funktion @mref{kill} entfernt werden.
 
 Beispiel:
 
@@ -458,9 +461,9 @@ Anfangswert: @code{[]}
 
 Die Systemvariable @code{aliases} ist eine Informationsliste der Symbole, die 
 einen vom Benutzer definierten Alias-Namen mit dem Kommando @code{alias} 
-erhalten haben. Weiterhin werden von den Funktionen @code{ordergreat} und 
-@code{orderless} sowie bei der Deklaration eines Symbols als ein @code{noun} 
-mit der Funktion @code{declare} Alias-Namen generiert, die in die Liste 
+erhalten haben. Weiterhin werden von den Funktionen @mref{ordergreat} und 
+@mref{orderless} sowie bei der Deklaration eines Symbols als ein @code{noun} 
+mit der Funktion @mref{declare} Alias-Namen generiert, die in die Liste 
 @code{aliases} eingetragen werden.
 
 Siehe auch die Funktion @mref{alias} f@"ur ein Beispiel.
@@ -561,8 +564,9 @@ Siehe die Optionsvariable @code{inflag}.
 @c @code{substpart ("[", @var{expr}, 0)}. See also @code{substpart}, and 
 @c @code{op}.
 
-@code{args(@var{expr})} ist @"aquivalent zu @code{substpart("[", @var{expr}, 0)}.
-Siehe auch @mref{substpart} und @mrefdot{op}
+@code{args(@var{expr})} ist @"aquivalent zu 
+@code{substpart("[", @var{expr}, 0)}. Siehe auch @mref{substpart} und 
+@mrefdot{op}
 
 Beispiele:
 
@@ -597,8 +601,8 @@ Beispiele:
 @c @code{box} as the operator and @var{expr} as the argument. A box is drawn on
 @c the display when @code{display2d} is @code{true}.
 
-Die Funktion @code{box(@var{expr})} umschlie@ss{}t den Ausdruck @var{expr} in der 
-Ausgabe mit einem Rahmen, wenn @code{display2d} den Wert @code{true} hat. 
+Die Funktion @code{box(@var{expr})} umschlie@ss{}t den Ausdruck @var{expr} in 
+der Ausgabe mit einem Rahmen, wenn @code{display2d} den Wert @code{true} hat. 
 Ansonsten ist der R@"uckgabewert ein Ausdruck mit @code{box} als Operator und 
 @var{expr} als Argument.
 
@@ -606,9 +610,9 @@ Ansonsten ist der R@"uckgabewert ein Ausdruck mit @code{box} als Operator und
 @c symbol @var{a}. The label is truncated if it is longer than the width of the
 @c box.
 
-@code{box(@var{expr}, @var{a})} umschlie@ss{}t @var{expr} mit einem Rahmen, der mit
-einer Marke @var{a} bezeichnet ist. Ist die Marke l@"anger als der Rahmen, werden
-Zeichen abgeschnitten.
+@code{box(@var{expr}, @var{a})} umschlie@ss{}t @var{expr} mit einem Rahmen, der 
+mit einer Marke @var{a} bezeichnet ist. Ist die Marke l@"anger als der Rahmen, 
+werden Zeichen abgeschnitten.
 
 @c @code{box} evaluates its argument. However, a boxed expression does not 
 @c evaluate to its content, so boxed expressions are effectively excluded from
@@ -711,8 +715,8 @@ gespeichert.
 @c collapse the elements of the array @code{A} by doing 
 @c @code{collapse (listarray ('A))}.
 
-Kompremiert einen Ausdruck @var{expr}, indem gemeinsame Teilausdr@"ucke denselben
-Speicher nutzen. @code{collapse} wird von der Funktion @code{optimize}
+Kompremiert einen Ausdruck @var{expr}, indem gemeinsame Teilausdr@"ucke 
+denselben Speicher nutzen. @code{collapse} wird von der Funktion @code{optimize}
 aufgerufen. @code{collapse} kann auch mit einer Liste aufgerufen werden, die
 mehrere Argumente enth@"alt.
 
@@ -786,8 +790,8 @@ Beispiel:
 @c the expression.
 
 W@"ahlt wie die Funktion @code{part} einen Teilausdruck aus, gibt aber den 
-vollst@"andigen Ausdruck zur@"uck, wobei der ausgew@"ahlte Teilausdruck eingerahmt 
-ist. Der Rahmen ist Teil des zur@"uckgegebenen Ausdrucks.
+vollst@"andigen Ausdruck zur@"uck, wobei der ausgew@"ahlte Teilausdruck 
+eingerahmt ist. Der Rahmen ist Teil des zur@"uckgegebenen Ausdrucks.
 
 Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{lpart}
 
@@ -912,12 +916,13 @@ w@"are.
 @c are not recognized by @code{freeof} as dummy variables; this is a bug.
 
 @code{freeof} ignoriert Dummy-Variablen. Dummy-Variablen sind Variablen, die 
-au@ss{}erhalb eines Ausdrucks nicht in Erscheinung treten. Folgende Dummy-Variablen 
-werden von @code{freeof} ignoriert: der Index einer Summe oder eines Produktes, 
-die unabh@"angige Variable in einem Grenzwert, die Integrationsvariable eines 
-bestimmten Integrals oder einer Laplacetransformation, formale Variablen in 
-@code{at}- oder @code{lambda}-Ausdr@"ucke, lokale Variablen eines Blocks oder 
-einer @code{do}-Schleife.
+au@ss{}erhalb eines Ausdrucks nicht in Erscheinung treten. Folgende 
+Dummy-Variablen werden von @code{freeof} ignoriert: der Index einer Summe oder 
+eines Produktes, die unabh@"angige Variable in einem Grenzwert, die 
+Integrationsvariable eines bestimmten Integrals oder einer 
+Laplacetransformation, formale Variablen in @code{at}- oder 
+@code{lambda}-Ausdr@"ucke, lokale Variablen eines Blocks oder einer 
+@code{do}-Schleife.
 
 @c The indefinite form of @code{integrate} is @i{not} free of its variable of 
 @c integration.
@@ -1130,8 +1135,8 @@ die Teile eines Ausdrucks extrahieren, die interne Form des Ausdrucks
 @c @code{inflag} is @code{false}. (@code{first (y + x)} gives the same results.)
 
 Die Anordnung der Argumente der internen Darstellung unterscheidet sich zum
-Beispiel f@"ur die Addition von der externen Darstellung f@"ur die Anzeige. Daher 
-hat @code{first(x+y)} das Ergebnis @code{x}, wenn @code{inflag} den Wert 
+Beispiel f@"ur die Addition von der externen Darstellung f@"ur die Anzeige. 
+Daher hat @code{first(x+y)} das Ergebnis @code{x}, wenn @code{inflag} den Wert
 @code{true} hat, und @code{y}, wenn @code{inflag} den Wert @code{false} hat. Der 
 Ausdruck @code{first(y+x)} gibt in beiden F@"allen dasselbe Ergebnis.
 
@@ -2057,7 +2062,8 @@ Standardwert: @code{false}
 @c When @code{partswitch} is @code{true}, @code{end} is returned when a selected
 @c part of an expression doesn't exist, otherwise an error message is given.
 
-Hat die Optionsvariable @code{partswitch} den Wert @code{true}, wird @code{end} zur@"uckgegeben, wenn versucht wird, einen Teilausdruck zu bilden, der nicht
+Hat die Optionsvariable @code{partswitch} den Wert @code{true}, wird @code{end} 
+zur@"uckgegeben, wenn versucht wird, einen Teilausdruck zu bilden, der nicht
 existiert, andernfalls wird eine Fehlermeldung ausgegeben.
 
 @c @opencatbox
@@ -2218,8 +2224,8 @@ Beispiel:
 @c example shows the result for the function @code{subst}, which does a serial
 @c substitution.
 
-Das erste Beispiel zeigt die parallele Substitution mit @code{psubst}. 
-Das zweite Beispiel zeigt das Ergebnis f@"ur die Funktion @code{subst}. In diesem
+Das erste Beispiel zeigt die parallele Substitution mit @code{psubst}. Das 
+zweite Beispiel zeigt das Ergebnis f@"ur die Funktion @code{subst}. In diesem
 Fall werden die Substitutionen nacheinander ausgef@"uhrt.
 
 @c ===beg===
@@ -2296,12 +2302,14 @@ Beispiele:
                                    "  """"   "
                                    """""""""""
 (%i4) rembox (expr2, unlabelled);
+@group
                                   BAR""""""""
                    FOO"""""""""   "a d - b c"
 (%o4)              "sin(%pi x)" + "---------"
                    """"""""""""   "    2    "
                                   "   h     "
                                   """""""""""
+@end group
 (%i5) rembox (expr2, FOO);
                                   BAR""""""""
                        """""""    "a d - b c"
@@ -2384,8 +2392,8 @@ Elemente der Liste ist.
 @c When @var{depth} is greater than or equal to the maximum depth of @var{expr},
 @c @code{reveal (@var{expr}, @var{depth})} returns @var{expr} unmodified.
 
-Ist @var{depth} gr@"o@ss{}er oder gleich der maximalen Tiefe des Ausdrucks @var{expr},
-gibt @code{reveal} den Ausdruck @var{expr} unver@"andert zur@"uck.
+Ist @var{depth} gr@"o@ss{}er oder gleich der maximalen Tiefe des Ausdrucks 
+@var{expr}, gibt @code{reveal} den Ausdruck @var{expr} unver@"andert zur@"uck.
 
 @c @code{reveal} evaluates its arguments. @code{reveal} returns the summarized 
 @c expression.
@@ -2662,8 +2670,8 @@ f@"ur einen Operator im Ausdruck @var{expr} substituiert wird. Zum Beispiel gibt
 @c or @code{substpart} is the same as calling @code{inpart} or 
 @c @code{substinpart}.
 
-Mit dem Wert @code{true} f@"ur die Optionsvariable @code{inflag}, verh@"alt sich die
-Funktion @code{substpart} wie @code{substinpart}.
+Mit dem Wert @code{true} f@"ur die Optionsvariable @code{inflag}, verh@"alt sich
+die Funktion @code{substpart} wie @code{substinpart}.
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
@@ -2700,8 +2708,8 @@ Siehe auch @nrefdot{Bezeichner}
 @c @code{orderless} may not be used more than one time each without calling 
 @c @code{unorder}. 
 
-L@"oscht die Ordnung, die mit dem letzten Aufruf der Funktionen @code{ordergreat} 
-oder @code{orderless} erzeugt wurde.
+L@"oscht die Ordnung, die mit dem letzten Aufruf der Funktionen 
+@code{ordergreat} oder @code{orderless} erzeugt wurde.
 
 Siehe auch @mref{ordergreat} und @mrefdot{orderless}
 

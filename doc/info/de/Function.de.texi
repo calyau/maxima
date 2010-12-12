@@ -2,6 +2,7 @@
 @c File        : Function.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Function.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
 @c 
@@ -679,13 +680,14 @@ Beispiele:
 @section Funktionen und Variablen f@"ur Funktionsdefinitionen
 
 @c --- 04.12.2010 DK -----------------------------------------------------------
+@anchor{apply}
 @deffn {Funktion} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 
 @c Constructs and evaluates an expression 
 @c @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 
-Konstuiert den Ausdruck @code{@var{F}(@var{arg_1}, ..., @var{arg_n})} und wertet
-diesen aus.
+Konstruiert den Ausdruck @code{@var{F}(@var{arg_1}, ..., @var{arg_n})} und 
+wertet diesen aus.
 
 @c @code{apply} does not attempt to distinguish array functions from ordinary 
 @c functions; when @var{F} is the name of an array function, @code{apply} 
@@ -1435,6 +1437,7 @@ and assigns the definition to the label.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{funmake}
 @deffn {Function} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
 
 Returns an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.

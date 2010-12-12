@@ -51,7 +51,7 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Maxima Manual}
-@center Version 5.22
+@center Version 5.23
 @sp 2
 @center Deutsche @"Ubersetzung
 @page
@@ -86,8 +86,8 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
 die deutsche Sprache. Das Manual ist noch nicht vollst@"andig @"ubersetzt. 
 Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
-Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13 
-vollst@"andig und Teile der Kapitel 15, 16 und 18 @"ubersetzt.
+Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13, 18 und 
+19 vollst@"andig und Teile der Kapitel 15, 16 und 25 @"ubersetzt.
 
 Dieses Manual ist nicht nur eine @"Ubersetzung, sondern auch der Versuch, die
 Inhalte neu zu organisieren und zu @"uberarbeiten. Ziel ist ein besser lesbares
@@ -98,7 +98,7 @@ Die Arbeit an dem Manual ist noch nicht abgeschlossen. Die jeweils aktuelle
 Version ist unter @url{http://crategus.users.sourceforge.net/maxima.html} 
 verf@"ugbar.
 
-Dr. Dieter Kaiser, 28.11.2010
+Dr. Dieter Kaiser, 12.12.2010
 @end titlepage
 
 @summarycontents
@@ -137,8 +137,8 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
 die deutsche Sprache. Das Manual ist noch nicht vollst@"andig @"ubersetzt. 
 Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
-Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13 
-vollst@"andig und Teile der Kapitel 15, 16 und 18 @"ubersetzt.
+Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13, 18 und 
+19 vollst@"andig und Teile der Kapitel 15, 16 und 25 @"ubersetzt.
 
 Dieses Manual ist nicht nur eine @"Ubersetzung, sondern auch der Versuch, die
 Inhalte neu zu organisieren und zu @"uberarbeiten. Ziel ist ein besser lesbares
@@ -149,7 +149,7 @@ Die Arbeit an dem Manual ist noch nicht abgeschlossen. Die jeweils aktuelle
 Version ist unter @url{http://crategus.users.sourceforge.net/maxima.html} 
 verf@"ugbar.
 
-Dr. Dieter Kaiser, 28.11.2010
+Dr. Dieter Kaiser, 12.12.2010
 @sp 2
 @end ifnottex
 

@@ -202,7 +202,7 @@ Variablen arbeiten mit Zeichenketten:
 @end verbatim
 
 @noindent
-Das Zusatzpaket @code{stringproc} enth@"alt eine umfangreiche Bibliothek an 
+Das Zusatzpaket @nref{stringproc} enth@"alt eine umfangreiche Bibliothek an 
 Funktionen f@"ur Zeichenketten.
 
 Beispiele:
@@ -371,9 +371,9 @@ Ausdruck eine gerade ganze Zahl repr@"asentiert.
 Konvertiert ganze, rationale und gro@ss{}e Gleitkommazahlen im Ausdruck 
 @var{expr} in Gleitkommazahlen mit doppelter Genauigkeit.
 
-@code{float} ist auch ein Auswertungsschalter f@"ur die Funktion @code{ev}. In 
-diesem Fall werden rationale Zahlen und gro@ss{}e Gleitkommazahlen, aber keine 
-ganzen Zahlen in Gleitkommazahlen umgewandelt. Daher haben die beiden
+@code{float} ist auch ein Auswertungsschalter f@"ur die Funktion @mrefdot{ev}@ 
+In diesem Fall werden rationale Zahlen und gro@ss{}e Gleitkommazahlen, aber 
+keine ganzen Zahlen in Gleitkommazahlen umgewandelt. Daher haben die beiden
 Kommandos @code{ev(expr),float} und @code{float(expr)} ein unterschiedliches
 Ergebnis.
 
@@ -590,7 +590,7 @@ Siehe auch die Optionsvariable @mrefdot{number_pbranch}
 @c Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an 
 @c integer.
 
-Gibt den Wert @code{true} zur@"uck, wenn @code{var} eine ganze positive Zahl 
+Gibt den Wert @code{true} zur@"uck, wenn @code{number} eine ganze positive Zahl
 oder Null ist. Siehe auch @mrefdot{integerp}
 
 @c @opencatbox
@@ -763,6 +763,8 @@ der internen Darstellung als bin@"are Zahl keine endliche Darstellung hat.
 Siehe auch die Funktion @mref{float} und den Auswertungsschalter 
 @mrefcomma{numer} um eine rationale Zahl in eine Gleitkommazahl umzuwandeln.
 
+Beispiele:
+
 @c ===beg===
 @c rationalize (0.5);
 @c rationalize (0.1);
@@ -858,7 +860,7 @@ wird eine Zeichenkette zur@"uckgegeben.
 @c @code{concat} evaluates its arguments. The single quote @code{'} prevents 
 @c evaluation.
 
-@code{concat} wertet seine Argumente aus. Der Quote-Operator verhindert die
+@code{concat} wertet die Argumente aus. Der Quote-Operator verhindert die
 Auswertung. Siehe auch die Funktion @mrefdot{sconcat}
 
 Beispiele:
@@ -897,8 +899,10 @@ werden und es kann in Ausdr@"ucken auftreten.
 @example
 (%i6) a: concat ('y, z/2);
 (%o6)                          y44
+@group
 (%i7) a:: 123;
 (%o7)                          123
+@end group
 (%i8) y44;
 (%o8)                          123
 (%i9) b^a;
@@ -934,9 +938,9 @@ werden und es kann in Ausdr@"ucken auftreten.
 @c Concatenates its arguments into a string. Unlike @code{concat}, the arguments
 @c do @i{not} need to be atoms.
 
-Verkettet die Argumente zu einer Zeichenkette. Im Unterschied zu der Funktion
-@mref{concat} m@"ussen die Argumente @i{nicht} Atome sein. Der R@"uckgabewert 
-ist eine Zeichenkette.
+Verkettet die Argumente @var{arg_1}, @var{arg_2}, ... zu einer Zeichenkette. Im 
+Unterschied zu der Funktion @mref{concat} m@"ussen die Argumente @i{nicht} Atome
+sein. Der R@"uckgabewert ist eine Zeichenkette.
 
 Beispiel:
 
@@ -1210,10 +1214,10 @@ Gleitkommawert in doppelter Genauigkeit ist 1.618033988749895d0.
 @c After evaluating @code{tellrat(%phi^2-%phi-1)} and @code{algebraic: true},
 @c @code{ratsimp} can simplify some expressions containing @code{%phi}.
 
-Die Funktion @code{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch
+Die Funktion @mref{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch
 @code{%phi} aus. Standardm@"a@ss{}ig kennt Maxima keine algebraischen 
 Eigenschaften der Konstanten @code{%phi}. Mit den Eingaben 
-@code{tellrat(%phi^2-%phi-1)} und @code{algebraic: true} kann die Funktion 
+@code{tellrat(%phi^2-%phi-1)} und @code{algebraic:true} kann die Funktion 
 @code{ratsimp} einige Vereinfachungen ausf@"uhren.
 
 Beispiele:
@@ -1255,7 +1259,7 @@ Beispiele:
 @c @code{algebraic: true}, @code{ratsimp} can simplify some expressions 
 @c containing @code{%phi}.
 
-Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und @code{algebraic: true} kann 
+Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und @code{algebraic:true} kann 
 die Funktion @code{ratsimp} einige Vereinfachungen f@"ur Ausdr@"ucke 
 ausf@"uhren, die @code{%phi} enthalten.
 
@@ -1462,8 +1466,8 @@ Wird einer indizierten Variablen ein Wert zugewiesen, bevor das entsprechende
 Array definiert wird, so wird ein undeklariertes Array erzeugt. Undeklarierte
 Arrays, auch Hashed-Arrays genannt, sind allgemeiner als deklarierte Arrays.
 Diese Arrays haben keine feste Gr@"o@ss{}e und wachsen dynamisch mit der 
-Zuweisung von Werten. Der Indizes eines undeklarierten Arrays m@"ussen keine 
-ganze Zahlen sein. Jedoch sind deklarierte Arrays im Allgemeinen effizienter, 
+Zuweisung von Werten. Die Indizes eines undeklarierten Arrays m@"ussen keine 
+ganze Zahlen sein. Deklarierte Arrays sind im Allgemeinen effizienter, 
 so dass Arrays falls m@"oglich deklariert werden sollten. Die Funktion 
 @code{array} kann genutzt werden, um ein undeklariertes Array in ein 
 deklariertes Array umzuwandeln.
@@ -1481,12 +1485,12 @@ deklariertes Array umzuwandeln.
 @c where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
 
 Wertet @code{@var{A} [@var{i_1}, ..., @var{i_n}]} aus, wobei @var{A} ein Array
-ist und @var{i_1}, ..., @var{i_n} sind ganze Zahlen.
+und @var{i_1}, ..., @var{i_n} ganze Zahlen sind.
 
 @c This is reminiscent of @code{apply}, except the first argument is an array
 @c instead of a function.
 
-@code{arrayapply} entspricht der Funktion @code{apply}, wobei in diesem Fall
+@code{arrayapply} entspricht der Funktion @mrefcomma{apply} wobei in diesem Fall
 das Argument ein Array und keine Funktion ist.
 
 @c @opencatbox
@@ -1513,7 +1517,7 @@ eine indizierte Funktion sein.
 
 F@"ur ein deklarierte Array gibt @code{arryinfo} eine Liste zur@"uck, die 
 @code{declared}, die Zahl der Dimensionen und die Gr@"o@ss{}e der Dimensionen 
-enh@"alt. Die Elemente des Arrays werden von der Funktion @code{listarray}
+enh@"alt. Die Elemente des Arrays werden von der Funktion @mref{listarray}@ 
 zur@"uckgegeben.
 
 @c For undeclared arrays (hashed arrays), @code{arrayinfo} returns a list 
@@ -1524,7 +1528,7 @@ zur@"uckgegeben.
 F@"ur ein undeklariertes Array (Hashed-Array) gibt @code{arrayinfo} eine Liste
 zur@"uck, die @code{hashed}, die Zahl der Indizes und die Indizes enth@"alt,
 deren Elemente einen Wert haben. Die Werte der Elemente werden mit der Funktion 
-@code{listarray} zur@"uckgegeben.
+@mref{listarray} zur@"uckgegeben.
 
 @c For array functions, @code{arrayinfo} returns a list comprising the atom 
 @c @code{hashed}, the number of subscripts, and any subscript values for which 
@@ -1534,7 +1538,7 @@ deren Elemente einen Wert haben. Die Werte der Elemente werden mit der Funktion
 F@"ur Array-Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{hashed} die Zahl der Indizes und die Indizes enth@"alt, f@"ur die 
 Funktionen im Array enthalten sind. Die Funktionen werden mit der Funktion 
-@code{listarray} angezeigt.
+@mref{listarray} angezeigt.
 
 @c For subscripted functions, @code{arrayinfo} returns a list comprising the 
 @c atom @code{hashed}, the number of subscripts, and any subscript values for 
@@ -1544,7 +1548,7 @@ Funktionen im Array enthalten sind. Die Funktionen werden mit der Funktion
 F@"ur indizierte Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{hashed}, die Zahl der Indizes und die Indizies enth@"alt, f@"ur die 
 Lambda-Ausdr@"ucke vorhanden sind. Die Lambda-Ausdr@"ucke werden von der 
-Funktion @code{listarray} angezeigt.
+Funktion @mref{listarray} angezeigt.
 
 Beispiele:
 
@@ -1715,9 +1719,8 @@ auf das Array @var{A} zur@"uck.
 @c @code{arraymake} is reminiscent of @code{funmake}, except the return value 
 @c is an unevaluated array reference instead of an unevaluated function call.
 
-@code{arraymake} entspricht der Funktion @code{funmake}, wobei in diesem Fall
-das Argument eine nicht ausgewerte Referenz auf ein Array und kein nicht 
-ausgewerteter Funktionsaufruf ist.
+@code{arraymake} entspricht der Funktion @mref{funmake}, wobei in diesem Fall
+das Argument eine nicht ausgewerte Referenz auf ein Array ist.
 
 Beispiele:
 
@@ -1818,10 +1821,10 @@ Standardwert: @code{[]}
 @c defined by @code{:=} and @code{define}. Arrays defined by @code{make_array} 
 @c are not included.
 
-@code{arrays} ist eine Informationsliste @code{infolists} der Arrays, die 
-definiert sind. Die Liste enth@"altdeklarierte Arrays, undedeklarierte Arrays 
+@code{arrays} ist eine Informationsliste @mref{infolists} der Arrays, die 
+definiert sind. Die Liste enth@"alt deklarierte Arrays, undedeklarierte Arrays 
 und Array-Funktionen, die mit @code{:=} oder @code{define} definiert sind. 
-Arrays die mit @code{make_array} definiert sind, sind nicht in der Liste 
+Arrays die mit @mref{make_array} definiert sind, sind nicht in der Liste 
 enthalten.
 
 @c See also @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake},
@@ -1874,7 +1877,7 @@ Beispiele:
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{fillarray}
-@deffn {Function} fillarray (@var{A}, @var{B})
+@deffn {Funktion} fillarray (@var{A}, @var{B})
 
 @c Fills array @var{A} from @var{B}, which is a list or an array.
 
@@ -2000,7 +2003,7 @@ Arrays werden zeilenweise aufgef@"ulllt.
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{listarray}
-@deffn {Function} listarray (@var{A})
+@deffn {Funktion} listarray (@var{A})
 
 @c Returns a list of the elements of the array @var{A}. The argument @var{A} 
 @c may be a declared array, an undeclared (hashed) array, an array function, or 
@@ -2016,15 +2019,15 @@ indizierte Funktion sein.
 @c @code{orderless}.
 
 Die Elemente werden zeilenweise ausgegeben. F@"ur Hashed-Arrays mit Indizes, die
-keine ganze Zahlen sind, wird die Sortierung von der Funktion @code{orderless}
-bestimmt.
+keine ganze Zahlen sind, wird die Sortierung von der Funktion 
+@mref{orderless} bestimmt.
 
 @c For undeclared arrays, array functions, and subscripted functions, the 
 @c elements correspond to the index values returned by @code{arrayinfo}.
 
 F@"ur undeklarierte Arrays, Array-Funktionen und indizierte Funktionen werden
-die Elemente in der Reihenfolge wie von der Funktion @code{arrayinfo} 
-zur@"uckgegeben.
+die Elemente in der Reihenfolge wie von der Funktion 
+@mref{arrayinfo} zur@"uckgegeben.
 
 @c Unbound elements of declared general arrays (that is, not @code{fixnum} and 
 @c not @code{flonum}) are returned as @code{#####}. Unbound elements of declared
@@ -2208,7 +2211,7 @@ indizierte Funktion.
 
 Erzeugt ein Lisp-Array. Das Argument @var{type} kann die Werte @code{any},
 @code{flonum}, @code{fixnum}, @code{hashed} oder @code{functional} haben.
-Das Array hat @math{i} Dimensionionen und der Index @math{i} l@"auft von 0 bis
+Das Array hat @math{i} Dimensionen und der Index @math{i} l@"auft von 0 bis
 @math{@var{dim_i}-1}.
 
 @c The advantage of @code{make_array} over @code{array} is that the return value
@@ -2315,10 +2318,10 @@ Beispiele:
 @c depending on the type of the array.  The type of the array cannot be changed.
 
 @"Andert die Dimension eines Arrays. Das neue Array wird zeilenweise mit den 
-Werten des alten Arrays aufgef@"ullt. Hat das alte nicht gen@"ugend Elemente 
-werden die restlichen Elemente entsprechend dem Typ des Arrays mit @code{false}, 
-@code{0.0} oder @code{0} aufgef@"ullt. Der Typ des Arrays kann nicht ge@"andert 
-werden.
+Werten des alten Arrays aufgef@"ullt. Hat das alte Array nicht gen@"ugend 
+Elemente werden die restlichen Elemente entsprechend dem Typ des Arrays mit 
+@code{false}, @code{0.0} oder @code{0} aufgef@"ullt. Der Typ des Arrays kann 
+nicht ge@"andert werden.
 
 @c @opencatbox
 @c @category{Arrays}
@@ -2335,13 +2338,13 @@ werden.
 @c functions, and subscripted functions.
 
 Entfernt Arrays und Array-Funktionen. Der vom Array belegte Speicher wird
-freigegeben. Die Argumente k@"onnen deklarierte, undeklarierte, Array-Funktionen
-und indizierte Funktionen sein.
+freigegeben. Die Argumente k@"onnen deklarierte und undeklarierte Arrays sowie 
+Array-Funktionen und indizierte Funktionen sein.
 
 @c @code{remarray (all)} removes all items in the global list @code{arrays}.
 
-@code{remarry(all)} entfernt alle Arrays, die in der Informationsliste
-@code{arrays} enthalten sind.
+@code{remarray(all)} entfernt alle Arrays, die in der Informationsliste
+@mref{arrays} enthalten sind.
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 @c It may be necessary to use this function if it is
@@ -2351,7 +2354,7 @@ und indizierte Funktionen sein.
 
 @c @code{remarray} returns the list of arrays removed.
 
-@code{remarry} gibt eine Liste der Arrays zur@"uck, die entfernt wurden.
+@code{remarray} gibt eine Liste der Arrays zur@"uck, die entfernt wurden.
 
 @c @opencatbox
 @c @category{Arrays}
@@ -2366,13 +2369,13 @@ und indizierte Funktionen sein.
 @c @code{subvar} evaluates its arguments.
 
 Wertet den indizierten Ausdruck @code{@var{x}[@var{i}]} aus. @code{subvar}
-wertet seine Argumente aus.
+wertet die Argumente aus.
 
 @c @code{arraymake (@var{x}, [@var{i}]} constructs the expression 
 @c @code{@var{x}[@var{i}]}, but does not evaluate it.
 
-@code{arraymake (@var{x}, [@var{i}]} generiert den Ausdruck 
-@code{@var{x}[@var{i}]}, ohne diesen auszuwerten.
+@code{arraymake(@var{x}, [@var{i}]} generiert den Ausdruck 
+@code{@var{x}[@var{i}]}, ohne diesen auszuwerten. Siehe @mrefdot{arraymake}
 
 Beispiele:
 
