@@ -1135,15 +1135,15 @@
       (update-ranges-3d (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
       (make-gr-object
          :name 'vector
-         :command (format nil " ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a lc ~a"
+         :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc ~a"
                               (make-obj-title (get-option '$key))
                               (if (get-option '$head_both) "heads" "head")
+                              (get-option '$head_length)
+                              (get-option '$head_angle)
                               (case (get-option '$head_type)
                                  ($filled   "filled")
                                  ($empty    "empty")
                                  ($nofilled "nofilled"))
-                              (get-option '$head_length)
-                              (get-option '$head_angle)
                               (get-option '$line_width)
                               (get-option '$line_type)
                               (hex-to-rgb (get-option '$color)) )
