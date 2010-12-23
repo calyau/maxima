@@ -131,9 +131,6 @@ if not get('draw,'version) then load("draw") $
 /*            AUXILIARY FUCTIONS                   */
 
 
-/* If draw package is not loaded, load it */
-if not draw_loaded = true then load(draw)$
-
 
 /* Computes the trace of a matrix */
 matrixtrace(m):=block([n:length(m)],
