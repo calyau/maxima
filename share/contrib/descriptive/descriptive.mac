@@ -152,22 +152,6 @@ listofexpr(y):=listp(y) and not some('identity,map('listp,y))$
 listoflistsp(y):=listp(y) and every('identity,map('listofnumbersp,y))$
 
 
-/* After checking whether Maxima is running on Windows or not,  */
-/* calls gnuplot to plot diagrams.                              */
-/* Windows => *autoconf-win32* = true => 4 letters              */
-/* Linux   => *autoconf-win32* = false => 5 letters             */
-/* This is a workaround and I don't know a better way for doing */
-/* it.                                                          */
-callgnuplot(persist):=
-   if persist then
-      if ?length(?\*autoconf\-win32\*) = 4
-         then system("wgnuplot maxout.gnuplot -")
-         else system("(gnuplot -persist maxout.gnuplot)&")
-   else
-      if ?length(?\*autoconf\-win32\*) = 4
-         then system("wgnuplot maxout.gnuplot")
-         else system("gnuplot maxout.gnuplot")$
-
 
 /*               DATA MANIPULATION                 */
 
@@ -378,7 +362,7 @@ geometric_mean(x):=block([listarith:true],
 
 
 /* Variation coefficient */
-cv(x):=block([listarith:true],std1(x) / mean(x))$
+cv(x):=block([listarith:true], std(x) / mean(x))$
 
 
 /* Mean deviation */
