@@ -775,9 +775,9 @@ is not included")
 (defun fsqrt (x)
   (typecase x
     (single-float
-     (sqrt (the (single-float 0f0) x)))
+     (sqrt (the (or (single-float (0f0)) (member 0f0)) x)))
     (double-float
-     (sqrt (the (double-float 0d0) x)))
+     (sqrt (the (or (double-float (0d0)) (member 0d0)) x)))
     (t
      (sqrt x))))
 
@@ -1467,9 +1467,13 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.21 2010-10-16 15:24:09 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.22 2010-12-28 00:05:02 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.21  2010-10-16 15:24:09  rtoy
+;;; Revision 1.22  2010-12-28 00:05:02  rtoy
+;;; Assert the type of the arg to fsqrt to be non-negative, excluding
+;;; negative zero.
+;;;
+;;; Revision 1.21  2010/10/16 15:24:09  rtoy
 ;;; Allow f2cl-lib to recognize BIGFLOAT and COMPLEX-BIGFLOAT numbers so
 ;;; that they can at least be printed, if not quite in the format
 ;;; specified by the format string.
