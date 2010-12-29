@@ -194,9 +194,10 @@ Fortgeschrittene M@"oglichkeiten und Programmierung
 
 * Regeln und Muster::           User defined pattern matching and
                                 simplification rules.
-* Funktionsdefinitionen::       Defining functions.
-* Laufzeitumgebung::            Customization of the Maxima environment.
-* Programmierung::              Defining Maxima programs.
+* Funktionsdefinitionen::       Definition von Funktionen.
+* Laufzeitumgebung::            Anpassung der Maxima-Umgebung.
+* Programmierung::              Maxima Programme.
+* @"Ubersetzer::                Maxima Programme @"ubersetzen und komplieren.
 * Fehlersuche::                 Fehlersuche in Programmen.
 * Verschiedene Optionen::       Options with a global effect on Maxima.
 @sp 1
@@ -318,6 +319,8 @@ Mathematische Funktionen
 * Hyperbelfunktionen::
 * Einf@"uhrung in Hyperbelfunktionen::
 * Funktionen und Variablen f@"ur Hyperbelfunktionen::
+* Funktionen der Zahlentheorie::
+* Zufallszahlen::
 
 Maximas Datenbank
 * Einf@"uhrung in Maximas Datenbank::
@@ -391,19 +394,19 @@ Spezielle Funktionen
 * Funktionen und Variablen f@"ur spezielle Funktionen::  
 
 Fouriertransformationen
-* Introduction to fast Fourier transform::                     
+* Introduction to fast Fourier transform::     
 * Functions and Variables for fast Fourier transform::
 * Introduction to Fourier series::
 * Functions and Variables for Fourier series::
 
 Laufzeitumgebung
-* Introduction for Runtime Environment::  
-* Interrupts::                  
-* Functions and Variables for Runtime Environment::  
+* Einf@"uhrung in die Laufzeitumgebung::
+* Interrupts::
+* Funktionen und Variablen der Laufzeitumgebung::
 
 Regeln und Muster
-* Introduction to Rules and Patterns::  
-* Functions and Variables for Rules and Patterns::  
+* Introduction to Rules and Patterns::
+* Functions and Variables for Rules and Patterns::
 
 Funktionsdefinitionen
 * Einf@"uhrung in Funktionsdefinitionen::
@@ -413,13 +416,17 @@ Funktionsdefinitionen
 
 Programmierung
 * Lisp und Maxima::
-* Introduction to Program Flow::  
-* Functions and Variables for Program Flow::  
+* Einf@"uhrung in die Programmierung::
+* Funktionen und Variablen der Programmierung::
+
+@"Ubersetzer
+* Einf@"uhrung in den @"Ubersetzer::
+* Funktionen und Variablen des @"Ubersetzers::
 
 Fehlersuche
-* Source Level Debugging::
-* Keyword Commands::
-* Functions and Variables for Debugging::
+* Quellcode-Debugger::
+* Debugger-Kommandos::
+* Funktionen und Variablen der Fehlersuche::
 
 Verschiedene Optionen
 * Introduction to Miscellaneous Options::  
@@ -722,11 +729,15 @@ Glossar
 @chapter Funktionsdefinitionen
 @include Function.de.texi
 
-@node Programmierung, Fehlersuche, Funktionsdefinitionen, Top
+@node Programmierung, @"Ubersetzer, Funktionsdefinitionen, Top
 @chapter Programmierung
 @include Program.de.texi
 
-@node Fehlersuche, Verschiedene Optionen, Programmierung, Top
+@node @"Ubersetzer, Fehlersuche, Programmierung, Top
+@chapter @"Ubersetzer
+@include Translator.de.texi
+
+@node Fehlersuche, Verschiedene Optionen, @"Ubersetzer, Top
 @chapter Fehlersuche
 @include Debugging.de.texi
 

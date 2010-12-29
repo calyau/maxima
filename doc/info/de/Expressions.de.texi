@@ -11,7 +11,7 @@
 @c  alias               aliases             allbut              args
 @c  box                 boxchar             collapse            disolate
 @c  dpart               exptisolate         exptsubst           freeof
-@c  fullmap             fullmapl            inflag              inpart
+@c  inflag              inpart
 @c  isolate             isolate_wrt_times   listconstvars       listdummyvars
 @c  listofvars          lfreeof             lpart               mainvar
 @c  noun                noundisp            nounify
@@ -1048,73 +1048,6 @@ Integrationsvariablen.
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
-@c @closecatbox
-@end deffn
-
-@c --- 15.10.2010 DK -----------------------------------------------------------
-@anchor{fullmap}
-@deffn {Funktion} fullmap (@var{f}, @var{expr_1}, ...)
-
-@c Similar to @code{map}, but @code{fullmap} keeps mapping down all 
-@c subexpressions until the main operators are no longer the same.
-
-Die Funktion @code{fullmap} ist vergleichbar mit der Funktion @code{map}. Im 
-Unterschied zu der Funktion @code{map} kann @code{fullmap} auf verschachtelte 
-Audr@"ucke angewendet werden.
-
-@c @code{fullmap} is used by the Maxima simplifier for certain matrix 
-@c manipulations; thus, Maxima sometimes generates an error message concerning 
-@c @code{fullmap} even though @code{fullmap} was not explicitly called by the 
-@c user.
-
-Intern wird @code{fullmap} von Maxima f@"ur die Vereinfachung von Matrizen 
-aufgerufen. Daher k@"onnen bei der Vereinfachung von Matrizen Fehlermeldungen 
-im Zusammenhang mit @code{fullmap} auftreten, ohne dass die Funktion direkt 
-aufgerufen wurde.
-
-Beispiele:
-
-@c ===beg===
-@c a + b * c;
-@c fullmap (g, %);
-@c map (g, %th(2));
-@c ===end===
-@example
-(%i1) a + b * c;
-(%o1)                        b c + a
-(%i2) fullmap (g, %);
-(%o2)                   g(b) g(c) + g(a)
-(%i3) map (g, %th(2));
-(%o3)                     g(b c) + g(a)
-@end example
-
-@c @opencatbox
-@c @category{Funktionsanwendungen} @category{Ausdr@"ucke}
-@c @closecatbox
-@end deffn
-
-@c --- 15.10.2010 DK -----------------------------------------------------------
-@anchor{fullmapl}
-@deffn {Funktion} fullmapl (@var{f}, @var{list_1}, ...)
-
-@c Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and 
-@c matrices.
-
-Die Funktion @code{fullmapl} ist vergleichbar mit @code{fullmap}. 
-@code{fullmapl} kann jedoch nur auf Matrizen und Listen angewendet werden kann.
-
-Beispiele:
-
-@c ===beg===
-@c fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
-@c ===end===
-@example
-(%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
-(%o1)                [[a + 3, 4], [4, 3.5]]
-@end example
-
-@c @opencatbox
-@c @category{Funktionsanwendungen} @category{Ausdr@"ucke}
 @c @closecatbox
 @end deffn
 

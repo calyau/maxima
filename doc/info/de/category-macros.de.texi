@@ -79,6 +79,7 @@
 
 @iftex
 @hyphenation{aus-ge-wer-tet
+             be-zeich-net
              Dol-lar-zei-chen
              Ei-gen-schafts-lis-te
              ent-hal-ten
@@ -94,6 +95,8 @@
              Spei-cher
              un-ge-ra-de
              ver-ein-fach-en
+             ver-ein-facht
+             Ver-zeich-nis
              wei-te-ren
              wei-ter-hin
              wxMaxima

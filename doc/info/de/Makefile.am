@@ -11,7 +11,7 @@ Input.de.texi Lists.de.texi Nset.de.texi Series.de.texi Calculus.de.texi \
 Polynomials.de.texi Equations.de.texi Matrices.de.texi Itensor.de.texi \
 Ctensor.de.texi Atensor.de.texi Special.de.texi Numerical.de.texi \
 Runtime.de.texi Rules.de.texi Function.de.texi Program.de.texi \
-Debugging.de.texi Miscellaneous.de.texi \
+Translator.de.texi Debugging.de.texi Miscellaneous.de.texi \
 affine.de.texi asympa.de.texi augmented_lagrangian.de.texi bode.de.texi \
 cobyla.de.texi contrib_ode.de.texi descriptive.de.texi diag.de.texi \
 distrib.de.texi draw.de.texi drawdf.de.texi dynamics.de.texi \

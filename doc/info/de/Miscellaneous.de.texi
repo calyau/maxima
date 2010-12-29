@@ -42,7 +42,23 @@ system browser.
 @node Functions and Variables for Miscellaneous Options,  , Share, Verschiedene Optionen
 @section Functions and Variables for Miscellaneous Options
 
-@c THE FUNCTION APRPOS IS MOVED TO THE FILE HELP.TEXI
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@defvr {Option variable} packagefile
+Default value: @code{false}
+
+Package designers who use @code{save} or @code{translate} to create packages 
+(files) for others to use may want to set @code{packagefile: true} to prevent 
+information from being added to Maxima's information-lists (e.g. @code{values},
+@code{functions}) except where necessary when the file is loaded in. In this 
+way, the contents of the package will not get in the user's way when he adds his
+own data.  Note that this will not solve the problem of possible name conflicts.
+Also note that the flag simply affects what is output to the package file.
+Setting the flag to @code{true} is also useful for creating Maxima init files.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES

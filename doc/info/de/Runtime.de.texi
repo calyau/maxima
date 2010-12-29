@@ -2,6 +2,7 @@
 @c File        : Runtime.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Runtime.texi revision 1.25
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
 @c 
@@ -9,236 +10,389 @@
 @c -----------------------------------------------------------------------------
 
 @menu
-* Introduction for Runtime Environment::  
-* Interrupts::                  
-* Functions and Variables for Runtime Environment::  
+* Einf@"uhrung in die Laufzeitumgebung::
+* Interrupts::
+* Funktionen und Variablen der Laufzeitumgebung::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction for Runtime Environment, Interrupts, Laufzeitumgebung, Laufzeitumgebung
-@section Introduction for Runtime Environment
+@node Einf@"uhrung in die Laufzeitumgebung, Interrupts, Laufzeitumgebung, Laufzeitumgebung
+@section Einf@"uhrung in die Laufzeitumgebung
 
-@c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
-@c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
-@code{maxima-init.mac} is a file which is loaded automatically when Maxima starts.
-You can use @code{maxima-init.mac} to customize your Maxima environment.
-@code{maxima-init.mac}, if it exists, is typically placed in the
-directory named by @code{maxima_userdir},
-although it can be in any directory searched by the function @code{file_search}.
+   @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !
+   @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT 
+   @c HEADING. !!!
 
-Here is an example @code{maxima-init.mac} file:
+@c @code{maxima-init.mac} is a file which is loaded automatically when Maxima 
+@c starts. You can use @code{maxima-init.mac} to customize your Maxima 
+@c environment. @code{maxima-init.mac}, if it exists, is typically placed in the
+@c directory named by @code{maxima_userdir}, although it can be in any directory
+@c searched by the function @code{file_search}.
+
+Die Datei @code{maxima-init.mac} wird automatisch geladen, wenn Maxima startet.
+Die Datei @code{maxima-init.mac} kann genutzt werden, um bevorzugte 
+Einstellungen vorzunehmen. Die Datei wird @"ublicherweise in dem Verzeichnis
+@code{maxima_userdir} abgelegt. Sie kann aber auch in jedes andere Verzeichnis
+abgelegt werden, das von der Funktion @code{file_search} gefunden wird.
+
+@c Here is an example @code{maxima-init.mac} file:
+
+@noindent
+Dies ist eine Beispiel f@"ur eine @code{maxima-init.mac}-Datei:
 
 @example
 setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
 showtime:all;
 @end example
 
-In this example, @code{setup_autoload} tells Maxima to load the
-specified file
-(@code{specfun.mac}) if any of the functions (@code{ultraspherical},
-@code{assoc_legendre_p}) are called but not yet defined.
-Thus you needn't remember to load the file before calling the functions.
+@c In this example, @code{setup_autoload} tells Maxima to load the specified 
+@c file (@code{specfun.mac}) if any of the functions (@code{ultraspherical},
+@c @code{assoc_legendre_p}) are called but not yet defined. Thus you needn't 
+@c remember to load the file before calling the functions.
 
-The statement @code{showtime: all} tells Maxima to set the @code{showtime} variable.
-The @code{maxima-init.mac} file can contain any other assignments or
-other Maxima statements.
+@c The statement @code{showtime: all} tells Maxima to set the @code{showtime} 
+@c variable. The @code{maxima-init.mac} file can contain any other assignments 
+@c or other Maxima statements.
 
 @c @opencatbox
 @c @category{Session management}
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Laufzeitumgebung
+@node Interrupts, Funktionen und Variablen der Laufzeitumgebung, Einf@"uhrung in die Laufzeitumgebung, Laufzeitumgebung
 @section Interrupts
 
-The user can stop a time-consuming computation with the
-^C (control-C) character.
-The default action is to stop the computation
-and print another user prompt.
-In this case, it is not possible to restart a stopped computation.
+@c The user can stop a time-consuming computation with the ^C (control-C) 
+@c character. The default action is to stop the computation and print another 
+@c user prompt. In this case, it is not possible to restart a stopped 
+@c computation.
 
-If the Lisp variable @code{*debugger-hook*} is set to @code{nil}, by executing
+Eine Berechnung kann mit dem Kommando @kbd{^c} (@kbd{control-c}) abgebrochen 
+werden. Standardm@"a@ss{}ig kehrt Maxima zu der Eingabeaufforderung der Konsole
+zur@"uck.
 
-@example
-:lisp (setq *debugger-hook* nil)
-@end example
+@c If the Lisp variable @code{*debugger-hook*} is set to @code{nil}, by 
+@c executing
+@c @example 
+@c :lisp (setq *debugger-hook* nil)
+@c @end example
+@c then upon receiving ^C, Maxima will enter the Lisp debugger, and the user may
+@c use the debugger to inspect the Lisp environment. The stopped computation can
+@c be restarted by entering @code{continue} in the Lisp debugger. The means of 
+@c returning to Maxima from the Lisp debugger (other than running the 
+@c computation to completion) is different for each version of Lisp.
 
-@noindent
-then upon receiving ^C, Maxima will enter the Lisp debugger,
-and the user may use the debugger to inspect the Lisp environment.
-The stopped computation can be restarted by entering
-@code{continue} in the Lisp debugger.
-The means of returning to Maxima from the Lisp debugger
-(other than running the computation to completion)
-is different for each version of Lisp.
+Wird die Lisp-Variable @code{*debugger-hook*} mit dem Kommando 
+@code{:lisp (setq *debugger-hook* nil)} auf den Wert @code{nil} gesetzt, dann 
+startet Maxima den Lisp-Debugger, wenn das Kommando @kbd{^c} ausgef@"uhrt wird. 
+Im Lisp-Debugger kann mit dem Kommando @code{continue} zu Maxima zur@"uckgekehrt
+werden.
 
-On Unix systems, the character ^Z (control-Z) causes Maxima
-to stop altogether, and control is returned to the shell prompt.
-The @code{fg} command causes Maxima
-to resume from the point at which it was stopped.
+@c On Unix systems, the character ^Z (control-Z) causes Maxima to stop 
+@c altogether, and control is returned to the shell prompt. The @code{fg} 
+@c command causes Maxima to resume from the at which it was stopped.
+
+In Unix-Systemen kann die Ausf@"uhrung auch mit Kommando @kbd{^z} 
+(@kbd{control-z}) abgebrochen werden. In diesem Fall wird eine Unix-Shell 
+gestartet. Das Kommando @code{fg} kehrt zu Maxima zur@"uck.
 
 @c @opencatbox
 @c @category{Console interaction}
 @c @closecatbox
 
-@c end concepts Runtime Environment
-
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Runtime Environment, , Interrupts, Laufzeitumgebung
-@section Functions and Variables for Runtime Environment
+@node Funktionen und Variablen der Laufzeitumgebung, , Interrupts, Laufzeitumgebung
+@section Funktionen und Variablen der Laufzeitumgebung
 
-@c -----------------------------------------------------------------------------
+@c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{maxima_tempdir}
-@defvr {System variable} maxima_tempdir
+@defvr {Systemvariable} maxima_tempdir
 
-@code{maxima_tempdir} names the directory in which Maxima creates some temporary files.
-In particular, temporary files for plotting are created in @code{maxima_tempdir}.
+@c @code{maxima_tempdir} names the directory in which Maxima creates some 
+@c temporary files. In particular, temporary files for plotting are created in 
+@c @code{maxima_tempdir}.
+@c The initial value of @code{maxima_tempdir} is the user's home directory, if 
+@c Maxima can locate it; otherwise Maxima makes a guess about a suitable 
+@c directory.
 
-The initial value of @code{maxima_tempdir} is the user's home directory,
-if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+Die Systemvariable @code{maxima_tempdir} enth@"alt das Verzeichnis in dem Maxima
+tempor@"are Dateien abgelegt. Insbesondere werden tempor@"are Grafikausgaben in 
+diesem Verzeichnis abgelegt. Der Standardwert von @code{maxima_tempdir} ist das 
+Home-Verzeichnis des Nutzers, sofern Maxima dieses feststellen kann. Andernfalls
+initialisiert Maxima die Systemvariable @code{maxima_tempdir} mit einer 
+geeigneten Annahme.
 
-@code{maxima_tempdir} may be assigned a string which names a directory.
+@c @code{maxima_tempdir} may be assigned a string which names a directory.
+
+Der Systemvariablen @code{maxima_tempdir} kann eine Zeichenkette zugewiesen 
+werden, die ein Verzeichnis bezeichnet.
 
 @c @opencatbox
 @c @category{Global variables}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{maxima_userdir}
-@defvr {System variable} maxima_userdir
+@defvr {Systemvariable} maxima_userdir
 
-@code{maxima_userdir} names a directory which Maxima searches to find Maxima and Lisp files.
-(Maxima searches some other directories as well;
-@code{file_search_maxima} and @code{file_search_lisp} are the complete lists.)
+@c @code{maxima_userdir} names a directory which Maxima searches to find Maxima 
+@c and Lisp files. Maxima searches some other directories as well;
+@c @code{file_search_maxima} and @code{file_search_lisp} are the complete lists.
+@c The initial value of @code{maxima_userdir} is a subdirectory of the user's 
+@c home directory, if Maxima can locate it; otherwise Maxima makes a guess about
+@c a suitable directory.
 
-The initial value of @code{maxima_userdir} is a subdirectory of the user's home directory,
-if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+Die Systemvariable @code{maxima_userdir} enth@"alt ein Verzeichnis, das Maxima 
+durchsucht, um Maxima- und Lisp-Dateien zu finden. Maxima sucht in weiteren 
+Verzeichnissen. Die vollst@"andige Liste der Suchverzeichnisse ist den Variablen
+@mref{file_search_maxima} und @mref{file_search_lisp} enthalten. Der 
+Standardwert der Systemvariablen @code{maxima_userdir} ist ein Unterverzeichnis
+des Home-Verzeichnis des Nutzers, sofern Maxima dieses bestimmen kann. Ansonsten
+initialisiert Maxima die Systemvariable @code{maxima_userdir} mit einer 
+geeigneten Annahme.
 
-@code{maxima_userdir} may be assigned a string which names a directory.
-However, assigning to @code{maxima_userdir} does not automatically change
-@code{file_search_maxima} and @code{file_search_lisp};
-those variables must be changed separately.
+@c @code{maxima_userdir} may be assigned a string which names a directory. 
+@c However, assigning to @code{maxima_userdir} does not automatically change
+@c @code{file_search_maxima} and @code{file_search_lisp}; those variables must 
+@c be changed separately.
+
+Der Systemvariablen @code{maxima_userdir} kann eine Zeichenkette zugewiesen 
+werden, die ein Verzeichnis bezeichnet. Wenn der Wert von @code{maxima_userdir}
+ge@"andert wird, werden die Variablen @code{file_search_maxima} und
+@code{file_search_lisp} nicht automatisch angepasst.
 
 @c @opencatbox
 @c @category{Global variables}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.12.2010 DK -----------------------------------------------------------
 @anchor{room}
-@deffn  {Function} room ()
-@deffnx {Function} room (true)
-@deffnx {Function} room (false)
+@deffn  {Funktion} room ()
+@deffnx {Funktion} room (true)
+@deffnx {Funktion} room (false)
 
-Prints out a description of the state of storage and
-stack management in Maxima. @code{room} calls the Lisp function of 
-the same name.
+@c Prints out a description of the state of storage and stack management in 
+@c Maxima. @code{room} calls the Lisp function of the same name.
 
-@itemize @bullet
-@item
-@code{room ()} prints out a moderate description.
-@item
-@code{room (true)} prints out a verbose description.
-@item
-@code{room (false)} prints out a terse description.
-@end itemize
+Gibt eine Beschreibung der Speicherplatznutzung aus. Die Darstellung und der
+Inhalt der Informationen h@"angen von dem Maxima zugrundeliegenden Lisp ab. Mit 
+den Argumenten @code{true} und @code{false} wird der Umfang der auszugebenen 
+Information kontrolliert. Mit dem Argument @code{true} wird die umfangreichste
+Darstellung ausgegeben und mit dem Argument @code{false} die k@"urzeste.
 
-@c @opencatbox
-@c @category{Debugging}
-@c @closecatbox
-@end deffn
+Beispiel:
 
-@c -----------------------------------------------------------------------------
-@anchor{sstatus}
-@deffn {Function} sstatus (@var{keyword}, @var{item})
-
-When @var{keyword} is the symbol @code{feature}, @var{item} is put on the list
-of system features. After @code{sstatus (keyword, item)} is executed,
-@code{status (feature, item)} returns @code{true}. If @var{keyword} is the
-symbol @code{nofeature}, @var{item} is deleted from the list of system features.
-This can be useful for package writers, to keep track of what features they have
-loaded in.
-
-See also @code{status}.
-
-@c @opencatbox
-@c @category{Programming}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{status}
-@deffn  {Function} status (@code{feature})
-@deffnx {Function} status (@code{feature}, @var{item})
-
-Returns information about the presence or absence of certain system-dependent 
-features.
-
-@itemize @bullet
-@item
-@code{status (feature)} returns a list of system features. These include Lisp 
-version, operating system type, etc. The list may vary from one Lisp type to 
-another.
-
-@item 
-@code{status (feature, item)} returns @code{true} if @var{item} is on the
-list of items returned by @code{status (feature)} and @code{false} otherwise.
-@code{status} quotes the argument @var{item}. The quote-quote operator 
-@code{'@w{}'} defeats quotation. A feature whose name contains a special 
-character, such as a hyphen, must be given as a string argument. For example,
-@code{status (feature, "ansi-cl")}.
-@end itemize
-
-See also @code{sstatus}.
-
-The variable @code{features} contains a list of features which apply to 
-mathematical expressions. See @code{features} and @code{featurep} for more 
-information.
-
-@c @opencatbox
-@c @category{Programming}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{time}
-@deffn {Function} time (%o1, %o2, %o3, ...)
-
-Returns a list of the times, in seconds, taken to compute the output
-lines @code{%o1}, @code{%o2}, @code{%o3}, .... The time returned is Maxima's estimate of
-the internal computation time, not the elapsed time. @code{time} can only
-be applied to output line variables; for any other variables, @code{time}
-returns @code{unknown}.
-
-Set @code{showtime: true} to make Maxima print out the computation time 
-and elapsed time with each output line.
-
-@c @opencatbox
-@c @category{Debugging}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{timedate}
-@deffn {Function} timedate ()
-
-Returns a string representing the current time and date.
-The string has the format @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)},
-where the fields are
-hours, minutes, seconds, day of week, month, day of month, year, and hours different from GMT.
-
-Example:
+Das folgende Beispiel zeigt die Ausgabe auf einem Linux-System mit der 
+Lisp-Implementierung SBCL 1.0.45.
 
 @c ===beg===
-@c d: timedate ();
-@c print ("timedate reports current time", d)$
+@c build_info();
+@c room(false);
 @c ===end===
 @example
-(%i1) d: timedate ();
-(%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
-(%i2) print ("timedate reports current time", d)$
-timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+(%i1) build_info();
+
+Maxima version: 5.22post
+Maxima build date: 18:52 12/28/2010
+Host type: i686-pc-linux-gnu
+Lisp implementation type: SBCL
+Lisp implementation version: 1.0.45
+(%o1)
+ 
+(%i2) room(false);
+Dynamic space usage is:   63,719,856 bytes.
+Read-only space usage is:      3,512 bytes.
+Static space usage is:         2,256 bytes.
+Control stack usage is:        1,440 bytes.
+Binding stack usage is:          184 bytes.
+Control and binding stack usage is for the current thread only.
+Garbage collection is currently enabled.
+(%o2)                         false
+@end example
+
+@c @itemize @bullet
+@c @item
+@c @code{room ()} prints out a moderate description.
+@c @item
+@c @code{room (true)} prints out a verbose description.
+@c @item
+@c @code{room (false)} prints out a terse description.
+@c @end itemize
+
+@c @opencatbox
+@c @category{Debugging}
+@c @closecatbox
+@end deffn
+
+@c --- 27.12.2010 DK -----------------------------------------------------------
+@anchor{sstatus}
+@deffn {Funktion} sstatus (@var{keyword}, @var{item})
+
+@c When @var{keyword} is the symbol @code{feature}, @var{item} is put on the 
+@c list of system features. After @code{sstatus (keyword, item)} is executed,
+@c @code{status (feature, item)} returns @code{true}. If @var{keyword} is the
+@c symbol @code{nofeature}, @var{item} is deleted from the list of system 
+@c features. This can be useful for package writers, to keep track of what 
+@c features they have loaded in.
+
+Hat das Argument @var{keyword} den Wert @code{feature}, wird das Argument
+@var{item} der internen Lisp-Eigenschaftsliste @code{*features*} hinzugef@"ugt.
+Das Kommando @code{status(feature,item)} hat dann das Ergebnis @code{true}.
+Hat das Argument @var{keyword} den Wert @code{false}, wird das Argument
+@var{item} von der internen Lisp-Eigenschaftsliste @code{*features*} entfernt.
+
+@c See also @code{status}.
+
+Siehe auch @mrefdot{status}
+
+@c @opencatbox
+@c @category{Programming}
+@c @closecatbox
+@end deffn
+
+@c --- 27.12.2010 DK -----------------------------------------------------------
+@anchor{status}
+@deffn  {Funktion} status (@code{feature})
+@deffnx {Funktion} status (@code{feature}, @var{item})
+
+@c Returns information about the presence or absence of certain system-dependent 
+@c features.
+@c @itemize @bullet
+@c @item
+@c @code{status (feature)} returns a list of system features. These include Lisp
+@c version, operating system type, etc. The list may vary from one Lisp type to 
+@c another.
+@c @item 
+@c @code{status (feature, item)} returns @code{true} if @var{item} is on the
+@c list of items returned by @code{status (feature)} and @code{false} otherwise.
+@c @code{status} quotes the argument @var{item}. The quote-quote operator 
+@c @code{'@w{}'} defeats quotation. A feature whose name contains a special 
+@c character, such as a hyphen, must be given as a string argument. For example,
+@c @code{status (feature, "ansi-cl")}.
+@c @end itemize
+
+@code{status(feature)} gibt die vollst@"andige interne Lisp-Eigenschaftsliste 
+@code{*features*} zur@"uck. @code{status(feature,item)} gibt @code{true} 
+zur@"uck, wenn das Argument @var{item} in der internen Lisp-Eigenschaftsliste 
+@code{*features*} enthalten ist. Ansonsten ist die R@"uckgabe @code{false}.
+@code{status} wertet die Argumente nicht aus. Eine Systemeigenschaft @var{item},
+die Sonderzeichen wie @code{-} oder @code{*} enth@"alt, muss als Zeichenkette 
+angegeben werden.
+
+@c See also @code{sstatus}.
+
+Siehe auch @mrefdot{sstatus}
+
+@c The variable @code{features} contains a list of features which apply to 
+@c mathematical expressions. See @code{features} and @code{featurep} for more 
+@c information.
+
+Die Systemvariable @code{features} enth@"alt eine Liste mit Eigenschaften, die 
+einer mathematischen Funktionen zugeordnet werden k@"onnen. Siehe 
+@mref{features} und @mrefdot{featurep}
+
+Beispiel:
+
+Das folgende Beispiel zeigt die Ausgabe f@"ur ein Linux-System mit SBCL als
+Lisp.
+
+@c ===beg===
+@c status(feature);
+@c status(feature, "ansi-cl");
+@c ===end===
+@example
+(%i1) status(feature);
+(%o1) [sb-bsd-sockets-addrinfo, asdf2, asdf, cl, mk-defsystem, 
+cltl2, ansi-cl, common-lisp, sbcl, sb-doc, sb-test, sb-ldb, 
+sb-package-locks, sb-unicode, sb-eval, sb-source-locations, 
+ieee-floating-point, x86, unix, elf, linux, sb-thread, 
+largefile, gencgc, stack-grows-downward-not-upward, 
+c-stack-is-control-stack, compare-and-swap-vops, 
+unwind-to-frame-and-call-vop, raw-instance-init-vops, 
+stack-allocatable-closures, stack-allocatable-vectors, 
+stack-allocatable-lists, stack-allocatable-fixed-objects, 
+alien-callbacks, cycle-counter, inline-constants, 
+memory-barrier-vops, linkage-table, os-provides-dlopen, 
+os-provides-dladdr, os-provides-putwc, os-provides-suseconds-t, 
+os-provides-getprotoby-r, os-provides-poll]
+
+(%i2) status(feature,"ansi-cl");
+(%o2)                         true
+@end example
+
+@c @opencatbox
+@c @category{Programming}
+@c @closecatbox
+@end deffn
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{time}
+@deffn {Funktion} time (%o1, %o2, %o3, ...)
+
+@c Returns a list of the times, in seconds, taken to compute the output lines 
+@c @code{%o1}, @code{%o2}, @code{%o3}, .... The time returned is Maxima's 
+@c estimate of the internal computation time, not the elapsed time. @code{time} 
+@c can only be applied to output line variables; for any other variables, 
+@c @code{time} returns @code{unknown}.
+
+Gibt eine Liste mit den Ausf@"uhrungszeiten zur@"uck, die ben@"otigt wurden, um
+die Ergebnisse @code{%o1}, @code{%o2}, @code{%o3}, .... zu berechnen.
+Die Argumente der Funktion @code{time} k@"onnen nur Ausgabemarken sein. F@"ur 
+andere Argumente ist das Ergebnis @code{unknown}.
+
+@c Set @code{showtime: true} to make Maxima print out the computation time and 
+@c elapsed time with each output line.
+
+Siehe die Optionsvariable @mrefcomma{showtime} um die Ausf@"uhrungszeiten f@"ur 
+jede einzelne Berechnung anzuzeigen.
+
+Beispiel:
+
+Die Zeit f@"ur die Berechnung der Fakult@"at einer gro@ss{}en ganzen Zahl wird 
+mit @code{time} ausgegeben. Das Ergebnis muss nicht angezeigt werden. Das
+Ergebnis hat 456573 Stellen.
+
+@c ===beg===
+@c factorial(100000);
+@c time(%o1);
+@c bfloat(%o1);
+@c ===end===
+@example
+(%i1) factorial(100000)$
+
+(%i2) time(%o1);
+(%o2)                        [7.585]
+(%i3) bfloat(%o1);
+(%o3)               2.824229407960348b456573
+@end example
+
+@c @opencatbox
+@c @category{Debugging}
+@c @closecatbox
+@end deffn
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{timedate}
+@deffn {Funktion} timedate ()
+
+@c Returns a string representing the current time and date. The string has the 
+@c format @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)}, where the fields are hours, 
+@c minutes, seconds, day of week, month, day of month, year, and hours different
+@c from GMT.
+
+Gibt eine Zeichenkette zur@"uck, die das aktuelle Datum und die aktuelle Zeit 
+enth@"alt. Die Zeichenkette hat das Format @code{yyyy-mm-dd HH:MM:SS (GMT-n)}.
+
+Beispiel:
+
+@c ===beg===
+@c timedate ();
+@c ===end===
+@example
+(%i1) timedate();
+(%o1)               2010-12-28 21:56:32+01:00
 @end example
 
 @c @opencatbox
@@ -246,24 +400,31 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 @c @closecatbox
 @end deffn
 
-@deffn {Function} absolute_real_time ()
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{absolute_real_time}
+@deffn {Funktion} absolute_real_time ()
 
-Returns the number of seconds since midnight, January 1, 1900 UTC.
-The return value is an integer.
+@c Returns the number of seconds since midnight, January 1, 1900 UTC. The return
+@c value is an integer.
 
-See also @code{elapsed_real_time} and @code{elapsed_run_time}.
+Gibt die Sekunden zur@"uck, die seit dem 1. Januar 1990 UTC verstrichen sind.
+Die R@"uckgabe ist eine ganze Zahl.
 
-Example:
+@c See also @code{elapsed_real_time} and @code{elapsed_run_time}.
+
+Siehe auch @mref{elapsed_real_time} und @mrefdot{elapsed_run_time}
+
+Beispiel:
 
 @c ===beg===
 @c absolute_real_time ();
-@c 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+@c truncate(1900+absolute_real_time()/(365.25*24*3600));
 @c ===end===
 @example
 (%i1) absolute_real_time ();
-(%o1)                      3385045277
-(%i2) 1900 + absolute_real_time () / (365.25 * 24 * 3600);
-(%o2)                   2007.265612087104
+(%o1)                      3502559124
+(%i2) truncate(1900+absolute_real_time()/(365.25*24*3600));
+(%o2)                         2010
 @end example
 
 @c @opencatbox
@@ -271,15 +432,22 @@ Example:
 @c @closecatbox
 @end deffn
 
-@deffn {Function} elapsed_real_time ()
+@c --- 27.12.2010 DK -----------------------------------------------------------
+@anchor{elapsed_real_time}
+@deffn {Funktion} elapsed_real_time ()
 
-Returns the number of seconds (including fractions of a second)
-since Maxima was most recently started or restarted.
-The return value is a floating-point number.
+@c Returns the number of seconds (including fractions of a second) since Maxima 
+@c was most recently started or restarted. The return value is a floating-point 
+@c number.
 
-See also @code{absolute_real_time} and @code{elapsed_run_time}.
+Gibt die Sekunden zur@"uck, die seit dem letzten Start von Maxima verstrichen 
+sind. Die R@"uckgabe ist eine Gleitkommazahl.
 
-Example:
+@c See also @code{absolute_real_time} and @code{elapsed_run_time}.
+
+Siehe auch @mref{absolute_real_time} und @mrefdot{elapsed_run_time}
+
+Beispiel:
 
 @c ===beg===
 @c elapsed_real_time ();
@@ -299,15 +467,23 @@ Example:
 @c @closecatbox
 @end deffn
 
-@deffn {Function} elapsed_run_time ()
+@c --- 27.12.2010 DK -----------------------------------------------------------
+@anchor{elapsed_run_time}
+@deffn {Funktion} elapsed_run_time ()
 
-Returns an estimate of the number of seconds (including fractions of a second)
-which Maxima has spent in computations since Maxima was most recently started or restarted.
-The return value is a floating-point number.
+@c Returns an estimate of the number of seconds (including fractions of a 
+@c second) which Maxima has spent in computations since Maxima was most recently
+@c started or restarted. The return value is a floating-point number.
 
-See also @code{absolute_real_time} and @code{elapsed_real_time}.
+Gibt eine Sch@"atzung der Zeit in Sekunden zur@"uck, die Maxima f@"ur 
+Berechnungen seit dem letzten Start ben@"otigt hat. Der R@"uckgabewert ist eine 
+Gleitkommazahl.
 
-Example:
+@c See also @code{absolute_real_time} and @code{elapsed_real_time}.
+
+Siehe auch @mref{absolute_real_time} und @mrefdot{elapsed_real_time}
+
+Beispiel:
 
 @c ===beg===
 @c elapsed_run_time ();

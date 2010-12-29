@@ -559,6 +559,7 @@ Beispiele:
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
+@anchor{macros}
 @defvr {Systemvariable} macros
 Standardwert: @code{[]}
 
@@ -578,7 +579,8 @@ gel@"oscht, wird der Eintrag aus der Informationsliste entfernt. Siehe auch
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.12.2010 DK -----------------------------------------------------------
+@anchor{remfunction}
 @deffn  {Funktion} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Funktion} remfunction (all)
 
@@ -787,226 +789,55 @@ Improper name or value in functional position.
 @c @closecatbox
 @end deffn
 
-@c --- 04.12.2010 DK -----------------------------------------------------------
-@anchor{block}
-@deffn  {Function} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Function} block (@var{expr_1}, ..., @var{expr_n})
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{define}
+@deffn  {Funktion} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffnx {Funktion} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Funktion} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Funktion} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Funktion} define (ev (@var{expr_1}), @var{expr_2})
 
-@c @code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence and 
-@c returns the value of the last expression evaluated. The sequence can be 
-@c modified by the @code{go}, @code{throw}, and @code{return} functions. The 
-@c last expression is @var{expr_n} unless @code{return} or an expression 
-@c containing @code{throw} is evaluated. Some variables @var{v_1}, ..., 
-@c @var{v_m} can be declared local to the block; these are distinguished from 
-@c global variables of the same names. If no variables are declared local then 
-@c the list may be omitted. Within the block, any variable other than @var{v_1},
-@c ..., @var{v_m} is a global variable.
+@c Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and
+@c function body @var{expr}. @code{define} always evaluates its second argument
+@c (unless explicitly quoted). The function so defined may be an ordinary Maxima
+@c function (with arguments enclosed in parentheses) or an array function (with
+@c arguments enclosed in square brackets).
 
-@code{block} wertet die Argument @var{expr_1}, @var{expr_2}, ..., @var{expr_n}
-nacheinander aus und gibt das Ergebnis des letzten ausgewerteten Ausdrucks
-zur@"uck. Die Reihenfolge kann mit den Funktionen @code{go}, @code{throw} und
-@code{return} beeinflusst werden. Die Liste der Variablen 
-@code{[v_1, ..., v_m]} am Anfang von @code{block} bezeichnet Variablen, die
-innerhalb von @code{block} lokal sind. Alle anderen Variablen, die in einem
-Block verwendet werden, beziehen sich auf globale Variablen.
+Definiert eine Funktion mit dem Namen @var{f} und den Argumenten @var{x1}, ...,
+@var{x_n} und dem Funktionsk@"orper @var{expr}. @code{define} wertet das zweite
+Argument immer aus.
 
-@c @code{block} saves the current values of the variables @var{v_1}, ..., 
-@c @var{v_m} (if any) upon entry to the block, then unbinds the variables so 
-@c that they evaluate to themselves. The local variables may be bound to 
-@c arbitrary values within the block but when the block is exited the saved 
-@c values are restored, and the values assigned within the block are lost.
 
-@code{block} sichert die aktuellen Werte der Variablen @var{v_1}, ..., 
-@var{v_m}. Wird @code{block} verlassen, werden diese Werte wiederhergestellt.
+ When the last or only function argument @var{x_n} is a list of one element, 
+ the function defined by @code{define} accepts a variable number of arguments.
+ Actual arguments are assigned one-to-one to formal arguments @var{x_1}, ..., 
+ @var{x_(n - 1)}, and any further actual arguments, if present, are assigned 
+ to @var{x_n} as a list.
 
-@c The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
-@c saves the properties associated with the symbols @var{v_1}, ..., @var{v_m},
-@c removes any properties before evaluating other expressions, and restores any 
-@c saved properties on exit from the block. Some declarations are implemented as
-@c properties of a symbol, including @code{:=}, @code{array}, 
-@c @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, 
-@c @code{constant}, @code{nonscalar}, @code{assume}, and some others. The effect
-@c of @code{local} is to make such declarations effective only within the block;
-@c otherwise declarations within a block are actually global declarations.
+ When the first argument of @code{define} is an expression of the form
+ @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., 
+ @var{x_n}]}, the function arguments are evaluated but @var{f} is not 
+ evaluated, even if there is already a function or variable by that name.
 
-Die Deklaration @code{local(@var{v_1}, ..., @var{v_m})} innerhalb @code{block}
-sichert nicht nur die Werte, sondern auch die Eigenschaften der Variablen. Beim
-Verlassen von @code{block} werden die Eigenschaften wiederhergestellt. Erhalten 
-die Variablen Eigenschaften innerhalb von @code{block}, werden diese wieder
-entfernt, wenn @code{block} verlassen wird.
+ When the first argument is an expression with operator @code{funmake}, 
+ @code{arraymake}, or @code{ev}, the first argument is evaluated; this allows 
+ for the function name to be computed, as well as the body.
 
-@c TODO: AB HIER FEHLT DIE UEBERSETZUNG.
+ All function definitions appear in the same namespace; defining a function 
+ @code{f} within another function @code{g} does not automatically limit the 
+ scope of @code{f} to @code{g}. However, @code{local(f)} makes the definition 
+ of function @code{f} effective only within the block or other compound 
+ expression in which @code{local} appears.
 
- @code{block} may appear within another @code{block}. Local variables are 
- established each time a new @code{block} is evaluated. Local variables appear
- to be global to any enclosed blocks. If a variable is non-local in a block,
- its value is the value most recently assigned by an enclosing block, if any,
- otherwise, it is the value of the variable in the global environment. This 
- policy may coincide with the usual understanding of "dynamic scope".
+ If some formal argument @var{x_k} is a quoted symbol (after evaluation), the 
+ function defined by @code{define} does not evaluate the corresponding actual 
+ argument. Otherwise all actual arguments are evaluated.
 
- The value of the block is the value of the last statement or the value of the
- argument to the function @code{return} which may be used to exit explicitly 
- from the block. The function @code{go} may be used to transfer control to the
- statement of the block that is tagged with the argument to @code{go}. To tag 
- a statement, precede it by an atomic argument as another statement in the 
- block.  For example: @code{block ([x], x:1, loop, x: x+1, ..., 
- go(loop), ...)}.  The argument to @code{go} must be the name of a tag 
- appearing within the block.  One cannot use @code{go} to transfer to a tag in
- a block other than the one containing the @code{go}.
+ See also @code{:=} and @code{::=}.
 
- Blocks typically appear on the right side of a function definition but can 
- be used in other places as well.
+Beispiele:
 
-@c @opencatbox
-@c @category{Expressions} @category{Programming}
-@c @closecatbox
-@end deffn
-
-@c REPHRASE, NEEDS EXAMPLE
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} break (@var{expr_1}, ..., @var{expr_n})
-
-Evaluates and prints @var{expr_1}, ..., @var{expr_n} and then
-causes a Maxima break at which point the user can examine and change
-his environment.  Upon typing @code{exit;} the computation resumes.
-
-@c @opencatbox
-@c @category{Debugging}
-@c @closecatbox
-@end deffn
-
-@c FOR SOME REASON throw IS IN SOME OTHER FILE. MOVE throw INTO THIS FILE.
-@c NEEDS CLARIFICATION
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} catch (@var{expr_1}, ..., @var{expr_n})
-
-Evaluates @var{expr_1}, ..., @var{expr_n} one by one; if any
-leads to the evaluation of an expression of the
-form @code{throw (arg)}, then the value of the @code{catch} is the value of
-@code{throw (arg)}, and no further expressions are evaluated.
-This "non-local return" thus goes through any depth of
-nesting to the nearest enclosing @code{catch}.
-If there is no @code{catch} enclosing a @code{throw}, an error message is printed.
-
-If the evaluation of the arguments does not lead to the evaluation of any @code{throw}
-then the value of @code{catch} is the value of @var{expr_n}.
-
-@example
-(%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
-(%i2) g(l) := catch (map (''%, l))$
-(%i3) g ([1, 2, 3, 7]);
-(%o3)               [f(1), f(2), f(3), f(7)]
-(%i4) g ([1, 2, -3, 7]);
-(%o4)                          - 3
-@end example
-
-@c REWORD THIS PART.
-The function @code{g} returns a list of @code{f} of each element of @code{l} if @code{l}
-consists only of non-negative numbers; otherwise, @code{g} "catches" the
-first negative element of @code{l} and "throws" it up.
-
-@c @opencatbox
-@c @category{Programming}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
-@deffnx {Function} compfile (@var{filename}, functions)
-@deffnx {Function} compfile (@var{filename}, all)
-
-Translates Maxima functions into Lisp 
-and writes the translated code into the file @var{filename}.
-
-@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
-specified functions.
-@code{compfile(@var{filename}, functions)} and @code{compfile(@var{filename}, all)}
-translate all user-defined functions.
-
-The Lisp translations are not evaluated, nor is the output file processed by the Lisp compiler.
-@c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
-@code{translate} creates and evaluates Lisp translations.
-@code{compile_file} translates Maxima into Lisp, and then executes the Lisp compiler. 
-
-See also @code{translate}, @code{translate_file}, and @code{compile_file}.
-
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
-@end deffn
-
-@c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
-@c TO EVENTUALLY CALL AN OBSOLETE FUNCTION SPRIN1.
-@c RECOMMENDATION IS TO CUT THIS ITEM, AND CUT $compgrind FROM src/transs.lisp
-@c @defvar compgrind
-@c Default value: @code{false}
-@c 
-@c When @code{compgrind} is @code{true}, function definitions printed by
-@c @code{compfile} are pretty-printed.
-@c 
-@c @end defvar
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} compile (@var{f_1}, ..., @var{f_n})
-@deffnx {Function} compile (functions)
-@deffnx {Function} compile (all)
-Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp, evaluates the Lisp translations,
-and calls the Lisp function @code{COMPILE} on each translated function.
-@code{compile} returns a list of the names of the compiled functions.
-
-@code{compile (all)} or @code{compile (functions)} compiles all user-defined functions.
-
-@code{compile} quotes its arguments; 
-the quote-quote operator @code{'@w{}'} defeats quotation.
-
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn  {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
-@deffnx {Function} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
-@deffnx {Function} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Function} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Function} define (ev (@var{expr_1}), @var{expr_2})
-
-Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
-@code{define} always evaluates its second argument (unless explicitly quoted).
-The function so defined may be an ordinary Maxima function (with arguments enclosed in parentheses)
-or an array function (with arguments enclosed in square brackets).
-
-When the last or only function argument @var{x_n} is a list of one element,
-the function defined by @code{define} accepts a variable number of arguments.
-Actual arguments are assigned one-to-one to formal arguments @var{x_1}, ..., @var{x_(n - 1)},
-and any further actual arguments, if present, are assigned to @var{x_n} as a list.
-
-When the first argument of @code{define} is an expression of the form
-@code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
-the function arguments are evaluated but @var{f} is not evaluated,
-even if there is already a function or variable by that name.
-
-When the first argument is an expression with operator @code{funmake}, @code{arraymake}, or @code{ev},
-the first argument is evaluated;
-this allows for the function name to be computed, as well as the body.
-
-All function definitions appear in the same namespace;
-defining a function @code{f} within another function @code{g}
-does not automatically limit the scope of @code{f} to @code{g}.
-However, @code{local(f)} makes the definition of function @code{f}
-effective only within the block or other compound expression in which @code{local} appears.
-
-If some formal argument @var{x_k} is a quoted symbol (after evaluation),
-the function defined by @code{define} does not evaluate the corresponding actual argument.
-Otherwise all actual arguments are evaluated.
-
-See also @code{:=} and @code{::=}.
-
-Examples:
-
-@code{define} always evaluates its second argument (unless explicitly quoted).
+ @code{define} always evaluates its second argument (unless explicitly quoted).
 
 @c ===beg===
 @c expr : cos(y) - sin(x);
@@ -1028,7 +859,8 @@ Examples:
 (%o5)                    cos(y) - sin(x)
 @end example
 
-The function defined by @code{define} may be an ordinary Maxima function or an array function.
+ The function defined by @code{define} may be an ordinary Maxima function or 
+ an array function.
 
 @c ===beg===
 @c define (G1 (x, y), x.y - y.x);
@@ -1042,8 +874,8 @@ The function defined by @code{define} may be an ordinary Maxima function or an a
                        x, y
 @end example
 
-When the last or only function argument @var{x_n} is a list of one element,
-the function defined by @code{define} accepts a variable number of arguments.
+ When the last or only function argument @var{x_n} is a list of one element,
+ the function defined by @code{define} accepts a variable number of arguments.
 
 @c ===beg===
 @c define (H ([L]), '(apply ("+", L)));
@@ -1056,8 +888,8 @@ the function defined by @code{define} accepts a variable number of arguments.
 (%o2)                       c + b + a
 @end example
 
-When the first argument is an expression with operator @code{funmake}, @code{arraymake}, or @code{ev},
-the first argument is evaluated.
+ When the first argument is an expression with operator @code{funmake}, 
+ @code{arraymake}, or @code{ev}, the first argument is evaluated.
 
 @c ===beg===
 @c [F : I, u : x];
@@ -1092,7 +924,8 @@ the first argument is evaluated.
 @c @deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode})
+@anchor{define_variable}
+@deffn {Funktion} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduces a global variable into the Maxima environment.
 @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE USEFUL IN TRANSLATED CODE ??
@@ -1337,6 +1170,73 @@ Examples:
 @c @closecatbox
 @end deffn
 
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{fullmap}
+@deffn {Funktion} fullmap (@var{f}, @var{expr_1}, ...)
+
+@c Similar to @code{map}, but @code{fullmap} keeps mapping down all 
+@c subexpressions until the main operators are no longer the same.
+
+Die Funktion @code{fullmap} ist vergleichbar mit der Funktion @code{map}. Im 
+Unterschied zu der Funktion @code{map} kann @code{fullmap} auf verschachtelte 
+Audr@"ucke angewendet werden.
+
+@c @code{fullmap} is used by the Maxima simplifier for certain matrix 
+@c manipulations; thus, Maxima sometimes generates an error message concerning 
+@c @code{fullmap} even though @code{fullmap} was not explicitly called by the 
+@c user.
+
+Intern wird @code{fullmap} von Maxima f@"ur die Vereinfachung von Matrizen 
+aufgerufen. Daher k@"onnen bei der Vereinfachung von Matrizen Fehlermeldungen 
+im Zusammenhang mit @code{fullmap} auftreten, ohne dass die Funktion direkt 
+aufgerufen wurde.
+
+Beispiele:
+
+@c ===beg===
+@c a + b * c;
+@c fullmap (g, %);
+@c map (g, %th(2));
+@c ===end===
+@example
+(%i1) a + b * c;
+(%o1)                        b c + a
+(%i2) fullmap (g, %);
+(%o2)                   g(b) g(c) + g(a)
+(%i3) map (g, %th(2));
+(%o3)                     g(b c) + g(a)
+@end example
+
+@c @opencatbox
+@c @category{Funktionsanwendungen} @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{fullmapl}
+@deffn {Funktion} fullmapl (@var{f}, @var{list_1}, ...)
+
+@c Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and 
+@c matrices.
+
+Die Funktion @code{fullmapl} ist vergleichbar mit @code{fullmap}. 
+@code{fullmapl} kann jedoch nur auf Matrizen und Listen angewendet werden kann.
+
+Beispiele:
+
+@c ===beg===
+@c fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+@c ===end===
+@example
+(%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+(%o1)                [[a + 3, 4], [4, 3.5]]
+@end example
+
+@c @opencatbox
+@c @category{Funktionsanwendungen} @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
 @c --- 19.11.2010 DK -----------------------------------------------------------
 @anchor{functions}
 @defvr {Systemvariable} functions
@@ -1410,7 +1310,9 @@ Beispiele:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{fundef}
 @deffn {Function} fundef (@var{f})
+
 Returns the definition of the function @var{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
@@ -1572,9 +1474,10 @@ Maxima simplifies @code{funmake}'s return value.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffn  {Function} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
 @deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
 @deffnx {Function} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+
 Defines and returns a lambda expression (that is, an anonymous function).
 The function may have required arguments @var{x_1}, ..., @var{x_m}
 and/or optional arguments @var{L}, which appear within the function body as a list.
@@ -1754,56 +1657,6 @@ The arguments appear within the function body as a list.
 
 @c @opencatbox
 @c @category{Function definition}
-@c @closecatbox
-@end deffn
-
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} local (@var{v_1}, ..., @var{v_n})
-
-Saves the properties associated with the symbols @var{v_1}, ..., @var{v_n},
-removes any properties before evaluating other expressions,
-and restores any saved properties on exit
-from the block or other compound expression in which @code{local} appears.
-
-Some declarations are implemented as properties of a symbol,
-including @code{:=}, @code{array}, @code{dependencies}, @code{atvalue}, @code{matchdeclare},
-@code{atomgrad}, @code{constant}, @code{nonscalar}, @code{assume}, and some others.
-The effect of @code{local} is to make such declarations effective only within the block
-or other compound expression in which @code{local} appears;
-otherwise such declarations are global declarations.
-
-@code{local} can only appear in @code{block}
-or in the body of a function definition or @code{lambda} expression,
-and only one occurrence is permitted in each.
-
-@code{local} quotes its arguments.
-@code{local} returns @code{done}.
-
-Example:
-
-A local function definition.
-
-@c ===beg===
-@c foo (x) := 1 - x;
-@c foo (100);
-@c block (local (foo), foo (x) := 2 * x, foo (100));
-@c foo (100);
-@c ===end===
-@example
-(%i1) foo (x) := 1 - x;
-(%o1)                    foo(x) := 1 - x
-(%i2) foo (100);
-(%o2)                         - 99
-(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
-(%o3)                          200
-(%i4) foo (100);
-(%o4)                         - 99
-@end example
-
-@c @opencatbox
-@c @category{Function definition} @category{Programming}
 @c @closecatbox
 @end deffn
 
@@ -1991,673 +1844,424 @@ x + 99 is equal to x
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@defvr {Option variable} mode_checkp
-Default value: @code{true}
+@anchor{map}
+@deffn {Funktion} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
 
-@c WHAT DOES THIS MEAN ??
-When @code{mode_checkp} is @code{true}, @code{mode_declare} checks the modes
-of bound variables.
-@c NEED SOME EXAMPLES HERE.
+@c Returns an expression whose leading operator is the same as that of the 
+@c expressions @var{expr_1}, ..., @var{expr_n} but whose subparts are the 
+@c results of applying @var{f} to the corresponding subparts of the expressions.
+@c @var{f} is either the name of a function of @math{n} arguments or is a 
+@c @code{lambda} form of @math{n} arguments.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
+Gibt einen Ausdruck zur@"uck, dessen Hauptoperator derselbe ist, wie der der
+Argumente @var{expr_1}, ..., @var{expr_n} aber dessen Operanden das Ergebnis
+der Anwendung des Operators @var{f} auf die Teilausdr@"ucke des Ausdrucks sind.
+@var{f} ist entweder der Name einer Funktion mit @math{n} Argumenten oder
+ein Lambda-Ausdruck mit @math{n} Argumenten.
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} mode_check_errorp
-Default value: @code{false}
+@c @code{maperror} - if @code{false} will cause all of the mapping functions to 
+@c (1) stop when they finish going down the shortest @var{expr_i} if not all of 
+@c the @var{expr_i} are of the same length and (2) apply @var{f} to 
+@c [@var{expr_1}, @var{expr_2}, ...]  if the @var{expr_i} are not all the same 
+@c type of object. If @code{maperror} is @code{true} then an error message will 
+@c be given in the above two instances.
 
-@c WHAT DOES THIS MEAN ??
-When @code{mode_check_errorp} is @code{true}, @code{mode_declare} calls
-error.
-@c NEED SOME EXAMPLES HERE.
+Hat @code{maperror} den Wert @code{false}, wird die Anwendung der Funktion 
+@var{f} gestoppt, (1) wenn die Anwendung auf den k@"urzesten Ausdruck 
+@var{expr_i} beendet ist und die Ausdr@"ucke nicht alle dieselbe L@"ange haben 
+oder (2) wenn die Ausdr@"ucke @var{expr_i} einen verschiedenen Typ haben. Hat 
+@code{maperror} den Wert @code{true} wird in den obigen F@"allen eine 
+Fehlermeldung ausgegeben.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
+@c One of the uses of this function is to @code{map} a function (e.g. 
+@c @code{partfrac}) onto each term of a very large expression where it 
+@c ordinarily wouldn't be possible to use the function on the entire expression 
+@c due to an exhaustion of list storage space in the course of the computation.
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} mode_check_warnp
-Default value: @code{true}
+@c TODO: NICHT UEBERSETZT
 
-@c WHAT DOES THIS MEAN ??
-When @code{mode_check_warnp} is @code{true}, mode errors are
-described.
-@c NEED SOME EXAMPLES HERE.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
-@code{mode_declare} is used to declare the modes of variables and
-functions for subsequent translation or compilation of functions.
-@code{mode_declare} is typically placed at the beginning of a function
-definition, at the beginning of a Maxima script, or executed at the interactive prompt.
-
-The arguments of @code{mode_declare} are pairs consisting of a variable and a mode which is
-one of @code{boolean}, @code{fixnum}, @code{number}, @code{rational}, or @code{float}.
-Each variable may also
-be a list of variables all of which are declared to have the same mode.
-
-@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-If a variable is an array, and if every element of the array which is
-referenced has a value then @code{array (yi, complete, dim1, dim2, ...)}
-rather than
-@example
-array(yi, dim1, dim2, ...)
-@end example
-should be used when first
-declaring the bounds of the array.
-@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-If all the elements of the array
-are of mode @code{fixnum} (@code{float}), use @code{fixnum} (@code{float}) instead of @code{complete}.
-@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-Also if every element of the array is of the same mode, say @code{m}, then
+   @c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR AND SHOW HOW THE 
+   @c RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
 
 @example
-mode_declare (completearray (yi), m))
+(%i1) map(f,x+a*y+b*z);
+(%o1)                        f(b z) + f(a y) + f(x)
+(%i2) map(lambda([u],partfrac(u,x)),x+1/(x^3+4*x^2+5*x+2));
+                           1       1        1
+(%o2)                     ----- - ----- + -------- + x
+                         x + 2   x + 1          2
+                                         (x + 1)
+(%i3) map(ratsimp, x/(x^2+x)+(y^2+y)/y);
+                                      1
+(%o3)                            y + ----- + 1
+                                    x + 1
+(%i4) map("=",[a,b],[-0.5,3]);
+(%o4)                          [a = - 0.5, b = 3]
+
+
 @end example
 
-should be used for efficient
-translation.
-
-Numeric code using arrays might run faster
-by declaring the expected size of the array, as in:
-
-@example
-mode_declare (completearray (a [10, 10]), float)
-@end example
-
-for a floating point number array which is 10 x 10.
-
-One may declare the mode of the result of a function by
-using @code{function (f_1, f_2, ...)} as an argument;
-here @code{f_1}, @code{f_2}, ... are the names
-of functions.  For example the expression,
-
-@example
-mode_declare ([function (f_1, f_2, ...)], fixnum)
-@end example
-
-declares that the values returned by @code{f_1}, @code{f_2}, ... are single-word integers.
-
-@code{modedeclare} is a synonym for @code{mode_declare}.
-
 @c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
-@end deffn
-
-@c WHAT IS THIS ABOUT ??
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
-A special form used with @code{mode_declare} and
-@code{macros} to declare, e.g., a list of lists of flonums, or other compound
-data object.  The first argument to @code{mode_identity} is a primitive value
-mode name as given to @code{mode_declare} (i.e., one of @code{float}, @code{fixnum}, @code{number},
-@code{list}, or @code{any}), and the second argument is an expression which is
-evaluated and returned as the value of @code{mode_identity}.  However, if the
-return value is not allowed by the mode declared in the first
-argument, an error or warning is signalled.  The important thing is
-that the mode of the expression as determined by the Maxima to Lisp
-translator, will be that given as the first argument, independent of
-anything that goes on in the second argument.
-E.g., @code{x: 3.3; mode_identity (fixnum, x);} yields an error. @code{mode_identity (flonum, x)}
-returns 3.3 . 
-This has a number of uses, e.g., if you knew that @code{first (l)} returned a
-number then you might write @code{mode_identity (number, first (l))}.  However,
-a more efficient way to do it would be to define a new primitive,
-
-@example
-firstnumb (x) ::= buildq ([x], mode_identity (number, x));
-@end example
-
-and use @code{firstnumb}
-every time you take the first of a list of numbers.
-
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
-@end deffn
-
-@c --- 28.08.2010 DK -----------------------------------------------------------
-@defvr {Option variable} packagefile
-Default value: @code{false}
-
-Package designers who use @code{save} or @code{translate} to create packages 
-(files) for others to use may want to set @code{packagefile: true} to prevent 
-information from being added to Maxima's information-lists (e.g. @code{values},
-@code{functions}) except where necessary when the file is loaded in. In this 
-way, the contents of the package will not get in the user's way when he adds his
-own data.  Note that this will not solve the problem of possible name conflicts.
-Also note that the flag simply affects what is output to the package file.
-Setting the flag to @code{true} is also useful for creating Maxima init files.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c --- 28.08.2010 DK -----------------------------------------------------------
-@defvr {Option variable} savedef
-Default value: @code{true}
-
-When @code{savedef} is @code{true}, the Maxima version of a user function is 
-preserved when the function is translated. This permits the definition to be 
-displayed by @code{dispfun} and allows the function to be edited.
-
-When @code{savedef} is @code{false}, the names of translated functions are
-removed from the @code{functions} list.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c IS THERE ANY REASON TO SET transcompile: false ??
-@c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} transcompile
-Default value: @code{true}
-
-When @code{transcompile} is @code{true}, @code{translate} and @code{translate_file} generate
-declarations to make the translated code more suitable for compilation.
-@c BUT THE DECLARATIONS DON'T SEEM TO BE NECESSARY, SO WHAT'S THE POINT AGAIN ??
-
-@code{compfile} sets @code{transcompile: true} for the duration.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} translate (@var{f_1}, ..., @var{f_n})
-@deffnx {Function} translate (functions)
-@deffnx {Function} translate (all)
-Translates the user-defined functions
-@var{f_1}, ..., @var{f_n} from the Maxima language into Lisp
-and evaluates the Lisp translations.
-Typically the translated functions run faster than the originals.
-
-@code{translate (all)} or @code{translate (functions)} translates all user-defined functions.
-
-Functions to be translated should include a call to @code{mode_declare} at the
-beginning when possible in order to produce more efficient code.  For
-example:
-
-@example
-f (x_1, x_2, ...) := block ([v_1, v_2, ...],
-    mode_declare (v_1, mode_1, v_2, mode_2, ...), ...)
-@end example
-
-@noindent
-
-where the @var{x_1}, @var{x_2}, ...  are the parameters to the function and the
-@var{v_1}, @var{v_2}, ... are the local variables.
-
-The names of translated functions
-are removed from the @code{functions} list if @code{savedef} is @code{false} (see below)
-and are added to the @code{props} lists.
-
-Functions should not be translated
-unless they are fully debugged.
-
-Expressions are assumed simplified; if they are not, correct but non-optimal code gets
-generated.  Thus, the user should not set the @code{simp} switch to @code{false}
-which inhibits simplification of the expressions to be translated.
-
-The switch @code{translate}, if @code{true}, causes automatic
-translation of a user's function to Lisp.
-
-Note that translated
-functions may not run identically to the way they did before
-translation as certain incompatabilities may exist between the Lisp
-and Maxima versions.  Principally, the @code{rat} function with more than
-one argument and the @code{ratvars} function should not be used if any
-variables are @code{mode_declare}'d canonical rational expressions (CRE).
-Also the @code{prederror: false} setting
-will not translate.
-@c WHAT ABOUT % AND %% ???
-
-@code{savedef} - if @code{true} will cause the Maxima version of a user
-function to remain when the function is @code{translate}'d.  This permits the
-definition to be displayed by @code{dispfun} and allows the function to be
-edited.
-
-@code{transrun} - if @code{false} will cause the interpreted version of all
-functions to be run (provided they are still around) rather than the
-translated version.
-
-The result returned by @code{translate} is a list of the names of the
-functions translated.
-
-@c @opencatbox
-@c @category{Translation and compilation}
+@c @category{Function application}
 @c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} translate_file (@var{maxima_filename})
-@deffnx {Function} translate_file (@var{maxima_filename}, @var{lisp_filename})
-Translates a file of Maxima code into a file of Lisp code.
-@code{translate_file} returns a list of three filenames:
-the name of the Maxima file, the name of the Lisp file, and the name of file
-containing additional information about the translation.
-@code{translate_file} evaluates its arguments.
+@anchor{mapatom}
+@deffn {Funktion} mapatom (@var{expr})
 
-@code{translate_file ("foo.mac"); load("foo.LISP")} is the same as
-@code{batch ("foo.mac")} except for certain restrictions,
-the use of @code{'@w{}'} and @code{%}, for example.
-@c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
+@c Returns @code{true} if and only if @var{expr} is treated by the mapping
+@c routines as an atom.  "Mapatoms" are atoms, numbers (including rational 
+@c numbers), and subscripted variables.
 
-@code{translate_file (@var{maxima_filename})} translates a Maxima file @var{maxima_filename}
-into a similarly-named Lisp file.
-For example, @code{foo.mac} is translated into @code{foo.LISP}.
-The Maxima filename may include a directory name or names,
-in which case the Lisp output file is written
-to the same directory from which the Maxima input comes.
+Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} von Funktionen 
+die auf Argumente angewendete werden, als ein Atom betrachtet wird. Als Atome
+werden Zahlen, einschlie@ss{}lich rationaler Zahlen und gro@ss{}er 
+Gleitkommazahlen, Symbole und indizierte Symbole betrachtet.
 
-@code{translate_file (@var{maxima_filename}, @var{lisp_filename})} translates
-a Maxima file @var{maxima_filename} into a Lisp file @var{lisp_filename}.
-@code{translate_file} ignores the filename extension, if any, of @code{lisp_filename};
-the filename extension of the Lisp output file is always @code{LISP}.
-The Lisp filename may include a directory name or names,
-in which case the Lisp output file is written to the specified directory.
-
-@code{translate_file} also writes a file of translator warning
-messages of various degrees of severity.
-The filename extension of this file is @code{UNLISP}.
-This file may contain valuable information, though possibly obscure,
-for tracking down bugs in translated code.
-The @code{UNLISP} file is always written
-to the same directory from which the Maxima input comes.
-
-@code{translate_file} emits Lisp code which causes
-some declarations and definitions to take effect as soon
-as the Lisp code is compiled.
-See @code{compile_file} for more on this topic.
-
-@c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
-See also @code{tr_array_as_ref},
-@c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
-@c WE DON'T WANT TO MENTION IT
-@c @code{tr_bind_mode_hook}, 
-@code{tr_bound_function_applyp},
-@c tr_exponent EXISTS AND WORKS AS ADVERTISED IN src/troper.lisp
-@c NOT OTHERWISE DOCUMENTED; ITS EFFECT SEEMS TOO WEAK TO MENTION
-@code{tr_exponent},
-@code{tr_file_tty_messagesp}, 
-@code{tr_float_can_branch_complex},
-@code{tr_function_call_default}, 
-@code{tr_numer},
-@code{tr_optimize_max_loop}, 
-@code{tr_semicompile},
-@code{tr_state_vars}, 
-@code{tr_warnings_get},
-@code{tr_warn_bad_function_calls},
-@code{tr_warn_fexpr}, 
-@code{tr_warn_meval},
-@code{tr_warn_mode},
-@code{tr_warn_undeclared}, 
-@code{tr_warn_undefined_variable},
-and @code{tr_windy}.
+   @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION
+   @c OF ATOMS ??
 
 @c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} transrun
-Default value: @code{true}
-
-When @code{transrun} is @code{false} will cause the interpreted
-version of all functions to be run (provided they are still around)
-rather than the translated version.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
-@c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_array_as_ref
-Default value: @code{true}
-
-If @code{translate_fast_arrays} is @code{false}, array references in
-Lisp code emitted by @code{translate_file} are affected by @code{tr_array_as_ref}.
-When @code{tr_array_as_ref} is @code{true},
-array names are evaluated,
-otherwise array names appear as literal symbols in translated code.
-
-@code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is @code{true}.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
-@c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_bound_function_applyp
-Default value: @code{true}
-
-When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a bound
-variable (such as a function argument) is found being used as a function.
-@c WHAT DOES THIS MEAN ??
-@code{tr_bound_function_applyp} does not affect the code generated in such cases.
-
-For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
-the warning message.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_file_tty_messagesp
-Default value: @code{false}
-
-When @code{tr_file_tty_messagesp} is @code{true},
-messages generated by @code{translate_file} during translation of a file are displayed
-on the console and inserted into the UNLISP file. 
-When @code{false}, messages about translation of the
-file are only inserted into the UNLISP file.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
-@c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
-@c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_float_can_branch_complex
-Default value: @code{true}
-
-Tells the Maxima-to-Lisp translator to assume that the functions 
-@code{acos}, @code{asin}, @code{asec}, and @code{acsc} can return complex results.
-
-The ostensible effect of @code{tr_float_can_branch_complex} is the following.
-However, it appears that this flag has no effect on the translator output.
-
-When it is @code{true} then @code{acos(x)} is of mode @code{any}
-even if @code{x} is of mode @code{float} (as set by @code{mode_declare}).
-When @code{false} then @code{acos(x)} is of mode
-@code{float} if and only if @code{x} is of mode @code{float}.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_function_call_default
-Default value: @code{general}
-
-@code{false} means give up and
-call @code{meval}, @code{expr} means assume Lisp fixed arg function.  @code{general}, the
-default gives code good for @code{mexprs} and @code{mlexprs} but not @code{macros}.
-@code{general} assures variable bindings are correct in compiled code.  In
-@code{general} mode, when translating F(X), if F is a bound variable, then it
-assumes that @code{apply (f, [x])} is meant, and translates a such, with
-apropriate warning. There is no need to turn this off.  With the
-default settings, no warning messages implies full compatibility of
-translated and compiled code with the Maxima interpreter.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_numer
-Default value: @code{false}
-
-When @code{tr_numer} is @code{true}, @code{numer} properties are used for
-atoms which have them, e.g. @code{%pi}.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_optimize_max_loop
-Default value: 100
-
-@code{tr_optimize_max_loop} is the maximum number of times the
-macro-expansion and optimization pass of the translator will loop in
-considering a form.  This is to catch macro expansion errors, and
-non-terminating optimization properties.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_semicompile
-Default value: @code{false}
-
-When @code{tr_semicompile} is @code{true}, @code{translate_file} and @code{compfile}
-output forms which will be macroexpanded but not compiled into machine
-code by the Lisp compiler.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c ARE ANY OF THESE OBSOLETE ??
-
-@c -----------------------------------------------------------------------------
-@defvr {System variable} tr_state_vars
-Default value:
-@example
-[transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
-tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
-tr_function_call_default, tr_array_as_ref,tr_numer]
-@end example
-
-The list of the switches that affect the form of the
-translated output.
-@c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
-This information is useful to system people when
-trying to debug the translator.  By comparing the translated product
-to what should have been produced for a given state, it is possible to
-track down bugs.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
-@c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
-@c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} tr_warnings_get ()
-Prints a list of warnings which have been given by
-the translator during the current translation.
-
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_warn_bad_function_calls
-Default value: @code{true}
-
-- Gives a warning when
-when function calls are being made which may not be correct due to
-improper declarations that were made at translate time.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_warn_fexpr
-Default value: @code{compfile}
-
-- Gives a warning if any FEXPRs are
-encountered.  FEXPRs should not normally be output in translated code,
-all legitimate special program forms are translated.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_warn_meval
-Default value: @code{compfile}
-
-- Gives a warning if the function
-@code{meval} gets called.  If @code{meval} is called that indicates problems in the
-translation.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_warn_mode
-Default value: @code{all}
-
-- Gives a warning when variables are
-assigned values inappropriate for their mode.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_warn_undeclared
-Default value: @code{compile}
-
-- Determines when to send
-warnings about undeclared variables to the TTY.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_warn_undefined_variable
-Default value: @code{all}
-
-- Gives a warning when
-undefined global variables are seen.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
-@c WHERE IT CAUSES A WARNING ABOUT USING kill. 
-@c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
-@c AND CUT OUT tr_windy FROM CODE AND DOCS.
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tr_windy
-Default value: @code{true}
-
-- Generate helpful comments and
-programming hints.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} compile_file (@var{filename})
-@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
-@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
-Translates the Maxima file @var{filename} into Lisp,
-executes the Lisp compiler,
-and, if the translation and compilation succeed, loads the compiled code into Maxima.
-
-@code{compile_file} returns a list of the names of four files:
-the original Maxima file, the Lisp translation, notes on translation, and the compiled code.
-If the compilation fails,
-the fourth item is @code{false}.
-
-Some declarations and definitions take effect as soon
-as the Lisp code is compiled (without loading the compiled code).
-These include functions defined with the @code{:=} operator,
-macros define with the @code{::=} operator, @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
-@code{alias}, @code{declare},
-@code{define_variable},  @code{mode_declare},
-and 
-@code{infix}, @code{matchfix},
-@code{nofix}, @code{postfix}, @code{prefix},
-and @code{compfile}.
-
-Assignments and function calls are not evaluated until the compiled code is loaded.
-In particular, within the Maxima file,
-assignments to the translation flags (@code{tr_numer}, etc.) have no effect on the translation.
-
-@c @code{compile_file} may mistake warnings for errors and
-@c return @code{false} as the name of the compiled code when, in fact,
-@c the compilation succeeded. This is a bug. 
-@c REPORTED AS SOURCEFORGE BUG # 1103722.
-
-@var{filename} may not contain @code{:lisp} statements.
-
-@code{compile_file} evaluates its arguments.
-
-@c @opencatbox
-@c @category{Translation and compilation}
+@c @category{Predicate functions}
 @c @closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} declare_translated (@var{f_1}, @var{f_2}, ...)
+@anchor{maperror}
+@defvr {Optionsvariable} maperror
+Standwert: @code{true}
 
-When translating a file of Maxima code
-to Lisp, it is important for the translator to know which functions it
-sees in the file are to be called as translated or compiled functions,
-and which ones are just Maxima functions or undefined.  Putting this
-declaration at the top of the file, lets it know that although a symbol
-does which does not yet have a Lisp function value, will have one at
-call time. @code{(MFUNCTION-CALL fn arg1 arg2 ...)} is generated when
-the translator does not know @code{fn} is going to be a Lisp function.
+@c When @code{maperror} is @code{false}, causes all of the mapping functions, 
+@c for example
+
+@c @example
+@c map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
+@c @end example
+
+@c to (1) stop when they finish going down the shortest @var{expr_i} if not all 
+@c of the @var{expr_i} are of the same length and (2) apply @var{f} to 
+@c [@var{expr_1}, @var{expr_2}, ...] if the @var{expr_i} are not all the same 
+@c type of object.
+
+@c If @code{maperror} is @code{true} then an error message is displayed in the 
+@c above two instances.
+
+Hat @code{maperror} den Wert @code{false}, wird die Anwendung der Funktion 
+@var{f} gestoppt, (1) wenn die Anwendung auf den k@"urzesten Ausdruck 
+@var{expr_i} beendet ist und die Ausdr@"ucke nicht alle dieselbe L@"ange haben 
+oder (2) wenn die Ausdr@"ucke @var{expr_i} einen verschiedenen Typ haben. Hat 
+@code{maperror} den Wert @code{true} wird in den obigen F@"allen eine 
+Fehlermeldung ausgegeben.
 
 @c @opencatbox
-@c @category{Translation and compilation}
+@c @category{Function application}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{mapprint}
+@defvr {Optionsvariable} mapprint
+Standardwert: @code{true}
+
+@c When @code{mapprint} is @code{true}, various information messages from 
+@c @code{map}, @code{mapl}, and @code{fullmap} are produced in certain 
+@c situations.  These include situations where @code{map} would use 
+@c @code{apply}, or @code{map} is truncating on the shortest list.
+
+Hat @code{mapprint} den Wert @code{true}, werden verschiedene Informationen von
+den Funktionen @code{map}, @code{mapl} und @code{fullmap} ausgegeben. Dies ist
+der Fall, wenn die Funktion @code{map} die Funktion @code{apply} aufruft oder
+wenn f@"ur die Funktion @code{map} die Argumente eine verschiedene L@"ange 
+haben.
+
+@c If @code{mapprint} is @code{false}, these messages are suppressed.
+
+Hat @code{mapprint} den Wert @code{false}, werden diese Meldungen unterdr@"uckt.
+
+@c @opencatbox
+@c @category{Function application}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{maplist}
+@deffn {Funktion} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+
+@c Returns a list of the applications of @var{f} to the parts of the expressions
+@c @var{expr_1}, ..., @var{expr_n}. @var{f} is the name of a function, or a 
+@c lambda expression.
+
+Wendet die Funktion @var{f} auf die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} 
+an und gibt das Ergebnis als eine Liste zur@"uck. @var{f} ist der Name einer 
+Funktion oder ein lambda-Ausdruck.
+
+@c @code{maplist} differs from @code{map (@var{f}, @var{expr_1}, ..., 
+@c @var{expr_n})} which returns an expression with the same main operator as 
+@c @var{expr_i} has (except for simplifications and the case where @code{map} 
+@c does an @code{apply}).
+
+Im Unterschied zu @code{maplist} gibt die Funktion @code{map} einen Ausdruck
+zur@"uck, der denselben Hauptoperator wie die Ausdr@"ucke @var{expr_i} hat.
+
+@c @opencatbox
+@c @category{Function application}
 @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{outermap}
+@deffn {Funktion} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
+
+@c Applies the function @var{f} to each one of the elements of the outer product
+@c @var{a_1} cross @var{a_2} ... cross @var{a_n}.
+
+Wendet die Funktion @var{f} auf jedes Element des @"au@ss{}eren Produktes der
+Argumente @var{a_1} @code{x} @var{a_2} ... @code{x} @var{a_n} an. 
+
+@c @var{f} is the name of a function of @math{n} arguments or a lambda 
+@c expression of @math{n} arguments. Each argument @var{a_k} may be a list or 
+@c nested list, or a matrix, or any other kind of expression.
+
+@var{f} ist der Name einer Funktion mit @math{n} Argumenten oder ein 
+Lambda-Ausdruck mit @math{n} Argumenten. Jedes Argument @var{a_k} kann eine
+Liste oder verschachtelte Liste, eine Matrix oder irgendein anderer Ausdruck
+sein.
+
+@c The @code{outermap} return value is a nested structure. Let @var{x} be the 
+@c return value. Then @var{x} has the same structure as the first list, nested 
+@c list, or matrix argument, @code{@var{x}[i_1]...[i_m]} has the same structure 
+@c as the second list, nested list, or matrix argument, 
+@c @code{@var{x}[i_1]...[i_m][j_1]...[j_n]} has the same structure as the third 
+@c list, nested list, or matrix argument, and so on, where @var{m}, @var{n}, ...
+@c are the numbers of indices required to access the elements of each argument 
+@c (one for a list, two for a matrix, one or more for a nested list). Arguments 
+@c which are not lists or matrices have no effect on the structure of the return
+@c value.
+
+@c Note that the effect of @code{outermap} is different from that of applying 
+@c @var{f} to each one of the elements of the outer product returned by 
+@c @code{cartesian_product}. @code{outermap} preserves the structure of the 
+@c arguments in the return value, while @code{cartesian_product} does not.
+
+@c TODO: OBIGE UEBERSETZUNG FEHLEN
+
+@c @code{outermap} evaluates its arguments.
+
+@code{outermap} werdet die Argumente aus.
+
+@c See also @code{map}, @code{maplist}, and @code{apply}.
+
+Siehe auch @mrefcomma{map} @mref{maplist} und @mrefdot{apply}
+
+@c CROSS REF OTHER FUNCTIONS HERE ??
+
+Beispiele:
+
+@c Elementary examples of @code{outermap}. To show the argument combinations 
+@c more clearly, @code{F} is left undefined.
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+@c outermap ("+", [a, b, c], [1, 2, 3]);
+@c ===end===
+@example
+(%i1) outermap(F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) outermap(F, matrix([a, b],[c, d]), matrix([1, 2],[3, 4]));
+         [ [ F(a, 1)  F(a, 2) ]  [ F(b, 1)  F(b, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(a, 3)  F(a, 4) ]  [ F(b, 3)  F(b, 4) ] ]
+(%o2)    [                                            ]
+         [ [ F(c, 1)  F(c, 2) ]  [ F(d, 1)  F(d, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(c, 3)  F(c, 4) ]  [ F(d, 3)  F(d, 4) ] ]
+(%i3) outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+       [ F(a, x, 1)  F(a, x, 2) ]  [ F(b, x, 1)  F(b, x, 2) ]
+(%o3) [[                        ], [                        ]]
+       [ F(a, x, 3)  F(a, x, 4) ]  [ F(b, x, 3)  F(b, x, 4) ]
+(%i4) outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+       [ [ F(a, 1, x) ]  [ F(a, 2, x) ] ]
+(%o4) [[ [            ]  [            ] ], 
+       [ [ F(a, 1, y) ]  [ F(a, 2, y) ] ]
+                              [ [ F(b, 1, x) ]  [ F(b, 2, x) ] ]
+                              [ [            ]  [            ] ]]
+                              [ [ F(b, 1, y) ]  [ F(b, 2, y) ] ]
+(%i5) outermap ("+", [a, b, c], [1, 2, 3]);
+(%o5) [[a + 1, a + 2, a + 3], [b + 1, b + 2, b + 3], 
+                                           [c + 1, c + 2, c + 3]]
+@end example
+
+@c A closer examination of the @code{outermap} return value. The first, second, 
+@c and third arguments are a matrix, a list, and a matrix, respectively. The 
+@c return value is a matrix. Each element of that matrix is a list, and each 
+@c element of each list is a matrix.
+
+@c ===beg===
+@c arg_1 :  matrix ([a, b], [c, d]);
+@c arg_2 : [11, 22];
+@c arg_3 : matrix ([xx, yy]);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
+@c                                                    arg_2, arg_3);
+@c xx_1 : xx_0 [1][1];
+@c xx_2 : xx_0 [1][1] [1];
+@c xx_3 : xx_0 [1][1] [1] [1][1];
+@c [op (arg_1), op (arg_2), op (arg_3)];
+@c [op (xx_0), op (xx_1), op (xx_2)];
+@c ===end===
+@example
+(%i1) arg_1 :  matrix ([a, b], [c, d]);
+                            [ a  b ]
+(%o1)                       [      ]
+                            [ c  d ]
+(%i2) arg_2 : [11, 22];
+(%o2)                       [11, 22]
+(%i3) arg_3 : matrix ([xx, yy]);
+(%o3)                      [ xx  yy ]
+(%i4) xx_0 : outermap(lambda([x, y, z], x / y + z), arg_1,
+                                                   arg_2, arg_3);
+               [  [      a        a  ]  [      a        a  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+(%o4)  Col 1 = [                                              ]
+               [  [      c        c  ]  [      c        c  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+                 [  [      b        b  ]  [      b        b  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+         Col 2 = [                                              ]
+                 [  [      d        d  ]  [      d        d  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+(%i5) xx_1 : xx_0 [1][1];
+           [      a        a  ]  [      a        a  ]
+(%o5)     [[ xx + --  yy + -- ], [ xx + --  yy + -- ]]
+           [      11       11 ]  [      22       22 ]
+(%i6) xx_2 : xx_0 [1][1] [1];
+                      [      a        a  ]
+(%o6)                 [ xx + --  yy + -- ]
+                      [      11       11 ]
+(%i7) xx_3 : xx_0 [1][1] [1] [1][1];
+                                  a
+(%o7)                        xx + --
+                                  11
+(%i8) [op (arg_1), op (arg_2), op (arg_3)];
+(%o8)                  [matrix, [, matrix]
+(%i9) [op (xx_0), op (xx_1), op (xx_2)];
+(%o9)                  [matrix, [, matrix]
+@end example
+
+@c @code{outermap} preserves the structure of the arguments in the return value,
+@c while @code{cartesian_product} does not.
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c setify (flatten (%));
+@c map (lambda ([L], apply (F, L)), 
+@c                      cartesian_product ({a, b, c}, {1, 2, 3}));
+@c is (equal (%, %th (2)));
+@c ===end===
+@example
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) setify (flatten (%));
+(%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i3) map(lambda([L], apply(F, L)),
+                     cartesian_product(@{a, b, c@}, @{1, 2, 3@}));
+(%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i4) is (equal (%, %th (2)));
+(%o4)                         true
+@end example
+
+@c @opencatbox
+@c @category{Function application}
+@c @closecatbox
+@end deffn
+
+
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{scanmap}
+@deffn  {Funktion} scanmap (@var{f}, @var{expr})
+@deffnx {Funktion} scanmap (@var{f}, @var{expr}, bottomup)
+
+@c Recursively applies @var{f} to @var{expr}, in a top down manner. This is most
+@c useful when complete factorization is desired, for example:
+
+Wendet die Funktion @var{f} rekursiv auf alle Teilausdr@"ucke in @var{expr} an. 
+
+Beispiele:
+
+@example
+(%i1) exp:(a^2+2*a+1)*y + x^2$
+(%i2) scanmap(factor,exp);
+                                    2      2
+(%o2)                         (a + 1)  y + x
+@end example
+
+@c Note the way in which @code{scanmap} applies the given function @code{factor}
+@c to the constituent subexpressions of @var{expr}; if another form of 
+@c @var{expr} is presented to @code{scanmap} then the result may be different. 
+@c Thus, @code{%o2} is not recovered when @code{scanmap} is applied to the 
+@c expanded form of @code{exp}:
+
+@example
+(%i3) scanmap(factor,expand(exp));
+                           2                  2
+(%o3)                      a  y + 2 a y + y + x
+@end example
+
+@c Here is another example of the way in which @code{scanmap} recursively
+@c applies a given function to all subexpressions, including exponents:
+
+Ein weiteres Beispiel f@"ur die Anwendung einer Funktion auf alle 
+Teilausdr@"ucke.
+
+@example
+(%i4) expr : u*v^(a*x+b) + c$
+(%i5) scanmap('f, expr);
+                    f(f(f(a) f(x)) + f(b))
+(%o5) f(f(f(u) f(f(v)                      )) + f(c))
+@end example
+
+@c @code{scanmap (@var{f}, @var{expr}, bottomup)} applies @var{f} to @var{expr} 
+@c in a bottom-up manner.  E.g., for undefined @code{f},
+
+@code{scanmap (@var{f}, @var{expr}, bottomup)} wendet die Funktion @var{f}
+Bottom-up auf den Ausdruck @var{expr} an.
+
+@example
+scanmap(f,a*x+b) ->
+   f(a*x+b) -> f(f(a*x)+f(b)) -> f(f(f(a)*f(x))+f(b))
+scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
+    -> f(f(a)*f(x))+f(b) ->
+     f(f(f(a)*f(x))+f(b))
+@end example
+
+@c In this case, you get the same answer both ways.
+
+@c @opencatbox
+@c @category{Function application}
+@c @closecatbox
+@end deffn
+
+
+
+
+
+
 
 @c --- End of file Function.de.texi --------------------------------------------
 

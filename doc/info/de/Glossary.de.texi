@@ -59,7 +59,7 @@ gegen@"uber und erl@"autert die Begriffe.
 @item  Koeffizientenmatrix, erweitert - augmented coefficient matrix
        Die erweiterte Koeffizientenmatrix entsteht, wenn an die 
        Koeffizientenmatrix eines Gleichungssystems eine Spalte mit der rechten
-       Seite des Gleichungssystems angefügt wird.
+       Seite des Gleichungssystems angef@"ugt wird.
 
 @item  Kommandozeile - command line
        @sp 1

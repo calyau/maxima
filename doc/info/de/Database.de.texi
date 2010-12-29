@@ -1786,6 +1786,35 @@ zur@"uck.
 @c @closecatbox
 @end deffn
 
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{prederror}
+@defvr {Optionsvariable} prederror
+Standardwert: @code{false}
+
+@c When @code{prederror} is @code{true}, an error message is displayed whenever 
+@c the predicate of an @code{if} statement or an @code{is} function fails to
+@c evaluate to either @code{true} or @code{false}.
+
+Hat @code{prederror} den Wert @code{true}, wird eine Fehlermeldung ausgegeben,
+wenn eine Aussage mit einer @code{if}-Anweisung oder der Funktion @code{is} 
+nicht zu @code{true} oder @code{false} ausgewertet werden kann.
+
+@c If @code{false}, @code{unknown} is returned instead in this case.  The 
+@c @code{prederror: false} mode is not supported in translated code; however, 
+@c @code{maybe} is supported in translated code.
+
+Hat @code{prederror} den Wert @code{false}, wird f@"ur diese F@"alle 
+@code{unknown} zur@"uckgegeben. 
+
+@c See also @code{is} and @code{maybe}.
+
+Siehe auch @mref{is} und @mrefdot{maybe}
+
+@c @opencatbox
+@c @category{Programming} @category{Predicate functions}
+@c @closecatbox
+@end defvr
+
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{sign}
 @deffn {Funktion} sign (@var{expr})
