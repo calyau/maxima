@@ -1,0 +1,866 @@
+@c -----------------------------------------------------------------------------
+@c File        : Translator.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Original    : New file
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 28.12.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einf@"uhrung in den @"Ubersetzer::
+* Funktionen und Variablen des @"Ubersetzers::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Einf@"uhrung in den @"Ubersetzer, Funktionen und Variablen des @"Ubersetzers, @"Ubersetzer, @"Ubersetzer
+@section Einf@"uhrung in den @"Ubersetzer
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen des @"Ubersetzers, , Einf@"uhrung in den @"Ubersetzer, @"Ubersetzer
+@section Funktionen und Variablen des @"Ubersetzers
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{compfile}
+@deffn  {Funktion} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffnx {Funktion} compfile (@var{filename}, functions)
+@deffnx {Funktion} compfile (@var{filename}, all)
+
+@c Translates Maxima functions into Lisp and writes the translated code into the
+@c file @var{filename}.
+
+@"Ubersetzt Maxima-Funktionen nach Lisp und schreibt den @"ubersetzten Code in 
+die Datei @var{filename}.
+
+@c @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
+@c specified functions. @code{compfile(@var{filename}, functions)} and 
+@c @code{compfile(@var{filename}, all)} translate all user-defined functions.
+
+@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} @"ubersetzt die
+Funktionen @var{f_1}, ..., @var{f_n}). @code{compfile(@var{filename}, 
+functions)} und @code{compfile(@var{filename}, all)} @"ubersetzen alle 
+benutzerdefinierten Funktionen.
+
+@c The Lisp translations are not evaluated, nor is the output file processed by 
+@c the Lisp compiler.
+   @c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
+@c @code{translate} creates and evaluates Lisp translations. @code{compile_file}
+@c translates Maxima into Lisp, and then executes the Lisp compiler. 
+
+Die Lisp-@"Ubersetzungen werden nicht ausgewertet. Auch wird die Ausgabedatei
+nicht kompiliert. @code{translate} generiert und wertert Lisp-@"Ubersetzungen
+aus. Die Funktion @code{compile_file} @"ubersetzt Maxima nach Lisp und f@"uhrt 
+dann den Lisp-Compiler aus.
+
+@c See also @code{translate}, @code{translate_file}, and @code{compile_file}.
+
+Siehe auch @mrefcomma{translate} @mref{translate_file} und 
+@mrefdot{compile_file}
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
+@c TO EVENTUALLY CALL AN OBSOLETE FUNCTION SPRIN1.
+@c RECOMMENDATION IS TO CUT THIS ITEM, AND CUT $compgrind FROM src/transs.lisp
+@c @defvar compgrind
+@c Default value: @code{false}
+@c 
+@c When @code{compgrind} is @code{true}, function definitions printed by
+@c @code{compfile} are pretty-printed.
+@c 
+@c @end defvar
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{compile}
+@deffn  {Funktion} compile (@var{f_1}, ..., @var{f_n})
+@deffnx {Funktion} compile (functions)
+@deffnx {Funktion} compile (all)
+
+@c Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp, evaluates 
+@c the Lisp translations, and calls the Lisp function @code{COMPILE} on each 
+@c translated function. @code{compile} returns a list of the names of the 
+@c compiled functions.
+
+@"Ubersetzt die Maxima-Funktionen @var{f_1}, ..., @var{f_n} nach Lisp, wertet
+die Lisp-@"Ubersetzungen aus und ruft den Lisp-Compiler f@"ur jede @"ubersetzte 
+Funktion auf. @code{compile} gibt eine Liste mit den Namen der kompilierten
+Funktionen zur@"uck.
+
+@c @code{compile (all)} or @code{compile (functions)} compiles all user-defined 
+@c functions.
+
+@code{compile(all)} oder @code{compile(compile(funtions)} kompiliert alle
+benutzerdefinierten Funktionen.
+
+@c @code{compile} quotes its arguments;  the quote-quote operator @code{'@w{}'} 
+@c defeats quotation.
+
+@code{compile} wertet die Argumente nicht aus. Der Quote-Quote-Operator
+@code{'@w{}'} erzwingt die Auswertung.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{compile_file}
+@deffn  {Funktion} compile_file (@var{filename})
+@deffnx {Funktion} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {Funktion} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+
+@c Translates the Maxima file @var{filename} into Lisp, executes the Lisp 
+@c compiler, and, if the translation and compilation succeed, loads the compiled
+@c code into Maxima.
+
+@"Ubersetzt die Maxima-Datei @var{filename} nach Lisp, ruft den Lisp-Compiler 
+auf und l@"adt falls erfolgreich den kompilierten Code in Maxima.
+
+@c @code{compile_file} returns a list of the names of four files: the original 
+@c Maxima file, the Lisp translation, notes on translation, and the compiled 
+@c code. If the compilation fails, the fourth item is @code{false}.
+
+@code{compile_file} gibt eine Liste mit den Namen von vier Dateien zur@"uck:
+die urspr@"ungliche Maxima-Datei, die Lisp-@"Ubersetzung, eine Datei mit Notizen
+zur @"Ubersetzungen und eine Datei mit dem kompilierten Code. Schl@"agt die
+Kompilierung fehlt, ist der vierte Eintrag @code{false}.
+
+@c Some declarations and definitions take effect as soon as the Lisp code is 
+@c compiled (without loading the compiled code). These include functions defined
+@c with the @code{:=} operator, macros define with the @code{::=} operator, 
+   @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
+@c @code{alias}, @code{declare}, @code{define_variable},  @code{mode_declare},
+@c and @code{infix}, @code{matchfix}, @code{nofix}, @code{postfix}, 
+@c @code{prefix}, and @code{compfile}.
+
+Einige Deklarationen und Definitionen sind bereits vorhanden, nachdem der 
+Lisp-Code kompiliert ist und ohne das dieser geladen wurde. Dies schlie@ss{}t
+Funktionsdefinitionen mit dem Operator @code{:=}, Maktros definiert mit dem
+Operator @code{::=}, @code{alias}, @code{declare}, @code{define_variable},
+@code{mode_declare}, @code{infix}, @code{matchfix}, @code{nofix}, 
+@code{postfix}, @code{prefix} und @code{compfile}.
+
+@c Assignments and function calls are not evaluated until the compiled code is 
+@c loaded. In particular, within the Maxima file, assignments to the translation
+@c flags (@code{tr_numer}, etc.) have no effect on the translation.
+
+Zuweisungen und Funktionsaufrufe werden nicht ausgwertet bevor der komplierte
+Code geladen wird. Im speziellen, in der Maxima-Datei, Zuweisungen an die
+@"Ubersetzungsschalter wie @code{tr_numer} und andere haben keinen Effekt auf
+die @"Ubersetzung.
+
+@c @code{compile_file} may mistake warnings for errors and
+@c return @code{false} as the name of the compiled code when, in fact,
+@c the compilation succeeded. This is a bug. 
+   @c REPORTED AS SOURCEFORGE BUG # 1103722.
+
+@code{compile_file} kann Fehler oder Warnungen ausgegeben und @code{false}
+zur@"uckgegeben, obwohl die Kompilierung erfolgreich ist. Dies ist ein
+Programmfehler
+
+@c @var{filename} may not contain @code{:lisp} statements.
+
+Die Datei @var{filename} darf keine @code{:lisp}-Anweisungen enthalten.
+
+@c @code{compile_file} evaluates its arguments.
+
+@code{compile_file} wertet die Argumente aus.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{declare_translated}
+@deffn {Funktion} declare_translated (@var{f_1}, @var{f_2}, ...)
+
+@c When translating a file of Maxima code to Lisp, it is important for the 
+@c translator to know which functions it sees in the file are to be called as 
+@c translated or compiled functions, and which ones are just Maxima functions or
+@c undefined. Putting this declaration at the top of the file, lets it know that
+@c although a symbol does which does not yet have a Lisp function value, will 
+@c have one at call time. @code{(MFUNCTION-CALL fn arg1 arg2 ...)} is generated 
+@c when the translator does not know @code{fn} is going to be a Lisp function.
+
+Bei der @"Ubersetzung einer Datei von Maxima-Code nach Lisp-Code ist es f@"ur 
+den @"Ubersetzer wichtig zu wissen, welche Funktionen der Datei bereits 
+@"ubersetzte oder kompilierte Funktionen sind und welche Funktionen 
+Maxima-Funktionen oder undefiniert sind. Mit der Deklaration 
+@code{declare_translated} am Anfang der zu @"ubersetzenden Datei wird dem 
+@"Ubersetzer mitgeteilt, dass die als Argumente aufgef@"uhrten Funktionen 
+@var{f_1}, @var{f_2}, ... zur Laufzeit des Programms eine Lisp-Funktion 
+repr@"asentieren. Fehlt dem @"Ubersetzer diese Information wird das Kommando 
+@code{(MFUNCTION-CALL fn arg1 arg2 ...)} generiert.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{mode_checkp}
+@defvr {Optionsvariable} mode_checkp
+Standardwert: @code{true}
+
+   @c WHAT DOES THIS MEAN ??
+@c When @code{mode_checkp} is @code{true}, @code{mode_declare} checks the modes
+@c of bound variables.
+
+Hat die Optionsvariable @code{mode_checkp} den Wert @code{true} und wird
+mit @code{mode_declare} f@"ur eine Variable, die bereits einen Wert hat, ein Typ 
+festgelegt, dann pr@"uft Maxima, ob der vorgesehene Typ zum vorliegenden Wert 
+passt.
+
+Beispiel:
+
+Im folgenden hat die Variable @var{n} den Wert 2.0. Wird @var{n} mit
+@code{mode_declare} als eine ganze Zahl definiert, gibt Maxima eine Warnung aus,
+wenn @code{mode_checkp} den Wert @code{true} hat.
+
+@example
+(%i1) n: 2.0;
+(%o1)                          2.0
+(%i2) mode_checkp:true;
+(%o2)                         true
+(%i3) mode_declare(n,fixnum);
+warning: n was declared with mode fixnum, but it has value: 2.0
+(%o3)                          [n]
+(%i4) mode_checkp:false;
+(%o4)                         false
+(%i5) mode_declare(n,fixnum);
+(%o5)                          [n]
+@end example
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c --- 28.12.21010 DK ----------------------------------------------------------
+@anchor{mode_check_errorp}
+@defvr {Optionsvariable} mode_check_errorp
+Standardwert: @code{false}
+
+   @c WHAT DOES THIS MEAN ??
+@c When @code{mode_check_errorp} is @code{true}, @code{mode_declare} calls 
+@c error.
+
+Hat @code{mode_check_errorp} den Wert @code{true}, bricht @code{mode_declare}
+mit einer Fehlermeldung ab, wenn f@"ur eine Variable die bereits einen Wert hat,
+mit @code{mode_declare} ein verschiedener Typ deklariert werden soll. Damit
+diese Optionsvariable wirksam ist, muss @code{mode_checkp} den Wert @code{true}
+haben. Siehe @mrefdot{mode_checkp}
+
+@example
+(%i1) n: 2.0;
+(%o1)                          2.0
+(%i2) mode_checkp:true;
+(%o2)                         true
+(%i3) mode_check_errorp:true;
+(%o3)                         true
+(%i4) mode_declare(n,fixnum);
+
+Error: n was declared mode fixnum, has value: 2.0
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c --- 28.12.2010 DK -----------------------------------------------------------
+@anchor{mode_check_warnp}
+@defvr {Optionsvariable} mode_check_warnp
+Standardwert: @code{true}
+
+   @c WHAT DOES THIS MEAN ??
+@c When @code{mode_check_warnp} is @code{true}, mode errors are described.
+
+Hat @code{mode_check_warnp} den Wert @code{true}, gibt @code{mode_declare}
+eine Warnung aus, wenn f@"ur eine Variable die bereits einen Wert hat,
+mit @code{mode_declare} ein verschiedener Typ deklariert werden soll. Damit
+diese Optionsvariable wirksam ist, muss @code{mode_checkp} den Wert @code{true}
+haben. Siehe @mref{mode_checkp} und @mrefdot{mode_check_errorp}
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_declare}
+@deffn {Funktion} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+
+ @code{mode_declare} is used to declare the modes of variables and functions 
+ for subsequent translation or compilation of functions. @code{mode_declare} 
+ is typically placed at the beginning of a function definition, at the 
+ beginning of a Maxima script, or executed at the interactive prompt.
+
+ The arguments of @code{mode_declare} are pairs consisting of a variable and a
+ mode which is one of @code{boolean}, @code{fixnum}, @code{number}, 
+ @code{rational}, or @code{float}. Each variable may also be a list of 
+ variables all of which are declared to have the same mode.
+
+   @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+ If a variable is an array, and if every element of the array which is
+ referenced has a value then @code{array (yi, complete, dim1, dim2, ...)}
+ rather than
+
+@example
+array(yi, dim1, dim2, ...)
+@end example
+
+ should be used when first declaring the bounds of the array.
+   @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+ If all the elements of the array are of mode @code{fixnum} (@code{float}), 
+ use @code{fixnum} (@code{float}) instead of @code{complete}.
+   @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+ Also if every element of the array is of the same mode, say @code{m}, then
+
+@example
+mode_declare (completearray (yi), m))
+@end example
+
+ should be used for efficient translation.
+
+ Numeric code using arrays might run faster by declaring the expected size of 
+ the array, as in:
+
+@example
+mode_declare (completearray (a [10, 10]), float)
+@end example
+
+ for a floating point number array which is 10 x 10.
+
+ One may declare the mode of the result of a function by using @code{function 
+ (f_1, f_2, ...)} as an argument; here @code{f_1}, @code{f_2}, ... are the 
+ names of functions.  For example the expression,
+
+@example
+mode_declare ([function (f_1, f_2, ...)], fixnum)
+@end example
+
+ declares that the values returned by @code{f_1}, @code{f_2}, ... are 
+ single-word integers.
+
+ @code{modedeclare} is a synonym for @code{mode_declare}.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c WHAT IS THIS ABOUT ??
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_identity}
+@deffn {Funktion} mode_identity (@var{arg_1}, @var{arg_2})
+
+ A special form used with @code{mode_declare} and @code{macros} to declare, 
+ e.g., a list of lists of flonums, or other compound data object.  The first 
+ argument to @code{mode_identity} is a primitive value mode name as given to 
+ @code{mode_declare} (i.e., one of @code{float}, @code{fixnum}, @code{number},
+ @code{list}, or @code{any}), and the second argument is an expression which 
+ is evaluated and returned as the value of @code{mode_identity}.  However, if 
+ the return value is not allowed by the mode declared in the first argument, 
+ an error or warning is signalled.  The important thing is that the mode of 
+ the expression as determined by the Maxima to Lisp translator, will be that 
+ given as the first argument, independent of anything that goes on in the 
+ second argument. E.g., @code{x: 3.3; mode_identity (fixnum, x);} yields an 
+ error. @code{mode_identity (flonum, x)} returns 3.3 . This has a number of 
+ uses, e.g., if you knew that @code{first (l)} returned a number then you 
+ might write @code{mode_identity (number, first (l))}.  However, a more 
+ efficient way to do it would be to define a new primitive,
+
+@example
+firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+@end example
+
+ and use @code{firstnumb} every time you take the first of a list of numbers.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@anchor{savedef}
+@defvr {Optionsvariable} savedef
+Standardwert: @code{true}
+
+ When @code{savedef} is @code{true}, the Maxima version of a user function is 
+ preserved when the function is translated. This permits the definition to be 
+ displayed by @code{dispfun} and allows the function to be edited.
+
+ When @code{savedef} is @code{false}, the names of translated functions are
+ removed from the @code{functions} list.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c IS THERE ANY REASON TO SET transcompile: false ??
+@c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
+
+@c -----------------------------------------------------------------------------
+@anchor{transcompile}
+@defvr {Optionsvariable} transcompile
+Standardwert: @code{true}
+
+ When @code{transcompile} is @code{true}, @code{translate} and 
+ @code{translate_file} generate declarations to make the translated code more 
+ suitable for compilation.
+   @c BUT THE DECLARATIONS DON'T SEEM TO BE NECESSARY, SO WHAT'S THE POINT AGAIN ??
+
+ @code{compfile} sets @code{transcompile: true} for the duration.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{translate}
+@deffn  {Funktion} translate (@var{f_1}, ..., @var{f_n})
+@deffnx {Funktion} translate (functions)
+@deffnx {Funktion} translate (all)
+
+ Translates the user-defined functions @var{f_1}, ..., @var{f_n} from the 
+ Maxima language into Lisp and evaluates the Lisp translations. Typically the 
+ translated functions run faster than the originals.
+
+ @code{translate (all)} or @code{translate (functions)} translates all 
+ user-defined functions.
+
+ Functions to be translated should include a call to @code{mode_declare} at 
+ the beginning when possible in order to produce more efficient code.  For
+ example:
+
+@example
+f (x_1, x_2, ...) := block ([v_1, v_2, ...],
+    mode_declare (v_1, mode_1, v_2, mode_2, ...), ...)
+@end example
+
+@noindent
+ where the @var{x_1}, @var{x_2}, ...  are the parameters to the function and 
+ the @var{v_1}, @var{v_2}, ... are the local variables.
+
+ The names of translated functions are removed from the @code{functions} list 
+ if @code{savedef} is @code{false} (see below) and are added to the 
+ @code{props} lists.
+
+ Functions should not be translated unless they are fully debugged.
+
+ Expressions are assumed simplified; if they are not, correct but non-optimal 
+ code gets generated.  Thus, the user should not set the @code{simp} switch to 
+ @code{false} which inhibits simplification of the expressions to be 
+ translated.
+
+ The switch @code{translate}, if @code{true}, causes automatic translation of 
+ a user's function to Lisp.
+
+ Note that translated functions may not run identically to the way they did 
+ before translation as certain incompatabilities may exist between the Lisp
+ and Maxima versions.  Principally, the @code{rat} function with more than
+ one argument and the @code{ratvars} function should not be used if any
+ variables are @code{mode_declare}'d canonical rational expressions (CRE).
+ Also the @code{prederror: false} setting will not translate.
+   @c WHAT ABOUT % AND %% ???
+
+ @code{savedef} - if @code{true} will cause the Maxima version of a user
+ function to remain when the function is @code{translate}'d.  This permits the
+ definition to be displayed by @code{dispfun} and allows the function to be
+ edited.
+
+ @code{transrun} - if @code{false} will cause the interpreted version of all
+ functions to be run (provided they are still around) rather than the 
+ translated version.
+
+ The result returned by @code{translate} is a list of the names of the
+ functions translated.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{translate_file}
+@deffn  {Funktion} translate_file (@var{maxima_filename})
+@deffnx {Funktion} translate_file (@var{maxima_filename}, @var{lisp_filename})
+
+Translates a file of Maxima code into a file of Lisp code.
+@code{translate_file} returns a list of three filenames:
+the name of the Maxima file, the name of the Lisp file, and the name of file
+containing additional information about the translation.
+@code{translate_file} evaluates its arguments.
+
+@code{translate_file ("foo.mac"); load("foo.LISP")} is the same as
+@code{batch ("foo.mac")} except for certain restrictions,
+the use of @code{'@w{}'} and @code{%}, for example.
+@c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
+
+@code{translate_file (@var{maxima_filename})} translates a Maxima file 
+@var{maxima_filename} into a similarly-named Lisp file.
+For example, @code{foo.mac} is translated into @code{foo.LISP}.
+The Maxima filename may include a directory name or names,
+in which case the Lisp output file is written
+to the same directory from which the Maxima input comes.
+
+@code{translate_file (@var{maxima_filename}, @var{lisp_filename})} translates
+a Maxima file @var{maxima_filename} into a Lisp file @var{lisp_filename}.
+@code{translate_file} ignores the filename extension, if any, of 
+@code{lisp_filename}; the filename extension of the Lisp output file is always 
+@code{LISP}. The Lisp filename may include a directory name or names,
+in which case the Lisp output file is written to the specified directory.
+
+@code{translate_file} also writes a file of translator warning
+messages of various degrees of severity.
+The filename extension of this file is @code{UNLISP}.
+This file may contain valuable information, though possibly obscure,
+for tracking down bugs in translated code.
+The @code{UNLISP} file is always written
+to the same directory from which the Maxima input comes.
+
+@code{translate_file} emits Lisp code which causes
+some declarations and definitions to take effect as soon
+as the Lisp code is compiled.
+See @code{compile_file} for more on this topic.
+
+@c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
+See also @code{tr_array_as_ref},
+@c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
+@c WE DON'T WANT TO MENTION IT
+@c @code{tr_bind_mode_hook}, 
+@code{tr_bound_function_applyp},
+@c tr_exponent EXISTS AND WORKS AS ADVERTISED IN src/troper.lisp
+@c NOT OTHERWISE DOCUMENTED; ITS EFFECT SEEMS TOO WEAK TO MENTION
+@code{tr_exponent},
+@code{tr_file_tty_messagesp}, 
+@code{tr_float_can_branch_complex},
+@code{tr_function_call_default}, 
+@code{tr_numer},
+@code{tr_optimize_max_loop}, 
+@code{tr_semicompile},
+@code{tr_state_vars}, 
+@code{tr_warnings_get},
+@code{tr_warn_bad_function_calls},
+@code{tr_warn_fexpr}, 
+@code{tr_warn_meval},
+@code{tr_warn_mode},
+@code{tr_warn_undeclared}, 
+@code{tr_warn_undefined_variable},
+and @code{tr_windy}.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{transrun}
+@defvr {Option variable} transrun
+Default value: @code{true}
+
+When @code{transrun} is @code{false} will cause the interpreted
+version of all functions to be run (provided they are still around)
+rather than the translated version.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
+@c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_array_as_ref}
+@defvr {Option variable} tr_array_as_ref
+Default value: @code{true}
+
+If @code{translate_fast_arrays} is @code{false}, array references in
+Lisp code emitted by @code{translate_file} are affected by @code{tr_array_as_ref}.
+When @code{tr_array_as_ref} is @code{true},
+array names are evaluated,
+otherwise array names appear as literal symbols in translated code.
+
+@code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is @code{true}.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
+@c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_bound_function_applyp}
+@defvr {Option variable} tr_bound_function_applyp
+Default value: @code{true}
+
+When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a bound
+variable (such as a function argument) is found being used as a function.
+@c WHAT DOES THIS MEAN ??
+@code{tr_bound_function_applyp} does not affect the code generated in such cases.
+
+For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
+the warning message.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_file_tty_messagep}
+@defvr {Option variable} tr_file_tty_messagesp
+Default value: @code{false}
+
+When @code{tr_file_tty_messagesp} is @code{true},
+messages generated by @code{translate_file} during translation of a file are displayed
+on the console and inserted into the UNLISP file. 
+When @code{false}, messages about translation of the
+file are only inserted into the UNLISP file.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
+@c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
+@c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_float_can_branch_complex}
+@defvr {Option variable} tr_float_can_branch_complex
+Default value: @code{true}
+
+Tells the Maxima-to-Lisp translator to assume that the functions 
+@code{acos}, @code{asin}, @code{asec}, and @code{acsc} can return complex results.
+
+The ostensible effect of @code{tr_float_can_branch_complex} is the following.
+However, it appears that this flag has no effect on the translator output.
+
+When it is @code{true} then @code{acos(x)} is of mode @code{any}
+even if @code{x} is of mode @code{float} (as set by @code{mode_declare}).
+When @code{false} then @code{acos(x)} is of mode
+@code{float} if and only if @code{x} is of mode @code{float}.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_function_call_default}
+@defvr {Option variable} tr_function_call_default
+Default value: @code{general}
+
+@code{false} means give up and
+call @code{meval}, @code{expr} means assume Lisp fixed arg function.  @code{general}, the
+default gives code good for @code{mexprs} and @code{mlexprs} but not @code{macros}.
+@code{general} assures variable bindings are correct in compiled code.  In
+@code{general} mode, when translating F(X), if F is a bound variable, then it
+assumes that @code{apply (f, [x])} is meant, and translates a such, with
+apropriate warning. There is no need to turn this off.  With the
+default settings, no warning messages implies full compatibility of
+translated and compiled code with the Maxima interpreter.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_numer}
+@defvr {Option variable} tr_numer
+Default value: @code{false}
+
+When @code{tr_numer} is @code{true}, @code{numer} properties are used for
+atoms which have them, e.g. @code{%pi}.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_optimize_max_loop}
+@defvr {Option variable} tr_optimize_max_loop
+Default value: 100
+
+@code{tr_optimize_max_loop} is the maximum number of times the
+macro-expansion and optimization pass of the translator will loop in
+considering a form.  This is to catch macro expansion errors, and
+non-terminating optimization properties.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_semicompile}
+@defvr {Option variable} tr_semicompile
+Default value: @code{false}
+
+When @code{tr_semicompile} is @code{true}, @code{translate_file} and @code{compfile}
+output forms which will be macroexpanded but not compiled into machine
+code by the Lisp compiler.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c ARE ANY OF THESE OBSOLETE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_state_vars}
+@defvr {System variable} tr_state_vars
+Default value:
+@example
+[transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
+tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
+tr_function_call_default, tr_array_as_ref,tr_numer]
+@end example
+
+The list of the switches that affect the form of the
+translated output.
+@c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
+This information is useful to system people when
+trying to debug the translator.  By comparing the translated product
+to what should have been produced for a given state, it is possible to
+track down bugs.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
+@c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
+@c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warnings_get}
+@deffn {Function} tr_warnings_get ()
+
+Prints a list of warnings which have been given by
+the translator during the current translation.
+
+@c @opencatbox
+@c @category{Translation and compilation}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_bad_function_calls}
+@defvr {Option variable} tr_warn_bad_function_calls
+Default value: @code{true}
+
+- Gives a warning when
+when function calls are being made which may not be correct due to
+improper declarations that were made at translate time.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_fexpr}
+@defvr {Option variable} tr_warn_fexpr
+Default value: @code{compfile}
+
+- Gives a warning if any FEXPRs are
+encountered.  FEXPRs should not normally be output in translated code,
+all legitimate special program forms are translated.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} tr_warn_meval
+Default value: @code{compfile}
+
+- Gives a warning if the function
+@code{meval} gets called.  If @code{meval} is called that indicates problems in the
+translation.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} tr_warn_mode
+Default value: @code{all}
+
+- Gives a warning when variables are
+assigned values inappropriate for their mode.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} tr_warn_undeclared
+Default value: @code{compile}
+
+- Determines when to send
+warnings about undeclared variables to the TTY.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} tr_warn_undefined_variable
+Default value: @code{all}
+
+- Gives a warning when
+undefined global variables are seen.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
+@c WHERE IT CAUSES A WARNING ABOUT USING kill. 
+@c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
+@c AND CUT OUT tr_windy FROM CODE AND DOCS.
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} tr_windy
+Default value: @code{true}
+
+- Generate helpful comments and
+programming hints.
+
+@c @opencatbox
+@c @category{Translation flags and variables}
+@c @closecatbox
+@end defvr
+
+@c --- End of file Translator.de.texi ------------------------------------------
+
