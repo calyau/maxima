@@ -255,7 +255,7 @@ ic2(%,x=0,y=b,diff(y,x)=0);
  */
 
 ode2('diff(x,t,2)+5*'diff(x,t)^3, x, t);
-[x = %k2-2*sqrt(t+%k1)/sqrt(10),x = 2*sqrt(t+%k1)/sqrt(10)+%k2];
+[x = %k2-2*1/sqrt(1/(t+%k1))/sqrt(10),x = 2*1/sqrt(1/(t+%k1))/sqrt(10)+%k2];
 
 ic2(%,t=0,x=0,'diff(x,t)=4);
 [];
