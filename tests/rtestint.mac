@@ -41,7 +41,8 @@ integrate(1/x/sqrt(-x^2+x-1),x);
  * Test of denn, 1/sqrt(R^(2*p+1))
  */
 
-(assume(4*a*c-b^2>0), assume(c > 0), assume(a > 0), assume(b > 0), 0);
+(assume(4*a*c-b^2>0), assume(c > 0), assume(a > 0), assume(b > 0), 
+ assume(R > 0), 0);
 0;
 
 /* 1/sqrt(R), repeated roots */
@@ -237,12 +238,12 @@ integrate(1/sqrt(R-a)/x^3,x);
 -16*c^2*sqrt(c*x^2+b*x)/(15*b^3*x)+8*c*sqrt(c*x^2+b*x)/(15*b^2*x^2)
 					  -2*sqrt(c*x^2+b*x)/(5*b*x^3);
 
-integrate(1/sqrt((R-a)^3)/x^2,x);
+integrate(1/sqrt((R-a)^3)/x^2,x),radexpand:all;
 -32*c^3*x/(5*b^4*sqrt(c*x^2+b*x))+4*c/(5*b^2*x*sqrt(c*x^2+b*x))
 					 -2/(5*b*x^2*sqrt(c*x^2+b*x))
 					 -16*c^2/(5*b^3*sqrt(c*x^2+b*x));
 
-integrate(1/sqrt((R-a)^3)/x^3,x);
+integrate(1/sqrt((R-a)^3)/x^3,x),radexpand:all;
 256*c^4*x/(35*b^5*sqrt(c*x^2+b*x))-32*c^2/(35*b^3*x*sqrt(c*x^2+b*x))
 					  +16*c/(35*b^2*x^2*sqrt(c*x^2+b*x))
 					  -2/(7*b*x^3*sqrt(c*x^2+b*x))
