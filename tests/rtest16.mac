@@ -1863,3 +1863,8 @@ rectform(1+%i);
  */
 scanmap(minfactorial, a!);
 a!;
+
+/* Bug ID: 3131324 - simplification of sqrt
+ */
+sqrt(x^3)/sqrt(x^3);
+1;
