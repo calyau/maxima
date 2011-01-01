@@ -1,9 +1,10 @@
 @c -----------------------------------------------------------------------------
-@c File     : Operators.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 17.10.2010
+@c File        : Operators.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Original    : Operators.texi revision 1.61
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 17.10.2010
 @c 
 @c This file contains documentation for the following Maxima symbols:
 @c 
@@ -23,7 +24,7 @@
 * Logische Operatoren::
 * Operatoren f@"ur Gleichungen::
 * Zuweisungsoperatoren::
-* Benutzerdefinierte Operatoren::
+* Nutzerdefinierte Operatoren::
 @end menu
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -988,7 +989,7 @@ Da @code{not @var{expr}} die Auswertung des Ausdrucks @var{expr} bewirkt, ist
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
-@node Zuweisungsoperatoren, Benutzerdefinierte Operatoren, Operatoren f@"ur Gleichungen, Operatoren
+@node Zuweisungsoperatoren, Nutzerdefinierte Operatoren, Operatoren f@"ur Gleichungen, Operatoren
 @section Zuweisungsoperatoren
 @c -----------------------------------------------------------------------------
 
@@ -1516,8 +1517,8 @@ akzepiert die Funktion eine variable Anzahl an Argumenten.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
-@node Benutzerdefinierte Operatoren, , Zuweisungsoperatoren, Operatoren
-@section Einf@"uhrung in benutzerdefinierte Operatoren
+@node Nutzerdefinierte Operatoren, , Zuweisungsoperatoren, Operatoren
+@section Einf@"uhrung in nutzerdefinierte Operatoren
 
 @c It is possible to define new operators with specified precedence, to undefine 
 @c existing operators, or to redefine the precedence of existing operators. An
@@ -1738,7 +1739,7 @@ Incorrect syntax: # is not a prefix operator
 @c @closecatbox
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
-@section Funktionen und Variable f@"ur benutzerdefinierte Operatoren
+@section Funktionen und Variable f@"ur nutzerdefinierte Operatoren
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
 @anchor{infix}
@@ -1994,7 +1995,7 @@ Einlesen eines Ausdrucks Syntaxfehler feststellen.
 @c displays the function definition.
 
 Die zu einem Matchfix-Operator zugeh@"orige Funktion kann jede 
-benutzerdefinierte Funktion sein, die mit @code{:=} oder @code{define} definiert
+nutzerdefinierte Funktion sein, die mit @code{:=} oder @code{define} definiert
 wird. Die Definition der Funktion kann mit @code{dispfun(@var{ldelimiter})} 
 ausgegeben werden.
 
@@ -2002,10 +2003,10 @@ ausgegeben werden.
 @c Parentheses @code{( )} and double-quotes @code{" "} act like matchfix 
 @c operators, but are not treated as such by the Maxima parser.
 
-Der einzige eingebaute Matchfix-Operator ist der Operator f@"ur das Erzeugen von
-Listen @code{[ ]}. Klammern @code{( )} und Anf@"uhrungszeichen  @code{" "} 
-arbeiten wie Matchfix-Operatoren, werden aber vom Parser nicht als 
-Matchfix-Operatoren behandelt.
+Maxima kennt nur den Operator f@"ur Listen @code{[ ]} als Matchfix-Operator.  
+Klammern @code{( )} und Anf@"uhrungszeichen @code{" "} arbeiten wie 
+Matchfix-Operatoren, werden aber vom Parser nicht als Matchfix-Operatoren 
+behandelt.
 
 @c @code{matchfix} evaluates its arguments. @code{matchfix} returns its first 
 @c argument, @var{ldelimiter}.
@@ -2050,7 +2051,7 @@ Begrenzungszeichen k@"onnen eine beliebige Zeichenkette sein.
 
 @c Matchfix operators are ordinary user-defined functions.
 
-Matchfix-Operatoren k@"onnen f@"ur benutzerdefinierte Funktionen definiert 
+Matchfix-Operatoren k@"onnen f@"ur nutzerdefinierte Funktionen definiert 
 werden.
 
 @example

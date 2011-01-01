@@ -2,6 +2,7 @@
 @c File        : Simplification.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Simplification.texi revision 1.26
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
 @c 
@@ -352,7 +353,7 @@ Funktion @code{expand} expandiert werden, weil @code{n} gr@"o@ss{}er als
 @c @code{expr} is not reevaluated. In distinction from @code{ev(expr, noeval)} 
 @c a special representation (e. g. a CRE form) is removed. See also @code{ev}.
 
-@code{expand(expr, 0, 0)} bewirkt eine erneuerte vollst@"andige Vereinfachung 
+@code{expand(expr,0,0)} bewirkt eine erneuerte vollst@"andige Vereinfachung 
 des Ausdrucks @var{expr}. Der Ausdruck wird nicht erneuert ausgewertet. Im 
 Unterschied zum Kommando @code{ev(expr, noeval)} wird eine spezielle Darstellung
 (zum Beispiel eine CRE-Form) nicht entfernt. Siehe auch @code{ev}.
@@ -564,8 +565,8 @@ automatisch expandiert wird. Hat zum Beispiel @code{expon} den Wert 4, wird
 @c @code{exponentialize}.
 
 Die Funktion @code{exponentialize} konvertiert trigonometrische und
-hyperbolische Funktion in @var{expr} in Exponentialfunktionen, ohne dass die
-Optionsvariable @code{exponentialize} gesetzt wird.
+hyperbolische Funktion die in dem Ausdruck @var{expr} auftreten in 
+Exponentialfunktionen, ohne dass die Optionsvariable @code{exponentialize} gesetzt wird.
 
 @c When the variable @code{exponentialize} is @code{true}, all circular and 
 @c hyperbolic functions are converted to exponential form. The default value is 

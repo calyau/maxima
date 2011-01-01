@@ -2,6 +2,7 @@
 @c File        : symmetries.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Symmetries.texi revision 1.17
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 13.11.2010
 @c 
@@ -1419,10 +1420,11 @@ For the Cayley resolvent, the 2 last arguments are neutral and the input
 polynomial must necessarily be of degree 5.
 
 See also:
-
+@flushleft
 @code{resolvante_bipartite}, @code{resolvante_produit_sym},
 @code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
 @code{resolvante_klein3}, @code{resolvante_vierer}, @code{resolvante_diedrale}. 
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1442,10 +1444,11 @@ calculates the transformation
 @end ifnottex
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_bipartite}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1467,10 +1470,11 @@ calculates the transformation of
 @end ifnottex
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_alternee1}.
+@end flushleft
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_bipartite (x^6 + 108, x);
@@ -1483,11 +1487,12 @@ See also:
 @end example
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante_diedrale},
 @code{resolvante_alternee1}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1516,10 +1521,11 @@ calculates the transformation of @code{@var{P}(@var{x})} by the function
 @end example
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1533,10 +1539,11 @@ calculates the transformation of @code{@var{P}(@var{x})} by the function
 @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1550,10 +1557,11 @@ calculates the transformation of @code{@var{P}(@var{x})} by the function
 @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
 @code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1596,11 +1604,12 @@ calculates the list of all product resolvents of the polynomial
 @c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
 
 See also:
-
+@flushleft
 @code{resolvante}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein},
 @code{resolvante_klein3}, @code{resolvante_vierer},
 @code{resolvante_diedrale}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1614,10 +1623,11 @@ computes the resolvent of the polynomial @code{@var{P}(@var{x})} by the
 polynomial @code{@var{Q}(@var{x})}. 
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}
@@ -1632,10 +1642,11 @@ computes the transformation of
 @var{x_3} @var{x_4}}.
 
 See also:
-
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
 @code{resolvante}, @code{resolvante_diedrale}.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package sym}

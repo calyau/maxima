@@ -2,6 +2,7 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : include-maxima.texi.in revision 1.12
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
 @c 
@@ -137,8 +138,7 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 Dieses Dokument ist eine @"Ubersetzung des englischen Maxima Manuals in 
 die deutsche Sprache. Das Manual ist noch nicht vollst@"andig @"ubersetzt. 
 Damit keine Inhalte fehlen, sind die nicht @"ubersetzten Teile in der englischen 
-Sprache eingef@"ugt. Bis auf wenige Ausnahmen sind die Kapitel 1 bis 13, 18 und 
-19 vollst@"andig und Teile der Kapitel 15, 16 und 25 @"ubersetzt.
+Sprache eingef@"ugt.
 
 Dieses Manual ist nicht nur eine @"Ubersetzung, sondern auch der Versuch, die
 Inhalte neu zu organisieren und zu @"uberarbeiten. Ziel ist ein besser lesbares
@@ -149,7 +149,7 @@ Die Arbeit an dem Manual ist noch nicht abgeschlossen. Die jeweils aktuelle
 Version ist unter @url{http://crategus.users.sourceforge.net/maxima.html} 
 verf@"ugbar.
 
-Dr. Dieter Kaiser, 12.12.2010
+Dr. Dieter Kaiser, 29.12.2010
 @sp 2
 @end ifnottex
 
@@ -199,7 +199,7 @@ Fortgeschrittene M@"oglichkeiten und Programmierung
 * Programmierung::              Maxima Programme.
 * @"Ubersetzer::                Maxima Programme @"ubersetzen und komplieren.
 * Fehlersuche::                 Fehlersuche in Programmen.
-* Verschiedene Optionen::       Options with a global effect on Maxima.
+* Verschiedenes::               Sonstige Funktionen und Variablen.
 @sp 1
  
 Zus@"atzliche Packete
@@ -298,7 +298,7 @@ Operatoren
 * Logische Operatoren::
 * Operatoren f@"ur Gleichungen::
 * Zuweisungsoperatoren::
-* Benutzerdefinierte Operatoren::
+* Nutzerdefinierte Operatoren::
 
 Auswertung
 * Funktionen und Variablen f@"ur die Auswertung::
@@ -428,10 +428,10 @@ Fehlersuche
 * Debugger-Kommandos::
 * Funktionen und Variablen der Fehlersuche::
 
-Verschiedene Optionen
-* Introduction to Miscellaneous Options::  
-* Share::                       
-* Functions and Variables for Miscellaneous Options::  
+Verschiedenes
+* Einf@"uhrung in Verschiedenes::
+* Share-Pakete::
+* Funktionen und Variablen f@"ur Verschiedenes::
 
 affine
 * Introduction to Affine::
@@ -737,17 +737,17 @@ Glossar
 @chapter @"Ubersetzer
 @include Translator.de.texi
 
-@node Fehlersuche, Verschiedene Optionen, @"Ubersetzer, Top
+@node Fehlersuche, Verschiedenes, @"Ubersetzer, Top
 @chapter Fehlersuche
 @include Debugging.de.texi
 
-@node Verschiedene Optionen, affine, Fehlersuche, Top
-@chapter Verschiedene Optionen
+@node Verschiedenes, affine, Fehlersuche, Top
+@chapter Verschiedenes
 @include Miscellaneous.de.texi
 
 @c --- LOAD ADDITIONAL PACKAGES ------------------------------------------------
 
-@node affine, asympa, Verschiedene Optionen, Top
+@node affine, asympa, Verschiedenes, Top
 @chapter affine
 @include affine.de.texi
 

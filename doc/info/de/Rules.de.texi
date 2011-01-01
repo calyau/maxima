@@ -2,6 +2,7 @@
 @c File        : Rules.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Rules.texi revision 1.36
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
 @c 
@@ -524,7 +525,7 @@ Standardwert: @code{[default_let_rule_package]}
 @c @code{let_rule_packages} is a list of all user-defined let rule packages 
 @c plus the default package @code{default_let_rule_package}.
 
-@code{let_rule_packages} ist eine Informationsliste mit den vom Benutzer 
+@code{let_rule_packages} ist eine Informationsliste mit den vom Nutzer 
 definierten @code{let}-Regeln.
 
 @c @opencatbox
@@ -883,7 +884,7 @@ Examples:
 @defvr {Systemvariable} rules
 Standardwert: @code{[]}
 
-Enth@"alt die vom Benutzer mit den Funktionen @code{tellsimp}, 
+Enth@"alt die vom Nutzer mit den Funktionen @code{tellsimp}, 
 @code{tellsimpafter}, @code{defmatch} oder @code{defrule} definierten Regeln.
 Siehe auch @mrefdot{infolists}
 

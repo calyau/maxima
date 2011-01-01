@@ -2,6 +2,7 @@
 @c File        : Input.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Input.texi revision 1.80
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 02.11.2010
 @c 
@@ -852,7 +853,7 @@ miteinander kombiniert werden, zum Beispiel
 @c been assigned new values by the user; see @code{myoptions}.
 
 @code{save(@var{filename}, all)} speichert den aktuellen Zustand von Maxima
-in eine Ausgabedatei. Eingeschlossen sind alle benutzerdefinierten Variablen, 
+in eine Ausgabedatei. Eingeschlossen sind alle nutzerdefinierten Variablen, 
 Funktionen, Arrays, usw., einschlie@ss{}lich automatischer Definitionen. Die 
 gespeicherten Daten enthalten auch die Werte von ge@"anderten System- oder
 Optionsvariablen, siehe @code{myoptions}.

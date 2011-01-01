@@ -417,7 +417,7 @@ Element zur@"uck.
 @c @closecatbox
 @end deffn
 
-@c TODO: DIESE FUNKTION GEH@"oRT IN DAS KAPITEL MAXIMAS DATENBANK
+@c TODO: DIESE FUNKTION GEHOERT IN DAS KAPITEL MAXIMAS DATENBANK
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
 @anchor{get}
@@ -576,7 +576,7 @@ Standardwert: @code{true}
 @c converted to matrices yielding a result which is always a matrix.  However,
 @c list-list operations should return lists.
 
-@c TODO: DAS KANN BEssER FORMULIERT WERDEN.
+@c TODO: DAS KANN BESSER FORMULIERT WERDEN.
 
 Hat die Optionsvariable @code{listarith} den Wert @code{true}, werden 
 Rechenoperationen mit Matrizen und Listen elementweise ausgef@"uhrt. Das 

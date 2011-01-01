@@ -2,6 +2,7 @@
 @c File        : Equations.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : Equations.texi revision 1.71
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 13.11.2010
 @c 
@@ -801,7 +802,7 @@ Variable, die im Falle einer @code{secondkind}-Gleichung als Argument des ersten
 @var{p} au@ss{}erhalb des Integrals vorgefunden wird, oder im Falle einer 
 @code{firstkind}-Gleichung die einzige andere Variable neben der 
 Integrationsvariable. Wenn der Versuch, @var{x} zu finden, fehlschl@"agt, wird 
-der Benutzer gefragt, eine unabh@"angige Variable anzugeben.
+der Nutzer gefragt, eine unabh@"angige Variable anzugeben.
 
 @var{tech}: @code{first}
 
@@ -872,7 +873,7 @@ Erzeugung weiterer Terme verhindert).
 Gibt die linke Seite, das ist das erste Argument, des Ausdrucks @var{expr} 
 zur@"uck, wenn der Operator von @var{expr} einer der relationalen Operatoren
 @code{< <= = # equal notequal >= >}, einer der Zuweisungsoperatoren 
-@code{:= ::= : ::} oder ein benutzerdefinierter bin@"arer Infixoperator ist, der 
+@code{:= ::= : ::} oder ein nutzerdefinierter bin@"arer Infixoperator ist, der 
 mit der Funktion deklariert durch @code{infix} deklariert wurde.
 
 @c When @var{expr} is an atom or its operator is something other than the ones 
@@ -1307,7 +1308,7 @@ Examples:
 Gibt die rechte Seite, das ist das zweite Argument, des Ausdrucks @var{expr} 
 zur@"uck, wenn der Operator von @var{expr} einer der relationalen Operatoren
 @code{< <= = # equal notequal >= >}, einer der Zuweisungsoperatoren 
-@code{:= ::= : ::} oder ein benutzerdefinierter bin@"arer Infixoperator ist, der
+@code{:= ::= : ::} oder ein nutzerdefinierter bin@"arer Infixoperator ist, der
 mit der Funktion @code{infix} deklariert wurde.
 
 @c When @var{expr} is an atom or its operator is something other than the ones 

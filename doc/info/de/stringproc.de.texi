@@ -2,6 +2,7 @@
 @c File     : stringproc.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : stringproc.texi revision 1.15
 @c Date     : 08.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -345,13 +346,13 @@ and it disregards line length. @code{newline()}, which will be autoloaded from @
 might be useful, if you whish to place intermediate line breaking.
 
 @c ===beg===
-@c for n:0 thru 20 do sprint( fib(n) )$
+@c for n:0 thru 19 do sprint( fib(n) )$
 @c for n:0 thru 22 do ( 
 @c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
 @c ===end===
 @example
-(%i1) for n:0 thru 20 do sprint( fib(n) )$
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+(%i1) for n:0 thru 19 do sprint( fib(n) )$
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
 (%i2) for n:0 thru 22 do ( 
          sprint(fib(n)), if mod(n,10)=9 then newline() )$
 0 1 1 2 3 5 8 13 21 34 

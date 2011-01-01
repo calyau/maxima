@@ -27,9 +27,9 @@
 @section Dokumentation
 
 Die Maxima-Dokumentation ist in Texinfo geschrieben und wird in verschiedenen 
-Formaten zur Verf@"ugung gestellt. Von der Maxima-Kommandozeile kann die
+Formaten zur Verf@"ugung gestellt.  Von der Maxima-Kommandozeile kann die
 Dokumentation mit den Kommandos @code{?}, @code{??} oder @code{describe} 
-aufgerufen werden. Weiterhin kann die Dokumentation als GNU Infotext mit dem 
+aufgerufen werden.  Weiterhin kann die Dokumentation als GNU Infotext mit dem 
 GNU Programm @code{info}, in einem Browser oder als PDF-Datei gelesen werden. 
 Sowohl unter Windows als auch unter Linux kann die Dokumentation als Hilfedatei 
 gelesen werden.
@@ -47,8 +47,8 @@ gelesen werden.
 @deffn {Funktion} apropos (@var{string})
 
 Gibt eine Liste der Maxima-Symbole zur@"uck, die @var{string} im Namen
-enthalten. @var{string} ist eine Zeichenkette. @code{apropos("")} gibt eine 
-Liste mit allen Maxima-Symbolen zur@"uck. @code{apropos} gibt eine leere Liste 
+enthalten.  @var{string} ist eine Zeichenkette.  @code{apropos("")} gibt eine 
+Liste mit allen Maxima-Symbolen zur@"uck.  @code{apropos} gibt eine leere Liste 
 @code{[]} zur@"uck, wenn kein Maxima-Symbol gefunden wurde, das @var{string} im 
 Namen enth@"alt.
 
@@ -77,14 +77,15 @@ gamma_incomplete_generalized_regularized]
 @anchor{demo}
 @deffn {Funktion} demo (@var{filename})
 
-F@"uhrt die Beispiele der Demo-Datei @var{filename} aus. @var{filename} kann ein 
-Symbol oder eine Zeichenkette sein. @code{demo} macht nach jeder Ausgabe eine 
-Pause und wartet auf eine Eingabe. @code{demo} sucht in den Ordnern, die in der Optionsvariablen @code{file_search_demo} enthalten sind, nach der Datei 
-@var{filename}. Die Dateiendung @var{.dem} mu@ss{} nicht angegeben werden.
+F@"uhrt die Beispiele der Demo-Datei @var{filename} aus.  @var{filename} kann 
+ein Symbol oder eine Zeichenkette sein.  @code{demo} macht nach jeder Ausgabe 
+eine Pause und wartet auf eine Eingabe.  @code{demo} sucht in den Ordnern, die 
+in der Optionsvariablen @code{file_search_demo} enthalten sind, nach der Datei 
+@var{filename}.  Die Dateiendung @var{.dem} mu@ss{} nicht angegeben werden.
 Siehe auch die Funktion @mref{file_search} und die Optionsvariable 
 @mrefdot{file_search_demo}
 
-@code{demo} wertet das Argument aus. @code{demo} gibt den Namen der Demo-Datei 
+@code{demo} wertet das Argument aus.  @code{demo} gibt den Namen der Demo-Datei 
 zur@"uck, die ausgef@"uhrt wird.
 
 Beispiel:
@@ -122,35 +123,35 @@ _
 @end ifinfo
 
 @code{describe(@var{topic})} entspricht dem Kommando @code{describe(@var{topic},
-exact)}. @var{topic} ist eine Zeichenkette oder ein
-Symbol. Wenn @var{topic} ein Operator wie zum Beispiel @code{+}, @code{*}, 
+exact)}.  @var{topic} ist eine Zeichenkette oder ein
+Symbol.  Wenn @var{topic} ein Operator wie zum Beispiel @code{+}, @code{*}, 
 @code{do} oder @code{if} ist, muss der Name des Operators als eine Zeichenkette 
 angegeben werden.
 
 @code{describe(@var{topic}, exact)} findet Eintr@"age, die mit @var{topic} 
-@"ubereinstimmen. Bei der Suche nach einer @"Ubereinstimmung werden Klein- und
+@"ubereinstimmen.  Bei der Suche nach einer @"Ubereinstimmung werden Klein- und
 Gro@ss{}schreibung nicht voneinander unterschieden. 
 @code{describe(@var{topic}, inexact)} findet Eintr@"age, die @var{topic}
-enthalten. Sind mehrere Eintr@"age vorhanden, fragt Maxima, welcher der 
+enthalten.  Sind mehrere Eintr@"age vorhanden, fragt Maxima, welcher der 
 Eintr@"age angezeigt werden soll.
 
 @code{? foo} (mit einem Leerzeichen zwischen @code{?} und @code{foo}) entspricht
 @code{describe("foo", exact)} und @code{?? foo} entspricht 
-@code{describe("foo", inexact)}. In der Kurzschreibweise muss das Argument ein
+@code{describe("foo", inexact)}.  In der Kurzschreibweise muss das Argument ein
 Symbol sein.
 
 @code{describe("", inexact)} gibt alle Themen aus, die in der Dokumentation
 enthalten sind.
 
-@code{describe} wertet das Argument nicht aus. @code{describe} gibt @code{true} 
+@code{describe} wertet das Argument nicht aus.  @code{describe} gibt @code{true} 
 zur@"uck, wenn Eintr@"age gefunden wurden, ansonsten @code{false}.
 
 Beispiel:
 
-Im folgenden Beispiel werden die Eintr@"age 2 und 3 ausgew@"ahlt (Die Ausgabe ist
-verk@"urzt wiedergeben). Alle oder keiner der Eintr@"age werden mit @code{all} 
-oder @code{none} ausgew@"ahlt. Die Eingabe kann mit @code{a} oder @code{n}
-abgek@"urzt werden.
+Im folgenden Beispiel werden die Eintr@"age 2 und 3 ausgew@"ahlt (Die Ausgabe 
+ist verk@"urzt wiedergeben).  Alle oder keiner der Eintr@"age werden mit 
+@code{all} oder @code{none} ausgew@"ahlt.  Die Eingabe kann mit @code{a} oder 
+@code{n} abgek@"urzt werden.
 
 @example
 (%i1) ?? integrat
@@ -195,20 +196,20 @@ Enter space-separated numbers, `all' or `none': 2 3
 @deffnx {Funktion} example ()
 
 @code{example(@var{topic})} zeigt Beispiele f@"ur das Argument @var{topic}. 
-@var{topic} ist ein Symbol oder eine Zeichenkette. Ist das Argument ein 
+@var{topic} ist ein Symbol oder eine Zeichenkette.  Ist das Argument ein 
 Operator, wie zum Beispiel @code{+}, @code{*} oder @code{do}, muss das Argument
-@var{topic} eine Zeichenkette sein. Gro@ss{}- und Kleinschreibung werden nicht 
+@var{topic} eine Zeichenkette sein.  Gro@ss{}- und Kleinschreibung werden nicht 
 unterschieden.
 
 @code{example()} zeigt eine Liste aller Themen, f@"ur die Beispiele 
 vorhanden sind.
 
 Die Optionsvariable @mref{manual_demo} enth@"alt den Namen der Datei, die die 
-Beispiele enth@"alt. Der Standardwert ist @code{"manual.demo"}.
+Beispiele enth@"alt.  Der Standardwert ist @code{"manual.demo"}.
 
-@code{example} wertet das Argument nicht aus. @code{example} gibt @code{done}
+@code{example} wertet das Argument nicht aus.  @code{example} gibt @code{done}
 zur@"uck, au@ss{}er wenn kein Argument angeben ist oder wenn kein Beispiel 
-gefunden wurde. In diesen F@"allen wird eine Liste mit allen Themen ausgegeben, 
+gefunden wurde.  In diesen F@"allen wird eine Liste mit allen Themen ausgegeben, 
 zu denen Beispiele vorhanden sind.
 
 Beispiele:
@@ -245,7 +246,7 @@ Beispiele:
 Standardwert: @code{"manual.demo"}
 
 Die Optionsvariable @code{manual_demo} enth@"alt den Namen der Datei, die die 
-Beispiele f@"ur die Funktion @code{example} enth@"alt. Siehe @mrefdot{example}
+Beispiele f@"ur die Funktion @code{example} enth@"alt.  Siehe @mrefdot{example}
 
 @c @opencatbox
 @c @category{Hilfe} @category{Optionsvariablen}

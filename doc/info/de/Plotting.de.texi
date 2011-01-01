@@ -1,9 +1,10 @@
 @c -----------------------------------------------------------------------------
-@c File     : Plotting.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 23.10.2010
+@c File        : Plotting.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Original    : Plotting.texi revision 1.34
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 23.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -142,13 +143,13 @@ Gnuplot. Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
 @c @code{maxout.xmaxima}, and the xmaxima program will be launched with the
 @c name of the location of that file as argument.
 
-Xmaxima ist eine auf Tcl/Tk basierende grafische Benutzeroberfl@"ache, die von
+Xmaxima ist eine auf Tcl/Tk basierende grafische Nutzeroberfl@"ache, die von
 der Maxima-Konsole gestartet werden kann, um Grafiken auszugeben. Um dieses 
 Grafikformat zu nutzen, muss Xmaxima installiert sein, das in der Distribution 
 von Maxima enthalten ist. Wird Maxima aus Xmaxima gestartet, werden die 
 Grafikkommandos und Daten @"uber denselben Socket gesendet, der auch f@"ur die 
 Kommunikation zwischen Xmaxima und Maxima ge@"offnet wird. Wird das Grafikformat
-von einer Konsole oder einer anderen Benutzeroberfl@"ache gestartet, werden die 
+von einer Konsole oder einer anderen Nutzeroberfl@"ache gestartet, werden die 
 Grafikkommandos und Daten in die Datei @code{maxout.xmaxima} gespeichert. Diese
 Datei wird an Xmaxima f@"ur die Ausgabe der Grafik @"ubergeben.
 
@@ -1171,7 +1172,7 @@ hingewiesen.
 @defvr {Grafikoption} adapt_depth [adapt_depth, @var{integer}]
 Standardwert: 5
 
-@c TODO: @"UBERSETZUNG FEHLT.
+@c TODO: UEBERSETZUNG FEHLT.
 
 The maximum number of splittings used by the adaptive plotting routine.
 

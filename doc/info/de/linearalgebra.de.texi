@@ -2,6 +2,7 @@
 @c File     : linearalgebra.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : linearalgebra.texi revision 1.17
 @c Date     : 08.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -919,9 +920,8 @@ value for @var{exponp}, you must supply @var{coeffp} with a value even if you wa
 to use the default for @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}.
-
+The command @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)} and
 @code{polynomialp (@var{p}, @var{L})} is equivalent to
 @code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 

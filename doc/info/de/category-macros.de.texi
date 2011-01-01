@@ -1,3 +1,14 @@
+@c -----------------------------------------------------------------------------
+@c File        : category-macros.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Original    : category-macros.texi revision 1.4
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 15.10.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
 @macro opencatbox {}
 @ifhtml
 @html
@@ -78,11 +89,16 @@
 @end macro
 
 @iftex
-@hyphenation{aus-ge-wer-tet
+@hyphenation{an-ge-ge-ben
+             Ar-gu-men-ten
+             Aus-drucks
+             aus-ge-wer-tet
+             Aus-wer-tung
              be-zeich-net
              Dol-lar-zei-chen
              Ei-gen-schafts-lis-te
              ent-hal-ten
+             ge-kenn-zeich-net
              ge-ne-riert
              ge-spei-chert
              Glei-chung
@@ -104,4 +120,6 @@
              Zei-chen-ket-ten
              Zwi-schen-aus-druck }
 @end iftex
+
+@c --- End of file category-macros.de.texi -------------------------------------
 

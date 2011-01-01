@@ -2,6 +2,7 @@
 @c File        : MathFunctions.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
 @c 
@@ -566,7 +567,7 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @section Funktionen der Kombinatorik
 @c -----------------------------------------------------------------------------
 
-@c TODO: DOKUMENTATION F@"UR DOUBLE_FACTORIAL FEHLT
+@c TODO: DOKUMENTATION FUER DOUBLE_FACTORIAL FEHLT
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{!!}
@@ -2618,14 +2619,14 @@ Beispiele:
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{ntrig}
-@defvr {Packet} ntrig
+@defvr {Paket} ntrig
 
 @c The @code{ntrig} package contains a set of simplification rules that are
 @c used to simplify trigonometric function whose arguments are of the form
 @c @code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
 @c @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
 
-Das Packet @code{ntrig} enth@"alt Regeln, um Winkelfunktionen zu vereinfachen, 
+Das Paket @code{ntrig} enth@"alt Regeln, um Winkelfunktionen zu vereinfachen, 
 die Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben. @var{f} ist eine 
 der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
 @code{cot}.
@@ -2634,7 +2635,7 @@ Das Kommando @code{load(ntrig)} l@"adt das Paket. Die Vereinfachungen werden
 dann von Maxima automatisch ausgef@"uhrt.
 
 @c @opencatbox
-@c @category{Winkel- und Hyperbelfunktionen} @category{Packete}
+@c @category{Winkel- und Hyperbelfunktionen} @category{Pakete}
 @c @closecatbox
 @end defvr
 

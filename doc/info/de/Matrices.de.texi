@@ -2709,7 +2709,7 @@ coordinate system. @code{potentialzeroloc} has a similar role as for
 be a cyclic permutation of the coordinate variables.
 
 @c @opencatbox
-@c @category{Packet vect}
+@c @category{Paket vect}
 @c @closecatbox
 @end deffn
 

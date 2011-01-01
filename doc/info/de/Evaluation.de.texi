@@ -2,6 +2,7 @@
 @c File        : Evaluation.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
 @c 
@@ -371,10 +372,9 @@ angewendet und ist nicht Teil eines Maxima-Ausdrucks.
 @c as in function definitions, lambda expressions, and expressions quoted by 
 @c single quote @code{'}.
 
-Der Quote-Quote-Operator verursacht die Auswertung von Ausdr@"ucken, deren
-Auswertung auf andere Art unterdr@"uckt ist wie in Funktionsdefinitionen,
-Lambda-Ausdr@"ucken und Ausdr@"ucken, auf die der Quote-Operator angewendet
-wurde.
+Der Quote-Quote-Operator bewirkt die Auswertung von Ausdr@"ucken, deren
+Auswertung unterdr@"uckt ist wie in Funktionsdefinitionen, Lambda-Ausdr@"ucken 
+und Aus@-dr@"u@-cken, auf die der Quote-Operator angewendet wurde.
 
 @c ===beg===
 @c foo_1a (x) := ''(integrate (log (x), x));

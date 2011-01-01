@@ -2,6 +2,7 @@
 @c File     : simplifications.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : simplifications.texi revision 1.11
 @c Date     : 08.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -224,16 +225,17 @@ the factor and the exponent will be processed in this way.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
-If several  expressions  have been
-simplified  with  @code{facsum}, @code{factorfacsum},  @code{factenexpand},  @code{facexpten} or
-@code{factorfacexpten},  and  they are  to  be added  together,  it  may be
-desirable   to  combine   them  using   the   function  @code{collecterms}.
-@code{collecterms} can take as arguments  all of the arguments that  can be
-given  to these  other associated  functions with  the  exception of
-@code{nextlayerfactor}, which has no effect on @code{collectterms}.  The advantage
-of @code{collectterms}  is that it  returns a form  similar to  @code{facsum}, but
-since it is adding forms that have already been processed by @code{facsum},
-it  does  not  need  to  repeat  that  effort.   This  capability is
+
+If several expressions have been simplified with the following functions: 
+@code{facsum}, @code{factorfacsum}, @code{factenexpand}, @code{facexpten} or
+@code{factorfacexpten}, and they are to be added together, it may be
+desirable to combine them using the function @code{collecterms}.
+@code{collecterms} can take as arguments all of the arguments that can be
+given to these other associated functions with the exception of
+@code{nextlayerfactor}, which has no effect on @code{collectterms}.  The 
+advantage of @code{collectterms} is that it returns a form similar to 
+@code{facsum}, but since it is adding forms that have already been processed by 
+@code{facsum}, it does not need to repeat that effort.  This capability is
 especially useful when the expressions to be summed are very large.
 
 @c @opencatbox

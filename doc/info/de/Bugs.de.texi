@@ -25,14 +25,14 @@
 @node Einf@"uhrung in Programmfehler, Funktionen und Variablen f@"ur Programmfehler, Programmfehler, Programmfehler
 @section Einf@"uhrung in Programmfehler
 
-Maxima wird st@"andig weiterentwickelt. Der Funktionsumfang wird erweitert und 
+Maxima wird st@"andig weiterentwickelt.  Der Funktionsumfang wird erweitert und 
 Fehler, die bei einem Programm dieser Komplexit@"at kaum zu vermeiden sind, 
-werden korrigiert. Fehler k@"onnen berichtet werden. Werden ausreichend
+werden korrigiert.  Fehler k@"onnen berichtet werden.  Werden ausreichend
 Informationen mitgeteilt, k@"onnen die Entwickler Maxima weiter verbessern.
 Ein aktueller Link zur Webseite zum Berichten von Fehlern sowie die notwendigen 
 Informationen @"uber die Maxima-Installation werden mit dem Befehl 
-@code{bug_report()} angezeigt. Um die Installation auf dem Rechner zu testen, 
-kann die Maxima-Testsuite ausgef@"uhrt werden. Die folgende @"Ubersicht zeigt 
+@code{bug_report()} angezeigt.  Um die Installation auf dem Rechner zu testen, 
+kann die Maxima-Testsuite ausgef@"uhrt werden.  Die folgende @"Ubersicht zeigt 
 die Funktionen und Variablen f@"ur das Testen der Installation und das Berichten
 von Fehlern:
 
@@ -48,45 +48,45 @@ von Fehlern:
 @anchor{run_testsuite}
 @deffn {Funktion} run_testsuite ([@var{options}])
 
-Die Funktion @code{run_testsuite} f@"uhrt die Maxima-Testsuite aus. Erfolgreiche 
-Tests und Tests, die zwar nicht erfolgreich, aber als ein bekannter Fehler 
-gekennzeichnet sind, geben die Meldung "passed". @code{run_testsuite} akzeptiert
-die folgenden optionalen Schl@"usselworte als Argumente:
+Die Funktion @code{run_testsuite} f@"uhrt die Maxima-Testsuite aus. 
+Erfolgreiche Tests und Tests, die zwar nicht erfolgreich, aber als ein bekannter
+Fehler gekennzeichnet sind, geben die Meldung "passed".  @code{run_testsuite} 
+akzeptiert die folgenden optionalen Schl@"usselworte als Argumente:
 
 @table @code
 @item display_all
 Hat das Schl@"usselwort @code{display_all} den Wert @code{true}, werden alle 
-Tests angezeigt. Der Standardwert ist @code{false}. In diesem Fall werden nur 
+Tests angezeigt.  Der Standardwert ist @code{false}.  In diesem Fall werden nur 
 die Tests angezeigt, die fehlschlagen.
 
 @item display_known_bugs
-Hat das Schl@"usselwort @code{display_known_bugs} den Wert @code{true},  werden 
-alle Tests angezeigt, die als fehlerhaft gekennzeichnet sind. Der Standardwert 
+Hat das Schl@"usselwort @code{display_known_bugs} den Wert @code{true}, werden 
+alle Tests angezeigt, die als fehlerhaft gekennzeichnet sind.  Der Standardwert 
 ist @code{false}.
 
 @item tests
 Das Schl@"usselwort @code{tests} erh@"alt eine Liste mit den Testdateien, die 
-ausgef@"uhrt werden sollen. Eine Testdatei kann durch eine Zeichenkette oder ein 
-Symbol angegeben werden. Der Standard ist, dass alle Testdateien ausgef@"uhrt
-werden, die in der Optionsvariablen @mref{testsuite_files} enthalten sind.
+ausgef@"uhrt werden sollen.  Eine Testdatei kann durch eine Zeichenkette oder 
+ein Symbol angegeben werden.  Der Standard ist, dass alle Testdateien 
+ausgef@"uhrt werden, die in der Optionsvariablen @mref{testsuite_files} 
+enthalten sind.
 
 @item time
 Hat das Schl@"usselwort @code{time} den Wert @code{true}, werden die Laufzeiten 
-der einzelnen Testdateien angezeigt. Hat @code{time} den Wert @code{all} und
+der einzelnen Testdateien angezeigt.  Hat @code{time} den Wert @code{all} und
 @code{display_all} den Wert @code{true}, wird die Laufzeit jedes einzelnen 
-Tests angezeigt. Der Standardwert ist @code{false}.
+Tests angezeigt.  Der Standardwert ist @code{false}.
 @end table
 
-Zum Beispiel f@"uhrt @code{run_testsuite(display_known_bugs = true, tests = 
-[rtest5])} die Testdatei @code{rtest5} aus und zeigt die Tests an, die als 
-fehlerhaft gekennzeichnet sind. 
-@code{run_testsuite(display_all = true, tests = ["rtest1", rtest2])} f@"uhrt die 
-Testdateien @code{rtest1} und @code{rtest2} aus und zeigt jeden einzelnen Test 
-an.
+Das Kommando @code{run_testsuite(display_known_bugs = true, tests = [rtest5])} 
+f@"uhrt die Testdatei @code{rtest5} aus und zeigt diejenigen Tests an, die als 
+fehlerhaft gekennzeichnet sind.  @code{run_testsuite(display_all = true, tests 
+= ["rtest1", rtest2])} f@"uhrt die Testdateien @code{rtest1} und @code{rtest2} 
+aus und zeigt jeden einzelnen Test an.
 
 Das Ausf@"uhren einer Testdatei kann die Maxima-Umgebung @"andern. 
 Typischerweise f@"uhrt eine Testdatei zuerst das Kommando @code{kill(all)} aus, 
-um eine definierte Umgebung herzustellen, in der keine benutzerdefinierten 
+um eine definierte Umgebung herzustellen, in der keine nutzerdefinierten 
 Funktionen und Variablen vorhanden sind.
 
 @code{run_testsuite} hat den R@"uckgabewert @code{done}.
@@ -101,10 +101,10 @@ Funktionen und Variablen vorhanden sind.
 @defvr {Optionsvariable} testsuite_files
 
 Die Optionsvariable @code{testsuite_files} enth@"alt die Liste der Testdateien, 
-die von @mref{run_testsuite} standardm@"a@ss{}ig ausgef@"uhrt werden. Wenn 
+die von @mref{run_testsuite} standardm@"a@ss{}ig ausgef@"uhrt werden.  Wenn 
 bekannt ist, dass einzelne Tests einer Testdatei fehlschlagen werden, dann wird 
 anstatt dem Namen der Datei eine Liste eingef@"ugt, die den Namen und die 
-Nummern der fehlerhaften Tests enth@"alt. Das folgende Beispiel zeigt, wie 
+Nummern der fehlerhaften Tests enth@"alt.  Das folgende Beispiel zeigt, wie 
 fehlerhafte Tests gekennzeichnet werden:
 
 @example
@@ -125,9 +125,9 @@ ausgef@"uhrt werden sollen und das bekannt ist, dass die Tests mit den Nummern
 @deffn {Funktion} bug_report ()
 
 Zeigt die Maxima- und Lisp-Version sowie einen Link zur Maxima-Projekt-Webseite.
-Die Informationen zur Version werden auch von @mref{build_info} angezeigt. Wenn 
+Die Informationen zur Version werden auch von @mref{build_info} angezeigt.  Wenn 
 ein Programmfehler berichtet wird, ist es hilfreich, die Maxima- und 
-Lisp-Version in den Fehlerbericht aufzunehmen. @code{bug_report} gibt eine 
+Lisp-Version in den Fehlerbericht aufzunehmen.  @code{bug_report} gibt eine 
 leere Zeichenkette @code{""} zur@"uck.
 
 Beispiel:

@@ -24,7 +24,7 @@
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{compfile}
-@deffn  {Funktion} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffn  {Funktion} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} compfile (@var{filename}, functions)
 @deffnx {Funktion} compfile (@var{filename}, all)
 
@@ -39,9 +39,9 @@ die Datei @var{filename}.
 @c @code{compfile(@var{filename}, all)} translate all user-defined functions.
 
 @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} @"ubersetzt die
-Funktionen @var{f_1}, ..., @var{f_n}). @code{compfile(@var{filename}, 
+Funktionen @var{f_1}, @dots{}, @var{f_n}). @code{compfile(@var{filename}, 
 functions)} und @code{compfile(@var{filename}, all)} @"ubersetzen alle 
-benutzerdefinierten Funktionen.
+nutzerdefinierten Funktionen.
 
 @c The Lisp translations are not evaluated, nor is the output file processed by 
 @c the Lisp compiler.
@@ -77,7 +77,7 @@ Siehe auch @mrefcomma{translate} @mref{translate_file} und
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{compile}
-@deffn  {Funktion} compile (@var{f_1}, ..., @var{f_n})
+@deffn  {Funktion} compile (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} compile (functions)
 @deffnx {Funktion} compile (all)
 
@@ -86,16 +86,16 @@ Siehe auch @mrefcomma{translate} @mref{translate_file} und
 @c translated function. @code{compile} returns a list of the names of the 
 @c compiled functions.
 
-@"Ubersetzt die Maxima-Funktionen @var{f_1}, ..., @var{f_n} nach Lisp, wertet
-die Lisp-@"Ubersetzungen aus und ruft den Lisp-Compiler f@"ur jede @"ubersetzte 
-Funktion auf. @code{compile} gibt eine Liste mit den Namen der kompilierten
-Funktionen zur@"uck.
+@"Ubersetzt die Maxima-Funktionen @var{f_1}, @dots{}, @var{f_n} nach Lisp, 
+wertet die Lisp-@"Ubersetzungen aus und ruft den Lisp-Compiler f@"ur jede 
+@"ubersetzte Funktion auf. @code{compile} gibt eine Liste mit den Namen der 
+kompilierten Funktionen zur@"uck.
 
 @c @code{compile (all)} or @code{compile (functions)} compiles all user-defined 
 @c functions.
 
 @code{compile(all)} oder @code{compile(compile(funtions)} kompiliert alle
-benutzerdefinierten Funktionen.
+nutzerdefinierten Funktionen.
 
 @c @code{compile} quotes its arguments;  the quote-quote operator @code{'@w{}'} 
 @c defeats quotation.
@@ -178,7 +178,7 @@ Die Datei @var{filename} darf keine @code{:lisp}-Anweisungen enthalten.
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
 @anchor{declare_translated}
-@deffn {Funktion} declare_translated (@var{f_1}, @var{f_2}, ...)
+@deffn {Funktion} declare_translated (@var{f_1}, @var{f_2}, @dots{})
 
 @c When translating a file of Maxima code to Lisp, it is important for the 
 @c translator to know which functions it sees in the file are to be called as 
@@ -194,7 +194,7 @@ den @"Ubersetzer wichtig zu wissen, welche Funktionen der Datei bereits
 Maxima-Funktionen oder undefiniert sind. Mit der Deklaration 
 @code{declare_translated} am Anfang der zu @"ubersetzenden Datei wird dem 
 @"Ubersetzer mitgeteilt, dass die als Argumente aufgef@"uhrten Funktionen 
-@var{f_1}, @var{f_2}, ... zur Laufzeit des Programms eine Lisp-Funktion 
+@var{f_1}, @var{f_2}, @dots{} zur Laufzeit des Programms eine Lisp-Funktion 
 repr@"asentieren. Fehlt dem @"Ubersetzer diese Information wird das Kommando 
 @code{(MFUNCTION-CALL fn arg1 arg2 ...)} generiert.
 
@@ -298,7 +298,7 @@ haben. Siehe @mref{mode_checkp} und @mrefdot{mode_check_errorp}
 
 @c -----------------------------------------------------------------------------
 @anchor{mode_declare}
-@deffn {Funktion} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+@deffn {Funktion} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
 
  @code{mode_declare} is used to declare the modes of variables and functions 
  for subsequent translation or compilation of functions. @code{mode_declare} 
@@ -349,7 +349,7 @@ mode_declare (completearray (a [10, 10]), float)
 mode_declare ([function (f_1, f_2, ...)], fixnum)
 @end example
 
- declares that the values returned by @code{f_1}, @code{f_2}, ... are 
+ declares that the values returned by @code{f_1}, @code{f_2}, @dots{} are 
  single-word integers.
 
  @code{modedeclare} is a synonym for @code{mode_declare}.
@@ -432,7 +432,7 @@ Standardwert: @code{true}
 
 @c -----------------------------------------------------------------------------
 @anchor{translate}
-@deffn  {Funktion} translate (@var{f_1}, ..., @var{f_n})
+@deffn  {Funktion} translate (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} translate (functions)
 @deffnx {Funktion} translate (all)
 

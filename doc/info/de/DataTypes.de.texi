@@ -2,6 +2,7 @@
 @c File        : DataTypes.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
 @c 
@@ -40,7 +41,7 @@
 
 Arithmetische Rechnungen mit ganzen oder rationalen Zahlen sind exakt.
 Prinzipell k@"onnen die ganzen und rationalen Zahlen eine beliebige Anzahl an 
-Stellen haben. Eine Obergrenze ist allein der zur Verf@"ugung stehende
+Stellen haben.  Eine Obergrenze ist allein der zur Verf@"ugung stehende
 Speicherplatz.
 
 @example
@@ -68,15 +69,15 @@ Funktionen f@"ur ganze und rationale Zahlen:
 
 @subheading Gleitkommazahlen
 
-Maxima rechnet mit Gleitkommazahlen in doppelter Genauigkeit. Weiterhin kann
+Maxima rechnet mit Gleitkommazahlen in doppelter Genauigkeit.  Weiterhin kann
 Maxima mit gro@ss{}en Gleitkommazahlen rechnen, die prinzipell eine beliebige
 Genauigkeit haben.
 
-Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben. Der Exponent kann mit
-"f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschlie@ss{}lich mit 
-Gleitkommazahlen in doppelter Genauigkeit, die immer mit "e" f@"ur den
-Exponenten angezeigt werden. Gro@ss{}e Gleitkommazahlen werden mit dem 
-Exponenten "b" bezeichnet. Gro@ss{}- und Kleinschreibung werden bei der 
+Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben.  Der Exponent kann 
+mit "f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschlie@ss{}lich
+mit Gleitkommazahlen in doppelter Genauigkeit, die immer mit "e" f@"ur den
+Exponenten angezeigt werden.  Gro@ss{}e Gleitkommazahlen werden mit dem 
+Exponenten "b" bezeichnet.  Gro@ss{}- und Kleinschreibung werden bei der 
 Schreibweise des Exponenten nicht unterschieden.
 
 @example
@@ -89,7 +90,7 @@ Schreibweise des Exponenten nicht unterschieden.
 @noindent
 Ist mindestens eine Zahl in einer Rechnung eine Gleitkommazahl, werden die 
 Argumente in Gleitkommazahlen umgewandelt und eine Gleitkommazahl als Ergebnis
-zur@"uckgegeben. Dies wird auch f@"ur gro@ss{}e Gleitkommazahlen ausgef@"uhrt.
+zur@"uckgegeben.  Dies wird auch f@"ur gro@ss{}e Gleitkommazahlen ausgef@"uhrt.
 
 @example
 (%i1) 2.0+1/2+3;
@@ -132,14 +133,14 @@ Funktionen und Variablen f@"ur Gleitkommazahlen:
 @c @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, 
 @c @code{abs}, @code{carg} functions.
 
-Maxima kennt keinen eigenen Typ f@"ur komplexe Zahlen. Komplexe Zahlen werden 
+Maxima kennt keinen eigenen Typ f@"ur komplexe Zahlen.  Komplexe Zahlen werden 
 von Maxima intern als die Addition von Realteil und dem mit der Imagin@"aren 
-Einheit @code{%i} multiplizierten Imagin@"arteil dargestellt. Zum Beispiel sind 
+Einheit @code{%i} multiplizierten Imagin@"arteil dargestellt.  Zum Beispiel sind 
 die komplexen Zahlen @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der 
 Gleichung @code{x^2 - 4*x + 13 = 0}.
 
 Maxima vereinfacht Produkte, Quotienten, Wurzel und andere Ausdr@"ucke mit 
-komplexen Zahlen nicht automatisch zu einer komplexen Zahl. Um Produkte mit
+komplexen Zahlen nicht automatisch zu einer komplexen Zahl.  Um Produkte mit
 komplexen Zahlen zu vereinfachen, kann der Ausdruck mit der Funktion 
 @code{expand} expandiert werden.
 
@@ -162,9 +163,9 @@ Funktionen f@"ur komplexe Zahlen:
 @c @code{"} for input, and displayed with or without the quote marks, depending
 @c on the global variable @code{stringdisp}.
 
-Zeichenketten werden bei der Eingabe in Anf@"uhrungszeichen gesetzt. Sie werden 
-standardm@"a@ss{}ig ohne Anf@"uhrungszeichen ausgegeben. Hat die Optionsvariable
-@code{stringdisp} den Wert @code{true}, werden Zeichenketten mit 
+Zeichenketten werden bei der Eingabe in Anf@"uhrungszeichen gesetzt.  Sie werden 
+standardm@"a@ss{}ig ohne Anf@"uhrungszeichen ausgegeben.  Hat die 
+Optionsvariable @code{stringdisp} den Wert @code{true}, werden Zeichenketten mit
 Anf@"uhrungszeichen dargestellt.
 
 @c Strings may contain any characters, including embedded tab, newline, and 
@@ -179,12 +180,12 @@ Anf@"uhrungszeichen dargestellt.
 @c carriage return) except by embedding the literal character in the string.
 
 Zeichenketten k@"onnen jedes Zeichen einschlie@ss{}lich Tabulator-, 
-Zeilenvorschub- oder Wagenr@"ucklauf-Zeichen enthalten. Das Anf@"uhrungszeichen 
+Zeilenvorschub- oder Wagenr@"ucklauf-Zeichen enthalten.  Das Anf@"uhrungszeichen 
 wird innerhalb einer Zeichenkette durch @code{\"} und der Backslash durch 
-@code{\\} dargestellt. Ein Backslash am Ende einer Eingabezeile erlaubt die
-Fortsetzung einer Zeichenkette in der n@"achsten Zeile. Maxima kennt keine 
-weiteren Kombinationen mit einem Backslash. Daher wird der Backslash an anderer
-Stelle ignoriert. Maxima kennt keine andere M@"oglichkeit, als spezielle Zeichen
+@code{\\} dargestellt.  Ein Backslash am Ende einer Eingabezeile erlaubt die
+Fortsetzung einer Zeichenkette in der n@"achsten Zeile.  Maxima kennt keine 
+weiteren Kombinationen mit einem Backslash.  Daher wird der Backslash an anderer
+Stelle ignoriert.  Maxima kennt keine andere M@"oglichkeit, als spezielle Zeichen
 wie ein Tabulator-, Zeilenvorschub- oder Wagenr@"ucklaufzeichen in einer
 Zeichenkette darzustellen.
 
@@ -193,8 +194,8 @@ Zeichenkette darzustellen.
 @c The @code{stringproc} add-on package contains many functions for working with
 @c strings.
 
-Maxima hat keinen Typ f@"ur ein einzelnes Zeichen. Einzelne Zeichen werden daher
-als eine Zeichenkette mit einem Zeichen dargestellt. Folgende Funktionen und 
+Maxima hat keinen Typ f@"ur ein einzelnes Zeichen.  Einzelne Zeichen werden daher
+als eine Zeichenkette mit einem Zeichen dargestellt.  Folgende Funktionen und 
 Variablen arbeiten mit Zeichenketten:
 
 @verbatim
@@ -305,10 +306,10 @@ Standartwert: @code{false}
 @c represent the bfloat.
 
 Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von gro@ss{}en
-Gleitkommazahlen in rationale Zahlen. Hat @code{bftorat} den Wert @code{true},
+Gleitkommazahlen in rationale Zahlen.  Hat @code{bftorat} den Wert @code{true},
 wird die Genauigkeit der Umwandlung von der Optionsvariablen @mref{ratepsilon} @
-kontrolliert. In diesem Fall ist das Ergebnis der Umwandlung eine relativ kleine
-rationale Zahl. Hat dagegen @code{bftorat} den Wert @code{false}, wird die 
+kontrolliert.  In diesem Fall ist das Ergebnis der Umwandlung eine relativ kleine
+rationale Zahl.  Hat dagegen @code{bftorat} den Wert @code{false}, wird die 
 gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl repr@"asentiert.
 
 @c @opencatbox
@@ -327,7 +328,7 @@ Standardwert: @code{true}
 @c @code{1.0B0}.
 
 Hat die Optionsvariable @code{bftrunc} den Wert @code{true}, werden bei der
-Ausgabe einer gro@ss{}en Gleitkommazahl nachfolgende Nullen nicht angezeigt. So 
+Ausgabe einer gro@ss{}en Gleitkommazahl nachfolgende Nullen nicht angezeigt.  So 
 wird @code{bfloat(1)} als @code{1.000000000000000b0} angezeigt, wenn 
 @code{bftrunc} den Wert @code{false} hat, ansonsten wird @code{1.0b0} angezeigt.
 
@@ -344,7 +345,7 @@ wird @code{bfloat(1)} als @code{1.000000000000000b0} angezeigt, wenn
 @c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @c @code{false} is returned in all other cases.
 
-Ist @var{expr} eine gerade ganze Zahl, wird @code{true} zur@"uckgegeben. In 
+Ist @var{expr} eine gerade ganze Zahl, wird @code{true} zur@"uckgegeben.  In 
 allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
 @code{evenp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
@@ -373,16 +374,16 @@ Konvertiert ganze, rationale und gro@ss{}e Gleitkommazahlen im Ausdruck
 
 @code{float} ist auch ein Auswertungsschalter f@"ur die Funktion @mrefdot{ev}@ 
 In diesem Fall werden rationale Zahlen und gro@ss{}e Gleitkommazahlen, aber 
-keine ganzen Zahlen in Gleitkommazahlen umgewandelt. Daher haben die beiden
+keine ganzen Zahlen in Gleitkommazahlen umgewandelt.  Daher haben die beiden
 Kommandos @code{ev(expr),float} und @code{float(expr)} ein unterschiedliches
 Ergebnis.
 
 Beispiele:
 
 In den ersten zwei Beispielen werden die Zahlen @code{1/2} und @code{1} in eine
-Gleitkommazahl umgewandelt. Die Sinusfunktion vereinfacht sodann zu einem
-numerischen Wert. Das Auswertungsflag @code{float} wandelt ganze Zahlen nicht
-in eine Gleitkommazahl um. Daher wird @code{sin(1)} nicht zu einem numerischen
+Gleitkommazahl umgewandelt.  Die Sinusfunktion vereinfacht sodann zu einem
+numerischen Wert.  Das Auswertungsflag @code{float} wandelt ganze Zahlen nicht
+in eine Gleitkommazahl um.  Daher wird @code{sin(1)} nicht zu einem numerischen
 Wert vereinfacht.
 
 @c === beg ===
@@ -434,7 +435,7 @@ kann.
 @c @code{false}.
 
 Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine 
-Gleitkommazahl ist. Ansonsten wird @code{false} zur@"uckgegeben. Auch wenn 
+Gleitkommazahl ist.  Ansonsten wird @code{false} zur@"uckgegeben.  Auch wenn 
 @var{number} eine gro@ss{}e Gleitkommazahl ist, ist das Ergebnis @code{false}.
 
 @c @opencatbox
@@ -453,8 +454,8 @@ Standardwert: 16
 @c See also @code{bfloat} and @code{fpprintprec}.
 
 @code{ffprec} ist die Zahl der Stellen f@"ur das Rechnen mit gro@ss{}en 
-Gleitkommazahlen. @code{ffprec} hat keinen Einflu@ss{} auf das Rechnen mit
-Gleitkommazahlen in doppelter Genauigkeit. Siehe auch @mref{bfloat} und 
+Gleitkommazahlen.  @code{ffprec} hat keinen Einflu@ss{} auf das Rechnen mit
+Gleitkommazahlen in doppelter Genauigkeit.  Siehe auch @mref{bfloat} und 
 @mrefdot{fpprintprec}
 
 @c @opencatbox
@@ -480,7 +481,7 @@ Gleitkommazahl ausgegeben wird.
 
 Hat @code{fpprintprec} einen Wert zwischen 2 und 16, ist die Anzahl der 
 angezeigten Stellen f@"ur einfache Gleitkommazahlen gleich dem Wert von 
-@code{fpprintprec}. Hat @code{fpprintprec} den Wert 0 oder ist gr@"o@ss{}er als
+@code{fpprintprec}.  Hat @code{fpprintprec} den Wert 0 oder ist gr@"o@ss{}er als
 16 werden 16 Stellen angezeigt.
 
 @c For bigfloat numbers, when @code{fpprintprec} has a value between 2 and 
@@ -488,9 +489,9 @@ angezeigten Stellen f@"ur einfache Gleitkommazahlen gleich dem Wert von
 @c @code{fpprintprec}. Otherwise, @code{fpprintprec} is 0, or greater than 
 @c @code{fpprec}, and the number of digits printed is equal to @code{fpprec}.
 
-F@"ur gro@ss{}e Gleitkommazahlen ist die Anzahl der angezeigten Stellen gleich
-@code{fpprintprec}, wenn @code{fpprintprec} einen Wert zwischen 2 und
-@code{fpprec} hat. Ist der Wert von @code{fpprintprec} gleich 0 oder 
+Hat f@"ur gro@ss{}e Gleitkommazahlen @code{fpprintprec} einen Wert zwischen 2 
+und @code{fpprec}, ist die Anzahl der angezeigten Stellen gleich
+@code{fpprintprec}.  Ist der Wert von @code{fpprintprec} gleich 0 oder 
 gr@"o@ss{}er als @code{fpprec} werden @code{fpprec} Stellen angezeigt.
 
 @c @code{fpprintprec} cannot be 1.
@@ -510,7 +511,7 @@ gr@"o@ss{}er als @code{fpprec} werden @code{fpprec} Stellen angezeigt.
 @c @code{false}.
 
 Hat den R@"uckgabewert @code{true}, wenn das Argument @var{number} eine ganze 
-Zahl ist. In allen anderen F@"allen gibt @code{integerp} den Wert @code{false} 
+Zahl ist.  In allen anderen F@"allen gibt @code{integerp} den Wert @code{false} 
 zur@"uck.
 
 @c @code{integerp} returns @code{false} if its argument is a symbol, even if the
@@ -518,7 +519,7 @@ zur@"uck.
 
 @code{integerp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
 zur@"uck, auch wenn das Symbol als ganze Zahl deklariert ist oder der Ausdruck 
-eine ganze Zahl repr@"asentiert. Siehe die Funktion @mrefcomma{featurep} um zu
+eine ganze Zahl repr@"asentiert.  Siehe die Funktion @mrefcomma{featurep} um zu
 testen, ob ein Symbol oder Ausdruck eine ganze Zahl repr@"asentiert.
 
 Beispiele:
@@ -559,9 +560,9 @@ Standardwert: @code{false}
 
 Die Optionsvariable @code{m1branch} kontrolliert die Vereinfachung der 
 Exponentiation von @code{-1} f@"ur den Fall, dass die Optionsvariable 
-@code{domain} den Wert @code{complex} hat. Hat @code{m1pbranch} f@"ur diesen 
+@code{domain} den Wert @code{complex} hat.  Hat @code{m1pbranch} f@"ur diesen 
 Fall den Wert @code{true}, wird die Exponentiation von @code{-1} zu einem 
-Ausdruck vereinfacht, der dem Hauptwert entspricht. Die Auswirkung der 
+Ausdruck vereinfacht, der dem Hauptwert entspricht.  Die Auswirkung der 
 Optionsvariable @code{m1pbranch} ist in der folgenden Tabelle gezeigt.
 
 @example
@@ -591,7 +592,7 @@ Siehe auch die Optionsvariable @mrefdot{number_pbranch}
 @c integer.
 
 Gibt den Wert @code{true} zur@"uck, wenn @code{number} eine ganze positive Zahl
-oder Null ist. Siehe auch @mrefdot{integerp}
+oder Null ist.  Siehe auch @mrefdot{integerp}
 
 @c @opencatbox
 @c @category{Zahlen} @category{Aussagefunktionen}
@@ -606,7 +607,7 @@ oder Null ist. Siehe auch @mrefdot{integerp}
 @c floating point number, or bigfloat, otherwise @code{false}.
 
 Hat das Ergebnis @code{true}, wenn @var{expr} eine ganze, rationale, eine
-Gleitkommazahl oder eine gro@ss{}e Gleitkommazahl ist. Ansonsten ist das 
+Gleitkommazahl oder eine gro@ss{}e Gleitkommazahl ist.  Ansonsten ist das 
 Ergebnis @code{false}.
 
 @c @code{numberp} returns @code{false} if its argument is a symbol, even if the
@@ -668,8 +669,8 @@ Die Optionsvariable @code{numer_pbranch} kontrolliert die Vereinfachung der
 Exponentiation einer negativen ganzen, rationalen oder Gleitkommazahl.
 Hat @code{numer_pbranch} den Wert @code{true} und ist der Exponent eine 
 Gleitkommazahl oder hat die Optionsvariable @code{numer} den Wert @code{true}, 
-dann berechnet Maxima den Hauptwert der Exponentiation. Ansonsten wird ein 
-vereinfachter Ausdruck, aber nicht numerischer Wert zur@"uckgegeben. Siehe auch
+dann berechnet Maxima den Hauptwert der Exponentiation.  Ansonsten wird ein 
+vereinfachter Ausdruck, aber nicht numerischer Wert zur@"uckgegeben.  Siehe auch
 die Optionsvariable @mrefdot{m1pbranch}
 
 Beispiele:
@@ -711,12 +712,12 @@ Beispiele:
 @c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @c @code{false} is returned in all other cases.
 
-Gibt @code{true} zur@"uck, wenn @var{expr} eine ungerade ganze Zahl ist. In 
+Gibt @code{true} zur@"uck, wenn @var{expr} eine ungerade ganze Zahl ist.  In 
 allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
 @code{oddp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
 zur@"uck, auch wenn das Symbol als ungerade ganze Zahl deklariert ist oder der 
-Ausdruck eine ungerade ganze Zahl repr@"asentiert. Siehe die Funktion 
+Ausdruck eine ungerade ganze Zahl repr@"asentiert.  Siehe die Funktion 
 @mrefcomma{featurep} um zu testen, ob ein Symbol oder Ausdruck eine ungerade 
 ganze Zahl repr@"asentiert.
 
@@ -734,7 +735,7 @@ Standardwert: 2.0e-8
 @c numbers to rational numbers.
 
 @code{ratepsilon} kontrolliert die Genauigkeit, mit der Gleitkommazahlen in
-rationale Zahlen umgewandelt werden. Siehe auch @mrefdot{bftorat}
+rationale Zahlen umgewandelt werden.  Siehe auch @mrefdot{bftorat}
 
 @c @opencatbox
 @c @category{Numerische Auswertung} @category{Rationale Ausdr@"ucke} @category{Optionsvariablen}
@@ -756,9 +757,10 @@ Gleitkommazahlen, die in dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
 @c 1/10.  This behavior isn't special to Maxima -- the number 1/10 has a 
 @c repeating, not a terminating, binary representation.
 
-Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. Dies
-ist nicht speziell f@"ur Maxima. Ursache ist, dass die gebrochene Zahl 1/10 in 
-der internen Darstellung als bin@"are Zahl keine endliche Darstellung hat.
+Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. 
+Dies ist nicht speziell f@"ur Maxima.  Ursache ist, dass die gebrochene Zahl 
+1/10 in der internen Darstellung als bin@"are Zahl keine endliche Darstellung 
+hat.
 
 Siehe auch die Funktion @mref{float} und den Auswertungsschalter 
 @mrefcomma{numer} um eine rationale Zahl in eine Gleitkommazahl umzuwandeln.
@@ -847,21 +849,21 @@ Beispiele:
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{concat}
-@deffn {Funktion} concat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Funktion} concat (@var{arg_1}, @var{arg_2}, @dots{})
 
 @c Concatenates its arguments. The arguments must evaluate to atoms. The return 
 @c value is a symbol if the first argument is a symbol and a string otherwise.
 
-Verkettet die Argumente @var{arg_1}, @var{arg_2}, ... zu einer Zeichenkette oder
-einem Symbol. Die Argumente m@"ussen sich zu einem Atom auswerten lassen. Der 
-R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist. Ansonsten 
-wird eine Zeichenkette zur@"uckgegeben.
+Verkettet die Argumente @var{arg_1}, @var{arg_2}, @dots{} zu einer Zeichenkette 
+oder einem Symbol.  Die Argumente m@"ussen sich zu einem Atom auswerten lassen. 
+Der R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist. 
+Ansonsten wird eine Zeichenkette zur@"uckgegeben.
 
 @c @code{concat} evaluates its arguments. The single quote @code{'} prevents 
 @c evaluation.
 
-@code{concat} wertet die Argumente aus. Der Quote-Operator verhindert die
-Auswertung. Siehe auch die Funktion @mrefdot{sconcat}
+@code{concat} wertet die Argumente aus.  Der Quote-Operator verhindert die
+Auswertung.  Siehe auch die Funktion @mrefdot{sconcat}
 
 Beispiele:
 
@@ -933,14 +935,14 @@ werden und es kann in Ausdr@"ucken auftreten.
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{sconcat}
-@deffn {Funktion} sconcat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Funktion} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
 
 @c Concatenates its arguments into a string. Unlike @code{concat}, the arguments
 @c do @i{not} need to be atoms.
 
-Verkettet die Argumente @var{arg_1}, @var{arg_2}, ... zu einer Zeichenkette. Im 
-Unterschied zu der Funktion @mref{concat} m@"ussen die Argumente @i{nicht} Atome
-sein. Der R@"uckgabewert ist eine Zeichenkette.
+Verkettet die Argumente @var{arg_1}, @var{arg_2}, @dots{} zu einer Zeichenkette.
+Im Unterschied zu der Funktion @mref{concat} m@"ussen die Argumente @i{nicht} 
+Atome sein.  Der R@"uckgabewert ist eine Zeichenkette.
 
 Beispiel:
 
@@ -967,8 +969,8 @@ Beispiel:
 @c a computation.
 
 Konvertiert @code{expr} in eine linearer Darstellung, wie sie auch vom Parser
-von der Eingabe eingelesen wird. Die R@"uckgabe von @code{string} ist eine
-Zeichenkette. Diese kann nicht f@"ur eine Berechnung genutzt werden.
+von der Eingabe eingelesen wird.  Die R@"uckgabe von @code{string} ist eine
+Zeichenkette.  Diese kann nicht f@"ur eine Berechnung genutzt werden.
 
 @c @opencatbox
 @c @category{Zeichenketten}
@@ -986,7 +988,7 @@ Standardwert: @code{false}
 @c double quote marks. Otherwise, quote marks are not displayed.
 
 Hat @code{stringdisp} den Wert @code{true}, werden Zeichenketten mit
-Anf@"uhrungszeichen ausgegeben. Ansonsten werden keine Anf@"uhrungszeichen
+Anf@"uhrungszeichen ausgegeben.  Ansonsten werden keine Anf@"uhrungszeichen
 ausgegeben.
 
 @c @code{stringdisp} is always @code{true} when displaying a function 
@@ -1042,7 +1044,7 @@ Beispiele:
 @c floating-point value 2.718281828459045d0.
 
 @code{%e} ist die Basis des nat@"urlichen Logarithmus, auch Eulersche Zahl 
-genannt. Der numerische Wert der Konstanten als Gleitkommazahl mit doppelter
+genannt.  Der numerische Wert der Konstanten als Gleitkommazahl mit doppelter
 Genauigkeit ist 2.718281828459045d0.
 
 Die Funktion @mref{bfloat} kann @code{%e} mit einer beliebigen Genauigkeit
@@ -1089,7 +1091,7 @@ Beispiel:
 @c @code{false} represents the Boolean constant of the same name. Maxima 
 @c implements @code{false} by the value @code{NIL} in Lisp.
 
-Repr@"asentiert den Logischen Wert @code{falsch}. @code{false} wird intern von 
+Repr@"asentiert den Logischen Wert @code{falsch}.  @code{false} wird intern von 
 Maxima durch die Lisp-Konstante @code{NIL} dargestellt.
 
 @c @opencatbox
@@ -1127,7 +1129,8 @@ berechnen.
 
 @c @code{ind} represents a bounded, indefinite result.
 
-@code{ind} repr@"asentiert ein unbestimmtes Ergebnis. Siehe auch @mrefdot{limit}
+@code{ind} repr@"asentiert ein unbestimmtes Ergebnis.  Siehe auch 
+@mrefdot{limit}
 
 Beispiel:
 
@@ -1205,7 +1208,7 @@ Beispiel:
 @c The numeric value of @code{%phi} is the double-precision floating-point value
 @c 1.618033988749895d0.
 
-@code{%phi} repr@"asentiert die @i{Golde Zahl} @math{(1 + sqrt(5))/2}. Der 
+@code{%phi} repr@"asentiert die @i{Golde Zahl} @math{(1 + sqrt(5))/2}.  Der 
 Gleitkommawert in doppelter Genauigkeit ist 1.618033988749895d0.
 
 @c @code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of 
@@ -1302,7 +1305,7 @@ ausf@"uhren, die @code{%phi} enthalten.
 @c The numeric value of @code{%pi} is the double-precision floating-point value 
 @c 3.141592653589793d0.
 
-@code{%pi} repr@"asentiert die Kreiszahl. Der numerische Wert in doppelter
+@code{%pi} repr@"asentiert die Kreiszahl.  Der numerische Wert in doppelter
 Gleitkommagenauigkeit ist @code{3.141592653589793d0}.
 
 Die Funktion @mref{bfloat} kann @code{%pi} mit einer beliebigen Genauigkeit
@@ -1320,7 +1323,7 @@ berechnen.
 @c @code{true} represents the Boolean constant of the same name. Maxima 
 @c implements @code{true} by the value @code{T} in Lisp.
 
-@code{true} repr@"asentiert den logischen Wert @code{wahr}. Intern ist 
+@code{true} repr@"asentiert den logischen Wert @code{wahr}.  Intern ist 
 @code{true} als die Lisp-Konstante @code{T} implementiert.
 
 @c @opencatbox
@@ -1337,7 +1340,7 @@ berechnen.
 
 @c @code{und} represents an undefined result.
 
-@code{und} repr@"asentiert ein nicht definiertes Ergebnis. Siehe auch 
+@code{und} repr@"asentiert ein nicht definiertes Ergebnis.  Siehe auch 
 @mrefdot{limit}
 
 Beispiel:
@@ -1363,8 +1366,8 @@ Beispiel:
 @c in expressions. @code{limit} simplifies expressions which contain 
 @c infinitesimals.
 
-@code{zeroa} repr@"asentiert eine positive unendlich kleine Zahl. @code{zeroa}
-kann in Ausdr@"ucken benutzt werden. Die Funktion @code{limit} vereinfacht
+@code{zeroa} repr@"asentiert eine positive unendlich kleine Zahl.  @code{zeroa}
+kann in Ausdr@"ucken benutzt werden.  Die Funktion @code{limit} vereinfacht
 Ausdr@"ucke, die infinitesimale Gr@"o@ss{}en enthalten.
 
 Siehe auch @mref{zerob} und @mrefdot{limit}
@@ -1399,8 +1402,8 @@ Beispiele:
 @c in expressions. @code{limit} simplifies expressions which contain 
 @c infinitesimals.
 
-@code{zerob} repr@"asentiert eine negative unendlich kleine Zahl. @code{zerob}
-kann in Ausdr@"ucken benutzt werden. Die Funktion @code{limit} vereinfacht
+@code{zerob} repr@"asentiert eine negative unendlich kleine Zahl.  @code{zerob}
+kann in Ausdr@"ucken benutzt werden.  Die Funktion @code{limit} vereinfacht
 Ausdr@"ucke, die infinitesimale Gr@"o@ss{}en enthalten.
 
 Siehe auch @mref{zeroa} und @mrefdot{limit}
@@ -1416,32 +1419,32 @@ Siehe auch @mref{zeroa} und @mrefdot{limit}
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{array}
-@deffn  {Funktion} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Funktion} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Funktion} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+@deffn  {Funktion} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {Funktion} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {Funktion} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
 
 @c Creates an @math{n}-dimensional array. @math{n} may be less than or equal to 
 @c 5. The subscripts for the @math{i}'th dimension are the integers running from
 @c 0 to @var{dim_i}.  
 
-Erzeugt ein @math{n}-dimensionales Array. @math{n} kann kleiner oder gleich 5 
-Dimensionen sein. Die Indizes der @math{i}-ten Dimension sind ganze Zahlen
+Erzeugt ein @math{n}-dimensionales Array.  @math{n} kann kleiner oder gleich 5 
+Dimensionen sein.  Die Indizes der @math{i}-ten Dimension sind ganze Zahlen
 in einem Bereich von 0 bis @var{dim_i}.
 
 @c @code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} creates a general 
 @c array.
 
-@code{array(@var{name}, @var{dim_1}, ... @var{dim_n})} erzeugt ein allgemeines
+@code{array(@var{name}, @var{dim_1}, ..., @var{dim_n})} erzeugt ein allgemeines 
 Array.
 
 @c @code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} creates
 @c an array, with elements of a specified type. @var{type} can be @code{fixnum}
 @c for integers of limited size or @code{flonum} for floating-point numbers.
 
-@code{array(@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} erzeugt ein
-Array mit Elementen, die vom Typ @var{type} sind. @var{type} kann @code{fixnum}
-f@"ur ganze Zahlen oder @code{flonum} f@"ur Gleitkommazahlen sein.
-
+@code{array(@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} erzeugt 
+ein Array mit Elementen, die vom Typ @var{type} sind.  @var{type} kann 
+@code{fixnum} f@"ur ganze Zahlen oder @code{flonum} f@"ur Gleitkommazahlen sein.
+ 
 @c @code{array([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., 
 @c @var{dim_n})} creates @math{m} arrays, all of the same dimensions.
 @c SAME TYPE AS WELL ??
@@ -1463,12 +1466,12 @@ erzeugt @math{m} Arrays, die alle die gleiche Dimension haben.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
 Wird einer indizierten Variablen ein Wert zugewiesen, bevor das entsprechende
-Array definiert wird, so wird ein undeklariertes Array erzeugt. Undeklarierte
+Array definiert wird, so wird ein undeklariertes Array erzeugt.  Undeklarierte
 Arrays, auch Hashed-Arrays genannt, sind allgemeiner als deklarierte Arrays.
 Diese Arrays haben keine feste Gr@"o@ss{}e und wachsen dynamisch mit der 
-Zuweisung von Werten. Die Indizes eines undeklarierten Arrays m@"ussen keine 
-ganze Zahlen sein. Deklarierte Arrays sind im Allgemeinen effizienter, 
-so dass Arrays falls m@"oglich deklariert werden sollten. Die Funktion 
+Zuweisung von Werten.  Die Indizes eines undeklarierten Arrays m@"ussen keine 
+ganze Zahlen sein.  Deklarierte Arrays sind im Allgemeinen effizienter, 
+so dass Arrays falls m@"oglich deklariert werden sollten.  Die Funktion 
 @code{array} kann genutzt werden, um ein undeklariertes Array in ein 
 deklariertes Array umzuwandeln.
 
@@ -1479,13 +1482,13 @@ deklariertes Array umzuwandeln.
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{arrayapply}
-@deffn {Funktion} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Funktion} arrayapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
 
 @c Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 @c where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
 
-Wertet @code{@var{A} [@var{i_1}, ..., @var{i_n}]} aus, wobei @var{A} ein Array
-und @var{i_1}, ..., @var{i_n} ganze Zahlen sind.
+Wertet @code{@var{A} [@var{i_1}, ... , @var{i_n}]} aus, wobei @var{A} ein Array
+und @var{i_1}, @dots{}, @var{i_n} ganze Zahlen sind.
 
 @c This is reminiscent of @code{apply}, except the first argument is an array
 @c instead of a function.
@@ -1506,7 +1509,7 @@ das Argument ein Array und keine Funktion ist.
 @c declared array, an undeclared (hashed) array, an array function, or a 
 @c subscripted function.
 
-Gibt Information @"uber das Array @var{A} zur@"uck. Das Argument @var{A} kann
+Gibt Information @"uber das Array @var{A} zur@"uck.  Das Argument @var{A} kann
 ein deklariertes oder ein undeklariertes Array sowie eine Array-Funktion oder
 eine indizierte Funktion sein.
 
@@ -1517,7 +1520,7 @@ eine indizierte Funktion sein.
 
 F@"ur ein deklarierte Array gibt @code{arryinfo} eine Liste zur@"uck, die 
 @code{declared}, die Zahl der Dimensionen und die Gr@"o@ss{}e der Dimensionen 
-enh@"alt. Die Elemente des Arrays werden von der Funktion @mref{listarray}@ 
+enh@"alt.  Die Elemente des Arrays werden von der Funktion @mref{listarray}@ 
 zur@"uckgegeben.
 
 @c For undeclared arrays (hashed arrays), @code{arrayinfo} returns a list 
@@ -1527,7 +1530,7 @@ zur@"uckgegeben.
 
 F@"ur ein undeklariertes Array (Hashed-Array) gibt @code{arrayinfo} eine Liste
 zur@"uck, die @code{hashed}, die Zahl der Indizes und die Indizes enth@"alt,
-deren Elemente einen Wert haben. Die Werte der Elemente werden mit der Funktion 
+deren Elemente einen Wert haben.  Die Werte der Elemente werden mit der Funktion 
 @mref{listarray} zur@"uckgegeben.
 
 @c For array functions, @code{arrayinfo} returns a list comprising the atom 
@@ -1537,7 +1540,7 @@ deren Elemente einen Wert haben. Die Werte der Elemente werden mit der Funktion
 
 F@"ur Array-Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{hashed} die Zahl der Indizes und die Indizes enth@"alt, f@"ur die 
-Funktionen im Array enthalten sind. Die Funktionen werden mit der Funktion 
+Funktionen im Array enthalten sind.  Die Funktionen werden mit der Funktion 
 @mref{listarray} angezeigt.
 
 @c For subscripted functions, @code{arrayinfo} returns a list comprising the 
@@ -1547,7 +1550,7 @@ Funktionen im Array enthalten sind. Die Funktionen werden mit der Funktion
 
 F@"ur indizierte Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{hashed}, die Zahl der Indizes und die Indizies enth@"alt, f@"ur die 
-Lambda-Ausdr@"ucke vorhanden sind. Die Lambda-Ausdr@"ucke werden von der 
+Lambda-Ausdr@"ucke vorhanden sind.  Die Lambda-Ausdr@"ucke werden von der 
 Funktion @mref{listarray} angezeigt.
 
 Beispiele:
@@ -1708,7 +1711,7 @@ Beispiele:
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{arraymake}
-@deffn {Funktion} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Funktion} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
 
 @c Returns the expression @code{@var{A}[@var{i_1}, ..., @var{i_n}]}. The result
 @c is an unevaluated array reference.
@@ -1822,7 +1825,7 @@ Standardwert: @code{[]}
 @c are not included.
 
 @code{arrays} ist eine Informationsliste @mref{infolists} der Arrays, die 
-definiert sind. Die Liste enth@"alt deklarierte Arrays, undedeklarierte Arrays 
+definiert sind.  Die Liste enth@"alt deklarierte Arrays, undedeklarierte Arrays 
 und Array-Funktionen, die mit @code{:=} oder @code{define} definiert sind. 
 Arrays die mit @mref{make_array} definiert sind, sind nicht in der Liste 
 enthalten.
@@ -1881,7 +1884,7 @@ Beispiele:
 
 @c Fills array @var{A} from @var{B}, which is a list or an array.
 
-F@"ullt das Array @var{A} mit den Werten aus @var{B}. Das Argument @var{B} ist 
+F@"ullt das Array @var{A} mit den Werten aus @var{B}.  Das Argument @var{B} ist 
 eine Liste oder ein Array.
 
 @c If a specific type was declared for @var{A} when it was created, it can only 
@@ -1897,9 +1900,10 @@ gef@"ullt werden, die den gleichen Typ haben.
 @c many, the remaining ones are ignored.
 
 Sind die Dimensionen von @var{A} und @var{B} verschieden, werden in @var{A}
-zun@"achst die Zeilen aufgef@"ullt. Hat @var{B} nicht gen@"ugend Elemente um das
-Array @var{A} aufzuf@"ullen, werden die restlichen Elemente mit dem letzten Wert
-von @var{B} aufgef@"ullt. @"Uberz@"ahlige Elemente in @var{B} werden ignoriert.
+zun@"achst die Zeilen aufgef@"ullt.  Hat @var{B} nicht gen@"ugend Elemente um 
+das Array @var{A} aufzuf@"ullen, werden die restlichen Elemente mit dem letzten 
+Wert von @var{B} aufgef@"ullt.  @"Uberz@"ahlige Elemente in @var{B} werden 
+ignoriert.
 
 @c @code{fillarray} returns its first argument.
 
@@ -1940,7 +1944,8 @@ Erzeuge ein Array mit 9 Elementen und f@"ulle es mit den Elementen einer Liste.
 @c repeated. When there are too many elements, the extra elements are ignored.
 
 Sind zu wenige Elemente vorhanden, um das Array aufzuf@"ullen, wird das Array
-mit dem letzten Element aufgef@"ullt. @"Uberz@"ahlige Elemente werden ignoriert.
+mit dem letzten Element aufgef@"ullt.  @"Uberz@"ahlige Elemente werden 
+ignoriert.
 
 @c ===beg===
 @c a2 : make_array (fixnum, 8);
@@ -2009,7 +2014,7 @@ Arrays werden zeilenweise aufgef@"ulllt.
 @c may be a declared array, an undeclared (hashed) array, an array function, or 
 @c a subscripted function.
 
-Gibt eine Liste mit den Elementen des Arrays @var{A} zur@"uck. Das Argument 
+Gibt eine Liste mit den Elementen des Arrays @var{A} zur@"uck.  Das Argument 
 @var{A} kann ein deklariertes, undeklariertes, eine Array-Funktion oder eine
 indizierte Funktion sein.
 
@@ -2018,8 +2023,8 @@ indizierte Funktion sein.
 @c The sorting order of index values is the same as the order established by 
 @c @code{orderless}.
 
-Die Elemente werden zeilenweise ausgegeben. F@"ur Hashed-Arrays mit Indizes, die
-keine ganze Zahlen sind, wird die Sortierung von der Funktion 
+Die Elemente werden zeilenweise ausgegeben.  F@"ur Hashed-Arrays mit Indizes, 
+die keine ganze Zahlen sind, wird die Sortierung von der Funktion 
 @mref{orderless} bestimmt.
 
 @c For undeclared arrays, array functions, and subscripted functions, the 
@@ -2036,7 +2041,7 @@ die Elemente in der Reihenfolge wie von der Funktion
 @c functions are not returned.
 
 Elemente von deklarierten Arrays, denen noch kein Wert zugewiesen wurde und die
-keinen Typ haben, werden als @code{#####} zur@"uckgegeben. Elemente von
+keinen Typ haben, werden als @code{#####} zur@"uckgegeben.  Elemente von
 deklarierten Arrays mit einem Typ, geben den Wert 0 f@"ur den Typ @code{fixnum}
 und 0.0 f@"ur den Typ @code{flonum} zur@"uck.
 
@@ -2202,14 +2207,14 @@ indizierte Funktion.
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{make_array}
-@deffn {Funktion} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Funktion} make_array (@var{type}, @var{dim_1}, @dots{}, @var{dim_n})
 
 @c Creates and returns a Lisp array.  @var{type} may be @code{any}, 
 @c @code{flonum}, @code{fixnum}, @code{hashed} or @code{functional}. There are 
 @c @math{n} indices, and the @math{i}'th index runs from 0 to 
 @c @math{@var{dim_i} - 1}.
 
-Erzeugt ein Lisp-Array. Das Argument @var{type} kann die Werte @code{any},
+Erzeugt ein Lisp-Array.  Das Argument @var{type} kann die Werte @code{any},
 @code{flonum}, @code{fixnum}, @code{hashed} oder @code{functional} haben.
 Das Array hat @math{i} Dimensionen und der Index @math{i} l@"auft von 0 bis
 @math{@var{dim_i}-1}.
@@ -2310,17 +2315,17 @@ Beispiele:
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{rearray}
-@deffn {Funktion} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Funktion} rearray (@var{A}, @var{dim_1}, @dots{}, @var{dim_n})
 
 @c Changes the dimensions of an array. The new array will be filled with the
 @c elements of the old one in row-major order.  If the old array was too small,
 @c the remaining elements are filled with @code{false}, @code{0.0} or @code{0},
 @c depending on the type of the array.  The type of the array cannot be changed.
 
-@"Andert die Dimension eines Arrays. Das neue Array wird zeilenweise mit den 
-Werten des alten Arrays aufgef@"ullt. Hat das alte Array nicht gen@"ugend 
+@"Andert die Dimension eines Arrays.  Das neue Array wird zeilenweise mit den 
+Werten des alten Arrays aufgef@"ullt.  Hat das alte Array nicht gen@"ugend 
 Elemente werden die restlichen Elemente entsprechend dem Typ des Arrays mit 
-@code{false}, @code{0.0} oder @code{0} aufgef@"ullt. Der Typ des Arrays kann 
+@code{false}, @code{0.0} oder @code{0} aufgef@"ullt.  Der Typ des Arrays kann 
 nicht ge@"andert werden.
 
 @c @opencatbox
@@ -2330,15 +2335,15 @@ nicht ge@"andert werden.
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{remarray}
-@deffn  {Funktion} remarray (@var{A_1}, ..., @var{A_n})
+@deffn  {Funktion} remarray (@var{A_1}, @dots{}, @var{A_n})
 @deffnx {Funktion} remarray (all)
 
 @c Removes arrays and array associated functions and frees the storage occupied.
 @c The arguments may be declared arrays, undeclared (hashed) arrays, array
 @c functions, and subscripted functions.
 
-Entfernt Arrays und Array-Funktionen. Der vom Array belegte Speicher wird
-freigegeben. Die Argumente k@"onnen deklarierte und undeklarierte Arrays sowie 
+Entfernt Arrays und Array-Funktionen.  Der vom Array belegte Speicher wird
+freigegeben.  Die Argumente k@"onnen deklarierte und undeklarierte Arrays sowie 
 Array-Funktionen und indizierte Funktionen sein.
 
 @c @code{remarray (all)} removes all items in the global list @code{arrays}.
@@ -2368,14 +2373,14 @@ Array-Funktionen und indizierte Funktionen sein.
 @c Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
 @c @code{subvar} evaluates its arguments.
 
-Wertet den indizierten Ausdruck @code{@var{x}[@var{i}]} aus. @code{subvar}
+Wertet den indizierten Ausdruck @code{@var{x}[@var{i}]} aus.  @code{subvar}
 wertet die Argumente aus.
 
 @c @code{arraymake (@var{x}, [@var{i}]} constructs the expression 
 @c @code{@var{x}[@var{i}]}, but does not evaluate it.
 
 @code{arraymake(@var{x}, [@var{i}]} generiert den Ausdruck 
-@code{@var{x}[@var{i}]}, ohne diesen auszuwerten. Siehe @mrefdot{arraymake}
+@code{@var{x}[@var{i}]}, ohne diesen auszuwerten.  Siehe @mrefdot{arraymake}
 
 Beispiele:
 
@@ -2452,8 +2457,8 @@ die folgenden zwei Typen von Arrays erkannt:
 @c indexing is zero based.
 
 @item
-Ein Array, das mehrere Dimensionen haben kann und ganzzahligen Indizes. Den
-Elementen kann jedes Lisp oder Maxima-Objekt zugewiesen werden. Zum Beispiel
+Ein Array, das mehrere Dimensionen haben kann und ganzzahligen Indizes.  Den
+Elementen kann jedes Lisp oder Maxima-Objekt zugewiesen werden.  Zum Beispiel
 weist das Kommando @code{a:make_array(any,3,4)} der Variablen @var{a} ein
 Array zu, das 12 Elemente hat.
 
@@ -2470,9 +2475,9 @@ Array zu, das 12 Elemente hat.
 @item
 Ein undeklariertes Array, welches standardm@"a@ss{}ig erzeugt wird, wenn zum 
 Beispiel einer indizierten Variablen @code{b[x+1]:y^2} ein Wert zugewiesen wird 
-und @code{b} nicht bereits ein deklariertes Array oder eine Liste ist. Ist 
+und @code{b} nicht bereits ein deklariertes Array oder eine Liste ist.  Ist 
 @var{b} bereits deklariert, wird eine Fehlermeldung ausgeben, da der Index 
-@var{x+1} keine ganze Zahl ist. Der Index eines undeklarierten Arrays kann ein 
+@var{x+1} keine ganze Zahl ist.  Der Index eines undeklarierten Arrays kann ein 
 beliebiger Ausdruck sein.
 
 @end enumerate

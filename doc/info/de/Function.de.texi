@@ -1247,9 +1247,9 @@ Standardwert: @code{[]}
 @c @code{:=} and called with parentheses @code{()}. A function may be defined at
 @c the Maxima prompt or in a Maxima file loaded by @code{load} or @code{batch}.
 
-@code{functions} ist eine Informationsliste, die die vom Benutzer mit dem
+@code{functions} ist eine Informationsliste, die die vom Nutzer mit dem
 Operator @var{:=} oder der Funktion @code{define} definierten Funktionen 
-enth@"alt. Siehe @mrefdot{infolists}
+enth@"alt.  Siehe @mrefdot{infolists}
 
 @c Array functions (called with square brackets, e.g., @code{F[x]}) and 
 @c subscripted functions (called with square brackets and parentheses, e.g., 

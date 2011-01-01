@@ -2,6 +2,7 @@
 @c File        : Calculus.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
 @c 
@@ -536,7 +537,7 @@ Beispiele:
 @c ext_diff AND lie_diff NOT DOCUMENTED (OTHER THAN HERE)
 
 @c -----------------------------------------------------------------------------
-@deffn {Packet} cartan
+@deffn {Paket} cartan
 
 The exterior calculus of differential forms is a basic tool of differential 
 geometry developed by Elie Cartan and has important applications in the theory 
@@ -1183,10 +1184,10 @@ wurde.
 @c integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 
 Maxima hat verschiedene Routinen um Integrale zu behandeln. Die Funktion
-@code{integrate} nutzt diese. Maxima hat ein Packet @code{antid}, welches
+@code{integrate} nutzt diese. Maxima hat ein Paket @code{antid}, welches
 Integrale mit einer unbekannten Funktion, deren Ableitung bekannt ist, 
 integrieren kann. F@"ur die numerische Berechnung von Integralen hat Maxima
-das Packet @code{QUADPACK} mit Funktionen wie @code{quad_qag} oder 
+das Paket @code{QUADPACK} mit Funktionen wie @code{quad_qag} oder 
 @code{quad_qags}. Die Funktionen @code{laplace} und @code{specint} finden die
 Laplacetransformation.
 
@@ -1358,7 +1359,7 @@ den Simpsonschen Algorithmus. Der Standardwert ist jeweils 10.
 
 Das Kommando @code{demo(dblint)} zeigt ein Beispiel.
 
-Die numerischen Funktionen des Packets @code{QUADPACK} sind gegen@"uber 
+Die numerischen Funktionen des Pakets @code{QUADPACK} sind gegen@"uber 
 @code{dblint} zu bevorzugen.
 
 @c @opencatbox

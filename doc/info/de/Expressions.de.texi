@@ -460,7 +460,7 @@ Anfangswert: @code{[]}
 @c declaring the atom a @code{noun} with @code{declare}).
 
 Die Systemvariable @code{aliases} ist eine Informationsliste der Symbole, die 
-einen vom Benutzer definierten Alias-Namen mit dem Kommando @code{alias} 
+einen vom Nutzer definierten Alias-Namen mit dem Kommando @code{alias} 
 erhalten haben. Weiterhin werden von den Funktionen @mref{ordergreat} und 
 @mref{orderless} sowie bei der Deklaration eines Symbols als ein @code{noun} 
 mit der Funktion @mref{declare} Alias-Namen generiert, die in die Liste 
@@ -2399,8 +2399,9 @@ F@"uhrt im Unterschied zu der Funktion @code{subst} die Substitutionen der Liste
 @c The variable @code{sublis_apply_lambda} controls simplification after
 @c @code{sublis}.
 
-Die Optionsvariable @code{sublis_apply_lambda} kontrolliert die Vereinfachung
-von Lamda-Ausdr@"ucken nachdem die Substitution ausgef@"uhrt wurde.
+Mit der Optionsvariablen @code{sublis_apply_lambda} wird die Vereinfachung
+von Lamda-Ausdr@"ucken kontrolliert, nachdem die Substitution ausgef@"uhrt 
+wurde.
 
 Beispiele:
 
