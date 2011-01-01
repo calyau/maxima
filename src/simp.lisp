@@ -2346,7 +2346,8 @@
                      (odnump (caddr gr))
                      ;; Again not correct in general.
                      ;; At first exclude the sqrt function.
-                     (not (alike1 pot '((rat simp) 1 2)))))
+                     (not (alike1 pot '((rat simp) 1 2)))
+                     (not (alike1 pot '((rat simp) -1 2)))))
             ;; Simplify (z^a)^b -> z^(a*b)
             (setq pot (mult pot (caddr gr)) gr (cadr gr)))
            ((and (eq $domain '$real)
@@ -2359,7 +2360,8 @@
            ((and (mminusp (caddr gr))
                  ;; Again not correct in general.
                  ;; At first exclude the sqrt function.
-                 (not (alike1 pot '((rat simp) 1 2))))
+                 (not (alike1 pot '((rat simp) 1 2)))
+                 (not (alike1 pot '((rat simp) -1 2))))
             ;; Simplify (1/z^a)^b -> 1/(z^a)^b
             (setq pot (neg pot)
                   gr (list (car gr) (cadr gr) (neg (caddr gr)))))
