@@ -1807,6 +1807,7 @@ integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf);
 
 (forget(equal(x,0)),done);
 done;
+
 /* Bug reported on the mailing list
  * <http://www.math.utexas.edu/pipermail/maxima/2010/023024.html>
  * integrate(cos(2*x)*cos(x),x) is wrong.
@@ -1838,7 +1839,7 @@ dependencies;
 kill(f);
 done;
 
-/* Bug ID:  3118770 - %edispflag:true causes a bug
+/* Bug ID: 3118770 - %edispflag:true causes a bug
  */
 %edispflag:true;
 true;
@@ -1857,3 +1858,8 @@ kill(all);
 done;
 rectform(1+%i);
 1+%i;
+
+/* Bug ID: 3133916 - scanmap(minfactorial,a!) infinite loop
+ */
+scanmap(minfactorial, a!);
+a!;
