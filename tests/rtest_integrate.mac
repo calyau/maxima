@@ -299,9 +299,12 @@ multthru(integrate(%e^(a*z)/z^(3/2),z)),gamma_expand:true;
 /* Problem 65: NEW Type 2 (OK)
  * Maxima simplifies z/sqrt(z^3) -> 1/sqrt(z). Therefore, we get the same
  * result for Problem 64 and 65.
+ * Because of revision 1.125 of simp.lisp Maxima no longer simplifies
+ * z/sqrt(z^3) -> 1/sqrt(z). We get a noun form.
  */
 multthru(integrate(%e^(a*z)/sqrt(z^3),z)),gamma_expand:true;
-2*sqrt(%pi)*sqrt(-a*z)*erfc(sqrt(-a*z))/sqrt(z)-2*%e^(a*z)/sqrt(z);
+/*2*sqrt(%pi)*sqrt(-a*z)*erfc(sqrt(-a*z))/sqrt(z)-2*%e^(a*z)/sqrt(z);*/
+'integrate(%e^(a*z)/sqrt(z^3),z);
 
 /* Problem 66: NEW Type 2 (OK) */
 multthru(integrate(%e^(a*z)/z^(5/2),z)),gamma_expand:true;
@@ -2691,13 +2694,13 @@ a^(3/2)*log((2*sqrt(b*%e^(c*z)+a)-2*sqrt(a))
          +(2*(b*%e^(c*z)+a)^(3/2)+6*a*sqrt(b*%e^(c*z)+a))/(3*c);
 
 /* Problem 486: OK */
-integrate(((b*%e^(c*z)+a)^3)^((-1)/2),z);
+integrate((b*%e^(c*z)+a)^(-3/2),z);
 log((2*sqrt(b*%e^(c*z)+a)-2*sqrt(a))/(2*sqrt(b*%e^(c*z)+a)+2*sqrt(a)))
          /(a^(3/2)*c)
          +2/(a*c*sqrt(b*%e^(c*z)+a));
 
 /* Problem 487: OK */
-integrate(((b*%e^(c*z)+a)^5)^((-1)/2),z);
+integrate((b*%e^(c*z)+a)^(-5/2),z);
 log((2*sqrt(b*%e^(c*z)+a)-2*sqrt(a))/(2*sqrt(b*%e^(c*z)+a)+2*sqrt(a)))
          /(a^(5/2)*c)
          +(6*(b*%e^(c*z)+a)+2*a)/(3*a^2*c*(b*%e^(c*z)+a)^(3/2));
@@ -2783,19 +2786,19 @@ integrate(((b*%e^(c*z)+a)^3)^(1/2)*%e^(c*z),z),logexpand;
 2*%e^(c*z)*(b*%e^(c*z)+a)^(3/2)/(5*c)+2*a*(b*%e^(c*z)+a)^(3/2)/(5*b*c);
 
 /* Problem 507: OK */
-integrate(((b*%e^(c*z)+a)^3)^((-1)/2)*%e^(c*z),z);
+integrate((b*%e^(c*z)+a)^(-3/2)*%e^(c*z),z);
 -2/(b*c*sqrt(b*%e^(c*z)+a));
 
 /* Problem 508: OK */
-integrate(((a*%e^(c*z)+a)^3)^((-1)/2)*%e^(c*z),z);
+integrate((a*%e^(c*z)+a)^(-3/2)*%e^(c*z),z);
 -2/(a*c*sqrt(a*%e^(c*z)+a));
 
 /* Problem 509: OK */
-integrate(((a-a*%e^(c*z))^3)^((-1)/2)*%e^(c*z),z);
+integrate((a-a*%e^(c*z))^(-3/2)*%e^(c*z),z);
 2/(a*c*sqrt(a-a*%e^(c*z)));
 
 /* Problem 510: OK */
-integrate(((b*%e^(c*z)+a)^5)^((-1)/2)*%e^(c*z),z);
+integrate((b*%e^(c*z)+a)^(-5/2)*%e^(c*z),z);
 -2/(3*b*c*(b*%e^(c*z)+a)^(3/2));
 
 /* ----- Involving (a+b*%e^(c*z))^p*(%e^(d*z))^v ---------------------------- */
@@ -2925,11 +2928,11 @@ forget(a>0,b>0);
 [a>0,b>0];
 
 /* Problem 537: NEW 08-2010 */
-integrate(((b*%e^(2*c*z)+a)^3)^((-1)/2)*%e^(c*z),z);
+integrate((b*%e^(2*c*z)+a)^(-3/2)*%e^(c*z),z);
 %e^(c*z)/(a*c*sqrt(b*%e^(2*c*z)+a));
 
 /* Problem 538: NEW 08-2010 */
-integrate(((b*%e^(2*c*z)+a)^5)^((-1)/2)*%e^(c*z),z);
+integrate((b*%e^(2*c*z)+a)^(-5/2)*%e^(c*z),z);
 2*%e^(c*z)/(3*a^2*c*sqrt(b*%e^(2*c*z)+a))
  +%e^(c*z)/(3*a*c*(b*%e^(2*c*z)+a)^(3/2));
 
