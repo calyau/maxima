@@ -57,8 +57,9 @@
 
 (defun evfact (e)
   (cond ((atom e) e)
-	((eq (caar e) 'mfactorial)
-	 (cdr (assoc (cadr e) *factlist :test #'equal)))
+        ((eq (caar e) 'mfactorial)
+         ;; Replace factorial with simplified expression from *factlist.
+         (simplifya (cdr (assoc (cadr e) *factlist :test #'equal)) nil))
 	((member  (caar e) '(%sum %derivative %integrate %product) :test #'eq)
 	 (cons (list (caar e)) (cons (evfact (cadr e)) (cddr e))))
 	(t (recur-apply #'evfact e))))
@@ -92,7 +93,8 @@
 			   (gfact (car e)
 				  ($ratsimp (list '(mplus) (car e)
 						  (list '(mtimes) -1 (caar al)))) 1)
-			   (list '(mfactorial) (caar al))))))))
+		           (list '(mfactorial) (caar al))))))))
+
 (defmfun $factcomb (e)
   (let ((varlist varlist ) genvar $ratfac (ratrep (and (not (atom e)) (eq (caar e) 'mrat))))
     (and ratrep (setq e (ratdisrep e)))
