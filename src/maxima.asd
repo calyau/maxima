@@ -562,6 +562,7 @@
 			;; These are not compiled, for whatever reason
 			:components ((:file "autol")
 				     (:file "max_ext")
+				     (:file "share-subdirs")
 				     (:file "init-cl"))))
   :serial t
   :depends-on ())
