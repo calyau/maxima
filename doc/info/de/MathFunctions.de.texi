@@ -989,7 +989,7 @@ wie negative ganze Zahlen.
 @c expressions like @code{(n+x)!}, where @code{n} is an integer.
 
 Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von 
-Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.
+Aus@-dr@"u@-cken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.
 
 @c See also @code{binomial}.
 
@@ -1141,7 +1141,7 @@ Standardwert: @code{false}
 @c for an example.
 
 Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von
-Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist. Siehe
+Aus@-dr@"u@-cken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.  Siehe
 @code{factorial} f@"ur ein Beispiel.
 
 @c @opencatbox
@@ -1830,8 +1830,8 @@ Standardwert: @code{false}
 @c @code{logcontract} command "contracts" expressions containing @code{log}.
 
 Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
-Ausdruck @code{%e^(r*log(x))} zu @code{x^r} vereinfacht. Dabei sind @code{r}  
-eine rationale Zahl und @code{x} ein beliebiger Ausdruck. Die Funktion 
+Ausdruck der Form @code{%e^(r*log(x))} zu @code{x^r} vereinfacht.  Dabei sind 
+@code{r} eine rationale Zahl und @code{x} ein beliebiger Ausdruck.  Die Funktion 
 @code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
 
 @c @opencatbox
@@ -1867,9 +1867,8 @@ verschiedene Optionsvariablen:
 @c @code{a#1}.  (@code{log(1/b)}, for @code{b} integer, always simplifies.)  If
 @c it is set to @code{false}, all of these simplifications will be turned off.
 
-@itemize
-@item @code{logexpand}
-
+@table @code
+@item logexpand
 @code{log(a^b)} wird zu @code{b*log(a)} vereinfacht. Hat @code{logexpand} den 
 Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} 
 vereinfacht. Mit den Wert @code{super} vereinfacht Maxima weiterhin 
@@ -1881,8 +1880,7 @@ Vereinfachungen ausgeschaltet.
 @c @code{logsimp} - if @code{false} then no simplification of @code{%e} to a 
 @c power containing @code{log}'s is done.
 
-@item @code{logsimp}
-
+@item logsimp
 Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
 Exponentialfunktionen @code{exp}, die Logarithmusfunktionen im Exponenten
 enthalten, nicht vereinfacht.
@@ -1893,8 +1891,7 @@ enthalten, nicht vereinfacht.
 @c integer arguments to @code{log} will also be converted to their absolute 
 @c value.
 
-@item @code{lognumer}
-
+@item lognumer
 Hat die Optionsvariable @code{lognumer} den Wert @code{true}, wird von
 negativen Gleitkommazahlen der Absolutwert genommen, bevor der Logarithmus
 berechnet wird.
@@ -1902,8 +1899,7 @@ berechnet wird.
 @c @code{lognegint} - if @code{true} implements the rule @code{log(-n)} ->
 @c @code{log(n)+%i*%pi} for @code{n} a positive integer.
 
-@item @code{lognegint}
-
+@item lognegint
 Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 @code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur postive @code{n} vereinfacht.
 
@@ -1914,13 +1910,12 @@ Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 @c well. The @code{logcontract} command "contracts" expressions containing 
 @c @code{log}.
 
-@item @code{%e_to_numlog}
-
+@item %e_to_numlog
 Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
 Ausdruck @code{%e^(r*log(x))} zu @code{x^r} vereinfacht. Dabei sind @code{r}  
 eine rationale Zahl und @code{x} ein beliebiger Ausdruck. Die Funktion 
 @code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
-@end itemize
+@end table
 
 @c @opencatbox
 @c @category{Logarithmusfunktionen}
@@ -2034,17 +2029,17 @@ Der Ausdruck @var{expr} wird rekursiv nach Ausdr@"ucken der Form
 @c ratnump(m)$} . Then @code{logcontract(1/2*log(x));} will give 
 @c @code{log(sqrt(x))}.
 
-Wird die Variable @var{n} als eine ganze Zahl deklariert, 
-@code{declare(n,integer);}, dann wird  @code{logcontract(2*a*n*log(x));} zu
-@code{a*log(x^(2*n))} vereinfacht. Die Koeffizienten, die zusammengezogen 
+Wird die Variable @var{n} mit dem Kommando @code{declare(n, integer)} als eine 
+ganze Zahl deklariert, dann wird  @code{logcontract(2*a*n*log(x))} zu
+@code{a*log(x^(2*n))} vereinfacht.  Die Koeffizienten, die zusammengezogen 
 werden, sind in diesem Fall die Zahl 2 und die Variable @var{n}, welche
-die folgende Aussage erf@"ullen @code{featurep(coeff,integer)}. Der Nutzer kann
-kontrollieren, welche Koeffizienten zusammengezogen werden. Dazu wird der
-Optionsvariablen @code{logconcoeffp} eine Aussagefunktion mit einem Argument 
-zugewiesen. Sollen z. B. Wurzeln generiert werden, kann folgende Definition 
-verwendet: @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or 
-ratnump(m)$}. Dann ergibt sich f@"ur @code{logcontract(1/2*log(x));} das 
-folgende Ergebnis @code{log(sqrt(x))}.
+die folgende Aussage erf@"ullen @code{featurep(coeff, integer)}. 
+Der Nutzer kann kontrollieren, welche Koeffizienten zusammengezogen werden. 
+Dazu wird der Optionsvariablen @code{logconcoeffp} eine Aussagefunktion mit 
+einem Argument zugewiesen. Sollen zum Beispiel Wurzeln generiert werden, kann 
+folgende Definition verwendet: @code{logconcoeffp: 'logconfun$ logconfun(m) :=
+featurep(m,integer) or ratnump(m)$}.  Dann ergibt sich f@"ur 
+@code{logcontract(1/2*log(x))} das Ergebnis @code{log(sqrt(x))}.
 
 @c @opencatbox
 @c @category{Logarithmusfunktionen}
@@ -2559,7 +2554,7 @@ der Sinus f@"ur ein halbzahliges Argument zu einer einfachen Formel:
 Ein komplizierter Faktor wird gebraucht, damit die Formel korrekt ist f@"ur ein
 komplexes Argument @var{z}:
 
-@example
+@verbatim
            realpart(z)
      floor(-----------)
               2 %pi
@@ -2569,7 +2564,7 @@ komplexes Argument @var{z}:
                       floor(-----------) - ceiling(-----------)
                                2 %pi                  2 %pi
                 ((- 1)                                          + 1))
-@end example
+@end verbatim
 
 @c Maxima knows this factor and similar factors for the functions @code{sin}, 
 @c @code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 

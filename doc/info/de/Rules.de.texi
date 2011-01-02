@@ -910,8 +910,8 @@ you, you probably want to use @code{tellsimpafter}.
 The pattern may not be a
 sum, product, single variable, or number.
 
-@code{rules} is the list of rules defined by
-@code{defrule}, @code{defmatch}, @code{tellsimp}, and @code{tellsimpafter}.
+@code{rules} is the list of rules defined by @code{tellsimpafter},
+@code{defrule}, @code{defmatch}, and @code{tellsimp}.
 
 Examples:
 

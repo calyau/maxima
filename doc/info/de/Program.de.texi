@@ -58,11 +58,11 @@
 @c @code{?foo} is written without a space between @code{?} and @code{foo}; 
 @c otherwise it might be mistaken for @code{describe ("foo")}.
 
-Maxima ist in Lisp programmiert. Es ist einfach Lisp-Funktionen und 
-Lisp-Variable in Maxima zu nutzen. Umgekehrt k@"onnen Maxima-Funktionen und
-Maxima-Variablen in Lisp genutzt werden. Ein Lisp-Symbol, das mit einem 
+Maxima ist in Lisp programmiert.  Es ist einfach Lisp-Funktionen und 
+Lisp-Variable in Maxima zu nutzen.  Umgekehrt k@"onnen Maxima-Funktionen und
+Maxima-Variablen in Lisp genutzt werden.  Ein Lisp-Symbol, das mit einem 
 Dollarzeichen @code{$} beginnt, entspricht einem Maxima-Symbol ohne einem 
-Dollarzeichen. Umgekehrt entspricht einem Maxima-Symbol, das mit einem 
+Dollarzeichen.  Umgekehrt entspricht einem Maxima-Symbol, das mit einem 
 Fragezeichen @code{?} beginnt, einem Lisp-Symbol ohne das Fragezeichen.
 Zum Beispiel entspricht dem Maxima-Symbol @code{foo} das Lisp-Symbol 
 @code{$foo} und dem Maxima-Symbol @code{?foo} entspricht das Lisp-Symbol
@@ -75,14 +75,14 @@ Zum Beispiel entspricht dem Maxima-Symbol @code{foo} das Lisp-Symbol
 
 Speziellen Zeichen wie der Trennstrich @code{-} oder ein Stern @code{*} in 
 Lisp-Symbolen muss ein Backslash @code{\} vorangestellt werden, um diese
-in Maxima zu nutzen. Zum Beispiel entspricht dem Lisp-Symbol @code{*foo-bar*}
+in Maxima zu nutzen.  Zum Beispiel entspricht dem Lisp-Symbol @code{*foo-bar*}
 das Maxima-Symbol @code{?\*foo\-bar\*}.
 
 @c Lisp code may be executed from within a Maxima session. A single line of Lisp
 @c (containing one or more forms) may be executed by the special command 
 @c @code{:lisp}. For example,
 
-Lisp-Code kann von einer Maxima-Kommandozeile ausgef@"uhrt werden. Eine einzelne
+Lisp-Code kann von einer Maxima-Kommandozeile ausgef@"uhrt werden.  Eine einzelne
 Zeile Lisp-Code kann mit dem Kommando @code{:lisp} ausgef@"uhrt werden. 
 Zum Beispiel f@"uhrt das folgende Kommando die Lisp-Funktion @code{foo} mit den
 Maxima-Variablen @code{x} und @code{y} als Argumente aus
@@ -110,7 +110,7 @@ den Funktionen @code{load}, @code{batchload}, @code{translate_file} oder
 @c @code{(to-maxima)} closes the Lisp session and returns to Maxima.
 
 Mit dem Kommando @code{to_lisp()} kann von einer Maxima-Kommandozeile eine
-Lisp-Sitzung ge@"offnet werden. Mit dem Kommando @code{(to-maxima)} wird die
+Lisp-Sitzung ge@"offnet werden.  Mit dem Kommando @code{(to-maxima)} wird die
 Lisp-Sitzung beendet und nach Maxima zur@"uckgekehrt.
 
    @c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
@@ -131,8 +131,8 @@ sollten mit einem Dollarzeichen @code{$} beginnen.
 @c letters in identifiers, while Lisp is not. There are some rules governing the
 @c translation of names between Lisp and Maxima.
 
-Im Gegensatz zu Lisp unterscheidet Maxima Gro@ss{}- und Kleinschreibung. Es gibt
-einige Regeln, die eine @"Ubersetzung von Namen zwischen Lisp und Maxima 
+Im Gegensatz zu Lisp unterscheidet Maxima Gro@ss{}- und Kleinschreibung.  Es 
+gibt einige Regeln, die eine @"Ubersetzung von Namen zwischen Lisp und Maxima 
 betreffen:
 
 @enumerate
@@ -143,9 +143,9 @@ betreffen:
 @c @code{$Foo} all correspond to Maxima @code{foo}.
 
 @item
-Ein Lisp-Bezeichner, der nicht mit vertikalen Strichen eingeschlossen ist,
-entspricht einem klein geschriebenen Maxima-Bezeichner. Die Schreibweise des
-Lisp-Bezeichners wird dabei ignoriert. Zum Beispiel entspricht den folgenden
+Ein Lisp-Bezeichner, der nicht mit senkrechten Strichen eingeschlossen ist,
+entspricht einem klein geschriebenen Maxima-Bezeichner.  Die Schreibweise des
+Lisp-Bezeichners wird dabei ignoriert.  Zum Beispiel entspricht den folgenden
 Lisp-Bezeichnern @code{$foo}, @code{$FOO} und @code{$Foo} jeweils der 
 Maxima-Bezeichner @code{foo}.
 
@@ -157,9 +157,9 @@ Maxima-Bezeichner @code{foo}.
 @c @code{FOO}, respectively.
 
 Ein Lisp-Bezeichner, der vollst@"andig gro@ss{} oder klein geschrieben ist und 
-in vertikalen Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner 
-mit der umgekehrten Schreibweise. Ein klein geschriebener Lisp-Bezeichner wird 
-also zu einem gro@ss{}geschriebenen Maxima-Bezeichner und umgekehrt. Zum 
+mit senkrechten Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner
+in der umgekehrten Schreibweise.  Ein klein geschriebener Lisp-Bezeichner wird 
+also zu einem gro@ss{}geschriebenen Maxima-Bezeichner und umgekehrt.  Zum 
 Beispiel entsprechen den Lisp-Bezeichner @code{|$FOO|} und @code{|$foo|} die
 Maxima-Bezeichner @code{foo} und @code{FOO}.
 
@@ -169,9 +169,9 @@ Maxima-Bezeichner @code{foo} und @code{FOO}.
 @c Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
 
 @item
-Ein Lisp-Bezeichner in gemischter Schreibweise der von vertikalen Strichen
-eingeschlossen wird, entspricht einem Maxima-Bezeichner mit der gleichen
-Schreibweise. Zum Beispiel entspricht dem Lisp-Bezeichner @code{|$Foo|} der
+Ein Lisp-Bezeichner in gemischter Schreibweise, der mit senkrechten Strichen
+eingeschlossen wird, entspricht einem Maxima-Bezeichner in der gleichen
+Schreibweise.  Zum Beispiel entspricht dem Lisp-Bezeichner @code{|$Foo|} der
 Maxima-Bezeichner @code{Foo}.
 @end enumerate
 
@@ -180,11 +180,11 @@ Maxima-Bezeichner @code{Foo}.
 @c expression @var{expr}.
 
 Das Lisp-Makro @code{#$} erlaubt die Nutzung von Maxima-Ausdr@"ucken in 
-Lisp-Code. @code{#$@var{expr}$} wird zu einem Lisp-Ausdruck expandiert, der
+Lisp-Code.  @code{#$@var{expr}$} wird zu einem Lisp-Ausdruck expandiert, der
 dem Maxima-Ausdruck @var{expr} entspricht.
 
 Die beiden folgenden Beispiele zeigen die Zuweisung an eine Variable @code{var}.
-Im ersten Beispiel werden Lisp- und Maxima-Code gemischt. Dies entspricht
+Im ersten Beispiel werden Lisp- und Maxima-Code gemischt.  Dies entspricht
 dem im zweiten Beispiel gezeigten Maxima-Kommando:
 
 @example
@@ -209,7 +209,7 @@ NIL
 @c Functions defined in Maxima are not ordinary Lisp functions. The Lisp 
 @c function @code{mfuncall} calls a Maxima function. For example:
 
-Maxima-Funktionen sind keine Lisp-Funktionen. Um eine Maxima-Funktion in 
+Maxima-Funktionen sind keine Lisp-Funktionen.  Um eine Maxima-Funktion in 
 Lisp-Code aufzurufen, kann die Lisp-Funktion @code{mfuncall} genutzt werden:
 
 @example
@@ -255,8 +255,8 @@ and @code{gcd}.
 @c Maxima provides a @code{do} loop for iteration, as well as more primitive
 @c constructs such as @code{go}.
 
-In Maxima k@"onnen Programme geschrieben werden. Alle Maxima-Funktionen und 
-Maxima-Variablen k@"onnen in Programmen verwendet werden. Maxima hat einen
+In Maxima k@"onnen Programme geschrieben werden.  Alle Maxima-Funktionen und 
+Maxima-Variablen k@"onnen in Programmen verwendet werden.  Maxima hat einen
 Compiler, um Maxima-Programme in Lisp-Programme zu @"ubersetzen. 
 
 Maxima kennt die folgenden Anweisungen und Variablen um Programme zu definieren:
@@ -371,8 +371,8 @@ Beispiele:
 
 @c --- 04.12.2010 DK -----------------------------------------------------------
 @anchor{block}
-@deffn  {Funktion} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Funktion} block (@var{expr_1}, ..., @var{expr_n})
+@deffn  {Funktion} block ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n})
+@deffnx {Funktion} block (@var{expr_1}, @dots{}, @var{expr_n})
 
 @c @code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence and 
 @c returns the value of the last expression evaluated. The sequence can be 
@@ -384,12 +384,12 @@ Beispiele:
 @c the list may be omitted. Within the block, any variable other than @var{v_1},
 @c ..., @var{v_m} is a global variable.
 
-@code{block} wertet die Argument @var{expr_1}, @var{expr_2}, ..., @var{expr_n}
-nacheinander aus und gibt das Ergebnis des letzten ausgewerteten Ausdrucks
-zur@"uck. Die Reihenfolge kann mit den Funktionen @code{go}, @code{throw} und
-@code{return} beeinflusst werden. Die Liste der Variablen 
+@code{block} wertet die Argument @var{expr_1}, @var{expr_2}, @dots{}, 
+@var{expr_n} nacheinander aus und gibt das Ergebnis des letzten ausgewerteten 
+Ausdrucks zur@"uck.  Die Reihenfolge kann mit den Funktionen @code{go}, 
+@code{throw} und @code{return} beeinflusst werden.  Die Liste der Variablen 
 @code{[v_1, ..., v_m]} am Anfang von @code{block} bezeichnet Variablen, die
-innerhalb von @code{block} lokal sind. Alle anderen Variablen, die in einem
+innerhalb von @code{block} lokal sind.  Alle anderen Variablen, die in einem
 Block verwendet werden, beziehen sich auf globale Variablen.
 
 @c @code{block} saves the current values of the variables @var{v_1}, ..., 
@@ -398,8 +398,8 @@ Block verwendet werden, beziehen sich auf globale Variablen.
 @c arbitrary values within the block but when the block is exited the saved 
 @c values are restored, and the values assigned within the block are lost.
 
-@code{block} sichert die aktuellen Werte der Variablen @var{v_1}, ..., 
-@var{v_m}. Wird @code{block} verlassen, werden diese Werte wiederhergestellt.
+@code{block} sichert die aktuellen Werte der Variablen @var{v_1}, @dots{}, 
+@var{v_m}.  Wird @code{block} verlassen, werden diese Werte wiederhergestellt.
 
 @c The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
 @c saves the properties associated with the symbols @var{v_1}, ..., @var{v_m},
@@ -412,8 +412,8 @@ Block verwendet werden, beziehen sich auf globale Variablen.
 @c otherwise declarations within a block are actually global declarations.
 
 Die Deklaration @code{local(@var{v_1}, ..., @var{v_m})} innerhalb @code{block}
-sichert nicht nur die Werte, sondern auch die Eigenschaften der Variablen. Beim
-Verlassen von @code{block} werden die Eigenschaften wiederhergestellt. Erhalten 
+sichert nicht nur die Werte, sondern auch die Eigenschaften der Variablen.  Beim
+Verlassen von @code{block} werden die Eigenschaften wiederhergestellt.  Erhalten 
 die Variablen Eigenschaften innerhalb von @code{block}, werden diese wieder
 entfernt, wenn @code{block} verlassen wird.
 
@@ -424,9 +424,9 @@ entfernt, wenn @code{block} verlassen wird.
 @c otherwise, it is the value of the variable in the global environment. This 
 @c policy may coincide with the usual understanding of "dynamic scope".
 
-Die Anweisung @code{block} kann verschachtelt werden. Jeder Block kann
-eigene lokale Variablen definieren. Diese sind global zu jedem verschachtelten
-Block. Ein Variable die nicht lokal ist, hat den globalen Wert eines
+Die Anweisung @code{block} kann verschachtelt werden.  Jeder Block kann
+eigene lokale Variablen definieren.  Diese sind global zu jedem verschachtelten
+Block.  Ein Variable die nicht lokal ist, hat den globalen Wert eines
 einschlie@ss{}enden Blocks oder den Wert der globalen Umgebung.
 
 @c The value of the block is the value of the last statement or the value of the
@@ -440,7 +440,7 @@ einschlie@ss{}enden Blocks oder den Wert der globalen Umgebung.
 @c a block other than the one containing the @code{go}.
 
 Der R@"uckgabewert eines Blocks ist der Wert des letzten Ausdrucks oder der 
-Wert, der mit den @code{return}-Anweisung zur@"uckgegeben wird. Mit der 
+Wert, der mit den @code{return}-Anweisung zur@"uckgegeben wird.  Mit der 
 @code{go}-Anweisung kann innerhalb eines Blocks zu einer Marke gesprungen 
 werden.
 
@@ -448,7 +448,7 @@ werden.
 @c be used in other places as well.
 
 Bl@"ocke erscheinen typischerweise auf der rechten Seite einer 
-Funktionsdefintion. Sie k@"onnen aber auch an anderen Stellen verwendet werden.
+Funktionsdefintion.  Sie k@"onnen aber auch an anderen Stellen verwendet werden.
 
 @c @opencatbox
 @c @category{Expressions} @category{Programming}
@@ -457,15 +457,15 @@ Funktionsdefintion. Sie k@"onnen aber auch an anderen Stellen verwendet werden.
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
 @anchor{break}
-@deffn {Funktion} break (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} break (@var{expr_1}, @dots{}, @var{expr_n})
 
 @c Evaluates and prints @var{expr_1}, ..., @var{expr_n} and then causes a Maxima
 @c break at which point the user can examine and change his environment.  Upon 
 @c typing @code{exit;} the computation resumes.
 
-Wertet die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} aus, zeigt die Ergebnisse
-an und f@"uhrt dann eine Unterbrechung aus. Mit dem Kommando @code{exit;} wird
-Maxima fortgesetzt.
+Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} aus, zeigt die 
+Ergebnisse an und f@"uhrt dann eine Unterbrechung aus.  Mit dem Kommando 
+@code{exit;} wird Maxima fortgesetzt.
 
 @c @opencatbox
 @c @category{Debugging}
@@ -474,7 +474,7 @@ Maxima fortgesetzt.
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
 @anchor{catch}
-@deffn {Funktion} catch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} catch (@var{expr_1}, @dots{}, @var{expr_n})
 
 @c Evaluates @var{expr_1}, ..., @var{expr_n} one by one; if any leads to the 
 @c evaluation of an expression of the form @code{throw (arg)}, then the value of
@@ -483,12 +483,12 @@ Maxima fortgesetzt.
 @c depth of nesting to the nearest enclosing @code{catch}. If there is no 
 @c @code{catch} enclosing a @code{throw}, an error message is printed.
 
-Wertet die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} nacheinander aus. Wertet
-irgendeiner der Ausdr@"ucke zu @code{throw(arg)} aus, dann ist das Ergebnis der
-Wert von @code{throw(arg)} und es werden keine weiteren Ausdr@"ucke ausgewertet.
-Diese nicht-lokale R@"uckgabe kehrt zu dem n@"achsten @code{catch} in einer
-beliebigen Verschachtelungstiefe zur@"uck. Wird kein @code{catch} gefunden
-gibt Maxima eine Fehlermeldung aus.
+Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} nacheinander aus.  
+Wertet irgendeiner der Ausdr@"ucke zu @code{throw(arg)} aus, dann ist das 
+Ergebnis der Wert von @code{throw(arg)} und es werden keine weiteren Ausdr@"ucke
+ausgewertet.  Diese nicht-lokale R@"uckgabe kehrt zu dem n@"achsten @code{catch}
+in einer beliebigen Verschachtelungstiefe zur@"uck.  Wird kein @code{catch} 
+gefunden gibt Maxima eine Fehlermeldung aus.
 
 @c If the evaluation of the arguments does not lead to the evaluation of any 
 @c @code{throw} then the value of @code{catch} is the value of @var{expr_n}.
@@ -503,7 +503,7 @@ Beispiel:
 @c "catches" the first negative element of @code{l} and "throws" it up.
 
 Die Funktion @code{g} gibt eine Liste mit den Werten des Lambda-Ausdrucks 
-zur@"uck. Tritt ein negativer Wert auf, bricht die Funktion ab, in diesem 
+zur@"uck.  Tritt ein negativer Wert auf, bricht die Funktion ab, in diesem 
 Beispiel mit @code{throw(-3)}.
 
 @example
@@ -530,16 +530,17 @@ Beispiel mit @code{throw(-3)}.
 @c programming languages (Fortran, Algol, PL/I, etc.); then the other features 
 @c will be mentioned.
 
-Die @code{do}-Anweisung erlaubt die Definition von Iterationen. Aufgrund der
+Die @code{do}-Anweisung erlaubt die Definition von Iterationen.  Aufgrund der
 gro@ss{}en Allgemeinheit der @code{do}-Anweisung folgt die Beschreibung in zwei
-Teilen. Zun@"achst wird mehr bekannte Form beschrieben, wie sie auch von anderen
-Programmiersprachen bekannt ist. Dann folgen die weiteren M@"oglichkeiten.
+Teilen.  Zun@"achst wird mehr bekannte Form beschrieben, wie sie auch von 
+anderen Programmiersprachen bekannt ist.  Dann folgen die weiteren 
+M@"oglichkeiten.
 
 @c There are three variants of this form that differ only in their terminating 
 @c conditions.  They are:
 
 Es gibt drei Varianten der @code{do}-Anweisung, die sich nur durch die
-Abbruchbedingung voneinander unterscheiden. Diese sind:
+Abbruchbedingung voneinander unterscheiden.  Diese sind:
 
 @itemize @bullet
 @item
@@ -561,7 +562,7 @@ Abbruchbedingung voneinander unterscheiden. Diese sind:
 @c expressions.  If the increment is 1 then "@code{step 1}" may be omitted.
 
 @var{initial_value}, @var{increment}, @var{limit} und @var{body} k@"onnen 
-beliebige Ausdr@"ucke sein. Ist das Inkrement 1, kann @code{step} entfallen.
+beliebige Ausdr@"ucke sein.  Ist das Inkrement 1, kann @code{step} entfallen.
 
 @c The execution of the @code{do} statement proceeds by first assigning the 
 @c @var{initial_value} to the @var{variable} (henceforth called the 
@@ -575,13 +576,13 @@ beliebige Ausdr@"ucke sein. Ist das Inkrement 1, kann @code{step} entfallen.
 @c any of them is satisfied.
 
 Die Ausf@"uhrung der @code{do}-Anweisung beginnt mit der Zuweisung von
-@code{initial_value} and die Kontrollvariable @var{variable}. Dann folgen die 
+@code{initial_value} and die Kontrollvariable @var{variable}.  Dann folgen die 
 Schritte: (1) Hat die Kontrollvariable den Wert einer @code{thru}-Anweisung
 @"uberschritten oder hat die Bedingung einer @code{unless}-Anweisung den Wert
 @code{true} oder hat die Bedingung einer @code{while}-Anweisung den Wert
-@code{false}, dann endet die Ausf@"uhrung der @code{do}-Anweisung. (2) Die
-Ausdr@"ucke in @var{body} werden ausgewertet. (3) Das Inkrement wird zu der
-Kontrollvariablen hinzuaddiert. Die Schritte (1) bis (3) werden solange 
+@code{false}, dann endet die Ausf@"uhrung der @code{do}-Anweisung.  (2) Die
+Ausdr@"ucke in @var{body} werden ausgewertet.  (3) Das Inkrement wird zu der
+Kontrollvariablen hinzuaddiert.  Die Schritte (1) bis (3) werden solange 
 ausgef@"uhrt, bis eine der Bedingungen f@"ur die Beendigung der 
 @code{do}-Anweisung zutrifft.
 
@@ -596,13 +597,13 @@ ausgef@"uhrt, bis eine der Bedingungen f@"ur die Beendigung der
 @c may not terminate properly.
 
 Im Allgemeinen ist der @code{thru}-Test erf@"ullt, wenn die Kontrollvariable 
-gr@"o@ss{}er als @var{limit} ist, falls @var{increment} nicht negativ ist. Oder 
+gr@"o@ss{}er als @var{limit} ist, falls @var{increment} nicht negativ ist.  Oder 
 wenn die Kontrollvariable kleiner als @code{limit} ist, f@"ur den Fall, dass das
-Inkrement negativ ist. @var{increment} und @var{limit} k@"onnen Ausdr@"ucke 
+Inkrement negativ ist.  @var{increment} und @var{limit} k@"onnen Ausdr@"ucke 
 sein, sofern die Bedingung zum Abbruch der @code{do}-Anweisung ausgewertet 
-werden kann. Soll @code{increment} zu einem negativen Wert auswerten und kann 
+werden kann.  Soll @code{increment} zu einem negativen Wert auswerten und kann 
 dies jedoch bei Eintritt in die Schleife von Maxima nicht festgestellt werden, 
-so wird das Inkrement als positiv angenommen. Dies kann dazu f@"uhren, dass die
+so wird das Inkrement als positiv angenommen.  Dies kann dazu f@"uhren, dass die
 Schleife nicht korrekt ausgef@"uhrt wird.
 
 @c Note that the @var{limit}, @var{increment}, and termination condition are
@@ -614,7 +615,7 @@ Schleife nicht korrekt ausgef@"uhrt wird.
 
 Es ist zu beachten, dass @var{limit}, @var{increment} und die Bedingung f@"ur
 den Abbruch der Schleife f@"ur jeden Durchgang durch die Schleife ausgewertet
-Werden. @"Andern diese ihren Wert nicht, kann es daher effizienter sein, die
+Werden.  @"Andern diese ihren Wert nicht, kann es daher effizienter sein, die
 Werte diese Ausdr@"ucke vor Eintritt in die Schleife zu berechnen und in
 Variablen abzulegen, die anstatt der Ausdr@"ucke in der Schleife verwendet 
 werden.
@@ -627,11 +628,11 @@ werden.
 @c @code{go} function may not be used to exit from a @code{do} into a 
 @c surrounding @code{block}.
 
-Die @code{do}-Anweisung hat den R@"uckgabewert @code{done}. Um einen anderen
-Wert zur@"uckzugeben, kann die Funktion @code{return} innerhalb von @code{body}
-genutzt werden. Befindet sich die @code{do}-Anweisung innerhalb eines Blockes,
-so wird dieser nicht mit einer @code{return}-Anweisung verlassen, die sich 
-innerhalbe der @code{do}-Anweisung befindet. Auch kann nicht mit der
+Die @code{do}-Anweisung hat den R@"uckgabewert @code{done}.  Um einen anderen
+Wert zu@-r@"uck@-zu@-ge@-ben, kann die Funktion @code{return} innerhalb von 
+@code{body} genutzt werden.  Befindet sich die @code{do}-Anweisung innerhalb 
+eines Blockes, so wird dieser nicht mit einer @code{return}-Anweisung verlassen,
+die sich innerhalbe der @code{do}-Anweisung befindet.  Auch kann nicht mit der
 @code{go}-Anweisung in einen umgebenen Block gesprungen werden.
 
 @c The control-variable is always local to the @code{do} and thus any variable 
@@ -639,7 +640,7 @@ innerhalbe der @code{do}-Anweisung befindet. Auch kann nicht mit der
 @c outside of the @code{do}.  The control-variable is unbound after the 
 @c @code{do} terminates.
 
-Die Kontrollvariable ist immer lokal zur @code{do}-Anweisung. Nach dem
+Die Kontrollvariable ist immer lokal zur @code{do}-Anweisung.  Nach dem
 Verlassen der @code{do}-Anweisung kann auf die Kontrollvariable nicht mehr 
 zugegriffen werden.
 
@@ -766,7 +767,7 @@ mit @code{next} f@"ur jeden Schleifendurchgang berechnet werden.
 
 Anstatt mit der Syntax @code{for @var{variable}: @var{value} ...} kann die
 Kontrollvariable auch mit @code{for @var{variable} from @var{value} ...do...}
-initialisiert werden. Wird auch @code{from @var{value}} fortgelassen, wird
+initialisiert werden.  Wird auch @code{from @var{value}} fortgelassen, wird
 die Kontrollvariable mit dem Wert 1 initialisiert.
 
 @c Sometimes one may be interested in performing an iteration where the 
@@ -776,9 +777,9 @@ die Kontrollvariable mit dem Wert 1 initialisiert.
 @c a poor initial guess.
 
 Manchmal kann es von Interesse sein, in einer Schleife keine Kontrollvariable
-zu nutzen. In diesem Fall gen@"ugt es allein die Bedingung f@"ur den Abbruch der
-Schleife anzugeben. Im folgenden wird die Wurzel aus 5 mit dem Heron-Verfahren
-bestimmt.
+zu nutzen.  In diesem Fall gen@"ugt es allein die Bedingung f@"ur den Abbruch 
+der Schleife anzugeben.  Im folgenden wird die Wurzel aus 5 mit dem 
+Heron-Verfahren bestimmt.
 
 @c ===beg===
 @c x: 1000$
@@ -800,10 +801,10 @@ bestimmt.
 @c indefinitely.  In this case the function @code{return} should be used to 
 @c terminate execution of the @code{do}.
 
-Auch die Abbruchbedingung kann fortgelassen werden. Wird allein
-@code{do @var{body}} angegeben, wird die Schleife unendlich oft ausgef@"uhrt. Um
-die Schleife zu verlassen, kann die Funktion @code{return} genutzt werden. Das
-folgende Beispiel zeigt die Implementation des Newton-Algorithmus.
+Auch die Abbruchbedingung kann fortgelassen werden.  Wird allein
+@code{do @var{body}} angegeben, wird die Schleife unendlich oft ausgef@"uhrt. 
+Um die Schleife zu verlassen, kann die Funktion @code{return} genutzt werden. 
+Das folgende Beispiel zeigt die Implementation des Newton-Algorithmus.
 
 @c ===beg===
 @c newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
@@ -843,7 +844,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 @c @code{list} may be any non-atomic expression, and successive parts are taken.
 
 Die Elemente der Liste @var{list} k@"onnen beliebige Ausdr@"ucke sein, die
-nacheinander der Kontrollvariablen zugewiesen werden. Die Schleife bricht ab, 
+nacheinander der Kontrollvariablen zugewiesen werden.  Die Schleife bricht ab, 
 wenn die optionale Abbruchbedingung @code{end_test} zutrifft, wenn die Liste
 @var{list} keine weiteren Elemente enth@"alt oder wenn die Schleife zum Beispiel
 mit der Funktion @code{return} verlassen wird.
@@ -870,7 +871,7 @@ mit der Funktion @code{return} verlassen wird.
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
 @anchor{errcatch}
-@deffn {Funktion} errcatch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} errcatch (@var{expr_1}, @dots{}, @var{expr_n})
 
 @c Evaluates @var{expr_1}, ..., @var{expr_n} one by one and returns 
 @c @code{[@var{expr_n}]} (a list) if no error occurs.  If an error occurs in the
@@ -878,9 +879,9 @@ mit der Funktion @code{return} verlassen wird.
 @c propagating and returns the empty list @code{[]} without evaluating any more 
 @c arguments.
 
-Wertet die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} nacheinander aus und
+Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} nacheinander aus und
 gibt das Ergebnis des letzten Ausdrucks als eine Liste @code{[@var{expr_n}]}
-zur@"uck, wenn kein Fehler bei der Auswertung auftritt. Tritt ein Fehler
+zur@"uck, wenn kein Fehler bei der Auswertung auftritt.  Tritt ein Fehler
 bei der Auswertung eines der Ausdr@"ucke auf, ist die R@"uckgabe eine leere 
 Liste @code{[]}.
 
@@ -888,7 +889,7 @@ Liste @code{[]}.
 @c might occur which would terminate the @code{batch} if the error weren't 
 @c caught.
 
-@code{errcatch} ist n@"utzlich in Batch-Dateien. Mit @code{errcatch} kann ein
+@code{errcatch} ist n@"utzlich in Batch-Dateien.  Mit @code{errcatch} kann ein
 m@"oglicher Fehler abgefangen werden, ohne das die Verarbeitung der Batch-Datei
 abbricht.
 
@@ -916,13 +917,13 @@ Division by 0
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
 @anchor{error}
-@deffn  {Funktion} error (@var{expr_1}, ..., @var{expr_n})
+@deffn  {Funktion} error (@var{expr_1}, @dots{}, @var{expr_n})
 @deffnx {Systemvariable} error
 
 @c Evaluates and prints @var{expr_1}, ..., @var{expr_n}, and then causes an 
 @c error return to top level Maxima or to the nearest enclosing @code{errcatch}.
 
-Wertet die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} aus, gibt diese auf der
+Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} aus, gibt diese auf der
 Konsole aus und generiert so dann einen Fehler, der zur obersten Ebene von
 Maxima f@"uhrt oder zu dem n@"achsten @code{errcatch}.
 
@@ -932,7 +933,7 @@ Maxima f@"uhrt oder zu dem n@"achsten @code{errcatch}.
 @c elements are the values of any non-string arguments.
 
 Der Systemvariable @code{error} wird eine Liste zugewiesen, die eine 
-Beschreibung des Fehlers enth@"alt. Das erste Element der Liste ist eine
+Beschreibung des Fehlers enth@"alt.  Das erste Element der Liste ist eine
 Zeichenkette und die weiteren Elemente enthalten die Argumente die keine 
 Zeichenkette sind.
 
@@ -987,9 +988,9 @@ Standardwert: 10
 @c @code{error_syms}.
 
 @code{error_size} kontrolliert die Ausgabe eines Ausdrucks der zu einem Fehler
-gef@"uhrt hat. Ist der Ausdruck gr@"o@ss{}er als @code{error_size} wird der 
+gef@"uhrt hat.  Ist der Ausdruck gr@"o@ss{}er als @code{error_size} wird der 
 Ausdruck bei der Ausgabe einer Fehlermeldung durch ein Symbol ersetzt und dem 
-Symbol wird der Ausdruck zugewiesen. Die Symbole werden aus der Liste 
+Symbol wird der Ausdruck zugewiesen.  Die Symbole werden aus der Liste 
 @code{error_syms} ausgew@"ahlt.
 
 @c Otherwise, the expression is smaller than @code{error_size}, and the 
@@ -1059,7 +1060,7 @@ Standardwert: @code{[errexp1, errexp2, errexp3]}
 @c by @code{error_syms[1]}, the second by @code{error_syms[2]}, and so on.
 
 In Fehlermeldungen werden Ausdr@"ucke die gr@"o@ss{}er als @code{error_size} 
-sind, durch Symbole ersetzt, denen der Ausdruck zugewiesen wird. Die Symbole 
+sind, durch Symbole ersetzt, denen der Ausdruck zugewiesen wird.  Die Symbole 
 werden nacheinander der Liste @code{error_syms} entnommen.
 
 @c If there are more too-large expressions than there are elements of 
@@ -1085,8 +1086,8 @@ Siehe auch @mref{error} und @mrefdot{error_size}
 @c Reprints the most recent error message. The variable @code{error} holds the 
 @c message, and @code{errormsg} formats and prints it.
 
-Gibt die letzte Fehlermeldung erneut aus. Die Fehlermeldung ist in der
-Systemvariablen @code{errormsg} enthalten. Die Funktion @code{errormsg}
+Gibt die letzte Fehlermeldung erneut aus.  Die Fehlermeldung ist in der
+Systemvariablen @code{errormsg} enthalten.  Die Funktion @code{errormsg}
 formatiert diese und gibt sie aus.
 
 @c @opencatbox
@@ -1108,7 +1109,7 @@ von Fehlermeldungen unterdr@"uckt.
 @c value. The global value of @code{errormsg} is always present.
 
 Der Optionsvariable @code{errormsg} kann in einem Block kein lokaler Wert
-zugewiesen werden. Der globale Wert von @code{errormsg} ist stets pr@"asent.
+zugewiesen werden.  Der globale Wert von @code{errormsg} ist stets pr@"asent.
 
 @c ===beg===
 @c errormsg;
@@ -1172,7 +1173,7 @@ value of errormsg is false
 @c Used in iterations. See @code{do} for a description of Maxima's iteration 
 @c facilities.
 
-Anweisung f@"ur Interationen. Siehe die @mref{do}-Anweisung f@"ur eine 
+Anweisung f@"ur Interationen.  Siehe die @mref{do}-Anweisung f@"ur eine 
 Beschreibung der Iterationsm@"oglichkeiten von Maxima.
 
 @c @opencatbox
@@ -1190,8 +1191,8 @@ Beschreibung der Iterationsm@"oglichkeiten von Maxima.
 @c For example:
 
 Erlaubt einen Sprung innerhalb eines Blocks zu einer Marke mit dem Namen 
-@code{tag}. Um eine Anweisung mit einer Sprungmarke zu versehen, wird der
-Anweisung die Marke als weitere Anweisung vorangestellt. Ein Beispiel ist:
+@code{tag}.  Um eine Anweisung mit einer Sprungmarke zu versehen, wird der
+Anweisung die Marke als weitere Anweisung vorangestellt.  Ein Beispiel ist:
 
 @example
 block ([x], x:1, loop, x+1, ..., go(loop), ...)
@@ -1202,7 +1203,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @c other than the one containing the @code{go}.
 
 Das Argument der Funktion @code{go} muss der Name einer Marke sein, die in
-demselben Block erscheint. Es ist nicht m@"oglich in einen anderen Block zu
+demselben Block erscheint.  Es ist nicht m@"oglich in einen anderen Block zu
 springen.
 
 @c @opencatbox
@@ -1220,7 +1221,7 @@ springen.
 @c Represents conditional evaluation. Various forms of @code{if} expressions are 
 @c recognized.
 
-Ist die bedingte Anweisung. Verschiedene Formen einer bedingten Anweisung sind
+Ist die bedingte Anweisung.  Verschiedene Formen einer bedingten Anweisung sind
 m@"oglich.
 
 @c @code{if @var{cond_1} then @var{expr_1} else @var{expr_0}} evaluates to 
@@ -1236,11 +1237,11 @@ Ansonsten wertet der Ausdruck zu @var{expr_0} aus.
 @c @code{true} and all preceding conditions are @code{false}. If none of the 
 @c conditions are @code{true}, the expression evaluates to @code{expr_0}.
 
-@code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2}
-elseif ... else @var{expr_0}} wertet zu @var{expr_k} aus, wenn die Bedingung
-@var{cond_k} den Wert @code{true} hat und alle vorhergehenden Bedingungen
-den Wert @code{false} haben. Trifft keine Bedingungen zu, wertet der Ausdruck
-zu @var{expr_0} aus.  
+Die zusammengesetzte bedingte Anweisung @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then 
+@var{expr_2} elseif ... else @var{expr_0}} wertet zu @var{expr_k} aus, wenn die 
+Bedingung @var{cond_k} den Wert @code{true} hat und alle vorhergehenden 
+Bedingungen den Wert @code{false} haben.  Trifft keine der Bedingungen zu, 
+wertet der Ausdruck zu @var{expr_0} aus.  
 
 @c A trailing @code{else false} is assumed if @code{else} is missing. That is, 
 @c @code{if @var{cond_1} then @var{expr_1}} is equivalent to 
@@ -1261,9 +1262,9 @@ then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}} ist
 @c neither simplified nor evaluated unless the corresponding condition is 
 @c @code{true}.
 
-Die Anweisungen @var{expr_0}, ..., @var{expr_n} k@"onnen beliebige 
-Maxima-Ausdr@"ucke einschlie@ss{}lich weiterer @code{if}-Anweisungen sein. Die
-Anweisungen werden nicht vereinfacht oder ausgewertet, solange die 
+Die Anweisungen @var{expr_0}, @dots{}, @var{expr_n} k@"onnen beliebige 
+Maxima-Ausdr@"ucke ein@-schlie@ss{}@-lich weiterer @code{if}-Anweisungen sein.  
+Die Anweisungen werden nicht vereinfacht oder ausgewertet, solange die 
 dazugeh@"orende Bedingung nicht das Ergebnis @code{true} hat.
 
 @c The conditions @var{cond_1}, ..., @var{cond_n} are expressions which 
@@ -1275,12 +1276,12 @@ dazugeh@"orende Bedingung nicht das Ergebnis @code{true} hat.
 @c do not evaluate to @code{true} or @code{false} are accepted, and the result 
 @c is a conditional expression.
 
-Die Bedingungen @var{cond_1}, ..., @var{cond_n} sind Ausdr@"ucke, die zu 
-@code{true} oder @code{false} ausgewertet werden k@"onnen. Kann eine Bedingung
+Die Bedingungen @var{cond_1}, @dots{}, @var{cond_n} sind Ausdr@"ucke, die zu 
+@code{true} oder @code{false} ausgewertet werden k@"onnen.  Kann eine Bedingung
 nicht zu @code{true} oder @code{false} ausgewertet werden, h@"angt die Reaktion
-von der Optionsvariablen @code{prederror} ab. Hat @code{prederror} den Wert
+von der Optionsvariablen @code{prederror} ab.  Hat @code{prederror} den Wert
 @code{true}, dann meldet Maxima einen Fehler, wenn eine Bedingung nicht zu
-@code{true} oder @code{false} ausgewertet werden kann. Ansonsten werden
+@code{true} oder @code{false} ausgewertet werden kann.  Ansonsten werden
 Bedingungen akzeptiert, die nicht zu @code{true} oder @code{false} ausgewertet
 werden k@"onnen und das Ergebnis ist ein bedingter Ausdruck.
 
@@ -1325,7 +1326,7 @@ not                    not         logical prefix
 @c saved properties on exit from the block or other compound expression in which
 @c @code{local} appears.
 
-Speichert alle Eigenschaften der Symbole @var{v_1}, ..., @var{v_n}, entfernt
+Speichert alle Eigenschaften der Symbole @var{v_1}, @dots{}, @var{v_n}, entfernt
 die Eigenschaften und stellt die abgespeicherten Eigenschaften nach dem Austritt
 aus einem Block oder einem zusammengesetzten Ausdruck in dem @code{local}
 auftritt wieder her.
@@ -1338,10 +1339,10 @@ auftritt wieder her.
 @c which @code{local} appears; otherwise such declarations are global 
 @c declarations.
 
-Einige Deklarationen sind als Eigenschaft eines Symbols implementiert. Dazu
+Einige Deklarationen sind als Eigenschaft eines Symbols implementiert.  Dazu
 geh@"oren Deklarationen mit @code{:=}, @code{array}, @code{dependencies}, 
 @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant}, 
-@code{nonscalar} oder @code{assume}. Der Effekt von @code{local} ist, dass
+@code{nonscalar} oder @code{assume}.  Der Effekt von @code{local} ist, dass
 solche Deklarationen nur lokal in dem Block wirksam sind.
 
 @c @code{local} can only appear in @code{block} or in the body of a function 
@@ -1354,7 +1355,7 @@ darf @code{local} jeweils nur einmal auftreten.
 
 @c @code{local} quotes its arguments. @code{local} returns @code{done}.
 
-@code{local} wertet die Argumente aus. @code{local} hat die R@"uckgabe 
+@code{local} wertet die Argumente aus.  @code{local} hat die R@"uckgabe 
 @code{done}.
 
 Beispiel:
@@ -1393,7 +1394,7 @@ Eine lokale Funktionsdefinition.
 @c See @code{block} for more information.
 
 Die @code{return}-Anweisung wird in einem Block verwendet, um den Block mit dem
-Ergebnis @var{value} zu verlassen. Sie @mref{block} f@"ur mehr Informationen.
+Ergebnis @var{value} zu verlassen.  Sie @mref{block} f@"ur mehr Informationen.
 
 @c @opencatbox
 @c @category{Programming}

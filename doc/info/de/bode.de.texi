@@ -23,7 +23,12 @@ Function to draw Bode gain plots. To use this function write first
 @code{load(bode)}. See also @mrefdot{bode_phase}
 
 Examples (1 through 7 from
+@ifnottex
 @url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
+@end ifnottex
+@tex
+\texttt{http://www.swarthmore.edu/\-NatSci/\-echeeve1/\-Ref/\-Bode/\-BodeHow.html},
+@end tex
 8 from Ron Crummett):
 
 @example
@@ -112,7 +117,12 @@ Function to draw Bode phase plots. To use this function write first
 @code{load(bode)}. See also @mrefdot{bode_gain}
 
 Examples (1 through 7 from
+@ifnottex
 @url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
+@end ifnottex
+@tex
+\texttt{http://www.swarthmore.edu/\-NatSci/\-echeeve1/\-Ref/\-Bode/\-BodeHow.html},
+@end tex
 8 from Ron Crummett):
 
 @example

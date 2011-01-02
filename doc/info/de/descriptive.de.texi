@@ -1352,8 +1352,7 @@ Example:
 
 (%i5) kurtosis (s2);
 (%o5) [- .2715445622195385, 0.119998784429451, 
-       - .4275233490482861, - .6405361979019522, - .4952382132352935]
-
+   - .4275233490482861, - .6405361979019522, - .4952382132352935]
 @end example
 
 See also functions @code{mean}, @code{var} and @code{skewness}.
@@ -1681,9 +1680,9 @@ Example:
 @end example
 
 Function @code{global_variances} has an optional logical argument: 
-@code{global_variances(x,true)} tells Maxima that @code{x} is the data matrix, 
+@code{global_variances (x, true)} tells Maxima that @code{x} is the data matrix, 
 making the same as @code{global_variances(x)}. On the other hand, 
-@code{global_variances(x,false)} means that @code{x} is not the data matrix, 
+@code{global_variances(x, false)} means that @code{x} is not the data matrix, 
 but the covariance matrix, avoiding its recalculation,
 
 @c ===beg===

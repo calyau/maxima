@@ -90,13 +90,16 @@
 
 @iftex
 @hyphenation{an-ge-ge-ben
+             an-ge-wen-det
              Ar-gu-men-ten
              Aus-drucks
              aus-ge-wer-tet
              Aus-wer-tung
              be-zeich-net
+             de-fi-nier-ten
              Dol-lar-zei-chen
              Ei-gen-schafts-lis-te
+             ein-ge-schlos-sen
              ent-hal-ten
              ge-kenn-zeich-net
              ge-ne-riert
@@ -111,13 +114,17 @@
              Spei-cher
              un-ge-ra-de
              ver-ein-fach-en
+             Ver-ein-fach-ung
              ver-ein-facht
+             ver-ti-ka-len
              Ver-zeich-nis
              wei-te-ren
              wei-ter-hin
+             wer-tet
              wxMaxima
              Xmaxima
              Zei-chen-ket-ten
+             Zu-falls-zah-len-ge-ne-ra-tors
              Zwi-schen-aus-druck }
 @end iftex
 

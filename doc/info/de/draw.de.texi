@@ -51,13 +51,25 @@ affect those @i{graphic objects} placed on its right. Some @i{graphic options}
 affect the global appearence of the scene.
 
 This is the list of @i{graphic objects} available for scenes in two dimensions:
-@code{bars}, @code{ellipse}, @code{explicit}, @code{image}, @code{implicit}, 
-@code{label}, @code{parametric}, @code{points}, @code{polar}, @code{polygon}, 
-@code{quadrilateral}, @code{rectangle}, @code{triangle}, @code{vector}, and 
+@flushleft
+@code{bars}, 
+@code{ellipse}, 
+@code{explicit}, 
+@code{image}, 
+@code{implicit}, 
+@code{label}, 
+@code{parametric}, 
+@code{points}, 
+@code{polar}, 
+@code{polygon}, 
+@code{quadrilateral}, 
+@code{rectangle}, 
+@code{triangle}, 
+@code{vector}, and 
 @code{geomap} (this one defined in package @code{worldmap}).
+@end flushleft
 
 See also @code{draw} and @code{draw2d}.
-
 To make use of this object, write first @code{load(draw)}.
 
 @c @opencatbox
@@ -75,14 +87,26 @@ affect those @i{graphic objects} placed on its right. Some @i{graphic options}
 affect the global appearence of the scene.
 
 This is the list of @i{graphic objects} available for scenes in three 
-dimensions: @code{cylindrical}, @code{elevation_grid}, @code{explicit}, 
-@code{implicit}, @code{label}, @code{mesh}, @code{parametric}, 
-@code{parametric_surface}, @code{points}, @code{quadrilateral}, 
-@code{spherical}, @code{triangle}, @code{tube}, @code{vector}, and @code{geomap} 
-(this one defined in package @code{worldmap}).
+dimensions:
+@flushleft
+@code{cylindrical}, 
+@code{elevation_grid}, 
+@code{explicit}, 
+@code{implicit}, 
+@code{label}, 
+@code{mesh}, 
+@code{parametric}, 
+@code{parametric_surface}, 
+@code{points}, 
+@code{quadrilateral}, 
+@code{spherical}, 
+@code{triangle}, 
+@code{tube}, 
+@code{vector}, and 
+@code{geomap} (this one defined in package @code{worldmap}).
+@end flushleft
 
 See also @code{draw} and @code{draw3d}.
-
 To make use of this object, write first @code{load(draw)}.
 
 @c @opencatbox
@@ -108,7 +132,6 @@ Functions @code{draw2d} and @code{draw3d} are short cuts to be used
 when only one scene is required, in two or three dimensions, respectively.
 
 See also @code{gr2d} and @code{gr3d}.
-
 To make use of this function, write first @code{load(draw)}.
 
 Example:
@@ -540,27 +563,30 @@ polygons and labels.
 
 Colors can be given as names or in hexadecimal @i{rgb} code.
 
-Available color names are: 
-@code{white}, @code{black}, @code{gray0}, @code{grey0}, @code{gray10},
-@code{grey10}, @code{gray20}, @code{grey20}, @code{gray30}, @code{grey30},
-@code{gray40}, @code{grey40}, @code{gray50}, @code{grey50}, @code{gray60},
-@code{grey60}, @code{gray70}, @code{grey70}, @code{gray80}, @code{grey80},
-@code{gray90}, @code{grey90}, @code{gray100}, @code{grey100}, @code{gray},
-@code{grey}, @code{light_gray}, @code{light_grey}, @code{dark_gray},
-@code{dark_grey}, @code{red}, @code{light_red}, @code{dark_red}, @code{yellow},
-@code{light_yellow}, @code{dark_yellow}, @code{green}, @code{light_green},
-@code{dark_green}, @code{spring_green}, @code{forest_green}, @code{sea_green},
-@code{blue}, @code{light_blue}, @code{dark_blue}, @code{midnight_blue}, 
-@code{navy}, @code{medium_blue}, @code{royalblue}, @code{skyblue}, 
-@code{cyan}, @code{light_cyan}, @code{dark_cyan}, @code{magenta}, 
-@code{light_magenta}, @code{dark_magenta}, @code{turquoise}, 
-@code{light_turquoise}, @code{dark_turquoise}, @code{pink}, @code{light_pink},
-@code{dark_pink}, @code{coral}, @code{light_coral}, @code{orange_red},
-@code{salmon}, @code{light_salmon}, @code{dark_salmon}, @code{aquamarine},
-@code{khaki}, @code{dark_khaki}, @code{goldenrod}, @code{light_goldenrod},
-@code{dark_goldenrod}, @code{gold}, @code{beige}, @code{brown}, @code{orange},
-@code{dark_orange}, @code{violet}, @code{dark_violet}, @code{plum} and 
-@code{purple}.
+Available color names are:
+@verbatim
+white            black            gray0            grey0 
+gray10           grey10           gray20           grey20     
+gray30           grey30           gray40           grey40     
+gray50           grey50           gray60           grey60     
+gray70           grey70           gray80           grey80
+gray90           grey90           gray100          grey100 
+gray             grey             light_gray       light_grey 
+dark_gray        dark_grey        red              light_red 
+dark_red         yellow           light_yellow     dark_yellow
+green            light_green      dark_green       spring_green
+forest_green     sea_green        blue             light_blue 
+dark_blue        midnight_blue    navy             medium_blue 
+royalblue        skyblue          cyan             light_cyan 
+dark_cyan        magenta          light_magenta    dark_magenta
+turquoise        light_turquoise  dark_turquoise   pink 
+light_pink       dark_pink        coral            light_coral 
+orange_red       salmon           light_salmon     dark_salmon 
+aquamarine       khaki            dark_khaki       goldenrod 
+light_goldenrod  dark_goldenrod   gold             beige 
+brown            orange           dark_orange      violet 
+dark_violet      plum             purple
+@end verbatim
 
 Cromatic componentes in hexadecimal code are introduced in the form 
 @code{"#rrggbb"}.
@@ -1221,11 +1247,21 @@ set graphic option @code{font} to the name of the font.
 
 @item
 @i{Postscript}:
-Standard Postscript fonts are: @code{"Times-Roman"}, @code{"Times-Italic"}, 
-@code{"Times-Bold"}, @code{"Times-BoldItalic"}, @code{"Helvetica"}, 
-@code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"}, 
-@code{"Helvetic-BoldOblique"}, @code{"Courier"}, @code{"Courier-Oblique"}, 
-@code{"Courier-Bold"}, and @code{"Courier-BoldOblique"}.
+Standard Postscript fonts are:
+@flushleft 
+@code{"Times-Roman"}, 
+@code{"Times-Italic"}, 
+@code{"Times-Bold"}, 
+@code{"Times-BoldItalic"}, 
+@code{"Helvetica"}, 
+@code{"Helvetica-Oblique"}, 
+@code{"Helvetica-Bold"}, 
+@code{"Helvetic-BoldOblique"}, 
+@code{"Courier"}, 
+@code{"Courier-Oblique"}, 
+@code{"Courier-Bold"}, and 
+@code{"Courier-BoldOblique"}.
+@end flushleft
   
 Example:
 
@@ -3531,12 +3567,12 @@ value of option @code{error_type}.
 
 @b{2D}
 
-If @code{error_type=x}, arguments to @code{errors} must be of the form 
-@code{[x,y,xdelta]} or @code{[x,y,xlow,xhigh]}. If @code{error_type=y}, 
-arguments must be of the form @code{[x,y,ydelta]} or @code{[x,y,ylow,yhigh]}.
-If @code{error_type=xy} or @code{error_type=boxes}, arguments to @code{errors}
-must be of the form @code{[x,y,xdelta,ydelta]} or 
-@code{[x,y,xlow,xhigh,ylow,yhigh]}.
+If @code{error_type = x}, arguments to @code{errors} must be of the form 
+@code{[x, y, xdelta]} or @code{[x, y, xlow, xhigh]}. If @code{error_type = y}, 
+arguments must be of the form @code{[x, y, ydelta]} or @code{[x, y, ylow, yhigh]}.
+If @code{error_type = xy} or @code{error_type = boxes}, arguments to @code{errors}
+must be of the form @code{[x, y, xdelta, ydelta]} or 
+@code{[x, y, xlow, xhigh, ylow, yhigh]}.
 
 See also @code{error_type}.
 
@@ -3575,8 +3611,8 @@ Vertical and horizontal error bars.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Graphic object} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
-@deffnx {Graphic object} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {Graphic object} explicit (@var{fcn}, @var{var}, @var{minval}, @var{maxval})
+@deffnx {Graphic object} explicit (@var{fcn}, @var{var1}, @var{minval1}, @var{maxval1}, @var{var2}, @var{minval2}, @var{maxval2})
 
 Draws explicit functions in 2D and 3D.
 
@@ -3604,9 +3640,9 @@ Example:
 
 @b{3D}
 
-@code{explicit(@var{fcn}, @var{var1}, @var{minval1}, @var{maxval1}, @var{var2}, 
-@var{minval2}, @var{maxval2})} plots explicit function @var{fcn}, with variable 
-@var{var1} taking values from @var{minval1} to @var{maxval1} and variable 
+@code{explicit (@var{fcn}, @var{var1}, @var{minval1}, @var{maxval1}, @var{var2}, 
+@var{minval2}, @var{maxval2})} plots the ex@-pli@-cit function @var{fcn}, with the variable 
+@var{var1} taking values from @var{minval1} to @var{maxval1} and the variable 
 @var{var2} taking values from @var{minval2} to @var{maxval2}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
@@ -3729,8 +3765,10 @@ An xpm file is read and then rendered.
 
 See also @code{make_level_picture}, @code{make_rgb_picture} and @code{read_xpm}.
 
-URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
-contains more elaborated examples.
+@flushleft
+@url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image} contains more
+elaborated examples.
+@end flushleft
 
 @c @opencatbox
 @c @category{Package draw}
@@ -3904,8 +3942,8 @@ Two quadrilaterals.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Graphic object} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
-@deffnx {Graphic object} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+@deffn  {Graphic object} parametric (@var{xfun}, @var{yfun}, @var{par}, @var{parmin}, @var{parmax})
+@deffnx {Graphic object} parametric (@var{xfun}, @var{yfun}, @var{zfun}, @var{par}, @var{parmin}, @var{parmax})
 
 Draws parametric functions in 2D and 3D.
 
@@ -3914,8 +3952,9 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 
 @b{2D}
 
-@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} plots parametric function 
-@code{[@var{xfun},@var{yfun}]}, with parameter @var{par} taking values from 
+@code{parametric (@var{xfun}, @var{yfun}, @var{par}, @var{parmin}, @var{parmax})} 
+plots the parametric function 
+@code{[@var{xfun}, @var{yfun}]}, with the parameter @var{par} taking values from 
 @var{parmin} to @var{parmax}.
 
 Example:
@@ -3930,8 +3969,9 @@ Example:
 
 @b{3D}
 
-@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} plots parametric curve 
-@code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par} taking values from 
+The command
+@code{parametric (@var{xfun}, @var{yfun}, @var{zfun}, @var{par}, @var{parmin}, @var{parmax})} plots the parametric curve 
+@code{[@var{xfun}, @var{yfun}, @var{zfun}]}, with the parameter @var{par} taking values from 
 @var{parmin} to @var{parmax}.
 
 Example:
@@ -3954,15 +3994,17 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Graphic object} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+@anchor{parametric_surface}
+@deffn {Graphic object} parametric_surface (@var{xfun}, @var{yfun}, @var{zfun}, @var{par1}, @var{par1min}, @var{par1max}, @var{par2}, @var{par2min}, @var{par2max})
 
 Draws parametric surfaces in 3D.
 
 @b{3D}
 
-@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
-plots parametric surface @code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par1}
-taking values from @var{par1min} to @var{par1max} and parameter @var{par2}
+@code{parametric_surface(@var{xfun}, @var{yfun}, @var{zfun}, @var{par1}, @var{par1min}, @var{par1max}, @var{par2},@* 
+@var{par2min}, @var{par2max})}
+plots the parametric surface @code{[@var{xfun}, @var{yfun}, @var{zfun}]}, with the parameter @var{par1}
+taking values from @var{par1min} to @var{par1max} and the parameter @var{par2}
 taking values from @var{par2min} to @var{par2max}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
@@ -4011,11 +4053,11 @@ This object is affected by the following @i{graphic options}: @code{point_size},
 
 @b{2D}
 
-@code{points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} or
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}
-plots points @code{[x1,y1]}, @code{[x2,y2]}, etc. If abscissas
+@code{points([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], ...])} or
+@code{points([@var{x1}, @var{x2}, ...], [@var{y1}, @var{y2}, ...])}
+plots points @code{[x1, y1]}, @code{[x2, y2]}, etc. If abscissas
 are not given, they are set to consecutive positive integers, so that 
-@code{points ([@var{y1},@var{y2},...])} draws points @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, etc.
+@code{points ([@var{y1}, @var{y2}, ...])} draws points @code{[1, @var{y1}]}, @code{[2, @var{y2}]}, etc.
 If @var{matrix} is a two-column or two-row matrix, @code{points (@var{matrix})}
 draws the associated points. If @var{matrix} is a one-column or one-row matrix,
 abscissas are assigned automatically.
@@ -4095,9 +4137,9 @@ Drawing an array filled with function @code{read_array}.
 
 @b{3D}
 
-@code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} or 
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
-plots points @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
+@code{points ([[@var{x1}, @var{y1}, @var{z1}], [@var{x2}, @var{y2}, @var{z2}], ...])} or 
+@code{points ([@var{x1}, @var{x2}, ...], [@var{y1}, @var{y2}, ...], [@var{z1}, @var{z2}, ...])}
+plots points @code{[@var{x1}, @var{y1}, @var{z1}]}, @code{[@var{x2}, @var{y2}, @var{z2}]}, etc.
 If @var{matrix} is a three-column or three-row matrix, @code{points (@var{matrix})}
 draws the associated points.
 
@@ -4253,9 +4295,12 @@ Draws a quadrilateral.
 @code{quadrilateral ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}], [@var{x4},@var{y4}])} draws a quadrilateral with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]},
 @code{[@var{x3},@var{y3}]}, and @code{[@var{x4},@var{y4}]}.
 
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
-@code{yaxis_secondary}, @code{line_type}, @code{transform} and @code{color}.
+This object is affected by the following @i{graphic options}:
+@flushleft
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
+@code{key}, @code{xaxis_secondary}, @code{yaxis_secondary}, @code{line_type}, 
+@code{transform} and @code{color}.
+@end flushleft
 
 Example:
 
@@ -4267,9 +4312,10 @@ Example:
 
 @b{3D}
 
-@code{quadrilateral ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}], [@var{x4},@var{y4},@var{z4}])} draws a quadrilateral with vertices
-@code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]},
-@code{[@var{x3},@var{y3},@var{z3}]}, and @code{[@var{x4},@var{y4},@var{z4}]}.
+@code{quadrilateral ([@var{x1}, @var{y1}, @var{z1}], [@var{x2}, @var{y2}, @var{z2}], [@var{x3}, @var{y3}, @var{z3}], [@var{x4}, @var{y4}, @var{z4}])} @* 
+draws a quadrilateral with vertices
+@code{[@var{x1}, @var{y1}, @var{z1}]}, @code{[@var{x2}, @var{y2}, @var{z2}]},
+@code{[@var{x3}, @var{y3}, @var{z3}]}, and @code{[@var{x4}, @var{y4}, @var{z4}]}.
 
 This object is affected by the following @i{graphic options}: @code{line_type}, 
 @code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
@@ -4378,9 +4424,12 @@ Draws a triangle.
 @code{triangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}])} draws a triangle with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]},
 and @code{[@var{x3},@var{y3}]}.
 
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
-@code{yaxis_secondary}, @code{line_type}, @code{transform}, and @code{color}.
+This object is affected by the following @i{graphic options}:
+@flushleft
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
+@code{key}, @code{xaxis_secondary}, @code{yaxis_secondary}, @code{line_type}, 
+@code{transform}, and @code{color}.
+@end flushleft
 
 Example:
 
@@ -4924,15 +4973,14 @@ A simple map defined by hand:
 (%i8) draw2d(geomap([0,1,2,3,4]))$
 @end example
 
-Auxiliary package @code{worldmap} sets global variable
-@code{boundaries_array} to real world boundaries in
-(longitude, latitude) coordinates. These data are in the 
+The auxiliary package @code{worldmap} sets the global variable
+@code{boundaries_array} to the real world boundaries in coordinates. The data is in the 
 public domain and come from 
 @url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
-Package @code{worldmap} defines also boundaries for countries,
+The package @code{worldmap} defines also boundaries for countries,
 continents and coastlines as lists with the necessary components of 
 @code{boundaries_array} (see file @code{share/draw/worldmap.mac}
-for more information). Package @code{worldmap} automatically loads 
+for more information). The package @code{worldmap} automatically loads 
 package @code{worldmap}.
 @example
 (%i1) load(worldmap)$

@@ -570,7 +570,7 @@ F. Schwarz, Algorithmic Solution of Abel's Equation,
 
 @item
 E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
-    ODE Patterns, Computer Physics Communications 113 (1998), p 239.
+    ODE Patterns, Computer Physics Communications 113 (1998), p 239.@*
 @ifnottex
     (@url{http://lie.uwaterloo.ca/papers/ode_vii.pdf})
 @end ifnottex
@@ -581,13 +581,16 @@ E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
 @item
 E. S. Cheb-Terrab, T. Kolokolnikov,  First Order ODEs,
     Symmetries and Linear Transformations, European Journal of
-    Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
+    Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).@*
 @ifnottex
     (@url{http://arxiv.org/abs/math-ph/0007023}, 
     @url{http://lie.uwaterloo.ca/papers/ode_iv.pdf})
 @end ifnottex
 @tex
     (\texttt{http://\-arxiv.org/\-abs/\-math-ph/\-0007023},
+@end tex
+@*
+@tex
     \texttt{http://\-lie.uwaterloo.ca/\-papers/\-ode\_iv.pdf})
 @end tex
 
@@ -599,9 +602,13 @@ G. W. Bluman, S. C. Anco, Symmetry and Integration Methods for
 M. Bronstein, S. Lafaille,
 Solutions of linear ordinary differential equations in terms
 of special functions,
-Proceedings of ISSAC 2002, Lille, ACM Press, 23-28. 
+Proceedings of ISSAC 2002, Lille, ACM Press, 23-28.@*
+@tex
+(\texttt{http://www-sop.inria.fr/cafe/Manuel.Bronstein/\-publications/\-issac2002.pdf)}
+@end tex
+@ifnottex
 (@url{http://www-sop.inria.fr/cafe/Manuel.Bronstein/publications/issac2002.pdf})
-
+@end ifnottex
 @end enumerate
 
 @c --- End of file contrib_ode.de.texi -----------------------------------------

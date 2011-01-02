@@ -2827,8 +2827,10 @@ Returns a list of graphs from the file @var{fl} in the sparse6 format.
 @subsection Visualization
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} draw_graph (@var{graph})
+@anchor{draw_graph}
+@deffn  {Function} draw_graph (@var{graph})
 @deffnx {Function} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
+
 Draws the graph using the @code{draw} package.
 
 The algorithm used to position vertices is specified by the optional
@@ -3034,14 +3036,16 @@ Example 6:
 
 @c ===beg===
 @c load(graphs)$
-@c t: tutte_graph();
-@c draw_graph(t, redraw=true, fixed_vertices=[1,2,3,4,5,6,7,8,9]);
+@c t: tutte_graph(); 
+@c draw_graph(t, redraw=true, 
+@c               fixed_vertices=[1,2,3,4,5,6,7,8,9]);
 @c ===end===
 @example
 (%i1) load(graphs)$
 (%i2) t: tutte_graph();
 (%o2)                         GRAPH
-(%i3) draw_graph(t, redraw=true, fixed_vertices=[1,2,3,4,5,6,7,8,9]);
+(%i3) draw_graph(t, redraw=true, 
+                    fixed_vertices=[1,2,3,4,5,6,7,8,9]);
 (%o3)                         done
 @end example
 

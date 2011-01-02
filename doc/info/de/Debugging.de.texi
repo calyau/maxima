@@ -756,17 +756,15 @@ Gebe @code{-> true} beim Eintritt in und Austritt aus einer Funktion aus.
 @c similar form; note also that keywords need not be quoted.) Specifying the 
 @c option keyword with a predicate function makes the option conditional on the 
 @c predicate.
-
-Es k@"onnen bedingte Optionen f@"ur die Ablaufverfolgung definiert werden.  Dazu
-wird eine Option zusammen mit einer Aussagefunktion angegeben.
-
 @c The argument list to the predicate function is always 
 @c @code{[level, direction, function, item]} where @code{level} is the recursion
 @c level for the function,  @code{direction} is either @code{enter} or 
 @c @code{exit}, @code{function} is the name of the function, and @code{item} is 
 @c the argument list (on entering) or the return value (on exiting).
 
-Die Argumente der Aussagefunktion f@"ur eine bedingte Option sind immer
+Es k@"onnen bedingte Optionen f@"ur die Ablaufverfolgung definiert werden.  Dazu
+wird eine Option zusammen mit einer Aussagefunktion angegeben.  Die Argumente 
+der Aussagefunktion f@"ur eine bedingte Option sind immer 
 @code{[level, direction, function, item]}.  @code{level} ist die Rekursionstiefe
 der Funktion, @code{direction} enth@"alt die Werte @code{enter} oder 
 @code{exit}, @code{function} ist der Name der Funktion und @code{item} ist eine 
