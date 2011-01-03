@@ -110,7 +110,8 @@
              ka-no-ni-scher
              Mgnuplot
              O-pe-ra-tor 
-             O-pe-ra-to-ren
+             O-pe-ra-to-ren         
+             Sei-ten-ef-fek-te
              Spei-cher
              un-ge-ra-de
              ver-ein-fach-en
@@ -125,6 +126,7 @@
              Xmaxima
              Zei-chen-ket-ten
              Zu-falls-zah-len-ge-ne-ra-tors
+             zu-ge-wie-sen
              Zwi-schen-aus-druck }
 @end iftex
 

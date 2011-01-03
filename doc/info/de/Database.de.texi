@@ -332,7 +332,8 @@ Symbole k@"onnen dann diese Eigenschaft erhalten.
 @var{a_i} wird als eine Nary-Funktion interpretiert.
 Verschachtelte Ausdr@"ucke wie @code{foo(x, foo(y,z))} werden zu 
 @code{foo(x, y, z)} vereinfacht. Die Deklaration @code{nary} unterscheidet sich
-von der Funktion @code{nary}. W@"ahrend der Funktionsaufruf einen neuen Operator definiert, wirkt sich die Deklaration nur auf die Vereinfachung aus.
+von der Funktion @code{nary}. W@"ahrend der Funktionsaufruf einen neuen Operator
+definiert, wirkt sich die Deklaration nur auf die Vereinfachung aus.
 
 @c Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
 @c @code{commutative} is the same as @code{symmetric}.
@@ -802,15 +803,17 @@ die Eigenschaft @var{foo} hat. Ansonsten wird @code{false} zur@"uckgegeben.
 
 @c The infolist @code{features} is a list of known features. These are
 
-Die Informationsliste @code{features} enth@"alt eine Liste der Eigenschaften, die
-Funktionen und Variablen erhalten k@"onnen und in die Datenbank eingetragen 
+Die Informationsliste @code{features} enth@"alt eine Liste der Eigenschaften, 
+die Funktionen und Variablen erhalten k@"onnen und in die Datenbank eingetragen 
 werden:
 
+@flushleft
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
 @code{irrational}, @code{real}, @code{imaginary}, @code{complex},
 @code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
 @code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
 @code{rassociative}, @code{symmetric}, und @code{antisymmetric}.
+@end flushleft
 
 @c plus any user-defined features.
 
@@ -939,8 +942,8 @@ andere Weise nicht angezeigt werden k@"onnen, zum Beispiel f@"ur @code{atvalue},
 @anchor{scalar}
 @defvr {Eigenschaft} scalar
 
-Hat ein Symbol die Eigenschaft @code{scalar}, verh@"alt es sich wie ein Skalar bei
-nicht-kommutativen Rechenoperationen.
+Hat ein Symbol die Eigenschaft @code{scalar}, verh@"alt es sich wie ein Skalar 
+bei nicht-kommutativen Rechenoperationen.
 
 @c @opencatbox
 @c @category{Declarations and inferences} @category{Vectors} @category{Matrices}
@@ -1081,8 +1084,8 @@ Die Funktion @code{asksign} versucht zu entscheiden, ob der Ausdruck @var{expr}
 positiv, negativ oder null ist. Kann Maxima dies nicht feststellen, wird der 
 Nutzer nach weiteren Informationen gefragt, um die Frage zu entscheiden. Die 
 Antworten des Nutzers werden f@"ur die laufende Auswertung in die Datenbank 
-eingetragen. Der R@"uckgabewert von @code{asksign} ist @code{pos}, @code{neg} oder
-@code{zero}.
+eingetragen. Der R@"uckgabewert von @code{asksign} ist @code{pos}, @code{neg} 
+oder @code{zero}.
 
 @c @opencatbox
 @c @category{Deklarationen und Inferenzen}
@@ -1210,7 +1213,7 @@ Standardwert: @code{true}
 
 Hat die Optionsvariable @code{assumescalar} den Wert @code{true}, werden 
 Ausdr@"ucke die mit @code{nonscalarp(expr)} den Wert @code{false} haben, in 
-bestimmten Transformationen als ein Scalar behandelt.
+bestimmten Transformationen als ein Skalar behandelt.
 
 @c Let @code{expr} represent any expression other than a list or a matrix, and 
 @c let @code{[1, 2, 3]} represent any list or matrix. Then 
@@ -1218,11 +1221,11 @@ bestimmten Transformationen als ein Scalar behandelt.
 @c @code{assumescalar} is @code{true}, or @code{scalarp (expr)} is @code{true}, 
 @c or @code{constantp (expr)} is @code{true}.
 
-Ist @code{expr} irgendein Ausdruck bis auf eine Liste oder eine Matix und
-@code{[1, 2, 3]} repr@"asentiert eine Liste oder eine Matrix. Dann ergibt
+Ist @code{expr} irgendein Ausdruck bis auf eine Liste oder eine Matrix und
+@code{[1, 2, 3]} re@-pr@"a@-sen@-tiert eine Liste oder eine Matrix. Dann ergibt
 @code{expr . [1, 2, 3]} das Ergebnis @code{[expr, 2 expr, 3 expr]}, wenn
-@code{assumescalar}, @code{scalarp(expr)} oder @code{constantp(expr} den Wert 
-@code{true} hat.
+@code{assumescalar}, @code{scalarp(expr)} oder @code{constantp(expr)} den Wert 
+@code{true} haben.
 
 @c If @code{assumescalar} is @code{true}, such expressions will behave like 
 @c scalars only for commutative operators, but not for noncommutative 

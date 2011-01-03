@@ -4,7 +4,7 @@
 @c Language    : German
 @c Original    : Miscellaneous.texi revision 1.28
 @c Translation : Dr. Dieter Kaiser
-@c Date        : 14.11.2010
+@c Date        : 03.01.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -19,152 +19,69 @@
 @node Einf@"uhrung in Verschiedenes, Share-Pakete, Verschiedenes, Verschiedenes
 @section Einf@"uhrung in Verschiedenes
 
-@c In this section various options are discussed which have a global effect on 
-@c the operation of Maxima.   Also various lists such as the list of all user 
-@c defined functions, are discussed.
-
 Dieses Kapitel enth@"alt verschiedene Funktionen und Optionsvariablen.
 
 @c -----------------------------------------------------------------------------
 @node Share-Pakete, Funktionen und Variablen f@"ur Verschiedenes, Einf@"uhrung in Verschiedenes, Verschiedenes
 @section Share-Pakete
 
-@c The Maxima "share" directory contains programs and other files  of interest 
-@c to Maxima users, but not part of the core implementation of Maxima. These 
-@c programs are typically loaded via @code{load} or @code{setup_autoload}.
-
 Das Maxima Share-Verzeichnis enth@"alt viele weitere zus@"atzliche Funktionen
-und Erweiterungen, die nicht Teil des Kernels von Maxima sind, und in Paketen
+und Erweiterungen, die nicht Teil des Kernels von Maxima und in Paketen
 organisiert sind.  Diese Pakete werden mit der Funktion @code{load} geladen. 
 Einige Pakete werden automatisch geladen, wenn der Nutzer eine Funktion
 des Paketes aufruft.  Mit der Funktion @code{setup_autoload} k@"onnen Funktionen
 f@"ur das automatische Laden konfiguriert werden.
 
-@c @code{:lisp *maxima-sharedir*} displays the location of the share directory
-@c within the user's file system.
+Die Lisp-Variable @code{*maxima-sharedir*} enth@"alt das Verzeichnis der Pakete.
+Das Kommanod @code{printfile("share.usg")} gibt eine @"Ubersicht @"uber Pakete 
+aus.  Diese ist jedoch derzeit stark veraltert.
 
-Die Lisp-Variable @code{*maxima-sharedir*} enth@"alt das Verzeichns der Pakete.
-
-@c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
-@c @code{printfile ("share.usg")} prints an out-of-date list of share packages.
-@c Users may find it more informative to browse the share directory using a file 
-@c system browser.
-
-Das Kommanod @code{printfile("share.usg"} gibt eine @"Ubersicht @"uber Pakete aus.
-Diese ist jedoch derzeit stark veraltert.
+@c TODO: FUEGE HIER EINE AUFSTELLUNG DER SHARE-PAKETE EIN.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Verschiedenes,  , Share-Pakete, Verschiedenes
 @section Funktionen und Variablen f@"ur Verschiedenes
 
-@c TODO: DIE OPTIONSVARIABLE PACKAGFILE WIRD NICHT GENUTZT. AN ALLEN BISHERIGEN
-@c       STELLEN IST DIE VARIABLE AUSKOMMENTIERT. MOEGLICHERWEISE KANN DIE
-@c       VARIABLE VOLLSTAENDIG ENTFERNT WERDEN.
-@c       DIE DOKUMENTATION WIRD HIER AUSKOMMENTIERT.
-
-@c --- 28.08.2010 DK -----------------------------------------------------------
-@c @defvr {Option variable} packagefile
-@c Default value: @code{false}
-
-@c Package designers who use @code{save} or @code{translate} to create packages 
-@c (files) for others to use may want to set @code{packagefile: true} to prevent 
-@c information from being added to Maxima's information-lists (e.g. @code{values},
-@c @code{functions}) except where necessary when the file is loaded in. In this 
-@c way, the contents of the package will not get in the user's way when he adds his
-@c own data.  Note that this will not solve the problem of possible name conflicts.
-@c Also note that the flag simply affects what is output to the package file.
-@c Setting the flag to @code{true} is also useful for creating Maxima init files.
-
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
-@c @end defvr
-
-@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{properties}
 @deffn {Funktion} properties (@var{a})
-
-@c Returns a list of the names of all the properties associated with the 
-@c atom @var{a}.
 
 Gibt eine Liste mit Eigenschaften zur@"uck, die das Atom @var{a} von Maxima
 oder dem Nutzer erhalten hat.
 
 @c TODO: HIER FEHLT EINE AUFLISTUNG DER MOEGLICHEN EIGENSCHAFTEN.
 
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
-
-@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! 
-@c (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c WHAT IS HIDDEN IN THE "etc" HERE ??
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
 @anchor{props}
 @defvr {Systemvariable} props
 Standardwert: @code{[]}
 
-@c @code{props} are atoms which have any property other than those explicitly
-@c mentioned in @code{infolists}, such as specified by @code{atvalue}, 
-@c @code{matchdeclare}, etc., as well as properties specified in the 
-@c @code{declare} function.
-
 @code{props} ist eine Liste der Symbole, die eine Eigenschaft mit den Funktionen
 @code{declare}, @code{atvaule} oder @code{matchdeclare} erhalten haben.
 
-@c @opencatbox
-@c @category{Declarations and inferences} @category{Global variables}
-@c @closecatbox
 @end defvr
-
-@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{propvars}
 @deffn {Funktion} propvars (@var{prop})
 
-@c Returns a list of those atoms on the @code{props} list which have the 
-@c property indicated by @var{prop}.  Thus @code{propvars (atvalue)} returns a 
-@c list of atoms which have atvalues.
+Gibt eine Liste mit den Atomen zur@"uck, die in der Informationsliste 
+@code{props} eingetragen sind und die die Eigenschaft @var{prop} haben.  Zum 
+Beispiel gibt @code{propvars(atvalue)} eine Liste der Atome zur@"uck, die die 
+Eigenschaft @code{atvalue} haben.
 
-Gibt eine Liste mit den Atomen zur@"uck, die in der Informationsliste @code{props}
-eingetragen sind und die die Eingenschaften @var{prop} haben.  Zum Beispiel
-gibt @code{propvars(atvalue)} eine Liste der Atome zur@"uck, die die Eigenschaft
-@code{atvalue} haben.
-
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
-
-@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY 
-@c declare OR OTHER FUNCTIONS ??
-@c IS put(foo,true,integer) EQUIVALENT TO declare(foo,integer) FOR EXAMPLE ??
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{put}
 @deffn {Funktion} put (@var{atom}, @var{value}, @var{indicator})
 
-@c Assigns @var{value} to the property (specified by @var{indicator}) of 
-@c @var{atom}. @var{indicator} may be the name of any property, not just a 
-@c system-defined property.
-
 Weist den Wert @var{value} der Eigenschaft @var{indicator} des Atoms @var{atom}
 zu.  @var{indicator} kann eine beliebige Eigenschaft sein und beschr@"ankt sich
-nicht auf die vom System definierten Eigenschaften.
-
-@c @code{put} evaluates its arguments.  @code{put} returns @var{value}.
-
-@code{put} wertet die Argumente aus.  @code{put} gibt @var{value} zur@"uck.
+nicht auf die vom System definierten Eigenschaften.  @code{put} wertet die 
+Argumente aus.  @code{put} gibt @var{value} zur@"uck.
 
 Beispiele:
 
@@ -184,24 +101,19 @@ Beispiele:
 (%i3) properties (foo);
 (%o3)            [[user properties, str, expr]]
 (%i4) get (foo, expr);
+@group
                                    5
 (%o4)                       (b + a)
+@end group
 (%i5) get (foo, str);
 (%o5)                         Hello
 @end example
 
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{qput}
 @deffn {Funktion} qput (@var{atom}, @var{value}, @var{indicator})
-
-@c Assigns @var{value} to the property (specified by @var{indicator}) of 
-@c @var{atom}. This is the same as @code{put}, except that the arguments are 
-@c quoted.
 
 Arbeit wie die Funktion @code{put} mit dem Unterschied, dass @code{qput} die
 Argumente nicht auswertet.
@@ -237,33 +149,15 @@ Beispiele:
 (%o9)                          bar
 @end example
 
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
-@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS?
-@c HOW IS THIS DIFFERENT FROM remove ??
-
-@c -----------------------------------------------------------------------------
+@c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{rem}
 @deffn {Funktion} rem (@var{atom}, @var{indicator})
 
-@c Removes the property indicated by @var{indicator} from @var{atom}.
-
 Entfernt die Eigenschaft @var{indicator} vom Atom @var{atom}.
 
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
-
-@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS?
-@c HOW IS THIS DIFFERENT FROM rem ??
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{remove}
@@ -273,177 +167,83 @@ Entfernt die Eigenschaft @var{indicator} vom Atom @var{atom}.
 @deffnx {Funktion} remove (@var{a}, transfun)
 @deffnx {Funktion} remove (all, @var{p})
 
-@c Removes properties associated with atoms.
-
 Entfernt Eigenschaften von Atomen.
-
-@c @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})} removes 
-@c property @code{p_k} from atom @code{a_k}.
 
 @code{remove(@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})} entfernt die
 Eigenschaft @code{p_k} von dem Atom @code{a_k}.
-
-@c @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-@c removes properties @code{@var{p_1}, ..., @var{p_n}} from atoms @var{a_1}, 
-@c ..., @var{a_m}. There may be more than one pair of lists.
 
 @code{remove([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
 entfernt die Eigenschaften @var{p_1}, @dots{}, @var{p_n} von den Atomen 
 @var{a_1}, @dots{}, @var{a_m}.  Es k@"onnen mehrere Paare an Listen angegeben 
 werden.
 
-@c VERIFY THAT THIS WORKS AS ADVERTISED
-@c @code{remove (all, @var{p})} removes the property @var{p} from all atoms 
-@c which have it.
-
 @code{remove(all, @var{p})} entfernt die Eigenschaft @var{p} von allen Atomen, 
 die diese Eigenschaft aufweisen.
 
-   @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
-@c The removed properties may be system-defined properties such as
-@c @code{function}, @code{macro}, or @code{mode_declare}, or user-defined properties.
-
 Die zu entfernenden Eigenschaften k@"onnen vom System definierte Eigenschaften
-wie @code{function}, @code{macro}, @code{mode_declare} oder nutzerdefiniere
+wie @code{function}, @code{macro}, @code{mode_declare} oder nutzerdefinierte
 Eigenschaften sein.
-
-   @c VERIFY THAT THIS WORKS AS ADVERTISED
-   @c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
-@c A property may be @code{transfun} to remove the translated Lisp version of a 
-@c function. After executing this, the Maxima version of the function is 
-@c executed rather than the translated version.
-
-Eine Eigenschaft kann zum Beispiel @code{transrun} sein.  In diesem Fall wird
-nicht mehr die @"ubersetzte Lisp-Version, sondern die zugeh@"orige Maxima-Funktion
-ausgef@"uhrt.
-
-@c @code{remove ("@var{a}", operator)} or, equivalently, 
-@c @code{remove ("@var{a}", op)} removes from @var{a} the operator properties 
-@c declared by @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, 
-@c @code{matchfix}, or @code{nofix}. Note that the name of the operator must be 
-@c written as a quoted string.
 
 @code{remove("@var{a}", operator)} oder @code{remove("@var{a}", op)}
 entfernen vom atom @var{a} die Operatoreigenschaften, die mit den Funktionen 
 @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} oder
-@code{nofix} definiert wurden.  Es ist zu beachten, dass der Name des Operators
-als eine Zeichenkette angegeben werden muss.
-
-@c @code{remove} always returns @code{done} whether or not an atom has a 
-@c specified property. This behavior is unlike the more specific remove 
-@c functions @code{remvalue}, @code{remarray}, @code{remfunction}, and 
-@c @code{remrule}.
+@code{nofix} definiert wurden.  Die Namen von Operatoren m@"ussen als eine 
+Zeichenkette angegeben werden.
 
 @code{remove} gibt immer @code{done} zur@"uck.
 
-@c IN SERIOUS NEED OF EXAMPLES HERE
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
-
-@c NEEDS EXAMPLES
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{remvalue}
 @deffn  {Funktion} remvalue (@var{name_1}, @dots{}, @var{name_n})
 @deffnx {Funktion} remvalue (all)
 
-@c Removes the values of user variables @var{name_1}, ..., @var{name_n} (which 
-@c can be subscripted) from the system.
-
-Entfernt die Werte von vom Nutzer definierten Variablen @var{name_1}, @dots{}, 
+Entfernt die Werte von nutzerdefinierten Variablen @var{name_1}, @dots{}, 
 @var{name_n}.  Die Variablen k@"onnen indiziert sein.
-
-@c @code{remvalue (all)} removes the values of all variables in @code{values},
-@c the list of all variables given names by the user (as opposed to those which 
-@c are automatically assigned by Maxima).
-
-@code{remvalue(all)} entfernt die Werte aller Variable die in der 
+@code{remvalue(all)} entfernt die Werte aller Variablen, die in der 
 Informationsliste @code{values} enthalten sind.
-
-@c See also @code{values}.
 
 Siehe auch @mrefdot{values}
 
-@c @opencatbox
-@c @category{Evaluation}
-@c @closecatbox
 @end deffn
-
-@c NEEDS EXAMPLES
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{rncombine}
 @deffn {Funktion} rncombine (@var{expr})
 
-@c Transforms @var{expr} by combining all terms of @var{expr} that have
-@c identical denominators or denominators that differ from each other by
-@c numerical factors only.  This is slightly different from the behavior
-@c of @code{combine}, which collects terms that have identical denominators.
-
 Transformiert den Ausdruck @var{expr} so, dass alle Terme mit identischem Nenner
 oder Nennern, die sich nur um einen numerischen Faktor voneinander 
 unterscheiden, @"uber einen Nenner zusammengefasst werden. Die Funktion
-@code{combine} fasst ebenfalls Ausdr@"ucke @"uber einen Nenner zusammen, betrachtet
-aber Nenner die sich um einen Zahlenfaktor voneinander unterscheiden, als
-verschieden.
-
-@c Setting @code{pfeformat: true} and using @code{combine} yields results 
-@c similar to those that can be obtained with @code{rncombine}, but 
-@c @code{rncombine} takes the additional step of cross-multiplying numerical 
-@c denominator factors. This results in neater forms, and the possibility of 
-@c recognizing some cancellations.
-
-@c @code{load(rncomb)} loads this function.
+@code{combine} fasst ebenfalls Ausdr@"ucke @"uber einen Nenner zusammen, 
+betrachtet aber Nenner als verschieden, die sich um einen Zahlenfaktor 
+voneinander unterscheiden.
 
 Die Funktion wird mit dem Kommando @code{rncomb} geladen.
 
-@c @opencatbox
-@c @category{Expressions}
-@c @closecatbox
 @end deffn
-
-@c NEEDS CLARIFICATION AND EXAMPLES
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{scalarp}
 @deffn {Funktion} scalarp (@var{expr})
 
-@c Returns @code{true} if @var{expr} is a number, constant, or variable declared
-@c @code{scalar} with @code{declare}, or composed entirely of numbers, 
-@c constants, and such variables, but not containing matrices or lists.
-
 Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} eine Zahl, Konstante, ein
 als Skalar definiertes Symbol oder ein aus diesen Objekten zusammengesetzter
 Ausdruck ist. Der Ausdruck darf jedoch keine Liste oder eine Matrix sein.
 
-@c @opencatbox
-@c @category{Predicate functions} @category{Vectors} @category{Matrices}
-@c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{setup_autoload}
 @deffn {Funktion} setup_autoload (@var{filename}, @var{function_1}, @dots{}, @var{function_n})
 
-@c Specifies that if any of @var{function_1}, ..., @var{function_n} are 
-@c referenced and not yet defined, @var{filename} is loaded via @code{load}.
-@c @var{filename} usually contains definitions for the functions specified,
-@c although that is not enforced.
-
-Die Funktionen @var{function_1}, @dots{}, @var{function_n} erhalten die Eigenschaft,
-dass die Datei @var{filename} automatisch geladen wird, wenn die Funktion zum
-ersten Mal genutzt werden soll.  @var{filename} wird mit der Funktion 
-@code{load} geladen und enth@"alt @"ublicherweise den Code f@"ur die Definition der 
-zu ladenden Funktion.
-
-@c @code{setup_autoload} does not work for array functions.
+Die Funktionen @var{function_1}, @dots{}, @var{function_n} erhalten die 
+Eigenschaft, dass die Datei @var{filename} automatisch geladen wird, wenn die 
+Funktion zum ersten Mal genutzt werden soll.  @var{filename} wird mit der 
+Funktion @code{load} geladen und enth@"alt @"ublicherweise den Code f@"ur die 
+Definition der zu ladenden Funktion.
 
 @code{setup_autoload} funktioniert nicht f@"ur Array-Funktionen.
-
-@c @code{setup_autoload} quotes its arguments.
-
 @code{setup_autoload} wertet die Argumente nicht aus.
 
 Beispiele:
@@ -470,81 +270,16 @@ Warning - you are redefining the Macsyma function legendre_p
 (%i4) legendre_p (1, %pi);
 (%o4)                          %pi
 (%i5) legendre_q (1, %pi);
+@group
                               %pi + 1
                       %pi log(-------)
                               1 - %pi
 (%o5)                 ---------------- - 1
                              2
+@end group
 @end example
 
-@c @opencatbox
-@c @category{Function definition} @category{File input}
-@c @closecatbox
 @end deffn
-
-@c TODO: DIE FUNKTION TCL_OUTPUT SOLL AUSGESCHNITTEN WERDEN.
-
-@c RECOMMEND CUTTING THIS ITEM AND CUTTING $tcl_output IN src/plot.lisp
-@c THIS REALLY, REALLY SEEMS LIKE CRUFT:
-@c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
-@c AND THIS EXTREMELY NARROW, LIMITED FUNCTIONALITY ISN'T USEFUL TO USERS
-@c AND IT'S BROKEN: INCORRECT OUTPUT FOR CLISP, DIES ON GCL
-
-@c @deffn  {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
-@c @deffnx {Function} tcl_output (@var{list}, @var{i0})
-@c @deffnx {Function} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
-
-@c Prints elements of a list enclosed by curly braces @code{@{ @}}, suitable as 
-@c part of a program in the Tcl/Tk language.
-
-@c @code{tcl_output (@var{list}, @var{i0}, @var{skip})} prints @var{list}, 
-@c beginning with element @var{i0} and printing elements 
-@c @code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
-
-@c @code{tcl_output (@var{list}, @var{i0})} is equivalent to 
-@c @code{tcl_output (@var{list}, @var{i0}, 2)}.
-
-@c @code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})} prints the 
-@c @var{i}'th elements of @var{list_1}, ..., @var{list_n}.
-
-@c Examples:
-
-@c EXAMPLE INPUT
-@c tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
-@c tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
-@c tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
-@c tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
-@c tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
-
-@c EXAMPLE OUTPUT: CLISP
-@c OUTPUT IS OK FOR FIRST TWO, BROKEN FOR OTHERS
-@c GCL OUTPUT: SAME FOR FIRST TWO
-@c GCL FAILS ON OTHERS (IN EACH CASE COMPLAINING ELEMENTS ARE "not of type 
-@c (OR RATIONAL LISP:FLOAT)"
-
-@c @example
-@c (%i1) tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
-@c 
-@c  @{1.000000000     4.000000000     
-@c  @}
-@c (%i2) tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
-@c 
-@c  @{2.000000000     5.000000000     
-@c  @}
-@c (%i3) tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
-@c 
-@c  @{((RAT SIMP) 3 7) ((RAT SIMP) 11 13) 
-@c  @}
-@c (%i4) tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
-@c 
-@c  @{$Y1 $Y2 $Y3 
-@c  @}
-@c (%i5) tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
-@c 
-@c  @{SIMP 1.000000000     11.00000000     
-@c  @}
-@c @end example
-@c @end deffn
 
 @c --- End of Miscellaneous.texi -----------------------------------------------
 
