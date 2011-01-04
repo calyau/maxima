@@ -92,6 +92,7 @@
 @hyphenation{an-ge-ge-ben
              an-ge-wen-det
              Ar-gu-men-ten
+             auf-ge-ru-fen
              Aus-drucks
              aus-ge-wer-tet
              Aus-wer-tung
@@ -105,6 +106,7 @@
              ge-ne-riert
              ge-spei-chert
              Glei-chung
+             Glo-ba-le
              Gnuplot
              Iso-li-nien
              ka-no-ni-scher
@@ -121,6 +123,7 @@
              Ver-zeich-nis
              wei-te-ren
              wei-ter-hin
+             wer-ten
              wer-tet
              wxMaxima
              Xmaxima

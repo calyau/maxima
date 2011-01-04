@@ -18,27 +18,40 @@
 @node Introduction to Rules and Patterns, Functions and Variables for Rules and Patterns, Regeln und Muster, Regeln und Muster
 @section Introduction to Rules and Patterns
 
-This section describes user-defined pattern matching and
-simplification rules.
-There are two groups of functions which implement somewhat different pattern matching schemes.
-In one group are @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, @code{defrule},
-@code{apply1}, @code{applyb1}, and @code{apply2}.
-In the other group are @code{let} and @code{letsimp}.
-Both schemes define patterns in terms of pattern variables declared by @code{matchdeclare}.
+@c This section describes user-defined pattern matching and simplification 
+@c rules. There are two groups of functions which implement somewhat different 
+@c pattern matching schemes. In one group are @code{tellsimp}, 
+@c @code{tellsimpafter}, @code{defmatch}, @code{defrule}, @code{apply1}, 
+@c @code{applyb1}, and @code{apply2}. In the other group are @code{let} and 
+@c @code{letsimp}. Both schemes define patterns in terms of pattern variables 
+@c declared by @code{matchdeclare}.
 
-Pattern-matching rules defined by @code{tellsimp} and @code{tellsimpafter} are applied automatically
-by the Maxima simplifier.
-Rules defined by @code{defmatch}, @code{defrule}, and @code{let} are applied
-by an explicit function call.
+Dieses Kapitel beschreibt nutzerdefinierte Mustererkennung und 
+Vereinfachungsregeln.  Es gibt zwei verschiedene Gruppen an Funktionen, die eine
+etwas unterschiedliche Mustererkennung implementieren.  Die eine Gruppe 
+enth@"alt die Funktionen @code{tellsimp}, @code{tellsimpafter}, @code{defmatch},
+@code{defrule}, @code{apply1}, @code{applyb1} und @code{apply2}.  In der anderen
+Gruppe sind die Funktionen @code{let} und @code{letsimp} enthalten.  Beide
+Mustererkennungsverfahren verwenden die Funktion @code{matchdeclare}, um Muster
+zu definieren.
 
-There are additional mechanisms for rules applied to polynomials by @code{tellrat},
-and for commutative and noncommutative algebra in @code{affine} package. 
+@c Pattern-matching rules defined by @code{tellsimp} and @code{tellsimpafter} 
+@c are applied automatically by the Maxima simplifier. Rules defined by 
+@c @code{defmatch}, @code{defrule}, and @code{let} are applied by an explicit 
+@c function call.
 
-@c @opencatbox
-@c @category{Simplification} @category{Rules and patterns}
-@c @closecatbox
+Regeln die mit den Funktionen @code{tellsimp} und @code{tellsimpafter} definiert
+werden, werden von Maxima automatisch bei der Vereinfachung von Ausdr@"ucken 
+angewendet.  Regeln die mit den Funktionen @code{defmatch}, @code{defrule} oder 
+@code{let} definiert werden, werden durch den Aufruf einer Funktion angewendet.
 
-@c end concepts Rules and Patterns
+@c There are additional mechanisms for rules applied to polynomials by 
+@c @code{tellrat}, and for commutative and noncommutative algebra in 
+@c @code{affine} package. 
+
+Es gibt zus@"atzliche Mechanismen wie @code{tellrat}, um Regeln auf Polynome 
+anzuwenden und weitere Funktionen der kommutativen und nicht-kommutativen
+Algebra in dem @code{affine}-Paket.
 
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Rules and Patterns,  , Introduction to Rules and Patterns, Regeln und Muster
@@ -47,7 +60,7 @@ and for commutative and noncommutative algebra in @code{affine} package.
 @c NEEDS CLARIFICATION AND EXAMPLES
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Funktion} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 
 Repeatedly applies @var{rule_1} to
 @var{expr} until it fails, then repeatedly applies the same rule to all
@@ -62,9 +75,6 @@ subexpression, the result is returned.
 
 See also @code{applyb1}, @code{apply2}, and @code{let}.
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
