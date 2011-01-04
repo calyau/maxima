@@ -3,7 +3,7 @@
 ;; I release this file under the terms of the GNU General Public License.
 
 ;; Redefine MERROR to throw something.
-(defun merror (s &rest l) (meval `(($throw) '((merror) ,s ,@l))))
+(defun merror (s &rest l) ($throw `((merror) ,s ,@l)))
 
 ;; Expose GENSYM as a Maxima function.
 (defun $gensym () (cadr (dollarify `(,(gensym)))))
