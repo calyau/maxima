@@ -1959,7 +1959,7 @@ Ejemplo:
 Valor por defecto: @code{screen}
 
 Selecciona el terminal a utilizar por Gnuplot; valores posibles son:
-@code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
+@code{screen} (por defecto), @code{png}, @code{pngcairo}, @code{jpg}, @code{eps}, @code{eps_color},
 @code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt}, @code{svg}
 y @code{aquaterm}.
 

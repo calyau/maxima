@@ -2151,7 +2151,7 @@ Example:
 Default value: @code{screen}
 
 Selects the terminal to be used by Gnuplot; possible values are:
-@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
+@code{screen} (default), @code{png}, @code{pngcairo}, @code{jpg}, @code{eps}, @code{eps_color},
 @code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt}, @code{svg},
 and @code{aquaterm}.
 
