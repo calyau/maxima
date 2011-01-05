@@ -9,7 +9,7 @@
 ;; Created: 14 Nov 2001
 ;; Version: 1.0b
 ;; Keywords: maxima
-;; $Id: imaxima.lisp,v 1.7 2009-11-16 22:09:19 crategus Exp $
+;; $Id: imaxima.lisp,v 1.8 2011-01-05 22:49:31 riotorto Exp $
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -673,8 +673,11 @@ nor Gnuplot is not recognized by maxima"))))
 		     (append
 		      `(
 			((mequal simp) $terminal $eps)
-			((mequal simp) $pic_width ,($first $wxplot_size))
-			((mequal simp) $pic_height ,($second $wxplot_size))
+                        ((mequal simp) $dimensions
+                                       ((mlist simp)
+                                        ;; convert points to 1/100 of cm
+                                        ,(* 3.53 ($first $wxplot_size))
+                                        ,(* 3.53 ($second $wxplot_size))))
 			((mequal simp) $file_name ,filename))
 		      args)))
     ($ldisp `((wxxmltag simp) ,(format nil "~a.eps" filename) "img"))
