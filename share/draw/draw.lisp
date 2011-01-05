@@ -41,6 +41,8 @@
 
 (defvar $draw_compound t)
 
+(defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
+
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
 (defmacro write-font-type ()
@@ -3161,6 +3163,11 @@
                            (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
                            (get-option '$file_name) ) )
+        ($pngcairo (format cmdstorage "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
+                           (write-font-type)
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
+                           (get-option '$file_name) ) )
         ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
@@ -3330,9 +3337,10 @@
                               "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
                               (get-option '$xy_file))) )
 
-             ; in svg format, unset output to force
-             ; Gnuplot to write </svg> at the end of the file
-             (when (equal (get-option '$terminal) '$svg)
+             ; in svg and pdfcairo terminals, unset output to force
+             ; Gnuplot to write </svg> at the end of the file (what about pdf?)
+             (when (or (equal (get-option '$terminal) '$svg)
+                       (equal (get-option '$terminal) '$pdfcairo))
                 (format cmdstorage "unset output~%"))
              (close cmdstorage)
 
@@ -3383,11 +3391,16 @@
          (update-gr-option ($lhs x) ($rhs x))
          (merror "draw: item ~M is not recognized as an option assignment" x)))
    (case (get-option '$terminal)
-      ($png (setf str (format nil "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
+      ($png (setf str (format nil "set terminal png enhanced truecolor ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (hex-to-xhex (get-option '$background_color))
+                           (get-option '$file_name) ) ))
+      ($pngcairo (setf str (format nil "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
+                           (write-font-type)
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) ))
       ($eps (setf str (format nil "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier

@@ -328,10 +328,12 @@
 (defvar *draw-terminal-number* "")
 
 (defun update-terminal (val)
-  (let ((terms '($screen $png $jpg $gif $eps $eps_color $svg
+  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $svg
                  $pdf $pdfcairo $wxt $animated_gif $aquaterm)))
      (cond
        ((member val terms)
+          (when (and (eq val '$png) $draw_use_pngcairo)
+            (setq val '$pngcairo))
           (setf (gethash '$terminal *gr-options*) val
                 *draw-terminal-number* ""))
        ((and ($listp val)
@@ -838,10 +840,10 @@
         (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) val)))
       (($eps_width $pdf_width)
         ($print "WARNING: 'eps_width' is deprecated, using 'dimensions' instead...")
-        (update-dimensions (list '(mlist) val (second (gethash '$dimensions *gr-options*)))))
+        (update-dimensions (list '(mlist) (* 100 val) (second (gethash '$dimensions *gr-options*)))))
       (($eps_height $pdf_height)
         ($print "WARNING: 'eps_height' is deprecated, using 'dimensions' instead...")
-        (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) val)))
+        (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) (* 100 val))))
 
       (otherwise (merror "draw: unknown option ~M " opt))  ) )
 
