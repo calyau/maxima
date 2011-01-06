@@ -2,7 +2,7 @@
 @c File     : draw.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : draw.texi revision 1.55
+@c Original : draw.texi revision 1.56
 @c Date     : 08.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -72,9 +72,6 @@ This is the list of @i{graphic objects} available for scenes in two dimensions:
 See also @code{draw} and @code{draw2d}.
 To make use of this object, write first @code{load(draw)}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -109,9 +106,6 @@ dimensions:
 See also @code{draw} and @code{draw3d}.
 To make use of this object, write first @code{load(draw)}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -171,9 +165,6 @@ End of animation sequence
 
 See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
 
-@c @opencatbox
-@c @category{Package draw} @category{File output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -188,9 +179,6 @@ To make use of this function, write first @code{load(draw)}.
 
 See also @code{draw} and @code{gr2d}.
 
-@c @opencatbox
-@c @category{Package draw} @category{File output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -205,9 +193,6 @@ To make use of this function, write first @code{load(draw)}.
 
 See also @code{draw} and @code{gr3d}.
 
-@c @opencatbox
-@c @category{Package draw} @category{File output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -227,9 +212,6 @@ Example:
                 dimensions = [5,5]) $
 @end example
 
-@c @opencatbox
-@c @category{Package draw} @category{File output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -264,9 +246,6 @@ Example:
 (%i7) multiplot_mode(none)$
 @end example
 
-@c @opencatbox
-@c @category{Package draw} @category{File output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -294,9 +273,6 @@ Example:
 
 To make use of this function, write first @code{load(draw)}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -311,9 +287,6 @@ plotting routine.
 
 This option is relevant only for 2d @code{explicit} functions.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -337,9 +310,6 @@ Example:
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and 
 @code{axis_right} for axis in 2d.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -362,9 +332,6 @@ Example:
 See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and 
 @code{axis_3d}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -387,9 +354,6 @@ Example:
 See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and 
 @code{axis_3d}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -412,9 +376,6 @@ Example:
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and 
 @code{axis_3d}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -437,9 +398,6 @@ Example:
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and 
 @code{axis_3d}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -452,9 +410,6 @@ and @code{gif}. Default background color is white.
 
 See also @code{color}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -482,9 +437,6 @@ Example:
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -518,9 +470,6 @@ Example:
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -549,9 +498,6 @@ Example :
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -608,9 +554,6 @@ Example:
 
 See also @code{fill_color}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -649,9 +592,6 @@ Color scale and 3D coloured object.
 
 See also @code{palette}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -675,9 +615,6 @@ Example:
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -725,9 +662,6 @@ Example:
              surface_hide   = true) $
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -847,9 +781,6 @@ any other case.
 
 See also @code{terminal}, @code{dimensions}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -902,9 +833,6 @@ We want an eps file with A4 portrait dimensions.
         explicit(x^2-y^2,x,-2,2,y,-2,2)) $
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -2100,13 +2028,14 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{terminal}
 @defvr {Graphic option} terminal
 Default value: @code{screen}
 
 Selects the terminal to be used by Gnuplot; possible values are:
-@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
-@code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt}, 
-@code{svg}, and @code{aquaterm}.
+@code{screen} (default), @code{png}, @code{pngcairo}, @code{jpg}, @code{eps}, 
+@code{eps_color}, @code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, 
+@code{wxt}, @code{svg}, and @code{aquaterm}.
 
 Terminals @code{screen}, @code{wxt} and @code{aquaterm} can be also defined as 
 a list with two elements: the name of the terminal itself and a non negative 
@@ -2150,6 +2079,7 @@ Examples:
 @end example
 
 Multiple windows.
+
 @example
 (%i1) load(draw)$
 (%i2) draw2d(explicit(x^5,x,-2,2), terminal=[screen, 3])$
@@ -2157,6 +2087,7 @@ Multiple windows.
 @end example
 
 An animated gif file.
+
 @example
 (%i1) load(draw)$
 (%i2) draw(
@@ -2175,12 +2106,10 @@ any other case.
 
 See also @code{file_name}, @code{dimensions} and @code{delay}.
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{title}
 @defvr {Graphic option} title
 Default value: @code{""} (empty string)
 
@@ -2198,12 +2127,10 @@ Example:
              title = "Exponential function")$
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{transform}
 @defvr {Graphic option} transform
 Default value: @code{none}
 
@@ -2248,12 +2175,10 @@ Translation in 3D.
         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3) )$
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{transparent}
 @defvr {Graphic option} transparent
 Default value: @code{false}
 
@@ -2276,12 +2201,10 @@ Example:
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{tube_extremes}
 @defvr {Graphic option} tube_extremes
 Default value: @code{[open, open]}
 
@@ -2299,9 +2222,6 @@ Example:
              a, 0, 8) )$
 @end example
 
-@c @opencatbox
-@c @category{Package draw}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
