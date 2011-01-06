@@ -1,0 +1,809 @@
+@c -----------------------------------------------------------------------------
+@c File        : Number.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Original    : Number.texi revision 1.35
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 06.01.2011
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Funktionen und Variablen der Zahlentheorie::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen der Zahlentheorie, , Zahlentheorie, Zahlentheorie
+@section Funktionen und Variablen der Zahlentheorie
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bern}
+@deffn {Funktion} bern (@var{n})
+
+@c Returns the @var{n}'th Bernoulli number for integer @var{n}.
+@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT
+@c OR JUST PRETEND IT'S "RETURNED" ???
+@c Bernoulli numbers equal to zero are suppressed if @code{zerobern} is 
+@c @code{false}.
+
+Gibt die @var{n}-te Bernoulli-Zahl der ganzen Zahl @var{n} zur@"uck. Hat die
+Optionsvariable @code{zerobern} den Wert @code{false}, werden Bernoulli-Zahlen
+unterdr@"uckt, die Null sind.
+
+Siehe auch @mrefdot{burn}
+
+@c ===beg===
+@c 
+@c ===end===
+@example
+(%i1) zerobern: true$
+@group
+(%i2) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+                  1  1       1      1        1
+(%o2)       [1, - -, -, 0, - --, 0, --, 0, - --]
+                  2  6       30     42       30
+@end group
+(%i3) zerobern: false$
+(%i4) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            1  1    1   5     691   7    3617  43867
+(%o4) [1, - -, -, - --, --, - ----, -, - ----, -----]
+            2  6    30  66    2730  6    510    798
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bernpoly}
+@deffn {Funktion} bernpoly (@var{x}, @var{n})
+
+@c Returns the @var{n}'th Bernoulli polynomial in the variable @var{x}.
+
+Gibt das @var{n}-te Bernoulli-Polynom in der Variablen @var{x} zur@"uck.
+
+@end deffn
+
+@c TODO: DIE FUNKTION ZETA KANN INZWISCHEN IN BELIEBIGER GENAUIGKEIT RECHNEN.
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bfzeta}
+@deffn {Function} bfzeta (@var{s}, @var{n})
+
+@c Returns the Riemann zeta function for the argument @var{s}. The return value 
+@c is a big float (bfloat); @var{n} is the number of digits in the return value.
+
+Die Riemannsche Zeta-Funktion f@"ur das Argument @var{s}, die wie folgt 
+definiert ist:
+
+@tex
+$$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
+@end tex
+@ifnottex
+@example
+                 inf
+                 ====
+                 \     1
+     zeta(s) =    >    --
+                 /      s
+                 ====  k
+                 k = 1
+@end example
+@end ifnottex
+
+@code{bfzeta} gibt einen Wert als gro@ss{}e Gleitkommazahl zur@"uck.  Die Anzahl 
+der Stellen wird durch das Argument @var{n} angegeben.
+
+Anstatt der Funktion @code{bfzeta} ist die Funktion @mref{zeta} zu bevorzugen,
+die sowohl f@"ur reelle und komplexe Gleitkommazahlen und Gleitkommazahlen mit
+eine beliebigen Genauigkeit die Riemannsche Zeta-Funktion berechnen kann.
+
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bfhzeta}
+@deffn {Funktion} bfhzeta (@var{s}, @var{h}, @var{n})
+
+@c Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
+@c The return value is a big float (bfloat); @var{n} is the number of digits in 
+@c the return value.
+
+@c The Hurwitz zeta function is defined as
+
+Die Hurwitzsche Zeta-Funktion f@"ur die Argumente @var{s} und @var{h}, die wie
+folgt definiert ist:
+
+@tex
+$$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
+@end tex
+@ifnottex
+@example
+                        inf
+                        ====
+                        \        1
+         zeta (s,h)  =   >    --------
+                        /            s
+                        ====  (k + h)
+                        k = 0
+@end example
+@end ifnottex
+
+@code{bfhzeta} gibt einen Wert als gro@ss{}e Gleitkommazahl zur@"uck.  Die 
+Anzahl der Stellen wird durch das Argument @var{n} angegeben.
+
+@c @code{load ("bffac")} loads this function.
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{burn}
+@deffn {Funktion} burn (@var{n})
+
+@c Returns a rational number, which is an approximation of the @var{n}'th 
+@c Bernoulli number for integer @var{n}. @code{burn} exploits the observation 
+@c that (rational) Bernoulli numbers can be approximated by (transcendental) 
+@c zetas with tolerable efficiency:
+
+Gibt eine rational Zahl zur@"uck, die eine N@"aherung f@"ur die @var{n}-te 
+Bernoulli Zahl f@"ur die ganze Zahl @var{n} ist.  @code{burn} berechnet eine 
+N@"aherung als gro@ss{}e Gleitkommatzahl mit der folgenden Beziehung:
+
+@example
+                   n - 1  1 - 2 n
+              (- 1)      2        zeta(2 n) (2 n)!
+     B(2 n) = ------------------------------------
+                                2 n
+                             %pi
+@end example
+
+@c @code{burn} may be more efficient than @code{bern} for large, isolated 
+@c @var{n} as @code{bern} computes all the Bernoulli numbers up to index @var{n}
+@c before returning. @code{burn} invokes the approximation for even integers 
+@c @var{n} > 255. For odd integers and @var{n} <= 255 the function @code{bern} 
+@c is called.
+
+@code{burn} kann effizienter als die Funktion @code{bern} f@"ur gro@ss{}e, 
+einzelne ganze Zahlen @var{n} sein, da @code{bern} zun@"achst alle Bernoulli 
+Zahlen bis @var{n} berechnet.  @code{burn} ruft f@"ur ungerade ganze Zahlen und 
+Zahlen die kleiner oder gleich 255 die Funktion @code{bern} auf.
+
+@c @code{load ("bffac")} loads this function. See also @code{bern}.
+
+Das Kommando @code{load(bffac)} l@"adt die Funktion.  Siehe auch @mrefdot{bern}
+
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{divsum}
+@deffn  {Funktion} divsum (@var{n}, @var{k})
+@deffnx {Funktion} divsum (@var{n})
+
+@c @code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
+@c raised to the @var{k}'th power.
+
+@code{divsum(@var{n}, @var{k})} potenziert die Teiler des Argumentes @var{n} 
+mit dem Argument @var{k} und gibt die Summe als Ergebnis zur@"uck.
+
+@c @code{divsum (@var{n})} returns the sum of the divisors of @var{n}.
+
+@code{divsum(@var{n})} gibt die Summe der Teiler der Zahl @var{n} zur@"uck.
+
+@example
+(%i1) divsum (12);
+(%o1)                          28
+(%i2) 1 + 2 + 3 + 4 + 6 + 12;
+(%o2)                          28
+(%i3) divsum (12, 2);
+(%o3)                          210
+(%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
+(%o4)                          210
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{euler}
+@deffn {Funktion} euler (@var{n})
+
+@c Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
+
+Gibt die @var{n}-te Eulersche Zahl f@"ur eine nichtnegative ganze Zahl @var{n}
+zur@"uck.
+
+@c For the Euler-Mascheroni constant, see @code{%gamma}.
+
+F@"ur die Euler-Mascheroni Konstante siehe @mrefdot{%gamma}
+
+Beispiele:
+
+@example
+(%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
+@end example
+
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{fib}
+@deffn {Funktion} fib (@var{n})
+
+@c Returns the @var{n}'th Fibonacci number. @code{fib(0)} equal to 0 and 
+@c @code{fib(1)} equal to 1, and @code{fib (-@var{n})} equal to 
+@c @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+
+Gibt die @var{n-te} Fibonacci-Zahl zur@"uck.  Die Fibonacci-Folge ist rekursiv 
+definiert:
+
+@example
+   fib(0) = 0
+   fib(1) = 1
+   fib(n) = fib(n-1) + fib(n-2)
+@end example
+
+F@"ur negative ganze Zahlen kann die Fibonacci-Folge erweitert wird mit:
+
+@example
+                   n + 1
+   fib(- n) = (- 1)      f(n)
+@end example 
+
+@c After calling @code{fib}, @code{prevfib} is equal to @code{fib(@var{x} - 1)},
+@c the Fibonacci number preceding the last one computed.
+
+@c TODO: PREVFIB HAT KEINEN EINTRAG.
+
+Nach einem Aufruf der Funktion @code{fib(n)}, enth@"alt die Systemvariable 
+@code{prevfib} die zur Zahl @code{n} vorhergehende Fibonacci-Zahl.
+
+@example
+(%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+@end example
+
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{fibtophi}
+@deffn {Funktion} fibtophi (@var{expr})
+
+@c Expresses Fibonacci numbers in @var{expr} in terms of the constant 
+@c @code{%phi}, which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
+
+Fibonacci-Zahlen im Ausdruck @var{expr} werden durch die Goldene Zahl 
+@code{%phi} ausgedr@"uckt.  Siehe @mrefdot{%phi}
+
+Beispiele:
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{ifactors}
+@deffn {Function} ifactors (@var{n})
+
+@c For a positive integer @var{n} returns the factorization of @var{n}. If
+@c @code{n=p1^e1..pk^nk} is the decomposition of @var{n} into prime
+@c factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
+
+Faktorisiert eine positive ganze Zahl @var{n}.  Sind @code{n = p1^e1..pk^nk} die
+Faktoren der ganzen Zahl @var{n}, dann gibt @code{ifactor} das Ergebnis
+@code{[[p1, e1], ... , [pk, ek]]} zur@"uck.
+
+@c Factorization methods used are trial divisions by primes up to 9973,
+@c Pollard's rho method and elliptic curve method.
+
+F@"ur die Faktorisierung kommen eine einfache Primfaktorzerlegung mit Primzahlen
+bis zu 9973, das Z@"ahlk@"orpersieb nach Pollard oder die Methode der 
+Elliptischen Kurven zum Einsatz.
+
+@example
+(%i1) ifactors(51575319651600);
+(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
+(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
+(%o2)                        51575319651600
+@end example
+
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{inrt}
+@deffn {Funktion} inrt (@var{x}, @var{n})
+
+@c Returns the integer @var{n}'th root of the absolute value of @var{x}.
+
+Gibt die ganzzahlige @var{n}-te Wurzel des Betrags von @var{x} zur@"uck.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], inrt (10^a, 3)), l);
+(%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
+@end example
+
+@end deffn
+
+@c --- 22.12.2010 DK -----------------------------------------------------------
+@anchor{inv_mod}
+@deffn {Funktion} inv_mod (@var{n}, @var{p})
+
+@c Computes the inverse of @var{n} modulo @var{m}. @code{inv_mod (n,m)} returns 
+@c @code{false}, if @var{n} is a zero divisor modulo @var{m}.
+
+Berechnet das modulare Inverse von @var{n} zum Modul @var{p}.  Das Argument
+@var{n} muss eine ganze Zahl und das Modul @var{p} eine positive ganze Zahl 
+sein.  @code{inv_mod(n,p)} gibt @code{false} zur@"uck, wenn das modulare Inverse
+nicht existiert.  Das modulare Inverse existiert immer, wenn das Modul @var{p}
+eine Primzahl ist.
+
+Siehe auch die Funktionen @mref{power_mod} und @mrefdot{mod}
+
+Beispiele:
+
+@c ===beg===
+@c inv_mod(3, 41);
+@c ratsimp(3^-1), modulus=41;
+@c inv_mod(3, 42);
+@c ===end===
+@example
+(%i1) inv_mod(3, 41);
+(%o1)                           14
+(%i2) ratsimp(3^-1), modulus=41;
+(%o2)                           14
+(%i3) inv_mod(3, 42);
+(%o3)                          false
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{jacobi}
+@deffn {Funktion} jacobi (@var{p}, @var{q})
+
+@c Returns the Jacobi symbol of @var{p} and @var{q}.
+
+Berechnet das Jacobi-Symbol f@"ur die Argumente @var{p} und @var{q}.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], jacobi (a, 9)), l);
+(%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{lcm}
+@deffn {Funktion} lcm (@var{expr_1}, @dots{}, @var{expr_n})
+
+@c Returns the least common multiple of its arguments. The arguments may be 
+@c general expressions as well as integers.
+
+Gibt den kleinsten gemeinsamen Teiler der Argumente zur@"uck.  Die Argumente 
+k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
+
+@c @code{load ("functs")} loads this function.
+
+Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
+
+@end deffn
+
+@c --- 22.12.2010 DK -----------------------------------------------------------
+@anchor{mod}
+@deffn {Funktion} mod (@var{x}, @var{p})
+
+@c If @var{x} and @var{y} are real numbers and @var{y} is nonzero, return 
+@c @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}. Further for all real 
+@c @var{x}, we have @code{mod (@var{x}, 0) = @var{x}}. For a discussion of the 
+@c definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of 
+@c "Concrete Mathematics," by Graham, Knuth, and Patashnik. The function 
+@c @code{mod (@var{x}, 1)} is a sawtooth function with period 1 with 
+@c @code{mod (1, 1) = 0} and @code{mod (0, 1) = 0}.
+
+Berechnet den Modulus @code{x mod p} des Arguments @var{x} zum Modul @var{p}. 
+@var{x} und @var{p} k@"onnen ganze Zahlen, rationale Zahlen, Gleitkommazahlen 
+oder allgemeine Ausdr@"ucke sein.
+
+Sind @var{x} und @var{p} reelle Zahlen und ist @var{p} ungleich Null, gibt 
+@code{mod(@var{x}, @var{p})} das Ergebnis von @code{@var{x} - @var{p} * 
+floor(@var{x} / @var{p})} zur@"uck.  Weiterhin gilt f@"ur alle reellen Zahlen
+@code{mod(@var{x}, 0) = @var{x}}.  F@"ur eine Diskussion dieser Definition siehe
+Kapitel 3.4, "Concrete Mathematics" von Graham, Knuth, and Patashnik.  Die 
+Funktion @code{mod(@var{x}, 1)} ist eine S@"agezahnfunktion mit der Periode 1 
+mit @code{mod(1, 1) = 0} und @code{mod(0, 1) = 0}.
+
+@c To find the principal argument (a number in the interval @code{(-%pi, %pi]}) 
+@c of a complex number, use the function @code{@var{x} |-> %pi - mod (%pi - 
+@c @var{x}, 2*%pi)}, where @var{x} is an argument.
+
+Der Hauptwert einer komplexen Zahl, die im Intervall @code{(-%pi, %pi)} liegt,
+kann mit @code{%pi - mod(%pi - @var{x}, 2*%pi)} bestimmt werden, wobei @var{x}
+die komplexe Zahl ist.
+
+@c When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for 
+@c example), @code{mod} uses the same big float evaluation scheme that 
+@c @code{floor} and @code{ceiling} uses. Again, it's possible, although 
+@c unlikely, that @code{mod} could return an erroneous value in such cases.
+
+Wie f@"ur die Funktionen @code{floor} oder @code{ceiling} werden konstante 
+Ausdr@"ucke, wie zum Beispiel @code{10 * %pi}, in gro@ss{}e Gleitkommazahlen 
+umgewandelt, um @code{mod} zu berechnen.  Diese Umwandlung kann zu Fehlern
+f@"uhren.
+
+@c For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several 
+@c simplification rules:
+
+F@"ur nicht nummerische Argumente @var{x} oder @var{y} kennt @code{mod}
+verschiedene Vereinfachungen.
+
+Siehe auch die Funktionen @mref{power_mod} und @mrefdot{inv_mod}
+
+Beispiele:
+
+Zeige f@"ur zwei gro@ss{}e ganze Zahlen, dass f@"ur das modulare Rechnen die 
+Regel @code{mod(a+b,p) = mod(a,p)+mod(b,p)} gilt.
+
+@c ===beg===
+@c a:random(10^20)+10^19;
+@c b:random(10^20)+10^19;
+@c p:random(10^20)+10^19;
+@c mod(a+b,p);
+@c mod(mod(a,p)+mod(b,p),p);
+@c ===end===
+@example
+(%i1) a:random(10^20)+10^19;
+(%o1)                 72588919020045581148
+(%i2) b:random(10^20)+10^19;
+(%o2)                 35463666253140008825
+(%i3) p:random(10^20)+10^19;
+(%o3)                 39127433614020247557
+(%i4) mod(a+b,p);
+(%o4)                 29797718045145094859
+(%i5) mod(mod(a,p)+mod(b,p),p);
+(%o5)                 29797718045145094859
+@end example
+
+Vereinfachung f@"ur nicht nummerische Argumente.
+
+@c ===beg===
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
+@c ===end===
+@example
+(%i1) mod (x, 0);
+(%o1)                           x
+(%i2) mod (a*x, a*y);
+(%o2)                      a mod(x, y)
+(%i3) mod (0, x);
+(%o3)                           0
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{next_prime}
+@deffn {Funktion} next_prime (@var{n})
+
+@c Returns the smallest prime bigger than @var{n}.
+
+Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
+
+@example
+(%i1) next_prime(27);
+(%o1)                       29
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{primep}
+@deffn {Funktion} primep (@var{n})
+
+@c Primality test. If @code{primep (@var{n})} returns @code{false}, @var{n} is a
+@c composite number and if it returns @code{true}, @var{n} is a prime number
+@c with very high probability.
+
+F@"uhrt einen Test auf eine Primzahl f@"ur das Argument @var{n} durch.  Hat
+@code{primep} das Ergebnis @code{false}, ist @var{n} keine Primzahl.  Ist das
+Ergebnis @code{true}, ist @var{n} mit gro@ss{}er Wahrscheinlichkeit eine 
+Primzahl.
+
+@c For @var{n} less than 10^16 a deterministic version of Miller-Rabin's
+@c test is used. If @code{primep (@var{n})} returns @code{true}, then @var{n} 
+@c is a prime number.
+
+F@"ur ganze Zahlen @var{n} die kleiner als 10^16 sind wird eine probalistisches
+Miller-Rabin-Verfahren.  Hat in diesem Fall @code{primep} das Ergebnis
+@code{true}, dann ist @var{n} eine Primzahl.
+
+@c For @var{n} bigger than 10^16 @code{primep} uses 
+@c @code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
+@c Lucas pseudo-primality test. The probability that @var{n} will pass one 
+@c Miller-Rabin test is less than 1/4. Using the default value 25 for 
+@c @code{primep_number_of_tests}, the probability of @var{n} beeing composite is 
+@c much smaller that 10^-15.
+
+F@"ur ganze Zahlen @var{n} gr@"o@ss{}er als 10^16 nutzt @code{primep} den
+Pseudo-Primzahlentest nach Miller-Rabin mit @mref{primep_number_of_tests} Tests
+und den Pseudo_Primzahlentest nach Lucas.  Die Wahrscheinlichkeit, dass eine
+Zahl @var{n} den Pseudo-Primzahlentest nach Miller-Rabin passiert, ist kleiner
+als 1/4.  Mit dem Standardwert 25 f@"ur die Optionsvariable 
+@code{primpe_number_of_tests} ist die Wahrscheinlichkeit viel kleiner als 
+10^-15.
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{primep_number_of_tests}
+@defvr {Optionsvariable} primep_number_of_tests
+Standardwert: 25
+
+@c Number of Miller-Rabin's tests used in @code{primep}.
+
+Die Anzal der Pseudo-Primzahlentests nach Miller-Rabin der Funktion 
+@mrefdot{primep}
+
+@end defvr
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{prev_prime}
+@deffn {Funktion} prev_prime (@var{n})
+
+@c Returns the greatest prime smaller than @var{n}.
+
+Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @var{n} ist.
+
+@example
+(%i1) prev_prime(27);
+(%o1)                       23
+@end example
+
+@end deffn
+
+@c --- 22.12.2010 DK -----------------------------------------------------------
+@anchor{power_mod}
+@deffn {Funktion} power_mod (@var{a}, @var{n}, @var{p})
+
+@c Uses a modular algorithm to compute @code{a^n mod m} where @var{a} and 
+@c @var{n} are integers and @var{m} is a positive integer. If @var{n} is 
+@c negative, @code{inv_mod} is used to find the modular inverse.
+
+Berechnet den Modulus @code{a^n mod p} der Exponentiation @code{a^n} zum Modul 
+@var{p}.  Die Argumente @var{a} und @var{n} m@"ussen ganze Zahlen sein.  Das 
+Modul @var{p} muss eine positive ganze Zahl sein.  Ist @var{n} negativ, wird die 
+Funktion @mref{inv_mod} aufgerufen, um das modulare Inverse zu berechnen.
+
+Die Funktion @code{power_mod} ist f@"ur ganze Zahlen @"aquivalent zu 
+@code{mod(a^n, p)}.  Der Algorithmus von @code{power_mod} ist besondere f@"ur 
+gro@ss{}e ganze Zahlen effizienter.
+
+Siehe auch die Funktionen @mref{inv_mod} und @mrefdot{mod}
+
+Beispiele:
+
+@code{power_mod(a,n,p)} ist @"aquivalent zu @code{mod(a^n,p}.  Das modulare
+Inverse wird mit der Funktion @code{inv_mod} berechnet.
+
+@c ===beg===
+@c power_mod(3, 15, 5);
+@c mod(3^15,5);
+@c power_mod(2, -1, 5);
+@c inv_mod(2,5);
+@c ===end===
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                          2
+(%i2) mod(3^15,5);
+(%o2)                          2
+(%i3) power_mod(2, -1, 5);
+(%o3)                          3
+(%i4) inv_mod(2,5);
+(%o4)                          3
+@end example
+
+F@"ur gro@ss{}e ganze Zahlen ist @code{power_mod} effizienter.  Das folgende 
+Ergebnis kann nicht in einer vern@"unftigen Zeit mit @code{mod(a^n,p)} berechnet
+werden.
+
+@c ===beg===
+@c power_mod(123456789,123456789,987654321);
+@c ===end===
+@example
+(%i1) power_mod(123456789,123456789,987654321);
+(%o1)                       598987215
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{qunit}
+@deffn {Funktion} qunit (@var{n})
+
+@c Returns the principal unit of the real quadratic number field 
+@c @code{sqrt (@var{n})} where @var{n} is an integer, i.e., the element whose 
+@c norm is unity. This amounts to solving Pell's equation 
+@c @code{a^2 - @var{n} b^2 = 1}.
+
+Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung 
+@code{a^2 - @var{n} b^2 = 1}.
+
+@example
+(%i1) qunit (17);
+(%o1)                     sqrt(17) + 4
+(%i2) expand (% * (sqrt(17) - 4));
+(%o2)                           1
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{totient}
+@deffn {Funktion} totient (@var{n})
+
+@c Returns the number of integers less than or equal to @var{n} which are 
+@c relatively prime to @var{n}.
+
+Gibt die Anzahl der ganzen Zahlen zur@"uck, die kleiner oder gleich @var{n}
+sind und die kein Teiler von @var{n} sind.
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{zerobern}
+@defvr {Optionsvariable} zerobern
+Standardwert: @code{true}
+
+@c When @code{zerobern} is @code{false}, @code{bern} excludes the Bernoulli 
+@c numbers and @code{euler} excludes the Euler numbers which are equal to zero.
+@c See @code{bern} and @code{euler}.
+
+Hat @code{zerobern} den Wert @code{false}, werden von den Funktionen @code{bern}
+die Bernoulli Zahlen und von @code{euler} die Euler Zahlen ausgeschlossen,
+die als Ergenis Null haben.  Siehe @mref{bern} und @mrefdot{euler}
+
+@end defvr
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{zeta}
+@deffn {Funktion} zeta (@var{n})
+
+@c Returns the Riemann zeta function. If @var{n} is a negative integer, 0, or a 
+@c positive even integer, the Riemann zeta function simplifies to an exact 
+@c value. For a positive even integer the option variable @code{zeta%pi} has to 
+@c be @code{true} in addition (See @code{zeta%pi}). For a floating point or 
+@c bigfloat number the Riemann zeta function is evaluated numerically. Maxima 
+@c returns a noun form @code{zeta (@var{n})} for all other arguments, including 
+@c rational noninteger, and complex arguments, or for even integers, if 
+@c @code{zeta%pi} has the value @code{false}.
+
+Die Riemannsche Zeta-Funktion f@"ur @var{s}, die wie folgt definiert ist:
+
+@tex
+$$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
+@end tex
+@ifnottex
+@example
+                 inf
+                 ====
+                 \     1
+     zeta(s) =    >    --
+                 /      s
+                 ====  k
+                 k = 1
+@end example
+@end ifnottex
+
+F@"ur negative ganze Zahlen @var{n}, Null und postive gerade ganze Zahlen 
+vereinfacht @code{zeta} zu einem exakten Ergebnis.  Damit diese Vereinfachung
+f@"ur positive ganze Zahlen ausgef@"uhrt wird, muss die Optionsvariable
+@code{zeta%pi} den Wert @code{true} haben.  Siehe @mrefdot{zeta%pi} F@"ur 
+einfache und gro@ss{}e Gleitkommazahlen hat @code{zeta} ein numerisches 
+Ergebnis.  F@"ur alle anderen Argumente einschlie@ss{}lich komplexe Zahlen und 
+rationale Zahlen gibt @code{zeta} eine Substantivform zur@"uck.  Hat die 
+Optionsvariable @code{zeta%pi} den Wert @code{false}, gibt @code{zeta} auch 
+f@"ur gerade ganze Zahlen eine Substantivform zur@"uck.
+
+@c @code{zeta(1)} is undefined, but Maxima knows the limit 
+@c @code{limit(zeta(x), x, 1)} from above and below.
+
+@code{zeta(1)} ist nicht definiert.  Maxima kennt jedoch die einseitigen
+Grenzwerte @code{limit(zeta(x), x, 1, plus} und 
+@code{limit(zeta(x), x, 1, minus}.
+
+@c The Riemann zeta function distributes over lists, matrices, and equations.
+
+Die Riemannsche Zeta-Funktion wird auf die Argumente von Listen, Matrizen und 
+Gleichungen angewendendet, wenn die Optionsvariable @code{distribute_over}
+den Wert @code{true} hat.
+
+@c See also @code{bfzeta} and @code{zeta%pi}.
+
+Siehe auch @mref{bfzeta} und @mrefdot{zeta%pi}
+
+Beispiele:
+
+@c ===beg===
+@c zeta([-2,-1,0,0.5,2,3,1+%i]);
+@c limit(zeta(x),x,1,plus);
+@c limit(zeta(x),x,1,minus);
+@c ===end===
+@example
+(%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
+                                             2
+            1     1                       %pi
+(%o1) [0, - --, - -, - 1.460354508809586, ----, zeta(3), 
+            12    2                        6
+                                                    zeta(%i + 1)]
+(%i2) limit(zeta(x),x,1,plus);
+(%o2)                          inf
+(%i3) limit(zeta(x),x,1,minus);
+(%o3)                         minf
+@end example
+
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{zeta%pi}
+@defvr {Optionsvariable} zeta%pi
+Standardwert: @code{true}
+
+@c When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression 
+@c proportional to @code{%pi^n} for even integer @code{n}. Otherwise, 
+@c @code{zeta} returns a noun form @code{zeta (n)} for even integer @code{n}.
+
+Hat @code{zeta%pi} den Wert @code{true}, vereinfacht die Funktion @code{zeta(n)}
+f@"ur gerade ganzen Zahlen @var{n} zu einem Ergebnis, das proportional zu 
+@code{%pi^n} ist.  Ansonsten ist das Ergebnis von @code{zeta} eine 
+Substantivform f@"ur gerade ganze Zahlen.
+
+Beispiele:
+
+@c ===beg===
+@c zeta%pi: true$
+@c zeta (4);
+@c zeta%pi: false$
+@c zeta (4);
+@c ===end===
+@example
+(%i1) zeta%pi: true$
+(%i2) zeta (4);
+                                 4
+                              %pi
+(%o2)                         ----
+                               90
+(%i3) zeta%pi: false$
+(%i4) zeta (4);
+(%o4)                        zeta(4)
+@end example
+
+@end defvr
+
+@c --- End of file Number.de.texi
+
