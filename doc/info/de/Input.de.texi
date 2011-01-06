@@ -802,10 +802,10 @@ noch nicht, wird diese angelegt.
 @c @code{values} comprises all user-defined variables.
 
 @code{save(@var{filename}, values, functions, labels, ...)} speichert die
-Werte aller Eintr@"age der Listen @code{values}, @code{functions}, 
-@code{labels}, u.s.w. in die Ausgabedatei. Es kann jede der vorhandenen
+Werte aller Ein@-tr@"a@-ge der Listen @code{values}, @code{functions}, 
+@code{labels}, u.s.w. in die Ausgabedatei.  Es kann jede der vorhandenen
 Informationslisten, die in der Systemvariablen @code{infolists} enthalten ist, 
-als Argument @"ubergeben werden. @code{values} enth@"alt zum Beispiel alle vom
+als Argument @"ubergeben werden.  @code{values} enth@"alt zum Beispiel alle vom
 Nutzer definierten Variablen.
 
 @c The special form @code{save (@var{filename}, [@var{m}, @var{n}])} stores the 
@@ -831,13 +831,13 @@ Beim Zur@"uckgelesen der Marken, werden vorhandene Werte @"uberschrieben.
 @c the new names into the current Maxima environment, but only stores them in 
 @c @var{filename}.
 
-@code{save(@var{filename}, @var{name_1}=@var{expr_1}, 
-@var{name_2}=@var{expr_2}, ...)} speichert die Werte @var{expr_1}, @var{expr_2},
- ..., unter den Namen @var{name_1}, @var{name_2}, .... ab. Dies kann n@"utzlich
-sein, um zum Beispiel die Werte von Marken mit einem neuen Namen abzuspeichern,
-zum Beispiel mit @code{save("foo.1", aa=%o88)}. Die rechte Seite der Gleichungen
-kann ein beliebiger ausgewerteter Ausdruck sein. Die neuen Namen werden der
-aktuellen Sitzung nicht hinzugef@"ugt und nur in der Ausgabedatei gespeichert.
+@code{save(@var{filename}, @var{name_1} = @var{expr_1}, @var{name_2} = 
+@var{expr_2}, ...)} speichert die Werte @var{expr_1}, @var{expr_2}, @dots{}, 
+unter den Namen @var{name_1}, @var{name_2}, @dots{} ab.  Dies kann  n@"utzlich
+sein, um zum Beispiel die Werte von Marken unter einem neuen Namen 
+abzuspeichern.  Die rechte Seite der Gleichungen kann ein beliebiger 
+ausgewerteter Ausdruck sein. Die neuen Namen werden der aktuellen Sitzung nicht
+hinzugef@"ugt und nur in der Ausgabedatei gespeichert.
 
 @c These special forms and the general form of @code{save} may be mixed at will.
 @c For example, @code{save (@var{filename}, aa, bb, cc=42, functions, [11,17])}.
@@ -1180,6 +1180,8 @@ Examples:
 @end example
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{texput}
 @deffn  {Function} texput (@var{a}, @var{s})
 @deffnx {Function} texput (@var{a}, @var{f})
 @deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
@@ -1248,13 +1250,15 @@ Call a function to generate TeX output.
 
 @c ===beg===
 @c texfoo (e) := block ([a, b], [a, b] : args (e),
-@c   concat ("\\left[\\stackrel{", tex1 (b), "}{", tex1 (a), "}\\right]"))$
+@c   concat ("\\left[\\stackrel{", tex1 (b), 
+@c           "}{", tex1 (a), "}\\right]"))$
 @c texput (foo, texfoo);
 @c tex (foo (2^x, %pi));
 @c ===end===
 @example
 (%i1) texfoo (e) := block ([a, b], [a, b] : args (e),
-  concat ("\\left[\\stackrel@{", tex1 (b), "@}@{", tex1 (a), "@}\\right]"))$
+  concat ("\\left[\\stackrel@{", tex1 (b), 
+          "@}@{", tex1 (a), "@}\\right]"))$
 (%i2) texput (foo, texfoo);
 (%o2)                        texfoo
 (%i3) tex (foo (2^x, %pi));

@@ -88,10 +88,38 @@ Additivit@"at f@"ur das erste Argument definiert. Zum Beispiel wird
 antisymmetrisch. Zum Beispiel wird @code{f(y, x)} zu @code{- f(x, y)}
 vereinfacht.
 
-@c @opencatbox
-@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
-@c @closecatbox
 @end defvr
+
+@c --- 11.12.2010 DK -----------------------------------------------------------
+@anchor{combine}
+@deffn {Funktion} combine (@var{expr})
+
+@c Simplifies the sum @var{expr} by combining terms with the same denominator 
+@c into a single term.
+
+Terme einer rationalen Funktion, die denselben Nenner haben, werden 
+zusammengefasst.
+
+Beispiel:
+
+@c ===beg===
+@c x^2/(1+x)+2*x/(1+x);
+@c combine(%);
+@c ===end===
+@example
+(%i1) x^2/(1+x)+2*x/(1+x);
+                            2
+                           x       2 x
+(%o1)                     ----- + -----
+                          x + 1   x + 1
+(%i2) combine(%);
+                             2
+                            x  + 2 x
+(%o2)                       --------
+                             x + 1
+@end example
+
+@end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
 @anchor{commutative}
@@ -105,9 +133,6 @@ vereinfacht.
 Zum Beispiel wird @code{f(x, z, y)} zu @code{f(x, y, z)} vereinfacht.
 Dies hat denselben Effekt wie die Deklaration @code{symmetric}.
 
-@c @opencatbox
-@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
-@c @closecatbox
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------

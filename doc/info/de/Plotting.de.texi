@@ -144,14 +144,14 @@ Gnuplot. Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
 @c name of the location of that file as argument.
 
 Xmaxima ist eine auf Tcl/Tk basierende grafische Nutzeroberfl@"ache, die von
-der Maxima-Konsole gestartet werden kann, um Grafiken auszugeben. Um dieses 
-Grafikformat zu nutzen, muss Xmaxima installiert sein, das in der Distribution 
-von Maxima enthalten ist. Wird Maxima aus Xmaxima gestartet, werden die 
-Grafikkommandos und Daten @"uber denselben Socket gesendet, der auch f@"ur die 
-Kommunikation zwischen Xmaxima und Maxima ge@"offnet wird. Wird das Grafikformat
-von einer Konsole oder einer anderen Nutzeroberfl@"ache gestartet, werden die 
-Grafikkommandos und Daten in die Datei @code{maxout.xmaxima} gespeichert. Diese
-Datei wird an Xmaxima f@"ur die Ausgabe der Grafik @"ubergeben.
+der Maxima-Konsole gestartet werden kann.  Um dieses Grafikformat zu nutzen, 
+muss Xmaxima installiert sein, das in der Distribution von Maxima enthalten ist.
+Wird Maxima aus Xmaxima gestartet, werden die Grafikkommandos und Daten @"uber 
+denselben Socket gesendet, der auch f@"ur die Kommunikation zwischen Xmaxima und
+Maxima ge@"offnet wird.  Wird das Grafikformat von einer Konsole oder einer 
+anderen Nutzeroberfl@"ache gestartet, werden die Grafikkommandos und Daten in 
+die Datei @code{maxout.xmaxima} gespeichert.  Diese Datei wird an Xmaxima f@"ur 
+die Ausgabe der Grafik @"ubergeben.
 
 @c In previous versions this format used to be called @code{openmath}; that
 @c old name will still be accepted as a synonym for @code{xmaxima}.
@@ -904,8 +904,8 @@ Graph der kleinschen Flasche, die parametrisch definiert ist.
 @c @code{spherical_to_xyz}, to transform from spherical to rectangular
 @c coordinates. See the documentation for @code{spherical_to_xyz}.
 
-Graph einer Kugelfunktion, wobei die vordefinierte Koordinatentransformation
-@code{spherical_xyz} genutzt wird, um von Kugelkoordinaten in ein 
+Graph einer Kugelfunktion, die vordefinierte Koordinatentransformation
+@code{spherical_xyz} wird verwendet, um von Kugelkoordinaten in ein 
 kartesisches Koordinatensystem zu transformieren. Siehe auch
 @mrefdot{spherical_to_xyz}
 

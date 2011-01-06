@@ -59,143 +59,208 @@ Algebra in dem @code{affine}-Paket.
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 
-@c -----------------------------------------------------------------------------
-@deffn {Funktion} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{apply1}
+@deffn {Funktion} apply1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Repeatedly applies @var{rule_1} to
-@var{expr} until it fails, then repeatedly applies the same rule to all
-subexpressions of @var{expr}, left to right, until @var{rule_1} has failed
-on all subexpressions.  Call the result of transforming @var{expr} in this
-manner @var{expr_2}.  Then @var{rule_2} is applied in the same fashion
-starting at the top of @var{expr_2}.  When @var{rule_n} fails on the final
-subexpression, the result is returned.
+@c Repeatedly applies @var{rule_1} to @var{expr} until it fails, then repeatedly
+@c applies the same rule to all subexpressions of @var{expr}, left to right, 
+@c until @var{rule_1} has failed on all subexpressions.  Call the result of 
+@c transforming @var{expr} in this manner @var{expr_2}.  Then @var{rule_2} is 
+@c applied in the same fashion starting at the top of @var{expr_2}.  When 
+@c @var{rule_n} fails on the final subexpression, the result is returned.
 
-@code{maxapplydepth} is the depth of the deepest subexpressions processed by
-@code{apply1} and @code{apply2}.
+Wendet die Regel @var{rule_1} auf den Ausdruck @var{expr} solange an, bis die
+Anwendung fehlschl@"agt.  Dann wird die Regel von links nach rechts auf alle 
+Teilausdr@"ucke von @var{expr} angewendet.  Ist @var{expr_2} das Ergebnis, dann
+wird nun die Regel @var{rule_2} auf gleiche Weise auf den Ausdruck @var{expr_2}
+angewendet.  Zuletzt wird die Regel @var{rule_n} angewendet.  Das letzte
+Ergebnis wird zur@"uckgegeben.
 
-See also @code{applyb1}, @code{apply2}, and @code{let}.
+@c @code{maxapplydepth} is the depth of the deepest subexpressions processed by
+@c @code{apply1} and @code{apply2}.
+
+Die Optionsvariable @code{maxapplydepth} ist gr@"o@ss{}te Verschachtelungstiefe 
+f@"ur die die Funktionen @code{apply1} und @code{apply2} auf einen Ausdruck 
+angewendet werden.
+
+@c See also @code{applyb1}, @code{apply2}, and @code{let}.
+
+Siehe auch @mrefcomma{applyb1} @mref{apply2} und @mrefdot{let}
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{apply2}
+@deffn {Funktion} apply2 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-If @var{rule_1} fails on a given subexpression, then @var{rule_2} is
-repeatedly applied, etc.  Only if all rules fail on a given
-subexpression is the whole set of rules repeatedly applied to the next
-subexpression.  If one of the rules succeeds, then the same
-subexpression is reprocessed, starting with the first rule.
+@c If @var{rule_1} fails on a given subexpression, then @var{rule_2} is
+@c repeatedly applied, etc.  Only if all rules fail on a given subexpression is 
+@c the whole set of rules repeatedly applied to the next subexpression.  If one 
+@c of the rules succeeds, then the same subexpression is reprocessed, starting 
+@c with the first rule.
 
-@code{maxapplydepth} is the depth of the deepest subexpressions processed by
-@code{apply1} and @code{apply2}.
+Zun@"achst werden nacheinander die Regeln @var{rule_1}, @var{rule_2}, @dots{} 
+auf einen Ausdruck angewendet.  Schl@"agt die Anwendung aller Regeln fehl, dann 
+werden die Regeln nacheinander auf Teilausdr@"ucke von @var{expr} angewendet.  
+Kann eine der Regeln erfolgreich angewendet werden, wird die Anwendung aller 
+Regeln auf den Teilausdruck wiederholt.
 
-See also @code{apply1} and @code{let}.
+@c @code{maxapplydepth} is the depth of the deepest subexpressions processed by
+@c @code{apply1} and @code{apply2}.
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
+Die Optionsvariable @code{maxapplydepth} ist gr@"o@ss{}te Verschachtelungstiefe 
+f@"ur die die Funktionen @code{apply1} und @code{apply2} auf einen Ausdruck 
+angewendet werden.
+
+@c See also @code{apply1} and @code{let}.
+
+Siehe auch @mref{apply1} und @mrefdot{let}
+
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{applyb1}
+@deffn {Funktion} applyb1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Repeatedly applies @var{rule_1} to the deepest subexpression of @var{expr} until it fails,
-then repeatedly applies the same rule one level higher (i.e., larger subexpressions),
-until @var{rule_1} has failed on the top-level expression.
-Then @var{rule_2} is applied in the same fashion to the result of @var{rule_1}.
-After @var{rule_n} has been applied to the top-level expression,
-the result is returned.
+@c Repeatedly applies @var{rule_1} to the deepest subexpression of @var{expr} 
+@c until it fails, then repeatedly applies the same rule one level higher (i.e.,
+@c larger subexpressions), until @var{rule_1} has failed on the top-level 
+@c expression. Then @var{rule_2} is applied in the same fashion to the result of
+@c @var{rule_1}. After @var{rule_n} has been applied to the top-level 
+@c expression, the result is returned.
 
-@code{applyb1} is similar to @code{apply1} but works from
-the bottom up instead of from the top down.
+Wendet wiederholt die Regel @var{rule_1} auf den tiefsten Teilausdruck an.
+Schl@"agt die Anwendung fehlt, wird der Teilausdruck eine Ebene h@"oher 
+betrachtet, bis @var{rule_1} auf die oberste Ebene des Ausdrucks @var{expr}
+angewendet wird.  Dannach wird auf gleiche Weise die Regel @var{rule_2}
+auf den Ausdruck @var{expr} angewendet.  Nachdem die letzte Regel @var{rule_n}
+angewendet wurde, wird das Ergebnis zur@"uckgegeben.
 
-@code{maxapplyheight} is the maximum height which @code{applyb1} reaches
-before giving up.
+@c @code{applyb1} is similar to @code{apply1} but works from the bottom up 
+@c instead of from the top down.
 
-See also @code{apply1}, @code{apply2}, and @code{let}.
+@code{applyb1} ist vergleichbar mit @code{apply1} mit dem Unterschied, dass
+die Regeln Bottum-Up angewendet werden.
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
+@c @code{maxapplyheight} is the maximum height which @code{applyb1} reaches
+@c before giving up.
+
+@code{maxapplyheigt} ist die gr@"o@ss{}te Verschachtelungstiefe f@"ur die 
+@code{applyb1} angewendet wird.
+
+@c See also @code{apply1}, @code{apply2}, and @code{let}.
+
+Siehe auch @mrefcomma{apply1} @mref{apply2} und @mref{let}
+
 @end deffn
 
-@c --- 19.11.2010 DK -----------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{clear_rules}
+@deffn {Function} clear_rules ()
+
+@c Executes @code{kill (rules)} and then resets the next rule number to 1 for 
+@c addition @code{+}, multiplication @code{*}, and exponentiation @code{^}.
+
+F@"uhrt das Kommando @code{kill(rules)} aus und setzt Zahl f@"ur die n@"achste 
+Regel der Operatoren der Addition @code{+}, der Multiplikation @code{*} und der
+Exponentiaton @code{^} auf den Wert 1 zur@"uck.
+
+@end deffn
+
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{current_let_rule_package}
 @defvr {Optionsvariable} current_let_rule_package
 Standardwert: @code{default_let_rule_package}
 
-@code{current_let_rule_package} is the name of the rule package that is used 
-by functions in the @code{let} package (@code{letsimp}, etc.) 
-@c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
-if no other rule package is specified. This variable may be assigned the name
-of any rule package defined via the @code{let} command.
+@c @code{current_let_rule_package} is the name of the rule package that is used 
+@c by functions in the @code{let} package (@code{letsimp}, etc.) 
+   @c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
+@c if no other rule package is specified. This variable may be assigned the name
+@c of any rule package defined via the @code{let} command.
 
-If a call such as @code{letsimp (expr, rule_pkg_name)} is made,
-the rule package @code{rule_pkg_name} is used for that function call only,
-and the value of @code{current_let_rule_package} is not changed.
+@code{current_let_rule_package} enth@"alt den Namen des Regel-Paketes, das von 
+den Funktionen des @code{let}-Paketes verwendet wird.  Der Optionsvariablen
+kann jedes mit dem Kommando @code{let} definierte Regelpaket zugewiesen werden.
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
+@c If a call such as @code{letsimp (expr, rule_pkg_name)} is made, the rule 
+@c package @code{rule_pkg_name} is used for that function call only, and the 
+@c value of @code{current_let_rule_package} is not changed.
+
+Wird zum Beispiel das Kommando @code{letsimp(expr, rule_pkg_name} ausgef@"uhrt,
+dann wird  f@"ur das aktuelle Kommando das Paket @code{rule_pgk_name} 
+angewendet.  Der Wert der Variablen @code{current_let_rule_package} wird nicht 
+ge@"andert.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} default_let_rule_package
-
-@c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
-Default value: @code{default_let_rule_package}
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{default_let_rule_package}
+@defvr {Optionsvariable} default_let_rule_package
+Standardwert: @code{default_let_rule_package}
 
 @c THIS IS SORT OF CONFUSING. PROBABLY NEED TO GIVE MORE DETAIL HERE
-@code{default_let_rule_package} is the name of the rule package used when one
-is not explicitly set by the user with @code{let} or by changing the value of
-@code{current_let_rule_package}.
+@c @code{default_let_rule_package} is the name of the rule package used when one
+@c is not explicitly set by the user with @code{let} or by changing the value of
+@c @code{current_let_rule_package}.
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
+@code{default_let_rule_package} ist der Name des Regelpaketes, das verwendet 
+wird, wenn kein Regelpaket mit der Funktion @code{let} definiert wurde.
 
 @end defvr
 
-@deffn {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
-@deffnx {Function} defmatch (@var{progname}, @var{pattern})
-Defines a function @code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}
-which tests @var{expr} to see if it matches @var{pattern}.
+@c --- 05.01.2011 DK -----------------------------------------------------------
+@anchor{defmatch}
+@deffn  {Funktion} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
+@deffnx {Funktion} defmatch (@var{progname}, @var{pattern})
 
-@var{pattern} is an expression containing the pattern arguments @var{x_1}, ..., @var{x_n} (if any)
-and some pattern variables (if any).
-The pattern arguments are given explicitly as arguments to @code{defmatch} while the pattern variables
-are declared by the @code{matchdeclare} function.
-Any variable not declared as a pattern variable in @code{matchdeclare}
-or as a pattern argument in @code{defmatch} matches only itself.
+@c Defines a function @code{@var{progname}(@var{expr}, @var{x_1}, ..., 
+@c @var{x_n})} which tests @var{expr} to see if it matches @var{pattern}.
 
-The first argument to the created function @var{progname} is an expression
-to be matched against the pattern and the other arguments are the actual arguments
-which correspond to the dummy variables @var{x_1}, ..., @var{x_n} in the pattern.
+Definiert eine Funktion @code{@var{progname}(@var{expr}, @var{x_1}, ..., 
+@var{x_n})}, die den Ausdruck @var{expr} testet, um zu pr@"ufen, ob dieser ein
+Muster @var{pattern} enth@"alt.
 
-If the match is successful, @var{progname} returns
-a list of equations whose left sides are the
-pattern arguments and pattern variables, and whose right sides are the subexpressions
-which the pattern arguments and variables matched.
-The pattern variables, but not the pattern arguments, are assigned the subexpressions they match.
-If the match fails, @var{progname} returns @code{false}.  
+@c TODO: AB HIER FEHLT DIE UEBERSETZUNG.
 
-A literal pattern
-(that is, a pattern which contains neither pattern arguments nor pattern variables)
-returns @code{true} if the match succeeds.
+ @var{pattern} is an expression containing the pattern arguments @var{x_1}, 
+ ..., @var{x_n} (if any) and some pattern variables (if any). The pattern 
+ arguments are given explicitly as arguments to @code{defmatch} while the 
+ pattern variables are declared by the @code{matchdeclare} function. Any 
+ variable not declared as a pattern variable in @code{matchdeclare} or as a 
+ pattern argument in @code{defmatch} matches only itself.
 
-See also @code{matchdeclare}, @code{defrule}, @code{tellsimp}, and @code{tellsimpafter}.
+ The first argument to the created function @var{progname} is an expression to
+ be matched against the pattern and the other arguments are the actual 
+ arguments which correspond to the dummy variables @var{x_1}, ..., @var{x_n} 
+ in the pattern.
+
+ If the match is successful, @var{progname} returns a list of equations whose 
+ left sides are the pattern arguments and pattern variables, and whose right 
+ sides are the subexpressions which the pattern arguments and variables 
+ matched. The pattern variables, but not the pattern arguments, are assigned 
+ the subexpressions they match. If the match fails, @var{progname} returns 
+ @code{false}.  
+
+ A literal pattern (that is, a pattern which contains neither pattern 
+ arguments nor pattern variables) returns @code{true} if the match succeeds.
+
+ See also @code{matchdeclare}, @code{defrule}, @code{tellsimp}, and 
+ @code{tellsimpafter}.
 
 Examples:
 
-Define a function @code{linearp(expr, x)} which
-tests @code{expr} to see if it is of the form @code{a*x + b}
-such that @code{a} and @code{b} do not contain @code{x} and @code{a} is nonzero.
-This match function matches expressions which are linear in any variable,
-because the pattern argument @code{x} is given to @code{defmatch}.
-@c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
+ Define a function @code{linearp(expr, x)} which tests @code{expr} to see if 
+ it is of the form @code{a*x + b} such that @code{a} and @code{b} do not 
+ contain @code{x} and @code{a} is nonzero. This match function matches 
+ expressions which are linear in any variable, because the pattern argument 
+ @code{x} is given to @code{defmatch}.
+  @c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE 
+  @c PATTERN ??
 
 @c ===beg===
 @c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, 
@@ -224,11 +289,11 @@ because the pattern argument @code{x} is given to @code{defmatch}.
 (%o6)                           x
 @end example
 
-Define a function @code{linearp(expr)} which tests @code{expr}
-to see if it is of the form @code{a*x + b}
-such that @code{a} and @code{b} do not contain @code{x} and @code{a} is nonzero.
-This match function only matches expressions linear in @code{x},
-not any other variable, because no pattern argument is given to @code{defmatch}.
+ Define a function @code{linearp(expr)} which tests @code{expr} to see if it 
+ is of the form @code{a*x + b} such that @code{a} and @code{b} do not contain 
+ @code{x} and @code{a} is nonzero. This match function only matches 
+ expressions linear in @code{x}, not any other variable, because no pattern 
+ argument is given to @code{defmatch}.
 
 @c ===beg===
 @c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, 
@@ -250,8 +315,8 @@ not any other variable, because no pattern argument is given to @code{defmatch}.
 (%o4)                  [b = y , a = y + 4]
 @end example
 
-Define a function @code{checklimits(expr)} which tests @code{expr}
-to see if it is a definite integral.
+ Define a function @code{checklimits(expr)} which tests @code{expr} to see if 
+ it is a definite integral.
 
 @c ===beg===
 @c matchdeclare ([a, f], true);
@@ -291,45 +356,45 @@ to see if it is a definite integral.
 (%o9)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} defrule (@var{rulename}, @var{pattern}, @var{replacement})
-Defines and names a
-replacement rule for the given pattern.  If the rule named @var{rulename} is
-applied to an expression (by @code{apply1}, @code{applyb1}, or @code{apply2}), every
-subexpression matching the pattern will be replaced by the
-replacement. All variables in the replacement which have been
-assigned values by the pattern match are assigned those values in the
-replacement which is then simplified.
 
-The rules themselves can be
-treated as functions which transform an expression by one
-operation of the pattern match and replacement.
-If the match fails, the rule function returns @code{false}.
+@c -----------------------------------------------------------------------------
+@anchor{defrule}
+@deffn {Funktion} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
+ Defines and names a replacement rule for the given pattern.  If the rule 
+ named @var{rulename} is applied to an expression (by @code{apply1}, 
+ @code{applyb1}, or @code{apply2}), every subexpression matching the pattern 
+ will be replaced by the replacement. All variables in the replacement which 
+ have been assigned values by the pattern match are assigned those values in 
+ the replacement which is then simplified.
+
+ The rules themselves can be treated as functions which transform an 
+ expression by one operation of the pattern match and replacement. If the 
+ match fails, the rule function returns @code{false}.
+
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Function} disprule (@var{rulename_1}, ..., @var{rulename_2})
+
+@c -----------------------------------------------------------------------------
+@anchor{disprule}
+@deffn  {Function} disprule (@var{rulename_1}, @dots{}, @var{rulename_2})
 @deffnx {Function} disprule (all)
-Display rules with the names @var{rulename_1}, ..., @var{rulename_n},
-as returned by @code{defrule}, @code{tellsimp}, or @code{tellsimpafter},
-or a pattern defined by @code{defmatch}.
-Each rule is displayed with an intermediate expression label (@code{%t}).
 
-@code{disprule (all)} displays all rules.
+ Display rules with the names @var{rulename_1}, ..., @var{rulename_n}, as 
+ returned by @code{defrule}, @code{tellsimp}, or @code{tellsimpafter}, or a 
+ pattern defined by @code{defmatch}. Each rule is displayed with an 
+ intermediate expression label (@code{%t}).
 
-@code{disprule} quotes its arguments.
-@code{disprule} returns the list of intermediate expression labels corresponding to the displayed rules.
+ @code{disprule (all)} displays all rules.
 
-See also @code{letrules}, which displays rules defined by @code{let}.
+ @code{disprule} quotes its arguments. @code{disprule} returns the list of 
+ intermediate expression labels corresponding to the displayed rules.
+
+ See also @code{letrules}, which displays rules defined by @code{let}.
 
 Examples:
 
@@ -360,13 +425,13 @@ Examples:
      +rule1 : y + x -> special_add(x, y), quux : mumble(x) -> []]
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns} @category{Display functions}
-@c @closecatbox
 @end deffn
 
-@deffn {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@c -----------------------------------------------------------------------------
+@anchor{let}
+@deffn  {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
 @deffnx {Function} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
+
 Defines a substitution rule for @code{letsimp} such that @var{prod} is replaced by @var{repl}.
 @var{prod} is a product of positive or negative powers of the following terms:
 
@@ -450,12 +515,10 @@ If not otherwise specified,
 (%o8)                cos (x) - 2 cos (x) + 1
 @end example
 
-@c NEEDS ADDITIONAL EXAMPLES
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{letrat}
 @defvr {Option variable} letrat
 Default value: @code{false}
 
@@ -482,15 +545,15 @@ the numerator, denominator, and their quotient are simplified in that order.
 (%o6)                       (a - 1)!
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
-
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Function} letrules ()
+
+@c -----------------------------------------------------------------------------
+@anchor{letrules}
+@deffn  {Function} letrules ()
 @deffnx {Function} letrules (@var{package_name})
+
 Displays the rules in a rule package.
 @code{letrules ()} displays the rules in the current rule package.
 @code{letrules (@var{package_name})} displays the rules in @var{package_name}.
@@ -502,14 +565,14 @@ defaults to @code{default_let_rule_package}.
 See also @code{disprule}, which displays rules defined by @code{tellsimp} and @code{tellsimpafter}.
 @c WHAT ABOUT defmatch AND defrule ??
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
-@deffn {Function} letsimp (@var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{letsimp}
+@deffn  {Function} letsimp (@var{expr})
 @deffnx {Function} letsimp (@var{expr}, @var{package_name})
 @deffnx {Function} letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})
+
 Repeatedly applies the substitution rules defined by @code{let}
 until no further change is made to @var{expr}.
 
@@ -522,13 +585,10 @@ without changing @code{current_let_rule_package}.
 is equivalent to @code{letsimp (@var{expr}, @var{package_name_1}},
 followed by @code{letsimp (%, @var{package_name_2})}, and so on.
 
-@c NEEDS EXAMPLES
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
+@anchor{let_rule_packages}
 @defvr {Optionsvariable} let_rule_packages
 Standardwert: @code{[default_let_rule_package]}
 
@@ -544,6 +604,7 @@ definierten @code{let}-Regeln.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{matchdeclare}
 @deffn {Function} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 
 Associates a predicate @var{pred_k} 
@@ -756,12 +817,10 @@ The functions @code{propvars} and @code{printprops} return information about mat
                       integerp(dd), atom(cc), atom(bb), atom(aa)]
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns} @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{maxapplydepth}
 @defvr {Optionsvariable} maxapplydepth
 Standardwert: 10000
 
@@ -771,12 +830,10 @@ Standardwert: 10000
 @code{maxapplydepth} ist die maximale Tiefe mit der @code{apply1} und 
 @code{apply2} angewendet werden.
 
-@c @opencatbox
-@c @category{Funktionsanwendungen}
-@c @closecatbox
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{maxapplyheight}
 @defvr {Optionsvariable} maxapplyheight
 Standardwert: 10000
 
@@ -786,17 +843,17 @@ Standardwert: 10000
 @code{maxapplyheigt} ist die maximale Gr@"o@ss{}e die @code{applyb1} erreichen kann,
 bevor die Funktion aufgibt.
 
-@c @opencatbox
-@c @category{Funktionsanwendungen}
-@c @closecatbox
 @end defvr
 
-
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} remlet (@var{prod}, @var{name})
+
+@c -----------------------------------------------------------------------------
+@anchor{remlet}
+@deffn  {Function} remlet (@var{prod}, @var{name})
 @deffnx {Function} remlet ()
 @deffnx {Function} remlet (all)
 @deffnx {Function} remlet (all, @var{name})
+
 Deletes the substitution rule, @var{prod} --> repl, most
 recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.
@@ -813,13 +870,11 @@ called the original substitution rule is revived.
 
 See also @code{remrule}, which removes a rule defined by @code{tellsimp} or @code{tellsimpafter}.
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} remrule (@var{op}, @var{rulename})
+@anchor{remrule}
+@deffn  {Function} remrule (@var{op}, @var{rulename})
 @deffnx {Function} remrule (@var{op}, all)
 
 Removes rules defined by @code{tellsimp} or @code{tellsimpafter}.
@@ -884,9 +939,6 @@ Examples:
                                          quux(%e, %pi)]
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -903,6 +955,7 @@ Siehe auch @mrefdot{infolists}
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
 
 @c -----------------------------------------------------------------------------
+@anchor{tellsimp}
 @deffn {Function} tellsimp (@var{pattern}, @var{replacement})
 
 is similar to @code{tellsimpafter} but places
@@ -966,12 +1019,12 @@ Examples:
 (%o17)                     1 - cos (y)
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{tellsimpafter}
 @deffn {Function} tellsimpafter (@var{pattern}, @var{replacement})
+
 Defines a simplification rule which the Maxima simplifier
 applies after built-in simplification rules.
 @var{pattern} is an expression, comprising pattern variables (declared by @code{matchdeclare})
@@ -1233,19 +1286,6 @@ A worked example: anticommutative multiplication.
             9    8    7    6    5    4    3    2    1    0
 @end example
 
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
-@end deffn
-
-@deffn {Function} clear_rules ()
-
-Executes @code{kill (rules)} and then resets the next rule number to 1
-for addition @code{+}, multiplication @code{*}, and exponentiation @code{^}.
-
-@c @opencatbox
-@c @category{Rules and patterns}
-@c @closecatbox
 @end deffn
 
 @c --- End of file Rules.de.texi -----------------------------------------------

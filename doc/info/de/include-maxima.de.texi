@@ -187,6 +187,7 @@ Spezifische Gebiete der Mathematik
 * Lineare Algebra::             Matrizen und Vektoren.
 * Tensoren::                    Methoden der Tensorrechnung.
 * Spezielle Funktionen::        Spezielle Mathematische Funktionen.
+* Zahlentheorie::               Funktionen der Zahlentheorie.
 * Fouriertransformationen::     Fouriertransformationen und -reihen.
 @sp 1
 
@@ -319,7 +320,6 @@ Mathematische Funktionen
 * Hyperbelfunktionen::
 * Einf@"uhrung in Hyperbelfunktionen::
 * Funktionen und Variablen f@"ur Hyperbelfunktionen::
-* Funktionen der Zahlentheorie::
 * Zufallszahlen::
 
 Maximas Datenbank
@@ -380,6 +380,9 @@ Tensoren
 * Functions and Variables for ctensor::
 * Introduction to atensor::
 * Functions and Variables for atensor::
+
+Zahlentheorie
+* Funktionen und Variablen der Zahlentheorie::
 
 Spezielle Funktionen
 * Einf@"uhrung f@"ur spezielle Funktionen:: 
@@ -699,13 +702,17 @@ Glossar
 @chapter Lineare Algebra
 @include Matrices.de.texi
 
-@node Tensoren, Spezielle Funktionen, Lineare Algebra, Top
+@node Tensoren, Zahlentheorie, Lineare Algebra, Top
 @chapter Tensoren
 @include Itensor.de.texi
 @include Ctensor.de.texi
 @include Atensor.de.texi
 
-@node Spezielle Funktionen, Fouriertransformationen, Tensoren, Top
+@node Zahlentheorie, Spezielle Funktionen, Tensoren, Top
+@chapter Zahlentheorie
+@include Number.de.texi
+
+@node Spezielle Funktionen, Fouriertransformationen, Zahlentheorie, Top
 @chapter Spezielle Funktionen
 @include Special.de.texi
 

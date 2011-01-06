@@ -1221,8 +1221,8 @@ bestimmten Transformationen als ein Skalar behandelt.
 @c @code{assumescalar} is @code{true}, or @code{scalarp (expr)} is @code{true}, 
 @c or @code{constantp (expr)} is @code{true}.
 
-Ist @code{expr} irgendein Ausdruck bis auf eine Liste oder eine Matrix und
-@code{[1, 2, 3]} re@-pr@"a@-sen@-tiert eine Liste oder eine Matrix. Dann ergibt
+Ist @code{expr} ein Ausdruck bis auf eine Liste oder eine Matrix und
+@code{[1, 2, 3]} re@-pr@"a@-sen@-tiert eine Liste oder eine Matrix.  Dann ergibt
 @code{expr . [1, 2, 3]} das Ergebnis @code{[expr, 2 expr, 3 expr]}, wenn
 @code{assumescalar}, @code{scalarp(expr)} oder @code{constantp(expr)} den Wert 
 @code{true} haben.

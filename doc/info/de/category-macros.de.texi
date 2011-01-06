@@ -102,14 +102,19 @@
              Ei-gen-schafts-lis-te
              ein-ge-schlos-sen
              ent-hal-ten
+             Er-geb-nis
+             Funk-tion
              ge-kenn-zeich-net
              ge-ne-riert
              ge-spei-chert
              Glei-chung
              Glo-ba-le
              Gnuplot
+             Gra-fik-for-mat
+             Gra-fik-kom-man-dos
              Iso-li-nien
              ka-no-ni-scher
+             Ko-or-di-na-ten-sys-tem
              Mgnuplot
              O-pe-ra-tor 
              O-pe-ra-to-ren         

@@ -39,7 +39,7 @@ die Datei @var{filename}.
 @c @code{compfile(@var{filename}, all)} translate all user-defined functions.
 
 @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} @"ubersetzt die
-Funktionen @var{f_1}, @dots{}, @var{f_n}).  @code{compfile(@var{filename}, 
+Funktionen @var{f_1}, @dots{}, @var{f_n}.  @code{compfile(@var{filename}, 
 functions)} und @code{compfile(@var{filename}, all)} @"ubersetzen alle 
 nutzerdefinierten Funktionen.
 
@@ -59,9 +59,6 @@ dann den Lisp-Compiler aus.
 Siehe auch @mrefcomma{translate} @mref{translate_file} und 
 @mrefdot{compile_file}
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
@@ -94,7 +91,7 @@ kompilierten Funktionen zur@"uck.
 @c @code{compile (all)} or @code{compile (functions)} compiles all user-defined 
 @c functions.
 
-@code{compile(all)} oder @code{compile(compile(funtions)} kompiliert alle
+@code{compile(all)} oder @code{compile(funtions)} kompiliert alle
 nutzerdefinierten Funktionen.
 
 @c @code{compile} quotes its arguments;  the quote-quote operator @code{'@w{}'} 
@@ -103,9 +100,6 @@ nutzerdefinierten Funktionen.
 @code{compile} wertet die Argumente nicht aus.  Der Quote-Quote-Operator
 @code{'@w{}'} erzwingt die Auswertung.
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
@@ -140,19 +134,20 @@ Kompilierung fehlt, ist der vierte Eintrag @code{false}.
 
 Einige Deklarationen und Definitionen sind bereits vorhanden, nachdem der 
 Lisp-Code kompiliert ist und ohne das dieser geladen wurde.  Dies schlie@ss{}t
-Funktionsdefinitionen mit dem Operator @code{:=}, Maktros definiert mit dem
-Operator @code{::=}, @code{alias}, @code{declare}, @code{define_variable},
-@code{mode_declare}, @code{infix}, @code{matchfix}, @code{nofix}, 
-@code{postfix}, @code{prefix} und @code{compfile}.
+Funktionsdefinitionen mit dem Operator @code{:=}, Makros definiert mit dem
+Operator @code{::=} sowie Definitionen der folgenden Funktionen @code{alias}, 
+@code{declare}, @code{define_variable}, @code{mode_declare}, @code{infix}, 
+@code{matchfix}, @code{nofix}, @code{postfix}, @code{prefix} und 
+@code{compfile} ein.
 
 @c Assignments and function calls are not evaluated until the compiled code is 
 @c loaded. In particular, within the Maxima file, assignments to the translation
 @c flags (@code{tr_numer}, etc.) have no effect on the translation.
 
 Zuweisungen und Funktionsaufrufe werden nicht ausgwertet bevor der komplierte
-Code geladen wird.  Im speziellen, in der Maxima-Datei, Zuweisungen an die
-@"Ubersetzungsschalter wie @code{tr_numer} und andere haben keinen Effekt auf
-die @"Ubersetzung.
+Code geladen wird.  Im besonderen haben Zuweisungen an die 
+@"Ubersetzungsschalter wie @code{tr_numer} und andere, die in der Maxima-Datei
+aufgef@"uhrt sind, keinen Effekt auf die @"Ubersetzung.
 
 @c @code{compile_file} may mistake warnings for errors and
 @c return @code{false} as the name of the compiled code when, in fact,
@@ -171,9 +166,6 @@ Die Datei @var{filename} darf keine @code{:lisp}-Anweisungen enthalten.
 
 @code{compile_file} wertet die Argumente aus.
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
@@ -198,9 +190,6 @@ Maxima-Funktionen oder undefiniert sind.  Mit der Deklaration
 repr@"asentieren.  Fehlt dem @"Ubersetzer diese Information wird das Kommando 
 @code{(MFUNCTION-CALL fn arg1 arg2 ...)} generiert.
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
@@ -237,9 +226,6 @@ warning: n was declared with mode fixnum, but it has value: 2.0
 (%o5)                          [n]
 @end example
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 28.12.21010 DK ----------------------------------------------------------
@@ -270,9 +256,6 @@ Error: n was declared mode fixnum, has value: 2.0
  -- an error. To debug this try: debugmode(true);
 @end example
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 28.12.2010 DK -----------------------------------------------------------
@@ -289,9 +272,6 @@ mit @code{mode_declare} ein verschiedener Typ deklariert werden soll.  Damit
 diese Optionsvariable wirksam ist, muss @code{mode_checkp} den Wert @code{true}
 haben.  Siehe @mref{mode_checkp} und @mrefdot{mode_check_errorp}
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -305,7 +285,7 @@ haben.  Siehe @mref{mode_checkp} und @mrefdot{mode_check_errorp}
 @c is typically placed at the beginning of a function definition, at the 
 @c beginning of a Maxima script, or executed at the interactive prompt.
 
-@code{mode_declare} deklariert den Typ von Variablen und Funktionen f@"ur die
+@code{mode_declare} deklariert den Typ von Variablen und Funktionen f@"ur den
 @"Ubersetzer und den Kompilierer.  Typischerweise wird @code{mode_declare} am
 Anfang einer Funktion oder einer Datei mit Maxima-Code ausgef@"uhrt.
 
@@ -377,9 +357,6 @@ definiert.
 
 @code{modedeclare} ist ein Alias-Name der Funktion @code{mode_declare}.
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c WHAT IS THIS ABOUT ??
@@ -410,8 +387,8 @@ definiert.
 @c and use @code{firstnumb} every time you take the first of a list of numbers.
 
 Mit der Funktion @code{mode_identity} wird der Typ @var{mode} f@"ur das
-Ergebnisses des Ausdrucks @var{expr} festgelegt.  Hat das Ergebnis einen
-anderen Typ wird eine in Abh@"angigkeit von den Werten der Optionsvariablen
+Ergebnis des Ausdrucks @var{expr} festgelegt.  Hat das Ergebnis einen anderen 
+Typ wird in Abh@"angigkeit von den Werten der Optionsvariablen 
 @code{mode_checkp}, @code{mode_check_warnp} und @code{mode_check_errorp} eine
 Warnung ausgegeben oder das Programm abgebrochen.
 
@@ -435,9 +412,6 @@ warning: sin(a) was declared with mode fixnum, but it has value:
 (%o3)                        sin(a)
 @end example
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c --- 02.01.2011 DK -----------------------------------------------------------
@@ -514,9 +488,6 @@ fundef: no such function: g
 (%o10)                       [f(x)]
 @end example
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
 @end defvr
 
 @c IS THERE ANY REASON TO SET transcompile: false ??
@@ -542,9 +513,6 @@ des Codes verbessern.
 
 @code{compfile} setzt den Wert von @code{transcompile} zu @code{true}.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -574,10 +542,9 @@ Benutzer definierten Funktionen.
 @c the @var{v_1}, @var{v_2}, ... are the local variables.
 
 Funktionen, die @"ubersetzt werden sollen, sollten mit @code{mode_declare} den
-Typ von Variablen und Funktionen und deklarieren, um effizienteren Code
-zu erhalten.  Im Folgenden Beispiel sind @var{x_1}, @var{x_2}, @dots{} die 
-Argumente der Funktion und @var{v_1}, @var{v_2}, @dots{} sind die lokalen 
-Variablen.
+Typ von Variablen und Funktionen deklarieren, um effizienteren Code zu erhalten.
+Im Folgenden Beispiel sind @var{x_1}, @var{x_2}, @dots{} die Argumente der 
+Funktion und @var{v_1}, @var{v_2}, @dots{} sind die lokalen Variablen.
 
 @example
 f (x_1, x_2, ...) := block ([v_1, v_2, ...],
@@ -622,11 +589,11 @@ Funktionen automatisch nach Lisp @"ubersetzt.
    @c WHAT ABOUT % AND %% ???
 
 Das Laufzeitverhalten von @"ubersetzten Funktionen kann sich von dem 
-nicht-@"ubersetzter Funktionen unterscheiden.  Grunds@"atzlich sollten die 
+nicht-@"ubersetzter Funktionen unterscheiden.  Grunds@"atzlich sollte die 
 Funktion @code{rat} nicht mit mehr als zwei Argumenten und die Funktion 
-@code{ratvars} genutzt werden, wenn irgendeine der Variablen eine CRE-Form mit 
-Deklaration mit @code{mode_declare} aufweisen.  Auch wird @code{prederror:false}
-nicht @"ubersetzt.
+@code{ratvars} nicht genutzt werden, wenn irgendeine der Variablen eine CRE-Form
+mit Deklaration mit @code{mode_declare} aufweisen.  Auch wird 
+@code{prederror:false} nicht @"ubersetzt.
 
 @c @code{savedef} - if @code{true} will cause the Maxima version of a user
 @c function to remain when the function is @code{translate}'d.  This permits the
@@ -647,9 +614,6 @@ Originalversionen der @"ubersetzten Funktion ausgef@"uhrt.
 Das Ergebnis der Funktion @code{translate} ist eine Liste der Namen der
 @"ubersetzten Funktionen.
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -674,7 +638,7 @@ Argumente aus.
 @c @code{'@w{}'} and @code{%}, for example.
    @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-Die Kommandos @code{translare_file("foo.mac")} und @code{load("foo.LISP")} 
+Die Kommandos @code{translate_file("foo.mac")} und @code{load("foo.LISP")} 
 haben bis auf wenige Ausnahmen dieselbe Wirkung wie @code{batch("foo.mac")}.  
 Zum Beispiel funktionieren @code{'@w{}'} und @code{%} unterschiedlich.
 
@@ -702,7 +666,7 @@ die Maxima-Datei @var{maxima_filename} in eine Lisp-Datei mit dem Namen
 @code{lisp_filename}.  @code{translate_file} ignoriert eine angegebene 
 Dateiendung des Dateinamenes @code{lisp_filename}.  Die Dateiendung ist immer
 @code{.LISP}.  Der Name der Lisp-Datei kann Pfadangaben enthalten, um die
-Lisp-Datei in das gew@"unschte Verzeihnis zu schreiben.
+Lisp-Datei in das gew@"unschte Verzeichnis zu schreiben.
 
 @c @code{translate_file} also writes a file of translator warning messages of 
 @c various degrees of severity. The filename extension of this file is 
@@ -755,9 +719,6 @@ Siehe auch die folgenden Optionsvariablen:
 @code{tr_windy}.
 @end flushleft
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -773,179 +734,196 @@ Hat @code{transrun} den Wert @code{false}, werden die nicht-@"ubersetzten
 Versionen ausgef@"uhrt, falls diese noch vorhanden sind.  
 Siehe @mrefdot{savedef}
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
 @end defvr
 
 @c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE 
 @c USEFULNESS HERE. ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR 
 @c translate_fast_arrays, ANOTHER CONFUSING FLAG ...
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_array_as_ref}
 @defvr {Optionsvariable} tr_array_as_ref
 Standardwert: @code{true}
 
- If @code{translate_fast_arrays} is @code{false}, array references in Lisp 
- code emitted by @code{translate_file} are affected by @code{tr_array_as_ref}.
- When @code{tr_array_as_ref} is @code{true}, array names are evaluated,
- otherwise array names appear as literal symbols in translated code.
+@c If @code{translate_fast_arrays} is @code{false}, array references in Lisp 
+@c code emitted by @code{translate_file} are affected by @code{tr_array_as_ref}.
+@c When @code{tr_array_as_ref} is @code{true}, array names are evaluated,
+@c otherwise array names appear as literal symbols in translated code.
 
- @code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is 
- @code{true}.
+Hat @code{translate_fast_arrays} den Wert @code{false}, werden Referenzen auf
+Arrays in Lisp-Code von der Variablen @code{tr_array_as_ref} kontrolliert.  Hat
+@code{tr_array_as_ref} den Wert @code{true}, werden Array-Namen ausgewertet.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+@c @code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is 
+@c @code{true}.
+
+@code{tr_array_as_ref} hat keinen Effekt, wenn @code{translate_fast_arrays} den
+Wert @code{true} hat.
+
 @end defvr
 
 @c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
 @c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_bound_function_applyp}
 @defvr {Optionsvariable} tr_bound_function_applyp
 Standardwert: @code{true}
 
- When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning 
- if a bound variable (such as a function argument) is found being used as a 
- function.
+@c When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning 
+@c if a bound variable (such as a function argument) is found being used as a 
+@c function.
    @c WHAT DOES THIS MEAN ??
- @code{tr_bound_function_applyp} does not affect the code generated in such 
- cases.
+@c @code{tr_bound_function_applyp} does not affect the code generated in such 
+@c cases.
 
- For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
- the warning message.
+Hat @code{tr_bound_function_applyp} den Wert @code{true}, gibt Maxima eine
+Warnung aus, wenn versucht wird, eine gebundene Variable als eine Funktion
+verwendet werden soll.  @code{tr_bound_function_applyp} hat keinen Effekt auf
+den generierten Code.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+@c For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
+@c the warning message.
+
+Zum Beispiel gibt ein Ausdruck der Form  @code{g (f, x) := f (x+1)} eine 
+Warnung.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_file_tty_messagep}
 @defvr {Optionsvariable} tr_file_tty_messagesp
 Standardwert: @code{false}
 
- When @code{tr_file_tty_messagesp} is @code{true}, messages generated by 
- @code{translate_file} during translation of a file are displayed on the 
- console and inserted into the UNLISP file. When @code{false}, messages about 
- translation of the file are only inserted into the UNLISP file.
+@c When @code{tr_file_tty_messagesp} is @code{true}, messages generated by 
+@c @code{translate_file} during translation of a file are displayed on the 
+@c console and inserted into the UNLISP file. When @code{false}, messages about 
+@c translation of the file are only inserted into the UNLISP file.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Hat @code{tr_file_tty_messagesp} den Wert @code{true}, werden Meldungen die
+von der Funktion @code{translate_file} w@"ahrend einer @"Ubersetzung generiert 
+werden auch auf der Konsole ausgegeben.  Ansonsten werden Meldungen nur in die
+Datei @code{.UNILISP} geschrieben.
+
 @end defvr
 
 @c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED 
 @c CODE. NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE
 @c MODE FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_float_can_branch_complex}
 @defvr {Optionsvariable} tr_float_can_branch_complex
 Standardwert: @code{true}
 
- Tells the Maxima-to-Lisp translator to assume that the functions @code{acos},
- @code{asin}, @code{asec}, and @code{acsc} can return complex results.
+@c Tells the Maxima-to-Lisp translator to assume that the functions @code{acos},
+@c @code{asin}, @code{asec}, and @code{acsc} can return complex results.
 
- The ostensible effect of @code{tr_float_can_branch_complex} is the following.
- However, it appears that this flag has no effect on the translator output.
+Erkl@"art dem @"Ubersetzer, dass die Funktionen @code{acos}, @code{asin}, 
+@code{asec} und @code{acsc} komplexe Werte zur@"uckgegeben k@"onnen.
 
- When it is @code{true} then @code{acos(x)} is of mode @code{any} even if 
- @code{x} is of mode @code{float} (as set by @code{mode_declare}). When 
- @code{false} then @code{acos(x)} is of mode @code{float} if and only if 
- @code{x} is of mode @code{float}.
+@c TODO: DAS FOLGENDE NICHT UEBERSETZT.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+@c The ostensible effect of @code{tr_float_can_branch_complex} is the following.
+@c However, it appears that this flag has no effect on the translator output.
+
+@c When it is @code{true} then @code{acos(x)} is of mode @code{any} even if 
+@c @code{x} is of mode @code{float} (as set by @code{mode_declare}). When 
+@c @code{false} then @code{acos(x)} is of mode @code{float} if and only if 
+@c @code{x} is of mode @code{float}.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_function_call_default}
 @defvr {Optionsvariable} tr_function_call_default
 Standardwert: @code{general}
 
- @code{false} means give up and call @code{meval}, @code{expr} means assume 
- Lisp fixed arg function.  @code{general}, the default gives code good for 
- @code{mexprs} and @code{mlexprs} but not @code{macros}. @code{general} 
- assures variable bindings are correct in compiled code.  In @code{general} 
- mode, when translating F(X), if F is a bound variable, then it assumes that 
- @code{apply (f, [x])} is meant, and translates a such, with apropriate 
- warning. There is no need to turn this off.  With the default settings, no 
- warning messages implies full compatibility of translated and compiled code 
- with the Maxima interpreter.
+@c @code{false} means give up and call @code{meval}, @code{expr} means assume 
+@c Lisp fixed arg function.  @code{general}, the default gives code good for 
+@c @code{mexprs} and @code{mlexprs} but not @code{macros}. @code{general} 
+@c assures variable bindings are correct in compiled code.  In @code{general} 
+@c mode, when translating F(X), if F is a bound variable, then it assumes that 
+@c @code{apply (f, [x])} is meant, and translates a such, with apropriate 
+@c warning. There is no need to turn this off.  With the default settings, no 
+@c warning messages implies full compatibility of translated and compiled code 
+@c with the Maxima interpreter.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+@c TODO: DIE WERTE FALSE UND EXPR SIND NICHT WIRKLICH KLAR.
+
+@code{false} bedeutet, gebe auf und rufe @code{meval} auf, @code{expr} bedeutet,
+nehme Lisp-Argumente an.  @code{general}, der Standardwert, gibt Code der f@"ur
+@code{MEXPRS}-Funktionen geeignet ist.  Wird Maxima-Code mit dem Standardwert
+@code{general} @"ubersetzt, ohne dass Warnmeldungen ausgegeben werden, kann davon
+ausgegangen werden, dass der @"ubersetzte und komplilierte Code kompatibel mit der
+urspr@"unglichen Funktion ist.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_numer}
 @defvr {Optionsvariable} tr_numer
 Standardwert: @code{false}
 
- When @code{tr_numer} is @code{true}, @code{numer} properties are used for
- atoms which have them, e.g. @code{%pi}.
+@c When @code{tr_numer} is @code{true}, @code{numer} properties are used for
+@c atoms which have them, e.g. @code{%pi}.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Hat @code{tr_numer} den Wert @code{true}, wird die @code{numer}-Eigenschaft
+von Symbolen vom @"Ubersetzer angewendet.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_optimize_max_loop}
 @defvr {Optionsvariable} tr_optimize_max_loop
 Standardwert: 100
 
- @code{tr_optimize_max_loop} is the maximum number of times the
- macro-expansion and optimization pass of the translator will loop in
- considering a form.  This is to catch macro expansion errors, and
- non-terminating optimization properties.
+@c @code{tr_optimize_max_loop} is the maximum number of times the
+@c macro-expansion and optimization pass of the translator will loop in
+@c considering a form.  This is to catch macro expansion errors, and
+@c non-terminating optimization properties.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+@code{tr_optimize_max_loop} enth@"alt die maximale Anzahl an Durchg@"angen, um
+Makros zu expandieren und den Code zu optimieren.  Damit werden unendliche
+Schleifen des @"Ubersetzers vermieden.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_semicompile}
 @defvr {Optionsvariable} tr_semicompile
 Standardwert: @code{false}
 
- When @code{tr_semicompile} is @code{true}, @code{translate_file} and 
- @code{compfile} output forms which will be macroexpanded but not compiled 
- into machine code by the Lisp compiler.
+@c When @code{tr_semicompile} is @code{true}, @code{translate_file} and 
+@c @code{compfile} output forms which will be macroexpanded but not compiled 
+@c into machine code by the Lisp compiler.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Hat @code{tr_semicompile} den Wert @code{true}, geben die Funktionen 
+@code{translate_file} und @code{compfile} Code aus, in dem Makrofunktionen
+expandiert sind, der aber nicht kompliliert ist.
+
 @end defvr
 
 @c ARE ANY OF THESE OBSOLETE ??
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_state_vars}
 @defvr {Systemvariable} tr_state_vars
 Standardwert:
-@example
+@verbatim
 [transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
 tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
 tr_function_call_default, tr_array_as_ref,tr_numer]
-@end example
+@end verbatim
 
- The list of the switches that affect the form of the translated output.
+@c The list of the switches that affect the form of the translated output.
    @c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
- This information is useful to system people when trying to debug the 
- translator.  By comparing the translated product to what should have been 
- produced for a given state, it is possible to track down bugs.
+@c This information is useful to system people when trying to debug the 
+@c translator.  By comparing the translated product to what should have been 
+@c produced for a given state, it is possible to track down bugs.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Enth@"alt eine Liste der Schalter, die die @"Ubersetzung kontrollieren.
+
 @end defvr
 
 @c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- 
@@ -953,93 +931,93 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 @c ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE 
 @c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warnings_get}
 @deffn {Funktion} tr_warnings_get ()
 
- Prints a list of warnings which have been given by the translator during the 
- current translation.
+@c Prints a list of warnings which have been given by the translator during the 
+@c current translation.
 
-@c @opencatbox
-@c @category{Translation and compilation}
-@c @closecatbox
+Gebe die Liste der Warnungen aus, welche bei der letzten @"Ubersetzung erzeugt 
+wurden.
+
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warn_bad_function_calls}
 @defvr {Optionsvariable} tr_warn_bad_function_calls
 Standardwert: @code{true}
 
- - Gives a warning when function calls are being made which may not be correct 
- due to improper declarations that were made at translate time.
+@c Gives a warning when function calls are being made which may not be correct 
+@c due to improper declarations that were made at translate time.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Gebe Warnungen aus, wenn Funktionsaufrufe generiert werden, die m@"oglicherweise
+nicht korrekt sind, aufgrund von ungeeigneten Deklarationen f@"ur die 
+@"Ubersetzung.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warn_fexpr}
 @defvr {Optionsvariable} tr_warn_fexpr
 Standardwert: @code{compfile}
 
- - Gives a warning if any FEXPRs are encountered.  FEXPRs should not normally 
- be output in translated code, all legitimate special program forms are 
- translated.
+@c Gives a warning if any FEXPRs are encountered.  FEXPRs should not normally 
+@c be output in translated code, all legitimate special program forms are 
+@c translated.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Gebe Warnungen aus, wenn @code{FEXPR}-Ausdr@"ucke im @"ubersetzten Code 
+auftreten.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warn_meval}
 @defvr {Optionsvariable} tr_warn_meval
 Standardwert: @code{compfile}
 
- - Gives a warning if the function @code{meval} gets called.  If @code{meval} 
- is called that indicates problems in the translation.
+@c Gives a warning if the function @code{meval} gets called.  If @code{meval} 
+@c is called that indicates problems in the translation.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Gebe Warnungen aus, wenn die Funktion @code{meval} aufgerufen wird.  Dies
+signalisiert Probleme bei der @"Ubersetzung.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warn_mode}
 @defvr {Optionsvariable} tr_warn_mode
 Standardwert: @code{all}
 
- - Gives a warning when variables are assigned values inappropriate for their 
- mode.
+@c Gives a warning when variables are assigned values inappropriate for their 
+@c mode.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Gebe Warnungen aus, wenn Variablen Werte zugewiesen werden, die nicht zu dem
+deklarierten Typ passen.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warn_undeclared}
 @defvr {Optionsvariable} tr_warn_undeclared
 Standardwert: @code{compile}
 
- - Determines when to send warnings about undeclared variables to the TTY.
+@c Determines when to send warnings about undeclared variables to the TTY.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Kontrolliert, wann Warnungen @"uber nicht-deklarierte Variablen angezeigt werden
+sollen.
+
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_warn_undedined_variable}
 @defvr {Optionsvariable} tr_warn_undefined_variable
 Standardwert: @code{all}
 
- - Gives a warning when undefined global variables are seen.
+@c Gives a warning when undefined global variables are seen.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Gebe eine Warnung aus, wenn undefinierte globale Variablen auftreten.
+
 @end defvr
 
 @c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
@@ -1047,16 +1025,15 @@ Standardwert: @code{all}
 @c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
 @c AND CUT OUT tr_windy FROM CODE AND DOCS.
 
-@c -----------------------------------------------------------------------------
+@c --- 05.01.2011 DK -----------------------------------------------------------
 @anchor{tr_windy}
 @defvr {Optionsvariable} tr_windy
 Standardwert: @code{true}
 
- - Generate helpful comments and programming hints.
+@c Generate helpful comments and programming hints.
 
-@c @opencatbox
-@c @category{Translation flags and variables}
-@c @closecatbox
+Generiere Kommentare und Hinweise zur Programmierung.
+
 @end defvr
 
 @c --- End of file Translator.de.texi ------------------------------------------
