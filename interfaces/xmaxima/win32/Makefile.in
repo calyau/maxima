@@ -76,11 +76,8 @@ gcccopy:
 
 # Install the gnuplot binary files in bin
 gnuplot: 
-	mkdir -p $(prefix)/bin/share/PostScript
-	cp $(GNUPLOTDIR)/bin/wgnuplot.exe $(prefix)/bin
-	cp $(GNUPLOTDIR)/bin/wgnuplot.hlp $(prefix)/bin
-	cp $(GNUPLOTDIR)/bin/wgnuplot.mnu $(prefix)/bin
-	cp $(GNUPLOTDIR)/bin/share/PostScript/prologue.ps $(prefix)/bin/share/PostScript
+	mkdir -p $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/binary/* $(prefix)/gnuplot
 
 # Install wxMaxima
 wxmaxima:

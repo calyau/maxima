@@ -79,7 +79,7 @@ Source: "@prefix@\readme_*.txt"; DestDir: "{app}"; Components: "core"
 Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\wxMaxima,\info,\share\maxima\@VERSION@\doc\html,\share\maxima\@VERSION@\doc\chm"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
 Source: "@prefix@\share\maxima\@VERSION@\doc\html\intromax.html"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\"; Flags: ignoreversion; Components: "core"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\"; Flags: ignoreversion; Components: "core"
-Source: "@prefix@\info\*.*"; DestDir: "{app}\info\";  Flags: ignoreversion;  Components: "core"
+Source: "@prefix@\share\info\*.*"; DestDir: "{app}\info\";  Flags: ignoreversion;  Components: "core"
 
 ; wmaxima
 Source: "@prefix@\wxMaxima\*.*"; DestDir: "{app}\wxMaxima\"; Flags: ignoreversion recursesubdirs; Components: "wxmaxima"
@@ -89,13 +89,13 @@ Source: "@prefix@\bin\xmaxima.*"; DestDir: "{app}\bin\"; Flags: ignoreversion; C
 Source: "@prefix@\bin\xmaxima"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "xmaxima"
 
 ; lang\spanish
-Source: "@prefix@\info\es\*.*"; DestDir: "{app}\info\es\";  Flags: recursesubdirs;  Components: "lang\spanish"
+Source: "@prefix@\share\info\es\*.*"; DestDir: "{app}\info\es\";  Flags: recursesubdirs;  Components: "lang\spanish"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\es\"; Components: "lang\spanish"
 ; lang\portuguese
-Source: "@prefix@\info\pt\*.*"; DestDir: "{app}\info\pt\";  Flags: recursesubdirs;  Components: "lang\portuguese"
+Source: "@prefix@\share\info\pt\*.*"; DestDir: "{app}\info\pt\";  Flags: recursesubdirs;  Components: "lang\portuguese"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\pt\"; Components: "lang\portuguese"
 ; lang\brazilian
-Source: "@prefix@\info\pt_BR\*.*"; DestDir: "{app}\info\pt_BR\";  Flags: recursesubdirs;  Components: "lang\brazilian"
+Source: "@prefix@\share\info\pt_BR\*.*"; DestDir: "{app}\info\pt_BR\";  Flags: recursesubdirs;  Components: "lang\brazilian"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\pt_BR\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\pt_BR\"; Components: "lang\brazilian"
 
 
