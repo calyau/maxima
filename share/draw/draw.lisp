@@ -31,6 +31,8 @@
 
 ($put '$draw 2 '$version)
 
+(defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
+
 (when
   (null ($get '$grcommon '$version))
   (simplify ($load "grcommon.lisp")))
@@ -40,8 +42,6 @@
 (defvar $draw_loaded t)
 
 (defvar $draw_compound t)
-
-(defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
