@@ -91,9 +91,6 @@ Funktionen und Variablen vorhanden sind.
 
 @code{run_testsuite} hat den R@"uckgabewert @code{done}.
 
-@c @opencatbox
-@c @category{Fehlersuche}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -115,9 +112,6 @@ Die Eintr@"age der Liste bedeuten, dass die Dateien "rtest13s" und "rtest14"
 ausgef@"uhrt werden sollen und das bekannt ist, dass die Tests mit den Nummern 
 57 und 63 der Testdatei "rtest14" fehlschlagen werden.
 
-@c @opencatbox
-@c @category{Fehlersuche} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -148,9 +142,6 @@ Lisp implementation version: 1.0.29.11.debian
 The above information is also reported by the function 'build_info'
 @end example
 
-@c @opencatbox
-@c @category{Fehlersuche}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -171,9 +162,6 @@ Lisp implementation type: SBCL
 Lisp implementation version: 1.0.29.11.debian
 @end example
 
-@c @opencatbox
-@c @category{Fehlersuche}
-@c @closecatbox
 @end deffn
 
 @c --- End of file Bugs.de.texi ------------------------------------------------

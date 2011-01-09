@@ -1555,8 +1555,8 @@ Beispiele:
 
 @c Gram-Schmidt algorithm using default inner product function.
 
-Das Gram-Schmidtsche Orthogonalisierungsverfahren mit der Funktion
-@code{innerproduct} als Skalarprodukt.
+Das Gram-Schmidtsche Orthogonalisierungsverfahren mit @code{innerproduct} 
+als Skalarprodukt.
 
 @c ===beg===
 @c load (eigen)$
@@ -2722,24 +2722,14 @@ be a cyclic permutation of the coordinate variables.
 
 Applies simplifications and expansions according to the following global flags:
 
-@code{expandall}, 
-@code{expanddot}, 
-@code{expanddotplus}, 
-@code{expandcross}, 
-@code{expandcrossplus},
-@code{expandcrosscross}, 
-@code{expandgrad}, 
-@code{expandgradplus}, 
-@code{expandgradprod},
-@code{expanddiv}, 
-@code{expanddivplus}, 
-@code{expanddivprod}, 
-@code{expandcurl}, 
-@code{expandcurlplus},
-@code{expandcurlcurl}, 
-@code{expandlaplacian}, 
-@code{expandlaplacianplus}, and 
-@code{expandlaplacianprod}.
+@flushleft
+@code{expandall}, @code{expanddot}, @code{expanddotplus}, @code{expandcross}, 
+@code{expandcrossplus}, @code{expandcrosscross}, @code{expandgrad}, 
+@code{expandgradplus}, @code{expandgradprod}, @code{expanddiv}, 
+@code{expanddivplus}, @code{expanddivprod}, @code{expandcurl}, 
+@code{expandcurlplus}, @code{expandcurlcurl}, @code{expandlaplacian}, 
+@code{expandlaplacianplus}, and @code{expandlaplacianprod}.
+@end flushleft
 
 All these flags have default value @code{false}. The @code{plus} suffix refers
 to employing additivity or distributivity.  The @code{prod} suffix refers to 
@@ -2747,16 +2737,23 @@ the expansion for an operand that is any kind of product.
 
 @table @code
 @item expandcrosscross
-Simplifies @math{p ~ (q ~ r)} to @math{(p . r)*q - (p . q)*r}.
+Simplifies @code{p ~ (q ~ r)} to @code{(p . r)*q - (p . q)*r}.
+
 @item expandcurlcurl
-Simplifies @math{curl curl p} to @math{grad div p + div grad p}.
+Simplifies @code{curl curl p} to @code{grad div p + div grad p}.
+
 @item expandlaplaciantodivgrad
-Simplifies @math{laplacian p} to @math{div grad p}.
+Simplifies @code{laplacian p} to @code{div grad p}.
+
 @item expandcross
 Enables @code{expandcrossplus} and @code{expandcrosscross}.
+
 @item expandplus
+@flushleft
 Enables @code{expanddotplus}, @code{expandcrossplus}, @code{expandgradplus},
 @code{expanddivplus}, @code{expandcurlplus}, and @code{expandlaplacianplus}.
+@end flushleft
+
 @item expandprod
 Enables @code{expandgradprod}, @code{expanddivprod}, and 
 @code{expandlaplacianprod}.

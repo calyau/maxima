@@ -30,13 +30,10 @@ Standardwert: 4
 @c @code{limit (cot(x)/csc(x), x, 0)}.
 
 @code{lhospitallim} enth@"alt die maximale Zahl an Iterationen f@"ur die die 
-L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird. Damit
+L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.  Damit
 wird verhindert, dass @code{limit} in eine unendliche Schleife f@"ur Grenzwerte
 wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 
-@c @opencatbox
-@c @category{Limits}
-@c @closecatbox
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -51,9 +48,9 @@ wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 @c may be omitted (implying a two-sided limit is to be computed).
 
 Berechnet den Grenzwert des Ausdrucks @var{expr}, wenn die reelle Variable
-@var{x} gegen den Wert @var{val} in Richtung @var{dir} geht. Die Richtung
+@var{x} gegen den Wert @var{val} in Richtung @var{dir} geht.  Die Richtung
 @var{dir} kann die Werte @var{plus} f@"ur einen Grenzwert von oben und 
-@var{minus} f@"ur einen Grenzwert von unten haben. F@"ur einen zweiseitigen 
+@var{minus} f@"ur einen Grenzwert von unten haben.  F@"ur einen zweiseitigen 
 Grenzwert braucht die Richtung nicht angegeben werden.
 
 @c @code{limit} uses the following special symbols: @code{inf} (positive 
@@ -62,7 +59,7 @@ Grenzwert braucht die Richtung nicht angegeben werden.
 @c @code{infinity} (complex infinity).
 
 @code{limit} nutzt die folgenden speziellen Symbole: @code{inf} (positiv 
-unendlich) und @code{minf} (negativ unendlich). In der Ausgabe k@"onnen die
+unendlich) und @code{minf} (negativ unendlich).  In der Ausgabe k@"onnen die
 Symbole @code{und} (nicht definiert), @code{ind} (unbestimmt) und 
 @code{infinity} (komplex unendlich) auftreten.
 
@@ -78,9 +75,9 @@ Symbole @code{und} (nicht definiert), @code{ind} (unbestimmt) und
 
 @code{infinity} (komplex unendlich) wird zur@"uckgegeben, wenn der Grenzwert
 des Betrags des Ausdrucks positiv unendlich ist, aber der Grenzwert des
-Ausdrucks selbst weder positive noch negativ unendlich ist. Dies schlie@ss{}t 
+Ausdrucks selbst weder positive noch negativ unendlich ist.  Dies schlie@ss{}t 
 F@"alle ein, wo der Grenzwert eines komplexen Arguments eine Konstante ist, wie
-zum Beispiel in @code{limit(log(x),x, minf)}, F@"alle in denen das komplexe
+zum Beispiel in @code{limit(log(x),x, minf)}.  F@"alle in denen das komplexe
 Argument oszilliert, wie zum Beispiel in @code{limit((-2)^x, x, inf)} und 
 F@"alle, wo das komlexe Argument f@"ur die beiden Seiten des Grenzwertes 
 verschieden ist, wie zum Beispiel in @code{limit(1/x, x, 0)} und 
@@ -91,7 +88,7 @@ verschieden ist, wie zum Beispiel in @code{limit(1/x, x, 0)} und
 @c @code{limit (cot(x)/csc(x), x, 0)}.
 
 @code{lhospitallim} enth@"alt die maximale Zahl an Iterationen f@"ur die die 
-L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird. Damit
+L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.  Damit
 wird verhindert, dass @code{limit} in eine unendliche Schleife f@"ur Grenzwerte
 wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 
@@ -99,30 +96,25 @@ wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 @c Taylor series expansion when necessary.
 
 Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
-Taylor-Reihenentwicklung, wenn der Grenzwert nicht mit anderen Methoden bestimmt
-werden kann.
+Taylor-Rei@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden 
+bestimmt werden kann.
 
 @c @code{limsubst} prevents @code{limit} from attempting substitutions on
 @c unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
 @c giving 1.  Setting @code{limsubst} to @code{true} will allow such
 @c substitutions.
 
-Die Optionsvariable @code{limsubst} verhindet Substitution der Funktion 
-@code{limit} f@"ur unbekannte Ausdr@"ucke. Dies vermeidet Fehler wie zum 
+Die Optionsvariable @code{limsubst} verhindet Substitutionen der Funktion 
+@code{limit} f@"ur unbekannte Ausdr@"ucke.  Dies vermeidet Fehler wie zum 
 Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
-@code{limit (f(n)/f(n+1), n, inf)}. Erh@"alt @code{limsubst} den Wert 
+@code{limit(f(n)/f(n+1), n, inf)}.  Erh@"alt @code{limsubst} den Wert 
 @code{true}, sind solche Substitution gestattet.
 
 @c @code{limit} with one argument is often called upon to simplify constant 
 @c expressions, for example, @code{limit (inf-1)}.
 
 @code{limit} kann mit einem Argument aufgerufen werden, um konstante Ausdr@"ucke
-zu vereinfachen. Zum Beispiel @code{limit (inf-1)}.
-
-@c MERGE EXAMPLES INTO THIS FILE
-@c @code{example (limit)} displays some examples.
-
-Das Kommando @code{example(limit)} zeigt einige Beispiele.
+zu vereinfachen.  Zum Beispiel @code{limit (inf-1)}.
 
 @c For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
 @c Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
@@ -131,9 +123,25 @@ Der Algorithmus ist in der folgenden Arbeit beschrieben: Wang, P., "Evaluation
 of Definite Integrals by Symbolic Manipulation", Ph.D. thesis, MAC TR-92, 
 October 1971.
 
-@c @opencatbox
-@c @category{Limits}
-@c @closecatbox
+Beispiele:
+
+@c ===beg===
+@c limit(x*log(x),x,0,plus)
+@c limit((x+1)^(1/x),x,0)
+@c limit(%e^x/x,x,inf)
+@c limit(sin(1/x),x,0)
+@c ===end===
+@example
+(%i1) limit(x*log(x),x,0,plus)
+(%o1)                           0
+(%i2) limit((x+1)^(1/x),x,0)
+(%o2)                          %e
+(%i3) limit(%e^x/x,x,inf)
+(%o3)                          inf
+(%i4) limit(sin(1/x),x,0)
+(%o4)                          ind
+@end example
+
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -145,15 +153,27 @@ Standardwert: @code{false}
 @c is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
 @c @code{limsubst} to @code{true} will allow such substitutions.
 
-Die Optionsvariable @code{limsubst} verhindet Substitution der Funktion 
-@code{limit} f@"ur unbekannte Ausdr@"ucke. Dies vermeidet Fehler wie zum 
-Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
-@code{limit (f(n)/f(n+1), n, inf)}. Erh@"alt @code{limsubst} den Wert 
-@code{true}, sind solche Substitution gestattet.
+Hat die Optionsvariable @code{limsubst} den Wert @code{false}, versucht 
+@code{limit} nicht, den Grenzwert einer unbekannten Funktion zu ermitteln.
+Dies vermeidet Fehler wie zum Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
+@code{limit (f(n)/f(n+1), n, inf)}.  Hat @code{limsubst} den Wert @code{true}, 
+versucht @code{limit} auch f@"ur unbekannte Funktionen einen Grenzwert zu 
+ermitteln.
 
-@c @opencatbox
-@c @category{Limits}
-@c @closecatbox
+Beispiele:
+
+Die Funktion @code{f} ist nicht definiert.  Maxima gibt im ersten Fall eine
+Substantivform zur@"uck.  Im zweiten Fall nimmt Maxima den Grenzwert f@"ur die
+unbekannte Funktion als @code{f(10} an.
+
+@example
+(%i1) limit(f(x),x,10),limsubst:false;
+(%o1)                     limit   f(x)
+                          x -> 10
+(%i2) limit(f(x),x,10),limsubst:true;
+(%o2)                         f(10)
+@end example
+
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -168,9 +188,6 @@ Beispiel ein Ergebnis von 1 f@"ur den Grenzwert
 Nimmt den Grenzwert der Taylor-Reihenwicklung des Ausdrucks @code{expr}, wenn
 die Variable @var{x} gegen den Wert @code{val} aus der Richtung @var{dir} geht.
 
-@c @opencatbox
-@c @category{Limits}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -186,13 +203,10 @@ Standardwert: @code{true}
 @c @code{limit} will return an unevaluated limit expression.
 
 Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
-Taylor-Reihenentwicklung, wenn der Grenzwert nicht mit anderen Methoden bestimmt
-werden kann. Dies erlaubt die Bestimmung von Grenzwerten wie
+Taylor-Reiæ@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden
+bestimmt werden kann.  Dies erlaubt die Bestimmung von Grenzwerten wie
 @code{limit(x/(x-1)-1/log(x),x,1,plus)}.
 
-@c @opencatbox
-@c @category{Limits}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -201,7 +215,7 @@ werden kann. Dies erlaubt die Bestimmung von Grenzwerten wie
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{at}
-@deffn  {Funktion} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffn  {Funktion} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
 @deffnx {Funktion} at (@var{expr}, @var{eqn})
 
 @c Evaluates the expression @var{expr} with the variables assuming the values as
@@ -219,19 +233,17 @@ oder in der einzelnen Gleichung @var{eqn} angegeben sind.
 
 Wenn ein Teilausdruck von einer Variablen abh@"angt, f@"ur die ein Wert 
 angegeben ist, aber kein @code{atvalue}, und er auch sonst nicht ausgewertet 
-werden kann, dann wird von @code{at} eine Substantivform zur@"uckgegeben, 
-dargestellt in einer zweidimensionalen Form.
+werden kann, dann wird von @code{at} eine Substantivform zur@"uckgegeben.
 
 @c @code{at} carries out multiple substitutions in series, not parallel.
 
-@code{at} f@"uhrt mehrfache Ersetzungen nacheinander und nicht nicht parallel 
-durch.
+@code{at} f@"uhrt mehrfache Ersetzungen parallel aus.
 
 @c See also @code{atvalue}. For other functions which carry out substitutions,
 @c see also @code{subst} and @code{ev}.
 
-Siehe auch @code{atvalue}. F@"ur andere Funktionen, die Ersetzungen 
-durchf@"uhren, siehe weiterhin @code{subst} und @code{ev}.
+Siehe auch @mrefdot{atvalue}  F@"ur andere Funktionen, die Ersetzungen 
+ausf@"uhren, siehe weiterhin @mref{subst} und @mrefdot{ev}
 
 Beispiele:
 
@@ -271,9 +283,6 @@ Beispiele:
                                          !x = 0, y = 1
 @end example
 
-@c @opencatbox
-@c @category{Auswertung} @category{Differentialgleichungen}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -283,19 +292,16 @@ Beispiele:
 @c Returns a two-element list, such that an antiderivative of @var{expr} with 
 @c respect to @var{x} can be constructed from the list. The expression 
 @c @var{expr} may contain an unknown function @var{u} and its derivatives.
-
-Gibt eine Liste mit zwei Elementen zur@"uck aus denen die Stammfunktion des 
-Ausdrucks @var{expr} mit der Variablen @var{x} konstruiert werden kann. Der
-Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und deren Ableitungen
-enthalten.
-
 @c Let @var{L}, a list of two elements, be the return value of @code{antid}.
 @c Then @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})} is an 
 @c antiderivative of @var{expr} with respect to @var{x}.
 
-Ist @var{L} das Ergebnis der Funktion @code{antid}, dann ist der Ausdruck
-@code{@var{L}[1]+ 'integrate(@var{L}[2], @var{x})} der gesuchte Stammfunktion
-des Ausdrucks @var{expr} mit der Variablen @var{x}.
+Gibt eine Liste mit zwei Elementen zur@"uck aus denen die Stammfunktion des 
+Ausdrucks @var{expr} mit der Variablen @var{x} konstruiert werden kann.  Der
+Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und deren Ableitungen
+enthalten.  Ist @var{L} das Ergebnis der Funktion @code{antid}, dann ist der 
+Ausdruck @code{@var{L}[1]+ 'integrate(@var{L}[2], @var{x})} die gesuchte 
+Stammfunktion des Ausdrucks @var{expr} mit der Variablen @var{x}.
 
 @c When @code{antid} succeeds entirely, the second element of the return value 
 @c is zero. Otherwise, the second element is nonzero, and the first element is 
@@ -303,8 +309,8 @@ des Ausdrucks @var{expr} mit der Variablen @var{x}.
 @c is zero and the second nonzero.
 
 Kann @code{antid} die Stammfunktion vollst@"andig bestimmen, ist das zweite
-Element der Liste Null. Hat @code{antid} keinerlei Erfolg, ist das erste 
-Element der Liste Null. In anderen F@"allen enth@"alt das erste Elemente den
+Element der Liste Null.  Hat @code{antid} keinerlei Erfolg, ist das erste 
+Element der Liste Null.  In anderen F@"allen enth@"alt das erste Elemente den
 integrierbaren Anteil des Ausdrucks @var{expr} und das zweite Element den nicht
 integrierbaren Anteil des Ausdrucks.
 
@@ -364,9 +370,6 @@ Beispiele:
                   /
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -378,7 +381,7 @@ Beispiele:
 @c derivatives.
 
 Gibt die Stammfunktion des Ausdrucks @var{expr} mit der Variablen @var{x} 
-zur@"uck. Der Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und 
+zur@"uck.  Der Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und 
 deren Ableitungen enthalten.
 
 @c When @code{antidiff} succeeds entirely, the resulting expression is free of 
@@ -407,12 +410,7 @@ Funktion @code{antidiff} das Ergebnis @code{@var{L}[1] + 'integrate(@var{L}[2],
 
 F@"ur Beispiele und weitere Ausf@"uhrungen siehe die Funktion @mrefdot{antid}
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
-
-@c I SUSPECT THERE IS MORE TO BE SAID HERE
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{atomgrad}
@@ -424,22 +422,18 @@ F@"ur Beispiele und weitere Ausf@"uhrungen siehe die Funktion @mrefdot{antid}
 Wird f@"ur ein Symbol eine Ableitung mit der Funktion @code{gradef} definiert,
 dann erh@"alt das Symbol die Eigenschaft @code{atomgrad}.
 
-@c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Differential calculus}
-@c @closecatbox
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{atvalue}
-@deffn  {Funktion} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffn  {Funktion} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, @dots{}, @var{x_m} = @var{a_m}], @var{c})
 @deffnx {Funktion} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 
 @c Assigns the value @var{c} to @var{expr} at the point @code{@var{x}=@var{a}}.
 @c Typically boundary values are established by this mechanism.
 
 Dem Ausdruck @var{expr} wird der Wert @var{c} am Punkt @code{@var{x} = @var{a}}
-zugewiesen. Typischerweise werden Randwerte mit der Funktion @code{atvalue}
+zugewiesen.  Typischerweise werden Randwerte mit der Funktion @code{atvalue}
 definiert.
 
 @c @var{expr} is a function evaluation, @code{@var{f}(@var{x_1},...,@var{x_m})},
@@ -452,9 +446,9 @@ definiert.
 
 Der Ausdruck @var{expr} ist entweder eine Funktion @code{@var{f}(@var{x_1}, ..., 
 @var{x_m})} oder die Ableitung einer Funktion @code{diff(@var{f}(@var{x_1}, ...,
-@var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}. Die Argumente
-m@"ussen explizit auftreten. @var{n_i} ist die Ordnung der Ableitung bez@"uglich
-der Variablen @var{x_i}.
+@var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}.  Die Argumente
+m@"ussen explizit auftreten.  @var{n_i} ist die Ordnung der Ableitung 
+bez@"uglich der Variablen @var{x_i}.
 
 @c The point at which the atvalue is established is given by the list of 
 @c equations @code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}. If 
@@ -462,7 +456,7 @@ der Variablen @var{x_i}.
 @c enclosing it in a list.
 
 Die Randwerte werden durch die Liste @code{[@var{x_1} = @var{a_1}, ..., 
-@var{x_m} = @var{a_m}]} definiert. Eine einzelne Gleichung muss nicht als Liste 
+@var{x_m} = @var{a_m}]} definiert.  Eine einzelne Gleichung muss nicht als Liste 
 angegeben werden.
 
 @c @code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} displays the 
@@ -473,20 +467,20 @@ angegeben werden.
 
 @code{printprops([@var{f_1}, @var{f_2}, ...], atvalue)} zeigt die Randwerte der
 Funktionen @code{@var{f_1}, @var{f_2}, ...} wie sie mit der Funktion 
-@code{atvalue} definiert wurden. @code{printprops (@var{f}, atvalue)} zeigt
-nur die Randwerte f@"ur die Funktion @var{f}. @code{printprops (all, atvalue)}
+@code{atvalue} definiert wurden.  @code{printprops (@var{f}, atvalue)} zeigt
+nur die Randwerte f@"ur die Funktion @var{f}.  @code{printprops (all, atvalue)}
 zeigt die Randwerte aller Funktionen.
 
 @c The symbols @code{@@1}, @code{@@2}, ... represent the variables @var{x_1}, 
 @c @var{x_2}, ... when atvalues are displayed.
 
-Die Symbole @code{@@1}, @code{@@2}, ... repr@"asentieren die Variablen 
-@var{x_1}, @var{x_2}, ..., wenn die Randwerte angezeigt werden.
+Die Symbole @code{@@1}, @code{@@2}, @dots{} repr@"asentieren die Variablen 
+@var{x_1}, @var{x_2}, @dots{}, wenn die Randwerte angezeigt werden.
 
 @c @code{atvalue} evaluates its arguments. @code{atvalue} returns @var{c}, the 
 @c atvalue.
 
-@code{atvalue} wertet die Argumente aus. @code{atvalue} gibt den Randwert
+@code{atvalue} wertet die Argumente aus.  @code{atvalue} gibt den Randwert
 @var{c} zur@"uck.
 
 Beispiele:
@@ -527,9 +521,6 @@ Beispiele:
                                          !x = 0, y = 1
 @end example
 
-@c @opencatbox
-@c @category{Differential equations} @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
 @c LOOKS LIKE cartan IS THE NAME OF A PACKAGE AND NOT A FUNCTION OR VARIABLE
@@ -549,9 +540,6 @@ with examples.
 
 @code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
 
-@c @opencatbox
-@c @category{Differential geometry}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -567,7 +555,7 @@ with examples.
 @c "total differential".
 
 @code{diff} gibt Ausdr@"ucke zur@"uck, die Differentiale enthalten, wenn keine 
-Variablen angegeben sind, nach denen abgeleitet werden soll. In diesem Fall
+Variablen angegeben sind, nach denen abgeleitet werden soll.  In diesem Fall
 gibt @code{diff} das totale Differential zur@"uck. 
 
 Beispiele:
@@ -589,9 +577,6 @@ Beispiele:
 (%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
 
-@c @opencatbox
-@c @category{Differential calculus}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -605,7 +590,7 @@ Die Diracsche Delta-Funktion.
 @c Currently only @code{laplace} knows about the @code{delta} function.
 
 Maxima kennt die Delta-Funktion nur im Zusammenhang mit 
-Laplace-Transformationen. Siehe @mrefdot{laplace}
+Laplace-Trans@-for@-ma@-tio@-nen.  Siehe @mrefdot{laplace}
 
 Beispiel:
 
@@ -620,9 +605,6 @@ p;
 (%o1)                   sin(a b) %e
 @end example
 
-@c @opencatbox
-@c @category{Mathematical functions} @category{Laplace transform}
-@c @closecatbox
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -637,17 +619,14 @@ Standardwert: @code{[]}
 @c See @code{depends} and @code{gradef}.
 
 @code{dependencies} ist eine Liste der Symbole, f@"ur die eine Abh@"angigkeit 
-mit den Funktionen @code{depends} oder @code{gradef} definiert wurde. Siehe
+mit den Funktionen @code{depends} oder @code{gradef} definiert wurde.  Siehe
 @mref{depends} und @mrefdot{gradef}
 
-@c @opencatbox
-@c @category{Declarations and inferences} @category{Global variables}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{depends}
-@deffn {Funktion} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+@deffn {Funktion} depends (@var{f_1}, @var{x_1}, @dots{}, @var{f_n}, @var{x_n})
 
 @c Declares functional dependencies among variables for the purpose of computing 
 @c derivatives. In the absence of declared dependence, @code{diff(f, x)} yields 
@@ -656,7 +635,7 @@ mit den Funktionen @code{depends} oder @code{gradef} definiert wurde. Siehe
 
 Definiert die Abh@"angigkeit einer Funktion @var{f} von einer Variablen @var{x}. 
 Ist keine Abh@"angigkeit definiert, dann hat die Ableitung @code{diff(f, x)} das 
-Ergebnis Null. Wird mit dem Kommando @code{depends(f, x)} definiert, dass die
+Ergebnis Null.  Wird mit dem Kommando @code{depends(f, x)} definiert, dass die
 Funktion @var{f} von der Variablen @var{x} abh@"angt, dann ist das Ergebnis der
 Ableitung die Substantivform @code{'diff(f,x,1)}.
 
@@ -666,9 +645,9 @@ Ableitung die Substantivform @code{'diff(f,x,1)}.
 @c single element). If some @var{f_i} is the name of an array or contains the 
 @c name of an array, all elements of the array depend on @var{x_i}.
 
-Jedes Argument @var{f_1}, @var{x_1}, ... kann der Name einer Variablen, eines
-Arrays oder eine Liste mit Namen sein. Jedes Symbol @var{f_i} h@"angt ab von
-den Symbolen der Liste @var{x_i}. Ist eines der Symbole @var{f_i} der Name
+Jedes Argument @var{f_1}, @var{x_1}, @dots{} kann der Name einer Variablen, 
+eines Arrays oder eine Liste mit Namen sein.  Jedes Symbol @var{f_i} h@"angt ab 
+von den Symbolen der Liste @var{x_i}.  Ist eines der Symbole @var{f_i} der Name
 eines Arrays, dann h@"angen alle Elemente des Arrays von @var{x_i} ab.
 
 @c @code{diff} recognizes indirect dependencies established by @code{depends}
@@ -687,9 +666,9 @@ die Kettenregel an.
 @c dependencies are appended to the global variable @code{dependencies}. 
 @c @code{depends} evaluates its arguments.
 
-@code{depends} gibt eine Liste der Abh@"angigkeiten zur@"uck. Die 
+@code{depends} gibt eine Liste der Abh@"angigkeiten zur@"uck.  Die 
 Abh@"angigkeiten werden in die Informationsliste @code{dependencies} 
-eingetragen. @code{depends} wertet die Argumente aus.
+eingetragen.  @code{depends} wertet die Argumente aus.
 
 @c @code{diff} is the only Maxima command which recognizes dependencies 
 @c established by @code{depends}. Other functions (@code{integrate}, 
@@ -699,9 +678,9 @@ eingetragen. @code{depends} wertet die Argumente aus.
 @c @code{integrate (f(x), x)}.
 
 Die Funktion @code{diff} ist die einzige Maxima-Funktion, die Abh@"angigkeiten
-erkennt, die mit @code{depends} definiert wurden. Andere Funktionen wie
+erkennt, die mit @code{depends} definiert wurden.  Andere Funktionen wie
 @code{integrate} oder @code{laplace} erkennen eine Abh@"angigkeiten die mit der
-@code{depends} definiert wurden. F@"ur diese Funktionen m@"ussen die 
+@code{depends} definiert wurden.  F@"ur diese Funktionen m@"ussen die 
 Abh@"angigkeiten explizit angegeben werden, zum Beispiel 
 @code{integrate(f(x), x)}.
 
@@ -752,9 +731,6 @@ Beispiele:
                                 du dt
 @end example
 
-@c @opencatbox
-@c @category{Differential calculus} @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -767,16 +743,10 @@ Standardwert: @code{false}
 @c displayed in the Leibniz notation @code{dy/dx}.
 
 Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
-mit einem tiefgestelltem Index angezeigt. Ansonsten werden Ableitungen als
+mit einem tiefgestelltem Index angezeigt.  Ansonsten werden Ableitungen als
 @code{dy/dy} angezeigt.
 
-@c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Differential calculus} @category{Global flags}
-@c @closecatbox
 @end defvr
-
-@c SEEMS LIKE THIS STATEMENT COULD BE LESS CLUMSY
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{derivdegree}
@@ -806,24 +776,18 @@ Beispiel:
 (%o2)                           2
 @end example
 
-@c @opencatbox
-@c @category{Differential calculus} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
-@deffn {Auswertungsschalter} derivlist (@var{var_1}, ..., @var{var_k})
+@deffn {Auswertungsschalter} derivlist (@var{var_1}, @dots{}, @var{var_k})
 
 @c Causes only differentiations with respect to the indicated variables, within
 @c the @code{ev} command.
 
 @code{derivlist} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}. 
 @code{ev} f@"uhrt nur die Ableitungen in Bezug auf die angegebenen Variablen
-@var{var_1}, ..., @var{var_k} aus.
+@var{var_1}, @dots{}, @var{var_k} aus.
 
-@c @opencatbox
-@c @category{Differential calculus} @category{Evaluation}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -835,17 +799,14 @@ Standardwert: @code{false}
 @c @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
 
 Hat @code{derivsubst} den Wert @code{true}, werden Substitutionen auch in 
-Ausdr@"ucke mit Ableitungen ausgef@"uhrt. Zum Beispiel hat dann
+Ausdr@"ucke mit Ableitungen ausgef@"uhrt.  Zum Beispiel hat dann
 @code{subst(x, 'diff(y, t), 'diff(y, t, 2))} das Ergebnis @code{'diff(x, t)}.
 
-@c @opencatbox
-@c @category{Differential calculus} @category{Expressions}
-@c @closecatbox
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{diff}
-@deffn  {Funktion} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@deffn  {Funktion} diff (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m})
 @deffnx {Funktion} diff (@var{expr}, @var{x}, @var{n})
 @deffnx {Funktion} diff (@var{expr}, @var{x})
 @deffnx {Funktion} diff (@var{expr})
@@ -869,7 +830,7 @@ alle oder einige der Variablen des Ausdrucks zur@"uck.
 
 @code{diff(@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})} gibt
 die partielle Ableitung des Ausdrucks @var{expr} in Bezug auf die Variablen
-@var{x_1}, ..., @var{x_m} zur@"uck. Dies ist @"aquivalent zu @code{diff(... 
+@var{x_1}, ..., @var{x_m} zur@"uck.  Dies ist @"aquivalent zu @code{diff(... 
 (diff(@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
 
 @c @code{diff (@var{expr}, @var{x})} returns the first derivative of @var{expr} 
@@ -885,7 +846,7 @@ die partielle Ableitung des Ausdrucks @var{expr} in Bezug auf die Variablen
 @c No further simplification of @code{del} is offered.
 
 @code{diff(@var{expr})} gibt das totale Differential des Ausdrucks @var{expr}
-zur@"uck. Siehe auch @mrefdot{del}
+zur@"uck.  Siehe auch @mrefdot{del}
 
 @c The noun form of @code{diff} is required in some contexts, such as stating a
 @c differential equation. In these cases, @code{diff} may be quoted (as 
@@ -900,7 +861,7 @@ verwendet werden, um eine Substantivform der Ableitung zu erhalten.
 @c @code{dy/dx}.
 
 Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
-mit einem tiefgestelltem Index angezeigt. Ansonsten werden Ableitungen als
+mit einem tiefgestelltem Index angezeigt.  Ansonsten werden Ableitungen als
 @code{dy/dy} angezeigt.
 
 Beispiele:
@@ -953,18 +914,14 @@ The @var{x_i} may be integers from 1 up to the value of the variable
 @code{dimension} [default value: 4].  This will cause the differentiation to
 be carried out with respect to the @var{x_i}'th member of the list 
 @code{coordinates} which should be set to a list of the names of the 
-coordinates, e.g., @code{[x, y, z, t]}. If @code{coordinates} is bound to an 
+coordinates, e.g., @code{[x, y, z, t]}.  If @code{coordinates} is bound to an 
 atomic variable, then that variable subscripted by @var{x_i} will be used for
 the variable of differentiation.  This permits an array of coordinate names 
-or subscripted names like @code{X[1]}, @code{X[2]}, ... to be used.  If 
+or subscripted names like @code{X[1]}, @code{X[2]}, @dots{} to be used.  If 
 @code{coordinates} has not been assigned a value, then the variables will be 
 treated as in (1) above.
 @end enumerate
 
-@c NEED EXAMPLES FOR TENSOR STUFF
-@c @opencatbox
-@c @category{Differential calculus}
-@c @closecatbox
 @end deffn
 
 @c MERGE THIS INTO @defun diff
@@ -976,9 +933,9 @@ treated as in (1) above.
 @c When @code{diff} is present as an @code{evflag} in call to @code{ev},
 @c all differentiations indicated in @code{expr} are carried out.
 
-@code{diff} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}. Das 
+@code{diff} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}.  Das 
 Kommando @code{ev(expr), diff} bewirkt, dass alle Ableitungen ausgef@"uhrt 
-werden, die im Ausdruck @var{expr} enhalten sind. Siehe auch die Funktion 
+werden, die im Ausdruck @var{expr} enhalten sind.  Siehe auch die Funktion 
 @mrefdot{ev}
 
 @end defvr
@@ -995,7 +952,7 @@ werden, die im Ausdruck @var{expr} enhalten sind. Siehe auch die Funktion
 @c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
 @c @code{load ("ctensor")} loads this function.
 
-Wendet den d'Alembert-Operator auf eine skalare Funktion @var{f} an. Der
+Wendet den d'Alembert-Operator auf eine skalare Funktion @var{f} an.  Der
 d'Alembert-Operator ist die Verallgemeinerung des Gradienten auf den
 vierdimensionalen Minkowski-Raum.
 
@@ -1019,9 +976,6 @@ Das Kommando @code{load(ctensor)} l@"adt die Funktion.
 @c                              2 r
 @c @end example
 
-@c @opencatbox
-@c @category{Differential calculus} @category{Package ctensor}
-@c @closecatbox
 @end deffn
 
 @c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
@@ -1048,7 +1002,7 @@ Das Kommando @code{load(ctensor)} l@"adt die Funktion.
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{gradef}
-@deffn  {Funktion} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffn  {Funktion} gradef (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, @dots{}, @var{g_m})
 @deffnx {Funktion} gradef (@var{a}, @var{x}, @var{expr})
 
 @c Defines the partial derivatives (i.e., the components of the gradient) of the 
@@ -1063,10 +1017,10 @@ Definiert eine partielle Ableitung der Funktion @var{f} oder Variablen @var{a}.
 @c arguments @var{n}, in which case derivatives are defined with respect to 
 @c @var{x_1} through @var{x_m} only.
 
-@code{gradef(@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
+Das Kommando @code{gradef(@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
 definiert die partielle Ableitung @code{d@var{f}/d@var{x_i}} als @var{g_i}.
-@var{g_i} ist ein Ausdruck. @var{g_i} kann ein Funktionsaufruf sein, aber nicht
-der Name einer Funktion. Die Anzahl der partiellen Ableitungen @var{m} kann
+@var{g_i} ist ein Ausdruck.  @var{g_i} kann ein Funktionsaufruf sein, aber nicht
+der Name einer Funktion.  Die Anzahl der partiellen Ableitungen @var{m} kann
 kleiner sein als die Anzahl der Argumente @var{n}.
 
 @c @code{gradef (@var{a}, @var{x}, @var{expr})} defines the derivative of 
@@ -1074,9 +1028,9 @@ kleiner sein als die Anzahl der Argumente @var{n}.
 @c the dependence of @var{a} on @var{x} (via @code{depends (@var{a}, @var{x})}).
 
 @code{gradef(@var{a}, @var{x}, @var{expr})} definierte die Ableitung der
-Variablen @var{a} in Bezug auf die Variable @var{x} als @var{expr}. Wie mit der
-Funktion @code{depends} wird @var{a} als abh@"angig von @var{x} deklariert. Die
-Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen. Siehe auch
+Variablen @var{a} in Bezug auf die Variable @var{x} als @var{expr}.  Wie mit der
+Funktion @code{depends} wird @var{a} als abh@"angig von @var{x} deklariert.  Die
+Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen.  Siehe auch
 @mrefdot{depends}
 
 @c The first argument @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @var{a} is 
@@ -1085,7 +1039,7 @@ Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen. Siehe auch
 @c derivatives are defined.
 
 Bis auf erste Argument werden die Argumente der Funktion @code{gradef} 
-ausgewertet. @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die 
+ausgewertet.  @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die 
 eine partielle Ableitung definiert wurde.
 
 @c @code{gradef} can redefine the derivatives of Maxima's built-in functions.
@@ -1093,7 +1047,7 @@ eine partielle Ableitung definiert wurde.
 @c derivative of @code{sin}.
 
 @code{gradef} kann die Ableitungen von vorhandenen Maxima-Funktionen neu 
-definieren. Zum Beispiel definiert @code{gradef(sin(x), sqrt (1 - sin(x)^2))}
+definieren.  Zum Beispiel definiert @code{gradef(sin(x), sqrt (1 - sin(x)^2))}
 eine neue Ableitung der Sinusfunktion.
 
 @c @code{gradef} cannot define partial derivatives for a subscripted function.
@@ -1104,25 +1058,22 @@ definieren.
 @c @code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} displays the partial
 @c derivatives of the functions @var{f_1}, ..., @var{f_n}, as defined by 
 @c @code{gradef}.
-
-@code{printprops([@var{f_1}, ..., @var{f_n}], gradef)} zeigt die mit 
-@code{gradef} definierten partiellen Ableitungen der Funktionen @var{f_1}, ...,
-@var{f_n} an.
-
 @c @code{printprops([@var{a_n}, ..., @var{a_n}], atomgrad)} displays the partial 
 @c derivatives of the variables @var{a_n}, ..., @var{a_n}, as defined by 
 @c @code{gradef}.
 
-@code{printprops([@var{a_n}, ..., @var{a_n}], atomgrad)} zeigt die mit 
-@code{gradef} definierten partiellen Ableitungen der Variablen @var{a_n}, ..., 
-@var{a_n} an.
+@code{printprops([@var{f_1}, ..., @var{f_n}], gradef)} zeigt die mit 
+@code{gradef} definierten partiellen Ableitungen der Funktionen @var{f_1}, 
+@dots{}, @var{f_n} an und @code{printprops([@var{a_n}, ..., @var{a_n}], 
+atomgrad)} zeigt die mit @code{gradef} definierten partiellen Ableitungen der 
+Variablen @var{a_n}, @dots{}, @var{a_n} an.
 
 @c @code{gradefs} is the list of the functions for which partial derivatives 
 @c have been defined by @code{gradef}. @code{gradefs} does not include any 
 @c variables for which partial derivatives have been defined by @code{gradef}.
 
 @code{gradefs} ist eine Informationsliste, die die Funktionen enth@"alt, f@"ur 
-die mit @code{gradef} eine Ableitung definierte wurde. Die Liste enth@"alt 
+die mit @code{gradef} eine Ableitung definierte wurde.  Die Liste enth@"alt 
 keine Variablen, f@"ur die Ableitungen definiert wurden.
 
 @c REPHRASE THIS NEXT BIT
@@ -1130,10 +1081,6 @@ keine Variablen, f@"ur die Ableitungen definiert wurden.
 @c but its first derivatives are and it is desired to obtain higher order 
 @c derivatives.
 
-@c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Differential calculus} @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -1148,9 +1095,6 @@ Standardwert: @code{[]}
 @code{gradefs} ist eine Liste der Funktionen, f@"ur die eine Ableitung definiert
 wurde.
 
-@c @opencatbox
-@c @category{Differential calculus} @category{Declarations and inferences}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1164,8 +1108,6 @@ wurde.
 * Einf@"uhrung in QUADPACK::
 * Funktionen und Variablen f@"ur QUADPACK::
 @end menu
-
-
 
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Integration, Integration
@@ -1183,12 +1125,12 @@ wurde.
 @c a few extensions (error function, dilogarithm).  It does not handle
 @c integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 
-Maxima hat verschiedene Routinen um Integrale zu behandeln. Die Funktion
-@code{integrate} nutzt diese. Maxima hat ein Paket @code{antid}, welches
+Maxima hat verschiedene Routinen um Integrale zu behandeln.  Die Funktion
+@code{integrate} nutzt diese.  Maxima hat ein Paket @code{antid}, welches
 Integrale mit einer unbekannten Funktion, deren Ableitung bekannt ist, 
-integrieren kann. F@"ur die numerische Berechnung von Integralen hat Maxima
+integrieren kann.  F@"ur die numerische Berechnung von Integralen hat Maxima
 das Paket @code{QUADPACK} mit Funktionen wie @code{quad_qag} oder 
-@code{quad_qags}. Die Funktionen @code{laplace} und @code{specint} finden die
+@code{quad_qags}.  Die Funktionen @code{laplace} und @code{specint} finden die
 Laplacetransformation.
 
 @c end concepts Integration
@@ -1209,7 +1151,7 @@ Laplacetransformation.
 
 F@"uhrt eine Substitution der Integrationsvariablen, die als @var{f(x,y)=0} 
 angegeben wird, f@"ur die Variable @var{x} in allen Integralen durch, die in 
-@var{expr} enthalten sind. Die neue Variable ist @var{y}.
+@var{expr} enthalten sind.  Die neue Variable ist @var{y}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
@@ -1245,7 +1187,7 @@ angegeben wird, f@"ur die Variable @var{x} in allen Integralen durch, die in
 
 Ein Ausdruck mit einem Integral in einer Substantivform @code{'integrate} wie
 im obigen Beispiel kann mit der Funktion @code{ev} und dem Auswertungsschalter
-@code{nouns} ausgewertet werden. Das Beispiel von oben kann zum Beispiel mit
+@code{nouns} ausgewertet werden.  Das Beispiel von oben kann zum Beispiel mit
 @code{ev(%o3, nouns)} ausgewertet werden.
 
 @c @code{changevar} may also be used to changes in the indices of a sum or
@@ -1254,7 +1196,7 @@ im obigen Beispiel kann mit der Funktion @code{ev} und dem Auswertungsschalter
 @c higher degree function.  E.g.,
 
 Mit @code{changevar} k@"onnen auch die Indizes einer Summe oder eines Produktes
-substituiert werden. Dabei muss beachtet werden, dass nur lineare 
+substituiert werden.  Dabei muss beachtet werden, dass nur lineare 
 Verschiebungen, wie zum Beispiel @code{i = j + ...}, eine korrekte Substitution 
 f@"ur Summen und Produkte sind.
 
@@ -1281,9 +1223,6 @@ f@"ur Summen und Produkte sind.
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
@@ -1344,11 +1283,11 @@ $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, d
 @c translated or compiled prior to calling @code{dblint}. This will result in 
 @c orders of magnitude speed improvement over interpreted code in many cases!
 
-Die Funktion @var{f} muss eine Funktion von zwei Variablen sein. @var{r} und 
-@var{s} m@"ussen Funktionen einer Variablen sein. @var{a} und @var{b} sind 
-Gleitkommazahlen. Die Optionsvariablen @code{dblint_x} und @code{dblint_y} 
+Die Funktion @var{f} muss eine Funktion von zwei Variablen sein.  @var{r} und 
+@var{s} m@"ussen Funktionen einer Variablen sein.  @var{a} und @var{b} sind 
+Gleitkommazahlen.  Die Optionsvariablen @code{dblint_x} und @code{dblint_y} 
 kontrollieren die Anzahl der Unterteilungen des Integrationsintervalls f@"ur
-den Simpsonschen Algorithmus. Der Standardwert ist jeweils 10.
+den Simpsonschen Algorithmus.  Der Standardwert ist jeweils 10.
 
 
 @c @code{demo (dblint)} executes a demonstration of @code{dblint} applied to an 
@@ -1362,9 +1301,6 @@ Das Kommando @code{demo(dblint)} zeigt ein Beispiel.
 Die numerischen Funktionen des Pakets @code{QUADPACK} sind gegen@"uber 
 @code{dblint} zu bevorzugen.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1380,7 +1316,7 @@ Die numerischen Funktionen des Pakets @code{QUADPACK} sind gegen@"uber
 @c ALREADY PRESENT IN integrate !!!
 
 Sucht das bestimmte Integral eines Ausdrucks @var{expr} f@"ur die 
-Integrationsvariable @var{x} in den Grenzen @var{a} und @var{b}. Diese Funktion
+Integrationsvariable @var{x} in den Grenzen @var{a} und @var{b}.  Diese Funktion
 wird ausgef@"uhrt, wenn ein bestimmtes Integral mit der Funktion 
 @code{integrate} gesucht wird.
 
@@ -1388,13 +1324,10 @@ wird ausgef@"uhrt, wenn ein bestimmtes Integral mit der Funktion
 @c the noun form of the integral. See @code{quad_qag} and related functions for 
 @c numerical approximation of definite integrals.
 
-@code{defint} gibt einen symbolischen Ausdruck als Ergebnis zur@"uck. Ist das 
-Integral divergent generiert Maxima eine Fehlermeldung. Kann @code{defint} 
+@code{defint} gibt einen symbolischen Ausdruck als Ergebnis zur@"uck.  Ist das 
+Integral divergent generiert Maxima eine Fehlermeldung.  Kann @code{defint} 
 keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1409,9 +1342,6 @@ Standardwert: @code{true}
 Hat @code{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
 keine Fehlerfunktion @code{erf} in die L@"osung eingef@"uhrt.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end defvr
 
 @c NEEDS WORK
@@ -1428,7 +1358,7 @@ keine Fehlerfunktion @code{erf} in die L@"osung eingef@"uhrt.
 @c convolution integral equation or a set of them.
 
 Berechnet die Inverse Laplace-Transformation des Ausdrucks @var{expr} f@"ur die
-Variable @var{s} und den Parameter @var{t}. @var{expr} muss eine rationale
+Variable @var{s} und den Parameter @var{t}.  @var{expr} muss eine rationale
 Funktion sein, in deren Nenner nur lineare und quadratische Faktoren auftreten.
 Mit den Funktionen @code{laplace} und @code{ilt} sowie den Funktionen 
 @code{solve} oder @code{linsolve} k@"onnen lineare Differentialgleichungen oder
@@ -1479,9 +1409,6 @@ pos;
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Laplace transform}
-@c @closecatbox
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1496,8 +1423,8 @@ Standardwert: @code{true}
 @c poles.
 
 Hat @code{intanalysis} den Wert @code{true}, sucht Maxima nach Polen in einem 
-Integranden. Existieren solche, wird der Cauchysche Hauptwert des Integrals
-bestimmt. Hat @code{intanalysis} den Wert @code{false}, wird die Integration
+Integranden.  Existieren solche, wird der Cauchysche Hauptwert des Integrals
+bestimmt.  Hat @code{intanalysis} den Wert @code{false}, wird die Integration
 unter der Annahme ausgef@"uhrt, dass das Integral keine Pole im 
 Integrationsbereich hat.
 
@@ -1544,9 +1471,6 @@ The number 1 isn't in the domain of atanh
                                        2
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1563,12 +1487,12 @@ The number 1 isn't in the domain of atanh
 @c @var{a}, @code{integrate} returns zero.
 
 Sucht die symbolische L@"osung des Integrals f@"ur den Ausdruck @var{expr} f@"ur
-die Integrationsvariable @var{x}. @code{integrate(@var{expr}, @var{x}} ist das
-unbestimmte Integral. @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}
+die Integrationsvariable @var{x}.  @code{integrate(@var{expr}, @var{x}} ist das
+unbestimmte Integral.  @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}
 sucht die L@"osung des bestimmten Integrals in den Integrationsgrenzen @var{a} 
-und @var{b}. Die Integrationsgrenzen sollten die Integrationsvariable @var{x}
-nicht enthalten. F@"ur die Integrationsgrenzen muss nicht gelten 
-@var{a} < @var{b}. Sind die Integrationsgrenzen gleich, dann ist das Ergebnis
+und @var{b}.  Die Integrationsgrenzen sollten die Integrationsvariable @var{x}
+nicht enthalten.  F@"ur die Integrationsgrenzen muss nicht gelten 
+@var{a} < @var{b}.  Sind die Integrationsgrenzen gleich, dann ist das Ergebnis
 der Integration Null.
 
 @c See @code{quad_qag} and related functions for numerical approximation of 
@@ -1577,8 +1501,8 @@ der Integration Null.
 @c indefinite integrals.
 
 F@"ur die numerische L@"osung von Integrale siehe die Funktion @code{quad_gag} 
-und verwandte Funktionen. Residuen eines Integranden k@"onnen mit der Funktion
-@code{residue} berechnet werden. Einen alternativen Algorithmus f@"ur das 
+und verwandte Funktionen.  Residuen eines Integranden k@"onnen mit der Funktion
+@code{residue} berechnet werden.  Einen alternativen Algorithmus f@"ur das 
 Berechnen von Integralen mit einer unbekannten Funktion bietet die Funktion 
 @code{antid}.
 
@@ -1642,7 +1566,7 @@ Auswertungsschalter @code{nouns} m@"oglich.
 @c dependencies established by the @code{depends} function.
 
 Die Abh@"angigkeit der Funktionen im Integranden von Parametern im Integranden 
-muss explizit zum Beispiel mit @code{f(x)} angegeben werden. @code{integrate}
+muss explizit zum Beispiel mit @code{f(x)} angegeben werden.  @code{integrate}
 beachtet keine Abh@"angigkeit der mit den Funktion @code{depends} definiert 
 werden.
 
@@ -1659,7 +1583,7 @@ Informationen gefragt.
 @c @code{integrate} is not, by default, declared to be linear. See 
 @c @code{declare} and @code{linear}.
 
-@code{integrate} ist standardm@"a@ss{}ig nicht als linear deklariert. Siehe
+@code{integrate} ist standardm@"a@ss{}ig nicht als linear deklariert.  Siehe
 @mref{declare} und @mrefdot{linear}
 
 @c @code{integrate} attempts integration by parts only in a few special cases.
@@ -1734,10 +1658,10 @@ neg;
 @c @code{diff(r(x))} of an unspecified function @code{r(x)}.
 
 @item
-Substitution der Integrationsvariable. In diesem Beispiel werden zwei 
-verschiedene Substitutionen vorgenommen. Zuerst wird eine Ableitung der Funktion
-mit der Funktion @code{gradef} definiert. Die andere nutzt die Ableitung
-@code{diff(r(x))} einer unbekannten Funktion @code{r(x)}.
+Substitution der Integrationsvariablen.  In diesem Beispiel werden zwei 
+verschiedene Substitutionen vorgenommen.  Zuerst wird eine Ableitung der 
+Funktion mit der Funktion @code{gradef} definiert.  Die andere nutzt die 
+Ableitung @code{diff(r(x))} einer unbekannten Funktion @code{r(x)}.
 
 @example
 @group
@@ -1767,7 +1691,7 @@ mit der Funktion @code{gradef} definiert. Die andere nutzt die Ableitung
 
 @item
 Die L@"osung enth@"alt eine Substantivform f@"ur das Integral einer rationalen 
-Funktion. Siehe auch @code{integrate_use_rootsof} f@"ur Informationen zu
+Funktion.  Siehe auch @code{integrate_use_rootsof} f@"ur Informationen zu
 Integralen von rationalen Funktionen.
 
 @example
@@ -1800,9 +1724,9 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 @c the body of @code{f_2}.
 
 @item
-Definition einer Funktion als ein Integral. Die rechte Seite einer
-Funktionsdefinition wird nicht ausgewertet. Daher enth@"alt die 
-Funktionsdefinition das Integral in einer Substantivform. Der 
+Definition einer Funktion als ein Integral.  Die rechte Seite einer
+Funktionsdefinition wird nicht ausgewertet.  Daher enth@"alt die 
+Funktionsdefinition das Integral in einer Substantivform.  Der 
 Quote-Quote-Operator @code{'@w{}'} erzwingt die Auswertung der Substantivform.
 
 @example
@@ -1830,9 +1754,6 @@ Quote-Quote-Operator @code{'@w{}'} erzwingt die Auswertung der Substantivform.
 @end example
 @end itemize
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c --- 28.11.2010 DK------------------------------------------------------------
@@ -1882,9 +1803,6 @@ Beispiele:
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1951,9 +1869,6 @@ Beispiele:
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -2029,14 +1944,11 @@ rationalen Funktion zur@"uckgegeben.
 @c obtain a more useful result.
 
 Alternativ kann der Nutzer die Wurzeln des Nenners separat berechnen und den
-Integranden mit Hilfe der Wurzeln ausdr@"ucken. Zum Beispiel als 
+Integranden mit Hilfe der Wurzeln ausdr@"ucken.  Zum Beispiel als 
 @code{1/((x - a)*(x - b)*(x - c))} oder @code{1/((x^2-(a+b)*x + a*b)*(x - c))}
-ein kubisches Polynom mit drei Nullstellen im Nenner. Auf diese Weise kann
+ein kubisches Polynom mit drei Nullstellen im Nenner.  Auf diese Weise kann
 Maxima in einigen F@"allen eine L@"osung f@"ur ein Integral finden.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -2060,10 +1972,10 @@ Integrationsvariable @var{x} und den Parameter @var{s}.
 
 @code{laplace} findet die Laplace-Transformation f@"ur Ausdr@"ucke, die die
 Funktionen @code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, 
-@code{sinh}, @code{cosh} und @code{erf} enthalten. Weiterhin k@"onnen auch
-@code{derivative}, @code{integrate}, @code{sum} und @code{ilt} enthalten sein.
+@code{sinh}, @code{cosh} und @code{erf} sowie Ausdr@"ucke mit @code{derivative}, 
+@code{integrate}, @code{sum} und @code{ilt} enthalten.
 Kann @code{laplace} die Laplace-Transformation nicht finden, wird die Funktion
-@code{specint} aufgerufen. @code{specint} kann die Laplace-Transformation f@"ur
+@code{specint} aufgerufen.  @code{specint} kann die Laplace-Transformation f@"ur
 eine Vielzahl von speziellen Funktion berechnen.
 
 @c If @code{specint} cannot find a solution too, a noun @code{laplace} is 
@@ -2088,7 +2000,7 @@ Findet auch @code{specint} keine L@"osung ist das Ergebnis eine Substantivform.
 @c other kinds of convolutions are not recognized.
 
 @code{laplace} erkennt die Faltung von Funktionen der Form
-@code{integrate (f(x) * g(t - x), x, 0, t)}. Andere Faltungen werden nicht
+@code{integrate (f(x) * g(t - x), x, 0, t)}.  Andere Faltungen werden nicht
 erkannt.
 
 @c Functional relations must be explicitly represented in @var{expr};
@@ -2098,7 +2010,7 @@ erkannt.
 
 Funktionale Abh@"angigkeiten von Variablen m@"ussen explizit angegeben werden. 
 @code{laplace} erkennt keine Abh@"angigkeiten die mit der Funktion 
-@code{depends} definiert wurden. Eine Funktion, die von den Variablen @var{x} 
+@code{depends} definiert wurden.  Eine Funktion, die von den Variablen @var{x} 
 abh@"angt, muss als @code{f(x)} im Ausdruck @var{expr} auftreten.
 
 @c See also @code{ilt}, the inverse Laplace transform.
@@ -2168,9 +2080,6 @@ Beispiele:
 
 @end example
 
-@c @opencatbox
-@c @category{Laplace transform} @category{Differential equations}
-@c @closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -2187,7 +2096,7 @@ Beispiele:
 
 Sucht die L@"osung des bestimmten Integrals f@"ur den Integranden @var{expr}. 
 @code{ldefinit} bestimmt die Stammfunktion und sucht die Grenzwerte mit der
-Funktion @code{limit} an den Integrationsgrenzen @var{a} und @var{b}. Kann ein
+Funktion @code{limit} an den Integrationsgrenzen @var{a} und @var{b}.  Kann ein
 Grenzwert nicht ermittelt werden, enth@"alt das Ergebnis die Substantivform
 des Grenzwertes.
 
@@ -2198,15 +2107,12 @@ des Grenzwertes.
 @c while @code{integrate} may employ various heuristics and may recognize some 
 @c special cases.
 
-@code{ldefint} wird nicht von der Funktion @code{integrate} aufgerufen. Daher
+@code{ldefint} wird nicht von der Funktion @code{integrate} aufgerufen.  Daher
 kann @code{ldefint} ein von @code{integrate} verschiedenes Ergebnis haben.
 @code{ldefint} verwendet immer denselben Algorithmus um eine L@"osung zu finden. 
 Dagegen wendet @code{integrate} verschiedene Algorithmen an, um nach einer
 L@"osung zu suchen.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -2237,9 +2143,6 @@ gegen den Wert @var{z_0} geht.
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus} @category{Complex variables}
-@c @closecatbox
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -2253,9 +2156,9 @@ gegen den Wert @var{z_0} geht.
 @c @code{integrate} will automatically apply @code{risch} if given these cases.
 
 Nutzt den transzendenten Risch-Algorithmus f@"ur die Integration des
-Ausdruck @var{expr} und der Integrationsvariable @var{x}. Der algebraische
-Risch-Algorithmus ist nicht implementiert. Der transzendente Risch-Algorithmus
-behandelt Integranden mit Exponential- und Logarithmusfunktionen. Der 
+Ausdruck @var{expr} und der Integrationsvariable @var{x}.  Der algebraische
+Risch-Algorithmus ist nicht implementiert.  Der transzendente Risch-Algorithmus
+behandelt Integranden mit Exponential- und Logarithmusfunktionen.  Der 
 Risch-Algorithmus wird von @code{integrate} aufgerufen, wenn @code{integrate}
 keine Stammfunktion finden kann.
 
@@ -2282,9 +2185,6 @@ keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -2298,9 +2198,6 @@ keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
 Entspricht der Funktion @code{ldefint} mit dem Wert @code{true} f@"ur die 
 Optionsvariable @code{tlimswitch}.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
 @end deffn
 
 @footnotestyle end
@@ -2312,122 +2209,232 @@ Optionsvariable @code{tlimswitch}.
 @c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM 
 @c http://www.netlib.org/slatec/src/qpdoc.f
 
-QUADPACK is a collection of functions for the numerical
-computation of one-dimensional definite integrals.
-It originated from a joint project of
-R. Piessens @footnote{Applied Mathematics and Programming Division, K.U. Leuven},
-E. de Doncker @footnote{Applied Mathematics and Programming Division, K.U. Leuven},
-C. Ueberhuber @footnote{Institut f@"ur Mathematik, T.U. Wien},
-and D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., U.S.A}.
+@c QUADPACK is a collection of functions for the numerical computation of 
+@c one-dimensional definite integrals. It originated from a joint project of
+@c R. Piessens @footnote{Applied Mathematics and Programming Division, K.U. 
+@c Leuven}, E. de Doncker @footnote{Applied Mathematics and Programming 
+@c Division, K.U. Leuven}, C. Ueberhuber @footnote{Institut f@"ur Mathematik, 
+@c T.U. Wien}, and D. Kahaner @footnote{National Bureau of Standards, 
+@c Washington, D.C., U.S.A}.
 
-The QUADPACK library included in Maxima is an automatic translation
-(via the program @code{f2cl}) of the Fortran source code of QUADPACK as it appears in
-the SLATEC Common Mathematical Library, Version 4.1 @footnote{@url{http://www.netlib.org/slatec}}.
-The SLATEC library is dated July 1993, but the QUADPACK functions
-were written some years before.
-There is another version of QUADPACK at Netlib @footnote{@url{http://www.netlib.org/quadpack}};
-it is not clear how that version differs from the SLATEC version.
+QUADPACK ist eine Sammlung von Funktionen f@"ur die numerische Berechnung von
+eindimensionalen bestimmten Integralen.  QUADPACK hat den Ursprung in einem 
+Projekt von R. Piessens @footnote{Applied Mathematics and Programming Division, 
+K.U. Leuven}, E. de Doncker @footnote{Applied Mathematics and Programming 
+Division, K.U. Leuven}, C. Ueberhuber @footnote{Institut f@"ur Mathematik, T.U. 
+Wien}, und D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., 
+U.S.A}.
 
-The QUADPACK functions included in Maxima are all automatic,
-in the sense that these functions attempt to compute a result to a specified accuracy,
-requiring an unspecified number of function evaluations.
-Maxima's Lisp translation of QUADPACK also includes some non-automatic functions,
-but they are not exposed at the Maxima level.
+@c The QUADPACK library included in Maxima is an automatic translation (via the 
+@c program @code{f2cl}) of the Fortran source code of QUADPACK as it appears in
+@c the SLATEC Common Mathematical Library, Version 4.1 
+@c @footnote{@url{http://www.netlib.org/slatec}}. The SLATEC library is dated 
+@c July 1993, but the QUADPACK functions were written some years before. There 
+@c is another version of QUADPACK at Netlib 
+@c @footnote{@url{http://www.netlib.org/quadpack}}; it is not clear how that 
+@c version differs from the SLATEC version.
 
-Further information about QUADPACK can be found in the QUADPACK book
-@footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. Kahaner.
-@i{QUADPACK: A Subroutine Package for Automatic Integration.}
-Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
+Die QUADPACK Bibliothek, die in Maxima enthalten ist, ist eine automatische
+@"Ubersetzung des Fortran Quellcodes mit dem Programm @code{f2cl}, wie er in
+der SLATEC Common Mathematical Library, Version 4.1 
+@footnote{@url{http://www.netlib.org/slatec}} vorliegt.  Die SLATEC Bibliothek
+datiert auf Juli 1993.  Die QUADPACK Funktionen wurden bereits einige Jahre
+fr@"uher programmiert.  Es gibt eine weitere Version von QUADPACK bei Netlib
+@footnote{@url{http://www.netlib.org/quadpack}}. Es ist jedoch unklar worin sich
+diese von der SLATEC Version unterscheidet.
+
+@c The QUADPACK functions included in Maxima are all automatic, in the sense 
+@c that these functions attempt to compute a result to a specified accuracy,
+@c requiring an unspecified number of function evaluations. Maxima's Lisp 
+@c translation of QUADPACK also includes some non-automatic functions, but they 
+@c are not exposed at the Maxima level.
+
+Alle in Maxima enthaltenen QUADPACK-Funktionen versuchen automatisch ein
+bestimmtes Integral numerisch innerhalb eine spezifierten Genauigkeit zu 
+berechnen.  Die @"Ubersetzung nach Lisp enth@"alt einige weitere 
+nicht-automatische Funktionen, die jedoch nicht als Maxima Funktionen zur 
+Verf@"ugung stehen.
+
+@c Further information about QUADPACK can be found in the QUADPACK book
+@c @footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. 
+@c Kahaner. @i{QUADPACK: A Subroutine Package for Automatic Integration.}
+@c Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
+
+Weitere Informationen @"uber QUADPACK k@"onnen in dem QUADPACK-Buch
+@footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. 
+@c Kahaner. @i{QUADPACK: A Subroutine Package for Automatic Integration.}
+Berlin: Springer-Verlag, 1983, ISBN 0387125531.} nachgelesen werden.
 
 @c -----------------------------------------------------------------------------
-@subsubheading Overview
+@subsubheading @"Ubersicht
 
 @table @code
+@c @item quad_qag
+@c Integration of a general function over a finite interval. @code{quad_qag} 
+@c implements a simple globally adaptive integrator using the strategy of Aind 
+@c (Piessens, 1973). The caller may choose among 6 pairs of Gauss-Kronrod 
+@c quadrature formulae for the rule evaluation component. The high-degree rules 
+@c are suitable for strongly oscillating integrands.
+
 @item quad_qag
-Integration of a general function over a finite interval.
-@code{quad_qag} implements a simple globally adaptive integrator using the strategy of Aind (Piessens, 1973).
-The caller may choose among 6 pairs of Gauss-Kronrod quadrature
-formulae for the rule evaluation component.
-The high-degree rules are suitable for strongly oscillating integrands.
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
+@code{quad_qag} implementiert eine globalen adaptiven Integrator auf
+Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
+Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
+h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
+
+@c @item quad_qags
+@c Integration of a general function over a finite interval. @code{quad_qags} 
+@c implements globally adaptive interval subdivision with extrapolation (de 
+@c Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
 
 @item quad_qags
-Integration of a general function over a finite interval.
-@code{quad_qags} implements globally adaptive interval subdivision with extrapolation
-(de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
+Die Funktion @code{quad_qags} implementiert die Strategie einer globalen   
+adaptiven Unterteilung des Integrationsintervalls mit Extrapolation (de Doncker,
+1978).  Zus@"atzlich wird versucht, die Konvergenz der Integralapproximation mit
+Hilfe des Epsilon-Algorithmus (Wynn, 1956) zu beschleunigen.  Dies f@"uhrt zum 
+Beispiel bei Integranden mit Singularit@"aten, deren Lage und Typ unbekannt 
+sind, zu einer Effizienzsteigerung.
+
+@c @item quad_qagi
+@c Integration of a general function over an infinite or semi-infinite interval.
+@c The interval is mapped onto a finite interval and then the same strategy as 
+@c in @code{quad_qags} is applied.
 
 @item quad_qagi
-Integration of a general function over an infinite or semi-infinite interval.
-The interval is mapped onto a finite interval and
-then the same strategy as in @code{quad_qags} is applied.
+Integration einer allgemeinen Funktion @"uber ein unendliches oder 
+halb-un@-end@-lich@-es Intervall.  Das Intervall wird auf ein endliches 
+Intervall transformiert.  Das transformierte Integrationsproblem wird dann mit 
+einer geringf@"ugig modifizierten Algorithmus wie in @code{quad_qags} gel@"ost.
+
+@c @item quad_qawo
+@c @ifnottex
+@c Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a 
+@c finite interval, where @math{omega} is a constant.
+@c @end ifnottex
+@c @tex
+@c Integration of $\cos\left(\omega \, x\right) \, f\left(x\right)$ or
+@c $\sin\left(\omega \, x\right) \, f\left(x\right)$ over a finite interval,
+@c where $\omega$ is a constant.
+@c @end tex
+@c The rule evaluation component is based on the modified Clenshaw-Curtis 
+@c technique. @code{quad_qawo} applies adaptive subdivision with extrapolation, 
+@c similar to @code{quad_qags}.
 
 @item quad_qawo
 @ifnottex
-Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a finite interval,
-where @math{omega} is a constant.
+Berechnung von Integralen mit den trigonometrischen Gewichtsfunktionen 
+@math{cos(omega x) f(x)} oder @math{sin(omega x) f(x)} @"uber ein endliches 
+Intervall, wobei @math{omega} eine Konstante ist.
 @end ifnottex
 @tex
-Integration of $\cos\left(\omega \, x\right) \, f\left(x\right)$ or
-$\sin\left(\omega \, x\right) \, f\left(x\right)$ over a finite interval,
-where $\omega$ is a constant.
+Berechnung von Integralen mit den trigonometrischen Gewichtsfunktionen 
+$\cos\left(\omega \, x\right) \, f\left(x\right)$ oder
+$\sin\left(\omega \, x\right) \, f\left(x\right)$ @"uber ein endliches 
+Intervall, wobei $\omega$ eine Konstante ist.
 @end tex
-The rule evaluation component is based on the modified Clenshaw-Curtis technique.
-@code{quad_qawo} applies adaptive subdivision with extrapolation, similar to @code{quad_qags}.
+Der Algorithmus zur Integration basiert auf eine modifizierte 
+Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung des
+Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem 
+Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die 
+Konvergenz der Integralapproximation mit Hilfe des Epsilon-Algorithmus (Wynn, 
+1956) zu beschleunigen.
+
+@c @item quad_qawf
+@c Calculates a Fourier cosine or Fourier sine transform on a semi-infinite 
+@c interval. The same approach as in @code{quad_qawo} is applied on successive 
+@c finite intervals, and convergence acceleration by means of the Epsilon 
+@c algorithm (Wynn, 1956) is applied to the series of the integral 
+@c contributions.
 
 @item quad_qawf
-Calculates a Fourier cosine or Fourier sine transform on a semi-infinite interval.
-The same approach as in @code{quad_qawo} is applied on successive finite intervals,
-and convergence acceleration by means of the Epsilon algorithm (Wynn, 1956)
-is applied to the series of the integral contributions.
+Berechnet die Sinus- oder Kosinus-Fouriertransformation @"uber ein 
+halb-un@-end@-lich@-es Intervall.  Dabei wird die global adaptive Routine
+@code{quad_qawo} sukzessive auf endliche Teilintervalle angewendet.  Zur
+Konvergenzbeschleunigung der resultierenden alternierenden Reihe wird dann
+der Epsilon-Algorithmus (Wynn, 1956) verwendet.
+
+@c @item quad_qaws
+@c @ifnottex
+@c Integration of @math{w(x) f(x)} over a finite interval @math{[a, b]}, where 
+@c @math{w} is a function of the form @math{(x - a)^alpha (b - x)^beta v(x)}
+@c and @math{v(x)} is 1 or @math{log(x - a)} or @math{log(b - x)} or 
+@c @math{log(x - a) log(b - x)}, and @math{alpha > -1} and @math{beta > -1}.
+@c @end ifnottex
+@c @tex
+@c Integration of $w\left(x\right) \, f\left(x\right)$ over a finite interval
+@c $\left[a, b\right]$, where $w$ is a function of the form
+@c $\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$
+@c and $v\left(x\right)$ is $1$ or $\log\left(x - a\right)$ or 
+@c $\log\left(b - x\right)$ or $\log\left(x - a\right) \, \log\left(b - 
+@c x\right)$, and $\alpha > -1$ and $\beta > -1$.
+@c @end tex
+@c A globally adaptive subdivision strategy is applied, with modified 
+@c Clenshaw-Curtis integration on the subintervals which contain @math{a} or 
+@c @math{b}.
 
 @item quad_qaws
 @ifnottex
-Integration of @math{w(x) f(x)} over a finite interval @math{[a, b]},
-where @math{w} is a function of the form @math{(x - a)^alpha (b - x)^beta v(x)}
-and @math{v(x)} is 1 or @math{log(x - a)} or @math{log(b - x)} or @math{log(x - a) log(b - x)},
-and @math{alpha > -1} and @math{beta > -1}.
+Integration von @math{w(x) f(x)} @"uber ein endliches Intervall @math{[a, b]},
+wobei @math{w} eine Funktion der Form @math{(x - a)^alpha (b - x)^beta v(x)} ist
+und @math{v(x)} ist 1 oder @math{log(x - a)} oder @math{log(b - x)} oder 
+@math{log(x - a) log(b - x)}, und @math{alpha > -1} und @math{beta > -1}.
 @end ifnottex
 @tex
-Integration of $w\left(x\right) \, f\left(x\right)$ over a finite interval
-$\left[a, b\right]$, where $w$ is a function of the form
-$\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$
-and $v\left(x\right)$ is $1$ or $\log\left(x - a\right)$
-or $\log\left(b - x\right)$ or $\log\left(x - a\right) \, \log\left(b - x\right)$,
-and $\alpha > -1$ and $\beta > -1$.
+Integration von $w\left(x\right) \, f\left(x\right)$ @"uber ein endliches 
+Intervall $\left[a, b\right]$, wobei $w$ eine Funktion der Form 
+$\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$ ist 
+und $v\left(x\right)$ ist $1$ oder $\log\left(x - a\right)$ oder 
+$\log\left(b - x\right)$ oder $\log\left(x - a\right) \, \log\left(b - 
+x\right)$, und $\alpha > -1$ und $\beta > -1$.
 @end tex
+@code{quad_qaws} ist speziell f@"ur die effiziente Berechnung von Integralen
+@"uber endliche Intervalle mit algebraischen oder algebraisch-logarithmischen
+Endpunktsingularit@"at konzipiert.  Eine globale adaptive Strategie mit 
+Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle, die
+keinen Endpunkt des Integrationsintervalls enthalten, kommt ein 
+Gau@ss{}-Kronrod-Formelpaar zur Anwendung.  Auf Randintervallen kommen 
+modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
 
-A globally adaptive subdivision strategy is applied,
-with modified Clenshaw-Curtis integration on the subintervals which contain @math{a} or @math{b}.
+@c @item quad_qawc
+@c Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite 
+@c interval @math{(a, b)} and specified @math{c}. The strategy is globally 
+@c adaptive, and modified Clenshaw-Curtis integration is used on the subranges
+@c which contain the point @math{x = c}.
 
 @item quad_qawc
-Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite interval @math{(a, b)}
-and specified @math{c}.
-The strategy is globally adaptive, and modified
-Clenshaw-Curtis integration is used on the subranges
-which contain the point @math{x = c}.
+Berechnet den Cauchyschen Hauptwert von @math{f(x)(x - c)} @"uber ein endliches
+Intervall @math{(a, b)} und dem Wert @math{c}.  Es wird eine modifizierte
+Clenshaw-Curtis-Formel angewendet, wenn @math{c} im Teilbereich enthalten ist,
+andernfalls wird eine globale adaptive Strategie mit einem 
+Gau@ss{}-Kronrod-Formelpaar angewendet.
 @end table
-
-@c @opencatbox
-@c @category{Integral calculus} @category{Numerical methods} @category{Share packages} @category{Package quadpack}
-@c @closecatbox
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur QUADPACK, , Einf@"uhrung in QUADPACK, Integration
 @subsection Funktionen und Variablen f@"ur QUADPACK
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qag}
+@deffn  {Funktion} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funktion} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@c Integration of a general function over a finite interval. @code{quad_qag} 
+@c implements a simple globally adaptive integrator using the strategy of Aind 
+@c (Piessens, 1973). The caller may choose among 6 pairs of Gauss-Kronrod 
+@c quadrature formulae for the rule evaluation component. The high-degree rules 
+@c are suitable for strongly oscillating integrands.
 
-Integration of a general function over a finite interval.
-@code{quad_qag} implements a simple globally adaptive integrator using the strategy of Aind (Piessens, 1973).
-The caller may choose among 6 pairs of Gauss-Kronrod quadrature
-formulae for the rule evaluation component.
-The high-degree rules are suitable for strongly oscillating integrands.
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
+@code{quad_qag} implementiert eine globalen adaptiven Integrator auf
+Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
+Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
+h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
 
-@code{quad_qag} computes the integral
+@c @code{quad_qag} computes the integral
+
+@code{quad_qag} berechnet das Integral
 
 @ifnottex
 @math{integrate (f(x), x, a, b)}
@@ -2436,66 +2443,129 @@ The high-degree rules are suitable for strongly oscillating integrands.
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-The function to be integrated is @var{f(x)}, with dependent
-variable @var{x}, and the function is to be integrated between the
-limits @var{a} and @var{b}.  @var{key} is the integrator to be used
-and should be an integer between 1 and 6, inclusive.  The value of
-@var{key} selects the order of the Gauss-Kronrod integration rule.
-High-order rules are suitable for strongly oscillating integrands.
+@c The function to be integrated is @var{f(x)}, with dependent variable @var{x},
+@c and the function is to be integrated between the limits @var{a} and @var{b}.
+@c @var{key} is the integrator to be used and should be an integer between 1 and
+@c 6, inclusive.  The value of @var{key} selects the order of the Gauss-Kronrod 
+@c integration rule. High-order rules are suitable for strongly oscillating 
+@c integrands.
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird im 
+Integrationsintervall @var{a} und @var{b} integriert.  @var{key} w@"ahlt den Grad
+der Gau@ss{}-Kronrod-Quadratorformel aus und kann Werte von 1 bis 6 annehmen.
+Ein gr@"o@ss{}erer Grad ist geeignet f@"ur stark oszillierende Integranden.
 
-The numerical integration is done adaptively by subdividing the
-integration region into sub-intervals until the desired accuracy is
-achieved.
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c The numerical integration is done adaptively by subdividing the integration 
+@c region into sub-intervals until the desired accuracy is achieved.
+
+Die numerische Integration wird adaptiv ausgef@"uhrt.  Der Integrationsbereich
+wird solange geteilt, bis die gew@"unschte Genauigkeit erreicht wird.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
 
 @table @var
+@c @item epsrel
+@c Desired relative error of approximation.  Default is 1d-8.
+
 @item epsrel
-Desired relative error of approximation.  Default is 1d-8.
+Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
+@code{1.0e-8}.
+
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 0.
+
 @item epsabs
-Desired absolute error of approximation.  Default is 0.
+Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
+@code{0}.
+
+@c @item limit
+@c Size of internal work array.  @var{limit} is the maximum number of 
+@c subintervals to use.  Default is 200.
+
 @item limit
-Size of internal work array.  @var{limit} is the
-maximum number of subintervals to use.  Default is 200.
+Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
+ist @code{200}.
 @end table
 
-@code{quad_qag} returns a list of four elements:
+@c @code{quad_qag} returns a list of four elements:
+
+@code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@c @item
+@c an approximation to the integral,
+
+@item eine numerische N@"aherung des Integrals,
+
+@c @item
+@c the estimated absolute error of the approximation,
+
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+
+@c @item
+@c the number integrand evaluations,
+
+@item Anzahl der Auswertungen des Integranden,
+
+@c @item
+@c an error code.
+
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+@c The error code (fourth element of the return value) can have the values:
+
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@item 0
-if no problems were encountered;
-@item 1
-if too many sub-intervals were done;
-@item 2
-if excessive roundoff error is detected;
-@item 3
-if extremely bad integrand behavior occurs;
-@item 6
-if the input is invalid.
+@c @item 0
+@c if no problems were encountered;
 
+@item 0
+wenn kein Fehler aufgetreten ist,
+
+@c @item 1
+@c if too many sub-intervals were done;
+
+@item 1
+wenn zuviele Teilintervalle notwendig wurden,
+
+@c @item 2
+@c if excessive roundoff error is detected;
+
+@item 2
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+
+@c @item 3
+@c if extremely bad integrand behavior occurs;
+
+@item 3
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
+
+@c @item 6
+@c if the input is invalid.
+
+@item 6
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
+Beispiele:
 
-Examples:
-
+@c ===beg===
+@c quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
+@c integrate (x^(1/2)*log(1/x), x, 0, 1);
+@c ===end===
 @example
 @group
 (%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
@@ -2509,23 +2579,28 @@ Examples:
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
 @end deffn
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qags}
+@deffn  {Funktion} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funktion} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@c Integration of a general function over a finite interval. @code{quad_qags} 
+@c implements globally adaptive interval subdivision with extrapolation (de 
+@c Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
 
-Integration of a general function over a finite interval.
-@code{quad_qags} implements globally adaptive interval subdivision with extrapolation
-(de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
+@code{quad_qags} implementiert die Strategie einer globalen adaptiven 
+Unterteilung des Integrationsintervalls mit Extrapolation (de Doncker, 1978).
+Zus@"atzlich wird versucht, die Konvergenz der Integralapproximation mit Hilfe
+des Epsilon-Algorithmus (Wynn, 1956) zu beschleunigen.  Dies f@"uhrt zum 
+Beispiel bei Integranden mit Singularit@"aten, deren Lage und Typ unbekannt 
+sind, zu einer Effizienzsteigerung. 
 
-@code{quad_qags} computes the integral
+@c @code{quad_qags} computes the integral
+
+@code{quad_qags} berechnet das Integral
 
 @ifnottex
 @math{integrate (f(x), x, a, b)}
@@ -2534,62 +2609,116 @@ Integration of a general function over a finite interval.
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-The function to be integrated is @var{f(x)}, with
-dependent variable @var{x}, and the function is to be integrated
-between the limits @var{a} and @var{b}.
+@c The function to be integrated is @var{f(x)}, with dependent variable @var{x},
+@c and the function is to be integrated between the limits @var{a} and @var{b}.
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird im 
+Integrationsintervall @var{a} und @var{b} integriert.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
+
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
 
 @table @var
+@c @item epsrel
+@c Desired relative error of approximation.  Default is 1d-8.
+
 @item epsrel
-Desired relative error of approximation.  Default is 1d-8.
+Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
+@code{1.0e-8}.
+
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 0.
+
 @item epsabs
-Desired absolute error of approximation.  Default is 0.
+Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
+@code{0}.
+
+@c @item limit
+@c Size of internal work array.  @var{limit} is the maximum number of 
+@c subintervals to use.  Default is 200.
+
 @item limit
-Size of internal work array.  @var{limit} is the
-maximum number of subintervals to use.  Default is 200.
+Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
+ist @code{200}.
 @end table
 
-@code{quad_qags} returns a list of four elements:
+@c @code{quad_qag} returns a list of four elements:
+
+@code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@c @item
+@c an approximation to the integral,
+
+@item eine numerische N@"aherung des Integrals,
+
+@c @item
+@c the estimated absolute error of the approximation,
+
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+
+@c @item
+@c the number integrand evaluations,
+
+@item Anzahl der Auswertungen des Integranden,
+
+@c @item
+@c an error code.
+
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+@c The error code (fourth element of the return value) can have the values:
+
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
+@c @item 0
+@c if no problems were encountered;
+
 @item 0
-no problems were encountered;
+wenn kein Fehler aufgetreten ist,
+
+@c @item 1
+@c if too many sub-intervals were done;
+
 @item 1
-too many sub-intervals were done;
+wenn zuviele Teilintervalle notwendig wurden,
+
+@c @item 2
+@c if excessive roundoff error is detected;
+
 @item 2
-excessive roundoff error is detected;
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+
+@c @item 3
+@c if extremely bad integrand behavior occurs;
+
 @item 3
-extremely bad integrand behavior occurs;
-@item 4
-failed to converge
-@item 5
-integral is probably divergent or slowly convergent
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
+
+@c @item 6
+@c if the input is invalid.
+
 @item 6
-if the input is invalid.
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
+Beispiele:
 
-Examples:
-
+@c ===beg===
+@c quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
+@c ===end===
 @example
 @group
 (%i1) quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
@@ -2597,25 +2726,31 @@ Examples:
 @end group
 @end example
 
-Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
+@c Note that @code{quad_qags} is more accurate and efficient than 
+@c @code{quad_qag} for this integrand.
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
+@code{quad_qags} ist genauer und effiziener als @code{quad_qag} f@"ur den obigen
+Integranden.
+
 @end deffn
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qagi}
+@deffn  {Funktion} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funktion} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@c Integration of a general function over an infinite or semi-infinite interval.
+@c The interval is mapped onto a finite interval and then the same strategy as 
+@c in @code{quad_qags} is applied.
 
-Integration of a general function over an infinite or semi-infinite interval.
-The interval is mapped onto a finite interval and
-then the same strategy as in @code{quad_qags} is applied.
+Integration einer allgemeinen Funktion @"uber ein unendliches oder 
+halb-unendliches Intervall.  Das Intervall wird auf ein endliches Intervall 
+transformiert.  Das transformierte Integrationsproblem wird dann mit einer
+geringf@"ugig modifizierten Algorithmus wie in @code{quad_qags} gel@"ost.
 
 @code{quad_qagi} evaluates one of the following integrals
+
+@code{quad_qagi} berechnet die folgenden Integrale
 
 @ifnottex
 @math{integrate (f(x), x, a, inf)}
@@ -2638,66 +2773,123 @@ $$\int_\infty^a {f(x) \, dx}$$
 $$\int_{-\infty}^\infty {f(x) \, dx}$$
 @end tex
 
-using the Quadpack QAGI routine.  The function to be integrated is
-@var{f(x)}, with dependent variable @var{x}, and the function is to
-be integrated over an infinite range.
+@c The function to be integrated is @var{f(x)}, with dependent variable @var{x},
+@c and the function is to be integrated over an infinite range.
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird @"uber einen
+unendlichen Bereich integriert.
 
-One of the limits of integration must be infinity.  If not, then
-@code{quad_qagi} will just return the noun form.
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c One of the limits of integration must be infinity.  If not, then 
+@c @code{quad_qagi} will just return the noun form.
+
+Eine der Grenzen des Integrationsbereiches kann unendlich sein.  Ist dies nicht
+der Fall gibt @code{quad_qagi} eine Substantivform zur@"uck.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
 
 @table @var
+@c @item epsrel
+@c Desired relative error of approximation.  Default is 1d-8.
+
 @item epsrel
-Desired relative error of approximation.  Default is 1d-8.
+Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
+@code{1.0e-8}.
+
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 0.
+
 @item epsabs
-Desired absolute error of approximation.  Default is 0.
+Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
+@code{0}.
+
+@c @item limit
+@c Size of internal work array.  @var{limit} is the maximum number of 
+@c subintervals to use.  Default is 200.
+
 @item limit
-Size of internal work array.  @var{limit} is the
-maximum number of subintervals to use.  Default is 200.
+Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
+ist @code{200}.
 @end table
 
-@code{quad_qagi} returns a list of four elements:
+@c @code{quad_qag} returns a list of four elements:
+
+@code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@c @item
+@c an approximation to the integral,
+
+@item eine numerische N@"aherung des Integrals,
+
+@c @item
+@c the estimated absolute error of the approximation,
+
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+
+@c @item
+@c the number integrand evaluations,
+
+@item Anzahl der Auswertungen des Integranden,
+
+@c @item
+@c an error code.
+
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+@c The error code (fourth element of the return value) can have the values:
+
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@item 0
-no problems were encountered;
-@item 1
-too many sub-intervals were done;
-@item 2
-excessive roundoff error is detected;
-@item 3
-extremely bad integrand behavior occurs;
-@item 4
-failed to converge
-@item 5
-integral is probably divergent or slowly convergent
-@item 6
-if the input is invalid.
+@c @item 0
+@c if no problems were encountered;
 
+@item 0
+wenn kein Fehler aufgetreten ist,
+
+@c @item 1
+@c if too many sub-intervals were done;
+
+@item 1
+wenn zuviele Teilintervalle notwendig wurden,
+
+@c @item 2
+@c if excessive roundoff error is detected;
+
+@item 2
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+
+@c @item 3
+@c if extremely bad integrand behavior occurs;
+
+@item 3
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
+
+@c @item 6
+@c if the input is invalid.
+
+@item 6
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
+Beispiele:
 
-Examples:
-
+@c ===beg===
+@c quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
+@c integrate (x^2*exp(-4*x), x, 0, inf);
+@c ===end===
 @example
 @group
 (%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
@@ -2711,24 +2903,26 @@ Examples:
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
 @end deffn
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qawc}
+@deffn  {Funktion} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funktion} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@c Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite 
+@c interval. The strategy is globally adaptive, and modified Clenshaw-Curtis 
+@c integration is used on the subranges which contain the point @math{x = c}.
 
-Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite interval.
-The strategy is globally adaptive, and modified
-Clenshaw-Curtis integration is used on the subranges
-which contain the point @math{x = c}.
+Berechnet den Cauchyschen Hauptwert von @math{f(x)(x - c)} @"uber ein endliches
+Intervall @math{(a, b)} und dem Wert @math{c}.  Es wird eine modifizierte
+Clenshaw-Curtis-Formel angewendet, wenn @math{c} im Teilbereich enthalten ist,
+andernfalls wird eine globale adaptive Strategie mit einem 
+Gau@ss{}-Kronrod-Formelpaar angewendet.
 
-@code{quad_qawc} computes the Cauchy principal value of
+@c @code{quad_qawc} computes the Cauchy principal value of
+
+@code{quad_qawc} berechnet den Cauchyschen Hauptwert von
 
 @ifnottex
 @math{integrate (f(x)/(x - c), x, a, b)}
@@ -2737,57 +2931,120 @@ which contain the point @math{x = c}.
 $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
-using the Quadpack QAWC routine.  The function to be integrated is
-@code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{x}, and the function
-is to be integrated over the interval @var{a} to @var{b}.
+@c using the Quadpack QAWC routine.  The function to be integrated is
+@c @code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{x}, and 
+@c the function is to be integrated over the interval @var{a} to @var{b}.
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+Die Funktion @code{@var{f(x)}/(@var{x} - @var{c})}, die von der Variablen
+@var{x} abh@"angt, wird in den Grenzen @var{a} und @var{b} integriert.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
+
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
 
 @table @var
+@c @item epsrel
+@c Desired relative error of approximation.  Default is 1d-8.
+
 @item epsrel
-Desired relative error of approximation.  Default is 1d-8.
+Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
+@code{1.0e-8}.
+
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 0.
+
 @item epsabs
-Desired absolute error of approximation.  Default is 0.
+Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
+@code{0}.
+
+@c @item limit
+@c Size of internal work array.  @var{limit} is the maximum number of 
+@c subintervals to use.  Default is 200.
+
 @item limit
-Size of internal work array.  @var{limit} is the
-maximum number of subintervals to use.  Default is 200.
+Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
+ist @code{200}.
 @end table
 
-@code{quad_qawc} returns a list of four elements:
+@c @code{quad_qag} returns a list of four elements:
+
+@code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@c @item
+@c an approximation to the integral,
+
+@item eine numerische N@"aherung des Integrals,
+
+@c @item
+@c the estimated absolute error of the approximation,
+
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+
+@c @item
+@c the number integrand evaluations,
+
+@item Anzahl der Auswertungen des Integranden,
+
+@c @item
+@c an error code.
+
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+@c The error code (fourth element of the return value) can have the values:
+
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@item 0
-no problems were encountered;
-@item 1
-too many sub-intervals were done;
-@item 2
-excessive roundoff error is detected;
-@item 3
-extremely bad integrand behavior occurs;
-@item 6
-if the input is invalid.
+@c @item 0
+@c if no problems were encountered;
 
+@item 0
+wenn kein Fehler aufgetreten ist,
+
+@c @item 1
+@c if too many sub-intervals were done;
+
+@item 1
+wenn zuviele Teilintervalle notwendig wurden,
+
+@c @item 2
+@c if excessive roundoff error is detected;
+
+@item 2
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+
+@c @item 3
+@c if extremely bad integrand behavior occurs;
+
+@item 3
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
+
+@c @item 6
+@c if the input is invalid.
+
+@item 6
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-Examples:
+Beispiele:
 
+@c ===beg===
+@c quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
+@c            'epsrel=1d-7);
+@c integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
+@c            x, 0, 5);
+@c ===end===
 @example
 @group
 (%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
@@ -2796,7 +3053,7 @@ Examples:
 @end group
 @group
 (%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
-      x, 0, 5);
+                 x, 0, 5);
 Principal Value
                        alpha
         alpha       9 4                 9
@@ -2821,25 +3078,28 @@ Principal Value
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
 @end deffn
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qawf}
+@deffn  {Funktion} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Funktion} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
-@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@c Calculates a Fourier cosine or Fourier sine transform on a semi-infinite 
+@c interval using the Quadpack QAWF function. The same approach as in 
+@c @code{quad_qawo} is applied on successive finite intervals, and convergence
+@c acceleration by means of the Epsilon algorithm (Wynn, 1956) is applied to the
+@c series of the integral contributions.
 
-Calculates a Fourier cosine or Fourier sine transform on a semi-infinite interval
-using the Quadpack QAWF function.
-The same approach as in @code{quad_qawo} is applied on successive finite intervals,
-and convergence acceleration by means of the Epsilon algorithm (Wynn, 1956)
-is applied to the series of the integral contributions.
+Berechnet die Sinus- oder Kosinus-Fouriertransformation @"uber ein 
+halb-unendliches Intervall.  Dabei wird die global adaptive Routine
+@code{quad_qawo} sukzessive auf endliche Teilintervalle angewendet.  Zur
+Konvergenzbeschleunigung der resultierenden alternierenden Reihe wird dann
+der Epsilon-Algorithmus (Wynn, 1956) verwendet.
 
-@code{quad_qawf} computes the integral
+@c @code{quad_qawf} computes the integral
+
+@code{quad_qawf} berechnet das Integral
 
 @ifnottex
 @math{integrate (f(x)*w(x), x, a, inf)}
@@ -2848,7 +3108,10 @@ is applied to the series of the integral contributions.
 $$\int_a^\infty f(x) \, w(x) \, dx$$
 @end tex
 
-The weight function @math{w} is selected by @var{trig}:
+@c The weight function @math{w} is selected by @var{trig}:
+
+Die Gewichtsfunktion @math{w} wird mit dem Schl@"usselwort @var{trig} 
+ausgew@"ahlt:
 
 @table @code
 @item cos
@@ -2857,57 +3120,84 @@ The weight function @math{w} is selected by @var{trig}:
 @math{w(x) = sin (omega x)}
 @end table
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
 
 @table @var
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 1d-10.
+
 @item epsabs
-Desired absolute error of approximation.  Default is 1d-10.
+Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist 
+@code{1.0e-10}.
+
+@c @item limit
+@c Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+@c maximum number of subintervals to use.  Default is 200.
+
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
-maximum number of subintervals to use.  Default is 200.
+@code{(@var{limit} - @var{limlst})/2} ist die maxima Zahl an Teilintervallen
+des adaptiven Algorithmus.  Der Standardwert ist @code{200}.
+
+@c @item maxp1
+@c Maximum number of Chebyshev moments. Must be greater than 0.  Default is 100.
+
 @item maxp1
-Maximum number of Chebyshev moments.  Must be greater than 0.  Default
-is 100.
+Die maximale Anzahl an Chebyshev-Gewichten.  Der Wert muss gr@"o@ss{}er als 0 
+sein.  Der Standardwert ist @code{100}.
+
+@c @item limlst
+@c Upper bound on the number of cycles.  Must be greater than or equal to 3.  
+@c Default is 10.
+
 @item limlst
-Upper bound on the number of cycles.  Must be greater than or equal to
-3.  Default is 10.
+Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
+3 sein.  Der Standardwert ist 10.
 @end table
 
-@code{quad_qawf} returns a list of four elements:
+@c @code{quad_qawf} returns a list of four elements:
+
+@code{quad_qawf} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@item eine numerische N@"aherung des Integrals,
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+@item Anzahl der Auswertungen des Integranden,
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
 @item 0
-no problems were encountered;
+wenn kein Fehler aufgetreten ist,
 @item 1
-too many sub-intervals were done;
+wenn zuviele Teilintervalle notwendig wurden,
 @item 2
-excessive roundoff error is detected;
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
 @item 3
-extremely bad integrand behavior occurs;
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
 @item 6
-if the input is invalid.
-
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-Examples:
+Beispiele:
 
+@c ===beg===
+@c quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
+@c integrate (exp(-x^2)*cos(x), x, 0, inf);
+@c ev (%, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
@@ -2926,46 +3216,60 @@ Examples:
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
 @end deffn
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qawo}
+@deffn  {Funktion} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Funktion} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
-@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@c Integration of
+@c @ifnottex
+@c @math{cos (omega x) f(x)}
+@c @end ifnottex
+@c @tex
+@c $\cos \left(\omega \, x\right) \, f\left(x\right)$
+@c @end tex
+@c or
+@c @ifnottex
+@c @math{sin (omega x) f(x)}
+@c @end ifnottex
+@c @tex
+@c $\sin \left(\omega \, x\right) \, f\left(x\right)$
+@c @end tex
+@c over a finite interval, where
+@c @ifnottex
+@c @math{omega}
+@c @end ifnottex
+@c @tex
+@c $\omega$
+@c @end tex
+@c is a constant.
+@c The rule evaluation component is based on the modified Clenshaw-Curtis 
+@c technique. @code{quad_qawo} applies adaptive subdivision with extrapolation, 
+@c similar to @code{quad_qags}.
 
-Integration of
 @ifnottex
-@math{cos (omega x) f(x)}
+Berechnung von Integralen mit den trigonometrischen Gewichtsfunktionen 
+@math{cos(omega x) f(x)} oder @math{sin(omega x) f(x)} @"uber ein endliches 
+Intervall, wobei @math{omega} eine Konstante ist.
 @end ifnottex
 @tex
-$\cos \left(\omega \, x\right) \, f\left(x\right)$
+Die Funktion @code{quad_qawo} berechnet Integrale mit den trigonometrischen 
+Gewichtsfunktionen $\cos\left(\omega \, x\right) \, f\left(x\right)$ oder
+$\sin\left(\omega \, x\right) \, f\left(x\right)$ @"uber ein endliches 
+Intervall, wobei $\omega$ eine Konstante ist.
 @end tex
-or
-@ifnottex
-@math{sin (omega x) f(x)}
-@end ifnottex
-@tex
-$\sin \left(\omega \, x\right) \, f\left(x\right)$
-@end tex
-over a finite interval,
-where
-@ifnottex
-@math{omega}
-@end ifnottex
-@tex
-$\omega$
-@end tex
-is a constant.
-The rule evaluation component is based on the modified Clenshaw-Curtis technique.
-@code{quad_qawo} applies adaptive subdivision with extrapolation, similar to @code{quad_qags}.
+Der Algorithmus basiert auf eine modifizierte 
+Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung des
+Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem 
+Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die 
+Konvergenz der Integralapproximation mit Hilfe des Epsilon-Algorithmus zu 
+beschleunigen.
 
-@code{quad_qawo} computes the integral using the Quadpack QAWO
-routine:
+@c @code{quad_qawo} computes the integral using the Quadpack QAWO routine:
+
+@code{quad_qawo} berechnet das Integral
 
 @ifnottex
 @math{integrate (f(x)*w(x), x, a, b)}
@@ -2974,7 +3278,10 @@ routine:
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
 
-The weight function @math{w} is selected by @var{trig}:
+@c The weight function @math{w} is selected by @var{trig}:
+
+Die Gewichtsfunktion @math{w} wird mit dem Schl@"usselwort @var{trig} 
+ausgew@"ahlt:
 
 @table @code
 @item cos
@@ -2993,59 +3300,110 @@ $w\left(x\right) = \sin \left(\omega \, x\right)$
 @end tex
 @end table
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
+
+@c @table @var
+@c @item epsrel
+@c Desired relative error of approximation.  Default is 1d-8.
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 0.
+@c @item limit
+@c Size of internal work array.  @var{limit}/2 is the
+@c maximum number of subintervals to use.  Default is 200.
+@c @item maxp1
+@c Maximum number of Chebyshev moments.  Must be greater than 0.  Default
+@c is 100.
+@c @item limlst
+@c Upper bound on the number of cycles.  Must be greater than or equal to
+@c 3.  Default is 10.
+@c @end table
 
 @table @var
 @item epsrel
-Desired relative error of approximation.  Default is 1d-8.
+Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert is 
+@code{1.0e-8}
 @item epsabs
-Desired absolute error of approximation.  Default is 0.
+Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist @code{0}.
 @item limit
-Size of internal work array.  @var{limit}/2 is the
-maximum number of subintervals to use.  Default is 200.
+@code{@var{limit}/2} ist die maxima Zahl an Teilintervallen des adaptiven 
+Algorithmus.  Der Standardwert ist @code{200}.
 @item maxp1
-Maximum number of Chebyshev moments.  Must be greater than 0.  Default
-is 100.
+Die maximale Anzahl an Chebyshev-Gewichten.  Der Wert muss gr@"o@ss{}er als 0 
+sein.  Der Standardwert ist @code{100}.
 @item limlst
-Upper bound on the number of cycles.  Must be greater than or equal to
-3.  Default is 10.
+Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
+3 sein.  Der Standardwert ist 10.
 @end table
 
-@code{quad_qawo} returns a list of four elements:
+@c @code{quad_qawo} returns a list of four elements:
+@c @itemize
+@c @item
+@c an approximation to the integral,
+@c @item
+@c the estimated absolute error of the approximation,
+@c @item
+@c the number integrand evaluations,
+@c @item
+@c an error code.
+@c @end itemize
+
+@code{quad_qawo} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@item eine numerische N@"aherung des Integrals,
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+@item Anzahl der Auswertungen des Integranden,
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+@c The error code (fourth element of the return value) can have the values:
+@c @table @code
+@c @item 0
+@c no problems were encountered;
+@c @item 1
+@c too many sub-intervals were done;
+@c @item 2
+@c excessive roundoff error is detected;
+@c @item 3
+@c extremely bad integrand behavior occurs;
+@c @item 6
+@c if the input is invalid.
+@c @end table
+
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
 @item 0
-no problems were encountered;
+wenn kein Fehler aufgetreten ist,
 @item 1
-too many sub-intervals were done;
+wenn zuviele Teilintervalle notwendig wurden,
 @item 2
-excessive roundoff error is detected;
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
 @item 3
-extremely bad integrand behavior occurs;
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
 @item 6
-if the input is invalid.
-
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-Examples:
+Beispiele:
 
+@c ===beg===
+@c quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
+@c rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
+@c           x, 0, inf));
+@c ev (%, alpha=2, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
@@ -3053,7 +3411,7 @@ Examples:
 @end group
 @group
 (%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
-      x, 0, inf));
+                x, 0, inf));
                    alpha/2 - 1/2            2 alpha
         sqrt(%pi) 2              sqrt(sqrt(2        + 1) + 1)
 (%o2)   -----------------------------------------------------
@@ -3066,26 +3424,43 @@ Examples:
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
 @end deffn
 
-@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
-@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@c --- 09.01.2011 DK -----------------------------------------------------------
+@anchor{quad_qaws}
+@deffn  {Funktion} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funktion} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@c Integration of @math{w(x) f(x)} over a finite interval, where @math{w(x)} is 
+@c a certain algebraic or logarithmic function. A globally adaptive subdivision 
+@c strategy is applied, with modified Clenshaw-Curtis integration on the 
+@c subintervals which contain the endpoints of the interval of integration.
 
-Integration of @math{w(x) f(x)} over a finite interval,
-where @math{w(x)} is a certain algebraic or logarithmic function.
-A globally adaptive subdivision strategy is applied,
-with modified Clenshaw-Curtis integration on the subintervals which contain the endpoints
-of the interval of integration.
+@ifnottex
+Integration von @math{w(x) f(x)} @"uber ein endliches Intervall @math{[a, b]},
+wobei @math{w} eine Funktion der Form @math{(x - a)^alpha (b - x)^beta v(x)}
+ist und @math{v(x)} ist 1 oder @math{log(x - a)} oder @math{log(b - x)} oder 
+@math{log(x - a) log(b - x)}, und @math{alpha > -1} und @math{beta > -1}.
+@end ifnottex
+@tex
+Integration von $w\left(x\right) \, f\left(x\right)$ @"uber ein endliches 
+Intervall $\left[a, b\right]$, wobei $w$ eine Funktion der Form 
+$\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$ ist 
+und $v\left(x\right)$ ist $1$ oder $\log\left(x - a\right)$ oder 
+$\log\left(b - x\right)$ oder $\log\left(x - a\right) \, \log\left(b - 
+x\right)$, und $\alpha > -1$ und $\beta > -1$.
+@end tex
+@code{quad_qaws} ist speziell f@"ur die effiziente Berechnung von Integralen
+@"uber endliche Intervalle mit algebraischen oder algebraisch-logarithmischen
+Endpunktsingularit@"at konzipiert.  Eine globale adaptive Strategie mit 
+Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle, die
+keinen Endpunkt des Integrationsintervalls enthalten, kommt ein 
+Gau@ss{}-Kronrod-Formelpaar zur Anwendung.  Auf Randintervallen kommen 
+modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
 
-@code{quad_qaws} computes the integral using the Quadpack QAWS
-routine:
+@c @code{quad_qaws} computes the integral using the Quadpack QAWS routine:
+
+@code{quad_qaws} berechnet das Integral
 
 @ifnottex
 @math{integrate (f(x)*w(x), x, a, b)}
@@ -3094,7 +3469,9 @@ routine:
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
 
-The weight function @math{w} is selected by @var{wfun}:
+@c The weight function @math{w} is selected by @var{wfun}:
+
+Die Gewichtsfunktion wird mit dem Schl@"usselwort @var{wfun} ausgew@"ahlt:
 
 @table @code
 @item 1
@@ -3109,71 +3486,119 @@ $w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta$
 @math{w(x) = (x - a)^alpha (b - x)^beta log(x - a)}
 @end ifnottex
 @tex
-$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, \log\left(x - a\right)$
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, 
+\log\left(x - a\right)$
 @end tex
 @item 3
 @ifnottex
 @math{w(x) = (x - a)^alpha (b - x)^beta log(b - x)}
 @end ifnottex
 @tex
-$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, \log\left(b - x\right)$
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, 
+\log\left(b - x\right)$
 @end tex
 @item 4
 @ifnottex
 @math{w(x) = (x - a)^alpha (b - x)^beta log(x - a) log(b - x)}
 @end ifnottex
 @tex
-$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, \log\left(x - a\right) \, \log\left(b - x\right)$
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, 
+\log\left(x - a\right) \, \log\left(b - x\right)$
 @end tex
 @end table
 
-The integrand may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
+@c The integrand may be specified as the name of a Maxima or Lisp function or 
+@c operator, a Maxima lambda expression, or a general Maxima expression.
 
-The keyword arguments are optional and may be specified in any order.
-They all take the form @code{key=val}.  The keyword arguments are:
+Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
+Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
+
+@c The keyword arguments are optional and may be specified in any order.
+@c They all take the form @code{key=val}.  The keyword arguments are:
+
+Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
+angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Schl@"usselwortargumente sind:
+
+@c @table @var
+@c @item epsrel
+@c Desired relative error of approximation.  Default is 1d-8.
+@c @item epsabs
+@c Desired absolute error of approximation.  Default is 0.
+@c @item limit
+@c Size of internal work array.  @var{limit}is the
+@c maximum number of subintervals to use.  Default is 200.
+@c @end table
 
 @table @var
 @item epsrel
-Desired relative error of approximation.  Default is 1d-8.
+Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert is 
+@code{1.0e-8}
 @item epsabs
-Desired absolute error of approximation.  Default is 0.
+Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist @code{0}.
 @item limit
-Size of internal work array.  @var{limit}is the
-maximum number of subintervals to use.  Default is 200.
+Maximale Anzahl der Teilintervalle des adaptiven Algorithmus.  Der Standardwert
+ist @code{200}.
 @end table
 
-@code{quad_qaws} returns a list of four elements:
+@c @code{quad_qaws} returns a list of four elements:
+@c @itemize
+@c @item
+@c an approximation to the integral,
+@c @item
+@c the estimated absolute error of the approximation,
+@c @item
+@c the number integrand evaluations,
+@c @item
+@c an error code.
+@c @end itemize
+
+@code{quad_qaws} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@item
-an approximation to the integral,
-@item
-the estimated absolute error of the approximation,
-@item
-the number integrand evaluations,
-@item
-an error code.
+@item eine numerische N@"aherung des Integrals,
+@item gesch@"atzer absoluter Fehler der N@"aherung,
+@item Anzahl der Auswertungen des Integranden,
+@item ein Fehlercode.
 @end itemize
 
-The error code (fourth element of the return value) can have the values:
+@c The error code (fourth element of the return value) can have the values:
+@c @table @code
+@c @item 0
+@c no problems were encountered;
+@c @item 1
+@c too many sub-intervals were done;
+@c @item 2
+@c excessive roundoff error is detected;
+@c @item 3
+@c extremely bad integrand behavior occurs;
+@c @item 6
+@c if the input is invalid.
+@c @end table
+
+Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
 @item 0
-no problems were encountered;
+wenn kein Fehler aufgetreten ist,
 @item 1
-too many sub-intervals were done;
+wenn zuviele Teilintervalle notwendig wurden,
 @item 2
-excessive roundoff error is detected;
+wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
 @item 3
-extremely bad integrand behavior occurs;
+wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
 @item 6
-if the input is invalid.
-
+wenn die Eingabe ung@"ultig ist.
 @end table
 
-Examples:
+Beispiele:
 
+@c ===beg===
+@c quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
+@c            'epsabs=1d-9);
+@c integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
+@c ev (%, alpha=4, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
@@ -3198,9 +3623,6 @@ pos;
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Numerical methods} @category{Package quadpack}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -3224,7 +3646,6 @@ equations, see the additional package @code{dynamics}. For graphical
 representations in phase space, see the additional package
 @code{plotdf}.
 
-
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Differentialgleichungen,  , Einf@"uhrung in Differentialgleichungen, Differentialgleichungen
 @subsection Funktionen und Variablen f@"ur Differentialgleichungen
@@ -3243,19 +3664,16 @@ form.
 
 See @code{ode2} for an example of its usage.
 
-@c @opencatbox
-@c @category{Differential equations}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn  {Function} desolve (@var{eqn}, @var{x})
-@deffnx {Function} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Function} desolve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
 The function @code{desolve} solves systems of linear ordinary
 differential equations using Laplace transform.  Here the @var{eqn}'s
-are differential equations in the dependent variables @var{x_1}, ...,
-@var{x_n}.  The functional dependence of @var{x_1}, ..., @var{x_n} on an
+are differential equations in the dependent variables @var{x_1}, @dots{},
+@var{x_n}.  The functional dependence of @var{x_1}, @dots{}, @var{x_n} on an
 independent variable, for instance @var{x}, must be explicitly indicated
 in the variables and its derivatives. For example, this would not be the
 correct way to define two equations:
@@ -3317,9 +3735,6 @@ calling @code{desolve} by using @code{atvalue}.
 
 If @code{desolve} cannot obtain a solution, it returns @code{false}.
 
-@c @opencatbox
-@c @category{Differential equations} @category{Laplace transform}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -3334,9 +3749,6 @@ initial value for the dependent variable in the form @code{@var{y} =
 
 See @code{ode2} for an example of its usage.
 
-@c @opencatbox
-@c @category{Differential equations}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -3354,9 +3766,6 @@ variable, in the form @code{diff(@var{y},@var{x}) = @var{dy0}}
 
 See @code{ode2} for an example of its usage.
 
-@c @opencatbox
-@c @category{Differential equations}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -3449,9 +3858,6 @@ Example:
 
 @end example
 
-@c @opencatbox
-@c @category{Differential equations}
-@c @closecatbox
 @end deffn
 
 @c --- End of file Calculus.de.texi --------------------------------------------

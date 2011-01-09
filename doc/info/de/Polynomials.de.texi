@@ -462,7 +462,7 @@ Liste @code{dontfactor}.
 
 Wendet ein Subresultanten-Verfahren an, um die Variablen @var{x_1}, @dots{}, 
 @var{x_k} aus den Gleichungen @var{eqn_1}, ..., @var{eqn_n} zu eliminieren.  Die
-Rückgabe ist ein Gleichungssystem mit @code{@var{n} - @var{k}} Gleichungen, 
+R@"uckgabe ist ein Gleichungssystem mit @code{@var{n} - @var{k}} Gleichungen, 
 wobei die @var{k}-Variablen @var{x_1}, @dots{}, @var{x_k} eliminiert sind.
 
 Beispiel:

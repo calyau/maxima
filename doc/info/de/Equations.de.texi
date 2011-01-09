@@ -25,10 +25,10 @@
 Standwert: 0
 
 Wenn notwendig, erzeugen die Funktionen @code{solve} und @code{algsys} 
-Parameter, die in die L@"osungen eingesetzt werden. Die Parameter haben den 
-Namen @code{%r<@var{num}>}. @code{%rnum} enth@"alt die Nummer @var{num}, die an 
-den Pr@"afix @code{%r} angeh@"angt wird. Maxima erh@"oht @code{%rnum} 
-automatisch. Siehe auch die Systemvariable @mref{%rnum_list} f@"ur eine Liste 
+Parameter, die in die L@"osungen eingesetzt werden.  Die Parameter haben den 
+Namen @code{%r<@var{num}>}.  @code{%rnum} enth@"alt die Nummer @var{num}, die an 
+den Pr@"afix @code{%r} angeh@"angt wird.  Maxima erh@"oht @code{%rnum} 
+automatisch.  Siehe auch die Systemvariable @mref{%rnum_list} f@"ur eine Liste 
 der Parameter einer L@"osung.
 @end defvr
 
@@ -46,7 +46,7 @@ Standardwert: @code{[]}
 @c It's recommended to use this list rather than doing @code{concat ('%r, j)}.
 
 @code{%rnum_list} ist die Liste der Parameter, die von @code{solve} und 
-@code{algsys} in L@"osungen eingesetzt werden. Die Parameter werden der Liste 
+@code{algsys} in L@"osungen eingesetzt werden.  Die Parameter werden der Liste 
 @code{%rnum_list} hinzugef@"ugt, in der Reihenfolge in der sie erzeugt werden.
 
 @c ===beg===
@@ -86,9 +86,6 @@ Standardwert: @code{[]}
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -109,7 +106,7 @@ Standardwert: @code{false}
 @itemize @bullet
 @item
 Hat @code{algexact} den Wert @code{true}, wird von der Funktion @code{algsys} 
-stets @code{solve} aufgerufen. Findet @code{solve} keine L@"osung, wird die 
+stets @code{solve} aufgerufen.  Findet @code{solve} keine L@"osung, wird die 
 Funktion @code{realroots} aufgerufen.
 
 @item
@@ -123,12 +120,9 @@ quadratische oder kubische Gleichungen.
 @c only yield approximations when all else fails.
 
 Der Wert @code{true} f@"ur @code{algexact} garantiert nicht, dass @code{algsys} 
-nur exakte L@"osungen findet. Findet @code{algsys} keine exakten L@"osungen,
-versucht die Funktion N@"aherungsl@"osungen zu finden.
+nur exakte L@"o@-sung@-en findet.  Findet @code{algsys} keine exakten 
+L@"osungen, versucht die Funktion N@"aherungsl@"osungen zu finden.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -143,15 +137,12 @@ Standardwert: 10^8
 Kontrolliert die Genauigkeit einer numerischen L@"osung der Funktion 
 @mrefdot{algsys}
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{algsys}
-@deffn  {Funktion} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
-@deffnx {Funktion} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn  {Funktion} algsys ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffnx {Funktion} algsys ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
 @c Solves the simultaneous polynomials @var{expr_1}, ..., @var{expr_m} or 
 @c polynomial equations @var{eqn_1}, ..., @var{eqn_m} for the variables 
@@ -159,10 +150,10 @@ Kontrolliert die Genauigkeit einer numerischen L@"osung der Funktion
 @c equation @code{@var{expr} = 0}. There may be more equations than variables 
 @c or vice versa.
 
-L@"ost ein Gleichungsystem mit den Polynomen @var{expr_1}, ..., @var{expr_m} 
-oder den Gleichungen @var{eqn_1}, ..., @var{eqn_m} f@"ur die Variablen 
-@var{x_1}, ..., @var{x_n}. Werden Polynome @var{expr_i} als Argument 
-@"ubergeben, werden diese als Gleichungen @var{x_i = 0} interpretiert. Die 
+L@"ost ein Gleichungsystem mit den Polynomen @var{expr_1}, @dots{}, @var{expr_m} 
+oder den Gleichungen @var{eqn_1}, @dots{}, @var{eqn_m} f@"ur die Variablen 
+@var{x_1}, @dots{}, @var{x_n}.  Werden Polynome @var{expr_i} als Argument 
+@"ubergeben, werden diese als Gleichungen @var{x_i = 0} interpretiert.  Die 
 Anzahl der Gleichungen und Variablen kann verschieden sein.
 
 @c @code{algsys} returns a list of solutions, with each solution given as a list
@@ -170,7 +161,7 @@ Anzahl der Gleichungen und Variablen kann verschieden sein.
 @c satisfy the system of equations. If @code{algsys} cannot find a solution, an
 @c empty list @code{[]} is returned.
 
-@code{algsys} gibt eine Liste mit den L@"osungen zur@"uck. Jede L@"osung ist
+@code{algsys} gibt eine Liste mit den L@"osungen zur@"uck.  Jede L@"osung ist
 wiederum eine Liste mit den L@"osungen f@"ur die einzelnen Variablen @var{x_i}.
 Kann @code{algsys} keine L@"osung finden, wird eine leere Liste @code{[]}
 zur@"uckgegeben.
@@ -181,8 +172,8 @@ zur@"uckgegeben.
 @c The method is as follows:
 
 Haben die L@"osungen freie Parameter setzt @code{algsys} die Symbole @code{%r1},
-@code{%r2}, ... in die L@"osungen ein. Die Parameter werden der Liste 
-@code{%rnum_list} hinzugef@"ugt. Siehe @mrefdot{%rnum_list}
+@code{%r2}, @dots{} in die L@"osungen ein.  Die Parameter werden der Liste 
+@code{%rnum_list} hinzugef@"ugt.  Siehe @mrefdot{%rnum_list}
 
 Die Funktion @code{algsys} verwendet die folgenden Schritte, um L@"osungen eines
 Gleichungsystems zu finden:
@@ -203,12 +194,12 @@ Die Gleichungen werden faktorisiert und in Teilsysteme aufgeteilt.
 
 @item
 F@"ur jedes Teilsystem @var{S_i} werden eine Gleichung @var{E} und eine Variable 
-@var{x} ausgew@"ahlt, die den niedrigsten von Null verschiedenen Grad hat. Dann
+@var{x} ausgew@"ahlt, die den niedrigsten von Null verschiedenen Grad hat.  Dann
 wird die Resultante der Gleichungen @var{E} und @var{E_j} f@"ur die Variable 
 @var{x} sowie allen verbleibenden Gleichungen @var{E_j} des Teilsystems 
-@var{S_i} berechnet. Dieses Verfahren eliminiert die Variable @var{x} und
-hat ein neues Teilsystem @var{S_i'} als Ergebnis. Der Algorithmus wiederholt nun
-den 1. Schritt.
+@var{S_i} berechnet.  Dieses Verfahren eliminiert die Variable @var{x} und
+hat ein neues Teilsystem @var{S_i'} als Ergebnis.  Der Algorithmus wiederholt 
+nun den 1. Schritt.
 
 @c (3) Eventually, a subsystem consisting of a single equation is obtained.  If 
 @c the equation is multivariate and no approximations in the form of floating 
@@ -245,10 +236,10 @@ Ausdruck als L@"osung findet.
 
 Auch f@"ur Gleichungen, die nur eine Variable enthalten und die entweder linear,
 quadratisch oder quartisch sind sowie keine Gleitkommazahlen enthalten, wird 
-@code{solve} aufgerufen, um eine exakte L@"osung zu finden. Trifft dies nicht 
+@code{solve} aufgerufen, um eine exakte L@"osung zu finden.  Trifft dies nicht 
 zu, wird die Funktion @code{realroots} aufgerufen, wenn der Schalter 
-@code{realonly} den Wert @code{true} hat. Ansonsten wird die Funktion 
-@code{allroots} aufgerufen. Die Funktion @code{realroots} sucht reelle L@"osung 
+@code{realonly} den Wert @code{true} hat.  Ansonsten wird die Funktion 
+@code{allroots} aufgerufen.  Die Funktion @code{realroots} sucht reelle L@"osung 
 der Gleichung, w@"ahrend die Funktion @code{allroots} auch komplex L@"osungen 
 sucht.
 
@@ -284,13 +275,13 @@ eingesetzt und der L@"osungsalgorithmus mit dem 1. Schritt fortgesetzt.
 Tritt beim L@"osen des Gleichungssystems eine Gleichung auf, die von mehreren
 Variablen abh@"angt und Gleitkommazahlen enth@"alt, dann wird der Algorithmus 
 mit der Meldung "@code{algsys} cannot solve - system too complicated." 
-abgebrochen. Ein N@"aherung mit Gleitkommazahlen kann in vorgehenden Schritten 
+abgebrochen.  Ein N@"aherung mit Gleitkommazahlen kann in vorgehenden Schritten 
 auftreten, wenn keine exakten L@"osungen auffindbar sind.
 
 Ist das Argument der Funktion @code{allroots} kein Polynom, gibt Maxima eine
-Fehlermeldung. Die L@"osungen eines Gleichungssystems k@"onnen sehr gro@ss{}e 
-Ausdr@"ucke sein. Obwohl die L@"osung reell ist, kann die imagin@"are Einheit 
-@code{%i} in den L@"osungen enthalten sein. F@"ur die weitere Bearbeitung der 
+Fehlermeldung.  Die L@"osungen eines Gleichungssystems k@"onnen sehr gro@ss{}e 
+Ausdr@"ucke sein.  Obwohl die L@"osung reell ist, kann die imagin@"are Einheit 
+@code{%i} in den L@"osungen enthalten sein.  F@"ur die weitere Bearbeitung der 
 L@"osungen k@"onnen die Funktionen @code{pickapart} oder @code{reval} n@"utzlich
 sein.
 
@@ -337,9 +328,6 @@ Beispiele:
      sqrt(3)        sqrt(3)          3        3
 @end example
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end deffn
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -366,7 +354,7 @@ Hat der Schalter @code{polyfactor} den Wert @code{true}, wird das Polynom
 @c different algorithm in that case.
 
 F@"ur den Fall mehrfacher Wurzeln kann @code{allroots} ungenaue Ergebnisse 
-liefern. Ist das Polynom reell, kann @code{allroots (%i*@var{p})}) genauere 
+liefern.  Ist das Polynom reell, kann @code{allroots (%i*@var{p})}) genauere 
 Approximationen liefern als @code{allroots (@var{p})}, da @code{allroots} in 
 diesem Fall einen anderen Algorithmus verwendet. 
 
@@ -378,8 +366,8 @@ diesem Fall einen anderen Algorithmus verwendet.
 
 Der Z@"ahler des Arguments der Funktion @code{allroots} muss nach Anwendung der
 Funktion @code{rat} ein Polynom sein und darf im Nenner h@"ochstens eine 
-komplexe Zahl enthalten. Ist das Argument der Funktion @code{allroots} kein 
-Polynom, gibt Maxima eine Fehlermeldung. Hat die Optionsvariable 
+komplexe Zahl enthalten.  Ist das Argument der Funktion @code{allroots} kein 
+Polynom, gibt Maxima eine Fehlermeldung.  Hat die Optionsvariable 
 @code{polyfactor} den Wert @code{true}, wird ein @"aquivalenter, faktorisierter 
 Ausdruck zur@"uckgegeben, der die N@"aherungen f@"ur die Nullstellen enth@"alt.
 
@@ -436,9 +424,6 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
  + 1.098699797110288)
 @end example
 
-@c @opencatbox
-@c @category{Polynomials} @category{Numerical methods}
-@c @closecatbox
 @end deffn
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -458,11 +443,8 @@ Berechnet numerische N@"aherungen der reellen und komplexen Wurzeln des Polynoms
 
 @code{bfallroots} entspricht in jeder Hinsicht der Funktion @code{allroots} mit
 dem Unterschied, dass @code{bfallroots} die N@"aherungen mit gro@ss{}en
-Gleitkommazahlen berechnet. Siehe @mrefdot{allroots}
+Gleitkommazahlen berechnet.  Siehe @mrefdot{allroots}
 
-@c @opencatbox
-@c @category{Polynomials} @category{Numerical methods}
-@c @closecatbox
 @end deffn
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -478,7 +460,7 @@ Standardwert: @code{true}
 @c generation of extremely large expressions.
 
 Hat @code{backsubst} den Wert @code{false}, werden die L@"osungen der Funktion
-@code{linsolve} nicht r@"ucksubstituiert. Dies kann hilfreich sein, wenn die
+@code{linsolve} nicht r@"ucksubstituiert.  Dies kann hilfreich sein, wenn die
 R@"ucksubstitution zu sehr gro@ss{}en Ausdr@"ucken f@"uhrt.
 
 @example
@@ -497,9 +479,6 @@ R@"ucksubstitution zu sehr gro@ss{}en Ausdr@"ucken f@"uhrt.
 @end group
 @end example
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -584,15 +563,12 @@ Solution:
 (%o9)                    [%t7, %t8, %t9]
 @end example
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{dimension}
 @deffn  {Funktion} dimension (@var{eqn})
-@deffnx {Funktion} dimension (@var{eqn_1}, ..., @var{eqn_n})
+@deffnx {Funktion} dimension (@var{eqn_1}, @dots{}, @var{eqn_n})
 
 @c @code{dimen} is a package for dimensional analysis.
 @c @code{load ("dimen")} loads this package.
@@ -602,12 +578,9 @@ Solution:
 @c TODO: DAS IST EIN PAKET UND ES FUNKTIONIERT NICHT!
 @c       ES GIBT NOCH EIN WEITERES PAKET MIT NAMEN DIMENSON.MAC
 
-@code{dimen} ist ein Paket f@"ur die Dimensionsanalysis. @code{load(dimen)} 
-l@"adt dieses Paket. @code{demo(dimen)} zeigt eine kleine Demonstration.
+@code{dimen} ist ein Paket f@"ur die Dimensionsanalysis.  @code{load(dimen)} 
+l@"adt dieses Paket.  @code{demo(dimen)} zeigt eine kleine Demonstration.
 
-@c @opencatbox
-@c @category{Share packages}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -625,9 +598,6 @@ Hat @code{dispflag} den Wert @code{false}, werden Ausgaben der Funktion
 @code{solve} unterdr@"uckt, die erzeugt werden, wenn die Optionsvariable
 @code{programmmode} den Wert @code{false} hat.
 
-@c @opencatbox
-@c @category{Algebraic equations} @category{Display flags and variables}
-@c @closecatbox
 @end defvr
 
 @c THIS COULD BENEFIT FROM REPHRASING
@@ -663,12 +633,9 @@ Dependent equations eliminated:  (4 3)
 @c Warning: this is a very rudimentary implementation -- many safety checks
 @c and obvious generalizations are missing.
 
-Warnung: Die Funktion ist nur sehr rudiment@"ar implementiert. Offensichtliche
+Warnung: Die Funktion ist nur sehr rudiment@"ar implementiert.  Offensichtliche
 Verallgemeinerungen fehlen.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end deffn
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -688,7 +655,7 @@ eines linearen Gleichungssystems die Werte der L@"osung der Funktionen
 @c as equations, and the solved-for variables are not assigned.
 
 Hat @code{globalsolve} den Wert @code{false}, werden den unbekannten Variablen
-eines linearen Gleichungssystems keine Werte zugewiesen. Die L@"osungen werden 
+eines linearen Gleichungssystems keine Werte zugewiesen.  Die L@"osungen werden 
 als Gleichungen mit den unbekannten Variablen ausgedr@"uckt.
 
 @c When solving anything other than two or more linear equations, @code{solve}
@@ -696,7 +663,7 @@ als Gleichungen mit den unbekannten Variablen ausgedr@"uckt.
 @c @code{algsys}) always ignore @code{globalsolve}.
 
 F@"ur andere als lineare Gleichungssysteme wird der Wert von @code{globalsolve}
-ignoriert. @code{algsys} ignoriert @code{globalsolve} immer.
+ignoriert.  @code{algsys} ignoriert @code{globalsolve} immer.
 
 Beispiele:
 
@@ -740,9 +707,6 @@ Solution
 (%o9)                           y
 @end example
 
-@c @opencatbox
-@c @category{Linear equations}
-@c @closecatbox
 @end defvr
 
 @c THIS DESCRIPTION NEEDS WORK AND EXAMPLES
@@ -762,7 +726,7 @@ Solution
 @code{inteqn} ist ein Paket zur L@"osung von Integralgleichungen der Form 
 @code{p(x) = q( x, p(x), 'integrate(w(x,u,p(x),p(u)),u,a(x),b(x)) )} (zweiter 
 Art, @code{secondkind}) und @code{'integrate(w(x,u,p(u)),u,a(x),b(x)) = f(x)} 
-(erster Art, @code{firstkind}). @code{load ("inteqn")} l@"adt dieses Paket.
+(erster Art, @code{firstkind}).  @code{load ("inteqn")} l@"adt dieses Paket.
 
 @c @var{ie} is the integral equation; @var{unk} is the unknown function; 
 @c @var{tech} is the technique to be tried from those given above (@var{tech} = 
@@ -801,7 +765,7 @@ aufgefundene Funktion ist, die f@"ur Maxima unbekannt ist, und @var{x} ist die
 Variable, die im Falle einer @code{secondkind}-Gleichung als Argument des ersten
 @var{p} au@ss{}erhalb des Integrals vorgefunden wird, oder im Falle einer 
 @code{firstkind}-Gleichung die einzige andere Variable neben der 
-Integrationsvariable. Wenn der Versuch, @var{x} zu finden, fehlschl@"agt, wird 
+Integrationsvariable.  Wenn der Versuch, @var{x} zu finden, fehlschl@"agt, wird 
 der Nutzer gefragt, eine unabh@"angige Variable anzugeben.
 
 @var{tech}: @code{first}
@@ -816,9 +780,6 @@ der Nutzer gefragt, eine unabh@"angige Variable anzugeben.
 
 Siehe share/integequations/inteqn.usg f@"ur weitere Informationen.
 
-@c @opencatbox
-@c @category{Integral equations}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -835,7 +796,7 @@ Standardwert: @code{true}
 @c where @var{flag} is absent if the solution is exact.
 
 @code{ieqnprint} regelt die Darstellung des Ergebnisses, das durch den Befehl 
-@code{ieqn} zur@"uck gegeben wird. Wenn @code{ieqnprint} @code{true} ist,
+@code{ieqn} zur@"uck gegeben wird.  Wenn @code{ieqnprint} @code{true} ist,
 ist die von der @code{ieqn}-Funktion zur@"uckgegebene Liste von der Form 
 
    [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]
@@ -849,14 +810,11 @@ wobei @var{flag} nicht vorkommt, wenn die L@"osung exakt ist.
 @c generation of further terms).
 
 Andernfalls ist @code{approximate} bzw. @code{incomplete} das Wort, das sich auf 
-eine nicht exakte bzw. nicht geschlossene Form der L@"osung bezieht. Wird eine
+eine nicht exakte bzw. nicht geschlossene Form der L@"osung bezieht.  Wird eine
 Reihenmethode angewandt, gibt @var{nterms} die Anzahl der verwendeten Terme (die
 kleiner als das in @code{ieqn} angegebene @var{n} sein kann, wenn ein Fehler die
 Erzeugung weiterer Terme verhindert). 
 
-@c @opencatbox
-@c @category{Integral equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -880,7 +838,7 @@ mit der Funktion deklariert durch @code{infix} deklariert wurde.
 @c listed above, @code{lhs} returns @var{expr}. See also @code{rhs}.
 
 Wenn @var{expr} ein Atom ist oder sein Operator ein anderer als oben 
-aufgelistet, gibt @code{lhs} den Ausdruck @var{expr} zur@"uck. Siehe auch 
+aufgelistet, gibt @code{lhs} den Ausdruck @var{expr} zur@"uck.  Siehe auch 
 @mrefdot{rhs}
 
 Beispiele:
@@ -932,24 +890,21 @@ Beispiele:
 (%o12)                         aa
 @end example
 
-@c @opencatbox
-@c @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c REVISIT -- THERE'S PROBABLY MORE TO SAY HERE
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{linsolve}
-@deffn {Funktion} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Funktion} linsolve ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
 @c Solves the list of simultaneous linear equations for the list of variables.  
 @c The expressions must each be polynomials in the variables and may be 
 @c equations.
 
 L@"ost das Gleichungssystem mit den Gleichungen oder Polynomen 
-[@var{expr_1}, ..., @var{expr_m}] und den Variablen [@var{x_1}, ..., @var{x_n}].
-Jede Gleichung muss ein Polynom in den angegebenen Variablen sein.
+[@var{expr_1}, @dots{}, @var{expr_m}] und den Variablen [@var{x_1}, @dots{}, 
+@var{x_n}].  Jede Gleichung muss ein Polynom in den angegebenen Variablen sein.
 
 @c When @code{globalsolve} is @code{true}, each solved-for variable is bound to 
 @c its value in the solution of the equations.
@@ -963,7 +918,7 @@ Gleichungssystems den angegebenen Variablen zugewiesen.
 @c generation of extremely large expressions.
 
 Hat @code{backsubst} den Wert @code{false}, f@"uhrt @code{linsolve} keine 
-R@"ucksubstitutionen aus. Dies kann hilfreich sein, wenn die R@"ucksubstitution
+R@"ucksubstitutionen aus.  Dies kann hilfreich sein, wenn die R@"ucksubstitution
 zu sehr gro@ss{}en Ausdr@"ucken f@"uhrt.
 
 @c When @code{linsolve_params} is @code{true}, @code{linsolve} also generates 
@@ -974,7 +929,7 @@ zu sehr gro@ss{}en Ausdr@"ucken f@"uhrt.
 
 Hat @code{linsolve_params} den Wert @code{true}, setzt @code{linsolve} f@"ur ein
 unterbestimmtes Gleichungssystem freie Parameter in die L@"osungen ein, die mit 
-@code{%r}-Symbolen bezeichnet werden. Siehe auch @mref{%rnum} und 
+@code{%r}-Symbolen bezeichnet werden.  Siehe auch @mref{%rnum} und 
 @mrefdot{%rnum_list}
 
 @c When @code{programmode} is @code{false}, @code{linsolve} displays the 
@@ -982,7 +937,7 @@ unterbestimmtes Gleichungssystem freie Parameter in die L@"osungen ein, die mit
 @c list of labels.
 
 Hat @code{programmode} den Wert @code{false}, gibt @code{linsolve} die 
-L@"osungen  mit Hilfe von Zwischenmarken @code{%t} aus. Die Zwischenmarken 
+L@"osungen  mit Hilfe von Zwischenmarken @code{%t} aus.  Die Zwischenmarken 
 werden als Liste zur@"uckgegeben.
 
 @c ===beg===
@@ -1051,9 +1006,6 @@ Solution
 (%o17)                 [a + 1, 2 a, a - 1]
 @end example
 
-@c @opencatbox
-@c @category{Linear equations}
-@c closecatbox
 @end deffn
 
 @c DO ANY FUNCTIONS OTHER THAN linsolve RESPECT linsolvewarn ??
@@ -1069,9 +1021,6 @@ Standardwert: @code{true}
 Hat @code{linsolvewarn} den Wert @code{true}, gibt @code{linsolve} 
 gegebenenfalls die Meldung "Dependent equations eliminated" aus.
 
-@c @opencatbox
-@c @category{Linear equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1087,12 +1036,9 @@ Standardwert: @code{true}
 
 Hat @code{linsolve_params} den Wert @code{true}, setzt @code{linsolve} f@"ur ein
 unterbestimmtes Gleichungssystem freie Parameter in die L@"osungen ein, die mit 
-@code{%r}-Symbolen bezeichnet werden. Siehe auch @mref{%rnum} und 
+@code{%r}-Symbolen bezeichnet werden.  Siehe auch @mref{%rnum} und 
 @mrefdot{%rnum_list}
 
-@c @opencatbox
-@c @category{Linear equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1108,9 +1054,6 @@ Standardwert: @code{not_set_yet}
 L@"osungen, die von @code{solve}, @code{realroots} oder @code{allroots} 
 zur@"uckgegeben werden.
 
-@c @opencatbox
-@c @category{Algebraic equations} @category{Polynomials}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1136,9 +1079,6 @@ positiv unendlich @code{inf} sein.
 (%o2)                           4
 @end example
 
-@c @opencatbox
-@c @category{Polynomials} @category{Numerical methods}
-@c @closecatbox
 @end deffn
 
 @c NEEDS WORK
@@ -1153,14 +1093,11 @@ positiv unendlich @code{inf} sein.
 @c faster than @code{factor} or even @code{sqfr}.
 
 Das Argument @var{p} ist ein Polynom mit ganzzahligen Koeffizienten und das
-Argument @var{n} eine positive ganze Zahl. @code{nthroot} gibt ein Polynom 
+Argument @var{n} eine positive ganze Zahl.  @code{nthroot} gibt ein Polynom 
 @math{q} @"uber den ganzen Zahlen zur@"uck, so dass @math{q^n = p} gilt. 
-Existiert kein derartiges Polynom @var{q} gibt Maxima eine Fehlermeldung. Diese
+Existiert kein derartiges Polynom @var{q} gibt Maxima eine Fehlermeldung.  Diese
 Funktion ist wesentlich schneller als @code{factor} oder @code{sqfr}.
 
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1173,15 +1110,12 @@ Standardwert: @code{false}
 @c complex.
 
 Hat die Optionsvariable @code{polyfactor} den Wert @code{true}, werden die
-L@"osungen der Funktionen @code{allroots} und @code{bfallroots} @"uber die reellen
-Zahlen, f@"ur reelle Polynome, und die komplexen Zahlen, f@"ur komplexe Polynome, 
-faktorisiert.
+L@"osungen der Funktionen @code{allroots} und @code{bfallroots} @"uber die 
+reellen Zahlen, f@"ur reelle Polynome, und die komplexen Zahlen, f@"ur komplexe 
+Polynome, faktorisiert.
 
 Siehe @mref{allroots} f@"ur ein Beispiel.
 
-@c @opencatbox
-@c @category{Polynomials} @category{Numerical methods}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1204,12 +1138,9 @@ die L@"osungen als Elemente einer Liste zur@"uck.
 @c solutions to them.
 
 Hat @code{programmode} den Wert @code{false}, werden die L@"osungen der oben 
-genannten Funktionen Zwischenmarken @code{%t} zugewiesen. Die R@"uckgabe der 
+genannten Funktionen Zwischenmarken @code{%t} zugewiesen.  Die R@"uckgabe der 
 Funktionen ist in diesem Fall eine Liste der Zwischenmarken.
 
-@c @opencatbox
-@c @category{Algebraic equations} @category{Polynomials}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1223,9 +1154,6 @@ Standardwert: @code{false}
 Hat @code{realonly} den Wert @code{true}, gibt @code{algsys} nur L@"osungen 
 zur@"uck, die nicht die imagin@"are Einheit @code{%i} enthalten.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1237,25 +1165,25 @@ zur@"uck, die nicht die imagin@"are Einheit @code{%i} enthalten.
 
 Computes rational approximations of the real roots of the polynomial @var{expr}
 or polynomial equation @var{eqn} of one variable, to within a tolerance of 
-@var{bound}. Coefficients of @var{expr} or @var{eqn} must be literal numbers;
+@var{bound}.  Coefficients of @var{expr} or @var{eqn} must be literal numbers;
 symbol constants such as @code{%pi} are rejected.
 
 @code{realroots} assigns the multiplicities of the roots it finds to the global 
 variable @code{multiplicities}.
 
 @code{realroots} constructs a Sturm sequence to bracket each root, and then 
-applies bisection to refine the approximations. All coefficients are converted 
+applies bisection to refine the approximations.  All coefficients are converted 
 to rational equivalents before searching for roots, and computations are carried
-out by exact rational arithmetic. Even if some coefficients are floating-point 
+out by exact rational arithmetic.  Even if some coefficients are floating-point 
 numbers, the results are rational (unless coerced to floats by the @code{float} 
 or @code{numer} flags).
 
-When @var{bound} is less than 1, all integer roots are found exactly. When 
+When @var{bound} is less than 1, all integer roots are found exactly.  When 
 @var{bound} is unspecified, it is assumed equal to the global variable 
 @code{rootsepsilon}.
 
 When the global variable @code{programmode} is @code{true}, @code{realroots} 
-returns a list of the form @code{[x = @var{x_1}, x = @var{x_2}, ...]}. When 
+returns a list of the form @code{[x = @var{x_1}, x = @var{x_2}, ...]}.  When 
 @code{programmode} is @code{false}, @code{realroots} creates intermediate 
 expression labels @code{%t1}, @code{%t2}, ..., assigns the results to them, and 
 returns the list of labels.
@@ -1289,9 +1217,6 @@ Examples:
 (%o2)                       [5, 3, 1]
 @end example
 
-@c @opencatbox
-@c @category{Polynomials} @category{Numerical methods}
-@c @closecatbox
 @end deffn
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1316,7 +1241,7 @@ mit der Funktion @code{infix} deklariert wurde.
 @c See also @code{lhs}.
 
 Wenn @var{expr} ein Atom ist oder sein Operator ein anderer als oben 
-aufgelistet, hat @code{rhs} das Ergebnis 0. Siehe auch @mrefdot{lhs}
+aufgelistet, hat @code{rhs} das Ergebnis 0.  Siehe auch @mrefdot{lhs}
 
 Beispiele:
 
@@ -1367,9 +1292,6 @@ Beispiele:
 (%o12)                         bb
 @end example
 
-@c @opencatbox
-@c @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c TODO: DIE FUNKTION ROOTSCONTRACT UND DIE VARIABLE ROOTSCONMODE
@@ -1384,11 +1306,8 @@ Standardwert: @code{true}
 @c See @code{rootscontract} for details.
 
 @code{rootsconmode} kontrolliert das Verhalten der Funktion 
-@code{rootscontract}. Siehe @code{rootscontract} f@"ur Details.
+@code{rootscontract}.  Siehe @code{rootscontract} f@"ur Details.
 
-@c @opencatbox
-@c @category{Expressions} @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c NEEDS WORK
@@ -1400,7 +1319,7 @@ Standardwert: @code{true}
 @c Converts products of roots into roots of products. For example,
 @c @code{rootscontract (sqrt(x)*y^(3/2))} yields @code{sqrt(x*y^3)}.
 
-Konvertiert Produkte von Wurzeln in Wurzeln von Produkten. Zum Beispiel hat 
+Konvertiert Produkte von Wurzeln in Wurzeln von Produkten.  Zum Beispiel hat 
 @code{rootscontract(sqrt(x)*y^(3/2))} das Ergebnis @code{sqrt(x*y^3)}.
 
 @c When @code{radexpand} is @code{true} and @code{domain} is @code{real},
@@ -1409,7 +1328,7 @@ Konvertiert Produkte von Wurzeln in Wurzeln von Produkten. Zum Beispiel hat
 
 Hat @code{radexpand} den Wert @code{true} und @code{domain} den Wert 
 @code{real}, das sind die Standardwerte, wird @code{abs(x)} zu @code{sqrt(x^2)}.
-Zum Beispiel hat @code{rootscontract(abs(x)*sqrt(y))} das Ergebnis 
+Zum Beispiel hat @code{rootscontract(abs(x) * sqrt(y))} das Ergebnis 
 @code{sqrt(x^2*y)}.
 
 @c There is an option @code{rootsconmode} affecting @code{rootscontract} as 
@@ -1437,15 +1356,16 @@ x^(1/2)*y^(1/3)     all              (x^3*y^2)^(1/6)
 @c common multiple of the denominators of the exponents.
 
 Hat @code{rootsconmode} den Wert @code{false}, kontrahiert @code{rootscontract}
-nur Faktoren mit rationalen Exponenten, die den gleichen Nenner haben. Hat
+nur Faktoren mit rationalen Exponenten, die den gleichen Nenner haben.  Hat
 @code{rootsconmode} den Wert @code{all}, wird das kleinste gemeinsame Vielfache
 des Nenners der Faktoren verwendet, um die Faktoren zusammenzufassen.
 
 @c @code{rootscontract} uses @code{ratsimp} in a manner similar to 
 @c @code{logcontract}.
 
-@"Ahnlich wie bei der Funktion @code{logcontract} werden von @code{rootscontract} 
-die Argumente unter der Wurzel mit der Funktion @code{ratsimp} vereinfacht.
+@"Ahnlich wie bei der Funktion @code{logcontract} werden von 
+@code{rootscontract} die Argumente unter der Wurzel mit der Funktion 
+@code{ratsimp} vereinfacht.
 
 Beispiele:
 
@@ -1497,9 +1417,6 @@ Beispiele:
 (%o13)                          0
 @end example
 
-@c @opencatbox
-@c @category{Simplification functions}
-@c @closecatbox
 @end deffn
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
@@ -1515,9 +1432,6 @@ Standardwert: 1.0e-7
 @code{rootsepsilon} ist die Toleranz, die den Vertrauensbereich f@"ur die von 
 der Funktion @code{realroots} gefundenen Wurzeln festsetzt.
 
-@c @opencatbox
-@c @category{Polynomials} @category{Numerical methods}
-@c @closecatbox
 @end defvr
 
 @c NEEDS WORK
@@ -1526,7 +1440,7 @@ der Funktion @code{realroots} gefundenen Wurzeln festsetzt.
 @anchor{solve}
 @deffn  {Funktion} solve (@var{expr}, @var{x})
 @deffnx {Funktion} solve (@var{expr})
-@deffnx {Funktion} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Funktion} solve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
 @c Solves the algebraic equation @var{expr} for the variable @var{x} and returns
 @c a list of solution equations in @var{x}.  If @var{expr} is not an equation, 
@@ -1538,11 +1452,11 @@ der Funktion @code{realroots} gefundenen Wurzeln festsetzt.
 
 L@"ost eine algebraische Gleichung @var{expr} nach der Variable @var{x} auf.
 Wenn @var{expr} keine Gleichung ist, wird die Gleichung @code{@var{expr} = 0} 
-angenommen. @var{x} kann eine Funktion wie zum Beispiel @code{f(x)}) sein oder
-ein allgemeiner Ausdruck. Ausgenommen sind Summen und Produkte. Hat die 
-Gleichung nur eine Variable, braucht diese nicht angegeben zu werden. @var{expr}
-kann ein rationaler Ausdruck sein und trigonometrische Funktionen, 
-Exponentialfunktionen und andre Funktionen enthalten. Zur L@"osung wird die
+angenommen.  @var{x} kann eine Funktion wie zum Beispiel @code{f(x)}) sein oder
+ein allgemeiner Ausdruck.  Ausgenommen sind Summen und Produkte.  Hat die 
+Gleichung nur eine Variable, braucht diese nicht angegeben zu werden.  
+@var{expr} kann ein rationaler Ausdruck sein und trigonometrische Funktionen, 
+Exponentialfunktionen und andere Funktionen enthalten.  Zur L@"osung wird die
 folgende Methode verwendet:
 
 @c Let @var{E} be the expression and @var{X} be the variable.  If @var{E} is 
@@ -1550,10 +1464,10 @@ folgende Methode verwendet:
 @c @var{E} is of the form @code{A*X^N + B} then the result is @code{(-B/A)^1/N)} 
 @c times the @code{N}'th roots of unity.
 
-Sei @var{E} ein Ausdruck und @var{X} die Variable. Ist @var{E} linear in 
+Sei @var{E} ein Ausdruck und @var{X} die Variable.  Ist @var{E} linear in 
 @var{X}, dann kann die Gleichung sofort nach der Variablen @code{X} aufgel@"ost 
-werden. Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis 
-@code{(-B/A)^1/N)} mal die @code{N}-te Einheitswurzel.
+werden.  Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis 
+@code{(-B/A)^1/N)} mal die @code{N}-te Einheitswurzel. 
 
 @c If @var{E} is not linear in @var{X} then the gcd of the exponents of @var{X} 
 @c in @var{E} (say @var{N}) is divided into the exponents and the multiplicity 
@@ -1562,13 +1476,13 @@ werden. Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis
 @c factors.  Finally @code{solve} will use the quadratic, cubic, or quartic 
 @c formulas where necessary.
 
-Ist @var{E} nicht linear in @var{X}, wird der gr@"o@ss{}te gemeinsame Teiler @var{N} 
-der Exponenten der Variable @var{X} bestimmt. Die Exponenten der Variablen
-werden durch @var{N} dividiert und die Multiplizit@"at der L@"osungen mit @var{N}
-multipliziert. @code{solve} wird erneut f@"ur den Ausdruck aufgerufen. Kann
-@var{E} faktorisiert werden, wird @code{solve} f@"ur jeden Faktor aufgerufen.
-Zuletzt pr@"uft @code{solve}, ob einer der Algorithmen f@"ur quadratische,
-kubische oder quartische Gleichungen angewendet werden kann.
+Ist @var{E} nicht linear in @var{X}, wird der gr@"o@ss{}te gemeinsame Teiler 
+@var{N} der Exponenten der Variable @var{X} bestimmt.  Die Exponenten der 
+Variablen werden durch @var{N} dividiert und die Multiplizit@"at der L@"osungen 
+mit @var{N} multipliziert.  @code{solve} wird erneut f@"ur den Ausdruck 
+aufgerufen.  Kann @var{E} faktorisiert werden, wird @code{solve} f@"ur jeden 
+Faktor aufgerufen.  Zuletzt pr@"uft @code{solve}, ob einer der Algorithmen f@"ur
+quadratische, kubische oder quartische Gleichungen angewendet werden kann. 
 
 @c In the case where @var{E} is a polynomial in some function of the variable
 @c to be solved for, say @code{F(X)}, then it is first solved for @code{F(X)} 
@@ -1577,8 +1491,8 @@ kubische oder quartische Gleichungen angewendet werden kann.
 
 Ist @var{E} ein Polynom in einer Funktion @code{F(X)} mit @var{X} als der
 Variablen, wird zun@"achst die L@"osung des Polynoms f@"ur @code{F(X)} gesucht.
-Ist @var{C} eine solche L@"osung, kann die Gleichung @code{F(X)=C} gel@"ost werden,
-wenn die Umkehrfunktion zu @code{F(X)} bekannt ist.
+Ist @var{C} eine solche L@"osung, kann die Gleichung @code{F(X)=C} gel@"ost 
+werden, wenn die Umkehrfunktion zu @code{F(X)} bekannt ist.
 
 @c @code{breakup} if @code{false} will cause @code{solve} to express the 
 @c solutions of cubic or quartic equations as single expressions rather than as 
@@ -1608,12 +1522,12 @@ L@"osungen.
 @c may be omitted.
 
 @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
-l@"ost ein Gleichungssystem mit den Polynomen @var{eqn_1}, ..., @var{eqn_n} 
-f@"ur die Variablen @var{x_1}, ..., @var{x_n}. Die Polynome k@"onnen linear oder 
-nichtlinear sein. Um das System zu l@"osen, werden die Funktionen @code{linsolve} 
-oder @code{algsys} aufgerufen. Das Ergebnis ist eine Liste mit den L@"osungen.
-Ist die Anzahl der Gleichungen gleich der Anzahl der Variablen des Systems,
-kann die Liste mit den Variablen entfallen.
+l@"ost ein Gleichungssystem mit den Polynomen @var{eqn_1}, @dots{}, @var{eqn_n} 
+f@"ur die Variablen @var{x_1}, @dots{}, @var{x_n}.  Die Polynome k@"onnen linear 
+oder nichtlinear sein.  Um das System zu l@"osen, werden die Funktionen 
+@code{linsolve} oder @code{algsys} aufgerufen.  Das Ergebnis ist eine Liste mit 
+den L@"osungen.  Ist die Anzahl der Gleichungen gleich der Anzahl der Variablen 
+des Systems, kann die Liste mit den Variablen entfallen. 
 
 @c When @code{programmode} is @code{false}, @code{solve} displays solutions with
 @c intermediate expression (@code{%t}) labels, and returns the list of labels.
@@ -1622,7 +1536,7 @@ Wenn @code{programmode} @code{false} ist, zeigt @code{solve} die L@"osungen mit
 Hilfe von Zwischenmarken (@code{%t}) an und gibt die Liste der Marken zur@"uck. 
 
 Hat @code{programmode} den Wert @code{false}, werden die L@"osungen 
-Zwischenmarken @code{%t} zugewiesen. Die R@"uckgabe ist in diesem Fall eine 
+Zwischenmarken @code{%t} zugewiesen.  Die R@"uckgabe ist in diesem Fall eine 
 Liste der Zwischenmarken.
 
 @c When @code{globalsolve} is @code{true} and the problem is to solve two or 
@@ -1756,9 +1670,6 @@ solve: dependent equations eliminated: (2)
 
 Siehe @mref{algsys} and @mref{%rnum_list} f@"ur mehr Informationen.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1774,9 +1685,6 @@ Standardwert: @code{true}
 Hat @code{solvedecomposes} den Wert @code{true}, ruft @code{solve} die Funktion
 @code{polydecomp} auf, um Polynome zu l@"osen.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1792,9 +1700,6 @@ Standardwert: @code{false}
 Hat @code{solveexplicit} den Wert @code{true}, gibt @code{solve} keine 
 impliziten L@"osungen der Form @code{F(x) = 0} zur@"uck.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1811,9 +1716,6 @@ Standardwert: @code{true}
 Hat @code{solvefactors} den Wert @code{false}, versucht @code{solve} nicht, den 
 Ausdruck zu faktorisieren.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1830,9 +1732,6 @@ Hat @code{solvenullwarn} den Wert @code{true}, gibt @code{solve} eine
 Warnmeldung aus, wenn keine Gleichungen oder keine Variablen als Argument
 @"ubergeben wurden.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1848,9 +1747,6 @@ Standardwert: @code{false}
 Hat @code{solveradcan} den Wert @code{true}, ruft @code{solve} die Funktion 
 @code{radcan} auf, um Ausdr@"ucke zu vereinfachen.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1866,11 +1762,8 @@ Standardwert: @code{true}
 
 Hat @code{solvetrigwarn} den Wert @code{true}, gibt @code{solve} eine Warnung
 aus, wenn inverse trigonometrische Funktionen genutzt werden, um L@"osungen zu
-finden. In diesem Fall k@"onnen L@"osungen verloren gehen.
+finden.  In diesem Fall k@"onnen L@"osungen verloren gehen.
 
-@c @opencatbox
-@c @category{Algebraic equations}
-@c @closecatbox
 @end defvr
 
 @c --- End of file Equations.de.texi -------------------------------------------

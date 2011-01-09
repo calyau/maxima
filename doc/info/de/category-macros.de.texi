@@ -89,14 +89,18 @@
 @end macro
 
 @iftex
-@hyphenation{an-ge-ge-ben
+@hyphenation{al-ter-nie-ren-den
+             an-ge-ge-ben
+             an-ge-ge-ben-er
              an-ge-wen-det
              Ar-gu-men-ten
              auf-ge-ru-fen
              Aus-drucks
              aus-ge-wer-tet
              Aus-wer-tung
+             be-rech-net
              be-zeich-net
+             Da-ten-bank
              de-fi-nier-ten
              Dol-lar-zei-chen
              Ei-gen-schafts-lis-te
@@ -112,18 +116,26 @@
              Gnuplot
              Gra-fik-for-mat
              Gra-fik-kom-man-dos
+             In-for-ma-tio-nen
+             In-te-gra-tions-in-ter-valls
              Iso-li-nien
              ka-no-ni-scher
+             Kon-stan-te
              Ko-or-di-na-ten-sys-tem
              Mgnuplot
              O-pe-ra-tor 
-             O-pe-ra-to-ren         
+             O-pe-ra-to-ren  
+             Rei-hen-ent-wick-lung
+             Ska-lar-pro-dukt    
              Sei-ten-ef-fek-te
              Spei-cher
+             Trans-for-ma-tio-nen
+             Trans-po-nier-ung
              un-ge-ra-de
              ver-ein-fach-en
              Ver-ein-fach-ung
              ver-ein-facht
+             ver-schie-de-ne
              ver-ti-ka-len
              Ver-zeich-nis
              wei-te-ren
