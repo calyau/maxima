@@ -30,7 +30,8 @@ antid(fn, var, unk) :=
           tvariablet,
           uvariableu,
           killer,
-          lisarith:true],
+          listarith:true],
+    local(killer),          
     dvariabled : derivdegree(fn, unk, var),
     if dvariabled = 0 then
     (
