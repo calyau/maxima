@@ -29,12 +29,14 @@ Standardwert: 4
 @c in @code{limit}.  This prevents infinite looping in cases like
 @c @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen f@"ur die die 
+@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen, f@"ur die die 
 L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.  Damit
-wird verhindert, dass @code{limit} in eine unendliche Schleife f@"ur Grenzwerte
-wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
+wird verhindert, dass @code{limit} in eine unendliche Schleife ger@"at.
 
 @end defvr
+
+@c TODO: DAS KANN NOCH VIEL BESSER GEMACHT WERDEN.
+@c TODO: DIE BESCHREIBUNG DES GRUNTZ-ALGORITHMUS FEHLT.
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{limit}
@@ -51,18 +53,12 @@ Berechnet den Grenzwert des Ausdrucks @var{expr}, wenn die reelle Variable
 @var{x} gegen den Wert @var{val} in Richtung @var{dir} geht.  Die Richtung
 @var{dir} kann die Werte @var{plus} f@"ur einen Grenzwert von oben und 
 @var{minus} f@"ur einen Grenzwert von unten haben.  F@"ur einen zweiseitigen 
-Grenzwert braucht die Richtung nicht angegeben werden.
+Grenzwert wird die Richtung @var{dir} nicht angegeben.
 
 @c @code{limit} uses the following special symbols: @code{inf} (positive 
 @c infinity) and @code{minf} (negative infinity).  On output it may also use 
 @c @code{und} (undefined), @code{ind} (indefinite but bounded) and 
 @c @code{infinity} (complex infinity).
-
-@code{limit} nutzt die folgenden speziellen Symbole: @code{inf} (positiv 
-unendlich) und @code{minf} (negativ unendlich).  In der Ausgabe k@"onnen die
-Symbole @code{und} (nicht definiert), @code{ind} (unbestimmt) und 
-@code{infinity} (komplex unendlich) auftreten.
-
 @c @code{infinity} (complex infinity) is returned when the limit of
 @c the absolute value of the expression is positive infinity, but
 @c the limit of the expression itself is not positive infinity or
@@ -73,24 +69,46 @@ Symbole @code{und} (nicht definiert), @code{ind} (unbestimmt) und
 @c argument is different for either side of a two-sided limit, as in
 @c @code{limit(1/x, x, 0)} and @code{limit(log(x), x, 0)}.
 
-@code{infinity} (komplex unendlich) wird zur@"uckgegeben, wenn der Grenzwert
-des Betrags des Ausdrucks positiv unendlich ist, aber der Grenzwert des
-Ausdrucks selbst weder positive noch negativ unendlich ist.  Dies schlie@ss{}t 
-F@"alle ein, wo der Grenzwert eines komplexen Arguments eine Konstante ist, wie
-zum Beispiel in @code{limit(log(x),x, minf)}.  F@"alle in denen das komplexe
-Argument oszilliert, wie zum Beispiel in @code{limit((-2)^x, x, inf)} und 
-F@"alle, wo das komlexe Argument f@"ur die beiden Seiten des Grenzwertes 
-verschieden ist, wie zum Beispiel in @code{limit(1/x, x, 0)} und 
-@code{limit(log(x), x, 0)}.
+Maxima verwendet die folgenden Symbole f@"ur unendliche und infinitesimale 
+Gr@"o@ss{}en sowie undefinierte und unbestimmte Gr@"o@ss{}en, wie sie als 
+Ergebnis eines Grenzwertes oder als Wert f@"ur die Bestimmung eines Grenzwertes 
+auftreten:
+
+@table @code
+@item inf      
+positiv unendlich
+@item minf     
+negativ unendlich
+@item infinity 
+komplex unendlich
+@item zeroa
+postiv unendlich klein
+@item zerob
+negativ unendlich klein
+@item und
+nicht definiert
+@item ind
+unbestimmt
+@end table
+
+@c TODO: DER FOLGENDE TEXT IST AUSKOMMENTIERT.
+
+@c @code{infinity} (komplex unendlich) wird zur@"uckgegeben, wenn der Grenzwert
+@c des Betrags des Ausdrucks positiv unendlich ist, aber der Grenzwert des
+@c Ausdrucks selbst weder positive noch negativ unendlich ist.  Dies 
+@c schlie@ss{}t F@"alle ein, wo der Grenzwert eines komplexen Arguments eine 
+@c Konstante ist, wie zum Beispiel in @code{limit(log(x),x, minf)}.  F@"alle in 
+@c denen das komplexe Argument oszilliert, wie zum Beispiel in 
+@c @code{limit((-2)^x, x, inf)} und F@"alle, wo das komlexe Argument f@"ur die 
+@c beiden Seiten des Grenzwertes verschieden ist, wie zum Beispiel in 
+@c @code{limit(1/x, x, 0)} und @code{limit(log(x), x, 0)}.
 
 @c @code{lhospitallim} is the maximum number of times L'Hospital's rule
 @c is used in @code{limit}.  This prevents infinite looping in cases like
 @c @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen f@"ur die die 
-L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.  Damit
-wird verhindert, dass @code{limit} in eine unendliche Schleife f@"ur Grenzwerte
-wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
+@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen, f@"ur die die 
+L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.
 
 @c @code{tlimswitch} when true will allow the @code{limit} command to use
 @c Taylor series expansion when necessary.
@@ -104,17 +122,16 @@ bestimmt werden kann.
 @c giving 1.  Setting @code{limsubst} to @code{true} will allow such
 @c substitutions.
 
-Die Optionsvariable @code{limsubst} verhindet Substitutionen der Funktion 
-@code{limit} f@"ur unbekannte Ausdr@"ucke.  Dies vermeidet Fehler wie zum 
-Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
-@code{limit(f(n)/f(n+1), n, inf)}.  Erh@"alt @code{limsubst} den Wert 
-@code{true}, sind solche Substitution gestattet.
+Hat die Optionsvariable @code{limsubst} den Wert @code{false}, wird die 
+Ersetzung von @code{limit(f(g(x)),x,x0)} durch @code{f(limit(g(x),x,x0))} f@"ur
+eine unbekannte Funktion @code{f} verhindert. Siehe auch @mrefdot{limsubst}
 
 @c @code{limit} with one argument is often called upon to simplify constant 
 @c expressions, for example, @code{limit (inf-1)}.
 
-@code{limit} kann mit einem Argument aufgerufen werden, um konstante Ausdr@"ucke
-zu vereinfachen.  Zum Beispiel @code{limit (inf-1)}.
+@code{limit} kann mit einem Argument aufgerufen werden, um Ausdr@"ucke
+zu vereinfachen, die unendliche oder infinitesimale Gr@"o@ss{}en enthalten.  
+Zum Beispiel wird @code{limit(inf-1)} zu @code{inf} vereinfacht.
 
 @c For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
 @c Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
@@ -153,18 +170,26 @@ Standardwert: @code{false}
 @c is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
 @c @code{limsubst} to @code{true} will allow such substitutions.
 
-Hat die Optionsvariable @code{limsubst} den Wert @code{false}, versucht 
-@code{limit} nicht, den Grenzwert einer unbekannten Funktion zu ermitteln.
-Dies vermeidet Fehler wie zum Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
-@code{limit (f(n)/f(n+1), n, inf)}.  Hat @code{limsubst} den Wert @code{true}, 
-versucht @code{limit} auch f@"ur unbekannte Funktionen einen Grenzwert zu 
-ermitteln.
+Ist eine Funktion @code{f} teil eines Ausdrucks f@"ur den Maxima den Grenzwert 
+sucht, dann wird folgende Ersetzung ausgef@"uhrt:
+
+@example
+   limit   f(g(x)) = f(limit   g(x))
+   x -> x0             x -> x0
+@end example
+
+Hat die Optionsvariable @code{limsubst} den Wert @code{false}, f@"uhrt 
+@code{limit} die oben gezeigte Ersetzung nicht f@"ur unbekannte Funktionen 
+@code{f} aus.  Dies vermeidet Fehler wie zum Beispiel ein Ergebnis von 1 f@"ur 
+den Grenzwert @code{limit (f(n)/f(n+1), n, inf)}.  Hat @code{limsubst} den Wert 
+@code{true}, f@"uhrt Maxima die oben gezeigte Ersetzung auch f@"ur unbekannte 
+Funktionen @code{f} aus.
 
 Beispiele:
 
 Die Funktion @code{f} ist nicht definiert.  Maxima gibt im ersten Fall eine
 Substantivform zur@"uck.  Im zweiten Fall nimmt Maxima den Grenzwert f@"ur die
-unbekannte Funktion als @code{f(10} an.
+unbekannte Funktion als @code{f(10)} an.
 
 @example
 (%i1) limit(f(x),x,10),limsubst:false;
@@ -185,8 +210,11 @@ unbekannte Funktion als @code{f(10} an.
 @c Take the limit of the Taylor series expansion of @code{expr} in @code{x}
 @c at @code{val} from direction @code{dir}.
 
-Nimmt den Grenzwert der Taylor-Reihenwicklung des Ausdrucks @code{expr}, wenn
-die Variable @var{x} gegen den Wert @code{val} aus der Richtung @var{dir} geht.
+Bestimmt den Grenzwert mit Hilfe der Taylor-Reihenwicklung des Ausdrucks 
+@code{expr}, wenn die Variable @var{x} gegen den Wert @code{val} aus der 
+Richtung @var{dir} geht.  Diese Methode wird von @code{limit} angewendet, wenn 
+die Optionsvariable @code{tlimswitch} den Wert @code{true} ist.  Das ist der 
+Standardwert.
 
 @end deffn
 
@@ -203,9 +231,8 @@ Standardwert: @code{true}
 @c @code{limit} will return an unevaluated limit expression.
 
 Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
-Taylor-Reiæ@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden
-bestimmt werden kann.  Dies erlaubt die Bestimmung von Grenzwerten wie
-@code{limit(x/(x-1)-1/log(x),x,1,plus)}.
+Taylor-Rei@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden
+bestimmt werden kann.
 
 @end defvr
 
@@ -514,11 +541,13 @@ Beispiele:
 (%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
                   dx                         dx
 (%i5) at (%, [x = 0, y = 1]);
+@group
                                          !
               2              d           !
 (%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
                              dx          !
                                          !x = 0, y = 1
+@end group
 @end example
 
 @end deffn
@@ -679,9 +708,9 @@ eingetragen.  @code{depends} wertet die Argumente aus.
 
 Die Funktion @code{diff} ist die einzige Maxima-Funktion, die Abh@"angigkeiten
 erkennt, die mit @code{depends} definiert wurden.  Andere Funktionen wie
-@code{integrate} oder @code{laplace} erkennen eine Abh@"angigkeiten die mit der
+@code{integrate} oder @code{laplace} erkennen keine Abh@"angigkeiten die mit der
 @code{depends} definiert wurden.  F@"ur diese Funktionen m@"ussen die 
-Abh@"angigkeiten explizit angegeben werden, zum Beispiel 
+Abh@"angigkeiten explizit angegeben werden, zum Beispiel als
 @code{integrate(f(x), x)}.
 
 Beispiele:
@@ -874,11 +903,13 @@ Beispiele:
 @c ===end===
 @example
 (%i1) diff (exp (f(x)), x, 2);
+@group
                      2
               f(x)  d               f(x)  d         2
 (%o1)       %e     (--- (f(x))) + %e     (-- (f(x)))
                       2                   dx
                     dx
+@end group
 (%i2) derivabbrev: true$
 (%i3) 'integrate (f(x, y), y, g(x), h(x));
                          h(x)
@@ -1038,7 +1069,7 @@ Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen.  Siehe auch
 @c @code{gradef} returns the function or variable for which the partial 
 @c derivatives are defined.
 
-Bis auf erste Argument werden die Argumente der Funktion @code{gradef} 
+Bis auf das erste Argument werden die Argumente der Funktion @code{gradef} 
 ausgewertet.  @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die 
 eine partielle Ableitung definiert wurde.
 
@@ -2065,12 +2096,14 @@ Beispiele:
 (%i8) assume(exp(%pi*s)>1)$
 (%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s)
         ,simpsum;
+@group
                          %i                         %i
               ------------------------ - ------------------------
                               - %pi s                    - %pi s
               (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
 (%o9)         ---------------------------------------------------
                                        2
+@end group
 (%i9) factor(%);
                                       %pi s
                                     %e
@@ -2147,7 +2180,7 @@ gegen den Wert @var{z_0} geht.
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{risch}
-@deffn {Function} risch (@var{expr}, @var{x})
+@deffn {Funktion} risch (@var{expr}, @var{x})
 
 @c Integrates @var{expr} with respect to @var{x} using the transcendental case 
 @c of the Risch algorithm.  (The algebraic case of the Risch algorithm has not 
@@ -3651,7 +3684,8 @@ representations in phase space, see the additional package
 @subsection Funktionen und Variablen f@"ur Differentialgleichungen
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@anchor{bc2}
+@deffn {Funktion} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
 
 Solves a boundary value problem for a second order differential equation.
 Here: @var{solution} is a general solution to the equation, as found by
@@ -3667,8 +3701,9 @@ See @code{ode2} for an example of its usage.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} desolve (@var{eqn}, @var{x})
-@deffnx {Function} desolve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
+@anchor{desolve}
+@deffn  {Funktion} desolve (@var{eqn}, @var{x})
+@deffnx {Funktion} desolve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
 The function @code{desolve} solves systems of linear ordinary
 differential equations using Laplace transform.  Here the @var{eqn}'s
@@ -3738,7 +3773,8 @@ If @code{desolve} cannot obtain a solution, it returns @code{false}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ic1 (@var{solution}, @var{xval}, @var{yval})
+@anchor{ic1}
+@deffn {Funktion} ic1 (@var{solution}, @var{xval}, @var{yval})
 
 Solves initial value problems for first order differential equations.
 Here @var{solution} is a general solution to the equation, as found by
@@ -3752,7 +3788,8 @@ See @code{ode2} for an example of its usage.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
+@anchor{ic2}
+@deffn {Funktion} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
 
 Solves initial value problems for second-order differential equations.
 Here @var{solution} is a general solution to the equation, as found by
@@ -3769,7 +3806,8 @@ See @code{ode2} for an example of its usage.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+@anchor{ode2}
+@deffn {Funktion} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
 
 The function @code{ode2} solves an ordinary differential equation (ODE)
 of first or second order. It takes three arguments: an ODE given by

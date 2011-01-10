@@ -2,6 +2,7 @@
 @c File        : Ctensor.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
+@c Origignal   : Ctensor.texi revision 1.37
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
 @c 
@@ -17,12 +18,12 @@
 @node Introduction to ctensor, Functions and Variables for ctensor, Functions and Variables for itensor, Tensoren
 @section Introduction to ctensor
 
-@code{ctensor} is a component tensor manipulation package.  To use the @code{ctensor}
-package, type @code{load(ctensor)}.
-To begin an interactive session with @code{ctensor}, type @code{csetup()}.  You are
-first asked to specify the dimension of the manifold. If the dimension
-is 2, 3 or 4 then the list of coordinates defaults to @code{[x,y]}, @code{[x,y,z]}
-or @code{[x,y,z,t]} respectively.
+@code{ctensor} is a component tensor manipulation package.  To use the 
+@code{ctensor} package, type @code{load(ctensor)}.
+To begin an interactive session with @code{ctensor}, type @code{csetup()}.  
+You are first asked to specify the dimension of the manifold. If the dimension
+is 2, 3 or 4 then the list of coordinates defaults to @code{[x,y]}, 
+@code{[x,y,z]} or @code{[x,y,z,t]} respectively.
 These names may be changed by assigning a new list of coordinates to
 the variable @code{ct_coords} (described below) and the user is queried about
 this. Care must be taken to avoid the coordinate names conflicting
@@ -129,31 +130,26 @@ y;
 
 @end example
 
-@c @opencatbox
-@c @category{Tensors} @c @category{Share packages} @c @category{Package ctensor}
-@c @c @closecatbox
-
-@c end concepts ctensor
-
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for ctensor, Introduction to atensor, Introduction to ctensor, Tensoren
 @section Functions and Variables for ctensor
 @subsection Initialization and setup
 
 @c -----------------------------------------------------------------------------
+@anchor{csetup}
 @deffn {Function} csetup ()
 
 A function in the @code{ctensor} (component tensor) package
 which initializes the package and allows the user to enter a metric
 interactively. See @code{ctensor} for more details.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-@deffn {Function} cmetric (@var{dis})
+@c -----------------------------------------------------------------------------
+@anchor{cmetric}
+@deffn  {Function} cmetric (@var{dis})
 @deffnx {Function} cmetric ()
+
 A function in the @code{ctensor} (component tensor) package
 that computes the metric inverse and sets up the package for
 further calculations.
@@ -171,18 +167,17 @@ If @code{cframe_flag} is @code{true}, the function expects that the values of
 defined. From these, the frame matrix @code{fr} and the inverse frame
 metric @code{ufg} are computed.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-@deffn {Function} ct_coordsys (@var{coordinate_system}, @var{extra_arg})
+@c -----------------------------------------------------------------------------
+@anchor{ct_coordsys}
+@deffn  {Function} ct_coordsys (@var{coordinate_system}, @var{extra_arg})
 @deffnx {Function} ct_coordsys (@var{coordinate_system})
+
 Sets up a predefined coordinate system and metric. The argument
 @var{coordinate_system} can be one of the following symbols:
 
 @example
-
  SYMBOL             Dim Coordinates     Description/comments
  ------------------------------------------------------------------
  cartesian2d           2  [x,y]             Cartesian 2D coordinate
@@ -230,12 +225,19 @@ Sets up a predefined coordinate system and metric. The argument
 followed by a list containing the coordinate variables. For instance,
 you can specify a spherical metric as follows:
 
+@c ===beg===
+@c load(ctensor);
+@c ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
+@c              r*sin(theta),[r,theta,phi]]);
+@c lg:trigsimp(lg);
+@c ct_coords;
+@c dim;
+@c ===end===
 @example
-
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
-      r*sin(theta),[r,theta,phi]]);
+                   r*sin(theta),[r,theta,phi]]);
 (%o2)                                done
 (%i3) lg:trigsimp(lg);
                            [ 1  0         0        ]
@@ -249,13 +251,21 @@ you can specify a spherical metric as follows:
 (%o4)                           [r, theta, phi]
 (%i5) dim;
 (%o5)                                  3
-
 @end example
 
-Transformation functions can also be used when @code{cframe_flag} is @code{true}:
+Transformation functions can also be used when @code{cframe_flag} is 
+@code{true}:
 
+@c ===beg===
+@c load(ctensor);
+@c cframe_flag:true;
+@c ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
+@c              r*sin(theta),[r,theta,phi]]);
+@c fri;
+@c cmetric();
+@c lg:trigsimp(lg);
+@c ===end===
 @example
-
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
@@ -285,33 +295,38 @@ Transformation functions can also be used when @code{cframe_flag} is @code{true}
 @end example
 
 The optional argument @var{extra_arg} can be any one of the following:
-@c LOOKING AT share/tensor/ctensor.mac CIRCA LINE 837, misner IS RECOGNIZED ALSO; WHAT EFFECT DOES IT HAVE ??
+@c LOOKING AT share/tensor/ctensor.mac CIRCA LINE 837, misner IS RECOGNIZED 
+@c ALSO; WHAT EFFECT DOES IT HAVE ??
 
-@code{cylindrical} tells @code{ct_coordsys} to attach an additional cylindrical coordinate.
+@code{cylindrical} tells @code{ct_coordsys} to attach an additional cylindrical 
+coordinate.
 
-@code{minkowski} tells @code{ct_coordsys} to attach an additional coordinate with negative metric signature.
+@code{minkowski} tells @code{ct_coordsys} to attach an additional coordinate 
+with negative metric signature.
 
-@code{all} tells @code{ct_coordsys} to call @code{cmetric} and @code{christof(false)} after setting up the metric.
+@code{all} tells @code{ct_coordsys} to call @code{cmetric} and 
+@code{christof(false)} after setting up the metric.
 
 @c GLOBAL VARIABLE verbose IS USED IN ctensor.mac IN JUST THIS ONE CONTEXT
-If the global variable @code{verbose} is set to @code{true}, @code{ct_coordsys} displays the values of @code{dim}, @code{ct_coords}, and either @code{lg} or @code{lfg} and @code{fri}, depending on the value of @code{cframe_flag}.
+If the global variable @code{verbose} is set to @code{true}, @code{ct_coordsys} 
+displays the values of @code{dim}, @code{ct_coords}, and either @code{lg} or 
+@code{lfg} and @code{fri}, depending on the value of @code{cframe_flag}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{init_ctensor}
 @deffn {Function} init_ctensor ()
+
 Initializes the @code{ctensor} package.
 
-The @code{init_ctensor} function reinitializes the @code{ctensor} package. It removes all arrays and matrices used by @code{ctensor}, resets all flags, resets @code{dim} to 4, and resets the frame metric to the Lorentz-frame.
+The @code{init_ctensor} function reinitializes the @code{ctensor} package. It 
+removes all arrays and matrices used by @code{ctensor}, resets all flags, resets
+@code{dim} to 4, and resets the frame metric to the Lorentz-frame.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
 @subsection The tensors of curved space
 
 The main purpose of the @code{ctensor} package is to compute the tensors
@@ -321,7 +336,6 @@ relativity.
 When a metric base is used, @code{ctensor} can compute the following tensors:
 
 @example
-
  lg  -- ug
    \      \
     lcs -- mcs -- ric -- uric
@@ -331,15 +345,12 @@ When a metric base is used, @code{ctensor} can compute the following tensors:
                  riem -- lriem -- weyl
                      \
                       uriem
-
-
 @end example
 
 @code{ctensor} can also work using moving frames. When @code{cframe_flag} is
 set to @code{true}, the following tensors can be calculated:
 
 @example
-
  lfg -- ufg
      \
  fri -- fr -- lcs -- mcs -- lriem -- ric -- uric
@@ -349,88 +360,92 @@ set to @code{true}, the following tensors can be calculated:
                               | riem
                               |
                               \uriem
-
 @end example
 
+@c -----------------------------------------------------------------------------
+@anchor{christof}
 @deffn {Function} christof (@var{dis})
-A function in the @code{ctensor} (component tensor)
-package.  It computes the Christoffel symbols of both
-kinds.  The argument @var{dis} determines which results are to be immediately
-displayed.  The Christoffel symbols of the first and second kinds are
-stored in the arrays @code{lcs[i,j,k]} and @code{mcs[i,j,k]} respectively and
-defined to be symmetric in the first two indices. If the argument to
-@code{christof} is @code{lcs} or @code{mcs} then the unique non-zero values of @code{lcs[i,j,k]}
-or @code{mcs[i,j,k]}, respectively, will be displayed. If the argument is @code{all}
-then the unique non-zero values of @code{lcs[i,j,k]} and @code{mcs[i,j,k]} will be
-displayed.  If the argument is @code{false} then the display of the elements
-will not occur. The array elements @code{mcs[i,j,k]} are defined in such a
-manner that the final index is contravariant.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+A function in the @code{ctensor} (component tensor) package.  It computes the 
+Christoffel symbols of both kinds.  The argument @var{dis} determines which 
+results are to be immediately displayed.  The Christoffel symbols of the first 
+and second kinds are stored in the arrays @code{lcs[i,j,k]} and 
+@code{mcs[i,j,k]} respectively and defined to be symmetric in the first two 
+indices.  If the argument to @code{christof} is @code{lcs} or @code{mcs} then 
+the unique non-zero values of @code{lcs[i,j,k]} or @code{mcs[i,j,k]}, 
+respectively, will be displayed. If the argument is @code{all} then the unique 
+non-zero values of @code{lcs[i,j,k]} and @code{mcs[i,j,k]} will be displayed.  
+If the argument is @code{false} then the display of the elements will not occur.
+The array elements @code{mcs[i,j,k]} are defined in such a manner that the final
+index is contravariant.
+
 @end deffn
-
+  
+@c -----------------------------------------------------------------------------
+@anchor{ricci}
 @deffn {Function} ricci (@var{dis})
-A function in the @code{ctensor} (component tensor)
-package. @code{ricci} computes the covariant (symmetric)
-components @code{ric[i,j]} of the Ricci tensor.  If the argument @var{dis} is @code{true},
-then the non-zero components are displayed.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+A function in the @code{ctensor} (component tensor) package. @code{ricci} 
+computes the covariant (symmetric) components @code{ric[i,j]} of the Ricci 
+tensor.  If the argument @var{dis} is @code{true}, then the non-zero components 
+are displayed.
+
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{uricci}
 @deffn {Function} uricci (@var{dis})
-This function first computes the
-covariant components @code{ric[i,j]} of the Ricci tensor.
-Then the mixed Ricci tensor is computed using the
-contravariant metric tensor.  If the value of the argument @var{dis}
-is @code{true}, then these mixed components, @code{uric[i,j]} (the
-index @code{i} is covariant and the index @code{j} is contravariant), will be displayed
-directly.  Otherwise, @code{ricci(false)} will simply compute the entries
-of the array @code{uric[i,j]} without displaying the results.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+This function first computes the covariant components @code{ric[i,j]} of the 
+Ricci tensor.  Then the mixed Ricci tensor is computed using the contravariant 
+metric tensor.  If the value of the argument @var{dis} is @code{true}, then 
+these mixed components, @code{uric[i,j]} (the index @code{i} is covariant and 
+the index @code{j} is contravariant), will be displayed directly.  Otherwise, 
+@code{ricci(false)} will simply compute the entries of the array 
+@code{uric[i,j]} without displaying the results.
+
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{scurvature}
 @deffn {Function} scurvature ()
+
 Returns the scalar curvature (obtained by contracting
 the Ricci tensor) of the Riemannian manifold with the given metric.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{einstein}
 @deffn {Function} einstein (@var{dis})
-A function in the @code{ctensor} (component tensor)
-package.  @code{einstein} computes the mixed Einstein tensor
-after the Christoffel symbols and Ricci tensor have been obtained
-(with the functions @code{christof} and @code{ricci}).  If the argument @var{dis} is
-@code{true}, then the non-zero values of the mixed Einstein tensor @code{ein[i,j]}
-will be displayed where @code{j} is the contravariant index.
-The variable @code{rateinstein} will cause the rational simplification on
-these components. If @code{ratfac} is @code{true} then the components will
-also be factored.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+A function in the @code{ctensor} (component tensor) package.  @code{einstein} 
+computes the mixed Einstein tensor after the Christoffel symbols and Ricci 
+tensor have been obtained (with the functions @code{christof} and @code{ricci}).
+If the argument @var{dis} is @code{true}, then the non-zero values of the mixed 
+Einstein tensor @code{ein[i,j]} will be displayed where @code{j} is the 
+contravariant index.  The variable @code{rateinstein} will cause the rational 
+simplification on these components. If @code{ratfac} is @code{true} then the 
+components will also be factored.
+
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{leinstein}
 @deffn {Function} leinstein (@var{dis})
-Covariant Einstein-tensor. @code{leinstein} stores the values of the covariant Einstein tensor in the array @code{lein}. The covariant Einstein-tensor is computed from the mixed Einstein tensor @code{ein} by multiplying it with the metric tensor. If the argument @var{dis} is @code{true}, then the non-zero values of the covariant Einstein tensor are displayed.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+Covariant Einstein-tensor.  @code{leinstein} stores the values of the covariant 
+Einstein tensor in the array @code{lein}.  The covariant Einstein-tensor is 
+computed from the mixed Einstein tensor @code{ein} by multiplying it with the 
+metric tensor.  If the argument @var{dis} is @code{true}, then the non-zero 
+values of the covariant Einstein tensor are displayed.
+
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{riemann}
 @deffn {Function} riemann (@var{dis})
+
 A function in the @code{ctensor} (component tensor)
 package.  @code{riemann} computes the Riemann curvature tensor
 from the given metric and the corresponding Christoffel symbols. The following
@@ -458,12 +473,12 @@ computed directly from the Christoffel-symbols. If @code{cframe_flag} is
 @code{true}, the covariant Riemann-tensor is computed first from the
 frame field coefficients.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{lriemann}
 @deffn {Function} lriemann (@var{dis})
+
 Covariant Riemann-tensor (@code{lriem[]}).
 
 Computes the covariant Riemann-tensor as the array @code{lriem}. If the
@@ -475,22 +490,22 @@ the (3,1) Riemann tensor is computed first.
 
 For information on index ordering, see @code{riemann}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{uriemann}
 @deffn {Function} uriemann (@var{dis})
+
 Computes the contravariant components of the Riemann
 curvature tensor as array elements @code{uriem[i,j,k,l]}.  These are displayed
 if @var{dis} is @code{true}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{rinvariant}
 @deffn {Function} rinvariant ()
+
 Forms the Kretchmann-invariant (@code{kinvariant}) obtained by
 contracting the tensors
 
@@ -500,24 +515,22 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 
 This object is not automatically simplified since it can be very large.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{weyl}
 @deffn {Function} weyl (@var{dis})
+
 Computes the Weyl conformal tensor.  If the argument @var{dis} is
-@code{true}, the non-zero components @code{weyl[i,j,k,l]} will be displayed to the
-user.  Otherwise, these components will simply be computed and stored.
+@code{true}, the non-zero components @code{weyl[i,j,k,l]} will be displayed to 
+the user.  Otherwise, these components will simply be computed and stored.
 If the switch @code{ratweyl} is set to @code{true}, then the components will be
 rationally simplified; if @code{ratfac} is @code{true} then the results will be
 factored as well.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Taylor series expansion
 
 The @code{ctensor} package has the ability to truncate results by assuming
@@ -525,10 +538,10 @@ that they are Taylor-series approximations. This behavior is controlled by
 the @code{ctayswitch} variable; when set to true, @code{ctensor} makes use
 internally of the function @code{ctaylor} when simplifying results.
 
-The @code{ctaylor} function is invoked by the following @code{ctensor} functions:
+The @code{ctaylor} function is invoked by the following @code{ctensor} 
+functions:
 
 @example
-
     Function     Comments
     ---------------------------------
     christof()   For mcs only
@@ -540,6 +553,8 @@ The @code{ctaylor} function is invoked by the following @code{ctensor} functions
     checkdiv()
 @end example
 
+@c -----------------------------------------------------------------------------
+@anchor{ctaylor}
 @deffn {Function} ctaylor ()
 
 The @code{ctaylor} function truncates its argument by converting
@@ -555,8 +570,21 @@ the Minkowski metric. Without further restrictions, even a diagonal
 metric produces expressions for the Einstein tensor that are far too
 complex:
 
+@c ===beg===
+@c load(ctensor);
+@c ratfac:true;
+@c derivabbrev:true;
+@c ct_coords:[t,r,theta,phi];
+@c lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],
+@c           [0,0,0,r^2*sin(theta)^2]);
+@c h:matrix([h11,0,0,0],[0,h22,0,0],[0,0,h33,0],[0,0,0,h44]);
+@c depends(l,r);
+@c lg:lg+l*h;
+@c cmetric(false);
+@c einstein(false);
+@c ntermst(ein);
+@c ===end===
 @example
-
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
@@ -618,14 +646,23 @@ complex:
 [[4, 3], 0]
 [[4, 4], 46]
 (%o12)                               done
-
 @end example
 
 However, if we recompute this example as an approximation that is
 linear in the variable @code{l}, we get much simpler expressions:
 
+@c ===beg===
+@c ctayswitch:true;
+@c ctayvar:l;
+@c ctaypov:1;
+@c ctaypt:0;
+@c christof(false);
+@c ricci(false);
+@c einstein(false);
+@c ntermst(ein);
+@c ratsimp(ein[1,1]);
+@c ===end===
 @example
-
 (%i14) ctayswitch:true;
 (%o14)                               true
 (%i15) ctayvar:l;
@@ -666,26 +703,23 @@ linear in the variable @code{l}, we get much simpler expressions:
                             2               2      4    2
               - 2 h44 l    r  - h33 h44 (l ) )/(4 r  sin (theta))
                        r r                r
-
-
-
 @end example
 
 This capability can be useful, for instance, when working in the weak
 field limit far from a gravitational source.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
 @subsection Frame fields
 
 When the variable @code{cframe_flag} is set to true, the @code{ctensor} package
 performs its calculations using a moving frame.
 
+@c -----------------------------------------------------------------------------
+@anchor{frame_bracket}
 @deffn {Function} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
+
 The frame bracket (@code{fb[]}).
 
 Computes the frame bracket according to the following definition:
@@ -696,11 +730,9 @@ ifb   = ( ifri    - ifri    ) ifr   ifr
    ab         d,e       e,d      a     b
 @end example
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Algebraic classification
 
 A new feature (as of November, 2004) of @code{ctensor} is its ability to
@@ -708,7 +740,10 @@ compute the Petrov classification of a 4-dimensional spacetime metric.
 For a demonstration of this capability, see the file
 @code{share/tensor/petrov.dem}.
 
+@c -----------------------------------------------------------------------------
+@anchor{nptetrad}
 @deffn {Function} nptetrad ()
+
 Computes a Newman-Penrose null tetrad (@code{np}) and its raised-index
 counterpart (@code{npi}). See @code{petrov} for an example.
 
@@ -733,12 +768,12 @@ np  = (fri  - %i fri ) / sqrt(2)
 
 @end example
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ctensor_psi}
 @deffn {Function} psi (@var{dis})
+
 Computes the five Newman-Penrose coefficients @code{psi[0]}...@code{psi[4]}.
 If @code{psi} is set to @code{true}, the coefficients are displayed.
 See @code{petrov} for an example.
@@ -758,17 +793,28 @@ inconsistent results, as you may end up with a mixed bag of tensors, some
 computed in a frame base, some in a coordinate base, with no means to
 distinguish between the two.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{petrov}
 @deffn {Function} petrov ()
-Computes the Petrov classification of the metric characterized by @code{psi[0]}...@code{psi[4]}.
+
+Computes the Petrov classification of the metric characterized by 
+@code{psi[0]} @dots{} @code{psi[4]}.
 
 For example, the following demonstrates how to obtain the Petrov-classification
 of the Kerr metric:
 
+@c ===beg===
+@c load(ctensor);
+@c (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
+@c ct_coordsys(exteriorschwarzschild,all);
+@c ug:invert(lg)$
+@c weyl(false);
+@c nptetrad(true);
+@c psi(true);
+@c petrov();
+@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -835,7 +881,6 @@ of the Kerr metric:
 (%o12)                               done
 (%i12) petrov();
 (%o12)                                 D
-
 @end example
 
 The Petrov classification function is based on the algorithm published in
@@ -844,12 +889,9 @@ by Pollney, Skea, and d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
 Except for some simple test cases, the implementation is untested as of
 December 19, 2004, and is likely to contain errors.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
 @subsection Torsion and nonmetricity
 
 @code{ctensor} has the ability to compute and include torsion and nonmetricity
@@ -860,7 +902,6 @@ The torsion coefficients are calculated from a user-supplied tensor
 coefficients @code{kt} are computed according to the following formulae:
 
 @example
-
               m          m      m
        - g  tr   - g   tr   - tr   g
           im  kj    jm   ki     ij  km
@@ -871,7 +912,6 @@ kt   = -------------------------------
   k     km
 kt   = g   kt
   ij         ijm
-
 @end example
 
 Note that only the mixed-index tensor is calculated and stored in the
@@ -882,13 +922,11 @@ nonmetricity vector @code{nm}. From this, the nonmetricity coefficients
 @code{nmc} are computed as follows:
 
 @example
-
              k    k        km
        -nm  D  - D  nm  + g   nm  g
    k      i  j    i   j         m  ij
 nmc  = ------------------------------
    ij                2
-
 @end example
 
 where D stands for the Kronecker-delta.
@@ -906,36 +944,33 @@ If necessary, @code{christof} calls the functions @code{contortion} and
 
 Computes the (2,1) contortion coefficients from the torsion tensor @var{tr}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{nonmetricity}
 @deffn {Function} nonmetricity (@var{nm})
 
 Computes the (2,1) nonmetricity coefficients from the nonmetricity
 vector @var{nm}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-
-
+@c -----------------------------------------------------------------------------
 @subsection Miscellaneous features
 
+@c -----------------------------------------------------------------------------
+@anchor{ctransform}
 @deffn {Function} ctransform (@var{M})
+
 A function in the @code{ctensor} (component tensor)
 package which will perform a coordinate transformation
 upon an arbitrary square symmetric matrix @var{M}. The user must input the
 functions which define the transformation.  (Formerly called @code{transform}.)
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{findde}
 @deffn {Function} findde (@var{A}, @var{n})
 
 returns a list of the unique differential equations (expressions)
@@ -946,7 +981,19 @@ differential equations. For the Einstein tensor (@code{ein}), which
 is a two dimensional array, if computed for the metric in the example
 below, @code{findde} gives the following independent differential equations:
 
-
+@c ===beg===
+@c load(ctensor);
+@c derivabbrev:true;
+@c dim:4;
+@c lg:matrix([a, 0, 0, 0], [ 0, x^2, 0, 0],
+@c                         [0, 0, x^2*sin(y)^2, 0], [0,0,0,-d]);
+@c depends([a,d],x);
+@c ct_coords:[x,y,z,t];
+@c cmetric();
+@c einstein(false);
+@c findde(ein,2);
+@c deindex;
+@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -983,23 +1030,22 @@ below, @code{findde} gives the following independent differential equations:
                                    x       x      x
 (%i10) deindex;
 (%o10)                     [[1, 1], [2, 2], [4, 4]]
-
 @end example
 
-
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{cograd}
 @deffn {Function} cograd ()
+
 Computes the covariant gradient of a scalar function allowing the
 user to choose the corresponding vector name as the example under
 @code{contragrad} illustrates.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{contragrad}
 @deffn {Function} contragrad ()
 
 Computes the contravariant gradient of a scalar function allowing
@@ -1007,8 +1053,17 @@ Computes the contravariant gradient of a scalar function allowing
 the user to choose the corresponding vector name as the example
 below for the Schwarzschild metric illustrates:
 
+@c ===beg===
+@c load(ctensor);
+@c derivabbrev:true;
+@c ct_coordsys(exteriorschwarzschild,all);
+@c depends(f,r);
+@c cograd(f,g1);
+@c listarray(g1);
+@c contragrad(f,g2);
+@c listarray(g2);
+@c ===end===
 @example
-
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
@@ -1029,17 +1084,24 @@ below for the Schwarzschild metric illustrates:
                                 r        r
 (%o8)                      [0, -------------, 0, 0]
                                      r
-
 @end example
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ctensor_dscalar}
 @deffn {Function} dscalar ()
+
 computes the tensor d'Alembertian of the scalar function once
 dependencies have been declared upon the function. For example:
 
+@c ===beg===
+@c load(ctensor);
+@c derivabbrev:true;
+@c ct_coordsys(exteriorschwarzschild,all);
+@c depends(p,r);
+@c factor(dscalar(p));
+@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -1058,10 +1120,10 @@ dependencies have been declared upon the function. For example:
                                       r
 @end example
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{checkdiv}
 @deffn {Function} checkdiv ()
 
 computes the covariant divergence of the mixed second rank tensor
@@ -1082,12 +1144,10 @@ package.  @code{cgeodesic} computes the geodesic equations of
 motion for a given metric.  They are stored in the array @code{geod[i]}.  If
 the argument @var{dis} is @code{true} then these equations are displayed.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{bdvac}
 @deffn {Function} bdvac (@var{f})
 
 generates the covariant components of the vacuum field equations of
@@ -1098,22 +1158,20 @@ with functional dependencies, e.g., @code{'p(x)}.
 The components of the second rank covariant field tensor are
 represented by the array @code{bd}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{invariant1}
 @deffn {Function} invariant1 ()
 
 generates the mixed Euler- Lagrange tensor (field equations) for the
 invariant density of R^2. The field equations are the components of an
 array named @code{inv1}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{invariant2}
 @deffn {Function} invariant2 ()
 
 *** NOT YET IMPLEMENTED ***
@@ -1122,11 +1180,10 @@ generates the mixed Euler- Lagrange tensor (field equations) for the
 invariant density of @code{ric[i,j]*uriem[i,j]}. The field equations are the
 components of an array named @code{inv2}.
 
-
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bimetric}
 @deffn {Function} bimetric ()
 
 *** NOT YET IMPLEMENTED ***
@@ -1134,46 +1191,43 @@ components of an array named @code{inv2}.
 generates the field equations of Rosen's bimetric theory. The field
 equations are the components of an array named @code{rosen}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Utility functions
 
+@c -----------------------------------------------------------------------------
+@anchor{diagmatrixp}
 @deffn {Function} diagmatrixp (@var{M})
 
 Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
 
-@c @opencatbox
-@c @category{Package ctensor} @c @category{Predicate functions}
-@c @c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{symmetricp}
 @deffn {Function} symmetricp (@var{M})
 
 Returns @code{true} if @var{M} is a symmetric matrix or (2D) array.
 
-@c @opencatbox
-@c @category{Package ctensor} @c @category{Predicate functions}
-@c @c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ntermst}
 @deffn {Function} ntermst (@var{f})
+
 gives the user a quick picture of the "size" of the doubly subscripted
 tensor (array) @var{f}.  It prints two element lists where the second
 element corresponds to NTERMS of the components specified by the first
 elements.  In this way, it is possible to quickly find the non-zero
 expressions and attempt simplification.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{cdisplay}
 @deffn {Function} cdisplay (@var{ten})
+
 displays all the elements of the tensor @var{ten}, as represented by
 a multidimensional array. Tensors of rank 0 and 1, as well as other types
 of variables, are displayed as with @code{ldisplay}. Tensors of rank 2 are
@@ -1181,6 +1235,13 @@ displayed as 2-dimensional matrices, while tensors of higher rank are displayed
 as a list of 2-dimensional matrices. For instance, the Riemann-tensor of
 the Schwarzschild metric can be viewed as:
 
+@c ===beg===
+@c load(ctensor);
+@c ratfac:true;
+@c ct_coordsys(exteriorschwarzschild,all);
+@c riemann(false);
+@c cdisplay(riem);
+@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -1387,26 +1448,24 @@ riem     = [        0         - -------------         0         0 ]
            [        0                0                0         0 ]
 
 (%o5)                                done
-
 @end example
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{deleten}
 @deffn {Function} deleten (@var{L}, @var{n})
+
 Returns a new list consisting of @var{L} with the @var{n}'th element
 deleted.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Variables used by @code{ctensor}
 
-
+@c -----------------------------------------------------------------------------
+@anchor{dim}
 @defvr {Option variable} dim
 Default value: 4
 
@@ -1415,12 +1474,10 @@ package.  @code{dim} is the dimension of the manifold with the
 default 4. The command @code{dim: n} will reset the dimension to any other
 value @code{n}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{diagmetric}
 @defvr {Option variable} diagmetric
 Default value: @code{false}
 
@@ -1431,23 +1488,19 @@ by taking into consideration the diagonality of the metric. Reduced
 run times will, of course, result. Note: this option is set
 automatically by @code{csetup} if a diagonal metric is specified.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ctrgsimp}
 @defvr {Option variable} ctrgsimp
 
-Causes trigonometric simplifications to be used when tensors are computed. Presently,
-@code{ctrgsimp} affects only computations involving a moving frame.
-
-@c @opencatbox
-@c @category{Package ctensor} @c @category{Simplification flags and variables}
-@c @c @closecatbox
+Causes trigonometric simplifications to be used when tensors are computed. 
+Presently, @code{ctrgsimp} affects only computations involving a moving frame.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{cfram_flag}
 @defvr {Option variable} cframe_flag
 
 Causes computations to be performed relative to a moving frame as opposed to
@@ -1457,24 +1510,20 @@ and the frame metric @code{lfg}. For computations using a Cartesian frame,
 computations in a Lorentz frame, @code{lfg} should have the appropriate
 signature.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ctorsion_flag}
 @defvr {Option variable} ctorsion_flag
 
 Causes the contortion tensor to be included in the computation of the
 connection coefficients. The contortion tensor itself is computed by
 @code{contortion} from the user-supplied tensor @code{tr}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{cnonmet_flag}
 @defvr {Option variable} cnonmet_flag
 
 Causes the nonmetricity coefficients to be included in the computation of
@@ -1482,79 +1531,65 @@ the connection coefficients. The nonmetricity coefficients are computed
 from the user-supplied nonmetricity vector @code{nm} by the function
 @code{nonmetricity}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ctayswitch}
 @defvr {Option variable} ctayswitch
 
-If set to @code{true}, causes some @code{ctensor} computations to be carried out using
-Taylor-series expansions. Presently, @code{christof}, @code{ricci},
+If set to @code{true}, causes some @code{ctensor} computations to be carried out
+using Taylor-series expansions. Presently, @code{christof}, @code{ricci},
 @code{uricci}, @code{einstein}, and @code{weyl} take into account this
 setting.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ctayvar}
 @defvr {Option variable} ctayvar
 
 Variable used for Taylor-series expansion if @code{ctayswitch} is set to
 @code{true}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ctaypov}
 @defvr {Option variable} ctaypov
 
 Maximum power used in Taylor-series expansion when @code{ctayswitch} is
 set to @code{true}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ctaypt}
 @defvr {Option variable} ctaypt
 
 Point around which Taylor-series expansion is carried out when
 @code{ctayswitch} is set to @code{true}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{gdet}
 @defvr {System variable} gdet
 
 The determinant of the metric tensor @code{lg}. Computed by @code{cmetric} when
 @code{cframe_flag} is set to @code{false}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ratchristof}
 @defvr {Option variable} ratchristof
 
 Causes rational simplification to be applied by @code{christof}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ratstein}
 @defvr {Option variable} rateinstein
 Default value: @code{true}
 
@@ -1562,11 +1597,10 @@ If @code{true} rational simplification will be
 performed on the non-zero components of Einstein tensors; if
 @code{ratfac} is @code{true} then the components will also be factored.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ratriemann}
 @defvr {Option variable} ratriemann
 Default value: @code{true}
 
@@ -1575,12 +1609,10 @@ simplification of Riemann tensors; if @code{true}, then rational
 simplification will be done; if @code{ratfac} is @code{true} then each of the
 components will also be factored.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ratweyl}
 @defvr {Option variable} ratweyl
 Default value: @code{true}
 
@@ -1588,147 +1620,130 @@ If @code{true}, this switch causes the @code{weyl} function
 to apply rational simplification to the values of the Weyl tensor. If
 @code{ratfac} is @code{true}, then the components will also be factored.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lfg}
 @defvr {Variable} lfg
-The covariant frame metric. By default, it is initialized to the 4-dimensional Lorentz frame with signature (+,+,+,-). Used when @code{cframe_flag} is @code{true}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+The covariant frame metric. By default, it is initialized to the 4-dimensional 
+Lorentz frame with signature (+,+,+,-). Used when @code{cframe_flag} is 
+@code{true}.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ufg}
 @defvr {Variable} ufg
-The inverse frame metric. Computed from @code{lfg} when @code{cmetric} is called while @code{cframe_flag} is set to @code{true}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+The inverse frame metric. Computed from @code{lfg} when @code{cmetric} is 
+called while @code{cframe_flag} is set to @code{true}.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{riem}
 @defvr {Variable} riem
-The (3,1) Riemann tensor. Computed when the function @code{riemann} is invoked. For information about index ordering, see the description of @code{riemann}.
 
-If @code{cframe_flag} is @code{true}, @code{riem} is computed from the covariant Riemann-tensor @code{lriem}.
+The (3,1) Riemann tensor. Computed when the function @code{riemann} is invoked. 
+For information about index ordering, see the description of @code{riemann}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+If @code{cframe_flag} is @code{true}, @code{riem} is computed from the 
+covariant Riemann-tensor @code{lriem}.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lriem}
 @defvr {Variable} lriem
 
 The covariant Riemann tensor. Computed by @code{lriemann}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{uriem}
 @defvr {Variable} uriem
 
 The contravariant Riemann tensor. Computed by @code{uriemann}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ric}
 @defvr {Variable} ric
 
 The mixed Ricci-tensor. Computed by @code{ricci}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{uric}
 @defvr {Variable} uric
 
 The contravariant Ricci-tensor. Computed by @code{uricci}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lg}
 @defvr {Variable} lg
 
-The metric tensor. This tensor must be specified (as a @code{dim} by @code{dim} matrix)
-before other computations can be performed.
-
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
+The metric tensor. This tensor must be specified (as a @code{dim} by 
+@code{dim} matrix) before other computations can be performed.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ug}
 @defvr {Variable} ug
 
 The inverse of the metric tensor. Computed by @code{cmetric}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{variable_weyl}
 @defvr {Variable} weyl
 
 The Weyl tensor. Computed by @code{weyl}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{fb}
 @defvr {Variable} fb
 
 Frame bracket coefficients, as computed by @code{frame_bracket}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{kinvariant}
 @defvr {Variable} kinvariant
 
 The Kretchmann invariant. Computed by @code{rinvariant}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{np}
 @defvr {Variable} np
 
 A Newman-Penrose null tetrad. Computed by @code{nptetrad}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{npi}
 @defvr {Variable} npi
 
 The raised-index Newman-Penrose null tetrad. Computed by @code{nptetrad}.
 Defined as @code{ug.np}. The product @code{np.transpose(npi)} is constant:
 
+@c ===beg===
+@c trigsimp(np.transpose(npi));
+@c ===end===
 @example
 (%i39) trigsimp(np.transpose(npi));
                               [  0   - 1  0  0 ]
@@ -1740,60 +1755,51 @@ Defined as @code{ug.np}. The product @code{np.transpose(npi)} is constant:
                               [  0    0   1  0 ]
 @end example
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{tr}
 @defvr {Variable} tr
 
 User-supplied rank-3 tensor representing torsion. Used by @code{contortion}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{kt}
 @defvr {Variable} kt
 
 The contortion tensor, computed from @code{tr} by @code{contortion}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{nm}
 @defvr {Variable} nm
 
 User-supplied nonmetricity vector. Used by @code{nonmetricity}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{nmc}
 @defvr {Variable} nmc
 
 The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{tensorkill}
 @defvr {System variable} tensorkill
 
 Variable indicating if the tensor package has been initialized. Set and used by
 @code{csetup}, reset by @code{init_ctensor}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ct_coords}
 @defvr {Option variable} ct_coords
 Default value: @code{[]}
 
@@ -1804,12 +1810,9 @@ one may redefine the coordinates with the assignment
 @code{ct_coords: [j1, j2, ..., jn]} where the j's are the new coordinate names.
 See also @code{csetup}.
 
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @subsection Reserved names
 
 The following names are used internally by the @code{ctensor} package and
@@ -1840,13 +1843,12 @@ should not be redefined:
   yesp()
 @end example
 
-
+@c -----------------------------------------------------------------------------
 @subsection Changes
 
 In November, 2004, the @code{ctensor} package was extensively rewritten.
 Many functions and variables have been renamed in order to make the
 package compatible with the commercial version of Macsyma.
-
 
 @example
   New Name     Old Name        Description
@@ -1872,6 +1874,7 @@ package compatible with the commercial version of Macsyma.
   ctransform() TTRANSFORM()    Interactive coordinate transformation
   uriem[]      UR[]            Contravariant Riemann-tensor
   weyl[]       W[]             (3,1) Weyl-tensor
-
 @end example
+
+@c --- End of file Ctensor.de.texi ---------------------------------------------
 
