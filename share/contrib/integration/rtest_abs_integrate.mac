@@ -42,8 +42,8 @@ factor(signum_to_abs(integrate(abs((x-a)*(x-b)),x,a,b)));
 i : integrate(abs(x) + abs(1-x),x);
 x*abs(x)/2+(x-1)*abs(x-1)/2$
 
-factor(signum_to_abs(diff(%,x)));
-abs(x)+abs(x-1)$
+factor(diff(i,x) - (abs(x) + abs(1-x)));
+0$
 
 (remvalue(i),0);
 0$
@@ -70,13 +70,10 @@ integrate(x + max(x,0),x);
 (x^2*signum(x))/4+(3*x^2)/4$
 
 i : integrate(max(x,x^2),x);
-(((2*x^3-3*x^2)/12+1/12)*signum(x-1)+1/12)*signum(x)+(x^3/3+x^2/2)/2$
+(((2*x^3-3*x^2)/12+1/12)*signum(x-1)+1/12)*signum(x)+x^3/6+x^2/4$
 
-di : simp_assuming(diff(i,x), notequal(x,0),notequal(x,1));
-(6*x^2-6*x)*signum(x-1)*signum(x)/12+(x^2+x)/2$
-
-makelist(ratsimp(subst(x = k, max(x,x^2) - di)),k, [-1066, -1, 0, 1, %pi, sqrt(2), 3/2, 42, 1932]);
-[0,0,0,0,0,0,0,0,0]$
+factor(convert_to_signum(diff(i,x) - max(x,x^2)));
+0$
 
 limit(i,x,1, 'minus) - limit(i,x,1, 'plus);
 0$
@@ -108,8 +105,8 @@ ratsimp(integrate(unit_step(x) + cos(x^2) * x,x));
 integrate(unit_step(x^2-1),x);
 ((x/2-1/2)*signum(x-1)-1)*signum(x+1)+x/2$
 
-expand(signum_expand(convert_to_signum(diff(%,x) - unit_step(x^2-1))));
-0$
+almost_everywhere_simp(scanmap('factor, convert_to_signum(diff(%,x) - unit_step(x^2-1))));
+0$ 
 
 integrate(abs(x),x,1,2);
 3/2$
@@ -135,10 +132,11 @@ integrate(unit_step(x),x,-1,1);
 signum_to_abs(integrate(unit_step(x),x,a,b));
 (abs(b)+b)/2-(abs(a)+a)/2$
 
-(i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
-((2*x^3-3*a*x^2)/6+a^3/6)*signum(x-a)$
+/* With hyper_int, we get an interesting result... */
+block([extra_integration_methods : ['signum_int]], i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
+x^2*abs(x-a)/2-(2*x^3/3-2*a^3/3)*signum(x-a)/4$
 
-signum_to_abs(simp_assuming(diff(%,x),notequal(x,a)));
+factor(simp_assuming(diff(signum_to_abs(%),x),notequal(x,a)));
 x*abs(x-a)$
 
 (i : integrate(f(x) * max(x,-x),x,0,1), ev(i, f(x) := x,integrate));
@@ -147,11 +145,11 @@ x*abs(x-a)$
 subst([a=-1,b=2/3, c=1], integrate(abs((x-a)*(x-b)*(x-c)),x,b,c));
 11/972$
 
-(i : integrate(abs(x^2-1)*x,x),0);
-0$
+i : integrate(abs(x^2-1)*x,x);
+(x^2-1)*abs(x^2-1)/4$
 
-signum_to_abs(diff(i,x));
-x*abs(x^2-1)$
+factor(diff(i,x) - abs(x^2-1)*x);
+0$
 
 is(equal(limit(i,x,-1,'minus), limit(i,x,-1,'plus)));
 true$
@@ -186,11 +184,11 @@ integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
 integrate(abs(x-1) / (x + abs(x-5)),x,9,-7) + integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
 0$
 
-integrate(signum(x) * f(x),x);
-signum(x)*integrate(f(x%),x%,0,x)$
+nicedummies(integrate(signum(x) * f(x),x));
+'integrate(signum(x) * f(x),x)$
 
-integrate(signum(x-a) * f(x),x);
-signum(x-a)*integrate(f(x%),x%,a,x)$
+nicedummies(integrate(signum(x-a) * f(x),x));
+'integrate(signum(x-a) * f(x),x)$
 
 is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
@@ -406,13 +404,13 @@ log(a+1)-log(1-a)$
 0$
 
 integrate(1/ (1 + max(x^2,x)),x,-1,1);
-log(2)+%pi/4$
+2*(log(4)/2-log(2)/2)+%pi/4$
 
 integrate(x/ (1 + max(x^2,1)^2),x,minf,inf);
 0$
 
 integrate(x/ (1 + max(x^2,1)^2),x,0,inf);
-%pi/8$
+%pi/8 + 1/4$
 
 /* the call to expand is a workaround for an integrate bug */
 expand(integrate(mod(x,1),x),0,0);
@@ -432,7 +430,7 @@ integrate(signum(abs(x)),x,0,2);
 /* SF bug ID: 3034415; the antidervative is non-ideal, but at least it nolonger signals an error. */
 
 integrate(1/abs(x),x);
-'integrate(1/(x*signum(x)),x)$
+'integrate(1/abs(x),x)$
 
 (extra_integration_methods : cons('conditional_integrate,extra_integration_methods),0);
 0$
@@ -483,7 +481,22 @@ block([domain : 'complex], 'integrate(x^2*sqrt(a^2 - x^2),x));
 'integrate(abs(1 - a*z),z);
 %if(a#0,((a*z-1)*abs(a*z-1))/(2*a),z)$
 
-(print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 45));
+integrate(unit_step(x),x,99,100);
+1$
+
+abs_defint(unit_step(x),x,99,100);
+1$
+
+abs_defint(unit_step(unit_step(x)),x,-1,0);
+0$
+
+integrate(unit_step(unit_step(x)),x,-1,0);
+0$
+
+integrate(signum(abs(x)),x,-2,2), prederror : false;
+4$
+
+(print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 70));
 true$
 
 (remvalue(e,i,di,f1,start), remove(x,noninteger), remfunction(convolution, unit_box),0);

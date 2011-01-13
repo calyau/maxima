@@ -1,5 +1,5 @@
 /*
-  Copyright 2008, 2009, 2010 by Barton Willis
+  Copyright 2008, 2009, 2010, 2011 by Barton Willis
   Maxima code for integration of signum, abs, max, min, and unit_step.
 
   This is free software; you can redistribute it and/or
@@ -34,9 +34,9 @@ extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
   while l # [ ] do (
     i : first(l)(q,x),
     l : rest(l),
-    if (i # false) then (
+    if (i # false and freeof('integrate, nounify('integrate), i)) then (
       ii : i, /* accept i as a simplification of ii. */
-      if freeof('integrate, i) then l : [])),
+      l : [])),
   ii);
 
 extra_definite_integration_methods : ['abs_defint];
@@ -63,15 +63,21 @@ real_linear_factors(e,x) := (
 /* Convert abs, max, min, and unit_step to signum expressions */
 convert_to_signum(e) := block([opsubst : true],
   e : unit_step_mult_simp(e),
-  e : subst('unit_step = lambda([s], (signum(s) + 1) / 2), e),
+  e : subst('unit_step = lambda([s], (signum(s)*(signum(s)+1))/2), e),
   e : subst('max = lambda([[x]], xreduce(lambda([a,b], (a + b +abs(a-b))/2),x)),e),
   e : subst('min = lambda([[x]], xreduce(lambda([a,b], (a + b -abs(a-b))/2),x)),e),
   subst('abs = lambda([s], s * signum(s)), e));
 
 /* Do signum(a) * signum(b) --> signum(a * b). Maybe it should, but when n is a positive integer,
-   apply_signum_mult doesn't do signum(a)^n --> signum(a^n).*/
-   
+   apply_signum_mult doesn't do signum(a)^n --> signum(a^n).
 
+   Starting with Maxima 5.23, the general simplifier does signum(a * b) --> signum(a) * signum(b).
+   Often (but not always!) the general simplifier reverts what this function does. Why not
+   always? We have apply_signum_mult_id(signum(x) * signum(1/x)) --> 1, but the general simplifier
+   doesn't change signum(x) * signum(1/x).
+
+   This function isn't used--maybe it will eventually be removed. */
+   
 apply_signum_mult_id (e) :=
   subst(["*" = lambda([[x]], block([p : [], q : []],
         for xk in x do (
@@ -92,20 +98,12 @@ unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
    if freeof('max, 'min, 'inf, p) then q * unit_step(p) else e)
  else map('unit_step_mult_simp, e));
          
-/* Do signum(a) * signum(b) --> signum(a * b) and e * signum(e) --> abs(e) */
+/* Do e * signum(e) --> abs(e) */
 signum_to_abs(e) := block([l],
-  e : apply_signum_mult_id(e),
   l : flatten(gatherargs(e,'signum)),
   for lk in l do (
      e : ratsubst(abs(lk), lk * signum(lk),e)),
   e);
-
-/* Do signum(a*b) --> signum(a) * signum(b) */
-
-signum_expand(e) := block([sublis_apply_lambda : true],
-  sublis(['signum = lambda([s],
-      (s : factor(s),
-        if safe_op(s) = "*" then xreduce("*", map('signum, args(s))) else signum(s)))], e));
 
 /* If e has the form w * signum(p1(x)) * signum(p2(x)) * ... * signum(pn(x)), where w
 is either freeof signum terms or free of x, return [w, append(q1,q2,...,qn)],
@@ -129,6 +127,7 @@ linear_in_p(e,x) :=
 
 signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
   q : convert_to_signum(q),
+  q : almost_everywhere_simp(q),
   v : listofvars(q),
   q : block([expandwrt_denom : true], expandwrt(q,'signum)),
   if (f : abs_int_extra(q,x)) # false then f
@@ -141,9 +140,12 @@ signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
      signum_int_helper(signum(sgn) * w, sort(acc), x)))
   else if (safe_op(q) = "+") then (
     f : map(lambda([s], signum_int(s,x)), args(q)),
-    if every(lambda([s], s # false), f) then xreduce("+", f) else false)
+    if member(false, f) then false else xreduce("+", f))
   else block([extra_integration_methods : [], extra_definite_integration_methods : []],
     integrate(q,x)));
+
+/* This function is deprecated. Either use new_variable (from to_poly_solve_extra) or
+gensym. */
 
 make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
  while member(x, v) do x : concat(x,"%"),
@@ -155,7 +157,7 @@ signum_int_helper(q,l,x) := block([v, xo, f, x%],
   if emptyp(rest(l)) then (
     f : integrate(q,x),
     if not(freeof('integrate, f)) then (
-        v : make_dummy(q,x%),
+        v : new_variable('general),
         f : funmake(nounify('integrate), [subst(x = v, q), v, first(l), x])),
     signum(x - first(l)) * (f - subst(x = first(l), f)))
   else (
@@ -174,20 +176,27 @@ dint(e,x,l) := block([xo, acc : 0, i],
     xo : xi),
   acc);
 
-partitions_interval_p(l,[endpts]) := (
-  if listp(l) then (
+partitions_interval_p(l,[endpts]) := block([ok,lo,hi],
+  ok : if length(endpts) = 2 then (
+    [lo,hi] : endpts,
+    every(lambda([s], (is(lo <= s) = true) and (is(s <= hi) = true)), l))
+  else endpts = [],
+  if listp(l) and ok then (
     l : listify(setify(append(endpts, l))),
-    l : sort(l, lambda([a,b], is(a < b) = true)),
+    l : sort(l, lambda([a,b], csign(b-a) = 'pos)),
     if every(lambda([a,b], is(a <= b)=true), l, endcons('inf, rest(l))) then l else false)
   else false);
 
-abs_defint(e,x,lo,hi) := block([f,l],
+abs_defint(e,x,lo,hi) := block([f,l, prederror : false],
   if is(hi < lo)=true then -abs_defint(e,x,hi,lo)
   else if is(lo = hi) then 0
   else (
+    e : simp_assuming(e,lo <= x, x <= hi), 
     e : convert_to_signum(e),
+    e : almost_everywhere_simp(e),
     l : xreduce('append, (gatherargs(e, 'signum))),
     l : flatten(map(lambda([s], real_linear_factors(s,x)), l)), /* flatten([[1], false]) --> [1,false] */
+    l : sublist(l, lambda([s], lo <= s and s <= hi)),
     l : delete(false,l),
     l : partitions_interval_p(l,lo,hi),
     if l # false then (
@@ -199,6 +208,20 @@ abs_defint(e,x,lo,hi) := block([f,l],
 
 simp_assuming(e, [fcts]) ::= 
   buildq([e,fcts], unwind_protect((apply(assume, fcts), expand(e,0,0)), apply(forget,fcts)));
+
+/* Replace signum(z)^2 --> 1, where z is nonzero and a polynomial. For a nonzero polynomial z,
+signum(z)^2 -1 is zero everywhere except at each zero of z. The almost_everywhere_simp simplification
+is OK for an integrand--thus integrate(e,x) = integrate(almost_everywhere_simp(e),x).
+
+This function could be extended to do signum(z) --> 1, when z is a nonzero polynomial at csign(z) = 'pn,
+for example. Another extension is %if(x=0,xxx,zzz) --> zzz. I'll save these for another day.*/
+
+almost_everywhere_simp(e) := block([l],
+  l : sublist(flatten(gatherargs(e,'signum)), lambda([s], s # 0 and polynomialp(s,listofvars(s)))),
+  e : ratexpand(e),
+  for lk in l do (
+    e : ratsubst(1, signum(lk)^2,e)),
+  e);
 
 /* For integrands of the form F(x, |x-c|), integrate F(x,-x+c) and F(x,x-c). Return a signum expression
 that is continuous at c; when the integrand doesn't have this form, return false. The error catch
@@ -239,7 +262,7 @@ abs_integrate_use_if(q,x) := block([k,%x,xo],
   k : flatten(gatherargs(q,'signum)),
   if k # [] and every(lambda([s], polynomialp(s,[x], 'numberp, lambda([k],is(k=0 or k=1)))), k) then (
     k : map(lambda([s], rhs(first(linsolve(s,x)))),k),
-    %x : make_dummy(q,x),
+    %x : new_variable('general),
     q : sublis([x = %x],q),
     k : listify(setify(k)),
     k : partitions_interval_p(k),
@@ -277,8 +300,8 @@ floor_int(q, x) := block([l, dl, fl, cl, t, s, k, simpsum : true],
   l : union(l, setify(xreduce('append, gatherargs(q,'ceiling)))),
   l : subset(l, lambda([s], not(freeof(x, s)))),
   if l = set(x) then (
-    fl : make_dummy([q,x], 'fl),
-    cl : make_dummy([q, x, fl], 'cl),
+    fl : new_variable('general),
+    cl : new_variable('general),
     q : subst([floor(x) = fl, ceiling(x) = cl], q),
     q : integrate(q, x),
     if freeof('integrate, q) then (

@@ -67,7 +67,7 @@ generate_hyper_mu(p, r, a, b) := block([l : [], f, n, i, pt, rt,k],
 /* Express sigma as a linear combination of the members of kern. */
 
 xresidue(sigma, kern, x) := block([zip, %g, i, n, k],
-  %g : make_dummy([sigma, kern], '%g),
+  %g : new_variable('general),
   n : length(kern),
   zip : partfrac(sigma - kern . makelist(concat(%g,i),i,1,n),x),
   zip : if safe_op(zip) = "+" then args(zip) else [zip],
@@ -92,8 +92,8 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
   if kern # false then (
     kern : listify(kern),
     sigma : partfrac(ratsimp(diff(e,x) / e),x),
-    a : make_dummy([e,x],'a),
-    b : make_dummy([e,x],'b),
+    a : new_variable('general),
+    b : new_variable('general),
  
     dkern : map(lambda([s], diff(s,x) / s), kern),
     r : xresidue(sigma, dkern, x),    
@@ -114,7 +114,7 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
           f : block([?errorsw : true], errcatch(subst(sk, f))),
           if f #  [] then (
             f : first(f),
-            %fo : make_dummy([f,e,x], '%fo),
+            %fo : new_variable('general),
             f : %fo * f,
             cnst : subst(sk, diff(f,x) * f^a * (1 - f)^b / e),
             cnst : infapply(cnst,lambda([s], radcan(rootscontract(s)))),
@@ -164,7 +164,7 @@ inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cns
   if kern # false then (
     kern : listify(kern),
     sigma : partfrac(ratsimp(diff(e,x) / e),x),
-    %k : make_dummy([e,x],'%k),
+    %k : new_variable('general),
     dkern : map(lambda([s], diff(s,x) / s), kern),
     r : xresidue(sigma, dkern, x),
     l : if r = [ ] then []  else generate_elliptic_candidates(dkern, r, %k),
@@ -193,7 +193,7 @@ inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cns
         f : block([?errorsw : true], errcatch(subst(sk, f))),
         if f #  [] then (
           f : first(f),
-          %fo : make_dummy([f,e,x], '%fo),
+          %fo : new_variable('general),
           f : %fo * f,
           cnst : subst(sk, (diff(f,x) / (sqrt(1-f^2) * (sqrt(1-%k^2 * f^2)))) / e),
           cnst : infapply(cnst,lambda([s], radcan(rootscontract(s)))),

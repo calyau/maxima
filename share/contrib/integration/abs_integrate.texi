@@ -322,20 +322,3 @@ uses @math{unit_step(x) = (1 + signum(x))/2}.
 
 @end deffn
 
-@deffn {Function} make_dummy(e,x)
-
-Append "%" to the symbol @math{x} until @math{x} is @i{not} a variable in the expression @math{e}.
-
-@example
- (%i1) make_dummy((x-y)*x, x);
- (%o1) x%
-
- (%i2) make_dummy((x-y)*x%, x);
- (%o2) x%%
-@end example
-
-@b{To use} @file{load(abs_integrate)}
-
-
-
-@end deffn
