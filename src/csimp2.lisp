@@ -38,7 +38,10 @@
 	    (return (eqtest (list '(%plog) x) check))))
      (newvar x)
      (cond
-       ((and (eq '$%i (car varlist)) (not (some #'atom (cdr varlist))))
+       ((and (member '$%i varlist)
+	     (not (some #'(lambda (v)
+			    (and (atom v) (not (eq v '$%i))))
+			varlist)))
 	(setq dd (trisplit x))
 	(cond ((setq z (patan (car dd) (cdr dd)))
 	       (return (add2* (simpln (list '(%log) 
