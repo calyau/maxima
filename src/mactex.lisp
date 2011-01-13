@@ -964,10 +964,10 @@
 ;; I'm not sure if the third case ever actually occurs.
 ;;
 ;; The use of '$false (instead of nil) may be a hack that is no longer
-;; needed.  For more information on this, look for $false near the end
-;; of PARSE-CONDITION in nparse.lisp, and the look for '$false in
-;; DIM-MCOND of displa.lisp.  Some mailing list discussion with
-;; subject "Bugs in tex-mcond" took place in January 2011.  -MHW
+;; needed.  For more information on this, search for $false in
+;; PARSE-CONDITION of nparse.lisp and DIM-MCOND of displa.lisp.  Also
+;; see the mailing list thread with subject "Bugs in tex-mcond" which
+;; took place in January 2011.  -MHW
 ;;
 (defun tex-mcond (x l r)
   (labels
