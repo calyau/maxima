@@ -1,3 +1,5 @@
+;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+
 (in-package :maxima)
 
 ;; TeX-printing
@@ -937,14 +939,51 @@
 	((= c 1)(cons (car n)(odds (cdr n) 0)))
 	((= c 0)(odds (cdr n) 1))))
 
+;;
+;; The format of MCOND expressions is documented above the definition
+;; of DIM-MCOND in displa.lisp.  Note that MCOND expressions may
+;; contain more than one non-T condition when elseif is used.  This
+;; was not always the case, so it's possible that some code in Maxima
+;; still doesn't handle this case properly.  Here are some examples:
+;;
+;;   ((%mcond) $a $b t nil)         <==>  'if a then b
+;;   ((%mcond) $a $b t $d)          <==>  'if a then b else d
+;;   ((%mcond) $a $b $c nil t nil)  <==>  'if a then b elseif c then false
+;;   ((%mcond) $a $b $c $d t nil)   <==>  'if a then b elseif c then d
+;;   ((%mcond) $a $b $c $d t $f)    <==>  'if a then b elseif c then d else f
+;; 
+;; Also note that DIM-MCOND omits display of the final "else" in the
+;; following three cases, so we do the same here:
+;; 
+;;   ((%mcond) $a $b t nil)      ==>  'if a then b
+;;   ((%mcond) $a $b t $false)   ==>  'if a then b
+;;   ((%mcond) $a $b)            ==>  'if a then b
+;;
+;; The first two cases happen in practice, as can be seen by
+;; evaluating ?print(if a then b) and ?print('(if a then b)).
+;; I'm not sure if the third case ever actually occurs.
+;;
+;; The use of '$false (instead of nil) may be a hack that is no longer
+;; needed.  For more information on this, look for $false near the end
+;; of PARSE-CONDITION in nparse.lisp, and the look for '$false in
+;; DIM-MCOND of displa.lisp.  Some mailing list discussion with
+;; subject "Bugs in tex-mcond" took place in January 2011.  -MHW
+;;
 (defun tex-mcond (x l r)
-  (append l
-	  (tex (cadr x) '("\\mathbf{if}\\;")
-	       '("\\;\\mathbf{then}\\;") 'mparen 'mparen)
-	  (if (eql (fifth x) '$false)
-	      (tex (caddr x) nil r 'mcond rop)
-	      (append (tex (caddr x) nil nil 'mparen 'mparen)
-		      (tex (fifth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))))
+  (labels
+      ((recurse (x l)
+	 (append
+	  (tex (car x) l '("\\;\\mathbf{then}\\;") 'mparen 'mparen)
+	  (cond ((member (cddr x) '(() (t nil) (t $false)) :test #'equal)
+		 (tex (second x) nil r 'mcond rop))
+		((eq (third x) t)
+		 (append
+		  (tex (second x) nil nil 'mparen 'mparen)
+		  (tex (fourth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))
+		(t (append
+		    (tex (second x) nil nil 'mparen 'mparen)
+		    (recurse (cddr x) '("\\;\\mathbf{elseif}\\;"))))))))
+  (append l (recurse (cdr x) '("\\mathbf{if}\\;")))))
 
 (defprop mdo tex-mdo tex)
 (defprop mdoin tex-mdoin tex)
