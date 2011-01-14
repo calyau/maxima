@@ -941,10 +941,7 @@
 
 ;;
 ;; The format of MCOND expressions is documented above the definition
-;; of DIM-MCOND in displa.lisp.  Note that MCOND expressions may
-;; contain more than one non-T condition when elseif is used.  This
-;; was not always the case, so it's possible that some code in Maxima
-;; still doesn't handle this case properly.  Here are some examples:
+;; of DIM-MCOND in displa.lisp.  Here are some examples:
 ;;
 ;;   ((%mcond) $a $b t nil)         <==>  'if a then b
 ;;   ((%mcond) $a $b t $d)          <==>  'if a then b else d
@@ -952,16 +949,19 @@
 ;;   ((%mcond) $a $b $c $d t nil)   <==>  'if a then b elseif c then d
 ;;   ((%mcond) $a $b $c $d t $f)    <==>  'if a then b elseif c then d else f
 ;; 
-;; Also note that DIM-MCOND omits display of the final "else" in the
-;; following three cases, so we do the same here:
+;; Note that DIM-MCOND omits display of the final "else" in three
+;; cases illustrated below, so we do the same here:
 ;; 
-;;   ((%mcond) $a $b t nil)      ==>  'if a then b
-;;   ((%mcond) $a $b t $false)   ==>  'if a then b
-;;   ((%mcond) $a $b)            ==>  'if a then b
+;;   ((%mcond) $a $b $c $d t $false)  <==>  '(if a then b elseif c then d)
+;;   ((%mcond) $a $b $c $d t nil)     <==>   'if a then b elseif c then d
+;;   ((%mcond) $a $b $c $d)            ==>   'if a then b elseif c then d
 ;;
-;; The first two cases happen in practice, as can be seen by
-;; evaluating ?print(if a then b) and ?print('(if a then b)).
-;; I'm not sure if the third case ever actually occurs.
+;; The first two cases occur in practice, as can be seen by evaluating
+;; ?print('(if a then b)) and ?print(if a then b).  The parser
+;; produces the first case, which is transformed into the second case
+;; during evaluation.  The third case is handled equivalently by the
+;; evaluator and DIM-MCOND, and might plausibly be created by some
+;; code, so we handle it here as well.
 ;;
 ;; The use of '$false (instead of nil) may be a hack that is no longer
 ;; needed.  For more information on this, search for $false in
@@ -976,7 +976,7 @@
 	  (tex (car x) l '("\\;\\mathbf{then}\\;") 'mparen 'mparen)
 	  (cond ((member (cddr x) '(() (t nil) (t $false)) :test #'equal)
 		 (tex (second x) nil r 'mcond rop))
-		((eq (third x) t)
+		((and (eq (third x) t) (null (nthcdr 4 x)))
 		 (append
 		  (tex (second x) nil nil 'mparen 'mparen)
 		  (tex (fourth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))
