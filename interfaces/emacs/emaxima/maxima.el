@@ -2103,6 +2103,7 @@ which is in a comment which begins on a previous line."
 ;;; The next functions are from comint.el in cvs emacs
 (if (and
      (not maxima-running-xemacs)
+     (<= emacs-major-version 21)
      (or
       (< emacs-major-version 21)
       (< emacs-minor-version 3)))
