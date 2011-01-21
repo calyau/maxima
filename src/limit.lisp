@@ -183,11 +183,14 @@ It appears in LIMIT and DEFINT.......")
 	      ;; Transform the limit value.
 	      (unless (infinityp val)
 		(unless (zerop2 val)
-		  (setq exp 
-			(let ((*atp* t))
-			  ;; *atp* prevents substitution from applying to vars 
-			  ;; bound by %sum, %product, %integrate, %limit
-			  (subin (m+ var val) exp))))
+		  (let ((*atp* t) (realvar var))
+		    ;; *atp* prevents substitution from applying to vars 
+		    ;; bound by %sum, %product, %integrate, %limit
+		    (setq var (gensym))
+		    (setq limit-assumptions (cons (assume `(($equal) ,realvar ,(m+ val var)))
+						  limit-assumptions))
+		    (setq exp (maxima-substitute (m+ val var) realvar exp))
+		    (putprop var realvar 'limitsub)))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
 				(t 0)))

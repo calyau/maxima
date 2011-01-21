@@ -1324,3 +1324,11 @@ sqrt(%pi)*erf(x)/2+sqrt(%pi)/2;
 /* integration error - ID: 3085498 */
 integrate(sqrt(1-cos(t)),t,0,2*%pi);
 2^(5/2);
+
+/* incorrect integration - ID: 3153533 */
+assume(x>2);
+[x>2];
+integrate(1/(x-z),z,1,x-1);
+log(x-1);
+forget(x>2);
+[x>2];
