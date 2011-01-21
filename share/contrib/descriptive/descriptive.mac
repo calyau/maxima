@@ -570,7 +570,7 @@ scatterplot(m,[select]):=
                                      gr),
                      gr),
              if draw_compound
-               then apply('draw,scen)
+               then draw(scen)
                else scen )
       else error("sorry, can't plot the scatter diagram for these data")) $
 
@@ -606,7 +606,7 @@ histogram(m,[select]):=
                             'xrange = [fr[1][1]-amp/2, fr[1][nclass+1]+amp/2],
                             'yrange = lmax(fr[2])*[-0.05, 1.05]  ] ),
               if draw_compound
-                then apply('draw2d,scen)
+                then draw2d(scen)
                 else scen )
         else error("sorry, can't plot the histogram for these data") )$
 
@@ -722,7 +722,7 @@ barsplot([args]):=
                         m,1,nsamples)) ),
 
     if draw_compound
-      then apply('draw2d,scene)
+      then draw2d(scene)
       else scene)$
 
 
@@ -743,7 +743,7 @@ piechart(m,[select]):=
 
       if pierad <= 0
          then error("pie radius must be greater than zero"),
-      if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
+      if listofexpr(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
         then (/* transform input data into a list */
               if matrixp(m)
                 then if length(m)=1
@@ -758,20 +758,16 @@ piechart(m,[select]):=
                                   end: ini + degrees[i],
                                   alpha: ini+degrees[i]/2.0,
                                   hexcolor: random_color(),
-                                  [/* 'color = black,
-                                    label([fr[1][i],
-                                           pierad*1.1*cos(alpha*conver),
-                                           pierad*1.1*sin(alpha*conver)]),*/
-                                    'color = hexcolor,  
+                                  [ 'color = hexcolor,  
                                     'fill_color = hexcolor,
-                                    'key = concat(fr[1][i]),
+                                    'key = string(fr[1][i]),
                                     ellipse(piecent[1],piecent[2],
                                             pierad,pierad,
                                             ini,degrees[i]) ])
                                   ,i,1,tot),
                scen:append(select, flatten(sectors)),
               if draw_compound
-                then apply('draw2d,scen)
+                then draw2d(scen)
                 else scen )
         else error("sorry, can't plot the piechart for these data") )$
 
@@ -827,6 +823,7 @@ boxplot(m,[select]):=
                         'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
                         'yrange = (top-bot)*0.05*[-1,+1]+[bot,top] ] ),
               if draw_compound
-                then apply('draw2d,scen)
+                then draw2d(scen)
                 else scen )
         else error("sorry, can't plot the box-whisker plot for these data") )$
+
