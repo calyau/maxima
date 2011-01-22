@@ -458,6 +458,13 @@
               *draw-enhanced3d-fun* (coerce-float-fun
                               ($first model)
                               (list '(mlist) ($second model) ($third model) ($fourth model))))))
+    ((not ($listp val))
+       ; enhanced3d is given an expression without 
+       ; explicit declaration of its variables.
+       ; Each graphic object must check for them.
+       (setf (gethash '$enhanced3d *gr-options*) val
+             *draw-enhanced3d-type* 99
+             *draw-enhanced3d-fun* nil))
     ((and ($listp val)
           ($subsetp ($setify ($listofvars ($first val)))
                     ($setify ($rest val))))
@@ -478,20 +485,13 @@
                                   ($first val)
                                   (list '(mlist) ($second val) ($third val) ($fourth val)))))
          (otherwise (merror "draw: illegal length of enhanced3d"))))
-    ((not ($listp val))
-       ; enhanced3d is given an expression without 
-       ; explicit declaration of its variables.
-       ; Each graphic object must check for them.
-       (setf (gethash '$enhanced3d *gr-options*) val
-             *draw-enhanced3d-type* 99
-             *draw-enhanced3d-fun* nil))
     (t
         (merror "draw: illegal enhanced3d definition")) ) )
 
 
 
-;; update boolean options
-;; ----------------------
+;; update boolean type options
+;; ---------------------------
 (defun update-boolean-option (opt val)
   (if (or (equal val t)
           (null val))
@@ -500,8 +500,8 @@
 
 
 
-;; update positive integer
-;; -----------------------
+;; update positive integer type options
+;; ------------------------------------
 (defun update-positive-integer (opt val)
   (if (and (integerp val)
            (> val 0 ))
@@ -510,14 +510,25 @@
 
 
 
-;; update positive float
-;; ---------------------
+;; update positive float type options
+;; ----------------------------------
 (defun update-positive-float (opt val)
   (setf val ($float val))
   (if (and (numberp val)
            (> val 0 ))
       (setf (gethash opt *gr-options*) val)
       (merror "draw: Non positive number: ~M " val)))
+
+
+
+;; update non negative float type options
+;; --------------------------------------
+(defun update-nonnegative-float (opt val)
+  (setf val ($float val))
+  (if (and (numberp val)
+           (>= val 0 ))
+      (setf (gethash opt *gr-options*) val)
+      (merror "draw: Not a non-negative number: ~M " val)))
 
 
 
@@ -558,7 +569,10 @@
 
 
 
-
+;; update string type options
+;; --------------------------
+(defun update-string (opt val)
+  (setf (gethash opt *gr-options*) string(val)))
 
 
 
@@ -617,11 +631,7 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal xyplane allocation: ~M " val)))
       ($point_size ; defined as non negative numbers
-            (setf val ($float val))
-            (if (and (numberp val)
-                     (>= val 0 ))
-                (setf (gethash opt *gr-options*) val)
-                (merror "draw: negative number: ~M " val)))
+        (update-nonnegative-float opt val))
       ($points_joined ; defined as true, false or $impulses
             (if (member val '(t nil $impulses))
               (setf (gethash opt *gr-options*) val)
@@ -763,8 +773,8 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal label orientation: ~M" val)))
       (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $font
-        $gnuplot_file_name $data_file_name)  ; defined as strings
-            (setf (gethash opt *gr-options*) val))
+        $gnuplot_file_name $data_file_name)
+            (update-string opt val))
       ($user_preamble ; defined as a string or a Maxima list of strings
             (let ((str ""))
               (cond
