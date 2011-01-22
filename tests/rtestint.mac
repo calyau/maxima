@@ -1332,3 +1332,7 @@ integrate(1/(x-z),z,1,x-1);
 log(x-1);
 forget(x>2);
 [x>2];
+
+/* integrate(x^2*exp(x)/(1+exp(x))^2, x, minf, inf); - ID: 3158526 */
+integrate(x^2*exp(x)/(1+exp(x))^2, x, minf, inf);
+%pi^2/3;
