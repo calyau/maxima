@@ -39,9 +39,9 @@
 		       (eq (caar temp) 'mequal)
 		       (symbolp (car (pop temp))))
 		  (push (cons (pop temp) (pop temp)) nl))
-		 (t (merror "Usage is sublis([sym1=form1,...],expression)")))))
+		 (t (merror (intl:gettext "sublis: expected an equation with left-hand side a symbol; found: ~M") temp)))))
 	(t
-	 (merror "Usage is sublis([sym1=form1,...],expression)")))
+	 (merror (intl:gettext "sublis: first argument must a list; found: ~M") substitutions)))
   (msublis substitutions form))
 
 (defun msublis (s y)
@@ -54,7 +54,7 @@
   (declare (special s))
   (do ((x s (cdr x)) (temp) (temp1)) ((null x))
     (cond ((not (symbolp (setq temp (caar x))))
-	   (merror "`sublis': Bad 1st arg")))
+	   (merror (intl:gettext "sublis: left-hand side of equation must be a symbol; found: ~M") temp)))
     (setf (symbol-plist temp) (list* *msublis-marker* (cdar x) (symbol-plist temp)))
     (cond ((not (eq temp (setq temp1 (getopr temp))))
 	   (setf (symbol-plist temp1) (list* *msublis-marker* (cdar x) (symbol-plist temp1)))
@@ -79,8 +79,8 @@
 		  (cond ((eq disrep sub) form)
 			(t ($rat sub)))))
 	       ((atom (car form))
-		(merror
-		 "`sublis': Illegal object in expression being substituted for."))
+		;; NOTE TO TRANSLATORS: "CAR" = FIRST ELEMENT OF LISP CONS
+		(merror (intl:gettext "sublis: malformed expression (atomic car).")))
 	       (t
 		(let ((cdr-value (msublis-subst (cdr form) nil))
 		      (caar-value (msublis-subst (caar form) t)))

@@ -54,10 +54,10 @@
     (cond ((and x (atom x)) x)
 	  ((and x (not (eq (car x) 'err))) x)
 	  ($verbose
-	   (mtell "powerseries: unable to expand for the following reason:")
-	   (cond ((null x) (mtell "~%no reason given") "Unable to expand")
+	   (mtell (intl:gettext "powerseries: unable to expand for the following reason: "))
+	   (cond ((null x) (mtell (intl:gettext "no reason given")) (intl:gettext "Failed to expand"))
 		 (t (cdr x))))
-	  (t "Unable to expand"))))
+	  (t (intl:gettext "Failed to expand")))))
 
 (defun out-of (e)
   (let  ((e      (cond ((and (boundp '*var) *var)
@@ -76,7 +76,7 @@
   (let ((w (sratsimp (sp1 e))))
     (when $verbose
       (terpri)
-      (mtell "powerseries: first simplification returned ~%")
+      (mtell (intl:gettext "powerseries: first simplification returned ~%"))
       (show-exp w))
     w))
 
@@ -118,7 +118,7 @@
 (defun ratexp (exp)
   (let (nn* dn* *gcd*)
     (if $verbose
-	(mtell "powerseries: trying to do a rational function expansion of~%~M"
+	(mtell (intl:gettext "powerseries: attempt rational function expansion of~%~M")
 	       (list '(mlable) nil exp)))
     (numden exp)
     (sratexpnd nn* dn*)))
@@ -190,7 +190,7 @@
 ; into   %sum ... + ... + ...
 (defun psp2foldsum (exp)
   (and $verbose
-       (prog2 (mtell "powerseries: preparing to fold sums~%")
+       (prog2 (mtell (intl:gettext "powerseries: preparing to fold sums~%"))
 	   (show-exp exp)))
   (if (and (eq (caar exp) 'mplus)
 	   (every #'(lambda (e) 
@@ -235,16 +235,16 @@
   (let ((*roots nil)
 	(*failures nil))
     (solve den var 1)
-    (cond (*failures (error "couldn't solve"))
+    (cond (*failures (error "EXPAND-DISTINCT-ROOTS: failed to solve for roots."))
 	  ((distinct-nonzero-roots-p *roots)
 	   (psp2form (m+l (mapcar #'(lambda (r) 
 				      (and $verbose
 					   (prog2
-					       (mtell "powerseries: for root:~%")
+					       (mtell (intl:gettext "powerseries: for root:~%"))
 					       (show-exp r)
-					       (mtell "powerseries: numerator at root =~%")
+					       (mtell (intl:gettext "powerseries: numerator at root =~%"))
 					       (show-exp (maxima-substitute r var num))
-					       (mtell "powerseries: first derivative of denominator at root =~%")
+					       (mtell (intl:gettext "powerseries: first derivative of denominator at root =~%"))
 					       (show-exp (maxima-substitute r var ($diff den var)))))
 				      (m* -1
 					  (m// 1 r)
@@ -253,36 +253,36 @@
 					  (m^ (m// 1 r) *index)))
 				  (mapcar #'caddr (deletmult *roots))))
 		     *index 0))
-	  (t (error "roots are not distinct~%")))))
+	  (t (error "EXPAND-DISTINCT-ROOTS: roots are not distinct.~%")))))
 
 (defun ratexand1 (n d)
   (and $verbose
-       (prog2 (mtell "powerseries: trying partial fraction expansion of ")
+       (prog2 (mtell (intl:gettext "powerseries: attempt partial fraction expansion of "))
 	   (show-exp (list '(mquotient) n d))
 	 (terpri)))
   (funcall #'(lambda (*ratexp) 
 	       (let ((l ($partfrac (div* n d) var)))
 					 (cond ((eq (caar l) 'mplus)
 						(and $verbose
-			     (prog2 (mtell "which is ~%")
+			     (prog2 (mtell (intl:gettext "which is ~%"))
 				 (show-exp l)))
 			(psp2foldsum
 			 (m+l (mapcar #'ratexp
 				      (cdr l)))))
 		       ((poly? n var)
 			(and $verbose
-			     (mtell "powerseries: partial fraction expansion failed, expanding denominator only~%"))
+			     (mtell (intl:gettext "powerseries: partial fraction expansion failed, expanding denominator only.~%")))
 			(m* n (ratexp (m// 1 d))))
 					       (t (throw 'psex
 						    '(err (mtext)
-				       "Partial fraction expansion failed"))))))
+				       (intl:gettext "powerseries: partial fraction expansion failed")))))))
 	   t))
 
 (defun sratsubst (gcd num den)
   (and $verbose
-       (prog2 (mtell "powerseries: substituting for the occurrences of")
+       (prog2 (mtell (intl:gettext "powerseries: substituting for the occurrences of"))
 	   (show-exp (list '(mexpt) var gcd))
-	 (mtell "in")
+	 (mtell (intl:gettext "in"))
 	 (show-exp (list '(mquotient) num den))
 	 (terpri)))
   (funcall #'(lambda (var* *var)
@@ -328,10 +328,10 @@
 
 (defun srintegexpd (n a m c)
   (and $verbose
-       (prog2 (mtell "powerseries: using a special rule for expressions of form~%")
+       (prog2 (mtell (intl:gettext "powerseries: apply rule for expressions of ~%"))
 	   (show-exp '((mexpt) ((mplus) $a ((mtimes) $c ((mexpt) $var $m)))
 		       ((mminus) $n)))
-	 (mtell "powerseries: here we have")
+	 (mtell (intl:gettext "powerseries: here we have"))
 	 (show-exp (list '(mlist) (list '(mequal) '$n n) (list '(mequal) '$a a)
 			 (list '(mequal) '$c c) (list '(mequal) '$m m)))))
   (cond ((= n 1)

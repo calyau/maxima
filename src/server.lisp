@@ -79,7 +79,7 @@
 
 
 (defun start-client (port &optional (host "localhost"))
-  (format t "Connecting Maxima to server on port ~a~%" port)
+  (format t (intl:gettext "Connecting Maxima to server on port ~a~%") port)
   (setq $in_netmath t)
   (setq $show_openplot nil)
   (setup-client port host))

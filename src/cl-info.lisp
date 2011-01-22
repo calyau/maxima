@@ -10,8 +10,8 @@
   (format t "~&~a~a~a"
 	  *prompt-prefix*
 	  (if (zerop prompt-count)
-	      "Enter space-separated numbers, `all' or `none': "
-	      "Still waiting: ")
+	      (intl:gettext "Enter space-separated numbers, `all' or `none': ")
+	      (intl:gettext "Still waiting: "))
 	  *prompt-suffix*))
 
 (defvar +select-by-keyword-alist+
@@ -23,8 +23,7 @@
    while (multiple-value-setq (nth pos)
 	   (parse-integer line :start pos :junk-allowed t))
    if (or (minusp nth) (>= nth nitems))
-   do (format *debug-io*
-	      "~&Discarding invalid number ~d." nth)
+   do (format *debug-io* (intl:gettext "~&Discarding invalid number ~d.") nth)
    else collect nth into list
    finally
    (let ((keyword
@@ -36,7 +35,7 @@
 			  (member item list :test #'string-equal))))))
      (unless keyword
        (setq keyword 'noop)
-       (format *debug-io* "~&Ignoring trailing garbage in input."))
+       (format *debug-io* (intl:gettext "~&Ignoring trailing garbage in input.")))
      (return (cons keyword list)))))
 
 (defun select-info-items (selection items)
@@ -71,7 +70,7 @@
   (let ((exact-matches (exact-topic-match x)))
     (if (null exact-matches)
       (progn
-        (format t "  No exact match found for topic `~a'.~%  Try `?? ~a' (inexact match) instead.~%~%" x x)
+        (format t (intl:gettext "  No exact match found for topic `~a'.~%  Try `?? ~a' (inexact match) instead.~%~%") x x)
         nil)
       (progn
         (format t "~%")
@@ -190,7 +189,7 @@
   (declare (special *info-section-pairs* *info-deffn-defvr-pairs*))
   (if (and (zerop (length *info-section-pairs*)) 
            (zerop (length *info-deffn-defvr-pairs*)))
-    (format t "WARNING: Empty documentation index. Describe command will not work!~%"))
+    (format t (intl:gettext "warning: empty documentation index; ? and ?? won't work!~%")))
   ; (format t "HEY, I'M LOADING THE INFO HASHTABLES NOW~%")
   (mapc
     #'(lambda (x) (setf (gethash (car x) *info-section-hashtable*) (cdr x)))

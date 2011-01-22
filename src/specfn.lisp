@@ -203,7 +203,7 @@
 (defun pole-err (exp)
   (declare (special errorsw))
   (cond (errorsw (throw 'errorsw t))
-	(t (merror "Pole encountered in: ~M" exp))))
+	(t (merror (intl:gettext "Pole encountered in: ~M") exp))))
 
 
 (declare-top (special $maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom))

@@ -321,15 +321,15 @@
 (defmfun twoargcheck (l)
   (if (or (null (cddr l)) (cdddr l)) (wna-err (caar l))))
 
-(defmfun wna-err (op) (merror "Wrong number of arguments to ~:@M" op))
+(defmfun wna-err (op) (merror (intl:gettext "~:@M: wrong number of arguments.") op))
 
 (defmfun improper-arg-err (exp fn)
-  (merror "Improper argument to ~:M:~%~M" fn exp))
+  (merror (intl:gettext "~:M: improper argument: ~M") fn exp))
 
 (defmfun subargcheck (form subsharp argsharp fun)
   (if (or (not (= (length (subfunsubs form)) subsharp))
 	  (not (= (length (subfunargs form)) argsharp)))
-      (merror "Wrong number of arguments or subscripts to ~:@M" fun)))
+      (merror (intl:gettext "~:@M: wrong number of arguments or subscripts.") fun)))
 
 ;; Constructor and extractor primitives for subscripted functions, e.g.
 ;; F[1,2](X,Y).  SUBL is (1 2) and ARGL is (X Y).
@@ -512,8 +512,7 @@
                (t x)))
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
-		(merror
-		  (intl:gettext "simplifya:Found a cons with an atomic cdr.")))
+		(merror (intl:gettext "simplifya: malformed expression (atomic cdr).")))
 	       ((get (car x) 'lisp-no-simp)
 		;; this feature is to be used with care. it is meant to be
 		;; used to implement data objects with minimum of consing.
@@ -535,7 +534,7 @@
 	 (cond ((or (eq (caaar x) 'lambda)
 		    (and (not (atom (caaar x))) (eq (caaaar x) 'lambda)))
 		(mapply1 (caar x) (cdr x) (caar x) x))
-	       (t (merror (intl:gettext "simplifya: Illegal form:~%~S") x))))
+	       (t (merror (intl:gettext "simplifya: operator is neither an atom nor a lambda expression: ~S") x))))
         ((and $distribute_over
               (get (caar x) 'distribute_over)
               ;; A function with the property 'distribute_over.
@@ -551,9 +550,7 @@
 	 (cond ((or (symbolp (cadr x)) (not (atom (cadr x))))
 		(simplifya (cons (cons (cadr x) (cdar x)) (cddr x)) y))
 	       ((or (not (member 'array (cdar x) :test #'eq)) (not $subnumsimp))
-		(merror 
-		  (intl:gettext "simplifya:Improper value in functional position:~%~M") 
-		  x))
+		(merror (intl:gettext "simplifya: I don't know how to simplify this operator: ~M") x))
 	       (t (cadr x))))
 	(t (let ((w (get (caar x) 'operators)))
 	     (cond ((and w
@@ -639,7 +636,7 @@
 	  (get (caar x) 'binary))
       (twoargcheck x))
   (if (and (member 'array (cdar x) :test #'eq) (null (margs x)))
-      (merror "Subscripted variable found with no subscripts."))
+      (merror (intl:gettext "SIMPARGS: subscripted variable found with no subscripts.")))
   (eqtest (if y x (let ((flag (member (caar x) '(mlist mequal) :test #'eq)))
 		    (cons (ncons (caar x))
 			  (mapcar #'(lambda (u)
@@ -931,7 +928,7 @@
         ((or (floatp a) (not (minusp b)))
          #+gcl
          (if (float-inf-p (setq b (expt a b)))
-             (merror (intl:gettext "expt: floating point overflow."))
+             (merror (intl:gettext "EXPT: floating point overflow."))
              b)
          #-gcl
          (expt a b))
@@ -1293,7 +1290,7 @@
 	((zerop1 y)
 	 (cond (radcanp (list '(%log simp) 0))
                ((not errorsw)
-                (merror (intl:gettext "log: log(0) has been generated.")))
+                (merror (intl:gettext "log: encountered log(0).")))
 	       (t (throw 'errorsw t))))
         ;; Check evaluation in floating point precision.
         ((flonum-eval (mop x) y))
@@ -1676,7 +1673,7 @@
 	   (cond ((mnegp power)
 		  (if errorsw
 		      (throw 'errorsw t)
-		      (merror "Division by 0")))
+		      (merror (intl:gettext "Division by 0"))))
 		 (t factor)))
 	  ((and (null product)
 		(or (and (mtimesp factor) (equal power 1))
@@ -1721,13 +1718,12 @@
   (let ((l1 (length x))
 	y)
     (unless (or (= l1 2) (= l1 4) (= l1 5))
-      (merror "Wrong number of arguments to '`limit'"))
+      (merror (intl:gettext "limit: wrong number of arguments.")))
     (setq y (simpmap (cdr x) z))
     (cond ((and (= l1 5) (not (member (cadddr y) '($plus $minus) :test #'eq)))
-           (merror "4th arg to `limit' must be either `plus' or `minus':~%~M"
-                   (cadddr y)))
+           (merror (intl:gettext "limit: direction must be either 'plus' or 'minus': ~M") (cadddr y)))
 	  ((mnump (cadr y))
-	   (merror "Wrong second arg to `limit':~%~M" (cadr y)))
+	   (merror (intl:gettext "limit: variable must not be a number; found: ~M") (cadr y)))
 	  ((equal (car y) 1)
 	   1)
 	  (t
@@ -1738,10 +1734,10 @@
   (let ((l1 (length x))
 	y)
     (unless (or (= l1 3) (= l1 5))
-      (merror "Wrong number of arguments to '`integrate'"))
+      (merror (intl:gettext "integrate: wrong number of arguments.")))
     (setq y (simpmap (cdr x) z))
     (cond ((mnump (cadr y))
-	   (merror "Attempt to integrate with respect to a number:~%~M" (cadr y)))
+	   (merror (intl:gettext "integrate: variable must not be a number; found: ~M") (cadr y)))
 	  ((and (= l1 5) (alike1 (caddr y) (cadddr y)))
 	   0)
           ((and (= l1 5)
@@ -1855,8 +1851,7 @@
      (setq y (cadr w))
      (do ((u (cddr w) (cddr u))) ((null u))
        (cond ((mnump (car u))
-	      (merror "Attempt to differentiate with respect to a number:~%~M"
-		      (car u)))))
+	      (merror (intl:gettext "diff: variable must not be a number; found: ~M") (car u)))))
      (cond ((or (zerop1 y)
 		(and (or (mnump y) (and (atom y) (constant y)))
 		     (or (null (cddr w))
@@ -1953,7 +1948,7 @@
 	((zerop1 r1)
 	 (cond ((or (zerop1 r2) (mnegp r2))
 		(if (not errorsw)
-		    (merror "~M has been generated" (list '(mexpt) r1 r2))
+		    (merror (intl:gettext "expt: undefined: ~M") (list '(mexpt) r1 r2))
 		    (throw 'errorsw t)))
 	       (t (zerores r1 r2))))
 	((or (zerop1 r2) (onep1 r1))
@@ -2066,18 +2061,18 @@
             (cond ((or (member (setq z ($csign pot)) '($neg $nz))
                        (and *zexptsimp? (eq ($asksign pot) '$neg)))
                    ;; A negative exponent. Maxima error.
-                   (cond ((not errorsw) (merror "Division by 0"))
+                   (cond ((not errorsw) (merror (intl:gettext "expt: undefined: 0 to a negative exponent.")))
                          (t (throw 'errorsw t))))
                   ((and (member z '($complex $imaginary))
                         ;; A complex exponent. Look at the sign of the realpart.
                         (member (setq z ($sign ($realpart pot))) 
                                 '($neg $nz $zero)))
                    (cond ((not errorsw)
-                          (merror "0 to a complex quantity has been generated."))
+                          (merror (intl:gettext "expt: undefined: 0 to a complex exponent.")))
                          (t (throw 'errorsw t))))
                   ((and *zexptsimp? (eq ($asksign pot) '$zero))
                    (cond ((not errorsw)
-                          (merror "0^0 has been generated"))
+                          (merror (intl:gettext "expt: undefined: 0^0")))
                          (t (throw 'errorsw t))))
                   ((not (member z '($pos $pz)))
                    ;; The sign of realpart(pot) is not known. We can not return
@@ -2087,7 +2082,7 @@
                    ;; old code.
                    (cond ((not (free pot '$%i))
                           (cond ((not errorsw)
-                                 (merror "0 to a complex quantity has been generated."))
+                                 (merror (intl:gettext "expt: undefined: 0 to a complex exponent.")))
                                 (t (throw 'errorsw t))))
                          (t
                           ;; Return ZERO and not an unsimplified expression.
@@ -3272,9 +3267,9 @@
 
 (defmfun expand1 (exp $expop $expon)
   (unless (and (integerp $expop) (> $expop -1))
-    (merror "Maxposex must be a non-negative-integer: ~%~M" $expop))
+    (merror (intl:gettext "expand: expop must be a nonnegative integer; found: ~M") $expop))
   (unless (and (integerp $expon) (> $expon -1))
-    (merror "Maxnegex must be a non-negative-integer: ~%~M" $expon))
+    (merror (intl:gettext "expand: expon must be a nonnegative integer; found: ~M") $expon))
   (resimplify (specrepcheck exp)))
 
 (defmfun $expand (exp &optional (expop $maxposex) (expon $maxnegex))

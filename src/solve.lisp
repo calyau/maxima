@@ -109,7 +109,7 @@
              ;; We can't solve inequalities
              ((member (g-rep-operator *eql)
                       '(mnotequal mgreaterp mlessp mgeqp mleqp) :test #'eq)
-              (merror "Cannot solve inequalities. -`solve'"))
+              (merror (intl:gettext "solve: cannot solve inequalities.")))
              ;; Finally, assume we have just one equation, and put it
              ;; on one side again.
              (t (ncons (meqhk *eql)))))
@@ -134,14 +134,13 @@
 
      ;; Some sanity checks and warning messages.
      (when (and (null varl) $solvenullwarn)
-       (mtell "~&solve: variable list is empty, continuing anyway.~%"))
+       (mtell (intl:gettext "~&solve: variable list is empty, continuing anyway.~%")))
 
      (when (and (null eql) $solvenullwarn)
-       (mtell "~&solve: equation list is empty, continuing anyway.~%"))
+       (mtell (intl:gettext "~&solve: equation list is empty, continuing anyway.~%")))
 
      (when (some #'mnump varl)
-       (merror
-        "A number was found where a variable was expected -`solve'"))
+       (merror (intl:gettext "solve: all variables must not be numbers.")))
      
      ;; Deal with special cases.
      (cond
@@ -179,14 +178,14 @@
        ;; then what was here before anyway.
        (if (> (length varl) (length eql))
 	   (merror
-      "More unknowns than equations - `solve'~
+      (intl:gettext "solve: more unknowns than equations.~
 		  ~%Unknowns given :  ~%~M~
-		  ~%Equations given:  ~%~M"
+		  ~%Equations given:  ~%~M")
       u e)
 	   (merror
-      "More equations than unknowns - `solve'~
+      (intl:gettext "solve: more equations than unknowns.~
 		  ~%Unknowns given :  ~%~M~
-		  ~%Equations given:  ~%~M"
+		  ~%Equations given:  ~%~M")
       u e)))))
 
 
@@ -220,10 +219,10 @@
 							   (nconc *roots *failures)))))
 		      (setq $multiplicities (make-mlist-l (nreverse multi)))))
 		   (t (when (and *failures (not $solveexplicit))
-			(when $dispflag (mtell "solve: the roots of:~%"))
+			(when $dispflag (mtell (intl:gettext "solve: the roots of:~%")))
 			(solve2 *failures))
 		      (when *roots
-			(when $dispflag (mtell "solve: solution:~%"))
+			(when $dispflag (mtell (intl:gettext "solve: solution:~%")))
 			(solve2 *roots))
 		      (make-mlist-l equations)))))))
 
@@ -868,7 +867,7 @@
 	     ((setq inverse (get op '$inverse))
 	      (when (and $solvetrigwarn
 			 (member op '(%sin %cos %tan %sec %csc %cot %cosh %sech) :test #'eq))
-		(mtell "~&solve: using arc-trig functions to get a solution.~%Some solutions will be lost.~%")
+		(mtell (intl:gettext "~&solve: using arc-trig functions to get a solution.~%Some solutions will be lost.~%"))
 		(setq $solvetrigwarn nil))
 	      `((mplus) ((mminus) ,(cadr *myvar))
 		((,inverse) ,exp)))
@@ -910,7 +909,7 @@
     (do ((varl varl (cdr varl)))
 	((null varl))
       (when (mnump (car varl))
-	(merror "Unacceptable variable to `solve': ~M" (car varl))))
+	(merror (intl:gettext "solve: variable must not be a number; found: ~M") (car varl))))
     (if (null varl)
 	(make-mlist-simp)
 	(solvex (mapcar 'meqhk eql) varl (not $programmode) nil))))
@@ -931,10 +930,10 @@
 	    ;; and NIL if called from LINSOLVE.
 	    (cond (flag (return ($algsys (make-mlist-l eql)
 					 (make-mlist-l varl))))
-		  (t (merror "`linsolve' ran into a nonlinear equation.")))))
+		  (t (merror (intl:gettext "linsolve: cannot solve a nonlinear equation."))))))
      (setq ans (tfgeli 'xa* xn* xm*))
      (if (and $linsolvewarn (car ans))
-	 (mtell "~&solve: dependent equations eliminated: ~A~%" (car ans)))
+	 (mtell (intl:gettext "~&solve: dependent equations eliminated: ~A~%") (car ans)))
      (if (cadr ans)
 	 (return '((mlist simp))))
      (do ((j 0 (1+ j)))

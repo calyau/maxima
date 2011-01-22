@@ -113,7 +113,7 @@
        (l skel (cdr l)))
       ((= i n)				;l should be nil now,
        (if (not (null l))	     ;but lets check just to make sure
-	   (merror "Skeleton too long in  `fill-row': ~S"
+	   (merror "FILL-ROW: skeleton too long: ~S"
 		   (list n '= skel)))
        (setf (aref mat row n) val)) ;The value is stored in the last column
     (setf (aref mat row i)
@@ -391,7 +391,7 @@
 	  f (cadr f) g (cadr g))	;f and g are now primitive
     (if (or (pcoefp f) (pcoefp g)
 	    (not (eq (car f) (car g))))
-	(merror "Bad args to `zgcd'"))
+	(merror "ZGCD: incorrect arguments."))
     (ptimes mon
 	    (do ((test))
 		(nil)

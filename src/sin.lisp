@@ -85,7 +85,7 @@
 	((and (not (atom (car a)))
 	      (member 'array (cdar a) :test #'eq))
 	 (cond ((freevar (cdr a)) t)
-	       (t (merror "Variable of integration appeared in subscript"))))
+	       (t (merror "~&FREEVAR: variable of integration appeared in subscript."))))
 	(t (and (freevar (car a)) (freevar (cdr a))))))
 
 (defun varp (x)
@@ -181,7 +181,7 @@
 	    (not (eq (caar expres) 'mexpt))
 	    (get (caar expres) 'integral))
        (when *debug-integrate*
-	 (format t "~&INTFORM with Integral on property list~%"))
+	 (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
        (cond
 	 ((setq arg
 	    (m2 exp
@@ -209,7 +209,7 @@
 	      (eq (caar exp) (caar expres))
 	      (or (atom (cadr exp))
 		  (not (eq (caaadr exp) 'mqapply))
-		  (merror "Invalid arg to `integrate':~%~M" exp))
+		  (merror (intl:gettext "integrate: invalid argument: ~M") exp))
 	      (checkderiv exp)))
         
         ;; Stop intform if we have not a power function.
@@ -1640,7 +1640,7 @@
   ;; INTEGRATOR for more details.  Initialize it here.
   (let ((*integrator-level* 0))
     (declare (special *integrator-level*))
-    (cond ((mnump var) (merror "Attempt to integrate wrt a number: ~:M" var))
+    (cond ((mnump var) (merror (intl:gettext "integrate: variable must not be a number; found: ~:M") var))
 	  (($ratp var) (sinint exp (ratdisrep var)))
 	  (($ratp exp) (sinint (ratdisrep exp) var))
 	  ((mxorlistp exp)    ;; if exp is an mlist or matrix
