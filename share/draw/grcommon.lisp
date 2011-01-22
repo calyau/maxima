@@ -329,7 +329,9 @@
 
 (defun update-terminal (val)
   (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $svg
-                 $pdf $pdfcairo $wxt $animated_gif $aquaterm)))
+                 $pdf $pdfcairo $wxt $animated_gif $aquaterm
+                
+                )))
      (cond
        ((member val terms)
           (when (and (eq val '$png) $draw_use_pngcairo)
@@ -458,13 +460,6 @@
               *draw-enhanced3d-fun* (coerce-float-fun
                               ($first model)
                               (list '(mlist) ($second model) ($third model) ($fourth model))))))
-    ((not ($listp val))
-       ; enhanced3d is given an expression without 
-       ; explicit declaration of its variables.
-       ; Each graphic object must check for them.
-       (setf (gethash '$enhanced3d *gr-options*) val
-             *draw-enhanced3d-type* 99
-             *draw-enhanced3d-fun* nil))
     ((and ($listp val)
           ($subsetp ($setify ($listofvars ($first val)))
                     ($setify ($rest val))))
@@ -485,6 +480,13 @@
                                   ($first val)
                                   (list '(mlist) ($second val) ($third val) ($fourth val)))))
          (otherwise (merror "draw: illegal length of enhanced3d"))))
+    ((not ($listp val))
+       ; enhanced3d is given an expression without 
+       ; explicit declaration of its variables.
+       ; Each graphic object must check for them.
+       (setf (gethash '$enhanced3d *gr-options*) val
+             *draw-enhanced3d-type* 99
+             *draw-enhanced3d-fun* nil))
     (t
         (merror "draw: illegal enhanced3d definition")) ) )
 
@@ -569,10 +571,27 @@
 
 
 
+;; update option point_type
+;; --------------------------
+(defun update-pointtype (val)
+  (cond
+    ((and (integerp val) (>= val -1 ))
+       (setf (gethash '$point_type *gr-options*) val))
+    (t (let ((shapes '($none $dot $plus $multiply $asterisk
+                       $square $filled_square $circle $filled_circle
+                       $up_triangle $filled_up_triangle $down_triangle
+                       $filled_down_triangle $diamant $filled_diamant
+                       $sphere $cube $cylinder $cone)))
+          (if (member val shapes)
+              (setf (gethash '$point_type *gr-options*) (- (position val shapes) 1))
+              (merror "draw: illegal point type: ~M " val)))))  )
+
+
+
 ;; update string type options
 ;; --------------------------
 (defun update-string (opt val)
-  (setf (gethash opt *gr-options*) string(val)))
+  (setf (gethash opt *gr-options*) val))
 
 
 
@@ -653,17 +672,8 @@
                      (member ($second val) '($open $closed)))
                (setf (gethash opt *gr-options*) val)
                (merror "draw: illegal tube extreme types: ~M" val)))
-      ($point_type ; numbers >= -1 or shape names
-            (cond
-              ((and (integerp val) (>= val -1 ))
-                 (setf (gethash opt *gr-options*) val))
-              (t (let ((shapes '($none $dot $plus $multiply $asterisk
-                                 $square $filled_square $circle $filled_circle
-                                 $up_triangle $filled_up_triangle $down_triangle
-                                 $filled_down_triangle $diamant $filled_diamant)))
-                    (if (member val shapes)
-                        (setf (gethash opt *gr-options*) (- (position val shapes) 1))
-                        (merror "draw: illegal point type: ~M " val))))) )
+      ($point_type
+         (update-pointtype val))
       (($columns $nticks $adapt_depth $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel $font_size)
             (update-positive-integer opt val))
       ($contour_levels    ; positive integer, increment or set of points
