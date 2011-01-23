@@ -105,20 +105,6 @@
 
 (defvar forms-to-compile-queue ())
 
-(defun compile-forms-to-compile-queue-now ()
-  (cond (forms-to-compile-queue
-	 (loop for v in forms-to-compile-queue
-	       do (eval v) (compile (second v)))))
-  (setq forms-to-compile-queue nil))
-
-(defmacro compile-forms-to-compile-queue ()
-  (if forms-to-compile-queue
-      (nconc (list 'progn ''compile)
-	     (prog1
-		 forms-to-compile-queue
-	       (setq forms-to-compile-queue nil))
-	     (list '(compile-forms-to-compile-queue)))))
-
 (defun emit-defun (exp)
   (if $tr_semicompile (setq exp `(progn ,exp)))
   (let nil
@@ -171,12 +157,6 @@
        (setq ,last-arg (cons '(mlist) ,last-arg))
        ,@body))))
 
-
-(defun for-eval-then-quote (var)
-  `(list 'quote ,var))
-
-(defun for-eval-then-quote-argl (argl)
-  (mapcar 'for-eval-then-quote argl))
 
 ;; Problem: You can pass a lambda expression around in macsyma
 ;; because macsyma "general-rep" has a CAR which is a list.

@@ -57,17 +57,6 @@
 ;;txx(i,j):=block([hl],hl[i]:j,hl[i]); should leave hl unbound, after creating
 ;;a  hash table for hl, There should be a resource of these.
 
-
-;;acceptable arguments to ar[i] or ar[i]:val
-
-(defun lispm-marray-type (ar)
-  (cond ((arrayp ar) 'array)
-	( (hash-table-p ar) 'hash-table)
-	(($listp ar) '$list)
-	(($matrixp ar) '$matrix)
-	((symbolp ar) 'symbol)
-	(t nil)))
-
 (defun tr-maset (ar val  inds)
   ;; Top-level forms need to define the variable first.
   (if *macexpr-top-level-form-p* 

@@ -369,18 +369,6 @@ APPLY means like APPLY.")
 (defun possible-predicate-op-p (f)
   (member f '(mnotequal mequal $equal mgreaterp mgeqp mlessp mleqp) :test #'eq))
 
-(defun warn-predicate (form)
-  (warn-meval
-   form
-   (cond ((atom form)
-	  "This variable should be declared `boolean' perhaps.")
-	 ((macsyma-special-op-p (caar form))
-	  "Special form not handled in targeting: Transl bug.")
-	 ((possible-predicate-op-p (caar form))
-	  "Unable to assert modes of subexpressions, a call to the macsyma data *print-base* has been generated.")
-	 (t
-	  "`translate' doesn't know predicate properties for this, a call to the macsyma data *print-base* has been generated."))))
-
 ;;;***************************************************************;;;
 
 ;;; This function is the way to call the TRANSLATOR on an expression with
@@ -573,18 +561,6 @@ APPLY means like APPLY.")
 
 (defun trfail (x)
   (tr-tell x " failed to translate.") nil)
-
-(defun translate-macexpr-actual (form filepos)
-  (declare (special *translate-buffered-forms*))
-  ;; Called as the EVAL-PRINT part of the READ-EVAL-PRINT
-  (if (and (not (atom form)) (symbolp (caar form)))
-      (let ((p (get (caar form) 'tags)))
-	;; So we can generate a tags file as we translate,
-	;; this is an incredibly efficient way to do it
-	;; since the incremental cost is almost nothing.
-	(if p (funcall p form filepos))))
-  (push (translate-macexpr-toplevel form)
-	*translate-buffered-forms*))
 
 (defmfun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
@@ -1362,12 +1338,6 @@ APPLY means like APPLY.")
 
 ;; The MDO and MDOIN translators should be changed to use the TR-LAMBDA.
 ;; Perhaps a mere expansion into an MPROG would be best.
-
-(defun new-end-symbol ( &aux tem)
-  (loop for i from 0
-	 do (setq tem (intern (format nil "~A-~A" '#:test i)))
-	 when (null (symbol-plist tem))
-	 do (return tem)))
 
 (declare-top (special shit))
 

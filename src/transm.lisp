@@ -91,11 +91,6 @@
      (maxima-error "No TRANSLATE property to alias. ~a" ',same-as))
     'translate))
 
-(defmacro def%tr-inherit (from &rest others)
-  `(let ((tr-prop (or (get ',from 'translate)
-		      (maxima-error "No TRANSLATE property to alias. ~a" ',from))))
-    (mapc #'(lambda (name) (putprop name tr-prop 'translate))',others)))
-
 ;;; declarations for the TRANSL PACKAGE.
 
 (declare-top (special *transl-sources*)
