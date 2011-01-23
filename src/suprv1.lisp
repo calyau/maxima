@@ -178,8 +178,8 @@
 	   (boundp ($concat '|| x $linenum)))))
 
 (defun gctimep (timep tim)
-  (cond ((and (eq timep '$all) (not (zerop tim))) (princ "Totaltime= ") t)
-	(t (princ "Time= ") nil)))
+  (cond ((and (eq timep '$all) (not (zerop tim))) (princ (intl:gettext "Total time = ")) t)
+	(t (princ (intl:gettext "Time = ")) nil)))
 
 ; Following GENERIC-AUTOLOAD is copied from orthopoly/orthopoly-init.lisp.
 ; Previous version didn't take Clisp, CMUCL, or SBCL into account.
@@ -239,11 +239,11 @@
 (defmfun loadfile (file findp printp &aux (saveno 0))
   (and findp (member $loadprint '(nil $loadfile) :test #'equal) (setq printp nil))
   ;; Should really get the truename of FILE.
-  (if printp (format t "~%~A being loaded.~%" file))
+  (if printp (format t (intl:gettext "loadfile: loading ~A.~%") file))
   (let* ((path (pathname file))
 	 ($load_pathname path)
 	 (tem (errset #-sbcl (load (pathname file)) #+sbcl (with-compilation-unit nil (load (pathname file))))))
-    (or tem (merror "Load failed for ~A" (namestring path)))
+    (or tem (merror (intl:gettext "loadfile: failed to load ~A") (namestring path)))
     (namestring path)))
 
 (defun $directory (path)
@@ -429,7 +429,7 @@
 		 ;; Silently let it stand and hope it doesn't cause trouble.
 		 ((eq (symbol-value x) x) t)
 		 (t
-		  (mtell "remvalue: ~M doesn't appear to be a known variable; just unbind it anyway.~%" x)
+		  (mtell (intl:gettext "remvalue: ~M doesn't appear to be a known variable; just unbind it anyway.~%") x)
 		  (makunbound x)
 		  t))))))
 
@@ -480,12 +480,12 @@
 
 (defmfun fexprcheck (form)
   (if (or (null (cdr form)) (cddr form))
-      (merror "~:M takes just one argument." (caar form))
+      (merror (intl:gettext "~:M: expected just one argument; found: ~M") (caar form) form)
       (cadr form)))
 
 (defmfun nonsymchk (x fn)
   (unless (symbolp x)
-    (merror "The argument to ~:M must be a symbolic name:~%~M" fn x)))
+    (merror (intl:gettext "~:M: argument must be a symbol; found: ~M") fn x)))
 
 (defmfun $print (&rest args)
   (if (null args)
@@ -537,8 +537,8 @@
 		((or incharp
 		     (prog2 (when (and timep (setq l (get (car l1) 'time)))
 			      (setq x (gctimep timep (cdr l)))
-			      (mtell-open "~A sec." (car l))
-			      (if x (mtell-open "  GCtime= ~A sec." (cdr l)))
+			      (mtell (intl:gettext "~A seconds") (car l))
+			      (if x (mtell (intl:gettext "  GC time = ~A seconds") (cdr l)))
 			      (mterpri))
 			 (not (or inputp (get (car l1) 'nodisp)))))
 		 (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
@@ -558,7 +558,7 @@
 
 (defmspec $alias (form)
   (if (oddp (length (setq form (cdr form))))
-      (merror "`alias' takes an even number of arguments."))
+      (merror (intl:gettext "alias: expected an even number of arguments.")))
   (do ((l nil (cons (alias (pop form) (pop form))
 		    l)))
       ((null form)
@@ -573,7 +573,7 @@
 ;	 (merror "-ed symbols may not be aliased. ~M" x))
 	((get x 'reversealias)
 	 (if (not (eq x y))
-	     (merror "~M already is aliased." x)))
+	     (merror (intl:gettext "alias: ~M already has an alias.") x)))
 	(t (putprop x y'alias)
 	   (putprop y x 'reversealias)
 	   (add2lnc y $aliases)
@@ -593,7 +593,7 @@
 (defmfun stripdollar (x)
   (cond ((not (atom x))
 	 (cond ((and (eq (caar x) 'bigfloat) (not (minusp (cadr x)))) (implode (fpformat x)))
-	       (t (merror "Atomic arg required:~%~M" x))))
+	       (t (merror (intl:gettext "STRIPDOLLAR: argument must be an atom; found: ~M") x))))
 	((numberp x) x)
 	((null x) 'false)
 	((eq x t) 'true)
@@ -629,7 +629,7 @@
 ;;;
 (defmfun $nounify (x)
   (if (not (or (symbolp x) (stringp x)))
-    (merror "nounify: argument must be a symbol or a string."))
+    (merror (intl:gettext "nounify: argument must be a symbol or a string; found: ~M") x))
   (setq x (amperchk x))
   (cond ((get x 'verb))
 	((get x 'noun) x)
@@ -644,7 +644,7 @@
 
 (defmfun $verbify (x)
   (if (not (or (symbolp x) (stringp x)))
-    (merror "verbify: argument must be a symbol or a string."))
+    (merror (intl:gettext "verbify: argument must be a symbol or a string; found: ~M") x))
   (setq x (amperchk x))
   (cond ((get x 'noun))
         ((eq x '||) x)
@@ -747,7 +747,7 @@
 		     (setq maxima-error t)))
 	      (setq truename (truename savefile))
 	      (terpri savefile))
-	    (if maxima-error (let ((errset 'errbreak1)) (merror "Error in `stringout' attempt")))
+	    (if maxima-error (let ((errset 'errbreak1)) (merror (intl:gettext "stringout: unspecified error."))))
 	    (cl:namestring truename)))))
 
 (defmspec $labels (char)
@@ -762,7 +762,7 @@
      (if (> x 0) (setq x (- x)))
      (if (cdr $labels)
 	 (setq l (cddr $labels) outchar (getlabcharn $outchar)))
-     loop (if (null l) (merror "Improper call to %th"))
+     loop (if (null l) (merror (intl:gettext "%th: no such previous output: ~M") x))
      (if (and (char= (getlabcharn (car l)) outchar) (= (setq x (1+ x)) 0))
 					; Only the 1st alphabetic character of $OUTCHAR is tested.
 	 (return (meval (car l))))
@@ -807,7 +807,7 @@
       (errlfun1 mcatch))))
 
 (defmfun $throw (exp)
-  (if (null mcatch) (merror "`throw' not within `catch':~%~M" exp))
+  (if (null mcatch) (merror (intl:gettext "throw: not within 'catch'; expression: ~M") exp))
   (throw 'mcatch exp))
 
 (defmspec $time (l)
@@ -860,10 +860,10 @@
   (let* ((keyword (car form))
          (feature (cadr form)))
     (when (not (symbolp keyword))
-      (merror (intl:gettext "status: First argument must be a symbol.")))
+      (merror (intl:gettext "status: first argument must be a symbol; found: ~M") keyword))
     (when (not (or (stringp feature) (symbolp feature)))
       (merror
-        (intl:gettext "status: Second argument must be symbol or a string.")))
+        (intl:gettext "status: second argument must be symbol or a string; found: ~M") feature))
     (case keyword
       ($feature (cond ((null feature) (dollarify *features*))
                       ((member (intern (if (stringp feature)
@@ -871,7 +871,7 @@
                                            (symbol-name (fullstrip1 feature)))
                                        'keyword)
                                *features* :test #'equal) t)))
-      (t (merror (intl:gettext "status: Unknown argument: ~M~%") keyword)))))
+      (t (merror (intl:gettext "status: unknown argument: ~M") keyword)))))
 
 (defquote $sstatus (keyword item)
   (cond ((equal keyword '$feature)
@@ -879,7 +879,7 @@
         ((equal keyword '$nofeature)
          (setq *features* (delete ($mkey item) *features*)) t)
         (t
-         (merror (intl:gettext "sstatus: Unknown argument: ~M~%") keyword))))
+         (merror (intl:gettext "sstatus: unknown argument: ~M") keyword))))
 
 (dolist (l '($sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
 	     $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
