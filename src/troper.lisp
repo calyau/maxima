@@ -42,12 +42,6 @@
 	  ((eq '$number mode) `($number + . ,(mapcar #'cdr args)))
 	  (t `($any add* . ,(mapcar #'dconvx args))))))
 
-(defun nestify (op l)
-  (do ((l (cdr l) (cdr l))
-       (nl (car l)))
-      ((null l) nl)
-    (setq nl (list op nl (car l)))))
-
 (def%tr mtimes (form)
   (let (args mode)
     (cond ((equal -1 (cadr form))

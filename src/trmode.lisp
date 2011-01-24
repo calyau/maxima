@@ -246,17 +246,6 @@
 
 ;;; 1/2 is not $RATIONAL. bad name. it means CRE form.
 
-(defun ir (x)
-  (case x
-    (($float $real $floatp $flonum $floatnum) '$float)
-    (($fixp $fixnum) '$fixnum)
-    (($rational $rat) '$rational)
-    (($number $bignum $big) '$number)
-    (($boolean $bool) '$boolean)
-    (($list $listp) '$list)
-    (($any $none $any_check) '$any)
-    (t (udm-err x) x)))
-
 (defun udm-err (mode)
   (mtell "warning: ~:M is not a known mode declaration; maybe you want ~:M mode.~%"
 	 mode

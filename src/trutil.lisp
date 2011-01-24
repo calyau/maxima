@@ -21,44 +21,6 @@
 (defun tr-gensym ()
   (gentemp (symbol-name 'tr-gensym)))
 
-(defun conserve-eval-args-data (l)
-  (do ((sublis nil)
-       (l l (cdr l))
-       (nl nil))
-      ((null l) (cons sublis (nreverse nl)))
-    (cond ((atom (car l))
-	   (push (car l) nl))
-	  (t
-	   (let ((sym (tr-gensym)))
-	     (push (cons sym (car l)) sublis)
-	     (push sym nl))))))
-
-(defun tr-trace-handle (form)
-  (let* ((level-sym (get (caar form) 'tr-trace-level))
-	 (level (1+ (symbol-value level-sym)))
-	 (op (caar form)))
-    (progv (list level-sym)
-	(list level)
-      (mtell-open "~%~S Enter ~:@M~%" level op)
-      (mgrind form nil)
-      (setq form (apply (get op 'otranslate) form))
-      (mtell-open "~%~S Exit  ~:@M" level op)
-      (pprint form)
-      form)))
-
-(defun tr-trace (op)
-  (if (get op 'otranslate) (tr-untrace op))
-  (let ((sym (gensym)))
-    (setf (symbol-value sym) 0)
-    (putprop op sym 'tr-trace-level))
-  (putprop op (get! op 'translate) 'otranslate)
-  (putprop op (get! 'tr-trace-handle 'subr) 'translate))
-
-(defun tr-untrace (op)
-  (remprop op 'tr-trace-level)
-  (putprop op (get! op 'otranslate) 'translate)
-  (remprop op 'otranslate))
-
 (defun push-defvar (var val)
   ;; makes sure there is a form in the beginning of the
   ;; file that insures the special variable is declared and bound.
