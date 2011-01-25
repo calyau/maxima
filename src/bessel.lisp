@@ -95,47 +95,44 @@
   grad)
 
 ;; Integral of the Bessel function wrt z
-(putprop '%bessel_j
-  `((v z)
-   nil
-  ,(lambda (v z)
-    (case v
-          (0 
-           ;; integrate(bessel_j(0,z)
-           ;; = (1/2)*z*(%pi*bessel_j(1,z)*struve_h(0,z)
-           ;;            +bessel_j(0,z)*(2-%pi*struve_h(1,z)))
-           '((mtimes) ((rat) 1 2) z
-             ((mplus)
-              ((mtimes) $%pi 
-               ((%bessel_j) 1 z)
-               ((%struve_h) 0 z))
-              ((mtimes) 
-               ((%bessel_j) 0 z)
-               ((mplus) 2 ((mtimes) -1 $%pi 
-                           ((%struve_h) 1 z)))))))
-          (1
-           ;; integrate(bessel_j(1,z) = -bessel_j(0,z)
-           '((mtimes) -1 ((%bessel_j) 0 z)))
-          (otherwise
-           ;; http://functions.wolfram.com/03.01.21.0002.01
-           ;; integrate(bessel_j(v,z)
-           ;;  = 2^(-v-1)*z^(v+1)*gamma(v/2+1/2)
-           ;;   * hypergeometric_regularized([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
-           ;;  = 2^(-v-1)*z^(v+1)*hypergeometric([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
-           ;;   / ((v/2+1/2)*gamma(v+1))
-           '((mtimes)
-              (($hypergeometric)
-                ((mlist)
-                  ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) v)))
-                ((mlist)
-                  ((mplus) ((rat) 3 2) ((mtimes) ((rat) 1 2) v))
-                  ((mplus) 1 v))
-                ((mtimes) ((rat) -1 4) ((mexpt) z 2)))
-              ((mexpt) ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) v)) -1)
-              ((mexpt) 2 ((mplus) -1 ((mtimes) -1 v)))
-              ((mexpt) ((%gamma) ((mplus) 1 v)) -1) 
-              ((mexpt) z ((mplus ) 1 v)))))))
-  'integral)
+(defun bessel-j-integral-2 (v z)
+  (case v
+    (0 
+     ;; integrate(bessel_j(0,z)
+     ;; = (1/2)*z*(%pi*bessel_j(1,z)*struve_h(0,z)
+     ;;            +bessel_j(0,z)*(2-%pi*struve_h(1,z)))
+     '((mtimes) ((rat) 1 2) z
+       ((mplus)
+	((mtimes) $%pi 
+	 ((%bessel_j) 1 z)
+	 ((%struve_h) 0 z))
+	((mtimes) 
+	 ((%bessel_j) 0 z)
+	 ((mplus) 2 ((mtimes) -1 $%pi ((%struve_h) 1 z)))))))
+    (1
+     ;; integrate(bessel_j(1,z) = -bessel_j(0,z)
+     '((mtimes) -1 ((%bessel_j) 0 z)))
+    (otherwise
+     ;; http://functions.wolfram.com/03.01.21.0002.01
+     ;; integrate(bessel_j(v,z)
+     ;;  = 2^(-v-1)*z^(v+1)*gamma(v/2+1/2)
+     ;;   * hypergeometric_regularized([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
+     ;;  = 2^(-v-1)*z^(v+1)*hypergeometric([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
+     ;;   / ((v/2+1/2)*gamma(v+1))
+     '((mtimes)
+       (($hypergeometric)
+	((mlist)
+	 ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) v)))
+	((mlist)
+	 ((mplus) ((rat) 3 2) ((mtimes) ((rat) 1 2) v))
+	 ((mplus) 1 v))
+	((mtimes) ((rat) -1 4) ((mexpt) z 2)))
+       ((mexpt) ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) v)) -1)
+       ((mexpt) 2 ((mplus) -1 ((mtimes) -1 v)))
+       ((mexpt) ((%gamma) ((mplus) 1 v)) -1) 
+       ((mexpt) z ((mplus ) 1 v))))))
+
+(putprop '%bessel_j `((v z) nil ,#'bessel-j-integral-2) 'integral)
 
 ;; Support a simplim%bessel_j function to handle specific limits
 
@@ -403,51 +400,49 @@
 
 ;; Integral of the Bessel Y function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselY/21/01/01/
-(putprop '%bessel_y
-  `((n z)
-   nil
-  ,(lambda (n unused)
-   (declare (ignore unused))
-   (cond 
-     ((and ($integerp n) (<= 0 n))
-      (cond
-       (($oddp n)
-        ;; integrate(bessel_y(2*N+1,z)) , N > 0 
-        ;; = -bessel_y(0,z) - 2 * sum(bessel_y(2*k,z),k,1,(n-1)/2)
-        (let* ((k (gensym))
-               (answer `((mplus) ((mtimes) -1 ((%bessel_y) 0 z))
+(defun bessel-y-integral-2 (n unused)
+  (declare (ignore unused))
+  (cond 
+   ((and ($integerp n) (<= 0 n))
+    (cond
+     (($oddp n)
+      ;; integrate(bessel_y(2*N+1,z)) , N > 0 
+      ;; = -bessel_y(0,z) - 2 * sum(bessel_y(2*k,z),k,1,(n-1)/2)
+      (let* ((k (gensym))
+	     (answer `((mplus) ((mtimes) -1 ((%bessel_y) 0 z))
                        ((mtimes) -2
                         ((%sum) ((%bessel_y) ((mtimes) 2 ,k) z) ,k 1
                          ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))))
-          ;; Expand out the sum if n < 10.  Otherwise fix up the indices
-          (if (< n 10) 
+	;; Expand out the sum if n < 10.  Otherwise fix up the indices
+	(if (< n 10) 
             (meval `(($ev) ,answer $sum))   ; Is there a better way?
-            (simplify ($niceindices answer)))))
-       (($evenp n)
-        ;; integrate(bessel_y(2*N,z)) , N > 0
-        ;; = (1/2)*%pi*z*(bessel_y(0,z)*struve_h(-1,z)
-        ;;               +bessel_y(1,z)*struve_h(0,z))
-        ;;    - 2 * sum(bessel_y(2*k,z),k,1,n/2)
-        (let* 
-            ((k (gensym))
-             (answer `((mplus)
-                       ((mtimes) -2
-                        ((%sum) ((%bessel_y) ((mtimes) 2 ,k) z) ,k 1
-                         ((mtimes) ((rat) 1 2) ,n)))
-                       ((mtimes) ((rat) 1 2) $%pi z
-                        ((mplus)
-                         ((mtimes) 
-                          ((%bessel_y) 0 z)
-                          ((%struve_h) -1 z))
-                         ((mtimes) 
-                          ((%bessel_y) 1 z)
-                          ((%struve_h) 0 z)))))))
-          ;; Expand out the sum if n < 10.  Otherwise fix up the indices
-          (if (< n 10) 
+	  (simplify ($niceindices answer)))))
+     (($evenp n)
+      ;; integrate(bessel_y(2*N,z)) , N > 0
+      ;; = (1/2)*%pi*z*(bessel_y(0,z)*struve_h(-1,z)
+      ;;               +bessel_y(1,z)*struve_h(0,z))
+      ;;    - 2 * sum(bessel_y(2*k,z),k,1,n/2)
+      (let* 
+	  ((k (gensym))
+	   (answer `((mplus)
+		     ((mtimes) -2
+		      ((%sum) ((%bessel_y) ((mtimes) 2 ,k) z) ,k 1
+		       ((mtimes) ((rat) 1 2) ,n)))
+		     ((mtimes) ((rat) 1 2) $%pi z
+		      ((mplus)
+		       ((mtimes) 
+			((%bessel_y) 0 z)
+			((%struve_h) -1 z))
+		       ((mtimes) 
+			((%bessel_y) 1 z)
+			((%struve_h) 0 z)))))))
+	;; Expand out the sum if n < 10.  Otherwise fix up the indices
+	(if (< n 10) 
             (meval `(($ev) ,answer $sum))  ; Is there a better way?
-            (simplify ($niceindices answer)))))))
-     (t nil))))
-  'integral)
+	  (simplify ($niceindices answer)))))))
+   (t nil)))
+
+(putprop '%bessel_y `((n z) nil ,#'bessel-y-integral-2) 'integral)
 
 ;; Support a simplim%bessel_y function to handle specific limits
 
@@ -735,30 +730,28 @@
 
 ;; Integral of the Bessel I function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselI/21/01/01/
-(putprop '%bessel_i
-  `((n z)
-   nil
-  ,(lambda (n unused)
-    (declare (ignore unused))
-    (case n
-          (0 
-           ;; integrate(bessel_i(0,z)
-           ;; = (1/2)*z*(bessel_i(0,z)*(%pi*struve_l(1,z)+2)
-           ;;            -%pi*bessel_i(1,z)*struve_l(0,z))
-           '((mtimes) ((rat) 1 2) z
-             ((mplus)
-              ((mtimes) -1 $%pi 
-               ((%bessel_i) 1 z)
-               ((%struve_l) 0 z))
-              ((mtimes) 
-               ((%bessel_i) 0 z)
-               ((mplus) 2
-                ((mtimes) $%pi ((%struve_l) 1 z)))))))
-          (1
-           ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
-           '((mtimes) -1 ((%bessel_i) 0 z)))
-          (otherwise nil))))
-  'integral)
+(defun bessel-i-integral-2 (n unused)
+  (declare (ignore unused))
+  (case n
+	(0 
+	 ;; integrate(bessel_i(0,z)
+	 ;; = (1/2)*z*(bessel_i(0,z)*(%pi*struve_l(1,z)+2)
+	 ;;            -%pi*bessel_i(1,z)*struve_l(0,z))
+	 '((mtimes) ((rat) 1 2) z
+	   ((mplus)
+	    ((mtimes) -1 $%pi 
+	     ((%bessel_i) 1 z)
+	     ((%struve_l) 0 z))
+	    ((mtimes) 
+	     ((%bessel_i) 0 z)
+	     ((mplus) 2
+	      ((mtimes) $%pi ((%struve_l) 1 z)))))))
+	(1
+	 ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
+	 '((mtimes) -1 ((%bessel_i) 0 z)))
+	(otherwise nil)))
+
+(putprop '%bessel_i `((n z) nil ,#'bessel-i-integral-2) 'integral)
 
 ;; Support a simplim%bessel_i function to handle specific limits
 
@@ -1012,62 +1005,60 @@
 
 ;; Integral of the Bessel K function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselK/21/01/01/
-(putprop '%bessel_k
-  `((n z)
-   nil
-  ,(lambda (n unused)
-   (declare (ignore unused))
-   (cond 
-     ((and ($integerp n) (<= 0 n))
-      (cond
-       (($oddp n)
-        ;; integrate(bessel_y(2*N+1,z)) , N > 0
-        ;; = -(-1)^((n-1)/2)*bessel_k(0,z) 
-        ;;   + 2*sum((-1)^(k+(n-1)/2-1)*bessel_k(2*k,z),k,1,(n-1)/2)
-        (let* ((k (gensym))
-               (answer `((mplus)
-                         ((mtimes) -1 ((%bessel_k) 0 z)
-                          ((mexpt) -1
-                           ((mtimes) ((rat) 1 2) ((mplus) -1 ,n))))
-                         ((mtimes) 2
-                          ((%sum)
-                           ((mtimes) ((%bessel_k) ((mtimes) 2 ,k) z)
-                            ((mexpt) -1
-                             ((mplus) -1 ,k
-                              ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))
-                           ,k 1 ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))))
-          ;; Expand out the sum if n < 10.  Otherwise fix up the indices
-          (if (< n 10) 
+(defun bessel-k-integral-2 (n unused)
+  (declare (ignore unused))
+  (cond 
+   ((and ($integerp n) (<= 0 n))
+    (cond
+     (($oddp n)
+      ;; integrate(bessel_y(2*N+1,z)) , N > 0
+      ;; = -(-1)^((n-1)/2)*bessel_k(0,z) 
+      ;;   + 2*sum((-1)^(k+(n-1)/2-1)*bessel_k(2*k,z),k,1,(n-1)/2)
+      (let* ((k (gensym))
+	     (answer `((mplus)
+		       ((mtimes) -1 ((%bessel_k) 0 z)
+			((mexpt) -1
+			 ((mtimes) ((rat) 1 2) ((mplus) -1 ,n))))
+		       ((mtimes) 2
+			((%sum)
+			 ((mtimes) ((%bessel_k) ((mtimes) 2 ,k) z)
+			  ((mexpt) -1
+			   ((mplus) -1 ,k
+			    ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))
+			 ,k 1 ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))))
+	;; Expand out the sum if n < 10.  Otherwise fix up the indices
+	(if (< n 10) 
             (meval `(($ev) ,answer $sum))   ; Is there a better way?
-            (simplify ($niceindices answer)))))
-       (($evenp n)
-        ;; integrate(bessel_k(2*N,z)) , N > 0
-        ;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*struve_l(-1,z)
-        ;;               +bessel_k(1,z)*struve_l(0,z))
-        ;;    + 2 * sum((-1)^(k+n/2)*bessel_k(2*k+1,z),k,0,n/2-1)
-        (let* 
-            ((k (gensym))
-             (answer `((mplus)
-                       ((mtimes) 2
-                        ((%sum)
-                         ((mtimes)
-                          ((%bessel_y) ((mplus) 1 ((mtimes) 2 ,k)) z)
-                          ((mexpt) -1
-                           ((mplus) ,k ((mtimes) ((rat) 1 2) ,n))))
-                         ,k 0 ((mplus) -1 ((mtimes) ((rat) 1 2) ,n))))
-                       ((mtimes) ((rat) 1 2) $%pi
-                        ((mexpt) -1 ((mtimes) ((rat) 1 2) ,n)) z
-                        ((mplus)
-                         ((mtimes) ((%bessel_k) 0 z)
-                          ((%struve_l) -1 z))
-                         ((mtimes) ((%bessel_k) 1 z)
-                          ((%struve_l) 0 z)))))))
-          ;; expand out the sum if n < 10.  Otherwise fix up the indices
-          (if (< n 10) 
+	  (simplify ($niceindices answer)))))
+     (($evenp n)
+      ;; integrate(bessel_k(2*N,z)) , N > 0
+      ;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*struve_l(-1,z)
+      ;;               +bessel_k(1,z)*struve_l(0,z))
+      ;;    + 2 * sum((-1)^(k+n/2)*bessel_k(2*k+1,z),k,0,n/2-1)
+      (let* 
+	  ((k (gensym))
+	   (answer `((mplus)
+		     ((mtimes) 2
+		      ((%sum)
+		       ((mtimes)
+			((%bessel_y) ((mplus) 1 ((mtimes) 2 ,k)) z)
+			((mexpt) -1
+			 ((mplus) ,k ((mtimes) ((rat) 1 2) ,n))))
+		       ,k 0 ((mplus) -1 ((mtimes) ((rat) 1 2) ,n))))
+		     ((mtimes) ((rat) 1 2) $%pi
+		      ((mexpt) -1 ((mtimes) ((rat) 1 2) ,n)) z
+		      ((mplus)
+		       ((mtimes) ((%bessel_k) 0 z)
+			((%struve_l) -1 z))
+		       ((mtimes) ((%bessel_k) 1 z)
+			((%struve_l) 0 z)))))))
+	;; expand out the sum if n < 10.  Otherwise fix up the indices
+	(if (< n 10) 
             (meval `(($ev) ,answer $sum))  ; Is there a better way?
-            (simplify ($niceindices answer)))))))
-      (t nil))))
-  'integral)
+	  (simplify ($niceindices answer)))))))
+   (t nil)))
+
+(putprop '%bessel_k `((n z) nil ,#'bessel-k-integral-2) 'integral)
 
 ;; Support a simplim%bessel_k function to handle specific limits
 
