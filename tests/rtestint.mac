@@ -1336,3 +1336,7 @@ forget(x>2);
 /* integrate(x^2*exp(x)/(1+exp(x))^2, x, minf, inf); - ID: 3158526 */
 integrate(x^2*exp(x)/(1+exp(x))^2, x, minf, inf);
 %pi^2/3;
+
+/* integrate(abs(sin(x)),x,0,2*%pi) wrong result - ID: 3165872 */
+integrate(abs(sin(x)),x,0,2*%pi);
+'integrate(abs(sin(x)),x,0,2*%pi);

@@ -1614,8 +1614,6 @@
   getout
      (setq y (list '(mtimes) *yy* *yz*))
   get2
-     (setq y (maxima-substitute var 'x y))
-     
      (when *debug-integrate*
        (format t "~& Call the INTEGRATOR with:~%")
        (format t "~&   : y    = ~A~%" y)
@@ -1629,7 +1627,7 @@
        (let (($triginverses '$all) (newvar (gensym)))
          (substint repl
                    newvar
-                   (integrator (maxima-substitute newvar var y) newvar))))))
+                   (integrator (maxima-substitute newvar 'x y) newvar))))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
