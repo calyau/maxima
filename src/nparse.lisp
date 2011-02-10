@@ -512,6 +512,7 @@
 		  ((eql test #\/)
 		   (parse-tyi)
 		   (cond ((char= (parse-tyipeek) #\*)
+                          (parse-tyi)
 			  (gobble-comment)
 			  (scan-one-token-g eof-ok? eof-obj))
 			 (t '$/)))
