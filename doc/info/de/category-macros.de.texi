@@ -122,6 +122,7 @@
              ka-no-ni-scher
              Kon-stan-te
              Ko-or-di-na-ten-sys-tem
+             Maxima
              Mgnuplot
              O-pe-ra-tor 
              O-pe-ra-to-ren  
@@ -132,6 +133,7 @@
              Trans-for-ma-tio-nen
              Trans-po-nier-ung
              un-ge-ra-de
+             ver-ar-bei-tet
              ver-ein-fach-en
              Ver-ein-fach-ung
              ver-ein-facht
@@ -144,10 +146,13 @@
              wer-tet
              wxMaxima
              Xmaxima
+             Zei-chen
              Zei-chen-ket-ten
              Zu-falls-zah-len-ge-ne-ra-tors
              zu-ge-wie-sen
-             Zwi-schen-aus-druck }
+             Zwi-schen-aus-druck
+             Zwi-schen-raum-zei-chen
+ }
 @end iftex
 
 @c --- End of file category-macros.de.texi -------------------------------------
