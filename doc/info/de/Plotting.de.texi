@@ -5,6 +5,7 @@
 @c Original    : Plotting.texi revision 1.34
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 23.10.2010
+@c Revision    : 05.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -18,7 +19,7 @@
 * Gnuplot_pipes Formatfunktionen::
 @end menu
 
-@c --- 23.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Einf@"uhrung in die grafische Darstellung, Grafikformate, Grafische Darstellung, Grafische Darstellung
 @section Einf@"uhrung in die grafische Darstellung
 @c -----------------------------------------------------------------------------
@@ -34,11 +35,12 @@
 
 Maxima verwendet externe Grafikprogramme, um grafische Darstellungen auszugeben.
 Die Grafikfunktionen berechnen die Punkte der Grafik und senden diese mit einem 
-Satz an Kommandos an das externe Grafikprogramm. Die Daten werden als
+Satz an Kommandos an das externe Grafikprogramm.  Die Daten werden als
 Datenstrom @"uber eine Pipe oder als eine Datei an das Grafikprogramm 
-@"ubergeben. Die Datei erh@"alt den Namen @code{maxout.interface}, wobei 
-@code{interface} der Name des externen Grafikprogramms ist. Die m@"oglichen 
-Werte sind: gnuplot, xmaxima, mgnuplot oder gnuplot_pipes.
+@"ubergeben.  Die Datei erh@"alt den Namen @code{maxout.interface}, wobei 
+@code{interface} der Name des externen Grafikprogramms ist.  Die m@"oglichen 
+Dateiendungen sind: @code{gnuplot}, @code{xmaxima}, @code{mgnuplot} oder 
+@code{gnuplot_pipes}.
 
 @c The @code{maxout.interface} file, in the cases when it is used, is created 
 @c in the directory specified by the system variable @var{maxima_tempdir}. That 
@@ -46,8 +48,7 @@ Werte sind: gnuplot, xmaxima, mgnuplot oder gnuplot_pipes.
 @c represents a valid directory where Maxima can create new files.
 
 Die Datei @code{maxout.interface} wird in dem Verzeichnis gespeichert, das
-durch die Systemvariable @code{maxima_tempdir} bezeichnet wird. Siehe
-@mrefdot{maxima_tempdir}
+durch die Systemvariable @mref{maxima_tempdir} bezeichnet wird. 
 
 @c After a plot has been created, the file @code{maxout.interface} can be
 @c executed again with the appropriate external program. If a Maxima plotting
@@ -55,16 +56,13 @@ durch die Systemvariable @code{maxima_tempdir} bezeichnet wird. Siehe
 @c possible sources of problems.
 
 Die Datei @code{maxout.interface} kann wiederholt an das Grafikprogramm
-@"ubergeben werden. Gibt Maxima keine Grafik aus, kann diese Datei gepr@"uft 
+@"ubergeben werden.  Gibt Maxima keine Grafik aus, kann diese Datei gepr@"uft 
 werden, um m@"ogliche Fehler festzustellen.
-
-@c @opencatbox
-@c @category{Grafische Darstellung}
-@c @closecatbox
 
 @c -----------------------------------------------------------------------------
 @node Grafikformate, Funktionen und Variablen f@"ur die grafische Darstellung, Einf@"uhrung in die grafische Darstellung, Grafische Darstellung
 @section Grafikformate
+@c -----------------------------------------------------------------------------
 
 @c There are currently two external plotting programs that Maxima use: Gnuplot
 @c and Xmaxima. There are various different formats for those programs, which 
@@ -73,22 +71,19 @@ werden, um m@"ogliche Fehler festzustellen.
 @c The plotting formats are the following:
 
 Maxima verwendet f@"ur die Ausgabe von Grafiken die Grafikprogramme Gnuplot 
-oder Xmaxima. Mit der Grafikoption @code{plot_format} k@"onnen verschiedene 
-Grafikformate f@"ur diese Programme ausgew@"ahlt werden. Die Grafikformate sind:
-
-@itemize @bullet
-@item
-@strong{gnuplot} (Standard f@"ur Windows)
+oder Xmaxima.  Mit der Grafikoption @code{plot_format} k@"onnen verschiedene 
+Grafikformate f@"ur diese Programme ausgew@"ahlt werden.  Die Grafikformate 
+sind:
 
 @c Used to launch the external program gnuplot, which must be installed in your
 @c system. All plotting commands and data are saved into the file 
 @c @code{maxout.gnuplot}.
 
-Startet das externe Programm Gnuplot. Gnuplot muss installiert sein. Die
-Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
+@itemize @bullet
+@item @strong{gnuplot} (Standard f@"ur Windows)
 
-@item
-@strong{gnuplot_pipes} (Standard, wenn nicht Windows)
+Startet das externe Programm Gnuplot.  Gnuplot muss installiert sein.  Die
+Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
 
 @c This format is not available in Windows platforms. It is similar to the 
 @c @code{gnuplot} format except that the commands are sent to gnuplot through a 
@@ -99,38 +94,36 @@ Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
 @c the function @code{gnuplot_replot} can be used to modify a plot that has 
 @c already displayed on the screen (see @code{gnuplot_replot}).
 
-Dieses Format ist f@"ur Windows nicht verf@"ugbar. Es ist @"ahnlich dem Format 
+@item @strong{gnuplot_pipes} (Standard, wenn nicht Windows)
+
+Dieses Format ist f@"ur Windows nicht verf@"ugbar.  Es ist @"ahnlich dem Format 
 @code{gnuplot}, mit der Ausnahme, dass die Grafikkommandos als Datenstrom @"uber
 eine Pipe an Gnuplot gesendet werden, w@"ahrend die Daten in der Datei 
-@code{maxout.gnuplot_pipes} gespeichert werden. Es wird nur eine Instanz von
-Gnuplot gestartet. Aufeinander folgende Grafikkommandos werden an ein bereits
-ge@"offnetes Gnuplot-Programm gesendet. Gnuplot wird mit dem Kommando
-@code{gnuplot_close()} geschlossen. In diesem Grafikformat kann das Kommando 
-@code{gnuplot_replot()} genutzt werden, um eine Grafik zu modifizieren, die 
-bereits auf dem Bildschirm ausgegeben wurde. Siehe @mrefdot{gnuplot_replot}
+@code{maxout.gnuplot_pipes} gespeichert werden.  Es wird nur eine Instanz von
+Gnuplot gestartet.  Aufeinander folgende Grafikkommandos werden an ein bereits
+ge@"offnetes Gnuplot-Programm gesendet.  Gnuplot wird mit der Funktion
+@mref{gnuplot_close} geschlossen.  In diesem Grafikformat kann die Funktion 
+@mref{gnuplot_replot} genutzt werden, um eine Grafik zu modifizieren, die 
+bereits auf dem Bildschirm ausgegeben wurde.
 
 @c This format should only be used to plot to the screen; for plotting to files 
 @c it is better to use the @code{gnuplot} format.
 
 Dieses Grafikformat sollte nur f@"ur die Ausgabe von Grafiken auf den Bildschirm
-verwendet werden. F@"ur die Ausgabe von Grafiken in eine Datei ist das 
-Grafikformat @code{gnuplot} eher geeignet.
-
-@item
-@strong{mgnuplot}
+verwendet werden.  F@"ur die Ausgabe von Grafiken in eine Datei ist das 
+Grafikformat @code{gnuplot} besser geeignet.
 
 @c Mgnuplot is a Tk-based wrapper around gnuplot. It is included in the Maxima 
 @c distribution. Mgnuplot offers a rudimentary GUI for gnuplot, but has fewer 
 @c overall features than the plain gnuplot interface. Mgnuplot requires an 
 @c external gnuplot installation and, in Unix systems, the Tcl/Tk system.
 
-Mgnuplot ist eine Tcl/Tk-Anwendung, die Gnuplot f@"ur die Ausgabe von Grafiken 
-nutzt. Die Anwendung ist in der Maxima-Distribution enthalten. Mgnuplot bietet 
-eine rudiment@"are GUI f@"ur Gnuplot, hat aber weniger F@"ahigkeiten als 
-Gnuplot. Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
+@item @strong{mgnuplot}
 
-@item
-@strong{xmaxima}
+Mgnuplot ist eine Tcl/Tk-Anwendung, die Gnuplot f@"ur die Ausgabe von Grafiken 
+nutzt.  Die Anwendung ist in der Maxima-Distribution enthalten.  Mgnuplot bietet 
+eine rudiment@"are GUI f@"ur Gnuplot, hat aber weniger F@"ahigkeiten als 
+Gnuplot.  Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
 
 @c Xmaxima is a Tcl/Tk graphical interface for Maxima that can also be used
 @c to display plots created when Maxima is run from the console or from other
@@ -142,6 +135,8 @@ Gnuplot. Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
 @c or from other interface, the commands and data will be saved in the file
 @c @code{maxout.xmaxima}, and the xmaxima program will be launched with the
 @c name of the location of that file as argument.
+
+@item @strong{xmaxima}
 
 Xmaxima ist eine auf Tcl/Tk basierende grafische Nutzeroberfl@"ache, die von
 der Maxima-Konsole gestartet werden kann.  Um dieses Grafikformat zu nutzen, 
@@ -158,20 +153,16 @@ die Ausgabe der Grafik @"ubergeben.
 
 In fr@"uheren Versionen wurde dieses Grafikformat @code{openmath} genannt. 
 Dieser Name wird weiterhin als ein Synonym f@"ur @code{xmaxima} akzeptiert.
-
 @end itemize
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur die grafische Darstellung, Grafikoptionen, Grafikformate, Grafische Darstellung
 @section Funktionen und Variablen f@"ur die grafische Darstellung
+@c -----------------------------------------------------------------------------
 
 @c --- 03.11.2010 DK -----------------------------------------------------------
 @anchor{contour_plot}
-@deffn {Funktion} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
+@deffn {Funktion} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, @dots{})
 
 @c It plots the contours (curves of equal value) of @var{expr} over the 
 @c region @var{x_range} by @var{y_range}. Any additional arguments are treated 
@@ -179,8 +170,9 @@ Dieser Name wird weiterhin als ein Synonym f@"ur @code{xmaxima} akzeptiert.
 
 Zeichnet einen Konturgraphen (die Isolinien einer Funktion) von @var{expr} im 
 Bereich @var{x_range} und @var{y_range} mit den Optionen @var{options}. 
-@var{expr} ist eine Funktion @code{f(x,y)} mit zwei Argumenten. Alle weiteren 
-Argumente entsprechen denen der Funktion @code{plot3d}.
+@var{expr} ist ein Ausdruck oder der Name einer Funktion @code{f(x,y)} mit zwei
+Argumenten.  Alle weiteren Argumente entsprechen denen der Funktion 
+@mrefdot{plot3d}
 
 @c This function only works when the plot format is either @code{gnuplot} or 
 @c @code{gnuplot_pipes}. The additional package @code{implicit_plot} can also 
@@ -188,9 +180,9 @@ Argumente entsprechen denen der Funktion @code{plot3d}.
 @c @code{implicit_plot}.
 
 Die Funktion steht nur f@"ur die Grafikformate @code{gnuplot} und 
-@code{gnuplot_pipes} zur Verf@"ugung. Das Paket @code{implicit_plot} enth@"alt
-die Funktion @code{implicit_plot} mit der f@"ur alle Grafikformate Konturgraphen
-erstellt werden k@"onnen. Siehe @mrefdot{implicit_plot}
+@code{gnuplot_pipes} zur Verf@"ugung.  Das Paket @code{implicit_plot} enth@"alt
+die Funktion @mref{implicit_plot} mit der f@"ur alle Grafikformate Konturgraphen
+erstellt werden k@"onnen.
 
 Beispiele:
 
@@ -200,9 +192,8 @@ Beispiele:
 @example
 (%i1) contour_plot(x^2 + y^2, [x, -4, 4], [y, -4, 4])$
 @end example
-
 @ifnotinfo
-@image{../figures/contour1,8cm}
+@image{../figures/contour1,10cm}
 @end ifnotinfo
 
 @c ===beg===
@@ -217,9 +208,8 @@ Beispiele:
 @end group
 (%i2) contour_plot(f, [u, -4, 4], [v, -4, 4])$
 @end example
-
 @ifnotinfo
-@image{../figures/contour2,8cm}
+@image{../figures/contour2,10cm}
 @end ifnotinfo
 
 @c You can add any options accepted by @code{plot3d}; for instance, the option 
@@ -228,10 +218,10 @@ Beispiele:
 @c necessary to specify a custom gnuplot preamble:
 
 Es kann jede Option genutzt werden, die von der Funktion @code{plot3d} 
-akzeptiert wird. Standardm@"a@ss{}ig zeichnet Gnuplot den Graphen mit 3 
-Isolinien. Die Anzahl der Isolinien kann mit der Gnuplot-Option 
-@code{gnuplot_preamble} erh@"oht werden. In diesem Beispiel ist die Legende 
-entfernt. 
+akzeptiert wird.  Standardm@"a@ss{}ig zeichnet Gnuplot den Graphen mit 3 
+Isolinien.  Die Anzahl der Isolinien kann mit der Gnuplot-Option 
+@mref{gnuplot_preamble} erh@"oht werden.  In diesem Beispiel werden 12 Isolinien
+gezeichnet und die Legende ist entfernt.
 
 @c ===beg===
 @c contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], [legend,false],
@@ -243,14 +233,9 @@ entfernt.
   [legend,false], [gnuplot_preamble, "set cntrparam levels 12"])$
 @end group
 @end example
-
 @ifnotinfo
-@image{../figures/contour3,8cm}
+@image{../figures/contour3,10cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end deffn
 
 @c --- 04.11.2010 DK -----------------------------------------------------------
@@ -264,8 +249,8 @@ entfernt.
 
 Gibt die Werte der Parameter der Option mit dem Namen @var{keyword} zur@"uck. 
 Die Optionen und ihre Parameter sind in der Variablen @code{plot_options} 
-gespeichert. Hat @var{index} den Wert 1 wird der Name der Option @var{keyword}
-zur@"uckgeben. Der Wert 2 f@"ur @var{index} gibt den Wert des ersten Parameters
+gespeichert.  Hat @var{index} den Wert 1 wird der Name der Option @var{keyword}
+zur@"uckgeben.  Der Wert 2 f@"ur @var{index} gibt den Wert des ersten Parameters
 zur@"uck, und so weiter.
 
 @c See also @code{plot_options}, @code{set_plot_option} and the section on
@@ -274,33 +259,48 @@ zur@"uck, und so weiter.
 Siehe auch @mrefcomma{plot_options} @mref{set_plot_option} und das Kapitel
 @nrefdot{Grafikoptionen}
 
+Beispiel:
+
+@c ===beg===
+@c get_plot_option(color,1);
+@c get_plot_option(color,2);
+@c get_plot_option(color,3);
+@c ===end===
+@example
+(%i1) get_plot_option(color,1);
+(%o1)                         color
+(%i2) get_plot_option(color,2);
+(%o2)                         blue
+(%i3) get_plot_option(color,3);
+(%o3)                          red
+@end example
 @end deffn
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{implicit_plot}
 @deffn  {Funktion} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Funktion} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffnx {Funktion} implicit_plot ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range})
 
 @c Displays a plot of one or more expressions in implicit
 @c form. @var{expr} is the expression to be plotted, @var{x_range} the
 @c range of the horizontal axis and @var{y_range} the range of vertical
 @c axis. @code{implicit_plot} respects global setting for the gnuplot
-@c driver set by the @var{set_plot_option} function. Options can also be passed to
-@c @code{implicit_plot} function as optional arguments.
+@c driver set by the @var{set_plot_option} function. Options can also be passed 
+@c to @code{implicit_plot} function as optional arguments.
 
-Zeigt einen Graphen eines oder mehrerer Ausdr@"ucke, die implizit gegeben sind.
+Zeichnet den Graphen eines oder mehrerer Ausdr@"ucke, die implizit gegeben sind.
 @var{expr} ist der Ausdruck der gezeichnet werden soll, @var{x_range} ist der
-Wertebereich der x-Achse und @var{y_range} der Wertebereich der y-Achse. Die
+Wertebereich der x-Achse und @var{y_range} der Wertebereich der y-Achse.  Die
 Funktion @code{implicit_plot} beachtet die Werte der Parameter der 
-Grafikoptionen in der Systemvariablen @code{plot_options}. Grafikoptionen 
-k@"onnen auch als Argumente @"ubergeben werden.
+Grafikoptionen, die in der Systemvariablen @code{plot_options} enthalten sind.
+Grafikoptionen k@"onnen auch als Argumente @"ubergeben werden.
 
 @c @code{implicit_plot} works by tracking sign changes on the area
 @c given by @var{x_range} and @var{y_range} and can fail for complicated
 @c expressions.
 
 Der Algorithmus von @code{implicit_plot} stellt Vorzeichenwechsel der Funktion
-in den Bereichen @var{x_range} und @var{y_range} fest. F@"ur komplizierte
+in den Bereichen @var{x_range} und @var{y_range} fest.  F@"ur komplizierte
 Fl@"achen kann der Algorithmus versagen.
 
 @c @code{load(implicit_plot)} loads this function.
@@ -313,14 +313,9 @@ Beispiel:
 (%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
  [gnuplot_preamble, "set zeroaxis"]);
 @end example
-
 @ifnotinfo
 @image{../figures/implicit_plot,10cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Plotting} @category{Share packages} @category{Package implicit_plot}
-@c @closecatbox
 @end deffn
 
 @c --- 04.11.2010 DK -----------------------------------------------------------
@@ -339,21 +334,38 @@ Beispiel:
 @c for those two transformations.
 
 Gibt eine Funktion zur@"uck, die als Parameter f@"ur die Grafikoption 
-@code{transform_xy} geeignet ist. Die zwei Argumente @var{var1} und @var{var2} 
-repr@"asentieren die zwei unabh@"angigen Variablen der Funktion 
-@code{plot3d}. Das dritte Argument @var{var3} ist die Funktion, die von den zwei
-Variablen abh@"angt. Die drei Funktionen @var{fx}, @var{fy} und @var{fz} 
-m@"ussen von den drei Argumenten @var{var1}, @var{var2} und @var{var3} 
-abh@"angen und die Argumente der Funktion @code{plot3d} in kartesische 
-Koordinaten f@"ur die Ausgabe des Graphen transformieren. 
+@code{transform_xy} geeignet ist.  Die zwei Argumente @var{var1} und @var{var2} 
+repr@"asentieren die zwei unabh@"angigen Variablen der Funktion @code{plot3d}.  
+Das dritte Argument @var{var3} ist die Funktion, die von den zwei Variablen 
+abh@"angt.  Die drei Funktionen @var{fx}, @var{fy} und @var{fz} m@"ussen von 
+den drei Argumenten @var{var1}, @var{var2} und @var{var3} abh@"angen und die 
+Argumente der Funktion @code{plot3d} in kartesische Koordinaten f@"ur die 
+Ausgabe des Graphen transformieren. 
 
 Die Transformationen @mref{polar_to_xy} f@"ur die Transformation von 
 Polarkoordinaten und @mref{spherical_to_xyz} f@"ur die Transformation von 
 Kugelkoordinaten in kartesische Koordinaten sind bereits definiert.
 
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Beispiel:
+
+Definition der Transformation von Zylinderkoordinaten nach kartesischen 
+Koordinaten.  Die Definition ist identisch mit der f@"ur @mrefdot{polar_to_xy}
+Der Graph zeigt einen Kegel.
+
+@c TODO: GRAPH DES BEISPIELS HINZUFUEGEN
+
+@c ===beg===
+@c cylinder_to_xy:make_transform([r,phi,z],r*cos(phi),
+@c                                         r*sin(phi),z)$
+@c plot3d(-r,[r,0,3],[phi,0,2*%pi],
+@c                   [transform_xy, cylinder_to_xy])$
+@c ===end===
+@example
+(%i1) cylinder_to_xy:make_transform([r,phi,z],r*cos(phi),
+                                              r*sin(phi),z)$
+(%i2) plot3d(-r,[r,0,3],[phi,0,2*%pi],
+                        [transform_xy, cylinder_to_xy])$
+@end example
 @end deffn
 
 @c --- 03.11.2010 DK -----------------------------------------------------------
@@ -366,20 +378,18 @@ Kugelkoordinaten in kartesische Koordinaten sind bereits definiert.
 @c coordinates), and transform them into x and y coordinates.
 
 Kann als Parameter der Grafikoption @code{transform_xy} der Funktion 
-@code{plot3d} @"ubergeben werden. Der Parameter @code{polar_to_xy} bewirkt, dass
-die zwei unabh@"angigen Variablen der Funktion @code{plot3d} von 
+@code{plot3d} @"ubergeben werden.  Der Parameter @code{polar_to_xy} bewirkt, 
+dass die zwei unabh@"angigen Variablen der Funktion @code{plot3d} von 
 Polarkoordinaten in kartesische Koordinaten transformiert werden.
 
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+F@"ur ein Beispiele siehe @mrefdot{make_transform}
 @end deffn
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot2d}
-@deffn  {Funktion} plot2d (@var{plot}, @var{x_range}, ..., @var{options}, ...)
-@deffnx {Funktion} plot2d ([@var{plot_1}, ..., @var{plot_n}], ..., @var{options}, ...)
-@deffnx {Funktion} plot2d ([@var{plot_1}, ..., @var{plot_n}], @var{x_range},..., @var{options}, ...)
+@deffn  {Funktion} plot2d (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{})
+@deffnx {Funktion} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{})
+@deffnx {Funktion} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
 
 @c Where @var{plot}, @var{plot_1}, ..., @var{plot_n} can be either
 @c expressions, function names or a list with
@@ -388,15 +398,16 @@ Polarkoordinaten in kartesische Koordinaten transformiert werden.
 @c ..., [@var{xn}, ..., @var{yn}]]} or @code{[parametric, @var{x_expr},
 @c @var{y_expr}, @var{t_range}]}.
 
-@var{plot}, @var{plot_1}, ..., @var{plot_n} sind Ausdr@"ucke, Namen von 
-Funktionen oder Listen der folgenden Form:
-@code{[discrete, [@var{x1}, ..., @var{xn}], [@var{y1}, ..., @var{yn}]]}, 
-@code{[discrete, [[@var{x1}, @var{y1}], ..., [@var{xn}, ..., @var{yn}]]} oder
+@var{plot}, @var{plot_1}, @dots{}, @var{plot_n} sind Ausdr@"ucke, Namen von 
+Funktionen oder Listen, mit denen diskrete Punkte oder Funktionen in einer
+parametrischen Darstellung angegeben werden.  Diskrete Punkte k@"onnen als
+@code{[discrete, [@var{x1}, ..., @var{xn}], [@var{y1}, ..., @var{yn}]]} oder als 
+@code{[discrete, [[@var{x1}, @var{y1}], ..., [@var{xn}, ..., @var{yn}]]}
+angegeben werden.  Eine parametrische Darstellung hat die Form
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}]}.
 
 @c Displays a plot of one or more expressions as a function of one
 @c variable or parameter.
-
 @c @code{plot2d} displays one or several plots in two dimensions. When
 @c expressions or function name are used to define the plots,
 @c they should all depend on only one variable @var{var} and the use of
@@ -405,9 +416,9 @@ Funktionen oder Listen der folgenden Form:
 @c @code{[@var{variable}, @var{min}, @var{max}]}.
 
 Die Funktion @code{plot2d} zeichnet einen zweidimensionalen Graphen einer oder 
-mehrerer Ausdr@"ucke als Funktion einer Variablen oder eines Parameters. Mit der
-Grafikoption @var{x_range} wird der Name der unabh@"angigen Variablen und deren
-Bereich angegeben. Die Syntax der Grafikoption @var{x_range} ist: 
+mehrerer Ausdr@"ucke als Funktion einer Variablen oder eines Parameters.  Mit 
+der Grafikoption @var{x_range} wird der Name der unabh@"angigen Variablen und 
+deren Bereich angegeben.  Die Syntax der Grafikoption @var{x_range} ist: 
 @code{[@var{variable}, @var{min}, @var{max}]}.
 
 @c A plot can also be defined in the discrete or parametric forms. The
@@ -421,12 +432,12 @@ Bereich angegeben. Die Syntax der Grafikoption @var{x_range} ist:
 @c with two values that correspond to the x and y coordinates of a point.
 
 Ein diskreter Graph wird durch eine Liste definiert, die mit dem
-Schl@"usselwort @var{disrecte} beginnt. Es folgen ein oder zwei Listen mit den
-Werten. Werden zwei Listen @"ubergeben, m@"ussen diese dieselbe L@"ange haben. 
-Die Daten der ersten Listen werden als die x-Koordinaten der Punkte und die der 
-zweiten als die y-Koordinaten der Punkte interpretiert. Wird nur eine Liste 
-@"ubergeben, sind die Elemente Listen mit je zwei Elementen, die die x- und 
-y-Koordinaten der Punkte repr@"asentieren.
+Schl@"usselwort @w{@var{disrecte}} beginnt.  Es folgen ein oder zwei Listen mit 
+den Werten.  Werden zwei Listen @"ubergeben, m@"ussen diese dieselbe L@"ange 
+haben.  Die Daten der ersten Listen werden als die x-Koordinaten der Punkte und 
+die der zweiten als die y-Koordinaten der Punkte interpretiert.  Wird nur eine 
+Liste @"ubergeben, sind die Elemente Listen mit je zwei Elementen, die die x- 
+und y-Koordinaten der Punkte repr@"asentieren.
 
 @c A parametric plot is defined by a list starting with the keyword
 @c @var{parametric}, followed by two expressions or function names and a
@@ -437,10 +448,10 @@ y-Koordinaten der Punkte repr@"asentieren.
 @c functions, as @var{param} increases from @var{min} to @var{max}.
 
 Ein parametrischer Graph wird durch eine Liste definiert, die mit dem
-Schl@"usselwort @var{parametric} beginnt. Es folgen zwei Ausdr@"ucke oder 
-Namen von Funktionen und ein Parameter. Der Bereich f@"ur den Parameter muss 
+Schl@"usselwort @var{parametric} beginnt.  Es folgen zwei Ausdr@"ucke oder 
+Namen von Funktionen und ein Parameter.  Der Bereich f@"ur den Parameter muss 
 eine Liste sein, die den Namen des Parameters, seinen gr@"o@ss{}ten und seinen 
-kleinsten Wert enth@"alt: @code{[@var{parameter}, @var{min}, @var{max}]}. Der 
+kleinsten Wert enth@"alt: @code{[@var{parameter}, @var{min}, @var{max}]}.  Der 
 Graph ist der Weg f@"ur die zwei Ausdr@"ucke oder Namen von Funktionen, wenn 
 der Parameter @var{parameter} von @var{min} nach @var{max} zunimmt.
 
@@ -454,16 +465,16 @@ der Parameter @var{parameter} von @var{min} nach @var{max} zunimmt.
 
 Als optionales Argument kann ein Wertebereich f@"ur die vertikale 
 Koordinatenachse mit der Grafikoption @code{y} angegeben werden: 
-@code{[y, @var{min}, @var{max}]}. Die vertikale Achse wird immer mit dem 
-Schl@"usselwort @var{y} bezeichnet. Wird kein Wertebereich @var{y} angegeben, 
-wird dieser durch den gr@"o@ss{}ten und kleinsten y-Wert des zu zeichnenden 
-Graphen festgelegt.
+@code{[y, @var{min}, @var{max}]}.  Die vertikale Achse wird immer mit dem 
+Schl@"usselwort @code{y} bezeichnet.  Wird kein Wertebereich @code{y} angegeben, 
+wird dieser durch den gr@"o@ss{}ten und kleinsten @code{y}-Wert des zu 
+zeichnenden Graphen festgelegt.
 
 @c All other options should also be lists, starting with a keyword and
 @c followed by one or more values. See @code{plot_options}.
 
 Auch alle anderen Grafikoptionen werden als Listen angegeben, die mit einem 
-Schl@"usselwort beginnen, auf das die Parameter der Grafikoption folgen. Siehe 
+Schl@"usselwort beginnen, auf das die Parameter der Grafikoption folgen.  Siehe 
 @mrefdot{plot_options}
 
 @c If there are several plots to be plotted, a legend will be
@@ -473,8 +484,8 @@ Schl@"usselwort beginnen, auf das die Parameter der Grafikoption folgen. Siehe
 @c function names.
 
 Werden mehrere Graphen gezeichnet, wird eine Legende hinzugef@"ugt, die die 
-einzelnen Graphen unterscheidet. Mit der Grafikoption @var{legend} k@"onnen die
-Bezeichnungen f@"ur die Legende festgelegt werden. Wird diese Option nicht 
+einzelnen Graphen unterscheidet.  Mit der Grafikoption @var{legend} k@"onnen die
+Bezeichnungen f@"ur die Legende festgelegt werden.  Wird diese Option nicht 
 genutzt, generiert Maxima die Bezeichnungen der Legende aus den Ausdr@"ucken 
 oder Namen der Funktionen, die als Argument @"ubergeben wurden.
 
@@ -524,11 +535,13 @@ plot2d: some values were clipped.
 @c plot the axes using arrows:
 
 Die Ansicht eines Graphen kann sich f@"ur verschiedene Grafikprogramme
-unterscheiden. In Xmaxima bewirkt die Grafikoption @code{[box, false]}, das die
+unterscheiden.  In Xmaxima bewirkt die Grafikoption @code{[box, false]}, das die
 Koordinatenachsen mit Pfeilen dargestellt werden.
 
 @c ===beg===
-@c plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [plot_format, xmaxima])$
+@c plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], 
+@c                 [box, false], 
+@c                 [plot_format, xmaxima])$
 @c ===end===
 @example
 @group
@@ -624,9 +637,9 @@ Punkte gezeichnet ist.
 @c These values work well for the Postscript terminal used to produce this
 @c plot; you might have to adjust the values for your screen.
 
-Graph der Funktion @code{abs(x)} und eines parametrischen Kreises. Das 
+Graph der Funktion @code{abs(x)} und eines parametrischen Kreises.  Das 
 Seitenverh@"altnis der Grafik wurde mit den Grafikoptionen @code{x} und @code{y}
-so angepasst, dass der Kreis rund erscheint. Das hier gew@"ahlte 
+so angepasst, dass der Kreis rund erscheint.  Das hier gew@"ahlte 
 Seitenverh@"altnis funktioniert gut f@"ur die Ausgabe im Postscript-Format.
 
 @c ===beg===
@@ -647,8 +660,8 @@ plot2d: some values were clipped.
 
 @c A plot of a discrete set of points, defining x and y coordinates separately:
 
-Graph f@"ur diskrete Punkte. Die Punkte sind in zwei separaten Listen jeweils 
-f@"ur die x- und y-Koordinaten angegeben. Standardm@"a@ss{}ig werden die Punkte
+Graph f@"ur diskrete Punkte.  Die Punkte sind in zwei separaten Listen jeweils 
+f@"ur die x- und y-Koordinaten angegeben.  Standardm@"a@ss{}ig werden die Punkte
 mit einer Linie verbunden.
 
 @c ===beg===
@@ -668,7 +681,7 @@ mit einer Linie verbunden.
 @c The same points shown in the previous example, defining each point
 @c separately and without any lines joining the points:
 
-Dieselben Punkte des letzten Beispiels. Jeder Punkt wird einzeln in eine Liste
+Dieselben Punkte des letzten Beispiels.  Jeder Punkt wird einzeln in eine Liste
 eingetragen und die Punkte werden nicht miteinander verbunden.
 
 @c ===beg===
@@ -692,7 +705,7 @@ eingetragen und die Punkte werden nicht miteinander verbunden.
 @c plotted on the two axes:
 
 In diesem Beispiel wird eine Tabelle mit drei Spalten in eine Datei 
-@code{data.txt} gespeichert. Die Datei wird gelesen und die zweite und dritte
+@code{data.txt} gespeichert.  Die Datei wird gelesen und die zweite und dritte
 Spalte werden gezeichnet.
 
 @c ===beg===
@@ -742,16 +755,12 @@ Funktion, die die Daten beschreibt.
 @ifnotinfo
 @image{../figures/plotting12,8cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end deffn
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot3d}
-@deffn {Funktion} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Funktion} plot3d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffn {Funktion} plot3d (@var{expr}, @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+@deffnx {Funktion} plot3d ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
 
 @c Displays a plot of one or more surfaces defined as functions of two
 @c variables or in parametric form.
@@ -765,7 +774,7 @@ von zwei Variablen oder in parametrischer Form definiert sind.
 @c from different sides.
 
 Die zu zeichnenden Funktionen werden als Ausdr@"ucke oder mit ihrem Namen als 
-Argumente @"ubergeben. Mit der Maus kann der Graph rotiert werden, 
+Argumente @"ubergeben.  Mit der Maus kann der Graph rotiert werden, 
 um die Fl@"ache aus verschiedenen Blickwinkeln zu betrachten.
 
 @c See also the section about Plotting Options.
@@ -815,7 +824,7 @@ Dieses Beispiel zeigt den Graph ohne F@"arbung der Fl@"ache.
 
 Unendlich gro@ss{}e Werte der z-Koordinate k@"onnen auch durch Wahl eines 
 Gitters vermieden werden, das nicht mit einer der Asymptoten zusammenf@"allt. 
-Das Beispiel zeigt die Nutzung einer vordefinierten Palette.
+Das Beispiel zeigt zudem die Nutzung einer vordefinierten Palette.
 
 @c ===beg===
 @c plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2], [grid, 29, 29],
@@ -839,11 +848,12 @@ Graph mit zwei Fl@"achen, die denselben Wertebereich haben und eine Palette
 nutzen.
 
 @c ===beg===
-@c plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2), [x, -3, 3], [y, -2, 2]])$
+@c plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2), 
+@c         [x, -3, 3], [y, -2, 2]])$
 @c ===end===
 @example
 (%i1) plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2), 
-         [x, -3, 3], [y, -2, 2]])$
+              [x, -3, 3], [y, -2, 2]])$
 @end example
 
 @ifnotinfo
@@ -854,7 +864,7 @@ nutzen.
 @c surface will use a different palette, chosen from the list defined by
 @c the option palette:
 
-Die gleichen zwei Fl@"achen mit verschiedenen Wertebereichen. In Xmaxima nutzen
+Die gleichen zwei Fl@"achen mit verschiedenen Wertebereichen.  In Xmaxima nutzen
 die zwei Fl@"achen verschiedene Paletten.
 
 @c ===beg===
@@ -905,9 +915,8 @@ Graph der kleinschen Flasche, die parametrisch definiert ist.
 @c coordinates. See the documentation for @code{spherical_to_xyz}.
 
 Graph einer Kugelfunktion, die vordefinierte Koordinatentransformation
-@code{spherical_xyz} wird verwendet, um von Kugelkoordinaten in ein 
-kartesisches Koordinatensystem zu transformieren. Siehe auch
-@mrefdot{spherical_to_xyz}
+@mref{spherical_to_xyz} wird verwendet, um von Kugelkoordinaten in ein 
+kartesisches Koordinatensystem zu transformieren.
 
 @c ===beg===
 @c plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi], [phi, 0, 2*%pi],
@@ -932,8 +941,8 @@ kartesisches Koordinatensystem zu transformieren. Siehe auch
 
 Gebrauch der vordefinierten Funktion @code{polar_to_xy}, um von
 zylindrischen Koordinaten in ein kartesisches Koordinatensystem zu 
-transformieren. Siehe auch @mrefdot{polar_to_xy} Dieses Beispiel zeigt auch wie
-der Rahmen und die Legende entfernt werden k@"onnen.
+transformieren.  Siehe auch @mrefdot{polar_to_xy} Dieses Beispiel zeigt auch 
+wie der Rahmen und die Legende entfernt werden k@"onnen.
 
 @c ===beg===
 @c plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi], [grid, 12, 80],
@@ -957,7 +966,7 @@ der Rahmen und die Legende entfernt werden k@"onnen.
 @c different shades of a single color is used:
 
 Graph einer Kugel, wobei die Koordinatentransformation von Kugelkoordinaten in
-ein kartesisches Koordinatensystem genutzt wird. In Xmaxima werden die drei 
+ein kartesisches Koordinatensystem genutzt wird.  In Xmaxima werden die drei 
 Achsen gleichm@"a@ss{}ig skaliert, um die Proportionen der Kugel zu bewahren. 
 Eine Palette mit verschiedenen Schattierungen einer Farbe wird genutzt.
 
@@ -981,7 +990,7 @@ Eine Palette mit verschiedenen Schattierungen einer Farbe wird genutzt.
 @c single quote in the definition of the function, to prevent plot3d from
 @c failing when it realizes that the matrix will require integer indices.
 
-Definition einer Funktion mit zwei Variablen als eine Matrix. Der 
+Definition einer Funktion mit zwei Variablen als eine Matrix.  Der 
 Quote-Operator in der Definition der Funktion verhindert, das @code{plot3d}
 fehlschl@"agt, wenn die Argumente keine ganze Zahlen sind. 
 
@@ -1010,9 +1019,9 @@ apply: subscript must be an integer; found: round(x)
 @c levels, and the mesh lines are disabled to make the colors easier to see.
 
 Wird die H@"ohenangabe @code{elevation} auf Null gesetzt, kann die Fl@"ache als
-eine Karte betrachtet werden. Jede Farbe repr@"asentiert einen anderen Wert der
-Fl@"ache. Die Option @code{colorbox} wird genutzt, um die Werte der Farben
-zu zeigen. Die Gitterlinien sind ausgeschaltet.
+eine Karte betrachtet werden.  Jede Farbe repr@"asentiert einen anderen Wert der
+Fl@"ache.  Die Option @code{colorbox} wird genutzt, um die Werte der Farben
+zu zeigen.  Die Gitterlinien sind ausgeschaltet.
 
 @c ===beg===
 @c plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
@@ -1030,10 +1039,6 @@ zu zeigen. Die Gitterlinien sind ausgeschaltet.
 @ifnotinfo
 @image{../figures/plotting23,10cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end deffn
 
 @c --- 05.11.2010 DK -----------------------------------------------------------
@@ -1049,9 +1054,9 @@ zu zeigen. Die Gitterlinien sind ausgeschaltet.
 @c this list of global options.
 
 Die Elemente dieser Liste definieren die Standardwerte f@"ur die Ausgabe von
-Graphen. Ist einer der Werte ein Argument der Funktionen @code{plot2d} oder
-@code{plot3d}, wird der Standwert @"uberschrieben. Die Standardwerte k@"onnen 
-mit der Funktion @code{set_plot_option} gesetzt werden. Einige Grafikoptionen
+Graphen.  Ist einer der Werte ein Argument der Funktionen @code{plot2d} oder
+@code{plot3d}, wird der Standwert @"uberschrieben.  Die Standardwerte k@"onnen 
+mit der Funktion @code{set_plot_option} gesetzt werden.  Einige Grafikoptionen
 sind nicht in der Liste @code{plot_options} enthalten.
 
 @c Each element of @code{plot_options} is a list of two or more items.  The
@@ -1060,19 +1065,15 @@ sind nicht in der Liste @code{plot_options} enthalten.
 @c value is a list, which may include several items.
 
 Jedes Element der Liste @code{plot_options} ist eine Liste mit zwei oder
-mehr Eintr@"agen. Der erste Eintrag ist der Name der Grafikoption. Die weiteren
-Eintr@"age sind die Parameter der Option. In einigen F@"allen kann der Parameter
-einer Option wiederum eine Liste sein.
+mehr Eintr@"agen.  Der erste Eintrag ist der Name der Grafikoption.  Die 
+weiteren Eintr@"age sind die Parameter der Option.  In einigen F@"allen kann 
+der Parameter einer Option wiederum eine Liste sein.
 
 @c See also @code{set_plot_option}, @code{get_option} and the section on
 @c Plotting Options.
 
 Siehe auch @mrefcomma{set_plot_option} @mref{get_plot_option} und das 
 Kapitel @nrefdot{Grafikoptionen}
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1081,14 +1082,12 @@ Kapitel @nrefdot{Grafikoptionen}
 
 @c Accepts most of the options listed in the section Plotting Options, and
 @c saves them into the global variable @code{plot_options}.
-
-Akzeptiert die meisten der Optionen, die im Kapitel Grafikoptionen aufgelistet
-sind und speichert diese in der globalen Variable @code{plot_options}. 
-
 @c @code{set_plot_option} evaluates its argument and returns the complete
 @c list @code{plot_options} (after modifying the option given).
 
-@code{set_plot_options} wertet seine Argumente aus und gibt die vollst@"andige
+Akzeptiert die meisten der Optionen, die im Kapitel Grafikoptionen aufgelistet
+sind und speichert diese in der globalen Variable @code{plot_options}.
+@code{set_plot_options} wertet die Argumente aus und gibt die vollst@"andige
 Liste @code{plot_optons} zur@"uck.
 
 @c See also @code{plot_options}, @code{get_option} and the section on
@@ -1101,13 +1100,14 @@ Beispiele:
 
 @c Modification of the @code{grid} values.
 
-Setze einen neuen Wert f@"ur die Option @code{grid}.
+Setze einen neue Werte f@"ur die Grafikoption @code{grid}.
 
 @c ===beg===
 @c set_plot_option ([grid, 30, 40]);
 @c ===end===
 @example
 (%i1) set_plot_option ([grid, 30, 40]);
+@group
 (%o1) [[t, - 3, 3], [grid, 30, 40], [transform_xy, false], 
 [run_viewer, true], [axes, true], [plot_format, gnuplot_pipes], 
 [color, blue, red, green, magenta, black, cyan], 
@@ -1121,16 +1121,13 @@ triangle, delta, wedge, nabla, diamond, lozenge],
 set term pop], [gnuplot_dumb_term_command, set term dumb 79 22], 
 [gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript \
 eps enhanced color solid 24], [plot_realpart, false]]
+@end group
 @end example
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end deffn
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{spherical_to_xyz}
-@deffn {System function} spherical_to_xyz
+@deffn {Systemfunktion} spherical_to_xyz
 
 @c It can be given as value for the @code{transform_xy} option of
 @c plot3d. Its effect will be to interpret the two independent variables
@@ -1140,19 +1137,16 @@ eps enhanced color solid 24], [plot_realpart, false]]
 @c them into x, y and z coordinates.
 
 Kann als Parameter f@"ur die Option @code{transform_xy} der Funktion 
-@code{plot3d} @"ubergeben werden. Der Parameter @code{spherical_to_xyz} bewirkt,
-dass die zwei unabh@"angigen Variablen und die Funktion beim Aufruf von 
-@code{plot3d} von Kugelkoordinaten in kartesische Koordinaten umgerechnet 
+@code{plot3d} @"ubergeben werden.  Der Parameter @code{spherical_to_xyz} 
+bewirkt, dass die zwei unabh@"angigen Variablen und die Funktion beim Aufruf 
+von @code{plot3d} von Kugelkoordinaten in kartesische Koordinaten umgerechnet 
 werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @node Grafikoptionen, Gnuplot Optionen, Funktionen und Variablen f@"ur die grafische Darstellung, Grafische Darstellung
 @section Grafikoptionen
+@c -----------------------------------------------------------------------------
 
 @c All options consist of a list starting with one of the keywords in this
 @c section, followed by one or more values. Most of the options can be used
@@ -1160,25 +1154,24 @@ werden.
 @c @var{implicit_plot}) or in the function @var{set_plot_option}; the
 @c exceptions will be specified in the following list.
 
-Die Grafikoptionen bestehen aus einer Liste, die mit einem der hier folgenden
-Schl@"usselworte beginnt und ein oder mehrere Parameter enth@"alt. Die meisten 
+Die Grafikoptionen bestehen aus einer Liste, die mit einem Schl@"usselwort 
+beginnt und ein oder mehrere Parameter enth@"alt.  Die meisten 
 Optionen k@"onnen mit den Funktionen @code{plot2d}, @code{plot3d}, 
 @code{contour_plot} oder @code{implicit_plot} genutzt und mit der Funktion 
-@code{set_plot_option} gesetzt werden. Auf Ausnahmen wird im Folgenden 
+@code{set_plot_option} gesetzt werden.  Auf Ausnahmen wird im Folgenden 
 hingewiesen.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{adapt_depth}
 @defvr {Grafikoption} adapt_depth [adapt_depth, @var{integer}]
-Standardwert: 5
+Standardwert: @code{5}
 
-@c TODO: UEBERSETZUNG FEHLT.
+@c The maximum number of splittings used by the adaptive plotting routine.
 
-The maximum number of splittings used by the adaptive plotting routine.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Die maximale Zahl an Teilungen von Intervallen, die der adaptive Algorithmus 
+f@"ur das Zeichnen eines Graphen vornimmt.  Zusammen mit der Grafikoption
+@mref{nticks} hat diese Grafikoption Einfluss darauf, wie glatt der Graph
+gezeichnet wird.
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1193,20 +1186,16 @@ Standardwert: @code{true}
 @c and implicit_plot.
 
 @code{symbol} kann einen der Werte @code{true}, @code{false}, @code{x} oder
-@code{y} haben. Ist der Wert @code{false}, werden keine Achsen gezeichnet. Mit
-@code{x} oder @code{y} werden nur die x- oder nur die y-Achse gezeichnet. Mit
-@code{true} werden beide Achsen gezeichnet. Diese Option wird nur von den
-Funktionen @code{plot2d} und @code{implicit_plot} genutzt.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+@code{y} annehmen.  Ist der Wert @code{false}, werden keine Achsen gezeichnet.  
+Mit @code{x} oder @code{y} werden nur die x- oder nur die y-Achse gezeichnet.  
+Mit @code{true} werden beide Achsen gezeichnet.  Diese Option wird nur von den
+Funktionen @mref{plot2d} und @mref{implicit_plot} beachtet.
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{azimuth}
 @defvr {Grafikoption} azimuth [azimuth, @var{number}]
-Standartwert: 30
+Standardwert: @code{30}
 
 @c A plot3d plot can be thought of as starting with its x and y axis
 @c in the horizontal and vertical axis, as in plot2d, and the z axis
@@ -1215,14 +1204,8 @@ Standartwert: 30
 @c plane is rotated around the new z axis an angle @code{azimuth}. This
 @c option sets the value for the azimuth, in degrees.
 
-Setzt den Wert in Grad des Azimutwinkels einer dreidimensionalen 
-Grafik.
-
-Siehe auch @mrefdot{elevation}
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Setzt den Wert des Azimutwinkels in Grad f@"ur die Ansicht einer 
+dreidimensionalen Grafik.  Siehe auch @mrefdot{elevation}
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1234,17 +1217,13 @@ Standardwert: @code{true}
 @c to @code{false}, no box will be drawn.
 
 Hat die Grafikoption @code{box} den Wert @code{true}, erh@"alt die Grafik einen
-Rahmen. Mit @code{false} wird die Ausgabe des Rahmens ausgeschaltet.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Rahmen.  Ist der Wert @code{false}, wird kein Rahmen gezeichnet.
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{color}
-@defvr {Grafikoption} color [color, @var{color_1}, ..., @var{color_n}]
-Standardwert: blue, red, green, magenta, black, cyan
+@defvr {Grafikoption} color [color, @var{color_1}, @dots{}, @var{color_n}]
+Standardwert: @code{[blue, red, green, magenta, black, cyan]}
 
 @c In plot2d and implicit_plot, it defines the color (or colors) for the
 @c various curves. In plot3d, it defines the colors used for the mesh lines
@@ -1252,9 +1231,10 @@ Standardwert: blue, red, green, magenta, black, cyan
 @c will have color @var{color_1} and the other @var{color_2} (or the same
 @c color if there is only one color).
 
-F@"ur die Funktionen @code{plot2d} und @code{implicit_plot} definiert die
-Grafikoption @code{color} die Farben der Graphen. F@"ur einen 3D-Graphen
-definiert diese Option die Einf@"arbung der Fl@"achen.
+Wenn die Funktionen @mref{plot2d} oder @mref{implicit_plot} mehrere Graphen
+zeichnen, definiert die Grafikoption @code{color} die Farben der einzelnen 
+Graphen.  F@"ur einen 3D-Graphen mit der Funktion @mref{plot3d} definiert die
+Grafikoption @code{color} die Farbe der Fl@"achen.
 
 @c If there are more curves or surfaces than colors, the colors will be repeated in
 @c sequence. When using gnuplot, the colors could be: blue, red, green,
@@ -1265,12 +1245,14 @@ definiert diese Option die Einf@"arbung der Fl@"achen.
 @c used instead.
 
 Gibt es mehr Kurven oder Fl@"achen als Farben, werden die Farben wiederholt.
-Mit Gnuplot und Xmaxima k@"onnen die Farben blue, red, green, magenta, black, 
-cyan verwendet werden. 
+Im Grafikformat Gnuplot k@"onnen nur die Farben @code{blue}, @code{red}, 
+@code{green}, @code{magenta}, @code{black}, @code{cyan} verwendet werden.  Im 
+Grafikformat Xmaxima k@"onnen die Farben auch als eine Zeichenkette angegeben 
+werden, die mit dem Zeichen # beginnt und auf dem sechs hexadezimale Zahlenwerte
+folgen.  Je zwei Werte bezeichnen die rote, gr@"une und blaue Komponente der 
+Farbe.
 
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Siehe auch @mrefdot{style}
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1285,19 +1267,15 @@ Standardwert: @code{false}
 @c option does not work in xmaxima.
 
 Hat die Grafikoption @code{colorbox} den Wert @code{true}, wird immer dann,
-wenn das Grafikkommando @code{plot3d} eine Palette mit verschiedenen Farben
+wenn das Grafikkommando @mref{plot3d} eine Palette mit verschiedenen Farben
 nutzt, um die z-Werte darzustellen, eine Legende mit den Farben und den
 dazugeh@"orenden z-Werten angezeigt.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{elevation}
 @defvr {Grafikoption} elevation [elevation, @var{number}]
-Standardwert: 60
+Standardwert: @code{60}
 
 @c A plot3d plot can be thought of as starting with its x and y axis
 @c in the horizontal and vertical axis, as in plot2d, and the z axis
@@ -1306,36 +1284,26 @@ Standardwert: 60
 @c plane is rotated around the new z axis an angle @code{azimuth}. This
 @c option sets the value for the elevation, in degrees.
 
-Setzt den Wert in Grad des Elevationswinkels einer dreidimensionalen 
-Grafik.
-
-Siehe auch @mrefdot{azimuth}
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Setzt den Wert des Elevationswinkels in Grad f@"ur die Ansicht einer 
+dreidimensionalen Grafik.  Siehe auch @mrefdot{azimuth}
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{grid}
 @defvr {Grafikoption} grid [grid, @var{integer}, @var{integer}]
-Standardwert: 30, 30
+Standardwert: @code{[30, 30]}
 
 @c Sets the number of grid points to use in the x- and y-directions
 @c for three-dimensional plotting.
 
-Setzt die Anzahl der Gitterlinen f@"ur die x- und y-Richtung einer 
+Setzt die Anzahl der Gitterlinen f@"ur die x- und y-Achsen einer 
 dreidimensionalen Grafik.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{legend}
-@defvr  {Plot option} legend [legend, @var{string_1}, ..., @var{string_n}]
-@defvrx {Plot option} legend [legend, @var{false}]
+@defvr  {Grafikoption} legend [legend, @var{string_1}, @dots{}, @var{string_n}]
+@defvrx {Grafikoption} legend [legend, @var{false}]
 
 @c It specifies the labels for the plots when various plots are shown. If
 @c there are more plots than the number of labels given, they will be
@@ -1344,17 +1312,13 @@ dreidimensionalen Grafik.
 @c words discrete1, discrete2, ..., for discrete sets of points. This
 @c option can not be set with @var{set_plot_option}.
 
-Definiert die Eintr@"age in eine Legende, wenn mehrere Grafiken gezeichnet 
-werden. Sind mehr Grafiken als Eintr@"age in die Legende vorhanden, werden die 
-Eintr@"age wiederholt. Hat die Grafikoption @code{legend} den Wert @code{false},
-wird keine Legende gezeichnet. Standardm@"a@ss{}ig werden die Ausdr@"ucke oder 
-Namen der Funktionen als Eintr@"age verwendet. F@"ur diskrete Grafiken werden 
-die Eintr@"age mit discrete1, discrete2, ... bezeichnet. Diese Grafikoption kann
-nicht mit der Funktion @code{set_plot_option} gesetzt werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Definiert die Eintr@"age einer Legende, wenn mehrere Graphen gezeichnet 
+werden.  Sind mehr Graphen als Eintr@"age vorhanden, werden die Eintr@"age 
+wiederholt.  Hat die Grafikoption @code{legend} den Wert @code{false}, wird 
+keine Legende gezeichnet.  Standardm@"a@ss{}ig werden die Ausdr@"ucke oder Namen
+der Funktionen als Eintr@"age verwendet.  F@"ur diskrete Grafiken werden die 
+Eintr@"age mit discrete1, discrete2, @dots{} bezeichnet.  Diese Grafikoption 
+kann nicht mit der Funktion @code{set_plot_option} gesetzt werden.
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1364,12 +1328,9 @@ nicht mit der Funktion @code{set_plot_option} gesetzt werden.
 @c Makes the horizontal axes to be scaled logarithmically. It can not be
 @c used with @var{set_plot_option}.
 
-Bewirkt, dass die horizontale Achse logarithmisch skaliert wird. Diese 
-Grafikoption kann nicht mit der Funktion @code{set_plot_option} genutzt werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Bewirkt, dass die horizontale Achse logarithmisch skaliert wird.  Diese 
+Grafikoption kann nicht mit der Funktion @code{set_plot_option} gesetzt werden.
+Siehe auch @mrefdot{logy}
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1379,12 +1340,9 @@ Grafikoption kann nicht mit der Funktion @code{set_plot_option} genutzt werden.
 @c Makes the vertical axes to be scaled logarithmically. It can not be used
 @c with @var{set_plot_option}.
 
-Bewirkt, dass die vertikale Achse logarithmisch skaliert wird. Diese 
-Grafikoption kann nicht mit der Funktion @code{set_plot_option} genutzt werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Bewirkt, dass die vertikale Achse logarithmisch skaliert wird.  Diese 
+Grafikoption kann nicht mit der Funktion @code{set_plot_option} gesetzt werden.
+Siehe auch @mrefdot{logx}
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1398,13 +1356,9 @@ Standardwert: black
 @c value @code{false} to eliminate completely the mesh lines.
 
 Setzt die Farbe, die von der Funktion @code{plot3d} genutzt wird, um die
-Gitterlinien zu zeichnen. Es k@"onnen dieselben Farben verwendet werden wie 
-f@"ur die Grafikoption @code{color}. Mit den Wert @code{false} wird die Anzeige 
-der Gitterlinien ausgeschaltet.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Gitterlinien zu zeichnen.  Es k@"onnen dieselben Farben verwendet werden wie 
+f@"ur die Grafikoption @mrefdot{color} Hat @code{mesh_lines_color} Wert 
+@code{false}, werden keine Gitterlinien gezeichnet.
 @end defvr
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
@@ -1418,22 +1372,23 @@ Standardwert: 29
 @c it sets the number of points that will be shown for the plot.
 
 Wird eine Grafik mit der Funktion @code{plot2d} gezeichnet, gibt @code{nticks}
-die Anzahl der Anfangspunkte an, die f@"ur das Zeichnen der Grafik genutzt wird.
-F@"ur parametrische Graphen mit den Funktionen @code{plot2d} und @code{plot3d} 
-ist @code{nticks} die Anzahl der Punkte f@"ur die der Graph gezeichnet wird.
+die Anzahl der Anfangspunkte f@"ur das Zeichnen der Grafik an.  Werden 
+parametrische Kurven mit den Funktionen @code{plot2d} oder @code{plot3d}
+gezeichnet, ist @code{nticks} die Anzahl der Punkte, f@"ur die der Graph
+gezeichnet wird.
 
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Zusammen mit der Grafikoption @mref{adapt_depth} hat diese Grafikoption Einfluss
+darauf, wie glatt der Graph gezeichnet wird.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{palette}
-@defvr  {Grafikoption} palette [palette, [@var{palette_1}], ..., [@var{palette_n}]]
+@defvr  {Grafikoption} palette [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]]
 @defvrx {Grafikoption} palette [palette, @var{false}]
-
-Standardwert: [hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55], 
-[hue, 0.55, 0.8, 0.9, 0.4], [hue, 0.95, 0.7, 0.8, 0.5]
+@flushleft
+Standardwert: @code{[hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55], 
+[hue, 0.55, 0.8, 0.9, 0.4], [hue, 0.95, 0.7, 0.8, 0.5]}
+@end flushleft
 
 @c It can consist of one palette or a list of several palettes. Each
 @c palette is a list with a keyword followed by four numbers. The first
@@ -1445,24 +1400,25 @@ Standardwert: [hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55],
 @c last number can be bigger than 1 or negative; the corresponding values
 @c of the modified attribute will be rounded modulo 1.
 
-Eine Palette kann aus einer oder mehreren Paletten bestehen. Sie beginnt mit 
-einem Schl@"usselwort, worauf 4 Zahlen folgen. Die ersten drei Zahlen haben 
-Werte zwischen 0 und 1. Diese definieren den Farbton @code{hue}, die S@"attigung
-@code{saturation} und die Grundfarbe @code{value}, die der kleinste z Wert 
-erh@"alt. Die Schl@"usselworte @code{hue}, @code{saturation} und @code{value}
-spezifizieren welcher der drei Attribute mit dem Wert von z ge@"andert werden. 
-Der letzte Wert der Liste, spezifiziert welcher Wert zum gr@"o@ss{}ten z Wert 
-geh@"ort. Dieser gr@"o@ss{}te Wert kann gr@"o@ss{}er als 1 und auch negativ 
-sein. Die Werte der modifizierten Attribute werden Modulo 1 gerundet.
+Eine Palette kann aus einer oder einer Liste mit mehreren Paletten bestehen.  
+Jede Palette beginnt mit einem Schl@"usselwort, worauf 4 Zahlen folgen.  Die 
+ersten drei Zahlen haben Werte zwischen 0 und 1.  Diese definieren den Farbton 
+@code{hue}, die S@"attigung @code{saturation} und die Grundfarbe @code{value}, 
+die der kleinste z-Wert erh@"alt.  Die Schl@"usselworte @code{hue}, 
+@code{saturation} und @code{value} spezifizieren, welches der drei Attribute mit
+dem Wert von z ge@"andert werden.  Der letzte Wert der Liste, spezifiziert, 
+welcher Wert zum gr@"o@ss{}ten z-Wert geh@"ort.  Dieser gr@"o@ss{}te Wert kann
+gr@"o@ss{}er als 1 und auch negativ sein.  Die Werte der modifizierten 
+Attribute werden Modulo 1 gerundet.
 
 @c Gnuplot only uses the first palette in the list; xmaxima will use the
 @c palettes in the list sequentially, when several surfaces are plotted
 @c together; if the number of palettes is exhausted, they will be repeated
 @c sequentially.
 
-Gnuplot nutzt nur die erste Palette in einer Liste mit Paletten. Xmaxima nutzt
-alle Paletten nacheinander, wenn mehrere Fl@"achen gezeichnet werden. Sind nicht
-gen@"ugend Paletten vorhanden, werden die Paletten wiederholt.
+Gnuplot verwendet nur die erste Palette in einer Liste mit Paletten.  Xmaxima 
+nutzt alle Paletten nacheinander, wenn mehrere Fl@"achen gezeichnet werden.  
+Sind nicht gen@"ugend Paletten vorhanden, werden die Paletten wiederholt.
 
 @c The color of the mesh lines will be given by the option
 @c @code{mesh_lines_color}.  If @code{palette} is given the value
@@ -1470,36 +1426,25 @@ gen@"ugend Paletten vorhanden, werden die Paletten wiederholt.
 @c mesh of curves only. In that case, the colors of the lines will be
 @c determined by the option @code{color}.
 
-Die Farbe der Gitterlinien wird mit der Option @code{mesh_lines_color} 
-angegeben. Hat @code{palette} den Wert @code{false}, werden die Fl@"achen nicht
-gef@"arbt, sondern als ein Gitternetz gezeichnet. Die Farbe der Gitterlinien
-wird in diesem Fall mit der Grafikoption @code{color} definiert.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Die Farbe der Gitterlinien wird mit der Option @mref{mesh_lines_color}@ 
+angegeben.  Hat @code{palette} den Wert @code{false}, werden die Fl@"achen nicht
+gef@"arbt, sondern als ein Gitternetz gezeichnet.  Die Farbe der Gitterlinien
+wird in diesem Fall mit der Grafikoption @mref{color} festgelegt.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{plot_format}
 @defvr {Grafikoption} plot_format [plot_format, @var{format}]
 
-Standardwert: gnuplot f@"ur Windows oder gnuplot_pipes f@"ur andere 
-Betriebssysteme.
+Standardwert: @code{gnuplot} f@"ur Windows, ansonsten @code{gnuplot_pipes}
 
 @c It sets the format to be used for plotting.
-
-Setzt das Format f@"ur die Ausgabe einer Grafik.
-
 @c Where @var{format} is one of the following: gnuplot, xmaxima, mgnuplot or
 @c gnuplot_pipes.
 
-@code{format} kann die Werte @code{gnuplot}, @code{xmaxima}, @code{mgnuplot}
-oder @code{gnuplot_pipes} annehmen.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Setzt das Grafikformat f@"ur die Ausgabe einer Grafik.  @code{format} kann die 
+Werte @code{gnuplot}, @code{xmaxima}, @code{mgnuplot} oder @code{gnuplot_pipes}
+annehmen.  Siehe das Kapitel @nrefdot{Grafikformate}
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1509,7 +1454,7 @@ Standardwert: @code{false}
 
 @c When set to @code{true}, the functions to be plotted will be considered
 @c as complex functions whose real value should be plotted; this is
-@c equivalent to plotting @code{realpart(@var{function})}. I set to
+@c equivalent to plotting @code{realpart(@var{function})}. If set to
 @c @code{false}, nothing will be plotted when the function does not give a
 @c real value. For instance, when @code{x} is negative, @code{log(x)} gives
 @c a complex value, with real value equal to @code{log(abs(x))}; if
@@ -1518,25 +1463,22 @@ Standardwert: @code{false}
 @c @code{plot_real_part} were @code{false}.
 
 Hat @code{plot_real_part} den Wert @code{true}, werden Funktionen als komplex
-angenommen und der Realteil wird gezeichnet. Dies ist @"aquivalent zu einem 
-Aufruf mit der Funktion @code{realpart(@var{function}}. Mit dem Wert 
-@code{false} wird keine Grafik gezeichnet, wenn die Funktion keinen Realteil
-hat. Zum Beispiel ist @code{log(x)} komplex, wenn @var{x} negativ ist. Hat
-@code{plot_real_part} den Wert @code{true}, wird der Wert @code{log(-5)} als
-@code{log(5)} gezeichnet. Hat @code{plot_real_part} den Wert @code{false}
-wird kein Wert gezeichnet.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+angenommen und der Realteil wird gezeichnet.  Das entspricht dem Aufruf der
+Grafikfunktion mit dem Ausdruck @code{realpart(@var{function})}.  Hat
+@code{plot_real_part} den Wert @code{false}, wird keine Grafik gezeichnet, wenn
+die Funktion keinen Realteil hat.  Zum Beispiel ist @code{log(x)} komplex, wenn 
+@var{x} negativ ist.  Hat @code{plot_real_part} den Wert @code{true}, wird der 
+Wert @code{log(-5)} als @code{log(5)} gezeichnet.  Hat @code{plot_real_part} 
+den Wert @code{false} wird kein Wert gezeichnet.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{point_type}
-@defvr {Grafikoption} point_type [point_type, @var{type_1}, ..., @var{type_n}]
-
-Standardwert: bullet, circle, plus, times, asterisk, box, square,triangle, 
-delta, wedge, nabla, diamond, lozenge
+@defvr {Grafikoption} point_type [point_type, @var{type_1}, @dots{}, @var{type_n}]
+@flushleft
+Standardwert: @code{[bullet, circle, plus, times, asterisk, box, square, 
+triangle, delta, wedge, nabla, diamond, lozenge]}
+@end flushleft
 
 @c In gnuplot, each set of points to be plotted with the style ``points''
 @c or ``linespoints'' will be represented with objects taken from this
@@ -1545,19 +1487,16 @@ delta, wedge, nabla, diamond, lozenge
 @c The possible objects that can be used are: bullet, circle, plus, times,
 @c asterisk, box, square,triangle, delta, wedge, nabla, diamond or lozenge
 
-Wird in Gnuplot ein Satz an Punkten mit den Stilen ``points'' oder 
-``linespoints'' gezeichnet, werden die Symbole f@"ur die einzelnen Datens@"atze
-nacheinander der Liste @code{point_type} entnommen. Gibt es mehr Datens@"atze
-als definierte Stile, werden diese wiederholt.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Werden im Grafikformat Gnuplot Punkte mit den Stilen @code{points} oder
+@code{linespoints} gezeichnet, werden die Symbole f@"ur die einzelnen 
+Datens@"atze nacheinander der Liste @code{point_type} entnommen.  Gibt es
+mehr Datens@"atze als Symbole, werden diese wiederholt.  Siehe auch 
+@mrefdot{style}
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{psfile}
-@defvr {Grafikoption} psfile [psfile, @var{string}]
+@defvr {Grafikoption} psfile [psfile, @var{filename}]
 
 @c Saves the plot into a Postscript file with name equal to @var{string},
 @c rather than showing it in the screen. By default, the file will be
@@ -1565,14 +1504,10 @@ als definierte Stile, werden diese wiederholt.
 @c the value of that variable can be changed to save the file in a
 @c different directory.
 
-Speichert die Grafik in eine Postscript-Datei mit den Namen @var{string} und
-gibt die Grafik nicht auf dem Bildschirm aus. Standardm@"a@ss{}ig wird die Datei
-in dem Ordner abgespeichert, dessen Namen in der Optionsvariablen
+Speichert die Grafik in eine Postscript-Datei mit den Namen @var{filename}.  Die
+Grafik wird nicht auf dem Bildschirm ausgegeben.  Standardm@"a@ss{}ig wird die 
+Datei in dem Ordner abgespeichert, dessen Namen in der Optionsvariablen
 @code{maxima_tempdir} enthalten ist.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1587,72 +1522,88 @@ Standardwert: @code{true}
 @c should be run.
 
 Kontrolliert, ob die Bildschirmausgabe des Grafikformats gestartet wird.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
-@c --- 02.11.2010 DK -----------------------------------------------------------
+@c --- 05.02.2011 DK -----------------------------------------------------------
 @anchor{style}
-@defvr  {Grafikoption} style [style, @var{type_1}, ..., @var{type1_n}]
-@defvrx {Grafikoption} style [style, [@var{style_1}], ..., [@var{style_n}]]
+@defvr  {Grafikoption} style [style, @var{type_1}, @dots{}, @var{type1_n}]
+@defvrx {Grafikoption} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
 
-Standardwert: @var{lines} (will plot all sets of points joined with
-lines of thickness 1 and the first color given by the option @code{color}).
+Standardwert: @code{lines}
 
-The styles that will be used for the various functions or sets of data
-in a 2d plot. The word @var{style} must be followed by one or more
-styles. If there are more functions and data sets than the styles
-given, the styles will be repeated. Each style can be either
-@var{lines} for line segments, @var{points} for isolated points,
-@var{linespoints} for segments and points, or @var{dots} for small
-isolated dots. Gnuplot accepts also an @var{impulses} style.
+@c The styles that will be used for the various functions or sets of data
+@c in a 2d plot.  The word @var{style} must be followed by one or more
+@c styles.  If there are more functions and data sets than the styles
+@c given, the styles will be repeated.  Each style can be either
+@c @var{lines} for line segments, @var{points} for isolated points,
+@c @var{linespoints} for segments and points, or @var{dots} for small
+@c isolated dots.  Gnuplot accepts also an @var{impulses} style.
 
-Each of the styles can be enclosed inside a list with some aditional
-parameters. @var{lines} accepts one or two numbers: the width of the
-line and an integer that identifies a color. The default color codes
-are: 1: blue, 2: red, 3: magenta, 4: orange, 5: brown, 6: lime and 7:
-aqua. If you use Gnuplot with a terminal different than X11,
-those colors might be different; for example, if you use the option
-[@var{gnuplot_term},@var{ps}], color index 4 will correspond to black,
-instead of orange.
+Bestimmt den Stil f@"ur das Zeichnen von Funktionen oder Datens@"atzen mit der
+Funktion @code{plot2d}.  Werden mehr Graphen gezeichnet, als Stile vorhanden
+sind, werden diese wiederholt.  Die m@"oglichen Stile sind @code{lines} f@"ur 
+Linien, @code{points} f@"ur einzelne Punkte, @code{linespoints} f@"ur Linien mit
+Punkten oder @code{dots} f@"ur kleine Punkte.  Das Grafikformat Gnuplot 
+akzeptiert zus@"atzlich den Stil @code{impulses}.
 
-@var{points} accepts one two or three parameters; the first parameter
-is the radius of the points, the second parameter is an integer that
-selects the color, using the same code used for @var{lines} and the
-third parameter is currently used only by Gnuplot and it corresponds
-to several objects instead of points. The default types of
-objects are: 1: filled circles, 2: open circles, 3: plus signs, 4: x,
-5: *, 6: filled squares, 7: open squares, 8: filled triangles, 9: open
-triangles, 10: filled inverted triangles, 11: open inverted triangles,
-12: filled lozenges and 13: open lozenges.
+@c Each of the styles can be enclosed inside a list with some aditional
+@c parameters. @var{lines} accepts one or two numbers: the width of the
+@c line and an integer that identifies a color. The default color codes
+@c are: 1: blue, 2: red, 3: magenta, 4: orange, 5: brown, 6: lime and 7:
+@c aqua. If you use Gnuplot with a terminal different than X11,
+@c those colors might be different; for example, if you use the option
+@c [@var{gnuplot_term},@var{ps}], color index 4 will correspond to black,
+@c instead of orange.
 
-@var{linesdots} accepts up to four parameters: line width, points
-radius, color and type of object to replace the points.
+Jeder Stil kann weitere Parameter erhalten, die zusammen mit dem Stil als eine
+Liste angegeben werden.  Der Stil @code{lines} akzeptiert zwei Zahlen, die die
+Breite der Linie und deren Farbe angegeben.  Die Standardfarben haben die
+Zahlenwerte: 1: @code{blue}, 2: @code{red}, 3: @code{magenta}, 4: @code{orange},
+5: @code{brown}, 6: @code{lime} und 7: @code{aqua}.  Im Grafikformat Gnuplot 
+kann die Kodierung der Farben f@"ur verschiedene Terminals abweichend sein.  
+Wird zum Beispiel das Terminal [@var{gnuplot_term},@var{ps}] verwendet, 
+entspricht dem Zahlenwert 4 die Farbe @code{black}.
 
-See also @code{color} and @code{point_type}.
- 
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+@c @var{points} accepts one two or three parameters; the first parameter
+@c is the radius of the points, the second parameter is an integer that
+@c selects the color, using the same code used for @var{lines} and the
+@c third parameter is currently used only by Gnuplot and it corresponds
+@c to several objects instead of points. The default types of
+@c objects are: 1: filled circles, 2: open circles, 3: plus signs, 4: x,
+@c 5: *, 6: filled squares, 7: open squares, 8: filled triangles, 9: open
+@c triangles, 10: filled inverted triangles, 11: open inverted triangles,
+@c 12: filled lozenges and 13: open lozenges.
+
+Der Stil @code{points} akzeptiert zwei oder drei Parameter.  Der erste Parameter
+ist der Radius des Punktes.  Der zweite Parameter ist eine Zahl, der wie
+f@"ur den Stil @code{lines} eine Farbe angibt.  Der dritte Parameter ist eine 
+Zahl, mit der im Grafikformat Gnuplot die folgenden Zeichen f@"ur die 
+Darstellung der Punkte ausgew@"ahlt werden k@"onnen: 1: @code{bullet}, 
+2: @code{circle}, 3: @code{plus}, 4: @code{times}, 5: @code{asterisk}, 
+6: @code{box}, 7: @code{square}, 8: @code{triangle}, 9: @code{delta}, 
+10: @code{wedge}, 11: @code{nabla}, 12: @code{diamond}, 13: @code{lozenge}.
+
+@c @var{linesdots} accepts up to four parameters: line width, points
+@c radius, color and type of object to replace the points.
+
+Der Stil @code{linesdots} akzeptiert bis zu vier Parameter: die Breite der 
+Linie, den Radius der Punkte, die Farbe und das Symbol f@"ur das Zeichnen der
+Punkte.
+
+@c See also @code{color} and @code{point_type}.
+
+Siehe auch die Grafikoptionen @mref{color} und @mrefdot{point_type}
 @end defvr
-
-@c I think $t is not being used anymore. (J. Villate)
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{t}
 @defvr {Grafikoption} t [t, @var{min}, @var{max}]
 
-Standardwert: -3, 3
-
 @c Default range for parametric plots.
 
-Standardbereich f@"ur eine parametrische Grafik.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Bestimmt den Wertebereich f@"ur das Zeichnen einer parametrischen Kurve mit der
+Funktion @mrefdot{plot2d}  Die Variable einer parametrischen Kurve muss mit
+@code{t} bezeichnet werden.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1665,17 +1616,13 @@ Standardwert: @code{false}
 @c using the function @code{transform_xy}. If different from @code{false},
 @c it will be used to transform the 3 coordinates in plot3d.
 
-@var{symbol} hat entweder den Wert @code{false} oder ist das Ergebnis, wenn
-die Funktion @code{transform_xy}. Wenn verschieden von @code{false}, wird die
+@var{symbol} hat entweder den Wert @code{false} oder ist das Ergebnis der 
+Funktion @mrefdot{make_transform}  Wenn verschieden von @code{false}, wird die
 Funktion genutzt, um die drei Koordinaten einer dreidimensionalen Grafik zu
 transformieren.
 
-Siehe auch @mrefcomma{make_transform} @mref{polar_to_xy} und
-@mrefdot{spherical_to_xyz}
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Siehe auch @mref{polar_to_xy} und @mrefdot{spherical_to_xyz} f@"ur bereits
+vordefinierte Koordinatentransformationen.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1688,18 +1635,19 @@ Siehe auch @mrefcomma{make_transform} @mref{polar_to_xy} und
 @c option (or after the second option in plot3d) to define the effective
 @c horizontal domain that will be shown in the plot.
 
-Wird diese Grafikoption als eine der ersten f@"ur das Kommando @code{plot3d}
-genutzt, wird der x-Bereich angegeben. F@"ur eine zweidimensional Grafik gibt
-diese Option den Bereich f@"ur die Ausgabe an.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Die erste Grafikoption der Funktionen @code{plot2d} oder @code{plot3d} 
+bezeichnet die un@-ab@-h@"ang@-ige Variable.  Die unabh@"angige Variable muss 
+nicht mit @code{x} bezeichnet werden, sondern kann ein beliebiges von @code{x} 
+verschiedenes Symbol sein.  Die Werte @var{min} und @var{max} geben in diesem
+Fall den Wertebereich der unabh@"angigen Variablen an.  Die Grafikoption 
+@code{x} kann ein zweites Mal angegeben werden, um den Bereich f@"ur die x-Achse
+festzulegen.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{xlabel}
 @defvr {Grafikoption} xlabel [xlabel, @var{string}]
+Standardwert: @code{"x"}
 
 @c Specifies the @var{string} that will label the first axis; if this
 @c option is not used, that label will be the name of the independent
@@ -1708,14 +1656,10 @@ diese Option den Bereich f@"ur die Ausgabe an.
 @c contours with contour_plot, or the first expression in the case of a
 @c parametric plot. It can not be used with @var{set_plot_option}.
 
-Spezifiziert die Zeichenkette @var{string}, die die x-Achse einer Grafik 
-bezeichnet. Wird diese Option nicht angegeben, wird die x-Achse mit "x" 
-bezeichnet. Diese Grafikoption kann nicht mit dem Kommando
-@code{set_plot_option} genutzt werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Legt die Zeichenkette @var{string} fest, mit der die x-Achse der Grafik 
+bezeichnet wird.  Der Standardwert ist @code{"x"} oder der Name der ersten
+unabh@"angigen Variablen.  Diese Grafikoption kann nicht mit dem Kommando 
+@code{set_plot_option} gesetzt werden.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1727,18 +1671,19 @@ bezeichnet. Diese Grafikoption kann nicht mit dem Kommando
 @c It defines the effective domain of the second variable that will be
 @c shown in the plot.
 
-Wird diese Grafikoption als eine der ersten f@"ur das Kommando @code{plot3d}
-genutzt, wird der y-Bereich angegeben. F@"ur eine zweidimensional Grafik gibt
-diese Option den Bereich f@"ur die Ausgabe an.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+F@"ur einen dreidimensionalen Graphen legt diese Grafikoption die zweite 
+unabh@"angige Variable fest.  Die unabh@"angige Variable muss nicht mit @code{y} 
+bezeichnet werden, sondern kann ein beliebiges von @code{y} verschiedenes Symbol
+sein.  Die Werte @var{min} und @var{max} geben in diesem Fall den Wertebereich 
+der Variablen an.  Wird die Grafikoption f@"ur einen zweidimensionalen Graphen 
+verwendet oder f@"ur einen dreidimensionalen Graphen ein zweites Mal eingesetzt, 
+dann wird der Bereich f@"ur die y-Achse festgelegt.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{ylabel}
 @defvr {Grafikoption} ylabel [ylabel, @var{string}]
+Standardwert: @code{"y"}
 
 @c Specifies the @var{string} that will label the second axis; if this
 @c option is not used, that label will be ``y'', when plotting functions
@@ -1747,14 +1692,10 @@ diese Option den Bereich f@"ur die Ausgabe an.
 @c second expression in the case of a parametric plot. It can not be used
 @c with @var{set_plot_option}.
 
-Spezifiziert die Zeichenkette @var{string}, die die y-Achse einer Grafik 
-bezeichnet. Wird diese Option nicht angegeben, wird die y-Achse mit "y" 
-bezeichnet. Diese Grafikoption kann nicht mit dem Kommando
-@code{set_plot_option} genutzt werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Legt die Zeichenkette @var{string} fest, mit der die y-Achse der Grafik 
+bezeichnet wird.  Der Standardwert ist @code{"y"} oder f@"ur den Fall einer
+dreidimensionalen Grafik der Name der zweiten unabh@"angigen Variablen.  Diese 
+Grafikoption kann nicht mit dem Kommando @code{set_plot_option} gesetzt werden.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1764,17 +1705,13 @@ bezeichnet. Diese Grafikoption kann nicht mit dem Kommando
 @c Used in plot3d to set the effective range of values of z that will be
 @c shown in the plot.
 
-Wird in dreidimensionalen Grafiken genutzt, um die Bereich der z-Achse 
-festzulegen.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Legt f@"ur eine dreidimensionalen Grafik den Bereich f@"ur die z-Achse fest.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{zlabel}
-@defvr {Plot option} zlabel [zlabel, @var{string}]
+@defvr {Grafikoption} zlabel [zlabel, @var{string}]
+Standardwert: @code{"z"}
 
 @c Specifies the @var{string} that will label the third axis, when using
 @c plot3d. If this option is not used, that label will be ``z'', when
@@ -1782,20 +1719,16 @@ festzulegen.
 @c plot. It can not be used with @var{set_plot_option} and it will be
 @c ignored by plot2d and implicit_plot.
 
-Spezifiziert die Zeichenkette @var{string}, die die z-Achse f@"ur eine 
-dreidimensionale Grafik bezeichnet. Wird diese Option nicht angegeben, wird die
-z-Achse mit "z" bezeichnet. Diese Grafikoption kann nicht mit dem Kommando
-@code{set_plot_option} genutzt werden und wird von den Funktionen @code{plot2d}
-und @code{implicit_plot} ignoriert.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Legt die Zeichenkette @var{string} fest, mit der die z-Achse der Grafik 
+bezeichnet wird.  Der Standardwert ist @code{"z"}.  Diese Grafikoption kann 
+nicht mit dem Kommando @code{set_plot_option} gesetzt werden und wird von den
+Funktionen @code{plot2d} sowie @code{implicit_plot} ignoriert.
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @node Gnuplot Optionen, Gnuplot_pipes Formatfunktionen, Grafikoptionen, Grafische Darstellung
 @section Gnuplot Optionen
+@c -----------------------------------------------------------------------------
 
 @c There are several plot options specific to gnuplot. All of them consist
 @c of a keyword (the name of the option), followed by a string that should
@@ -1804,10 +1737,11 @@ und @code{implicit_plot} ignoriert.
 @c similar result and whose use is more recommended than the gnuplot
 @c specific option.
 
-Es gibt einige spezielle Optionen f@"ur Gnuplot. Diese Optionen werden als
-Schl@"usselwort und einer Zeichenkette, die ein g@"ultiges Kommando ist und an
-Gnuplot weitergeleitet wird. In den meisten F@"allen gibt es eine entsprechende
-Grafikoption, die ein vergleichbares Ergebnis liefert. Die Grafikoptionen 
+Es gibt einige spezielle Optionen f@"ur das Grafikformat Gnuplot.  Diese 
+Optionen werden mit einem Schl@"usselwort bezeichnet und zusammen mit einer 
+Zeichenkette, die ein g@"ultiges Gnuplot-Kommando darstellt, an Gnuplot 
+@"ubergeben.  In den meisten F@"allen gibt es eine entsprechende
+Grafikoption, die ein vergleichbares Ergebnis erzeugt.  Die Grafikoptionen 
 sollten den Gnuplot-Optionen vorgezogen werden.
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1816,22 +1750,20 @@ sollten den Gnuplot-Optionen vorgezogen werden.
 
 @c Sets the output terminal type for gnuplot.
 
-Setzt den Terminaltyp f@"ur Gnuplot.
+Setzt den Terminaltyp f@"ur das Grafikformat Gnuplot.
 
 @itemize @bullet
 
 @c Gnuplot output is displayed in a separate graphical window.
 
-@item
-@strong{default} (Standardwert)
+@item @strong{default} (Standardwert)
 
 Die Ausgabe von Gnuplot wird in einem separatem Fenster angezeigt.
 
 @c Gnuplot output is displayed in the Maxima console by an "ASCII art" 
 @c approximation to graphics.
 
-@item
-@strong{dumb}
+@item @strong{dumb}
 
 Die Ausgabe von Gnuplot wird in der Maxima Konsole mit Ascii-Zeichen angezeigt.
 
@@ -1840,18 +1772,17 @@ Die Ausgabe von Gnuplot wird in der Maxima Konsole mit Ascii-Zeichen angezeigt.
 @c writes the PostScript commands to @var{filename}.  Otherwise, it is
 @c saved as @code{maxplot.ps} file.
 
-@item
-@strong{ps}
+@item @strong{ps}
 
-Gnuplot generiert PostScript-Kommandos. Mit der Grafikoption 
+Gnuplot generiert PostScript-Kommandos.  Mit der Grafikoption 
 @code{gnuplot_out_file} werden die PostScript-Kommandos in eine Datei
-@var{filename} geschrieben. Ansonsten werden die Kommandos in die Datei
+@var{filename} geschrieben.  Ansonsten werden die Kommandos in die Datei
 @code{maxplot.ps} geschrieben.
 
-any other valid gnuplot term specification
+@c any other valid gnuplot term specification
 
-@item
-Jede andere g@"ultige Gnuplot Spezifikation
+@item Jede andere g@"ultige Gnuplot Spezifikation
+@end itemize
 
 @c Gnuplot can generate output in many other graphical formats such
 @c as png, jpeg, svg etc.  To create plot in all these formats the
@@ -1866,20 +1797,15 @@ Jede andere g@"ultige Gnuplot Spezifikation
 @c terminal name.
 
 Gnuplot kann Ausgaben in verschiedenen Formaten wie zum Beispiel PNG, JPEG, SVG
-generieren. Die verschiedenen Formate werden mit der Option @code{gnuplot_term}
-angegeben. Weiterhin kann jedes g@"ultige Kommando als Zeichenkette @"ubergeben
-werden. Zum Beispiel generiert @code{[gnuplot_term, png]} eine Grafik im 
-PNG-Format (Portable Network Graphics) und @code{[gnuplot_term, "png size 1000, 
-1000"]} generiert eine Grafik im PNG-Format im Format 1000x1000 Punkte. Mit der 
-Grafikoption @code{gnuplot_out_file} werden die Ausgabe in eine Datei
-@var{filename} geschrieben. Ansonsten werden die Kommandos in die Datei
-@code{maxplot.@var{term}} geschrieben, wobei @var{term} das Gnuplot-Format ist.
-
-@end itemize
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+generieren.  Die verschiedenen Formate werden mit der Option @code{gnuplot_term}
+angegeben.  Weiterhin kann jedes g@"ultige Kommando als Zeichenkette @"ubergeben
+werden.  Zum Beispiel generiert @code{[gnuplot_term, png]} eine Grafik im 
+PNG-Format.  Das Kommando @code{[gnuplot_term, "png size 1000, 1000"]} generiert
+eine Grafik im PNG-Format mit dem Format 1000@ x@ 1000 Punkte.  Erh@"alt die 
+Grafikoption @code{gnuplot_out_file} den Wert @var{filename}, wird die Ausgabe 
+in die Datei @var{filename} geschrieben.  Ansonsten werden die Kommandos in die 
+Datei @code{maxplot.@var{term}} geschrieben, wobei @var{term} das verwendete 
+Grafikformat ist.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1893,17 +1819,13 @@ Grafikoption @code{gnuplot_out_file} werden die Ausgabe in eine Datei
 @c the same thing with just one option.
 
 Zusammen mit der Option @code{gnuplot_term}, kann die Ausgabe in dem angegebenen
-Gnuplot-Format in eine Datei geschrieben werden. Eine Postscript-Datei kann auch
-mit der Option @code{psfile} ausgegeben werden. Die Option @code{psfile} 
-funktioniert auch im Grafikformat @code{xmaxima}.
+Gnuplot-Format in eine Datei geschrieben werden.  Eine Postscript-Datei kann 
+auch mit der Grafikoption @code{psfile} angegeben werden.  Die Grafikoption 
+@code{psfile} funktioniert auch mit dem Grafikformat @code{xmaxima}.
 
 @example
 [gnuplot_term, png], [gnuplot_out_file, "graph3.png"]
 @end example
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1914,11 +1836,7 @@ funktioniert auch im Grafikformat @code{xmaxima}.
 @c PM3D mode, which is enabled by default.
 
 Hat die Grafikoption @code{gnuplot_pm3d} den Wert @code{false}, wird der
-PM3D-Modus ausgeschaltet. Dieser ist Modus ist standardm@"a@ss{}ig eingeschaltet.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+PM3D-Modus ausgeschaltet.  Dieser Modus ist standardm@"a@ss{}ig eingeschaltet.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1930,14 +1848,11 @@ PM3D-Modus ausgeschaltet. Dieser ist Modus ist standardm@"a@ss{}ig eingeschaltet
 @c semi-colon. The example shown produces a log scale plot. The default
 @c value for @code{gnuplot_preamble} is the empty string @code{""}.
 
-F@"ugt Gnuplot-Kommandos ein, die vor dem Zeichnen der Grafik ausgef@"uhrt werden.
-Jedes g@"ultige Gnuplot-Kommando kann genutzt werden. Mehrere Kommandos sollten
-mit einem Semikolon voneinander getrennt werden. Der Standardwert der Option
-@code{gnuplot_preamble} ist eine leere Zeichenkette @code{""}.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+F@"ugt Gnuplot-Kommandos ein, die vor dem Zeichnen der Grafik ausgef@"uhrt 
+werden.  Jedes g@"ultige Gnuplot-Kommando kann verwendet werden.  Mehrere 
+Kommandos sollten mit einem Semikolon voneinander getrennt werden.  Der 
+Standardwert der Option @code{gnuplot_preamble} ist eine leere Zeichenkette 
+@code{""}.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1949,10 +1864,6 @@ mit einem Semikolon voneinander getrennt werden. Der Standardwert der Option
 
 Dies ist eine veraltete Option, die von der Grafikoption @code{legend} ersetzt
 wurde.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1963,10 +1874,6 @@ wurde.
 
 Dies ist eine veraltete Option, die von der Grafikoption @code{style}
 ersetzt wurde.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1976,12 +1883,8 @@ ersetzt wurde.
 @c The gnuplot command to set the terminal type for the default
 @c terminal. The default value is @code{set term pop}.
 
-Ist das Gnuplot-Kommando um den Standardtyp eines Terminals zu setzen.
+Das Gnuplot-Kommando, um den Standardtyp eines Terminals zu setzen.
 Der Standardwert ist @code{set term pop}.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -1992,13 +1895,9 @@ Der Standardwert ist @code{set term pop}.
 @c default value is @code{"set term dumb 79 22"}, which makes the text
 @c output 79 characters by 22 characters.
 
-Ist das Gnuplot-Kommando um den Terminaltyp f@"ur ein dumb-Terminal zu setzen.
-Der Standardwert ist @code{"set term dumb 79 22"}. Die Ausgabe hat eine Breite
-von 79 Zeichen und eine H@"ohe von 22 Zeichen.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Das Gnuplot-Kommando, um die Breite und H@"ohe des Terminaltyps @code{dumb} zu
+setzen.  Der Standardwert ist @code{"set term dumb 79 22"}.  Die Ausgabe hat 
+eine Breite von 79 Zeichen und eine H@"ohe von 22 Zeichen.
 @end defvr
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -2012,21 +1911,18 @@ von 79 Zeichen und eine H@"ohe von 22 Zeichen.
 @c things. See the gnuplot documentation for @code{set term postscript} for
 @c more information.
 
-Ist das Gnuplot-Kommando, um den Terminaltyp f@"ur eine Postscript-Terminal zu
-setzen. Der Standardwert ist @code{"set size 1.5, 1.5;set term postscript eps 
-enhanced color solid 24"}. Das Terminal wird auf das 1,5 fache des 
-Standardwertes der Gr@"o@ss{}e gesetzt und die Schriftgr@"o@ss{}e wird auf 24 gesetzt. Siehe
-die Gnuplot-Dokumentation f@"ur weitere Parameter die f@"ur ein Postscript-Terminal
-gesetzt werden k@"onnen.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Das Gnuplot-Kommando, um die Parameter f@"ur eine Postscript-Terminal zu
+setzen.  Ein Postscript-Terminal hat die Standardwerte @code{"set size 1.5, 1.5;
+set term postscript eps enhanced color solid 24"}.  Das Terminal wird auf den 
+1,5 fachen Wert des Standardwertes und die Schriftgr@"o@ss{}e auf 24 gesetzt.  
+Siehe die Gnuplot-Dokumentation f@"ur eine Beschreibung weiterer Parameter, die 
+f@"ur ein Postscript-Terminal gesetzt werden k@"onnen.
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @node Gnuplot_pipes Formatfunktionen,  , Gnuplot Optionen, Grafische Darstellung
 @section Gnuplot_pipes Formatfunktionen
+@c -----------------------------------------------------------------------------
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{gnuplot_start}
@@ -2037,10 +1933,6 @@ gesetzt werden k@"onnen.
 
 @"Offnet eine Pipe, die im Grafikformat @code{gnuplot_pipes} f@"ur den Austausch
 der Daten genutzt wird.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
 @end deffn
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -2050,12 +1942,8 @@ der Daten genutzt wird.
 @c Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes} 
 @c format.
 
-Schlie@ss{}t die Pipe, die im Grafikformat @code{gnuplot_pipes} f@"ur den Austausch
-der Daten genutzt wird.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Schlie@ss{}t die Pipe, die im Grafikformat @code{gnuplot_pipes} f@"ur den 
+Austausch der Daten genutzt wird.
 @end deffn
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -2065,30 +1953,22 @@ der Daten genutzt wird.
 @c Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
 @c format and opens a new pipe.
 
-Schlie@ss{}t die Pipe, die im Grafikformat @code{gnuplot_pipes} f@"ur den Austausch
-der Daten genutzt wird, und @"offnet eine neue Pipe.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Schlie@ss{}t die Pipe, die im Grafikformat @code{gnuplot_pipes} f@"ur den 
+Austausch der Daten genutzt wird, und @"offnet eine neue Pipe.
 @end deffn
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{gnuplot_replot}
 @deffn  {Funktion} gnuplot_replot ()
-@deffnx {Funktion} gnuplot_replot (@var{s})
+@deffnx {Funktion} gnuplot_replot (@var{string})
 
 @c Updates the gnuplot window. If @code{gnuplot_replot} is called with a
 @c gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
 @c before reploting the window.
 
-Aktualisiert die Ausgabe von Gnuplot. Wird @code{gnuplot_replot} mit einem
-Kommando @var{s} aufgerufen, dann wird das Kommando @var{s} vor der 
-Aktualisierung an Gnuplot gesendet.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Aktualisiert die Ausgabe von Gnuplot.  Wird @code{gnuplot_replot} mit einer
+Zeichenkette @var{string} aufgerufen, die Gnuplot-Kommandos enth@"alt, dann 
+werden die Kommandos vor der Aktualisierung an Gnuplot gesendet.
 @end deffn
 
 @c --- 02.11.2010 DK -----------------------------------------------------------
@@ -2099,13 +1979,9 @@ Aktualisierung an Gnuplot gesendet.
 @c format. To update the gnuplot window call @code{gnuplot_replot} after
 @c @code{gnuplot_reset}.
 
-Im Grafikformat @code{gnuplot_pipes} wird Gnuplot zur@"uckgesetzt. Um die Anzeige
-zu aktualisieren, kann das Kommando @code{gnuplot_replot} nach dem Kommando
-@code{gnuplot_reset} ausgef@"uhrt werden.
-
-@c @opencatbox
-@c @category{Plotting}
-@c @closecatbox
+Im Grafikformat @code{gnuplot_pipes} wird Gnuplot zur@"uckgesetzt.  Um die 
+Anzeige zu aktualisieren, kann das Kommando @code{gnuplot_replot} nach dem 
+Kommando @code{gnuplot_reset} ausgef@"uhrt werden.
 @end deffn
 
 @c --- End of file Plotting.de.texi --------------------------------------------
