@@ -1882,3 +1882,11 @@ trigreduce(sqrt(r^2*sin(x)^2+r^2*cos(x)^2));
 sqrt(r^2);
 reset(radexpand);
 [radexpand];
+
+/* Bug ID: 917283 - Comment syntax confused
+ * Show that nested comments work as expected.
+ */
+a/*/**/*/+b;
+a+b;
+a/*/**/*/+/*/**/*/b;
+a+b;
