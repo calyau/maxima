@@ -18,12 +18,14 @@
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in Verschiedenes, Share-Pakete, Verschiedenes, Verschiedenes
 @section Einf@"uhrung in Verschiedenes
+@c -----------------------------------------------------------------------------
 
 Dieses Kapitel enth@"alt verschiedene Funktionen und Optionsvariablen.
 
 @c -----------------------------------------------------------------------------
 @node Share-Pakete, Funktionen und Variablen f@"ur Verschiedenes, Einf@"uhrung in Verschiedenes, Verschiedenes
 @section Share-Pakete
+@c -----------------------------------------------------------------------------
 
 Das Maxima Share-Verzeichnis enth@"alt viele weitere zus@"atzliche Funktionen
 und Erweiterungen, die nicht Teil des Kernels von Maxima und in Paketen
@@ -41,158 +43,26 @@ aus.  Diese ist jedoch derzeit stark veraltert.
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Verschiedenes,  , Share-Pakete, Verschiedenes
 @section Funktionen und Variablen f@"ur Verschiedenes
+@c -----------------------------------------------------------------------------
 
-@c --- 29.12.2010 DK -----------------------------------------------------------
-@anchor{properties}
-@deffn {Funktion} properties (@var{a})
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{askexp}
+@defvr {Systemvariable} askexp
 
-Gibt eine Liste mit Eigenschaften zur@"uck, die das Atom @var{a} von Maxima
-oder dem Nutzer erhalten hat.
+@c TODO: KANN DIESE DOKUMENTATION ENTFERNT WERDEN?
 
-@c TODO: HIER FEHLT EINE AUFLISTUNG DER MOEGLICHEN EIGENSCHAFTEN.
+@c When @code{asksign} is called, @code{askexp} is the expression @code{asksign}
+@c is testing.
 
-@end deffn
+Wenn @code{asksign} aufgerufen wird, enth@"alt @code{askexp} den Ausdruck, der 
+von @code{asksign} getestet wird.
 
-@c --- 19.11.2010 DK -----------------------------------------------------------
-@anchor{props}
-@defvr {Systemvariable} props
-Standardwert: @code{[]}
+@c At one time, it was possible for a user to inspect @code{askexp} by entering
+@c a Maxima break with control-A.
 
-@code{props} ist eine Liste der Symbole, die eine Eigenschaft mit den Funktionen
-@code{declare}, @code{atvaule} oder @code{matchdeclare} erhalten haben.
-
+Es war einmal m@"oglich, die Variable @code{askexp} nach einer Unterbrechnung 
+mit Control-A zu inspezieren.
 @end defvr
-
-@c --- 29.12.2010 DK -----------------------------------------------------------
-@anchor{propvars}
-@deffn {Funktion} propvars (@var{prop})
-
-Gibt eine Liste mit den Atomen zur@"uck, die in der Informationsliste 
-@code{props} eingetragen sind und die die Eigenschaft @var{prop} haben.  Zum 
-Beispiel gibt @code{propvars(atvalue)} eine Liste der Atome zur@"uck, die die 
-Eigenschaft @code{atvalue} haben.
-
-@end deffn
-
-@c --- 29.12.2010 DK -----------------------------------------------------------
-@anchor{put}
-@deffn {Funktion} put (@var{atom}, @var{value}, @var{indicator})
-
-Weist den Wert @var{value} der Eigenschaft @var{indicator} des Atoms @var{atom}
-zu.  @var{indicator} kann eine beliebige Eigenschaft sein und beschr@"ankt sich
-nicht auf die vom System definierten Eigenschaften.  @code{put} wertet die 
-Argumente aus.  @code{put} gibt @var{value} zur@"uck.
-
-Beispiele:
-
-@c ===beg===
-@c put (foo, (a+b)^5, expr);
-@c put (foo, "Hello", str);
-@c properties (foo);
-@c get (foo, expr);
-@c get (foo, str);
-@c ===end===
-@example
-(%i1) put (foo, (a+b)^5, expr);
-                                   5
-(%o1)                       (b + a)
-(%i2) put (foo, "Hello", str);
-(%o2)                         Hello
-(%i3) properties (foo);
-(%o3)            [[user properties, str, expr]]
-(%i4) get (foo, expr);
-@group
-                                   5
-(%o4)                       (b + a)
-@end group
-(%i5) get (foo, str);
-(%o5)                         Hello
-@end example
-
-@end deffn
-
-@c --- 29.12.2010 DK -----------------------------------------------------------
-@anchor{qput}
-@deffn {Funktion} qput (@var{atom}, @var{value}, @var{indicator})
-
-Arbeit wie die Funktion @code{put} mit dem Unterschied, dass @code{qput} die
-Argumente nicht auswertet.
-
-Beispiele:
-
-@c ===beg===
-@c foo: aa$ 
-@c bar: bb$
-@c baz: cc$
-@c put (foo, bar, baz);
-@c properties (aa);
-@c get (aa, cc);
-@c qput (foo, bar, baz);
-@c properties (foo);
-@c get ('foo, 'baz);
-@c ===end===
-@example
-(%i1) foo: aa$ 
-(%i2) bar: bb$
-(%i3) baz: cc$
-(%i4) put (foo, bar, baz);
-(%o4)                          bb
-(%i5) properties (aa);
-(%o5)                [[user properties, cc]]
-(%i6) get (aa, cc);
-(%o6)                          bb
-(%i7) qput (foo, bar, baz);
-(%o7)                          bar
-(%i8) properties (foo);
-(%o8)            [value, [user properties, baz]]
-(%i9) get ('foo, 'baz);
-(%o9)                          bar
-@end example
-
-@end deffn
-
-@c --- 03.01.2011 DK -----------------------------------------------------------
-@anchor{rem}
-@deffn {Funktion} rem (@var{atom}, @var{indicator})
-
-Entfernt die Eigenschaft @var{indicator} vom Atom @var{atom}.
-
-@end deffn
-
-@c --- 29.12.2010 DK -----------------------------------------------------------
-@anchor{remove}
-@deffn  {Funktion} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
-@deffnx {Funktion} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
-@deffnx {Funktion} remove ("@var{a}", operator)
-@deffnx {Funktion} remove (@var{a}, transfun)
-@deffnx {Funktion} remove (all, @var{p})
-
-Entfernt Eigenschaften von Atomen.
-
-@code{remove(@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})} entfernt die
-Eigenschaft @code{p_k} von dem Atom @code{a_k}.
-
-@code{remove([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-entfernt die Eigenschaften @var{p_1}, @dots{}, @var{p_n} von den Atomen 
-@var{a_1}, @dots{}, @var{a_m}.  Es k@"onnen mehrere Paare an Listen angegeben 
-werden.
-
-@code{remove(all, @var{p})} entfernt die Eigenschaft @var{p} von allen Atomen, 
-die diese Eigenschaft aufweisen.
-
-Die zu entfernenden Eigenschaften k@"onnen vom System definierte Eigenschaften
-wie @code{function}, @code{macro}, @code{mode_declare} oder nutzerdefinierte
-Eigenschaften sein.
-
-@code{remove("@var{a}", operator)} oder @code{remove("@var{a}", op)}
-entfernen vom atom @var{a} die Operatoreigenschaften, die mit den Funktionen 
-@code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} oder
-@code{nofix} definiert wurden.  Die Namen von Operatoren m@"ussen als eine 
-Zeichenkette angegeben werden.
-
-@code{remove} gibt immer @code{done} zur@"uck.
-
-@end deffn
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{remvalue}
@@ -205,7 +75,6 @@ Entfernt die Werte von nutzerdefinierten Variablen @var{name_1}, @dots{},
 Informationsliste @code{values} enthalten sind.
 
 Siehe auch @mrefdot{values}
-
 @end deffn
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
@@ -220,17 +89,6 @@ betrachtet aber Nenner als verschieden, die sich um einen Zahlenfaktor
 voneinander unterscheiden.
 
 Die Funktion wird mit dem Kommando @code{rncomb} geladen.
-
-@end deffn
-
-@c --- 29.12.2010 DK -----------------------------------------------------------
-@anchor{scalarp}
-@deffn {Funktion} scalarp (@var{expr})
-
-Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} eine Zahl, Konstante, ein
-als Skalar definiertes Symbol oder ein aus diesen Objekten zusammengesetzter
-Ausdruck ist. Der Ausdruck darf jedoch keine Liste oder eine Matrix sein.
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -278,7 +136,6 @@ Warning - you are redefining the Macsyma function legendre_p
                              2
 @end group
 @end example
-
 @end deffn
 
 @c --- End of Miscellaneous.texi -----------------------------------------------

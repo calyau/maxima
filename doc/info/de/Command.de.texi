@@ -5,25 +5,7 @@
 @c Original    : Command.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c 
-@c This file contains documentation for the following symbols:
-@c 
-@c  __                  _                   %                   %%     
-@c  %th                 ?                   ?? 
-@c 
-@c  inchar              infolists           kill                labels         
-@c  linechar            linenum             myoptions           nolabels      
-@c  optionset           outchar             playback            prompt
-@c  quit                reset               reset_verbosely     showtime
-@c  system              to_lisp             values
-@c                  
-@c  %dispflag           absboxchar          disp                dispform       
-@c  display             display2d           display_format_internal        
-@c  dispterms           expt                ncexpt              exptdispflag
-@c  grind               ibase               ldisp               ldisplay
-@c  linel               lispdisp            negsumdispflag      obase 
-@c  pfeformat           print               read                readonly       
-@c  sqrtdispflag        stardisp            ttyoff
+@c Revision    : 06.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -37,6 +19,7 @@
 @c --- 21.10.2010 DK -----------------------------------------------------------
 @node Einf@"uhrung in die Kommandozeile, Funktionen und Variablen der Eingabe, Kommandozeile, Kommandozeile
 @section Einf@"uhrung in die Kommandozeile
+@c -----------------------------------------------------------------------------
 
 @subheading Konsole
 
@@ -163,9 +146,8 @@ Konsole.  Maxima kennt die folgenden Symbole:
    display_format_internal             exptdispflag
    expt               nexpt            ibase
    linel              lispdisp         negsumdispflag
-   obase              pfeformat        sqrtdispflag
-   stardisp           ttyoff
-
+   obase              pfeformat        powerdisp
+   sqrtdispflag       stardisp         ttyoff
 @end verbatim
 
 @noindent
@@ -188,6 +170,7 @@ aus und lesen dann die Eingabe des Nutzers ein:
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der Eingabe, Funktionen und Variablen der Ausgabe, Einf@"uhrung in die Kommandozeile, Kommandozeile
 @section Funktionen und Variablen der Eingabe
+@c -----------------------------------------------------------------------------
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{__}
@@ -234,7 +217,6 @@ I was called as:  print(I was called as, __)
 Current input expression = -------------- 
                            g(x) + ee + dd
 @end example
-
 @end defvr
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
@@ -295,7 +277,6 @@ sichtbar zu machen.
 (%i6) string(_);
 (%o6)                       abs(1+%i)
 @end example
-
 @end defvr
 
 @c --- 21.10.2010 DK -----------------------------------------------------------
@@ -316,7 +297,6 @@ eine Datei mit der Funktion @code{load} geladen, enth@"alt @code{%} das letzte
 Ergebnis des Ausdrucks, der auf der Konsole eingegeben wurde.
 
 Siehe auch die Systemvariablen @mrefcomma{_} @mref{__} und @mrefdot{%th}
-
 @end defvr
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
@@ -382,7 +362,6 @@ _%%;
 42
 _
 @end example
-
 @end defvr
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
@@ -423,7 +402,6 @@ Das Beispiel zeigt, wie die letzten 5 eingegebenen Werte mit der Funktion
 (%i6) block (s: 0, for i:1 thru 5 do s: s + %th(i), s);
 (%o6)                          15
 @end example
-
 @end deffn
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -442,7 +420,6 @@ Die Eingabe @code{? word} ist eine Kurzschreibweise f@"ur das Kommando
 @code{describe("word")}.  Das Fragezeichen muss am Anfang einer Eingabezeile 
 stehen, damit Maxima die Eingabe als eine Anfrage nach der Dokumentation
 interpretiert.  Siehe auch @mrefdot{describe}
-
 @end deffn
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -456,7 +433,6 @@ Die Eingabe @code{?? word} ist eine Kurzschreibweise f@"ur das Kommando
 @code{describe("word", inexact)}.  Die Fragezeichen m@"ussen am Anfang einer 
 Eingabezeile stehen, damit Maxima die Eingabe als eine Anfrage nach der 
 Dokumentation interpretiert.  Siehe auch @mrefdot{describe}
-
 @end deffn
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -492,7 +468,6 @@ Beispiele:
 (%o2)               b  + 3 a b  + 3 a  b + a
 (input3)
 @end example
-
 @end defvr
 
 @c INFOLISTS ENTHAELT NOCH DIE LISTEN STRUCTURES UND NAMESPACES
@@ -558,22 +533,21 @@ Enth@"alt die vom Nutzer definierten @code{let}-Regeln.
 @c TODO: BESCHREIBUNG DER LISTE STRUCTURES FEHLT.
 
 @end table
-
 @end defvr
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{kill}
-@deffn  {Funktion} kill (@var{a_1}, ..., @var{a_n})
+@deffn  {Funktion} kill (@var{a_1}, @dots{}, @var{a_n})
 @deffnx {Funktion} kill (labels)
 @deffnx {Funktion} kill (inlabels, outlabels, linelabels)
 @deffnx {Funktion} kill (@var{n})
 @deffnx {Funktion} kill ([@var{m}, @var{n}])
-@deffnx {Funktion} kill (values, functions, arrays, ...)
+@deffnx {Funktion} kill (values, functions, arrays, @dots{})
 @deffnx {Funktion} kill (all)
-@deffnx {Funktion} kill (allbut (@var{a_1}, ..., @var{a_n}))
+@deffnx {Funktion} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
 Die Funktion @code{kill} entfernt alle Zuweisungen (Werte, Funktionen, Arrays 
-oder Regeln) und Eigenschaften von den Argumenten @var{a_1}, ..., @var{a_n}. 
+oder Regeln) und Eigenschaften von den Argumenten @var{a_1}, @dots{}, @var{a_n}. 
 Ein Argument @var{a_k} kann ein Symbol oder ein einzelnes Arrayelement sein. 
 Ist @var{a_k} ein einzelnes Arrayelement, entfernt @code{kill} die Zuweisungen 
 an dieses Element, ohne die anderen Elemente des Arrays zu beeinflussen. 
@@ -605,7 +579,7 @@ Standardwerte zur@"uck.  Siehe die Funktion @mrefcomma{reset} um
 Optionsvariablen auf ihre Standwerte zur@"uckzusetzen.
 
 @code{kill(allbut(@var{a_1}, ..., @var{a_n}))} entfernt alle Zuweisungen bis 
-auf Zuweisungen an die Variablen @var{a_1}, ..., @var{a_n}. 
+auf Zuweisungen an die Variablen @var{a_1}, @dots{}, @var{a_n}. 
 @code{kill(allbut(@var{infolist}))} entfernt alle Zuweisungen bis auf denen in 
 der Informationsliste @var{infolist}. 
 
@@ -623,7 +597,6 @@ Eigenschaft eines Symbols.
 
 @code{kill} wertet die Argumente nicht aus.  Der Quote-Quote-Operator kann die 
 Auswertung erzwingen.  @code{kill} gibt immer @code{done} zur@"uck.
-
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -666,7 +639,6 @@ stets Zwischenmarken.
 
 Siehe auch @mrefcomma{inchar} @mrefcomma{outchar} @mref{linechar} und 
 @mrefdot{infolists}
-
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -686,7 +658,6 @@ unterscheiden.  Ansonsten funktionieren einige Kommandos wie
 
 Die Ausgabe von Zwischenmarken kann mit verschiedenen Optionsvariablen 
 kontrolliert werden.  Siehe @mref{programmode} und @mrefdot{labels}
-
 @end defvr
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -694,7 +665,6 @@ kontrolliert werden.  Siehe @mref{programmode} und @mrefdot{labels}
 @defvr {Systemvariable} linenum
 
 Die Zeilennummer der aktuellen Ein- und Ausgabemarken. 
-
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -705,8 +675,7 @@ Standardwert: @code{[]}
 @code{myoptions} ist eine Informationsliste, die die Optionsvariablen enth@"alt,
 die vom Nutzer w@"ahrend einer Sitzung ge@"andert wurden.  Die Variable 
 verbleibt in der Liste, auch wenn sie wieder auf den Standwert zur@"uckgesetzt 
-wird. 
-
+wird.
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -725,7 +694,6 @@ Marken werden unabh@"angig vom Wert, den @code{nolables} hat, Zwischenergebnisse
 zugewiesen und sie werden in die Informationsliste @code{labels} eingetragen.
 
 Siehe auch @mrefcomma{batch} @mref{load} und @mrefdot{labels}
-
 @end defvr
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -735,7 +703,6 @@ Standardwert: @code{false}
 
 Hat @code{optionset} den Wert @code{true}, gibt Maxima eine Meldung aus, wenn 
 eine Optionsvariable einen neuen Wert erh@"alt.
-
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -770,7 +737,6 @@ Beispiele:
 (output2)           b  + 3 a b  + 3 a  b + a
 (%i3) 
 @end example
-
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -837,7 +803,6 @@ Standardwert: @code{_}
 Die Optionsvariable @code{prompt} enth@"alt das Zeichen f@"ur die
 Eingabeaufforderung der Funktionen @code{demo} und @code{playback} sowie
 nach einer Unterbrechung, wie zum Beispiel durch das Kommando @code{break}. 
-
 @end defvr
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -851,7 +816,6 @@ abgebrochen werden.  Stan@-dard@-m@"a@ss{}ig wird die Maxima-Sitzung
 fortgesetzt.  Hat die globale Lisp-Variable @code{*debugger-hook*} den Wert 
 @code{nil}, wird der Lisp-Debugger gestartet.  Siehe das Kapitel 
 @mrefdot{Fehlersuche}
-
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -865,7 +829,7 @@ werden auf ihre Standardwerte zur@"uckgesetzt.  Nicht alle globalen Variablen
 sind mit ihren Standwerten in diese Liste eingetragen.  Daher kann @code{reset} 
 die Anfangswerte stets nur unvollst@"andig wiederherstellen. 
 
-@code{reset(@var{arg_1, ..., arg_n})} setzt die Variablen @var{arg_1}, ..., 
+@code{reset(@var{arg_1, ..., arg_n})} setzt die Variablen @var{arg_1}, @dots{}, 
 @var{arg_n} auf ihren Standardwert zur@"uck. 
 
 @code{reset} gibt eine Liste mit den Variablen zur@"uck, die auf ihren
@@ -873,19 +837,17 @@ Standardwert zur@"uckgesetzt wurden.  Ist die Liste leer, wurden keine Variablen
 zur@"uckgesetzt.
 
 Siehe auch @mrefdot{reset_verbosely}
-
 @end deffn
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{reset_verbosely}
 @deffn  {Funktion} reset_verbosely ()
-@deffnx {Funktion} reset_verbosely (@var{arg_1}, ..., @var{arg_n})
+@deffnx {Funktion} reset_verbosely (@var{arg_1}, @dots{}, @var{arg_n})
 
 Entspricht der Funktion @code{reset}.  Im Unterschied zu @code{reset} wird zu
 jeder Variable, die zur@"uckgesetzt wird, zus@"atzlich der Standwert angezeigt. 
 
 Siehe @mrefdot{reset}
-
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -902,7 +864,6 @@ Daher k@"onnen die Funktionen @code{time} und @code{playback} die Rechenzeit
 auch dann anzeigen, wenn @code{showtime} den Wert @code{false} hat. 
 
 Siehe auch @mrefdot{timer}
-
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -913,7 +874,6 @@ Siehe auch @mrefdot{timer}
 Prozess aus.  Das Kommando wird an die Standard-Shell @"ubergeben.  
 @code{system} wird nicht von allen Betriebssystemen unterst@"utzt, steht aber im
 Allgemeinen unter Unix oder Unix @"ahnlichen Betriebssystemen zur Verf@"ugung. 
-
 @end deffn
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -947,7 +907,6 @@ Returning to Maxima
 (%i3) result;
 (%o3)                       x (x + 1)
 @end example
-
 @end deffn
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -991,12 +950,12 @@ Beispiele:
 (%i4) values;
 (%o4)                                 []
 @end example
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der Ausgabe, , Funktionen und Variablen der Eingabe, Kommandozeile
 @section Funktionen und Variablen der Ausgabe
+@c -----------------------------------------------------------------------------
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{%edispflag}
@@ -1024,7 +983,6 @@ Beispiel:
                                 10
                               %e
 @end example
-
 @end defvr
 
 @c --- 28.08.2010 --------------------------------------------------------------
@@ -1050,11 +1008,11 @@ Beispiel:
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{disp}
-@deffn {Funktion} disp (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Funktion} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
 Ist @"ahnlich wie die Funktion @code{display}.  @code{disp} zeigt jedoch keine
 Gleichungen sondern nur die Ergebnisse der Ausdr@"ucke @var{expr_1}, 
-@var{expr_2}, ... an. 
+@var{expr_2}, @dots{} an. 
 
 Beispiele:
 
@@ -1076,7 +1034,6 @@ Beispiele:
 
 (%o3)                         done
 @end example
-
 @end deffn
 
 @c --- 21.10.2010 DK -----------------------------------------------------------
@@ -1111,6 +1068,12 @@ Die Funktion @code{dispform} kann genutzt werden, um die Wurzelfunktion in einem
 Ausdruck zu substituieren.  Die Wurzelfunktion ist nur in der externen 
 Darstellung eines Ausdruckes vorhanden:
 
+@c ===beg===
+@c expr: sqrt(5)/(5+sqrt(2));
+@c subst(f,sqrt,expr);
+@c subst(f,sqrt,dispform(expr));
+@c subst(f,sqrt,dispform(expr,all));
+@c ===end===
 @example
 (%i1) expr: sqrt(5)/(5+sqrt(2));
                              sqrt(5)
@@ -1129,12 +1092,11 @@ Darstellung eines Ausdruckes vorhanden:
 (%o4)                       --------
                             f(2) + 5
 @end example
-
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{display}
-@deffn {Funktion} display (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Funktion} display (@var{expr_1}, @var{expr_2}, @dots{})
 
 Die Variablen oder Ausdr@"ucke @var{expr_i} werden als eine Gleichung 
 ausgegeben.Die linke Seite der Gleichung ist die Variable oder der Ausdruck 
@@ -1163,7 +1125,6 @@ Beispiele:
 
 (%o3)                         done
 @end example
-
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1191,7 +1152,6 @@ Beispiel:
 (%i3) x/(x^2+1);
 (%o3) x/(x^2+1)
 @end example
-
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -1206,7 +1166,6 @@ Funktion @code{inpart}.
 
 Siehe die Funktion @mref{dispform} f@"ur Beispiele, die den Unterschied zwischen
 der internen und der externen Darstellung zeigen. 
-
 @end defvr
 
 @c --- 23.10.2010 --------------------------------------------------------------
@@ -1235,7 +1194,6 @@ Beispiel:
 
 (%o1)                         done
 @end example
-
 @end deffn
 
 @c --- 23.10.2010 --------------------------------------------------------------
@@ -1249,7 +1207,6 @@ anzuzeigen, wird stattdessen @code{expt(@var{a}, @var{b})} angezeigt.
 Entsprechend wird statt @code{@var{a}^^@var{b}}, @code{ncexpt(@var{a}, @var{b})}
 angezeigt.  @code{expt} und @code{ncexpt} sind keine Funktionen und erscheinen 
 nur in der Ausgabe. 
-
 @end defvr
 
 @c --- 21.08.2010 --------------------------------------------------------------
@@ -1282,7 +1239,6 @@ Beispiele:
                                 - x
 (%o4)                         10
 @end example
-
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -1378,7 +1334,6 @@ bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
 +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
 bb+aa^10
 @end example
-
 @end deffn
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -1391,7 +1346,7 @@ werden.
 
 @code{ibase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36 
 zugewiesen werden.  Ist @code{ibase} gr@"o@ss{}er als 10, werden die Zahlen 0 
-bis 9 und die Buchstaben A, B, C, ... f@"ur die Darstellung der Zahl in der 
+bis 9 und die Buchstaben A, B, C, @dots{} f@"ur die Darstellung der Zahl in der 
 Basis @code{ibase} herangezogen.  Gro@ss{}e und kleine Buchstaben werden nicht 
 unterschieden.  Die erste Stelle muss immer eine Ziffer sein, damit Maxima den 
 eingelesenen Ausdruck als eine Zahl interpretiert.
@@ -1462,14 +1417,13 @@ Gleitkommazahl interpretiert.
 (%i4) 1234.;
 (%o4)                         1234
 @end example
-
 @end defvr
 
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{ldisp}
-@deffn {Funktion} ldisp (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
 
-Die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} werden auf der Konsole 
+Die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} werden auf der Konsole 
 ausgegeben.  Dabei wird jedem Ausdruck eine Zwischenmarke zugewiesen.  Die Liste
 der Zwischenmarken wird als Ergebnis zur@"uckgegeben.
 
@@ -1506,14 +1460,13 @@ Siehe auch @mref{disp} und @mrefdot{display}
                      3        2      2      3
 (%o5)               b  + 3 a b  + 3 a  b + a
 @end example
-
 @end deffn
 
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{ldisplay}
-@deffn {Funktion} ldisplay (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
 
-Die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} werden als eine Gleichung 
+Die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} werden als eine Gleichung 
 der Form @code{lhs = rhs} ausgegeben.  @code{lhs} ist eines der Argumente der 
 Funktion @code{ldisplay} und @code{rhs} ist der Wert oder das Ergebis des 
 Argumentes.  Im Unterschied zur Funktion @code{display} wird jeder Gleichung 
@@ -1543,7 +1496,6 @@ Siehe auch @mrefcomma{display} @mref{disp} und @mrefdot{ldisp}
                        3        2      2      3
 (%o5)             f = b  + 3 a b  + 3 a  b + a
 @end example
-
 @end deffn
 
 @c --- 23.10.2010 --------------------------------------------------------------
@@ -1556,7 +1508,6 @@ der Ausgabe.  @code{linel} k@"onnen beliebige positive ganze Zahlen zugewiesen
 werden, wobei sehr kleine oder gro@ss{}e Werte unpraktisch sein k@"onnen.  Text,
 der von internen Funktionen ausgegeben wird, wie Fehlermeldungen oder Ausgaben
 der Hilfe, werden von @code{linel} nicht beeinflusst.
-
 @end defvr
 
 @c --- 21.08.2010 --------------------------------------------------------------
@@ -1583,7 +1534,6 @@ Beispiele:
 (%i4) ?foo + ?bar;
 (%o4)                      ?foo + ?bar
 @end example
-
 @end defvr
 
 @c --- 23.10.2010 --------------------------------------------------------------
@@ -1594,7 +1544,6 @@ Standardwert: @code{true}
 Hat @code{negsumdispflag} den Wert @code{true}, wird eine Differenz mit zwei 
 Argumenten @code{x - y} als @code{x - y} und nicht als @code{-y + x} angezeigt. 
 Ist das Flag @code{false} wird die Differenz als @code{-y + x} angezeigt.
-
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -1606,7 +1555,7 @@ Standardwert: 10
 
 @code{obase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36 
 zugewiesen werden.  Ist @code{obase} gr@"o@ss{}er als 10, werden die Zahlen 0 
-bis 9 und die Buchstaben A, B, C, ... f@"ur die Darstellung der Zahl in der 
+bis 9 und die Buchstaben A, B, C, @dots{} f@"ur die Darstellung der Zahl in der 
 Basis @code{obase} herangezogen.  Gro@ss{}e und kleine Buchstaben werden nicht 
 unterschieden.  Die erste Stelle muss immer eine Ziffer sein, damit Maxima den 
 eingelesenen Ausdruck als eine Zahl interpretiert.
@@ -1682,15 +1631,43 @@ Beispiele:
 (%i6) (a+b)/8;
 (%o6)                      1/8 (b + a)
 @end example
+@end defvr
 
+@c --- 27.01.2011 DK -----------------------------------------------------------
+@anchor{powerdisp}
+@defvr {Optionsvariable} powerdisp
+Standardwert: @code{false}
+
+Hat @code{powerdisp} den Wert @code{true}, werden die Terme einer Summe mit
+steigender Potenz angezeigt.  Der Standard ist, dass die Terme mit fallender
+Potenz angezeigt werden.
+
+@c ===beg===
+@c powerdisp:true;
+@c x^2+x^3+x^4;
+@c powerdisp:false;
+@c x^2+x^3+x^4;
+@c ===end===
+@example
+(%i1) powerdisp:true;
+(%o1)                         true
+(%i2) x^2+x^3+x^4;
+                           2    3    4
+(%o2)                     x  + x  + x
+(%i3) powerdisp:false;
+(%o3)                         false
+(%i4) x^2+x^3+x^4;
+                           4    3    2
+(%o4)                     x  + x  + x
+@end example
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{print}
-@deffn {Funktion} print (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} print (@var{expr_1}, @dots{}, @var{expr_n})
 
-Wertet die Argumente @var{expr_1}, ..., @var{expr_n} nacheinander von links nach
-rechts aus und zeigt die Ergebnisse an.  @code{print} gibt das Ergebnis des 
+Wertet die Argumente @var{expr_1}, @dots{}, @var{expr_n} nacheinander von links 
+nach rechts aus und zeigt die Ergebnisse an.  @code{print} gibt das Ergebnis des 
 letzten Arguments als Ergebnis zur@"uck.  @code{print} erzeugt keine 
 Zwischenmarken.
 
@@ -1722,16 +1699,15 @@ Beispiele:
 
                        10 log(a) - log(b)
 @end example
-
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{read}
-@deffn {Funktion} read (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} read (@var{expr_1}, @dots{}, @var{expr_n})
 
-Gibt die Ausdr@"ucke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
-sodann einen Ausdruck von der Konsole ein und wertet diesen aus.  Die Eingabe
-des Ausdrucks wird mit den Zeichen @code{;} oder @code{$} beendet.
+Gibt die Ausdr@"ucke @var{expr_1}, @dots{} @var{expr_n} auf der Konsole aus, 
+liest sodann einen Ausdruck von der Konsole ein und wertet diesen aus.  Die 
+Eingabe des Ausdrucks wird mit den Zeichen @code{;} oder @code{$} beendet.
 
 Siehe auch @mrefdot{readonly}
 
@@ -1744,17 +1720,16 @@ foo is 42  -- enter new value.
                                      3
 (%o3)                         (b + a)
 @end example
-
 @end deffn
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{readonly}
-@deffn {Funktion} readonly (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funktion} readonly (@var{expr_1}, @dots{}, @var{expr_n})
  
-Gibt die Ausdr@"ucke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
-sodann einen Ausdruck von der Konsole ein und gibt den eingelesenen Ausdruck
-zur@"uck ohne diesen auszuwerten.  Die Eingabe des Ausdrucks wird mit den 
-Zeichen @code{;} oder @code{$} beendet.
+Gibt die Ausdr@"ucke @var{expr_1}, @dots{} @var{expr_n} auf der Konsole aus, 
+liest sodann einen Ausdruck von der Konsole ein und gibt den eingelesenen 
+Ausdruck zur@"uck ohne diesen auszuwerten.  Die Eingabe des Ausdrucks wird mit 
+den Zeichen @code{;} oder @code{$} beendet.
 
 Siehe auch @mrefdot{read}
 
@@ -1775,7 +1750,6 @@ Enter an expression:
 2^aa;
 (%o3)                            128
 @end example
-
 @end deffn
 
 @c --- 21.08.2010 --------------------------------------------------------------
@@ -1785,7 +1759,6 @@ Standardwert: @code{true}
 
 Hat die Optionsvariable den Wert @code{false}, wird die Wurzelfunktion als
 Exponentation mit dem Exponenten 1/2 angezeigt.
-
 @end defvr
 
 @c --- 21.08.2010 --------------------------------------------------------------
@@ -1795,7 +1768,6 @@ Standardwert: @code{false}
 
 Hat die Optionsvariable @code{stardisp} den Wert @code{true}, wird die 
 Multiplikation mit einem Stern @code{*} angezeigt.
-
 @end defvr
 
 @c --- 21.08.2010 --------------------------------------------------------------
@@ -1809,7 +1781,6 @@ Marken zugewiesen.  Siehe @mrefdot{labels}
 
 Textausgaben von internen Funktionen, wie Fehlermeldungen und Ausgaben der 
 Hilfe mit @code{describe} werden nicht beeinflusst.
-
 @end defvr
 
 @c --- Ende Command.de.texi ----------------------------------------------------

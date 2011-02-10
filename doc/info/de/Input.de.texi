@@ -5,6 +5,7 @@
 @c Original    : Input.texi revision 1.80
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 02.11.2010
+@c Revision    : 01.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -21,27 +22,16 @@
 @section Kommentare
 @c -----------------------------------------------------------------------------
 
-@c A comment in Maxima input is any text between @code{/*} and @code{*/}.
-@c The Maxima parser treats a comment as whitespace for the purpose of finding 
-@c tokens in the input stream; a token always ends at a comment. An input such 
-@c as @code{a/* foo */b} contains two tokens, @code{a} and @code{b}, and not a 
-@c single token @code{ab}. Comments are otherwise ignored by Maxima; neither the
-@c content nor the location of comments is stored in parsed input expressions.
+Ein Kommentar in der Maxima-Eingabe ist ein Text der von den Zeichen @code{/*} 
+und @code{*/} eingeschlossen ist.  Der Maxima-Parser behandelt einen Kommentar 
+wie ein Zwischenraumzeichen, wenn ein Token eingelesen wird.  Ein Token endet 
+immer an einem Zwischenraumzeichen.  Eine Eingabe wie @code{a/* foo */b} 
+enth@"alt die beiden Token @code{a} und @code{b} und nicht das einzelne Token 
+@code{ab}.  Ansonsten werden Kommentare von Maxima ignoriert.  Kommentare werden
+im eingelesenen Ausdruck nicht gespeichert.
 
-Ein Kommentar in der Maxima-Eingabe ist ein Text der von @code{/*} und @code{*/}
-eingeschlossen ist. Der Maxima-Parser behandelt einen Kommentar wie ein 
-Zwischenraumzeichen, wenn ein Token eingelesen wird. Ein Token endet immer an
-einem Zwischenraumzeichen. Eine Einabe wie @code{a/* foo */b} enth@"alt die beiden
-Token @code{a} und @code{b} und nicht das einzelne Token @code{ab}. Ansonsten
-werden Kommentare von Maxima ignoriert. Kommentare werden im eingelesenen 
-Ausdruck nicht gespeichert.
-
-@c Comments can be nested to arbitrary depth. The @code{/*} and @code{*/} 
-@c delimiters form matching pairs. There must be the same number of @code{/*} 
-@c as there are @code{*/}.
-
-Kommentare k@"onnen in beliebiger Tiefe verschachtelt werden. Die @code{/*} und
-@code{*/} Begrenzungen m@"ussen paarweise auftreten.
+Kommentare k@"onnen in beliebiger Tiefe verschachtelt werden.  Die 
+Begrenzungszeichen @code{/*} und @code{*/} m@"ussen paarweise auftreten.
 
 Beispiele:
 
@@ -65,23 +55,15 @@ Beispiele:
 (%o5)                        xyz + 1
 @end example
 
-@c @opencatbox
-@c @category{Syntax}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Dateien, Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Kommentare, Eingabe und Ausgabe
 @section Dateien
 @c -----------------------------------------------------------------------------
 
-@c A file is simply an area on a particular storage device which contains data 
-@c or text. Files on the disks are figuratively grouped into "directories".
-@c A directory is just a list of files. Commands which deal with files are:
-
 @c TODO: HIER FEHLEN AUSFUEHRUNGEN DIE MAXIMA BETREFFEN.
 @c       DIE OBIGEN AUSFUEHRUNGEN SIND ZU ALLGEMEIN.
 
-Folgende Funktionen und Variable arbeiten mit Dateien:
+Folgende Funktionen und Variablen arbeiten mit Dateien:
 
 @example
 appendfile           batch                 batchload     
@@ -104,185 +86,91 @@ writefile
 @anchor{appendfile}
 @deffn {Funktion} appendfile (@var{filename})
 
-@c Appends a console transcript to @var{filename}. @code{appendfile} is the same
-@c as @code{writefile}, except that the transcript file, if it exists, is always
-@c appended.
+Startet wie die Funktion @mref{writefile} eine Aufzeichnung aller Ein- und 
+Ausgaben der Konsole.  Die Ein- und Ausgaben werden in die Datei @var{filename} 
+geschrieben.  Im Unterschied zu @code{writefile} werden die Daten immer an eine 
+existierende Datei angeh@"angt, wenn diese existiert.  Existiert die Datei 
+nicht, wird diese angelegt.
 
-Startet wie die Funktion @code{writefile} eine Aufzeichnung aller Ein- und 
-Ausgaben der Konsole. Die Ein- und Ausgaben werden in die Datei @var{filename} 
-geschrieben. Im Unterschied zu @code{writefile} werden die Daten immer an eine 
-existierende Datei angeh@"angt. Existiert die Datei nicht, wird diese angelegt.
-
-@c @code{closefile} closes the transcript file opened by @code{appendfile} or 
-@c @code{writefile}.
-
-@code{closefile} beendet die Aufzeichnung. Siehe auch @mrefdot{writefile}
-
-@c @opencatbox
-@c @category{Dateiausgabe} @category{Konsole Ein- und Ausgabe}
-@c @closecatbox
+Die Funktion @mref{closefile} beendet die Aufzeichnung.
 @end deffn
-
-@c batch CAN TAKE test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
-@c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
-@c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{batch}
 @deffn  {Funktion} batch (@var{filename})
 @deffnx {Funktion} batch (@var{filename}, option)
 
-@c Reads Maxima expressions from @var{filename} and evaluates them. @code{batch}
-@c searches for @var{filename} in the list @code{file_search_maxima}. 
-@c See @code{file_search}.
-
-@code{batch(@var{filename})} liest Maxima Ausdr@"ucke aus der Datei 
+Das Kommando @code{batch(@var{filename})} liest Maxima-Ausdr@"ucke aus der Datei 
 @var{filename} ein, wertet diese aus und gibt die Ergebnisse auf der Konsole 
-aus. @code{batch} sucht die Datei @var{filename} in den Verzeichnissen, die in 
-der Liste @code{file_search_maxima} enthalten sind. Siehe @mrefdot{file_search}
-
-@c @code{batch(@var{filename}, @code{demo})} is like 
-@c @code{demo(@var{filename})}. In this case @code{batch} searches for 
-@c @var{filename} in the list @code{file_search_demo}. See @code{demo}.
+aus.  @code{batch} sucht die Datei @var{filename} in den Verzeichnissen, die in 
+der Liste @mref{file_search_maxima} enthalten sind.  Siehe auch die Funktion
+@mrefdot{file_search}
 
 @code{batch(@var{filename}, @code{demo})} entspricht dem Kommando
-@code{demo(@var{filename})}. @code{batch} sucht f@"ur diesen Fall die Datei in
-der Liste der Verzeichnisse @code{file_search_demo}. Siehe @mrefdot{demo}
-
-@c @code{batch(@var{filename}, @code{test})} is like @code{run_testsuite} with 
-@c the option @code{display_all=true}. For this case @code{batch} searches 
-@c @var{filename} in the list @code{file_search_maxima} and not in the list
-@c @code{file_search_tests} like @code{run_testsuite}. Furthermore, 
-@c @code{run_testsuite} runs tests which are in the list @code{testsuite_files}. 
-@c With @code{batch} it is possible to run any file in a test mode, which can be 
-@c found in the list @code{file_search_maxima}. This is useful, when writing a
-@c test file.
+@code{demo(@var{filename})}.  @code{batch} sucht f@"ur diesen Fall die Datei in
+der Liste der Verzeichnisse @mrefdot{file_search_demo}  Siehe auch die Funktion
+@mrefdot{demo}
 
 @code{batch(@var{filename}, @code{test})} entspricht dem Kommando
-@code{run_testsuite} mit der Option @code{display_all=true}. In diesem Fall
-sucht @code{batch} die Datei @var{filename} in den Verzeichnissen der Liste
-@code{file_search_maxima} und nicht in der Liste @code{file_search_tests} wie
-der Befehl @code{run_testsuite}. Siehe auch @mrefdot{run_testsuite}
+@mref{run_testsuite} mit der Option @code{display_all=true}.  Im Unterschied zur
+Funktion @code{run_testsuite} sucht die Funktion @code{batch} die Datei 
+@var{filename} in den Verzeichnissen der Liste @code{file_search_maxima} und 
+nicht in der Liste @mrefdot{file_search_tests}
 
-@c @var{filename} comprises a sequence of Maxima expressions, each terminated
-@c with @code{;} or @code{$}. The special variable @code{%} and the function 
-@c @code{%th} refer to previous results within the file. The file may include 
-@c @code{:lisp} constructs. Spaces, tabs, and newlines in the file are ignored.
-@c A suitable input file may be created by a text editor or by the 
-@c @code{stringout} function.
+Die Maxima-Ausdr@"ucke in der Datei werden wie auf der Konsole mit den 
+Zeichen @code{;} oder @code{$} beendet.  Die Systemvariable @code{%} und die
+Funktion @code{%th} beziehen sich auf vorhergehende Zeilen in der Datei.  Die
+Datei kann @code{:lisp}-Unterbrechungskommandos enthalten.  Leerzeichen, 
+Tabulatoren, Zeilenschaltungen und Kommentare werden ignoriert.  Eine geeignete 
+Datei kann mit einem Texteditor oder der Funktion @mref{stringout} erstellt 
+werden.
 
-Die Maxima-Ausdr@"ucke in der Datei werden wie auf der Konsoloe mit den 
-Zeichen @code{;} oder @code{$} beendet. Die Systemvariable @code{%} und die
-Funktion @code{%th} beziehen sich auf vorhergende Zeilen in der Datei. Die
-Datei kann @code{:lisp}-Breakkommandos enthalten. Leerzeichen, Tabulatoren,
-Zeilenschaltungen und Kommentare werden ignoriert. Eine geeignete Datei kann
-mit einem Texteditor oder der Funktion @code{stringout} erstellt werden.
-
-@c @code{batch} reads each input expression from @var{filename}, displays the 
-@c input to the console, computes the corresponding output expression, and 
-@c displays the output expression. Input labels are assigned to the input 
-@c expressions and output labels are assigned to the output expressions.
-@c @code{batch} evaluates every input expression in the file unless there is an 
-@c error. If user input is requested (by @code{asksign} or @code{askinteger}, 
-@c for example) @code{batch} pauses to collect the requisite input and then 
-@c continue.
-
-Den Ein- und Ausgaben werden jeweils Ein- und Ausgabemarken zugewiesen. Tritt 
-w@"ahrend der Auswertung eines Ausrucks ein Fehler auf, wird das Einlesen der 
-Datei abgebrochen. Werden Eingaben vom Nutzer ben@"otigt, wie zum Beispiel bei
+Den Ein- und Ausgaben werden jeweils Ein- und Ausgabemarken zugewiesen.  Tritt 
+w@"ahrend der Auswertung eines Ausdrucks ein Fehler auf, wird das Einlesen der 
+Datei abgebrochen.  Werden Eingaben vom Nutzer ben@"otigt, wie zum Beispiel bei
 Fragen der Funktionen @code{asksign} oder @code{askinteger}, dann wartet 
-@code{batch} auf die Antworten, um dann die Bearbeitung der Datei fortzusetzen.
-
-@c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") KEEPS 
-@c GOING !!! DON'T KNOW ABOUT GCL !!!
-
-@c It may be possible to halt @code{batch} by typing @code{control-C} at the 
-@c console. The effect of @code{control-C} depends on the underlying Lisp 
-@c implementation.
+@code{batch} auf die Antworten, um dann die Verarbeitung der Datei fortzusetzen.
 
 Die Verarbeitung von @code{batch} kann durch die Eingabe von @code{control-C} 
-abgebrochen werden. Die weitere Reaktion auf einen Abbruch mit @code{control-C}
+abgebrochen werden.  Die weitere Reaktion auf einen Abbruch mit @code{control-C}
 h@"angt von der Lisp-Implementation ab.
 
-@c @code{batch} has several uses, such as to provide a reservoir for working 
-@c command lines, to give error-free demonstrations, or to help organize one's 
-@c thinking in solving complex problems.
-
-@c NICHT @"UBERSETZT
-
-@c @code{batch} evaluates its argument. @code{batch} returns the path of 
-@c @var{filename} as a string, when called with no second argument or with the 
-@c option @code{demo}. When called with the option @code{test}, the return value
-@c is a an empty list @code{[]} or a list with @var{filename} and the numbers of
-@c the tests which have failed.
-
-@code{batch} wertet seine Argument aus. @code{batch} gibt den Namen der Datei
-@var{filename} als Zeichenkette zur@"uck, wenn die Funktion ohne zweites Argument
-oder mit der Option @code{demo} aufgerufen wird. Wir die Funktion mit 
-@code{test} als Option aufgerufen, ist die R@"uckgabe eine leere Liste @code{[]} 
+@code{batch} wertet die Argumente aus.  @code{batch} gibt den Namen der Datei
+@var{filename} als Zeichenkette zur@"uck, wenn die Funktion ohne zweites 
+Argument oder mit der Option @code{demo} aufgerufen wird.  Wird die Funktion mit 
+der Option @code{test} aufgerufen, ist die R@"uckgabe eine leere Liste @code{[]} 
 oder eine Liste, die @var{filename} und die Nummern der fehlgeschlagenen Tests
 enth@"alt.
 
-Siehe auch @mrefcomma{load} @mref{batchload} und @mrefdot{demo}
-
-@c @opencatbox
-@c @category{Sitzungsverwaltung} @category{Dateieingabe}
-@c @closecatbox
+Siehe auch die Funktionen @mref{load} und @mrefcomma{batchload} um Dateien
+zu laden, sowie die Funktionen @mref{run_testsuite} und @mrefdot{demo}
 @end deffn
-
-@c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{batchload}
 @deffn {Funktion} batchload (@var{filename})
 
-@c Reads Maxima expressions from @var{filename} and evaluates them, without 
-@c displaying the input or output expressions and without assigning labels to 
-@c output expressions. Printed output (such as produced by @code{print} or 
-@c @code{describe}) is displayed, however.
-
 Liest Ausdr@"ucke aus der Datei @var{filename} ein und wertet diese aus, ohne 
 die eingelesenen und ausgewerteten Ausdr@"ucke anzuzeigen und ohne Zuweisung von
-Eingabe- und Ausgabemarken. Die Ausgabe von Fehlermeldungen oder sonstigem Text,
-der von Funktionen ausgegeben wird, wird nicht unterdr@"uckt.
-
-@c The special variable @code{%} and the function @code{%th} refer to previous 
-@c results from the interactive interpreter, not results within the file.
-@c The file cannot include @code{:lisp} constructs.
+Eingabe- und Ausgabemarken.  Die Ausgabe von Fehlermeldungen oder sonstigem 
+Text, der von Funktionen ausgegeben wird, wird nicht unterdr@"uckt.
 
 Die Systemvariable @code{%} und die Funktion @code{%th} beziehen sich auf die
-letzten Eingabe auf der Konsole und nicht auf Zeilen oder Ergebnisse der Datei.
-Im Gegensatz zur Funktion @code{batch}, darf eine Datei die von @code{batchload}
-geladen wird, keine @code{:lisp}-Breakkommandos enthalten.
-
-@c @code{batchload} returns the path of @var{filename}, as a string.
-@c @code{batchload} evaluates its argument.
+letzte Eingabe auf der Konsole und nicht auf Zeilen oder Ergebnisse der Datei.
+Im Gegensatz zur Funktion @code{batch} darf eine Datei, die von @code{batchload}
+geladen wird, keine @code{:lisp}-Unterbrechungskommandos enthalten.
 
 @code{batchload} gibt eine Zeichenkette mit dem Pfad der Datei @var{filename} 
-zur@"uck.
-
-Siehe auch @mref{batch} und @mrefdot{load}
-
-   @c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF 
-   @c batchload ???
-
-@c @opencatbox
-@c @category{Sitzungsverwaltung} @category{Dateieingabe}
-@c @closecatbox
+zur@"uck.  Siehe auch die Funktionen @mref{batch} und @mrefcomma{load} um 
+Dateien zu laden.
 @end deffn
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{closefile}
 @deffn {Funktion} closefile ()
 
-@c Closes the transcript file opened by @code{writefile} or @code{appendfile}.
-
-Beendet eine Aufzeichnung, die von den Funktionen @code{writefile} oder 
-@code{appendfile} gestartet wurde, und schlie@ss{}t die Ausgabedatei.
-
-@c @opencatbox
-@c @category{Dateiausgabe} @category{Konsole Ein- und Ausgabe}
-@c @closecatbox
+Beendet eine Aufzeichnung, die von den Funktionen @mref{writefile} oder 
+@mref{appendfile} gestartet wurde, und schlie@ss{}t die Ausgabedatei.
 @end deffn
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
@@ -290,55 +178,41 @@ Beendet eine Aufzeichnung, die von den Funktionen @code{writefile} oder
 @defvr {Optionsvariable} file_output_append
 Standardwert: @code{false}
 
-@c @code{file_output_append} governs whether file output functions append or 
-@c truncate their output file. When @code{file_output_append} is @code{true},
-@c such functions append to their output file. Otherwise, the output file is 
-@c truncated.
+Die Optionsvariable @code{file_output_append} kontrolliert, ob die Funktionen 
+@mrefcomma{save} @mref{stringout} oder @mrefcomma{with_stdout} die in eine Datei 
+schreiben, diese l@"oschen und neu anlegen oder die Daten anh@"angen.  Wenn 
+@code{file_output_append} den Wert @code{true} hat, werden die Daten an die 
+existierende Datei angeh@"angt.  Ansonsten wird eine neue Datei erstellt.
 
-@code{file_output_append} kontrolliert, ob Funktionen, die in eine Datei 
-schreiben, diese l@"oschen und neu anlegen oder die Daten an eine existierende 
-Datei anh@"angen. Wenn @code{file_output_append} den Wert @code{true} hat, 
-werden die Daten an die existierende Datei angeh@"angt. Ansonsten wird eine 
-neue Datei erstellt.
-
-@c @code{save}, @code{stringout}, and @code{with_stdout} respect 
-@c @code{file_output_append}. Other functions which write output files do not 
-@c respect @code{file_output_append}. In particular, plotting and translation 
-@c functions always truncate their output file, and @code{tex} and 
-@c @code{appendfile} always append.
-   @c WHAT ABOUT WRITEFILE ??
-
-Die Funktionen @code{save}, @code{stringout} und @code{with_stdout} beachten
-den Wert von @code{file_output_append}. Dagegen erstellen Plot-Funktionen und 
-der @"Ubersetzer grunds@"atzlich neue Dateien und die Funktionen @code{tex} und 
-@code{appendfile} h@"angen die Ausgabe immer an eine bestehende Datei an.
-
-@c @opencatbox
-@c @category{Dateiausgabe} @category{Globale Schalter}
-@c @closecatbox
+Plot-Funktionen und der @"Ubersetzer erstellen grunds@"atzlich neue Dateien und
+die Funktionen @mref{tex} und @mref{appendfile} h@"angen die Ausgabe immer an 
+eine bestehende Datei an.
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{filename_merge}
 @deffn {Funktion} filename_merge (@var{path}, @var{filename})
 
-@c Constructs a modified path from @var{path} and @var{filename}. If the final 
-@c component of @var{path} is of the form @code{###.@var{something}}, the 
-@c component is replaced with @code{@var{filename}.@var{something}}. Otherwise, 
-@c the final component is simply replaced by @var{filename}.
-
-Konstruiert einen Pfad aus @var{path} und @var{filename}. Endet @var{path} mit
-einer Zeichenkette der Form @code{###.@var{something}}, wird diese Zeichenkette
-durch @code{@var{filename.@var{something}}} ersetzt. Ansonsten wird der 
-Endbestandteil durch @var{filename} ersetzt.
-
-@c The result is a Lisp pathname object.
+Setzt einen Pfad aus @var{path} und @var{filename} zusammen.  Endet @var{path}
+mit einer Zeichenkette der Form @code{###.@var{something}}, wird diese 
+Zeichenkette durch @code{@var{filename.@var{something}}} ersetzt.  Ansonsten 
+wird der Endbestandteil durch @var{filename} ersetzt.
 
 Die R@"uckgabe ist ein Lisp-Dateiname.
 
-@c @opencatbox
-@c @category{Deieingabe} @category{Dateiausgabe}
-@c @closecatbox
+Beispiele:
+
+@c ===beg===
+@c filename_merge("user/", "myfile");
+@c filename_merge("user/###.lisp", "myfile");
+@c ===end===
+@example
+(%i1) filename_merge("user/", "myfile");
+(%o1)                      user/myfile
+
+(%i2) filename_merge("user/###.lisp", "myfile");
+(%o2)                   user/myfile.lisp
+@end example
 @end deffn
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
@@ -346,40 +220,24 @@ Die R@"uckgabe ist ein Lisp-Dateiname.
 @deffn  {Funktion} file_search (@var{filename})
 @deffnx {Funktion} file_search (@var{filename}, @var{pathlist})
 
-@c @code{file_search} searches for the file @var{filename} and returns the path 
-@c to the file (as a string) if it can be found; otherwise @code{file_search} 
-@c returns @code{false}. @code{file_search (@var{filename})} searches in the 
-@c default search directories, which are specified by the 
-@c @code{file_search_maxima}, @code{file_search_lisp}, and 
-@c @code{file_search_demo} variables.
-
 @code{file_search} sucht die Datei @var{filename} und gibt den Pfad als eine
-Zeichenkette zur@"uck, wenn die Datei gefunden wurde. Ansonsten wird 
-@code{false} zur@"uckgegeben. @code{file_search (@var{filename})} sucht in den 
+Zeichenkette zur@"uck, wenn die Datei gefunden wurde.  Ansonsten wird 
+@code{false} zur@"uckgegeben.  @code{file_search(@var{filename})} sucht in den 
 Standardsuchverzeichnissen, die mit den Optionsvariablen 
-@code{file_search_maxima}, @code{file_search_lisp} und @code{file_search_demo} 
-spezifiziert werden.
+@mrefcomma{file_search_maxima} @mref{file_search_lisp} und 
+@mref{file_search_demo} spezifiziert werden.
 
-@c @code{file_search} first checks if the actual name passed exists, before 
-@c attempting to match it to ``wildcard'' file search patterns. See 
-@c @code{file_search_maxima} concerning file search patterns.
-
-@code{file_search} pr@"uft zuerst, ob die Datei @code{filename} existiert. Dann
+@code{file_search} pr@"uft zuerst, ob die Datei @code{filename} existiert.  Dann
 pr@"uft @code{file_search}, ob die Datei anhand von Mustern im Dateinamen 
-gefunden werden kann. Siehe @mref{file_search_maxima} f@"ur die Suche von
+gefunden werden kann.  Siehe @mref{file_search_maxima} f@"ur die Suche von
 Dateien.
 
-@c The argument @var{filename} can be a path and file name, or just a file name,
-@c or, if a file search directory includes a file search pattern, just the base 
-@c of the file name (without an extension). For example,
-@c all find the same file, assuming the file exists and 
-@c @code{/home/wfs/special/###.mac} is in @code{file_search_maxima}.
-
 Das Argument @var{filename} kann ein Name mit einer Pfadangabe oder allein der
-Dateiname sein. Sind in den Suchverzeichnissen Dateinamen mit Mustern enthalten,
-kann die Datei auch ohne Endung angegeben werden. Zum Beispiel finden die 
-folgende Kommandos dieselbe Datei, wenn @code{/home/wfs/special/###.mac} in der 
-Liste @code{file_search_maxima} enthalten ist:
+Dateiname sein.  Sind in den Suchverzeichnissen Dateinamen mit Mustern 
+enthalten, kann die Datei auch ohne Endung angegeben werden.  Zum Beispiel 
+finden die folgenden Kommandos dieselbe Datei, wenn 
+@code{/home/wfs/special/###.mac} in der Liste @code{file_search_maxima} 
+enthalten ist:
 
 @example
 file_search ("/home/wfs/special/zeta.mac");
@@ -387,33 +245,16 @@ file_search ("zeta.mac");
 file_search ("zeta");
 @end example
 
-@c @code{file_search (@var{filename}, @var{pathlist})} searches only in the 
-@c directories specified by @var{pathlist}, which is a list of strings. The 
-@c argument @var{pathlist} supersedes the default search directories, so if the
-@c path list is given, @code{file_search} searches only the ones specified, and 
-@c not any of the default search directories. Even if there is only one 
-@c directory in @var{pathlist}, it must still be given as a one-element list.
-
-@code{file_search (@var{filename}, @var{pathlist})} sucht nur in den
-Verzeichnissen @var{pathlist}. Das Argument @var{pathlist} @"uberschreibt die
-Standardsuchverzeichnisse. Auch ein einzelnes Verzeichnis muss als eine Liste 
+@code{file_search(@var{filename}, @var{pathlist})} sucht nur in den
+Verzeichnissen @var{pathlist}.  Das Argument @var{pathlist} @"uberschreibt die
+Standardsuchverzeichnisse.  Auch ein einzelnes Verzeichnis muss als eine Liste 
 @"ubergeben werden.
 
-@c The user may modify the default search directories. 
-@c See @code{file_search_maxima}.
-
-Die Standardsuchverzeichnisse k@"onnen modifiziert werden. Siehe
+Die Standardsuchverzeichnisse k@"onnen modifiziert werden.  Siehe dazu auch
 @mrefdot{file_search_maxima}
 
-@c @code{file_search} is invoked by @code{load} with @code{file_search_maxima} 
-@c and @code{file_search_lisp} as the search directories.
-
-@code{file_search} wird von den Funktionen @code{load} mit den Verzeichnislisten
+@code{file_search} wird von der Funktion @mref{load} mit den Verzeichnislisten
 @code{file_search_maxima} und @code{file_search_lisp} aufgerufen.
-
-@c @opencatbox
-@c @category{Dateieingabe}
-@c @closecatbox
 @end deffn
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
@@ -428,24 +269,12 @@ Die Standardsuchverzeichnisse k@"onnen modifiziert werden. Siehe
 @defvrx {Optionsvariable} file_search_usage
 @defvrx {Optionsvariable} file_search_tests
 
-@c These variables specify lists of directories to be searched by @code{load}, 
-@c @code{demo}, and some other Maxima functions. The default values of these 
-@c variables name various directories in the Maxima installation.
-
-Diese Optionsvariablen bezeichnen Listen mit Verzeichnisen, die von den 
-Funktionen @code{load}, @code{demo} und anderen Funktionen durchsucht werden,
-um eine Datei zu finden. Die Standardwerte bezeichnen verschiedene Verzeichnisse
-der Maxima-Installation.
-
-@c The user can modify these variables, either to replace the default values or
-@c to append additional directories. For example,
-@c replaces the default value of @code{file_search_maxima}, while
-@c appends two additional directories. It may be convenient to put such an 
-@c expression in the file @code{maxima-init.mac} so that the file search path 
-@c is assigned automatically when Maxima starts.
+Diese Optionsvariablen bezeichnen Listen mit Verzeichnissen, die von Funktionen 
+wie @mref{load} und @mref{demo} durchsucht werden, um eine Datei zu finden.  Die
+Standardwerte bezeichnen verschiedene Verzeichnisse der Maxima-Installation.
 
 Diese Variablen k@"onnen modifiziert werden, indem die Standardwerte ersetzt 
-oder weitere Verzeichnisse angeh@"angt werden. Zum Beispiel wird im Folgenden 
+oder weitere Verzeichnisse angeh@"angt werden.  Zum Beispiel wird im Folgenden 
 der Standardwert der Optionsvariablen @code{file_search_maxima} ersetzt:
 
 @example
@@ -462,126 +291,69 @@ file_search_maxima: append (file_search_maxima,
 @end example
 
 Soll eine erweiterte Liste der Suchverzeichnisse nach jedem Start von Maxima
-zur Verf@"ugung stehen, kann das obige Kommando in die Datei 
+zur Verf@"ugung stehen, kann das obige Kommando in die Datei
 @code{maxima-init.mac} aufgenommen werden.
 
-@c Multiple filename extensions and multiple paths can be specified by special 
-@c ``wildcard'' constructions. The string @code{###} expands into the 
-@c sought-after name, while a comma-separated list enclosed in curly braces 
-@c @code{@{foo,bar,baz@}} expands into multiple strings. For example, supposing 
-@c the sought-after name is @code{neumann},
-
 Mehrere Dateiendungen und Pfade k@"onnen mit Wildcard-Konstruktionen 
-spezifiziert werden. Eine Zeichenkette @code{###} wird durch einen Dateinamen
-ersetzt. Werden mehrere Zeichenketten durch Kommata getrennt und mit 
-geschweiften Klammern angegeben @code{@{foo, bar, baz@}}, expandiert die Liste 
-in mehrere Zeichenketten. So expandiert das folgende Beispiel f@"ur 
-@code{neumann} 
+spezifiziert werden.  Eine Zeichenkette @code{###} wird durch einen Dateinamen
+ersetzt.  Werden mehrere Zeichenketten durch Kommata getrennt und mit 
+geschweiften Klammern angegeben wie zum Beispiel @code{@{foo, bar, baz@}}, 
+expandiert die Liste in mehrere Zeichenketten.  Das folgende Beispiel expandiert
+f@"ur @code{neumann} 
 
 @example
 "/home/@{wfs,gcj@}/###.@{lisp,mac@}"
 @end example
 
-@c expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, 
-@c @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
-
 in @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, 
 @code{/home/wfs/neumann.mac} und @code{/home/gcj/neumann.mac}.
-
-@c @opencatbox
-@c @category{Dateieingabe} @category{Globale Variablen}
-@c @closecatbox
 @end defvr
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{file_type}
 @deffn {Funktion} file_type (@var{filename})
 
-@c Returns a guess about the content of @var{filename}, based on the filename 
-@c extension. @var{filename} need not refer to an actual file; no attempt is 
-@c made to open the file and inspect the content.
+Gibt eine Vermutung @"uber den Typ der Datei @var{filename} zur@"uck.  Es 
+wird nur die Dateiendung betrachtet.
 
-Gibt eine Vermutung @"uber den Inhalt der Datei @var{filename} zur@"uck. Es wird
-nur die Dateiendung betrachtet.
-
-@c The return value is a symbol, either @code{object}, @code{lisp}, or 
-@c @code{maxima}. If the extension is "mac", "mc", "demo", "dem", "dm1", "dm2",
-@c "dm3", or "dmt", @code{file_type} returns @code{maxima}. If the extension is 
-@c "l", "lsp", or "lisp", @code{file_type} returns @code{lisp}. If none of the 
-@c above, @code{file_type} returns @code{object}.
-
-Die R@"uckgabe ist ein Symbol. Ist die Dateiendung "mac", "mc", "demo", "dem",
-"dm1", "dm2", "dm3" oder "dmt", ist die R@"uckgabe @code{maxima}. Ist die 
-Dateiendung "l", "lsp" oder "lisp", ist die R@"uckgabe @code{lisp}. In allen
+Die R@"uckgabe ist ein Symbol.  Ist die Dateiendung "mac", "mc", "demo", "dem",
+"dm1", "dm2", "dm3" oder "dmt" ist die R@"uckgabe @code{maxima}.  Ist die 
+Dateiendung "l", "lsp" oder "lisp" ist die R@"uckgabe @code{lisp}.  In allen
 anderen F@"allen ist die R@"uckgabe @code{object}.
-
-@c @opencatbox
-@c @category{Dateieingabe}
-@c @closecatbox
 @end deffn
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{load}
 @deffn {Funktion} load (@var{filename})
 
-@c Evaluates expressions in @var{filename}, thus bringing variables, functions, 
-@c and other objects into Maxima. The binding of any existing object is 
-@c clobbered by the binding recovered from @var{filename}. To find the file,
-@c @code{load} calls @code{file_search} with @code{file_search_maxima} and 
-@c @code{file_search_lisp} as the search directories. If @code{load} succeeds, 
-@c it returns the name of the file. Otherwise @code{load} prints an error 
-@c message.
-
 Wertet die Ausdr@"ucke in der Datei @var{filename} aus, wodurch die Variablen,
-Funktionen und andere Objekte in Maxima geladen werden. Alle bisher zugewiesen
-Variablen und Definitionen werden @"uberschrieben. Um die Datei zu finden, wird
-von @code{load} die Funktion @code{file_search} mit den Verzeichnislisten
-@code{file_search_maxima} und @code{file_search_lisp} aufgerufen. Ist 
-@code{load} erfolgreich, wird der Dateiname zur@"uckgegeben. Ansonsten gibt
+Funktionen und andere Objekte in Maxima geladen werden.  Alle bisher zugewiesen
+Variablen und Definitionen werden @"uberschrieben.  Um die Datei zu finden, wird
+von @code{load} die Funktion @mref{file_search} mit den Verzeichnislisten
+@mref{file_search_maxima} und @mref{file_search_lisp} aufgerufen.  Ist 
+@code{load} erfolgreich, wird der Dateiname zur@"uckgegeben.  Ansonsten gibt
 @code{load} eine Fehlermeldung aus.
 
-@c @code{load} works equally well for Lisp code and Maxima code. Files created 
-@c by @code{save}, @code{translate_file}, and @code{compile_file}, which create 
-@c Lisp code, and @code{stringout}, which creates Maxima code, can all be 
-@c processed by @code{load}. @code{load} calls @code{loadfile} to load Lisp 
-@c files and @code{batchload} to load Maxima files.
+@code{load} verarbeitet Dateien mit Lisp-Code oder Maxima-Code.  Dateien, die 
+mit den Funktionen @mrefcomma{save} @mref{translate_file} und
+@mref{compile_file} erstellt wurden, enthalten Lisp-Code.  Dateien, die mit
+@mref{stringout} erstellt wurden, enthalten Maxima-Code.  Die Ausgabedateien
+dieser Funktionen k@"onnen mit @code{load} geladen werden.  @code{load} ruft die
+Funktion @mref{loadfile} auf, um Lisp-Dateien und @mref{batchload} auf, um 
+Maxima-Da@-tei@-en zu verarbeiten.
 
-@code{load} verarbeitet gleicherma@ss{}en Dateien mit Lisp-Code und Maxima-Code.
-Dateien, die mit den Funktionen @code{save}, @code{translate_file} und
-@code{compile_file} erstellt wurden, enthalten Lisp-Code. Dateien, die mit
-@code{stringout} erstellt wurden, enthalten Maxima-Code. Alle diese Dateien
-k@"onnen mit @code{load} geladen werden. @code{load} ruft die Funktion
-@code{loadfile} auf, um Lisp-Dateien zu verarbeiten, und @code{batchload}, um
-Maxima-Dateien zu verarbeiten.
+@code{load} erkennt keine @code{:lisp}-Unterbrechungskommandos in 
+Maxima-Dateien.  Die Systemvariablen @mrefcomma{_} @mref{__} und @mref{%} und 
+die Funktion @mref{%th} behalten jeweils ihren letzten Wert vor dem Aufruf von 
+@code{load}.
 
-@c @code{load} does not recognize @code{:lisp} constructs in Maxima files, and 
-@c while processing @var{filename}, the global variables @code{_}, @code{__}, 
-@c @code{%}, and @code{%th} have whatever bindings they had when @code{load} 
-@c was called.
+Siehe auch die Funktionen @mrefcomma{loadfile} @mrefcomma{batch} 
+@mref{batchload} und @mrefdot{demo}  @code{loadfile} verarbeitet 
+Lisp-Da@-tei@-en.  @code{batch}, @code{batchload} und @code{demo} verarbeiten 
+Maxima-Dateien.
 
-@code{load} erkennt keine @code{:lisp}-Breakkommandos in Maxima-Dateien. Die
-Systemvariablen @code{_}, @code{__} und @code{%} und die Funktion @code{%th}
-behalten jeweils ihren letzten Wert vor dem Aufruf von @code{load}.
-
-@c See also @code{loadfile}, @code{batch}, @code{batchload}, and @code{demo}.
-@c @code{loadfile} processes Lisp files; @code{batch}, @code{batchload}, and 
-@c @code{demo} process Maxima files.
-
-Siehe auch @code{loadfile}, @code{batch}, @code{batchload}, and @code{demo}.
-@code{loadfile} verarbeitet Lisp-Dateien. @code{batch}, @code{batchload} und 
-@code{demo} verarbeiten Maxima-Dateien.
-
-@c See @code{file_search} for more detail about the file search mechanism.
-
-Siehe @code{file_search} f@"ur mehr Details zum Auffinden von Dateien.
-
-@c @code{load} evaluates its argument.
-
-@code{load} wertet seine Argumente aus.
-
-@c @opencatbox
-@c @category{Sitzungsverwaltung} @category{Dateieingabe}
-@c @closecatbox
+Siehe @mref{file_search} f@"ur mehr Informationen, wie Maxima Dateien in 
+Verzeichnissen findet.  @code{load} wertet die Argumente aus.
 @end deffn
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
@@ -589,23 +361,14 @@ Siehe @code{file_search} f@"ur mehr Details zum Auffinden von Dateien.
 @defvr {Systemvariable} load_pathname
 Standardwert: @code{false}
 
-@c When a file is loaded with the functions @code{load}, @code{loadfile} or 
-@c @code{batchload} the system variable @code{load_pathname} is bound to the 
-@c pathname of the file which is processed.
-@c The variable @code{load_pathname} can be accessed from the file during the
-@c loading.
-
-Wird eine Datei mit den Funktionen @code{load}, @code{loadfile} oder
-@code{batchload} geladen, enth@"alt die Systemvariable @code{load_pathname}
-den Namen der Datei. Der Wert der Systemvariablen kann in der Datei, die 
+Wird eine Datei mit den Funktionen @mrefcomma{load} @mref{loadfile} oder
+@mref{batchload} geladen, enth@"alt die Systemvariable @code{load_pathname}
+den Namen der Datei.  Der Wert der Systemvariablen kann in der Datei, die 
 geladen wird, ausgelesen werden.
 
 Beispiele:
 
-@c Suppose we have a batchfile @code{test.mac} in the directory 
-@c @code{"/home/dieter/workspace/mymaxima/temp/"} with the following commands
-
-Ist eine Batch-Datei @code{test.mac} in dem Verzeichnis
+Ist eine Batch-Datei mit den Namen @code{test.mac} in dem Verzeichnis
 @example
 "/home/dieter/workspace/mymaxima/temp/"
 @end example 
@@ -616,86 +379,46 @@ print("The value of load_pathname is: ", load_pathname)$
 print("End of batchfile")$
 @end example
 
-dann erh@"alt man die folgenden Ausgaben:
+dann wird das Folgende ausgegeben:
 
 @example
 (%i1) load("/home/dieter/workspace/mymaxima/temp/test.mac")$
 The value of load_pathname is:  
-                   /home/dieter/workspace/mymaxima/temp/test.mac 
+              /home/dieter/workspace/mymaxima/temp/test.mac 
 End of batchfile
 @end example
-
-@c @opencatbox
-@c @category{File input}
-@c @closecatbox
 @end defvr
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{loadfile}
 @deffn {Funktion} loadfile (@var{filename})
 
-@c Evaluates Lisp expressions in @var{filename}. @code{loadfile} does not invoke
-@c @code{file_search}, so @code{filename} must include the file extension and as
-@c much of the path as needed to find the file.
+L@"adt die Datei @var{filename} und wertet die Lisp-Ausdr@"ucke in der Datei 
+aus.  @code{filename} ruft nicht @mref{file_search} auf, um eine Datei zu 
+finden.  Daher muss @code{filename} ein voll@-st@"an@-di@-ger Dateiname sein.
 
-Wertet Lisp-Ausdr@"ucke in der Datei @var{filename} aus. @code{filename} ruft 
-nicht @code{file_search} auf, um eine Datei zu finden. Daher muss 
-@code{filename} ein vollst@"andiger Dateiname sein.
-
-@c @code{loadfile} can process files created by @code{save}, 
-@c @code{translate_file}, and @code{compile_file}. The user may find it more 
-@c convenient to use @code{load} instead of @code{loadfile}.
-
-@code{loadfile} kann Dateien verarbeiten, die mit den Funktionen @code{save},
-@code{translate_file} und @code{compile_file} erzeugt wurden.
-
-@c @opencatbox
-@c @category{Sitzungsverwaltung} @category{Dateieingabe}
-@c @closecatbox
+@code{loadfile} kann Dateien verarbeiten, die mit den Funktionen 
+@mrefcomma{save} @mref{translate_file} und @mref{compile_file} erzeugt wurden.
 @end deffn
-
-@c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
-@c I GUESS THIS COULD BE UPDATED TO DESCRIBE THE WAY IT ACTUALLY WORKS
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{loadprint}
 @defvr {Optionsvariable} loadprint
 Standardwert: @code{true}
 
-@c @code{loadprint} tells whether to print a message when a file is loaded.
-
 @code{loadprint} kontrolliert, ob Meldungen ausgegeben werden, wenn eine Datei
 geladen wird.
 
 @itemize @bullet
-@c When @code{loadprint} is @code{true}, always print a message.
-@item
-Hat @code{loadprint} den Wert @code{true}, wird immer eine Meldung ausgegeben.
-
-@c When @code{loadprint} is @code{'loadfile}, print a message only if a file is
-@c loaded by the function @code{loadfile}.
-
-@item
-Hat @code{loadprint} den Wert @code{'loadfile}, wird eine Meldung ausgegeben, 
-wenn die Datei mit der Funktion @code{loadfile} geladen wird.
-
-@c When @code{loadprint} is @code{'autoload}, print a message only if a file is
-@c automatically loaded. See @code{setup_autoload}.
-
-@item
-Hat @code{loadprint} den Wert @code{'autoload}, wird eine Meldung ausgegeben,
-wenn eine Datei automatisch geladen wird.
-
-@c When @code{loadprint} is @code{false}, never print a message.
-
-@item
-Hat @code{loadprint} den Wert @code{false}, werden keine Meldung beim Laden von
-Dateien ausgegben.
+@item Hat @code{loadprint} den Wert @code{true}, wird immer eine Meldung 
+      ausgegeben.
+@item Hat @code{loadprint} den Wert @code{'loadfile}, wird eine Meldung 
+      ausgegeben, wenn die Datei mit der Funktion @mref{loadfile} geladen wird.
+@item Hat @code{loadprint} den Wert @code{'autoload}, wird eine Meldung 
+      ausgegeben, wenn eine Datei automatisch geladen wird.
+@item Hat @code{loadprint} den Wert @code{false}, werden keine Meldungen beim 
+      Laden von Dateien ausgegeben.
 @end itemize
-
-@c @opencatbox
-@c @category{Dateieingabe} @category{Globale Schalter}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -705,8 +428,6 @@ Dateien ausgegben.
 @deffn  {Funktion} pathname_directory (@var{pathname})
 @deffnx {Funktion} pathname_name (@var{pathname})
 @deffnx {Funktion} pathname_type (@var{pathname})
-
-@c These functions return the components of @var{pathname}.
 
 Diese Funktionen geben die Bestandteile eines Pfadnamens zur@"uck.
 
@@ -725,81 +446,45 @@ Beispiele:
 (%i3) pathname_type("/home/dieter/maxima/changelog.txt");
 (%o3)                          txt
 @end example
-
-@c @opencatbox
-@c @category{File input}
-@c @closecatbox
 @end deffn
 
 @c --- 09.11.2010 DK -----------------------------------------------------------
 @anchor{printfile}
 @deffn {Funktion} printfile (@var{path})
 
-@c Prints the file named by @var{path} to the console. @var{path} may be a 
-@c string or a symbol; if it is a symbol, it is converted to a string.
-
-Druckt eine Datei mit dem Namen @var{path} auf der Konsole aus. @var{path} kann
-ein Symbol oder ein String sein.
-
-@c If @var{path} names a file which is accessible from the current working 
-@c directory, that file is printed to the console. Otherwise, @code{printfile} 
-@c attempts to locate the file by appending @var{path} to each of the elements 
-@c of @code{file_search_usage} via @code{filename_merge}.
-
-@code{printfile} sucht die Datei in den Verzeichnissen, die in der
-Optionsvariablen @code{file_search_usage} enthalten sind.
-
-@c @code{printfile} returns @var{path} if it names an existing file, or 
-@c otherwise the result of a successful filename merge.
+Druckt eine Datei mit dem Namen @var{path} auf der Konsole aus.  @var{path} kann
+ein Symbol oder eine Zeichenkette sein.  @code{printfile} sucht die Datei in den 
+Verzeichnissen, die in der Optionsvariablen @mref{file_search_usage} enthalten 
+sind.
 
 @code{printfile} gibt @var{path} zur@"uck, wenn die Datei existiert.
-
-@c @opencatbox
-@c @category{Dateieingabe} @category{Konsole Ein- und Ausgabe}
-@c @closecatbox
 @end deffn
 
 @c --- 11.11.2010 DK -----------------------------------------------------------
 @anchor{save}
-@deffn  {Funktion} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Funktion} save (@var{filename}, values, functions, labels, ...)
+@deffn  {Funktion} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, @dots{})
+@deffnx {Funktion} save (@var{filename}, values, functions, labels, @dots{})
 @deffnx {Funktion} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Funktion} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Funktion} save (@var{filename}, @var{name_1}=@var{expr_1}, @dots{})
 @deffnx {Funktion} save (@var{filename}, all)
-@deffnx {Funktion} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+@deffnx {Funktion} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, @dots{})
 
-@c Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, ..., 
-@c in @var{filename}. The arguments are the names of variables, functions, or 
-@c other objects. If a name has no value or function associated with it, it is 
-@c ignored. @code{save} returns @var{filename}.
+Speichert die aktuellen Werte von @var{name_1}, @var{name_2}, @var{name_3}, 
+@dots{}, in die Datei @var{filename}.  Die Argumente sind die Namen von 
+Variablen, Funktionen oder anderen Objekten.  Argumente, die keinen Wert haben, 
+werden ignoriert.  @code{save} gibt den Namen der Datei @code{filename} 
+zur@"uck.
 
-Speichert die aktuellen Werte von @var{name_1}, @var{name_2}, @var{name_3}, ..., 
-in die Datei @var{filename}. Die Argumente sind die Namen von Variablen, 
-Funktionen oder anderen Objekten. Argumente, die keinen Wert haben, werden 
-ignoriert. @code{save} gibt den Namen der Datei @code{filename} zur@"uck.
-
-@c @code{save} stores data in the form of Lisp expressions. The data stored by 
-@c @code{save} may be recovered by @code{load (@var{filename})}.
-
-@code{save} speichert die Daten in einem Lisp-Format. Die gespeicherten Daten
+@code{save} speichert die Daten in einem Lisp-Format.  Die gespeicherten Daten
 k@"onnen mit dem Kommando @code{load(@var{filename})} zur@"uckgelesen werden.
+Siehe @mrefdot{load}
 
-@c The global flag @code{file_output_append} governs whether @code{save} appends
-@c or truncates the output file. When @code{file_output_append} is @code{true},
-@c @code{save} appends to the output file. Otherwise, @code{save} truncates the 
-@c output file. In either case, @code{save} creates the file if it does not yet 
-@c exist.
-
-Die Optionsvariable @code{file_output_append} bestimmt, ob @code{save} die
-Daten an die Ausgabedatei anh@"angt oder die Ausgabedatei zuvor l@"oscht. Hat
-@code{file_output_append} den Wert @code{true}, werden die Daten angeh@"angt.
-Ansonsten wird die Datei gel@"oscht und neu angelegt. Existiert die Ausgabedatei 
+Die Optionsvariable @mref{file_output_append} kontrolliert, ob @code{save} die
+Daten an die Ausgabedatei anh@"angt, wenn diese bereits existiert, oder die 
+Ausgabedatei zuvor l@"oscht.  Hat @code{file_output_append} den Wert 
+@code{true}, werden die Daten angeh@"angt.  Ansonsten wird die Datei gel@"oscht
+und neu angelegt, wenn diese bereits existiert.  Existiert die Ausgabedatei
 noch nicht, wird diese angelegt.
-
-@c The special form @code{save (@var{filename}, values, functions, labels, ...)}
-@c stores the items named by @code{values}, @code{functions}, @code{labels}, 
-@c etc. The names may be any specified by the variable @code{infolists}.
-@c @code{values} comprises all user-defined variables.
 
 @code{save(@var{filename}, values, functions, labels, ...)} speichert die
 Werte aller Ein@-tr@"a@-ge der Listen @code{values}, @code{functions}, 
@@ -808,213 +493,113 @@ Informationslisten, die in der Systemvariablen @code{infolists} enthalten ist,
 als Argument @"ubergeben werden.  @code{values} enth@"alt zum Beispiel alle vom
 Nutzer definierten Variablen.
 
-@c The special form @code{save (@var{filename}, [@var{m}, @var{n}])} stores the 
-@c values of input and output labels @var{m} through @var{n}. Note that @var{m} 
-@c and @var{n} must be literal integers. Input and output labels may also be 
-@c stored one by one, e.g., @code{save ("foo.1", %i42, %o42)}. 
-@c @code{save (@var{filename}, labels)} stores all input and output labels. When
-@c the stored labels are recovered, they clobber existing labels.
-
-@code{save(@var{filename}, [@var{m}, @var{n}])} speichert die Werte der 
-Eingabe- und Ausgabemarken von @var{m} bis @var{n}. @var{m} und @var{n} m@"ussen
-ganze Zahlen sein. Die Eingabe- und Ausgabemarken k@"onnen auch einzeln 
-gespeichert werden, zum Beispiel mit @code{save("foo.1", %i42, %o42)}.
+@code{save(@var{filename}, [@var{m}, @var{n}])} speichert die Werte der Eingabe-
+und Ausgabemarken von @var{m} bis @var{n}.  @var{m} und @var{n} m@"ussen ganze 
+Zahlen sein.  Die Eingabe- und Ausgabemarken k@"onnen auch einzeln gespeichert 
+werden, zum Beispiel mit dem Kommando @code{save("foo.1", %i42, %o42)}.
 @code{save(@var{filename}, labels)} speichert alle Eingabe- und Ausgabemarken.
-Beim Zur@"uckgelesen der Marken, werden vorhandene Werte @"uberschrieben.
-
-@c The special form @code{save (@var{filename}, @var{name_1}=@var{expr_1}, 
-@c @var{name_2}=@var{expr_2}, ...)} stores the values of @var{expr_1}, 
-@c @var{expr_2}, ..., with names @var{name_1}, @var{name_2}, .... It is useful 
-@c to apply this form to input and output labels, e.g., 
-@c @code{save ("foo.1", aa=%o88)}. The right-hand side of the equality in this 
-@c form may be any expression, which is evaluated. This form does not introduce 
-@c the new names into the current Maxima environment, but only stores them in 
-@c @var{filename}.
+Beim Zur@"ucklesen der Marken werden vorhandene Werte @"uberschrieben.
 
 @code{save(@var{filename}, @var{name_1} = @var{expr_1}, @var{name_2} = 
 @var{expr_2}, ...)} speichert die Werte @var{expr_1}, @var{expr_2}, @dots{}, 
-unter den Namen @var{name_1}, @var{name_2}, @dots{} ab.  Dies kann  n@"utzlich
+unter den Namen @var{name_1}, @var{name_2}, @dots{} ab.  Dies kann  n@"utz@-lich
 sein, um zum Beispiel die Werte von Marken unter einem neuen Namen 
 abzuspeichern.  Die rechte Seite der Gleichungen kann ein beliebiger 
-ausgewerteter Ausdruck sein. Die neuen Namen werden der aktuellen Sitzung nicht
+ausgewerteter Ausdruck sein.  Die neuen Namen werden der aktuellen Sitzung nicht
 hinzugef@"ugt und nur in der Ausgabedatei gespeichert.
 
-@c These special forms and the general form of @code{save} may be mixed at will.
-@c For example, @code{save (@var{filename}, aa, bb, cc=42, functions, [11,17])}.
-
-Die verschiedenen M@"oglichkeiten die Funktion @code{save} aufzurufen, k@"onnen
-miteinander kombiniert werden, zum Beispiel 
-@code{save(@var{filename}, aa, bb, cc=42, functions, [11,17])}.
-
-@c The special form @code{save (@var{filename}, all)} stores the current state 
-@c of Maxima. This includes all user-defined variables, functions, arrays, etc.,
-@c as well as some automatically defined items. The saved items include system 
-@c variables, such as @code{file_search_maxima} or @code{showtime}, if they have 
-@c been assigned new values by the user; see @code{myoptions}.
+Die verschiedenen M@"oglichkeiten der Funktion @code{save}, k@"onnen
+miteinander kombiniert werden.  Das Kommando
+@code{save(@var{filename}, aa, bb, cc=42, functions, [11,17])} ist daf@"ur ein
+Beispiel.
 
 @code{save(@var{filename}, all)} speichert den aktuellen Zustand von Maxima
-in eine Ausgabedatei. Eingeschlossen sind alle nutzerdefinierten Variablen, 
-Funktionen, Arrays, usw., einschlie@ss{}lich automatischer Definitionen. Die 
+in eine Ausgabedatei.  Eingeschlossen sind alle nutzerdefinierten Variablen, 
+Funktionen oder Arrays, einschlie@ss{}lich automatischer Definitionen.  Die 
 gespeicherten Daten enthalten auch die Werte von ge@"anderten System- oder
-Optionsvariablen, siehe @code{myoptions}.
+Optionsvariablen.  Siehe dazu auch @mrefdot{myoptions}
 
-@c @code{save} evaluates @var{filename} and quotes all other arguments.
-
-@code{save} wertet das Argument @var{filename} aus. Alle anderen Argumente
+@code{save} wertet das Argument @var{filename} aus.  Alle anderen Argumente
 werden nicht ausgewertet.
-
-@c @opencatbox
-@c @category{Sitzungverwaltung} @category{Dateiausgabe}
-@c @closecatbox
 @end deffn
 
 @c --- 11.11.2010 DK -----------------------------------------------------------
 @anchor{stringout}
-@deffn  {Funktion} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffn  {Funktion} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
 @deffnx {Funktion} stringout (@var{filename}, [@var{m}, @var{n}])
 @deffnx {Funktion} stringout (@var{filename}, input)
 @deffnx {Funktion} stringout (@var{filename}, functions)
 @deffnx {Funktion} stringout (@var{filename}, values)
 
-@c @code{stringout} writes expressions to a file in the same form the 
-@c expressions would be typed for input. The file can then be used as input for 
-@c the @code{batch} or @code{demo} commands, and it may be edited for any 
-@c purpose. @code{stringout} can be executed while @code{writefile} is in 
-@c progress.
-
 @code{stringout} schreibt Ausdr@"ucke in einem Format in eine Datei, dass 
-identisch mit dem Format der Eingabe ist. Die Datei kann als Eingabedatei f@"ur
-die Funktionen @code{batch} oder @code{demo} genutzt werden. Sie kann mit 
-einem Texteditor f@"ur jeden Zweck editiert werden. @code{stringout} kann
-ausgef@"uhrt werden, wenn das Kommando @code{writefile} aktiv ist.
+identisch mit dem Format der Eingabe ist.  Die Datei kann als Eingabedatei f@"ur
+die Funktionen @mref{batch} oder @mref{demo} genutzt werden.  Sie kann mit 
+einem Texteditor f@"ur jeden Zweck editiert werden.  @code{stringout} kann
+ausgef@"uhrt werden, wenn das Kommando @mref{writefile} aktiv ist.
 
-@c The global flag @code{file_output_append} governs whether @code{stringout} 
-@c appends or truncates the output file. When @code{file_output_append} is 
-@c @code{true}, @code{stringout} appends to the output file. Otherwise, 
-@c @code{stringout} truncates the output file. In either case, @code{stringout} 
-@c creates the file if it does not yet exist.
-
-Die Optionsvariable @code{file_output_append} bestimmt, ob @code{stringout} die
-Daten an die Ausgabedatei anh@"angt oder die Ausgabedatei zuvor l@"oscht. Hat
-@code{file_output_append} den Wert @code{true}, werden die Daten angeh@"angt.
-Ansonsten wird die Datei gel@"oscht und neu angelegt. Existiert die Ausgabedatei 
-noch nicht, wird diese angelegt.
-
-@c The general form of @code{stringout} writes the values of one or more 
-@c expressions to the output file. Note that if an expression is a variable, 
-@c only the value of the variable is written and not the name of the variable. 
-@c As a useful special case, the expressions may be input labels (@code{%i1}, 
-@c @code{%i2}, @code{%i3}, ...) or output labels (@code{%o1}, @code{%o2}, 
-@c @code{%o3}, ...).
+Die Optionsvariable @mref{file_output_append} kontrolliert, ob @code{stringout}
+die Daten an die Ausgabedatei anh@"angt, wenn diese bereits existiert oder die 
+Ausgabedatei zuvor l@"oscht.  Hat @code{file_output_append} den Wert 
+@code{true}, werden die Daten angeh@"angt, wenn die Datei bereits existiert.  
+Ansonsten wird die Datei gel@"oscht und neu angelegt.  Existiert die 
+Ausgabedatei noch nicht, wird diese angelegt.
 
 Die allgemeine Form von @code{stringout} schreibt die Werte eines oder mehrerer
-Ausdr@"ucke in die Ausgabedatei. Ist ein Ausdruck eine Variable, wird nur der
+Ausdr@"ucke in die Ausgabedatei.  Ist ein Ausdruck eine Variable, wird nur der
 Wert der Variablen, nicht jedoch der Name der Variablen in die Ausgabedatei 
-geschrieben. Ein n@"utzlicher Spezialfall ist, dass Eingabe- (@code{%i1}, 
-@code{%i2}, @code{%i3}, ...) und Ausgabemarken (@code{%o1}, @code{%o2},  
-@code{%o3}, ...) in die Datei geschrieben werden k@"onnen.
-
-@c If @code{grind} is @code{true}, @code{stringout} formats the output using the
-@c @code{grind} format. Otherwise the @code{string} format is used. See 
-@c @code{grind} and @code{string}.
+geschrieben.  Ein n@"utzlicher Spezialfall ist, dass die Werte der Eingabe- 
+und Ausgabemarken (@code{%i1}, @code{%i2}, @code{%i3}, @dots{} und @code{%o1}, 
+@code{%o2}, @code{%o3}, @dots{}) in die Datei geschrieben werden k@"onnen.
 
 Hat die Optionsvariable @code{grind} den Wert @code{true}, wird die Ausgabe
-im Format der Funktion @code{grind} in die Ausgabedatei geschrieben. Ansonsten
-wird das Format der Funktion @code{string} f@"ur die Ausgabe genutzt. Siehe
-die Funktionen @code{grind} und @code{string}.
-
-@c The special form @code{stringout (@var{filename}, [@var{m}, @var{n}])} writes
-@c the values of input labels m through n, inclusive. 
+im Format der Funktion @mref{grind} in die Ausgabedatei geschrieben.  Ansonsten
+wird das Format der Funktion @mref{string} f@"ur die Ausgabe genutzt.
 
 @code{stringout(@var{filename}, [@var{m}, @var{n}])} schreibt die Werte aller
 Eingabemarken von @var{m} bis @var{n} in die Ausgabedatei.
-
-@c The special form @code{stringout (@var{filename}, input)} writes all input 
-@c labels to the file.
-
 @code{stringout(@var{filename}, input)} schreibt alle Eingabemarken in die
-Ausgabedatei.
-
-@c The special form @code{stringout (@var{filename}, functions)} writes all
-@c user-defined functions (named by the global list @code{functions}) to the 
-@c file.
-
-@code{stringout(@var{filename}, functions)} schreibt alle vom Nutzer 
-definierten Funktionen, die in der Informationsliste @code{functions} enthalten
-sind, in die Ausgabedatei.
-
-@c The special form @code{stringout (@var{filename}, values)} writes all
-@c user-assigned variables (named by the global list @code{values}) to the file.
-@c Each variable is printed as an assignment statement, with the name of the 
-@c variable, a colon, and its value. Note that the general form of 
-@c @code{stringout} does not print variables as assignment statements.
+Ausgabedatei.  @code{stringout(@var{filename}, functions)} schreibt alle vom 
+Nutzer definierten Funktionen, die in der Informationsliste @code{functions} 
+enthalten sind, in die Ausgabedatei.
 
 @code{stringout(@var{filename}, values)} schreibt alle benuzterdefinierten
 Variablen, die in der Informationsliste @code{values} enthalten sind, in die
-Ausgabedatei. Die Variablen werden als eine Zuweisung, mit dem Namen der 
+Ausgabedatei.  Die Variablen werden als eine Zuweisung, mit dem Namen der 
 Variablen, dem Zuweisungsoperator @code{:} und dem Wert in die Datei 
-geschrieben. Beachte, dass die allgemeine Form der Funktion @code{stringout} die
-Werte der Variablen nicht als Zuweisung in die Datei speichert.
-
-@c @opencatbox
-@c @category{Sitzungsverwaltung} @category{Dateiausgabe}
-@c @closecatbox
+geschrieben.  Im Unterschied dazu, speichert die allgemeine Form der Funktion
+@code{stringout} die Variablen nicht als Zuweisung.
 @end deffn
-
-@c NEEDS CLARIFICATION
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{with_stdout}
-@deffn  {Funktion} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Funktion} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-
-@c Evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, ... and writes any output
-@c thus generated to a file @var{f} or output stream @var{s}. The evaluated 
-@c expressions are not written to the output. Output may be generated by 
-@c @code{print}, @code{display}, @code{grind}, among other functions.
+@deffn  {Funktion} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
+@deffnx {Funktion} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
 
 @code{with_stdout} wertet Argumente @var{expr_1}, @var{expr_2}, @var{expr_3}, 
-... aus und schreibt die Ergebnisse der Auswertung in die Ausgabedatei 
-@code{f} oder in den Stream @code{s}. Die Ergebnisse werden nicht auf der 
+@dots{} aus und schreibt die Ergebnisse der Auswertung in die Ausgabedatei 
+@code{f} oder in den Stream @code{s}.  Die Ergebnisse werden nicht auf der 
 Konsole ausgegeben.
-
-@c The global flag @code{file_output_append} governs whether @code{with_stdout}
-@c appends or truncates the output file @var{f}. When @code{file_output_append} 
-@c is @code{true}, @code{with_stdout} appends to the output file. Otherwise, 
-@c @code{with_stdout} truncates the output file. In either case, 
-@c @code{with_stdout} creates the file if it does not yet exist.
 
 Die Optionsvariable @code{file_output_append} bestimmt, ob @code{with_stdout} 
 die Daten an die Ausgabedatei anh@"angt oder die Ausgabedatei zuvor l@"oscht. 
 Hat @code{file_output_append} den Wert @code{true}, werden die Daten 
-angeh@"angt. Ansonsten wird die Datei gel@"oscht und neu angelegt. Existiert die
-Ausgabedatei noch nicht, wird diese angelegt.
+angeh@"angt.  Ansonsten wird die Datei gel@"oscht und neu angelegt.  Existiert
+die Ausgabedatei noch nicht, wird diese angelegt.
 
-@c @code{with_stdout} returns the value of its final argument.
-
-@code{with_stout} gibt das Ergebnis des letzten Argumentes zur@"uck.
+@code{with_stout} gibt das Ergebnis des letzten Argumentes zur@"uck.  
 
 Siehe auch @mrefdot{writefile}
 
-@c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
-@c Note the binding of display2d to be
-@c false, otherwise the printing will have things like "- 3" instead
-@c of "-3".
+Beispiel:
 
-@c THIS EXAMPLE USES SOME UNIX-ISH CONSTRUCTS -- WILL IT WORK IN WINDOWS ???
-@c ALSO IT'S SORT OF COMPLICATED AND THE SIMPLER SECOND EXAMPLE ILLUSTRATES 
-@c with_stdout BETTER !!!
-@c mygnuplot (f, var, range, number_ticks) :=
-@c  block ([numer:true, display2d:false],
-@c  with_stdout("tmp.out",
-@c    dx: (range[2]-range[1])/number_ticks,
-@c    for x: range[1] thru range[2] step dx
-@c       do print (x, at (f, var=x))),
-@c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
-@c ;pause 10 \" | gnuplot"))$
+@c ===beg===
+@c with_stdout ("tmp.out", for i:5 thru 10 do
+@c    print (i, "! yields", i!))$
+@c printfile ("tmp.out")$
+@c ===end===
 @example
 (%i1) with_stdout ("tmp.out", for i:5 thru 10 do
-      print (i, "! yields", i!))$
+         print (i, "! yields", i!))$
 (%i2) printfile ("tmp.out")$
 5 ! yields 120 
 6 ! yields 720 
@@ -1023,65 +608,31 @@ Siehe auch @mrefdot{writefile}
 9 ! yields 362880 
 10 ! yields 3628800
 @end example
-
-@c @opencatbox
-@c @category{Dateiausgabe}
-@c @closecatbox
 @end deffn
 
 @c --- 03.09.2010 DK -----------------------------------------------------------
 @anchor{writefile}
 @deffn {Funktion} writefile (@var{filename})
 
-@c Begins writing a transcript of the Maxima session to @var{filename}. All 
-@c interaction between the user and Maxima is then recorded in this file,
-   @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
-@c just as it appears on the console.
-
-Startet eine Aufzeichnung aller Ein- und Ausgaben der Konsole. Die Ein- und 
+Startet eine Aufzeichnung aller Ein- und Ausgaben der Konsole.  Die Ein- und 
 Ausgaben werden in die Datei @var{filename} geschrieben.
 
-@c As the transcript is printed in the console output format, it cannot be 
-@c reloaded into Maxima. To make a file containing expressions which can be 
-@c reloaded, see @code{save} and @code{stringout}. @code{save} stores 
-@c expressions in Lisp form, while @code{stringout} stores expressions in Maxima
-@c form.
-
-Die Ausgabedatei kann von Maxima nicht wieder zur@"uckgelesen werden. Um ein 
+Die Ausgabedatei kann von Maxima nicht wieder zur@"uckgelesen werden.  Um ein 
 Datei zu erzeugen, die von Maxima zur@"uckgelesen werden kann, siehe die 
-Funktionen @code{save} and @code{stringout}. @code{save} speichert Ausdr@"ucke 
-in einem Lisp-Format und @code{stringout} speichert Ausdr@"ucke in einem 
-Maxima-Format.
-
-@c The effect of executing @code{writefile} when @var{filename} already exists
-@c depends on the underlying Lisp implementation; the transcript file may be 
-@c clobbered, or the file may be appended. @code{appendfile} always appends to 
-@c the transcript file.
+Funktionen @mref{save} und @mrefdot{stringout}  @code{save} speichert 
+Ausdr@"ucke in einem Lisp-Format und @code{stringout} in einem Maxima-Format.
 
 Die Reaktion der Funktion @code{writefile} f@"ur den Fall, dass die Ausgabedatei
-bereits existiert, h@"angt von der Lisp-Implementation ab. Die Ausgabedatei
-kann zur@"uckgesetzt werden oder die Daten werden angeh@"angt. Die Funktion
-@code{appendfile} h@"angt die Daten immer an eine existierende Datei an.
-
-@c It may be convenient to execute @code{playback} after @code{writefile} to 
-@c save the display of previous interactions. As @code{playback} displays only 
-@c the input and output variables (@code{%i1}, @code{%o1}, etc.), any output 
-@c generated by a print statement in a function (as opposed to a return value) 
-@c is not displayed by @code{playback}.
+bereits existiert, h@"angt von der Lisp-Implementation ab.  Die Ausgabedatei
+kann zur@"uckgesetzt werden oder die Daten werden angeh@"angt.  Die Funktion
+@mref{appendfile} h@"angt die Daten immer an eine existierende Datei an.
 
 Um eine Aufzeichnung ohne Textausgaben von Funktionen zu erhalten, kann 
 @code{writefile} nach der Ausf@"uhrung von @code{playback} ausgef@"uhrt werden. 
 @code{playback} gibt alle vorhergenden Eingabe- und Ausgabemarken aus, jedoch 
 nicht sonstige Textausgaben von Maxima-Funktionen.
 
-@c @code{closefile} closes the transcript file opened by @code{writefile} or 
-@c @code{appendfile}.
-
-Mit @code{closefile} wird die Aufzeichnung beendet.
-
-@c @opencatbox
-@c @category{Dateiausgabe} @category{Konsole Ein- und Ausgabe}
-@c @closecatbox
+Mit @mref{closefile} wird die Aufzeichnung beendet.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1155,10 +706,6 @@ $$-\cos x$$
 (%i2) S;
 (%o2) $$x\,y\,z$$
 @end example
-
-@c @opencatbox
-@c @category{TeX output} @category{File output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1219,11 +766,11 @@ arguments.
 Examples:
 
 Assign TeX output for a variable.
+
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
 @c ===end===
-
 @example
 (%i1) texput (me,"\\mu_e");
 (%o1)                         \mu_e
@@ -1233,11 +780,11 @@ $$\mu_e$$
 @end example
 
 Assign TeX output for an ordinary function (not an operator).
+
 @c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
 @c ===end===
-
 @example
 (%i1) texput (lcm, "\\mathrm@{lcm@}");
 (%o1)                     \mathrm@{lcm@}
@@ -1267,12 +814,12 @@ $$\left[\stackrel@{\pi@}@{2^@{x@}@}\right]$$
 @end example
 
 Assign TeX output for a prefix operator.
+
 @c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
 @c tex (grad f);
 @c ===end===
-
 @example
 (%i1) prefix ("grad");
 (%o1)                         grad
@@ -1284,12 +831,12 @@ $$ \nabla f$$
 @end example
 
 Assign TeX output for an infix operator.
+
 @c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
 @c tex (a ~ b);
 @c ===end===
-
 @example
 (%i1) infix ("~");
 (%o1)                           ~
@@ -1301,12 +848,12 @@ $$a \times b$$
 @end example
 
 Assign TeX output for a postfix operator.
+
 @c ===beg===
 @c postfix ("##");
 @c texput ("##", "!!", postfix);
 @c tex (x ##);
 @c ===end===
-
 @example
 (%i1) postfix ("##");
 (%o1)                          ##
@@ -1318,12 +865,12 @@ $$x!!$$
 @end example
 
 Assign TeX output for a nary operator.
+
 @c ===beg===
 @c nary ("@@");
 @c texput ("@@", " \\circ ", nary);
 @c tex (a @@ b @@ c @@ d);
 @c ===end===
-
 @example
 (%i1) nary ("@@@@");
 (%o1)                          @@@@
@@ -1335,12 +882,12 @@ $$a \circ b \circ c \circ d$$
 @end example
 
 Assign TeX output for a nofix operator.
+
 @c ===beg===
 @c nofix ("foo");
 @c texput ("foo", "\\mathsc{foo}", nofix);
 @c tex (foo);
 @c ===end===
-
 @example
 (%i1) nofix ("foo");
 (%o1)                          foo
@@ -1352,6 +899,7 @@ $$\mathsc@{foo@}$$
 @end example
 
 Assign TeX output for a matchfix operator.
+
 @c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
@@ -1362,7 +910,6 @@ Assign TeX output for a matchfix operator.
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
-
 @example
 (%i1) matchfix ("<<", ">>");
 (%o1)                          <<
@@ -1384,10 +931,6 @@ $$ \langle a \rangle $$
 $$ \langle a \, | \,b \rangle $$
 (%o7)                         false
 @end example
-
-@c @opencatbox
-@c @category{TeX output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1438,10 +981,6 @@ f(x):=1-x;
 $$f(x):=1-x$$
 (%o4)                         false
 @end example
-
-@c @opencatbox
-@c @category{TeX output}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1488,10 +1027,6 @@ g\left(x\right)+f\left(x\right)
 \end@{equation@}
 (%o4)                         false
 @end example
-
-@c @opencatbox
-@c @category{TeX output}
-@c @closecatbox
 @end deffn
 
 @c --- End of Input.de.texi ----------------------------------------------------
