@@ -348,7 +348,7 @@
 
 (defun sp1expt (b e)
   (cond ((mexptp b)
-	 (sp1expt (cadr b) (m* e (caddr b))))
+         (power (sp1 b) (sp1 e)))
 	((and (null (trigfp b)) (free e var))
 	 (m^ b e))
 	((equal b '$%e)
@@ -399,8 +399,9 @@
 
 (defun sp1log2 (e)
   (and $verbose
-       (prog2 (mtell "trigreduce: can't expand ")
-	   (show-exp (list '(%log) e))
+       (prog2
+         (mtell "trigreduce: can't expand~%~%")
+	 (show-exp (list '(%log) e))
 	 (mtell "trigreduce: try again after applying the rule:~2%~M~%~%"
 		(list '(mlable) nil
 		      (out-of
