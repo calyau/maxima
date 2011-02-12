@@ -862,7 +862,7 @@ Ausdruck ist.  Der Ausdruck darf jedoch keine Liste oder eine Matrix sein.
 @section Funktionen und Variablen f@"ur Fakten
 @c -----------------------------------------------------------------------------
 
-@c --- 27.08.2010 DK -----------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{activate}
 @deffn {Funktion} activate (@var{context_1}, @dots{}, @var{context_n})
 
@@ -889,9 +889,10 @@ Fakten eines anderen als des aktuellen Kontexts auszugeben, kann das Kommando
 @c by way of the @code{activate} function.
 
 Die Systemvariable @mref{activecontexts} enth@"alt eine Liste der aktiven
-Kontexte.
+Kontexte.  Siehe auch die Systemvariable @mref{contexts} f@"ur eine Liste
+aller Kontexte, die Maxima kennt.
 @end deffn
- 
+
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{activecontexts}
 @defvr {Systemvariable} activecontexts
@@ -905,7 +906,8 @@ Die Systemvariable @code{activecontexts} enth@"alt eine Liste der Kontexte, die
 mit der Funktion @code{activate} aktiviert wurden.  Unterkontexte sind aktiv,
 ohne dass die Funktion @code{activate} aufgerufen werden muss und sind nicht in
 der Liste @code{activecontexts} enthalten.  Siehe auch die Funktion
-@mrefdot{activate}
+@mref{activate} f@"ur die Aktivierung eines Kontextes und die Systemvariable
+@mref{contexts} f@"ur eine Liste aller vorhandenen Kontexte.
 @end defvr
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
@@ -924,8 +926,8 @@ der Liste @code{activecontexts} enthalten.  Siehe auch die Funktion
 @c @code{askinteger (@var{expr})} is equivalent to @code{askinteger (@var{expr},
 @c integer)}.
 
-@code{askinteger(@var{expr}, integer)} versucht anhand der Aussagen und Fakten
-der aktiven Kontexte zu entscheiden, ob @var{expr} eine ganze Zahl 
+Das Kommando @code{askinteger(@var{expr}, integer)} versucht anhand der Aussagen
+und Fakten der aktiven Kontexte zu entscheiden, ob @var{expr} eine ganze Zahl
 repr@"asentiert.  Kann @code{askinteger} die Frage nicht entscheiden, fragt 
 Maxima den Nutzer.  Die Antwort wird dem aktuellen Kontext hinzugef@"ugt.  
 @code{askinteger(@var{expr})} ist @"aquivalent zu 
@@ -1089,7 +1091,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 26.08.2010 DK -----------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{assumescalar}
 @defvr {Optionsvariable} assumescalar
 Standardwert: @code{true}
@@ -1182,7 +1184,7 @@ dann als einen Skalar, wenn @code{assumescalar} den Wert @code{all} hat.
 @end example
 @end defvr
 
-@c --- 26.08.2010 --------------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{assume_pos}
 @defvr {Optionsvariable} assume_pos
 Standardwert: @code{false}
@@ -1193,32 +1195,30 @@ Standardwert: @code{false}
 @c or other considerations, @code{sign} and @code{asksign (@var{x})} return 
 @c @code{true}. This may forestall some automatically-generated @code{asksign} 
 @c queries, such as may arise from @code{integrate} or other computations.
-
-Hat die Optionsvariable @code{assume_pos} den Wert @code{true} und das
-Vorzeichen eines Parameters @var{x} kann nicht bestimmt werden vom 
-gegenw@"artigen Kontext oder aus anderen Zusammenh@"angen, geben 
-@code{sign(@var{x})} und @code{asksign(@var{x})} das Ergebnis @code{true}.
-Dadurch k@"onnen automatische Abfragen wie sie von @code{integrate} 
-ausgef@"uhrt werden, vermieden werden.
-
 @c By default, a parameter is @var{x} such that @code{symbolp (@var{x})} or 
 @c @code{subvarp (@var{x})}. The class of expressions considered parameters can
 @c be modified to some extent via the variable @code{assume_pos_pred}.
 
-Standardm@"a@ss{}ig ist ein Parameter @var{x}, so dass @code{symbolp(@var{x})} 
-oder @code{subvarp(@var{x})}.  Die Klasse an Ausdr@"ucken, die als Parameter 
-betrachtet werden, kann mit der Optionsvariablen @code{assume_pos_pred} 
-erweitert werden.
+Die Optionsvariable @code{assume_pos} kontrolliert das Ergebnis der Funktionen
+@mref{sign} und @mrefcomma{asksign} f@"ur den Fall, dass Maxima das Vorzeichen
+einer Variablen oder indizierten Variablen nicht aus den aktiven Kontexten 
+ermitteln kann.  Hat @code{assume_pos} den Wert @code{true}, dann wird f@"ur 
+Variable oder indizierte Variable, immer das Ergebnis @code{pos} ermittelt, wenn
+die Optionsvariable @code{assume_pos_pred} den Standardwert @code{false} hat und
+das Vorzeichen nicht aus den aktiven Kontexten ermittelt werden kann.
+
+Die Optionsvariable @mref{assume_pos_pred} hat den Standardwert @code{false}.
+In diesem Fall werden von Maxima Variablen und indizierte Variablen als positiv
+angenommen, wenn @code{assume_pos} den Wert @code{true} hat.  Der 
+Optionsvariablen @mref{assume_pos_pred} kann eine Aussagefunktion mit einem
+Argument zugewiesen werden.  Hat die Aussagefunktion f@"ur ein Argument 
+@var{expr} das Ergebnis @code{true}, wird das Argument als positiv 
+angenommen, wenn die Optionsvariable @code{assume_pos} den Wert @code{true} hat
+und Maxima das Vorzeichen nicht aus den aktiven Kontexten ermitteln kann.
 
 @c @code{sign} and @code{asksign} attempt to deduce the sign of expressions from
 @c the sign of operands within the expression. For example, if @code{a} and 
 @c @code{b} are both positive, then @code{a + b} is also positive.
-
-@code{sign} und @code{asksing} versuchen das Vorzeichen eines Ausdruckes vom
-Vorzeichen der Operanten eines Ausdruckes zu ermitteln.  Sind zum Beispiel
-@code{a} und @code{b} beide postive, dann hat auch @code{a+b} ein positives
-Vorzeichen.
-
 @c However, there is no way to bypass all @code{asksign} queries. In particular,
 @c when the @code{asksign} argument is a difference @code{@var{x} - @var{y}} or 
 @c a logarithm @code{log(@var{x})}, @code{asksign} always requests an input from
@@ -1226,14 +1226,55 @@ Vorzeichen.
 @c @code{assume_pos_pred} is a function which returns @code{true} for all 
 @c arguments.
 
-Jedoch gibt es keine M@"oglichkeit, alle Fragen von @code{asksign} zu vermeiden.
-So fragt @code{asksign} auf jeden Fall nach dem Vorzeichen f@"ur eine Differenz
-@code{@var{x} - @var{y}} oder einen Logarithmus @code{log(@var{x})}, auch wenn
-@code{assume_pos} den Wert @code{true} hat und @code{assume_pos_pred} eine
-Funktion ist, die f@"ur alle Argumente den Wert @code{true} zur@"uckgibt.
+Die Funktionen @code{sign} und @code{asksign} versuchen das Vorzeichen eines
+Ausdrucks anhand der Vorzeichen der Argumente zu ermitteln.  Sind zum Beispiel
+@code{a} und @code{b} beide positiv, dann wird f@"ur den Ausdruck @code{a+b} ein
+positives Vorzeichen ermittelt.  Auch wenn die Vorzeichen der Variablen @code{a}
+und @code{b} nicht bekannt sind, hat daher @code{asksign(a+b)} das Ergebnis
+@code{pos}, wenn @code{assume_pos} den Wert @code{true} hat, da in diesem Fall
+die Variablen als positiv angenommen werden.
+
+Es gibt jedoch keine M@"oglichkeit, alle Ausdr@"ucke grunds@"atzlich als positiv
+zu erkl@"aren.  Selbst wenn der Optionsvariablen @code{assume_pos_pred} eine 
+Aussagefunktion zugewiesen wird, die alle Ausdr@"ucke als positiv erkl@"art,
+werden Differenzen @code{a-b} oder das Vorzeichen der Logarithmusfunktion 
+@code{log(a)} nicht als positiv ermittelt.  Die Fragen der Funktion 
+@code{asksign} an den Nutzer k@"onnen daher nie vollst@"andig mit dem 
+Mechanismus der Optionsvariablen @code{assume_pos} unterdr@"uckt werden.
+
+Siehe f@"ur weitere Beispiele die Optionsvariable @mrefdot{assume_pos_pred}
+
+Beispiele:
+
+Das Vorzeichen der Variablen @code{x} ist nicht bekannt.  Erh@"alt die
+Optionsvariable @code{assume_pos} den Wert @code{true}, wird f@"ur die Variable
+@code{x} und die indizierte Variable @code{x[1]} ein positives Vorzeichen
+ermittelt.
+
+@example
+(%i1) sign(x);
+(%o1)                          pnz
+(%i2) assume_pos:true;
+(%o2)                         true
+(%i3) sign(x);
+(%o3)                          pos
+(%i4) sign(x[1]);
+(%o4)                          pos
+@end example
+
+Die Vorzeichen der Variablen @code{a} und @code{b} sind nicht bekannt.  Maxima
+ermittelt ein positives Vorzeichen f@"ur die Summe der Variablen.  Das
+Vorzeichen der Differenz ist dagegen weiterhin nicht bekannt.
+
+@example
+(%i5) sign(a+b);
+(%o5)                          pos
+(%i6) sign(a-b);
+(%o6)                          pnz
+@end example
 @end defvr
 
-@c --- 26.08.2010 DK -----------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{assume_pos_pred}
 @defvr {Optionsvariable} assume_pos_pred
 Standardwert: @code{false}
@@ -1243,47 +1284,47 @@ Standardwert: @code{false}
 @c whether @var{x} is considered a parameter for the purpose of 
 @c @code{assume_pos}. @code{assume_pos_pred} is ignored when @code{assume_pos} 
 @c is @code{false}.
-
-Wird der Optionsvariablen @code{assume_pos_pred} der Name einer Funktion oder
-ein Lambda-Ausdruck mit einem Argument @var{x} zugewiesen, wird diese Funktion
-aufgerufen, um festzustellen, ob @var{x} als ein Parameter im Zusammenhang
-mit @code{assume_pos} behandelt wird.  @code{assume_pos_pred} wird ignoriert,
-wenn die Optionsvariable @code{assume_pos} den Wert @code{false} hat.
-
 @c The @code{assume_pos_pred} function is called by @code{sign} and 
 @c @code{asksign} with an argument @var{x} which is either an atom, a 
 @c subscripted variable, or a function call expression. If the 
 @c @code{assume_pos_pred} function returns @code{true}, @var{x} is considered a 
 @c parameter for the purpose of @code{assume_pos}.
-
-Die @code{assume_pos_pred}-Funktion wird von den Funktionen @code{sign} und
-@code{asksign} mit einem Argument @var{x} aufgerufen, welches entweder ein 
-Symbol, eine indizierte Variable oder ein Funktionsaufruf ist.  Gibt
-@code{assume_pos_pred} den Wert @code{true} zur@"uck, wird @var{x} als ein
-Parameter f@"ur @code{assuem_pos} betrachtet.
-
 @c By default, a parameter is @var{x} such that @code{symbolp (@var{x})} or 
 @c @code{subvarp (@var{x})}.
 
-Standardm@"a@ss{}ig ist ein Parameter @var{x}, so dass @code{symbolp(@var{x})} 
-oder @code{subvarp(@var{x})}.
+Der Optionsvariablen @code{assume_pos_pred} kann eine Aussagefunktion wie zum
+Beispiel @mref{symbolp} oder ein Lambda-Ausdruck mit einem Argument @code{x}
+zugewiesen werden.  Hat die Optionsvariable @mref{assume_pos} den Wert
+@code{true}, werden Variablen, indizierte Variablen oder die Werte von 
+Funktionen dann als positiv angenommen, wenn die Aussagefunktion das Ergebnis 
+@code{true} hat.
 
-Siehe auch @code{assume} und @code{assume_pos}.
+Die Aussagefunktion wird intern von den Funktionen @mref{sign} und 
+@mref{asksign} aufgerufen, wenn die Optionsvariable @code{assume_pos} den Wert
+@code{true} hat und das Vorzeichen einer Variablen, indizierten Variablen oder
+f@"ur den Wert einer Funktion nicht ermittelt werden konnte.  Gibt die
+Aussagefunktion das Ergebnis @code{true} zur@"uck, wird das Argument als
+positiv angenommen.
+
+Hat die Optionsvariable @code{assume_pos_pred} den Standardwert @code{false}
+werden Variablen und indizierte Variablen von Maxima als positiv angenommen,
+wenn die Optionsvariable @code{assume_pos} den Wert @code{true} hat.  Das 
+entspricht einer Aussagefunktion, die als @code{lambda([x], symbolp(x) or
+subvarp(x))} definiert wird.
+
+Siehe auch @mref{assume} und @mrefdot{assume_pos}
 
 Beispiele:
+
+Der Optionsvariablen @code{assume_pos_pred} wird der Name der Aussagefunktion
+@code{symbolp} zugewiesen.  Indizierte Variablen werden nun nicht mehr als 
+positiv angenommen, wie es f@"ur den Standartwert @code{false} gilt.
 
 @c ===beg===
 @c assume_pos: true$
 @c assume_pos_pred: symbolp$
 @c sign (a);
 @c sign (a[1]);
-@c assume_pos_pred: lambda ([x], display (x), true)$
-@c asksign (a);
-@c asksign (a[1]);
-@c asksign (foo (a));
-@c asksign (foo (a) + bar (b));
-@c asksign (log (a));
-@c asksign (a - b);
 @c ===end===
 @example
 (%i1) assume_pos: true$
@@ -1292,50 +1333,44 @@ Beispiele:
 (%o3)                          pos
 (%i4) sign (a[1]);
 (%o4)                          pnz
-(%i5) assume_pos_pred: lambda ([x], display (x), true)$
-(%i6) asksign (a);
-                              x = a
+@end example
 
+Der Optionsvariablen @code{assume_pos_pred} wird ein Lambda-Ausdruck zugewiesen,
+der f@"ur alle Argumente das Ergebnis @code{true} hat.  Die Funktion @code{sign}
+ermittelt nun f@"ur Variablen, indizierte Variablen und den Werten von 
+Funktionen ein positives Vorzeichen.  Dies trifft jedoch nicht f@"ur die 
+Logarithmusfunktion oder eine Differenz zu.
+
+@c ===beg===
+@c assume_pos: true$
+@c assume_pos_pred: lambda([x], true);
+@c sign(a);
+@c sign(a[1]);
+@c sign(foo(x));
+@c sign(foo(x)+foo(y));
+@c sign(log(x));
+@c sign(x-y);
+@c ===end===
+@example
+(%i1) assume_pos: true$
+(%i2) assume_pos_pred: lambda([x], true);
+(%o2)                   lambda([x], true)
+(%i3) sign(a);
+(%o3)                          pos
+(%i4) sign(a[1]);
+(%o4)                          pos
+(%i5) sign(foo(x));
+(%o5)                          pos
+(%i6) sign(foo(x)+foo(y));
 (%o6)                          pos
-(%i7) asksign (a[1]);
-                             x = a
-                                  1
-
-(%o7)                          pos
-(%i8) asksign (foo (a));
-                           x = foo(a)
-
-(%o8)                          pos
-(%i9) asksign (foo (a) + bar (b));
-                           x = foo(a)
-
-                           x = bar(b)
-
-(%o9)                          pos
-(%i10) asksign (log (a));
-                              x = a
-
-Is  a - 1  positive, negative, or zero?
-
-p;
-(%o10)                         pos
-(%i11) asksign (a - b);
-                              x = a
-
-                              x = b
-
-                              x = a
-
-                              x = b
-
-Is  b - a  positive, negative, or zero?
-
-p;
-(%o11)                         neg
+(%i7) sign(log(x));
+(%o7)                          pnz
+(%i8) sign(x-y);
+(%o8)                          pnz
 @end example
 @end defvr
 
-@c --- 27.08.2010 --------------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{context}
 @defvr {Optionsvariable} context
 Standardwert: @code{initial}
@@ -1344,9 +1379,11 @@ Standardwert: @code{initial}
 @c @code{forget}. @code{assume} adds facts to the collection named by 
 @c @code{context}, while @code{forget} removes facts.
 
-Die Optionsvariable @code{context} enth@"alt den Namen des aktuellen Kontexts.
-Das ist der Kontext, der die Fakten der Funktion @code{assume} aufnimmt oder aus
-dem Fakten mit der Funktion @code{forget} gel@"oscht werden.
+Die Optionsvariable @code{context} enth@"alt den Namen des aktuellen Kontextes.
+Das ist der Kontext, der die Aussagen der Funktion @mref{assume} oder die mit 
+der Funktion @mref{declare} definierten Eigenschaften aufnimmt und aus dem die 
+Aussagen mit der Funktion @mref{forget} oder die Eigenschaften mit der Funktion
+@mref{remove} gel@"oscht werden.
 
 @c Binding @code{context} to a name @var{foo} changes the current context to 
 @c @var{foo}. If the specified context @var{foo} does not yet exist, it is 
@@ -1354,67 +1391,125 @@ dem Fakten mit der Funktion @code{forget} gel@"oscht werden.
    @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
 @c The specified context is activated automatically.
 
-Wird der Optionsvariable @code{context} der Name @var{foo} zugewiesen, wird der
-Kontext @var{foo} zum aktuellen Kontext.  Existiert dieser Kontext noch nicht,
-wird er automatisch durch Aufruf der Funktion @code{newcontext} erzeugt.
+Wird der Optionsvariablen @code{context} der Name eines existierenden Kontextes
+zugewiesen, wird dieser zum aktuellen Kontext.  Existiert der Kontext noch 
+nicht, wird er durch Aufruf der Funktion @mref{newcontext} erzeugt.
 
 @c See @code{contexts} for a general description of the context mechanism.
 
 Siehe auch @mref{contexts} f@"ur eine allgemeinere Beschreibung von Kontexten.
+
+Beispiele:
+
+Der Standardkontext ist @code{initial}.  Es wird ein neuer Kontext
+@code{mycontext} generiert, der die Aussagen und Eigenschaften aufnimmt.
+
+@c ===beg===
+@c context;
+@c context:mycontext;
+@c contexts;
+@c assume(a>0);
+@c declare(b,integer);
+@c facts(mycontext);
+@c ===end===
+@example
+(%i1) context;
+(%o1)                        initial
+(%i2) context:mycontext;
+(%o2)                       mycontext
+(%i3) contexts;
+(%o3)             [mycontext, initial, global]
+(%i4) assume(a>0);
+(%o4)                        [a > 0]
+(%i5) declare(b,integer);
+(%o5)                         done
+(%i6) facts(mycontext);
+(%o6)               [a > 0, kind(b, integer)]
+@end example
 @end defvr
 
-@c --- 27.08.2010 DK -----------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{contexts}
-@defvr {Optionsvariable} contexts
+@defvr {Systemvariable} contexts
 Standardwert: @code{[initial, global]}
 
 @c @code{contexts} is a list of the contexts which currently exist, including 
 @c the currently active context.
-
-Die Optionsvariable @code{contexts} enth@"alt eine Liste der Kontexte, die 
-aktuell vorhanden sind. Darin sind auch die Kontexte enthalten, die aktuell 
-nicht aktiv sind.
-
 @c The context mechanism makes it possible for a user to bind together and name 
 @c a collection of facts, called a context. Once this is done, the user can have
 @c Maxima assume or forget large numbers of facts merely by activating or
 @c deactivating their context.
-
-Kontexte k@"onnen genutzt werden, um eine Vielzahl von Fakten zusammenzustellen.
-Diese Fakten k@"onnen dann durch Aktivierung oder Deaktivierung des Kontextes 
-f@"ur die Auswertung von Aussagen verf@"ugbar gemacht und wieder ausgeschaltet 
-werden.
-
 @c Any symbolic atom can be a context, and the facts contained in that context 
 @c will be retained in storage until destroyed one by one by calling 
 @c @code{forget} or destroyed as a whole by calling @code{kill} to destroy the 
 @c context to which they belong.
-
-Der Name eines Kontextes kann irgendein Symbol sein.  Die Fakten in einem 
-Kontext bleiben so lange verf@"ugbar, bis sie entweder einzeln mit der Funktion 
-@code{forget} oder der gesamte Kontext mit der Funktion @code{kill} gel@"oscht
-werden.
-
 @c Contexts exist in a hierarchy, with the root always being the context 
 @c @code{global}, which contains information about Maxima that some functions 
 @c need.  When in a given context, all the facts in that context are "active" 
 @c (meaning that they are used in deductions and retrievals) as are all the 
 @c facts in any context which is a subcontext of the active context.
-
-Kontexte haben eine Hierarchie.  Die Wurzel ist immer der Kontext @code{global},
-welcher Informationen enth@"alt, die Maxima f@"ur die Auswertung und 
-Vereinfachung von Funktionen ben@"otigt.  Neben den Fakten des aktuellen 
-Kontextes sind immer auch alle Fakten alle Subkontexte verf@"ugbar.
-
 @c When a fresh Maxima is started up, the user is in a context called 
 @c @code{initial}, which has @code{global} as a subcontext.
 
-Wird Maxima gestarted, ist der aktuelle und aktive Kontext @code{initial}.
-Dieser enth@"alt den Subkontext @code{global}.
+Die Systemvariable @code{contexts} enth@"alt eine Liste der Kontexte, die 
+Maxima bekannt sind.  Die Liste enth@"alt auch die nicht aktiven Kontexte.
 
-Siehe auch @code{facts}, @code{newcontext}, @code{supcontext}, 
-@code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, 
-und @code{forget}.
+Die Kontexte @code{global} und @code{initial} sind immer vorhanden.  Diese 
+werden von Maxima initialisiert und k@"onnen nicht entfernt werden.  Der Kontext
+@code{global} enth@"alt Aussagen und Fakten f@"ur Systemvariablen und
+Systemfunktionen.  Mit den Funktionen @mref{newcontext} oder @mref{supcontext}@ 
+kann der Nutzer weitere Kontexte anlegen.
+
+Die Kontexte haben eine Hierarchie.  Die Wurzel ist immer der Kontext
+@code{global}, der damit ein Unterkontext aller anderen Kontexte und immer aktiv
+ist.  Der Kontext @code{initial} ist anfangs leer und nimmt, sofern kein 
+weiterer Kontext angelegt wurde, die Aussagen und Fakten des Nutzers auf, die 
+mit den Funktionen @mref{assume} und @mref{declare} definiert werden.  Mit der
+Funktion @mref{facts} k@"onnen die Aussagen und Fakten von Kontexten angezeigt
+werden.
+
+Die Verwaltung verschiedener Kontexte erm@"oglicht es, Aussagen und Fakten in
+einem Kontext zusammenzustellen.  Durch das Aktivieren mit der Funktion
+@mref{activate} oder Deaktivieren mit der Funktion @mref{deactivate} k@"onnen
+diese Aussagen und Fakten f@"ur Maxima verf@"ugbar gemacht oder wieder
+ausgeschaltet werden.
+
+Die Aussagen und Fakten in einem Kontext bleiben so lange verf@"ugbar, bis sie 
+mit den Funktionen @mref{forget} oder @mref{remove} gel@"oscht werden.
+Weiterhin kann der gesamte Kontext mit der Funktion @mref{killcontext} entfernt
+werden.
+
+Beispiel:
+
+Das folgende Beispiel zeigt wie ein Kontext @code{mycontext} angelegt wird.  Der
+Kontext enth@"alt die Aussage @code{[a>0]}.  Der Kontext kann mit der Funktion
+@code{activate} aktiviert werden, um die Aussage verf@"ugbar zu machen.
+
+@c ===beg===
+@c newcontext(mycontext);
+@c context;
+@c assume(a>0);
+@c context:initial;
+@c is(a>0);
+@c activate(mycontext);
+@c is(a>0);
+@c ===end===
+@example
+(%i1) newcontext(mycontext);
+(%o1)                       mycontext
+(%i2) context;
+(%o2)                       mycontext
+(%i3) assume(a>0);
+(%o3)                        [a > 0]
+(%i4) context:initial;
+(%o4)                        initial
+(%i5) is(a>0);
+(%o5)                        unknown
+(%i6) activate(mycontext);
+(%o6)                         done
+(%i7) is(a>0);
+(%o7)                         true
+@end example
 @end defvr
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
@@ -1424,16 +1519,14 @@ und @code{forget}.
 @c Deactivates the specified contexts @var{context_1}, ..., @var{context_n}.
 
 Die Kontexte @var{context_1}, @dots{}, @var{context_n} werden deaktiviert.  Die
-Fakten dieser Kontexte stehen f@"ur die Auswertung von Aussagen nicht mehr zur
-Verf@"ugung.  Die Kontexte werden jedoch nicht gel@"oscht und k@"onnen mit der 
-Funktion @code{activate} wieder aktiviert werden.
+Aussagen und Fakten dieser Kontexte stehen f@"ur die Auswertung von Aussagen 
+nicht mehr zur Verf@"ugung.  Die Kontexte werden nicht gel@"oscht und k@"onnen 
+mit der Funktion @mref{activate} wieder aktiviert werden.
 
-Die deaktivierten Kontexte werden aus der Liste @code{activecontexts} entfernt.
-
-Siehe auch @mref{activate} und @mrefdot{activecontexts}
+Die deaktivierten Kontexte werden aus der Liste @mref{activecontexts} entfernt.
 @end deffn
 
-@c --- 27.08.2010 DK -----------------------------------------------------------
+@c --- 12.02.2011 DK -----------------------------------------------------------
 @anchor{facts}
 @deffn  {Funktion} facts (@var{item})
 @deffnx {Funktion} facts ()
@@ -1441,21 +1534,56 @@ Siehe auch @mref{activate} und @mrefdot{activecontexts}
 @c If @var{item} is the name of a context, @code{facts (@var{item})} returns a 
 @c list of the facts in the specified context.
 
-Ist @var{item} der Name eines Kontexts, gibt @code{facts(@var{item})} eine
-Liste aller Fakten des Kontextes zur@"uck.
+Ist @var{item} der Name eines Kontextes, gibt @code{facts(@var{item})} eine
+Liste der Aussagen und Fakten des Kontextes @code{item} zur@"uck.
 
 @c If @var{item} is not the name of a context, @code{facts (@var{item})} returns
 @c a list of the facts known about @var{item} in the current context.  Facts 
 @c that are active, but in a different context, are not listed.
 
-Ist @var{item} nicht der Name eines Kontexts, gibt @code{facts (@var{item})} 
-eine List der Fakten zur@"uck, die zu @var{item} im aktuellen Kontext bekannt 
-sind.  Fakten, die aktiv sind, aber zu einem anderen Kontext geh@"oren, sind 
-nicht in der Liste enthalten.
+Ist @var{item} nicht der Name eines Kontextes, gibt @code{facts(@var{item})} 
+eine Liste mit den Aussagen und Fakten zur@"uck, die zu @var{item} im aktuellen
+Kontext bekannt sind.  Aussagen und Fakten die zu einem anderen aktiven Kontext
+geh@"oren einschlie@ss{}lich der Unterkontexte, sind nicht in der Liste 
+enthalten.
 
 @c @code{facts ()} (i.e., without an argument) lists the current context.
 
 @code{facts()} gibt eine Liste der Fakten des aktuellen Kontextes zur@"uck.
+
+Beispiel:
+
+@c ===beg===
+@c context:mycontext;
+@c assume(a>0, a+b>0, x<0);
+@c facts();
+@c facts(a);
+@c facts(x);
+@c context:initial;
+@c activate(mycontext);
+@c facts();
+@c facts(mycontext);
+@c ===end===
+@example
+(%i1) context:mycontext;
+(%o1)                       mycontext
+(%i2) assume(a>0, a+b>0, x<0);
+(%o2)               [a > 0, b + a > 0, x < 0]
+(%i3) facts();
+(%o3)               [a > 0, b + a > 0, 0 > x]
+(%i4) facts(a);
+(%o4)                  [a > 0, b + a > 0]
+(%i5) facts(x);
+(%o5)                        [0 > x]
+(%i6) context:initial;
+(%o6)                        initial
+(%i7) activate(mycontext);
+(%o7)                         done
+(%i8) facts();
+(%o8)                          []
+(%i9) facts(mycontext);
+(%o9)               [a > 0, b + a > 0, 0 > x]
+@end example
 @end deffn
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
@@ -1466,16 +1594,15 @@ nicht in der Liste enthalten.
 @c Removes predicates established by @code{assume}. The predicates may be 
 @c expressions equivalent to (but not necessarily identical to) those previously
 @c assumed.
-
-Entfernt Fakten die mit @code{assume} einem Kontext hinzugef@"ugt wurden.  Die
-Fakten k@"onnen Ausdr@"ucke sein, die @"aquivalent aber nicht unbedingt 
-identisch zu vorherigen Fakten sind.
-
 @c @code{forget (@var{L})}, where @var{L} is a list of predicates, forgets each
 @c item on the list.
 
-@code{forget(@var{L})} entfernt alle Fakten, die in der Liste @var{L} enthalten
-sind.
+Entfernt Aussagen, die mit @code{assume} einem Kontext hinzugef@"ugt wurden.
+Die Aussagen k@"onnen Ausdr@"ucke sein, die @"aquivalent aber nicht unbedingt
+identisch zu vorherigen Fakten sind.
+
+@code{forget(@var{L})} entfernt alle Aussagen, die in der Liste @var{L}
+enthalten sind.
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -1484,34 +1611,33 @@ sind.
 
 @c Attempts to determine whether the predicate @var{expr} is provable from the 
 @c facts in the @code{assume} database.
-
-versucht festzustellen, ob die Aussage @var{expr} mit Hilfe der Fakten in der
-Datenbank entschieden werden kann.
-
 @c If the predicate is provably @code{true} or @code{false}, @code{is} returns 
 @c @code{true} or @code{false}, respectively. Otherwise, the return value is 
 @c governed by the global flag @code{prederror}. When @code{prederror} is 
 @c @code{true}, @code{is} complains with an error message. Otherwise, @code{is} 
 @c returns @code{unknown}.
 
-Kann die Aussage zu @code{true} oder @code{false} entschieden werden, wird
-das entsprechende zur@"uck gegeben.  Andernfalls wird der R@"uckgabewert durch 
-das globale Flag @code{prederror} bestimmt.  Hat @code{prederror} den Wert 
-@code{true}, wird eine Fehlermeldung erzeugt.  Andernfalls wird @code{unknown}
-zur@"uck gegeben.
+Versucht festzustellen, ob die Aussage @var{expr} mit Hilfe der Aussagen und 
+Fakten der aktiven Kontexte entschieden werden kann.
+
+Kann die Aussage @var{expr} zu @code{true} oder @code{false} entschieden werden,
+wird das entsprechende zur@"uck gegeben.  Andernfalls wird der R@"uckgabewert
+durch den Schalter @code{prederror} bestimmt.  Hat @code{prederror} den Wert 
+@code{true}, wird eine Fehlermeldung ausgegeben.  Andernfalls wird
+@code{unknown} zur@"uckgegeben.
 
 @c @code{ev(@var{expr}, pred)} (which can be written  @code{@var{expr}, pred} 
 @c at the interactive prompt) is equivalent to @code{is(@var{expr})}.
 
 @c See also @code{assume}, @code{facts}, and @code{maybe}.
 
-Siehe auch @code{assume}, @code{facts} und @code{maybe}.
+Siehe auch @mrefcomma{assume} @mref{facts} und @mrefdot{maybe}
 
 Beispiele:
 
 @c @code{is} causes evaluation of predicates.
 
-@code{is} wertet Aussagen aus:
+@code{is} wertet Aussagen aus.
 
 @c ===beg===
 @c %pi > %e;
@@ -1526,7 +1652,8 @@ Beispiele:
 
 @c @code{is} attempts to derive predicates from the @code{assume} database.
 
-@code{is} versucht Aussagen anhand der Fakten der Datenbank zu entscheiden.
+@code{is} versucht Aussagen anhand der Aussagen und Fakten der aktiven
+Kontexte zu entscheiden.
 
 @c ===beg===
 @c assume (a > b);
@@ -1552,9 +1679,9 @@ Beispiele:
 @c @code{assume} database, the global flag @code{prederror} governs the behavior
 @c of @code{is}.
 
-Wenn @code{is} eine Aussage anhand der Fakten der Datenbank nicht entscheiden
-kann, wird der R@"uckgabewert vom Wert des globalen Flags @code{prederror}
-bestimmt.
+Wenn @code{is} eine Aussage anhand der Aussagen und Fakten der aktiven Kontexte 
+nicht entscheiden kann, wird der R@"uckgabewert vom Wert des Schalters 
+@code{prederror} bestimmt.
 
 @c ===beg===
 @c assume (a > b);
@@ -1593,7 +1720,7 @@ Das Kommando @code{killcontext(@var{context})} l@"oscht den Kontext
 @c new, empty @code{initial} context is created.
 
 Ist einer der Kontexte der aktuelle Kontext, wird der erste vorhandene 
-Subkontext zum aktuellen Kontext.  Ist der erste verf@"ugbare Kontext der 
+Unterkontext zum aktuellen Kontext.  Ist der erste verf@"ugbare Kontext der 
 Kontext @code{global}, dann wird der Kontext @code{initial} zum aktuellen 
 Kontext.  Wird der Kontext @code{initial} gel@"oscht, dann wird eine neuer 
 leerer Kontext @code{initial} erzeugt.
@@ -1602,14 +1729,14 @@ leerer Kontext @code{initial} erzeugt.
 @c either because it is a subcontext of the current context, or by use of the 
 @c function @code{activate}.
 
-@code{killcontext} l@"oscht einen Kontext nicht, wenn dieser ein Subkontext des
-aktuellen Kontextes ist oder wenn der Kontext mit der Funktion @code{activate}
-aktiviert wurde.
+@code{killcontext} l@"oscht einen Kontext nicht, wenn dieser ein Unterkontext 
+des aktuellen Kontextes ist oder wenn der Kontext mit der Funktion 
+@code{activate} aktiviert wurde.
 
 @c @code{killcontext} evaluates its arguments. @code{killcontext} returns 
 @c @code{done}.
 
-@code{killcontext} wertet seine Argumente aus.  @code{killcontext} gibt 
+@code{killcontext} wertet die Argumente aus.  @code{killcontext} gibt 
 @code{done} zur@"uck.
 @end deffn
 
@@ -1620,14 +1747,14 @@ aktiviert wurde.
 @c Attempts to determine whether the predicate @var{expr} is provable from the 
 @c facts in the @code{assume} database.
 
-Versucht festzustellen, ob die Aussage @var{expr} anhand der @code{assume} 
-Datenbank beweisbar ist.
+Versucht festzustellen, ob die Aussage @var{expr} anhand der Aussagen und
+Fakten der aktive Kontexte entschieden werden kann.
 
 @c If the predicate is provably @code{true} or @code{false}, @code{maybe} 
 @c returns @code{true} or @code{false}, respectively. Otherwise, @code{maybe} 
 @c returns @code{unknown}.
 
-Kann die Aussage als @code{true} oder @code{false} bewiesen werden, gibt 
+Kann die Aussage als @code{true} oder @code{false} entschieden werden, gibt 
 @code{maybe} entsprechend @code{true} oder @code{false} zur@"uck.  Andernfalls
 gibt @code{maybe} den Wert @code{unknown} zur@"uck.
 
@@ -1641,7 +1768,7 @@ erh@"alt.
 
 @c See also @code{assume}, @code{facts}, and @code{is}.
 
-Siehe auch @code{assume}, @code{facts} und @code{is}.
+Siehe auch @mrefcomma{assume} @mref{facts} und @mrefdot{is}
 
 Beispiele:
 
