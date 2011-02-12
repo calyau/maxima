@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 22.10.2010
-@c Revision    : 06.02.2011
+@c Revision    : 12.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1097,42 +1097,89 @@ Standardwert: @code{true}
 @c @code{assumescalar} helps govern whether expressions @code{expr} for which 
 @c @code{nonscalarp (expr)} is @code{false} are assumed to behave like scalars
 @c for certain transformations.
-
-Hat die Optionsvariable @code{assumescalar} den Wert @code{true}, werden 
-Ausdr@"ucke die mit @code{nonscalarp(expr)} den Wert @code{false} haben, in 
-bestimmten Transformationen als ein Skalar behandelt.
-
 @c Let @code{expr} represent any expression other than a list or a matrix, and 
 @c let @code{[1, 2, 3]} represent any list or matrix. Then 
 @c @code{expr . [1, 2, 3]} yields @code{[expr, 2 expr, 3 expr]} if 
 @c @code{assumescalar} is @code{true}, or @code{scalarp (expr)} is @code{true}, 
 @c or @code{constantp (expr)} is @code{true}.
-
-Ist @code{expr} ein Ausdruck bis auf eine Liste oder eine Matrix und
-@code{[1, 2, 3]} re@-pr@"a@-sen@-tiert eine Liste oder eine Matrix.  Dann ergibt
-@code{expr . [1, 2, 3]} das Ergebnis @code{[expr, 2 expr, 3 expr]}, wenn
-@code{assumescalar}, @code{scalarp(expr)} oder @code{constantp(expr)} den Wert 
-@code{true} haben.
-
 @c If @code{assumescalar} is @code{true}, such expressions will behave like 
 @c scalars only for commutative operators, but not for noncommutative 
 @c multiplication @code{.}.
-
-Hat @code{assumescalar} den Wert @code{true}, solche Ausdr@"ucke verhalten sich
-wie Skalare nur f@"ur kommutative Operatoren, aber nicht f@"ur die 
-nicht-kommutative Multiplikation @code{.}.
-
 @c When @code{assumescalar} is @code{false}, such expressions will behave like 
 @c non-scalars.
-
-Hat @code{assumescalar} den Wert @code{false}, verhalten sich solche Ausdr@"ucke 
-wie Nicht-Skalare.
-
 @c When @code{assumescalar} is @code{all}, such expressions will behave like 
 @c scalars for all the operators listed above.
 
-Hat @code{assumescalar} den Wert @code{all}, verhalten sich solche Ausdr@"ucke
-wie Skalare f@"ur alle oben genannten Operatoren.
+Die Optionsvariable @code{assumescalar} kontrolliert, wie ein Ausdruck von den
+arithmetischen Operatoren @code{"+"}, @code{"*"}, @code{"^"}, @code{"."} und
+@code{"^^"} behandelt wird, wenn Maxima nicht ermitteln kann, ob der Ausdruck
+ein Skalar oder Nicht-Skalar ist.  @code{assumescalar} hat drei m@"ogliche
+Werte:
+
+@table @code
+@item false
+Unbekannte Ausdr@"ucke werden als ein Nicht-Skalar behandelt.
+
+@item true
+Unbekannte Ausdr@"ucke werden als ein Skalar f@"ur die kommutativen 
+arithmetischen Operatoren @code{"+"}, @code{"*"} und @code{"^"} behandelt.
+
+@item all
+Unbekannte Ausdr@"ucke werden f@"ur alle arithmetischen Operatoren als ein
+Skalar behandelt.
+@end table
+
+Es ist besser Variablen als ein Skalar oder Nicht-Skalar mit der Funktion
+@mref{declare} zu deklarieren, anstatt die Vereinfachung mit der 
+Optionsvariablen @code{assumescalar} zu kontrollieren.  Siehe auch die 
+Eigenschaften @mref{scalar} und @mref{nonscalar} sowie die Funktionen 
+@mref{scalarp} und @mrefdot{nonscalarp}
+
+Beispiele:
+
+Maxima kann nicht ermitteln, ob das Symbol @code{x} ein Skalar oder ein
+Nicht-Skalar ist.
+
+@c ===beg===
+@c scalarp(x);
+@c nonscalarp(x);
+@c ===end===
+@example
+(%i1) scalarp(x);
+(%o1)                         false
+(%i2) nonscalarp(x);
+(%o2)                         false
+@end example
+
+Hat @code{assumescalar} den Wert @code{true}, behandelt Maxima das Symbol 
+@code{x} als einen Skalar f@"ur die kommutative Multiplikation.
+
+@c ===beg===
+@c x * [a,b,c], assumescalar:false;
+@c x * [a,b,c], assumescalar:true;
+@c ===end===
+@example
+(%i3) x * [a,b,c], assumescalar:false;
+(%o3)                      x [a, b, c]
+(%i4) x * [a,b,c], assumescalar:true;
+(%o4)                    [a x, b x, c x]
+@end example
+
+F@"ur die nicht kommutative Multiplikation behandelt Maxima das Symbol @code{x}
+dann als einen Skalar, wenn @code{assumescalar} den Wert @code{all} hat.
+
+@c ===beg===
+@c x . [a,b,c], assumescalar:false;
+@c x . [a,b,c], assumescalar:true;
+@c ===end===
+@example
+(%i5) x . [a,b,c], assumescalar:false;
+(%o5)                     x . [a, b, c]
+(%i6) x . [a,b,c], assumescalar:true;
+(%o6)                     x . [a, b, c]
+(%i7) x . [a,b,c], assumescalar:all;
+(%o7)                 [x . a, x . b, x . c]
+@end example
 @end defvr
 
 @c --- 26.08.2010 --------------------------------------------------------------
