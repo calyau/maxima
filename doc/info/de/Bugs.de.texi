@@ -5,13 +5,7 @@
 @c Original    : Bugs.texi revision 1.15
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c 
-@c This file contains documentation for the following Maxima symbols:
-@c 
-@c   run_testsuite
-@c   testsuite_files
-@c   bugreport
-@c   build_info
+@c Revision    : 13.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -24,25 +18,27 @@
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in Programmfehler, Funktionen und Variablen f@"ur Programmfehler, Programmfehler, Programmfehler
 @section Einf@"uhrung in Programmfehler
+@c -----------------------------------------------------------------------------
 
 Maxima wird st@"andig weiterentwickelt.  Der Funktionsumfang wird erweitert und 
 Fehler, die bei einem Programm dieser Komplexit@"at kaum zu vermeiden sind, 
 werden korrigiert.  Fehler k@"onnen berichtet werden.  Werden ausreichend
 Informationen mitgeteilt, k@"onnen die Entwickler Maxima weiter verbessern.
 Ein aktueller Link zur Webseite zum Berichten von Fehlern sowie die notwendigen 
-Informationen @"uber die Maxima-Installation werden mit dem Befehl 
-@code{bug_report()} angezeigt.  Um die Installation auf dem Rechner zu testen, 
-kann die Maxima-Testsuite ausgef@"uhrt werden.  Die folgende @"Ubersicht zeigt 
-die Funktionen und Variablen f@"ur das Testen der Installation und das Berichten
-von Fehlern:
+Informationen @"uber die Maxima-Installation werden mit der Funktion 
+@mref{bug_report} angezeigt.  Um die Installation auf dem Rechner zu testen, 
+kann die Maxima-Testsuite mit der Funktion @mref{run_testsuite} ausgef@"uhrt 
+werden.  Die folgende @"Ubersicht zeigt die Funktionen und Variablen f@"ur das 
+Testen der Installation und das Berichten von Fehlern:
 
 @verbatim
-     run_testsuite     testsuite_files     bug_report     build_info
+   run_testsuite     testsuite_files     bug_report     build_info
 @end verbatim
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Programmfehler, , Einf@"uhrung in Programmfehler, Programmfehler
 @section Funktionen und Variablen f@"ur Programmfehler
+@c -----------------------------------------------------------------------------
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{run_testsuite}
@@ -87,10 +83,9 @@ aus und zeigt jeden einzelnen Test an.
 Das Ausf@"uhren einer Testdatei kann die Maxima-Umgebung @"andern. 
 Typischerweise f@"uhrt eine Testdatei zuerst das Kommando @code{kill(all)} aus, 
 um eine definierte Umgebung herzustellen, in der keine nutzerdefinierten 
-Funktionen und Variablen vorhanden sind.
+Funktionen und Variablen vorhanden sind.  Siehe @mrefdot{kill}
 
 @code{run_testsuite} hat den R@"uckgabewert @code{done}.
-
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -111,7 +106,6 @@ fehlerhafte Tests gekennzeichnet werden:
 Die Eintr@"age der Liste bedeuten, dass die Dateien "rtest13s" und "rtest14" 
 ausgef@"uhrt werden sollen und das bekannt ist, dass die Tests mit den Nummern 
 57 und 63 der Testdatei "rtest14" fehlschlagen werden.
-
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -141,7 +135,6 @@ Lisp implementation version: 1.0.29.11.debian
 -------------------------------------------------------------
 The above information is also reported by the function 'build_info'
 @end example
-
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -161,7 +154,6 @@ Host type: i686-pc-linux-gnu
 Lisp implementation type: SBCL
 Lisp implementation version: 1.0.29.11.debian
 @end example
-
 @end deffn
 
 @c --- End of file Bugs.de.texi ------------------------------------------------

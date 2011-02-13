@@ -5,19 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c 
-@c This file contains documentation for the following symbols:
-@c 
-@c  bfloat              bfloatp             bftorat             bftrunc
-@c  evenp               float               float2bf            floatnump
-@c  fpprec              fpprintprec         integerp            m1pbranch
-@c  nonnegintegerp      numberp             number_pbranch      oddp
-@c  ratepsilon          rationalize         ratnump             
-@c  concat              sconcat             string              stringdisp
-@c  %e                  %i                  false               %gamma
-@c  ind                 inf                 infinity            minf
-@c  %phi                %pi                 true                und
-@c  zeroa               zerob 
+@c Revision    : 13.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -33,9 +21,10 @@
 * Funktionen und Variablen f@"ur Listen::
 @end menu
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Einf@"uhrung in Maxima Zahlen, Zeichenketten, Datentypen und -strukturen, Datentypen und -strukturen
 @section Einf@"uhrung in Maxima Zahlen
+@c -----------------------------------------------------------------------------
 
 @subheading Ganze und rationale Zahlen
 
@@ -74,10 +63,10 @@ Maxima mit gro@ss{}en Gleitkommazahlen rechnen, die prinzipell eine beliebige
 Genauigkeit haben.
 
 Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben.  Der Exponent kann 
-mit "f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschlie@ss{}lich
-mit Gleitkommazahlen in doppelter Genauigkeit, die immer mit "e" f@"ur den
-Exponenten angezeigt werden.  Gro@ss{}e Gleitkommazahlen werden mit dem 
-Exponenten "b" bezeichnet.  Gro@ss{}- und Kleinschreibung werden bei der 
+mit "f", "e" oder "d" angegeben werden.  Intern rechnet Maxima
+ausschlie@ss{}lich mit Gleitkommazahlen in doppelter Genauigkeit, die immer mit
+"e" f@"ur den Exponenten angezeigt werden.  Gro@ss{}e Gleitkommazahlen werden
+mit dem Exponenten "b" bezeichnet.  Gro@ss{}- und Kleinschreibung werden bei der
 Schreibweise des Exponenten nicht unterschieden.
 
 @example
@@ -100,7 +89,7 @@ zur@"uckgegeben.  Dies wird auch f@"ur gro@ss{}e Gleitkommazahlen ausgef@"uhrt.
 @end example
 
 @noindent
-Mit den Funktionen @code{float} und @code{bfloat} werden Zahlen in 
+Mit den Funktionen @mref{float} und @mref{bfloat} werden Zahlen in
 Gleitkommazahlen und gro@ss{}e Gleitkommazahlen umgewandelt:
 
 @example
@@ -126,7 +115,7 @@ Funktionen und Variablen f@"ur Gleitkommazahlen:
 
 @c A complex expression is specified in Maxima by adding the real part of the
 @c expression to @code{%i} times the imaginary part.  Thus the roots of the 
-@c equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.  
+@c equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.
 @c Note that simplification of products of complex expressions can be effected 
 @c by expanding the product.  Simplification of quotients, roots, and other
 @c functions of complex expressions can usually be accomplished by using the 
@@ -135,14 +124,14 @@ Funktionen und Variablen f@"ur Gleitkommazahlen:
 
 Maxima kennt keinen eigenen Typ f@"ur komplexe Zahlen.  Komplexe Zahlen werden 
 von Maxima intern als die Addition von Realteil und dem mit der Imagin@"aren 
-Einheit @code{%i} multiplizierten Imagin@"arteil dargestellt.  Zum Beispiel sind 
+Einheit @mref{%i} multiplizierten Imagin@"arteil dargestellt.  Zum Beispiel sind
 die komplexen Zahlen @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der 
 Gleichung @code{x^2 - 4*x + 13 = 0}.
 
-Maxima vereinfacht Produkte, Quotienten, Wurzel und andere Ausdr@"ucke mit 
+Maxima vereinfacht Produkte, Quotienten, Wurzeln und andere Ausdr@"ucke mit 
 komplexen Zahlen nicht automatisch zu einer komplexen Zahl.  Um Produkte mit
 komplexen Zahlen zu vereinfachen, kann der Ausdruck mit der Funktion 
-@code{expand} expandiert werden.
+@mref{expand} expandiert werden.
 
 Funktionen f@"ur komplexe Zahlen:
 
@@ -151,13 +140,10 @@ Funktionen f@"ur komplexe Zahlen:
    cabs         carg          conjugate    csign
 @end verbatim
 
-@c @opencatbox
-@c @category{Komplexe Zahlen}
-@c @closecatbox
-
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Zeichenketten, Funktionen und Variablen f@"ur Zahlen, Einf@"uhrung in Maxima Zahlen, Datentypen und -strukturen
 @section Zeichenketten
+@c -----------------------------------------------------------------------------
 
 @c Strings (quoted character sequences) are enclosed in double quote marks 
 @c @code{"} for input, and displayed with or without the quote marks, depending
@@ -165,7 +151,7 @@ Funktionen f@"ur komplexe Zahlen:
 
 Zeichenketten werden bei der Eingabe in Anf@"uhrungszeichen gesetzt.  Sie werden 
 standardm@"a@ss{}ig ohne Anf@"uhrungszeichen ausgegeben.  Hat die 
-Optionsvariable @code{stringdisp} den Wert @code{true}, werden Zeichenketten mit
+Optionsvariable @mref{stringdisp} den Wert @code{true}, werden Zeichenketten mit
 Anf@"uhrungszeichen dargestellt.
 
 @c Strings may contain any characters, including embedded tab, newline, and 
@@ -185,8 +171,8 @@ wird innerhalb einer Zeichenkette durch @code{\"} und der Backslash durch
 @code{\\} dargestellt.  Ein Backslash am Ende einer Eingabezeile erlaubt die
 Fortsetzung einer Zeichenkette in der n@"achsten Zeile.  Maxima kennt keine 
 weiteren Kombinationen mit einem Backslash.  Daher wird der Backslash an anderer
-Stelle ignoriert.  Maxima kennt keine andere M@"oglichkeit, als spezielle Zeichen
-wie ein Tabulator-, Zeilenvorschub- oder Wagenr@"ucklaufzeichen in einer
+Stelle ignoriert.  Maxima kennt keine andere M@"oglichkeit, als spezielle
+Zeichen wie ein Tabulator-, Zeilenvorschub- oder Wagenr@"ucklaufzeichen in einer
 Zeichenkette darzustellen.
 
 @c There is no character type in Maxima; a single character is represented as a 
@@ -246,13 +232,10 @@ this string.";
 (%o8)                  "This is a string."
 @end example
 
-@c @opencatbox
-@c @category{Syntax}
-@c @closecatbox
-
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Zahlen, Funktionen und Variablen f@"ur Zeichenketten, Zeichenketten, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Zahlen
+@c -----------------------------------------------------------------------------
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{bfloat}
@@ -262,7 +245,7 @@ this string.";
 @c numbers. The number of significant digits in the resulting bigfloats is 
 @c specified by the global variable @code{fpprec}.
 
-Konvertiert alle Zahlen im Ausdruck @var{expr} in gro@ss{}e Gleitkommazahlen. 
+Konvertiert alle Zahlen im Ausdruck @var{expr} in gro@ss{}e Gleitkommazahlen.
 Die Anzahl der Stellen wird durch die Optionsvariable 
 @mref{fpprec} spezifiziert.
 
@@ -273,10 +256,6 @@ Die Anzahl der Stellen wird durch die Optionsvariable
 Hat die Optionsvariable @mref{float2bf} den Wert @code{false}, gibt Maxima eine
 Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine 
 gro@ss{}e Gleitkommazahl umgewandelt wird.
-
-@c @opencatbox
-@c @category{Numerische Auswertung}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -288,16 +267,12 @@ gro@ss{}e Gleitkommazahl umgewandelt wird.
 
 Gibt den Wert @code{true} zur@"uck, wenn @var{expr} eine gro@ss{}e 
 Gleitkommazahl ist, ansonsten den Wert @code{false}.
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Aussagefunktionen}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{bftorat}
 @defvr {Optionsvariable} bftorat
-Standartwert: @code{false}
+Standardwert: @code{false}
 
 @c @code{bftorat} controls the conversion of bfloats to rational numbers. When 
 @c @code{bftorat} is @code{false}, @code{ratepsilon} will be used to control the
@@ -307,14 +282,10 @@ Standartwert: @code{false}
 
 Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von gro@ss{}en
 Gleitkommazahlen in rationale Zahlen.  Hat @code{bftorat} den Wert @code{true},
-wird die Genauigkeit der Umwandlung von der Optionsvariablen @mref{ratepsilon} @
+wird die Genauigkeit der Umwandlung von der Optionsvariablen @mref{ratepsilon}@ 
 kontrolliert.  In diesem Fall ist das Ergebnis der Umwandlung eine relativ kleine
 rationale Zahl.  Hat dagegen @code{bftorat} den Wert @code{false}, wird die 
 gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl repr@"asentiert.
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 --------------------------------------------------------------
@@ -331,10 +302,6 @@ Hat die Optionsvariable @code{bftrunc} den Wert @code{true}, werden bei der
 Ausgabe einer gro@ss{}en Gleitkommazahl nachfolgende Nullen nicht angezeigt.  So 
 wird @code{bfloat(1)} als @code{1.000000000000000b0} angezeigt, wenn 
 @code{bftrunc} den Wert @code{false} hat, ansonsten wird @code{1.0b0} angezeigt.
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -354,10 +321,6 @@ Ausdruck eine gerade ganze Zahl repr@"asentiert.
 
 Siehe die Funktion @mrefcomma{featurep} um zu testen, ob ein Symbol oder 
 Ausdruck eine gerade ganze Zahl repr@"asentiert.
-
-@c @opencatbox
-@c @category{Aussagefunktionen}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -402,10 +365,6 @@ Wert vereinfacht.
 (%i4) sin(1),float;
 (%o4)                        sin(1)
 @end example
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Auswertungsschalter}
-@c @closecatbox
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
@@ -421,10 +380,6 @@ Hat die Optionsvariable @code{float2bf} den Wert @code{false}, wird eine
 Warnung ausgegeben, wenn eine Gleitkommazahl in eine gro@ss{}e Gleitkommazahl 
 umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit f@"uhren 
 kann.
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -437,10 +392,6 @@ kann.
 Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine 
 Gleitkommazahl ist.  Ansonsten wird @code{false} zur@"uckgegeben.  Auch wenn 
 @var{number} eine gro@ss{}e Gleitkommazahl ist, ist das Ergebnis @code{false}.
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Aussagefunktionen}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -457,10 +408,6 @@ Standardwert: 16
 Gleitkommazahlen.  @code{ffprec} hat keinen Einflu@ss{} auf das Rechnen mit
 Gleitkommazahlen in doppelter Genauigkeit.  Siehe auch @mref{bfloat} und 
 @mrefdot{fpprintprec}
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -490,17 +437,13 @@ angezeigten Stellen f@"ur einfache Gleitkommazahlen gleich dem Wert von
 @c @code{fpprec}, and the number of digits printed is equal to @code{fpprec}.
 
 Hat f@"ur gro@ss{}e Gleitkommazahlen @code{fpprintprec} einen Wert zwischen 2 
-und @code{fpprec}, ist die Anzahl der angezeigten Stellen gleich
+und @mrefcomma{fpprec} ist die Anzahl der angezeigten Stellen gleich
 @code{fpprintprec}.  Ist der Wert von @code{fpprintprec} gleich 0 oder 
 gr@"o@ss{}er als @code{fpprec} werden @code{fpprec} Stellen angezeigt.
 
 @c @code{fpprintprec} cannot be 1.
 
 @code{fpprintprec} kann nicht den Wert 1 erhalten.
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Anzeigeschalter und -variable} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -542,10 +485,6 @@ Beispiele:
 (%i5) integerp (n);
 (%o5)                         false
 @end example
-
-@c @opencatbox
-@c @category{Zahlen} @category{Aussagefunktionen}
-@c @closecatbox
 @end deffn
 
 @c --- 08.10.2010 --------------------------------------------------------------
@@ -560,7 +499,7 @@ Standardwert: @code{false}
 
 Die Optionsvariable @code{m1branch} kontrolliert die Vereinfachung der 
 Exponentiation von @code{-1} f@"ur den Fall, dass die Optionsvariable 
-@code{domain} den Wert @code{complex} hat.  Hat @code{m1pbranch} f@"ur diesen 
+@mref{domain} den Wert @code{complex} hat.  Hat @code{m1pbranch} f@"ur diesen 
 Fall den Wert @code{true}, wird die Exponentiation von @code{-1} zu einem 
 Ausdruck vereinfacht, der dem Hauptwert entspricht.  Die Auswirkung der 
 Optionsvariable @code{m1pbranch} ist in der folgenden Tabelle gezeigt.
@@ -578,10 +517,6 @@ m1pbranch:false          m1pbranch:true
 @end example
 
 Siehe auch die Optionsvariable @mrefdot{number_pbranch}
-
-@c @opencatbox
-@c @category{Zahlen} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
@@ -593,10 +528,6 @@ Siehe auch die Optionsvariable @mrefdot{number_pbranch}
 
 Gibt den Wert @code{true} zur@"uck, wenn @code{number} eine ganze positive Zahl
 oder Null ist.  Siehe auch @mrefdot{integerp}
-
-@c @opencatbox
-@c @category{Zahlen} @category{Aussagefunktionen}
-@c @closecatbox
 @end deffn
 
 @c --- 21.08.2010 --------------------------------------------------------------
@@ -615,10 +546,11 @@ Ergebnis @code{false}.
 @c to be @code{even}, @code{odd}, @code{integer}, @code{rational}, 
 @c @code{irrational}, @code{real}, @code{imaginary}, or @code{complex}.
 
-@code{numberp} gibt f@"ur ein Symbol immer das Ergebnis @code{false} zur@"uck. 
+@code{numberp} gibt f@"ur ein Symbol immer das Ergebnis @code{false} zur@"uck.
 Dies ist auch dann der Fall, wenn das Symbol eine numerische Konstante wie 
-@code{%pi} ist oder wenn das Symbol eine Deklaration wie @code{integer}, 
-@code{real} oder @code{complex} erhalten hat.
+@mref{%pi} ist oder wenn das Symbol mit der Funktion @mref{declare} eine 
+Eigenschaft wie @mrefcomma{integer} @mref{real} oder @mref{complex} erhalten
+hat.
 
 Beispiele:
 
@@ -647,10 +579,6 @@ Beispiele:
 (%i7) map (numberp, [a, b, c, d, e]);
 (%o7) [false, false, false, false, false]
 @end example
-
-@c @opencatbox
-@c @category{Aussagefunktion}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -668,7 +596,7 @@ Standardwert: @code{false}
 Die Optionsvariable @code{numer_pbranch} kontrolliert die Vereinfachung der
 Exponentiation einer negativen ganzen, rationalen oder Gleitkommazahl.
 Hat @code{numer_pbranch} den Wert @code{true} und ist der Exponent eine 
-Gleitkommazahl oder hat die Optionsvariable @code{numer} den Wert @code{true}, 
+Gleitkommazahl oder hat die Optionsvariable @mref{numer} den Wert @code{true}, 
 dann berechnet Maxima den Hauptwert der Exponentiation.  Ansonsten wird ein 
 vereinfachter Ausdruck, aber nicht numerischer Wert zur@"uckgegeben.  Siehe auch
 die Optionsvariable @mrefdot{m1pbranch}
@@ -698,10 +626,6 @@ Beispiele:
 (%i5) (-2)^(3/4),numer,numer_pbranch:true;
 (%o5) 1.189207115002721*%i-1.189207115002721
 @end example
-
-@c @opencatbox
-@c @category{Numerische Berechnung} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
@@ -720,10 +644,6 @@ zur@"uck, auch wenn das Symbol als ungerade ganze Zahl deklariert ist oder der
 Ausdruck eine ungerade ganze Zahl repr@"asentiert.  Siehe die Funktion 
 @mrefcomma{featurep} um zu testen, ob ein Symbol oder Ausdruck eine ungerade 
 ganze Zahl repr@"asentiert.
-
-@c @opencatbox
-@c @category{Zahlen} @category{Aussagefunktionen}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -736,10 +656,6 @@ Standardwert: 2.0e-8
 
 @code{ratepsilon} kontrolliert die Genauigkeit, mit der Gleitkommazahlen in
 rationale Zahlen umgewandelt werden.  Siehe auch @mrefdot{bftorat}
-
-@c @opencatbox
-@c @category{Numerische Auswertung} @category{Rationale Ausdr@"ucke} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -747,7 +663,7 @@ rationale Zahlen umgewandelt werden.  Siehe auch @mrefdot{bftorat}
 @deffn {Funktion} rationalize (@var{expr})
 
 @c Convert all double floats and big floats in the Maxima expression @var{expr} 
-@c to their exact rational equivalents. 
+@c to their exact rational equivalents.
 
 Konvertiert alle Gleitkommazahlen einschlie@ss{}lich gro@ss{}er 
 Gleitkommazahlen, die in dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
@@ -757,10 +673,10 @@ Gleitkommazahlen, die in dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
 @c 1/10.  This behavior isn't special to Maxima -- the number 1/10 has a 
 @c repeating, not a terminating, binary representation.
 
-Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. 
-Dies ist nicht speziell f@"ur Maxima.  Ursache ist, dass die gebrochene Zahl 
-1/10 in der internen Darstellung als bin@"are Zahl keine endliche Darstellung 
-hat.
+Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht das Ergebnis
+@code{1/10} hat.  Dies ist nicht speziell f@"ur Maxima.  Ursache ist, dass die 
+gebrochene Zahl @code{1/10} in der internen Darstellung als bin@"are Zahl keine
+endliche Darstellung hat.
 
 Siehe auch die Funktion @mref{float} und den Auswertungsschalter 
 @mrefcomma{numer} um eine rationale Zahl in eine Gleitkommazahl umzuwandeln.
@@ -806,10 +722,6 @@ Beispiele:
 (%i8) float(%);
 (%o8)                          sin(0.1 x + 5.6)
 @end example
-
-@c @opencatbox
-@c @category{Zahlen} @category{Numerische Auswertung}
-@c @closecatbox
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
@@ -837,15 +749,12 @@ Beispiele:
 (%i3) ratnump(3.0);
 (%o3)                         false
 @end example
-
-@c @opencatbox
-@c @category{Zahlen} @category{Ausagefunktionen}
-@c @closecatbox
 @end deffn
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Zeichenketten, Funktionen und Variablen f@"ur Konstante, Funktionen und Variablen f@"ur Zahlen, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Zeichenketten
+@c -----------------------------------------------------------------------------
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{concat}
@@ -855,8 +764,8 @@ Beispiele:
 @c value is a symbol if the first argument is a symbol and a string otherwise.
 
 Verkettet die Argumente @var{arg_1}, @var{arg_2}, @dots{} zu einer Zeichenkette 
-oder einem Symbol.  Die Argumente m@"ussen sich zu einem Atom auswerten lassen. 
-Der R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist. 
+oder einem Symbol.  Die Argumente m@"ussen sich zu einem Atom auswerten lassen.
+Der R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist.
 Ansonsten wird eine Zeichenkette zur@"uckgegeben.
 
 @c @code{concat} evaluates its arguments. The single quote @code{'} prevents 
@@ -927,10 +836,6 @@ werden und es kann in Ausdr@"ucken auftreten.
 (%i12) concat (1, 2) + 3;
 (%o12)                       "12" + 3
 @end example
-
-@c @opencatbox
-@c @category{Ausdr@"ucke} @category{Zeichenketten}
-@c @closecatbox
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -953,10 +858,6 @@ Beispiel:
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
 (%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
 @end example
-
-@c @opencatbox
-@c @category{Ausdr@"ucke} @category{Zeichenketten}
-@c @closecatbox
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
@@ -971,10 +872,6 @@ Beispiel:
 Konvertiert @code{expr} in eine linearer Darstellung, wie sie auch vom Parser
 von der Eingabe eingelesen wird.  Die R@"uckgabe von @code{string} ist eine
 Zeichenkette.  Diese kann nicht f@"ur eine Berechnung genutzt werden.
-
-@c @opencatbox
-@c @category{Zeichenketten}
-@c @closecatbox
 @end deffn
 
 @c TODO: DIESE FUNKTION IN DAS KAPITEL KOMMANDOZEILE VERSCHIEBEN ???
@@ -1020,15 +917,12 @@ Beispiele:
 (%i5) "This is an example string.";
 (%o5)             "This is an example string."
 @end example
-
-@c @opencatbox
-@c @category{Anzeigeschalter und -variable} @category{Optionsvariablen}
-@c @closecatbox
 @end defvr
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Konstante,  Funktionen und Variablen f@"ur Arrays, Funktionen und Variablen f@"ur Zeichenketten, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Konstante
+@c -----------------------------------------------------------------------------
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{%e}
@@ -1061,10 +955,6 @@ Beispiel:
 (%i2) bfloat(%e);
 (%o2)  2.7182818284590452353602874713526624977572470937b0
 @end example
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1078,10 +968,6 @@ Beispiel:
 @c @code{%i} represents the imaginary unit, @math{sqrt(- 1)}.
 
 @code{%i} ist die imagin@"are Einheit.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1091,12 +977,8 @@ Beispiel:
 @c @code{false} represents the Boolean constant of the same name. Maxima 
 @c implements @code{false} by the value @code{NIL} in Lisp.
 
-Repr@"asentiert den Logischen Wert @code{falsch}.  @code{false} wird intern von 
+Repr@"asentiert den logischen Wert @code{falsch}.  @code{false} wird intern von 
 Maxima durch die Lisp-Konstante @code{NIL} dargestellt.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1114,10 +996,6 @@ Gleitkommazahl in doppelter Genauigkeit.
 
 Die Funktion @mref{bfloat} kann @code{%gamma} mit einer beliebigen Genauigkeit
 berechnen.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1141,10 +1019,6 @@ Beispiel:
 (%i1) limit (sin(1/x), x, 0);
 (%o1)                          ind
 @end example
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1157,10 +1031,6 @@ Beispiel:
 @c @code{inf} represents real positive infinity.
 
 @code{inf} repr@"asentiert einen positiven unendlich gro@ss{}en Wert.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1173,10 +1043,6 @@ Beispiel:
 @c @code{infinity} represents complex infinity.
 
 @code{infinity} repr@"asentiert einen komplexen unendlichen Wert.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1190,10 +1056,6 @@ Beispiel:
 @c @code{minf} represents real minus (i.e., negative) infinity.
 
 @code{minf} repr@"asentiert einen negativen unendlichen Wert.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1208,7 +1070,7 @@ Beispiel:
 @c The numeric value of @code{%phi} is the double-precision floating-point value
 @c 1.618033988749895d0.
 
-@code{%phi} repr@"asentiert die @i{Golde Zahl} @math{(1 + sqrt(5))/2}.  Der 
+@code{%phi} repr@"asentiert die @i{Goldene Zahl} @math{(1 + sqrt(5))/2}.  Der
 Gleitkommawert in doppelter Genauigkeit ist 1.618033988749895d0.
 
 @c @code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of 
@@ -1217,11 +1079,11 @@ Gleitkommawert in doppelter Genauigkeit ist 1.618033988749895d0.
 @c After evaluating @code{tellrat(%phi^2-%phi-1)} and @code{algebraic: true},
 @c @code{ratsimp} can simplify some expressions containing @code{%phi}.
 
-Die Funktion @mref{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch
-@code{%phi} aus. Standardm@"a@ss{}ig kennt Maxima keine algebraischen 
-Eigenschaften der Konstanten @code{%phi}. Mit den Eingaben 
-@code{tellrat(%phi^2-%phi-1)} und @code{algebraic:true} kann die Funktion 
-@code{ratsimp} einige Vereinfachungen ausf@"uhren.
+Die Funktion @mref{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch die
+Goldene Zahl @code{%phi} aus.  Stan@-dard@-m@"a@ss{}ig kennt Maxima keine
+algebraischen Eigenschaften der Konstanten @code{%phi}.  Mit den Eingaben
+@mref{tellrat, tellrat(%phi^2-%phi-1)} und @mref{algebraic, algebraic:true} kann
+die Funktion @mref{ratsimp} einige Vereinfachungen ausf@"uhren.
 
 Beispiele:
 
@@ -1288,10 +1150,6 @@ ausf@"uhren, die @code{%phi} enthalten.
 (%i5) ratsimp (e);
 (%o5)                           0
 @end example
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1310,10 +1168,6 @@ Gleitkommagenauigkeit ist @code{3.141592653589793d0}.
 
 Die Funktion @mref{bfloat} kann @code{%pi} mit einer beliebigen Genauigkeit
 berechnen.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1325,10 +1179,6 @@ berechnen.
 
 @code{true} repr@"asentiert den logischen Wert @code{wahr}.  Intern ist 
 @code{true} als die Lisp-Konstante @code{T} implementiert.
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1352,10 +1202,6 @@ Beispiel:
 (%i1) limit (x*sin(x), x, inf);
 (%o1)                          und
 @end example
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
@@ -1388,10 +1234,6 @@ Beispiele:
 (%i2) limit(x+zeroa);
 (%o2)                           x
 @end example
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1407,15 +1249,12 @@ kann in Ausdr@"ucken benutzt werden.  Die Funktion @code{limit} vereinfacht
 Ausdr@"ucke, die infinitesimale Gr@"o@ss{}en enthalten.
 
 Siehe auch @mref{zeroa} und @mrefdot{limit}
-
-@c @opencatbox
-@c @category{Konstante}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Arrays, Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Konstante, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Arrays
+@c -----------------------------------------------------------------------------
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{array}
@@ -1474,10 +1313,6 @@ ganze Zahlen sein.  Deklarierte Arrays sind im Allgemeinen effizienter,
 so dass Arrays falls m@"oglich deklariert werden sollten.  Die Funktion 
 @code{array} kann genutzt werden, um ein undeklariertes Array in ein 
 deklariertes Array umzuwandeln.
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1487,7 +1322,7 @@ deklariertes Array umzuwandeln.
 @c Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 @c where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
 
-Wertet @code{@var{A} [@var{i_1}, ... , @var{i_n}]} aus, wobei @var{A} ein Array
+Wertet @code{@var{A}[@var{i_1}, ... , @var{i_n}]} aus, wobei @var{A} ein Array
 und @var{i_1}, @dots{}, @var{i_n} ganze Zahlen sind.
 
 @c This is reminiscent of @code{apply}, except the first argument is an array
@@ -1495,10 +1330,6 @@ und @var{i_1}, @dots{}, @var{i_n} ganze Zahlen sind.
 
 @code{arrayapply} entspricht der Funktion @mrefcomma{apply} wobei in diesem Fall
 das Argument ein Array und keine Funktion ist.
-
-@c @opencatbox
-@c @category{Expressions} @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1667,7 +1498,7 @@ Beispiele:
 
 @c @code{arrayinfo} and @code{listarray} applied to a subscripted function.
 
-@code{arrayinfo} und @code{listarray} angewendet auf eine indizierte Funktion. 
+@code{arrayinfo} und @code{listarray} angewendet auf eine indizierte Funktion.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -1703,10 +1534,6 @@ Beispiele:
 (%o5)      [lambda([y], y     ), lambda([y], y     )]
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1722,8 +1549,8 @@ auf das Array @var{A} zur@"uck.
 @c @code{arraymake} is reminiscent of @code{funmake}, except the return value 
 @c is an unevaluated array reference instead of an unevaluated function call.
 
-@code{arraymake} entspricht der Funktion @mref{funmake}, wobei in diesem Fall
-das Argument eine nicht ausgewerte Referenz auf ein Array ist.
+@code{arraymake} entspricht der Funktion @mrefcomma{funmake} wobei in diesem
+Fall das Argument eine nicht ausgewerte Referenz auf ein Array ist.
 
 Beispiele:
 
@@ -1807,10 +1634,6 @@ Beispiele:
 (%o14)                          9
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Expressions} @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -1826,7 +1649,7 @@ Standardwert: @code{[]}
 
 @code{arrays} ist eine Informationsliste @mref{infolists} der Arrays, die 
 definiert sind.  Die Liste enth@"alt deklarierte Arrays, undedeklarierte Arrays 
-und Array-Funktionen, die mit @code{:=} oder @code{define} definiert sind. 
+und Array-Funktionen, die mit @mref{:=} oder @mref{define} definiert sind.
 Arrays die mit @mref{make_array} definiert sind, sind nicht in der Liste 
 enthalten.
 
@@ -1834,7 +1657,7 @@ enthalten.
 @c @code{fillarray}, @code{listarray}, and @code{rearray}.
 @c IS THIS AN EXHAUSTIVE LIST ??
 
-Siehe auch @mrefcomma{array} @mrefcomma{arrayapply} @mrefcomma{arrayinfo} @
+Siehe auch @mrefcomma{array} @mrefcomma{arrayapply} @mrefcomma{arrayinfo}@ 
 @mrefcomma{arraymake} @mrefcomma{fillarray} @mref{listarray} und 
 @mrefdot{rearray}
 
@@ -1872,10 +1695,6 @@ Beispiele:
 (%o5)                     [aa, bb, cc]
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Arrays} @category{Global variables}
-@c @closecatbox
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -1907,7 +1726,7 @@ ignoriert.
 
 @c @code{fillarray} returns its first argument.
 
-@code{fillarray} gibt sein erstes Argument zur@"uck.
+@code{fillarray} gibt das erste Argument zur@"uck.
 
 Beispiele:
 
@@ -2000,10 +1819,6 @@ Arrays werden zeilenweise aufgef@"ulllt.
 (%o4)     @{Array:  #2A((1 2) (3 4) (5 6) (7 8) (9 10))@}
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -2199,10 +2014,6 @@ indizierte Funktion.
 (%o5)             [hashed, 1, [b + a], [v - u]]
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -2307,10 +2118,6 @@ Beispiele:
 (%o12)                         12
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -2327,10 +2134,6 @@ Werten des alten Arrays aufgef@"ullt.  Hat das alte Array nicht gen@"ugend
 Elemente werden die restlichen Elemente entsprechend dem Typ des Arrays mit 
 @code{false}, @code{0.0} oder @code{0} aufgef@"ullt.  Der Typ des Arrays kann 
 nicht ge@"andert werden.
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -2360,10 +2163,6 @@ Array-Funktionen und indizierte Funktionen sein.
 @c @code{remarray} returns the list of arrays removed.
 
 @code{remarray} gibt eine Liste der Arrays zur@"uck, die entfernt wurden.
-
-@c @opencatbox
-@c @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
@@ -2416,10 +2215,6 @@ Beispiele:
 (%o7)                          cc
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Expressions} @category{Arrays}
-@c @closecatbox
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -2430,11 +2225,7 @@ Beispiele:
 @c @code{a[i]}.
 
 Gibt @code{true} zur@"uck, wenn @var{expr} eine indizierte Variable wie zum
-Beispiel @code{a[i]} ist. 
-
-@c @opencatbox
-@c @category{Aussagefunktionen}
-@c @closecatbox
+Beispiel @code{a[i]} ist.
 @end deffn
 
 @c THIS IS REALLY CONFUSING
@@ -2449,7 +2240,6 @@ Hat die Optionsvariable @code{use_fast_arrays} den Wert @code{true}, werden nur
 die folgenden zwei Typen von Arrays erkannt:
 
 @enumerate
-
 @c 1) The art-q array (t in Common Lisp) which may have several dimensions
 @c indexed by integers, and may hold any Lisp or Maxima object as an
 @c entry.  To construct such an array, enter @code{a:make_array(any,3,4);} 
@@ -2460,14 +2250,14 @@ die folgenden zwei Typen von Arrays erkannt:
 Ein Array, das mehrere Dimensionen haben kann und ganzzahligen Indizes.  Den
 Elementen kann jedes Lisp oder Maxima-Objekt zugewiesen werden.  Zum Beispiel
 weist das Kommando @code{a:make_array(any,3,4)} der Variablen @var{a} ein
-Array zu, das 12 Elemente hat.
+Array zu, das @code{12} Elemente hat.
 
 @c 2) The Hash_table array which is the default type of array created if one
 @c does @code{b[x+1]:y^2} (and @code{b} is not already an array, a list, or a
 @c matrix -- if it were one of these an error would be caused since
 @c @code{x+1} would not be a valid subscript for an art-q array, a list or
 @c a matrix). Its indices (also known as keys) may be any object.  
-@c It only takes one key at a time (@code{b[x+1,u]:y} would ignore the @code{u}). 
+@c It only takes one key at a time (@code{b[x+1,u]:y} would ignore the @code{u}).
 @c Referencing is done by @code{b[x+1] ==> y^2}.  Of course the key may be
 @c a list, e.g. @code{b[[x+1,u]]:y} would be valid.  This is incompatible 
 @c with the old Maxima hash arrays, but saves consing.
@@ -2479,7 +2269,6 @@ und @code{b} nicht bereits ein deklariertes Array oder eine Liste ist.  Ist
 @var{b} bereits deklariert, wird eine Fehlermeldung ausgeben, da der Index 
 @var{x+1} keine ganze Zahl ist.  Der Index eines undeklarierten Arrays kann ein 
 beliebiger Ausdruck sein.
-
 @end enumerate
 
 @c An advantage of storing the arrays as values of the symbol is that the
@@ -2490,10 +2279,6 @@ beliebiger Ausdruck sein.
 @c @code{true}.
 
 @c TODO: VEREINFACHE DIE TECHNISCHE BESCHREIBUNG.
-
-@c @opencatbox
-@c @category{Arrays} @category{Global flags}
-@c @closecatbox
 @end defvr
 
 @c --- End of file DataTypes.de.texi -------------------------------------------

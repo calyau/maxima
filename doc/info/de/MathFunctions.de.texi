@@ -102,7 +102,7 @@ $$\left \lceil a \right \rceil$$
 @c returns a noun form.
 
 Ist das Argument der Funktion offenbar ein komplexer Ausdruck, wird die 
-Substantivform zur@"uck gegeben.
+Substantivform zur@"uckgegeben.
 
 @c If the range of a function is a subset of the integers, it can be declared 
 @c to be @code{integervalued}. Both the @code{ceiling} and @code{floor} 
@@ -202,7 +202,7 @@ $$\left \lfloor a \right \rfloor$$
 @c a noun form.
 
 Ist das Argument der Funktion offenbar ein komplexer Ausdruck, wird eine
-Substantivform zur@"uck gegeben.
+Substantivform zur@"uckgegeben.
 
 @c If the range of a function is a subset of the integers, it can be declared to
 @c be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions

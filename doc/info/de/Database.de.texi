@@ -1621,10 +1621,10 @@ Versucht festzustellen, ob die Aussage @var{expr} mit Hilfe der Aussagen und
 Fakten der aktiven Kontexte entschieden werden kann.
 
 Kann die Aussage @var{expr} zu @code{true} oder @code{false} entschieden werden,
-wird das entsprechende zur@"uck gegeben.  Andernfalls wird der R@"uckgabewert
-durch den Schalter @code{prederror} bestimmt.  Hat @code{prederror} den Wert 
-@code{true}, wird eine Fehlermeldung ausgegeben.  Andernfalls wird
-@code{unknown} zur@"uckgegeben.
+wird das entsprechende Ergebnis zur@"uckgegeben.  Andernfalls wird der 
+R@"uckgabewert durch den Schalter @mref{prederror} bestimmt.  Hat 
+@code{prederror} den Wert @code{true}, wird eine Fehlermeldung ausgegeben.  
+Ansonsten wird @code{unknown} zur@"uckgegeben.
 
 @c @code{ev(@var{expr}, pred)} (which can be written  @code{@var{expr}, pred} 
 @c at the interactive prompt) is equivalent to @code{is(@var{expr})}.

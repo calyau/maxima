@@ -5,6 +5,7 @@
 @c Original    : Function.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
+@c Revision    : 13.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -19,10 +20,12 @@
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in Funktionsdefinitionen, Funktionen, Funktionsdefinitionen, Funktionsdefinitionen
 @section Einf@"uhrung in Funktionsdefinitionen
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @node Funktionen, Makros, Einf@"uhrung in Funktionsdefinitionen, Funktionsdefinitionen
 @section Funktionen
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @subsection Gew@"ohnliche Funktionen
@@ -103,7 +106,7 @@ f(x) := (expr1, expr2, ...., exprn);
 @c than the last expression.
 
 Ein R@"ucksprung mit der Anweisung @code{return} aus einer Funktion ist 
-m@"oglich, wenn die Definition der Funktion in einen Block eingef@"ugt wird. 
+m@"oglich, wenn die Definition der Funktion in einen Block eingef@"ugt wird.
 Ein Block wird mit der @code{block}-Anweisung definiert.  Das folgende Beispiel 
 hat entweder den Wert @code{a} oder den Wert des Ausdrucks @var{exprn} als 
 Ergebnis:
@@ -135,7 +138,7 @@ lokalen Variablen wie zum Beispiel @code{[a: 3, b, c: []]}.  Die Variablen sind
 au@ss{}erhalb des Blocks nicht sichtbar.  Die Werte von globalen Variablen 
 werden von den lokalen Werten @"uberschrieben.  Au@ss{}erhalb des Blocks haben 
 die Variablen, wenn vorhanden, wieder ihre alten Werte.  Die Zuweisung der Werte
-an die lokalen Variablen wird parallel ausgef@"uhrt. 
+an die lokalen Variablen wird parallel ausgef@"uhrt.
 
 Im folgenden Beispiel wird der Wert der globalen Variablen @var{a} der lokalen 
 Variablen @var{a} zugewiesen.  @"Anderungen von @var{a} im Block wirken sich 
@@ -252,6 +255,7 @@ einschlie@ss{}lich der Definition der Funktion.
 @c -----------------------------------------------------------------------------
 @node Makros, Funktionen und Variablen f@"ur Funktionsdefinitionen, Funktionen, Funktionsdefinitionen
 @section Makros
+@c -----------------------------------------------------------------------------
 
 @c --- 02.12.2010 DK -----------------------------------------------------------
 @anchor{buildq}
@@ -435,7 +439,6 @@ Konstruktion einer Funktion.
 (%i3) by3 (a + b);
 (%o3)                       3 (b + a)
 @end example
-
 @end deffn
 
 @c --- 04.12 2010 DK -----------------------------------------------------------
@@ -492,7 +495,6 @@ Beispiele:
 (%o5)                       --------
                                99
 @end example
-
 @end deffn
 
 @c --- 04.12.2010 DK -----------------------------------------------------------
@@ -546,7 +548,6 @@ Beispiele:
 (%o5)                       --------
                                99
 @end example
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -597,7 +598,6 @@ in den aufrufenden Ausdruck eingesetzt.  Weitere Aufrufe werten das Makro nicht
 erneut aus.  Seiteneffekte, wie Zuweisungen an globale Variablen, werden nur bei
 der ersten Auswertung wirksam.  Die Expansion des Makros beeinflusst nicht 
 andere Ausdr@"ucke, die das Makro ebenfalls aufrufen.
-
 @end table
 
 Beispiele:
@@ -759,7 +759,6 @@ x + 99 is equal to x
 (%o7)                       --------
                             a b + 99
 @end example
-
 @end defvr
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -777,7 +776,6 @@ Standardwert: @code{[]}
 einer der Funktionen @code{kill}, @code{remove} oder @code{remfunction} 
 gel@"oscht, wird der Eintrag aus der Informationsliste entfernt.  Siehe auch 
 @mrefdot{infolists}
-
 @end defvr
 
 @c --- 04.12.2010 DK -----------------------------------------------------------
@@ -837,6 +835,7 @@ Beispiele:
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Funktionsdefinitionen, , Makros, Funktionsdefinitionen
 @section Funktionen und Variablen f@"ur Funktionsdefinitionen
+@c -----------------------------------------------------------------------------
 
 @c --- 04.12.2010 DK -----------------------------------------------------------
 @anchor{apply}
@@ -942,7 +941,6 @@ Improper name or value in functional position.
 (%i4) apply ('demoivre, [exp (%i * x)]);
 (%o4)                  %i sin(x) + cos(x)
 @end example
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -1009,7 +1007,7 @@ kann @code{lokal(g)} innerhalb der Funktion @code{f} ausgef@"uhrt werden.
 @c argument. Otherwise all actual arguments are evaluated.
 
 Ist eines der Argumente @var{x_k} nach der Auswertung ein quotiertes Symbol,
-wertet die mit @code{define} definierte Funktion das Argument nicht aus.  
+wertet die mit @code{define} definierte Funktion das Argument nicht aus.
 Alle weiteren Argumente der Funktion werden ausgewertet.
 
 @c See also @code{:=} and @code{::=}.
@@ -1107,7 +1105,6 @@ Ist das erste Argument ein Ausdruck mit den Funktionen @code{funmake},
 (%i6) define (ev (foo (x, y)), sin(x) - cos(y));
 (%o6)             bar(y, x) := sin(x) - cos(y)
 @end example
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -1132,7 +1129,7 @@ kompiliert werden.  @code{define_variable} f@"uhrt die folgenden Schritte aus:
 @item
 @code{mode_declare(@var{name}, @var{mode})} deklariert den Typ der Variablen
 @var{name} f@"ur den @"Ubersetzer.  Siehe @mref{mode_declare} f@"ur eine Liste 
-der m@"oglichen Typen. 
+der m@"oglichen Typen.
 
 @c If the variable is unbound, @var{default_value} is assigned to @var{name}.
 
@@ -1291,7 +1288,6 @@ Cannot assign to `baz_quux'.
 (%i6) baz_quux;
 (%o6)                       baz_quux
 @end example
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -1411,7 +1407,6 @@ Beispiele:
                                 5             10
 @end group
 @end example
-
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1450,7 +1445,6 @@ Beispiele:
 (%i3) map (g, %th(2));
 (%o3)                     g(b c) + g(a)
 @end example
-
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1460,7 +1454,7 @@ Beispiele:
 @c Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and 
 @c matrices.
 
-Die Funktion @code{fullmapl} ist vergleichbar mit @code{fullmap}. 
+Die Funktion @code{fullmapl} ist vergleichbar mit @code{fullmap}.
 @code{fullmapl} kann jedoch nur auf Matrizen und Listen angewendet werden kann.
 
 Beispiele:
@@ -1472,7 +1466,6 @@ Beispiele:
 (%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
 (%o1)                [[a + 3, 4], [4, 3.5]]
 @end example
-
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -1541,7 +1534,6 @@ Beispiele:
 (%i9) arrays;
 (%o9)                 [G_1, G_2, G_3, H_1]
 @end example
-
 @end defvr
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -1575,7 +1567,6 @@ Array-Funktion oder eine indizierte Funktion sein.
 @c assigns the definition to the label.
 
 Siehe auch @mrefdot{dispfun}
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -1732,10 +1723,10 @@ Maxima vereinfacht den R@"uckgabewert der Funktion @code{funmake}.
 (%i1) funmake (sin, [%pi / 2]);
 (%o1)                           1
 @end example
-
 @end deffn
 
 @c --- 04.01.2011 DK -----------------------------------------------------------
+@anchor{lambda}
 @deffn  {Funktion} lambda ([@var{x_1}, @dots{}, @var{x_m}], @var{expr_1}, @dots{}, @var{expr_n})
 @deffnx {Funktion} lambda ([[@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
 @deffnx {Funktion} lambda ([@var{x_1}, @dots{}, @var{x_m}, [@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
@@ -1862,7 +1853,7 @@ erwartet wird.
 
 Die Argumente sind lokale Variablen.  Andere Variablen sind globale Variablen.
 Globale Variablen werden zu dem Zeitpunkt ausgewertet, wenn der Lambda-Ausdruck
-ausgewertet wird. 
+ausgewertet wird.
 
 @c ===beg===
 @c a: %pi$
@@ -1980,7 +1971,6 @@ letzte Argument eine Liste mit einem Element ist.
 (%i4) g (17, 29, x, y, z, %e);
 (%o4)                  z + y + x + %e + 46
 @end example
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -2042,7 +2032,6 @@ Beispiele:
 
 
 @end example
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -2060,7 +2049,6 @@ Gleitkommazahlen, Symbole und indizierte Symbole betrachtet.
 
    @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION
    @c OF ATOMS ??
-
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -2091,7 +2079,6 @@ Hat @code{maperror} den Wert @code{false}, wird die Anwendung der Funktion
 oder (2) wenn die Ausdr@"ucke @var{expr_i} einen verschiedenen Typ haben.  Hat 
 @code{maperror} den Wert @code{true} wird in den obigen F@"allen eine 
 Fehlermeldung ausgegeben.
-
 @end defvr
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -2113,7 +2100,6 @@ haben.
 @c If @code{mapprint} is @code{false}, these messages are suppressed.
 
 Hat @code{mapprint} den Wert @code{false}, werden diese Meldungen unterdr@"uckt.
-
 @end defvr
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -2135,7 +2121,6 @@ Name einer Funktion oder ein lambda-Ausdruck.
 
 Im Unterschied zu @code{maplist} gibt die Funktion @code{map} einen Ausdruck
 zur@"uck, der denselben Hauptoperator wie die Ausdr@"ucke @var{expr_i} hat.
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -2320,7 +2305,6 @@ Liste und jedes Element der Liste ist eine Matrix.
 (%i4) is (equal (%, %th (2)));
 (%o4)                         true
 @end example
-
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
@@ -2359,7 +2343,6 @@ zur@"uckgegeben, f@"ur die es keine Funktionsdefinition gibt.
 @code{remfunction} kann nicht auf Array-Funktionen und indizierte Funktionen
 angewendet werden.  F@"ur diese Funktionen kann @code{remarray} verwendet 
 werden.
-
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
@@ -2435,7 +2418,6 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
     -> f(f(a)*f(x))+f(b) ->
      f(f(f(a)*f(x))+f(b))
 @end example
-
 @end deffn
 
 @c --- End of file Function.de.texi --------------------------------------------

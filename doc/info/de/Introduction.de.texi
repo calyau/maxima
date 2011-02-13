@@ -5,6 +5,7 @@
 @c Original    : Introduction.texi revision 1.11
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
+@c Revision    : 13.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -39,8 +40,8 @@ provides bug reporting information.
 @noindent
 Maxima kann GNU Infotext anzeigen.  Das Kommando @code{describe(text)} zeigt 
 alle Inhalte an, die die Zeichenkette @code{text} enthalten.  Das Fragezeichen
-@code{?} (exakte Suche) und zwei Fragezeichen @code{??} (ungenaue Suche) sind 
-abk@"urzende Schreibweisen f@"ur @code{describe}:
+@mref{?} (exakte Suche) und zwei Fragezeichen @mref{??} (ungenaue Suche) sind 
+abk@"urzende Schreibweisen f@"ur @mrefdot{describe}
 
 @example
 (%i1) ?? integrat
@@ -89,7 +90,7 @@ zugewiesen.  Weiterhin speichert Maxima die Eingaben unter den Marken
 @code{(%i)} und die Ausgaben unter den Marken @code{(%o)} ab.  Die Marken 
 erhalten eine fortlaufende Nummerierung.  Mit diesen Marken kann auf fr@"uhere 
 Eingaben und Ausgaben zur@"uckgegriffen werden.  Auf die letzte Ausgabe kann mit
-@code{%} zur@"uckgegriffen werden:
+@mref{%} zur@"uckgegriffen werden:
 
 @c ===beg===
 @c u: expand ((x + y)^6);

@@ -5,6 +5,7 @@
 @c Original    : Lists.texi revision 1.37
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
+@c Revision    : 13.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -12,13 +13,14 @@
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Listen, Funktionen und Variablen f@"ur Arrays, Datentypen und -strukturen
 @section Einf@"uhrung in Listen
+@c -----------------------------------------------------------------------------
 
 @c Lists are the basic building block for Maxima and Lisp.   All data types
 @c other than arrays, hash tables, numbers are represented as Lisp lists,
 @c These Lisp lists have the form
 
-Listen sind die grundlegenden Bausteine f@"ur Maxima und Lisp. Alle Ausdr@"ucke
-und Datentypen bis auf Arrays und Zahlen werden als Lisp-Listen dargestellt. 
+Listen sind die grundlegenden Bausteine f@"ur Maxima und Lisp.  Alle Ausdr@"ucke
+und Datentypen bis auf Arrays und Zahlen werden als Lisp-Listen dargestellt.
 So wird ein Ausdruck @code{a+2} folgenderma@ss{}en intern als Liste dargestellt:
 
 @example
@@ -29,7 +31,7 @@ So wird ein Ausdruck @code{a+2} folgenderma@ss{}en intern als Liste dargestellt:
 @c infix notation @code{a+2}.   Maxima also has lists which are printed as
 
 @noindent
-Maxima selbst kennt den Typ einer Liste. Eine Liste mit 4 Elementen wird zum 
+Maxima selbst kennt den Typ einer Liste.  Eine Liste mit 4 Elementen wird zum 
 Beispiel wie folgt dargestellt:
 
 @example
@@ -51,7 +53,7 @@ Intern ist die Darstellung der obigen Liste wie folgt:
 
 @noindent
 Das erste Element der internen Darstellung ist selbst eine Liste und bezeichnet
-einen Operator oder eine Funktion. Wird der Ausdruck vereinfacht wird dem
+einen Operator oder eine Funktion.  Wird der Ausdruck vereinfacht wird dem
 ersten Element ein @code{simp}-Schalter hinzugef@"ugt:
 
 @example
@@ -61,31 +63,28 @@ ersten Element ein @code{simp}-Schalter hinzugef@"ugt:
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Listen,  , Einf@"uhrung in Listen, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Listen
+@c -----------------------------------------------------------------------------
 
 @c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
 @anchor{append}
-@deffn {Funktion} append (@var{list_1}, ..., @var{list_n})
+@deffn {Funktion} append (@var{list_1}, @dots{}, @var{list_n})
 
 @c Returns a single list of the elements of @var{list_1} followed by the 
 @c elements of @var{list_2}, ...  @code{append} also works on general 
 @c expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields 
 @c @code{f(a,b,c,d,e)}.
 
-Gibt eine Liste mit den Elementen der Listen @var{list_1}, ..., @var{list_n}
-zur@"uck. @code{append} kann auch f@"ur allgemeine Ausdr@"ucke genutzt werden.
+Gibt eine Liste mit den Elementen der Listen @var{list_1}, @dots{}, @var{list_n}
+zur@"uck.  @code{append} kann auch f@"ur allgemeine Ausdr@"ucke genutzt werden.
 So hat zum Beispiel @code{append(f(a,b), f(c,d,e))} das Ergebnis
 @code{f(a,b,c,d,e)}.
 
 @c Do @code{example(append);} for an example.
 
 Mit dem Kommando @code{example(append)} wird ein Beispiel angezeigt.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -104,17 +103,13 @@ Mit dem Kommando @code{example(append)} wird ein Beispiel angezeigt.
 @c value.  @var{default} is optional and defaults to @code{false}.
 
 Die Funktion @code{assoc} sucht den Schl@"ussel @var{key} in der Liste 
-@var{list}. Die Liste hat die Form @var{[x, y, z, ...]}. Jedes Element der Liste
-ist ein Ausdruck mit 2 Argumenten wie zum Beispiel @code{x=1}, @code{2^3} oder 
-@code{[a,b]}. Der Schl@"ussel @var{key} wird im ersten Argument gesucht. Wenn
-der Schl@"ussel gefunden wurde, gibt @code{assoc} das zweite Argument als 
-Ergebnis zur@"uck. Wird der Schl@"ussel nicht gefunden, gibt @code{asscoc} den
-Wert des Arguments @code{default} oder @code{false} zur@"uck. Das Argument
+@var{list}.  Die Liste hat die Form @var{[x, y, z, @dots{}]}.  Jedes Element der
+Liste ist ein Ausdruck mit 2 Argumenten wie zum Beispiel @code{x=1}, @code{2^3}
+oder @code{[a,b]}.  Der Schl@"ussel @var{key} wird im ersten Argument gesucht.
+Wenn der Schl@"ussel gefunden wurde, gibt @code{assoc} das zweite Argument als
+Ergebnis zur@"uck.  Wird der Schl@"ussel nicht gefunden, gibt @code{asscoc} den
+Wert des Arguments @code{default} oder @code{false} zur@"uck.  Das Argument
 @var{default} ist optional und hat den Standardwert @code{false}.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c REPHRASE
@@ -129,14 +124,10 @@ Wert des Arguments @code{default} oder @code{false} zur@"uck. Das Argument
 @c @code{atom(a[1])} and @code{atom(sin(x))} are @code{false} 
 @c (asuming @code{a[1]} and @code{x} are unbound).
 
-Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} ein Atom ist. 
-Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole. So hat
+Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} ein Atom ist.
+Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole.  So hat
 @code{atom(5)} das Ergebnis @code{true}, w@"ahrend die Ausdr@"ucke 
 @code{atom(a[1])} oder @code{atom(sin(x))} das Ergebnis @code{false} haben.
-
-@c @opencatbox
-@c @category{Expressions} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS
@@ -151,13 +142,9 @@ Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole. So hat
 @c on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 Gibt eine Liste zur@"uck, deren erstes Element der Ausdruck @var{expr} ist, dem
-die weiteren Elemente der Liste @var{list} folgen. @code{cons} arbeitet auch
-mit allgemeinen Ausdr@"ucken. Zum Beispiel hat @code{cons(x, f(a,b,c))} das 
+die weiteren Elemente der Liste @var{list} folgen.  @code{cons} arbeitet auch
+mit allgemeinen Ausdr@"ucken.  Zum Beispiel hat @code{cons(x, f(a,b,c))} das 
 Ergebnis @code{f(x,a,b,c)}.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -167,15 +154,11 @@ Ergebnis @code{f(x,a,b,c)}.
 @c Returns a copy of the list @var{list}.
 
 Gibt eine Kopie der Liste @var{list} zur@"uck.
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
 @anchor{create_list}
-@deffn {Funktion} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+@deffn {Funktion} create_list (@var{form}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
 
 @c Create a list by evaluating @var{form} with @var{x_1} bound to each element 
 @c of @var{list_1}, and for each such binding bind @var{x_2} to each element of 
@@ -185,13 +168,13 @@ Gibt eine Kopie der Liste @var{list} zur@"uck.
 @c once at the beginning of the iteration.
 
 Erzeugt eine Liste indem der Ausdruck @var{form} zun@"achst f@"ur die Variable 
-@var{x_1} ausgewertet wird. Der Variablen @var{x_1} werden f@"ur die Auswertung 
-nacheinander die Werte der Liste @var{list_1} zugewiesen. Dann wird der Ausdruck
+@var{x_1} ausgewertet wird.  Der Variablen @var{x_1} werden f@"ur die Auswertung 
+nacheinander die Werte der Liste @var{list_1} zugewiesen.  Dann wird der Ausdruck
 @var{form} f@"ur die Variable @var{x_2} mit den Werten der Liste @var{list_2}
-ausgewertet u.s.w. Die Anzahl der Elemente der Ergebnisliste ist das Produkt
-der Anzahl der Elemente der einzelnen Listen @var{list_i}. Jede Variable
-@var{x_i} muss ein Symbol sein, das nicht ausgewertet wird. Die Elemente der
-Listen @var{x_i} werden einmal vor der Iteration ausgewertet. 
+ausgewertet u.s.w.  Die Anzahl der Elemente der Ergebnisliste ist das Produkt
+der Anzahl der Elemente der einzelnen Listen @var{list_i}.  Jede Variable
+@var{x_i} muss ein Symbol sein, das nicht ausgewertet wird.  Die Elemente der
+Listen @var{x_i} werden einmal vor der Iteration ausgewertet.
 
 Beispiele:
 
@@ -214,8 +197,8 @@ In diesem Beispiel wird f@"ur zwei Listen iteriert.
 @c for the iteration.
 
 Anstatt einer Liste @var{list_i} k@"onnen auch zwei Argumente @"ubergeben 
-werden, die jedes zu einer Nummer auswerten. Diese Werte sind die untere und die
-obere Grenze f@"ur die Iteration.
+werden, die jedes zu einer Nummer auswerten.  Diese Werte sind die untere und
+die obere Grenze f@"ur die Iteration.
 
 @example
 (%i1) create_list([i,j],i,[1,2,3],j,1,i);
@@ -226,10 +209,6 @@ obere Grenze f@"ur die Iteration.
 @c current value of @code{i}.
 
 @c TODO: ENTWEDER NACH OBEN ODER HIER EIN BEISPIEL
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -245,15 +224,15 @@ obere Grenze f@"ur die Iteration.
 @code{delete(@var{expr_1}, @var{expr_2})} entfernt vom Ausdruck @var{expr_2}
 jedes Argument des Hauptoperators, welches gleich dem Ausdruck @var{expr_1} ist.
 Die Gleichheit wird mit dem Operator "=" festgestellt, der keine @"aquivalenten
-Ausdr@"ucke erkennt. Teilausdr@"ucke eines Arguments werden von @code{delete} 
-nicht entfernt. 
+Ausdr@"ucke erkennt.  Teilausdr@"ucke eines Arguments werden von @code{delete} 
+nicht entfernt.
 
 @c @var{expr_1} may be an atom or a non-atomic expression. @var{expr_2} may be 
 @c any non-atomic expression. @code{delete} returns a new expression; it does 
 @c not modify @var{expr_2}.
 
 @var{expr_1} kann ein beliebiger Ausdruck sein, der kein Atom sein muss.
-@code{delete} erzeugt einen neuen Ausdruck. Der Ausdruck @var{expr_2} wird 
+@code{delete} erzeugt einen neuen Ausdruck.  Der Ausdruck @var{expr_2} wird 
 nicht modifiziert.
 
 @c @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} removes from @var{expr_2} 
@@ -263,7 +242,7 @@ nicht modifiziert.
 
 @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} entfernt vom Ausdruck
 @var{expr_2} die ersten @var{n} Argumente des Hauptoperators, die gleich dem
-Ausdruck @var{expr_1} sind. Hat der Ausdruck @var{expr_2} weniger Argumente als
+Ausdruck @var{expr_1} sind.  Hat der Ausdruck @var{expr_2} weniger Argumente als
 @var{n}, dann werden alle gleichen Argumente entfernt.
 
 Beispiele:
@@ -359,10 +338,6 @@ Argumente die @code{equal} aber nicht "=" sind werden nicht entfernt.
                               2    2
 (%o6)                       [x  - y ]
 @end example
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS
@@ -377,13 +352,9 @@ Argumente die @code{equal} aber nicht "=" sind werden nicht entfernt.
 @c @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 Gibt eine neue Liste zur@"uck, die die Elemente der Liste @var{list} enth@"alt 
-und an der das Element @var{expr} angeh@"angt wird. @code{endcons} kann auch 
-f@"ur allgemeine Ausdr@"ucke genutzt werden. So hat zum Beispiel der Ausdruck
+und an der das Element @var{expr} angeh@"angt wird.  @code{endcons} kann auch 
+f@"ur allgemeine Ausdr@"ucke genutzt werden.  So hat zum Beispiel der Ausdruck
 @code{endcons(x, f(a,b,c))} das Ergebnis @code{f(a,b,c,x)}.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -411,10 +382,6 @@ Darstellung betrachtet. Siehe dazu auch @mrefdot{inflag}
 
 Die Funktionen @mref{second} bis @mref{tenth} geben jeweils das 2. bis 10. 
 Element zur@"uck.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c TODO: DIESE FUNKTION GEHOERT IN DAS KAPITEL MAXIMAS DATENBANK
@@ -426,7 +393,7 @@ Element zur@"uck.
 @c Retrieves the user property indicated by @var{i} associated with
 @c atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
 
-Gibt die Eigenschaft @var{i} des Symbols @var{a} zur@"uck. Hat das Symbol
+Gibt die Eigenschaft @var{i} des Symbols @var{a} zur@"uck.  Hat das Symbol
 @var{a} nicht die Eigenschaft @var{i}, wird @code{false} zur@"uckgegeben.
 
 @c @code{get} evaluates its arguments.
@@ -467,10 +434,6 @@ x is not numeric.
 (%i6) typeof (2*%e + %pi);
 (%o6)     [transcendental, [algebraic, transcendental]]
 @end example
-
-@c @opencatbox
-@c @category{Declarations and inferences}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -483,7 +446,7 @@ x is not numeric.
 @c type of elements.
 
 Erzeugt eine neue Liste aus den Elementen der Listen @var{l} und @var{m},
-wobei die Elemente abwechselnd @"ubernommen werden. Das Ergebnis hat die Form
+wobei die Elemente abwechselnd @"ubernommen werden.  Das Ergebnis hat die Form
 @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
 
 @c If the lists are different lengths, @code{join} ignores elements of the 
@@ -511,10 +474,6 @@ Beispiele:
 (%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
 (%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -526,12 +485,8 @@ Beispiele:
 
 @c Returns the last part (term, row, element, etc.) of the @var{expr}.
 
-Gibt das letzte Element des Ausdrucks @var{expr} zur@"uck. Siehe 
+Gibt das letzte Element des Ausdrucks @var{expr} zur@"uck.  Siehe 
 @mref{first} f@"ur weitere Erl@"auterungen.
-
-@c @opencatbox
-@c @category{Lists} @c @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -545,23 +500,19 @@ Gibt das letzte Element des Ausdrucks @var{expr} zur@"uck. Siehe
 @c number of rows, and for sums it is the number of terms (see @code{dispform}).
 
 Gibt die Anzahl der Elemente eines Ausdrucks @var{expr} zur@"uck, wie er in der
-externen Darstellung erscheint. Dies k@"onnen zum Beispiel die Elemente einer 
+externen Darstellung erscheint.  Dies k@"onnen zum Beispiel die Elemente einer 
 Liste, die Spalten einer Matrix oder die Terme einer Summe sein.
 
-@c The @code{length} command is affected by the @code{inflag} switch.  So, e.g. 
+@c The @code{length} command is affected by the @code{inflag} switch.  So, e.g.
 @c @code{length(a/(b*c));} gives 2 if @code{inflag} is @code{false} (Assuming 
 @c @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is @code{true} 
 @c (the internal representation is essentially @code{a*b^-1*c^-1}).
 
 Die Optionsvariable @code{inflag} hat Einfluss auf das Ergebnis der Funktion
-@code{length}. So hat zum Beispiel das Kommando @code{length(a/(b*c));} das 
+@code{length}.  So hat zum Beispiel das Kommando @code{length(a/(b*c));} das 
 Ergebnis 2, wenn @code{inflag} den Wert @code{false} hat, und das Ergebnis 3,
-wenn @code{inflag} den Wert @code{true} hat. Siehe @mref{inflag} f@"ur 
+wenn @code{inflag} den Wert @code{true} hat.  Siehe @mref{inflag} f@"ur 
 Ausf@"uhrungen zur internen und externen Darstellung von Ausdr@"ucken.
-
-@c @opencatbox
-@c @category{Lists} @c @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c TODO: DIES GEHOERT IN DAS KAPITEL VEREINFACHUNGEN?!
@@ -579,14 +530,10 @@ Standardwert: @code{true}
 @c TODO: DAS KANN BESSER FORMULIERT WERDEN.
 
 Hat die Optionsvariable @code{listarith} den Wert @code{true}, werden 
-Rechenoperationen mit Matrizen und Listen elementweise ausgef@"uhrt. Das 
+Rechenoperationen mit Matrizen und Listen elementweise ausgef@"uhrt.  Das 
 Ergebnis von Rechnungen mit Listen und Matrizen sind wieder Listen und Matrizen.
 Hat die Optionsvariable @code{listarith} den Wert @code{false} wird die 
 elementweise Ausf@"uhrung der Rechenoperationen unterdr@"uckt.
-
-@c @opencatbox
-@c @category{Lists} @category{Global flags}
-@c @closecatbox
 @end defvr
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -595,12 +542,8 @@ elementweise Ausf@"uhrung der Rechenoperationen unterdr@"uckt.
 
 @c Returns @code{true} if @var{expr} is a list else @code{false}.
 
-Gibt @code{true} zur@"uck, wenn @var{expr} eine Liste ist. Ansonsten ist der 
+Gibt @code{true} zur@"uck, wenn @var{expr} eine Liste ist.  Ansonsten ist der 
 R@"uckgabewert @code{false}.
-
-@c @opencatbox
-@c @category{Lists} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -619,7 +562,7 @@ Erzeugt eine Liste, deren Elemente aus dem Ausdruck @var{expr} generiert werden.
 
 @code{makelist(@var{expr}, @var{i}, @var{i_0}, @var{i_1})} gibt eine Liste
 zur@"uck, deren @var{j}-tes Element der Auswertung
-@code{ev(@var{expr}, @var{i}=j)} entspricht. @var{j} nimmt die Werte von
+@code{ev(@var{expr}, @var{i}=j)} entspricht.  @var{j} nimmt die Werte von
 @var{i_0} bis @var{i_1} an.
 
 @c @code{makelist (@var{expr}, @var{x}, @var{list})} returns a list, the 
@@ -629,7 +572,7 @@ zur@"uck, deren @var{j}-tes Element der Auswertung
 
 @code{makelist(@var{expr}, @var{x}, @var{list})} gibt eine Liste zur@"uck,
 deren @var{j}-tes Element der Auswertung @code{ev(@var{expr}, 
-@var{x}=@var{list}[j])} entspricht. @var{j} nimmt in diesem Fall die Werte der
+@var{x}=@var{list}[j])} entspricht.  @var{j} nimmt in diesem Fall die Werte der
 Liste @var{list} an.
 
 Beispiele:
@@ -645,10 +588,6 @@ Beispiele:
 (%o2)                 [x = a, x = b, x = c]
 
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -677,7 +616,7 @@ Ansonsten ist der R@"uckgabewert @code{false}.
 @c of @code{expr_2}.
 
 @code{member} betrachtet keine Teilausdr@"ucke der Argumente des Ausdrucks 
-@var{expr_2}. 
+@var{expr_2}.
 
 @c See also @code{elementp}.
 
@@ -715,10 +654,6 @@ Beispiele:
 (%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
 (%o8)                         true
 @end example
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -732,14 +667,10 @@ Beispiele:
 @c matrix, or other expression.
 
 Gibt den Ausdruck @var{expr} zur@"uck, wobei die ersten @var{n} Elemente 
-entfernt sind, wenn @var{n} positiv ist. Ist @var{n} negativ werden die letzten 
-@var{n} Elemente entfernt. Der Wert 1 f@"ur @var{n} muss nicht als Argument 
-angegeben werden. @var{expr} kann eine Liste, eine Matrix oder irgendein anderer
-Ausdruck sein.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
+entfernt sind, wenn @var{n} positiv ist.  Ist @var{n} negativ werden die letzten 
+@var{n} Elemente entfernt.  Der Wert 1 f@"ur @var{n} muss nicht als Argument 
+angegeben werden.  @var{expr} kann eine Liste, eine Matrix oder irgendein
+anderer Ausdruck sein.
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -750,13 +681,9 @@ Ausdruck sein.
 @c themselves).  @code{reverse} also works on general expressions, e.g.  
 @c @code{reverse(a=b);} gives @code{b=a}.
 
-Kehrt die Anordnung der Elemente einer Liste @var{list} um. @code{reverse}
-kann auch f@"ur allgemeine Ausdr@"ucke verwendet werden. So hat zum Beispiel
+Kehrt die Anordnung der Elemente einer Liste @var{list} um.  @code{reverse}
+kann auch f@"ur allgemeine Ausdr@"ucke verwendet werden.  So hat zum Beispiel
 @code{reverse(a=b)} das Ergebnis @code{b=a}.
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -783,11 +710,7 @@ kann auch f@"ur allgemeine Ausdr@"ucke verwendet werden. So hat zum Beispiel
 @c See @code{first} for more details.
 
 Die Funktionen @code{second} bis @code{tenth} geben das 2. bis 10. Element eines
-Ausdrucks oder einer Liste @var{expr} zur@"uck. Siehe @mrefdot{first}
-
-@c @opencatbox
-@c @category{Lists} @category{Expressions}
-@c @closecatbox
+Ausdrucks oder einer Liste @var{expr} zur@"uck.  Siehe @mrefdot{first}
 @end deffn
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -803,16 +726,17 @@ Ausdrucks oder einer Liste @var{expr} zur@"uck. Siehe @mrefdot{first}
 
 Sortiert eine Liste @var{L} mit Hilfe einer Aussagefunktion @code{P}, die zwei
 Argumente hat, so dass @code{@var{P}(@var{L}[k], @var{L}[k + 1])} f@"ur zwei 
-beliebige aufeinander folgende Elemente das Ergebnis @code{true} hat. Die 
+beliebige aufeinander folgende Elemente das Ergebnis @code{true} hat.  Die 
 Aussagefunktion kann eine Funktion, ein bin@"arer Operator oder ein
-Lambda-Ausdruck sein. Die Namen von Operatoren m@"ussen in Anf@"uhrungszeichen angegeben werden.
+Lambda-Ausdruck sein.  Die Namen von Operatoren m@"ussen in Anf@"uhrungszeichen
+angegeben werden.
 
 @c The sorted list is returned as a new object; the argument @var{L} is not 
 @c modified. To construct the return value, @code{sort} makes a shallow copy of 
 @c the elements of @var{L}.
    @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 
-Die sortierte List wird als ein neue Liste zur@"uckgegeben. Das Argument
+Die sortierte List wird als ein neue Liste zur@"uckgegeben.  Das Argument
 @code{L} wird nicht modifiziert.
 
    @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
@@ -822,7 +746,7 @@ Die sortierte List wird als ein neue Liste zur@"uckgegeben. Das Argument
 @c other than @code{true} or @code{false}.
 
 Ist die Aussage @var{P} keine totale Ordnung der Elemente der Liste @var{L}, 
-kann @code{sort} ohne einen Fehler enden, ohne dass das Ergebnis definiert ist. 
+kann @code{sort} ohne einen Fehler enden, ohne dass das Ergebnis definiert ist.
 @code{sort} gibt einen Fehler aus, wenn die Aussage nicht zu @code{true} oder 
 @code{false} ausgewertet werden kann.
 
@@ -834,8 +758,8 @@ kann @code{sort} ohne einen Fehler enden, ohne dass das Ergebnis definiert ist.
 
 @code{sort(@var{L})} ist @"aquivalent zu @code{sort(@var{L}, orderlessp)}.
 Damit ist die Standardordnung aufsteigend, wie sie von der Funktion
-@mref{orderlessp} definiert wird. Alle Maxima Atome und Ausdr@"ucke k@"onnen mit
-@code{orderlessp} verglichen werden.
+@mref{orderlessp} definiert wird.  Alle Maxima Atome und Ausdr@"ucke k@"onnen
+mit @code{orderlessp} verglichen werden.
 
 Beispiele:
 
@@ -874,10 +798,6 @@ Beispiele:
       reverse (b))));
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
 @end example
-
-@c @opencatbox
-@c @category{Listen}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -888,7 +808,7 @@ Beispiele:
 @c returns @code{true}.
 
 Gibt die Elemente der Liste @var{L} zur@"uck, f@"ur die die Aussage @code{P}
-den Wert @code{true} hat. Siehe auch die Funktion @mrefdot{sublist_indices}
+den Wert @code{true} hat.  Siehe auch die Funktion @mrefdot{sublist_indices}
 
 Beispiele:
 
@@ -902,10 +822,6 @@ Beispiele:
 (%i2) sublist (L, evenp);
 (%o2)                       [2, 4, 6]
 @end example
-
-@c @opencatbox
-@c @category{Listen}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -918,9 +834,9 @@ Beispiele:
 @c or a lambda expression. @var{L} must be a literal list.
 
 Gibt die Indizes der Elemente @var{x} der Liste @var{L} zur@"uck, f@"ur die die 
-Aussage @code{maybe(@var{P}(x))} das Ergebnis @code{true} hat. @var{P} kann der
-Name einer Funktion oder ein Lambda-Ausdruck sein. @var{L} muss eine explizit
-angegebene Liste sein. Siehe auch die Funktion @mrefdot{sublist}
+Aussage @code{maybe(@var{P}(x))} das Ergebnis @code{true} hat.  @var{P} kann der
+Name einer Funktion oder ein Lambda-Ausdruck sein.  @var{L} muss eine explizit
+angegebene Liste sein.  Siehe auch die Funktion @mrefdot{sublist}
 
 Beispiele:
 
@@ -950,10 +866,6 @@ Beispiele:
 (%i6) sublist_indices ([x > 0, x < 0, x < -2], identity);
 (%o6)                          [2]
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
@@ -966,7 +878,7 @@ Beispiele:
 @c If @var{L} is not a list, @code{unique} returns @var{L}.
 
 Gibt eine Liste mit den Elementen von @var{L} zur@"uck, die sich voneinander
-unterscheiden. Sind alle Elemente der Liste @var{L} verschieden, gibt 
+unterscheiden.  Sind alle Elemente der Liste @var{L} verschieden, gibt 
 @code{unique} eine Kopie der Liste @var{L} und nicht die Liste selbst zur@"uck.
 Ist @var{L} keine Liste, gibt @code{unique} den Ausdruck @var{L} zur@"uck.
 

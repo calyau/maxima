@@ -796,7 +796,7 @@ Standardwert: @code{true}
 @c where @var{flag} is absent if the solution is exact.
 
 @code{ieqnprint} regelt die Darstellung des Ergebnisses, das durch den Befehl 
-@code{ieqn} zur@"uck gegeben wird.  Wenn @code{ieqnprint} @code{true} ist,
+@code{ieqn} zur@"uckgegeben wird.  Wenn @code{ieqnprint} @code{true} ist,
 ist die von der @code{ieqn}-Funktion zur@"uckgegebene Liste von der Form 
 
    [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]

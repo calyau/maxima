@@ -5,6 +5,7 @@
 @c Original    : Polynomials.texi revision 1.34
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 11.12.2010
+@c Revision    : 13.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -17,6 +18,7 @@
 @c -----------------------------------------------------------------------------
 @node Introduction to Polynomials, Functions and Variables for Polynomials, Polynome, Polynome
 @section Introduction to Polynomials
+@c -----------------------------------------------------------------------------
 
 @c Polynomials are stored in Maxima either in General Form or as Cannonical 
 @c Rational Expressions (CRE) form.  The latter is a standard form, and is used 
@@ -61,10 +63,10 @@ eine Zahl oder wiederum ein Polynom sein.  Zum Beispiel hat das Polynom
 @code{y} die Hauptvariable des Polynoms ist.  Ist @var{x} die Hauptvariable des
 Polynoms, dann ist die Darstellung @code{(X 1 (Y 1 2 0 1) 0 -3)}.
 
-Die Ordnung der Variablen ist in der Regel umgekehrt alphabetisch. Die Variablen
-m@"ussen keine Atome sein.  Alle Ausdr@"ucke, die nicht die Operatoren @code{+},
-@code{-}, @code{*}, @code{/} oder @code{^} enthalten, werden in einer 
-CRE-Darstellung als "Variable" angenommen. Zum  Beispiel sind @code{x}, 
+Die Ordnung der Variablen ist in der Regel umgekehrt alphabetisch.  Die
+Variablen m@"ussen keine Atome sein.  Alle Ausdr@"ucke, die nicht die Operatoren
+@code{+}, @code{-}, @code{*}, @code{/} oder @code{^} enthalten, werden in einer
+CRE-Darstellung als "Variable" angenommen.  Zum Beispiel sind @code{x}, 
 @code{sqrt(x)} und @code{sin(x+1)} die CRE-Variablen des Ausdrucks
 @code{x+sin(x+1)+2*SQRT(x)+1}.  Wird vom Nutzer keine abweichende Ordnung der 
 Variablen mit der Funktion @code{ratvars} definiert, nimmt Maxima eine 
@@ -80,7 +82,7 @@ alphabetische Ordnung der Variablen an.
 
 Im Allgemeinen werden rationale Funktionen in einer CRE-Form dargestellt, die
 keinen gemeinsamen Faktor im Z@"ahler und Nenner haben.  Die interne Darstellung
-ist ein Paar von Polynomen, die jeweils den Z@"ahler und den Nenner darstellen. 
+ist ein Paar von Polynomen, die jeweils den Z@"ahler und den Nenner darstellen.
 Diesem Paar geht eine Liste mit der Ordnung der Variablen im Ausdruck voraus.
 Ein Ausdruck in einer CRE-Form oder der CRE-Formen enth@"alt, wird in der 
 Ausgabe mit dem Symbol @code{/R/} gekennzeichnet.  Mit der Funktion @code{rat} 
@@ -106,6 +108,7 @@ Grad des Polynoms.  In der Ausgabe wird die erweiterte CRE-Form mit dem Symbol
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynome
 @section Functions and Variables for Polynomials
+@c -----------------------------------------------------------------------------
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
 @anchor{algebraic}
@@ -117,7 +120,6 @@ Standardwert: @code{false}
 
 @code{algebraic} muss den Wert @code{true} haben, damit algebraische ganze
 Zahlen vereinfacht werden.
-
 @end defvr
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -132,7 +134,6 @@ Standardwert: @code{true}
 Hat @code{berlefact} den Wert @code{false}, dann wird der Kronecker-Algorithmus
 f@"ur die Faktorisierung genutzt.  Ansonsten wird der Berlekamp-Algorithmus 
 genutzt.  Das ist der Standard.
-
 @end defvr
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -145,7 +146,6 @@ genutzt.  Das ist der Standard.
 @code{bezout} ist eine Alternative zur Funktion @code{resultant}.  Die 
 R@"uckgabe ist eine Matrix.  Die Anwendung der Funktion @code{determinant} auf 
 das Ergebnis liefert das gew@"unschte Ergebnis.
-
 @end deffn
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -177,7 +177,6 @@ Beispiel:
 (%i2) islinear ((r^2 - (x - r)^2)/x, x);
 (%o2)                         true
 @end example
-
 @end deffn
 
 @c --- 12.10.2010 DK -----------------------------------------------------------
@@ -197,7 +196,7 @@ zur@"uck, wobei @var{expr} ein Polynom ist.
 @c which is free of @var{x}. If omitted, @var{n} is assumed to be 1.
 
 @code{coeff(@var{expr}, @var{x}^@var{n})} ist @"aquivalent zu 
-@code{coeff(@var{expr}, @var{x}, @var{n})}. 
+@code{coeff(@var{expr}, @var{x}, @var{n})}.
 @code{coeff(@var{expr}, @var{x}, 0)} gibt den Rest des Ausdrucks @var{expr}
 zur@"uck, der frei von der Variablen @var{x} ist.  Wenn nicht angegeben, wird
 @var{n} als 1 angenommen.
@@ -207,7 +206,7 @@ zur@"uck, der frei von der Variablen @var{x} ist.  Wenn nicht angegeben, wird
 @c arguments.
 
 @var{x} kann auch eine indizierte Variable oder ein Teilausdruck von @var{expr}
-sein. 
+sein.
 
 @c It may be possible to compute coefficients of expressions which are 
 @c equivalent to @var{expr} by applying @code{expand} or @code{factor}.
@@ -217,7 +216,7 @@ sein.
 @code{coeff} wendet weder die Funktion @code{expand} noch die Funktion 
 @code{factor} an, um einen Ausdruck zu expandieren oder zu faktorisieren.  Daher
 kann es zu anderen Ergebnissen kommen, wenn zuvor diese Funktionen angewendet 
-werden. 
+werden.
 
 @c @code{coeff} distributes over lists, matrices, and equations.
 
@@ -350,7 +349,6 @@ auf die beiden Seiten angewendet.
 (%i3) coeff (a*u - b*v = 7*u + 3*v, u);
 (%o3)                         a = 7
 @end example
-
 @end deffn
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -379,7 +377,6 @@ Beispiel:
                                    2
 (%o1)                   [2 x, 2 x y  + y]
 @end example
-
 @end deffn
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -389,7 +386,6 @@ Beispiel:
 @c Returns the denominator of the rational expression @var{expr}.
 
 Gibt den Nenner des rationalen Ausdrucks @var{expr} zur@"uck.
-
 @end deffn
 
 @c --- 01.12.2010 DK -----------------------------------------------------------
@@ -405,7 +401,7 @@ Gibt den Nenner des rationalen Ausdrucks @var{expr} zur@"uck.
 
 Berechnet den Quotienten und den Rest der Division des Polynom @var{p_1} durch
 das Polynom @var{p_2} f@"ur die Variable @var{x_n}.  Die anderen Variablen
-@var{x_1}, ... @var{x_n-1} haben dieselbe Bedeutung wie f@"ur die Funktion
+@var{x_1}, @dots{}, @var{x_n-1} haben dieselbe Bedeutung wie f@"ur die Funktion
 @code{ratvars}.  Das Ergebnis ist eine Liste, wobei das erste Element der
 Quotient und das zweite Element der Rest ist.
 
@@ -425,7 +421,6 @@ Im zweiten Beispiel ist @code{y} die Hauptvariable des Ausdrucks.
 (%i2) divide (x + y, x - y);
 (%o2)                      [- 1, 2 x]
 @end example
-
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -444,7 +439,6 @@ bez@"uglich der ein Ausdruck nicht faktorisiert werden soll.  Weiterhin wird
 nicht bez@"uglich von Variablen faktorisiert, die gem@"a@ss{} der kanonischen 
 Ordnung der Variablen von geringerer Bedeutung sind, als die Variablen in der 
 Liste @code{dontfactor}.
-
 @end defvr
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -461,7 +455,7 @@ Liste @code{dontfactor}.
 @c for the last variable.
 
 Wendet ein Subresultanten-Verfahren an, um die Variablen @var{x_1}, @dots{}, 
-@var{x_k} aus den Gleichungen @var{eqn_1}, ..., @var{eqn_n} zu eliminieren.  Die
+@var{x_k} aus den Gleichungen @var{eqn_1}, @dots{}, @var{eqn_n} zu eliminieren.  Die
 R@"uckgabe ist ein Gleichungssystem mit @code{@var{n} - @var{k}} Gleichungen, 
 wobei die @var{k}-Variablen @var{x_1}, @dots{}, @var{x_k} eliminiert sind.
 
@@ -489,7 +483,6 @@ Beispiel:
                                     3         2
                             - 5154 x  - 1291 x  + 7688 x + 15376]
 @end example
-
 @end deffn
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -505,7 +498,6 @@ Teiler der Polynome @var{p_1}, @dots{}, @var{p_n} ist und deren weitere Elemente
 die durch den gr@"o@ss{}ten gemeinsamen Teiler dividierten Polynome sind.  Der
 gr@"o@ss{}te gemeinsame Teiler wird immer mit dem @code{ezgcd}-Algorithmus 
 bestimmt.
-
 @end deffn
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -519,7 +511,6 @@ Standardwert: @code{true}
 @code{facexpand} kontrolliert, ob die irreduziblen Faktoren der Faktorisierung
 mit @code{factor} in einer expandierten oder in einer rekursiven (CRE-Form) 
 vorliegen.  Der Standard ist, das die Faktoren expandiert werden.
-
 @end defvr
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -562,7 +553,7 @@ integers if no factor is found after trial divisions and Pollard's rho
 method.  If set to @code{false} (this is the case when the user calls
 @code{factor} explicitly), complete factorization of the integer will be
 attempted.  The user's setting of @code{intfaclim} is used for internal
-calls to @code{factor}. Thus, @code{intfaclim} may be reset to prevent
+calls to @code{factor}.  Thus, @code{intfaclim} may be reset to prevent
 Maxima from taking an inordinately long time factoring large integers.
 
 Examples:
@@ -679,7 +670,6 @@ Examples:
     30    27    21    18    12    9    3
  - x   - x   + x   + x   - x   - x  + x  + 1)
 @end example
-
 @end deffn
 
 @c --- 05.01.2011 DK -----------------------------------------------------------
@@ -717,7 +707,6 @@ Beispiel:
 (%o4)                       --------
                               2 3
 @end example
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -728,7 +717,6 @@ Beispiel:
  @code{f (@var{x_1}, @var{x_2}, ...)*g} where @code{g} is a product of 
  expressions not containing any @var{x_i} and @code{f} is factored.
    @c NEED EXAMPLE HERE
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -758,7 +746,6 @@ Beispiel:
                                    2          2
 (%o2)            (x + 1) (a (z + w)  + (v + u) )
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -767,11 +754,10 @@ Beispiel:
 
  Returns the product of the polynomials @var{p_1} and @var{p_2} by using a 
  special algorithm for multiplication of polynomials.  @code{p_1} and 
- @code{p_2} should be multivariate, dense, and nearly the same size.  
+ @code{p_2} should be multivariate, dense, and nearly the same size.
  Classical multiplication is of order @code{n_1 n_2} where @code{n_1} is the 
- degree of @code{p_1} and @code{n_2} is the degree of @code{p_2}. 
+ degree of @code{p_1} and @code{n_2} is the degree of @code{p_2}.
  @code{fasttimes} is of order @code{max (n_1, n_2)^1.585}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -784,8 +770,8 @@ Beispiel:
 
  When non-rational expressions are involved, one call to @code{ratsimp} 
  followed as is usual by non-rational ("general") simplification may not be 
- sufficient to return a simplified result. Sometimes, more than one such call 
- may be necessary. @code{fullratsimp} makes this process convenient.
+ sufficient to return a simplified result.  Sometimes, more than one such call 
+ may be necessary.  @code{fullratsimp} makes this process convenient.
 
  @code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} takes one or more 
  arguments similar to @code{ratsimp} and @code{rat}.
@@ -821,7 +807,6 @@ Example:
                               a
                              x  - 1
 @end example
-
 @end deffn
 
 @c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
@@ -832,7 +817,7 @@ Example:
 @deffn {Function} fullratsubst (@var{a}, @var{b}, @var{c})
 
  is the same as @code{ratsubst} except that it calls itself recursively on its
- result until that result stops changing. This function is useful when the 
+ result until that result stops changing.  This function is useful when the 
  replacement expression and the replaced expression have one or more variables
  in common.
 
@@ -934,7 +919,6 @@ equation as first argument.
 
 *** - Lisp stack overflow. RESET
 @end example
-
 @end deffn
 
 @c GCD IS A VARIABLE AND A FUNCTION
@@ -942,14 +926,14 @@ equation as first argument.
 
 @c -----------------------------------------------------------------------------
 @anchor{gcd}
-@deffn {Function} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
+@deffn {Function} gcd (@var{p_1}, @var{p_2}, @var{x_1}, @dots{})
 
- Returns the greatest common divisor of @var{p_1} and @var{p_2}. The flag 
- @code{gcd} determines which algorithm is employed. Setting @code{gcd} to 
+ Returns the greatest common divisor of @var{p_1} and @var{p_2}.  The flag 
+ @code{gcd} determines which algorithm is employed.  Setting @code{gcd} to 
  @code{ez}, @code{subres}, @code{red}, or @code{spmod} selects the 
  @code{ezgcd}, subresultant @code{prs}, reduced, or modular algorithm,
  respectively.  If @code{gcd} @code{false} then @code{gcd (@var{p_1}, 
- @var{p_2}, @var{x})} always returns 1 for all @var{x}.  Many functions (e.g. 
+ @var{p_2}, @var{x})} always returns 1 for all @var{x}.  Many functions (e.g.
  @code{ratsimp}, @code{factor}, etc.) cause gcd's to be taken implicitly.  For
  homogeneous polynomials it is recommended that @code{gcd} equal to 
  @code{subres} be used.  To take the gcd when an algebraic is present, e.g., 
@@ -961,7 +945,6 @@ equation as first argument.
  to canonical rational expression (CRE) form.  This will sometimes speed the 
  calculation if gcds are not required.
  NEEDS EXAMPLES HERE
-
 @end deffn
 
 @c IN NEED OF SERIOUS CLARIFICATION HERE
@@ -973,10 +956,10 @@ equation as first argument.
 
  Returns a list @code{[@var{a}, @var{b}, @var{u}]} where @var{u} is the 
  greatest common divisor (gcd) of @var{f} and @var{g}, and @var{u} is equal to
- @code{@var{a} @var{f} + @var{b} @var{g}}. The arguments @var{f} and @var{g} 
+ @code{@var{a} @var{f} + @var{b} @var{g}}.  The arguments @var{f} and @var{g} 
  should be univariate polynomials, or else polynomials in @var{x} a supplied 
  @b{main} variable since we need to be in a principal ideal domain for this to
- work. The gcd means the gcd regarding @var{f} and @var{g} as univariate 
+ work.  The gcd means the gcd regarding @var{f} and @var{g} as univariate 
  polynomials with coefficients being rational functions in the other 
  variables.
 
@@ -1016,7 +999,6 @@ Beispiel:
                               2
                              y  - 1
 @end example
-
 @end deffn
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN 
@@ -1032,7 +1014,6 @@ Beispiel:
  normalized by making @var{a} and @var{b} non-negative.
 
 @c NEED EXAMPLES HERE
-
 @end deffn
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN 
@@ -1054,10 +1035,6 @@ Example:
 (%i1) gfactor (x^4 - 1);
 (%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
 @end example
-
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c DESCRIBE THIS INDEPENDENTLY OF factorsum
@@ -1100,10 +1077,6 @@ Examples:
 (%i5) hipow (expand ((x + y)^5), x + y);
 (%o5)                           0
 @end example
-
-@c @opencatbox
-@c @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c I SUSPECT THE FOLLOWING TEXT IS OUTDATED DUE TO CHANGES IN INTEGER FACTORING CODE
@@ -1127,10 +1100,6 @@ Internal calls to @code{factor} respect the user-specified value of
 @code{intfaclim}.  Setting @code{intfaclim} to @code{true} may reduce
 the time spent factoring large integers.
 @c NEED EXAMPLES HERE
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1174,10 +1143,6 @@ Examples:
 `rat' replaced 1.0 by 1/1 = 1.0
 (%o3)                               [x = 1]
 @end example
-
-@c @opencatbox
-@c @category{Numerical evaluation}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1194,10 +1159,6 @@ auftritt.  Treten symbolische Exponententen auf, wird ein Ausdruck mit
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
 (%o1)                       min(a, 2)
 @end example
-
-@c @opencatbox
-@c @category{Ausdr@"ucke}
-@c @closecatbox
 @end deffn
 
 @c DESCRIBE lratsubst INDEPENDENTLY OF subst
@@ -1248,10 +1209,6 @@ equation may be given as first argument.
 (%i4) lratsubst (a^2 = b, a^3);
 (%o4)                          a b
 @end example
-
-@c @opencatbox
-@c @category{Polynomials} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1279,11 +1236,6 @@ If @code{modulus} is set to a positive non-prime integer,
 this setting is accepted, but a warning message is displayed.
 Maxima will allow zero or a negative integer to be assigned to @code{modulus},
 although it is not clear if that has any useful consequences.
-
-@c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
 @end defvr
 
 @c APPARENTLY OBSOLETE: ONLY EFFECT OF $newfac COULD BE TO CAUSE NONEXISTENT FUNCTION NMULTFACT
@@ -1307,9 +1259,6 @@ If @var{expr} is not a ratio, @var{expr} is returned.
 @code{num} evaluates its argument.
 
 @c NEED SOME EXAMPLES HERE
-@c @opencatbox
-@c @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1420,10 +1369,6 @@ necessarily return @code{[@var{p_1}, ..., @var{p_n}]}:
 (%o5)               [------, ------, 2 x + 1]
                        4       2
 @end example
-
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1445,10 +1390,6 @@ aktuellen Modul.  Das Modul ist der Wert der Variablen @code{modulus}.
 @c See @code{modulus}.
 
 Siehe @code{modulus}.
-
-@c @opencatbox
-@c @category{Polynome}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1469,15 +1410,11 @@ Gives the powers of @var{x} occuring in @var{expr}.
 @c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
 @c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
 @c AND MANY OTHER SIMILAR USEFUL HACKS.
-
-@c @opencatbox
-@c @category{Expressions} @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} quotient (@var{p_1}, @var{p_2})
-@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn  {Function} quotient (@var{p_1}, @var{p_2})
+@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.
 The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
@@ -1485,16 +1422,13 @@ The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
 @code{quotient} returns the first element of the two-element list returned by @code{divide}.
 
 @c NEED SOME EXAMPLES HERE
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} rat (@var{expr})
-@deffnx {Function} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn  {Function} rat (@var{expr})
+@deffnx {Function} rat (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 Converts @var{expr} to canonical rational expression (CRE) form by expanding and
 combining all terms over a common denominator and cancelling out the
@@ -1554,10 +1488,6 @@ Examples:
 (%o2)/R/                    ---------
                              x + 2 y
 @end example
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1567,16 +1497,12 @@ Default value: @code{true}
 When @code{ratalgdenom} is @code{true}, allows rationalization of
 denominators with respect to radicals to take effect.
 @code{ratalgdenom} has an effect only when canonical rational expressions (CRE) are used in algebraic mode.
-
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffn  {Function} ratcoef (@var{expr}, @var{x}, @var{n})
 @deffnx {Function} ratcoef (@var{expr}, @var{x})
 
 Returns the coefficient of the expression @code{@var{x}^@var{n}}
@@ -1615,10 +1541,6 @@ Example:
 (%o2)                           x
 @end example
 @c NEED MORE EXAMPLES HERE
-
-@c @opencatbox
-@c @category{Polynomials} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1640,9 +1562,6 @@ and thus some expressions which are considered ratios by @code{ratdenom}
 are not considered ratios by @code{denom}.
 
 @c NEEDS AN EXAMPLE HERE
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1692,10 +1611,6 @@ Examples:
                               2
                              b  + 3
 @end example
-
-@c @opencatbox
-@c @category{Simplification flags and variables} @category{Rational expressions}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1757,10 +1672,6 @@ Example:
                     2                    2
 (%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
 @end example
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1776,14 +1687,10 @@ This is sometimes convenient if one wishes to stop the "contagion", or
 use rational functions in non-rational contexts.
 
 See also @code{totaldisrep}.
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratexpand (@var{expr})
+@deffn  {Function} ratexpand (@var{expr})
 @deffnx {Option variable} ratexpand
 
 Expands @var{expr} by multiplying out products of sums and
@@ -1841,10 +1748,6 @@ Examples:
                  3    2            3    2
                 x  + x  - x - 1   x  + x  - x - 1
 @end example
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1872,9 +1775,6 @@ The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
 both be used at the same time.
 
 @c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1896,9 +1796,6 @@ and thus some expressions which are considered ratios by @code{ratnumer}
 are not considered ratios by @code{num}.
 
 @c NEEDS AN EXAMPLE HERE
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1906,10 +1803,6 @@ are not considered ratios by @code{num}.
 
 Returns @code{true} if @var{expr} is a literal integer or ratio of literal integers,
 otherwise @code{false}.
-
-@c @opencatbox
-@c @category{Predicate functions} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1920,10 +1813,6 @@ otherwise @code{false}.
 
 CRE are created by @code{rat} and related functions.
 Extended CRE are created by @code{taylor} and related functions.
-
-@c @opencatbox
-@c @category{Predicate functions} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1933,15 +1822,12 @@ Default value: @code{true}
 When @code{ratprint} is @code{true},
 a message informing the user of the conversion of floating point numbers
 to rational numbers is displayed.
-
-@c @opencatbox
-@c @category{Rational expressions} @category{Numerical evaluation} @category{Console interaction}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ratsimp (@var{expr})
-@deffnx {Function} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+@anchor{ratsimp}
+@deffn  {Function} ratsimp (@var{expr})
+@deffnx {Function} ratsimp (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
 Simplifies the expression @var{expr} and all of its subexpressions,
 including the arguments to non-rational functions.
@@ -1997,10 +1883,6 @@ Examples:
                                 a
 (%o5)                        x
 @end example
-
-@c @opencatbox
-@c @category{Simplification functions} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2011,9 +1893,6 @@ When @code{ratsimpexpons} is @code{true},
 @code{ratsimp} is applied to the exponents of expressions during simplification.
 
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
-@c @opencatbox
-@c @category{Simplification flags and variables} @category{Rational expressions}
-@c @closecatbox
 @end defvr
 
 @c --- 06.01.2011 DK -----------------------------------------------------------
@@ -2027,7 +1906,6 @@ Standardwert: @code{false}
 Hat @code{radsubstflag} den Wert @code{true}, wird verhindert, dass die Funktion
 @code{ratsubst} zum Beispiel @code{u} f@"ur @code{sqrt(x)} in @code{x} 
 substituiert.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -2080,11 +1958,10 @@ Examples:
                                 2
 (%o8)                          u
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratvars (@var{x_1}, ..., @var{x_n})
+@deffn  {Function} ratvars (@var{x_1}, @dots{}, @var{x_n})
 @deffnx {Function} ratvars ()
 @deffnx {System variable} ratvars
 
@@ -2104,11 +1981,10 @@ The variable @code{ratvars} is a list of the arguments of
 the function @code{ratvars} when it was called most recently.
 Each call to the function @code{ratvars} resets the list.
 @code{ratvars ()} clears the list.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {Function} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn  {Function} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
 @deffnx {Function} ratweight ()
 
 Assigns a weight @var{w_i} to the variable @var{x_i}.
@@ -2144,10 +2020,6 @@ Examples:
 (%i5) expr1^2;
 (%o5)/R/                  2 b + 2 a + 1
 @end example
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2160,10 +2032,6 @@ each call to @code{ratweight} places additional items in the list.
 
 @c DO WE REALLY NEED TO MENTION THIS ??
 @code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -2173,15 +2041,11 @@ Default value: @code{false}
 @code{ratwtlvl} is used in combination with the @code{ratweight}
 function to control the truncation of canonical rational expressions (CRE).
 For the default value of @code{false}, no truncation occurs.
-
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} remainder (@var{p_1}, @var{p_2})
-@deffnx {Function} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn  {Function} remainder (@var{p_1}, @var{p_2})
+@deffnx {Function} remainder (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns the remainder of the polynomial @var{p_1} divided by the polynomial @var{p_2}.
 The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
@@ -2190,9 +2054,6 @@ The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
 of the two-element list returned by @code{divide}.
 
 @c NEED SOME EXAMPLES HERE
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c CAN PROBABLY BE CLARIFIED
@@ -2224,9 +2085,6 @@ The function @code{bezout} takes the same arguments as @code{resultant} and retu
 a matrix.  The determinant of the return value is the desired resultant.
 
 @c NEED AN EXAMPLE HERE
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2238,10 +2096,6 @@ When @code{savefactors} is @code{true}, causes the factors of an
 expression which is a product of factors to be saved by certain
 functions in order to speed up later factorizations of expressions
 containing some of the same factors.
-
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -2251,10 +2105,6 @@ Returns a list of the canonical rational expression (CRE) variables in
 expression @code{expr}.
 
 See also @code{ratvars}.
-
-@c @opencatbox
-@c @category{Rational expressions} @category{Display functions}
-@c @closecatbox
 @end deffn
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
@@ -2280,21 +2130,17 @@ Example:
                                 2   2
 (%o1)                  (2 x + 1)  (x  - 1)
 @end example
-
-@c @opencatbox
-@c @category{Polynomials}
-@c @closecatbox
 @end deffn
 
 @c THIS ITEM STILL NEEDS WORK
 
 @c --- 20.12.2010 DK -----------------------------------------------------------
 @anchor{tellrat}
-@deffn  {Funktion} tellrat (@var{p_1}, ..., @var{p_n})
+@deffn  {Funktion} tellrat (@var{p_1}, @dots{}, @var{p_n})
 @deffnx {Funktion} tellrat ()
 
  Adds to the ring of algebraic integers known to Maxima the elements which are 
- the solutions of the polynomials @var{p_1}, ..., @var{p_n}. Each argument 
+ the solutions of the polynomials @var{p_1}, ..., @var{p_n}.  Each argument 
  @var{p_i} is a polynomial with integer coefficients.
 
  @code{tellrat (@var{x})} effectively means substitute 0 for @var{x} in 
@@ -2313,7 +2159,7 @@ Example:
 
  When @code{tellrat}'ing a multivariate polynomial, e.g., 
  @code{tellrat (x^2 - y^2)}, there would be an ambiguity as to whether to 
- substitute @code{@var{y}^2} for @code{@var{x}^2} or vice versa. Maxima 
+ substitute @code{@var{y}^2} for @code{@var{x}^2} or vice versa.  Maxima 
  picks a particular ordering, but if the user wants to specify which, e.g.
  @code{tellrat (y^2 = x^2)} provides a syntax which says replace
  @code{@var{y}^2} by @code{@var{x}^2}.
@@ -2362,10 +2208,6 @@ Beispiele:
                         2    2   2
 (%o6)                 [y  - x , a  + a + 1]
 @end example
-
-@c @opencatbox
-@c @category{Polynomials} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -2377,7 +2219,7 @@ Beispiele:
 @c itself in CRE form then @code{totaldisrep} is identical to @code{ratdisrep}.
 
 Konvertiert alle Teilausdr@"ucke im Ausdruck @var{expr} von der CRE-Form in die
-allgemeine Form und gibt das Ergebnis zur@"uck. Ist @var{expr} selbst eine
+allgemeine Form und gibt das Ergebnis zur@"uck.  Ist @var{expr} selbst eine
 CRE-Form, dann entspricht @code{totaldisrep} der Funktion @code{ratdisrep}.
 
 @c @code{totaldisrep} may be useful for ratdisrepping expressions such as 
@@ -2387,24 +2229,18 @@ CRE-Form, dann entspricht @code{totaldisrep} der Funktion @code{ratdisrep}.
 Matrizen in eine allgmeine Form zu konvertieren sind.
 
 @c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c --- 20.12.2010 DK -----------------------------------------------------------
 @anchor{untellrat}
-@deffn {Funktion} untellrat (@var{x_1}, ..., @var{x_n})
+@deffn {Funktion} untellrat (@var{x_1}, @dots{}, @var{x_n})
 
 @c Removes @code{tellrat} properties from @var{x_1}, ..., @var{x_n}.
 
-Entfernt Eigenschaften von den Symbolen @var{x_1}, ..., @var{x_n}, die mit der
+Entfernt Eigenschaften von den Symbolen @var{x_1}, @dots{}, @var{x_n}, die mit der
 Funktion @code{tellrat} zugewiesen wurden.
 
 @c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Polynomials} @category{Rational expressions}
-@c @closecatbox
 @end deffn
 
 @c --- End of file Polynomials.de.texi -----------------------------------------
