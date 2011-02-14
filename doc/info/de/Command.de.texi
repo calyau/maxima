@@ -5,7 +5,7 @@
 @c Original    : Command.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 13.02.2011
+@c Revision    : 14.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -171,6 +171,67 @@ aus und lesen dann die Eingabe des Nutzers ein:
 @node Funktionen und Variablen der Eingabe, Funktionen und Variablen der Ausgabe, Einf@"uhrung in die Kommandozeile, Kommandozeile
 @section Funktionen und Variablen der Eingabe
 @c -----------------------------------------------------------------------------
+
+@c --- 14.02.2011 DK -----------------------------------------------------------
+@anchor{;}
+@defvr {Operator} ;
+
+Mit dem Semikolon @code{;} wird die Eingabe eines Maxima-Ausdrucks auf der
+Konsole und in einer Datei abgeschlossen.  Es k@"onnen mehrere Ausdr@"ucke mit
+einem Semikolon als Abschluss auf einer Zeile eingegeben werden.  Siehe auch
+@mrefdot{$}
+
+Beispiele:
+
+@c ===beg===
+@c a:10;
+@c a+b;
+@c x:10; x+y;
+@c ===end===
+@example
+(%i1) a:10;
+(%o1)                          10
+(%i2) a+b;
+(%o2)                        b + 10
+(%i3) x:10; x+y;
+(%o3)                          10
+(%o4)                        y + 10
+@end example
+@end defvr
+
+@c --- 14.02.2011 DK -----------------------------------------------------------
+@anchor{$}
+@defvr {Operator} $
+
+Das Dollarzeichen schliesst wie das Semikolon die Eingabe eines Ausdruckes auf
+der Konsole und in einer Datei ab.  Im Unterschied zum Semikolon wird die
+Ausgabe des Ergebnisses unterdr@"uckt.  Das Ergebnis wird jedoch weiterhin
+einer Ausgabemarke @mref{outchar,%o} zugewiesen und die Systemvariable 
+@mref{%} enth@"alt das Ergebnis.  Siehe auch @mrefdot{;}
+
+Beispiele:
+
+@c ===beg===
+@c expand((a+b)^2)$
+@c %;
+@c a:10$ a+b$
+@c %o3;
+@c %o4;
+@c ===end===
+@example
+(%i1) expand((a+b)^2)$
+
+(%i2) %;
+                          2            2
+(%o2)                    b  + 2 a b + a
+(%i3) a:10$ a+b$
+
+(%i5) %o3;
+(%o5)                          10
+(%i6) %o4;
+(%o6)                        b + 10
+@end example
+@end defvr
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{__}

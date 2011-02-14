@@ -5,6 +5,7 @@
 @c Original    : category-macros.texi revision 1.4
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
+@c Revision    : 14.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -42,6 +43,16 @@
 @code{\nodename\}
 @end ifnothtml
 @end macro
+
+@macro mxref {nodename, text}
+@ifhtml
+@code{@ref{\nodename\, \text\}}
+@end ifhtml
+@ifnothtml
+@code{\text\}
+@end ifnothtml
+@end macro
+
 
 @macro mrefdot {nodename}
 @ifhtml
@@ -108,6 +119,7 @@
              ein-ge-schlos-sen
              ent-hal-ten
              Er-geb-nis
+             Fra-ge-zei-chen
              Funk-tion
              ge-kenn-zeich-net
              ge-ne-riert

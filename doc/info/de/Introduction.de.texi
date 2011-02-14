@@ -5,16 +5,16 @@
 @c Original    : Introduction.texi revision 1.11
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 13.02.2011
+@c Revision    : 14.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 Von einer Kommandozeile wird Maxima mit dem Kommando @code{maxima} gestartet. 
 Maxima zeigt die aktuelle Version an und gibt einen Prompt f@"ur die Eingabe 
-aus.  Ein Maxima-Kommando wird mit einem Semikolon abgeschlossen.  Eine 
+aus.  Ein Maxima-Kommando wird mit einem Semikolon @mref{;} abgeschlossen.  Eine
 Maxima-Sitzung wird mit dem Kommando @code{quit();} beendet.  Es folgt ein 
-Beispiel f@"ur eine Sitzung:
+Beispiel f@"ur eine Sitzung.
 
 @example
 [wfs@@chromium]$ maxima
@@ -38,10 +38,10 @@ provides bug reporting information.
 @end example
 
 @noindent
-Maxima kann GNU Infotext anzeigen.  Das Kommando @code{describe(text)} zeigt 
+Maxima kann Hilfetexte anzeigen.  Das Kommando @code{describe(text)} zeigt 
 alle Inhalte an, die die Zeichenkette @code{text} enthalten.  Das Fragezeichen
 @mref{?} (exakte Suche) und zwei Fragezeichen @mref{??} (ungenaue Suche) sind 
-abk@"urzende Schreibweisen f@"ur @mrefdot{describe}
+abk@"urzende Schreibweisen f@"ur die Funktion @mrefdot{describe}
 
 @example
 (%i1) ?? integrat
@@ -85,12 +85,12 @@ Enter space-separated numbers, `all' or `none': 4
 @end example
 
 @noindent
-Das Ergebnis einer Rechnung wird mit dem Operator @code{:} einer Variablen 
+Das Ergebnis einer Rechnung wird mit dem Operator @mref{:} einer Variablen 
 zugewiesen.  Weiterhin speichert Maxima die Eingaben unter den Marken 
-@code{(%i)} und die Ausgaben unter den Marken @code{(%o)} ab.  Die Marken 
-erhalten eine fortlaufende Nummerierung.  Mit diesen Marken kann auf fr@"uhere 
-Eingaben und Ausgaben zur@"uckgegriffen werden.  Auf die letzte Ausgabe kann mit
-@mref{%} zur@"uckgegriffen werden:
+@mxref{inchar,(%i)} und die Ausgaben unter den Marken @mxref{outchar,(%o)} ab.
+Die Marken erhalten eine fortlaufende Nummerierung.  Mit diesen Marken kann auf
+fr@"uhere Eingaben und Ausgaben zur@"uckgegriffen werden.  Auf die letzte
+Ausgabe kann mit @mref{%} zur@"uckgegriffen werden.
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -114,21 +114,35 @@ Eingaben und Ausgaben zur@"uckgegriffen werden.  Auf die letzte Ausgabe kann mit
 @end example
 
 @noindent
-Maxima kennt numerische Konstanten und kann mit komplexen Zahlen rechnen:
+Maxima kennt numerische Konstanten wie die Kreiszahl @mref{%pi} oder die
+imagin@"are Einheit @mref{%i} und kann mit komplexen Zahlen rechnen.  Mit der
+Funktion @mref{rectform} wird eine komplexe Zahl in die Standardform gebracht,
+mit der Funktion @mref{polarform} wird die komplexe Zahl in der Polarform
+dargestellt.
 
 @c ===beg===
 @c cos(%pi);
 @c exp(%i*%pi);
+@c rectform((1+%i)/(1-%i));
+@c polarform((1+%i)/(1-%i));
 @c ===end===
 @example
 (%i1) cos(%pi);
 (%o1)                          - 1
 (%i2) exp(%i*%pi);
 (%o2)                          - 1
+(%i3) rectform((1+%i)/(1-%i));
+(%o3)                          %i
+(%i4) polarform((1+%i)/(1-%i));
+                              %i %pi
+                              ------
+                                2
+(%o4)                       %e
 @end example
 
 @noindent
-Maxima kann differenzieren und integrieren:
+Maxima kann mit der Funktion @mref{diff} differenzieren und mit der Funktion
+@mref{integrate} integrieren.
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -151,7 +165,8 @@ Maxima kann differenzieren und integrieren:
 @end example
 
 @noindent
-Maxima kann lineare Gleichungssysteme und kubische Gleichungen l@"osen:
+Mit den Funktionen @mref{linsolve} und @mref{solve} kann Maxima lineare
+Gleichungssysteme und kubische Gleichungen l@"osen.
 
 @c ===beg===
 @c linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -167,8 +182,9 @@ Maxima kann lineare Gleichungssysteme und kubische Gleichungen l@"osen:
 @end example
 
 @noindent
-Maxima kann nichtlineare Gleichungssysteme l@"osen.  Wird eine Eingabe mit 
-@code{$} anstatt @code{;} abgeschlossen, wird keine Ausgabe erzeugt:
+Die Funktion @mref{solve} kann auch nichtlineare Gleichungssysteme l@"osen.
+Wird eine Eingabe mit @mref{$} anstatt @mref{;} abgeschlossen, wird keine
+Ausgabe erzeugt.
 
 @c ===beg===
 @c eq_1: x^2 + 3*x*y + y^2 = 0$
@@ -189,7 +205,8 @@ Maxima kann nichtlineare Gleichungssysteme l@"osen.  Wird eine Eingabe mit
 @end example
 
 @noindent
-Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
+Mit den Funktionen @mref{plot2d} und @mref{plot3d} kann Maxima Funktionsgraphen
+mit einer oder mehreren Funktionen zeichnen.
 
 @c ===beg===
 @c plot2d(sin(x)/x, [x, -20, 20]);
@@ -218,17 +235,15 @@ Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
 @c    [x, -12, 12], [y, -12, 12])$
 @c ===end===
 @example
+@group
 (%i3) plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
          [x, -12, 12], [y, -12, 12])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/introduction3, 12cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Hilfe}
-@c @closecatbox
 
 @c --- End of file Introduction.de.texi ----------------------------------------
 
