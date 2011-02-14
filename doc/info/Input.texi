@@ -1004,13 +1004,17 @@ Returns a guess about the content of @var{filename}, based on the filename
 extension. @var{filename} need not refer to an actual file; no attempt is made 
 to open the file and inspect the content.
 
-The return value is a symbol, either @code{object}, @code{lisp}, or 
-@code{maxima}. If the extension is "mac", "mc", "demo", "dem", "dm1", "dm2", 
-"dm3", or "dmt", @code{file_type} returns @code{maxima}. If the extension is 
-"l", "lsp", or "lisp", @code{file_type} returns @code{lisp}. If none of the 
-above, @code{file_type} returns @code{object}.
+The return value is a symbol, either @code{object}, @code{lisp}, or
+@code{maxima}. If the extension is matches one of the values in
+@code{file_type_maxima} @code{file_type} returns @code{maxima}. If the
+extension matchees one of the values in @code{file_type_lisp},
+@code{file_type} returns @code{lisp}. If none of the above,
+@code{file_type} returns @code{object}.
 
 See also @code{pathname_type}.
+
+See @code{file_type_maxima} and @code{file_type_lisp} for the default
+values.
 
 Examples:
 
@@ -1027,6 +1031,23 @@ Examples:
 @closecatbox
 @end deffn
 
+@defvr {Option variable} file_type_lisp
+Default value:  @code{[``l'', ``lsp'', ``lisp'']}
+
+@code{file_type_lisp} is a list of file extensions that maxima recognizes
+as denoting a Lisp source file.
+
+See also @code{file_type}.
+@end defvr
+
+@defvr {Option variable} file_type_maxima
+Default value:  @code{[``mac'', ``mc'', ``demo'', ``dem'',  ``dm1'',  ``dm2'', ``dm3'', ``dmt'']}
+
+@code{file_type_maxima} is a list of file extensions that maxima recognizes
+as denoting a Maxima source file.
+
+See also @code{file_type}.
+@end defvr
 
 @deffn {Function} grind (@var{expr})
 @deffnx {Option variable} grind

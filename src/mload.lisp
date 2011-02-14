@@ -148,13 +148,18 @@
     searched-for))
 
 
+(defmvar $file_type_lisp
+    (list '(mlist) "l" "lsp" "lisp"))
+
+(defmvar $file_type_maxima
+    (list '(mlist) "mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt"))
+
 (defun $file_type (fil)
   (let ((typ ($pathname_type fil)))
     (cond
-      ((member typ '("l" "lsp" "lisp") :test #'string=)
+      ((member typ (cdr $file_type_lisp) :test #'string=)
        '$lisp)
-      ((member typ '("mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt")
-	       :test #'string=)
+      ((member typ (cdr $file_type_maxima) :test #'string=)
        '$maxima)
       (t
        '$object))))
