@@ -466,9 +466,9 @@
 (defprop $alpha "\\alpha" texword)
 (defprop $beta "\\beta" texword)
 (defprop $gamma "\\gamma" texword)
-(defprop %gamma "\\gamma" texword) ;; fix by yhonda Feb/13/2011
+(defprop %gamma "\\gamma" texword)
 
-(defprop %gamma tex-gamma tex) ;; added by yhonda Feb/13/2011
+(defprop %gamma tex-gamma tex)
 (defun tex-gamma (x l r)
  (tex (cadr x) (append l '("\\Gamma\\left(")) (append '("\\right)") r) 'mparen 'mparen))
 
