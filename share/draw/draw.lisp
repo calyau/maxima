@@ -2711,21 +2711,6 @@
 
 
 
-
-
-;; transforms arguments to make-scene-2d, make-scene-3d
-;; and draw to a unique list. With this piece of code,
-;; gr2d, gr3d and draw admit as arguments nested lists
-;; of options and graphic objects
-(defmacro make-list-of-arguments ()
-   '(setf largs (rest ($flatten
-                        ($tree_reduce 
-                          '$append
-                          (cons '(mlist)
-                                (map 
-                                  'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
-                                  args)))))))
-
 (defvar *2d-graphic-objects* (make-hash-table))
 
 ; table of basic 2d graphic objects
@@ -2752,7 +2737,7 @@
       (ini-gr-options)
       (ini-local-option-variables)
       (user-defaults)
-      (make-list-of-arguments)
+      (setf largs (listify-arguments))
       ; update option values and detect objects to be plotted
       (dolist (x largs)
          (cond ((equal ($op x) "=")
@@ -2920,7 +2905,7 @@
       (ini-gr-options)
       (ini-local-option-variables)
       (user-defaults)
-      (make-list-of-arguments)
+      (setf largs (listify-arguments))
       ; update option values and detect objects to be plotted
       (dolist (x largs)
          (cond ((equal ($op x) "=")
@@ -3108,7 +3093,7 @@
         ncols nrows width height ; multiplot parameters
         isanimatedgif is1stobj biglist grouplist largs)
 
-    (make-list-of-arguments)
+    (setf largs (listify-arguments))
     (dolist (x largs)
       (cond ((equal ($op x) "=")
               (case ($lhs x)

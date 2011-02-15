@@ -330,8 +330,7 @@
 (defun update-terminal (val)
   (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $svg
                  $pdf $pdfcairo $wxt $animated_gif $aquaterm
-                
-                )))
+                 $tiff $vrml $obj $pnm)))
      (cond
        ((member val terms)
           (when (and (eq val '$png) $draw_use_pngcairo)
@@ -866,4 +865,22 @@
         (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) (* 100 val))))
 
       (otherwise (merror "draw: unknown option ~M " opt))  ) )
+
+
+
+
+
+
+;; transforms arguments to make-scene-2d, make-scene-3d,
+;; draw, and model3d to a unique list. With this piece of code,
+;; gr2d, gr3d, draw, and model3d admit as arguments nested lists
+;; of options and graphic objects
+(defmacro listify-arguments ()
+   '(rest ($flatten
+             ($tree_reduce 
+               '$append
+               (cons '(mlist)
+                     (map 
+                       'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
+                       args))))))
 
