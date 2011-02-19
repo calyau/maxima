@@ -5,6 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
+@c Revision    : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1186,7 +1187,7 @@ Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
 
 Hat die Optionsvariable @code{logarc} den Wert @code{true}, werden inverse
 Winkel- und Hyperbelfunktionen durch Logarithmusfunktionen ersetzt.  Der 
-Standwert von @code{logarc} ist @code{false}.
+Standardwert von @code{logarc} ist @code{false}.
 
 @c The function @code{logarc(@var{expr})} carries out that replacement for an 
 @c expression @var{expr} without setting the global variable @code{logarc}.

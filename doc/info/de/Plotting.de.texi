@@ -5,7 +5,7 @@
 @c Original    : Plotting.texi revision 1.34
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 23.10.2010
-@c Revision    : 05.02.2011
+@c Revision    : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1055,9 +1055,9 @@ zu zeigen.  Die Gitterlinien sind ausgeschaltet.
 
 Die Elemente dieser Liste definieren die Standardwerte f@"ur die Ausgabe von
 Graphen.  Ist einer der Werte ein Argument der Funktionen @code{plot2d} oder
-@code{plot3d}, wird der Standwert @"uberschrieben.  Die Standardwerte k@"onnen 
-mit der Funktion @code{set_plot_option} gesetzt werden.  Einige Grafikoptionen
-sind nicht in der Liste @code{plot_options} enthalten.
+@code{plot3d}, wird der Standardwert @"uberschrieben.  Die Standardwerte
+k@"onnen mit der Funktion @code{set_plot_option} gesetzt werden.  Einige
+Grafikoptionen sind nicht in der Liste @code{plot_options} enthalten.
 
 @c Each element of @code{plot_options} is a list of two or more items.  The
 @c first item is the name of the option, and the remainder comprises the

@@ -5,7 +5,7 @@
 @c Original    : Expressions.texi revision 1.71
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 06.02.2011
+@c Revision    : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -22,23 +22,19 @@
 @section Einf@"uhrung in Ausdr@"ucke
 @c -----------------------------------------------------------------------------
 
-@c Most things in Maxima are expressions.   A sequence of expressions can be 
-@c made into an expression by separating them by commas and putting parentheses 
-@c around them.   This is similar to the @b{C} @i{comma expression}.
+Alles in Maxima, bis auf wenige Ausnahmen, sind Ausdr@"ucke.  Dazu geh@"oren 
+mathematische Ausdr@"ucke wie @code{sqrt(2*a+b)} oder Kommandos wie
+@code{subst(a^2,b,sin(b+1)}.  Auch Maxima-Programme sind Ausdr@"ucke.
+Ausdr@"ucke bestehen aus einem Atom oder einem Operator mit seinen Argumenten.
 
-Alles in Maxima, bis auf wenige Ausnahmen, sind Ausdr@"ucke. Dazu geh@"oren 
-mathematische Ausdr@"ucke wie @code{sqrt(2*a+b)}, Kommandos wie 
-@code{subst(a^2,b,sin(b+1)}. Auch Maxima-Programme sind Ausdr@"ucke. Ausdr@"ucke 
-bestehen aus einem Atom oder einem Operator mit seinen Argumenten.
-
-Ein Atom kann ein Symbol (ein Name), eine Zeichenkette, eine ganze Zahl oder 
-eine Gleitkommazahl sein. Jeder Ausdruck, der nicht ein Atom ist, hat die 
-Darstellung @code{op(a_1, a_2, ..., a_n)}. @code{op} ist der Operator und 
-@code{a_1}, ..., @code{a_n} sind die Argumente des Operators. Die Argumente des 
-Operators k@"onnen Atome oder wiederum Operatoren mit Argumenten sein.
+Ein Atom kann ein Symbol, eine Zeichenkette, eine ganze Zahl oder 
+eine Gleitkommazahl sein.  Jeder Ausdruck, der nicht ein Atom ist, hat die 
+Darstellung @code{op(a_1, a_2, ..., a_n)}.  @code{op} ist der Operator und 
+@code{a_1}, @dots{}, @code{a_n} sind die Argumente des Operators.  Die Argumente
+des Operators k@"onnen Atome oder wiederum Operatoren mit Argumenten sein.
 
 Da Maxima in Lisp programmiert ist, wird ein Ausdruck intern als eine Liste 
-dargestellt, die die Gestalt @code{((op) a_1 a_2 ... a_n)} hat. Die 
+dargestellt, die die Gestalt @code{((op) a_1 a_2 ... a_n)} hat.  Die 
 arithmetischen Operatoren "+" und "*" haben zum Beispiel die interne 
 Darstellung:
 
@@ -60,12 +56,6 @@ log(y)          -> ((%log) $y)
 Mehrere Ausdr@"ucke k@"onnen zusammengefa@ss{}t werden, indem die Ausdr@"ucke 
 durch Kommata getrennt und mit runden Klammern umgeben werden.
 
-@c === beg ===
-@c x: 3$
-@c (x: x+1, x: x^2);
-@c (if (x > 17) then 2 else 4);
-@c (if (x > 17) then x: 2 else y: 4, y+x);
-@c === end ===
 @example
 (%i1) x: 3$
 (%i2) (x: x+1, x: x^2);
@@ -76,45 +66,28 @@ durch Kommata getrennt und mit runden Klammern umgeben werden.
 (%o4)                          20
 @end example
 
-@c Even loops in Maxima are expressions, although the value they return is the 
-@c not too useful @code{done}.
-
-Auch Programmschleifen sind in Maxima Ausdr@"ucke. Der R@"uckgabewert einer 
+Auch Programmschleifen sind in Maxima Ausdr@"ucke.  Der R@"uckgabewert einer 
 Programmschleife ist @code{done}.
 
-@c === beg ===
-@c y: (x: 1, for i from 1 thru 10 do (x: x*i))$
-@c y;
-@c === end ===
 @example
 (%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
 (%i2) y;
 (%o2)                         done
 @end example
 
-@c whereas what you really want is probably to include a third term in the 
-@c @i{comma expression} which actually gives back the value.
-
 Um einen anderen R@"uckgabewert als @code{done} zu erhalten, kann zum Beispiel 
 der Wert der Variablen @var{x} nach dem Ende der Programmschleife ausgegeben 
 werden.
 
-@c === beg ===
-@c y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
-@c y;
-@c === end ===
 @example
 (%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
 (%i4) y;
 (%o4)                        3628800
 @end example
 
-@c There are a number of reserved words which should not be used as variable 
-@c names. Their use would cause a possibly cryptic syntax error.
-
 Es gibt eine Anzahl an reservierten Namen, die nicht als Variablennamen 
-verwendet werden sollten. Ihre Verwendung kann m@"oglicherweise kryptische
-Fehlermeldungen erzeugen. Dazu geh@"oren zum Beispiel die folgenden Namen:
+verwendet werden sollten.  Ihre Verwendung kann m@"oglicherweise kryptische
+Fehlermeldungen erzeugen.  Dazu geh@"oren zum Beispiel die folgenden Namen:
 
 @verbatim
    integrate            next           from                 diff            
@@ -187,62 +160,30 @@ Weitere Funktionen und Variablen:
 @section Substantive und Verben
 @c -----------------------------------------------------------------------------
 
-@c Maxima distinguishes between operators which are "nouns" and operators which 
-@c are "verbs". A verb is an operator which can be executed. A noun is an 
-@c operator which appears as a symbol in an expression, without being executed.
-@c By default, function names are verbs. A verb can be changed into a noun by 
-@c quoting the function name or applying the @code{nounify} function. A noun can
-@c be changed into a verb by applying the @code{verbify} function. The 
-@c evaluation flag @code{nouns} causes @code{ev} to evaluate nouns in an 
-@c expression.
-
-Operatoren und Funktionen k@"onnen als Substantiv oder Verb vorliegen. Verben 
-werden von Maxima ausgewertet. Substantive, die in einem Ausdruck auftreten, 
-werden dagegen nicht ausgewertet, sondern vereinfacht. Die meisten 
-mathematischen Funktionen sind Substantive. Funktionen wie @code{limit}, 
-@code{diff} oder @code{integrate} sind standardm@"a@ss{}ig Verben, die jedoch in
-ein Substantiv umgewandelt werden k@"onnen. Ein Verb kann durch den 
-Quote-Operator @code{'} oder mit der Funktion @code{nounify} in ein Substantiv
-umgewandelt werden. Der Auswertungsschalter @code{nouns} bewirkt, dass
-Substantive von der Funktion @code{ev} ausgewertet werden.
-
-@c The verb form is distinguished by a leading dollar sign @code{$} on the
-@c corresponding Lisp symbol. In contrast, the noun form is distinguished by
-@c a leading percent sign @code{%} on the corresponding Lisp symbol. Some nouns 
-@c have special display properties, such as @code{'integrate} and 
-@c @code{'derivative} (returned by @code{diff}), but most do not. By default, 
-@c the noun and verb forms of a function are identical when displayed. The 
-@c global flag @code{noundisp} causes Maxima to display nouns with a leading 
-@c quote mark @code{'}.
+Operatoren und Funktionen k@"onnen als Substantiv oder Verb vorliegen.  Verben 
+werden von Maxima ausgewertet.  Substantive, die in einem Ausdruck auftreten, 
+werden dagegen nicht ausgewertet, sondern vereinfacht.  Die meisten 
+mathematischen Funktionen sind Substantive.  Funktionen wie @mrefcomma{limit}
+@mref{diff} oder @mref{integrate} sind standardm@"a@ss{}ig Verben, die jedoch in
+ein Substantiv umgewandelt werden k@"onnen.  Ein Verb kann durch den 
+Quote-Operator @code{'} oder mit der Funktion @mref{nounify} in ein Substantiv
+umgewandelt werden.  Der Auswertungsschalter @mref{nouns} bewirkt, dass
+Substantive von der Funktion @mref{ev} ausgewertet werden.
 
 In der internen Darstellung von Maxima erhalten Lisp-Symbole, die ein Verb 
-darstellen, ein f@"uhrendes Dollarzeichen @code{$}. Lisp-Symbole, die ein 
-Substantiv darstellen, erhalten ein f@"uhrendes Prozentzeichen @code{%}. Einige 
+darstellen, ein f@"uhrendes Dollarzeichen @code{$}.  Lisp-Symbole, die ein 
+Substantiv darstellen, erhalten ein f@"uhrendes Prozentzeichen @code{%}.  Einige 
 Substantive wie @code{'integrate} oder @code{'derivative} haben eine spezielle 
-Darstellung f@"ur die Ausgabe. Standardm@"a@ss{}ig werden jedoch Substantive und
-Verben identisch dargestellt. Hat die Optionsvariable @code{noundisp} den Wert
-@code{true}, werden Substantive mit einem f@"uhrenden Hochkommata angezeigt.
-
-@c See also @code{noun}, @code{nouns}, @code{nounify}, and @code{verbify}.
+Darstellung f@"ur die Ausgabe.  Standardm@"a@ss{}ig werden jedoch Substantive
+und Verben identisch dargestellt.  Hat die Optionsvariable @mref{noundisp} den
+Wert @code{true}, werden Substantive mit einem f@"uhrenden Hochkommata
+angezeigt.
 
 Siehe auch @mrefcomma{noun} @mrefcomma{nouns} @mref{nounify} und 
 @mrefdot{verbify}
 
 Beispiele:
 
-@c ===beg===
-@c foo (x) := x^2;
-@c foo (42);
-@c 'foo (42);
-@c 'foo (42), nouns;
-@c declare (bar, noun);
-@c bar (x) := x/17;
-@c bar (52);
-@c bar (52), nouns;
-@c integrate (1/x, x, 1, 42);
-@c 'integrate (1/x, x, 1, 42);
-@c ev (%, nouns);
-@c ===end===
 @example
 (%i1) foo (x) := x^2;
                                      2
@@ -284,40 +225,20 @@ Beispiele:
 @section Bezeichner
 @c -----------------------------------------------------------------------------
 
-@c Maxima identifiers may comprise alphabetic characters, plus the numerals 0 
-@c through 9, plus any special character preceded by the backslash @code{\} 
-@c character.
-
 Maxima Bezeichner bestehen aus den Buchstaben des Alphabets und den 
-Zahlzeichen 0 bis 9. Sonderzeichen k@"onnen in einem Bezeichner mit einem
+Zahlzeichen 0 bis 9.  Sonderzeichen k@"onnen in einem Bezeichner mit einem
 vorangestellten Backslash @code{\} verwendet werden, zum Beispiel @code{a\&b}.
-
-@c A numeral may be the first character of an identifier if it is preceded by a
-@c backslash. Numerals which are the second or later characters need not be 
-@c preceded by a backslash.
 
 Ein Zahlzeichen kann der erste Buchstabe eines Bezeichners sein, wenn ihm ein 
 Backslash vorangestellt ist, zum Beispiel @code{\2and3}.  Zahlzeichen, die an 
 anderen Stellen auftreten, muss kein Backslash vorangestellt werden, zum 
 Beispiel @code{is5}.
 
-@c Characters may be declared alphabetic by the @code{declare} function. If so
-@c declared, they need not be preceded by a backslash in an identifier. The
-@c alphabetic characters are initially @code{A} through @code{Z}, @code{a} 
-@c through @code{z}, @code{%}, and @code{_}.
-
 Sonderzeichen k@"onnen mit der Funktion @code{declare} als alphabetisch 
 erkl@"art werden.  In diesem Fall muss dem Sonderzeichen kein Backslash 
 vorangestellt werden, wenn es in einem Bezeichner genutzt wird.  Die Zeichen 
 @code{A} bis @code{Z}, @code{a} bis @code{z} und @code{0} bis @code{9} sowie
 die Zeichen @code{%} und @code{_} haben bereits die Eigenschaft alphabetisch.
-
-@c Maxima is case-sensitive. The identifiers @code{foo}, @code{FOO}, and 
-@c @code{Foo} are distinct. See @ref{Lisp and Maxima} for more on this point.
-
-@c A Maxima identifier is a Lisp symbol which begins with a dollar sign 
-@c @code{$}. Any other Lisp symbol is preceded by a question mark @code{?} when 
-@c it appears in Maxima. See @ref{Lisp and Maxima} for more on this point.
 
 Maxima unterscheidet Gro@ss{}- und Kleinschreibung.  So werden von Maxima 
 @code{foo}, @code{FOO} oder @code{Foo} unterschieden.  Ein Maxima-Bezeichner 
@@ -328,21 +249,6 @@ ausf@"uhrlichere Beschreibung.
 
 Beispiele:
 
-@c ===beg===
-@c %an_ordinary_identifier42;
-@c embedded\ spaces\ in\ an\ identifier;
-@c symbolp (%);
-@c [foo+bar, foo\+bar];
-@c [1729, \1729];
-@c [symbolp (foo\+bar), symbolp (\1729)];
-@c [is (foo\+bar = foo+bar), is (\1729 = 1729)];
-@c baz\~quux;
-@c declare ("~", alphabetic);
-@c baz~quux;
-@c [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
-@c :lisp (defvar *my-lisp-variable* '$foo)
-@c ?\*my\-lisp\-variable\*;
-@c ===end===
 @example
 (%i1) %an_ordinary_identifier42;
 (%o1)               %an_ordinary_identifier42
@@ -381,9 +287,6 @@ Beispiele:
 @anchor{alias}
 @deffn {Funktion} alias (@var{new_name_1}, @var{old_name_1}, @dots{}, @var{new_name_n}, @var{old_name_n})
 
-@c provides an alternate name for a (user or system) function, variable, array, 
-@c etc. Any even number of arguments may be used.
-
 Die Funktion @code{alias} erm@"oglicht einen alternativen Alias-Namen f@"ur eine 
 Maxima-Funktion, einer Variablen oder einem Array.  Der Funktion @code{alias} 
 kann eine beliebige Anzahl von paarweisen Namen und Alias-Namen @"ubergeben 
@@ -398,18 +301,14 @@ das bereits einen Alias-Namen hat, einen neuen Alias-Namen zu geben, bricht
 Symbole, die einen Alias-Namen erhalten haben, werden in die Systemvariable 
 @code{aliases} eingetragen.  Siehe die Systemvariable @mrefdot{aliases}
 
+Die Funktionen @mref{ordergreat} und @mref{orderless} sowie die Deklaration
+eines Symbols als ein @mref{noun} mit der Funktion @mref{declare} erzeugen
+automatisch Alias-Namen, die in die Liste @code{aliases} eingetragen werden.
+
 Der Alias-Name kann mit der Funktion @mref{kill} entfernt werden.
 
 Beispiel:
 
-@c ==beg==
-@c alias(mysqrt);
-@c aliases;
-@c mysqrt(4);
-@c kill(mysqrt);
-@c mysqrt(4);
-@c aliases;
-@c ==end==
 @example
 (%i1) alias(mysqrt,sqrt);
 (%o1)                        [sqrt]
@@ -431,16 +330,12 @@ Beispiel:
 @defvr {Systemvariable} aliases
 Anfangswert: @code{[]}
 
-@c @code{aliases} is the list of atoms which have a user defined alias (set up 
-@c by the @code{alias}, @code{ordergreat}, @code{orderless} functions or by
-@c declaring the atom a @code{noun} with @code{declare}).
-
 Die Systemvariable @code{aliases} ist eine Informationsliste der Symbole, die 
 einen vom Nutzer definierten Alias-Namen mit dem Kommando @code{alias} 
 erhalten haben.  Weiterhin werden von den Funktionen @mref{ordergreat} und 
-@mref{orderless} sowie bei der Deklaration eines Symbols als ein @code{noun} 
-mit der Funktion @mref{declare} Alias-Namen generiert, die in die Liste 
-@code{aliases} eingetragen werden.
+@mref{orderless} sowie bei der Deklaration eines Symbols als ein
+@mref{noun} mit der Funktion @mref{declare} Alias-Namen generiert, die in die
+Liste @code{aliases} eingetragen werden.
 
 Siehe auch die Funktion @mref{alias} f@"ur ein Beispiel.
 @end defvr
@@ -449,19 +344,12 @@ Siehe auch die Funktion @mref{alias} f@"ur ein Beispiel.
 @anchor{allbut}
 @defvr {Schl@"usselwort} allbut
 
-@c works with the @code{part} commands (i.e. @code{part}, @code{inpart}, 
-@c @code{substpart}, @code{substinpart}, @code{dpart}, and @code{lpart}).  
-@c For example,
-
-Das Schl@"usselwort @code{allbut} wird bei @code{part}-Befehlen wie @code{part}, 
-@code{inpart}, @code{substpart}, @code{substinpart}, @code{dpart} und 
-@code{lpart} genutzt, um Indizes bei der Auswahl von Teilausdr@"ucken
-auszuschlie@ss{}en.  Das Schl@"usselwort @code{allbut} kann auch zusammen mit
-dem Kommando @code{kill} verwendet werden.  Siehe die Funktion @mrefdot{kill}
-
-@c @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of 
-@c @code{kill(all)} except that it does not kill the symbols @var{a_1}, 
-@c @var{a_2}, ... .
+Das Schl@"usselwort @code{allbut} wird bei @code{part}-Befehlen wie
+@mrefcomma{part} @mrefcomma{inpart} @mrefcomma{substpart}@ 
+@mrefcomma{substinpart} @mref{dpart} und @mref{lpart} genutzt, um Indizes bei
+der Auswahl von Teilausdr@"ucken auszuschlie@ss{}en.  Das Schl@"usselwort 
+@code{allbut} kann auch zusammen mit dem Kommando @code{kill} verwendet werden.
+Siehe die Funktion @mrefdot{kill}
 
 @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} hat denselben Effekt wie
 @code{kill(all)} mit der Ausnahme, dass die Symbole @var{a_1}, @var{a_2}, 
@@ -469,12 +357,6 @@ dem Kommando @code{kill} verwendet werden.  Siehe die Funktion @mrefdot{kill}
 
 Beispiele:
 
-@c ===beg===
-@c expr : e + d + c + b + a;
-@c part (expr, [2, 5]);
-@c expr : e + d + c + b + a;
-@c part (expr, allbut (2, 5));
-@c ===end===
 @example
 (%i1) expr : e + d + c + b + a;
 (%o1)                   e + d + c + b + a
@@ -487,16 +369,9 @@ Beispiele:
 (%o4)                       e + c + b
 @end example
 
-@c @code{allbut} is also recognized by @code{kill}.
-
 Das Schl@"usselwort @code{allbut} kann zusammen mit dem Kommando @code{kill}
 verwendet werden.
 
-@c ===beg===
-@c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
-@c kill (allbut (cc, dd));
-@c [aa, bb, cc, dd];
-@c ===end===
 @example
 (%i1) [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
 (%o1)                 [11, 22, 33, 44, 55]
@@ -511,26 +386,14 @@ verwendet werden.
 @anchor{args}
 @deffn {Funktion} args (@var{expr})
 
-@c Returns the list of arguments of @code{expr}, which may be any kind of
-@c expression other than an atom. Only the arguments of the top-level operator
-@c are extracted; subexpressions of @code{expr} appear as elements or
-@c subexpressions of elements of the list of arguments.
-
 Die Funktion @code{args} gibt eine Liste mit den Argumenten des Hauptoperators
 des Ausdrucks @var{expr} zur@"uck.
-
-@c The order of the items in the list may depend on the global flag 
-@c @code{inflag}.
 
 Die Anordnung der Argumente der Ergebnisliste wird von der Optionsvariablen
 @code{inflag} beeinflu@ss{}t.  Hat @code{inflag} den Wert @code{true}, ist die
 Anordnung entsprechend der internen Darstellung des Ausdrucks @var{expr}.
-Ansonsten ist die Andordnung wie in der externen Darstellung f@"ur die Anzeige.
-Siehe die Optionsvariable @code{inflag}.
-
-@c @code{args (@var{expr})} is equivalent to 
-@c @code{substpart ("[", @var{expr}, 0)}. See also @code{substpart}, and 
-@c @code{op}.
+Ansonsten ist die Anordnung wie in der externen Darstellung f@"ur die Anzeige.
+Siehe die Optionsvariable @mrefdot{inflag}
 
 @code{args(@var{expr})} ist @"aquivalent zu 
 @code{substpart("[", @var{expr}, 0)}.  Siehe auch @mref{substpart} und 
@@ -538,12 +401,6 @@ Siehe die Optionsvariable @code{inflag}.
 
 Beispiele:
 
-@c ===beg===
-@c args(gamma_incomplete(a,x));
-@c args(x+y+z);
-@c args(x+y+z),inflag:true;
-@c args(x+2*a);
-@c ===end===
 @example
 (%i1) args(gamma_incomplete(a,x));
 (%o1)                        [a, x]
@@ -561,49 +418,24 @@ Beispiele:
 @deffn  {Funktion} box (@var{expr})
 @deffnx {Funktion} box (@var{expr}, @var{a})
 
-@c Returns @var{expr} enclosed in a box. The return value is an expression with 
-@c @code{box} as the operator and @var{expr} as the argument. A box is drawn on
-@c the display when @code{display2d} is @code{true}.
-
 Die Funktion @code{box(@var{expr})} umschlie@ss{}t den Ausdruck @var{expr} in 
 der Ausgabe mit einem Rahmen, wenn @code{display2d} den Wert @code{true} hat.
 Ansonsten ist der R@"uckgabewert ein Ausdruck mit @code{box} als Operator und 
 @var{expr} als Argument.
 
-@c @code{box (@var{expr}, @var{a})} encloses @var{expr} in a box labelled by the
-@c symbol @var{a}. The label is truncated if it is longer than the width of the
-@c box.
-
-@code{box(@var{expr}, @var{a})} umschlie@ss{}t @var{expr} mit einem Rahmen, der 
-mit einer Marke @var{a} bezeichnet ist.  Ist die Marke l@"anger als der Rahmen, 
+@code{box(@var{expr}, @var{a})} umschlie@ss{}t @var{expr} mit einem Rahmen, der
+mit einer Marke @var{a} bezeichnet ist.  Ist die Marke l@"anger als der Rahmen,
 werden Zeichen abgeschnitten.
-
-@c @code{box} evaluates its argument. However, a boxed expression does not 
-@c evaluate to its content, so boxed expressions are effectively excluded from
-@c computations.
 
 Die Funktion @code{box} wertet ihre Argumente aus.  Die eingerahmten Ausdr@"ucke
 werden dagegen nicht mehr ausgewertet.
 
-@c @code{boxchar} is the character used to draw the box in @code{box} and in the
-@c @code{dpart} and @code{lpart} functions.
-
-Die Optionsvariable @code{boxchar} enth@"alt das Zeichen, das von den Funktionen
-@code{box} sowie @code{dpart} und @code{lpart} verwendet wird, um den Rahmen 
+Die Optionsvariable @mref{boxchar} enth@"alt das Zeichen, das von den Funktionen
+@code{box} sowie @mref{dpart} und @mref{lpart} verwendet wird, um den Rahmen
 auszugeben.
 
 Beispiele:
 
-@c ===beg===
-@c box (a^2 + b^2);
-@c a : 1234;
-@c b : c - d;
-@c box (a^2 + b^2);
-@c box (a^2 + b^2, term_1);
-@c 1729 - box (1729);
-@c boxchar: "-";
-@c box (sin(x) + cos(y));
-@c ===end===
 @example
 (%i1) box (a^2 + b^2);
                             """""""""
@@ -628,12 +460,6 @@ Beispiele:
                                  """"""
 (%o6)                     1729 - "1729"
                                  """"""
-@c (%i7) boxchar: "-";
-@c (%o7)                           -
-@c (%i8) box (sin(x) + cos(y));
-@c                         -----------------
-@c (%o8)                   -cos(y) + sin(x)-
-@c                         -----------------
 @end example
 @end deffn
 
@@ -642,15 +468,9 @@ Beispiele:
 @defvr {Optionsvariable} boxchar
 Standardwert: @code{"}
 
-@c @code{boxchar} is the character used to draw the box in the @code{box} and 
-@c in the @code{dpart} and @code{lpart} functions.
-
 Die Optionsvariable @code{boxchar} enth@"alt das Zeichen, welches von den 
-Funktionen @code{box} sowie @code{dpart} und @code{lpart} genutzt wird, um
+Funktionen @mref{box} sowie @mref{dpart} und @mref{lpart} genutzt wird, um
 einen Rahmen auszugeben.
-
-@c All boxes in an expression are drawn with the current value of 
-@c @code{boxchar}; the drawing character is not stored with the box expression.
 
 Die Rahmen werden immer mit dem aktuellen Wert von @code{boxchar} ausgegeben.
 Das Zeichen @code{boxchar} wird nicht zusammen mit dem eingerahmten Ausdruck
@@ -661,15 +481,6 @@ gespeichert.
 @anchor{collapse}
 @deffn  {Funktion} collapse (@var{expr})
 @deffnx {Funktion} collapse ([@var{expr_1}, @var{expr_2}, @dots{}])
-
-@c Collapses @var{expr} by causing all of its common (i.e., equal) 
-@c subexpressions to share (i.e., use the same cells), thereby saving space.  
-@c (@code{collapse} is a subroutine used by the @code{optimize} command.) Thus, 
-@c calling @code{collapse} may be useful after loading in a @code{save} file.  
-@c You can collapse several expressions together by using 
-@c @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarly, you can
-@c collapse the elements of the array @code{A} by doing 
-@c @code{collapse (listarray ('A))}.
 
 Kompremiert einen Ausdruck @var{expr}, indem gemeinsame Teilausdr@"ucke 
 denselben Speicher nutzen.  @code{collapse} wird von der Funktion 
@@ -683,24 +494,17 @@ Siehe auch die Funktion @mrefdot{optimize}
 @anchor{disolate}
 @deffn {Funktion} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-@c is similar to @code{isolate (@var{expr}, @var{x})} except that it enables the
-@c user to isolate more than one variable simultaneously. This might be useful, 
-@c for example, if one were attempting to change variables in a multiple
-@c integration, and that variable change involved two or more of the integration 
-@c variables.  This function is autoloaded from @file{simplification/disol.mac}.
-@c A demo is available by @code{demo("disol")$}.
-
 Die Funktion @code{disolate} arbeitet @"ahnlich wie die Funktion @code{isolate}.
 Im Unterschied zu der Funktion @code{isolate} kann die Funktion @code{disolate} 
 Teilausdr@"ucke zu mehr als einer Variablen aus einem Ausdruck isolieren.
 
 Die Ersetzung von Teilausdr@"ucken durch Zwischenmarken kann mit der 
-Optionsvariable @code{isolate_wrt_times} kontrolliert werden.  Hat die 
+Optionsvariable @code{isolate_wrt_times} kontrolliert werden.  Hat die
 Optionsvariable @code{isolate_wrt_times} den Wert @code{true}, werden 
 Ersetzungen in Produkten ausgef@"uhrt.  Der Standardwert ist @code{false}.
-Siehe @code{isolate_wrt_times} f@"ur Beispiele.
+Siehe @mref{isolate_wrt_times} f@"ur Beispiele.
 
-Die Optionsvariable @code{expisolate} hat im Unterschied zur Funktion 
+Die Optionsvariable @mref{exptisolate} hat im Unterschied zur Funktion
 @code{isolate} keinen Einfluss auf die Ersetzung von Teilausdr@"ucken durch
 Zwischenmarken.
 
@@ -712,10 +516,6 @@ Siehe auch die Funktion @mrefdot{isolate}
 
 Beispiel:
 
-@c ===beg===
-@c expr:a*(e*(g+f)+b*(d+c));
-@c disolate(expr,a,b,e);
-@c ===end===
 @example
 (%i1) expr:a*(e*(g+f)+b*(d+c));
 (%o1)               a (e (g + f) + b (d + c))
@@ -732,20 +532,14 @@ Beispiel:
 @anchor{dpart}
 @deffn {Funktion} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-@c Selects the same subexpression as @code{part}, but instead of just returning 
-@c that subexpression as its value, it returns the whole expression with the 
-@c selected subexpression displayed inside a box. The box is actually part of 
-@c the expression.
-
 W@"ahlt wie die Funktion @code{part} einen Teilausdruck aus, gibt aber den 
 vollst@"andigen Ausdruck zur@"uck, wobei der ausgew@"ahlte Teilausdruck 
 eingerahmt ist.  Der Rahmen ist Teil des zur@"uckgegebenen Ausdrucks.
 
 Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{lpart}
 
-@c === beg ===
-@c dpart (x+y/z^2, 1, 2, 1);
-@c === end ===
+Beispiel:
+
 @example
 (%i1) dpart (x+y/z^2, 1, 2, 1);
                              y
@@ -762,10 +556,6 @@ Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{lpart}
 @defvr {Optionsvariable} exptisolate
 Standardwert: @code{false}
 
-   @c WHAT DOES THIS MEAN EXACTLY ??
-@c @code{exptisolate}, when @code{true}, causes @code{isolate (expr, var)} to
-@c examine exponents of atoms (such as @code{%e}) which contain @code{var}.
-
 Hat @code{exptisolate} den Wert @code{true}, dann sucht die Funktion
 @code{isolate} auch in den Exponenten von Zahlen oder Symbolen nach 
 Teilausdr@"ucken zu einer Variablen.
@@ -778,19 +568,12 @@ Siehe die Funktion @mref{isolate} f@"ur Beispiele.
 @defvr {Optionsvariable} exptsubst
 Standardwert: @code{false}
 
-@c @code{exptsubst}, when @code{true}, permits substitutions such as @code{y}
-@c for @code{%e^x} in @code{%e^(a x)}.
-
 Die Optionsvariable @code{exptsubst} kontrolliert die Substitution von
-Ausdr@"ucken mit der Exponentialfunktion durch die Funktionen @code{subst} und
-@code{psubst}.
+Ausdr@"ucken mit der Exponentialfunktion durch die Funktionen @mref{subst} und
+@mrefdot{psubst}
 
 Beispiele:
 
-@c === beg ===
-@c subst(y,%e^x,%e^(a*x)),exptsubst:false;
-@c subst(y,%e^x,%e^(a*x)),exptsubst:true;
-@c === end ===
 @example
 (%i1) subst(y,%e^x,%e^(a*x)),exptsubst:false;
                                 a x
@@ -806,36 +589,17 @@ Beispiele:
 @deffn  {Funktion} freeof (@var{x}, @var{expr})
 @deffnx {Funktion} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
 
-@c @code{freeof (@var{x_1}, @var{expr})} Returns @code{true} if no subexpression
-@c of @var{expr} is equal to @var{x_1} or if @var{x_1} occurs only as a dummy
-@c variable in @var{expr}, or if @var{x_1} is neither the noun nor verb form of
-@c any operator in @var{expr}, and returns @code{false} otherwise.
-
 @code{freeof(@var{x}, @var{expr})} gibt das Ergebnis @code{true} zur@"uck, wenn
 das Argument @var{x} nicht im Ausdruck @var{expr} enthalten ist.  Ansonsten ist
 der R@"uckgabewert @code{false}.
-
-@c @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} is equivalent to 
-@c @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, 
-@c @var{expr})}.
 
 @code{freeof(@var{x_1}, ..., @var{x_n}, @var{expr})} gibt das Ergebnis 
 @code{true} zur@"uck, wenn keines der Argumente @var{x_1}, @var{x_2}, @dots{}
 im Ausdruck @var{expr} enthalten ist.
 
-@c The arguments @var{x_1}, ..., @var{x_n} may be names of functions and 
-@c variables, subscripted names, operators (enclosed in double quotes), or 
-@c general expressions. @code{freeof} evaluates its arguments.
-
 Die Argumente @var{x_1}, @dots{}, @var{x_n} k@"onnen die Namen von Funktionen 
 und Variablen sein, indizierte Namen, die Namen von Operatoren oder allgemeine
-Ausdr@"ucke.  Die Funktion @code{freeof} wertet ihre Argumente aus.
-
-@c @code{freeof} operates only on @var{expr} as it stands (after simplification 
-@c and evaluation) and does not attempt to determine if some equivalent 
-@c expression would give a different result. In particular, simplification may 
-@c yield an equivalent but different expression which comprises some different
-@c elements than the original form of @var{expr}.
+Ausdr@"ucke.  Die Funktion @code{freeof} wertet die Argumente aus.
 
 Bei der Pr@"ufung, ob ein Teilausdruck @var{x} im Ausdruck @var{expr} enthalten
 ist, untersucht die Funktion @code{freeof} den Ausdruck @var{expr} in der 
@@ -843,48 +607,23 @@ vorliegenden Form (nach Auswertung und Vereinfachung) und versucht nicht
 herauszufinden, ob der Teilausdruck in einem @"aquivalenten Ausdruck enth@"alten
 w@"are.
 
-@c A variable is a dummy variable in an expression if it has no binding outside 
-@c of the expression. Dummy variables recognized by @code{freeof} are the index 
-@c of a sum or product, the limit variable in @code{limit}, the integration 
-@c variable in the definite integral form of @code{integrate}, the original 
-@c variable in @code{laplace}, formal variables in @code{at} expressions,
-@c and arguments in @code{lambda} expressions. Local variables in @code{block} 
-@c are not recognized by @code{freeof} as dummy variables; this is a bug.
-
 @code{freeof} ignoriert Dummy-Variablen.  Dummy-Variablen sind Variablen, die 
 au@ss{}erhalb eines Ausdrucks nicht in Erscheinung treten.  Folgende 
 Dummy-Variablen werden von @code{freeof} ignoriert: der Index einer Summe oder 
 eines Produktes, die unabh@"angige Variable in einem Grenzwert, die 
 Integrationsvariable eines bestimmten Integrals oder einer 
-Laplacetransformation, formale Variablen in @code{at}- oder 
-@code{lambda}-Ausdr@"ucke, lokale Variablen eines Blocks oder einer 
-@code{do}-Schleife.
-
-@c The indefinite form of @code{integrate} is @i{not} free of its variable of 
-@c integration.
+Laplacetransformation, formale Variablen in @mref{at}- oder
+@mref{lambda}-Ausdr@"ucke, lokale Variablen eines Blocks oder einer
+@mref{do}-Schleife.
 
 Das unbestimmte Integral ist @i{nicht} frei von seinen Integrationsvariablen.
 
 Beispiele:
 
-@c Arguments are names of functions, variables, subscripted names, operators, 
-@c and expressions. @code{freeof (a, b, expr)} is equivalent to
-@c @code{freeof (a, expr) and freeof (b, expr)}.
-
 Argumente sind Namen von Funktionen, Variablen, indizierten Variablen, 
-Operatoren und Ausdr@"ucke.  @code{freeof(a, b, expr)} ist @"aquivaent zu
+Operatoren und Ausdr@"ucke.  @code{freeof(a, b, expr)} ist @"aquivalent zu
 @code{freeof(a, expr) and freeof(b, expr)}.
 
-@c === beg ===
-@c expr: z^3 * cos (a[1]) * b^(c+d);
-@c freeof(z, expr);
-@c freeof(cos, expr);
-@c freeof(a[1], expr);
-@c freeof(cos (a[1]), expr);
-@c freeof(b^(c+d), expr);
-@c freeof("^", expr);
-@c freeof(w, sin, a[2], sin (a[2]), b*(c+d), expr);
-@c === end ===
 @example
 (%i1) expr: z^3 * cos (a[1]) * b^(c+d);
                                  d + c  3
@@ -906,14 +645,8 @@ Operatoren und Ausdr@"ucke.  @code{freeof(a, b, expr)} ist @"aquivaent zu
 (%o8)                         true
 @end example
 
-@c @code{freeof} evaluates its arguments.
-
 Die Funktion @code{freeof} wertet ihre Argumente aus.
 
-@c === beg ===
-@c expr: (a+b)^5$
-@c freeof(c, expr);
-@c === end ===
 @example
 (%i1) expr: (a+b)^5$
 (%i2) c: a$
@@ -921,19 +654,10 @@ Die Funktion @code{freeof} wertet ihre Argumente aus.
 (%o3)                         false
 @end example
 
-@c @code{freeof} does not consider equivalent expressions. Simplification may
-@c yield an equivalent but different expression.
-
 @code{freeof} betrachtet keine @"aquivalenten Ausdr@"ucke.  Vereinfachungen 
 k@"onnen einen @"aquivalenten Ausdruck liefern, der jedoch den Teilausdruck 
 nicht mehr enth@"alt.
 
-@c === beg ===
-@c expr: (a+b)^5$
-@c expand(expr);
-@c freeof(a+b, %);
-@c freeof(a+b, expr);
-@c === end ===
 @example
 (%i1) expr: (a+b)^5$
 (%i2) expand(expr);
@@ -949,10 +673,6 @@ Die Exponentialfunktion @code{exp(x)} wird von Maxima sofort zu @code{%e^x}
 vereinfacht.  Der Name der Exponentialfunktion ist daher nicht in einem Ausdruck 
 enthalten.
 
-@c === beg ===
-@c exp(x);
-@c freeof(exp, exp (x));
-@c === end ===
 @example 
 (%i5) exp(x);
                                  x
@@ -961,18 +681,10 @@ enthalten.
 (%o6)                         true
 @end example
 
-@c A summation or definite integral is free of its dummy variable. An indefinite
-@c integral is not free of its variable of integration.
-
 Eine Summe ist frei von dem Index und ein bestimmtes Integral ist frei von der
 Integrationsvariablen.  Ein unbestimmtes Integral ist nicht frei von der 
 Integrationsvariablen.
 
-@c === beg ===
-@c freeof(i, 'sum (f(i), i, 0, n));
-@c freeof(x, 'integrate (x^2, x, 0, 1));
-@c freeof(x, 'integrate (x^2, x));
-@c === end ===
 @example
 (%i1) freeof(i, 'sum (f(i), i, 0, n));
 (%o1)                         true
@@ -988,16 +700,9 @@ Integrationsvariablen.
 @defvr {Optionsvariable} inflag
 Standardwert: @code{false}
 
-@c When @code{inflag} is @code{true}, functions for part extraction inspect the 
-@c internal form of @code{expr}.
-
 Hat die Optionsvariable @code{inflag} den Wert @code{true}, wird von Funktionen,
 die Teile eines Ausdrucks extrahieren, die interne Form des Ausdrucks 
 @code{expr} betrachtet.
-
-@c Note that the simplifier re-orders expressions. Thus @code{first (x + y)} 
-@c returns @code{x} if @code{inflag} is @code{true} and @code{y} if 
-@c @code{inflag} is @code{false}. (@code{first (y + x)} gives the same results.)
 
 Die Anordnung der Argumente der internen Darstellung unterscheidet sich zum
 Beispiel f@"ur die Addition von der externen Darstellung f@"ur die Anzeige.
@@ -1005,38 +710,19 @@ Daher hat @code{first(x+y)} das Ergebnis @code{x}, wenn @code{inflag} den Wert
 @code{true} hat, und @code{y}, wenn @code{inflag} den Wert @code{false} hat.
 Der Ausdruck @code{first(y+x)} gibt in beiden F@"allen dasselbe Ergebnis.
 
-@c Also, setting @code{inflag} to @code{true} and calling @code{part} or 
-@c @code{substpart} is the same as calling @code{inpart} or @code{substinpart}.
-
 Hat @code{inflag} den Wert @code{true}, entsprechen die Funktionen @code{part} 
 und @code{substpart} den Funktionen @code{inpart} und @code{substinpart}.
 
-@c Functions affected by the setting of @code{inflag} are: @code{part}, 
-@c @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
-@c the @code{for} ... @code{in} construct, @code{map}, @code{fullmap}, 
-@c @code{maplist}, @code{reveal} and @code{pickapart}.
-
 Folgende Funktionen werden von der Optionsvariablen @code{inflag} beeinflusst:
-@code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, 
-@code{length}, die Konstruktion @code{for} @dots{} @code{in}, @code{map}, 
-@code{fullmap}, @code{maplist}, @code{reveal}, @code{pickapart}, @code{args}
-und @code{op}.
+@mrefcomma{part} @mrefcomma{substpart} @mrefcomma{first} @mrefcomma{rest}@ 
+@mrefcomma{last} @mrefcomma{length}, die Konstruktion @mref{for} @dots{}
+@code{in}, @mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{maplist}@ 
+@mrefcomma{reveal} @mrefcomma{pickapart} @mref{args} und @mrefdot{op}
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{inpart}
 @deffn {Funktion} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
-
-@c is similar to @code{part} but works on the internal representation of the 
-@c expression rather than the displayed form and thus may be faster since no 
-@c formatting is done.  Care should be taken with respect to the order of 
-@c subexpressions in sums and products (since the order of variables in the 
-@c internal form is often different from that in the displayed form) and in 
-@c dealing with unary minus, subtraction, and division (since these operators 
-@c are removed from the expression). @code{part (x+y, 0)} or 
-@c @code{inpart (x+y, 0)} yield @code{+}, though in order to refer to the 
-@c operator it must be enclosed in "s.  For example @code{... if inpart 
-@c (%o9,0) = "+" then ...}.
 
 Die Funktion @code{inpart} ist @"ahnlich wie @code{part}, arbeitet aber mit der 
 internen Darstellung eines Ausdruckes und nicht mit der externen Darstellung 
@@ -1077,28 +763,14 @@ Beispiele:
 @anchor{isolate}
 @deffn {Funktion} isolate (@var{expr}, @var{x})
 
-@c Returns @var{expr} with subexpressions which are sums and which do not 
-@c contain @var{var} replaced by intermediate expression labels (these being 
-@c atomic symbols like @code{%t1}, @code{%t2}, ...).  This is often useful to 
-@c avoid unnecessary expansion of subexpressions which don't contain the 
-@c variable of interest.  Since the intermediate labels are bound to the 
-@c subexpressions they can all be substituted back by evaluating the expression
-@c in which they occur.
-
 Teilausdr@"ucke im Ausdruck @var{expr}, die die Variable @var{x} nicht 
 enthalten, werden durch Zwischenmarken @code{%t1}, @code{%t2}, @dots{} ersetzt.
 Dies kann genutzt werden, um die weitere Auswertung und Vereinfachung dieser
 Teilausdr@"ucke zu verhindern.  Die Ersetzung der Teilausdr@"ucke kann durch 
 eine Auswertung des Ausdrucks r@"uckg@"angig gemacht werden.
 
-@c @code{exptisolate} (default value: @code{false}) if @code{true} will cause 
-@c @code{isolate} to examine exponents of atoms (like @code{%e}) which contain 
-@c @var{var}.
-@c @code{isolate_wrt_times} if @code{true}, then @code{isolate} will also 
-@c isolate with respect to products. See @code{isolate_wrt_times}.
-
 Die Ersetzung von Teilausdr@"ucken kann mit den Optionsvariablen 
-@code{expisolate} und @code{isolate_wrt_times} kontrolliert werden.  Hat die 
+@mref{exptisolate} und @mref{isolate_wrt_times} kontrolliert werden.  Hat die
 Optionsvariable @code{exptisolate} den Wert @code{true}, werden Ersetzungen auch
 f@"ur die Exponentiaton ausgef@"uhrt.  Die Basis muss dabei eine Zahl oder ein 
 Symbol wie @code{%e} sein.  Hat die Optionsvariable @code{isolate_wrt_times} den 
@@ -1153,10 +825,6 @@ Beispiele:
 @defvr {Optionsvariable} isolate_wrt_times
 Standardwert: @code{false}
 
-@c When @code{isolate_wrt_times} is @code{true}, @code{isolate} will also 
-@c isolate with respect to products.  E.g. compare both settings of the switch 
-@c on
-
 Hat die Optionsvariable @code{isolate_wrt_times} den Wert @code{true}, f@"uhren 
 die Funktionen @code{isolate} und @code{disolate} auch Ersetzungen in Produkten 
 aus.
@@ -1192,16 +860,11 @@ Beispiele:
 @defvr {Optionsvariable} listconstvars
 Standardwert: @code{false}
 
-@c When @code{listconstvars} is @code{true}, it will cause @code{listofvars} to
-@c include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant
-@c in the list it returns if they appear in the expression @code{listofvars} is 
-@c called on. The default is to omit these.
-
 Hat die Optionsvariable @code{listconstvars} den Wert @code{true}, werden
-Konstante wie @code{%e}, @code{%pi} und Variablen, die als konstant deklariert
-sind, von der Funktion @code{listofvars} in die Ergebnisliste aufgenommen.  Der
-Standardwert von @code{listconstvars} ist @code{false} und Konstante werden
-ignoriert.
+Konstante wie @mrefcomma{%e} @mref{%pi} und Variablen, die als konstant
+deklariert sind, von der Funktion @mref{listofvars} in die Ergebnisliste
+aufgenommen.  Der Standardwert von @code{listconstvars} ist @code{false} und
+Konstante werden ignoriert.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1209,14 +872,8 @@ ignoriert.
 @defvr {Optionsvariable} listdummyvars
 Standardwert: @code{true}
 
-@c When @code{listdummyvars} is @code{false}, "dummy variables" in the
-@c expression will not be included in the list returned by @code{listofvars}.
-@c (The meaning of "dummy variables" is as given in @code{freeof}. "Dummy 
-@c variables" are mathematical things like the index of a sum or product, the 
-@c limit variable, and the definite integration variable.)
-
 Hat @code{listdummyvars} den Wert @code{false}, werden die Dummy-Variablen eines
-Ausdrucks von der Funktion @code{listofvars} ignoriert.  Dummy-Variablen sind
+Ausdrucks von der Funktion @mref{listofvars} ignoriert.  Dummy-Variablen sind
 zum Beispiel der Index einer Summe, die Grenzwertvariable oder die
 Integrationsvariable eines bestimmten Integrals.
 
@@ -1236,22 +893,13 @@ Beispiele:
 @anchor{listofvars}
 @deffn {Funktion} listofvars (@var{expr})
 
-@c Returns a list of the variables in @var{expr}.
-
 Die Funktion @code{listofvars} gibt eine Liste der Variablen zur@"uck, die im 
 Ausdruck @var{expr} enthalten sind.
 
-@c @code{listconstvars} if @code{true} causes @code{listofvars} to include 
-@c @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in the 
-@c list it returns if they appear in @var{expr}.  The default is to omit these.
-
-Hat die Optionsvariable @code{listconstvars} den Wert @code{true}, werden auch
-Konstante wie @code{%e}, @code{%pi}, @code{%i} und als konstant deklarierte
-Variable in die Liste aufgenommen.  Der Standwert von @code{listconstvars} ist
-@code{false}.
-
-@c See also the option variable @code{listdummyvars} to exclude or include 
-@c "dummy variables" in the list of variables.
+Hat die Optionsvariable @mref{listconstvars} den Wert @code{true}, werden auch
+Konstante wie @mrefcomma{%e} @mref{%pi} und @mref{%i} sowie als konstant
+deklarierte Variable in die Liste aufgenommen.  Der Standardwert von
+@code{listconstvars} ist @code{false}.
 
 Siehe entsprechend die Optionsvariable @mref{listdummyvars} f@"ur 
 Dummy-Variablen.
@@ -1267,14 +915,10 @@ Dummy-Variablen.
 @anchor{lfreeof}
 @deffn {Funktion} lfreeof (@var{list}, @var{expr})
 
-@c For each member @var{m} of @var{list}, calls @code{freeof (@var{m}, 
-@c @var{expr})}. It returns @code{false} if any call to @code{freeof} does and 
-@c @code{true} otherwise.
-
-F@"ur jedes Element @var{m} der Liste @var{list} wird die Funktion @code{freeof}
-aufgerufen.  @code{lfreeof} hat den R@"uckgabewert @code{true}, wenn keines der
-Elemente der Liste @var{list} im Ausdruck @code{expr} enthalten ist.  Ansonsten
-ist der R@"uckgabewert @code{false}.
+F@"ur jedes Element @var{m} der Liste @var{list} wird die Funktion
+@code{freeof} aufgerufen.  @code{lfreeof} hat den R@"uckgabewert @code{true},
+wenn keines der Elemente der Liste @var{list} im Ausdruck @code{expr} enthalten
+ist.  Ansonsten ist der R@"uckgabewert @code{false}.
 
 Siehe auch die Funktion @mrefdot{freeof}
 @end deffn
@@ -1282,9 +926,6 @@ Siehe auch die Funktion @mrefdot{freeof}
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{lpart}
 @deffn {Funktion} lpart (@var{label}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
-
-@c is similar to @code{dpart} but uses a labelled box. A labelled box is similar
-@c to the one produced by @code{dpart} but it has a name in the top line.
 
 Die Funktion @code{lpart} ist @"ahnlich zu @code{dpart}, verwendet aber einen
 Rahmen, der mit einer Marke gekennzeichnet ist.
@@ -1296,28 +937,13 @@ Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{dpart}
 @anchor{mainvar}
 @defvr {Eigenschaft} mainvar
 
-@c You may declare variables to be @code{mainvar}. The ordering scale for atoms 
-@c is essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars 
-@c < other variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)} with 
-@c @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: Care should be taken
-@c if you elect to use the above feature.  E.g., if you subtract an expression 
-@c in which @code{x} is a @code{mainvar} from one in which @code{x} isn't a 
-@c @code{mainvar}, resimplification e.g. with @code{ev (expr, simp)} may be
-@c necessary if cancellation is to occur.  Also, if you save an expression in 
-@c which @code{x} is a @code{mainvar}, you probably should also save @code{x}.)
-
 Die Deklaration einer Variablen als eine Hauptvariable @"andert deren Anordnung
 in einem Ausdruck der kanonisch geordnet ist.  Hauptvariable sind bez@"uglich
-der Funktionen @code{ordergreatp} und @code{orderlessp} stets gr@"o@ss{}er als
+der Funktionen @mref{ordergreatp} und @mref{orderlessp} stets gr@"o@ss{}er als
 alle anderen Symbole, Konstanten und Zahlen.
 
 Beispiel:
 
-@c === beg ===
-@c sort([9,1,%pi,g,t,a]);
-@c declare(a,mainvar);
-@c sort([9,1,%pi,g,t,a]);
-@c === end ===
 @example
 (%i1) sort([9,1,%pi,g,t,a]);
 (%o1)                 [1, 9, %pi, a, g, t]
@@ -1328,26 +954,20 @@ Beispiel:
 @end example
 @end defvr
 
-@c --- 18.10.2010 DK -----------------------------------------------------------
+@c --- 18.02.2011 DK -----------------------------------------------------------
 @anchor{noun}
 @defvr {Eigenschaft} noun
 
-@c @code{noun} is one of the options of the @code{declare} command.  It makes a
-@c function so declared a "noun", meaning that it won't be evaluated 
-@c automatically.
-
-@code{noun} ist eine der Optionen des Kommandos @code{declare}.  Wird eine
+@code{noun} ist eine der Optionen des Kommandos @mref{declare}.  Wird eine
 Funktion als @code{noun} deklariert, wird diese als Substantivform behandelt
 und nicht ausgewertet.
 
+Ein Symbol @code{f}, dass als @code{noun} deklariert wird, wird in die
+Informationsliste @mref{aliases} eingetragen und die R@"uckgabe der Funktion
+@mref{properties} enth@"alt @code{noun}.
+
 Beispiel:
 
-@c ===beg===
-@c factor (12345678);
-@c declare (factor, noun);
-@c factor (12345678);
-@c ''%, nouns;
-@c ===end===
 @example
 (%i1) factor (12345678);
                              2
@@ -1367,9 +987,6 @@ Beispiel:
 @defvr {Optionsvariable} noundisp
 Standardwert: @code{false}
 
-@c When @code{noundisp} is @code{true}, nouns display with a single quote. This 
-@c switch is always @code{true} when displaying function definitions.
-
 Hat @code{noundisp} den Wert @code{true}, werden Substantivformen mit einem
 vorangestelltem Hochkomma angezeigt.  Diese Optionsvariable hat immer den Wert
 @code{true}, wenn die Definition von Funktionen angezeigt wird.
@@ -1379,33 +996,21 @@ vorangestelltem Hochkomma angezeigt.  Diese Optionsvariable hat immer den Wert
 @anchor{nounify}
 @deffn {Funktion} nounify (@var{f})
 
-@c Returns the noun form of the function name @var{f}.  This is needed if one 
-@c wishes to refer to the name of a verb function as if it were a noun.  Note 
-@c that some verb functions will return their noun forms if they can't be 
-@c evaluated for certain arguments.  This is also the form returned if a 
-@c function call is preceded by a quote.
-
 Die Funktion @code{nounify} gibt den Namen einer Funktion @var{f} in einer 
 Substantivform zur@"uck.  Der Name @var{f} ist ein Symbol oder eine
 Zeichenkette.
-
-@c IST ES CONSISTENT, DASs NOUNIFY("+") DAS ERGEBNIS %MPLUS HAT?
 
 Einige Funktionen geben eine Sustantivform zur@"uck, wenn die Funktion nicht 
 ausgewertet werden kann.  Wird einem Funktionsaufruf wie zum Beispiel 
 @code{'f(x)} oder @code{'(f(x))} ein Hochkomma vorangestellt, wird ebenfalls 
 eine Substantivform zur@"uckgegeben.
+
+Siehe auch die Funktion @mrefdot{verbify}
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{nterms}
 @deffn {Funktion} nterms (@var{expr})
-
-@c Returns the number of terms that @var{expr} would have if it were fully 
-@c expanded out and no cancellations or combination of terms occurred. Note that
-@c expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, 
-@c @code{exp (@var{expr})}, etc. count as just one term regardless of how many 
-@c terms @var{expr} has (if it is a sum).
 
 Die Funktion @code{nterms} gibt die Anzahl der Terme des Ausdrucks @var{expr} 
 zur@"uck, wobei der Ausdruck als vollst@"andig expandiert angenommen wird, ohne 
@@ -1419,47 +1024,18 @@ Ausdr@"ucke wie @code{sin(@var{expr})}, @code{sqrt(@var{expr})} oder
 @anchor{op}
 @deffn {Funktion} op (@var{expr})
 
-@c Returns the main operator of the expression @var{expr}. 
-@c @code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}. 
-
 Die Funktion @code{op} gibt den Hauptoperator des Ausdrucks @var{expr} zur@"uck.
 @code{op(@var{expr})} ist @"aquivalent zu @code{part(@var{expr}, 0)}.
-
-@c @code{op} returns a string if the main operator is a built-in or user-defined
-@c prefix, binary or n-ary infix, postfix, matchfix, or nofix operator. 
-@c Otherwise, if @var{expr} is a subscripted function expression, @code{op} 
-@c returns the subscripted function; in this case the return value is not an 
-@c atom. Otherwise, @var{expr} is an array function or ordinary function 
-@c expression, and @code{op} returns a symbol.
 
 Ist der Hauptoperator des Ausdrucks @var{expr} ein Operator wie "+", "*" oder 
 "/" wird der Name des Operators als Zeichenkette zur@"uckgegeben.  Andernfalls 
 wird ein Symbol zur@"uckgegeben.
 
-@c @code{op} observes the value of the global flag @code{inflag}.
-@c @code{op} evaluates it argument.
-@c See also @code{args}.
-
-@code{op} beachtet den Wert der Optionsvariablen @code{inflag}.  @code{op} 
-wertet seine Argumente aus.  Siehe auch @mrefdot{args}
+@code{op} beachtet den Wert der Optionsvariablen @mrefdot{inflag}  @code{op}
+wertet die Argumente aus.  Siehe auch @mrefdot{args}
 
 Beispiele:
 
-@c ===beg===
-@c stringdisp: true$
-@c op (a * b * c);
-@c op (a * b + c);
-@c op ('sin (a + b));
-@c op (a!);
-@c op (-a);
-@c op ([a, b, c]);
-@c op ('(if a > b then c else d));
-@c op ('foo (a));
-@c prefix (foo);
-@c op (foo a);
-@c op (F [x, y] (a, b, c));
-@c op (G [u, v, w]);
-@c ===end===
 @example
 (%i1) stringdisp: true$
 (%i2) op (a * b * c);
@@ -1495,15 +1071,8 @@ Beispiele:
 @deffn  {Funktion} operatorp (@var{expr}, @var{op})
 @deffnx {Funktion} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
 
-@c @code{operatorp (@var{expr}, @var{op})} returns @code{true} if @var{op} is 
-@c equal to the operator of @var{expr}.
-
-Die Funktion @code{operatorp(@var{expr}, @var{op})} gibt @code{true} zur@"uck,
+Das Kommando @code{operatorp(@var{expr}, @var{op})} gibt @code{true} zur@"uck,
 wenn @var{op} der Hauptoperator des Ausdrucks @var{expr} ist.
-
-@c @code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} returns 
-@c @code{true} if some element @var{op_1}, ..., @var{op_n} is equal to the 
-@c operator of @var{expr}.
 
 @code{operatorp(@var{expr}, [@var{op_1}, ..., @var{op_n}])} gibt @code{true} 
 zur@"uck, wenn einer der Operatoren @var{op_1}, @dots{}, @var{op_n} der 
@@ -1517,7 +1086,7 @@ Hauptoperator des Ausdrucks @var{expr} ist.
 @c TODO: DAS MUSS BESSER FORMULIERT WERDEN.
 
 Hat die Optionsvariable @code{opsubst} den Wert @code{false}, f@"uhrt die 
-Funktion @code{subst} keine Substitution in einen Operator eines Ausdrucks aus.
+Funktion @mref{subst} keine Substitution in einen Operator eines Ausdrucks aus.
 Zum Beispiel hat @code{(opsubst: false, subst(x^2, r, r+r[0]))} das Ergebnis
 @code{x^2+r[0]}.
 @end defvr
@@ -1526,19 +1095,13 @@ Zum Beispiel hat @code{(opsubst: false, subst(x^2, r, r+r[0]))} das Ergebnis
 @anchor{optimize}
 @deffn {Funktion} optimize (@var{expr})
 
-@c Returns an expression that produces the same value and side effects as 
-@c @var{expr} but does so more efficiently by avoiding the recomputation of 
-@c common subexpressions.  @code{optimize} also has the side effect of 
-@c "collapsing" its argument so that all common subexpressions are shared.
-@c Do @code{example (optimize)} for examples.
-
 Die Funktion @code{optimize} gibt einen Ausdruck zur@"uck, der dasselbe Ergebnis 
 und dieselben Seiteneffekte wie @var{expr} hat, der jedoch effizienter 
 ausgewertet werden kann.  Im neuen Ausdruck wird die mehrfache Berechnung 
 gleicher Teilausdr@"ucke vermieden und gleiche Teilausdr@"ucke werden 
 zusammengefasst.
 
-Siehe auch die Funktion @code{collapse}.
+Siehe auch die Funktion @mrefdot{collapse}
 
 @c TODO: HIER EIN BEISPIEL ERGAENZEN.
 
@@ -1550,11 +1113,8 @@ Siehe auch die Funktion @code{collapse}.
 @defvr {Optionsvariable} optimprefix
 Standardwert: @code{%}
 
-@c @code{optimprefix} is the prefix used for generated symbols by the 
-@c @code{optimize} command.
-
 Die Optionsvariable @code{optimprefix} enth@"alt den Pr@"afix, der von der 
-Funktion @code{optimize} benutzt wird, um einen Teilausdruck zu benennen.
+Funktion @mref{optimize} benutzt wird, um einen Teilausdruck zu benennen.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1563,33 +1123,18 @@ Funktion @code{optimize} benutzt wird, um einen Teilausdruck zu benennen.
 @deffn  {Funktion} ordergreat (@var{v_1}, @dots{}, @var{v_n})
 @deffnx {Funktion} orderless (@var{v_1}, @dots{}, @var{v_n})
 
-@c @code{ordergreat} changes the canonical ordering of Maxima expressions such 
-@c that @var{v_1} succeeds @var{v_2} succeeds ...  succeeds @var{v_n}, and 
-@c @var{v_n} succeeds any other symbol not mentioned as an argument.
-
 Die Funktion @code{ordergreat} @"andert die kanonische Anordnung der Symbole so,
 dass @var{v_1} > @var{v_2} > @dots{} > @var{v_n}.  Weiterhin ist @var{v_n} 
 gr@"o@ss{}er als jedes andere Symbol, das nicht in der Liste enthalten ist.
-
-@c @code{orderless} changes the canonical ordering of Maxima expressions such 
-@c that @var{v_1} precedes @var{v_2} precedes ...  precedes @var{v_n}, and 
-@c @var{v_n} precedes any other variable not mentioned as an argument.
 
 @code{orderless} @"andert die kanonische Anordnung der Symbole so, dass
 @var{v_1} < @var{v_2} < @dots{} < @var{v_n}.  Weiterhin ist @var{v_n} kleiner 
 als jedes andere Symbol, das nicht in der Liste enthalten ist.
 
-@c The order established by @code{ordergreat} and @code{orderless} is dissolved 
-@c by @code{unorder}. @code{ordergreat} and @code{orderless} can be called only 
-@c once each, unless @code{unorder} is called; only the last call to 
-@c @code{ordergreat} and @code{orderless} has any effect.
-
 Die durch @code{ordergreat} und @code{orderless} definierte Ordnung wird durch
-@code{unorder} wieder aufgehoben.  @code{ordergreat} und @code{orderless} 
+@mref{unorder} wieder aufgehoben.  @code{ordergreat} und @code{orderless} 
 k@"onnen jeweils nur einmal aufgerufen werden, solange nicht mit @code{unorder} 
 zuvor die definierte Ordnung aufgehoben wird.
-
-@c See also @code{ordergreatp}.
 
 Siehe auch @mrefcomma{ordergreatp} @mref{orderlessp} und @mrefdot{mainvar}
 @end deffn
@@ -1600,32 +1145,13 @@ Siehe auch @mrefcomma{ordergreatp} @mref{orderlessp} und @mrefdot{mainvar}
 @deffn  {Funktion} ordergreatp (@var{expr_1}, @var{expr_2})
 @deffnx {Funktion} orderlessp (@var{expr_1}, @var{expr_2})
 
-@c @code{ordergreatp} returns @code{true} if @var{expr_1} succeeds @var{expr_2} 
-@c in the canonical ordering of Maxima expressions, and @code{false} otherwise.
-
 Die Funktion @code{ordergreatp} gibt @code{true} zur@"uck, wenn in der 
 kanonischen Ordnung von Maxima @var{expr_1} gr@"o@ss{}er als @var{expr_2} ist.
 Ansonsten ist das Ergebnis @code{false}.
 
-@c @code{orderlessp} returns @code{true} if @var{expr_1} precedes @var{expr_2} 
-@c in the canonical ordering of Maxima expressions, and @code{false} otherwise.
-
 Die Funktion @code{orderlessp} gibt @code{true} zur@"uck, wenn in der 
 kanonischen Ordnung von Maxima @var{expr_1} kleiner als @var{expr_2} ist.
 Ansonsten ist das Ergebnis @code{false}.
-
-@c All Maxima atoms and expressions are comparable under @code{ordergreatp} and 
-@c @code{orderlessp}, although there are isolated examples of expressions for 
-@c which these predicates are not transitive; that is a bug.
-
-@c The canonical ordering of atoms (symbols, literal numbers, and strings) is 
-@c the following.
-@c (integers and floats) precede (bigfloats) precede
-@c (declared constants) precede (strings) precede (declared scalars)
-@c precede (first argument to @code{orderless}) precedes ...  precedes
-@c (last argument to @code{orderless}) precedes (other symbols) precede
-@c (last argument to @code{ordergreat}) precedes ... precedes
-@c (first argument to @code{ordergreat}) precedes (declared main variables)
 
 Alle Maxima-Atome und Ausdr@"ucke sind vergleichbar unter @code{ordergreatp} und
 @code{orderlessp}.  Die kanonische Ordnung von Atomen ist folgenderma@ss{}en:
@@ -1637,15 +1163,6 @@ Variablen beginnend mit a < @dots{} < Variablen beginnend mit Z <
 letztes Argument von @code{ordergreat} < @dots{}
 erstes Argument von @code{ordergreat} < deklarierte Hauptvariablen.
 
-@c For non-atomic expressions, the canonical ordering is derived from the 
-@c ordering for atoms. For the built-in @code{+} @code{*} and @code{^} 
-@c operators, the ordering is not easily summarized. For other built-in 
-@c operators and all other functions and operators, expressions are ordered by 
-@c their arguments (beginning with the first argument), then by the name of the 
-@c operator or function. In the case of subscripted expressions, the subscripted
-@c symbol is considered the operator and the subscript is considered an 
-@c argument.
-
 Die Ordnung f@"ur Ausdr@"ucke, die keine Atome sind, wird von der f@"ur Atome 
 abgeleitet.  F@"ur die Operatoren @code{"+"}, @code{"*"} und @code{"^"} kann die
 Ordnung nicht einfach beschrieben werden.  Andere Operatoren, Funktionen und 
@@ -1653,30 +1170,17 @@ Ausdr@"ucke werden angeordnet nach den Argumenten, dann nach den Namen.
 Bei Ausdr@"ucken mit Indizes wird der Name des Symbols als Operator und der 
 Index als Argument betrachtet.
 
-@c The canonical ordering of expressions is modified by the functions 
-@c @code{ordergreat} and @code{orderless}, and the @code{mainvar}, 
-@c @code{constant}, and @code{scalar} declarations.
-
 Die kanonische Ordnung der Ausdr@"ucke wird modifiziert durch die Funktionen
-@code{ordergreat} und @code{orderless} sowie der Deklarationen @code{mainvar},
-@code{constant} und @code{scalar}.
-
-@c See also @code{sort}.
+@mref{ordergreat} und @mref{orderless} sowie der Deklarationen
+@mrefcomma{mainvar} @mref{constant} und @mrefdot{scalar}
 
 Siehe auch @mrefdot{sort}
 
 Beispiele:
 
-@c Ordering ordinary symbols and constants. Note that @code{%pi} is not ordered 
-@c according to its numerical value.
-
-Ordne Symbole und Konstanten.  Beachte, dass @code{%pi} nicht nach dem 
+Ordne Symbole und Konstanten.  Beachte, dass @mref{%pi} nicht nach dem 
 numerischen Wert sortiert wird.
 
-@c ===beg===
-@c stringdisp : true;
-@c sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, "bar", 4.0, 4b0]);
-@c ===end===
 @example
 (%i1) stringdisp : true;
 (%o1)                         true
@@ -1684,16 +1188,8 @@ numerischen Wert sortiert wird.
 (%o2) [3, 3.0, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", a, x, X]
 @end example
 
-@c Effect of @code{ordergreat} and @code{orderless} functions.
-
 Anwendung der Funktionen @code{ordergreat} und @code{orderless}.
 
-@c ===beg===
-@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
-@c ordergreat (S, J);
-@c orderless (M, H);
-@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
-@c ===end===
 @example
 (%i1) sort ([M, H, K, T, E, W, G, A, P, J, S]);
 (%o1)           [A, E, G, H, J, K, M, P, S, T, W]
@@ -1705,17 +1201,8 @@ Anwendung der Funktionen @code{ordergreat} und @code{orderless}.
 (%o4)           [M, H, A, E, G, K, P, T, W, J, S]
 @end example
 
-@c Effect of @code{mainvar}, @code{constant}, and @code{scalar} declarations.
+Anwendung der Deklarationen @code{mainvar}, @code{constant} und @code{scalar}.
 
-Anwendung der Deklarationen @code{mainvar}, @code{constant}, und @code{scalar}.
-
-@c ===beg===
-@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
-@c declare (aa, mainvar);
-@c declare ([baz, quux], constant);
-@c declare ([A1, B1], scalar);
-@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
-@c ===end===
 @example
 (%i1) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
 (%o1)   [aa, bar, baz, bb, cc, dd, foo, quux, A1, B1, C1]
@@ -1729,14 +1216,8 @@ Anwendung der Deklarationen @code{mainvar}, @code{constant}, und @code{scalar}.
 (%o5)   [baz, quux, A1, B1, bar, bb, cc, dd, foo, C1, aa]
 @end example
 
-@c Ordering non-atomic expressions.
-
 Ordne nicht atomare Ausdr@"ucke.
 
-@c ===beg===
-@c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
-@c sort ([foo(1), X[1], X[k], foo(k), 1, k]);
-@c ===end===
 @example
 (%i1) sort ([f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
 (%o1) [f(1), g(1), g(1, 2), f(2), f(2, 1), g(n), f(n, 1)]
@@ -1748,13 +1229,7 @@ Ordne nicht atomare Ausdr@"ucke.
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{part}
-@deffn {Funktion} part (@var{expr}, @var{n_1}, ..., @var{n_k})
-
-@c Returns parts of the displayed form of @code{expr}. It obtains the part of 
-@c @code{expr} as specified by the indices @var{n_1}, ..., @var{n_k}. First part
-@c @var{n_1} of @code{expr} is obtained, then part @var{n_2} of that, etc. The 
-@c result is part @var{n_k} of ... part @var{n_2} of part @var{n_1} of 
-@c @code{expr}. If no indices are specified @code{expr} is returned.
+@deffn {Funktion} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
 Die Funktion @code{part} gibt einen Teilausdruck von @var{expr} zur@"uck.  Der 
 Ausdruck @var{expr} wird zuvor in das Format f@"ur die Anzeige umgewandelt.
@@ -1764,52 +1239,26 @@ ausgew@"ahlt.  Zuerst wird der Teilausdruck @var{n_1} ermittelt, von diesem der
 Teilausdruck @var{n_2}, u.s.w.  Der zum Index @var{n_k} zuletzt gewonnene 
 Teilausdruck ist dann das Ergebnis.
 
-@c @code{part} can be used to obtain an element of a list, a row of a matrix, 
-@c etc.
-
 @code{part} kann auch verwendet werden, um ein Element einer Liste, der Zeile 
 einer Matrix und anderer Objekte zu erhalten.
-
-   @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER 
-   @c FUNCTIONS ?? ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO 
-   @c DESCRIPTIONS OF OTHER FUNCTIONS
-@c If the last argument to a @code{part} function is a list of indices then
-@c several subexpressions are picked out, each one corresponding to an index of 
-@c the list.  Thus @code{part (x + y + z, [1, 3])} is @code{z+x}.
 
 Das letzte Argument einer @code{part}-Funktion kann eine Liste mit Indizes sein.
 In diesem Fall werden alle angebenen Teilausdr@"ucke als Ergebnis zur@"uck 
 gegeben.  So erh@"alt man zum Beispiel mit dem Kommando 
 @code{part(x + y + z, [1, 3])} das Ergebnis @code{z+x}.
 
-@c @code{piece} holds the last expression selected when using the @code{part}
-@c functions.  It is set during the execution of the function and thus may be 
-@c referred to in the function itself as shown below.
-
-Die Systemvariable @code{piece} enth@"alt den letzten Ausdruck, der bei der 
+Die Systemvariable @mref{piece} enth@"alt den letzten Ausdruck, der bei der
 Verwendung einer @code{part}-Funktion ausgew@"ahlt wurde.
 
-@c If @code{partswitch} is set to @code{true} then @code{end} is returned when a
-@c selected part of an expression doesn't exist, otherwise an error message is 
-@c given.
-
-Hat die Optionsvariable @code{partswitch} den Wert @code{true} wird @code{end} 
+Hat die Optionsvariable @mref{partswitch} den Wert @code{true} wird @code{end}
 zur@"uckgegeben, wenn versucht wurde, einen Teilausdruck zu bilden, der nicht
 existiert, andernfalls wird eine Fehlermeldung ausgegeben.
-
-@c See also @code{inpart}, @code{substpart}, @code{substinpart}, @code{dpart}, 
-@c and @code{lpart}.
 
 Siehe auch @mrefcomma{inpart} @mrefcomma{substpart} @mrefcomma{substinpart}@
 @mref{dpart} und @mrefdot{lpart}
  
 Beispiele:
 
-@c ===beg===
-@c part(z+2*y+a,2);
-@c part(z+2*y+a,[1,3]);
-@c part(z+2*y+a,2,1);
-@c ===end===
 @example
 (%i1) part(z+2*y+a,2);
 (%o1)                                 2 y
@@ -1819,19 +1268,12 @@ Beispiele:
 (%o3)                                  2
 @end example
 
-@c @code{example (part)} displays additional examples.
-
 @code{example(part)} zeigt weitere Beispiele.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{partition}
 @deffn {Funktion} partition (@var{expr}, @var{var})
-
-@c Returns a list of two expressions.  They are (1) the factors of @var{expr} 
-@c (if it is a product), the terms of @var{expr} (if it is a sum), or the list 
-@c (if it is a list) which don't contain @var{x} and, (2) the factors, terms, 
-@c or list which do.
 
 Die Funktion @code{partition} gibt eine Liste mit zwei Ausdr@"ucken zur@"uck.
 Ist @var{expr} ein Produkt enth@"alt der erste Ausdruck die Faktoren, die die
@@ -1854,9 +1296,6 @@ einer Summe oder einer Liste, die @var{var} enthalten.
 @defvr {Optionsvariable} partswitch
 Standardwert: @code{false}
 
-@c When @code{partswitch} is @code{true}, @code{end} is returned when a selected
-@c part of an expression doesn't exist, otherwise an error message is given.
-
 Hat die Optionsvariable @code{partswitch} den Wert @code{true}, wird @code{end} 
 zur@"uckgegeben, wenn versucht wird, einen Teilausdruck zu bilden, der nicht
 existiert, andernfalls wird eine Fehlermeldung ausgegeben.
@@ -1866,18 +1305,10 @@ existiert, andernfalls wird eine Fehlermeldung ausgegeben.
 @anchor{pickapart}
 @deffn {Funktion} pickapart (@var{expr}, @var{n})
 
-@c Assigns intermediate expression labels to subexpressions of @var{expr} at 
-@c depth @var{n}, an integer. Subexpressions at greater or lesser depths are not
-@c assigned labels. @code{pickapart} returns an expression in terms of 
-@c intermediate expressions equivalent to the original expression @var{expr}.
-
 Den Teilausdr@"ucken in einer Tiefe @var{n} eines verschachtelten Ausdrucks 
 werden Zwischenmarken zugewiesen.  @var{n} ist eine ganze positive Zahl.  Die 
 R@"uckgabe von @code{pickapart} ist ein @"aquivalenter Ausdruck, der die 
 Zwischenmarken enth@"alt.
-
-@c See also @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, and 
-@c @code{reveal}.
 
 Siehe auch @mrefcomma{part} @mrefcomma{dpart} @mrefcomma{lpart} @mref{inpart}@
 und @mrefdot{reveal}
@@ -1886,10 +1317,12 @@ Beispiele:
 
 @example
 (%i1) expr: (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
+@group
                                           2
                                      sin(x )   b + a
 (%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
                                         3        2
+@end group
 (%i2) pickapart (expr, 0);
 
                                           2
@@ -1936,9 +1369,11 @@ Beispiele:
                                 2
 (%t10)                         x
 
+@group
                   b + a              sin(%t10)
 (%o10)            ----- - log(%t9) + ---------
                     2                    3
+@end group
 (%i10) pickapart (expr, 4);
 
 (%t11)                     sqrt(x + 1)
@@ -1967,15 +1402,8 @@ Beispiele:
 @anchor{piece}
 @defvr {Systemvariable} piece
 
-@c Holds the last expression selected when using the @code{part} functions.
-
 Die Systemvariable @code{piece} enth@"alt den letzten Ausdruck, der bei der 
 Verwendung einer @code{part}-Funktion ausgew@"ahlt wurde.
-
-
-   @c WHAT DOES THIS MEAN EXACTLY ??
-@c It is set during the execution of the function and thus may be referred to 
-@c in the function itself.
 
 Siehe auch @mref{part} und @mrefdot{inpart}
 @end defvr
@@ -1985,36 +1413,20 @@ Siehe auch @mref{part} und @mrefdot{inpart}
 @deffn  {Funktion} psubst (@var{list}, @var{expr})
 @deffnx {Funktion} psubst (@var{a}, @var{b}, @var{expr})
 
-@c @code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}. See 
-@c @code{subst}.
-
 @code{psubst(@var{a}, @var{b}, @var{expr})} ist identisch mit @code{subst}.
-Siehe @code{subst}.
-
-@c In distinction from @code{subst} the function @code{psubst} makes parallel 
-@c substitutions, if the first argument @var{list} is a list of equations.
+Siehe @mrefdot{subst}
 
 Im Unterschied zu @code{subst} f@"uhrt die Funktion @code{psubst} Substitutionen
 parallel aus, wenn das erste Argument @var{list} eine Liste mit Gleichungen ist.
-
-@c See also @code{sublis} for making parallel substitutions.
 
 Siehe auch @mref{sublis} um Substitutionen parallel auszuf@"uhren.
 
 Beispiel:
 
-@c The first example shows parallel substitution with @code{psubst}. The second
-@c example shows the result for the function @code{subst}, which does a serial
-@c substitution.
-
 Das erste Beispiel zeigt die parallele Substitution mit @code{psubst}.  Das 
 zweite Beispiel zeigt das Ergebnis f@"ur die Funktion @code{subst}.  In diesem
 Fall werden die Substitutionen nacheinander ausgef@"uhrt.
 
-@c ===beg===
-@c psubst ([a^2=b, b=a], sin(a^2) + sin(b));
-@c subst ([a^2=b, b=a], sin(a^2) + sin(b));
-@c ===end===
 @example
 (%i4) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
 (%o4)                           sin(b) + sin(a)
@@ -2029,35 +1441,17 @@ Fall werden die Substitutionen nacheinander ausgef@"uhrt.
 @deffnx {Funktion} rembox (@var{expr}, @var{label})
 @deffnx {Funktion} rembox (@var{expr})
 
-@c Removes boxes from @var{expr}.
-@c @code{rembox (@var{expr}, unlabelled)} removes all unlabelled boxes from 
-@c @var{expr}.
-@c @code{rembox (@var{expr}, @var{label})} removes only boxes bearing 
-@c @var{label}.
-@c @code{rembox (@var{expr})} removes all boxes, labelled and unlabelled.
-
 Die Funktion @code{rembox} entfernt Rahmen aus dem Ausdruck @var{expr}.
 @code{rembox(@var{expr}, unlabelled)} entfernt alle Rahmen, die keine Marke 
 haben.  @code{rembox(@var{expr}, @var{label})} entfernt nur Rahmen, die mit der 
 Marke @var{label} gekennzeichnet sind.  @code{rembox(@var{expr})} entfernt alle 
 Rahmen.
 
-@c Boxes are drawn by the @code{box}, @code{dpart}, and @code{lpart} functions.
-
-Rahmen werden von den Funktionen @code{box}, @code{dpart} und @code{lpart} 
-einem Ausdruck hinzugef@"ugt.
+Rahmen werden von den Funktionen @mrefcomma{box} @mref{dpart} und
+@mref{lpart} einem Ausdruck hinzugef@"ugt.
 
 Beispiele:
 
-@c ===beg===
-@c expr: (a*d - b*c)/h^2 + sin(%pi*x);
-@c dpart (dpart (expr, 1, 1), 2, 2);
-@c expr2: lpart (BAR, lpart (FOO, %, 1), 2);
-@c rembox (expr2, unlabelled);
-@c rembox (expr2, FOO);
-@c rembox (expr2, BAR);
-@c rembox (expr2);
-@c ===end===
 @example
 (%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
                                   a d - b c
@@ -2120,75 +1514,40 @@ Beispiele:
 @anchor{reveal}
 @deffn {Funktion} reveal (@var{expr}, @var{depth})
 
-@c Replaces parts of @var{expr} at the specified integer @var{depth} with 
-@c descriptive summaries.
-
 Ersetzt Teile des Ausdrucks @var{expr} in der ganzzahligen Tiefe @var{depth} 
 durch eine beschreibende Zusammenfassung.
 
 @itemize @bullet
-
-@c Sums and differences are replaced by @code{Sum(@var{n})} where @var{n} is the
-@c number of operands of the sum.
-
 @item
 Summen und Differenzen werden durch @code{Sum(@var{n})} ersetzt, wobei @var{n}
 die Anzahl der Terme der Summe ist.
-
-@c Products are replaced by @code{Product(@var{n})} where @var{n} is the number 
-@c of operands of the product.
 
 @item
 Produkte werden durch @code{Product(@var{n})} ersetzt, wobei @var{n} die Anzahl
 der Faktoren des Produktes ist.
 
-@c Exponentials are replaced by @code{Expt}.
-
 @item
 Exponentiationen werden durch @code{Expt} ersetzt.
-
-@c Quotients are replaced by @code{Quotient}.
 
 @item
 Quotienten werden durch @code{Quotient} ersetzt.
 
-@c Unary negation is replaced by @code{Negterm}.
-
 @item
 Die Negation wird durch @code{Negterm} ersetzt.
-
-@c Lists are replaced by @code{List(@var{n})} where @var{n} ist the number of
-@c elements of the list.
 
 @item
 Listen werden durch @code{List(@var{n})} ersetzt, wobei @var{n} die Anzahl der 
 Elemente der Liste ist.
-
 @end itemize
-
-@c When @var{depth} is greater than or equal to the maximum depth of @var{expr},
-@c @code{reveal (@var{expr}, @var{depth})} returns @var{expr} unmodified.
 
 Ist @var{depth} gr@"o@ss{}er oder gleich der maximalen Tiefe des Ausdrucks 
 @var{expr}, gibt @code{reveal} den Ausdruck @var{expr} unver@"andert zur@"uck.
-
-@c @code{reveal} evaluates its arguments. @code{reveal} returns the summarized 
-@c expression.
 
 @code{reveal} wertet seine Argumente aus.  @code{reveal} gibt die 
 Zusammenfassung zur@"uck.
 
 Beispiele:
 
-@c === beg ===
-@c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
-@c reveal (e, 1);
-@c reveal (e, 2);
-@c reveal (e, 3);
-@c reveal (e, 4);
-@c reveal (e, 5);
-@c reveal (e, 6);
-@c === end ===
 @example
 (%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
                           2            2
@@ -2231,23 +1590,15 @@ Beispiele:
 @anchor{sublis}
 @deffn {Funktion} sublis (@var{list}, @var{expr})
 
-@c Makes multiple parallel substitutions into an expression.
-
-F@"uhrt im Unterschied zu der Funktion @code{subst} die Substitutionen der
+F@"uhrt im Unterschied zu der Funktion @mref{subst} die Substitutionen der
 Liste @var{list} parallel und nicht nacheinander aus.
 
-@c The variable @code{sublis_apply_lambda} controls simplification after
-@c @code{sublis}.
-
-Mit der Optionsvariablen @code{sublis_apply_lambda} wird die Vereinfachung
+Mit der Optionsvariablen @mref{sublis_apply_lambda} wird die Vereinfachung
 von Lamda-Ausdr@"ucken kontrolliert, nachdem die Substitution ausgef@"uhrt 
 wurde.
 
 Beispiele:
 
-@c ===beg===
-@c sublis ([a=b, b=a], sin(a) + cos(b));
-@c ===end===
 @example
 (%i1) sublis ([a=b, b=a], sin(a) + cos(b));
 (%o1)                    sin(b) + cos(a)
@@ -2259,10 +1610,6 @@ Beispiele:
 @defvr {Optionsvariable} sublis_apply_lambda
 Standardwert: @code{true}
 
-@c Controls whether @code{lambda}'s substituted are applied in simplification 
-@c after @code{sublis} is used or whether you have to do an @code{ev} to get 
-@c things to apply. @code{true} means do the application.
-
 Kontrolliert, ob Lambda-Ausdr@"ucke nach einer Substitution ausgewertet werden.
 Hat @code{sublis_apply_lambda} den Wert @code{true} werden Lambda-Ausdr@"ucke
 ausgewertet.  Ansonsten verbleiben diese nach der Substitution im Ausdruck.
@@ -2272,43 +1619,21 @@ ausgewertet.  Ansonsten verbleiben diese nach der Substitution im Ausdruck.
 @anchor{subst}
 @deffn {Funktion} subst (@var{a}, @var{b}, @var{c})
 
-@c Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
-@c complete subexpression of @var{c}.  For example, @code{x+y+z} is a complete
-@c subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not. When @var{b} 
-@c does not have these characteristics, one may sometimes use @code{substpart} 
-@c or @code{ratsubst} (see below).  Alternatively, if @var{b} is of the form 
-@c @code{e/f} then one could use @code{subst (a*f, e, c)} while if @var{b} is 
-@c of the form @code{e^(1/f)} then one could use @code{subst (a^f, e, c)}.  
-@c The @code{subst} command also discerns the @code{x^y} in @code{x^-y} so that 
-@c @code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @var{a} and @var{b} 
-@c may also be operators of an expression enclosed in double-quotes @code{"} or 
-@c they may be function names.  If one wishes to substitute for the independent
-@c variable in derivative forms then the @code{at} function (see below) should 
-@c be used.
-
 Substituiert @var{a} f@"ur @var{b} in den Ausdruck @var{c}.  @var{b} muss ein 
 Atom oder ein vollst@"andiger Teilausdruck von @var{c} sein.  Zum Beispiel ist 
 @code{x+y+z} ist ein vollst@"andiger Teilausdruck von @code{2*(x+y+z)/w}, nicht 
 aber @code{x+y}.  Hat @var{b} nicht diese Eigenschaft, dann k@"onnen 
-m@"oglicherweise die Funktionen @code{substpart} oder @code{ratsubst} angewendet
+m@"oglicherweise die Funktionen @mref{substpart} oder @mref{ratsubst} angewendet
 werden.  Hat @var{b} die Form @code{e/f}, dann kann man @code{subst(a*f, e, c)} 
 nutzen.  Ist @code{b} von der Form @code{e^(1/f)}, dann kann man 
 @code{subst(a^f, e, c)} nutzen.  Die Funktion @code{subst} erkennt auch den 
 Ausdruck @code{x^y} in @code{x^-y}, so dass @code{subst (a, sqrt(x), 1/sqrt(x))}
 das Ergebnis @code{1/a} hat.  @var{a} und @var{b} k@"onnen auch die Namen von 
 Operatoren oder Funktionen sein.  Soll die unabh@"angige Variable in 
-Ableitungsausr@"ucken substituiert werden, sollte die Funktion @code{at} genutzt
+Ableitungsausr@"ucken substituiert werden, sollte die Funktion @mref{at} genutzt
 werden.
 
-   @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
-@c @code{subst} is an alias for @code{substitute}.
-
 @code{subst} ist der Alias-Name f@"ur @code{substitute}.
-
-@c @code{subst (@var{eq_1}, @var{expr})} or @code{subst ([@var{eq_1}, ..., @var
-@c {eq_k}], @var{expr})} are other permissible forms.  The @var{eq_i} are 
-@c equations indicating substitutions to be made. For each equation, the right 
-@c side will be substituted for the left in the expression @var{expr}.
 
 @code{subst(@var{eq_1}, @var{expr})} und @code{subst([@var{eq_1}, ..., 
 @var{eq_k}], @var{expr})} sind weitere m@"ogliche Formen.  @var{eq_i} sind
@@ -2316,28 +1641,17 @@ Gleichungen, die angeben, welche Substitutionen durchzuf@"uhren sind.  F@"ur
 jede Gleichung wird die rechte Seite der Gleichung f@"ur die linke Seite in den
 Ausdruck @var{expr} substituiert.
 
-@c @code{exptsubst} if @code{true} permits substitutions like @code{y} for 
-@c @code{%e^x} in @code{%e^(a*x)} to take place.
-
-Hat die Optionsvariable @code{exptsubst} den Wert @code{true}, wird eine
+Hat die Optionsvariable @mref{exptsubst} den Wert @code{true}, wird eine
 Substitution wie @code{y} f@"ur @code{%e^x} in einem Ausdruck der Form 
 @code{%e^(a*x)} nicht ausgef@"uhrt.
 
-@c When @code{opsubst} is @code{false}, @code{subst} will not attempt to 
-@c substitute into the operator of an expression. E.g. @code{(opsubst: false, 
-@c subst (x^2, r, r+r[0]))} will work.
-
-Hat die Optionsvariable @code{opsubst} den Wert @code{false}, wird die Funktion
-@code{subst} keine Substitution in einen Operator eines Ausdrucks ausf@"uhren.
-Zum Beispiel hat @code{(opsubst: false, subst(x^2, r, r+r[0]))} das Ergebnis
-@code{x^2+r[0]}.
+Hat die Optionsvariable @mxref{option_opsubst, opsubst} den Wert @code{false},
+wird die Funktion @code{subst} keine Substitution in einen Operator eines
+Ausdrucks ausf@"uhren.  Zum Beispiel hat @code{(opsubst: false, 
+subst(x^2, r, r+r[0]))} das Ergebnis @code{x^2+r[0]}.
 
 Beispiele:
 
-@c ===beg===
-@c subst (a, x+y, x + (x+y)^2 + y);
-@c subst (-%i, %i, a + b*%i);
-@c ===end===
 @example
 (%i1) subst (a, x+y, x + (x+y)^2 + y);
                                     2
@@ -2345,8 +1659,6 @@ Beispiele:
 (%i2) subst (-%i, %i, a + b*%i);
 (%o2)                       a - %i b
 @end example
-
-@c For further examples, do @code{example (subst)}.
 
 @noindent
 Weitere Beispiele werden mit @code{example(subst)} angezeigt.
@@ -2356,20 +1668,12 @@ Weitere Beispiele werden mit @code{example(subst)} angezeigt.
 @anchor{substinpart}
 @deffn {Funktion} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-@c Similar to @code{substpart}, but @code{substinpart} works on the internal 
-@c representation of @var{expr}.
-
-Die Funktion @code{substinpart} ist vergleichbar mit @code{substpart}.
+Die Funktion @code{substinpart} ist vergleichbar mit @mrefdot{substpart}
 @code{substinpart} wirkt jedoch auf die interne Darstellung des Ausdrucks 
 @var{expr}.
 
 Beispiele:
 
-@c ===beg===
-@c x . 'diff (f(x), x, 2);
-@c substinpart (d^2, %, 2);
-@c substinpart (f1, f[1](x + 1), 0);
-@c ===end===
 @example
 (%i1) x . 'diff (f(x), x, 2);
                               2
@@ -2389,24 +1693,12 @@ Beispiele:
 @anchor{substpart}
 @deffn {Funktion} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
 
-@c Substitutes @var{x} for the subexpression picked out by the rest of the 
-@c arguments as in @code{part}.  It returns the new value of @var{expr}.  
-@c @var{x} may be some operator to be substituted for an operator of @var{expr}.
-@c In some cases @var{x} needs to be enclosed in double-quotes @code{"} (e.g.  
-@c @code{substpart ("+", a*b, 0)} yields @code{b + a}).
-
 Substituiert @var{x} f@"ur den Teilausdruck, der mit den restlichen Argumenten 
 der Funktion @code{substpart} ausgew@"ahlt wird.  Es wird der neue Ausdruck 
 @var{expr} zur@"uckgegeben.  @var{x} kann auch der Name eines Operators sein,
 der f@"ur einen Operator im Ausdruck @var{expr} substituiert wird.  Zum Beispiel
 gibt @code{substpart("+", a*b, 0)} den Ausdruck @code{b + a}).
 
-@c ===beg===
-@c 1/(x^2 + 2);
-@c substpart (3/2, %, 2, 1, 2);
-@c a*x + f(b, y);
-@c substpart ("+", %, 1, 0);
-@c ===end===
 @example
 (%i1) 1/(x^2 + 2);
                                1
@@ -2426,39 +1718,24 @@ gibt @code{substpart("+", a*b, 0)} den Ausdruck @code{b + a}).
 (%o4)                    x + f(b, y) + a
 @end example
 
-@c Also, setting the option @code{inflag} to @code{true} and calling @code{part}
-@c or @code{substpart} is the same as calling @code{inpart} or 
-@c @code{substinpart}.
-
-Mit dem Wert @code{true} f@"ur die Optionsvariable @code{inflag}, verh@"alt sich
-die Funktion @code{substpart} wie @code{substinpart}.
+Mit dem Wert @code{true} f@"ur die Optionsvariable @mrefcomma{inflag} verh@"alt
+sich die Funktion @code{substpart} wie @mrefdot{substinpart}
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{symbolp}
 @deffn {Funktion} symbolp (@var{expr})
 
-@c Returns @code{true} if @var{expr} is a symbol, else @code{false}. In effect, 
-@c @code{symbolp(x)} is equivalent to the predicate @code{atom(x) and not
-@c numberp(x)}.
-
 Gibt @code{true} zur@"uck, wenn @var{expr} ein Symbol ist, ansonsten 
 @code{false}.  @code{symbolp(x)} ist @"aquivalent zu 
 @code{atom(x) and not numberp(x)}.
 
-@c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
-@c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
 Siehe auch @nrefdot{Bezeichner}
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{unorder}
 @deffn {Funktion} unorder ()
-
-@c Disables the aliasing created by the last use of the ordering commands 
-@c @code{ordergreat} and @code{orderless}. @code{ordergreat} and 
-@c @code{orderless} may not be used more than one time each without calling 
-@c @code{unorder}.
 
 L@"oscht die Ordnung, die mit dem letzten Aufruf der Funktionen 
 @code{ordergreat} oder @code{orderless} erzeugt wurde.
@@ -2467,15 +1744,6 @@ Siehe auch @mref{ordergreat} und @mrefdot{orderless}
 
 Beispiele:
 
-@c HMM, IN THIS EXAMPLE, WHY ISN'T %o5 EQUAL TO ZERO ???
-@c ===beg===
-@c unorder();
-@c b*x + a^2;
-@c ordergreat (a);
-@c b*x + a^2;
-@c  %th(1) - %th(3);
-@c unorder();
-@c ===end===
 @example
 (%i1) unorder();
 (%o1)                          []
@@ -2498,20 +1766,11 @@ Beispiele:
 @anchor{verbify}
 @deffn {Funktion} verbify (@var{f})
 
-@c Returns the verb form of the function name @var{f}.
-@c See also @code{verb}, @code{noun}, and @code{nounify}.
-
-Gibt das Verb des Symbols @var{f} zur@"uck.  Siehe auch @code{verb}, @code{noun} 
-und @code{nounify}.
+Gibt das Verb des Symbols @var{f} zur@"uck.  Siehe auch das Kapitel
+@nrefcomma{Substantive und Verben} sowie @mref{noun} und @mrefdot{nounify}
 
 Beispiele:
 
-@c ===beg===
-@c verbify ('foo);
-@c :lisp $%
-@c nounify (foo);
-@c :lisp $%
-@c ===end===
 @example
 (%i1) verbify ('foo);
 (%o1)                          foo

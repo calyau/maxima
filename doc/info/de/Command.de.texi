@@ -5,7 +5,7 @@
 @c Original    : Command.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.02.2011
+@c Revision    : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -50,8 +50,9 @@ inbesondere Operatoren wie "+", "/" oder "do" behandelt.
 
 @item
 Der vom Parser eingelesene Ausdruck wird von Maxima in der 2.@w{ }Phase 
-ausgewertet.  Dabei werden Variablen durch ihren Wert ersetzt und Funktionen 
-ausgef@"uhrt.  Das Ergebnis dieser Phase ist ein ausgewerteter Ausdruck.
+ausgewertet.  Dabei werden Variablen durch ihren Wert ersetzt und Funktionen wie
+die Substitutuion oder Integration eines Ausdrucks ausgef@"uhrt.  Das Ergebnis
+dieser Phase ist ein ausgewerteter Ausdruck.
 
 @item
 Der ausgewertete Ausdruck wird in der 3.@w{ }Phase von Maxima vereinfacht.
@@ -183,11 +184,6 @@ einem Semikolon als Abschluss auf einer Zeile eingegeben werden.  Siehe auch
 
 Beispiele:
 
-@c ===beg===
-@c a:10;
-@c a+b;
-@c x:10; x+y;
-@c ===end===
 @example
 (%i1) a:10;
 (%o1)                          10
@@ -211,13 +207,6 @@ einer Ausgabemarke @mref{outchar,%o} zugewiesen und die Systemvariable
 
 Beispiele:
 
-@c ===beg===
-@c expand((a+b)^2)$
-@c %;
-@c a:10$ a+b$
-@c %o3;
-@c %o4;
-@c ===end===
 @example
 (%i1) expand((a+b)^2)$
 
@@ -256,13 +245,6 @@ Siehe auch die Systemvariablen @mref{_} und @mrefdot{%}
 
 Beispiele:
 
-@c ===beg===
-@c print ("I was called as: ", __)$
-@c foo (__);
-@c g (x) := (print ("Current input expression =", __), 0)$
-@c [aa : 1, bb : 2, cc : 3]$
-@c (aa + bb + cc)/(dd + ee + g(x))$
-@c ===end===
 @example
 (%i1) print ("I was called as: ", __)$
 I was called as:  print(I was called as, __) 
@@ -291,11 +273,11 @@ Die Systemvariable @code{_} enth@"alt den zuletzt eingebenen Ausdruck
 @var{expr}.  Der Ausdruck @var{expr} wird der Systemvariablen @code{_} vor der 
 Auswertung und Vereinfachung zugewiesen.
 
-Die Systemvariable @code{_} wird von den Funktionen @mref{batch} und @mref{load}
-erkannt.  Wird eine Datei mit der Funktion @code{batch} ausgef@"uhrt, hat
-@code{_} dieselbe Bedeutung wie bei der Eingabe in einer Kommandozeile.  Wird 
-eine Datei mit der Funktion @code{load} geladen, enth@"alt @code{_} das zuletzt 
-in der Kommandozeile eingegebene Kommando.
+Die Systemvariable @code{_} wird von den Funktionen @mref{batch} und
+@mref{load} erkannt.  Wird eine Datei mit der Funktion @code{batch}@ 
+ausgef@"uhrt, hat @code{_} dieselbe Bedeutung wie bei der Eingabe in einer
+Kommandozeile.  Wird eine Datei mit der Funktion @code{load} geladen, enth@"alt
+@code{_} das zuletzt in der Kommandozeile eingegebene Kommando.
 
 Siehe auch die Systemvariablen @mref{__} und @mrefdot{%}
 
@@ -305,10 +287,6 @@ Die Funktion @mref{cabs} wird ausgewertet und nicht vereinfacht.  Das Beispiel
 zeigt, dass die Systemvariable @code{_} den zuletzt eingelesenen Ausdruck vor
 der Auswertung enth@"alt.
 
-@c ===beg===
-@c cabs(1+%i);
-@c _;
-@c ===end===
 @example
 (%i1) cabs(1+%i);
 (%o1)                        sqrt(2)
@@ -322,12 +300,6 @@ Ergebnis angezeigt.  Mit der Funktion @mref{string} wird der Inhalt der
 Systemvariablen @code{_} vor der Ausgabe in ein Zeichenkette umgewandelt, um 
 den nicht vereinfachten Wert sichtbar zu machen.
 
-@c ===beg===
-@c abs(1+%i);
-@c _;
-@c abs(1+%i);
-@c string(_);
-@c ===end===
 @example
 (%i3) abs(1+%i);
 (%o3)                        sqrt(2)
@@ -349,7 +321,8 @@ den nicht vereinfachten Wert sichtbar zu machen.
 
 Die Systemvariable @code{%} enth@"alt das Ergebnis des zuletzt von Maxima
 ausgewerteten und vereinfachten Ausdrucks.  @code{%} enh@"alt das letzte 
-Ergebnis auch dann, wenn die Ausgabe des Ergebnisses unterdr@"uckt wurde.
+Ergebnis auch dann, wenn die Ausgabe des Ergebnisses durch Abschluss der Eingabe
+mit einem Dollarzeichen @mref{$} unterdr@"uckt wurde.
 
 Die Systemvariable @code{%} wird von den Funktionen @mref{batch} und @mref{load}
 erkannt.  Wird eine Datei mit der Funktion @code{batch} ausgef@"uhrt, hat
@@ -383,9 +356,6 @@ Auf die im ersten Ausdruck berechnete Stammfunktion wird im zweiten Ausdruck
 mit @code{%%} Bezug genommen, um das Integral an der oberen und unteren Grenze
 auszuwerten.
 
-@c ===beg===
-@c block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
-@c ===end===
 @example
 @group
 (%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
@@ -399,9 +369,6 @@ Ein zusammengesetzter Ausdruck kann weitere zusammengesetzte Ausdr@"ucke
 enthalten.  @code{%%} enth@"alt dabei jeweils das Ergebnis des letzten 
 Ausdrucks.  Das folgende Beispiel hat das Ergebnis @code{7*a^n}.
 
-@c ===beg===
-@c block (block (a^n, %%*42), %%/6)
-@c ===end===
 @example
 (%i3) block (block (a^n, %%*42), %%/6);
                                  n
@@ -412,10 +379,6 @@ Der Wert der Systemvariablen @code{%%} kann nach einer Unterbrechung mit dem
 Kommando @mref{break} inspiziert werden.  In diesem Beispiel hat die
 Systemvariable @code{%%} den Wert 42.
 
-@c ===beg===
-@c block (a: 42, break ())$
-@c %%;
-@c ===end===
 @example
 (%i4) block (a: 42, break ())$
 Entering a Maxima break point. Type 'exit;' to resume.
@@ -436,11 +399,11 @@ Die Funktion @code{%th} liefert das n-te vorhergehende Ergebnis.  Dies ist dann
 n@"utzlich, wenn wie in Batch-Dateien die absolute Zeilennummer der letzten
 Ausgabemarken nicht bekannt ist.
 
-Die Funktion @code{%th} wird von den Funktionen @mref{batch} und @mref{load}
-erkannt.  Wird eine Datei mit @code{batch} ausgef@"uhrt, hat @code{%th} dieselbe 
-Bedeutung wie bei der Eingabe in der Konsole.  Wird eine Datei mit der Funktion
-@code{load} geladen, enth@"alt @code{%th} das letzte Ergebnis der Eingabe in der 
-Konsole.
+Die Funktion @code{%th} wird von den Funktionen @mref{batch} und 
+@mref{load} erkannt.  Wird eine Datei mit @code{batch} ausgef@"uhrt, hat
+@code{%th} dieselbe Bedeutung wie bei der Eingabe in der Konsole.  Wird eine
+Datei mit der Funktion @code{load} geladen, enth@"alt @code{%th} das letzte 
+Ergebnis der Eingabe in der Konsole.
 
 Siehe auch @mref{%} und @mrefdot{%%}
 
@@ -449,10 +412,6 @@ Beispiel:
 Das Beispiel zeigt, wie die letzten 5 eingegebenen Werte mit der Funktion 
 @code{%th} aufsummiert werden.
 
-@c ===beg===
-@c 1;2;3;4;5;
-@c block (s: 0, for i:1 thru 5 do s: s + %th(i), s);
-@c ===end===
 @example
 (%i1) 1;2;3;4;5;
 (%o1)                           1
@@ -517,10 +476,6 @@ Systemvariablen @mref{outchar} und @mrefdot{linechar}
 
 Beispiele:
 
-@c ===beg===
-@c inchar: "input";
-@c expand((a+b)^3);
-@c ===end===
 @example
 (%i1) inchar: "input";
 (%o1)                         input
@@ -561,8 +516,8 @@ Arrays oder Array-Funktionen.
 Enth@"alt die vom Nutzer mit dem Operator @mref{::=} definierten Makros.
 
 @item myoptions
-Enth@"alt die Liste der Optionsvariablen, die vom Nutzer bisher einen neuen
-Wert erhalten haben.
+Enth@"alt die Optionsvariablen, die vom Nutzer bisher einen neuen Wert erhalten
+haben.
 
 @item rules
 Enth@"alt die vom Nutzer mit den Funktionen @mrefcomma{tellsimp}@ 
@@ -570,10 +525,10 @@ Enth@"alt die vom Nutzer mit den Funktionen @mrefcomma{tellsimp}@
 Regeln.
 
 @item aliases
-Enth@"alt die Liste der Symbole, die einen vom Nutzer definierten
-Alias-Namen mit der Funktion @mref{alias} erhalten haben.  Weiterhin erzeugen
-die Funktionen @mref{ordergreat} und @mref{orderless} sowie eine Deklaration
-als @mref{noun} mit der Funktion @mref{declare} Alias-Namen, die in die Liste
+Enth@"alt die Symbole, die einen vom Nutzer definierten Alias-Namen mit der
+Funktion @mref{alias} erhalten haben.  Weiterhin erzeugen die Funktionen
+@mref{ordergreat} und @mref{orderless} sowie eine Deklaration als
+@mref{noun} mit der Funktion @mref{declare} Alias-Namen, die in die Liste
 eingetragen werden.
 
 @item dependencies
@@ -585,7 +540,7 @@ Enth@"alt die Funktionen, f@"ur die der Nutzer mit der Funktion @code{gradef}
 eine Ableitung definiert hat.
 
 @item props
-Enth@"alt die Symbole, die eine Eigenschaft mit der Funktion @mref{declare}
+Enth@"alt die Symbole, die eine Eigenschaft mit der Funktion @mref{declare}@ 
 erhalten haben.
 
 @item let_rule_packages
@@ -666,18 +621,19 @@ Auswertung erzwingen.  @code{kill} gibt immer @code{done} zur@"uck.
 @deffnx {Systemvariable} labels
 
 Die Funktion @code{labels} gibt eine Liste der Eingabe-, Ausgabe- und 
-Zwischenmarken zur@"uck, die mit @var{symbol} beginnen.  Typischerweise ist 
-@var{symbol} der Wert von @code{inchar}, @code{outchar} oder @code{linechar}.
-Dabei kann das Prozentzeichen fortgelassen werden.  So ergeben zum Beispiel 
-@code{labels(i)} und @code{labels(%i)} dasselbe Ergebnis.
+Zwischenmarken zur@"uck, die mit dem Argument @var{symbol} beginnen.
+Typischerweise ist @var{symbol} der Wert von @mrefcomma{inchar} @mref{outchar}@ 
+oder @mrefdot{linechar}  Dabei kann das Prozentzeichen fortgelassen werden.
+So haben zum Beispiel die Kommandos @code{labels(i)} und @code{labels(%i)}
+dasselbe Ergebnis.
 
 Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste 
 zur@"uck.
 
-Die Funktion @code{labels} wertet ihre Argument nicht aus.  Mit dem
+Die Funktion @code{labels} wertet das Argument nicht aus.  Mit dem
 Quote-Quote-Operator @mref{'','@w{}'} kann die Auswertung erzwungen werden.  Zum
-Beispiel gibt das Kommando @code{labels(''inchar)} die Eingabemarken zur@"uck,
-die mit dem aktuellen Buchstaben f@"ur die Eingabemarken beginnen.
+Beispiel gibt das Kommando @code{labels(''inchar)} die Marken zur@"uck, die mit
+dem aktuellen Buchstaben f@"ur die Eingabemarken beginnen.
 
 Die Systemvariable @code{labels} ist eine Informationsliste, die die Eingabe-, 
 Ausgabe- und Zwischenmarken enth@"alt.  In der Liste sind auch die Marken
@@ -686,8 +642,8 @@ enthalten, die vor einer @"Anderung von @code{inchar}, @code{outchar} oder
 
 Standardm@"a@ss{}ig zeigt Maxima das Ergebnis jeder Eingabe an, wobei dem
 Ergebnis eine Ausgabemarke hinzugef@"ugt wird.  Die Anzeige der Ausgabe wird
-durch die Eingabe eines abschlie@ss{}enden @code{$} (Dollarzeichen) statt eines
-@code{;} (Semikolon) unterdr@"uckt.  Dabei wird eine Ausgabemarke erzeugt und 
+durch die Eingabe eines abschlie@ss{}enden @mref{$} (Dollarzeichen) statt eines
+@mref{;} (Semikolon) unterdr@"uckt.  Dabei wird eine Ausgabemarke erzeugt und
 das Ergebnis zugewiesen, jedoch nicht angezeigt.  Die Marke kann aber in der 
 gleichen Art und Weise wie bei angezeigten Ausgabemarken referenziert werden.
 Siehe auch @mrefcomma{%} @mref{%%} und @mrefdot{%th}
@@ -698,8 +654,7 @@ Funktionen Zwischenmarken erzeugen, anstatt eine Liste von Ausdr@"ucken
 zur@"uckzugeben.  Andere Funktionen wie zum Beispiel @mref{ldisplay} erzeugen
 stets Zwischenmarken.
 
-Siehe auch @mrefcomma{inchar} @mrefcomma{outchar} @mref{linechar} und 
-@mrefdot{infolists}
+Siehe auch @mrefdot{infolists}
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -736,8 +691,8 @@ Standardwert: @code{[]}
 
 @code{myoptions} ist eine Informationsliste, die die Optionsvariablen enth@"alt,
 die vom Nutzer w@"ahrend einer Sitzung ge@"andert wurden.  Die Variable 
-verbleibt in der Liste, auch wenn sie wieder auf den Standwert zur@"uckgesetzt 
-wird.
+verbleibt in der Liste, auch wenn sie wieder auf den Standardwert
+zur@"uckgesetzt wird.
 @end defvr
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -787,10 +742,6 @@ Siehe auch @mrefdot{labels}
 
 Beispiele:
 
-@c ===beg===
-@c outchar: "output";
-@c expand((a+b)^3);
-@c ===end===
 @example
 (%i1) outchar: "output";
 (output1)                    output
@@ -820,7 +771,7 @@ zugewiesen wurden.  Andere Ausgaben, wie zum Beispiel durch @mrefcomma{print}@
 
 @code{playback()} zeigt s@"amtliche Eingaben und Ergebnisse an, die bis dahin
 erzeugt wurden.  Ein Ergebnis wird auch dann angezeigt, wenn die Ausgabe mit 
-@code{$} unterdr@"uckt war.
+@mref{$} unterdr@"uckt war.
 
 @code{playback(@var{n})} zeigt die letzten @var{n} Ausdr@"ucke an.  Jeder 
 Eingabe-, Ausgabe- und Zwischenausdruck z@"ahlt dabei als ein Ausdruck.
@@ -845,7 +796,7 @@ Eingabe.  Dieses Verhalten ist vergleichbar mit der Funktion @mrefdot{demo}@
 @code{playback(time)} zeigt f@"ur jeden Ausdruck die f@"ur die Berechnung 
 ben@"otigte Zeit an.
 
-@code{playback(grind)} zeigt die Eingabeausdr@"ucke in dem gleichen Format an 
+@code{playback(grind)} zeigt die Eingabeausdr@"ucke in dem gleichen Format an,
 wie die Funktion @code{grind}.  Ausgabeausdr@"ucke werden von der Option
 @code{grind} nicht beeinflusst.  Siehe auch @mrefdot{grind}
 
@@ -906,7 +857,8 @@ Siehe auch @mrefdot{reset_verbosely}
 @deffnx {Funktion} reset_verbosely (@var{arg_1}, @dots{}, @var{arg_n})
 
 Entspricht der Funktion @code{reset}.  Im Unterschied zu @code{reset} wird zu
-jeder Variable, die zur@"uckgesetzt wird, zus@"atzlich der Standwert angezeigt.
+jeder Variable, die zur@"uckgesetzt wird, zus@"atzlich der Standardwert
+angezeigt.
 
 Siehe @mrefdot{reset}
 @end deffn
@@ -919,7 +871,7 @@ Standardwert: @code{false}
 Hat @code{showtime} den Wert @code{true}, werden die interne Rechenzeit und die 
 gesamte verstrichene Zeit zu jeder Ausgabe angezeigt.
 
-Die Rechenzeit wird unabh@"angig vom Wert der Optionsvariable @code{showtime}
+Die Rechenzeit wird unabh@"angig vom Wert der Optionsvariablen @code{showtime}
 nach jeder Auswertung eines Ausdruckes in den Ausgabemarken abgespeichert.
 Daher k@"onnen die Funktionen @mref{time} und @mref{playback} die Rechenzeit
 auch dann anzeigen, wenn @code{showtime} den Wert @code{false} hat.
@@ -992,24 +944,16 @@ Beispiele:
 @c not @code{d}, it is not bound to a value, and not the user function @code{f}.
 @c The values are removed from the variables. @code{values} is the empty list.
 
-@c ===beg===
-@c [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
-@c values;
-@c [kill(a), remove(b,value), remvalue(c)];
-@c values;
-@c ===end===
 @example
-@group
 (%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
-                                                  2
-(%o1)                     [99, 9, 90, d, f(x) := x ]
-@end group
+                                           2
+(%o1)              [99, 9, 90, d, f(x) := x ]
 (%i2) values;
-(%o2)                              [a, b, c]
+(%o2)                       [a, b, c]
 (%i3) [kill(a), remove(b,value), remvalue(c)];
-(%o3)                          [done, done, [c]]
+(%o3)                   [done, done, [c]]
 (%i4) values;
-(%o4)                                 []
+(%o4)                          []
 @end example
 @end defvr
 
@@ -1024,15 +968,10 @@ Beispiele:
 Standardwert: @code{false}
 
 Hat @code{%edispflag} den Wert @code{true}, zeigt Maxima die Exponentiation von
-@mref{%e} mit einen negativen Exponenten als Quotienten an.
+@mref{%e} mit einem negativen Exponenten als Quotienten an.
 
 Beispiel:
 
-@c ===beg===
-@c %e^-10;
-@c %edispflag:true$
-@c %e^-10;
-@c ===end===
 @example
 (%i1) %e^-10;
                                - 10
@@ -1051,14 +990,12 @@ Beispiel:
 @defvr {Optionsvariable} absboxchar
 Standardwert: @code{!}
 
-Die Optionsvariable @code{absboxchar} enth@"alt das Zeichen, das benutzt wird,
-um den Betrag eines Ausdruckes anzuzeigen, der mehr als eine Zeile ben@"otigt.
+Die Optionsvariable @code{absboxchar} enth@"alt das Zeichen, das von Maxima
+benutzt wird, um den Betrag eines Ausdruckes anzuzeigen, der mehr als eine Zeile
+ben@"otigt.
 
 Beispiel:
 
-@c === beg ===
-@c abs((x^3+1));
-@c === end ===
 @example
 (%i1) abs((x^3+1));
                             ! 3    !
@@ -1076,11 +1013,6 @@ jedoch keine Gleichungen sondern nur die Ergebnisse der Ausdr@"ucke
 
 Beispiele:
 
-@c ===beg===
-@c b[1,2]:x-x^2$
-@c x:123$
-@c isp(x, b[1,2], sin(1.0));
-@c ===end===
 @example
 (%i1) b[1,2]:x-x^2$
 (%i2) x:123$
@@ -1128,12 +1060,6 @@ Die Funktion @code{dispform} kann genutzt werden, um die Wurzelfunktion in einem
 Ausdruck zu substituieren.  Die Wurzelfunktion ist nur in der externen 
 Darstellung eines Ausdruckes vorhanden:
 
-@c ===beg===
-@c expr: sqrt(5)/(5+sqrt(2));
-@c subst(f,sqrt,expr);
-@c subst(f,sqrt,dispform(expr));
-@c subst(f,sqrt,dispform(expr,all));
-@c ===end===
 @example
 (%i1) expr: sqrt(5)/(5+sqrt(2));
                              sqrt(5)
@@ -1166,11 +1092,6 @@ sein.
 
 Beispiele:
 
-@c ===beg===
-@c b[1,2]:x-x^2$
-@c x:123$
-@c display(x, b[1,2], sin(1.0));
-@c ===end===
 @example
 (%i1) b[1,2]:x-x^2$
 (%i2) x:123$
@@ -1197,11 +1118,6 @@ linear und nicht zweidimensional angezeigt.
 
 Beispiel:
 
-@c ===beg===
-@c x/(x^2+1);
-@c display2d:false$
-@c x/(x^2+1);
-@c ===end===
 @example
 (%i1) x/(x^2+1);
                                x
@@ -1239,9 +1155,6 @@ sehr lang ist.
 
 Beispiel:
 
-@c ===beg===
-@c dispterms(2*a*sin(x)+%e^x);
-@c ===end===
 @example
 (%i1) dispterms(2*a*sin(x)+%e^x);
 
@@ -1279,12 +1192,6 @@ Ausdr@"ucke mit einem negativen Exponenten als Quotient angezeigt.
 
 Beispiele:
 
-@c ===beg===
-@c exptdispflag:true;
-@c 10^-x;
-@c exptdispflag:false;
-@c 10^-x;
-@c ===end===
 @example
 (%i1) exptdispflag:true;
 (%o1)                         true
@@ -1330,21 +1237,6 @@ diesem Fall gibt @code{playback} die Eingabe im gleichen Format wie die Funktion
 
 Beispiele:
 
-@c ===beg===
-@c aa + 1729;
-@c grind (%);
-@c [aa, 1729, aa + 1729];
-@c grind (%);
-@c matrix ([aa, 17], [29, bb]);
-@c grind (%);
-@c set (aa, 17, 29, bb);
-@c grind (%);
-@c exp (aa / (bb + 17)^29);
-@c grind (%);
-@c expr: expand ((aa + bb)^10);
-@c grind (expr);
-@c string (expr);
-@c ===end===
 @example
 (%i1) aa + 1729;
 (%o1)                       aa + 1729
@@ -1419,11 +1311,6 @@ Beispiele:
 
 @code{ibase} ist kleiner als 10.
 
-@c ===beg===
-@c ibase : 2 $
-@c obase;
-@c 1111111111111111;
-@c ===end===
 @example
 (%i1) ibase : 2 $
 (%i2) obase;
@@ -1434,15 +1321,6 @@ Beispiele:
 
 @code{ibase} ist gr@"o@ss{}er als 10.  Die erste Stelle muss eine Ziffer sein.
 
-@c ===beg===
-@c ibase : 16 $
-@c obase;
-@c 1000;
-@c abcd;
-@c symbolp (abcd);
-@c 0abcd;
-@c symbolp (0abcd);
-@c ===end===
 @example
 (%i1) ibase : 16 $
 (%i2) obase;
@@ -1462,12 +1340,6 @@ Beispiele:
 Wird eine ganze Zahl mit einer Dezimalpunkt beendet, wird die Zahl als 
 Gleitkommazahl interpretiert.
 
-@c ===beg===
-@c ibase : 36 $
-@c obase;
-@c 1234;
-@c 1234.;
-@c ===end===
 @example
 (%i1) ibase : 36 $
 (%i2) obase;
@@ -1489,13 +1361,6 @@ der Zwischenmarken wird als Ergebnis zur@"uckgegeben.
 
 Siehe auch @mref{disp} und @mrefdot{display}
 
-@c ===beg===
-@c e: (a+b)^3;
-@c f: expand (e);
-@c ldisp (e, f);
-@c %t3;
-@c %t4;
-@c ===end===
 @example
 @group
 (%i1) e: (a+b)^3;
@@ -1580,12 +1445,6 @@ Lisp-Symbole mit einem vorangestelltem Fragezeichen @code{?} angezeigt.
 
 Beispiele:
 
-@c ===beg===
-@c lispdisp: false$
-@c ?foo + ?bar;
-@c lispdisp: true$
-@c ?foo + ?bar;
-@c ===end===
 @example
 (%i1) lispdisp: false$
 (%i2) ?foo + ?bar;
@@ -1624,16 +1483,6 @@ Siehe auch @mrefdot{ibase}
 
 Beispiele:
 
-@c ===beg===
-@c obase : 2;
-@c 2^8 - 1;
-@c obase : 8;
-@c 8^8 - 1;
-@c obase : 16;
-@c 16^8 - 1;
-@c obase : 36;
-@c 36^8 - 1;
-@c ===end===
 @example
 (%i1) obase : 2;
 (%o1)                          10
@@ -1666,14 +1515,6 @@ gestellt.
 
 Beispiele:
 
-@c ===beg===
-@c pfeformat: false$
-@c 2^16/7^3;
-@c (a+b)/8;
-@c pfeformat: true$
-@c 2^16/7^3;
-@c (a+b)/8; 
-@c ===end===
 @example
 (%i1) pfeformat: false$
 (%i2) 2^16/7^3;
@@ -1701,12 +1542,6 @@ Hat @code{powerdisp} den Wert @code{true}, werden die Terme einer Summe mit
 steigender Potenz angezeigt.  Der Standard ist, dass die Terme mit fallender
 Potenz angezeigt werden.
 
-@c ===beg===
-@c powerdisp:true;
-@c x^2+x^3+x^4;
-@c powerdisp:false;
-@c x^2+x^3+x^4;
-@c ===end===
 @example
 (%i1) powerdisp:true;
 (%o1)                         true
@@ -1792,11 +1627,6 @@ den Zeichen @code{;} oder @code{$} beendet.
 
 Siehe auch @mrefdot{read}
 
-@c === beg ===
-@c aa: 7$
-@c foo: readonly ("Enter an expression:");
-@c foo: read ("Enter an expression:");
-@c === end ===
 @example
 (%i1) aa: 7$
 (%i2) foo: readonly ("Enter an expression:");

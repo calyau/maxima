@@ -5,7 +5,7 @@
 @c Original    : Lists.texi revision 1.37
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 13.02.2011
+@c Revision    : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -382,58 +382,6 @@ Darstellung betrachtet. Siehe dazu auch @mrefdot{inflag}
 
 Die Funktionen @mref{second} bis @mref{tenth} geben jeweils das 2. bis 10. 
 Element zur@"uck.
-@end deffn
-
-@c TODO: DIESE FUNKTION GEHOERT IN DAS KAPITEL MAXIMAS DATENBANK
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
-@anchor{get}
-@deffn {Funktion} get (@var{a}, @var{i})
-
-@c Retrieves the user property indicated by @var{i} associated with
-@c atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
-
-Gibt die Eigenschaft @var{i} des Symbols @var{a} zur@"uck.  Hat das Symbol
-@var{a} nicht die Eigenschaft @var{i}, wird @code{false} zur@"uckgegeben.
-
-@c @code{get} evaluates its arguments.
-
-@code{get} wertet die Argumente aus.
-
-@c ===beg===
-@c put (%e, 'transcendental, 'type);
-@c put (%pi, 'transcendental, 'type)$
-@c put (%i, 'algebraic, 'type)$
-@c typeof (expr) := block ([q],
-@c         if numberp (expr)
-@c         then return ('algebraic),
-@c         if not atom (expr)
-@c         then return (maplist ('typeof, expr)),
-@c         q: get (expr, 'type),
-@c         if q=false
-@c         then errcatch (error(expr,"is not numeric.")) else q)$
-@c typeof (2*%e + x*%pi);
-@c typeof (2*%e + %pi);
-@c ===end===
-@example
-(%i1) put (%e, 'transcendental, 'type);
-(%o1)                    transcendental
-(%i2) put (%pi, 'transcendental, 'type)$
-(%i3) put (%i, 'algebraic, 'type)$
-(%i4) typeof (expr) := block ([q],
-        if numberp (expr)
-        then return ('algebraic),
-        if not atom (expr)
-        then return (maplist ('typeof, expr)),
-        q: get (expr, 'type),
-        if q=false
-        then errcatch (error(expr,"is not numeric.")) else q)$
-(%i5) typeof (2*%e + x*%pi);
-x is not numeric.
-(%o5)  [[transcendental, []], [algebraic, transcendental]]
-(%i6) typeof (2*%e + %pi);
-(%o6)     [transcendental, [algebraic, transcendental]]
-@end example
 @end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------

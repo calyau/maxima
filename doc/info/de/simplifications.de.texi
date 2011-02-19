@@ -4,6 +4,7 @@
 @c Language : German
 @c Original : simplifications.texi revision 1.11
 @c Date     : 08.11.2010
+@c Revision : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -22,6 +23,7 @@
 @c -----------------------------------------------------------------------------
 @node Introduction to simplification, Package absimp, simplification, simplification
 @section Introduction to simplification
+@c -----------------------------------------------------------------------------
 
 The directory @code{maxima/share/simplification} contains several scripts
 which implement simplification rules and functions,
@@ -32,28 +34,23 @@ and also some functions not related to simplification.
 @c -----------------------------------------------------------------------------
 @node Package absimp, Package facexp, Introduction to simplification, simplification
 @section Package absimp
+@c -----------------------------------------------------------------------------
 
 The @code{absimp} package contains pattern-matching rules that
 extend the built-in simplification rules for the @code{abs} and @code{signum}
 functions.
 @code{absimp} respects relations
 established with the built-in @code{assume} function and by declarations such
-as  @code{modedeclare (m, even, n, odd)}  for even or odd integers.
+as @code{modedeclare (m, even, n, odd)} for even or odd integers.
 
 @code{absimp} defines @code{unitramp} and @code{unitstep} functions
 in terms of @code{abs} and @code{signum}.
 
-@code{load (absimp)} loads this package.
-@code{demo (absimp)} shows a demonstration of this package.
+@code{load(absimp)} loads this package.
+@code{demo(absimp)} shows a demonstration of this package.
 
 Examples:
 
-@c ===beg===
-@c load (absimp)$
-@c (abs (x))^2;
-@c diff (abs (x), x);
-@c cosh (abs (x));
-@c ===end===
 @example
 (%i1) load (absimp)$
 (%i2) (abs (x))^2;
@@ -68,13 +65,7 @@ Examples:
 @end example
 
 @c disol.usg: "disolate" already in doc/info/Expressions.texi
-
 @c elim.usg: "eliminate" already in doc/info/Polynomials.texi
-
-@c @opencatbox
-@c @category{Simplification functions} @category{Rules and patterns} @category{Share packages} @category{Package absimp}
-@c @closecatbox
-
 
 @c Adapted from facexp.usg ----------------------
 @c ALL OF THE TEXT IN FACEXP.USG IS VERY VAGUE.
@@ -85,146 +76,133 @@ Examples:
 @c -----------------------------------------------------------------------------
 @node Package facexp, Package functs, Package absimp, simplification
 @section Package facexp
+@c -----------------------------------------------------------------------------
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
-The @code{facexp} package contains several related  functions that
+The @code{facexp} package contains several related functions that
 provide the user with the ability to structure expressions by controlled
-expansion.   This capability  is especially  useful when  the expression
-contains variables that have physical meaning, because it is  often true
-that the most economical form  of such an expression can be  obtained by
+expansion.  This capability is especially useful when the expression
+contains variables that have physical meaning, because it is often true
+that the most economical form of such an expression can be obtained by
 fully expanding the expression with respect to those variables, and then
-factoring their coefficients.  While it is  true that this  procedure is
-not difficult to carry out using standard Maxima  functions, additional
-fine-tuning may also  be desirable, and  these finishing touches  can be
-more  difficult to  apply.
+factoring their coefficients.  While it is true that this procedure is
+not difficult to carry out using standard Maxima functions, additional
+fine-tuning may also be desirable, and these finishing touches can be
+more difficult to apply.
 
-The  function @code{facsum}  and its  related forms
-provide a convenient means for controlling the structure  of expressions
-in this way.  Another function, @code{collectterms}, can be used to add  two or
-more expressions that have already been simplified to this form, without
-resimplifying the whole expression again.  This function may be
-useful when the expressions are very large.
+The function @code{facsum} and its related forms provide a convenient means
+for controlling the structure of expressions in this way.  Another function,
+@code{collectterms}, can be used to add two or more expressions that have
+already been simplified to this form, without resimplifying the whole expression
+again.  This function may be useful when the expressions are very large.
 
 @c CAN'T FIND ANY SUCH FILE "DIAGEVAL".
 @c THERE ARE COMMENTED-OUT DEFNS OF FACTENEXPAND, FACEXPTEN, AND FACTORFACEXPTEN
 @c IN FACEXP (AND NOWHERE ELSE).
 @c COMMENTING OUT THIS TEXT FOR NOW.
-@c Note:  @code{factenexpand}, @code{facexpten}, and @code{factorfacexpten}  are available  only
-@c after loading @code{diageval}. They are special functions used for  tensor
+@c Note: @code{factenexpand}, @code{facexpten}, and @code{factorfacexpten} 
+@c are available only
+@c after loading @code{diageval}. They are special functions used for tensor
 @c manipulation.
 
-@code{load (facexp)} loads this package.
-@code{demo (facexp)} shows a demonstration of this package.
-
-@c @opencatbox
-@c @category{Expressions} @category{Share packages} @category{Package facexp}
-@c @closecatbox
-
+@code{load(facexp)} loads this package.
+@code{demo(facexp)} shows a demonstration of this package.
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 @c SOME EXAMPLES WOULD HELP HERE
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
-Returns  a form  of @var{expr}  which depends  on the
-arguments @var{arg_1}, ..., @var{arg_n}.
-The arguments can be any form suitable for @code{ratvars}, or they can be
-lists  of such  forms.  If  the arguments  are not  lists, then  the form
-returned is  fully expanded with respect  to the arguments,  and the
-coefficients of the arguments are factored.  These  coefficients are
+@anchor{facsum}
+@deffn {Function} facsum (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+
+Returns a form of @var{expr} which depends on the arguments @var{arg_1},
+@dots{}, @var{arg_n}.  The arguments can be any form suitable for 
+@code{ratvars}, or they can be lists of such forms.  If the arguments are not
+lists, then the form returned is fully expanded with respect to the arguments,
+and the coefficients of the arguments are factored.  These coefficients are
 free of the arguments, except perhaps in a non-rational sense.
 
-If any of the arguments are  lists, then all such lists are combined
-into  a  single  list,   and  instead  of  calling  @code{factor}   on  the
-coefficients  of  the  arguments,  @code{facsum}  calls  itself   on  these
-coefficients, using  this newly constructed  single list as  the new
-argument list  for this  recursive  call.  This  process can  be  repeated to
-arbitrary depth by nesting the desired elements in lists.
+If any of the arguments are lists, then all such lists are combined
+into a single list, and instead of calling @code{factor} on the coefficients of
+the arguments, @code{facsum} calls itself on these coefficients, using this
+newly constructed single list as the new argument list for this recursive call.
+This process can be repeated to arbitrary depth by nesting the desired elements
+in lists.
 
-It is possible that one may wish to @code{facsum} with respect  to more
-complicated subexpressions,  such as  @code{log (x + y)}.  Such  arguments are
-also  permissible.   
+It is possible that one may wish to @code{facsum} with respect to more
+complicated subexpressions, such as @code{log(x + y)}.  Such arguments are also
+permissible.
 
 @c CUTTING THIS OUT, BECAUSE IT IS OBVIOUSLY NOT CORRECT
 @c SEE EXAMPLE IN BUG REPORT ID: 2834336 - ratsimp vs facsum
 @c With no variable specification, for example @code{facsum (@var{expr})}, the 
 @c result returned is the same as that returned by @code{ratsimp (@var{expr})}.
 
-Occasionally the user may wish to obtain any of the  above forms
+Occasionally the user may wish to obtain any of the above forms
 for expressions which are specified only by their leading operators.
-For example, one may wish  to @code{facsum} with respect to all  @code{log}'s.  In
-this situation, one may  include among the arguments either  the specific
-@code{log}'s which are to be treated in this way, or  alternatively, either
-the expression  @code{operator (log)} or @code{'operator (log)}.   If one  wished to
-@code{facsum} the expression @var{expr} with respect to the operators @var{op_1}, ..., @var{op_n},
-one   would  evaluate  @code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}.
-The @code{operator} form may also appear inside list arguments.
+For example, one may wish to @code{facsum} with respect to all @code{log}'s.
+In this situation, one may include among the arguments either the specific
+@code{log}'s which are to be treated in this way, or alternatively, either
+the expression @code{operator (log)} or @code{'operator (log)}.  If one
+wished to @code{facsum} the expression @var{expr} with respect to the operators
+@var{op_1}, @dots{}, @var{op_n}, one would evaluate @code{facsum (@var{expr},
+operator (@var{op_1}, ..., @var{op_n}))}.  The @code{operator} form may also
+appear inside list arguments.
 
-In  addition,  the  setting  of  the  switches   @code{facsum_combine}  and
+In addition, the setting of the switches @code{facsum_combine} and
 @code{nextlayerfactor} may affect the result of @code{facsum}.
-
-@c @opencatbox
-@c @category{Package facexp} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{nextlayerfactor}
 @defvr {Global variable} nextlayerfactor
 Default value: @code{false}
 
-When @code{nextlayerfactor} is @code{true}, recursive calls  of @code{facsum}
-are applied  to  the  factors  of  the  factored  form   of  the
+When @code{nextlayerfactor} is @code{true}, recursive calls of @code{facsum}
+are applied to the factors of the factored form of the
 coefficients of the arguments.
 
-When  @code{false}, @code{facsum} is applied to
-each coefficient as a whole whenever recusive calls to  @code{facsum} occur.
+When @code{false}, @code{facsum} is applied to
+each coefficient as a whole whenever recusive calls to @code{facsum} occur.
 
-Inclusion   of   the  atom
-@code{nextlayerfactor} in  the argument  list of @code{facsum}  has the  effect of
-@code{nextlayerfactor: true}, but for the next level of the expression @i{only}.
-Since @code{nextlayerfactor} is  always bound to  either @code{true} or  @code{false}, it
-must be presented single-quoted whenever it appears in the argument list of @code{facsum}.
-
-@c @opencatbox
-@c @category{Package facexp} @category{Expressions}
-@c @closecatbox
+Inclusion of the atom @code{nextlayerfactor} in the argument list of
+@code{facsum} has the effect of @code{nextlayerfactor: true}, but for the next
+level of the expression @i{only}.  Since @code{nextlayerfactor} is always bound
+to either @code{true} or @code{false}, it must be presented single-quoted
+whenever it appears in the argument list of @code{facsum}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{facsum_combine}
 @defvr {Global variable} facsum_combine
 Default value: @code{true}
 
-@code{facsum_combine} controls the form  of the final result  returned by
-@code{facsum}  when  its  argument  is  a  quotient  of   polynomials.   If
-@code{facsum_combine} is @code{false}  then the form will  be returned as  a fully
-expanded  sum  as described  above,  but if  @code{true},  then  the expression
+@code{facsum_combine} controls the form of the final result returned by
+@code{facsum} when its argument is a quotient of polynomials.  If
+@code{facsum_combine} is @code{false} then the form will be returned as a fully
+expanded sum as described above, but if @code{true}, then the expression
 returned is a ratio of polynomials, with each polynomial in the form
 described above.
 
 The @code{true} setting of this switch is useful when one
-wants to  @code{facsum} both  the numerator and  denominator of  a rational
-expression,  but  does not  want  the denominator  to  be multiplied
+wants to @code{facsum} both the numerator and denominator of a rational
+expression, but does not want the denominator to be multiplied
 through the terms of the numerator.
-
-@c @opencatbox
-@c @category{Package facexp} @category{Expressions}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
-Returns a  form of @var{expr}  which is
-obtained by calling  @code{facsum} on the factors  of @var{expr} with @var{arg_1}, ... @var{arg_n} as
-arguments.  If any of the factors of @var{expr} is raised to a  power, both
-the factor and the exponent will be processed in this way.
+@anchor{factorfacsum}
+@deffn {Function} factorfacsum (@var{expr}, @var{arg_1}, @dots{} @var{arg_n})
 
-@c @opencatbox
-@c @category{Package facexp} @category{Expressions}
-@c @closecatbox
+Returns a form of @var{expr} which is obtained by calling @code{facsum} on the
+factors of @var{expr} with @var{arg_1}, @dots{} @var{arg_n} as arguments.  If
+any of the factors of @var{expr} is raised to a power, both the factor and the
+exponent will be processed in this way.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@anchor{collectterms}
+@deffn {Function} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 
 If several expressions have been simplified with the following functions: 
 @code{facsum}, @code{factorfacsum}, @code{factenexpand}, @code{facexpten} or
@@ -237,44 +215,36 @@ advantage of @code{collectterms} is that it returns a form similar to
 @code{facsum}, but since it is adding forms that have already been processed by 
 @code{facsum}, it does not need to repeat that effort.  This capability is
 especially useful when the expressions to be summed are very large.
-
-@c @opencatbox
-@c @category{Package facexp} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c Adapted from functs.usg ----------------------
 
-@c conjugate already described in doc/info/Matrices.texi
-
 @c -----------------------------------------------------------------------------
 @node Package functs, Package ineq, Package facexp, simplification
 @section Package functs
-
-@c @opencatbox
-@c @category{Share packages} @category{Package functs}
-@c @closecatbox
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{rempart}
 @deffn {Function} rempart (@var{expr}, @var{n})
+
 Removes part @var{n} from the expression @var{expr}.
 
 If @var{n} is a list of the form @code{[@var{l}, @var{m}]}
 then parts @var{l} thru @var{m} are removed.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
-Returns the Wronskian matrix of the list of expressions [@var{f_1}, ..., @var{f_n}] in the variable @var{x}.
-The determinant of the Wronskian matrix is the Wronskian determinant of the list of expressions.
+@anchor{wronskian}
+@deffn {Function} wronskian ([@var{f_1}, @dots{}, @var{f_n}], @var{x})
 
-To use @code{wronskian}, first @code{load(functs)}. Example:
+Returns the Wronskian matrix of the list of expressions [@var{f_1}, @dots{}, 
+@var{f_n}] in the variable @var{x}.  The determinant of the Wronskian matrix is
+the Wronskian determinant of the list of expressions.
+
+To use @code{wronskian}, first @code{load(functs)}.  Example:
 
 @c ===beg===
 @c load (functs)$
@@ -285,284 +255,230 @@ To use @code{wronskian}, first @code{load(functs)}. Example:
 (%i2) wronskian([f(x), g(x)],x);
 (%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
 @end example
-
-@c @opencatbox
-@c @category{Package functs} @category{Differential calculus}
-@c @closecatbox
 @end deffn
 
 @c adjoint already described in doc/info/Matrices.texi
 
 @c -----------------------------------------------------------------------------
+@anchor{tracematrix}
 @deffn {Function} tracematrix (@var{M})
+
 Returns the trace (sum of the diagonal elements) of matrix @var{M}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{function_rational}
 @deffn {Function} rational (@code{z})
-Multiplies numerator and denominator of @var{z} by the complex conjugate of denominator,
-thus rationalizing the denominator.
-Returns canonical rational expression (CRE) form if given one, else returns general form.
+
+Multiplies numerator and denominator of @var{z} by the complex conjugate of
+denominator, thus rationalizing the denominator.  Returns canonical rational
+expression (CRE) form if given one, else returns general form.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{logand}
 @deffn {Function} logand (@code{x},@code{y})
+
 Returns logical (bit-wise) "and" of arguments x and y.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{logor}
 @deffn {Function} logor (@code{x},@code{y})
+
 Returns logical (bit-wise) "or" of arguments x and y.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{logxor}
 @deffn {Function} logxor (@code{x},@code{y})
+
 Returns logical (bit-wise) exclusive-or of arguments x and y.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
-@c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
-
-@c kronecker superseded by kron_delta in src/nset.lisp
-
 @c -----------------------------------------------------------------------------
+@anchor{nonzeroandfreeof}
 @deffn {Function} nonzeroandfreeof (@var{x}, @var{expr})
-Returns @code{true} if @var{expr} is nonzero and @code{freeof (@var{x}, @var{expr})} returns @code{true}.
-Returns @code{false} otherwise.
+
+Returns @code{true} if @var{expr} is nonzero and @code{freeof (@var{x}, 
+@var{expr})} returns @code{true}.  Returns @code{false} otherwise.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{function_linear}
 @deffn {Function} linear (@var{expr}, @var{x})
-When @var{expr} is an expression linear in variable @var{x},
-@code{linear} returns @code{@var{a}*@var{x} + @var{b}} where @var{a} is nonzero,
+
+When @var{expr} is an expression linear in variable @var{x}, @code{linear}
+returns @code{@var{a}*@var{x} + @var{b}} where @var{a} is nonzero,
 and @var{a} and @var{b} are free of @var{x}.
 Otherwise, @code{linear} returns @var{expr}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Expressions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gcdivide}
 @deffn {Function} gcdivide (@var{p}, @var{q})
+
 When @code{takegcd} is @code{true},
-@code{gcdivide} divides the polynomials @var{p} and @var{q} by their greatest common divisor
-and returns the ratio of the results.
+@code{gcdivide} divides the polynomials @var{p} and @var{q} by their greatest
+common divisor and returns the ratio of the results.
 
 When @code{takegcd} is @code{false},
 @code{gcdivide} returns the ratio @code{@var{p}/@var{q}}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Polynomials}
-@c @closecatbox
 @end deffn
 
-@c lcm already described in doc/info/Number.texi
-
 @c -----------------------------------------------------------------------------
+@anchor{arithmetic}
 @deffn {Function} arithmetic (@var{a}, @var{d}, @var{n})
-Returns the @var{n}-th term of the arithmetic series
-@code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
+
+Returns the @var{n}-th term of the arithmetic series @code{@var{a}, @var{a} +
+@var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Sums and products}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{geometric}
 @deffn {Function} geometric (@var{a}, @var{r}, @var{n})
+
 Returns the @var{n}-th term of the geometric series
-@code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
+@code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ...,
+@var{a}*@var{r}^(@var{n} - 1)}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Sums and products}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{harmonic}
 @deffn {Function} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
+
 Returns the @var{n}-th term of the harmonic series
-@code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
+@code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} +
+2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Sums and products}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{arithsum}
 @deffn {Function} arithsum (@var{a}, @var{d}, @var{n})
+
 Returns the sum of the arithmetic series from 1 to @var{n}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Sums and products}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{geosum}
 @deffn {Function} geosum (@var{a}, @var{r}, @var{n})
+
 Returns the sum of the geometric series from 1 to @var{n}.  If @var{n} is
 infinity (@code{inf}) then a sum is finite only if the absolute value
 of @var{r} is less than 1.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Sums and products}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gaussprob}
 @deffn {Function} gaussprob (@var{x})
+
 Returns the Gaussian probability function
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gd}
 @deffn {Function} gd (@var{x})
-Returns the Gudermannian function
-@code{2*atan(%e^x)-%pi/2}.
+
+Returns the Gudermannian function @code{2*atan(%e^x)-%pi/2}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{agd}
 @deffn {Function} agd (@var{x})
-Returns the inverse Gudermannian function
-@code{log (tan (%pi/4 + x/2)))}.
+
+Returns the inverse Gudermannian function @code{log (tan (%pi/4 + x/2)))}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{vers}
 @deffn {Function} vers (@var{x})
+
 Returns the versed sine @code{1 - cos (x)}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{covers}
 @deffn {Function} covers (@var{x})
+
 Returns the coversed sine @code{1 - sin (@var{x})}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{exsec}
 @deffn {Function} exsec (@var{x})
+
 Returns the exsecant @code{sec (@var{x}) - 1}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{hav}
 @deffn {Function} hav (@var{x})
+
 Returns the haversine @code{(1 - cos(x))/2}.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
 
 @c -----------------------------------------------------------------------------
+@anchor{combination}
 @deffn {Function} combination (@var{n}, @var{r})
-Returns the number of combinations of @var{n} objects
-taken @var{r} at a time.
+
+Returns the number of combinations of @var{n} objects taken @var{r} at a time.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
-
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
+
+@c -----------------------------------------------------------------------------
+@anchor{permutation}
 @deffn {Function} permutation (@var{n}, @var{r})
-Returns the number of permutations of @var{r} objects
-selected from a set of @var{n} objects.
+
+Returns the number of permutations of @var{r} objects selected from a set of
+@var{n} objects.
 
 To use this function write first @code{load(functs)}.
-
-@c @opencatbox
-@c @category{Package functs} @category{Mathematical functions}
-@c @closecatbox
 @end deffn
 
 @c Adapted from ineq.usg ----------------------
@@ -571,9 +487,9 @@ To use this function write first @code{load(functs)}.
 @c -----------------------------------------------------------------------------
 @node Package ineq, Package rducon, Package functs, simplification
 @section Package ineq
+@c -----------------------------------------------------------------------------
 
-The @code{ineq} package contains simplification rules
-for inequalities.
+The @code{ineq} package contains simplification rules for inequalities.
 
 Example session:
 
@@ -672,34 +588,29 @@ The most common mis-feature is illustrated by:
 
 Another problem is 0 times an inequality; the default to have this
 turn into 0 has been left alone. However, if you type 
-@code{X*@var{some_inequality}} and Maxima asks about the sign of @code{X} and you
-respond @code{zero} (or @code{z}), the program returns @code{X*@var{some_inequality}}
-and not use the information that @code{X} is 0. You should do @code{ev (%, x: 0)} in such
-a case, as the database will only be used for comparison purposes
-in decisions, and not for the purpose of evaluating @code{X}.
+@code{X*@var{some_inequality}} and Maxima asks about the sign of @code{X} and
+you respond @code{zero} (or @code{z}), the program returns
+@code{X*@var{some_inequality}} and not use the information that @code{X} is 0.
+You should do @code{ev (%, x: 0)} in such a case, as the database will only be
+used for comparison purposes in decisions, and not for the purpose of evaluating
+@code{X}.
 
 The user may note a slower response when this package is loaded, as
 the simplifier is forced to examine more rules than without the
 package, so you might wish to remove the rules after making use of
-them. Do @code{kill (rules)} to eliminate all of the rules (including any
+them.  Do @code{kill (rules)} to eliminate all of the rules (including any
 that you might have defined); or you may be more selective by
 killing only some of them; or use @code{remrule} on a specific rule.
 
-Note that if you load this package after defining your own
-rules you will clobber your rules that have the same name. The
-rules in this package are:
-@code{*rule1}, ..., @code{*rule8},
-@code{+rule1}, ..., @code{+rule18},
-and you must enclose the rulename in quotes to refer to it, as
-in @code{remrule ("+", "+rule1")} to specifically remove the first rule on @code{"+"}
-or @code{disprule ("*rule2")} to display the definition of the second multiplicative rule.
+Note that if you load this package after defining your own rules you will
+clobber your rules that have the same name.  The rules in this package are:
+@code{*rule1}, @dots{}, @code{*rule8}, @code{+rule1}, @dots{}, @code{+rule18},
+and you must enclose the rulename in quotes to refer to it, as in
+@code{remrule ("+", "+rule1")} to specifically remove the first rule on
+@code{"+"} or @code{disprule ("*rule2")} to display the definition of the
+second multiplicative rule.
 
-@c @opencatbox
-@c @category{Simplification functions} @category{Rules and patterns} @category{Share packages} @category{Package ineq}
-@c @closecatbox
-
-
-@c lrats.usg: "lratsubst" and "fullratsubst" already in doc/info/Polynomials.texi
+@c lrats.usg:"lratsubst" and "fullratsubst" already in doc/info/Polynomials.texi
 
 @c Adapted from rducon.usg ----------------------
 @c THIS IS AN INTERESTING FUNCTION BUT THIS TEXT NEEDS WORK AND EXAMPLES
@@ -707,13 +618,12 @@ or @code{disprule ("*rule2")} to display the definition of the second multiplica
 @c -----------------------------------------------------------------------------
 @node Package rducon, Package scifac, Package ineq, simplification
 @section Package rducon
-
-@c @opencatbox
-@c @category{Expressions} @category{Share packages} @category{Package rducon}
-@c @closecatbox
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{reduce_consts}
 @deffn {Function} reduce_consts (@var{expr})
+
 Replaces constant subexpressions of @var{expr} with
 constructed constant atoms, saving the definition of all these
 constructed constants in the list of equations @code{const_eqns}, and
@@ -744,12 +654,8 @@ symbols generated by @code{reduce_consts} to represent constant subexpressions.
 @code{const_counter} (default value: 1) is the integer index used to generate unique
 symbols to represent each constant subexpression found by @code{reduce_consts}.
 
-@code{load (rducon)} loads this function.
-@code{demo (rducon)} shows a demonstration of this function.
-
-@c @opencatbox
-@c @category{Package rducon} @category{Expressions}
-@c @closecatbox
+@code{load(rducon)} loads this function.
+@code{demo(rducon)} shows a demonstration of this function.
 @end deffn
 
 @c rncomb.usg: "rncombine" already in doc/info/Miscellaneous.texi
@@ -759,16 +665,15 @@ symbols to represent each constant subexpression found by @code{reduce_consts}.
 @c -----------------------------------------------------------------------------
 @node Package scifac, Package sqdnst, Package rducon, simplification
 @section Package scifac
-
-@c @opencatbox
-@c @category{Expressions} @category{Share packages} @category{Package scifac}
-@c @closecatbox
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{gcfac}
 @deffn {Function} gcfac (@var{expr})
-@code{gcfac} is a factoring function that attempts to apply the same heuristics which
-scientists apply in trying to make expressions simpler.  @code{gcfac} is limited
-to monomial-type factoring.  For a sum, @code{gcfac} does the following:
+
+@code{gcfac} is a factoring function that attempts to apply the same heuristics
+which scientists apply in trying to make expressions simpler.  @code{gcfac} is
+limited to monomial-type factoring.  For a sum, @code{gcfac} does the following:
 
 @enumerate
 @item
@@ -788,23 +693,23 @@ factoring because of the combinatorially-difficult nature of finding
 which of all possible rearrangements of the pairs yields the most
 compact pair-factored result.
 
-@code{load (scifac)} loads this function.
-@code{demo (scifac)} shows a demonstration of this function.
-
-@c @opencatbox
-@c @category{Package scifac} @category{Expressions}
-@c @closecatbox
+@code{load(scifac)} loads this function.
+@code{demo(scifac)} shows a demonstration of this function.
 @end deffn
 
 @c Adapted from sqdnst.usg ----------------------
-@c THIS FUNCTION IS INTERESTING BUT THIS TEXT NEEDS WORK. HOW DEEPLY CAN SQRT BE NESTED ??
+@c THIS FUNCTION IS INTERESTING BUT THIS TEXT NEEDS WORK. HOW DEEPLY CAN SQRT
+@c BE NESTED ??
 
 @c -----------------------------------------------------------------------------
 @node Package sqdnst,  , Package scifac, simplification
 @section Package sqdnst
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{sqrtdenest}
 @deffn {Function} sqrtdenest (@var{expr})
+
 Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 
 @c ===beg===
@@ -832,14 +737,11 @@ Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 Sometimes it helps to apply @code{sqrtdenest} more than once, on such as
 @code{(19601-13860 sqrt(2))^(7/4)}.
 
-@code{load (sqdnst)} loads this function.
-
-@c @opencatbox
-@c @category{Expressions} @category{Share packages} @category{Package sqdnst}
-@c @closecatbox
+@code{load(sqdnst)} loads this function.
 @end deffn
 
-@c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already in doc/info/Simplification.texi
+@c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already
+@c in doc/info/Simplification.texi
 
 @c --- End of file simplifications.de.texi -------------------------------------
 

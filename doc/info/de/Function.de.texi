@@ -5,7 +5,7 @@
 @c Original    : Function.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 13.02.2011
+@c Revision    : 18.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -30,17 +30,12 @@
 @c -----------------------------------------------------------------------------
 @subsection Gew@"ohnliche Funktionen
 
-@c To define a function in Maxima you use the @code{:=} operator. E.g.
-
 Eine Maxima-Funktion wird mit dem Operator @code{:=} definiert.  Im folgenden 
 wird die Funktion @code{f} definiert:
 
 @example
 f(x) := sin(x)
 @end example
-
-@c defines a function @code{f}. Anonmyous functions may also be created using 
-@c @code{lambda}. For example
 
 @noindent
 Funktionen, die mit der Funktion @code{lambda} definiert werden, sind anonyme 
@@ -51,9 +46,6 @@ genannt:
 lambda ([i, j], ...)
 @end example
 
-@c can be used instead of @code{f} where
-@c would return a list with 1 added to each term.
-
 @noindent
 Anonyme Funktionen k@"onnen @"uberall dort verwendet werden, wo eine Funktion 
 als Argument erwartet wird.  Das folgene Beispiel gibt eine Liste zur@"uck, bei 
@@ -63,19 +55,10 @@ der jedes Element der Liste @code{L} mit 1 addiert wird:
 map (lambda ([i], i+1), L)
 @end example
 
-@c You may also define a function with a variable number of arguments, by 
-@c having a final argument which is assigned to a list of the extra arguments:
-
 Ist das letzte oder einzige Argument einer Funktion eine Liste mit einem 
 Element, kann eine variable Anzahl an Argumenten an die Funktion @"ubergeben 
 werden:
 
-@c ===beg===
-@c f ([u]) := u;
-@c f (1, 2, 3, 4);
-@c f (a, b, [u]) := [a, b, u];
-@c f (1, 2, 3, 4, 5, 6);
-@c ===end===
 @example
 (%i1) f ([u]) := u;
 (%o1)                      f([u]) := u
@@ -87,10 +70,6 @@ werden:
 (%o4)                 [1, 2, [3, 4, 5, 6]]
 @end example
 
-@c The right hand side of a function is an expression.  Thus if you want a
-@c sequence of expressions, you do
-@c and the value of @var{exprn} is what is returned by the function.
-
 Die rechte Seite einer Funktionsdefinition ist ein Ausdruck.  Mehrere 
 Ausdr@"ucke werden durch Kommata getrennt und mit Klammern umgegeben.  Das 
 Ergebnis der Funktion ist der Wert des letzten Ausdrucks @var{exprn}:
@@ -98,12 +77,6 @@ Ergebnis der Funktion ist der Wert des letzten Ausdrucks @var{exprn}:
 @example
 f(x) := (expr1, expr2, ...., exprn);
 @end example
-
-@c If you wish to make a @code{return} from some expression inside the
-@c function then you must use @code{block} and @code{return}.
-@c is itself an expression, and so could take the place of the right hand side 
-@c of a function definition.  Here it may happen that the return happens earlier 
-@c than the last expression.
 
 Ein R@"ucksprung mit der Anweisung @code{return} aus einer Funktion ist 
 m@"oglich, wenn die Definition der Funktion in einen Block eingef@"ugt wird.
@@ -114,24 +87,6 @@ Ergebnis:
 @example
 block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
 @end example
-
-@c COPY THIS STUFF TO @defun block AS NEEDED
-@c ESPECIALLY STUFF ABOUT LOCAL VARIABLES
-
-@c The first @code{[]} in the block, may contain a list of variables and
-@c variable assignments, such as @code{[a: 3, b, c: []]}, which would cause the
-@c three variables @code{a},@code{b},and @code{c} to not refer to their
-@c global values, but rather have these special values for as long as the
-@c code executes inside the @code{block}, or inside functions called from
-@c inside the @code{block}.  This is called @i{dynamic} binding, since the
-@c variables last from the start of the block to the time it exits.  Once
-@c you return from the @code{block}, or throw out of it, the old values (if
-@c any) of the variables will be restored.   It is certainly a good idea
-@c to protect your variables in this way.   Note that the assignments
-@c in the block variables, are done in parallel.   This means, that if
-@c you had used @code{c: a} in the above, the value of @code{c} would
-@c have been the value of @code{a} at the time you just entered the block,
-@c but before @code{a} was bound.   Thus doing something like
 
 Das erste paar Klammern @code{[]} in einem Block enth@"alt die Definition von 
 lokalen Variablen wie zum Beispiel @code{[a: 3, b, c: []]}.  Die Variablen sind 
@@ -148,18 +103,8 @@ nicht auf den globalen Wert der Variablen aus.
 block ([a: a], expr1, ... a: a+3, ..., exprn)
 @end example
 
-@c will protect the external value of @code{a} from being altered, but
-@c would let you access what that value was.   
-@c Thus the right hand side of the assignments, is evaluated in the entering 
-@c context, before any binding occurs.
-@c Using just @code{block ([x], ...} would cause the @code{x} to have itself
-@c as value, just as if it would have if you entered a fresh Maxima session.
-
 Die Anweisung @code{block ([x], ...)} bewirkt, dass @code{x} als lokale Variable
 ohne einen Wert verwendet werden kann.
-
-@c The actual arguments to a function are treated in exactly same way as the 
-@c variables in a block.  Thus in
 
 Die Argumente einer Funktion werden in gleicher Weise wie lokal definierte
 Variable behandelt.  Die folgende Definition
@@ -174,17 +119,11 @@ mit
 f(1);
 @end example
 
-@c we would have a similar context for evaluation of the expressions
-@c as if we had done
-
 hat denselben Effekt wie der folgende Block:
 
 @example
 block ([x: 1], expr1, ..., exprn)
 @end example
-
-@c Inside functions, when the right hand side of a definition, may be computed 
-@c at runtime, it is useful to use @code{define} and possibly @code{buildq}.
 
 Muss die rechte Seite einer Funktionsdefinition ausgewertet werden,
 kann es sinnvoll sein, die Funktionen @code{define} oder @code{buildq} zu
@@ -193,35 +132,16 @@ verwenden.
 @c -----------------------------------------------------------------------------
 @subsection Array-Funktionen
 
-@c An array function stores the function value the first time it is called with 
-@c a given argument, and returns the stored value, without recomputing it, when 
-@c that same argument is given. Such a function is often called a 
-@c @i{memoizing function}.
-
 Eine Array-Funktion speichert bei dem ersten Aufruf den Funktionswert zu dem 
 Argument.  Wird die Array-Funktion mit demselben Argument aufgerufen, wird der
 gespeicherte Wert zur@"uckgeben, ohne diesen neu zu berechnen.  Dies wird auch
 Memoisation genannt.
-
-@c Array function names are appended to the global list @code{arrays} (not the 
-@c global list @code{functions}). @code{arrayinfo} returns the list of arguments 
-@c for which there are stored values, and @code{listarray} returns the stored 
-@c values. @code{dispfun} and @code{fundef} return the array function 
-@c definition.
 
 Die Namen der Array-Funktionen werden in die Informationsliste @code{arrays}
 und nicht in die Liste @code{functions} eingetragen.  @code{arrayinfo} gibt eine
 Liste der Argumente zur@"uck, f@"ur die Werte gespeichert sind und 
 @code{listarrays} gibt die Werte zur@"uck.  @code{dispfun} und @code{fundef} 
 geben die Definition der Array-Funktion zur@"uck.
-
-@c @code{arraymake} constructs an array function call, analogous to 
-@c @code{funmake} for ordinary functions. @code{arrayapply} applies an array 
-@c function to its arguments, analogous to @code{apply} for ordinary functions. 
-@c There is nothing exactly analogous to @code{map} for array functions, 
-@c although @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} or 
-@c @code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, where @var{L} is a list,
-@c are not too far off the mark.
 
 @code{arraymake} erzeugt den Aufruf einer Array-Funktion.  Dies ist analog zu
 der Funktion @code{funmake} f@"ur gew@"ohnliche Funktionen.  @code{arrayapply}
@@ -232,18 +152,9 @@ Entsprechung f@"ur Array-Funktionen.  Vergleichbare Konstruktionen sind
 @code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, wobei @var{L} eine Liste
 ist.
 
-@c @code{remarray} removes an array function definition (including any stored 
-@c function values), analogous to @code{remfunction} for ordinary functions.
-
 @code{remarray} entfernt die Definition einer Array-Funktion einschlie@ss{}lich 
 der gespeicherten Werte.  Dies entspricht @code{remfunction} f@"ur gew@"ohnliche
 Funktionen.
-
-@c @code{kill(@var{a}[@var{x}])} removes the value of the array function @var{a}
-@c stored for the argument @var{x}; the next time @var{a} is called with 
-@c argument @var{x}, the function value is recomputed. However, there is no way 
-@c to remove all of the stored values at once, except for @code{kill(@var{a})} 
-@c or @code{remarray(@var{a})}, which also remove the function definition.
 
 @code{kill(@var{a}[@var{x}])} entfernt den f@"ur das Argument @var{x} 
 gespeicherten Wert einer Array-Funktion @var{a}.  Beim n@"achsten Aufruf von 
@@ -261,22 +172,9 @@ einschlie@ss{}lich der Definition der Funktion.
 @anchor{buildq}
 @deffn {Funktion} buildq (@var{L}, @var{expr})
 
-@c Substitutes variables named by the list @var{L} into the expression 
-@c @var{expr}, in parallel, without evaluating @var{expr}. The resulting 
-@c expression is simplified, but not evaluated, after @code{buildq} carries out 
-@c the substitution.
-
 Die Variablen der Liste @var{L} werden in den Ausdruck @var{expr} substituiert. 
 Die Substitution wird parallel ausgef@"uhrt.  Das Ergebnis der Substitution wird
 vereinfacht, aber nicht ausgewertet.
-
-@c The elements of @var{L} are symbols or assignment expressions 
-@c @code{@var{symbol}: @var{value}}, evaluated in parallel. That is, the binding
-@c of a variable on the right-hand side of an assignment is the binding of that
-@c variable in the context from which @code{buildq} was called, not the binding 
-@c of that variable in the variable list @var{L}. If some variable in @var{L} is 
-@c not given an explicit assignment, its binding in @code{buildq} is the same as
-@c in the context from which @code{buildq} was called.
 
 Die Elemente der Liste @var{L} sind Symbole oder Zuweisungen der Form
 @code{@var{symbol}: @var{value}}.  Zuweisungen werden parallel ausgewertet.
@@ -285,24 +183,11 @@ Wert in dem Kontext in dem @code{buildq} aufgerufen wird und nicht der lokale
 Wert einer vorhergenden Zuweisung.  Erh@"alt eine Variable keinen Wert, dann 
 beh@"alt die Variable den globalen Wert.
 
-@c Then the variables named by @var{L} are substituted into @var{expr} in 
-@c parallel. That is, the substitution for every variable is determined before 
-@c any substitution is made, so the substitution for one variable has no effect 
-@c on any other.
-
 Dann werden die in der Liste @var{L} enthaltenen Variablen parallel in den 
 Ausdruck @var{expr} substituiert.
 
-@c If any variable @var{x} appears as @code{splice (@var{x})} in @var{expr},
-@c then @var{x} must be bound to a list, and the list is spliced (interpolated) 
-@c into @var{expr} instead of substituted.
-
 Enth@"alt @var{expr} Ausdr@"ucke der Form @code{splice(@var{x})}, muss die 
 Variable @var{x} eine Liste sein.  Die Liste wird in den Ausdruck eingef@"ugt.
-
-@c Any variables in @var{expr} not appearing in @var{L} are carried into the 
-@c result verbatim, even if they have bindings in the context from which 
-@c @code{buildq} was called.
 
 Variablen in @var{expr}, die nicht in @var{L} enthalten sind, werden nicht
 durch einen Wert ersetzt, auch wenn es eine globale Variable mit demselben
@@ -310,21 +195,11 @@ Namen gibt.
 
 Beispiele:
 
-@c @code{a} is explicitly bound to @code{x}, while @code{b} has the same binding 
-@c (namely 29) as in the calling context, and @code{c} is carried through 
-@c verbatim. The resulting expression is not evaluated until the explicit 
-@c evaluation @code{''%}.
-
 Der Variablen @code{a} wird der Wert zugewiesen.  Die Variable @code{b} erh@"alt
 den globalen Wert.  Die Variable @code{c} hat keinen Wert.  Das Ergebnis ist
 ein nicht ausgewerteter Ausdruck.  Die Auswertung wird mit dem 
 Quote-Quote-Operator erzwungen.
 
-@c ===beg===
-@c (a: 17, b: 29, c: 1729)$
-@c buildq ([a: x, b], a + b + c);
-@c ''%;
-@c ===end===
 @example
 (%i1) (a: 17, b: 29, c: 1729)$
 (%i2) buildq ([a: x, b], a + b + c);
@@ -333,17 +208,10 @@ Quote-Quote-Operator erzwungen.
 (%o3)                       x + 1758
 @end example
 
-@c @code{e} is bound to a list, which appears as such in the arguments of 
-@c @code{foo}, and interpolated into the arguments of @code{bar}.
-
 @code{e} ist eine Liste, die einmal als Argument der Funktion @code{foo}
 vorliegt und zum anderen in die Argumentliste der Funktion @code{bar} 
 eingef@"ugt wird.
 
-@c ===beg===
-@c buildq ([e: [a, b, c]], foo (x, e, y));
-@c buildq ([e: [a, b, c]], bar (x, splice (e), y));
-@c ===end===
 @example
 (%i1) buildq ([e: [a, b, c]], foo (x, e, y));
 (%o1)                 foo(x, [a, b, c], y)
@@ -351,16 +219,9 @@ eingef@"ugt wird.
 (%o2)                  bar(x, a, b, c, y)
 @end example
 
-@c The result is simplified after substitution. If simplification were applied 
-@c before substitution, these two results would be the same.
-
 Das Ergebnis wird nach der Substitution vereinfacht, ansonsten h@"atten die
 beiden folgenden Beispiele dasselbe Ergebnis.
 
-@c ===beg===
-@c buildq ([e: [a, b, c]], splice (e) + splice (e));
-@c buildq ([e: [a, b, c]], 2 * splice (e));
-@c ===end===
 @example
 (%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
 (%o1)                    2 c + 2 b + 2 a
@@ -368,23 +229,11 @@ beiden folgenden Beispiele dasselbe Ergebnis.
 (%o2)                        2 a b c
 @end example
 
-@c The variables in @var{L} are bound in parallel; if bound sequentially, the 
-@c first result would be @code{foo (b, b)}. Substitutions are carried out in 
-@c parallel; compare the second result with the result of @code{subst}, which 
-@c carries out substitutions sequentially.
-
 Die Variablen der Liste @var{L} erhalten ihren Wert parallel, ansonsten w@"are
 das erste Ergebnis @code{foo(b,b)}.  Substitutionen werden parallel 
 ausgef@"uhrt.  Im Gegensatz dazu werden die Substitutionen mit der Funktion 
 @code{subst} nacheinander ausgef@"uhrt.
 
-@c ===beg===
-@c buildq ([a: b, b: a], foo (a, b));
-@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], 
-@c               bar (u, v, w, x, y, z));
-@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], 
-@c              bar (u, v, w, x, y, z));
-@c ===end===
 @example
 (%i1) buildq ([a: b, b: a], foo (a, b));
 (%o1)                       foo(b, a)
@@ -396,20 +245,10 @@ ausgef@"uhrt.  Im Gegensatz dazu werden die Substitutionen mit der Funktion
 (%o3)                 bar(u, u, u, u, u, u)
 @end example
 
-@c Construct a list of equations with some variables or expressions on the 
-@c left-hand side and their values on the right-hand side. @code{macroexpand} 
-@c shows the expression returned by @code{show_values}.
-
 Konstruktion einer Liste mit Gleichungen mit Variablen oder Ausdr@"ucken auf 
 der linken Seite und deren Werten auf der rechten Seite.  Die Funktion
 @code{macroexpand} expandiert das Makro @code{show_values}.
 
-@c ===beg===
-@c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
-@c (a: 17, b: 29, c: 1729)$
-@c show_values (a, b, c - a - b);
-@c macroexpand (show_values (a, b, c - a - b));
-@c ===end===
 @example
 (%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
 (%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
@@ -420,17 +259,8 @@ der linken Seite und deren Werten auf der rechten Seite.  Die Funktion
 (%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
 @end example
 
-@c Given a function of several arguments, create another function for which 
-@c some of the arguments are fixed.
-
 Konstruktion einer Funktion.
 
-@c ===beg===
-@c curry (f, [a]) :=
-@c         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
-@c by3 : curry ("*", 3);
-@c by3 (a + b);
-@c ===end===
 @example
 (%i1) curry (f, [a]) :=
         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
@@ -445,38 +275,19 @@ Konstruktion einer Funktion.
 @anchor{macroexpand}
 @deffn {Funktion} macroexpand (@var{expr})
 
-@c Returns the macro expansion of @var{expr} without evaluating it, when 
-@c @code{expr} is a macro function call. Otherwise, @code{macroexpand} returns 
-@c @var{expr}.
-
 Ist @var{expr} eine Makrodefinition, wird das Makro expandiert, ohne dass es 
 ausgewertet wird.  Ansonsten wird @var{expr} zur@"uckgegeben.
-
-@c If the expansion of @var{expr} yields another macro function call,
-@c that macro function call is also expanded.
 
 Ist die Expansion des Makros selbst ein Makro, wird dieses Makro wiederholt
 expandiert.
 
-@c @code{macroexpand} quotes its argument. However, if the expansion of a macro 
-@c function call has side effects, those side effects are executed.
-
 @code{macroexpand} wertet das Argument @var{expr} nicht aus.  Hat die Expansion
 des Makros Seiteneffekte, dann werden diese ausgef@"uhrt.
-
-@c See also @code{::=}, @code{macros}, and @code{macroexpand1}.
 
 Siehe auch @mrefcomma{::=} @mref{Makros} und @mrefdot{macroexpand1}
 
 Beispiele:
 
-@c ===beg===
-@c g (x) ::= x / 99;
-@c h (x) ::= buildq ([x], g (x - a));
-@c a: 1234;
-@c macroexpand (h (y));
-@c h (y);
-@c ===end===
 @example
 (%i1) g (x) ::= x / 99;
                                     x
@@ -501,22 +312,12 @@ Beispiele:
 @anchor{macroexpand1}
 @deffn {Funktion} macroexpand1 (@var{expr})
 
-@c Returns the macro expansion of @var{expr} without evaluating it, when 
-@c @code{expr} is a macro function call. Otherwise, @code{macroexpand1} returns 
-@c @var{expr}.
-
 Gibt die Makro-Expansion von @var{expr} zur@"uck, ohne das Ergebnis auszuwerten.
 Ist @var{expr} keine Makro-Funktion gibt @code{macroexpand1} das Argument
 @var{expr} zur@"uck.
 
-@c @code{macroexpand1} quotes its argument. However, if the expansion of a macro
-@c function call has side effects, those side effects are executed.
-
 @code{macroexpand1} wertet das Argument nicht aus.  Hat die Expansion des Makros
 Seiteneffekte, dann werden diese ausgef@"uhrt.
-
-@c If the expansion of @var{expr} yields another macro function call, that 
-@c macro function call is not expanded.
 
 Enth@"alt die Expansion @var{expr} wiederum Makros, werden diese im Unterschied
 zur Funktion @code{macroexpand} nicht expandiert.
@@ -525,13 +326,6 @@ Siehe auch @mrefcomma{::=} @mref{Makros} und @mrefdot{macroexpand}
 
 Beispiele:
 
-@c ===beg===
-@c g (x) ::= x / 99;
-@c h (x) ::= buildq ([x], g (x - a));
-@c a: 1234;
-@c macroexpand1 (h (y));
-@c h (y);
-@c ===end===
 @example
 (%i1) g (x) ::= x / 99;
                                     x
@@ -554,28 +348,12 @@ Beispiele:
 @defvr {Optionsvariable} macroexpansion
 Standardwert: @code{false}
 
-@c @code{macroexpansion} controls whether the expansion (that is, the return 
-@c value) of a macro function is substituted for the macro function call. A 
-@c substitution may speed up subsequent expression evaluations, at the cost of 
-@c storing the expansion.
-
 @code{macroexpansion} kontrolliert die Expansion von Makro-Funktionen.
 
 @table @code
-@c @item false
-@c The expansion of a macro function is not substituted for the macro function 
-@c call.
-
 @item false
 Die Expansion der Makro-Funktion wird nicht f@"ur die aufrufende Funktion 
 ersetzt.
-
-@c @item expand
-@c The first time a macro function call is evaluated, the expansion is stored.
-@c The expansion is not recomputed on subsequent calls; any side effects (such 
-@c as @code{print} or assignment to global variables) happen only when the macro
-@c function call is first evaluated. Expansion in an expression does not affect 
-@c other expressions which have the same macro function call.
 
 @item expand
 Wird die Makro-Funktion das erste Mal ausgewertet, wird die Expansion des Makros
@@ -583,14 +361,6 @@ gespeichert.  Weitere Aufrufe werten das Makro nicht erneut aus.  Seiteneffekte,
 wie Zuweisungen an globale Variablen, werden nur bei der ersten Auswertung 
 wirksam.  Die Expansion des Makros beeinflusst nicht andere Ausdr@"ucke, die das
 Makro ebenfalls aufrufen.
-
-@c @item displace
-@c The first time a macro function call is evaluated, the expansion is 
-@c substituted for the call, thus modifying the expression from which the macro 
-@c function was called. The expansion is not recomputed on subsequent calls;
-@c any side effects happen only when the macro function call is first evaluated.
-@c Expansion in an expression does not affect other expressions which have the 
-@c same macro function call.
 
 @item displace
 Wird die Makro-Funktion das erstemal ausgewertet, wird die Expansion des Makros
@@ -602,25 +372,10 @@ andere Ausdr@"ucke, die das Makro ebenfalls aufrufen.
 
 Beispiele:
 
-@c When @code{macroexpansion} is @code{false}, a macro function is called every 
-@c time the calling expression is evaluated, and the calling expression is not 
-@c modified.
-
 Hat @code{macroexpansion} den Wert @code{false}, wird eine Makro-Funktion
 jedesmal aufgerufen, wenn der aufrufende Ausdruck ausgewertet wird.  Der
 aufrufende Ausdruck wird nicht modifiziert.
 
-@c ===beg===
-@c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), 
-@c                        return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), 
-@c                        return (x - 99));
-@c macroexpansion: false;
-@c f (a * b);
-@c dispfun (f);
-@c f (a * b);
-@c ===end===
 @example
 (%i1) f (x) := h (x) / g (x);
                                   h(x)
@@ -658,23 +413,9 @@ x + 99 is equal to x
                             a b + 99
 @end example
 
-@c When @code{macroexpansion} is @code{expand}, a macro function is called once,
-@c and the calling expression is not modified.
-
 Hat @code{macroexpansion} den Wert @code{expand}, wird eine Makro-Funktion nur
 einmal aufgerufen.  Der aufrufende Ausdruck wird nicht modifiziert.
 
-@c ===beg===
-@c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), 
-@c                        return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), 
-@c                        return (x - 99));
-@c macroexpansion: expand;
-@c f (a * b);
-@c dispfun (f);
-@c f (a * b);
-@c ===end===
 @example
 (%i1) f (x) := h (x) / g (x);
                                   h(x)
@@ -710,23 +451,9 @@ x + 99 is equal to x
                             a b + 99
 @end example
 
-@c When @code{macroexpansion} is @code{expand}, a macro function is called once,
-@c and the calling expression is modified.
-
 Hat @code{macroexpansion} den Wert @code{displace}, wird eine Makro-Funktion
 nur einmal aufgerufen.  Der aufrufende Ausdruck wird modifiziert.
 
-@c ===beg===
-@c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), 
-@c                        return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), 
-@c                        return (x - 99));
-@c macroexpansion: displace;
-@c f (a * b);
-@c dispfun (f);
-@c f (a * b);
-@c ===end===
 @example
 (%i1) f (x) := h (x) / g (x);
                                   h(x)
@@ -766,11 +493,6 @@ x + 99 is equal to x
 @defvr {Systemvariable} macros
 Standardwert: @code{[]}
 
-@c @code{macros} is the list of user-defined macro functions. The macro function
-@c definition operator @code{::=} puts a new macro function onto this list, and 
-@c @code{kill}, @code{remove}, and @code{remfunction} remove macro functions 
-@c from the list. See also @code{infolists}.
-
 @code{macros} ist eine Informationsliste, die die vom Nutzer mit dem Operator
 @code{::=} definierten Makro-Funktionen enth@"alt.  Wird die Makro-Funktion mit 
 einer der Funktionen @code{kill}, @code{remove} oder @code{remfunction} 
@@ -782,39 +504,14 @@ gel@"oscht, wird der Eintrag aus der Informationsliste entfernt.  Siehe auch
 @anchor{splice}
 @deffn {Funktion} splice (@var{a})
 
-@c Splices (interpolates) the list named by the atom @var{a} into an expression,
-@c but only if @code{splice} appears within @code{buildq}; otherwise, 
-@c @code{splice} is treated as an undefined function. If appearing within 
-@c @code{buildq} as @var{a} alone (without @code{splice}), @var{a} is 
-@c substituted (not interpolated) as a list into the result. The argument of 
-@c @code{splice} can only be an atom; it cannot be a literal list or an 
-@c expression which yields a list.
-
 Die Funktion @code{splice} kann nur im Zusammenhang mit der Funktion 
 @code{buildq} verwendet werden.  Das Argument @var{a} bezeichnet eine Liste, die
 an Stelle von @code{splice(a)} in einen Ausdruck eingef@"ugt wird.  @var{a} kann
 nicht selbst eine Liste sein oder ein Ausdruck sein, der zu einer Liste 
 auswertet.
 
-@c Typically @code{splice} supplies the arguments for a function or operator.
-@c For a function @code{f}, the expression @code{f (splice (@var{a}))} within 
-@c @code{buildq} expands to @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
-@c For an operator @code{o}, the expression @code{"o" (splice (@var{a})} within 
-@c @code{buildq} expands to @code{"o" (@var{a}[1], @var{a}[2],@var{a}[3], ...)},
-@c where @code{o} may be any type of operator (typically one which takes 
-@c multiple arguments). Note that the operator must be enclosed in double quotes
-@c @code{"}.
-
-@c TODO: TEXT NICHT UEBERSETZT. BESSER ALS GUTE BEISPIELE DOKUMENTIEREN!
-
 Beispiele:
 
-@c ===beg===
-@c buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
-@c buildq ([x: [1, %pi]], "/" (splice (x)));
-@c matchfix ("<>", "<>");
-@c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
-@c ===end===
 @example
 (%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
                        foo(1, %pi, z - y)
@@ -841,17 +538,8 @@ Beispiele:
 @anchor{apply}
 @deffn {Funktion} apply (@var{F}, [@var{x_1}, @dots{}, @var{x_n}])
 
-@c Constructs and evaluates an expression 
-@c @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
-
 Konstruiert den Ausdruck @code{@var{F}(@var{arg_1}, ..., @var{arg_n})} und 
 wertet diesen aus.
-
-@c @code{apply} does not attempt to distinguish array functions from ordinary 
-@c functions; when @var{F} is the name of an array function, @code{apply} 
-@c evaluates @code{@var{F}(...)} (that is, a function call with parentheses 
-@c instead of square brackets). @code{arrayapply} evaluates a function call with
-@c square brackets in this case.
 
 @code{apply} versucht nicht Array-Funktionen von gew@"ohnlichen Funktionen zu
 unterscheiden.  Ist @var{F} der Name eine Array-Funktion, wertet @code{apply}
@@ -860,16 +548,9 @@ Funktion @code{apply}, wenn @var{F} eine Array-Funktion ist.
 
 Beispiele:
 
-@c @code{apply} evaluates its arguments. In this example, @code{min} is applied 
-@c to the value of @code{L}.
-
 @code{apply} wertet die Argumente aus.  In diesem Beispiel wird die Funktion
 @code{min} auf die Liste @code{L} angewendet.
 
-@c ===beg===
-@c L : [1, 5, -10.2, 4, 3];
-@c apply (min, L);
-@c ===end===
 @example
 (%i1) L : [1, 5, -10.2, 4, 3];
 (%o1)                 [1, 5, - 10.2, 4, 3]
@@ -877,18 +558,9 @@ Beispiele:
 (%o2)                        - 10.2
 @end example
 
-@c @code{apply} evaluates arguments, even if the function @var{F} quotes them.
-
 @code{apply} wertet die Argumente auch dann aus, wenn die Funktion @code{F}
 die Auswertung ihrer Argumente unterdr@"uckt.
 
-@c ===beg===
-@c F (x) := x / 1729;
-@c fname : F;
-@c dispfun (F);
-@c dispfun (fname);
-@c apply (dispfun, [fname]);
-@c ===end===
 @example
 (%i1) F (x) := x / 1729;
 @group
@@ -915,20 +587,10 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-@c @code{apply} evaluates the function name @var{F}. Single quote @code{'} 
-@c defeats evaluation. @code{demoivre} is the name of a global variable and also
-@c a function.
-
 @code{apply} wertet den Namen der Funktion @var{F} aus.  Mit dem Quote-Operator
 @code{'} wird die Auswertung unterdr@"uckt.  @code{demoivre} ist der Name einer
 globalen Optionsvariable und einer Funktion.
 
-@c ===beg===
-@c demoivre;
-@c demoivre (exp (%i * x));
-@c apply (demoivre, [exp (%i * x)]);
-@c apply ('demoivre, [exp (%i * x)]);
-@c ===end===
 @example
 (%i1) demoivre;
 (%o1)                         false
@@ -951,21 +613,9 @@ Improper name or value in functional position.
 @deffnx {Funktion} define (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
 @deffnx {Funktion} define (ev (@var{expr_1}), @var{expr_2})
 
-@c Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and
-@c function body @var{expr}. @code{define} always evaluates its second argument
-@c (unless explicitly quoted). The function so defined may be an ordinary Maxima
-@c function (with arguments enclosed in parentheses) or an array function (with
-@c arguments enclosed in square brackets).
-
 Definiert eine Funktion mit dem Namen @var{f} und den Argumenten @var{x1}, 
 @dots{}, @var{x_n} und der Funktionsdefinition @var{expr}.  @code{define} wertet 
 das zweite Argument immer aus.
-
-@c When the last or only function argument @var{x_n} is a list of one element, 
-@c the function defined by @code{define} accepts a variable number of arguments.
-@c Actual arguments are assigned one-to-one to formal arguments @var{x_1}, ..., 
-@c @var{x_(n - 1)}, and any further actual arguments, if present, are assigned 
-@c to @var{x_n} as a list.
 
 Ist das letzte oder einzige Argument @var{v_n} eine Liste mit einem Element, 
 dann akzeptiert die Funktion eine variable Anzahl an Argumenten.  Die Argumente
@@ -973,60 +623,30 @@ der Funktion werden nacheinander den Variablen @var{x_1}, @dots{}, @var{x_(n-1)}
 zugewiesen.  Sind weitere Argumente vorhanden, werden diese als Liste der
 Variablen @var{x_n} zugewiesen.
 
-@c When the first argument of @code{define} is an expression of the form
-@c @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., 
-@c @var{x_n}]}, the function arguments are evaluated but @var{f} is not 
-@c evaluated, even if there is already a function or variable by that name.
-
 Ist das erste Argument der Funktion @code{define} ein Ausdruck der Form
 @code{@var{f}(@var{x_1}, ..., @var{x_n})} oder @code{@var{f}[@var{x_1}, ..., 
 @var{x_n}]} werden die Argumente der Funktion ausgewertet, aber nicht die 
 Funktion @var{f} selbst.  @var{f} wird auch dann nicht ausgewertet, wenn es 
 bereits eine Funktion mit dem Namen @var{f} gibt.
 
-@c When the first argument is an expression with operator @code{funmake}, 
-@c @code{arraymake}, or @code{ev}, the first argument is evaluated; this allows 
-@c for the function name to be computed, as well as the body.
-
 Das erste Argument wird dann ausgewertet, wenn es ein Ausdruck mit den 
 Funktionen @code{funmake}, @code{arraymake} oder @code{ev} ist.
-
-@c All function definitions appear in the same namespace; defining a function 
-@c @code{f} within another function @code{g} does not automatically limit the 
-@c scope of @code{f} to @code{g}. However, @code{local(f)} makes the definition 
-@c of function @code{f} effective only within the block or other compound 
-@c expression in which @code{local} appears.
 
 Alle Funktionsdefinitionen treten in demselben Namensraum auf.  Die Definition
 einer Funktion @code{g} innerhalb einer Funktion @code{f} f@"uhrt nicht 
 automatisch zu einer lokalen Definition.  Um eine lokale Funktion zu erhalten,
 kann @code{lokal(g)} innerhalb der Funktion @code{f} ausgef@"uhrt werden.
 
-@c If some formal argument @var{x_k} is a quoted symbol (after evaluation), the 
-@c function defined by @code{define} does not evaluate the corresponding actual 
-@c argument. Otherwise all actual arguments are evaluated.
-
 Ist eines der Argumente @var{x_k} nach der Auswertung ein quotiertes Symbol,
 wertet die mit @code{define} definierte Funktion das Argument nicht aus.
 Alle weiteren Argumente der Funktion werden ausgewertet.
-
-@c See also @code{:=} and @code{::=}.
 
 Siehe auch @mref{:=} und @mrefdot{::=}
 
 Beispiele:
 
-@c @code{define} always evaluates its second argument (unless explicitly quoted).
-
 @code{define} wertet das zweite Argument aus.
 
-@c ===beg===
-@c expr : cos(y) - sin(x);
-@c define (F1 (x, y), expr);
-@c F1 (a, b);
-@c F2 (x, y) := expr;
-@c F2 (a, b);
-@c ===end===
 @example
 (%i1) expr : cos(y) - sin(x);
 (%o1)                    cos(y) - sin(x)
@@ -1040,16 +660,10 @@ Beispiele:
 (%o5)                    cos(y) - sin(x)
 @end example
 
-@c The function defined by @code{define} may be an ordinary Maxima function or 
-@c an array function.
 
 Mit @code{define} k@"onnen gew@"ohnliche Maxima-Funktionen und Array-Funktionen 
 definiert werden.
 
-@c ===beg===
-@c define (G1 (x, y), x.y - y.x);
-@c define (G2 [x, y], x.y - y.x);
-@c ===end===
 @example
 (%i1) define (G1 (x, y), x.y - y.x);
 (%o1)               G1(x, y) := x . y - y . x
@@ -1058,17 +672,10 @@ definiert werden.
                        x, y
 @end example
 
-@c When the last or only function argument @var{x_n} is a list of one element,
-@c the function defined by @code{define} accepts a variable number of arguments.
-
 Ist das letzte oder einzige Argument @var{x_n} eine Liste mit einem Element,
 akzeptiert die mit @code{define} definierte Funktion eine variable Anzahl an
 Argumenten.
 
-@c ===beg===
-@c define (H ([L]), '(apply ("+", L)));
-@c H (a, b, c);
-@c ===end===
 @example
 (%i1) define (H ([L]), '(apply ("+", L)));
 (%o1)                H([L]) := apply("+", L)
@@ -1076,20 +683,9 @@ Argumenten.
 (%o2)                       c + b + a
 @end example
 
-@c When the first argument is an expression with operator @code{funmake}, 
-@c @code{arraymake}, or @code{ev}, the first argument is evaluated.
-
 Ist das erste Argument ein Ausdruck mit den Funktionen @code{funmake},
 @code{arraymake} oder @code{ev} wird das Argument ausgewertet.
 
-@c ===beg===
-@c [F : I, u : x];
-@c funmake (F, [u]);
-@c define (funmake (F, [u]), cos(u) + 1);
-@c define (arraymake (F, [u]), cos(u) + 1);
-@c define (foo (x, y), bar (y, x));
-@c define (ev (foo (x, y)), sin(x) - cos(y));
-@c ===end===
 @example
 (%i1) [F : I, u : x];
 (%o1)                        [I, x]
@@ -1111,65 +707,27 @@ Ist das erste Argument ein Ausdruck mit den Funktionen @code{funmake},
 @anchor{define_variable}
 @deffn {Funktion} define_variable (@var{name}, @var{default_value}, @var{mode})
 
-@c Introduces a global variable into the Maxima environment.
-   @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE
-   @c USEFUL IN TRANSLATED CODE ??
-@c @code{define_variable} is useful in user-written packages, which are often
-@c translated or compiled.
-@c @code{define_variable} carries out the following steps:
-
 Definiert eine globale Variable in der Maxima-Umgebung.  @code{define_variable}
 ist n@"utzlich f@"ur das Schreiben von Paketen, die h@"aufig @"ubersetzt oder 
 kompiliert werden.  @code{define_variable} f@"uhrt die folgenden Schritte aus:
 
 @enumerate
-@c @code{mode_declare (@var{name}, @var{mode})} declares the mode of @var{name} 
-@c to the translator. See @code{mode_declare} for a list of the possible modes.
-
 @item
 @code{mode_declare(@var{name}, @var{mode})} deklariert den Typ der Variablen
 @var{name} f@"ur den @"Ubersetzer.  Siehe @mref{mode_declare} f@"ur eine Liste 
 der m@"oglichen Typen.
 
-@c If the variable is unbound, @var{default_value} is assigned to @var{name}.
-
 @item
 Hat die Variable keinen Wert, wird der Variablen der Wert @var{default_value}
 zugewiesen.
 
-@c @code{declare (@var{name}, special)} declares it special.
-   @c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP 
-   @c PROGRAMMERS
-
 @item
 @code{declare(@var{name}, special)} deklariert die Variable als Special.
-
-@c Associates @var{name} with a test function to ensure that @var{name} is only
-@c assigned values of the declared mode.
 
 @item
 Ordnet der Variablen @var{name} eine Testfunktion zu, um sicherzustellen, dass 
 der Variablen nur Werte zugewiesen werden k@"onnen.
 @end enumerate
-
-@c FOLLOWING STATEMENT APPEARS TO BE OUT OF DATE. EXAMINING DEFMSPEC 
-@c $DEFINE_VARIABLE AND DEF%TR $DEFINE_VARIABLE IN src/trmode.lisp,
-@c IT APPEARS THAT THE 4TH ARGUMENT IS NEVER REFERRED TO.
-@c EXECUTING translate_file ON A MAXIMA BATCH FILE WHICH CONTAINS
-@c define_variable (foo, 2222, integer, "THIS IS FOO");
-@c DOES NOT PUT "THIS IS FOO" INTO THE LISP FILE NOR THE UNLISP FILE.
-@c The optional 4th argument is a documentation string.  When
-@c @code{translate_file} is used on a package which includes documentation
-@c strings, a second file is output in addition to the Lisp file which
-@c will contain the documentation strings, formatted suitably for use in
-@c manuals, usage files, or (for instance) @code{describe}.
-
-@c The @code{value_check} property can be assigned to any variable which has 
-@c been defined via @code{define_variable} with a mode other than @code{any}.
-@c The @code{value_check} property is a lambda expression or the name of a 
-@c function of one variable, which is called when an attempt is made to assign 
-@c a value to the variable. The argument of the @code{value_check} function is 
-@c the would-be assigned value.
 
 Einer mit @code{define_variable} definierten Variablen, die einen anderen Typ 
 als @code{any} erhalten hat, kann die Eigenschaft @code{value_check} zugewiesen
@@ -1178,11 +736,6 @@ Variablen oder ein Lambda-Ausdruck, die aufgerufen werden, wenn der Variablen
 ein Wert zugewiesen werden soll.  Das Argument der @code{value_check}-Funktion
 ist der Wert, den die Variable erhalten soll.
 
-@c @code{define_variable} evaluates @code{default_value}, and quotes @code{name}
-@c and @code{mode}. @code{define_variable} returns the current value of 
-@c @code{name}, which is @code{default_value} if @code{name} was unbound before,
-@c and otherwise it is the previous value of @code{name}.
-
 @code{define_variable} wertet @code{default_value} aus.  Die Argumente 
 @code{name} und @code{mode} werden nicht ausgewertet.  @code{define_variable}
 gibt den aktuellen Wert der Variable @code{name} zur@"uck.  Dieser ist
@@ -1190,17 +743,8 @@ gibt den aktuellen Wert der Variable @code{name} zur@"uck.  Dieser ist
 
 Beispiele:
 
-@c @code{foo} is a Boolean variable, with the initial value @code{true}.
-
 @code{foo} ist eine boolsche Variable mit dem Wert @code{true}.
 
-@c ===beg===
-@c define_variable (foo, true, boolean);
-@c foo;
-@c foo: false;
-@c foo: %pi;
-@c foo;
-@c ===end===
 @example
 (%i1) define_variable (foo, true, boolean);
 (%o1)                         true
@@ -1215,20 +759,9 @@ Error: foo was declared mode boolean, has value: %pi
 (%o5)                         false
 @end example
 
-@c @code{bar} is an integer variable, which must be prime.
-
 @code{bar} ist eine Variable mit dem Typ einer ganzen Zahl, die eine Primzahl
 sein muss.
 
-@c ===beg===
-@c define_variable (bar, 2, integer);
-@c qput (bar, prime_test, value_check);
-@c prime_test (y) := if not primep(y) then 
-@c                            error (y, "is not prime.");
-@c bar: 1439;
-@c bar: 1440;
-@c bar;
-@c ===end===
 @example
 (%i1) define_variable (bar, 2, integer);
 (%o1)                           2
@@ -1249,23 +782,10 @@ sein muss.
 (%o6)                         1439
 @end example
 
-@c @code{baz_quux} is a variable which cannot be assigned a value. The mode 
-@c @code{any_check} is like @code{any}, but @code{any_check} enables the 
-@c @code{value_check} mechanism, and @code{any} does not.
-
 @code{baz_quux} ist eine Variable, der kein Wert zugewiesen werden kann.  Der
 Typ @code{any_check} ist vergleichbar mit @code{any}.  Aber @code{any_check} 
 ruft im Gegensatz zu @code{any} den @code{value_check}-Mechanismus auf.
 
-@c ===beg===
-@c define_variable (baz_quux, 'baz_quux, any_check);
-@c F: lambda ([y], if y # 'baz_quux then 
-@c                  error ("Cannot assign to `baz_quux'."));
-@c qput (baz_quux, ''F, value_check);
-@c baz_quux: 'baz_quux;
-@c baz_quux: sqrt(2);
-@c baz_quux;
-@c ===end===
 @example
 (%i1) define_variable (baz_quux, 'baz_quux, any_check);
 (%o1)                       baz_quux
@@ -1295,56 +815,24 @@ Cannot assign to `baz_quux'.
 @deffn  {Funktion} dispfun (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} dispfun (all)
 
-@c Displays the definition of the user-defined functions @var{f_1}, ..., 
-@c @var{f_n}. Each argument may be the name of a macro (defined with 
-@c @code{::=}), an ordinary function (defined with @code{:=} or @code{define}),
-@c an array function (defined with @code{:=} or @code{define}, but enclosing 
-@c arguments in square brackets @code{[ ]}), a subscripted function, (defined 
-@c with @code{:=} or @code{define}, but enclosing some arguments in square 
-@c brackets and others in parentheses @code{( )}) one of a family of subscripted
-@c functions selected by a particular subscript value, or a subscripted function
-@c defined with a constant subscript.
-
 Zeigt die Definitionen der nutzerdefinierten Funktionen @var{f_1}, @dots{}, 
 @var{f_n} an.  Die Argumente k@"onnen gew@"ohnliche Funktionen, Makros, 
 Array-Funktionen oder indizierte Funktionen sein.
 
-@c @code{dispfun (all)} displays all user-defined functions as given by the 
-@c @code{functions}, @code{arrays}, and @code{macros} lists, omitting 
-@c subscripted functions defined with constant subscripts.
-
 @code{dispfun(all)} zeigt die Definitionen aller nutzerdefinierten Funktionen
 an, die in den Informationslisten @code{functions}, @code{arrays} oder
 @code{macros} enthalten sind.
-
-@c @code{dispfun} creates an intermediate expression label (@code{%t1}, 
-@c @code{%t2}, etc.) for each displayed function, and assigns the function 
-@c definition to the label. In contrast, @code{fundef} returns the function 
-@c definition.
 
 @code{dispfun} erzeugt Zwischenmarken @code{%t} f@"ur jede einzelne anzuzeigende
 Funktion und weist die Funktionsdefinitionen den Zwischenmarken zu.  Im 
 Gegensatz dazu, zeigt die Funktion @code{fundef} die Funktionsdefinition ohne
 Zwischenmarken an.
 
-@c @code{dispfun} quotes its arguments; the quote-quote operator @code{'@w{}'} 
-@c defeats quotation.  @code{dispfun} returns the list of intermediate 
-@c expression labels corresponding to the displayed functions.
-
 @code{dispfun} wertet die Argumente nicht aus.  @code{dispfun} gibt eine Liste
 mit den Zwischenmarken zur@"uck, die zu den angezeigten Funktionen geh@"oren.
 
 Beispiele:
 
-@c ===beg===
-@c m(x, y) ::= x^(-y);
-@c f(x, y) :=  x^(-y);
-@c g[x, y] :=  x^(-y);
-@c h[x](y) :=  x^(-y);
-@c i[8](y) :=  8^(-y);
-@c dispfun (m, f, g, h, h[5], h[10], i[8]);
-@c ''%;
-@c ===end===
 @example
 (%i1) m(x, y) ::= x^(-y);
                                      - y
@@ -1413,17 +901,9 @@ Beispiele:
 @anchor{fullmap}
 @deffn {Funktion} fullmap (@var{f}, @var{expr_1}, @dots{})
 
-@c Similar to @code{map}, but @code{fullmap} keeps mapping down all 
-@c subexpressions until the main operators are no longer the same.
-
 Die Funktion @code{fullmap} ist vergleichbar mit der Funktion @code{map}.  Im 
 Unterschied zu der Funktion @code{map} kann @code{fullmap} auf verschachtelte 
 Audr@"ucke angewendet werden.
-
-@c @code{fullmap} is used by the Maxima simplifier for certain matrix 
-@c manipulations; thus, Maxima sometimes generates an error message concerning 
-@c @code{fullmap} even though @code{fullmap} was not explicitly called by the 
-@c user.
 
 Intern wird @code{fullmap} von Maxima f@"ur die Vereinfachung von Matrizen 
 aufgerufen.  Daher k@"onnen bei der Vereinfachung von Matrizen Fehlermeldungen 
@@ -1432,11 +912,6 @@ aufgerufen wurde.
 
 Beispiele:
 
-@c ===beg===
-@c a + b * c;
-@c fullmap (g, %);
-@c map (g, %th(2));
-@c ===end===
 @example
 (%i1) a + b * c;
 (%o1)                        b c + a
@@ -1451,17 +926,11 @@ Beispiele:
 @anchor{fullmapl}
 @deffn {Funktion} fullmapl (@var{f}, @var{list_1}, @dots{})
 
-@c Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and 
-@c matrices.
-
 Die Funktion @code{fullmapl} ist vergleichbar mit @code{fullmap}.
 @code{fullmapl} kann jedoch nur auf Matrizen und Listen angewendet werden kann.
 
 Beispiele:
 
-@c ===beg===
-@c fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
-@c ===end===
 @example
 (%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
 (%o1)                [[a + 3, 4], [4, 3.5]]
@@ -1473,39 +942,16 @@ Beispiele:
 @defvr {Systemvariable} functions
 Standardwert: @code{[]}
 
-@c @code{functions} is the list of ordinary Maxima functions in the current 
-@c session. An ordinary function is a function constructed by @code{define} or 
-@c @code{:=} and called with parentheses @code{()}. A function may be defined at
-@c the Maxima prompt or in a Maxima file loaded by @code{load} or @code{batch}.
-
 @code{functions} ist eine Informationsliste, die die vom Nutzer mit dem
 Operator @var{:=} oder der Funktion @code{define} definierten Funktionen 
 enth@"alt.  Siehe @mrefdot{infolists}
-
-@c Array functions (called with square brackets, e.g., @code{F[x]}) and 
-@c subscripted functions (called with square brackets and parentheses, e.g., 
-@c @code{F[x](y)}) are listed by the global variable @code{arrays}, and not by 
-@c @code{functions}.
 
 Array-Funktionen und indizierte Funktionen werden nicht in die Informationsliste
 @code{functions}, sondern in die Informationsliste @code{arrays} eingetragen.
 Siehe @mrefdot{arrays}
 
-@c Lisp functions are not kept on any list.
-
 Beispiele:
 
-@c ===beg===
-@c F_1 (x) := x - 100;
-@c F_2 (x, y) := x / y;
-@c define (F_3 (x), sqrt (x));
-@c G_1 [x] := x - 100;
-@c G_2 [x, y] := x / y;
-@c define (G_3 [x], sqrt (x));
-@c H_1 [x] (y) := x^y;
-@c functions;
-@c arrays;
-@c ===end===
 @example
 (%i1) F_1 (x) := x - 100;
 (%o1)                   F_1(x) := x - 100
@@ -1540,73 +986,33 @@ Beispiele:
 @anchor{fundef}
 @deffn {Funktion} fundef (@var{f})
 
-@c Returns the definition of the function @var{f}.
-
 Gibt die Definition der Funktion @var{f} zur@"uck.
-
-@c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
-@c The argument may be the name of a macro (defined with @code{::=}), an 
-@c ordinary function (defined with @code{:=} or @code{define}), an array 
-@c function (defined with @code{:=} or @code{define}, but enclosing arguments 
-@c in square brackets @code{[ ]}), a subscripted function, (defined with 
-@c @code{:=} or @code{define}, but enclosing some arguments in square brackets 
-@c and others in parentheses @code{( )}) one of a family of subscripted 
-@c functions selected by a particular subscript value, or a subscripted 
-@c function defined with a constant subscript.
 
 Das Argument @var{f} kann eine gew@"ohnliche Funktion, eine Makro-Funktion, eine
 Array-Funktion oder eine indizierte Funktion sein.
 
-@c @code{fundef} quotes its argument; the quote-quote operator @code{'@w{}'} 
-@c defeats quotation.
-
-@code{fundef} wertet das Argument aus.
-
-@c @code{fundef (@var{f})} returns the definition of @var{f}. In contrast, 
-@c @code{dispfun (@var{f})} creates an intermediate expression label and 
-@c assigns the definition to the label.
-
-Siehe auch @mrefdot{dispfun}
+@code{fundef} wertet das Argument aus.  Siehe auch @mrefdot{dispfun}
 @end deffn
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{funmake}
 @deffn {Funktion} funmake (@var{F}, [@var{arg_1}, @dots{}, @var{arg_n}])
 
-@c Returns an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}. The 
-@c return value is simplified, but not evaluated, so the function @var{F} is 
-@c not called, even if it exists.
-
 Gibt den Ausdruck @code{@var{F}(@var{arg_1}, ..., @var{arg_n})} zur@"uck.  Die
 R@"uckgabe wird vereinfacht, aber nicht ausgewertet.  Die Funktion @var{F} wird
 also nicht aufgerufen, auch wenn diese existiert.
-
-@c @code{funmake} does not attempt to distinguish array functions from ordinary 
-@c functions; when @var{F} is the name of an array function, @code{funmake} 
-@c returns @code{@var{F}(...)} (that is, a function call with parentheses 
-@c instead of square brackets). @code{arraymake} returns a function call with 
-@c square brackets in this case.
 
 @code{funmake} versucht nicht, Array-Funktionen von gew@"ohnlichen Funktionen zu 
 unterscheiden.  Ist @var{F} der Name einer Array-Funktion, dann gibt
 @code{funmake} einen Ausdruck der Form @code{@var{F}(...)} zur@"uck.
 F@"ur Array-Funktionen kann die Funktion @code{arraymake} verwendet werden.
 
-@c @code{funmake} evaluates its arguments.
-
 @code{funmake} wertet die Argumente aus.
 
 Beispiele:
 
-@c @code{funmake} applied to an ordinary Maxima function.
-
 @code{funmake} angewendet auf eine gew@"ohnliche Funktion.
 
-@c ===beg===
-@c F (x, y) := y^2 - x^2;
-@c funmake (F, [a + 1, b + 1]);
-@c ''%;
-@c ===end===
 @example
 (%i1) F (x, y) := y^2 - x^2;
                                    2    2
@@ -1618,15 +1024,8 @@ Beispiele:
 (%o3)                  (b + 1)  - (a + 1)
 @end example
 
-@c @code{funmake} applied to a macro.
-
 @code{funmake} angewendet auf ein Makro.
 
-@c ===beg===
-@c G (x) ::= (x - 1)/2;
-@c funmake (G, [u]);
-@c ''%;
-@c ===end===
 @example
 (%i1) G (x) ::= (x - 1)/2;
                                   x - 1
@@ -1640,17 +1039,8 @@ Beispiele:
                                 2
 @end example
 
-@c @code{funmake} applied to a subscripted function.
-
 @code{funmake} angewendet auf eine indizierte Funktion.
 
-@c ===beg===
-@c H [a] (x) := (x - 1)^a;
-@c funmake (H [n], [%e]);
-@c ''%;
-@c funmake ('(H [n]), [%e]);
-@c ''%;
-@c ===end===
 @example
 (%i1) H [a] (x) := (x - 1)^a;
                                         a
@@ -1670,16 +1060,9 @@ Beispiele:
 (%o5)                       (%e - 1)
 @end example
 
-@c @code{funmake} applied to a symbol which is not a defined function of any 
-@c kind.
-
 @code{funmake} angewendet auf ein Symbol, welches keine Funktion 
 repr@"asentiert.
 
-@c ===beg===
-@c funmake (A, [u]);
-@c ''%;
-@c ===end===
 @example
 (%i1) funmake (A, [u]);
 (%o1)                         A(u)
@@ -1687,17 +1070,8 @@ repr@"asentiert.
 (%o2)                         A(u)
 @end example
 
-@c @code{funmake} evaluates its arguments, but not the return value.
-
 @code{funmake} wertet die Argumente, aber nicht die R@"uckgabe aus.
 
-@c ===beg===
-@c det(a,b,c) := b^2 -4*a*c;
-@c (x : 8, y : 10, z : 12);
-@c f : det;
-@c funmake (f, [x, y, z]);
-@c ''%;
-@c ===end===
 @example
 (%i1) det(a,b,c) := b^2 -4*a*c;
                                     2
@@ -1712,13 +1086,8 @@ repr@"asentiert.
 (%o5)                         - 284
 @end example
 
-@c Maxima simplifies @code{funmake}'s return value.
-
 Maxima vereinfacht den R@"uckgabewert der Funktion @code{funmake}.
 
-@c ===beg===
-@c funmake (sin, [%pi / 2]);
-@c ===end===
 @example
 (%i1) funmake (sin, [%pi / 2]);
 (%o1)                           1
@@ -1731,29 +1100,12 @@ Maxima vereinfacht den R@"uckgabewert der Funktion @code{funmake}.
 @deffnx {Funktion} lambda ([[@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
 @deffnx {Funktion} lambda ([@var{x_1}, @dots{}, @var{x_m}, [@var{L}]], @var{expr_1}, @dots{}, @var{expr_n})
 
-@c Defines and returns a lambda expression (that is, an anonymous function). The
-@c function may have required arguments @var{x_1}, ..., @var{x_m} and/or 
-@c optional arguments @var{L}, which appear within the function body as a list.
-@c The return value of the function is @var{expr_n}. A lambda expression can be 
-@c assigned to a variable and evaluated like an ordinary function. A lambda 
-@c expression may appear in some contexts in which a function name is expected.
-
 Definiert einen Lambda-Ausdruck, auch als anonyme Funktion bezeichnet, und gibt 
 diesen zur@"uck.  Die Funktion kann Argumente @var{x_1}, @dots{}, @var{x_m} und
 optionale Argumente @var{L} haben.  Die R@"uckgabe der Funktion ist das Ergebnis
 des Ausdrucks @var{exprn}.  Ein Lambda-Ausdruck kann einer Variablen zugewiesen
 werden und wertet wie eine gew@"ohnliche Funktion aus.  Ein Lambda-Ausdruck kann
 an solchen Stellen verwendet werden, wo der Name einer Funktion erwartet wird.
-
-@c When the function is evaluated, unbound local variables @var{x_1}, ..., 
-@c @var{x_m} are created. @code{lambda} may appear within @code{block} or 
-@c another @code{lambda}; local variables are established each time another 
-@c @code{block} or @code{lambda} is evaluated. Local variables appear to be 
-@c global to any enclosed @code{block} or @code{lambda}. If a variable is not 
-@c local, its value is the value most recently assigned in an enclosing 
-@c @code{block} or @code{lambda}, if any, otherwise, it is the value of the 
-@c variable in the global environment. This policy may coincide with the usual 
-@c understanding of "dynamic scope".
 
 Wird der Lambda-Ausdruck ausgewertet, werden lokale Variablen @var{x_1}, 
 @dots{}, @var{x_m} erzeugt.  @code{lambda} kann innerhalb von Bl@"ocken oder 
@@ -1765,22 +1117,11 @@ oder zu jedem eingeschlossenen Lambda-Ausdruck.  Ist eine Variable innerhalb von
 n@"achsth@"oheren Anweisung, die ihr einen Wert gibt oder den globalen Wert der 
 Maxima-Umgebung.
 
-@c After local variables are established, @var{expr_1} through @var{expr_n} are 
-@c evaluated in turn. The special variable @code{%%}, representing the value of 
-@c the preceding expression, is recognized. @code{throw} and @code{catch} may 
-@c also appear in the list of expressions.
-
 Nachdem die lokalen Variablen erzeugt sind, werden die Ausdr@"ucke @var{expr_1},
 @dots{}, @var{expr_n} nacheinander ausgewertet.  Die Systemvariable @code{%%},
 welche das Ergebnis eines vorhergehendes Ausdrucks enth@"alt, kann verwendet 
 werden.  In einem Lambda-Ausdruck k@"onnen die Anweisungen @code{catch} und
 @code{throw} verwendet werden.
-
-@c @code{return} cannot appear in a lambda expression unless enclosed by 
-@c @code{block}, in which case @code{return} defines the return value of the 
-@c block and not of the lambda expression, unless the block happens to be 
-@c @var{expr_n}. Likewise, @code{go} cannot appear in a lambda expression unless
-@c enclosed by @code{block}.
 
 Die @code{return}-Anweisung kann in einem Lambda-Ausdruck nur verwendet werden,
 wenn sie von einer @code{block}-Anweisung eingeschlossen wird.  Die 
@@ -1788,26 +1129,13 @@ wenn sie von einer @code{block}-Anweisung eingeschlossen wird.  Die
 des Lambda-Ausdrucks.  Auch die @code{go}-Anweisung kann in einem
 Lambda-Ausdrucks nur in einem Block verwendet werden.
 
-@c @code{lambda} quotes its arguments; the quote-quote operator @code{'@w{}'} 
-@c defeats quotation.
-
 @code{lambda} wertet die Argumente nicht aus.
 
 Beispiele:
 
-@c @itemize @bullet
-@c @item
-@c A lambda expression can be assigned to a variable and evaluated like an 
-@c ordinary function.
-@c @end itemize
-
 Ein Lambda-Ausdruck kann einer Variablen zugewiesen werden und wie eine
 gew@"ohnliche Funktion ausgewertet werden.
 
-@c ===beg===
-@c f: lambda ([x], x^2);
-@c f(a);
-@c ===end===
 @example
 (%i1) f: lambda ([x], x^2);
                                       2
@@ -1817,20 +1145,9 @@ gew@"ohnliche Funktion ausgewertet werden.
 (%o2)                          a
 @end example
 
-@c @itemize @bullet
-@c @item
-@c A lambda expression may appear in contexts in which a function evaluation is 
-@c expected.
-@c @end itemize
-
 Ein Lamda-Ausdruck kann an Stellen verwendet werden, wo der Name einer Funktion
 erwartet wird.
 
-@c ===beg===
-@c lambda ([x], x^2) (a);
-@c apply (lambda ([x], x^2), [a]);
-@c map (lambda ([x], x^2), [a, b, c, d, e]);
-@c ===end===
 @example
 (%i3) lambda ([x], x^2) (a);
                                 2
@@ -1843,28 +1160,10 @@ erwartet wird.
 (%o5)                 [a , b , c , d , e ]
 @end example
 
-@c @itemize @bullet
-@c @item
-@c Argument variables are local variables. Other variables appear to be global 
-@c variables. Global variables are evaluated at the time the lambda expression 
-@c is evaluated, unless some special evaluation is forced by some means, such as
-@c @code{'@w{}'}.
-@c @end itemize
-
 Die Argumente sind lokale Variablen.  Andere Variablen sind globale Variablen.
 Globale Variablen werden zu dem Zeitpunkt ausgewertet, wenn der Lambda-Ausdruck
 ausgewertet wird.
 
-@c ===beg===
-@c a: %pi$
-@c b: %e$
-@c g: lambda ([a], a*b);
-@c b: %gamma$
-@c g(1/2);
-@c g2: lambda ([a], a*''b);
-@c b: %e$
-@c g2(1/2);
-@c ===end===
 @example
 (%i6) a: %pi$
 (%i7) b: %e$
@@ -1884,21 +1183,10 @@ ausgewertet wird.
                                2
 @end example
 
-@c @itemize @bullet
-@c @item
-@c Lambda expressions may be nested. Local variables within the outer lambda 
-@c expression appear to be global to the inner expression unless masked by local
-@c variables of the same names.
-@c @end itemize
-
 Lambda-Ausdr@"ucke k@"onnen verschachtelt werden.  Lokale Variablen eines
 @"au@ss{}eren Lambda-Ausdrucks sind global zu den enthaltenen Lambda-Ausdr@"ucken, 
 au@ss{}er diese werden wieder als lokal erkl@"art.
 
-@c ===beg===
-@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
-@c h(%pi, %gamma);
-@c ===end===
 @example
 (%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
                                                    1
@@ -1910,24 +1198,10 @@ au@ss{}er diese werden wieder als lokal erkl@"art.
                                2
 @end example
 
-@c @itemize @bullet
-@c @item
-@c Since @code{lambda} quotes its arguments, lambda expression @code{i} below 
-@c does not define a "multiply by @code{a}" function. Such a function can be 
-@c defined via @code{buildq}, as in lambda expression @code{i2} below.
-@c @end itemize
-
 Da @code{lambda} die Argumente nicht auswertet, definiert der unten angegebene
 Ausdruck @code{i} keine Funktion "multipliziere mit @code{a}".  Solch eine
 Funktion kann mit Hilfe der Funktion @code{buildq} definiert werden.
 
-@c ===beg===
-@c i: lambda ([a], lambda ([x], a*x));
-@c i(1/2);
-@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
-@c i2(1/2);
-@c i2(1/2)(%pi);
-@c ===end===
 @example
 (%i16) i: lambda ([a], lambda ([x], a*x));
 (%o16)            lambda([a], lambda([x], a x))
@@ -1945,22 +1219,9 @@ Funktion kann mit Hilfe der Funktion @code{buildq} definiert werden.
                                 2
 @end example
 
-@c @itemize @bullet
-@c @item
-@c A lambda expression may take a variable number of arguments, which are 
-@c indicated by @code{[@var{L}]} as the sole or final argument. The arguments 
-@c appear within the function body as a list.
-@c @end itemize
-
 Ein Lambda-Ausdruck kann eine variable Anzahl an Argumenten haben, wenn das
 letzte Argument eine Liste mit einem Element ist.
 
-@c ===beg===
-@c f : lambda ([aa, bb, [cc]], aa * cc + bb);
-@c f (foo, %i, 17, 29, 256);
-@c g : lambda ([[aa]], apply ("+", aa));
-@c g (17, 29, x, y, z, %e);
-@c ===end===
 @example
 (%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
 (%o1)          lambda([aa, bb, [cc]], aa cc + bb)
@@ -1977,24 +1238,11 @@ letzte Argument eine Liste mit einem Element ist.
 @anchor{map}
 @deffn {Funktion} map (@var{f}, @var{expr_1}, @dots{}, @var{expr_n})
 
-@c Returns an expression whose leading operator is the same as that of the 
-@c expressions @var{expr_1}, ..., @var{expr_n} but whose subparts are the 
-@c results of applying @var{f} to the corresponding subparts of the expressions.
-@c @var{f} is either the name of a function of @math{n} arguments or is a 
-@c @code{lambda} form of @math{n} arguments.
-
 Gibt einen Ausdruck zur@"uck, dessen Hauptoperator derselbe ist, wie der der
 Argumente @var{expr_1}, @dots{}, @var{expr_n} aber dessen Operanden das Ergebnis
 der Anwendung des Operators @var{f} auf die Teilausdr@"ucke des Ausdrucks sind.
 @var{f} ist entweder der Name einer Funktion mit @math{n} Argumenten oder
 ein Lambda-Ausdruck mit @math{n} Argumenten.
-
-@c @code{maperror} - if @code{false} will cause all of the mapping functions to 
-@c (1) stop when they finish going down the shortest @var{expr_i} if not all of 
-@c the @var{expr_i} are of the same length and (2) apply @var{f} to 
-@c [@var{expr_1}, @var{expr_2}, ...]  if the @var{expr_i} are not all the same 
-@c type of object. If @code{maperror} is @code{true} then an error message will 
-@c be given in the above two instances.
 
 Hat @code{maperror} den Wert @code{false}, wird die Anwendung der Funktion 
 @var{f} gestoppt, (1) wenn die Anwendung auf den k@"urzesten Ausdruck 
@@ -2003,12 +1251,11 @@ oder (2) wenn die Ausdr@"ucke @var{expr_i} einen verschiedenen Typ haben.  Hat
 @code{maperror} den Wert @code{true} wird in den obigen F@"allen eine 
 Fehlermeldung ausgegeben.
 
+@c TODO: NICHT UEBERSETZT
 @c One of the uses of this function is to @code{map} a function (e.g. 
 @c @code{partfrac}) onto each term of a very large expression where it 
 @c ordinarily wouldn't be possible to use the function on the entire expression 
 @c due to an exhaustion of list storage space in the course of the computation.
-
-@c TODO: NICHT UEBERSETZT
 
    @c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR AND SHOW HOW THE 
    @c RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
@@ -2038,40 +1285,16 @@ Beispiele:
 @anchor{mapatom}
 @deffn {Funktion} mapatom (@var{expr})
 
-@c Returns @code{true} if and only if @var{expr} is treated by the mapping
-@c routines as an atom.  "Mapatoms" are atoms, numbers (including rational 
-@c numbers), and subscripted variables.
-
 Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} von Funktionen 
 die auf Argumente angewendete werden, als ein Atom betrachtet wird.  Als Atome
 werden Zahlen, einschlie@ss{}lich rationaler Zahlen und gro@ss{}er 
 Gleitkommazahlen, Symbole und indizierte Symbole betrachtet.
-
-   @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION
-   @c OF ATOMS ??
 @end deffn
-
-@c NEEDS CLARIFICATION
 
 @c --- 03.01.2011 DK -----------------------------------------------------------
 @anchor{maperror}
 @defvr {Optionsvariable} maperror
-Standwert: @code{true}
-
-@c When @code{maperror} is @code{false}, causes all of the mapping functions, 
-@c for example
-
-@c @example
-@c map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
-@c @end example
-
-@c to (1) stop when they finish going down the shortest @var{expr_i} if not all 
-@c of the @var{expr_i} are of the same length and (2) apply @var{f} to 
-@c [@var{expr_1}, @var{expr_2}, ...] if the @var{expr_i} are not all the same 
-@c type of object.
-
-@c If @code{maperror} is @code{true} then an error message is displayed in the 
-@c above two instances.
+Standardwert: @code{true}
 
 Hat @code{maperror} den Wert @code{false}, wird die Anwendung der Funktion 
 @var{f} gestoppt, (1) wenn die Anwendung auf den k@"urzesten Ausdruck 
@@ -2086,18 +1309,11 @@ Fehlermeldung ausgegeben.
 @defvr {Optionsvariable} mapprint
 Standardwert: @code{true}
 
-@c When @code{mapprint} is @code{true}, various information messages from 
-@c @code{map}, @code{mapl}, and @code{fullmap} are produced in certain 
-@c situations.  These include situations where @code{map} would use 
-@c @code{apply}, or @code{map} is truncating on the shortest list.
-
 Hat @code{mapprint} den Wert @code{true}, werden verschiedene Informationen von
 den Funktionen @code{map}, @code{mapl} und @code{fullmap} ausgegeben.  Dies ist
 der Fall, wenn die Funktion @code{map} die Funktion @code{apply} aufruft oder
 wenn f@"ur die Funktion @code{map} die Argumente eine verschiedene L@"ange 
 haben.
-
-@c If @code{mapprint} is @code{false}, these messages are suppressed.
 
 Hat @code{mapprint} den Wert @code{false}, werden diese Meldungen unterdr@"uckt.
 @end defvr
@@ -2106,18 +1322,9 @@ Hat @code{mapprint} den Wert @code{false}, werden diese Meldungen unterdr@"uckt.
 @anchor{maplist}
 @deffn {Funktion} maplist (@var{f}, @var{expr_1}, @dots{}, @var{expr_n})
 
-@c Returns a list of the applications of @var{f} to the parts of the expressions
-@c @var{expr_1}, ..., @var{expr_n}. @var{f} is the name of a function, or a 
-@c lambda expression.
-
 Wendet die Funktion @var{f} auf die Ausdr@"ucke @var{expr_1}, @dots{}, 
 @var{expr_n} an und gibt das Ergebnis als eine Liste zur@"uck.  @var{f} ist der 
 Name einer Funktion oder ein lambda-Ausdruck.
-
-@c @code{maplist} differs from @code{map (@var{f}, @var{expr_1}, ..., 
-@c @var{expr_n})} which returns an expression with the same main operator as 
-@c @var{expr_i} has (except for simplifications and the case where @code{map} 
-@c does an @code{apply}).
 
 Im Unterschied zu @code{maplist} gibt die Funktion @code{map} einen Ausdruck
 zur@"uck, der denselben Hauptoperator wie die Ausdr@"ucke @var{expr_i} hat.
@@ -2127,64 +1334,29 @@ zur@"uck, der denselben Hauptoperator wie die Ausdr@"ucke @var{expr_i} hat.
 @anchor{outermap}
 @deffn {Funktion} outermap (@var{f}, @var{a_1}, @dots{}, @var{a_n})
 
-@c Applies the function @var{f} to each one of the elements of the outer product
-@c @var{a_1} cross @var{a_2} ... cross @var{a_n}.
-
 Wendet die Funktion @var{f} auf jedes Element des @"au@ss{}eren Produktes der
 Argumente @var{a_1} @code{x} @var{a_2} @code{x} @dots{} @code{x} @var{a_n} an. 
-
-@c @var{f} is the name of a function of @math{n} arguments or a lambda 
-@c expression of @math{n} arguments. Each argument @var{a_k} may be a list or 
-@c nested list, or a matrix, or any other kind of expression.
 
 @var{f} ist der Name einer Funktion mit @math{n} Argumenten oder ein 
 Lambda-Ausdruck mit @math{n} Argumenten.  Jedes Argument @var{a_k} kann eine
 Liste oder verschachtelte Liste, eine Matrix oder irgendein anderer Ausdruck
 sein.
 
-@c The @code{outermap} return value is a nested structure. Let @var{x} be the 
-@c return value. Then @var{x} has the same structure as the first list, nested 
-@c list, or matrix argument, @code{@var{x}[i_1]...[i_m]} has the same structure 
-@c as the second list, nested list, or matrix argument, 
-@c @code{@var{x}[i_1]...[i_m][j_1]...[j_n]} has the same structure as the third 
-@c list, nested list, or matrix argument, and so on, where @var{m}, @var{n}, ...
-@c are the numbers of indices required to access the elements of each argument 
-@c (one for a list, two for a matrix, one or more for a nested list). Arguments 
-@c which are not lists or matrices have no effect on the structure of the return
-@c value.
-
+@c TODO: OBIGE UEBERSETZUNG FEHLEN
 @c Note that the effect of @code{outermap} is different from that of applying 
 @c @var{f} to each one of the elements of the outer product returned by 
 @c @code{cartesian_product}. @code{outermap} preserves the structure of the 
 @c arguments in the return value, while @code{cartesian_product} does not.
 
-@c TODO: OBIGE UEBERSETZUNG FEHLEN
-
-@c @code{outermap} evaluates its arguments.
-
 @code{outermap} wertet die Argumente aus.
-
-@c See also @code{map}, @code{maplist}, and @code{apply}.
 
 Siehe auch @mrefcomma{map} @mref{maplist} und @mrefdot{apply}
 
-@c CROSS REF OTHER FUNCTIONS HERE ??
-
 Beispiele:
-
-@c Elementary examples of @code{outermap}. To show the argument combinations 
-@c more clearly, @code{F} is left undefined.
 
 Einfaches Beispiel f@"ur @code{outermap}.  Die Funktion @code{F} ist 
 undefiniert.
 
-@c ===beg===
-@c outermap (F, [a, b, c], [1, 2, 3]);
-@c outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
-@c outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
-@c outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
-@c outermap ("+", [a, b, c], [1, 2, 3]);
-@c ===end===
 @example
 (%i1) outermap(F, [a, b, c], [1, 2, 3]);
 (%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
@@ -2213,28 +1385,11 @@ undefiniert.
                                            [c + 1, c + 2, c + 3]]
 @end example
 
-@c A closer examination of the @code{outermap} return value. The first, second, 
-@c and third arguments are a matrix, a list, and a matrix, respectively. The 
-@c return value is a matrix. Each element of that matrix is a list, and each 
-@c element of each list is a matrix.
-
 Das Beispiel zeigt die R@"uckgabe der Funktion @code{outermap} detaillierter.
 Das erste, zweite und dritte Argument sind eine Matrix, eine Liste und eine
 Matrix.  Der R@"uckgabewert ist eine Matrix.  Jedes Element der Matrix ist eine
 Liste und jedes Element der Liste ist eine Matrix.
 
-@c ===beg===
-@c arg_1 :  matrix ([a, b], [c, d]);
-@c arg_2 : [11, 22];
-@c arg_3 : matrix ([xx, yy]);
-@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
-@c                                                    arg_2, arg_3);
-@c xx_1 : xx_0 [1][1];
-@c xx_2 : xx_0 [1][1] [1];
-@c xx_3 : xx_0 [1][1] [1] [1][1];
-@c [op (arg_1), op (arg_2), op (arg_3)];
-@c [op (xx_0), op (xx_1), op (xx_2)];
-@c ===end===
 @example
 (%i1) arg_1 :  matrix ([a, b], [c, d]);
                             [ a  b ]
@@ -2278,19 +1433,9 @@ Liste und jedes Element der Liste ist eine Matrix.
 (%o9)                  [matrix, [, matrix]
 @end example
 
-@c @code{outermap} preserves the structure of the arguments in the return value,
-@c while @code{cartesian_product} does not.
-
 @code{outermap} erh@"alt die Struktur der Argumente im Ergebnis.  Die Funktion
 @code{cartesian_product} erh@"alt die Struktur der Argumente nicht.
 
-@c ===beg===
-@c outermap (F, [a, b, c], [1, 2, 3]);
-@c setify (flatten (%));
-@c map (lambda ([L], apply (F, L)), 
-@c                      cartesian_product ({a, b, c}, {1, 2, 3}));
-@c is (equal (%, %th (2)));
-@c ===end===
 @example
 (%i1) outermap (F, [a, b, c], [1, 2, 3]);
 (%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
@@ -2312,33 +1457,18 @@ Liste und jedes Element der Liste ist eine Matrix.
 @deffn  {Funktion} remfunction (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} remfunction (all)
 
-@c Unbinds the function definitions of the symbols @var{f_1}, ..., @var{f_n}.
-@c The arguments may be the names of ordinary functions (created by @code{:=} 
-@c or @code{define}) or macro functions (created by @code{::=}).
-
 Hebt die Bindung der Symbole @var{f_1}, @dots{}, @var{f_n} an ihre
 Funktionsdefinitionen auf.  Die Argumente k@"onnen die Namen von Funktionen 
 sein, die mit @code{:=} oder @code{define} definiert wurden sowie 
 Makro-Funktionen, die mit @code{::=} definiert wurden.
 
-@c @code{remfunction (all)} unbinds all function definitions.
-
 @code{remfunction(all)} entfernt alle Bindungen von Funktionsdefinitionen.
 
-@c @code{remfunction} quotes its arguments.
-
 @code{remfunction} wertet seine Argumente nicht aus.
-
-@c @code{remfunction} returns a list of the symbols for which the function 
-@c definition was unbound. @code{false} is returned in place of any symbol for 
-@c which there is no function definition.
 
 @code{remfunction} gibt eine Liste mit den Symbolen zur@"uck, die von ihren 
 Funktionsdefinitionen entbunden wurden.  @code{false} wird f@"ur die Symbole
 zur@"uckgegeben, f@"ur die es keine Funktionsdefinition gibt.
-
-@c @code{remfunction} does not apply to array functions or subscripted functions.
-@c @code{remarray} applies to those types of functions.
 
 @code{remfunction} kann nicht auf Array-Funktionen und indizierte Funktionen
 angewendet werden.  F@"ur diese Funktionen kann @code{remarray} verwendet 
@@ -2350,19 +1480,12 @@ werden.
 @deffn  {Funktion} scanmap (@var{f}, @var{expr})
 @deffnx {Funktion} scanmap (@var{f}, @var{expr}, bottomup)
 
-@c Recursively applies @var{f} to @var{expr}, in a top down manner. This is most
-@c useful when complete factorization is desired, for example:
-
 Wendet die Funktion @var{f} rekursiv auf alle Teilausdr@"ucke in @var{expr} an.
 Dies kann zum Beispiel verwendet werden, um einen Ausdruck vollst@"andig zu 
 faktorisieren.
 
 Beispiele:
 
-@c ===beg===
-@c exp:(a^2+2*a+1)*y + x^2$
-@c scanmap(factor,exp);
-@c ===end===
 @example
 (%i1) exp:(a^2+2*a+1)*y + x^2$
 (%i2) scanmap(factor,exp);
@@ -2370,41 +1493,21 @@ Beispiele:
 (%o2)                         (a + 1)  y + x
 @end example
 
-@c Note the way in which @code{scanmap} applies the given function @code{factor}
-@c to the constituent subexpressions of @var{expr}; if another form of 
-@c @var{expr} is presented to @code{scanmap} then the result may be different. 
-@c Thus, @code{%o2} is not recovered when @code{scanmap} is applied to the 
-@c expanded form of @code{exp}:
-
-@c ===beg===
-@c scanmap(factor,expand(exp));
-@c ===end===
 @example
 (%i3) scanmap(factor,expand(exp));
                            2                  2
 (%o3)                      a  y + 2 a y + y + x
 @end example
 
-@c Here is another example of the way in which @code{scanmap} recursively
-@c applies a given function to all subexpressions, including exponents:
-
 Ein weiteres Beispiel f@"ur die Anwendung einer Funktion auf alle 
 Teilausdr@"ucke.
 
-@c ===beg===
-@c expr : u*v^(a*x+b) + c$
-@c scanmap('f, expr);
-@c ===end===
 @example
 (%i4) expr : u*v^(a*x+b) + c$
 (%i5) scanmap('f, expr);
                     f(f(f(a) f(x)) + f(b))
 (%o5) f(f(f(u) f(f(v)                      )) + f(c))
 @end example
-
-@c @code{scanmap (@var{f}, @var{expr}, bottomup)} applies @var{f} to @var{expr} 
-@c in a bottom-up manner.  E.g., for undefined @code{f},
-@c In this case, you get the same answer both ways.
 
 @code{scanmap (@var{f}, @var{expr}, bottomup)} wendet die Funktion @var{f}
 Bottom-up auf den Ausdruck @var{expr} an.
