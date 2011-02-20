@@ -5,7 +5,7 @@
 @c Original    : Input.texi revision 1.80
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 02.11.2010
-@c Revision    : 01.02.2011
+@c Revision    : 20.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -35,13 +35,6 @@ Begrenzungszeichen @code{/*} und @code{*/} m@"ussen paarweise auftreten.
 
 Beispiele:
 
-@c ===beg===
-@c /* aa is a variable of interest */  aa : 1234;
-@c /* Value of bb depends on aa */  bb : aa^2;
-@c /* User-defined infix operator */  infix ("b");
-@c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
-@c /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
-@c ===end===
 @example
 (%i1) /* aa is a variable of interest */  aa : 1234;
 (%o1)                         1234
@@ -202,10 +195,6 @@ Die R@"uckgabe ist ein Lisp-Dateiname.
 
 Beispiele:
 
-@c ===beg===
-@c filename_merge("user/", "myfile");
-@c filename_merge("user/###.lisp", "myfile");
-@c ===end===
 @example
 (%i1) filename_merge("user/", "myfile");
 (%o1)                      user/myfile
@@ -433,11 +422,6 @@ Diese Funktionen geben die Bestandteile eines Pfadnamens zur@"uck.
 
 Beispiele:
 
-@c === beg ===
-@c pathname_directory("/home/dieter/maxima/changelog.txt");
-@c pathname_name("/home/dieter/maxima/changelog.txt");
-@c pathname_type("/home/dieter/maxima/changelog.txt");
-@c === end ===
 @example 
 (%i1) pathname_directory("/home/dieter/maxima/changelog.txt");
 (%o1)                 /home/dieter/maxima/
@@ -592,11 +576,6 @@ Siehe auch @mrefdot{writefile}
 
 Beispiel:
 
-@c ===beg===
-@c with_stdout ("tmp.out", for i:5 thru 10 do
-@c    print (i, "! yields", i!))$
-@c printfile ("tmp.out")$
-@c ===end===
 @example
 (%i1) with_stdout ("tmp.out", for i:5 thru 10 do
          print (i, "! yields", i!))$
@@ -696,10 +675,6 @@ $$-\cos x$$
 
 @code{tex (@var{expr}, false)} returns its TeX output as a string.
 
-@c ===beg===
-@c S : tex (x * y * z, false);
-@c S;
-@c ===end===
 @example
 (%i1) S : tex (x * y * z, false);
 (%o1) $$x\,y\,z$$
@@ -718,9 +693,6 @@ environment.
 
 Examples:
 
-@c ===beg===
-@c tex1 (sin(x) + cos(x));
-@c ===end===
 @example
 (%i1) tex1 (sin(x) + cos(x));
 (%o1)                     \sin x+\cos x
@@ -767,10 +739,6 @@ Examples:
 
 Assign TeX output for a variable.
 
-@c ===beg===
-@c texput (me,"\\mu_e");
-@c tex (me);
-@c ===end===
 @example
 (%i1) texput (me,"\\mu_e");
 (%o1)                         \mu_e
@@ -781,10 +749,6 @@ $$\mu_e$$
 
 Assign TeX output for an ordinary function (not an operator).
 
-@c ===beg===
-@c texput (lcm, "\\mathrm{lcm}");
-@c tex (lcm (a, b));
-@c ===end===
 @example
 (%i1) texput (lcm, "\\mathrm@{lcm@}");
 (%o1)                     \mathrm@{lcm@}
@@ -795,13 +759,6 @@ $$\mathrm@{lcm@}\left(a , b\right)$$
 
 Call a function to generate TeX output.
 
-@c ===beg===
-@c texfoo (e) := block ([a, b], [a, b] : args (e),
-@c   concat ("\\left[\\stackrel{", tex1 (b), 
-@c           "}{", tex1 (a), "}\\right]"))$
-@c texput (foo, texfoo);
-@c tex (foo (2^x, %pi));
-@c ===end===
 @example
 (%i1) texfoo (e) := block ([a, b], [a, b] : args (e),
   concat ("\\left[\\stackrel@{", tex1 (b), 
@@ -815,11 +772,6 @@ $$\left[\stackrel@{\pi@}@{2^@{x@}@}\right]$$
 
 Assign TeX output for a prefix operator.
 
-@c ===beg===
-@c prefix ("grad");
-@c texput ("grad", " \\nabla ", prefix);
-@c tex (grad f);
-@c ===end===
 @example
 (%i1) prefix ("grad");
 (%o1)                         grad
@@ -832,11 +784,6 @@ $$ \nabla f$$
 
 Assign TeX output for an infix operator.
 
-@c ===beg===
-@c infix ("~");
-@c texput ("~", " \\times ", infix);
-@c tex (a ~ b);
-@c ===end===
 @example
 (%i1) infix ("~");
 (%o1)                           ~
@@ -849,11 +796,6 @@ $$a \times b$$
 
 Assign TeX output for a postfix operator.
 
-@c ===beg===
-@c postfix ("##");
-@c texput ("##", "!!", postfix);
-@c tex (x ##);
-@c ===end===
 @example
 (%i1) postfix ("##");
 (%o1)                          ##
@@ -866,11 +808,6 @@ $$x!!$$
 
 Assign TeX output for a nary operator.
 
-@c ===beg===
-@c nary ("@@");
-@c texput ("@@", " \\circ ", nary);
-@c tex (a @@ b @@ c @@ d);
-@c ===end===
 @example
 (%i1) nary ("@@@@");
 (%o1)                          @@@@
@@ -883,11 +820,6 @@ $$a \circ b \circ c \circ d$$
 
 Assign TeX output for a nofix operator.
 
-@c ===beg===
-@c nofix ("foo");
-@c texput ("foo", "\\mathsc{foo}", nofix);
-@c tex (foo);
-@c ===end===
 @example
 (%i1) nofix ("foo");
 (%o1)                          foo
@@ -900,16 +832,6 @@ $$\mathsc@{foo@}$$
 
 Assign TeX output for a matchfix operator.
 
-@c ===beg===
-@c matchfix ("<<", ">>");
-@c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
-@c tex (<<a>>);
-@c tex (<<a, b>>);
-@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], 
-@c       matchfix);
-@c tex (<<a>>);
-@c tex (<<a, b>>);
-@c ===end===
 @example
 (%i1) matchfix ("<<", ">>");
 (%o1)                          <<
@@ -955,12 +877,6 @@ has been assigned.
 
 Examples:
 
-@c ===beg===
-@c get_tex_environment (":=");
-@c tex (f (x) := 1 - x);
-@c set_tex_environment (":=", "$$", "$$");
-@c tex (f (x) := 1 - x);
-@c ===end===
 @example
 (%i1) get_tex_environment (":=");
 (%o1) [
@@ -1001,14 +917,6 @@ specific TeX environment (as assigned by @code{set_tex_environment}).
 
 Examples:
 
-@c ===beg===
-@c get_tex_environment_default ();
-@c tex (f(x) + g(x));
-@c set_tex_environment_default ("\\begin{equation}
-@c ", "
-@c \\end{equation}");
-@c tex (f(x) + g(x));
-@c ===end===
 @example
 (%i1) get_tex_environment_default ();
 (%o1)                       [$$, $$]

@@ -4,6 +4,7 @@
 @c Language : German
 @c Original : linearalgebra.texi revision 1.17
 @c Date     : 08.11.2010
+@c Revision : 19.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -16,27 +17,12 @@
 @c -----------------------------------------------------------------------------
 @node Introduction to linearalgebra, Functions and Variables for linearalgebra, linearalgebra, linearalgebra
 @section Introduction to linearalgebra
+@c -----------------------------------------------------------------------------
 
 @code{linearalgebra} is a collection of functions for linear algebra.
 
 Example:
 
-@c ===beg===
-@c M : matrix ([1, 2], [1, 2]);
-@c nullspace (M);
-@c columnspace (M);
-@c ptriangularize (M - z*ident(2), z);
-@c M : matrix ([1, 2, 3], [4, 5, 6], [7, 8, 9]) - z*ident(3);
-@c MM : ptriangularize (M, z);
-@c algebraic : true;
-@c tellrat (MM [3, 3]);
-@c MM : ratsimp (MM);
-@c nullspace (MM);
-@c M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], 
-@c                    [13, 14, 15, 16]);
-@c columnspace (M);
-@c apply ('orthogonal_complement, args (nullspace (transpose (M))));
-@c ===end===
 @example
 (%i1) M : matrix ([1, 2], [1, 2]);
                             [ 1  2 ]
@@ -128,30 +114,21 @@ Example:
                            [ 3 ]  [ - 2 ]
 @end example
 
-@c @opencatbox
-@c @category{Linear algebra} @category{Share packages} @category{Package linearalgebra}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, linearalgebra
 @section Functions and Variables for linearalgebra
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
 Using the function @var{f} as the addition function, return the sum of
-the matrices @var{M_1}, ..., @var{M_n}. The function @var{f} must accept any number of
-arguments (a Maxima nary function).
+the matrices @var{M_1}, ..., @var{M_n}. The function @var{f} must accept any
+number of arguments (a Maxima nary function).
 
 Examples:
 
-@c ===beg===
-@c m1 : matrix([1,2],[3,4])$
-@c m2 : matrix([7,8],[9,10])$
-@c addmatrices('max,m1,m2);
-@c addmatrices('max,m1,m2,5*m1);
-@c ===end===
 @example
 (%i1) m1 : matrix([1,2],[3,4])$
 (%i2) m2 : matrix([7,8],[9,10])$
@@ -160,10 +137,6 @@ Examples:
 (%i4) addmatrices('max,m1,m2,5*m1);
 (%o4) matrix([7,10],[15,20])
 @end example
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -171,33 +144,21 @@ Examples:
 
 Return true if and only if @var{M} is a matrix and every entry of 
 @var{M} is a matrix.
-
-@c @opencatbox
-@c @category{Package linearalgebra} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 If @var{M} is a matrix, return the matrix that results from doing the  
-column operation @code{C_i <- C_i - @var{theta} * C_j}. If @var{M} doesn't have a row
-@var{i} or @var{j}, signal an error.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+column operation @code{C_i <- C_i - @var{theta} * C_j}. If @var{M} doesn't
+have a row @var{i} or @var{j}, signal an error.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} columnswap (@var{M}, @var{i}, @var{j})
 
-If @var{M} is a matrix, swap columns @var{i} and @var{j}.  If @var{M} doesn't have a column
-@var{i} or @var{j}, signal an error.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+If @var{M} is a matrix, swap columns @var{i} and @var{j}.  If @var{M} doesn't 
+have a column @var{i} or @var{j}, signal an error.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -207,10 +168,6 @@ If @var{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set
 @code{@{v_1, ..., v_n@}} is a basis for the column space of @var{M}.  The span 
 of the empty set is @code{@{0@}}. Thus, when the column space has only 
 one member, return @code{span ()}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -219,13 +176,7 @@ one member, return @code{span ()}.
 Return a copy of the Maxima expression @var{e}. Although @var{e} can be any
 Maxima expression, the copy function is the most useful when @var{e} is either 
 a list or a matrix; consider:
-@c ===beg===
-@c m : [1,[2,3]]$
-@c mm : m$
-@c mm[2][1] : x$
-@c m;
-@c mm;
-@c ===end===
+
 @example 
 (%i1) m : [1,[2,3]]$
 (%i2) mm : m$
@@ -235,14 +186,9 @@ a list or a matrix; consider:
 (%i5) mm;
 (%o5)                      [1,[x,3]]
 @end example
+
 Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
-@c ===beg===
-@c m : [1,[2,3]]$
-@c mm : copy(m)$
-@c mm[2][1] : x$
-@c m;
-@c mm;
-@c ===end===
+
 @example
 (%i6) m : [1,[2,3]]$
 (%i7) mm : copy(m)$
@@ -253,46 +199,32 @@ Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 (%o10)                    [1,[x,3]]
 @end example
 This time, the assignment to @var{mm} does not change the value of @var{m}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cholesky (@var{M})
+@deffn  {Function} cholesky (@var{M})
 @deffnx {Function} cholesky (@var{M}, @var{field})
 
-Return the Cholesky factorization of the matrix selfadjoint (or hermitian) matrix 
-@var{M}. The second argument defaults to 'generalring.' For a description of the
-possible values for @var{field}, see @code{lu_factor}.
-
-@c @opencatbox
-@c @category{Matrix decompositions} @category{Package linearalgebra}
-@c @closecatbox
+Return the Cholesky factorization of the matrix selfadjoint (or hermitian)
+matrix @var{M}. The second argument defaults to 'generalring.' For a description
+of the possible values for @var{field}, see @code{lu_factor}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} ctranspose (@var{M})
 
 Return the complex conjugate transpose of the matrix @var{M}. The function
-@code{ctranspose} uses @code{matrix_element_transpose} to transpose each matrix element.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+@code{ctranspose} uses @code{matrix_element_transpose} to transpose each matrix
+element.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
 
-Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2},...,@var{d_n}.
-When the diagonal entries are matrices, the zero entries of the returned matrix
-are zero matrices of the appropriate size; for example:
-@c ===beg===
-@c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
-@c diag_matrix(p,q);
-@c ===end===
+Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2}, ...,
+@var{d_n}.  When the diagonal entries are matrices, the zero entries of the
+returned matrix are zero matrices of the appropriate size; for example:
+
 @example
 (%i1) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 
@@ -309,45 +241,30 @@ are zero matrices of the appropriate size; for example:
 (%o2)                              [      ]
                                    [ 0  q ]
 @end example
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} dotproduct (@var{u}, @var{v})
 
 Return the dotproduct of vectors @var{u} and @var{v}.  This is the same
-as @code{conjugate (transpose (@var{u})) . @var{v}}.  The arguments @var{u} and @var{v} must be
-column vectors.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+as @code{conjugate (transpose (@var{u})) . @var{v}}.  The arguments @var{u} and
+@var{v} must be column vectors.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} eigens_by_jacobi (@var{A})
 @deffnx {Function} eigens_by_jacobi (@var{A}, @var{field_type})
 
-Computes the eigenvalues and eigenvectors of @var{A} by the method of Jacobi rotations.
-@var{A} must be a symmetric matrix (but it need not be positive definite nor positive semidefinite).
-@var{field_type} indicates the computational field, either @code{floatfield} or @code{bigfloatfield}.
-If @var{field_type} is not specified, it defaults to @code{floatfield}.
+Computes the eigenvalues and eigenvectors of @var{A} by the method of Jacobi
+rotations.  @var{A} must be a symmetric matrix (but it need not be positive
+definite nor positive semidefinite).  @var{field_type} indicates the
+computational field, either @code{floatfield} or @code{bigfloatfield}.  If 
+@var{field_type} is not specified, it defaults to @code{floatfield}.
 
 The elements of @var{A} must be numbers or expressions which evaluate to numbers
 via @code{float} or @code{bfloat} (depending on @var{field_type}).
 
 Examples:
-@c ===beg===
-@c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
-@c L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
-@c M : S . L . transpose (S);
-@c eigens_by_jacobi (M);
-@c float ([[sqrt(3), sqrt(5)], S]);
-@c eigens_by_jacobi (M, bigfloatfield);
-@c ===end===
 
 @example
 (%i1) S: matrix([1/sqrt(2), 1/sqrt(2)],[-1/sqrt(2), 1/sqrt(2)]);
@@ -394,50 +311,35 @@ number of rotations: 1
                 [                                              ]]
                 [ - 7.071067811865475b-1  7.071067811865475b-1 ]
 @end example
-
-@c @opencatbox
-@c @category{Matrix decompositions} @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} get_lu_factors (@var{x}) 
 
-When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns a list of the 
-form @code{[P, L, U]}, where @var{P} is a permutation matrix, @var{L} is lower triangular with
-ones on the diagonal, and @var{U} is upper triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns 
+a list of the form @code{[P, L, U]}, where @var{P} is a permutation matrix, 
+@var{L} is lower triangular with ones on the diagonal, and @var{U} is upper 
+triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} hankel (@var{col})
+@deffn  {Function} hankel (@var{col})
 @deffnx {Function} hankel (@var{col}, @var{row})
 
 Return a Hankel matrix @var{H}. The first column of @var{H} is @var{col};
 except for the first entry, the last row of @var{H} is @var{row}. The
 default for @var{row} is the zero vector with the same length as @var{col}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} hessian (@var{f}, @var{x})
 
-Returns the Hessian matrix of @var{f} with respect to the list of variables @var{x}.
-The @code{(i, j)}-th element of the Hessian matrix is @code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}.
+Returns the Hessian matrix of @var{f} with respect to the list of variables 
+@var{x}.  The @code{(i, j)}-th element of the Hessian matrix is 
+@code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}.
 
 Examples:
 
-@c ===beg===
-@c hessian (x * sin (y), [x, y]);
-@c depends (F, [a, b]);
-@c hessian (F, [a, b]);
-@c ===end===
 @example
 (%i1) hessian (x * sin (y), [x, y]);
                      [   0       cos(y)   ]
@@ -458,10 +360,6 @@ Examples:
                         [ da db     2  ]
                         [         db   ]
 @end example
-
-@c @opencatbox
-@c @category{Differential calculus} @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -469,10 +367,6 @@ Examples:
 
 Return the @var{n} by @var{n} Hilbert matrix. When @var{n} isn't a positive
 integer, signal an error.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -490,10 +384,6 @@ square matrix -- thus @var{M} can be a blocked Maxima matrix. The
 matrix can be blocked to any (finite) depth.
 
 See also @code{zerofor}
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -501,25 +391,17 @@ See also @code{zerofor}
 
 Invert a matrix @var{M} by using the LU factorization.  The LU factorization
 is done using the ring @var{rng}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} jacobian (@var{f}, @var{x})
 
-Returns the Jacobian matrix of the list of functions @var{f} with respect to the list of variables @var{x}.
-The @code{(i, j)}-th element of the Jacobian matrix is @code{diff(@var{f}[i], @var{x}[j])}.
+Returns the Jacobian matrix of the list of functions @var{f} with respect to 
+the list of variables @var{x}.  The @code{(i, j)}-th element of the Jacobian 
+matrix is @code{diff(@var{f}[i], @var{x}[j])}.
 
 Examples:
 
-@c ===beg===
-@c jacobian ([sin (u - v), sin (u * v)], [u, v]);
-@c depends ([F, G], [y, z]);
-@c jacobian ([F, G], [y, z]);
-@c ===end===
 @example
 (%i1) jacobian ([sin (u - v), sin (u * v)], [u, v]);
                   [ cos(v - u)  - cos(v - u) ]
@@ -536,34 +418,22 @@ Examples:
                            [ --  -- ]
                            [ dy  dz ]
 @end example
-
-@c @opencatbox
-@c @category{Differential calculus} @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} kronecker_product (@var{A}, @var{B})
 
 Return the Kronecker product of the matrices @var{A} and @var{B}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} listp (@var{e}, @var{p})
+@deffn  {Function} listp (@var{e}, @var{p})
 @deffnx {Function} listp (@var{e})
 
 Given an optional argument @var{p}, return @code{true} if @var{e} is 
 a Maxima list and @var{p} evaluates to @code{true} for every list element.
 When @code{listp} is not given the optional argument, return @code{true} if @var{e} is 
 a Maxima list.  In all other cases, return @code{false}.
-
-@c @opencatbox
-@c @category{Package linearalgebra} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -591,10 +461,6 @@ Return the index of a maximizing entry.
 
 Scan the sub-matrix looking for an entry that minimizes @var{f}. 
 Return the index of a minimizing entry.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -603,37 +469,35 @@ Return the index of a minimizing entry.
 When @code{@var{M} = lu_factor (@var{A}, @var{field})},
 then @code{lu_backsub (@var{M}, @var{b})} solves the linear
 system @code{@var{A} @var{x} = @var{b}}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} lu_factor (@var{M}, @var{field})
 
-Return a list of the form @code{[@var{LU}, @var{perm}, @var{fld}]}, 
-or @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, where
+Return a list of the form @code{[@var{LU}, @var{perm}, @var{fld}]}, or 
+@code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, where
 
-  (1) The matrix @var{LU} contains the factorization of @var{M} in a packed form. Packed
-      form means three things: First, the rows of @var{LU} are permuted according to the 
-      list @var{perm}.  If, for example, @var{perm} is the list @code{[3,2,1]}, the actual first row 
-      of the @var{LU} factorization is the third row of the matrix @var{LU}. Second,
-      the lower triangular factor of m is the lower triangular part of @var{LU} with the
-      diagonal entries replaced by all ones. Third, the upper triangular factor of 
-      @var{M} is the upper triangular part of @var{LU}.  
+  (1) The matrix @var{LU} contains the factorization of @var{M} in a packed 
+      form. Packed form means three things: First, the rows of @var{LU} are 
+      permuted according to the list @var{perm}.  If, for example, @var{perm} 
+      is the list @code{[3,2,1]}, the actual first row 
+      of the @var{LU} factorization is the third row of the matrix @var{LU}. 
+      Second, the lower triangular factor of m is the lower triangular part of 
+      @var{LU} with the diagonal entries replaced by all ones. Third, the upper
+      triangular factor of @var{M} is the upper triangular part of @var{LU}.
 
   (2) When the field is either @code{floatfield} or @code{complexfield},
-      the numbers @var{lower-cnd} and @var{upper-cnd} are lower and upper bounds for the 
-      infinity norm condition number of @var{M}.  For all fields, the condition number 
-      might not be estimated; for such fields, @code{lu_factor} returns a two item list.
-      Both the lower and upper bounds can differ from their true values by 
-      arbitrarily large factors. (See also @code{mat_cond}.)
+      the numbers @var{lower-cnd} and @var{upper-cnd} are lower and upper bounds
+      for the infinity norm condition number of @var{M}.  For all fields, the 
+      condition number might not be estimated; for such fields, @code{lu_factor}
+      returns a two item list.  Both the lower and upper bounds can differ from 
+      their true values by arbitrarily large factors. 
+      (See also @code{mat_cond}.)
    
   The argument @var{M} must be a square matrix.
 
-  The optional argument @var{fld} must be a symbol that determines a ring or field. The pre-defined 
-  fields and rings are:
+  The optional argument @var{fld} must be a symbol that determines a ring or 
+  field. The pre-defined fields and rings are:
 
     (a) @code{generalring} -- the ring of Maxima expressions,
     (b) @code{floatfield} --  the field of floating point numbers of the type double,
@@ -680,21 +544,8 @@ converted to Maxima expressions.
 
 See also  @code{get_lu_factors}.
 
-
 Examples:
 
-@c ===beg===
-@c w[i,j] := random (1.0) + %i * random (1.0);
-@c showtime : true$
-@c M : genmatrix (w, 100, 100)$
-@c lu_factor (M, complexfield)$
-@c lu_factor (M, generalring)$
-@c showtime : false$
-@c M : matrix ([1 - z, 3], [3, 8 - z]);
-@c lu_factor (M, generalring);
-@c get_lu_factors (%);
-@c %[1] . %[2] . %[3];
-@c ===end===
 @example
 (%i1) w[i,j] := random (1.0) + %i * random (1.0);
 (%o1)          w     := random(1.) + %i random(1.)
@@ -730,10 +581,6 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 (%o10)                  [              ]
                         [   3    8 - z ]
 @end example
-
-@c @opencatbox
-@c @category{Matrix decompositions} @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -747,28 +594,20 @@ the running time for @code{mat_cond} is proportional to the cube of
 the matrix size; @code{lu_factor} determines lower and upper bounds
 for the infinity norm condition number in time proportional to the
 square of the matrix size.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} mat_norm (@var{M}, 1)
+@deffn  {Function} mat_norm (@var{M}, 1)
 @deffnx {Function} mat_norm (@var{M}, inf)
 @deffnx {Function} mat_norm (@var{M}, frobenius)
 
-Return the matrix @var{p}-norm of the matrix @var{M}.  The allowed values for @var{p} are
-1, @code{inf}, and @code{frobenius} (the Frobenius matrix norm). The matrix @var{M} should be
-an unblocked matrix.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+Return the matrix @var{p}-norm of the matrix @var{M}.  The allowed values for 
+@var{p} are 1, @code{inf}, and @code{frobenius} (the Frobenius matrix norm). 
+The matrix @var{M} should be an unblocked matrix.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} matrixp (@var{e}, @var{p})
+@deffn  {Function} matrixp (@var{e}, @var{p})
 @deffnx {Function} matrixp (@var{e})
 
 Given an optional argument @var{p}, return @code{true} if @var{e} is 
@@ -777,10 +616,6 @@ When @code{matrixp} is not given an optional argument, return @code{true}
 if @code{e} is a matrix.  In all other cases, return @code{false}.
 
 See also @code{blockmatrixp}
-
-@c @opencatbox
-@c @category{Package linearalgebra} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -788,21 +623,13 @@ See also @code{blockmatrixp}
 
 Return a two member list that gives the number of rows and columns, respectively
 of the matrix @var{M}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} mat_fullunblocker (@var{M})
 
-If @var{M} is a block matrix, unblock the matrix to all levels. If @var{M} is a matrix,
-return @var{M}; otherwise, signal an error.  
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+If @var{M} is a block matrix, unblock the matrix to all levels. If @var{M} is 
+a matrix, return @var{M}; otherwise, signal an error.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -811,10 +638,6 @@ return @var{M}; otherwise, signal an error.
 Return the trace of the matrix @var{M}. If @var{M} isn't a matrix, return a
 noun form. When @var{M} is a block matrix, @code{mat_trace(M)} returns
 the same value as does @code{mat_trace(mat_unblocker(m))}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -824,20 +647,15 @@ If @var{M} is a block matrix, unblock @var{M} one level. If @var{M} is a matrix,
 @code{mat_unblocker (M)} returns @var{M}; otherwise, signal an error.
 
 Thus if each entry of @var{M} is matrix, @code{mat_unblocker (M)} returns an 
-unblocked matrix, but if each entry of @var{M} is a block matrix, @code{mat_unblocker (M)} 
-returns a block matrix with one less level of blocking.
+unblocked matrix, but if each entry of @var{M} is a block matrix, 
+@code{mat_unblocker (M)} returns a block matrix with one less level of blocking.
 
-If you use block matrices, most likely you'll want to set @code{matrix_element_mult} to 
-@code{"."} and @code{matrix_element_transpose} to @code{'transpose}. See also @code{mat_fullunblocker}.
+If you use block matrices, most likely you'll want to set 
+@code{matrix_element_mult} to @code{"."} and @code{matrix_element_transpose} 
+to @code{'transpose}. See also @code{mat_fullunblocker}.
 
 Example:
 
-@c ===beg===
-@c A : matrix ([1, 2], [3, 4]);
-@c B : matrix ([7, 8], [9, 10]);
-@c matrix ([A, B]);
-@c mat_unblocker (%);
-@c ===end===
 @example
 (%i1) A : matrix ([1, 2], [3, 4]);
                             [ 1  2 ]
@@ -856,42 +674,21 @@ Example:
 (%o4)                    [             ]
                          [ 3  4  9  10 ]
 @end example
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} nonnegintegerp (@var{n})
-
-Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
-
-@c @opencatbox
-@c @category{Package linearalgebra} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} nullspace (@var{M})
 
-If @var{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set @code{@{v_1, ..., v_n@}}
-is a basis for the nullspace of @var{M}.  The span of the empty set is @code{@{0@}}.  
-Thus, when the nullspace has only one member, return @code{span ()}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
+If @var{M} is a matrix, return @code{span (v_1, ..., v_n)}, where the set 
+@code{@{v_1, ..., v_n@}} is a basis for the nullspace of @var{M}.  The span of 
+the empty set is @code{@{0@}}.  Thus, when the nullspace has only one member, 
+return @code{span ()}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} nullity (@var{M})
 
 If @var{M} is a matrix, return the dimension of the nullspace of @var{M}.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -901,23 +698,19 @@ Return @code{span (u_1, ..., u_m)}, where the set @code{@{u_1, ..., u_m@}} is a
 basis for the orthogonal complement of the set @code{(v_1, ..., v_n)}.
 
 Each vector @var{v_1} through @var{v_n} must be a column vector.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffn  {Function} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
 @deffnx {Function} polynomialp (@var{p}, @var{L}, @var{coeffp})
 @deffnx {Function} polynomialp (@var{p}, @var{L})
 
-Return @code{true} if @var{p} is a polynomial in the variables in the list @var{L},
-The predicate @var{coeffp} must evaluate to @code{true} for each
+Return @code{true} if @var{p} is a polynomial in the variables in the list 
+@var{L}.  The predicate @var{coeffp} must evaluate to @code{true} for each
 coefficient, and the predicate @var{exponp} must evaluate to @code{true} for all 
 exponents of the variables in @var{L}. If you want to use a non-default
-value for @var{exponp}, you must supply @var{coeffp} with a value even if you want
-to use the default for @var{coeffp}.
+value for @var{exponp}, you must supply @var{coeffp} with a value even if you
+want to use the default for @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
 The command @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
@@ -927,10 +720,6 @@ The command @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
 
 The polynomial needn't be expanded:
 
-@c ===beg===
-@c polynomialp ((x + 1)*(x + 2), [x]);
-@c polynomialp ((x + 1)*(x + 2)^a, [x]);
-@c ===end===
 @example
 (%i1) polynomialp ((x + 1)*(x + 2), [x]);
 (%o1)                         true
@@ -940,11 +729,6 @@ The polynomial needn't be expanded:
 
 An example using non-default values for coeffp and exponp:
 
-@c ===beg===
-@c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
-@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, 
-@c                                                        numberp);
-@c ===end===
 @example
 (%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 (%o1)                         true
@@ -955,34 +739,22 @@ An example using non-default values for coeffp and exponp:
 
 Polynomials with two variables:
 
-@c ===beg===
-@c polynomialp (x^2 + 5*x*y + y^2, [x]);
-@c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
-@c ===end===
 @example
 (%i1) polynomialp (x^2 + 5*x*y + y^2, [x]);
 (%o1)                         false
 (%i2) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
 (%o2)                         true
 @end example
-
-@c @opencatbox
-@c @category{Package linearalgebra} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} polytocompanion (@var{p}, @var{x})
 
-If @var{p} is a polynomial in @var{x}, return the companion matrix of @var{p}. For
-a monic polynomial @var{p} of degree @var{n},
-we have @code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
+If @var{p} is a polynomial in @var{x}, return the companion matrix of @var{p}. 
+For a monic polynomial @var{p} of degree @var{n}, we have 
+@code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
 
 When @var{p} isn't a polynomial in @var{x}, signal an error.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1000,10 +772,6 @@ whose entries are polynomials in @var{v},
 (3) @code{|det (@var{M})| = |det (@var{M2})|},
 
 Note: This function doesn't check that every entry is a polynomial in @var{v}.  
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1012,10 +780,6 @@ Note: This function doesn't check that every entry is a polynomial in @var{v}.
 If @var{M} is a matrix, return the matrix that results from doing the  
 row operation @code{R_i <- R_i - theta * R_j}. If @var{M} doesn't have a row
 @var{i} or @var{j}, signal an error.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1026,10 +790,6 @@ column space.
 
 Example:
 
-@c ===beg===
-@c rank(matrix([1,2],[2,4]));
-@c rank(matrix([1,b],[c,d]));
-@c ===end===
 @example
 (%i1) rank(matrix([1,2],[2,4]));
 (%o1)                                  1
@@ -1037,10 +797,6 @@ Example:
 Proviso:  @{d - b c # 0@}
 (%o2)                                  2
 @end example
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1048,10 +804,6 @@ Proviso:  @{d - b c # 0@}
 
 If @var{M} is a matrix, swap rows @var{i} and @var{j}. If @var{M} doesn't have 
 a row @var{i} or @var{j}, signal an error.
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1064,10 +816,6 @@ The default for @var{row} is complex conjugate of @var{col}.
 
 Example:
 
-@c ===beg===
-@c toeplitz([1,2,3],[x,y,z]);
-@c toeplitz([1,1+%i]);
-@c ==end===
 @example
 (%i1)  toeplitz([1,2,3],[x,y,z]);
 
@@ -1082,10 +830,6 @@ Example:
 (%o2)                         [                ]
                               [ %I + 1    1    ]
 @end example
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1093,15 +837,11 @@ Example:
 
 Return a @var{n} by @var{n} matrix whose @var{i}-th row is 
 @code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}. 
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} zerofor (@var{M})
-@deffnx {Function}  zerofor (@var{M}, @var{fld})
+@deffn  {Function} zerofor (@var{M})
+@deffnx {Function} zerofor (@var{M}, @var{fld})
 
 Return a zero  matrix that has the same shape as the matrix
 @var{M}.  Every entry of the zero matrix is the
@@ -1114,10 +854,6 @@ square matrix -- thus @var{M} can be a blocked Maxima matrix. The
 matrix can be blocked to any (finite) depth.
 
 See also @code{identfor}
-
-@c @opencatbox
-@c @category{Package linearalgebra}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1127,10 +863,6 @@ If @var{M} is not a block matrix, return @code{true} if
 @code{is (equal (@var{e}, 0))} is true for each element @var{e} of the matrix 
 @var{M}.  If @var{M} is a block matrix, return @code{true} if @code{zeromatrixp}
 evaluates to @code{true} for each element of @var{e}.
-
-@c @opencatbox
-@c @category{Package linearalgebra} @category{Predicate functions}
-@c @closecatbox
 @end deffn
 
 @c --- End of file linearalgebra.de.texi ---------------------------------------

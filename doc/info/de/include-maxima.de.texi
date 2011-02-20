@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in revision 1.12
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.02.2011
+@c Revision    : 20.02.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -173,6 +173,7 @@ Fortgeschrittene M@"oglichkeiten und Programmierung
  
 Zus@"atzliche Pakete (Englisch)
 
+* abs_integrate::               Integrals for the functions abs, signun, ...
 * affine::                      
 * asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
@@ -403,6 +404,10 @@ Verschiedenes
 * Einf@"uhrung in Verschiedenes::
 * Share-Pakete::
 * Funktionen und Variablen f@"ur Verschiedenes::
+
+abs_integrate
+* Introduction to abs_integrate::
+* Functions and Variables for abs_integrate::
 
 affine
 * Introduction to Affine::
@@ -716,13 +721,17 @@ Glossar
 @chapter Fehlersuche
 @include Debugging.de.texi
 
-@node Verschiedenes, affine, Fehlersuche, Top
+@node Verschiedenes, abs_integrate, Fehlersuche, Top
 @chapter Verschiedenes
 @include Miscellaneous.de.texi
 
 @c --- LOAD ADDITIONAL PACKAGES ------------------------------------------------
 
-@node affine, asympa, Verschiedenes, Top
+@node abs_integrate, affine, Verschiedenes, Top
+@chapter abs_integrate
+@include abs_integrate.de.texi
+
+@node affine, asympa, abs_integrate, Top
 @chapter affine
 @include affine.de.texi
 
