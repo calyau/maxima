@@ -12,6 +12,7 @@ Polynomials.de.texi Equations.de.texi Matrices.de.texi Itensor.de.texi \
 Ctensor.de.texi Atensor.de.texi Special.de.texi Numerical.de.texi \
 Runtime.de.texi Rules.de.texi Function.de.texi Program.de.texi \
 Translator.de.texi Debugging.de.texi Miscellaneous.de.texi \
+abs_integrate.de.texi \
 affine.de.texi asympa.de.texi augmented_lagrangian.de.texi bode.de.texi \
 cobyla.de.texi contrib_ode.de.texi descriptive.de.texi diag.de.texi \
 distrib.de.texi draw.de.texi drawdf.de.texi dynamics.de.texi \
@@ -32,7 +33,7 @@ maxima-index.lisp: maxima.info ../build_index.pl
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
 	sh ../extract_categories.sh maxima
-	perl ../texi2html -split_chapter --lang=de --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
+	perl texi2html -split_chapter --lang=de --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 
 contents.hhc: maxima.html
 	perl ../create_index
