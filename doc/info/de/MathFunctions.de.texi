@@ -26,19 +26,101 @@
 @section Funktionen f@"ur Zahlen
 @c -----------------------------------------------------------------------------
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{abs}
 @deffn {Funktion} abs (@var{expr})
 
-@c Returns the absolute value @var{expr}.  If @var{expr} is complex, returns 
-@c the complex modulus of @var{expr}.
+Die Funktion @code{abs} ist die Betragsfunktion und f@"ur numerische und
+symbolische Rechnungen geeignet.  Ist das Argument @var{expr} eine reelle oder
+komplexe Zahl wird der Betrag berechnet.  Wenn m@"oglich werden allgemeine
+Ausdr@"ucke mit der Betragsfunktion vereinfacht.  Maxima kann Ausdr@"ucke mit
+der Betragsfunktion integrieren und ableiten sowie Grenzwerte von Ausdr@"ucken
+mit der Betragsfunktion ermitteln.  Siehe auch @mrefcomma{diff}@ 
+@mref{integrate} und @mrefdot{limit}  Das Paket @mref{abs_integrate} erweitert
+Maximas M@"oglichkeiten, Integrale mit der Betragsfunktion zu berechnen.
 
-Gibt den Betrag des Argumentes @var{expr} zur@"uck.  Ist @var{expr} eine 
-komplexe Zahl wird das Argument zum komplexen Betrag vereinfacht.  Allgemeine 
-komplexe Ausdr@"ucke oder komplexe Funktionen werden von @code{abs} nicht 
-vereinfacht.  F@"ur komplexe Ausdr@"ucke kann die Funktion @code{cabs} genutzt 
-werden.  Siehe @mrefdot{cabs}
+Die Betragsfunktion wird automatisch auf die Elemente von Listen und Matrizen
+sowie auf beide Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
+Siehe die Funktion @mrefcomma{cabs} um den Betrag eines komplexen Ausdrucks
+oder Funktion zu berechnen.
+
+Beispiele:
+
+Berechnung des Betrages f@"ur reelle und komplexen Zahlen sowie numerische
+Konstanten und unendliche Gr@"o@ss{}en.  Das erste Beispiel zeigt, wie die
+Betragsfunktion von Maxima auf die Elemente einer Liste angewendet werden.
+
+@example
+(%i1) abs([-4, 0, 1, 1+%i]);
+(%o1)                  [4, 0, 1, sqrt(2)]
+
+(%i2) abs((1+%i)*(1-%i));
+(%o2)                           2
+(%i3) abs(%e+%i);
+                                2
+(%o3)                    sqrt(%e  + 1)
+(%i4) abs([inf, infinity, minf]);
+(%o4)                   [inf, inf, inf]
+@end example
+
+Vereinfachung von Ausdr@"ucken mit der Betragsfunktion.
+
+@example
+(%i5) abs(x^2);
+                                2
+(%o5)                          x
+(%i6) abs(x^3);
+                             2
+(%o6)                       x  abs(x)
+
+(%i7) abs(abs(x));
+(%o7)                       abs(x)
+(%i8) abs(conjugate(x));
+(%o8)                       abs(x)
+@end example
+
+Ableitung und Integrale mit der Betragsfunktion.  Wird das Paket
+@nref{abs_integrate} geladen, k@"onnen weitere Integrale mit der Betragsfunktion
+gel@"ost werden.  Das letzte Beispiel zeigt die Laplacetransformation der
+Betragsfunktion.
+
+@example
+(%i9) diff(x*abs(x),x),expand;
+(%o9)                       2 abs(x)
+
+(%i10) integrate(abs(x),x);
+                             x abs(x)
+(%o10)                       --------
+                                2
+
+(%i11) integrate(x*abs(x),x);
+                           /
+                           [
+(%o11)                     I x abs(x) dx
+                           ]
+                           /
+
+(%i12) load(abs_integrate)$
+(%i13) integrate(x*abs(x),x);
+                      2           3
+                     x  abs(x)   x  signum(x)
+(%o13)               --------- - ------------
+                         2            6
+
+(%i14) integrate(abs(x),x,-2,%pi);
+                               2
+                            %pi
+(%o14)                      ---- + 2
+                             2
+
+(%i15) laplace(abs(x),x,s);
+                               1
+(%o15)                         --
+                                2
+                               s
+@end example
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -46,7 +128,7 @@ werden.  Siehe @mrefdot{cabs}
 @deffn {Funktion} ceiling (@var{x})
 
 @c When @var{x} is a real number, return the least integer that is greater than 
-@c or equal to @var{x}.  
+@c or equal to @var{x}.
 
 F@"ur eine reelle Zahl @var{x} gibt @code{ceiling} die kleinste ganze Zahl 
 zur@"uck, die gr@"o@ss{}er oder gleich @var{x} ist.
@@ -67,21 +149,12 @@ dass @code{ceiling} ein fehlerhaftes Ergebnis errechnet.  Um solche Fehler zu
 minimieren, wird bei der Umwandlung in Gleitkommazahlen die Genauigkeit 
 @code{fpprec} um drei zus@"atzliche Stellen erh@"oht.
 
-@c For non-constant inputs, @code{ceiling} tries to return a simplified value.  
+@c For non-constant inputs, @code{ceiling} tries to return a simplified value.
 @c Here are examples of the simplifications that @code{ceiling} knows about:
 
 Nicht-konstante Ausdr@"ucke versucht @code{ceiling} zu vereinfachen.  Es folgen
 Beispiele f@"ur solche Vereinfachungen:
 
-@c ===beg===
-@c ceiling (ceiling (x));
-@c ceiling (floor (x));
-@c declare (n, integer)$
-@c [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
-@c assume (x > 0, x < 1)$
-@c ceiling (x);
-@c tex (ceiling (a));
-@c ===end===
 @example
 (%i1) ceiling (ceiling (x));
 (%o1)                      ceiling(x)
@@ -113,11 +186,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @code{integervalued} deklariert werden.  Die Funktionen @code{ceiling} und
 @code{floor} k@"onnen diese Information nutzen, um Ausdr@"ucke zu vereinfachen:
 
-@c ===beg===
-@c declare (f, integervalued)$
-@c floor (f(x));
-@c ceiling (f(x) - 1);
-@c ===end===
 @example
 (%i1) declare (f, integervalued)$
 (%i2) floor (f(x));
@@ -125,7 +193,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 (%i3) ceiling (f(x) - 1);
 (%o3)                       f(x) - 1
 @end example
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -138,7 +205,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 
 @code{entier} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}. 
 Siehe @mrefdot{floor}
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -173,15 +239,6 @@ minimieren, wird bei der Umwandlung in Gleitkommazahlen die Genauigkeit
 Nicht-konstante Ausdr@"ucke versucht @code{floor} zu vereinfachen.  Es folgen
 Beispiele f@"ur solche Vereinfachungen:
 
-@c ===beg===
-@c floor (ceiling (x));
-@c floor (floor (x));
-@c declare (n, integer)$
-@c [floor (n), floor (abs (n)), floor (min (n, 6))];
-@c assume (x > 0, x < 1)$
-@c floor (x);
-@c tex (floor (a));
-@c ===end===
 @example
 (%i1) floor (ceiling (x));
 (%o1)                      ceiling(x)
@@ -213,11 +270,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @code{integervalued} deklariert werden.  Die Funktionen @code{ceiling} und
 @code{floor} k@"onnen diese Information nutzen, um Ausdr@"ucke zu vereinfachen:
 
-@c ===beg===
-@c declare (f, integervalued)$
-@c floor (f(x));
-@c ceiling (f(x) - 1);
-@c ===end===
 @example
 (%i1) declare (f, integervalued)$
 (%i2) floor (f(x));
@@ -225,7 +277,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 (%i3) ceiling (f(x) - 1);
 (%o3)                       f(x) - 1
 @end example
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -236,7 +287,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 
 @code{fix} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}.  Siehe
 @mrefdot{floor}
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -249,7 +299,6 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 Ist @var{L} eine Liste oder Menge, wird die Funktion @code{max} auf die Elemente
 der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.  Ist @var{L} 
 keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -262,7 +311,6 @@ keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
 Ist @var{L} eine Liste oder Menge, wird die Funktion @code{min} auf die Elemente
 der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.  Ist @var{L} 
 keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -282,9 +330,8 @@ Gibt einen vereinfachten Wert f@"ur das Maximum der Ausdr@"ucke @var{x_1} bis
 gr@"o@ss{}er, nutzt @code{max} die Vereinfachung @code{max(e,-e) --> |e|}.  Ist 
 @code{get(trylevel, maxmin)} gleich 3 oder gr@"o@ss{}er, versucht @code{max} 
 Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So 
-wird zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht. 
-@code{put(trylevel, 2, maximin)} setzt den Wert von @code{trylevel} zu 2. 
-
+wird zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht.
+@code{put(trylevel, 2, maximin)} setzt den Wert von @code{trylevel} zu 2.
 @end deffn 
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -306,7 +353,6 @@ gr@"o@ss{}er, nutzt @code{min} die Vereinfachung @code{min(e,-e) --> |e|}.  Ist
 Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So 
 wird zum Beispiel @code{min(x,2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht. 
 @code{put(trylevel, 2, maximin)} setzt den Wert von @code{trylevel} zu 2.
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -323,7 +369,6 @@ gerundet.  Die Berechnung von @var{x} ist vergleichbar mit den Methoden der
 Funktionen @code{floor} und @code{ceiling}.
 
 Siehe auch @mref{floor} und @mrefdot{ceiling}
-
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
@@ -342,7 +387,6 @@ ist.
 
 Ist @var{x} keine Zahl, versucht Maxima den Ausdruck zu vereinfachen.  So wird 
 zum Beispiel @code{signum(-x)} zu @code{-signum(x)} vereinfacht.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -350,50 +394,107 @@ zum Beispiel @code{signum(-x)} zu @code{-signum(x)} vereinfacht.
 @section Funktionen f@"ur komplexe Zahlen
 @c -----------------------------------------------------------------------------
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{cabs}
 @deffn {Funktion} cabs (@var{expr})
 
-@c Returns the complex absolute value (the complex modulus) of @var{expr}.
+Berechnet den Betrag eines komplexen Ausdrucks @var{expr}.  Im Unterschied
+zu der Funktion @mrefcomma{abs} zerlegt die Funktion @code{cabs} einen komplexen
+Ausdruck immer in einen Realteil und Imagin@"arteil, um den komplexen Betrag zu
+berechnen.  Sind @var{x} und @var{y} zwei reelle Variablen oder Ausdr@"ucke
+berechnet die Funktion @code{cabs} den Betrag des komplexen Ausdrucks
+@code{x + %i*y} als:
+@example
+                           2    2
+                     sqrt(y  + x )
+@end example
 
-Gibt den Betrag eines komplexen Ausdrucks @var{expr} zur@"uck.  Im Unterschied
-zu der Funktion @code{abs}, zerlegt die Funktion @code{cabs} einen komplexen 
-Ausdruck immer in einen Realteil und einen Imagin@"arteil, um den komplexen 
-Betrag zu berechnen.
+Die Funktion @code{cabs} nutzt Symmetrieeigenschaften und implementierte
+Eigenschaften komplexer Funktionen, um den Betrag eines Ausdrucks zu berechnen.
+Sind solche Eigenschaften f@"ur eine Funktion vorhanden, k@"onnen diese mit der
+Funktion @mref{properties} angezeigt werden.  Eigenschaften, die das Ergebnis
+der Funktion @code{cabs} bestimmen, sind: @code{mirror symmetry},
+@code{conjugate function} und @code{complex characteristic}.
 
-@end deffn
+@code{cabs} ist eine Verbfunktion, die nicht f@"ur das symbolische Rechnen
+geeignet ist.  F@"ur das symbolische Rechnen wie der Integration oder der
+Ableitung von Ausdr@"ucken muss die Betragsfunktion @code{abs} verwendet werden.
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
-@anchor{carg}
-@deffn {Funktion} carg (@var{z})
+Das Ergebnis der Funktion @code{cabs} kann die Betragsfunktion @mref{abs} und
+die Arcustangensfunktion @mref{atan2} enthalten.
 
-@c Returns the complex argument of @var{z}. The complex argument is an angle 
-@c @code{theta} in @code{(-%pi, %pi]} such that @code{r exp (theta %i) = 
-@c @var{z}} where @code{r} is the magnitude of @var{z}.
+@code{cabs} wird automatisch auf die Elemente von Listen und Matrizen sowie auf
+beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
 
-Gibt das komplexe Argument von @var{z} zur@"uck.  Das komplexe Argument ist ein
-Winkel @code{theta} im Intervall @code{(-%pi, %pi)} derart, das @var{z} = 
-@code{r exp (theta %i)} ist, wobei @code{r} den Betrag des komplexen Ausdrucks 
-@var{z} bezeichnet.
-
-@c @code{carg} is a computational function, not a simplifying function.
-
-@c See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
-@c @code{realpart}, and @code{imagpart}.
-
-Siehe auch @mrefcomma{cabs} @mrefcomma{polarform} @mrefcomma{rectform}@
-@mref{realpart} und @mrefdot{imagpart}
+Siehe auch die Funktionen @mrefcomma{rectform} @mrefcomma{realpart}@ 
+@mrefcomma{imagpart} @mrefcomma{carg} @mrefcomma{conjugate} und 
+@mref{polarform} f@"ur das Rechnen mit komplexen Zahlen.
 
 Beispiele:
 
-@c ===beg===
-@c carg (1);
-@c carg (1 + %i);
-@c carg (exp (%i));
-@c carg (exp (%pi * %i));
-@c carg (exp (3/2 * %pi * %i));
-@c carg (17 * exp (2 * %i));
-@c ===end===
+Zwei Beispiele mit der Wurzelfunktion @mref{sqrt} und der Sinusfunktion
+@mrefdot{sin}
+
+@example
+(%i1) cabs(sqrt(1+%i*x));
+                             2     1/4
+(%o1)                      (x  + 1)
+(%i2) cabs(sin(x+%i*y));
+                    2        2         2        2
+(%o2)       sqrt(cos (x) sinh (y) + sin (x) cosh (y))
+@end example
+
+Die Funktion @mref{erf} hat Spiegelsymmetrie, die hier f@"ur die Berechnung des
+komplexen Betrages angwendet wird.
+
+@example
+(%i3) cabs(erf(x+%i*y));
+@group
+                                          2
+           (erf(%i y + x) - erf(%i y - x))
+(%o3) sqrt(--------------------------------
+                          4
+                                                               2
+                                (erf(%i y + x) + erf(%i y - x))
+                              - --------------------------------)
+                                               4
+@end group
+@end example
+
+Maxima kennt komplexe Eigenschaften der Besselfunktionen, um den komplexen
+Betrag zu vereinfachen.  Dies ist ein Beispiel f@"ur die Besselfunktion
+@mrefdot{bessel_j}
+
+@example
+(%i4) cabs(bessel_j(1,%i));
+(%o4)                 abs(bessel_j(1, %i))
+@end example
+@end deffn
+
+@c --- 20.02.2011 DK -----------------------------------------------------------
+@anchor{carg}
+@deffn {Funktion} carg (@var{expr})
+
+Gibt das komplexe Argument des Ausdrucks @var{expr} zur@"uck.  Das komplexe
+Argument ist ein Winkel @code{theta} im Intervall @code{(-%pi, %pi)} derart,
+dass @var{expr} = @code{r exp (theta %i)} gilt, wobei @code{r} den Betrag des
+komplexen Ausdrucks @var{expr} bezeichnet.  Das ist die Polarform des Ausdrucks,
+wie sie auch von der Funktion @mref{polarform} zur@"uckgegeben wird.  Der Betrag
+des komplexen Ausdrucks kann mit der Funktion @mref{cabs} berechnet werden.
+
+Das Ergebnis der Funktion @code{carg} kann die Funktion @mref{atan2} enthalten.
+
+@code{carg} wird automatisch auf die Elemente von Listen und Matrizen sowie auf
+beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+
+Die Funktion @code{carg} ist eine Verbfunktion, mit der nicht symbolisch
+gerechnet werden kann.
+
+Siehe auch die Funktionen @mrefcomma{rectform} @mref{realpart} und
+@mref{imagpart} sowie die Funktionen @mref{cabs} und @mrefdot{conjugate}
+
+Beispiele:
+
 @example
 (%i1) carg (1);
 (%o1)                           0
@@ -403,109 +504,318 @@ Beispiele:
                                 4
 (%i3) carg (exp (%i));
 (%o3)                           1
-(%i4) carg (exp (%pi * %i));
-(%o4)                          %pi
-(%i5) carg (exp (3/2 * %pi * %i));
-                                %pi
-(%o5)                         - ---
-                                 2
-(%i6) carg (17 * exp (2 * %i));
-(%o6)                           2
-@end example
 
+(%i4) carg (exp (3/2 * %pi * %i));
+                                %pi
+(%o4)                         - ---
+                                 2
+(%i5) carg(exp(x+%i*y));
+(%o5)                atan2(sin(y), cos(y))
+
+(%i6) carg(sqrt(x+%i*y));
+                          atan2(y, x)
+(%o6)                     -----------
+                               2
+(%i7) carg(sqrt(1+%i*y));
+                            atan(y)
+(%o7)                       -------
+                               2
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{conjugate}
-@deffn {Funktion} conjugate (@var{x})
+@deffn {Funktion} conjugate (@var{expr})
 
-@c Returns the complex conjugate of @var{x}.
+Gibt den konjugiert komplexen Wert des Ausdrucks @var{expr} zur@"uck.  Sind
+@var{x} und @var{y} reelle Variablen oder Ausdr@"ucke, dann hat der Ausdruck
+@code{x + %i*y} das Ergebnis @code{x - %i*y}.  Die Funktion @code{conjugate} ist
+f@"ur numerische und symbolische Rechnungen geeignet.
 
-Gibt den konjugiert komplexen Wert des Ausdruckes @var{x} zur@"uck.
+Maxima kennt Regeln, um den konjugierten Wert f@"ur Summen, Produkte und
+Quotienten von komplexen Ausdr@"ucken zu vereinfachen.  Weiterhin kennt Maxima
+Symmetrieeigenschaften und komplexe Eigenschaften von Funktionen, um den 
+konjugierten Wert mit diesen Funktionen zu vereinfachen.  Sind solche
+Eigenschaften f@"ur eine Funktion vorhanden, k@"onnen diese mit der
+Funktion @mref{properties} angezeigt werden.  Eigenschaften, die das Ergebnis
+der Funktion @code{conjugate} bestimmen, sind: @code{mirror symmetry},
+@code{conjugate function} und @code{complex characteristic}.
+
+@code{conjugate} wird automatisch auf die Elemente von Listen und Matrizen sowie
+auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+
+F@"ur das Rechnen mit komplexen Ausdr@"ucken siehe auch die Funktionen
+@mref{cabs} und @mref{carg} sowie @mref{rectform} und @mrefdot{polarform}
 
 Beispiele:
 
-@c ===beg===
-@c declare ([aa, bb], real, cc, complex, ii, imaginary);
-@c conjugate (aa + bb*%i);
-@c conjugate (cc);
-@c conjugate (ii);
-@c conjugate (xx + yy);
-@c ===end===
+Beispiele mit reellen, imagin@"aren und komplexen Variablen.
+
 @example
-(%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
-
+(%i1) declare ([x, y], real, [z1, z2], complex, j, imaginary);
 (%o1)                         done
-(%i2) conjugate (aa + bb*%i);
-
-(%o2)                      aa - %i bb
-(%i3) conjugate (cc);
-
-(%o3)                     conjugate(cc)
-(%i4) conjugate (ii);
-
-(%o4)                         - ii
-(%i5) conjugate (xx + yy);
-
-(%o5)             conjugate(yy) + conjugate(xx)
+(%i2) conjugate(x + %i*y);
+(%o2)                       x - %i y
+(%i3) conjugate(z1*z2);
+(%o3)              conjugate(z1) conjugate(z2)
+(%i4) conjugate(j/z2);
+                                 j
+(%o4)                    - -------------
+                           conjugate(z2)
 @end example
 
+Im Folgenden nutzt Maxima Symmetrieeigenschaften, um den konjugiert komplexen
+Wert der Funktionen @mref{gamma} und @mref{sin} zu berechnen.  Die
+Logarithmusfunktion @mref{log} hat Spiegelsymmetrie, wenn das Argument einen
+positiven Realteil hat.
+
+@example
+(%i5) conjugate(gamma(x+%i*y));
+(%o5)                    gamma(x - %i y)
+(%i6) conjugate(sin(x+%i*y));
+(%o6)                    - sin(%i y - x)
+(%i7) conjugate(log(x+%i*y));
+(%o7)               conjugate(log(%i y + x))
+(%i8) conjugate(log(1+%i*y));
+(%o8)                     log(1 - %i y)
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{imagpart}
 @deffn {Funktion} imagpart (@var{expr})
 
-@c Returns the imaginary part of the expression @var{expr}.
+Gibt den Imagin@"arteil des Ausrucks @var{expr} zur@"uck.  Intern berechnet
+Maxima den Imagin@"arteil mit der Funktion @mrefcomma{rectform} die einen
+Ausdruck in den Realteil und in den Imagin@"arteil zerlegt.  Daher treffen die
+Ausf@"uhrungen zu @code{rectform} auch auf die Funktion @code{imagpart} zu.
 
-Gibt den Imagin@"arteil des Ausdrucks @var{expr} zur@"uck.
+Wie die Funktion @code{rectform} ist auch die Funktion @code{imagpart} eine
+Verbfunktion, mit der nicht symbolisch gerechnet werden kann.
 
-@c @code{imagpart} is a computational function, not a simplifying function.
-   @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@code{imagpart} wird automatisch auf die Elemente von Listen und Matrizen sowie
+auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
 
-@c See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform},
-@c and @code{realpart}.
+Mit der Funktion @mref{realpart} wird der Realteil eines Ausdrucks berechnet.
 
-Siehe auch @code{abs}, @code{carg}, @code{polarform}, @code{rectform} 
-und @code{realpart}.
+Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
+@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.  Mit der Funktion
+@mref{polarform} kann ein komplexer Ausdruck in die Polarform gebracht werden.
 
+Beispiele:
+
+F@"ur weitere Erl@"auterungen dieser Beispiele siehe auch die Funktion
+@mrefdot{rectform}
+
+@example
+(%i1) imagpart((2-%i)/(1-%i));
+                                1
+(%o1)                           -
+                                2
+(%i2) imagpart(sin(x+%i*y));
+(%o2)                    cos(x) sinh(y)
+(%i3) imagpart(gamma(x+%i*y));
+             %i (gamma(x - %i y) - gamma(%i y + x))
+(%o3)        --------------------------------------
+                               2
+(%i4) imagpart(bessel_j(1,%i));
+(%o4)                    bessel_j(1, %i)
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{polarform}
 @deffn {Funktion} polarform (@var{expr})
 
-@c Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr}, such 
-@c that @code{r} and @code{theta} are purely real.
+Gibt den Ausdruck @var{expr} in der Polarform @code{r %e^(%i theta)} zur@"uck.
+@code{r} ist der Betrag des komplexen Ausdrucks, wie er auch mit der Funktion
+@mref{cabs} berechnet werden kann.  @code{theta} ist das Argument des komplexen
+Ausdrucks, das mit der Funktion @mref{carg} berechnet werden kann.
 
-Gibt einen zu @var{expr} @"aquivalenten Ausdruck @code{r %e^(%i theta)} 
-zur@"uck. @code{r} ist der Betrag der komplexen Ausdrucks @var{expr} und 
-@code{theta} das Argument des komplexen Ausdrucks.
+Maxima kennt komplexe Eigenschaften von Funktionen, die bei der Berechnung der
+Polarform angewendet werden.  Siehe die Funktion @mref{cabs} f@"ur weitere
+Erl@"auterungen.
 
+Wenn mit komplexen Ausdr@"ucken in der Polarform gerechnet werden soll, ist es
+hilfreich die Optionsvariable @mref{%emode} auf den Wert @code{false} zu setzen.
+Damit wird verhindert, dass Maxima komplexe Ausdr@"ucke mit der
+Exponentialfunktion @mref{exp} automatisch in die Standardform vereinfacht.
+
+@code{polarform} wird automatisch auf die Elemente von Listen und Matrizen sowie
+auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+
+Die Funktion @code{polarform} ist eine Verbfunktion, mit der nicht symbolisch
+gerechnet werden kann.
+
+Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
+@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.  Mit der Funktion
+@mref{rectform} kann ein komplexer Ausdruck in die Standardform gebracht werden.
+
+Beispiele:
+
+Die allgemeine Polarform eines komplexen Ausdrucks.  Die Variablen @var{x} und
+@var{y} werden von Maxima als reell angenommen.
+
+@example
+(%i1) polarform(x+%i*y);
+                       2    2    %i atan2(y, x)
+(%o1)            sqrt(y  + x ) %e
+@end example
+
+Die Polarform einer komplexen Zahl und eines Ausdrucks mit einer reellen 
+Variablen @var{x}.
+
+@example
+(%i2) polarform(4/5+3*%i/5);
+                           %i atan(3/4)
+(%o2)                    %e
+(%i3) polarform(sqrt(1+%i*x));
+                                  %i atan(x)
+                                  ----------
+                      2     1/4       2
+(%o3)               (x  + 1)    %e
+@end example
+
+Wenn in der Polarform gerechnet werden soll, ist es hilfreich die
+Optionsvariable @mref{%emode} auf den Wert @code{false} zu setzen.  Damit wird
+verhindert, dass Maxima komplexe Ausdr@"ucke mit der Exponentialfunktion 
+@mref{exp} automatisch in eine Standardform vereinfacht.
+
+@example
+(%i4) z:polarform(1+%i);
+                                  %i %pi
+                                  ------
+                                    4
+(%o4)                   sqrt(2) %e
+(%i5) z^3;
+                     3/2    %i         1
+(%o5)               2    (------- - -------)
+                          sqrt(2)   sqrt(2)
+(%i6) %emode:false;
+(%o6)                         false
+(%i7) z^3;
+                                3 %i %pi
+                                --------
+                          3/2      4
+(%o7)                    2    %e
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{realpart}
 @deffn {Funktion} realpart (@var{expr})
 
-@c Returns the real part of @var{expr}. @code{realpart} and @code{imagpart} will
-@c work on expressions involving trigonometic and hyperbolic functions, as well 
-@c as square root, logarithm, and exponentiation.
+Gibt den Realteil des Ausrucks @var{expr} zur@"uck.  Intern berechnet Maxima
+den Realteil mit der Funktion @mrefcomma{rectform} die einen Ausdruck in den
+Realteil und in den Imagin@"arteil zerlegt.  Daher treffen die Ausf@"uhrungen
+zu @code{rectform} auch auf die Funktion @code{realpart} zu.
 
-Gibt den Realteil des Ausrucks @var{expr} zur@"uck.
+Wie die Funktion @code{rectform} ist auch die Funktion @code{realpart} eine
+Verbfunktion, mit der nicht symbolisch gerechnet werden kann.
 
+@code{realpart} wird automatisch auf die Elemente von Listen und Matrizen sowie
+auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+
+Mit der Funktion @mref{imagpart} wird der Imagin@"arteil eines Ausdrucks
+berechnet.
+
+Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
+@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.  Mit der Funktion
+@mref{polarform} kann ein komplexer Ausdruck in die Polarform gebracht werden.
+
+Beispiele:
+
+F@"ur weitere Erl@"auterungen dieser Beispiele siehe auch die Funktion
+@mrefdot{rectform}
+
+@example
+(%i1) realpart((2-%i)/(1-%i));
+                                3
+(%o1)                           -
+                                2
+(%i2) realpart(sin(x+%i*y));
+(%o2)                    sin(x) cosh(y)
+(%i3) realpart(gamma(x+%i*y));
+                gamma(%i y + x) + gamma(x - %i y)
+(%o3)           ---------------------------------
+                                2
+(%i4) realpart(bessel_j(1,%i));
+(%o4)                           0
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{rectform}
 @deffn {Funktion} rectform (@var{expr})
 
-@c Returns an expression @code{a + b %i} equivalent to @var{expr}, such that 
-@c @var{a} and @var{b} are purely real.
+Zerlegt den Ausdruck @var{expr} in den Realteil @code{a} und den Imagin@"arteil
+@code{b} und gibt den komplexen Ausdruck in der Standardform @code{a + b %i}
+zur@"uck.
 
-Zerlegt einen Ausdruck in den Realteil @code{a} und den Imagin@"arteil @code{b}
-und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
+Die Funktion @code{rectform} nutzt Symmetrieeigenschaften und implementierte
+Eigenschaften komplexer Funktionen, um den Realteil und Imagin@"arteil eines
+komplexen Ausdrucks zu berechnen.  Sind solche Eigenschaften f@"ur eine Funktion vorhanden, k@"onnen diese mit der Funktion @mref{properties} angezeigt werden.
+Eigenschaften, die das Ergebnis der Funktion @code{rectform} bestimmen, sind:
+@code{mirror symmetry}, @code{conjugate function} und
+@code{complex characteristic}.
 
+@code{rectform} ist eine Verbfunktion, die nicht f@"ur das symbolische Rechnen
+geeignet ist.
+
+@code{rectform} wird automatisch auf die Elemente von Listen und Matrizen sowie
+auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+
+Die Funktionen @mref{realpart} und @mref{imagpart} geben jeweils allein den
+Realteil und den Imagin@"arteil eines Ausdrucks zur@"uck.  Um einen Ausdruck in
+die Polarform zu bringen, kann die Funktion @mref{polarform} verwendet werden.
+
+Siehe auch die Funktionen @mrefcomma{cabs} @mref{carg} und
+@mref{conjugate} f@"ur das Rechnen mit komplexen Zahlen.
+
+Beispiele:
+
+Zerlegung eines komplexen Ausdrucks und der Sinusfunktion @mref{sin} in den
+Realteil und Imagin@"arteil.  Maxima kennt komplexe Eigenschaften der
+trigonometrischen Funktionen, um den Realteil und den Imagin@"arteil zu
+bestimmen.
+
+@example
+(%i1) rectform((2-%i)/(1-%i));
+@group
+                             %i   3
+(%o1)                        -- + -
+                             2    2
+@end group
+(%i2) rectform(sin(x+%i*y));
+(%o2)          %i cos(x) sinh(y) + sin(x) cosh(y)
+@end example
+
+Bei der Zerlegung in einen Realteil und einen Imagin@"arteil nutzt Maxima die
+Spiegelsymmetrie der Gammfunktion @mrefdot{gamma}  Die Eigenschaft der 
+Spiegelsymmetrie wird mit der Funktion @mref{properties} angezeigt, der Eintrag
+lautet @code{mirror symmetry}.
+
+@example
+(%i3) properties(gamma);
+(%o3)    [mirror symmetry, noun, rule, gradef, transfun]
+
+(%i4) rectform(gamma(x+%i*y));
+      gamma(%i y + x) + gamma(x - %i y)
+(%o4) ---------------------------------
+                      2
+                                gamma(x - %i y) - gamma(%i y + x)
+                              - ---------------------------------
+                                                2
+@end example
+
+Maxima kennt komplexe Eigenschaften der Besselfunktionen.  Die Besselfunktion
+@mref{bessel_j} ist f@"ur eine ganzzahlige Ordnung und einem imagin@"aren
+Argument rein imagin@"ar.
+
+@example
+(%i5) rectform(bessel_j(1,%i));
+(%o5)                  %i bessel_j(1, %i)
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -556,8 +866,7 @@ F@"ur ein Argument @code{n}, das keine ganze, rationale oder Gleitkommazahl ist,
 gibt @code{n!!} die Substantivform @code{genfact(n, n/2,2)} zur@"uck.
 
 Maxima kennt noch die Funktion @code{double_factorial}, die wesentlich 
-allgemeiner definiert ist. Siehe @code{double_factorial}.
-
+allgemeiner definiert ist.  Siehe @code{double_factorial}.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -576,13 +885,6 @@ Binomialkoeffizient zu einem Polynom vereinfacht.
 
 Beispiele:
 
-@c ===beg===
-@c binomial (11, 7);
-@c 11! / 7! / (11 - 7)!;
-@c binomial (x, 7);
-@c binomial (x + 7, x);
-@c binomial (11, y);
-@c ===end===
 @example
 (%i1) binomial (11, 7);
 (%o1)                          330
@@ -599,7 +901,6 @@ Beispiele:
 (%i5) binomial (11, y);
 (%o5)                    binomial(11, y)
 @end example
-
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -626,7 +927,6 @@ Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
 @c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
 @c (n + 1)^b*n!^b;
 @c factcomb (%);
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -717,12 +1017,6 @@ Die Fakult@"at einer ganzen Zahl wird zu einer exakten Zahl vereinfacht, wenn
 das Argument nicht gr@"o@ss{}er als @code{factlim} ist.  Die Fakult@"at f@"ur 
 reelle und komplexe Zahlen wird in als Gleitkommazahl berechnet.
 
-@c ===beg===
-@c factlim : 10;
-@c [0!, (7/2)!, 8!, 20!];
-@c [4,77!, (1.0+%i)!];
-@c [2.86b0!, 1.0b0+%i)!];
-@c ===end===
 @example
 (%i1) factlim:10;
 (%o1)                                 10
@@ -746,10 +1040,6 @@ Die Fakult@"at einer komplexen Zahl, bekannten Konstanten oder eines allgemeinen
 Ausdrucks wird nicht vereinfacht.  Der Vereinfachung kann m@"oglich sein, wenn 
 der Operand zu einer Zahl ausgewertet werden kann.
 
-@c ===beg===
-@c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
-@c ev (%, numer, %enumer);
-@c ===end===
 @example
 (%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
 (%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
@@ -780,9 +1070,6 @@ Fakult@"aten werden vereinfacht und nicht ausgewertet.  Daher kann @code{x!}
 auch in Ausdr@"ucken ersetzt werden, deren Auswertung mit dem Quote-Operator 
 verhindert wurde.
 
-@c ===beg===
-@c '([0!, (7/2)!, 4.77!, 8!, 20!]);
-@c ===end===
 @example
 (%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
           105 sqrt(%pi)
@@ -795,9 +1082,6 @@ verhindert wurde.
 
 Maxima kennt die Ableitung der Fakult@"at.
 
-@c ===beg===
-@c diff(x!,x);
-@c ===end===
 @example
 (%i1) diff(x!,x);
 (%o1)                           x! psi (x + 1)
@@ -810,14 +1094,10 @@ Maxima kennt die Ableitung der Fakult@"at.
 Die Optionsvariable @code{factorial_expand} steuert die Expansion und
 Vereinfachung von Ausdr@"ucken, die die Fakult@"at enthalten.
 
-@c ===beg===
-@c (n+1)!/n!,factorial_expand:true;
-@c ===end===
 @example
 (%i1) (n+1)!/n!,factorial_expand:true;
 (%o1)                                n + 1
 @end example
-
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -834,7 +1114,6 @@ den Wert -1 hat, wird die Fakult@"at f@"ur jede ganze Zahl berechnet.
 
 @c TODO: IN ABHAENIGKEIT VON DER LISP IMPLEMENTATION GIBT ES GRENZEN FUER DIE
 @c       GROESSTE ZAHL.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -849,7 +1128,6 @@ Standardwert: @code{false}
 Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von
 Aus@-dr@"u@-cken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.  Siehe
 @code{factorial} f@"ur ein Beispiel.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -863,7 +1141,6 @@ Aus@-dr@"u@-cken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.  Siehe
 Gibt die verallgemeinerte Fakult@"at zur@"uck, die als @code{x (x-z) (x - 2 z) 
 ... (x - (y - 1) z)} definiert ist.  Damit gilt f@"ur ein ganzzahliges Argument 
 @var{x}, @code{genfact (x, x, 1) = x!} und @code{genfact (x, x/2, 2) = x!!}.
-
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -893,7 +1170,6 @@ ganze Zahlen voneinander unterscheiden, werden diese vereinfacht.
 (%o2)                    ---------------
                          (n + 1) (n + 2)
 @end example
-
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
@@ -910,7 +1186,6 @@ Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
 @code{factcomb} angewendet.
 
 @c TODO: EIN BEISPIEL
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -927,7 +1202,6 @@ Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
 
 Gibt die ganzzahlige Wurzel des Betrages von @var{x} zur@"uck, wenn @var{x} eine
 ganze Zahl ist.  Andernfalls wird eine Substantivform zur@"uckgegeben.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -949,7 +1223,6 @@ Hat die Optionsvariable @code{radexpand} den Wert @code{true}, werden die
 n-ten Wurzeln von Faktoren unter einer Wurzel aus der Wurzel herausgezogen.
 So wird zum Beispiel @code{sqrt(16*x^2)} nur dann zu @code{4*x} vereinfacht,
 wenn @code{radexpand} den Wert @code{true} hat.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -988,7 +1261,6 @@ Ausdr@"ucke der Form  @code{%e^(%pi %i x)} vereinfacht.  Siehe @mrefdot{%emode}
 Hat die Optionsvariable @code{%enumer} den Wert @code{true}, wird die Konstante
 @code{%e} durch ihren nummerischen Wert 2.718@dots{} ersetzt, sobald auch die
 Optionsvariable @code{numer} den Wert @code{true} hat.  Siehe @mrefdot{%enumer}
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1025,7 +1297,6 @@ Hat @code{%emode} den Wert @code{false}, werden keine speziellen Vereinfachungen
 f@"ur den Ausdruck @code{%e^(%pi %i x)} vorgenommen.
 
 @c NEED EXAMPLES HERE
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1052,7 +1323,6 @@ einer Gleitkommazahl ausgewertet wird.
 Siehe auch @mref{ev} und @mrefdot{numer}
 
    @c NEED EXAMPLES HERE
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1070,7 +1340,6 @@ Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein
 Ausdruck der Form @code{%e^(r*log(x))} zu @code{x^r} vereinfacht.  Dabei sind 
 @code{r} eine rationale Zahl und @code{x} ein beliebiger Ausdruck.  Die Funktion 
 @code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1150,7 +1419,6 @@ Ausdruck @code{%e^(r*log(x))} zu @code{x^r} vereinfacht.  Dabei sind @code{r}
 eine rationale Zahl und @code{x} ein beliebiger Ausdruck.  Die Funktion 
 @code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
 @end table
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1173,7 +1441,6 @@ Betr@"age gebildet @code{log(...)}.
 
 Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
 @code{logabs} zu den Wert @code{false}.  
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1194,7 +1461,6 @@ Standardwert von @code{logarc} ist @code{false}.
 
 Die Funktion @code{logarc(@var{expr})} f@"uhrt diese Ersetzung aus, ohne dass 
 die Optionsvariable @code{logarc} gesetzt wird.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1218,7 +1484,6 @@ logconcoeffp:'logconfun$
 logconfun(m) := featurep(m,integer) or ratnump(m)$
 @end example
 Dann hat @code{logcontract(1/2*log(x))} das Ergebnis @code{log(sqrt(x))}.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1233,10 +1498,6 @@ Der Ausdruck @var{expr} wird rekursiv nach Ausdr@"ucken der Form
 @code{a1*log(b1) + a2*log(b2) + c} abgesucht.  Diese werden zu 
 @code{log(ratsimp(b1^a1 * b2^a2)) + c} transformiert.
 
-@c ===beg===
-@c 2*(a*log(x) + 2*a*log(y))$
-@c logcontract(%);
-@c ===end===
 @example
 (%i1) 2*(a*log(x) + 2*a*log(y))$
 (%i2) logcontract(%);
@@ -1265,7 +1526,6 @@ einem Argument zugewiesen.  Sollen zum Beispiel Wurzeln generiert werden, kann
 folgende Definition verwendet: @code{logconcoeffp: 'logconfun$ logconfun(m) :=
 featurep(m,integer) or ratnump(m)$}.  Dann ergibt sich f@"ur 
 @code{logcontract(1/2*log(x))} das Ergebnis @code{log(sqrt(x))}.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1287,7 +1547,6 @@ vereinfacht.  Mit den Wert @code{super} vereinfacht Maxima weiterhin
 ist.  @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht.  Hat
 die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
 Vereinfachungen ausgeschaltet.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1300,7 +1559,6 @@ Standardwert: @code{false}
 
 Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 @code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur postive @code{n} vereinfacht.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1316,7 +1574,6 @@ Standardwert: @code{false}
 Hat die Optionsvariable @code{lognumer} den Wert @code{true}, wird von
 negativen Gleitkommazahlen der Absolutwert genommen, bevor der Logarithmus
 berechnet wird.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1330,7 +1587,6 @@ Standardwert: @code{true}
 Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
 Exponentialfunktionen @code{exp}, die Logarithmusfunktionen im Exponenten
 enthalten, nicht vereinfacht.
-
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1342,7 +1598,6 @@ enthalten, nicht vereinfacht.
 
 Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} zur@"uck.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1402,40 +1657,36 @@ Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} acos (@var{x})
 -- Arkuskosinus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} acot (@var{x})
 -- Arkuskotangens.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} acsc (@var{x})
 -- Arkuskosekans.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} asec (@var{x})
 -- Arkussekans.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} asin (@var{x})
 -- Arkussinus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{atan}
 @deffn {Funktion} atan (@var{x})
 -- Arkustangens.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{atan2}
 @deffn {Funktion} atan2 (@var{y}, @var{x})
 
 @c -- yields the value of @code{atan(@var{y}/@var{x})} in the interval 
@@ -1443,19 +1694,16 @@ Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 
 -- Gibt den Wert von @code{atan(@var{y}/@var{x})} im Intervall @code{-%pi}
 bis @code{%pi} zur@"uck.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} cos (@var{x})
 -- Kosinus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} cot (@var{x})
 -- Kotangens.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1467,7 +1715,6 @@ bis @code{%pi} zur@"uck.
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} sec (@var{x})
 -- Sekans.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1641,13 +1888,11 @@ Reihenentwicklung der Sinusfunktion:
                              6
 @end group
 @end example
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} tan (@var{x})
 -- Tangens.
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -1689,16 +1934,6 @@ mit einer Variablen multipliziert wird, die als ganzzahlig deklariert wurde.
 
 Beispiele:
 
-@c ===beg===
-@c %piargs : false$
-@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
-@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-@c %piargs : true$
-@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
-@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
-@c        cos (sqrt(2)*%pi/3)];
-@c ===end===
 @example
 (%i1) %piargs : false$
 @group
@@ -1753,11 +1988,6 @@ Weitere Identit@"aten werden angewendet, wenn
 @end ifnottex
 mit einer ganzzahligen Variable multipliziert werden.
 
-@c ===beg===
-@c declare (n, integer, m, even)$
-@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
-@c        cos (%pi/2 * m)];
-@c ===end===
 @example
 (%i1) declare (n, integer, m, even)$
 @group
@@ -1767,7 +1997,6 @@ mit einer ganzzahligen Variable multipliziert werden.
 (%o2)                  [0, 1, 0, (- 1)   ]
 @end group
 @end example
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -1808,12 +2037,6 @@ Argument offensichtlich reel ist.
 
 Beispiele:
 
-@c ===beg===
-@c %iargs : false$
-@c [sin (%i * x), cos (%i * x), tan (%i * x)];
-@c %iargs : true$
-@c [sin (%i * x), cos (%i * x), tan (%i * x)];
-@c ===end===
 @example
 (%i1) %iargs : false$
 @group
@@ -1832,11 +2055,6 @@ Beispiele:
 Auch wenn das Argument offensichtlich reel ist, wird zu einer Hyperbelfunktion
 vereinfacht.
 
-@c ===beg===
-@c declare (x, imaginary)$
-@c [featurep (x, imaginary), featurep (x, real)];
-@c sin (%i * x);
-@c ===end===
 @example
 (%i1) declare (x, imaginary)$
 @group
@@ -1848,7 +2066,6 @@ vereinfacht.
 (%o3)                      %i sinh(x)
 @end group
 @end example
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -1902,14 +2119,6 @@ Argumente @math{z} dieser Funktionen vereinfachen diese Funktionen entsprechend.
 
 Beispiele:
 
-@c ===beg===
-@c halfangles : false$
-@c sin (x / 2);
-@c halfangles : true$
-@c sin (x / 2);
-@c assume(x>0, x<2*%pi)$
-@c sin(x / 2);
-@c ===end===
 @example
 (%i1) halfangles:false;
 (%o1)                                false
@@ -1932,7 +2141,6 @@ Beispiele:
 (%o6)                          ----------------
                                    sqrt(2)
 @end example
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -1951,7 +2159,6 @@ der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder
 
 Das Kommando @code{load(ntrig)} l@"adt das Paket.  Die Vereinfachungen werden
 dann von Maxima automatisch ausgef@"uhrt.
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2010,10 +2217,6 @@ wie zum Beispiel @code{sin(2 x)}, vereinfacht.
 
 Beispiele:
 
-@c ===beg===
-@c x+sin(3*x)/sin(x),trigexpand=true,expand;
-@c trigexpand(sin(10*x+y));
-@c ===end===
 @example
 @group
 (%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
@@ -2025,7 +2228,6 @@ Beispiele:
 (%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
 @end group
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2042,7 +2244,6 @@ Standardwert: @code{true}
 der Funktion @code{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit Summen
 als Argumente auftreten.  Hat @code{trigexpandplus} den Wert @code{true},
 werden zum Beispiel Winkelfunktionen wie @code{sin(x+y)} vereinfacht.
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2060,7 +2261,6 @@ der Funktion @code{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit
 Produkten als Argumente auftreten.  Hat @code{trigexpandtimes} den Wert 
 @code{true}, werden zum Beispiel Winkelfunktionen wie @code{sin(2 x)} 
 vereinfacht.
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2092,7 +2292,6 @@ Hat @code{triginverses} den Wert @code{all}, wird
 Hat @code{triginverses} den Wert @code{false}, werden
 @code{@var{arcfun}(@var{fun}(@var{x}))} und 
 @code{@var{fun}(@var{arcfun}(@var{x}))} nicht vereinfacht.
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2113,9 +2312,6 @@ angegeben, werden alle Variablen im Ausdruck @code{expr} betrachtet.
 
 Siehe auch @mrefdot{poissimp}
 
-@c ===beg===
-@c trigreduce(-sin(x)^2+3*cos(x)^2+x);
-@c ===end===
 @example
 @group
 (%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
@@ -2147,7 +2343,6 @@ Siehe auch @mrefdot{poissimp}
 @c (%i3) sin(x + (o + 1/2)*%pi);
 @c (%o3)                       - cos(x)
 @c @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2162,7 +2357,6 @@ Standardwert: @code{true}
 Hat @code{trigsign} den Wert @code{true}, werden Trigonometrische Funktionen
 mit einem negativem Argument vereinfacht.  Zum Beispiel vereinfacht in diesem
 Fall @code{sin(-x)} zu @code{-sin(x)}.
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2221,7 +2415,6 @@ Die Anwendung von Funktionen wie @code{trigreduce}, @code{ratsimp} und
 Das Kommando @code{demo(trgsmp)} zeigt einige Beispiele.
 
 @c MERGE EXAMPLES INTO THIS ITEM
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2236,9 +2429,6 @@ The result is a simplified fraction with numerator and denominator linear in
 @code{sin} and @code{cos}. Thus @code{trigrat} linearize always when it is 
 possible.
 
-@c ===beg===
-@c trigrat(sin(3*a)/sin(a+%pi/3));
-@c ===end===
 @example
 @group
 (%i1) trigrat(sin(3*a)/sin(a+%pi/3));
@@ -2250,13 +2440,6 @@ The following example is taken from
 Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (or in English,
 Addison-Wesley), section 1.5.5, Morley theorem.
 
-@c ===beg===
-@c c : %pi/3 - a - b$
-@c bc : sin(a)*sin(3*c)/sin(a+b);
-@c ba : bc, c=a, a=c;
-@c ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
-@c trigrat (ac2);
-@c ===end===
 @example
 (%i1) c : %pi/3 - a - b$
 @group
@@ -2310,7 +2493,6 @@ Addison-Wesley), section 1.5.5, Morley theorem.
  - 9)/4
 @end group
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2335,43 +2517,36 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} acosh (@var{x})
 -- Areakosinus Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} acoth (@var{x})
 -- Areakotangens Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} acsch (@var{x})
 -- Areakosekans Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} asech (@var{x})
 -- Areasekans Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} asinh (@var{x})
 -- Areasinus Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} atanh (@var{x})
 -- Areatangens Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} cosh (@var{x})
 -- Kosinus Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -2383,30 +2558,27 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} csch (@var{x})
 -- Kosekans Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} sech (@var{x})
 -- Sekans Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} sinh (@var{x})
 -- Sinus Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} tanh (@var{x})
 -- Tangens Hyperbolicus.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @node Zufallszahlen, , Hyperbelfunktionen, Mathematische Funktionen
 @section Zufallszahlen
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @deffn  {Funktion} make_random_state (@var{n})
@@ -2452,7 +2624,6 @@ der aktuellen Systemzeit des Computers erzeugt wird.
 
 @code{make_random_state(false)} gibt eine Kopie des aktuellen Zustands des
 Zufallszahlengenerators zur@"uck.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2465,7 +2636,6 @@ Kopiert @var{s} in den Zufallszustand des Zufallszahlengenerators.
 @c @code{set_random_state} always returns @code{done}.
 
 @code{set_random_state} gibt immer @code{done} zur@"uck.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2500,21 +2670,6 @@ MT 19937.
 
 Beispiele:
 
-@c ===beg===
-@c s1: make_random_state (654321)$
-@c set_random_state (s1);
-@c random (1000);
-@c random (9573684);
-@c random (2^75);
-@c s2: make_random_state (false)$
-@c random (1.0);
-@c random (10.0);
-@c random (100.0);
-@c set_random_state (s2);
-@c random (1.0);
-@c random (10.0);
-@c random (100.0);
-@c ===end===
 @example
 (%i1) s1: make_random_state (654321)$
 (%i2) set_random_state (s1);
