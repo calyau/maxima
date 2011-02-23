@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 18.02.2011
+@c Revision    : 22.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -40,7 +40,7 @@ mit der Betragsfunktion ermitteln.  Siehe auch @mrefcomma{diff}@
 Maximas M@"oglichkeiten, Integrale mit der Betragsfunktion zu berechnen.
 
 Die Betragsfunktion wird automatisch auf die Elemente von Listen und Matrizen
-sowie auf beide Seiten von Gleichungen angewendet.  Siehe
+sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
 @mrefdot{distribute_over}
 
 Siehe die Funktion @mrefcomma{cabs} um den Betrag eines komplexen Ausdrucks
@@ -123,68 +123,58 @@ Betragsfunktion.
 @end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{ceiling}
 @deffn {Funktion} ceiling (@var{x})
 
-@c When @var{x} is a real number, return the least integer that is greater than 
-@c or equal to @var{x}.
+Die Funktion @code{ceiling} ist f@"ur das numerische und symbolische Rechnen
+geeignet.
 
-F@"ur eine reelle Zahl @var{x} gibt @code{ceiling} die kleinste ganze Zahl 
-zur@"uck, die gr@"o@ss{}er oder gleich @var{x} ist.
+Ist das Argument @var{expr} eine reelle Zahl, gibt @code{ceiling} die kleinste
+ganze Zahl zur@"uck, die gr@"o@ss{}er oder gleich @var{x} ist.
 
-@c If @var{x} is a constant expression (@code{10 * %pi}, for example), 
-@c @code{ceiling} evaluates @var{x} using big floating point numbers, and 
-@c applies @code{ceiling} to the resulting big float. Because @code{ceiling} 
-@c uses floating point evaluation, it's possible, although unlikely, that 
-@c @code{ceiling} could return an erroneous value for constant inputs. To guard 
-@c against errors, the floating point evaluation is done using three values for 
-@c @code{fpprec}.
+Die Funktion @code{ceiling} gibt auch dann einen numerischen Wert zur@"uck, wenn
+das Argument ein konstanter Ausdruck ist, wie zum Beispiel @code{1+%e}, der zu
+einer reellen Zahl ausgewertet werden kann.  In diesem Fall wird der konstante
+Ausdruck in eine gro@ss{}e Gleitkommazahl umgewandelt, auf die die Funktion
+@code{ceiling} angewendet wird.  Aufgrund von Rundungsfehlern bei der Umwandlung
+in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{ceiling}
+kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
+@mref{fpprec} f@"ur die Berechnung von @code{ceiling} um drei Stellen erh@"oht.
 
-Ist @var{expr} ein konstanter Ausdruck, zum Beispiel @code{10*%pi}, dann wird 
-der Ausdruck @var{expr} in eine gro@ss{}e Gleitkommazahl umgewandelt.  Auf die 
-gro@ss{}e Gleitkommazahl wird dann @code{ceiling} angewendet.  Aufgrund der 
-Umwandlung in Gleitkommazahlen f@"ur konstante Ausdr@"ucke, ist es m@"oglich, 
-dass @code{ceiling} ein fehlerhaftes Ergebnis errechnet.  Um solche Fehler zu 
-minimieren, wird bei der Umwandlung in Gleitkommazahlen die Genauigkeit 
-@code{fpprec} um drei zus@"atzliche Stellen erh@"oht.
+Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
+inbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
+Ausdruck mit den Funktionen @mref{floor} oder @mref{round} ist.  Weiterhin
+werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
+herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
 
-@c For non-constant inputs, @code{ceiling} tries to return a simplified value.
-@c Here are examples of the simplifications that @code{ceiling} knows about:
+Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
+Substantivform zur@"uckgegeben.
 
-Nicht-konstante Ausdr@"ucke versucht @code{ceiling} zu vereinfachen.  Es folgen
-Beispiele f@"ur solche Vereinfachungen:
+@code{ceiling} wird automatisch auf die Elemente von Listen und Matrizen
+sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
+
+Siehe auch die Funktionen @mref{floor} und @mrefdot{round}
+
+Beispiele:
 
 @example
-(%i1) ceiling (ceiling (x));
+(%i1) ceiling(ceiling(x));
 (%o1)                      ceiling(x)
-(%i2) ceiling (floor (x));
+(%i2) ceiling(floor(x));
 (%o2)                       floor(x)
 (%i3) declare (n, integer)$
-(%i4) [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
-(%o4)                [n, abs(n), max(n, 6)]
+(%i4) ceiling([n, abs(n), max (n, 6)]);
+(%o4)               [n, abs(n), max(6, n)]
 (%i5) assume (x > 0, x < 1)$
 (%i6) ceiling (x);
 (%o6)                           1
-(%i7) tex (ceiling (a));
-$$\left \lceil a \right \rceil$$
-(%o7)                         false
 @end example
 
-@c The function @code{ceiling} does not automatically map over lists or 
-@c matrices. Finally, for all inputs that are manifestly complex, @code{ceiling}
-@c returns a noun form.
-
-Ist das Argument der Funktion offenbar ein komplexer Ausdruck, wird die 
-Substantivform zur@"uckgegeben.
-
-@c If the range of a function is a subset of the integers, it can be declared 
-@c to be @code{integervalued}. Both the @code{ceiling} and @code{floor} 
-@c functions can use this information; for example:
-
 Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
-@code{integervalued} deklariert werden.  Die Funktionen @code{ceiling} und
-@code{floor} k@"onnen diese Information nutzen, um Ausdr@"ucke zu vereinfachen:
+@mref{integervalued} deklariert werden.  Die Funktionen @code{ceiling} und
+@mref{floor} k@"onnen diese Information nutzen, um Ausdr@"ucke zu vereinfachen.
 
 @example
 (%i1) declare (f, integervalued)$
@@ -192,6 +182,15 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 (%o2)                         f(x)
 (%i3) ceiling (f(x) - 1);
 (%o3)                       f(x) - 1
+@end example
+
+Maxima kennt das Integral der Funktion @code{ceiling}.
+
+@example
+(%i1) integrate(ceiling(x),x);
+               (- ceiling(x) + 2 x + 1) ceiling(x)
+(%o1)          -----------------------------------
+                                2
 @end example
 @end deffn
 
@@ -199,83 +198,79 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @anchor{entier}
 @deffn {Funktion} entier (@var{x})
 
-@c Returns the largest integer less than or equal to @var{x} where @var{x} is 
-@c numeric.  @code{fix} (as in @code{fixnum}) is a synonym for this, so 
-@c @code{fix(@var{x})} is precisely the same.
-
-@code{entier} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}. 
+@code{entier} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}.
 Siehe @mrefdot{floor}
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{floor}
-@deffn {Funktion} floor (@var{x})
+@deffn {Funktion} floor (@var{expr})
 
-@c When @var{x} is a real number, return the largest integer that is less than 
-@c or equal to @var{x}.
+Die Funktion @code{floor} ist f@"ur das numerische und symbolische Rechnen
+geeignet.
 
-F@"ur eine reelle Zahl @var{x} gibt @code{floor} die gr@"o@ss{}te ganze Zahl 
-zur@"uck, die kleiner oder gleich @var{x} ist.
+Ist das Argument @var{expr} eine reelle Zahl, gibt @code{floor} die gr@"o@ss{}te
+ganze Zahl zur@"uck, die kleiner oder gleich @var{x} ist.
 
-@c If @var{x} is a constant expression (@code{10 * %pi}, for example), 
-@c @code{floor} evaluates @var{x} using big floating point numbers, and applies 
-@c @code{floor} to the resulting big float. Because @code{floor} uses
-@c floating point evaluation, it's possible, although unlikely, that 
-@c @code{floor} could return  an erroneous value for constant inputs. To guard 
-@c against errors, the floating point evaluation is done using three values for 
-@c @code{fpprec}.
+Die Funktion @code{floor} gibt auch dann einen numerischen Wert zur@"uck, wenn
+das Argument ein konstanter Ausdruck ist, wie zum Beispiel @code{1+%e}, der zu
+einer reellen Zahl ausgewertet werden kann.  In diesem Fall wird der konstante
+Ausdruck in eine gro@ss{}e Gleitkommazahl umgewandelt, auf die die Funktion
+@code{floor} angewendet wird.  Aufgrund von Rundungsfehlern bei der Umwandlung
+in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{floor}
+kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
+@mref{fpprec} f@"ur die Berechnung von @code{floor} um drei Stellen erh@"oht.
 
-Ist @var{expr} ein konstanter Ausdruck, zum Beispiel @code{10*%pi}, dann wird 
-der Ausdruck @var{expr} in eine gro@ss{}e Gleitkommazahl umgewandelt.  Auf die 
-gro@ss{}e Gleitkommazahl wird dann @code{floor} angewendet.  Aufgrund der 
-Umwandlung in Gleitkommazahlen f@"ur konstante Ausdr@"ucke, ist es m@"oglich, 
-dass @code{floor} ein fehlerhaftes Ergebnis errechnet.  Um solche Fehler zu 
-minimieren, wird bei der Umwandlung in Gleitkommazahlen die Genauigkeit 
-@code{fpprec} um drei zus@"atzliche Stellen erh@"oht.
+Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
+inbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
+Ausdruck mit den Funktionen @mref{ceiling} oder @mref{round} ist.  Weiterhin
+werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
+herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
 
-@c For non-constant inputs, @code{floor} tries to return a simplified value. 
-@c Here are examples of the simplifications that @code{floor} knows about:
-
-Nicht-konstante Ausdr@"ucke versucht @code{floor} zu vereinfachen.  Es folgen
-Beispiele f@"ur solche Vereinfachungen:
-
-@example
-(%i1) floor (ceiling (x));
-(%o1)                      ceiling(x)
-(%i2) floor (floor (x));
-(%o2)                       floor(x)
-(%i3) declare (n, integer)$
-(%i4) [floor (n), floor (abs (n)), floor (min (n, 6))];
-(%o4)                [n, abs(n), min(n, 6)]
-(%i5) assume (x > 0, x < 1)$
-(%i6) floor (x);
-(%o6)                           0
-(%i7) tex (floor (a));
-$$\left \lfloor a \right \rfloor$$
-(%o7)                         false
-@end example
-
-@c The function @code{floor} does not automatically map over lists or matrices.
-@c Finally, for all inputs that are manifestly complex, @code{floor} returns 
-@c a noun form.
-
-Ist das Argument der Funktion offenbar ein komplexer Ausdruck, wird eine
+Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
 Substantivform zur@"uckgegeben.
 
-@c If the range of a function is a subset of the integers, it can be declared to
-@c be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions
-@c can use this information; for example:
+@code{floor} wird automatisch auf die Elemente von Listen und Matrizen
+sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
+
+Siehe auch die Funktionen @mref{ceiling} und @mrefdot{round}
+
+Beispiele:
+
+@example
+(%i1) floor(ceiling(x));
+(%o1)                      ceiling(x)
+(%i2) floor(floor(x));
+(%o2)                       floor(x)
+(%i3) declare(n, integer);
+(%o3)                         done
+(%i4) floor([n, abs(n), min (n, 6)]);
+(%o4)                [n, abs(n), min(6, n)]
+(%i5) assume(x>0, x<1)$
+(%i6) floor(x);
+(%o6)                           0
+@end example
 
 Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
-@code{integervalued} deklariert werden.  Die Funktionen @code{ceiling} und
-@code{floor} k@"onnen diese Information nutzen, um Ausdr@"ucke zu vereinfachen:
+@mref{integervalued} deklariert werden.  Die Funktionen @mref{ceiling} und
+@code{floor} k@"onnen diese Information nutzen, um Ausdr@"ucke zu vereinfachen.
 
 @example
 (%i1) declare (f, integervalued)$
-(%i2) floor (f(x));
+(%i2) floor(f(x));
 (%o2)                         f(x)
-(%i3) ceiling (f(x) - 1);
+(%i3) ceiling(f(x) - 1);
 (%o3)                       f(x) - 1
+@end example
+
+Maxima kennt das Integral der Funktion @code{floor}.
+
+@example
+(%i6) integrate(floor(x),x);
+                 (- floor(x) + 2 x - 1) floor(x)
+(%o6)            -------------------------------
+                                2
 @end example
 @end deffn
 
@@ -283,110 +278,281 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @anchor{fix}
 @deffn {Funktion} fix (@var{x})
 
-@c A synonym for @code{entier (@var{x})}.
-
 @code{fix} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}.  Siehe
 @mrefdot{floor}
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 22.02.2011 DK -----------------------------------------------------------
 @anchor{lmax}
 @deffn {Funktion} lmax (@var{L})
 
-@c When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}. 
-@c When @var{L} isn't a list or a set, signal an error.
+Ist das Argument @var{L} eine Liste oder Menge, wird die Funktion @mref{max} auf
+die Elemente der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.
+Ist @var{L} keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
 
-Ist @var{L} eine Liste oder Menge, wird die Funktion @code{max} auf die Elemente
-der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.  Ist @var{L} 
-keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
+Beispiel:
+
+@example
+(%i1) L:[1+%e, %pi, 3];
+(%o1)                   [%e + 1, %pi, 3]
+(%i1) lmax(L);
+(%o1)                        %e + 1
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 22.02.2011 DK -----------------------------------------------------------
 @anchor{lmin}
 @deffn {Funktion} lmin (@var{L})
 
-@c When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}. 
-@c When @var{L} isn't a list or a set, signal an error.
+Ist das Argument @var{L} eine Liste oder Menge, wird die Funktion @mref{min} auf
+die Elemente der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.
+Ist @var{L} keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
 
-Ist @var{L} eine Liste oder Menge, wird die Funktion @code{min} auf die Elemente
-der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.  Ist @var{L} 
-keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
+Beispiel:
+
+@example
+(%i1) L:[1+%e, %pi, 3];
+(%o1)                   [%e + 1, %pi, 3]
+(%i2) lmin(L);
+(%o2)                           3
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 22.02.2011 DK -----------------------------------------------------------
 @anchor{max}
 @deffn {Funktion} max (@var{x_1}, @dots{}, @var{x_n})
 
-@c Return a simplified value for the maximum of the expressions @var{x_1} 
-@c through @var{x_n}. When @code{get (trylevel, maxmin)}, is 2 or greater, 
-@c @code{max} uses the simplification @code{max (e, -e) --> |e|}.  When 
-@c @code{get (trylevel, maxmin)} is 3 or greater, @var{max} tries
-@c to eliminate expressions that are between two other arguments; for example,
-@c @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. To set the value of 
-@c @code{trylevel} to 2, use @code{put (trylevel, 2, maxmin)}.
+Sind alle Argumente @var{x_1}, @dots{}, @var{x_n} Zahlen oder konstante
+Ausdr@"ucke wie zum Beispiel @code{1+%e} oder @code{sin(1)}, dann wird der
+gr@"o@ss{}te Zahlenwert zur@"uckgegeben.  Treten symbolische Argumente oder
+Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.
 
-Gibt einen vereinfachten Wert f@"ur das Maximum der Ausdr@"ucke @var{x_1} bis 
-@var{x_n} zur@"uck.  Ist @code{get(trylevel, maxmin)} gleich 2 oder 
-gr@"o@ss{}er, nutzt @code{max} die Vereinfachung @code{max(e,-e) --> |e|}.  Ist 
-@code{get(trylevel, maxmin)} gleich 3 oder gr@"o@ss{}er, versucht @code{max} 
-Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So 
+Die unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
+auftreten und werden von @code{max} korrekt behandelt.
+
+Die Vereinfachung der Funktion @code{max} kann kontrolliert werden, in dem mit
+der Funktion @mref{put} dem Symbol @code{trylevel} zu der Eigenschaft
+@code{maxmin} ein Wert zwischen 1 bis 3 gegeben wird.  Folgende Werte k@"onnen 
+mit der Funktion @code{put} gesetzt werden:
+
+@table @code
+@item put(trylevel, 1, maxmin)
+@code{trylevel} hat den Wert 1.  Das ist der Standardwert.  Maxima f@"uhrt
+keine besonderen Vereinfachungen aus.
+@item put(trylevel, 2, maxmin)
+Maxima wendet die Vereinfachung @code{max(e,-e) --> |e|} an.
+@item put(trylevel, 3, maxima)
+Maxima wendet die Vereinfachung @code{max(e,-e) --> |e|} an und versucht
+Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So
 wird zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht.
-@code{put(trylevel, 2, maximin)} setzt den Wert von @code{trylevel} zu 2.
-@end deffn 
+@end table
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+Mit dem Kommando @code{get(trylevel, maxmin)} wird der aktuelle Wert f@"ur
+das Symbol @code{trylevel} angezeigt.  Siehe die Funktion @mrefdot{get}
+
+@code{max} ber@"ucksichtigt bei der Vereinfachung von Ausdr@"ucken die Aussagen
+und Fakten der aktiven Kontexte.  Siehe das Kapitel 
+@nrefdot{Funktionen und Variablen f@"ur Fakten}
+
+Beispiele:
+
+@example
+(%i1) max(1.6, 3/2, 1);
+(%o1)                          1.6
+(%i2) max(1.5b0,1.5,3/2);
+@group
+                                3
+(%o2)                           -
+                                2
+@end group
+(%i3) max(%e,%pi,1,2,3);
+(%o3)                          %pi
+(%i4) max(1+%e,%pi,1,2,3);
+(%o4)                        %e + 1
+(%i5) max(minf,inf);
+(%o5)                          inf
+@end example
+@end deffn
+
+@c --- 22.02.2011 DK -----------------------------------------------------------
 @anchor{min}
 @deffn {Funktion} min (@var{x_1}, @dots{}, @var{x_n})
 
-@c Return a simplified value for the minimum of the expressions @code{x_1} 
-@c through @code{x_n}. When @code{get (trylevel, maxmin)}, is 2 or greater, 
-@c @code{min} uses the simplification @code{min (e, -e) --> -|e|}.  When 
-@c @code{get (trylevel, maxmin)} is 3 or greater, @code{min} tries to eliminate 
-@c expressions that are between two other arguments; for example,
-@c @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. To set the value of 
-@c @code{trylevel} to 2, use @code{put (trylevel, 2, maxmin)}.
+Sind alle Argumente @var{x_1}, @dots{}, @var{x_n} Zahlen oder konstante
+Ausdr@"ucke wie zum Beispiel @code{1+%e} oder @code{sin(1)}, dann wird der
+kleinste Zahlenwert zur@"uckgegeben.  Treten symbolische Argumente oder
+Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.
 
-Gibt einen vereinfachten Wert f@"ur das Minimum der Ausdr@"ucke @var{x_1} bis 
-@var{x_n} zur@"uck.  Ist @code{get(trylevel, maxmin)} gleich 2 oder 
-gr@"o@ss{}er, nutzt @code{min} die Vereinfachung @code{min(e,-e) --> |e|}.  Ist 
-@code{get(trylevel, maxmin)} gleich 3 oder gr@"o@ss{}er, versucht @code{min} 
-Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So 
-wird zum Beispiel @code{min(x,2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht. 
-@code{put(trylevel, 2, maximin)} setzt den Wert von @code{trylevel} zu 2.
+Die unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
+auftreten und werden von @code{min} korrekt behandelt.
+
+Die Vereinfachung der Funktion @code{mmin} kann kontrolliert werden, in dem mit
+der Funktion @mref{put} dem Symbol @code{trylevel} zu der Eigenschaft
+@code{maxmin} ein Wert zwischen 1 bis 3 gegeben wird.  Folgende Werte k@"onnen
+mit der Funktion @code{put} gesetzt werden:
+
+@table @code
+@item put(trylevel, 1, maxmin)
+@code{trylevel} hat den Wert 1.  Das ist der Standardwert.  Maxima f@"uhrt keine
+besonderen Vereinfachungen aus.
+@item put(trylevel, 2, maxmin)
+Maxima wendet die Vereinfachung @code{min(e,-e) --> |e|} an.
+@item put(trylevel, 3, maxima)
+Maxima wendet die Vereinfachung @code{min(e,-e) --> |e|} an und versucht
+Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So
+wird zum Beispiel @code{min(x,2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht.
+@end table
+
+Mit dem Kommando @code{get(trylevel, maxmin)} wird der aktuelle Wert f@"ur
+das Symbol @code{trylevel} angezeigt.  Siehe die Funktion @mrefdot{get}
+
+@code{min} ber@"ucksichtigt bei der Vereinfachung von Ausdr@"ucken die Aussagen
+und Fakten der aktiven Kontexte.  Siehe das Kapitel 
+@nrefdot{Funktionen und Variablen f@"ur Fakten}
+
+Beispiele:
+
+@example
+(%i1) min(1.6, 3/2, 1);
+(%o1)                           1
+(%i2) min(1.5b0,1.5,3/2);
+                                3
+(%o2)                           -
+                                2
+(%i3) min(%e,%pi,3);
+(%o3)                          %e
+(%i4) min(1+%e,%pi,3);
+(%o4)                           3
+(%i5) min(minf,inf);
+(%o5)                         minf
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{round}
-@deffn {Funktion} round (@var{x})
+@deffn {Funktion} round (@var{expr})
 
-@c When @var{x} is a real number, returns the closest integer to @var{x}.  
-@c Multiples of 1/2 are rounded to the nearest even integer. Evaluation of 
-@c @var{x} is similar to  @code{floor} and @code{ceiling}.
+Die Funktion @code{round} ist f@"ur das numerische und symbolische Rechnen
+geeignet.
 
-Ist @var{x} eine reelle Zahl, gibt @code{round} die am n@"achsten liegende ganze
-Zahl zur@"uck.  Vielfache von 1/2 werden auf die n@"achste gerade ganze Zahl 
-gerundet.  Die Berechnung von @var{x} ist vergleichbar mit den Methoden der 
-Funktionen @code{floor} und @code{ceiling}.
+Ist das Argument @var{expr} eine reelle Zahl, gibt @code{round} die am
+n@"achsten liegende ganze Zahl zur@"uck.  Vielfache von 1/2 werden auf die 
+n@"achste gerade ganze Zahl gerundet.
 
-Siehe auch @mref{floor} und @mrefdot{ceiling}
+Die Funktion @code{round} gibt auch dann einen numerischen Wert zur@"uck, wenn
+das Argument ein konstanter Ausdruck ist, wie zum Beispiel @code{1+%e}, der zu
+einer reellen Zahl ausgewertet werden kann.  In diesem Fall wird der konstante
+Ausdruck in eine gro@ss{}e Gleitkommazahl umgewandelt, auf die die Funktion
+@code{round} angewendet wird.  Aufgrund von Rundungsfehlern bei der Umwandlung
+in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{round}
+kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
+@mref{fpprec} f@"ur die Berechnung von @code{round} um drei Stellen erh@"oht.
+
+Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
+inbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
+Ausdruck mit den Funktionen @mref{ceiling} oder @mref{floor} ist.  Weiterhin
+werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
+herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
+
+Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
+Substantivform zur@"uckgegeben.
+
+@code{round} wird automatisch auf die Elemente von Listen und Matrizen
+sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
+
+Siehe auch die Funktionen @mref{ceiling} und @mrefdot{floor}
+
+Beispiele:
+
+@example
+(%i1) round(floor(x));
+(%o1)                       floor(x)
+(%i2) round(round(x));
+(%o2)                       round(x)
+(%i3) declare(n, integer);
+(%o3)                         done
+(%i4) round([n, abs(n), min(n,6)]);
+(%o4)                [n, abs(n), min(6, n)]
+@end example
+
+Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
+@mref{integervalued} deklariert werden.  Die Funktion @code{round} kann diese
+Information nutzen, um Ausdr@"ucke zu vereinfachen.
+
+@example
+(%i1) declare(f, integervalued);
+(%o1)                         done
+(%i2) round(f(x));
+(%o2)                         f(x)
+(%i3) round(f(x) - 1);
+(%o3)                       f(x) - 1
+@end example
 @end deffn
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
+@c --- 22.02.2011 DK -----------------------------------------------------------
 @anchor{signum}
-@deffn {Funktion} signum (@var{x})
+@deffn {Funktion} signum (@var{expr})
 
-@c For numeric @var{x}, returns 0 if @var{x} is 0, otherwise returns -1 or +1
-@c as @var{x} is less than or greater than 0, respectively.
+Die Signumfunktion @code{signum} ist f@"ur das numerische und symbolische
+Rechnen geeignet.  Ist das Argument @var{expr} eine Zahl, ist das Ergebnis 0, 1
+oder -1, wenn die Zahl Null, positiv oder negativ ist.  Das Argument kann auch
+ein konstanter Ausdruck wie @code{%pi} oder @code{1+%e} sein.  Ist das Argument
+@var{expr} eine komplexe Zahl, vereinfacht die Funktion @code{signum(expr)} zu
+@code{expr/abs(expr)}.
 
-Ist @var{x} eine Zahl, ist das Ergebnis 0, wenn @var{x} gleich 0 ist, oder -1
-f@"ur eine Zahl kleiner als 0 und +1 f@"ur eine Zahl, die gr@"o@ss{}er als 0 
-ist.
+Ist das Argument @var{expr} keine Zahl oder kein konstanter Ausdruck, versucht
+Maxima den Ausdruck zu vereinfachen.  Maxima kann die Funktion @code{signum}
+differenzieren.  Wird das Paket @nref{abs_integrate} geladen, kann Maxima
+Integrale mit der Funktion @code{signum} l@"osen.
 
-@c If @var{x} is not numeric then a simplified but equivalent form is returned.
-@c For example, @code{signum(-x)} gives @code{-signum(x)}.
+@code{signum} wird automatisch auf die Elemente von Listen und Matrizen
+sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
-Ist @var{x} keine Zahl, versucht Maxima den Ausdruck zu vereinfachen.  So wird 
-zum Beispiel @code{signum(-x)} zu @code{-signum(x)} vereinfacht.
+Beispiele:
+
+Ergebnisse f@"ur verschiedene Zahlen und konstante Ausdr@"ucke.  Die Beispiele
+zeigen, dass das Ergebnis der Signumfunktion den Typ der Zahl erh@"alt.  Die
+unendlichen Gr@"o@ss{}en @mref{minf} und @mref{inf} k@"onnen als Argument
+auftreten.
+
+@example
+(%i1) signum([-1.5, 0, 0.0, 1.5, 1.5b0, %e, sin(1), cos(4)]);
+(%o1)        [- 1.0, 0, 0.0, 1.0, 1.0b0, 1, 1, - 1]
+(%i2) signum(1+%i);
+                          %i         1
+(%o2)                   ------- + -------
+                        sqrt(2)   sqrt(2)
+(%i3) signum([minf,inf]);
+(%o3)                      [- 1, 1]
+@end example
+
+Vereinfachungen der Signumfunktion.
+
+@example
+(%i3) signum(x*y);
+(%o3)                  signum(x) signum(y)
+(%i4) signum(-x);
+(%o4)                      - signum(x)
+@end example
+
+Wird das Paket @nref{abs_integrate} geladen, kann Maxima Integrale mit der
+Signumfunktion l@"osen.  Ausdr@"ucke mit der Signumfunktion k@"onnen
+differenziert werden.
+
+@example
+(%i5) load(abs_integrate)$
+
+(%i6) integrate(signum(x),x);
+(%o6)                        abs(x)
+
+(%i7) integrate(sin(x)*signum(x),x);
+(%o7)               (1 - cos(x)) signum(x)
+
+(%i7) diff(%,x);
+(%o7)                  signum(x) sin(x)
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -424,7 +590,7 @@ Das Ergebnis der Funktion @code{cabs} kann die Betragsfunktion @mref{abs} und
 die Arcustangensfunktion @mref{atan2} enthalten.
 
 @code{cabs} wird automatisch auf die Elemente von Listen und Matrizen sowie auf
-beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+die beiden Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
 
 Siehe auch die Funktionen @mrefcomma{rectform} @mrefcomma{realpart}@ 
 @mrefcomma{imagpart} @mrefcomma{carg} @mrefcomma{conjugate} und 
@@ -485,7 +651,7 @@ des komplexen Ausdrucks kann mit der Funktion @mref{cabs} berechnet werden.
 Das Ergebnis der Funktion @code{carg} kann die Funktion @mref{atan2} enthalten.
 
 @code{carg} wird automatisch auf die Elemente von Listen und Matrizen sowie auf
-beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+die beiden Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
 
 Die Funktion @code{carg} ist eine Verbfunktion, mit der nicht symbolisch
 gerechnet werden kann.
@@ -499,9 +665,11 @@ Beispiele:
 (%i1) carg (1);
 (%o1)                           0
 (%i2) carg (1 + %i);
+@group
                                %pi
 (%o2)                          ---
                                 4
+@end group
 (%i3) carg (exp (%i));
 (%o3)                           1
 
@@ -542,7 +710,8 @@ der Funktion @code{conjugate} bestimmen, sind: @code{mirror symmetry},
 @code{conjugate function} und @code{complex characteristic}.
 
 @code{conjugate} wird automatisch auf die Elemente von Listen und Matrizen sowie
-auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
 F@"ur das Rechnen mit komplexen Ausdr@"ucken siehe auch die Funktionen
 @mref{cabs} und @mref{carg} sowie @mref{rectform} und @mrefdot{polarform}
@@ -594,7 +763,8 @@ Wie die Funktion @code{rectform} ist auch die Funktion @code{imagpart} eine
 Verbfunktion, mit der nicht symbolisch gerechnet werden kann.
 
 @code{imagpart} wird automatisch auf die Elemente von Listen und Matrizen sowie
-auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
 Mit der Funktion @mref{realpart} wird der Realteil eines Ausdrucks berechnet.
 
@@ -642,7 +812,8 @@ Damit wird verhindert, dass Maxima komplexe Ausdr@"ucke mit der
 Exponentialfunktion @mref{exp} automatisch in die Standardform vereinfacht.
 
 @code{polarform} wird automatisch auf die Elemente von Listen und Matrizen sowie
-auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
 Die Funktion @code{polarform} ist eine Verbfunktion, mit der nicht symbolisch
 gerechnet werden kann.
@@ -714,7 +885,8 @@ Wie die Funktion @code{rectform} ist auch die Funktion @code{realpart} eine
 Verbfunktion, mit der nicht symbolisch gerechnet werden kann.
 
 @code{realpart} wird automatisch auf die Elemente von Listen und Matrizen sowie
-auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
 Mit der Funktion @mref{imagpart} wird der Imagin@"arteil eines Ausdrucks
 berechnet.
@@ -763,7 +935,8 @@ Eigenschaften, die das Ergebnis der Funktion @code{rectform} bestimmen, sind:
 geeignet ist.
 
 @code{rectform} wird automatisch auf die Elemente von Listen und Matrizen sowie
-auf beide Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
 
 Die Funktionen @mref{realpart} und @mref{imagpart} geben jeweils allein den
 Realteil und den Imagin@"arteil eines Ausdrucks zur@"uck.  Um einen Ausdruck in
@@ -1754,23 +1927,23 @@ Sinusfunktion:
 @item distribute_over
 Hat die Optionsvariable den Wert @code{true} und ist das Argument der 
 Sinusfunktion eine Matrix, Liste oder Gleichung wird die Funktion auf die 
-Elemente oder beiden Seiten der Gleichung angewendet. Der Standardwert ist 
+Elemente oder beiden Seiten der Gleichung angewendet.  Der Standardwert ist 
 @code{true}.
 
 @item %piargs
 Hat die Optionsvariable den Wert @code{true}, vereinfacht die Sinusfunktion
 f@"ur ganzahlige und halbzahlige Vielfache sowie Vielfache von @code{1/3} und 
-@code{1/4} von @code{%pi}. Der Standardwert ist @code{true}.
+@code{1/4} von @code{%pi}.  Der Standardwert ist @code{true}.
 
 @item %iargs
 Hat die Optionsvariable den Wert @code{true} und ist das Argument der 
 Sinusfunktion ein Vielfaches von @code{%i} vereinfacht die Sinusfunktion zum 
-Sinus Hyperbolicus. Der Standardwert ist @code{true}.
+Sinus Hyperbolicus.  Der Standardwert ist @code{true}.
 
 @item trigsign
 Hat die Optionsvariable den Wert @code{true}, wird die Eigenschaften, dass 
 der Sinus eine ungerade Funktion ist, angewendet, zum Beispiel vereinfacht 
-@code{sin(-x)} zu @code{-sin(x)}. Der Standardwert ist @code{true}.
+@code{sin(-x)} zu @code{-sin(x)}.  Der Standardwert ist @code{true}.
 
 @item triginverses
 Hat die Optionsvariable den Wert @code{true} und ist das Argument eine inverse
@@ -1781,15 +1954,15 @@ Der Standardwert ist @code{true}.
 @item trigexpand
 Hat die Optionsvariable den Wert @code{true}, dann wird die Sinusfunktion f@"ur 
 ein Argument expandiert, das eine Summe oder ein Produkt mit einer ganzen Zahl 
-ist. Der Standardwert ist @code{false}.
+ist.  Der Standardwert ist @code{false}.
 
 @item exponentialize
 Hat die Optionsvariable den Wert @code{true}, dann wird die Sinusfunktion in
-die Exponentialform transformiert. Der Standardwert ist @code{false}.
+die Exponentialform transformiert.  Der Standardwert ist @code{false}.
 
 @item halfangles
 Hat die Optionsvariable den Wert @code{true}, dann wird die Sinusfunktion f@"ur
-halbzahlige Argumente zu einem @"aquivalenten Ausdruck transformiert. Der 
+halbzahlige Argumente zu einem @"aquivalenten Ausdruck transformiert.  Der 
 Standardwert ist @code{false}.
 
 @end table
@@ -2196,7 +2369,7 @@ Wenn @code{true}, werden Sinus- und Cosinus-Funktionen expandiert.
 Wenn @code{true}, werden Vereinfachungen f@"ur halbzahlige Argumente angewendet.
 
 @c @item trigexpandplus
-@c Controls the "sum" rule for @code{trigexpand}, expansion of sums (e.g. 
+@c Controls the "sum" rule for @code{trigexpand}, expansion of sums (e.g.
 @c @code{sin(x + y)}) will take place only if @code{trigexpandplus} is 
 @c @code{true}.
 
@@ -2424,9 +2597,9 @@ Das Kommando @code{demo(trgsmp)} zeigt einige Beispiele.
 Gives a canonical simplifyed quasilinear form of a trigonometrical expression; 
 @var{expr} is a rational fraction of several @code{sin}, @code{cos} or 
 @code{tan}, the arguments of them are linear forms in some variables (or 
-kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. 
+kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients.
 The result is a simplified fraction with numerator and denominator linear in 
-@code{sin} and @code{cos}. Thus @code{trigrat} linearize always when it is 
+@code{sin} and @code{cos}.  Thus @code{trigrat} linearize always when it is 
 possible.
 
 @example
