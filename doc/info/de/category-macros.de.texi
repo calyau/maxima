@@ -135,6 +135,7 @@
              ka-no-ni-scher
              Kon-stan-te
              Ko-or-di-na-ten-sys-tem
+             letz-te
              Maxima
              Mgnuplot
              O-pe-ra-tor 

@@ -5,6 +5,7 @@
 @c Original    : Program.texi revision 1.34
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
+@c Revision    : 20.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -42,21 +43,7 @@
 @c -----------------------------------------------------------------------------
 @node Lisp und Maxima, Einf@"uhrung in die Programmierung, Programmierung, Programmierung
 @section Lisp und Maxima
-
-@c Maxima is written in Lisp, and it is easy to access Lisp functions and
-@c variables from Maxima and vice versa. Lisp and Maxima symbols are 
-@c distinguished by a naming convention. A Lisp symbol which begins with a 
-@c dollar sign @code{$} corresponds to a Maxima symbol without the dollar sign.
-   @c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
-   @c This includes special Maxima variables such as @code{%} and input and 
-   @c output labels, which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., 
-   @c in Lisp.
-@c A Maxima symbol which begins with a question mark @code{?} corresponds to a 
-@c Lisp symbol without the question mark. For example, the Maxima symbol 
-@c @code{foo} corresponds to the Lisp symbol @code{$foo}, while the Maxima 
-@c symbol @code{?foo} corresponds to the Lisp symbol @code{foo}, Note that 
-@c @code{?foo} is written without a space between @code{?} and @code{foo}; 
-@c otherwise it might be mistaken for @code{describe ("foo")}.
+@c -----------------------------------------------------------------------------
 
 Maxima ist in Lisp programmiert.  Es ist einfach Lisp-Funktionen und 
 Lisp-Variable in Maxima zu verwenden.  Umgekehrt k@"onnen Maxima-Funktionen und
@@ -68,80 +55,40 @@ Zum Beispiel entspricht dem Maxima-Symbol @code{foo} das Lisp-Symbol
 @code{$foo} und dem Maxima-Symbol @code{?foo} entspricht das Lisp-Symbol
 @code{foo}.
 
-@c Hyphen @code{-}, asterisk @code{*}, or other special characters in Lisp 
-@c symbols must be escaped by backslash @code{\} where they appear in Maxima 
-@c code. For example, the Lisp identifier @code{*foo-bar*} is written 
-@c @code{?\*foo\-bar\*} in Maxima.
-
 Speziellen Zeichen wie der Trennstrich @code{-} oder ein Stern @code{*} in 
 Lisp-Symbolen muss ein Backslash @code{\} vorangestellt werden, um diese
 in Maxima zu verwenden.  Zum Beispiel entspricht dem Lisp-Symbol 
 @code{*foo-bar*} das Maxima-Symbol @code{?\*foo\-bar\*}.
 
-@c Lisp code may be executed from within a Maxima session. A single line of Lisp
-@c (containing one or more forms) may be executed by the special command 
-@c @code{:lisp}. For example,
-
 Lisp-Code kann von einer Maxima-Kommandozeile ausgef@"uhrt werden.  Eine 
-einzelne Zeile Lisp-Code kann mit dem Kommando @code{:lisp} ausgef@"uhrt werden.
-Zum Beispiel f@"uhrt das folgende Kommando die Lisp-Funktion @code{foo} mit den
-Maxima-Variablen @code{x} und @code{y} als Argumente aus
+einzelne Zeile Lisp-Code kann mit dem Unterbrechungskommando @code{:lisp} 
+ausgef@"uhrt werden.  Siehe das Kapitel @nref{Debugger-Kommandos} f@"ur weitere
+Informationen zu Unterbrechungskommandos.  Zum Beispiel f@"uhrt das folgende Kommando die Lisp-Funktion @code{foo} mit den Maxima-Variablen @code{x} und
+@code{y} als Argumente aus
 
 @example
 (%i1) :lisp (foo $x $y)
 @end example
 
 @noindent
-@c calls the Lisp function @code{foo} with Maxima variables @code{x} and 
-@c @code{y} as arguments.
-
-@c The @code{:lisp} construct can appear at the 
-@c interactive prompt or in a file processed by @code{batch} or @code{demo}, but
-@c not in a file processed by @code{load}, @code{batchload}, 
-@c @code{translate_file}, or @code{compile_file}.
-
-Das Kommando @code{:lisp} kann in einer Kommandozeile und in Dateien, die mit
-den Funktionen @code{batch} oder @code{demo} geladen werden, verwendet werden.
+Das Kommando @code{:lisp} kann in einer Kommandozeile und in Dateien verwendet
+werden, die mit den Funktionen @mref{batch} oder @mref{demo} geladen werden.
 Dagegen kann das Kommando @code{:lisp} nicht in Dateien verwendet werden, die 
-mit den Funktionen @code{load}, @code{batchload}, @code{translate_file} oder 
-@code{compile_file} geladen werden.
+mit den Funktionen @mrefcomma{load} @mrefcomma{batchload}@ 
+@mref{translate_file} oder @mref{compile_file} geladen werden.
 
-@c The function @code{to_lisp()} opens an interactive Lisp session. Entering 
-@c @code{(to-maxima)} closes the Lisp session and returns to Maxima.
+Mit dem Kommando @mxref{to_lisp, to_lisp()} kann von einer Maxima-Kommandozeile
+eine Lisp-Sitzung ge@"offnet werden.  Mit dem Kommando @code{(TO-MAXIMA)} wird
+die Lisp-Sitzung beendet und nach Maxima zur@"uckgekehrt.
 
-Mit dem Kommando @code{to_lisp()} kann von einer Maxima-Kommandozeile eine
-Lisp-Sitzung ge@"offnet werden.  Mit dem Kommando @code{(to-maxima)} wird die
-Lisp-Sitzung beendet und nach Maxima zur@"uckgekehrt.
-
-   @c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
-   @c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp 
-   @c (setq *debugger-hook* nil)
-   @c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET 
-   @c BACK TO MAXIMA
-   @c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
-
-@c Lisp functions and variables which are to be visible in Maxima as functions 
-@c and variables with ordinary names (no special punctuation) must have Lisp 
-@c names beginning with the dollar sign @code{$}.
-
-Lisp-Funktionen und Lisp-Variablen, welche in Maxima verwendet werden sollen,
+Lisp-Funktionen und Lisp-Variablen, welche in Maxima verwendet werden,
 sollten mit einem Dollarzeichen @code{$} beginnen.
-
-@c Maxima is case-sensitive, distinguishing between lowercase and uppercase 
-@c letters in identifiers, while Lisp is not. There are some rules governing the
-@c translation of names between Lisp and Maxima.
 
 Im Gegensatz zu Lisp unterscheidet Maxima Gro@ss{}- und Kleinschreibung.  Es 
 gibt einige Regeln, die eine @"Ubersetzung von Namen zwischen Lisp und Maxima 
 betreffen:
 
 @enumerate
-@c @item
-@c A Lisp identifier not enclosed in vertical bars corresponds to a Maxima 
-@c identifier in lowercase. Whether the Lisp identifier is uppercase, lowercase,
-@c or mixed case, is ignored. E.g., Lisp @code{$foo}, @code{$FOO}, and 
-@c @code{$Foo} all correspond to Maxima @code{foo}.
-
 @item
 Ein Lisp-Bezeichner, der nicht mit senkrechten Strichen eingeschlossen ist,
 entspricht einem klein geschriebenen Maxima-Bezeichner.  Die Schreibweise des
@@ -149,13 +96,7 @@ Lisp-Bezeichners wird dabei ignoriert.  Zum Beispiel entspricht den folgenden
 Lisp-Bezeichnern @code{$foo}, @code{$FOO} und @code{$Foo} jeweils der 
 Maxima-Bezeichner @code{foo}.
 
-@c @item
-@c A Lisp identifier which is all uppercase or all lowercase and enclosed in 
-@c vertical bars corresponds to a Maxima identifier with case reversed. That is,
-@c uppercase is changed to lowercase and lowercase to uppercase. E.g., Lisp 
-@c @code{|$FOO|} and @code{|$foo|} correspond to Maxima @code{foo} and 
-@c @code{FOO}, respectively.
-
+@item
 Ein Lisp-Bezeichner, der vollst@"andig gro@ss{} oder klein geschrieben ist und 
 mit senkrechten Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner
 in der umgekehrten Schreibweise.  Ein klein geschriebener Lisp-Bezeichner wird 
@@ -163,21 +104,12 @@ also zu einem gro@ss{}geschriebenen Maxima-Bezeichner und umgekehrt.  Zum
 Beispiel entsprechen den Lisp-Bezeichner @code{|$FOO|} und @code{|$foo|} die
 Maxima-Bezeichner @code{foo} und @code{FOO}.
 
-@c @item
-@c A Lisp identifier which is mixed uppercase and lowercase and enclosed in 
-@c vertical bars corresponds to a Maxima identifier with the same case. E.g., 
-@c Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
-
 @item
 Ein Lisp-Bezeichner in gemischter Schreibweise, der mit senkrechten Strichen
 eingeschlossen wird, entspricht einem Maxima-Bezeichner in der gleichen
 Schreibweise.  Zum Beispiel entspricht dem Lisp-Bezeichner @code{|$Foo|} der
 Maxima-Bezeichner @code{Foo}.
 @end enumerate
-
-@c The @code{#$} Lisp macro allows the use of Maxima expressions in Lisp code.
-@c @code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima 
-@c expression @var{expr}.
 
 Das Lisp-Makro @code{#$} erlaubt die Nutzung von Maxima-Ausdr@"ucken in 
 Lisp-Code.  @code{#$@var{expr}$} wird zu einem Lisp-Ausdruck expandiert, der
@@ -194,9 +126,7 @@ dem im zweiten Beispiel gezeigten Maxima-Kommando:
 @end example
 
 @noindent
-@c The Lisp function @code{displa} prints an expression in Maxima format.
-
-Die Lisp-Funktion @code{displa} gibt einen Ausdruck im Maxima-Format aus:
+Die Lisp-Funktion @code{DISPLA} gibt einen Ausdruck im Maxima-Format aus:
 
 @example
 (%i1) :lisp #$[x, y, z]$ 
@@ -206,19 +136,14 @@ Die Lisp-Funktion @code{displa} gibt einen Ausdruck im Maxima-Format aus:
 NIL
 @end example
 
-@c Functions defined in Maxima are not ordinary Lisp functions. The Lisp 
-@c function @code{mfuncall} calls a Maxima function. For example:
-
 Maxima-Funktionen sind keine Lisp-Funktionen.  Um eine Maxima-Funktion in 
-Lisp-Code aufzurufen, kann die Lisp-Funktion @code{mfuncall} verwendet werden:
+Lisp-Code aufzurufen, kann die Lisp-Funktion @code{MFUNCALL} verwendet werden:
 
 @example
 (%i1) foo(x,y) := x*y$
 (%i2) :lisp (mfuncall '$foo 'a 'b)
 ((MTIMES SIMP) A B)
 @end example
-
-@c Some Lisp functions are shadowed in the Maxima package, namely the following.
 
 Die folgenden Lisp-Funktionen k@"onnen in Maxima nicht verwendet werden:
 
@@ -247,13 +172,13 @@ und @code{gcd}.
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in die Programmierung, Funktionen und Variablen der Programmierung, Lisp und Maxima, Programmierung
 @section Einf@"uhrung in die Programmierung
-
-@c Maxima provides a @code{do} loop for iteration, as well as more primitive
-@c constructs such as @code{go}.
+@c -----------------------------------------------------------------------------
 
 In Maxima k@"onnen Programme geschrieben werden.  Alle Maxima-Funktionen und 
 Maxima-Variablen k@"onnen in Programmen verwendet werden.  Maxima hat einen
-@"Ubersetzer, um Maxima-Programme in Lisp-Programme zu @"ubersetzen.
+@"Ubersetzer, um Maxima-Programme in Lisp-Programme zu @"ubersetzen, und einen
+Compiler, um die @"ubersetzten Programme zu kompilieren.  Siehe dazu das Kapitel
+@nrefdot{@"Ubersetzer}
 
 Maxima kennt die folgenden Anweisungen und Variablen um Programme zu definieren:
 
@@ -269,49 +194,27 @@ Maxima kennt die folgenden Anweisungen und Variablen um Programme zu definieren:
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der Programmierung,  , Einf@"uhrung in die Programmierung, Programmierung
 @section Funktionen und Variablen der Programmierung
+@c -----------------------------------------------------------------------------
 
 @c --- 23.12.2010 DK -----------------------------------------------------------
 @anchor{backtrace}
 @deffn  {Funktion} backtrace ()
 @deffnx {Funktion} backtrace (@var{n})
 
-@c Prints the call stack, that is, the list of functions which called the 
-@c currently active function.
-
 Gibt den Aufruf-Stack der Funktion zur@"uck, die ausgef@"uhrt wird.
 
-@c @code{backtrace()} prints the entire call stack.
-
 Das Kommando @code{backtrace()} zeigt den gesamten Stack.
-
-@c @code{backtrace (@var{n})} prints the @var{n} most recent functions, 
-@c including the currently active function.
-
-@code{backtrace(@var{n})} zeigt die letzten @var{n} Funktionen 
+@code{backtrace(@var{n})} zeigt die letzten @var{n} Funktionen
 einschlie@ss{}lich der Funktion, die ausgef@"uhrt wird.
 
-   @c IS THIS STATMENT REALLY NEEDED ?? 
-   @c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING 
-   @c CONTEXT??)
-@c @code{backtrace} can be called from a script, a function, or the interactive 
-@c prompt (not only in a debugging context).
-
-@code{backtrace} kann in einer Batch-Datei, in einer Funktion oder in einer
-Kommandozeile aufgerufen werden.
+@code{backtrace} kann in einer Batch-Datei, die zum Beispiel mit der Funktion
+@mref{batch} geladen wird, in einer Funktion oder von einer Kommandozeile
+aufgerufen werden.
 
 Beispiele:
 
-@c @code{backtrace()} prints the entire call stack.
-
 @code{backtrace()} gibt den gesamten Stack aus.
 
-@c ===beg===
-@c h(x) := g(x/7)$
-@c g(x) := f(x-11)$
-@c f(x) := e(x^2)$
-@c e(x) := (backtrace(), 2*x + 13)$
-@c h(10);
-@c ===end===
 @example
 (%i1) h(x) := g(x/7)$
 (%i2) g(x) := f(x-11)$
@@ -327,18 +230,8 @@ Beispiele:
                                49
 @end example
 
-@c @code{backtrace (@var{n})} prints the @var{n} most recent 
-@c functions, including the currently active function.
-
 @code{backtrace(@var{n})} gibt die letzten @var{n} Funktionen aus.
 
-@c ===beg===
-@c h(x) := (backtrace(1), g(x/7))$
-@c g(x) := (backtrace(1), f(x-11))$
-@c f(x) := (backtrace(1), e(x^2))$
-@c e(x) := (backtrace(1), 2*x + 13)$
-@c h(10);
-@c ===end===
 @example
 (%i1) h(x) := (backtrace(1), g(x/7))$
 (%i2) g(x) := (backtrace(1), f(x-11))$
@@ -353,7 +246,6 @@ Beispiele:
 (%o5)                         ----
                                49
 @end example
-
 @end deffn
 
 @c --- 04.12.2010 DK -----------------------------------------------------------
@@ -361,96 +253,84 @@ Beispiele:
 @deffn  {Funktion} block ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n})
 @deffnx {Funktion} block (@var{expr_1}, @dots{}, @var{expr_n})
 
-@c @code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence and 
-@c returns the value of the last expression evaluated. The sequence can be 
-@c modified by the @code{go}, @code{throw}, and @code{return} functions. The 
-@c last expression is @var{expr_n} unless @code{return} or an expression 
-@c containing @code{throw} is evaluated. Some variables @var{v_1}, ..., 
-@c @var{v_m} can be declared local to the block; these are distinguished from 
-@c global variables of the same names. If no variables are declared local then 
-@c the list may be omitted. Within the block, any variable other than @var{v_1},
-@c ..., @var{v_m} is a global variable.
-
 @code{block} wertet die Argument @var{expr_1}, @var{expr_2}, @dots{}, 
 @var{expr_n} nacheinander aus und gibt das Ergebnis des letzten ausgewerteten 
 Ausdrucks zur@"uck.  Die Reihenfolge kann mit den Funktionen @code{go}, 
 @code{throw} und @code{return} beeinflusst werden.  Die Liste der Variablen 
 @code{[v_1, ..., v_m]} am Anfang der @code{block}-Anweisung bezeichnet 
 Variablen, die innerhalb von @code{block} lokal sind.  Alle anderen Variablen, 
-die in einem Block verwendet werden, beziehen sich auf globale Variablen.
-
-@c @code{block} saves the current values of the variables @var{v_1}, ..., 
-@c @var{v_m} (if any) upon entry to the block, then unbinds the variables so 
-@c that they evaluate to themselves. The local variables may be bound to 
-@c arbitrary values within the block but when the block is exited the saved 
-@c values are restored, and the values assigned within the block are lost.
+die in einem Block verwendet werden, beziehen sich auf globale Variablen, die
+außerhalb des Block definiert sind.
 
 @code{block} sichert die aktuellen Werte der Variablen @var{v_1}, @dots{}, 
 @var{v_m}.  Wird @code{block} verlassen, werden diese Werte wiederhergestellt.
 
-@c The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
-@c saves the properties associated with the symbols @var{v_1}, ..., @var{v_m},
-@c removes any properties before evaluating other expressions, and restores any 
-@c saved properties on exit from the block. Some declarations are implemented as
-@c properties of a symbol, including @code{:=}, @code{array}, 
-@c @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, 
-@c @code{constant}, @code{nonscalar}, @code{assume}, and some others. The effect
-@c of @code{local} is to make such declarations effective only within the block;
-@c otherwise declarations within a block are actually global declarations.
-
 Die Deklaration @code{local(@var{v_1}, ..., @var{v_m})} innerhalb @code{block}
-sichert nicht nur die Werte, sondern auch die Eigenschaften der Variablen.  Beim
-Verlassen von @code{block} werden die Eigenschaften wiederhergestellt.  Erhalten 
-die mit @code{local} deklarierten Variablen innerhalb der 
-@code{block}-Anweisung Eigenschaften, wirken sich diese nur lokal aus.
-
-@c @code{block} may appear within another @code{block}. Local variables are 
-@c established each time a new @code{block} is evaluated. Local variables appear
-@c to be global to any enclosed blocks. If a variable is non-local in a block,
-@c its value is the value most recently assigned by an enclosing block, if any,
-@c otherwise, it is the value of the variable in the global environment. This 
-@c policy may coincide with the usual understanding of "dynamic scope".
+sichert nicht nur die Werte, sondern auch die Eigenschaften der Variablen.
+Beim Verlassen von @code{block} werden die Eigenschaften wiederhergestellt.
+Erhalten die mit @code{local} deklarierten Variablen innerhalb der
+@code{block}-Anweisung Eigenschaften, wirken sich diese nur lokal aus.  Siehe
+auch @mrefdot{local}
 
 Die @code{block}-Anweisung kann verschachtelt werden.  Jeder Block kann
 eigene lokale Variablen definieren.  Diese sind global zu jedem verschachtelten
 Block.  Ein Variable die nicht lokal ist, hat den globalen Wert eines
 einschlie@ss{}enden Blocks oder den Wert der globalen Umgebung.
 
-@c The value of the block is the value of the last statement or the value of the
-@c argument to the function @code{return} which may be used to exit explicitly 
-@c from the block. The function @code{go} may be used to transfer control to the
-@c statement of the block that is tagged with the argument to @code{go}. To tag 
-@c a statement, precede it by an atomic argument as another statement in the 
-@c block.  For example: @code{block ([x], x:1, loop, x: x+1, ..., 
-@c go(loop), ...)}.  The argument to @code{go} must be the name of a tag 
-@c appearing within the block.  One cannot use @code{go} to transfer to a tag in
-@c a block other than the one containing the @code{go}.
-
 Der R@"uckgabewert eines Blocks ist der Wert des letzten Ausdrucks oder der 
 Wert, der mit den @code{return}-Anweisung zur@"uckgegeben wird.  Mit der 
 @code{go}-Anweisung kann innerhalb eines Blocks zu einer Marke gesprungen 
 werden.
 
-@c Blocks typically appear on the right side of a function definition but can 
-@c be used in other places as well.
-
 Bl@"ocke erscheinen typischerweise auf der rechten Seite einer 
 Funktionsdefintion.  Sie k@"onnen aber auch an anderen Stellen verwendet werden.
 
+Beispiel:
+
+Das Beispiel zeigt eine einfache Implementation des Newton-Algorithmus.  Der
+Block definiert die lokalen Variablen @code{xn}, @code{s} und @var{numer}.
+@code{numer} ist eine Optionsvariable, die im Block einen lokalen Wert erh@"alt.
+Im Block ist das Tag @code{loop} definiert.  Zu diesem Tag wird mit der
+Anweisung @code{go(loop)} gesprungen.  Der Block und damit die Funktion wird
+mit der Anweisung @code{return(xn)} verlassen.  Der Wert der Variablen @code{xn}
+ist das Ergebnis der Funktion @code{newton}.
+
+@example
+newton(exp,var,x0,eps):=
+   block([xn,s,numer],
+      numer:true,
+      s:diff(exp,var),
+      xn:x0,
+   loop,
+      if abs(subst(xn,var,exp))<eps then return(xn),
+      xn:xn-subst(xn,var,exp)/subst(xn,var,s),
+      go(loop) )$
+@end example
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
 @anchor{break}
 @deffn {Funktion} break (@var{expr_1}, @dots{}, @var{expr_n})
 
-@c Evaluates and prints @var{expr_1}, ..., @var{expr_n} and then causes a Maxima
-@c break at which point the user can examine and change his environment.  Upon 
-@c typing @code{exit;} the computation resumes.
-
 Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} aus, zeigt die 
 Ergebnisse an und f@"uhrt dann eine Unterbrechung aus.  Mit dem Kommando 
-@code{exit;} wird Maxima fortgesetzt.
+@code{exit;} wird Maxima fortgesetzt.  Siehe das Kapitel
 
+Beispiel:
+
+Der Variablen @code{a} wird der Wert 2 zugewiesen.  Dann wird die Unterbrechung
+ausgef@"uhrt.  Mit dem Kommando @code{exit;} wird Maxima fortgesetzt.
+
+@example
+(%i1) break(a:2);
+2 
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_a;
+2
+_exit;
+(%o1)                           2
+@end example
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
@@ -464,7 +344,7 @@ Ergebnisse an und f@"uhrt dann eine Unterbrechung aus.  Mit dem Kommando
 @c depth of nesting to the nearest enclosing @code{catch}. If there is no 
 @c @code{catch} enclosing a @code{throw}, an error message is printed.
 
-Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} nacheinander aus.  
+Wertet die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} nacheinander aus.
 Wertet irgendeiner der Ausdr@"ucke zu @code{throw(arg)} aus, dann ist das 
 Ergebnis der Wert von @code{throw(arg)} und es werden keine weiteren Ausdr@"ucke
 ausgewertet.  Diese nicht-lokale R@"uckgabe kehrt zu dem n@"achsten @code{catch}
@@ -495,7 +375,6 @@ Beispiel mit @code{throw(-3)}.
 (%i4) g ([1, 2, -3, 7]);
 (%o4)                          - 3
 @end example
-
 @end deffn
 
 @c --- 23.12.2010 DK -----------------------------------------------------------
@@ -621,9 +500,6 @@ Die Kontrollvariable ist immer lokal zur @code{do}-Anweisung.  Nach dem
 Verlassen der @code{do}-Anweisung kann auf die Kontrollvariable nicht mehr 
 zugegriffen werden.
 
-@c ==beg===
-@c for a:-3 thru 26 step 7 do display(a)$
-@c ==end===
 @example
 (%i1) for a:-3 thru 26 step 7 do display(a)$
                              a = - 3
@@ -643,11 +519,6 @@ zugegriffen werden.
 Die Bedingung @code{while i <= 10} ist @"aquivalent zu den Bedingungen
 @code{unless i > 10} und @code{thru 10} ist.
 
-@c ===beg===
-@c s: 0$
-@c for i: 1 while i <= 10 do s: s+i;
-@c s;
-@c ===end===
 @example
 (%i1) s: 0$
 (%i2) for i: 1 while i <= 10 do s: s+i;
@@ -660,14 +531,6 @@ Die Bedingung @code{while i <= 10} ist @"aquivalent zu den Bedingungen
 
 Berechne die ersten acht Terme einer Taylorreihe in einer @code{do}-Schleife.
 
-@c ===beg===
-@c series: 1$
-@c term: exp (sin (x))$
-@c for p: 1 unless p > 7 do
-@c          (term: diff (term, x)/p, 
-@c           series: series + subst (x=0, term)*x^p)$
-@c series;
-@c ===end===
 @example
 (%i1) series: 1$
 (%i2) term: exp (sin (x))$
@@ -688,17 +551,6 @@ Berechne die ersten acht Terme einer Taylorreihe in einer @code{do}-Schleife.
 In diesem Beispiel wird die negative Wurzel von 10 mit einem 
 Newton-Raphson-Algorithmus berechnet. 
 
-@c ===beg===
-@c poly: 0$
-@c for i: 1 thru 5 do
-@c     for j: i step -1 thru 1 do
-@c         poly: poly + i*x^j$
-@c poly;
-@c guess: -3.0$
-@c for i: 1 thru 10 do
-@c     (guess: subst (guess, x, 0.5*(x + 10/x)),
-@c     if abs (guess^2 - 10) < 0.00005 then return (guess));
-@c ===end===
 @example
 (%i1) poly: 0$
 (%i2) for i: 1 thru 5 do
@@ -723,9 +575,6 @@ Newton-Raphson-Algorithmus berechnet.
 Anstatt eines festes Inkrements mit @code{step} kann die Kontrollvariable auch 
 mit @code{next} f@"ur jeden Schleifendurchgang berechnet werden.
 
-@c ===beg===
-@c for count: 2 next 3*count thru 20 do display (count)$
-@c ===end===
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
                             count = 2
@@ -758,12 +607,6 @@ zu nutzen.  In diesem Fall gen@"ugt es allein die Bedingung f@"ur den Abbruch
 der Schleife anzugeben.  Im folgenden wird die Wurzel aus 5 mit dem 
 Heron-Verfahren bestimmt.
 
-@c ===beg===
-@c x: 1000$
-@c thru 20 do x: 0.5*(x + 5.0/x)$
-@c x;
-@c sqrt(5), numer;
-@c ===end===
 @example
 (%i1) x: 1000$
 (%i2) thru 20 do x: 0.5*(x + 5.0/x)$
@@ -783,13 +626,6 @@ Auch die Abbruchbedingung kann fortgelassen werden.  Wird allein
 Die Schleife kann mit der @code{return}-Anweisung verlassen werden.   Das 
 folgende Beispiel zeigt eine Implementierung des Newton-Algorithmus.
 
-@c ===beg===
-@c newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
-@c     do (y: ev(df), x: x - f(x)/y, 
-@c        if abs (f (x)) < 5e-6 then return (x)))$
-@c sqr (x) := x^2 - 5.0$
-@c newton (sqr, 1000);
-@c ===end===
 @example
 @group
 (%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
@@ -828,10 +664,6 @@ wenn die optionale Abbruchbedingung @code{end_test} zutrifft, wenn die Liste
 @var{list} keine weiteren Elemente enth@"alt oder wenn die Schleife zum Beispiel
 mit der Funktion @code{return} verlassen wird.
 
-@c ===beg===
-@c for f in [log, rho, atan] do ldisp(f(1))$
-@c ev(%t3,numer);
-@c ===end===
 @example
 (%i1)  for f in [log, rho, atan] do ldisp(f(1))$
 (%t1)                                  0
@@ -842,7 +674,6 @@ mit der Funktion @code{return} verlassen wird.
 (%i4) ev(%t3,numer);
 (%o4)                             0.78539816
 @end example
-
 @end deffn
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
@@ -871,10 +702,6 @@ abbricht.
 
 Beispiele:
 
-@c ===beg===
-@c errcatch(x:2,1/x);
-@c errcatch(x:0,1/x);
-@c ===end===
 @example
 (%i1) errcatch(x:2,1/x);
                                 1
@@ -885,7 +712,6 @@ Beispiele:
 Division by 0
 (%o2)                          []
 @end example
-
 @end deffn
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
@@ -918,14 +744,6 @@ Damit wird die letzte Fehlermeldung erneut ausgegeben.
 
 Beispiel:
 
-@c ===beg===
-@c f(x):= if x=0 then 
-@c           error("Division durch", x, "ist nicht gestattet.") 
-@c        else 1/x$
-@c f(0);
-@c errormsg();
-@c error;
-@c ===end===
 @example
 (%i1) f(x):= if x=0 then 
                 error("Division durch", x, "ist nicht gestattet.") 
@@ -942,7 +760,6 @@ Division durch 0 ist nicht gestattet.
 (%i4) error;
 (%o4)      [Division durch ~M ist nicht gestattet., 0]
 @end example
-
 @end deffn
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
@@ -979,14 +796,6 @@ Beispiel:
 
 Die Gr@"o@ss{}e des Ausdrucks @code{U} ist 24.
 
-@c ===beg===
-@c U: (C^D^E + B + A)/(cos(X-1) + 1)$
-@c error_size: 20$
-@c error ("Example expression is", U);
-@c errexp1;
-@c error_size: 30$
-@c error ("Example expression is", U);
-@c ===end===
 @example
 (%i1) U: (C^D^E + B + A)/(cos(X-1) + 1)$
 
@@ -1013,7 +822,6 @@ Example expression is --------------
                       cos(X - 1) + 1
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
-
 @end defvr
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
@@ -1040,7 +848,6 @@ Sind keine Symbole mehr vorhanden, werden automatisch neue Symbole mit
 @c See also @code{error} and @code{error_size}.
 
 Siehe auch @mref{error} und @mrefdot{error_size}
-
 @end defvr
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
@@ -1053,7 +860,6 @@ Siehe auch @mref{error} und @mrefdot{error_size}
 Gibt die letzte Fehlermeldung erneut aus.  Die Fehlermeldung ist in der
 Systemvariablen @code{errormsg} enthalten.  Die Funktion @code{errormsg}
 formatiert diese und gibt sie aus.
-
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
@@ -1074,12 +880,6 @@ zugewiesen werden.  Der globale Wert von @code{errormsg} ist stets pr@"asent.
 
 Beispiele:
 
-@c ===beg===
-@c errormsg;
-@c sin(a,b);
-@c errormsg:false;
-@c sin(a,b);
-@c ===end===
 @example
 (%i1) errormsg;
 (%o1)                                true
@@ -1099,13 +899,6 @@ Wrong number of arguments to sin
 Der Optionsvariablen @code{errormsg} kann in einem Block kein lokaler Wert
 zugewiesen werden.
 
-@c ===beg===
-@c f(bool):=block([errormsg:bool], print ("value of errormsg is",errormsg))$
-@c errormsg:true;
-@c f(false);
-@c errormsg:false;
-@c f(true);
-@c ===end===
 @example
 (%i1) f(bool):=block([errormsg:bool], 
                      print ("value of errormsg is",errormsg))$
@@ -1122,7 +915,6 @@ value of errormsg is true
 value of errormsg is false 
 (%o5)                                false
 @end example
-
 @end defvr
 
 @c REPHRASE
@@ -1137,7 +929,6 @@ value of errormsg is false
 
 Anweisung f@"ur Interationen.  Siehe die @mref{do}-Anweisung f@"ur eine 
 Beschreibung der Iterationsm@"oglichkeiten von Maxima.
-
 @end deffn
 
 @c --- 25.12.2010 DK -----------------------------------------------------------
@@ -1164,7 +955,6 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 Das Argument der Funktion @code{go} muss der Name einer Marke sein, die in
 demselben Block erscheint.  Es ist nicht m@"oglich in einen anderen Block zu
 springen.
-
 @end deffn
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
@@ -1267,7 +1057,6 @@ and                    and         logical infix
 or                     or          logical infix
 not                    not         logical prefix
 @end example
-
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
@@ -1313,16 +1102,8 @@ darf @code{local} jeweils nur einmal auftreten.
 
 Beispiel:
 
-@c A local function definition.
-
 Eine lokale Funktionsdefinition.
 
-@c ===beg===
-@c foo (x) := 1 - x;
-@c foo (100);
-@c block (local (foo), foo (x) := 2 * x, foo (100));
-@c foo (100);
-@c ===end===
 @example
 (%i1) foo (x) := 1 - x;
 (%o1)                    foo(x) := 1 - x
@@ -1333,7 +1114,6 @@ Eine lokale Funktionsdefinition.
 (%i4) foo (100);
 (%o4)                         - 99
 @end example
-
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
@@ -1345,7 +1125,6 @@ Eine lokale Funktionsdefinition.
 
 Die @code{return}-Anweisung wird in einem Block verwendet, um den Block mit dem
 Ergebnis @var{value} zu verlassen.  Siehe @mref{block} f@"ur mehr Informationen.
-
 @end deffn
 
 @c --- 27.12.2010 DK -----------------------------------------------------------
@@ -1358,7 +1137,6 @@ Ergebnis @var{value} zu verlassen.  Siehe @mref{block} f@"ur mehr Informationen.
 
 Wertet den Ausdruck @var{expr} aus und generiert eine Ausnahme mit dem Ergebnis
 der Auswertung, die von der letzten @code{catch}-Anweisung behandelt wird.
-
 @end deffn
 
 @c --- 23.12.2010 Dk -----------------------------------------------------------
@@ -1370,7 +1148,6 @@ der Auswertung, die von der letzten @code{catch}-Anweisung behandelt wird.
 @c See @code{do}.
 
 Siehe den Operator @mrefdot{do}
-
 @end deffn
 
 @c --- End of file Program.de.texi ---------------------------------------------
