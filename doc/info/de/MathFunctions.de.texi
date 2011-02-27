@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 22.02.2011
+@c Revision    : 27.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -14,8 +14,7 @@
 * Funktionen f@"ur Zahlen::
 * Funktionen f@"ur komplexe Zahlen::
 * Funktionen der Kombinatorik::
-* Algebraische Funktionen::
-* Exponential- und Logarithmusfunktion::
+* Wurzel-@comma{} Exponential- und Logarithmusfunktion::
 * Winkelfunktionen::
 * Hyperbelfunktionen::
 * Zufallszahlen::
@@ -992,117 +991,223 @@ Argument rein imagin@"ar.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen der Kombinatorik, Algebraische Funktionen, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen
+@node Funktionen der Kombinatorik, Wurzel-@comma{} Exponential- und Logarithmusfunktion, Funktionen f@"ur komplexe Zahlen, Mathematische Funktionen
 @section Funktionen der Kombinatorik
 @c -----------------------------------------------------------------------------
 
-@c TODO: DOKUMENTATION FUER DOUBLE_FACTORIAL FEHLT
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 25.02.2011 DK -----------------------------------------------------------
 @anchor{!!}
 @deffn {Operator} !!
 @ifinfo
 @fnindex Doppelte Fakult@"at
 @end ifinfo
 
-@c The double factorial operator.
-
 Ist der Operator der doppelten Fakult@"at.
 
-@c For an integer, float, or rational number @code{n}, @code{n!!} evaluates to 
-@c the product @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} where @code{k} is 
-@c equal to @code{entier (n/2)}, that is, the largest integer less than or equal
-@c to @code{n/2}. Note that this definition does not coincide with other 
-@c published definitions for arguments which are not integers.
-@c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
+F@"ur eine positive ganze Zahl @code{n}, wird @code{n!!} zu dem Produkt
+@code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} vereinfacht, wobei @code{k} gleich
+@code{floor(n/2)} ist und @mref{floor} die gr@"o@ss{}te ganze Zahl liefert, die
+kleiner oder gleich @code{n/2} ist.
 
-F@"ur eine ganze Zahl, rationale Zahl oder Gleitkommazahl @code{n},  wird 
-@code{n!!} zu dem Produkt @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} 
-vereinfacht, wobei @code{k} gleich @code{floor(n/2)} ist und @code{floor} die 
-gr@"o@ss{}te ganze Zahl liefert, die kleiner oder gleich @code{n/2} ist.  Diese 
-Definition entspricht f@"ur nicht ganze Zahlen nicht der @"ublichen Definition.
+F@"ur ein Argument @code{n}, das keine ganze positive Zahl ist, gibt @code{n!!}
+die Substantivform @code{genfact(n, n/2,2)} zur@"uck.  Siehe die Funktion
+@mrefdot{genfact}
 
-@c For an even (or odd) integer @code{n}, @code{n!!} evaluates to the product of
-@c all the consecutive even (or odd) integers from 2 (or 1) through @code{n} 
-@c inclusive.
-
-F@"ur eine gerade (oder ungerade) ganze Zahl wird @code{n!!} zum Produkt aller
-aufeinanderfolgenden geraden (oder ungeraden) ganzen Zahlen beginnend mit 2 
-(oder 1) einschlie@ss{}lich @code{n} vereinfacht.
-
-@c For an argument @code{n} which is not an integer, float, or rational,
-@c @code{n!!} yields a noun form @code{genfact (n, n/2, 2)}.
-@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? 
-@c OR TOO MUCH DETAIL ???
-
-F@"ur ein Argument @code{n}, das keine ganze, rationale oder Gleitkommazahl ist, 
-gibt @code{n!!} die Substantivform @code{genfact(n, n/2,2)} zur@"uck.
-
-Maxima kennt noch die Funktion @code{double_factorial}, die wesentlich 
-allgemeiner definiert ist.  Siehe @code{double_factorial}.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@anchor{binomial}
-@deffn {Funktion} binomial (@var{x}, @var{y})
-
-@c The binomial coefficient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}. If 
-@c @var{x} and @var{y} are integers, then the numerical value of the binomial
-@c coefficient is computed. If @var{y}, or @var{x - y}, is an integer, the 
-@c binomial coefficient is expressed as a polynomial.
-
-Der Binomialkoeffizient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.  Sind
-die Argumente @var{x} und @var{y} ganze Zahlen, wird der Binomialkoeffizient
-numerisch berechnet.  Sind @var{y} oder @var{x-y} ganze Zahlen, dann wird der
-Binomialkoeffizient zu einem Polynom vereinfacht.
+Die Verallgemeinerung der doppelten Fakult@"at f@"ur reelle und komplexe Zahlen
+ist als die Funktion @mref{double_factorial} implementiert.
 
 Beispiele:
 
 @example
-(%i1) binomial (11, 7);
-(%o1)                          330
-(%i2) 11! / 7! / (11 - 7)!;
-(%o2)                          330
-(%i3) binomial (x, 7);
-        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
-(%o3)   -------------------------------------------------
-                              5040
-(%i4) binomial (x + 7, x);
-      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
-(%o4) -------------------------------------------------------
-                               5040
-(%i5) binomial (11, y);
-(%o5)                    binomial(11, y)
+(%i1) [0!!, 1!!, 2!!, 3!!, 4!!, 5!!, 6!!, 7!!, 8!!];
+(%o1)           [1, 1, 2, 3, 8, 15, 48, 105, 384]
+(%i2) 1.5!!;
+(%o2)                  genfact(1.5, 0, 2)
+(%i3) x!!;
+                                   x
+(%o3)                   genfact(x, -, 2)
+                                   2
 @end example
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
+@anchor{binomial}
+@deffn {Funktion} binomial (@var{x}, @var{y})
+
+Ist der Binomialkoeffizient, der definiert ist als
+@ifnottex
+@example
+                                  x!
+             binomial(x, y) = -----------
+                              (x - y)! y!
+@end example
+@end ifnottex
+@tex
+$${{x}\choose{y}}={{x!}\over{\left(x-y\right)!\,y!}}$$
+@end tex
+
+Die Funktion @code{binomial} ist f@"ur das numerische und symbolische Rechnen
+geeignet.
+
+Sind die Argumente @var{x} oder @var{y} ganze Zahlen, wird der
+Binomialkoeffizient numerisch berechnet.  Sind die Argumente @var{x} und @var{y}
+reelle oder komplexe Gleitkommazahlen, wird der Binomialkoeffizent mit der 
+entsprechenden verallgemeinerten Fakult@"at berechnet.  Siehe auch
+@mref{factorial} und @mrefdot{gamma}
+
+Ist das Argument @var{y} oder die Differenz @var{x-y} eine ganz Zahl, wird
+der Binomialkoeffizient zu einem Polynom vereinfacht.
+
+Mit den Funkionen @mref{makefact} oder @mref{makegamma} wird der
+Binomialkoeffizient in einen @"aquivalenten Ausdruck mit der Fakult@"at oder
+der Gammafunktion transformiert.
+
+Maxima kennt die Ableitung des Binomialkoeffizienten.
+
+Beispiele:
+
+@example
+(%i1) binomial(11, 7);
+(%o1)                          330
+(%i2) binomial(%i, 1.5);
+(%o2)       .3693753994635863 %i - .7573400496142132
+(%i3) binomial(x, 3);
+                        (x - 2) (x - 1) x
+(%o3)                   -----------------
+                                6
+(%i4) binomial(x+3, 3);
+                     (x + 1) (x + 2) (x + 3)
+(%o4)                -----------------------
+                                6
+(%i5) makefact(binomial(x,y));
+                               x!
+(%o5)                      -----------
+                           (x - y)! y!
+
+(%i6) diff(binomial(x,y), y);
+(%o6)  - binomial(x, y) (psi (y + 1) - psi (- y + x + 1))
+                            0             0
+@end example
+@end deffn
+
+@c --- 25.02.2011 DK -----------------------------------------------------------
+@anchor{double_factorial}
+@deffn {Funktion} double_factorial (expr)
+
+Ist die doppelte Fakult@"at, die allgemein definiert ist als
+@ifnottex
+@example
+               2  1/4 (1 - cos(n %pi))  n/2       n
+             (---)                     2    gamma(- + 1)
+              %pi                                 2
+@end example
+@end ifnottex
+@tex
+$$\left({{2}\over{\pi}}\right)^{{{1}\over{4}}\,\left(1-\cos \left(n\,
+ \pi\right)\right)}\,2^{{{n}\over{2}}}\,\Gamma\left({{n}\over{2}}+1
+ \right)$$
+@end tex
+
+Die Funktion @code{double_factorial} ist f@"ur das numerische und symbolische
+Rechnen geeignet.  Ist das Argument @var{expr} eine ganze Zahl, eine
+Gleitkommazahl, eine gro@ss{}e Gleitkommazahl oder eine komplexe Gleitkommazahl,
+dann wird ein numerisches Ergebnis berechnet.  F@"ur eine positive ganze Zahl
+ist das Ergebnis gleich dem Ergebnis des Operators der doppelten Fakult@"at
+@mref{!!}.  F@"ur rationale Zahlen ist das Ergebnis eine Substantivform.
+
+F@"ur negative gerade ganze Zahlen ist die Funktion @code{double_factorial}
+nicht definiert.
+
+Hat die Optionsvariable @mref{factorial_expand} den Wert @code{true}, 
+vereinfacht Maxima @code{double_factorial} f@"ur das Argument @code{n-1} und
+f@"ur Argumente @code{n+2*k}, wobei @code{k} eine ganze Zahl ist.
+
+Maxima kennt die Ableitung der Funktion @code{double_factorial}.
+
+@code{double_factorial} wird automatisch auf die Elemente von Listen und
+Matrizen sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
+
+Beispiele:
+
+Numerische Ergebnisse f@"ur ganze Zahlen, Gleitkommazahlen und komplexen
+Gleitkommazahlen.
+
+@example
+(%i1) double_factorial([-3, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1) [- 1, 1, 1, 1, 2, 3, 8, 15, 48, 105, 384, 945, 3840]
+
+(%i2) double_factorial([1.5, 1.5b0, 0.5+%i, 0.5b0+%i]);
+(%o2) [1.380662681753386, 1.380662681753387b0,
+.4186422526242637 - .7218816624466643 %i, 
+4.186422526242633b-1 - 7.218816624466641b-1 %i]
+@end example
+
+Vereinfachungen, wenn die Optionsvariable @mref{factorial_expand} den Wert
+@code{true} hat.
+
+@example
+(%i3) factorial_expand:true;
+(%o3)                         true
+(%i4) double_factorial(n-1);
+                               n!
+(%o4)                  -------------------
+                       double_factorial(n)
+(%i5) double_factorial(n+4);
+(%o5)          (n + 2) (n + 4) double_factorial(n)
+(%i6) double_factorial(n-4);
+@group
+                       double_factorial(n)
+(%o6)                  -------------------
+                            (n - 2) n
+@end group
+@end example
+
+Die Ableitung der Funktion @code{double_factorial}.
+
+@example
+(%i7) diff(double_factorial(x), x);
+                                     2
+                            %pi log(---) sin(%pi x)
+                                    %pi                    x
+(%o7) (double_factorial(x) (----------------------- + psi (- + 1)
+                                       2                 0 2
+                                                     + log(2)))/2
+@end example
+@end deffn
+
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{factcomb}
 @deffn {Funktion} factcomb (@var{expr})
 
-@c Tries to combine the coefficients of factorials in @var{expr} with the 
-@c factorials themselves by converting, for example, @code{(n + 1)*n!} into 
-@c @code{(n + 1)!}.
+Fasst Faktoren und Fakult@"aten im Ausdruck @var{expr} zusammen.  Zum Beispiel
+wird @code{(n+1)*n!} zu @code{(n+1)!} zusammengefasst.
 
-Fasst Faktoren in Ausdr@"ucken mit Fakult@"aten zusammen.  Zum Beispiel wird 
-@code{(n+1)*n!} zu @code{(n+1)!} zusammengefasst.
+Hat die Optionsvariable @mref{sumsplitfact} den Wert @code{false}, wird nach
+der Vereinfachung mit @code{factcomb} die Funktion @mref{minfactorial} auf den 
+Ausdruck @var{expr} angewendet.
 
-@c @code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to
-@c be applied after a @code{factcomb}.
+Beispiele:
 
-Hat die Optionsvariable @code{sumsplitfact} den Wert @code{false}, wird die
-Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
-@code{factcomb} angewendet.
-
-@c Example:
-@c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
-@c THE PREVIOUS REVISION OF THIS FILE, BUT IN THIS CASE
-@c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
-@c (n + 1)^b*n!^b;
-@c factcomb (%);
+@example
+(%i1) expr: ((n+1)*n!)/(n+2)!;
+                           (n + 1) n!
+(%o1)                      ----------
+                            (n + 2)!
+(%i2) factcomb(expr);
+@group
+                            (n + 1)!
+(%o2)                       --------
+                            (n + 2)!
+@end group
+(%i3) factcomb(expr), sumsplitfact:false;
+                                1
+(%o3)                         -----
+                              n + 2
+@end example
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{factorial}
 @anchor{!}
 @deffn  {Funktion} factorial (@var{x})
@@ -1111,227 +1216,147 @@ Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
 @fnindex Fakult@"at
 @end ifinfo
 
-@c The factorial operator. For any complex number @code{x}, except for negative 
-@c integers, @code{x!} is defined as @code{gamma(x+1)}.
-
-@code{factorial} ist die Funktion f@"ur die Berechnung der Fakult@"at.  Der 
-Operator f@"ur die Fakult@"at @code{!}, ist identisch mit der Funktion.  F@"ur 
-jede komplexe Zahl @code{x}, einschlie@ss{}lich ganze und rationale Zahlen, 
-sowie Gleitkommazahlen und mit Ausnahme der negative ganzen Zahlen, ist die 
-Fakult@"at definiert als @code{gamma(x+1}.
-
-@c For an integer @code{x}, @code{x!} simplifies to the product of the integers 
-@c from 1 to @code{x} inclusive. @code{0!} simplifies to 1. For a real or 
-@c complex number in float or bigfloat precision @code{x}, @code{x!} simplifies
-@c to the value of @code{gamma (x+1)}. For @code{x} equal to @code{n/2} where 
-@c @code{n} is an odd integer, @code{x!} simplifies to a rational factor times 
-@c @code{sqrt (%pi)} (since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
+Die Funktion @code{factorial} ist f@"ur das numerische und symbolische Rechnen
+der Fakult@"at geeignet.  Der Operator der Fakult@"at @code{!}, ist identisch
+mit der Funktion @code{factorial}.
 
 F@"ur eine ganze Zahl @code{x}, vereinfacht @code{x!} zum Produkt der ganzen 
-Zahlen von 1 bis einschlie@ss{}lich @code{x}.  @code{0!} vereinfacht zu 1.  
-F@"ur eine Gleitkommazahl vereinfacht @code{x!} zu @code{gamma(x+1)}.  F@"ur 
-eine halbzahlige rationale Zahl @code{n/2}, wobei @code{n} eine ungerade ganze 
-Zahl ist, vereinfacht @code{(n/2)!} zu einem rationalen Faktor multipliziert mit
-@code{sqrt(%pi)}.  F@"ur jedes andere Argument wird @code{x!} nicht vereinfacht.
+Zahlen von 1 bis einschlie@ss{}lich @code{x}.  @code{0!} vereinfacht zu 1.
+F@"ur reelle und komplexe Gleitkommazahlen wird @code{x!} mit der
+Verallgemeinerung @code{gamma(x+1)} berechnet.  Siehe die Funktion
+@mrefdot{gamma}  F@"ur eine halbzahlige rationale Zahl @code{n/2}, vereinfacht
+@code{(n/2)!} zu einem rationalen Faktor multipliziert mit @code{sqrt(%pi)}.
 
-@c The option variables @code{factlim} and @code{gammalim} control the numerical 
-@c evaluation of factorials for integer and rational arguments. The functions 
-@c @code{minfactorial} and @code{factcomb} simplifies expressions containing 
-@c factorials. See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
-@c @code{factcomb}.
+Die Optionsvariable @mref{factlim} enth@"alt die gr@"o@ss{}te Zahl, f@"ur die
+die Fakult@"at einer ganzen Zahl numerisch berechnet wird.  Ist das Argument
+der Fakult@"at eine rationale Zahl, wird von Maxima die Funktion
+@mref{gamma} f@"ur die numerische Berechnung aufgerufen.  In diesem Fall ist
+@code{gammalim - 1} der gr@"o@ss{}te Nenner, f@"ur den die Fakult@"at vereinfacht
+wird.  Siehe @mrefdot{gammalim}
 
-Die Optionsvariablen @code{factlim} und @code{gammalim} steuern die numerische
-Berechnung von Ausdr@"ucken, die Fakult@"aten enthalten.  Siehe @code{factlim} 
-und @code{gammalim}.
+Hat die Optionsvariable @mref{factorial_expand} den Wert @code{true}, wird die
+Fakult@"at von Argumenten der Form @code{(n+k)!} oder @code{(n-k)!} vereinfacht,
+wobei @code{k} eine ganze Zahl ist.
 
-Die Funktionen @code{minfactorial} und @code{factcomb} vereinfachen 
-Ausdr@"ucken, die die Fakult@"at enthalten.  Siehe @code{minfactorial} und 
-@code{factcomb}.
+Mit den Funktionen @mref{minfactorial} und @mref{factcomb} k@"onnen Fakult@"aten
+in Ausdr@"ucken vereinfacht werden.
 
-@c The functions @code{gamma}, @code{bffac}, and @code{cbffac} are varieties of 
-@c the gamma function. @code{bffac} and @code{cbffac} are called internally by 
-@c @code{gamma} to evaluate the gamma function for real and complex numbers in 
-@c bigfloat precision.
+Die Funktion @mref{makegamma} ersetzt Fakult@"aten in einem Ausdruck durch die
+Gammafunktion @mrefdot{gamma}  Umgekehrt ersetzt die Funktion
+@mref{makefact} Binomialkoeffizienten und die Gammafunktion in einem Ausdruck
+durch Fakult@"aten.
 
-Die Funktionen @code{gamma}, @code{bbfac} und @code{cbffac} sind Varianten der
-Gamma Funktion.  @code{bffac} und @code{cbffac} werden intern von Maxima 
-aufgerufen, um die Gammafunktion f@"ur reelle und komplexe gro@ss{}e 
-Gleitkommazahlen zu berechnen.
+Maxima kennt die Ableitung der Fakult@"at und die Grenzwerte der Fakult@"at
+f@"ur spezielle Werte wie negative ganze Zahlen.
 
-@c @code{makegamma} substitutes @code{gamma} for factorials and related 
-@c functions.
-
-Die Funktion @code{makegamma} ersetzt die Gamma Funktion @code{gamma} f@"ur die
-Fakult@"at und verwandte Funktionen in einem Ausdruck.
-
-@c Maxima knows the derivative of the factorial function and the limits for 
-@c specific values like negative integers.
-
-Maxima kennt die Ableitung der Fakult@"at und den Grenzwert f@"ur spezielle Wert
-wie negative ganze Zahlen.
-
-@c The option variable @code{factorial_expand} controls the simplification of 
-@c expressions like @code{(n+x)!}, where @code{n} is an integer.
-
-Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von 
-Aus@-dr@"u@-cken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.
-
-@c See also @code{binomial}.
-
-Siehe auch @code{binomial}.
+Siehe auch die Gammfunktion @mref{gamma} und den Binomialkoeffizienten
+@mrefdot{binomial}
 
 Beispiele:
 
-@c The factorial of an integer is simplified to an exact number unless the 
-@c operand is greater than @code{factlim}. The factorial for real and complex 
-@c numbers is evaluated in float or bigfloat precision.
-
 Die Fakult@"at einer ganzen Zahl wird zu einer exakten Zahl vereinfacht, wenn
 das Argument nicht gr@"o@ss{}er als @code{factlim} ist.  Die Fakult@"at f@"ur 
-reelle und komplexe Zahlen wird in als Gleitkommazahl berechnet.
+reelle und komplexe Zahlen wird als Gleitkommazahl berechnet.
 
 @example
 (%i1) factlim:10;
-(%o1)                                 10
+(%o1)                          10
 (%i2) [0!, (7/2)!, 8!, 20!];
-                            105 sqrt(%pi)
-(%o2)                   [1, -------------, 40320, 20!]
-                                 16
+                     105 sqrt(%pi)
+(%o2)            [1, -------------, 40320, 20!]
+                          16
 (%i3) [4.77!, (1.0+%i)!];
-(%o3)    [81.44668037931197, 
-          .3430658398165454 %i + .6529654964201665]
+(%o3) [81.44668037931197, .3430658398165451 %i
+                                             + .6529654964201663]
 (%i4) [2.86b0!, (1.0b0+%i)!];
-(%o4) [5.046635586910012b0, 
-       3.430658398165454b-1 %i + 6.529654964201667b-1]
+(%o4) [5.046635586910012b0, 3.430658398165454b-1 %i
+                                          + 6.529654964201667b-1]
 @end example
 
-@c The factorial of a known constant, or general expression is not simplified. 
-@c Even so it may be possible to simplify the factorial after evaluating the 
-@c operand.
-
-Die Fakult@"at einer komplexen Zahl, bekannten Konstanten oder eines allgemeinen
-Ausdrucks wird nicht vereinfacht.  Der Vereinfachung kann m@"oglich sein, wenn 
-der Operand zu einer Zahl ausgewertet werden kann.
+Die Fakult@"at von numerischen Konstanten oder eines konstanten Ausdrucks wird
+numerisch berechnet, wenn die Konstante oder der Ausdruck zu einer Zahl
+ausgewertet werden kann.
 
 @example
 (%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
 (%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
 (%i2) ev (%, numer, %enumer);
-(%o2) [.3430658398165454 %i + .6529654964201665, 
-       7.188082728976031, 
-       4.260820476357003, 1.227580202486819]
+(%o2) [.3430658398165451 %i + .6529654964201663, 
+         7.188082728976031, 4.260820476357003, 1.227580202486819]
 @end example
 
-@c REMOVING THIS EXAMPLE. IT IS NOT SPECIFIC FOR THE FACTORIAL FUNCTION:
-@c The factorial of an unbound symbol is not simplified.
-
-@c @c ===beg===
-@c @c kill (foo);
-@c @c foo!;
-@c @c ===end===
-@c @example
-@c (%i1) kill (foo);
-@c (%o1)                         done
-@c (%i2) foo!;
-@c (%o2)                         foo!
-@c @end example
-
-@c Factorials are simplified, not evaluated. Thus @code{x!} may be replaced 
-@c even in a quoted expression.
-
-Fakult@"aten werden vereinfacht und nicht ausgewertet.  Daher kann @code{x!} 
-auch in Ausdr@"ucken ersetzt werden, deren Auswertung mit dem Quote-Operator 
-verhindert wurde.
+Fakult@"aten werden vereinfacht und nicht ausgewertet.  Daher wird die
+Fakult@"at auch dann berechnet, wenn die Auswertung mit dem Quote-Operator 
+@mref{'} unterdr@"uckt ist.
 
 @example
 (%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
-          105 sqrt(%pi)
-(%o1) [1, -------------, 81.44668037931199, 40320, 
-               16
-                                             2432902008176640000]
+            105 sqrt(%pi)
+(%o1)   [1, -------------, 81.44668037931197, 40320, 20!]
+                 16
 @end example
-
-@c Maxima knows the derivative of the factorial function.
 
 Maxima kennt die Ableitung der Fakult@"at.
 
 @example
-(%i1) diff(x!,x);
-(%o1)                           x! psi (x + 1)
-                                      0
+(%i1) diff(x!, x);
+(%o1)                    x! psi (x + 1)
+                               0
 @end example
 
-@c The option variable @code{factorial_expand} controls expansion and 
-@c simplification of expressions with the factorial function.
-
-Die Optionsvariable @code{factorial_expand} steuert die Expansion und
+Die Optionsvariable @code{factorial_expand} kontrolliert die Expansion und
 Vereinfachung von Ausdr@"ucken, die die Fakult@"at enthalten.
 
 @example
 (%i1) (n+1)!/n!,factorial_expand:true;
-(%o1)                                n + 1
+(%o1)                         n + 1
 @end example
 @end deffn
 
-@c --- 17.10.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{factlim}
 @defvr {Optionsvariable} factlim
 Standardwert: 100000
 
-@c @code{factlim} specifies the highest factorial which is automatically 
-@c expanded. If it is -1 then all integers are expanded.
-
 Die Optionsvariable @code{factlim} spezifiziert die gr@"o@ss{}te ganze Zahl, 
-f@"ur die die Fakult@"at einer ganzen Zahl berechnet wird.  Wenn @code{factlim} 
-den Wert -1 hat, wird die Fakult@"at f@"ur jede ganze Zahl berechnet.
-
-@c TODO: IN ABHAENIGKEIT VON DER LISP IMPLEMENTATION GIBT ES GRENZEN FUER DIE
-@c       GROESSTE ZAHL.
+f@"ur die die Fakult@"at einer ganzen Zahl numerisch berechnet wird.  Hat
+@code{factlim} den Wert -1, wird die Fakult@"at f@"ur jede ganze Zahl
+berechnet.  Siehe die Funktion @mrefdot{factorial}
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{factorial_expand}
 @defvr {Optionsvariable} factorial_expand
 Standardwert: @code{false}
 
-@c The option variable @code{factorial_expand} controls the simplification of 
-@c expressions like @code{(n+1)!}, where @code{n} is an integer. See @code{!} 
-@c for an example.
-
 Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von
-Aus@-dr@"u@-cken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.  Siehe
-@code{factorial} f@"ur ein Beispiel.
+Aus@-dr@"u@-cken wie @code{(n+k)!} oder @code{(n-k)!}, wobei @code{k} eine
+ganze Zahl ist.  Siehe @mref{factorial} f@"ur ein Beispiel.
+
+Siehe auch die Funktionen @mref{minfactorial} und @mref{factcomb} f@"ur die
+Vereinfachung von Ausdr@"ucken mit der Fakult@"at.
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{genfact}
 @deffn {Funktion} genfact (@var{x}, @var{y}, @var{z})
 
-@c Returns the generalized factorial, defined as
-@c @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @var{x},
-@c @code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
-
 Gibt die verallgemeinerte Fakult@"at zur@"uck, die als @code{x (x-z) (x - 2 z) 
-... (x - (y - 1) z)} definiert ist.  Damit gilt f@"ur ein ganzzahliges Argument 
-@var{x}, @code{genfact (x, x, 1) = x!} und @code{genfact (x, x/2, 2) = x!!}.
+... (x - (y - 1) z)} definiert ist.  Ist @var{x} eine ganze Zahl, dann
+entspricht @code{genfact(x, x, 1)} der Fakult@"at @code{x!} und 
+@code{genfact(x, x/2, 2)} der doppelten Fakult@"at @code{x!!}.  Siehe auch die 
+Funktionen @mref{factorial} und @mref{double_factorial} sowie die Operatoren
+@mref{!} und @mrefdot{!!}
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{minfactorial}
 @deffn {Funktion} minfactorial (@var{expr})
 
-@c Examines @var{expr} for occurrences of two factorials which differ by an 
-@c integer. @code{minfactorial} then turns one into a polynomial times the 
-@c other.
-
-Treten mehrere Fakult@"aten in einem Ausdruck @var{expr} auf, die sich nur um
-ganze Zahlen voneinander unterscheiden, werden diese vereinfacht.
-
-@c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
-@c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!
-@c LOOKING AT THE minfactorial CODE DOESN'T HELP !!!
-@c If exp involves binomial coefficients then they will be
-@c converted into ratios of factorials.
+Die Funktion @code{minfactorial} vereinfacht Fakult@"aten @mref{factorial} in
+dem Ausdruck @var{epxr}, die sich um eine ganze Zahl voneinander unterscheiden.
+Siehe auch die Funktion @mref{factcomb}, um Fakult@"aten zusammenzufassen,
+sowie die Optionsvariable @mrefdot{factorial_expand}
 
 @example
 (%i1) n!/(n+2)!;
@@ -1345,62 +1370,20 @@ ganze Zahlen voneinander unterscheiden, werden diese vereinfacht.
 @end example
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{sumsplitfact}
 @defvr {Optionsvariable} sumsplitfact
 Standardwert: @code{true}
 
-@c When @code{sumsplitfact} is @code{false},
-@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
-@c @code{minfactorial} is applied after a @code{factcomb}.
-
-Hat die Optionsvariable @code{sumsplitfact} den Wert @code{false}, wird die
-Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
-@code{factcomb} angewendet.
-
-@c TODO: EIN BEISPIEL
+Hat die Optionsvariable @code{sumsplitfact} den Wert @code{false}, wird von
+der Funktion @code{factcomb} nach der Zusammenfassung von Fakult@"aten die
+Funktion @mref{minfactorial} angewendet.  Siehe die Funktion
+@mref{factcomb} f@"ur ein Beispiel.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Algebraische Funktionen, Exponential- und Logarithmusfunktion, Funktionen der Kombinatorik, Mathematische Funktionen
-@section Algebraische Funktionen
-@c -----------------------------------------------------------------------------
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@anchor{isqrt}
-@deffn {Funktion} isqrt (@var{x})
-
-@c Returns the "integer square root" of the absolute value of @var{x}, which is 
-@c an integer.
-
-Gibt die ganzzahlige Wurzel des Betrages von @var{x} zur@"uck, wenn @var{x} eine
-ganze Zahl ist.  Andernfalls wird eine Substantivform zur@"uckgegeben.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@anchor{sqrt}
-@deffn {Funktion} sqrt (@var{x})
-
-@c The square root of @var{x}. It is represented internally by 
-@c @code{@var{x}^(1/2)}.  See also @code{rootscontract}.
-
-Ist die Wurzelfunktion.  Intern stellt Maxima die Wurzelfunktion als
-@code{sqrt@var{x}^(1/2)} dar.  Siehe auch die Funktion @code{rootscontract}.
-
-@c @code{radexpand} if @code{true} will cause nth roots of factors of a product
-@c which are powers of n to be pulled outside of the radical, e.g.
-@c @code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is 
-@c @code{true}.
-
-Hat die Optionsvariable @code{radexpand} den Wert @code{true}, werden die
-n-ten Wurzeln von Faktoren unter einer Wurzel aus der Wurzel herausgezogen.
-So wird zum Beispiel @code{sqrt(16*x^2)} nur dann zu @code{4*x} vereinfacht,
-wenn @code{radexpand} den Wert @code{true} hat.
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@node Exponential- und Logarithmusfunktion, Winkelfunktionen, Algebraische Funktionen, Mathematische Funktionen
-@section Exponential- und Logarithmusfunktion
+@node Wurzel-@comma{} Exponential- und Logarithmusfunktion, Winkelfunktionen, Funktionen der Kombinatorik, Mathematische Funktionen
+@section Wurzel-, Exponential- und Logarithmusfunktion
 @c -----------------------------------------------------------------------------
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1740,7 +1723,7 @@ Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 Standardwert: @code{false}
 
 @c If @code{true} then negative floating point arguments to @code{log} will 
-@c always be converted to their absolute value before the @code{log} is taken.  
+@c always be converted to their absolute value before the @code{log} is taken.
 @c If @code{numer} is also @code{true}, then negative integer arguments to 
 @c @code{log} will also be converted to their absolute value.
 
@@ -1773,8 +1756,29 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} zur@"uck.
 @end deffn
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{sqrt}
+@deffn {Funktion} sqrt (@var{x})
+
+@c The square root of @var{x}. It is represented internally by 
+@c @code{@var{x}^(1/2)}.  See also @code{rootscontract}.
+
+Ist die Wurzelfunktion.  Intern stellt Maxima die Wurzelfunktion als
+@code{sqrt@var{x}^(1/2)} dar.  Siehe auch die Funktion @code{rootscontract}.
+
+@c @code{radexpand} if @code{true} will cause nth roots of factors of a product
+@c which are powers of n to be pulled outside of the radical, e.g.
+@c @code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is 
+@c @code{true}.
+
+Hat die Optionsvariable @code{radexpand} den Wert @code{true}, werden die
+n-ten Wurzeln von Faktoren unter einer Wurzel aus der Wurzel herausgezogen.
+So wird zum Beispiel @code{sqrt(16*x^2)} nur dann zu @code{4*x} vereinfacht,
+wenn @code{radexpand} den Wert @code{true} hat.
+@end deffn
+
 @c -----------------------------------------------------------------------------
-@node Winkelfunktionen, Hyperbelfunktionen, Exponential- und Logarithmusfunktion, Mathematische Funktionen
+@node Winkelfunktionen, Hyperbelfunktionen, Wurzel-@comma{} Exponential- und Logarithmusfunktion, Mathematische Funktionen
 @section Winkelfunktionen
 @c -----------------------------------------------------------------------------
 

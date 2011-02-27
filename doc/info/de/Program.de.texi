@@ -5,7 +5,7 @@
 @c Original    : Program.texi revision 1.34
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 20.02.2011
+@c Revision    : 23.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -15,30 +15,6 @@
 * Einf@"uhrung in die Programmierung::
 * Funktionen und Variablen der Programmierung::
 @end menu
-
-@c TODO: SOLL DAS FOLGENDE IN DIESES KAPITEL AUFGENOMMEN WERDEN?
-
-@c -----------------------------------------------------------------------------
-@c @node Garbage Collection, Documentation, Lisp and Maxima, Help
-@c @section Garbage Collection
-
-@c Symbolic computation tends to create a good deal
-@c of garbage (temporary or intermediate results that are eventually
-@c not used), and effective handling of this can be crucial to successful
-@c completion of some programs.
-
-@c @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
-@c @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
-@c @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-@c Under GCL, on UNIX systems where the mprotect system call is available
-@c (including SUN OS 4.0 and some variants of BSD) a stratified garbage 
-@c collection is available. This limits the collection to pages which have been 
-@c recently written to. See the GCL documentation under ALLOCATE and GBC. At the
-@c Lisp level doing (setq si::*notify-gbc* t) will help you determine which
-@c areas might need more space.
-
-@c For other Lisps that run Maxima, we refer the reader to the
-@c documentation for that Lisp on how to control GC.
 
 @c -----------------------------------------------------------------------------
 @node Lisp und Maxima, Einf@"uhrung in die Programmierung, Programmierung, Programmierung
@@ -55,7 +31,7 @@ Zum Beispiel entspricht dem Maxima-Symbol @code{foo} das Lisp-Symbol
 @code{$foo} und dem Maxima-Symbol @code{?foo} entspricht das Lisp-Symbol
 @code{foo}.
 
-Speziellen Zeichen wie der Trennstrich @code{-} oder ein Stern @code{*} in 
+Speziellen Zeichen wie einem Trennstrich @code{-} oder einem Stern @code{*} in
 Lisp-Symbolen muss ein Backslash @code{\} vorangestellt werden, um diese
 in Maxima zu verwenden.  Zum Beispiel entspricht dem Lisp-Symbol 
 @code{*foo-bar*} das Maxima-Symbol @code{?\*foo\-bar\*}.
@@ -63,19 +39,68 @@ in Maxima zu verwenden.  Zum Beispiel entspricht dem Lisp-Symbol
 Lisp-Code kann von einer Maxima-Kommandozeile ausgef@"uhrt werden.  Eine 
 einzelne Zeile Lisp-Code kann mit dem Unterbrechungskommando @code{:lisp} 
 ausgef@"uhrt werden.  Siehe das Kapitel @nref{Debugger-Kommandos} f@"ur weitere
-Informationen zu Unterbrechungskommandos.  Zum Beispiel f@"uhrt das folgende Kommando die Lisp-Funktion @code{foo} mit den Maxima-Variablen @code{x} und
-@code{y} als Argumente aus
+Informationen zu Unterbrechungskommandos.
+
+@noindent
+Beispiele:
+
+@noindent
+Addiere die Werte der Maxima-Variablen @code{x} und @code{y} mit dem 
+Lisp-Operator @code{+}.
 
 @example
-(%i1) :lisp (foo $x $y)
+(%i1) x:10$ y:5$
+(%i3) :lisp (+ $x $y)
+15
+@end example
+
+@noindent
+Addiere die Symbole @code{a} und @code{b} mit der Lisp-Funktion @code{ADD}.  Das
+Ergebnis wird der Variablen @code{$RES} zugewiesen.  Die Variable hat in Maxima
+den Namen @code{res}.
+
+@example
+(%i3) :lisp (setq $res (add '$a '$b))
+((MPLUS SIMP) $A $B)
+(%i3) res;
+(%o3)                         b + a
+@end example
+
+@noindent
+Das @code{:lisp}-Kommando ist n@"utzlich, um zum Beispiel Lisp-Eigenschaften
+von Maxima-Symbolen anzuzeigen, globale Lisp-Variablen wie
+@code{*PRINT-CIRCLE*} zu setzen oder wie im letzten Beispiel die interne
+Form von Maxima-Ausdr@"ucken anzuzeigen.
+
+@example
+(%i4) :lisp (symbol-plist 'mabs)
+(TEXSYM ((\left| ) \right| ) TEX TEX-MATCHFIX REAL-VALUED T
+        MAPS-INTEGERS-TO-INTEGERS T DIMENSION DIM-MABS TRANSLATE
+        #<FUNCTION (LAMBDA #) @{972D045@}> FLOATPROG MABSBIGFLOAT INTEGRAL
+        ((X) #<FUNCTION ABS-INTEGRAL>) OPERATORS SIMPABS DISTRIBUTE_OVER
+        (MLIST $MATRIX MEQUAL) NOUN $ABS REVERSEALIAS $ABS GRAD
+        ((X) ((MTIMES) X ((MEXPT) ((MABS) X) -1))))
+
+(%i4) :lisp (setq *print-circle* nil)
+NIL
+
+(%i4) 'integrate(t*sin(t), t);
+                          /
+                          [
+(%o4)                     I t sin(t) dt
+                          ]
+                          /
+(%i5) :lisp $%
+((%INTEGRATE SIMP) ((MTIMES SIMP) $T ((%SIN SIMP) $T)) $T)
 @end example
 
 @noindent
 Das Kommando @code{:lisp} kann in einer Kommandozeile und in Dateien verwendet
 werden, die mit den Funktionen @mref{batch} oder @mref{demo} geladen werden.
 Dagegen kann das Kommando @code{:lisp} nicht in Dateien verwendet werden, die 
-mit den Funktionen @mrefcomma{load} @mrefcomma{batchload}@ 
-@mref{translate_file} oder @mref{compile_file} geladen werden.
+mit den Funktionen 
+@mrefcomma{load} @mrefcomma{batchload} @mref{translate_file} oder
+@mref{compile_file} geladen werden.
 
 Mit dem Kommando @mxref{to_lisp, to_lisp()} kann von einer Maxima-Kommandozeile
 eine Lisp-Sitzung ge@"offnet werden.  Mit dem Kommando @code{(TO-MAXIMA)} wird
@@ -90,23 +115,23 @@ betreffen:
 
 @enumerate
 @item
-Ein Lisp-Bezeichner, der nicht mit senkrechten Strichen eingeschlossen ist,
+Ein Lisp-Bezeichner, der nicht von senkrechten Strichen eingeschlossen ist,
 entspricht einem klein geschriebenen Maxima-Bezeichner.  Die Schreibweise des
 Lisp-Bezeichners wird dabei ignoriert.  Zum Beispiel entspricht den folgenden
-Lisp-Bezeichnern @code{$foo}, @code{$FOO} und @code{$Foo} jeweils der 
+Lisp-Bezeichnern @code{$foo}, @code{$FOO} und @code{$Foo} jeweils der
 Maxima-Bezeichner @code{foo}.
 
 @item
 Ein Lisp-Bezeichner, der vollst@"andig gro@ss{} oder klein geschrieben ist und 
-mit senkrechten Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner
+von senkrechten Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner
 in der umgekehrten Schreibweise.  Ein klein geschriebener Lisp-Bezeichner wird 
 also zu einem gro@ss{}geschriebenen Maxima-Bezeichner und umgekehrt.  Zum 
-Beispiel entsprechen den Lisp-Bezeichner @code{|$FOO|} und @code{|$foo|} die
+Beispiel entsprechen den Lisp-Bezeichnern @code{|$FOO|} und @code{|$foo|} die
 Maxima-Bezeichner @code{foo} und @code{FOO}.
 
 @item
-Ein Lisp-Bezeichner in gemischter Schreibweise, der mit senkrechten Strichen
-eingeschlossen wird, entspricht einem Maxima-Bezeichner in der gleichen
+Ein Lisp-Bezeichner in gemischter Schreibweise, der von senkrechten Strichen
+eingeschlossen ist, entspricht einem Maxima-Bezeichner in der gleichen
 Schreibweise.  Zum Beispiel entspricht dem Lisp-Bezeichner @code{|$Foo|} der
 Maxima-Bezeichner @code{Foo}.
 @end enumerate
@@ -115,36 +140,55 @@ Das Lisp-Makro @code{#$} erlaubt die Nutzung von Maxima-Ausdr@"ucken in
 Lisp-Code.  @code{#$@var{expr}$} wird zu einem Lisp-Ausdruck expandiert, der
 dem Maxima-Ausdruck @var{expr} entspricht.
 
+@noindent
+Beispiele:
+
+@noindent
 Die beiden folgenden Beispiele zeigen die Zuweisung an eine Variable @code{var}.
-Im ersten Beispiel werden Lisp- und Maxima-Code gemischt.  Dies entspricht
-dem im zweiten Beispiel gezeigten Maxima-Kommando:
+Im ersten Beispiel werden Lisp- und Maxima-Code gemischt.  F@"ur die Zuweisung
+an die Variable wird die Lisp-Funktion @code{MSETQ} aufgerufen.  Das Makro
+@code{#$} transformiert den Maxima Ausdruck @code{sin(x) + a^2} in die Lisp-Form
+@code{((MPLUS SIMP) ((MEXPT SIMP) $A 2) ((%SIN SIMP) $X))}.  Dies entspricht
+dem im zweiten Beispiel gezeigten Maxima-Kommando.
 
 @example
-(msetq $foo #$[x, y]$)
+(%i1) :lisp (msetq $var #$sin(x)+a^2$)
+((MPLUS SIMP) ((MEXPT SIMP) $A 2) ((%SIN SIMP) $X))
 
-(%i1) foo: [x, y];
+(%i1) var: sin(x)+a^2;
+                                     2
+(%o1)                      sin(x) + a
 @end example
 
 @noindent
-Die Lisp-Funktion @code{DISPLA} gibt einen Ausdruck im Maxima-Format aus:
+In diesem Beispiel wird zun@"achst ein Maxima-Ausdruck der Variablen @var{$VAR}
+zugewiesen und dann mit der Lisp-Funktion @code{DISPLA} ausgegeben.
 
 @example
-(%i1) :lisp #$[x, y, z]$ 
-((MLIST SIMP) $X $Y $Z)
-(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
-[x, y, z]
+(%i1) :lisp (setq $var #$'integrate(f(x), x)$)
+((%INTEGRATE SIMP) (($F SIMP) $X) $X)
+
+(%i1) :lisp (displa $var)
+/
+[
+I f(x) dx
+]
+/
 NIL
 @end example
 
+@noindent
 Maxima-Funktionen sind keine Lisp-Funktionen.  Um eine Maxima-Funktion in 
-Lisp-Code aufzurufen, kann die Lisp-Funktion @code{MFUNCALL} verwendet werden:
+Lisp-Code aufzurufen, kann die Lisp-Funktion @code{MFUNCALL} aufgerufen werden.
 
 @example
-(%i1) foo(x,y) := x*y$
-(%i2) :lisp (mfuncall '$foo 'a 'b)
-((MTIMES SIMP) A B)
+(%i1) f(x,y) := x^2 + sin(y)$
+
+(%i2) :lisp (mfuncall '$f '$a 10)
+((MPLUS SIMP) ((%SIN SIMP) 10) ((MEXPT SIMP) $A 2))
 @end example
 
+@noindent
 Die folgenden Lisp-Funktionen k@"onnen in Maxima nicht verwendet werden:
 
 @code{complement},
@@ -179,6 +223,31 @@ Maxima-Variablen k@"onnen in Programmen verwendet werden.  Maxima hat einen
 @"Ubersetzer, um Maxima-Programme in Lisp-Programme zu @"ubersetzen, und einen
 Compiler, um die @"ubersetzten Programme zu kompilieren.  Siehe dazu das Kapitel
 @nrefdot{@"Ubersetzer}
+
+Maxima-Programme bestehen aus Funktionen und Makros, die im Kapitel 
+@nref{Funktionsdefinitionen} beschrieben sind.  Die Funktionen werden aus 
+Ausdr@"ucken der Form @code{(expr_1, expr_2, ..., expr_n)} oder
+@mref{block}-Anweisungen zusammengesetzt.  Mit der Anweisung @mref{local} werden
+Variablen definiert, deren Werte und Eigenschaften lokal zu einem Block sind.
+
+Konditionale Verzweigen werden mit der Anweisung @mref{if} definiert und haben 
+die Form @code{if ... then ... else}.
+
+Maxima kennt die sehr allgemeine Anweisung @mrefcomma{for} um Schleifen zu
+programmieren.  Schl@"usselworte f@"ur die Programmierung von Schleifen sind
+@mrefcomma{while} @mrefcomma{unless} @mref{do} sowie @code{thru}, @code{step},
+@code{in}.
+
+Mit der Sprunganweisung @mref{return} kann ein Block verlassen werden und mit
+der Sprunganweisung @mref{go} wird innerhalb eines Blockes zu eine Marke
+verzweigt.  Nicht-lokale R@"uckspr@"unge aus Funktionen werden mit den 
+Anweisungen @mref{catch} und @mref{throw} programmiert.
+
+Die Anweisung @mref{errcatch} f@"angt Fehler ab, so dass die Ausf@"uhrung eines
+Programms nicht abgebrochen wird.  Mit der Anweisungen @mref{error} und
+@mref{break} wird ein Programm abgebrochen.  Im ersten Fall kann eine
+Fehlermelung ausgegeben werden und das Programm kehrt zur Maxima-Kommandozeile
+zur@"uck.  Mit @code{break} wird der Maxima-Debugger gestartet.
 
 Maxima kennt die folgenden Anweisungen und Variablen um Programme zu definieren:
 
@@ -242,54 +311,61 @@ Beispiele:
 #0: g(x=10/7)
 #0: f(x=-67/7)
 #0: e(x=4489/49)
+@group
                               9615
 (%o5)                         ----
                                49
+@end group
 @end example
 @end deffn
 
-@c --- 04.12.2010 DK -----------------------------------------------------------
+@c --- 23.02.2011 DK -----------------------------------------------------------
 @anchor{block}
 @deffn  {Funktion} block ([@var{v_1}, @dots{}, @var{v_m}], @var{expr_1}, @dots{}, @var{expr_n})
 @deffnx {Funktion} block (@var{expr_1}, @dots{}, @var{expr_n})
 
-@code{block} wertet die Argument @var{expr_1}, @var{expr_2}, @dots{}, 
-@var{expr_n} nacheinander aus und gibt das Ergebnis des letzten ausgewerteten 
-Ausdrucks zur@"uck.  Die Reihenfolge kann mit den Funktionen @code{go}, 
-@code{throw} und @code{return} beeinflusst werden.  Die Liste der Variablen 
-@code{[v_1, ..., v_m]} am Anfang der @code{block}-Anweisung bezeichnet 
-Variablen, die innerhalb von @code{block} lokal sind.  Alle anderen Variablen, 
-die in einem Block verwendet werden, beziehen sich auf globale Variablen, die
-außerhalb des Block definiert sind.
+Mit der Anweisung @code{block} werden Ausdr@"ucke in einer lokalen Umgebung
+zusammengefasst.  @code{block} wertet die Argument @var{expr_1}, @var{expr_2},
+@dots{}, @var{expr_n} nacheinander aus und gibt das Ergebnis des letzten
+ausgewerteten Ausdrucks zur@"uck.  Die Liste @code{[v_1, ..., v_m]} am Anfang
+der @code{block}-Anweisung bezeichnet Variablen, die innerhalb der
+@code{block}-Anweisung lokal sind.  Alle anderen Variablen, die in einem Block
+verwendet werden, beziehen sich auf globale Variablen, die außerhalb des Block
+definiert sind.  Dies kann ein weiterer Block oder die globale Maxima-Umgebung
+sein.  @code{block} sichert die aktuellen Werte der Variablen @var{v_1}, 
+@dots{}, @var{v_m}.  Wird @code{block} verlassen, werden diese Werte
+wiederhergestellt.
 
-@code{block} sichert die aktuellen Werte der Variablen @var{v_1}, @dots{}, 
-@var{v_m}.  Wird @code{block} verlassen, werden diese Werte wiederhergestellt.
-
-Die Deklaration @code{local(@var{v_1}, ..., @var{v_m})} innerhalb @code{block}
-sichert nicht nur die Werte, sondern auch die Eigenschaften der Variablen.
-Beim Verlassen von @code{block} werden die Eigenschaften wiederhergestellt.
-Erhalten die mit @code{local} deklarierten Variablen innerhalb der
-@code{block}-Anweisung Eigenschaften, wirken sich diese nur lokal aus.  Siehe
-auch @mrefdot{local}
+Die Deklaration @code{local(@var{v_1}, ..., @var{v_m})} innerhalb der
+@code{block}-Anweisung sichert nicht nur die Werte, sondern auch die
+Eigenschaften der Variablen wie sie zum Beispiel mit den Funktionen
+@mref{declare} oder @mref{depends} definiert werden.  Erhalten die mit
+@code{local} deklarierten Variablen innerhalb der @code{block}-Anweisung
+Eigenschaften, wirken sich diese nur lokal aus.  Beim Verlassen der
+@code{block}-Anweisung werden die globalen Eigenschaften wiederhergestellt.
+Siehe auch @mrefdot{local}
 
 Die @code{block}-Anweisung kann verschachtelt werden.  Jeder Block kann
-eigene lokale Variablen definieren.  Diese sind global zu jedem verschachtelten
-Block.  Ein Variable die nicht lokal ist, hat den globalen Wert eines
-einschlie@ss{}enden Blocks oder den Wert der globalen Umgebung.
+eigene lokale Variablen definieren.  Diese sind global zu jedem anderen Block
+der sich innerhalb des Blockes befindet.  Ein Variable die nicht als lokal
+definiert ist, hat den globalen Wert eines umgebenden Blocks oder den Wert der
+globalen Maxima-Umgebung.
 
 Der R@"uckgabewert eines Blocks ist der Wert des letzten Ausdrucks oder der 
 Wert, der mit den @code{return}-Anweisung zur@"uckgegeben wird.  Mit der 
 @code{go}-Anweisung kann innerhalb eines Blocks zu einer Marke gesprungen 
-werden.
+werden.  Weiterhin kann mit der @mref{throw}-Anweisung ein nicht-lokaler
+R@"ucksprung zu einer entsprechenden @mref{catch}-Anweisung erfolgen.
 
 Bl@"ocke erscheinen typischerweise auf der rechten Seite einer 
-Funktionsdefintion.  Sie k@"onnen aber auch an anderen Stellen verwendet werden.
+Funktionsdefinitionen.  Sie k@"onnen aber auch an anderen Stellen verwendet
+werden.
 
 Beispiel:
 
 Das Beispiel zeigt eine einfache Implementation des Newton-Algorithmus.  Der
 Block definiert die lokalen Variablen @code{xn}, @code{s} und @var{numer}.
-@code{numer} ist eine Optionsvariable, die im Block einen lokalen Wert erh@"alt.
+@mref{numer} ist eine Optionsvariable, die im Block einen lokalen Wert erh@"alt.
 Im Block ist das Tag @code{loop} definiert.  Zu diesem Tag wird mit der
 Anweisung @code{go(loop)} gesprungen.  Der Block und damit die Funktion wird
 mit der Anweisung @code{return(xn)} verlassen.  Der Wert der Variablen @code{xn}
@@ -399,17 +475,18 @@ M@"oglichkeiten.
 Es gibt drei Varianten der @code{do}-Anweisung, die sich nur durch die
 Abbruchbedingung voneinander unterscheiden.  Diese sind:
 
-@itemize
-@item
-@code{for @var{variable}: @var{initial_value} step @var{increment}
-      thru @var{limit} do @var{body}}
-@item
-@code{for @var{variable}: @var{initial_value} step @var{increment}
-      while @var{condition} do @var{body}}
-@item
-@code{for @var{variable}: @var{initial_value} step @var{increment}
-      unless @var{condition} do @var{body}}
-@end itemize
+@example
+@b{for} @var{variable}: @var{initial_value} @b{step} @var{increment}
+      @b{thru} @var{limit} @b{do} @var{body}
+
+@group
+@b{for} @var{variable}: @var{initial_value} @b{step} @var{increment}
+      @b{while} @var{condition} @b{do} @var{body}
+@end group
+
+@b{for} @var{variable}: @var{initial_value} @b{step} @var{increment}
+      @b{unless} @var{condition} @b{do} @var{body}
+@end example
 
    @c UGH. DO WE REALLY NEED TO MENTION THIS??
 @c (Alternatively, the @code{step} may be given after the termination condition

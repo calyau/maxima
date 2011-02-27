@@ -5,7 +5,7 @@
 @c Original    : category-macros.texi revision 1.4
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.02.2011
+@c Revision    : 27.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -125,6 +125,7 @@
              ge-ne-riert
              ge-spei-chert
              Glei-chung
+             Gleit-kom-ma-zah-len
              Glo-ba-le
              Gnuplot
              Gra-fik-for-mat

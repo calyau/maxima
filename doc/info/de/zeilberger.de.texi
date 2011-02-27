@@ -4,6 +4,7 @@
 @c Language : German
 @c Original : zeilberger.texi revision 1.11
 @c Date     : 08.11.2010
+@c Revision : 24.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -16,30 +17,21 @@
 @c -----------------------------------------------------------------------------
 @node Introduction to zeilberger, Functions and Variables for zeilberger, zeilberger, zeilberger
 @section Introduction to zeilberger
+@c -----------------------------------------------------------------------------
 
 @code{zeilberger} is a implementation of Zeilberger's algorithm for definite 
 hypergeometric summation, and also Gosper's algorithm for indefinite 
-hypergeometric summation.
-
-@code{zeilberger} makes use of the "filtering" optimization method developed by 
-Axel Riese.
-
-@code{zeilberger} was developed by Fabrizio Caruso.
-
-@code{load (zeilberger)} loads this package.
-
-@c @opencatbox
-@c @category{Sums and products} @category{Share packages} @category{Package zeilberger}
-@c @closecatbox
+hypergeometric summation.  @code{zeilberger} makes use of the "filtering"
+optimization method developed by Axel Riese.  @code{zeilberger} was developed
+by Fabrizio Caruso.  @code{load(zeilberger)} loads this package.
 
 @c -----------------------------------------------------------------------------
-@subsubsection The indefinite summation problem
+@subsection The indefinite summation problem
 
-@code{zeilberger} implements Gosper's algorithm for indefinite hypergeometric 
-summation. Given a hypergeometric term @math{F_k} in @math{k} we want to find 
-its hypergeometric anti-difference, that is, a hypergeometric term @math{f_k} 
+@code{zeilberger} implements Gosper's algorithm for indefinite hypergeometric
+summation.  Given a hypergeometric term @math{F_k} in @math{k} we want to find
+its hypergeometric anti-difference, that is, a hypergeometric term @math{f_k}
 such that
-
 @tex
 $$F_k = f_{k+1} - f_k.$$
 @end tex
@@ -48,10 +40,11 @@ $$F_k = f_{k+1} - f_k.$$
 @end ifnottex
 
 @c -----------------------------------------------------------------------------
-@subsubsection The definite summation problem
+@subsection The definite summation problem
 
 @code{zeilberger} implements Zeilberger's algorithm for definite hypergeometric 
-summation. Given a proper hypergeometric term (in @math{n} and @math{k})
+summation.  Given a proper hypergeometric term (in @math{n} and @math{k})
+
 @tex
 $F_{n,k}$
 @end tex
@@ -96,8 +89,8 @@ $\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k$.
 @c -----------------------------------------------------------------------------
 @subsection Verbosity levels
 
-There are also verbose versions of the commands
-which are called by adding one of the following prefixes:
+There are also verbose versions of the commands which are called by adding one
+of the following prefixes:
 
 @table @code
 @item Summary
@@ -107,8 +100,8 @@ Some information in the intermidiate steps
 @item VeryVerbose
 More information
 @item Extra
-Even more information including information on
-the linear system in Zeilberger's algorithm
+Even more information including information on the linear system in
+Zeilberger's algorithm
 @end table
 
 @noindent
@@ -121,40 +114,35 @@ For example:
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
 @section Functions and Variables for zeilberger
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{AntiDifference}
 @deffn {Function} AntiDifference (@math{F_k}, @var{k})
 
 Returns the hypergeometric anti-difference of @math{F_k}, if it exists.
 
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{Gosper}
 @deffn {Function} Gosper (@math{F_k}, @var{k})
 
-Returns the rational certificate @math{R(k)} for @math{F_k}, that is,
-a rational function such that
+Returns the rational certificate @math{R(k)} for @math{F_k}, that is, a
+rational function such that
 @tex
 $F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
 @end tex
 @ifnottex
 @math{F_k = R(k+1) F_(k+1) - R(k) F_k},
 @end ifnottex
-if it exists.
-Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+if it exists.  Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
+@anchor{GosperSum}
+@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b})
 
 Returns the summmation of @math{F_k} from @math{@var{k} = @var{a}} to 
 @math{@var{k} = @var{b}} if @math{F_k} has a hypergeometric anti-difference.
@@ -162,16 +150,6 @@ Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 
 Examples:
 
-@c ===beg===
-@c load (zeilberger)$
-@c GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
-@c GosperSum (1 / (4*k^2 - 1), k, 1, n);
-@c GosperSum (x^k, k, 1, n);
-@c GosperSum ((-1)^k*a! / (k!*(a - k)!), k, 1, n);
-@c GosperSum (k*k!, k, 1, n);
-@c GosperSum ((k + 1)*k! / (k + 1)!, k, 1, n);
-@c GosperSum (1 / ((a - k)!*k!), k, 1, n);
-@c ===end===
 @example
 (%i1) load (zeilberger)$
 @group
@@ -223,20 +201,19 @@ Dependent equations eliminated:  (1)
 (%o8)                  NON_GOSPER_SUMMABLE
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@iftex
-@deffn {Function} parGosper (@math{F_{n,k}}, @var{k}, @var{n}, @var{d})
+@anchor{parGosper}
+@deffn {Function} parGosper (@var{F_(n,k)}, @var{k}, @var{n}, @var{d})
 
 Attempts to find a @var{d}-th order recurrence for
 @tex
 $F_{n,k}$.
 @end tex
+@ifnottex
+@math{F_(n,k)}.
+@end ifnottex
 
 The algorithm yields a sequence @math{[s_1, s_2, ..., s_m]} of solutions.
 Each solution has the form
@@ -244,46 +221,28 @@ Each solution has the form
 @tex
 $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end tex
-
-@code{parGosper} returns @code{[]} if it fails to find a recurrence.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
-@end deffn
-@end iftex
-
-@c -----------------------------------------------------------------------------
 @ifnottex
-@deffn {Function} parGosper (@math{F_(n,k)}, @var{k}, @var{n}, @var{d})
-
-Attempts to find a @var{d}-th order recurrence for @math{F_(n,k)}.
-
-The algorithm yields a sequence @math{[s_1, s_2, ..., s_m]} of solutions.
-Each solution has the form
-
-@math{[R(n, k), [a_0, a_1, ..., a_d]].}
-
-@code{parGosper} returns @code{[]} if it fails to find a recurrence.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
-@end deffn
+@math{[R(n, k), [a_0, a_1, ..., a_d]]}.
 @end ifnottex
 
+@code{parGosper} returns @code{[]} if it fails to find a recurrence.
+@end deffn
+
 @c -----------------------------------------------------------------------------
-@iftex
-@deffn {Function} Zeilberger (@math{F_{n,k}}, @var{k}, @var{n})
+@anchor{Zeilberger}
+@deffn {Function} Zeilberger (@var{F_(n,k)}, @var{k}, @var{n})
 
 Attempts to compute the indefinite hypergeometric summation of
 @tex
 $F_{n,k}$.
 @end tex
+@ifnottex
+@math{F_(n,k)}.
+@end ifnottex
 
-@code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a 
-solution, then invokes @code{parGosper} with order 1, 2, 3, ..., up to 
-@code{MAX_ORD}. If Zeilberger finds a solution before reaching @code{MAX_ORD},
+@code{Zeilberger} first invokes @mref{Gosper}, and if that fails to find a
+solution, then invokes @mref{parGosper} with order 1, 2, 3, ..., up to
+@mref{MAX_ORD}.  If Zeilberger finds a solution before reaching @code{MAX_ORD},
 it stops and returns the solution.
 
 The algorithms yields a sequence @math{[s_1, s_2, ..., s_m]} of solutions.
@@ -292,185 +251,120 @@ Each solution has the form
 @tex
 $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end tex
-
-@code{Zeilberger} returns @code{[]} if it fails to find a solution.
-
-@code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is 
-@code{true}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
-@end deffn
-@end iftex
-
-@c -----------------------------------------------------------------------------
 @ifnottex
-@deffn {Function} Zeilberger (@math{F_(n,k)}, @var{k}, @var{n})
-
-Attempts to compute the indefinite hypergeometric summation of @math{F_(n,k)}.
-
-@code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a 
-solution, then invokes @code{parGosper} with order 1, 2, 3, ..., up to 
-@code{MAX_ORD}. If Zeilberger finds a solution before reaching @code{MAX_ORD},
-it stops and returns the solution.
-
-The algorithms yields a sequence @math{[s_1, s_2, ..., s_m]} of solutions.
-Each solution has the form
-
 @math{[R(n,k), [a_0, a_1, ..., a_d]].}
+@end ifnottex
 
 @code{Zeilberger} returns @code{[]} if it fails to find a solution.
 
-@code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is 
+@code{Zeilberger} invokes @mref{Gosper} only if @mref{Gosper_in_Zeilberger} is 
 @code{true}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
 @end deffn
-@end ifnottex
 
 @c -----------------------------------------------------------------------------
 @section General global variables
 
 @c -----------------------------------------------------------------------------
+@anchor{MAX_ORD}
 @defvr {Global variable} MAX_ORD
 Default value: 5
 
 @code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{simplified_output}
 @defvr {Global variable} simplified_output
 Default value: @code{false}
 
-When @code{simplified_output} is @code{true},
-functions in the @code{zeilberger} package attempt
-further simplification of the solution.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+When @code{simplified_output} is @code{true}, functions in the @code{zeilberger}
+package attempt further simplification of the solution.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{linear_solver}
 @defvr {Global variable} linear_solver
 Default value: @code{linsolve}
 
 @code{linear_solver} names the solver which is used to solve the system
 of equations in Zeilberger's algorithm.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{warnings}
 @defvr {Global variable} warnings
 Default value: @code{true}
 
-When @code{warnings} is @code{true},
-functions in the @code{zeilberger} package print
-warning messages during execution.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+When @code{warnings} is @code{true}, functions in the @code{zeilberger} package
+print warning messages during execution.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{Gosper_in_Zeilberger}
 @defvr {Global variable} Gosper_in_Zeilberger
 Default value: @code{true}
 
-When @code{Gosper_in_Zeilberger} is @code{true}, the @code{Zeilberger} function 
-calls @code{Gosper} before calling @code{parGosper}. Otherwise, 
+When @code{Gosper_in_Zeilberger} is @code{true}, the @mref{Zeilberger} function
+calls @mref{Gosper} before calling @mref{parGosper}.  Otherwise,
 @code{Zeilberger} goes immediately to @code{parGosper}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{trivial_solutions}
 @defvr {Global variable} trivial_solutions
 Default value: @code{true}
 
-When @code{trivial_solutions} is @code{true},
-@code{Zeilberger} returns solutions
-which have certificate equal to zero, or all coefficients equal to zero.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+When @code{trivial_solutions} is @code{true}, @mref{Zeilberger} returns
+solutions which have certificate equal to zero, or all coefficients equal to
+zero.
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @section Variables related to the modular test
 
 @c -----------------------------------------------------------------------------
+@anchor{mod_test}
 @defvr {Global variable} mod_test
 Default value: @code{false}
 
-When @code{mod_test} is @code{true},
-@code{parGosper} executes a
-modular test for discarding systems with no solutions.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+When @code{mod_test} is @code{true}, @mref{parGosper} executes a modular test
+for discarding systems with no solutions.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{modular_linear_solver}
 @defvr {Global variable} modular_linear_solver
 Default value: @code{linsolve}
 
-@code{modular_linear_solver} names the linear solver used by the modular test 
-in @code{parGosper}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+@code{modular_linear_solver} names the linear solver used by the modular test
+in @mrefdot{parGosper}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ev_point}
 @defvr {Global variable} ev_point
 Default value: @code{big_primes[10]}
 
 @code{ev_point} is the value at which the variable @var{n} is evaluated
-when executing the modular test in @code{parGosper}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+when executing the modular test in @mrefdot{parGosper}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{mod_big_prime}
 @defvr {Global variable} mod_big_prime
 Default value: @code{big_primes[1]}
 
-@code{mod_big_prime} is the modulus used by the modular test in 
-@code{parGosper}.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+@code{mod_big_prime} is the modulus used by the modular test in
+@mrefdot{parGosper}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{mod_threshold}
 @defvr {Global variable} mod_threshold
 Default value: 4
 
-@code{mod_threshold} is the
-greatest order for which the modular test in @code{parGosper} is attempted.
-
-@c @opencatbox
-@c @category{Package zeilberger}
-@c @closecatbox
+@code{mod_threshold} is the greatest order for which the modular test in
+@mref{parGosper} is attempted.
 @end defvr
 
 @c --- End of file zeilberger.de.texi ------------------------------------------

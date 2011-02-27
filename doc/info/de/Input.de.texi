@@ -15,6 +15,7 @@
 * Dateien::
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
 * Funktionen und Variablen f@"ur die Tex-Ausgabe::
+* Funktionen und Variablen f@"ur die Fortran-Ausgabe::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -615,7 +616,7 @@ Mit @mref{closefile} wird die Aufzeichnung beendet.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Tex-Ausgabe, , Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Eingabe und Ausgabe
+@node Funktionen und Variablen f@"ur die Tex-Ausgabe, Funktionen und Variablen f@"ur die Fortran-Ausgabe, Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Eingabe und Ausgabe
 @section Funktionen und Variablen f@"ur die Tex-Ausgabe
 @c -----------------------------------------------------------------------------
 
@@ -936,6 +937,89 @@ g\left(x\right)+f\left(x\right)
 (%o4)                         false
 @end example
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur die Fortran-Ausgabe, , Funktionen und Variablen f@"ur die Tex-Ausgabe, Eingabe und Ausgabe
+@section Funktionen und Variablen f@"ur die Fortran-Ausgabe
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} fortindent
+Default value: 0
+
+@code{fortindent} controls the left margin indentation of
+expressions printed out by the @code{fortran} command.  0 gives normal
+printout (i.e., 6 spaces), and positive values will causes the
+expressions to be printed farther to the right.
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{fortran}
+@deffn {Function} fortran (@var{expr})
+
+Prints @var{expr} as a Fortran statement.
+The output line is indented with spaces.
+If the line is too long, @code{fortran} prints continuation lines.
+@code{fortran} prints the exponentiation operator @code{^} as @code{**},
+and prints a complex number @code{a + b %i} in the form @code{(a,b)}.
+
+@var{expr} may be an equation. If so, @code{fortran} prints an assignment
+statement, assigning the right-hand side of the equation to the left-hand side.
+In particular, if the right-hand side of @var{expr} is the name of a matrix,
+then @code{fortran} prints an assignment statement for each element of the
+matrix.
+
+If @var{expr} is not something recognized by @code{fortran},
+the expression is printed in @code{grind} format without complaint.
+@code{fortran} does not know about lists, arrays, or functions.
+
+@code{fortindent} controls the left margin of the printed lines.
+0 is the normal margin (i.e., indented 6 spaces). Increasing @code{fortindent}
+causes expressions to be printed further to the right.
+
+When @code{fortspaces} is @code{true}, @code{fortran} fills out
+each printed line with spaces to 80 columns.
+
+@code{fortran} evaluates its arguments;
+quoting an argument defeats evaluation.
+@code{fortran} always returns @code{done}.
+
+Examples:
+
+@verbatim
+(%i1) expr: (a + b)^12$
+(%i2) fortran (expr);
+      (b+a)**12                                                                 
+(%o2)                         done
+(%i3) fortran ('x=expr);
+      x = (b+a)**12                                                             
+(%o3)                         done
+(%i4) fortran ('x=expand (expr));
+      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792
+     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b
+     2   **3+66*a**10*b**2+12*a**11*b+a**12
+(%o4)                         done
+(%i5) fortran ('x=7+5*%i);
+      x = (7,5)                                                                 
+(%o5)                         done
+(%i6) fortran ('x=[1,2,3,4]);
+      x = [1,2,3,4]                                                             
+(%o6)                         done
+(%i7) f(x) := x^2$
+(%i8) fortran (f);
+      f                                                                         
+(%o8)                         done
+@end verbatim
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fortspaces}
+@defvr {Option variable} fortspaces
+Default value: @code{false}
+
+When @code{fortspaces} is @code{true}, @code{fortran} fills out
+each printed line with spaces to 80 columns.
+@end defvr
 
 @c --- End of Input.de.texi ----------------------------------------------------
 

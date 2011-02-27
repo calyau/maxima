@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in revision 1.12
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 20.02.2011
+@c Revision    : 26.02.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -281,8 +281,7 @@ Mathematische Funktionen
 * Funktionen f@"ur Zahlen::
 * Funktionen f@"ur komplexe Zahlen::
 * Funktionen der Kombinatorik::
-* Algebraische Funktionen::
-* Exponential- und Logarithmusfunktion::
+* Wurzel-@comma{} Exponential- und Logarithmusfunktion::
 * Winkelfunktionen::
 * Einf@"uhrung in Winkelfunktionen::
 * Funktionen und Variablen f@"ur Winkelfunktionen::
@@ -310,6 +309,7 @@ Eingabe und Ausgabe
 * Dateien::
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
 * Funktionen und Variablen f@"ur die Tex-Ausgabe::
+* Funktionen und Variablen f@"ur die Fortran-Ausgabe::
 
 Mengen
 * Introduction to Sets::

@@ -202,7 +202,7 @@ Beispiele:
 Das Dollarzeichen schliesst wie das Semikolon die Eingabe eines Ausdruckes auf
 der Konsole und in einer Datei ab.  Im Unterschied zum Semikolon wird die
 Ausgabe des Ergebnisses unterdr@"uckt.  Das Ergebnis wird jedoch weiterhin
-einer Ausgabemarke @mref{outchar,%o} zugewiesen und die Systemvariable 
+einer Ausgabemarke @mxref{outchar,%o} zugewiesen und die Systemvariable 
 @mref{%} enth@"alt das Ergebnis.  Siehe auch @mrefdot{;}
 
 Beispiele:

@@ -2,7 +2,9 @@
 @c File     : f90.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : f90.texi revision 1.6
 @c Date     : 08.11.2010
+@c Revision : 24.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -14,6 +16,7 @@
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for f90,  , f90, f90
 @section Functions and Variables for f90
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{function_f90}
@@ -33,11 +36,6 @@ character.
 
 Examples:
 
-@c ===beg===
-@c load (f90)$
-@c foo : expand ((xxx + yyy + 7)^4);
-@c f90 ('foo = foo);
-@c ===end===
 @example
 (%i1) load (f90)$
 (%i2) foo : expand ((xxx + yyy + 7)^4);
@@ -57,13 +55,6 @@ foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2&
 Multiple expressions.
 Capture standard output into a file via the @code{with_stdout} function.
 
-@c ===beg===
-@c load (f90)$
-@c foo : sin (3*x + 1) - cos (7*x - 2);
-@c with_stdout ("foo.f90", 
-@c              f90 (x=0.25, y=0.625, 'foo=foo, 'stop, 'end));
-@c printfile ("foo.f90");
-@c ===end===
 @example
 (%i1) load (f90)$
 (%i2) foo : sin (3*x + 1) - cos (7*x - 2);
@@ -79,10 +70,6 @@ stop
 end
 (%o4)                        foo.f90
 @end example
-
-@c @opencatbox
-@c @category{Translation and compilation} @category{Share packages} @category{Package f90}
-@c @closecatbox
 @end deffn
 
 @c --- End of file f90.de.texi -------------------------------------------------

@@ -4,6 +4,7 @@
 @c Language : German
 @c Original : draw.texi revision 1.56
 @c Date     : 08.11.2010
+@c Revision : 26.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -30,13 +31,10 @@ Follow this link for more elaborated examples of this package:
 
 You need Gnuplot 4.2 to run this program.
 
-@c @opencatbox
-@c @category{Plotting} @category{Share packages} @category{Package draw}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw
 @section Functions and Variables for draw
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @subsection Scenes
@@ -71,7 +69,6 @@ This is the list of @i{graphic objects} available for scenes in two dimensions:
 
 See also @code{draw} and @code{draw2d}.
 To make use of this object, write first @code{load(draw)}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -105,7 +102,6 @@ dimensions:
 
 See also @code{draw} and @code{draw3d}.
 To make use of this object, write first @code{load(draw)}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -141,6 +137,7 @@ Example:
 @end example
 
 The two draw sentences are equivalent:
+
 @example
 (%i1) load(draw)$
 (%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
@@ -164,7 +161,6 @@ End of animation sequence
 @end example
 
 See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -178,7 +174,6 @@ It can be used to plot a unique scene in 2d.
 To make use of this function, write first @code{load(draw)}.
 
 See also @code{draw} and @code{gr2d}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -192,7 +187,6 @@ It can be used to plot a unique scene in 3d.
 To make use of this function, write first @code{load(draw)}.
 
 See also @code{draw} and @code{gr3d}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -211,7 +205,6 @@ Example:
       draw_file(terminal  = eps,
                 dimensions = [5,5]) $
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -245,7 +238,6 @@ Example:
 (%i6) draw2d(color=brown, explicit(x^4,x,-1,1))$
 (%i7) multiplot_mode(none)$
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -272,7 +264,6 @@ Example:
 @end example
 
 To make use of this function, write first @code{load(draw)}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -286,7 +277,6 @@ Default value: 10
 plotting routine.
 
 This option is relevant only for 2d @code{explicit} functions.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -309,7 +299,6 @@ Example:
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and 
 @code{axis_right} for axis in 2d.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -331,7 +320,6 @@ Example:
 
 See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and 
 @code{axis_3d}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -353,7 +341,6 @@ Example:
 
 See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and 
 @code{axis_3d}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -375,7 +362,6 @@ Example:
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and 
 @code{axis_3d}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -397,7 +383,6 @@ Example:
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and 
 @code{axis_3d}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -409,7 +394,6 @@ Sets the background color for terminals @code{gif}, @code{png}, @code{jpg},
 and @code{gif}. Default background color is white.
 
 See also @code{color}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -436,7 +420,6 @@ Example:
              fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -469,7 +452,6 @@ Example:
 @end example
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -497,7 +479,6 @@ Example :
 @end example
 
 See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -553,7 +534,6 @@ Example:
 @end example
 
 See also @code{fill_color}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------

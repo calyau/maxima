@@ -5,6 +5,7 @@
 @c Original    : Number.texi revision 1.35
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.01.2011
+@c Revision    : 26.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -33,9 +34,6 @@ unterdr@"uckt, die Null sind.
 
 Siehe auch @mrefdot{burn}
 
-@c ===beg===
-@c 
-@c ===end===
 @example
 (%i1) zerobern: true$
 @group
@@ -50,10 +48,6 @@ Siehe auch @mrefdot{burn}
 (%o4) [1, - -, -, - --, --, - ----, -, - ----, -----]
             2  6    30  66    2730  6    510    798
 @end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
 @end deffn
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
@@ -63,7 +57,6 @@ Siehe auch @mrefdot{burn}
 @c Returns the @var{n}'th Bernoulli polynomial in the variable @var{x}.
 
 Gibt das @var{n}-te Bernoulli-Polynom in der Variablen @var{x} zur@"uck.
-
 @end deffn
 
 @c TODO: DIE FUNKTION ZETA KANN INZWISCHEN IN BELIEBIGER GENAUIGKEIT RECHNEN.
@@ -99,7 +92,6 @@ der Stellen wird durch das Argument @var{n} angegeben.
 Anstatt der Funktion @code{bfzeta} ist die Funktion @mref{zeta} zu bevorzugen,
 die sowohl f@"ur reelle und komplexe Gleitkommazahlen und Gleitkommazahlen mit
 eine beliebigen Genauigkeit die Riemannsche Zeta-Funktion berechnen kann.
-
 @end deffn
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
@@ -134,7 +126,6 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 Anzahl der Stellen wird durch das Argument @var{n} angegeben.
 
 @c @code{load ("bffac")} loads this function.
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -172,7 +163,6 @@ Zahlen die kleiner oder gleich 255 die Funktion @code{bern} auf.
 @c @code{load ("bffac")} loads this function. See also @code{bern}.
 
 Das Kommando @code{load(bffac)} l@"adt die Funktion.  Siehe auch @mrefdot{bern}
-
 @end deffn
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
@@ -200,7 +190,6 @@ mit dem Argument @var{k} und gibt die Summe als Ergebnis zur@"uck.
 (%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
 (%o4)                          210
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -222,7 +211,6 @@ Beispiele:
 (%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 (%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
 @end example
-
 @end deffn
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
@@ -261,7 +249,6 @@ Nach einem Aufruf der Funktion @code{fib(n)}, enth@"alt die Systemvariable
 (%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 (%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 @end example
-
 @end deffn
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
@@ -276,12 +263,6 @@ Fibonacci-Zahlen im Ausdruck @var{expr} werden durch die Goldene Zahl
 
 Beispiele:
 
-@c ===beg===
-@c fibtophi (fib (n));
-@c fib (n-1) + fib (n) - fib (n+1);
-@c fibtophi (%);
-@c ratsimp (%);
-@c ===end===
 @example
 (%i1) fibtophi (fib (n));
                            n             n
@@ -302,7 +283,6 @@ Beispiele:
 (%i4) ratsimp (%);
 (%o4)                           0
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -330,7 +310,6 @@ Elliptischen Kurven zum Einsatz.
 (%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
 (%o2)                        51575319651600
 @end example
-
 @end deffn
 
 @c --- 23.11.2010 DK -----------------------------------------------------------
@@ -346,7 +325,6 @@ Gibt die ganzzahlige @var{n}-te Wurzel des Betrags von @var{x} zur@"uck.
 (%i2) map (lambda ([a], inrt (10^a, 3)), l);
 (%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
 @end example
-
 @end deffn
 
 @c --- 22.12.2010 DK -----------------------------------------------------------
@@ -366,11 +344,6 @@ Siehe auch die Funktionen @mref{power_mod} und @mrefdot{mod}
 
 Beispiele:
 
-@c ===beg===
-@c inv_mod(3, 41);
-@c ratsimp(3^-1), modulus=41;
-@c inv_mod(3, 42);
-@c ===end===
 @example
 (%i1) inv_mod(3, 41);
 (%o1)                           14
@@ -379,7 +352,17 @@ Beispiele:
 (%i3) inv_mod(3, 42);
 (%o3)                          false
 @end example
+@end deffn
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{isqrt}
+@deffn {Funktion} isqrt (@var{x})
+
+@c Returns the "integer square root" of the absolute value of @var{x}, which is 
+@c an integer.
+
+Gibt die ganzzahlige Wurzel des Betrages von @var{x} zur@"uck, wenn @var{x} eine
+ganze Zahl ist.  Andernfalls wird eine Substantivform zur@"uckgegeben.
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -395,7 +378,6 @@ Berechnet das Jacobi-Symbol f@"ur die Argumente @var{p} und @var{q}.
 (%i2) map (lambda ([a], jacobi (a, 9)), l);
 (%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -411,7 +393,6 @@ k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
 @c @code{load ("functs")} loads this function.
 
 Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
-
 @end deffn
 
 @c --- 22.12.2010 DK -----------------------------------------------------------
@@ -469,13 +450,6 @@ Beispiele:
 Zeige f@"ur zwei gro@ss{}e ganze Zahlen, dass f@"ur das modulare Rechnen die 
 Regel @code{mod(a+b,p) = mod(a,p)+mod(b,p)} gilt.
 
-@c ===beg===
-@c a:random(10^20)+10^19;
-@c b:random(10^20)+10^19;
-@c p:random(10^20)+10^19;
-@c mod(a+b,p);
-@c mod(mod(a,p)+mod(b,p),p);
-@c ===end===
 @example
 (%i1) a:random(10^20)+10^19;
 (%o1)                 72588919020045581148
@@ -491,11 +465,6 @@ Regel @code{mod(a+b,p) = mod(a,p)+mod(b,p)} gilt.
 
 Vereinfachung f@"ur nicht nummerische Argumente.
 
-@c ===beg===
-@c mod (x, 0);
-@c mod (a*x, a*y);
-@c mod (0, x);
-@c ===end===
 @example
 (%i1) mod (x, 0);
 (%o1)                           x
@@ -504,7 +473,6 @@ Vereinfachung f@"ur nicht nummerische Argumente.
 (%i3) mod (0, x);
 (%o3)                           0
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -519,7 +487,6 @@ Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
 (%i1) next_prime(27);
 (%o1)                       29
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -557,7 +524,6 @@ Zahl @var{n} den Pseudo-Primzahlentest nach Miller-Rabin passiert, ist kleiner
 als 1/4.  Mit dem Standardwert 25 f@"ur die Optionsvariable 
 @code{primpe_number_of_tests} ist die Wahrscheinlichkeit viel kleiner als 
 10^-15.
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -569,7 +535,6 @@ Standardwert: 25
 
 Die Anzal der Pseudo-Primzahlentests nach Miller-Rabin der Funktion 
 @mrefdot{primep}
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -584,7 +549,6 @@ Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @var{n} ist.
 (%i1) prev_prime(27);
 (%o1)                       23
 @end example
-
 @end deffn
 
 @c --- 22.12.2010 DK -----------------------------------------------------------
@@ -611,12 +575,6 @@ Beispiele:
 @code{power_mod(a,n,p)} ist @"aquivalent zu @code{mod(a^n,p}.  Das modulare
 Inverse wird mit der Funktion @code{inv_mod} berechnet.
 
-@c ===beg===
-@c power_mod(3, 15, 5);
-@c mod(3^15,5);
-@c power_mod(2, -1, 5);
-@c inv_mod(2,5);
-@c ===end===
 @example
 (%i1) power_mod(3, 15, 5);
 (%o1)                          2
@@ -632,14 +590,10 @@ F@"ur gro@ss{}e ganze Zahlen ist @code{power_mod} effizienter.  Das folgende
 Ergebnis kann nicht in einer vern@"unftigen Zeit mit @code{mod(a^n,p)} berechnet
 werden.
 
-@c ===beg===
-@c power_mod(123456789,123456789,987654321);
-@c ===end===
 @example
 (%i1) power_mod(123456789,123456789,987654321);
 (%o1)                       598987215
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -660,7 +614,6 @@ Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung
 (%i2) expand (% * (sqrt(17) - 4));
 (%o2)                           1
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -672,7 +625,6 @@ Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung
 
 Gibt die Anzahl der ganzen Zahlen zur@"uck, die kleiner oder gleich @var{n}
 sind und die kein Teiler von @var{n} sind.
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -687,7 +639,6 @@ Standardwert: @code{true}
 Hat @code{zerobern} den Wert @code{false}, werden von den Funktionen @code{bern}
 die Bernoulli Zahlen und von @code{euler} die Euler Zahlen ausgeschlossen,
 die als Ergenis Null haben.  Siehe @mref{bern} und @mrefdot{euler}
-
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -749,11 +700,6 @@ Siehe auch @mref{bfzeta} und @mrefdot{zeta%pi}
 
 Beispiele:
 
-@c ===beg===
-@c zeta([-2,-1,0,0.5,2,3,1+%i]);
-@c limit(zeta(x),x,1,plus);
-@c limit(zeta(x),x,1,minus);
-@c ===end===
 @example
 (%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
                                              2
@@ -766,7 +712,6 @@ Beispiele:
 (%i3) limit(zeta(x),x,1,minus);
 (%o3)                         minf
 @end example
-
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -785,12 +730,6 @@ Substantivform f@"ur gerade ganze Zahlen.
 
 Beispiele:
 
-@c ===beg===
-@c zeta%pi: true$
-@c zeta (4);
-@c zeta%pi: false$
-@c zeta (4);
-@c ===end===
 @example
 (%i1) zeta%pi: true$
 (%i2) zeta (4);
@@ -802,7 +741,6 @@ Beispiele:
 (%i4) zeta (4);
 (%o4)                        zeta(4)
 @end example
-
 @end defvr
 
 @c --- End of file Number.de.texi
