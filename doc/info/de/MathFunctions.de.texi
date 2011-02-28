@@ -1386,117 +1386,164 @@ Funktion @mref{minfactorial} angewendet.  Siehe die Funktion
 @section Wurzel-, Exponential- und Logarithmusfunktion
 @c -----------------------------------------------------------------------------
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@anchor{exp}
-@deffn {Funktion} exp (@var{x})
+@c --- 27.02.2011 DK -----------------------------------------------------------
+@anchor{%e_to_numlog}
+@defvr {Optionsvariable} %e_to_numlog
+Standardwert: @code{false}
 
-@c Represents the exponential function. Instances of @code{exp (@var{x})} in 
-@c input are simplified to @code{%e^@var{x}}; @code{exp} does not appear in
-@c simplified expressions.
+Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
+Ausdruck mit der Exponentialfunktion @mref{exp} der Form @code{%e^(r*log(x))}
+zu @code{x^r} vereinfacht, wenn @code{r} eine rationale Zahl ist.  Ist @code{r}
+eine ganze Zahl, wird die Vereinfachung von der Optionsvariablen
+@mref{logsimp} kontrolliert.
 
-Ist die Exponentialfunktion.  Die Exponentialfunkton @var{exp} wird sofort zu
-@code{%e^@var{x}} vereinfacht und tritt in vereinfachten Ausdr@"ucken nicht auf.
+Beispiel:
 
-@c @code{demoivre} if @code{true} causes @code{%e^(a + b %i)} to simplify to
-@c @code{%e^(a (cos(b) + %i sin(b)))} if @code{b} is free of @code{%i}. See 
-@c @code{demoivre}.
+@example
+(%i1) exp(1/2*log(x));
+                              log(x)
+                              ------
+                                2
+(%o1)                       %e
+(%i2) exp(1/2*log(x)), %e_to_numlog:true;
+(%o2)                        sqrt(x)
+@end example
+@end defvr
 
-Hat die Optionsvariable @code{demoivre} den Wert @code{true}, werden Ausdr@"ucke
-der Form @code{%e^(a + b %i)} zu @code{%e^(a (cos(b) + %i sin(b)))} vereinfacht,
-wobei @var{a} und @var{b} reelle Ausdr@"ucke sind.
-
-@c @code{%emode}, when @code{true}, causes @code{%e^(%pi %i x)} to be 
-@c simplified. See @code{%emode}.
-
-Hat die Optionsvariable @code{%emode} den Wert @code{true}, dann werden
-Ausdr@"ucke der Form  @code{%e^(%pi %i x)} vereinfacht.  Siehe @mrefdot{%emode}
-
-@c @code{%enumer}, when @code{true} causes @code{%e} to be replaced by
-@c 2.718...  whenever @code{numer} is @code{true}. See @code{%enumer}.
-
-Hat die Optionsvariable @code{%enumer} den Wert @code{true}, wird die Konstante
-@code{%e} durch ihren nummerischen Wert 2.718@dots{} ersetzt, sobald auch die
-Optionsvariable @code{numer} den Wert @code{true} hat.  Siehe @mrefdot{%enumer}
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 27.02.2011 DK -----------------------------------------------------------
 @anchor{%emode}
 @defvr {Optionsvariable} %emode
 Standardwert: @code{true}
 
-@c When @code{%emode} is @code{true}, @code{%e^(%pi %i x)} is simplified as 
-@c follows.
+Die Optionsvariable @code{%emode} kontrolliert die Vereinfachung von
+Ausdr@"ucken mit der Exponentialfunktion @mref{exp} der Form
+@code{%e^(%pi %i x)}.
 
-Hat die Optionsvariable @code{%emode} den Wert @code{true}, wird 
-@code{%e^(%pi %i x)} wie folgt vereinfacht:
+Ist das Argument @var{x} eine ganze Zahl oder eine rationale Zahl, die ein
+Vielfaches von 1/2, 1/3, 1/4 oder 1/6 ist, dann wird der Ausdruck
+@code{%e^(%pi %i x)} zu einer reellen oder komplexen Zahl vereinfacht.  F@"ur
+Gleitkommazahlen wird diese Vereinfachung dann ausgef@"uhrt, wenn diese eine
+ganze Zahl oder halbzahlige rationale Zahl repr@"asentieren.
 
-@c @code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if 
-@c @code{x} is a floating point number, an integer, or a multiple of 1/2, 1/3, 
-@c 1/4, or 1/6, and then further simplified.
-
-@code{%e^(%pi %i x)} wird zu @code{cos (%pi x) + %i sin (%pi x)} vereinfacht, 
-wenn @code{x} eine Gleitkommazahl, eine ganze Zahl oder ein vielfaches von
-1/2, 1/3, 1/4 oder 1/6 ist. 
-
-@c For other numerical @code{x}, @code{%e^(%pi %i x)} simplifies to 
-@c @code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k} for some integer 
-@c @code{k} such that @code{abs(y) < 1}.  
-
-F@"ur andere nummerische Werte @code{x} wird @code{%e^(%pi %i x)} zu 
-@code{%e^(%pi %i y)} vereinfacht, wobei @code{y} eine ganze Zahl @code{x - 2 k} 
-mit einem @code{k} ist, so dass @code{abs(y) < 1} gilt.
-
-@c When @code{%emode} is @code{false}, no special simplification of 
-@c @code{%e^(%pi %i x)} is carried out.
+Eine Summe im Exponenten wie zum Beispiel @code{%e^(%pi *%i (x+n))}, wobei 
+@var{n} eine der oben genannten Zahlen und @var{x} ein allgemeiner Ausdruck ist,
+wird vereinfacht, indem der Faktor @code{%^(%pi %i n)} entsprechend vereinfacht
+wird.
 
 Hat @code{%emode} den Wert @code{false}, werden keine speziellen Vereinfachungen
 f@"ur den Ausdruck @code{%e^(%pi %i x)} vorgenommen.
 
-@c NEED EXAMPLES HERE
+Beispiele:
+
+@example
+(%i1) exp([2*%pi*%i, 1/2*%pi*%i, 0.5*%pi*%i, 0.5b0*%pi*%i]);
+(%o1)               [1, %i, 1.0 %i, 1.0b0 %i]
+
+(%i2) exp([1/3*%pi*%i, 1/4*%pi*%i, 1/6*%pi*%i]);
+         sqrt(3) %i   1    %i         1     %i   sqrt(3)
+(%o2)   [---------- + -, ------- + -------, -- + -------]
+             2        2  sqrt(2)   sqrt(2)  2       2
+
+(%i3) exp((1/3+x)*%pi*%i);
+                    sqrt(3) %i   1    %i %pi x
+(%o3)              (---------- + -) %e
+                        2        2
+@end example
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 27.02.2011 DK -----------------------------------------------------------
 @anchor{%enumer}
 @defvr {Optionsvariable} %enumer
 Standardwert: @code{false}
 
-@c When @code{%enumer} is @code{true}, @code{%e} is replaced by its numeric 
-@c value 2.718...  whenever @code{numer} is @code{true}. 
-
 Hat @code{%enumer} den Wert @code{true}, wird die Konstante @code{%e} immer dann
-durch ihren nummerischen Wert ersetzt, wenn die Optionsvariable @code{numer} den
+durch ihren nummerischen Wert ersetzt, wenn die Optionsvariable @mref{numer} den
 Wert @code{true} hat.
-
-@c When @code{%enumer} is @code{false}, this substitution is carried out only 
-@c if the exponent in @code{%e^x} evaluates to a number.
 
 Hat @code{%enumer} den Wert @code{false}, wird die Konstante @code{%e} nur dann
 durch ihren nummerischen Wert ersetzt, wenn der Exponent von @code{%e^x} zu 
 einer Gleitkommazahl ausgewertet wird.
 
-@c See also @code{ev} and @code{numer}.
-
 Siehe auch @mref{ev} und @mrefdot{numer}
 
-   @c NEED EXAMPLES HERE
+Beispiel:
+
+@example
+(%i1) %enumer:true;
+(%o1)                         true
+(%i2) exp(x);
+                                 x
+(%o2)                          %e
+(%i3) exp(x),numer;
+                                        x
+(%o3)                  2.718281828459045
+@end example
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@anchor{%e_to_numlog}
-@defvr {Optionsvariable} %e_to_numlog
-Standardwert: @code{false}
+@c --- 27.02.2011 DK -----------------------------------------------------------
+@anchor{exp}
+@deffn {Funktion} exp (@var{z})
 
-@c When @code{true}, @code{r} some rational number, and @code{x} some 
-@c expression, @code{%e^(r*log(x))} will be simplified into @code{x^r} . It 
-@c should be noted that the @code{radcan} command also does this transformation,
-@c and more complicated transformations of this ilk as well. The 
-@c @code{logcontract} command "contracts" expressions containing @code{log}.
+Ist die Exponentialfunktion.  Die Exponentialfunkton @code{exp} wird von Maxima
+sofort zu @code{%e^@var{z}} vereinfacht und tritt in vereinfachten
+Ausdr@"ucken nicht auf.  Maxima vereinfacht die Exponentialfunktion daher wie
+die allgmeine Exponentiation @mrefdot{^}  Dar@"uberhinaus kennt Maxima spezielle
+Regeln f@"ur die Vereinfachung der Exponentialfunktion.
 
-Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
-Ausdruck der Form @code{%e^(r*log(x))} zu @code{x^r} vereinfacht.  Dabei sind 
-@code{r} eine rationale Zahl und @code{x} ein beliebiger Ausdruck.  Die Funktion 
-@code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
-@end defvr
+Ist das Argument @var{z} der Exponentialfunktion eine ganze oder rationale
+Zahl wird ein vereinfachter Ausdruck zur@"uckgegeben.  Ist das Argument
+@var{z} eine reelle oder komplexe Gleitkommazahl wird ein numerisches
+Ergebnis berechnet.
+
+Folgende Optionsvariablen kontrollieren die Vereinfachung der
+Exponentialfunktion:
+
+@table @code
+@item %enumer
+Hat die Optionsvariable @mref{%enumer} den Wert @code{true}, vereinfacht Maxima
+die Eulersche Zahl @mref{%e} immer dann zu ihrem numerischen Wert, wenn die
+Optionsvariable @mref{numer} auch den Wert @code{true} hat.
+
+@item %emode
+Hat die Optionsvariable @mref{%emode} den Wert @code{true}, wendet Maxima
+Regeln an, um Ausdr@"ucke der Form @code{%e^(x*%i*%pi)} zu vereinfachen.
+Der Standardwert von @code{%emode} ist @code{true}.  Wenn mit komplexen Zahlen
+in der Polarform gerechnet wird, kann es hilfreich sein, die Optionsvariable
+@code{%emode} auf den Wert @code{false} zu setzen.
+
+@item %e_to_numlog
+Hat die Optionsvariable @mref{%e_to_numlog} den Wert @code{true}, vereinfacht
+Maxima einen Ausdruck @code{%e^(r*log(x)} zu @code{x^r}, wobei @var{r}
+eine rationale Zahl ist.  Ist @var{r} eine ganze Zahl wird diese Vereinfachung
+von der Optionsvariablen @mref{logsimp} kontrolliert.  F@"ur reelle oder
+komplexe Gleitkommazahlen wird diese Vereinfachung nicht ausgef@"uhrt.
+
+@item radexpand
+Die Optionsvariable @mref{radexpand} kontrolliert die Vereinfachung von
+Ausdr@"ucken der Form @code{(%e^a)^b}.  Ist @var{a} ein reelles Argument
+vereinfacht Maxima immer zu einem Ausdruck @code{%e^(a*b)}.  Ist @var{a} ein
+komplexes Argument, wird die Vereinfachung @code{%e^(a*b)} dann ausgef@"uhrt,
+wenn die Optionsvariable @code{radexpand} den Wert @code{all} hat.
+
+@item logsimp
+Die Optionsvariable @mref{logsimp} kontrolliert die Vereinfachung der 
+Exponentialfunktion f@"ur den Fall, dass im Argument @var{expr} die
+Logarithmusfunktion @mref{log} auftritt.  Hat die @code{logsimp} den Wert
+@code{true}, wird ein Ausdruck @code{%e^(n*log(x)} zu @code{x^n} vereinfacht,
+wenn @var{n} eine ganze Zahl ist.  Mit der Optionsvariablen @mref{%e_to_numlog}
+wird diese Vereinfachung f@"ur eine rationale Zahl @var{n} kontrolliert.
+
+@item demoivre
+Ist eine Optionsvariable und eine Funktion, die auch als Auswertungsschalter
+@mref{evflag} definiert ist.  Hat die Optionsvariable @mref{demoivre} den Wert
+@code{true}, wird ein Ausdruck @code{%e^(x + %i y)} zu
+@code{%e^x (cos(y) + %i sin(y))} vereinfacht.  Siehe auch die Funktion
+@mrefdot{exponentialize}
+@end table
+
+Maxima kennt viele spezielle unbestimmte und bestimmte Integrale mit der 
+Exponentialfunktion.
+@end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{log}
@@ -1564,7 +1611,7 @@ Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 
 @c @code{%e_to_numlog} - when @code{true}, @code{r} some rational number, and
 @c @code{x} some expression, @code{%e^(r*log(x))} will be simplified into
-@c @code{x^r} .  It should be noted that the @code{radcan} command also
+@c @code{x^r}.  It should be noted that the @code{radcan} command also
 @c does this transformation, and more complicated transformations of this ilk as 
 @c well. The @code{logcontract} command "contracts" expressions containing 
 @c @code{log}.
@@ -1593,10 +1640,10 @@ Werden unbestimmte Integrale mit Logarithmusfunktionen erzeugt, zum Beispiel
 @code{integrate(1/x,x)}, wird der Betrag der Argumente der 
 Logarithmusfunktionen gebildet @code{log(abs(...))}, wenn die Optionsvariable
 @code{logabs} den Wert @code{true} hat.  Ist der Wert @code{false} werden keine
-Betr@"age gebildet @code{log(...)}. 
+Betr@"age gebildet @code{log(...)}.
 
 Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
-@code{logabs} zu den Wert @code{false}.  
+@code{logabs} zu den Wert @code{false}.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1632,7 +1679,7 @@ Standardwert: @code{false}
 
 Die Optionsvariable @code{logconcoeffp} kontrolliert, welche Koeffizienten von
 der Funktion @code{logcontract} zusammengezogen werden.  Der Optionsvariablen 
-kann der Name einer Aussagefunktion mit einem Argument zugewiesen werden. 
+kann der Name einer Aussagefunktion mit einem Argument zugewiesen werden.
 Sollen zum Beispiel Wurzeln generiert werden, kann folgende Definition 
 verwendet werden: 
 @example
@@ -1675,8 +1722,8 @@ Wird die Variable @var{n} mit dem Kommando @code{declare(n, integer)} als eine
 ganze Zahl deklariert, dann wird  @code{logcontract(2*a*n*log(x))} zu
 @code{a*log(x^(2*n))} vereinfacht.  Die Koeffizienten, die zusammengezogen 
 werden, sind in diesem Fall die Zahl 2 und die Variable @var{n}, welche
-die folgende Aussage erf@"ullen @code{featurep(coeff, integer)}. 
-Der Nutzer kann kontrollieren, welche Koeffizienten zusammengezogen werden. 
+die folgende Aussage erf@"ullen @code{featurep(coeff, integer)}.
+Der Nutzer kann kontrollieren, welche Koeffizienten zusammengezogen werden.
 Dazu wird der Optionsvariablen @code{logconcoeffp} eine Aussagefunktion mit 
 einem Argument zugewiesen.  Sollen zum Beispiel Wurzeln generiert werden, kann 
 folgende Definition verwendet: @code{logconcoeffp: 'logconfun$ logconfun(m) :=
@@ -1815,16 +1862,16 @@ hinzuzuf@"ugen.
 
 Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 
-@multitable @columnfractions .15 .15 .15
-@item @code{sin}   @tab @code{cos}       @tab @code{tan}
-@item @code{sec}   @tab @code{csc}       @tab @code{cot}
-@item @code{asin}  @tab @code{acos}      @tab @code{atan}
-@item @code{asec}  @tab @code{acsc}      @tab @code{acot}
-@item @code{sinh}  @tab @code{cosh}      @tab @code{tanh}
-@item @code{sech}  @tab @code{csch}      @tab @code{coth}
-@item @code{asinh} @tab @code{acosh}     @tab @code{atanh}
-@item @code{asech} @tab @code{acsch}     @tab @code{acoth}
-@end multitable
+@verbatim
+     sin       cos       tan
+     sec       csc       cot
+     asin      acos      atan
+     asec      acsc      acot
+     sinh      cosh      tanh
+     sech      csch      coth
+     asinh     acosh     atanh
+     asech     acsch     acoth
+@end verbatim
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Winkelfunktionen, , Einf@"uhrung in Winkelfunktionen, Winkelfunktionen

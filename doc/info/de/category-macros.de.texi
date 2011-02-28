@@ -119,6 +119,7 @@
              ein-ge-schlos-sen
              ent-hal-ten
              Er-geb-nis
+             Ex-po-nen-tial-funk-tion
              Fra-ge-zei-chen
              Funk-tion
              ge-kenn-zeich-net
@@ -140,7 +141,8 @@
              Maxima
              Mgnuplot
              O-pe-ra-tor 
-             O-pe-ra-to-ren  
+             O-pe-ra-to-ren
+             Op-tions-va-ri-ablen
              Rei-hen-ent-wick-lung
              Ska-lar-pro-dukt    
              Sei-ten-ef-fek-te

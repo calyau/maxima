@@ -5,6 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
+@c Revision    : 27.02.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -39,8 +40,8 @@ Symbols.
 @c the function call.
 
 Auf eine Funktion angewendet, verhindert der Quote-Operator die Auswertung der
-Funktion. Die Auswertung der Argumente der Funktion wird nicht verhindert, 
-falls diese nicht auf andere Weise unterdr@"uckt ist. Das Ergebnis ist die 
+Funktion.  Die Auswertung der Argumente der Funktion wird nicht verhindert, 
+falls diese nicht auf andere Weise unterdr@"uckt ist.  Das Ergebnis ist die 
 Substantivform der Funktion.
 
 @c Applied to a parenthesized expression, the single quote prevents evaluation 
@@ -53,8 +54,8 @@ Substantivform der Funktion.
 
 Wird der Quote-Operator auf einen eingeklammerten Ausdruck angewendet, wird die
 Auswertung aller Symbole und Funktionen des Ausdrucks innerhalb der Klammern
-unterdr@"uckt. @code{'(f(x))} bedeutet, dass der Ausdruck @code{f(x)} nicht
-ausgewertet werden soll. @code{'f(x)} bedeutet, dass die Substantivform von 
+unterdr@"uckt.  @code{'(f(x))} bedeutet, dass der Ausdruck @code{f(x)} nicht
+ausgewertet werden soll.  @code{'f(x)} bedeutet, dass die Substantivform von 
 @code{f} auf das ausgewertete Argument @var{x} angewendet wird.
 
 @c The single quote does not prevent simplification.
@@ -63,7 +64,7 @@ Der Quote-Operator verhindert nur die Auswertung, aber nicht die Vereinfachung
 von Ausdr@"ucken.
 
 @c When the global flag @code{noundisp} is @code{true}, nouns display with a 
-@c single quote. This switch is always @code{true} when displaying function 
+@c single quote.  This switch is always @code{true} when displaying function 
 @c definitions.
 
 Substantivformen werden mit einem Hochkomma angezeigt, wenn die Optionsvariable 
@@ -81,12 +82,6 @@ Beispiele:
 Auf ein Symbol angewendet, verhindert der Quote-Operator die Auswertung des
 Symbols.
 
-@c ===beg===
-@c aa: 1024;
-@c aa^2;
-@c 'aa^2;
-@c ''%;
-@c ===end===
 @example
 (%i1) aa: 1024;
 (%o1)                         1024
@@ -100,18 +95,11 @@ Symbols.
 @end example
 
 @c Applied to a function call, the single quote prevents evaluation of the 
-@c function call. The result is the noun form of the function call.
+@c function call.  The result is the noun form of the function call.
 
 Auf eine Funktion angewendet, verhindert der Quote-Operator die Auswertung der
-Funktion. Das Ergebnis ist die Substantivform der Funktion.
+Funktion.  Das Ergebnis ist die Substantivform der Funktion.
 
-@c ===beg===
-@c x0: 5;
-@c x1: 7;
-@c integrate (x^2, x, x0, x1);
-@c 'integrate (x^2, x, x0, x1);
-@c %, nouns;
-@c ===end===
 @example
 (%i1) x0: 5;
 (%o1)                           5
@@ -143,13 +131,6 @@ Funktion. Das Ergebnis ist die Substantivform der Funktion.
 Wird der Quote-Operator auf einen eingeklammerten Ausdruck angewendet, wird die
 Auswertung aller Symbole und Funktionen innerhalb der Klammern verhindert.
 
-@c ===beg===
-@c aa: 1024;
-@c bb: 19;
-@c sqrt(aa) + bb;
-@c '(sqrt(aa) + bb);
-@c ''%;
-@c ===end===
 @example
 (%i1) aa: 1024;
 (%o1)                         1024
@@ -167,10 +148,6 @@ Auswertung aller Symbole und Funktionen innerhalb der Klammern verhindert.
 
 Der Quot-Operator verhindert nicht die Vereinfachung von Ausdr@"ucken.
 
-@c ===beg===
-@c sin (17 * %pi) + cos (17 * %pi);
-@c '(sin (17 * %pi) + cos (17 * %pi));
-@c ===end===
 @example
 (%i1) sin (17 * %pi) + cos (17 * %pi);
 (%o1)                          - 1
@@ -183,20 +160,12 @@ Der Quot-Operator verhindert nicht die Vereinfachung von Ausdr@"ucken.
 
 Maxima f@"uhrt Gleitkommarechnungen als eine Vereinfachung aus.
 
-@c ===beg===
-@c sin(1.0);
-@c '(sin(1.0));
-@c ===end===
 @example
 (%i1) sin(1.0);
 (%o1)                          .8414709848078965
 (%i2) '(sin(1.0));
 (%o2)                          .8414709848078965
 @end example
-
-@c @opencatbox
-@c @category{Auswertung} @category{Operatoren}
-@c @closecatbox
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
@@ -227,16 +196,16 @@ Verbform.
 
 @c The quote-quote operator is applied by the input parser; it is not stored as 
 @c part of a parsed input expression. The quote-quote operator is always applied
-@c as soon as it is parsed, and cannot be quoted. Thus quote-quote causes 
+@c as soon as it is parsed, and cannot be quoted.  Thus quote-quote causes 
 @c evaluation when evaluation is otherwise suppressed, such as in function 
 @c definitions, lambda expressions, and expressions quoted by single quote 
 @c @code{'}.
 
 Der Quote-Quote-Operator wird vom Parser, der die Eingabe liest, sofort 
-angewendet und nicht im eingelesen Ausdruck gespeichert. Daher kann die 
+angewendet und nicht im eingelesen Ausdruck gespeichert.  Daher kann die 
 Auswertung des Quote-Quote-Operators nicht durch einen weiteren Quote-Operator 
-verhindert werden. Der Quote-Quote-Operator f@"uhrt zur Auswertung von
-Ausdr@"ucken, deren Auswertung unterdr@"uckt ist. Das ist der Fall f@"ur 
+verhindert werden.  Der Quote-Quote-Operator f@"uhrt zur Auswertung von
+Ausdr@"ucken, deren Auswertung unterdr@"uckt ist.  Das ist der Fall f@"ur 
 Funktionsdefinitionen, Lambda-Ausdr@"ucke und Ausdr@"ucke, deren Auswertung
 durch den Quote-Operator verhindert wurde.
 
@@ -257,22 +226,6 @@ Beispiele:
 Wird der Quote-Quote-Operator auf einen Ausdruck @var{expr} angewendet, wird 
 der Wert von @var{expr} in den Ausdruck eingesetzt.
 
-@c ===beg===
-@c expand ((a + b)^3);
-@c [_, ''_];
-@c [%i1, ''%i1];
-@c [aa : cc, bb : dd, cc : 17, dd : 29];
-@c foo_1 (x) := aa - bb * x;
-@c foo_1 (10);
-@c ''%;
-@c ''(foo_1 (10));
-@c foo_2 (x) := ''aa - ''bb * x;
-@c foo_2 (10);
-@c [x0 : x1, x1 : x2, x2 : x3];
-@c x0;
-@c ''x0;
-@c '' ''x0;
-@c ===end===
 @example
 (%i1) expand ((a + b)^3);
                      3        2      2      3
@@ -313,12 +266,6 @@ der Wert von @var{expr} in den Ausdruck eingesetzt.
 Wird der Quote-Quote-Operator auf den Operator in einem Ausdruck angewendet,
 @"andert sich der Operator von seiner Substantivform in die Verbform.
 
-@c ===beg==
-@c declare (foo, noun);
-@c foo (x) := x - 1729;
-@c foo (100);
-@c ''foo (100);
-@c ===end==
 @example
 (%i1) declare (foo, noun);
 (%o1)                         done
@@ -336,13 +283,6 @@ Wird der Quote-Quote-Operator auf den Operator in einem Ausdruck angewendet,
 Der Quote-Quote-Operator wird vom Parser sofort auf den eingelesenen Ausdruck 
 angewendet und ist nicht Teil eines Maxima-Ausdrucks.
 
-@c ===beg===
-@c [aa : bb, cc : dd, bb : 1234, dd : 5678];
-@c aa + cc;
-@c display (_, op (_), args (_));
-@c ''(aa + cc);
-@c display (_, op (_), args (_));
-@c ===end===
 @example
 (%i1) [aa : bb, cc : dd, bb : 1234, dd : 5678];
 (%o1)                 [bb, dd, 1234, 5678]
@@ -376,19 +316,6 @@ Der Quote-Quote-Operator bewirkt die Auswertung von Ausdr@"ucken, deren
 Auswertung unterdr@"uckt ist wie in Funktionsdefinitionen, Lambda-Ausdr@"ucken 
 und Aus@-dr@"u@-cken, auf die der Quote-Operator angewendet wurde.
 
-@c ===beg===
-@c foo_1a (x) := ''(integrate (log (x), x));
-@c foo_1b (x) := integrate (log (x), x);
-@c dispfun (foo_1a, foo_1b);
-@c integrate (log (x), x);
-@c foo_2a (x) := ''%;
-@c foo_2b (x) := %;
-@c dispfun (foo_2a, foo_2b);
-@c F : lambda ([u], diff (sin (u), u));
-@c G : lambda ([u], ''(diff (sin (u), u)));
-@c '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
-@c '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
-@c ===end===
 @example
 (%i1) foo_1a (x) := ''(integrate (log (x), x));
 (%o1)               foo_1a(x) := x log(x) - x
@@ -423,15 +350,11 @@ und Aus@-dr@"u@-cken, auf die der Quote-Operator angewendet wurde.
 (%o11)             b  + a  + b  + a  + b  + a
                     3    3    2    2    1    1
 @end example
-
-@c @opencatbox
-@c @category{Auswertung} @category{Operatoren}
-@c @closecatbox
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
 @anchor{ev}
-@deffn {Funktion} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Funktion} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 
 @c Evaluates the expression @var{expr} in the environment specified by the 
 @c arguments @var{arg_1}, ..., @var{arg_n}. The arguments are switches (Boolean
@@ -439,8 +362,8 @@ und Aus@-dr@"u@-cken, auf die der Quote-Operator angewendet wurde.
 @c (another expression) of the evaluation.
 
 Wertet den Ausdruck @var{expr} in einer Umgebung aus, die durch die Argumente
-@var{arg_1}, ..., @var{arg_n} spezifiert wird. Die Argumente sind 
-Optionsvariablen (Boolsche Variablen), Zuweisungen, Gleichungen und Funktionen. 
+@var{arg_1}, @dots{}, @var{arg_n} spezifiert wird.  Die Argumente sind
+Optionsvariablen (Boolsche Variablen), Zuweisungen, Gleichungen und Funktionen.
 @code{ev} gibt das Ergebnis der Auswertung zur@"uck.
 
 @c The evaluation is carried out in steps, as follows.
@@ -453,18 +376,18 @@ Die Auswertung wird in den folgenden Schritten durchgef@"uhrt:
 @c be any or all of the following.
 
 @item
-Zuerst wird die Umgebung gesetzt. Dazu werden die Argumente @var{arg_1}, ..., 
-@var{arg_n} ausgewertet. Folgende Argumente sind m@"oglich:
+Zuerst wird die Umgebung gesetzt.  Dazu werden die Argumente @var{arg_1},
+@dots{}, @var{arg_n} ausgewertet.  Folgende Argumente sind m@"oglich:
 
 @c @code{simp} causes @var{expr} to be simplified regardless of the setting of 
 @c the switch @code{simp} which inhibits simplification if @code{false}.
 
 @itemize @bullet
 @item
-@code{simp} bewirkt, dass der Ausdruck @var{expr} vereinfacht wird. Der Wert 
-der globalen Optionsvariablen @var{simp} wird dabei ignoriert. Der Ausdruck wird
-also auch vereinfacht, wenn das globale Flag @var{simp} den Wert @code{false} 
-hat.
+@code{simp} bewirkt, dass der Ausdruck @var{expr} vereinfacht wird.  Der Wert 
+der globalen Optionsvariablen @var{simp} wird dabei ignoriert.  Der Ausdruck
+wird also auch vereinfacht, wenn das globale Flag @var{simp} den Wert
+@code{false} hat.
 
 @c @code{noeval} supresses the evaluation phase of @code{ev} (see step (4) 
 @c below). This is useful in conjunction with the other switches and in causing
@@ -472,16 +395,16 @@ hat.
 
 @item
 @code{noeval} unterdr@"uckt die Auswertungphase der Funktion @code{ev} (siehe 
-Schritt (4) unten). Dies ist n@"utzlich im Zusammenhang mit anderen Flags und um 
-einen Ausdruck @var{expr} erneuert zu vereinfachen, ohne dass dieser ausgewertet 
-wird.
+Schritt (4) unten).  Dies ist n@"utzlich im Zusammenhang mit anderen Flags und
+um einen Ausdruck @var{expr} erneuert zu vereinfachen, ohne dass dieser
+ausgewertet wird.
 
 @c @code{nouns} causes the evaluation of noun forms
 @c (typically unevaluated functions such as @code{'integrate} or @code{'diff})
 @c in @var{expr}.
 
 @item
-@code{nouns} bewirkt die Auswertung von Substantivformen. Solche 
+@code{nouns} bewirkt die Auswertung von Substantivformen.  Solche 
 Substantivformen sind typischerweise nicht ausgewertete Funktionen wie 
 @code{'integrate} oder @code{'diff}, die im Ausdruck @var{expr} enthalten sind.
 
@@ -519,8 +442,8 @@ und nicht elementweise in die Matrize herein multipliziert werden.
 
 @item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} bewirkt, dass nur die
-Ableitungen bez@"uglich der angegebenen Variablen @var{x}, @var{y}, @var{z}, ... 
-ausgef@"uhrt werden.
+Ableitungen bez@"uglich der angegebenen Variablen @var{x}, @var{y}, @var{z},
+@dots{} ausgef@"uhrt werden.
 
 @c @code{risch} causes integrals in @var{expr} to be evaluated using the Risch
 @c algorithm. See @code{risch}. The standard integration routine is invoked when
@@ -528,7 +451,7 @@ ausgef@"uhrt werden.
 
 @item
 @code{risch} bewirkt das Integral in @var{expr} mit dem Risch-Algorithmus
-berechnet werden. Siehe @code{risch}. Wird @code{nouns} benutzt, wird der
+berechnet werden.  Siehe @code{risch}.  Wird @code{nouns} benutzt, wird der
 Standardalgorithmus f@"ur Integrale verwendet.
 
 @c @code{float} causes non-integral rational numbers to be converted to floating
@@ -545,8 +468,8 @@ werden.
 
 @item
 @code{numer} bewirkt, dass mathematische Funktionen mit numerischen Argumenten 
-ein Ergebnis in Gleitkommazahlen liefern. Variable in @code{expr}, denen 
-numerische Werte zugewiesen wurden, werden durch diese ersetzt. Die Option 
+ein Ergebnis in Gleitkommazahlen liefern.  Variable in @code{expr}, denen 
+numerische Werte zugewiesen wurden, werden durch diese ersetzt.  Die Option 
 @code{float} wird zus@"atzlich wirksam.
 
 @c @code{pred} causes predicates (expressions which evaluate to @code{true} or 
@@ -561,8 +484,8 @@ werden.
 @c @code{eval}, the expression is evaluated again.
 
 @item
-@code{eval} bewirkt eine zus@"atzliche Auswertung des Ausdrucks @var{expr}. 
-(Siehe Schritt (5) unten). @code{eval} kann mehrfach angewendet werden. Jedes 
+@code{eval} bewirkt eine zus@"atzliche Auswertung des Ausdrucks @var{expr}.
+(Siehe Schritt (5) unten).  @code{eval} kann mehrfach angewendet werden.  Jedes 
 Auftreten von @code{eval} f@"uhrt zu einer weiteren Auswertung.
 
 @c @code{A} where @code{A} is an atom declared to be an evaluation flag (see 
@@ -571,7 +494,7 @@ Auftreten von @code{eval} f@"uhrt zu einer weiteren Auswertung.
 
 @item
 @code{A}, wobei @code{A} ein Atom ist, das als ein Auswertungsflag (siehe
-@code{evflag}) definiert wurde. W@"ahrend der Auswertung des Ausdrucks 
+@code{evflag}) definiert wurde.  W@"ahrend der Auswertung des Ausdrucks 
 @var{expr} erh@"alt @code{A} den Wert @code{true}.
 
 @c @code{V: expression} (or alternately @code{V=expression}) causes @code{V} to
@@ -585,11 +508,11 @@ Auftreten von @code{eval} f@"uhrt zu einer weiteren Auswertung.
 @item
 @code{V: expression} (oder alternativ @code{V=expression}) bewirkt, dass 
 @code{V} w@"ahrend der Auswertung des Ausdrucks @var{expr} den Wert
-@code{expression} erh@"alt. @code{V} kann auch eine Optionsvariable sein, die
-f@"ur die Auswertung den Wert @code{expression} erh@"alt. Wenn mehr als ein 
+@code{expression} erh@"alt.  @code{V} kann auch eine Optionsvariable sein, die
+f@"ur die Auswertung den Wert @code{expression} erh@"alt.  Wenn mehr als ein 
 Argument der Funktion @code{ev} @"ubergeben wird, wird die Zuweisung der Werte
-parallel ausgef@"uhrt. Wenn @code{V} kein Atom ist, wird anstatt einer Zuweisung 
-eine Substitution ausgef@"uhrt.
+parallel ausgef@"uhrt.  Wenn @code{V} kein Atom ist, wird anstatt einer
+Zuweisung eine Substitution ausgef@"uhrt.
 
 @c @code{F} where @code{F}, a function name, has been declared to be an 
 @c evaluation function (see @code{evfun}) causes @code{F} to be applied to 
@@ -597,15 +520,15 @@ eine Substitution ausgef@"uhrt.
 
 @item
 @code{F}, wobei @code{F} der Name einer Funktion ist, die als eine 
-Auswertungsfunktion (siehe @code{evfun}) definiert wurde. @code{F} bewirkt, 
+Auswertungsfunktion (siehe @code{evfun}) definiert wurde.  @code{F} bewirkt, 
 dass die Auswertungsfunktion auf den Ausdruck @var{expr} angewendet wird.
 
 @c Any other function names (e.g., @code{sum}) cause evaluation of occurrences
 @c of those names in @var{expr} as though they were verbs.
 
 @item
-Jeder andere Funktionsname (z. B. @code{sum}) bewirkt, dass jedes Auftreten
-dieser Funktion im Ausdruck @var{expr} ausgewertet wird.
+Jeder andere Funktionsname (zum Beispiel @code{sum}) bewirkt, dass jedes
+Auftreten dieser Funktion im Ausdruck @var{expr} ausgewertet wird.
 
 @c In addition a function occurring in @var{expr} (say @code{F(x)}) may be 
 @c defined locally for the purpose of this evaluation of @var{expr} by giving
@@ -626,14 +549,14 @@ Zus@"atzlich kann f@"ur die Auswertung von @var{expr} eine lokale Funktion
 
 @item
 Wird ein Atom, eine indizierte Variable oder ein indizierter Ausdruck, der oben 
-nicht genannt wurde, als Argument @"ubergeben, wird das Argument ausgewertet. 
+nicht genannt wurde, als Argument @"ubergeben, wird das Argument ausgewertet.
 Wenn das Ergebnis eine Gleichung oder eine Zuweisung ist, werden die 
-entsprechenden Zuweisungen und Substitutionen ausgef@"uhrt. Wenn das Ergebnis 
+entsprechenden Zuweisungen und Substitutionen ausgef@"uhrt.  Wenn das Ergebnis 
 eine Liste ist, werden die Elemente der Liste als zus@"atzliche Argumente von 
-@code{ev} betrachtet. Dies erlaubt, das eine Liste mit Gleichungen (zum Beispiel
-@code{[%t1, %t2]}, wobei @code{%t1} und @code{%t2} Gleichungen sind) wie sie zum
-Beispiel von der Funktion @code{solve} erzeugt wird, als Argument verwendet 
-werden kann.
+@code{ev} betrachtet.  Dies erlaubt, das eine Liste mit Gleichungen (zum
+Beispiel @code{[%t1, %t2]}, wobei @code{%t1} und @code{%t2} Gleichungen sind)
+wie sie zum Beispiel von der Funktion @code{solve} erzeugt wird, als Argument 
+verwendet werden kann.
 @end itemize
 
 @c The arguments of @code{ev} may be given in any order with the exception of
@@ -642,9 +565,9 @@ werden kann.
 @c realpart)} is handled as @code{realpart (ratsimp (@var{expr}))}.
 
 Die Argumente der Funktion @code{ev} k@"onnen in einer beliebigen Reihenfolge
-@"ubergeben werden. Ausgenommen sind Gleichungen mit Substitutionen, die
+@"ubergeben werden.  Ausgenommen sind Gleichungen mit Substitutionen, die
 nacheinander von links nach rechts ausgewertet werden, sowie
-Auswertungsfunktionen, die verkettet werden. So wird z. B.
+Auswertungsfunktionen, die verkettet werden.  So wird zum Beispiel
 @code{ev (@var{expr}, ratsimp, realpart)} zu 
 @code{realpart (ratsimp (@var{expr}))}.
 
@@ -675,13 +598,14 @@ falls nicht die beiden Flags @code{float} und @code{numer} den Wert
 
 @item
 W@"ahrend des Schritts (1) wird eine Liste der nicht indizierten Variablen
-erstellt, die auf der linken Seite von Gleichungen auftreten. Die Gleichungen
-k@"onnen dabei entweder als Argument oder als Wert eines Argumentes vorliegen. 
+erstellt, die auf der linken Seite von Gleichungen auftreten.  Die Gleichungen
+k@"onnen dabei entweder als Argument oder als Wert eines Argumentes vorliegen.
 Variablen, die nicht in dieser Liste enthalten sind, werden durch ihre globalen 
-Werte ersetzt. Davon ausgenommen sind Variable, die eine Array-Funktion 
-repr@"asentieren. Ist z. B. @var{expr} eine Marke wie @code{%i2} im Beispiel
-unten oder die letzte Ausgabe @code{%}, so wird in diesem Schritt der globale
-Wert dieser Marke eingesetzt und die Bearbeitung durch @code{ev} fortgesetzt.
+Werte ersetzt.  Davon ausgenommen sind Variable, die eine Array-Funktion 
+repr@"asentieren.  Ist zum Beispiel @var{expr} eine Marke wie @code{%i2} im
+Beispiel unten oder die letzte Ausgabe @code{%}, so wird in diesem Schritt der
+globale Wert dieser Marke eingesetzt und die Bearbeitung durch @code{ev}
+fortgesetzt.
 
 @c If any substitutions are indicated by the arguments, they are carried out 
 @c now.
@@ -697,8 +621,8 @@ ausgef@"uhrt.
 
 @item
 Der resultierende Ausdruck wird erneut ausgewertet, au@ss{}er wenn @code{noeval} 
-unter den Argumente ist, und vereinfacht. Die Funktionsaufrufe in @var{expr} 
-werden erst ausgef@"uhrt, wenn die enthaltenden Variablen ausgewertet sind. 
+unter den Argumente ist, und vereinfacht.  Die Funktionsaufrufe in @var{expr} 
+werden erst ausgef@"uhrt, wenn die enthaltenden Variablen ausgewertet sind.
 Dadurch verh@"alt sich @code{ev(F(x))} wie @code{F(ev(x))}.
 
 @c For each instance of @code{eval} in the arguments, steps (3) and (4) are 
@@ -711,10 +635,6 @@ und (4) wiederholt.
 
 Beispiele:
 
-@c ===beg===
-@c sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
-@c ev (%, numer, expand, diff, x=2, y=1);
-@c ===end===
 @example
 (%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
                                      d                    2
@@ -733,7 +653,7 @@ Anstatt der Anwendung der Funktion @code{ev} k@"onnen alternativ der Ausdruck
 und die Argumente durch Kommata getrennt eingegeben werden
 
 @example
-@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@var{expr}, @var{arg_1}, @dots{}, @var{arg_n}
 @end example
 
 @c This is not permitted as part of
@@ -777,10 +697,6 @@ Solution
 (%i11) %, pred;
 (%o11)                               true
 @end example
-
-@c @opencatbox
-@c @category{Auswertung}
-@c @closecatbox
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -795,13 +711,6 @@ Auswertung des Ausdrucks @code{expr}.
 
 Beispiele:
 
-@c ===beg===
-@c [a:b,b:c,c:d,d:e];
-@c a;
-@c ev(a);
-@c ev(a),eval;
-@c a,eval,eval;
-@c ===end===
 @example
 (%i1) [a:b,b:c,c:d,d:e];
 (%o1)                            [b, c, d, e]
@@ -814,10 +723,6 @@ Beispiele:
 (%i5) a,eval,eval;
 (%o5)                                  e
 @end example
-
-@c @opencatbox
-@c @category{Auswertungsflags}
-@c @closecatbox
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -831,16 +736,16 @@ Beispiele:
 
 Wenn ein Symbol @var{x} die Eigenschaft eines Auswertungsflags besitzt, sind die
 Ausdr@"ucke @code{ev(@var{expr}, @var{x})} und @code{@var{expr}, @var{x}} 
-@"aquivalent zu @code{ev(@var{expr}, @var{x} = true)}. W@"ahrend der Auswertung
+@"aquivalent zu @code{ev(@var{expr}, @var{x} = true)}.  W@"ahrend der Auswertung
 von @var{expr} erh@"alt also @var{x} den Wert @code{true}.
 
 @c The expression @code{declare(@var{x}, evflag)}
 @c gives the @code{evflag} property to the variable @var{x}.
 
 Mit @code{declare(@var{x}, evflag)} wird der Variablen @var{x} die 
-@code{evflag}-Eigenschaft gegeben. Mit @code{kill} oder @code{remove} kann diese
-Eigenschaft wieder entfernt werden. Siehe auch @code{properties} f@"ur die 
-Anzeige von Eigenschaften.
+@code{evflag}-Eigenschaft gegeben.  Mit @code{kill} oder @code{remove} kann
+diese Eigenschaft wieder entfernt werden.  Siehe auch @code{properties} f@"ur
+die Anzeige von Eigenschaften.
 
 @c The flags which have the @code{evflag} property by default are the following:
 
@@ -886,20 +791,6 @@ Folgende Optionsvariablen haben standardm@"a@ss{}ig die
 
 Beispiele:
 
-@c ===beg===
-@c sin (1/2);
-@c sin (1/2), float;
-@c sin (1/2), float=true;
-@c simp : false;
-@c 1 + 1;
-@c 1 + 1, simp;
-@c simp : true;
-@c sum (1/k^2, k, 1, inf);
-@c sum (1/k^2, k, 1, inf), simpsum;
-@c declare (aa, evflag);
-@c if aa = true then YES else NO;
-@c if aa = true then YES else NO, aa;
-@c ===end===
 @example
 (%i1) sin (1/2);
                                  1
@@ -937,10 +828,6 @@ Beispiele:
 (%i12) if aa = true then YES else NO, aa;
 (%o12)                         YES
 @end example
-
-@c @opencatbox
-@c @category{Auswertungsflags} @category{Vereinfachungsflags und -variable}
-@c @closecatbox
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -959,15 +846,15 @@ Ausdr@"ucke @code{ev(@var{expr}, @var{F})} und @code{@var{expr}, @var{F}}
 @c If two or more @code{evfun} functions @var{F}, @var{G}, etc., are specified,
 @c the functions are applied in the order that they are specified.
 
-Zwei oder mehr @code{evfun}-Funktionen @var{F}, @var{G}, ... werden in der 
+Zwei oder mehr @code{evfun}-Funktionen @var{F}, @var{G}, @dots{} werden in der 
 aufgef@"uhrten Reihenfolge angewendet.
 
 @c The expression @code{declare(@var{F}, evfun)}
 @c gives the @code{evfun} property to the function @var{F}.
 
 Mit @code{declare(@var{F}, evfun)} wird der Funktion @var{F} die
-@code{evfun}-Eigenschaft gegeben. Mit @code{kill} oder @code{remove} kann diese
-Eigenschaft wieder entfernt werden. Siehe auch @code{properties} f@"ur die 
+@code{evfun}-Eigenschaft gegeben.  Mit @code{kill} oder @code{remove} kann diese
+Eigenschaft wieder entfernt werden.  Siehe auch @code{properties} f@"ur die 
 Anzeige von Eigenschaften.
 
 @c The functions which have the @code{evfun} property by default are the 
@@ -992,23 +879,6 @@ Funktionen, die standardm@"a@ss{}ig die @code{evfun}-Eigenschaft besitzen, sind:
 
 Beispiele:
 
-@c ===beg===
-@c x^3 - 1;
-@c x^3 - 1, factor;
-@c factor (x^3 - 1);
-@c cos(4 * x) / sin(x)^4;
-@c cos(4 * x) / sin(x)^4, trigexpand;
-@c cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
-@c ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
-@c declare ([F, G], evfun);
-@c (aa : bb, bb : cc, cc : dd);
-@c aa;
-@c aa, F;
-@c F (aa);
-@c F (ev (aa));
-@c aa, F, G;
-@c G (F (ev (aa)));
-@c ===end===
 @example
 (%i1) x^3 - 1;
                               3
@@ -1059,10 +929,6 @@ Beispiele:
 (%i15) G (F (ev (aa)));
 (%o15)                      G(F(cc))
 @end example
-
-@c @opencatbox
-@c @category{Auswertungsflags}
-@c @closecatbox
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -1077,15 +943,11 @@ Standardwert: @code{false}
 @c infeval)} will generate an infinite loop.
 
 @code{infeval} bewirkt, dass @code{ev} die Auswertung eines Ausdrucks solange 
-wiederholt, bis dieser sich nicht mehr @"andert. Um zu verhindern, dass eine 
-Variable in diesem Modus durch die Auswertung verschwindet, kann z. B. f@"ur
-eine Variable @code{x} der Ausdruck @code{x='x} als Argument von @code{ev}
-einf@"ugt werden. Ausdr@"ucke wie @code{ev(x, x=x+1, infeval)} f@"uhren in
+wiederholt, bis dieser sich nicht mehr @"andert.  Um zu verhindern, dass eine 
+Variable in diesem Modus durch die Auswertung verschwindet, kann zum Beispiel
+f@"ur eine Variable @code{x} der Ausdruck @code{x='x} als Argument von @code{ev}
+einf@"ugt werden.  Ausdr@"ucke wie @code{ev(x, x=x+1, infeval)} f@"uhren in
 diesem Modus zu Endlosschleifen.
-
-@c @opencatbox
-@c @category{Auswertungsflags}
-@c @closecatbox
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
@@ -1096,13 +958,9 @@ diesem Modus zu Endlosschleifen.
 @c conjunction with other switches and in causing expressions to be resimplified
 @c without being reevaluated.
 
-@code{noeval} unterdr@"uckt die Auswertungsphase der Funktion @code{ev}. Dies 
+@code{noeval} unterdr@"uckt die Auswertungsphase der Funktion @code{ev}.  Dies 
 kann im Zusammenhang mit anderen Auswertungsflags genutzt werden, um einen 
 Ausdruck erneut zu vereinfachen, ohne diesen auszuwerten.
-
-@c @opencatbox
-@c @category{Auswertungsflags}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1114,20 +972,11 @@ Ausdruck erneut zu vereinfachen, ohne diesen auszuwerten.
 @c being @code{ev}'d to "verbs", i.e., evaluates them.  See also @code{noun}, 
 @c @code{nounify}, @code{verb}, and @code{verbify}.
 
-@code{nouns} ist ein Auswertungsflag @code{evflag}. Wird dieses Flag als eine 
+@code{nouns} ist ein Auswertungsflag @code{evflag}.  Wird dieses Flag als eine 
 Option der Funktion @code{ev} genutzt, werden alle Substantivformen, die in dem
-Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet. Siehe auch
+Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet.  Siehe auch
 @mrefcomma{noun} @mrefcomma{nounify} @mref{verb} und @mrefdot{verbify}
-
-@c @opencatbox
-@c @category{Auswertungsflags} @category{Substantivformen und Verbformen}
-@c @closecatbox
 @end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-@c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
-@c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
-@c NEED TO MENTION THIS IS AN evflag
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
 @anchor{numer}
@@ -1139,18 +988,14 @@ Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet. Siehe auch
 @c their values.  It also sets the @code{float} switch on.
 
 @code{numer} bewirkt, dass mathematische Funktionen mit numerischen Argumenten
-als Gleitkommazahlen ausgewertet werden. Variable in einem Ausdruck @code{expr},
-die numerische Werte erhalten haben, werden durch diese ersetzt. Zus@"atzlich
-wird das Flag @code{float} gesetzt.
+als Gleitkommazahlen ausgewertet werden.  Variablen in einem Ausdruck
+@code{expr}, die numerische Werte erhalten haben, werden durch diese ersetzt.
+Zus@"atzlich wird das Flag @code{float} gesetzt.
 
 Siehe auch @mrefdot{%enumer}
 
 Beispiele:
 
-@c ===beg===
-@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
-@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
-@c ===end===
 @example
 (%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
                                         1
@@ -1160,35 +1005,27 @@ Beispiele:
 (%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
 (%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
 @end example
-
-@c @opencatbox
-@c @category{Numerische Auswertung}
-@c @closecatbox
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
 @anchor{numerval}
-@deffn {Funktion} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+@deffn {Funktion} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
 
 @c Declares the variables @code{x_1}, ..., @var{x_n} to have numeric values 
 @c equal to @code{expr_1}, ..., @code{expr_n}. The numeric value is evaluated 
 @c and substituted for the variable in any expressions in which the variable 
 @c occurs if the @code{numer} flag is @code{true}. See also @code{ev}.
 
-Die Variablen @code{x_1}, ..., @code{x_n} erhalten die numerischen Werte
-@code{expr_1}, ..., @code{expr_n}. Die numerischen Werte werden immer dann
+Die Variablen @code{x_1}, @dots{}, @code{x_n} erhalten die numerischen Werte
+@code{expr_1}, ..., @code{expr_n}.  Die numerischen Werte werden immer dann
 f@"ur die Variablen in Ausdr@"ucke eingesetzt, wenn das Flag @code{numer} den 
-Wert @code{true} hat. Siehe auch @code{ev}.
+Wert @code{true} hat.  Siehe auch @code{ev}.
 
 @c The expressions @code{expr_1}, ..., @code{expr_n} can be any expressions, not
 @c necessarily numeric.
 
 Die Ausdr@"ucke @code{expr1_1}, ..., @code{expr_n} k@"onnen auch Ausdr@"ucke
 sein und m@"ussen nicht numerische Werte sein.
-
-@c @opencatbox
-@c @category{Deklarationen und Inferenzen} @category{Numerische Auswertung}
-@c @closecatbox
 @end deffn
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
@@ -1200,24 +1037,16 @@ sein und m@"ussen nicht numerische Werte sein.
 @c evaluated. See @code{ev}.
 
 Wird @code{pred} als ein Argument der Funktion @code{ev} eingesetzt, werden
-Aussagen zu @code{true} oder @code{false} ausgewertet. Siehe @mrefdot{ev}
+Aussagen zu @code{true} oder @code{false} ausgewertet.  Siehe @mrefdot{ev}
 
 Beispiel:
 
-@c ===beg===
-@c 1<2;
-@c 1<2,pred;
-@c ===end===
 @example
 (%i1) 1<2;
 (%o1)                                1 < 2
 (%i2) 1<2,pred;
 (%o2)                                true
 @end example
-
-@c @opencatbox
-@c @category{Evaluation flags}
-@c @closecatbox
 @end defvr
 
 @c --- End of file Evaluation.de.texi ------------------------------------------
