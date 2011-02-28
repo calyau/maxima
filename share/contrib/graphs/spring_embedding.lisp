@@ -1,7 +1,7 @@
 ;;;
 ;;;  GRAPHS - graph theory package for Maxima
 ;;;
-;;;  Copyright (C) 2007-2008 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+;;;  Copyright (C) 2007-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ;;;
 ;;;  This program is free software; you can redistribute it and/or modify
 ;;;  it under the terms of the GNU General Public License as published by
@@ -69,15 +69,21 @@
 		  (list x y z)
 		  (list x y)))))))
 
-(defmfun $spring_embedding (g depth fixed-vertices dimension)
+(defmfun $spring_embedding (g depth fixed-vertices dimension continue)
   (let ((*vertex-position* (make-hash-table))
 	(vertex-displacement (make-hash-table))
 	(*fixed-vertices* (cdr fixed-vertices))
 	(*optimal-distance* (/ (* 2 *frame-width*)
 			       (sqrt ($graph_order g)))))
 
-    (random-positions (vertices g) dimension)
-    
+    ;; Start with current positions if we already have some.
+    (if (and continue
+             (> (length ($get_positions g)) 1)
+             (= ($length ($first ($get_positions g))) dimension))
+        (dolist (v (cdr ($get_positions g)))
+          (setf (gethash (cadr v) *vertex-position*) (cdaddr v)))
+        (random-positions (vertices g) dimension))
+
     (let* ((step (/ *frame-width* 5))
 	   (d-step (/ step (1+ depth))))
       (dotimes (i depth)

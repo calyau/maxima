@@ -1,7 +1,7 @@
 /*
   
   GRAPHS - graph theory package for Maxima
-  Copyright (C) 2007 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+  Copyright (C) 2007-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -135,7 +135,7 @@ tutte_polynomial(g, x, y) := block(
         tp: tp*y^get_vertex_label(v, g, 0),
       tp)
     else block(
-      [g1: copy_graph(g), g2: copy_graph(g), mfactor:1],
+      [g1: copy_graph(g), g2: copy_graph(g), mfactor:1, tp],
       contract_edge(non_bridge, g2),
       if get_edge_weight(non_bridge, g)=1 then (
         remove_edge(non_bridge, g1))
@@ -152,8 +152,12 @@ tutte_polynomial(g, x, y) := block(
         get_vertex_label(non_bridge[1], g, 0) +
         get_vertex_label(non_bridge[2], g, 0),
         g2),
-      tutte_polynomial(g1, x, y) + mfactor*tutte_polynomial(g2, x, y))))$
+      tp: tutte_polynomial(g1, x, y) + mfactor*tutte_polynomial(g2, x, y))))$
 
 flow_polynomial(g, x) := block(
   [n: graph_order(g), m: graph_size(g)],
   (-1)^(m-n+1)*ratexpand(psubst(['y=0, 'x=x], tutte_polynomial(g,'y,1-'x))))$
+
+rank_polynomial(g, x, y) := block(
+  [tp: tutte_polynomial(g, 'x, 'y), n:graph_order(g)],
+  ratexpand(x^(n-1)*psubst(['x=1+1/x, 'y=1+y], tp)))$

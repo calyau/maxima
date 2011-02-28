@@ -1,6 +1,6 @@
 /*  
   GRAPHS - graph theory package for Maxima
-  Copyright (C) 2007-2008 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+  Copyright (C) 2007-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ define_variable(gp_file_out, "out.txt", any)$
 define_variable(gp_file_in, "in.txt", any)$
 define_variable(draw_graph_program, 'spring_embedding, any)$
 define_variable(draw_graph_terminal, 'screen, any)$
+define_variable(graphs_plot_size, [400,400], list)$
 
 if draw_loaded#true then load("draw")$
 
@@ -85,7 +86,7 @@ with_parameters ([L]) ::= buildq (
 draw_graph(G, [options]) := block(
   [
    maperror : false, mapprint : false,
-   wxplot_size : [400,400],
+   wxplot_size : graphs_plot_size,
    program : draw_graph_program, 
    show_id : false, show_label : false, show_weight : false,
    vertex_color : 'red, text_color : 'blue, edge_color : 'black,
@@ -96,7 +97,7 @@ draw_graph(G, [options]) := block(
    edge_width : 1, show_edge_width : 2,
    head_length : 0.1, head_angle : 15,
    vertices:[], edges:[], v_pos, vertex_labels:[], edge_weights:[],
-   show_vertices : [], show_edges : [],
+   show_vertices : [], show_edges : [], show_path : [],
    label_alignment : 'center, label_padding: "  ",
    command, x_max, y_max, gp_options,
    terminal : draw_graph_terminal, file_name : "graph",
@@ -143,11 +144,12 @@ draw_graph(G, [options]) := block(
 
     /* Get vertex positions */
     v_pos : get_positions(G),
-    if redraw=true or v_pos=false then (
+    if redraw='continue or redraw=true or v_pos=false then (
       if member(program, ['neato, 'dot, 'twopi, 'fdp, 'circo]) then
         v_pos : graphviz_positions(G, program)
       else if program = 'spring_embedding then
-        v_pos : spring_embedding(G, spring_embedding_depth, fixed_vertices, dimension)
+        v_pos : spring_embedding(G, spring_embedding_depth, fixed_vertices, dimension,
+          if redraw='continue then true else false)
       else if program = 'planar_embedding then block(
         [embedding : planar_embedding(G), c],
         if embedding=false then
@@ -156,7 +158,8 @@ draw_graph(G, [options]) := block(
           c : embedding[1],
           for i:2 thru length(embedding) do (
             if length(embedding[i])>length(c) then c:embedding[i]),
-          v_pos : spring_embedding(G, spring_embedding_depth, c, 2)))
+          v_pos : spring_embedding(G, spring_embedding_depth, c, 2,
+            if redraw='continue then true else false)))
       else
         v_pos : apply(program, [G]),
       set_positions(v_pos, G)),
@@ -180,6 +183,7 @@ draw_graph(G, [options]) := block(
            v_pos)),
 
     /* Setup edges */
+    if show_path#[] then show_edges: vertices_to_path(show_path),
     if edge_coloring=true then edge_coloring: edge_coloring(G),
     if show_edges#[] then (
       for e in edges(G) do
@@ -336,18 +340,42 @@ draw_graph(G, [options]) := block(
       else
         scene))$
 
+draw_graph_list(grlist, [options]) :=
+  if get('wxmaxima, 'version)=false then block(
+    [scenes],
+    scenes: map(lambda([g],
+        apply(gr2d,
+          append(
+            apply(draw_graph,
+              append([g, transform=true], options))))),
+      grlist),
+    apply(draw, append(['columns=length(grlist)], scenes)))
+  else (
+    if length(grlist)<4 then block(
+      [scenes, wxplot_size: 2.0/3 * [length(grlist), 1] * graphs_plot_size],
+      scenes: map(lambda([g],
+          apply(gr2d,
+            append(
+              apply(draw_graph,
+                append([g, transform=true], options))))),
+        grlist),
+      apply(wxdraw, append(scenes, ['columns=length(grlist)])))
+    else block(
+      [display_graphics:false, wxplot_size: 2*graphs_plot_size/3],
+      ldisp(
+        map(lambda([g],
+            apply(wxdraw2d,
+              append(
+                apply(draw_graph,
+                  append([g, transform=true], options))))),
+          grlist))),
+    'done)$
+
 vertices_to_path(lst) := block(
   [path : []],
-
   while length(lst)>1 do (
     path : cons([lst[1], lst[2]], path),
     lst : rest(lst)),
-  
   path)$
 
 vertices_to_cycle(lst) := vertices_to_path(append(lst, [first(lst)]))$
-
-draw_graph_transform(arg) :=
-  apply(draw_graph, append(args(arg),[transform=true]))$
-
-put(graph, draw_graph_transform, draw2d_transform)$

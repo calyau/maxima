@@ -1,7 +1,7 @@
 /*
 
   GRAPHS - graph theory package for Maxima
-  Copyright (C) 2007 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+  Copyright (C) 2007-2011 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -37,6 +37,28 @@ relabel_graph_vertices(gr, [options]) := block(
   for e in edges(gr) do
   edg: cons([get_hash(e[1], new_ids), get_hash(e[2], new_ids)], edg),
   create_graph(vrt, edg, directed=is_digraph(gr)))$
+
+subdivide_edge(e, g, [n]) := block(
+  [pos: get_positions(g), added_vertices],
+  if length(n)=1 then n: first(n) else n:1,
+  remove_edge(e, g),
+  added_vertices: add_vertices(n, g),
+  add_edges(
+    append(
+      [[e[1], first(added_vertices)]],
+      makelist([added_vertices[i], added_vertices[i+1]], i, 1, n-1),
+      [[last(added_vertices), e[2]]]),
+    g),
+  if pos#false then
+    pos: append(
+      makelist([added_vertices[i], (i*assoc(e[1], pos)+(n+1-i)*assoc(e[2],pos))/(n+1)], i, 1, n),
+      pos),
+  set_positions(pos, g),
+  'done)$
+
+subdivide_edges(e_lst, g, [n]) :=
+  block([n: if length(n)=1 then first(n) else 1],
+    for e in e_lst do subdivide_edge(e, g, n))$
 
 random_network(n, p, w) := block(
   [net, source, sink, u, v],
@@ -111,31 +133,60 @@ grotzch_graph() := block(
   g)$
 
 complete_bipartite_graph(n, m) := block(
-  [edges, A, B],
+  [edges, A, B, g],
   if not (integerp(n) and integerp(m)) or
        n<=0 or m<=0 then
      error("`complete_bipartite_graph': arguments are not positive integers"),
   A : makelist(i-1, i, 1, n),
   B : makelist(i+n-1, i, 1, m),
   edges : create_list([i,j], i, A, j, B),
-  create_graph(append(A, B), edges))$
+  g : create_graph(append(A, B), edges),
+  set_positions(
+    append(
+      makelist([i-1, [0, i-n/2]], i, 1, n),
+      makelist([i+n-1, [1, i-m/2]], i, 1, m)),
+    g),
+  g)$
 
 grid_graph(n, m) :=
   if not (integerp(n) and integerp(m)) or
        n<=0 or m<=0 then
      error("`grid_graph': arguments are not positive integers")
   else block(
-    [g:graph_product(path_graph(n), path_graph(m)),numer:true, pos:[]],
+    [g:graph_product(path_graph(n), path_graph(m)), numer:true, pos:[]],
     for i:0 thru n-1 do
       for j:0 thru m-1 do
         pos:cons([n*j+i, [i/n, j/m]], pos),
     set_positions(pos, g),
     g)$
 
+grid_graph1(n,m) := block(
+  [g, pos],
+  g:make_graph(
+    makelist(i-1,i,n*m),
+    lambda([a, b],
+      block([ax,ay,bx,by],
+        [ax,ay]:divide(a,n),
+        [bx,by]:divide(b,n),
+        is( abs(ax-bx)<=1 and abs(ay-by)<=1)))),
+  set_positions(makelist([i-1, divide(i-1, n)], i, n*m), g),
+  g);
+
 tetrahedron_graph() := complete_graph(4)$
 
-cube_graph(n) := 
-  if n=1 then path_graph(2)
+bipiramid_graph(n) := block(
+  [g: cycle_graph(n)],
+  add_vertices([n,n+1], g),
+  pos: makelist([i, [3*cos(2*%pi*i/n), sin(2*%pi*i/n)]], i, 0, n-1),
+  pos: append([[n, [0,5]], [n+1, [0,-5]]], pos),
+  connect_vertices([n,n+1],makelist(i,i,0,n-1),g),
+  set_positions(pos, g),
+  g)$
+
+cube_graph(n) :=
+  if n<0 then error("cub_graph(n): n can't be negative!")
+  else if n=0 then empty_graph(1)
+  else if n=1 then path_graph(2)
   else block(
     [k,r,g],
     [k,r]:divide(n, 2),
@@ -267,7 +318,26 @@ make_graph(vertices, edges_lambda, [dir]) := block(
 tutte_graph() := sparse6_decode(
   ":m`?WSMHDbPwGa@?_QhSs\\NgRaKE`HEdH@QaUbca|MUX`qr[YW\\eVwaAs[nF{UMqclhIYYCfSWCmDT\\QpTYr")$
 
-pappus_graph() := graph6_decode("QhEKA?_C?O?_?P?g?I?@S?DOAG_")$
+cycle_positions(cycles) := block(
+  [pos:[],r:1,i,v,pi:float(%pi),po,k],
+  po: apply(lcm, map(length, cycles)),
+  if length(first(cycles))=1 then (
+    pos: cons([part(cycles, 1, 1), [0,0]], pos),
+    cycles: rest(cycles)),
+  for c in cycles do (
+    r: r+1, n: length(c),
+    i:0, k: 2*pi*po/n,
+    for v in c do (
+      pos: cons([v, r*[cos(i*k/po), sin(i*k/po)]], pos),
+      i:i+1)),
+  pos)$
+
+pappus_graph() := block(
+  [g: graph6_decode("QhEKA?_C?O?_?P?g?I?@S?DOAG_")],
+  set_positions(
+    cycle_positions(reverse([[0,1,2,3,4,5],[6,7,8,9,10,11],[12,13,14,15,16,17]])),
+    g),
+  g)$
 
 truncated_cube_graph() := graph6_decode("W`CaSG??G??@?@?A?AO@A?CG?_O?K??Q@A?G_O@?o?CC_?G")$
 
@@ -295,10 +365,17 @@ snub_dodecahedron_graph() := sparse6_decode(":{a??SCFG??_cCEDbPwSMGEa`xCe@@jDIk?
 
 snub_cube_graph() := sparse6_decode(":Wa?@_@eCDcDab_`eIfJcGdH_AGIK`BHJL`AGJM_BHINcEGKMdFHLNdEIKNcFJLM")$
 
-chvatal_graph() := graph6_decode("KhdLA_hc?L_y")$
+chvatal_graph() := graph6_decode("KlDGiCh_hOoh")$
 
-knight_tour_graph(a,b) := block(
+coxeter_graph() := sparse6_decode(":[___``aabbcdcdfJeIhLgKfehQgRlRkQUjTiSWnOmPY")$
+
+desargues_graph() := sparse6_decode(":S___``aabbcFdEcHdGfHeGiJkLmNoPQ")$
+
+tutte_cage_graph() := sparse6_decode(":]_`abcdefg`HidJklaMfNojPqbRgSlT_UpVcWhXmYrZ_E[")$
+
+knight_tour_graph(a,[b]) := block(
   [g, pos:[]],
+  if length(b)=1 then b:b[1] else b:a,
   g: make_graph(
     listify(cartesian_product(setify(makelist(i,i,1,a)), setify(makelist(i,i,1,b)))),
     lambda([u,v],
@@ -321,7 +398,15 @@ star_graph(n) := if n=1 then empty_graph(1) else complete_bipartite_graph(1, n-1
 
 book_graph(n) := graph_product(star_graph(n+1), path_graph(2))$
 
-antiprism_graph(n) := circulant_graph(2*n, [1, 2])$
+antiprism_graph(n) := block(
+  [g:circulant_graph(2*n, [1, 2])],
+  block([numer:true],
+    set_positions(
+      append(
+        makelist([2*i-2, 2*[cos(2*i*%pi/n), sin(2*i*%pi/n)]], i, 1, n),
+        makelist([2*i-1, [cos(2*i*%pi/n+%pi/n), sin(2*i*%pi/n+%pi/n)]], i, 1, n)),
+      g)),
+  g)$
 
 gear_graph(n) := block(
   [g:cycle_graph(2*n)],
@@ -360,24 +445,78 @@ centipede_graph(n) := block([edg1, edg2],
   create_graph(2*n, append(edg1, edg2)))$
 
 hanoi_graph(n) :=
-if not integerp(n) or n<1 then funmake(hanoi_graph, [n])
-elseif n=1 then block(
-  [hg: cycle_graph(3), pos, numer:true],
-  pos: makelist([i, [cos(%pi/2+2*%pi/3*i), sin(%pi/2+2*%pi/3*i)]], i, 0, 2),
-  set_positions(pos, hg),
-  hg)
-else block(
-  [hg1: hanoi_graph(n-1), hg, pos1, pos2, pos3, numer:true, a:2.2],
-  hg: graph_union(hg1, hg1, hg1),
-  add_edges([[(3^(n-1)-1)/2, 3^(n-1)],
-    [3^(n-1)-1, 2*3^(n-1)],
-    [2*3^(n-1)-1, (3^(n-1)-1)/2+2*3^(n-1)]], hg),
-  pos1: get_positions(hg1),
-  pos2: map(lambda([p], [3^(n-1)+p[1], a^(n-1)*[cos(%pi/2+2*%pi/3), sin(%pi/2+2*%pi/3)]+p[2]]), pos1),
-  pos3: map(lambda([p], [2*3^(n-1)+p[1], a^(n-1)*[cos(%pi/2+4*%pi/3), sin(%pi/2+4*%pi/3)]+p[2]]), pos1),
-  pos1: map(lambda([p], [p[1], a^(n-1)*[cos(%pi/2), sin(%pi/2)]+p[2]]), pos1),
-  set_positions(append(pos1, pos2, pos3), hg),
-  hg)$
+  if not integerp(n) or n<1 then funmake(hanoi_graph, [n])
+  elseif n=1 then block(
+    [hg: cycle_graph(3), pos, numer:true],
+    pos: makelist([i, [cos(%pi/2+2*%pi/3*i), sin(%pi/2+2*%pi/3*i)]], i, 0, 2),
+    set_positions(pos, hg),
+    hg)
+  else block(
+    [hg1: hanoi_graph(n-1), hg, pos1, pos2, pos3, numer:true, a:2.2],
+    hg: graph_union(hg1, hg1, hg1),
+    add_edges([[(3^(n-1)-1)/2, 3^(n-1)],
+      [3^(n-1)-1, 2*3^(n-1)],
+      [2*3^(n-1)-1, (3^(n-1)-1)/2+2*3^(n-1)]], hg),
+    pos1: get_positions(hg1),
+    pos2: map(lambda([p], [3^(n-1)+p[1], a^(n-1)*[cos(%pi/2+2*%pi/3), sin(%pi/2+2*%pi/3)]+p[2]]), pos1),
+    pos3: map(lambda([p], [2*3^(n-1)+p[1], a^(n-1)*[cos(%pi/2+4*%pi/3), sin(%pi/2+4*%pi/3)]+p[2]]), pos1),
+    pos1: map(lambda([p], [p[1], a^(n-1)*[cos(%pi/2), sin(%pi/2)]+p[2]]), pos1),
+    set_positions(append(pos1, pos2, pos3), hg),
+    hg)$
+
+franklin_graph() := block(
+  [g: cycle_graph(12)],
+  add_edges(
+    [[6,11], [3,10],[0,9],[5,8],[2,7],[1,4]],
+    g),
+  g)$
+
+crossed_prism_graph(n) := block(
+  [g, pi:float(%pi)],
+  if oddp(n) or n<4 then error("crossed_prism_graph: n should be even and at least 4"),
+  g: graph_union(cycle_graph(n), cycle_graph(n)),
+  add_edges(makelist([k,k+n+1], k, 0, n-2, 2), g),
+  add_edges(makelist([k+1, k+n], k, 0, n-2, 2), g),
+  set_positions(
+    append(
+      makelist([k, 3*[cos(k*2*pi/n), sin(k*2*pi/n)]], k, 0, n-1),
+      makelist([n+k, 5*[cos(k*2*pi/n), sin(k*2*pi/n)]], k, 0, n-1)),
+    g),
+  g)$
+
+flower_snark(n) := block(
+  [fs: empty_graph(4*n), pi:float(%pi)],
+  add_edges(
+    append(
+      makelist([i,i+1], i, 0, n-2),
+      makelist([i,i+n], i, 0, n-1),
+      makelist([i+n, i+2*n], i, 0, n-1),
+      makelist([i+n, i+3*n], i, 0, n-1),
+      makelist([i+2*n, i+3*n+1], i, 0, n-2),
+      makelist([i+3*n, i+2*n+1], i, 0, n-2),
+      [[0,n-1],[3*n, 3*n-1], [2*n,4*n-1]]),
+    fs),
+  set_positions(
+    append(
+      makelist([k, 2*[cos(2*k*pi/n), sin(2*k*pi/n)]], k, 0, n-1),
+      makelist([k+n, 4*[cos(2*k*pi/n), sin(2*k*pi/n)]], k, 0, n-1),
+      makelist([k+2*n, 7*[cos(2*k*pi/n-pi/2/n), sin(2*k*pi/n-pi/2/n)]], k, 0, n-1),
+      makelist([k+3*n, 7*[cos(2*k*pi/n+pi/2/n), sin(2*k*pi/n+pi/2/n)]], k, 0, n-1)),
+    fs),
+  fs)$
+
+complete_kpartite_graph([args]) := block(
+  [graphs: map(complete_graph, args), g, pos, pi:float(%pi)],
+  g: xreduce(graph_union, graphs),
+  n: xreduce("+", args),
+  g: complement_graph(g),
+  pos: makelist([i, [cos(2*i/n*pi), sin(2*i/n*pi)]], i, 0, n-1),
+  set_positions(pos, g),
+  g)$
+
+kneser_graph(n,k) := make_graph(powerset(setify(makelist(i,i,n)), k), disjointp)$
+
+odd_graph(n) := kneser_graph(2*n-1, n-1)$
 
 add_path(lst, g) :=
   add_edges(vertices_to_path(lst), g)$
