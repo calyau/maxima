@@ -1882,10 +1882,14 @@ Example:
 @defvr {Graphic option} palette
 Default value: @code{color}
 
-@code{palette} indicates how to map the real values of a matrix
-passed to object @code{image} onto color components.
+@code{palette} indicates how to map gray levels onto color components.
+It works together with option @code{enhanced3d} in 3D graphics,
+who associates every point of a surfaces to a real number or gray level.
+It also works with gray images. With @code{palette}, levels are transformed into colors.
 
-@code{palette} is a vector of length three with components 
+There are two ways for defining these transformations.
+
+First, @code{palette} can be a vector of length three with components 
 ranging from -36 to +36; each value is an index for a formula mapping the levels
 onto red, green and blue colors, respectively:
 @example
@@ -1897,21 +1901,39 @@ onto red, green and blue colors, respectively:
 15: sin(360x)      16: cos(360x)    17: |sin(360x)|
 18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
 21: 3x             22: 3x-1         23: 3x-2
-24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2 
 27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
 30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
 33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
 36: 2*x - 1
 @end example
 negative numbers mean negative colour component.
-
 @code{palette = gray} and @code{palette = color} are short cuts for
 @code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
+
+Second, @code{palette} can be a user defined lookup table. In this case,
+the format for building a lookup table of length @code{n} is
+@code{palette=[color_1, color_2, ..., color_n]}, where @code{color_i} is
+a well formed color (see option @code{color}), such that @code{color_1} is
+assigned to the lowest gray level and @code{color_n} to the highest. The rest
+of colors are interpolated.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
 Examples:
+
+It works together with option @code{enhanced3d} in 3D graphics.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d = [z-x+2*y,x,y,z],
+        palette = [32, -8, 17],
+        explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+@end example
+
+It also works with gray images.
 
 @example
 (%i1) load(draw)$
@@ -1926,7 +1948,19 @@ Examples:
              image(im,0,0,30,30))$
 @end example
 
-See also @code{colorbox}. 
+@code{palette} can be a user defined lookup table.
+In this example, low values of @code{x} are colored
+in red, and higher values in yellow.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         palette = [red, blue, yellow],
+         enhanced3d = x,
+         explicit(x^2+y^2,x,-1,1,y,-1,1)) $
+@end example
+
+See also @code{colorbox} and @code{enhanced3d}.
 
 @opencatbox
 @category{Package draw}
