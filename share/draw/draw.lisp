@@ -2709,6 +2709,34 @@
 
 
 
+(defmacro write-palette-code ()
+  '(let ((pal (get-option '$palette)))
+     (cond
+       ((equal pal '$gray)
+          (format nil "set palette gray~%"))
+       ((equal pal '$color)
+          (format nil "set palette rgbformulae 7,5,15~%"))
+       ((and (listp pal)
+             (= (length pal) 3)
+             (every #'(lambda (x) (and (integerp x) (<= (abs x) 36))) pal) )
+          (format nil "set palette rgbformulae ~a,~a,~a~%"
+                  (car pal) (cadr pal) (caddr pal)))
+       ((and (listp pal)
+             (every #'(lambda (x) (and (listp x) (= (length x) 3))) pal) )
+          (let (triplete
+                (n (length pal)))
+            (with-output-to-string (stream)
+              (format stream "set palette defined ( \\~%")
+              (dotimes (k n)
+                (setf triplete (nth k pal))
+                (format stream "  ~a ~a ~a ~a "
+                        k (car triplete) (cadr triplete) (caddr triplete))
+                (if (= (1+ k) n)
+                  (format stream ")~%")
+                  (format stream ", \\~%") )))))
+       (t
+          (merror "draw: illegal palette description")))))
+
 
 
 (defvar *2d-graphic-objects* (make-hash-table))
@@ -2859,12 +2887,7 @@
                         (if (stringp (get-option '$colorbox))
                           (get-option '$colorbox)
                           ""))
-            (let ((pal (get-option '$palette)))
-              (case pal
-                 ($gray     (format nil "set palette gray~%"))
-                 ($color    (format nil "set palette rgbformulae 7,5,15~%"))
-                 (otherwise (format nil "set palette rgbformulae ~a,~a,~a~%"
-                                        (car pal) (cadr pal) (caddr pal))) ))
+            (write-palette-code)
             (if (not (string= (get-option '$user_preamble) ""))
                (format nil "~a~%" (get-option '$user_preamble))) ) )
       ; scene description: (dimensions, gnuplot preamble in string format, list of objects)
@@ -3035,12 +3058,7 @@
                         (if (stringp (get-option '$colorbox))
                           (get-option '$colorbox)
                           ""))
-            (let ((pal (get-option '$palette)))
-              (case pal
-                 ($gray     (format nil "set palette gray~%"))
-                 ($color    (format nil "set palette rgbformulae 7,5,15~%"))
-                 (otherwise (format nil "set palette rgbformulae ~a,~a,~a~%"
-                                        (car pal) (cadr pal) (caddr pal))) ) )
+            (write-palette-code)
             (if (not (string= (get-option '$user_preamble) ""))
                (format nil "~a~%" (get-option '$user_preamble)))  ))
 

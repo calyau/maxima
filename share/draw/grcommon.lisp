@@ -594,6 +594,63 @@
 
 
 
+;; update palette option
+;; ---------------------
+
+(defun update-palette (val)
+  ; defined as $color, $gray, [f1,f2,f3], with -36<=fi<=36,
+  ; or a list of triplets defining a user palette.
+  (cond ((member val '($color $gray))
+          (setf (gethash '$palette *gr-options*) val))
+
+        ((and ($listp val)
+              (= ($length val) 3)
+              (every #'(lambda (x) (and (integerp x) (<= (abs x) 36)))
+                     (cdr val)) )
+          (setf (gethash '$palette *gr-options*) (rest val)))
+
+        ((and ($listp val)  ; user defined palette without transparency
+              (not ($listp (cadr val)) ))
+           (let* ((palette (cdr val))
+                  (n (length palette))
+                  str color)
+             (setf (gethash '$palette *gr-options*)
+                   (loop for k below n
+                      do (setf str (atom-to-downcased-string (nth k palette)))
+                         (cond ((correct-color-hex str)
+                                  (setf color (hex-to-numeric-list str)))
+                               ((correct-color-name str)
+                                  (setf color (hex-to-numeric-list (gethash str *color-table*))))
+                               (t
+                                  (merror "draw: illegal color in palette description")))
+                      collect color))))
+
+        ((and ($listp val)  ; user defined palette with transparency
+              (every #'(lambda (x) (and ($listp x) (= (length x) 3)))
+                     (cdr val)))
+           (let* ((palette (cdr val))
+                  (n (length palette))
+                  str color transparency)
+             (setf (gethash '$palette *gr-options*)
+                   (loop for k below n
+                      do (setf str (atom-to-downcased-string ($first (nth k palette))))
+                         (cond ((correct-color-hex str)
+                                  (setf color (hex-to-numeric-list str)))
+                               ((correct-color-name str)
+                                  (setf color (hex-to-numeric-list (gethash str *color-table*))))
+                               (t
+                                  (merror "draw: illegal color in palette description")))
+                         (setf transparency ($float ($second (nth k palette))))
+                         (when (or (< transparency 0)
+                                   (> transparency 1)
+                                   (not (floatp transparency)))
+                           (merror "draw: illegal transparency in palette description"))
+                      collect (append color (list transparency))))))
+
+        (t
+          (merror "draw: illegal palette description: ~M" val))) )
+
+
 
 
 
@@ -824,16 +881,8 @@
                          (integerp ($second val))))
                (merror "draw: illegal value for grid")
                (setf (gethash opt *gr-options*) val))))
-      ($palette ; defined as $color, $gray or [f1,f2,f3], with -36<=fi<=36
-            (cond ((member val '($color $gray))
-                    (setf (gethash opt *gr-options*) val))
-                  ((and ($listp val)
-                        (= ($length val) 3)
-                        (every #'(lambda (x) (and (integerp x) (<= (abs x) 36)))
-                               (cdr val)) )
-                    (setf (gethash opt *gr-options*) (list (cadr val) (caddr val) (cadddr val))))
-                  (t
-                    (merror "draw: illegal palette description: ~M" val)))  )
+      ($palette
+        (update-palette val))
       (($color $fill_color $xaxis_color $yaxis_color
         $zaxis_color $background_color)
         (update-color opt val))
