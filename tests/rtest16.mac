@@ -341,6 +341,10 @@ limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
 limit(1/n * n!^(1/n), n, inf);
 %e^-1;
 
+/* Apparently wrong limit with factorial - ID: 3198530 */
+limit(1/(2+1/factorial(n)),n,inf);
+1/2;
+
 limit(t*(erf((t))-1),t,inf);
 0;
 

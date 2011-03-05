@@ -510,28 +510,24 @@ It appears in LIMIT and DEFINT.......")
 			    (t (simplimit exp var val)))))))
 
 (defun limitsimp (exp var)
-  (limitsimp-dispatch (sin-sq-cos-sq-sub exp) var))
+  (limitsimp-expt (sin-sq-cos-sq-sub exp) var))
 ;;Hack for sin(x)^2+cos(x)^2.
 
-(defun limitsimp-dispatch (exp var)
+;; if var appears in base and power of expt,
+;; push var into power of of expt
+(defun limitsimp-expt (exp var)
   (cond ((or (atom exp)
 	     (mnump exp)
 	     (freeof var exp))   exp)
-	((mexptp exp)
-	 (limitsimp-expt exp var))
-	(t (subst0 (cons (cons (caar exp) ())
-			 (mapcar #'(lambda (x)
-				     (limitsimp-dispatch x var))
-				 (cdr exp)))
-		   exp))))
-
-
-(defun limitsimp-expt (exp var)
-  (cond ((and (mexptp exp)
+	((and (mexptp exp)
 	      (not (freeof var (cadr exp)))
 	      (not (freeof var (caddr exp))))
 	 (m^ '$%e (simplify `((%log) ,exp))))
-	(t exp)))
+	(t (subst0 (cons (cons (caar exp) ())
+			 (mapcar #'(lambda (x)
+				     (limitsimp-expt x var))
+				 (cdr exp)))
+		   exp))))
 
 (defun sin-sq-cos-sq-sub (exp)		;Hack ... Hack
   (let ((arg (involve exp '(%sin %cos))))
@@ -1909,8 +1905,7 @@ It appears in LIMIT and DEFINT.......")
 ;; Limit n/d, using heuristics on the order of growth.
 (defun sheur0 (n d)
   (let ((orig-n n))
-    (cond ((/#alike n d) 1)
-	  ((and (free n var)
+    (cond ((and (free n var)
 		(free d var))
 	   (m// n d))
 	  (t (setq n (cpa n d nil))
