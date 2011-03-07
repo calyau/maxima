@@ -1238,14 +1238,15 @@
 		    (b (cdras 'b arg))
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var exp))
-		    (new-int (if (every-trigarg-alike new-exp new-var)
-                                 ;; avoid endless recursion when more than one
-                                 ;; trigarg exists or c is a float
-		                 (div (integrator new-exp new-var) c)
-		                 (rischint exp var))))
-	       (return-from monstertrig 
-	         (maxima-substitute *trigarg* new-var new-int))))
+						var exp)))
+	       (if (every-trigarg-alike new-exp new-var)
+		   ;; avoid endless recursion when more than one
+		   ;; trigarg exists or c is a float
+		   (return-from monstertrig 
+		     (maxima-substitute 
+		      *trigarg* 
+		      new-var 
+		      (div (integrator new-exp new-var) c))))))
 	    (t
 	     (return-from monstertrig (rischint exp var))))))
   (prog (*notsame* w a b y d)

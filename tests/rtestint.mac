@@ -1044,7 +1044,7 @@ integrate(1/cosh(x/a)^2,x,-inf,inf);
 
 /* [ 1860487 ] MONSTERTRIG endless recursion */
 integrate (x*(cos(2*x) + sin(x)), x);
-(2*x*sin(2*x)+cos(2*x)+4*sin(x)-4*x*cos(x))/4;
+(2*x*sin(2*x)+cos(2*x))/4+sin(x)-x*cos(x);
 
 /* [ 1631094 ] integrate(sin(n*x)*x, x) => linear time when n is an integer */
 integrate(sin(1000000000*x)*x, x);
@@ -1340,3 +1340,7 @@ integrate(x^2*exp(x)/(1+exp(x))^2, x, minf, inf);
 /* integrate(abs(sin(x)),x,0,2*%pi) wrong result - ID: 3165872 */
 integrate(abs(sin(x)),x,0,2*%pi);
 'integrate(abs(sin(x)),x,0,2*%pi);
+
+/* integrate(sin(2x)atan(sin(x)),x) - ID: 3199708 */
+integrate(sin(2*x)*atan(sin(x)),x,0,%pi/2);
+%pi/2 - 1;
