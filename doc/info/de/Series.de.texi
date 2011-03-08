@@ -960,7 +960,7 @@ Terme wie m@"oglich mitgef@"uhrt.
 @item taylordepth
 Findet @code{taylor} keine von Null verschiedenen Terme in der
 Reihenentwicklung, wird die Ordnung der Entwicklung solange erh@"oht wie sie
-kleiner oder gleich @code{2^taylordepth} ist.  Siehe @mrefdot{taylordepth}
+kleiner oder gleich @code{2^taylordepth} ist.
 
 @item taylor_logexpand
 Die Optionsvariable @mref{taylor_logexpand} kontrolliert die Entwicklung von
@@ -974,7 +974,14 @@ von Termen in einer Reihenentwicklung.  Der Standardwert ist @code{true} und
 die Anordung entspricht der kanonischen Darstellung eines Ausdrucks.
 
 @item taylor_truncate_polynomials
-Siehe @mrefdot{taylor_truncate_polynomials}
+Hat die Optionsvariable @mref{taylor_truncate_polynomials} den Wert
+@code{false}, wird das Ergebnis der Reihenentwicklung eines Polynoms als exakt
+angenommen.
+
+@item taylor_simplifier
+Die Funktion zur Vereinfachung der Koeffizienten einer Entwicklung ist in der Optionsvariablen @mref{taylor_simplifier} enthalten.  Der Standardwert ist
+@code{simplify}.  Der Variablen kann eine nutzerdefinierte Funktion zugewiesen
+werden.
 @end table
 
 @c TODO: UEBERSETZUNG DES FOLGENDEN FEHLT.  WIE FUNKTIONIERT PSEXPAND?
@@ -989,11 +996,7 @@ Siehe @mrefdot{taylor_truncate_polynomials}
 Mit der Funktion @mref{taylorp} kann getestet werden, ob ein Ausdruck eine
 Taylorreihe repr@"asentiert.  Die Funktion @mref{taylorinfo} gibt Informationen
 zu einer Taylorreihe aus.  Die spezielle CRE-Form einer Taylorreihe wird mit der
-Funktion @mref{taytorat} in eine Standardform gebracht.  Die Funktion zur
-Vereinfachung von Koeffizienten einer Entwicklung ist in der Optionsvariablen
-@mref{taylor_simplifier} enthalten.  Der Standardwert ist @code{simplify}.  Der 
-Variablen kann eine nutzerdefinierte Funktion zugewiesen werden.
-
+Funktion @mref{taytorat} in eine Standardform gebracht. 
 Mit den Funktionen @mref{revert} und @mref{revert2} kann die Taylorreihe einer
 inversen Funktion berechnet werden.
 
@@ -1041,10 +1044,12 @@ Beispiele:
 (%o7)/T/         - + - - -- + -- - ----- + . . .
                  x   2   12   24    720
 (%i8) taylor (cos(x) - sec(x), x, 0, 5);
+@group
                                 4
                            2   x
 (%o8)/T/                - x  - -- + . . .
                                6
+@end group
 (%i9) taylor ((cos(x) - sec(x))^3, x, 0, 5);
 (%o9)/T/                    0 + . . .
 (%i10) taylor (1/(cos(x) - sec(x))^3, x, 0, 5);
@@ -1086,10 +1091,12 @@ Beispiele:
           + (- - + -- + . . .) x  + (- - + -- + . . .) x  + . . .
                2   12                  6   12
 (%i14) taylor (sin (y + x), [x, y], 0, 3);
+@group
                      3        2      2      3
                     x  + 3 y x  + 3 y  x + y
 (%o14)/T/   y + x - ------------------------- + . . .
                                 6
+@end group
 (%i15) taylor (1/sin (y + x), x, 0, 3, y, 0, 3);
 @group
           1   y              1    1               1            2
@@ -1110,28 +1117,29 @@ Beispiele:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{taylordepth}
-@defvr {Option variable} taylordepth
-Default value: 3
+@defvr {Optionsvariable} taylordepth
+Standardwert: 3
 
-@c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
-If there are still no nonzero terms, @code{taylor} doubles the degree of the 
-expansion of @code{@var{g}(@var{x})} so long as the degree of the expansion is 
-less than or equal to @code{@var{n} 2^taylordepth}.
+Findet @code{taylor} keine von Null verschiedenen Terme in der
+Reihenentwicklung, wird die Ordnung der Entwicklung solange erh@"oht wie sie
+kleiner oder gleich @code{2^taylordepth} ist.
+
+Siehe auch @mrefdot{taylor}
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{taylorinfo}
-@deffn {Function} taylorinfo (@var{expr})
+@deffn {Funktion} taylorinfo (@var{expr})
 
-Returns information about the Taylor series @var{expr}. The return value is a 
-list of lists. Each list comprises the name of a variable, the point of 
-expansion, and the degree of the expansion.
+Gibt Informationen über die Tayolorreihe @var{expr} zur@"uck.  Die R@"uckgabe
+ist eine Liste, die Listen mit den Namen der Variablen, den Entwicklungspunkten
+und den Ordnungen der Entwicklung enthalten.
 
-@code{taylorinfo} returns @code{false} if @var{expr} is not a Taylor series.
+Ist @var{expr} keine Taylorreihe, ist die R@"uckgabe @code{false}.
 
-Example:
+Beispiele:
 
 @example
 (%i1) taylor ((1 - y^2)/(1 - x), x, 0, 3, [y, a, inf]);
@@ -1151,87 +1159,132 @@ Example:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{taylorp}
-@deffn {Function} taylorp (@var{expr})
+@deffn {Funktion} taylorp (@var{expr})
 
-Returns @code{true} if @var{expr} is a Taylor series, and @code{false} 
-otherwise.
+Hat den R@"uckgabewert @code{true}, wenn das Argument @var{expr} eine
+Taylorreihe ist.  Ansonsten ist der R@"uckgabewert @code{false}.
 @end deffn
 
-@c WHAT IS THIS ABOUT EXACTLY ??
-
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{taylor_logexpand}
-@defvr {Option variable} taylor_logexpand
-Default value: @code{true}
+@defvr {Optionsvariable} taylor_logexpand
+Standardwert: @code{true}
 
-@code{taylor_logexpand} controls expansions of logarithms in @code{taylor} 
-series.
+@c TODO: WAS BEDEUTET DAS? KEIN BEISPIEL GEFUNDEN.
 
-When @code{taylor_logexpand} is @code{true}, all logarithms are expanded fully 
-so that zero-recognition problems involving logarithmic identities do not
-disturb the expansion process.  However, this scheme is not always
-mathematically correct since it ignores branch information.
+@c @code{taylor_logexpand} controls expansions of logarithms in @code{taylor} 
+@c series.
+@c When @code{taylor_logexpand} is @code{true}, all logarithms are expanded
+@c fully so that zero-recognition problems involving logarithmic identities do
+@c not disturb the expansion process.  However, this scheme is not always
+@c mathematically correct since it ignores branch information.
+@c When @code{taylor_logexpand} is set to @code{false}, then the only expansion
+@c of logarithms that occur is that necessary to obtain a formal power series.
 
-When @code{taylor_logexpand} is set to @code{false}, then the only expansion of 
-logarithms that occur is that necessary to obtain a formal power series.
+@code{taylor_logexpand} kontrolliert die Entwicklung von Logarithmen in einer
+Taylorreihe.  Der Standardwert ist @code{true} und die Logarithmusfunktionen in
+einer Reihenentwicklung werden vollst@"andig entwickelt.  Ansonsten werden
+Logarithmusfunktionen so weit entwickelt, wie es notwendig ist, um eine formale
+Reihenentwicklung zu erhalten.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{taylor_order_coefficients}
-@defvr {Option variable} taylor_order_coefficients
-Default value: @code{true}
+@defvr {Optionsvariable} taylor_order_coefficients
+Standardwert: @code{true}
 
-@code{taylor_order_coefficients} controls the ordering of coefficients in a 
-Taylor series.
+@c TODO: KEIN BEISPIEL GEFUNDEN.  WIE FUNKTIONIERT DAS?
 
-When @code{taylor_order_coefficients} is @code{true}, coefficients of taylor 
-series are ordered canonically.
-@c IS MAXIMA'S NOTION OF "CANONICALLY" DESCRIBED ELSEWHERE ??
-@c AND WHAT HAPPENS WHEN IT IS FALSE ??
+@c @code{taylor_order_coefficients} controls the ordering of coefficients in a 
+@c Taylor series.
+@c When @code{taylor_order_coefficients} is @code{true}, coefficients of taylor 
+@c series are ordered canonically.
+
+@code{taylor_order_coefficients} kontrolliert die Ordnung der Koeffizienten
+einer Taylorreihenentwicklung.  Hat @code{taylor_order_coefficients} den Wert
+@code{true}, werden die Koeffizienten kanonisch angeordnet.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{taylor_simplifier}
-@deffn {Function} taylor_simplifier (@var{expr})
+@defvr {Optionsvariable} taylor_simplifier
+Standardwert: @code{SIMPLIFY}
 
-Simplifies coefficients of the power series @var{expr}. @code{taylor} calls 
-this function.
-@end deffn
+@c TODO: KEIN GUTES BEISPIEL GEFUNDEN.
+@c       MOEGLICHE NUTZLICHE FUNKTIONEN WIE RADCAN ODER FACTOR WERDEN ZWAR
+@c       AUFGERUFEN, ABER DIE ERZIELTEN BLEIBEN IM ERGEBNIS NICHT ERHALTEN.
 
-@c -----------------------------------------------------------------------------
-@anchor{taylor_truncate_polynomials}
-@defvr {Option variable} taylor_truncate_polynomials
-Default value: @code{true}
-
-@c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
-When @code{taylor_truncate_polynomials} is @code{true}, polynomials are 
-truncated based upon the input truncation levels.
-
-Otherwise, polynomials input to @code{taylor} are considered to have infinite 
-precison.
-@c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
+Die Optionsvariable @code{taylor_simplifier} enth@"alt den Namen der Funktion,
+die f@"ur die Vereinfachung der Koeffizienten einer Taylorreihenentwicklung
+von @mref{taylor} aufgerufen wird.  Der Standardwert ist die Lisp-Funktion
+@code{SIMPLIFY}.
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@anchor{taytorat}
-@deffn {Function} taytorat (@var{expr})
+@c --- 28.02.2011 DK -----------------------------------------------------------
+@anchor{taylor_truncate_polynomials}
+@defvr {Optionsvariable} taylor_truncate_polynomials
+Standardwert: @code{true}
 
-Converts @var{expr} from @code{taylor} form to canonical rational expression 
-(CRE) form. The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but 
-faster.
+@c TODO: IST DIE DOKUMENTATON KORREKT? IST DAS BEISPIEL KORREKT?
+@c       DER ENGLISCHE TEXT IST NICHT VERSTAENDLICH.
+
+@c When @code{taylor_truncate_polynomials} is @code{true}, polynomials are 
+@c truncated based upon the input truncation levels.
+@c Otherwise, polynomials input to @code{taylor} are considered to have infinite 
+@c precison.
+
+Hat die Optionsvariable @code{taylor_truncate_polynomials} den Wert
+@code{false}, wird das Ergebnis der Reihenentwicklung eines Polynoms als exakt
+angenommen.
+
+Beispiel:
+
+@example
+(%i1) taylor(x^6+x^4+x^2,x,0,4),taylor_truncate_polynomials:true;
+                          2    4
+(%o1)/T/                 x  + x  + . . .
+(%i2) taylor(x^6+x^4+x^2,x,0,4),taylor_truncate_polynomials:false;
+                              2    4
+(%o2)/T/                     x  + x
+@end example
+@end defvr
+
+@c --- 28.02.2011 DK -----------------------------------------------------------
+@anchor{taytorat}
+@deffn {Funktion} taytorat (@var{expr})
+
+Konvertiert den Ausdruck @var{expr} von der speziellen Darstellung einer
+Taylorreihenentwicklung in eine CRE-Form.
+
+Beispiel:
+
+@example
+(%i1) taylor(atan(x),x,0,5);
+                            3    5
+                           x    x
+(%o1)/T/               x - -- + -- + . . .
+                           3    5
+(%i2) taytorat(%);
+@group
+                          5      3
+                       3 x  - 5 x  + 15 x
+(%o2)/R/               ------------------
+                               15
+@end group
+@end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{trunc}
-@deffn {Function} trunc (@var{expr})
+@deffn {Funktion} trunc (@var{expr})
 
-Annotates the internal representation of the general expression @var{expr}
-so that it is displayed as if its sums were truncated Taylor series.
-@var{expr} is not otherwise modified.
+Die R@"uckgabe der Funktion @code{trunc} ist ein Ausdruck, der das Argument
+@var{expr} in der Ausgabe wie eine Taylorreihenentwicklung anzeigt.  Der
+Ausdruck @var{expr} wird ansonsten nicht modifiziert.
 
-Example:
+Beispiel:
 
 @example
 (%i1) expr: x^2 + x + 1;
@@ -1245,17 +1298,20 @@ Example:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.02.2011 DK -----------------------------------------------------------
 @anchor{verbose}
-@defvr {Option variable} verbose
-Default value: @code{false}
+@defvr {Optionsvariable} verbose
+Standardwert: @code{false}
 
-When @code{verbose} is @code{true}, @code{powerseries} prints progress messages.
+Hat die Optionsvariable @code{verbose} den Wert @code{true}, werden von der
+Funktion @mref{powerseries} Meldungen @"uber die verwendeten Algorithmen 
+ausgegeben.
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @node Poisson Reihen, Kettenbr@"uche, Funktionen und Variablen f@"ur Reihen, Summen Produkte und Reihen
 @section Poisson Reihen
+@c -----------------------------------------------------------------------------
 
 @c NEED EXAMPLES HERE
 
