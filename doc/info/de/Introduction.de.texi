@@ -5,16 +5,16 @@
 @c Original    : Introduction.texi revision 1.11
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.02.2011
+@c Revision    : 08.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 Von einer Kommandozeile wird Maxima mit dem Kommando @code{maxima} gestartet. 
 Maxima zeigt die aktuelle Version an und gibt einen Prompt f@"ur die Eingabe 
-aus.  Ein Maxima-Kommando wird mit einem Semikolon @mref{;} abgeschlossen.  Eine
-Maxima-Sitzung wird mit dem Kommando @code{quit();} beendet.  Es folgt ein 
-Beispiel f@"ur eine Sitzung.
+aus.  Ein Maxima-Kommando wird mit einem Semikolon @mref{;} abgeschlossen.
+Eine Maxima-Sitzung wird mit dem Kommando @code{quit();} beendet.  Es folgt
+ein Beispiel f@"ur eine Sitzung.
 
 @example
 [wfs@@chromium]$ maxima
@@ -87,17 +87,11 @@ Enter space-separated numbers, `all' or `none': 4
 @noindent
 Das Ergebnis einer Rechnung wird mit dem Operator @mref{:} einer Variablen 
 zugewiesen.  Weiterhin speichert Maxima die Eingaben unter den Marken 
-@mxref{inchar,(%i)} und die Ausgaben unter den Marken @mxref{outchar,(%o)} ab.
-Die Marken erhalten eine fortlaufende Nummerierung.  Mit diesen Marken kann auf
-fr@"uhere Eingaben und Ausgaben zur@"uckgegriffen werden.  Auf die letzte
-Ausgabe kann mit @mref{%} zur@"uckgegriffen werden.
+@mxref{inchar,(%i)} und die Ergebnisse unter den Marken 
+@mxref{outchar,(%o)} ab.  Die Marken erhalten eine fortlaufende Nummerierung.
+Mit diesen Marken kann auf fr@"uhere Eingaben und Ergebnisse zur@"uckgegriffen
+werden.  Auf das letzte Ergebnis kann mit @mref{%} zur@"uckgegriffen werden.
 
-@c ===beg===
-@c u: expand ((x + y)^6);
-@c diff(u,x);
-@c factor(%o2);
-@c %/6;
-@c ===end===
 @example
 (%i1) u: expand ((x + y)^6);
            6        5       2  4       3  3       4  2      5      6
@@ -117,15 +111,9 @@ Ausgabe kann mit @mref{%} zur@"uckgegriffen werden.
 Maxima kennt numerische Konstanten wie die Kreiszahl @mref{%pi} oder die
 imagin@"are Einheit @mref{%i} und kann mit komplexen Zahlen rechnen.  Mit der
 Funktion @mref{rectform} wird eine komplexe Zahl in die Standardform gebracht,
-mit der Funktion @mref{polarform} wird die komplexe Zahl in der Polarform
+mit der Funktion @mref{polarform} wird eine komplexe Zahl in der Polarform
 dargestellt.
 
-@c ===beg===
-@c cos(%pi);
-@c exp(%i*%pi);
-@c rectform((1+%i)/(1-%i));
-@c polarform((1+%i)/(1-%i));
-@c ===end===
 @example
 (%i1) cos(%pi);
 (%o1)                          - 1
@@ -144,11 +132,6 @@ dargestellt.
 Maxima kann mit der Funktion @mref{diff} differenzieren und mit der Funktion
 @mref{integrate} integrieren.
 
-@c ===beg===
-@c u: expand ((x + y)^6);
-@c diff (%, x);
-@c integrate (1/(1 + x^3), x);
-@c ===end===
 @example
 (%i1) u: expand ((x + y)^6);
        6        5       2  4       3  3       4  2      5      6
@@ -168,10 +151,6 @@ Maxima kann mit der Funktion @mref{diff} differenzieren und mit der Funktion
 Mit den Funktionen @mref{linsolve} und @mref{solve} kann Maxima lineare
 Gleichungssysteme und kubische Gleichungen l@"osen.
 
-@c ===beg===
-@c linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
-@c solve (x^3 - 3*x^2 + 5*x = 15, x);
-@c ===end===
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
                         7 a - 52        25
@@ -186,11 +165,6 @@ Die Funktion @mref{solve} kann auch nichtlineare Gleichungssysteme l@"osen.
 Wird eine Eingabe mit @mref{$} anstatt @mref{;} abgeschlossen, wird keine
 Ausgabe erzeugt.
 
-@c ===beg===
-@c eq_1: x^2 + 3*x*y + y^2 = 0$
-@c eq_2: 3*x + y = 1$
-@c  solve ([eq_1, eq_2]);
-@c ===end===
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$
 (%i2) eq_2: 3*x + y = 1$
@@ -208,9 +182,6 @@ Ausgabe erzeugt.
 Mit den Funktionen @mref{plot2d} und @mref{plot3d} kann Maxima Funktionsgraphen
 mit einer oder mehreren Funktionen zeichnen.
 
-@c ===beg===
-@c plot2d(sin(x)/x, [x, -20, 20]);
-@c ===end===
 @example
 (%i1) plot2d(sin(x)/x, [x, -20, 20])$
 @end example
@@ -219,9 +190,6 @@ mit einer oder mehreren Funktionen zeichnen.
 @image{../figures/introduction1, 10cm}
 @end ifnotinfo
 
-@c ===beg===
-@c plot2d([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
-@c ===end===
 @example
 (%i2) plot2d([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
@@ -230,10 +198,6 @@ mit einer oder mehreren Funktionen zeichnen.
 @image{../figures/introduction2, 10cm}
 @end ifnotinfo
 
-@c ===beg==
-@c plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
-@c    [x, -12, 12], [y, -12, 12])$
-@c ===end===
 @example
 @group
 (%i3) plot3d(sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 

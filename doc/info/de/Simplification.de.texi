@@ -791,7 +791,8 @@ zur@"uckgegeben.
 @code{example(scsimp)} zeigt einige Beispiele.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 07.03.2011 DK -----------------------------------------------------------
+@anchor{simp}
 @defvr {Optionsvariable} simp
 Standardwert: @code{true}
 

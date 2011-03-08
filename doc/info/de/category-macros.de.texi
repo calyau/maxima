@@ -138,6 +138,7 @@
              Kon-stan-te
              Ko-or-di-na-ten-sys-tem
              letz-te
+             ma-the-ma-ti-sche
              Maxima
              Mgnuplot
              O-pe-ra-tor 

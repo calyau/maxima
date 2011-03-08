@@ -5,7 +5,7 @@
 @c Original    : Help.texi revision 1.28
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.02.2011
+@c Revision    : 08.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -48,9 +48,6 @@ Beispiel:
 Zeige alle Maxima-Symbole, die die Zeichenkette @code{"gamma"} im Namen
 enthalten:
 
-@c ===beg===
-@c apropos("gamma");
-@c ===end===
 @example
 (%i1) apropos("gamma");
 (%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
@@ -112,7 +109,7 @@ _
 exact)}.  Das Argument @var{topic} ist eine Zeichenkette oder ein Symbol.  Wenn
 @var{topic} ein Operator wie zum Beispiel @code{+}, @code{*}, @code{do} oder
 @code{if} ist, muss der Name des Operators als eine Zeichenkette angegeben
-werden.  Der Name des Operators f@"ur die Addition @code{+} ist zum Beispiel
+werden.  Der Name des Operators @code{+} f@"ur die Addition ist zum Beispiel
 @code{"+"}.
 
 @code{describe(@var{topic}, exact)} findet Eintr@"age, die mit @var{topic} 
@@ -178,8 +175,8 @@ Enter space-separated numbers, `all' or `none': 2 3
 Das Kommando @code{example(@var{topic})} zeigt Beispiele f@"ur das Argument
 @var{topic}.  @var{topic} ist ein Symbol oder eine Zeichenkette.  Ist das
 Argument ein Operator, wie zum Beispiel @code{+}, @code{*} oder @code{do}, muss
-das Argument @var{topic} eine Zeichenkette sein.  Der Name des Operators f@"ur
-die Addition @code{+} ist zum Beispiel @code{"+"}.  Gro@ss{}- und
+das Argument @var{topic} eine Zeichenkette sein.  Der Name des Operators
+@code{+} f@"ur die Addition ist zum Beispiel @code{"+"}.  Gro@ss{}- und
 Kleinschreibung werden nicht unterschieden.
 
 @code{example()} zeigt eine Liste aller Themen, f@"ur die Beispiele 
