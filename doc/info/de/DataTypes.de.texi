@@ -311,19 +311,27 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c --- 08.03.2011 DK -----------------------------------------------------------
 @anchor{float}
 @deffn  {Funktion} float (@var{expr})
-@deffnx {Auswertungsschalter} float
+@deffnx {Optionsvariable} float
 
-Konvertiert ganze, rationale und gro@ss{}e Gleitkommazahlen im Ausdruck 
-@var{expr} in Gleitkommazahlen mit doppelter Genauigkeit.
+Die Funktion @code{float} konvertiert ganze, rationale und gro@ss{}e
+Gleitkommazahlen, die im Argument @var{expr} enthalten sind, in Gleitkommazahlen
+mit doppelter Genauigkeit.
 
-@code{float} ist auch ein Auswertungsschalter f@"ur die Funktion @mrefdot{ev}@ 
-In diesem Fall werden rationale Zahlen und gro@ss{}e Gleitkommazahlen, aber 
-keine ganzen Zahlen in Gleitkommazahlen umgewandelt.  Daher haben die beiden
-Kommandos @code{ev(expr),float} und @code{float(expr)} ein unterschiedliches
-Ergebnis.
+@code{float} ist auch eine Optionsvariable mit dem Standardwert @code{false} und
+ein Auswertungsschalter f@"ur die Funktion @mrefdot{ev}  Erh@"alt die
+Optionsvariable @code{float} den Wert @code{true} werden rationale und gro@ss{}e
+Gleitkommazahlen sofort in Gleitkommazahlen umgewandelt.  Als
+Auswertungsschalter der Funktion @code{ev} hat @code{float} denselben Effekt,
+ohne dass die Optionsvariable @code{float} ihren Wert @"andert.  Im Unterschied
+zur Funktion @code{float} werden durch das Setzen der Optionsvariablen oder bei
+Verwendung als Auswertungsschalter keine ganze Zahlen in Gleitkommazahlen
+umgewandelt.  Daher k@"onnen die beiden Kommandos @code{ev(expr, float)} und
+@code{float(expr)} ein unterschiedliches Ergebnis haben.
+
+Siehe auch die Optionsvariable @mrefdot{numer}
 
 Beispiele:
 
@@ -506,6 +514,7 @@ Ausdruck vereinfacht, der dem Hauptwert entspricht.  Die Auswirkung der
 Optionsvariable @code{m1pbranch} ist in der folgenden Tabelle gezeigt.
 
 @example
+@group
               domain:real
                             
 (-1)^(1/3):      -1         
@@ -515,6 +524,7 @@ Optionsvariable @code{m1pbranch} ist in der folgenden Tabelle gezeigt.
 m1pbranch:false          m1pbranch:true
 (-1)^(1/3)               1/2+%i*sqrt(3)/2
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
+@end group
 @end example
 
 Siehe auch die Optionsvariable @mrefdot{numer_pbranch}
@@ -571,6 +581,61 @@ Beispiele:
 @end example
 @end deffn
 
+@c --- 08.03.2011 DK -----------------------------------------------------------
+@anchor{numer}
+@defvr {Optionsvariable} numer
+Standardwert: @code{false}
+
+Hat die Optionsvariable @code{numer} den Wert @code{true}, werden rationale
+Zahlen und gro@ss{}e Gleitkommazahlen in Gleitkommazahlen umgewandelt.
+Weiterhin werden Konstante wie zum Beispiel @mrefcomma{%pi} die einen
+numerischen Wert haben, durch diesen ersetzt.  Mathematische Funktionen mit
+numerischen Argumenten vereinfachen zu einer Gleitkommazahl.  Wird die
+Optionsvariable @code{numer} gesetzt, erh@"alt die Optionsvariable
+@mref{float} denselben Wert.  Im Unterschied zur Optionsvariablen @code{float}
+vereinfachen auch mathematische Funktionen mit einem ganzzahligen Wert wie zum
+Beispiel @code{sin(1)} zu einem numerischen Wert.
+
+@code{numer} ist auch ein Auswertungsschalter der Funktion @mrefdot{ev}  Der
+Auswertungsschalter hat die gleiche funktionsweise wie die Optionsvariable, 
+ohne dass die Optionsvariable ihren Wert @"andert.
+
+Siehe auch @mref{float} und @mrefdot{%enumer}
+
+Beispiele:
+
+Erh@"alt @code{numer} den Wert @code{true}, werden rationale Zahlen, Konstante
+mit einem numerischen Wert und mathematische Funktionen mit numerischen
+Argumenten zu einer Gleitkommazahl ausgewertet oder vereinfacht.
+
+@example
+(%i1) numer:false;
+(%o1)                         false
+(%i2) [1, 1/3, %pi, sin(1)];
+                           1
+(%o2)                  [1, -, %pi, sin(1)]
+                           3
+(%i3) numer:true;
+(%o3)                         true
+(%i4) [1, 1/3, %pi, sin(1)];
+(%o4) [1, .3333333333333333, 3.141592653589793, 
+                                               .8414709848078965]
+@end example
+
+@code{numer} ist auch ein Auswertungsschalter der Funktion @code{ev}.  Hier wird
+die Kurzschreibweise der Funktion @code{ev} verwendet.
+
+@example
+(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
+                                        1
+(%o1)            [sqrt(2), sin(1), -----------]
+                                   sqrt(3) + 1
+
+(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
+@end example
+@end defvr
+
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{numer_pbranch}
 @defvr {Optionsvariable} numer_pbranch
@@ -603,6 +668,33 @@ Beispiele:
 (%o5) 1.189207115002721*%i-1.189207115002721
 @end example
 @end defvr
+
+@c --- 08.03.2011 DK -----------------------------------------------------------
+@anchor{numerval}
+@deffn {Funktion} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
+
+Die Variablen @code{x_1}, @dots{}, @code{x_n} erhalten die numerischen Werte
+@code{expr_1}, ..., @code{expr_n}.  Die numerischen Werte werden immer dann
+f@"ur die Variablen in Ausdr@"ucke eingesetzt, wenn der Schalter @mref{numer}
+den Wert @code{true} hat.  Siehe auch @mrefdot{ev}
+
+Die Ausdr@"ucke @code{expr1_1}, ..., @code{expr_n} k@"onnen auch Ausdr@"ucke
+sein und m@"ussen nicht numerische Werte sein.
+
+Beispiele:
+
+@example
+(%i1) numerval(a, 123, b, x^2)$
+
+(%i2) [a, b];
+(%o2)                        [a, b]
+(%i3) numer:true;
+(%o3)                         true
+(%i4) [a, b];
+                                   2
+(%o4)                       [123, x ]
+@end example
+@end deffn
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
 @anchor{oddp}
@@ -976,6 +1068,7 @@ Beispiele:
 (%i2) fib (n-1) + fib (n) - fib (n+1);
 (%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
 (%i3) fibtophi (%);
+@group
             n + 1             n + 1       n             n
         %phi      - (1 - %phi)        %phi  - (1 - %phi)
 (%o3) - --------------------------- + -------------------
@@ -984,6 +1077,7 @@ Beispiele:
                                       %phi      - (1 - %phi)
                                     + ---------------------------
                                               2 %phi - 1
+@end group
 (%i4) ratsimp (%);
 (%o4)                           0
 @end example
