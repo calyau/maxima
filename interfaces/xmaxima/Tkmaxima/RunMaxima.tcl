@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.32 2010-04-11 18:50:31 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.33 2011-03-09 11:29:03 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -232,11 +232,11 @@ proc maximaFilter { win sock } {
 	set it $res
     }
     # puts "it=<$it>"
-    if { [regexp -indices "\{plot\[d23]\[fd]" $it inds] } {
+    if { [regexp -indices "\{(plotdf|plot2d|plot3d|scene)" $it inds] } {
 	set plotPending [string range $it [lindex $inds 0] end]
 	set it ""
 	if { [regexp {\(\(C|%i\)[0-9]+\) $} $it ff] } {
-	    regexp "\{plot\[d23]\[df].*\}" $ff it
+	    regexp "\{(plotdf|plot2d|plot3d|scene).*\}" $ff it
 	    #	set it $ff
 	}
     }
@@ -506,7 +506,7 @@ proc doShowPlot { w data } {
     #puts data=$data
     set name [plotWindowName $w]
     set command [lindex [lindex $data 0] 0]
-    if { "$command" == "plotdf" } {
+    if { "$command" == "plotdf" || $command == "scene" } {
 	set command [lindex $data 0]
     } else {
 	lappend command -data [lindex $data 0]
