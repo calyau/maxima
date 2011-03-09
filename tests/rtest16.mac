@@ -1894,3 +1894,8 @@ a/*/**/*/+b;
 a+b;
 a/*/**/*/+/*/**/*/b;
 a+b;
+
+/* Bug ID: 3138054 -  bfloat problem / FIX -
+ */
+exp(gamma(1/3)),bfloat;
+1.45696199392313b1;
