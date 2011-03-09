@@ -132,6 +132,7 @@
 
       ; polygon  options
       (gethash '$transparent *gr-options*) nil
+      (gethash '$opacity *gr-options*)     1
       (gethash '$border *gr-options*)      t
 
       ; vector  options
@@ -594,6 +595,18 @@
 
 
 
+;; update opacity option
+;; ---------------------
+(defun update-opacity (val)
+  (let ((value ($float val)))
+    (when (or (not (floatp value))
+              (> value 1)
+              (< value 0))
+      (merror "draw: illegal opacity value: ~M " val))
+    (setf (gethash '$opacity *gr-options*) value)))
+
+
+
 ;; update palette option
 ;; ---------------------
 
@@ -752,6 +765,8 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "draw: unknown contour level description: ~M " val))))
+      ($opacity
+         (update-opacity val))
       (($transparent $border $logx $logy $logz $logcb $head_both $grid
         $xaxis_secondary $yaxis_secondary $axis_bottom $axis_left $axis_top
         $axis_right $axis_3d $surface_hide $xaxis $yaxis $zaxis $unit_vectors
