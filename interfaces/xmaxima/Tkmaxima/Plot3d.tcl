@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.17 2009-11-30 04:37:06 villate Exp $
+#       $Id: Plot3d.tcl,v 1.18 2011-03-09 11:27:58 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -21,7 +21,7 @@ set plot3dOptions {
     {bbox "" "xmin ymin xmax ymax zmin zmax overrides the -xcenter etc"}
     {zradius auto " Height in z direction of the z values"}
     {az 30 "azimuth angle" }
-    {el 60 "elevantion angle" }
+    {el 60 "elevation angle" }
 
     {thetax 10.0 "ignored is obsolete: use az and el"}
     {thetay 20.0 "ignored is obsolete: use az and el"}
@@ -671,13 +671,12 @@ The plot can be saved as a postscript file, by clicking on Save.
 } ] $Parser(help)]]
 }
 
-proc     makeFrame3d { win } {
+proc makeFrame3d { win } {
     global plot3dPoints
     set w [makeFrame $win 3d]
     set top $w
     catch { set top [winfo parent $w]}
     catch {
-
 	wm title $top [mc "Xmaxima: Plot3d"]
 	wm iconname $top "plot3d"
 	#   wm geometry $top 750x700-0+20
