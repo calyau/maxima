@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.49 2009-12-03 22:03:32 villate Exp $
+#       $Id: Makefile.am,v 1.50 2011-03-09 11:30:45 villate Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -45,6 +45,7 @@ TKSOURCES = \
 	Tkmaxima/Plot2d.tcl \
 	Tkmaxima/Matrix.tcl \
 	Tkmaxima/Plot3d.tcl \
+	Tkmaxima/scene.tcl \
 	Tkmaxima/NPlot3d.tcl \
 	Tkmaxima/EOctave.tcl \
 	Tkmaxima/EOpenplot.tcl \
