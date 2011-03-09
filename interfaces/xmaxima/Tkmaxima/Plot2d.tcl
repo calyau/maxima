@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.19 2009-04-01 02:24:02 villate Exp $
+#       $Id: Plot2d.tcl,v 1.20 2011-03-09 11:28:25 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -93,7 +93,7 @@ proc  makeFrame2d  { win } {
     set top $w
     catch { set top [winfo parent $w]}
     catch {
-	wm title $top [mc "Openmath: Plot2d"]
+	wm title $top [mc "Xmaxima: Plot2d"]
 	wm iconname $top "plot2d"
 	# wm geometry $top 750x700-0+20
     }
