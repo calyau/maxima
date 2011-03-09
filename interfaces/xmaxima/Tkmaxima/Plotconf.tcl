@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.23 2009-06-06 09:43:57 villate Exp $
+#       $Id: Plotconf.tcl,v 1.24 2011-03-09 11:30:10 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -50,11 +50,16 @@ proc makeFrame { w type } {
     set dismiss [concat $dismiss "; clearLocal $win "]
     set mb [frame $w.menubar]
     pack $mb -fill x
-    button $mb.close -text [mc "Close"] -command $dismiss -font $buttonFont
-    button $mb.config -text [mc "Config"] -command "doConfig$type $win" -font $buttonFont
-    button $mb.replot -text [mc "Replot"] -command "replot$type $win" -font $buttonFont
-    button $mb.zoom -text [mc "Zoom"] -command "showZoom $w" -font $buttonFont
-    button $mb.save -text [mc "Save"] -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
+    button $mb.close -image ::img::close -text [mc "Close"] \
+        -command $dismiss -font $buttonFont
+    button $mb.config -image ::img::config -text [mc "Config"] \
+        -command "doConfig$type $win" -font $buttonFont
+    button $mb.replot -image ::img::replot -text [mc "Replot"] \
+        -command "replot$type $win" -font $buttonFont
+    button $mb.zoom -image ::img::zoom -text [mc "Zoom"] \
+        -command "showZoom $w" -font $buttonFont
+    button $mb.save  -image ::img::save -text [mc "Save"] \
+        -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
     button $mb.help -text [mc "Help"] -command "doHelp$type $win" -font $buttonFont
     pack $mb.close $mb.config $mb.replot $mb.zoom $mb.save -side left
     pack $mb.help -side right
