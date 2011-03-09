@@ -327,5 +327,11 @@
     $rk))
   ($auto_mexpr mexpr "dynamics"))
 
+(dolist (f
+  '($get_option
+    $scene
+    $plotdf))
+  (setf (get f 'autoload) "visualization"))
+
 (defprop $hypergeometric simp-hypergeometric operators)
 (autof 'simp-hypergeometric "hypergeometric")
