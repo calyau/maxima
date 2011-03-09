@@ -2,7 +2,7 @@
 ;;              Field for an ordinary 1st order differential equation,
 ;;              or for a system of two autonomous 1st order equations.
 ;;   
-;; Copyright (C) 2004, 2008 Jaime E. Villate <villate@gnu.org>
+;; Copyright (C) 2004, 2008, 2011 Jaime E. Villate <villate@fe.up.pt>
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,13 +16,13 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-;; MA  02111-1307  USA
+;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+;; MA  02110-1301, USA.
 ;;
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.11 2009-04-10 13:46:28 villate Exp $
+;; $Id: plotdf.lisp,v 1.12 2011-03-09 11:33:46 villate Exp $
 
 (in-package :maxima)
 
@@ -31,7 +31,9 @@
   (let (vv)
     (unless (and  ($listp value)
                   (symbolp (setq name (second value))))
-      (merror "~M is not a plotdf option.  Must be [symbol,..data]" value))
+      (merror
+       (intl:gettext "~M is not a plotdf option.  Must be [symbol,...data]")
+       value))
     (setq value
       (case name
         (($xradius $yradius $xcenter $ycenter $tinitial $tstep)
@@ -45,18 +47,20 @@
 		$windowtitle $xaxislabel $yaxislabel $psfile) value)
 	($axes
 	 (if (not (third value))
-	     (setq value '((mlist simp) $axes 0))  
+	     (setq value '((mlist) $axes 0))  
 	   (case (third value)
-		 ($x (setq value '((mlist simp) $axes "x")))
-		 ($y (setq value '((mlist simp) $axes "y")))
-		 (t (setq value '((mlist simp) $axes "xy"))))))
+		 ($x (setq value '((mlist) $axes "x")))
+		 ($y (setq value '((mlist) $axes "y")))
+		 (t (setq value '((mlist) $axes "xy"))))))
 	($box
 	 (if (not (third value))
-	     (setq value '((mlist simp) $nobox 1))
-	   (setq value '((mlist simp) $nobox 0))))
+	     (setq value '((mlist) $nobox 1))
+	   (setq value '((mlist) $nobox 0))))
         ($direction
-         (or (member (third value) '($forward $backward $both))
-             (merror "direction: choose one of [forward,backward,both]")) 
+         (or
+          (member (third value) '($forward $backward $both))
+          (merror
+           (intl:gettext "direction: choose one of [forward,backward,both]"))) 
          value)
         (t (cond
             ((eql name s1)
@@ -65,7 +69,7 @@
             ((eql name s2)
 	     (setq value (check-range value))
              (check-list-items '$y (rest (rest value)) 'number 2))
-            (t (merror "Unknown option ~M" name))))))
+            (t (merror (intl:gettext "Unknown option ~M") name))))))
     (setq vv (mapcar #'stripdollar (rest value)))
     (with-output-to-string (st)
       (cond ((or (eql (first vv) 'x) (eql (first vv) 'y))
@@ -85,8 +89,7 @@
 ;; plots the direction field for an ODE  dy/dx = f(x,y), or for an autonomous
 ;; system of 2 equations dx/dt = f(x,y), dy/dt = g(x,y) 
 ;;
-(defun $plotdf (ode &rest options)
-  
+(defun $plotdf (ode &rest options)  
   (let (cmd (opts " ") (s1 '$x) (s2 '$y))
     (unless ($listp ode) (setf ode `((mlist) ,ode)))
     ;; parse arguments and prepare string cmd with the equation(s)
@@ -116,7 +119,8 @@
                                     (expr_to_str (third ode)) "\"")))
           (2 (setq cmd (concatenate 'string " -dydx \""
                                     (expr_to_str (second ode)) "\"")))
-          (t (merror "Argument must be either dydx or [dxdt, dydt]")))
+          (t (merror 
+              (intl:gettext "Argument must be either dydx or [dxdt, dydt]"))))
     
     ;; parse options and copy them to string opts
     (cond (options
