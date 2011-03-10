@@ -126,11 +126,13 @@
              ge-ne-riert
              ge-spei-chert
              Glei-chung
+             Glei-chung-en
              Gleit-kom-ma-zah-len
              Glo-ba-le
              Gnuplot
              Gra-fik-for-mat
              Gra-fik-kom-man-dos
+             Hilfs-pro-gram-me
              In-for-ma-tio-nen
              In-te-gra-tions-in-ter-valls
              Iso-li-nien
