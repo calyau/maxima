@@ -472,24 +472,25 @@ Incorrect syntax: # is not a prefix operator
 @node Functions and Variables for Expressions,  , Syntax, Expressions
 @section Functions and Variables for Expressions
 
-@deffn {Function} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@c -----------------------------------------------------------------------------
+@deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
 @deffnx {Function} at (@var{expr}, @var{eqn})
-Evaluates the expression @var{expr} with
-the variables assuming the values as specified for them in the list of
-equations @code{[@var{eqn_1}, ..., @var{eqn_n}]} or the single equation @var{eqn}.
 
-If a subexpression depends on any of the variables for which a value is specified
-but there is no atvalue specified and it can't be otherwise evaluated,
-then a noun form of the @code{at} is returned which displays in a two-dimensional form.
+Evaluates the expression @var{expr} with the variables assuming the values as
+specified for them in the list of equations @code{[@var{eqn_1}, ...,
+@var{eqn_n}]} or the single equation @var{eqn}.
 
-@code{at} carries out multiple substitutions in series, not parallel.
+If a subexpression depends on any of the variables for which a value is
+specified but there is no @code{atvalue} specified and it can't be otherwise
+evaluated, then a noun form of the @code{at} is returned which displays in a
+two-dimensional form.
 
-See also @code{atvalue}.
-For other functions which carry out substitutions,
+@code{at} carries out multiple substitutions in parallel.
+
+See also @code{atvalue}.  For other functions which carry out substitutions,
 see also @code{subst} and @code{ev}.
 
 Examples:
-@c COPIED FROM example(at)
 
 @c ===beg===
 @c atvalue (f(x,y), [x = 0, y = 1], a^2);
@@ -520,11 +521,13 @@ Examples:
 (%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
                   dx                         dx
 (%i5) at (%, [x = 0, y = 1]);
+@group
                                          !
               2              d           !
 (%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
                              dx          !
                                          !x = 0, y = 1
+@end group
 @end example
 
 @opencatbox
