@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.18 2011-03-09 11:27:58 villate Exp $
+#       $Id: Plot3d.tcl,v 1.19 2011-03-12 17:29:04 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -703,20 +703,14 @@ proc mkPlot3d { win  args } {
     makeLocal $win buttonFont c
     [winfo parent $c].position config -text {}
     bind $c <Motion> ""
-#   bind $c <Motion> "showPosition3d $win %x %y"
-    button $wb.rotate -text [mc "Rotate"] -command "setForRotate $win" -font $buttonFont
 #    setBalloonhelp $win $wb.rotate [mc {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}]
 
     #$win.position config -width 15
-    pack $wb.rotate -side left
     setForRotate $win
 }
 
 proc doConfig3d { win } {
-
-
     desetq "wb1 wb2" [doConfig $win]
-
     makeLocal $win buttonFont
 
     mkentry $wb1.zfun [oloc $win zfun]  "z=f(x,y)" $buttonFont
