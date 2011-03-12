@@ -95,7 +95,8 @@
   grad)
 
 ;; Integral of the Bessel function wrt z
-(defun bessel-j-integral-2 (v z)
+(defun bessel-j-integral-2 (v unused)
+  (declare (ignore unused))
   (case v
     (0 
      ;; integrate(bessel_j(0,z)
