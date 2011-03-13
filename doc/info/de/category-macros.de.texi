@@ -117,6 +117,7 @@
              Dol-lar-zei-chen
              Ei-gen-schafts-lis-te
              ein-ge-schlos-sen
+             E-le-men-te
              ent-hal-ten
              Er-geb-nis
              Ex-po-nen-tial-funk-tion
@@ -132,6 +133,7 @@
              Gnuplot
              Gra-fik-for-mat
              Gra-fik-kom-man-dos
+             Grenz-wer-te
              Hilfs-pro-gram-me
              In-for-ma-tio-nen
              In-te-gra-tions-in-ter-valls
@@ -154,6 +156,7 @@
              Trans-po-nier-ung
              un-ge-ra-de
              ver-ar-bei-tet
+             Ver-ar-bei-tung
              ver-ein-fach-en
              Ver-ein-fach-ung
              ver-ein-facht
@@ -164,6 +167,7 @@
              wei-ter-hin
              wer-ten
              wer-tet
+             Wink-el-funk-tio-nen
              wxMaxima
              Xmaxima
              Zei-chen

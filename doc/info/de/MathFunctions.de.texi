@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 27.02.2011
+@c Revision    : 12.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{ceiling} um drei Stellen erh@"oht.
 
 Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
-inbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
+insbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
 Ausdruck mit den Funktionen @mref{floor} oder @mref{round} ist.  Weiterhin
 werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
 herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
@@ -221,7 +221,7 @@ kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{floor} um drei Stellen erh@"oht.
 
 Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
-inbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
+insbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
 Ausdruck mit den Funktionen @mref{ceiling} oder @mref{round} ist.  Weiterhin
 werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
 herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
@@ -448,7 +448,7 @@ kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{round} um drei Stellen erh@"oht.
 
 Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
-inbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
+insbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
 Ausdruck mit den Funktionen @mref{ceiling} oder @mref{floor} ist.  Weiterhin
 werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
 herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
@@ -1050,9 +1050,9 @@ Die Funktion @code{binomial} ist f@"ur das numerische und symbolische Rechnen
 geeignet.
 
 Sind die Argumente @var{x} oder @var{y} ganze Zahlen, wird der
-Binomialkoeffizient numerisch berechnet.  Sind die Argumente @var{x} und @var{y}
-reelle oder komplexe Gleitkommazahlen, wird der Binomialkoeffizent mit der 
-entsprechenden verallgemeinerten Fakult@"at berechnet.  Siehe auch
+Binomialkoeffizient numerisch berechnet.  Sind die Argumente @var{x} und
+@var{y} reelle oder komplexe Gleitkommazahlen, wird der Binomialkoeffizient
+mit der entsprechenden verallgemeinerten Fakult@"at berechnet.  Siehe auch
 @mref{factorial} und @mrefdot{gamma}
 
 Ist das Argument @var{y} oder die Differenz @var{x-y} eine ganz Zahl, wird
@@ -1484,11 +1484,11 @@ Beispiel:
 @anchor{exp}
 @deffn {Funktion} exp (@var{z})
 
-Ist die Exponentialfunktion.  Die Exponentialfunkton @code{exp} wird von Maxima
+Ist die Exponentialfunktion.  Die Exponentialfunktion @code{exp} wird von Maxima
 sofort zu @code{%e^@var{z}} vereinfacht und tritt in vereinfachten
 Ausdr@"ucken nicht auf.  Maxima vereinfacht die Exponentialfunktion daher wie
-die allgmeine Exponentiation @mrefdot{^}  Dar@"uberhinaus kennt Maxima spezielle
-Regeln f@"ur die Vereinfachung der Exponentialfunktion.
+die allgemeine Exponentiation @mrefdot{^}  Dar@"uberhinaus kennt Maxima
+spezielle Regeln f@"ur die Vereinfachung der Exponentialfunktion.
 
 Ist das Argument @var{z} der Exponentialfunktion eine ganze oder rationale
 Zahl wird ein vereinfachter Ausdruck zur@"uckgegeben.  Ist das Argument
@@ -1545,33 +1545,26 @@ Maxima kennt viele spezielle unbestimmte und bestimmte Integrale mit der
 Exponentialfunktion.
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{log}
-@deffn {Funktion} log (@var{x})
+@deffn {Funktion} log (@var{z})
 
-@c Represents the natural (base @math{e}) logarithm of @var{x}.
-
-Ist der nat@"urliche Logaritmus zur Basis @math{e}.
-
-@c Maxima does not have a built-in function for the base 10 logarithm or other 
-@c bases. @code{log10(x) := log(x) / log(10)} is a useful definition.
+Ist der nat@"urliche Logarithmus zur Basis @math{e}.  Die Logarithmusfunktion
+ist f@"ur das numerische und symbolische Rechnen geeignet.
 
 Maxima hat keine vordefinierte Logarithmusfunktion zur Basis 10 oder anderen 
 Basen.  Eine einfache Definition ist zum Beispiel 
-@code{log10(x) := log(x)/log(10)}.
+@code{log10(x) := log(x)/log(10)}.  Mit dem Kommando @code{load(log10)} kann ein
+Paket geladen werden, dass eine dekadische Logarithmusfunktion @code{log10}
+definiert.
 
-@c Simplification and evaluation of logarithms is governed by several global 
-@c flags:
+Ist das Argument @var{z} der Logarithmusfunktion eine ganze oder rationale
+Zahl wird ein vereinfachter Ausdruck zur@"uckgegeben.  Ist das Argument
+@var{z} eine reelle oder komplexe Gleitkommazahl wird ein numerisches
+Ergebnis berechnet.
 
-F@"ur die Vereinfachung und Auswertung der Logarithmusfunktion hat Maxima
-verschiedene Optionsvariablen:
-
-@c @code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}. If it 
-@c is set to @code{all}, @code{log(a*b)} will also simplify to 
-@c @code{log(a)+log(b)}. If it is set to @code{super}, then @code{log(a/b)} will
-@c also simplify to @code{log(a)-log(b)} for rational numbers @code{a/b}, 
-@c @code{a#1}.  (@code{log(1/b)}, for @code{b} integer, always simplifies.)  If
-@c it is set to @code{false}, all of these simplifications will be turned off.
+Die folgenden Optionsvariablen kontrollieren die Vereinfachung und Auswertung
+der Logarithmusfunktion:
 
 @table @code
 @item logexpand
@@ -1581,40 +1574,16 @@ vereinfacht.  Mit den Wert @code{super} vereinfacht Maxima weiterhin
 @code{log(a/b)} zu @code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl 
 ist.  @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht.  Hat
 die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
-Vereinfachungen ausgeschaltet.
-
-@c @code{logsimp} - if @code{false} then no simplification of @code{%e} to a 
-@c power containing @code{log}'s is done.
+Vereinfachungen ausgeschaltet.  Das ist der Standardwert.
 
 @item logsimp
 Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
-Exponentialfunktionen @code{exp}, die Logarithmusfunktionen im Exponenten
+Exponentialfunktionen @mrefcomma{exp} die Logarithmusfunktionen im Exponenten
 enthalten, nicht vereinfacht.
-
-@c @code{lognumer} - if @code{true} then negative floating point arguments to
-@c @code{log} will always be converted to their absolute value before the 
-@c @code{log} is taken.  If @code{numer} is also @code{true}, then negative 
-@c integer arguments to @code{log} will also be converted to their absolute 
-@c value.
-
-@item lognumer
-Hat die Optionsvariable @code{lognumer} den Wert @code{true}, wird von
-negativen Gleitkommazahlen der Absolutwert genommen, bevor der Logarithmus
-berechnet wird.
-
-@c @code{lognegint} - if @code{true} implements the rule @code{log(-n)} ->
-@c @code{log(n)+%i*%pi} for @code{n} a positive integer.
 
 @item lognegint
 Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
-@code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur postive @code{n} vereinfacht.
-
-@c @code{%e_to_numlog} - when @code{true}, @code{r} some rational number, and
-@c @code{x} some expression, @code{%e^(r*log(x))} will be simplified into
-@c @code{x^r}.  It should be noted that the @code{radcan} command also
-@c does this transformation, and more complicated transformations of this ilk as 
-@c well. The @code{logcontract} command "contracts" expressions containing 
-@c @code{log}.
+@code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur positive @code{n} vereinfacht.
 
 @item %e_to_numlog
 Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
@@ -1622,28 +1591,76 @@ Ausdruck @code{%e^(r*log(x))} zu @code{x^r} vereinfacht.  Dabei sind @code{r}
 eine rationale Zahl und @code{x} ein beliebiger Ausdruck.  Die Funktion 
 @code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
 @end table
+
+Die Logarithmusfunktion wird automatisch auf die Elemente von Listen und
+Matrizen sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
+@mrefdot{distribute_over}
+
+Beispiele:
+
+Verschiedene Beispiele mit der Logarithmusfunktion.
+
+@example
+(%i1) log(%e);
+(%o1)                           1
+(%i2) log(100.0);
+(%o2)                   4.605170185988092
+(%i3) log(2.5+%i);
+(%o3)       .3805063771123649 %i + .9905007344332917
+(%i4) taylor(log(1+x),x,0,5);
+                       2    3    4    5
+                      x    x    x    x
+(%o4)/T/          x - -- + -- - -- + -- + . . .
+                      2    3    4    5
+(%i5) rectform(log(x+%i*y));
+                       2    2
+                  log(y  + x )
+(%o5)             ------------ + %i atan2(y, x)
+                       2
+(%i6) limit(log(x),x,0,plus);
+(%o6)                         minf
+(%i7) integrate(log(z)^n,z);
+                                                    - n - 1
+(%o7) - gamma_incomplete(n + 1, - log(z)) (- log(z))
+                                                            n + 1
+                                                      log(z)
+(%i8) laplace(log(t),t,s);
+@group
+                        - log(s) - %gamma
+(%o8)                   -----------------
+                                s
+@end group
+(%i9) depends(y,x);
+(%o9)                        [y(x)]
+(%i10) ode2(diff(y,x)+log(y)+1,y,x);
+            - 1
+(%o10)    %e    expintegral_e(1, - log(y) - 1) = x + %c
+@end example
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{logabs}
 @defvr {Optionsvariable} logabs
 Standardwert: @code{false}
 
-@c When doing indefinite integration where logs are generated, e.g. 
-@c @code{integrate(1/x,x)}, the answer is given in terms of @code{log(abs(...))}
-@c if @code{logabs} is @code{true}, but in terms of @code{log(...)} if 
-@c @code{logabs} is @code{false}.  For definite integration, the 
-@c @code{logabs:true} setting is used, because here "evaluation" of the 
-@c indefinite integral at the endpoints is often needed.
+Treten bei der unbestimmten Integration Logarithmusfunktionen im Ergebnis auf,
+so wird der Betrag der Argumente der Logarithmusfunktionen gebildet, wenn die
+Optionsvariable @code{logabs} den Wert @code{true} hat.
 
-Werden unbestimmte Integrale mit Logarithmusfunktionen erzeugt, zum Beispiel
-@code{integrate(1/x,x)}, wird der Betrag der Argumente der 
-Logarithmusfunktionen gebildet @code{log(abs(...))}, wenn die Optionsvariable
-@code{logabs} den Wert @code{true} hat.  Ist der Wert @code{false} werden keine
-Betr@"age gebildet @code{log(...)}.
+Beispiele:
 
-Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
-@code{logabs} zu den Wert @code{false}.
+@example
+(%i1) logabs:true;
+(%o1)                         true
+(%i2) integrate(1/x,x);
+(%o2)                      log(abs(x))
+(%i3) integrate(1/(1+x^3),x);
+                                                   2 x - 1
+            ! 2        !                      atan(-------)
+        log(!x  - x + 1!)   log(abs(x + 1))        sqrt(3)
+(%o3) - ----------------- + --------------- + -------------
+                6                  3             sqrt(3)
+@end example
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1651,54 +1668,52 @@ Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
 @deffn  {Funktion} logarc (@var{expr})
 @deffnx {Optionsvariable} logarc
 
-@c When the global variable @code{logarc} is @code{true}, inverse circular and 
-@c hyperbolic functions are replaced by equivalent logarithmic functions.
-@c The default value of @code{logarc} is @code{false}.
-
 Hat die Optionsvariable @code{logarc} den Wert @code{true}, werden inverse
 Winkel- und Hyperbelfunktionen durch Logarithmusfunktionen ersetzt.  Der 
 Standardwert von @code{logarc} ist @code{false}.
 
-@c The function @code{logarc(@var{expr})} carries out that replacement for an 
-@c expression @var{expr} without setting the global variable @code{logarc}.
-
 Die Funktion @code{logarc(@var{expr})} f@"uhrt diese Ersetzung aus, ohne dass 
 die Optionsvariable @code{logarc} gesetzt wird.
+
+Beispiele:
+
+@example
+(%i1) logarc(asin(x));
+                                     2
+(%o1)             - %i log(sqrt(1 - x ) + %i x)
+(%i2) logarc:true;
+(%o2)                         true
+(%i3) asin(x);
+                                     2
+(%o3)             - %i log(sqrt(1 - x ) + %i x)
+@end example
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{logconcoeffp}
 @defvr {Optionsvariable} logconcoeffp
 Standardwert: @code{false}
 
-@c Controls which coefficients are contracted when using @code{logcontract}.  
-@c It may be set to the name of a predicate function of one argument.  E.g. if 
-@c you like to generate SQRTs, you can do @code{logconcoeffp:'logconfun$
-@c logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
-@c @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
+Der Optionsvariablen @code{logconcoeffp} kann eine Aussagefunktion mit einem
+Argument zugewiesen werden, die kontrolliert, welche Koeffizienten von
+der Funktion @mref{logcontract} zusammengezogen werden.  Sollen zum Beispiel
+Wurzeln generiert werden, kann folgende Aussagefunktion definiert werden:
 
-Die Optionsvariable @code{logconcoeffp} kontrolliert, welche Koeffizienten von
-der Funktion @code{logcontract} zusammengezogen werden.  Der Optionsvariablen 
-kann der Name einer Aussagefunktion mit einem Argument zugewiesen werden.
-Sollen zum Beispiel Wurzeln generiert werden, kann folgende Definition 
-verwendet werden: 
 @example
 logconcoeffp:'logconfun$ 
 logconfun(m) := featurep(m,integer) or ratnump(m)$
 @end example
-Dann hat @code{logcontract(1/2*log(x))} das Ergebnis @code{log(sqrt(x))}.
+
+Das Kommando @code{logcontract(1/2*log(x))} liefert nun das Ergebnis
+@code{log(sqrt(x))}.
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 20.03.2011 DK -----------------------------------------------------------
 @anchor{logcontract}
 @deffn {Funktion} logcontract (@var{expr})
 
-@c Recursively scans the expression @var{expr}, transforming subexpressions of 
-@c the form @code{a1*log(b1) + a2*log(b2) + c} into 
-@c @code{log(ratsimp(b1^a1 * b2^a2)) + c}
-
 Der Ausdruck @var{expr} wird rekursiv nach Ausdr@"ucken der Form 
-@code{a1*log(b1) + a2*log(b2) + c} abgesucht.  Diese werden zu 
+@code{a1*log(b1) + a2*log(b2) + c} durchsucht.  Diese werden zu
 @code{log(ratsimp(b1^a1 * b2^a2)) + c} transformiert.
 
 @example
@@ -1708,40 +1723,26 @@ Der Ausdruck @var{expr} wird rekursiv nach Ausdr@"ucken der Form
 (%o2)                     a log(x  y )
 @end example
 
-@c If you do @code{declare(n,integer);} then @code{logcontract(2*a*n*log(x));} 
-@c gives @code{a*log(x^(2*n))}.  The coefficients that "contract" in this manner 
-@c are those such as the 2 and the @code{n} here which satisfy
-@c @code{featurep(coeff,integer)}.  The user can control which coefficients are
-@c contracted by setting the option @code{logconcoeffp} to the name of a 
-@c predicate function of one argument.  E.g. if you like to generate SQRTs, you 
-@c can do @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or 
-@c ratnump(m)$} . Then @code{logcontract(1/2*log(x));} will give 
-@c @code{log(sqrt(x))}.
-
-Wird die Variable @var{n} mit dem Kommando @code{declare(n, integer)} als eine 
+Wird die Variable @var{n} mit dem Kommando @code{declare(n, integer)} als eine
 ganze Zahl deklariert, dann wird  @code{logcontract(2*a*n*log(x))} zu
 @code{a*log(x^(2*n))} vereinfacht.  Die Koeffizienten, die zusammengezogen 
 werden, sind in diesem Fall die Zahl 2 und die Variable @var{n}, welche
 die folgende Aussage erf@"ullen @code{featurep(coeff, integer)}.
 Der Nutzer kann kontrollieren, welche Koeffizienten zusammengezogen werden.
-Dazu wird der Optionsvariablen @code{logconcoeffp} eine Aussagefunktion mit 
+Dazu wird der Optionsvariablen @mref{logconcoeffp} eine Aussagefunktion mit 
 einem Argument zugewiesen.  Sollen zum Beispiel Wurzeln generiert werden, kann 
 folgende Definition verwendet: @code{logconcoeffp: 'logconfun$ logconfun(m) :=
-featurep(m,integer) or ratnump(m)$}.  Dann ergibt sich f@"ur 
+featurep(m,integer) or ratnump(m)$}.  Dann hat das Kommando
 @code{logcontract(1/2*log(x))} das Ergebnis @code{log(sqrt(x))}.
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{logexpand}
 @defvr {Optionsvariable} logexpand
 Standardwert: @code{true}
 
-@c Causes @code{log(a^b)} to become @code{b*log(a)}. If it is set to @code{all},
-@c @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If it is set to 
-@c @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)}
-@c for rational numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for integer 
-@c @code{b}, always simplifies.)  If it is set to @code{false}, all of these 
-@c simplifications will be turned off.
+Die Optionsvariable @code{logexpand} kontrolliert die Vereinfachung der
+Logarithmusfunktion @mrefdot{log}
 
 @code{log(a^b)} wird zu @code{b*log(a)} vereinfacht.  Hat @code{logexpand} den 
 Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} 
@@ -1752,76 +1753,172 @@ die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
 Vereinfachungen ausgeschaltet.
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{lognegint}
 @defvr {Optionsvariable} lognegint
 Standardwert: @code{false}
 
-@c If @code{true} implements the rule @code{log(-n)} -> @code{log(n)+%i*%pi} for
-@c @code{n} a positive integer.
-
 Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
-@code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur postive @code{n} vereinfacht.
+@code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur positive @code{n} vereinfacht.
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@anchor{lognummer}
-@defvr {Optionsvariable} lognumer
-Standardwert: @code{false}
-
-@c If @code{true} then negative floating point arguments to @code{log} will 
-@c always be converted to their absolute value before the @code{log} is taken.
-@c If @code{numer} is also @code{true}, then negative integer arguments to 
-@c @code{log} will also be converted to their absolute value.
-
-Hat die Optionsvariable @code{lognumer} den Wert @code{true}, wird von
-negativen Gleitkommazahlen der Absolutwert genommen, bevor der Logarithmus
-berechnet wird.
-@end defvr
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{logsimp}
 @defvr {Optionsvariable} logsimp
 Standardwert: @code{true}
 
-@c If @code{false} then no simplification of @code{%e} to a power containing 
-@c @code{log}'s is done.
-
 Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
-Exponentialfunktionen @code{exp}, die Logarithmusfunktionen im Exponenten
+Exponentialfunktionen @mrefcomma{exp} die Logarithmusfunktionen im Exponenten
 enthalten, nicht vereinfacht.
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{plog}
 @deffn {Funktion} plog (@var{x})
-
-@c Represents the principal branch of the complex-valued natural logarithm with 
-@c @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} zur@"uck.
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
+@anchor{rootsconmode}
+@defvr {Optionsvariable} rootsconmode
+Standardwert: @code{true}
+
+@code{rootsconmode} kontrolliert das Verhalten der Funktion 
+@code{rootscontract}.  Siehe die Funktion @mref{rootscontract} f@"ur Details.
+@end defvr
+
+@c --- 12.03.2011 DK -----------------------------------------------------------
+@anchor{rootscontract}
+@deffn {Funktion} rootscontract (@var{expr})
+
+Konvertiert Produkte von Wurzeln in Wurzeln von Produkten.  Zum Beispiel hat 
+@code{rootscontract(sqrt(x)*y^(3/2))} das Ergebnis @code{sqrt(x*y^3)}.
+
+Hat die Optionsvariable @mref{radexpand} den Wert @code{true} und die
+Optionsvariable @mref{domain} den Wert @code{real}, das sind die Standardwerte,
+wird @code{abs(x)} zu @code{sqrt(x^2)} vereinfacht.  Zum Beispiel hat
+@code{rootscontract(abs(x) * sqrt(y))} das Ergebnis @code{sqrt(x^2*y)}.
+
+Die Optionsvariable @mref{rootsconmode} kontrolliert das Ergebnis
+folgenderma@ss{}en:
+
+@example
+Problem             Wert             Ergebnis 
+                    rootsconmode     rootscontract
+      
+x^(1/2)*y^(3/2)     false            sqrt(x*y^3)
+x^(1/2)*y^(1/4)     false            sqrt(x)*y^(1/4)
+x^(1/2)*y^(1/4)     true             sqrt(x*sqrt(y))
+x^(1/2)*y^(1/3)     true             sqrt(x)*y^(1/3)
+x^(1/2)*y^(1/4)     all              (x^2*y)^(1/4)
+x^(1/2)*y^(1/3)     all              (x^3*y^2)^(1/6)
+@end example
+
+Hat @code{rootsconmode} den Wert @code{false}, kontrahiert @code{rootscontract}
+nur Faktoren mit rationalen Exponenten, die den gleichen Nenner haben.  Hat
+@code{rootsconmode} den Wert @code{all}, wird das kleinste gemeinsame Vielfache
+des Nenners der Faktoren verwendet, um die Faktoren zusammenzufassen.
+
+@"Ahnlich wie bei der Funktion @mref{logcontract} werden von
+@code{rootscontract} die Argumente unter der Wurzel mit der Funktion 
+@mref{ratsimp} vereinfacht.
+
+Beispiele:
+
+@example
+(%i1) rootsconmode: false$
+(%i2) rootscontract (x^(1/2)*y^(3/2));
+                                   3
+(%o2)                      sqrt(x y )
+(%i3) rootscontract (x^(1/2)*y^(1/4));
+                                   1/4
+(%o3)                     sqrt(x) y
+(%i4) rootsconmode: true$
+(%i5) rootscontract (x^(1/2)*y^(1/4));
+(%o5)                    sqrt(x sqrt(y))
+@group
+(%i6) rootscontract (x^(1/2)*y^(1/3));
+                                   1/3
+(%o6)                     sqrt(x) y
+@end group
+(%i7) rootsconmode: all$
+(%i8) rootscontract (x^(1/2)*y^(1/4));
+                              2   1/4
+(%o8)                       (x  y)
+(%i9) rootscontract (x^(1/2)*y^(1/3));
+                             3  2 1/6
+(%o9)                      (x  y )
+(%i10) rootsconmode: false$
+(%i11) rootscontract (sqrt(sqrt(x) + sqrt(1 + x))
+                    *sqrt(sqrt(1 + x) - sqrt(x)));
+(%o11)                          1
+(%i12) rootsconmode: true$
+(%i13) rootscontract (sqrt(5+sqrt(5)) - 5^(1/4)*sqrt(1+sqrt(5)));
+(%o13)                          0
+@end example
+@end deffn
+
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{sqrt}
-@deffn {Funktion} sqrt (@var{x})
+@deffn {Funktion} sqrt (@var{z})
 
-@c The square root of @var{x}. It is represented internally by 
-@c @code{@var{x}^(1/2)}.  See also @code{rootscontract}.
+Ist die Wurzelfunktion.  Die Wurzelfunktion wird von Maxima sofort zu
+@code{@var{x}^(1/2)} vereinfacht und tritt in Ausdr@"ucken nicht auf.
 
-Ist die Wurzelfunktion.  Intern stellt Maxima die Wurzelfunktion als
-@code{sqrt@var{x}^(1/2)} dar.  Siehe auch die Funktion @code{rootscontract}.
+Die Wurzelfunktion ist f@"ur das numerische und symbolische Rechnen geeignet.
+Ist das Argument @var{z} der Wurzelfunktion eine Gleitkommazahl, wird ein
+numerisches Ergebnis zur@"uckgegeben.  F@"ur ganze und rationale Zahlen wird
+die Wurzelfunktion vereinfacht.  Die numerische Berechnung kann mit den 
+Optionsvariablen und Auswertungsschaltern @mref{numer} und
+@mref{float} kontrolliert werden.
 
-@c @code{radexpand} if @code{true} will cause nth roots of factors of a product
-@c which are powers of n to be pulled outside of the radical, e.g.
-@c @code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is 
-@c @code{true}.
-
-Hat die Optionsvariable @code{radexpand} den Wert @code{true}, werden die
+Hat die Optionsvariable @mref{radexpand} den Wert @code{true}, werden die
 n-ten Wurzeln von Faktoren unter einer Wurzel aus der Wurzel herausgezogen.
 So wird zum Beispiel @code{sqrt(16*x^2)} nur dann zu @code{4*x} vereinfacht,
 wenn @code{radexpand} den Wert @code{true} hat.
+
+Siehe auch die Funktionen @mref{rootscontract} und @mref{sqrtdenest} f@"ur die
+Vereinfachung von Ausdr@"ucken, die die Wurzelfunktion enthalten.
+
+Beispiele:
+
+Verschiedene Beispiele mit der Wurzelfunktion.
+
+@example
+(%i1) sqrt(4);
+(%o1)                           2
+(%i2) sqrt(24);
+(%o2)                       2 sqrt(6)
+(%i3) sqrt(2.0);
+(%o3)                   1.414213562373095
+(%i4) taylor(sqrt(1+x),x,0,5);
+                       2    3      4      5
+                  x   x    x    5 x    7 x
+(%o4)/T/      1 + - - -- + -- - ---- + ---- + . . .
+                  2   8    16   128    256
+(%i5) rectform(sqrt(x+%i*y));
+           2    2 1/4     atan2(y, x)
+(%o5) %i (y  + x )    sin(-----------)
+                               2
+                                      2    2 1/4     atan2(y, x)
+                                  + (y  + x )    cos(-----------)
+                                                          2
+(%i6) rectform(sqrt(x+%i*y));
+@group
+           2    2 1/4     atan2(y, x)
+(%o6) %i (y  + x )    sin(-----------)
+                               2
+                                      2    2 1/4     atan2(y, x)
+                                  + (y  + x )    cos(-----------)
+                                                          2
+@end group
+(%i7) integrate(sqrt(t)*(t+1)^-2,t,0,1);
+                             %pi - 2
+(%o7)                        -------
+                                4
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1839,28 +1936,12 @@ wenn @code{radexpand} den Wert @code{true} hat.
 @subsection Einf@"uhrung in Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
-@c Maxima has many trigonometric functions defined.  Not all trigonometric
-@c identities are programmed, but it is possible for the user to add many of 
-@c them using the pattern matching capabilities of the system. The trigonometric
-@c functions defined in Maxima are: 
-@c @code{acos}, @code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
-@c @code{acsch}, @code{asec}, @code{asech}, @code{asin},
-@c @code{asinh}, @code{atan}, @code{atanh}, @code{cos},
-@c @code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch},
-@c @code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan},
-@c and @code{tanh}.  
-@c There are a number of commands especially for handling trigonometric 
-@c functions, see @code{trigexpand}, @code{trigreduce}, and the switch 
-@c @code{trigsign}.  Two share packages extend the simplification rules built 
-@c into Maxima, @code{ntrig} and @code{atrig1}. 
-@c Do @code{describe(@var{command})} for details.
-
 Maxima kennt viele Winkel- und Hyperbelfunktionen.  Nicht alle Identit@"aten 
 f@"ur Winkel- und Hyperbelfunktionen sind programmiert, aber es ist m@"oglich 
 weitere Identit@"aten mit der F@"ahigkeit der Erkennung von Mustern 
 hinzuzuf@"ugen.
 
-Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
+Maxima kennt die folgenden Winkel- und Hyperbelfunktionen sowie deren Inverse:
 
 @verbatim
      sin       cos       tan
@@ -1878,35 +1959,22 @@ Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 @subsection Funktionen und Variablen f@"ur Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} acos (@var{x})
--- Arkuskosinus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} acot (@var{x})
--- Arkuskotangens.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} acsc (@var{x})
--- Arkuskosekans.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} asec (@var{x})
--- Arkussekans.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} asin (@var{x})
--- Arkussinus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
+@anchor{asin}
+@anchor{acos}
 @anchor{atan}
-@deffn {Funktion} atan (@var{x})
--- Arkustangens.
+@anchor{acot}
+@anchor{acsc}
+@anchor{asec}
+@deffn  {Funktion} asin (@var{z})
+@deffnx {Funktion} acos (@var{z})
+@deffnx {Funktion} atan (@var{z})
+@deffnx {Funktion} acot (@var{z})
+@deffnx {Funktion} acsc (@var{z})
+@deffnx {Funktion} asec (@var{z})
+
+Die inversen trigonometrischen Funktionen: Arkussinus, Arkuskosinus,
+Arkustangens, Arkuskotanges, Arkuskosekans und Arkussekans.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -1920,138 +1988,100 @@ Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 bis @code{%pi} zur@"uck.
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} cos (@var{x})
--- Kosinus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} cot (@var{x})
--- Kotangens.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} csc (@var{x})
--- Kosekans.
-
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} sec (@var{x})
--- Sekans.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 12.03.2011 DK -----------------------------------------------------------
 @anchor{sin}
-@deffn {Funktion} sin (@var{x})
+@anchor{cos}
+@anchor{tan}
+@anchor{cot}
+@anchor{csc}
+@anchor{sec}
+@deffn {Funktion}  sin (@var{z})
+@deffnx {Funktion} cos (@var{z})
+@deffnx {Funktion} tan (@var{z})
+@deffnx {Funktion} cot (@var{z})
+@deffnx {Funktion} csc (@var{z})
+@deffnx {Funktion} sec (@var{z})
 
-Die Sinusfunktion.
+Die Winkelfunktionen: Sinus, Kosinus, Tangens, Kotangens, Kosekans und Sekans.
 
-Die Sinusfunktion kann f@"ur reelle und komplexe Gleitkommazahlen in doppelter
-und in beliebiger Genauigkeit berechnet werden.  Ist das Argument eine ganze
-oder rationale Zahl, wird die Sinusfunktion nicht numerisch berechnet und eine
-Substantivform zur@"uckgegeben.  Die numerische Berechnung kann mit der 
-Optionsvariablen @mref{numer} oder der Funktion @mref{float} erzwungen werden.
+Die Winkelfunktionen k@"onnen f@"ur reelle und komplexe Gleitkommazahlen in
+doppelter und in beliebiger Genauigkeit berechnet werden.  Ist das Argument 
+eine ganze oder rationale Zahl, werden die Winkelfunktionen nicht numerisch
+berechnet, sondern vereinfacht.  Die numerische Berechnung kann mit den
+Optionsvariablen und Auswertungsschaltern @mref{numer} und
+@mref{float} erzwungen werden.
 
-Die Sinusfunktion ist eine ungerade Funktion und hat Spiegelsymmetrie.  Maxima 
-wendet diese Symmetrieeigenschaften automatisch f@"ur die Sinusfunktion an.
+Die Winkelfunktionen sind gerade oder ungerade und haben Spiegelsymmetrie.
+Maxima wendet diese Symmetrieeigenschaften automatisch bei bei der Vereinfachung
+von Ausdr@"ucken mit Winkelfunktionen an.
 
-Ist das Argument @var{x} eine Matrix, eine Liste oder eine Gleichung wird die
-Sinusfunktion auf die Elemente der Matrix, der Liste oder auf die beiden Seiten
-der Gleichung angewendet.  Dieses Verhalten wird mit der Optionsvariablen
+Ist das Argument @var{z} eine Matrix, eine Liste oder eine Gleichung werden die
+Winkelfunktionen auf die Elemente der Matrix, der Liste oder auf die beiden
+Seiten der Gleichung angewendet.  Dieses Verhalten wird von der Optionsvariablen
 @mref{distribute_over} kontrolliert.
 
-Die Sinusfunktion kann f@"ur symbolische Rechnungen verwendet werden.  Maxima
-kann Ausdr@"ucke mit der Sinusfunktion differenzieren und integrieren, 
-Grenzwerte mit der Sinusfunktion bestimmen sowie Gleichungen und 
-Differentialgleichungen mit der Sinusfunktion l@"osen.
+Winkelfunktionen k@"onnen f@"ur das symbolische Rechnen verwendet werden.
+Maxima kann Ausdr@"ucke mit Winkelfunktionen differenzieren und integrieren,
+Grenzwerte bestimmen sowie Gleichungen und  Differentialgleichungen mit
+Winkelfunktionen l@"osen.
 
-Das Argument der Sinusfunktion kann eine Taylorreihe sein.  In diesem Fall
-wird die Taylorreihenentwicklung f@"ur die Sinusfunktion vollst@"andig 
+Das Argument der Winkelfunktionen kann eine Taylorreihe sein.  In diesem Fall
+wird die Taylorreihenentwicklung f@"ur die Winkelfunktion vollst@"andig
 ausgef@"uhrt.
 
-Die folgenden Optionsvariablen kontrollieren die Vereinfachung der 
-Sinusfunktion:
+Die folgenden Optionsvariablen kontrollieren die Vereinfachung der
+Winkelfunktionen:
 
 @table @code
 
 @item distribute_over
-Hat die Optionsvariable den Wert @code{true} und ist das Argument der 
-Sinusfunktion eine Matrix, Liste oder Gleichung wird die Funktion auf die 
-Elemente oder beiden Seiten der Gleichung angewendet.  Der Standardwert ist 
-@code{true}.
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und ist das
+Argument der Winkelfunktion eine Matrix, Liste oder Gleichung wird die Funktion
+auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der Standardwert
+ist @code{true}.
 
 @item %piargs
-Hat die Optionsvariable den Wert @code{true}, vereinfacht die Sinusfunktion
-f@"ur ganzahlige und halbzahlige Vielfache sowie Vielfache von @code{1/3} und 
-@code{1/4} von @code{%pi}.  Der Standardwert ist @code{true}.
+Hat die Optionsvariable @mref{%piargs} den Wert @code{true}, werden die
+Winkelfunktionen f@"ur ganzzahlige und halbzahlige Vielfache der Konstanten
+@code{%pi} zu speziellen Werten vereinfacht.  Der Standardwert ist @code{true}.
 
 @item %iargs
-Hat die Optionsvariable den Wert @code{true} und ist das Argument der 
-Sinusfunktion ein Vielfaches von @code{%i} vereinfacht die Sinusfunktion zum 
-Sinus Hyperbolicus.  Der Standardwert ist @code{true}.
+Hat die Optionsvariable @mref{%iargs} den Wert @code{true} und ist das Argument
+der Winkelfunktion ein Vielfaches der imagin@"aren Einheit @code{%i} werden die
+Winkelfunktionen zu Hyperbelfunktionen vereinfacht.  Der Standardwert ist
+@code{true}.
 
 @item trigsign
-Hat die Optionsvariable den Wert @code{true}, wird die Eigenschaften, dass 
-der Sinus eine ungerade Funktion ist, angewendet, zum Beispiel vereinfacht 
-@code{sin(-x)} zu @code{-sin(x)}.  Der Standardwert ist @code{true}.
-
-@item triginverses
-Hat die Optionsvariable den Wert @code{true} und ist das Argument eine inverse
-Winkelfunktion vereinfacht die Sinusfunktion zu einem einfachen algebraischen
-Ausdruck, zum Beispiel vereinfacht @code{sin(acos(x))} zu @code{sqrt(1-x^2)}.
+Hat die Optionsvariable @mref{trigsign} den Wert @code{true}, werden die gerade
+oder ungerade Symmetrie der Winkelfunktionen bei der Vereinfachung angewendet.
 Der Standardwert ist @code{true}.
 
+@item triginverses
+Hat die Optionsvariable @mref{triginverses} den Wert @code{true} und ist das
+Argument eine inverse Winkelfunktion vereinfachen die Winkelfunktionen zu einem
+einfachen algebraischen Ausdruck, zum Beispiel vereinfacht @code{sin(acos(x))}
+zu @code{sqrt(1-x^2)}.  Der Standardwert ist @code{true}.
+
 @item trigexpand
-Hat die Optionsvariable den Wert @code{true}, dann wird die Sinusfunktion f@"ur 
-ein Argument expandiert, das eine Summe oder ein Produkt mit einer ganzen Zahl 
-ist.  Der Standardwert ist @code{false}.
+Hat die Optionsvariable @mref{trigexpand} den Wert @code{true}, dann werden die
+Winkelfunktionen f@"ur ein Argument expandiert, das eine Summe oder ein Produkt
+mit einer ganzen Zahl ist.  Der Standardwert ist @code{false}.
 
 @item exponentialize
-Hat die Optionsvariable den Wert @code{true}, dann wird die Sinusfunktion in
-die Exponentialform transformiert.  Der Standardwert ist @code{false}.
+Hat die Optionsvariable @mref{exponentialize} den Wert @code{true}, dann werden
+die Winkelfunktionen in eine Exponentialform transformiert.  Der Standardwert
+ist @code{false}.
 
 @item halfangles
-Hat die Optionsvariable den Wert @code{true}, dann wird die Sinusfunktion f@"ur
-halbzahlige Argumente zu einem @"aquivalenten Ausdruck transformiert.  Der 
-Standardwert ist @code{false}.
-
-@end table
-
-F@"ur die Sinusfunktion hat Maxima die folgenden Eigenschaften definiert, die 
-mit dem Kommando @code{properties(sin)} angezeigt werden:
-
-@table @code
-@item mirror symmetry
-Die Sinusfunktion hat Spiegelsymmetrie.
-
-@item deftaylor
-Die Taylorreihenentwicklung der Sinusfunktion.
-
-@item integral
-Das Integral der Sinusfunktion.
-
-@item distributes over bags
-Die Sinusfunktion wird auf Elemente einer Matrix oder Liste oder auf beide
-Seiten einer Gleichung angewendet.
-
-@item rule
-Die Sinusfunktion ist eine ungerade Funktion.
-
-@item noun
-Die Sinusfunktion hat eine Verbform.
-
-@item gradef
-Die Ableitung der Sinusfunktion.
-
-@item transfun
-Die Sinusfunktion ist eine kompilierte Lisp-Funktion.
-
+Hat die Optionsvariable @mref{halfangles} den Wert @code{true}, dann werden die
+Winkelfunktionen f@"ur halbzahlige Argumente zu einem @"aquivalenten Ausdruck
+transformiert.  Der Standardwert ist @code{false}.
 @end table
 
 Beispiele:
 
-Numerische Berechnungen f@"ur Gleitkommazahlen:
+Im Folgenden werden Beispiele f@"ur die Sinusfunktion gezeigt.  Numerische
+Berechnungen f@"ur Gleitkommazahlen:
 
 @example
 (%i1) sin(1+%i);
@@ -2114,24 +2144,10 @@ Reihenentwicklung der Sinusfunktion:
 @end example
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} tan (@var{x})
--- Tangens.
-@end deffn
-
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{%piargs}
 @defvr {Optionsvariable} %piargs
 Standardwert: @code{true}
-
-@c When @code{%piargs} is @code{true}, trigonometric functions are simplified to
-@c algebraic constants when the argument is an integer multiple of
-@c @iftex
-@c @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
-@c @end iftex
-@c @ifnottex
-@c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
-@c @end ifnottex
 
 Hat @code{%piargs} den Wert @code{true}, werden Winkel- und Hyperbelfunktionen 
 sowie deren Inverse zu algebraischen Konstanten vereinfacht, wenn das Argument
@@ -2142,10 +2158,6 @@ ein ganzzahliges Vielfaches der folgenden Konstanten ist:
 @ifnottex
 @code{%pi}, @code{%pi/2}, @code{%pi/3}, @code{%pi/4} oder @code{%pi/6}.
 @end ifnottex
-
-@c Maxima knows some identities which can be applied when 
-@c are multiplied by an integer variable (that is, a symbol declared to be 
-@c integer).
 
 Maxima kennt weiterhin einige Identit@"aten, wenn die Konstante
 @iftex 
@@ -2194,15 +2206,6 @@ Beispiele:
 @end group
 @end example
 
-@c @iftex
-@c Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied 
-@c by an integer variable.
-@c @end iftex
-@c @ifnottex
-@c Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied 
-@c by an integer variable.
-@c @end ifnottex
-
 Weitere Identit@"aten werden angewendet, wenn
 @iftex 
 @math{\pi} und @math{\pi/2}
@@ -2228,15 +2231,6 @@ mit einer ganzzahligen Variable multipliziert werden.
 @defvr {Optionsvariable} %iargs
 Standardwert: @code{true}
 
-@c When @code{%iargs} is @code{true}, trigonometric functions are simplified to
-@c hyperbolic functions
-@c @iftex
-@c when the argument is apparently a multiple of the imaginary unit @math{i}.
-@c @end iftex
-@c @ifnottex
-@c when the argument is apparently a multiple of the imaginary unit @math{%i}.
-@c @end ifnottex
-
 Hat @code{%iargs} den Wert @code{true}, werden Winkelfunktionen zu 
 Hyperbelfunktionen vereinfacht, wenn das Argument ein Vielfaches der 
 imagin@"aren Einheit
@@ -2248,16 +2242,8 @@ imagin@"aren Einheit
 @end ifnottex
 ist.
 
-@c Even when the argument is demonstrably real, the simplification is applied;
-@c @iftex
-@c Maxima considers only whether the argument is a literal multiple of @math{i}.
-@c @end iftex
-@c @ifnottex
-@c Maxima considers only whether the argument is a literal multiple of @math{%i}.
-@c @end ifnottex
-
 Die Vereinfachung zu Hyperbelfunktionen wird auch dann ausgef@"uhrt, wenn das
-Argument offensichtlich reel ist.
+Argument offensichtlich reell ist.
 
 Beispiele:
 
@@ -2274,9 +2260,7 @@ Beispiele:
 @end group
 @end example
 
-@c Even when the argument is demonstrably real, the simplification is applied.
-
-Auch wenn das Argument offensichtlich reel ist, wird zu einer Hyperbelfunktion
+Auch wenn das Argument offensichtlich reell ist, wird zu einer Hyperbelfunktion
 vereinfacht.
 
 @example
@@ -2297,14 +2281,8 @@ vereinfacht.
 @defvr {Optionsvariable} halfangles
 Standardwert: @code{false}
 
-@c When @code{halfangles} is @code{true}, trigonometric functions of arguments 
-@c @code{@var{expr}/2} are simplified to functions of @var{expr}.
-
 Hat @code{halfangles} den Wert @code{true}, werden Winkel- und 
 Hyperbelfunktionen mit halbzahligen Argumenten @code{@var{expr}/2} vereinfacht.
-
-@c For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
-@c the half-angle simplifies to a simple formula:
 
 F@"ur ein reelles Argument @var{x} im Intervall @code{0 < x < 2*%pi} vereinfacht
 der Sinus f@"ur ein halbzahliges Argument zu einer einfachen Formel: 
@@ -2314,9 +2292,6 @@ der Sinus f@"ur ein halbzahliges Argument zu einer einfachen Formel:
                          ----------------
                              sqrt(2)
 @end example
-
-@c A complicated factor is needed to make this formula correct for all complex 
-@c arguments @var{z}:
 
 Ein komplizierter Faktor wird gebraucht, damit die Formel korrekt ist f@"ur ein
 komplexes Argument @var{z}:
@@ -2333,12 +2308,8 @@ komplexes Argument @var{z}:
                 ((- 1)                                          + 1))
 @end verbatim
 
-@c Maxima knows this factor and similar factors for the functions @code{sin}, 
-@c @code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 
-@c @math{z} these factors simplify accordingly.
-
-Maxima kennt diesen Faktor und @"ahnliche Faktoren f@"ur die Sinus, Cosinus, 
-Sinus Hyperbolicus und Cosinus Hyperbolicus Funktionen.  F@"ur spezielle 
+Maxima kennt diesen Faktor und @"ahnliche Faktoren f@"ur die Sinus, Kosinus,
+Sinus Hyperbolicus und Kosinus Hyperbolicus Funktionen.  F@"ur spezielle 
 Argumente @math{z} dieser Funktionen vereinfachen diese Funktionen entsprechend.
 
 Beispiele:
@@ -2371,11 +2342,6 @@ Beispiele:
 @anchor{ntrig}
 @defvr {Paket} ntrig
 
-@c The @code{ntrig} package contains a set of simplification rules that are
-@c used to simplify trigonometric function whose arguments are of the form
-@c @code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
-@c @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
-
 Das Paket @code{ntrig} enth@"alt Regeln, um Winkelfunktionen zu vereinfachen, 
 die Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben.  @var{f} ist eine 
 der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
@@ -2389,54 +2355,27 @@ dann von Maxima automatisch ausgef@"uhrt.
 @anchor{trigexpand}
 @deffn {Funktion} trigexpand (@var{expr})
 
-@c Expands trigonometric and hyperbolic functions of sums of angles and of 
-@c multiple angles occurring in @var{expr}. For best results, @var{expr} should
-@c be expanded. To enhance user control of simplification, this function expands
-@c only one level at a time, expanding sums of angles or multiple angles.  To 
-@c obtain full expansion into sines and cosines immediately, set the switch 
-@c @code{trigexpand: true}.
-
 Die Funktion @code{trigexpand} expandiert Winkel- und Hyperbelfunktionen im 
 Ausdruck @var{expr}, die Summen und Vielfache von Winkeln als Argument haben.
 Die besten Ergebnisse werden erzielt, wenn der Ausdruck @var{expr} zun@"achst
 expandiert wird.
 
-@c @code{trigexpand} is governed by the following global flags:
-
 Folgende Schalter kontrollieren @code{trigexpand}:
 
 @table @code
-@c @item trigexpand
-@c If @code{true} causes expansion of all expressions containing sin's and 
-@c cos's occurring subsequently.
-
 @item trigexpand
-Wenn @code{true}, werden Sinus- und Cosinus-Funktionen expandiert.
-
-@c @item halfangles
-@c If @code{true} causes half-angles to be simplified away.
+Wenn @code{true}, werden Sinus- und Kosinusfunktionen expandiert.
 
 @item halfangles
 Wenn @code{true}, werden Vereinfachungen f@"ur halbzahlige Argumente angewendet.
-
-@c @item trigexpandplus
-@c Controls the "sum" rule for @code{trigexpand}, expansion of sums (e.g.
-@c @code{sin(x + y)}) will take place only if @code{trigexpandplus} is 
-@c @code{true}.
 
 @item trigexpandplus
 Wenn @code{true}, werden Winkelfunktionen, die eine Summe als Argument haben,
 wie zum Beispiel @code{sin(x+y)}, vereinfacht.
 
-@c @item trigexpandtimes
-@c Controls the "product" rule for @code{trigexpand}, expansion of products 
-@c (e.g. @code{sin(2 x)}) will take place only if @code{trigexpandtimes} is 
-@c @code{true}.
-
 @item trigexpandtimes
 Wenn @code{true},  werden Winkelfunktionen, die ein Produkt als Argument haben,
 wie zum Beispiel @code{sin(2 x)}, vereinfacht.
-
 @end table
 
 Beispiele:
@@ -2459,13 +2398,8 @@ Beispiele:
 @defvr {Optionsvariable} trigexpandplus
 Standardwert: @code{true}
 
-@c @code{trigexpandplus} controls the "sum" rule for @code{trigexpand}.  Thus, 
-@c when the @code{trigexpand} command is used or the @code{trigexpand} switch 
-@c set to @code{true}, expansion of sums (e.g. @code{sin(x+y))} will take place 
-@c only if @code{trigexpandplus} is @code{true}.
-
 @code{trigexpandplus} kontrolliert die Vereinfachung von Winkelfunktionen mit
-der Funktion @code{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit Summen
+der Funktion @mref{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit Summen
 als Argumente auftreten.  Hat @code{trigexpandplus} den Wert @code{true},
 werden zum Beispiel Winkelfunktionen wie @code{sin(x+y)} vereinfacht.
 @end defvr
@@ -2475,13 +2409,8 @@ werden zum Beispiel Winkelfunktionen wie @code{sin(x+y)} vereinfacht.
 @defvr {Optionsvariable} trigexpandtimes
 Standardwert: @code{true}
 
-@c @code{trigexpandtimes} controls the "product" rule for @code{trigexpand}.  
-@c Thus, when the @code{trigexpand} command is used or the @code{trigexpand} 
-@c switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)}) will 
-@c take place only if @code{trigexpandtimes} is @code{true}.
-
 @code{trigexpandtimes} kontrolliert die Vereinfachung von Winkelfunktionen mit
-der Funktion @code{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit 
+der Funktion @mref{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit
 Produkten als Argumente auftreten.  Hat @code{trigexpandtimes} den Wert 
 @code{true}, werden zum Beispiel Winkelfunktionen wie @code{sin(2 x)} 
 vereinfacht.
@@ -2492,26 +2421,14 @@ vereinfacht.
 @defvr {Optionsvariable} triginverses
 Standardwert: @code{true}
 
-@c @code{triginverses} controls the simplification of the composition of 
-@c trigonometric and hyperbolic functions with their inverse functions.
-
-Kontrolliert die Vereinfachung, wenn das Argument einer Trigonometrischen oder
-Hyperbolischen Funktion eine der inversen Funktion ist.
-
-@c If @code{all}, both e.g. @code{atan(tan(@var{x}))} and 
-@c @code{tan(atan(@var{x}))} simplify to @var{x}.
+Kontrolliert die Vereinfachung, wenn das Argument einer Winkelfunktion oder
+Hyperbelfunktion eine der inversen Funktion ist.
 
 Hat @code{triginverses} den Wert @code{all}, vereinfachen beide Ausdr@"ucke
 @code{atan(tan(@var{x}))} und @code{tan(atan(@var{x}))} zum Wert @var{x}.
 
-@c If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))} simplification 
-@c is turned off.
-
 Hat @code{triginverses} den Wert @code{all}, wird
 @code{@var{arcfun}(@var{fun}(@var{x}))} nicht vereinfacht.
-
-@c If @code{false}, both the @code{@var{arcfun}(@var{fun}(@var{x}))} and
-@c @code{@var{fun}(@var{arcfun}(@var{x}))} simplifications are turned off.
 
 Hat @code{triginverses} den Wert @code{false}, werden
 @code{@var{arcfun}(@var{fun}(@var{x}))} und 
@@ -2523,16 +2440,11 @@ Hat @code{triginverses} den Wert @code{false}, werden
 @deffn  {Funktion} trigreduce (@var{expr}, @var{x})
 @deffnx {Funktion} trigreduce (@var{expr})
 
-@c Combines products and powers of trigonometric and hyperbolic sin's and cos's 
-@c of @var{x} into those of multiples of @var{x}. It also tries to eliminate 
-@c these functions when they occur in denominators.  If @var{x} is omitted then 
-@c all variables in @var{expr} are used.
-
-Produkte und Potenzen von Trigonometrischen und Hyperbolischen Sinus und Cosinus
-Funktionen mit dem Argument @var{x} werden zu Funktionen vereinfacht, die
-Vielfache von @var{x} enthalten.  @code{trigreduce} versucht auch, Sinus und
-Cosinus Funktionen in einem Nenner zu eleminieren.  Wird keine Variable @var{x}
-angegeben, werden alle Variablen im Ausdruck @code{expr} betrachtet.
+Produkte und Potenzen von Winkelfunktionen und den Hyperbelfunktionen mit dem
+Argument @var{x} werden zu Funktionen vereinfacht, die Vielfache von @var{x}
+enthalten.  @code{trigreduce} versucht auch, Sinus- und Kosinusfunktionen in
+einem Nenner zu eliminieren.  Wird keine Variable @var{x} angegeben, werden alle
+Variablen im Ausdruck @code{expr} betrachtet.
 
 Siehe auch @mrefdot{poissimp}
 
@@ -2544,29 +2456,6 @@ Siehe auch @mrefdot{poissimp}
                   2             2       2        2
 @end group
 @end example
-
-@c 
-@c     OBSOLETE
-@c     The behavior was changed in order to avoid calling expand in the core
-@c     simplifier (trigi.lisp rev 1.31)
-@c     See http://www.math.utexas.edu/pipermail/maxima/2008/010919.html.
-@c 
-@c The trigonometric simplification routines will use declared
-@c information in some simple cases.  Declarations about variables are
-@c used as follows, e.g.
-@c 
-@c ---beg---
-@c declare(j, integer, e, even, o, odd)$
-@c sin(x + (e + 1/2)*%pi);
-@c sin(x + (o + 1/2)*%pi);
-@c ---end---
-@c @example
-@c (%i1) declare(j, integer, e, even, o, odd)$
-@c (%i2) sin(x + (e + 1/2)*%pi);
-@c (%o2)                        cos(x)
-@c (%i3) sin(x + (o + 1/2)*%pi);
-@c (%o3)                       - cos(x)
-@c @end example
 @end deffn
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -2574,37 +2463,14 @@ Siehe auch @mrefdot{poissimp}
 @defvr {Optionsvariable} trigsign
 Standardwert: @code{true}
 
-@c When @code{trigsign} is @code{true}, it permits simplification of negative
-@c arguments to trigonometric functions. E.g., @code{sin(-x)} will become
-@c @code{-sin(x)} only if @code{trigsign} is @code{true}.
-
-Hat @code{trigsign} den Wert @code{true}, werden Trigonometrische Funktionen
-mit einem negativem Argument vereinfacht.  Zum Beispiel vereinfacht in diesem
-Fall @code{sin(-x)} zu @code{-sin(x)}.
+Hat @code{trigsign} den Wert @code{true}, werden Winkelfunktionen mit einem
+negativem Argument vereinfacht.  Zum Beispiel vereinfacht in diesem Fall
+@code{sin(-x)} zu @code{-sin(x)}.
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
 @anchor{trigsimp}
 @deffn {Funktion} trigsimp (@var{expr})
-
-@c @iftex
-@c Employs the identities
-@c @tex
-@c $\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
-@c @end tex
-@c and
-@c @tex
-@c $\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
-@c @end tex
-@c to simplify expressions containing @code{tan}, @code{sec},
-@c etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
-@c @end iftex
-@c @ifnottex
-@c Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
-@c @math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing 
-@c @code{tan}, @code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, 
-@c @code{cosh}.
-@c @end ifnottex
 
 Wendet die Identit@"aten
 @iftex
@@ -2628,17 +2494,10 @@ an, um Ausdr@"ucke, die Funktionen wie @code{tan}, @code{sec}, usw. enthalten,
 zu Ausdr@"ucken mit den Funktionen @code{sin}, @code{cos}, @code{sinh}, 
 @code{cosh} zu vereinfachen.
 
-@c @code{trigreduce}, @code{ratsimp}, and @code{radcan} may be able to further 
-@c simplify the result.
-
-Die Anwendung von Funktionen wie @code{trigreduce}, @code{ratsimp} und 
-@code{radcan} kann den Ausdruck weiter vereinfachen.
-
-@c @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
+Die Anwendung von Funktionen wie @mrefcomma{trigreduce} @mref{ratsimp} und
+@mref{radcan} kann den Ausdruck weiter vereinfachen.
 
 Das Kommando @code{demo(trgsmp)} zeigt einige Beispiele.
-
-@c MERGE EXAMPLES INTO THIS ITEM
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2666,16 +2525,16 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 
 @example
 (%i1) c : %pi/3 - a - b$
-@group
 (%i2) bc : sin(a)*sin(3*c)/sin(a+b);
+@group
                                           %pi
                   sin(a) sin(3 (- b - a + ---))
                                            3
 (%o2)             -----------------------------
                            sin(b + a)
 @end group
-@group
 (%i3) ba : bc, c=a, a=c;
+@group
                                          %pi
                     sin(3 a) sin(b + a - ---)
                                           3
@@ -2684,8 +2543,8 @@ Addison-Wesley), section 1.5.5, Morley theorem.
                           sin(a - ---)
                                    3
 @end group
-@group
 (%i4) ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
+@group
          2         2         %pi
       sin (3 a) sin (b + a - ---)
                               3
@@ -2706,8 +2565,8 @@ Addison-Wesley), section 1.5.5, Morley theorem.
                 2
              sin (b + a)
 @end group
-@group
 (%i5) trigrat (ac2);
+@group
 (%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
  - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
  - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)

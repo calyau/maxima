@@ -5,7 +5,7 @@
 @c Original    : Equations.texi revision 1.71
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 13.11.2010
-@c Revision    : 18.02.2011
+@c Revision    : 12.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1167,113 +1167,6 @@ Beispiele:
 (%o11)                         ][
 (%i12) rhs (aa ][ bb);
 (%o12)                         bb
-@end example
-@end deffn
-
-@c TODO: DIE FUNKTION ROOTSCONTRACT UND DIE VARIABLE ROOTSCONMODE
-@c       GEHOEREN NICHT IN DIESES KAPITEL!
-
-@c --- 30.11.2010 DK -----------------------------------------------------------
-@anchor{rootsconmode}
-@defvr {Optionsvariable} rootsconmode
-Standardwert: @code{true}
-
-@c @code{rootsconmode} governs the behavior of the @code{rootscontract} command.
-@c See @code{rootscontract} for details.
-
-@code{rootsconmode} kontrolliert das Verhalten der Funktion 
-@code{rootscontract}.  Siehe @code{rootscontract} f@"ur Details.
-@end defvr
-
-@c NEEDS WORK
-
-@c --- 30.11.2010 DK -----------------------------------------------------------
-@anchor{rootscontract}
-@deffn {Funktion} rootscontract (@var{expr})
-
-@c Converts products of roots into roots of products. For example,
-@c @code{rootscontract (sqrt(x)*y^(3/2))} yields @code{sqrt(x*y^3)}.
-
-Konvertiert Produkte von Wurzeln in Wurzeln von Produkten.  Zum Beispiel hat 
-@code{rootscontract(sqrt(x)*y^(3/2))} das Ergebnis @code{sqrt(x*y^3)}.
-
-@c When @code{radexpand} is @code{true} and @code{domain} is @code{real},
-@c @code{rootscontract} converts @code{abs} into @code{sqrt}, e.g.,
-@c @code{rootscontract (abs(x)*sqrt(y))} yields @code{sqrt(x^2*y)}.
-
-Hat @code{radexpand} den Wert @code{true} und @code{domain} den Wert 
-@code{real}, das sind die Standardwerte, wird @code{abs(x)} zu @code{sqrt(x^2)}.
-Zum Beispiel hat @code{rootscontract(abs(x) * sqrt(y))} das Ergebnis 
-@code{sqrt(x^2*y)}.
-
-@c There is an option @code{rootsconmode} affecting @code{rootscontract} as 
-@c follows:
-
-Die Optionsvariable @code{rootsconmode} kontrolliert das Ergebnis 
-folgenderma@ss{}en:
-
-@example
-Problem             Wert             Ergebnis 
-                    rootsconmode     rootscontract
-      
-x^(1/2)*y^(3/2)     false            sqrt(x*y^3)
-x^(1/2)*y^(1/4)     false            sqrt(x)*y^(1/4)
-x^(1/2)*y^(1/4)     true             sqrt(x*sqrt(y))
-x^(1/2)*y^(1/3)     true             sqrt(x)*y^(1/3)
-x^(1/2)*y^(1/4)     all              (x^2*y)^(1/4)
-x^(1/2)*y^(1/3)     all              (x^3*y^2)^(1/6)
-@end example
-
-@c When @code{rootsconmode} is @code{false}, @code{rootscontract} contracts only
-@c with respect to rational number exponents whose denominators are the same.  
-@c The key to the @code{rootsconmode: true} examples is simply that 2 divides 
-@c into 4 but not into 3.  @code{rootsconmode: all} involves taking the least 
-@c common multiple of the denominators of the exponents.
-
-Hat @code{rootsconmode} den Wert @code{false}, kontrahiert @code{rootscontract}
-nur Faktoren mit rationalen Exponenten, die den gleichen Nenner haben.  Hat
-@code{rootsconmode} den Wert @code{all}, wird das kleinste gemeinsame Vielfache
-des Nenners der Faktoren verwendet, um die Faktoren zusammenzufassen.
-
-@c @code{rootscontract} uses @code{ratsimp} in a manner similar to 
-@c @code{logcontract}.
-
-@"Ahnlich wie bei der Funktion @code{logcontract} werden von 
-@code{rootscontract} die Argumente unter der Wurzel mit der Funktion 
-@code{ratsimp} vereinfacht.
-
-Beispiele:
-
-@example
-(%i1) rootsconmode: false$
-(%i2) rootscontract (x^(1/2)*y^(3/2));
-                                   3
-(%o2)                      sqrt(x y )
-(%i3) rootscontract (x^(1/2)*y^(1/4));
-                                   1/4
-(%o3)                     sqrt(x) y
-(%i4) rootsconmode: true$
-(%i5) rootscontract (x^(1/2)*y^(1/4));
-(%o5)                    sqrt(x sqrt(y))
-@group
-(%i6) rootscontract (x^(1/2)*y^(1/3));
-                                   1/3
-(%o6)                     sqrt(x) y
-@end group
-(%i7) rootsconmode: all$
-(%i8) rootscontract (x^(1/2)*y^(1/4));
-                              2   1/4
-(%o8)                       (x  y)
-(%i9) rootscontract (x^(1/2)*y^(1/3));
-                             3  2 1/6
-(%o9)                      (x  y )
-(%i10) rootsconmode: false$
-(%i11) rootscontract (sqrt(sqrt(x) + sqrt(1 + x))
-                    *sqrt(sqrt(1 + x) - sqrt(x)));
-(%o11)                          1
-(%i12) rootsconmode: true$
-(%i13) rootscontract (sqrt(5+sqrt(5)) - 5^(1/4)*sqrt(1+sqrt(5)));
-(%o13)                          0
 @end example
 @end deffn
 
