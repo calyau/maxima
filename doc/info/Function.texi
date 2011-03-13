@@ -520,10 +520,11 @@ In this example, @code{min} is applied to the value of @code{L}.
 fname is not the name of a user function.
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i5) apply (dispfun, [fname]);
+@group
                                    x
 (%t5)                     F(x) := ----
                                   1729
-
+@end group
 (%o5)                         [%t5]
 @end example
 
@@ -656,17 +657,16 @@ first negative element of @code{l} and "throws" it up.
 @closecatbox
 @end deffn
 
-@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffn {Function} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
 @deffnx {Function} compfile (@var{filename}, functions)
 @deffnx {Function} compfile (@var{filename}, all)
 
-Translates Maxima functions into Lisp 
-and writes the translated code into the file @var{filename}.
+Translates Maxima functions into Lisp and writes the translated code into the
+file @var{filename}.
 
 @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
-specified functions.
-@code{compfile(@var{filename}, functions)} and @code{compfile(@var{filename}, all)}
-translate all user-defined functions.
+specified functions.  @code{compfile (@var{filename}, functions)} and
+@code{compfile (@var{filename}, all)} translate all user-defined functions.
 
 The Lisp translations are not evaluated, nor is the output file processed by the Lisp compiler.
 @c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
@@ -1033,9 +1033,10 @@ Examples:
 (%i6) dispfun (m, f, g, h, h[5], h[10], i[8]);
                                      - y
 (%t6)                   m(x, y) ::= x
-
+@group
                                      - y
 (%t7)                    f(x, y) := x
+@end group
 
                                     - y
 (%t8)                     g     := x
@@ -1938,9 +1939,9 @@ the name of the Maxima file, the name of the Lisp file, and the name of file
 containing additional information about the translation.
 @code{translate_file} evaluates its arguments.
 
-@code{translate_file ("foo.mac"); load("foo.LISP")} is the same as
-@code{batch ("foo.mac")} except for certain restrictions,
-the use of @code{'@w{}'} and @code{%}, for example.
+@code{translate_file ("foo.mac"); load("foo.LISP")} is the same as the command
+@code{batch ("foo.mac")} except for certain restrictions, the use of
+@code{'@w{}'} and @code{%}, for example.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
 @code{translate_file (@var{maxima_filename})} translates a Maxima file @var{maxima_filename}
@@ -1971,7 +1972,9 @@ as the Lisp code is compiled.
 See @code{compile_file} for more on this topic.
 
 @c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
-See also @code{tr_array_as_ref},
+See also 
+@flushleft
+@code{tr_array_as_ref},
 @c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
 @c WE DON'T WANT TO MENTION IT
 @c @code{tr_bind_mode_hook}, 
@@ -1992,8 +1995,9 @@ See also @code{tr_array_as_ref},
 @code{tr_warn_meval},
 @code{tr_warn_mode},
 @code{tr_warn_undeclared}, 
-@code{tr_warn_undefined_variable},
-and @code{tr_windy}.
+@code{tr_warn_undefined_variable}, and
+@code{tr_windy}.
+@end flushleft
 
 @opencatbox
 @category{Translation and compilation}

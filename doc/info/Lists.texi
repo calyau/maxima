@@ -224,7 +224,7 @@ Whether arguments are the same as @var{expr_1} is determined by "=".
 Arguments which are @code{equal} but not "=" are not removed.
 
 @c ===beg===
-@c [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+@c [is(equal(0, 0)), is(equal(0, 0.0)), is(equal(0, 0b0))];
 @c [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
 @c delete (0, [0, 0.0, 0b0]);
 @c is (equal ((x + y)*(x - y), x^2 - y^2));
@@ -232,7 +232,7 @@ Arguments which are @code{equal} but not "=" are not removed.
 @c delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
 @c ===end===
 @example
-(%i1) [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+(%i1) [is(equal(0, 0)), is(equal(0, 0.0)), is(equal(0, 0b0))];
 
 `rat' replaced 0.0 by 0/1 = 0.0
 `rat' replaced 0.0B0 by 0/1 = 0.0B0

@@ -81,6 +81,7 @@ The result is the noun form of the function call.
 (%o3)                          ---
                                 3
 (%i4) 'integrate (x^2, x, x0, x1);
+@group
                              7
                             /
                             [   2
@@ -88,6 +89,7 @@ The result is the noun form of the function call.
                             ]
                             /
                              5
+@end group
 (%i5) %, nouns;
                                218
 (%o5)                          ---
@@ -615,6 +617,7 @@ gives the @code{evflag} property to the variable @var{x}.
 The flags which have the @code{evflag} property by default are the following:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
+
 @code{algebraic},
 @code{cauchysum},
 @code{demoivre},
@@ -726,6 +729,7 @@ gives the @code{evfun} property to the function @var{F}.
 The functions which have the @code{evfun} property by default are the following:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
+
 @code{bfloat},
 @code{factor},
 @code{fullratsimp},
@@ -769,10 +773,12 @@ Examples:
                                 2
 (%o3)                 (x - 1) (x  + x + 1)
 (%i4) cos(4 * x) / sin(x)^4;
+@group
                             cos(4 x)
 (%o4)                       --------
                                4
                             sin (x)
+@end group
 (%i5) cos(4 * x) / sin(x)^4, trigexpand;
                  4           2       2         4
               sin (x) - 6 cos (x) sin (x) + cos (x)
@@ -813,6 +819,7 @@ Examples:
 @category{Evaluation flags}
 @closecatbox
 @end defvr
+
 @c NEEDS WORK
 @defvr {Option variable} infeval
 Enables "infinite evaluation" mode.  @code{ev} repeatedly
@@ -885,9 +892,9 @@ one unbinds the output label which shows the bound value, as well as unbinding t
 @code{kill} quotes its arguments.
 The quote-quote operator @code{'@w{}'} defeats quotation.
 
-@code{kill (@var{symbol})} unbinds all properties of @var{symbol}.
-In contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and @code{remrule}
-unbind a specific property.
+@code{kill (@var{symbol})} unbinds all properties of @var{symbol}.  In contrast,
+the functions @code{remvalue}, @code{remfunction}, @code{remarray}, and 
+@code{remrule} unbind a specific property.
 
 @code{kill} always returns @code{done}, even if an argument has no binding.
 
@@ -1173,20 +1180,20 @@ after returning to Maxima.
 
 @example
 (%i1) f(x):=x^2+x;
-                                         2
-(%o1)                           f(x) := x  + x
+                                  2
+(%o1)                    f(x) := x  + x
 (%i2) to_lisp();
 Type (to-maxima) to restart, ($quit) to quit Maxima.
-
 MAXIMA> (symbol-plist '$f)
-(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) ((MPLUS) ((MEXPT) $X 2) $X))))
+(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) 
+                             ((MPLUS) ((MEXPT) $X 2) $X))))
 MAXIMA> (setq $result ($factor (caddr (mget '$f 'mexpr))))
 ((MTIMES SIMP FACTORED) $X ((MPLUS SIMP IRREDUCIBLE) 1 $X))
 MAXIMA> (to-maxima)
 Returning to Maxima
-(%o2)                                true
+(%o2)                         true
 (%i3) result;
-(%o3)                              x (x + 1)
+(%o3)                       x (x + 1)
 @end example
 
 @opencatbox

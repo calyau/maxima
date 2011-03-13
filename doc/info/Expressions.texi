@@ -1133,6 +1133,7 @@ aa unbound variable
 (%i2) declare (nounify (sum), linear);
 (%o2)                         done
 (%i3) 'sum (F(k) + G(k), k, 1, inf);
+@group
                      inf          inf
                      ====         ====
                      \            \
@@ -1140,6 +1141,7 @@ aa unbound variable
                      /            /
                      ====         ====
                      k = 1        k = 1
+@end group
 @end example
 
 @opencatbox
@@ -1632,7 +1634,8 @@ declared part of speech to an actual expression.
 (%i1) infix ("##", 100, 99, expr, expr, expr);
 (%o1)                          ##
 (%i2) if x ## y then 1 else 0;
-Incorrect syntax: Found algebraic expression where logical expression expected
+Incorrect syntax: Found algebraic expression where logical
+expression expected
 if x ## y then 
              ^
 (%i2) infix ("##", 100, 99, expr, expr, clause);
@@ -2165,7 +2168,7 @@ Note that @code{%pi} is not ordered according to its numerical value.
 @example
 (%i1) stringdisp : true;
 (%o1)                         true
-(%i2) sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+(%i2) sort([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
 (%o2) [3, 3.0, 4, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", a, x, X]
 @end example
 
@@ -2213,11 +2216,13 @@ Effect of @code{mainvar}, @code{constant}, and @code{scalar} declarations.
 Ordering non-atomic expressions.
 
 @c ===beg===
-@c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
+@c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), 
+@c        f(n, 1)]);
 @c sort ([foo(1), X[1], X[k], foo(k), 1, k]);
 @c ===end===
 @example
-(%i1) sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
+(%i1) sort([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n),
+            f(n, 1)]);
 (%o1) [1, 2, f(1), g(1), g(1, 2), f(2), f(2, 1), n, g(n), 
                                                          f(n, 1)]
 (%i2) sort ([foo(1), X[1], X[k], foo(k), 1, k]);
@@ -2764,10 +2769,10 @@ Examples:
 @end deffn
 
 @deffn {Function} lsum (@var{expr}, @var{x}, @var{L})
-Represents the sum of @var{expr} for each element @var{x} in @var{L}.
 
-A noun form @code{'lsum} is returned
-if the argument @var{L} does not evaluate to a list.
+Represents the sum of @var{expr} for each element @var{x} in @var{L}.
+A noun form @code{'lsum} is returned if the argument @var{L} does not evaluate
+to a list.
 
 Examples:
 
@@ -2780,6 +2785,7 @@ Examples:
                             7    2
 (%o1)                      x  + x  + x
 (%i2) lsum (i^2, i, rootsof (x^3 - 1));
+@group
                      ====
                      \      2
 (%o2)                 >    i
@@ -2787,6 +2793,7 @@ Examples:
                      ====
                                    3
                      i in rootsof(x  - 1)
+@end group
 @end example
 
 @opencatbox
@@ -2799,7 +2806,6 @@ Examples:
 Disables the aliasing created by the last use of the ordering commands 
 @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} 
 may not be used more than one time each without calling @code{unorder}.
-
 @code{unorder} does not substitute back in expressions the original symbols for
 the aliases introduced by @code{ordergreat} and @code{orderless}. Therefore,
 after execution of @code{unorder} the aliases appear in previous expressions.
@@ -2849,8 +2855,8 @@ substitute back the symbol @code{a} and the alias appears in the output
 @end deffn
 
 @deffn {Function} verbify (@var{f})
-Returns the verb form of the function name @var{f}.
 
+Returns the verb form of the function name @var{f}.
 See also @code{verb}, @code{noun}, and @code{nounify}.
 
 Examples:

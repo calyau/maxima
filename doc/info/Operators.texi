@@ -13,6 +13,7 @@
 
 @node nary, nofix, Operators, Operators
 @section nary
+
 An @code{nary} operator is used to denote a function of any number of
 arguments, each of which is separated by an occurrence of the
 operator, e.g. A+B or A+B+C.  The @code{nary("x")} function is a syntax
@@ -29,6 +30,7 @@ See also @code{Syntax}.
 
 @node nofix, postfix, nary, Operators
 @section nofix
+
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
 corresponding function to be evaluated.  For example, when one types
@@ -44,6 +46,7 @@ See also @code{Syntax}.
 
 @node postfix, prefix, nofix, Operators
 @section postfix
+
 @code{postfix} operators like the @code{prefix} variety denote functions
 of a single argument, but in this case the argument immediately
 precedes an occurrence of the operator in the input string, e.g. 3! .
@@ -58,6 +61,7 @@ See also @code{Syntax}.
 
 @node prefix, Arithmetic operators, postfix, Operators
 @section prefix
+
 A @code{prefix} operator is one which signifies a function of one
 argument, which argument immediately follows an occurrence of the
 operator.  @code{prefix("x")} is a syntax extension function to declare @code{x} to
@@ -144,6 +148,7 @@ Examples:
 Addition and multiplication are n-ary, commutative operators.
 Maxima sorts the operands to construct a canonical representation.
 The names of these operators are @code{"+"} and @code{"*"}.
+
 @c ===beg===
 @c c + g + d + a + b + e + f;
 @c [op (%), args (%)];
@@ -152,7 +157,6 @@ The names of these operators are @code{"+"} and @code{"*"}.
 @c apply ("+", [a, 8, x, 2, 9, x, x, a]);
 @c apply ("*", [a, 8, x, 2, 9, x, x, a]);
 @c ===end===
-
 @example
 (%i1) c + g + d + a + b + e + f;
 (%o1)               g + f + e + d + c + b + a
@@ -171,12 +175,12 @@ The names of these operators are @code{"+"} and @code{"*"}.
 
 Division and exponentiation are binary, noncommutative operators.
 The names of these operators are @code{"/"} and @code{"^"}.
+
 @c ===beg===
 @c [a / b, a ^ b];
 @c [map (op, %), map (args, %)];
 @c [apply ("/", [a, b]), apply ("^", [a, b])];
 @c ===end===
-
 @example
 (%i1) [a / b, a ^ b];
                               a   b
@@ -192,11 +196,11 @@ The names of these operators are @code{"/"} and @code{"^"}.
 
 Subtraction and division are represented internally
 in terms of addition and multiplication, respectively.
+
 @c ===beg===
 @c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
 @c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
 @c ===end===
-
 @example
 (%i1) [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
 (%o1)                      [+, a, - b]
@@ -208,11 +212,11 @@ in terms of addition and multiplication, respectively.
 
 Computations are carried out on literal numbers.
 Floating-point contagion applies.
+
 @c ===beg===
 @c 17 + b - (1/2)*29 + 11^(2/4);
 @c [17 + 29, 17 + 29.0, 17 + 29b0];
 @c ===end===
-
 @example
 (%i1) 17 + b - (1/2)*29 + 11^(2/4);
                                        5
@@ -223,13 +227,13 @@ Floating-point contagion applies.
 @end example
 
 Arithmetic computations are a simplification, not an evaluation.
+
 @c ===beg===
 @c simp : false;
 @c '(17 + 29*11/7 - 5^3);
 @c simp : true;
 @c '(17 + 29*11/7 - 5^3);
 @c ===end===
-
 @example
 (%i1) simp : false;
 (%o1)                         false
@@ -246,6 +250,7 @@ Arithmetic computations are a simplification, not an evaluation.
 @end example
 
 Arithmetic is carried out element-by-element for lists (depending on @code{listarith}) and matrices.
+
 @c ===beg===
 @c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
 @c 5 * matrix ([a, x], [h, u]);
@@ -256,12 +261,13 @@ Arithmetic is carried out element-by-element for lists (depending on @code{lista
 @c [a, c, m, t] / [1, 7, 2, 9];
 @c [a, c, m, t] ^ x;
 @c ===end===
-
 @example
 (%i1) matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+@group
                         [ a - 1  x - 2 ]
 (%o1)                   [              ]
                         [ h - 3  u - 4 ]
+@end group
 (%i2) 5 * matrix ([a, x], [h, u]);
                           [ 5 a  5 x ]
 (%o2)                     [          ]
@@ -388,7 +394,8 @@ Relational expressions are evaluated to Boolean values by some functions and pro
 @c is (x < y);
 @c maybe (y > z);
 @c if x >= z then 1 else 0;
-@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, 
+@c        return (S));
 @c ===end===
 @example
 (%i1) [x, y, z] : [123, 456, 789];
@@ -399,7 +406,8 @@ Relational expressions are evaluated to Boolean values by some functions and pro
 (%o3)                         false
 (%i4) if x >= z then 1 else 0;
 (%o4)                           0
-(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, 
+             return (S));
 (%o5)                         5050
 @end example
 
@@ -511,9 +519,11 @@ evaluated in float or bigfloat precision.
 (%i1) factlim:10;
 (%o1)                                 10
 (%i2) [0!, (7/2)!, 8!, 20!];
+@group
                             105 sqrt(%pi)
 (%o2)                   [1, -------------, 40320, 20!]
                                  16
+@end group
 (%i3) [4.77!, (1.0+%i)!];
 (%o3)    [81.44668037931197, 
           .3430658398165454 %i + .6529654964201665]
@@ -907,14 +917,10 @@ printing message (2).
 @c ===end===
 @example
 (%i1) x: %pi$
-
 (%i2) y: 1234$
-
 (%i3) z: 1729 * w$
-
 (%i4) printq1 (x) ::= block (print ("(1) x is equal to", x),
       '(print ("(2) x is equal to", x)))$
-
 (%i5) printq1 (y - z);
 (1) x is equal to y - z
 (2) x is equal to %pi
@@ -936,14 +942,10 @@ until the explicit evaluation @code{''%}.
 @c ===end===
 @example
 (%i1) x: %pi$
-
 (%i2) y: 1234$
-
 (%i3) z: 1729 * w$
-
 (%i4) printe1 (x) := block (print ("(1) x is equal to", x),
       '(print ("(2) x is equal to", x)))$
-
 (%i5) printe1 (y - z);
 (1) x is equal to 1234 - 1729 w
 (%o5)                     print((2) x is equal to, x)
@@ -967,13 +969,9 @@ when @code{foo} is a macro function.
 @c ===end===
 @example
 (%i1) x: %pi$
-
 (%i2) y: 1234$
-
 (%i3) z: 1729 * w$
-
 (%i4) g (x) ::= buildq ([x], print ("x is equal to", x))$
-
 (%i5) macroexpand (g (y - z));
 (%o5)                     print(x is equal to, y - z)
 (%i6) ''%;
@@ -2369,22 +2367,15 @@ Example use:
 @c apply ("+", %);
 @c ===end===
 @example
+@group
 (%i1) unitfrac(r) := block([uf : [], q],
     if not(ratnump(r)) then
        error("The input to 'unitfrac' must be a rational number"),
     while r # 0 do (
         uf : cons(q : 1/ceiling(1/r), uf),
         r : r - q),
-    reverse(uf));
-(%o1) unitfrac(r) := block([uf : [], q], 
-if not ratnump(r) then
-   error("The input to 'unitfrac' must be a rational number"),
-                                  1
-while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
-                                      1
-                              ceiling(-)
-                                      r
-reverse(uf))
+    reverse(uf))$
+@end group
 (%i2) unitfrac (9/10);
                             1  1  1
 (%o2)                      [-, -, --]
@@ -2527,8 +2518,10 @@ Examples:
 (%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
 (%i6) sort (my_list);
 (%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
+@group
 (%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a),
       reverse (b))));
+@end group
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
 @end example
 
@@ -2536,12 +2529,14 @@ Order Maxima numbers, constants, and constants expressions by magnitude, and
 all other elements in ascending sorting order:
 
 @c ===beg===
-@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],ordermagnitudep);
+@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+@c      ordermagnitudep);
 @c ===end===
 @example
 (%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
-      ordermagnitudep);
-(%o8)  [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, %i + 1, 2 x]
+           ordermagnitudep);
+(%o8) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
+                                                     %i + 1, 2 x]
 @end example
 
 @opencatbox
@@ -2680,7 +2675,7 @@ derivative forms then the @code{at} function (see below) should be used.
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst} is an alias for @code{substitute}.
 
-@code{subst (@var{eq_1}, @var{expr})} or 
+The commands @code{subst (@var{eq_1}, @var{expr})} or 
 @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})} are other permissible
 forms.  The @var{eq_i} are equations indicating substitutions to be made.
 For each equation, the right side will be substituted for the left in the 
@@ -2910,11 +2905,13 @@ expression to be @code{ratsimp}ed.
 @c ===end===
 @example
 (%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@group
                                 20
                  1       (x + 2)   - 2 y       x
 (%o1)        --------- + --------------- - ---------
                     19             20             20
              (y + x)        (y + x)        (y + x)
+@end group
 (%i2) xthru (%);
                                  20
                           (x + 2)   - y
@@ -2954,12 +2951,13 @@ hazardous business, although the algorithm tries to minimize the
 potential for error.
 @end enumerate
 
-For example @code{zeroequiv (sin(2*x) - 2*sin(x)*cos(x), x)} returns
+For example @code{zeroequiv (sin(2 * x) - 2 * sin(x) * cos(x), x)} returns
 @code{true} and @code{zeroequiv (%e^x + x, x)} returns @code{false}.
-On the other hand @code{zeroequiv (log(a*b) - log(a) - log(b), a)} returns @code{dontknow} because
-of the presence of an extra parameter @code{b}.
+On the other hand @code{zeroequiv (log(a * b) - log(a) - log(b), a)} returns 
+@code{dontknow} because of the presence of an extra parameter @code{b}.
 
 @opencatbox
 @category{Predicate functions}
 @closecatbox
 @end deffn
+

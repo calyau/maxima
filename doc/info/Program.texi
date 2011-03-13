@@ -432,7 +432,7 @@ one containing the @code{go}.
 Represents conditional evaluation. Various forms of @code{if} expressions are recognized.
 
 @code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
-evaluates to @var{expr_1} if @var{cond_1} evaluates to @code{true},
+eva@-lu@-ates to @var{expr_1} if @var{cond_1} evaluates to @code{true},
 otherwise the expression evaluates to @var{expr_0}.
 
 @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}

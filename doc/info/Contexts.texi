@@ -371,11 +371,13 @@ and @code{false} otherwise.
 
 The infolist @code{features} is a list of known features.
 These are
+@flushleft
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
 @code{irrational}, @code{real}, @code{imaginary}, @code{complex},
 @code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
 @code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
 @code{rassociative}, @code{symmetric}, and @code{antisymmetric},
+@end flushleft
 plus any user-defined features.
 
 @code{features} is a list of mathematical features.

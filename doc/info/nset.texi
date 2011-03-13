@@ -2508,11 +2508,13 @@ Examples:
 @end deffn
 
 @anchor{symmdifference}
-@deffn {Function} symmdifference (@var{a_1}, ..., @var{a_n})
+@deffn {Function} symmdifference (@var{a_1}, @dots{}, @var{a_n})
 
-Returns the symmetric difference of sets @code{ @var{a_1}, ..., @var{a_n}}.
-Given two arguments, @code{symmdifference ( @var{a}, @var{b})} is
-the same as @code{union ( setdifference ( @var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
+Returns the symmetric difference of sets @var{a_1}, @dots{}, @var{a_n}.
+
+Given two arguments, @code{symmdifference (@var{a}, @var{b})} is the same as
+@code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b},
+@var{a}))}.
 
 @code{symmdifference} complains if any argument is not a literal set.
 

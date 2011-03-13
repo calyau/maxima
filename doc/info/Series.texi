@@ -136,6 +136,7 @@ Example:
                 bar = 1 ====
                         foo = 1
 (%i3) niceindices (%);
+@group
                      inf  inf
                     /===\ ====
                      ! !  \
@@ -143,6 +144,7 @@ Example:
                      ! !  /
                     l = 1 ====
                           k = 1
+@end group
 @end example
 
 @opencatbox
@@ -340,6 +342,7 @@ By default, terms of a sum are displayed in order of decreasing power.
 Returns the general form of the power series expansion for @var{expr} in the 
 variable @var{x} about the point @var{a} (which may be @code{inf} for infinity):
 @example
+@group
            inf
            ====
            \               n
@@ -347,6 +350,7 @@ variable @var{x} about the point @var{a} (which may be @code{inf} for infinity):
            /      n
            ====
            n = 0
+@end group
 @end example
 
 If @code{powerseries} is unable to expand @var{expr},
@@ -551,6 +555,7 @@ Examples:
 (%i4) %^2;
 (%o4)/T/                  1 + x + . . .
 (%i5) product ((1 + x^i)^2.5, i, 1, inf)/(1 + x^2);
+@group
                          inf
                         /===\
                          ! !    i     2.5
@@ -560,6 +565,7 @@ Examples:
 (%o5)                   -----------------
                               2
                              x  + 1
+@end group
 (%i6) ev (taylor(%, x,  0, 3), keepfloat);
                                2           3
 (%o6)/T/    1 + 2.5 x + 3.375 x  + 6.5625 x  + . . .
@@ -594,6 +600,7 @@ Examples:
                              - -------------------------- + . . .
                                           720
 (%i12) taylor ((x + 1)^n, x, 0, 4);
+@group
                       2       2     3      2         3
                     (n  - n) x    (n  - 3 n  + 2 n) x
 (%o12)/T/ 1 + n x + ----------- + --------------------
@@ -603,6 +610,7 @@ Examples:
                              (n  - 6 n  + 11 n  - 6 n) x
                            + ---------------------------- + . . .
                                           24
+@end group
 (%i13) taylor (sin (y + x), x, 0, 3, y, 0, 3);
                3                 2
               y                 y

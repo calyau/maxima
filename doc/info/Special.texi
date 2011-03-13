@@ -409,18 +409,25 @@ The gamma function and the related beta, psi and incomplete gamma
 functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 6.
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} gamma (@var{z})
+
 The basic definition of the gamma function (A&S 6.1.1) is
 
+@ifnottex
 @example
-                               inf
-                              /
-                              [     z - 1   - t
-                   gamma(z) = I    t      %e    dt
-                              ]
-                              /
-                               0
+                         inf
+                        /
+                        [     z - 1   - t
+             gamma(z) = I    t      %e    dt
+                        ]
+                        /
+                         0
 @end example
+@end ifnottex
+@tex
+$$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
+@end tex
 
 Maxima simplifies @code{gamma} for positive integer and positive and negative 
 rational numbers. For half integral values the result is a rational number times 
@@ -448,57 +455,55 @@ Simplification for integer, half integral, and rational numbers:
 
 @example
 (%i1) map('gamma,[1,2,3,4,5,6,7,8,9]);
-(%o1)               [1, 1, 2, 6, 24, 120, 720, 5040, 40320]
-
+(%o1)        [1, 1, 2, 6, 24, 120, 720, 5040, 40320]
 (%i2) map('gamma,[1/2,3/2,5/2,7/2]);
-                           sqrt(%pi)  3 sqrt(%pi)  15 sqrt(%pi)
-(%o2)          [sqrt(%pi), ---------, -----------, ------------]
-                               2           4            8
-
+                    sqrt(%pi)  3 sqrt(%pi)  15 sqrt(%pi)
+(%o2)   [sqrt(%pi), ---------, -----------, ------------]
+                        2           4            8
 (%i3) map('gamma,[2/3,5/3,7/3]);
-                                        2           1
-                                2 gamma(-)  4 gamma(-)
-                            2           3           3
-(%o3)                [gamma(-), ----------, ----------]
-                            3       3           9
+                                  2           1
+                          2 gamma(-)  4 gamma(-)
+                      2           3           3
+(%o3)          [gamma(-), ----------, ----------]
+                      3       3           9
 @end example
 
 Numerical evaluation for real and complex values:
 
 @example
 (%i4) map('gamma,[2.5,2.5b0]);
-(%o4)             [1.329340388179137, 1.329340388179137b0]
-
+(%o4)     [1.329340388179137, 1.3293403881791370205b0]
 (%i5) map('gamma,[1.0+%i,1.0b0+%i]);
-(%o5) [.4980156681183558 - .1549498283018108 %i, 
-                      4.980156681183561b-1 - 1.549498283018107b-1 %i]
+(%o5) [0.498015668118356 - .1549498283018107 %i, 
+          4.9801566811835604272b-1 - 1.5494982830181068513b-1 %i]
 @end example
 
 @code{gamma} has mirror symmetry:
 
 @example
-(%i8) declare(z,complex)$
-(%i9) conjugate(gamma(z));
-(%o9)                         gamma(conjugate(z))
+(%i6) declare(z,complex)$
+(%i7) conjugate(gamma(z));
+(%o7)                  gamma(conjugate(z))
 @end example
 
 Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @code{gamma_expand} 
 is @code{true}:
 
 @example
-(%i10) gamma_expand:true$
-(%i11) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
-                                      gamma(z)
-(%o11)                   [z gamma(z), --------, z + 1]
-                                       z - 1
+(%i8) gamma_expand:true$
+
+(%i9) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
+                               gamma(z)
+(%o9)             [z gamma(z), --------, z + 1]
+                                z - 1
 @end example
 
 The deriviative of @code{gamma}:
 
 @example
-(%i12) diff(gamma(z),z);
-(%o12)                         psi (z) gamma(z)
-                                  0
+(%i10) diff(gamma(z),z);
+(%o10)                  psi (z) gamma(z)
+                           0
 @end example
 
 See also @code{makegamma}.
@@ -510,8 +515,11 @@ The Euler-Mascheroni constant is @code{%gamma}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} log_gamma (@var{z})
+
 The natural logarithm of the gamma function.
+
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
 @closecatbox
@@ -519,33 +527,78 @@ The natural logarithm of the gamma function.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete (@var{a}, @var{z})
+
 The incomplete upper gamma function A&S 6.5.2:
-@math{gamma_incomplete(a, z) = integrate(exp(-t)*t^(a-1), t, z, inf)}
-@opencatbox
-@category{Gamma and factorial functions} @category{Special functions}
-@closecatbox
-@end deffn
 
-@deffn {Function} gamma_incomplete_regularized (@var{a},@var{z})
-The regularized incomplete upper gamma function A&S 6.5.1.  
-
-@code{gamma_incomplete_regularized(a,z) = gamma_incomplete(a,z)/gamma(a)}
-
-@opencatbox
-@category{Gamma and factorial functions} @category{Special functions}
-@closecatbox
-@end deffn
-
-@deffn {Function} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1} )
-The generalized incomplete gamma function.  
-
-@code{gamma_incomplete_generalized(a,z) = integrate(t^(a-1)*exp(-t), z, z1,z2) }
+@ifnottex
+@example
+                              inf
+                             /
+                             [     a - 1   - t
+    gamma_incomplete(a, z) = I    t      %e    dt
+                             ]
+                             /
+                              z
+@end example
+@end ifnottex
+@tex
+$$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
+@end tex
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
+
+The regularized incomplete upper gamma function A&S 6.5.1:
+
+@ifnottex
+@example
+gamma_incomplete_regularized(a, z) = 
+                                        gamma_incomplete(a, z)
+                                        ----------------------
+                                               gamma(a)
+@end example
+@end ifnottex
+@tex
+$${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
+@end tex
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z1})
+
+The generalized incomplete gamma function.
+
+@ifnottex
+@example
+gamma_incomplete_generalized(a, z1, z2) = 
+                                               z2
+                                              /
+                                              [    a - 1   - t
+                                              I   t      %e    dt
+                                              ]
+                                              /
+                                               z1
+@end example
+@end ifnottex
+@tex
+$$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
+@end tex
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} gammalim
 Default value: 1000000
 
@@ -708,17 +761,21 @@ The derivative of the beta function wrt @code{a}:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
+
 The basic definition of the incomplete beta function (A&S 6.6.1) is
 
 @example
-                       z
-                      /
-                      [         b - 1  a - 1
-                      I  (1 - t)      t      dt
-                      ]
-                      /
-                       0
+@group
+        z
+       /
+       [         b - 1  a - 1
+       I  (1 - t)      t      dt
+       ]
+       /
+        0
+@end group
 @end example
 
 This definition is possible for @math{realpart(a)>0} and @math{realpart(b)>0} 
@@ -760,9 +817,9 @@ Maxima evaluates @code{beta_incomplete} numerically for real and complex values
 in float or bigfloat precision. For the numerical evaluation an expansion of the 
 incomplete beta function in continued fractions is used.
 
-When @code{beta_expand} is @code{true}, Maxima expands expressions like 
-@code{beta_incomplete(a+n,b,z)} and @code{beta_incomplete(a-n,b,z)} where n is 
-a positive integer.
+When the option variable @code{beta_expand} is @code{true}, Maxima expands
+expressions like @code{beta_incomplete(a+n,b,z)} and
+@code{beta_incomplete(a-n,b,z)} where n is a positive integer.
 
 Maxima knows the derivatives of @code{beta_incomplete} with respect to the 
 variables @var{a}, @var{b} and @var{z} and the integral with respect to the 
@@ -794,10 +851,12 @@ Simplification for @var{a} and @var{b} a positive integer:
 
 @example
 (%i3) beta_incomplete(3,2,z);
+@group
                                                3
                               (3 (1 - z) + 1) z
 (%o3)                         ------------------
                                       12
+@end group
 @end example
 
 @var{a} is a negative integer and @math{b<=(-a)}, Maxima simplifies:
@@ -866,13 +925,21 @@ Expansion, when @code{beta_expand} is @code{true}:
 Derivative and integral for @code{beta_incomplete}:
 
 @example
-(%i34) diff(beta_incomplete(a,b,z),z);
-                                     b - 1  a - 1
-(%o34)                        (1 - z)      z
-(%i35) integrate(beta_incomplete(a,b,z),z);
-(%o35)     beta_incomplete(a, b, z) z - beta_incomplete(a + 1, b, z)
-(%i36) diff(%,z);
-(%o36)                     beta_incomplete(a, b, z)
+(%i34) diff(beta_incomplete(a, b, z), z);
+@group
+                              b - 1  a - 1
+(%o34)                 (1 - z)      z
+@end group
+(%i35) integrate(beta_incomplete(a, b, z), z);
+              b  a
+       (1 - z)  z
+(%o35) ----------- + beta_incomplete(a, b, z) z
+          b + a
+                                       a beta_incomplete(a, b, z)
+                                     - --------------------------
+                                                 b + a
+(%i36) factor(diff(%, z));
+(%o36)              beta_incomplete(a, b, z)
 @end example
 
 @opencatbox
@@ -880,9 +947,17 @@ Derivative and integral for @code{beta_incomplete}:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
-The regularized incomplete beta function A&S 6.6.2,
-defined as @code{beta_incomplete(a,b,z)/beta(a,b)}.
+
+The regularized incomplete beta function A&S 6.6.2, defined as
+
+@example
+beta_incomplete_regularized(a, b, z) = 
+                                      beta_incomplete(a, b, z)
+                                      ------------------------
+                                             beta(a, b)
+@end example
 
 As for @code{beta_incomplete} this definition is not complete. See 
 functions.wolfram.com for a complete definition of 
@@ -954,31 +1029,34 @@ Expansion, when @code{beta_expand} is @code{true}:
 
 @example
 (%i13) beta_incomplete_regularized(a+1,b,z);
-                                                            b  a
-                                                     (1 - z)  z
-(%o13)        beta_incomplete_regularized(a, b, z) - ------------
-                                                     a beta(a, b)
+                                                     b  a
+                                              (1 - z)  z
+(%o13) beta_incomplete_regularized(a, b, z) - ------------
+                                              a beta(a, b)
 (%i14) beta_incomplete_regularized(a-1,b,z);
-                                                          b  a - 1
-                                                   (1 - z)  z
-(%o14)   beta_incomplete_regularized(a, b, z) - ----------------------
-                                                beta(a, b) (b + a - 1)
+(%o14) beta_incomplete_regularized(a, b, z)
+                                                     b  a - 1
+                                              (1 - z)  z
+                                         - ----------------------
+                                           beta(a, b) (b + a - 1)
 @end example
 
 The derivative and the integral wrt @var{z}:
 
 @example
 (%i15) diff(beta_incomplete_regularized(a,b,z),z);
-                                     b - 1  a - 1
-                              (1 - z)      z
-(%o15)                        -------------------
-                                  beta(a, b)
-
+                              b - 1  a - 1
+                       (1 - z)      z
+(%o15)                 -------------------
+                           beta(a, b)
 (%i16) integrate(beta_incomplete_regularized(a,b,z),z);
 (%o16) beta_incomplete_regularized(a, b, z) z
-                           a beta_incomplete_regularized(a + 1, b, z)
-                         - ------------------------------------------
-                                             b + a
+                                                           b  a
+                                                    (1 - z)  z
+          a (beta_incomplete_regularized(a, b, z) - ------------)
+                                                    a beta(a, b)
+        - -------------------------------------------------------
+                                   b + a
 @end example
 
 @opencatbox
@@ -986,17 +1064,21 @@ The derivative and the integral wrt @var{z}:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
+
 The basic definition of the generalized incomplete beta function is
 
 @example
-                      z2
-                     /
-                     [          b - 1  a - 1
-                     I   (1 - t)      t      dt
-                     ]
-                     /
-                      z1
+@group
+             z2
+           /
+           [          b - 1  a - 1
+           I   (1 - t)      t      dt
+           ]
+           /
+            z1
+@end group
 @end example
 
 Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
@@ -1025,22 +1107,22 @@ positive integer:
 
 @example
 (%i1) beta_incomplete_generalized(2,b,z1,z2);
-                          b                      b
-                  (1 - z1)  (b z1 + 1) - (1 - z2)  (b z2 + 1)
-(%o1)             -------------------------------------------
-                                   b (b + 1)
-
+                   b                      b
+           (1 - z1)  (b z1 + 1) - (1 - z2)  (b z2 + 1)
+(%o1)      -------------------------------------------
+                            b (b + 1)
 (%i2) beta_incomplete_generalized(a,2,z1,z2);
-                                     a                      a
-                  (a (1 - z2) + 1) z2  - (a (1 - z1) + 1) z1
-(%o2)             -------------------------------------------
-                                   a (a + 1)
-
+@group
+                              a                      a
+           (a (1 - z2) + 1) z2  - (a (1 - z1) + 1) z1
+(%o2)      -------------------------------------------
+                            a (a + 1)
+@end group
 (%i3) beta_incomplete_generalized(3,2,z1,z2);
-                  2      2                       2      2
-          (1 - z1)  (3 z1  + 2 z1 + 1) - (1 - z2)  (3 z2  + 2 z2 + 1)
-(%o3)     -----------------------------------------------------------
-                                      12
+              2      2                       2      2
+      (1 - z1)  (3 z1  + 2 z1 + 1) - (1 - z2)  (3 z2  + 2 z2 + 1)
+(%o3) -----------------------------------------------------------
+                                  12
 @end example
 
 Simplification for specific values @math{z1=0}, @math{z2=0}, @math{z1=1}, or 
@@ -1087,39 +1169,39 @@ Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when
 
 @example
 (%i14) beta_expand:true$
+
 (%i15) beta_incomplete_generalized(a+1,b,z1,z2);
+
                b   a           b   a
        (1 - z1)  z1  - (1 - z2)  z2
 (%o15) -----------------------------
                    b + a
-                            a beta_incomplete_generalized(a, b, z1, z2)
-                          + -------------------------------------------
-                                               b + a
-
+                      a beta_incomplete_generalized(a, b, z1, z2)
+                    + -------------------------------------------
+                                         b + a
 (%i16) beta_incomplete_generalized(a-1,b,z1,z2);
+
        beta_incomplete_generalized(a, b, z1, z2) (- b - a + 1)
 (%o16) -------------------------------------------------------
                                 1 - a
-                                          b   a - 1           b   a - 1
-                                  (1 - z2)  z2      - (1 - z1)  z1
-                                - -------------------------------------
-                                                  1 - a
+                                    b   a - 1           b   a - 1
+                            (1 - z2)  z2      - (1 - z1)  z1
+                          - -------------------------------------
+                                            1 - a
 @end example
 
 Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
 
 @example
 (%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
-                                      b - 1   a - 1
-(%o17)                      - (1 - z1)      z1
-
+                               b - 1   a - 1
+(%o17)               - (1 - z1)      z1
 (%i18) integrate(beta_incomplete_generalized(a,b,z1,z2),z1);
 (%o18) beta_incomplete_generalized(a, b, z1, z2) z1
-                                        + beta_incomplete(a + 1, b, z1)
-
+                                  + beta_incomplete(a + 1, b, z1)
 (%i19) integrate(beta_incomplete_generalized(a,b,z1,z2),z2);
 (%o19) beta_incomplete_generalized(a, b, z1, z2) z2
-                                        - beta_incomplete(a + 1, b, z2)
+                                  - beta_incomplete(a + 1, b, z2)
 @end example
 
 @opencatbox
@@ -1517,28 +1599,32 @@ negative integer (a polynomial case), @code{hypergeometric} returns an
 expanded polynomial. 
 
 Examples:
+
 @example
- (%i1)  hypergeometric([],[],x);
- (%o1) %e^x
+(%i1)  hypergeometric([],[],x);
+(%o1) %e^x
 @end example
+
 Polynomial cases automatically expand when @code{expand_hypergeometric} is true:
-@example
- (%i2) hypergeometric([-3],[7],x);
- (%o2) hypergeometric([-3],[7],x)
 
- (%i3) hypergeometric([-3],[7],x), expand_hypergeometric : true;
- (%o3) -x^3/504+3*x^2/56-3*x/7+1
+@example
+(%i2) hypergeometric([-3],[7],x);
+(%o2) hypergeometric([-3],[7],x)
+
+(%i3) hypergeometric([-3],[7],x), expand_hypergeometric : true;
+(%o3) -x^3/504+3*x^2/56-3*x/7+1
 @end example
+
 Both double float and big float evaluation is supported:
+
 @example
- (%i4) hypergeometric([5.1],[7.1 + %i],0.42);
- (%o4) 1.346250786375334-0.0559061414208204*%i
-
- (%i5) hypergeometric([5,6],[8], 5.7 - %i);
- (%o5) 0.00737582400977495-0.00104981368857867*%i
-
- (%i6) hypergeometric([5,6],[8], 5.7b0 - %i), fpprec : 30;
- (%o6) 7.37582400977494674506442010824b-3-1.04981368857867315858055393376b-3*%i
+(%i4) hypergeometric([5.1],[7.1 + %i],0.42);
+(%o4)       1.346250786375334 - 0.0559061414208204 %i
+(%i5) hypergeometric([5,6],[8], 5.7 - %i);
+(%o5)     .007375824009774946 - .001049813688578674 %i
+(%i6) hypergeometric([5,6],[8], 5.7b0 - %i), fpprec : 30;
+(%o6) 7.37582400977494674506442010824b-3
+                          - 1.04981368857867315858055393376b-3 %i
 @end example
 @end deffn
 
@@ -1620,27 +1706,28 @@ Examples for exponential integrals:
 
 @example
 (%i4) assume(s>0,a>0,s-a>0)$
-(%i5) ratsimp(specint(%e^(a*t)*(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
-                                    log(s)
-(%o5)                               ------
-                                    s - a
-
+(%i5) ratsimp(specint(%e^(a*t)
+                      *(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
+                             log(s)
+(%o5)                        ------
+                             s - a
 (%i6) logarc:true$
-(%i7) gamma_expand:true$
-(%i8) radcan(specint((cos(t)*expintegral_si(t)
-                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
-                                    log(s)
-(%o8)                               ------
-                                     2
-                                    s  + 1
 
-(%i9) ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
+(%i7) gamma_expand:true$
+
+radcan(specint((cos(t)*expintegral_si(t)
+                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
+                             log(s)
+(%o8)                        ------
+                              2
+                             s  + 1
+ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
                       -2*t*expintegral_ci(a*t))*%e^(-s*t),t));
-                                      2    2
-                                 log(s  + a )
-(%o9)                            ------------
-                                       2
-                                      s
+                               2    2
+                          log(s  + a )
+(%o9)                     ------------
+                                2
+                               s
 @end example
 
 Results when using the expansion of @code{gamma_incomplete} and when changing 
@@ -1716,12 +1803,14 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 @example
 (%i5) load(orthopoly)$
 (%i6) hgfred([-2],[a],z);
+@group
 
                                     (a - 1)
                                  2 L       (z)
                                     2
 (%o6)                            -------------
                                    a (a + 1)
+@end group
 (%i7) ev(%);
 
                                   2
@@ -1730,7 +1819,6 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
                               a (a + 1)    a
 
 @end example
-
 @end deffn
 
 @deffn {Function} lambert_w (@var{z})

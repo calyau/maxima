@@ -84,12 +84,14 @@ Examples:
 (%i7) L : makelist (i / 4.0, i, 0, 8);
 (%o7)   [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
 (%i8) map (lambda ([x], li [2] (x)), L);
+@group
 (%o8) [0, .2676526384986274, .5822405249432515, 
 .9784693966661848, 1.64493407, 2.190177004178597
  - .7010261407036192 %i, 2.374395264042415
  - 1.273806203464065 %i, 2.448686757245154
  - 1.758084846201883 %i, 2.467401098097648
  - 2.177586087815347 %i]
+@end group
 (%i9) map (lambda ([x], li [3] (x)), L);
 (%o9) [0, .2584613953442624, 0.537213192678042, 
 .8444258046482203, 1.2020569, 1.642866878950322
@@ -137,11 +139,11 @@ if @code{true} implements the rule @code{log(-n)} -> @code{log(n)+%i*%pi} for
 @code{n} a positive integer.
 
 @item @code{%e_to_numlog}
-when @code{true}, @code{r} some rational number, and @code{x} some expression, 
-@code{%e^(r*log(x))} will be simplified into @code{x^r} . It should be noted 
-that the @code{radcan} command also does this transformation, and more 
-complicated transformations of this as well. The @code{logcontract} command 
-"contracts" expressions containing @code{log}.
+when @code{true}, @code{r} some rational number, and @code{x} some expression,
+the expression @code{%e^(r*log(x))} will be simplified into @code{x^r}.  It
+should be noted that the @code{radcan} command also does this transformation,
+and more complicated transformations of this as well. The @code{logcontract} 
+command "contracts" expressions containing @code{log}.
 @end table
 
 @opencatbox
@@ -214,16 +216,15 @@ subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 (%i2) logcontract(%);
                                  2  4
 (%o2)                     a log(x  y )
-
 @end example
 
-If you do @code{declare(n,integer);} then @code{logcontract(2*a*n*log(x));} gives
-@code{a*log(x^(2*n))}.  The coefficients that "contract" in this manner are
-those such as the 2 and the @code{n} here which satisfy
-@code{featurep(coeff,integer)}.  The user can control which coefficients are
-contracted by setting the option @code{logconcoeffp} to the name of a
-predicate function of one argument.  E.g. if you like to generate
-SQRTs, you can do @code{logconcoeffp:'logconfun$
+The declaration @code{declare(n,integer)} causes
+@code{logcontract(2*a*n*log(x))} to simplify to @code{a*log(x^(2*n))}.  The
+coefficients that "contract" in this manner are those such as the 2 and the
+@code{n} here which satisfy @code{featurep(coeff,integer)}.  The user can
+control which coefficients are contracted by setting the option
+@code{logconcoeffp} to the name of a predicate function of one argument.
+E.g. if you like to generate SQRTs, you can do @code{logconcoeffp:'logconfun$
 logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
 

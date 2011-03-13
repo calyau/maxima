@@ -708,21 +708,21 @@ See also @code{bfzeta} and @code{zeta%pi}.
 Examples:
 
 @c ===beg===
-@c zeta([-2,-1,0,0.5,2,3,1+%i]);
+@c zeta([-2, -1, 0, 0.5, 2, 3,1+%i]);
 @c limit(zeta(x),x,1,plus);
 @c limit(zeta(x),x,1,minus);
 @c ===end===
 @example
-(%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
-                                              2
-             1     1                       %pi
-(%o1)  [0, - --, - -, - 1.460354508809587, ----, zeta(3), zeta(%i + 1)]
-             12    2                        6 
-
+(%i1) zeta([-2, -1, 0, 0.5, 2, 3, 1+%i]);
+                                             2
+            1     1                       %pi
+(%o1) [0, - --, - -, - 1.460354508809586, ----, zeta(3), 
+            12    2                        6
+                                                    zeta(%i + 1)]
 (%i2) limit(zeta(x),x,1,plus);
-(%o2)                                 inf
+(%o2)                          inf
 (%i3) limit(zeta(x),x,1,minus);
-(%o3)                                minf
+(%o3)                         minf
 @end example
 
 @opencatbox

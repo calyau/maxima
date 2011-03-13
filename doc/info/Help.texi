@@ -181,8 +181,7 @@ yields
 
 @example
 (%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
-(%o2) test(f) := block([u], u : integrate(f, x), 
-
+(%o2) test(f) := block([u], u : integrate(f, x),
                                          ratsimp(f - diff(u, x)))
 (%i3) test(sin(x))
 (%o3)                           0
@@ -223,9 +222,10 @@ Show all Maxima symbols wich have @code{"gamma"} in the name:
 @c ===end===
 @example
 (%i1) apropos("gamma");
-(%o1) [%gamma, %gammagreek, gamma, gammagreek, gammalim, gamma_expand, 
-gamma_imag, gamma_incomplete, gamma_incomplete_generalized, 
-gamma_incomplete_regularized, gamma_radius, Gamma, log_gamma, makegamma, 
+(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
+gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
+prefer_gamma_incomplete, 
 gamma_incomplete_generalized_regularized]
 @end example
 
@@ -308,11 +308,13 @@ _
 
 _
 (%i11)                    combine(exp2)
+@group
                       2 d + 2 c + 3 (b + a)
 (%o11)                ---------------------
                                 6
 
 _
+@end group
 (%i12)                   rncombine(exp2)
                       2 d + 2 c + 3 b + 3 a
 (%o12)                ---------------------

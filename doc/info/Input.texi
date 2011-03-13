@@ -568,8 +568,10 @@ The @code{::} (double colon) assignment operator evaluates its left-hand side.
 (%i7) y44;
 (%o7)                          123
 (%i8) b^a;
+@group
                                y44
 (%o8)                         b
+@end group
 (%i9) %, numer;
                                123
 (%o9)                         b
@@ -989,12 +991,14 @@ For example, supposing the sought-after name is @code{neumann},
 "/home/@{wfs,gcj@}/###.@{lisp,mac@}"
 @end example
 
-expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
+@flushleft
+expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
+@code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
+@end flushleft
 
 @opencatbox
 @category{File input} @category{Global variables}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1019,10 +1023,12 @@ values.
 Examples:
 
 @c === beg ===
-@c map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
+@c map('file_type,
+@c     ["test.lisp", "test.mac", "test.dem", "test.txt"]);
 @c === end ===
 @example
-(%i2) map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
+(%i2) map('file_type,
+          ["test.lisp", "test.mac", "test.dem", "test.txt"]);
 (%o2)            [lisp, maxima, maxima, object]
 @end example
 
@@ -1032,7 +1038,7 @@ Examples:
 @end deffn
 
 @defvr {Option variable} file_type_lisp
-Default value:  @code{[``l'', ``lsp'', ``lisp'']}
+Default value:  @code{[l, lsp, lisp]}
 
 @code{file_type_lisp} is a list of file extensions that maxima recognizes
 as denoting a Lisp source file.
@@ -1041,7 +1047,7 @@ See also @code{file_type}.
 @end defvr
 
 @defvr {Option variable} file_type_maxima
-Default value:  @code{[``mac'', ``mc'', ``demo'', ``dem'',  ``dm1'',  ``dm2'', ``dm3'', ``dmt'']}
+Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
 
 @code{file_type_maxima} is a list of file extensions that maxima recognizes
 as denoting a Maxima source file.
@@ -1501,8 +1507,10 @@ loading.
 
 Example:
 
-Suppose we have a batchfile @code{test.mac} in the directory 
+Suppose we have a batchfile @code{test.mac} in the directory
+@flushleft
 @code{"/home/dieter/workspace/mymaxima/temp/"} with the following commands
+@end flushleft
 
 @example
 print("The value of load_pathname is: ", load_pathname)$
@@ -1958,9 +1966,11 @@ Example:
 (%o3)                        ------
                              Sum(3)
 (%i4) reveal (e, 3);
+@group
                      Expt + Negterm + Expt
 (%o4)               ------------------------
                     Product(2) + Expt + Expt
+@end group
 (%i5) reveal (e, 4);
                        2                 2
                       b  - Product(3) + a
@@ -2344,11 +2354,11 @@ with @var{s_3} separating the arguments.
 Examples:
 
 Assign TeX output for a variable.
+
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
 @c ===end===
-
 @example
 (%i1) texput (me,"\\mu_e");
 (%o1)                         \mu_e
@@ -2358,11 +2368,11 @@ $$\mu_e$$
 @end example
 
 Assign TeX output for an ordinary function (not an operator).
+
 @c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
 @c ===end===
-
 @example
 (%i1) texput (lcm, "\\mathrm@{lcm@}");
 (%o1)                     \mathrm@{lcm@}
@@ -2375,13 +2385,13 @@ Call a function to generate TeX output.
 
 @c ===beg===
 @c texfoo (e) := block ([a, b], [a, b] : args (e),
-@c   concat ("\\left[\\stackrel{", tex1 (b), "}{", tex1 (a), "}\\right]"))$
+@c   concat ("\\left[\\stackrel{",tex1(b),"}{",tex1(a),"}\\right]"))$
 @c texput (foo, texfoo);
 @c tex (foo (2^x, %pi));
 @c ===end===
 @example
 (%i1) texfoo (e) := block ([a, b], [a, b] : args (e),
-  concat ("\\left[\\stackrel@{", tex1 (b), "@}@{", tex1 (a), "@}\\right]"))$
+  concat("\\left[\\stackrel@{",tex1(b),"@}@{",tex1(a),"@}\\right]"))$
 (%i2) texput (foo, texfoo);
 (%o2)                        texfoo
 (%i3) tex (foo (2^x, %pi));
@@ -2390,12 +2400,12 @@ $$\left[\stackrel@{\pi@}@{2^@{x@}@}\right]$$
 @end example
 
 Assign TeX output for a prefix operator.
+
 @c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
 @c tex (grad f);
 @c ===end===
-
 @example
 (%i1) prefix ("grad");
 (%o1)                         grad
@@ -2407,12 +2417,12 @@ $$ \nabla f$$
 @end example
 
 Assign TeX output for an infix operator.
+
 @c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
 @c tex (a ~ b);
 @c ===end===
-
 @example
 (%i1) infix ("~");
 (%o1)                           ~
@@ -2424,12 +2434,12 @@ $$a \times b$$
 @end example
 
 Assign TeX output for a postfix operator.
+
 @c ===beg===
 @c postfix ("##");
 @c texput ("##", "!!", postfix);
 @c tex (x ##);
 @c ===end===
-
 @example
 (%i1) postfix ("##");
 (%o1)                          ##
@@ -2441,12 +2451,12 @@ $$x!!$$
 @end example
 
 Assign TeX output for a nary operator.
+
 @c ===beg===
 @c nary ("@@");
 @c texput ("@@", " \\circ ", nary);
 @c tex (a @@ b @@ c @@ d);
 @c ===end===
-
 @example
 (%i1) nary ("@@@@");
 (%o1)                          @@@@
@@ -2458,12 +2468,12 @@ $$a \circ b \circ c \circ d$$
 @end example
 
 Assign TeX output for a nofix operator.
+
 @c ===beg===
 @c nofix ("foo");
 @c texput ("foo", "\\mathsc{foo}", nofix);
 @c tex (foo);
 @c ===end===
-
 @example
 (%i1) nofix ("foo");
 (%o1)                          foo
@@ -2475,6 +2485,7 @@ $$\mathsc@{foo@}$$
 @end example
 
 Assign TeX output for a matchfix operator.
+
 @c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
@@ -2485,7 +2496,6 @@ Assign TeX output for a matchfix operator.
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
-
 @example
 (%i1) matchfix ("<<", ">>");
 (%o1)                          <<

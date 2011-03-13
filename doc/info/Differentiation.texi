@@ -838,13 +838,16 @@ Examples:
                                s    sqrt(-----)
                                            s
 (%i8) assume(exp(%pi*s)>1)$
-(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),simpsum;
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),
+         simpsum;
+@group
                          %i                         %i
               ------------------------ - ------------------------
                               - %pi s                    - %pi s
               (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
 (%o9)         ---------------------------------------------------
                                        2
+@end group
 (%i9) factor(%);
                                       %pi s
                                     %e

@@ -379,7 +379,7 @@ the half-angle simplifies to a simple formula:
 A complicated factor is needed to make this formula correct for all complex 
 arguments @var{z}:
 
-@example
+@verbatim
            realpart(z)
      floor(-----------)
               2 %pi
@@ -389,7 +389,7 @@ arguments @var{z}:
                       floor(-----------) - ceiling(-----------)
                                2 %pi                  2 %pi
                 ((- 1)                                          + 1))
-@end example
+@end verbatim
 
 Maxima knows this factor and similar factors for the functions @code{sin}, 
 @code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 

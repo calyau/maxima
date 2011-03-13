@@ -389,7 +389,7 @@ ichr2([%2,%3],[u])*ichr2([%5,%6],[%1])*ichr2([%7,r],[%2])-
 g([],[%4,%5])*g([],[%6,%7])*ichr2([%1,%2],[u])*
 ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 (%i4) expr:ishow(%)$
-
+@group
        %4 %5  %6 %7      %3         u          %1         %2
 (%t4) g      g      ichr2      ichr2      ichr2      ichr2
                          %1 %4      %2 %3      %5 %6      %7 r
@@ -397,6 +397,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
         %4 %5  %6 %7      u          %1         %3         %2
      - g      g      ichr2      ichr2      ichr2      ichr2
                           %1 %2      %3 %5      %4 %6      %7 r
+@end group
 (%i5) flipflag:true;
 (%o5)                                true
 (%i6) ishow(rename(expr))$
@@ -529,7 +530,6 @@ of which involve the use of the @code{components} command:
 1) As an indexed expression. For instance:
 
 @example
-
 (%i2) components(g([],[i,j]),e([],[i])*p([],[j]))$
 (%i3) ishow(g([],[i,j]))$
                                       i  j
@@ -542,6 +542,7 @@ of which involve the use of the @code{components} command:
 @example
 
 (%i5) lg:-ident(4)$lg[1,1]:1$lg;
+@group
                             [ 1   0    0    0  ]
                             [                  ]
                             [ 0  - 1   0    0  ]
@@ -549,7 +550,7 @@ of which involve the use of the @code{components} command:
                             [ 0   0   - 1   0  ]
                             [                  ]
                             [ 0   0    0   - 1 ]
-
+@end group
 (%i6) components(g([i,j],[]),lg);
 (%o6)                                done
 (%i7) ishow(g([i,j],[]))$
@@ -559,7 +560,6 @@ of which involve the use of the @code{components} command:
 (%o8)                                  1
 (%i9) g([4,4],[]);
 (%o9)                                 - 1
-
 @end example
 
 3) As a function. You can use a Maxima function to specify the
@@ -580,7 +580,6 @@ of covariant and contravariant indices and no derivative indices, and
                                      k
 (%t6)                               g
                                      i j,l
-
 @end example
 
 4) Using Maxima's pattern matching capabilities, specifically the
@@ -599,15 +598,15 @@ of covariant and contravariant indices and no derivative indices, and
       w([],[l1[1],l1[2]])*e([i1],[])*q([],[i1])))$
 
 (%i5) ishow(m([i,n],[])*m([],[i,m]))$
+@group
                                     i m
 (%t5)                              m    m
                                          i n
+@end group
 (%i6) ishow(rename(applyb1(%,r1,r2)))$
                            %1  %2  %3 m
 (%t6)                     e   q   w     q   e   g
                                          %1  %2  %3 n
-
-
 @end example
 
 @opencatbox
@@ -808,7 +807,6 @@ are more easily simplified with @code{rename} or @code{contract}.
                                  i           i
 (%t6)                           a  - a kdelta
                                  l           l
-
 @end example
 
 The @code{lc2kdt} function sometimes makes use of the metric tensor.
@@ -819,9 +817,11 @@ this results in an error.
 
 (%i7) expr:ishow('levi_civita([],[i,j])
                  *'levi_civita([],[k,l])*a([j,k],[]))$
+@group
                                  i j            k l
 (%t7)                 levi_civita    levi_civita    a
                                                      j k
+@end group
 (%i8) ishow(lc2kdt(expr))$
 Maxima encountered a Lisp error:
 
@@ -843,7 +843,6 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
                                   l i    l i  j
 (%t11)                           a    - g    a
                                               j
-
 @end example
 
 
@@ -964,8 +963,10 @@ illustrates.
 (%i2) expr:contract( expand( a([i1, j1, k1], [])
            *kdels([i, j, k], [i1, j1, k1])))$
 (%i3) ishow(expr)$
+@group
 (%t3)         a      + a      + a      + a      + a      + a
                k j i    k i j    j k i    j i k    i k j    i j k
+@end group
 (%i4) decsym(a,3,0,[sym(all)],[]);
 (%o4)                                done
 (%i5) ishow(canform(expr))$
@@ -1065,7 +1066,7 @@ is set to @code{true}.
 @code{idiff} can also differentiate the determinant of the metric
 tensor. Thus, if @code{imetric} has been bound to @code{G} then
 @code{idiff(determinant(g),k)} will return
-@code{2*determinant(g)*ichr2([%i,k],[%i])} where the dummy index @code{%i}
+@code{2 * determinant(g) * ichr2([%i,k],[%i])} where the dummy index @code{%i}
 is chosen appropriately.
 
 @opencatbox
@@ -1271,7 +1272,7 @@ symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
 @deffn {Function} conmetderiv (@var{expr}, @var{tensor})
 
 Simplifies expressions containing ordinary derivatives of
-both covariant and contravariant forms of the metric tensor (the
+both covariant and con@-tra@-va@-ri@-ant forms of the metric tensor (the
 current restriction).  For example, @code{conmetderiv} can relate the
 derivative of the contravariant metric tensor with the Christoffel
 symbols as seen from the following:
@@ -1403,8 +1404,8 @@ exactly one derivative index.
 @deffnx {System variable} imetric
 
 Specifies the metric by assigning the variable @code{imetric:@var{g}} in
-addition, the contraction properties of the metric @var{g} are set up by
-executing the commands @code{defcon(@var{g}),defcon(@var{g},@var{g},kdelta)}.
+addition, the con@-trac@-tion properties of the metric @var{g} are set up by
+executing the commands @code{defcon(@var{g}), defcon(@var{g}, @var{g}, kdelta)}.
 The variable @code{imetric} (unbound by default), is bound to the metric, assigned by
 the @code{imetric(@var{g})} command.
 
@@ -1504,6 +1505,7 @@ Enter a list of the derivative indices: [];
                 i %1   s %4,j    j s,%4    j %4,s
 (%t5) - ------------------------------------------
                             2
+@group
     %1 %3  k
    g      a     (g       - g       + g      )
            %1 j   s %3,i    i s,%3    i %3,s
@@ -1514,6 +1516,7 @@ Enter a list of the derivative indices: [];
           i j   s %2,%1    %1 s,%2    %1 %2,s     k
  + ------------------------------------------- + a
                         2                         i j,s
+@end group
 (%i6)
 @end example
 
@@ -1629,11 +1632,13 @@ and @code{icc2}), as the following example demonstrates:
 (%t5)                    v   ifg     ifc1        + v
                                          %1 j %2    ,j
 (%i6) ishow(ev(%,ifc1))$
+@group
             %1    i %2
            v   ifg     (ifb        - ifb        + ifb       )
                            j %2 %1      %2 %1 j      %1 j %2     i
 (%t6)      -------------------------------------------------- + v
                                    2                             ,j
+@end group
 (%i7) ishow(ifb([a,b,c]))$
                                                    %3    %4
 (%t7)               (ifri        - ifri       ) ifr   ifr
@@ -2276,7 +2281,6 @@ To use the @code{tentex} function, you must first load @code{tentex},
 as in the following example:
 
 @example
-
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
 (%i2) load(tentex);
@@ -2294,7 +2298,6 @@ as in the following example:
 (%i5) tentex(%)$
 $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
  \Gamma_@{k\,m_1@}^@{i@}-\Gamma_@{j\,l,k@}^@{i@}+\Gamma_@{j\,k,l@}^@{i@}$$
-
 @end example
 
 Note the use of the @code{idummyx} assignment, to avoid the appearance

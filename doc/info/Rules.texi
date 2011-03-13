@@ -245,6 +245,7 @@ to see if it is a definite integral.
 (%i7) simp : true;
 (%o7)                         true
 (%i8) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+@group
                        x + 2 %pi
                       /
                       [
@@ -252,6 +253,7 @@ to see if it is a definite integral.
                       ]
                       /
                        x + %pi
+@end group
 (%i9) checklimits (%);
 (%o9)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
 @end example
@@ -372,16 +374,16 @@ Substitutions such as @code{n!/n} goes to @code{(n-1)!} then fail.
 When @code{letrat} is @code{true}, then the numerator,
 denominator, and the quotient are simplified in that order.
 
-These substitution functions allow you to work with several rule packages at once.
-Each rule package can contain any number of @code{let}
-rules and is referenced by a user-defined name.
-@code{let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})}
-adds the rule @var{predname} to the rule package @var{package_name}.
-@code{letsimp (@var{expr}, @var{package_name})} 
-applies the rules in @var{package_name}.
-@code{letsimp (@var{expr}, @var{package_name1}, @var{package_name2}, ...)}
-is equivalent to @code{letsimp (@var{expr}, @var{package_name1})}
-followed by @code{letsimp (%, @var{package_name2})}, ....
+These substitution functions allow you to work with several rule packages at
+once.  Each rule package can contain any number of @code{let} rules and is
+referenced by a user-defined name.  The command @code{let ([@var{prod},
+@var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})}
+adds the rule @var{predname} to the rule package @var{package_name}.  The
+command @code{letsimp (@var{expr}, @var{package_name})} applies the rules in 
+@var{package_name}.  @code{letsimp (@var{expr}, @var{package_name1},
+@var{package_name2}, ...)} is equivalent to @code{letsimp (@var{expr},
+@var{package_name1})} followed by @code{letsimp (%, @var{package_name2})},
+@dots{}
 
 @code{current_let_rule_package} is the name of the rule package that is
 presently being used.
@@ -745,10 +747,10 @@ In particular, built-in operators such as addition @code{+} can
 be declared matchfix,
 but operator functions cannot be defined for built-in operators.
 
-@code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})} 
-declares the argument part-of-speech @var{arg_pos} 
-and result part-of-speech @var{pos}, 
-and the delimiters @var{ldelimiter} and @var{rdelimiter}.
+The command @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos},
+@var{pos})} declares the argument part-of-speech @var{arg_pos} and result
+part-of-speech @var{pos}, and the delimiters @var{ldelimiter} and
+@var{rdelimiter}.
 
 "Part of speech", in reference to operator declarations, means expression type.
 Three types are recognized: @code{expr}, @code{clause}, and @code{any},
@@ -970,7 +972,7 @@ you, you probably want to use @code{tellsimpafter}.
 The pattern may not be a
 sum, product, single variable, or number.
 
-@code{rules} is the list of rules defined by
+The system variable @code{rules} is the list of rules defined by
 @code{defrule}, @code{defmatch}, @code{tellsimp}, and @code{tellsimpafter}.
 
 Examples:

@@ -190,7 +190,7 @@ comprises an operator and all of its arguments.
 @c ===beg===
 @c coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
 @c coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
-@c coeff (sin(1 + x)*sin(x) + sin(1 + x)^3*sin(x)^3, sin(1 + x)^3);
+@c coeff (sin(1+x)*sin(x) + sin(1+x)^3*sin(x)^3, sin(1+x)^3);
 @c coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
 @c ===end===
 @example
@@ -198,7 +198,7 @@ comprises an operator and all of its arguments.
 (%o1)                        - 2 %pi
 (%i2) coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
 (%o2)                        - 2 %pi
-(%i3) coeff (sin(1 + x)*sin(x) + sin(1 + x)^3*sin(x)^3, sin(1 + x)^3);
+(%i3) coeff (sin(1+x)*sin(x) + sin(1+x)^3*sin(x)^3, sin(1+x)^3);
                                 3
 (%o3)                        sin (x)
 (%i4) coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
@@ -471,10 +471,12 @@ Examples:
                 2  2        2    2    2
 (%o3)          x  y  + 2 x y  + y  - x  - 2 x - 1
 (%i4) block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
+@group
                        2
                      (x  + 2 x + 1) (y - 1)
 (%o4)                ----------------------
                            36 (y + 1)
+@end group
 (%i5) factor (1 + %e^(3*x));
                       x         2 x     x
 (%o5)              (%e  + 1) (%e    - %e  + 1)
@@ -517,6 +519,7 @@ Examples:
              2
    ((b - 3) c  + (18 - 6 b) c + 9 b - 27) (x + 3)
 (%i11) map ('factor, %);
+@group
               2
              c  - 4 c - b + 6                 c - 2
 (%o11) - ------------------------- - ------------------------
@@ -527,6 +530,7 @@ Examples:
             + ------------------------ - ------------------------
                              2                          2
               (b - 3) (c - b)  (x + b)   (b - 3) (c - 3)  (x + 3)
+@end group
 (%i12) ratsimp ((x^5 - 1)/(x - 1));
                        4    3    2
 (%o12)                x  + x  + x  + x + 1
@@ -838,10 +842,12 @@ terminates at @code{L[i+1]} when the remainder @code{r[i+2]} is zero.
 
 @example
 (%i1) gcdex (x^2 + 1, x^3 + 4);
+@group
                        2
                       x  + 4 x - 1  x + 4
 (%o1)/R/           [- ------------, -----, 1]
                            17        17
+@end group
 (%i2) % . [x^2 + 1, x^3 + 4, -1];
 (%o2)/R/                        0
 @end example
@@ -855,10 +861,12 @@ since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[
 
 @example
 (%i1) gcdex (x*(y + 1), y^2 - 1, x);
+@group
                                1
 (%o1)/R/                 [0, ------, 1]
                               2
                              y  - 1
+@end group
 @end example
 
 @opencatbox
@@ -1267,6 +1275,7 @@ Examples:
 @example
 (%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
       (4*y^2 + x^2);
+@group
                                            4
                                   (x - 2 y)
               (y + a) (2 y + x) (------------ + 1)
@@ -1275,6 +1284,7 @@ Examples:
 (%o1)         ------------------------------------
                               2    2
                            4 y  + x
+@end group
 (%i2) rat (%, y, a, x);
                             2 a + 2 y
 (%o2)/R/                    ---------
@@ -1689,11 +1699,13 @@ Examples:
 
 @example
 (%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+@group
                                          2      2
                    x         (log(x) + 1)  - log (x)
 (%o1)        sin(------) = %e
                   2
                  x  + x
+@end group
 (%i2) ratsimp (%);
                              1          2
 (%o2)                  sin(-----) = %e x
@@ -1778,8 +1790,10 @@ Examples:
             4           2                     2
 (%o3)    sin (x) - 3 sin (x) + cos(x) (2 - sin (x)) + 3
 (%i4) ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+@group
                         4           2
 (%o4)                cos (x) - 2 cos (x) + 1
+@end group
 (%i5) radsubstflag: false$
 (%i6) ratsubst (u, sqrt(x), x);
 (%o6)                           x

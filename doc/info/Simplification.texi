@@ -214,7 +214,7 @@ representation (e. g. a CRE form) is removed. See also @code{ev}.
 
 The @code{expand} flag used with @code{ev} causes expansion.
 
-The file @file{simplification/facexp.mac}
+The file @file{share/simplification/facexp.mac}
 @c I should really use a macro which expands to something like
 @c @uref{file://...,,simplification/facexp.mac}.  But texi2html
 @c currently supports @uref only with one argument.
@@ -238,37 +238,36 @@ Examples:
 @c ===end===
 @example
 (%i1) expr:(x+1)^2*(y+1)^3;
-                                      2        3
-(%o1)                          (x + 1)  (y + 1)
+                               2        3
+(%o1)                   (x + 1)  (y + 1)
 (%i2) expand(expr);
        2  3        3    3      2  2        2      2      2
 (%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
-                                                 2
-                                + 6 x y + 3 y + x  + 2 x + 1
-
+                                                      2
+                                     + 6 x y + 3 y + x  + 2 x + 1
 (%i3) expand(expr,2);
-                      2        3              3          3
-(%o3)                x  (y + 1)  + 2 x (y + 1)  + (y + 1)
-
+               2        3              3          3
+(%o3)         x  (y + 1)  + 2 x (y + 1)  + (y + 1)
 (%i4) expr:(x+1)^-2*(y+1)^3;
-                                          3
-                                   (y + 1)
-(%o4)                              --------
-                                          2
-                                   (x + 1)
+                                   3
+                            (y + 1)
+(%o4)                       --------
+                                   2
+                            (x + 1)
 (%i5) expand(expr);
-                 3               2
-                y             3 y            3 y             1
-(%o5)      ------------ + ------------ + ------------ + ------------
-            2              2              2              2
-           x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
-
+            3               2
+           y             3 y            3 y             1
+(%o5) ------------ + ------------ + ------------ + ------------
+       2              2              2              2
+      x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
 (%i6) expand(expr,2,2);
-                                          3
-                                   (y + 1)
-(%o6)                            ------------
-                                  2
-                                 x  + 2 x + 1
+@group
+                                   3
+                            (y + 1)
+(%o6)                     ------------
+                           2
+                          x  + 2 x + 1
+@end group
 @end example
 
 Resimplify an expression without expansion:
@@ -643,6 +642,7 @@ evaluates them.  See also @code{noun}, @code{nounify}, @code{verb}, and @code{ve
 
 @c -----------------------------------------------------------------------------
 @defvr {Option variable} numer
+
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point. It causes
 variables in @code{expr} which have been given numerals to be replaced by
@@ -658,11 +658,11 @@ Examples:
 @c ===end===
 @example
 (%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
-                                               1
-(%o1)                   [sqrt(2), sin(1), -----------]
-                                          sqrt(3) + 1
+                                        1
+(%o1)            [sqrt(2), sin(1), -----------]
+                                   sqrt(3) + 1
 (%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
-(%o2)      [1.414213562373095, .8414709848078965, .3660254037844387]
+(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
 @end example
 
 @opencatbox
@@ -1012,6 +1012,7 @@ Examples:
 @example
 (%i1) sumexpand: true$
 (%i2) sum (f (i), i, 0, m) * sum (g (j), j, 0, n);
+@group
                      m      n
                     ====   ====
                     \      \
@@ -1019,6 +1020,7 @@ Examples:
                     /      /
                     ====   ====
                     i1 = 0 i2 = 0
+@end group
 (%i3) sum (f (i), i, 0, m)^2;
                      m      m
                     ====   ====
