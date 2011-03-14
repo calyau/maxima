@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.8 2008-05-13 08:20:53 villate Exp $
+#       $Id: Send-some.tcl,v 1.9 2011-03-14 20:01:13 villate Exp $
 #
 ###### send-some.tcl ######
 
@@ -91,7 +91,7 @@ if { "[info commands vwait]" == "vwait"  } {
     }
 }
 
-proc omDoInterrupt { win } {7534
+proc omDoInterrupt { win } {
     foreach v [ $win tag names] {
 	if { [regexp "com:pdata\\((\[a-z_A-Z]*)," $v junk program] } {
 	    set var [string range $v 4 end]
