@@ -2,147 +2,256 @@
 @c File        : Lists.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Lists.texi revision 1.37
+@c Original    : Lists.texi revision 1.38
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 18.02.2011
+@c Revision    : 14.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
+@page
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Listen, Funktionen und Variablen f@"ur Arrays, Datentypen und -strukturen
-@section Einf@"uhrung in Listen
-@c -----------------------------------------------------------------------------
-
-@c Lists are the basic building block for Maxima and Lisp.   All data types
-@c other than arrays, hash tables, numbers are represented as Lisp lists,
-@c These Lisp lists have the form
-
-Listen sind die grundlegenden Bausteine f@"ur Maxima und Lisp.  Alle Ausdr@"ucke
-und Datentypen bis auf Arrays und Zahlen werden als Lisp-Listen dargestellt.
-So wird ein Ausdruck @code{a+2} folgenderma@ss{}en intern als Liste dargestellt:
-
-@example
-((MPLUS) $A 2)
-@end example
-
-@c to indicate an expression @code{a+2}.   At Maxima level one would see the 
-@c infix notation @code{a+2}.   Maxima also has lists which are printed as
-
-@noindent
-Maxima selbst kennt den Typ einer Liste.  Eine Liste mit 4 Elementen wird zum 
-Beispiel wie folgt dargestellt:
-
-@example
-[1, 2, 7, x+y]
-@end example
-
-@c for a list with 4 elements.  Internally this corresponds to a Lisp list 
-@c of the form
-
-@noindent
-Intern ist die Darstellung der obigen Liste wie folgt:
-
-@example
-((MLIST) 1  2  7  ((MPLUS)  $X $Y ))
-@end example
-
-@c The flag which denotes the type field of the Maxima expression is a list
-@c itself, since after it has been through the simplifier the list would become
-
-@noindent
-Das erste Element der internen Darstellung ist selbst eine Liste und bezeichnet
-einen Operator oder eine Funktion.  Wird der Ausdruck vereinfacht wird dem
-ersten Element ein @code{simp}-Schalter hinzugef@"ugt:
-
-@example
-((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
-@end example
-
-@c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Listen,  , Einf@"uhrung in Listen, Datentypen und -strukturen
-@section Funktionen und Variablen f@"ur Listen
+@node Listen, Arrays, Funktionen und Variablen f@"ur Konstante, Datentypen und -strukturen
+@section Listen
 @c -----------------------------------------------------------------------------
 
-@c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS
-@c NEEDS CLARIFICATION AND EXAMPLES
+@menu
+* Einf@"uhrung in Listen::
+* Funktionen und Variablen f@"ur Listen::
+@end menu
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
+@node Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Listen, Listen, Listen
+@subsection Einf@"uhrung in Listen
+@c -----------------------------------------------------------------------------
+
+Listen werden in Maxima mit eckigen Klammern eingegeben und angezeigt:
+
+@example
+[a, b, c, ...]
+@end example
+
+Die Elemente einer Liste k@"onnen Zahlen, Symbole, Ausdr@"ucke und auch Listen
+sein, wodurch verschachtelte Listen entstehen:
+
+@example
+(%i1) [1, 1/2, a, a+b, sin(x), [log(y)^2, y]];
+                 1                        2
+(%o1)        [1, -, a, b + a, sin(x), [log (y), y]]
+                 2
+@end example
+
+Mit den Funktionen @mref{makelist} und @mref{create_list} k@"onnen Listen aus
+Ausdr@"ucken generiert werden.  Die Funktion @mref{copylist} erzeugt eine Kopie
+einer Liste.  Auf einzelne Elemente oder Teile von Listen kann mit den
+Funktionen @mrefcomma{first} @mref{rest} oder @mref{last} zugegriffen werden.
+Mit der Aussagefunktion @mref{listp} kann getestet werden, ob eine Liste
+vorliegt.  F@"ur das Arbeiten mit Listen kennt Maxima die folgenden Funktionen:
+
+@verbatim
+   append        assoc     cons      copylist
+   create_list   delete    eighth    endcons
+   fifth         first     fourth    join
+   last          length    listp     makelist
+   member        ninth     pop       push
+   rest          reverse   second    seventh
+   sixth         sort      sublist   sublist_indices
+   tenth         third
+@end verbatim
+
+Da Maxima intern alle Ausdr@"ucke als Listen darstellt, k@"onnen viele der oben
+aufgef@"uhrten Funktionen nicht nur auf Maxima-Listen, sondern auch auf
+allgemeine Ausdr@"ucke angewendet werden.  So wird zum Beispiel die Addition der
+drei Symbole @code{a}, @code{b}, @code{c} von Maxima intern folgenderma@ss{}en
+als eine Lisp-Liste dargestellt:
+
+@example
+   ((MPLUS) $A $B $C)
+@end example
+
+Der Operator der Addition ist @code{MPLUS} und die Symbole @code{$A}, @code{$B}
+und @code{$C} sind die Argumente des Operators.  Alle Funktionen f@"ur Listen,
+die nur auf die Argumente wirken, k@"onnen nun auch auf allgemeine Ausdr@"ucke
+angewendet werden.  Im folgenden werden zum Beispiel die Funktionen
+@mrefcomma{first} @mrefcomma{last} @mref{cons} und @mref{delete} auf eine
+Addition angewendet:
+
+@example
+(%i1) expr: a + b + c;
+(%o1)                       c + b + a
+(%i2) first(expr);
+(%o2)                           c
+(%i3) last(expr);
+(%o3)                           a
+(%i4) cons(2*x, expr);
+(%o4)                    2 x + c + b + a
+(%i5) delete(b, expr);
+(%o5)                         c + a
+@end example
+
+Weitere Beispiele f@"ur die Anwendung der Funktionen f@"ur Listen auf allgemeine
+Ausdr@"ucke sind bei den einzelnen Funktionen angegeben.  Eine ausf@"uhrlichere
+Beschreibung der internen Darstellung von Maxima-Ausdr@"ucken ist im Kapitel
+@nref{Ausdr@"ucke} enthalten.
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur Listen, , Einf@"uhrung in Listen, Listen
+@subsection Funktionen und Variablen f@"ur Listen
+@c -----------------------------------------------------------------------------
+
+@c --- 14.03.2011 DK -----------------------------------------------------------
+@defvr  {Operator} [
+@defvrx {Operator} ]
+
+Die Operatoren @code{[} und @code{]} markieren den Anfang und das Ende einer
+Liste.
+
+@code{[} und @code{]} schlie@ss{}en auch die Indizes von Symbolen, Arrays, 
+Hash-Arrays oder Array-Funktionen ein.
+
+Beispiele:
+
+@example
+(%i1) x: [a, b, c];
+(%o1)                       [a, b, c]
+(%i2) x[3];
+(%o2)                           c
+(%i3) array (y, fixnum, 3);
+(%o3)                           y
+(%i4) y[2]: %pi;
+(%o4)                          %pi
+(%i5) y[2];
+(%o5)                          %pi
+(%i6) z['foo]: 'bar;
+(%o6)                          bar
+(%i7) z['foo];
+(%o7)                          bar
+(%i8) g[k] := 1/(k^2+1);
+                                  1
+(%o8)                     g  := ------
+                           k     2
+                                k  + 1
+(%i9) g[10];
+                                1
+(%o9)                          ---
+                               101
+@end example
+@end defvr
+
+@c --- 14.03.2011 DK -----------------------------------------------------------
 @anchor{append}
 @deffn {Funktion} append (@var{list_1}, @dots{}, @var{list_n})
 
-@c Returns a single list of the elements of @var{list_1} followed by the 
-@c elements of @var{list_2}, ...  @code{append} also works on general 
-@c expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields 
-@c @code{f(a,b,c,d,e)}.
-
 Gibt eine Liste mit den Elementen der Listen @var{list_1}, @dots{}, @var{list_n}
-zur@"uck.  @code{append} kann auch f@"ur allgemeine Ausdr@"ucke genutzt werden.
+zur@"uck.  Ist eines der Argumente @var{list_1}, @dots{}, @var{list_n} keine
+Liste meldet Maxima einen Fehler.
+
+@code{append} kann auch f@"ur allgemeine Ausdr@"ucke genutzt werden.
 So hat zum Beispiel @code{append(f(a,b), f(c,d,e))} das Ergebnis
-@code{f(a,b,c,d,e)}.
+@code{f(a,b,c,d,e)}.  In diesem Fall muss der Operator, der hier @code{f} ist,
+f@"ur beide Ausdr@"ucke identisch sein, ansonsten meldet Maxima einen Fehler.
 
-@c Do @code{example(append);} for an example.
+Siehe auch die Funktionen @mref{cons} und @mrefcomma{endcons} um ein Element
+einer Liste hin@-zu@-zu@-f@"u@-gen.
 
-Mit dem Kommando @code{example(append)} wird ein Beispiel angezeigt.
+Beispiele:
+
+In den ersten Beispielen werden jeweils Listen mit verschiedenen Elementen
+zusammengef@"ugt.  Im letzten Beispiel wird @code{append} genutzt, um zwei
+Additionen zusammenzusetzen.
+
+@example
+(%i1) append([a,b], [x,y,z], [1]);
+(%o1)                  [a, b, x, y, z, 1]
+(%i2) append([x+y, 0, -3.2], [2.5e+20, x]);
+(%o2)             [y + x, 0, - 3.2, 2.5e+20, x]
+(%i3) append([2*a+b], [x+y]);
+(%o3)                   [b + 2 a, y + x]
+(%i4) append(2*a+b, x+y);
+(%o4)                    y + x + b + 2 a
+@end example
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 14.03.2011 DK -----------------------------------------------------------
 @anchor{assoc}
 @deffn  {Funktion} assoc (@var{key}, @var{list}, @var{default})
 @deffnx {Funktion} assoc (@var{key}, @var{list})
 
-@c This function searches for the @var{key} in the left hand side of the input 
-@c @var{list} of the form @code{[x,y,z,...]} where each of the @var{list} 
-@c elements is an expression of a binary operand and 2 elements.  For example 
-@c @code{x=1}, @code{2^3}, @code{[a,b]} etc. The @var{key} is checked againts 
-@c the first operand.  @code{assoc} returns the second operand if the @code{key}
-@c is found.  If the @code{key} is not found it either returns the @var{default}
-@c value.  @var{default} is optional and defaults to @code{false}.
+Ist das Argument @code{list} eine Liste mit paarweisen Elementen der Form
+@code{[[key_1, value_1], [key_2, value_2], ...]}, wobei @var{key_i} ein
+Schl@"ussel und @var{value_i} der dazugeh@"orige Wert ist, dann gibt die
+Funktion @code{assoc} den zum Schl@"ussel @var{key} geh@"orenden Wert
+@code{value} zur@"uck.  Wird der Schl@"ussel nicht gefunden wird das Argument
+@code{default} zur@"uckgegeben, wenn es vorhanden ist, oder der Wert
+@code{false}.
 
-Die Funktion @code{assoc} sucht den Schl@"ussel @var{key} in der Liste 
-@var{list}.  Die Liste hat die Form @var{[x, y, z, @dots{}]}.  Jedes Element der
-Liste ist ein Ausdruck mit 2 Argumenten wie zum Beispiel @code{x=1}, @code{2^3}
-oder @code{[a,b]}.  Der Schl@"ussel @var{key} wird im ersten Argument gesucht.
-Wenn der Schl@"ussel gefunden wurde, gibt @code{assoc} das zweite Argument als
-Ergebnis zur@"uck.  Wird der Schl@"ussel nicht gefunden, gibt @code{asscoc} den
-Wert des Arguments @code{default} oder @code{false} zur@"uck.  Das Argument
-@var{default} ist optional und hat den Standardwert @code{false}.
+Die Paare @code{[key_i, value_i]} k@"onnen auch allgemeine Ausdr@"ucke sein, die
+zwei Argumente haben.  Zum Beispiel sind Eintr@"age der Form @code{x=1} oder
+@code{a^b} m@"oglich.  Im ersten Fall ist @code{x} der Schl@"ussel und im
+zweiten Fall @code{a}.  Die Werte sind jeweils @code{1} und @code{b}.
+
+Beispiele:
+
+@example
+(%i1) l : [[info, 10], [warn, 20], [err, 30]];
+(%o1)          [[info, 10], [warn, 20], [err, 30]]
+(%i2) assoc(info, l);
+(%o2)                          10
+(%i3) assoc(warn, l);
+(%o3)                          20
+(%i4) assoc(err, l);
+(%o4)                          30
+(%i5) l : [x+y, a^(2*b), sin(x) = 0.5];
+                            2 b
+(%o5)              [y + x, a   , sin(x) = 0.5]
+(%i6) assoc(x, l);
+(%o6)                           y
+(%i7) assoc(y, l);
+(%o7)                         false
+(%i8) assoc(a, l);
+(%o8)                          2 b
+(%i9) assoc(sin(x), l);
+(%o9)                          0.5
+@end example
 @end deffn
 
-@c REPHRASE
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 14.03.2011 DK -----------------------------------------------------------
 @anchor{atom}
 @deffn {Funktion} atom (@var{expr})
 
-@c Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) 
-@c else @code{false}.  Thus @code{atom(5)} is @code{true} while 
-@c @code{atom(a[1])} and @code{atom(sin(x))} are @code{false} 
-@c (asuming @code{a[1]} and @code{x} are unbound).
-
 Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} ein Atom ist.
-Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole.  So hat
-@code{atom(5)} das Ergebnis @code{true}, w@"ahrend die Ausdr@"ucke 
-@code{atom(a[1])} oder @code{atom(sin(x))} das Ergebnis @code{false} haben.
-@end deffn
+Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole.  Siehe
+auch die Funktionen @mref{symbolp} und @mrefdot{listp}
 
-@c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+Beispiele:
+
+@example
+(%i1) atom(5);
+(%o1)                         true
+(%i2) atom(5.0);
+(%o2)                         true
+(%i3) atom(5.0b0);
+(%o3)                         true
+(%i4) atom(1/2);
+(%o4)                         false
+(%i5) atom('a);
+(%o5)                         true
+(%i6) atom(2*x);
+(%o6)                         false
+(%i7) atom("string");
+(%o7)                         true
+@end example
+@end deffn
 
 @c --- 16.11.2010 DK -----------------------------------------------------------
 @anchor{cons}
 @deffn {Funktion} cons (@var{expr}, @var{list})
 
-@c Returns a new list constructed of the element @var{expr} as its first 
-@c element, followed by the elements of @var{list}.  @code{cons} also works
-@c on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+F@"ugt den Ausdruck @var{expr} als erstes Element der Liste @var{list} hinzu.
 
-Gibt eine Liste zur@"uck, deren erstes Element der Ausdruck @var{expr} ist, dem
-die weiteren Elemente der Liste @var{list} folgen.  @code{cons} arbeitet auch
+
+@code{cons} arbeitet auch
 mit allgemeinen Ausdr@"ucken.  Zum Beispiel hat @code{cons(x, f(a,b,c))} das 
 Ergebnis @code{f(x,a,b,c)}.
 @end deffn
@@ -601,6 +710,63 @@ Beispiele:
 (%o7)                         true
 (%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
 (%o8)                         true
+@end example
+@end deffn
+
+@c --- 14.03.2011 DK -----------------------------------------------------------
+@deffn {Funktion} pop (@var{list})
+
+@code{pop} removes the first element from the list @var{list} and returns this 
+element. @var{list} must be a symbol, which is bound to a list and not the list 
+itself.
+
+If the argument @var{list} is not bound to a list or the list is empty, Maxima
+generates an error message.
+
+See also @code{push} for examples.
+
+@code{load(basic)} loads this function.
+@end deffn
+
+@c --- 14.03.2011 DK -----------------------------------------------------------
+@deffn {Function} push (@var{item}, @var{list})
+
+@code{push} prepends the item @var{item} to the list @var{list} and returns a
+copy of the new list. @var{list} must be a symbol, which is bound to a list and
+not the list itself. @var{item} can be any Maxima symbol or expression.
+
+If the argument @var{list} is not bound to a list, Maxima generates an error
+message.
+
+See also @code{pop} to remove the first item from a list.
+
+@code{load(basic)} loads this function.
+
+Examples:
+
+@example
+(%i1) ll:[];
+(%o1)                          []
+(%i2) push(x,ll);
+(%o2)                          [x]
+(%i3) push(x^2+y,ll);
+                                 2
+(%o3)                      [y + x , x]
+(%i4) a:push("string",ll);
+                                     2
+(%o4)                  [string, y + x , x]
+(%i5) pop(ll);
+(%o5)                        string
+(%i6) pop(ll);
+                                  2
+(%o6)                        y + x
+(%i7) pop(ll);
+(%o7)                           x
+(%i8) ll;
+(%o8)                          []
+(%i9) a;
+                                     2
+(%o9)                  [string, y + x , x]
 @end example
 @end deffn
 

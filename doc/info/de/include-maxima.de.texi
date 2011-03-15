@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in revision 1.12
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 08.03.2011
+@c Revision    : 14.03.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -129,7 +129,7 @@ Dr. Dieter Kaiser, 14.02.2011
 * Hilfe::                       Hilfe in einer Maxima-Sitzung erhalten.
 * Kommandozeile::               Eingaben und Ausgaben der Konsole.
 * Datentypen und -strukturen::  Ganze, rationale und Gleitkommazahlen,
-                                Konstante, Zeichenketten, Arrays und Listen.
+                                Konstante, Zeichenketten, Listen und Arrays.
 * Ausdr@"ucke::                 Ausdr@"ucke in Maxima.
 * Operatoren::                  Operatoren in Maxima.
 * Auswertung::                  Auswertung von Ausdr@"ucken.
@@ -247,14 +247,11 @@ Kommandozeile
 * Funktionen und Variablen der Ausgabe::
 
 Datentypen und -strukturen
-* Einf@"uhrung in Maxima Zahlen::
+* Zahlen::
 * Zeichenketten::
-* Funktionen und Variablen f@"ur Zahlen::
-* Funktionen und Variablen f@"ur Zeichenketten::
 * Funktionen und Variablen f@"ur Konstante::
-* Funktionen und Variablen f@"ur Arrays::
-* Einf@"uhrung in Listen::
-* Funktionen und Variablen f@"ur Listen::
+* Listen::
+* Arrays::
 
 Ausdr@"ucke
 * Einf@"uhrung in Ausdr@"ucke::
@@ -614,7 +611,9 @@ Glossar
 @node Datentypen und -strukturen, Ausdr@"ucke, Kommandozeile, Top
 @chapter Datentypen und -strukturen
 @include DataTypes.de.texi
+@include Constants.de.texi
 @include Lists.de.texi
+@include Arrays.de.texi
 
 @node Ausdr@"ucke, Operatoren, Datentypen und -strukturen, Top
 @chapter Ausdr@"ucke
