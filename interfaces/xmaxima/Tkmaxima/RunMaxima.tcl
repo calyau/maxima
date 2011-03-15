@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.33 2011-03-09 11:29:03 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.34 2011-03-15 01:09:27 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -17,11 +17,11 @@ proc resizeMaxima { win width height } {
     }
 }
 
-proc packBoth {fr browser} {
-    pack forget $fr $browser
-    pack $fr -expand 1 -fill both -side top
-    pack $browser -side bottom -expand 1 -fill both
-}
+# proc packBoth {fr browser} {
+#     pack forget $fr $browser
+#     pack $fr -expand 1 -fill both -side top
+#     pack $browser -side bottom -expand 1 -fill both
+# }
 
 proc CMeval { w } {
     linkLocal $w inputs
