@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.26 2011-03-12 17:23:24 villate Exp $
+#       $Id: Constants.tcl,v 1.27 2011-03-15 01:01:44 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -86,7 +86,7 @@ proc cMAXINITAfterIni {} {
 
 # Constants
 global maxima_priv
-set maxima_priv(date) 29/07/2006
+set maxima_priv(date) 14/03/2011
 
 # from
 if { ![info exists maxima_priv(date)] } {
@@ -134,10 +134,8 @@ set maxima_priv(options,href) {
 # from Preamle.tcl
 set maxima_priv(counter) 0
 	
-# the linelength should be long enough to display formatted mathematical
-# output from things like maxima, without adjustment, and to allow
-# for a margin.
-set maxima_priv(linelength) 90
+# the linelength initially will have Maxima's default value.
+set maxima_priv(linelength) 79
 
 # From Browser.tcl
 set maxima_priv(sticky) "^Teval$|^program:"
@@ -154,8 +152,6 @@ set maxima_priv(urlHandlers) {
 }
 set maxima_priv(imagecounter) 0
 
-set maxima_priv(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
-
 global evalPrograms
 set evalPrograms {  gp gap gb }
 #set maxima_priv(options,maxima) {{doinsert 1 "Do an insertion" boolean}}
@@ -166,6 +162,15 @@ set evalPrograms {  gp gap gb }
 # "The Tango base icon theme is released to the Public Domain.
 # "The palette is in public domain. Developers, feel free to ship it
 # "along with your application."
+
+image create photo ::img::brokenimage -format GIF -data {
+    R0lGODlhHQAgAOMEAAAAAP9jMcbGxoSEhP///zExY/9jzgCEAP/////////////////////
+    //////////yH5BAEAAAIALAAAAAAdACAAAATTcMhJqxU440G6/+AnaRkXnuAgqKRJvi+3th
+    1sbzWLE/bh+xoTT+d6/Y6lz2xVIx2fO8+sqHkiBYCsNsvkOa1ATGFMBkiaVfAhSDFTM+r1q
+    +NGp6Ew+plnMF7zBHV8fTc3ei4GiYU2hzWJioskjYOPLwGXmJdiBYICj5UamZqbI4ifkBii
+    mwVEjqckowJkI0mUqDBjtEGut6ucrC+doBq5EzADwoQkwDccwsRkzMeTL6y6MSrU0DotkoF
+    7HsU22SGCHbmFKN9bWdwk7PBmK9fYFhQZEQA7
+}
 
 image create photo ::img::play -format GIF -data {
     R0lGODlhFgAWAPZZAEpMSVJUUVRWU1dZVVdaVVhaVVhaVlhbVllbVllaV1lbV1lbWFpbWFl
@@ -337,4 +342,133 @@ image create photo ::img::save -format GIF -data {
     OJBGG977jQQ1ONOHGgasYhEUfIktDh3evAxsCSOnTkvoZERGYHMzThs2CgxQGCMnjhQo8a5
     8gCL1KR5wBAwcK2r167C2IAZS5bsFjBn0W45yyZsFjVBPoQUQaLESRMrZqKc0cu3rQE2WdA
     AkWvkyBIpU/LuXRzFL2AwU6JEjhLFShbFfPf63ZK0s+fPnrM0Y0a6NGk+gQAAOw==
+}
+
+image create photo ::img::redo -format GIF -data {
+    R0lGODlhFgAWAPUAAEmRBUqTBUuUBUyXBU2ZBU6aBlKSDWesD2i/E2nBE2rCFGvEFG7KFG/
+    LFXLKHHTUFnXVFnbYFnjbF3XQHHbTHHfTHXfUHXnWHnnXHnrZHnzdHnrUInzWI33aIn3aJJ
+    SjA5egIKe0MozPLYDVK4LYKpHTK4XdMJTWPJrcP4fgLInpK4rjMYvjMoriNIvkNIzkNYzkN
+    4zqMI7kOo/lO4/lPJDlPZDlPpHlPpHlP5LlQJPlQpnrRqHsVwAAAAAAAAAAACH5BAEAAD0A
+    LAAAAAAWABYAAAaMwJ5wSBQWisjksHBUOo2t5jNZaEWnRCazpblOC6CTtWXCOLzKAoo22mw
+    8FQwigS4WcK+KXh9pzOlSSyI4FhUOExMQEgsJgFQuGRsvLzg4NDQJDXVZOB0qJVoFMpqBdj
+    gqEFJ3m3Y6PIFVpUgFLjuwsrMhdbizHyu8XykGWGkkwF8Hx08AAsRPzc7RQkEAOw==
+}
+
+image create photo ::img::home -format GIF -data {
+    R0lGODlhFgAWAPYAAFVXU3tMSmVnY3V1dXV2dnJ1enV4e3d4enV4fHZ5fHZ5fZwICKQAAIQ
+    iIdwlJdwmJt4mJuAmJuInJ+U5OYhaWJldW511c+xGRvFMTPBRUfJVVfNbW/JeXvNjY/NkZP
+    RmZvRsbPR1dX6Ae3+BfIqIZYmIcICCfYiJfjRlpG52gXF4gUp2rl+Gt3eYwnmZw4SGgYSFg
+    oWHgoaIg4eJhIiKhY+QjZeZlJiZlpmalpmal5ubmqONi6efnZ+gnqGgnqKjoaKioqOjoqOj
+    o6SkpLGztri5uLq6ubq7vL+/vsCKisShocm1tbi8wbm9wcLCwdfX19zQ0NjY2Nra2tvc293
+    d3d7e3d7e3uLe3uDg4OLi4uPj4+Tk5OXl5ebm5ufn5+np6erq6uvr6+zs7O3t7e7u7u/v7/
+    Dw8PHx8fLy8vPz8/j4+Pn5+QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAGwALAAAAAAWABYAAAfygGyCg4QMDISI
+    iYUhIYeKj2wMjIyOkIsTjBKNloOSFxiZmpWPkhkajZISopCSGxyNARSSD6uJkh4ejRUwOkm
+    ztZ0hIB+NFjVFTkVKv5vBuQw7PUhV1E9LCyEPzYKSjT5BUmHiXmFeUNjbkSENPj9RXfDwWl
+    1aWNijkVMA+/thXQcJBiQ4YAYfGwBlAIgQMWIEvAQuBrRIYAZAIgBiAMDYCEOLFgQsBqwoU
+    PFiRhkySJSopwLFABQpSiLCCIAGjRMmsKwhwuQIkyEJL4apaZPGlTVBgghRWsXizDICbNyY
+    mqYMmatX1TglxK+r166cworlFAgAOw==
+}
+
+image create photo ::img::next -format GIF -data {
+    R0lGODlhFgAWAPYAAC9dAzNmAjduAzt0Azt1Azt3Azx2AzhwBDlzBDpzBDt0BDp1BDt1BDt
+    2BDx3BT13BT12CT53CUR9D0V8EE6aBk+aB0+cBkqDFkuBGE6DHlKhCFSjCFWlCVeoClipCl
+    iqDFyvDFywDF6zDV+0DV2qE16uEl+lHGC2DmG3DmCvFWGtFmW9EFWLIlaKIliJKVqNKWaVO
+    WufOmGlIWanJ2SpImirJ2aoKGqtK2qqLWurLWutLm2sMm+tNHCtNnCuNnOvOne2OnWwPXax
+    PnaxP2fBEWnDEWnCE3HGH3PMGnShSniyQXiyQnqzRHu0RXy0R321R361SX+0Sn+2SoOtW4e
+    7V4m8WI23Z5e/cYTER47DWpXTWZjJZ5jFb53HdZzKcJ3FeJ/GeKPfaaTPeqPLfqTLfqbPf6
+    bWdqfecqbMgqjNhanUgazYgq7bg6/cg7DSkLXVl7fVm7nXnLzZoLzZob7ao77ZpL/apL/ap
+    cDbpsHcqQAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAHoALAAAAAAWABYAAAfGgHqCg4SFhoeI
+    iYgLio0JLo2JCHcwBpGGCHlwSQqNCwmgoAp3VG5TlokJeKurc3NNTmhWEKlxUbdOTkpBQTx
+    cXBOICXFKxbxBPjs4NlRgwYYLbz42MjIzOTk3MzQmSmMtjIQLaRYUFBYbHB8lKiokQF0s4Y
+    MJY+boHiAjKCgjWF4XHBiqZ05DhxAoVhAxomXLs4FkIpZRw6aNESRhskRINQCBRwQK2Bw5E
+    2XepQRszPQQcIlQAjEuArR0mQHATEIsb+rcSSgQADs=
+}
+
+image create photo ::img::previous -format GIF -data {
+    R0lGODlhFgAWAPcAAC1ZAzNlAjduAzpyAzp0Azt1Azt3AzpzBDtzBDp0BDt1BDx0BDx0Bjx
+    1Bzx2Bzx1CD11CDx2CD13CD52CT92Cj93C0F7C0F9CUJ5DUR7D06aBlOdDVSeD0mCFUmAFk
+    yBG1WeEFKgB1enCVenC1elDFekD1mrClqqC1qsC1uuC1ywDF+zDV+0DVqhF16jHGC2DmK4D
+    mO6D2O7D2S7D2GxFGm5HFSIIFSKIFSIJVeLJWKSNGaYNmGlIWOmI2SnJWevI2aoKGmrK2uv
+    KWqqLWuvLGqwKG2sMW2sMm+tNHCtNnKvOXOvOnKyNnWwPXWxPnaxPnaxP2fBEWjBEWrFEmv
+    GEnGeRXWmRXiyQXiyQnqzRH21R361SX+2Sn6qVYGwU4S5Uoa7U4e6VYu2Y4y5YZS8bJTGY5
+    bDa5XAbJ3Ob5rEcZrDdJvEdKPOeaTLf6HQdajUfqrXf6rThKzYga3bgK3Zgq7dgK/dg6/Rj
+    rTVlbXUmLjWmrnXnbrWn7vYn7LhhLTlhbXmhrzZoLzZob7ao7/apL/apcDbpgAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAIcALAAAAAAWABYAA
+    AjfAA8JHEiwoMGDCBMqPJRgYUIcCxwaPKBjTwWJBBNUyVPoIsZDC7rc+SLIwoEEB1I2RChB
+    TBssV/YIKlTIkKFCGBBmIGPGSJIlUK5k0bJlSyAJBz2sCcMDyBAjSIAGxaKHQsEEN9ZAaeG
+    iaRAhRX78EMIED1KCBm6kQbKBA4cSIkygUKECxYk4ZzN2OKNFQwgRKVjAmCEDxoo3eQtiGA
+    OmROAZUahQiRJDzoOECbyUocGijh9Af/zYoZPY4AAraGrMuXASZcqFAna4mVNaYoAcbGpLB
+    PDhwEeDAn4LHy4wIAA7}
+
+image create photo ::img::help -format GIF -data {
+    R0lGODlhFgAWAPfmAA8jQRMsURUyWhk4Zh5BcyBFeiFJgiJJgiBJhSFKhiBKhyFLhyFLiCJ
+    LiCJMiCNNiSlRiylRjClSjCxTjSxVji5Wjy1WkC9XkTNblDVclDRclTRdlTdelTZeljhglz
+    hgmDlhmTpimTtjmjxkmkBnnUFpnkJpn0Rrn0Zrn0psnkxunkxun0RroEVsoUhvo0lvo01uo
+    E5xoU5xoktxpUtypUxxpExypU10p050p1BxoFByo1JzolB0pFV1pFV2pVl4pVh4plh5plB2
+    qFF3qVJ4qlR6rFV7rFd8rVd9rlh8q1x8qFh9rlp/r1p/sFqAsF2Csl6Dsl6Ds1+Ds2KBrWK
+    Fs2GFtGGGtGKGtWKHtWOHtmaIs2OItmSItmSJt2yIsGeLuWiMuWuNuGqOu2uOu2uPu2uPvH
+    aRtniTt3CTv3eWvnyWu32Wu3uXvXKVwHOWwXOXwXeZw3yawnibxXmcxXydxX6dxHyfyH2fy
+    H2gyH6hyX+hyYKcv4edvoeevoCbwIOix4yiwYGiyYCiyoCjyoOkyoOky4Wnzoanzoaozoao
+    z4mqz5CnxZKpx5SoxZesyZaty5mxz5ywzJ2xzIip0Iiq0Imq0I2v1I6v1JGy1pKz15+205i
+    11p652J+72pu73Z+83KCyzKGzzaO0zaS1zqa40Ka40aO616a61KS716i50Km50ai60qm60q
+    m81K+/1a/A1rPB1rTC17LC2LLF27XE2LTE2bXE2bXF2rXF27bG27fH3LjH27rH2rrI273L3
+    b7L3cHO38HQ4sLR48HR5MjT48nU5MjW58nX58vX587Z6NPe69ri7N/l7uDm7uDm7+Ho8eHp
+    8ePo8ODo8uXq8ebr8ebr8ufs8ufs8+ft9ejt8+nt8+nu9Onu9env9erv9env9uzw9e3x9u7
+    y9/Dz9/P1+Pj5+////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAOcALAAAAAAWABYAA
+    Aj+AM8JHEiwoMGD5xQoVMCAgUKEBBXC4AOrmTNafVQogJgQAqhpo87EyLEm1TZQEjYaVJCC
+    WSoOFjBw6CBCBAtazWCoHKhAQjMvFqbYmlaO3LJFJ0zsaSahoAJRqWKmMke1aqsZM3qdesA
+    zxzQOHESc2sVGyymq3orwSOItB09AoDCIMDFDSJEmYaiOg9KkiC1GKhX0MuNhRN0jULgkoy
+    rsSxYnj35xTWgtxogWN4pA6YKMqjM4aMJ8YTMt8DYehok4yTKLqrRCduS4GSNn2mQFv9SYs
+    KH5izSqnCYZKiQHjSlgtxudOnHjSJYwcApNuoTpkiE7b4A5Cvxj2ozmWcpyKMO27ZMnTJT0
+    zAnnI+KrV+DLbANeHZEdZLImD6ywLY4RKmFgQ9UmkyCiByrbVLDSD9bYQsUWZbgxhx56EII
+    MOO0dxEAFtmyjCyR1/GFKMOHYQgFHCSkRCTHhhINMJD8YgKJAAQxQgAIGECAAADP2SFBAAD
+    s=
+    }
+
+image create photo ::img::stop -format GIF -data {
+    R0lGODlhFgAWAPf6AFYAAF4AAG4AAHQAAIIAAIMAAIQAAIYAAIgAAIkAAIkEBIgFBYkHB4w
+    HB4kICIoJCZkNDZsPD5wQEJ0SEp8UFKIPD6gPD7UAALMGBrUGBrkAALoAALsAAL0AAL4AAL
+    8AALsEBL0EBL8EBKwREb8WFrocHLodHakqKqkrK6srK6wqKqwuLrcoKLspKb4uLq8yMq81N
+    bY1Nb8wMLA5ObA7O7E+PsAAAMEAAMIAAMMAAMUAAMYAAMAFBcIFBcMFBcgAAMsAAMsLC88Q
+    EMsWFsIdHcMfH9EdHdMeHtUfH8UgIMYgIMgkJMgnJ8cpKcosLNggINkqKsszM80xMcw0NM4
+    1Nc02Ns83N8s7O884OMg8PNA4ONE5OdE6OtE7O9I7O9I8PNI9PdE/P9Q8PNc/P9g9Pdg+Pt
+    g/P7tERL1ERL1HR8FDQ8VCQsVDQ8BFRcFHR8JGRsRERMxFRc1GRsVJScRLS8xISM1JSc5MT
+    M1OTsxPT9lBQdlCQtlDQ9lERNlFRdpGRtpHR9RPT9pISNpJSdpKSttLS9pMTNtMTNtNTdtP
+    T91PT8BRUcFTU8BUVMFVVcJVVcBXV8JXV8VWVsxRUc5SUsNcXMVdXcRfX8VfX8lZWctbW85
+    fX9BVVdpQUNtTU9xQUNxRUdxSUt9SUuRFRelLS+pNTeRTU+FVVeFXV+RUVOpSUulWVutWVu
+    ZYWOdbW+laWuhdXehfX+1dXcViYsVjY8ZiYsZjY8dkZMZnZ8hmZsx2dsx7e8t8fONhYeViY
+    uNkZOpiYu1mZu9mZuRoaOVqau9paexqau1sbO9sbOxvb+pycu92dvF7e8+IiNWVlfKBgfKI
+    iPSJifWMjPWNjfWOjvSPj/WPj/aQkPSTk/aSkvSUlPSVlfaWlveYmPeZmfeamvebm9miouS
+    8vN3T097U1N/V1eXV1eXW1ubW1uLY2ObY2ObZ2ejf3+bi4uri4uvj4+7j4+nk5Ovr6+3s7O
+    7u7vHj4/Dk5PXm5vbq6vDu7gAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAPoALAAAAAAWABYAA
+    Aj+APUJHEiwoMGDCBIqTJAAQYKDBBHU2AbOm7dt3LJFU4EAor4DNLYRU6SIEKE/fVA944hw
+    hkhPnhCZRKnnFDMUHSPC2DbMUyZOMQkJkjPHjKllOAcieIGtV6dMzWZRkmmn0a43YhQpS6p
+    PQbVeiDqlKTfuEp5AjdS5S5PFC6FiDwQ2yCYIEaJJs8aZqwRJ3btLa75gsQJXbrU/JgnhmV
+    WuXbx4s9aIGRylsL4G1fT06WOSTjN69Jyp+eLFipUpwRQY3rzZTpp1oN/N2iTFSZMmxxYYN
+    qNHT5xF6NzpulWvHhoXHzhwKHVAbjQyer40QscO15oMufDdi3GBA4lXzbt+CoMiJAidcI1M
+    6LBRIpc4NMqJKAuvr4IsJD+GvJGhY70NDJJkwQERprSQk0AUsHJEf/7Z8EFyHChxCgsHDkS
+    BKkj0Z8OGECqRyggVEgQBKUfwwIMIKHKwxCkWhEiQABCMwgowwMDiiiu9VDCARwIBcMABBQ
+    QZ5AEB8GjkQQEBADs=}
+
+image create photo ::img::track -format GIF -data {
+    R0lGODlhFgAWAPYAACBKhyBLiCFLiCFLiSNNiSJMiiRNiSVPiydRjShSjilUkSxXkS9XkTJ
+    clzFdmThfmDZhmzhjnDRlpDVlpDVmpDZmpTZnpT1noT5noDdopjhopjpppzpqpztqpzxqpj
+    xrpztrqD5sqD5tqT9uqUNso0BqpEFspUdvpEhuo0FuqEBuqUJvqUFvqklxp0NwqENxq0Nyq
+    0Rxq0Vxq0ZxqkVyq0RyrUdzrElzqUtzqEp1rUl2rk53rE15r1J6rkh3sEt4sU15sU96sFF7
+    sVZ9sFJ+tFN/tVuCtFuCtVuDtVmDtmOLvGGMvWmQwGuSwWiRwmuTwm+XxXGWw3OaxnKfz3O
+    fz3ieynOgz3Sgz3igzYCo04So0IWs1Yas1Yet1Yet1oiu1o+y2JCz2ZW325e425y42Z+72p
+    q63Jy73aG/36LA36PA36XB4LDI4rHJ47HK5LjO5gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAHAALAAAAAAWABYAAAfcgHCCg4SFExKF
+    iYpwEzxNGYuREzBsb0oTkYoZZGNfZB2ZiTpuVlRsIpEBAYQTUWNTU2hJiwELKKuCE01isGp
+    AiwZGRie4cERnsGugiQAQQhNGDIMgaFRfWpDMOCoSNje4NmZUZj+YzD0dEho9BIxFYVtV2c
+    w7IRMdO6swUltgqLQXbExQUYLAhCVivEAxtygBjwk2IgTQhcXLk2W0SqgQcSGAhB9bsMyLh
+    EBHBxMBCmQAkYFhKggqbjQoFkoQAAQ2VKigWRMOARUeVADoSQiAAg8OePYMAEAp0Z6BAAA7
 }
