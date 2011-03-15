@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.16 2004-10-28 18:26:29 vvzhy Exp $
+#       $Id: OpenMath.tcl,v 1.17 2011-03-15 01:13:22 villate Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -146,125 +146,16 @@ proc omPanel { w args } {
     wmenubar $menubar
     pack $menubar -side top -expand 1 -fill x -anchor nw
 
-    foreach v { file  } {
-	label $win.$v -text [string totit $v] -relief raised
-	$menubar add $win.$v
-    }
-
-    button $win.back -text [mc "Back"] \
-	-command "OpenMathMoveHistory $win -1"
-    pack $win.back -side left -expand 0
-    button $win.forward -text [mc "Forward"] \
-	-command "OpenMathMoveHistory $win 1"
-    pack $win.forward -side left -expand 0
-
-    foreach v {  edit help  } {
-	label $win.$v -text [string totit $v] -relief raised
-	$menubar add $win.$v
-    }
-
-
-    ####### begin edit button
-
-    setHelp $win.edit [mc "Bring down a menu with some edit options"]
-    set m [oget $win.edit menu]
-    $win.edit configure -text [mc "Edit"]
-    oset $win showEditBar [mc "show edit bar"]
-
-    oset $win currentProgram maxima
-    oset $win currentProgramInsert 1
-    $m add command \
-	-help [mc "Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program specified below."] -label [mc "mark for eval"]  \
-	-command  "markForProgram \[oget $win textwin\]"
-#	-help {_eval {Mark the currently selected region of the text window, so that clicking on the region will cause evaluation by a program.  The program specified below is [oget [omPanel %W] currentProgram].}} -label "mark for eval"  \
-
-    global evalPrograms
-    #   regsub -all eval_ [concat $evalPrograms [info proc eval_*]] "" programs
-    set programs $evalPrograms
-    foreach v $programs {
-	$m add radio \
-	    -help [M [mc "Set `%s' to be the current type used by 'mark for eval' for making the selected region sensitive to double clicking."] "$v"] -label "$v" -value $v -variable [oloc $win currentProgram] \
-	    -command "setTypeForEval $m $v"
-    }
-    frame $m.program
-    $m invoke 1
-    pack $m.program
-
-    #  $m add check -help "Toggle whether Mark for Eval should expect the program to insert a result, or should just evaluate for effect." -label "Eval Insert" -onvalue 1 -offvalue 0 -variable [oloc $win currentProgramInsert]
-
-
-
-
-    # ====begin Help button===
-    set m [oget $win.help menu]
-    $win.help configure -text [mc "Options"]
-    setHelp $win.help [mc "Offer possible help options, including toggling \n	whether to show balloon help messages"]
-
-    global show_balloons showHelpMessages
-    if {$show_balloons == "1"} {
-	set showHelpMessages [mc "Hide Balloon Help"]
-    } else {
-	set showHelpMessages [mc "Show Balloon Help"]
-    }
-
-    $m add command -textvariable showHelpMessages \
-	-command {
-	    set show_balloons [expr {!$show_balloons}]
-	    if { $show_balloons} {
-		after 500 set showHelpMessages [list [mc "Hide Balloon Help"] ]
-	    } else {
-		after 500 set showHelpMessages [list [mc "Show Balloon Help"] ]
-	    }
-	}
-
-
-    # ====begin File button===
-    set m [oget $win.file menu]
-    $win.file configure -text [mc "File"]
-    setHelp $win.file [mc {Menu of file options, for saving and preferences}]
-    global [oarray $win]
-    $m add command -label [mc "Reload"] \
-	-command {OpenMathOpenUrl [oget [omPanel %W] location] -reload 1 \
-		      -commandpanel [omPanel %W]} \
-	-help [mc "Reload the current URL displayed in the window."]
-#	-help {_eval {Reload the current URL displayed in the entry window: [oget [omPanel %W] location]}}
-    $m add command -label [mc "Interrupt"] \
-	-command {omDoInterrupt [oget [omPanel %W] textwin]} \
-	-help [mc {Try to interrupt the current remote computations.}]
-    $m add command -label [mc "Abort"] \
-	-command {omDoAbort [oget [omPanel %W] textwin]} \
-	-help [mc {Try to abort the current remote computation.}]
-    $m add command -label [mc "Stop"] \
-	-command {omDoStop [oget [omPanel %W] textwin]} \
-	-help [mc {Stop reading the current url or image.}]
-    $m add command -label [mc "Forget"] \
-	-command  "forgetCurrent $win"   \
-	-help [mc {Move back one in the history, and remove the current one from the history, unless it was the first window.}]
-    if {0} {
-    $m add command -label [mc "History"] \
-	-command  "showHistory $win"   \
-	-help [mc {Display the history list, so that one may be selected by clicking.}]
-    }
-    $m add command -label [mc "Base Program"] \
-	-command  {fileBaseprogram [oget [omPanel %W] textwin]  %W %x %y}   \
-	-help [mc {Show and allow altering of the base program, which shows which is the default host for programs to run on.   May also be specified in <body baseprogram= ...> in the .html file.}]
-
-    $m add command -label [mc "Save to file"] \
-	-command "pMAXSaveTexToFile \[oget $win textwin\]" \
-	-help [mc "Save to file"]
-#	-help {_eval {Save to the file list below([oget [omPanel %W] savefilename]).  Not available when running inside Netscape}}
-
-    $m add command -label [mc "Fonts"] \
-	-command "fontDialog .fontdialog" \
-	-help [mc {set the default font sizes and types}]
-    $m add command -label [mc "Exit"] \
-	-command  "tkmaxima exit"   \
-	-help [mc {Exit this program}]
-
+    button $win.back -image ::img::previous -text [mc Back] -relief flat \
+        -width 30 -height 30 -command "OpenMathMoveHistory $win -1"
+    button $win.forward -image ::img::next -text [mc Forward] \
+	-relief flat -width 30 -height 30 -command "OpenMathMoveHistory $win 1"
+    pack $win.back $win.forward -side left -expand 0
 
     global location
     if {1} {
-	menubutton $win.url -text Url: -bd 1 -relief raised
+	menubutton $win.url -image ::img::track -text Url: -relief flat \
+            -width 30 -height 30 
 	menu $win.url.m -tearoff 0 \
 	    -postcommand [list vMaxOMUrlPostCommand $win $win.url.m]
 	$win.url configure -menu $win.url.m
