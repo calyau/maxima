@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tkmaxima.tcl,v 1.5 2006-06-28 09:12:26 villate Exp $
+#       $Id: Tkmaxima.tcl,v 1.6 2011-03-15 01:10:27 villate Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -131,7 +131,7 @@ object_class MAXTkmaxima {
 	global maxima_priv argv argv0 env fontSize maxima_default
 
 	wm withdraw .
-	wm title . xmaxima
+	wm title . {Xmaxima: shell}
 
 	set fr .maxima
 	MAXGui gui
