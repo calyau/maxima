@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.5 2007-04-14 15:44:25 robert_dodier Exp $
+#       $Id: Gui.tcl,v 1.6 2011-03-15 01:04:30 villate Exp $
 #
 
 object_class MAXGui {
@@ -42,17 +42,16 @@ object_class MAXGui {
 	pack $st -side bottom -fill x -anchor w
 	set maxima_priv(cStatusLabel) $st.rate
 
-
-
-	frame .browser
+	toplevel .browser
+	wm title .browser {Xmaxima: browser}
 
 	OpenMathOpenUrl $maxima_priv(firstUrl) -toplevel .browser
 	set maxima_priv(cBrowser) .browser
 
 	frame $fr
 	pack $fr -expand 1 -fill both -side top
-	pack .browser -side bottom -expand 1 -fill both
-	packBoth $fr .browser
+#	pack .browser -side bottom -expand 1 -fill both
+#	packBoth $fr .browser
 
 	set w $fr.text
 
@@ -140,6 +139,7 @@ object_class MAXGui {
 
 	# Add a proper system menu
 	vMAXAddSystemMenu $fr $maxima_priv(cConsoleText)
+	vMAXAddBrowserMenu .browser
 	wm deiconify .
 
 	return $w
