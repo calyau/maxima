@@ -5,9 +5,10 @@ langsdir = /de
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = include-maxima.de.texi category-macros.de.texi \
 Introduction.de.texi Bugs.de.texi Help.de.texi Command.de.texi \
-DataTypes.de.texi Expressions.de.texi Operators.de.texi Evaluation.de.texi \
+DataTypes.de.texi Constants.de.texi Lists.de.texi Arrays.de.texi \
+Expressions.de.texi Operators.de.texi Evaluation.de.texi \
 Simplification.de.texi MathFunctions.de.texi Database.de.texi Plotting.de.texi \
-Input.de.texi Lists.de.texi Nset.de.texi Series.de.texi Calculus.de.texi \
+Input.de.texi Nset.de.texi Series.de.texi Calculus.de.texi \
 Polynomials.de.texi Equations.de.texi Matrices.de.texi Itensor.de.texi \
 Ctensor.de.texi Atensor.de.texi Special.de.texi Numerical.de.texi \
 Runtime.de.texi Rules.de.texi Function.de.texi Program.de.texi \
@@ -32,7 +33,7 @@ maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
-	sh ../extract_categories.sh maxima
+#	sh ../extract_categories.sh maxima
 	perl texi2html -split_chapter --lang=de --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 
 contents.hhc: maxima.html
