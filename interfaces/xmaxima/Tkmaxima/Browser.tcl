@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.22 2008-04-04 23:10:28 villate Exp $
+#       $Id: Browser.tcl,v 1.23 2011-03-15 01:03:14 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -677,11 +677,7 @@ proc backgroundGetImage  { image res width height }   {
     global maxima_priv
     #puts [list backgroundGetImage  $image $res $width $height ]
     if { [catch { backgroundGetImage1 $image $res $width $height } err ] } {
-	if { ![info exists maxima_priv(brokenimage)] } {
-	    set maxima_priv(brokenimage) [image create photo -data $maxima_priv(brokenimage,data)]
-	}
-	#puts "got error $err, doing $image copy $maxima_priv(brokenimage)"
-	set im $maxima_priv(brokenimage)
+        set im ::img::brokenimage
 	$image config -width [image width $im] -height [image height $im]
 	$image copy $im
     }
@@ -823,10 +819,6 @@ proc doRead { sock } {
     }
 }
 
-proc tes {} {
-    OpenMathOpenUrl http://www.ma.utexas.edu/users/wfs/foo/t1.om
-}
-
 proc tempName { name extension } {
     set count [pid]
     while { [file exists $name[incr count].$extension] } { list }
@@ -868,13 +860,15 @@ proc OpenMathOpenUrl { name args} {
 	}
     }
     set toplevel [assoc -toplevel $args ""]
+    if { "$toplevel" == "" } {set toplevel ".browser"}
+    if { "$toplevel" == "." } {set toplevel ""}
     set reload [assoc -reload $args 0]
     set post [assoc -post $args ""]
     #puts "post=$post"
     if { [winfo exists $commandPanel ] }  {
 	makeLocal $commandPanel history historyIndex textwin
-	set toplevel [winfo paren $commandPanel]
-	if { "$toplevel" == "." } {set toplevel ""}
+#	set toplevel [winfo paren $commandPanel]
+#	if { "$toplevel" == "." } {set toplevel ""}
 	# eval pack forget [winfo parent $textwin ]
 	set prevwin [winfo parent $textwin]
 	set currentUrl [oget $textwin currentUrl]
