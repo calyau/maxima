@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.25 2011-03-12 17:26:56 villate Exp $
+#       $Id: Plotconf.tcl,v 1.26 2011-03-15 01:16:10 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -51,18 +51,20 @@ proc makeFrame { w type } {
     set mb [frame $w.menubar]
     pack $mb -fill x
     button $mb.close -image ::img::close -text [mc "Close"] \
-        -command $dismiss -font $buttonFont
+        -command $dismiss -relief flat -width 30 -height 30
     button $mb.config -image ::img::config -text [mc "Config"] \
-        -command "doConfig$type $win" -font $buttonFont
+        -command "doConfig$type $win" -relief flat -width 30 -height 30
     button $mb.replot -image ::img::replot -text [mc "Replot"] \
-        -command "replot$type $win" -font $buttonFont
+        -command "replot$type $win" -relief flat -width 30 -height 30
     button $mb.save  -image ::img::save -text [mc "Save"] \
-        -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
+        -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " \
+        -relief flat -width 30 -height 30
     button $mb.zoomin -image ::img::zoom-in -text [mc "Zoom in"] \
-        -command "doZoom $win 1" -font $buttonFont
+        -command "doZoom $win 1" -relief flat -width 30 -height 30
     button $mb.zoomout -image ::img::zoom-out -text [mc "Zoom out"] \
-        -command "doZoom $win -1" -font $buttonFont
-    button $mb.help -text [mc "Help"] -command "doHelp$type $win" -font $buttonFont
+        -command "doZoom $win -1" -relief flat -width 30 -height 30
+    button $mb.help -image ::img::help -text [mc "Help"] \
+        -command "doHelp$type $win" -relief flat -width 30 -height 30
     pack $mb.close $mb.config $mb.replot $mb.save $mb.zoomin $mb.zoomout -side left
     pack $mb.help -side right
     scrollbar $w.hscroll -orient horiz -command "$c xview"
