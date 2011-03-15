@@ -1010,7 +1010,6 @@
 (defun dim-$matrix (form result)
   (prog (dmstr rstr cstr consp)
      (if (or (null (cdr form))
-	     (not (member 'simp (cdar form) :test #'eq))
 	     (memalike '((mlist simp)) (cdr form))
 	     (dolist (row (cdr form)) (if (not ($listp row)) (return t))))
 	 (return (dimension-function form result)))
