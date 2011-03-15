@@ -130,6 +130,7 @@
 		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
 		      ind* factors rlm*
+		      $trigexpandplus $trigexpandtimes
 		      plogabs *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
@@ -536,7 +537,10 @@ in the interval of integration.")
 		(setq arg (%einvolve exp))
 		(dintexp exp var)))
 	  ((and (not (ratp exp var))
-		(setq ans ($expand exp))
+		(setq ans (let (($trigexpandtimes nil)
+				($trigexpandplus t))
+			    ($trigexpand exp)))
+		(setq ans ($expand ans))
 		(not (alike1 ans exp))
 		(intbyterm ans t)))
 	  ((setq ans (antideriv exp))
@@ -862,7 +866,8 @@ in the interval of integration.")
 			    (trisplit e))
 			   (t (cons e 0))))
 	     (cond ((not (equal (sratsimp ipart) 0))
-		    (let ((rans (limit-subs rpart a b))
+		    (let ((rans (or (limit-subs rpart a b)
+				    (same-sheet-subs rpart a b)))
 			  (ians (limit-subs ipart a b)))
 		      (if (and rans ians)
 			  (m+ rans (m* '$%i ians)))))

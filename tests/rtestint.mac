@@ -1344,3 +1344,7 @@ integrate(abs(sin(x)),x,0,2*%pi);
 /* integrate(sin(2x)atan(sin(x)),x) - ID: 3199708 */
 integrate(sin(2*x)*atan(sin(x)),x,0,%pi/2);
 %pi/2 - 1;
+
+/* wrong integration answer - ID: 2989983 */
+integrate(cos(w+T)/(1+1/2*cos(T))^2,T,0,2*%pi);
+-8*%pi*cos(w)/3^(3/2);
