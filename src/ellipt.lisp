@@ -2089,8 +2089,8 @@ first kind:
 					  (take '(%tan) phi)))
 		     (power (add n -1) 1//2)))
 	       ($negative
-		(div (take '(%atanh) (mul (power (sub 1 n) 1//2)
-					  (take '(%tan) phi)))
+		(div (take '(%atan) (mul (power (sub 1 n) 1//2)
+					 (take '(%tan) phi)))
 		     (power (sub 1 n) 1//2)))
 	       ($zero
 		(take '(%tan) phi)))))

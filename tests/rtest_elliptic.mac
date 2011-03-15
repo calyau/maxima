@@ -418,7 +418,7 @@ diff(elliptic_pi(4/3,phi,0),phi);
 sec(phi)^2/(1-tan(phi)^2/3);
 
 diff(elliptic_pi(3/4,phi,0),phi);
-sec(phi)^2/(1-tan(phi)^2/4);
+sec(phi)^2/(1+tan(phi)^2/4);
 
 diff(elliptic_pi(1,phi,0),phi);
 sec(phi)^2;
