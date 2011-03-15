@@ -1126,8 +1126,8 @@ wrapper for this."
 		   $parsewindow $ttyintnum) :test #'eq)
 	 (if (not (fixnump y)) (mseterr x y))
          (if (eq x '$linel)
-             (cond ((not (and (> y 0)       ; at least one char per line
-                              (< y 10001))) ; arbitrary chosen big value
+             (cond ((not (and (> y 0)         ; at least one char per line
+                              (< y 1000001))) ; arbitrary chosen big value
                     (mseterr x y))
                    (t
                     (setq linel y))))
