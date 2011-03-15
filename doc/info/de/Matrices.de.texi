@@ -2,9 +2,10 @@
 @c File        : Matrices.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Matrices.texi revision 1.39
+@c Original    : Matrices.texi revision 1.40
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 10.12.2010
+@c Revision    : 14.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -17,6 +18,7 @@
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in die lineare Algebra, Funktionen und Variablen der linearen Algebra, Lineare Algebra, Lineare Algebra
 @section Einf@"uhrung in die lineare Algebra
+@c -----------------------------------------------------------------------------
 
 @menu
 * Nichtkommutative Multiplikation::
@@ -28,6 +30,7 @@
 @anchor{dot}
 @node Nichtkommutative Multiplikation, Vektoren, Einf@"uhrung in die lineare Algebra, Einf@"uhrung in die lineare Algebra
 @subsection Nichtkommutative Multiplikation
+@c -----------------------------------------------------------------------------
 
 @c The operator @code{.} represents noncommutative multiplication and scalar 
 @c product. When the operands are 1-column or 1-row matrices @code{a} and 
@@ -94,6 +97,7 @@ Multiplikation. Zu diesen geh@"oren:
 @c -----------------------------------------------------------------------------
 @node Vektoren, Eigenwerte, Nichtkommutative Multiplikation, Einf@"uhrung in die lineare Algebra
 @subsection Vektoren
+@c -----------------------------------------------------------------------------
 
 @c @code{vect} is a package of functions for vector analysis. 
 @c @code{load ("vect")} loads this package, and @code{demo ("vect")} displays a 
@@ -138,13 +142,10 @@ Das Paket @code{vect} enth@"alt die folgenden Funktionen:
 @c Warning: the @code{vect} package declares the dot operator @code{.}
 @c to be a commutative operator.
 
-@c @opencatbox
-@c @category{Vectors} @category{Share packages} @category{Package vect}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Eigenwerte, , Vektoren, Einf@"uhrung in die lineare Algebra
 @subsection Eigenwerte
+@c -----------------------------------------------------------------------------
 
 @c The package @code{eigen} contains several functions devoted to the symbolic 
 @c computation of eigenvalues and eigenvectors. Maxima loads the package 
@@ -181,13 +182,10 @@ Das Paket @code{eigen} enth@"alt die folgenden Funktionen:
 @code{uniteigenvectors} und 
 @code{similaritytransform}.
 
-@c @opencatbox
-@c @category{Vectors} @category{Matrices} @category{Share packages} @category{Package eigen}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der linearen Algebra,  , Einf@"uhrung in die lineare Algebra, Lineare Algebra
 @section Funktionen und Variablen der linearen Algebra
+@c -----------------------------------------------------------------------------
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
 @anchor{addcol}
@@ -201,10 +199,6 @@ H@"angt eine oder mehrere Spalten, die als Listen @var{list_1}, ...,
 
 Beispiel:
 
-@c ===beg===
-@c M:matrix([a,b],[c,d]);
-@c addcol(M,[1,2],[x,y]);
-@c ===end===
 @example
 (%i1) M:matrix([a,b],[c,d]);
                             [ a  b ]
@@ -215,10 +209,6 @@ Beispiel:
 (%o2)                    [            ]
                          [ c  d  2  y ]
 @end example
-
-@c @c @opencatbox
-@c @c @category{Matrices}
-@c @c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -233,10 +223,6 @@ H@"angt eine oder mehrere Zeilen, die als Listen @var{list_1}, ..., @var{list_n}
 
 Beispiel:
 
-@c ===beg===
-@c M:matrix([a,b],[c,d]);
-@c addrow(M,[1,2],[x,y]);
-@c ===end===
 @example
 (%i1) M:matrix([a,b],[c,d]);
                             [ a  b ]
@@ -251,10 +237,6 @@ Beispiel:
                             [      ]
                             [ x  y ]
 @end example
-
-@c @c @opencatbox
-@c @c @category{Matrices}
-@c @c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -265,10 +247,6 @@ Beispiel:
 @c transpose of the matrix of cofactors of @var{M}.
 
 Gibt die adjungierte der Matrix @var{M} zur@"uck.
-
-@c @c @opencatbox
-@c @c @category{Matrices}
-@c @c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -289,10 +267,6 @@ angef@"ugt wird.
 
 Beispiel:
 
-@c ===beg===
-@c m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
-@c augcoefmatrix (m, [x, y]);
-@c ===end===
 @example
 (%i1) m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
 (%i2) augcoefmatrix (m, [x, y]);
@@ -300,10 +274,6 @@ Beispiel:
 (%o2)                  [                 ]
                        [ a    b      c   ]
 @end example
-
-@c @opencatbox
-@c @category{Linear equations} @c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -320,16 +290,6 @@ zur@"uck. Das charakterische Polynom wird als
 
 Beispiel:
 
-@c ===beg===
-@c a: matrix ([3, 1], [2, 4]);
-@c expand (charpoly (a, lambda));
-@c (programmode: true, solve (%));
-@c matrix ([x1], [x2]);
-@c ev (a . % - lambda*%, %th(2)[1]);
-@c %[1, 1] = 0;
-@c x2^2 + x1^2 = 1;
-@c solve ([%th(2), %], [x1, x2]);
-@c ===end===
 @example
 (%i1) a: matrix ([3, 1], [2, 4]);
                             [ 3  1 ]
@@ -362,10 +322,6 @@ Beispiel:
                                     [x1 = -------, x2 = -------]]
                                           sqrt(5)       sqrt(5)
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -380,9 +336,6 @@ linearen Gleichungssystem @var{eqn_1}, ..., @var{eqn_m} zur@"uck.
 
 Beispiel:
 
-@c ===beg===
-@c coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
-@c ===end===
 @example
 (%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
 @group
@@ -391,10 +344,6 @@ Beispiel:
                                  [ a    b   ]
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Linear equations} @c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -410,10 +359,6 @@ Matrix.
 
 Beispiel:
 
-@c ===beg===
-@c M:matrix([1,2,3],[a,b,c]);
-@c col(M,2);
-@c ===end===
 @example
 (%i1) M:matrix([1,2,3],[a,b,c]);
                            [ 1  2  3 ]
@@ -424,10 +369,6 @@ Beispiel:
 (%o2)                         [   ]
                               [ b ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -456,10 +397,6 @@ Beispiel:
 @c HMM, SPURIOUS "redefining the Macsyma function".
 @c LEAVE IT HERE SINCE THAT'S WHAT A USER ACTUALLY SEES.
 
-@c ===beg===
-@c load(eigen)$
-@c columnvector ([aa, bb, cc]);
-@c ===end===
 @example
 (%i1) load(eigen)$
 
@@ -470,10 +407,6 @@ Beispiel:
                              [    ]
                              [ cc ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -495,11 +428,6 @@ Die Zuweisung wie zum Beispiel @code{m2: m1} kopiert die Matrix @code{m1} nicht.
 Wird nach dieser Zuweisung die Matrix @code{m2} ge@"andert, wird auch die Matrix
 @code{m1} ge@"andert. Um eine Kopie zu erhalten, muss @code{m2: copymatrix(m1)}
 ausgef@"uhrt werden.
-
-@c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -522,11 +450,6 @@ vergleichbar mit dem Gau@ss{}-Verfahren.
 @code{determinat} wird von den Schaltern @code{ratmx} und @code{sparse}
 kontrolliert. Haben beide Schalter den Wert @code{true}, wird ein spezieller
 Algorithmus f@"ur schwachbesetzte Matrizen aufgerufen.
-
-@c EXAMPLES NEEDED HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -549,13 +472,6 @@ Damit dieser Schalter einen Effekt hat, m@"ussen die Optionsvariablen
 
 Beispiele:
 
-@c ===beg===
-@c m: matrix ([a, b], [c, d]);
-@c detout: true$
-@c doallmxops: false$
-@c doscmxops: false$
-@c invert (m);
-@c ===end===
 @example
 (%i1) m: matrix ([a, b], [c, d]);
                             [ a  b ]
@@ -574,10 +490,6 @@ Beispiele:
 
 @c THERE'S MORE TO THIS STORY detout: false$ invert (m); RETURNS THE SAME THING.
 @c IT APPEARS THAT doallmxops IS CRUCIAL HERE.
-
-@c @opencatbox
-@c @category{Matrices} @category{Evaluation flags}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -603,10 +515,6 @@ Fehler.
 
 @var{x} kann ein beliebiger Ausdruck einschlie@ss{}lich einer Matrix sein. Ist
 @var{x} eine Matrix, dann wird diese nicht kopiert.
-
-@c NEED EXAMPLE HERE
-@c @opencatbox 
-@c @closecatbox
 @end deffn
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -623,11 +531,6 @@ Standardwert: @code{true}
 Hat @code{doallmxops} den Wert @code{true}, werden Matrixoperationen 
 ausgef@"uhrt. Ist der Wert @code{false}, werden nur die Matrixoperationen 
 ausgef@"uhrt, die mit den einzelnen @code{dot}-Schaltern eingeschaltet sind.
-
-@c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 08.12.2010 DK -----------------------------------------------------------
@@ -656,13 +559,6 @@ Liste oder Matrix ist.
 
 Beispiele:
 
-@c ===beg===
-@c m: matrix ([1, %i], [a+b, %pi]);
-@c domxexpt: false$
-@c (1 - c)^m;
-@c domxexpt: true$
-@c (1 - c)^m;
-@c ===end===
 @example
 (%i1) m: matrix ([1, %i], [a+b, %pi]);
                          [   1    %i  ]
@@ -682,10 +578,6 @@ Beispiele:
                   [        b + a         %pi ]
                   [ (1 - c)       (1 - c)    ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -702,9 +594,6 @@ Hat @code{domxmxops} den Wert @code{true}, werden allen Matrix-Matrix und
 Matrix-Listen-Operationen ausgef@"uhrt.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -720,9 +609,6 @@ Hat @code{domxnctimes} den Wert @code{true}, werden nichtkommutative Produkte
 von Matrizen ausgef@"uhrt.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -738,9 +624,6 @@ Hat @code{doscmxops} den Wert @code{true}, werden Skalar-Matrix-Operationen
 ausgef@"uhrt.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -757,9 +640,6 @@ eine Matrix als Ergebnis. Dieser Schalter ist nicht unter @code{doallmxops}
 subsumiert.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -776,9 +656,6 @@ mit einer Null und einem nichtskalaren Term zu einem kommutativen Produkt
 vereinfacht.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -794,9 +671,6 @@ Hat @code{dot0simp} den Wert @code{true}, werden nichtkommutative Produkte mit
 einer Null und einem skalaren Term zu einem kommutatitiven Produkt vereinfacht.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -812,9 +686,6 @@ Hat @code{dot1simp} den Wert @code{true}, werden nichtkommutative Produkte mit
 einer Eins und einem anderen Term zu einem kommutativen Produkt vereinfacht.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -830,9 +701,6 @@ Hat @code{dotassoc} den Wert @code{true}, vereinfacht Maxima ein Ausdruck
 @code{(A.B).C} zu @code{A.(B.C)}.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -854,9 +722,6 @@ Die folgenden Optionsvariablen @code{dot0simp}, @code{dot0nscsimp} und
 eingeschaltet wird.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -871,9 +736,6 @@ Hat @code{dotdistrib} den Wert @code{true}, vereinfacht Maxima einen Ausdruck
 @code{A.(B + C)} zu @code{A.B + A.C}.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -888,9 +750,6 @@ Hat @code{dotexptsimp} den Wert @code{true}, vereinfacht Maxima einen Ausdruck
 @code{A.A} zu @code{A^^2}.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -905,9 +764,6 @@ Standardwert: 1
 wird.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -925,9 +781,6 @@ Hat @code{dotscrules} den Wert @code{true}, vereinfacht Maxima Ausdr@"ucke
 @code{SC*(A.B)}.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -957,10 +810,6 @@ Dreiecksmatrizen zu erhalten.
 
 Beispiel:
 
-@c ===beg===
-@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
-@c echelon (M);
-@c ===end===
 @example
 (%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
                        [  3   7  aa  bb ]
@@ -981,10 +830,6 @@ Beispiel:
                   [              37 aa - 313 ]
 @end group
 @end example
-
-@c @opencatbox
-@c @category{Linear equations} @c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1044,9 +889,6 @@ Das Paket @code{eigen} wird automatisch geladen, wenn eine der Funktionen
 @code{eigenvalues} oder @code{eigenvectors} aufgerufen wird.
 
 @c NEED EXAMPLES HERE
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1139,12 +981,6 @@ Beispiele:
 
 Eine Matrix, die einen Eigenvektor zu jedem Eigenwert hat.
 
-@c ===beg===
-@c M1 : matrix ([11, -1], [1, 7]);
-@c [vals, vecs] : eigenvectors (M1);
-@c for i thru length (vals[1]) do disp (val[i] = vals[1][i],
-@c   mult[i] = vals[2][i], vec[i] = vecs[i]);
-@c ===end===
 @example
 (%i1) M1 : matrix ([11, -1], [1, 7]);
                            [ 11  - 1 ]
@@ -1180,13 +1016,6 @@ Eine Matrix, die einen Eigenvektor zu jedem Eigenwert hat.
 
 Eine Matrix, die zwei Eigenvektoren zu jedem Eigenwert hat.
 
-@c ===beg===
-@c M1 : matrix([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0],
-@c             [0, 0, 0, 2]);
-@c [vals, vecs] : eigenvectors (M1);
-@c for i thru length (vals[1]) do disp (val[i] = vals[1][i],
-@c   mult[i] = vals[2][i], vec[i] = vecs[i]);
-@c ===end===
 @example
 (%i1) M1 : matrix([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], 
                   [0, 0, 0, 2]);
@@ -1224,10 +1053,6 @@ Eine Matrix, die zwei Eigenvektoren zu jedem Eigenwert hat.
 
 (%o3)                         done
 @end example
-
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1240,10 +1065,6 @@ Eine Matrix, die zwei Eigenvektoren zu jedem Eigenwert hat.
 
 Gibt eine @var{m} @code{x} @var{n}-Matrix zur@"uck, deren Elemente den Wert 0 
 haben, bis auf das Element @code{[@var{i}, @var{j}]}, das den Wert @var{x} hat.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1302,10 +1123,6 @@ Matrix entered.
                 [                            5 ]
                 [    0         0      (b + a)  ]
 @end example
-
-@c @opencatbox
-@c @category{Console interaction} @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -1345,23 +1162,6 @@ Mit dem Kommando @code{load(vect)} wird die Funktion geladen.
 
 Beispiele:
 
-@c ===beg===
-@c load ("vect")$
-@c grad (x^2 + y^2 + z^2);
-@c express (%);
-@c ev (%, diff);
-@c div ([x^2, y^2, z^2]);
-@c express (%);
-@c ev (%, diff);
-@c curl ([x^2, y^2, z^2]);
-@c express (%);
-@c ev (%, diff);
-@c laplacian (x^2 * y^2 * z^2);
-@c express (%);
-@c ev (%, diff);
-@c [a, b, c] ~ [x, y, z];
-@c express (%);
-@c ===end===
 @example
 (%i1) load ("vect")$
 (%i2) grad (x^2 + y^2 + z^2);
@@ -1408,10 +1208,6 @@ Beispiele:
 (%i15) express (%);
 (%o15)          [b z - c y, c x - a z, a y - b x]
 @end example
-
-@c @opencatbox
-@c @category{Differential calculus} @category{Vectors} @category{Operators}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1451,16 +1247,6 @@ Matrix den symbolischen Wert @code{@var{a}[i,j]}.
 
 Beispiele:
 
-@c ===beg===
-@c h [i, j] := 1 / (i + j - 1);
-@c genmatrix (h, 3, 3);
-@c array (a, fixnum, 2, 2);
-@c a [1, 1] : %e;
-@c a [2, 2] : %pi;
-@c genmatrix (a, 2, 2);
-@c genmatrix (lambda ([i, j], j - i), 3, 3);
-@c genmatrix (B, 2, 2);
-@c ===end===
 @example
 (%i1) h [i, j] := 1 / (i + j - 1);
 @group
@@ -1503,10 +1289,6 @@ Beispiele:
                         [ B      B     ]
                         [  2, 1   2, 2 ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1558,12 +1340,6 @@ Beispiele:
 Das Gram-Schmidtsche Orthogonalisierungsverfahren mit @code{innerproduct} 
 als Skalarprodukt.
 
-@c ===beg===
-@c load (eigen)$
-@c x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
-@c y: gramschmidt (x);
-@c map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
-@c ===end===
 @example
 (%i1) load (eigen)$
 (%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
@@ -1586,12 +1362,6 @@ als Skalarprodukt.
 Das Gram-Schmidtsche Orthogonalisierungsverfahren mit einer selbstdefinierten
 Funktion f@"ur das Skalarprodukt.
 
-@c ===beg===
-@c load (eigen)$
-@c ip (f, g) := integrate (f * g, u, a, b);
-@c y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
-@c map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
-@c ===end===
 @example
 (%i1) load (eigen)$
 (%i2) ip (f, g) := integrate (f * g, u, a, b);
@@ -1603,10 +1373,6 @@ Funktion f@"ur das Skalarprodukt.
 (%i4) map(ip,[y[1],y[2],y[3]],[y[2],y[3],y[1]]), a=-%pi/2, b=%pi/2;
 (%o4)                       [0, 0, 0]
 @end example
-
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1616,10 +1382,6 @@ Funktion f@"ur das Skalarprodukt.
 @c Returns an @var{n} by @var{n} identity matrix.
 
 Gibt eine @var{n} @code{x} @var{n}-Einheitsmatrix zur@"uck.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
@@ -1646,9 +1408,6 @@ Das Kommando @code{load(eigen)} l@"adt die Funktion.
 @code{inprod} ist ein Alias-Name der Funktion @code{innerproduct}.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c THIS DESCRIPTION NEEDS WORK
@@ -1711,9 +1470,6 @@ Siehe auch den Operator @code{^^} der nichtkommutativen Exponentiation f@"ur
 eine andere Methode zur Berechnung der inversen Matrix.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -1737,10 +1493,6 @@ Beispiel:
                            |         ]
                            | g  h  i ]
 @end example
-
-@c @opencatbox
-@c @category{Anzeigeschalter und -variablen} @c @category{Matrizen}
-@c @closecatbox
 @end defvr
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -1995,10 +1747,6 @@ Berechnung der inversen Matrix mit @code{x^^-1}.
 (%o15)                      [      ]
                             [ 0  1 ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2016,9 +1764,6 @@ Gibt eine Matrix mit den Elementen @code{[i,j]} zur@"uck, die mit
 Siehe auch @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
 
 @c NEED EXAMPLE HERE
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2029,10 +1774,6 @@ Siehe auch @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
 
 Gibt @code{true} zur@"uck, wenn @var{expr} eine Matrix ist. Ansonsten wird
 @code{false} zur@"uckgegeben.
-
-@c @opencatbox
-@c @category{Predicate functions} @c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2075,10 +1816,6 @@ Beispiele:
                      [  u  v  w   x  y  z ]
                      [ d  e  f   d  e  f  ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2134,10 +1871,6 @@ Beispiele:
                          [             2          2          2  ]
                          [ sqrt((f - z)  + (e - y)  + (d - x) ) ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2207,10 +1940,6 @@ Beispiele:
 (%o9)                 [                  ]
                       [ 2 %i + 3    11   ]
 @end example
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c IS THIS THE ONLY MATRIX TRACE FUNCTION ??
@@ -2228,10 +1957,6 @@ Gibt die Spur einer quadratischen Matrix @var{M} zur@"uck.
 @c @code{charpoly}.
 @c UMM, HOW IS THAT RELEVANT HERE ??
 @c @code{load ("nchrpl")} loads this function.
-
-@c @opencatbox
-@c @category{Matrices} @category{Package nchrpl}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2243,10 +1968,6 @@ Gibt die Spur einer quadratischen Matrix @var{M} zur@"uck.
 
 Gibt den Minor zu @var{i}, @var{j} der Matrix @var{M} zur@"uck. Die Matrix
 entsteht durch Streichen der @var{i}-ten Spalte und @var{j}-ten Zeile.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2273,10 +1994,6 @@ zur@"uck. Diese Funktion ist eine Alternative zur Funktion @code{charpoly}.
 Der Algorithmus von @code{ncharpoly} ist vorteilhaft gegen@"uber 
 @code{charpoly}, wenn gro@ss{}e und d@"unn besetzte Matrizen vorliegen. Das 
 Kommando @code{load(nchrpl} l@"adt die Funktion.
-
-@c @opencatbox
-@c @category{Matrices} @category{Package nchrpl}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2291,10 +2008,6 @@ Kommando @code{load(nchrpl} l@"adt die Funktion.
 Berechnet die Determinate der Matrix oder eines Arrays @var{M} mit dem
 Johnson-Gentleman-Algorithmus. Das Argument @var{n} ist die Ordnung. F@"ur eine
 Matrix ist @var{n} ein optionales Argument.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2306,10 +2019,6 @@ Matrix ist @var{n} ein optionales Argument.
 
 Berechnet die Permanente der Matrix @var{M}. Die Permanente ist @"ahnlich der
 Determinate, aber es fehlen die Vorzeichenwechsel.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2327,10 +2036,6 @@ Berechnet den Rang der Matrix @var{M}.
 
 @var{rank} kann ein falsches Ergebnis geben, wenn ein Element @"aquivalent
 zu Null ist, dies aber nicht von Maxima festgestellt werden kann.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2348,7 +2053,6 @@ the former being equivalent to the nonlist expression for all right-hand
 sides in the latter. The indicated right-hand sides are used as the lower 
 limit of integration.  The success of the integrations may depend upon their 
 values and order. @code{potentialzeroloc} is initially set to 0.
-
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2374,10 +2078,6 @@ Darstellung.
 Hat @code{ratmx} den Wert @code{true}, werden die oben genannten Operationen
 in einer CRE-Darstellung ausgef@"uhrt un das Ergebnis ist in einer 
 CRE-Darstellung.
-
-@c @opencatbox
-@c @category{Matrices} @category{Rational expressions}
-@c @closecatbox
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
@@ -2389,10 +2089,6 @@ Standardwert: @code{]}
 
 @code{rmxchar} ist das Zeichen, das f@"ur die rechte Seite einer Matrix 
 ausgegeben wird. Siehe auch @code{lmxchar}.
-
-@c @opencatbox
-@c @category{Anzeigeschalter und -variable} @category{Matrizen}
-@c @closecatbox
 @end defvr
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2404,10 +2100,6 @@ ausgegeben wird. Siehe auch @code{lmxchar}.
 
 Gibt die @var{i}-te Spalte der Matrix @var{M} zur@"uck. Der R@"uckgabewert ist 
 eine Matrix.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2434,10 +2126,6 @@ zu einem Skalar vereinfacht.
 
 Hat @code{scalarmatrixp} den Wert @code{false}, werden 1 x 1-Matrizen nicht zu
 einem Skalar vereinfacht.
-
-@c @opencatbox
-@c @category{Matrices} @c @category{Simplification flags and variables}
-@c @closecatbox
 @end defvr
 
 @c I WONDER WHAT THIS IS ABOUT
@@ -2458,10 +2146,6 @@ SF[1]=SF[2]=SF[3]=SFPROD=1, corresponding to 3-dimensional rectangular Cartesian
 coordinates. To expand an expression into physical components in the current
 coordinate system, there is a function with usage of the form
 @c SOME TEXT HAS GONE MISSING HERE
-
-@c @opencatbox
-@c @category{Package vect}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2479,10 +2163,6 @@ modifizierte Matrix zur@"uck.
 
 @code{@var{M}[@var{i}, @var{j}]: @var{x}} hat denselben Effekt. In diesem Fall
 wird jedoch der Wert @var{x} zur@"uckgeben und nicht die Matrix.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2511,10 +2191,6 @@ in the package in order to be able to form @code{rightmatrix}.
 @code{load ("eigen")} loads this function.
 
 @code{simtran} is a synonym for @code{similaritytransform}.
-
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2529,10 +2205,6 @@ Standardwert: @code{false}
 Haben @code{sparse} und @code{ratmx} den Wert @code{true}, verwendet die 
 Funktion @code{determinant} einen speziellen Algorithmus f@"ur d@"unnbesetzte
 Matrizen, um die Determinante einer Matrix zu berechnen.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end defvr
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2546,10 +2218,6 @@ Matrizen, um die Determinante einer Matrix zu berechnen.
 
 Gibt eine Matrix zur@"uck, in der die Spalten @var{i_1}, ..., @var{i_m} und
 die Zeilen @var{j_1}, ..., @var{j_n} der Matrix @var{M} gel@"oscht sind.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2577,10 +2245,6 @@ Ist @var{M} eine Liste, ist die R@"uckgabe eine Matrix @var{N} mit
 @c @code{'transpose (@var{M})}.
 
 Ansonsten wird eine Substantivform @code{'transpose(@var{M})} zur@"uckgegeben.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2605,10 +2269,6 @@ Matrix in die Dreiecksform transformiert werden.
 
 Beispiel:
 
-@c ===beg===
-@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
-@c triangularize (M);
-@c ===end===
 @example
 (%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
                        [  3   7  aa  bb ]
@@ -2623,10 +2283,6 @@ Beispiel:
              [                                     ]
              [  0    0    626 - 74 aa  238 - 74 bb ]
 @end example
-
-@c @opencatbox
-@c @category{Linear equations} @category{Matrices}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2670,10 +2326,6 @@ Das Kommando @code{load(eigen)} l@"adt die Funktion.
 @c @code{ueivects} is a synonym for @code{uniteigenvectors}.
 
 @code{ueivects} ist ein Alias-Name der Funkion @code{uniteigenvectors}.
-
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2693,10 +2345,6 @@ Das Kommando @code{load(eigen)} l@"adt die Funktion.
 @c @code{uvect} is a synonym for @code{unitvector}.
 
 @code{uvect} ist ein Alias-Name der Funktion @code{unitvector}.
-
-@c @opencatbox
-@c @category{Package eigen}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2707,10 +2355,6 @@ Returns the vector potential of a given curl vector, in the current
 coordinate system. @code{potentialzeroloc} has a similar role as for 
 @code{potential}, but the order of the left-hand sides of the equations must 
 be a cyclic permutation of the coordinate variables.
-
-@c @opencatbox
-@c @category{Paket vect}
-@c @closecatbox
 @end deffn
 
 @c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A
@@ -2767,10 +2411,6 @@ These flags have all been declared @code{evflag}.
 @c For orthogonal curvilinear coordinates, the global variables
 @c COORDINATES[[X,Y,Z]], DIMENSION[3], SF[[1,1,1]], and SFPROD[1] are set
 @c by the function invocation
-
-@c @opencatbox
-@c @category{Package vect} @category{Simplification functions}
-@c @closecatbox
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
@@ -2787,13 +2427,6 @@ Ableitung eines Kreuzproduktes enthalten, vereinfacht.
 
 Beispiel:
 
-@c ===beg===
-@c load(vect)$
-@c vect_cross:false;
-@c diff(f(x)~g(x),x);
-@c vect_cross:true;
-@c diff(f(x)~g(x),x);
-@c ===end===
 @example
 (%i1) load(vect)$
 
@@ -2810,10 +2443,6 @@ Beispiel:
 (%o5)        f(x) ~ (-- (g(x))) - g(x) ~ (-- (f(x)))
                      dx                   dx
 @end example
-
-@c @opencatbox
-@c @category{Package vect} @category{Differential calculus}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -2823,64 +2452,7 @@ Beispiel:
 @c Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
 Gibt eine @var{m} x @var{n}-Matrix zur@"uck, deren Elemente alle Null sind.
-
-@c @opencatbox
-@c @category{Matrices}
-@c @closecatbox
 @end deffn
-
-@c TODO: IST DAS HIER DER RICHTIGE PLATZ ? BESSER OPERATOREN ODER LISTEN ?
-
-@c -----------------------------------------------------------------------------
-@defvr  {Spezielles Symbol} [
-@defvrx {Spezielles Symbol} ]
-@ifinfo
-@fnindex List delimiters
-@fnindex Subscript operator
-@end ifinfo
-
-@c @code{[} and @code{]} mark the beginning and end, respectively, of a list.
-
-@code{[} und @code{]} markieren den Anfang und das Ende einer Liste.
-
-@c @code{[} and @code{]} also enclose the subscripts of a list, array, hash 
-@c array, or array function.
-
-@code{[} und @code{]} schlie@ss{}en auch die Indizes von Listen, Array, 
-Hash-Arrays oder Array-Funktionen ein.
-
-Beispiele:
-
-@example
-(%i1) x: [a, b, c];
-(%o1)                       [a, b, c]
-(%i2) x[3];
-(%o2)                           c
-(%i3) array (y, fixnum, 3);
-(%o3)                           y
-(%i4) y[2]: %pi;
-(%o4)                          %pi
-(%i5) y[2];
-(%o5)                          %pi
-(%i6) z['foo]: 'bar;
-(%o6)                          bar
-(%i7) z['foo];
-(%o7)                          bar
-(%i8) g[k] := 1/(k^2+1);
-                                  1
-(%o8)                     g  := ------
-                           k     2
-                                k  + 1
-(%i9) g[10];
-                                1
-(%o9)                          ---
-                               101
-@end example
-
-@c @opencatbox
-@c @category{Lists} @category{Operators}
-@c @closecatbox
-@end defvr
 
 @c --- End of file Matrices.de.texi --------------------------------------------
 
