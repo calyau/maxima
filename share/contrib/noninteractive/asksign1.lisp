@@ -1,19 +1,41 @@
 (defvar $e% nil)
 
-(defun |$meval2| ($e%)
-  (declare (special $e%))
-  (mfuncall '|$meval1|))
+(defmvar $no_questions t)
 
-(defun toplevel-macsyma-eval (x)
+;; ADAPTED FROM $CATCH IN SRC/SUPRV1.LISP
+;; CLEARSIGN CALL COPIED FROM MEVAL* IN SRC/SUPRV1.LISP
+(defun meval* ($e%)
   (declare (special $e%))
   (let
-    ((mcatch (cons bindlist loclist))
-     ($e% x))
+    ((mcatch (cons bindlist loclist)))
     (prog1
-      (catch 'mcatch (funcall '|$meval2| x))
+      (catch 'mcatch (mfuncall '|$meval1|))
+      ;; Clear the facts from asksign and friends.
+      (clearsign)
       (errlfun1 mcatch))))
 
-(defmvar $no_questions t)
+;; ADAPTED FROM MEVALN IN SRC/MLISP.LISP
+;; CALL MEVAL* INSTEAD OF MEVAL
+(defmfun meval*n (l) ;; called in a few places externally.
+  (do ((body l (cdr body))
+       ($%% '$%%))
+      ((null (cdr body)) (meval* (car body)))
+    (setq $%% (meval (car body)))))
+
+;; ADAPTED FROM $ERRCATCH IN SRC/SUPRV1.LISP
+;; CALL MEVAL*N INSTEAD OF MEVALN
+;; ALSO SPECIAL CASE FOR MERROR
+(defmspec $errcatch (form)
+  (let ((errcatch (cons bindlist loclist)) ret)
+    (if (null (setq ret (let (*mdebug*)
+			  (errset (meval*n (cdr form)) lisperrprint))))
+	(errlfun1 errcatch))
+    (if (and (consp (car ret)) (eq (caar (car ret)) 'merror))
+      (progn
+        (apply 'mtell (cdr (car ret)))
+        (fresh-line)
+        '((mlist)))
+      (cons '(mlist) ret))))
 
 (defun asksign1 ($askexp)
   (let ($radexpand) (sign1 $askexp))

@@ -79,9 +79,6 @@
  * (load (Solver), Solver ([x=a, y=b], [x], [y, b])); (TRIGGERS "ZERO OR NONZERO" QUERY; SOLVER HAS ITS OWN ASKSIGN-LIKE FUNCTION)
  */
 
-load (boolsimp);
-load ("noninteractive.lisp");
-
 within_MEVAL1 : false;
 
 MEVAL1 () :=
@@ -172,7 +169,8 @@ tellsimpafter ('if aa then bb elseif cc then bb else dd, 'if aa or cc then bb el
 simp: true;
  */
 
-/* Load revised toplevel loop AFTER defining the Maxima function it calls */
+load (boolsimp);
+load ("noninteractive.lisp");
 load ("asksign1.lisp");
 
 /* Remove functions and variables defined at Maxima level
