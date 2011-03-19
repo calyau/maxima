@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.34 2011-03-15 01:09:27 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.35 2011-03-19 23:16:17 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -182,9 +182,6 @@ proc closeMaxima { win } {
     }
 
 }
-
-
-
 
 
 #
@@ -504,8 +501,8 @@ proc doShowPlot { w data } {
     global maxima_default
 
     #puts data=$data
-    set name [plotWindowName $w]
     set command [lindex [lindex $data 0] 0]
+    set name [plotWindowName $w $command]
     if { "$command" == "plotdf" || $command == "scene" } {
 	set command [lindex $data 0]
     } else {
