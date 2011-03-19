@@ -167,6 +167,3 @@
 			      (push res *fcall-memory*))))
     (putprop (cadr res) (mapcar #'eval (car args)) 'sumarg-env)
     (caddr res)))
-
-(defquote m-tlambda-i (&rest args)
-  `(lambda ,@(cddr args)))

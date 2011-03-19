@@ -168,30 +168,6 @@
 
 ;;; this is the important case for numerical hackery.
 
-(defun declare-snarf (body)
-  (cond ((and (not (atom (car body)))
-	      (eq (caar body) 'declare))
-	 (list (car body)))
-	(t nil)))
-
-
-;;; I will use the special variable given by the NAME as a pointer to
-;;; an environment.
-
-(defopt m-tlambda-i (mode env argl &rest body &aux (name (gentemp "maxima"))
-			  (declarep (declare-snarf body)))
-  (cond ((eq mode '$float)
-	 (emit-defun `(defprop ,name t flonum-compiled))))
-  (emit-defun
-   `(defun ,name ,argl
-     ,@declarep
-     (let ((,env ,name))
-       ,@(cond (declarep (cdr body))
-	       (t body)))))
-  (emit-defun `(defparameter ,name (make-list ,(length env))))
-  `(progn
-    (set-vals-into-list ,env ,name)
-    (quote ,name)))
 
 ;;; This is not optimal code.
 ;;; I.E. IT SUCKS ROCKS.

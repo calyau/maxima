@@ -207,10 +207,6 @@
 (defprop m-tlambda&env free-lisp-vars-m-tlambda&env free-lisp-vars)
 (defprop m-tlambda&env& free-lisp-vars-m-tlambda&env free-lisp-vars)
 
-;; (m-tlambda-i mode env ...)
-(defun-prop (m-tlambda-i free-lisp-vars-macro) (form)
-  `(lambda ,@(cdddr form)))
-
 ;;; Other entry points:
 
 (defun tbound-free-vars (free-varl)
@@ -266,10 +262,6 @@
 ;;;       since you can always ask the LAMBDA for its environment by
 ;;;       calling it on the proper message {If the LAMBDA is written that way}.
 
-;;; LAMBDA-I is used by ROMBERG, PLOT2 and INTERPOLATE, and it could be used
-;;; by the mapping functions. We have a single instance of the LAMBDA
-;;; and its environment.
-
 
 ;;; ((LAMBDA) ((MLIST) X Y ((MLIST Z))) . <BODY>)
 ;;; must also handle the &REST arguments. N.B. MAPPLY correctly handles
@@ -286,11 +278,6 @@
 ;;; from LAMBDA's by the functions that want to. All this
 ;;; is meaningless in the present macsyma evaluator of course, since
 ;;; it uses dynamic binding and just hopes for the best.
-
-(def%tr $lambda_i (form)
-  (gen-tr-lambda form))
-
-(def%tr lambda-i (form) (gen-tr-lambda form))
 
 (def%tr lambda (form)
   (gen-tr-lambda form))
@@ -332,13 +319,10 @@
 	       (t
 		`($any . (m-tlambda& ,@(cdr t-form))))))
 	((null (cadr frees))
-	 (cond ((eq (caar form) 'lambda-i)
-		`($any . (m-tlambda-i ,mode ,(car frees) ,@(cdr t-form))))
-	       (t
-		`($any . (,(cond ((null arg-info) 'm-tlambda&env)
-				 (t               'm-tlambda&env&))
-			   (,(cadr t-form) ,(car frees))
-			   ,@(cddr t-form))))))
+	`($any . (,(cond ((null arg-info) 'm-tlambda&env)
+			 (t               'm-tlambda&env&))
+		   (,(cadr t-form) ,(car frees))
+		   ,@(cddr t-form))))
 	(t
 	 (warn-meval form)
 	 (side-effect-free-check (cadr frees) form)
