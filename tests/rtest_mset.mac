@@ -26,7 +26,7 @@ myrecord;
 45;
 
 [kill (f), errcatch (new (f)), errcatch (myrecord@x)];
-[done, [], []];
+[done, [], [f(x, 45, z)@x]];
 
 defstruct (f (x, y=3.14159, z));
 '[f(x, 3.14159, z)];
