@@ -474,6 +474,8 @@ Note that the name of the operator must be written as a quoted string.
 This behavior is unlike the more specific remove functions
 @code{remvalue}, @code{remarray}, @code{remfunction}, and @code{remrule}.
 
+@code{remove} quotes its arguments.
+
 @c IN SERIOUS NEED OF EXAMPLES HERE
 @opencatbox
 @category{Declarations and inferences}
