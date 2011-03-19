@@ -1097,7 +1097,7 @@ the newly-defined rule applies only to the noun (or verb) form.
 The rule constructed by @code{tellsimpafter} is an ordinary Lisp function.
 If the name of the rule is @code{$foorule1},
 the construct @code{:lisp (trace $foorule1)} traces the function,
-and @code{:lisp (symbol-function '$foorule1} displays its definition.
+and @code{:lisp (symbol-function '$foorule1)} displays its definition.
 
 @code{tellsimpafter} quotes its arguments.
 @code{tellsimpafter} returns the list of rules for the main operator of @var{pattern},
