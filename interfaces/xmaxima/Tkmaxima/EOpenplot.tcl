@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EOpenplot.tcl,v 1.6 2006-10-01 23:58:29 villate Exp $
+#       $Id: EOpenplot.tcl,v 1.7 2011-03-19 23:15:44 villate Exp $
 #
 ###### EOpenplot.tcl ######
 ############################################################
@@ -27,12 +27,10 @@
 proc eval_openplot { program w thisRange resultRange } {
 
 
-    set name  [plotWindowName $w]
-    set desired [setDesiredDims $w $name $thisRange ]
     set tem [eval $w get $thisRange]
     lappend tem -windowname $name
     foreach v [getDimensions $w $name] { lappend tem $v }
-    set allowed "plot2d plotdf plot3d"
+    set allowed "plot2d plotdf plot3d scene"
     set f [lindex $tem 0]
     if { [lsearch $allowed $f] >= 0 } {
 	apply $f [lrange $tem 1 end]
@@ -40,6 +38,8 @@ proc eval_openplot { program w thisRange resultRange } {
     } else {
 	error [concat "$f" [mc "not allowed, only"] "{$allowed}"]
     }
+    set name  [plotWindowName $w $f]
+    set desired [setDesiredDims $w $name $thisRange ]
     return 0
 }
 
@@ -57,38 +57,50 @@ proc eval_openplot { program w thisRange resultRange } {
 #
 #----------------------------------------------------------------
 #
-proc plotWindowName { w } {
+proc plotWindowName { w command } {
     upvar #0 maxima_default(plotwindow) plot
     upvar #0 maxima_priv(plot,count) count
     set name ""
 
-    if { ![info exists plot] || "$plot" == "embedded" } {
-	linkLocal $w counter
-	if { ![info exists counter] } {set counter 0}
-	return $w.plot[incr counter]
+    if { "$command" == "scene" } {
+        set name ".plotfr"	
+        if { [winfo exists $name ] } {
+            after cancel PlayStep $name.plot.menubar.play
+            vtkCommand DeleteAllObjects
+            destroy $name
+            clearLocal $name.plot
+        }
+        toplevel $name
+        if { "[info proc setIcon]" != "" } {
+            after 1000 setIcon $name
+        }
+    } else {
+        if { ![info exists plot] || "$plot" == "embedded" } {
+            linkLocal $w counter
+            if { ![info exists counter] } {set counter 0}
+            return $w.plot[incr counter]
+        }
+        set name ".plotfr"	
+        if { "$plot" == "multiple" } {
+            if { ![info exists count] } {
+                set count 1
+            } else {
+                incr count
+            }
+            append name $count
+        }
+        if { ![winfo exists $name ] } {
+            toplevel $name
+            set h [expr {round ([winfo screenheight $name]*.6) }]
+            set wid [expr round ($h * 1.2) ]
+            set r1 [expr {round(10+rand()*30)} ]
+            set r2 [expr {round(10+rand()*30)} ]
+            wm geometry $name ${wid}x${h}+${r1}+${r2}
+            if { "[info proc setIcon]" != "" } {
+                after 1000 setIcon $name
+            }   
+        }
     }
-    set name ".plotfr"	
-    if { "$plot" == "multiple" } {
-	if { ![info exists count] } {
-	    set count 1
-	} else {
-	    incr count
-	}
-	append name $count
-    }
-    if { ![winfo exists $name ] } {
-	toplevel $name
-	set h [expr {round ([winfo screenheight $name]*.6) }]
-	set wid [expr round ($h * 1.2) ]
-	set r1 [expr {round(10+rand()*30)} ]
-	set r2 [expr {round(10+rand()*30)} ]
-	wm geometry $name ${wid}x${h}+${r1}+${r2}
-	if { "[info proc setIcon]" != "" } {
-	    after 1000 setIcon $name
-	}
-
-    }
-
     append name .plot
     return $name
 }
