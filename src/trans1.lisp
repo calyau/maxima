@@ -183,7 +183,7 @@
     `(,mode . ((lambda (x)
 		 (cond ((null mcatch)
 			(displa x)
-			(merror "`throw' not within `catch'")))
+			(merror (intl:gettext "throw: not within 'catch'."))))
 		 (throw 'mcatch x))
 	       ,exp))))
 
@@ -288,7 +288,7 @@
               ,|0| ,n ,s))))
     (t
      (mformat *translation-msgs-files*
-              (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%To create a list with sublists, use nested makelist commands.~%")
+              (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%makelist: to create a list with sublists, use nested makelist commands.~%")
               (length form))
      (setq tr-abort t)
      '($any . '$**error**))))

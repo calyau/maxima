@@ -73,14 +73,14 @@
 		    ar)
 	   val))
     ((symbolp ar)
-     (error "must set the hash table outside"))
+     (error "MASET1: first argument must not be a symbol; found: ~M" ar))
     ((and (= (length inds) 1)
 	  (or ($listp ar) ($matrixp ar)))
      (setf (nth (car inds) ar) val) val)
     ((and ($matrixp ar)
 	  (= (length inds) 2))
      (setf (nth (second inds) (nth  (car inds) ar)) val) val)
-    (t (error "not a valid array reference to ~A" ar))))
+    (t (error "MASET1: invalid array reference: ~A" ar))))
 
 
 ;;apply is too expensive for a simple array reference.  The time
@@ -141,7 +141,7 @@
     ((and ($matrixp ar) (= (length inds) 2))
      (nth (second inds) (nth (first inds) ar)))
     (t
-     (merror "Wrong number of indices:~%~M" (cons '(mlist) inds)))))
+     (merror (intl:gettext "Wrong number of array indices: ~M") (cons '(mlist) inds)))))
 
 
 (defun tr-arraycall (form &aux all-inds)
