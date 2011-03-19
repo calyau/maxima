@@ -786,6 +786,8 @@ desired to redefine the values in a hashed array.
 
 @code{remarray} returns the list of arrays removed.
 
+@code{remarray} quotes its arguments.
+
 @opencatbox
 @category{Arrays}
 @closecatbox
