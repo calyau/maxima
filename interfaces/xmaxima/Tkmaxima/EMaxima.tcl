@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EMaxima.tcl,v 1.3 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: EMaxima.tcl,v 1.4 2011-03-19 23:16:41 villate Exp $
 #
 ###### EMaxima.tcl ######
 ############################################################
@@ -33,9 +33,10 @@ proc insertResult_maxima {  w thisRange resultRange res } {
     if { 0 == [string compare "$res" "cant connect"] } {
 	bgerror [concat [mc "unable to call"] "$program"]
     }
-    if { [regexp "\{plot\[23\]d" $res] } {
+    if { [regexp "\{plot\[23\]d" $res] || [regexp "\{plotdf" $res] \
+             || [regexp "\{scene" $res] } {
 	#puts "its a plot"
-	set name [plotWindowName $w]
+	set name [plotWindowName $w [lindex $res 0]]
 	eval plot2dData $name $res [getDimensions $w $name]
 	set desired [setDesiredDims $w $name $thisRange ]
 	ShowPlotWindow $w $name  $thisRange $resultRange $desired

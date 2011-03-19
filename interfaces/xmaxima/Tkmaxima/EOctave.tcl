@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EOctave.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: EOctave.tcl,v 1.3 2011-03-19 23:17:20 villate Exp $
 #
 ###### EOctave.tcl ######
 ############################################################
@@ -27,9 +27,10 @@
 
 proc insertResult_octave {  w thisRange resultRange res } {
     #puts "res=$res"
-    if { [regexp "\{plot\[23\]d" $res] } {
+    if { [regexp "\{plot\[23\]d" $res] || [regexp "\{plotdf" $res] \
+             || [regexp "\{scene" $res] } {
 	#puts "its a plot"
-	set name [plotWindowName $w]
+	set name [plotWindowName $w [lindex $res 0]]
 	set tem [setDesiredDims $w $name $thisRange ]
 	eval plot2dData $name $res [getDimensions $w $name]
 	ShowPlotWindow $w $name  $thisRange $resultRange $tem
