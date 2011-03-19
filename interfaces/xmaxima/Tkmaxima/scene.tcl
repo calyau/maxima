@@ -1,4 +1,4 @@
-#  $Id: scene.tcl,v 1.1 2011-03-09 11:27:20 villate Exp $
+#  $Id: scene.tcl,v 1.2 2011-03-19 23:13:04 villate Exp $
 #
 ###### scene.tcl ######
 # Copyright (c) 2011, Jaime E. Villate <villate@fe.up.pt>
@@ -133,15 +133,7 @@ proc makeVTKFrame { w type } {
 	catch { destroy $w}
 	frame $w
     }
-    set dismiss "destroy $win"
-    catch { set  parent [winfo parent $win]
-	if { "$parent" == "." } {
-	    set dismiss "destroy ."
-	}
-	if { [string match .scene [winfo toplevel $win]] } {
-	    set dismiss "destroy [winfo toplevel $win]"
-	}
-    }
+    set dismiss "destroy [winfo toplevel $win]"
     if { "$doExit" != "" } {set dismiss $doExit } 	
     oset $w type $type
 
@@ -154,12 +146,16 @@ proc makeVTKFrame { w type } {
 
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
-    set mb [frame $w.mb]
+    set mb [frame $w.menubar]
     pack $mb -fill x
 
     set dismiss [concat "vtkCommand DeleteAllObjects;" \
                      "after cancel PlayStep $mb.play;" $dismiss \
-                     "; clearLocal $win "]
+                     "; clearLocal $win"]
+    # define exit command fot the scene window
+    wm protocol $top WM_DELETE_WINDOW \
+        "after cancel PlayStep $mb.play; vtkCommand DeleteAllObjects; destroy $top; clearLocal $win"
+ 
     button $mb.play -image ::img::play -text [mc "Play"] \
         -command "playAnimation $w"
     button $mb.start -image ::img::start -text [mc "Start"] \
@@ -171,21 +167,25 @@ proc makeVTKFrame { w type } {
     if {$restart} {
         $mb.end configure -state disabled
     }
-    # Create a Tk widget that we can render into.
-    set vtkw [vtkTkRenderWidget $w.ren -width $width -height $height -rw $renwin]
+    set c $w.c
+    oset $win c $c
+    canvas $c  -borderwidth 2 -scrollregion {-1200 -1200 1200 1200}
 
+    # Create a Tk widget that we can render into.
+    set vtkw [vtkTkRenderWidget $c.ren -width $width -height $height -rw $renwin]
     # Setup Tk bindings and VTK observers for that widget.
     ::vtk::bind_tk_render_widget $vtkw
 
     pack $vtkw -side left -fill both -expand 1
     pack $mb.play $mb.start $mb.end -side left
     pack $mb.close $mb.config -side right
-    pack $w
-    focus $w
 # FIX ME: these bindings do not work inside the VTK frame, because it
 # has its own bindings.
-    bind $w <Control-w> $dismiss
-    bind $w <p> "playAnimation $w"
+    bind $c <Control-w> $dismiss
+    bind $c <p> "playAnimation $w"
+    pack $c -side right -expand 1 -fill both
+    pack $w
+    focus $w
     return $w
 }
 
