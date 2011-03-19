@@ -165,7 +165,13 @@ multiply_with_units(x%, u%) :=
   if unitp (u%) then
     (x%*qty(u%))`units(u%)
   else
-    (x%*apply ("*", map (qty, args (u%)))) ` simplify_units (apply ("*", map (units, args (u%))));
+    /* Work around effect of *AFTERFLAG in tellsimpafter rules:
+     * if units = 1, return foo instead of foo ` 1.
+     */
+    block ([qq, uu],
+      qq : x%*apply ("*", map (qty, args (u%))),
+      uu : simplify_units (apply ("*", map (units, args (u%)))),
+      if uu = 1 then qq else qq ` uu);
 
 matchdeclare (a%, all);
 defrule (runits1, 'units (a%), 1);
@@ -747,3 +753,27 @@ simp : true;
 declare_unit_conversion (degree = %pi/180);
 matchdeclare (uu, lambda ([e], unitp(e) and units(e) = 'degree));
 map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot]);
+
+/* Subscript applied to "`" expression => exchange "`" with subscript
+ * Note that this applies only to literal "`" expressions.
+ */
+
+matchdeclare ([aa, bb, cc], all);
+tellsimpafter ((aa ` bb) [cc], aa [cc] ` bb);
+
+/* "@" applied to "`" expression => exchange "`" with "@"
+ * Note that this applies only to literal "`" expressions.
+ */
+
+matchdeclare ([aa, bb, cc], all);
+/* substitute into "@" expression because "@" quotes its second argument */
+tellsimpafter ((aa ` bb) @ cc, buildq ([aa, bb, cc], (aa @ cc) ` bb));
+
+/* realpart/imagpart applied to "`" expression => exchange "`" with realpart/imagpart
+ * Note that this applies only to literal "`" expressions.
+ * Note further that this applies only to realpart/imagpart nouns.
+ */
+
+matchdeclare ([aa, bb], all);
+tellsimpafter ('realpart (aa ` bb), 'realpart (aa) ` bb);
+tellsimpafter ('imagpart (aa ` bb), 'imagpart (aa) ` bb);
