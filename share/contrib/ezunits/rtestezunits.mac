@@ -70,6 +70,28 @@ a`m + b`m + c`m;
 (a`m)*(b`m)*(c`m)*(d`m);
 a*b*c*d`m^4;
 
+(a`kg/m^2)/(b`kg/m^2);
+a/b;
+
+(a`kg*m/s)/(b`kg*m/s);
+a/b;
+
+1729 ` 1;
+1729;
+
+0 ` kg/m^3;
+0 ` kg/m^3;
+
+/* next one has result = unknown;
+ * substitute narrower test on "=" instead of equal
+ * pending simplification rule for equal applied to unitful expressions
+is (equal (0 ` m, 0 ` kg));
+false;
+ */
+
+is (0 ` m = 0 ` kg);
+false;
+
 /* begin addt'l stuff adapted from Cliff Yapp's email
  * to the Maxima mailing list 2005/05/21.
  */
@@ -288,6 +310,9 @@ oops ('cc, bar[k]);
 cc: bar[11] * (57 ` s/kg) * (10 ` acre);
 570 * qty(bar[11]) ` s;
 
+kill (aa, bb, cc, dd, ee, ff, gg);
+done;
+
 /* Unit conversions */
 
 0 ` kg/m^2 `` lbm/acre;
@@ -332,6 +357,12 @@ map (constantp, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 
 map (units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 ''([m/s, N/A^2, s^2*A^2/(m^2*N), m*N/(s*A^2), m^3/(kg*s^2), J*s, J*s]);
+
+[dimensions (1), dimensions (1729), dimensions (%e)];
+[1, 1, 1];
+
+[dimensions (0 ` m/s), dimensions (0 ` kg/m^3), dimensions (0 ` W/kg)];
+[length/time, mass/length^3, length^2/time^3];
 
 dimensions (foobar);
 'dimensions (foobar);
@@ -755,3 +786,102 @@ compute_conversion_factor (hp/rpm, lbf*foot);
 
 omega_mech : ev (2/npoles * 50 ` 'Hz[S] `` rpm, npoles = 4);
 1500 ` rpm;
+
+/* from: http://www.ibiblio.org/harris/500milemail.html
+ * "The case of the 500-mile email" -- a pleasant diversion
+ */
+
+declare_unit_conversion (1 ` lightsecond = constvalue (%c) * (1 ` s), millilightsecond = lightsecond/1000);
+done;
+
+3 ` millilightsecond `` mile;
+149896229/268224 ` mile;
+
+block ([fpprec : 16], 3b0 ` millilightsecond `` mile);
+5.588471911536626b2 ` mile;
+
+/* subscripts applied to unitful expressions */
+
+(kill (x, k), (x ` kg/m^2)[k]);
+x[k] ` kg/m^2;
+
+([1, 2, 3] ` m/s^2)[3];
+3 ` m/s^2;
+
+(kill (foo, i), declare_units (foo, MJ/cd), foo[i]);
+/* verify that foo[i] not expanded to qty(foo[i]) ` MJ/cd or anything else */
+foo[i];
+
+/* "@" applied to unitful expressions */
+
+(kill (foo, a, b, c), defstruct (foo (a, b, c)), 0);
+0;
+
+(kill (m), block ([x : new (foo ('x1, %pi, 17)) ` m/s], [x@a, x@b, x@c], ev (%%)));
+[x1 ` m/s, %pi ` m/s, 17 ` m/s];
+
+/* realpart/imagpart applied to unitful expressions
+ * ev(..., nouns) seems to be necessary to work around noun/verb strangeness ... sigh
+ */
+
+(kill (x), x : (17 - %e*%i) ` s*A/kg, ['realpart (x), 'imagpart (x)], ev (%%, nouns));
+[17 ` s*A/kg, -%e ` s*A/kg];
+
+/* examples derived from dissertation of Andrew John Kennedy */
+
+/* statistics of a list of numbers x:
+ * mean has same units as x
+ * variance has units = (units(x))^2
+ * std deviation has same units as x
+ * skewness is dimensionless
+ * covariance has units = units(x) * units(y)
+ * correlation is dimensionless
+ */
+
+(kill (x, n), x : [2 ` kg/m^2, 3 ` kg/m^2, 5 ` kg/m^2, 7 ` kg/m^2, 11 ` kg/m^2], n : length (x), 0);
+0;
+
+(kill (mean_x), mean_x : apply ("+", x) / n);
+28/5 ` kg/m^2;
+
+(kill (mean_x2, var_x), mean_x2 : apply ("+", map (lambda ([x1], x1^2), x)) / n, var_x : mean_x2 - mean_x^2);
+256/25 ` kg^2/m^4;
+
+(kill (std_x), std_x : sqrt (var_x));
+16/5 ` kg/m^2;
+
+(kill (mean_x3, skewness_x),
+  mean_x3 : apply ("+", map (lambda ([x1], x1^3), x)) / n,
+  moment3_x : mean_x3 - 3 * mean_x2 * mean_x + 2 * mean_x^3,
+  skewness_x : moment3_x / std_x^3);
+1197/2048;
+
+(kill (y, m), y : [13 ` s*A, 17 ` s*A, 19 ` s*A, 23 ` s*A, 29 ` s*A], m : length (y), is (m = n));
+true;
+
+(kill (mean_y), mean_y : apply ("+", y) / m);
+101/5 ` s*A;
+
+(kill (mean_y2, var_y, std_y), mean_y2 : sum (y[i]^2, i, 1, m) / m, var_y : mean_y2 - mean_y^2, std_y : sqrt (var_y));
+2*sqrt(186)/5 ` s*A;
+
+(kill (mean_xy, covar_xy), mean_xy : sum (x[i] * y[i], i, 1, n) / n, covar_xy : mean_xy - mean_x * mean_y);
+432/25 ` kg*s*A/m^2;
+
+(kill (corr_xy), corr_xy : covar_xy / std_x / std_y);
+27/(2*sqrt(186));
+
+/* differentiation via secant approximation:
+ * diff(f(x), x) = (f(x + h) - f(x - h))/(2 h)
+ *  => diff has units = units(f) / units(x)
+ */
+
+/* integration via trapezoid rule:
+ * integral(f(x), x, a, b) = (h/2) (f(a) + 2 f(a + h) + ... + 2 f(b - h) + f(b)), h = (b - a)/n
+ *  => integral has units = units(x) * units(f)
+ */
+
+/* root finding via Newton-Raphson algorithm:
+ * x[n + 1] = x[n] - f(x[n])/f'(x[n])
+ *  => each x[n] has same units as x[1]
+ */
