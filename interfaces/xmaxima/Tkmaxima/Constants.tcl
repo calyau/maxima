@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.27 2011-03-15 01:01:44 villate Exp $
+#       $Id: Constants.tcl,v 1.28 2011-03-20 16:32:52 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -472,3 +472,10 @@ image create photo ::img::track -format GIF -data {
     w7IRMdO6swUltgqLQXbExQUYLAhCVivEAxtygBjwk2IgTQhcXLk2W0SqgQcSGAhB9bsMyLh
     EBHBxMBCmQAkYFhKggqbjQoFkoQAAQ2VKigWRMOARUeVADoSQiAAg8OePYMAEAp0Z6BAAA7
 }
+
+image create photo ::img::plot -format GIF -data {
+R0lGODlhFgAWAMIHAAAAAAAAMgAAfwAPAAAZAAAnAAE8AP///yH5BAEKAAcALAAAAAAWABYAAANb
+eLrcriDKSSl8eAEVct4H6DkCVI6McQLCORpGeLVvLN80k8OaMiy5ltDWOxB0woWqYRMpXIdYTlG4
+PHhPF8ipgBGzVpAXSwqPRysr6pC+rYXbtS4uL1bu9zomAQA7
+}
+
