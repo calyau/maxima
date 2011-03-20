@@ -353,7 +353,7 @@ in the interval of integration.")
 		      d
 		    (let ((root (power* (div (sub 'yx a) b) (inv n))))
 		      (cond (t
-			     (setq d (subst var 'yx root))
+			     (setq d root)
 			     (cond (flag (intcv2 d ind nv))
 				   (t (intcv1 d ind nv))))
 			    ))))
@@ -361,17 +361,23 @@ in the interval of integration.")
 		  (putprop 'yx t 'internal);; keep var from appearing in questions to user
 		  (solve (m+t 'yx (m*t -1 nv)) var 1.)
 		  (cond (*roots
-			 (setq d (subst var 'yx (caddar *roots)))
+			 (setq d (caddar *roots))
 			 (cond (flag (intcv2 d ind nv))
 			       (t (intcv1 d ind nv))))
 			(t ()))))))))
 
+;; d: original variable (var) as a function of 'yx
+;; ind: boolean flag
+;; nv: new variable ('yx) as a function of original variable (var)
 (defun intcv1 (d ind nv)
   (cond ((and (intcv2 d ind nv)
+	      (equal ($imagpart *ll1*) 0)
+	      (equal ($imagpart *ul1*) 0)
 	      (not (alike1 *ll1* *ul1*)))
 	 (let ((*def2* t))
-	   (defint exp1 var *ll1* *ul1*)))))
+	   (defint exp1 'yx *ll1* *ul1*)))))
 
+;; converts limits of integration to values for new variable 'yx
 (defun intcv2 (d ind nv)
   (intcv3 d ind nv)
   (and (cond ((and (zerop1 (m+ ll ul))
@@ -391,13 +397,18 @@ in the interval of integration.")
 		    (among '$und ans)))
 	   ans))))
 
+;; rewrites exp, the integrand in terms of var,
+;; into exp1, the integrand in terms of 'yx.
 (defun intcv3 (d ind nv)
-  (setq nn* (sratsimp (sdiff d var)))
-  (setq exp1 (subst 'yx nv exp))
-  (setq exp1 (m* nn* (cond (ind exp)
-			   (t (subst d var exp1)))))
-  (setq exp1 (sratsimp (subst var 'yx exp1))))
+  (setq exp1 (m* (sdiff d 'yx)
+		 (cond (ind (subst 'yx var exp))
+		       (t (subst d var (subst 'yx nv exp))))))
+  (setq exp1 (sratsimp exp1)))
 
+(defun integrand-changevar (d newvar exp var)
+  (m* (sdiff d newvar)
+      (subst d var exp)))
+  
 (defun defint (exp var ll ul)
   (let ((old-assumptions *defint-assumptions*)  
         (*current-assumptions* ())
@@ -640,9 +651,9 @@ in the interval of integration.")
       ;; See Bugs 938235 and 941457.  These fail because $FACTOR is
       ;; unable to factor the transformed result.  This needs more
       ;; work (in other places).
-      (let ((trans (intcv3 (m// (m+t 'll (m*t 'ul var))
-				(m+t 1. var))
-			   nil 'yx)))
+      (let ((trans (integrand-changevar (m// (m+t 'll (m*t 'ul 'yx))
+					     (m+t 1. 'yx))
+					'yx exp var)))
 	;; If the limit is a number, use $substitute so we simplify
 	;; the result.  Do we really want to do this?
 	(setf trans (if (mnump ll)
@@ -651,7 +662,7 @@ in the interval of integration.")
 	(setf trans (if (mnump ul)
 			($substitute ul 'ul trans)
 			(subst ul 'ul trans)))
-	(method-by-limits trans var 0. '$inf))
+	(method-by-limits trans 'yx 0. '$inf))
       ()))
 
 ;; Integrate rational functions over a finite interval by doing the
@@ -2350,8 +2361,8 @@ in the interval of integration.")
        (cond ((eq arg var)
 	      (cond ((ratgreaterp 1. ll)
 		     (cond ((not (eq ul '$inf))
-			    (intcv1 (m^t '$%e (m- var)) () (m- `((%log) ,var))))
-			   (t (intcv1 (m^t '$%e var) () `((%log) ,var)))))))
+			    (intcv1 (m^t '$%e (m- 'yx)) () (m- `((%log) ,var))))
+			   (t (intcv1 (m^t '$%e 'yx) () `((%log) ,var)))))))
 	     (t (intcv arg nil nil)))))))
 
 

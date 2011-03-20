@@ -981,8 +981,11 @@ ratsimp(integrate(1/(sin(x-3)^2+1),x,3,11));
 (atan(sqrt(2)*sin(8)/cos(8))+3*%pi)/sqrt(2);
 
 /* defint log(sqrt(q^2-1)+1) asks about YX - ID: 924868 */
-ratsimp(integrate( log(sqrt(q^2-1)+1),q,0,1));
--((4*asinh(1)+(2-sqrt(2))*%i*%pi+(-2^(3/2)))/2^(3/2));
+integrate( log(sqrt(q^2-1)+1),q,0,1);
+'integrate( log(sqrt(q^2-1)+1),q,0,1);
+/*  should be 
+ *  ((4*asinh(1)+(2-sqrt(2))*%i*%pi+(-2^(3/2)))/2^(3/2));
+ */
 
 /* Bug 1748168 */
 integrate(1/(2+cos(x)),x,-%pi/2,%pi/2);
@@ -1348,3 +1351,7 @@ integrate(sin(2*x)*atan(sin(x)),x,0,%pi/2);
 /* wrong integration answer - ID: 2989983 */
 integrate(cos(w+T)/(1+1/2*cos(T))^2,T,0,2*%pi);
 -8*%pi*cos(w)/3^(3/2);
+
+/* wrong sign for integral of e^(-1/x^2) - ID: 3211937 */
+integrate(%e^(-1/x^2),x,0,1);
+%e^-1*(sqrt(%pi)*%e*erf(1)+1)-sqrt(%pi);
