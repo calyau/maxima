@@ -335,5 +335,14 @@ plot2d (foo29, [u, -1, 0]);
 (translate(f),
  plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
 
+/* bug report "xlabel and ylabel don't change plot3d axis labels" - ID: 3020589 */
+
+(Bxt(x, r) := x^2 + r^2,
+ [R, L] : [1, 1],
+ plot3d(Bxt(x,r),[x,0,L],[r,0,R],[xlabel,"x [m]"],[ylabel,"r [m]"],[zlabel,"Bx [T]"],[legend,"Axial field"]));
+
+/* same but now using default axis labels */
+plot3d(Bxt(x,r),[x,0,L],[r,0,R],[legend,"Axial field"]);
+
 "FINIS" $
 
