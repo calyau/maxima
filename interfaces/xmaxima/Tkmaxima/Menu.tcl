@@ -1,7 +1,16 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.34 2011-03-15 01:08:44 villate Exp $
+#       $Id: Menu.tcl,v 1.35 2011-03-20 23:17:36 villate Exp $
 #
+
+proc zoomConsole {f} {
+    global maxima_default
+    set ffamily [lindex $maxima_default(ConsoleFont) 0]
+    set fsize [lindex $maxima_default(ConsoleFont) 1]
+    set fsize [expr round($fsize*1.2**$f)]
+    font configure ConsoleFont -family $ffamily -size $fsize
+    set maxima_default(ConsoleFont) [list $ffamily $fsize]
+}
 
 proc pMAXSaveTexToFile {text} {
     set file [tide_savefile [M [mc "Save to a file"]] "" *.out]
@@ -199,10 +208,10 @@ proc vMAXAddSystemMenu {fr text} {
 	    -value $elt -command [list SetPlotFormat $text ]
     }
 
-    $m add separator
-    $m add command -underline 0 \
-	-label [mc "Preferences"] \
-	-command {fontDialog .preferences}
+    # $m add separator
+    # $m add command -underline 0 \
+    #     -label [mc "Preferences"] \
+    #     -command {fontDialog .preferences}
     if {[info commands console] == "console" } {
 	$m add sep
 	$m add command -underline 0 -label [mc "Show Tcl Console"] \
@@ -327,8 +336,18 @@ proc vMAXAddSystemMenu {fr text} {
     rename vMAXAddSystemMenu ""
     # vMAXSystemMenuHandlers $text $event
 
-    # Backwards compatability
+    # Backwards compatibility
     return $win
+}
+
+proc vMAXAddSystemBar {} {
+    set tb [frame .toolbar -borderwidth 1]
+    pack $tb -side top -fill x
+    button $tb.zoomin -image ::img::zoom-in -text [mc "Zoom in"] \
+        -command "zoomConsole 1" -relief flat -width 30 -height 30
+    button $tb.zoomout -image ::img::zoom-out -text [mc "Zoom out"] \
+        -command "zoomConsole -1" -relief flat -width 30 -height 30
+    pack $tb.zoomin $tb.zoomout -side left
 }
 
 proc SetPlotFormat { text } {
