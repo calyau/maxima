@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.35 2011-03-19 23:16:17 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.36 2011-03-20 23:15:48 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -8,6 +8,11 @@ proc textWindowWidth { w } {
     return [expr round(floor([winfo width $w]*20.0/$w20))]
 }
 
+proc textWindowHeight { w } {
+    set font [$w cget -font]
+    set h1 [font metrics [$w cget -font] -displayof $w -linespace]
+    return [expr round([winfo height $w]/$h1)]
+}
 
 proc resizeMaxima { win width height } {
     linkLocal $win pid
