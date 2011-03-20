@@ -1,18 +1,18 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.6 2011-03-15 01:04:30 villate Exp $
+#       $Id: Gui.tcl,v 1.7 2011-03-20 23:13:58 villate Exp $
 #
 
 object_class MAXGui {
 
     method __init__ {} {
 	global tcl_platform maxima_priv
-
+        
     }
-
+    
     method install {fr} {
-	global tcl_platform maxima_priv
-
+	global tcl_platform maxima_priv maxima_default
+        
 	if {$tcl_platform(platform) == "windows" && \
 		[info commands winico] != ""} {
 	    set file [file join \
@@ -23,14 +23,14 @@ object_class MAXGui {
 		winico setwindow . $ico
 	    }
 	}
-
+        
 	if {[winfo exists $fr]} {catch { destroy $fr }}
 
-
+        
 	######## make status panel....
 	set st .status
 	frame $st
-
+        
 	set maxima_priv(cStatusWindow) $st
 	label $st.rate -width 35 -bd 1 -relief sunken \
 	    -justify left \
@@ -42,16 +42,20 @@ object_class MAXGui {
 	pack $st -side bottom -fill x -anchor w
 	set maxima_priv(cStatusLabel) $st.rate
 
+        # Creates the browser in a separate window
 	toplevel .browser
 	wm title .browser {Xmaxima: browser}
-
 	OpenMathOpenUrl $maxima_priv(firstUrl) -toplevel .browser
-	set maxima_priv(cBrowser) .browser
+	set maxima_priv(cBrowser) .browse
+        
+        # Adds the menubar and the toolbar to the browser
+	vMAXAddBrowserMenu .browser
+
+ 	# Adds the toolbar to the Maxima console
+	vMAXAddSystemBar
 
 	frame $fr
 	pack $fr -expand 1 -fill both -side top
-#	pack .browser -side bottom -expand 1 -fill both
-#	packBoth $fr .browser
 
 	set w $fr.text
 
@@ -74,7 +78,7 @@ object_class MAXGui {
 	text $w -yscrollcommand "$fr.scroll set" \
 	    	-selectbackground yellow -selectforeground blue
 	set maxima_priv($w,inputTag) input
-	resetMaximaFont $w
+#	resetMaximaFont $w
 	scrollbar $fr.scroll -command "$w yview"
 	pack $fr.scroll -side right -fill y
 	pack $fr.text -expand 1 -fill both -side left
@@ -84,8 +88,8 @@ object_class MAXGui {
 	bind $w <Configure> "resizeSubPlotWindows $w %w %h; resizeMaxima $w %w %h"
 
 	$w configure -background white
-	$w configure -foreground {#009900}
-	$w tag configure input -foreground blue
+	$w configure -foreground "#008600"
+        $w tag configure input -foreground blue
 	$w tag configure output -foreground black
 
 	# binding order will be: window bindings, CNtext bindings,
@@ -97,52 +101,24 @@ object_class MAXGui {
 	    append maxima_priv(sticky) {|^input$}
 	}
 	set maxima_priv(cConsoleText) $fr.text
+        
+        vMAXSetCNTextBindings $w
+        wm protocol . WM_DELETE_WINDOW [list tkmaxima exit $fr.text]
 
-	vMAXSetCNTextBindings $w
-	wm protocol . WM_DELETE_WINDOW [list tkmaxima exit $fr.text]
+        # Sets up the console size and font
+        $fr.text configure \
+            -height $maxima_default(iConsoleHeight) \
+            -width $maxima_default(iConsoleWidth)
+        font configure ConsoleFont \
+            -family [lindex $maxima_default(ConsoleFont) 0] \
+            -size [lindex $maxima_default(ConsoleFont) 1]
+        $fr.text configure -font ConsoleFont
 
-	if {0} {
-	    # Simple approach won't work with plotting
+ 	# Adds the menu bar to the Maxima console
+	vMAXAddSystemMenu $fr $fr.text
 
-	    $fr.text configure \
-		-height $maxima_default(iConsoleHeight) \
-		-width $maxima_default(iConsoleWidth)
-	    set btext [info commands .browser.*.text]
-	    $btext configure \
-		-height $maxima_default(iConsoleHeight) \
-		-width $maxima_default(iConsoleWidth)
-
-	    update
-	    if {[set h [winfo reqheight .]] > \
-		    [set max [expr [winfo screenheight .] \
-				  - (2 * abs($fontSize))]]} {
-		set cur [$btext cget -height]
-		set delta [expr \
-			       int (($h - $max) / abs($fontSize))]
-		$btext config -height [expr $cur - $delta]
-	    }
-
-	} else {
-	    # There's voodo that makes this work with plotting
-	    # May the force be with you.
-	    desetq "width height"  [getMaxDimensions]
-	    wm geometry . ${width}x${height}
-	    update
-	    
-	    # ZW: this text window size adjustment doesn't
-	    # work as expected making window height too small.
-	    #if { [winfo height $fr] > .8 * [winfo height .]  } {
-	    #	$fr.text config -height 15
-	    #}
-	}
-
-
-	# Add a proper system menu
-	vMAXAddSystemMenu $fr $maxima_priv(cConsoleText)
-	vMAXAddBrowserMenu .browser
 	wm deiconify .
-
-	return $w
+ 	return $w
     }
 
     method status {mess} {
