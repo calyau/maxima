@@ -1,13 +1,13 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.35 2011-03-20 23:17:36 villate Exp $
+#       $Id: Menu.tcl,v 1.36 2011-03-20 23:36:00 villate Exp $
 #
 
 proc zoomConsole {f} {
     global maxima_default
     set ffamily [lindex $maxima_default(ConsoleFont) 0]
     set fsize [lindex $maxima_default(ConsoleFont) 1]
-    set fsize [expr round($fsize*1.2**$f)]
+    set fsize [expr round($fsize*pow(1.2,$f))]
     font configure ConsoleFont -family $ffamily -size $fsize
     set maxima_default(ConsoleFont) [list $ffamily $fsize]
 }
