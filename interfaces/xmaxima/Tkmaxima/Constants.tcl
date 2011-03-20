@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.28 2011-03-20 16:32:52 villate Exp $
+#       $Id: Constants.tcl,v 1.29 2011-03-20 23:14:57 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -21,7 +21,14 @@ proc cMAXINITBeforeIni {} {
     set maxima_default(fontAdjust) 0
 
     set maxima_default(iConsoleWidth) 80
-    set maxima_default(iConsoleHeight) 24
+    set maxima_default(iConsoleHeight) 32
+
+    # Set up Maxima console font
+    set cfont [font actual TkFixedFont -family]
+    set cfontsize [font actual TkFixedFont -size]
+    catch {font delete ConsoleFont}
+    font create ConsoleFont -family $cfont -size $cfontsize 
+    set maxima_default(ConsoleFont) [list $cfont $cfontsize]
 
     set maxima_default(iLocalPort) 4008
 
