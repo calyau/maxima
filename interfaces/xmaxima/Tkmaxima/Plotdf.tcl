@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.22 2011-03-09 11:37:47 villate Exp $
+#       $Id: Plotdf.tcl,v 1.23 2011-03-20 16:33:16 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -68,9 +68,9 @@ proc makeFrameDf { win } {
     }
     set wb $w.menubar
     makeLocal $win buttonFont
-    button $wb.integrate -text [mc "Integrate"] -command "setForIntegrate $w" -font $buttonFont
-    button $wb.versust -text [mc "Time Plots"] -command "plotVersusT $w" -font $buttonFont
-    pack $wb.integrate $wb.versust -side left
+    button $wb.versust -image ::img::plot -text [mc "Time Plots"] \
+        -command "plotVersusT $w" -relief flat -width 30 -height 30
+    pack $wb.versust -side left
     setForIntegrate $w
     return $win
 }
