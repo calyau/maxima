@@ -693,6 +693,7 @@ nonmetricity
 nonscalar
 nonscalarp
 not
+notequal
 noun
 noundisp
 nounify
