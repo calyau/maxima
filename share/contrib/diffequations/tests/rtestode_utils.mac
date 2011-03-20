@@ -21,3 +21,13 @@ expintegral_e_simp(
 expintegral_e_simp(
 -%e^(-3*x-5)*(x*((100*expintegral_e(2,5*(x-1))+300*expintegral_e(1,5*(x-1)))*%e^(5*x)-100*%e^5)+500*expintegral_e(1,5*(x-1))*x^2*%e^(5*x)+(160*expintegral_e(2,5*(x-1))-800*expintegral_e(1,5*(x-1)))*%e^(5*x)-160*%e^5));
 0;
+
+/* verify that ode1_lie doesn't trigger an error on this problem.
+ * contrib_ode doesn't appear to be able to solve it, which is OK, I guess.
+ */
+block ([foo],
+ declare (n, integer),
+ foo : contrib_ode ('diff(x, t)^2 = alpha - beta*abs(x)^n, x, t),
+ remove (n, integer),
+ foo);
+false;

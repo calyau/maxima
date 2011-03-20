@@ -173,7 +173,7 @@ ode1_a(phi,y,x) := block(
       [%Axy,%eye,%Iy,%p,%px],
       %Axy: ratsimp(diff(%Ay,x)),
       %eye: ratsimp(%Axy/%Ayy),
-      if linear2(y,%eye) then
+      if %eye # 0 and linear2(y,%eye) then
         /* Case 3: diff(A,y,2)#0 and I=Axx/Ayy linear in y
            p=exp(integrate(Iy,x))
            Substitute y = u/p */
