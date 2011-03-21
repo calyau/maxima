@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.24 2011-03-20 23:20:14 villate Exp $
+#       $Id: Browser.tcl,v 1.25 2011-03-21 09:18:58 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -1173,7 +1173,7 @@ proc fontDialog { top } {
 proc savePreferences {} {
     global maxima_default maxima_priv
 
-    # Save currente console size in maxima_default
+    # Save current console size in maxima_default
     set console [lindex [array get maxima_priv cConsoleText] end]
     set maxima_default(iConsoleWidth) [textWindowWidth $console]
     set maxima_default(iConsoleHeight) [textWindowHeight $console]
