@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.7 2011-03-20 23:13:58 villate Exp $
+#       $Id: Gui.tcl,v 1.8 2011-03-21 09:17:42 villate Exp $
 #
 
 object_class MAXGui {
@@ -44,7 +44,7 @@ object_class MAXGui {
 
         # Creates the browser in a separate window
 	toplevel .browser
-	wm title .browser {Xmaxima: browser}
+	wm title .browser [mc {Xmaxima: browser}]
 	OpenMathOpenUrl $maxima_priv(firstUrl) -toplevel .browser
 	set maxima_priv(cBrowser) .browse
         
