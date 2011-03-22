@@ -5,7 +5,7 @@
 @c Original    : Arrays.texi revision 1.17
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.03.2011
-@c Revision    : 14.03.2011
+@c Revision    : 22.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -26,42 +26,116 @@
 @subsection Einf@"uhrung in Arrays
 @c -----------------------------------------------------------------------------
 
+Am flexibelsten sind Arrays, die nicht deklariert werden, diese werden auch
+Hashed-Arrays genannt und entstehen dadurch, dass einer indizierten Variablen
+ein Wert zugewiesen wird.  Die Indizes brauchen keine ganze Zahlen zu sein,
+es sind auch Symbole und Ausdr@"ucke als Index m@"oglich.  Nicht-deklarierte
+Arrays wachsen dynamisch mit der Zuweisung von Werten an die Elemente.  Im 
+Folgenden wird ein nicht-deklariertes Array @code{a} durch Zuweisung von Werten
+erzeugt.  Die Elemente des Arrays werden mit der Funktion @mref{listarray}@w{}
+angezeigt.
 
+@example 
+(%i1) a[1,2]: 99;
+(%o1)                          99
+(%i2) a[x,y]: x^y;
+                                y
+(%o2)                          x
+(%i3) listarray(a);
+                                  y
+(%o3)                       [99, x ]
+@end example
+
+Von den nicht-deklarierten Arrays sind deklarierte Arrays zu unterscheiden.
+Diese haben bis zu 5 Dimensionen und k@"onnen einen Typ wie @code{fixnum} oder
+@code{flonum} erhalten.  Maxima unterscheidet zun@"achst zwei verschiedene Arten
+von deklarierten Arrays.  Zum einen kann ein Symbol mit der Funktion
+@mref{array} als ein deklariertes Array definiert werden.  Eine andere 
+M@"oglichkeit ist, mit der Funktion @mref{make_array} ein Lisp-Array zu 
+deklarieren, dass einem Symbol zugewiesen wird.
+
+Das erste Beispiel zeigt die Deklaration eines Symbols @code{a} als ein Array.
+Im zweiten Beispiel wird ein Lisp-Array erzeugt, das dem Symbol @code{b}
+zugewiesen wird.
+
+@example
+(%i1) array(a, fixnum, 2, 2);
+(%o1)                           a
+(%i2) b: make_array(fixnum, 2, 2);
+(%o2)              @{Array:  #2A((0 0) (0 0))@}
+@end example
+
+Erh@"alt die Optionsvariable @mref{use_fast_arrays} den Wert @code{true}, werden
+ausschlie@ss{}lich Lisp-Arrays erzeugt.  Im Folgenden wird auch von der Funktion
+@code{array} ein Lisp-Array erzeugt, dass dem Symbol @code{c} zugewiesen wird.
+Die Implementation der Funktionalit@"at der Funktion @code{array} ist jedoch
+nicht vollst@"andig, wenn Lisp-Arrays genutzt werden.  So kann in diesem
+Beispiel nicht wie oben ein Array mit dem Typ @code{fixnum} definiert werden.
+Das ist ein Programmfehler.
+
+@example
+(%i3) use_fast_arrays: true;
+(%o3)                         true
+(%i4) array(c, 2, 2);
+(%o4)    #2A((NIL NIL NIL) (NIL NIL NIL) (NIL NIL NIL))
+(%i5) c;
+(%o5)    #2A((NIL NIL NIL) (NIL NIL NIL) (NIL NIL NIL))
+(%i6) array(c, fixnum, 2, 2);
+
+make_array: dimensions must be integers; found [fixnum + 1, 3, 3]
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+Maxima kennt weiterhin Array-Funktionen, die Funktionswerte speichern k@"onnen,
+und indizierte Funktionen.  Die hier beschriebenen Funktionen k@"onnen auch
+auf diese Arrays angewendet werden.  Siehe das Kapitel
+@nref{Array-Funktionen} f@"ur eine Beschreibung.
+
+Weitere Ausf@"uhrungen sind bei der Beschreibung der einzelnen Funktionen zu
+finden.  Maxima kennt folgende Funktionen und Symbole f@"ur das Arbeiten mit
+Arrays:
+
+@verbatim
+   array         arrayapply     arrayinfo   
+   arraymake     arrays         fillarray
+   listarray     make_array     rearray
+   remarray      subvar         subvarp
+   use_fast_arrays
+@end verbatim
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Arrays, , Einf@"uhrung in Arrays, Arrays
 @subsection Funktionen und Variablen f@"ur Arrays
 @c -----------------------------------------------------------------------------
 
-@c --- 18.02.2011 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{array}
 @deffn  {Funktion} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
 @deffnx {Funktion} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
 @deffnx {Funktion} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {Funktion} array ([@var{name_1}, @dots{}, @var{name_m}], @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
 
-Erzeugt ein @math{n}-dimensionales Array.  @math{n} kann kleiner oder gleich 5 
-Dimensionen sein.  Die Indizes der @math{i}-ten Dimension sind ganze Zahlen
-in einem Bereich von 0 bis @var{dim_i}.
+Erzeugt ein @math{n}-dimensionales Array.  Das Array kann bis zu 5 Dimensionen
+haben.  Die Indizes der @math{i}-ten Dimension sind ganze Zahlen in einem 
+Bereich von 0 bis einschlie@ss{}lich @var{dim_i}.
 
-@code{array(@var{name}, @var{dim_1}, ..., @var{dim_n})} erzeugt ein allgemeines 
-Array.
+@code{array(@var{name}, @var{dim_1}, ..., @var{dim_n})} erzeugt ein Array, 
+dessen Elemente einen beliebigen Typ haben und auch Symbole oder Ausdr@"ucke
+sein k@"onnen.
 
 @code{array(@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} erzeugt 
-ein Array mit Elementen, die vom Typ @var{type} sind.  @var{type} kann 
-@code{fixnum} f@"ur ganze Zahlen oder @code{flonum} f@"ur Gleitkommazahlen sein.
+ein Array mit Elementen, die vom Typ @var{type} sind.  Das Argument @var{type}
+kann @code{fixnum} f@"ur ganze Zahlen oder @code{flonum} f@"ur Gleitkommazahlen
+sein.
  
 @code{array([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
-erzeugt @math{m} Arrays, die alle die gleiche Dimension haben.
+erzeugt @math{m} Arrays, die alle die gleiche Dimension haben.  Wie oben kann
+weiterhin der Typ der Arrays durch Angabe des Argumentes @var{type} als
+@code{fixnum} oder @code{flonum} festgelegt werden.
 
-Wird einer indizierten Variablen ein Wert zugewiesen, bevor das entsprechende
-Array definiert wird, so wird ein undeklariertes Array erzeugt.  Undeklarierte
-Arrays, auch Hashed-Arrays genannt, sind allgemeiner als deklarierte Arrays.
-Diese Arrays haben keine feste Gr@"o@ss{}e und wachsen dynamisch mit der 
-Zuweisung von Werten.  Die Indizes eines undeklarierten Arrays m@"ussen keine 
-ganze Zahlen sein.  Deklarierte Arrays sind im Allgemeinen effizienter, 
-so dass Arrays falls m@"oglich deklariert werden sollten.  Die Funktion 
-@code{array} kann genutzt werden, um ein undeklariertes Array in ein 
-deklariertes Array umzuwandeln.
+Mit der Funktion @code{array} k@"onnen nicht-deklarierte Arrays in ein
+deklariertes Array umgewandelt werden.  Wenn das deklarierte einen Typ erhalten
+soll, m@"ussen alle Elemente des nicht-deklarierten Arrays von diesem Typ sein.
 
 Beispiele:
 
@@ -69,6 +143,9 @@ Es werden zwei verschiedene Arrays definiert.  Im ersten Fall erh@"alt das Array
 keinen Typ.  Elemente, denen noch kein Wert zugewiesen wurde, werden mit dem
 Symbol @code{#####} initialisiert.  Im zweiten Fall ist das Array vom Typ 
 @code{fixnum}.  Jetzt wird das Array mit dem Wert @code{0} initialisiert.
+
+Siehe auch die Funktion @mrefcomma{make_array} um ein Lisp-Array zu erzeugen,
+sowie die Optionsvariable @mrefdot{use_fast_arrays}
 
 @example
 (%i1) array(a, 2, 2);
@@ -88,44 +165,78 @@ Symbol @code{#####} initialisiert.  Im zweiten Fall ist das Array vom Typ
 (%i10) listarray(b);
 (%o10)            [0, 0, 0, 0, 11, 0, 0, 0, 22]
 @end example
+
+Ein nicht-deklariertes Array kann in ein deklariertes Array umgewandelt werden.
+
+@example
+(%i1) a[1,1]:11;
+(%o1)                          11
+(%i2) a[2,2]:22;
+(%o2)                          22
+(%i3) arrayinfo(a);
+(%o3)              [hashed, 2, [1, 1], [2, 2]]
+(%i4) array(a, fixnum, 2, 2);
+(%o4)                           a
+(%i5) arrayinfo(a);
+(%o5)                 [complete, 2, [2, 2]]
+@end example
 @end deffn
 
-@c --- 18.02.2011 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arrayapply}
 @deffn {Funktion} arrayapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
 
 Wertet @code{@var{A}[@var{i_1}, ... , @var{i_n}]} aus, wobei @var{A} ein Array
 und @var{i_1}, @dots{}, @var{i_n} die Indizes eines Array-Elementes sind.
 
+Siehe auch die Funktion @mrefcomma{subvar} die die gleich Funktionalit@"at hat,
+sowie die Funktion @mrefcomma{arraymake} die die Referenz auf das Array-Element
+nicht auswertet.
+
 Beispiele:
 
+Die Funktion @code{arrayapply} wertet die Referenz auf ein Array-Element aus.
+Im Unterschied dazu wertet die Funktion @mref{arraymake} die Referenz nicht aus.
+Die Funktion @mref{subvar} hat die gleiche Funktionalit@"at wie
+@code{arrayapply}.
+
 @example
-(%i1) arrayapply('a,[x, y]);
-(%o1)                         a
+(%i1) a[1,2]: 12;
+(%o1)                          12
+(%i2) a[x,y]: x^y;
+                                y
+(%o2)                          x
+(%i3) arrayapply(a, [1, 2]);
+(%o3)                          12
+(%i4) arrayapply(a, [x, y]);
+                                y
+(%o4)                          x
+(%i5) arraymake(a, [x,y]);
+(%o5)                         a
                                x, y
-(%i2) arrayapply('a,[1, 2, 3]);
-(%o2)                       a
-                             1, 2, 3
+(%i6) subvar(a, x, y);
+                                y
+(%o6)                          x
 @end example
 @end deffn
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arrayinfo}
 @deffn {Funktion} arrayinfo (@var{A})
 
-Gibt Information @"uber das Array @var{A} zur@"uck.  Das Argument @var{A} kann
-ein deklariertes oder ein undeklariertes Array sowie eine Array-Funktion oder
-eine indizierte Funktion sein.
+Gibt Informationen @"uber das Array @var{A} zur@"uck.  Das Argument @var{A} kann
+ein deklariertes oder ein nicht-deklariertes Array sowie eine Array-Funktion
+oder eine indizierte Funktion sein.
 
-F@"ur ein deklarierte Array gibt @code{arryinfo} eine Liste zur@"uck, die 
+F@"ur ein deklarierte Array gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{declared}, die Zahl der Dimensionen und die Gr@"o@ss{}e der Dimensionen 
-enh@"alt.  Die Elemente des Arrays werden von der Funktion @mref{listarray}@ 
+enth@"alt.  Die Elemente des Arrays werden von der Funktion @mref{listarray}@w{}
 zur@"uckgegeben.
 
-F@"ur ein undeklariertes Array (Hashed-Array) gibt @code{arrayinfo} eine Liste
-zur@"uck, die @code{hashed}, die Zahl der Indizes und die Indizes enth@"alt,
-deren Elemente einen Wert haben.  Die Werte der Elemente werden mit der Funktion 
-@mref{listarray} zur@"uckgegeben.
+F@"ur ein nicht-deklariertes Array (Hashed-Array) gibt @code{arrayinfo} eine
+Liste zur@"uck, die @code{hashed}, die Zahl der Indizes und die Indizes
+enth@"alt, deren Elemente einen Wert haben.  Die Werte der Elemente werden mit
+der Funktion @mref{listarray} zur@"uckgegeben.
 
 F@"ur Array-Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{hashed} die Zahl der Indizes und die Indizes enth@"alt, f@"ur die 
@@ -133,9 +244,12 @@ Funktionen im Array enthalten sind.  Die Funktionen werden mit der Funktion
 @mref{listarray} angezeigt.
 
 F@"ur indizierte Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
-@code{hashed}, die Zahl der Indizes und die Indizies enth@"alt, f@"ur die 
+@code{hashed}, die Zahl der Indizes und die Indizes enth@"alt, f@"ur die 
 Lambda-Ausdr@"ucke vorhanden sind.  Die Lambda-Ausdr@"ucke werden von der 
 Funktion @mref{listarray} angezeigt.
+
+Die Funktion @code{arrayinfo} kann auch f@"ur Lisp-Arrays angewendet werden,
+die mit der Funktion @mref{make_array} erzeugt werden.
 
 Beispiele:
 
@@ -143,29 +257,30 @@ Beispiele:
 
 @example
 @group
-(%i1) array (aa, 2, 3);
+(%i1) array(aa, 2, 3);
 (%o1)                          aa
 @end group
 @group
-(%i2) aa [2, 3] : %pi;
+(%i2) aa[2, 3] : %pi;
 (%o2)                          %pi
 @end group
 @group
-(%i3) aa [1, 2] : %e;
+(%i3) aa[1, 2] : %e;
 (%o3)                          %e
 @end group
 @group
-(%i4) arrayinfo (aa);
+(%i4) arrayinfo(aa);
 (%o4)                 [declared, 2, [2, 3]]
 @end group
 @group
-(%i5) listarray (aa);
+(%i5) listarray(aa);
 (%o5) [#####, #####, #####, #####, #####, #####, %e, #####, 
                                         #####, #####, #####, %pi]
 @end group
 @end example
 
-@code{arrayinfo} und @code{listarray} angewendet auf ein undeklariertes Array.
+@code{arrayinfo} und @code{listarray} angewendet auf ein nicht-deklariertes
+Array.
 
 @example
 @group
@@ -253,14 +368,20 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 18.02.2011 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arraymake}
 @deffn {Funktion} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
 
 Gibt den Ausdruck @code{@var{A}[@var{i_1}, ..., @var{i_n}]} zur@"uck.  Das 
-Ergebnis ist eine nicht ausgewertete Referenz auf ein Element des Arrays.
+Ergebnis ist eine nicht ausgewertete Referenz auf ein Element des Arrays
+@var{A}.  @code{arraymake} ist vergleichbar mit der Funktion @mrefdot{funmake}
 
-@code{arraymake} entspricht der Funktion @mrefdot{funmake}
+Ist das Array @var{A} ein Lisp-Array, wie es mit der Funktion 
+@mref{make_array} erzeugt wird, dann gibt @code{arraymake} einen Lisp-Fehler
+zur@"uck.  Das ist ein Programmfehler.
+
+Siehe auch die Funktionen @mref{arrayapply} und @mrefcomma{subvar} die die
+Referenz auswerten.
 
 Beispiele:
 
@@ -330,20 +451,18 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{arrays}
 @defvr {Systemvariable} arrays
 Standardwert: @code{[]}
 
-@code{arrays} ist eine Informationsliste @mref{infolists} der Arrays, die 
-definiert sind.  Die Liste enth@"alt deklarierte Arrays, undedeklarierte Arrays 
-und Array-Funktionen, die mit @mref{:=} oder @mref{define} definiert sind.
-Arrays die mit @mref{make_array} definiert sind, sind nicht in der Liste 
-enthalten.
+@code{arrays} ist eine Informationsliste @mref{infolists} der vom Nutzer 
+definierten Arrays.  Die Liste enth@"alt deklarierte Arrays, nicht-deklarierte
+Arrays und Array-Funktionen, die der Nutzer mit dem Operator @mref{:=} oder der
+Funktion @mref{define} definiert hat.  Dagegen sind Arrays, die mit
+@mref{make_array} definiert sind, nicht in der Liste enthalten.
 
-Siehe auch @mrefcomma{array} @mrefcomma{arrayapply} @mrefcomma{arrayinfo}@ 
-@mrefcomma{arraymake} @mrefcomma{fillarray} @mref{listarray} und 
-@mrefdot{rearray}
+Siehe auch die Funktion @mrefcomma{array} um ein Array zu definieren.
 
 Beispiele:
 
@@ -374,23 +493,26 @@ Beispiele:
 @end example
 @end defvr
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{fillarray}
 @deffn {Funktion} fillarray (@var{A}, @var{B})
 
 F@"ullt das Array @var{A} mit den Werten aus @var{B}.  Das Argument @var{B} ist 
 eine Liste oder ein Array.
 
-Ist das Array @var{A} mit einem Typ deklariert, dann kann es nur mit Elementen
-gef@"ullt werden, die den gleichen Typ haben.
+Hat das Array @var{A} einen Typ, dann kann es nur mit Elementen gef@"ullt
+werden, die den gleichen Typ haben.
 
-Sind die Dimensionen von @var{A} und @var{B} verschieden, werden in @var{A}
-zun@"achst die Zeilen aufgef@"ullt.  Hat @var{B} nicht gen@"ugend Elemente um 
-das Array @var{A} aufzuf@"ullen, werden die restlichen Elemente mit dem letzten 
-Wert von @var{B} aufgef@"ullt.  @"Uberz@"ahlige Elemente in @var{B} werden 
-ignoriert.
+Sind die Dimensionen von @var{A} und @var{B} verschieden, werden zun@"achst die
+Zeilen des Arrays @var{A} aufgef@"ullt.  Hat die Liste oder das Array @var{B}
+nicht gen@"ugend Elemente, um das Array @var{A} aufzuf@"ullen, werden die 
+restlichen Elemente mit dem letzten Wert von @var{B} aufgef@"ullt.
+@"Uberz@"ahlige Elemente in @var{B} werden ignoriert.
 
 @code{fillarray} gibt das erste Argument zur@"uck.
+
+Siehe die Funktionen @mref{array} und @mrefcomma{make_array} um ein Array
+zu definieren.
 
 Beispiele:
 
@@ -438,7 +560,7 @@ ignoriert.
 @end group
 @end example
 
-Arrays werden zeilenweise aufgef@"ulllt.
+Arrays werden zeilenweise aufgef@"ullt.
 
 @example
 @group
@@ -460,20 +582,20 @@ Arrays werden zeilenweise aufgef@"ulllt.
 @end example
 @end deffn
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{listarray}
 @deffn {Funktion} listarray (@var{A})
 
 Gibt eine Liste mit den Elementen des Arrays @var{A} zur@"uck.  Das Argument 
-@var{A} kann ein deklariertes, undeklariertes, eine Array-Funktion oder eine
+@var{A} kann ein deklariertes, nicht-deklariertes, eine Array-Funktion oder eine
 indizierte Funktion sein.
 
-Die Elemente werden zeilenweise ausgegeben.  F@"ur Hashed-Arrays mit Indizes, 
-die keine ganze Zahlen sind, wird die Sortierung von der Funktion 
-@mref{orderless} bestimmt.
+Die Elemente werden zeilenweise ausgegeben.  F@"ur nicht-deklarierte Arrays mit
+Indizes, die keine ganze Zahlen sind, wird die Sortierung von der
+Aussagefunktion @mref{orderlessp} bestimmt.
 
-F@"ur undeklarierte Arrays, Array-Funktionen und indizierte Funktionen werden
-die Elemente in der Reihenfolge wie von der Funktion 
+F@"ur nicht-deklarierte Arrays, Array-Funktionen und indizierte Funktionen
+werden die Elemente in der Reihenfolge wie von der Funktion 
 @mref{arrayinfo} zur@"uckgegeben.
 
 Elemente von deklarierten Arrays, denen noch kein Wert zugewiesen wurde und die
@@ -481,9 +603,13 @@ keinen Typ haben, werden als @code{#####} zur@"uckgegeben.  Elemente von
 deklarierten Arrays mit einem Typ, geben den Wert 0 f@"ur den Typ @code{fixnum}
 und 0.0 f@"ur den Typ @code{flonum} zur@"uck.
 
+Ist das Argument @var{A} ein Lisp-Array, wie es von der Funktion
+@mref{make_array} erzeugt wird, generiert Maxima einen Lisp-Fehler.  Das ist ein
+Programmfehler.
+
 Beispiele:
 
-Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur ein
+Anwendung der Funktionen @code{listarray} und @mref{arrayinfo} f@"ur ein
 deklariertes Array.
 
 @example
@@ -510,8 +636,8 @@ deklariertes Array.
 @end group
 @end example
 
-Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur ein
-undeklariertes Array.
+Anwendung der Funktionen @code{listarray} und @mref{arrayinfo} f@"ur ein
+nicht-deklariertes Array.
 
 @example
 @group
@@ -535,7 +661,7 @@ undeklariertes Array.
 @end group
 @end example
 
-Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur eine
+Anwendung der Funktionen @code{listarray} und @mref{arrayinfo} f@"ur eine
 Array-Funktion.
 
 @example
@@ -569,7 +695,7 @@ Array-Funktion.
 @end group
 @end example
 
-Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur ein
+Anwendung der Funktionen @code{listarray} und @mref{arrayinfo} f@"ur ein
 indizierte Funktion.
 
 @example
@@ -601,25 +727,28 @@ indizierte Funktion.
 @end example
 @end deffn
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{make_array}
 @deffn {Funktion} make_array (@var{type}, @var{dim_1}, @dots{}, @var{dim_n})
 
-Erzeugt ein Lisp-Array.  Das Argument @var{type} kann die Werte @code{any},
-@code{flonum}, @code{fixnum}, @code{hashed} oder @code{functional} haben.
-Das Array hat @math{i} Dimensionen und der Index @math{i} l@"auft von 0 bis
-@math{@var{dim_i}-1}.
+Gibt ein Lisp-Array zur@"uck.  Das Argument @var{type} kann die Werte
+@code{any}, @code{flonum}, @code{fixnum} oder @code{hashed} haben.  Das Array
+hat @math{i} Dimensionen und der Index @math{i} l@"auft von 0 bis 
+einschlie@ss{}lich @math{@var{dim_i}-1}.
 
-@c TODO: ES FEHLT EINE UEBERSETZUNG, DIE WENIGER TECHNISCH SEIN SOLLTE.
+@c TODO: MAKE_ARRAY KENNT NOCH DEN TYP FUNCTIONAL.  DAS FUNKTIONIERT ABER NICHT.
 
-@c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
-@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED 
-@c TO WORK COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
-@c RESTORE IT WHEN MAKE_ARRAY ('FUNCTIONAL, ...) IS FIXED
-@c @code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
-@c @code{make_array} in this case is the function to call to calculate array
-@c elements, and the rest of the arguments are passed recursively to
-@c @code{make_array} to generate the "memory" for the array function object.
+Die meisten Funktionen, die auf ein Array angewendet werden k@"onnen, das mit
+der Funktion @mref{array} definiert wurde, k@"onnen auch auf Lisp-Arrays
+angewendet werden.  Einige Funktionalit@"aten stehen jedoch nicht zur
+Verf@"ugung.  Dies ist auf eine unzureichende Implementation der Lisp-Arrays
+zur@"uckzuf@"uhren und kann als Programmfehler betrachtet werden.  Hinweise auf
+Einschr@"ankungen sind bei den einzelnen Funktionen f@"ur Arrays zu finden.
+
+Erh@"alt die Optionsvariable @mref{use_fast_arrays} den Wert @code{true},
+erzeugt Maxima ausschlie@ss{}lich Lisp-Arrays.  Dies trifft auch auf die
+Funktion @mref{array} zu.  Wie bereits oben erl@"autert, ist in diesem Fall
+jedoch mit einer eingeschr@"ankten Funktionalit@"at zu rechnen.
 
 Beispiele:
 
@@ -680,25 +809,48 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{rearray}
 @deffn {Funktion} rearray (@var{A}, @var{dim_1}, @dots{}, @var{dim_n})
 
-@"Andert die Dimension eines Arrays.  Das neue Array wird zeilenweise mit den 
-Werten des alten Arrays aufgef@"ullt.  Hat das alte Array nicht gen@"ugend 
-Elemente werden die restlichen Elemente entsprechend dem Typ des Arrays mit 
-@code{false}, @code{0.0} oder @code{0} aufgef@"ullt.  Der Typ des Arrays kann 
-nicht ge@"andert werden.
+Die Funktion @code{rearray} erlaubt es, ein Array @var{A} zu vergr@"o@ss{}ern
+oder auch zu verkleinern.  Die Anzahl der Dimensionen @var{n} sowie der Typ
+eines Arrays k@"onnen nicht ge@"andert werden.
+
+Das neue Array wird zeilenweise mit den Werten des alten Arrays aufgef@"ullt.
+Hat das alte Array nicht gen@"ugend Elemente werden die restlichen Elemente
+entsprechend dem Typ des Arrays mit @code{false}, @code{0.0} oder @code{0}
+aufgef@"ullt.
+
+Siehe die Funktionen @mref{array} und @mrefcomma{make_array} um ein Array
+zu definieren.
+
+Beispiel:
+
+In diesem Beispiel wird das Array @code{A}.  Der R@"uckgabewert von
+@code{rearray} ist ein internes Lisp-Array auch f@"ur den Fall, dass das Array
+selbst kein Lisp-Array ist.  Das ist ein Programmfehler.
+
+@example
+(%i1) array(A, fixnum, 2, 2);
+(%o1)                           A
+(%i2) listarray(A);
+(%o2)              [0, 0, 0, 0, 0, 0, 0, 0, 0]
+(%i3) rearray(A, 1, 1);
+(%o3)              @{Array:  #2A((0 0) (0 0))@}
+(%i4) listarray(A);
+(%o4)                     [0, 0, 0, 0]
+@end example
 @end deffn
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{remarray}
 @deffn  {Funktion} remarray (@var{A_1}, @dots{}, @var{A_n})
 @deffnx {Funktion} remarray (all)
 
 Entfernt Arrays und Array-Funktionen.  Der vom Array belegte Speicher wird
-freigegeben.  Die Argumente k@"onnen deklarierte und undeklarierte Arrays sowie 
-Array-Funktionen und indizierte Funktionen sein.
+freigegeben.  Die Argumente k@"onnen deklarierte und nicht-deklarierte Arrays
+sowie Array-Funktionen und indizierte Funktionen sein.
 
 @code{remarray(all)} entfernt alle Arrays, die in der Informationsliste
 @mref{arrays} enthalten sind.
@@ -706,15 +858,16 @@ Array-Funktionen und indizierte Funktionen sein.
 @code{remarray} gibt eine Liste der Arrays zur@"uck, die entfernt wurden.
 @end deffn
 
-@c --- 13.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{subvar}
-@deffn {Funktion} subvar (@var{x}, @var{i})
+@deffn {Funktion} subvar (@var{x}, @var{i_1}, @var{x_2}, @dots{})
 
-Wertet den indizierten Ausdruck @code{@var{x}[@var{i}]} aus.  @code{subvar}
-wertet die Argumente aus.
+Wertet den indizierten Ausdruck @code{@var{x}[@var{i_1}, @var{i_2}, ...]} aus.
+@code{subvar} wertet die Argumente aus.
 
-@code{arraymake(@var{x}, [@var{i}]} generiert den Ausdruck 
-@code{@var{x}[@var{i}]}, ohne diesen auszuwerten.  Siehe @mrefdot{arraymake}
+Siehe die Funktion @mrefcomma{arrayapply} die dieselbe Funktionalit@"at hat, und
+die Funktion @mrefcomma{arraymake} die eine Referenz auf das Array-Element
+zur@"uckgibt, ohne diese auszuwerten.
 
 Beispiele:
 
@@ -743,7 +896,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{subvarp}
 @deffn {Funktion} subvarp (@var{expr})
 
@@ -751,37 +904,23 @@ Gibt @code{true} zur@"uck, wenn @var{expr} eine indizierte Variable wie zum
 Beispiel @code{a[i]} ist.
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 22.03.2011 DK -----------------------------------------------------------
 @anchor{use_fast_arrays}
 @defvr {Optionsvariable} use_fast_arrays
+Standardwert: @code{false}
 
-Hat die Optionsvariable @code{use_fast_arrays} den Wert @code{true}, werden nur
-die folgenden zwei Typen von Arrays erkannt:
+Erh@"alt die Optionsvariable @mref{use_fast_arrays} den Wert @code{true},
+erzeugt Maxima ausschlie@ss{}lich Lisp-Arrays, wie sie auch von der Funktion
+@mref{make_array} erzeugt werden.  Dies trifft auch auf die Funktion 
+@mref{array} zu.  Der Vorteil der Lisp-Arrays ist, dass diese effizienter sind.
 
-@enumerate
-@item
-Ein Array, das mehrere Dimensionen haben kann und ganzzahligen Indizes.  Den
-Elementen kann jedes Lisp oder Maxima-Objekt zugewiesen werden.  Zum Beispiel
-weist das Kommando @code{a:make_array(any,3,4)} der Variablen @var{a} ein
-Array zu, das @code{12} Elemente hat.
+Die Implementation der Lisp-Arrays ist jedoch nicht vollst@"andig ausgef@"uhrt,
+so dass es zu einer eingeschr@"ankten Funktionalit@"at kommt.  Dies ist ein 
+Programmfehler.  Hinweise auf einzelne Einschr@"ankungen sind bei den einzelnen
+Funktionen zu finden.
 
-@item
-Ein undeklariertes Array, welches standardm@"a@ss{}ig erzeugt wird, wenn zum 
-Beispiel einer indizierten Variablen @code{b[x+1]:y^2} ein Wert zugewiesen wird 
-und @code{b} nicht bereits ein deklariertes Array oder eine Liste ist.  Ist 
-@var{b} bereits deklariert, wird eine Fehlermeldung ausgeben, da der Index 
-@var{x+1} keine ganze Zahl ist.  Der Index eines undeklarierten Arrays kann ein 
-beliebiger Ausdruck sein.
-@end enumerate
-
-@c TODO: VEREINFACHE DIE TECHNISCHE BESCHREIBUNG.
-
-@c An advantage of storing the arrays as values of the symbol is that the
-@c usual conventions about local variables of a function apply to arrays as
-@c well.  The Hash_table type also uses less consing and is more efficient
-@c than the old type of Maxima hashar.  To obtain consistent behaviour in
-@c translated and compiled code set @code{translate_fast_arrays} to be 
-@c @code{true}.
+Siehe die Funktion @mref{make_array} f@"ur weitere Ausf@"uhrungen zu
+Lisp-Arrays.
 @end defvr
 
 @c --- End of file Arrays.de.texi ----------------------------------------------
