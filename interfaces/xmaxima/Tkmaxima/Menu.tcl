@@ -1,14 +1,17 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.36 2011-03-20 23:36:00 villate Exp $
+#       $Id: Menu.tcl,v 1.37 2011-03-22 01:23:04 villate Exp $
 #
 
 proc zoomConsole {f} {
-    global maxima_default
+    global maxima_default maxima_priv
     set ffamily [lindex $maxima_default(ConsoleFont) 0]
     set fsize [lindex $maxima_default(ConsoleFont) 1]
     set fsize [expr round($fsize*pow(1.2,$f))]
     font configure ConsoleFont -family $ffamily -size $fsize
+    set text $maxima_priv(cConsoleText)
+    resizeSubPlotWindows $text [winfo width $text] [winfo height $text]
+    resizeMaxima $text [winfo width $text] [winfo height $text]
     set maxima_default(ConsoleFont) [list $ffamily $fsize]
 }
 
