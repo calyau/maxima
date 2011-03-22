@@ -5,7 +5,7 @@
 @c Original    : Lists.texi revision 1.38
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 14.03.2011
+@c Revision    : 20.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -95,6 +95,43 @@ Ausdr@"ucke sind bei den einzelnen Funktionen angegeben.  Eine ausf@"uhrlichere
 Beschreibung der internen Darstellung von Maxima-Ausdr@"ucken ist im Kapitel
 @nref{Ausdr@"ucke} enthalten.
 
+Auf die einzelnen Elemente einer Liste kann direkt @"uber einen Index
+zugegriffen werden.  Bezeichnet der Index kein Element der Liste, gibt Maxima
+eine Fehlermeldung aus.  Im Folgenden werden Beispiele gezeigt:
+
+@example
+(%i1) list : [a,b,c];
+(%o1)                       [a, b, c]
+(%i2) list[1];
+(%o2)                           a
+(%i3) list[2];
+(%o3)                           b
+(%i4) list[3];
+(%o4)                           c
+(%i5) list[1]: sin(x);
+(%o5)                        sin(x)
+(%i6) list[2]: cos(x);
+(%o6)                        cos(x)
+(%i7) list[3]: tan(x);
+(%o7)                        tan(x)
+(%i8) list;
+(%o8)               [sin(x), cos(x), tan(x)]
+@end example
+
+Listen k@"onnen auch als Argument einer Funktion auftreten.  Hat die Funktion
+die Eigenschaft @mrefcomma{distribute_over} dann wird die Funktion auf die
+Elemente der Liste angewendet.  Dies funktioniert auch f@"ur Funktionen mit
+mehreren Argumenten.
+
+@example
+(%i1) sin([x,y,z]);
+(%o1)               [sin(x), sin(y), sin(z)]
+(%i2) mod([x,y],3);
+(%o2)                [mod(x, 3), mod(y, 3)]
+(%i3) mod([x,y],[5,7]);
+(%o3)   [[mod(x, 5), mod(x, 7)], [mod(y, 5), mod(y, 7)]]
+@end example
+
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Listen, , Einf@"uhrung in Listen, Listen
 @subsection Funktionen und Variablen f@"ur Listen
@@ -182,7 +219,7 @@ Ist das Argument @code{list} eine Liste mit paarweisen Elementen der Form
 @code{[[key_1, value_1], [key_2, value_2], ...]}, wobei @var{key_i} ein
 Schl@"ussel und @var{value_i} der dazugeh@"orige Wert ist, dann gibt die
 Funktion @code{assoc} den zum Schl@"ussel @var{key} geh@"orenden Wert
-@code{value} zur@"uck.  Wird der Schl@"ussel nicht gefunden wird das Argument
+@code{value} zur@"uck.  Wird der Schl@"ussel nicht gefunden, wird das Argument
 @code{default} zur@"uckgegeben, wenn es vorhanden ist, oder der Wert
 @code{false}.
 
@@ -244,66 +281,98 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{cons}
 @deffn {Funktion} cons (@var{expr}, @var{list})
 
 F@"ugt den Ausdruck @var{expr} als erstes Element der Liste @var{list} hinzu.
 
+@code{cons} arbeitet auch mit allgemeinen Ausdr@"ucken als Argument @var{list}.
+In diesem Fall wird dem Hauptoperator des Arguments @var{list} der Ausdruck
+@var{expr} als erstes Argument hinzugef@"ugt.
 
-@code{cons} arbeitet auch
-mit allgemeinen Ausdr@"ucken.  Zum Beispiel hat @code{cons(x, f(a,b,c))} das 
-Ergebnis @code{f(x,a,b,c)}.
-@end deffn
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
-@anchor{copylist}
-@deffn {Funktion} copylist (@var{list})
-
-@c Returns a copy of the list @var{list}.
-
-Gibt eine Kopie der Liste @var{list} zur@"uck.
-@end deffn
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
-@anchor{create_list}
-@deffn {Funktion} create_list (@var{form}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
-
-@c Create a list by evaluating @var{form} with @var{x_1} bound to each element 
-@c of @var{list_1}, and for each such binding bind @var{x_2} to each element of 
-@c @var{list_2}, .... The number of elements in the result will be the product 
-@c of the number of elements in each list. Each variable @var{x_i} must actually
-@c be a symbol -- it will not be evaluated. The list arguments will be evaluated
-@c once at the beginning of the iteration.
-
-Erzeugt eine Liste indem der Ausdruck @var{form} zun@"achst f@"ur die Variable 
-@var{x_1} ausgewertet wird.  Der Variablen @var{x_1} werden f@"ur die Auswertung 
-nacheinander die Werte der Liste @var{list_1} zugewiesen.  Dann wird der Ausdruck
-@var{form} f@"ur die Variable @var{x_2} mit den Werten der Liste @var{list_2}
-ausgewertet u.s.w.  Die Anzahl der Elemente der Ergebnisliste ist das Produkt
-der Anzahl der Elemente der einzelnen Listen @var{list_i}.  Jede Variable
-@var{x_i} muss ein Symbol sein, das nicht ausgewertet wird.  Die Elemente der
-Listen @var{x_i} werden einmal vor der Iteration ausgewertet.
+Siehe auch die Funktion @mrefcomma{endcons} um ein Element an das Ende einer
+Liste anzuh@"angen sowie die Funktion @mrefcomma{append} um zwei Listen
+zusammenzuf@"ugen.
 
 Beispiele:
 
 @example
-(%i1) create_list(x^i,i,[1,3,7]);
+(%i1) cons(x, [a, b, c]);
+(%o1)                     [x, a, b, c]
+(%i2) cons(x^2+1, [a, b, c]);
+                          2
+(%o2)                   [x  + 1, a, b, c]
+(%i3) cons(x^2+1, a+b+c);
+                        2
+(%o3)                  x  + c + b + a + 1
+(%i4) cons(x^2+1, f(a,b,c));
+                          2
+(%o4)                  f(x  + 1, a, b, c)
+@end example
+@end deffn
+
+@c --- 15.03.2011 DK -----------------------------------------------------------
+@anchor{copylist}
+@deffn {Funktion} copylist (@var{list})
+
+Gibt eine Kopie der Liste @var{list} zur@"uck.
+
+Im Unterschied zur Funktion @code{copylist} wird mit dem Zuweisungsoperator
+@mref{:} keine Kopie, sondern eine Referenz auf das Original zugewiesen.  Das
+folgende Beispiel zeigt den Unterschied f@"ur den Fall, dass das Original
+modifiziert wird.
+
+@example
+(%i1) list : [x,y,z];
+(%o1)                       [x, y, z]
+(%i2) a: list;
+(%o2)                       [x, y, z]
+(%i3) b: copylist(list);
+(%o3)                       [x, y, z]
+(%i4) list[2]:99;
+(%o4)                          99
+(%i5) list;
+(%o5)                      [x, 99, z]
+(%i6) a;
+(%o6)                      [x, 99, z]
+(%i7) b;
+(%o7)                       [x, y, z]
+@end example
+@end deffn
+
+@c --- 15.03.2011 DK -----------------------------------------------------------
+@anchor{create_list}
+@deffn {Funktion} create_list (@var{expr}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
+
+Erzeugt eine Liste, indem der Ausdruck @var{expr} zun@"achst f@"ur die Variable
+@var{x_1} ausgewertet wird.  Der Variablen @var{x_1} werden f@"ur die Auswertung 
+nacheinander die Werte der Liste @var{list_1} zugewiesen.  Dann wird der
+Ausdruck @var{expr} f@"ur die Variable @var{x_2} mit den Werten der Liste
+@var{list_2} ausgewertet u.s.w.  Die Anzahl der Elemente der Ergebnisliste ist
+das Produkt der Anzahl der Elemente der einzelnen Listen @var{list_i}.  Die
+Variablen @var{x_i} m@"ussen Symbole sein, die nicht ausgewertet werden.  Die 
+Elemente der Listen @var{list_i} werden vor der Iteration ausgewertet.
+
+Anstatt einer Liste @var{list_i} mit den Elementen f@"ur die Iteration kann auch
+eine untere und obere Grenze angegeben werden.  Die Grenzen k@"onnen ganze
+Zahlen oder Gleitkommazahlen sowie Ausdr@"ucke sein, die zu einer Zahl
+auswerten.  Die Schrittweite ist immer 1.  Siehe auch das Beispiel weiter unten.
+
+Beispiele:
+
+@example
+(%i1) create_list(x^i, i, [1, 3, 7]);
                  3   7
 (%o1)       [x, x , x ]
 @end example
 
-@noindent
 In diesem Beispiel wird f@"ur zwei Listen iteriert.
 
 @example
-(%i1) create_list([i,j],i,[a,b],j,[e,f,h]);
+(%i1) create_list([i, j], i, [a, b], j, [e, f, h]);
 (%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
 @end example
-
-@c Instead of @var{list_i} two args may be supplied each of which should
-@c evaluate to a number.  These will be the inclusive lower and upper bounds 
-@c for the iteration.
 
 Anstatt einer Liste @var{list_i} k@"onnen auch zwei Argumente @"ubergeben 
 werden, die jedes zu einer Nummer auswerten.  Diese Werte sind die untere und
@@ -313,122 +382,68 @@ die obere Grenze f@"ur die Iteration.
 (%i1) create_list([i,j],i,[1,2,3],j,1,i);
 (%o1) [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
 @end example
-
-@c Note that the limits or list for the @code{j} variable can depend on the 
-@c current value of @code{i}.
-
-@c TODO: ENTWEDER NACH OBEN ODER HIER EIN BEISPIEL
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{delete}
-@deffn  {Funktion} delete (@var{expr_1}, @var{expr_2})
-@deffnx {Funktion} delete (@var{expr_1}, @var{expr_2}, @var{n})
+@deffn  {Funktion} delete (@var{expr}, @var{list})
+@deffnx {Funktion} delete (@var{expr}, @var{list}, @var{n})
 
-@c @code{delete(@var{expr_1}, @var{expr_2})} removes from @var{expr_2} any 
-@c arguments of its top-level operator which are the same (as determined by "=")
-@c as @var{expr_1}. Note that "=" tests for formal equality, not equivalence.
-@c Note also that arguments of subexpressions are not affected.
+@code{delete(@var{expr}, @var{list})} entfernt aus der der Liste @var{list} die
+Elemente, die gleich dem Ausdruck @var{expr} sind.  Mit dem Argument @var{n}
+kann die Anzahl der Elemente spezifiziert werden, die aus der Liste entfernt
+werden sollen.  @code{delete} gibt eine neue Liste zur@"uck.  Das Argument
+@var{list} wird nicht modifiziert.
 
-@code{delete(@var{expr_1}, @var{expr_2})} entfernt vom Ausdruck @var{expr_2}
-jedes Argument des Hauptoperators, welches gleich dem Ausdruck @var{expr_1} ist.
-Die Gleichheit wird mit dem Operator "=" festgestellt, der keine @"aquivalenten
-Ausdr@"ucke erkennt.  Teilausdr@"ucke eines Arguments werden von @code{delete} 
-nicht entfernt.
+Die Gleichheit wird mit dem Operator @mref{=} gepr@"uft.  Daher werden nur
+Ausdr@"ucke als gleich erkannt, die syntaktisch @"ubereinstimmen.  @"Aquivalente
+Ausdr@"ucke, die syntaktisch voneinander verschieden sind, werden nicht aus der
+Liste entfernt.  Zum Beispiel sind die Ausdr@"ucke @code{x^2-1} und
+@code{(x+1)*(x-1)} @"aquivalent, aber syntaktisch verschieden.
 
-@c @var{expr_1} may be an atom or a non-atomic expression. @var{expr_2} may be 
-@c any non-atomic expression. @code{delete} returns a new expression; it does 
-@c not modify @var{expr_2}.
-
-@var{expr_1} kann ein beliebiger Ausdruck sein, der kein Atom sein muss.
-@code{delete} erzeugt einen neuen Ausdruck.  Der Ausdruck @var{expr_2} wird 
-nicht modifiziert.
-
-@c @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} removes from @var{expr_2} 
-@c the first @var{n} arguments of the top-level operator which are the same as 
-@c @var{expr_1}. If there are fewer than @var{n} such arguments, then all such 
-@c arguments are removed.
-
-@code{delete(@var{expr_1}, @var{expr_2}, @var{n})} entfernt vom Ausdruck
-@var{expr_2} die ersten @var{n} Argumente des Hauptoperators, die gleich dem
-Ausdruck @var{expr_1} sind.  Hat der Ausdruck @var{expr_2} weniger Argumente als
-@var{n}, dann werden alle gleichen Argumente entfernt.
+Das zweite Argument @var{list} kann auch ein allgemeiner Ausdr@"uck sein.  In 
+diesem Fall werden die Argumente des Hauptoperators als die Elemente einer Liste
+angenommen.
 
 Beispiele:
 
-@c Removing elements from a list.
-
 Entferne Elemente von einer Liste.
 
-@c ===beg===
-@c delete (y, [w, x, y, z, z, y, x, w]);
-@c ===end===
 @example
 (%i1) delete (y, [w, x, y, z, z, y, x, w]);
 (%o1)                  [w, x, z, z, x, w]
 @end example
 
-@c Removing terms from a sum.
-
 Entferne Terme einer Summe.
 
-@c ===beg===
-@c delete (sin(x), x + sin(x) + y);
-@c ===end===
 @example
 (%i1) delete (sin(x), x + sin(x) + y);
 (%o1)                         y + x
 @end example
 
-@c Removing factors from a product.
-
 Entferne Faktoren eines Produkts.
 
-@c ===beg===
-@c delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
-@c ===end===
 @example
 (%i1) delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
 (%o1)                (u - w) (u - y) (u - z)
 @end example
 
-@c Removing arguments from an arbitrary expression.
+Entferne Argumente einer Funktion.
 
-Entferne Argumente von einem beliebigen Ausdruck.
-
-@c ===beg===
-@c delete (a, foo (a, b, c, d, a));
-@c ===end===
 @example
-(%i1) delete (a, foo (a, b, c, d, a));
-(%o1)                     foo(b, c, d)
+(%i1) delete (a, f(a, b, c, d, a));
+(%o1)                     f(b, c, d)
 @end example
-
-@c Limit the number of removed arguments.
 
 Die Anzahl der Elemente, die entfernt werden, wird begrenzt.
 
-@c ===beg===
-@c delete (a, foo (a, b, a, c, d, a), 2);
-@c ===end===
 @example
-(%i1) delete (a, foo (a, b, a, c, d, a), 2);
-(%o1)                    foo(b, c, d, a)
+(%i1) delete (a, f(a, b, a, c, d, a), 2);
+(%o1)                    f(b, c, d, a)
 @end example
 
-@c Whether arguments are the same as @var{expr_1} is determined by "=".
-@c Arguments which are @code{equal} but not "=" are not removed.
+Die Gleichheit wird mit dem Operator @code{=} gepr@"uft.
 
-Argumente die @code{equal} aber nicht "=" sind werden nicht entfernt.
-
-@c ===beg===
-@c [is(equal (0, 0)), is(equal (0, 0.0)), is(equal (0, 0b0))];
-@c [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
-@c delete (0, [0, 0.0, 0b0]);
-@c is (equal ((x + y)*(x - y), x^2 - y^2));
-@c is ((x + y)*(x - y) = x^2 - y^2);
-@c delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
-@c ===end===
 @example
 (%i1) [is(equal (0, 0)), is(equal (0, 0.0)), is(equal (0, 0b0))];
 
@@ -449,80 +464,86 @@ Argumente die @code{equal} aber nicht "=" sind werden nicht entfernt.
 @end example
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{endcons}
 @deffn {Funktion} endcons (@var{expr}, @var{list})
 
-@c Returns a new list consisting of the elements of @code{list} followed by  
-@c @var{expr}.  @code{endcons} also works on general expressions, e.g.
-@c @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
+F@"ugt den Ausdruck @var{expr} als letztes Element der Liste @var{list} hinzu.
 
-Gibt eine neue Liste zur@"uck, die die Elemente der Liste @var{list} enth@"alt 
-und an der das Element @var{expr} angeh@"angt wird.  @code{endcons} kann auch 
-f@"ur allgemeine Ausdr@"ucke genutzt werden.  So hat zum Beispiel der Ausdruck
-@code{endcons(x, f(a,b,c))} das Ergebnis @code{f(a,b,c,x)}.
+@code{endcons} arbeitet auch mit allgemeinen Ausdr@"ucken als Argument
+@var{list}.  In diesem Fall wird dem Hauptoperator des Arguments @var{list} der
+Ausdruck @var{expr} als letztes Argument hinzugef@"ugt.
+
+Siehe auch die Funktion @mrefcomma{cons} um ein Element am Anfang einer
+Liste einzuf@"ugen sowie die Funktion @mrefcomma{append} um zwei Listen
+zusammenzuf@"ugen.
+
+Beispiele:
+
+@example
+(%i1) endcons(x, [a, b, c]);
+(%o1)                     [a, b, c, x]
+(%i2) endcons(x^2+1, [a, b, c]);
+                                   2
+(%o2)                   [a, b, c, x  + 1]
+(%i3) endcons(x^2+1, a+b+c);
+                        2
+(%o3)                  x  + c + b + a + 1
+(%i4) endcons(x^2+1, f(a,b,c));
+                                   2
+(%o4)                  f(a, b, c, x  + 1)
+@end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{first}
-@deffn {Funktion} first (@var{expr})
+@deffn {Funktion} first (@var{list})
 
-@c Returns the first part of @var{expr} which may result in the first element 
-@c of a list, the first row of a matrix, the first term of a sum, etc.  Note 
-@c that @code{first} and its related functions, @code{rest} and @code{last}, 
-@c work on the form of @var{expr} which is displayed not the form which is typed
-@c on input.  If the variable @code{inflag} is set to @code{true} however, these
-@c functions will look at the internal form of @var{expr}.  Note that the
-@c simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} 
-@c if @code{inflag} is @code{true} and @code{y} if @code{inflag} is @code{false}
-@c (@code{first(y+x)} gives the same results).  The functions @code{second} .. 
-@c @code{tenth} yield the second through the tenth part of their input argument.
+Gibt das erste Element der Liste @var{list} zur@"uck.
 
-Gibt das erste Element des Ausdrucks @var{expr} zur@"uck. Dies kann zum Beispiel 
-das erste Elemente einer Liste, die erste Spalte einer Matrix oder der erste 
-Term einer Summe sein. Die Funktion @code{first} und verwandte Funktionen wie
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck wie zum Beispiel
+der Term einer Summe, der Faktor eines Produktes oder die erste Spalte einer
+Matrix sein.  Die Funktion @code{first} und verwandte Funktionen wie
 @mref{last} oder @mref{rest} arbeiten mit der externen Darstellung eines
-Ausdrucks wie er in der Anzeige erscheint. Hat die Optionsvariable 
-@mref{inflag} den Wert @code{true}, wird von diesen Funktionen die interne 
-Darstellung betrachtet. Siehe dazu auch @mrefdot{inflag}
+Ausdrucks, wie sie in der Anzeige erscheint.  Dies kann mit der Optionsvariablen
+@mref{inflag} kontrolliert werden.  Hat die Optionsvariable @code{inflag} den
+Wert @code{true}, wird von diesen Funktionen die interne Darstellung betrachtet.
 
 Die Funktionen @mref{second} bis @mref{tenth} geben jeweils das 2. bis 10. 
 Element zur@"uck.
+
+Beispiele:
+
+@example
+(%i1) l: [a,b,c];
+(%o1)                       [a, b, c]
+(%i2) first(l);
+(%o2)                           a
+(%i3) first(x + y);
+(%o3)                           y
+(%i4) first(x * y);
+(%o4)                           x
+(%i5) first(f(x, y, z));
+(%o5)                           x
+@end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{join}
-@deffn {Funktion} join (@var{l}, @var{m}) 
+@deffn {Funktion} join (@var{list_1}, @var{list_2})
 
-@c Creates a new list containing the elements of lists @var{l} and @var{m}, 
-@c interspersed. The result has elements @code{[@var{l}[1], @var{m}[1], 
-@c @var{l}[2], @var{m}[2], ...]}. The lists @var{l} and @var{m} may contain any 
-@c type of elements.
-
-Erzeugt eine neue Liste aus den Elementen der Listen @var{l} und @var{m},
-wobei die Elemente abwechselnd @"ubernommen werden.  Das Ergebnis hat die Form
-@code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
-
-@c If the lists are different lengths, @code{join} ignores elements of the 
-@c longer list.
+Erzeugt eine neue Liste aus den Elementen der Listen @var{list_1} und
+@var{list_2}, wobei die Elemente abwechselnd @"ubernommen werden.  Das Ergebnis
+hat die Form @code{[@var{list_1}[1], @var{list_2}[1], @var{list_1}[2],
+@var{list_2}[2], ...]}.
 
 Haben die Listen verschiedene L@"angen, werden die zus@"atzlichen Elemente der
 l@"angeren Liste ignoriert.
 
-@c Maxima complains if @var{l} or @var{m} is not a list.
-
-Sind @var{l} oder @var{m} keine Listen, gibt Maxima einen Fehler aus.
+Sind @var{list_1} oder @var{list_2} keine Listen, gibt Maxima einen Fehler aus.
 
 Beispiele:
 
-@c ===beg===
-@c L1: [a, sin(b), c!, d - 1];
-@c join (L1, [1, 2, 3, 4]);
-@c join (L1, [aa, bb, cc, dd, ee, ff]);
-@c ===end===
 @example
 (%i1) L1: [a, sin(b), c!, d - 1];
 (%o1)                [a, sin(b), c!, d - 1]
@@ -533,164 +554,135 @@ Beispiele:
 @end example
 @end deffn
 
-@c NEEDS EXAMPLES
-@c HOW IS "LAST" PART DETERMINED ??
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{last}
-@deffn {Funktion} last (@var{expr})
+@deffn {Funktion} last (@var{list})
 
-@c Returns the last part (term, row, element, etc.) of the @var{expr}.
+Gibt das letzte Element der Liste @var{list} zur@"uck.
 
-Gibt das letzte Element des Ausdrucks @var{expr} zur@"uck.  Siehe 
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Siehe
 @mref{first} f@"ur weitere Erl@"auterungen.
+
+Beispiele:
+
+@example
+(%i1) l: [a,b,c];
+(%o1)                       [a, b, c]
+(%i2) last(x + y);
+(%o2)                           x
+(%i3) last(x * y);
+(%o3)                           y
+(%i4) last(f(x, y, z));
+(%o4)                           z
+@end example
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{length}
-@deffn {Funktion} length (@var{expr})
+@deffn {Funktion} length (@var{list})
 
-@c Returns (by default) the number of parts in the external (displayed) form of 
-@c @var{expr}.  For lists this is the number of elements, for matrices it is the
-@c number of rows, and for sums it is the number of terms (see @code{dispform}).
+Gibt die Anzahl der Elemente der Liste @var{list} zur@"uck.
 
-Gibt die Anzahl der Elemente eines Ausdrucks @var{expr} zur@"uck, wie er in der
-externen Darstellung erscheint.  Dies k@"onnen zum Beispiel die Elemente einer 
-Liste, die Spalten einer Matrix oder die Terme einer Summe sein.
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Wie bei
+anderen Funktionen f@"ur Listen wird auch von der Funktion @code{length} die
+externe Darstellung eines Ausdrucks betrachtet, wie sie f@"ur die Ausgabe
+vorliegt.  Die Optionsvariable @mref{inflag} hat daher Einfluss auf das Ergebnis
+der Funktion @code{length}.
 
-@c The @code{length} command is affected by the @code{inflag} switch.  So, e.g.
-@c @code{length(a/(b*c));} gives 2 if @code{inflag} is @code{false} (Assuming 
-@c @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is @code{true} 
-@c (the internal representation is essentially @code{a*b^-1*c^-1}).
+Beispiele:
 
-Die Optionsvariable @code{inflag} hat Einfluss auf das Ergebnis der Funktion
-@code{length}.  So hat zum Beispiel das Kommando @code{length(a/(b*c));} das 
-Ergebnis 2, wenn @code{inflag} den Wert @code{false} hat, und das Ergebnis 3,
-wenn @code{inflag} den Wert @code{true} hat.  Siehe @mref{inflag} f@"ur 
-Ausf@"uhrungen zur internen und externen Darstellung von Ausdr@"ucken.
+@example
+(%i1) length([a, x^2, sin(x), y+3]);
+(%o1)                           4
+(%i2) length(a/(b*x));
+(%o2)                           2
+(%i3) length(a/(b*x)),inflag:true;
+(%o3)                           3
+@end example
 @end deffn
 
 @c TODO: DIES GEHOERT IN DAS KAPITEL VEREINFACHUNGEN?!
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{listarith}
 @defvr {Optionsvariable} listarith
 Standardwert: @code{true}
 
-@c if @code{false} causes any arithmetic operations with lists to be suppressed;
-@c when @code{true}, list-matrix operations are contagious causing lists to be
-@c converted to matrices yielding a result which is always a matrix.  However,
-@c list-list operations should return lists.
-
-@c TODO: DAS KANN BESSER FORMULIERT WERDEN.
-
 Hat die Optionsvariable @code{listarith} den Wert @code{true}, werden 
 Rechenoperationen mit Matrizen und Listen elementweise ausgef@"uhrt.  Das 
 Ergebnis von Rechnungen mit Listen und Matrizen sind wieder Listen und Matrizen.
-Hat die Optionsvariable @code{listarith} den Wert @code{false} wird die 
+Hat die Optionsvariable @code{listarith} den Wert @code{false}, wird die
 elementweise Ausf@"uhrung der Rechenoperationen unterdr@"uckt.
+
+Beispiele:
+
+@example
+(%i1) listarith: true;
+(%o1)                         true
+(%i2) 2 + [a, b, c];
+(%o2)                 [a + 2, b + 2, c + 2]
+(%i3) 2^[a, b, c];
+                            a   b   c
+(%o3)                     [2 , 2 , 2 ]
+(%i4) [1, 2, 3] + [a, b, c];
+(%o4)                 [a + 1, b + 2, c + 3]
+(%i5) listarith: false;
+(%o5)                         false
+(%i6) 2 + [a, b, c];
+(%o6)                     [a, b, c] + 2
+(%i7) 2^[a, b, c];
+                            [a, b, c]
+(%o7)                      2
+(%i8) [1, 2, 3] + [a, b, c];
+(%o8)                 [a, b, c] + [1, 2, 3]
+@end example
 @end defvr
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{listp}
 @deffn {Funktion} listp (@var{expr})
-
-@c Returns @code{true} if @var{expr} is a list else @code{false}.
 
 Gibt @code{true} zur@"uck, wenn @var{expr} eine Liste ist.  Ansonsten ist der 
 R@"uckgabewert @code{false}.
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{makelist}
 @deffn  {Funktion} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 @deffnx {Funktion} makelist (@var{expr}, @var{x}, @var{list})
 
-@c Constructs and returns a list, each element of which is generated from
-@c @var{expr}.
-
-Erzeugt eine Liste, deren Elemente aus dem Ausdruck @var{expr} generiert werden.
-
-@c @code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} returns a list,
-@c the @code{j}'th element of which is equal to @code{ev(@var{expr}, @var{i}=j)}
-@c for @code{j} equal to @var{i_0} through @var{i_1}.
-
-@code{makelist(@var{expr}, @var{i}, @var{i_0}, @var{i_1})} gibt eine Liste
-zur@"uck, deren @var{j}-tes Element der Auswertung
-@code{ev(@var{expr}, @var{i}=j)} entspricht.  @var{j} nimmt die Werte von
-@var{i_0} bis @var{i_1} an.
-
-@c @code{makelist (@var{expr}, @var{x}, @var{list})} returns a list, the 
-@c @code{j}'th element of which is equal to @code{ev (@var{expr}, 
-@c @var{x}=@var{list}[j])} for @code{j} equal to 1 through 
-@c @code{length(@var{list})}.
-
-@code{makelist(@var{expr}, @var{x}, @var{list})} gibt eine Liste zur@"uck,
-deren @var{j}-tes Element der Auswertung @code{ev(@var{expr}, 
-@var{x}=@var{list}[j])} entspricht.  @var{j} nimmt in diesem Fall die Werte der
-Liste @var{list} an.
+Erzeugt eine Liste, indem der Ausdruck @var{expr} f@"ur die Variable @var{i}
+ausgewertet wird.  Die Variable @var{i} nimmt nacheinander die Werte von
+@var{i_0} bis @var{i_1} an, wobei die Schrittweite 1 ist.  Alternativ kann eine
+Liste @var{list} als Argument @"ubergeben werden.  In diesem Fall nimmt die
+Variable @var{i} nacheinander die Werte der Liste @var{list} an.
 
 Beispiele:
 
-@c ===beg===
-@c makelist(concat(x,i),i,1,6);
-@c makelist(x=y,y,[a,b,c]);
-@c ===end===
 @example
-(%i1) makelist(concat(x,i),i,1,6);
+(%i1) makelist(concat(x, i), i, 1, 6);
 (%o1)               [x1, x2, x3, x4, x5, x6]
-(%i2) makelist(x=y,y,[a,b,c]);
+(%i2) makelist(x = y, y, [a, b, c]);
 (%o2)                 [x = a, x = b, x = c]
-
 @end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{member}
-@deffn {Funktion} member (@var{expr_1}, @var{expr_2})
+@deffn {Funktion} member (@var{expr}, @var{list})
 
-@c Returns @code{true} if @code{is(@var{expr_1} = @var{a})} for some element 
-@c @var{a} in @code{args(@var{expr_2})}, otherwise returns @code{false}.
+Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} gleich einem Element in
+der Liste @var{list} ist.  Die Gleichheit wird dem Operator
+@mref{=} festgestellt.  Siehe die Funktion @mref{delete} f@"ur eine
+Erl@"auterung.
 
-Gibt @code{true} zur@"uck, wenn f@"ur eines der Elemente @var{a} in @var{expr_2} 
-der Ausdruck @code{is(@var{expr_1} = @var{a})} das Ergebnis @code{true} hat.
-Ansonsten ist der R@"uckgabewert @code{false}.
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Dabei werden
+jedoch nur die Argumente des Hauptoperators betrachtet.
 
-@c @code{expr_2} is typically a list, in which case @code{args(@var{expr_2}) 
-@c = @var{expr_2}} and @code{is(@var{expr_1} = @var{a})} for some element 
-@c @var{a} in @code{expr_2} is the test.
-
-@c TODO : IST DAS NICHT SCHON OBEN BESCHRIEBEN ?
-
-@c @code{expr_2} ist typischerweise eine Liste, so dass f@"ur diesen Fall
-@c @code{args(@var{expr_2}) = @var{expr_2}} und @code{is(@var{expr_1} = @var{a})}
-@c f@"ur ein Element der Liste @var{a} der Test ist.
-
-@c @code{member} does not inspect parts of the arguments of @code{expr_2}, so 
-@c it may return @code{false} even if @code{expr_1} is a part of some argument 
-@c of @code{expr_2}.
-
-@code{member} betrachtet keine Teilausdr@"ucke der Argumente des Ausdrucks 
-@var{expr_2}.
-
-@c See also @code{elementp}.
-
-Siehe auch @mrefdot{elementp}
+Siehe auch die Funktion @mrefdot{elementp}
 
 Beispiele:
 
-@c ===beg===
-@c member (8, [8, 8.0, 8b0]);
-@c member (8, [8.0, 8b0]);
-@c member (b, [a, b, c]);
-@c member (b, [[a, b], [b, c]]);
-@c member ([b, c], [[a, b], [b, c]]);
-@c F (1, 1/2, 1/4, 1/8);
-@c member (1/8, %);
-@c member ("ab", ["aa", "ab", sin(1), a + b]);
-@c ===end===
 @example
 (%i1) member (8, [8, 8.0, 8b0]);
 (%o1)                         true
@@ -713,36 +705,41 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 14.03.2011 DK -----------------------------------------------------------
+@c --- 16.03.2011 DK -----------------------------------------------------------
+@anchor{pop}
 @deffn {Funktion} pop (@var{list})
 
-@code{pop} removes the first element from the list @var{list} and returns this 
-element. @var{list} must be a symbol, which is bound to a list and not the list 
-itself.
+Die Funktion @code{pop} entfernt das erste Element der Liste @var{list} und
+gibt dieses Element zur@"uck.  @var{list} muss ein Symbol sein, dem eine Liste
+zugewiesen wurde, und kann nicht selbst eine Liste sein.
 
-If the argument @var{list} is not bound to a list or the list is empty, Maxima
-generates an error message.
+Ist dem Argument @var{list} keine Liste zugewiesen, gibt Maxima eine
+Fehlermeldung aus.
 
-See also @code{push} for examples.
+Siehe auch @mref{push} f@"ur Beispiele.
 
-@code{load(basic)} loads this function.
+Mit dem Kommando @code{load(basic)} wird die Funktion geladen.
 @end deffn
 
-@c --- 14.03.2011 DK -----------------------------------------------------------
-@deffn {Function} push (@var{item}, @var{list})
+@c --- 16.03.2011 DK -----------------------------------------------------------
+@anchor{push}
+@deffn {Funktion} push (@var{item}, @var{list})
 
-@code{push} prepends the item @var{item} to the list @var{list} and returns a
-copy of the new list. @var{list} must be a symbol, which is bound to a list and
-not the list itself. @var{item} can be any Maxima symbol or expression.
+Die Funktion @code{push} f@"ugt das Argument @var{item} als erstes Element der
+Liste @var{list} hinzu und gibt die neue Liste zur@"uck.  Das Argument
+@var{list} muss ein Symbol sein, dem eine Liste zugewiesen wurde, und kann nicht
+selbst eine Liste sein.  Das Argument @var{item} kann ein beliebiger Ausdruck
+sein.
 
-If the argument @var{list} is not bound to a list, Maxima generates an error
-message.
+Ist dem Argument @var{list} keine Liste zugewiesen, gibt Maxima eine 
+Fehlermeldung aus.
 
-See also @code{pop} to remove the first item from a list.
+Siehe auch die Funktion @mrefcomma{pop} um das erste Element einer Liste zu
+entfernen.
 
-@code{load(basic)} loads this function.
+Mit dem Kommando @code{load(basic)} wird die Funktion geladen.
 
-Examples:
+Beispiele:
 
 @example
 (%i1) ll:[];
@@ -770,37 +767,50 @@ Examples:
 @end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{rest}
-@deffn  {Funktion} rest (@var{expr}, @var{n})
-@deffnx {Funktion} rest (@var{expr})
+@deffn  {Funktion} rest (@var{list}, @var{n})
+@deffnx {Funktion} rest (@var{list})
 
-@c Returns @var{expr} with its first @var{n} elements removed if @var{n} is
-@c positive and its last @code{- @var{n}} elements removed if @var{n} is 
-@c negative. If @var{n} is 1 it may be omitted.  @var{expr} may be a list, 
-@c matrix, or other expression.
+Entfernt das erste Element oder, wenn @var{n} eine positive ganze Zahl ist, die
+ersten @var{n} Elemente der Liste @var{list} und gibt den Rest der Liste als
+Ergebnis zur@"uck.  Ist @var{n} eine negative Zahl, werden die letzten @var{n}
+Elemente von der Liste entfernt und der Rest als Ergebnis zur@"uckgegeben.
 
-Gibt den Ausdruck @var{expr} zur@"uck, wobei die ersten @var{n} Elemente 
-entfernt sind, wenn @var{n} positiv ist.  Ist @var{n} negativ werden die letzten 
-@var{n} Elemente entfernt.  Der Wert 1 f@"ur @var{n} muss nicht als Argument 
-angegeben werden.  @var{expr} kann eine Liste, eine Matrix oder irgendein
-anderer Ausdruck sein.
+Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.
+
+Siehe auch die Funktionen @mref{first} und @mrefdot{last}
+
+Beispiele:
+
+@example
+(%i1) rest([a,b,c]);
+(%o1)                        [b, c]
+(%i2) rest(a+b+c);
+(%o2)                         b + a
+@end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{reverse}
 @deffn {Funktion} reverse (@var{list})
 
-@c Reverses the order of the members of the @var{list} (not the members 
-@c themselves).  @code{reverse} also works on general expressions, e.g.  
-@c @code{reverse(a=b);} gives @code{b=a}.
+Kehrt die Anordnung der Elemente einer Liste @var{list} um und gibt die
+Ergebnisliste zur@"uck.  Das Argument @var{list} kann auch ein allgemeiner
+Ausdruck sein.
 
-Kehrt die Anordnung der Elemente einer Liste @var{list} um.  @code{reverse}
-kann auch f@"ur allgemeine Ausdr@"ucke verwendet werden.  So hat zum Beispiel
-@code{reverse(a=b)} das Ergebnis @code{b=a}.
+Beispiele:
+
+@example
+(%i1) reverse([a, b, c]);
+(%o1)                       [c, b, a]
+(%i2) reverse(sin(x)=2*x^2+1);
+                           2
+(%o2)                   2 x  + 1 = sin(x)
+@end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{second}
 @anchor{third}
 @anchor{fourth}
@@ -810,85 +820,43 @@ kann auch f@"ur allgemeine Ausdr@"ucke verwendet werden.  So hat zum Beispiel
 @anchor{eighth}
 @anchor{ninth}
 @anchor{tenth}
-@deffn  {Funktion} second (@var{expr})
-@deffnx {Funktion} third (@var{expr})
-@deffnx {Funktion} fourth (@var{expr})
-@deffnx {Funktion} fifth (@var{expr})
-@deffnx {Funktion} sixth (@var{expr})
-@deffnx {Funktion} seventh (@var{expr})
-@deffnx {Funktion} eighth (@var{expr})
-@deffnx {Funktion} ninth (@var{expr})
-@deffnx {Funktion} tenth (@var{expr})
-
-@c Returns the 2'nd item of expression or list @var{expr}.
-@c See @code{first} for more details.
+@deffn  {Funktion} second (@var{list})
+@deffnx {Funktion} third (@var{list})
+@deffnx {Funktion} fourth (@var{list})
+@deffnx {Funktion} fifth (@var{list})
+@deffnx {Funktion} sixth (@var{list})
+@deffnx {Funktion} seventh (@var{list})
+@deffnx {Funktion} eighth (@var{list})
+@deffnx {Funktion} ninth (@var{list})
+@deffnx {Funktion} tenth (@var{list})
 
 Die Funktionen @code{second} bis @code{tenth} geben das 2. bis 10. Element eines
-Ausdrucks oder einer Liste @var{expr} zur@"uck.  Siehe @mrefdot{first}
+Ausdrucks oder einer Liste @var{list} zur@"uck.  Siehe @mrefdot{first}
 @end deffn
 
-@c --- 28.08.2010 DK -----------------------------------------------------------
+@c --- 20.03.2011 DK -----------------------------------------------------------
 @anchor{sort}
 @deffn  {Funktion} sort (@var{L}, @var{P})
 @deffnx {Funktion} sort (@var{L})
 
-@c Sorts a list @var{L} according to a predicate @code{P} of two arguments, such
-@c that @code{@var{P} (@var{L}[k], @var{L}[k + 1])} is @code{true} for any two 
-@c successive elements. The predicate may be specified as the name of a function
-@c or binary infix operator, or as a @code{lambda} expression. If specified as 
-@c the name of an operator, the name is enclosed in "double quotes".
+Sortiert eine Liste @var{L} und gibt die sortierte Liste zur@"uck.  Das
+optionale Argument @var{P} ist eine Aussagefunktion mit zwei Argumenten, die
+eine Ordnung der Elemente definiert.  Die Aussagefunktion kann eine Funktion,
+ein bin@"arer Operator oder ein Lambda-Ausdruck sein.  Wird kein Argument
+@var{P} angegeben, werden die Elemente der Liste mit der Aussagefunktion
+@mref{orderlessp} geordnet.
 
-Sortiert eine Liste @var{L} mit Hilfe einer Aussagefunktion @code{P}, die zwei
-Argumente hat, so dass @code{@var{P}(@var{L}[k], @var{L}[k + 1])} f@"ur zwei 
-beliebige aufeinander folgende Elemente das Ergebnis @code{true} hat.  Die 
-Aussagefunktion kann eine Funktion, ein bin@"arer Operator oder ein
-Lambda-Ausdruck sein.  Die Namen von Operatoren m@"ussen in Anf@"uhrungszeichen
-angegeben werden.
-
-@c The sorted list is returned as a new object; the argument @var{L} is not 
-@c modified. To construct the return value, @code{sort} makes a shallow copy of 
-@c the elements of @var{L}.
-   @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
-
-Die sortierte List wird als ein neue Liste zur@"uckgegeben.  Das Argument
-@code{L} wird nicht modifiziert.
-
-   @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-@c If the predicate @var{P} is not a total order on the elements of @var{L},
-@c then @code{sort} might run to completion without error, but the result is 
-@c undefined. @code{sort} complains if the predicate evaluates to something 
-@c other than @code{true} or @code{false}.
-
-Ist die Aussage @var{P} keine totale Ordnung der Elemente der Liste @var{L}, 
-kann @code{sort} ohne einen Fehler enden, ohne dass das Ergebnis definiert ist.
-@code{sort} gibt einen Fehler aus, wenn die Aussage nicht zu @code{true} oder 
-@code{false} ausgewertet werden kann.
-
-@c @code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
-@c That is, the default sorting order is ascending, as determined by 
-@c @code{orderlessp}. All Maxima atoms and expressions are comparable under 
-@c @code{orderlessp}, although there are isolated examples of expressions for 
-@c which @code{orderlessp} is not transitive; this is a bug.
-
-@code{sort(@var{L})} ist @"aquivalent zu @code{sort(@var{L}, orderlessp)}.
-Damit ist die Standardordnung aufsteigend, wie sie von der Funktion
-@mref{orderlessp} definiert wird.  Alle Maxima Atome und Ausdr@"ucke k@"onnen
-mit @code{orderlessp} verglichen werden.
+Die Aussagefunktion @mref{orderlessp} sortiert eine List aufsteigend.  Mit der
+Aussagefunktion @mref{ordergreatp} kann die Liste absteigend sortiert werden.
+Die Aussagefunktion @mref{ordermagnitudep} sortiert Maxima Zahlen, Konstante 
+oder Ausdr@"ucke, die zu einer Zahl oder Konstanten ausgewertet werden k@"onnen,
+nach der Gr@"o@ss{}e.  Mit dem Operator @mref{<} kann auch nach der Gr@"o@ss{}e
+sortiert werden.  Im Unterschied zur Aussagefunktion @code{ordermagnitudep} ist
+die Ordnung nicht vollst@"andig, wenn einzelne Elemente der Liste nicht
+vergleichbar unter dem Operator @code{<} sind.
 
 Beispiele:
 
-@c ===beg===
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 
-@c       19 - 3 * x]);
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], 
-@c       ordergreatp);
-@c sort ([%pi, 3, 4, %e, %gamma]);
-@c sort ([%pi, 3, 4, %e, %gamma], "<");
-@c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
-@c sort (my_list);
-@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), 
-@c       reverse (b))));
-@c ===end===
 @example
 (%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c,
       19 - 3 * x]);
@@ -912,24 +880,29 @@ Beispiele:
       reverse (b))));
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
 @end example
+
+Ordne Maxima Zahlen, Konstante und konstante Ausdr@"ucke nach der Gr@"o@ss{}e.
+Alle anderen Elemente werden aufsteigend sortiert.
+
+@example
+(%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+           ordermagnitudep);
+(%o8) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
+                                                     %i + 1, 2 x]
+@end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{sublist}
 @deffn {Funktion} sublist (@var{L}, @var{P})
 
-@c Returns the list of elements of @var{list} for which the predicate @code{p} 
-@c returns @code{true}.
-
-Gibt die Elemente der Liste @var{L} zur@"uck, f@"ur die die Aussage @code{P}
-den Wert @code{true} hat.  Siehe auch die Funktion @mrefdot{sublist_indices}
+Gibt die Elemente der Liste @var{L} als eine Liste zur@"uck, f@"ur die die
+Aussagefunktion @code{P} das Ergebnis @code{true} hat.  @code{P} ist eine
+Funktion mit einem Argument wie zum Beispiel die Funktion
+@mrefdot{integerp}  Siehe auch die Funktion @mrefdot{sublist_indices}
 
 Beispiele:
 
-@c ===beg===
-@c L: [1, 2, 3, 4, 5, 6];
-@c sublist (L, evenp);
-@c ===end===
 @example
 (%i1) L: [1, 2, 3, 4, 5, 6];
 (%o1)                  [1, 2, 3, 4, 5, 6]
@@ -942,28 +915,13 @@ Beispiele:
 @anchor{sublist_indices}
 @deffn {Funktion} sublist_indices (@var{L}, @var{P})
 
-@c Returns the indices of the elements @code{x} of the list @var{L} for which
-@c the predicate @code{maybe(@var{P}(x))} returns @code{true}; this excludes 
-@c @code{unknown} as well as @code{false}. @var{P} may be the name of a function
-@c or a lambda expression. @var{L} must be a literal list.
-
 Gibt die Indizes der Elemente @var{x} der Liste @var{L} zur@"uck, f@"ur die die 
-Aussage @code{maybe(@var{P}(x))} das Ergebnis @code{true} hat.  @var{P} kann der
-Name einer Funktion oder ein Lambda-Ausdruck sein.  @var{L} muss eine explizit
-angegebene Liste sein.  Siehe auch die Funktion @mrefdot{sublist}
+Aussagefunktion @code{P} das Ergebnis @code{true} hat.  @code{P} ist eine
+Funktion mit einem Argument wie zum Beispiel die Funktion
+@mrefdot{integerp}  Siehe auch die Funktion @mrefdot{sublist}
 
 Beispiele:
 
-@c ===beg===
-@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], 
-@c                        lambda ([x], x='b));
-@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
-@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], 
-@c                        identity);
-@c assume (x < -1);
-@c map (maybe, [x > 0, x < 0, x < -2]);
-@c sublist_indices ([x > 0, x < 0, x < -2], identity);
-@c ===end===
 @example
 (%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
                        lambda ([x], x='b));
@@ -982,7 +940,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 16.11.2010 DK -----------------------------------------------------------
+@c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{unique}
 @deffn {Funktion} unique (@var{L})
 
@@ -991,16 +949,14 @@ Beispiele:
 @c copy of @var{L}, not @var{L} itself.
 @c If @var{L} is not a list, @code{unique} returns @var{L}.
 
-Gibt eine Liste mit den Elementen von @var{L} zur@"uck, die sich voneinander
-unterscheiden.  Sind alle Elemente der Liste @var{L} verschieden, gibt 
-@code{unique} eine Kopie der Liste @var{L} und nicht die Liste selbst zur@"uck.
-Ist @var{L} keine Liste, gibt @code{unique} den Ausdruck @var{L} zur@"uck.
+Gibt eine Liste mit den Elementen der Liste @var{L} zur@"uck, die sich
+voneinander unterscheiden.  Sind alle Elemente der Liste @var{L} verschieden,
+gibt @code{unique} eine Kopie der Liste @var{L} und nicht die Liste selbst
+zur@"uck.  Ist @var{L} keine Liste, gibt @code{unique} den Ausdruck @var{L}
+zur@"uck.
 
 Beispiel:
 
-@c ===beg===
-@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
-@c ===end===
 @example
 (%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
 (%o1)              [1, 2, %e, %pi, [1], b + a]

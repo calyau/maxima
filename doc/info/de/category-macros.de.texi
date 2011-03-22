@@ -146,6 +146,7 @@
              ma-the-ma-ti-sche
              Maxima
              Mgnuplot
+             Mus-ter-er-ken-nungs-ver-fah-ren
              O-pe-ra-tor 
              O-pe-ra-to-ren
              Op-tions-va-ri-ablen

@@ -5,7 +5,7 @@
 @c Original    : Bugs.texi revision 1.15
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.02.2011
+@c Revision    : 16.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -132,8 +132,8 @@ f(x) := y + x
 [...]
 @end example
 
-Im folgenden Beispiel werden die Tests, von denen bekannt ist, dass sie
-fehlerhaft sind ausgegeben.  Dies sind die Tests mit den Nummern 76 und 78.
+Im folgenden Beispiel werden die Tests ausgegeben, von denen bekannt ist, dass
+sie fehlerhaft sind.  Dies sind die Tests mit den Nummern 76 und 78.
 
 @example
 (%i1) run_testsuite(display_known_bugs=true, tests=[rtest12]);

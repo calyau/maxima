@@ -5,7 +5,7 @@
 @c Original    : Expressions.texi revision 1.72
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 12.03.2011
+@c Revision    : 23.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ Ausdrucks:
 
 @verbatim
    ordergreat    orderless    unorder
-   ordergreatp   orderlessp
+   ordergreatp   orderlessp   ordermagnitudep
 @end verbatim
 
 @noindent
@@ -163,12 +163,13 @@ Weitere Funktionen und Variablen:
 Operatoren und Funktionen k@"onnen als Substantiv oder Verb vorliegen.  Verben 
 werden von Maxima ausgewertet.  Substantive, die in einem Ausdruck auftreten, 
 werden dagegen nicht ausgewertet, sondern vereinfacht.  Die meisten 
-mathematischen Funktionen sind Substantive.  Funktionen wie @mrefcomma{limit}
-@mref{diff} oder @mref{integrate} sind standardm@"a@ss{}ig Verben, die jedoch in
-ein Substantiv umgewandelt werden k@"onnen.  Ein Verb kann durch den 
-Quote-Operator @code{'} oder mit der Funktion @mref{nounify} in ein Substantiv
-umgewandelt werden.  Der Auswertungsschalter @mref{nouns} bewirkt, dass
-Substantive von der Funktion @mref{ev} ausgewertet werden.
+mathematischen Funktionen sind Substantive.  Funktionen wie 
+@mrefcomma{limit} @mref{diff} oder @mref{integrate} sind standardm@"a@ss{}ig 
+Verben, die jedoch in ein Substantiv umgewandelt werden k@"onnen.  Ein Verb kann
+durch den @mxref{', Quote-Operator} @code{'} oder mit der Funktion
+@mref{nounify} in ein Substantiv umgewandelt werden.  Der Auswertungsschalter 
+@mref{nouns} bewirkt, dass Substantive von der Funktion @mref{ev} ausgewertet 
+werden.
 
 In der internen Darstellung von Maxima erhalten Lisp-Symbole, die ein Verb 
 darstellen, ein f@"uhrendes Dollarzeichen @code{$}.  Lisp-Symbole, die ein 
@@ -234,7 +235,7 @@ Backslash vorangestellt ist, zum Beispiel @code{\2and3}.  Zahlzeichen, die an
 anderen Stellen auftreten, muss kein Backslash vorangestellt werden, zum 
 Beispiel @code{is5}.
 
-Sonderzeichen k@"onnen mit der Funktion @code{declare} als alphabetisch 
+Sonderzeichen k@"onnen mit der Funktion @mref{declare} als alphabetisch 
 erkl@"art werden.  In diesem Fall muss dem Sonderzeichen kein Backslash 
 vorangestellt werden, wenn es in einem Bezeichner genutzt wird.  Die Zeichen 
 @code{A} bis @code{Z}, @code{a} bis @code{z} und @code{0} bis @code{9} sowie
@@ -340,20 +341,20 @@ Liste @code{aliases} eingetragen werden.
 Siehe auch die Funktion @mref{alias} f@"ur ein Beispiel.
 @end defvr
 
-@c --- 13.10.2010 DK -----------------------------------------------------------
+@c --- 21.03.2011 DK -----------------------------------------------------------
 @anchor{allbut}
 @defvr {Schl@"usselwort} allbut
 
 Das Schl@"usselwort @code{allbut} wird bei @code{part}-Befehlen wie
 @mrefcomma{part} @mrefcomma{inpart} @mrefcomma{substpart}@ 
 @mrefcomma{substinpart} @mref{dpart} und @mref{lpart} genutzt, um Indizes bei
-der Auswahl von Teilausdr@"ucken auszuschlie@ss{}en.  Das Schl@"usselwort 
-@code{allbut} kann auch zusammen mit dem Kommando @code{kill} verwendet werden.
-Siehe die Funktion @mrefdot{kill}
+der Auswahl von Teilausdr@"ucken auszuschlie@ss{}en.
 
-@code{kill(allbut(@var{a_1}, @var{a_2}, ...))} hat denselben Effekt wie
-@code{kill(all)} mit der Ausnahme, dass die Symbole @var{a_1}, @var{a_2}, 
-@dots{} von @code{kill} ausgenommen werden.
+Das Schl@"usselwort @code{allbut} kann auch zusammen mit dem Kommando
+@code{kill} verwendet werden.  @code{kill(allbut(@var{a_1}, @var{a_2}, ...))}
+hat denselben Effekt wie @code{kill(all)} mit der Ausnahme, dass die Symbole 
+@var{a_1}, @var{a_2}, @dots{} von @code{kill} ausgenommen werden.  Siehe die 
+Funktion @mrefdot{kill}
 
 Beispiele:
 
@@ -1224,6 +1225,34 @@ Ordne nicht atomare Ausdr@"ucke.
 (%i2) sort ([foo(1), X[1], X[k], foo(k), 1, k]);
 (%o2)            [1, foo(1), X , k, foo(k), X ]
                               1              k
+@end example
+@end deffn
+
+@c --- 20.03.2011 DK -----------------------------------------------------------
+@anchor{ordermagnitudep}
+@deffn {Funktion} ordermagnitudep (@var{expr_1}, @var{expr_2})
+
+Ist eine Aussagefunktion, die das Ergebnis @code{true} hat, wenn die Argumente
+@var{expr_1} und @var{expr_2} Zahlen, Konstante oder konstante Ausdr@"ucke
+repr@"asentieren und @var{expr_1} kleiner als @var{expr_2} ist.  Sind die
+Argumente nicht der Gr@"o@ss{}e nach vergleichbar, wird die Ordnung durch die
+Aussagefunktion @mref{orderlessp} bestimmt.
+
+Wird die Aussagefunktion @code{ordermagnitudep} als Argument der Funktion 
+@mref{sort} verwendet, werden die Elemente einer Liste nach der Gr@"o@ss{}e
+sortiert.
+
+Beispiele:
+
+@example
+(%i1) ordermagnitudep(1, 2);
+(%o1)                         true
+(%i2) ordermagnitudep(%e, %pi);
+(%o2)                         true
+(%i3) sort([%e, %pi, sin(1), 0, 1, 2, 3, 4]);
+(%o3)           [0, 1, 2, 3, 4, %e, %pi, sin(1)]
+(%i4) sort([%e, %pi, sin(1), 0, 1, 2, 3, 4], ordermagnitudep);
+(%o4)           [0, sin(1), 1, 2, %e, 3, %pi, 4]
 @end example
 @end deffn
 

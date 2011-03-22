@@ -130,6 +130,7 @@ kann es sinnvoll sein, die Funktionen @code{define} oder @code{buildq} zu
 verwenden.
 
 @c -----------------------------------------------------------------------------
+@anchor{Array-Funktionen}
 @subsection Array-Funktionen
 
 Eine Array-Funktion speichert bei dem ersten Aufruf den Funktionswert zu dem 
