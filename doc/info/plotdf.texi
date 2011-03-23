@@ -6,14 +6,14 @@
 @node Introduction to plotdf, Functions and Variables for plotdf, plotdf, plotdf
 @section Introduction to plotdf
 
-The function @code{plotdf} creates a plot of the direction field of a
-first-order Ordinary Differential Equation (ODE) or a system of two
-autonomous first-order ODE's.
+The function @code{plotdf} creates a plot of the direction field (also
+called slope field) for a first-order Ordinary Differential Equation
+(ODE) or a system of two autonomous first-order ODE's.
 
-Since this is an additional package, in order to use it you must first
-load it with @code{load("plotdf")}. Plotdf requires Openmath, which is
-provided by the package Xmaxima (Xmaxima is not only used as a graphical
-console for Maxima but also to plot graphs in the Openmath format).
+Plotdf requires Xmaxima. It can be used from the console or any other
+interface to Maxima, but the resulting file will be sent to Xmaxima for
+plotting. Please make sure you have installed Xmaxima before trying to
+use plotdf.
 
 To plot the direction field of a single ODE, the ODE must be written in
 the form:
@@ -206,15 +206,16 @@ the variable on the vertical axis.
 The default vertical range is from -10 to 10.
 @end itemize
 
-@b{Examples:}
+@strong{Examples:}
 
 @itemize @bullet
 @item
 To show the direction field of the differential equation @math{y' = exp(-x) + y} and the solution that goes through @math{(2, -0.1)}:
+@c ===beg===
+@c plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+@c ===end===
 @example
-(%i1) load("plotdf")$
-
-(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+(%i1) plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
 @end example
 
 @ifnotinfo
@@ -223,11 +224,19 @@ To show the direction field of the differential equation @math{y' = exp(-x) + y}
 
 @item
 To obtain the direction field for the equation @math{diff(y,x) = x - y^2} and the solution with initial condition @math{y(-1) = 3}, we can use the command:
+@c ===beg===
+@c plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
+@c          [trajectory_at,-1,3], [direction,forward],
+@c          [y,-5,5], [x,-4,16])$
+@c ===end===
 @example
-(%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
-          [trajectory_at,-1,3], [direction,forward],
-          [y,-5,5], [x,-4,16])$
+@group
+(%i1) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
+         [trajectory_at,-1,3], [direction,forward],
+         [y,-5,5], [x,-4,16])$
+@end group
 @end example
+
 The graph also shows the function @math{y = sqrt(x)}. 
 
 @ifnotinfo
@@ -240,9 +249,15 @@ defined by the two equations @math{dz/dt = v} and @math{dv/dt = -k*z/m},
 and the integral curve through @math{(z,v) = (6,0)}, with a slider that
 will allow you to change the value of @math{m} interactively (@math{k} is
 fixed at 2):
+@c ===beg===
+@c plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
+@c            [sliders,"m=1:5"], [trajectory_at,6,0])$
+@c ===end===
 @example
-(%i4) plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
-            [sliders,"m=1:5"], [trajectory_at,6,0])$
+@group
+(%i1) plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
+           [sliders,"m=1:5"], [trajectory_at,6,0])$
+@end group
 @end example
 
 @ifnotinfo
@@ -251,10 +266,17 @@ fixed at 2):
 
 @item
 To plot the direction field of the Duffing equation, @math{m*x''+c*x'+k*x+b*x^3 = 0}, we introduce the variable @math{y=x'} and use:
+@c ===beg===
+@c plotdf([y,-(k*x + c*y + b*x^3)/m],
+@c              [parameters,"k=-1,m=1.0,c=0,b=1"],
+@c              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+@c ===end===
 @example
-(%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
-              [parameters,"k=-1,m=1.0,c=0,b=1"],
-              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+@group
+(%i1) plotdf([y,-(k*x + c*y + b*x^3)/m],
+             [parameters,"k=-1,m=1.0,c=0,b=1"],
+             [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+@end group
 @end example
 
 @ifnotinfo
@@ -267,12 +289,21 @@ solution for the given initial conditions, with a slider that
 can be used to change the value of the mass @math{m}, and with a plot of
 the two state variables as a function of time:
 
+@c ===beg===
+@c plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
+@c         [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
+@c         [trajectory_at,1.05,-9],[tstep,0.01],
+@c         [a,-10,2], [w,-14,14], [direction,forward],
+@c         [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
+@c ===end===
 @example
-(%i6) plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
-         [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
-         [trajectory_at,1.05,-9],[tstep,0.01],
-         [a,-10,2], [w,-14,14], [direction,forward],
-         [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
+@group
+(%i1) plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
+        [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
+        [trajectory_at,1.05,-9],[tstep,0.01],
+        [a,-10,2], [w,-14,14], [direction,forward],
+        [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
+@end group
 @end example
 
 @ifnotinfo
