@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.03.2011
+@c Revision    : 23.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -36,7 +36,7 @@
 @subheading Ganze und rationale Zahlen
 
 Arithmetische Rechnungen mit ganzen oder rationalen Zahlen sind exakt.
-Prinzipell k@"onnen die ganzen und rationalen Zahlen eine beliebige Anzahl an 
+Prinzipiell k@"onnen die ganzen und rationalen Zahlen eine beliebige Anzahl an 
 Stellen haben.  Eine Obergrenze ist allein der zur Verf@"ugung stehende
 Speicherplatz.
 
@@ -66,7 +66,7 @@ Funktionen f@"ur ganze und rationale Zahlen:
 @subheading Gleitkommazahlen
 
 Maxima rechnet mit Gleitkommazahlen in doppelter Genauigkeit.  Weiterhin kann
-Maxima mit gro@ss{}en Gleitkommazahlen rechnen, die prinzipell eine beliebige
+Maxima mit gro@ss{}en Gleitkommazahlen rechnen, die prinzipiell eine beliebige
 Genauigkeit haben.
 
 Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben.  Der Exponent kann 
@@ -155,8 +155,9 @@ Hat die Optionsvariable @mref{float2bf} den Wert @code{false}, gibt Maxima eine
 Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine 
 gro@ss{}e Gleitkommazahl umgewandelt wird.
 
-Siehe auch die Funktion und den Auswertungsschalter @mref{float} f@"ur die
-Umwandlung von Zahlen in Gleitkommazahlen mit doppelter Genauigkeit.
+Siehe auch die Funktion und den Auswertungsschalter @mref{float} sowie die
+Optionsvariable @mref{numer} f@"ur die Umwandlung von Zahlen in Gleitkommazahlen
+mit doppelter Genauigkeit.
 
 Beispiele:
 
@@ -172,12 +173,12 @@ Beispiele:
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
 @anchor{bfloatp}
-@deffn {Funktion} bfloatp (@var{expr})
+@deffn {Funktion} bfloatp (@var{number})
 
-Gibt den Wert @code{true} zur@"uck, wenn @var{expr} eine gro@ss{}e 
-Gleitkommazahl ist, ansonsten den Wert @code{false}.
+Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine
+gro@ss{}e Gleitkommazahl ist, ansonsten den Wert @code{false}.
 
-Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{floatnump}@ 
+Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{floatnump}@w{}
 @mref{ratnump} und @mrefdot{integerp}
 
 Beispiele:
@@ -199,14 +200,15 @@ Beispiele:
 @defvr {Optionsvariable} bftorat
 Standardwert: @code{false}
 
-@c TODO: DIE GENAUE FUNTIONSWEISE IST UNKKLAR.  ES FEHLT EIN BEISPIEL.
+@c TODO: DIE GENAUE FUNKTIONSWEISE IST UNKLAR.  ES FEHLT EIN BEISPIEL.
 
 Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von gro@ss{}en
 Gleitkommazahlen in rationale Zahlen.  Hat @code{bftorat} den Wert @code{true},
-wird die Genauigkeit der Umwandlung von der Optionsvariablen @mref{ratepsilon}@ 
-kontrolliert.  In diesem Fall ist das Ergebnis der Umwandlung eine relativ
-kleine rationale Zahl.  Hat dagegen @code{bftorat} den Wert @code{false}, wird
-die gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl repr@"asentiert.
+wird die Genauigkeit der Umwandlung von der Optionsvariablen
+@mref{ratepsilon} kontrolliert.  In diesem Fall ist das Ergebnis der Umwandlung
+eine relativ kleine rationale Zahl.  Hat dagegen @code{bftorat} den Wert
+@code{false}, wird die gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl 
+repr@"asentiert..
 @end defvr
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
@@ -235,8 +237,8 @@ Beispiele:
 @anchor{evenp}
 @deffn {Funktion} evenp (@var{expr})
 
-Ist @var{expr} eine gerade ganze Zahl, wird @code{true} zur@"uckgegeben.  In 
-allen anderen F@"allen wird @code{false} zur@"uckgegeben.
+Ist das Argument @var{expr} eine gerade ganze Zahl, wird @code{true}
+zur@"uckgegeben.  In allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
 @code{evenp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
 zur@"uck, auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der 
@@ -271,8 +273,8 @@ mit doppelter Genauigkeit.
 
 @code{float} ist auch eine Optionsvariable mit dem Standardwert @code{false} und
 ein Auswertungsschalter f@"ur die Funktion @mrefdot{ev}  Erh@"alt die
-Optionsvariable @code{float} den Wert @code{true} werden rationale und gro@ss{}e
-Gleitkommazahlen sofort in Gleitkommazahlen umgewandelt.  Als
+Optionsvariable @code{float} den Wert @code{true}, werden rationale und
+gro@ss{}e Gleitkommazahlen sofort in Gleitkommazahlen umgewandelt.  Als
 Auswertungsschalter der Funktion @code{ev} hat @code{float} denselben Effekt,
 ohne dass die Optionsvariable @code{float} ihren Wert @"andert.  Im Unterschied
 zur Funktion @code{float} werden durch das Setzen der Optionsvariablen oder bei
@@ -286,9 +288,9 @@ Beispiele:
 
 In den ersten zwei Beispielen werden die Zahlen @code{1/2} und @code{1} in eine
 Gleitkommazahl umgewandelt.  Die Sinusfunktion vereinfacht sodann zu einem
-numerischen Wert.  Das Auswertungsflag @code{float} wandelt ganze Zahlen nicht
-in eine Gleitkommazahl um.  Daher wird @code{sin(1)} nicht zu einem numerischen
-Wert vereinfacht.
+numerischen Wert.  Das Auswertungsschalter @code{float} wandelt ganze Zahlen
+nicht in eine Gleitkommazahl um.  Daher wird @code{sin(1)} nicht zu einem
+numerischen Wert vereinfacht.
 
 @example
 (%i1) float(sin(1/2));
@@ -312,7 +314,7 @@ Warnung ausgegeben, wenn eine Gleitkommazahl in eine gro@ss{}e Gleitkommazahl
 umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit f@"uhren 
 kann.
 
-Beispiel:
+Beispiele:
 
 @example
 (%i1) float2bf:true;
@@ -335,7 +337,7 @@ Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine
 Gleitkommazahl ist.  Ansonsten wird @code{false} zur@"uckgegeben.  Auch wenn 
 @var{number} eine gro@ss{}e Gleitkommazahl ist, ist das Ergebnis @code{false}.
 
-Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{bfloatp}@ 
+Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{bfloatp}@w{}
 @mref{ratnump} und @mrefdot{integerp}
 
 Beispiele:
@@ -379,7 +381,7 @@ Beispiele:
 @defvr {Optionsvariable} fpprintprec
 Standardwert: 0
 
-@code{fpprintprec} ist die Anzahl der Stellen, die angezeigt wird, wenn eine
+@code{fpprintprec} ist die Anzahl der Stellen, die angezeigt werden, wenn eine
 Gleitkommazahl ausgegeben wird.
 
 Hat @code{fpprintprec} einen Wert zwischen 2 und 16, ist die Anzahl der 
@@ -452,6 +454,7 @@ Beispiele:
 
 @c --- 08.10.2010 --------------------------------------------------------------
 @anchor{m1pbranch}
+@need 800
 @defvr {Optionsvariable} m1pbranch
 Standardwert: @code{false}
 
@@ -466,10 +469,11 @@ Optionsvariable @code{m1pbranch} ist in der folgenden Tabelle gezeigt.
 @group
               domain:real
                             
-(-1)^(1/3):      -1         
-(-1)^(1/4):   (-1)^(1/4)   
+(-1)^(1/3):      -1
+(-1)^(1/4):   (-1)^(1/4)
 
-             domain:complex              
+             domain:complex
+          
 m1pbranch:false          m1pbranch:true
 (-1)^(1/3)               1/2+%i*sqrt(3)/2
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
@@ -546,7 +550,7 @@ vereinfachen auch mathematische Funktionen mit einem ganzzahligen Wert wie zum
 Beispiel @code{sin(1)} zu einem numerischen Wert.
 
 @code{numer} ist auch ein Auswertungsschalter der Funktion @mrefdot{ev}  Der
-Auswertungsschalter hat die gleiche funktionsweise wie die Optionsvariable, 
+Auswertungsschalter hat die gleiche Funktionsweise wie die Optionsvariable,
 ohne dass die Optionsvariable ihren Wert @"andert.
 
 Siehe auch @mref{float} und @mrefdot{%enumer}
@@ -620,15 +624,15 @@ Beispiele:
 
 @c --- 08.03.2011 DK -----------------------------------------------------------
 @anchor{numerval}
-@deffn {Funktion} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
+@deffn {Funktion} numerval (@var{x_1}, @var{val_1}, @dots{}, @var{var_n}, @var{val_n})
 
-Die Variablen @code{x_1}, @dots{}, @code{x_n} erhalten die numerischen Werte
-@code{expr_1}, ..., @code{expr_n}.  Die numerischen Werte werden immer dann
-f@"ur die Variablen in Ausdr@"ucke eingesetzt, wenn der Schalter @mref{numer}
-den Wert @code{true} hat.  Siehe auch @mrefdot{ev}
+Die Variablen @var{x_1}, @dots{}, @var{x_n} erhalten die numerischen Werte
+@var{val_1}, @dots{}, @code{val_n}.  Die numerischen Werte werden immer dann
+f@"ur die Variablen in Ausdr@"ucke eingesetzt, wenn die Optionsvariable 
+@mref{numer} den Wert @code{true} hat.  Siehe auch @mrefdot{ev}
 
-Die Ausdr@"ucke @code{expr1_1}, ..., @code{expr_n} k@"onnen auch Ausdr@"ucke
-sein und m@"ussen nicht numerische Werte sein.
+Die Argumente @var{val_1}, @dots{}, @var{val_n} k@"onnen auch beliebige 
+Ausdr@"ucke sein, die wie numerische Werte f@"ur Variablen eingesetzt werden.
 
 Beispiele:
 
@@ -649,8 +653,8 @@ Beispiele:
 @anchor{oddp}
 @deffn {Funktion} oddp (@var{expr})
 
-Gibt @code{true} zur@"uck, wenn @var{expr} eine ungerade ganze Zahl ist.  In 
-allen anderen F@"allen wird @code{false} zur@"uckgegeben.
+Gibt @code{true} zur@"uck, wenn das Argument @var{expr} eine ungerade ganze Zahl
+ist.  In allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
 @code{oddp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
 zur@"uck, auch wenn das Symbol als ungerade ganze Zahl deklariert ist oder der 
@@ -682,7 +686,7 @@ Standardwert: 2.0e-8
 @code{ratepsilon} kontrolliert die Genauigkeit, mit der Gleitkommazahlen in
 rationale Zahlen umgewandelt werden.  Siehe auch @mrefdot{bftorat}
 
-@c TODO: HIER FEHLT EIN BEISPIEL
+@c TODO: HIER FEHLT EIN BEISPIEL.  DIE FUNKTIONSWEISE IST NICHT KLAR.
 @end defvr
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
@@ -697,9 +701,9 @@ Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht das Ergebnis
 gebrochene Zahl @code{1/10} in der internen Darstellung als bin@"are Zahl keine
 endliche Darstellung hat.
 
-Siehe auch die Funktion @mref{float} sowie die Auswertungsschalter
-@mref{float} und @mrefcomma{numer} um eine rationale Zahl in eine Gleitkommazahl
-umzuwandeln.
+Siehe auch die Funktionen @mref{float} und @mref{bfloat} sowie die
+Auswertungsschalter @mref{float} und @mrefcomma{numer} um eine rationale Zahl
+in eine Gleitkommazahl umzuwandeln.
 
 Beispiele:
 
@@ -741,6 +745,9 @@ Beispiele:
 
 Gibt @code{true} zur@"uck, wenn @var{number} eine ganze oder rationale Zahl ist.
 In allen anderen F@"allen ist das Ergebnis @code{false}.
+
+Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{integerp}@w{}
+@mref{floatnump} und @mrefdot{bfloatp}
 
 Beispiele:
 
