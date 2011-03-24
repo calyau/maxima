@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 23.03.2011
+@c Revision    : 24.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -907,9 +907,15 @@ Beispiel:
 @anchor{string}
 @deffn {Funktion} string (@var{expr})
 
-Konvertiert @code{expr} in eine lineare Darstellung, wie sie auch vom Parser
-von der Eingabe eingelesen wird.  Die R@"uckgabe von @code{string} ist eine
-Zeichenkette.  Diese kann nicht f@"ur eine Berechnung genutzt werden.
+Konvertiert das Argument @code{expr} in eine lineare Darstellung, wie sie auch
+vom Parser von der Eingabe eingelesen wird.  Die R@"uckgabe von @code{string}
+ist eine Zeichenkette.  Diese kann nicht als Eingabe f@"ur eine Berechnung
+genutzt werden.
+
+Beispiele:
+
+Die hier verwendete Funktion @mref{stringp} ist im Paket @mref{stringproc}@w{}
+definiert und wird automatisch geladen.
 
 @example
 (%i1) stringdisp:true;
@@ -921,8 +927,6 @@ Zeichenkette.  Diese kann nicht f@"ur eine Berechnung genutzt werden.
 @end example
 @end deffn
 
-@c TODO: DIE FOLGENDE FUNKTION IN DAS KAPITEL KOMMANDOZEILE VERSCHIEBEN ???
-
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{stringdisp}
 @defvr {Optionsvariable} stringdisp
@@ -933,7 +937,7 @@ Anf@"uhrungszeichen ausgegeben.  Ansonsten werden keine Anf@"uhrungszeichen
 ausgegeben.
 
 Wird die Definition einer Funktion ausgegeben, werden enthaltene Zeichenketten
-unabh@"angig vom Wert der Optionsvariablen @code{stringdisp} immer in 
+unabh@"angig vom Wert der Optionsvariablen @code{stringdisp} immer mit
 Anf@"uhrungszeichen ausgegeben.
 
 Beispiele:
