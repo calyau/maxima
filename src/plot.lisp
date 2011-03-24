@@ -979,7 +979,7 @@ sin(y)*(10.0+6*cos(x)),
            ;; 100*flonum-epsilon is ok.
            (let ((diff (- (abs quad)
                           (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c)))))
-                 (delta (* 100 flonum-epsilon)))
+                 (delta (* 150 flonum-epsilon)))
              (<= diff delta))))
         (t
          ;; Something is not a number, so assume it's not smooth enough.
