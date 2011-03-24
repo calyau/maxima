@@ -5,7 +5,7 @@
 @c Original    : Command.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 10.03.2011
+@c Revision    : 24.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -212,8 +212,8 @@ Beispiele:
 @anchor{$}
 @defvr {Operator} $
 
-Das Dollarzeichen schliesst wie das Semikolon die Eingabe eines Ausdruckes auf
-der Konsole und in einer Datei ab.  Im Unterschied zum Semikolon wird die
+Das Dollarzeichen schlie@ss{}t wie das Semikolon die Eingabe eines Ausdruckes
+auf der Konsole und in einer Datei ab.  Im Unterschied zum Semikolon wird die
 Ausgabe des Ergebnisses unterdr@"uckt.  Das Ergebnis wird jedoch weiterhin
 einer Ausgabemarke @mxref{outchar,%o} zugewiesen und die Systemvariable 
 @mref{%} enth@"alt das Ergebnis.  Siehe auch @mrefdot{;}
@@ -282,12 +282,12 @@ Current input expression = --------------
 @vrindex Letzte Eingabe
 @end ifinfo
 
-Die Systemvariable @code{_} enth@"alt den zuletzt eingebenen Ausdruck 
+Die Systemvariable @code{_} enth@"alt den zuletzt eingegebenen Ausdruck 
 @var{expr}.  Der Ausdruck @var{expr} wird der Systemvariablen @code{_} vor der 
 Auswertung und Vereinfachung zugewiesen.
 
 Die Systemvariable @code{_} wird von den Funktionen @mref{batch} und
-@mref{load} erkannt.  Wird eine Datei mit der Funktion @code{batch}@ 
+@mref{load} erkannt.  Wird eine Datei mit der Funktion @code{batch}@w{}
 ausgef@"uhrt, hat @code{_} dieselbe Bedeutung wie bei der Eingabe in einer
 Kommandozeile.  Wird eine Datei mit der Funktion @code{load} geladen, enth@"alt
 @code{_} das zuletzt in der Kommandozeile eingegebene Kommando.
@@ -471,6 +471,7 @@ Dokumentation interpretiert.  Siehe auch @mrefdot{describe}
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{inchar}
+@need 1000
 @defvr {Optionsvariable} inchar
 Standardwert: @code{%i}
 
@@ -576,8 +577,8 @@ Enth@"alt die vom Nutzer definierten @mref{let}-Regeln.
 
 Die Funktion @code{kill} entfernt alle Zuweisungen (Werte, Funktionen, Arrays 
 oder Regeln) und Eigenschaften von den Argumenten @var{a_1}, @dots{}, @var{a_n}.
-Ein Argument @var{a_k} kann ein Symbol oder ein einzelnes Arrayelement sein.
-Ist @var{a_k} ein einzelnes Arrayelement, entfernt @code{kill} die Zuweisungen 
+Ein Argument @var{a_k} kann ein Symbol oder ein einzelnes Array-Element sein.
+Ist @var{a_k} ein einzelnes Array-Element, entfernt @code{kill} die Zuweisungen
 an dieses Element, ohne die anderen Elemente des Arrays zu beeinflussen.
 
 @code{kill} kennt verschiedene spezielle Argumente, die auch kombiniert werden 
@@ -808,7 +809,7 @@ ben@"otigte Zeit an.
 wie die Funktion @code{grind}.  Ausgabeausdr@"ucke werden von der Option
 @code{grind} nicht beeinflusst.  Siehe auch @mrefdot{grind}
 
-Die Argumente k@"onnen kombiniert werden, wie zum Beispiel im folgendenen 
+Die Argumente k@"onnen kombiniert werden, wie zum Beispiel im folgenden
 Kommando @code{playback([5, 10], grind, time, slow)}.
 
 @code{playback} wertet die Argumente nicht aus.  @code{playback} gibt stets 
@@ -987,9 +988,9 @@ Anfangswert: @code{[]}
 
 @code{values} ist eine Informationsliste, die die Variablen enth@"alt, die vom
 Nutzer mit den Operatoren @mref{:} oder @mref{::} einen Wert erhalten haben.
-Wird der Wert einer Variablen mit den Kommandos @mrefcomma{kill} @mref{remove}@ 
-oder @mref{remvalue} entfernt, wird die Variable von der Liste @code{values}
-entfernt.
+Wird der Wert einer Variablen mit den Kommandos @mrefcomma{kill}@w{}
+@mref{remove} oder @mref{remvalue} entfernt, wird die Variable von der Liste
+@code{values} entfernt.
 
 Siehe auch @mref{functions} f@"ur die Informationsliste mit den vom Nutzer 
 definierten Funktionen sowie @mrefdot{infolists}
@@ -1050,8 +1051,8 @@ Beispiel:
 Standardwert: @code{!}
 
 Die Optionsvariable @code{absboxchar} enth@"alt das Zeichen, das von Maxima
-benutzt wird, um den Betrag eines Ausdruckes anzuzeigen, der mehr als eine Zeile
-ben@"otigt.
+benutzt wird, um den Betrag eines Ausdruckes anzuzeigen, der mehr als eine
+Zeile ben@"otigt.
 
 Beispiel:
 
@@ -1066,8 +1067,8 @@ Beispiel:
 @anchor{disp}
 @deffn {Funktion} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
-Ist @"ahnlich wie die Funktion @mrefdot{display}  Die Funktion @code{disp} zeigt
-jedoch keine Gleichungen sondern nur die Ergebnisse der Ausdr@"ucke
+Ist @"ahnlich wie die Funktion @mrefdot{display}  Die Funktion @code{disp}
+zeigt jedoch keine Gleichungen sondern nur die Ergebnisse der Ausdr@"ucke
 @var{expr_1}, @var{expr_2}, @dots{} an.
 
 Siehe auch die Funktionen @mrefcomma{ldisp} @mref{display} und @mrefdot{print}
@@ -1334,14 +1335,16 @@ matrix([aa,17],[29,bb])$
 %e^(aa/(bb+17)^29)$
 (%o10)                        done
 (%i11) expr: expand ((aa + bb)^10);
+@group
          10           9        2   8         3   7         4   6
 (%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
          5   5         6   4         7   3        8   2
  + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
         9        10
  + 10 aa  bb + aa
-@group
+@end group
 (%i12) grind (expr);
+@group
 bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
      +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
      +10*aa^9*bb+aa^10$
@@ -1530,18 +1533,18 @@ Standardwert: @code{true}
 
 Hat @code{negsumdispflag} den Wert @code{true}, wird eine Differenz mit zwei
 Argumenten @code{x - y} als @code{x - y} und nicht als @code{-y + x} angezeigt.
-Ist das Flag @code{false} wird die Differenz als @code{-y + x} angezeigt.
+Hat @code{negsumdispflag} den Wert @code{false}, wird die Differenz als
+@code{-y + x} angezeigt.
 @end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{obase}
+@need 800
 @defvr {Optionsvariable} obase
 Standardwert: 10
 
 @code{obase} enth@"alt die Basis f@"ur ganze Zahlen f@"ur die Ausgabe von
-Maxima.
-
-@code{obase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36 
+Maxima.  @code{obase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36
 zugewiesen werden.  Ist @code{obase} gr@"o@ss{}er als 10, werden die Zahlen 0 
 bis 9 und die Buchstaben A, B, C, @dots{} f@"ur die Darstellung der Zahl in der 
 Basis @code{obase} herangezogen.  Gro@ss{}e und kleine Buchstaben werden nicht 
@@ -1671,7 +1674,7 @@ Beispiele:
 Standardwert: @code{true}
 
 Hat die Optionsvariable den Wert @code{false}, wird die Wurzelfunktion als
-Exponentation mit dem Exponenten @code{1/2} angezeigt.
+Exponentiation mit dem Exponenten @code{1/2} angezeigt.
 @end defvr
 
 @c --- 21.08.2010 --------------------------------------------------------------
