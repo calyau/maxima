@@ -548,7 +548,17 @@ When one changes, the other does too."
   (in-package :maxima)
   (setf *load-verbose* nil)
   (setf *debugger-hook* #'maxima-lisp-debugger)
-  (setf *print-circle* t) ;; "assume" db contains circular objects
+  ;; See discussion on the maxima list
+  ;; http://www.math.utexas.edu/pipermail/maxima/2011/024014.html.
+  ;; Set *print-length* and *print-level* to some reasonable values so
+  ;; that normal Lisp structure is shown, but prevent typical circular
+  ;; structures from hanging Lisp.
+  ;;
+  ;; (We do we set these instead of binding them?)
+  (setf *print-circle* nil)
+  (setf *print-length* 100)
+  (setf *print-level* 15)
+  
   ;; GCL: print special floats, which are generated whether or not this flag is enabled
   #+gcl (setf si:*print-nans* t)
   #+ccl
