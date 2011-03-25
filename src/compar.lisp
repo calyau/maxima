@@ -2380,6 +2380,12 @@ relational knowledge is contained in the default context GLOBAL.")
 	  (kind %coth $oddfun)
 	  (kind %csch $oddfun)
 	  (kind %sech $posfun)
+	  (kind %asinh $increasing) (kind %asinh $oddfun)
+	  ;; It would be nice to say %acosh is $posfun, but then
+	  ;; assume(xn<0); abs(acosh(xn)) -> acosh(xn), which is wrong
+	  ;; since acosh(xn) is complex.
+	  (kind %acosh $increasing)
+	  (kind %atanh $increasing) (kind %atanh $oddfun)
 	  (kind $li $complex)
 	  (kind $lambert_w $complex)
 	  (kind %cabs $complex)))
