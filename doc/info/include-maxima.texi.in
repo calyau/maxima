@@ -152,6 +152,8 @@ Additional packages
 * dynamics::                    Graphics for dynamical systems and fractals.
 * ezunits::                     Dimensional quantities.
 * f90::                         Maxima to fortran translator.
+* finance::                     Financial package.
+* fractals::                    Fractals.
 * ggf::                         Generating function of sequences.
 * graphs::                      Graph theory package.
 * grobner::                     Functions for working with Groebner bases.
@@ -482,6 +484,19 @@ ezunits
 f90
 
 * Functions and Variables for f90::
+
+finance
+
+* Introduction to finance::
+* Functions and Variables for finance::
+
+fractals
+
+* Introduction to fractals::
+* Definitions for IFS fractals::
+* Definitions for complex fractals::
+* Definitions for Koch snowflakes::
+* Definitions for Peano maps::
 
 ggf
 
@@ -843,11 +858,19 @@ zeilberger
 @chapter ezunits
 @include ezunits.texi
 
-@node f90, ggf, ezunits, Top
+@node f90, finance, ezunits, Top
 @chapter f90
 @include f90.texi
 
-@node ggf, graphs, f90, Top
+@node finance, fractals, f90, Top
+@chapter finance
+@include finance.texi
+
+@node fractals, ggf, finance, Top
+@chapter fractals
+@include fractals.texi
+
+@node ggf, graphs, fractals, Top
 @chapter ggf
 @include ggf.texi
 
