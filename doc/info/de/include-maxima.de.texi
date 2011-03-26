@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in revision 1.12
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 14.03.2011
+@c Revision    : 27.03.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -161,7 +161,7 @@ Spezifische Gebiete der Mathematik
 
 Fortgeschrittene M@"oglichkeiten und Programmierung
 
-* Regeln und Muster::           (Englisch) Nutzerdefinierte Muster und Regeln
+* Muster und Regeln::           Nutzerdefinierte Muster und Regeln
                                 f@"ur die Vereinfachung.
 * Funktionsdefinitionen::       Definition von Maxima-Funktionen.
 * Laufzeitumgebung::            Anpassung der Maxima-Umgebung.
@@ -173,7 +173,7 @@ Fortgeschrittene M@"oglichkeiten und Programmierung
  
 Zus@"atzliche Pakete (Englisch)
 
-* abs_integrate::               Integrals for the functions abs, signun, ...
+* abs_integrate::               Integrals for the functions abs, signum, @dots{}
 * affine::                      
 * asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
@@ -374,9 +374,9 @@ Laufzeitumgebung
 * Interrupts::
 * Funktionen und Variablen der Laufzeitumgebung::
 
-Regeln und Muster
-* Introduction to Rules and Patterns::
-* Functions and Variables for Rules and Patterns::
+Muster und Regeln
+* Einf@"uhrung in Muster und Regeln::
+* Funktionen und Variablen f@"ur Muster und Regeln::
 
 Funktionsdefinitionen
 * Einf@"uhrung in Funktionsdefinitionen::
@@ -697,15 +697,15 @@ Glossar
 @c @chapter Number Theory
 @c @include Number.texi
 
-@node Laufzeitumgebung, Regeln und Muster, Fouriertransformationen, Top
+@node Laufzeitumgebung, Muster und Regeln, Fouriertransformationen, Top
 @chapter Laufzeitumgebung
 @include Runtime.de.texi
 
-@node Regeln und Muster, Funktionsdefinitionen, Laufzeitumgebung, Top
-@chapter Regeln und Muster
+@node Muster und Regeln, Funktionsdefinitionen, Laufzeitumgebung, Top
+@chapter Muster und Regeln
 @include Rules.de.texi
 
-@node Funktionsdefinitionen, Programmierung, Regeln und Muster, Top
+@node Funktionsdefinitionen, Programmierung, Muster und Regeln, Top
 @chapter Funktionsdefinitionen
 @include Function.de.texi
 

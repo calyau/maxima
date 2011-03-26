@@ -5,7 +5,7 @@
 @c Original    : category-macros.texi revision 1.4
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 27.02.2011
+@c Revision    : 27.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -150,6 +150,7 @@
              O-pe-ra-tor 
              O-pe-ra-to-ren
              Op-tions-va-ri-ablen
+             Re-gel-pa-ket
              Rei-hen-ent-wick-lung
              Ska-lar-pro-dukt    
              Sei-ten-ef-fek-te
