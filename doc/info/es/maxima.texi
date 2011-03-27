@@ -17,7 +17,7 @@
 @documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
-Ver. 5.23
+Ver. 5.24
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
@@ -155,6 +155,8 @@ Paquetes adicionales
 * dynamics::                    Gr@'aficas de sistemas din@'amicos y fractales.
 * ezunits::                     Magnitudes dimensionales.
 * f90::                         Traductor de Maxima fortran.
+* finance::                     C@'alculo financiero.
+* fractals::                    Fractales.
 * ggf::                         Expresi@'on general de sucesiones.
 * graphs::                      Teor@'{@dotless{i}}a de grafos.
 * grobner::                     Funciones para trabajar con bases de Groebner.
@@ -474,6 +476,19 @@ ezunits
 f90
 
 * Funciones y variables para f90::
+
+finance
+
+* Introducci@'on a finance::
+* Funciones y Variables para finance::
+
+* fractals
+
+* Introducci@'on a fractals::
+* Definiciones para IFS fractals::
+* Definiciones para fractales complejos::
+* Definiciones para cops de Koch::
+* Definiciones para curvas de Peano::
 
 ggf
 
@@ -816,11 +831,19 @@ zeilberger
 @chapter ezunits
 @include ezunits.texi
 
-@node f90, ggf, ezunits, Top
+@node f90, finance, ezunits, Top
 @chapter f90
 @include f90.texi
 
-@node ggf, graphs, f90, Top
+@node finance, fractals, f90, Top
+@chapter finance
+@include finance.texi
+
+@node fractals, ggf, finance, Top
+@chapter fractals
+@include fractals.texi
+
+@node ggf, graphs, fractals, Top
 @chapter ggf
 @include ggf.texi
 
