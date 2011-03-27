@@ -24,6 +24,7 @@ Tree and a Fern
 
 - Peano maps: the Sierpinski and Hilbert maps
 
+Author: Jos@'e Ram@'{@dotless{i}}rez Labrador.
 
 For questions, suggestions and  bugs, please feel free
 to contact me at
