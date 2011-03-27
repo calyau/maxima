@@ -1045,19 +1045,23 @@ summation when necessary."
       *opers-list (cons '($lassociative . lassociative) *opers-list))
 
 (defmfun lassociative (e z)
-  (let ((ans (cdr (oper-apply (cons (car e) (total-nary e)) z))))
-    (cond ((null (cddr ans)) (cons (car e) ans))
-	  ((do ((newans (list (car e) (car ans) (cadr ans))
-			(list (car e) newans (car ans)))
-		(ans (cddr ans) (cdr ans)))
-	       ((null ans) newans))))))
+  (let*
+    ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
+     (ans (cdr ans0)))
+    (cond ((or (null (cddr ans)) (not (eq (caar ans0) (caar e)))) ans0)
+          ((do ((newans (list (car e) (car ans) (cadr ans))
+                        (list (car e) newans (car ans)))
+                (ans (cddr ans) (cdr ans)))
+               ((null ans) newans))))))
 
 (setq opers (cons '$rassociative opers)
       *opers-list (cons '($rassociative . rassociative) *opers-list))
 
 (defmfun rassociative (e z)
-  (let ((ans (cdr (oper-apply (cons (car e) (total-nary e)) z))))
-    (cond ((null (cddr ans)) (cons (car e) ans))
+  (let*
+    ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
+     (ans (cdr ans0)))
+    (cond ((or (null (cddr ans)) (not (eq (caar ans0) (caar e)))) ans0)
 	  (t (setq ans (nreverse ans))
 	     (do ((newans (list (car e) (cadr ans) (car ans))
 			  (list (car e) (car ans) newans))

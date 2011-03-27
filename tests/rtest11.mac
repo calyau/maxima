@@ -395,3 +395,51 @@ sort (listofvars (xx + yy * zz));
 killcontext (aa);
 done;
 
+/* tellsimp interaction with rassociative declaration
+ * from the mailing list circa 2011-03-25
+ */
+
+(kill (zand, zor, a, b, c), declare (zand, rassociative));
+done;
+
+zand (a, zand (b, c));
+zand (a, zand (b, c));
+
+zand (zand (a, b), c);
+zand (a, zand (b, c));
+
+(matchdeclare ([var1, var2, var3], all),
+ tellsimp (zand (zor (var1, var2), var3), zor (zand (var1, var3), zand (var2, var3))),
+ tellsimp (zand (var1, zor (var2, var3)), zor (zand (var1, var2), zand (var1, var3))),
+ 0);
+0;
+
+zand (zor (a, b), c);
+zor (zand (a, c), zand (b, c));
+
+zand (a, zor (b, c));
+zor (zand (a, b), zand (a, c));
+
+zand (a, zand (b, c));
+zand (a, zand (b, c));
+
+zand (zand (a, b), c);
+zand (a, zand (b, c));
+
+/* try it w/ lassociative as well */
+
+(remove (zand, rassociative), declare (zand, lassociative));
+done;
+
+zand (zand (a, b), c);
+zand (zand (a, b), c);
+
+zand (a, zand (b, c));
+zand (zand (a, b), c);
+
+zand (zor (a, b), c);
+zor (zand (a, c), zand (b, c));
+
+zand (a, zor (b, c));
+zor (zand (a, b), zand (a, c));
+
