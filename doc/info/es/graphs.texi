@@ -21,7 +21,7 @@ v@'ertices de los grafos/digrafos y pesos a sus aristas/arcos.
 
 La funci@'on @code{draw_graph} dibuja grafos siguiendo un criterio r@'{@dotless{i}}gido
 de posicionamiento de los v@'ertices. Tambi@'en puede hacer uso del programa graphviz
-disponible en @url{http://www.graphviz.org}. La funci@'n @code{draw_graph} utiliza el paquete 
+disponible en @url{http://www.graphviz.org}. La funci@'on @code{draw_graph} utiliza el paquete 
 @code{draw} de Maxima.
 
 Para hacer uso de este paquete, ejec@'utese primero @code{load(graphs)}.
