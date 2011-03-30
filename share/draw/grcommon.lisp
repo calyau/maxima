@@ -25,6 +25,8 @@
 ($put '$grcommon 1 '$version)
 
 
+(defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
+
 ;; This variable stores actual graphics options
 (defvar *gr-options* (make-hash-table))
 
@@ -67,10 +69,10 @@
       (gethash '$user_preamble *gr-options*)    ""
       (gethash '$xyplane *gr-options*)          nil
       (gethash '$font *gr-options*)             "";
-      (gethash '$font_size *gr-options*)        12;
+      (gethash '$font_size *gr-options*)        10;
 
       ; colors are specified by name
-      (gethash '$color *gr-options*)           "#000000" ; for lines, points, borders and labels
+      (gethash '$color *gr-options*)           "#0000ff" ; for lines, points, borders and labels
       (gethash '$fill_color *gr-options*)      "#ff0000" ; for filled regions
       (gethash '$fill_density *gr-options*)    0         ; in [0,1], only for object 'bars
 
@@ -187,7 +189,7 @@
 
 ;; update options color, fill_color, xaxis_color, yaxis_color,
 ;; $zaxis_color, and $background_color
-;; ------------------------------------------------------------------------
+;; -----------------------------------------------------------
 ;; defined as a color name or hexadecimal #rrggbb
 (defun atom-to-downcased-string (val)
    (substitute
@@ -665,6 +667,30 @@
 
 
 
+;; update line_type and line-axes
+;; Negative indices indicate the number of faces to be drawn in case of tubes.
+;; Default number of faces is 8.
+;; --------------------------------------------------------------------------
+(defun update-linestyle (opt val)
+  (cond
+    ((atom val)
+       (case val
+         ($dots     (setf (gethash opt *gr-options*) 0))
+         ($solid    (setf (gethash opt *gr-options*) 1))
+         ($dashes   (setf (gethash opt *gr-options*) 2))
+         ($dot_dash (setf (gethash opt *gr-options*) 3))
+         ($tube     (setf (gethash opt *gr-options*) -8))
+         (otherwise  (merror "draw: illegal line type: ~M" val) )))
+    ((and ($listp val)
+          (= ($length val) 2)
+          (equal ($first val) '$tube)
+          (integerp ($second val))
+          (> ($second val) 2))
+       (setf (gethash opt *gr-options*) (- ($second val)) ) )
+    (t
+       (merror "draw: unknown line type: ~M" val))))
+
+
 
 
 
@@ -710,7 +736,7 @@
                      (<= val 1 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: fill_density must be a number in [0, 1]")))
-      (($line_width $head_length $head_angle $xaxis_width $yaxis_width $zaxis_width)
+      (($line_width $head_length $head_angle $xaxis_width $yaxis_width $zaxis_width $font_size)
             (update-positive-float opt val))
       ($xyplane ; defined as real number or false
             (setf val ($float val))
@@ -730,10 +756,7 @@
               (setf (gethash opt *gr-options*) val)
               (merror "draw: illegal colorbox option: ~M " val)) )
       (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
-            (case val
-               ($solid (setf (gethash opt *gr-options*) 1))
-               ($dots  (setf (gethash opt *gr-options*) 0))
-               (otherwise  (merror "draw: illegal line type: ~M" val))) )
+         (update-linestyle opt val) )
       (($tube_extremes) ; defined as a list of two elements, $open and/or $closed
             (if (and ($listp val)
                      (= ($length val) 2)
@@ -743,7 +766,7 @@
                (merror "draw: illegal tube extreme types: ~M" val)))
       ($point_type
          (update-pointtype val))
-      (($columns $nticks $adapt_depth $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel $font_size)
+      (($columns $nticks $adapt_depth $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel)
             (update-positive-integer opt val))
       ($contour_levels    ; positive integer, increment or set of points
             (cond ((and (integerp val) (> val 0 ))
@@ -933,10 +956,10 @@
 
 
 
+;;; COMMON GNUPLOT - VTK AUXILIARY FUNCTIONS
 
-
-;; transforms arguments to make-scene-2d, make-scene-3d,
-;; draw, and model3d to a unique list. With this piece of code,
+;; Transforms arguments to make-scene-2d, make-scene-3d,
+;; draw, and vtk3d to a unique list. With this piece of code,
 ;; gr2d, gr3d, draw, and model3d admit as arguments nested lists
 ;; of options and graphic objects
 (defmacro listify-arguments ()
@@ -947,4 +970,132 @@
                      (map 
                        'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
                        args))))))
+
+
+
+
+
+;; The following functions implement the marching cubes algorithm
+;; for implicit functions in 3d.
+(simplify ($load "implicit3d.lisp"))
+
+; Copies multidimensional arrays.
+(defun copy-array (array)
+  (let ((dims (array-dimensions array)))
+    (adjust-array
+      (make-array
+         dims
+         :element-type (array-element-type array)
+         :displaced-to array)
+      dims)))
+
+; Calculates surface-edge intersection by interpolation
+(defun edge-interpolation (x1 y1 z1 x2 y2 z2 v1 v2)
+  (cond ((or (< (abs v1) 0.00001)
+             (< (abs (- v1 v2)) 0.00001))
+          (list x1 y1 z1))
+        ((< (abs v2) 0.00001)
+          (list x2 y2 z2))
+        (t
+          (let ((m (/ (- v1) (- v2 v1))))
+            (list
+              (+ x1 (* m (- x2 x1)))
+              (+ y1 (* m (- y2 y1)))
+              (+ z1 (* m (- z2 z1))))))))
+
+(defmacro make-triangle-vertices (i1 j1 k1 i2 j2 k2 e1 e2)
+  `(edge-interpolation
+       (aref px ,i1) (aref py ,j1) (aref pz ,k1)
+       (aref px ,i2) (aref py ,j2) (aref pz ,k2)
+       (aref val ,e1) (aref val ,e2)))
+
+(defun flatten (lis)
+  (cond ((atom lis) lis)
+        ((listp (car lis))
+          (append (flatten (car lis)) (flatten (cdr lis))))
+        (t
+          (append (list (car lis)) (flatten (cdr lis))))))
+
+(defun find-triangles (expr par1 xmin xmax par2 ymin ymax par3 zmin zmax)
+  (let* ((nx (get-option '$x_voxel))
+         (ny (get-option '$y_voxel))
+         (nz (get-option '$z_voxel))
+         (dx (/ (- xmax xmin) nx))
+         (dy (/ (- ymax ymin) ny))
+         (dz (/ (- zmax zmin) nz))
+         (fcn (coerce-float-fun (m- ($lhs expr) ($rhs expr)) `((mlist) ,par1 ,par2 ,par3)))
+         (vert '())
+         (px (make-array (+ nx 1) :element-type 'flonum))
+         (py (make-array (+ ny 1) :element-type 'flonum))
+         (pz (make-array (+ nz 1) :element-type 'flonum))
+         (oldval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'flonum))
+         (newval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'flonum))    )
+    ; initialize coordinate arrays
+    (loop for i to nx do (setf (aref px i) (+ xmin (* i dx))))
+    (loop for j to ny do (setf (aref py j) (+ ymin (* j dy))))
+    (loop for k to nz do (setf (aref pz k) (+ zmin (* k dz))))
+
+    ; initialize first layer
+    (loop for i to nx do
+      (loop for j to ny do
+        (let ((fxy (funcall fcn (aref px i) (aref py j) (aref pz 0))))
+          (if (floatp fxy)
+            (setf (aref oldval i j) fxy)
+            (merror "draw3d (implicit): non real value")))))
+
+    ; begin triangularization process
+    (loop for k from 1 to nz do
+
+      ; calculate node values in new layer
+      (loop for i to nx do
+        (loop for j to ny do
+          (let ((fxy (funcall fcn (aref px i) (aref py j) (aref pz k))))
+            (if (floatp fxy)
+              (setf (aref newval i j) fxy)
+              (merror "draw3d (implicit): check surface definition; non real value")))))
+
+      ; analyze voxels in this slide
+      (loop for i below nx do
+        (loop for j below ny do
+          (let* (triangles
+                 (cubidx 0)
+                 (k-1 (- k 1))
+                 (i+1 (+ i 1))
+                 (j+1 (+ j 1))
+                 (val (make-array 8 :element-type
+                                       'flonum
+                                    :initial-contents
+                                       `(,(aref oldval i j+1) ,(aref oldval i+1 j+1)
+                                         ,(aref oldval i+1 j) ,(aref oldval i j)
+                                         ,(aref newval i j+1) ,(aref newval i+1 j+1)
+                                         ,(aref newval i+1 j) ,(aref newval i j)))))
+            (when (< (aref val 0) 0.0) (setf cubidx (logior cubidx 1)))
+            (when (< (aref val 1) 0.0) (setf cubidx (logior cubidx 2)))
+            (when (< (aref val 2) 0.0) (setf cubidx (logior cubidx 4)))
+            (when (< (aref val 3) 0.0) (setf cubidx (logior cubidx 8)))
+            (when (< (aref val 4) 0.0) (setf cubidx (logior cubidx 16)))
+            (when (< (aref val 5) 0.0) (setf cubidx (logior cubidx 32)))
+            (when (< (aref val 6) 0.0) (setf cubidx (logior cubidx 64)))
+            (when (< (aref val 7) 0.0) (setf cubidx (logior cubidx 128)))
+            (setf triangles (aref *i3d_triangles* cubidx))   ; edges intersecting the surface
+            (do ((e 0 (1+ e)))
+                ((= (aref triangles e) -1) 'done)
+              (push 
+                (case (aref triangles e)
+                  (0  (make-triangle-vertices i j+1 k-1 i+1 j+1 k-1 0 1))
+                  (1  (make-triangle-vertices i+1 j+1 k-1 i+1 j k-1 1 2))
+                  (2  (make-triangle-vertices i+1 j k-1 i j k-1 2 3))
+                  (3  (make-triangle-vertices i j k-1 i j+1 k-1 3 0))
+                  (4  (make-triangle-vertices i j+1 k i+1 j+1 k 4 5))
+                  (5  (make-triangle-vertices i+1 j+1 k i+1 j k 5 6))
+                  (6  (make-triangle-vertices i+1 j k i j k 6 7))
+                  (7  (make-triangle-vertices i j k i j+1 k 7 4))
+                  (8  (make-triangle-vertices i j+1 k-1 i j+1 k 0 4))
+                  (9  (make-triangle-vertices i+1 j+1 k-1 i+1 j+1 k 1 5))
+                  (10 (make-triangle-vertices i+1 j k-1 i+1 j k 2 6))
+                  (11 (make-triangle-vertices i j k-1 i j k 3 7)) )
+                vert)))))
+      ; make oldval a copy of newval
+      (setf oldval (copy-array newval)))
+    vert))
 

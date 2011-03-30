@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2010 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2011 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -31,17 +31,15 @@
 
 ($put '$draw 2 '$version)
 
-(defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
-
-(when
-  (null ($get '$grcommon '$version))
-  (simplify ($load "grcommon.lisp")))
+($load "grcommon.lisp")
 
 ;; the following variable will be removed in the future,
 ;; since some packages are still using it. 
 (defvar $draw_loaded t)
 
 (defvar $draw_compound t)
+
+(defvar $draw_renderer '$gnuplot)
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
@@ -1616,143 +1614,23 @@
 ;;     line_type
 ;;     color
 ;;     enhanced3d
-(simplify ($load "implicit3d.lisp"))
-
-;; Copies multidimensional arrays.
-(defun copy-array (array)
-  (let ((dims (array-dimensions array)))
-    (adjust-array
-      (make-array
-         dims
-         :element-type (array-element-type array)
-         :displaced-to array)
-      dims)))
-
-;; Calculates surface-edge intersection by interpolation
-(defun edge-interpolation (x1 y1 z1 x2 y2 z2 v1 v2)
-  (cond ((or (< (abs v1) 0.00001)
-             (< (abs (- v1 v2)) 0.00001))
-          (list x1 y1 z1))
-        ((< (abs v2) 0.00001)
-          (list x2 y2 z2))
-        (t
-          (let ((m (/ (- v1) (- v2 v1))))
-            (list
-              (+ x1 (* m (- x2 x1)))
-              (+ y1 (* m (- y2 y1)))
-              (+ z1 (* m (- z2 z1))))))))
-
-(defmacro make-triangle-vertices (i1 j1 k1 i2 j2 k2 e1 e2)
-  `(edge-interpolation
-       (aref px ,i1) (aref py ,j1) (aref pz ,k1)
-       (aref px ,i2) (aref py ,j2) (aref pz ,k2)
-       (aref val ,e1) (aref val ,e2)))
-
-(defun flatten (lis)
-  (cond ((atom lis) lis)
-        ((listp (car lis))
-          (append (flatten (car lis)) (flatten (cdr lis))))
-        (t
-          (append (list (car lis)) (flatten (cdr lis))))))
-
+;; Some functions and macros are defined in grcommon.lisp
 (defun implicit3d (expr par1 xmin xmax par2 ymin ymax par3 zmin zmax)
-  (let* ((nx (get-option '$x_voxel))
-         (ny (get-option '$y_voxel))
-         (nz (get-option '$z_voxel))
-         (xmin ($float xmin))
-         (xmax ($float xmax))
-         (ymin ($float ymin))
-         (ymax ($float ymax))
-         (zmin ($float zmin))
-         (zmax ($float zmax))
-         (dx (/ (- xmax xmin) nx))
-         (dy (/ (- ymax ymin) ny))
-         (dz (/ (- zmax zmin) nz))
-         (fcn (coerce-float-fun (m- ($lhs expr) ($rhs expr)) `((mlist) ,par1 ,par2 ,par3)))
-         ($numer t)
-         (vertices '())
-         (pts '())
-         pltcmd
-         (grouping '())
-         ncols
-         (px (make-array (+ nx 1) :element-type 'flonum))
-         (py (make-array (+ ny 1) :element-type 'flonum))
-         (pz (make-array (+ nz 1) :element-type 'flonum))
-         (oldval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'flonum))
-         (newval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'flonum)) )
+  (let ((xmin ($float xmin))
+        (xmax ($float xmax))
+        (ymin ($float ymin))
+        (ymax ($float ymax))
+        (zmin ($float zmin))
+        (zmax ($float zmax))
+        (pts '())
+        (grouping '())
+        pltcmd ncols vertices)
     (check-enhanced3d-model "implicit" '(0 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2 par3)))
     (setf ncols (if (= *draw-enhanced3d-type* 0) 3 4))
-    ; initialize coordinate arrays
-    (loop for i to nx do (setf (aref px i) (+ xmin (* i dx))))
-    (loop for j to ny do (setf (aref py j) (+ ymin (* j dy))))
-    (loop for k to nz do (setf (aref pz k) (+ zmin (* k dz))))
 
-    ; initialize first layer
-    (loop for i to nx do
-      (loop for j to ny do
-        (let ((fxy (funcall fcn (aref px i) (aref py j) (aref pz 0))))
-          (if (floatp fxy)
-            (setf (aref oldval i j) fxy)
-            (merror "draw3d (implicit): non real value")))))
-
-    ; begin triangularization process
-    (loop for k from 1 to nz do
-
-      ; calculate node values in new layer
-      (loop for i to nx do
-        (loop for j to ny do
-          (let ((fxy (funcall fcn (aref px i) (aref py j) (aref pz k))))
-            (if (floatp fxy)
-              (setf (aref newval i j) fxy)
-              (merror "draw3d (implicit): check surface definition; non real value")))))
-
-      ; analyze voxels in this slide
-      (loop for i below nx do
-        (loop for j below ny do
-          (let* (triangles
-                 (cubidx 0)
-                 (k-1 (- k 1))
-                 (i+1 (+ i 1))
-                 (j+1 (+ j 1))
-                 (val (make-array 8 :element-type
-                                       'flonum
-                                    :initial-contents
-                                       `(,(aref oldval i j+1) ,(aref oldval i+1 j+1)
-                                         ,(aref oldval i+1 j) ,(aref oldval i j)
-                                         ,(aref newval i j+1) ,(aref newval i+1 j+1)
-                                         ,(aref newval i+1 j) ,(aref newval i j)))))
-            (when (< (aref val 0) 0.0) (setf cubidx (logior cubidx 1)))
-            (when (< (aref val 1) 0.0) (setf cubidx (logior cubidx 2)))
-            (when (< (aref val 2) 0.0) (setf cubidx (logior cubidx 4)))
-            (when (< (aref val 3) 0.0) (setf cubidx (logior cubidx 8)))
-            (when (< (aref val 4) 0.0) (setf cubidx (logior cubidx 16)))
-            (when (< (aref val 5) 0.0) (setf cubidx (logior cubidx 32)))
-            (when (< (aref val 6) 0.0) (setf cubidx (logior cubidx 64)))
-            (when (< (aref val 7) 0.0) (setf cubidx (logior cubidx 128)))
-            (setf triangles (aref *i3d_triangles* cubidx))   ; edges intersecting the surface
-            (do ((e 0 (1+ e)))
-                ((= (aref triangles e) -1) 'done)
-              (push 
-                (case (aref triangles e)
-                  (0  (make-triangle-vertices i j+1 k-1 i+1 j+1 k-1 0 1))
-                  (1  (make-triangle-vertices i+1 j+1 k-1 i+1 j k-1 1 2))
-                  (2  (make-triangle-vertices i+1 j k-1 i j k-1 2 3))
-                  (3  (make-triangle-vertices i j k-1 i j+1 k-1 3 0))
-                  (4  (make-triangle-vertices i j+1 k i+1 j+1 k 4 5))
-                  (5  (make-triangle-vertices i+1 j+1 k i+1 j k 5 6))
-                  (6  (make-triangle-vertices i+1 j k i j k 6 7))
-                  (7  (make-triangle-vertices i j k i j+1 k 7 4))
-                  (8  (make-triangle-vertices i j+1 k-1 i j+1 k 0 4))
-                  (9  (make-triangle-vertices i+1 j+1 k-1 i+1 j+1 k 1 5))
-                  (10 (make-triangle-vertices i+1 j k-1 i+1 j k 2 6))
-                  (11 (make-triangle-vertices i j k-1 i j k 3 7)) )
-                vertices)))))
-
-      ; make oldval a copy of newval
-      (setf oldval (copy-array newval)))
-
+    (setf vertices (find-triangles expr par1 xmin xmax par2 ymin ymax par3 zmin zmax))
     (when (null vertices)
       (merror "draw3d (implicit): no surface within these ranges"))
     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
@@ -1921,8 +1799,8 @@
                    dx dy)
                 (setf ncols (length (cdadr mat))
                       nrows (length (cdr mat)))
-                (setf dx (/ fwidth ncols)
-                      dy (/ fheight nrows))
+                (setf dx (/ fwidth (1- ncols))
+                      dy (/ fheight (1- nrows)))
                 (setf ncols-file (if (= *draw-enhanced3d-type* 0) 3 4))
                 (setf result (make-array (* ncols nrows ncols-file) :element-type 'flonum))
                 (loop for row on (cdr mat) by #'cdr do
@@ -3376,7 +3254,14 @@
 
 ;; Equivalent to draw3d(opt & obj)
 (defun $draw3d (&rest args)
-   ($draw (cons '($gr3d) args)) )
+  (cond ((equal $draw_renderer '$gnuplot)
+           ($draw (cons '($gr3d) args)))
+        ((equal $draw_renderer '$vtk)
+           (when (null ($get '$vtk '$version))
+              (simplify ($load "vtk.lisp")))
+           (apply 'vtk3d args))
+        (t
+           (merror "draw: unknown renderer ~M" $draw_renderer))))
 
 ;; This function transforms an integer number into
 ;; a string, adding zeros at the left side until the
@@ -3442,8 +3327,8 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name))))
-      (otherwise (merror "draw: not a file format" )))
-   (send-gnuplot-command (format nil "~a~%replot" str)) ))
+      (otherwise (merror "draw: not a file format")))
+   (send-gnuplot-command (format nil "~a~%replot~%unset output~%" str)) ))
 
 
 ;; When working with multiple windows, for example
