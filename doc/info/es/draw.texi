@@ -1,4 +1,4 @@
-@c version 1.57
+@c version 1.58
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -22,9 +22,9 @@ Tres son las funciones principales a utilizar a nivel de Maxima:
 S@'{@dotless{i}}gase este enlace para ver ejemplos m@'as elaborados
 de este paquete:
 
-@url{http://www.telefonica.net/web2/biomates/maxima/gpdraw}
+@url{http://riotorto.users.sourceforge.net/gnuplot}
 
-Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
+Se necesita tener instalado Gnuplot 4.2 o superior para ejecutar este paquete.
 
 
 
@@ -495,7 +495,7 @@ See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
 
 @defvr {Opci@'on gr@'afica} color
-Valor por defecto: @code{black}
+Valor por defecto: @code{blue}
 
 @code{color} especifica el color para dibujar l@'{@dotless{i}}neas,
 puntos, bordes de pol@'{@dotless{i}}gonos y etiquetas.
@@ -1203,7 +1203,7 @@ La documentaci@'on de gnuplot es una importante fuente de informaci@'on sobre te
 
 
 @defvr {Opci@'on gr@'afica} font_size
-Valor por defecto: 12
+Valor por defecto: 10
 
 Esta opci@'on permite seleccionar el tama@~no de la fuente a utilizar por el
 terminal. S@'olo se puede utilizar un tipo de fuente y tama@~no por
