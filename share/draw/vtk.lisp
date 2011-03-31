@@ -353,8 +353,8 @@
     ; return tcl-vtk code
     (concatenate 'string
       output-string
-      (format nil "vtkPolyDataReader \"~a\"~%" source-name)
-      (format nil "  ~a SetFileName ~a~%" source-name data-file-path)
+      (format nil "vtkPolyDataReader ~a~%" source-name)
+      (format nil "  ~a SetFileName \"~a\"~%" source-name data-file-path)
       (vtktransform-code trans-name)
       (vtktransformpolydatafilter-code filter-name source-name trans-name)
       (vtkpolydatamapper-code mapper-name filter-name)
@@ -966,8 +966,8 @@
         (setf output-string
           (concatenate 'string
             output-string
-            (format nil "vtkPolyDataReader \"~a\"~%" source-name)
-            (format nil "  ~a SetFileName ~a~%" source-name data-file-path)
+            (format nil "vtkPolyDataReader ~a~%" source-name)
+            (format nil "  ~a SetFileName \"~a\"~%" source-name data-file-path)
             (vtktransform-code trans-name)
             (vtktransformpolydatafilter-code filter-name source-name trans-name)
             (cond
@@ -995,8 +995,8 @@
         (setf output-string
           (concatenate 'string
             output-string
-            (format nil "vtkUnstructuredGridReader \"~a\"~%" source-name)
-            (format nil "  ~a SetFileName ~a~%" source-name data-file-path)))))
+            (format nil "vtkUnstructuredGridReader ~a~%" source-name)
+            (format nil "  ~a SetFileName \"~a\"~%" source-name data-file-path)))))
 
     ; draw glyphs according to point-type
     (cond
@@ -1233,8 +1233,8 @@
     ; return tcl-vtk code
     (concatenate 'string
       output-string
-      (format nil "vtkPolyDataReader \"~a\"~%" source-name)
-      (format nil "  ~a SetFileName ~a~%" source-name data-file-path)
+      (format nil "vtkPolyDataReader ~a~%" source-name)
+      (format nil "  ~a SetFileName \"~a\"~%" source-name data-file-path)
       (vtktransform-code trans-name)
       (vtktransformpolydatafilter-code filter-name source-name trans-name)
       (cond
@@ -1672,7 +1672,7 @@
            (($eps $eps_color)
               (setf extension   "eps"
                     classformat "vtkPostScriptWriter")))
-         (format cmds "~a~%~a~%~a ~a~%~a~%~a ~a.~a~%~a~%~a~%~a~%"
+         (format cmds "~a~%~a~%~a ~a~%~a~%~a \"~a.~a\"~%~a~%~a~%~a~%"
            "vtkWindowToImageFilter w2if"
            "  w2if SetInput renWin"
            classformat "writer"
@@ -1682,7 +1682,7 @@
            "vtkCommand DeleteAllObjects"
            "exit"))
       ((eq terminal '$vrml)
-         (format cmds "~a~%~a~%~a ~a.~a~%~a~%~a~%~a~%~a~%"
+         (format cmds "~a~%~a~%~a \"~a.~a\"~%~a~%~a~%~a~%~a~%"
            "vtkVRMLExporter vrml"
            "  vrml SetInput renWin"
            "  vrml SetFileName" filename "wrl"
