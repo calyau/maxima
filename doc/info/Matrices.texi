@@ -61,8 +61,9 @@ The @code{vect} package contains these functions:
 @c REVIEW vect.usg TO ENSURE THAT TEXINFO HAS WHATEVER IS THERE
 @c PRINTFILE(VECT,USAGE,SHARE); for details.
 
-Warning: the @code{vect} package declares the dot operator @code{.}
-to be a commutative operator.
+By default the @code{vect} package does not declare the dot operator to be a
+commutative operator.  To get a commutative dot operator @code{.}, the command
+@code{declare(".", commutative)} must be executed.
 
 @opencatbox
 @category{Vectors} @category{Share packages} @category{Package vect}
