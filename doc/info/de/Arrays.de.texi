@@ -5,7 +5,7 @@
 @c Original    : Arrays.texi revision 1.17
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.03.2011
-@c Revision    : 22.03.2011
+@c Revision    : 31.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -137,15 +137,15 @@ Mit der Funktion @code{array} k@"onnen nicht-deklarierte Arrays in ein
 deklariertes Array umgewandelt werden.  Wenn das deklarierte einen Typ erhalten
 soll, m@"ussen alle Elemente des nicht-deklarierten Arrays von diesem Typ sein.
 
+Siehe auch die Funktion @mrefcomma{make_array} um ein Lisp-Array zu erzeugen,
+sowie die Optionsvariable @mrefdot{use_fast_arrays}
+
 Beispiele:
 
 Es werden zwei verschiedene Arrays definiert.  Im ersten Fall erh@"alt das Array
 keinen Typ.  Elemente, denen noch kein Wert zugewiesen wurde, werden mit dem
 Symbol @code{#####} initialisiert.  Im zweiten Fall ist das Array vom Typ 
 @code{fixnum}.  Jetzt wird das Array mit dem Wert @code{0} initialisiert.
-
-Siehe auch die Funktion @mrefcomma{make_array} um ein Lisp-Array zu erzeugen,
-sowie die Optionsvariable @mrefdot{use_fast_arrays}
 
 @example
 (%i1) array(a, 2, 2);
@@ -189,7 +189,7 @@ Ein nicht-deklariertes Array kann in ein deklariertes Array umgewandelt werden.
 Wertet @code{@var{A}[@var{i_1}, ... , @var{i_n}]} aus, wobei @var{A} ein Array
 und @var{i_1}, @dots{}, @var{i_n} die Indizes eines Array-Elementes sind.
 
-Siehe auch die Funktion @mrefcomma{subvar} die die gleich Funktionalit@"at hat,
+Siehe auch die Funktion @mrefcomma{subvar} die die gleiche Funktionalit@"at hat,
 sowie die Funktion @mrefcomma{arraymake} die die Referenz auf das Array-Element
 nicht auswertet.
 
@@ -245,7 +245,7 @@ Funktionen im Array enthalten sind.  Die Funktionen werden mit der Funktion
 
 F@"ur indizierte Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
 @code{hashed}, die Zahl der Indizes und die Indizes enth@"alt, f@"ur die 
-Lambda-Ausdr@"ucke vorhanden sind.  Die Lambda-Ausdr@"ucke werden von der 
+Lambda-Ausdr@"ucke vorhanden sind.  Die @mref{lambda}-Ausdr@"ucke werden von der
 Funktion @mref{listarray} angezeigt.
 
 Die Funktion @code{arrayinfo} kann auch f@"ur Lisp-Arrays angewendet werden,
@@ -827,9 +827,9 @@ zu definieren.
 
 Beispiel:
 
-In diesem Beispiel wird das Array @code{A}.  Der R@"uckgabewert von
+In diesem Beispiel wird das Array @code{A} verkleinert.  Der R@"uckgabewert von
 @code{rearray} ist ein internes Lisp-Array auch f@"ur den Fall, dass das Array
-selbst kein Lisp-Array ist.  Das ist ein Programmfehler.
+selbst kein Lisp-Array ist.
 
 @example
 (%i1) array(A, fixnum, 2, 2);

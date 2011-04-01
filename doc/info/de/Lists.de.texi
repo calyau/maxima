@@ -5,7 +5,7 @@
 @c Original    : Lists.texi revision 1.38
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 20.03.2011
+@c Revision    : 31.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ als eine Lisp-Liste dargestellt:
 
 Der Operator der Addition ist @code{MPLUS} und die Symbole @code{$A}, @code{$B}
 und @code{$C} sind die Argumente des Operators.  Alle Funktionen f@"ur Listen,
-die nur auf die Argumente wirken, k@"onnen nun auch auf allgemeine Ausdr@"ucke
+die nur auf die Argumente wirken, k@"onnen auch auf allgemeine Ausdr@"ucke
 angewendet werden.  Im folgenden werden zum Beispiel die Funktionen
 @mrefcomma{first} @mrefcomma{last} @mref{cons} und @mref{delete} auf eine
 Addition angewendet:
@@ -91,7 +91,7 @@ Addition angewendet:
 @end example
 
 Weitere Beispiele f@"ur die Anwendung der Funktionen f@"ur Listen auf allgemeine
-Ausdr@"ucke sind bei den einzelnen Funktionen angegeben.  Eine ausf@"uhrlichere
+Ausdr@"ucke sind bei den einzelnen Funktionen angegeben.  Eine ausf@"uhrliche
 Beschreibung der internen Darstellung von Maxima-Ausdr@"ucken ist im Kapitel
 @nref{Ausdr@"ucke} enthalten.
 
@@ -223,10 +223,11 @@ Funktion @code{assoc} den zum Schl@"ussel @var{key} geh@"orenden Wert
 @code{default} zur@"uckgegeben, wenn es vorhanden ist, oder der Wert
 @code{false}.
 
-Die Paare @code{[key_i, value_i]} k@"onnen auch allgemeine Ausdr@"ucke sein, die
-zwei Argumente haben.  Zum Beispiel sind Eintr@"age der Form @code{x=1} oder
-@code{a^b} m@"oglich.  Im ersten Fall ist @code{x} der Schl@"ussel und im
-zweiten Fall @code{a}.  Die Werte sind jeweils @code{1} und @code{b}.
+Anstatt Paare @code{[key_i, value_i]} k@"onnen auch allgemeine Ausdr@"ucke in 
+der Liste enthalten sein, die zwei Argumente haben.  Zum Beispiel sind 
+Eintr@"age der Form @code{x=1} oder @code{a^b} m@"oglich.  Im ersten Fall ist 
+@code{x} der Schl@"ussel und im zweiten Fall @code{a}.  Die Werte sind jeweils 
+@code{1} und @code{b}.
 
 Beispiele:
 
@@ -250,34 +251,6 @@ Beispiele:
 (%o8)                          2 b
 (%i9) assoc(sin(x), l);
 (%o9)                          0.5
-@end example
-@end deffn
-
-@c --- 14.03.2011 DK -----------------------------------------------------------
-@anchor{atom}
-@deffn {Funktion} atom (@var{expr})
-
-Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} ein Atom ist.
-Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole.  Siehe
-auch die Funktionen @mref{symbolp} und @mrefdot{listp}
-
-Beispiele:
-
-@example
-(%i1) atom(5);
-(%o1)                         true
-(%i2) atom(5.0);
-(%o2)                         true
-(%i3) atom(5.0b0);
-(%o3)                         true
-(%i4) atom(1/2);
-(%o4)                         false
-(%i5) atom('a);
-(%o5)                         true
-(%i6) atom(2*x);
-(%o6)                         false
-(%i7) atom("string");
-(%o7)                         true
 @end example
 @end deffn
 
@@ -314,6 +287,7 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{copylist}
+@need 800
 @deffn {Funktion} copylist (@var{list})
 
 Gibt eine Kopie der Liste @var{list} zur@"uck.
@@ -389,7 +363,7 @@ die obere Grenze f@"ur die Iteration.
 @deffn  {Funktion} delete (@var{expr}, @var{list})
 @deffnx {Funktion} delete (@var{expr}, @var{list}, @var{n})
 
-@code{delete(@var{expr}, @var{list})} entfernt aus der der Liste @var{list} die
+@code{delete(@var{expr}, @var{list})} entfernt aus der Liste @var{list} die
 Elemente, die gleich dem Ausdruck @var{expr} sind.  Mit dem Argument @var{n}
 kann die Anzahl der Elemente spezifiziert werden, die aus der Liste entfernt
 werden sollen.  @code{delete} gibt eine neue Liste zur@"uck.  Das Argument
@@ -401,13 +375,13 @@ Ausdr@"ucke, die syntaktisch voneinander verschieden sind, werden nicht aus der
 Liste entfernt.  Zum Beispiel sind die Ausdr@"ucke @code{x^2-1} und
 @code{(x+1)*(x-1)} @"aquivalent, aber syntaktisch verschieden.
 
-Das zweite Argument @var{list} kann auch ein allgemeiner Ausdr@"uck sein.  In 
+Das zweite Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  In 
 diesem Fall werden die Argumente des Hauptoperators als die Elemente einer Liste
 angenommen.
 
 Beispiele:
 
-Entferne Elemente von einer Liste.
+Entferne Elemente einer Liste.
 
 @example
 (%i1) delete (y, [w, x, y, z, z, y, x, w]);
@@ -435,7 +409,7 @@ Entferne Argumente einer Funktion.
 (%o1)                     f(b, c, d)
 @end example
 
-Die Anzahl der Elemente, die entfernt werden, wird begrenzt.
+Das Element @code{a} tritt mehrfach auf.  Es werden zwei Elemente entfernt.
 
 @example
 (%i1) delete (a, f(a, b, a, c, d, a), 2);
@@ -605,6 +579,7 @@ Beispiele:
 
 @c --- 15.03.2011 DK -----------------------------------------------------------
 @anchor{listarith}
+@need 800
 @defvr {Optionsvariable} listarith
 Standardwert: @code{true}
 
@@ -657,6 +632,8 @@ ausgewertet wird.  Die Variable @var{i} nimmt nacheinander die Werte von
 Liste @var{list} als Argument @"ubergeben werden.  In diesem Fall nimmt die
 Variable @var{i} nacheinander die Werte der Liste @var{list} an.
 
+Siehe auch die Funktion @mrefcomma{create_list} um eine Liste zu generieren.
+
 Beispiele:
 
 @example
@@ -673,11 +650,16 @@ Beispiele:
 
 Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} gleich einem Element in
 der Liste @var{list} ist.  Die Gleichheit wird dem Operator
-@mref{=} festgestellt.  Siehe die Funktion @mref{delete} f@"ur eine
-Erl@"auterung.
+@mref{=} festgestellt.
+
+Die Gleichheit wird mit dem Operator @mref{=} gepr@"uft.  Daher werden nur
+Ausdr@"ucke als gleich erkannt, die syntaktisch @"ubereinstimmen.  @"Aquivalente
+Ausdr@"ucke, die syntaktisch voneinander verschieden sind, werden nicht aus der
+Liste entfernt.  Zum Beispiel sind die Ausdr@"ucke @code{x^2-1} und
+@code{(x+1)*(x-1)} @"aquivalent, aber syntaktisch verschieden.
 
 Das Argument @var{list} kann auch ein allgemeiner Ausdruck sein.  Dabei werden
-jedoch nur die Argumente des Hauptoperators betrachtet.
+die Argumente des Hauptoperators betrachtet.
 
 Siehe auch die Funktion @mrefdot{elementp}
 
@@ -716,7 +698,7 @@ zugewiesen wurde, und kann nicht selbst eine Liste sein.
 Ist dem Argument @var{list} keine Liste zugewiesen, gibt Maxima eine
 Fehlermeldung aus.
 
-Siehe auch @mref{push} f@"ur Beispiele.
+Siehe auch die Funktion @mref{push} f@"ur Beispiele.
 
 Mit dem Kommando @code{load(basic)} wird die Funktion geladen.
 @end deffn
@@ -885,8 +867,10 @@ Ordne Maxima Zahlen, Konstante und konstante Ausdr@"ucke nach der Gr@"o@ss{}e.
 Alle anderen Elemente werden aufsteigend sortiert.
 
 @example
+@group
 (%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
            ordermagnitudep);
+@end group
 (%o8) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
                                                      %i + 1, 2 x]
 @end example
@@ -915,7 +899,7 @@ Beispiele:
 @anchor{sublist_indices}
 @deffn {Funktion} sublist_indices (@var{L}, @var{P})
 
-Gibt die Indizes der Elemente @var{x} der Liste @var{L} zur@"uck, f@"ur die die 
+Gibt die Indizes der Elemente der Liste @var{L} zur@"uck, f@"ur die die
 Aussagefunktion @code{P} das Ergebnis @code{true} hat.  @code{P} ist eine
 Funktion mit einem Argument wie zum Beispiel die Funktion
 @mrefdot{integerp}  Siehe auch die Funktion @mrefdot{sublist}
@@ -943,11 +927,6 @@ Beispiele:
 @c --- 16.03.2011 DK -----------------------------------------------------------
 @anchor{unique}
 @deffn {Funktion} unique (@var{L})
-
-@c Returns the unique elements of the list @var{L}.
-@c When all the elements of @var{L} are unique, @code{unique} returns a shallow 
-@c copy of @var{L}, not @var{L} itself.
-@c If @var{L} is not a list, @code{unique} returns @var{L}.
 
 Gibt eine Liste mit den Elementen der Liste @var{L} zur@"uck, die sich
 voneinander unterscheiden.  Sind alle Elemente der Liste @var{L} verschieden,

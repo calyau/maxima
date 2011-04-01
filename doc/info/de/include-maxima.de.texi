@@ -352,16 +352,14 @@ Zahlentheorie
 * Funktionen und Variablen der Zahlentheorie::
 
 Spezielle Funktionen
-* Einf@"uhrung f@"ur spezielle Funktionen:: 
-* Besselfunktionen::
-* Airyfunktionen::
-* Struvefunktionen::
+* Einf@"uhrung f@"ur spezielle Funktionen::
+* Besselfunktionen und verwandte Funktionen::
 * Gammafunktionen und verwandte Funktionen::
 * Exponentielle Integrale::
 * Fehlerfunktionen::
 * Elliptische Funktionen und Integrale::
 * Hypergeometrische Funktionen::
-* Funktionen und Variablen f@"ur spezielle Funktionen::  
+* Funktionen und Variablen f@"ur spezielle Funktionen::
 
 Fouriertransformationen
 * Introduction to fast Fourier transform::     

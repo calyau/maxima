@@ -5,7 +5,7 @@
 @c Original    : Constants.texi revision 1.24
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.03.2011
-@c Revision    : 25.03.2011
+@c Revision    : 31.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -108,12 +108,6 @@ Beispiele:
 Einige Beispiele f@"ur das Rechnen mit der imagin@"aren Einheit.
 
 @example
-(%i1) %i^2;
-(%o1)                          - 1
-(%i2) sqrt(-1);
-(%o2)                          %i
-(%i3) kill(all);
-(%o0)                         done
 (%i1) sqrt(-1);
 (%o1)                          %i
 (%i2) %i^2;

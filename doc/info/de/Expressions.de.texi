@@ -5,7 +5,7 @@
 @c Original    : Expressions.texi revision 1.72
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 23.03.2011
+@c Revision    : 31.03.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -411,6 +411,36 @@ Beispiele:
 (%o3)                       [x, y, z]
 (%i4) args(x+2*a);
 (%o4)                       [x, 2 a]
+@end example
+@end deffn
+
+@c --- 31.03.2011 DK -----------------------------------------------------------
+@anchor{atom}
+@deffn {Funktion} atom (@var{expr})
+
+Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{expr} ein Atom ist.
+Atome sind ganze Zahlen, Gleitkommazahlen, Zeichenketten und Symbole.  Siehe
+auch die Funktionen @mref{symbolp} und @mrefdot{listp}
+
+@c TODO: ATOM(5.0B0) IST ATOM, ABER NICHT ATOM(1/2). DAS IST INKONSISTENT.
+
+Beispiele:
+
+@example
+(%i1) atom(5);
+(%o1)                         true
+(%i2) atom(5.0);
+(%o2)                         true
+(%i3) atom(5.0b0);
+(%o3)                         true
+(%i4) atom(1/2);
+(%o4)                         false
+(%i5) atom('a);
+(%o5)                         true
+(%i6) atom(2*x);
+(%o6)                         false
+(%i7) atom("string");
+(%o7)                         true
 @end example
 @end deffn
 
