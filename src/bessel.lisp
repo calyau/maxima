@@ -1577,6 +1577,10 @@
 (defprop %hankel_1 $hankel_1 reversealias)
 (defprop %hankel_1 $hankel_1 noun)
 
+;; hankel_1 distributes over lists, matrices, and equations
+
+(defprop %hankel_1 (mlist $matrix mequal) distribute_over)
+
 (defprop %hankel_1 simp-hankel-1 operators)
 
 (defprop %hankel_1
@@ -1659,6 +1663,10 @@
 (defprop %hankel_2 $hankel_2 reversealias)
 (defprop %hankel_2 $hankel_2 noun)
 
+;; hankel_2 distributes over lists, matrices, and equations
+
+(defprop %hankel_2 (mlist $matrix mequal) distribute_over)
+
 (defprop %hankel_2 simp-hankel-2 operators)
 
 (defprop %hankel_2
@@ -1740,6 +1748,10 @@
 (defprop $struve_h %struve_h verb)
 (defprop %struve_h $struve_h reversealias)
 (defprop %struve_h $struve_h noun)
+
+;; struve_h distributes over lists, matrices, and equations
+
+(defprop %struve_h (mlist $matrix mequal) distribute_over)
 
 (defprop %struve_h simp-struve-h operators)
 
@@ -1982,6 +1994,10 @@
 (defprop %struve_l $struve_l noun)
 
 (defprop %struve_l simp-struve-l operators)
+
+;; struve_l distributes over lists, matrices, and equations
+
+(defprop %struve_l (mlist $matrix mequal) distribute_over)
 
 (defprop %struve_l
   ((v z)
