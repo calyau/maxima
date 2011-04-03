@@ -8,7 +8,7 @@
 ;*******************************************************************************
 (in-package :maxima)
 
-(cond ((null (fboundp 'wrs)) (include "convmac.lisp")))
+(cond ((null (fboundp 'wrs)) (load "convmac.lisp")))
 
 (declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
@@ -47,7 +47,6 @@
 
 (setq *fortran nil)
 (setq *ratfor  nil)
-(setq *if* nil)
 (setq *c       nil)
 (setq *gendecs t)
 
@@ -89,20 +88,18 @@
 
 ;;  global variables  ;;
 
-(declare-top (special *eof* *cr* *currin* *currout* *endofloopstack* *errin* *errout*
+(declare-top (special *eof* *cr* *currin* *currout* *endofloopstack*
 	  *instk* *lisparithexpops* *lispdefops* *lisplogexpops*
 	  *lispstmtgpops* *lispstmtops* *outchanl* *outstk* *reswds* *slash*
 	  *stdin* *stdout* *symboltable*))
 
-(setq *stdin*   (cons t piport))
+(setq *stdin*   (cons t *standard-input*))
 (setq *instk*           (list *stdin*))
 (setq *currin*          (car *instk*))
-(setq *stdout*  (cons t poport))
+(setq *stdout*  (cons t *standard-output*))
 (setq *outstk*          (list *stdout*))
 (setq *currout*         (car *outstk*))
 (setq *outchanl*        (list (cdr *currout*)))
-(setq *errin*   piport)
-(setq *errout*  errport)
 (setq *symboltable*     (list '*main*))
 (setq *endofloopstack*  ())
 (setq *lisparithexpops* (list 'expt 'minus 'plus 'quotient 'times))
@@ -112,9 +109,9 @@
 			      'stop))
 (setq *lispstmtgpops*   (list 'prog 'progn))
 (setq *lispdefops*      (list 'defun))
-(setq *slash* (character 47))
-(setq *cr*    (character 10))
-(setq *eof*    (character 0))
+(setq *slash* (code-char 47))
+(setq *cr*    (code-char 10))
+(setq *eof*    (code-char 0))
 (setq *reswds* '(lambda mand mcond mdefine mdo mdoin mequal mexpt mgeqp
 			 mgo mgreaterp mleqp mlessp mlist mminus mnot mnotequal
 			 mor mplus mprog mprogn mquotient mreturn msetq mtimes

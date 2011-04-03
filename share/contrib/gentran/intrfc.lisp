@@ -264,7 +264,7 @@
 	(foreach inf in (setq inlist (preproc inlist)) do
 		 (cond ((listp inf)
 			(gentranerr 'e inf "wrong type of arg" nil))
-		       ((and (not (filep (mkfil inf))) (neq inf 't))
+		       ((and (not (filep (mkfil inf))) (not (eq inf 't)))
 			(gentranerr 'e inf "nonexistent input file" nil))))
 	(cond (outlist
 	       (eval (list 'gentranoutpush (list 'quote outlist) nil))))
@@ -334,7 +334,7 @@
 
 (defun $recurunmark (exp)
   (cond ((atom exp) (unmarkvar (stripdollar1 exp)))
-	(t (foreach elt in exp do (rrecurunmark elt))))
+	(t (foreach elt in exp do ($recurunmark elt))))
   '$done)
 
 
@@ -352,7 +352,7 @@
 (defun fargstonames (args openp)
   (prog (names)
 	(setq args
-	      (foreach a in args conc
+	      (foreach a in (if (listp args) args (list args)) conc
 		       (cond ((member a '(nil 0))
 			      (cond ((car *currout*)
 				     (list (car *currout*)))
@@ -400,7 +400,7 @@
 					     (explode lang)))))
 	(while (eval flag)
 	       (progn
-		(setq exp (gentranswitch1 (list ($readvexp)
+		(setq exp (gentranswitch1 (list ($readvexp (cons nil *currin*))
 						                   )))
 		(eval (list 'gentran (list 'quote exp) 'nil))))
 	(setq *gentranlang hlang)))

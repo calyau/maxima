@@ -9,7 +9,7 @@
 
 (when (null (fboundp 'wrs)) (load "convmac.lisp"))
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -17,7 +17,7 @@
 ;;  opt.l     ;;    interface to the code optimizer
 ;;  --------  ;;       for local optimizations
 
-(declare (special *cr*))
+(declare-top (special *cr*))
 
 (defun opt (code)
   (opt1 code))
@@ -59,7 +59,7 @@
 	;    read in ##tmp2 and write lisp prefix equivalent forms to ##tmp3. ;
 	(exec "reduce < ~barbg//gentran//lisp//opt.red")
 	; 3. read ##tmp3 back into vaxima. ;
-	(setq p (infile "##tmp3"))
+	(setq p (open "##tmp3" :direction :input))
 	(setq setqseq (read p))
 	(cond ((> (length setqseq) 1)
 	       (setq setqseq (cons 'progn setqseq))))

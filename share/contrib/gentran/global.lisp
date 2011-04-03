@@ -40,30 +40,16 @@
   ;                                                           ;
   ; return var                                                ;
   ;                                                           ;
-  (prog (tvar xname num)
+  (prog (tvar num)
 (cond (tempvartype* (setq tempvartype* (stripdollar1 tempvartype*))))
 	(cond ((member type '(nil 0)) (setq type tempvartype*)))
 (cond (type (setq type (stripdollar1 type))))
 (setq tempvarname* (stripdollar1 tempvarname*))
-	(setq xname (explode2 tempvarname*))
 	(setq num tempvarnum*)
 	(cond ((member type '(nil unknown))
-	       (repeat (progn
-			(setq tvar (intern (compress (append xname
-							     (explode2 num)))))
-			(setq num (1+ num)))
-		       (and (not (markedvarp tvar))
-			    (not (get tvar '*vtype*))
-			    (not (getvartype tvar)))))
+	       (setq tvar (gentemp (string tempvarname*))))
 	      (t
-	       (repeat (progn
-			(setq tvar (intern (compress (append xname
-							     (explode2 num)))))
-			(setq num (1+ num)))
-		       (and (not (markedvarp tvar))
-			    (or (equal (get tvar '*vtype*) type)
-				(and (not (get tvar '*vtype*))
-				     (not (getvartype tvar))))))))
+	       (setq tvar (gentemp (string tempvarname*)))))
 	(put tvar '*vtype* type)
 	(cond ((equal type 'unknown)
 	       (gentranerr 'w tvar "undeclared variable" nil))
@@ -234,7 +220,7 @@
 
 (defun mkfilpr (fname)
   ; open output channel & return filepair (fname . chan#) ;
-  (cons fname (outfile (mkfil fname) 'append)))
+  (cons fname (open fname :direction :output :if-exists :append :if-does-not-exist :create)))
 
 (defun pfilpr (flist stk)
   ; retrieve flist's "parallel" filepair from stack stk ;
@@ -524,7 +510,7 @@
 		(merror "atomic arg required" x))))
 	((numberp x)
 	 x)
-	((member (getcharn x 1) '(#\$ #\% #\&))
-	 (intern (substring x 1)))
+	((member (char (string x) 0) '(#\$ #\% #\&))
+	 (intern (subseq (string x) 1)))
 	(t
 	 x)))

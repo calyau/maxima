@@ -9,14 +9,14 @@
 
 (when (null (fboundp 'wrs)) (load "convmac.lisp"))
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
 ;;  -----------  ;;
 ;;  parser.l     ;;    gentran parser module
 ;;  -----------  ;;
-(declare (special *reswds*))
+(declare-top (special *reswds*))
 
 ;;                                            ;;
 ;;  2. vaxima internal representation parser  ;;

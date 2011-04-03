@@ -30,30 +30,30 @@
 (defun procforttem ()
   (prog (c)
 	(setq c (procfortcomm))
-	(while (neq c '$eof$)
+	(while (not (eq c '$eof$))
 	       (cond ((eq c *cr*)
 		      (progn (pprin2 *cr*)
 			     (setq c (procfortcomm))))
                      ((eq c '<)
-		      (setq c (readc nil '$eof$))
+		      (setq c (read-char nil nil '$eof$))
 		      (cond ((eq c '<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 '<)
 			     (pprin2 c)
-			     (setq c (readc nil '$eof$)))))
+			     (setq c (read-char nil nil '$eof$)))))
 		     (t
 		      (progn (pprin2 c)
-			     (setq c (readc nil '$eof$))))))))
+			     (setq c (read-char nil nil '$eof$))))))))
 
 (defun procfortcomm ()
   ; <col 1>c ... <cr> ;
   ; <col 1>c ... <cr> ;
   ; <col 1>* ... <cr> ;
   (prog (c)
-	(while (member (setq c (readc nil '$eof$)) '(c c *))
+	(while (member (setq c (read-char nil nil '$eof$)) '(c c *))
 	       (progn (pprin2 c)
-		      (repeat (pprin2 (setq c (readc nil '$eof$)))
+		      (repeat (pprin2 (setq c (read-char nil nil '$eof$)))
 			      (eq c *cr*))))
 	(return c)))
 
@@ -63,30 +63,30 @@
 
 (defun procrattem ()
   (prog (c)
-	(setq c (readc nil '$eof$))
-	(while (neq c '$eof$)
+	(setq c (read-char nil nil '$eof$))
+	(while (not (eq c '$eof$))
 	       (cond ((eq c '|#|)
 		      (setq c (procratcomm)))
                      ((eq c '<)
-		      (setq c (readc nil '$eof$))
+		      (setq c (read-char nil nil '$eof$))
 		      (cond ((eq c '<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 '<)
 			     (pprin2 c)
-			     (setq c (readc nil '$eof$)))))
+			     (setq c (read-char nil nil '$eof$)))))
 		     (t
 		      (progn (pprin2 c)
-			     (setq c (readc nil '$eof$))))))))
+			     (setq c (read-char nil nil '$eof$))))))))
 
 (defun procratcomm ()
   ; # ... <cr> ;
   (prog (c)
 	(pprin2 '|#|)
-	(while (neq (setq c (readc nil '$eof$)) *cr*)
+	(while (not (eq (setq c (read-char nil nil '$eof$)) *cr*))
 	       (pprin2 c))
 	(pprin2 *cr*)
-	(return (readc nil '$eof$))))
+	(return (read-char nil nil '$eof$))))
 
 
 ;;  c  ;;
@@ -94,38 +94,38 @@
 
 (defun procctem ()
   (prog (c)
-	(setq c (readc nil '$eof$))
-	(while (neq c '$eof$)
+	(setq c (read-char nil nil '$eof$))
+	(while (not (eq c '$eof$))
 	       (cond ((eq c *slash*)
 		      (setq c (procccomm)))
                      ((eq c '<)
-		      (setq c (readc nil '$eof$))
+		      (setq c (read-char nil nil '$eof$))
 		      (cond ((eq c '<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 '<)
 			     (pprin2 c)
-			     (setq c (readc nil '$eof$)))))
+			     (setq c (read-char nil nil '$eof$)))))
 		     (t
 		      (progn (pprin2 c)
-			     (setq c (readc nil '$eof$))))))))
+			     (setq c (read-char nil nil '$eof$))))))))
 
 (defun procccomm ()
   ; /* ... */ ;
   (prog (c)
 	(pprin2 *slash*)
-	(setq c (readc nil '$eof$))
+	(setq c (read-char nil nil '$eof$))
 	(cond ((eq c '*)
 	       (progn (pprin2 c)
-		      (setq c (readc nil '$eof$))
-		      (repeat (progn (while (neq c '*)
+		      (setq c (read-char nil nil '$eof$))
+		      (repeat (progn (while (not (eq c '*))
 					    (progn (pprin2 c)
-						   (setq c (readc nil '$eof$))))
+						   (setq c (read-char nil nil '$eof$))))
 				     (pprin2 c)
-				     (setq c (readc nil '$eof$)))
+				     (setq c (read-char nil nil '$eof$)))
 			      (eq c *slash*))
 		      (pprin2 c)
-		      (setq c (readc nil '$eof$)))))
+		      (setq c (read-char nil nil '$eof$)))))
 	(return c)))
 
 
@@ -142,8 +142,8 @@
 	(setq vexptrm *vexptrm)
 	(meval vexp)
 	(cond ((member vexptrm '(#\NULL #\>))
-	       (return (cond ((equal (setq c (readc nil '$eof$)) *cr*)
-			      (readc nil '$eof$))
+	       (return (cond ((equal (setq c (read-char nil nil '$eof$)) *cr*)
+			      (read-char nil nil '$eof$))
 			     (c)))))
 	(go loop)))
 
@@ -184,6 +184,6 @@
 	       (go loop)))
 	(setq oldst st)
 	(cond ((null st) (return nil))
-	      ((setq test (parse2)) (return (car test))))
+	      ((setq test (let (*prompt-on-read-hang*) (mread iport nil))) (return (third test))))
 	(setq test (tyi iport))
 	(go c)))

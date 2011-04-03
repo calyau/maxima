@@ -4,10 +4,6 @@
 ;*                                                                             *
 ;*******************************************************************************
 
-(defvar piport nil)
-(defvar poport nil)
-(defvar errport nil)
-
 (defmacro foreach (elt kw1 lst kw2 stmt)
 ;                                                                              ;
 ; (foreach elt   -->  (progn (mapc    (function (lambda (elt) stmt)) lst) nil) ;
@@ -55,6 +51,21 @@
 ;                                              ;
   `(nconc ,m1 (list ,m2)))
 
+(defun caaaddr (p) (caaar (cddr p)))
+
+(defun CADADDR (x) (car(cdr(car(cdr(cdr x))))))
+
+(defun CADDADDR (x) (car(cdr(cdr(car(cdr(cdr x)))))))
+
+(defun CADDDDDDDR (x) (car(cdr(cdr(cdr(cdr(cdr(cdr(cdr x)))))))))
+
+(defun CADDDDDDR (x) (car(cdr(cdr(cdr(cdr(cdr(cdr x))))))))
+
+(defun CADDDDDR (x) (car(cdr(cdr(cdr(cdr(cdr x)))))))
+
+(defun CDADADDR (x) (cdr(car(cdr(car(cdr(cdr x)))))))
+
+(defun CADDDDR (x) (car(cdr(cdr(cdr(cdr x))))))
 
 (defun compress (m)
 ;                                    ;
@@ -62,20 +73,14 @@
 ;                                    ;
   (coerce m 'string))
 
+(defun append1 (x y)
+   (append x (cons y ())))
 
 (defmacro delete1 (e lst)
 ;                                            ;
 ; (delete1 elt lst)  -->  (delete elt lst 1) ;
 ;                                            ;
   `(delete ,e ,lst :count 1))
-
-
-(defmacro dskin (m)
-;                                        ;
-; (dskin filename)  -->  (load filename) ;
-;                                        ;
-  '(load m))
-
 
 (defun explode2 (m)
 ;                                     ;
@@ -107,7 +112,7 @@
   (get var fname))
 
 
-(defun geq (m)
+(defun geq (n1 n2)
 ;                              ;
 ; (geq n1 n2)  -->  (>= n1 n2) ;
 ;                              ;
@@ -128,32 +133,38 @@
   (cons 'stripdollar m))
 
 
-(defmacro posn ()
+(defun posn ()
 ;                       ;
 ; (posn)  -->  (nwritn) ;
 ;                       ;
-  #+clisp '(SYS::LINE-POSITION)
-  #+gcl '(si::file-column *standard-output*))
+  #+clisp (SYS::LINE-POSITION)
+  #+gcl (si::file-column *standard-output*)
+  #+cmu (file-position *standard-output*)
+  #+sbcl (sb-impl::charpos))
+
+(defun exec (program)
+  #+clisp (EXT:RUN-PROGRAM program)
+  #+cmu (ext:run-program program))
 
 (defmacro prettyprint (m)
 ;                                                      ;
 ; (prettyprint exp)  -->  (prog1 ($prpr exp) (terpri)) ;
 ;                                                      ;
-  `(prog1 ($prpr ,m) (terpri)))
+  `(prog1 (linear-displa ,m) (terpri)))
 
 
 (defun put (id proptype propval)
 ;                                                               ;
 ; (put id proptype propval)  -->  (putprop id propval proptype) ;
 ;                                                               ;
-  `(putprop ,id ,propval ,proptype))
+  (putprop id propval proptype))
 
 
 (defmacro rds (m)
 ;                                                   ;
 ; (rds arg)  -->   (prog1 piport (setq piport arg)) ;
 ;                                                   ;
-  `(prog1 piport (setq piport ,m)))
+  `(prog1 *standard-input* (setq *standard-input* ,m)))
 
 
 (defun rederr (m)

@@ -6,7 +6,7 @@
 
 (when (null (fboundp 'wrs)) (load "convmac.lisp"))
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -28,7 +28,7 @@
 (put 'times    '*cprecedence* 6)
 (put 'quotient '*cprecedence* 6)
 (put 'not      '*cprecedence* 7)
-(print "bar") (terpri)(put 'minus    '*cprecedence* 7)
+(put 'minus    '*cprecedence* 7)
 (put 'and      '*cop* '|&&|)
 (put 'not      '*cop* '|!|)
 (put 'equal    '*cop* '|==|)
@@ -237,7 +237,7 @@
 	(indentclevel (- 1))
 	(setq stmt (cdr stmt))
 	(while (and (setq stmt (cdr stmt))
-		    (neq (caar stmt) t))
+		    (not (eq (caar stmt) t)))
 	       (progn
 		(setq r (append r (mkfcelseif (caar stmt))))
 		(indentclevel (+ 1))
@@ -394,7 +394,7 @@
 	  (list '|)| (mkterpri))))
 
 (defun mkfclabel (label)
-  (list label ': (mkterpri)))
+  (list label '|:| (mkterpri)))
 
 (defun mkfcliteral (args)
   (foreach a in args conc

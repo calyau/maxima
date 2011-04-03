@@ -15,7 +15,8 @@
 ;;  vaxlsp.l     ;;    lisp code generation module
 ;;  -----------  ;;
 
-(declare-top (special *float allnum expty lefttype oincr onextexp tvname))
+(defvar lefttype 'real)
+(declare-top (special *float allnum expty oincr onextexp tvname))
 
 ;; *float is a flag set to t to cause all constants to be floated
 
@@ -23,6 +24,8 @@
 ;; 2. vaxima -> lisp translation ;;
 ;;                               ;;
 
+(defun safe-car (x) (if (listp x) (car x) nil))
+(defun safe-caar (x) (if (listp x) (car (safe-car x)) nil))
 
 (defun franz (form)
   ; translate form from macsyma internal representation into franz lisp ;
@@ -30,7 +33,11 @@
 	   (cond ((member f '($begin_group $end_group))
 		  f)
 		 ((macexpp f)
-		  (franzexp form 0 form))
+		  ; Following line was (franzexp form 0 form))
+		  ; This change corrected failure for gentran(x+y), however
+		  ; I am not sure if it is the correct way of fixing this
+		  ; problem. It seems unlikely that gentran(x+y) didn't work.
+		  (franzexp f 0 f))
 
 ;; should have a function to make the choices of 0, 1, 2, 3 or 4 ;;
 
@@ -40,10 +47,7 @@
 
 (defun franzexp (exp ind context)
 
-	(setq allnum t )
-			;;set flag to check if all numbers in an expression
-
-
+  (setq allnum t ) ;;set flag to check if all numbers in an expression
   (cond ((atom exp)
 
 	 (cond ((numberp exp)
@@ -73,13 +77,10 @@
 		      (double exp))
 
 		     ((equal ind 4)
-		      (gcomplex exp))
+		      (gcomplex exp))))
 
-		)
-	)
-
-	       ((eq (nthchar exp 1) '|&|)
-		(uconcat '|"| (stripdollar1 exp) '|"|))
+	       ((char= (char (string exp) 0) #\&)
+		(format nil "\"~A\"" (stripdollar1 exp)))
 	       ((eq exp t) (cond ((eq *gentranlang 'c) 1)
 				 (t '| .true. |)))
 	       (t
@@ -114,7 +115,7 @@
 		     (list 'expt (franzexp (cadr exp) 0 exp)
 				 (franzexp (caddr exp) 1 nil))))))
 
-	((and (and (= (caar exp) 'mminus) (numberp (cadr exp)))
+	((and (and (eq (caar exp) 'mminus) (numberp (cadr exp)))
 		    (and (= 1 (length (car exp)))
 			 (and (numberp (cadr exp)) (numberp (caddr exp))) ))
 
@@ -152,7 +153,7 @@
 	( cond ( ( null exp ) ( return 'integer ) ) )
 	( cond ( ( atom exp ) ( return ( itemtype exp ) ) ) )
 
-	(cond ((and (listp (car exp)) (= 'array (cadar exp)))
+	(cond ((and (listp (car exp)) (eq 'array (cadar exp)))
 	       (return (exptype (caar exp))) ))
 
 	(cond ((member (car exp)
@@ -167,16 +168,16 @@
 ;;(terpri)
 ;;(print "ty2 -- ")
 ;;(print ty2)
-	(cond((or (= ty1 'complex) (= ty2 'complex))
+	(cond((or (eq ty1 'complex) (eq ty2 'complex))
 	      (return 'complex)))
 
-	(cond((or (= ty1 'double) (= ty2 'double))
+	(cond((or (eq ty1 'double) (eq ty2 'double))
 	      (return 'double)))
 
-	(cond((or (= ty1 'real) (= ty2 'real))
+	(cond((or (eq ty1 'real) (eq ty2 'real))
 	      (return 'real)))
 
-	(cond((and (= ty1 'integer) (= ty2 'integer))
+	(cond((and (eq ty1 'integer) (eq ty2 'integer))
 	      (return 'integer))
 	     (t (return 'nil)))  ))
 
@@ -250,7 +251,7 @@
 
 (defun franzstmt (stmt)
   ; return the franz lisp equivalent statement ;
-  (cond ((member (caar stmt) '( msetq mdo ))
+  (cond ((member (safe-caar stmt) '( msetq mdo ))
 	 (setq lefttype (exptype (cadr stmt))) ))
 		;;added by Trevor 12/28/86
 
@@ -379,13 +380,14 @@
 
 (defun franzif (stmt)
   ; return the franz lisp representation for an if statement ;
-  (let ((fr '(cond)) ((x exp stmt1 x stmt2) stmt))
-       (setq fr (append1 fr (list (franzexp exp 0 exp)
-				  (franzstmt stmt1))))
-       (cond ((not (equal stmt2 '$false))
-	      (append1 fr (list 't (franzstmt stmt2))))
-	     (t
-	      fr))))
+  (destructuring-bind (x exp stmt1 y stmt2) stmt
+   (let ((fr '(cond)))
+        (setq fr (append1 fr (list (franzexp exp 0 exp)
+				   (franzstmt stmt1))))
+        (cond ((not (equal stmt2 '$false))
+	       (append1 fr (list 't (franzstmt stmt2))))
+	      (t
+	       fr)))))
 
 (defun franzfor (stmt)
   ; return the franz lisp representation for a for statement      ;
@@ -393,8 +395,8 @@
   ;   -->  (do ((var lo (+ var incr))  =or=  (var lo nextexp)) ;
   ;            ((or (> var hi) exitcond))                  ;
   ;            dobody)                                            ;
-  (let (((var lo incr nextexp hi exitcond dobody) (cdr stmt))
-					dovars doexit posincr)
+  (destructuring-bind (var lo incr nextexp hi exitcond dobody) (cdr stmt)
+   (let (dovars doexit posincr)
        (setq oincr    incr
 	     onextexp nextexp)
        (setq var      (franzexp var 0 var )
@@ -419,7 +421,7 @@
 		     (cond ((numberp lo) (setq lo (floor lo))))
 		     (cond ((numberp hi) (setq hi (floor hi))))
 		     (cond ((numberp incr) (setq incr (floor incr))))))
-	      (setq dovars `((,var ,lo (+ ,var ,incr))))))
+	      (setq dovars `((,var ,lo (plus ,var ,incr))))))
        (cond (nextexp
 	      (setq dovars `((,var ,lo ,nextexp)))))
        (cond (hi
@@ -428,13 +430,13 @@
 		    (t
 		     (setq posincr (noerrmevalp '((mgeqp) oincr 0)))))
 	      (cond (posincr
-		     (setq doexit `((> ,var ,hi))))
+		     (setq doexit `((greaterp ,var ,hi))))
 		    (t
-		     (setq doexit `((< ,var ,hi)))))))
+		     (setq doexit `((lessp ,var ,hi)))))))
        (cond (exitcond (setq doexit (append1 doexit exitcond))))
        (cond ((> (length doexit) 1)
 	      (setq doexit (list (cons 'or doexit)))))
-       `(do ,dovars ,doexit ,dobody)))
+       `(do ,dovars ,doexit ,dobody))))
 
 (defun franzforin (stmt)
   ; return the franz lisp representation for a for-in statement             ;
@@ -448,9 +450,8 @@
   ;                  ((equal genvar listlength) (setq dovar list(length)))) ;
   ;            (cond ((doexitcond) (break)))                                ;
   ;            dobody)                                                      ;
-  (let (((dovar (x . dolist) x x x doexitcond dobody) (cdr stmt))
-	(gvar)
-	condbody)
+  (let ((gvar) condbody)
+    (destructuring-bind (dovar (x . dolist) x x x doexitcond dobody) (cdr stmt)
        (setq tvname tempvarname*)
        (setq tempvarname* 'i)
        (setq gvar ($tempvar nil))
@@ -475,7 +476,7 @@
 		   ((> ,gvar ,(length dolist)))
 		   (progn
 		    ,(cons 'cond condbody)
-		    ,(franz dobody)))))))
+		    ,(franz dobody))))))))
 
 (defun franzgo (stmt)
   ; return the franz lisp representation for a go statement ;
@@ -558,7 +559,7 @@
 
 (defun macassignp (stmt)
   ; is stmt a macsyma assignment statement? ;
-  (equal (caar stmt) 'msetq))
+  (equal (safe-caar stmt) 'msetq))
 
 (defun macnestassignp (stmt)
   ; is stmt a macsyma nested assignment statement? ;
@@ -576,19 +577,19 @@
 
 (defun macifp (stmt)
   ; is stmt a macsyma if-then or if-then-else statement? ;
-  (equal (caar stmt) 'mcond))
+  (equal (safe-caar stmt) 'mcond))
 
 (defun macforp (stmt)
   ; is stmt a macsyma for-loop? ;
-  (equal (caar stmt) 'mdo))
+  (equal (safe-caar stmt) 'mdo))
 
 (defun macforinp (stmt)
   ; is stmt a macsyma for-in-loop? ;
-  (equal (caar stmt) 'mdoin))
+  (equal (safe-caar stmt) 'mdoin))
 
 (defun macgop (stmt)
   ; is stmt a macsyma go statement? ;
-  (equal (caar stmt) 'mgo))
+  (equal (safe-caar stmt) 'mgo))
 
 (defun maclabelp (stmt)
   ; is stmt a macsyma statement label? ;
@@ -601,26 +602,23 @@
 
 (defun macretp (stmt)
   ; is stmt a macsyma return statement? ;
-  (equal (caar stmt) 'mreturn))
+  (equal (safe-caar stmt) 'mreturn))
 
 (defun macreadp (stmt)
   ; is stmt a macsyma read statement? ;
   (cond ((or (null stmt) (atom stmt) (atom (car stmt))) nil)
-	((equal (caar stmt) '$readonly))
-	((equal (caar stmt) 'msetq)
+	((equal (safe-caar stmt) '$readonly))
+	((equal (safe-caar stmt) 'msetq)
 	 (macreadp (caddr stmt)))))
 
 (defun macprintp (stmt)
   ; is stmt a macsyma print statement? ;
-  (equal (caar stmt) '$print))
+  (equal (safe-caar stmt) '$print))
 
 (defun macstopp (stmt)
   ; is stmt a macsyma stop statement? ;
-  (equal (caar stmt) '$stop))
+  (equal (safe-caar stmt) '$stop))
 
 (defun macendp (stmt)
   ; is stmt a macsyma end statement? ;
-  (equal (caar stmt) '$end))
-
-(defun nthchar (s o)
-   (char (string s) (1- o)))
+  (equal (safe-caar stmt) '$end))

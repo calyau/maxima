@@ -19,8 +19,7 @@
 
 
 (declare-top (special poport fortlinelen* fortcurrind* ratlinelen*
-	ratcurrind* clinelen* ccurrind* *cr* piport
-	*errin* *errout* *slash*))
+	ratcurrind* clinelen* ccurrind* *cr* *slash*))
 ;;                                        ;;
 ;;  code formatting & printing functions  ;;
 ;;                                        ;;
@@ -29,13 +28,9 @@
 ;;  fortran code formatting & printing functions  ;;
 
 (defun formatfort (lst)
-  (prog (ch)
-	(setq ch (wrs nil))
-	(foreach c in *outchanl* do
-		 (progn
-		  (wrs c)
-		  (formatfort1 lst)))
-	(wrs ch)))
+  (foreach c in *outchanl* do
+     (let ((*standard-output* c))
+       (formatfort1 lst))))
 
 (defun formatfort1 (lst)
   (foreach elt in lst do
@@ -62,13 +57,9 @@
 ;;  ratfor code formatting & printing functions  ;;
 
 (defun formatrat (lst)
-  (prog (ch)
-	(setq ch (wrs nil))
-	(foreach c in *outchanl* do
-		 (progn
-		  (wrs c)
-		  (formatrat1 lst)))
-	(wrs ch)))
+  (foreach c in *outchanl* do
+     (let ((*standard-output* c))
+       (formatrat1 lst))))
 
 (defun formatrat1 (lst)
   (foreach elt in lst do
@@ -95,13 +86,9 @@
 ;;  c code formatting & printing functions  ;;
 
 (defun formatc (lst)
-  (prog (ch)
-	(setq ch (wrs nil))
-	(foreach c in *outchanl* do
-		 (progn
-		  (wrs c)
-		  (formatc1 lst)))
-	(wrs ch)))
+  (foreach c in *outchanl* do
+     (let ((*standard-output* c))
+       (formatc1 lst))))
 
 (defun formatc1 (lst)
   (foreach elt in lst do
@@ -132,14 +119,9 @@
 
 
 (defun pprin2 (arg)
-  (let ((ch (wrs nil)))
-       (cond ((eq arg *cr*)
-	      (foreach c in *outchanl* do
-		       (progn (wrs c) (terpri))))
-	     (t
-	      (foreach c in *outchanl* do
-		       (progn (wrs c) (princ arg)))))
-       (wrs ch)))
+  (if (eq arg *cr*)
+      (foreach c in *outchanl* do (terpri c))
+      (foreach c in *outchanl* do (princ arg c))))
 
 
 ;;                 ;;
@@ -148,11 +130,13 @@
 
 
 ;;  error & warning message printing routine  ;;
+(defun gentranerr( msgtype exp msg1 msg2)
+  (if (eq msgtype 'e) ($error exp msg1 msg2) (mtell exp msg1 msg2)))
 
-(defun gentranerr (msgtype exp msg1 msg2)
+#+nil(defun gentranerr (msgtype exp msg1 msg2)
   (prog (holdich holdoch c)
-	(setq holdich (rds *errin*))
-	(setq holdoch (wrs *errout*))
+	(setq holdich (rds *standard-input*))
+	(setq holdoch (wrs *error-output*))
 	(terpri)
 	(cond (exp
 	       (prettyprint exp)))
@@ -169,7 +153,7 @@
 		(unless (member c (list '| |  *cr*))
 		  (format t  "~%    ~a" msg2)
 		  (format t " (y~an)  " *slash*))
-		(member (setq c (readc)) '(y y n n)))))
+		(member (setq c (read-char t nil nil)) '(y y n n)))))
 	(wrs holdoch)
 	(rds holdich)
 	(cond ((member c '(n n))
