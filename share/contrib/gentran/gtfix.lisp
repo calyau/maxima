@@ -39,6 +39,6 @@
 	       (go loop)))
 	(setq oldst st)
 	(cond ((null st) (return nil))
-	      ((setq test (parse2)) (return (car test))))
+	      ((setq test (let (*prompt-on-read-hang*) (mread iport nil))) (return (third test))))
 	(setq test (tyi iport))
 	(go c)))
