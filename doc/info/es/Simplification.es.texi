@@ -1,4 +1,4 @@
-@c version 1.26
+@c version 1.27
 @menu
 * Funciones y variables para simplificaci@'on::  
 @end menu
@@ -156,11 +156,7 @@ V@'ease tambi@'en @code{ev}.
 
 La variable @code{expand} utilizada con @code{ev} provocar@'a una expansi@'on.
 
-El fichero @file{simplification/facexp.mac}
-@c I should really use a macro which expands to something like
-@c @uref{file://...,,simplification/facexp.mac}.  But texi2html
-@c currently supports @uref only with one argument.
-@c Worse, the `file:' scheme is OS and browser dependent.
+El fichero @file{share/simplification/facexp.mac}
 contiene algunas funciones relacionadas con @code{expand} (en concreto, @code{facsum}, @code{factorfacsum}
 y @code{collectterms}, que se cargan autom@'aticamente) y variables (@code{nextlayerfactor}
 y @code{facsum_combine}) que permiten al usuario estructurar las expresiones controlando la expansi@'on.

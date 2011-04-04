@@ -1,4 +1,4 @@
-@c english version 1.53
+@c english version 1.54
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -520,14 +520,14 @@ La funci@'on @code{g} devuelve las im@'agenes por @code{f} de todos los elemento
 
 @end deffn
 
-@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffn {Function} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
 @deffnx {Function} compfile (@var{filename}, functions)
 @deffnx {Function} compfile (@var{filename}, all)
 
 Traduce funciones de Maxima a c@'odigo Lisp, guard@'andolo 
 luego en el fichero @var{filename}.
 
-Con la llamada @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})}
+Con la llamada @code{compfile(@var{filename}, @var{f_1}, @dots{}, @var{f_n})}
 se traducen las funciones especificadas, mientras que 
 @code{compfile(@var{filename}, functions)} y
 @code{compfile(@var{filename}, all)} traducen las funciones definidas por

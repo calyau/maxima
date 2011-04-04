@@ -1,4 +1,4 @@
-@c version 1.28
+@c version 1.29
 @menu
 * Lisp y Maxima::
 * Recolector de basura::
@@ -213,11 +213,13 @@ contienen la subcadena @code{"gamma"} en su nombre:
 @c ===end===
 @example
 (%i1) apropos("gamma");
-(%o1) [%gamma, %gammagreek, gamma, gammagreek, gammalim, gamma_expand, 
-gamma_imag, gamma_incomplete, gamma_incomplete_generalized, 
-gamma_incomplete_regularized, gamma_radius, Gamma, log_gamma, makegamma, 
+(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
+gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
+prefer_gamma_incomplete, 
 gamma_incomplete_generalized_regularized]
 @end example
+
 
 @end deffn
 

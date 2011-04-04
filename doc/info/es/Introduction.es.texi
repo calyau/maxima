@@ -1,4 +1,4 @@
-@c version 1.10
+@c version 1.11
 Se puede iniciar Maxima con el comando "maxima". Maxima desplegar@'a alguna informaci@'on importante acerca de la versi@'on que se est@'a usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesi@'on en Maxima se emplea el comando "quit();". A continuaci@'on se presenta un breve ejemplo de sesi@'on:
 
 @example
@@ -165,7 +165,7 @@ Maxima puede generar gr@'aficos de una o m@'as funciones:
 @image{../figures/introduction1, 10cm}
 @end ifnotinfo
 @example
-(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5])$
+(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
 @ifnotinfo
 @image{../figures/introduction2, 10cm}

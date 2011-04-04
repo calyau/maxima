@@ -1,4 +1,4 @@
-@c english version 1.28
+@c english version 1.29
 @menu
 * Introducci@'on a los conjuntos::       
 * Funciones y variables para los conjuntos::       
@@ -2319,9 +2319,9 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} symmdifference (@var{a_1}, ..., @var{a_n})
+@deffn {Funci@'on} symmdifference (@var{a_1}, @dots{}, @var{a_n})
 
-Devuelve la diferencia sim@'etrica de los conjuntos @code{ @var{a_1}, ..., @var{a_n}}.
+Devuelve la diferencia sim@'etrica de los conjuntos @code{ @var{a_1}, @dots{}, @var{a_n}}.
 
 Dados dos argumentos, @code{symmdifference (@var{a}, @var{b})} equivale a
 @code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a}))}.

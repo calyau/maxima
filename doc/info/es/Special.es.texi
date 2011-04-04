@@ -1,4 +1,4 @@
-@c version 1.60
+@c version 1.61
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -379,6 +379,7 @@ definidas en el cap@'{@dotless{i}}tulo 6 de Abramowitz y Stegun,
 
 La definici@'on b@'asica de la funci@'on gamma (A&S 6.1.1) es
 
+@ifnottex
 @example
                                inf
                               /
@@ -388,6 +389,10 @@ La definici@'on b@'asica de la funci@'on gamma (A&S 6.1.1) es
                               /
                                0
 @end example
+@end ifnottex
+@tex
+$$\Gamma\left(z\right)=\int_{0}^{\infty }{t^{z-1}\,e^ {- t }\;dt}$$
+@end tex
 
 Maxima simplifica @code{gamma} para enteros positivos y para fracciones positivas
 o negativas. Para fracciones de denominador dos, el resultado es un n@'umero 
@@ -448,27 +453,27 @@ Evaluaci@'on num@'erica para valores reales y complejos:
 Simetr@'{@dotless{i}}a especular:
 
 @example
-(%i8) declare(z,complex)$
-(%i9) conjugate(gamma(z));
-(%o9)                         gamma(conjugate(z))
+(%i6) declare(z,complex)$
+(%i7) conjugate(gamma(z));
+(%o7)                         gamma(conjugate(z))
 @end example
 
 Maxima expande @code{gamma(z+n)} y @code{gamma(z-n)} si 
 @code{gamma_expand} vale @code{true}:
 
 @example
-(%i10) gamma_expand:true$
-(%i11) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
+(%i8) gamma_expand:true$
+(%i9) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
                                       gamma(z)
-(%o11)                   [z gamma(z), --------, z + 1]
+(%o9)                    [z gamma(z), --------, z + 1]
                                        z - 1
 @end example
 
 Derivada de @code{gamma}:
 
 @example
-(%i12) diff(gamma(z),z);
-(%o12)                         psi (z) gamma(z)
+(%i10) diff(gamma(z),z);
+(%o10)                         psi (z) gamma(z)
                                   0
 @end example
 
@@ -484,19 +489,60 @@ Logaritmo natural de la funci@'on gamma.
 
 @deffn {Funci@'on} gamma_incomplete (@var{a},@var{z})
 Funci@'on gamma incompleta superior, A&S 6.5.2:
-@math{gamma_incomplete(a, z) = integrate(exp(-t)*t^(a-1), t, z, inf)}
+
+@ifnottex
+@example
+                              inf
+                             /
+                             [     a - 1   - t
+    gamma_incomplete(a, z) = I    t      %e    dt
+                             ]
+                             /
+                              z
+@end example
+@end ifnottex
+@tex
+$$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
+@end tex
+
 @end deffn
 
 @deffn {Funci@'on} gamma_incomplete_regularized (@var{a},@var{z})
 Funci@'on gamma incompleta superior regularizada, A&S 6.5.1.
 
-@code{ gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
+@ifnottex
+@example
+gamma_incomplete_regularized(a, z) = 
+                                        gamma_incomplete(a, z)
+                                        ----------------------
+                                               gamma(a)
+@end example
+@end ifnottex
+@tex
+$${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
+@end tex
+
 @end deffn
 
 @deffn {Funci@'on} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1})
 Funci@'on gamma incompleta generalizada.  
 
-@code{gamma_incomplete_generalized(a,z) = integrate(t^(a-1)*exp(-t), z, z1,z2) }
+@ifnottex
+@example
+gamma_incomplete_generalized(a, z1, z2) = 
+                                               z2
+                                              /
+                                              [    a - 1   - t
+                                              I   t      %e    dt
+                                              ]
+                                              /
+                                               z1
+@end example
+@end ifnottex
+@tex
+$$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
+@end tex
+
 @end deffn
 
 
@@ -809,19 +855,35 @@ Expansi@'on cuando @code{beta_expand} vale @code{true}:
 Derivada e integral de @code{beta_incomplete}:
 
 @example
-(%i34) diff(beta_incomplete(a,b,z),z);
-                                     b - 1  a - 1
-(%o34)                        (1 - z)      z
-(%i35) integrate(beta_incomplete(a,b,z),z);
-(%o35)     beta_incomplete(a, b, z) z - beta_incomplete(a + 1, b, z)
-(%i36) diff(%,z);
-(%o36)                     beta_incomplete(a, b, z)
+@example
+(%i34) diff(beta_incomplete(a, b, z), z);
+                              b - 1  a - 1
+(%o34)                 (1 - z)      z
+(%i35) integrate(beta_incomplete(a, b, z), z);
+              b  a
+       (1 - z)  z
+(%o35) ----------- + beta_incomplete(a, b, z) z
+          b + a
+                                       a beta_incomplete(a, b, z)
+                                     - --------------------------
+                                                 b + a
+(%i36) factor(diff(%, z));
+(%o36)              beta_incomplete(a, b, z)
+@end example
+
 @end example
 @end deffn
 
 @deffn {Funci@'on} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 Funci@'on beta incompleta regularizada A&S 6.6.2,
-definida como @code{beta_incomplete(a,b,z)/beta(a,b)}.
+definida como
+
+@example
+beta_incomplete_regularized(a, b, z) = 
+                                      beta_incomplete(a, b, z)
+                                      ------------------------
+                                             beta(a, b)
+@end example
 
 Al igual que @code{beta_incomplete}, esta definici@'on no es completa.
 V@'ease Funci@'ons.wolfram.com para una definici@'on completa de 
@@ -892,31 +954,35 @@ Expansi@'on cuando @code{beta_expand} vale @code{true}:
 
 @example
 (%i13) beta_incomplete_regularized(a+1,b,z);
-                                                            b  a
-                                                     (1 - z)  z
-(%o13)        beta_incomplete_regularized(a, b, z) - ------------
-                                                     a beta(a, b)
+                                                     b  a
+                                              (1 - z)  z
+(%o13) beta_incomplete_regularized(a, b, z) - ------------
+                                              a beta(a, b)
 (%i14) beta_incomplete_regularized(a-1,b,z);
-                                                          b  a - 1
-                                                   (1 - z)  z
-(%o14)   beta_incomplete_regularized(a, b, z) - ----------------------
-                                                beta(a, b) (b + a - 1)
+(%o14) beta_incomplete_regularized(a, b, z)
+                                                     b  a - 1
+                                              (1 - z)  z
+                                         - ----------------------
+                                           beta(a, b) (b + a - 1)
+
 @end example
 
 Derivada e integral respecto de @var{z}:
 
 @example
 (%i15) diff(beta_incomplete_regularized(a,b,z),z);
-                                     b - 1  a - 1
-                              (1 - z)      z
-(%o15)                        -------------------
-                                  beta(a, b)
-
+                              b - 1  a - 1
+                       (1 - z)      z
+(%o15)                 -------------------
+                           beta(a, b)
 (%i16) integrate(beta_incomplete_regularized(a,b,z),z);
 (%o16) beta_incomplete_regularized(a, b, z) z
-                           a beta_incomplete_regularized(a + 1, b, z)
-                         - ------------------------------------------
-                                             b + a
+                                                           b  a
+                                                    (1 - z)  z
+          a (beta_incomplete_regularized(a, b, z) - ------------)
+                                                    a beta(a, b)
+        - -------------------------------------------------------
+                                   b + a
 @end example
 
 @end deffn
@@ -1370,32 +1436,31 @@ devuelve un polinomio expandido.
 
 Ejemplos:
 @example
- (%i1)  hypergeometric([],[],x);
- (%o1) %e^x
+(%i1)  hypergeometric([],[],x);
+(%o1) %e^x
 @end example
 
 Los polinomios se expanden autom@'aticamente cuando @code{expand_hypergeometric}
 vale @code{true}.
 
 @example
- (%i2) hypergeometric([-3],[7],x);
- (%o2) hypergeometric([-3],[7],x)
+(%i2) hypergeometric([-3],[7],x);
+(%o2) hypergeometric([-3],[7],x)
 
- (%i3) hypergeometric([-3],[7],x), expand_hypergeometric : true;
- (%o3) -x^3/504+3*x^2/56-3*x/7+1
+(%i3) hypergeometric([-3],[7],x), expand_hypergeometric : true;
+(%o3) -x^3/504+3*x^2/56-3*x/7+1
 @end example
 
 Se soporta la evaluaci@'on en doble (float) y gran (bigfloat) precisi@'on:
 
 @example
- (%i4) hypergeometric([5.1],[7.1 + %i],0.42);
- (%o4) 1.346250786375334-0.0559061414208204*%i
-
- (%i5) hypergeometric([5,6],[8], 5.7 - %i);
- (%o5) 0.00737582400977495-0.00104981368857867*%i
-
- (%i6) hypergeometric([5,6],[8], 5.7b0 - %i), fpprec : 30;
- (%o6) 7.37582400977494674506442010824b-3-1.04981368857867315858055393376b-3*%i
+(%i4) hypergeometric([5.1],[7.1 + %i],0.42);
+(%o4)       1.346250786375334 - 0.0559061414208204 %i
+(%i5) hypergeometric([5,6],[8], 5.7 - %i);
+(%o5)     .007375824009774946 - .001049813688578674 %i
+(%i6) hypergeometric([5,6],[8], 5.7b0 - %i), fpprec : 30;
+(%o6) 7.37582400977494674506442010824b-3
+                          - 1.04981368857867315858055393376b-3 %i
 @end example
 @end deffn
 
@@ -1492,27 +1557,28 @@ Ejemplos para integrales exponenciales:
 
 @example
 (%i4) assume(s>0,a>0,s-a>0)$
-(%i5) ratsimp(specint(%e^(a*t)*(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
-                                    log(s)
-(%o5)                               ------
-                                    s - a
-
+(%i5) ratsimp(specint(%e^(a*t)
+                      *(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
+                             log(s)
+(%o5)                        ------
+                             s - a
 (%i6) logarc:true$
-(%i7) gamma_expand:true$
-(%i8) radcan(specint((cos(t)*expintegral_si(t)
-                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
-                                    log(s)
-(%o8)                               ------
-                                     2
-                                    s  + 1
 
-(%i9) ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
+(%i7) gamma_expand:true$
+
+radcan(specint((cos(t)*expintegral_si(t)
+                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
+                             log(s)
+(%o8)                        ------
+                              2
+                             s  + 1
+ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
                       -2*t*expintegral_ci(a*t))*%e^(-s*t),t));
-                                      2    2
-                                 log(s  + a )
-(%o9)                            ------------
-                                       2
-                                      s
+                               2    2
+                          log(s  + a )
+(%o9)                     ------------
+                                2
+                               s
 @end example
 
 Resultados cuando se utiliza la expansi@'on de @code{gamma_incomplete}
