@@ -398,7 +398,7 @@ Die skalierte modifizierte Besselfunktion der ersten Art der Ordnung
 @code{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}. 
 @code{scaled_bessel_i} liefert ein numerisches Ergebnis, wenn die Argumente 
 @math{v} und @math{z} Zahlen sind.  Die Funktion kann geeignet sein, wenn 
-@code{bessel_i} f@"ur große Argumente @math{z} numerisch berechnet werden soll.
+@code{bessel_i} f@"ur gro@ss{}e Argumente @math{z} numerisch berechnet werden soll.
 Ganze, rationale oder gro@ss{}e Gleitkommazahlen werden in Gleitkommazahlen mit 
 doppelter Genauigkeit umgewandelt.  Sind die Argumente keine Zahlen, wird ein 
 vereinfachter Ausdruck mit der Funktion @mref{bessel_i} zur@"uckgegeben.
@@ -422,16 +422,18 @@ Beispiele:
 
 @c -----------------------------------------------------------------------------
 @anchor{scaled_bessel_i0}
-@deffn {Function} scaled_bessel_i0 (@var{z}) 
+@deffn {Funktion} scaled_bessel_i0 (@var{z}) 
 
 Identical to @code{scaled_bessel_i(0,z)}.
+
+Entspricht @code{scaled_bessel_i(0,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{scaled_bessel_i1}
-@deffn {Function} scaled_bessel_i1 (@var{z}) 
+@deffn {Funktion} scaled_bessel_i1 (@var{z}) 
 
-Identical to @code{scaled_bessel_i(1,z)}.
+Entspricht @code{scaled_bessel_i(1,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -457,7 +459,7 @@ Maxima berechnet @code{hankel_1} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
 @mref{float} oder der Optionsvariablen @mref{numer} kann die numerische
 Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
-Berechnung f@"ur große Gleitkommazahlen ist nicht implementiert.  In diesem
+Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
 When @code{besselexpand} is @code{true}, @code{hankel_1} is expanded in terms
@@ -526,7 +528,7 @@ Maxima berechnet @code{hankel_2} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
 @mref{float} oder der Optionsvariablen @mref{numer} kann die numerische
 Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
-Berechnung f@"ur große Gleitkommazahlen ist nicht implementiert.  In diesem
+Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
 When @code{besselexpand} is @code{true}, @code{hankel_2} is expanded in terms

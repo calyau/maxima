@@ -2,10 +2,10 @@
 @c File        : Matrices.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Matrices.texi revision 1.40
+@c Original    : Matrices.texi revision 1.41
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 10.12.2010
-@c Revision    : 14.03.2011
+@c Revision    : 01.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
