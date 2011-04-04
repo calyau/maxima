@@ -20,12 +20,12 @@
 (defvar local-obj-dir)
 
 
-(load "convmac")
+(load "convmac.lisp")
 
 (putprop 'procforttem "templt" 'autoload)
 (putprop 'procrattem "templt" 'autoload)
 (putprop 'procctem "templt" 'autoload)
-(putprop '$readvexp "read" 'autoload)
+(putprop '$readvexp "templt" 'autoload)
 (putprop 'gentranparse "parser" 'autoload)
 (putprop 'opt "opt"    'autoload)
 ;(putprop 'seg "segmnt" 'autoload)
@@ -34,5 +34,5 @@
 (putprop 'ccode "lspc"   'autoload)
 
 (dolist (fname  '( "init" "lspfor" "templt" "global" "intrfc"
-		     "pre" "output" "vaxlsp" "gtfix" "segmnt"))
+		     "pre" "output" "vaxlsp" "segmnt"))
                (load fname))
