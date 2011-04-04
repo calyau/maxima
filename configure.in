@@ -878,7 +878,7 @@ AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([src/share-subdirs.lisp])
 
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
-src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
+admin/Makefile src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 doc/info/de/Makefile doc/info/de.utf8/Makefile \
