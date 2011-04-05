@@ -137,6 +137,7 @@ Funcionalidades avanzadas y programaci@'on
                                 reglas de simplificaci@'on.
 * Listas::                      Manipulaci@'on de listas.
 * Conjuntos::                   Operaciones con conjuntos.
+* Estructuras::                 Agregaci@'on de datos.
 * Definici@'on de Funciones::   Programando funciones.
 * Programaci@'on::              Programaci@'on en Maxima.
 * Depurado::                    Depuraci@'on de fallos en programas Maxima.
@@ -392,6 +393,11 @@ Conjuntos
 
 * Introducci@'on a los conjuntos::
 * Funciones y variables para los conjuntos::
+
+Estructuras
+
+* Introducci@'on a las estructuras::       
+* Funciones y variables para las estructuras:: 
 
 Definici@'on de Funciones
 
@@ -771,11 +777,15 @@ zeilberger
 @chapter Listas
 @include Lists.es.texi
 
-@node Conjuntos, Definici@'on de Funciones, Listas, Top
+@node Conjuntos, Estructuras, Listas, Top
 @chapter Conjuntos
 @include nset.es.texi
 
-@node Definici@'on de Funciones, Programaci@'on, Conjuntos, Top
+@node Estructuras, Definici@'on de Funciones, Conjuntos, Top
+@chapter Estructuras
+@include defstruct.texi
+
+@node Definici@'on de Funciones, Programaci@'on, Estructuras, Top
 @chapter Definici@'on de Funciones
 @include Function.es.texi
 
