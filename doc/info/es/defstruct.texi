@@ -6,61 +6,68 @@
 @node Introducci@'on a las estructuras, Funciones y variables para las estructuras, Estructuras, Estructuras
 @section Introducci@'on a las estructuras
 
-Maxima provides a simple data aggregate called a structure.
-A structure is an expression in which arguments are identified by name (the field name)
-and the expression as a whole is identified by its operator (the structure name).
-A field value can be any expression.
+Maxima dispone de estructuras para la agregaci@'on de datos.
+Una estructura es una expresi@'on en la que los argumentos se definen con
+un nombre (nombre del campo) y la estructura en su conjunto se define por
+medio de su operador (nombre de la estructura). Los valores dados a los 
+campos pueden ser expresiones cualesquiera.
 
-A structure is defined by the @code{defstruct} function;
-the global variable @code{structures} is the list of user-defined structures.
-The function @code{new} creates instances of structures.
-The @code{@@} operator refers to fields.
-@code{kill(@var{S})} removes the structure definition @var{S},
-and @code{kill(@var{x}@@ @var{a})} unbinds the field @var{a} of the structure instance @var{x}.
+Una estructura se define con la funci@'on @code{defstruct}, guardando la
+variable @code{structures} la lista de todas las estructuras definidas
+por el usuario. El operador @code{@@} permite hacer referencias a los
+campos de la estructura. Con @code{kill(@var{S})} se borra la estructura
+@var{S} completa y @code{kill(@var{x}@@ @var{a})} elimina la asignaci@'on
+actual del campo @var{a} en la estructura @var{x}.
 
-In the pretty-printing console display (with @code{display2d} equal to @code{true}),
-structure instances are displayed with the value of each field
-represented as an equation, with the field name on the left-hand side
-and the value on the right-hand side.
-(The equation is only a display construct; only the value is actually stored.)
-In 1-dimensional display (via @code{grind} or with @code{display2d} equal to @code{false}),
-structure instances are displayed without the field names.
+En la impresi@'on por consola (con @code{display2d} igual a @code{true}),
+las estructuras se representan con las asignaciones de los campos en forma de ecuaci@'on,
+con el nombre del campo a la izquierda y su valor asociado a la derecha. En la
+impresi@'on unidimensional (mediante @code{grind} o d@'andole a @code{display2d}
+el valor @code{false}), las estructuras se escriben sin los nombres de los campos.
 
-There is no way to use a field name as a function name,
-although a field value can be a lambda expression.
-Nor can the values of fields be restricted to certain types; any field can be assigned any kind of expression.
-There is no way to make some fields accessible or inaccessible in different contexts;
-all fields are always visible.
+No es posible utilizar el nombre de un campo como nombre de funci@'on, pero el
+valor de un campo s@'{@dotless{i}} puede ser una expresi@'on lambda.
+Tampoco es posible restringir los valores de los campos a tipos de datos
+concretos, siendo el caso que a cada campo se le puede asignar cualquier
+tipo de expresi@'on. Por @'ultimo, no es posible hacer que ciertos campos
+sean o no accesibles desde determinados contextos, ya que todos los campos
+son siempre visibles.
+
+
+
 
 @node Funciones y variables para las estructuras,  , Introducci@'on a las estructuras, Estructuras
 @section Funciones y variables para las estructuras
 
-@defvr {Global variable} structures
+@defvr {Variable global} structures
 
-@code{structures} is the list of user-defined structures defined by @code{defstruct}.
+@code{structures} es la lista que contiene las estructuras definidas por el usuario con @code{defstruct}.
 
 @end defvr
 
-@deffn {Function} defstruct (@var{S}(@var{a_1}, ..., @var{a_n}))
-@deffnx {Function} defstruct (@var{S}(@var{a_1} = @var{v_1}, ..., @var{a_n} = @var{v_n}))
 
-Define a structure, which is a list of named fields @var{a_1}, ..., @var{a_n}
-associated with a symbol @var{S}.
-An instance of a structure is just an expression which has operator @var{S}
-and exactly @code{n} arguments.
-@code{new(@var{S})} creates a new instance of structure @var{S}.
 
-An argument which is just a symbol @var{a} specifies the name of a field.
-An argument which is an equation @code{@var{a} = @var{v}} specifies the field name @var{a}
-and its default value @var{v}.
-The default value can be any expression.
+@deffn {Funci@'on} defstruct (@var{S}(@var{a_1}, ..., @var{a_n}))
+@deffnx {Funci@'on} defstruct (@var{S}(@var{a_1} = @var{v_1}, ..., @var{a_n} = @var{v_n}))
 
-@code{defstruct} puts @var{S} on the list of user-defined structures, @code{structures}.
+Define una estructura, la cual es una lista de nombres de campos @var{a_1}, ..., @var{a_n}
+asociados a un s@'{@dotless{i}}mbolo @var{S}.
+Todo individuo de una estructura dada consiste en una expresi@'on con operador @var{S}
+y exactamente @code{n} argumentos. La sentencia @code{new(@var{S})} crea un nuevo
+individuo con estructura @var{S}.
 
-@code{kill(@var{S})} removes @var{S} from the list of user-defined structures,
-and removes the structure definition.
+Un argumento consistente en un s@'{@dotless{i}}mbolo @var{a} especifica el nombre de
+un campo. Un argumento consistente en una ecuaci@'on @code{@var{a} = @var{v}} especifica
+el nombre del campo @var{a} junto con su valor por defecto @var{v}. El valor por
+defecto puede ser cualquier tipo de expresi@'on.
 
-Examples:
+La llamada a @code{defstruct} a@~nade @var{S} a la lista de estructuras definidas
+por el usuario, @code{structures}.
+
+La sentencia @code{kill(@var{S})} borra @var{S} de la lista de estructuras
+definidas por el usuario y elimina la definici@'on de la estructura.
+
+Ejemplos:
 
 @c ===beg===
 @c defstruct (foo (a, b, c));
@@ -93,19 +100,21 @@ Examples:
 
 @end deffn
 
-@deffn {Function} new (@var{S})
-@deffnx {Function} new (@var{S} (@var{v_1}, ..., @var{v_n}))
+@deffn {Funci@'on} new (@var{S})
+@deffnx {Funci@'on} new (@var{S} (@var{v_1}, ..., @var{v_n}))
 
-@code{new} creates new instances of structures.
+@code{new} crea nuevos individuos de estructuras declaradas.
 
-@code{new(@var{S})} creates a new instance of structure @var{S}
-in which each field is assigned its default value, if any,
-or no value at all if no default was specified in the structure definition.
+La sentencia @code{new(@var{S})} crea un nuevo individuo de 
+estructura @var{S} en el que cada campo toma su valor por defecto,
+si este fue definido, o sin valor alguno en caso de que no se haya
+fijado un valor por defecto en la definici@'on de la estructura.
 
-@code{new(@var{S}(@var{v_1}, ..., @var{v_n}))} creates a new instance of @var{S}
-in which fields are assigned the values @var{v_1}, ..., @var{v_n}.
+La sentencia @code{new(@var{S}(@var{v_1}, ..., @var{v_n}))}
+crea un nuevo individuo de estructura @var{S} en el que los campos
+adquieren los valores @var{v_1}, ..., @var{v_n}.
 
-Examples:
+Ejemplos:
 
 @c ===beg===
 @c defstruct (foo (w, x = %e, y = 42, z));
@@ -123,18 +132,20 @@ Examples:
 
 @end deffn
 
-@deffn {Operator} @@
+@deffn {Operador} @@
 
-@code{@@} is the structure field access operator.
-The expression @code{@var{x}@@ @var{a}} refers to the value of field @var{a} of the structure instance @var{x}.
-The field name is not evaluated.
+@code{@@} es el operador para acceder a los campos de las estructuras.
 
-If the field @var{a} in @var{x} has not been assigned a value,
-@code{@var{x}@@ @var{a}} evaluates to itself.
+La expresi@'on @code{@var{x}@@ @var{a}} hace referencia al valor del
+campo @var{a} del individuo @var{x} de una estructura dada. El nombre del campo no se eval@'ua.
 
-@code{kill(@var{x}@@ @var{a})} removes the value of field @var{a} in @var{x}.
+Si el campo @var{a} de @var{x} no tiene valor asignado, @code{@var{x}@@ @var{a}}
+se eval@'ua a s@'{@dotless{i}} mismo; es decir, devuelve la propia expresi@'on
+@code{@var{x}@@ @var{a}} tal cual.
 
-Examples:
+La sentencia @code{kill(@var{x}@@ @var{a})} elimina el valor del campo @var{a} de @var{x}.
+
+Ejemplos:
 
 @c ===beg===
 @c defstruct (foo (x, y, z));
@@ -165,7 +176,7 @@ Examples:
 (%o8)                          u@@z
 @end example
 
-The field name is not evaluated.
+El nombre del campo no se eval@'ua.
 
 @c ===beg===
 @c defstruct (bar (g, h));
