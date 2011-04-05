@@ -1,4 +1,4 @@
-@c english version 1.15
+@c english version 1.18
 @menu
 * Funciones y variables para Arrays::  
 @end menu
@@ -562,6 +562,8 @@ funciones array y funciones subindicadas.
 La llamada @code{remarray (all)} borra todos los elementos de la lista global @code{arrays}.
 
 La funci@'on @code{remarray} devuelve la lista de los arrays borrados.
+
+La funci@'on @code{remarray} no eval@'ua sus argumentos.
 
 @end deffn
 

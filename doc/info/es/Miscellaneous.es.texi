@@ -1,4 +1,4 @@
-@c version 1.28
+@c version 1.29
 @menu
 * Introducci@'on a la miscel@'anea de opciones::  
 * Share::  
@@ -355,7 +355,9 @@ las propiedades definidas por @code{put}.
 
 La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
 
-La llamada @code{remove} devuelve siempre @code{done} independientemente que haya alg@'un @'atomo con la propiedad especificada.
+La funci@'on @code{remove} devuelve siempre @code{done} independientemente que haya alg@'un @'atomo con la propiedad especificada.
+
+La funci@'on @code{remove} no eval@'ua sus argumentos.
 
 @end deffn
 

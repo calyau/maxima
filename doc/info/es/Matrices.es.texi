@@ -1,4 +1,4 @@
-@c english version 1.39
+@c english version 1.41
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::
@@ -59,7 +59,9 @@ El paquete @code{vect} contiene las siguientes funciones:
 @c REVIEW vect.usg TO ENSURE THAT TEXINFO HAS WHATEVER IS THERE
 @c PRINTFILE(VECT,USAGE,SHARE); for details.
 
-Aviso: el paquete @code{vect} declara el operador @code{.} como conmutativo.
+Por defecto, el paquete @code{vect} no declara el operador @code{.} como conmutativo.
+Para transformarlo en conmutativo, se debe ejecutar previamente la instrucci@'on
+@code{declare(".", commutative)}.
 
 @node Paquete eigen, , Vectores, Introducci@'on a las matrices y el @'algebra lineal
 @subsection Paquete eigen

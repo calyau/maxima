@@ -1,4 +1,4 @@
-@c english version 1.34
+@c english version 1.37
 @menu
 * Introducci@'on a reglas y patrones::  
 * Funciones y variables sobre reglas y patrones::  
@@ -729,7 +729,7 @@ La regla construida por  @code{tellsimpafter} es nombrada detr@'as del operador 
 
 El tratamiento de formas nominales y verbales es hasta cierto punto confuso. Si se define una regla para una forma nominal (o verbal)  y ya existe una regla para la correspondiente forma verbal (o nominal), la regla reci@'en definida se aplica a ambas formas (nominal y verbal). Si no existe regla para una forma verbal (o nominal) la regla reci@'en definida se aplica @'unicamente a la forma nominal (o verbal).
 
-La regla construida por  @code{tellsimpafter} es una t@'{@dotless{i}}pica funci@'on de Lisp. Si el nombre de la regla es @code{$foorule1}, la sentencia @code{:lisp (trace $foorule1)} hace una traza de la funci@'on y  @code{:lisp (symbol-function '$foorule1} muestra su definici@'on.
+La regla construida por  @code{tellsimpafter} es una t@'{@dotless{i}}pica funci@'on de Lisp. Si el nombre de la regla es @code{$foorule1}, la sentencia @code{:lisp (trace $foorule1)} hace una traza de la funci@'on y  @code{:lisp (symbol-function '$foorule1)} muestra su definici@'on.
 
 La funci@'on @code{tellsimpafter} no eval@'ua sus argumentos y devuelve la lista de reglas para el operador principal de  @var{patr@'on}, incluida la regla reci@'en establecida.
 
