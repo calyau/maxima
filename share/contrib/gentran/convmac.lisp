@@ -139,7 +139,7 @@
 ;                       ;
   #+clisp (SYS::LINE-POSITION)
   #+gcl (si::file-column *standard-output*)
-  #+cmu (file-position *standard-output*)
+  #+cmu (lisp::charpos *standard-output*)
   #+sbcl (sb-impl::charpos))
 
 (defun exec (program)
