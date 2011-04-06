@@ -52,15 +52,16 @@ ispace : makelist(0, k, 1, 2500)$
 fixpnt : [];
 
 /* Define the equations */
-fsub(x, z) := [z[1]/x/x - z[2]/x + (z[1]-z[3]*(1-z[1]/x) - gamma*x*(1-x*x/2))/eps4mu,
-               z[3]/x/x - z[4]/x + z[1]*(1-z[1]/2/x)/dmu];
-df : jacobian(fsub(x,z),[z[1],z[2],z[3],z[4]]);
-dfsub(x, z) := ''df;
-g(z) := [z[1], z[3], z[1], z[4] - 0.3*z[3] + .7];
-gsub(i, z) :=
-    g(z)[i];
-dg:jacobian(g(z), [z[1],z[2],z[3],z[4]]);
-dgsub(i, z) := row(dg, i)[1];
+fsub(x, z1, z2, z3, z4) := [z1/x/x - z2/x + (z1-z3*(1-z1/x) - gamma*x*(1-x*x/2))/eps4mu,
+               z3/x/x - z4/x + z1*(1-z1/2/x)/dmu];
+df : jacobian(fsub(x,z1, z2, z3, z4),[z1,z2,z3,z4]);
+dfsub(x, z1, z2, z3, z4) := 
+  subst(['x=x,'z1=z1,'z2=z2,'z3=z3,'z4=z4], df);
+g(z1, z2, z3, z4) := [z1, z3, z1, z4 - 0.3*z3 + .7];
+gsub(i, z1, z2, z3, z4) :=
+    subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], g(z1, z2, z3, z4)[i]);
+dg:jacobian(g(z1, z2, z3, z4), [z1,z2,z3,z4]);
+dgsub(i, z1, z2, z3, z4) := subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], row(dg, i)[1]);
 
 solutn(x) :=
   block([cons : gamma*x*(1-0.5*x*x),

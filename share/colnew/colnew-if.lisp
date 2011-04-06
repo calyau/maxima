@@ -20,39 +20,46 @@
 	  (a-tol (convert-to-array tol 'double-float))
 	  (a-fixpnt (convert-to-array fixpnt 'double-float))
 	  (a-ispace (convert-to-array ispace 'f2cl-lib:integer4))
-	  (a-fspace (convert-to-array fspace 'double-float)))
+	  (a-fspace (convert-to-array fspace 'double-float))
+	  (f (coerce-float-fun f))
+	  (df (coerce-float-fun df))
+	  (g (coerce-float-fun g))
+	  (dg (coerce-float-fun dg))
+	  (nz (reduce #'+ (cdr m))))
       (flet ((fsub (x z f-array)
 	       (declare (type (cl:array double-float (*)) z f-array)
 			(double-float x))
-	       (let ((res (mcall f x (list* '(mlist) (coerce z 'list)))))
-		 (loop for k from 0
-		    for ff in (cdr res)
-		    do
-		    (setf (aref f-array k) ($float ff))))
+	       (let ((res (apply f x (coerce (subseq z 0 nz) 'list))))
+		 (when (listp res)
+		   (loop for k from 0
+		      for ff in (cdr res)
+		      do
+		      (setf (aref f-array k) ($float ff)))))
 	       (values nil nil f-array))
 	     (dfsub (x z df-array)
 	       (declare (type (cl:array double-float (*)) z df-array)
 			(double-float x))
-	       (let ((res (mcall df x (list* '(mlist) (coerce z 'list)))))
-		 ;; res is a Maxima matrix.  
-		 (loop for row from 1
-		    for row-list in (cdr res)
-		    do
-		    (loop for col from 1
-		       for element in (cdr row-list)
-		       do
-		       (setf (f2cl-lib::fref df-array (row col) ((1 ncomp) (1 *))) ($float element)))))
+	       (let ((res (apply df x (coerce (subseq z 0 nz) 'list))))
+		 ;; res is a Maxima matrix.
+		 (when (listp res)
+		   (loop for row from 1
+		      for row-list in (cdr res)
+		      do
+		      (loop for col from 1
+			 for element in (cdr row-list)
+			 do
+			 (setf (f2cl-lib::fref df-array (row col) ((1 ncomp) (1 *))) ($float element))))))
 	       (values nil nil df-array))
 	     (gsub (i z dummy)
 	       (declare (type (cl:array double-float (*)) z)
 			(type f2cl-lib:integer4 i))
 	       (declare (ignore dummy))
-	       (let ((res ($float (mcall g i (list* '(mlist) (coerce z 'list))))))
+	       (let ((res (apply g i (coerce (subseq z 0 nz) 'list))))
 		 (values nil nil res)))
 	     (dgsub (i z dg-array)
 	       (declare (type (cl:array double-float (*)) z dg-array)
 			(type f2cl-lib:integer4 i))
-	       (let ((res (mcall dg i (list* '(mlist) (coerce z 'list)))))
+	       (let ((res (apply dg i (coerce (subseq z 0 nz) 'list))))
 		 (loop for k from 0
 		    for ff in (cdr res)
 		    do

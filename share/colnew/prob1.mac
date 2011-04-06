@@ -23,13 +23,13 @@ ispace : makelist(0, k, 1, 200)$
 fixpnt : [];
 
 /* Define the equations */
-fsub(x, z) := [(1-6*x^2*z[4]-6*x*z[3])/x^3];
-df : jacobian(fsub(x,z),[z[1],z[2],z[3],z[4]]);
-dfsub(x, z) := ''df;
-g(z) := [z[1], z[3], z[1], z[3]];
-gsub(i, z) := g(z)[i];
-dg:jacobian(g(z), [z[1],z[2],z[3],z[4]]);
-dgsub(i, z) := row(dg, i)[1];
+fsub(x, z1, z2, z3, z4) := [(1-6*x^2*z4-6*x*z3)/x^3];
+df : jacobian(fsub(x,z1, z2, z3, z4),[z1,z2,z3,z4]);
+dfsub(x, z1, z2, z3, z4) := subst(['x=x,'z1=z1,'z2=z2,'z3=z3,'z4=z4], df);
+g(z1, z2, z3, z4) := [z1, z3, z1, z3];
+gsub(i, z1, z2, z3, z4) := subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], g(z1, z2, z3, z4)[i]);
+dg:jacobian(g(z1, z2, z3, z4), [z1,z2,z3,z4]);
+dgsub(i, z1, z2, z3, z4) := subst(['z1=z1,'z2=z2,'z3=z3,'z4=z4], row(dg, i)[1]);
 
 exact(x) := [.25*(10.*log(2.)-3.)*(1.-x) + .5*(1./x+(3.+x)*log(x)-x),
              -.25*(10.*log(2.)-3.) + .5*(-1./x/x+log(x)+(3.+x)/x-1.),
@@ -52,5 +52,3 @@ block([x : 1,
       x : x + 0.01),
   print("The exact errors are:"),
   printf(true, "   ~{ ~11,4e~}~%", err));
-
-
