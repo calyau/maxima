@@ -32,6 +32,7 @@
 ($put '$draw 2 '$version)
 
 ($load "grcommon.lisp")
+($load "vtk.lisp")
 
 ;; the following variable will be removed in the future,
 ;; since some packages are still using it. 
@@ -3257,8 +3258,6 @@
   (cond ((equal $draw_renderer '$gnuplot)
            ($draw (cons '($gr3d) args)))
         ((equal $draw_renderer '$vtk)
-           (when (null ($get '$vtk '$version))
-              (simplify ($load "vtk.lisp")))
            (apply 'vtk3d args))
         (t
            (merror "draw: unknown renderer ~M" $draw_renderer))))

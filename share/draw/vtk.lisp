@@ -757,6 +757,7 @@
         (head-length  (gethash '$head_length  *gr-options*))
         (head-angle   (gethash '$head_angle   *gr-options*))
         (line-width   (gethash '$line_width   *gr-options*))
+        (unit-vectors (gethash '$unit_vectors *gr-options*))
         (x ($float (cadr arg1)))
         (y ($float (caddr arg1)))
         (z ($float (cadddr arg1)))
@@ -775,10 +776,8 @@
           ndy (/ dy module)
           ndz (/ dz module))
     ; transform into unitary vector when unit_vectors=true
-    (setf dx ndx
-          dy ndy
-          dz ndz
-          module 1)
+    (when unit-vectors
+      (setf module 1))
     ; head parameters
     (setf radians (* head-angle 0.0174532925199433)) ; 0.017..=%pi/180
     (setf tiplength (* head-length ($float ($cos radians))))
@@ -799,7 +798,7 @@
       (format nil "  ~a SetTipRadius ~a~%" source-name (/ radius module))
       (format nil "  ~a SetTipLength ~a~%" source-name (/ tiplength module))
       (format nil "  ~a SetShaftResolution ~a~%" source-name 10)
-      (format nil "  ~a SetShaftRadius ~a~%" source-name line-width)
+      (format nil "  ~a SetShaftRadius ~a~%" source-name (/ line-width module))
       (vtktransform-code trans-name)
       (format nil "  ~a Translate ~a ~a ~a~%" trans-name x y z)
       (format nil "  ~a RotateWXYZ ~a ~a ~a ~a~%" trans-name rotangle 0 (- ndz) ndy)
