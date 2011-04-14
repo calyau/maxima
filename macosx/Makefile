@@ -9,7 +9,7 @@ PREFIX = $(APPRESOURCES)/maxima
 BINDIR = $(PREFIX)/bin 
 
 all:
-	./configure --with-$(LISP_NAME)=$(LISP_PROGRAM) --prefix=$(PREFIX)
+	./configure --with-$(LISP_NAME) --prefix=$(PREFIX)
 	make
 	platypus -F -y -a Maxima                      \
                  -c macosx/script                     \
