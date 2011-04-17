@@ -65,7 +65,7 @@ subst(solf,f(r),fri);
 fri:subst(solh,h(r),%);
 ("And compute the metric, which is the standard Schwarzschild metric:")$
 cmetric(true);
-("We're done... now let's verify our solution.")$
+("We're done... now let us verify our solution.")$
 ("We begin with recomputing the Ricci rotation coefficients:")$
 christof(true);
 ("And the Riemann tensor:")$
