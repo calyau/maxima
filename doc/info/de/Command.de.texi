@@ -2,10 +2,10 @@
 @c File        : Command.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Command.texi revision 1.53
+@c Original    : Command.texi revision 1.54
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 24.03.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -617,9 +617,9 @@ des Symbols @w{@var{symbol}}.  Im Gegensatz dazu entfernen
 @mrefcomma{remvalue} @mrefcomma{remfunction} @mref{remarray} und
 @mref{remrule} jeweils eine spezielle Eigenschaft eines Symbols.
 
-@code{kill} wertet die Argumente nicht aus.  Der Quote-Quote-Operator
-@mref{''} kann die Auswertung erzwingen.  @code{kill} gibt immer @code{done}
-zur@"uck.
+@code{kill} wertet die Argumente nicht aus.  Der
+@nxref{'', Quote-Quote-Operator} @code{''} kann die Auswertung erzwingen.
+@code{kill} gibt immer @code{done} zur@"uck.
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
@@ -638,9 +638,9 @@ Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste
 zur@"uck.
 
 Die Funktion @code{labels} wertet das Argument nicht aus.  Mit dem
-Quote-Quote-Operator @mxref{'','@w{}'} kann die Auswertung erzwungen werden.
-Zum Beispiel gibt das Kommando @code{labels(''inchar)} die Marken zur@"uck, die
-mit dem aktuellen Buchstaben f@"ur die Eingabemarken beginnen.
+@nxref{'', Quote-Quote-Operator} @code{''} kann die Auswertung erzwungen
+werden.  Zum Beispiel gibt das Kommando @code{labels(''inchar)} die Marken
+zur@"uck, die mit dem aktuellen Buchstaben f@"ur die Eingabemarken beginnen.
 
 Die Systemvariable @code{labels} ist eine Informationsliste, die die Eingabe-, 
 Ausgabe- und Zwischenmarken enth@"alt.  In der Liste sind auch die Marken
