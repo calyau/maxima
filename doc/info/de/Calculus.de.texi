@@ -5,6 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -882,8 +883,9 @@ zur@"uck.  Siehe auch @mrefdot{del}
 @c @code{'diff}) to yield the noun form instead of carrying out the 
 @c differentiation.
 
-Wenn die Ableitungen nicht ausgef@"uhrt werden sollen, kann der Quote-Operator
-verwendet werden, um eine Substantivform der Ableitung zu erhalten.
+Wenn die Ableitungen nicht ausgef@"uhrt werden sollen, kann der
+@nxref{', Quote-Operator} @code{'} verwendet werden, um eine Substantivform der
+Ableitung zu erhalten.
 
 @c When @code{derivabbrev} is @code{true}, derivatives are displayed as 
 @c subscripts. Otherwise, derivatives are displayed in the Leibniz notation, 
@@ -1758,7 +1760,8 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 Definition einer Funktion als ein Integral.  Die rechte Seite einer
 Funktionsdefinition wird nicht ausgewertet.  Daher enth@"alt die 
 Funktionsdefinition das Integral in einer Substantivform.  Der 
-Quote-Quote-Operator @code{'@w{}'} erzwingt die Auswertung der Substantivform.
+@nxref{'', Quote-Quote-Operator} @code{''} erzwingt die Auswertung der
+Substantivform.
 
 @example
 @group
