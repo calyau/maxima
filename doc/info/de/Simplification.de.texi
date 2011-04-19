@@ -2,10 +2,10 @@
 @c File        : Simplification.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Simplification.texi revision 1.26
+@c Original    : Simplification.texi revision 1.27
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 18.02.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------

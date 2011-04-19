@@ -2,10 +2,10 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : include-maxima.texi.in revision 1.12
+@c Original    : include-maxima.texi.in revision 1.14
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 27.03.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -153,8 +153,8 @@ Spezifische Gebiete der Mathematik
 * Gleichungen::                 L@"osen von Gleichungen.
 * Lineare Algebra::             Matrizen und Vektoren.
 * Tensoren::                    (Englisch) Methoden der Tensorrechnung.
-* Spezielle Funktionen::        (Englisch) Spezielle Mathematische Funktionen.
 * Zahlentheorie::               Funktionen der Zahlentheorie.
+* Spezielle Funktionen::        (Englisch) Spezielle Mathematische Funktionen.
 * Fouriertransformationen::     (Englisch) Fouriertransformationen und
                                 Fourierreihen.
 @sp 1
@@ -260,6 +260,7 @@ Ausdr@"ucke
 * Funktionen und Variablen f@"ur Ausdr@"ucke::
 
 Operatoren
+* Einf@"uhrung in Operatoren::
 * Arithmetische Operatoren::
 * Relationale Operatoren::
 * Logische Operatoren::

@@ -2,10 +2,10 @@
 @c File        : Plotting.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Plotting.texi revision 1.34
+@c Original    : Plotting.texi revision 1.53
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 23.10.2010
-@c Revision    : 18.02.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -991,8 +991,8 @@ Eine Palette mit verschiedenen Schattierungen einer Farbe wird genutzt.
 @c failing when it realizes that the matrix will require integer indices.
 
 Definition einer Funktion mit zwei Variablen als eine Matrix.  Der 
-Quote-Operator in der Definition der Funktion verhindert, das @code{plot3d}
-fehlschl@"agt, wenn die Argumente keine ganze Zahlen sind. 
+@nxref{', Quote-Operator} @code{'} in der Definition der Funktion verhindert,
+das @code{plot3d} fehlschl@"agt, wenn die Argumente keine ganze Zahlen sind.
 
 @c ===beg===
 @c M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],[1, 2, 3, 3])$

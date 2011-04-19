@@ -2,15 +2,16 @@
 @c File        : Operators.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Operators.texi revision 1.61
+@c Original    : Operators.texi revision 1.62
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 24.02.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@menu                     
+@menu
+* Einf@"uhrung in Operatoren::
 * Arithmetische Operatoren::
 * Relationale Operatoren::
 * Logische Operatoren::
@@ -20,7 +21,95 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Arithmetische Operatoren, Relationale Operatoren, Operatoren, Operatoren
+@node Einf@"uhrung in Operatoren, Arithmetische Operatoren, Operatoren, Operatoren
+@section Einf@"uhrung in Operatoren
+@c -----------------------------------------------------------------------------
+
+Maxima kennt die @"ublichen arithmetischen, relationalen und logischen
+Operatoren der Mathematik.  Weiterhin kennt Maxima Operatoren f@"ur die
+Zuweisung von Werten an Variablen und die Definition von Funktionen.  Die
+folgende Tabelle zeigt die in diesem Kapitel beschriebenen Operatoren.
+Angegeben sind der Name des Operators, der linksseitige Vorrang @code{lbp} und
+der rechtsseitige Vorrang @code{rbp}, der Typ des Operators und ein Beispiel
+einschlie@ss{}lich der internen Darstellung, wie sie vom Parser von der Eingabe
+gelesen wird.
+
+@verbatim
+
+Operator  lbp rbp  Typ     Beispiel
+                       
+   +      100 134  nary     a+b     ((mplus) $A $B)
+   -      100 134  prefix   -a      ((mminus) $A)
+   *      120      nary     a*b     ((mtimes) $A $B)
+   /      120 120  infix    a/b     ((mquotient) $A $B)
+   ^      140 139  infix    a^b     ((mexpt)  $A $B)
+   **     140 139  infix    a**b    ((mexpt) $A $B)
+   ^^     140 139  infix    a^^b    ((mncexpt) $A $B)
+   .      130 129  infix    a.b     ((mnctimes) $A $B)
+                                    
+   <       80  80  infix    a<b     ((mlessp) $A $B)
+   <=      80  80  infix    a<=b    ((mleqp) $A $B)
+   >       80  80  infix    a>b     ((mqreaterp) $A $B)
+   >=      80  80  infix    a>=b    ((mgeqp) $A $B)
+                                    
+   not         70  prefix   not a   ((mnot) $A)
+   and     65      nary     a and b ((mand) $A $B)
+   or      60      nary     a or b  ((mor) $A $B)
+                                    
+   #       80  80  infix    a#b     ((mnotequal) $A $B)
+   =       80  80  infix    a=b     ((mequal) $A $B)
+                                    
+   :      180  20  infix    a:b     ((msetq) $A $B)
+   ::     180  20  infix    a::b    ((mset) $A $B)
+   :=     180  20  infix    a:=b    ((mdefine) $A $B)
+   ::=    180  20  infix    a::=b   ((mdefmacro) $A $B)
+
+@end verbatim
+
+@noindent
+Mit dem Vorrang der Operatoren werden die bekannten Rechenregeln der einzelnen
+Operatoren definiert.  So wird zum Beispiel @code{a + b * c} vom Parser
+als @code{a + (b * c)} interpretiert, da der linksseitige Vorrang der
+Multiplikation gr@"o@ss{}er als der linksseitige Vorrang der Addition ist.
+
+Die Tabelle enth@"alt nicht alle von Maxima definierten Operatoren.  Weitere
+Operatoren sind zum Beispiel @code{!} f@"ur die Fakult@"at, die Operatoren
+@code{for}, @code{do}, @code{while}, um eine Programmschleife zu programmieren,
+oder @code{if}, @code{then}, @code{else}, um eine Bedingung zu definieren.
+
+Maxima unterscheidet die folgenden Typen an Operatoren:
+
+@table @emph
+@item Prefix
+Prefix-Operatoren haben einen Operanden, der dem Operator nachfolgt.  Beispiele
+sind die Operatoren @code{-} und @code{not}.
+@item Postfix
+Postfix-Operatoren haben einen Operanden, der dem Operator vorangestellt ist.
+Ein Beispiel ist der Operator @code{!} f@"ur die Fakult@"at.
+@item Infix
+Infix-Operatoren haben zwei Operanden.  Hierzu z@"ahlen zum Beispiel der
+Operator f@"ur die Exponentiation @code{^} oder der Operator f@"ur die Zuweisung
+@code{:}.
+@item N-ary
+N-ary-Operatoren fassen eine beliebige Anzahl an Operanden zu einem Ausdruck
+zusammen.  Hierzu z@"ahlen die Multiplikation @code{*} oder die Addition
+@code{+}.
+@item Matchfix
+Matchfix-Operatoren sind Begrenzungszeichen, die eine beliebige Anzahl an
+Operanden einschlie@ss{}en.  Ein Beispiel sind die Operatoren @code{[} und
+@code{]}, die eine Liste @code{[a, b, ...]} definieren.
+@item Nofix
+Ein Nofix-Operator ist ein Operator, der keinen Operanden hat.  Maxima kennt
+keinen internen Nofix-Operator.  Zum Beispiel kann mit @code{nofix(quit)} ein
+Nofix-Operator definiert werden.  Dann ist es m@"oglich, Maxima allein mit
+@code{quit} anstatt dem Funktionsaufruf @code{quit()} zu beenden.
+@end table
+
+Im Kapitel @nref{Nutzerdefinierte Operatoren} wird beschrieben, wie interne
+Maxima-Ope@-ra@-to@-ren umdefiniert oder neue Operatoren definiert werden.
+
+@c -----------------------------------------------------------------------------
+@node Arithmetische Operatoren, Relationale Operatoren, Einf@"uhrung in Operatoren, Operatoren
 @section Arithmetische Operatoren
 @c -----------------------------------------------------------------------------
 
@@ -52,58 +141,59 @@
 @end ifinfo
 
 Sind die Operatoren der Addition, Multiplikation, Division und Exponentiation.
-Wird der Name eines Operators in einem Ausdruck ben@"otigt, k@"onnen die 
-Bezeichnungen @code{"+"}, @code{"*"}, @code{"/"} und @code{"^"} verwendet 
+Wird der Name eines Operators in einem Ausdruck ben@"otigt, k@"onnen die
+Bezeichnungen @code{"+"}, @code{"*"}, @code{"/"} und @code{"^"} verwendet
 werden.
 
-Die Symbole @code{+} und @code{-} repr@"asentieren die un@"are Addition and 
+Die Symbole @code{+} und @code{-} repr@"asentieren die un@"are Addition und
 Negation.  Die Namen der Operatoren sind @code{"+"} und @code{"-"}.
 
-Die Subtraktion @code{a - b} wird von Maxima intern als Addition 
-@code{a + (- b)} dargestellt.  In der Ausgabe werden die Ausdr@"ucke 
-@code{a + (- b)} als Subtraktion @code{a - b} angezeigt.  Maxima erkennt 
-@code{"-"} nur als den Namen der un@"aren Negation, nicht jedoch als den 
+Die Subtraktion @code{a - b} wird von Maxima intern als Addition
+@code{a + (- b)} dargestellt.  In der Ausgabe werden die Ausdr@"ucke
+@code{a + (- b)} als Subtraktion @code{a - b} angezeigt.  Maxima erkennt
+@code{"-"} nur als den Namen der un@"aren Negation, nicht jedoch als den
 bin@"aren Operator der Subtraktion.
 
 Die Division @code{a / b} wird von Maxima intern als Multiplikation
-@code{a * b^(- 1)} dargestellt.  In der Ausgabe werden die Ausdr@"ucke 
+@code{a * b^(- 1)} dargestellt.  In der Ausgabe werden die Ausdr@"ucke
 @code{a * b^(- 1)} als Division @code{a / b} angezeigt.  Der Name des Operators
 f@"ur die Division ist @code{"/"}.
 
-Die Addition und Multiplikation sind kommutative N-ary-Operatoren.  Die Division 
+Die Addition und Multiplikation sind kommutative N-ary-Operatoren.  Die Division
 und Exponentiation sind nicht-kommutative bin@"are Operatoren.
 
 Maxima sortiert die Argumente eines kommutativen Operators und konstruiert eine
 kanonische Darstellung.  F@"ur die interne Darstellung wird die Ordnung durch
-@mref{orderlessp} bestimmt.  F@"ur die externe Darstellung der Anzeige wird die 
-Ordnung mit @mref{ordergreatp} festgelegt.  Ausnahme ist die Multiplikaton.
-F@"ur diese sind die interne und die externe Darstellung identisch.
+die Aussagefunktion @mref{orderlessp} bestimmt.  F@"ur die externe Darstellung
+der Anzeige wird die Ordnung mit der Aussagefunktion @mref{ordergreatp}@w{}
+festgelegt.  Ausnahme ist die Multiplikation.  F@"ur diese sind die interne und
+die externe Darstellung identisch.
 
-Arithmetische Rechnungen werden mit Zahlen (ganzen Zahlen, rationale Zahlen, 
-Gleitkommazahlen und gro@ss{}en Gleitkommazahlen) durchgef@"uhrt.  Mit Ausnahme 
-der Exponentiation werden alle arithmetischen Operationen mit Zahlen zu Zahlen 
-vereinfacht.  Die Exponentiation vereinfacht zu einer Zahl, wenn eines der 
-Argumente eine Gleikommazahl ist, oder wenn das Ergebnis eine ganze 
-oder rationale Zahl ist.  In anderen F@"allen kann die Exponentiation zum 
-Beispiel zu einer Wurzelfunktion @mref{sqrt} oder wiederum zu einer
-Exponentiation vereinfachen.
+Arithmetische Rechnungen mit Zahlen (ganzen Zahlen, rationale Zahlen,
+Gleitkommazahlen und gro@ss{}en Gleitkommazahlen) werden als eine Vereinfachung
+und nicht als Auswertung  ausgef@"uhrt.  Mit Ausnahme der Exponentiation werden
+alle arithmetischen Operationen mit Zahlen zu Zahlen vereinfacht.  Die
+Exponentiation vereinfacht zu einer Zahl, wenn eines der Argumente eine
+Gleitkommazahl ist, oder wenn das Ergebnis eine ganze oder rationale Zahl ist.
+In anderen F@"allen kann die Exponentiation zum Beispiel zu einer Wurzelfunktion
+@mref{sqrt} oder wiederum zu einer Exponentiation vereinfachen.
 
-Bei einer arithmetische Rechnung kann es zur Umwandlung in Gleitkommazahlen
+Bei einer arithmetischen Rechnung kann es zur Umwandlung in Gleitkommazahlen
 kommen.  Ist eines der Argumente eine gro@ss{}e Gleitkommazahl, so ist auch das
 Ergebnis eine gro@ss{}e Gleitkommazahl.  Entsprechend ist das Ergebnis eine
 einfache Gleitkommazahl, sofern mindestens eines der Argumente eine einfache
 Gleitkommazahl ist.  Treten nur ganze oder rationale Zahlen auf, ist das
 Ergebnis wieder eine ganze oder rationale Zahl.
 
-Arithmetische Rechnungen sind Vereinfachungen und keine Auswertungen.  Daher
-werden arithmetische Rechnungen auch dann ausgef@"uhrt, wenn die Auswertung des
-Ausdrucks mit den Quote-Operator @mref{'} unterdr@"uckt wird.
+Da arithmetische Rechnungen Vereinfachungen und keine Auswertungen sind, werden
+arithmetische Rechnungen auch dann ausgef@"uhrt, wenn die Auswertung des
+Ausdrucks mit dem @nxref{', Quote-Operator} @code{'} unterdr@"uckt wird.
 
 Arithmetische Operatoren werden elementweise auf Listen angewendet, wenn die
 Optionsvariable @mref{listarith} den Wert @code{true} hat.  Auf Matrizen werden
 die arithmetischen Operatoren immer elementweise angewendet.  Ist eines der 
 Argumente eine Liste oder Matrix und das andere Argument hat einen anderen 
-Typ, dann wird dieses Argument mit jedem Element der Liste oder Matrix 
+Typ, dann wird dieses Argument mit jedem Element der Liste oder Matrix
 kombiniert.
 
 Beispiele:
@@ -133,9 +223,11 @@ Namen der Operatoren sind @code{"/"} und @code{"^"}.
 
 @example
 (%i1) [a / b, a ^ b];
+@group
                               a   b
 (%o1)                        [-, a ]
                               b
+@end group
 (%i2) [map (op, %), map (args, %)];
 (%o2)              [[/, ^], [[a, b], [a, b]]]
 (%i3) [apply ("/", [a, b]), apply ("^", [a, b])];
@@ -144,7 +236,7 @@ Namen der Operatoren sind @code{"/"} und @code{"^"}.
                               b
 @end example
 
-Subtraktion and Divison werden intern als Addition und Multiplikation 
+Subtraktion und Division werden intern als Addition und Multiplikation 
 dargestellt.
 
 @example
@@ -156,8 +248,8 @@ dargestellt.
                                    b
 @end example
 
-Rechnungen werden f@"ur Zahlen ausgef@"uhrt.  Die Umwandlung in Gleitkommazahlen
-wird angewendet.
+Rechnungen werden f@"ur Zahlen ausgef@"uhrt.  Ist einer der Operanden eine
+Gleitkommazahl, ist das Ergebnis ebenfalls eine Gleitkommazahl.
 
 @example
 @group
@@ -197,9 +289,11 @@ ausgef@"uhrt.  Bei Listen wird dies mit der Optionsvariablen
 (%o1)                   [              ]
                         [ h - 3  u - 4 ]
 (%i2) 5 * matrix ([a, x], [h, u]);
+@group
                           [ 5 a  5 x ]
 (%o2)                     [          ]
                           [ 5 h  5 u ]
+@end group
 (%i3) listarith : false;
 (%o3)                         false
 (%i4) [a, c, m, t] / [1, 7, 2, 9];
@@ -280,12 +374,12 @@ Beispiele:
 @fnindex Nicht-kommutative Multiplikation
 @end ifinfo
 
-Ist der Operator f@"ur die nicht-kommutative Multiplikation von Matrizen.
+Ist der Operator der nicht-kommutativen Multiplikation von Matrizen.
 
 Siehe auch
-@mrefcomma{dot} @mrefcomma{dot0nscsimp} @mrefcomma{dot0simp}@ 
-@mrefcomma{dot1simp} @mrefcomma{dotassoc} @mrefcomma{dotconstrules}@ 
-@mrefcomma{dotdistrib} @mrefcomma{dotexptsimp} @mref{dotident}@ 
+@mrefcomma{dot} @mrefcomma{dot0nscsimp} @mrefcomma{dot0simp}@w{}
+@mrefcomma{dot1simp} @mrefcomma{dotassoc} @mrefcomma{dotconstrules}@w{}
+@mrefcomma{dotdistrib} @mrefcomma{dotexptsimp} @mref{dotident}@w{}
 und @mrefdot{dotscrules}
 @end deffn
 
@@ -323,25 +417,26 @@ gleich" und "gr@"o@ss{}er als".  Die Namen dieser Operatoren sind jeweils:
 eingesetzt werden, wo der Name des Operators ben@"otigt wird.
 
 Die relationalen Operatoren sind bin@"are Operatoren.  Ausdr@"ucke wie 
-@code{a < b < c} werden von Maxima nicht erkannt.
+@code{a < b < c} werden von Maxima nicht erkannt und generieren eine
+Fehlermeldung.
 
 Relationale Ausdr@"ucke werden von den Funktionen @mref{is} und
 @mref{maybe} sowie den Funktionen @mrefcomma{if} @mref{while} und
-@mref{unless} zu boolschen Werten ausgewertet.  Relationale Ausdr@"ucke werden
-ansonsten nicht zu boolschen Werten ausgewertet oder vereinfacht.  Jedoch
-werden die Argumente eines boolschen Ausdruckes ausgewertet, wenn die
+@mref{unless} zu booleschen Werten ausgewertet.  Relationale Ausdr@"ucke werden
+ansonsten nicht zu booleschen Werten ausgewertet oder vereinfacht.  Jedoch
+werden die Argumente eines booleschen Ausdruckes ausgewertet, wenn die
 Auswertung nicht auf andere Weise unterdr@"uckt ist.
 
 Wenn ein relationaler Ausdruck nicht zu @code{true} oder @code{false} 
 ausgewertet werden kann, wird das Verhalten von @code{is} und @code{if} von der
 Optionsvariable @mref{prederror} kontrolliert.  Hat @code{prederror} den Wert 
-@code{true}, wird von @code{is} and @code{if} ein Fehler erzeugt.  Hat 
+@code{true}, wird von @code{is} und @code{if} ein Fehler erzeugt.  Hat 
 @code{prederror} den Wert @code{false}, hat @code{is} den R@"uckgabewert 
 @code{unknown} und @code{if} gibt einen konditionalen Ausdruck zur@"uck, der 
 teilweise ausgewertet ist.
 
-Die Funktion @code{maybe} verh@"alt sich immer so, als ob @code{prederror} den 
-Wert @code{false} hat, und @code{while} sowie @code{unless} verhalten sich 
+Die Funktion @code{maybe} verh@"alt sich immer so, als ob @code{prederror} den
+Wert @code{false} hat, und @code{while} sowie @code{unless} verhalten sich
 immer so, als ob @code{prederror} den Wert @code{true} hat.
 
 Relationale Operatoren werden nicht auf die Elemente von Listen oder Matrizen
@@ -351,7 +446,7 @@ Siehe auch @mrefcomma{=} @mrefcomma{#} @mref{equal} und @mrefdot{notequal}
 
 Beispiele:
 
-Relationale Ausdr@"ucke werden von einigen Funktionen zu boolschen Werten 
+Relationale Ausdr@"ucke werden von einigen Funktionen zu booleschen Werten 
 ausgewertet.
 
 @example
@@ -368,7 +463,7 @@ ausgewertet.
 (%o5)                         5050
 @end example
 
-Relationale Ausdr@"ucke werden ansonsten nicht zu boolschen Werten ausgewertet 
+Relationale Ausdr@"ucke werden ansonsten nicht zu booleschen Werten ausgewertet 
 oder vereinfacht, auch wenn die Argumente eines relationalen Ausdruckes 
 ausgewertet werden.
 
@@ -393,24 +488,24 @@ ausgewertet werden.
 @fnindex Logische Konjunktion
 @end ifinfo
 
-Ist der logische Operator der Konjunktion.  @code{and} ist ein N-ary Infix 
-Operator.  Seine Argumente sind boolsche Ausdr@"ucke und sein Ergebnis ist ein 
-boolscher Wert.
+Ist der logische Operator der Konjunktion.  @code{and} ist ein 
+N-ary-Operator.  Die Argumente sind boolesche Ausdr@"ucke und das Ergebnis ist
+ein boolescher Wert.
 
-Wie @mref{is} erzwingt @code{and} die Auswertung aller oder einen Teil seiner 
+Wie @mref{is} erzwingt @code{and} die Auswertung aller oder einen Teil der
 Argumente.
 
 Die Argumente werden in der Reihenfolge ausgewertet, in der sie auftreten.
-@code{and} wertet nur soviele Argumente aus, wie n@"otig sind, um das Ergebnis 
+@code{and} wertet nur so viele Argumente aus, wie n@"otig sind, um das Ergebnis 
 des Ausdrucks zu bestimmen.  Hat irgendein Argument den Wert @code{false}, ist 
 das Ergebnis @code{false} und die weiteren Argumente werden nicht ausgewertet.
 
 Die Optionsvariable @mref{prederror} kontrolliert das Verhalten von @code{and}
 f@"ur den Fall, dass ein Argument nicht zu @code{true} oder @code{false} 
 ausgewertet werden kann.  @code{and} gibt eine Fehlermeldung, wenn 
-@code{prederror} den Wert @code{true} hat.  Andernfalls werden Argumente, die 
-nicht zu @code{true} oder @code{false} ausgewertet werden k@"onnen, akzeptiert 
-und das Ergebnis ist ein boolscher Ausdruck.
+@code{prederror} den Wert @code{true} hat.  Andernfalls werden Argumente
+akzeptiert, die nicht zu @code{true} oder @code{false} ausgewertet werden
+k@"onnen und das Ergebnis ist ein boolescher Ausdruck.
 
 @code{and} ist nicht kommutativ, da aufgrund von nicht ausgewerteten Argumenten
 die Ausdr@"ucke @code{a and b} und @code{b and a} ein unterschiedliches Ergebnis
@@ -424,24 +519,24 @@ haben k@"onnen.
 @fnindex Logische Disjunktion
 @end ifinfo
 
-Ist der logische Operator der Disjunktion.  @code{or} ist ein N-ary Infix 
-Operator.  Seine Argumente sind boolsche Ausdr@"ucke und sein Ergebnis ist ein 
-boolscher Wert.
+Ist der logische Operator der Disjunktion.  @code{or} ist ein N-ary-Operator.
+Die Argumente sind boolesche Ausdr@"ucke und das Ergebnis ist ein boolescher
+Wert.
 
 Wie @mref{is} erzwingt der Operator @code{or} die Auswertung aller oder einen
-Teil seiner Argumente.
+Teil der Argumente.
 
 Die Argumente werden in der Reihenfolge ausgewertet, in der sie auftreten.
-@code{or} wertet nur soviele Argumente aus, wie n@"otig sind, um das Ergebnis 
+@code{or} wertet nur so viele Argumente aus, wie n@"otig sind, um das Ergebnis 
 des Ausdrucks zu bestimmen.  Hat irgendein Argument den Wert @code{true}, ist
 das Ergebnis @code{true} und die weiteren Argumente werden nicht ausgewertet.
 
-Die Optionsvariable @mref{prederror} kontrolliert das Verhalten von @code{or},
-f@"ur den Fall, das ein Argument nicht zu @code{true} oder @code{false} 
-ausgewertet werden kann.  @code{and} gibt eine Fehlermeldung, wenn
-@code{prederror} den Wert @code{true} hat.  Andernfalls, werden Argumente, die
-nicht zu @code{true} oder @code{false} ausgewertet werden k@"onnen, akzeptiert
-und das Ergebnis ist ein boolscher Ausdruck.
+Die Optionsvariable @mref{prederror} kontrolliert das Verhalten von @code{or}
+f@"ur den Fall, dass ein Argument nicht zu @code{true} oder @code{false} 
+ausgewertet werden kann.  @code{or} gibt eine Fehlermeldung, wenn
+@code{prederror} den Wert @code{true} hat.  Andernfalls werden Argumente
+akzeptiert, die nicht zu @code{true} oder @code{false} ausgewertet werden
+k@"onnen und das Ergebnis ist ein boolescher Ausdruck.
 
 @code{or} ist nicht kommutativ, da aufgrund von nicht ausgewerteten Argumenten
 die Ausdr@"ucke @code{a or b} und @code{b or a} ein unterschiedliches Ergebnis
@@ -455,17 +550,17 @@ haben k@"onnen.
 @fnindex Logische Negation
 @end ifinfo
 
-Ist die logische Negation.  @code{not} ist ein Prefix-Operator.  Sein Argument
-ist ein boolscher Ausdruck und sein Ergebnis ein boolscher Wert.
+Ist die logische Negation.  @code{not} ist ein Prefix-Operator.  Das Argument
+ist ein boolescher Ausdruck und das Ergebnis ein boolescher Wert.
 
-Wie @mref{is} erzwingt @code{not} die Auswertung seiner Argumente.
+Wie @mref{is} erzwingt @code{not} die Auswertung der Argumente.
 
-Die Optionsvariable @mref{prederror} kontrolliert das Verhalten von @code{not},
+Die Optionsvariable @mref{prederror} kontrolliert das Verhalten von @code{not}
 f@"ur den Fall, dass das Argument nicht zu @code{true} oder @code{false} 
 ausgewertet werden kann.  @code{not} gibt eine Fehlermeldung, wenn 
 @code{prederror} den Wert @code{true} hat.  Andernfalls wird ein Argument, das 
 nicht zu @code{true} oder @code{false} ausgewertet werden kann, akzeptiert und 
-das Ergebnis ist ein boolscher Ausdruck.
+das Ergebnis ist ein boolescher Ausdruck.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -509,52 +604,52 @@ Beispiele:
 @anchor{=}
 @deffn {Operator} =
 @ifinfo
-@fnindex Operator for Gleichungen
+@fnindex Operator f@"ur Gleichungen
 @fnindex gleich (Gleichheit)
 @end ifinfo
 
 Ist der Operator f@"ur eine Gleichung.
 
-Ein Ausdruck @code{@var{a} = @var{b}} repr@"asentiert eine nicht ausgewertete 
-Gleichung, welche zutreffen kann oder auch nicht.  Nicht ausgewertete 
+Ein Ausdruck @code{@var{a} = @var{b}} repr@"asentiert eine nicht ausgewertete
+Gleichung, welche zutreffen kann oder auch nicht.  Nicht ausgewertete
 Gleichungen k@"onnen zum Beispiel als Argument der Funktionen @mref{solve} und
 @mref{algsys} auftreten.
 
-Die Funktion @mref{is} wertet @code{=} zu einem boolschen Wert aus.
-@code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}} zum 
-Wert @code{true} aus, wenn @var{a} and @var{b} identische Ausdr@"ucke sind.  Das 
-trifft zu, wenn @var{a} und @var{b} identische Atome sind, oder wenn ihre 
-Operatoren sowie die Argumente identisch sind.  In jedem anderen Fall ist das 
-Ergebnis @code{false}.  Das Ergebnis der Auswertung ist nie @code{unkown}.  Hat 
-@code{is(@var{a} = @var{b})} das Ergebnis @code{true}, werden @code{a} und 
+Die Funktion @mref{is} wertet @code{=} zu einem booleschen Wert aus.
+@code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}} zum
+Wert @code{true} aus, wenn @var{a} und @var{b} identische Ausdr@"ucke sind.  Das
+trifft zu, wenn @var{a} und @var{b} identische Atome sind oder wenn ihre
+Operatoren sowie die Argumente identisch sind.  In jedem anderen Fall ist das
+Ergebnis @code{false}.  Das Ergebnis der Auswertung ist nie @code{unkown}.  Hat
+@code{is(@var{a} = @var{b})} das Ergebnis @code{true}, werden @code{a} und
 @code{b} als syntaktisch gleich bezeichnet.  Im Unterschied dazu gilt f@"ur
-@"aquivalente Ausdr@"ucke, das @code{is(equal(@var{a}, @var{b}))} den Wert 
-@code{true} hat.  Ausdr@"ucke k@"onnen @"aquivalent, aber syntaktisch 
+@"aquivalente Ausdr@"ucke, dass @code{is(equal(@var{a}, @var{b}))} den Wert
+@code{true} hat.  Ausdr@"ucke k@"onnen @"aquivalent aber syntaktisch
 verschieden sein.
 
 Die Negation von @code{=} wird durch @mref{#} repr@"asentiert.  Wie bei @code{=}
 wird ein Ausdruck @code{@var{a} # @var{b}} nicht ausgewertet.  Eine Auswertung
 erfolgt mit @code{is(@var{a} # @var{b})}, welche die Werte @code{true} oder
-@code{false} liefert.
+@code{false} als Ergebnis hat.
 
-Neben @code{is} werten auch die Operatoren
-@mrefcomma{if} @mrefcomma{and} @mref{or} und @mref{not} die Operatoren
-@code{=} und @code{#} zu den Werten @code{true} oder @code{false} aus.
+Neben @code{is} werten auch die Operatoren @mrefcomma{if} @mrefcomma{and}@w{}
+@mref{or} und @mref{not} die Operatoren @code{=} und @code{#} zu den Werten
+@code{true} oder @code{false} aus.
 
 Wegen der Regeln f@"ur die Auswertung von Aussagen und weil im Ausdruck
 @code{not @var{expr}} das Argument @var{expr} ausgewertet wird, ist
-@code{not @var{a} = @var{b}} @"aquivalent zu @code{is(@var{a} # @var{b})} und 
+@code{not @var{a} = @var{b}} @"aquivalent zu @code{is(@var{a} # @var{b})} und
 nicht zu @code{@var{a} # @var{b}}.
 
-Die Funktionen @mref{rhs} und @mref{lhs} geben die rechte und die linke einer
-Gleichung oder Ungleichung zur@"uck.
+Die Funktionen @mref{rhs} und @mref{lhs} geben die rechte und die linke Seite
+einer Gleichung oder Ungleichung zur@"uck.
 
 Siehe auch @mref{equal} und @mrefdot{notequal}
 
 Beispiele:
 
 Ein Ausdruck @code{@var{a} = @var{b}} repr@"asentiert eine nicht ausgewertete
-Gleichung.  Diese kann zutreffen oder nicht.
+Gleichung.
 
 @example
 (%i1) eq_1 : a * x - 5 * y = 17;
@@ -640,7 +735,7 @@ Ist die linke Seite ein Element einer Liste, Matrix oder ein deklariertes
 Maxima- oder Lisp-Array, wird die rechte Seite diesem Element zugewiesen.  Der 
 Index muss ein existierendes Element bezeichnen.
 
-Ist die linke Seite ein Element eines nicht deklarierten Maxima-Array, dann wird
+Ist die linke Seite ein Element eines nicht deklarierten Arrays, dann wird
 die rechte Seite diesem Element zugewiesen, falls dieses existiert.  Existiert 
 das Element noch nicht, wird ein neues Element erzeugt.
 
@@ -649,7 +744,7 @@ zu einer Liste auswerten.  Die Elemente der Liste auf der rechten Seite werden
 den Elementen auf der linken Seite parallel zugewiesen.
 
 Siehe auch @mref{kill} und @mref{remvalue} f@"ur die Aufhebung der Zuweisung
-eines Wertes an die linke Seite.
+eines Wertes an ein Symbol.
 
 Beispiele:
 
@@ -722,7 +817,7 @@ Die mehrfache Zuweisung wird parallel ausgef@"uhrt.  Die Werte von @code{a} und
 @anchor{::}
 @deffn {Operator} ::
 @ifinfo
-@fnindex Zuweisungsoperaotor (wertet die linke Seite aus)
+@fnindex Zuweisungsoperator (wertet die linke Seite aus)
 @end ifinfo
 
 Ist der Operator f@"ur die Zuweisung eines Wertes an eine Variable.
@@ -756,18 +851,18 @@ Beispiele:
 @anchor{::=}
 @deffn {Operator} ::=
 @ifinfo
-@fnindex Operator for Makrodefinitionen
+@fnindex Operator f@"ur Makrodefinitionen
 @end ifinfo
 
 Ist der Operator f@"ur die Definition von Makro-Funktionen.  @code{::=} 
 definiert eine Funktion (aus historischen Gr@"unden Makro genannt), welche ihre
-Argumenente nicht auswertet.  Der Ausdruck, welcher zur@"uckgegeben wird, wird
-in dem Kontext ausgewertet, in dem das Makro aufgerufen wurde.  Ansonsten
+Argumente nicht auswertet.  Der Ausdruck, welcher zur@"uckgegeben wird, wird
+in dem Kontext ausgewertet, in dem das Makro aufgerufen wird.  Ansonsten
 verh@"alt sich eine Makro-Funktion wie eine gew@"ohnliche Funktion.
 
-@mref{macroexpand} expandiert ein Makro ohne es auszuwerten.
-@code{macroexpand(foo(x)} dem @code{''%} folgt, ist @"aquivalent zu 
-@code{foo (x)}, wenn @code{foo} eine Makro-Funktion ist.
+@mref{macroexpand} expandiert ein Makro, ohne es auszuwerten.
+@code{macroexpand(foo(x))} dem @code{''%} folgt, ist @"aquivalent zu 
+@code{foo(x)}, wenn @code{foo} eine Makro-Funktion ist.
 
 @code{::=} f@"ugt den Namen der neuen Makro-Funktion der Informationsliste
 @mref{macros} hinzu.  Die Funktionen @mrefcomma{kill} @mref{remove} und
@@ -826,8 +921,8 @@ von @code{y - z}.  Der R@"uckgabewert wird nicht ausgewertet und gibt (2).  Mit
 @end example
 
 @mref{macroexpand} gibt die Expansion des Makros zur@"uck.
-@code{macroexpand(foo(x)} dem @code{''%} folgt, ist @"aquivalent zu 
-@code{foo (x)}, wenn @code{foo} eine Makro-Funktion ist.
+@code{macroexpand(foo(x))} dem @code{''%} folgt, ist @"aquivalent zu 
+@code{foo(x)}, wenn @code{foo} eine Makro-Funktion ist.
 
 @example
 (%i1) x: %pi$
@@ -858,34 +953,35 @@ x is equal to 1234 - 1729 w
 
 Ist der Operator f@"ur Funktionsdefinitionen.
 @code{@var{f}(@var{x_1}, ..., @var{x_n})} := @var{expr} definiert eine Funktion
-mit dem Namen @var{f}, den Argumenten @var{x_1}, @dots{}, @var{x_n} und der 
+mit dem Namen @var{f}, den Argumenten @var{x_1}, @dots{}, @var{x_n} und der
 Funktionsdefinition @var{expr}.  @code{:=} wertet die Funktionsdefinition nicht
-aus.  Die Auswertung kann mit dem Quote-Quote-Operator @mref{''} erzwungen
-werden.  Die definierte Funktion kann eine gew@"ohnliche Maxima-Funktion sein,
-deren Argumente in runden Klammern eingeschlossen sind, oder eine Array-Funktion
-mit Argumenten, die in eckigen Klammern eingeschlossen sind.
+aus.  Die Auswertung kann mit dem @nxref{'', Quote-Quote-Operator} @code{''}
+erzwungen werden.  Die definierte Funktion kann eine gew@"ohnliche
+Maxima-Funktion sein, deren Argumente in runden Klammern eingeschlossen sind,
+oder eine Array-Funktion mit Argumenten, die in eckigen Klammern eingeschlossen
+sind.
 
 Ist das letzte oder das einzige Argument der Funktion @var{x_n} eine Liste mit
-einem Element, dann akzeptiert die mit @code{:=} definierte Funktion eine 
+einem Element, dann akzeptiert die mit @code{:=} definierte Funktion eine
 variable Anzahl an Argumenten.  Die Argumente werden zun@"achst nacheinander den
 Argumenten @var{x_1}, @dots{}, @var{x_(n - 1)} zugewiesen.  Sind weitere
 Argumente vorhanden, werden diese @var{x_n} als Liste zugewiesen.
 
 Funktionsdefinitionen erscheinen in demselben Namensraum.  Wird eine Funktion
 @code{f} innerhalb einer Funktion @code{g} definiert, wird die Reichweite der
-Funktion nicht automatisch auf @code{g} beschr@"ankt.  Dagegen f@"uhrt 
+Funktion nicht automatisch auf @code{g} beschr@"ankt.  Dagegen f@"uhrt
 @code{local(f)} zu einer Definition, die nur innerhalb eines Blockes oder einem
 anderen zusammengesetzten Ausdr@"uck erscheint.  Siehe auch @mrefdot{local}
 
-Ist eines der Argumente ein Symbol auf das der Quote-Operator angewendet wurde, 
-wird dieses Argument nicht ausgewertet.  Ansonsten werden alle Argumente 
-ausgewertet.
+Ist eines der Argumente ein Symbol auf das der @nxref{', Quote-Operator}@w{}
+@code{'} angewendet wurde, wird dieses Argument nicht ausgewertet.  Ansonsten
+werden alle Argumente ausgewertet.
 
 Siehe auch @mref{define} und @mrefdot{::=}
 
 Beispiele:
 
-@code{:=} wertet die Funktions-Definition nie aus, au@ss{}er wenn der 
+@code{:=} wertet die Funktionsdefinition nie aus, au@ss{}er wenn der
 Quote-Quote-Operator angewendet wird.
 
 @example
@@ -912,8 +1008,8 @@ Maxima-Funktion oder eine Array-Funktion sein.
                        x, y
 @end example
 
-Ist das letzte oder einzige Argument @var{x_n} eine Liste mit einem Element, 
-akzepiert die Funktion eine variable Anzahl an Argumenten.
+Ist das letzte oder einzige Argument @var{x_n} eine Liste mit einem Element,
+dann akzeptiert die Funktion eine variable Anzahl an Argumenten.
 
 @example
 (%i1) H ([L]) := apply ("+", L);
@@ -938,35 +1034,22 @@ akzepiert die Funktion eine variable Anzahl an Argumenten.
 
 @c -----------------------------------------------------------------------------
 @node Nutzerdefinierte Operatoren, , Zuweisungsoperatoren, Operatoren
-@section Einf@"uhrung in nutzerdefinierte Operatoren
+@section Nutzerdefinierte Operatoren
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einf@"uhrung in nutzerdefinierte Operatoren::
+* Funktionen und Variablen f@"ur nutzerdefinierte Operatoren::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Einf@"uhrung in nutzerdefinierte Operatoren, Funktionen und Variablen f@"ur nutzerdefinierte Operatoren, Nutzerdefinierte Operatoren, Nutzerdefinierte Operatoren
+@subsection Einf@"uhrung in nutzerdefinierte Operatoren
 @c -----------------------------------------------------------------------------
 
 Es ist m@"oglich neue Operatoren zu definieren, vorhandene Operatoren zu
-entfernen oder deren Eigenschaften zu @"andern.  Es k@"onnen Operatoren mit den
-folgenden Eigenschaften definiert werden:
-
-@table @dfn
-@item un@"ar Prefix
-Negation @code{- a}
-
-@item un@"ar Postfix
-Fakult@"at @code{a!}
-
-@item bin@"ar Infix
-Exponentiation @code{a^b}
-
-@item N-ary Infix
-Addition @code{a + b}
-
-@item Matchfix
-Liste @code{[a,b]}
-
-@item Nofix
-Maxima hat keinen implementierten Nofix-Operator.
-@end table
-
-Jede Funktion kann als ein Operator definiert werden, die Funktion kann, muss 
-aber nicht definiert sein.
+entfernen oder deren Eigenschaften zu @"andern.  Jede Funktion kann als ein
+Operator definiert werden, die Funktion kann, muss aber nicht definiert sein.
 
 Im Folgenden werden die Operatoren @code{dd} und @code{"<-"} definiert.  Nach
 der Definition als Operatoren ist @code{dd a} gleichbedeutend mit @code{"dd"(a)}
@@ -989,60 +1072,28 @@ Beispiel sind die Funktionen @code{"dd"} und @code{"<-"} nicht definiert.
 @end example
 
 Die Maxima-Funktionen, um Operatoren zu definieren, sind in der folgenden
-Tabelle zusammengefasst.  Weiterhin sind die Standardvorgaben f@"ur die links- 
-und rechtsseitige Bindungskraft der Operatoren (lbp und rbp) angegeben.  Die 
-Bindungskr@"afte bestimmen den Vorrang der Operatoren.
+Tabelle zusammengefasst.  Weiterhin sind die Standardvorgaben f@"ur den 
+linksseitigen @code{lbp} und rechtsseitigen Vorrang @code{rbp} der Operatoren
+angegeben.
 
-@table @code
-@item Prefix
+@table @emph
+@item prefix
 rbp=180
-@item Postfix
+@item postfix
 lbp=180
-@item Infix
+@item infix
 lbp=180, rbp=180
-@item N-ary
+@item nary
 lbp=180, rbp=180
-@item Matchfix
-(Bindungskraft nicht anwendbar)
-@item Nofix
-(Bindungskraft nicht anwendbar)
+@item matchfix
+(Vorrang nicht anwendbar)
+@item nofix
+(Vorrang nicht anwendbar)
 @end table
-
-Die folgende Tabelle enth@"alt die Maxima-Operatoren und deren links- und 
-rechtsseitigen Bindungskr@"afte.
-
-@example
-Operator   lbp     rbp     lpos     rpos     pos
-                                               
-  :        180     20                         
-  ::       180     20                           
-  :=       180     20                          
-  ::=      180     20                             
-  !        160                                      
-  !!       160                                     
-  ^        140     139                              
-  .        130     129                                
-  *        120             expr              expr     
-  /        120     120     expr     expr     expr 
-  +        100     134              expr     expr
-  -        100     134              expr     expr
-  =        80      80                            
-  #        80      80                                 
-  >        80      80                              
-  >=       80      80                                
-  <        80      80                         
-  <=       80      80                                
-  not              70      clause   clause   clause
-  and      65
-  or       60
-  ,        10
-  $        -1
-  ;        -1
-@end example
 
 Mit den Befehlen @mref{remove} und @mref{kill} k@"onnen Operatoreigenschaften
 von einem Symbol entfernt werden.  @code{remove("@var{a}", op)} entfernt
-die Operator-Eigenschaften des Symbols @var{a}.  @code{kill("@var{a}")} entfernt
+die Operatoreigenschaften des Symbols @var{a}.  @code{kill("@var{a}")} entfernt
 alle Eigenschaften einschlie@ss{}ich der Operator-Eigenschaften des Symbols 
 @var{a}.  In diesem Fall steht der Name des Symbols in Anf@"uhrungszeichen.
 
@@ -1076,8 +1127,9 @@ Incorrect syntax: # is not a prefix operator
 (%o9)                       ##(5, 3)
 @end example
 
-@c --- -------------------------------------------------------------------------
-@section Funktionen und Variable f@"ur nutzerdefinierte Operatoren
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur nutzerdefinierte Operatoren, , Einf@"uhrung in nutzerdefinierte Operatoren, Nutzerdefinierte Operatoren
+@subsection Funktionen und Variablen f@"ur nutzerdefinierte Operatoren
 @c -----------------------------------------------------------------------------
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
@@ -1093,7 +1145,7 @@ Argumenten.  Zum Beispiel ist die Subtraktion @code{-} ein Infix-Operator.
 @code{infix(@var{op})} deklariert @var{op} als einen Infix-Operator mit einer
 links- und rechtsseitigen Bindungskraft von jeweils 180.
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp})} deklariert @var{op} als einen
+@code{infix(@var{op}, @var{lbp}, @var{rbp})} deklariert @var{op} als einen
 Infix-Operator mit den angegebenen Werten f@"ur die links- und rechtsseitige 
 Bindungskraft.
 
@@ -1102,7 +1154,7 @@ deklariert @var{op} als einen Infix-Operator mit den angegebenen
 Bindungskr@"aften sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} f@"ur
 den linken und den rechten Operanden sowie das Ergebnis des Operators.
 
-Wortart bedeutet hier, den Type eines Operanden.  Maxima kennt die drei Typen
+Wortart bedeutet hier, den Typ eines Operanden.  Maxima kennt die drei Typen
 @code{expr}, @code{clause} und @code{any}.  Diese stehen f@"ur einen
 algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
 Mit Hilfe der f@"ur einen Operator definierten Wortart kann der Parser beim 
@@ -1120,7 +1172,7 @@ Die Assoziativit@"at eines Operators @var{op} h@"angt ab von seiner
 Bindungskraft.  Eine gr@"o@ss{}ere linksseitige Bindungskraft hat zur Folge,
 dass der Operator @var{op} vor einem anderen Operator auf seiner linken Seite
 ausgewertet wird.  W@"ahrend eine gr@"o@ss{}ere rechtsseitige Bindungskraft zur 
-Folge hat, dass der Operator vor anderen Operaroten auf der rechten Seite 
+Folge hat, dass der Operator vor anderen Operatoren auf der rechten Seite 
 ausgewertet wird.  Daraus folgt, dass eine gr@"o@ss{}ere linksseitige 
 Bindungskraft @var{lbp} einen Operator @var{op} rechts-assoziativ und eine 
 gr@"o@ss{}ere rechtsseitige Bindungskraft @var{rbp} den Operator 
@@ -1131,7 +1183,7 @@ Beispiele:
 
 Sind die rechtsseitigen und linksseitigen Bindungskr@"afte eines Operators
 @var{op} gr@"o@ss{}er als die entsprechenden Bindungskr@"afte eines anderen 
-Operatores, dann hat der Operator @var{op} Vorrang.
+Operators, dann hat der Operator @var{op} Vorrang.
 
 @example
 (%i1) :lisp (get '$+ 'lbp)
@@ -1226,7 +1278,7 @@ Klammern @code{( )} und Anf@"uhrungszeichen @code{" "} arbeiten wie
 Matchfix-Operatoren, werden aber vom Parser nicht als Matchfix-Operatoren 
 behandelt.
 
-@mref{matchfix} wertet seine Argumente aus.  @code{matchfix} gibt das erste
+@mref{matchfix} wertet die Argumente aus.  @code{matchfix} gibt das erste
 Argument @var{ldelimiter} als Ergebnis zur@"uck.
 
 Beispiele:
@@ -1309,17 +1361,15 @@ Nofix-Operatoren sind Operatoren, die kein Argument haben.  Tritt ein solcher
 Operator allein auf, wird die dazugeh@"orige Funktion ausgewertet.  Zum Beispiel
 beendet die Funktion @code{quit()} eine Maxima-Sitzung.  Wird diese Funktion 
 mit @code{nofix("quit")} zu einen Nofix-Operator deklariert, gen@"ugt die 
-Eingabe von @code{quit;}, um eine Maxima-Sitzung zu beenden.  Die Funktion 
-@code{nofix("x")} erweitert die Maxima-Syntax um den Nofix-Operator @code{x}.
+Eingabe von @code{quit}, um eine Maxima-Sitzung zu beenden.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
 @anchor{postfix}
 @deffn {Funktion} postfix (@var{x})
 
-Postfix-Operatoren und Prefix-Operatoren bezeichnen Operatoren mit einem 
-Argument, wobei f@"ur Postfix-Operatoren der Operator dem Argument direkt 
-nachfolgt.  Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
+Ein Postfix-Operator hat einen Operanden, der dem Operator vorangestellt ist.
+Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
 @code{postfix("x")} erweitert die Maxima-Syntax um den Postfix-Operator 
 @code{x}.
 @end deffn
@@ -1328,9 +1378,9 @@ nachfolgt.  Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
 @anchor{prefix}
 @deffn {Funktion} prefix (@var{x})
 
-Ein Prefix-Operator ist ein Operator mit einem Argument, das dem Operator
-nachfolgt.  Mit @code{prefix("x")} wird die Maxima-Syntax um einen
-Prefix-Operator @code{x} erweitert.
+Ein Prefix-Operator hat einen Operanden, der dem Operator nachfolgt.  Mit
+@code{prefix("x")} wird die Maxima-Syntax um einen Prefix-Operator @code{x}
+erweitert.
 @end deffn
 
 @c --- End of file Operators.de.texi -------------------------------------------

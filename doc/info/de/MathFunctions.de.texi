@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 12.03.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1286,8 +1286,8 @@ ausgewertet werden kann.
 @end example
 
 Fakult@"aten werden vereinfacht und nicht ausgewertet.  Daher wird die
-Fakult@"at auch dann berechnet, wenn die Auswertung mit dem Quote-Operator 
-@mref{'} unterdr@"uckt ist.
+Fakult@"at auch dann berechnet, wenn die Auswertung mit dem
+@nxref{', Quote-Operator} @code{'} unterdr@"uckt ist.
 
 @example
 (%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);

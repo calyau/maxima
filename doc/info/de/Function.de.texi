@@ -2,10 +2,10 @@
 @c File        : Function.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Function.texi revision 1.53
+@c Original    : Function.texi revision 1.54
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 18.02.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -199,7 +199,7 @@ Beispiele:
 Der Variablen @code{a} wird der Wert zugewiesen.  Die Variable @code{b} erh@"alt
 den globalen Wert.  Die Variable @code{c} hat keinen Wert.  Das Ergebnis ist
 ein nicht ausgewerteter Ausdruck.  Die Auswertung wird mit dem 
-Quote-Quote-Operator erzwungen.
+@nxref{'', Quote-Quote-Operator} @code{''} erzwungen.
 
 @example
 (%i1) (a: 17, b: 29, c: 1729)$
@@ -588,9 +588,9 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-@code{apply} wertet den Namen der Funktion @var{F} aus.  Mit dem Quote-Operator
-@code{'} wird die Auswertung unterdr@"uckt.  @code{demoivre} ist der Name einer
-globalen Optionsvariable und einer Funktion.
+@code{apply} wertet den Namen der Funktion @var{F} aus.  Mit dem
+@nxref{', Quote-Operator} @code{'} wird die Auswertung unterdr@"uckt.
+@code{demoivre} ist der Name einer globalen Optionsvariable und einer Funktion.
 
 @example
 (%i1) demoivre;

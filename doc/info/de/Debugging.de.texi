@@ -5,6 +5,7 @@
 @c Original    : Debugging.texi revision 1.20
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 20.12.2010
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -399,10 +400,11 @@ Vorherige Zuweisungen werden @"uberschrieben.
 @c @code{y}, and @code{z} are already bound, then enter
 @c to put them on the list of variables to check.
 
-Die Auswertung der Namen der Variablen muss mit dem Quote-Operator unterdr@"uckt
-werden, wenn den Variablen bereits Werte zugewiesen wurden.  Haben zum Beispiel
-die Variablen @code{x}, @code{y} und @code{z} Werte, dann werden die Variablen
-mit dem folgenden Befehl angegeben:
+Die Auswertung der Namen der Variablen muss mit dem
+@nxref{', Quote-Operator} @code{'} unterdr@"uckt werden, wenn den Variablen
+bereits Werte zugewiesen wurden.  Haben zum Beispiel die Variablen @code{x},
+@code{y} und @code{z} Werte, dann werden die Variablen mit dem folgenden Befehl
+angegeben:
 
 @example
 setcheck: ['x, 'y, 'z]$

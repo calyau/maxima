@@ -88,17 +88,17 @@ wertet die Lisp-@"Ubersetzungen aus und ruft den Lisp-Compiler f@"ur jede
 @"ubersetzte Funktion auf.  @code{compile} gibt eine Liste mit den Namen der 
 kompilierten Funktionen zur@"uck.
 
-@c @code{compile (all)} or @code{compile (functions)} compiles all user-defined 
+@c @code{compile (all)} or @code{compile (functions)} compiles all user-defined
 @c functions.
 
 @code{compile(all)} oder @code{compile(funtions)} kompiliert alle
 nutzerdefinierten Funktionen.
 
-@c @code{compile} quotes its arguments;  the quote-quote operator @code{'@w{}'} 
+@c @code{compile} quotes its arguments;  the quote-quote operator @code{'@w{}'}
 @c defeats quotation.
 
-@code{compile} wertet die Argumente nicht aus.  Der Quote-Quote-Operator
-@code{'@w{}'} erzwingt die Auswertung.
+@code{compile} wertet die Argumente nicht aus.  Der
+@nxref{'', Quote-Quote-Operator} @code{''} erzwingt die Auswertung.
 
 @end deffn
 

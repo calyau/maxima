@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 22.10.2010
-@c Revision    : 18.02.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1497,12 +1497,12 @@ einer Funktion reelle Zahlen enth@"alt.  Obwohl der Wertebereich von
 Repr@"asentiert die @"Aquivalenz, das hei@ss{}t den gleichen Wert.
 
 @code{equal} wird nicht ausgewertet oder vereinfacht.  Die Funktion @code{is}
-versucht einen Ausdruck mit @code{equal} zu einem boolschen Wert auszuwerten.
-@code{is(equal(@var{a}, @var{b}))} gibt @code{true} oder @code{false} zur@"uck, 
+versucht einen Ausdruck mit @code{equal} zu einem booleschen Wert auszuwerten.
+@code{is(equal(@var{a}, @var{b}))} gibt @code{true} oder @code{false} zur@"uck,
 wenn und nur wenn @var{a} und @var{b} gleich oder ungleich sind f@"ur alle Werte
 ihrer Variablen, was mit @code{ratsimp(@var{a} - @var{b})} bestimmt wird.  Gibt
-@code{ratsimp} das Ergebnis 0 zur@"uck, werden die beiden Ausdr@"ucke als 
-@"aquivalent betracht.  Zwei Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie 
+@code{ratsimp} das Ergebnis 0 zur@"uck, werden die beiden Ausdr@"ucke als
+@"aquivalent betracht.  Zwei Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie
 nicht syntaktisch gleich (im allgemeinen identisch) sind.
 
 Kann @code{is} einen Ausdruck mit @code{equal} nicht zu @code{true} oder 
@@ -1530,10 +1530,10 @@ Beispiele:
 (%o3)                      equal(x, y)
 @end example
 
-Die Funktion @code{is} versucht, @code{equal} zu einem boolschen Wert 
-auszuwerten.  @code{is(equal(@var{a}, @var{b}))} gibt den Wert @code{true} 
-zur@"uck, when @code{ratsimp(@var{a} - @var{b})} den Wert 0 hat.  Zwei 
-Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie nicht syntaktisch gleich 
+Die Funktion @code{is} versucht, @code{equal} zu einem booleschen Wert
+auszuwerten.  @code{is(equal(@var{a}, @var{b}))} gibt den Wert @code{true}
+zur@"uck, when @code{ratsimp(@var{a} - @var{b})} den Wert 0 hat.  Zwei
+Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie nicht syntaktisch gleich
 sind.
 
 @example
@@ -1581,7 +1581,7 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 @end example
 
 Einige weitere Operatoren werten @code{equal} und @code{notequal} zu einem
-boolschen Wert aus.
+booleschen Wert aus.
 
 @example
 (%i1) if equal (y, y - 1) then FOO else BAR;

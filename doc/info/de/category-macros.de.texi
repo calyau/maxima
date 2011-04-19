@@ -5,7 +5,7 @@
 @c Original    : category-macros.texi revision 1.4
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 27.03.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -78,6 +78,15 @@
 @end ifhtml
 @ifnothtml
 \nodename\
+@end ifnothtml
+@end macro
+
+@macro nxref {nodename, text}
+@ifhtml
+@ref{\nodename\, \text\}
+@end ifhtml
+@ifnothtml
+\text\
 @end ifnothtml
 @end macro
 

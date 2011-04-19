@@ -2,7 +2,9 @@
 @c File     : diag.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : diag.texi revision 1.6
 @c Date     : 08.11.2010
+@c Revision : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -14,6 +16,7 @@
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for diag,  , diag, diag
 @section Functions and Variables for diag
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} diag (@var{lm})
@@ -25,12 +28,12 @@ Example:
 
 @example
 (%i1) load("diag")$
-
 (%i2) a1:matrix([1,2,3],[0,4,5],[0,0,6])$
-
 (%i3) a2:matrix([1,1],[1,0])$
-
 (%i4) diag([a1,x,a2]);
+@end example
+@example
+@group
                    [ 1  2  3  0  0  0 ]
                    [                  ]
                    [ 0  4  5  0  0  0 ]
@@ -42,17 +45,14 @@ Example:
                    [ 0  0  0  0  1  1 ]
                    [                  ]
                    [ 0  0  0  0  1  0 ]
+@end group
 @end example
 
 To use this function write first @code{load("diag")}.
-
-@c @opencatbox
-@c @category{Matrices} @category{Share packages} @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} JF (@var{lambda},@var{n})
+@deffn {Function} JF (@var{lambda}, @var{n})
 
 Returns the Jordan cell of order @var{n} with eigenvalue @var{lambda}.
 
@@ -60,8 +60,10 @@ Example:
 
 @example
 (%i1) load("diag")$
-
 (%i2) JF(2,5);
+@end example
+@example
+@group
                     [ 2  1  0  0  0 ]
                     [               ]
                     [ 0  2  1  0  0 ]
@@ -71,17 +73,18 @@ Example:
                     [ 0  0  0  2  1 ]
                     [               ]
                     [ 0  0  0  0  2 ]
+@end group
+@end example
+@example
 (%i3) JF(3,2);
+@group
                          [ 3  1 ]
 (%o3)                    [      ]
                          [ 0  3 ]
+@end group
 @end example
 
 To use this function write first @code{load("diag")}.
-
-@c @opencatbox
-@c @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -95,7 +98,6 @@ Example:
 
 @example
 (%i1) load("diag")$
-
 (%i3) a:matrix([2,0,0,0,0,0,0,0],
                [1,2,0,0,0,0,0,0],
                [-4,1,2,0,0,0,0,0],
@@ -104,7 +106,6 @@ Example:
                [9,0,-2,0,1,2,0,0],
                [-34,7,1,-2,-1,1,2,0],
                [145,-17,-16,3,9,-2,0,3])$
-
 (%i34) jordan(a);
 (%o4)             [[2, 3, 3, 1], [3, 1]]
 (%i5) dispJordan(%);
@@ -127,10 +128,6 @@ Example:
 
 To use this function write first @code{load("diag")}. See also @code{dispJordan}
 and @code{minimalPoly}.
-
-@c @opencatbox
-@c @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -140,15 +137,14 @@ Returns the Jordan matrix associated to the codification given by the Maxima
 list @var{l}, which is the output given by function @code{jordan}.
 
 Example:
+
 @example
 (%i1) load("diag")$
-
 (%i2) b1:matrix([0,0,1,1,1],
                 [0,0,0,1,1],
                 [0,0,0,0,1],
                 [0,0,0,0,0],
                 [0,0,0,0,0])$
-
 (%i3) jordan(b1);
 (%o3)                  [[0, 3, 2]]
 (%i4) dispJordan(%);
@@ -165,10 +161,6 @@ Example:
 
 To use this function write first @code{load("diag")}. See also @code{jordan} 
 and @code{minimalPoly}.
-
-@c @opencatbox
-@c @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -181,12 +173,10 @@ Example:
 
 @example
 (%i1) load("diag")$
-
 (%i2) a:matrix([2,1,2,0],
                [-2,2,1,2],
                [-2,-1,-1,1],
                [3,1,2,-1])$
-
 (%i3) jordan(a);
 (%o3)               [[- 1, 1], [1, 3]]
 (%i4) minimalPoly(%);
@@ -196,10 +186,6 @@ Example:
 
 To use this function write first @code{load("diag")}. See also @code{jordan} 
 and @code{dispJordan}.
-
-@c @opencatbox
-@c @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -213,7 +199,6 @@ Example:
 
 @example
 (%i1) load("diag")$
-
 (%i2) a:matrix([2,1,2,0],
           [-2,2,1,2],
           [-2,-1,-1,1],
@@ -222,6 +207,9 @@ Example:
 (%i3) jordan(a);
 (%o3)               [[- 1, 1], [1, 3]]
 (%i4) M: ModeMatrix(a,%);
+@end example
+@example
+@group
                   [  1    - 1   1   1 ]
                   [                   ]
                   [   1               ]
@@ -235,6 +223,9 @@ Example:
                   [  17               ]
                   [  --   - 1   1   1 ]
                   [  9                ]
+@end group
+@end example
+@example
 (%i5) is(  (M^^-1).a.M = dispJordan(%o3)  );
 (%o5)                      true
 @end example
@@ -243,10 +234,6 @@ Note that @code{dispJordan(%o3)} is the Jordan form of matrix @code{a}.
 
 To use this function write first @code{load("diag")}. See also @code{jordan} 
 and @code{dispJordan}.
-
-@c @opencatbox
-@c @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -255,28 +242,18 @@ and @code{dispJordan}.
 Returns @math{f(mat)}, where @var{f} is an analytic function and @var{mat}
 a matrix. This computation is based on Cauchy's integral formula, which states 
 that if @code{f(x)} is analytic and
-
-@example
-mat = diag([JF(m1,n1),...,JF(mk,nk)]),
-@end example
-
-then
-
-@example
-f(mat) = ModeMatrix*diag([f(JF(m1,n1)), ..., f(JF(mk,nk))])
-                                              *ModeMatrix^^(-1)
-@end example
-
+@code{mat = diag([JF(m1,n1), ..., JF(mk,nk)])}, then @code{f(mat) = 
+ModeMatrix * diag([f(JF(m1,n1)), ..., f(JF(mk,nk))]) * ModeMatrix^^(-1)}.
 Note that there are about 6 or 8 other methods for this calculation.
-
 Some examples follow.
 
+To use this function write first @code{load(diag)}.
+
 Example 1:
+
 @example
 (%i1) load("diag")$
-
 (%i2) b2:matrix([0,1,0], [0,0,1], [-1,-3,-3])$
-
 (%i3) mat_function(exp,t*b2);
                2   - t
               t  %e          - t     - t
@@ -309,7 +286,10 @@ t  (- ----- - ----- + %e   ) - t (2 %e    - -----),
  2  %e      %e            - t   %e
 t  (----- - -----) - t (%e    - -----)])
       2       t                   t
+@end example
+@example
 (%i4) ratsimp(%);
+@group
                [   2              - t ]
                [ (t  + 2 t + 2) %e    ]
                [ -------------------- ]
@@ -324,6 +304,10 @@ t  (----- - -----) - t (%e    - -----)])
                [   (t  - 2 t) %e      ]
                [   ----------------   ]
                [          2           ]
+@end group
+@end example
+@example
+@group
          [      2        - t    ]
          [    (t  + t) %e       ]
          [                      ]
@@ -332,6 +316,10 @@ t  (----- - -----) - t (%e    - -----)])
          [                      ]
          [     2          - t   ]
          [   (t  - 3 t) %e      ]
+@end group
+@end example
+@example
+@group
          [        2   - t       ]
          [       t  %e          ]
          [       --------       ]
@@ -346,7 +334,7 @@ t  (----- - -----) - t (%e    - -----)])
          [ (t  - 4 t + 2) %e    ]
          [ -------------------- ]
          [          2           ]
-
+@end group
 @end example
 
 Example 2:
@@ -357,8 +345,10 @@ Example 2:
                 [0,0,0,0,1],
                 [0,0,0,0,0],
                 [0,0,0,0,0])$
-
+@end example
+@example
 (%i6) mat_function(exp,t*b1);
+@group
                   [              2     ]
                   [             t      ]
                   [ 1  0  t  t  -- + t ]
@@ -371,10 +361,14 @@ Example 2:
                   [ 0  0  0  1    0    ]
                   [                    ]
                   [ 0  0  0  0    1    ]
+@end group
+@end example
 (%i7) minimalPoly(jordan(b1));
                              3
 (%o7)                       x
+@example
 (%i8) ident(5)+t*b1+1/2*(t^2)*b1^^2;
+@group
                   [              2     ]
                   [             t      ]
                   [ 1  0  t  t  -- + t ]
@@ -387,7 +381,11 @@ Example 2:
                   [ 0  0  0  1    0    ]
                   [                    ]
                   [ 0  0  0  0    1    ]
+@end group
+@end example
+@example
 (%i9) mat_function(exp,%i*t*b1);
+@group
              [                           2 ]
              [                          t  ]
              [ 1  0  %i t  %i t  %i t - -- ]
@@ -400,7 +398,11 @@ Example 2:
              [ 0  0   0     1        0     ]
              [                             ]
              [ 0  0   0     0        1     ]
+@end group
+@end example
 (%i10) mat_function(cos,t*b1)+%i*mat_function(sin,t*b1);
+@example
+@group
               [                           2 ]
               [                          t  ]
               [ 1  0  %i t  %i t  %i t - -- ]
@@ -413,6 +415,7 @@ Example 2:
               [ 0  0   0     1        0     ]
               [                             ]
               [ 0  0   0     0        1     ]
+@end group
 @end example
 
 Example 3:
@@ -424,10 +427,11 @@ Example 3:
                  [-1,1,-1,4,0,0],
                  [-1,1,-1,1,3,0],
                  [-1,1,-1,1,1,2])$
-
 (%i12) fpow(x):=block([k],declare(k,integer),x^k)$
-
 (%i13) mat_function(fpow,a1);
+@end example
+@example
+@group
                 [  k      k - 1 ]         [      k - 1    ]
                 [ 3  - k 3      ]         [   k 3         ]
                 [               ]         [               ]
@@ -445,6 +449,10 @@ Example 3:
                 [               ]         [               ]
                 [       k - 1   ]         [      k - 1    ]
                 [  - k 3        ]         [   k 3         ]
+@end group
+@end example
+@example
+@group
          [       0       ]         [       0       ]
          [               ]         [               ]
          [       0       ]         [       0       ]
@@ -460,6 +468,10 @@ Example 3:
          [               ]         [               ]
          [       k - 1   ]         [      k - 1    ]
          [  - k 3        ]         [   k 3         ]
+@end group
+@end example
+@example
+@group
          [    0    ]
          [         ]         [ 0  ]
          [    0    ]         [    ]
@@ -473,13 +485,8 @@ Example 3:
          [         ]         [    ]
          [  k    k ]         [  k ]
          [ 3  - 2  ]         [ 2  ]
+@end group
 @end example
-
-To use this function write first @code{load("diag")}.
-
-@c @opencatbox
-@c @category{Package diag}
-@c @closecatbox
 @end deffn
 
 @c --- End of file diag.de.texi ------------------------------------------------

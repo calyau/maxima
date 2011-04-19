@@ -2,7 +2,9 @@
 @c File     : unit.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : unit.texi revision 1.7
 @c Date     : 08.11.2010
+@c Revision : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -15,9 +17,10 @@
 @c -----------------------------------------------------------------------------
 @node Introduction to Units, Functions and Variables for Units, unit, unit
 @section Introduction to Units
+@c -----------------------------------------------------------------------------
 
 The @emph{unit} package enables the user to convert between arbitrary
-units and work with dimensions in equations. The functioning of this package
+units and work with dimensions in equations.  The functioning of this package
 is radically different from the original Maxima units package - whereas the
 original was a basic list of definitions, this package uses rulesets to allow
 the user to chose, on a per dimension basis, what unit final answers should be
@@ -26,21 +29,21 @@ allowing the user to readily identify the units associated with a particular
 answer.  It will allow a user to simplify an expression to its fundamental Base
 Units, as well as providing fine control over simplifying to derived units.
 Dimensional analysis is possible, and a variety of tools are available to
-manage conversion and simplification options. In addition to customizable
+manage conversion and simplification options.  In addition to customizable
 automatic conversion, @emph{units} also provides a traditional manual
 conversion option.
 
-Note - when unit conversions are inexact Maxima will make approximations resulting
-in fractions. This is a consequence of the techniques used to simplify units.
-The messages warning of this type of substitution are disabled by default in
-the case of units (normally they are on) since this situation occurs frequently
-and the warnings clutter the output.  (The existing state of ratprint is restored
-after unit conversions, so user changes to that setting will be preserved
-otherwise.)  If  the user needs this information for units, they can set
-@emph{unitverbose:on} to reactivate the printing of warnings from the unit
-conversion process.
+Note - when unit conversions are inexact Maxima will make approximations
+resulting in fractions.  This is a consequence of the techniques used to
+simplify units.  The messages warning of this type of substitution are disabled
+by default in the case of units (normally they are on) since this situation
+occurs frequently and the warnings clutter the output.  (The existing state of
+ratprint is restored after unit conversions, so user changes to that setting
+will be preserved otherwise.)  If  the user needs this information for units,
+they can set @emph{unitverbose:on} to reactivate the printing of warnings from
+the unit conversion process.
 
-@emph{unit} is included in Maxima in the share/contrib/unit directory. It obeys
+@emph{unit} is included in Maxima in the share/contrib/unit directory.  It obeys
 normal Maxima package loading conventions:
 
 @example
@@ -65,8 +68,8 @@ Done.
 @end example
 
 The WARNING messages are expected and not a cause for concern - they indicate
-the @emph{unit} package is redefining functions already defined in Maxima proper.
-This is necessary in order to properly handle units.  The user
+the @emph{unit} package is redefining functions already defined in Maxima
+proper.  This is necessary in order to properly handle units.  The user
 should be aware that if other changes have been made to these functions by other
 packages those changes will be overwritten by this loading process.
 
@@ -74,8 +77,8 @@ The @emph{unit.mac} file also loads a lisp file @emph{unit-functions.lisp} which
 contains the lisp functions needed for the package.
 
 Clifford Yapp is the primary author.  He has received valuable assistance from
-Barton Willis of the University of Nebraska at Kearney (UNK), Robert Dodier, and
-other intrepid folk of the Maxima mailing list.
+Barton Willis of the University of Nebraska at Kearney (UNK), Robert Dodier,
+and other intrepid folk of the Maxima mailing list.
 
 There are probably lots of bugs.  Let me know.  @code{float} and @code{numer}
 don't do what is expected.
@@ -84,19 +87,17 @@ TODO : dimension functionality, handling of temperature,
 showabbr and friends.  Show examples with addition of quantities containing
 units.
 
-@c @opencatbox
-@c @category{Physical units} @category{Share packages} @category{Package unit}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Units,  , Introduction to Units, unit
 @section Functions and Variables for Units
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} setunits (@var{list})
 
-By default, the @emph{unit} package does not use any derived dimensions, but will
-convert all units to the seven fundamental dimensions using MKS units.
+By default, the @emph{unit} package does not use any derived dimensions, but
+will convert all units to the seven fundamental dimensions using MKS units.
+
 @example
 @group
 (%i2) N;
@@ -129,6 +130,7 @@ convert all units to the seven fundamental dimensions using MKS units.
 
 In some cases this is the desired behavior.  If the user wishes to use other
 units, this is achieved with the @code{setunits} command:
+
 @example
 @group
 (%i6) setunits([centigram,inch,minute]);
@@ -161,9 +163,9 @@ units, this is achieved with the @code{setunits} command:
 @end group
 @end example
 
-The setting of units is quite flexible.  For example, if we want to
-get back to kilograms, meters, and seconds as defaults for those
-dimensions we can do:
+The setting of units is quite flexible.  For example, if we want to get back to
+kilograms, meters, and seconds as defaults for those dimensions we can do:
+
 @example
 @group
 (%i11) setunits([kg,m,s]);
@@ -179,6 +181,7 @@ dimensions we can do:
 @end example
 
 Derived units are also handled by this command:
+
 @example
 @group
 (%i17) setunits(N);
@@ -210,6 +213,7 @@ Notice that the @emph{unit} package recognized the non MKS combination
 of mass, length, and inverse time squared as a force, and converted it
 to Newtons.  This is how Maxima works in general.  If, for example, we
 prefer dyne to Newtons, we simply do the following:
+
 @example
 @group
 (%i22) setunits(dyn);
@@ -228,6 +232,7 @@ prefer dyne to Newtons, we simply do the following:
 @end example
 
 To discontinue simplifying to any force, we use the uforget command:
+
 @example
 @group
 (%i26) uforget(dyn);
@@ -248,24 +253,21 @@ To discontinue simplifying to any force, we use the uforget command:
                                               s
 @end group
 @end example
+
 This would have worked equally well with @code{uforget(N)} or
 @code{uforget(%force)}.
 
-See also @code{uforget}. To use this function write first @code{load("unit")}.
-
-@c @opencatbox
-@c @category{Package unit}
-@c @closecatbox
+See also @code{uforget}.  To use this function write first @code{load("unit")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} uforget (@var{list})
 
-By default, the @emph{unit} package converts all units to the
-seven fundamental dimensions using MKS units. This behavior can
-be changed with the @code{setunits} command. After that, the
-user can restore the default behavior for a particular dimension
-by means of the @code{uforget} command:
+By default, the @emph{unit} package converts all units to the seven fundamental
+dimensions using MKS units.  This behavior can be changed with the
+@code{setunits} command.  After that, the user can restore the default behavior
+for a particular dimension by means of the @code{uforget} command:
+
 @example
 @group
 (%i13) setunits([centigram,inch,minute]);
@@ -291,15 +293,10 @@ by means of the @code{uforget} command:
 @end group
 @end example
 
-@code{uforget} operates on dimensions,
-not units, so any unit of a particular dimension will work.  The
-dimension itself is also a legal argument.
+@code{uforget} operates on dimensions, not units, so any unit of a particular
+dimension will work.  The dimension itself is also a legal argument.
 
-See also @code{setunits}. To use this function write first @code{load("unit")}.
-
-@c @opencatbox
-@c @category{Package unit}
-@c @closecatbox
+See also @code{setunits}.  To use this function write first @code{load("unit")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -309,12 +306,12 @@ When resetting the global environment is overkill, there is the @code{convert}
 command, which allows one time conversions.  It can accept either a single
 argument or a list of units to use in conversion.  When a convert operation is
 done, the normal global evaluation system is bypassed, in order to avoid the
-desired result being converted again.  As a consequence, for inexact calculations
-"rat" warnings will be visible if the global environment controlling this behavior
-(@code{ratprint}) is true.  This is also useful for spot-checking the
-accuracy of a global conversion.  Another feature is @code{convert} will allow a
-user to do Base Dimension conversions even if the global environment is set to
-simplify to a Derived Dimension.
+desired result being converted again.  As a consequence, for inexact
+calculations "rat" warnings will be visible if the global environment
+controlling this behavior (@code{ratprint}) is true.  This is also useful for
+spot-checking the accuracy of a global conversion.  Another feature is
+@code{convert} will allow a user to do Base Dimension conversions even if the
+global environment is set to simplify to a Derived Dimension.
 
 @example
 @group
@@ -402,11 +399,8 @@ simplify to a Derived Dimension.
 @end group
 @end example
 
-See also @code{setunits} and @code{uforget}. To use this function write first @code{load("unit")}.
-
-@c @opencatbox
-@c @category{Package unit}
-@c @closecatbox
+See also @code{setunits} and @code{uforget}.  To use this function write first
+@code{load("unit")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -417,13 +411,16 @@ If a user wishes to have a default unit behavior other than that described,
 they can make use of @emph{maxima-init.mac} and the @emph{usersetunits}
 variable.  The @emph{unit} package will check on startup to see if this variable
 has been assigned a list.  If it has, it will use setunits on that list and take
-the units from that list to be defaults.  @code{uforget} will revert to the behavior
-defined by usersetunits over its own defaults.  For example, if we have a
-@emph{maxima-init.mac} file containing:
+the units from that list to be defaults.  @code{uforget} will revert to the
+behavior defined by usersetunits over its own defaults.  For example, if we
+have a @emph{maxima-init.mac} file containing:
+
 @example
 usersetunits : [N,J];
 @end example
+
 we would see the following behavior:
+
 @example
 @group
 (%i1) load("unit")$
@@ -503,15 +500,18 @@ User defaults initialized.
 (%o15)                            (1000) (J)
 @end group
 @end example
+
 Without @code{usersetunits}, the initial inputs would have been converted
 to MKS, and uforget would have resulted in a return to MKS rules.  Instead,
 the user preferences are respected in both cases.  Notice these can still
 be overridden if desired.  To completely eliminate this simplification - i.e.
-to have the user defaults reset to factory defaults - the @code{dontusedimension}
-command can be used.  @code{uforget} can restore user settings again, but
-only if @code{usedimension} frees it for use.  Alternately,
-@code{kill(usersetunits)} will completely remove all knowledge of the user defaults
-from the session.  Here are some examples of how these various options work.
+to have the user defaults reset to factory defaults - the
+@code{dontusedimension} command can be used.  @code{uforget} can restore user
+settings again, but only if @code{usedimension} frees it for use.  Alternately,
+@code{kill(usersetunits)} will completely remove all knowledge of the user
+defaults from the session.  Here are some examples of how these various options
+work.
+
 @example
 @group
 (%i2) kg*m/s^2;
@@ -681,6 +681,7 @@ setunits([unit]) to select a unit.
                                       s
 @end group
 @end example
+
 Unfortunately this wide variety of options is a little confusing at first,
 but once the user grows used to them they should find they have very full
 control over their working environment.
@@ -690,10 +691,6 @@ control over their working environment.
 @c used in standard texts as possible.  Some people, however, prefer to use those
 @c symbols for normal work and have units labeled in some other fasion.
 @c @code{setunitprefix} is provided for this case.  Here is an example of its use:
-
-@c @opencatbox
-@c @category{Package unit}
-@c @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -703,6 +700,7 @@ Rebuilds global unit lists automatically creating all desired metric units.
 @var{x} is a numerical argument which is used to specify how many metric
 prefixes the user wishes defined.  The arguments are as follows, with each
 higher number defining all lower numbers' units:
+
 @example
 @group
            0 - none. Only base units
@@ -714,15 +712,12 @@ higher number defining all lower numbers' units:
            4 - all
 @end group
 @end example
+
 Normally, Maxima will not define the full expansion since this results in a
 very large number of units, but @code{metricexpandall} can be used to
-rebuild the list in a more or less complete fashion. The relevant variable
+rebuild the list in a more or less complete fashion.  The relevant variable
 in the @emph{unit.mac} file is @var{%unitexpand}.
 @c This should be made configurable as a maxima-init.mac controllable option.
-
-@c @opencatbox
-@c @category{Package unit}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -731,18 +726,7 @@ Default value: @code{2}
 
 This is the value supplied to @code{metricexpandall} during the initial loading
 of @emph{unit}.
-
-@c @opencatbox
-@c @category{Package unit}
-@c @closecatbox
 @end defvr
-
-@c @deffn {Function} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
-@c @end deffn
-
-@c @defvr {Optional variable} variablename
-@c Default value: @code{true}
-@c @end defvr
 
 @c --- End of file unit.de.texi ------------------------------------------------
 

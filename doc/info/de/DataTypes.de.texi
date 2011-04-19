@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 24.03.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -844,8 +844,8 @@ oder einem Symbol.  Die Argumente m@"ussen sich zu einem Atom auswerten lassen.
 Der R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist.
 Ansonsten wird eine Zeichenkette zur@"uckgegeben.
 
-@code{concat} wertet die Argumente aus.  Der Quote-Operator verhindert die
-Auswertung.  Siehe auch die Funktion @mrefdot{sconcat}
+@code{concat} wertet die Argumente aus.  Der @nxref{', Quote-Operator} @code{'}
+verhindert die Auswertung.  Siehe auch die Funktion @mrefdot{sconcat}
 
 Beispiele:
 

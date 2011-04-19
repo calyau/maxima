@@ -5,7 +5,7 @@
 @c Original    : Expressions.texi revision 1.73
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 04.04.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -166,7 +166,7 @@ werden dagegen nicht ausgewertet, sondern vereinfacht.  Die meisten
 mathematischen Funktionen sind Substantive.  Funktionen wie
 @mrefcomma{limit} @mref{diff} oder @mref{integrate} sind standardm@"a@ss{}ig
 Verben, die jedoch in ein Substantiv umgewandelt werden k@"onnen.  Ein Verb kann
-durch den @mxref{', Quote-Operator} @code{'} oder mit der Funktion
+durch den @nxref{', Quote-Operator} @code{'} oder mit der Funktion
 @mref{nounify} in ein Substantiv umgewandelt werden.  Der Auswertungsschalter 
 @mref{nouns} bewirkt, dass Substantive von der Funktion @mref{ev} ausgewertet 
 werden.

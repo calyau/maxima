@@ -4,31 +4,32 @@
 @c Language : German
 @c Author   : Dr. Dieter Kaiser
 @c Date     : 17.10.2010
+@c Revision : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-Das Glossar stellt den deutschen @"Ubersetzungen die englischen Begriffe 
+Das Glossar stellt den deutschen @"Ubersetzungen die englischen Begriffe
 gegen@"uber und erl@"autert die Begriffe.
 
 @table @emph
 
 @item  Ausdruck - expression
-       Jede beliebige Zeichenfolge, die Maxima als Eingabe versteht und die von 
+       Jede beliebige Zeichenfolge, die Maxima als Eingabe versteht und die von
        Maxima verarbeitet werden kann.
 
 @item  Aussage - predicate
-       Ausdr@"ucke, die zu den boolschen Werten @code{true} oder @code{false} 
+       Ausdr@"ucke, die zu den booleschen Werten @code{true} oder @code{false}
        auswerten.
 
 @item  Auswertung - evaluation
-       Ausdr@"ucke werden zun@"achst ausgewertet. Funktionen werden aufgerufen, 
+       Ausdr@"ucke werden zun@"achst ausgewertet. Funktionen werden aufgerufen,
        die Werte von Variablen werden eingesetzt. Die Auswertung wird von
-       der Vereinfachung (Simplification) unterschieden und wird vor der 
+       der Vereinfachung (Simplification) unterschieden und wird vor der
        Vereinfachung ausgef@"uhrt.
 
 @item  Begrenzungszeichen - delimiter
-       Das Zeichen das auf der linken und rechten Seite zum Beispiel eine 
+       Das Zeichen das auf der linken und rechten Seite zum Beispiel eine
        Liste @code{[ ... ]} begrenzt.
 
 @item  Bezeichner - identifier
@@ -53,11 +54,11 @@ gegen@"uber und erl@"autert die Begriffe.
        @sp 1
 
 @item  Flag - flag
-       Boolsche Variablen mit den Werten @code{true} oder @code{false}, die zur
+       Boolesche Variablen mit den Werten @code{true} oder @code{false}, die zur
        Steuerung des Programms vom Nutzer gesetzt werden k@"onnen.
 
 @item  Koeffizientenmatrix, erweitert - augmented coefficient matrix
-       Die erweiterte Koeffizientenmatrix entsteht, wenn an die 
+       Die erweiterte Koeffizientenmatrix entsteht, wenn an die
        Koeffizientenmatrix eines Gleichungssystems eine Spalte mit der rechten
        Seite des Gleichungssystems angef@"ugt wird.
 
@@ -69,8 +70,8 @@ gegen@"uber und erl@"autert die Begriffe.
 
 @item  Marke - label
        Die Eingaben und Ausgaben werden von Maxima in globale Variablen, die als
-       Marken bezeichnet werden, mit den Namen @code{%i} und @code{%o} sowie 
-       @code{%t} f@"ur Zwischenergebnisse abgelegt. Die Marken werden 
+       Marken bezeichnet werden, mit den Namen @code{%i} und @code{%o} sowie
+       @code{%t} f@"ur Zwischenergebnisse abgelegt. Die Marken werden
        fortlaufend numeriert.
 
 @item  Matrix, schwachbesetzt - sparse matrix

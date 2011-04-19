@@ -2,10 +2,10 @@
 @c File        : Rules.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Rules.texi revision 1.37
+@c Original    : Rules.texi revision 1.38
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 26.03.2011
+@c Revision    : 08.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1292,23 +1292,23 @@ Darstellung einer indizierten Funktion.
 @c quote-quote operator @code{'@w{}'} or the flag @code{infeval}) to ensure that
 @c all rules are applied.
 
-Regeln f@"ur die Vereinfachung werden nach der Auswertung eines Ausdrucks 
+Regeln f@"ur die Vereinfachung werden nach der Auswertung eines Ausdrucks
 angewendet, sofern die Auswertung zum Beispiel mit dem Schalter
-@mref{noeval} nicht unterdr@"uckt wurde.  Regeln, die mit @code{tellsimpafter} 
+@mref{noeval} nicht unterdr@"uckt wurde.  Regeln, die mit @code{tellsimpafter}
 definiert sind, werden nach den vorhandenen Maxima-Regeln und in der Reihenfolge
 angewendet werden, in der sie definiert sind.  Die Regeln f@"ur die
 Vereinfachung werden zun@"achst f@"ur Teilausdr@"ucke und zuletzt f@"ur den
 ganzen Ausdruck angewendet.  Es kann notwendig sein, Regeln f@"ur die
-Vereinfachung mehrfach zum Beispiel mit dem @mxref{'', Quote-Quote-Operator}@w{}
-oder dem Schalter @mref{infeval} anzuwenden, um sicher zu gehen, dass alle
-Regeln angewendet werden.
+Vereinfachung mehrfach zum Beispiel mit dem @nxref{'', Quote-Quote-Operator}@w{}
+@code{''} oder dem Schalter @mref{infeval} anzuwenden, um sicher zu gehen, dass
+alle Regeln angewendet werden.
 
 @c Pattern variables are treated as local variables in simplification rules.
 @c Once a rule is defined, the value of a pattern variable does not affect the
-@c rule, and is not affected by the rule.  An assignment to a pattern variable 
-@c which results from a successful rule match does not affect the current 
-@c assignment (or lack of it) of the pattern variable.  However, as with all 
-@c atoms in Maxima, the properties of pattern variables (as declared by 
+@c rule, and is not affected by the rule.  An assignment to a pattern variable
+@c which results from a successful rule match does not affect the current
+@c assignment (or lack of it) of the pattern variable.  However, as with all
+@c atoms in Maxima, the properties of pattern variables (as declared by
 @c @code{put} and related functions) are global.
 
 Mustervariable werden als lokale Variablen in Vereinfachungsregeln behandelt.
