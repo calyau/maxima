@@ -1,4 +1,4 @@
-  Maxima project CVS / build system HOWTO
+  Maxima project Git / build system HOWTO
 
 
   1  General
@@ -11,20 +11,40 @@
 
       Adding / removing files often leads to Makefile problems
 
+      To update your repository, execute
+      git pull  # assuming origin/master points to the SF Maxima repo
 
-  2  Renaming something in CVS
+      Workflow with Git:
+      git pull                      # update your repo
+      git checkout master           # work off master
+      git checkout -b scratch-pad   # create a working branch
+      <do development, tests, commits, then, once satisfied...>
+      git checkout master           # put yourself on master branch
+      git pull                      # update your repo, again
+      git merge scratch-pad         # merge development work into master
+      git push origin master        # push to SF Maxima repo
 
-      --  Remove the old something and add the new something.
-          (CVS has no concept of renaming)
+      BE SURE NOT TO PUSH YOUR SCRATCH-PAD!
 
+  2  Renaming something in Git
+
+      --  Create a scratch/development branch as in 1.
+  
+      --  git mv X Y
+          This moves X to Y and preserves the history.
+	  Like any other change, this needs to be committed
+	  as a separate step.
 
   3  Adding / removing a file in maxima/src
 
-      --  Copy new file / remove old file
-          and execute "cvs add" / "cvs rm"
+      --  Create a scratch/development branch as in 1.
+  
+      --  Add new file X, then execute
+          git add X; git commit -m 'Message' -- X
 
-          Then execute "cvs commit"
-          (Otherwise add / rm has no effect!)
+      --  Remove old file X
+          git rm X
+          Then execute "git commit" as above
 
       --  Add / remove file name from maxima/src/Makefile.am
 
@@ -40,13 +60,13 @@
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
-      --  Execute "cvs commit"
+      --  Merge your work onto master and push the changes as in 1.
 
 
   4  Adding / removing a file in maxima/share
 
       --  Copy new file / remove old file
-          and execute "cvs add" / "cvs rm"
+          as you did in 3.
 
       --  Add / remove file name in maxima/share/Makefile.am
 
@@ -54,7 +74,7 @@
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
-      --  Execute "cvs commit"
+      --  Merge your work onto master and push the changes as in 1.
 
 
   5.1  Creating a new share package
@@ -94,18 +114,14 @@
 
 
   5.2  Adding a directory in maxima/share
-
-      NOTE: Removing a directory is probably more or less a reversal
-      of the steps for adding. Not sure if I've ever done that.
+  
+      --  Create a scratch/development branch as in 1.
 
       --  Make the new directory and put the new files in it
 
-      --  In the directory above the one you want to add,
-          "cvs add my_package"
-
-          NOTE: no need to commit after "cvs add" when adding a directory
-
-      --  In the directory my_package, "cvs add file1 file2 file3 ..."
+      --  Add the all the files in your new directory and commit this change:
+          git add .
+	  git commit -m 'Message' -a
 
       --  Put the my_package files on the file list of maxima/share/Makefile.am
 
@@ -123,13 +139,15 @@
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
-      --  Execute "cvs commit"
+      --  Commit and push your work as in 1.
 
 
   6  Adding / removing a file in maxima/tests
 
+      --  Create a scratch/development branch as in 1.
+
       --  Copy new file / remove old file
-          and execute "cvs add" / "cvs rm"
+          and execute "git add" / "git rm"
 
       --  Add / remove file name in maxima/tests/Makefile.am
 
@@ -139,21 +157,21 @@
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
-      --  Execute "cvs commit"
+      --  Commit and push your work as in 1.
 
 
   7  Updating the website
 
-    See the CVS module "site-xml", particularly "README" there.
+    See the Git module "site-xml", particularly "README" there.
 
 
-  8.1  Backups of CVS
+  8.1  Backups of Git
 
     All you need is the rsync tool and some disk space.
 
     Issue the following command:
 
-    rsync -av 'rsync://maxima.cvs.sourceforge.net/cvsroot/maxima/*' .
+    rsync -av 'rsync://maxima.git.sourceforge.net/gitroot/maxima/*' .
 
 
   8.2  Backups of the ML subscribers list
