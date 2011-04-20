@@ -2,10 +2,10 @@
 @c File        : Function.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Function.texi revision 1.54
+@c Original    : Function.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 08.04.2011
+@c Revision    : 19.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1453,26 +1453,26 @@ Liste und jedes Element der Liste ist eine Matrix.
 @end example
 @end deffn
 
-@c --- 27.12.2010 DK -----------------------------------------------------------
+@c --- 19.04.2011 DK -----------------------------------------------------------
 @anchor{remfunction}
 @deffn  {Funktion} remfunction (@var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} remfunction (all)
 
 Hebt die Bindung der Symbole @var{f_1}, @dots{}, @var{f_n} an ihre
 Funktionsdefinitionen auf.  Die Argumente k@"onnen die Namen von Funktionen 
-sein, die mit @code{:=} oder @code{define} definiert wurden sowie 
-Makro-Funktionen, die mit @code{::=} definiert wurden.
+sein, die mit dem Operator @mref{:=} oder der Funktion @mref{define} definiert
+wurden sowie Makro-Funktionen, die mit dem Operator @mref{::=} definiert wurden.
 
 @code{remfunction(all)} entfernt alle Bindungen von Funktionsdefinitionen.
-
-@code{remfunction} wertet seine Argumente nicht aus.
 
 @code{remfunction} gibt eine Liste mit den Symbolen zur@"uck, die von ihren 
 Funktionsdefinitionen entbunden wurden.  @code{false} wird f@"ur die Symbole
 zur@"uckgegeben, f@"ur die es keine Funktionsdefinition gibt.
 
+@code{remfunction} wertet die Argumente nicht aus.
+
 @code{remfunction} kann nicht auf Array-Funktionen und indizierte Funktionen
-angewendet werden.  F@"ur diese Funktionen kann @code{remarray} verwendet 
+angewendet werden.  F@"ur diese Funktionen kann @mref{remarray} verwendet
 werden.
 @end deffn
 

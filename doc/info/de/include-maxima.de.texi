@@ -2,10 +2,10 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : include-maxima.texi.in revision 1.14
+@c Original    : include-maxima.texi.in 27.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 20.04.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -189,6 +189,8 @@ Zus@"atzliche Pakete (Englisch)
 * dynamics::                    Graphics for dynamical systems and fractals.
 * ezunits::                     Dimensional quantities.
 * f90::                         Maxima to fortran translator.
+* finance::                     Financial package.
+* fractals::                    Fractals.
 * ggf::                         Generating function of sequences.
 * graphs::                      Graph theory package.
 * grobner::                     Functions for working with Groebner bases.
@@ -252,6 +254,7 @@ Datentypen und -strukturen
 * Funktionen und Variablen f@"ur Konstante::
 * Listen::
 * Arrays::
+* Strukturen::
 
 Ausdr@"ucke
 * Einf@"uhrung in Ausdr@"ucke::
@@ -469,6 +472,17 @@ ezunits
 f90
 * Functions and Variables for f90::
 
+finance
+* Introduction to finance::
+* Functions and Variables for finance::
+
+fractals
+* Introduction to fractals::
+* Definitions for IFS fractals::
+* Definitions for complex fractals::
+* Definitions for Koch snowflakes::
+* Definitions for Peano maps::
+
 ggf
 * Functions and Variables for ggf::
 
@@ -613,6 +627,7 @@ Glossar
 @include Constants.de.texi
 @include Lists.de.texi
 @include Arrays.de.texi
+@include Defstruct.de.texi
 
 @node Ausdr@"ucke, Operatoren, Datentypen und -strukturen, Top
 @chapter Ausdr@"ucke
@@ -782,11 +797,19 @@ Glossar
 @chapter ezunits
 @include ezunits.de.texi
 
-@node f90, ggf, ezunits, Top
+@node f90, finance, ezunits, Top
 @chapter f90
 @include f90.de.texi
 
-@node ggf, graphs, f90, Top
+@node finance, fractals, f90, Top
+@chapter finance
+@include finance.de.texi
+
+@node fractals, ggf, finance, Top
+@chapter fractals
+@include fractals.de.texi
+
+@node ggf, graphs, fractals, Top
 @chapter ggf
 @include ggf.de.texi
 

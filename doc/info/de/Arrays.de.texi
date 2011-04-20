@@ -1,18 +1,18 @@
 @c -----------------------------------------------------------------------------
-@c File        : DataTypes.de.texi
+@c File        : Arrays.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Arrays.texi revision 1.17
+@c Original    : Arrays.texi revision 19.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.03.2011
-@c Revision    : 31.03.2011
+@c Revision    : 20.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 @page
 @c -----------------------------------------------------------------------------
-@node Arrays, Einf@"uhrung in Arrays, Listen, Datentypen und -strukturen
+@node Arrays, Strukturen, Listen, Datentypen und -strukturen
 @section Arrays
 @c -----------------------------------------------------------------------------
 
@@ -843,7 +843,7 @@ selbst kein Lisp-Array ist.
 @end example
 @end deffn
 
-@c --- 22.03.2011 DK -----------------------------------------------------------
+@c --- 19.04.2011 DK -----------------------------------------------------------
 @anchor{remarray}
 @deffn  {Funktion} remarray (@var{A_1}, @dots{}, @var{A_n})
 @deffnx {Funktion} remarray (all)
@@ -856,6 +856,7 @@ sowie Array-Funktionen und indizierte Funktionen sein.
 @mref{arrays} enthalten sind.
 
 @code{remarray} gibt eine Liste der Arrays zur@"uck, die entfernt wurden.
+@code{remarray} wertet die Argumente nicht aus.
 @end deffn
 
 @c --- 22.03.2011 DK -----------------------------------------------------------

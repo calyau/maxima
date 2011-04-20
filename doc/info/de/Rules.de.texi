@@ -2,10 +2,10 @@
 @c File        : Rules.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Rules.texi revision 1.38
+@c Original    : Rules.texi revision 19.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 08.04.2011
+@c Revision    : 19.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1352,7 +1352,7 @@ Namen.
 @c The rule constructed by @code{tellsimpafter} is an ordinary Lisp function.
 @c If the name of the rule is @code{$foorule1},
 @c the construct @code{:lisp (trace $foorule1)} traces the function,
-@c and @code{:lisp (symbol-function '$foorule1} displays its definition.
+@c and @code{:lisp (symbol-function '$foorule1)} displays its definition.
 
 
 @c @code{tellsimpafter} quotes its arguments.  @code{tellsimpafter} returns the

@@ -16,6 +16,7 @@
 * Funktionen und Variablen f@"ur Konstante::
 * Listen::
 * Arrays::
+* Strukturen::
 @end menu
 
 @c -----------------------------------------------------------------------------

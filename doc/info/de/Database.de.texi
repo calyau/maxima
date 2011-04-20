@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 22.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 20.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ zugewiesen werden.  Diese Eigenschaften werden in eine Datenbank abgelegt oder
 in eine von Lisp bereitgestellte Eigenschaftsliste eingetragen.  Mit der 
 Funktion @mref{featurep} kann gepr@"uft werden, ob ein Symbol eine bestimmte
 Eigenschaft hat und mit der Funktion @mref{properties} k@"onnen alle 
-Eigenschaften eines Symbols angezeigt werden.  Die Funktion @mref{remove}@ 
+Eigenschaften eines Symbols angezeigt werden.  Die Funktion @mref{remove}@w{}
 l@"oscht Eigenschaften aus der Datenbank oder von der Eigenschaftsliste.  Wird 
 mit der Funktion @mref{kill} ein Symbol entfernt, werden auch die zugewiesenen 
 Eigenschaften gel@"oscht.
@@ -872,8 +872,8 @@ oder @code{redunant} zur@"uck.
 
 @code{assume} wertet die Argumente aus.
 
-Siehe auch @mrefcomma{is} @mrefcomma{facts} @mrefcomma{forget} @mref{context}@ 
-und @mrefdot{declare}
+Siehe auch @mrefcomma{is} @mrefcomma{facts} @mrefcomma{forget}@w{}
+@mref{context} und @mrefdot{declare}
 
 Beispiele:
 
@@ -1152,8 +1152,8 @@ Maxima bekannt sind.  Die Liste enth@"alt auch die nicht aktiven Kontexte.
 Die Kontexte @code{global} und @code{initial} sind immer vorhanden.  Diese 
 werden von Maxima initialisiert und k@"onnen nicht entfernt werden.  Der Kontext
 @code{global} enth@"alt Aussagen und Fakten f@"ur Systemvariablen und
-Systemfunktionen.  Mit den Funktionen @mref{newcontext} oder @mref{supcontext}@ 
-kann der Nutzer weitere Kontexte anlegen.
+Systemfunktionen.  Mit den Funktionen @mref{newcontext} oder
+@mref{supcontext} kann der Nutzer weitere Kontexte anlegen.
 
 Die Kontexte haben eine Hierarchie.  Die Wurzel ist immer der Kontext
 @code{global}, der damit ein Unterkontext aller anderen Kontexte und immer aktiv
@@ -1490,31 +1490,32 @@ einer Funktion reelle Zahlen enth@"alt.  Obwohl der Wertebereich von
 @end example
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 20.04.2011 DK -----------------------------------------------------------
 @anchor{equal}
 @deffn {Funktion} equal (@var{a}, @var{b})
 
 Repr@"asentiert die @"Aquivalenz, das hei@ss{}t den gleichen Wert.
 
-@code{equal} wird nicht ausgewertet oder vereinfacht.  Die Funktion @code{is}
-versucht einen Ausdruck mit @code{equal} zu einem booleschen Wert auszuwerten.
-@code{is(equal(@var{a}, @var{b}))} gibt @code{true} oder @code{false} zur@"uck,
-wenn und nur wenn @var{a} und @var{b} gleich oder ungleich sind f@"ur alle Werte
-ihrer Variablen, was mit @code{ratsimp(@var{a} - @var{b})} bestimmt wird.  Gibt
-@code{ratsimp} das Ergebnis 0 zur@"uck, werden die beiden Ausdr@"ucke als
-@"aquivalent betracht.  Zwei Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie
-nicht syntaktisch gleich (im allgemeinen identisch) sind.
+@code{equal} wird nicht ausgewertet oder vereinfacht.  Die Funktion
+@mref{is} versucht einen Ausdruck mit @code{equal} zu einem booleschen Wert
+auszuwerten.  @code{is(equal(@var{a}, @var{b}))} gibt @code{true} oder
+@code{false} zur@"uck, wenn und nur wenn @var{a} und @var{b} gleich oder
+ungleich sind f@"ur alle Werte ihrer Variablen, was mit @code{ratsimp(@var{a} -
+@var{b})} bestimmt wird.  Gibt @mref{ratsimp} das Ergebnis 0 zur@"uck, werden
+die beiden Ausdr@"ucke als @"aquivalent betracht.  Zwei Ausdr@"ucke k@"onnen
+@"aquivalent sein, obwohl sie nicht syntaktisch gleich (im allgemeinen
+identisch) sind.
 
 Kann @code{is} einen Ausdruck mit @code{equal} nicht zu @code{true} oder 
 @code{false} auswerten, h@"angt das Ergebnis vom Wert des globalen Flags 
-@code{prederror} ab.  Hat @code{prederror} den Wert @code{true}, gibt @code{is}
+@mref{prederror} ab.  Hat @code{prederror} den Wert @code{true}, gibt @code{is}
 eine Fehlermeldung zur@"uck.  Ansonsten wird @code{unknown} zur@"uckgegeben.
 
 Es gibt weitere Operatoren, die einen Ausdruck mit @code{equal} zu @code{true}
-oder @code{false} auswerten k@"onnen.  Dazu geh@"oren @code{if}, @code{and}, 
-@code{or} und @code{not}.
+oder @code{false} auswerten k@"onnen.  Dazu geh@"oren @mrefcomma{if}@w{}
+@mrefcomma{and} @mref{or} und @mrefdot{not}
 
-Die Umkehrung von @code{equal} ist @code{notequal}.
+Die Umkehrung von @code{equal} ist @mrefdot{notequal}
 
 Beispiele:
 
@@ -1531,10 +1532,10 @@ Beispiele:
 @end example
 
 Die Funktion @code{is} versucht, @code{equal} zu einem booleschen Wert
-auszuwerten.  @code{is(equal(@var{a}, @var{b}))} gibt den Wert @code{true}
-zur@"uck, when @code{ratsimp(@var{a} - @var{b})} den Wert 0 hat.  Zwei
-Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie nicht syntaktisch gleich
-sind.
+auszuwerten.  Der Ausdruck @code{is(equal(@var{a}, @var{b}))} gibt den Wert
+@code{true} zur@"uck, when @code{ratsimp(@var{a} - @var{b})} den Wert 0 hat.
+Zwei Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie nicht syntaktisch
+gleich sind.
 
 @example
 (%i1) ratsimp (x^2 - 1 - (x + 1) * (x - 1));
