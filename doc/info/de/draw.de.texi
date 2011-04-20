@@ -2,9 +2,9 @@
 @c File     : draw.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : draw.texi revision 1.57
+@c Original : draw.texi revision 31.03.2011
 @c Date     : 08.11.2010
-@c Revision : 15.03.2011
+@c Revision : 20.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -28,9 +28,9 @@ There are three main functions to be used at Maxima level:
 
 Follow this link for more elaborated examples of this package:
 
-@url{http://www.telefonica.net/web2/biomates/maxima/gpdraw}
+@url{http://riotorto.users.sourceforge.net/gnuplot}
 
-You need Gnuplot 4.2 to run this program.
+You need Gnuplot 4.2 or newer to run this program.
 
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw
@@ -483,9 +483,10 @@ Example :
 See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 20.04.2011 DK -----------------------------------------------------------
+@anchor{color_graphic_option}
 @defvr {Graphic option} color
-Default value: @code{black}
+Default value: @code{blue}
 
 @code{color} specifies the color for plotting lines, points, borders of
 polygons and labels.
@@ -538,7 +539,8 @@ Example:
 See also @code{fill_color}.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 19.04.2011 DK -----------------------------------------------------------
+@anchor{colorbox_graphic_option}
 @defvr {Graphic option} colorbox
 Default value: @code{true}
 
@@ -803,7 +805,8 @@ We want an eps file with A4 portrait dimensions.
 @end example
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 19.04.2011 DK -----------------------------------------------------------
+@anchor{enhanced3d}
 @defvr {Graphic option} enhanced3d
 Default value: @code{none}
 
@@ -1056,7 +1059,8 @@ defined by option @code{filled_func}.  Note that the variable in
 See also @code{fill_color} and @code{explicit}.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 20.04.2011 DK -----------------------------------------------------------
+@anchor{font}
 @defvr {Graphic option} font
 Default value: @code{""} (empty string)
 
@@ -1066,7 +1070,7 @@ Only one font face and size can be used throughout the plot.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-See also @code{font_size}.
+See also @mref{font_size}
 
 Gnuplot doesn't handle fonts by itself, it leaves this task to the
 support libraries of the different terminals, each one with its own
@@ -1177,9 +1181,10 @@ The gnuplot documentation is an important source of information about terminals
 and fonts.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 20.04.2011 DK -----------------------------------------------------------
+@anchor{font_size}
 @defvr {Graphic option} font_size
-Default value: 12
+Default value: 10
 
 This option can be used to set the font size to be used by the terminal.
 Only one font face and size can be used throughout the plot.  @code{font_size} 
@@ -1188,7 +1193,7 @@ is active only when option @code{font} is not equal to the empty string.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-See also @code{font}.
+See also @mrefdot{font}
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1642,19 +1647,21 @@ Example:
 @end example
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 19.04.2011 DK -----------------------------------------------------------
+@anchor{palette_graphic_option}
 @defvr {Graphic option} palette
 Default value: @code{color}
 
 @code{palette} indicates how to map gray levels onto color components.  It works
-together with option @code{enhanced3d} in 3D graphics, who associates every
+together with option @mref{enhanced3d} in 3D graphics, who associates every
 point of a surfaces to a real number or gray level.  It also works with gray
 images.  With @code{palette}, levels are transformed into colors.
 
-There are two ways for defining these transformations.  First, @code{palette}
-can be a vector of length three with components ranging from -36 to +36; each
-value is an index for a formula mapping the levels onto red, green and blue
-colors, respectively:
+There are two ways for defining these transformations.
+
+First, @code{palette} can be a vector of length three with components ranging
+from -36 to +36; each value is an index for a formula mapping the levels onto
+red, green and blue colors, respectively:
 
 @example
  0: 0               1: 0.5           2: 1
@@ -1665,7 +1672,7 @@ colors, respectively:
 15: sin(360x)      16: cos(360x)    17: |sin(360x)|
 18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
 21: 3x             22: 3x-1         23: 3x-2
-24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2 
 27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
 30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
 33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
@@ -1673,16 +1680,15 @@ colors, respectively:
 @end example
 
 negative numbers mean negative colour component.
-
 @code{palette = gray} and @code{palette = color} are short cuts for
 @code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
 
-Second, @code{palette} can be a user defined lookup table.  In this case, the
-format for building a lookup table of length @code{n} is @code{palette = 
-[color_1, color_2, ..., color_n]}, where @code{color_i} is a well formed color
-(see option @code{color}), such that @code{color_1} is assigned to the lowest
-gray level and @code{color_n} to the highest.  The rest of colors are
-interpolated.
+Second, @code{palette} can be a user defined lookup table.  In this case,
+the format for building a lookup table of length @code{n} is
+@code{palette = [color_1, color_2, ..., color_n]}, where @code{color_i} is
+a well formed color (see option @mxref{color_graphic_option, color}), such that
+@code{color_1} is assigned to the lowest gray level and @code{color_n} to the
+highest. The rest of colors are interpolated.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
@@ -1693,9 +1699,10 @@ It works together with option @code{enhanced3d} in 3D graphics.
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(enhanced3d = [z-x+2*y,x,y,z],
-             palette = [32, -8, 17],
-             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i2) draw3d(
+        enhanced3d = [z-x+2*y,x,y,z],
+        palette = [32, -8, 17],
+        explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
 
 It also works with gray images.
@@ -1713,17 +1720,19 @@ It also works with gray images.
              image(im,0,0,30,30))$
 @end example
 
-@code{palette} can be a user defined lookup table.  In this example, low values
-of @code{x} are colored in red, and higher values in yellow.
+@code{palette} can be a user defined lookup table.
+In this example, low values of @code{x} are colored
+in red, and higher values in yellow.
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(palette = [red, blue, yellow],
-             enhanced3d = x,
-             explicit(x^2+y^2,x,-1,1,y,-1,1)) $
+(%i2) draw3d(
+         palette = [red, blue, yellow],
+         enhanced3d = x,
+         explicit(x^2+y^2,x,-1,1,y,-1,1)) $
 @end example
 
-See also @code{colorbox} and @code{enhanced3d}.
+See also @mxref{colorbox_graphic_option, colorbox} and @mrefdot{enhanced3d}
 @end defvr
 
 @c -----------------------------------------------------------------------------

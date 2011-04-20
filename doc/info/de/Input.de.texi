@@ -2,10 +2,10 @@
 @c File        : Input.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Input.texi revision 1.80
+@c Original    : Input.texi revision 14.02.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 02.11.2010
-@c Revision    : 20.02.2011
+@c Revision    : 19.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -299,18 +299,42 @@ in @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 @code{/home/wfs/neumann.mac} und @code{/home/gcj/neumann.mac}.
 @end defvr
 
-@c --- 09.11.2010 DK -----------------------------------------------------------
+@c --- 19.04.2011 DK -----------------------------------------------------------
 @anchor{file_type}
 @deffn {Funktion} file_type (@var{filename})
 
 Gibt eine Vermutung @"uber den Typ der Datei @var{filename} zur@"uck.  Es 
 wird nur die Dateiendung betrachtet.
 
-Die R@"uckgabe ist ein Symbol.  Ist die Dateiendung "mac", "mc", "demo", "dem",
-"dm1", "dm2", "dm3" oder "dmt" ist die R@"uckgabe @code{maxima}.  Ist die 
-Dateiendung "l", "lsp" oder "lisp" ist die R@"uckgabe @code{lisp}.  In allen
-anderen F@"allen ist die R@"uckgabe @code{object}.
+Die R@"uckgabe ist das Symbol @code{maxima} oder @code{lisp}, wenn die
+Dateiendung einen der Werte der Optionsvariablen @mref{file_type_maxima} oder
+der Optionsvariablen @mref{file_type_lisp} entspricht.  Ansonsten ist die
+R@"uckgabe das Symbol @code{object}.
+
+Siehe auch die Funktion @mrefdot{pathname_type}
 @end deffn
+
+@c --- 19.04.2011 DK -----------------------------------------------------------
+@anchor{file_type_lisp}
+@defvr {Optionsvariable} file_type_lisp
+Standardwert:  @code{[l, lsp, lisp]}
+
+Die Optionsvariable @code{file_type_lisp} enth@"alt die Dateiendungen, die
+Maxima als die Bezeichnung f@"ur eine Lisp-Datei annimmt.
+
+Siehe auch die Funktion @mrefdot{file_type}
+@end defvr
+
+@c --- 19.04.2011 DK -----------------------------------------------------------
+@anchor{file_type_maxima}
+@defvr {Option variable} file_type_maxima
+Standardwert:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
+
+Die Optionsvariable @code{file_type_maxima} enth@"alt die Dateiendungen, die
+Maxima als die Bezeichnung f@"ur eine Maxima-Datei annimmt.
+
+Siehe auch die Funktion @mrefdot{file_type}
+@end defvr
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{load}
