@@ -58,7 +58,7 @@ test_sum(
   [],
   false,
   [],
-  ((product(2*%l+1,%l,1,n-1))*(-1)^n*2^n)/n!);
+  ((product(2*%j1-1,%j1,1,n))*(-1)^n*2^n)/n!);
 0;
 
 test_sum(
@@ -98,7 +98,7 @@ test_sum(
   [],
   false,
   [],
-  (2*(product(3*%l+1,%l,1,m-1))*(product(3*%l+2,%l,1,m-1))*(-1)^m*3^m)/m!^2);
+  (product(3*%j1-2,%j1,1,m)*product(3*%j1-1,%j1,1,m)*(-1)^m*3^m)/m!^2);
 0;
 
 test_sum(
@@ -114,7 +114,7 @@ test_sum(
   [n>0],
   false,
   [],
-  (4*(product(3*%l+1,%l,1,n-1))^2*(product(3*%l+2,%l,1,n-1))^2*9^n)/((product(2*%l+1,%l,1,n-1))^2*4^n*n!^2));
+  (product(3*%j1-2,%j1,1,n))^2*(product(3*%j1-1,%j1,1,n))^2*9^n/((product(2*%j1-1,%j1,1,n))^2*4^n*n!^2));
 0;
 
 test_sum(
@@ -223,6 +223,14 @@ test_sum(
 
 test_sum(
   sum(binomial(n,i)*p^i*(1-p)^(n-i),i,0,n),
+  [],
+  true,
+  [],
+  1);
+0;
+
+test_sum(
+  sum(binomial(n,k)*binomial(k-1,j)*(-1)^(k-j-1), k, j+1, n),
   [],
   true,
   [],

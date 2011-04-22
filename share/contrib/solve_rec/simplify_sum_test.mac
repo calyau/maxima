@@ -404,3 +404,10 @@ test_sum(
   false,
   []
 );
+
+test_sum(
+  sum(1/sqrt(k)/sqrt(k+1)/(sqrt(k)+sqrt(k+1)),k,1,inf),
+  [],
+  false,
+  []
+);
