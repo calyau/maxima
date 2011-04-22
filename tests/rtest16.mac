@@ -1899,3 +1899,9 @@ a+b;
  */
 exp(gamma(1/3)),bfloat;
 1.45696199392313b1;
+
+/* Bug ID: 3288989 - Lisp functions and linear display
+ * Show that we do not get a Lisp error.
+ */
+grind(?cdr([a,b,c]));
+done;
