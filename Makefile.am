@@ -31,6 +31,9 @@ extradocinstall:
 $(distdir).tar.gz: Makefile.am
 	$(MAKE) dist
 
+iss: extradocinstall
+	$(MAKE) -C interfaces/xmaxima/win32 cclcopy install
+
 # Build the Maxima rpms. Optionally, use
 #     make rpm SUDO=sudo
 # to use sudo to wrap the commands. The user must have sudo permissions

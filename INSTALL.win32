@@ -14,10 +14,7 @@ that this process is not as polished as the Unix-like install process.
 In order to create the Maxima Windows installer from the maxima tarball 
 distribution, I do the following in a MSYS window:
 ----------------------------------------------------
-./configure --prefix=c:/maxima \
-    --enable-chm \
-    --enable-xmaxima-exe \
-    --with-hhc=hhc \
+./configure --prefix=c:/maxima --with-ccl=<path to wxcl86.exe> \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make install
@@ -30,17 +27,15 @@ takes.
 External Requirements
 =====================
 
-1) MSYS+MinGW, including mktemp
-2) msysDTK
-3) GCL
-4) Tcl/Tk
-5) Starkit, TclKit and img.kit
-6) InnoSetup
-7) gnuplot
-8) wxMaxima
-9) Microsoft HTML Help Workshop
-10) Perl 5.8 (ActivePerl)
-11) Python 
+1) MinGW and MSYS
+2) ccl
+3) Starkit, TclKit and img.kit
+4) InnoSetup
+5) gnuplot
+6) wxMaxima
+7) Microsoft HTML Help Workshop
+8) Perl
+9) Python
 
 Detailed Instructions
 =====================
@@ -143,91 +138,69 @@ Temporary directory for compiler files set to C:/DOCUME~1/user/LOCALS~1/Temp/
 
 >(quit)
 -----------------------------------------------------------------------
+=======
+1) Get a working msys+mingw installation from www.mingw.org. The files
+are available from <http://sourceforge.net/projects/mingw/>. Download
+the automated installer and run it. In the "Select components" page of
+the installation program select "MSYS Basic System" and "MinGW
+Developer ToolKit".
+>>>>>>> Copied changes for maxima+ccl on windows from github.
 
-3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>. 
+2) Download Clozure Common List from <http://ccl.clozure.com>. Use at
+least version 1.7.
 
-Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>. 
-Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from 
+3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>.
+Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>.
+Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from
 <http://www.equi4.com/pub/tk/8.5.2/>.
 
 Install the following four files 
 	sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
 in your MSYS user home directory in ~/programs/star
 
-Download img.kit from <http://www.tcl.tk/starkits/> and put it in
-~/programs/star
+Download img.kit from <http://www.tcl.tk/starkits/> and put it in your
+MSYS user home directory in ~/programs/star.
 
-6) Get and install Inno Setup from
-<http://www.jrsoftware.org/isinfo.php>. 
+4) Get and install Inno Setup from <http://www.jrsoftware.org/isinfo.php>.
 
-7) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
-It is recomended to use version 4.6 patchlevel 3 or more recent (If you
-do have to use an older version, read the Maxima documentation for variable
-gnuplot_view_args).  
-Install gnuplot in your MSYS user home directory in ~/programs/gnuplot 
+5) Download the gnuplot windows binary from
+<http://gnuplot.sourceforge.net>.  Install in your MSYS user home
+directory in ~/programs/gnuplot. Use at least version 4.4.
 
-8) Compile wxMaxima for windows from <http://wxmaxima.sourceforge.net>.
-Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier, 
-wxMaxima 0.7.0 with Maxima 5.10.0,
-and wxMaxima 0.7.1 with Maxima 5.11.0.
+6) Put wxMaxima windows binary into ~/programs/wxMaxima.
 
-Install it to default location, say C:\Program Files\wxMaxima. 
-Then copy contents of wxMaxima directory excluding \uninst subdirectory
-to your MSYS user home directory ~/programs/wxMaxima
-
-NOTE: Location of Starkit/TclKit, gnuplot and wxMaxima is controlled
-by the override-able variables and their defaults are:
- 
-TCLKITSH = tclkitsh.exe
-TCLKITDIR = ../../../../programs/star
-SDXDIR = $(TCLKITDIR)
-GCCPREFIX=/mingw
-GNUPLOTDIR = ../../../../programs/gnuplot
-WXMAXIMADIR = ../../../../programs/wxMaxima
-
-To see how they are used, look in interfaces/xmaxima/win32/Makefile.in
-and Makefile.am in the top level maxima directory.  You may change
-their values according to your preferences.
-
-9) Get Microsoft HTML Help Workshop from 
+7) Get Microsoft HTML Help Workshop from
 <http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
-and install it.  
+and install it.
 
 Make sure that HHW directory is within PATH (edit PATH environment
-variable with either Windows or MSYS approach), so the HTML Help Workshop
-compiler command "hhc.exe" is available at the MSYS command prompt.
+variable with either Windows or MSYS approach), so the HTML Help
+Workshop compiler command "hhc.exe" is available at the MSYS command
+prompt.
 
-For reference, to change PATH within MSYS only, edit the file
-c:\msys\1.0\etc\profile and add the following line after the initial
-setting of PATH:
-    export PATH="/c/gcl/bin:$PATH"
+8) Install perl from http://strawberryperl.com/. Create a file
+/usr/local/bin/perl which contains
 
-10) Install Perl 5.8.  ActivePerl binaries provided by
-    http://www.activestate.com work.  Again add the perl bin
-    directory to PATH.  Alternatively use a wrapper script like
+  #!/bin/sh
+  exec /c/strawberry/perl/bin/perl $@
 
-    $ cat /usr/local/bin/perl
-    #!/bin/sh
-    exec /c/perl/bin/perl $@
+9) Install Python from www.python.org. Add the path to python to your
+windows PATH environment variable.
 
-11) Install Python 2.6. ActivePython binaries provided by
-    http://www.activestate.com work.
-
-11) Following components
-    a) tcltk (e.g. wish84 command), 
-    b) gcl (gcl command),
-    c) HTML Help Workshop compiler (hhc command)
-    d) perl
-    e) python
+10) The following components
+    a) HTML Help Workshop compiler (hhc command)
+    b) perl
+    c) python
 should also be available at the MSYS command prompt.
 
-If this is not the case, edit your PATH variable or add wrapper scripts.
+If this is not the case, edit your PATH variable or add wrapper
+scripts.
 
-12) You should now be ready to compile and install maxima. 
-Configure maxima so that it will install in some sort of temporary
+You should now be ready to compile and install maxima.  Configure
+maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
-./configure --prefix="c:/maxima" \
+./configure --prefix="c:/maxima" --with-ccl=<path to wx86cl.exe> \
   --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make check
@@ -237,11 +210,11 @@ make iss
 The "check" should pass all tests except those listed as known
 failures.
 
-13) Once "make iss" is complete, run Inno Setup on the maxima.iss
-file. It is recommended to remove the temporary maxima install
-directory (c:/maxima above) before testing the installation.
+Once "make iss" is complete, run Inno Setup on the maxima.iss file. It
+is recommended to remove the temporary maxima install directory
+(c:/maxima above) before testing the installation.
 
-14) Test the installed package.  For example
+Test the installed package.  For example
  o Run the maxima testsuite: run_testsuite()
  o Try compiling a function.  This has been a problem in the past
     - f(x):=x+2;
