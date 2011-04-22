@@ -53,7 +53,7 @@ for i thru dim do for j thru dim do for k thru dim do for l thru dim do
     weyl[i,j,k,l]:sum(sum(sum(sum(w2[ii,jj,kk,ll]*fri[ii,i]*fri[jj,j]*
                   fri[kk,k]*fri[ll,l],ii,1,dim),jj,1,dim),kk,1,dim),ll,1,dim);
 */
-("Now we're ready to compute the Newman-Penrose coefficients:")$
+("Now we are ready to compute the Newman-Penrose coefficients:")$
 psi(true);
 petrov();
 
