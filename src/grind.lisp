@@ -131,10 +131,10 @@
     (t (setq x  (cdr x))
        (do () ((null x) l) (setq l (string1 (car x) l) x (cdr x))))))
 
-
 (defun msize (x l r lop rop)
   (setq x (nformat x))
   (cond ((atom x) (if fortranp (msz (makestring x) l r) (msize-atom x l r)))
+        ((and (atom (car x)) (setq x (cons '(mprogn) x)) nil))
 	((or (<= (lbp (caar x)) (rbp lop)) (> (lbp rop) (rbp (caar x))))
 	 (msize-paren x l r))
 	((member 'array (cdar x) :test #'eq) (msize-array x l r))
@@ -268,6 +268,8 @@
   (msz (mapcar #'(lambda (l) (getcharn l 1)) (fpformat x)) l r))
 
 (defprop mprogn msize-matchfix grind)
+(defprop mprogn ((#\( ) #\) ) strsym)
+
 (defprop mlist msize-matchfix grind)
 
 (defprop mqapply msz-mqapply grind)
