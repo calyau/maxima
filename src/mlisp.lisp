@@ -1700,16 +1700,19 @@ wrapper for this."
 
 	     u))))
 
-
 (defmspec $array (x)
   (setq x (cdr x))
   (cond ($use_fast_arrays
-         (mset (car x) 
-               (apply '$make_array '$any 
-                      (mapcar #'(lambda (dim)
+         (let ((type (if (symbolp (cadr x)) (cadr x) '$any))
+               (name (car x))
+               (diml (if (symbolp (cadr x)) (cddr x) (cdr x))))
+           (mset name
+                 (apply '$make_array
+                        type
+                        (mapcar #'(lambda (dim)
                                   ;; let make_array catch bad vals
-                                  (add 1 (meval dim)))
-                              (cdr x)))))
+                                    (add 1 (meval dim)))
+                                diml)))))
 	((symbolp (car x))
 	 (let ((compp (assoc (cadr x) '(($complete . t) ($integer . fixnum) ($fixnum . fixnum)
 					($float . flonum) ($flonum . flonum)))))
@@ -1734,10 +1737,11 @@ wrapper for this."
 		    (merror (intl:gettext "array: all dimensions must be integers."))))
 	     (setq diml (mapcar #'1+ diml))
 	     (setq new (if compp fun (gensym)))
-	     (setf (symbol-array new) (make-array diml :initial-element (case compp
-									   (fixnum 0)
-									   (flonum 0.0)
-									   (otherwise munbound))))
+	     (setf (symbol-array new) 
+	           (make-array diml :initial-element (case compp
+	                                               (fixnum 0)
+	                                               (flonum 0.0)
+	                                               (otherwise munbound))))
 	     (when (or funp (arrfunp fun))
 	       (fillarray new (list (if (eq compp 'fixnum) fixunbound flounbound))))
 	     (cond ((null (setq old (mget fun 'hashar)))
@@ -1869,10 +1873,12 @@ wrapper for this."
 		       (prog2
 			   (setq mqapplyp t l (cdr l))
 			   nil)))
-
 		 ((and (not mqapplyp)
-		       (or (not (boundp fun)) (not (or (mxorlistp (setq ary (symbol-value fun)))
-						       (eq (ml-typep ary) 'array)))))
+		       (or (not (boundp fun))
+		           (not (or (mxorlistp (setq ary (symbol-value fun)))
+		                    (arrayp ary)
+		                    (typep ary 'hash-table)
+		                    (eq (type-of ary) 'mgenarray)))))
 		  (if (member fun '(mqapply $%) :test #'eq) (merror (intl:gettext "assignment: cannot assign to ~M") l))
 		  (add2lnc fun $arrays)
 		  (setq ary (gensym))
@@ -1882,8 +1888,9 @@ wrapper for this."
 		  (setf (aref (symbol-array ary) 1) 0)
 		  (setf (aref (symbol-array ary) 2) (length (cdr l)))
 		  (arrstore l r))
-
-		 ((eq (ml-typep ary) 'array)
+	         ((or (arrayp ary)
+	              (typep ary 'hash-table)
+	              (eq (type-of ary) 'mgenarray))
 		  (arrstore-extend ary (mevalargs (cdr l)) r))
 		 ((or (eq (caar ary) 'mlist) (= (length l) 2))
 		  (cond ((eq (caar ary) '$matrix)
