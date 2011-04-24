@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2010 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2011 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -24,6 +24,11 @@
 
 ($put '$grcommon 1 '$version)
 
+;; Possible draw renderers:
+;;      gnuplot_pipes (default)
+;;      gnuplot
+;;      vtk
+(defvar $draw_renderer '$gnuplot_pipes)
 
 (defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
 
@@ -332,8 +337,8 @@
 
 (defun update-terminal (val)
   (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $svg
-                 $pdf $pdfcairo $wxt $animated_gif $aquaterm
-                 $tiff $vrml $obj $pnm)))
+                 $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
+                 $aquaterm $tiff $vrml $obj $pnm)))
      (cond
        ((member val terms)
           (when (and (eq val '$png) $draw_use_pngcairo)
