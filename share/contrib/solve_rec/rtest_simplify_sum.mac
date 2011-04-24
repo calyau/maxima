@@ -23,7 +23,7 @@
 
 test_sum(
   sum(r/k*binomial(n,r)*binomial(m,k-r)/binomial(n+m,k),r,0,k),
-  [n>k, m>k-1],
+  [n>k, m>k-1, m>k],
   true,
   [makefact, minfactorial],
   n/(n+m));
@@ -87,7 +87,7 @@ test_sum(
 
 test_sum(
   sum((-1)^k*binomial(x-2*k,n-k)*binomial(x-k+1,k),k,0,n),
-  [x>2*n, x>n-1],
+  [x>2*n, x>2*n-1, x>n-1],
   true,
   [],
   ((-1)^n+1)/2);
@@ -191,7 +191,7 @@ test_sum(
 
 test_sum(
   sum(binomial(l+j,j)*(-1)^(l+2*j)*binomial(n+1,l+j+1),l,0,n-j),
-  [],
+  [j>1],
   true,
   [],
   1);
@@ -231,7 +231,7 @@ test_sum(
 
 test_sum(
   sum(binomial(n,k)*binomial(k-1,j)*(-1)^(k-j-1), k, j+1, n),
-  [],
+  [j>1],
   true,
   [],
   1);
