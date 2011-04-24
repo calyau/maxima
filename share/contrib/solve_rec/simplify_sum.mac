@@ -713,6 +713,40 @@ to_hypergeometric(expr, var, lo, hi) := block(
 
   for i:1 thru 100 while subst(var=lo, expr)=0 do lo : lo+1,
   expr:subst(var=var+lo, expr),
+
+  quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
+  if not(?ratp(quo, var)) then return(false),
+  
+  ss_print_message(2, "Shift quotient", quo),
+  
+  upper : -map(rhs, solve(num(quo), var)),
+  if not(every(lambda([u], freeof(var, u)), upper)) then return(false),
+  for i:1 thru length(upper) do (
+    for j:1 thru multiplicities[i] do
+      a : cons(upper[i], a)),
+  ss_print_message(2, "a=", a),
+  
+  lower : -map(rhs, solve(denom(quo), var)),
+  if not(every(lambda([u], freeof(var, u)), lower)) then return(false),
+  for i:1 thru length(lower) do (
+    for j:1 thru multiplicities[i] do
+      b : cons(lower[i], b)),
+
+  ni_coeffs: sublist(append(upper, lower), lambda([ni], is(integerp(ni) and ni<0))),
+  if ni_coeffs#[] then block(
+    [use_simpsum:false, use_harmonic:false, use_integral:false,
+     use_ratfun:false, use_gosper:false, use_zeilberger:false,
+     use_telescoping:false, min_ni: lmin(ni_coeffs)],
+    print(-min_ni+1),
+    apply('sum, [expr, var, lo, -min_ni]) + simplify_sum(apply(sum, [expr, var, -min_ni, hi])))
+  else to_hypergeometric1(expr, var, lo, hi))$
+
+
+to_hypergeometric1(expr, var, lo, hi) := block(
+  [quo, upper, lower, a:[], b:[], x, c, warnings:false],
+
+  for i:1 thru 100 while subst(var=lo, expr)=0 do lo : lo+1,
+/*  expr:subst(var=var+lo, expr),*/
   
   quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
   if not(?ratp(quo, var)) then return(false),
