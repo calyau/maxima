@@ -571,8 +571,10 @@ ss_support(expr, %k%) := block(
   if freeof(%k%, expr) or expr=%k% then [minf, inf]
   else if member(part(expr, 0), ["+", "-"]) then
     lreduce(ss_union, map(lambda([u], ss_support(u,%k%)), args(expr)))
-  else if member(part(expr, 0), ["*", "/"]) then
+  else if part(expr, 0)="*" then
     lreduce(ss_intersection, map(lambda([u], ss_support(u,%k%)), args(expr)))
+  else if part(expr, 0)="/" then
+    lreduce(ss_intersection, map(lambda([u], ss_support(factcomb(u),%k%)), args(expr)))
   else if member(part(expr, 0), ["^"]) then ss_support(part(expr, 1), %k%)
   else if part(expr, 0)=binomial then ss_support_binomial(expr, %k%)
   else if part(expr, 0)="!" then ss_support_factorial(expr, %k%)
