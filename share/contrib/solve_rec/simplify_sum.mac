@@ -739,7 +739,6 @@ to_hypergeometric(expr, var, lo, hi) := block(
     [use_simpsum:false, use_harmonic:false, use_integral:false,
      use_ratfun:false, use_gosper:false, use_zeilberger:false,
      use_telescoping:false, min_ni: lmin(ni_coeffs)],
-    print(-min_ni+1),
     apply('sum, [expr, var, lo, -min_ni]) + simplify_sum(apply(sum, [expr, var, -min_ni, hi])))
   else to_hypergeometric1(expr, var, lo, hi))$
 
