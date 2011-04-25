@@ -1178,8 +1178,9 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun plusin (x fm)
-  (prog (x1 flag check w xnew)
+  (prog (x1 x2 flag check v w xnew a n m c)
      (setq w 1)
+     (setq v 1)
      (cond ((mtimesp x)
             (setq check x)
             (if (mnump (cadr x)) (setq w (cadr x) x (cddr x))
@@ -1189,6 +1190,96 @@
            xnew (list* '(mtimes) w x))
   start
      (cond ((null (cdr fm)))
+           ((and (alike1 x1 (cadr fm)) (null (cdr x)))
+            (go equ))
+           ;; Implement the simplification of
+           ;;   v*a^(c+n)+w*a^(c+m) -> (v*a^n+w*a^m)*a^c
+           ;; where a, v, w, and (n-m) are integers.
+           ((and (or (mexptp (setq x2 (cadr fm)))
+                     (and (mtimesp x2)
+                          (not (alike1 x1 x2))
+                          (null (cadddr x2))
+                          (integerp (setq v (cadr x2)))
+                          (mexptp (setq x2 (caddr x2)))))
+                 (integerp (setq a (cadr x2)))
+                 (mexptp x1)
+                 (equal a (cadr x1))
+                 (integerp (sub (caddr x2) (caddr x1))))
+            (setq n (if (and (mplusp (caddr x2))
+                             (mnump (cadr (caddr x2))))
+                        (cadr (caddr x2))
+                        (if (mnump (caddr x2))
+                            (caddr x2)
+                            0)))
+            (setq m (if (and (mplusp (caddr x1))
+                             (mnump (cadr (caddr x1))))
+                        (cadr (caddr x1))
+                        (if (mnump (caddr x1))
+                            (caddr x1)
+                            0)))
+            (setq c (sub (caddr x2) n))
+            (cond ((integerp n)
+                   ;; The simple case:
+                   ;; n and m are integers and the result is (v*a^n+w*a^m)*a^c.
+                   (setq x1 (mul (addk (timesk v (exptb a n))
+                                       (timesk w (exptb a m)))
+                                 (power a c)))
+                   (go equt2))
+                  (t
+                   ;; n and m are rational numbers: The difference n-m is an
+                   ;; integer. The rational numbers might be improper fractions.
+                   ;; The mixed numbers are: n = n1 + d1/r and m = n2 + d2/r,
+                   ;; where r is the common denominator. We have two cases:
+                   ;; I)  d1 = d2: e.g. 2^(1/3+c)+2^(4/3+c)
+                   ;;     The result is (v*a^n1+w*a^n2)*a^(c+d1/r)
+                   ;; II) d1 # d2: e.g. 2^(1/2+c)+2^(-1/2+c)
+                   ;;     In this case one of the exponents d1 or d2 must
+                   ;;     be negative. The negative exponent is factored out.
+                   ;;     This guarantees that the factor (v*a^n1+w*a^n2)
+                   ;;     is an integer. But the positive exponent has to be
+                   ;;     adjusted accordingly. E.g. when we factor out
+                   ;;     a^(d2/r) because d2 is negative, then we have to
+                   ;;     adjust the positive exponent to n1 -> n1+(d1-d2)/r.
+                   ;; Remark:
+                   ;; Part of the simplification is done in simptimes. E.g.
+                   ;; this algorithm simplifies the sum sqrt(2)+3*sqrt(2)
+                   ;; to 4*sqrt(2). In simptimes this is further simplified
+                   ;; to 2^(5/2).
+                   (multiple-value-bind (n1 d1)
+                       (truncate (num1 n) (denom1 n))
+                     (multiple-value-bind (n2 d2)
+                         (truncate (num1 m) (denom1 m))
+                       (cond ((equal d1 d2)
+                              ;; Case I: -> (v*a^n1+w*a^n2)*a^(c+d1/r)
+                              (setq x1
+                                    (mul (addk (timesk v (exptb a n1))
+                                               (timesk w (exptb a n2)))
+                                         (power a
+                                                (add c
+                                                     (div d1 (denom1 n))))))
+                              (go equt2))
+                             ((minusp d2)
+                              ;; Case II:: d2 is negative, adjust n1.
+                              (setq n1 (add n1 (div (sub d1 d2) (denom1 n))))
+                              (setq x1
+                                    (mul (addk (timesk v (exptb a n1))
+                                               (timesk w (exptb a n2)))
+                                         (power a
+                                                (add c
+                                                     (div d2 (denom1 n))))))
+                              (go equt2))
+                             ((minusp d1)
+                              ;; Case II: d1 is negative, adjust n2.
+                              (setq n2 (add n2 (div (sub d2 d1) (denom1 n))))
+                              (setq x1
+                                    (mul (addk (timesk v (exptb a n1))
+                                               (timesk w (exptb a n2)))
+                                         (power a 
+                                                (add c
+                                                     (div d1 (denom1 n))))))
+                              (go equt2))
+                             ;; This clause should never be reached.
+                             (t (merror "Internal error in simplus."))))))))
            ((mtimesp (cadr fm))
             (cond ((alike1 x1 (cadr fm))
                    (go equt))
@@ -1196,8 +1287,6 @@
                    (setq flag t) ; found common factor
                    (go equt))
                   ((great xnew (cadr fm)) (go gr))))
-           ((and (alike1 x1 (cadr fm)) (null (cdr x)))
-            (go equ))
            ((great x1 (cadr fm)) (go gr)))
      (setq xnew (eqtest (testt xnew) (or check '((foo)))))
      (return (cdr (rplacd fm (cons xnew (cdr fm)))))
@@ -1234,6 +1323,7 @@
   equt
      ;; Call muln to get a simplified product.
      (setq x1 (muln (cons (addk w (if flag (cadadr fm) 1)) x) t))
+  equt2
      (rplaca (cdr fm)
              (if (zerop1 x1)
                  (list* '(mtimes) x1 x)
