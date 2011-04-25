@@ -15,8 +15,7 @@
     cs : simplify_sum(sm),
     for f in smp do cs : apply(f, [cs]),
     if length(ass)>0 then apply(forget, ass),
-    ratsimp(cs-ans)
-    ),
+    ratsimp(cs-ans)),
   0
 );
 0;
@@ -203,7 +202,7 @@ test_sum(
   true,
   [rectform],
   (2*2^(n/2)*cos((%pi*n)/4)+2^n)/4
-  );
+  ), sum_min=1;
 0;
 
 (declare(n, integer), load(orthopoly), 0);
@@ -523,4 +522,78 @@ test_sum(
   [],
   1
 );
+0;
+
+test_sum(
+  sum(%e^-4*(k-4)^2*4^k/k!, k, 0, inf),
+  [],
+  false,
+  [],
+  4
+);
+0;
+
+
+test_sum(
+  sum(%e^-4*(k-5)^2*4^k/k!, k, 0, inf),
+  [],
+  false,
+  [],
+  5
+);
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 0, n),
+  [],
+  false,
+  [],
+  2^(-2+n)*n*(1 + n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 0, n),
+  [],
+  false,
+  [],
+  2^(-2+n)*n*(1 + n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 1, n),
+  [],
+  false,
+  [],
+  2^(-2+n)*n*(1 + n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 2, n),
+  [],
+  false,
+  [],
+  1/4*n*(-4+2^n+2^n*n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 3, n),
+  [],
+  false,
+  [],
+  1/4*n*(4+2^n-8*n+2^n*n)
+  );
+0;
+
+
+test_sum(
+  sum(binomial(n,k)*binomial(k-1,j)*(-1)**(k-1-j),k,j+1,n),
+  [j>1],
+  false,
+  [],
+  1
+  );
 0;
