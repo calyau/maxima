@@ -129,6 +129,7 @@
              ein-ge-schlos-sen
              E-le-men-te
              ent-hal-ten
+             ent-spre-chend
              Er-geb-nis
              Ex-po-nen-tial-funk-tion
              Fra-ge-zei-chen
