@@ -5,7 +5,7 @@
 @c Original    : Arrays.texi revision 19.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.03.2011
-@c Revision    : 20.04.2011
+@c Revision    : 25.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -88,8 +88,8 @@ make_array: dimensions must be integers; found [fixnum + 1, 3, 3]
 
 Maxima kennt weiterhin Array-Funktionen, die Funktionswerte speichern k@"onnen,
 und indizierte Funktionen.  Die hier beschriebenen Funktionen k@"onnen auch
-auf diese Arrays angewendet werden.  Siehe das Kapitel
-@nref{Array-Funktionen} f@"ur eine Beschreibung.
+auf diese Arrays angewendet werden.  Siehe @ref{Array-Funktionen} f@"ur eine
+Beschreibung.
 
 Weitere Ausf@"uhrungen sind bei der Beschreibung der einzelnen Funktionen zu
 finden.  Maxima kennt folgende Funktionen und Symbole f@"ur das Arbeiten mit

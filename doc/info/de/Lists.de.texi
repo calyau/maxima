@@ -5,7 +5,7 @@
 @c Original    : Lists.texi revision 1.38
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 31.03.2011
+@c Revision    : 25.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -92,8 +92,8 @@ Addition angewendet:
 
 Weitere Beispiele f@"ur die Anwendung der Funktionen f@"ur Listen auf allgemeine
 Ausdr@"ucke sind bei den einzelnen Funktionen angegeben.  Eine ausf@"uhrliche
-Beschreibung der internen Darstellung von Maxima-Ausdr@"ucken ist im Kapitel
-@nref{Ausdr@"ucke} enthalten.
+Beschreibung der internen Darstellung von Maxima-Ausdr@"ucken ist in
+@ref{Ausdr@"ucke} enthalten.
 
 Auf die einzelnen Elemente einer Liste kann direkt @"uber einen Index
 zugegriffen werden.  Bezeichnet der Index kein Element der Liste, gibt Maxima

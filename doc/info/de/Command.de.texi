@@ -2,10 +2,10 @@
 @c File        : Command.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Command.texi revision 1.54
+@c Original    : Command.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 25.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -69,10 +69,9 @@ Konsole ausgegeben.
 Der Nutzer kann auf jede einzelne Phase Einflu@ss{} nehmen.  Verschiedene 
 Kapitel der Dokumentation befassen sich mit diesen M@"oglichkeiten.  In diesem 
 Kapitel werden die Kommandos und M@"oglichkeiten zusammengestellt, die sich mit 
-der Eingabe und Ausgabe auf der Konsole befassen.  Das Kapitel
-@nref{Auswertung} beschreibt wie auf die Auswertung und das Kapitel
-@nref{Vereinfachung} wie auf die Vereinfachung einer Eingabe Einfluss genommen
-werden kann.
+der Eingabe und Ausgabe auf der Konsole befassen.  In @ref{Auswertung} wird
+beschrieben wie auf die Auswertung und in @ref{Vereinfachung} wie auf die
+Vereinfachung einer Eingabe Einfluss genommen werden kann.
 
 @subheading Marken
 
@@ -156,9 +155,9 @@ externe Darstellung transformiert.  Zum Beispiel hat die Eingabe @code{sqrt(x)}
 eine interne Darstellung, die dem Ausdruck @code{x^(1/2)} entspricht.  F@"ur die
 Ausgabe wird die interne Darstellung in einen Ausdruck transformiert, die der
 Ausgabe @code{sqrt(x)} entspricht.  Dieses Verhalten wird von der
-Optionsvariablen @mref{sqrtdispflag} kontrolliert.  Siehe auch das Kapitel
-@nref{Ausdr@"ucke} f@"ur Funktionen, die die interne und externe Darstellung von
-Ausdr@"ucken unterscheiden.
+Optionsvariablen @mref{sqrtdispflag} kontrolliert.  Siehe @ref{Ausdr@"ucke}
+f@"ur Funktionen, die die interne und externe Darstellung von Ausdr@"ucken
+unterscheiden.
 
 @noindent
 Folgende Optionsvariablen und Symbole kontrollieren die Ausgabe auf der Konsole:
@@ -447,8 +446,8 @@ Das Beispiel zeigt, wie die letzten 5 eingegebenen Werte mit der Funktion
 
 Wird dem Namen einer Funktion oder Variablen ein @code{?} als Pr@"afix
 vorangestellt, wird der Name als ein Lisp-Symbol interpretiert.  Zum Beispiel 
-bedeutet @code{?round} die Lisp-Funktion @code{ROUND}.  Siehe auch das Kapitel
-@nref{Lisp und Maxima} f@"ur weitere Ausf@"uhrungen zu diesem Thema.
+bedeutet @code{?round} die Lisp-Funktion @code{ROUND}.  Siehe
+@ref{Lisp und Maxima} f@"ur weitere Ausf@"uhrungen zu diesem Thema.
 
 Die Eingabe @code{? word} ist eine Kurzschreibweise f@"ur das Kommando 
 @code{describe("word")}.  Das Fragezeichen muss am Anfang einer Eingabezeile 
@@ -533,9 +532,9 @@ Enth@"alt die Optionsvariablen, die vom Nutzer bisher einen neuen Wert erhalten
 haben.
 
 @item rules
-Enth@"alt die vom Nutzer mit den Funktionen
-@mrefcomma{tellsimp} @mrefcomma{tellsimpafter} @mref{defmatch}
-oder @mref{defrule} definierten Regeln.
+Enth@"alt die vom Nutzer mit den Funktionen @mrefcomma{tellsimp}@w{}
+@mrefcomma{tellsimpafter} @mref{defmatch} oder @mref{defrule}@w{}
+definierten Regeln.
 
 @item aliases
 Enth@"alt die Symbole, die einen vom Nutzer definierten Alias-Namen mit der
@@ -836,7 +835,7 @@ Mit der Tastatureingabe @kbd{control-c} oder @code{Strg-c} kann in der Konsole
 die Verarbeitung abgebrochen werden.  Stan@-dard@-m@"a@ss{}ig wird die
 Maxima-Sitzung fortgesetzt.  Hat die globale Lisp-Variable
 @code{*debugger-hook*} den Wert @code{nil}, wird der Lisp-Debugger gestartet.
-Siehe das Kapitel @mrefdot{Fehlersuche}
+Siehe @ref{Fehlersuche}.
 @end deffn
 
 @c --- 23.10.2010 DK -----------------------------------------------------------

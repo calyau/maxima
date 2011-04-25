@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 25.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -802,8 +802,8 @@ und Variablen arbeiten mit Zeichenketten:
 @end verbatim
 
 @noindent
-Das Zusatzpaket @nref{stringproc} enth@"alt eine umfangreiche Bibliothek an 
-Funktionen f@"ur Zeichenketten.
+Das Zusatzpaket @code{stringproc} enth@"alt eine umfangreiche Bibliothek an 
+Funktionen f@"ur Zeichenketten.  Siehe @ref{stringproc}.
 
 Beispiele:
 
