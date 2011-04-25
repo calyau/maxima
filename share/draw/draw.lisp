@@ -40,8 +40,6 @@
 
 (defvar $draw_compound t)
 
-(defvar $draw_renderer '$gnuplot)
-
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
 (defmacro write-font-type ()
@@ -3039,6 +3037,13 @@
     ; when one multiplot window is active, change of terminal is not allowed
     (if (not *multiplot-is-active*)
     (case (get-option '$terminal)
+        ($dumb (format cmdstorage "set terminal dumb size ~a, ~a"
+                           (round (/ (first (get-option '$dimensions)) 10))
+                           (round (/ (second (get-option '$dimensions)) 10))))
+        ($dumb_file (format cmdstorage "set terminal dumb size ~a, ~a~%set out '~a.dumb'"
+                           (round (/ (first (get-option '$dimensions)) 10))
+                           (round (/ (second (get-option '$dimensions)) 10))
+                           (get-option '$file_name)))
         ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3225,24 +3230,27 @@
                        (equal (get-option '$terminal) '$pdfcairo))
                 (format cmdstorage "unset output~%"))
              (close cmdstorage)
-
              ; get the plot
              (cond
-                (*windows-OS*
-                   ($system (if (equal (get-option '$terminal) '$screen)
-                                   (format nil "~a ~a"
-                                               $gnuplot_command
-                                               (format nil $gnuplot_view_args gfn))
-                                   (format nil "~a \"~a\"" 
-                                               $gnuplot_command
-                                               gfn))) )
-                (t  ; non windows operating system
+                ; connect to gnuplot via pipes
+                ((and (not *windows-OS*)
+                      (member (get-option '$terminal) '($screen $aquaterm $wxt))
+                      (equal $draw_renderer '$gnuplot_pipes))
                    (check-gnuplot-process)
                    (when (not *multiplot-is-active*) ; not in a one window multiplot
                      (send-gnuplot-command "unset output"))
                    (send-gnuplot-command "reset")
                    (send-gnuplot-command
-                        (format nil "load '~a'" gfn))  ))))
+                        (format nil "load '~a'" gfn)))
+                ; call gnuplot via system command
+                (t
+                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt))
+                                   (format nil "~a ~a"
+                                               $gnuplot_command
+                                               (format nil $gnuplot_view_args gfn))
+                                   (format nil "~a \"~a\"" 
+                                               $gnuplot_command
+                                               gfn)))))))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)) )
@@ -3255,7 +3263,8 @@
 
 ;; Equivalent to draw3d(opt & obj)
 (defun $draw3d (&rest args)
-  (cond ((equal $draw_renderer '$gnuplot)
+  (cond ((or (equal $draw_renderer '$gnuplot)
+             (equal $draw_renderer '$gnuplot_pipes))
            ($draw (cons '($gr3d) args)))
         ((equal $draw_renderer '$vtk)
            (apply 'vtk3d args))

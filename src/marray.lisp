@@ -38,16 +38,25 @@
 	       (mapcar #'(lambda (subs) ($arrayapply ary subs))
 		       (cdddr (meval (list '($arrayinfo) ary)))))
 	      ((mget ary 'array) (listarray (mget ary 'array)))
-	      ((arrayp ary) (coerce ary 'list))
+              ((arrayp ary)
+               (if (eql (array-rank ary) 1)
+                   (coerce ary 'list)
+                   (coerce (make-array (apply '* (array-dimensions ary))
+                                       :displaced-to ary
+                                       :element-type (array-element-type ary))
+                           'list)))
 	      ((hash-table-p ary)
 	       (let (vals (tab ary))
 		 (declare (special vals tab))
                  (maphash #'(lambda (x &rest l) l 
                               (unless (eq x 'dim1) (push (gethash x tab) vals)))
                             ary)
-                 (reverse vals)))
+	         (reverse vals)))
+	      ((eq (marray-type ary) '$functional)
+	       (cdr ($listarray (mgenarray-content ary))))
 	      (t 
-	       (merror (intl:gettext "listarray: argument must be an array; found: ~M") ary)))))
+	       (merror (intl:gettext "listarray: argument must be an array; found: ~M")
+	               ary)))))
 
 (defmfun $fillarray (ary1 ary2)
   (let ((ary

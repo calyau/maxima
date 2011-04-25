@@ -95,29 +95,10 @@
 ;;;;;                                                                    ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; gobble whitespace, recognize '#' comments..
-(defun gobble-whitespace (&aux saw-newline ch saw-other)
-  (do ()
-      (nil) ; Gobble whitespace
-      (setq ch (parse-tyipeek))
-      (cond ((eql ch #\newline)
-	     (setq saw-other nil)
-	     (setq saw-newline t))
-	    ((member ch '(#\tab #\space #\linefeed #\return #\page))
-	     (setq saw-other t))
-	    ;; allow comments to be lines which are whitespace and then
-	    ;; a '#' character.
-	    ;; recognize
-	    ;; # 234 "jim.mac"
-	    ;; to set the current line information to be line 234 of jim.mac
-	    ((and (eql ch #\#) saw-newline)
-	     (let ((li (read-line *parse-stream* nil)))
-	       (unread-char #\newline *parse-stream*)
-	       (setq *parse-tyi* nil)
-	       (unless saw-other
-		   (grab-line-number li *parse-stream*))))
-	    (t  (return t)))
-     (parse-tyi)))
+(defun gobble-whitespace ()
+  (do ((ch (parse-tyipeek) (parse-tyipeek)))
+      ((not (member ch '(#\tab #\space #\linefeed #\return #\page #\newline))))
+    (parse-tyi)))
 
 (defun read-command-token (obj)
   (gobble-whitespace)

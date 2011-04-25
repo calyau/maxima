@@ -711,7 +711,7 @@
       (if (integerp v_list)
 	  (dotimes (v v_list)
 	    ($add_vertex v gr))
-	  (dolist (v (cdr v_list))
+	  (dolist (v (reverse (cdr v_list)))
 	    (if ($listp v)
 		(progn
 		  ($add_vertex ($first v) gr)

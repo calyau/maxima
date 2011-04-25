@@ -14,7 +14,7 @@
 
 (declare-top (special evarrp munbound flounbound fixunbound $use_fast_arrays))
 
-(defstruct (mgenarray (:conc-name mgenarray-) (:type vector))
+(defstruct (mgenarray (:conc-name mgenarray-))
   aref
   aset
   type
@@ -23,49 +23,57 @@
   content)
 
 (defun marray-type (x)
-  (case (ml-typep x)
-    (array (array-element-type x))
-    (hash-table 'hash-table)
-    (cl:array  (princ "confusion over `array' and `cl:array'")
-	       (array-element-type x))
-    (otherwise
-     (or (cdr (assoc (array-element-type x) '((flonum . $float) (fixnum . $fixnum))))
-	 (mgenarray-type x)))))
+  (cond ((arrayp x) 'array)
+        ((hash-table-p x) 'hash-table)
+        ((eq (type-of x) 'mgenarray) (mgenarray-type x))))
 
-(defmfun $make_array (type &rest diml)
-  (let ((ltype (assoc type '(($float . flonum) ($flonum . flonum) ($fixnum . fixnum)))))
-    ;; Check the dimensions. No check for upper number of dimensions. (01/2009)
-    (when (member nil (mapcar #'(lambda (u) (eq (ml-typep u) 'fixnum)) diml) :test #'eq)
-      (merror (intl:gettext "make_array: dimensions must be integers; found ~M") `((mlist) ,@diml)))
+(defun $make_array (type &rest diml)
+  (let ((ltype (assoc type '(($float . flonum)
+                             ($flonum . flonum)
+                             ($fixnum . fixnum)))))
+    ;; Check the dimensions. No check for number of dimensions.
+    (when (member nil
+                  (mapcar #'(lambda (u) (fixnump u))
+                          ;; For a functional array the list of dimensions
+                          ;; starts at the third element of the list diml
+                          (if (eq type '$functional)
+                              (cddr diml)
+                              diml))
+                  :test #'eq)
+      (merror (intl:gettext "make_array: dimensions must be integers; found ~M")
+              `((mlist) ,@diml)))
     (if (not ltype)
 	(case type
 	  ($any
 	   (make-array diml :initial-element nil))
-	  ($hashed
-	   (let ((kludge (gensym)))
-	     (unless (integerp (car diml))
-	       (merror (intl:gettext "make_array: number of dimensions must be an integer; found ~M") (car diml)))
-	     (insure-array-props kludge () (car diml))
-	     (make-mgenarray :type '$hashed :content kludge)))
-	  ($functional ;; MAKE_ARRAY('FUNCTIONAL,LAMBDA(...),'ARRAY_TYPE,...)
+          ($hashed
+           (make-equal-hash-table (cdr diml)))
+	  ($functional
+           ;; MAKE_ARRAY('FUNCTIONAL, LAMBDA(...), 'ARRAY_TYPE, ...)
+           ;; This is a memoizing array.
 	   (unless (> (length diml) 1)
 	     (merror (intl:gettext "make_array: not enough arguments for functional array specification.")))
-	   (let ((ar (apply #'$make_array (cdr diml)))
+	   (let ((ar (apply #'$make_array (cadr diml) (cddr diml)))
 		 (the-null))
-	     (case (marray-type ar)
+	     (case (cadr diml)
 	       ($fixnum
 		(fillarray ar (list (setq the-null fixunbound))))
 	       ($float
 		(fillarray ar (list (setq the-null flounbound))))
 	       ($any
-		(fillarray (mgenarray-content ar) (list (setq the-null munbound))))
+	        (fillarray (mgenarray-content ar)
+	                   (list (setq the-null munbound))))
 	       (t
-		;; Nothing to do for hashed arrays.
-		;; Is FUNCTIONAL here an error?
-		(setq the-null 'notexist)))
-	     (make-mgenarray :type '$functional :content ar :generator (car diml) :null the-null)))
+	        ;; Nothing to do for hashed arrays. Is FUNCTIONAL here an error?
+	        ;; No, it is the most useful case for a FUNCTIONAL array.
+		(setq the-null nil)))
+	     (make-mgenarray :type '$functional
+	                     :content ar
+	                     :generator (car diml)
+	                     :null the-null)))
 	  (t
-	   (merror (intl:gettext "make_array: array type ~M not recognized.") type)))
+	   (merror (intl:gettext "make_array: array type ~M not recognized.")
+	           type)))
 	(make-array diml :initial-element (case (cdr ltype)
 					    (fixnum 0)
 					    (flonum 0.0)
@@ -97,8 +105,6 @@
 	      (exploden "}"))
        result)))
 
-
-
 (defun marray-check (a)
   (if (eq (ml-typep a) 'array)
       (case (marray-type a)
@@ -115,7 +121,8 @@
   (array-dimension (marray-check a) n))
 
 (defun marray-type-unknown (x)
-  (merror (intl:gettext "MARRAY-TYPE-UNKNOWN: array type ~S not recognized.") x))
+  (merror (intl:gettext "MARRAY-TYPE-UNKNOWN: array type ~S not recognized.")
+          x))
 
 (defun marrayref-gensub (aarray ind1 inds)
   (case (marray-type aarray)
@@ -125,26 +132,20 @@
     ;; speed and simplicity we want anyway. Ah me. Also, passing the single
     ;; unconsed index IND1 around is a dubious optimization, which causes
     ;; extra consing in the case of hashed arrays.
-    ((t) (apply #'aref aarray ind1 inds))
+    ((array) (apply #'aref aarray ind1 inds))
     ((hash-table) (gethash (if inds (cons ind1 inds) ind1) aarray))
-    (($hashed)
-     (apply #'marrayref (mgenarray-content aarray) ind1 inds))
-    (($float $fixnum)
-     (apply aarray ind1 inds))
-    (($any)
-     (apply (mgenarray-content aarray) ind1 inds))
     (($functional)
      (let ((value (let ((evarrp t))
 		    ;; special variable changes behavior of hashed-array
 		    ;; referencing functions in case of not finding an element.
 		    (catch 'evarrp (marrayref-gensub
-				    (mgenarray-content aarray) ind1 inds)))))
+		                    (mgenarray-content aarray) ind1 inds)))))
        (if (equal value (mgenarray-null aarray))
 	   (marrayset-gensub  (apply #'mfuncall
 				     (mgenarray-generator aarray)
 				     ;; the first argument we pass the
 				     ;; function is a SELF variable.
-				     aarray
+;				     aarray
 				     ;; extra consing here! LEXPR madness.
 				     ind1
 				     inds)
@@ -155,13 +156,8 @@
 
 (defun marrayset-gensub (val aarray ind1 inds)
   (case (marray-type aarray)
-    ((t) (setf (apply #'aref aarray ind1 inds) val))
-    (($hashed)
-     (apply #'marrayset val (mgenarray-content aarray) ind1 inds))
-    (($any)
-     (setf (apply #'aref (mgenarray-content aarray) ind1 inds) val ))
-    (($float $fixnum)
-     (setf  (apply #'aref (mgenarray-content aarray) ind1 inds) val ))
+    ((array) (setf (apply #'aref aarray ind1 inds) val))
+    ((hash-table) (setf (gethash (if inds (cons ind1 inds) ind1) aarray) val))
     (($functional)
      (marrayset-gensub val (mgenarray-content aarray) ind1 inds))
     (t

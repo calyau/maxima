@@ -751,7 +751,10 @@
   (prog (arra ary)
      (setq arra val)
      (setq ary sym)
-     (if (and arra (or (hash-table-p arra) (arrayp arra)))
+     (if (and arra
+              (or (hash-table-p arra)
+                  (arrayp arra)
+                  (eq (marray-type arra) '$functional)))
 	 (cond ((hash-table-p arra)
 		(let ((dim1 (gethash 'dim1 arra)))
 		  (return (list* '(mlist) '$hash_table (if dim1 1 t)
@@ -765,8 +768,10 @@
 		(return (let ((dims (array-dimensions arra)))
 			  (list '(mlist) '$declared
 				;; they don't want more info (array-type arra)
-				(length dims)
-				(cons '(mlist) (mapcar #'1- dims)))))))
+			        (length dims)
+			        (cons '(mlist) (mapcar #'1- dims))))))
+	       ((eq (marray-type arra) '$functional)
+	        (return (arrayinfo-aux sym (mgenarray-content arra)))))
 	 (let ((gen (mgetl sym '(hashar array))) ary1)
            (when (null gen)
              (merror (intl:gettext "arrayinfo: ~M is not an array.") ary))
@@ -790,7 +795,6 @@
 					(t '$declared))
 				  (length (cdr ary1))
 				  (cons '(mlist simp) (mapcar #'1- (cdr ary1)))))))))))
-
 
 ;;;; ALIAS
 
