@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in 27.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 20.04.2011
+@c Revision    : 24.04.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -143,7 +143,7 @@ Dr. Dieter Kaiser, 14.02.2011
 
 Spezifische Gebiete der Mathematik
 
-* Mengen::                      (Englisch) Methoden f@"ur Mengen.
+* Mengen::                      Methoden f@"ur Mengen.
 * Summen Produkte und Reihen::  Summen, Produkte, Taylorreihen und
                                 Poissonreihen.
 * Analysis::                    Grenzwerte, Differentiation, Integration,
@@ -314,8 +314,8 @@ Eingabe und Ausgabe
 * Funktionen und Variablen f@"ur die Fortran-Ausgabe::
 
 Mengen
-* Introduction to Sets::
-* Functions and Variables for Sets::
+* Einf@"uhrung in Mengen::
+* Funktionen und Variablen f@"ur Mengen::
 
 Summen, Produkte und Reihen
 * Summen und Produkte::
@@ -660,10 +660,6 @@ Glossar
 @node Eingabe und Ausgabe, Mengen, Grafische Darstellung, Top
 @chapter Eingabe und Ausgabe
 @include Input.de.texi
-
-@c @node Listen, Mengen, Eingabe und Ausgabe, Top
-@c @chapter Listen
-@c @include Lists.de.texi
 
 @node Mengen, Summen Produkte und Reihen, Eingabe und Ausgabe, Top
 @chapter Mengen

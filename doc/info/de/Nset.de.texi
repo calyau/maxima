@@ -2,55 +2,68 @@
 @c File        : Nset.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Nset.texi revision 1.28
+@c Original    : Nset.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
+@c Revision    : 25.04.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 @menu
-* Introduction to Sets::       
-* Functions and Variables for Sets::       
+* Einf@"uhrung in Mengen::
+* Funktionen und Variablen f@"ur Mengen::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Sets, Functions and Variables for Sets, Mengen, Mengen
-@section Introduction to Sets
+@node Einf@"uhrung in Mengen, Funktionen und Variablen f@"ur Mengen, Mengen, Mengen
+@section Einf@"uhrung in Mengen
+@c -----------------------------------------------------------------------------
 
-Maxima provides set functions, such as intersection and 
-union, for finite sets that are defined by explicit enumeration.
-Maxima treats 
-lists and sets as distinct objects. This feature makes it possible to
-work with sets that have members that are either lists or sets.
+@c Maxima provides set functions, such as intersection and 
+@c union, for finite sets that are defined by explicit enumeration.
+@c Maxima treats 
+@c lists and sets as distinct objects.  This feature makes it possible to
+@c work with sets that have members that are either lists or sets.
 
-In addition to functions for finite sets, Maxima provides some
-functions related to combinatorics; these include the Stirling
-numbers of the first and second kind, the Bell numbers, multinomial
-coefficients, partitions of nonnegative integers, and a few others. 
-Maxima also defines a Kronecker delta function.
+Maxima hat Funktionen wie den Schnitt und die Vereinigung von endlichen Mengen,
+die durch eine explizite Aufz@"ahlung definiert sind.  Listen und Mengen sind in
+Maxima unterschiedliche Objekte.  Daher k@"onnen Listen, aber auch Mengen,
+selbst Elemente von Mengen sein.  Siehe auch @ref{Listen}.
 
-@subsection Usage
+@c In addition to functions for finite sets, Maxima provides some
+@c functions related to combinatorics; these include the Stirling
+@c numbers of the first and second kind, the Bell numbers, multinomial
+@c coefficients, partitions of nonnegative integers, and a few others.
+@c Maxima also defines a Kronecker delta function.
 
-To construct a set with members @code{a_1, ..., a_n}, write
-@code{set(a_1, ..., a_n)} or @code{@{a_1, ..., a_n@}};
-to construct the empty set, write @code{set()} or @code{@{@}}.
-In input, @code{set(...)} and @code{@{ ... @}} are equivalent.
-Sets are always displayed with curly braces.
+Neben Funktionen f@"ur endliche Mengen, hat Maxima auch Funktionen der
+Kombinatorik.  Darunter die Stirling-Zahlen der ersten und zweiten Art, die
+Bellschen Zahlen, Multinomialverteilungen, Partitionsfunktionen oder die
+Kronecker-Delta-Funktion.
 
-If a member is listed more than
-once, simplification eliminates the redundant member.
+@c -----------------------------------------------------------------------------
+@subsection Anwendung
 
-@c ===beg===
-@c set();
-@c set(a, b, a);
-@c set(a, set(b));
-@c set(a, [b]);
-@c {};
-@c {a, b, a};
-@c {a, {b}};
-@c {a, [b]};
-@c ===end===
+@c To construct a set with members @code{a_1, ..., a_n}, write
+@c @code{set(a_1, ..., a_n)} or @code{@{a_1, ..., a_n@}};
+@c to construct the empty set, write @code{set()} or @code{@{@}}.
+@c In input, @code{set(...)} and @code{@{ ... @}} are equivalent.
+@c Sets are always displayed with curly braces.
+
+@c If a member is listed more than
+@c once, simplification eliminates the redundant member.
+
+Mit @code{set(a_1, ..., a_n} oder @code{@{a_1, ..., a_n@}} wird eine Menge
+mit den Elementen @code{a_1, ..., a_n} konstruiert.  Die leere Menge
+wird mit @code{set()} oder  @code{@{@}} angegeben.  In der Eingabe sind
+@code{set(...)} und @code{@{ ... @}} @"aquivalent.  Mengen werden immer mit
+geschweiften Klammern angezeigt.  Wird ein Element mehrmals angegeben, werden
+die mehrfachen Elemente aus der Menge entfernt.
+
+@noindent
+Beispiele:
+
 @example
 (%i1) set();
 (%o1)                          @{@}
@@ -70,35 +83,32 @@ once, simplification eliminates the redundant member.
 (%o8)                       @{a, [b]@}
 @end example
 
-Two would-be elements @var{x} and @var{y} are redundant
-(i.e., considered the same for the purpose of set construction)
-if and only if @code{is(@var{x} = @var{y})} yields @code{true}.
-@c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
-@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-Note that @code{is(equal(@var{x}, @var{y}))} can yield @code{true}
-while @code{is(@var{x} = @var{y})} yields @code{false};
-in that case the elements @var{x} and @var{y} are considered distinct.
+@c Two would-be elements @var{x} and @var{y} are redundant
+@c (i.e., considered the same for the purpose of set construction)
+@c if and only if @code{is(@var{x} = @var{y})} yields @code{true}.
+   @c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
+   @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+@c Note that @code{is(equal(@var{x}, @var{y}))} can yield @code{true}
+@c while @code{is(@var{x} = @var{y})} yields @code{false};
+@c in that case the elements @var{x} and @var{y} are considered distinct.
 
-@c ===beg===
-@c x: a/c + b/c;
-@c y: a/c + b/c;
-@c z: (a + b)/c;
-@c is (x = y);
-@c is (y = z);
-@c is (equal (y, z));
-@c y - z;
-@c ratsimp (%);
-@c {x, y, z};
-@c ===end===
+Zwei Elemente @var{x} und @var{y} werden als gleich angesehen, wenn
+@code{is(@var{x} = @var{y})} das Ergebnis @code{true} hat.  Es ist zu beachten,
+dass @code{is(equal(@var{x}, @var{y}))} das Ergebnis @code{true} haben kann,
+jedoch der Ausdruck @code{is(@var{x} = @var{y})} das Ergebnis @code{false}
+liefert.  In diesem Fall werden die Elemente als verschieden betrachtet.
+
 @example
 (%i1) x: a/c + b/c;
                               b   a
 (%o1)                         - + -
                               c   c
 (%i2) y: a/c + b/c;
+@group
                               b   a
 (%o2)                         - + -
                               c   c
+@end group
 (%i3) z: (a + b)/c;
                               b + a
 (%o3)                         -----
@@ -121,46 +131,48 @@ in that case the elements @var{x} and @var{y} are considered distinct.
                             c    c   c
 @end example
 
-To construct a set from the elements of a list, use @code{setify}.
+@c To construct a set from the elements of a list, use @code{setify}.
 
-@c ===beg===
-@c setify ([b, a]);
-@c ===end===
+Mit der Funktion @mref{setify} kann eine Menge aus einer Liste konstruiert
+werden.
+
 @example
 (%i1) setify ([b, a]);
 (%o1)                        @{a, b@}
 @end example
 
-Set members @code{x} and @code{y} are equal provided @code{is(x = y)} 
-evaluates to @code{true}. Thus @code{rat(x)} and @code{x} are equal as set
-members; consequently, 
+@c Set members @code{x} and @code{y} are equal provided @code{is(x = y)} 
+@c evaluates to @code{true}. Thus @code{rat(x)} and @code{x} are equal as set
+@c members; consequently, 
 
-@c ===beg===
-@c {x, rat(x)};
-@c ===end===
+Die Elemente @code{x} und @code{y} einer Menge sind gleich, wenn der Ausdruck
+@code{is(x = y)} das Ergebnis @code{true} hat.  Daher werden zum Beispiel
+@code{rat(x)} und @code{x} als gleich betrachtet.
+
 @example
 (%i1) @{x, rat(x)@};
 (%o1)                          @{x@}
 @end example
 
-Further, since @code{is((x - 1)*(x + 1) = x^2 - 1)} evaluates to @code{false}, 
-@code{(x - 1)*(x + 1)} and @code{x^2 - 1} are distinct set members; thus 
+@c Further, since @code{is((x - 1)*(x + 1) = x^2 - 1)} evaluates to
+@c @code{false}, @code{(x - 1)*(x + 1)} and @code{x^2 - 1} are distinct set
+@c members; thus
 
-@c ===beg===
-@c {(x - 1)*(x + 1), x^2 - 1};
-@c ===end===
+Da der Ausdruck @code{is((x - 1)*(x + 1) = x^2 - 1)} das Ergebnis @code{false}
+hat, werden @code{(x - 1)*(x + 1)} und @code{x^2 - 1} als verschiedene Elemente
+angenommen.
+
 @example
 (%i1) @{(x - 1)*(x + 1), x^2 - 1@};
                                        2
 (%o1)               @{(x - 1) (x + 1), x  - 1@}
 @end example
 
-To reduce this set to a singleton set, apply @code{rat} to each set member:
+@c To reduce this set to a singleton set, apply @code{rat} to each set member:
 
-@c ===beg===
-@c {(x - 1)*(x + 1), x^2 - 1};
-@c map (rat, %);
-@c ===end===
+Um die Menge im letzten Beispiel auf ein Element zu reduzieren, kann die
+Funktion @mref{rat} auf die Elemente der Menge angewendet werden.
+
 @example
 (%i1) @{(x - 1)*(x + 1), x^2 - 1@};
                                        2
@@ -170,13 +182,13 @@ To reduce this set to a singleton set, apply @code{rat} to each set member:
 (%o2)/R/                    @{x  - 1@}
 @end example
 
-To remove redundancies from other sets, you may need to use other
-simplification functions. Here is an example that uses @code{trigsimp}:
+@c To remove redundancies from other sets, you may need to use other
+@c simplification functions. Here is an example that uses @code{trigsimp}:
 
-@c ===beg===
-@c {1, cos(x)^2 + sin(x)^2};
-@c map (trigsimp, %);
-@c ===end===
+Um redundante Elemente von Mengen zu entfernen, k@"onnen Funktionen f@"ur die
+Vereinfachung von Ausdr@"ucken angewendet werden.  In diesem Beispiel wird
+die Funktion @mref{trigsimp} auf die Elemente der Menge angewendet.
+
 @example
 (%i1) @{1, cos(x)^2 + sin(x)^2@};
                             2         2
@@ -185,20 +197,19 @@ simplification functions. Here is an example that uses @code{trigsimp}:
 (%o2)                          @{1@}
 @end example
 
-A set is simplified when its members are non-redundant and
-sorted. The current version of the set functions uses the Maxima function
-@code{orderlessp} to order sets; however, @i{future versions of 
-the set functions might use a different ordering function}.
+@c A set is simplified when its members are non-redundant and
+@c sorted. The current version of the set functions uses the Maxima function
+@c @code{orderlessp} to order sets; however, @i{future versions of
+@c the set functions might use a different ordering function}.
 
-Some operations on sets, such as substitution, automatically force a 
-re-simplification; for example,
+@c Some operations on sets, such as substitution, automatically force a
+@c re-simplification; for example,
 
-@c ===beg===
-@c s: {a, b, c}$
-@c subst (c=a, s);
-@c subst ([a=x, b=x, c=x], s);
-@c map (lambda ([x], x^2), set (-1, 0, 1));
-@c ===end===
+Hat eine Menge redundante Elemente, wird sie vereinfacht und sortiert.  Die
+Ordnung der Elemente wird von der Funktion @mref{orderlessp} bestimmt.  Einige
+Operationen auf Mengen, wie zum Beispiel Substitutionen erzwingen die
+Vereinfachung von Mengen.
+
 @example
 (%i1) s: @{a, b, c@}$
 (%i2) subst (c=a, s);
@@ -209,16 +220,18 @@ re-simplification; for example,
 (%o4)                        @{0, 1@}
 @end example
 
-Maxima treats lists and sets as distinct objects;
-functions such as @code{union} and @code{intersection} complain
-if any argument is not a set. If you need to apply a set
-function to a list, use the @code{setify} function to convert it
-to a set. Thus
+@c Maxima treats lists and sets as distinct objects;
+@c functions such as @code{union} and @code{intersection} complain
+@c if any argument is not a set. If you need to apply a set
+@c function to a list, use the @code{setify} function to convert it
+@c to a set. Thus
 
-@c ===beg===
-@c union ([1, 2], {a, b});
-@c union (setify ([1, 2]), {a, b});
-@c ===end===
+Maxima behandelt Listen und Mengen als verschiedene Objekte.  Funktionen wie
+@mref{union} oder @mref{intersection} geben eine Fehlermeldung, wenn die
+Argumente keine Mengen sind.  Um eine Funktion f@"ur Mengen auf eine Liste
+anzuwenden, kann diese mit der Funktion @mref{setify} in eine Menge
+umgewandelt werden.
+
 @example
 (%i1) union ([1, 2], @{a, b@});
 Function union expects a set, instead found [1,2]
@@ -227,47 +240,46 @@ Function union expects a set, instead found [1,2]
 (%o2)                     @{1, 2, a, b@}
 @end example
 
-To extract all set elements of a set @code{s} that satisfy a predicate
-@code{f}, use @code{subset(s, f)}. (A @i{predicate} is a 
-boolean-valued function.) For example, to find the equations 
-in a given set that do not depend on a variable @code{z}, use
+@c To extract all set elements of a set @code{s} that satisfy a predicate
+@c @code{f}, use @code{subset(s, f)}.  (A @i{predicate} is a
+@c boolean-valued function.) For example, to find the equations
+@c in a given set that do not depend on a variable @code{z}, use
 
-@c ===beg===
-@c subset ({x + y + z, x - y + 4, x + y - 5}, 
-@c                                     lambda ([e], freeof (z, e)));
-@c ===end===
+Mit der Funktion @mref{subset} kann eine Teilmenge ermittelt werden, deren
+Elemente f@"ur eine Aussagefunktion das Ergebnis @code{true} haben.  Um die
+Gleichungen einer Menge zu finden, die nicht von der Variablen @code{z}
+abh@"angen, wird im Folgenden die Aussagefunktion @mref{freeof} verwendet.
+
 @example
 (%i1) subset (@{x + y + z, x - y + 4, x + y - 5@},
                                     lambda ([e], freeof (z, e)));
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
-The section @ref{Functions and Variables for Sets} has a complete list of
-the set functions in Maxima.
+@c The section @ref{Funktionen und Variablen f@"ur Mengen} has a complete list
+@c of the set functions in Maxima.
 
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
+In @ref{Funktionen und Variablen f@"ur Mengen} sind die Funktionen dokumentiert,
+die Maxima f@"ur Mengen kennt.
 
-@subsection Set Member Iteration
+@c -----------------------------------------------------------------------------
+@subsection Iteration @"uber Mengen
 
-There two ways to to iterate over set members. One way is the use
-@code{map}; for example:
+@c There two ways to to iterate over set members.  One way is the use
+@c @code{map}; for example:
 
-@c ===beg===
-@c map (f, {a, b, c});
-@c ===end===
+Es gibt zwei M@"oglichkeiten, @"uber die Elemente einer Menge zu iterieren.
+Im ersten Fall wird die Funktion @mref{map} genutzt.
+
 @example
 (%i1) map (f, @{a, b, c@});
 (%o1)                  @{f(a), f(b), f(c)@}
 @end example
 
-The other way is to use @code{for @var{x} in @var{s} do}
+@c The other way is to use @code{for @var{x} in @var{s} do}
 
-@c ===beg===
-@c s: {a, b, c};
-@c for si in s do print (concat (si, 1));
-@c ===end===
+Eine weitere M@"oglichkeit, ist eine @mref{for}-Schleife einzusetzen.
+
 @example
 (%i1) s: @{a, b, c@};
 (%o1)                       @{a, b, c@}
@@ -278,126 +290,121 @@ c1
 (%o2)                         done
 @end example
 
-The Maxima functions @code{first} and @code{rest} work
-correctly on sets. Applied to a set, @code{first} returns the first
-displayed element of a set; which element that is may be
-implementation-dependent. If @code{s} is a set, then 
-@code{rest(s)} is equivalent to @code{disjoin(first(s), s)}.
-Currently, there are other Maxima functions that work correctly
-on sets.
-In future versions of the set functions,
-@code{first} and @code{rest} may function differently or not at all.
+@c The Maxima functions @code{first} and @code{rest} work
+@c correctly on sets. Applied to a set, @code{first} returns the first
+@c displayed element of a set; which element that is may be
+@c implementation-dependent. If @code{s} is a set, then 
+@c @code{rest(s)} is equivalent to @code{disjoin(first(s), s)}.
+@c Currently, there are other Maxima functions that work correctly
+@c on sets.  In future versions of the set functions,
+@c @code{first} and @code{rest} may function differently or not at all.
 
-@subsection Bugs
+Die Funktionen @mref{first} und @mref{rest} funktionieren auch f@"ur Mengen.
+Wird die Funktion @code{first} auf eine Menge angewendet, ist das Ergebnis
+das erste Element, wie es in der Anzeige erscheint.  Ist @code{s} eine Menge,
+dann ist der Ausdruck @code{rest(s)} @"aquivalent zu
+@code{disjoin(first(s), s)}.  Siehe die Funktion @mrefdot{disjoin}
 
-The set functions use the Maxima function @code{orderlessp} to 
-order set members and the (Lisp-level) function @code{like} to test for set
-member equality. Both of these functions have known bugs
-that may manifest if you attempt to use
-sets with members that are lists or matrices that contain expressions
-in canonical rational expression (CRE) form. An example is
+@c -----------------------------------------------------------------------------
+@subsection Programmfehler
 
-@c ===beg===
-@c {[x], [rat (x)]};
-@c ===end===
-@example
-(%i1) @{[x], [rat (x)]@};
-Maxima encountered a Lisp error:
+@c TODO: DIE FOLGENDEN PROGRAMMFEHLER TRETEN NICHT MEHR AUF
 
-  The value #:X1440 is not of type LIST.
+@c The set functions use the Maxima function @code{orderlessp} to 
+@c order set members and the (Lisp-level) function @code{like} to test for set
+@c member equality.  Both of these functions have known bugs
+@c that may manifest if you attempt to use
+@c sets with members that are lists or matrices that contain expressions
+@c in canonical rational expression (CRE) form.  An example is
 
-Automatically continuing.
-To reenable the Lisp debugger set *debugger-hook* to nil.
-@end example
+@c @example
+@c (%i1) @{[x], [rat (x)]@};
+@c Maxima encountered a Lisp error:
+@c 
+@c The value #:X1440 is not of type LIST.
+@c 
+@c Automatically continuing.
+@c To reenable the Lisp debugger set *debugger-hook* to nil.
+@c @end example
 
-This expression causes Maxima to halt with an error (the error message
-depends on which version of Lisp your Maxima uses). Another
-example is
+@c This expression causes Maxima to halt with an error (the error message
+@c depends on which version of Lisp your Maxima uses).  Another
+@c example is
 
-@c ===beg===
-@c setify ([[rat(a)], [rat(b)]]);
-@c ===end===
-@example
-(%i1) setify ([[rat(a)], [rat(b)]]);
-Maxima encountered a Lisp error:
+@c @example
+@c (%i1) setify ([[rat(a)], [rat(b)]]);
+@c Maxima encountered a Lisp error:
+@c 
+@c The value #:A1440 is not of type LIST.
+@c 
+@c Automatically continuing.
+@c To reenable the Lisp debugger set *debugger-hook* to nil.
+@c @end example
 
-  The value #:A1440 is not of type LIST.
+@c These bugs are caused by bugs in @code{orderlessp} and @code{like}; they
+@c are not caused by bugs in the set functions.  To illustrate, try the
+@c expressions
 
-Automatically continuing.
-To reenable the Lisp debugger set *debugger-hook* to nil.
-@end example
+@c @example
+@c (%i1) orderlessp ([rat(a)], [rat(b)]);
+@c Maxima encountered a Lisp error:
+@c 
+@c The value #:B1441 is not of type LIST.
+@c 
+@c Automatically continuing.
+@c To reenable the Lisp debugger set *debugger-hook* to nil.
+@c (%i2) is ([rat(a)] = [rat(a)]);
+@c (%o2)                         false
+@c @end example
 
-These bugs are caused by bugs in @code{orderlessp} and @code{like}; they
-are not caused by bugs in the set functions. To illustrate, try the expressions
+@c Until these bugs are fixed, do not construct sets with members that
+@c are lists or matrices containing expressions in CRE form; a set with a 
+@c member in CRE form, however, shouldn't be a problem:
 
-@c ===beg===
-@c orderlessp ([rat(a)], [rat(b)]);
-@c is ([rat(a)] = [rat(a)]);
-@c ===end===
-@example
-(%i1) orderlessp ([rat(a)], [rat(b)]);
-Maxima encountered a Lisp error:
+@c @example
+@c (%i1) @{x, rat (x)@};
+@c (%o1)                          @{x@}
+@c @end example
 
-  The value #:B1441 is not of type LIST.
+@c Maxima's @code{orderlessp} has another bug that can cause problems
+@c with set functions, namely that the ordering predicate @code{orderlessp} is
+@c not transitive.  The simplest known example that shows this is
 
-Automatically continuing.
-To reenable the Lisp debugger set *debugger-hook* to nil.
-(%i2) is ([rat(a)] = [rat(a)]);
-(%o2)                         false
-@end example
+@c @example
+@c (%i1) q: x^2$
+@c (%i2) r: (x + 1)^2$
+@c (%i3) s: x*(x + 2)$
+@c (%i4) orderlessp (q, r);
+@c (%o4)                         true
+@c (%i5) orderlessp (r, s);
+@c (%o5)                         true
+@c (%i6) orderlessp (q, s);
+@c (%o6)                         false
+@c @end example
 
-Until these bugs are fixed, do not construct sets with members that
-are lists or matrices containing expressions in CRE form; a set with a 
-member in CRE form, however, shouldn't be a problem:
+@c This bug can cause trouble with all set functions as well as with
+@c Maxima functions in general. It is probable, but not certain, that 
+@c this bug can be avoided
+@c if all set members are either in CRE form or have been simplified
+@c using @code{ratsimp}.
 
-@c ===beg===
-@c {x, rat (x)};
-@c ===end===
-@example
-(%i1) @{x, rat (x)@};
-(%o1)                          @{x@}
-@end example
+   @c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
+@c Maxima's @code{orderless} and @code{ordergreat} mechanisms are 
+@c incompatible with the set functions.  If you need to use either
+@c @code{orderless} or @code{ordergreat}, call those functions before
+@c constructing any sets, and do not call @code{unorder}.
 
-Maxima's @code{orderlessp} has another bug that can cause problems
-with set functions, namely that the ordering predicate @code{orderlessp} is
-not transitive. The simplest known example that shows this is
-
-@c ===beg===
-@c q: x^2$
-@c r: (x + 1)^2$
-@c s: x*(x + 2)$
-@c orderlessp (q, r);
-@c orderlessp (r, s);
-@c orderlessp (q, s);
-@c ===end===
-@example
-(%i1) q: x^2$
-(%i2) r: (x + 1)^2$
-(%i3) s: x*(x + 2)$
-(%i4) orderlessp (q, r);
-(%o4)                         true
-(%i5) orderlessp (r, s);
-(%o5)                         true
-(%i6) orderlessp (q, s);
-(%o6)                         false
-@end example
-
-This bug can cause trouble with all set functions as well as with
-Maxima functions in general. It is probable, but not certain, that 
-this bug can be avoided
-if all set members are either in CRE form or have been simplified
-using @code{ratsimp}.
-
-@c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
-Maxima's @code{orderless} and @code{ordergreat} mechanisms are 
-incompatible with the set functions. If you need to use either @code{orderless}
-or @code{ordergreat}, call those functions before constructing any sets,
-and do not call @code{unorder}. 
+Die M@"oglichkeit mit den Funktionen @mref{orderless} und @mref{ordergreat}
+eine neue Ordnung f@"ur Variablen zu definieren, ist nicht kompatibel mit den
+Funktionen f@"ur Mengen.  Wird eine der Funktionen @code{orderless} oder
+@code{ordergreat} ben@"otigt, sollten diese vor der Konstruktion der ersten
+Menge ausgef@"uhrt werden.  Die Funktion @mref{unorder} sollte nicht
+ausgef@"uhrt werden.
 
 @c APPARENTLY THIS NEXT BIT REFERS TO BUG REPORT 798571
 @c EXAMPLE WITH kron_delta (1/sqrt(2), sqrt(2)/2); NOW WORKS AS EXPECTED
 @c COMMENT OUT PENDING CONSTRUCTION OF ANOTHER EXAMPLE WHICH TRIGGERS THE BUG
-@c
+@c 
 @c Maxima's sign function has a bug that may cause the Kronecker
 @c delta function to misbehave; for example:
 @c 
@@ -419,73 +426,92 @@ and do not call @code{unorder}.
 @c (%o1)                          pos
 @c @end example
 
-If you find something that you think might be a set function bug, please 
-report it to the Maxima bug database. See @code{bug_report}.
+@c If you find something that you think might be a set function bug, please
+@c report it to the Maxima bug database.  See @code{bug_report}.
 
-@subsection Authors
-
-Stavros Macrakis of Cambridge, Massachusetts and Barton Willis of the
-University of Nebraska at Kearney (UNK) wrote the Maxima set functions and their
-documentation. 
+Programmfehler im Zusammenhang mit den Funktionen f@"ur Mengen k@"onnen
+berichtet werden.  Siehe @ref{Programmfehler}.
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Sets,  , Introduction to Sets, Mengen
-@section Functions and Variables for Sets
+@subsection Autoren
 
+@c Stavros Macrakis of Cambridge, Massachusetts and Barton Willis of the
+@c University of Nebraska at Kearney (UNK) wrote the Maxima set functions and
+@c their documentation.
+
+Stavros Macrakis aus Cambridge, Massachusetts und Barton Willis von der
+Universit@"at Nebraska in Kearney (UNK) haben die Funktionen und die
+Dokumentation f@"ur Mengen geschrieben.
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur Mengen,  , Einf@"uhrung in Mengen, Mengen
+@section Funktionen und Variablen f@"ur Mengen
+@c -----------------------------------------------------------------------------
+
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{adjoin}
-@deffn {Function} adjoin (@var{x}, @var{a}) 
+@deffn {Funktion} adjoin (@var{x}, @var{a})
 
-Returns the union of the set @var{a} with @code{@{@var{x}@}}.
+@c Returns the union of the set @var{a} with @code{@{@var{x}@}}.
 
-@code{adjoin} complains if @var{a} is not a literal set.
+Vereinigt die Menge @var{a} mit @code{@{@var{x}@}} und gibt die vereinigte
+Menge als Ergebnis zur@"uck.
 
-@code{adjoin(@var{x}, @var{a})} and @code{union(set(@var{x}), @var{a})}
-are equivalent;
-however, @code{adjoin} may be somewhat faster than @code{union}.
+@c @code{adjoin} complains if @var{a} is not a literal set.
 
-See also @code{disjoin}.
+@code{adjoin} gibt eine Fehlermeldung, wenn das Argument @var{a} keine Menge
+ist.
 
-Examples:
+@c @code{adjoin(@var{x}, @var{a})} and @code{union(set(@var{x}), @var{a})}
+@c are equivalent; however, @code{adjoin} may be somewhat faster than
+@c @code{union}.
 
-@c ===beg===
-@c adjoin (c, {a, b});
-@c adjoin (a, {a, b});
-@c ===end===
+@code{adjoin(@var{x}, @var{a})} und @code{union(set(@var{x}), @var{a})} sind
+@"aquivalent.  Die Funktion @code{adjoin} kann etwas schneller als die Funktion
+@mref{union} sein.
+
+Siehe auch die Funktion @mrefdot{disjoin}
+
+Beispiele:
+
 @example
 (%i1) adjoin (c, @{a, b@});
 (%o1)                       @{a, b, c@}
 (%i2) adjoin (a, @{a, b@});
 (%o2)                        @{a, b@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{belln}
-@deffn {Function} belln (@var{n})
+@deffn {Funktion} belln (@var{n})
 
-Represents the @math{n}-th Bell number.
-@code{belln(n)} is the number of partitions of a set with @var{n} members.
+@c Represents the @math{n}-th Bell number.
+@c @code{belln(n)} is the number of partitions of a set with @var{n} members.
 
-For nonnegative integers @var{n},
-@code{belln(@var{n})} simplifies to the @math{n}-th Bell number.
-@code{belln} does not simplify for any other arguments.
+Repr@"asentiert die @math{n}-te Bellsche Zahl.
 
-@code{belln} distributes over equations, lists, matrices, and sets.
+@c For nonnegative integers @var{n},
+@c @code{belln(@var{n})} simplifies to the @math{n}-th Bell number.
+@c @code{belln} does not simplify for any other arguments.
 
-Examples:
+Ist das Argument @var{n} eine nicht-negative ganze Zahl, vereinfacht
+@code{belln(@var{n})} zu der @math{n}-ten Bellschen Zahl.  F@"ur andere
+Argumente vereinfacht die Funktion @code{belln} nicht.
 
-@code{belln} applied to nonnegative integers.
+@c @code{belln} distributes over equations, lists, matrices, and sets.
 
-@c ===beg===
-@c makelist (belln (i), i, 0, 6);
-@c is (cardinality (set_partitions ({})) = belln (0));
-@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = 
-@c                        belln (6));
-@c ===end===
+Ist das Argument der Funktion @code{belln} eine Liste, Menge, Matrix oder
+eine Gleichung, wird die Funktion auf die Elemente oder beide Seiten der
+Gleichung angewendet.
+
+@need 600
+Beispiele:
+
+@c @code{belln} applied to nonnegative integers.
+
+Anwendung der Funktion @code{belln} auf nicht-negative ganze Zahlen.
+
 @example
 (%i1) makelist (belln (i), i, 0, 6);
 (%o1)               [1, 1, 2, 5, 15, 52, 203]
@@ -496,38 +522,34 @@ Examples:
 (%o3)                         true
 @end example
 
-@code{belln} applied to arguments which are not nonnegative integers.
+@c @code{belln} applied to arguments which are not nonnegative integers.
 
-@c ===beg===
-@c [belln (x), belln (sqrt(3)), belln (-9)];
-@c ===end===
+Anwendung der Funktion @code{belln} auf andere Argumente als nicht-negative
+ganze Zahlen.
+
 @example
 (%i1) [belln (x), belln (sqrt(3)), belln (-9)];
 (%o1)        [belln(x), belln(sqrt(3)), belln(- 9)]
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{cardinality}
-@deffn {Function} cardinality (@var{a})
+@deffn {Funktion} cardinality (@var{a})
 
-Returns the number of distinct elements of the set @var{a}. 
+@c Returns the number of distinct elements of the set @var{a}.
 
-@code{cardinality} ignores redundant elements
-even when simplification is disabled.
+Gibt die M@"achtigkeit (Kardinalit@"at) einer Menge zur@"uck.  F@"ur endliche
+Mengen ist die M@"achtigkeit die Anzahl der Elemente der Menge.
 
-Examples:
+@c @code{cardinality} ignores redundant elements
+@c even when simplification is disabled.
 
-@c ===beg===
-@c cardinality ({});
-@c cardinality ({a, a, b, c});
-@c simp : false;
-@c cardinality ({a, a, b, c});
-@c ===end===
+@code{cardinality} ignoriert redundante Elemente einer Menge auch dann, wenn die
+Vereinfachung abgeschaltet ist.
+
+Beispiele:
+
 @example
 (%i1) cardinality (@{@});
 (%o1)                           0
@@ -538,29 +560,30 @@ Examples:
 (%i4) cardinality (@{a, a, b, c@});
 (%o4)                           3
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{cartesian_product}
-@deffn {Function} cartesian_product (@var{b_1}, ... , @var{b_n})
-Returns a set of lists of the form @code{[@var{x_1}, ..., @var{x_n}]}, where
-@var{x_1}, ..., @var{x_n} are elements of the sets @var{b_1}, ... , @var{b_n},
-respectively.
+@deffn {Funktion} cartesian_product (@var{b_1}, @dots{}, @var{b_n})
 
-@code{cartesian_product} complains if any argument is not a literal set.
+@c Returns a set of lists of the form @code{[@var{x_1}, ..., @var{x_n}]}, where
+@c @var{x_1}, ..., @var{x_n} are elements of the sets @var{b_1}, ..., @var{b_n},
+@c respectively.
 
-Examples:
+Gibt das kartesische Produkt der Mengen @var{b_1}, @dots{}, @var{b_n} zur@"uck.
+Das kartesische Produkt ist die Menge der geordneten Paare.
 
-@c ===beg===
-@c cartesian_product ({0, 1});
-@c cartesian_product ({0, 1}, {0, 1});
-@c cartesian_product ({x}, {y}, {z});
-@c cartesian_product ({x}, {-1, 0, 1});
-@c ===end===
+Die R@"uckgabe ist eine Menge mit Listen der Form @code{[@var{x_1}, ..., 
+@var{x_n}]}, wobei @var{x_1}, @dots{}, @var{x_n} die Elemente der Mengen
+@var{b_1}, @dots{}, @var{b_n} sind.
+
+@c @code{cartesian_product} complains if any argument is not a literal set.
+
+Die Funktion @code{cartesian_product} gibt eine Fehlermeldung, wenn eines
+der Argumente keine Menge ist.
+
+Beispiele:
+
 @example
 (%i1) cartesian_product (@{0, 1@});
 (%o1)                      @{[0], [1]@}
@@ -571,32 +594,37 @@ Examples:
 (%i4) cartesian_product (@{x@}, @{-1, 0, 1@});
 (%o4)              @{[x, - 1], [x, 0], [x, 1]@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
-
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{disjoin}
-@deffn {Function} disjoin (@var{x}, @var{a})
-Returns the set @var{a} without the member @var{x}.
-If @var{x} is not a member of @var{a}, return @var{a} unchanged.
+@deffn {Funktion} disjoin (@var{x}, @var{a})
 
-@code{disjoin} complains if @var{a} is not a literal set.
+@c Returns the set @var{a} without the member @var{x}.
+@c If @var{x} is not a member of @var{a}, return @var{a} unchanged.
 
-@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})}, and
-@code{setdifference(@var{a}, set(@var{x}))} are all equivalent. 
-Of these, @code{disjoin} is generally faster than the others.
+Entfernt das Element @var{x} aus der Menge @var{a} und gibt das Ergebnis
+zur@"uck.
 
-Examples:
+@c @code{disjoin} complains if @var{a} is not a literal set.
 
-@c ===beg===
-@c disjoin (a, {a, b, c, d});
-@c disjoin (a + b, {5, z, a + b, %pi});
-@c disjoin (a - b, {5, z, a + b, %pi});
-@c ===end===
+@code{disjoin} gibt eine Fehlermeldung, wenn das Argument @var{a} keine Menge
+ist.
+
+@c @code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})}, and
+@c @code{setdifference(@var{a}, set(@var{x}))} are all equivalent.
+@c Of these, @code{disjoin} is generally faster than the others.
+
+Die Ausdr@"ucke @code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x},
+@var{a})} und @code{setdifference(@var{a}, set(@var{x}))} sind @"aquivalent.
+Von diesen M@"oglichkeiten ist im Allgemeinen die Funktion @code{disjoin} am 
+schnellsten.
+
+Siehe auch die Funktion @mref{adjoin} sowie die Funktionen @mref{delete} und
+@mrefdot{setdifference}
+
+Beispiele:
+
 @example
 (%i1) disjoin (a, @{a, b, c, d@});
 (%o1)                       @{b, c, d@}
@@ -605,59 +633,66 @@ Examples:
 (%i3) disjoin (a - b, @{5, z, a + b, %pi@});
 (%o3)                  @{5, %pi, b + a, z@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{disjointp}
-@deffn {Function} disjointp (@var{a}, @var{b}) 
-Returns @code{true} if and only if the sets @var{a} and @var{b} are disjoint.
+@deffn {Funktion} disjointp (@var{a}, @var{b})
 
-@code{disjointp} complains if either @var{a} or @var{b} is not a literal set.
+@c Returns @code{true} if and only if the sets @var{a} and @var{b} are disjoint.
 
-Examples:
+@code{disjointp} hat das Ergebnis @code{true}, wenn die Mengen @var{a} und
+@var{b} disjunkt sind.  Zwei Mengen sind disjunkt, wenn sie kein gemeinsames
+Element besitzen.
 
-@c ===beg===
-@c disjointp ({a, b, c}, {1, 2, 3});
-@c disjointp ({a, b, 3}, {1, 2, 3});
-@c ===end===
+@c @code{disjointp} complains if either @var{a} or @var{b} is not a literal set.
+
+@code{disjointp} gibt eine Fehlermeldung, wenn eines der Argumente keine
+Menge ist.
+
+Beispiele:
+
 @example
 (%i1) disjointp (@{a, b, c@}, @{1, 2, 3@});
 (%o1)                         true
 (%i2) disjointp (@{a, b, 3@}, @{1, 2, 3@});
 (%o2)                         false
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Predicate functions}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{divisors}
-@deffn {Function} divisors (@var{n})
+@deffn {Funktion} divisors (@var{n})
 
-Represents the set of divisors of @var{n}.
+@c Represents the set of divisors of @var{n}.
 
-@code{divisors(@var{n})} simplifies to a set of integers
-when @var{n} is a nonzero integer.
-The set of divisors includes the members 1 and @var{n}.
-The divisors of a negative integer are the divisors of its absolute value.
+Repr@"asentiert die Menge der Teiler der Zahl @var{n}.
 
-@code{divisors} distributes over equations, lists, matrices, and sets.
+@c @code{divisors(@var{n})} simplifies to a set of integers
+@c when @var{n} is a nonzero integer.
+@c The set of divisors includes the members 1 and @var{n}.
+@c The divisors of a negative integer are the divisors of its absolute value.
 
-Examples:
+Ist das Argument @var{n} eine von Null verschiedene ganze Zahl, vereinfacht
+@code{divisors(@var{n})} zu einer Menge mit ganzen Zahlen, die Teiler des
+Argumentes @var{n} sind.  Ist das Argument @var{n} eine negative Zahl wird
+der Betrag des Argumentes genommen.  Das Ergebnis enth@"alt die Elemente
+@var{1} und @var{n}.
 
-We can verify that 28 is a perfect number:
-the sum of its divisors (except for itself) is 28.
+@c @code{divisors} distributes over equations, lists, matrices, and sets.
 
-@c ===beg===
-@c s: divisors(28);
-@c lreduce ("+", args(s)) - 28;
-@c ===end===
+Ist das Argument der Funktion @code{divisors} eine Liste, Menge, Matrix oder
+eine Gleichung, wird die Funktion auf die Elemente oder beide Seiten der
+Gleichung angewendet.
+
+Beispiele:
+
+@c We can verify that 28 is a perfect number:
+@c the sum of its divisors (except for itself) is 28.
+
+Das Beispiel zeigt, dass 28 eine perfekte Zahl ist, die gleich die Summe
+ihrer Teiler au@ss{}er sich selbst ist.
+
 @example
 (%i1) s: divisors(28);
 (%o1)                 @{1, 2, 4, 7, 14, 28@}
@@ -665,14 +700,13 @@ the sum of its divisors (except for itself) is 28.
 (%o2)                          28
 @end example
 
-@code{divisors} is a simplifying function.
-Substituting 8 for @code{a} in @code{divisors(a)}
-yields the divisors without reevaluating @code{divisors(8)}.
+@c @code{divisors} is a simplifying function.
+@c Substituting 8 for @code{a} in @code{divisors(a)}
+@c yields the divisors without reevaluating @code{divisors(8)}.
 
-@c ===beg===
-@c divisors (a);
-@c subst (8, a, %);
-@c ===end===
+@code{divisors} ist eine vereinfachende Funktion.  In diesem Beispiel braucht
+daher der Ausdruck nach der Substitution nicht erneut ausgewertet werden.
+
 @example
 (%i1) divisors (a);
 (%o1)                      divisors(a)
@@ -680,14 +714,11 @@ yields the divisors without reevaluating @code{divisors(8)}.
 (%o2)                     @{1, 2, 4, 8@}
 @end example
 
-@code{divisors} distributes over equations, lists, matrices, and sets.
+@c @code{divisors} distributes over equations, lists, matrices, and sets.
 
-@c ===beg===
-@c divisors (a = b);
-@c divisors ([a, b, c]);
-@c divisors (matrix ([a, b], [c, d]));
-@c divisors ({a, b, c});
-@c ===end===
+Anwendung der Funktion @code{divisors} auf Gleichungen, Listen, Matrizen oder
+Mengen.
+
 @example
 (%i1) divisors (a = b);
 (%o1)               divisors(a) = divisors(b)
@@ -700,172 +731,208 @@ yields the divisors without reevaluating @code{divisors(8)}.
 (%i4) divisors (@{a, b, c@});
 (%o4)        @{divisors(a), divisors(b), divisors(c)@}
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{elementp}
-@deffn {Function} elementp (@var{x}, @var{a})
-Returns @code{true} if and only if @var{x} is a member of the 
-set @var{a}.
+@deffn {Funktion} elementp (@var{x}, @var{a})
 
-@code{elementp} complains if @var{a} is not a literal set.
+@c Returns @code{true} if and only if @var{x} is a member of the
+@c set @var{a}.
 
-Examples:
+Gibt @code{true} zur@"uck, wenn das Argument @var{x} Element der Menge @var{a}
+ist.
 
-@c ===beg===
-@c elementp (sin(1), {sin(1), sin(2), sin(3)});
-@c elementp (sin(1), {cos(1), cos(2), cos(3)});
-@c ===end===
+@c @code{elementp} complains if @var{a} is not a literal set.
+
+@code{elementp} gibt eine Fehlermeldung, wenn das Argument @var{a} keine
+Menge ist.
+
+Beispiele:
+
 @example
 (%i1) elementp (sin(1), @{sin(1), sin(2), sin(3)@});
 (%o1)                         true
 (%i2) elementp (sin(1), @{cos(1), cos(2), cos(3)@});
 (%o2)                         false
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Predicate functions}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{emptyp}
-@deffn {Function} emptyp (@var{a})
-Return @code{true} if and only if @var{a} is the empty set or
-the empty list.
+@deffn {Funktion} emptyp (@var{a})
 
-Examples:
+@c Return @code{true} if and only if @var{a} is the empty set or
+@c the empty list.
 
-@c ===beg===
-@c map (emptyp, [{}, []]);
-@c map (emptyp, [a + b, {{}}, %pi]);
-@c ===end===
+Gibt @code{true} zur@"uck, wenn das Argument @var{a} die leere Menge oder eine
+leere Liste ist.
+
+Beispiele:
+
 @example
 (%i1) map (emptyp, [@{@}, []]);
 (%o1)                     [true, true]
 (%i2) map (emptyp, [a + b, @{@{@}@}, %pi]);
 (%o2)                 [false, false, false]
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Predicate functions}
-@c @closecatbox
-
 @end deffn
-       
+
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{equiv_classes}
-@deffn {Function} equiv_classes (@var{s}, @var{F})
-Returns a set of the equivalence classes of the set @var{s} with respect
-to the equivalence relation @var{F}.
+@deffn {Funktion} equiv_classes (@var{s}, @var{F})
 
-@var{F} is a function of two variables defined on the Cartesian product of @var{s} with @var{s}.
-The return value of @var{F} is either @code{true} or @code{false},
-or an expression @var{expr} such that @code{is(@var{expr})} is either @code{true} or @code{false}.
+@c Returns a set of the equivalence classes of the set @var{s} with respect
+@c to the equivalence relation @var{F}.
 
-When @var{F} is not an equivalence relation,
-@code{equiv_classes} accepts it without complaint,
-but the result is generally incorrect in that case.
+Gibt die Menge der @"Aquivalenzklassen der Menge @var{s} f@"ur die
+@"Aquivalenzrelation @code{F} zur@"uck.
 
-@c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
+@c @var{F} is a function of two variables defined on the Cartesian product of
+@c @var{s} with @var{s}.
+@c The return value of @var{F} is either @code{true} or @code{false},
+@c or an expression @var{expr} such that @code{is(@var{expr})} is either
+@c @code{true} or @code{false}.
+
+Die @"Aquivalenzrelation @code{F} ist eine Funktion mit zwei Argumenten
+definiert auf dem Kartesischen Produkt der Menge @var{s} mit @var{s}.  Die
+R@"uckgabe der Funktion @code{F} ist @code{true} oder @code{false} oder ein
+Ausdruck @var{expr}, so dass @code{is(@var{expr})} das Ergebnis @code{true}
+oder @code{false} hat.
+
+@c When @var{F} is not an equivalence relation,
+@c @code{equiv_classes} accepts it without complaint,
+@c but the result is generally incorrect in that case.
+
+Ist @var{F} keine @"Aquivalenzrelation, wird die Funktion von
+@code{equiv_classes} ohne Fehlermeldung akzeptiert.  Das Ergebnis ist jedoch
+im Allgemeinen nicht korrekt.
+
+@c EXCESSIVE DETAIL HERE.  PROBABLY JUST CUT THIS
 @c @var{F} may be a relational operator (built-in or user-defined),
 @c an ordinary Maxima function, a Lisp function, a lambda expression,
 @c a macro, or a subscripted function.
 
-Examples:
+Beispiele:
 
-The equivalence relation is a lambda expression which returns @code{true} or @code{false}.
+@c The equivalence relation is a lambda expression which returns @code{true} or
+@c @code{false}.
 
-@c ===beg===
-@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, 
-@c                         lambda ([x, y], is (equal (x, y))));
-@c ===end===
+Die @"Aquivalenzrelation ist ein Lambda-Ausdruck mit den Ergebnissen
+@code{true} oder @code{false}.
+
 @example
 (%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@},
                         lambda ([x, y], is (equal (x, y))));
 (%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
-The equivalence relation is the name of a relational function
-which @code{is} evaluates to @code{true} or @code{false}.
+@c The equivalence relation is the name of a relational function
+@c which @code{is} evaluates to @code{true} or @code{false}.
 
-@c ===beg===
-@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, equal);
-@c ===end===
+Die @"Aquivalenzrelation ist der Name einer relationalen Funktion, die von
+@code{is} zu @code{true} oder @code{false} ausgewertet werden.
+
 @example
 (%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, equal);
 (%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
-The equivalence classes are numbers which differ by a multiple of 3.
+@c The equivalence classes are numbers which differ by a multiple of 3.
 
-@c ===beg===
-@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, 
-@c                      lambda ([x, y], remainder (x - y, 3) = 0));
-@c ===end===
+Die @"Aquivalenzklassen sind Mengen mit Zahlen, die sich um ein Vielfaches von
+3 voneinander unterscheiden.
+
 @example
 (%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@},
                      lambda ([x, y], remainder (x - y, 3) = 0));
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{every}
-@deffn {Function} every (@var{f}, @var{s})
-@deffnx {Function} every (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn  {Funktion} every (@var{f}, @var{s})
+@deffnx {Funktion} every (@var{f}, @var{L_1}, @dots{}, @var{L_n})
 
-Returns @code{true} if the predicate @var{f} is @code{true} for all given arguments.
+@c Returns @code{true} if the predicate @var{f} is @code{true} for all given
+@c arguments.
 
-Given one set as the second argument, 
-@code{every(@var{f}, @var{s})} returns @code{true}
-if @code{is(@var{f}(@var{a_i}))} returns @code{true} for all @var{a_i} in @var{s}.
-@code{every} may or may not evaluate @var{f} for all @var{a_i} in @var{s}.
-Since sets are unordered,
-@code{every} may evaluate @code{@var{f}(@var{a_i})} in any order.
+Gibt das Ergebnis @code{true} zur@"uck, wenn die Aussage @code{f} das Ergebnis
+@code{true} f@"ur alle Elemente der Menge @var{s} hat.
 
-Given one or more lists as arguments,
-@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} returns @code{true}
-if @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} returns @code{true} 
-for all @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
-@code{every} may or may not evaluate 
-@var{f} for every combination @var{x_1}, ..., @var{x_n}.
-@code{every} evaluates lists in the order of increasing index.
+@c Given one set as the second argument, @code{every(@var{f}, @var{s})} returns
+@c @code{true} if @code{is(@var{f}(@var{a_i}))} returns @code{true} for all
+@c @var{a_i} in @var{s}.  @code{every} may or may not evaluate @var{f} for all
+@c @var{a_i} in @var{s}.  Since sets are unordered, @code{every} may evaluate
+@c @code{@var{f}(@var{a_i})} in any order.
 
-Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
-@code{every} returns @code{false}.
+Ist das zweite Argument eine Menge, dann gibt @code{every(@var{f}, @var{s})}
+den Wert @code{true} zur@"uck, wenn @code{is(@var{f}(@var{a_i}))} das Ergebnis
+@code{true} f@"ur alle Elemente @var{a_i} der Menge @var{s} hat.  @code{every}
+wertet @var{f} nicht notwendigerweise für alle Elemente @var{a_i} aus, wenn das
+Ergebnis bereits feststeht.  Da Mengen nicht geordnet sind, kann die Funktion
+@code{every} die Ausdr@"ucke @code{@var{f}(@var{a_i})} in irgendeiner
+Reihenfolge auswerten.
 
-When the global flag @code{maperror} is @code{true}, all lists 
-@var{L_1}, ..., @var{L_n} must have equal lengths.
-When @code{maperror} is @code{false}, list arguments are
-effectively truncated to the length of the shortest list. 
+@c Given one or more lists as arguments,
+@c @code{every(@var{f}, @var{L_1}, ..., @var{L_n})} returns @code{true}
+@c if @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} returns @code{true} 
+@c for all @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
+@c @code{every} may or may not evaluate 
+@c @var{f} for every combination @var{x_1}, ..., @var{x_n}.
+@c @code{every} evaluates lists in the order of increasing index.
 
-Return values of the predicate @var{f} which evaluate (via @code{is})
-to something other than @code{true} or @code{false}
-are governed by the global flag @code{prederror}.
-When @code{prederror} is @code{true},
-such values are treated as @code{false},
-and the return value from @code{every} is @code{false}.
-When @code{prederror} is @code{false},
-such values are treated as @code{unknown},
-and the return value from @code{every} is @code{unknown}.
+Sind die Argumente eine oder mehrere Listen, dann gibt
+@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} den Wert @code{true} zur@"uck,
+wenn @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} das Ergebnis @code{true}
+f@"ur alle @var{x_1}, @dots{}, @var{x_n} der Listen @var{L_1}, @dots{},
+@var{L_n} hat.  @code{every} wertet @var{f} wird nicht notwendigerweise f@"ur 
+alle Kombinationen @var{x_1}, ..., @var{x_n} aus, wenn das Ergebnis bereits
+feststeht.  @code{every} wertet die Listen in der Reihenfolge des steigenden
+Index aus.
 
-Examples:
+@c Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
+@c @code{every} returns @code{false}.
 
-@code{every} applied to a single set.
-The predicate is a function of one argument.
+Ist die leere Menge oder leere Liste ein Argument der Funktion @code{every},
+dann ist das Ergebnis immer @code{false}.
 
-@c ===beg===
-@c every (integerp, {1, 2, 3, 4, 5, 6});
-@c every (atom, {1, 2, sin(3), 4, 5 + y, 6});
-@c ===end===
+@c When the global flag @code{maperror} is @code{true}, all lists 
+@c @var{L_1}, ..., @var{L_n} must have equal lengths.
+@c When @code{maperror} is @code{false}, list arguments are
+@c effectively truncated to the length of the shortest list.
+
+Hat die Optionsvariable @mref{maperror} den Wert @code{true}, m@"ussen alle
+Listen @var{L_1}, @dots{}, @var{L_n} die gleiche L@"ange haben.  Hat die
+Optionsvariable @code{maperror} den Wert @code{false}, werden die Listen auf
+die L@"ange der k@"urzesten Liste abgeschnitten.
+
+@c Return values of the predicate @var{f} which evaluate (via @code{is}) to
+@c something other than @code{true} or @code{false} are governed by the global
+@c flag @code{prederror}.
+@c When @code{prederror} is @code{true},
+@c such values are treated as @code{false},
+@c and the return value from @code{every} is @code{false}.
+@c When @code{prederror} is @code{false},
+@c such values are treated as @code{unknown},
+@c and the return value from @code{every} is @code{unknown}.
+
+Kann die Aussagefunktion @var{f} von der Funktion @code{is} nicht zu @code{true}
+oder @code{false} ausgewertet werden, h@"angt das Ergebnis von der
+Optionsvariablen @mref{prederror} ab.  Hat die Optionsvariable @code{prederror}
+den Wert @code{true}, werden solche Werte als @code{false} behandelt und die
+Funktion @code{every} hat das Ergebnis @code{false}.  Hat @code{prederror}
+den Wert @code{false}, werden solche Werte als @code{unknown} behandelt und die
+Funktion @code{every} hat das Ergebnis @code{unknown}.
+
+Beispiele:
+
+@c @code{every} applied to a single set.
+@c The predicate is a function of one argument.
+
+@code{every} angewendet auf eine Menge.  Die Aussagefunktion hat ein Argument.
+
 @example
 (%i1) every (integerp, @{1, 2, 3, 4, 5, 6@});
 (%o1)                         true
@@ -873,13 +940,12 @@ The predicate is a function of one argument.
 (%o2)                         false
 @end example
 
-@code{every} applied to two lists.
-The predicate is a function of two arguments.
+@c @code{every} applied to two lists.
+@c The predicate is a function of two arguments.
 
-@c ===beg===
-@c every ("=", [a, b, c], [a, b, c]);
-@c every ("#", [a, b, c], [a, b, c]);
-@c ===end===
+@code{every} angewendet auf zwei Listen.  Die Aussagefunktion hat zwei
+Argumente entsprechend der Anzahl der Listen.
+
 @example
 (%i1) every ("=", [a, b, c], [a, b, c]);
 (%o1)                         true
@@ -887,18 +953,14 @@ The predicate is a function of two arguments.
 (%o2)                         false
 @end example
 
-Return values of the predicate @var{f} which evaluate
-to something other than @code{true} or @code{false}
-are governed by the global flag @code{prederror}.
+@c Return values of the predicate @var{f} which evaluate
+@c to something other than @code{true} or @code{false}
+@c are governed by the global flag @code{prederror}.
 
-@c ===beg===
-@c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], 
-@c                    [x^2, y^2, z^2]);
-@c every ("<", [x, y, z], [x^2, y^2, z^2]);
-@c prederror : true;
-@c every ("<", [x, y, z], [x^2, y^2, z^2]);
-@c ===end===
+Kann die Aussagefunktion @var{f} nicht zu @code{true} oder @code{false}
+ausgewertet werden, h@"angt das Ergebnis von @code{every} von der 
+Optionsvariablen @code{prederror} ab.
+
 @example
 (%i1) prederror : false;
 (%o1)                         false
@@ -912,80 +974,103 @@ are governed by the global flag @code{prederror}.
 (%i5) every ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o5)                         false
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
- 
+
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{extremal_subset}
-@deffn {Function} extremal_subset (@var{s}, @var{f}, max)
-@deffnx {Function} extremal_subset (@var{s}, @var{f}, min)
+@deffn  {Funktion} extremal_subset (@var{s}, @var{f}, max)
+@deffnx {Funktion} extremal_subset (@var{s}, @var{f}, min)
 
-Returns the subset of @var{s} for which the function @var{f} takes on maximum or minimum values.
+@c Returns the subset of @var{s} for which the function @var{f} takes on maximum
+@c or minimum values.
 
-@code{extremal_subset(@var{s}, @var{f}, max)} returns the subset of the set or 
-list @var{s} for which the real-valued function @var{f} takes on its maximum value.
+Gibt die Teilmenge von @var{s} zur@"uck, f@"ur die die Funktion @var{f} maximale
+oder minimale Ergebnisse hat.
 
-@code{extremal_subset(@var{s}, @var{f}, min)} returns the subset of the set or 
-list @var{s} for which the real-valued function @var{f} takes on its minimum value.
+@c @code{extremal_subset(@var{s}, @var{f}, max)} returns the subset of the set
+@c or list @var{s} for which the real-valued function @var{f} takes on its
+@c maximum value.
 
-Examples:
+@code{extremal_subset(@var{s}, @var{f}, max)} gibt die Teilmenge der Liste oder
+Menge @var{s} zur@"uck, f@"ur die die Funktion @var{f} ihre maximalen Werte
+annimmt.
 
-@c ===beg===
-@c extremal_subset ({-2, -1, 0, 1, 2}, abs, max);
-@c extremal_subset ({sqrt(2), 1.57, %pi/2}, sin, min);
-@c ===end===
+@c @code{extremal_subset(@var{s}, @var{f}, min)} returns the subset of the set
+@c or list @var{s} for which the real-valued function @var{f} takes on its
+@c minimum value.
+
+@code{extremal_subset(@var{s}, @var{f}, min)} gibt die Teilmenge der Liste oder
+Menge @var{s} zur@"uck, f@"ur die die Funktion @var{f} ihre minimalen Werte
+annimmt.
+
+Beispiele:
+
 @example
 (%i1) extremal_subset (@{-2, -1, 0, 1, 2@}, abs, max);
 (%o1)                       @{- 2, 2@}
 (%i2) extremal_subset (@{sqrt(2), 1.57, %pi/2@}, sin, min);
 (%o2)                       @{sqrt(2)@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{flatten}
-@deffn {Function} flatten (@var{expr})
+@deffn {Funktion} flatten (@var{expr})
 
-Collects arguments of subexpressions which have the same operator as @var{expr}
-and constructs an expression from these collected arguments.
+@c Collects arguments of subexpressions which have the same operator as
+@c @var{expr} and constructs an expression from these collected arguments.
 
-Subexpressions in which the operator is different from the main operator of @code{expr}
-are copied without modification,
-even if they, in turn, contain some subexpressions in which the operator is the same as for @code{expr}.
+Sammelt die Argumente von allen Teilausdr@"ucken, die denselben Operator wie
+der Ausdruck @var{expr} haben und konstruiert einen Ausdruck mit dem Operator
+des Ausdrucks @var{expr} und den Argumenten.  Ein einfaches Beispiel ist eine
+verschachtelte Liste.  @code{flatten} konstruiert in diesem Fall eine Liste
+aus den Elementen aller Teillisten.
 
-It may be possible for @code{flatten} to construct expressions in which the number
-of arguments differs from the declared arguments for an operator;
-this may provoke an error message from the simplifier or evaluator.
-@code{flatten} does not try to detect such situations.
+@c Subexpressions in which the operator is different from the main operator of
+@c @code{expr} are copied without modification, even if they, in turn, contain
+@c some subexpressions in which the operator is the same as for @code{expr}.
 
-Expressions with special representations, for example, canonical rational expressions (CRE), 
-cannot be flattened; in such cases, @code{flatten} returns its argument unchanged.
+Teilausdr@"ucke, deren Operator sich von dem Hauptoperator des Ausdrucks
+@var{expr} unterscheidet, werden als ein Argument betrachtet, auch wenn der
+Teilausdr@"uck wiederum Teilausdr@"ucke des Hauptoperators enth@"alt.
 
-Examples:
+@c It may be possible for @code{flatten} to construct expressions in which the
+@c number of arguments differs from the declared arguments for an operator;
+@c this may provoke an error message from the simplifier or evaluator.
+@c @code{flatten} does not try to detect such situations.
 
-Applied to a list, @code{flatten} gathers all list elements that are lists.
+Es ist m@"oglich, dass @code{flatten} Ausdr@"ucke konstruiert, in denen die
+Anzahl der Argumente nicht der erforderlichen Anzahl an Argumenten des Operators
+entspricht.  Dies kann zu Fehlermeldungen bei der Auswertung oder Vereinfachung
+f@"uhren.  @code{flatten} kontrolliert nicht, ob die konstruierten Ausdr@"ucke
+g@"ultig sind.
 
-@c ===beg===
-@c flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
-@c ===end===
+@c Expressions with special representations, for example, canonical rational
+@c expressions (CRE), cannot be flattened; in such cases, @code{flatten} returns
+@c its argument unchanged.
+
+Ausdr@"ucke mit speziellen Darstellungen, wie zum Beispiel CRE-Ausdr@"ucke,
+k@"onnen von @code{flatten} nicht verarbeitet werden.  In diesem F@"allen gibt
+@code{flatten} das Argument unver@"andert zur@"uck.
+
+Beispiele:
+
+@c Applied to a list, @code{flatten} gathers all list elements that are lists.
+
+Wird @code{flatten} auf eine Liste angewendet, werden die Elemente aller
+Teillisten zu einer Liste zusammengef@"ugt.
+
 @example
 (%i1) flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
 (%o1)            [a, b, c, d, e, f, g, h, i, j]
 @end example
 
-Applied to a set, @code{flatten} gathers all members of set elements that are sets.
+@c Applied to a set, @code{flatten} gathers all members of set elements that
+@c are sets.
 
-@c ===beg===
-@c flatten ({a, {b}, {{c}}});
-@c flatten ({a, {[a], {a}}});
-@c ===end===
+Wird @code{flatten} auf eine Menge angewendet, werden die Elemente aller
+Teilmengen zu einer Menge zusammengef@"ugt.
+
 @example
 (%i1) flatten (@{a, @{b@}, @{@{c@}@}@});
 (%o1)                       @{a, b, c@}
@@ -993,15 +1078,16 @@ Applied to a set, @code{flatten} gathers all members of set elements that are se
 (%o2)                       @{a, [a]@}
 @end example
 
-@code{flatten} is similar to the effect of declaring the main operator n-ary.
-However, @code{flatten} has no effect on subexpressions which have an operator
-different from the main operator, while an n-ary declaration affects those.
+@c @code{flatten} is similar to the effect of declaring the main operator n-ary.
+@c However, @code{flatten} has no effect on subexpressions which have an
+@c operator different from the main operator, while an n-ary declaration affects
+@c those.
 
-@c ===beg===
-@c expr: flatten (f (g (f (f (x)))));
-@c declare (f, nary);
-@c ev (expr);
-@c ===end===
+Die Funktionsweise von @code{flatten} ist vergleichbar mit der Deklaration eines
+Operators als ein N-ary-Operator.  Im Unterschied zu einer Deklaration hat 
+@code{flatten} keinen Einfluss auf Teilausdr@"ucke, die einen vom Hauptoperator
+verschiedenen Operator haben.
+
 @example
 (%i1) expr: flatten (f (g (f (f (x)))));
 (%o1)                     f(g(f(f(x))))
@@ -1011,25 +1097,22 @@ different from the main operator, while an n-ary declaration affects those.
 (%o3)                      f(g(f(x)))
 @end example
 
-@code{flatten} treats subscripted functions the same as any other operator.
+@c @code{flatten} treats subscripted functions the same as any other operator.
 
-@c ===beg===
-@c flatten (f[5] (f[5] (x, y), z));
-@c ===end===
+@code{flatten} behandelt indizierte Funktionen wie andere Operatoren.
+
 @example
 (%i1) flatten (f[5] (f[5] (x, y), z));
 (%o1)                      f (x, y, z)
                             5
 @end example
 
-It may be possible for @code{flatten} to construct expressions in which the number
-of arguments differs from the declared arguments for an operator;
+@c It may be possible for @code{flatten} to construct expressions in which the
+@c number of arguments differs from the declared arguments for an operator;
 
-@c ===beg===
-@c 'mod (5, 'mod (7, 4));
-@c flatten (%);
-@c ''%, nouns;
-@c ===end===
+Es ist m@"oglich, dass @code{flatten} einen Ausdruck konstruiert, der nicht die
+korrekte Anzahl an Argumenten eines Operators enth@"alt.
+
 @example
 (%i1) 'mod (5, 'mod (7, 4));
 (%o1)                   mod(5, mod(7, 4))
@@ -1039,121 +1122,130 @@ of arguments differs from the declared arguments for an operator;
 Wrong number of arguments to mod
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{full_listify}
-@deffn {Function} full_listify (@var{a})
-Replaces every set operator in @var{a} by a list operator,
-and returns the result.
-@code{full_listify} replaces set operators in nested subexpressions,
-even if the main operator is not @code{set}.
+@deffn {Funktion} full_listify (@var{a})
 
-@code{listify} replaces only the main operator.
+@c Replaces every set operator in @var{a} by a list operator,
+@c and returns the result.
+@c @code{full_listify} replaces set operators in nested subexpressions,
+@c even if the main operator is not @code{set}.
 
-Examples:
+Ersetzt jedes Auftreten des Operators f@"ur Mengen in dem Ausdruck @var{a}
+durch den Operator f@"ur Listen.  Die Ersetzung wird auch in verschachtelten
+Teilausdr@"ucken ausgef@"uhrt, deren Operator nicht der Operator f@"ur Mengen
+ist.
 
-@c ===beg===
-@c full_listify ({a, b, {c, {d, e, f}, g}});
-@c full_listify (F (G ({a, b, H({c, d, e})})));
-@c ===end===
+@c @code{listify} replaces only the main operator.
+
+Die Funktion @mref{listify} ersetzt nur den Hauptoperator.
+
+@need 800
+Beispiele:
+
 @example
 (%i1) full_listify (@{a, b, @{c, @{d, e, f@}, g@}@});
 (%o1)               [a, b, [c, [d, e, f], g]]
 (%i2) full_listify (F (G (@{a, b, H(@{c, d, e@})@})));
 (%o2)              F(G([a, b, H([c, d, e])]))
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{fullsetify}
-@deffn {Function} fullsetify (@var{a})
-When @var{a} is a list, replaces the list operator with a set operator,
-and applies @code{fullsetify} to each member which is a set.
-When @var{a} is not a list, it is returned unchanged.
+@deffn {Funktion} fullsetify (@var{a})
 
-@code{setify} replaces only the main operator.
+@c When @var{a} is a list, replaces the list operator with a set operator,
+@c and applies @code{fullsetify} to each member which is a set.
+@c When @var{a} is not a list, it is returned unchanged.
 
-Examples:
+Ist @var{a} eine Liste, wird der Operator f@"ur Listen durch den Operator f@"ur
+Mengen ersetzt.  Dann wird @code{fullsetify} auf alle Argumente der Liste
+angewendet.  Ist ein Argument keine Liste, wenn das Argument unver@"andert
+zur@"uckgegeben.
 
-In line @code{(%o2)}, the argument of @code{f} isn't converted to a set
-because the main operator of @code{f([b])} isn't a list.
+@c @code{setify} replaces only the main operator.
 
-@c ===beg===
-@c fullsetify ([a, [a]]);
-@c fullsetify ([a, f([b])]);
-@c ===end===
+Die Funktion @mref{setify} ersetzt nur den Hauptoperator.
+
+Beispiele:
+
+@c In line @code{(%o2)}, the argument of @code{f} isn't converted to a set
+@c because the main operator of @code{f([b])} isn't a list.
+
+Im zweiten Beispiel wird das Argument der Funktion @code{f} nicht in eine
+Menge konvertiert, da der Operator des Teilausdrucks keine Liste ist.
+
 @example
 (%i1) fullsetify ([a, [a]]);
 (%o1)                       @{a, @{a@}@}
 (%i2) fullsetify ([a, f([b])]);
 (%o2)                      @{a, f([b])@}
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{identity}
-@deffn {Function} identity (@var{x})
+@deffn {Funktion} identity (@var{x})
 
-Returns @var{x} for any argument @var{x}.
+@c Returns @var{x} for any argument @var{x}.
 
-Examples:
+Gibt f@"ur jedes Argument @var{x} das Argument selbst zur@"uck.
 
-@code{identity} may be used as a predicate when the arguments
-are already Boolean values.
+Beispiele:
 
-@c ===beg===
-@c every (identity, [true, true]);
-@c ===end===
+@c @code{identity} may be used as a predicate when the arguments
+@c are already Boolean values.
+
+@code{identity} kann als eine Aussage genutzt werden, wenn die Argumente
+bereits boolesche Werte sind.
+
 @example
 (%i1) every (identity, [true, true]);
 (%o1)                         true
 @end example
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{integer_partitions}
-@deffn {Function} integer_partitions (@var{n})
-@deffnx {Function} integer_partitions (@var{n}, @var{len})
+@deffn  {Funktion} integer_partitions (@var{n})
+@deffnx {Funktion} integer_partitions (@var{n}, @var{len})
 
-Returns integer partitions of @var{n}, that is,
-lists of integers which sum to @var{n}.
+@c Returns integer partitions of @var{n}, that is,
+@c lists of integers which sum to @var{n}.
 
-@code{integer_partitions(@var{n})} returns the set of
-all partitions of the integer @var{n}.
-Each partition is a list sorted from greatest to least.
+Ermittelt die Zerlegung einer ganzen Zahl @var{n} in ganzen Zahlen, die
+@var{n} als Summe haben.
 
-@code{integer_partitions(@var{n}, @var{len})}
-returns all partitions that have length @var{len} or less; in this
-case, zeros are appended to each partition with fewer than @var{len}
-terms to make each partition have exactly @var{len} terms.
-Each partition is a list sorted from greatest to least.
+@c @code{integer_partitions(@var{n})} returns the set of
+@c all partitions of the integer @var{n}.
+@c Each partition is a list sorted from greatest to least.
 
-A list @math{[a_1, ..., a_m]} is a partition of a nonnegative integer
-@math{n} when (1) each @math{a_i} is a nonzero integer, and (2) 
-@math{a_1 + ... + a_m = n.} Thus 0 has no partitions.
+@code{integer_partitions(@var{n})} gibt eine Menge aller Zerlegungen der ganzen
+Zahl @var{n} zur@"uck.  Jede Zerlegung ist eine Liste mit den ganzen Zahlen, die
+@var{n} als Summe haben.  Die Listen sind nach der Gr@"o@ss{}e sortiert.
 
-Examples:
+@c @code{integer_partitions(@var{n}, @var{len})}
+@c returns all partitions that have length @var{len} or less; in this
+@c case, zeros are appended to each partition with fewer than @var{len}
+@c terms to make each partition have exactly @var{len} terms.
+@c Each partition is a list sorted from greatest to least.
 
-@c ===beg===
-@c integer_partitions (3);
-@c s: integer_partitions (25)$
-@c cardinality (s);
-@c map (lambda ([x], apply ("+", x)), s);
-@c integer_partitions (5, 3);
-@c integer_partitions (5, 2);
-@c ===end===
+@code{integer_partitions(@var{n}, @var{len})} gibt eine Menge aller Zerlegungen
+der ganzen Zahl @var{n} zur@"uck, deren Listen @code{len} oder weniger Elemente
+haben.  Listen die weniger als @code{len} Elemente haben, werden mit Nullen
+aufgef@"ullt.
+
+@c TODO: MATHEMATISCHER HINTERGRUND NICHT UEBERSETZT
+
+@c A list @math{[a_1, ..., a_m]} is a partition of a nonnegative integer
+@c @math{n} when (1) each @math{a_i} is a nonzero integer, and (2) 
+@c @math{a_1 + ... + a_m = n.} Thus 0 has no partitions.
+
+Beispiele:
+
 @example
 (%i1) integer_partitions (3);
 (%o1)               @{[1, 1, 1], [2, 1], [3]@}
@@ -1168,15 +1260,14 @@ Examples:
 (%o6)               @{[3, 2], [4, 1], [5, 0]@}
 @end example
 
-To find all partitions that satisfy a condition, use the function @code{subset};
-here is an example that finds all partitions of 10 that consist of prime numbers.
+@c To find all partitions that satisfy a condition, use the function
+@c @code{subset}; here is an example that finds all partitions of 10 that
+@c consist of prime numbers.
 
-@c ===beg===
-@c s: integer_partitions (10)$
-@c cardinality (s);
-@c xprimep(x) := integerp(x) and (x > 1) and primep(x)$
-@c subset (s, lambda ([x], every (xprimep, x)));
-@c ===end===
+Um alle Zerlegungen zu finden, die eine Bedingung erf@"ullen, kann die Funktion
+@mref{subset} genutzt werden.  In diesem Beispiel werden alle Zerlegungen
+der Zahl 10 ermittelt, die nur Primzahlen enthalten.
+
 @example
 (%i1) s: integer_partitions (10)$
 (%i2) cardinality (s);
@@ -1185,43 +1276,34 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 (%i4) subset (s, lambda ([x], every (xprimep, x)));
 (%o4) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{intersect}
-@deffn {Function} intersect (@var{a_1}, ..., @var{a_n})
+@deffn {Funktion} intersect (@var{a_1}, @dots{}, @var{a_n})
 
-@code{intersect} is the same as @code{intersection}, which see.
+@c @code{intersect} is the same as @code{intersection}, which see.
 
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
+@code{intersect} ist identisch mit der Funktion @mrefdot{intersection}
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{intersection}
-@deffn {Function} intersection (@var{a_1}, ..., @var{a_n})
-Returns a set containing the elements that are common to the 
-sets @var{a_1} through @var{a_n}.
+@deffn {Funktion} intersection (@var{a_1}, @dots{}, @var{a_n})
 
-@code{intersection} complains if any argument is not a literal set.
+@c Returns a set containing the elements that are common to the 
+@c sets @var{a_1} through @var{a_n}.
 
-Examples:
+Gibt die Schnittmenge der Mengen @var{a_1}, @dots{}, @var{a_n} zur@"uck.  Die
+Schnittmenge enth@"alt die Elemente, die den Mengen gemeinsam sind.
 
-@c ===beg===
-@c S_1 : {a, b, c, d};
-@c S_2 : {d, e, f, g};
-@c S_3 : {c, d, e, f};
-@c S_4 : {u, v, w};
-@c intersection (S_1, S_2);
-@c intersection (S_2, S_3);
-@c intersection (S_1, S_2, S_3);
-@c intersection (S_1, S_2, S_3, S_4);
-@c ===end===
+@c @code{intersection} complains if any argument is not a literal set.
+
+@code{intersection} gibt eine Fehlermeldung, wenn eines der Argumente
+keine Liste ist.
+
+Beispiele:
+
 @example
 (%i1) S_1 : @{a, b, c, d@};
 (%o1)                     @{a, b, c, d@}
@@ -1240,56 +1322,75 @@ Examples:
 (%i8) intersection (S_1, S_2, S_3, S_4);
 (%o8)                          @{@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
-@deffn {Function} kron_delta (@var{x}, @var{y})
+@c --- 24.04.2011 DK -----------------------------------------------------------
+@anchor{kron_delta}
+@deffn {Funktion} kron_delta (@var{x}, @var{y})
 
-Represents the Kronecker delta function.
+@c Represents the Kronecker delta function.
 
-@code{kron_delta} simplifies to 1 when @var{x} and @var{y} are identical or demonstrably equivalent,
-and it simplifies to 0 when @var{x} and @var{y} are demonstrably not equivalent.
-Otherwise,
-it is not certain whether @var{x} and @var{y} are equivalent,
-and @code{kron_delta} simplifies to a noun expression.
-@code{kron_delta} implements a cautious policy with respect to floating point expressions:
-if the difference @code{@var{x} - @var{y}} is a floating point number,
-@code{kron_delta} simplifies to a noun expression when @var{x} is apparently equivalent to @var{y}.
+Ist die Kronecker-Delta-Funktion.
 
-Specifically,
-@code{kron_delta(@var{x}, @var{y})} simplifies to 1
-when @code{is(x = y)} is @code{true}.
-@code{kron_delta} also simplifies to 1
-when @code{sign(abs(@var{x} - @var{y}))} is @code{zero}
-and @code{@var{x} - @var{y}} is not a floating point number
-(neither an ordinary float nor a bigfloat).
-@code{kron_delta} simplifies to 0
-when @code{sign(abs(@var{x} - @var{y}))} is @code{pos}.
+@c @code{kron_delta} simplifies to 1 when @var{x} and @var{y} are identical or
+@c demonstrably equivalent, and it simplifies to 0 when @var{x} and @var{y} are
+@c demonstrably not equivalent.  Otherwise, it is not certain whether @var{x}
+@c and @var{y} are equivalent, and @code{kron_delta} simplifies to a noun
+@c expression.
 
-Otherwise, @code{sign(abs(@var{x} - @var{y}))} is
-something other than @code{pos} or @code{zero},
-or it is @code{zero} and @code{@var{x} - @var{y}}
-is a floating point number.
-In these cases, @code{kron_delta} returns a noun expression.
+@code{kron_delta} vereinfacht zu 1, wenn @var{x} und @var{y} identisch sind oder
+als identisch gezeigt werden k@"onnen.  Das Ergebnis ist 0, wenn gezeigt werden
+kann, das @var{x} und @var{y} nicht identisch sind.  In anderen F@"allen ist es
+nicht sicher, dass @var{x} und @var{y} @"aquivalent sind und @code{kron_delta}
+vereinfacht zu einer Substantivform.
 
-@code{kron_delta} is declared to be symmetric.
-That is,
-@code{kron_delta(@var{x}, @var{y})} is equal to @code{kron_delta(@var{y}, @var{x})}.
+@c TODO: DAS SCHEINT NICHT ZU STIMMEN.  NICHT UEBERSETZT.
 
-Examples:
+@c @code{kron_delta} implements a cautious policy with respect to floating point
+@c expressions: if the difference @code{@var{x} - @var{y}} is a floating point
+@c number, @code{kron_delta} simplifies to a noun expression when @var{x} is
+@c apparently equivalent to @var{y}.
 
-The arguments of @code{kron_delta} are identical.
-@code{kron_delta} simplifies to 1.
+@c Specifically, @code{kron_delta(@var{x}, @var{y})} simplifies to 1 when
+@c @code{is(x = y)} is @code{true}.  @code{kron_delta} also simplifies to 1
+@c when @code{sign(abs(@var{x} - @var{y}))} is @code{zero} and @code{@var{x} -
+@c @var{y}} is not a floating point number (neither an ordinary float nor a
+@c bigfloat).  @code{kron_delta} simplifies to 0 when @code{sign(abs(@var{x} -
+@c @var{y}))} is @code{pos}.
 
-@c ===beg===
-@c kron_delta (a, a);
-@c kron_delta (x^2 - y^2, x^2 - y^2);
-@c float (kron_delta (1/10, 0.1));
-@c ===end===
+Im Besonderen vereinfacht @code{kron_delta(@var{x}, @var{y})} zum Ergebnis 1,
+wenn @code{is(x = y)} das Ergebnis @code{true} hat.  @code{kron_delta}
+vereinfacht auch dann zu 1, wenn @code{sign(abs(@var{x} - @var{y}))} das
+Ergebnis @code{zero} hat und @code{@var{x} - @var{y}} keine Gleitkommazahl ist.
+@code{kron_delta} vereinfacht zu 0, wenn @code{sign(abs(@var{x} - @var{y}))}
+das Ergebnis @code{pos} hat.
+
+@c Otherwise, @code{sign(abs(@var{x} - @var{y}))} is something other than
+@c @code{pos} or @code{zero}, or it is @code{zero} and @code{@var{x} - @var{y}}
+@c is a floating point number.  In these cases, @code{kron_delta} returns a
+@c noun expression.
+
+Hat @code{sign(abs(@var{x} - @var{y}))} ein von @code{pos} oder @code{zero}
+verschiedenes Ergebnis oder ist das Ergebnis @code{zero}, aber
+@code{@var{x} - @var{y}} ist eine Gleitkommazahl, dann gibt @code{kron_delta}
+eine Substantivform zur@"uck.
+
+@c @code{kron_delta} is declared to be symmetric.  That is, 
+@c @code{kron_delta(@var{x}, @var{y})} is equal to 
+@c @code{kron_delta(@var{y}, @var{x})}.
+
+@code{kron_delta} ist als symmetrisch deklariert.  Daher ist
+@code{kron_delta(@var{x}, @var{y})} @"aquivalent zu
+@code{kron_delta(@var{y}, @var{x})}.
+
+Beispiele:
+
+@c The arguments of @code{kron_delta} are identical.
+@c @code{kron_delta} simplifies to 1.
+
+Die Argumente der Funktion @code{kron_delta} sind identisch.  @code{kron_delta}
+vereinfacht zu 1.
+
 @example
 (%i1) kron_delta (a, a);
 (%o1)                           1
@@ -1299,14 +1400,12 @@ The arguments of @code{kron_delta} are identical.
 (%o3)                           1
 @end example
 
-The arguments of @code{kron_delta} are equivalent,
-and their difference is not a floating point number.
-@code{kron_delta} simplifies to 1.
+@c The arguments of @code{kron_delta} are equivalent, and their difference is
+@c not a floating point number.  @code{kron_delta} simplifies to 1.
 
-@c ===beg===
-@c assume (equal (x, y));
-@c kron_delta (x, y);
-@c ===end===
+Die Argumente der Funktion @code{kron_delta} sind @"aquivalent und die
+Differenz ist keine Gleitkommazahl.  @code{kron_delta} vereinfacht zu 1.
+
 @example
 (%i1) assume (equal (x, y));
 (%o1)                     [equal(x, y)]
@@ -1314,15 +1413,12 @@ and their difference is not a floating point number.
 (%o2)                           1
 @end example
 
-The arguments of @code{kron_delta} are not equivalent.
-@code{kron_delta} simplifies to 0.
+@c The arguments of @code{kron_delta} are not equivalent.
+@c @code{kron_delta} simplifies to 0.
 
-@c ===beg===
-@c kron_delta (a + 1, a);
-@c assume (a > b)$
-@c kron_delta (a, b);
-@c kron_delta (1/5, 0.7);
-@c ===end===
+Die Argumente der Funktion @code{kron_delta} sind nicht @"aquivalent.
+@code{kron_delta} vereinfacht zu 0.
+
 @example
 (%i1) kron_delta (a + 1, a);
 (%o1)                           0
@@ -1333,14 +1429,12 @@ The arguments of @code{kron_delta} are not equivalent.
 (%o4)                           0
 @end example
 
-The arguments of @code{kron_delta} might or might not be equivalent.
-@code{kron_delta} simplifies to a noun expression.
+@c The arguments of @code{kron_delta} might or might not be equivalent.
+@c @code{kron_delta} simplifies to a noun expression.
 
-@c ===beg===
-@c kron_delta (a, b);
-@c assume(x >= y)$
-@c kron_delta (x, y);
-@c ===end===
+Maxima kann nicht entscheiden, ob die Argumente @"aquivalent sind.
+@code{kron_delta} vereinfacht zu einer Substantivform.
+
 @example
 (%i1) kron_delta (a, b);
 (%o1)                   kron_delta(a, b)
@@ -1349,18 +1443,14 @@ The arguments of @code{kron_delta} might or might not be equivalent.
 (%o3)                   kron_delta(x, y)
 @end example
 
-The arguments of @code{kron_delta} are equivalent,
-but their difference is a floating point number.
-@code{kron_delta} simplifies to a noun expression.
+@c The arguments of @code{kron_delta} are equivalent,
+@c but their difference is a floating point number.
+@c @code{kron_delta} simplifies to a noun expression.
 
-@c ===beg===
-@c 1/4 - 0.25;
-@c 1/10 - 0.1;
-@c 0.25 - 0.25b0;
-@c kron_delta (1/4, 0.25);
-@c kron_delta (1/10, 0.1);
-@c kron_delta (0.25, 0.25b0);
-@c ===end===
+Die Argumente der Funktion @code{kron_delta} sind @"aquivalent, aber die
+Differenz ist eine Gleitkommazahl.  @code{kron_delta} vereinfacht zu einer
+Substantivform.
+
 @example
 (%i1) 1/4 - 0.25;
 (%o1)                          0.0
@@ -1382,15 +1472,10 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o6)               kron_delta(0.25, 2.5b-1)
 @end example
 
-@code{kron_delta} is symmetric.
+@c @code{kron_delta} is symmetric.
 
-@c ===beg===
-@c kron_delta (x, y);
-@c kron_delta (y, x);
-@c kron_delta (x, y) - kron_delta (y, x);
-@c is (equal (kron_delta (x, y), kron_delta (y, x)));
-@c is (kron_delta (x, y) = kron_delta (y, x));
-@c ===end===
+@code{kron_delta} ist symmetrisch.
+
 @example
 (%i1) kron_delta (x, y);
 (%o1)                   kron_delta(x, y)
@@ -1403,60 +1488,55 @@ Warning:  Float to bigfloat conversion of 0.25
 (%i5) is (kron_delta (x, y) = kron_delta (y, x));
 (%o5)                         true
 @end example
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{listify}
-@deffn {Function} listify (@var{a})
+@deffn {Funktion} listify (@var{a})
 
-Returns a list containing the members of @var{a} when @var{a} is a set.
-Otherwise, @code{listify} returns @var{a}.
+@c Returns a list containing the members of @var{a} when @var{a} is a set.
+@c Otherwise, @code{listify} returns @var{a}.
 
-@code{full_listify} replaces all set operators in @var{a} by list operators.
+Ist das Argument @var{a} eine Menge, werden die Elemente der Menge als eine
+Liste zur@"uckgegeben.  Ansonsten wird @var{a} zur@"uckgegeben.
 
-Examples:
+@c @code{full_listify} replaces all set operators in @var{a} by list operators.
 
-@c ===beg===
-@c listify ({a, b, c, d});
-@c listify (F ({a, b, c, d}));
-@c ===end===
+Siehe die Funktion @mrefcomma{full_listify} um alle Mengen im Ausdruck @var{a}
+durch Listen zu ersetzen.
+
+Beispiele:
+
 @example
 (%i1) listify (@{a, b, c, d@});
 (%o1)                     [a, b, c, d]
 (%i2) listify (F (@{a, b, c, d@}));
 (%o2)                    F(@{a, b, c, d@})
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c --- 24.04.2011 DK -----------------------------------------------------------
 @anchor{lreduce}
-@deffn {Function} lreduce (@var{F}, @var{s})
-@deffnx {Function} lreduce (@var{F}, @var{s}, @var{s_0})
+@deffn  {Funktion} lreduce (@var{F}, @var{s})
+@deffnx {Funktion} lreduce (@var{F}, @var{s}, @var{s_0})
 
 Extends the binary function @var{F} to an n-ary function by composition,
 where @var{s} is a list.
 
-@code{lreduce(@var{F}, @var{s})} returns @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
-When the optional argument @var{s_0} is present,
-the result is equivalent to @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
+@code{lreduce(@var{F}, @var{s})} returns
+@code{F(... F(F(s_1, s_2), s_3), ... s_n)}.  When the optional argument
+@var{s_0} is present, the result is equivalent to
+@code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
 
-The function @var{F} is first applied to the
-@i{leftmost} list elements, thus the name "lreduce". 
+The function @var{F} is first applied to the @i{leftmost} list elements, thus
+the name "lreduce".
 
 See also @code{rreduce}, @code{xreduce}, and @code{tree_reduce}.
 
-Examples:
+Beispiele:
 
 @code{lreduce} without the optional argument.
 
-@c ===beg===
-@c lreduce (f, [1, 2, 3]);
-@c lreduce (f, [1, 2, 3, 4]);
-@c ===end===
 @example
 (%i1) lreduce (f, [1, 2, 3]);
 (%o1)                     f(f(1, 2), 3)
@@ -1466,9 +1546,6 @@ Examples:
 
 @code{lreduce} with the optional argument.
 
-@c ===beg===
-@c lreduce (f, [1, 2, 3], 4);
-@c ===end===
 @example
 (%i1) lreduce (f, [1, 2, 3], 4);
 (%o1)                  f(f(f(4, 1), 2), 3)
@@ -1477,10 +1554,6 @@ Examples:
 @code{lreduce} applied to built-in binary operators.
 @code{/} is the division operator.
 
-@c ===beg===
-@c lreduce ("^", args ({a, b, c, d}));
-@c lreduce ("/", args ({a, b, c, d}));
-@c ===end===
 @example
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
                                b c d
@@ -1490,21 +1563,16 @@ Examples:
 (%o2)                         -----
                               b c d
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{makeset}
 @deffn {Function} makeset (@var{expr}, @var{x}, @var{s})
 
-Returns a set with members generated from the expression @var{expr},
-where @var{x} is a list of variables in @var{expr},
-and @var{s} is a set or list of lists.
-To generate each set member,
-@var{expr} is evaluated with the variables @var{x} bound in parallel to a member of @var{s}.
+Returns a set with members generated from the expression @var{expr}, where
+@var{x} is a list of variables in @var{expr}, and @var{s} is a set or list of
+lists.  To generate each set member, @var{expr} is evaluated with the variables
+@var{x} bound in parallel to a member of @var{s}.
 
 Each member of @var{s} must have the same length as @var{x}.
 The list of variables @var{x} must be a list of symbols, without subscripts.
@@ -1545,13 +1613,9 @@ Examples:
 (%i5) makeset (sin(x), [x], @{[1], [2], [3]@});
 (%o5)               @{sin(1), sin(2), sin(3)@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{moebius}
 @deffn {Function} moebius (@var{n})
 
@@ -1599,15 +1663,11 @@ Examples:
 (%i9) moebius (@{21, 22, 23, 24@});
 (%o9)                      @{- 1, 0, 1@}
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
  
+@c -----------------------------------------------------------------------------
 @anchor{multinomial_coeff}
-@deffn {Function} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffn  {Function} multinomial_coeff (@var{a_1}, ..., @var{a_n})
 @deffnx {Function} multinomial_coeff ()
 
 Returns the multinomial coefficient.
@@ -1620,7 +1680,8 @@ evaluates to @code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
 
 @code{multinomial_coeff()} (with no arguments) evaluates to 1.
 
-@code{minfactorial} may be able to simplify the value returned by @code{multinomial_coeff}.
+@code{minfactorial} may be able to simplify the value returned by
+@code{multinomial_coeff}.
 
 Examples:
 
@@ -1646,15 +1707,11 @@ Examples:
 (%i4) minfactorial (%);
 (%o4)                          10
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{num_distinct_partitions}
-@deffn {Function} num_distinct_partitions (@var{n})
+@deffn  {Function} num_distinct_partitions (@var{n})
 @deffnx {Function} num_distinct_partitions (@var{n}, list)
 
 Returns the number of distinct integer partitions of @var{n}
@@ -1683,13 +1740,9 @@ Examples:
 (%i3) num_distinct_partitions (n);
 (%o3)              num_distinct_partitions(n)
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{num_partitions}
 @deffn {Function} num_partitions (@var{n})
 @deffnx {Function} num_partitions (@var{n}, list)
@@ -1720,24 +1773,18 @@ Examples:
 (%i3) num_partitions (n);
 (%o3)                   num_partitions(n)
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
-
-
+@c -----------------------------------------------------------------------------
 @anchor{partition_set}
 @deffn {Function} partition_set (@var{a}, @var{f})
 
 Partitions the set @var{a} according to the predicate @var{f}.
 
-@code{partition_set} returns a list of two sets.
-The first set comprises the elements of @var{a} for which @var{f} evaluates to @code{false},
-and the second comprises any other elements of @var{a}.
-@code{partition_set} does not apply @code{is} to the return value of @var{f}.
+@code{partition_set} returns a list of two sets.  The first set comprises the
+elements of @var{a} for which @var{f} evaluates to @code{false}, and the second
+comprises any other elements of @var{a}.  @code{partition_set} does not apply
+@code{is} to the return value of @var{f}.
 
 @code{partition_set} complains if @var{a} is not a literal set.
 
@@ -1757,18 +1804,14 @@ Examples:
                      lambda ([x], ratp(x)));
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{permutations}
 @deffn {Function} permutations (@var{a})
 
 Returns a set of all distinct permutations of the members of 
-the list or set @var{a}. Each permutation is a list, not a set. 
+the list or set @var{a}.  Each permutation is a list, not a set.
 
 When @var{a} is a list, duplicate members of @var{a} are included
 in the permutations.
@@ -1789,15 +1832,11 @@ Examples:
 (%i2) permutations ([a, a, b]);
 (%o2)           @{[a, a, b], [a, b, a], [b, a, a]@}
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{powerset}
-@deffn {Function} powerset (@var{a})
+@deffn  {Function} powerset (@var{a})
 @deffnx {Function} powerset (@var{a}, @var{n})
 
 Returns the set of all subsets of @var{a}, or a subset of that set.
@@ -1805,8 +1844,8 @@ Returns the set of all subsets of @var{a}, or a subset of that set.
 @code{powerset(@var{a})} returns the set of all subsets of the set @var{a}.
 @code{powerset(@var{a})} has @code{2^cardinality(@var{a})} members.
 
-@code{powerset(@var{a}, @var{n})} returns the set of all subsets of @var{a} that have 
-cardinality @var{n}.
+@code{powerset(@var{a}, @var{n})} returns the set of all subsets of @var{a}
+that have cardinality @var{n}.
 
 @code{powerset} complains if @var{a} is not a literal set,
 or if @var{n} is not a nonnegative integer.
@@ -1835,13 +1874,10 @@ Examples:
 (%i6) powerset (@{w, x, y, z@}, 0);
 (%o6)                         @{@{@}@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{random_permutation}
 @deffn {Function} random_permutation (@var{a})
 
 Returns a random permutation of the set or list @var{a},
@@ -1869,15 +1905,11 @@ Examples:
 (%i4) random_permutation (@{x + 1, y + 2, z + 3@});
 (%o4)                 [x + 1, y + 2, z + 3]
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{rreduce}
-@deffn {Function} rreduce (@var{F}, @var{s})
+@deffn  {Function} rreduce (@var{F}, @var{s})
 @deffnx {Function} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
 
 Extends the binary function @var{F} to an n-ary function by composition,
@@ -1935,13 +1967,9 @@ Examples:
 (%o2)                          ---
                                b d
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{setdifference}
 @deffn {Function}  setdifference (@var{a}, @var{b})
 
@@ -1977,13 +2005,9 @@ Examples:
 (%i7) setdifference (@{@}, S_1);
 (%o7)                          @{@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{setequalp}
 @deffn {Function} setequalp (@var{a}, @var{b})
 
@@ -2011,17 +2035,13 @@ Examples:
 (%i3) setequalp (@{x^2 - y^2@}, @{(x + y) * (x - y)@});
 (%o3)                         false
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Predicate functions}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{setify}
 @deffn {Function} setify (@var{a})
 
-Constructs a set from the elements of the list @var{a}. Duplicate
+Constructs a set from the elements of the list @var{a}.  Duplicate
 elements of the list @var{a} are deleted and the elements
 are sorted according to the predicate @code{orderlessp}.
 
@@ -2042,22 +2062,18 @@ Examples:
 (%i3) setify ([7, 13, 11, 1, 3, 9, 5]);
 (%o3)                @{1, 3, 5, 7, 9, 11, 13@}
 @end example
-
-@c @opencatbox
-@c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{setp}
 @deffn {Function} setp (@var{a})
 
 Returns @code{true} if and only if @var{a} is a Maxima set.
 
-@code{setp} returns @code{true} for unsimplified sets (that is, sets with redundant members)
-as well as simplified sets.
+@code{setp} returns @code{true} for unsimplified sets (that is, sets with
+redundant members) as well as simplified sets.
 
-@c NOT SURE WE NEED TO MENTION THIS. OK FOR NOW
+@c NOT SURE WE NEED TO MENTION THIS.  OK FOR NOW
 @code{setp} is equivalent to the Maxima function
 @code{setp(a) := not atom(a) and op(a) = 'set}.
 
@@ -2076,15 +2092,11 @@ Examples:
 (%i3) setp (%);
 (%o3)                         true
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Predicate functions}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{set_partitions}
-@deffn {Function} set_partitions (@var{a})
+@deffn  {Function} set_partitions (@var{a})
 @deffnx {Function} set_partitions (@var{a}, @var{n})
 
 Returns the set of all partitions of @var{a}, or a subset of that set.
@@ -2109,7 +2121,8 @@ the union of the members of @math{P} equals @math{S}.
 
 Examples:
 
-The empty set is a partition of itself, the conditions 1 and 2 being vacuously true.
+The empty set is a partition of itself, the conditions 1 and 2 being vacuously
+true.
 
 @c ===beg===
 @c set_partitions ({});
@@ -2119,7 +2132,8 @@ The empty set is a partition of itself, the conditions 1 and 2 being vacuously t
 (%o1)                         @{@{@}@}
 @end example
 
-The cardinality of the set of partitions of a set can be found using @code{stirling2}.
+The cardinality of the set of partitions of a set can be found using
+@code{stirling2}.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
@@ -2161,22 +2175,20 @@ equal @code{s}; again let's check.
 (%i3) map (lambda ([x], apply (union, listify (x))), p);
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{some}
-@deffn {Function} some (@var{f}, @var{a})
+@deffn  {Function} some (@var{f}, @var{a})
 @deffnx {Function} some (@var{f}, @var{L_1}, ..., @var{L_n})
 
-Returns @code{true} if the predicate @var{f} is @code{true} for one or more given arguments.
+Returns @code{true} if the predicate @var{f} is @code{true} for one or more
+given arguments.
 
 Given one set as the second argument, 
 @code{some(@var{f}, @var{s})} returns @code{true}
-if @code{is(@var{f}(@var{a_i}))} returns @code{true} for one or more @var{a_i} in @var{s}.
+if @code{is(@var{f}(@var{a_i}))} returns @code{true} for one or more @var{a_i}
+in @var{s}.
 @code{some} may or may not evaluate @var{f} for all @var{a_i} in @var{s}.
 Since sets are unordered,
 @code{some} may evaluate @code{@var{f}(@var{a_i})} in any order.
@@ -2184,7 +2196,8 @@ Since sets are unordered,
 Given one or more lists as arguments,
 @code{some(@var{f}, @var{L_1}, ..., @var{L_n})} returns @code{true}
 if @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} returns @code{true} 
-for one or more @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
+for one or more @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n},
+respectively.
 @code{some} may or may not evaluate 
 @var{f} for some combinations @var{x_1}, ..., @var{x_n}.
 @code{some} evaluates lists in the order of increasing index.
@@ -2195,7 +2208,7 @@ Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
 When the global flag @code{maperror} is @code{true}, all lists 
 @var{L_1}, ..., @var{L_n} must have equal lengths.
 When @code{maperror} is @code{false}, list arguments are
-effectively truncated to the length of the shortest list. 
+effectively truncated to the length of the shortest list.
 
 Return values of the predicate @var{f} which evaluate (via @code{is})
 to something other than @code{true} or @code{false}
@@ -2266,25 +2279,21 @@ are governed by the global flag @code{prederror}.
 (%i7) some ("<", [x, y, z], [x^2, y^2, z + 1]);
 (%o7)                         true
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{stirling1}
 @deffn {Function} stirling1 (@var{n}, @var{m})
 
 Represents the Stirling number of the first kind.
 
 When @var{n} and @var{m} are nonnegative 
-integers, the magnitude of @code{stirling1 (@var{n}, @var{m})} is the number of 
-permutations of a set with @var{n} members that have @var{m} cycles.
+integers, the magnitude of @code{stirling1 (@var{n}, @var{m})} is the number 
+of permutations of a set with @var{n} members that have @var{m} cycles.
 For details, see Graham, Knuth and Patashnik @i{Concrete Mathematics}.
-Maxima uses a recursion relation to define @code{stirling1 (@var{n}, @var{m})} for
-@var{m} less than 0; it is undefined for @var{n} less than 0 and for non-integer
-arguments.
+Maxima uses a recursion relation to define @code{stirling1 (@var{n}, @var{m})}
+for @var{m} less than 0; it is undefined for @var{n} less than 0 and for 
+non-integer arguments.
 
 @code{stirling1} is a simplifying function.
 Maxima knows the following identities.
@@ -2356,24 +2365,19 @@ Maxima applies identities to @code{stirling1}.
 (%i4) stirling1 (n + 1, 1);
 (%o4)                          n!
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{stirling2}
 @deffn {Function} stirling2 (@var{n}, @var{m})
 
 Represents the Stirling number of the second kind.
 
-When @var{n} and @var{m} are nonnegative 
-integers, @code{stirling2 (@var{n}, @var{m})} is the number of ways a set with 
-cardinality @var{n} can be partitioned into @var{m} disjoint subsets.
-Maxima uses a recursion relation to define @code{stirling2 (@var{n}, @var{m})} for
-@var{m} less than 0; it is undefined for @var{n} less than 0 and for non-integer
-arguments.
+When @var{n} and @var{m} are nonnegative integers, @code{stirling2 (@var{n}, 
+@var{m})} is the number of ways a set with cardinality @var{n} can be 
+partitioned into @var{m} disjoint subsets.  Maxima uses a recursion relation 
+to define @code{stirling2 (@var{n}, @var{m})} for @var{m} less than 0; it is 
+undefined for @var{n} less than 0 and for non-integer arguments.
 
 @code{stirling2} is a simplifying function.
 Maxima knows the following identities.
@@ -2455,17 +2459,13 @@ Maxima applies identities to @code{stirling2}.
                               n
 (%o4)                        2  - 1
 @end example
-
-@c @opencatbox
-@c @category{Integers}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{subset}
 @deffn {Function} subset (@var{a}, @var{f})
 
-Returns the subset of the set @var{a} that satisfies the predicate @var{f}. 
+Returns the subset of the set @var{a} that satisfies the predicate @var{f}.
 
 @code{subset} returns a set which comprises the elements of @var{a}
 for which @var{f} returns anything other than @code{false}.
@@ -2487,11 +2487,6 @@ Examples:
 (%i2) subset (@{1, 2, 7, 8, 9, 14@}, evenp);
 (%o2)                      @{2, 8, 14@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2514,7 +2509,6 @@ Examples:
 (%i2) subsetp (@{a, 1, b, 2, c, 3@}, @{1, 2, 3@});
 (%o2)                         false
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2522,8 +2516,8 @@ Examples:
 @deffn {Function} symmdifference (@var{a_1}, ..., @var{a_n})
 
 Returns the symmetric difference of sets @code{ @var{a_1}, ..., @var{a_n}}.
-Given two arguments, @code{symmdifference (@var{a}, @var{b})} is
-the same as:
+Given two arguments, @code{symmdifference (@var{a}, @var{b})} is the same as:
+
 @example
 union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a})).
 @end example
@@ -2560,7 +2554,6 @@ Examples:
 (%i8) symmdifference (@{@}, S_1, S_2, S_3);
 (%o8)                        @{1,b, z@}
 @end example
-
 @end deffn
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE 
@@ -2568,7 +2561,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{tree_reduce}
-@deffn {Function} tree_reduce (@var{F}, @var{s})
+@deffn  {Function} tree_reduce (@var{F}, @var{s})
 @deffnx {Function} tree_reduce (@var{F}, @var{s}, @var{s_0})
 
 Extends the binary function @var{F} to an n-ary function by composition,
@@ -2587,8 +2580,8 @@ For addition of floating point numbers,
 @code{tree_reduce} may return a sum that has a smaller rounding error
 than either @code{rreduce} or @code{lreduce}.
 
-The elements of @var{s} and the partial results may be arranged in a minimum-depth binary tree,
-thus the name "tree_reduce".
+The elements of @var{s} and the partial results may be arranged in a
+minimum-depth binary tree, thus the name "tree_reduce".
 
 Examples:
 
@@ -2611,16 +2604,13 @@ Examples:
 (%i1) tree_reduce (f, [a, b, c, d, e]);
 (%o1)               f(f(f(a, b), f(c, d)), e)
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{union}
 @deffn {Function} union (@var{a_1}, ..., @var{a_n})
-Returns the union of the sets @var{a_1} through @var{a_n}. 
+
+Returns the union of the sets @var{a_1} through @var{a_n}.
 
 @code{union()} (with no arguments) returns the empty set.
 
@@ -2656,16 +2646,13 @@ Examples:
 (%i8) union (@{@}, S_1, S_2, S_3);
 (%o8)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
 @end example
-
-@c @opencatbox
-@c @category{Sets}
-@c @closecatbox
-
 @end deffn
 
 @c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
+
+@c -----------------------------------------------------------------------------
 @anchor{xreduce}
-@deffn {Function} xreduce (@var{F}, @var{s})
+@deffn  {Function} xreduce (@var{F}, @var{s})
 @deffnx {Function} xreduce (@var{F}, @var{s}, @var{s_0})
 
 Extends the function @var{F} to an n-ary function by composition,
@@ -2723,11 +2710,6 @@ Examples:
 (%i3) lreduce (G, [a, b, c, d, e]);
 (%o3)                 [[[[a, b], c], d], e]
 @end example
-
-@c @opencatbox
-@c @category{Sets} @c @category{Lists}
-@c @closecatbox
-
 @end deffn
 
 @c --- End of file Nset.de.texi ------------------------------------------------
