@@ -751,9 +751,11 @@ to_hypergeometric1(expr, var, lo, hi) := block(
   
   quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
   if not(?ratp(quo, var)) then return(false),
-  
+
   ss_print_message(2, "Shift quotient", quo),
-  
+  quolim: limit(quo/(var+1), var, inf),
+  if freeof_limit(quolim) and abs(quolim)>1 then error("Sum is divergent!"),
+ 
   upper : -map(rhs, solve(num(quo), var)),
   if not(every(lambda([u], freeof(var, u)), upper)) then return(false),
   for i:1 thru length(upper) do (
