@@ -187,7 +187,7 @@
   (cond ((and (symbolp form) (get form atom-context))
 	 (funcall (get form atom-context) form result))
 	((stringp form) (dimension-string (makestring form) result))
-	((ml-typep form 'array)
+	((member (marray-type form) '(array hash-table $functional))
 	 (dimension-array-object form result))
 	(t (dimension-string (makestring form) result))))
 
