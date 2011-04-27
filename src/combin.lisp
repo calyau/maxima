@@ -432,21 +432,78 @@
 	($bern u)
 	(eqtest (list '($bern) u) x))))
 
-(defmfun $bernpoly (x s)
-  (let ((%n 0))
+;;; ----------------------------------------------------------------------------
+;;; Bernoulli polynomials
+;;;
+;;; The following explicit formula is directly implemented:
+;;;
+;;;              n
+;;;             ====
+;;;             \                        n - k
+;;;     B (x) =  >    b  binomial(n, k) x
+;;;      n      /      k
+;;;             ====
+;;;             k = 0
+;;;
+;;; The coeffizients b[k] are the Bernoulli numbers. The algorithm does not
+;;; skip over Beroulli numbers, which are zero. We have to ensure that
+;;; $zerobern is bound to true.
+;;; ----------------------------------------------------------------------------
+
+(defun $bernpoly (x s)
+  (let ((%n 0) ($zerobern t))
     (cond ((not (fixnump s)) (list '($bernpoly) x s))
 	  ((> (setq %n s) -1)
 	   (do ((sum (cons (if (and (= %n 0) (zerop1 x))
-			       (addk 1 x)
-			       (power x %n)) nil)
-		     (cons (m* (timesk (binocomp %n %k) ($bern %k))
-			       (if (and (= %n %k) (zerop1 x))
-				   (addk 1 x)
-				   (m^ x (- %n %k))))
-			   sum))
-		(%k 1 (1+ %k)))
+	                       (add 1 x)
+	                       (power x %n))
+	                   nil)
+	             (cons (mul (binocomp %n %k)
+	                        ($bern %k)
+	                        (if (and (= %n %k) (zerop1 x))
+	                            (add 1 x)
+	                            (power x (- %n %k))))
+	                   sum))
+	        (%k 1 (1+ %k)))
 	       ((> %k %n) (addn sum t))))
 	  (t (list '($bernpoly) x %n)))))
+
+;;; ----------------------------------------------------------------------------
+;;; Euler polynomials
+;;;
+;;; The following explicit formula is directly implemented:
+;;;
+;;;              n                           1 n - k
+;;;             ====  E  binomial(n, k) (x - -)
+;;;             \      k                     2
+;;;     E (x) =  >    ------------------------------
+;;;      n      /                    k
+;;;             ====                2
+;;;             k = 0
+;;;
+;;; The coeffizients E[k] are the Euler numbers.
+;;; ----------------------------------------------------------------------------
+
+(defun $eulerpoly (x s)
+  (let ((n 0) ($zerobern t) (y 0))
+    (cond ((not (fixnump s)) (list '($eulerpoly) x s))
+          ((> (setq n s) -1)
+           (do ((sum (cons (if (and (zerop1 (setq y (sub x (div 1 2))))
+                                    (= n 0))
+                               (add 1 y)
+                               (power y n))
+                           nil)
+                     (cons (mul (binocomp n k)
+                                ($euler k)
+                                (power 2 (mul -1 k))
+                                (if (and (zerop1 (setq y (sub x (div 1 2))))
+                                         (= n k))
+                                    (add 1 y)
+                                    (power y (- n k))))
+                           sum))
+                (k 1 (1+ k)))
+               ((> k n) ($expand (addn sum t)))))
+          (t (list '($eulerpoly) x n)))))
 
 ;; zeta and fibonacci stuff
 
