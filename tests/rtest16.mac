@@ -2057,3 +2057,15 @@ divide(p, (z-2-sqrt(2)*%i),z);
 3/2^(2/5);
 2^(3/5+x)+2^(-2/5+x);
 3*2^(x-2/5);
+
+/* Bug ID: 1439566 - zerobern & bernpoly
+ * Show that the option variable zerobern does not change the results.
+ */
+zerobern:false;
+false;
+bernpoly(x,3);
+x^3-3*x^2/2+x/2$
+bernpoly(x,5);
+x^5-5*x^4/2+5*x^3/3-x/6$
+reset(zerobern);
+[zerobern];
