@@ -54,19 +54,18 @@
 	   (unless (> (length diml) 1)
 	     (merror (intl:gettext "make_array: not enough arguments for functional array specification.")))
 	   (let ((ar (apply #'$make_array (cadr diml) (cddr diml)))
-		 (the-null))
+	         (the-null))
 	     (case (cadr diml)
 	       ($fixnum
-		(fillarray ar (list (setq the-null fixunbound))))
-	       ($float
-		(fillarray ar (list (setq the-null flounbound))))
+	         (fillarray ar (list (setq the-null fixunbound))))
+	       (($flonum $float)
+	        (fillarray ar (list (setq the-null flounbound))))
 	       ($any
-	        (fillarray (mgenarray-content ar)
-	                   (list (setq the-null munbound))))
+	        (fillarray ar (list (setq the-null munbound))))
 	       (t
 	        ;; Nothing to do for hashed arrays. Is FUNCTIONAL here an error?
 	        ;; No, it is the most useful case for a FUNCTIONAL array.
-		(setq the-null nil)))
+	        (setq the-null nil)))
 	     (make-mgenarray :type '$functional
 	                     :content ar
 	                     :generator (car diml)
@@ -79,11 +78,13 @@
 					    (flonum 0.0)
 					    (otherwise nil))))))
 
+#+nil
 (defmfun maknum (x)
   (if $use_fast_arrays
       (exploden (format nil "~A" x))
       (format nil "~A" x)))
 
+#+nil
 (defmfun dimension-array-object (form result &aux (mtype (marray-type form)))
   (if $use_fast_arrays
       (dimension-string (maknum form) result)
@@ -104,6 +105,18 @@
 			 (exploden "]")))
 	      (exploden "}"))
        result)))
+
+(defun dimension-array-object (form result)
+  (let ((mtype (marray-type form)))
+    (if (eq mtype '$functional)
+        (dimension-array-object (mgenarray-content form) result)
+        (dimension-atom (format nil "{Lisp Array: ~A}" form) result))))
+
+(defun msize-array-object (x l r)
+  (let ((mtype (marray-type x)))
+    (if (eq mtype '$functional)
+        (msize-array-object (mgenarray-content x) l r)
+        (msize-atom (format nil "{Lisp Array: ~A}" x) l r))))
 
 (defun marray-check (a)
   (if (eq (ml-typep a) 'array)
