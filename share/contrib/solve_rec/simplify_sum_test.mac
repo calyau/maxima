@@ -23,7 +23,7 @@ test_sum(sm, ass, use_gamma, smp, [comment]) := block(
 
 test_sum(
   sum(r/k*binomial(n,r)*binomial(m,k-r)/binomial(n+m,k),r,0,k),
-  [n>k, m>k-1],
+  [n>k, m>k-1, m>k],
   true,
   [makefact, minfactorial]
 )$
@@ -79,7 +79,7 @@ test_sum(
 
 test_sum(
   sum((-1)^k*binomial(x-2*k,n-k)*binomial(x-k+1,k),k,0,n),
-  [x>2*n, x>n-1],
+  [x>2*n, x>2*n-1, x>n-1],
   true,
   []
 )$
@@ -170,7 +170,7 @@ test_sum(
 
 test_sum(
   sum(binomial(l+j,j)*(-1)^(n-l-j)*binomial(n+1,l+j+1),l,0,n-j),
-  [],
+  [j>0],
   true,
   []
 )$
@@ -400,6 +400,13 @@ test_sum(
 
 test_sum(
   sum(i*fib(i-1)/2^i,i,1,inf),
+  [],
+  false,
+  []
+);
+
+test_sum(
+  sum(1/sqrt(k)/sqrt(k+1)/(sqrt(k)+sqrt(k+1)),k,1,inf),
   [],
   false,
   []

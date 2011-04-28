@@ -44,7 +44,7 @@ block
         rtest_odelin,	
         rtestezunits,
         rtest_numericalio,
-        [rtest_simplify_sum, 56],
+        [rtest_simplify_sum, 57],
         rtest_solve_rec,
         [rteststringproc, 16],
         rtest_opproperties,

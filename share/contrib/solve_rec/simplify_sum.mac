@@ -49,7 +49,7 @@ eval_when(batch,
 put('simplify_sum, 1.0, 'version)$
 
 define_variable(zeilberger_check, true, boolean)$
-define_variable(sum_min, 1, any)$
+define_variable(sum_min, 0, any)$
 define_variable(use_simpsum, true, boolean)$
 define_variable(use_harmonic, true, boolean)$
 define_variable(use_integral, true, boolean)$
@@ -254,8 +254,19 @@ simplify_sum(expr) :=
 
     /*** Zeilberger algorithm ************************************************/
     if errcatch(
-      if use_zeilberger and not(atom(sm1)) and not freeof_sum(sm1) then (
+      if use_zeilberger and not(atom(sm1)) and not freeof_sum(sm1) then block(
+        [summand:summand, var:var, lo:lo, hi:hi, nv: gensym(), supp],
         ss_print_message(1, "Trying with Zeilberger ..."),
+        assume(var>lo), assume(var<hi),
+        support : ss_support(summand, var),
+        if atom(support[1]) and support[1]#minf then
+          [summand, var, lo, hi]: args(intosum(
+              changevar(apply('sum, [summand, var, lo, hi]), nv=var-support[1]+sum_min, nv, var)
+              ))
+        else if lo#sum_min then
+          [summand, var, lo, hi]: args(intosum(
+              changevar(apply('sum, [summand, var, lo, hi]), nv=var-lo+sum_min, nv, var)
+              )),
         sm1 : ss_zeilb(summand, var, lo, hi),
         ss_print_message(1, "Zeilberger method returns:", sm1)
       )
@@ -366,9 +377,10 @@ extended_nusum(expr, var, lo, hi) := block(
 
 ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   [vars : delete(%k%, listofvars(expr)), %n%, eq, sm, zb, deg,
-   cond, eq_rhs, cert, %i%, expr1, ihom, support,
+   cond, eq_rhs, cert, %i%, expr1, ihom, support, sum_min:sum_min,
    upper_bound_implicit : false, lower_bound_implicit : false,
-   solve_rec_warn : false, warnings:false, Gosper_in_Zeilberger:false],
+   solve_rec_warn : false, warnings:false, Gosper_in_Zeilberger:false,
+   cont],
 
   if lo=-inf then lo:minf,
   
@@ -389,7 +401,6 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   else
     %n% : in_zr[1],
 
-
   /*  Find support. */
   assume(%k%>lo), assume(%k%<hi),
   support : ss_support(expr1, %k%),
@@ -406,6 +417,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   if hi=inf then hi : support[2],
   
   ss_print_message(2, "Found support:", support),
+  if numberp(support[1]) then sum_min:max(support[1], lo),
 
   /* We don't handle sums over infinite support yet! */
   if (support[1]=minf and lower_bound_implicit) or
@@ -423,20 +435,17 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   eq : part(zb, 1, 2) . makelist(sm[%n%+%i%], %i%, 0, deg-1),
 
   /* Find the initial conditions for recurrence. */
-  cond : makelist(
-    sm[%i%] =
-    subst(%n%=%i%,
-      apply('sum, [
-        minfactorial(expr),
-        %k%, lo, hi
-      ]
-      )
-    ),
-    %i%, sum_min, sum_min + deg - 2),
-  cond : ev(cond, simpsum),
-  
-  /* Simplify initial conditions (also sums in initial conditions). */
-  cond : factor(minfactorial(simplify_sum(cond))),
+  cont: first(content(eq)),
+  while subst(%n%=sum_min, cont)=0 do sum_min: sum_min+1,
+
+  if subst(%n%=max(support[1], lo), cont)#0 or
+     errcatch(
+       cond : ss_zeilb_init(expr, %n%,
+         max(support[1], lo), min(support[2], hi), max(support[1], lo), deg))=[] or
+     not freeof_sum(cond) then (
+       cond : ss_zeilb_init(expr, %n%, lo, hi, sum_min, deg))
+  else (
+    sum_min: max(support[1], lo)),
 
   /* Initial conditions should not contain sums. */
   if not freeof_sum(cond) then (
@@ -485,6 +494,21 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   /* Check the solution. */
   if check_sum(expr, %k%, %n%, lo, hi, deg, eq) then eq
   else false)$
+
+ss_zeilb_init(expr, %n%, lo, hi, sum_min, deg) := block(
+  [cond],
+  cond : makelist(
+    sm[%i%] =
+    subst(%n%=%i%,
+      apply('sum, [
+        minfactorial(expr),
+        %k%, lo, hi
+      ]
+      )
+    ),
+    %i%, sum_min, sum_min + deg - 2),
+  cond : factor(minfactorial(simplify_sum(cond))),
+  cond)$
 
 /*******************
  *
@@ -547,8 +571,10 @@ ss_support(expr, %k%) := block(
   if freeof(%k%, expr) or expr=%k% then [minf, inf]
   else if member(part(expr, 0), ["+", "-"]) then
     lreduce(ss_union, map(lambda([u], ss_support(u,%k%)), args(expr)))
-  else if member(part(expr, 0), ["*", "/"]) then
+  else if part(expr, 0)="*" then
     lreduce(ss_intersection, map(lambda([u], ss_support(u,%k%)), args(expr)))
+  else if part(expr, 0)="/" then
+    lreduce(ss_intersection, map(lambda([u], ss_support(factcomb(u),%k%)), args(expr)))
   else if member(part(expr, 0), ["^"]) then ss_support(part(expr, 1), %k%)
   else if part(expr, 0)=binomial then ss_support_binomial(expr, %k%)
   else if part(expr, 0)="!" then ss_support_factorial(expr, %k%)
@@ -689,12 +715,47 @@ to_hypergeometric(expr, var, lo, hi) := block(
 
   for i:1 thru 100 while subst(var=lo, expr)=0 do lo : lo+1,
   expr:subst(var=var+lo, expr),
-  
+
   quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
   if not(?ratp(quo, var)) then return(false),
   
   ss_print_message(2, "Shift quotient", quo),
   
+  upper : -map(rhs, solve(num(quo), var)),
+  if not(every(lambda([u], freeof(var, u)), upper)) then return(false),
+  for i:1 thru length(upper) do (
+    for j:1 thru multiplicities[i] do
+      a : cons(upper[i], a)),
+  ss_print_message(2, "a=", a),
+  
+  lower : -map(rhs, solve(denom(quo), var)),
+  if not(every(lambda([u], freeof(var, u)), lower)) then return(false),
+  for i:1 thru length(lower) do (
+    for j:1 thru multiplicities[i] do
+      b : cons(lower[i], b)),
+
+  ni_coeffs: sublist(append(upper, lower), lambda([ni], is(integerp(ni) and ni<0))),
+  if ni_coeffs#[] then block(
+    [use_simpsum:false, use_harmonic:false, use_integral:false,
+     use_ratfun:false, use_gosper:false, use_zeilberger:false,
+     use_telescoping:false, min_ni: lmin(ni_coeffs)],
+    apply('sum, [expr, var, lo, -min_ni]) + simplify_sum(apply(sum, [expr, var, -min_ni, hi])))
+  else to_hypergeometric1(expr, var, lo, hi))$
+
+
+to_hypergeometric1(expr, var, lo, hi) := block(
+  [quo, upper, lower, a:[], b:[], x, c, warnings:false],
+
+  for i:1 thru 100 while subst(var=lo, expr)=0 do lo : lo+1,
+/*  expr:subst(var=var+lo, expr),*/
+  
+  quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
+  if not(?ratp(quo, var)) then return(false),
+
+  ss_print_message(2, "Shift quotient", quo),
+  quolim: limit(quo/(var+1), var, inf),
+  if freeof_limit(quolim) and abs(quolim)>1 then error("Sum is divergent!"),
+ 
   upper : -map(rhs, solve(num(quo), var)),
   if not(every(lambda([u], freeof(var, u)), upper)) then return(false),
   for i:1 thru length(upper) do (

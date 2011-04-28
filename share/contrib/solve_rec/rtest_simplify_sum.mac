@@ -15,15 +15,14 @@
     cs : simplify_sum(sm),
     for f in smp do cs : apply(f, [cs]),
     if length(ass)>0 then apply(forget, ass),
-    ratsimp(cs-ans)
-    ),
+    ratsimp(cs-ans)),
   0
 );
 0;
 
 test_sum(
   sum(r/k*binomial(n,r)*binomial(m,k-r)/binomial(n+m,k),r,0,k),
-  [n>k, m>k-1],
+  [n>k, m>k-1, m>k],
   true,
   [makefact, minfactorial],
   n/(n+m));
@@ -58,7 +57,7 @@ test_sum(
   [],
   false,
   [],
-  ((product(2*%l+1,%l,1,n-1))*(-1)^n*2^n)/n!);
+  ((product(2*%j1-1,%j1,1,n))*(-1)^n*2^n)/n!);
 0;
 
 test_sum(
@@ -87,7 +86,7 @@ test_sum(
 
 test_sum(
   sum((-1)^k*binomial(x-2*k,n-k)*binomial(x-k+1,k),k,0,n),
-  [x>2*n, x>n-1],
+  [x>2*n, x>2*n-1, x>n-1],
   true,
   [],
   ((-1)^n+1)/2);
@@ -98,7 +97,7 @@ test_sum(
   [],
   false,
   [],
-  (2*(product(3*%l+1,%l,1,m-1))*(product(3*%l+2,%l,1,m-1))*(-1)^m*3^m)/m!^2);
+  (product(3*%j1-2,%j1,1,m)*product(3*%j1-1,%j1,1,m)*(-1)^m*3^m)/m!^2);
 0;
 
 test_sum(
@@ -114,7 +113,7 @@ test_sum(
   [n>0],
   false,
   [],
-  (4*(product(3*%l+1,%l,1,n-1))^2*(product(3*%l+2,%l,1,n-1))^2*9^n)/((product(2*%l+1,%l,1,n-1))^2*4^n*n!^2));
+  (product(3*%j1-2,%j1,1,n))^2*(product(3*%j1-1,%j1,1,n))^2*9^n/((product(2*%j1-1,%j1,1,n))^2*4^n*n!^2));
 0;
 
 test_sum(
@@ -191,7 +190,7 @@ test_sum(
 
 test_sum(
   sum(binomial(l+j,j)*(-1)^(l+2*j)*binomial(n+1,l+j+1),l,0,n-j),
-  [],
+  [j>1],
   true,
   [],
   1);
@@ -203,7 +202,7 @@ test_sum(
   true,
   [rectform],
   (2*2^(n/2)*cos((%pi*n)/4)+2^n)/4
-  );
+  ), sum_min=1;
 0;
 
 (declare(n, integer), load(orthopoly), 0);
@@ -224,6 +223,14 @@ test_sum(
 test_sum(
   sum(binomial(n,i)*p^i*(1-p)^(n-i),i,0,n),
   [],
+  true,
+  [],
+  1);
+0;
+
+test_sum(
+  sum(binomial(n,k)*binomial(k-1,j)*(-1)^(k-j-1), k, j+1, n),
+  [j>1],
   true,
   [],
   1);
@@ -515,4 +522,78 @@ test_sum(
   [],
   1
 );
+0;
+
+test_sum(
+  sum(%e^-4*(k-4)^2*4^k/k!, k, 0, inf),
+  [],
+  false,
+  [],
+  4
+);
+0;
+
+
+test_sum(
+  sum(%e^-4*(k-5)^2*4^k/k!, k, 0, inf),
+  [],
+  false,
+  [],
+  5
+);
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 0, n),
+  [],
+  false,
+  [],
+  2^(-2+n)*n*(1 + n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 0, n),
+  [],
+  false,
+  [],
+  2^(-2+n)*n*(1 + n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 1, n),
+  [],
+  false,
+  [],
+  2^(-2+n)*n*(1 + n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 2, n),
+  [],
+  false,
+  [],
+  1/4*n*(-4+2^n+2^n*n)
+  );
+0;
+
+test_sum(
+  sum(k^2*binomial(n,k), k, 3, n),
+  [],
+  false,
+  [],
+  1/4*n*(4+2^n-8*n+2^n*n)
+  );
+0;
+
+
+test_sum(
+  sum(binomial(n,k)*binomial(k-1,j)*(-1)**(k-1-j),k,j+1,n),
+  [j>1],
+  false,
+  [],
+  1
+  );
 0;
