@@ -9,8 +9,7 @@ VECTORS AND DYADICS.
 Style changes made in order to TRANSLATE, 3/1/81 George Carrette (GJC)
 */
 
-
-herald_package('vect)$
+herald_package(vect)$
 put('vect,true,'version);
 
 eval_when([translate,batch,demo,load,loadfile],
