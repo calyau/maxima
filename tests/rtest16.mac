@@ -1916,10 +1916,15 @@ a[x]:sin(x);
 sin(x);
 a[x*y]:x^2+y;
 y+x^2;
-arrayinfo(a);
-[hash_table,1,100,x,x*y];
-listarray(a);
-[100,sin(x),y+x^2];
+
+/* Cutting out these two examples.
+ * The ordering of the lists is different depending on the underlying Lisp.
+ *
+ * arrayinfo(a);
+ * [hash_table,1,100,x,x*y];
+ * listarray(a);
+ * [100,sin(x),y+x^2];
+ */
 
 (f:make_array(functional, 'factorial, hashed), done);
 done;
