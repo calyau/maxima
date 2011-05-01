@@ -1,9 +1,9 @@
 ;;; The Maxima test suite is defined to be the sum of all the tests
-;;; in the files listed in *testsuite-files*.
+;;; in the files listed in the Maxima option variable $testsuite_files.
 ;;; Each entry can either be a plain file name (minus extension), e.g.,
-;;; "testfile.mac", or a list containing a file name followed by the numbers
-;;; of the test problems that are expected to fail, e.g.
-;;; ("testfile.mac" 7 9 13).
+;;; "testfile.mac", or a Maxima list containing a file name followed by
+;;; the numbers of the test problems that are expected to fail, e.g.
+;;; ((mlist simp) "testfile.mac" 7 9 13).
 
 (setf $testsuite_files
       '((mlist simp)
@@ -44,13 +44,13 @@
         ((mlist simp) "rtest_map" 2 3 4)
         ((mlist simp) "rtest_sign" 21 25 30 40 65 72 77 79)
         "rtest_algebraic"
-        "rtest_gamma"
+        ((mlist simp) "rtest_gamma" 473 474)
         "rtest_expintegral"
-	"rtest_signum"
+        "rtest_signum"
         "rtest_lambert_w"
-	"rtest_elliptic"
+        "rtest_elliptic"
         ((mlist simp) "rtest_integrate" 13 14 21 22 32)
-	"rtest_integrate_special"
+        "rtest_integrate_special"
         "rtest_ask"
         ((mlist simp) "rtest_sqrt" 76 78 79 80)
         ((mlist simp) "rtest_carg" 40 41)
