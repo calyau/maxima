@@ -870,7 +870,7 @@ Gibt das Ergebnis @code{true} zur@"uck, wenn die Aussage @code{f} das Ergebnis
 Ist das zweite Argument eine Menge, dann gibt @code{every(@var{f}, @var{s})}
 den Wert @code{true} zur@"uck, wenn @code{is(@var{f}(@var{a_i}))} das Ergebnis
 @code{true} f@"ur alle Elemente @var{a_i} der Menge @var{s} hat.  @code{every}
-wertet @var{f} nicht notwendigerweise für alle Elemente @var{a_i} aus, wenn das
+wertet @var{f} nicht notwendigerweise f@"ur alle Elemente @var{a_i} aus, wenn das
 Ergebnis bereits feststeht.  Da Mengen nicht geordnet sind, kann die Funktion
 @code{every} die Ausdr@"ucke @code{@var{f}(@var{a_i})} in irgendeiner
 Reihenfolge auswerten.
@@ -1515,27 +1515,40 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 24.04.2011 DK -----------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{lreduce}
 @deffn  {Funktion} lreduce (@var{F}, @var{s})
 @deffnx {Funktion} lreduce (@var{F}, @var{s}, @var{s_0})
 
-Extends the binary function @var{F} to an n-ary function by composition,
-where @var{s} is a list.
+@c Extends the binary function @var{F} to an n-ary function by composition,
+@c where @var{s} is a list.
 
-@code{lreduce(@var{F}, @var{s})} returns
-@code{F(... F(F(s_1, s_2), s_3), ... s_n)}.  When the optional argument
-@var{s_0} is present, the result is equivalent to
+@c @code{lreduce(@var{F}, @var{s})} returns
+@c @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.  When the optional argument
+@c @var{s_0} is present, the result is equivalent to
+@c @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
+
+@c The function @var{F} is first applied to the @i{leftmost} list elements, thus
+@c the name "lreduce".
+
+@c See also @code{rreduce}, @code{xreduce}, and @code{tree_reduce}.
+
+Wendet eine Funktion @var{F}, die zwei Argumente hat, auf die Elemente einer
+Liste @var{s} an, indem die Funktionsaufrufe verkettet werden.
+
+Das Kommando @code{lreduce(@var{F}, @var{s})} bildet den Ausdruck
+@code{F(... F(F(s_1, s_2), s_3), ... s_n)}.  Ist das optionale Argument
+@var{s_0} vorhanden, dann ist das Ergebnis @"aquivalent zu
 @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
 
-The function @var{F} is first applied to the @i{leftmost} list elements, thus
-the name "lreduce".
+Siehe auch @mrefcomma{rreduce} @mref{xreduce} und @mrefdot{tree_reduce}
 
-See also @code{rreduce}, @code{xreduce}, and @code{tree_reduce}.
-
+@need 600
 Beispiele:
 
-@code{lreduce} without the optional argument.
+@c @code{lreduce} without the optional argument.
+
+@code{lreduce} ohne das optionale Argument.
 
 @example
 (%i1) lreduce (f, [1, 2, 3]);
@@ -1544,15 +1557,20 @@ Beispiele:
 (%o2)                  f(f(f(1, 2), 3), 4)
 @end example
 
-@code{lreduce} with the optional argument.
+@c @code{lreduce} with the optional argument.
+
+@code{lreduce} mit dem optionalen Argument.
 
 @example
 (%i1) lreduce (f, [1, 2, 3], 4);
 (%o1)                  f(f(f(4, 1), 2), 3)
 @end example
 
-@code{lreduce} applied to built-in binary operators.
-@code{/} is the division operator.
+@c @code{lreduce} applied to built-in binary operators.
+@c @code{/} is the division operator.
+
+@code{lreduce} mit den bin@"aren Operatoren der Exponentiation "^" und der
+Division "/".
 
 @example
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
@@ -1565,14 +1583,20 @@ Beispiele:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{makeset}
-@deffn {Function} makeset (@var{expr}, @var{x}, @var{s})
+@deffn {Funktion} makeset (@var{expr}, @var{x}, @var{s})
 
 Returns a set with members generated from the expression @var{expr}, where
 @var{x} is a list of variables in @var{expr}, and @var{s} is a set or list of
 lists.  To generate each set member, @var{expr} is evaluated with the variables
 @var{x} bound in parallel to a member of @var{s}.
+
+@c Erzeugt eine Liste, indem der Ausdruck expr für die Variable i ausgewertet
+@c wird. Die Variable i nimmt nacheinander die Werte von i_0 bis i_1 an, wobei
+@c die Schrittweite 1 ist. Alternativ kann eine Liste list als Argument 
+@c übergeben werden. In diesem Fall nimmt die Variable i nacheinander die Werte 
+@c der Liste list an. 
 
 Each member of @var{s} must have the same length as @var{x}.
 The list of variables @var{x} must be a list of symbols, without subscripts.
@@ -1907,31 +1931,37 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{rreduce}
-@deffn  {Function} rreduce (@var{F}, @var{s})
-@deffnx {Function} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+@deffn  {Funktion} rreduce (@var{F}, @var{s})
+@deffnx {Funktion} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
 
-Extends the binary function @var{F} to an n-ary function by composition,
-where @var{s} is a list.
+@c Extends the binary function @var{F} to an n-ary function by composition,
+@c where @var{s} is a list.
+@c @code{rreduce(@var{F}, @var{s})} returns @code{F(s_1, ... F(s_@{n - 2@}, 
+@c F(s_@{n - 1@}, s_n)))}.  When the optional argument @var{s_@{n + 1@}} is 
+@c present, the result is equivalent to @code{rreduce(@var{F}, 
+@c endcons(@var{s_@{n + 1@}}, @var{s}))}.
+@c The function @var{F} is first applied to the
+@c @i{rightmost} list elements, thus the name "rreduce".
+@c See also @code{lreduce}, @code{tree_reduce}, and @code{xreduce}.
 
-@code{rreduce(@var{F}, @var{s})} returns @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
-When the optional argument @var{s_@{n + 1@}} is present,
-the result is equivalent to @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
+Wendet eine Funktion @var{F}, die zwei Argumente hat, auf die Elemente einer
+Liste @var{s} an, indem die Funktionsaufrufe verkettet werden.
 
-The function @var{F} is first applied to the
-@i{rightmost} list elements, thus the name "rreduce". 
+Das Kommando @code{rreduce(@var{F}, @var{s})} bildet den Ausdruck
+@code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.  Ist das optionale
+Argument @var{s_0} vorhanden, dann ist das Ergebnis @"aquivalent zu
+@code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
 
-See also @code{lreduce}, @code{tree_reduce}, and @code{xreduce}.
+Siehe auch @mrefcomma{lreduce} @mref{xreduce} und @mrefdot{tree_reduce}
 
-Examples:
+Beispiele:
 
-@code{rreduce} without the optional argument.
+@c @code{rreduce} without the optional argument.
 
-@c ===beg===
-@c rreduce (f, [1, 2, 3]);
-@c rreduce (f, [1, 2, 3, 4]);
-@c ===end===
+@code{rreduce} ohne das optionale Argument.
+
 @example
 (%i1) rreduce (f, [1, 2, 3]);
 (%o1)                     f(1, f(2, 3))
@@ -1939,23 +1969,21 @@ Examples:
 (%o2)                  f(1, f(2, f(3, 4)))
 @end example
 
-@code{rreduce} with the optional argument.
+@c @code{rreduce} with the optional argument.
 
-@c ===beg===
-@c rreduce (f, [1, 2, 3], 4);
-@c ===end===
+@code{rreduce} mit dem optionalen Argument.
+
 @example
 (%i1) rreduce (f, [1, 2, 3], 4);
 (%o1)                  f(1, f(2, f(3, 4)))
 @end example
 
-@code{rreduce} applied to built-in binary operators.
-@code{/} is the division operator.
+@c @code{rreduce} applied to built-in binary operators.
+@c @code{/} is the division operator.
 
-@c ===beg===
-@c rreduce ("^", args ({a, b, c, d}));
-@c rreduce ("/", args ({a, b, c, d}));
-@c ===end===
+@code{rreduce} mit den bin@"aren Operatoren der Exponentiation "^" und der
+Division "/".
+
 @example
 (%i1) rreduce ("^", args (@{a, b, c, d@}));
                                  d
@@ -2461,26 +2489,32 @@ Maxima applies identities to @code{stirling2}.
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{subset}
-@deffn {Function} subset (@var{a}, @var{f})
+@deffn {Funktion} subset (@var{a}, @var{f})
 
-Returns the subset of the set @var{a} that satisfies the predicate @var{f}.
+@c Returns the subset of the set @var{a} that satisfies the predicate @var{f}.
+@c @code{subset} returns a set which comprises the elements of @var{a}
+@c for which @var{f} returns anything other than @code{false}.
+@c @code{subset} does not apply @code{is} to the return value of @var{f}.
+@c @code{subset} complains if @var{a} is not a literal set.
+@c See also @code{partition_set}.
 
-@code{subset} returns a set which comprises the elements of @var{a}
-for which @var{f} returns anything other than @code{false}.
-@code{subset} does not apply @code{is} to the return value of @var{f}.
+Gibt eine Teilmenge der Menge @var{a} zur@"uck, deren Elemente der Bedingung
+@var{f} gen@"ugen.
 
-@code{subset} complains if @var{a} is not a literal set.
+@code{subset} gibt eine Menge zur@"uck, die alle Elemente der Menge @var{a}
+enth@"alt, die f@"ur die Bedingung @var{f} ein von @code{false} verschiedenes
+Ergebnis haben.  @code{subset} wendet nicht die Funktion @code{is} auf das
+Ergebnis der Bedingung @code{f} an.
 
-See also @code{partition_set}.
+@code{subset} gibt eine Fehlermeldung, wenn das Argument @var{a} keine Menge
+ist.
 
-Examples:
+Siehe auch die Funktion @mrefdot{partition_set}
 
-@c ===beg===
-@c subset ({1, 2, x, x + y, z, x + y + z}, atom);
-@c subset ({1, 2, 7, 8, 9, 14}, evenp);
-@c ===end===
+Beispiele:
+
 @example
 (%i1) subset (@{1, 2, x, x + y, z, x + y + z@}, atom);
 (%o1)                     @{1, 2, x, z@}
@@ -2489,20 +2523,21 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{subsetp}
-@deffn {Function} subsetp (@var{a}, @var{b})
+@deffn {Funktion} subsetp (@var{a}, @var{b})
 
-Returns @code{true} if and only if the set @var{a} is a subset of @var{b}.
+@c Returns @code{true} if and only if the set @var{a} is a subset of @var{b}.
+@c @code{subsetp} complains if either @var{a} or @var{b} is not a literal set.
 
-@code{subsetp} complains if either @var{a} or @var{b} is not a literal set.
+Gibt das Ergebnis @code{true} zur@"uck, wenn die Menge @var{a} einer Teilmenge
+der Menge @var{b} ist.
 
-Examples:
+@code{subsetp} gibt eine Fehlermeldung, wenn eines der Argumente keine Menge
+ist.
 
-@c ===beg===
-@c subsetp ({1, 2, 3}, {a, 1, b, 2, c, 3});
-@c subsetp ({a, 1, b, 2, c, 3}, {1, 2, 3});
-@c ===end===
+Beispiele:
+
 @example
 (%i1) subsetp (@{1, 2, 3@}, @{a, 1, b, 2, c, 3@});
 (%o1)                         true
@@ -2511,31 +2546,27 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{symmdifference}
-@deffn {Function} symmdifference (@var{a_1}, ..., @var{a_n})
+@deffn {Funktion} symmdifference (@var{a_1}, ..., @var{a_n})
 
-Returns the symmetric difference of sets @code{ @var{a_1}, ..., @var{a_n}}.
-Given two arguments, @code{symmdifference (@var{a}, @var{b})} is the same as:
+@c Returns the symmetric difference of sets @code{ @var{a_1}, ..., @var{a_n}}.
+@c Given two arguments, @code{symmdifference (@var{a}, @var{b})} is the same as:
+@c 
+@c @example
+@c union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a})).
+@c @end example
+@c @code{symmdifference} complains if any argument is not a literal set.
 
-@example
-union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a})).
-@end example
+Gibt die symmetrische Differenz der Mengen @code{@var{a_1}, ..., @var{a_n}}
+zur@"uck.  F@"ur zwei Argumente ist die symmetrische Differenz @"aquivalent zu
+@code{union(setdifference(@var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
 
-@code{symmdifference} complains if any argument is not a literal set.
+@code{symmdifference} gibt eine Fehlermeldung, wenn eines der Argumente keine
+Menge ist.
 
-Examples:
+Beispiele:
 
-@c ===beg===
-@c S_1 : {a, b, c};
-@c S_2 : {1, b, c};
-@c S_3 : {a, b, z};
-@c symmdifference ();
-@c symmdifference (S_1);
-@c symmdifference (S_1, S_2);
-@c symmdifference (S_1, S_2, S_3);
-@c symmdifference ({}, S_1, S_2, S_3);
-@c ===end===
 @example
 (%i1) S_1 : @{a, b, c@};
 (%o1)                       @{a, b, c@}
@@ -2556,78 +2587,88 @@ Examples:
 @end example
 @end deffn
 
-@c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE 
-@c WANT ONLY LISTS; STRANGE
-
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{tree_reduce}
-@deffn  {Function} tree_reduce (@var{F}, @var{s})
-@deffnx {Function} tree_reduce (@var{F}, @var{s}, @var{s_0})
+@deffn  {Funktion} tree_reduce (@var{F}, @var{s})
+@deffnx {Funktion} tree_reduce (@var{F}, @var{s}, @var{s_0})
 
-Extends the binary function @var{F} to an n-ary function by composition,
-where @var{s} is a set or list.
+@c Extends the binary function @var{F} to an n-ary function by composition,
+@c where @var{s} is a set or list.
 
-@code{tree_reduce} is equivalent to the following:
-Apply @var{F} to successive pairs of elements
-to form a new list @code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]},
-carrying the final element unchanged if there are an odd number of elements.
-Then repeat until the list is reduced to a single element, which is the return value.
+@c @code{tree_reduce} is equivalent to the following:
+@c Apply @var{F} to successive pairs of elements to form a new list 
+@c @code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]},
+@c carrying the final element unchanged if there are an odd number of elements.
+@c Then repeat until the list is reduced to a single element, which is the
+@c return value.
 
-When the optional argument @var{s_0} is present,
-the result is equivalent @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+@c When the optional argument @var{s_0} is present, the result is equivalent
+@c @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
 
-For addition of floating point numbers,
-@code{tree_reduce} may return a sum that has a smaller rounding error
-than either @code{rreduce} or @code{lreduce}.
+@c For addition of floating point numbers, @code{tree_reduce} may return a sum
+@c that has a smaller rounding error than either @code{rreduce} or
+@c @code{lreduce}.
 
-The elements of @var{s} and the partial results may be arranged in a
-minimum-depth binary tree, thus the name "tree_reduce".
+@c The elements of @var{s} and the partial results may be arranged in a
+@c minimum-depth binary tree, thus the name "tree_reduce".
 
-Examples:
+Wendet eine Funktion @var{F}, die zwei Argumente hat, auf die Elemente einer
+Liste oder Menge @var{s} an, indem die Funktionsaufrufe verkettet werden.
 
-@code{tree_reduce} applied to a list with an even number of elements.
+@code{tree_reduce} f@"uhrt folgende Operationen aus: Die Funktion @var{F} wird
+auf Paare von Elementen der Liste @var{s} angewendet, wodurch die neue Liste
+@code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]}
+entsteht.  Hat die Liste eine ungerade Anzahl an Elementen, bleibt das letzte
+Element unver@"andert.  Dann wird das Verfahren solange wiederholt, bis nur noch
+ein einziges Element @"ubrig ist.  Dieses wird als Ergebnis zur@"uckgegeben.
 
-@c ===beg===
-@c tree_reduce (f, [a, b, c, d]);
-@c ===end===
+Ist das optionale Argument @var{s_0} vorhanden, dann ist das Ergebnis 
+@"aquivalent zu @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+
+Werden Gleitkommazahlen addiert, dann kann @code{tree_reduce} ein Ergebnis
+mit einem kleineren Rundungsfehler als @mref{lreduce} oder @mref{rreduce}@w{}
+liefern.
+
+Siehe auch @mrefcomma{lreduce} @mref{rreduce} und @mrefdot{xreduce}
+
+Beispiele:
+
+@c @code{tree_reduce} applied to a list with an even number of elements.
+
+@code{tree_reduce} angewendet auf eine Liste mit einer geraden Anzahl an
+Elementen.
+
 @example
 (%i1) tree_reduce (f, [a, b, c, d]);
 (%o1)                  f(f(a, b), f(c, d))
 @end example
 
-@code{tree_reduce} applied to a list with an odd number of elements.
+@c @code{tree_reduce} applied to a list with an odd number of elements.
 
-@c ===beg===
-@c tree_reduce (f, [a, b, c, d, e]);
-@c ===end===
+@code{tree_reduce} angewendet auf eine List mit einer ungeraden Anzahl an
+Elementen.
+
 @example
 (%i1) tree_reduce (f, [a, b, c, d, e]);
 (%o1)               f(f(f(a, b), f(c, d)), e)
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{union}
-@deffn {Function} union (@var{a_1}, ..., @var{a_n})
+@deffn {Funktion} union (@var{a_1}, @dots{}, @var{a_n})
 
-Returns the union of the sets @var{a_1} through @var{a_n}.
+@c Returns the union of the sets @var{a_1} through @var{a_n}.
+@c @code{union()} (with no arguments) returns the empty set.
+@c @code{union} complains if any argument is not a literal set.
 
-@code{union()} (with no arguments) returns the empty set.
+Gibt die Vereinigung der Mengen @var{a_1}, @dots{}, @var{a_n} zur@"uck.  Wird
+@code{union} ohne ein Argument aufgerufen, wird die leere Menge zur@"uckgegeben.
 
-@code{union} complains if any argument is not a literal set.
+@code{union} gibt eine Fehlermeldung, wenn eines der Argumente keine Menge ist.
 
-Examples:
+Beispiele:
 
-@c ===beg===
-@c S_1 : {a, b, c + d, %e};
-@c S_2 : {%pi, %i, %e, c + d};
-@c S_3 : {17, 29, 1729, %pi, %i};
-@c union ();
-@c union (S_1);
-@c union (S_1, S_2);
-@c union (S_1, S_2, S_3);
-@c union ({}, S_1, S_2, S_3);
-@c ===end===
 @example
 (%i1) S_1 : @{a, b, c + d, %e@};
 (%o1)                   @{%e, a, b, d + c@}
@@ -2648,43 +2689,57 @@ Examples:
 @end example
 @end deffn
 
-@c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
-
-@c -----------------------------------------------------------------------------
+@c --- 25.04.2011 DK -----------------------------------------------------------
 @anchor{xreduce}
-@deffn  {Function} xreduce (@var{F}, @var{s})
-@deffnx {Function} xreduce (@var{F}, @var{s}, @var{s_0})
+@deffn  {Funktion} xreduce (@var{F}, @var{s})
+@deffnx {Funktion} xreduce (@var{F}, @var{s}, @var{s_0})
 
-Extends the function @var{F} to an n-ary function by composition,
-or, if @var{F} is already n-ary, applies @var{F} to @var{s}.
-When @var{F} is not n-ary, @code{xreduce} is the same as @code{lreduce}.
-The argument @var{s} is a list.
+@c Extends the function @var{F} to an n-ary function by composition,
+@c or, if @var{F} is already n-ary, applies @var{F} to @var{s}.
+@c When @var{F} is not n-ary, @code{xreduce} is the same as @code{lreduce}.
+@c The argument @var{s} is a list.
 
-Functions known to be n-ary include
-addition @code{+}, multiplication @code{*}, @code{and}, @code{or}, @code{max},
-@code{min}, and @code{append}.
-Functions may also be declared n-ary by @code{declare(@var{F}, nary)}.
-For these functions,
-@code{xreduce} is expected to be faster than either @code{rreduce} or @code{lreduce}.
+@c Functions known to be n-ary include addition @code{+}, multiplication
+@c @code{*}, @code{and}, @code{or}, @code{max}, @code{min}, and @code{append}.
+@c Functions may also be declared n-ary by @code{declare(@var{F}, nary)}.
+@c For these functions, @code{xreduce} is expected to be faster than either
+@c @code{rreduce} or @code{lreduce}.
 
-When the optional argument @var{s_0} is present,
-the result is equivalent to @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
+@c When the optional argument @var{s_0} is present, the result is equivalent to
+@c @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
 
-@c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
-@c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
-Floating point addition is not exactly associative; be that as it may,
-@code{xreduce} applies Maxima's n-ary addition when @var{s} contains floating point numbers.
+   @c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT MAXIMA IS NEVER SO
+   @c CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
+@c Floating point addition is not exactly associative; be that as it may,
+@c @code{xreduce} applies Maxima's n-ary addition when @var{s} contains floating
+@c point numbers.
 
-Examples:
+Wendet eine Funktion @var{F}, die zwei Argumente hat, auf die Elemente einer
+Liste oder Menge @var{s} an, indem die Funktionsaufrufe verkettet werden.  Ist
+die Funktion eine N-ary-Funktion wird die Funktion @var{F} auf die Liste
+angewendet.  Ist die Funktion @var{F} keine N-ary_Funktion ist @code{xreduce}
+@"aquivalent zu @mrefdot{lreduce}
 
-@code{xreduce} applied to a function known to be n-ary.
-@code{F} is called once, with all arguments.
+Folgende N-ary-Funktionen und Operatoren kennt @code{xreduce}:
+Addition @code{"+"}, Multiplikation @code{"*"}, @code{and}, @code{or},
+@code{max}, @code{min} und @code{append}.  Funktionen und Operatoren k@"onnen
+mit der Funktion @mref{declare} als @mref{nary} deklariert werden.  F@"ur diese
+Funktionen ist @code{xreduce} schneller als @mref{lreduce} oder
+@mrefdot{rreduce}
 
-@c ===beg===
-@c declare (F, nary);
-@c F ([L]) := L;
-@c xreduce (F, [a, b, c, d, e]);
-@c ===end===
+Ist das optionale Argument @var{s_0} vorhanden, dann ist das Ergebnis 
+@"aquivalent zu @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
+
+Siehe auch @mrefcomma{lreduce} @mref{rreduce} und @mrefdot{tree_reduce}
+
+Beispiele:
+
+@c @code{xreduce} applied to a function known to be n-ary.
+@c @code{F} is called once, with all arguments.
+
+@code{xreduce} angewendet mit einer N-ary-Funktion.  @code{F} wird einmal mit
+allen Argumenten aufgerufen.
+
 @example
 (%i1) declare (F, nary);
 (%o1)                         done
@@ -2694,14 +2749,12 @@ Examples:
 (%o3)         [[[[[("[", simp), a], b], c], d], e]
 @end example
 
-@code{xreduce} applied to a function not known to be n-ary.
-@code{G} is called several times, with two arguments each time.
+@c @code{xreduce} applied to a function not known to be n-ary.
+@c @code{G} is called several times, with two arguments each time.
 
-@c ===beg===
-@c G ([L]) := L;
-@c xreduce (G, [a, b, c, d, e]);
-@c lreduce (G, [a, b, c, d, e]);
-@c ===end===
+@code{xreduce} angewendet mit einer Funktion, die nicht die Eigenschaft 
+@code{nary} hat.
+
 @example
 (%i1) G ([L]) := L;
 (%o1)                      G([L]) := L
