@@ -2307,11 +2307,26 @@ true;
 map(erf, [0,0.0,0.0b0,inf,minf,infinity,und,ind]);
 [0,0.0,0.0b0,1,-1,erf(infinity),erf(und),erf(ind)];
 
+limit(erf(z), z, inf);
+1;
+limit(erf(z), z, minf);
+-1;
+
 map(erfc, [0,inf,minf,infinity,und,ind]);
 [1,0,2,erfc(infinity),erfc(und),erfc(ind)];
 
+limit(erfc(z), z, inf);
+0;
+limit(erfc(z), z, minf);
+2;
+
 map(erfi, [0,inf,minf,infinity,und,ind]);
 [0,inf,minf,erfi(infinity),erfi(und),erfi(ind)];
+
+limit(erfi(z), z, inf);
+inf;
+limit(erfi(z), z, minf);
+minf;
 
 erf_generalized(z1,0);
 -erf(z1);
@@ -2330,14 +2345,22 @@ erf_generalized(0.0b0,0.0b0);
 
 erf_generalized(z1,inf);
 1-erf(z1);
+limit(erf_generalized(z1, z2), z2, inf);
+1-erf(z1);
 
 erf_generalized(z1,minf);
+-erf(z1)-1;
+limit(erf_generalized(z1, z2), z2, minf);
 -erf(z1)-1;
 
 erf_generalized(inf,z2);
 erf(z2)-1;
+limit(erf_generalized(z1, z2), z1, inf);
+erf(z2)-1;
 
 erf_generalized(minf,z2);
+erf(z2)+1;
+limit(erf_generalized(z1, z2), z1, minf);
 erf(z2)+1;
 
 /* Parity */
