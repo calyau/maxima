@@ -105,7 +105,7 @@ Nofix-Operator definiert werden.  Dann ist es m@"oglich, Maxima allein mit
 @code{quit} anstatt dem Funktionsaufruf @code{quit()} zu beenden.
 @end table
 
-Im Kapitel @nref{Nutzerdefinierte Operatoren} wird beschrieben, wie interne
+In @ref{Nutzerdefinierte Operatoren} wird beschrieben, wie interne
 Maxima-Ope@-ra@-to@-ren umdefiniert oder neue Operatoren definiert werden.
 
 @c -----------------------------------------------------------------------------
