@@ -1900,7 +1900,33 @@
       ((mexpt) $%e ((mtimes) -1 ((mexpt) z2 2)))))
   grad)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ----------------------------------------------------------------------------
+
+(defprop %erf_generalized simplim%erf_generalized simplim%function)
+
+(defun simplim%erf_generalized (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((z1 (limit (cadr expr) var val 'think))
+        (z2 (limit (caddr expr) var val 'think)))
+    (cond
+      ;; Handle infinities at this place.
+      ((or (eq z2 '$inf)
+           (alike1 z2 '((mtimes) -1 $minf)))
+       (sub 1 (take '(%erf) z1)))
+      ((or (eq z2 '$minf)
+           (alike1 z2 '((mtimes) -1 $inf)))
+       (sub (mul -1 (take '(%erf) z1)) 1))
+      ((or (eq z1 '$inf)
+           (alike1 z1 '((mtimes) -1 $minf)))
+       (sub (take '(%erf) z2) 1))
+      ((or (eq z1 '$minf)
+           (alike1 z1 '((mtimes) -1 $inf)))
+       (add (take '(%erf) z2) 1))
+      (t
+       ;; All other cases are handled by the simplifier of the function.
+       (simplify (list '(%erf_generalized) z1 z2))))))
+
+;;; ----------------------------------------------------------------------------
 
 (defun simp-erf-generalized (expr ignored simpflag)
   (declare (ignore ignored))
@@ -1908,16 +1934,24 @@
   (let ((z1 (simpcheck (cadr expr) simpflag))
         (z2 (simpcheck (caddr expr) simpflag)))
     (cond
-
+      
       ;; Check for specific values
-
+      
       ((and (zerop1 z1) (zerop1 z2)) 0)
-      ((zerop1 z1) (simplify (list '(%erf) z2)))
-      ((zerop1 z2) (mul -1 (simplify (list '(%erf) z1))))
-      ((eq z2 '$inf) (sub 1 (simplify (list '(%erf) z1))))
-      ((eq z2 '$minf) (sub (mul -1 (simplify (list '(%erf) z1))) 1))
-      ((eq z1 '$inf) (sub (simplify (list '(%erf) z2)) 1))
-      ((eq z1 '$minf) (add (simplify (list '(%erf) z2)) 1))
+      ((zerop1 z1) (take '(%erf) z2))
+      ((zerop1 z2) (mul -1 (take '(%erf) z1)))
+      ((or (eq z2 '$inf)
+           (alike1 z2 '((mtimes) -1 $minf)))
+       (sub 1 (take '(%erf) z1)))
+      ((or (eq z2 '$minf)
+           (alike1 z2 '((mtimes) -1 $inf)))
+       (sub (mul -1 (take '(%erf) z1)) 1))
+      ((or (eq z1 '$inf)
+           (alike1 z1 '((mtimes) -1 $minf)))
+       (sub (take '(%erf) z2) 1))
+      ((or (eq z1 '$minf)
+           (alike1 z1 '((mtimes) -1 $inf)))
+       (add (take '(%erf) z2) 1))
 
       ;; Check for numerical evaluation. Use erf(z1,z2) = erf(z2)-erf(z1)
 
@@ -2003,7 +2037,22 @@
      ((mtimes) z ((%erfc) z))))
   integral)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ----------------------------------------------------------------------------
+
+;(defprop %erfc simplim%erfc simplim%function)
+;
+;(defun simplim%erfc (expr var val)
+;  ;; Look for the limit of the arguments.
+;  (let ((z (limit (cadr expr) var val 'think)))
+;    (cond
+;      ;; Handle infinities at this place.
+;      ((eq z '$inf) 0)
+;      ((eq z '$minf) 2)
+;      (t
+;       ;; All other cases are handled by the simplifier of the function.
+;       (simplify (list '(%erfc) z))))))
+
+;;; ----------------------------------------------------------------------------
 
 (defun simp-erfc (expr z simpflag)
   (oneargcheck expr)
@@ -2117,7 +2166,22 @@
      ((mtimes) z ((%erfi) z))))
   integral)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ----------------------------------------------------------------------------
+
+(defprop %erfi simplim%erfi simplim%function)
+
+(defun simplim%erfi (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond
+      ;; Handle infinities at this place.
+      ((eq z '$inf) '$inf)
+      ((eq z '$minf) '$minf)
+      (t
+       ;; All other cases are handled by the simplifier of the function.
+       (simplify (list '(%erfi) z))))))
+
+;;; ----------------------------------------------------------------------------
 
 (defun simp-erfi (expr z simpflag)
   (oneargcheck expr)
