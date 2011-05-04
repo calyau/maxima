@@ -339,7 +339,7 @@ Gleichungen
 
 Lineare Algebra
 * Einf@"uhrung in die lineare Algebra::
-* Nichtkommutative Multiplikation::
+* Nicht-kommutative Multiplikation::
 * Vektoren::
 * Eigenwerte::
 * Funktionen und Variablen der linearen Algebra::

@@ -139,6 +139,7 @@
              ge-spei-chert
              Glei-chung
              Glei-chung-en
+             Glei-chungs-sys-tem
              Gleit-kom-ma-zah-len
              Glo-ba-le
              Gnuplot

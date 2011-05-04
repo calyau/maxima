@@ -2,10 +2,10 @@
 @c File        : Operators.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Operators.texi revision 1.62
+@c Original    : Operators.texi revision 14.04.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 04.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -38,31 +38,31 @@ gelesen wird.
 
 Operator  lbp rbp  Typ     Beispiel
                        
-   +      100 134  nary     a+b     ((mplus) $A $B)
-   -      100 134  prefix   -a      ((mminus) $A)
-   *      120      nary     a*b     ((mtimes) $A $B)
-   /      120 120  infix    a/b     ((mquotient) $A $B)
-   ^      140 139  infix    a^b     ((mexpt)  $A $B)
-   **     140 139  infix    a**b    ((mexpt) $A $B)
-   ^^     140 139  infix    a^^b    ((mncexpt) $A $B)
-   .      130 129  infix    a.b     ((mnctimes) $A $B)
-                                    
-   <       80  80  infix    a<b     ((mlessp) $A $B)
-   <=      80  80  infix    a<=b    ((mleqp) $A $B)
-   >       80  80  infix    a>b     ((mqreaterp) $A $B)
-   >=      80  80  infix    a>=b    ((mgeqp) $A $B)
-                                    
-   not         70  prefix   not a   ((mnot) $A)
-   and     65      nary     a and b ((mand) $A $B)
-   or      60      nary     a or b  ((mor) $A $B)
-                                    
-   #       80  80  infix    a#b     ((mnotequal) $A $B)
-   =       80  80  infix    a=b     ((mequal) $A $B)
-                                    
-   :      180  20  infix    a:b     ((msetq) $A $B)
-   ::     180  20  infix    a::b    ((mset) $A $B)
-   :=     180  20  infix    a:=b    ((mdefine) $A $B)
-   ::=    180  20  infix    a::=b   ((mdefmacro) $A $B)
+   +      100 134  nary     a+b      ((mplus) $A $B)
+   -      100 134  prefix   -a       ((mminus) $A)
+   *      120      nary     a*b      ((mtimes) $A $B)
+   /      120 120  infix    a/b      ((mquotient) $A $B)
+   ^      140 139  infix    a^b      ((mexpt)  $A $B)
+   **     140 139  infix    a**b     ((mexpt) $A $B)
+   ^^     140 139  infix    a^^b     ((mncexpt) $A $B)
+   .      130 129  infix    a.b      ((mnctimes) $A $B)
+                                     
+   <       80  80  infix    a<b      ((mlessp) $A $B)
+   <=      80  80  infix    a<=b     ((mleqp) $A $B)
+   >       80  80  infix    a>b      ((mqreaterp) $A $B)
+   >=      80  80  infix    a>=b     ((mgeqp) $A $B)
+                                     
+   not         70  prefix   not a    ((mnot) $A)
+   and     65      nary     a and b  ((mand) $A $B)
+   or      60      nary     a or b   ((mor) $A $B)
+                                     
+   #       80  80  infix    a#b      ((mnotequal) $A $B)
+   =       80  80  infix    a=b      ((mequal) $A $B)
+                                     
+   :      180  20  infix    a:b      ((msetq) $A $B)
+   ::     180  20  infix    a::b     ((mset) $A $B)
+   :=     180  20  infix    a:=b     ((mdefine) $A $B)
+   ::=    180  20  infix    a::=b    ((mdefmacro) $A $B)
 
 @end verbatim
 
@@ -81,13 +81,15 @@ Maxima unterscheidet die folgenden Typen an Operatoren:
 
 @table @emph
 @item Prefix
-Prefix-Operatoren haben einen Operanden, der dem Operator nachfolgt.  Beispiele
-sind die Operatoren @code{-} und @code{not}.
+Prefix-Operatoren sind un@"are Operatoren, die einen Operanden haben, der dem 
+Operator nachfolgt.  Beispiele sind die Operatoren @code{-} und @code{not}.
 @item Postfix
-Postfix-Operatoren haben einen Operanden, der dem Operator vorangestellt ist.
-Ein Beispiel ist der Operator @code{!} f@"ur die Fakult@"at.
+Postfix-Operatoren sind un@"are Operatoren, die einen Operanden haben, der dem 
+Operator vorangestellt ist.  Ein Beispiel ist der Operator @code{!} f@"ur die 
+Fakult@"at.
 @item Infix
-Infix-Operatoren haben zwei Operanden.  Hierzu z@"ahlen zum Beispiel der
+Infix-Operatoren, sind bin@"are Operatoren, die zwei Operanden haben.  Der
+Operator steht zwischen diesen Operanden.  Hierzu z@"ahlen zum Beispiel der
 Operator f@"ur die Exponentiation @code{^} oder der Operator f@"ur die Zuweisung
 @code{:}.
 @item N-ary
@@ -113,7 +115,7 @@ Maxima-Ope@-ra@-to@-ren umdefiniert oder neue Operatoren definiert werden.
 @section Arithmetische Operatoren
 @c -----------------------------------------------------------------------------
 
-@c --- 17.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{+} 
 @anchor{-}
 @anchor{*}
@@ -145,35 +147,38 @@ Wird der Name eines Operators in einem Ausdruck ben@"otigt, k@"onnen die
 Bezeichnungen @code{"+"}, @code{"*"}, @code{"/"} und @code{"^"} verwendet
 werden.
 
-Die Symbole @code{+} und @code{-} repr@"asentieren die un@"are Addition und
-Negation.  Die Namen der Operatoren sind @code{"+"} und @code{"-"}.
+In Ausdr@"ucken wie @code{(+a)*(-a)} oder @code{exp(-a)} repr@"asentieren die
+Operatoren @code{+} und @code{-} die un@"are Addition und Negation.  Die Namen
+der Operatoren sind @code{"+"} und @code{"-"}.
 
 Die Subtraktion @code{a - b} wird von Maxima intern als Addition
-@code{a + (- b)} dargestellt.  In der Ausgabe werden die Ausdr@"ucke
-@code{a + (- b)} als Subtraktion @code{a - b} angezeigt.  Maxima erkennt
-@code{"-"} nur als den Namen der un@"aren Negation, nicht jedoch als den
-bin@"aren Operator der Subtraktion.
+@code{a + (- b)} dargestellt.  In der Ausgabe wird der Ausdruck @code{a + (- b)}
+als Subtraktion @code{a - b} angezeigt.  Maxima erkennt @code{"-"} nur als den 
+Namen der un@"aren Negation, nicht jedoch als den bin@"aren Operator der
+Subtraktion.
 
 Die Division @code{a / b} wird von Maxima intern als Multiplikation
-@code{a * b^(- 1)} dargestellt.  In der Ausgabe werden die Ausdr@"ucke
+@code{a * b^(- 1)} dargestellt.  In der Ausgabe wird der Ausdruck
 @code{a * b^(- 1)} als Division @code{a / b} angezeigt.  Der Name des Operators
 f@"ur die Division ist @code{"/"}.
 
-Die Addition und Multiplikation sind kommutative N-ary-Operatoren.  Die Division
-und Exponentiation sind nicht-kommutative bin@"are Operatoren.
+Die Operatoren der Addition und Multiplikation sind kommutative
+N-ary-Operatoren.  Die Operatoren der  Division und Exponentiation sind
+nicht-kommutative bin@"are Operatoren.
 
-Maxima sortiert die Argumente eines kommutativen Operators und konstruiert eine
-kanonische Darstellung.  F@"ur die interne Darstellung wird die Ordnung durch
-die Aussagefunktion @mref{orderlessp} bestimmt.  F@"ur die externe Darstellung
-der Anzeige wird die Ordnung mit der Aussagefunktion @mref{ordergreatp}@w{}
-festgelegt.  Ausnahme ist die Multiplikation.  F@"ur diese sind die interne und
-die externe Darstellung identisch.
+Maxima sortiert die Operanden eines kommutativen Operators und konstruiert eine
+kanonische Darstellung.  Maxima unterscheidet die interne Sortierung von der
+externen Sortierung f@"ur die Anzeige.  Die interne Sortierung wird von der
+Aussagefunktion @mref{orderlessp} bestimmt.  Die externe Sortierung f@"ur die
+Anzeige wird mit der Aussagefunktion @mref{ordergreatp} festgelegt.  Ausnahme
+ist die Multiplikation.  F@"ur diese sind die interne und die externe
+Sortierung identisch.
 
 Arithmetische Rechnungen mit Zahlen (ganzen Zahlen, rationale Zahlen,
 Gleitkommazahlen und gro@ss{}en Gleitkommazahlen) werden als eine Vereinfachung
 und nicht als Auswertung  ausgef@"uhrt.  Mit Ausnahme der Exponentiation werden
 alle arithmetischen Operationen mit Zahlen zu Zahlen vereinfacht.  Die
-Exponentiation vereinfacht zu einer Zahl, wenn eines der Argumente eine
+Exponentiation vereinfacht zu einer Zahl, wenn einer der Operanden eine
 Gleitkommazahl ist, oder wenn das Ergebnis eine ganze oder rationale Zahl ist.
 In anderen F@"allen kann die Exponentiation zum Beispiel zu einer Wurzelfunktion
 @mref{sqrt} oder wiederum zu einer Exponentiation vereinfachen.
@@ -181,18 +186,18 @@ In anderen F@"allen kann die Exponentiation zum Beispiel zu einer Wurzelfunktion
 Bei einer arithmetischen Rechnung kann es zur Umwandlung in Gleitkommazahlen
 kommen.  Ist eines der Argumente eine gro@ss{}e Gleitkommazahl, so ist auch das
 Ergebnis eine gro@ss{}e Gleitkommazahl.  Entsprechend ist das Ergebnis eine
-einfache Gleitkommazahl, sofern mindestens eines der Argumente eine einfache
+einfache Gleitkommazahl, sofern mindestens einer der Operanden eine einfache
 Gleitkommazahl ist.  Treten nur ganze oder rationale Zahlen auf, ist das
 Ergebnis wieder eine ganze oder rationale Zahl.
 
 Da arithmetische Rechnungen Vereinfachungen und keine Auswertungen sind, werden
 arithmetische Rechnungen auch dann ausgef@"uhrt, wenn die Auswertung des
-Ausdrucks mit dem @nxref{', Quote-Operator} @code{'} unterdr@"uckt wird.
+Ausdrucks mit dem @nxref{', Quote-Operator} @code{'} unterdr@"uckt ist.
 
 Arithmetische Operatoren werden elementweise auf Listen angewendet, wenn die
 Optionsvariable @mref{listarith} den Wert @code{true} hat.  Auf Matrizen werden
-die arithmetischen Operatoren immer elementweise angewendet.  Ist eines der 
-Argumente eine Liste oder Matrix und das andere Argument hat einen anderen 
+die arithmetischen Operatoren immer elementweise angewendet.  Ist einer der
+Operanden eine Liste oder Matrix und der andere Operand hat einen anderen
 Typ, dann wird dieses Argument mit jedem Element der Liste oder Matrix
 kombiniert.
 
@@ -218,7 +223,7 @@ Operatoren sind @code{"+"} und @code{"*"}.
 (%o6)                       144 a  x
 @end example
 
-Die Division und Exponentiation sind nicht-kommutative bin@"are Operatoren.  Die 
+Division und Exponentiation sind nicht-kommutative bin@"are Operatoren.  Die 
 Namen der Operatoren sind @code{"/"} und @code{"^"}.
 
 @example
@@ -248,8 +253,8 @@ dargestellt.
                                    b
 @end example
 
-Rechnungen werden f@"ur Zahlen ausgef@"uhrt.  Ist einer der Operanden eine
-Gleitkommazahl, ist das Ergebnis ebenfalls eine Gleitkommazahl.
+Sind die Operanden Zahlen, werden die Rechnungen ausgef@"uhrt.  Ist einer der
+Operanden eine Gleitkommazahl, ist das Ergebnis ebenfalls eine Gleitkommazahl.
 
 @example
 @group
@@ -317,7 +322,7 @@ ausgef@"uhrt.  Bei Listen wird dies mit der Optionsvariablen
 @end example
 @end deffn
 
-@c --- 17.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{**}
 @deffn {Operator} **
 
@@ -344,7 +349,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 17.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{^^}
 @deffn {Operator} ^^
 @ifinfo
@@ -367,7 +372,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{.}
 @deffn {Operator} .
 @ifinfo
@@ -376,11 +381,7 @@ Beispiele:
 
 Ist der Operator der nicht-kommutativen Multiplikation von Matrizen.
 
-Siehe auch
-@mrefcomma{dot} @mrefcomma{dot0nscsimp} @mrefcomma{dot0simp}@w{}
-@mrefcomma{dot1simp} @mrefcomma{dotassoc} @mrefcomma{dotconstrules}@w{}
-@mrefcomma{dotdistrib} @mrefcomma{dotexptsimp} @mref{dotident}@w{}
-und @mrefdot{dotscrules}
+Siehe @ref{Nicht-kommutative Multiplikation}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1071,25 +1072,34 @@ Beispiel sind die Funktionen @code{"dd"} und @code{"<-"} nicht definiert.
 (%o6)                      a <- dd b
 @end example
 
-Die Maxima-Funktionen, um Operatoren zu definieren, sind in der folgenden
-Tabelle zusammengefasst.  Weiterhin sind die Standardvorgaben f@"ur den 
-linksseitigen @code{lbp} und rechtsseitigen Vorrang @code{rbp} der Operatoren
-angegeben.
+Maxima kennt die folgenden Funktionen, um Operatoren zu definieren:
+@code{prefix}, @code{postfix}, @code{infix}, @code{nary}, @code{matchfix} und
+@code{nofix}.
 
-@table @emph
-@item prefix
-rbp=180
-@item postfix
-lbp=180
-@item infix
-lbp=180, rbp=180
-@item nary
-lbp=180, rbp=180
-@item matchfix
-(Vorrang nicht anwendbar)
-@item nofix
-(Vorrang nicht anwendbar)
-@end table
+Der Vorrang eines Operators @var{op} vor anderen Operatoren leitet sich aus dem
+links- und rechtsseitigen Vorrang des Operators ab.  Sind die links- und
+rechtsseitigen Vorr@"ange von @var{op} beide gr@"o@ss{}er als der links-
+und rechtsseitige Vorrang eines anderen Operators, dann hat @var{op} 
+Vorrang vor diesem Operator.  Sind die Vorr@"ange nicht beide gr@"o@ss{}er oder
+kleiner, werden weitere Regeln zur Bestimmung des Vorrangs herangezogen.
+
+Maxima kennt die Wortart eines Operanden und des Ergebnisses eines Operanden.
+Wortart bedeutet hier, den Typ eines Operanden.  Maxima kennt die drei Typen
+@code{expr}, @code{clause} und @code{any}.  Diese stehen f@"ur einen
+algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
+Mit Hilfe der f@"ur einen Operator definierten Wortart kann der Parser beim 
+Einlesen eines Ausdrucks Syntaxfehler feststellen.
+
+Die Assoziativit@"at eines Operators @var{op} h@"angt ab von seinem Vorrang.
+Ein gr@"o@ss{}erer linksseitiger Vorrang hat zur Folge, dass der Operator
+@var{op} vor einem anderen Operator auf seiner linken Seite ausgewertet wird.
+W@"ahrend ein gr@"o@ss{}erer rechtsseitiger Vorrang zur Folge hat, dass der
+Operator vor anderen Operatoren auf der rechten Seite ausgewertet wird.  Daraus
+folgt, dass ein gr@"o@ss{}erer linksseitiger Vorrang @var{lbp} einen Operator
+@var{op} rechts-assoziativ und eine gr@"o@ss{}erer rechtsseitiger Vorrang
+@var{rbp} den Operator links-assoziativ macht.  Sind der links- und
+rechtsseitige Vorrang gleich gro@ss{}, ist der Operator @var{op}
+links-assoziativ.
 
 Mit den Befehlen @mref{remove} und @mref{kill} k@"onnen Operatoreigenschaften
 von einem Symbol entfernt werden.  @code{remove("@var{a}", op)} entfernt
@@ -1132,7 +1142,7 @@ Incorrect syntax: # is not a prefix operator
 @subsection Funktionen und Variablen f@"ur nutzerdefinierte Operatoren
 @c -----------------------------------------------------------------------------
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{infix}
 @deffn  {Funktion} infix (@var{op})
 @deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp})
@@ -1140,49 +1150,24 @@ Incorrect syntax: # is not a prefix operator
 
 Deklariert @var{op} als einen Infix-Operator.  Ein Infix-Operator hat eine 
 Funktionsdefinition mit zwei Argumenten.  Der Infix-Operator steht zwischen den
-Argumenten.  Zum Beispiel ist die Subtraktion @code{-} ein Infix-Operator.
+Operanden.  Zum Beispiel ist die Subtraktion @mref{-} ein Infix-Operator.
 
-@code{infix(@var{op})} deklariert @var{op} als einen Infix-Operator mit einer
-links- und rechtsseitigen Bindungskraft von jeweils 180.
+@code{infix(@var{op})} deklariert @var{op} als einen Infix-Operator mit einem
+links- und rechtsseitigen Vorrang von jeweils 180.
 
 @code{infix(@var{op}, @var{lbp}, @var{rbp})} deklariert @var{op} als einen
-Infix-Operator mit den angegebenen Werten f@"ur die links- und rechtsseitige 
-Bindungskraft.
+Infix-Operator mit den angegebenen Werten f@"ur den links- und rechtsseitigen
+Vorrang.
 
 @code{infix(@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
-deklariert @var{op} als einen Infix-Operator mit den angegebenen 
-Bindungskr@"aften sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} f@"ur
+deklariert @var{op} als einen Infix-Operator mit den angegebenen
+Vorr@"angen sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} f@"ur
 den linken und den rechten Operanden sowie das Ergebnis des Operators.
-
-Wortart bedeutet hier, den Typ eines Operanden.  Maxima kennt die drei Typen
-@code{expr}, @code{clause} und @code{any}.  Diese stehen f@"ur einen
-algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
-Mit Hilfe der f@"ur einen Operator definierten Wortart kann der Parser beim 
-Einlesen eines Ausdrucks Syntaxfehler feststellen.
-
-Der Vorrang eines Operators @var{op} vor anderen Operatoren leitet sich aus den
-links- und rechtsseitigen Bindungskr@"aften ab.  Sind die links- und 
-rechtsseitigen Bindungskr@"afte von @var{op} beide gr@"o@ss{}er als die links- 
-und rechtsseitige Bindungskraft eines anderen Operators, dann hat @var{op} 
-Vorrang vor dem anderen Operator.  Sind die Bindungskr@"afte nicht beide 
-gr@"o@ss{}er oder kleiner, werden weitere Regeln zur Bestimmung des Vorrangs 
-herangezogen.
-
-Die Assoziativit@"at eines Operators @var{op} h@"angt ab von seiner 
-Bindungskraft.  Eine gr@"o@ss{}ere linksseitige Bindungskraft hat zur Folge,
-dass der Operator @var{op} vor einem anderen Operator auf seiner linken Seite
-ausgewertet wird.  W@"ahrend eine gr@"o@ss{}ere rechtsseitige Bindungskraft zur 
-Folge hat, dass der Operator vor anderen Operatoren auf der rechten Seite 
-ausgewertet wird.  Daraus folgt, dass eine gr@"o@ss{}ere linksseitige 
-Bindungskraft @var{lbp} einen Operator @var{op} rechts-assoziativ und eine 
-gr@"o@ss{}ere rechtsseitige Bindungskraft @var{rbp} den Operator 
-links-assoziativ macht.  Sind die links- und rechtsseitigen Bindungskr@"afte 
-gleich gro@ss{}, ist der Operator @var{op} links-assoziativ.
 
 Beispiele:
 
-Sind die rechtsseitigen und linksseitigen Bindungskr@"afte eines Operators
-@var{op} gr@"o@ss{}er als die entsprechenden Bindungskr@"afte eines anderen 
+Sind die rechtsseitigen und linksseitigen Vorr@"ange eines Operators
+@var{op} gr@"o@ss{}er als die entsprechenden Vorr@"ange eines anderen
 Operators, dann hat der Operator @var{op} Vorrang.
 
 @example
@@ -1202,9 +1187,9 @@ Operators, dann hat der Operator @var{op} Vorrang.
 (%o5)                       (a+1,b+2)
 @end example
 
-Eine gr@"o@ss{}ere linksseitige Bindungskraft @var{lbp} bewirkt, dass der 
-Operator @var{op} rechts-assoziativ ist.  Eine gr@"o@ss{}ere rechtsseitige 
-Bindungskraft macht dagegen den Operator @var{op} links-assoziativ.
+Ein gr@"o@ss{}erer linksseitige Vorrang @var{lbp} bewirkt, dass der
+Operator @var{op} rechts-assoziativ ist.  Ein gr@"o@ss{}erer rechtsseitiger
+Vorrang macht dagegen den Operator @var{op} links-as@-so@-zia@-tiv.
 
 @example
 (%i1) infix ("##", 100, 99);
@@ -1236,7 +1221,7 @@ if x ## y then
 @end example
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{matchfix}
 @deffn  {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter})
 @deffnx {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
@@ -1261,12 +1246,6 @@ der Operator @code{+} als Matchfix-Operator definiert werden.
 definiert die Wortarten f@"ur die Argumente @var{arg_pos} und das Ergebnis
 @var{pos} sowie das linksseitige @var{ldelimiter} und rechtsseitige
 @var{rdelimiter} Begrenzungszeichen.
-
-Wortart bedeutet hier, den Type eines Operanden.  Maxima kennt die drei Typen
-@code{expr}, @code{clause} und @code{any}.  Diese stehen f@"ur einen
-algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
-Mit Hilfe der f@"ur einen Operator definierten Wortart kann der Parser beim 
-Einlesen eines Ausdrucks Syntaxfehler feststellen.
 
 Die zu einem Matchfix-Operator zugeh@"orige Funktion kann jede 
 nutzerdefinierte Funktion sein, die mit @mref{:=} oder @mref{define} definiert
@@ -1339,34 +1318,57 @@ werden.
 @end example
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{nary}
-@deffn {Funktion} nary (@var{x})
+@deffn  {Funktion} nary (@var{op})
+@deffnx {Funktion} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
+
+@code{nary(@var{op})} definiert einen @code{N-ary}-Operator @var{op} mit einem
+linksseitigen Vorrang von 180.  Der rechtsseitige Vorrang wird nicht ben@"otigt.
+
+@code{nary(@var{op}, @var{bp}, @var{arg_pos}, @var{pos})} definiert einen
+@code{N-ary}-Operator @var{op} mit einem rechtsseitigen Vorrang von @var{bp} und
+der Wortart @var{arg_pos} f@"ur den Operanden und der Wortart @var{pos} für das
+Ergebnis.
 
 Ein @code{N-ary}-Operator ist ein Operator, der eine beliebige Anzahl an 
 Argumenten haben kann.  Die Argumente werden durch den Operator voneinander 
 getrennt, so ist zum Beispiel @code{+} ein @code{N-ary}-Operator und 
-@code{A+B+C}.  Die Funktion @code{nary("x")} erm@"oglicht die Erweiterung der 
-Maxima-Syntax um einen N-ary-Operator @code{x}.  Funktionen k@"onnen als 
-N-ary-Operator deklariert werden.  @code{declare(j,nary)} deklariert den
-Operator @code{j} zu einem N-ary-Operator.  Ein Ausdruck @code{j(j(a,b),j(c,d)}
-wird in diesem Fall zu @code{j(a,b,c,d)} vereinfacht.
+@code{A+B+C}.
+
+Im Unterschied zur Definition eines Operators kann eine Funktion @code{f} auch
+als @mref{nary} mit der Funktion @mref{declare} deklariert werden.  Die
+Deklaration hat Auswirkung auf die Vereinfachung der Funktion.  Zum Beispiel
+wird ein Ausdruck @code{j(j(a,b),j(c,d)} zu @code{j(a,b,c,d)} vereinfacht.
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{nofix}
-@deffn {Funktion} nofix (@var{x})
+@deffn  {Funktion} nofix (@var{op})
+@deffnx {Funktion} nofix (@var{op}, @var{pos})
+
+@code{nofix(@var{op})} definiert den Operator @var{op} als einen Nofix-Operator.
+
+@code{nofix(@var{op}, @var{pos})} definiert einen Nofix-Operator mit der
+Wortart @var{pos} f@"ur das Ergebnis.
 
 Nofix-Operatoren sind Operatoren, die kein Argument haben.  Tritt ein solcher 
 Operator allein auf, wird die dazugeh@"orige Funktion ausgewertet.  Zum Beispiel
 beendet die Funktion @code{quit()} eine Maxima-Sitzung.  Wird diese Funktion 
-mit @code{nofix("quit")} zu einen Nofix-Operator deklariert, gen@"ugt die 
+mit @code{nofix("quit")} als ein Nofix-Operator definiert, gen@"ugt die
 Eingabe von @code{quit}, um eine Maxima-Sitzung zu beenden.
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{postfix}
-@deffn {Funktion} postfix (@var{x})
+@deffn  {Funktion} postfix (@var{op})
+@deffnx {Funktion} postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
+
+@code{postfix (@var{op})} definiert einen Postfix-Operator @var{op}.
+
+@code{postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})} definiert einen
+Postfix-Operator @var{op} mit einem linksseitigem Vorrang von @var{lbp} sowie
+den Wortarten @var{lpos} f@"ur den Operanden und @var{pos} f@"ur das Ergebnis.
 
 Ein Postfix-Operator hat einen Operanden, der dem Operator vorangestellt ist.
 Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
@@ -1374,9 +1376,16 @@ Ein Beispiel ist der @code{!}-Operator mit @code{3!}.  Die Funktion
 @code{x}.
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 04.05.2011 DK -----------------------------------------------------------
 @anchor{prefix}
-@deffn {Funktion} prefix (@var{x})
+@deffn  {Funktion} prefix (@var{op})
+@deffnx {Funktion} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
+
+@code{prefix (@var{op})} definiert einen Prefix-Operator @var{op}.
+
+@code{prefix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})} definiert einen
+Prefix-Operator @var{op} mit einem rechtsseitigem Vorrang von @var{rbp} sowie
+den Wortarten @var{rpos} f@"ur den Operanden und @var{pos} f@"ur das Ergebnis.
 
 Ein Prefix-Operator hat einen Operanden, der dem Operator nachfolgt.  Mit
 @code{prefix("x")} wird die Maxima-Syntax um einen Prefix-Operator @code{x}
