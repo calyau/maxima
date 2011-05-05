@@ -527,7 +527,7 @@ get_exps(expr, var) :=
     )
   )
   else if op(expr)="*" then xreduce("*", map(lambda([u], get_exps(u, var)), args(expr)))
-  else [expr, 1]$
+  else [[expr, 1]]$
 
 
 /**************************************************************************
