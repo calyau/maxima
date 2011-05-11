@@ -2,7 +2,9 @@
 @c File     : cobyla.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : cobyla.texi revision 20.10.2010
 @c Date     : 08.11.2010
+@c Revision : 11.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -16,15 +18,16 @@
 @c -----------------------------------------------------------------------------
 @node Introduction to cobyla, Functions and Variables for cobyla,  cobyla, cobyla
 @section Introduction to cobyla
+@c -----------------------------------------------------------------------------
 
 @code{fmin_cobyla} is a Common Lisp translation (via @code{f2cl}) of the
-Fortran constrained optimization routine COBYLA by Powell[1][2][3].  
+Fortran constrained optimization routine COBYLA by Powell[1][2][3].
 
 COBYLA minimizes an objective function F(X) subject to M inequality
 constraints of the form g(X) >= 0 on X, where X is a vector of
 variables that has N components.
 
-Equality constraints g(X)=0 can often be implemented by a pair of inequality 
+Equality constraints g(X)=0 can often be implemented by a pair of inequality
 constraints g(X)>=0 and -g(X)>= 0.  Maxima's interface to COBYLA
 allows equality constraints and internally converts the equality
 constraints to a pair of inequality constraints.
@@ -32,19 +35,18 @@ constraints to a pair of inequality constraints.
 The algorithm employs linear approximations to the
 objective and constraint functions, the approximations being formed by
 linear interpolation at N+1 points in the space of the variables.
-The interpolation points are regarded as vertices of a simplex. The
+The interpolation points are regarded as vertices of a simplex.  The
 parameter RHO controls the size of the simplex and it is reduced
-automatically from RHOBEG to RHOEND. For each RHO the subroutine tries
+automatically from RHOBEG to RHOEND.  For each RHO the subroutine tries
 to achieve a good vector of variables for the current size, and then
-RHO is reduced until the value RHOEND is reached. Therefore RHOBEG and
-RHOEND should be set to reasonable initial changes to and the required   
+RHO is reduced until the value RHOEND is reached.  Therefore RHOBEG and
+RHOEND should be set to reasonable initial changes to and the required
 accuracy in the variables respectively, but this accuracy should be
 viewed as a subject for experimentation because it is not guaranteed.
 The routine treats each constraint individually when calculating
 a change to the variables, rather than lumping the constraints together
-into a single penalty function. The name of the subroutine is derived
+into a single penalty function.  The name of the subroutine is derived
 from the phrase Constrained Optimization BY Linear Approximations.
-
 
 References:
 
@@ -61,13 +63,10 @@ Department of Applied Mathematics and Theoretical Physics,  Numerical Analysis
 Group, Report NA1998/04 from 
 @url{http://www.damtp.cam.ac.uk/user/na/reports.html}
 
-@c @opencatbox
-@c @category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package cobyla}
-@c @closecatbox
-
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla
 @section Functions and Variables for cobyla
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{fmin_cobyla}
@@ -82,22 +81,22 @@ to the variables @var{X}, subject to an optional set of constraints.
 expressions.
 
 @code{optional_args} represents additional arguments, specified as 
-@code{@var{symbol} = @var{value}}. The optional arguments recognized are:
+@code{@var{symbol} = @var{value}}.  The optional arguments recognized are:
 
 @table @code
 @item constraints
-List of inequality and equality constraints that must be satisfied by @var{X}.  
+List of inequality and equality constraints that must be satisfied by @var{X}.
 The inequality constraints must be actual inequalities of the form 
-@code{g(@var{X}) >= h(@var{X})} or @code{g(@var{X}) <= h(@var{X})}. The 
-equality constraints must be of the form @code{g(@var{X}) = h(@var{X})}. 
+@code{g(@var{X}) >= h(@var{X})} or @code{g(@var{X}) <= h(@var{X})}.  The
+equality constraints must be of the form @code{g(@var{X}) = h(@var{X})}.
 
 @item rhobeg
-Initial value of the internal RHO variable which controls the size of simplex.  
+Initial value of the internal RHO variable which controls the size of simplex.
 (Defaults to 1.0)
 
 @item rhoend 
 The desired final value rho parameter.  It is approximately the accuracy in 
-the variables. (Defaults to 1d-6.)
+the variables.  (Defaults to 1d-6.)
 
 @item iprint
 Verbose output level.  (Defaults to 0)
@@ -149,7 +148,7 @@ Return code with the following meanings
 
 This function is identical to @code{fmin_cobyla}, except that bigfloat
 operations are used, and the default value for @var{rhoend} is
-@code{10^(fpprec/2)}. 
+@code{10^(fpprec/2)}.
 
 See @code{fmin_cobyla} for more information.
 
@@ -159,14 +158,11 @@ See @code{fmin_cobyla} for more information.
 @c -----------------------------------------------------------------------------
 @node Examples for cobyla, , Functions and Variables for cobyla, cobyla
 @section Examples for cobyla
+@c -----------------------------------------------------------------------------
 
-Minimize x1*x2 with 1-x1^2-x2^2 >= 0.  
+Minimize x1*x2 with 1-x1^2-x2^2 >= 0.
 The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
-@c ===beg===
-@c load(fmin_cobyla);
-@c fmin_cobyla(x1*x2, [x1, x2], [1,1], constraints = [x1^2+x2^2<=1], iprint=1);
-@c ===end===
 @example
 (%i1) load(fmin_cobyla)$
 

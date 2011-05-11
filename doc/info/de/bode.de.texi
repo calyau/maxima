@@ -2,7 +2,9 @@
 @c File     : bode.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : bode.texi revision 28.11.2007
 @c Date     : 08.11.2010
+@c Revision : 11.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -14,13 +16,16 @@
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for bode,  , bode, bode
 @section Functions and Variables for bode
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{bode_gain}
-@deffn {Function} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+@deffn {Function} bode_gain (@var{H}, @var{range}, @dots{} @var{plot_opts} @dots{})
 
 Function to draw Bode gain plots. To use this function write first
 @code{load(bode)}. See also @mrefdot{bode_phase}
+
+Examples:
 
 Examples (1 through 7 from
 @ifnottex
@@ -103,18 +108,16 @@ Examples (1 through 7 from
 @ifnotinfo
 @image{../figures/bodegain8, 7cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Plotting} @category{Package bode}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{bode_phase}
-@deffn {Function} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+@deffn {Function} bode_phase (@var{H}, @var{range}, @dots{} @var{plot_opts} @dots{})
 
 Function to draw Bode phase plots. To use this function write first 
 @code{load(bode)}. See also @mrefdot{bode_gain}
+
+Examples:
 
 Examples (1 through 7 from
 @ifnottex
@@ -206,10 +209,6 @@ Examples (1 through 7 from
 @ifnotinfo
 @image{../figures/bodephase9, 7cm}
 @end ifnotinfo
-
-@c @opencatbox
-@c @category{Plotting} @category{Package bode}
-@c @closecatbox
 @end deffn
 
 @c --- End of file bode.de.texi ------------------------------------------------
