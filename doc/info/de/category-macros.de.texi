@@ -121,6 +121,7 @@
              aus-ge-wer-tet
              Aus-wer-tung
              be-rech-net
+             be-stimm-tes
              be-zeich-net
              Da-ten-bank
              de-fi-nier-ten

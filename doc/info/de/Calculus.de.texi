@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
-@c Revision    : 08.04.2011
+@c Revision    : 10.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -2285,11 +2285,10 @@ diese von der SLATEC Version unterscheidet.
 @c translation of QUADPACK also includes some non-automatic functions, but they 
 @c are not exposed at the Maxima level.
 
-Alle in Maxima enthaltenen QUADPACK-Funktionen versuchen automatisch ein
-bestimmtes Integral numerisch innerhalb eine spezifierten Genauigkeit zu 
-berechnen.  Die @"Ubersetzung nach Lisp enth@"alt einige weitere 
-nicht-automatische Funktionen, die jedoch nicht als Maxima Funktionen zur 
-Verf@"ugung stehen.
+Alle QUADPACK-Funktionen versuchen automatisch ein bestimmtes Integral numerisch
+innerhalb eine spezifierten Genauigkeit zu berechnen.  Die @"Ubersetzung nach
+Lisp enth@"alt einige weitere nicht-automatische Funktionen, die jedoch nicht
+als Maxima Funktionen zur Verf@"ugung stehen.
 
 @c Further information about QUADPACK can be found in the QUADPACK book
 @c @footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. 

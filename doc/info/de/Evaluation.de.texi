@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 10.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -20,9 +20,9 @@
 @section Einf@"uhrung in die Auswertung
 @c -----------------------------------------------------------------------------
 
-Im Kapitel @nref{Einf@"uhrung in die Kommandozeile} sind die vier Phasen der
-Eingabe, Auswertung, Vereinfachung und Ausgabe erl@"autert, die jede Eingabe
-des Nutzers bis zur Ausgabe auf der Konsole durchl@"auft.
+In @ref{Einf@"uhrung in die Kommandozeile} sind die vier Phasen der Eingabe, 
+Auswertung, Vereinfachung und Ausgabe erl@"autert, die jede Eingabe des Nutzers
+bis zur Ausgabe auf der Konsole durchl@"auft.
 
 Jede Eingabe eines Ausdrucks @var{expr} wird von Maxima ausgewertet.  Symbole,
 die keinen Wert haben, und Zahlen werden zu sich selbst ausgewertet.  Symbole,
@@ -54,7 +54,7 @@ werden Funktionen in einer Substantivform nicht auf die Argumente angewendet,
 jedoch werden die Argumente weiterhin ausgewertet.  Funktionen k@"onnen in
 beiden Formen auftreten.  Typische Beispiele sind die Differentiation mit der
 Funktion @mref{diff} oder die Integration mit der Funktion @mrefdot{integrate}
-Siehe zum diesem Thema auch das Kapitel @nrefdot{Substantive und Verben}
+Siehe zum diesem Thema auch @ref{Substantive und Verben}.
 
 @noindent
 Beispiele:

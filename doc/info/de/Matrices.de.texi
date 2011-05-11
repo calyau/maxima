@@ -5,7 +5,7 @@
 @c Original    : Matrices.texi revision 01.04.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 10.12.2010
-@c Revision    : 04.05.2011
+@c Revision    : 10.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -83,16 +83,12 @@ der Variablen @code{e3}.
 Verschiedene Schalter kontrollieren die Vereinfachung der nichtkommutativen
 Multiplikation. Zu diesen geh@"oren:
 
-@code{dot}, 
-@code{dot0nscsimp}, 
-@code{dot0simp}, 
-@code{dot1simp}, 
-@code{dotassoc}, 
-@code{dotconstrules}, 
-@code{dotdistrib}, 
-@code{dotexptsimp}, 
-@code{dotident} und
-@code{dotscrules}.
+@verbatim
+   dot            dot0nscsimp     dot0simp
+   dot1simp       dotassoc        dotconstrules
+   dotdistrib     dotexptsimp     dotident
+   dotscrules
+@end verbatim
 
 @c -----------------------------------------------------------------------------
 @node Vektoren, Eigenwerte, Nicht-kommutative Multiplikation, Einf@"uhrung in die lineare Algebra
@@ -174,14 +170,12 @@ Nutzers.
 @c and @code{similaritytransform}.
 
 Das Paket @code{eigen} enth@"alt die folgenden Funktionen:
-@code{innerproduct},
-@code{unitvector}, 
-@code{columnvector}, 
-@code{gramschmidt}, 
-@code{eigenvalues}, 
-@code{eigenvectors}, 
-@code{uniteigenvectors} und 
-@code{similaritytransform}.
+
+@verbatim
+   innerproduct       unitvector            columnvector
+   gramschmidt        eigenvalues           eigenvectors
+   uniteigenvectors   similaritytransform
+@end verbatim
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der linearen Algebra,  , Einf@"uhrung in die lineare Algebra, Lineare Algebra
@@ -1820,6 +1814,7 @@ Beispiele:
 @end defvr
 
 @c --- 10.12.2010 DK -----------------------------------------------------------
+@need 800
 @anchor{matrix_element_mult}
 @defvr {Optionsvariable} matrix_element_mult
 Standardwert: @code{*}
@@ -2369,14 +2364,14 @@ be a cyclic permutation of the coordinate variables.
 
 Applies simplifications and expansions according to the following global flags:
 
-@flushleft
-@code{expandall}, @code{expanddot}, @code{expanddotplus}, @code{expandcross}, 
-@code{expandcrossplus}, @code{expandcrosscross}, @code{expandgrad}, 
-@code{expandgradplus}, @code{expandgradprod}, @code{expanddiv}, 
-@code{expanddivplus}, @code{expanddivprod}, @code{expandcurl}, 
-@code{expandcurlplus}, @code{expandcurlcurl}, @code{expandlaplacian}, 
-@code{expandlaplacianplus}, and @code{expandlaplacianprod}.
-@end flushleft
+@verbatim
+expandall         expanddot             expanddotplus
+expandcross       expandcrossplus       expandcrosscross
+expandgrad        expandgradplus        expandgradprod
+expanddiv         expanddivplus         expanddivprod
+expandcurl        expandcurlplus        expandcurlcurl 
+expandlaplacian   expandlaplacianplus   expandlaplacianprod
+@end verbatim
 
 All these flags have default value @code{false}.  The @code{plus} suffix refers
 to employing additivity or distributivity.  The @code{prod} suffix refers to 

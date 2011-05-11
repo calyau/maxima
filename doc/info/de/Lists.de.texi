@@ -5,7 +5,7 @@
 @c Original    : Lists.texi revision 1.38
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 25.04.2011
+@c Revision    : 10.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -138,6 +138,8 @@ mehreren Argumenten.
 @c -----------------------------------------------------------------------------
 
 @c --- 14.03.2011 DK -----------------------------------------------------------
+@anchor{[}
+@anchor{]}
 @defvr  {Operator} [
 @defvrx {Operator} ]
 

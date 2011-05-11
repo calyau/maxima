@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 11.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1995,7 +1995,7 @@ bis @code{%pi} zur@"uck.
 @anchor{cot}
 @anchor{csc}
 @anchor{sec}
-@deffn {Funktion}  sin (@var{z})
+@deffn  {Funktion} sin (@var{z})
 @deffnx {Funktion} cos (@var{z})
 @deffnx {Funktion} tan (@var{z})
 @deffnx {Funktion} cot (@var{z})
@@ -2008,8 +2008,8 @@ Die Winkelfunktionen k@"onnen f@"ur reelle und komplexe Gleitkommazahlen in
 doppelter und in beliebiger Genauigkeit berechnet werden.  Ist das Argument 
 eine ganze oder rationale Zahl, werden die Winkelfunktionen nicht numerisch
 berechnet, sondern vereinfacht.  Die numerische Berechnung kann mit den
-Optionsvariablen und Auswertungsschaltern @mref{numer} und
-@mref{float} erzwungen werden.
+Optionsvariablen und Auswertungsschaltern @mref{numer} und @mref{float}@w{}
+erzwungen werden.
 
 Die Winkelfunktionen sind gerade oder ungerade und haben Spiegelsymmetrie.
 Maxima wendet diese Symmetrieeigenschaften automatisch bei bei der Vereinfachung
@@ -2033,7 +2033,6 @@ Die folgenden Optionsvariablen kontrollieren die Vereinfachung der
 Winkelfunktionen:
 
 @table @code
-
 @item distribute_over
 Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und ist das
 Argument der Winkelfunktion eine Matrix, Liste oder Gleichung wird die Funktion
@@ -2598,64 +2597,31 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @subsection Funktionen und Variablen f@"ur Hyperbelfunktionen
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} acosh (@var{x})
--- Areakosinus Hyperbolicus.
-@end deffn
+@deffn  {Funktion} asinh (@var{x})
+@deffnx {Funktion} acosh (@var{x})
+@deffnx {Funktion} atanh (@var{x})
+@deffnx {Funktion} acoth (@var{x})
+@deffnx {Funktion} acsch (@var{x})
+@deffnx {Funktion} asech (@var{x})
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} acoth (@var{x})
--- Areakotangens Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} acsch (@var{x})
--- Areakosekans Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} asech (@var{x})
--- Areasekans Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} asinh (@var{x})
--- Areasinus Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} atanh (@var{x})
--- Areatangens Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} cosh (@var{x})
--- Kosinus Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} coth (@var{x})
--- Kotangens Hyperbolicus.
+Die inversen Hyperbelfunktionen: Areasinus Hyperbolicus, Areakosinus
+Hyperbolicus, Areatangens Hyperbolicus, Areakotangens Hyperbolicus, Areakosekans
+Hyperbolicus, Areasekans Hyperbolicus.
 
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} csch (@var{x})
--- Kosekans Hyperbolicus.
-@end deffn
+@deffn  {Funktion} sinh (@var{x})
+@deffnx {Funktion} cosh (@var{x})
+@deffnx {Funktion} tanh (@var{x})
+@deffnx {Funktion} coth (@var{x})
+@deffnx {Funktion} csch (@var{x})
+@deffnx {Funktion} sech (@var{x})
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} sech (@var{x})
--- Sekans Hyperbolicus.
-@end deffn
+Die Hyperbelfunktionen: Sinus Hyperbolicus, Kosinus Hyperbolicus, Tangens
+Hyperbolicus, Kotangens Hyperbolicus, Kosekans Hyperbolicus, Sekans
+Hyperbolicus.
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} sinh (@var{x})
--- Sinus Hyperbolicus.
-@end deffn
-
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Funktion} tanh (@var{x})
--- Tangens Hyperbolicus.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2664,72 +2630,41 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{make_random_state}
 @deffn  {Funktion} make_random_state (@var{n})
 @deffnx {Funktion} make_random_state (@var{s})
 @deffnx {Funktion} make_random_state (true)
 @deffnx {Funktion} make_random_state (false)
-@c OMIT THIS FOR NOW. SEE COMMENT BELOW.
-@c @defunx make_random_state (@var{a})
-
-@c A random state object represents the state of the random number generator.
-@c The state comprises 627 32-bit words.
 
 Ein Zufallszustand repr@"asentiert den Zustand des Zufallszahlengenerators.  Der
 Zustand enth@"alt 627 32-Bit Worte.
-
-@c @code{make_random_state (@var{n})} returns a new random state object created 
-@c from an integer seed value equal to @var{n} modulo 2^32. @var{n} may be 
-@c negative.
 
 @code{make_random_state(@var{n})} gibt einen neuen Zufallszustand zur@"uck, der 
 aus einer ganzen Zahl @var{n} modulo 2^32 erzeugt wird.  @var{n} kann eine 
 negative Zahl sein.
 
- @c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
- @c @code{make_random_state (@var{a})} returns a new random state object
- @c created from an array @var{a}, which must be a Lisp array of 32 unsigned
- @c bytes.
-
-@c @code{make_random_state (@var{s})} returns a copy of the random state 
-@c @var{s}.
-
 @code{make_random_state(@var{s})} gibt eine Kopie des Zufallszutandes @var{s}
 zur@"uck.
 
-@c @code{make_random_state (true)} returns a new random state object, using the
-@c current computer clock time as the seed.
-
 @code{make_random_state(true)} gibt einen neuen Zufallszustand zur@"uck, der aus
 der aktuellen Systemzeit des Computers erzeugt wird.
-
-@c @code{make_random_state (false)} returns a copy of the current state of the 
-@c random number generator.
 
 @code{make_random_state(false)} gibt eine Kopie des aktuellen Zustands des
 Zufallszahlengenerators zur@"uck.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{set_random_state}
 @deffn {Funktion} set_random_state (@var{s})
 
-@c Copies @var{s} to the random number generator state.
-
 Kopiert @var{s} in den Zufallszustand des Zufallszahlengenerators.
-
-@c @code{set_random_state} always returns @code{done}.
 
 @code{set_random_state} gibt immer @code{done} zur@"uck.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{random}
 @deffn {Funktion} random (@var{x})
-
-@c Returns a pseudorandom number. If @var{x} is an integer, @code{random 
-@c (@var{x})} returns an integer from 0 through @code{@var{x} - 1} inclusive. 
-@c If @var{x} is a floating point number, @code{random (@var{x})} returns a 
-@c nonnegative floating point number less than @var{x}. @code{random} complains 
-@c with an error if @var{x} is neither an integer nor a float, or if @var{x} is 
-@c not positive.
 
 Erzeugt eine Pseudo-Zufallszahl.  Ist @var{x} eine ganze Zahl, gibt 
 @code{random(@var{x})} eine ganze Zahl im Intervall 0 bis einschlie@ss{}lich
@@ -2739,14 +2674,8 @@ Erzeugt eine Pseudo-Zufallszahl.  Ist @var{x} eine ganze Zahl, gibt
 ganze Zahl noch eine Gleitkommazahl ist oder wenn @var{x} eine negative Zahl 
 ist.
 
-@c The functions @code{make_random_state} and @code{set_random_state} maintain 
-@c the state of the random number generator.
-
 Die Funktionen @code{make_random_state} und @code{set_random_state} verwalten
 den Zustand des Zufallszahlengenerators.
-
-@c The Maxima random number generator is an implementation of the Mersenne 
-@c twister MT 19937.
 
 Der Maxima-Zufallszahlengenerator ist eine Implementation des Mersenne twister
 MT 19937.
@@ -2779,7 +2708,6 @@ Beispiele:
 (%i13) random (100.0);
 (%o13)                  32.28666704056853
 @end example
-
 @end deffn
 
 @c --- End of file MathFunctions.de.texi ---------------------------------------
