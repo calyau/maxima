@@ -5,7 +5,7 @@
 @c Original    : Simplification.texi revision 1.27
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 11.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -20,12 +20,88 @@
 @section Einf@"uhrung in die Vereinfachung
 @c -----------------------------------------------------------------------------
 
+Nach der Auswertung einer Eingabe, die in @ref{Auswertung} beschrieben ist,
+schlie@ss{}t sich die Vereinfachung eines Ausdrucks an.  Mathematische
+Funktionen mit denen symbolisch gerechnet werden kann, werden nicht ausgewertet,
+sondern vereinfacht.  Mathematische Funktionen werden intern von Maxima in einer
+Substantivform dargestellt.  Auch Ausdr@"ucke mit den arithmetischen Operatoren
+werden vereinfacht.  Numerische Rechnungen wie die Addition oder Multiplikation
+sind daher keine Auswertung, sondern eine Vereinfachung.  Die Auswertung eines
+Ausdrucks kann mit dem @mxref{', Quote-Operator} @code{'} unterdr@"uckt werden.
+Entsprechend kann die Vereinfachung eines Ausdrucks mit der Optionsvariablen
+@mref{simp} kontrolliert werden.
+
+Beispiele:
+
+Im ersten Beispiel wird die Auswertung mit dem Quote-Operator unterdr@"uckt.
+Das Ergebnis ist eine Substantivform f@"ur die Ableitung.  Im zweiten Beispiel
+ist die Vereinfachung unterdr@"uckt.  Die Ableitung wird ausgef@"uhrt, da es
+sich um eine Auswertung handelt.  Das Ergebnis wird jedoch nicht zu @code{2*x} 
+vereinfacht.
+
+@example
+(%i1) 'diff(x*x,x);
+                             d    2
+(%o1)                        -- (x )
+                             dx
+(%i2) simp:false;
+(%o2)                         false
+(%i3) diff(x*x,x);
+(%o3)                       1 x + 1 x
+@end example
+
+F@"ur jede mathematischen Funktion oder Operator hat Maxima intern eine eigene
+Routine, die f@"ur die Vereinfachung aufgerufen wird, sobald die Funktion oder
+der Operator in einem Ausdruck auftritt.  Diese Routinen implementieren
+Symmetrieeigenschaften, spezielle Funktionswerte oder andere Eigenschaften und
+Regeln.  Mit einer Vielzahl von Optionsvariablen kann Einfluss auf die
+Vereinfachung der Funktionen und Operatoren genommen werden.
+
+Beispiel:
+
+Die Vereinfachung der Exponentialfunktion @mref{exp} wird von den folgenden
+Optionsvariablen kontrolliert: @mrefcomma{%enumer} @mrefcomma{%emode}@w{}
+@mrefcomma{%e_to_numlog} @mrefcomma{radexpand} @mrefcomma{logsimp} und
+@mrefdot{demoivre}  Im ersten Beispiel wird der Ausdruck mit der 
+Exponentialfunktion nicht vereinfacht.  Im zweiten Beispiel vereinfacht
+Maxima ein Argument @code{%i*%pi/2}.
+
+@example
+(%i1) exp(x+%i*%pi/2), %emode:false;
+                                %i %pi
+                            x + ------
+                                  2
+(%o1)                     %e
+(%i2) exp(x+%i*%pi/2), %emode:true;
+                                  x
+(%o2)                        %i %e
+@end example
+
+Zus@"atzlich zu der Vereinfachung von einzelnen mathematischen Funktionen und
+Operatoren, die automatisch von Maxima ausgef@"uhrt werden, kennt Maxima
+Funktionen wie @mref{expand} oder @mrefcomma{radcan} die auf Ausdr@"ucke
+angewendet werden, um spezielle Vereinfachungen vorzunehmen.
+
+Beispiel:
+
+@example
+(%i1) (log(x+x^2)-log(x))^a/log(1+x)^(a/2);
+                           2               a
+                     (log(x  + x) - log(x))
+(%o1)                -----------------------
+                                    a/2
+                          log(x + 1)
+(%i2) radcan(%);
+                                    a/2
+(%o2)                     log(x + 1)
+@end example
+
 Einem Operator oder einer Funktion k@"onnen Eigenschaften wie linear oder 
 symmetrisch gegeben werden.  Maxima ber@"ucksichtigt diese Eigenschaften bei der
 Vereinfachung eines Ausdrucks.  Zum Beispiel wird mit dem Kommando 
 @code{declare(f, oddfun)} eine Funktion als ungerade definiert.  Maxima 
-vereinfacht dann jedes Auftreten eines Ausdrucks @code{f(-x)} zu @code{-f(x)}. 
-Ensprechend vereinfacht Maxima @code{f(-x)} zu @code{f(x)}, wenn die Funktion 
+vereinfacht dann jedes Auftreten eines Ausdrucks @code{f(-x)} zu @code{-f(x)}.
+Entsprechend vereinfacht Maxima @code{f(-x)} zu @code{f(x)}, wenn die Funktion 
 als gerade definiert wurde.
 
 Die folgenden Eigenschaften sind in der Liste @mref{opproperties} enthalten und
@@ -37,6 +113,29 @@ kontrollieren die Vereinfachung von Funktionen und Operatoren:
    commutative     multiplicative   rassociative
    evenfun         nary             symmetric
 @end verbatim
+
+Dar@"uber hinaus haben auch die Fakten und die Eigenschaften des aktuellen
+Kontextes Einfluss auf die Vereinfachung von Ausdr@"ucken.  Siehe dazu die
+Ausf@"uhrungen in @ref{Maximas Datenbank}.
+
+Beispiel:
+
+Die Sinusfunktion vereinfacht f@"ur ein ganzzahliges Vielfaches von @code{%pi}
+zum Wert @code{0}.  Erh@"alt das Symbol @code{n} die Eigenschaft @code{integer},
+wird die Sinusfunktion entsprechend vereinfacht.
+
+@example
+(%i1) sin(n*%pi);
+(%o1)                      sin(%pi n)
+(%i2) declare(n, integer);
+(%o2)                         done
+(%i3) sin(n*%pi);
+(%o3)                           0
+@end example
+
+F@"uhren alle oben genannten M@"oglichkeiten nicht zu dem gew@"unschten
+Ergebnis, kann der Nutzer Maxima um weitere Regeln f@"ur die Vereinfachung
+erweitern.  Diese M@"oglichkeiten werden in @ref{Muster und Regeln} erl@"autert.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur die Vereinfachung, , Einf@"uhrung in die Vereinfachung, Vereinfachung
@@ -153,10 +252,11 @@ hyperbolische Funktionen in eine Exponentialform zu konvertieren.
 @anchor{function_distrib}
 @deffn {Funktion} distrib (@var{expr})
 
-Summen werden ausmultipliziert.  Im Unterschied zu @mref{expand} wird
-@code{distrib} nur auf der obersten Ebene eines Ausdruckes angewendet und ist 
-daher schneller als @code{expand}.  Im Unterschied zu @mref{multthru} werden
-die Summen der obersten Ebenen vollst@"andig ausmultipliziert.
+Summen werden ausmultipliziert.  Im Unterschied zu der Funktion
+@mref{expand} wird @code{distrib} nur auf der obersten Ebene eines Ausdruckes
+angewendet und ist daher schneller als @code{expand}.  Im Unterschied zu der
+Funktion @mref{multthru} werden die Summen der obersten Ebenen vollst@"andig
+ausmultipliziert.
 
 Beispiele:
 
@@ -182,14 +282,12 @@ Beispiele:
 Standardwert: @code{true}
 
 Die Optionsvariable @code{distribute_over} kontrolliert die Anwendung von 
-Funktionen auf Listen, Matrizen oder Gleichungen.
-
-Diese Eigenschaft wird nicht angewendet, wenn @code{distribute_over} den Wert
-@code{false} hat.
+Funktionen auf Listen, Matrizen oder Gleichungen.  Diese Eigenschaft wird nicht 
+angewendet, wenn @code{distribute_over} den Wert @code{false} hat.
 
 Beispiele:
 
-Die Funktion @mref{sin} wird auf eine Liste angewendet:
+Die Funktion @mref{sin} wird auf eine Liste angewendet.
 
 @example
 (%i1) sin([x,1,1.0]);
@@ -197,7 +295,7 @@ Die Funktion @mref{sin} wird auf eine Liste angewendet:
 @end example
 
 Die Funktion @mref{mod} hat zwei Argumente, die auf Listen angewendet werden
-kann.  Die Funktion kann auch auf verschachtelte Listen angewendet werden:
+kann.  Die Funktion kann auch auf verschachtelte Listen angewendet werden.
 
 @example
 (%i2) mod([x,11,2*a],10);
@@ -206,7 +304,7 @@ kann.  Die Funktion kann auch auf verschachtelte Listen angewendet werden:
 (%o3)       [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
 @end example
 
-Anwendung der Funktion @mref{floor} auf eine Matrix und eine Gleichung:
+Anwendung der Funktion @mref{floor} auf eine Matrix und eine Gleichung.
 
 @example
 (%i4) floor(matrix([a,b],[c,d]));
@@ -218,7 +316,7 @@ Anwendung der Funktion @mref{floor} auf eine Matrix und eine Gleichung:
 @end example
 
 Funktionen mit mehreren Argumenten k@"onnen auf Listen f@"ur eines der Argumente
-oder alle Argumente angewendet werden:
+oder alle Argumente angewendet werden.
 
 @example
 (%i6) expintegral_e([1,2],[x,y]);
@@ -315,57 +413,51 @@ Beispiele:
 
 @example
 (%i1) expr:(x+1)^2*(y+1)^3;
-                                      2        3
-(%o1)                          (x + 1)  (y + 1)
-@group
+                               2        3
+(%o1)                   (x + 1)  (y + 1)
 (%i2) expand(expr);
        2  3        3    3      2  2        2      2      2
 (%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
-                                                 2
-                                + 6 x y + 3 y + x  + 2 x + 1
-@end group
+                                                      2
+                                     + 6 x y + 3 y + x  + 2 x + 1
 (%i3) expand(expr,2);
-                      2        3              3          3
-(%o3)                x  (y + 1)  + 2 x (y + 1)  + (y + 1)
-
+               2        3              3          3
+(%o3)         x  (y + 1)  + 2 x (y + 1)  + (y + 1)
 (%i4) expr:(x+1)^-2*(y+1)^3;
-                                          3
-                                   (y + 1)
-(%o4)                              --------
-                                          2
-                                   (x + 1)
-(%i5) expand(expr);
 @group
-               3               2
-              y             3 y            3 y             1
-(%o5)    ------------ + ------------ + ------------ + ------------
-          2              2              2              2
-         x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
+                                   3
+                            (y + 1)
+(%o4)                       --------
+                                   2
+                            (x + 1)
 @end group
-
-(%i6) expand(expr,2,2);
-                                          3
-                                   (y + 1)
-(%o6)                            ------------
-                                  2
-                                 x  + 2 x + 1
+(%i5) expand(expr);
+            3               2
+           y             3 y            3 y             1
+(%o5) ------------ + ------------ + ------------ + ------------
+       2              2              2              2
+      x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
+(%i6) expand(expr, 2, 2);
+                                   3
+                            (y + 1)
+(%o6)                     ------------
+                           2
+                          x  + 2 x + 1
 @end example
 
 Vereinfache einen Ausdruck erneut:
 
 @example
 (%i7) expr:(1+x)^2*sin(x);
-                                       2
-(%o7)                           (x + 1)  sin(x)
+                                2
+(%o7)                    (x + 1)  sin(x)
 (%i8) exponentialize:true;
-(%o8)                                true
-(%i9) expand(expr,0,0);
-@group
-                                   2    %i x     - %i x
-                         %i (x + 1)  (%e     - %e      )
-(%o9)                  - -------------------------------
-                                        2
-@end group
+(%o8)                         true
+(%i9) expand(expr, 0, 0);
+                            2    %i x     - %i x
+                  %i (x + 1)  (%e     - %e      )
+(%o9)           - -------------------------------
+                                 2
 @end example
 @end deffn
 
@@ -380,7 +472,7 @@ frei von den Variablen sind.  @var{x_1}, @dots{}, @var{x_n} k@"onnen Variable,
 Operatoren oder Ausdr@"ucke sein.
 
 Standardm@"a@ss{}ig wird der Nenner eines rationalen Ausdrucks nicht expandiert.
-Dies kann mit dem Flag @mref{expandwrt_denom} kontrolliert werden.
+Dies kann mit der Optionsvariablen @mref{expandwrt_denom} kontrolliert werden.
 
 Die Funktion wird automatisch aus der Datei @file{simplification/stopex.mac}
 geladen.
@@ -401,10 +493,10 @@ Z@"ahler und der Nenner eines rationalen Ausdrucks expandiert.  Ist der Wert
 @anchor{expandwrt_factored}
 @deffn {Funktion} expandwrt_factored (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-Ist vergleichbar mit @mref{expandwrt}, behandelt aber Ausdr@"ucke verschieden,
-die Produkte enthalten.  @code{expandwrt_factored} expandiert nur die Faktoren 
-im Ausdruck @code{expr}, die die Variablen @var{x_1}, @dots{}, @var{x_n} 
-enthalten.
+Ist vergleichbar mit der Funktion @mref{expandwrt}, behandelt aber Ausdr@"ucke 
+verschieden, die Produkte enthalten.  @code{expandwrt_factored} expandiert nur
+die Faktoren im Ausdruck @code{expr}, die die Variablen @var{x_1}, @dots{},
+@var{x_n} enthalten.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -477,6 +569,7 @@ Linearit@"at f@"ur das erste Argument definiert.  Zum Beispiel wird
 @code{linear} ist @"aquivalent zu @mref{additive} und @mrefdot{outative}  Siehe
 auch @mref{opproperties} und die Funktion @mrefdot{declare}
 
+@need 800
 Beispiel:
 
 @example
