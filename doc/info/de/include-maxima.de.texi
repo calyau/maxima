@@ -47,6 +47,8 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
+@paragraphindent 0
+
 @include category-macros.de.texi
 
 @titlepage
