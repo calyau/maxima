@@ -672,7 +672,7 @@ nor Gnuplot is not recognized by maxima"))))
     (setq res (apply (symbol-function '$draw)
 		     (append
 		      `(
-			((mequal simp) $terminal $eps)
+			((mequal simp) $terminal $eps_color)
                         ((mequal simp) $dimensions
                                        ((mlist simp)
                                         ;; convert points to 1/100 of cm
