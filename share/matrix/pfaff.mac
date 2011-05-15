@@ -1,5 +1,4 @@
 ttyoff:true$
-declare(pfaffm,special)$
 pfaffian(integ,list):=block([sgn:-1,ans:0,pdum,ldum],
   if not (listp(list)
 	  and integerp(integ)

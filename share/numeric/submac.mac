@@ -57,8 +57,6 @@ gensym_conventionp(x):=
     getcharn(x,2)=parameter(getcharn('_,1)) then true
     else false$
 
-eval_when(translate,declare(%_gensyms,special))$
-
 %_check(exp):=if atom(exp)
                  then( if gensym_conventionp(exp) and not(member(exp,%_gensyms))
 			  then push(exp,%_gensyms))

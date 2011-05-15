@@ -36,7 +36,6 @@
     if matrixp (exp) or listp (exp) or setp (exp) or trigrat_equationp (exp)
     then map (trigrat, exp)
     else block([e,n,d,lg,f,lexp,ls,d2,l2,alg,gcd1],
-		declare(d2,special,lg,special,lexp,special),
 		alg:algebraic,gcd1:gcd,
 		algebraic:true,gcd:subres,
 		e: rat(ratsimp(exponentialize(exp))),

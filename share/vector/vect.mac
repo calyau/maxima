@@ -86,7 +86,6 @@ vect_cross: true$
 ev_diff(_expr_):=apply('ev,[_expr_,'diff])$
 
 
-declare(jacobian,special)$
 scalefactors(transformation) := block(
    if listp(first(transformation)) then (
       coordinates: rest(transformation),

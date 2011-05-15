@@ -22,7 +22,7 @@ EVAL_WHEN(TRANSLATE,PACKAGEFILE:TRUE,SAVEDEF:FALSE,TRANSCOMPILE:TRUE)$ */
 
 defar('name,'argl,'body)=>
  (name(splice(argl)):=
-  block([%_val:block([?evarrp:true],declare(?evarrp,special),name[splice(argl)])],
+  block([%_val:block([?evarrp:true],name[splice(argl)])],
 	if %_val='?notexist then 
            (%_val:body,name[splice(argl)]:%_val,%_val)
          else %_val),

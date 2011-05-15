@@ -1,4 +1,3 @@
-declare([a,b],special)$
 define_variable(sinnpiflag,true,boolean)$
 define_variable(cosnpiflag,true,boolean)$
 

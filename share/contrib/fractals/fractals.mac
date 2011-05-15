@@ -151,7 +151,6 @@ the computing time is also related with the number of grid points.
 */
 
 julia_parameter:%i$
-declare (julia_parameter, special)$
 julia_set(x,y):=block([zz:x+%i*y,nn:1], while (nn<30 and abs(zz)<100) do (zz:rectform(zz*zz+julia_parameter),nn:nn+1),nn ) $
 compile(julia_set)$
 
