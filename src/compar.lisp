@@ -1748,7 +1748,7 @@ relational knowledge is contained in the default context GLOBAL.")
           ind))
         ;; Properties not related to the assume database.
         ((and (member ind opers) (get e ind)))
-        ((and (member ind '($evfun $evflag $bindtest $special $nonarray))
+        ((and (member ind '($evfun $evflag $bindtest $nonarray))
               (get e (stripdollar ind))))
         ((and (eq ind '$noun)
               (get e (stripdollar ind))

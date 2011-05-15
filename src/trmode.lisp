@@ -43,9 +43,7 @@
 (def%tr $define_variable (form)	;;VAR INIT MODE.
   (cond ((> (length form) 3)
 	 (destructuring-let (((var val mode) (cdr form)))
-			    (let ((spec-form `(($declare) ,var $special))
-				  (mode-form `(($modedeclare) ,var ,mode)))
-			      (translate spec-form)
+			    (let ((mode-form `(($modedeclare) ,var ,mode)))
 			      (translate mode-form)
 			      (push-pre-transl-form
 			       ;; POSSIBLE OVERKILL HERE
@@ -66,7 +64,6 @@
 					   #+gcl (compile load eval)
 					   #-gcl (:compile-toplevel :load-toplevel :execute)
 					   (meval* ',mode-form)
-					   (meval* ',spec-form)
 					   ,(if (not (eq mode '$any))
 						`(defprop ,var assign-mode-check assign))
 					   (def-mtrvar ,(cadr form) ,(dtranslate (caddr form))))))))
@@ -87,7 +84,6 @@
   (unless (symbolp (car l))
     (merror "First arg to `define_variable' not a symbol."))
   (meval `(($modedeclare) ,(car l) ,(caddr l)))
-  (meval `(($declare) ,(car l) $special))
   (unless (eq (caddr l) '$any)
     (putprop (car l) 'assign-mode-check 'assign))
   (if (mseemingly-unbound (car l))
