@@ -5,12 +5,12 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 11.05.2011
+@c Revision    : 16.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@menu 
+@menu
 * Funktionen f@"ur Zahlen::
 * Funktionen f@"ur komplexe Zahlen::
 * Funktionen der Kombinatorik::
@@ -34,7 +34,7 @@ symbolische Rechnungen geeignet.  Ist das Argument @var{expr} eine reelle oder
 komplexe Zahl wird der Betrag berechnet.  Wenn m@"oglich werden allgemeine
 Ausdr@"ucke mit der Betragsfunktion vereinfacht.  Maxima kann Ausdr@"ucke mit
 der Betragsfunktion integrieren und ableiten sowie Grenzwerte von Ausdr@"ucken
-mit der Betragsfunktion ermitteln.  Siehe auch @mrefcomma{diff}@ 
+mit der Betragsfunktion ermitteln.  Siehe auch @mrefcomma{diff}@w{}
 @mref{integrate} und @mrefdot{limit}  Das Paket @mref{abs_integrate} erweitert
 Maximas M@"oglichkeiten, Integrale mit der Betragsfunktion zu berechnen.
 
@@ -43,13 +43,13 @@ sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
 @mrefdot{distribute_over}
 
 Siehe die Funktion @mrefcomma{cabs} um den Betrag eines komplexen Ausdrucks
-oder Funktion zu berechnen.
+oder Funktion zu l@"osen.
 
 Beispiele:
 
 Berechnung des Betrages f@"ur reelle und komplexen Zahlen sowie numerische
 Konstanten und unendliche Gr@"o@ss{}en.  Das erste Beispiel zeigt, wie die
-Betragsfunktion von Maxima auf die Elemente einer Liste angewendet werden.
+Betragsfunktion von Maxima auf die Elemente einer Liste angewendet wird.
 
 @example
 (%i1) abs([-4, 0, 1, 1+%i]);
@@ -83,7 +83,7 @@ Vereinfachung von Ausdr@"ucken mit der Betragsfunktion.
 Ableitung und Integrale mit der Betragsfunktion.  Wird das Paket
 @nref{abs_integrate} geladen, k@"onnen weitere Integrale mit der Betragsfunktion
 gel@"ost werden.  Das letzte Beispiel zeigt die Laplacetransformation der
-Betragsfunktion.
+Betragsfunktion.  Siehe auch @mrefdot{laplace}
 
 @example
 (%i9) diff(x*abs(x),x),expand;
@@ -141,14 +141,15 @@ in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{ceiling}
 kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{ceiling} um drei Stellen erh@"oht.
 
-Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
-insbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
-Ausdruck mit den Funktionen @mref{floor} oder @mref{round} ist.  Weiterhin
-werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
-herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
-
 Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
 Substantivform zur@"uckgegeben.
+
+Wenn m@"oglich werden Ausdr@"ucke mit der Funktion @code{ceiling} von Maxima
+vereinfacht.  Maxima kennt insbesondere Vereinfachungen f@"ur den Fall, dass
+das Argument der Funktion @code{ceiling} ein Ausdruck mit den Funktionen
+@mref{floor} oder @mref{round} ist.  Weiterhin werden f@"ur die Vereinfachung
+die Aussagen und Fakten der aktiven Kontexte herangezogen.  Siehe 
+@ref{Funktionen und Variablen f@"ur Fakten}.
 
 @code{ceiling} wird automatisch auf die Elemente von Listen und Matrizen
 sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
@@ -220,14 +221,15 @@ in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{floor}
 kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{floor} um drei Stellen erh@"oht.
 
-Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
-insbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
-Ausdruck mit den Funktionen @mref{ceiling} oder @mref{round} ist.  Weiterhin
-werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
-herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
-
 Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
 Substantivform zur@"uckgegeben.
+
+Wenn m@"oglich werden Ausdr@"ucke mit der Funktion @code{floor} von Maxima
+vereinfacht.  Maxima kennt insbesondere Vereinfachungen f@"ur den Fall, dass
+das Argument der Funktion @code{floor} ein Ausdruck mit den Funktionen
+@mref{ceiling} oder @mref{round} ist.  Weiterhin werden f@"ur die Vereinfachung
+die Aussagen und Fakten der aktiven Kontexte herangezogen.  Siehe
+@ref{Funktionen und Variablen f@"ur Fakten}.
 
 @code{floor} wird automatisch auf die Elemente von Listen und Matrizen
 sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
@@ -287,8 +289,9 @@ Maxima kennt das Integral der Funktion @code{floor}.
 
 Ist das Argument @var{L} eine Liste oder Menge, wird die Funktion @mref{max} auf
 die Elemente der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.
-Ist @var{L} keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
+Ist @var{L} keine Liste oder Menge, signalisiert Maxima einen Fehler.
 
+@need 600
 Beispiel:
 
 @example
@@ -305,7 +308,7 @@ Beispiel:
 
 Ist das Argument @var{L} eine Liste oder Menge, wird die Funktion @mref{min} auf
 die Elemente der Liste oder Menge angewendet und das Ergebnis zur@"uckgegeben.
-Ist @var{L} keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
+Ist @var{L} keine Liste oder Menge, signalisiert Maxima einen Fehler.
 
 Beispiel:
 
@@ -324,10 +327,9 @@ Beispiel:
 Sind alle Argumente @var{x_1}, @dots{}, @var{x_n} Zahlen oder konstante
 Ausdr@"ucke wie zum Beispiel @code{1+%e} oder @code{sin(1)}, dann wird der
 gr@"o@ss{}te Zahlenwert zur@"uckgegeben.  Treten symbolische Argumente oder
-Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.
-
-Die unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
-auftreten und werden von @code{max} korrekt behandelt.
+Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.  Die
+unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
+auftreten.
 
 Die Vereinfachung der Funktion @code{max} kann kontrolliert werden, in dem mit
 der Funktion @mref{put} dem Symbol @code{trylevel} zu der Eigenschaft
@@ -342,16 +344,16 @@ keine besonderen Vereinfachungen aus.
 Maxima wendet die Vereinfachung @code{max(e,-e) --> |e|} an.
 @item put(trylevel, 3, maxima)
 Maxima wendet die Vereinfachung @code{max(e,-e) --> |e|} an und versucht
-Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So
-wird zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht.
+Ausdr@"ucke zu eliminieren, die zwischen zwei anderen Argumenten liegen.  So
+wird zum Beispiel @code{max(x, 2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht.
 @end table
 
 Mit dem Kommando @code{get(trylevel, maxmin)} wird der aktuelle Wert f@"ur
 das Symbol @code{trylevel} angezeigt.  Siehe die Funktion @mrefdot{get}
 
-@code{max} ber@"ucksichtigt bei der Vereinfachung von Ausdr@"ucken die Aussagen
-und Fakten der aktiven Kontexte.  Siehe das Kapitel 
-@nrefdot{Funktionen und Variablen f@"ur Fakten}
+@code{max} ber@"ucksichtigt bei der Vereinfachung von Ausdr@"ucken die
+Aussagen und Fakten der aktiven Kontexte.  Siehe das Kapitel
+@ref{Funktionen und Variablen f@"ur Fakten}.
 
 Beispiele:
 
@@ -370,6 +372,10 @@ Beispiele:
 (%o4)                        %e + 1
 (%i5) max(minf,inf);
 (%o5)                          inf
+(%i6) assume(a>b);
+(%o6)                        [a > b]
+(%i7) max(a,b);
+(%o7)                           a
 @end example
 @end deffn
 
@@ -380,33 +386,32 @@ Beispiele:
 Sind alle Argumente @var{x_1}, @dots{}, @var{x_n} Zahlen oder konstante
 Ausdr@"ucke wie zum Beispiel @code{1+%e} oder @code{sin(1)}, dann wird der
 kleinste Zahlenwert zur@"uckgegeben.  Treten symbolische Argumente oder
-Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.
+Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.  Die
+unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
+auftreten.
 
-Die unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
-auftreten und werden von @code{min} korrekt behandelt.
-
-Die Vereinfachung der Funktion @code{mmin} kann kontrolliert werden, in dem mit
+Die Vereinfachung der Funktion @code{min} kann kontrolliert werden, in dem mit
 der Funktion @mref{put} dem Symbol @code{trylevel} zu der Eigenschaft
 @code{maxmin} ein Wert zwischen 1 bis 3 gegeben wird.  Folgende Werte k@"onnen
 mit der Funktion @code{put} gesetzt werden:
 
 @table @code
 @item put(trylevel, 1, maxmin)
-@code{trylevel} hat den Wert 1.  Das ist der Standardwert.  Maxima f@"uhrt keine
-besonderen Vereinfachungen aus.
+@code{trylevel} hat den Wert 1.  Das ist der Standardwert.  Maxima f@"uhrt
+keine besonderen Vereinfachungen aus.
 @item put(trylevel, 2, maxmin)
 Maxima wendet die Vereinfachung @code{min(e,-e) --> |e|} an.
 @item put(trylevel, 3, maxima)
 Maxima wendet die Vereinfachung @code{min(e,-e) --> |e|} an und versucht
-Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen.  So
-wird zum Beispiel @code{min(x,2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht.
+Ausdr@"ucke zu eliminieren, die zwischen zwei anderen Argumenten liegen.  So
+wird zum Beispiel @code{min(x, 2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht.
 @end table
 
 Mit dem Kommando @code{get(trylevel, maxmin)} wird der aktuelle Wert f@"ur
 das Symbol @code{trylevel} angezeigt.  Siehe die Funktion @mrefdot{get}
 
-@code{min} ber@"ucksichtigt bei der Vereinfachung von Ausdr@"ucken die Aussagen
-und Fakten der aktiven Kontexte.  Siehe das Kapitel 
+@code{min} ber@"ucksichtigt bei der Vereinfachung von Ausdr@"ucken die
+Aussagen und Fakten der aktiven Kontexte.  Siehe das Kapitel
 @nrefdot{Funktionen und Variablen f@"ur Fakten}
 
 Beispiele:
@@ -424,6 +429,10 @@ Beispiele:
 (%o4)                           3
 (%i5) min(minf,inf);
 (%o5)                         minf
+(%i6) assume(a>b);
+(%o6)                        [a > b]
+(%i7) min(a,b);
+(%o7)                           b
 @end example
 @end deffn
 
@@ -447,14 +456,15 @@ in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{round}
 kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{round} um drei Stellen erh@"oht.
 
-Wenn m@"oglich werden andere Ausdr@"ucke von Maxima vereinfacht.  Maxima kennt
-insbesondere Vereinfachungen f@"ur den Fall, dass das Argument @var{expr} ein
-Ausdruck mit den Funktionen @mref{ceiling} oder @mref{floor} ist.  Weiterhin
-werden f@"ur die Vereinfachung die Aussagen und Fakten der aktiven Kontexte
-herangezogen.  Siehe das Kapitel @nrefdot{Funktionen und Variablen f@"ur Fakten}
-
 Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
 Substantivform zur@"uckgegeben.
+
+Wenn m@"oglich werden Ausdr@"ucke mit der Funktion @code{round} von Maxima
+vereinfacht.  Maxima kennt insbesondere Vereinfachungen f@"ur den Fall, dass
+das Argument der Funktion @code{round} ein Ausdruck mit den Funktionen
+@mref{ceiling} oder @mref{floor} ist.  Weiterhin werden f@"ur die Vereinfachung
+die Aussagen und Fakten der aktiven Kontexte herangezogen.  Siehe 
+@ref{Funktionen und Variablen f@"ur Fakten}.
 
 @code{round} wird automatisch auf die Elemente von Listen und Matrizen
 sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
@@ -591,7 +601,7 @@ die Arcustangensfunktion @mref{atan2} enthalten.
 @code{cabs} wird automatisch auf die Elemente von Listen und Matrizen sowie auf
 die beiden Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
 
-Siehe auch die Funktionen @mrefcomma{rectform} @mrefcomma{realpart}@ 
+Siehe auch die Funktionen @mrefcomma{rectform} @mrefcomma{realpart}@w{}
 @mrefcomma{imagpart} @mrefcomma{carg} @mrefcomma{conjugate} und 
 @mref{polarform} f@"ur das Rechnen mit komplexen Zahlen.
 
@@ -828,8 +838,10 @@ Die allgemeine Polarform eines komplexen Ausdrucks.  Die Variablen @var{x} und
 
 @example
 (%i1) polarform(x+%i*y);
+@group
                        2    2    %i atan2(y, x)
 (%o1)            sqrt(y  + x ) %e
+@end group
 @end example
 
 Die Polarform einer komplexen Zahl und eines Ausdrucks mit einer reellen 
@@ -875,7 +887,7 @@ verhindert, dass Maxima komplexe Ausdr@"ucke mit der Exponentialfunktion
 @anchor{realpart}
 @deffn {Funktion} realpart (@var{expr})
 
-Gibt den Realteil des Ausrucks @var{expr} zur@"uck.  Intern berechnet Maxima
+Gibt den Realteil des Ausdrucks @var{expr} zur@"uck.  Intern berechnet Maxima
 den Realteil mit der Funktion @mrefcomma{rectform} die einen Ausdruck in den
 Realteil und in den Imagin@"arteil zerlegt.  Daher treffen die Ausf@"uhrungen
 zu @code{rectform} auch auf die Funktion @code{realpart} zu.
@@ -925,7 +937,8 @@ zur@"uck.
 
 Die Funktion @code{rectform} nutzt Symmetrieeigenschaften und implementierte
 Eigenschaften komplexer Funktionen, um den Realteil und Imagin@"arteil eines
-komplexen Ausdrucks zu berechnen.  Sind solche Eigenschaften f@"ur eine Funktion vorhanden, k@"onnen diese mit der Funktion @mref{properties} angezeigt werden.
+komplexen Ausdrucks zu berechnen.  Sind solche Eigenschaften f@"ur eine Funktion
+vorhanden, k@"onnen diese mit der Funktion @mref{properties} angezeigt werden.
 Eigenschaften, die das Ergebnis der Funktion @code{rectform} bestimmen, sind:
 @code{mirror symmetry}, @code{conjugate function} und
 @code{complex characteristic}.
@@ -1355,7 +1368,7 @@ Funktionen @mref{factorial} und @mref{double_factorial} sowie die Operatoren
 
 Die Funktion @code{minfactorial} vereinfacht Fakult@"aten @mref{factorial} in
 dem Ausdruck @var{epxr}, die sich um eine ganze Zahl voneinander unterscheiden.
-Siehe auch die Funktion @mref{factcomb}, um Fakult@"aten zusammenzufassen,
+Siehe auch die Funktion @mrefcomma{factcomb} um Fakult@"aten zusammenzufassen,
 sowie die Optionsvariable @mrefdot{factorial_expand}
 
 @example
@@ -1973,14 +1986,75 @@ Maxima kennt die folgenden Winkel- und Hyperbelfunktionen sowie deren Inverse:
 @deffnx {Funktion} acsc (@var{z})
 @deffnx {Funktion} asec (@var{z})
 
-Die inversen trigonometrischen Funktionen: Arkussinus, Arkuskosinus,
-Arkustangens, Arkuskotanges, Arkuskosekans und Arkussekans.
+Die inversen Winkelfunktionen: Arkussinus, Arkuskosinus, Arkustangens,
+Arkuskotangens, Arkuskosekans und Arkussekans.
+
+Die inversen Winkelfunktionen sind f@"ur das numerische und symbolische Rechnen
+geeignet.  Die inversen Winkelfunktionen k@"onnen f@"ur reelle und komplexe
+Gleitkommazahlen in doppelter und in beliebiger Genauigkeit berechnet werden.
+Ist das Argument eine ganze oder rationale Zahl, werden die inversen
+Winkelfunktionen nicht numerisch berechnet, sondern vereinfacht.  Die numerische
+Berechnung kann mit den Optionsvariablen und Auswertungsschaltern
+@mref{numer} und @mref{float} erzwungen werden.
+
+Die inversen Winkelfunktionen sind bis auf die Funktionen @code{acos} und
+@code{asec} als ungerade definiert.  Die Funktionen @code{acos} und @code{asec}
+vereinfachen f@"ur ein negatives Argument @code{-x} zu @code{%pi-acos(x)} und
+@code{%pi-asec(x)}.  F@"ur die inversen Winkelfunktion @code{asin}, @code{acos}
+und @code{atan} ist die Spiegelsymmetrie f@"ur den Fall implementiert, dass das
+komplexe Argument @code{x+%i*y} einen Realteil @code{abs(x)<1} hat.
+
+Ist das Argument @var{z} eine Matrix, eine Liste oder eine Gleichung werden die
+inversen Winkelfunktionen auf die Elemente der Matrix, der Liste oder auf die
+beiden Seiten der Gleichung angewendet.  Dieses Verhalten wird von der
+Optionsvariablen @mref{distribute_over} kontrolliert.
+
+Inverse Winkelfunktionen k@"onnen f@"ur das symbolische Rechnen verwendet
+werden.  Maxima kann Ausdr@"ucke mit inversen Winkelfunktionen differenzieren
+und integrieren, Grenzwerte bestimmen sowie Gleichungen mit inversen
+Winkelfunktionen l@"osen.
+ 
+Das Argument der inversen Winkelfunktionen kann eine Taylorreihe sein.  In
+diesem Fall wird die Taylorreihenentwicklung f@"ur die inverse Winkelfunktion
+vollst@"andig ausgef@"uhrt.
+
+Die folgenden Optionsvariablen kontrollieren die Vereinfachung der
+inversen Winkelfunktionen:
+
+@table @code
+@item distribute_over
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und ist das
+Argument der inversen Winkelfunktion eine Matrix, Liste oder Gleichung wird die
+Funktion auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der
+Standardwert ist @code{true}.
+
+@item %piargs
+Hat die Optionsvariable @mref{%piargs} den Wert @code{true}, werden die
+inversen Winkelfunktionen f@"ur spezielle Werte als Argument vereinfacht.
+Der Standardwert ist @code{true}.
+
+@item %iargs
+Hat die Optionsvariable @mref{%iargs} den Wert @code{true} und ist das Argument
+der inversen Winkelfunktion ein Vielfaches der imagin@"aren Einheit @code{%i}
+werden die inversen Winkelfunktionen zu inversen Hyperbelfunktionen vereinfacht.
+Der Standardwert ist @code{true}.
+
+@item triginverses
+Hat die Optionsvariable @mref{triginverses} den Wert @code{all} und ist das
+Argument die entsprechende Winkelfunktion vereinfachen die inversen
+Winkelfunktionen, zum Beispiel vereinfacht @code{asin(sin(x))} zu @code{x}.
+Der Standardwert ist @code{true} und die Vereinfachung wird nicht vorgenommen.
+
+@item logarc
+Hat die Optionsvariable @mref{logarc} den Wert @code{true}, werden inverse
+Winkelfunktionen durch Logarithmusfunktionen ersetzt.  Der Standardwert von
+@code{logarc} ist @code{false}.
+@end table
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{atan2}
 @deffn {Funktion} atan2 (@var{y}, @var{x})
-
 @c -- yields the value of @code{atan(@var{y}/@var{x})} in the interval 
 @c @code{-%pi} to @code{%pi}.
 
@@ -2004,6 +2078,7 @@ bis @code{%pi} zur@"uck.
 
 Die Winkelfunktionen: Sinus, Kosinus, Tangens, Kotangens, Kosekans und Sekans.
 
+Die Winkelfunktionen sind f@"ur das numerische und symbolische Rechnen geeignet.
 Die Winkelfunktionen k@"onnen f@"ur reelle und komplexe Gleitkommazahlen in
 doppelter und in beliebiger Genauigkeit berechnet werden.  Ist das Argument 
 eine ganze oder rationale Zahl, werden die Winkelfunktionen nicht numerisch
@@ -2295,6 +2370,7 @@ der Sinus f@"ur ein halbzahliges Argument zu einer einfachen Formel:
 Ein komplizierter Faktor wird gebraucht, damit die Formel korrekt ist f@"ur ein
 komplexes Argument @var{z}:
 
+@need 1600
 @verbatim
            realpart(z)
      floor(-----------)
