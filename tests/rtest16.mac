@@ -165,7 +165,7 @@ string ('"+"(a, b, '"."(c, d), '"^"(e, f)));
 
 /* Bug 626697 */
 limit(atan2(y,x),y,minf);
--'limit(atan2(y,x),y,inf);
+'limit(atan2(y,x),y,minf);
 
 /* Bug 1548643 */
 limit(abs(sqrt(1-1/x)-1),x,0);
