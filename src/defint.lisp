@@ -335,6 +335,15 @@ in the interval of integration.")
 			  (t (intcv1 d ind nv))))
 		   (t ()))))))
 
+;; test whether fun2 is inverse of fun1 at val
+(defun test-inverse (fun1 var1 fun2 var2 val)
+  (let* ((out1 (let ((var var1))
+		 (no-err-sub val fun1)))
+	 (out2 (let ((var var2))
+		 (no-err-sub out1 fun2))))
+    (alike1 val out2)))
+
+;; integration change of variable
 (defun intcv (nv ind flag)
   (let ((d (bx**n+a nv))
 	(*roots ())  (*failures ())  ($breakup ()))
@@ -360,8 +369,14 @@ in the interval of integration.")
 		 (t
 		  (putprop 'yx t 'internal);; keep var from appearing in questions to user
 		  (solve (m+t 'yx (m*t -1 nv)) var 1.)
-		  (cond (*roots
-			 (setq d (caddar *roots))
+		  (cond ((setq d	;; look for root that is inverse of nv
+			       (do* ((roots *roots (cddr roots))
+				     (root (caddar roots) (caddar roots)))
+				    ((null root) nil)
+				    (if (test-inverse nv var root 'yx ll)
+					;; to do: check upper limit, 
+					;;        test for minf/inf
+					(return root))))
 			 (cond (flag (intcv2 d ind nv))
 			       (t (intcv1 d ind nv))))
 			(t ()))))))))

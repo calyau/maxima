@@ -232,8 +232,7 @@ It appears in LIMIT and DEFINT.......")
 
 	      (if ans
 		  (return (clean-limit-exp ans))
-                  (return (cons '(%limit) args)))))
-;      		  (return (nounlimit exp var val)))))
+                  (return (cons '(%limit) args)))))	;; failure: return nounform
       (restore-assumptions))))
 
 (defun clean-limit-exp (exp)
