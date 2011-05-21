@@ -117,10 +117,10 @@
 	 (destructuring-let ((((nil ssymbol) (nil (nil definition) nil)) (cdr form)))
 	   (unless (eq (car definition) 'lambda)
 	     (tr-format
-	      "~%`patch-up-meval-in-fset': Not a lambda expression:~%~A"
+	      "PATCH-UP-MEVAL-IN-FSET: not a lambda expression: ~A~%"
 	      definition)
 	     (barfo))
-	   (tr-format "~%Translating rule or match ~:M" ssymbol)
+	   (tr-format "Translating rule or match ~:M ..." ssymbol)
 	   (setq definition (lisp->lisp-tr-lambda definition))
 	   (if (null definition)
 	       form
