@@ -370,7 +370,6 @@
    "sumsplitfact"
    "taylordepth"
    "tlimswitch"
-   "transbind"
    "transcompile"
    "transrun"
    "trigexpandplus"
