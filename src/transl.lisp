@@ -296,7 +296,7 @@ APPLY means like APPLY.")
        (cond ((member form warned-undefined-variables :test #'eq))
 	     (t
 	      (push form warned-undefined-variables)
-	      (tr-format "~%Warning-> ~:M is an undefined global variable." form)
+	      (tr-format (intl:gettext "note: encountered undefined variable ~:M in translation.") form)
 	      (tr-warnbreak)))))
 
 (defun warn-undeclared (form &optional comment)
@@ -304,8 +304,8 @@ APPLY means like APPLY.")
        (cond ((member form *warned-un-declared-vars* :test #'equal) t)
 	     (t
 	      (push form *warned-un-declared-vars*)
-	      (tr-format "~%WARNING-> ~:M has not been MODEDECLAREd, ~
-		       taken as mode `any'." form)
+	      (tr-format (intl:gettext "note: no type declaration for ~:M; assume type is 'any'.") form)
+	      (tr-format (intl:gettext "note: 'modedeclare' declares types for translation."))
 	      (cond (comment
 		     (dolist (v *translation-msgs-files*)
 		       (terpri v)
