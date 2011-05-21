@@ -91,17 +91,6 @@
 ;;; N.B. It does not mean that that is the translate property for <something>.
 
 
-(defmvar $transbind nil "This variable is now obsolete.")
-
-(defun obsolete-variable (var ignore-val)
-  (declare (ignore ignore-val))
-  (cond ((eq (symbol-value var) '$obsolete))
-	(t
-	 (setf (symbol-value var) '$obsolete)
-	 (mtell "warning: assigning to obsolete variable: ~:M~%" var))))
-
-(putprop '$transbind #'obsolete-variable 'assign)
-
 (defvar *untranslated-functions-called* nil)
 
 (defmvar *declared-translated-functions* nil

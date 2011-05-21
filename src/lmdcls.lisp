@@ -90,7 +90,7 @@
 	  $superlogcon $suspend $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $to_call_lisp_compiler $trace $trace_break_arg $trace_max_indent
-	  $trace_safety $transbind $transcompile $translate $transrun
+	  $trace_safety $transcompile $translate $transrun
 	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
 	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
