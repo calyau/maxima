@@ -1135,6 +1135,7 @@ utils/mactex-utilities.lisp \
 vector/rtest_vect.mac \
 vector/vect.dem \
 vector/vect.mac \
+vector/vect.mac.orig \
 vector/vector.dem \
 vector/vector.mac \
 vector/vector_rebuild.lisp \

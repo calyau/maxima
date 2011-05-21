@@ -7,21 +7,11 @@
     thesis and Boyce & DiPrima for solving O.D.E.s of 1st and 2nd order. 
     The top-level routines are ODE2, IC1, IC2, and BC2.  */
 
-/* The following declares help the translated code.  We also used the
-   convention  of %f% being the special rather than declaring f special
-   since other programs might use f */
-
 eval_when(translate,
 declare_translated(boundtest,noteqn,nlxy,nly,nlx,xcc2,bessel2,euler2,
    pttest,exact2,cc2,genhom,solvebernoulli,solvehom,integfactor,exact,
    separable,solvelnr,solve1,linear2,reduce,hom2,pr2,varp,desimp,failure,
    ode1a,ftest,ode2a));
-
-/* Remove some of the specials like x and y at the end */
-declare(pt,special,yp,special,yold,special,%q%,special,x,special,y,special,
-   method,special,%f%,special,
-    %g%,special,msg1,special,
-    msg2,special,intfactor,special,odeindex,special,singsolve,special);
 
 ode2(eq,yold,x):=block([derivsubst:false,ynew],
    subst(yold,ynew,ode2a(subst(ynew,yold,eq),ynew,x)))$
@@ -335,9 +325,6 @@ failure(msg,eq):=
       then (ldisp(subst(yold,ynew,eq)), disp(msg)),
     false))$
 
-eval_when([translate,load,compile],
-       remove(x,special,y,special))$
- 
 msg1:	"not a proper differential equation"$
 msg2:	"first order equation not linear in y'"$
 

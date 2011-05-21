@@ -1394,7 +1394,7 @@ wrapper for this."
 	  ((nonsymchk (cadr l) '$declare))
 	  (t (setq vars (declsetup (car l) '$declare))))
     (cond (flag)
-	  ((member (cadr l) '($evfun $evflag $special $nonarray $bindtest) :test #'eq)
+	  ((member (cadr l) '($evfun $evflag $nonarray $bindtest) :test #'eq)
 	   (declare1 vars t (stripdollar (cadr l)) nil))
 	  ((eq (cadr l) '$noun)
 	   (dolist (var vars) (alias (getopr var) ($nounify var))))
@@ -1467,7 +1467,7 @@ wrapper for this."
 	  ((member (cadr l) '($alias $noun) :test #'eq) (remalias1 vars (eq (cadr l) '$alias)))
 	  ((eq (cadr l) '$matchdeclare) (remove1 vars 'matchdeclare t t nil))
 	  ((eq (cadr l) '$rule) (remrule vars))
-	  ((member (cadr l) '($evfun $evflag $special $nonarray $bindtest
+	  ((member (cadr l) '($evfun $evflag $nonarray $bindtest
 			    $autoload $assign) :test #'eq)
 	   (remove1 vars (stripdollar (cadr l)) nil t nil))
 	  ((member (cadr l) '($mode $modedeclare) :test #'eq) (remove1 vars 'mode nil 'foo nil))

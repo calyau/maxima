@@ -70,7 +70,6 @@ linsimp(exp,opdum1,[opdumlist]):=
 linopsum0(exp,opdum):=block(
   [linposns,getdum,linpreddum,lvarsdum:listofvars(exp),substflag:false,newdum,
    ansdum,piece,inflag:true,partswitch:true],
-  /* declare(ansdum,special), */
   modedeclare(substflag,boolean),
   if (getdum:get(opdum,'linear_operator))=false
   then error(opdum,messdeclin1),
@@ -89,7 +88,6 @@ linopsum0(exp,opdum):=block(
 
 linopsum1(list,opdum):=block(
   [ansdum,linopansdum],
-  /* declare([ansdum,linopansdum],special), */
   if not lclinearp(list,opdum) then return(apply("+",list)),
   setlist(partition(list,opdum),'ansdum,'linopansdum),
   apply("+",ansdum)
@@ -101,7 +99,6 @@ linopsum2(examineddum,unexaminedyetdum,opdum):=block(
   [cofexdum,cofunexdum,exdum,unexdum,lexdum:1,exfoundflag:false,argsundum,
    argsexadum,lunexdum,argsundum456,undum,exadum,newargsdum,fnewargsdum],
   modedeclare([lunexdum,lexdum],fixnum,exfoundflag,boolean),
-  /* declare([cofexdum,exdum,cofunexdum,unexdum],special), */
   setlist(orpartitionlist(examineddum,"*",opdum),'cofexdum,'exdum),
   setlist(orpartitionlist(unexaminedyetdum,"*",opdum),
 	  'cofunexdum,'unexdum),
@@ -164,7 +161,6 @@ linopprod1(exp,opdum,linposns,linpreddum):=
 
 findasymbol(lvarsdum):=block(
   [newdum:?gensym()],
-  /* declare(newdum,special), */
   if not member(newdum,lvarsdum)
   then newdum
   else findasymbol(lvarsdum))$

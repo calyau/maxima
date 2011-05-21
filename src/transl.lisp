@@ -117,10 +117,6 @@
 	  The only use of the switch is to save the space declarations take
 	  up in interpreted code.")
 
-(defmvar $special nil "This is an obsolete variable -GJC")
-
-(putprop '$special #'obsolete-variable 'assign)
-
 (defmvar tstack nil " stack of local variable modes ")
 
 (defmvar local nil "T if a $local statement is in the body.")
@@ -994,16 +990,7 @@ APPLY means like APPLY.")
 (def%tr $declare (form)
   (do ((l (cdr form) (cddr l)) (nl))
       ((null l) (if nl `($any $declare . ,(nreverse nl))))
-    (cond ((not (eq '$special (cadr l)))
-	   (setq nl (cons (cadr l) (cons (car l) nl))))
-	  ((atom (car l)) (spec (car l)))
-	  (t (mapcar 'spec (cdar l))))))
-
-(defun spec (var)
-  (pushnew var specials :test #'eq)
-  (putprop var t 'special)
-  (putprop var var 'tbind))
-
+      (setq nl (cons (cadr l) (cons (car l) nl)))))
 
 (def%tr $eval_when (form)
   (tr-tell

@@ -166,7 +166,6 @@
   			    (risplit-function . "complex characteristic")
                             (noun . $noun)
                             (evfun . $evfun)
-                            (special . $special)
                             (evflag . $evflag)
                             (op . $operator)) :test #'eq))
   	   (nconc l (ncons (cdr prop))))
