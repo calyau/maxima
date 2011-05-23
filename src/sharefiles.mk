@@ -225,7 +225,9 @@ contrib/diffequations/tests/testsuite.lisp \
 contrib/distrib/distrib.mac \
 contrib/distrib/numdistrib.lisp \
 contrib/distrib/rtest_distrib.mac \
+contrib/ezunits/ezunits_db.mac \
 contrib/ezunits/ezunits.dem \
+contrib/ezunits/ezunits_functions.mac \
 contrib/ezunits/ezunits.lisp \
 contrib/ezunits/ezunits.mac \
 contrib/ezunits/physical_constants.mac \
@@ -1133,6 +1135,7 @@ utils/mactex-utilities.lisp \
 vector/rtest_vect.mac \
 vector/vect.dem \
 vector/vect.mac \
+vector/vect.mac.orig \
 vector/vector.dem \
 vector/vector.mac \
 vector/vector_rebuild.lisp \

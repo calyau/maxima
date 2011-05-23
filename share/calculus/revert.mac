@@ -1,5 +1,3 @@
-declare([v,w],special);
-
 revert(exp, t) := block([f, n, v, w, r1], n : hipow(exp, t), 
 array([v,w], n), r1:1/ratcoeff(exp,t,1), v[1]:1,
 for k:2 thru n do (v[k]:ratcoef(exp, t, k)*r1 ,w[k]: - v[k] ), w[1]  : 1, 

@@ -46,7 +46,6 @@ lratsubst1(listofeqns,exp):=block(
 			    else ratsubst(inpart(listofeqns,1,2),
 					  inpart(listofeqns,1,1),
 					  exp))],
-  declare(dum,special),
   if fullratsubstflag=true and dum#exp
   then lratsubst1(listofeqns,dum)
   else if dum#exp

@@ -130,7 +130,6 @@ listoftrigsq(expn):=
   if atom(expn)
   then []
   else block([inflag, ans:[]],
-             declare(ans,special),
              if inpart(expn,0)="^" and integerp(inpart(expn,2))
                 and piece>=2
              then if atom(expn:inpart(expn,1))
@@ -152,11 +151,8 @@ specialunion(list1,list2):=
                       list2:update(alt,get(inpart(alt,0),'complement_function)),
                   specialunion(rest(list1),list2))$
 
-declare(list2,special)$
-
 update(form, complement):=block(
    [ans],
-   declare(ans,special),
    complement: apply(complement,[inpart(form,1)]),
    ans: for element in list2 do
       if member(form, element) then return('found)

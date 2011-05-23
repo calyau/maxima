@@ -91,17 +91,6 @@
 ;;; N.B. It does not mean that that is the translate property for <something>.
 
 
-(defmvar $transbind nil "This variable is now obsolete.")
-
-(defun obsolete-variable (var ignore-val)
-  (declare (ignore ignore-val))
-  (cond ((eq (symbol-value var) '$obsolete))
-	(t
-	 (setf (symbol-value var) '$obsolete)
-	 (mtell "warning: assigning to obsolete variable: ~:M~%" var))))
-
-(putprop '$transbind #'obsolete-variable 'assign)
-
 (defvar *untranslated-functions-called* nil)
 
 (defmvar *declared-translated-functions* nil
@@ -116,10 +105,6 @@
   "If TRUE TRANSLATE_FILE outputs declarations for the COMPLR.
 	  The only use of the switch is to save the space declarations take
 	  up in interpreted code.")
-
-(defmvar $special nil "This is an obsolete variable -GJC")
-
-(putprop '$special #'obsolete-variable 'assign)
 
 (defmvar tstack nil " stack of local variable modes ")
 
@@ -296,7 +281,7 @@ APPLY means like APPLY.")
        (cond ((member form warned-undefined-variables :test #'eq))
 	     (t
 	      (push form warned-undefined-variables)
-	      (tr-format "~%Warning-> ~:M is an undefined global variable." form)
+	      (tr-format (intl:gettext "note: encountered undefined variable ~:M in translation.") form)
 	      (tr-warnbreak)))))
 
 (defun warn-undeclared (form &optional comment)
@@ -304,8 +289,8 @@ APPLY means like APPLY.")
        (cond ((member form *warned-un-declared-vars* :test #'equal) t)
 	     (t
 	      (push form *warned-un-declared-vars*)
-	      (tr-format "~%WARNING-> ~:M has not been MODEDECLAREd, ~
-		       taken as mode `any'." form)
+	      (tr-format (intl:gettext "note: no type declaration for ~:M; assume type is 'any'.") form)
+	      (tr-format (intl:gettext "note: 'modedeclare' declares types for translation."))
 	      (cond (comment
 		     (dolist (v *translation-msgs-files*)
 		       (terpri v)
@@ -994,16 +979,7 @@ APPLY means like APPLY.")
 (def%tr $declare (form)
   (do ((l (cdr form) (cddr l)) (nl))
       ((null l) (if nl `($any $declare . ,(nreverse nl))))
-    (cond ((not (eq '$special (cadr l)))
-	   (setq nl (cons (cadr l) (cons (car l) nl))))
-	  ((atom (car l)) (spec (car l)))
-	  (t (mapcar 'spec (cdar l))))))
-
-(defun spec (var)
-  (pushnew var specials :test #'eq)
-  (putprop var t 'special)
-  (putprop var var 'tbind))
-
+      (setq nl (cons (cadr l) (cons (car l) nl)))))
 
 (def%tr $eval_when (form)
   (tr-tell

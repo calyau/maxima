@@ -215,10 +215,7 @@ rungen(fl,xa,xb,h,yal):=
 
 vapply(fl,argl):=
  (modedeclare([fl,argl],list),
-  declare(argl,special),
   maplist(lambda([f],modedeclare(f,any),apply(f,argl)),fl))$
-
-declare(listarith,special)$
 
 rungen_internal(f,xa,xb,h,ya):=
  (modedeclare([xa,xb,h],float,[f,ya],list),
