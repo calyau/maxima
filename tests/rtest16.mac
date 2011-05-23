@@ -1511,7 +1511,7 @@ true;
  * clisp.
  *
  */
-closeto(abs(zeta(1/2+.5*%i)) - 1.06534921249378, 1e-15);
+closeto(abs(zeta(1/2+.5*%i)) - 1.06534921249378, 1e-14);
 true;
 
 /* Bug ID: 2997401 - float(log(200!)) produces an error
