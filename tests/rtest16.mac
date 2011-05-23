@@ -1504,6 +1504,15 @@ closeto(zeta(3)-1.202056903159594,1e-15), numer:true;
 true;
 closeto(zeta(3+%i)-(1.10721440843141 - .1482908671781754*%i), 1e-15);
 true;
+/*
+ * Reported on mailing list 2011-05-22 by Thomas Dean:
+ *
+ * plot2d(abs(zeta(1/2+x*%i)),[x,0,36]) causes a Lisp error with
+ * clisp.
+ *
+ */
+closeto(abs(zeta(1/2+.5*%i)) - 1.06534921249378, 1e-15);
+true;
 
 /* Bug ID: 2997401 - float(log(200!)) produces an error
  *
@@ -2074,3 +2083,4 @@ bernpoly(x,5);
 x^5-5*x^4/2+5*x^3/3-x/6$
 reset(zerobern);
 [zerobern];
+

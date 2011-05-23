@@ -1532,7 +1532,21 @@
 	
 (defun %to (maxima-num &optional imag)
   (cond (imag
-	 (complex (to maxima-num) (to imag)))
+	 ;; Clisp has a "feature" that (complex rat float) does not
+	 ;; make the both components of the complex number a float.
+	 ;; Sometimes this is nice, but other times it's annoying
+	 ;; because it is non-ANSI behavior.  For our code, we really
+	 ;; want both components to be a float.
+	 #-clisp
+	 (complex (to maxima-num) (to imag))
+	 #+clisp
+	 (let ((re (to maxima-num))
+	       (im (to imag)))
+	   (cond ((and (rationalp re) (floatp im))
+		  (setf re (float re im)))
+		 ((and (rational im) (floatp re))
+		  (setf im (float im re))))
+	   (complex re im)))
 	(t
 	 (cond ((cl:realp maxima-num)
 		maxima-num)
