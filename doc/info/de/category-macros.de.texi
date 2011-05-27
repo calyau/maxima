@@ -53,13 +53,21 @@
 @end ifnothtml
 @end macro
 
-
 @macro mrefdot {nodename}
 @ifhtml
 @code{@ref{\nodename\}}.
 @end ifhtml
 @ifnothtml
 @code{\nodename\}.
+@end ifnothtml
+@end macro
+
+@macro mxrefdot {nodename, text}
+@ifhtml
+@code{@ref{\nodename\, \text\}}.
+@end ifhtml
+@ifnothtml
+@code{\text\}.
 @end ifnothtml
 @end macro
 
