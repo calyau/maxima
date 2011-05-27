@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 22.10.2010
-@c Revision    : 20.04.2011
+@c Revision    : 27.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -25,18 +25,22 @@
 @subheading Eigenschaften
 
 Variablen und Funktionen k@"onnen mit der Funktion @mref{declare} Eigenschaften
-zugewiesen werden.  Diese Eigenschaften werden in eine Datenbank abgelegt oder 
-in eine von Lisp bereitgestellte Eigenschaftsliste eingetragen.  Mit der 
+zugewiesen werden.  Diese Eigenschaften werden in eine Datenbank abgelegt oder
+in eine von Lisp bereitgestellte Eigenschaftsliste eingetragen.  Mit der
 Funktion @mref{featurep} kann gepr@"uft werden, ob ein Symbol eine bestimmte
-Eigenschaft hat und mit der Funktion @mref{properties} k@"onnen alle 
+Eigenschaft hat und mit der Funktion @mref{properties} k@"onnen alle
 Eigenschaften eines Symbols angezeigt werden.  Die Funktion @mref{remove}@w{}
-l@"oscht Eigenschaften aus der Datenbank oder von der Eigenschaftsliste.  Wird 
-mit der Funktion @mref{kill} ein Symbol entfernt, werden auch die zugewiesenen 
+l@"oscht Eigenschaften aus der Datenbank oder von der Eigenschaftsliste.  Wird
+mit der Funktion @mref{kill} ein Symbol entfernt, werden auch die zugewiesenen
 Eigenschaften gel@"oscht.
 
-@noindent
+Weiterhin k@"onnen mit den Funktionen @mref{put} und @mref{qput} beliebige
+vom Nutzer vorgesehene Eigenschaften in die Eigenschaftsliste zu einem Symbol
+abgelegt werden.  Mit der Funktion @mref{get} werden die Eigenschaften von
+der Eigenschaftsliste gelesen und mit der Funktion @mref{rem} gel@"oscht.
+
 Variablen k@"onnen die folgenden Eigenschaften erhalten, die in die Datenbank
-eingetragen werden:
+eingetragen werden.
 
 @verbatim
    constant
@@ -46,18 +50,17 @@ eingetragen werden:
    real           imaginary      complex
 @end verbatim
 
-@noindent
 Funktionen k@"onnen die folgenden Eigenschaften erhalten, die in die Datenbank
-eingetragen werden:
+eingetragen werden.
 
 @verbatim
    increasing     decreasing
    posfun         integervalued
 @end verbatim
 
-@noindent
 Die folgenden Eigenschaften k@"onnen f@"ur Funktionen definiert werden und 
-wirken sich auf die Vereinfachung dieser Funktionen aus:
+wirken sich auf die Vereinfachung dieser Funktionen aus.  Diese Eigenschaften
+werden in @ref{Vereinfachung} beschrieben.
 
 @verbatim
    linear         additive       multiplicative
@@ -66,20 +69,37 @@ wirken sich auf die Vereinfachung dieser Funktionen aus:
    rassociative   evenfun        oddfun
 @end verbatim
 
-@noindent
 Weitere Eigenschaften, die Variablen und Funktionen erhalten k@"onnen, und
-die in die Lisp-Eigenschaftsliste des Symbols abgelegt werden, sind:
+die in die Lisp-Eigenschaftsliste des Symbols abgelegt werden, sind.
 
 @verbatim
    bindtest       feature        alphabetic
    scalar         nonscalar      nonarray
 @end verbatim
 
-@noindent
-Weiterhin k@"onnen mit den Funktion @mref{put} und @mref{qput} beliebige
-vom Nutzer vorgesehene Eigenschaften in die Eigenschaftsliste zu einem Symbol
-abgelegt werden.  Mit der Funktion @mref{get} werden die Eigenschaften von
-der Eigenschaftsliste gelesen und mit der Funktion @mref{rem} gel@"oscht.
+@subheading Kontexte
+
+Maxima verwaltet Kontexte, um Eigenschaften von Variablen und Funktionen sowie
+Fakten abzulegen.  Fakten werden mit der Funktion @mref{assume} definiert und
+in dem aktuellen Kontext abgelegt.  Mit @code{assume(a>10)} erh@"alt Maxima zum
+Beispiel die Information, dass die Variable @code{a} gr@"o@ss{}er als @code{10}
+ist.  Mit der Funktion @mref{forget} werden Fakten aus der Datenbank entfernt.
+Fragt Maxima den Nutzer nach Eigenschaften von Variablen, werden die Antworten
+in einem Kontext abgelegt.
+
+Ein Kontext hat einen Namen, mit dem auf diesen Bezug genommen werden kann.
+Nach dem Starten von Maxima hat der aktuelle Kontext den Namen @code{initial}.
+Es kann eine beliebige Anzahl weiterer Kontexte definiert werden.  Diese
+k@"onnen hierarchisch voneinander abh@"angen.  So ist der Kontext @code{initial}
+ein Unterkontext zum Kontext @code{global}.  Die Fakten in einem
+@"ubergeordneten Kontext sind in dem Unterkontext immer pr@"asent.  Der Kontext
+@code{global} enth@"alt zum Beispiel Fakten, die von Maxima initialisiert
+werden, und zus@"atzlich zu den Fakten des Kontextes @code{initial} aktiv sind.
+
+Kontexte k@"onnen eine beliege Anzahl an Fakten aufnehmen.  Sie k@"onnen mit der
+Funktion @mref{deactivate} deaktiviert werden, ohne dass die Fakten verloren
+gehen und sp@"ater mit der Funktion @mref{activate} aktiviert werden, wodurch
+die Fakten f@"ur Aussagefunktionen wieder zur Verf@"ugung stehen.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Eigenschaften, Funktionen und Variablen f@"ur Fakten, Einf@"uhrung in Maximas Datenbank, Maximas Datenbank
@@ -93,9 +113,11 @@ der Eigenschaftsliste gelesen und mit der Funktion @mref{rem} gel@"oscht.
 Das Kommando @code{declare(string, alphabetic)} deklariert die Zeichen der 
 Zeichenkette @var{string} als alphabetisch.  Das Argument @var{string} muss eine
 Zeichenkette sein.  Zeichen, die als alphabetisch deklariert sind, k@"onnen in
-Maxima-Bezeichnern verwendet werden.  Siehe auch @mrefdot{Bezeichner}
+Maxima-Bezeichnern verwendet werden.  Siehe auch @ref{Bezeichner}.
 
 Beispiele:
+
+Die Zeichen @code{"~"}, @code{"@@"} und @code{`} als alphabetisch erkl@"art.
 
 @example
 (%i1) xx\~yy\`\@@ : 1729;
@@ -115,7 +137,7 @@ Beispiele:
 
 Hat ein Symbol @var{x} die Eigenschaft @code{bindtest} und wird es ausgewertet,
 ohne das dem Symbol bisher ein Wert zugewiesen wurde, signalisiert Maxima einen 
-Fehler.  Siehe auch @mrefdot{declare}
+Fehler.  Siehe auch die Funktion @mrefdot{declare}
 
 Beispiel:
 
@@ -138,8 +160,24 @@ aa unbound variable
 @anchor{constant}
 @deffn {Eigenschaft} constant
 
-@code{declare(@var{a}, constant)} deklariert ein Symbol @var{a} als konstant.
-Siehe @mref{declare} und @mrefdot{constantp}
+Das Kommando @code{declare(@var{a}, constant)} deklariert ein Symbol @var{a}
+als konstant.  Die Funktion @mref{constantp} hat f@"ur dieses Symbol dann das
+Ergebnis @code{true}.  Die Deklaration als eine Konstante verhindert nicht, dass
+dem Symbol ein Wert zugewiesen werden kann.  Siehe @mref{declare} und
+@mrefdot{constantp}
+
+Beispiel:
+
+@example
+(%i1) declare(c, constant);
+(%o1)                         done
+(%i2) constantp(c);
+(%o2)                         true
+(%i3) c : x;
+(%o3)                           x
+(%i4) constantp(c);
+(%o4)                         false
+@end example
 @end deffn
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
@@ -157,6 +195,8 @@ Variablen, die einen konstanten Wert haben, Variablen, die mit
 konstant sind.
 
 Die Funktion @code{constantp} wertet das Argument aus.
+
+Siehe auch die Eigenschaft @mrefdot{constant}
 
 Beispiele:
 
@@ -183,24 +223,29 @@ Beispiele:
 @anchor{declare}
 @deffn {Funktion} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
 
-Weist dem Symbol oder den Symbolen einer Liste @var{a_i} die Eigenschaft oder 
-die Eigenschaften der Liste @var{p_i} zu.  Ist @var{a_i} oder @var{p_i}
-eine Liste, erh@"alt jedes Atom die aufgef@"uhrten Eigenschaften.  Die Funktion
-@code{declare} wertet die Argumente nicht aus.  @code{declare} gibt stets 
-@code{done} zur@"uck.
+Weist dem Symbol @var{a_i} die Eigenschaft @var{p_i} zu.  Die Argumente
+@var{a_i} und @var{p_i} k@"onnen Listen sein.  Ist @var{a_i} eine Liste, dann
+erh@"alt jedes Symbol der Liste die Eigenschaft @var{p_i}.  Ist umgekehrt
+@var{p_i} eine Liste mit Eigenschaften, dann erh@"alt das Symbol @var{a_i} 
+diese Eigenschaften.  Entsprechend erhalten alle Symbole einer Liste @var{a_i}
+die Eigenschaften einer Liste @var{p_i}.
+
+Die Funktion @code{declare} wertet die Argumente nicht aus.  @code{declare} gibt
+stets @code{done} als Ergebnis zur@"uck.
 
 Hat ein Symbol @var{sym} die Eigenschaft @var{prop} mit der Funktion 
 @code{declare} erhalten, dann hat das Kommando @code{featurep(@var{sym}, 
 @var{prop})} das Ergebnis @code{true}.  Mit der Funktion @code{properties}
-k"onnen alle Eigenschaften eines Symbols angzeigt werden.
+k@"onnen alle Eigenschaften eines Symbols angezeigt werden.
 
-Die Funktion @code{declare} kennt die folgenden Eigenschaften:
+Mit der Funktion @code{declare} k@"onnen Symbole die folgenden Eigenschaften
+erhalten:
 
 @table @code
 @item additive
 Hat eine Funktion @code{f} die Eigenschaft @code{additive}, wird ein Ausdruck
-@code{f(x + y + z + ...} zu @code{f(x) + f(y) + f(z) + ...} vereinfacht.
-Siehe @mrefdot{additive}
+der Form @code{f(x + y + z + ...)} zu @code{f(x) + f(y) + f(z) + ...}
+vereinfacht.  Siehe @mrefdot{additive}
 
 @item alphabetic
 @var{a_i} ist eine Zeichenkette, deren Zeichen als alphabetische Zeichen 
@@ -209,8 +254,9 @@ werden.  Siehe @mref{alphabetic} f@"ur Beispiele.
 
 @item antisymmetric, commutative, symmetric
 @var{a_i} wird als eine symmetrische, antisymmetrische oder kommutative Funktion
-interpretiert.  @code{commutative} und @code{symmtric} sind @"aquivalent.
-Siehe @mrefcomma{antisymmetric} @mref{commutative} und @mrefdot{symmetric}
+interpretiert.  Die Eigenschaften @code{commutative} und @code{symmetric} sind
+@"aquivalent.  Siehe @mrefcomma{antisymmetric} @mref{commutative} und
+@mrefdot{symmetric}
 
 @item bindtest
 Hat ein Symbol die Eigenschaft @code{bindtest} und wird es ausgewertet, ohne 
@@ -243,16 +289,17 @@ Funktion @var{a_i} als Argument der Funktion @code{ev} auf, so wird die Funktion
 auf den Ausdruck angewendet.  Siehe @mref{evfun} f@"ur Beispiele.
 
 @item feature
-@var{a_i} wird als eine Eigenschaft @code{feature} interpretiert.  Andere 
-Symbole k@"onnen dann diese Eigenschaft erhalten.  Siehe @mrefdot{feature}
+@var{a_i} wird als eine Eigenschaft @code{feature} interpretiert.  Andere
+Symbole k@"onnen dann diese vom Nutzer definierte Eigenschaft erhalten.
+Siehe@mrefdot{feature}
 
 @item increasing, decreasing
 Erh@"alt eine Funktion die Eigenschaft @code{decreasing} oder @code{increasing}, 
-wird die Funktion als eine steigende oder fallende Funktion interpretiert.
-Siehe @mref{decreasing} und @mrefdot{increasing}
+wird die Funktion als eine monoton steigende oder fallende Funktion
+interpretiert.  Siehe @mref{decreasing} und @mrefdot{increasing}
 
 @item integer, noninteger
-@var{a_i} wird als eine ganzzahlige oder nichtganzzahlige Variable 
+@var{a_i} wird als eine ganzzahlige oder nicht-ganzzahlige Variable
 interpretiert.  Siehe @mref{integer} und @mrefdot{noninteger}
 
 @item integervalued
@@ -265,7 +312,7 @@ F@"ur ein Beispiel siehe @mrefdot{integervalued}
 Siehe @mref{lassociative} und @mrefdot{rassociative}
 
 @item linear
-Entspricht der Deklaration einer Funktion als @code{outative} und 
+Entspricht der Deklaration einer Funktion als @code{outative} und
 @code{additive}.  Siehe auch @mrefdot{linear}
 
 @item mainvar
@@ -276,9 +323,11 @@ Die Anordnung wird durch die Funktion @code{ordergreatp} bestimmt.  Siehe auch
 @mrefdot{mainvar}
 
 @item multiplicative
-Ausdr@"ucke @code{@var{a_i}(x * y * z * ...)} werden durch @code{@var{a_i}(x) * 
-@var{a_i}(y) * @var{a_i}(z) * ...} ersetzt.  Die Ersetzung wird nur f@"ur das
-Argument der Funktion @var{a_i} ausgef@"uhrt.  Siehe @mrefdot{multiplicative}
+Hat eine Funktion @code{f} die Eigenschaft @code{multiplicative}, werden
+Ausdr@"ucke der Form @code{@var{a_i}(x * y * z * ...)} zu
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...} vereinfacht.  Die
+Vereinfachung wird nur f@"ur das erste Argument der Funktion @var{f}
+ausgef@"uhrt.  Siehe @mrefdot{multiplicative}
 
 @item nary
 Erh@"alt eine Funktion oder ein Operator die Eigenschaft @code{nary}, wird die
@@ -288,17 +337,17 @@ Nary-Operator interpretiert.  Verschachtelte Ausdr@"ucke wie
 Die Deklaration @code{nary} unterscheidet sich von der Funktion @code{nary}.
 W@"ahrend der Funktionsaufruf einen neuen Operator definiert, wirkt sich die 
 Deklaration nur auf die Vereinfachung aus.  Siehe auch 
-@mrefdot{property_nary, nary}
+@mxrefdot{property_nary, nary}
 
 @item nonarray
-@var{a_i} wird nicht als ein Array interpretiert.  Diese Deklaration verhindert
-die mehrfache Auswertung, wenn @var{a_i} als indizierte Variable genutzt wird.
-Siehe  @mrefdot{nonarray}
+Hat ein Symbol @var{a_i} die Eigenschaft @code{nonarray}, wird es nicht als ein
+Array interpretiert, wenn das Symbol einen Index erh@"alt.  Diese Deklaration
+verhindert die mehrfache Auswertung, wenn @var{a_i} als indizierte Variable
+genutzt wird.  Siehe  @mrefdot{nonarray}
 
 @item nonscalar
-@var{a_i} wird als eine nicht-skalare Variable interpretiert.  @"Uberlicherweise
-wird damit ein symbolischer Vektor oder eine Matrix deklariert.  Siehe
-@mrefdot{nonscalar}
+@var{a_i} wird als eine nicht-skalare Variable interpretiert.  Ein Symbol wird
+also als ein Vektor oder eine Matrix deklariert.  Siehe @mrefdot{nonscalar}
 
 @item noun
 @var{a_i} wird als Substantivform interpretiert.  Abh@"angig vom Kontext wird 
@@ -315,7 +364,8 @@ ein Symbol und der Faktor unabh@"angig vom zweiten Argument ist.  Siehe auch
 @mrefdot{outative}
 
 @item posfun
-@var{a_i} wird als eine positive Funktion interpretiert.  Siehe @mrefdot{posfun}
+@var{a_i} wird als eine Funktion interpretiert, die nur positive Werte hat.
+Siehe @mrefdot{posfun}
 
 @item rational, irrational
 @var{a_i} wird als eine rationale oder irrationale Zahl interpretiert.  Siehe
@@ -340,10 +390,18 @@ Erh@"alt eine Funktion mit der Funktion @mref{declare} die Eigenschaft
 @code{decreasing} oder @code{increasing} wird die Funktion als eine steigende 
 oder fallende Funktion interpretiert.
 
-@c TODO: KEIN BEISPIEL:
-@c       DIE EIGENSCHAFT WIRD VON ASSUME GETESTET, ABER WIR HABEN ANSCHEINEND
-@c       EINEN BUG.
+Beispiel:
 
+@example
+(%i1) assume(a > b);
+(%o1)                        [a > b]
+(%i2) is(f(a) > f(b));
+(%o2)                        unknown
+(%i3) declare(f, increasing);
+(%o3)                         done
+(%i4) is(f(a) > f(b));
+(%o4)                         true
+@end example
 @end defvr
 
 @c --- 06.02.2011 DK -----------------------------------------------------------
@@ -354,17 +412,33 @@ oder fallende Funktion interpretiert.
 
 Hat eine Variable mit der Funktion @mref{declare} die Eigenschaft @code{even}
 oder @code{odd} erhalten, wird sie von Maxima als gerade oder ungerade
-interpretiert.
+ganze Zahl interpretiert.  Diese Eigenschaften werden jedoch nicht von den
+Funktionen @mrefcomma{evenp} @mref{oddp} oder @mref{integerp} erkannt.
+
+Siehe auch die Funktion @mrefdot{askinteger}
+
+Beispiele:
+
+@example
+(%i1) declare(n, even);
+(%o1)                         done
+(%i2) askinteger(n, even);
+(%o2)                          yes
+(%i3) askinteger(n);
+(%o3)                          yes
+(%i4) evenp(n);
+(%o4)                         false
+@end example
 @end defvr
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{feature}
 @defvr {Eigenschaft} feature
 
-@code{feature} ist eine Eigenschaft, die ein Symbol @var{sym} mit der Funktion 
-@code{declare} erhalten kann.  In diesem Fall ist das Symbol @var{sym} selbst 
-eine Eigenschaft, so dass das Kommando @code{declare(x, sym)} einem Symobl 
-@var{x} die neu definierte Eigenschaft @code{sym} gibt.
+@code{feature} ist eine Eigenschaft, die ein Symbol @var{sym} mit der Funktion
+@code{declare} erhalten kann.  In diesem Fall ist das Symbol @var{sym} selbst
+eine Eigenschaft, so dass das Kommando @code{declare(x, sym)} einem Symbol
+@var{x} die vom Nutzer definierte Eigenschaft @code{sym} gibt.
 
 Maxima unterscheidet Systemeigenschaften und mathematische Eigenschaften, die 
 Symbole und Ausdr@"ucke haben k@"onnen.  F@"ur Systemeigenschaften siehe die 
@@ -385,14 +459,14 @@ Beispiel:
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{featurep}
-@deffn {Funktion} featurep (@var{a}, @var{f})
+@deffn {Funktion} featurep (@var{a}, @var{p})
 
-Stellt fest, ob das Symbol oder der Ausdruck @var{a} die Eigenschaft @var{f} 
-hat.  Maxima nutzt daf@"ur die Fakten der Datenbank und die definierten 
+Stellt fest, ob das Symbol oder der Ausdruck @var{a} die Eigenschaft @var{p} 
+hat.  Maxima nutzt die Fakten der aktiven Kontexte und die definierten
 Eigenschaften f@"ur Symbole und Funktionen.
 
 @code{featurep} gibt sowohl f@"ur den Fall @code{false} zur@"uck, dass das 
-Argument @var{a} nicht die Eigenschaft @var{f} hat, als auch f@"ur den Fall, 
+Argument @var{a} nicht die Eigenschaft @var{p} hat, als auch f@"ur den Fall, 
 dass Maxima dies nicht anhand der bekannten Fakten und Eigenschaften entscheiden
 kann.
 
@@ -412,15 +486,14 @@ Beispiele:
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{features}
 @defvr {Systemvariable} features
-Standardwert: @code{[]}
 
-Maxima erkennt spezielle mathematische Eigenschaften von Funktionen und 
+Maxima kennt spezielle mathematische Eigenschaften von Funktionen und 
 Variablen.
 
 @code{declare(@var{x})}, @var{foo} gibt der Funktion oder Variablen @var{x} die
 Eigenschaft @var{foo}.
 
-@code{declare(@var{foo}, feature)} deklariert die neue Eigenschaft @var{foo}. 
+@code{declare(@var{foo}, feature)} deklariert die neue Eigenschaft @var{foo}.
 Zum  Beispiel deklariert @code{declare([red, green, blue], feature)} die drei 
 neuen Eigenschaften @code{red}, @code{green} und @code{blue}.
 
@@ -428,16 +501,18 @@ neuen Eigenschaften @code{red}, @code{green} und @code{blue}.
 die Eigenschaft @var{foo} hat.  Ansonsten wird @code{false} zur@"uckgegeben.
 
 Die Informationsliste @code{features} enth@"alt eine Liste der Eigenschaften, 
-die Funktionen und Variablen erhalten k@"onnen und in die Datenbank eingetragen 
-werden:
+die Funktionen und Variablen erhalten k@"onnen und die in die Datenbank
+eingetragen werden:
 
-@flushleft
-@code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
-@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
-@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
-@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
-@code{rassociative}, @code{symmetric}, und @code{antisymmetric}.
-@end flushleft
+@verbatim
+   integer         noninteger       even 
+   odd             rational         irrational
+   real            imaginary        complex
+   analytic        increasing       decreasing
+   oddfun          evenfun          posfun
+   commutative     lassociative     rassociative
+   symmetric       antisymmetric
+@end verbatim
 
 Hinzu kommen die vom Nutzer definierten Eigenschaften.
 
@@ -485,7 +560,18 @@ x is not numeric.
 
 Hat eine Variable mit der Funktion @mref{declare} die Eigenschaft @code{integer}
 oder @code{noninteger} erhalten, wird sie von Maxima als eine ganze Zahl oder 
-als nicht ganze Zahl interpretiert.
+als nicht-ganze Zahl interpretiert.  Siehe auch @mrefdot{askinteger}
+
+Beispiele:
+
+@example
+(%i1) declare(n, integer, x, noninteger);
+(%o1)                         done
+(%i2) askinteger(n);
+(%o2)                          yes
+(%i3) askinteger(x);
+(%o3)                          no
+@end example
 @end defvr
 
 @c --- 06.02.2011 DK -----------------------------------------------------------
@@ -555,22 +641,35 @@ deklariert wurden.
 @anchor{posfun}
 @defvr {Eigenschaft} posfun
 
-@code{declare(f, posfun)} deklariert die Funktion @code{f} als positive
-Funktion.  @code{is (f(x) > 0)} gibt dann @code{true} zur@"uck.
+@code{declare(f, posfun)} deklariert die Funktion @code{f} als eine Funktion,
+die nur positive Werte annimmt.  @code{is(f(x) > 0)} gibt dann @code{true}
+zur@"uck.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.05.2011 DK -----------------------------------------------------------
 @anchor{printprops}
 @deffn  {Funktion} printprops (@var{a}, @var{i})
 @deffnx {Funktion} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
 @deffnx {Funktion} printprops (all, @var{i})
 
-Zeigt die zum Kennzeichen @var{i} zugeordnete Eigenschaft des Atoms @var{a} an. 
-@var{a} kann sowohl eine Liste von Atomen, als auch das Atom @code{all} sein. 
-In diesem Fall werden alle Atome angezeigt, die eine Eigenschaft zum Kennzeichen
-@var{i} haben.  @code{printprops} zeigt die Eigenschaften von Atomen, die auf 
-andere Weise nicht angezeigt werden k@"onnen, zum Beispiel f@"ur @code{atvalue}, 
-@code{atomgrad}, @code{gradef} und @code{matchdeclare}.
+Zeigt die zum Kennzeichen @var{i} zugeordnete Eigenschaft des Atoms @var{a} an.
+@var{i} kann einer der Werte @code{gradef}, @code{atvalue}, @code{atomgrad} oder
+@code{matchdeclare} sein.  @var{a} kann sowohl eine Liste von Atomen, als auch
+das Atom @code{all} sein.  In diesem Fall werden alle Atome angezeigt, die eine
+Eigenschaft zum Kennzeichen @var{i} haben.
+
+Beispiel:
+
+@example
+(%i1) gradef(f(x), 2*g(x));
+(%o1)                         f(x)
+(%i2) printprops(f,gradef);
+                       d
+                       -- (f(x)) = 2 g(x)
+                       dx
+
+(%o2)                         done
+@end example
 @end deffn
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
@@ -590,7 +689,7 @@ oder dem Nutzer erhalten hat.
 Standardwert: @code{[]}
 
 @code{props} ist eine Liste der Symbole, die eine Eigenschaft mit den Funktionen
-@code{declare}, @code{atvaule} oder @code{matchdeclare} erhalten haben.
+@code{declare}, @code{atvalue} oder @code{matchdeclare} erhalten haben.
 @end defvr
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
@@ -636,7 +735,7 @@ Beispiele:
 @anchor{qput}
 @deffn {Funktion} qput (@var{atom}, @var{value}, @var{indicator})
 
-Arbeit wie die Funktion @code{put} mit dem Unterschied, dass @code{qput} die
+Entspricht der Funktion @code{put} mit dem Unterschied, dass @code{qput} die
 Argumente nicht auswertet.
 
 Beispiele:
@@ -717,7 +816,7 @@ wie @code{function}, @code{macro}, @code{mode_declare} oder nutzerdefinierte
 Eigenschaften sein.
 
 @code{remove("@var{a}", operator)} oder @code{remove("@var{a}", op)}
-entfernen vom atom @var{a} die Operatoreigenschaften, die mit den Funktionen 
+entfernen vom Atom @var{a} die Operatoreigenschaften, die mit den Funktionen
 @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} oder
 @code{nofix} definiert wurden.  Die Namen von Operatoren m@"ussen als eine 
 Zeichenkette angegeben werden.
