@@ -2,111 +2,161 @@
 @c File        : Numerical.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Numerical.texi revision 1.32
+@c Original    : Numerical.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 13.11.2010
-@c Revision    : 26.02.2011
+@c Revision    : 28.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 @menu
-* Introduction to fast Fourier transform::                     
-* Functions and Variables for fast Fourier transform::
-* Introduction to Fourier series::
-* Functions and Variables for Fourier series::
+* Einf@"uhrung in die schnelle Fourier-Transformation::
+* Funktionen und Variablen f@"ur die schnelle Fourier-Transformation::
+* Einf@"uhrung in Fourierreihen::
+* Funktionen und Variablen f@"ur Fourierreihen::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, Fouriertransformationen, Fouriertransformationen
-@section Introduction to fast Fourier transform
+@node Einf@"uhrung in die schnelle Fourier-Transformation, Funktionen und Variablen f@"ur die schnelle Fourier-Transformation, Fourier-Transformationen, Fourier-Transformationen
+@section Einf@"uhrung in die schnelle Fourier-Transformation
 @c -----------------------------------------------------------------------------
 
-The @code{fft} package comprises functions for the numerical (not symbolic)
-computation of the fast Fourier transform.
+@c The @code{fft} package comprises functions for the numerical (not symbolic)
+@c computation of the fast Fourier transform.
+
+Das Paket @code{fft} enth@"alt Funktionen f@"ur die numerische Berechnung der
+schnellen Fourier Transformation (FFT - "Fast Fourier Transform").
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for fast Fourier transform, Introduction to Fourier series, Introduction to fast Fourier transform, Fouriertransformationen
-@section Functions and Variables for fast Fourier transform
+@node Funktionen und Variablen f@"ur die schnelle Fourier-Transformation, Einf@"uhrung in Fourierreihen, Einf@"uhrung in die schnelle Fourier-Transformation, Fourier-Transformationen
+@section Funktionen und Variablen f@"ur die schnelle Fourier-Transformation
 @c -----------------------------------------------------------------------------
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} polartorect (@var{r}, @var{t})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{polartorect}
+@deffn {Funktion} polartorect (@var{r}, @var{t})
 
-Translates complex values of the form @code{r %e^(%i t)} to the form
-@code{a + b %i}, where @var{r} is the magnitude and @var{t} is the phase.
-@var{r} and @var{t} are 1-dimensional arrays of the same size.
-The array size need not be a power of 2.
+@c Translates complex values of the form @code{r %e^(%i t)} to the form
+@c @code{a + b %i}, where @var{r} is the magnitude and @var{t} is the phase.
+@c @var{r} and @var{t} are 1-dimensional arrays of the same size.
+@c The array size need not be a power of 2.
 
-The original values of the input arrays are
-replaced by the real and imaginary parts, @code{a} and @code{b}, on return.
-The outputs are calculated as
+Transformiert komplexe Zahlen der Form @code{r %e^(%i t)} in die Standardform
+@code{a + b %i}.  @var{r} ist der Betrag der komplexen Zahl und @var{t} die
+Phase.  Die Argumente @var{r} und @var{t} sind eindimensionale Arrays derselben
+Gr@"o@ss{}e.  Die Gr@"o@ss{}e der Arrays muss eine Potenz von 2 sein.
 
-@example
-a = r cos(t)
-b = r sin(t)
-@end example
+@c The original values of the input arrays are replaced by the real and
+@c imaginary parts, @code{a} and @code{b}, on return.  The outputs are
+@c calculated as
+@c @example
+@c a = r cos(t)
+@c b = r sin(t)
+@c @end example
 
-@code{polartorect} is the inverse function of @code{recttopolar}.
+Die Werte der originalen Arrays werden durch den Realteil @code{a = r cos(t)}
+und den Imagin@"arteil @code{b = r sin(t)} ersetzt.
 
-@code{load(fft)} loads this function. See also @code{fft}.
+@c @code{polartorect} is the inverse function of @code{recttopolar}.
+@c @code{load(fft)} loads this function.  See also @code{fft}.
+
+@code{polartorect} ist die inverse Funktion zu @mrefdot{recttopolar}
+Das Kommando @code{load(fft)} l@"adt die Funktion.
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} recttopolar (@var{a}, @var{b})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{recttopolar}
+@deffn {Funktion} recttopolar (@var{a}, @var{b})
 
-Translates complex values of the form @code{a + b %i} to the form
-@code{r %e^(%i t)}, where @var{a} is the real part and @var{b} is the imaginary
-part.  @var{a} and @var{b} are 1-dimensional arrays of the same size.
-The array size need not be a power of 2.
+@c Translates complex values of the form @code{a + b %i} to the form
+@c @code{r %e^(%i t)}, where @var{a} is the real part and @var{b} is the
+@c imaginary part.  @var{a} and @var{b} are 1-dimensional arrays of the same
+@c size.  The array size need not be a power of 2.
 
-The original values of the input arrays are
-replaced by the magnitude and angle, @code{r} and @code{t}, on return.
-The outputs are calculated as
+Transformiert komplexe Zahlen der Form @code{a + b %i} in die Polarform
+@code{r %e^(%i t)}.  @var{a} ist der Realteil und @var{b} der Imagin@"arteil der
+komplexen Zahl.  Die Argumente @var{a} und @var{b} sind eindimensionale Arrays
+derselben Gr@"o@ss{}e.  Die Gr@"o@ss{}e der Arrays muss eine Potenz von 2 sein.
 
-@example
-r = sqrt(a^2 + b^2)
-t = atan2(b, a)
-@end example
+@c The original values of the input arrays are replaced by the magnitude and
+@c angle, @code{r} and @code{t}, on return. The outputs are calculated as
+@c @example
+@c r = sqrt(a^2 + b^2)
+@c t = atan2(b, a)
+@c @end example
+@c The computed angle is in the range @code{-%pi} to @code{%pi}.
 
-The computed angle is in the range @code{-%pi} to @code{%pi}. 
+Die Werte der originalen Arrays werden durch den Betrag
+@code{r = sqrt(a^2 + b^2} und die Phase @code{t = atan2(b, a)} ersetzt.  Die
+Phase ist ein Winkel in dem Bereich @code{-%pi} bis @code{%pi}.
 
-@code{recttopolar} is the inverse function of @code{polartorect}.
+@c @code{recttopolar} is the inverse function of @code{polartorect}.
+@c @code{load(fft)} loads this function.  See also @code{fft}.
 
-@code{load(fft)} loads this function. See also @code{fft}.
+@code{recttoploar} ist die inverse Funktion zu @mrefdot{polartorect}
+Das Kommando @code{load(fft)} l@"adt die Funktion.
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} inverse_fft (@var{y})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{inverse_fft}
+@deffn {Funktion} inverse_fft (@var{y})
 
-Computes the inverse complex fast Fourier transform.  @var{y} is a list or
-array (named or unnamed) which contains the data to transform.  The number of
-elements must be a power of 2.  The elements must be literal numbers (integers,
-rationals, floats, or bigfloats) or symbolic constants, or expressions 
-@code{a + b*%i} where @code{a} and @code{b} are literal numbers or symbolic 
-constants.
+@c Computes the inverse complex fast Fourier transform.  @var{y} is a list or
+@c array (named or unnamed) which contains the data to transform.  The number of
+@c elements must be a power of 2.  The elements must be literal numbers
+@c (integers, rationals, floats, or bigfloats) or symbolic constants, or
+@c expressions @code{a + b*%i} where @code{a} and @code{b} are literal numbers
+@c or symbolic constants.
 
-@code{inverse_fft} returns a new object of the same type as @var{y},
-which is not modified.
-Results are always computed as floats
-or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
+Berechnet die inverse schnelle Fourier-Transformation.  Das Argument @var{y} ist
+eine Liste oder ein Array mit den Daten, die zu transformieren sind.  Die Anzahl
+der Daten muss eine Potenz von 2 sein.  Die Elemente m@"ussen Zahlen (ganze,
+rationale, Gleitkommazahlen oder gro@ss{}e Gleitkommazahlen) oder numerische
+Konstanten sein.  Weiterhin k@"onnen die Elemente komplexe Zahlen
+@code{a + b*%i} sein, wobei der Realteil und der Imagin@"arteil wiederum Zahlen
+oder numerische Konstanten sein m@"ussen.
 
-The inverse discrete Fourier transform is defined as follows.
-Let @code{x} be the output of the inverse transform.
-Then for @code{j} from 0 through @code{n - 1},
+@c @code{inverse_fft} returns a new object of the same type as @var{y}, which is
+@c not modified.  Results are always computed as floats or expressions
+@c @code{a + b*%i} where @code{a} and @code{b} are floats.
 
+@code{inverse_fft} gibt ein neues Objekt vom selben Typ wie @var{y} zur@"uck.
+Die Ergebnisse sind immer Gleitkommazahlen oder komplexe Zahlen
+@code{a + %i*b}, wobei @code{a} und @code{b} Gleitkommazahlen sind.
+
+@c The inverse discrete Fourier transform is defined as follows.
+@c Let @code{x} be the output of the inverse transform.
+@c Then for @code{j} from 0 through @code{n - 1},
+@c @example
+@c x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
+@c @end example
+
+Die inverse diskrete Fourier-Transformation ist wie folgt definiert.  Wenn
+@code{x} das Ergebnis der inversen Fourier-Transformation ist, dann gilt f@"ur
+@code{j} von 0 bis @code{n-1}
+
+@ifnottex
 @example
-x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
+x[j] = sum(y[k] exp(2 %i %pi j k / n), k, 0, n - 1)
 @end example
+@end ifnottex
+@tex
+$$x_{j}=\sum_{k=0}^{n-1}{y_{k}\,e^{{{2\,i\,\pi\,j\,k}\over{n}}}}$$
+@end tex
 
-@code{load(fft)} loads this function.
+@c @code{load(fft)} loads this function.
+@c See also @code{fft} (forward transform), @code{recttopolar}, and 
+@c @code{polartorect}.
 
-See also @code{fft} (forward transform), @code{recttopolar}, and 
-@code{polartorect}.
+Mit dem Kommando @code{load(fft)} wird die Funktion geladen.  Siehe auch 
+@mref{fft} f@"ur die schnelle Fourier-Transformation.
 
-Examples:
+Beispiele:
 
-Real data.
+@c Real data.
+
+Reelle Daten.
 
 @example
 (%i1) load (fft) $
@@ -123,7 +173,9 @@ Real data.
 (%o6)                       3.545L-16
 @end example
 
-Complex data.
+@c Complex data.
+
+Komplexe Daten.
 
 @example
 (%i1) load (fft) $
@@ -142,66 +194,123 @@ Complex data.
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fft (@var{x})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fft}
+@deffn {Funktion} fft (@var{x})
 
-Computes the complex fast Fourier transform.  @var{x} is a list or array 
-(named or unnamed) which contains the data to transform.  The number of 
-elements must be a power of 2.  The elements must be literal numbers (integers, 
-rationals, floats, or bigfloats) or symbolic constants, or expressions 
-@code{a + b*%i} where @code{a} and @code{b} are literal numbers or symbolic 
-constants.
+@c Computes the complex fast Fourier transform.  @var{x} is a list or array 
+@c (named or unnamed) which contains the data to transform.  The number of 
+@c elements must be a power of 2.  The elements must be literal numbers
+@c (integers, rationals, floats, or bigfloats) or symbolic constants, or
+@c expressions @code{a + b*%i} where @code{a} and @code{b} are literal numbers
+@c or symbolic constants.
 
-@code{fft} returns a new object of the same type as @var{x},
-which is not modified.
-Results are always computed as floats
-or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
+Berechnet die schnelle Fourier-Transformation.  Das Argument @var{x} ist eine
+Liste oder ein Array mit den Daten, die zu transformieren sind.  Die Anzahl der
+Elemente muss eine Potenz von 2 sein.  Die Elemente m@"ussen Zahlen (ganze,
+rationale, Gleitkommazahlen oder gro@ss{}e Gleitkommazahlen) oder numerische
+Konstanten sein.  Weiterhin k@"onnen die Elemente komplexe Zahlen
+@code{a + b*%i} sein, wobei der Realteil und der Imagin@"arteil wiederum Zahlen
+oder numerische Konstanten sein m@"ussen.
 
-The discrete Fourier transform is defined as follows.
-Let @code{y} be the output of the transform.
-Then for @code{k} from 0 through @code{n - 1},
+@c @code{fft} returns a new object of the same type as @var{x}, which is not
+@c modified.  Results are always computed as floats or expressions
+@c @code{a + b*%i} where @code{a} and @code{b} are floats.
 
+@code{inverse_fft} gibt ein neues Objekt vom selben Typ wie @var{x} zur@"uck.
+Die Ergebnisse sind immer Gleitkommazahlen oder komplexe Zahlen
+@code{a + %i*b}, wobei @code{a} und @code{b} Gleitkommazahlen sind.
+
+@c The discrete Fourier transform is defined as follows.
+@c Let @code{y} be the output of the transform.
+@c Then for @code{k} from 0 through @code{n - 1},
+@c @example
+@c y[k] = (1/n) sum(x[j] exp(-2 %i %pi j k / n), j, 0, n - 1)
+@c @end example
+
+Die diskrete Fourier-Transformation ist wie folgt definiert.  Wenn @code{y} das
+Ergebnis der Fourier-Transformation ist, dann gilt f@"ur @code{k} von 0 bis
+@code{n-1}
+
+@ifnottex
 @example
 y[k] = (1/n) sum(x[j] exp(-2 %i %pi j k / n), j, 0, n - 1)
 @end example
+@end ifnottex
+@tex
+$$y_{k}={{1}\over{n}}
+        \sum_{j=0}^{n-1}{x_{j}\,e^ {- {{2\,i\,\pi\,j\,k}\over{n}} }}$$
+@end tex
 
-When the data @var{x} are real,
-real coefficients @code{a} and @code{b} can be computed such that
+@c When the data @var{x} are real,
+@c real coefficients @code{a} and @code{b} can be computed such that
 
+Sind die Daten @var{x} reelle Zahlen, dann werden die reellen Koeffizienten
+@var{a} und @var{b} so berechnet, dass gilt
+
+@ifnottex
 @example
-x[j] = sum (a[k] * cos (2*%pi*j*k / n) + b[k] 
-                 * sin (2*%pi*j*k / n), k, 0, n/2)
+x[j] = sum (a[k] * cos (2*%pi*j*k / n) 
+          + b[k] * sin (2*%pi*j*k / n), k, 0, n/2)
 @end example
+@end ifnottex
+@tex
+$$x_{j}=\sum_{k=0}^{{{n}\over{2}}}{\left(b_{k}\,\sin \left({{2\,\pi\,
+ j\,k}\over{n}}\right)+a_{k}\,\cos \left({{2\,\pi\,j\,k}\over{n}}
+ \right)\right)}$$
+@end tex
 
-with
+wobei
 
+@ifnottex
 @example
 a[0] = realpart (y[0])
 b[0] = 0
 @end example
+@end ifnottex
+@tex
+$$a_{0}={\it realpart}\left(y_{0}\right)$$
+$$b_{0}=0$$
+@end tex
 
-and, for k from 1 through n/2 - 1,
+@c and, for k from 1 through n/2 - 1,
 
+und f@"ur @var{k} von 1 bis @code{n/2-1}
+
+@ifnottex
 @example
 a[k] = realpart (y[k] + y[n - k])
 b[k] = imagpart (y[n - k] - y[k])
 @end example
+@end ifnottex
+@tex
+$$a_{k}={\it realpart}\left(y_{n-k}+y_{k}\right)$$
+$$b_{k}={\it imagpart}\left(y_{n-k}-y_{k}\right)$$
+@end tex
 
-and
+sowie
 
+@ifnottex
 @example
 a[n/2] = realpart (y[n/2])
 b[n/2] = 0
 @end example
+@end ifnottex
+@tex
+$$a_{{{n}\over{2}}}={\it realpart}\left(y_{{{n}\over{2}}}\right)$$
+$$b_{{{n}\over{2}}}=0$$
+@end tex
 
-@code{load(fft)} loads this function.
+@c @code{load(fft)} loads this function.
+@c See also @code{inverse_fft} (inverse transform), @code{recttopolar}, and 
+@c @code{polartorect}.
 
-See also @code{inverse_fft} (inverse transform), @code{recttopolar}, and 
-@code{polartorect}.
+Das Kommando @code{load(fft)} l@"adt die Funktion.
+Siehe auch @mref{inverse_fft} f@"ur die inverse schnelle Fourier-Transformation.
 
-Examples:
+Beispiele:
 
-Real data.
+Reelle Daten.
 
 @example
 (%i1) load (fft) $
@@ -218,16 +327,18 @@ Real data.
 (%o6)                       3.545L-16
 @end example
 
-Complex data.
+Komplexe Daten.
 
 @example
 (%i1) load (fft) $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : fft (L);
+@group
 (%o4) [0.5, .3536 %i + .3536, - 0.25 %i - 0.25, 
 0.5 - 6.776L-21 %i, 0.0, - .3536 %i - .3536, 0.25 %i - 0.25, 
 0.5 - 3.388L-20 %i]
+@end group
 (%i5) L2 : inverse_fft (L1);
 (%o5) [1.0 - 4.066E-20 %i, 1.0 %i + 1.0, 1.0 - 1.0 %i, 
 - 1.008L-19 %i - 1.0, 4.066E-20 %i - 1.0, 1.0 - 1.0 %i, 
@@ -236,7 +347,9 @@ Complex data.
 (%o6)                       6.83L-17
 @end example
 
-Computation of sine and cosine coefficients.
+@c Computation of sine and cosine coefficients.
+
+Berechnung der Sinus- und Kosinus-Koeffizienten.
 
 @example
 (%i1) load (fft) $
@@ -267,19 +380,29 @@ Computation of sine and cosine coefficients.
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{horner}
-@deffn {Function} horner (@var{expr}, @var{x})
-@deffnx {Function} horner (@var{expr})
+@deffn  {Funktion} horner (@var{expr}, @var{x})
+@deffnx {Funktion} horner (@var{expr})
 
-Returns a rearranged representation of @var{expr} as in Horner's rule, using
-@var{x} as the main variable if it is specified. @code{x} may be omitted in
-which case the main variable of the canonical rational expression form of
-@var{expr} is used.
+@c Returns a rearranged representation of @var{expr} as in Horner's rule, using
+@c @var{x} as the main variable if it is specified.  @code{x} may be omitted in
+@c which case the main variable of the canonical rational expression form of
+@c @var{expr} is used.
 
-@code{horner} sometimes improves stability if @code{expr} is
-to be numerically evaluated.  It is also useful if Maxima is used to
-generate programs to be run in Fortran. See also @code{stringout}.
+Formt ein Polynom @var{expr} in das Horner-Schema um.  Mit @var{x} wird die
+Variable angegeben, f@"ur die das Horner-Schema zu bilden ist.  Wird das
+Argument @var{x} nicht angegeben, wird die Hauptvariable des kanonischen
+Ausdrucks @var{expr} f@"ur die Bildung des Horner-Schemas genutzt.
+
+@c @code{horner} sometimes improves stability if @code{expr} is
+@c to be numerically evaluated.  It is also useful if Maxima is used to
+@c generate programs to be run in Fortran.  See also @code{stringout}.
+
+Das Horner-Schema kann die Stabilit@"at der numerischen Berechnung eines
+Ausdrucks verbessern.
+
+Beispiel:
 
 @example
 (%i1) expr: 1e-155*x^2 - 5.5*x + 5.2e155;
@@ -299,52 +422,95 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{find_root}
-@deffn {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
-@deffnx {Option variable} find_root_error
-@deffnx {Option variable} find_root_abs
-@deffnx {Option variable} find_root_rel
+@anchor{find_root_error}
+@anchor{find_root_abs}
+@anchor{find_root_rel}
+@deffn  {Funktion} find_root (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {Funktion} find_root (@var{f}, @var{a}, @var{b})
+@deffnx {Optionsvariable} find_root_error
+@deffnx {Optionsvariable} find_root_abs
+@deffnx {Optionsvariable} find_root_rel
 
-Finds a root of the expression @var{expr} or the function @var{f} over the 
-closed interval @math{[@var{a}, @var{b}]}.  The expression @var{expr} may be an
-equation, in which case @code{find_root} seeks a root of 
-@code{lhs(@var{expr}) - rhs(@var{expr})}.
+@c Finds a root of the expression @var{expr} or the function @var{f} over the 
+@c closed interval @math{[@var{a}, @var{b}]}.  The expression @var{expr} may be
+@c an equation, in which case @code{find_root} seeks a root of 
+@c @code{lhs(@var{expr}) - rhs(@var{expr})}.
 
-Given that Maxima can evaluate @var{expr} or @var{f} over 
-@math{[@var{a}, @var{b}]} and that @var{expr} or @var{f} is continuous,
-@code{find_root} is guaranteed to find the root, or one of the roots if there 
-is more than one.
+Findet die Nullstellen eines Ausdrucks @var{expr} oder einer Funktion @var{f}
+in dem Intervall @code{[@var{a}, @var{b}]}.  Der Ausdruck @var{expr} kann eine
+Gleichung sein.  In diesem Fall sucht die Funktion @code{find_root} die 
+Nullstellen f@"ur den Ausdruck @code{lhs(@var{expr}) - rhs(@var{expr})}.
 
-@code{find_root} initially applies binary search.
-If the function in question appears to be smooth enough,
-@code{find_root} applies linear interpolation instead.
+@c Given that Maxima can evaluate @var{expr} or @var{f} over 
+@c @math{[@var{a}, @var{b}]} and that @var{expr} or @var{f} is continuous,
+@c @code{find_root} is guaranteed to find the root, or one of the roots if there
+@c is more than one.
 
-The accuracy of @code{find_root} is governed by @code{find_root_abs} and 
-@code{find_root_rel}.  @code{find_root} stops when the function in question
-evaluates to something less than or equal to @code{find_root_abs},
-or if successive approximants @var{x_0}, @var{x_1} differ by no more than
-@code{find_root_rel * max(abs(x_0), abs(x_1))}.  The default values of 
-@code{find_root_abs} and @code{find_root_rel} are both zero.
+Kann Maxima den Ausdruck @var{expr} oder die Funktion @var{f} in dem Intervall
+@code{[@var{a}, @var{b}]} f@"ur alle Werte auswerten und ist der Ausdruck
+@var{expr} oder die Funktion @var{f} in dem Intervall stetig, dann ist sicher,
+dass @code{find_root} die Nullstelle oder zumindest eine Nullstelle findet,
+wenn mehrere Nullstellen vorhanden sind.
 
-@code{find_root} expects the function in question to have a different sign at 
-the endpoints of the search interval.  When the function evaluates to a number 
-at both endpoints and these numbers have the same sign, the behavior of 
-@code{find_root} is governed by @code{find_root_error}.  
-When @code{find_root_error} is @code{true}, @code{find_root} prints an error 
-message.  Otherwise @code{find_root} returns the value of 
-@code{find_root_error}.  The default value of @code{find_root_error} is 
-@code{true}.
+@c @code{find_root} initially applies binary search.
+@c If the function in question appears to be smooth enough,
+@c @code{find_root} applies linear interpolation instead.
 
-If @var{f} evaluates to something other than a number at any step in the search 
-algorithm, @code{find_root} returns a partially-evaluated @code{find_root} 
-expression.
+@code{find_root} beginnt mit einer bin@"aren Suche der Nullstelle.  Erscheint
+die Funktion als glatt genug, wendet Maxima einen Algorithmus mit einer linearen
+Interpolation f@"ur die Suche der Nullstelle an.
 
-The order of @var{a} and @var{b} is ignored; the region in which a root is 
-sought is @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
+@c The accuracy of @code{find_root} is governed by @code{find_root_abs} and 
+@c @code{find_root_rel}.  @code{find_root} stops when the function in question
+@c evaluates to something less than or equal to @code{find_root_abs},
+@c or if successive approximants @var{x_0}, @var{x_1} differ by no more than
+@c @code{find_root_rel * max(abs(x_0), abs(x_1))}.  The default values of 
+@c @code{find_root_abs} and @code{find_root_rel} are both zero.
 
-Examples:
+Die Genauigkeit der Nullstellensuche wird von den Optionsvariablen
+@code{find_root_abs} und @code{find_root_rel} kontrolliert.  @code{find_root}
+endet, wenn die Auswertung der Funktion ein Ergebnis hat, das kleiner als
+@code{find_root_abs} ist oder wenn aufeinander folgende Auswertungen
+Ergebnisse @var{x_0} und @var{x_1} haben, die sich voneinander weniger als
+@code{find_root_rel * max(abs(x_0), abs(x_1))} unterscheiden.  Der Standardwert
+der Optionsvariablen @code{find_root_abs} und @code{find_root_rel} ist Null.
+
+@c @code{find_root} expects the function in question to have a different sign at
+@c the endpoints of the search interval.  When the function evaluates to a
+@c number at both endpoints and these numbers have the same sign, the behavior
+@c of @code{find_root} is governed by @code{find_root_error}.
+@c When @code{find_root_error} is @code{true}, @code{find_root} prints an error
+@c message.  Otherwise @code{find_root} returns the value of 
+@c @code{find_root_error}.  The default value of @code{find_root_error} is 
+@c @code{true}.
+
+@code{find_root} erwartet, dass die Funktion an den Endpunkten des Intervalls
+f@"ur die Nullstellensuche ein unterschiedliches Vorzeichen hat.  Hat die
+Funktion an den Endpunkten des Intervalls dasselbe Vorzeichen, wird das
+Verhalten der Funktion @code{find_root} von der Optionsvariablen
+@code{find_root_error} kontrolliert.  Hat @code{find_root_error} den Wert
+@code{true}, wird eine Fehlermeldung ausgegeben.  Ansonsten wird von
+@code{find_root} der Wert von @code{find_root_error} als Ergebnis
+zur@"uckgegeben.  Der Standardwert von @code{find_root_error} ist @code{true}.
+
+@c If @var{f} evaluates to something other than a number at any step in the
+@c search algorithm, @code{find_root} returns a partially-evaluated
+@c @code{find_root} expression.
+
+Kann die Funktion @var{f} bei der Nullstellensuche nicht zu einer Zahl
+ausgewertet werden, gibt @code{find_root} ein teilweise ausgewertetes Ergebnis
+zur@"uck.
+
+@c The order of @var{a} and @var{b} is ignored; the region in which a root is 
+@c sought is @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
+
+Die Reihenfolge der Grenzen des Intervalls @var{a} und @var{b} wird ignoriert.
+@code{find_root} sucht die Nullstellen immer in dem Intervall
+@code{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
+
+Beispiele:
 
 @example
 (%i1) f(x) := sin(x) - x/2;
@@ -369,26 +535,44 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{newton}
+@deffn {Funktion} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
 
-Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
-considering @var{expr} to be a function of one variable, @var{x}.
-The search begins with @code{@var{x} = @var{x_0}}
-and proceeds until @code{abs(@var{expr}) < @var{eps}}
-(with @var{expr} evaluated at the current value of @var{x}).
+@c Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
+@c considering @var{expr} to be a function of one variable, @var{x}.
+@c The search begins with @code{@var{x} = @var{x_0}}
+@c and proceeds until @code{abs(@var{expr}) < @var{eps}}
+@c (with @var{expr} evaluated at the current value of @var{x}).
 
-@code{newton} allows undefined variables to appear in @var{expr},
-so long as the termination test @code{abs(@var{expr}) < @var{eps}} evaluates
-to @code{true} or @code{false}.
-Thus it is not necessary that @var{expr} evaluate to a number.
+Gibt eine N@"aherungsl@"osung der Gleichung @code{@var{expr} = 0} zur@"uck, die
+mit dem Newton-Algorithmus berechnet wird.  Der Ausdruck @var{expr} ist eine
+Funktion einer Variablen @var{x}.  Der Anfangswert ist 
+@code{ @var{x} = @var{x_0}}.  Der Algorithmus bricht ab, wenn
+@code{abs(@var{expr}) < @var{eps}}, wobei der Ausdruck @var{expr} f@"ur den
+aktuellen N@"aherungswert @var{x} ausgewertet wird.
 
-@code{load(newton1)} loads this function.
+@c @code{newton} allows undefined variables to appear in @var{expr},
+@c so long as the termination test @code{abs(@var{expr}) < @var{eps}} evaluates
+@c to @code{true} or @code{false}.
+@c Thus it is not necessary that @var{expr} evaluate to a number.
 
-See also @code{realroots}, @code{allroots}, @code{find_root}, and 
-@code{mnewton}.
+@code{newton} erlaubt symbolische Variablen im Ausdruck @var{expr}, wenn der
+Ausdruck @code{abs(@var{expr}) < @var{eps}} zu @code{true} oder @code{false}
+ausgewertet werden kann.  Daher ist es nicht notwendig, dass der Ausdruck
+@var{expr} zu einer Zahl ausgewertet werden kann.
 
-Examples:
+@c @code{load(newton1)} loads this function.
+
+Das Kommando @code{load(newton1)} l@"adt die Funktion.
+
+@c See also @code{realroots}, @code{allroots}, @code{find_root}, and 
+@c @code{mnewton}.
+
+Siehe auch die Funktionen @mrefcomma{realroots} @mrefcomma{allroots}@w{}
+@mref{find_root} und @mrefdot{mnewton}
+
+Beispiele:
 
 @example
 (%i1) load (newton1);
@@ -408,168 +592,257 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Fourier series, Functions and Variables for Fourier series, Functions and Variables for fast Fourier transform, Fouriertransformationen
-@section Introduction to Fourier series
+@node Einf@"uhrung in Fourierreihen, Funktionen und Variablen f@"ur Fourierreihen, Funktionen und Variablen f@"ur die schnelle Fourier-Transformation, Fourier-Transformationen
+@section Einf@"uhrung in Fourierreihen
 @c -----------------------------------------------------------------------------
 
-The @code{fourie} package comprises functions for the symbolic computation
-of Fourier series.
-There are functions in the @code{fourie} package to calculate Fourier integral
-coefficients and some functions for manipulation of expressions.
+@c The @code{fourie} package comprises functions for the symbolic computation
+@c of Fourier series.
+@c There are functions in the @code{fourie} package to calculate Fourier 
+@c integral coefficients and some functions for manipulation of expressions.
+
+Das Paket @code{fourie} enth@"alt Funktionen f@"ur die symbolische Berechnungen
+von Fourierreihen.  Weiterhin enth@"alt das Paket Funktionen, um
+Fourierkoeffizienten zu berechnen und einige weitere Funktionen.
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Fourier series, , Introduction to Fourier series, Fouriertransformationen
-@section Functions and Variables for Fourier series
+@node Funktionen und Variablen f@"ur Fourierreihen, , Einf@"uhrung in Fourierreihen, Fourier-Transformationen
+@section Funktionen und Variablen f@"ur Fourierreihen
 @c -----------------------------------------------------------------------------
 
 @c REPHRASE
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} equalp (@var{x}, @var{y})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{equalp}
+@deffn {Funktion} equalp (@var{x}, @var{y})
 
-Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
-(doesn't give an error message like @code{equal (x, y)} would do in this case).
+@c Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
+@c (doesn't give an error message like @code{equal (x, y)} would do in this
+@c case).
+
+Gibt @code{true} zur@"uck, wenn @code{equal(@var{x}, @var{y})} das Ergebnis
+@code{true} hat.  Ansonsten ist das Ergebnis @code{false}.
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn  {Function} remfun (@var{f}, @var{expr})
-@deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@deffn  {Funktion} remfun (@var{f}, @var{expr})
+@deffnx {Funktion} remfun (@var{f}, @var{expr}, @var{x})
 
-@code{remfun (@var{f}, @var{expr})} replaces all occurrences of 
-@code{@var{f} (@var{arg})} by @var{arg} in @var{expr}.
+@c @code{remfun (@var{f}, @var{expr})} replaces all occurrences of 
+@c @code{@var{f} (@var{arg})} by @var{arg} in @var{expr}.
 
-@code{remfun (@var{f}, @var{expr}, @var{x})} replaces all occurrences of 
-@code{@var{f} (@var{arg})} by @var{arg} in @var{expr} only if @var{arg} 
-contains the variable @var{x}.
+@code{remfun(@var{f}, @var{expr}} ersetzt @code{@var{f}(@var{arg})} durch
+@var{arg} im Ausdruck @var{expr}.
+
+@c @code{remfun (@var{f}, @var{expr}, @var{x})} replaces all occurrences of 
+@c @code{@var{f} (@var{arg})} by @var{arg} in @var{expr} only if @var{arg} 
+@c contains the variable @var{x}.
+
+@code{remfun(@var{f}, @var{expr}, @var{x})} ersetzt @code{@var{f} (@var{arg})}
+durch @var{arg} im Ausdruck @var{expr} nur dann, wenn @var{arg} die Variable
+@var{x} enth@"alt.
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} funp (@var{f}, @var{expr})
-@deffnx {Function} funp (@var{f}, @var{expr}, @var{x})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{funp}
+@deffn  {Funktion} funp (@var{f}, @var{expr})
+@deffnx {Funktion} funp (@var{f}, @var{expr}, @var{x})
 
-@code{funp (@var{f}, @var{expr})}
-returns @code{true} if @var{expr} contains the function @var{f}.
+@c @code{funp (@var{f}, @var{expr})}
+@c returns @code{true} if @var{expr} contains the function @var{f}.
 
-@code{funp (@var{f}, @var{expr}, @var{x})}
-returns @code{true} if @var{expr} contains the function @var{f} and the variable
-@var{x} is somewhere in the argument of one of the instances of @var{f}.
+@code{funp(@var{f}, @var{expr})} hat das Ergebnis @code{true}, wenn der
+Ausdruck @var{expr} die Funktion @var{f} enth@"alt.
+
+@c @code{funp (@var{f}, @var{expr}, @var{x})} returns @code{true} if @var{expr}
+@c contains the function @var{f} and the variable @var{x} is somewhere in the
+@c argument of one of the instances of @var{f}.
+
+@code{funp(@var{f}, @var{expr}, @var{x})} hat das Ergebnis @code{true}, wenn
+der Ausdruck @var{expr} die Funktion @var{f} enthält und die Variable @var{x}
+ein Argument der Funktion @var{f} ist.
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn  {Function} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {Function} absint (@var{f}, @var{x})
-@deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{absint}
+@deffn  {Funktion} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Funktion} absint (@var{f}, @var{x})
+@deffnx {Funktion} absint (@var{f}, @var{x}, @var{a}, @var{b})
 
-@code{absint (@var{f}, @var{x}, @var{halfplane})}
-returns the indefinite integral of @var{f} with respect to
-@var{x} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
-@var{f} may contain expressions of the form
-@code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
+@c @code{absint (@var{f}, @var{x}, @var{halfplane})}
+@c returns the indefinite integral of @var{f} with respect to
+@c @var{x} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
+@c @var{f} may contain expressions of the form
+@c @code{abs (x)}, @code{abs (sin (x))}, @code{abs(a) * exp (-abs(b) * abs(x))}.
 
-@code{absint (@var{f}, @var{x})} is equivalent to 
-@code{absint (@var{f}, @var{x}, pos)}.
+@code{absint(@var{f}, @var{x}, @var{halfplane})} gibt das unbestimmte Integral
+der Funktion @var{f} f@"ur die Variable @var{x} zur@"uck.  Das Integral wird in
+der angegebenen Halbebene @code{pos}, @code{neg} oder f@"ur beide Halbebenen
+mit @code{both} berechnet.  Der Integrand kann die Betragsfunktion enthalten:
+@code{abs(x)}, @code{abs(sin(x))}, @code{abs(a) * exp(-abs(b) * abs(x))}.
 
-@code{absint (@var{f}, @var{x}, @var{a}, @var{b})} returns the definite integral
-of @var{f} with respect to @var{x} from @var{a} to @var{b}.
+@c @code{absint (@var{f}, @var{x})} is equivalent to 
+@c @code{absint (@var{f}, @var{x}, pos)}.
+
+@code{absint(@var{f}, @var{x})} ist @"aquivalent zu
+@code{absint(@var{f}, @var{x}, pos)}.
+
+@c @code{absint (@var{f}, @var{x}, @var{a}, @var{b})} returns the definite
+@c integral of @var{f} with respect to @var{x} from @var{a} to @var{b}.
 @c SAME LIST AS ABOVE ??
-@var{f} may include absolute values.
+@c @var{f} may include absolute values.
+
+@code{absint(@var{f}, @var{x}, @var{a}, @var{b})} gibt das bestimmte Integral
+der Funktion @var{f} f@"ur die Variable @var{x} in den Grenzen @var{a} und
+@var{b} zur@"uck.  Der Integrand kann die Betragsfunktion enthalten.
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fourier (@var{f}, @var{x}, @var{p})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fourier}
+@deffn {Funktion} fourier (@var{f}, @var{x}, @var{p})
 
-Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
-on the interval @code{[-p, p]}.
+@c Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
+@c on the interval @code{[-p, p]}.
+
+Berechnet die Fourier-Koeffizienten der Funktion @code{@var{f}(@var{x})} f@"ur
+das Intervall @code{[-p, p]}.
 @end deffn
 
-@c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
+@c NEES EXPANSION.  WHAT IS THE ARGUMENT l ??
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} foursimp (@var{l})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{foursimp}
+@deffn {Funktion} foursimp (@var{l})
 
-Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
-@code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
+@c Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
+@c @code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
+
+Vereinfacht @code{sin(n %pi)} zu 0, wenn die Optionsvariable @mref{sinnpiflag}
+den Wert @code{true} hat und @code{cos(n %pi)} zu @code{(-1)^n}, wenn die
+Optionsvariable @mref{cosnpiflag} den Wert @code{true} hat.
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} sinnpiflag
-Default value: @code{true}
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{sinnpiflag}
+@defvr {Optionsvariable} sinnpiflag
+Standardwert: @code{true}
 
-See @code{foursimp}.
+@c See @code{foursimp}.
+
+Siehe die Funktion @mrefdot{foursimp}
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} cosnpiflag
-Default value: @code{true}
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{cosnpiflag}
+@defvr {Optionsvariable} cosnpiflag
+Standardwert: @code{true}
 
-See @code{foursimp}.
+@c See @code{foursimp}.
+
+Siehe die Funktion @mrefdot{foursimp}
 @end defvr
 
-@c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
+@c NEEDS EXPANSION.  EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fourexpand}
+@deffn {Funktion} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
 
-Constructs and returns the Fourier series from the list of
-Fourier coefficients @var{l} up through @var{limit} terms (@var{limit}
-may be @code{inf}). @var{x} and @var{p} have same meaning as in
-@code{fourier}.
+@c Constructs and returns the Fourier series from the list of
+@c Fourier coefficients @var{l} up through @var{limit} terms (@var{limit}
+@c may be @code{inf}). @var{x} and @var{p} have same meaning as in
+@c @code{fourier}.
+
+Konstruiert aus der Liste der Fourier-Koeffizienten @var{l} eine Fourierreihe
+mit @var{limit} Termen.  Das Argument @var{limit} kann @code{inf} sein.  Die
+Argumente @var{x} und @var{p} haben dieselbe Bedeutung wie f@"ur die Funktion
+@mrefdot{fourier}
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fourcos (@var{f}, @var{x}, @var{p})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fourcos}
+@deffn {Funktion} fourcos (@var{f}, @var{x}, @var{p})
 
-Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on
-@code{[0, @var{p}]}.
+@c Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined
+@c on @code{[0, @var{p}]}.
+
+Gibt die Kosinus-Koeffizienten einer Fourierreihe f@"ur die Funktion
+@code{@var{f}(@var{x})} zur@"uck, die auf dem Intervall @code{[0, @var{p}]}
+definiert ist.
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} foursin (@var{f}, @var{x}, @var{p})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{foursin}
+@deffn {Funktion} foursin (@var{f}, @var{x}, @var{p})
 
-Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on 
-@code{[0, @var{p}]}.
+@c Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on
+@c @code{[0, @var{p}]}.
+
+Gibt die Sinus-Koeffizienten einer Fourierreihe f@"ur die Funktion
+@code{@var{f}(@var{x})} zur@"uck, die auf dem Intervall @code{[0, @var{p}]}
+definiert ist.
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} totalfourier (@var{f}, @var{x}, @var{p})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{totalfourier}
+@deffn {Funktion} totalfourier (@var{f}, @var{x}, @var{p})
 
-Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})),
-@var{x}, @var{p}, 'inf)}.
+@c Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})),
+@c @var{x}, @var{p}, 'inf)}.
+
+Gibt das Ergebnis des Kommandos 
+@code{fourexpand(foursimp(fourier(@var{f}, @var{x}, @var{p})), @var{x}, @var{p},
+'inf)} zur@"uck.
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fourint (@var{f}, @var{x})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fourint}
+@deffn {Funktion} fourint (@var{f}, @var{x})
 
-Constructs and returns a list of the Fourier integral coefficients of 
-@code{@var{f}(@var{x})} defined on @code{[minf, inf]}.
+@c Constructs and returns a list of the Fourier integral coefficients of 
+@c @code{@var{f}(@var{x})} defined on @code{[minf, inf]}.
+
+Konstruiert eine Liste der Fourierintegral-Koeffizienten der Funktion
+@code{@var{f}(@var{x})}, die auf dem Intervall @code{[minf, inf]} definiert ist.
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fourintcos (@var{f}, @var{x})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fourintcos}
+@deffn {Funktion} fourintcos (@var{f}, @var{x})
 
-Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})} on
-@code{[0, inf]}.
+@c Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})}
+@c on @code{[0, inf]}.
+
+Gibt die Koeffizienten des Kosinus-Fourierintegrals der Funktion
+@code{@var{f}(@var{x})} zur@"uck, die auf dem Intervall @code{[0, inf]}
+definiert ist.
+
 @end deffn
 
 @c NEEDS EXPANSION
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fourintsin (@var{f}, @var{x})
+@c --- 28.05.2011 DK -----------------------------------------------------------
+@anchor{fourintsin}
+@deffn {Funktion} fourintsin (@var{f}, @var{x})
 
-Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on
-@code{[0, inf]}.
+@c Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})}
+@c on @code{[0, inf]}.
+
+Gibt die Koeffizienten des Sinus-Fourierintegrals der Funktion
+@code{@var{f}(@var{x})} zur@"uck, die auf dem Intervall @code{[0, inf]}
+definiert ist.
 @end deffn
 
 @c --- End of Numerical.de.texi ------------------------------------------------
