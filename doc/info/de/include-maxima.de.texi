@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in 27.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 24.04.2011
+@c Revision    : 28.05.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -157,8 +157,7 @@ Spezifische Gebiete der Mathematik
 * Tensoren::                    (Englisch) Methoden der Tensorrechnung.
 * Zahlentheorie::               Funktionen der Zahlentheorie.
 * Spezielle Funktionen::        (Englisch) Spezielle Mathematische Funktionen.
-* Fouriertransformationen::     (Englisch) Fouriertransformationen und
-                                Fourierreihen.
+* Fourier-Transformationen::    Fourier-Transformationen und Fourierreihen.
 @sp 1
 
 Fortgeschrittene M@"oglichkeiten und Programmierung
@@ -367,16 +366,11 @@ Spezielle Funktionen
 * Hypergeometrische Funktionen::
 * Funktionen und Variablen f@"ur spezielle Funktionen::
 
-Fouriertransformationen
-* Introduction to fast Fourier transform::     
-* Functions and Variables for fast Fourier transform::
-* Introduction to Fourier series::
-* Functions and Variables for Fourier series::
-
-Laufzeitumgebung
-* Einf@"uhrung in die Laufzeitumgebung::
-* Interrupts::
-* Funktionen und Variablen der Laufzeitumgebung::
+Fourier-Transformationen
+* Einf@"uhrung in die schnelle Fourier-Transformation::
+* Funktionen und Variablen f@"ur die schnelle Fourier-Transformation:
+* Einf@"uhrung in Fourierreihen::
+* Funktionen und Variablen f@"ur Fourierreihen::
 
 Muster und Regeln
 * Einf@"uhrung in Muster und Regeln::
@@ -387,6 +381,11 @@ Funktionsdefinitionen
 * Funktionen::                    
 * Makros::                      
 * Funktionen und Variablen f@"ur Funktionsdefinitionen::
+
+Laufzeitumgebung
+* Einf@"uhrung in die Laufzeitumgebung::
+* Interrupts::
+* Funktionen und Variablen der Laufzeitumgebung::
 
 Programmierung
 * Lisp und Maxima::
@@ -697,31 +696,27 @@ Glossar
 @chapter Zahlentheorie
 @include Number.de.texi
 
-@node Spezielle Funktionen, Fouriertransformationen, Zahlentheorie, Top
+@node Spezielle Funktionen, Fourier-Transformationen, Zahlentheorie, Top
 @chapter Spezielle Funktionen
 @include Special.de.texi
 
-@node Fouriertransformationen, Laufzeitumgebung, Spezielle Funktionen, Top
-@chapter Fouriertransformationen
+@node Fourier-Transformationen, Muster und Regeln, Spezielle Funktionen, Top
+@chapter Fourier-Transformationen
 @include Numerical.de.texi
 
-@c @node Number Theory, Symmetries, Series, Top
-@c @chapter Number Theory
-@c @include Number.texi
-
-@node Laufzeitumgebung, Muster und Regeln, Fouriertransformationen, Top
-@chapter Laufzeitumgebung
-@include Runtime.de.texi
-
-@node Muster und Regeln, Funktionsdefinitionen, Laufzeitumgebung, Top
+@node Muster und Regeln, Funktionsdefinitionen, Fourier-Transformationen, Top
 @chapter Muster und Regeln
 @include Rules.de.texi
 
-@node Funktionsdefinitionen, Programmierung, Muster und Regeln, Top
+@node Funktionsdefinitionen, Laufzeitumgebung, Muster und Regeln, Top
 @chapter Funktionsdefinitionen
 @include Function.de.texi
 
-@node Programmierung, @"Ubersetzer, Funktionsdefinitionen, Top
+@node Laufzeitumgebung, Programmierung, Funktionsdefinitionen, Top
+@chapter Laufzeitumgebung
+@include Runtime.de.texi
+
+@node Programmierung, @"Ubersetzer, Laufzeitumgebung, Top
 @chapter Programmierung
 @include Program.de.texi
 
