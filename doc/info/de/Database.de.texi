@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 22.10.2010
-@c Revision    : 27.05.2011
+@c Revision    : 28.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -291,7 +291,7 @@ auf den Ausdruck angewendet.  Siehe @mref{evfun} f@"ur Beispiele.
 @item feature
 @var{a_i} wird als eine Eigenschaft @code{feature} interpretiert.  Andere
 Symbole k@"onnen dann diese vom Nutzer definierte Eigenschaft erhalten.
-Siehe@mrefdot{feature}
+Siehe @mrefdot{feature}
 
 @item increasing, decreasing
 Erh@"alt eine Funktion die Eigenschaft @code{decreasing} oder @code{increasing}, 
