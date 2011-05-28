@@ -697,31 +697,131 @@ der Funktion @var{f} f@"ur die Variable @var{x} in den Grenzen @var{a} und
 @var{b} zur@"uck.  Der Integrand kann die Betragsfunktion enthalten.
 @end deffn
 
-@c NEEDS EXPANSION
-
 @c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{fourier}
-@deffn {Funktion} fourier (@var{f}, @var{x}, @var{p})
+@deffn {Funktion} fourier (@var{f}, @var{x}, @var{l})
 
-@c Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
-@c on the interval @code{[-p, p]}.
+Berechnet die Fourier-Koeffizienten @code{a[0]}, @code{a[n]} und @code{b[n]}
+der Funktion @code{@var{f}(@var{x})} f@"ur das Intervall @code{[-l, l]}.  Die
+Fourierreihe ist definiert als:
 
-Berechnet die Fourier-Koeffizienten der Funktion @code{@var{f}(@var{x})} f@"ur
-das Intervall @code{[-p, p]}.
+@example
+         inf
+         ====
+         \             %pi n x           %pi n x
+  f(x) =  >    (b  sin(-------) + a  cos(-------))
+         /       n        l        n        l
+         ====
+         n = 0
+@end example
+
+Die Koeffizienten der Fourierreihe werden folgenderma@ss{}en berechnet:
+
+@example
+                     l
+                    /
+                - 1 [
+      a  = 1/2 l    I    f(x) dx
+       0            ]
+                    /
+                     - l
+@end example
+
+@example
+                 l
+                /
+            - 1 [                  - 1
+      a  = l    I    f(x) cos(%pi l    n x) dx
+       n        ]
+                /
+                 - l
+@end example
+
+@example
+                  l
+                 /
+            - 1 [                  - 1
+      b  = l    I    f(x) sin(%pi l    n x) dx
+       n        ]
+                /
+                 - l
+@end example
+
+@code{fourier} weist die Fourier-Koeffizienten Zwischenmarken zu.  Die
+Zwischenmarken werden als eine Liste zur@"uckgegeben.
+
+Der Index der Summe ist immer das Symbol @var{n}.  Sinus- und Kosinusfunktionen
+mit ganzzahligen Vielfachen von @code{%pi} werden nicht automatisch vereinfacht.
+Dies kann mit der Funktion @mref{foursimp} erreicht werden, der als Argument
+die Liste der Fourier-Koeffizienten @"ubergeben wird.
+
+Mit der Funktion @mref{fourexpand} kann die Fourierreihe aus den
+Fourier-Koeffizienten konstruiert werden.  Siehe auch die Funktion
+@mrefdot{totalfourier}
+
+Mit den Funktionen @mref{fourcos} und @mref{foursin} werden jeweils die
+Koeffizienten der Kosinus- und Sinus-Entwicklung berechnet.
+
+Beispiel:
+
+@example
+(%i1) load(fourie)$
+
+(%i2) fourier(x, x, 1);
+(%t2)                        a  = 0
+                              0
+
+(%t3)                        a  = 0
+                              n
+
+                        sin(%pi n)   cos(%pi n)
+(%t4)           b  = 2 (---------- - ----------)
+                 n          2  2       %pi n
+                         %pi  n
+
+(%o4)                    [%t2, %t3, %t4]
+(%i5) foursimp(%);
+(%t5)                        a  = 0
+                              0
+
+(%t6)                        a  = 0
+                              n
+
+                                       n
+                                2 (- 1)
+(%t7)                    b  = - --------
+                          n      %pi n
+
+(%o7)                    [%t5, %t6, %t7]
+(%i8) fourexpand(%, x, 1, inf);
+                      inf
+                      ====       n
+                      \     (- 1)  sin(%pi n x)
+                    2  >    -------------------
+                      /              n
+                      ====
+                      n = 1
+(%o8)             - ---------------------------
+                                %pi
+@end example
 @end deffn
-
-@c NEES EXPANSION.  WHAT IS THE ARGUMENT l ??
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{foursimp}
 @deffn {Funktion} foursimp (@var{l})
 
-@c Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
-@c @code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
+@code{foursimp} wird auf das Ergebnis der Funktion @mref{fourier} angewendet,
+um Sinus- und Kosinus-Funktionen zu vereinfachen, die ganzzahlige Vielfache
+von @code{%pi} enthalten.  Das Argument @var{l} ist eine Liste mit den
+Koeffizienten der Fourierreihe, f@"ur die die Vereinfachung ausgef@"uhrt werden
+soll.
 
-Vereinfacht @code{sin(n %pi)} zu 0, wenn die Optionsvariable @mref{sinnpiflag}
-den Wert @code{true} hat und @code{cos(n %pi)} zu @code{(-1)^n}, wenn die
-Optionsvariable @mref{cosnpiflag} den Wert @code{true} hat.
+@code{sin(n %pi)} wird zu @code{0} vereinfacht, wenn die Optionsvariable
+@mref{sinnpiflag} den Wert @code{true} hat, und @code{cos(n %pi)} wird zu
+@code{(-1)^n}, wenn die Optionsvariable @mref{cosnpiflag} den Wert @code{true}
+hat.
+
+Siehe die Funktion @mref{fourier} f@"ur ein Beispiel.
 @end deffn
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
@@ -729,9 +829,8 @@ Optionsvariable @mref{cosnpiflag} den Wert @code{true} hat.
 @defvr {Optionsvariable} sinnpiflag
 Standardwert: @code{true}
 
-@c See @code{foursimp}.
-
-Siehe die Funktion @mrefdot{foursimp}
+Kontrolliert die Vereinfachung der Sinus-Funktion durch die Funktion
+@code{foursimp}.  Siehe die Funktion @mrefdot{foursimp}
 @end defvr
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
@@ -739,9 +838,8 @@ Siehe die Funktion @mrefdot{foursimp}
 @defvr {Optionsvariable} cosnpiflag
 Standardwert: @code{true}
 
-@c See @code{foursimp}.
-
-Siehe die Funktion @mrefdot{foursimp}
+Kontrolliert die Vereinfachung der Kosinus-Funktion durch die Funktion
+@code{foursimp}.  Siehe die Funktion @mrefdot{foursimp}
 @end defvr
 
 @c NEEDS EXPANSION.  EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
@@ -750,18 +848,13 @@ Siehe die Funktion @mrefdot{foursimp}
 @anchor{fourexpand}
 @deffn {Funktion} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
 
-@c Constructs and returns the Fourier series from the list of
-@c Fourier coefficients @var{l} up through @var{limit} terms (@var{limit}
-@c may be @code{inf}). @var{x} and @var{p} have same meaning as in
-@c @code{fourier}.
-
 Konstruiert aus der Liste der Fourier-Koeffizienten @var{l} eine Fourierreihe
 mit @var{limit} Termen.  Das Argument @var{limit} kann @code{inf} sein.  Die
 Argumente @var{x} und @var{p} haben dieselbe Bedeutung wie f@"ur die Funktion
 @mrefdot{fourier}
-@end deffn
 
-@c NEEDS EXPANSION
+Siehe die Funktion @mref{fourier} f@"ur ein Beispiel.
+@end deffn
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{fourcos}
@@ -774,8 +867,6 @@ Gibt die Kosinus-Koeffizienten einer Fourierreihe f@"ur die Funktion
 @code{@var{f}(@var{x})} zur@"uck, die auf dem Intervall @code{[0, @var{p}]}
 definiert ist.
 @end deffn
-
-@c NEEDS EXPANSION
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{foursin}
@@ -793,14 +884,54 @@ definiert ist.
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
 @anchor{totalfourier}
-@deffn {Funktion} totalfourier (@var{f}, @var{x}, @var{p})
+@deffn {Funktion} totalfourier (@var{f}, @var{x}, @var{l})
 
-@c Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})),
-@c @var{x}, @var{p}, 'inf)}.
+Gibt die Fourierreihe der Funktion @var{f(x)} f@"ur das Intervall
+@code{[@var{-l}, @var{l}]} zur@"uck.  Das Ergebnis wird berechnet, indem
+die nacheinander die Funktionen @mref{foursimp} und @mref{fourexpand} auf das
+Ergebnis der Funktion @mref{fourier} angewendet werden.
 
-Gibt das Ergebnis des Kommandos 
-@code{fourexpand(foursimp(fourier(@var{f}, @var{x}, @var{p})), @var{x}, @var{p},
-'inf)} zur@"uck.
+Beispiel:
+
+@example
+(%i1) load(fourie)$
+
+(%i2) totalfourier(x, x, 1);
+(%t2)                        a  = 0
+                              0
+
+(%t3)                        a  = 0
+                              n
+
+                        sin(%pi n)   cos(%pi n)
+(%t4)           b  = 2 (---------- - ----------)
+                 n          2  2       %pi n
+                         %pi  n
+
+(%t5)                        a  = 0
+                              0
+
+(%t6)                        a  = 0
+                              n
+@group
+                                       n
+                                2 (- 1)
+(%t7)                    b  = - --------
+                          n      %pi n
+@end group
+@group
+                      inf
+                      ====       n
+                      \     (- 1)  sin(%pi n x)
+                    2  >    -------------------
+                      /              n
+                      ====
+                      n = 1
+(%o7)             - ---------------------------
+                                %pi
+@end group
+@end example
+
 @end deffn
 
 @c NEEDS EXPANSION
