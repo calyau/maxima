@@ -368,7 +368,7 @@ Spezielle Funktionen
 
 Fourier-Transformationen
 * Einf@"uhrung in die schnelle Fourier-Transformation::
-* Funktionen und Variablen f@"ur die schnelle Fourier-Transformation:
+* Funktionen und Variablen f@"ur die schnelle Fourier-Transformation::
 * Einf@"uhrung in Fourierreihen::
 * Funktionen und Variablen f@"ur Fourierreihen::
 
