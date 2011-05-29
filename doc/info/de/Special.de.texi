@@ -2,10 +2,10 @@
 @c File        : Special.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Special.texi revision 1.61
+@c Original    : Special.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 13.11.2010
-@c Revision    : 31.03.2011
+@c Revision    : 29.05.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -18,7 +18,7 @@
 * Fehlerfunktionen::
 * Elliptische Funktionen und Integrale::
 * Hypergeometrische Funktionen::
-* Funktionen und Variablen f@"ur spezielle Funktionen::
+* Weitere spezielle Funktionen::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -395,7 +395,7 @@ Beispiele:
 
 Die skalierte modifizierte Besselfunktion der ersten Art der Ordnung
 @math{v} und dem Argument @math{z}.  Diese ist definiert als 
-@code{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}. 
+@code{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}.
 @code{scaled_bessel_i} liefert ein numerisches Ergebnis, wenn die Argumente 
 @math{v} und @math{z} Zahlen sind.  Die Funktion kann geeignet sein, wenn 
 @code{bessel_i} f@"ur gro@ss{}e Argumente @math{z} numerisch berechnet werden soll.
@@ -422,9 +422,7 @@ Beispiele:
 
 @c -----------------------------------------------------------------------------
 @anchor{scaled_bessel_i0}
-@deffn {Funktion} scaled_bessel_i0 (@var{z}) 
-
-Identical to @code{scaled_bessel_i(0,z)}.
+@deffn {Funktion} scaled_bessel_i0 (@var{z})
 
 Entspricht @code{scaled_bessel_i(0,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @end deffn
@@ -438,7 +436,7 @@ Entspricht @code{scaled_bessel_i(1,z)}.  Siehe @mrefdot{scaled_bessel_i}
 
 @c -----------------------------------------------------------------------------
 @node Hankelfunktionen, Airyfunktionen, Besselfunktionen, Besselfunktionen und verwandte Funktionen
-@subsection Hankelfunktion
+@subsection Hankelfunktionen
 @c -----------------------------------------------------------------------------
 
 @c --- 27.03.2011 DK -----------------------------------------------------------
@@ -446,7 +444,7 @@ Entspricht @code{scaled_bessel_i(1,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @deffn {Funktion} hankel_1 (@var{v}, @var{z})
 
 Die Hankelfunktion der ersten Art der Ordnung @math{v} und dem Argument
-@math{z}. Siehe A@w{ }&@w{ }S 9.1.3.  @code{hankel_1} ist definiert als
+@math{z}.  Siehe A@w{ }&@w{ }S 9.1.3.  @code{hankel_1} ist definiert als
 
 @example
    bessel_j(v,z) + %i * bessel_y(v,z)
@@ -462,15 +460,18 @@ Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
 Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
-When @code{besselexpand} is @code{true}, @code{hankel_1} is expanded in terms
-of elementary functions when the order @math{v} is half of an odd integer. 
-See @code{besselexpand}.
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, werden
+Hankelfunktionen @code{hankel_1} mit einer halbzahligen Ordnung @math{v} als
+Sinus- und Kosinusfunktionen entwickelt.
 
-Maxima knows the derivative of @code{hankel_1} wrt the argument @math{z}.
+Maxima kennt die Ableitung der Hankelfunktion @code{hankel_1} nach dem zweiten
+Argument @code{z}.
 
-Examples:
+Siehe auch die Funktion @mrefdot{hankel_1}
 
-Numerical evaluation:
+Beispiele:
+
+Numerische Berechnung.
 
 @example
 (%i1) hankel_1(1,0.5);
@@ -479,14 +480,16 @@ Numerical evaluation:
 (%o2)             - .2558287994862166 %i - 0.239575601883016
 @end example
 
-A complex order @math{v} is not supported. Maxima returns a noun form:
+F@"ur eine komplex Ordnung kann Maxima keinen numerischen Wert berechnet.  Das
+Ergebnis ist eine Substantivform.
 
 @example
 (%i3) hankel_1(%i,0.5+%i);
 (%o3)                       hankel_1(%i, %i + 0.5)
 @end example
 
-Expansion of @code{hankel_1} when @code{besselexpand} is @code{true}:
+Entwicklung der Hankelfunktion @code{hankel_1}, wenn die Optionsvariable
+@code{besselexpand} den Wert @code{true} hat.
 
 @example
 (%i4) hankel_1(1/2,z),besselexpand:true;
@@ -495,8 +498,9 @@ Expansion of @code{hankel_1} when @code{besselexpand} is @code{true}:
                               sqrt(%pi) sqrt(z)
 @end example
 
-Derivative of @code{hankel_1} wrt the argument @math{z}. The derivative wrt the 
-order @math{v} is not supported. Maxima returns a noun form:
+Ableitung der Hankelfunktion @code{hankel_1} nach dem Argument @var{z}.  Die
+Ableitung nach der Ordnung @var{v} ist nicht implementiert.  Maxima gibt eine
+Substantivform zur@"uck.
 
 @example
 (%i5) diff(hankel_1(v,z),z);
@@ -514,8 +518,8 @@ order @math{v} is not supported. Maxima returns a noun form:
 @anchor{hankel_2}
 @deffn {Funktion} hankel_2 (@var{v}, @var{z})
 
-Die Hankelfunktion der ersten Art der Ordnung @math{v} und dem Argument
-@math{z}. Siehe A@w{ }&@w{ }S 9.1.4.  @code{hankel_2} ist definiert als
+Die Hankelfunktion der zweiten Art der Ordnung @math{v} und dem Argument
+@math{z}.  Siehe A@w{ }&@w{ }S 9.1.4.  @code{hankel_2} ist definiert als
 
 @example
    bessel_j(v,z) - %i * bessel_y(v,z)
@@ -531,13 +535,14 @@ Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
 Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
-When @code{besselexpand} is @code{true}, @code{hankel_2} is expanded in terms
-of elementary functions when the order @math{v} is half of an odd integer. 
-See @code{besselexpand}.
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, werden
+Hankelfunktionen @code{hankel_2} mit einer halbzahligen Ordnung @math{v} als
+Sinus- und Kosinusfunktionen entwickelt.
 
-Maxima knows the derivative of @code{hankel_2} wrt the argument @math{z}.
+Maxima kennt die Ableitung der Hankelfunktion @code{hankel_2} nach dem zweiten
+Argument @code{z}.
 
-For examples see @code{hankel_1}.
+F@"ur Beispiele siehe @mrefdot{hankel_1}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -545,50 +550,50 @@ For examples see @code{hankel_1}.
 @subsection Airyfunktionen
 @c -----------------------------------------------------------------------------
 
-The Airy functions Ai(x) and Bi(x) are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Section 10.4. 
+Die Airy-Funktionen @math{Ai(z)} und @math{Bi(z)} sind definiert in Abramowitz
+und Stegun, @i{Handbook of Mathematical Functions}, Kapitel 10.4.  Die
+Funktionen @code{y = Ai(z)} und @code{y = Bi(z)} sind zwei linear unabh@"angige
+L@"osungen der Airy-Differentialgleichung @code{diff (y(z), z, 2) - z y(z) = 0}.
 
-@code{y = Ai(x)} and @code{y = Bi(x)} are two linearly independent solutions 
-of the Airy differential equation @code{diff (y(x), x, 2) - x y(x) = 0}.
+Ist das Argument @code{z} eine reelle oder komplexe Gleitkommazahl, werden die
+Airy-Funktionen numerisch berechnet.
 
-If the argument @code{x} is a real or complex floating point 
-number, the numerical value of the function is returned.
+@c --- 29.05.2011 DK -----------------------------------------------------------
+@anchor{airy_ai}
+@deffn {Funktion} airy_ai (@var{z})
 
-@deffn {Function} airy_ai (@var{x})
-The Airy function Ai(x).  (A&S 10.4.2)
+Die Airy-Funktion @math{Ai(z)} (A & S 10.4.2).
 
-The derivative @code{diff (airy_ai(x), x)} is @code{airy_dai(x)}.
+Die Ableitung @code{diff (airy_ai(z), z)} ist @code{airy_dai(z)}.  Siehe die
+Funktion @mrefdot{airy_dai}
 
-See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
+Siehe auch die Funktionen @mref{airy_bi} und @mrefdot{airy_dbi}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{airy_dai}
-@deffn {Function} airy_dai (@var{x})
+@deffn {Funktion} airy_dai (@var{z})
 
-The derivative of the Airy function Ai @code{airy_ai(x)}. 
-
-See @code{airy_ai}.
+Die Ableitung der Airy-Funktion @mrefdot{airy_ai}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{airy_bi}
-@deffn {Function} airy_bi (@var{x})
+@deffn {Funktion} airy_bi (@var{z})
 
-The Airy function Bi(x).  (A&S 10.4.3)
+Die Airy-Funktion Bi(z) (A & S 10.4.3).
 
-The derivative @code{diff (airy_bi(x), x)} is @code{airy_dbi(x)}.
+Die Ableitung @code{diff(airy_bi(z), z)} ist @code{airy_dbi(z)}.  Siehe die
+Funktion @mrefdot{airy_dbi}
 
-See @code{airy_ai}, @code{airy_dbi}.
+Siehe auch die Funktionen @mref{airy_ai} und @mrefdot{airy_dbi}
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{airy_dbi}
-@deffn {Function} airy_dbi (@var{x})
+@deffn {Funktion} airy_dbi (@var{z})
 
-The derivative of the Airy Bi function @code{airy_bi(x)}.
-
-See @code{airy_ai} and @code{airy_bi}.
+Die Ableitung der Airy-Funktion @mrefdot{airy_bi}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -739,51 +744,93 @@ Beispiele:
 @section Gammafunktionen und verwandte Funktionen
 @c -----------------------------------------------------------------------------
 
-The gamma function and the related beta, psi and incomplete gamma 
-functions are defined in Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Chapter 6.
+Die Gammafunktion und die verwandten Funktionen wie die Beta-, Psi- und die
+unvollst@"andige Gammafunktion sind definiert in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Kapitel 6.
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{bffac}
-@deffn {Function} bffac (@var{expr}, @var{n})
+@deffn {Funktion} bffac (@var{x}, @var{fpprec})
 
-Bigfloat version of the factorial (shifted gamma)
-function.  The second argument is how many digits to retain and return,
-it's a good idea to request a couple of extra.
+Berechnet die Fakult@"at f@"ur gro@ss{}e Gleitkommazahlen.  Das Argument @var{x}
+muss eine gro@ss{}e Gleitkommazahl sein.  Das zweite Argument @var{fpprec} ist
+die Anzahl der Stellen, f@"ur die die Fakult@"at berechnet wird.  Das Ergebnis
+ist eine gro@ss{}e Gleitkommazahl.
+
+F@"ur das symbolische Rechnen mit der Fakult@"at und der Gammafunktion siehe die
+entsprechenden Funktionen @mref{factorial} und @mrefdot{gamma}  Maxima ruft
+intern die Funktion @code{bffac} auf, um die Fakult@"at @code{factorial} und
+die Gammafunktion @code{gamma} f@"ur eine gro@ss{}e Gleitkommazahl numerisch zu
+berechnen.
+
+Siehe auch die Funktion @mref{cbffac} f@"ur die Berechnung der Fakult@"at f@"ur
+komplexe gro@ss{}e Gleitkommazahlen.
+
+Beispiel:
+
+@example
+(%i1) bffac(10.5b0, 25);
+(%o1)             1.189942308396224845701304b7
+(%i2) fpprec:25$
+(%i3) 10.5b0!;
+(%o3)             1.189942308396224845701303b7
+@end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{bfpsi}
-@deffn {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
+@deffn  {Funktion} bfpsi (@var{n}, @var{x}, @var{fpprec})
+@deffnx {Funktion} bfpsi0 (@var{x}, @var{fpprec})
 
-@code{bfpsi} is the polygamma function of real argument @var{z} and integer 
-order @var{n}. @code{bfpsi0} is the digamma function. 
-@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to @code{bfpsi (0, @var{z}, 
+@code{bfpsi} ist die Polygammafunktion f@"ur ein reelles Argument @var{x} und
+einer ganzzahligen Ordnung @var{n}.  @code{bfpsi0} ist die Digammafunktion.
+@code{bfpsi0(@var{x}, @var{fpprec})} ist @"aquivalent zu @code{bfpsi(0, @var{x},
 @var{fpprec})}.
 
-These functions return bigfloat values. @var{fpprec} is the bigfloat precision 
-of the return value.
+Das Argument @var{x} der Funktionen @code{bfpsi} und @code{bfpsi0} muss eine
+gro@ss{}e Gleitkommazahl sein.  Das Argument @var{fpprec} gibt die Anzahl der
+Stellen an, f@"ur die die Funktion berechnet wird.  Das Ergebnis ist eine
+gro@ss{}e Gleitkommazahl.
 
-@c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
-@c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
-@c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+F@"ur das symbolische Rechnen mit der Polygammafunktion siehe die Funktion
+@mrefdot{psi}  Maxima ruft intern die Funktion @code{bfpsi} auf, um die
+Polygammafunktion f@"ur gro@ss{}e Gleitkommazahlen numerisch zu berechnen.
+
+Beispiel:
+
+@example
+(%i1) bfpsi(0, 1, 25);
+(%o1)            - 5.772156649015328606065121b-1
+(%i2) fpprec:25$
+
+(%i3) psi[0](1.0b0);
+(%o3)            - 5.772156649015328606065121b-1
+@end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{cbffac}
-@deffn {Function} cbffac (@var{z}, @var{fpprec})
+@deffn {Funktion} cbffac (@var{z}, @var{fpprec})
 
-Complex bigfloat factorial.
+Berechnet die Fakult@"at f@"ur komplexe gro@ss{}e Gleitkommazahlen.  Das
+Argument @var{z} ist eine komplexe gro@ss{}e Gleitkommazahl.  Das zweite
+Argument @var{fpprec} ist die Anzahl der Stellen, f@"ur die die Fakult@"at
+berechnet wird.  Das Ergebnis ist eine komplexe gro@ss{}e Gleitkommazahl.
 
-@code{load ("bffac")} loads this function.
+F@"ur das symbolische Rechnen mit der Fakult@"at und der Gammafunktion siehe die
+entsprechenden Funktionen @mref{factorial} und @mrefdot{gamma}  Maxima ruft
+intern die Funktion @code{cbffac} auf, um die Fakult@"at @code{factorial} und
+die Gammafunktion @code{gamma} f@"ur eine komplexe gro@ss{}e Gleitkommazahl
+numerisch zu berechnen.
+
+Siehe auch die Funktion @mrefdot{bffac}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma}
-@deffn {Function} gamma (@var{z})
+@deffn {Funktion} gamma (@var{z})
 
-The basic definition of the gamma function (A&S 6.1.1) is
+Die Definition der Gammafunktion ist (A & S 6.1.1)
 
 @example
                        inf
@@ -795,29 +842,37 @@ The basic definition of the gamma function (A&S 6.1.1) is
                        0
 @end example
 
-Maxima simplifies @code{gamma} for positive integer and positive and negative 
-rational numbers. For half integral values the result is a rational number times 
-@code{sqrt(%pi)}. The simplification for integer values is controlled by 
-@code{factlim}. For integers greater than @code{factlim} the numerical result of 
-the factorial function, which is used to calculate @code{gamma}, will overflow. 
-The simplification for rational numbers is controlled by @code{gammalim} to 
-avoid internal overflow. See @code{factlim} and @code{gammalim}.
+Die Gammafunktion @code{gamma} ist f@"ur das numerische und symbolische Rechnen
+geeignet.  F@"ur positive ganze Zahlen und rationale Zahlen als Argument @var{z}
+wird die Gammafunktion vereinfacht.  F@"ur halbzahlige rationale Zahlen ist das
+Ergebnis der Vereinfachung eine rationale Zahl multipliziert mit
+@code{sqrt(%pi)}.  Die Vereinfachung f@"ur ganze Zahlen wird von der
+Optionsvariablen @mref{factlim} kontrolliert.  F@"ur ganze Zahlen, die
+gr@"o@ss{}er als @code{factlim} sind, kann es zu einem @"Uberlauf bei der
+Berechnung der Gammafunktion kommen.  Entsprechend wird die Vereinfachung f@"ur
+rationale Zahlen von der Optionsvariablen @mref{gammalim} kontrolliert.
 
-For negative integers @code{gamma} is not definied.
+F@"ur negative ganze Zahlen ist die Gammafunktion @code{gamma} nicht definiert.
 
-Maxima can evalute @code{gamma} numerically for real and complex values in float 
-and bigfloat precision.
+Maxima berechnet @code{gamma} numerisch f@"ur reelle und komplexe Argumente
+@var{z}.  Das Ergebnis ist eine reelle oder komplexe Gleitkommazahl.
 
-@code{gamma} has mirror symmetry.
+@code{gamma} hat Spiegelsymmetrie.
 
-When @code{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
-arguments @code{z+n} and @code{z-n} where @code{n} is an integer.
+Hat die Optionsvariable @mref{gamma_expand} den Wert @code{true}, entwickelt
+Maxima die Gammafunktion f@"ur Argumente der Form @code{z+n} und @code{z-n},
+wobei @var{n} eine ganze Zahl ist.
 
-Maxima knows the derivate of @code{gamma}.
+Maxima kennt die Ableitung der Gammafunktion @code{gamma}.
 
-Examples:
+Siehe auch die Funktion @mrefcomma{makegamma} um Fakult@"aten und
+Betafunktionen in einem Ausdruck durch die Gammafunktion zu ersetzen.
 
-Simplification for integer, half integral, and rational numbers:
+Die Euler-Mascheroni-Konstante ist @mrefdot{%gamma}
+
+Beispiele:
+
+Vereinfachung f@"ur ganze Zahlen und rationale Zahlen.
 
 @example
 (%i1) map('gamma,[1,2,3,4,5,6,7,8,9]);
@@ -834,7 +889,7 @@ Simplification for integer, half integral, and rational numbers:
                       3       3           9
 @end example
 
-Numerical evaluation for real and complex values:
+Numerische Berechnung f@"ur reelle und komplexe Argumente.
 
 @example
 (%i4) map('gamma,[2.5,2.5b0]);
@@ -844,7 +899,7 @@ Numerical evaluation for real and complex values:
           4.9801566811835604272b-1 - 1.5494982830181068513b-1 %i]
 @end example
 
-@code{gamma} has mirror symmetry:
+@code{gamma} hat Spiegelsymmetrie.
 
 @example
 (%i6) declare(z,complex)$
@@ -852,43 +907,54 @@ Numerical evaluation for real and complex values:
 (%o7)                  gamma(conjugate(z))
 @end example
 
-Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @code{gamma_expand} 
-is @code{true}:
+Maxima entwickelt @code{gamma(z+n)} und @code{gamma(z-n)}, wenn die
+Optionsvariable @code{gamma_expand} den Wert @code{true} hat.
 
 @example
 (%i8) gamma_expand:true$
 
 (%i9) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
+@group
                                gamma(z)
 (%o9)             [z gamma(z), --------, z + 1]
                                 z - 1
+@end group
 @end example
 
-The deriviative of @code{gamma}:
+Die Ableitung der Gammafunktion @code{gamma}.
 
 @example
 (%i10) diff(gamma(z),z);
 (%o10)                  psi (z) gamma(z)
                            0
 @end example
-
-See also @mrefdot{makegamma}
-
-The Euler-Mascheroni constant is @mrefdot{%gamma}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
+@anchor{gamma_expand}
+@defvr {Optionsvariable} gamma_expand
+Standardwert: @code{false}
+
+Kontrolliert die Vereinfachung der Gammafunktion @mref{gamma} und verwandte
+Funktionen wie @mref{gamma_incomplete} f@"ur den Fall, dass das Argument die
+Form @code{z+n} oder @code{z-n} hat.  Dabei ist @code{z} ist ein beliebiges
+Argument und @code{n} ist eine ganze Zahl.
+
+Siehe die Funktion @code{gamma} f@"ur ein Beispiel.
+@end defvr
+
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{log_gamma}
-@deffn {Function} log_gamma (@var{z})
+@deffn {Funktion} log_gamma (@var{z})
 
-The natural logarithm of the gamma function.
+Der Logarithmus der Gammafunktion.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma_incomplete}
-@deffn {Function} gamma_incomplete (@var{a}, @var{z})
+@deffn {Funktion} gamma_incomplete (@var{a}, @var{z})
 
-The incomplete upper gamma function A&S 6.5.2:
+Die unvollst@"andige Gammafunktion (A & S 6.5.2) die definiert ist als
 
 @tex
 $$\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
@@ -906,11 +972,11 @@ $$\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
 @end ifnottex
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma_incomplete_regularized}
-@deffn {Function} gamma_incomplete_regularized (@var{a}, @var{z})
+@deffn {Funktion} gamma_incomplete_regularized (@var{a}, @var{z})
 
-The regularized incomplete upper gamma function A&S 6.5.1.  
+Regularisierte unvollst@"andige Gammafunktion (A & S 6.5.1)
 
 @tex
 $${{{\it gamma\_incomplete}\left(a , z\right)}\over{\Gamma\left(a
@@ -923,14 +989,13 @@ $${{{\it gamma\_incomplete}\left(a , z\right)}\over{\Gamma\left(a
                       gamma(a)
 @end example
 @end ifnottex
-
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gamma_incomplete_generalized}
-@deffn {Function} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z2})
+@deffn {Funktion} gamma_incomplete_generalized (@var{a}, @var{z1}, @var{z2})
 
-The generalized incomplete gamma function defined as
+Verallgemeinerte unvollst@"andige Gammafunktion
 
 @tex
 $$\int_{z1}^{z2}{t^{a-1}\,e^ {- t }\;dt}$$
@@ -946,84 +1011,107 @@ $$\int_{z1}^{z2}{t^{a-1}\,e^ {- t }\;dt}$$
                   z1
 @end example
 @end ifnottex
-
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{gammalim}
-@defvr {Option variable} gammalim
-Default value: 1000000
+@defvr {Optionsvariable} gammalim
+Standardwert: 1000000
 
-@c REPHRASE
-@code{gammalim} controls simplification of the gamma
-function for integral and rational number arguments.  If the absolute
-value of the argument is not greater than @code{gammalim}, then
-simplification will occur.  Note that the @code{factlim} switch controls
-simplification of the result of @code{gamma} of an integer argument as well.
+Kontrolliert die Vereinfachung der Gammafunktion f@"ur rationale Argumente.
+Ist der Betrag des Arguments der Gammafunktion gr@"o@ss{}er als @code{gammalim},
+wird die Gammafunktion nicht vereinfacht.  Damit wird verhindert, dass
+die Berechnung der Gammafunktion zu einem @"Uberlauf f@"uhrt und mit einem
+Fehler abbricht.
+
+Siehe auch die Optionsvariable @mrefcomma{factlim} um die Vereinfachung f@"ur
+ganze Zahlen zu kontrollieren.
 @end defvr
 
-@c NEED CROSS REFS HERE
-@c NEED EXAMPLES HERE
-
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{makegamma}
-@deffn {Function} makegamma (@var{expr})
+@deffn {Funktion} makegamma (@var{expr})
 
-Transforms instances of binomial, factorial, and beta
-functions in @var{expr} into gamma functions.
+Ersetzt Fakult@"aten sowie Binomial- und Betafunktionen durch die Gammafunktion
+@mref{gamma} im Ausdruck @var{expr}.
 
-See also @code{makefact}.
+Siehe auch die Funktion @mrefcomma{makefact} um stattdessen Fakult@"aten in den
+Ausdruck einzusetzen.
+
+Beispiel:
+
+@example
+(%i1) expr: binomial(a,b)*gamma(b+1)/gamma(a+1);
+                   binomial(a, b) gamma(b + 1)
+(%o1)              ---------------------------
+                          gamma(a + 1)
+(%i2) makegamma(expr);
+                               1
+(%o2)                  ------------------
+                       gamma(- b + a + 1)
+@end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{beta}
-@deffn {Function} beta (@var{a}, @var{b})
+@deffn {Funktion} beta (@var{a}, @var{b})
 
-The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 
-(A&S 6.2.1).
+Die Betafunktion ist definiert als @code{gamma(a) gamma(b)/gamma(a+b)}
+(A & S 6.2.1).
 
-Maxima simplifies the beta function for positive integers and rational 
-numbers, which sum to an integer. When @code{beta_args_sum_to_integer} is 
-@code{true}, Maxima simplifies also general expressions which sum to an integer. 
+Maxima vereinfacht die Betafunktion f@"ur positive ganze Zahlen @var{a} und
+@var{b} sowie rationale Zahlen, deren Summe @code{@var{a} + @var{b}} eine ganze
+Zahl ist.  Hat die Optionsvariable @mref{beta_args_sum_to_integer} den Wert
+@code{true}, vereinfacht Maxima die Betafunktion f@"ur allgemeine Ausdr@"ucke
+@var{a} und @var{b}, deren Summe eine ganze Zahl ist.
 
-For @var{a} or @var{b} equal to zero the beta function is not defined.
+Ist eines der Argumente @var{a} oder @var{b} Null, ist die Betafunktion nicht
+definiert.
 
-In general the beta function is not defined for negative integers as an 
-argument. The exception is for @var{a=-n}, @var{n} a positive integer 
-and @var{b} a positive integer with @var{b<=n}, it is possible to define an 
-analytic continuation. Maxima gives for this case a result.
+Im allgemeinen ist die Betafunktion nicht definiert f@"ur negative ganze Zahlen
+als Argument.  Ausnahme ist der Fall, dass @var{a = -n}, wobei @var{n} eine
+positive ganze Zahl und @var{b} eine positive ganze Zahl mit @var{b <= b} ist.
+In diesem Fall kann eine analytische Fortsetzung der Betafunktion definiert
+werden.  Maxima gibt f@"ur diesen Fall ein Ergebnis zur@"uck.
 
-When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
-@code{beta(a-n,b)} or @code{beta(a,b+n)} and @code{beta(a,b-n)} with @code{n} 
-an integer are simplified.
+Hat die Optionsvariable @code{beta_expand} den Wert @code{true}, werden
+Ausdr@"ucke wie @code{beta(a+n, b} und @code{beta(a-n, b)} oder
+@code{beta(a, b+n} und @code{beta(a, b-n)} entwickelt.
 
-Maxima can evaluate the beta function for real and complex values in float and 
-bigfloat precision. For numerical evaluation Maxima uses @code{log_gamma}:
+Maxima berechnet die Betafunktion f@"ur reelle und komplexe Gleitkommazahlen
+numerisch.  F@"ur die numerische Berechnung nutzt Maxima die Funktion
+@mref{log_gamma}:
 
 @example
            - log_gamma(b + a) + log_gamma(b) + log_gamma(a)
          %e
 @end example
 
-Maxima knows that the beta function is symmetric and has mirror symmetry.
+Maxima kennt Symmetrieeigenschaften der Betafunktion.  Die Betafunktion ist
+symmetrisch und hat Spiegelsymmetrie.
 
-Maxima knows the derivatives of the beta function with respect to @var{a} or 
+Maxima kennt die Ableitung der Betafunktion nach den Argumenten @var{a} und
 @var{b}.
 
-To express the beta function as a ratio of gamma functions see @code{makegamma}. 
+Mit der Funktion @mref{makegamma} kann die Betafunktion durch Gammafunktionen
+ersetzt werden.  Entsprechend ersetzt die Funktion @mref{makefact}@w{}
+Betafunktionen in einem Ausdruck durch Fakult@"aten.
 
-Examples:
+Beispiele:
 
-Simplification, when one of the arguments is an integer:
+Vereinfachung der Betafunktion, wenn eines der Argumente eine ganze Zahl ist.
 
 @example
 (%i1) [beta(2,3),beta(2,1/3),beta(2,a)];
+@group
                                1   9      1
 (%o1)                         [--, -, ---------]
                                12  4  a (a + 1)
+@end group
 @end example
 
-Simplification for two rational numbers as arguments which sum to an integer:
+Vereinfachung der Betafunktion f@"ur zwei rationale Argumente, die sich zu
+einer ganzen Zahl summieren.
 
 @example
 (%i2) [beta(1/2,5/2),beta(1/3,2/3),beta(1/4,3/4)];
@@ -1032,8 +1120,9 @@ Simplification for two rational numbers as arguments which sum to an integer:
                             8    sqrt(3)
 @end example
 
-When setting @code{beta_args_sum_to_integer} to @code{true} more general 
-expression are simplified, when the sum of the arguments is an integer:
+Hat die Optionsvariable @code{beta_args_sum_to_integer} den Wert @code{true},
+vereinfacht die Betafunktion f@"ur allgemeine Ausdr@"ucke, die sich zu einer
+ganzen Zahl summieren.
 
 @example
 (%i3) beta_args_sum_to_integer:true$
@@ -1043,7 +1132,8 @@ expression are simplified, when the sum of the arguments is an integer:
                               2 sin(%pi (2 - a))
 @end example
 
-The possible results, when one of the arguments is a negative integer: 
+Die m@"oglichen Ergebnisse, wenn eines der Argumente eine negative ganze
+Zahl ist.
 
 @example
 (%i5) [beta(-3,1),beta(-3,2),beta(-3,3)];
@@ -1052,8 +1142,8 @@ The possible results, when one of the arguments is a negative integer:
                                     3  6    3
 @end example
 
-@code{beta(a+n,b)} or @code{beta(a-n)} with @code{n} an integer simplifies when 
-@code{beta_expand} is @code{true}:
+Vereinfachungen, wenn die Optionsvariable @code{beta_expand} den Wert
+@code{true} hat.
 
 @example
 (%i6) beta_expand:true$
@@ -1064,7 +1154,7 @@ The possible results, when one of the arguments is a negative integer:
 
 @end example
 
-Beta is not definied, when one of the arguments is zero:
+Die Betafunktion ist nicht definiert, wenn eines der Argumente Null ist.
 
 @example
 (%i7) beta(0,b);
@@ -1072,8 +1162,7 @@ beta: expected nonzero arguments; found 0, b
  -- an error.  To debug this try debugmode(true);
 @end example
 
-Numercial evaluation for real and complex arguments in float or bigfloat 
-precision:
+Numerische Berechnung der Betafunktion f@"ur reelle und komplexe Argumente.
 
 @example
 (%i8) beta(2.5,2.3);
@@ -1089,7 +1178,7 @@ precision:
 (%o11) 6.401449507966944b-2 - 1.502078053286415b-1 %i
 @end example
 
-Beta is symmetric and has mirror symmetry:
+Die Betafunktion ist symmetrisch und hat Spiegelsymmetrie.
 
 @example
 (%i14) beta(a,b)-beta(b,a);
@@ -1099,7 +1188,8 @@ Beta is symmetric and has mirror symmetry:
 (%o16)                 beta(conjugate(a), conjugate(b))
 @end example
 
-The derivative of the beta function wrt @code{a}:
+Ableitung der Betafunktion.
+
 @example
 (%i17) diff(beta(a,b),a);
 (%o17)               - beta(a, b) (psi (b + a) - psi (a))
@@ -1107,11 +1197,11 @@ The derivative of the beta function wrt @code{a}:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 29.05.2011 DK -----------------------------------------------------------
 @anchor{beta_incomplete}
-@deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
+@deffn {Funktion} beta_incomplete (@var{a}, @var{b}, @var{z})
 
-The basic definition of the incomplete beta function (A&S 6.6.1) is
+Die Definition der unvollst@"andigen Betafunktion ist (A & S 6.6.1)
 
 @example
                        z
@@ -1123,19 +1213,21 @@ The basic definition of the incomplete beta function (A&S 6.6.1) is
                        0
 @end example
 
-This definition is possible for @math{realpart(a)>0} and @math{realpart(b)>0} 
-and @math{abs(z)<1}. For other values the incomplete beta function can be 
-defined through a generalized hypergeometric function:
+Diese Definition ist m@"oglich f@"ur @math{realpart(a)>0} und
+@math{realpart(b)>0} sowie @math{abs(z)<1}.  F@"ur andere Werte kann die
+unvollst@"andige Betafunktion als eine verallgemeinerte Hypergeometrische
+Funktion definiert werden:
 
 @example
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
 
-(See functions.wolfram.com for a complete definition of the incomplete beta 
-function.)
+(Siehe functions.wolfram.com f@"ur eine Definition der unvollst@"andigen
+Betafunktion.)
 
-For negative integers @math{a = -n} and positive integers @math{b=m} with 
-@math{m<=n} the incomplete beta function is defined through
+F@"ur negative ganze Zahlen @math{a = -n} und positive ganze Zahlen
+@math{b = m} mit @math{m <= n} kann die unvollst@"andige Betafunktion definiert
+werden als
 
 @example
                             m - 1           k
@@ -1147,32 +1239,33 @@ For negative integers @math{a = -n} and positive integers @math{b=m} with
                             k = 0
 @end example
 
-Maxima uses this definition to simplify @code{beta_incomplete} for @var{a} a 
-negative integer.
+Maxima nutzt diese Definition, um die Funktion @code{beta_incomplete} f@"ur
+negative ganzzahlige Argumente @var{a} zu vereinfachen.
 
-For @var{a} a positive integer, @code{beta_incomplete} simplifies for any 
-argument @var{b} and @var{z} and for @var{b} a positive integer for any 
-argument @var{a} and @var{z}, with the exception of @var{a} a negative integer.
+F@"ur positive ganzzahlige Argumente @var{a} vereinfacht @code{beta_incomplete}
+f@"ur jedes Argument @var{b} und @var{z}.  Entsprechend vereinfacht
+@code{beta_incomplete} f@"ur ein positives ganzzahliges Argument @var{b} mit
+der Ausnahme, dass @var{a} eine negative ganze Zahl ist.
 
-For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete} has the 
-specific value zero. For @var{z=1} and @math{realpart(b)>0}, 
-@code{beta_incomplete} simplifies to the beta function @code{beta(a,b)}.
+F@"ur @math{z=0} und @math{realpart(a) > 0} hat @code{beta_incomplete} den
+speziellen Wert Null.  F@"ur @var{z=1} und @math{realpart(b) > 0} vereinfacht
+@code{beta_incomplete} zu einem Ausdruck mit der Betafunktion @code{beta(a, b)}.
 
-Maxima evaluates @code{beta_incomplete} numerically for real and complex values 
-in float or bigfloat precision. For the numerical evaluation an expansion of the 
-incomplete beta function in continued fractions is used.
+Maxima berechnet @code{beta_incomplete} numerisch f@"ur reelle und komplexe
+Gleitkommazahlen als Argumente.  F@"ur die numerische Berechnung nutzt Maxima
+eine Entwicklung der unvollst@"andigen Betafunktion als Kettenbruch.
 
-When @code{beta_expand} is @code{true}, Maxima expands expressions like 
-@code{beta_incomplete (a+n, b, z)} and @code{beta_incomplete (a-n, b, z)} where 
-@var{n} is a positive integer.
+Hat die Optionsvariable @mref{beta_expand} den Wert @code{true}, entwickelt
+Maxima Ausdr@"ucke der Form @code{beta_incomplete(a+n, b, z)} und
+@code{beta_incomplete(a-n, b, z)}, wobei @code{n} eine ganze Zahl ist.
 
-Maxima knows the derivatives of @code{beta_incomplete} with respect to the 
-variables @var{a}, @var{b} and @var{z} and the integral with respect to the 
-variable @var{z}.
+Maxima kennt die Ableitungen der unvollst@"andigen Betafunktion nach den
+Variablen @var{a}, @var{b} und @var{z} und das Integral f@"ur die 
+Integrationsvariable @var{z}.
 
-Examples:
+Beispiele:
 
-Simplification for @var{a} a positive integer:
+Vereinfachung f@"ur eine positive ganze Zahl als Argument @var{a}.
 
 @example
 (%i1) beta_incomplete(2,b,z);
@@ -1182,7 +1275,7 @@ Simplification for @var{a} a positive integer:
                                   b (b + 1)
 @end example
 
-Simplification for @var{b} a positive integer:
+Vereinfachung f@"ur eine positive ganze Zahl als Argument @var{b}.
 
 @example
 (%i2) beta_incomplete(a,2,z);
@@ -1192,7 +1285,7 @@ Simplification for @var{b} a positive integer:
                                   a (a + 1)
 @end example
 
-Simplification for @var{a} and @var{b} a positive integer:
+Vereinfachung f@"ur positive ganzzahlige Argumente @var{a} und @var{b}.
 
 @example
 (%i3) beta_incomplete(3,2,z);
@@ -1202,7 +1295,8 @@ Simplification for @var{a} and @var{b} a positive integer:
                                       12
 @end example
 
-@var{a} is a negative integer and @math{b<=(-a)}, Maxima simplifies:
+@var{a} ist eine negative ganze Zahl mit @math{b <= (-a)}.  Maxima vereinfacht
+f@"ur diesem Fall.
 
 @example
 (%i4) beta_incomplete(-3,1,z);
@@ -1212,7 +1306,7 @@ Simplification for @var{a} and @var{b} a positive integer:
                                      3 z
 @end example
 
-For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
+F@"ur die speziellen Werte @math{z=0} und @math{z=1} vereinfacht Maxima.
 
 @example
 (%i5) assume(a>0,b>0)$
@@ -1222,7 +1316,7 @@ For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
 (%o7)                            beta(a, b)
 @end example
 
-Numerical evaluation in float or bigfloat precision:
+Numerische Berechnung f@"ur reelle Argumente.
 
 @example
 (%i8) beta_incomplete(0.25,0.50,0.9);
@@ -1232,14 +1326,14 @@ Numerical evaluation in float or bigfloat precision:
 (%o10)                    4.594959440269324086971203b0
 @end example
 
-For @math{abs(z)>1} @code{beta_incomplete} returns a complex result:
+F@"ur @math{abs(z) > 1} ist das Ergebnis komplex.
 
 @example
 (%i11) beta_incomplete(0.25,0.50,1.7);
 (%o11)              5.244115108584249 - 1.45518047787844 %i
 @end example
 
-Results for more general complex arguments:
+Numerische Ergebnisse f@"ur komplexe Argumente.
 
 @example
 (%i14) beta_incomplete(0.25+%i,1.0+%i,1.7+%i);
@@ -1249,7 +1343,7 @@ Results for more general complex arguments:
 (%i16) 
 @end example
 
-Expansion, when @code{beta_expand} is @code{true}:
+Entwicklung, wenn @code{beta_expand} den Wert @code{true} hat.
 
 @example
 (%i23) beta_incomplete(a+1,b,z),beta_expand:true;
@@ -1265,7 +1359,7 @@ Expansion, when @code{beta_expand} is @code{true}:
                            1 - a                         1 - a
 @end example
  
-Derivative and integral for @code{beta_incomplete}:
+Ableitung und Integral der unvollst@"andigen Betafunktion.
 
 @example
 (%i34) diff(beta_incomplete(a, b, z), z);
@@ -1282,7 +1376,6 @@ Derivative and integral for @code{beta_incomplete}:
 (%i36) factor(diff(%, z));
 (%o36)              beta_incomplete(a, b, z)
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1372,11 +1465,13 @@ Expansion, when @code{beta_expand} is @code{true}:
 (%o13) beta_incomplete_regularized(a, b, z) - ------------
                                               a beta(a, b)
 (%i14) beta_incomplete_regularized(a-1,b,z);
+@group
 (%o14) beta_incomplete_regularized(a, b, z)
                                                      b  a - 1
                                               (1 - z)  z
                                          - ----------------------
                                            beta(a, b) (b + a - 1)
+@end group
 @end example
 
 The derivative and the integral wrt @var{z}:
@@ -1440,10 +1535,12 @@ positive integer:
 
 @example
 (%i1) beta_incomplete_generalized(2,b,z1,z2);
+@group
                    b                      b
            (1 - z1)  (b z1 + 1) - (1 - z2)  (b z2 + 1)
 (%o1)      -------------------------------------------
                             b (b + 1)
+@end group
 (%i2) beta_incomplete_generalized(a,2,z1,z2);
 @group
                               a                      a
@@ -1504,7 +1601,7 @@ Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when
 (%i14) beta_expand:true$
 
 (%i15) beta_incomplete_generalized(a+1,b,z1,z2);
-
+@group
                b   a           b   a
        (1 - z1)  z1  - (1 - z2)  z2
 (%o15) -----------------------------
@@ -1512,6 +1609,7 @@ Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when
                       a beta_incomplete_generalized(a, b, z1, z2)
                     + -------------------------------------------
                                          b + a
+@end group
 (%i16) beta_incomplete_generalized(a-1,b,z1,z2);
 
        beta_incomplete_generalized(a, b, z1, z2) (- b - a + 1)
@@ -1536,7 +1634,6 @@ Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
 (%o19) beta_incomplete_generalized(a, b, z1, z2) z2
                                   - beta_incomplete(a + 1, b, z2)
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -2215,7 +2312,7 @@ terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Hypergeometrische Funktionen, Funktionen und Variablen f@"ur spezielle Funktionen, Elliptische Funktionen und Integrale, Spezielle Funktionen
+@node Hypergeometrische Funktionen, Weitere spezielle Funktionen, Elliptische Funktionen und Integrale, Spezielle Funktionen
 @section Hypergeometrische Funktionen
 @c -----------------------------------------------------------------------------
 
@@ -2311,8 +2408,8 @@ can be returned from function @code{hgfred}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur spezielle Funktionen,  , Hypergeometrische Funktionen, Spezielle Funktionen
-@section Funktionen und Variablen f@"ur spezielle Funktionen
+@node Weitere spezielle Funktionen,  , Hypergeometrische Funktionen, Spezielle Funktionen
+@section Weitere spezielle Funktionen
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
@@ -2451,11 +2548,12 @@ Examples for exponential integrals:
 (%i4) assume(s>0,a>0,s-a>0)$
 (%i5) ratsimp(specint(%e^(a*t)
                       *(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
+@group
                              log(s)
 (%o5)                        ------
                              s - a
+@end group
 (%i6) logarc:true$
-
 (%i7) gamma_expand:true$
 
 radcan(specint((cos(t)*expintegral_si(t)
