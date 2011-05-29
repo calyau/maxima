@@ -1,12 +1,17 @@
-
 @menu
 * Functions and Variables for Bug Detection and Reporting::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Bug Detection and Reporting
 @section Functions and Variables for Bug Detection and Reporting
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{run_testsuite}
 @deffn {Function} run_testsuite ([@var{options}])
-Run the Maxima test suite. Tests producing the desired answer are
+
+Run the Maxima test suite.  Tests producing the desired answer are
 considered ``passes,'' as are tests that do not produce the desired
 answer, but are marked as known bugs.
 
@@ -14,14 +19,14 @@ answer, but are marked as known bugs.
 
 @table @var
 @item display_all
-Display all tests.  Normally, the tests are not displayed, unless the test fails.
-(Defaults to @code{false}).
+Display all tests.  Normally, the tests are not displayed, unless the test
+fails.  (Defaults to @code{false}).
 @item display_known_bugs
 Displays tests that are marked as known bugs.  (Default is @code{false}).
 @item tests
-This is a list of tests that should be run.  Each test can be
-specified by either a string or a symbol.  By default, all tests are
-run.  The complete set of tests is specified by @code{testsuite_files}.
+This is a list of tests that should be run.  Each test can be specified by
+either a string or a symbol.  By default, all tests are run.  The complete set
+of tests is specified by @mrefdot{testsuite_files}
 @item time
 Display time information.  If @code{true}, the time taken for each
 test file is displayed.  If @code{all}, the time for each individual
@@ -48,10 +53,12 @@ and then defines functions and variables appropriate to the test.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{testsuite_files}
 @defvr {Option variable} testsuite_files
 
 @code{testsuite_files} is the set of tests to be run by
-@code{run_testsuite}.  It is a list of names of the files containing
+@mrefdot{run_testsuite}  It is a list of names of the files containing
 the tests to run.  If some of the tests in a file are known to fail,
 then instead of listing the name of the file, a list containing the
 file name and the test numbers that fail is used.
@@ -69,13 +76,15 @@ and 63.
 @opencatbox
 @category{Debugging} @category{Global variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{bug_report}
 @deffn {Function} bug_report ()
+
 Prints out Maxima and Lisp version numbers, and gives a link
 to the Maxima project bug report web page.
-The version information is the same as reported by @code{build_info}.
+The version information is the same as reported by @mrefdot{build_info}
 
 When a bug is reported, it is helpful to copy the Maxima
 and Lisp version information into the bug report.
@@ -87,12 +96,17 @@ and Lisp version information into the bug report.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{build_info}
 @deffn {Function} build_info ()
+
 Prints out a summary of the parameters of the Maxima build.
 
 @code{build_info} returns an empty string @code{""}.
+See also @mrefdot{bug_report}
 
 @opencatbox
 @category{Debugging}
 @closecatbox
 @end deffn
+
