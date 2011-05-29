@@ -5,40 +5,46 @@
 * Functions and Variables for Help::        
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Lisp and Maxima, Garbage Collection, Help, Help
 @section Lisp and Maxima
+@c -----------------------------------------------------------------------------
+
 Maxima is written in Lisp, and it is easy to access Lisp functions and variables
-from Maxima and vice versa.
-Lisp and Maxima symbols are distinguished by a naming convention.
-A Lisp symbol which begins with a dollar sign @code{$} corresponds to
-a Maxima symbol without the dollar sign.
+from Maxima and vice versa.  Lisp and Maxima symbols are distinguished by a
+naming convention.  A Lisp symbol which begins with a dollar sign @code{$}
+corresponds to a Maxima symbol without the dollar sign.
+
 @c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
-@c This includes special Maxima variables such as @code{%} and input and output labels,
-@c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
-A Maxima symbol which begins with a question mark @code{?} corresponds to
-a Lisp symbol without the question mark.
-For example, the Maxima symbol @code{foo} corresponds to the Lisp symbol @code{$FOO},
-while the Maxima symbol @code{?foo} corresponds to the Lisp symbol @code{FOO},
-Note that @code{?foo} is written without a space between @code{?} and @code{foo};
-otherwise it might be mistaken for @code{describe ("foo")}.
+@c This includes special Maxima variables such as @code{%} and input and output
+@c labels, which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
+
+A Maxima symbol which begins with a question mark @code{?} corresponds to a Lisp
+symbol without the question mark.  For example, the Maxima symbol @code{foo}
+corresponds to the Lisp symbol @code{$FOO}, while the Maxima symbol @code{?foo}
+corresponds to the Lisp symbol @code{FOO}.  Note that @code{?foo} is written
+without a space between @code{?} and @code{foo}; otherwise it might be mistaken
+for @code{describe ("foo")}.
 
 Hyphen @code{-}, asterisk @code{*}, or other special characters in Lisp symbols
-must be escaped by backslash @code{\} where they appear in Maxima code.
-For example, the Lisp identifier @code{*foo-bar*} is written @code{?\*foo\-bar\*} in Maxima.
+must be escaped by backslash @code{\} where they appear in Maxima code.  For
+example, the Lisp identifier @code{*foo-bar*} is written @code{?\*foo\-bar\*}
+in Maxima.
 
-Lisp code may be executed from within a Maxima session.
-A single line of Lisp (containing one or more forms) may be executed
-by the special command @code{:lisp}. For example,
+Lisp code may be executed from within a Maxima session.  A single line of Lisp
+(containing one or more forms) may be executed by the special command
+@code{:lisp}.  For example,
 
 @example
 (%i1) :lisp (foo $x $y)
 @end example
 
 @noindent
-calls the Lisp function @code{foo} with Maxima variables @code{x} and @code{y} as arguments.
-The @code{:lisp} construct can appear at the interactive prompt
-or in a file processed by @code{batch} or @code{demo}, but not in a file processed by
-@code{load}, @code{batchload}, @code{translate_file}, or @code{compile_file}.
+calls the Lisp function @code{foo} with Maxima variables @code{x} and @code{y}
+as arguments.  The @code{:lisp} construct can appear at the interactive prompt
+or in a file processed by @code{batch} or @code{demo}, but not in a file
+processed by @code{load}, @code{batchload}, @code{translate_file}, or
+@code{compile_file}.
 
 The function @code{to_lisp()} opens an interactive Lisp session.
 Entering @code{(to-maxima)} closes the Lisp session and returns to Maxima.
@@ -47,37 +53,37 @@ Entering @code{(to-maxima)} closes the Lisp session and returns to Maxima.
 @c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
 @c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
 
-Lisp functions and variables which are to be visible in Maxima as
-functions and variables with ordinary names (no special punctuation)
-must have Lisp names beginning with the dollar sign @code{$}.
+Lisp functions and variables which are to be visible in Maxima as functions and
+variables with ordinary names (no special punctuation) must have Lisp names
+beginning with the dollar sign @code{$}.
 
 Maxima is case-sensitive, distinguishing between lowercase and uppercase letters
-in identifiers.
-There are some rules governing the translation of names between Lisp and Maxima.
+in identifiers.  There are some rules governing the translation of names between
+Lisp and Maxima.
 
 @enumerate
 @item
-A Lisp identifier not enclosed in vertical bars corresponds to a Maxima identifier
-in lowercase.
-Whether the Lisp identifier is uppercase, lowercase, or mixed case, is ignored.
-E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo} all correspond to
-Maxima @code{foo}.  But this is because @code{$foo}, @code{$FOO} and
-@code{$Foo} are converted by the Lisp reader by default to the Lisp
-symbol @code{$FOO}.
+A Lisp identifier not enclosed in vertical bars corresponds to a Maxima
+identifier in lowercase.  Whether the Lisp identifier is uppercase, lowercase,
+or mixed case, is ignored.  E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo}
+all correspond to Maxima @code{foo}.  But this is because @code{$foo},
+@code{$FOO} and @code{$Foo} are converted by the Lisp reader by default to the
+Lisp symbol @code{$FOO}.
 @item
-A Lisp identifier which is all uppercase or all lowercase
-and enclosed in vertical bars corresponds to a Maxima identifier with case reversed.
-That is, uppercase is changed to lowercase and lowercase to uppercase.
-E.g., Lisp @code{|$FOO|} and @code{|$foo|}
-correspond to Maxima @code{foo} and @code{FOO}, respectively.
+A Lisp identifier which is all uppercase or all lowercase and enclosed in
+vertical bars corresponds to a Maxima identifier with case reversed.  That is,
+uppercase is changed to lowercase and lowercase to uppercase.  E.g., Lisp
+@code{|$FOO|} and @code{|$foo|} correspond to Maxima @code{foo} and @code{FOO},
+respectively.
 @item
-A Lisp identifier which is mixed uppercase and lowercase
-and enclosed in vertical bars corresponds to a Maxima identifier with the same case.
-E.g., Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
+A Lisp identifier which is mixed uppercase and lowercase and enclosed in
+vertical bars corresponds to a Maxima identifier with the same case.  E.g.,
+Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
 @end enumerate
 
 The @code{#$} Lisp macro allows the use of Maxima expressions in Lisp code.
-@code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima expression @var{expr}.
+@code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima
+expression @var{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -101,9 +107,8 @@ The Lisp function @code{displa} prints an expression in Maxima format.
 NIL
 @end example
 
-Functions defined in Maxima are not ordinary Lisp functions.
-The Lisp function @code{mfuncall} calls a Maxima function.
-For example:
+Functions defined in Maxima are not ordinary Lisp functions.  The Lisp function
+@code{mfuncall} calls a Maxima function.  For example:
 
 @example
 (%i1) foo(x,y) := x*y$
@@ -113,65 +118,56 @@ For example:
 
 Some Lisp functions are shadowed in the Maxima package, namely the following.
 
-@code{complement},
-@code{continue},
-@code{//},
-@code{float},
-@code{functionp},
-@code{array},
-@code{exp},
-@code{listen},
-@code{signum},
-@code{atan},
-@code{asin},
-@code{acos},
-@code{asinh},
-@code{acosh},
-@code{atanh},
-@code{tanh},
-@code{cosh},
-@code{sinh},
-@code{tan},
-@code{break},
-and @code{gcd}.
+@verbatim
+   complement     continue      //
+   float          functionp     array
+   exp            listen        signum
+   atan           asin          acos
+   asinh          acosh         atanh
+   tanh           cosh          sinh
+   tan            break         gcd
+@end verbatim
 
 @opencatbox
 @category{Programming}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Garbage Collection, Documentation, Lisp and Maxima, Help
 @section Garbage Collection
-Symbolic computation tends to create a good deal
-of garbage (temporary or intermediate results that are eventually
-not used), and effective handling of this can be crucial to successful
-completion of some programs.
+@c -----------------------------------------------------------------------------
+
+Symbolic computation tends to create a good deal of garbage (temporary or
+intermediate results that are eventually not used), and effective handling of
+this can be crucial to successful completion of some programs.
 
 @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
 Under GCL, on UNIX systems where the mprotect system call is available
 (including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
-is available.   This limits the collection to pages which have been recently
-written to.    See the GCL documentation under ALLOCATE and GBC.   At the
-Lisp level doing (setq si::*notify-gbc* t) will help you determine which
-areas might need more space.
+is available.  This limits the collection to pages which have been recently
+written to.  See the GCL documentation under ALLOCATE and GBC.  At the Lisp
+level doing (setq si::*notify-gbc* t) will help you determine which areas might
+need more space.
 
-For other Lisps that run Maxima, we refer the reader to the
-documentation for that Lisp on how to control GC.
+For other Lisps that run Maxima, we refer the reader to the documentation for
+that Lisp on how to control GC.
 
+@c -----------------------------------------------------------------------------
 @node Documentation, Functions and Variables for Help, Garbage Collection, Help
 @section Documentation
+@c -----------------------------------------------------------------------------
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
-The Maxima on-line user's manual can be viewed in different forms.
-From the Maxima interactive prompt, the user's manual
-is viewed as plain text by the @code{?} command (i.e., the @code{describe} function).
-The user's manual is viewed as @code{info} hypertext by the @code{info} viewer program
-and as a web page by any ordinary web browser.
+The Maxima on-line user's manual can be viewed in different forms.  From the
+Maxima interactive prompt, the user's manual is viewed as plain text by the
+@code{?} command (i.e., the @mref{describe} function).  The user's manual is
+viewed as @code{info} hypertext by the @code{info} viewer program and as a
+web page by any ordinary web browser.
 
-@code{example} displays examples for many Maxima functions.
-For example,
+@mref{example} displays examples for many Maxima functions.  For example,
 
 @example
 (%i1) example (integrate);
@@ -197,25 +193,30 @@ and additional output.
 @category{Console interaction}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Help,  , Documentation, Help
 @section Functions and Variables for Help
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{apropos}
 @deffn {Function} apropos (@var{string})
+
 Searches for Maxima names which have @var{string} appearing anywhere within
 them.  Thus, @code{apropos (exp)} returns a list of all the flags and functions
 which have @code{exp} as part of their names, such as @code{expand}, @code{exp},
 and @code{exponentialize}.  Thus if you can only remember part of the name of
-something you can use this command to find the rest of the name. Similarly, you
+something you can use this command to find the rest of the name.  Similarly, you
 could say @code{apropos (tr_)} to find a list of many of the switches relating
 to the translator, most of which begin with @code{tr_}.
 
-@code{apropos("")} returns a list with all Maxima names. 
+@code{apropos("")} returns a list with all Maxima names.
 
 @code{apropos} returns the empty list @code{[]}, if no name is found.
 
 Example:
 
-Show all Maxima symbols wich have @code{"gamma"} in the name:
+Show all Maxima symbols which have @code{"gamma"} in the name:
 
 @c ===beg===
 @c apropos("gamma");
@@ -234,18 +235,18 @@ gamma_incomplete_generalized_regularized]
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{demo}
 @deffn {Function} demo (@var{filename})
-Evaluates Maxima expressions in @var{filename} and displays the results.
-@code{demo} pauses after evaluating each expression
-and continues after the user enters a carriage return.
-(If running in Xmaxima, @code{demo} may need to see a semicolon @code{;}
-followed by a carriage return.)
 
-@code{demo} searches the list of directories
-@code{file_search_demo} to find @code{filename}.
-If the file has the suffix @code{dem},
-the suffix may be omitted.
-See also @code{file_search}.
+Evaluates Maxima expressions in @var{filename} and displays the results.
+@code{demo} pauses after evaluating each expression and continues after the
+user enters a carriage return.  (If running in Xmaxima, @code{demo} may need
+to see a semicolon @code{;} followed by a carriage return.)
+
+@code{demo} searches the list of directories @code{file_search_demo} to find
+@code{filename}.  If the file has the suffix @code{dem}, the suffix may be
+omitted.  See also @code{file_search}.
 
 @code{demo} evaluates its argument.
 @code{demo} returns the name of the demonstration file.
@@ -327,35 +328,36 @@ _
 @opencatbox
 @category{Help} @category{Console interaction} @category{File input}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} describe (@var{string})
+@c -----------------------------------------------------------------------------
+@anchor{describe}
+@deffn  {Function} describe (@var{string})
 @deffnx {Function} describe (@var{string}, exact)
 @deffnx {Function} describe (@var{string}, inexact)
 @ifinfo
 @fnindex Help
 @end ifinfo
 
-@code{describe(@var{string})} is equivalent to @code{describe(@var{string}, exact)}.
+@code{describe(@var{string})} is equivalent to
+@code{describe(@var{string}, exact)}.
 
 @code{describe(@var{string}, exact)} finds an item with title equal
-(case-insensitive)
-to @var{string}, if there is any such item.
+(case-insensitive) to @var{string}, if there is any such item.
 
-@code{describe(@var{string}, inexact)} finds all documented items which contain @var{string} in their titles.
-If there is more than one such item, Maxima asks the user to select
-an item or items to display.
+@code{describe(@var{string}, inexact)} finds all documented items which contain
+@var{string} in their titles.  If there is more than one such item, Maxima asks
+the user to select an item or items to display.
 
-At the interactive prompt,
-@code{? foo} (with a space between @code{?} and @code{foo})
-is equivalent to @code{describe("foo", exact)},
-and @code{?? foo} is equivalent to @code{describe("foo", inexact)}.
+At the interactive prompt, @code{? foo} (with a space between @code{?} and
+@code{foo}) is equivalent to @code{describe("foo", exact)}, and @code{?? foo}
+is equivalent to @code{describe("foo", inexact)}.
 
-@code{describe("", inexact)} yields a list of all topics documented in the on-line manual.
+@code{describe("", inexact)} yields a list of all topics documented in the
+on-line manual.
 
-@code{describe} quotes its argument.
-@code{describe} returns @code{true} if some documentation is found, otherwise @code{false}.
+@code{describe} quotes its argument.  @code{describe} returns @code{true} if
+some documentation is found, otherwise @code{false}.
 
 See also @ref{Documentation}.
 
@@ -395,29 +397,32 @@ Enter space-separated numbers, `all' or `none': 7 8
      [...]
 @end example
 
-In this example, items 7 and 8 were selected 
-(output is shortened as indicated by @code{[...]}.
-All or none of the items could have been selected by entering @code{all} or @code{none},
-which can be abbreviated @code{a} or @code{n}, respectively.
+In this example, items 7 and 8 were selected (output is shortened as indicated
+by @code{[...]}.  All or none of the items could have been selected by entering
+@code{all} or @code{none}, which can be abbreviated @code{a} or @code{n},
+respectively.
 
 @opencatbox
 @category{Help} @category{Console interaction}
 @closecatbox
 @end deffn
 
-@deffn {Function} example (@var{topic})
+@c -----------------------------------------------------------------------------
+@anchor{example}
+@deffn  {Function} example (@var{topic})
 @deffnx {Function} example ()
+
 @code{example (@var{topic})} displays some examples of @var{topic}, which is a
-symbol or a string. To get examples for operators like @code{if}, @code{do}, or
-@code{lambda} the argument must be a string, e.g. @code{example ("do")}. 
-@code{example} is not case sensitive. Most topics are function names.
+symbol or a string.  To get examples for operators like @code{if}, @code{do},
+or @code{lambda} the argument must be a string, e.g.  @code{example ("do")}.
+@code{example} is not case sensitive.  Most topics are function names.
 
 @code{example ()} returns the list of all recognized topics.
 
 The name of the file containing the examples is given by the global option 
-variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
+variable @mrefcomma{manual_demo} which defaults to @code{"manual.demo"}.
 
-@code{example} quotes its argument. @code{example} returns @code{done} unless
+@code{example} quotes its argument.  @code{example} returns @code{done} unless
 no examples are found or there is no argument, in which case @code{example}
 returns the list of all recognized topics.
 
@@ -459,11 +464,13 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{manual_demo}
 @defvr {Option variable} manual_demo
 Default value: @code{"manual.demo"}
 
 @code{manual_demo} specifies the name of the file containing the examples for 
-the function @code{example}. See @code{example}.
+the function @code{example}.  See @mrefdot{example}
 
 @opencatbox
 @category{Help} @category{Global variables}
