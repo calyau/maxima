@@ -364,7 +364,7 @@ Spezielle Funktionen
 * Fehlerfunktionen::
 * Elliptische Funktionen und Integrale::
 * Hypergeometrische Funktionen::
-* Funktionen und Variablen f@"ur spezielle Funktionen::
+* Weitere spezielle Funktionen::
 
 Fourier-Transformationen
 * Einf@"uhrung in die schnelle Fourier-Transformation::
