@@ -297,39 +297,6 @@ Warning - you are redefining the Macsyma function eigenvectors
 @closecatbox
 @end deffn
 
-@deffn {Function} conjugate (@var{x})
-Returns the complex conjugate of @var{x}.
-
-@c ===beg===
-@c declare ([aa, bb], real, cc, complex, ii, imaginary);
-@c conjugate (aa + bb*%i);
-@c conjugate (cc);
-@c conjugate (ii);
-@c conjugate (xx + yy);
-@c ===end===
-@example
-(%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
-
-(%o1)                         done
-(%i2) conjugate (aa + bb*%i);
-
-(%o2)                      aa - %i bb
-(%i3) conjugate (cc);
-
-(%o3)                     conjugate(cc)
-(%i4) conjugate (ii);
-
-(%o4)                         - ii
-(%i5) conjugate (xx + yy);
-
-(%o5)             conjugate(yy) + conjugate(xx)
-@end example
-
-@opencatbox
-@category{Complex variables}
-@closecatbox
-@end deffn
-
 @deffn {Function} copymatrix (@var{M})
 Returns a copy of the matrix @var{M}.  This is the only way
 to make a copy aside from copying @var{M} element by element.
