@@ -90,7 +90,9 @@ Maxima infrastructure
 * Command Line::                Maxima command line syntax.
 * Operators::                   Operators used in Maxima expressions.
 * Expressions::                 Expressions in Maxima.
+* Evaluation::                  Evaluating expressions.
 * Simplification::              Simplifying expressions.
+* Mathematical Functions::      Mathematical functions in Maxima.
 * Plotting::                    2D and 3D graphical output.
 * Input and Output::            File input and output.
 * Floating Point::              Low level numerical routines.
@@ -227,11 +229,20 @@ Expressions
 * Complex::                     
 * Inequality::                  
 * Syntax::                      
-* Functions and Variables for Expressions::  
+* Functions and Variables for Expressions::
+
+Evaluation
+
+* Functions and Variables for Evaluation::
 
 Simplification
 
-* Functions and Variables for Simplification::  
+* Functions and Variables for Simplification::
+
+Mathematical Functions
+
+* Functions for Numbers::
+* Functions for Complex Numbers::
 
 Plotting
 
@@ -670,15 +681,23 @@ zeilberger
 @chapter Operators
 @include Operators.texi
 
-@node Expressions, Simplification, Operators, Top
+@node Expressions, Evaluation, Operators, Top
 @chapter Expressions
 @include Expressions.texi
 
-@node Simplification, Plotting, Expressions, Top
+@node Evaluation, Simplification, Expressions, Top
+@chapter Evaluation
+@include Evaluation.texi
+
+@node Simplification, Mathematical Functions, Evaluation, Top
 @chapter Simplification
 @include Simplification.texi
 
-@node Plotting, Input and Output, Simplification, Top
+@node Mathematical Functions, Plotting, Simplification, Top
+@chapter Mathematical Functions
+@include MathFunctions.texi
+
+@node Plotting, Input and Output, Mathematical Functions, Top
 @chapter Plotting
 @include Plotting.texi
 
