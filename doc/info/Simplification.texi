@@ -178,6 +178,8 @@ Check if a function has the property distribute_over:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{domain}
 @defvr {Option variable} domain
 Default value: @code{real}
 
@@ -652,22 +654,6 @@ displayed the same way.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@c NEED TO MENTION THIS IS AN evflag
-
-@c -----------------------------------------------------------------------------
-@anchor{noeval}
-@defvr {Special symbol} noeval
-
-@code{noeval} suppresses the evaluation phase of @code{ev}.  This is useful in
-conjunction with other switches and in causing expressions      
-to be resimplified without being reevaluated.
-
-@opencatbox
-@category{Evaluation flags}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
 
 @c -----------------------------------------------------------------------------
 @anchor{noun}
@@ -695,22 +681,6 @@ definitions.
 
 @opencatbox
 @category{Display flags and variables} @category{Nouns and verbs}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{nouns}
-@defvr {Special symbol} nouns
-
-@code{nouns} is an @code{evflag}.  When used as an option to the @code{ev}
-command, @code{nouns} converts all "noun" forms occurring in the expression
-being @code{ev}'d to "verbs", i.e., evaluates them.  See also @code{noun},
-@code{nounify}, @code{verb}, and @code{verbify}.
-
-@opencatbox
-@category{Evaluation flags} @category{Nouns and verbs}
 @closecatbox
 @end defvr
 
@@ -842,32 +812,6 @@ simplify to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 
 @opencatbox
 @category{Declarations and inferences} @category{Operators}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{pred}
-@defvr {Special symbol} pred
-
-As an argument in a call to @code{ev (@var{expr})}, @code{pred} causes 
-predicates (expressions which evaluate to @code{true} or @code{false}) to be 
-evaluated.  See @code{ev}.
-
-Example:
-
-@c ===beg===
-@c 1<2;
-@c 1<2,pred;
-@c ===end===
-@example
-(%i1) 1<2;
-(%o1)                                1 < 2
-(%i2) 1<2,pred;
-(%o2)                                true
-@end example
-
-@opencatbox
-@category{Evaluation flags}
 @closecatbox
 @end defvr
 
