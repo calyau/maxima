@@ -9,8 +9,10 @@
 * Functions and Variables for Expressions::  
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Expressions, Complex, Expressions, Expressions
 @section Introduction to Expressions
+@c -----------------------------------------------------------------------------
 
 There are a number of reserved words which should not be used as variable names.
 Their use would cause a possibly cryptic syntax error.
@@ -24,9 +26,9 @@ unless               product        while                thru
 step                                                                     
 @end example
 
-Most things in Maxima are expressions.   A sequence of expressions
+Most things in Maxima are expressions.  A sequence of expressions
 can be made into an expression by separating them by commas and
-putting parentheses around them.   This is similar to the @b{C}
+putting parentheses around them.  This is similar to the @b{C}
 @i{comma expression}.
 
 @example
@@ -57,43 +59,46 @@ term in the @i{comma expression} which actually gives back the value.
 (%o4)                        3628800
 @end example
 
-
-
 @c THIS REALLY NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
 @node Complex, Nouns and Verbs, Introduction to Expressions, Expressions
 @section Complex
-A complex expression is specified in Maxima by adding the
-real part of the expression to @code{%i} times the imaginary part.  Thus the
-roots of the equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.  Note that
-simplification of products of complex expressions can be effected by
-expanding the product.  Simplification of quotients, roots, and other
-functions of complex expressions can usually be accomplished by using
-the @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg} functions.
+@c -----------------------------------------------------------------------------
+
+A complex expression is specified in Maxima by adding the real part of the
+expression to @code{%i} times the imaginary part.  Thus the roots of the
+equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.
+Note that simplification of products of complex expressions can be effected by
+expanding the product.  Simplification of quotients, roots, and other functions
+of complex expressions can usually be accomplished by using the @code{realpart},
+@code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}
+functions.
 
 @opencatbox
 @category{Complex variables}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Nouns and Verbs, Identifiers, Complex, Expressions
 @section Nouns and Verbs
-Maxima distinguishes between operators which are "nouns" and operators which are "verbs".
-A verb is an operator which can be executed.
-A noun is an operator which appears as a symbol in an expression, without being executed.
-By default, function names are verbs.
-A verb can be changed into a noun by quoting the function name
-or applying the @code{nounify} function.
-A noun can be changed into a verb by applying the @code{verbify} function.
-The evaluation flag @code{nouns} causes @code{ev} to evaluate nouns in an expression.
+@c -----------------------------------------------------------------------------
 
-The verb form is distinguished by 
-a leading dollar sign @code{$} on the corresponding Lisp symbol.
-In contrast,
-the noun form is distinguished by 
-a leading percent sign @code{%} on the corresponding Lisp symbol.
-Some nouns have special display properties, such as @code{'integrate} and @code{'derivative}
-(returned by @code{diff}), but most do not.
-By default, the noun and verb forms of a function are identical when displayed.
-The global flag @code{noundisp} causes Maxima to display nouns with a leading quote mark @code{'}.
+Maxima distinguishes between operators which are "nouns" and operators which are
+"verbs".  A verb is an operator which can be executed.  A noun is an operator
+which appears as a symbol in an expression, without being executed.  By default,
+function names are verbs.  A verb can be changed into a noun by quoting the
+function name or applying the @code{nounify} function.  A noun can be changed
+into a verb by applying the @code{verbify} function.  The evaluation flag
+@code{nouns} causes @code{ev} to evaluate nouns in an expression.
+
+The verb form is distinguished by a leading dollar sign @code{$} on the
+corresponding Lisp symbol.  In contrast, the noun form is distinguished by a
+leading percent sign @code{%} on the corresponding Lisp symbol.  Some nouns have
+special display properties, such as @code{'integrate} and @code{'derivative}
+(returned by @code{diff}), but most do not.  By default, the noun and verb forms
+of a function are identical when displayed.  The global flag @code{noundisp}
+causes Maxima to display nouns with a leading quote mark @code{'}.
 
 See also @code{noun}, @code{nouns}, @code{nounify}, and @code{verbify}.
 
@@ -152,27 +157,30 @@ Examples:
 @category{Evaluation} @category{Nouns and verbs}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Identifiers, Strings, Nouns and Verbs, Expressions
 @section Identifiers
-Maxima identifiers may comprise alphabetic characters,
-plus the numerals 0 through 9,
-plus any special character preceded by the backslash @code{\} character.
+@c -----------------------------------------------------------------------------
 
-A numeral may be the first character of an identifier
-if it is preceded by a backslash.
-Numerals which are the second or later characters need not be preceded by a backslash.
+Maxima identifiers may comprise alphabetic characters, plus the numerals 0
+through 9, plus any special character preceded by the backslash @code{\}
+character.
+
+A numeral may be the first character of an identifier if it is preceded by a
+backslash.  Numerals which are the second or later characters need not be
+preceded by a backslash.
 
 Characters may be declared alphabetic by the @code{declare} function.
 If so declared, they need not be preceded by a backslash in an identifier.
-The alphabetic characters are initially 
-@code{A} through @code{Z}, @code{a} through @code{z}, @code{%}, and @code{_}.
+The alphabetic characters are initially @code{A} through @code{Z}, @code{a}
+through @code{z}, @code{%}, and @code{_}.
 
-Maxima is case-sensitive. The identifiers @code{foo}, @code{FOO}, and @code{Foo} are distinct.
-See @ref{Lisp and Maxima} for more on this point.
+Maxima is case-sensitive.  The identifiers @code{foo}, @code{FOO}, and
+@code{Foo} are distinct.  See @ref{Lisp and Maxima} for more on this point.
 
 A Maxima identifier is a Lisp symbol which begins with a dollar sign @code{$}.
-Any other Lisp symbol is preceded by a question mark @code{?} when it appears in Maxima.
-See @ref{Lisp and Maxima} for more on this point.
+Any other Lisp symbol is preceded by a question mark @code{?} when it appears
+in Maxima.  See @ref{Lisp and Maxima} for more on this point.
 
 Examples:
 
@@ -225,33 +233,31 @@ Examples:
 @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Strings, Inequality, Identifiers, Expressions
 @section Strings
+@c -----------------------------------------------------------------------------
 
-Strings (quoted character sequences) are enclosed in double quote marks @code{"} for input,
-and displayed with or without the quote marks, 
-depending on the global variable @code{stringdisp}.
+Strings (quoted character sequences) are enclosed in double quote marks @code{"}
+for input, and displayed with or without the quote marks, depending on the
+global variable @code{stringdisp}.
 
-Strings may contain any characters,
-including embedded tab, newline, and carriage return characters.
-The sequence @code{\"} is recognized as a literal double quote,
-and @code{\\} as a literal backslash.
-When backslash appears at the end of a line,
-the backslash and the line termination
-(either newline or carriage return and newline)
-are ignored,
-so that the string continues with the next line.
-No other special combinations of backslash with another character are recognized;
-when backslash appears before any character other than @code{"}, @code{\},
-or a line termination, the backslash is ignored.
-There is no way to represent a special character
-(such as tab, newline, or carriage return)
+Strings may contain any characters, including embedded tab, newline, and
+carriage return characters.  The sequence @code{\"} is recognized as a literal
+double quote, and @code{\\} as a literal backslash.  When backslash appears at
+the end of a line, the backslash and the line termination (either newline or
+carriage return and newline) are ignored, so that the string continues with the
+next line.  No other special combinations of backslash with another character
+are recognized; when backslash appears before any character other than @code{"},
+@code{\}, or a line termination, the backslash is ignored.  There is no way to
+represent a special character (such as tab, newline, or carriage return)
 except by embedding the literal character in the string.
 
-There is no character type in Maxima;
-a single character is represented as a one-character string.
+There is no character type in Maxima; a single character is represented as a
+one-character string.
 
-The @code{stringproc} add-on package contains many functions for working with strings.
+The @code{stringproc} add-on package contains many functions for working with
+strings.
 
 Examples:
 
@@ -297,19 +303,25 @@ this string.";
 @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Inequality, Syntax, Strings, Expressions
 @section Inequality
-Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, and @code{notequal}.
-See @code{if} for a description of conditional expressions.
+@c -----------------------------------------------------------------------------
 
+Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>},
+@code{#}, and @code{notequal}.  See @code{if} for a description of conditional
+expressions.
+
+@c -----------------------------------------------------------------------------
 @node Syntax, Functions and Variables for Expressions, Inequality, Expressions
 @section Syntax
-It is possible to define new operators with specified precedence,
-to undefine existing operators,
-or to redefine the precedence of existing operators.  
-An operator may be unary prefix or unary postfix, binary infix, n-ary infix, matchfix, or nofix.
-"Matchfix" means a pair of symbols which enclose their argument or arguments,
-and "nofix" means an operator which takes no arguments.
+@c -----------------------------------------------------------------------------
+
+It is possible to define new operators with specified precedence, to undefine
+existing operators, or to redefine the precedence of existing operators.  An
+operator may be unary prefix or unary postfix, binary infix, n-ary infix,
+matchfix, or nofix.  "Matchfix" means a pair of symbols which enclose their
+argument or arguments, and "nofix" means an operator which takes no arguments.
 As examples of the different types of operators, there are the following.
 
 @table @asis
@@ -325,17 +337,17 @@ addition @code{a + b}
 list construction @code{[a, b]}
 @end table
 
-(There are no built-in nofix operators;
-for an example of such an operator, see @code{nofix}.)
+(There are no built-in nofix operators; for an example of such an operator,
+see @code{nofix}.)
 
-The mechanism to define a new operator is straightforward.
-It is only necessary to declare a function as an operator;
-the operator function might or might not be defined.
+The mechanism to define a new operator is straightforward.  It is only necessary
+to declare a function as an operator; the operator function might or might not
+be defined.
 
-An example of user-defined operators is the following.
-Note that the explicit function call @code{"dd" (a)} is equivalent to @code{dd a},
-likewise @code{"<-" (a, b)} is equivalent to @code{a <- b}.
-Note also that the functions @code{"dd"} and @code{"<-"} are undefined in this example.
+An example of user-defined operators is the following.  Note that the explicit
+function call @code{"dd" (a)} is equivalent to @code{dd a}, likewise
+@code{"<-" (a, b)} is equivalent to @code{a <- b}.  Note also that the functions
+@code{"dd"} and @code{"<-"} are undefined in this example.
 
 @c ===beg===
 @c prefix ("dd");
@@ -362,11 +374,12 @@ Note also that the functions @code{"dd"} and @code{"<-"} are undefined in this e
 
 The Maxima functions which define new operators are summarized in this table,
 stating the default left and right binding powers (lbp and rbp, respectively).
-@c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
-(Binding power determines operator precedence. However, since left and right
-binding powers can differ, binding power is somewhat more complicated than precedence.)
-Some of the operation definition functions take additional arguments;
-see the function descriptions for details.
+@c REWORK FOLLOWING COMMENT.
+@c IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
+(Binding power determines operator precedence.  However, since left and right
+binding powers can differ, binding power is somewhat more complicated than
+precedence.) Some of the operation definition functions take additional
+arguments; see the function descriptions for details.
 
 @c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
 @table @code
@@ -384,8 +397,8 @@ lbp=180, rbp=180
 (binding power not applicable)
 @end table
 
-For comparison,
-here are some built-in operators and their left and right binding powers.
+For comparison, here are some built-in operators and their left and right
+binding powers.
 
 @example
 Operator   lbp     rbp
@@ -418,8 +431,9 @@ Operator   lbp     rbp
 
 @code{remove} and @code{kill} remove operator properties from an atom.
 @code{remove ("@var{a}", op)} removes only the operator properties of @var{a}.
-@code{kill ("@var{a}")} removes all properties of @var{a}, including the operator properties.
-Note that the name of the operator must be enclosed in quotation marks.
+@code{kill ("@var{a}")} removes all properties of @var{a}, including the
+operator properties.  Note that the name of the operator must be enclosed in
+quotation marks.
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
 @c ===beg===
@@ -469,10 +483,13 @@ Incorrect syntax: # is not a prefix operator
 @category{Operators} @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Expressions,  , Syntax, Expressions
 @section Functions and Variables for Expressions
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{at}
 @deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
 @deffnx {Function} at (@var{expr}, @var{eqn})
 
@@ -535,22 +552,25 @@ Examples:
 @closecatbox
 @end deffn
 
-@deffn {Function} box (@var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{box}
+@deffn  {Function} box (@var{expr})
 @deffnx {Function} box (@var{expr}, @var{a})
-Returns @var{expr} enclosed in a box.
-The return value is an expression with @code{box} as the operator and @var{expr} as the argument.
-A box is drawn on the display when @code{display2d} is @code{true}.
 
-@code{box (@var{expr}, @var{a})}
-encloses @var{expr} in a box labelled by the symbol @var{a}.
-The label is truncated if it is longer than the width of the box.
+Returns @var{expr} enclosed in a box.  The return value is an expression with
+@code{box} as the operator and @var{expr} as the argument.  A box is drawn on
+the display when @code{display2d} is @code{true}.
 
-@code{box} evaluates its argument.
-However, a boxed expression does not evaluate to its content,
-so boxed expressions are effectively excluded from computations.
+@code{box (@var{expr}, @var{a})} encloses @var{expr} in a box labelled by the
+symbol @var{a}.  The label is truncated if it is longer than the width of the
+box.
 
-@code{boxchar} is the character used to draw the box in @code{box}
-and in the @code{dpart} and @code{lpart} functions.
+@code{box} evaluates its argument.  However, a boxed expression does not
+evaluate to its content, so boxed expressions are effectively excluded from
+computations.
+
+@code{boxchar} is the character used to draw the box in @code{box} and in the
+@code{dpart} and @code{lpart} functions.
 
 Examples:
 
@@ -601,6 +621,8 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{boxchar}
 @defvr {Option variable} boxchar
 Default value: @code{"}
 
@@ -613,14 +635,15 @@ the drawing character is not stored with the box expression.
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{carg}
 @deffn {Function} carg (@var{z})
-Returns the complex argument of @var{z}.
-The complex argument is an angle @code{theta} in @code{(-%pi, %pi]} such that 
-@code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
+
+Returns the complex argument of @var{z}.  The complex argument is an angle
+@code{theta} in @code{(-%pi, %pi]} such that @code{r exp (theta %i) = @var{z}}
+where @code{r} is the magnitude of @var{z}.
 
 @code{carg} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
@@ -664,7 +687,11 @@ Examples:
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
+
+@c -----------------------------------------------------------------------------
+@anchor{constant}
 @deffn {Special operator} constant
+
 @code{declare (@var{a}, constant)} declares @var{a} to be a constant.
 See @code{declare}.
 @c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
@@ -674,9 +701,12 @@ See @code{declare}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{constantp}
 @deffn {Function} constantp (@var{expr})
-Returns @code{true} if @var{expr} is a constant expression,
-otherwise returns @code{false}.
+
+Returns @code{true} if @var{expr} is a constant expression, otherwise returns
+@code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
 An expression is considered a constant expression if its arguments are
@@ -698,7 +728,6 @@ Examples:
 @c constantp (exp (x));
 @c constantp (foo (x) + bar (%e) + baz (2));
 @c ===end===
-
 @example
 (%i1) constantp (7 * sin(2));
 (%o1)                                true
@@ -720,27 +749,29 @@ Examples:
 @opencatbox
 @category{Predicate functions} @category{Constants}
 @closecatbox
-
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
-Assigns the atom or list of atoms @var{a_i} the property or list of properties @var{p_i}.
-When @var{a_i} and/or @var{p_i} are lists,
-each of the atoms gets all of the properties.
+
+@c -----------------------------------------------------------------------------
+@anchor{declare}
+@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
+
+Assigns the atom or list of atoms @var{a_i} the property or list of properties
+@var{p_i}.  When @var{a_i} and/or @var{p_i} are lists, each of the atoms gets
+all of the properties.
 
 @code{declare} quotes its arguments.
 @code{declare} always returns @code{done}.
 
 
-As noted in the description for each declaration flag,
-for some flags
-@code{featurep(@var{object}, @var{feature})}
-returns @code{true} if @var{object} has been declared to have @var{feature}.
-However, @code{featurep} does not recognize some flags; this is a bug.
+As noted in the description for each declaration flag, for some flags
+@code{featurep(@var{object}, @var{feature})} returns @code{true} if @var{object}
+has been declared to have @var{feature}.  However, @code{featurep} does not
+recognize some flags; this is a bug.
 
 See also @code{features}.
 
@@ -753,26 +784,24 @@ is applied when @var{a_i} appears as a flag argument of @code{ev}.
 See @code{evfun}.
 
 @item @code{evflag}
-Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to @code{true}
-during the execution of @code{ev} when @var{a_i} appears as a flag argument of @code{ev}.
-See @code{evflag}.
+Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to
+@code{true} during the execution of @code{ev} when @var{a_i} appears as a flag
+argument of @code{ev}.  See @code{evflag}.
 
 @c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
-
-@c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
 @item @code{bindtest}
 Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
 
 @item @code{noun}
-Tells Maxima to parse @var{a_i} as a noun. 
-The effect of this is to replace instances of @var{a_i} with @code{'@var{a_i}}
-or @code{nounify(@var{a_i})}, depending on the context.
+Tells Maxima to parse @var{a_i} as a noun.  The effect of this is to replace
+instances of @var{a_i} with @code{'@var{a_i}} or @code{nounify(@var{a_i})},
+depending on the context.
 
 @item @code{constant}
 Tells Maxima to consider @var{a_i} a symbolic constant.
 @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
-@c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
 @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
 @item @code{scalar}
@@ -783,32 +812,33 @@ Tells Maxima to consider @var{a_i} a nonscalar variable.
 The usual application is to declare a variable as a symbolic vector or matrix.
 
 @item @code{nonarray}
-Tells Maxima to consider @var{a_i} not an array. This declaration prevents
+Tells Maxima to consider @var{a_i} not an array.  This declaration prevents
 multiple evaluation of a subscripted variable name.
 
 @item @code{mainvar}
-Tells Maxima to consider @var{a_i} a "main variable".
-A main variable succeeds all other constants and variables in the
-canonical ordering of Maxima expressions,
-as determined by @code{ordergreatp}.
+Tells Maxima to consider @var{a_i} a "main variable".  A main variable succeeds
+all other constants and variables in the canonical ordering of Maxima
+expressions, as determined by @code{ordergreatp}.
 
 @item @code{alphabetic}
-Tells Maxima to recognize all characters in @var{a_i} (which must be a string) as alphabetic characters.
+Tells Maxima to recognize all characters in @var{a_i} (which must be a string)
+as alphabetic characters.
 
 @item @code{feature}
 Tells Maxima to recognize @var{a_i} as the name of a feature.
 Other atoms may then be declared to have the @var{a_i} property.
 
 @item @code{rassociative}, @code{lassociative}
-Tells Maxima to recognize @var{a_i} as a right-associative or left-associative function.
+Tells Maxima to recognize @var{a_i} as a right-associative or left-associative
+function.
 
 @item @code{nary}
 Tells Maxima to recognize @var{a_i} as an n-ary function.
 
 The @code{nary} declaration is not the same as calling the @code{nary} function.
-The sole effect of @code{declare(foo, nary)} is to instruct the Maxima simplifier
-to flatten nested expressions,
-for example, to simplify @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
+The sole effect of @code{declare(foo, nary)} is to instruct the Maxima
+simplifier to flatten nested expressions, for example, to simplify
+@code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
 
 @item @code{symmetric}, @code{antisymmetric}, @code{commutative}
 Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
@@ -818,26 +848,24 @@ Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
 Tells Maxima to recognize @var{a_i} as an odd or even function.
 
 @item @code{outative}
-Tells Maxima to simplify @var{a_i} expressions
-by pulling constant factors out of the first argument.
+Tells Maxima to simplify @var{a_i} expressions by pulling constant factors out
+of the first argument.
 
-When @var{a_i} has one argument,
-a factor is considered constant if it is a literal or declared constant.
+When @var{a_i} has one argument, a factor is considered constant if it is a
+literal or declared constant.
 
-When @var{a_i} has two or more arguments,
-a factor is considered constant
-if the second argument is a symbol
-and the factor is free of the second argument.
+When @var{a_i} has two or more arguments, a factor is considered constant if the
+second argument is a symbol and the factor is free of the second argument.
 
 @item @code{multiplicative}
-Tells Maxima to simplify @var{a_i} expressions
-by the substitution @code{@var{a_i}(x * y * z * ...)} @code{-->}
+Tells Maxima to simplify @var{a_i} expressions by the substitution
+@code{@var{a_i}(x * y * z * ...)} @code{-->} 
 @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
 The substitution is carried out on the first argument only.
 
 @item @code{additive}
-Tells Maxima to simplify @var{a_i} expressions
-by the substitution @code{@var{a_i}(x + y + z + ...)} @code{-->}
+Tells Maxima to simplify @var{a_i} expressions by the substitution
+@code{@var{a_i}(x + y + z + ...)} @code{-->}
 @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
 The substitution is carried out on the first argument only.
 
@@ -856,7 +884,8 @@ Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
 Tells Maxima to recognize @var{a_i} as a rational or irrational real variable.
 
 @item @code{real}, @code{imaginary}, @code{complex}
-Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex variable.
+Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex
+variable.
 
 @item @code{increasing}, @code{decreasing}
 Tells Maxima to recognize @var{a_i} as an increasing or decreasing function.
@@ -875,6 +904,7 @@ Tells Maxima to recognize @var{a_i} as an integer-valued function.
 Examples:
 
 @code{evfun} and @code{evflag} declarations.
+
 @c ===beg===
 @c declare (expand, evfun);
 @c (a + b)^3;
@@ -903,6 +933,7 @@ Examples:
 @end example
 
 @code{bindtest} declaration.
+
 @c ===beg===
 @c aa + bb;
 @c declare (aa, bindtest);
@@ -925,6 +956,7 @@ aa unbound variable
 @end example
 
 @code{noun} declaration.
+
 @c ===beg===
 @c factor (12345678);
 @c declare (factor, noun);
@@ -944,7 +976,9 @@ aa unbound variable
 (%o4)                     2 3  47 14593
 @end example
 
-@code{constant}, @code{scalar}, @code{nonscalar}, and @code{mainvar} declarations.
+@code{constant}, @code{scalar}, @code{nonscalar}, and @code{mainvar}
+declarations.
+
 @c ===beg===
 @c declare (bb, constant);
 @c declare (cc, scalar);
@@ -955,6 +989,7 @@ aa unbound variable
 @end example
 
 @code{alphabetic} declaration.
+
 @c ===beg===
 @c xx\~yy\`\@ : 1729;
 @c declare ("~`@", alphabetic);
@@ -973,6 +1008,7 @@ aa unbound variable
 @end example
 
 @code{feature} declaration.
+
 @c ===beg===
 @c declare (FOO, feature);
 @c declare (x, FOO);
@@ -988,6 +1024,7 @@ aa unbound variable
 @end example
 
 @code{rassociative} and @code{lassociative} declarations.
+
 @c ===beg===
 @c declare (F, rassociative);
 @c declare (G, lassociative);
@@ -996,6 +1033,7 @@ aa unbound variable
 @end example
 
 @code{nary} declaration.
+
 @c ===beg===
 @c H (H (a, b), H (c, H (d, e)));
 @c declare (H, nary);
@@ -1011,6 +1049,7 @@ aa unbound variable
 @end example
 
 @code{symmetric} and @code{antisymmetric} declarations.
+
 @c ===beg===
 @c S (b, a);
 @c declare (S, symmetric);
@@ -1041,6 +1080,7 @@ aa unbound variable
 @end example
 
 @code{oddfun} and @code{evenfun} declarations.
+
 @c ===beg===
 @c o (- u) + o (u);
 @c declare (o, oddfun);
@@ -1065,6 +1105,7 @@ aa unbound variable
 @end example
 
 @code{outative} declaration.
+
 @c ===beg===
 @c F1 (100 * x);
 @c declare (F1, outative);
@@ -1086,6 +1127,7 @@ aa unbound variable
 @end example
 
 @code{multiplicative} declaration.
+
 @c ===beg===
 @c F2 (a * b * c);
 @c declare (F2, multiplicative);
@@ -1101,6 +1143,7 @@ aa unbound variable
 @end example
 
 @code{additive} declaration.
+
 @c ===beg===
 @c F3 (a + b + c);
 @c declare (F3, additive);
@@ -1116,6 +1159,7 @@ aa unbound variable
 @end example
 
 @code{linear} declaration.
+
 @c ===beg===
 @c 'sum (F(k) + G(k), k, 1, inf);
 @c declare (nounify (sum), linear);
@@ -1150,29 +1194,33 @@ aa unbound variable
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
-is similar to @code{isolate (@var{expr}, @var{x})}
-except that it enables the user to isolate
-more than one variable simultaneously.  This might be useful, for
-example, if one were attempting to change variables in a multiple
-integration, and that variable change involved two or more of the
-integration variables.  This function is autoloaded from
-@file{simplification/disol.mac}.  A demo is available by
-@code{demo("disol")$}.
+
+@c -----------------------------------------------------------------------------
+@anchor{disoloate}
+@deffn {Function} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+
+is similar to @code{isolate (@var{expr}, @var{x})} except that it enables the
+user to isolate more than one variable simultaneously.  This might be useful,
+for example, if one were attempting to change variables in a multiple
+integration, and that variable change involved two or more of the integration
+variables.  This function is autoloaded from @file{simplification/disol.mac}.
+A demo is available by @code{demo("disol")$}.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
 @end deffn
 
-@deffn {Function} dispform (@var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{dispform}
+@deffn  {Function} dispform (@var{expr})
 @deffnx {Function} dispform (@var{expr}, all)
+
 Returns the external representation of @var{expr}.
 
-@code{dispform(@var{expr})} returns the external representation
-with respect to the main (top-level) operator.
-@code{dispform(@var{expr}, all)} returns the external representation
-with respect to all operators in @var{expr}.
+@code{dispform(@var{expr})} returns the external representation with respect to
+the main (top-level) operator.  @code{dispform(@var{expr}, all)} returns the
+external representation with respect to all operators in @var{expr}.
 
 See also @code{part}, @code{inpart}, and @code{inflag}.
 
@@ -1247,11 +1295,15 @@ Use of the optional argument @code{all}.
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{function_distrib}
 @deffn {Function} distrib (@var{expr})
-Distributes sums over products.  It differs from @code{expand}
-in that it works at only the top level of an expression, i.e., it doesn't
-recurse and it is faster than @code{expand}.  It differs from @code{multthru} in
-that it expands all sums at that level.
+
+Distributes sums over products.  It differs from @code{expand} in that it works
+at only the top level of an expression, i.e., it doesn't recurse and it is
+faster than @code{expand}.  It differs from @code{multthru} in that it expands
+all sums at that level.
 
 Examples:
 
@@ -1276,11 +1328,15 @@ Examples:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-Selects the same subexpression as @code{part}, but
-instead of just returning that subexpression as its value, it returns
-the whole expression with the selected subexpression displayed inside
-a box.  The box is actually part of the expression.
+
+@c -----------------------------------------------------------------------------
+@anchor{dpart}
+@deffn {Function} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Selects the same subexpression as @code{part}, but instead of just returning
+that subexpression as its value, it returns the whole expression with the
+selected subexpression displayed inside a box.  The box is actually part of the
+expression.
 
 @example
 (%i1) dpart (x+y/z^2, 1, 2, 1);
@@ -1298,19 +1354,24 @@ a box.  The box is actually part of the expression.
 @end deffn
 
 @c PROBABLY MORE TO BE SAID HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{exp}
 @deffn {Function} exp (@var{x})
-Represents the exponential function.  
-Instances of @code{exp (@var{x})} in input are simplified to @code{%e^@var{x}};
-@code{exp} does not appear in simplified expressions.
+
+Represents the exponential function.  Instances of @code{exp (@var{x})} in input
+are simplified to @code{%e^@var{x}}; @code{exp} does not appear in simplified
+expressions.
 
 @code{demoivre} if @code{true} causes @code{%e^(a + b %i)} to simplify to
-@code{%e^(a (cos(b) + %i sin(b)))} if @code{b} is free of @code{%i}. See @code{demoivre}.
+@code{%e^(a (cos(b) + %i sin(b)))} if @code{b} is free of @code{%i}.
+See @code{demoivre}.
 
-@code{%emode}, when @code{true}, 
-causes @code{%e^(%pi %i x)} to be simplified. See @code{%emode}.
+@code{%emode}, when @code{true}, causes @code{%e^(%pi %i x)} to be simplified.
+See @code{%emode}.
 
 @code{%enumer}, when @code{true} causes @code{%e} to be replaced by
-2.718...  whenever @code{numer} is @code{true}. See @code{%enumer}.
+2.718@dots{}  whenever @code{numer} is @code{true}.  See @code{%enumer}.
 
 @c NEED EXAMPLES HERE
 @opencatbox
@@ -1318,36 +1379,38 @@ causes @code{%e^(%pi %i x)} to be simplified. See @code{%emode}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{%emode}
 @defvr {Option variable} %emode
 Default value: @code{true}
 
-When @code{%emode} is @code{true},
-@code{%e^(%pi %i x)} is simplified as
+When @code{%emode} is @code{true}, @code{%e^(%pi %i x)} is simplified as
 follows.
 
-@code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if @code{x} is a floating point number, an integer, or
-a multiple of 1/2, 1/3, 1/4, or 1/6, and then further simplified.
+@code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if
+@code{x} is a floating point number, an integer, or a multiple of 1/2, 1/3, 1/4,
+or 1/6, and then further simplified.
 
-For other numerical @code{x},
-@code{%e^(%pi %i x)} simplifies to @code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k}
-for some integer @code{k} such that @code{abs(y) < 1}.  
+For other numerical @code{x}, @code{%e^(%pi %i x)} simplifies to
+@code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k} for some integer @code{k}
+such that @code{abs(y) < 1}.
 
-When @code{%emode} is @code{false}, no
-special simplification of @code{%e^(%pi %i x)} is carried out.
+When @code{%emode} is @code{false}, no special simplification of
+@code{%e^(%pi %i x)} is carried out.
 
 @c NEED EXAMPLES HERE
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%enumer}
 @defvr {Option variable} %enumer
 Default value: @code{false}
 
-When @code{%enumer} is @code{true},
-@code{%e} is replaced by its numeric value
-2.718...  whenever @code{numer} is @code{true}. 
+When @code{%enumer} is @code{true}, @code{%e} is replaced by its numeric value
+2.718@dots{}  whenever @code{numer} is @code{true}.
 
 When @code{%enumer} is @code{false}, this substitution is carried out
 only if the exponent in @code{%e^x} evaluates to a number.
@@ -1358,9 +1421,10 @@ See also @code{ev} and @code{numer}.
 @opencatbox
 @category{Exponential and logarithm functions} @category{Evaluation flags}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{exptisolate}
 @defvr {Option variable} exptisolate
 Default value: @code{false}
 
@@ -1372,9 +1436,10 @@ examine exponents of atoms (such as @code{%e}) which contain @code{var}.
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{exptsubst}
 @defvr {Option variable} exptsubst
 Default value: @code{false}
 
@@ -1388,7 +1453,8 @@ for @code{%e^x} in @code{%e^(a x)}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@anchor{freeof}
+@deffn {Function} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
 
 @code{freeof (@var{x_1}, @var{expr})} returns @code{true} if no subexpression of
 @var{expr} is equal to @var{x_1} or if @var{x_1} occurs only as a dummy variable
@@ -1396,20 +1462,21 @@ in @var{expr}, or if @var{x_1} is neither the noun nor verb form of any operator
 in @var{expr}, and returns @code{false} otherwise.
 
 @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} is equivalent to 
-@code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+@code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n},
+@var{expr})}.
 
-The arguments @var{x_1}, ..., @var{x_n} may be names of functions and variables,
-subscripted names, operators (enclosed in double quotes), or general expressions.
-@code{freeof} evaluates its arguments.
+The arguments @var{x_1}, @dots{}, @var{x_n} may be names of functions and
+variables, subscripted names, operators (enclosed in double quotes), or general
+expressions.  @code{freeof} evaluates its arguments.
 
 @code{freeof} operates only on @var{expr} as it stands (after simplification and
 evaluation) and does not attempt to determine if some equivalent expression 
-would give a different result. In particular, simplification may yield an 
+would give a different result.  In particular, simplification may yield an
 equivalent but different expression which comprises some different elements than
 the original form of @var{expr}.
 
 A variable is a dummy variable in an expression if it has no binding outside of 
-the expression. Dummy variables recognized by @code{freeof} are the index of a 
+the expression.  Dummy variables recognized by @code{freeof} are the index of a 
 sum or product, the limit variable in @code{limit}, the integration variable in 
 the definite integral form of @code{integrate}, the original variable in 
 @code{laplace}, formal variables in @code{at} expressions, and arguments in 
@@ -1421,7 +1488,7 @@ integration.
 Examples:
 
 Arguments are names of functions, variables, subscripted names, operators, and 
-expressions. @code{freeof (a, b, expr)} is equivalent to 
+expressions.  @code{freeof (a, b, expr)} is equivalent to 
 @code{freeof (a, expr) and freeof (b, expr)}.
 
 @example
@@ -1501,16 +1568,18 @@ Returns the generalized factorial, defined as
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{impagpart}
 @deffn {Function} imagpart (@var{expr})
+
 Returns the imaginary part of the expression @var{expr}.
 
-@code{imagpart} is a computational function,
-not a simplifying function.
+@code{imagpart} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform},
-and @code{realpart}.
+See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform}, and
+@code{realpart}.
 
 @c NEED EXAMPLES HERE
 @opencatbox
@@ -1518,51 +1587,49 @@ and @code{realpart}.
 @closecatbox
 @end deffn
 
-@deffn {Function} infix (@var{op})
+@c -----------------------------------------------------------------------------
+@anchor{infix}
+@deffn  {Function} infix (@var{op})
 @deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
 @deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
-Declares @var{op} to be an infix operator.
-An infix operator is a function of two arguments,
-with the name of the function written between the arguments.
+
+Declares @var{op} to be an infix operator.  An infix operator is a function of
+two arguments, with the name of the function written between the arguments.
 For example, the subtraction operator @code{-} is an infix operator.
 
-@code{infix (@var{op})} declares @var{op} to be an infix operator
-with default binding powers (left and right both equal to 180)
-and parts of speech (left and right both equal to @code{any}).
+@code{infix (@var{op})} declares @var{op} to be an infix operator with default
+binding powers (left and right both equal to 180) and parts of speech (left and
+right both equal to @code{any}).
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp})} declares @var{op} to be an infix operator
-with stated left and right binding powers
-and default parts of speech (left and right both equal to @code{any}).
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} declares @var{op} to be an infix
+operator with stated left and right binding powers and default parts of speech
+(left and right both equal to @code{any}).
 
 @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
-declares @var{op} to be an infix operator
-with stated left and right binding powers
-and parts of speech @var{lpos}, @var{rpos}, and @var{pos}
-for the left operand, the right operand, and the operator result, respectively.
+declares @var{op} to be an infix operator with stated left and right binding
+powers and parts of speech @var{lpos}, @var{rpos}, and @var{pos} for the left
+operand, the right operand, and the operator result, respectively.
 
 "Part of speech", in reference to operator declarations, means expression type.
 Three types are recognized: @code{expr}, @code{clause}, and @code{any},
-indicating an algebraic expression, a Boolean expression, or any kind of expression,
-respectively.
-Maxima can detect some syntax errors by comparing the
+indicating an algebraic expression, a Boolean expression, or any kind of
+expression, respectively.  Maxima can detect some syntax errors by comparing the
 declared part of speech to an actual expression.
 
-The precedence of @var{op} with respect to other operators
-derives from the left and right binding powers of the operators in question.
-If the left and right binding powers of @var{op} are both greater
-the left and right binding powers of some other operator,
-then @var{op} takes precedence over the other operator.
-If the binding powers are not both greater or less,
-some more complicated relation holds.
+The precedence of @var{op} with respect to other operators derives from the left
+and right binding powers of the operators in question.  If the left and right
+binding powers of @var{op} are both greater the left and right binding powers of
+some other operator, then @var{op} takes precedence over the other operator.
+If the binding powers are not both greater or less, some more complicated
+relation holds.
 
-The associativity of @var{op} depends on its binding powers.
-Greater left binding power (@var{lbp}) implies an instance of
-@var{op} is evaluated before other operators to its left in an expression,
-while greater right binding power (@var{rbp}) implies  an instance of
-@var{op} is evaluated before other operators to its right in an expression.
-Thus greater @var{lbp} makes @var{op} right-associative,
-while greater @var{rbp} makes @var{op} left-associative.
+The associativity of @var{op} depends on its binding powers.  Greater left
+binding power (@var{lbp}) implies an instance of @var{op} is evaluated before
+other operators to its left in an expression, while greater right binding power
+(@var{rbp}) implies  an instance of @var{op} is evaluated before other operators
+to its right in an expression.  Thus greater @var{lbp} makes @var{op}
+right-associative, while greater @var{rbp} makes @var{op} left-associative.
 If @var{lbp} is equal to @var{rbp}, @var{op} is left-associative.
 
 See also @code{Syntax}.
@@ -1647,47 +1714,49 @@ if x ## y then
 @opencatbox
 @category{Operators} @category{Declarations and inferences} @category{Syntax}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{inflag}
 @defvr {Option variable} inflag
 Default value: @code{false}
 
-When @code{inflag} is @code{true}, functions for part
-extraction inspect the internal form of @code{expr}.
+When @code{inflag} is @code{true}, functions for part extraction inspect the
+internal form of @code{expr}.
 
-Note that the simplifier re-orders expressions.
-Thus @code{first (x + y)} returns @code{x} if @code{inflag}
-is @code{true} and @code{y} if @code{inflag} is @code{false}.
-(@code{first (y + x)} gives the same results.)
+Note that the simplifier re-orders expressions.  Thus @code{first (x + y)}
+returns @code{x} if @code{inflag} is @code{true} and @code{y} if @code{inflag}
+is @code{false}.  (@code{first (y + x)} gives the same results.)
 
-Also, setting @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is
-the same as calling @code{inpart} or @code{substinpart}.
+Also, setting @code{inflag} to @code{true} and calling @code{part} or
+@code{substpart} is the same as calling @code{inpart} or @code{substinpart}.
 
-Functions affected by the setting of @code{inflag} are:
-@code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
-the @code{for} ... @code{in} construct,
-@code{map}, @code{fullmap}, @code{maplist}, @code{reveal} and @code{pickapart}.
+Functions affected by the setting of @code{inflag} are: @code{part},
+@code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length}, the
+@code{for} @dots{} @code{in} construct, @code{map}, @code{fullmap},
+@code{maplist}, @code{reveal} and @code{pickapart}.
 
 @c NEED EXAMPLES HERE
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
 @c NEEDS WORK
-@deffn {Function} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-is similar to @code{part} but works on the internal
-representation of the expression rather than the displayed form and
-thus may be faster since no formatting is done.  Care should be taken
-with respect to the order of subexpressions in sums and products
-(since the order of variables in the internal form is often different
-from that in the displayed form) and in dealing with unary minus,
-subtraction, and division (since these operators are removed from the
-expression). @code{part (x+y, 0)} or @code{inpart (x+y, 0)} yield @code{+}, though in order to
-refer to the operator it must be enclosed in "s.  For example
-@code{... if inpart (%o9,0) = "+" then ...}.
+
+@c -----------------------------------------------------------------------------
+@anchor{inpart}
+@deffn {Function} inpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+is similar to @code{part} but works on the internal representation of the
+expression rather than the displayed form and thus may be faster since no
+formatting is done.  Care should be taken with respect to the order of
+subexpressions in sums and products (since the order of variables in the
+internal form is often different from that in the displayed form) and in dealing
+with unary minus, subtraction, and division (since these operators are removed
+from the expression).  @code{part (x+y, 0)} or @code{inpart (x+y, 0)} yield
+@code{+}, though in order to refer to the operator it must be enclosed in "s.
+For example @code{... if inpart (%o9,0) = "+" then ...}.
 
 Examples:
 
@@ -1712,20 +1781,24 @@ Examples:
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{isoloate}
 @deffn {Function} isolate (@var{expr}, @var{x})
-Returns @var{expr} with subexpressions which are sums and
-which do not contain @var{var} replaced by intermediate expression labels
-(these being atomic symbols like @code{%t1}, @code{%t2}, ...).  This is often useful
-to avoid unnecessary expansion of subexpressions which don't contain
-the variable of interest.  Since the intermediate labels are bound to
-the subexpressions they can all be substituted back by evaluating the
-expression in which they occur.
 
-@code{exptisolate} (default value: @code{false}) if @code{true} will cause @code{isolate} to examine exponents of
-atoms (like @code{%e}) which contain @var{var}.
+Returns @var{expr} with subexpressions which are sums and which do not contain
+@var{var} replaced by intermediate expression labels (these being atomic symbols
+like @code{%t1}, @code{%t2}, @dots{}).  This is often useful to avoid
+unnecessary expansion of subexpressions which don't contain the variable of
+interest.  Since the intermediate labels are bound to the subexpressions they
+can all be substituted back by evaluating the expression in which they occur.
 
-@code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate with respect to
-products. See @code{isolate_wrt_times}.
+@code{exptisolate} (default value: @code{false}) if @code{true} will cause
+@code{isolate} to examine exponents of atoms (like @code{%e}) which contain
+@var{var}.
+
+@code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate
+with respect to products.  See @code{isolate_wrt_times}.
 
 Do @code{example (isolate)} for examples.
 
@@ -1735,12 +1808,14 @@ Do @code{example (isolate)} for examples.
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{isolate_wrt_times}
 @defvr {Option variable} isolate_wrt_times
 Default value: @code{false}
 
-When @code{isolate_wrt_times} is @code{true}, @code{isolate}
-will also isolate with respect to products.  E.g. compare both settings of the
-switch on
+When @code{isolate_wrt_times} is @code{true}, @code{isolate} will also isolate
+with respect to products.  E.g. compare both settings of the switch on
 
 @example
 (%i1) isolate_wrt_times: true$
@@ -1766,32 +1841,36 @@ switch on
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{listconstvars}
 @defvr {Option variable} listconstvars
 Default value: @code{false}
 
 When @code{listconstvars} is @code{true}, it will cause @code{listofvars} to
-include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in the list
-it returns if they appear in the expression @code{listofvars} is called on.
-The default is to omit these.
+include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in
+the list it returns if they appear in the expression @code{listofvars} is called
+on.  The default is to omit these.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{listdummyvars}
 @defvr {Option variable} listdummyvars
 Default value: @code{true}
 
-When @code{listdummyvars} is @code{false}, "dummy variables" in the
-expression will not be included in the list returned by @code{listofvars}.
-(The meaning of "dummy variables" is as given in @code{freeof}.
-"Dummy variables" are mathematical things like the index of a sum or
-product, the limit variable, and the definite integration variable.)
+When @code{listdummyvars} is @code{false}, "dummy variables" in the expression
+will not be included in the list returned by @code{listofvars}.  (The meaning
+of "dummy variables" is as given in @code{freeof}.  "Dummy variables" are
+mathematical things like the index of a sum or product, the limit variable,
+and the definite integration variable.)
+
 Example:
 
 @example
@@ -1806,12 +1885,14 @@ Example:
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
 @c NEEDS WORK
+
 @c -----------------------------------------------------------------------------
+@anchor{listofvars}
 @deffn {Function} listofvars (@var{expr})
+
 Returns a list of the variables in @var{expr}.
 
 @code{listconstvars} if @code{true} causes @code{listofvars} to include 
@@ -1833,16 +1914,24 @@ See also the option variable @code{listdummyvars} to exclude or include
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{lfreeof}
 @deffn {Function} lfreeof (@var{list}, @var{expr})
-For each member @var{m} of @var{list}, calls @code{freeof (@var{m}, @var{expr})}.
-It returns @code{false} if any call to @code{freeof} does and @code{true} otherwise.
+
+For each member @var{m} of @var{list}, calls
+@code{freeof (@var{m}, @var{expr})}.  It returns @code{false} if any call to
+@code{freeof} does and @code{true} otherwise.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{lowpow}
 @deffn {Function} lopow (@var{expr}, @var{x})
+
 Returns the lowest exponent of @var{x} which explicitly appears in
 @var{expr}.  Thus
 
@@ -1857,10 +1946,13 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
-is similar to @code{dpart} but uses a
-labelled box. A labelled box is similar to the one produced by @code{dpart}
-but it has a name in the top line.
+
+@c -----------------------------------------------------------------------------
+@anchor{lpart}
+@deffn {Function} lpart (@var{label}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+is similar to @code{dpart} but uses a labelled box.  A labelled box is similar
+to the one produced by @code{dpart} but it has a name in the top line.
 
 @opencatbox
 @category{Expressions}
@@ -1868,21 +1960,25 @@ but it has a name in the top line.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} multthru (@var{expr})
-@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
-Multiplies a factor (which should be a sum) of @var{expr} by
-the other factors of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
-where at least
-one factor, say @var{f_i}, is a sum of terms.  Each term in that sum is
-multiplied by the other factors in the product.  (Namely all the
-factors except @var{f_i}).  @code{multthru} does not expand exponentiated sums.
-This function is the fastest way to distribute products (commutative
-or noncommutative) over sums.  Since quotients are represented as
-products @code{multthru} can be used to divide sums by products as well.
 
-@code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in @var{expr_2} (which should be a
-sum or an equation) by @var{expr_1}.  If @var{expr_1} is not itself a sum then this
-form is equivalent to @code{multthru (@var{expr_1}*@var{expr_2})}.
+@c -----------------------------------------------------------------------------
+@anchor{multthru}
+@deffn  {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
+
+Multiplies a factor (which should be a sum) of @var{expr} by the other factors
+of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
+where at least one factor, say @var{f_i}, is a sum of terms.  Each term in that
+sum is multiplied by the other factors in the product.  (Namely all the factors
+except @var{f_i}).  @code{multthru} does not expand exponentiated sums.
+This function is the fastest way to distribute products (commutative or
+noncommutative) over sums.  Since quotients are represented as products
+@code{multthru} can be used to divide sums by products as well.
+
+@code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in
+@var{expr_2} (which should be a sum or an equation) by @var{expr_1}.  If
+@var{expr_1} is not itself a sum then this form is equivalent to
+@code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
@@ -1920,10 +2016,11 @@ form is equivalent to @code{multthru (@var{expr_1}*@var{expr_2})}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{nonarray}
 @deffn {Property} nonarray
 
-The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not an 
-array. This declaration prevents multiple evaluation, if @var{a} is a 
+The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not
+an array.  This declaration prevents multiple evaluation, if @var{a} is a
 subscripted variable.
 
 Example:
@@ -1953,7 +2050,11 @@ Example:
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{nounify}
 @deffn {Function} nounify (@var{f})
+
 Returns the noun form of the function name @var{f}.  This is
 needed if one wishes to refer to the name of a verb function as if it
 were a noun.  Note that some verb functions will return their noun
@@ -1966,13 +2067,16 @@ the form returned if a function call is preceded by a quote.
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{nterms}
 @deffn {Function} nterms (@var{expr})
-Returns the number of terms that @var{expr} would have if it were
-fully expanded out and no cancellations or combination of terms
-occurred.
-Note that expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc.
-count as just one term regardless of how many terms @var{expr} has (if it is a
-sum).
+
+Returns the number of terms that @var{expr} would have if it were fully
+expanded out and no cancellations or combination of terms occurred.
+Note that expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})},
+@code{exp (@var{expr})}, etc. count as just one term regardless of how many
+terms @var{expr} has (if it is a sum).
 
 @opencatbox
 @category{Expressions}
@@ -1980,16 +2084,18 @@ sum).
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} op (@var{expr})
-Returns the main operator of the expression @var{expr}.
-@code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}. 
 
-@code{op} returns a string if the main operator is
-a built-in or user-defined
+@c -----------------------------------------------------------------------------
+@anchor{op}
+@deffn {Function} op (@var{expr})
+
+Returns the main operator of the expression @var{expr}.
+@code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}.
+
+@code{op} returns a string if the main operator is a built-in or user-defined
 prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.
-Otherwise, if @var{expr} is a subscripted function expression,
-@code{op} returns the subscripted function;
-in this case the return value is not an atom.
+Otherwise, if @var{expr} is a subscripted function expression, @code{op}
+returns the subscripted function; in this case the return value is not an atom.
 Otherwise, @var{expr} is an array function or ordinary function expression,
 and @code{op} returns a symbol.
 
@@ -2049,39 +2155,47 @@ Examples:
 @opencatbox
 @category{Expressions} @category{Operators}
 @closecatbox
-
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} operatorp (@var{expr}, @var{op})
-@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+
+@c -----------------------------------------------------------------------------
+@anchor{operatorp}
+@deffn  {Function} operatorp (@var{expr}, @var{op})
+@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
 
 @code{operatorp (@var{expr}, @var{op})} returns @code{true}
 if @var{op} is equal to the operator of @var{expr}.
 
-@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} returns @code{true}
-if some element @var{op_1}, ..., @var{op_n} is equal to the operator of @var{expr}.
+@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} returns
+@code{true} if some element @var{op_1}, @dots{}, @var{op_n} is equal to the
+operator of @var{expr}.
 
 @opencatbox
 @category{Operators} @category{Predicate functions}
 @closecatbox
-
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{optimize}
 @deffn {Function} optimize (@var{expr})
+
 Returns an expression that produces the same value and
 side effects as @var{expr} but does so more efficiently by avoiding the
 recomputation of common subexpressions.  @code{optimize} also has the side
 effect of "collapsing" its argument so that all common subexpressions
-are shared.
-Do @code{example (optimize)} for examples.
+are shared.  Do @code{example (optimize)} for examples.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
 @end deffn
 
+
+@c -----------------------------------------------------------------------------
+@anchor{optimprefix}
 @defvr {Option variable} optimprefix
 Default value: @code{%}
 
@@ -2091,24 +2205,26 @@ the @code{optimize} command.
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} ordergreat (@var{v_1}, ..., @var{v_n})
-@deffnx {Function} orderless (@var{v_1}, ..., @var{v_n})
+@c -----------------------------------------------------------------------------
+@anchor{ordergreat}
+@anchor{orderless}
+@deffn  {Function} ordergreat (@var{v_1}, @dots{}, @var{v_n})
+@deffnx {Function} orderless (@var{v_1}, @dots{}, @var{v_n})
 
 @code{ordergreat} changes the canonical ordering of Maxima expressions
-such that @var{v_1} succeeds @var{v_2} succeeds ...  succeeds @var{v_n},
+such that @var{v_1} succeeds @var{v_2} succeeds @dots{}  succeeds @var{v_n},
 and @var{v_n} succeeds any other symbol not mentioned as an argument.
 
 @code{orderless} changes the canonical ordering of Maxima expressions
-such that @var{v_1} precedes @var{v_2} precedes ...  precedes @var{v_n},
+such that @var{v_1} precedes @var{v_2} precedes @dots{} precedes @var{v_n},
 and @var{v_n} precedes any other variable not mentioned as an argument.
 
-The order established by @code{ordergreat} and @code{orderless} is dissolved by @code{unorder}.
-@code{ordergreat} and @code{orderless} can be called only once each,
-unless @code{unorder} is called;
-only the last call to @code{ordergreat} and @code{orderless} has any effect.
+The order established by @code{ordergreat} and @code{orderless} is dissolved
+by @code{unorder}.  @code{ordergreat} and @code{orderless} can be called only
+once each, unless @code{unorder} is called; only the last call to
+@code{ordergreat} and @code{orderless} has any effect.
 
 See also @code{ordergreatp}.
 
@@ -2117,42 +2233,43 @@ See also @code{ordergreatp}.
 @closecatbox
 @end deffn
 
-@deffn {Function} ordergreatp (@var{expr_1}, @var{expr_2})
+@c -----------------------------------------------------------------------------
+@anchor{ordergreatp}
+@anchor{orderlessp}
+@deffn  {Function} ordergreatp (@var{expr_1}, @var{expr_2})
 @deffnx {Function} orderlessp (@var{expr_1}, @var{expr_2})
 
-@code{ordergreatp} returns @code{true} if @var{expr_1} succeeds @var{expr_2} in the
-canonical ordering of Maxima expressions,
-and @code{false} otherwise.
+@code{ordergreatp} returns @code{true} if @var{expr_1} succeeds @var{expr_2} in
+the canonical ordering of Maxima expressions, and @code{false} otherwise.
 
-@code{orderlessp} returns @code{true} if @var{expr_1} precedes @var{expr_2} in the
-canonical ordering of Maxima expressions,
-and @code{false} otherwise.
+@code{orderlessp} returns @code{true} if @var{expr_1} precedes @var{expr_2} in
+the canonical ordering of Maxima expressions, and @code{false} otherwise.
 
-All Maxima atoms and expressions are comparable under @code{ordergreatp} and @code{orderlessp},
-although there are isolated examples of expressions for which these predicates are not transitive;
-that is a bug.
+All Maxima atoms and expressions are comparable under @code{ordergreatp} and
+@code{orderlessp}, although there are isolated examples of expressions for which
+these predicates are not transitive; that is a bug.
 
-The canonical ordering of atoms (symbols, literal numbers, and strings) is the following.
+The canonical ordering of atoms (symbols, literal numbers, and strings) is the
+following.
 
 (integers and floats) precede (bigfloats) precede
 (declared constants) precede (strings) precede (declared scalars)
-precede (first argument to @code{orderless}) precedes ...  precedes
+precede (first argument to @code{orderless}) precedes @dots{} precedes
 (last argument to @code{orderless}) precedes (other symbols) precede
-(last argument to @code{ordergreat}) precedes ... precedes
+(last argument to @code{ordergreat}) precedes @dots{} precedes
 (first argument to @code{ordergreat}) precedes (declared main variables)
 
-For non-atomic expressions, the canonical ordering is derived from the ordering for atoms.
-For the built-in @code{+} @code{*} and @code{^} operators,
-the ordering is not easily summarized.
-For other built-in operators and all other functions and operators,
-expressions are ordered by their arguments (beginning with the first argument),
-then by the name of the operator or function.
-In the case of subscripted expressions,
-the subscripted symbol is considered the operator and the subscript is considered an argument.
+For non-atomic expressions, the canonical ordering is derived from the ordering
+for atoms.  For the built-in @code{+} @code{*} and @code{^} operators,
+the ordering is not easily summarized.  For other built-in operators and all
+other functions and operators, expressions are ordered by their arguments
+(beginning with the first argument), then by the name of the operator or
+function.  In the case of subscripted expressions, the subscripted symbol is
+considered the operator and the subscript is considered an argument.
 
 The canonical ordering of expressions is modified by the functions
-@code{ordergreat} and @code{orderless},
-and the @code{mainvar}, @code{constant}, and @code{scalar} declarations.
+@code{ordergreat} and @code{orderless}, and the @code{mainvar}, @code{constant},
+and @code{scalar} declarations.
 
 See also @code{sort}.
 
@@ -2236,13 +2353,16 @@ Ordering non-atomic expressions.
 @end deffn
 
 @c NEEDS WORK
+
 @c -----------------------------------------------------------------------------
-@deffn {Function} part (@var{expr}, @var{n_1}, ..., @var{n_k})
-Returns parts of the displayed form of @code{expr}. It obtains the part of 
-@code{expr} as specified by the indices @var{n_1}, ..., @var{n_k}.  First part 
-@var{n_1} of @code{expr} is obtained, then part @var{n_2} of that, etc. The 
-result is part @var{n_k} of ... part @var{n_2} of part @var{n_1} of @code{expr}.
-If no indices are specified @code{expr} is returned.
+@anchor{part}
+@deffn {Function} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Returns parts of the displayed form of @code{expr}.  It obtains the part of
+@code{expr} as specified by the indices @var{n_1}, @dots{}, @var{n_k}.  First
+part @var{n_1} of @code{expr} is obtained, then part @var{n_2} of that, etc.
+The result is part @var{n_k} of @dots{} part @var{n_2} of part @var{n_1} of
+@code{expr}.  If no indices are specified @code{expr} is returned.
 
 @code{part} can be used to obtain an element of a list, a row of a matrix, etc.
 
@@ -2257,8 +2377,8 @@ functions.  It is set during the execution of the function and thus
 may be referred to in the function itself as shown below.
 
 If @code{partswitch} is set to @code{true} then @code{end} is returned when a
-selected part of an expression doesn't exist, otherwise an error
-message is given.
+selected part of an expression doesn't exist, otherwise an error message is
+given.
 
 See also @code{inpart}, @code{substpart}, @code{substinpart}, @code{dpart}, and 
 @code{lpart}.
@@ -2287,11 +2407,16 @@ Examples:
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} partition (@var{expr}, @var{x})
-Returns a list of two expressions.  They are (1)
-the factors of @var{expr} (if it is a product), the terms of @var{expr} (if it is a
-sum), or the list (if it is a list) which don't contain @var{x} and, (2)
-the factors, terms, or list which do.
+
+Returns a list of two expressions.  They are (1) the factors of @var{expr}
+(if it is a product), the terms of @var{expr} (if it is a sum), or the list
+(if it is a list) which don't contain @var{x} and, (2) the factors, terms,
+or list which do.
+
+Examples:
 
 @example
 (%i1) partition (2*a*x*f(x), x);
@@ -2308,6 +2433,9 @@ the factors, terms, or list which do.
 @end deffn
 
 @c NEEDS EXAMPLE
+
+@c -----------------------------------------------------------------------------
+@anchor{partswitch}
 @defvr {Option variable} partswitch
 Default value: @code{false}
 
@@ -2318,17 +2446,19 @@ error message is given.
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{pickapart}
 @deffn {Function} pickapart (@var{expr}, @var{n})
-Assigns intermediate expression labels to subexpressions of
-@var{expr} at depth @var{n}, an integer.
-Subexpressions at greater or lesser depths are not assigned labels.
-@code{pickapart} returns an expression in terms of intermediate expressions
-equivalent to the original expression @var{expr}.
 
-See also @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, and @code{reveal}.
+Assigns intermediate expression labels to subexpressions of @var{expr} at depth
+@var{n}, an integer.  Subexpressions at greater or lesser depths are not
+assigned labels.  @code{pickapart} returns an expression in terms of
+intermediate expressions equivalent to the original expression @var{expr}.
+
+See also @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, and
+@code{reveal}.
 
 Examples:
 
@@ -2416,23 +2546,29 @@ Examples:
 @end deffn
 
 @c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{piece}
 @defvr {System variable} piece
-Holds the last expression selected when using the @code{part}
-functions.
+
+Holds the last expression selected when using the @code{part} functions.
 @c WHAT DOES THIS MEAN EXACTLY ??
-It is set during the execution of the function and thus
-may be referred to in the function itself.
+It is set during the execution of the function and thus may be referred to in
+the function itself.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{polarform}
 @deffn {Function} polarform (@var{expr})
+
 Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr},
 such that @code{r} and @code{theta} are purely real.
 
@@ -2443,7 +2579,11 @@ such that @code{r} and @code{theta} are purely real.
 
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
+
+@c -----------------------------------------------------------------------------
+@anchor{powers}
 @deffn {Function} powers (@var{expr}, @var{x})
+
 Gives the powers of @var{x} occuring in @var{expr}.
 
 @code{load (powers)} loads this function.
@@ -2466,13 +2606,16 @@ Gives the powers of @var{x} occuring in @var{expr}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{product}
 @deffn {Function} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+
 Represents a product of the values of @var{expr} as
 the index @var{i} varies from @var{i_0} to @var{i_1}.
 The noun form @code{'product} is displayed as an uppercase letter pi.
 
-@code{product} evaluates @var{expr} and lower and upper limits @var{i_0} and @var{i_1},
-@code{product} quotes (does not evaluate) the index @var{i}.
+@code{product} evaluates @var{expr} and lower and upper limits @var{i_0} and
+@var{i_1}, @code{product} quotes (does not evaluate) the index @var{i}.
 
 If the upper and lower limits differ by an integer,
 @var{expr} is evaluated for each value of the index @var{i},
@@ -2480,9 +2623,9 @@ and the result is an explicit product.
 
 Otherwise, the range of the index is indefinite.
 Some rules are applied to simplify the product.
-When the global variable @code{simpproduct} is @code{true}, additional rules are applied.
-In some cases, simplification yields a result which is not a product;
-otherwise, the result is a noun form @code{'product}.
+When the global variable @code{simpproduct} is @code{true}, additional rules
+are applied.  In some cases, simplification yields a result which is not a
+product; otherwise, the result is a noun form @code{'product}.
 
 See also @code{nouns} and @code{evflag}.
 
@@ -2544,8 +2687,12 @@ Examples:
 @end deffn
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{realpart}
 @deffn {Function} realpart (@var{expr})
-Returns the real part of @var{expr}. @code{realpart} and @code{imagpart} will
+
+Returns the real part of @var{expr}.  @code{realpart} and @code{imagpart} will
 work on expressions involving trigonometic and hyperbolic functions,
 as well as square root, logarithm, and exponentiation.
 
@@ -2555,7 +2702,11 @@ as well as square root, logarithm, and exponentiation.
 @end deffn
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rectform}
 @deffn {Function} rectform (@var{expr})
+
 Returns an expression @code{a + b %i} equivalent to @var{expr},
 such that @var{a} and @var{b} are purely real.
 
@@ -2564,12 +2715,16 @@ such that @var{a} and @var{b} are purely real.
 @closecatbox
 @end deffn
 
-@deffn {Function} rembox (@var{expr}, unlabelled)
+@c -----------------------------------------------------------------------------
+@anchor{rembox}
+@deffn  {Function} rembox (@var{expr}, unlabelled)
 @deffnx {Function} rembox (@var{expr}, @var{label})
 @deffnx {Function} rembox (@var{expr})
+
 Removes boxes from @var{expr}.
 
-@code{rembox (@var{expr}, unlabelled)} removes all unlabelled boxes from @var{expr}.
+@code{rembox (@var{expr}, unlabelled)} removes all unlabelled boxes from
+@var{expr}.
 
 @code{rembox (@var{expr}, @var{label})} removes only boxes bearing @var{label}.
 
@@ -2646,34 +2801,37 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sum}
 @deffn {Function} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+
 Represents a summation of the values of @var{expr} as
 the index @var{i} varies from @var{i_0} to @var{i_1}.
 The noun form @code{'sum} is displayed as an uppercase letter sigma.
 
-@code{sum} evaluates its summand @var{expr} and lower and upper limits @var{i_0} and @var{i_1},
-@code{sum} quotes (does not evaluate) the index @var{i}.
+@code{sum} evaluates its summand @var{expr} and lower and upper limits @var{i_0}
+and @var{i_1}, @code{sum} quotes (does not evaluate) the index @var{i}.
 
-If the upper and lower limits differ by an integer,
-the summand @var{expr} is evaluated for each value of the summation index @var{i},
-and the result is an explicit sum.
+If the upper and lower limits differ by an integer, the summand @var{expr} is
+evaluated for each value of the summation index @var{i}, and the result is an
+explicit sum.
 
 Otherwise, the range of the index is indefinite.
 Some rules are applied to simplify the summation.
-When the global variable @code{simpsum} is @code{true}, additional rules are applied.
-In some cases, simplification yields a result which is not a summation;
-otherwise, the result is a noun form @code{'sum}.
+When the global variable @code{simpsum} is @code{true}, additional rules are
+applied.  In some cases, simplification yields a result which is not a
+summation; otherwise, the result is a noun form @code{'sum}.
 
 When the @code{evflag} (evaluation flag) @code{cauchysum} is @code{true},
 a product of summations is expressed as a Cauchy product,
 in which the index of the inner summation is a function of the
 index of the outer one, rather than varying independently.
 
-The global variable @code{genindex} is the alphabetic prefix used to generate the next index of summation,
-when an automatically generated index is needed.
+The global variable @code{genindex} is the alphabetic prefix used to generate
+the next index of summation, when an automatically generated index is needed.
 
-@code{gensumnum} is the numeric suffix used to generate the next index of summation,
-when an automatically generated index is needed.
+@code{gensumnum} is the numeric suffix used to generate the next index of
+summation, when an automatically generated index is needed.
 When @code{gensumnum} is @code{false}, an automatically-generated index is only
 @code{genindex} with no numeric suffix.
 
@@ -2768,6 +2926,8 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{lsum}
 @deffn {Function} lsum (@var{expr}, @var{x}, @var{L})
 
 Represents the sum of @var{expr} for each element @var{x} in @var{L}.
@@ -2802,22 +2962,24 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{unorder}
 @deffn {Function} unorder ()
+
 Disables the aliasing created by the last use of the ordering commands 
-@code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} 
+@code{ordergreat} and @code{orderless}.  @code{ordergreat} and @code{orderless} 
 may not be used more than one time each without calling @code{unorder}.
 @code{unorder} does not substitute back in expressions the original symbols for
-the aliases introduced by @code{ordergreat} and @code{orderless}. Therefore,
+the aliases introduced by @code{ordergreat} and @code{orderless}.  Therefore,
 after execution of @code{unorder} the aliases appear in previous expressions.
  
 See also @code{ordergreat} and @code{orderless}.
 
 Examples:
 
-@code{ordergreat(a)} introduces an alias for the symbol @code{a}. Therefore, the
-difference of @code{%o2} and @code{%o4} does not vanish. @code{unorder} does not
-substitute back the symbol @code{a} and the alias appears in the output 
-@code{%o7}.
+@code{ordergreat(a)} introduces an alias for the symbol @code{a}.  Therefore,
+the difference of @code{%o2} and @code{%o4} does not vanish.  @code{unorder}
+does not substitute back the symbol @code{a} and the alias appears in the
+output @code{%o7}.
 
 @c ===beg===
 @c unorder();
@@ -2854,6 +3016,8 @@ substitute back the symbol @code{a} and the alias appears in the output
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{verbify}
 @deffn {Function} verbify (@var{f})
 
 Returns the verb form of the function name @var{f}.

@@ -1,11 +1,11 @@
-@c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
-
 @menu
 * Functions and Variables for Floating Point::  
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Floating Point,  , Floating Point, Floating Point
 @section Functions and Variables for Floating Point
+@c -----------------------------------------------------------------------------
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
@@ -17,7 +17,10 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
+@c -----------------------------------------------------------------------------
+@anchor{bffac}
 @deffn {Function} bffac (@var{expr}, @var{n})
+
 Bigfloat version of the factorial (shifted gamma)
 function.  The second argument is how many digits to retain and return,
 it's a good idea to request a couple of extra.
@@ -27,6 +30,8 @@ it's a good idea to request a couple of extra.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{algepsilon}
 @defvr {Option variable} algepsilon
 Default value: 10^8
 
@@ -36,12 +41,15 @@ Default value: 10^8
 @opencatbox
 @category{Algebraic equations}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{bfloat}
 @deffn {Function} bfloat (@var{expr})
+
 Converts all numbers and functions of numbers in @var{expr} to bigfloat numbers.
-The number of significant digits in the resulting bigfloats is specified by the global variable @code{fpprec}.
+The number of significant digits in the resulting bigfloats is specified by the
+global variable @code{fpprec}.
 
 When @code{float2bf} is @code{false} a warning message is printed when
 a floating point number is converted into a bigfloat number (since
@@ -52,20 +60,26 @@ this may lead to loss of precision).
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{bfloatp}
 @deffn {Function} bfloatp (@var{expr})
+
 Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 
 @opencatbox
 @category{Numerical evaluation} @category{Predicate functions}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@c -----------------------------------------------------------------------------
+@anchor{bfpsi}
+@deffn  {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
 @deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
-@code{bfpsi} is the polygamma function of real argument @var{z} and integer order @var{n}.
-@code{bfpsi0} is the digamma function. 
-@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to @code{bfpsi (0, @var{z}, @var{fpprec})}.
+
+@code{bfpsi} is the polygamma function of real argument @var{z} and integer
+order @var{n}.  @code{bfpsi0} is the digamma function.
+@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to
+@code{bfpsi (0, @var{z}, @var{fpprec})}.
 
 These functions return bigfloat values.
 @var{fpprec} is the bigfloat precision of the return value.
@@ -79,39 +93,39 @@ These functions return bigfloat values.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{bftorat}
 @defvr {Option variable} bftorat
 Default value: @code{false}
 
-@code{bftorat} controls the conversion of bfloats to
-rational numbers. 
-When @code{bftorat} is @code{false},
-@code{ratepsilon} will be used to
-control the conversion (this results in relatively small rational
-numbers).
-When @code{bftorat} is @code{true},
-the rational number generated will
-accurately represent the bfloat.
+@code{bftorat} controls the conversion of bfloats to rational numbers.  When
+@code{bftorat} is @code{false}, @code{ratepsilon} will be used to control the
+conversion (this results in relatively small rational numbers).  When
+@code{bftorat} is @code{true}, the rational number generated will accurately
+represent the bfloat.
 
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{bftrunc}
 @defvr {Option variable} bftrunc
 Default value: @code{true}
 
-@code{bftrunc} causes trailing zeroes in non-zero bigfloat
-numbers not to be displayed.  Thus, if @code{bftrunc} is @code{false}, @code{bfloat (1)}
-displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
+@code{bftrunc} causes trailing zeroes in non-zero bigfloat numbers not to be
+displayed.  Thus, if @code{bftrunc} is @code{false}, @code{bfloat (1)}
+displays as @code{1.000000000000000B0}.  Otherwise, this is displayed as
 @code{1.0B0}.
 
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{cbffac}
 @deffn {Function} cbffac (@var{z}, @var{fpprec})
 Complex bigfloat factorial.
 
@@ -122,11 +136,13 @@ Complex bigfloat factorial.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{float}
 @deffn {Function} float (@var{expr})
-Converts integers, rational numbers and bigfloats in @var{expr}
-to floating point numbers.  It is also an @code{evflag}, @code{float} causes
-non-integral rational numbers and bigfloat numbers to be converted to
-floating point.
+
+Converts integers, rational numbers and bigfloats in @var{expr} to floating
+point numbers.  It is also an @code{evflag}, @code{float} causes non-integral
+rational numbers and bigfloat numbers to be converted to floating point.
 
 @opencatbox
 @category{Numerical evaluation} @category{Evaluation flags}
@@ -139,40 +155,48 @@ Default value: @code{true}
  
 When @code{float2bf} is @code{false}, a warning message is printed when
 a floating point number is converted into a bigfloat number (since
-this may lead to loss of precision). The default value is @code{true}.
+this may lead to loss of precision).  The default value is @code{true}.
 
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{floatnump}
 @deffn {Function} floatnump (@var{expr})
-Returns @code{true} if @var{expr} is a floating point number, otherwise @code{false}.
+
+Returns @code{true} if @var{expr} is a floating point number, otherwise
+@code{false}.
 
 @opencatbox
 @category{Numerical evaluation} @category{Predicate functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fpprec}
 @defvr {Option variable} fpprec
 Default value: 16
 
-@code{fpprec} is the number of significant digits for arithmetic on bigfloat numbers.
-@code{fpprec} does not affect computations on ordinary floating point numbers.
+@code{fpprec} is the number of significant digits for arithmetic on bigfloat
+numbers.  @code{fpprec} does not affect computations on ordinary floating point
+numbers.
 
 See also @code{bfloat} and @code{fpprintprec}.
 
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{fpprintprec}
 @defvr {Option variable} fpprintprec
 Default value: 0
 
-@code{fpprintprec} is the number of digits to print when printing an ordinary float or bigfloat number.
+@code{fpprintprec} is the number of digits to print when printing an ordinary
+float or bigfloat number.
 
 For ordinary floating point numbers,
 when @code{fpprintprec} has a value between 2 and 16 (inclusive),
@@ -191,19 +215,19 @@ and the number of digits printed is equal to @code{fpprec}.
 @opencatbox
 @category{Numerical evaluation} @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{numer_pbranch}
 @defvr {Option variable} numer_pbranch
 Default value: @code{false}
 
 The option variable @code{numer_pbranch} controls the numerical evaluation of 
-the power of a negative integer, rational, or floating point number. When
+the power of a negative integer, rational, or floating point number.  When
 @code{numer_pbranch} is @code{true} and the exponent is a floating point number
 or the option variable @code{numer} is @code{true} too, Maxima evaluates
-the numerical result using the principal branch. Otherwise a simplified, but not
-an evaluated result is returned.
+the numerical result using the principal branch.  Otherwise a simplified, but
+not an evaluated result is returned.
 
 Examples:
 

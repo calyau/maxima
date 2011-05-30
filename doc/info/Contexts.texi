@@ -1,13 +1,17 @@
-@c end concepts Contexts
 @menu
 * Functions and Variables for Contexts::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Contexts,  , Contexts, Contexts
 @section Functions and Variables for Contexts
+@c -----------------------------------------------------------------------------
 
-@deffn {Function} activate (@var{context_1}, ..., @var{context_n})
-Activates the contexts @var{context_1}, ..., @var{context_n}.
+@c -----------------------------------------------------------------------------
+@anchor{activate}
+@deffn {Function} activate (@var{context_1}, @dots{}, @var{context_n})
+
+Activates the contexts @var{context_1}, @dots{}, @var{context_n}.
 The facts in these contexts are then available to
 make deductions and retrieve information.
 The facts in these contexts are not listed by @code{facts ()}.
@@ -20,6 +24,8 @@ of contexts which are active by way of the @code{activate} function.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{activecontexts}
 @defvr {System variable} activecontexts
 Default value: @code{[]}
 
@@ -30,44 +36,43 @@ they are subcontexts of the current context.
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{assume}
+@deffn {Function} assume (@var{pred_1}, @dots{}, @var{pred_n})
 
-@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
-Adds predicates @var{pred_1}, ..., @var{pred_n} to the current context.
-If a predicate is inconsistent or redundant 
-with the predicates in the current context,
-it is not added to the context.
-The context accumulates predicates from each call to @code{assume}.
+Adds predicates @var{pred_1}, @dots{}, @var{pred_n} to the current context.
+If a predicate is inconsistent or redundant with the predicates in the current
+context, it is not added to the context.  The context accumulates predicates
+from each call to @code{assume}.
 
-@code{assume} returns a list whose elements are the predicates added to the context
-or the atoms @code{redundant} or @code{inconsistent} where applicable.
+@code{assume} returns a list whose elements are the predicates added to the
+context or the atoms @code{redundant} or @code{inconsistent} where applicable.
 
-The predicates @var{pred_1}, ..., @var{pred_n} can only be expressions
+The predicates @var{pred_1}, @dots{}, @var{pred_n} can only be expressions
 with the relational operators @code{< <= equal notequal >=} and @code{>}.
-Predicates cannot be literal equality @code{=} or literal inequality @code{#} expressions,
-nor can they be predicate functions such as @code{integerp}.
+Predicates cannot be literal equality @code{=} or literal inequality @code{#}
+expressions, nor can they be predicate functions such as @code{integerp}.
 
 Compound predicates of the form @code{@var{pred_1} and ... and @var{pred_n}}
-are recognized,
-but not @code{@var{pred_1} or ... or @var{pred_n}}.
+are recognized, but not @code{@var{pred_1} or ... or @var{pred_n}}.
 @code{not @var{pred_k}} is recognized if @var{pred_k} is a relational predicate.
 Expressions of the form @code{not (@var{pred_1} and @var{pred_2})}
-and @code{not (@var{pred_1} or @var{pred_2})}
-are not recognized.
+and @code{not (@var{pred_1} or @var{pred_2})} are not recognized.
 
 Maxima's deduction mechanism is not very strong;
 there are many obvious consequences which cannot be determined by @code{is}.
 This is a known weakness.
 
-@code{assume} does not handle predicates with complex numbers. If a predicate
+@code{assume} does not handle predicates with complex numbers.  If a predicate
 contains a complex number @code{assume} returns @code{inconsistent} or 
 @code{redunant}.
 
 @code{assume} evaluates its arguments.
 
-See also @code{is}, @code{facts}, @code{forget}, @code{context}, and @code{declare}.
+See also @code{is}, @code{facts}, @code{forget}, @code{context}, and
+@code{declare}.
 
 Examples:
 
@@ -83,7 +88,6 @@ Examples:
 @c is (sinh (bb - aa) > 0);
 @c is (bb^2 < cc^2);
 @c ===end===
-
 @example
 (%i1) assume (xx > 0, yy < -1, zz >= 0);
 (%o1)              [xx > 0, yy < - 1, zz >= 0]
@@ -112,13 +116,14 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{assumescalar}
 @defvr {Option variable} assumescalar
 Default value: @code{true}
 
 @code{assumescalar} helps govern whether expressions @code{expr}
 for which @code{nonscalarp (expr)} is @code{false}
-are assumed to behave like scalars
-for certain transformations.
+are assumed to behave like scalars for certain transformations.
 
 Let @code{expr} represent any expression other than a list or a matrix,
 and let @code{[1, 2, 3]} represent any list or matrix.
@@ -133,22 +138,21 @@ operators, but not for noncommutative multiplication @code{.}.
 When @code{assumescalar} is @code{false}, such
 expressions will behave like non-scalars.
 
-When @code{assumescalar} is @code{all},
-such expressions will behave like scalars for all the operators listed
-above.
+When @code{assumescalar} is @code{all}, such expressions will behave like
+scalars for all the operators listed above.
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
+@anchor{assume_pos}
 @defvr {Option variable} assume_pos
 Default value: @code{false}
 
-When @code{assume_pos} is @code{true}
-and the sign of a parameter @var{x} cannot be determined from the current context
+When @code{assume_pos} is @code{true} and the sign of a parameter @var{x}
+cannot be determined from the current context
 @c WHAT ARE THOSE OTHER CONSIDERATIONS ??
 or other considerations,
 @code{sign} and @code{asksign (@var{x})} return @code{true}.
@@ -176,10 +180,10 @@ a function which returns @code{true} for all arguments.
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
+@anchor{assume_pos_pred}
 @defvr {Option variable} assume_pos_pred
 Default value: @code{false}
 
@@ -201,7 +205,8 @@ or @code{subvarp (@var{x})}.
 See also @code{assume} and @code{assume_pos}.
 
 Examples:
-@c EXAMPLE OUTPUT GENERATED FROM:
+
+@c ===beg===
 @c assume_pos: true$
 @c assume_pos_pred: symbolp$
 @c sign (a);
@@ -213,7 +218,7 @@ Examples:
 @c asksign (foo (a) + bar (b));
 @c asksign (log (a));
 @c asksign (a - b);
-
+@c ===end===
 @example
 (%i1) assume_pos: true$
 (%i2) assume_pos_pred: symbolp$
@@ -266,19 +271,19 @@ p;
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
+@anchor{context}
 @defvr {Option variable} context
 Default value: @code{initial}
 
-@code{context} names the collection of facts maintained by @code{assume} and @code{forget}.
-@code{assume} adds facts to the collection named by @code{context},
-while @code{forget} removes facts.
+@code{context} names the collection of facts maintained by @code{assume} and
+@code{forget}.  @code{assume} adds facts to the collection named by
+@code{context}, while @code{forget} removes facts.
 
-Binding @code{context} to a name @var{foo} changes the current context to @var{foo}.
-If the specified context @var{foo} does not yet exist,
+Binding @code{context} to a name @var{foo} changes the current context to
+@var{foo}.  If the specified context @var{foo} does not yet exist,
 it is created automatically by a call to @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
 The specified context is activated automatically.
@@ -288,11 +293,13 @@ See @code{contexts} for a general description of the context mechanism.
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
 @c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
 @c SOME EXAMPLES WILL HELP A LOT HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{option_contexts}
 @defvr {Option variable} contexts
 Default value: @code{[initial, global]}
 
@@ -319,32 +326,36 @@ of the active context.
 When a fresh Maxima is started up, the user is in a
 context called @code{initial}, which has @code{global} as a subcontext.
 
-See also @code{facts}, @code{newcontext},
-@code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, and @code{forget}.
+See also @code{facts}, @code{newcontext}, @code{supcontext}, @code{killcontext},
+@code{activate}, @code{deactivate}, @code{assume}, and @code{forget}.
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} deactivate (@var{context_1}, ..., @var{context_n})
-Deactivates the specified contexts @var{context_1}, ..., @var{context_n}.
+@c -----------------------------------------------------------------------------
+@anchor{deactivate}
+@deffn {Function} deactivate (@var{context_1}, @dots{}, @var{context_n})
+
+Deactivates the specified contexts @var{context_1}, @dots{}, @var{context_n}.
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
 
-@deffn {Function} facts (@var{item})
+@c -----------------------------------------------------------------------------
+@anchor{facts}
+@deffn  {Function} facts (@var{item})
 @deffnx {Function} facts ()
-If @var{item} is the name of a context,
-@code{facts (@var{item})} returns a list
-of the facts in the specified context.
 
-If @var{item} is not the name of a context,
-@code{facts (@var{item})} returns a list of the facts known about @var{item} in the current
-context.  Facts that are active, but in a different context, are not listed.
+If @var{item} is the name of a context, @code{facts (@var{item})} returns a
+list of the facts in the specified context.
+
+If @var{item} is not the name of a context, @code{facts (@var{item})} returns a
+list of the facts known about @var{item} in the current context.  Facts that
+are active, but in a different context, are not listed.
 
 @code{facts ()} (i.e., without an argument) lists the current context.
 
@@ -353,7 +364,10 @@ context.  Facts that are active, but in a different context, are not listed.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{features}
 @defvr {Declaration} features
+
 Maxima recognizes certain mathematical properties of functions and variables.
 These are called "features".
 
@@ -369,31 +383,36 @@ The predicate @code{featurep (@var{x}, @var{foo})}
 returns @code{true} if @var{x} has the @var{foo} property,
 and @code{false} otherwise.
 
-The infolist @code{features} is a list of known features.
-These are
-@flushleft
-@code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
-@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
-@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
-@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
-@code{rassociative}, @code{symmetric}, and @code{antisymmetric},
-@end flushleft
+The infolist @code{features} is a list of known features.  These are
+
+@verbatim
+   integer        noninteger      even
+   odd            rational        irrational
+   real           imaginary       complex
+   analytic       increasing      decreasing
+   oddfun         evenfun         posfun
+   commutative    lassociative    rassociative
+   symmetric      antisymmetric
+@end verbatim
+
 plus any user-defined features.
 
-@code{features} is a list of mathematical features.
-There is also a list of non-mathematical, system-dependent features. See @code{status}.
+@code{features} is a list of mathematical features.  There is also a list of
+non-mathematical, system-dependent features.  See @code{status}.
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} forget (@var{pred_1}, ..., @var{pred_n})
+@c -----------------------------------------------------------------------------
+@anchor{forget}
+@deffn  {Function} forget (@var{pred_1}, @dots{}, @var{pred_n})
 @deffnx {Function} forget (@var{L})
+
 Removes predicates established by @code{assume}.
-The predicates may be expressions equivalent to (but not necessarily identical to)
-those previously assumed.
+The predicates may be expressions equivalent to (but not necessarily identical
+to) those previously assumed.
 
 @code{forget (@var{L})}, where @var{L} is a list of predicates,
 forgets each item on the list.
@@ -403,14 +422,17 @@ forgets each item on the list.
 @closecatbox
 @end deffn
 
-@deffn {Function} killcontext (@var{context_1}, ..., @var{context_n})
-Kills the contexts @var{context_1}, ..., @var{context_n}.
+@c -----------------------------------------------------------------------------
+@anchor{killcontext}
+@deffn {Function} killcontext (@var{context_1}, @dots{}, @var{context_n})
 
-If one of the contexts is the current context, the new current
-context will become the first available subcontext of the current
-context which has not been killed.  If the first available unkilled
-context is @code{global} then @code{initial} is used instead.  If the @code{initial}
-context is killed, a new, empty @code{initial} context is created.
+Kills the contexts @var{context_1}, @dots{}, @var{context_n}.
+
+If one of the contexts is the current context, the new current context will
+become the first available subcontext of the current context which has not been
+killed.  If the first available unkilled context is @code{global} then
+@code{initial} is used instead.  If the @code{initial} context is killed, a
+new, empty @code{initial} context is created.
 
 @code{killcontext} refuses to kill a context which is
 currently active, either because it is a subcontext of the current
@@ -424,7 +446,10 @@ context, or by use of the function @code{activate}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{newcontext}
 @deffn {Function} newcontext (@var{name})
+
 Creates a new, empty context, called @var{name}, which
 has @code{global} as its only subcontext.  The newly-created context
 becomes the currently active context.
@@ -437,11 +462,13 @@ becomes the currently active context.
 @closecatbox
 @end deffn
 
-@deffn {Function} supcontext (@var{name}, @var{context})
+@c -----------------------------------------------------------------------------
+@anchor{supcontext}
+@deffn  {Function} supcontext (@var{name}, @var{context})
 @deffnx {Function} supcontext (@var{name})
-Creates a new context, called @var{name},
-which has @var{context} as a subcontext.
-@var{context} must exist.
+
+Creates a new context, called @var{name}, which has @var{context} as a
+subcontext.  @var{context} must exist.
 
 If @var{context} is not specified, the current context is assumed.
 
@@ -449,3 +476,4 @@ If @var{context} is not specified, the current context is assumed.
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
+

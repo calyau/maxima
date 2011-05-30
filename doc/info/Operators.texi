@@ -11,16 +11,17 @@
 @c FOLLOWING @NODES SHOULD BE CHANGED TO @DEFFN
 @c SINCE NARY, NOFIX, POSTFIX, AND PREFIX ARE ALL MAXIMA FUNCTIONS
 
+@c -----------------------------------------------------------------------------
 @node nary, nofix, Operators, Operators
 @section nary
+@c -----------------------------------------------------------------------------
 
-An @code{nary} operator is used to denote a function of any number of
-arguments, each of which is separated by an occurrence of the
-operator, e.g. A+B or A+B+C.  The @code{nary("x")} function is a syntax
-extension function to declare @code{x} to be an @code{nary} operator.
-Functions may be declared to be
-@code{nary}.  If @code{declare(j,nary);} is done, this tells the simplifier to
-simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
+An @code{nary} operator is used to denote a function of any number of arguments,
+each of which is separated by an occurrence of the operator, e.g.  A+B or A+B+C.
+The @code{nary("x")} function is a syntax extension function to declare @code{x}
+to be an @code{nary} operator.  Functions may be declared to be @code{nary}.  If
+@code{declare(j,nary);} is done, this tells the simplifier to simplify, e.g.
+@code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
 
 See also @code{Syntax}.
 
@@ -28,15 +29,17 @@ See also @code{Syntax}.
 @category{Operators} @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node nofix, postfix, nary, Operators
 @section nofix
+@c -----------------------------------------------------------------------------
 
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
 corresponding function to be evaluated.  For example, when one types
 "exit;" to exit from a Maxima break, "exit" is behaving similar to a
 @code{nofix} operator.  The function @code{nofix("x")} is a syntax extension
-function which declares @code{x} to be a @code{nofix} operator. 
+function which declares @code{x} to be a @code{nofix} operator.
 
 See also @code{Syntax}.
 
@@ -44,13 +47,15 @@ See also @code{Syntax}.
 @category{Operators} @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node postfix, prefix, nofix, Operators
 @section postfix
+@c -----------------------------------------------------------------------------
 
-@code{postfix} operators like the @code{prefix} variety denote functions
-of a single argument, but in this case the argument immediately
-precedes an occurrence of the operator in the input string, e.g. 3! .
-The @code{postfix("x")} function is a syntax extension function to declare @code{x}
+@code{postfix} operators like the @code{prefix} variety denote functions of a
+single argument, but in this case the argument immediately precedes an
+occurrence of the operator in the input string, e.g. 3!.  The
+@code{postfix("x")} function is a syntax extension function to declare @code{x}
 to be a @code{postfix} operator.
 
 See also @code{Syntax}.
@@ -59,13 +64,15 @@ See also @code{Syntax}.
 @category{Operators} @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node prefix, Arithmetic operators, postfix, Operators
 @section prefix
+@c -----------------------------------------------------------------------------
 
-A @code{prefix} operator is one which signifies a function of one
-argument, which argument immediately follows an occurrence of the
-operator.  @code{prefix("x")} is a syntax extension function to declare @code{x} to
-be a @code{prefix} operator.
+A @code{prefix} operator is one which signifies a function of one argument,
+which argument immediately follows an occurrence of the operator.
+@code{prefix("x")} is a syntax extension function to declare @code{x} to be a
+@code{prefix} operator.
 
 See also @code{Syntax}.
 
@@ -73,9 +80,17 @@ See also @code{Syntax}.
 @category{Operators} @category{Syntax}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Arithmetic operators, Relational operators, prefix, Operators
 @section Arithmetic operators
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{+}
+@anchor{-}
+@anchor{*}
+@anchor{/}
+@anchor{^}
 @deffn {Operator} +
 @ifinfo
 @fnindex Addition
@@ -97,51 +112,53 @@ See also @code{Syntax}.
 @fnindex Exponentiation
 @end ifinfo
 
-The symbols @code{+} @code{*} @code{/} and @code{^} represent
-addition, multiplication, division, and exponentiation, respectively.
-The names of these operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"},
-which may appear where the name of a function or operator is required.
+The symbols @code{+} @code{*} @code{/} and @code{^} represent addition,
+multiplication, division, and exponentiation, respectively.  The names of these
+operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"}, which may appear
+where the name of a function or operator is required.
 
-The symbols @code{+} and @code{-} represent unary addition and negation, respectively,
-and the names of these operators are @code{"+"} and @code{"-"}, respectively.
+The symbols @code{+} and @code{-} represent unary addition and negation,
+respectively, and the names of these operators are @code{"+"} and @code{"-"},
+respectively.
 
-Subtraction @code{a - b} is represented within Maxima as addition, @code{a + (- b)}.
-Expressions such as @code{a + (- b)} are displayed as subtraction.
-Maxima recognizes @code{"-"} only as the name of the unary negation operator,
-and not as the name of the binary subtraction operator.
+Subtraction @code{a - b} is represented within Maxima as addition,
+@code{a + (- b)}.  Expressions such as @code{a + (- b)} are displayed as
+subtraction.  Maxima recognizes @code{"-"} only as the name of the unary
+negation operator, and not as the name of the binary subtraction operator.
 
-Division @code{a / b} is represented within Maxima as multiplication, @code{a * b^(- 1)}.
-Expressions such as @code{a * b^(- 1)} are displayed as division.
-Maxima recognizes @code{"/"} as the name of the division operator.
+Division @code{a / b} is represented within Maxima as multiplication,
+@code{a * b^(- 1)}.  Expressions such as @code{a * b^(- 1)} are displayed as
+division.  Maxima recognizes @code{"/"} as the name of the division operator.
 
 Addition and multiplication are n-ary, commutative operators.
 Division and exponentiation are binary, noncommutative operators.
 
-Maxima sorts the operands of commutative operators to construct a canonical representation.
-For internal storage, the ordering is determined by @code{orderlessp}.
-For display, the ordering for addition is determined by @code{ordergreatp},
-and for multiplication, it is the same as the internal ordering.
+Maxima sorts the operands of commutative operators to construct a canonical
+representation.  For internal storage, the ordering is determined by
+@code{orderlessp}.  For display, the ordering for addition is determined by
+@code{ordergreatp}, and for multiplication, it is the same as the internal
+ordering.
 
-Arithmetic computations are carried out on literal numbers
-(integers, rationals, ordinary floats, and bigfloats).
-Except for exponentiation, all arithmetic operations on numbers are simplified to numbers.
-Exponentiation is simplified to a number if either operand is an ordinary float or bigfloat
-or if the result is an exact integer or rational;
-otherwise an exponentiation may be simplified to @code{sqrt} or another exponentiation or left unchanged.
+Arithmetic computations are carried out on literal numbers (integers, rationals,
+ordinary floats, and bigfloats).  Except for exponentiation, all arithmetic
+operations on numbers are simplified to numbers.  Exponentiation is simplified
+to a number if either operand is an ordinary float or bigfloat or if the result
+is an exact integer or rational; otherwise an exponentiation may be simplified
+to @code{sqrt} or another exponentiation or left unchanged.
 
-Floating-point contagion applies to arithmetic computations:
-if any operand is a bigfloat, the result is a bigfloat;
-otherwise, if any operand is an ordinary float, the result is an ordinary float;
-otherwise, the operands are rationals or integers and the result is a rational or integer.
+Floating-point contagion applies to arithmetic computations: if any operand is
+a bigfloat, the result is a bigfloat; otherwise, if any operand is an ordinary
+float, the result is an ordinary float; otherwise, the operands are rationals
+or integers and the result is a rational or integer.
 
 Arithmetic computations are a simplification, not an evaluation.
 Thus arithmetic is carried out in quoted (but simplified) expressions.
 
-Arithmetic operations are applied element-by-element
-to lists when the global flag @code{listarith} is @code{true},
-and always applied element-by-element to matrices.
-When one operand is a list or matrix and another is an operand of some other type,
-the other operand is combined with each of the elements of the list or matrix.
+Arithmetic operations are applied element-by-element to lists when the global
+flag @code{listarith} is @code{true}, and always applied element-by-element to
+matrices.  When one operand is a list or matrix and another is an operand of
+some other type, the other operand is combined with each of the elements of the
+list or matrix.
 
 Examples:
 
@@ -249,7 +266,8 @@ Arithmetic computations are a simplification, not an evaluation.
                                  7
 @end example
 
-Arithmetic is carried out element-by-element for lists (depending on @code{listarith}) and matrices.
+Arithmetic is carried out element-by-element for lists (depending on
+@code{listarith}) and matrices.
 
 @c ===beg===
 @c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
@@ -295,9 +313,10 @@ Arithmetic is carried out element-by-element for lists (depending on @code{lista
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{**}
 @deffn {Operator} **
 
 Exponentiation operator.
@@ -332,12 +351,19 @@ Examples:
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@need 1000
 @node Relational operators, General operators, Arithmetic operators, Operators
 @section Relational operators
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{<}
+@anchor{<=}
+@anchor{>=}
+@anchor{>}
 @deffn {Operator} <
 @ifinfo
 @fnindex Less than
@@ -355,31 +381,31 @@ Examples:
 @fnindex Greater than
 @end ifinfo
 
-The symbols @code{<} @code{<=} @code{>=} and @code{>} represent
-less than, less than or equal, greater than or equal, and greater than, respectively.
-The names of these operators are @code{"<"} @code{"<="} @code{">="} and @code{">"},
-which may appear where the name of a function or operator is required.
+The symbols @code{<} @code{<=} @code{>=} and @code{>} represent less than, less
+than or equal, greater than or equal, and greater than, respectively.  The names
+of these operators are @code{"<"} @code{"<="} @code{">="} and @code{">"}, which
+may appear where the name of a function or operator is required.
 
-These relational operators are all binary operators;
-constructs such as @code{a < b < c} are not recognized by Maxima.
+These relational operators are all binary operators; constructs such as
+@code{a < b < c} are not recognized by Maxima.
 
-Relational expressions are evaluated to Boolean values
-by the functions @code{is} and @code{maybe},
-and the programming constructs @code{if}, @code{while}, and @code{unless}.
-Relational expressions are not otherwise evaluated or simplified to Boolean values,
-although the arguments of relational expressions are evaluated
-(when evaluation is not otherwise prevented by quotation).
+Relational expressions are evaluated to Boolean values by the functions
+@code{is} and @code{maybe}, and the programming constructs @code{if},
+@code{while}, and @code{unless}.  Relational expressions are not otherwise
+evaluated or simplified to Boolean values, although the arguments of relational
+expressions are evaluated (when evaluation is not otherwise prevented by
+quotation).
 
 When a relational expression cannot be evaluated to @code{true} or @code{false},
-the behavior of @code{is} and @code{if} are governed by the global flag @code{prederror}.
-When @code{prederror} is @code{true},
-@code{is} and @code{if} trigger an error.
-When @code{prederror} is @code{false},
-@code{is} returns @code{unknown},
-and @code{if} returns a partially-evaluated conditional expression.
+the behavior of @code{is} and @code{if} are governed by the global flag
+@code{prederror}.  When @code{prederror} is @code{true}, @code{is} and @code{if}
+trigger an error.  When @code{prederror} is @code{false}, @code{is} returns
+@code{unknown}, and @code{if} returns a partially-evaluated conditional
+expression.
 
-@code{maybe} always behaves as if @code{prederror} were @code{false},
-and @code{while} and @code{unless} always behave as if @code{prederror} were @code{true}.
+@code{maybe} always behaves as if @code{prederror} were @code{false}, and
+@code{while} and @code{unless} always behave as if @code{prederror} were
+@code{true}.
 
 Relational operators do not distribute over lists or other aggregates.
 
@@ -387,7 +413,8 @@ See also @code{=} @code{#} @code{equal} and @code{notequal}.
 
 Examples:
 
-Relational expressions are evaluated to Boolean values by some functions and programming constructs.
+Relational expressions are evaluated to Boolean values by some functions and
+programming constructs.
 
 @c ===beg===
 @c [x, y, z] : [123, 456, 789];
@@ -411,8 +438,8 @@ Relational expressions are evaluated to Boolean values by some functions and pro
 (%o5)                         5050
 @end example
 
-Relational expressions are not otherwise evaluated or simplified to Boolean values,
-although the arguments of relational expressions are evaluated.
+Relational expressions are not otherwise evaluated or simplified to Boolean
+values, although the arguments of relational expressions are evaluated.
 
 @c ===beg===
 @c [x, y, z] : [123, 456, 789];
@@ -432,20 +459,26 @@ although the arguments of relational expressions are evaluated.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @node General operators, , Relational operators, Operators
 @section General operators
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{^^}
 @deffn {Operator} ^^
 @ifinfo
 @fnindex Noncommutative exponentiation
 @end ifinfo
 
 Noncommutative exponentiation operator.
-@code{^^} is the exponentiation operator corresponding to noncommutative multiplication @code{.},
-just as the ordinary exponentiation operator @code{^} corresponds to commutative multiplication @code{*}.
+@code{^^} is the exponentiation operator corresponding to noncommutative
+multiplication @code{.}, just as the ordinary exponentiation operator @code{^}
+corresponds to commutative multiplication @code{*}.
 
 Noncommutative exponentiation is displayed by @code{^^} in 1-dimensional output,
-and by placing the exponent as a superscript within angle brackets @code{< >} in 2-dimensional output.
+and by placing the exponent as a superscript within angle brackets @code{< >}
+in 2-dimensional output.
 
 Examples:
 
@@ -464,34 +497,35 @@ Examples:
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{!}
 @deffn {Operator} !
 @ifinfo
 @fnindex Factorial
 @end ifinfo
+
 The factorial operator.
 
 For any complex number @code{x}, except for negative integers, @code{x!} is 
 defined as @code{gamma(x+1)}.
 
 For an integer @code{x}, @code{x!} simplifies to the product of the integers 
-from 1 to @code{x} inclusive. @code{0!} simplifies to 1. For a real or complex 
+from 1 to @code{x} inclusive.  @code{0!} simplifies to 1.  For a real or complex 
 number in float or bigfloat precision @code{x}, @code{x!} simplifies to the 
-value of @code{gamma (x+1)}. For @code{x} equal to @code{n/2} where @code{n} is 
+value of @code{gamma (x+1)}.  For @code{x} equal to @code{n/2} where @code{n} is 
 an odd integer, @code{x!} simplifies to a rational factor times 
 @code{sqrt (%pi)} (since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
 
 The option variables @code{factlim} and @code{gammalim} control the numerical 
-evaluation of factorials for integer and rational arguments. The functions 
+evaluation of factorials for integer and rational arguments.  The functions 
 @code{minfactorial} and @code{factcomb} simplifies expressions containing 
-factorials. See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
+factorials.  See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
 @code{factcomb}.
 
 The functions @code{gamma}, @code{bffac}, and @code{cbffac} are varieties of the
-gamma function. @code{bffac} and @code{cbffac} are called internally by 
+gamma function.  @code{bffac} and @code{cbffac} are called internally by 
 @code{gamma} to evaluate the gamma function for real and complex numbers in 
 bigfloat precision.
 
@@ -506,7 +540,7 @@ expressions like @code{(n+x)!}, where @code{n} is an integer.
 See also @code{binomial}.
 
 The factorial of an integer is simplified to an exact number unless the operand 
-is greater than @code{factlim}. The factorial for real and complex numbers is 
+is greater than @code{factlim}.  The factorial for real and complex numbers is 
 evaluated in float or bigfloat precision.
 
 @c ===beg===
@@ -532,8 +566,9 @@ evaluated in float or bigfloat precision.
        3.430658398165454b-1 %i + 6.529654964201667b-1]
 @end example
 
-The factorial of a known constant, or general expression is not simplified. Even 
-so it may be possible to simplify the factorial after evaluating the operand.
+The factorial of a known constant, or general expression is not simplified.
+Even so it may be possible to simplify the factorial after evaluating the
+operand.
 
 @c ===beg===
 @c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
@@ -601,40 +636,45 @@ simplification of expressions with the factorial function.
 @opencatbox
 @category{Gamma and factorial functions} @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{!!}
 @deffn {Operator} !!
 @ifinfo
 @fnindex Double factorial
 @end ifinfo
+
 The double factorial operator.
 
-For an integer, float, or rational number @code{n},
-@code{n!!} evaluates to the product @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
-where @code{k} is equal to @code{entier (n/2)},
-that is, the largest integer less than or equal to @code{n/2}.
-Note that this definition does not coincide with other published definitions
-for arguments which are not integers.
+For an integer, float, or rational number @code{n}, @code{n!!} evaluates to the
+product @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} where @code{k} is equal to
+@code{entier (n/2)}, that is, the largest integer less than or equal to
+@code{n/2}.  Note that this definition does not coincide with other published
+definitions for arguments which are not integers.
 @c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
 
 For an even (or odd) integer @code{n}, @code{n!!} evaluates to the product of
-all the consecutive even (or odd) integers from 2 (or 1) through @code{n} inclusive.
+all the consecutive even (or odd) integers from 2 (or 1) through @code{n}
+inclusive.
 
-For an argument @code{n} which is not an integer, float, or rational,
-@code{n!!} yields a noun form @code{genfact (n, n/2, 2)}.
-@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
+For an argument @code{n} which is not an integer, float, or rational, @code{n!!}
+yields a noun form @code{genfact (n, n/2, 2)}.
+@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE 
+@c -- MENTION THAT? OR TOO MUCH DETAIL ???
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{#}
 @deffn {Operator} #
 @ifinfo
 @fnindex Not equal (syntactic inequality)
 @end ifinfo
+
 Represents the negation of syntactic equality @code{=}.
 
 Note that because of the rules for evaluation of predicate expressions
@@ -670,16 +710,18 @@ Examples:
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{.}
 @deffn {Operator} .
 @ifinfo
 @fnindex Noncommutative multiplication
 @end ifinfo
+
 The dot operator, for matrix (non-commutative) multiplication.
 When @code{"."} is used in this way, spaces should be left on both sides of
-it, e.g. @code{A . B}.  This distinguishes it plainly from a decimal point in
+it, e.g.  @code{A . B}.  This distinguishes it plainly from a decimal point in
 a floating point number.
 
 See also
@@ -698,35 +740,35 @@ and
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{:}
 @deffn {Operator} :
 @ifinfo
 @fnindex Assignment operator
 @end ifinfo
+
 Assignment operator.
 
-When the left-hand side is a simple variable (not subscripted),
-@code{:} evaluates its right-hand side
-and associates that value with the left-hand side.
+When the left-hand side is a simple variable (not subscripted), @code{:}
+evaluates its right-hand side and associates that value with the left-hand side.
 
-When the left-hand side is a subscripted element of a list, matrix, declared Maxima array, or Lisp array,
-the right-hand side is assigned to that element.
-The subscript must name an existing element;
-such objects cannot be extended by naming nonexistent elements.
+When the left-hand side is a subscripted element of a list, matrix, declared
+Maxima array, or Lisp array, the right-hand side is assigned to that element.
+The subscript must name an existing element; such objects cannot be extended by
+naming nonexistent elements.
 
 When the left-hand side is a subscripted element of an undeclared Maxima array,
 the right-hand side is assigned to that element, if it already exists,
 or a new element is allocated, if it does not already exist.
 
-When the left-hand side is a list of simple and/or subscripted variables,
-the right-hand side must evaluate to a list,
-and the elements of the right-hand side are assigned to the elements of the left-hand side,
-in parallel.
+When the left-hand side is a list of simple and/or subscripted variables, the
+right-hand side must evaluate to a list, and the elements of the right-hand
+side are assigned to the elements of the left-hand side, in parallel.
 
-See also @code{kill} and @code{remvalue},
-which undo the association between the left-hand side and its value.
+See also @code{kill} and @code{remvalue}, which undo the association between
+the left-hand side and its value.
 
 Examples:
 
@@ -828,14 +870,18 @@ The values of @code{a} and @code{b} are exchanged in this example.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@need 900
+@anchor{::}
 @deffn {Operator} ::
 @ifinfo
 @fnindex Assignment operator (evaluates left-hand side)
 @end ifinfo
+
 Assignment operator.
 
-@code{::} is the same as @code{:} (which see)
-except that @code{::} evaluates its left-hand side as well as its right-hand side.
+@code{::} is the same as @code{:} (which see) except that @code{::} evaluates
+its left-hand side as well as its right-hand side.
 
 Examples:
 
@@ -873,39 +919,39 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{::=}
 @deffn {Operator} ::=
 @ifinfo
 @fnindex Macro function definition operator
 @end ifinfo
+
 Macro function definition operator.
-@code{::=} defines a function (called a "macro" for historical reasons)
-which quotes its arguments,
-and the expression which it returns (called the "macro expansion")
-is evaluated in the context from which the macro was called.
+@code{::=} defines a function (called a "macro" for historical reasons) which
+quotes its arguments, and the expression which it returns (called the "macro
+expansion") is evaluated in the context from which the macro was called.
 A macro function is otherwise the same as an ordinary function.
 
 @code{macroexpand} returns a macro expansion (without evaluating it).
-@code{macroexpand (foo (x))} followed by @code{''%} is equivalent to @code{foo (x)}
-when @code{foo} is a macro function.
+@code{macroexpand (foo (x))} followed by @code{''%} is equivalent to
+@code{foo (x)} when @code{foo} is a macro function.
 
-@code{::=} puts the name of the new macro function onto the global list @code{macros}.
-@code{kill}, @code{remove}, and @code{remfunction} unbind macro function definitions
-and remove names from @code{macros}.
+@code{::=} puts the name of the new macro function onto the global list
+@code{macros}.  @code{kill}, @code{remove}, and @code{remfunction} unbind macro
+function definitions and remove names from @code{macros}.
 
-@code{fundef} or @code{dispfun} return a macro function definition
-or assign it to a label, respectively.
+@code{fundef} or @code{dispfun} return a macro function definition or assign it
+to a label, respectively.
 
-Macro functions commonly contain @code{buildq} and @code{splice}
-expressions to construct an expression,
-which is then evaluated.
+Macro functions commonly contain @code{buildq} and @code{splice} expressions to
+construct an expression, which is then evaluated.
 
 Examples
 
-A macro function quotes its arguments,
-so message (1) shows @code{y - z}, not the value of @code{y - z}.
-The macro expansion (the quoted expression @code{'(print ("(2) x is equal to", x))}
-is evaluated in the context from which the macro was called,
-printing message (2).
+A macro function quotes its arguments, so message (1) shows @code{y - z}, not
+the value of @code{y - z}.  The macro expansion (the quoted expression
+@code{'(print ("(2) x is equal to", x))} is evaluated in the context from which
+the macro was called, printing message (2).
 
 @c ===beg===
 @c x: %pi$
@@ -927,8 +973,8 @@ printing message (2).
 (%o5)                                 %pi
 @end example
 
-An ordinary function evaluates its arguments, so message (1) shows the value of @code{y - z}.
-The return value is not evaluated, so message (2) is not printed
+An ordinary function evaluates its arguments, so message (1) shows the value of
+@code{y - z}.  The return value is not evaluated, so message (2) is not printed
 until the explicit evaluation @code{''%}.
 
 @c ===beg===
@@ -955,8 +1001,8 @@ until the explicit evaluation @code{''%}.
 @end example
 
 @code{macroexpand} returns a macro expansion.
-@code{macroexpand (foo (x))} followed by @code{''%} is equivalent to @code{foo (x)}
-when @code{foo} is a macro function.
+@code{macroexpand (foo (x))} followed by @code{''%} is equivalent to
+@code{foo (x)} when @code{foo} is a macro function.
 
 @c ===beg===
 @c x: %pi$
@@ -985,41 +1031,45 @@ x is equal to 1234 - 1729 w
 @opencatbox
 @category{Function definition} @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{:=}
 @deffn {Operator} :=
 @ifinfo
 @fnindex Function definition operator
 @end ifinfo
 
 The function definition operator.
-@code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}}
-defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
-@code{:=} never evaluates the function body (unless explicitly evaluated by quote-quote @code{'@w{}'}).
-The function so defined may be an ordinary Maxima function (with arguments enclosed in parentheses)
-or an array function (with arguments enclosed in square brackets).
+@code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} defines a function named
+@var{f} with arguments @var{x_1}, @dots{}, @var{x_n} and function body
+@var{expr}.  @code{:=} never evaluates the function body (unless explicitly
+evaluated by quote-quote @code{'@w{}'}).  The function so defined may be an
+ordinary Maxima function (with arguments enclosed in parentheses) or an array
+function (with arguments enclosed in square brackets).
 
-When the last or only function argument @var{x_n} is a list of one element,
-the function defined by @code{:=} accepts a variable number of arguments.
-Actual arguments are assigned one-to-one to formal arguments @var{x_1}, ..., @var{x_(n - 1)},
-and any further actual arguments, if present, are assigned to @var{x_n} as a list.
+When the last or only function argument @var{x_n} is a list of one element, the
+function defined by @code{:=} accepts a variable number of arguments.  Actual
+arguments are assigned one-to-one to formal arguments @var{x_1}, @dots{},
+@var{x_(n - 1)}, and any further actual arguments, if present, are assigned to
+@var{x_n} as a list.
 
-All function definitions appear in the same namespace;
-defining a function @code{f} within another function @code{g}
-does not automatically limit the scope of @code{f} to @code{g}.
-However, @code{local(f)} makes the definition of function @code{f}
-effective only within the block or other compound expression in which @code{local} appears.
+All function definitions appear in the same namespace; defining a function
+@code{f} within another function @code{g} does not automatically limit the scope
+of @code{f} to @code{g}.  However, @code{local(f)} makes the definition of
+function @code{f} effective only within the block or other compound expression
+in which @code{local} appears.
 
-If some formal argument @var{x_k} is a quoted symbol,
-the function defined by @code{:=} does not evaluate the corresponding actual argument.
-Otherwise all actual arguments are evaluated.
+If some formal argument @var{x_k} is a quoted symbol, the function defined by
+@code{:=} does not evaluate the corresponding actual argument.  Otherwise all
+actual arguments are evaluated.
 
 See also @code{define} and @code{::=}.
 
 Examples:
 
-@code{:=} never evaluates the function body (unless explicitly evaluated by quote-quote).
+@code{:=} never evaluates the function body (unless explicitly evaluated by
+quote-quote).
 
 @c ===beg===
 @c expr : cos(y) - sin(x);
@@ -1041,7 +1091,8 @@ Examples:
 (%o5)                    cos(b) - sin(a)
 @end example
 
-The function defined by @code{:=} may be an ordinary Maxima function or an array function.
+The function defined by @code{:=} may be an ordinary Maxima function or an
+array function.
 
 @c ===beg===
 @c G1 (x, y) := x.y - y.x;
@@ -1091,39 +1142,41 @@ the function defined by @code{:=} accepts a variable number of arguments.
 @opencatbox
 @category{Function definition} @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{=}
 @deffn {Operator} =
 @ifinfo
 @fnindex Equation operator
 @fnindex Equal (syntactic equality)
 @end ifinfo
+
 The equation operator.
 
-An expression @code{@var{a} = @var{b}}, by itself, represents
-an unevaluated equation, which might or might not hold.
-Unevaluated equations may appear as arguments to @code{solve} and @code{algsys}
-or some other functions.
+An expression @code{@var{a} = @var{b}}, by itself, represents an unevaluated
+equation, which might or might not hold.  Unevaluated equations may appear as
+arguments to @code{solve} and @code{algsys} or some other functions.
 
 The function @code{is} evaluates @code{=} to a Boolean value.
-@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true} when @var{a} and @var{b}
-are identical. That is, @var{a} and @var{b} are atoms which are identical,
-or they are not atoms and their operators are identical and their arguments are identical.
-Otherwise, @code{is(@var{a} = @var{b})} evaluates to @code{false};
-it never evaluates to @code{unknown}.
-When @code{is(@var{a} = @var{b})} is @code{true}, @var{a} and @var{b} are said to be syntactically equal,
-in contrast to equivalent expressions, for which @code{is(equal(@var{a}, @var{b}))} is @code{true}.
-Expressions can be equivalent and not syntactically equal.
+@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true}
+when @var{a} and @var{b} are identical.  That is, @var{a} and @var{b} are atoms
+which are identical, or they are not atoms and their operators are identical and
+their arguments are identical.  Otherwise, @code{is(@var{a} = @var{b})}
+evaluates to @code{false}; it never evaluates to @code{unknown}.  When
+@code{is(@var{a} = @var{b})} is @code{true}, @var{a} and @var{b} are said to be
+syntactically equal, in contrast to equivalent expressions, for which
+@code{is(equal(@var{a}, @var{b}))} is @code{true}.  Expressions can be
+equivalent and not syntactically equal.
 
 The negation of @code{=} is represented by @code{#}.
-As with @code{=}, an expression @code{@var{a} # @var{b}}, by itself, is not evaluated.
-@code{is(@var{a} # @var{b})} evaluates @code{@var{a} # @var{b}} to
+As with @code{=}, an expression @code{@var{a} # @var{b}}, by itself, is not
+evaluated.  @code{is(@var{a} # @var{b})} evaluates @code{@var{a} # @var{b}} to
 @code{true} or @code{false}.
 
-In addition to @code{is},
-some other operators evaluate @code{=} and @code{#} to @code{true} or @code{false},
-namely @code{if}, @code{and}, @code{or}, and @code{not}.
+In addition to @code{is}, some other operators evaluate @code{=} and @code{#}
+to @code{true} or @code{false}, namely @code{if}, @code{and}, @code{or}, and
+@code{not}.
 
 Note that because of the rules for evaluation of predicate expressions
 (in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
@@ -1167,8 +1220,8 @@ an unevaluated equation, which might or might not hold.
 (%o5)                  [17 = 17, 29 = 29]
 @end example
 
-@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true} when @var{a} and @var{b}
-are syntactically equal (that is, identical).
+@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true}
+when @var{a} and @var{b} are syntactically equal (that is, identical).
 Expressions can be equivalent and not syntactically equal.
 
 @c ===beg===
@@ -1228,88 +1281,94 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{and}
 @deffn {Operator} and
 @ifinfo
 @fnindex Logical conjunction
 @end ifinfo
-The logical conjunction operator.
-@code{and} is an n-ary infix operator;
+
+The logical conjunction operator.  @code{and} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
 
 @code{and} forces evaluation (like @code{is}) of one or more operands,
 and may force evaluation of all operands.
 
-Operands are evaluated in the order in which they appear.
-@code{and} evaluates only as many of its operands as necessary to determine the result.
-If any operand is @code{false},
-the result is @code{false} and no further operands are evaluated.
+Operands are evaluated in the order in which they appear.  @code{and} evaluates
+only as many of its operands as necessary to determine the result.  If any
+operand is @code{false}, the result is @code{false} and no further operands are
+evaluated.
 
-The global flag @code{prederror} governs the behavior of @code{and}
-when an evaluated operand cannot be determined to be @code{true} or @code{false}.
+The global flag @code{prederror} governs the behavior of @code{and} when an
+evaluated operand cannot be determined to be @code{true} or @code{false}.
 @code{and} prints an error message when @code{prederror} is @code{true}.
-Otherwise, operands which do not evaluate to @code{true} or @code{false} are accepted,
-and the result is a Boolean expression.
+Otherwise, operands which do not evaluate to @code{true} or @code{false} are
+accepted, and the result is a Boolean expression.
 
-@code{and} is not commutative:
-@code{a and b} might not be equal to @code{b and a} due to the treatment of indeterminate operands.
+@code{and} is not commutative: @code{a and b} might not be equal to
+@code{b and a} due to the treatment of indeterminate operands.
 
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{or}
 @deffn {Operator} or
 @ifinfo
 @fnindex Logical disjunction
 @end ifinfo
-The logical disjunction operator.
-@code{or} is an n-ary infix operator;
+
+The logical disjunction operator.  @code{or} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
 
 @code{or} forces evaluation (like @code{is}) of one or more operands,
 and may force evaluation of all operands.
 
-Operands are evaluated in the order in which they appear.
-@code{or} evaluates only as many of its operands as necessary to determine the result.
-If any operand is @code{true},
-the result is @code{true} and no further operands are evaluated.
+Operands are evaluated in the order in which they appear.  @code{or} evaluates
+only as many of its operands as necessary to determine the result.  If any
+operand is @code{true}, the result is @code{true} and no further operands are
+evaluated.
 
-The global flag @code{prederror} governs the behavior of @code{or}
-when an evaluated operand cannot be determined to be @code{true} or @code{false}.
+The global flag @code{prederror} governs the behavior of @code{or} when an
+evaluated operand cannot be determined to be @code{true} or @code{false}.
 @code{or} prints an error message when @code{prederror} is @code{true}.
-Otherwise, operands which do not evaluate to @code{true} or @code{false} are accepted,
-and the result is a Boolean expression.
+Otherwise, operands which do not evaluate to @code{true} or @code{false} are
+accepted, and the result is a Boolean expression.
 
-@code{or} is not commutative:
-@code{a or b} might not be equal to @code{b or a} due to the treatment of indeterminate operands.
+@code{or} is not commutative: @code{a or b} might not be equal to @code{b or a}
+due to the treatment of indeterminate operands.
 
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{not}
 @deffn {Operator} not
 @ifinfo
 @fnindex Logical negation
 @end ifinfo
-The logical negation operator.
-@code{not} is a prefix operator;
+
+The logical negation operator.  @code{not} is a prefix operator;
 its operand is a Boolean expression, and its result is a Boolean value.
 
 @code{not} forces evaluation (like @code{is}) of its operand.
 
-The global flag @code{prederror} governs the behavior of @code{not}
-when its operand cannot be determined to be @code{true} or @code{false}.
-@code{not} prints an error message when @code{prederror} is @code{true}.
-Otherwise, operands which do not evaluate to @code{true} or @code{false} are accepted,
+The global flag @code{prederror} governs the behavior of @code{not} when its
+operand cannot be determined to be @code{true} or @code{false}.  @code{not}
+prints an error message when @code{prederror} is @code{true}.  Otherwise,
+operands which do not evaluate to @code{true} or @code{false} are accepted,
 and the result is a Boolean expression.
 
 @opencatbox
@@ -1318,11 +1377,13 @@ and the result is a Boolean expression.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{abs}
 @deffn {Function} abs (@var{expr})
+
 Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the 
 complex modulus of @var{expr}.
 
-@code{abs} distributes over a list, a matrix, or an equation. 
+@code{abs} distributes over a list, a matrix, or an equation.
 See @code{distribute_over}.
 
 @opencatbox
@@ -1330,18 +1391,21 @@ See @code{distribute_over}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{additive}
 @defvr {Keyword} additive
+
 If @code{declare(f,additive)} has been executed, then:
 
-(1) If @code{f} is univariate, whenever the simplifier encounters @code{f} applied
-to a sum, @code{f} will be distributed over that sum.  I.e. @code{f(y+x)} will
-simplify to @code{f(y)+f(x)}.
+(1) If @code{f} is univariate, whenever the simplifier encounters @code{f}
+applied to a sum, @code{f} will be distributed over that sum.  I.e.
+@code{f(y+x)} will simplify to @code{f(y)+f(x)}.
 
-(2) If @code{f} is a function of 2 or more arguments, additivity is defined as 
-additivity in the first argument to @code{f}, as in the case of @code{sum} or 
-@code{integrate}, i.e. @code{f(h(x)+g(x),x)} will simplify to @code{f(h(x),x)+f(g(x),x)}.
-This simplification does not occur when @code{f} is applied to expressions of
-the form @code{sum(x[i],i,lower-limit,upper-limit)}.
+(2) If @code{f} is a function of 2 or more arguments, additivity is defined as
+additivity in the first argument to @code{f}, as in the case of @code{sum} or
+@code{integrate}, i.e.  @code{f(h(x)+g(x),x)} will simplify to
+@code{f(h(x),x)+f(g(x),x)}.  This simplification does not occur when @code{f} is
+applied to expressions of the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
@@ -1350,9 +1414,14 @@ the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @c NEEDS TO BE REWORKED. NOT CONVINCED THIS SYMBOL NEEDS ITS OWN ITEM
 @c (SHOULD BE DESCRIBED IN CONTEXT OF EACH FUNCTION WHICH RECOGNIZES IT)
+
+@c -----------------------------------------------------------------------------
+@anchor{allbut}
 @defvr {Keyword} allbut
-works with the @code{part} commands (i.e. @code{part}, @code{inpart}, @code{substpart},
-@code{substinpart}, @code{dpart}, and @code{lpart}).  For example,
+
+works with the @code{part} commands (i.e.  @code{part}, @code{inpart},
+@code{substpart}, @code{substinpart}, @code{dpart}, and @code{lpart}).
+For example,
 
 @c ===beg===
 @c expr : e + d + c + b + a;
@@ -1395,47 +1464,51 @@ while
 @end example
 
 @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of @code{kill(all)}
-except that it does not kill the symbols @var{a_1}, @var{a_2}, ... .
-
+except that it does not kill the symbols @var{a_1}, @var{a_2}, @dots{}
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{antisymmetric}
 @defvr {Declaration} antisymmetric
-If @code{declare(h,antisymmetric)} is done, this tells the
-simplifier that @code{h} is antisymmetric.  E.g. @code{h(x,z,y)} will simplify to
+
+If @code{declare(h,antisymmetric)} is done, this tells the simplifier that
+@code{h} is antisymmetric.  E.g.  @code{h(x,z,y)} will simplify to 
 @code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
-@code{symmetric} or @code{commutative}, where n is the number of interchanges of two
-arguments necessary to convert it to that form.
+@code{symmetric} or @code{commutative}, where n is the number of interchanges
+of two arguments necessary to convert it to that form.
 
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{cabs}
 @deffn {Function} cabs (@var{expr})
-Returns the complex absolute value (the complex modulus) of
-@var{expr}.
+
+Returns the complex absolute value (the complex modulus) of @var{expr}.
 
 @opencatbox
 @category{Complex variables}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ceiling}
 @deffn {Function} ceiling (@var{x})
 
 When @var{x} is a real number, return the least integer that 
-is greater than or equal to @var{x}.  
+is greater than or equal to @var{x}.
 
 If @var{x} is a constant expression (@code{10 * %pi}, for example), 
 @code{ceiling} evaluates @var{x} using big floating point numbers, and 
-applies @code{ceiling} to the resulting big float. Because @code{ceiling} uses
-floating point evaluation, it's possible, although unlikely, 
-that @code{ceiling} could return an erroneous value for constant
-inputs. To guard against errors, the floating point evaluation
-is done using three values for @code{fpprec}.
+applies @code{ceiling} to the resulting big float.  Because @code{ceiling} uses
+floating point evaluation, it's possible, although unlikely, that @code{ceiling}
+could return an erroneous value for constant inputs.  To guard against errors,
+the floating point evaluation is done using three values for @code{fpprec}.
 
-For non-constant inputs, @code{ceiling} tries to return a simplified
-value.  Here are examples of the simplifications that @code{ceiling}
-knows about:
+For non-constant inputs, @code{ceiling} tries to return a simplified value.
+Here are examples of the simplifications that @code{ceiling} knows about:
 
 @c ===beg===
 @c ceiling (ceiling (x));
@@ -1466,8 +1539,8 @@ The function @code{ceiling} does not automatically map over lists or matrices.
 Finally, for all inputs that are manifestly complex, @code{ceiling} returns 
 a noun form.
 
-If the range of a function is a subset of the integers, it can be
-declared to be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions
+If the range of a function is a subset of the integers, it can be declared to
+be @code{integervalued}.  Both the @code{ceiling} and @code{floor} functions
 can use this information; for example:
 
 @c ===beg===
@@ -1488,12 +1561,13 @@ can use this information; for example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{charfun}
 @deffn {Function} charfun (@var{p})
 
-Return 0 when the predicate @var{p} evaluates to @code{false}; return
-1 when the predicate evaluates to @code{true}.  When the predicate
-evaluates to something other than @code{true} or @code{false} (unknown), 
-return a noun form.
+Return 0 when the predicate @var{p} evaluates to @code{false}; return 1 when
+the predicate evaluates to @code{true}.  When the predicate evaluates to
+something other than @code{true} or @code{false} (unknown),  return a noun form.
 
 Examples:
 
@@ -1518,25 +1592,28 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{commutative}
 @defvr {Declaration} commutative
-If @code{declare(h,commutative)} is done, this tells the
-simplifier that @code{h} is a commutative function.  E.g. @code{h(x,z,y)} will
-simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
+
+If @code{declare(h,commutative)} is done, this tells the simplifier that
+@code{h} is a commutative function.  E.g.  @code{h(x,z,y)} will simplify to
+@code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{compare}
 @deffn {Function} compare (@var{x}, @var{y})
 
-Return a comparison operator @var{op}
-(@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, or @code{#}) such that
-@code{is (@var{x} @var{op} @var{y})} evaluates to @code{true};
-when either @var{x} or @var{y} depends on @code{%i} and
-@code{@var{x} # @var{y}}, return @code{notcomparable};
-when there is no such operator or
-Maxima isn't able to determine the operator, return @code{unknown}.
+Return a comparison operator @var{op} (@code{<}, @code{<=}, @code{>}, @code{>=},
+@code{=}, or @code{#}) such that @code{is (@var{x} @var{op} @var{y})} evaluates
+to @code{true}; when either @var{x} or @var{y} depends on @code{%i} and
+@code{@var{x} # @var{y}}, return @code{notcomparable}; when there is no such
+operator or Maxima isn't able to determine the operator, return @code{unknown}.
 
 Examples:
 
@@ -1582,37 +1659,42 @@ The real domain of @code{acos (x^2 + 1)} is empty.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{entier}
 @deffn {Function} entier (@var{x})
-Returns the largest integer less than or equal to @var{x} where @var{x} is numeric.  @code{fix} (as in
-@code{fixnum}) is a synonym for this, so @code{fix(@var{x})} is precisely the same.
+
+Returns the largest integer less than or equal to @var{x} where @var{x} is
+numeric.  @code{fix} (as in @code{fixnum}) is a synonym for this, so
+@code{fix(@var{x})} is precisely the same.
 
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{equal}
 @deffn {Function} equal (@var{a}, @var{b})
 
 Represents equivalence, that is, equal value.
 
 By itself, @code{equal} does not evaluate or simplify.
 The function @code{is} attempts to evaluate @code{equal} to a Boolean value.
-@code{is(equal(@var{a}, @var{b}))} 
-returns @code{true} (or @code{false}) if
+@code{is(equal(@var{a}, @var{b}))} returns @code{true} (or @code{false}) if
 and only if @var{a} and @var{b} are equal (or not equal) for all possible
-values of their variables, as determined by evaluating @code{ratsimp(@var{a} - @var{b})};
-if @code{ratsimp} returns 0, the two expressions are considered equivalent.
-Two expressions may be equivalent even if they are not syntactically equal (i.e., identical).
+values of their variables, as determined by evaluating
+@code{ratsimp(@var{a} - @var{b})}; if @code{ratsimp} returns 0, the two
+expressions are considered equivalent.  Two expressions may be equivalent even
+if they are not syntactically equal (i.e., identical).
 
-When @code{is} fails to reduce @code{equal} to @code{true} or @code{false},
-the result is governed by the global flag @code{prederror}.
-When @code{prederror} is @code{true},
-@code{is} complains with an error message.
-Otherwise, @code{is} returns @code{unknown}.
+When @code{is} fails to reduce @code{equal} to @code{true} or @code{false}, the
+result is governed by the global flag @code{prederror}.  When @code{prederror}
+is @code{true}, @code{is} complains with an error message.  Otherwise, @code{is}
+returns @code{unknown}.
 
-In addition to @code{is},
-some other operators evaluate @code{equal} and @code{notequal} to @code{true} or @code{false},
-namely @code{if}, @code{and}, @code{or}, and @code{not}.
+In addition to @code{is}, some other operators evaluate @code{equal} and
+@code{notequal} to @code{true} or @code{false}, namely @code{if}, @code{and},
+@code{or}, and @code{not}.
 
 @c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE CORRECT
 @c Declarations (integer, complex, etc)
@@ -1641,8 +1723,9 @@ By itself, @code{equal} does not evaluate or simplify.
 @end example
 
 The function @code{is} attempts to evaluate @code{equal} to a Boolean value.
-@code{is(equal(@var{a}, @var{b}))} returns @code{true} when @code{ratsimp(@var{a} - @var{b})} returns 0.
-Two expressions may be equivalent even if they are not syntactically equal (i.e., identical).
+@code{is(equal(@var{a}, @var{b}))} returns @code{true} when
+@code{ratsimp(@var{a} - @var{b})} returns 0.  Two expressions may be equivalent
+even if they are not syntactically equal (i.e., identical).
 
 @c ===beg===
 @c ratsimp (x^2 - 1 - (x + 1) * (x - 1));
@@ -1706,7 +1789,8 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 (%o6)                        unknown
 @end example
 
-Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code{false}.
+Some operators evaluate @code{equal} and @code{notequal} to @code{true} or
+@code{false}.
 
 @c ===beg===
 @c if equal (y, y - 1) then FOO else BAR;
@@ -1727,7 +1811,8 @@ Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code
 @end example
 
 Because @code{not @var{expr}} causes evaluation of @var{expr},
-@code{not equal(@var{a}, @var{b})} is equivalent to @code{is(notequal(@var{a}, @var{b}))}.
+@code{not equal(@var{a}, @var{b})} is equivalent to
+@code{is(notequal(@var{a}, @var{b}))}.
 
 @c ===beg===
 @c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
@@ -1743,25 +1828,24 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{floor}
 @deffn {Function} floor (@var{x})
 
-When @var{x} is a real number, return the largest integer that 
-is less than or equal to @var{x}.
+When @var{x} is a real number, return the largest integer that is less than or
+equal to @var{x}.
 
-If @var{x} is a constant expression (@code{10 * %pi}, for example), 
-@code{floor} evaluates @var{x} using big floating point numbers, and 
-applies @code{floor} to the resulting big float. Because @code{floor} uses
-floating point evaluation, it's possible, although unlikely, 
-that @code{floor} could return  an erroneous value for constant 
-inputs.  To guard against errors, the floating point evaluation
-is done using three values for @code{fpprec}.
+If @var{x} is a constant expression (@code{10 * %pi}, for example), @code{floor}
+evaluates @var{x} using big floating point numbers, and applies @code{floor} to
+the resulting big float. Because @code{floor} uses floating point evaluation,
+it's possible, although unlikely, that @code{floor} could return an erroneous
+value for constant inputs.  To guard against errors, the floating point
+evaluation is done using three values for @code{fpprec}.
 
-For non-constant inputs, @code{floor} tries to return a simplified
-value.  Here are examples of the simplifications that @code{floor}
-knows about:
+For non-constant inputs, @code{floor} tries to return a simplified value.  Here
+are examples of the simplifications that @code{floor} knows about:
 
 @c ===beg===
 @c floor (ceiling (x));
@@ -1792,8 +1876,8 @@ The function @code{floor} does not automatically map over lists or matrices.
 Finally, for all inputs that are manifestly complex, @code{floor} returns 
 a noun form.
 
-If the range of a function is a subset of the integers, it can be
-declared to be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions
+If the range of a function is a subset of the integers, it can be declared to
+be @code{integervalued}.  Both the @code{ceiling} and @code{floor} functions
 can use this information; for example:
 
 @c ===beg===
@@ -1814,7 +1898,10 @@ can use this information; for example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{notequal}
 @deffn {Function} notequal (@var{a}, @var{b})
+
 Represents the negation of @code{equal(@var{a}, @var{b})}.
 
 Examples:
@@ -1857,10 +1944,12 @@ Examples:
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{evenp}
 @deffn {Function} evenp (@var{expr})
+
 Returns @code{true} if @var{expr} is an even integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} is returned in all other cases.
@@ -1870,7 +1959,10 @@ Returns @code{true} if @var{expr} is an even integer.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fix}
 @deffn {Function} fix (@var{x})
+
 A synonym for @code{entier (@var{x})}.
 
 @opencatbox
@@ -1878,15 +1970,16 @@ A synonym for @code{entier (@var{x})}.
 @closecatbox
 @end deffn
 
-@deffn {Function} fullmap (@var{f}, @var{expr_1}, ...)
-Similar to @code{map}, but @code{fullmap} keeps mapping
-down all subexpressions until the main operators are no longer the
-same.
+@c -----------------------------------------------------------------------------
+@anchor{fullmap}
+@deffn {Function} fullmap (@var{f}, @var{expr_1}, @dots{})
 
-@code{fullmap} is used by the Maxima
-simplifier for certain matrix manipulations; thus, Maxima sometimes generates
-an error message concerning @code{fullmap} even though @code{fullmap} was not
-explicitly called by the user.
+Similar to @code{map}, but @code{fullmap} keeps mapping down all subexpressions
+until the main operators are no longer the same.
+
+@code{fullmap} is used by the Maxima simplifier for certain matrix
+manipulations; thus, Maxima sometimes generates an error message concerning
+@code{fullmap} even though @code{fullmap} was not explicitly called by the user.
 
 Examples:
 
@@ -1909,9 +2002,12 @@ Examples:
 @closecatbox
 @end deffn
 
-@deffn {Function} fullmapl (@var{f}, @var{list_1}, ...)
-Similar to @code{fullmap}, but @code{fullmapl} only maps onto
-lists and matrices.
+@c -----------------------------------------------------------------------------
+@anchor{fullmapl}
+@deffn {Function} fullmapl (@var{f}, @var{list_1}, @dots{})
+
+Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and
+matrices.
 
 Example:
 
@@ -1928,20 +2024,21 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{is}
 @deffn {Function} is (@var{expr})
-Attempts to determine whether the predicate @var{expr} 
-is provable from the facts in the @code{assume} database.
 
-If the predicate is provably @code{true} or @code{false},
-@code{is} returns @code{true} or @code{false}, respectively.
-Otherwise, the return value is governed by the global flag @code{prederror}.
-When @code{prederror} is @code{true},
-@code{is} complains with an error message.
-Otherwise, @code{is} returns @code{unknown}.
+Attempts to determine whether the predicate @var{expr} is provable from the
+facts in the @code{assume} database.
 
-@code{ev(@var{expr}, pred)}
-(which can be written  @code{@var{expr}, pred} at the interactive prompt)
-is equivalent to @code{is(@var{expr})}.
+If the predicate is provably @code{true} or @code{false}, @code{is} returns
+@code{true} or @code{false}, respectively.  Otherwise, the return value is
+governed by the global flag @code{prederror}.  When @code{prederror} is
+@code{true}, @code{is} complains with an error message.  Otherwise, @code{is}
+returns @code{unknown}.
+
+@code{ev(@var{expr}, pred)} (which can be written  @code{@var{expr}, pred} at
+the interactive prompt) is equivalent to @code{is(@var{expr})}.
 
 See also @code{assume}, @code{facts}, and @code{maybe}.
 
@@ -1982,8 +2079,8 @@ Examples:
 (%o5)                         false
 @end example
 
-If @code{is} can neither prove nor disprove a predicate from the @code{assume} database,
-the global flag @code{prederror} governs the behavior of @code{is}.
+If @code{is} can neither prove nor disprove a predicate from the @code{assume}
+database, the global flag @code{prederror} governs the behavior of @code{is}.
 
 @c ===beg===
 @c assume (a > b);
@@ -2010,16 +2107,20 @@ a > 0
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{maybe}
 @deffn {Function} maybe (@var{expr})
-Attempts to determine whether the predicate @var{expr} 
-is provable from the facts in the @code{assume} database.
 
-If the predicate is provably @code{true} or @code{false},
-@code{maybe} returns @code{true} or @code{false}, respectively.
-Otherwise, @code{maybe} returns @code{unknown}.
+Attempts to determine whether the predicate @var{expr} is provable from the
+facts in the @code{assume} database.
 
-@code{maybe} is functionally equivalent to @code{is} with @code{prederror: false},
-but the result is computed without actually assigning a value to @code{prederror}.
+If the predicate is provably @code{true} or @code{false}, @code{maybe} returns
+@code{true} or @code{false}, respectively.  Otherwise, @code{maybe} returns
+@code{unknown}.
+
+@code{maybe} is functionally equivalent to @code{is} with
+@code{prederror: false}, but the result is computed without actually assigning
+a value to @code{prederror}.
 
 See also @code{assume}, @code{facts}, and @code{is}.
 
@@ -2044,69 +2145,83 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{isqrt}
 @deffn {Function} isqrt (@var{x})
-Returns the "integer square root"
-of the absolute value of @var{x},
-which is an integer.
+
+Returns the "integer square root" of the absolute value of @var{x}, which is an
+integer.
 
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{lmax}
 @deffn {Function} lmax (@var{L})
 
-When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.  When @var{L} isn't a
-list or a set, signal an error.
+When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.
+When @var{L} isn't a list or a set, signal an error.
 
 @opencatbox
 @category{Mathematical functions} @category{Lists} @category{Sets}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{lmin}
 @deffn {Function} lmin (@var{L})
 
-When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}. When @var{L} isn't a
-list or a set, signal an error.
+When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}.
+When @var{L} isn't a list or a set, signal an error.
 
 @opencatbox
 @category{Mathematical functions} @category{Lists} @category{Sets}
 @closecatbox
 @end deffn
 
-@deffn {Function} max (@var{x_1}, ..., @var{x_n})
+@c -----------------------------------------------------------------------------
+@anchor{max}
+@deffn {Function} max (@var{x_1}, @dots{}, @var{x_n})
 
-Return a simplified value for the maximum of the expressions @var{x_1} through @var{x_n}.
-When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max} uses the simplification 
-@code{max (e, -e) --> |e|}.  When @code{get (trylevel, maxmin)} is 3 or greater, @var{max} tries
-to eliminate expressions that are between two other arguments; for example,
-@code{max (x, 2*x, 3*x) --> max (x, 3*x)}. To set the value of @code{trylevel} to 2, use
-@code{put (trylevel, 2, maxmin)}.
-
-@opencatbox
-@category{Mathematical functions}
-@closecatbox
-@end deffn
-
-@deffn {Function} min (@var{x_1}, ..., @var{x_n})
-
-Return a simplified value for the minimum of the expressions @code{x_1} through @code{x_n}.
-When @code{get (trylevel, maxmin)}, is 2 or greater, @code{min} uses the simplification 
-@code{min (e, -e) --> -|e|}.  When @code{get (trylevel, maxmin)} is 3 or greater, @code{min} tries
-to eliminate expressions that are between two other arguments; for example,
-@code{min (x, 2*x, 3*x) --> min (x, 3*x)}. To set the value of @code{trylevel} to 2, use
-@code{put (trylevel, 2, maxmin)}.
+Return a simplified value for the maximum of the expressions @var{x_1} through
+@var{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max}
+uses the simplification @code{max (e, -e) --> |e|}.  When
+@code{get (trylevel, maxmin)} is 3 or greater, @var{max} tries to eliminate
+expressions that are between two other arguments; for example,
+@code{max (x, 2*x, 3*x) --> max (x, 3*x)}.  To set the value of @code{trylevel}
+to 2, use @code{put (trylevel, 2, maxmin)}.
 
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} polymod (@var{p})
+@c -----------------------------------------------------------------------------
+@anchor{min}
+@deffn {Function} min (@var{x_1}, @dots{}, @var{x_n})
+
+Return a simplified value for the minimum of the expressions @code{x_1} through
+@code{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{min}
+uses the simplification @code{min (e, -e) --> -|e|}.  When
+@code{get (trylevel, maxmin)} is 3 or greater, @code{min} tries to eliminate
+expressions that are between two other arguments; for example,
+@code{min (x, 2*x, 3*x) --> min (x, 3*x)}.  To set the value of @code{trylevel}
+to 2, use @code{put (trylevel, 2, maxmin)}.
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{polymod}
+@deffn  {Function} polymod (@var{p})
 @deffnx {Function} polymod (@var{p}, @var{m})
-Converts the polynomial @var{p} to a modular representation
-with respect to the current modulus which is the value of the variable
-@code{modulus}.  
+
+Converts the polynomial @var{p} to a modular representation with respect to the
+current modulus which is the value of the variable @code{modulus}.
 
 @code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
 instead of the current value of @code{modulus}.
@@ -2118,27 +2233,30 @@ See @code{modulus}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{mod}
 @deffn {Function} mod (@var{x}, @var{y})
 
-If @var{x} and @var{y} are real numbers and @var{y} is nonzero,
-return @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Further for all real @var{x}, we have @code{mod (@var{x}, 0) = @var{x}}. For a discussion of
-the definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of "Concrete Mathematics," 
-by Graham, Knuth, and Patashnik. The function @code{mod (@var{x}, 1)} 
-is a sawtooth function with period 1 with @code{mod (1, 1) = 0} and 
-@code{mod (0, 1) = 0}.
+If @var{x} and @var{y} are real numbers and @var{y} is nonzero, return
+@code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.  Further for all real
+@var{x}, we have @code{mod (@var{x}, 0) = @var{x}}.  For a discussion of the
+definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of
+"Concrete Mathematics," by Graham, Knuth, and Patashnik.  The function
+@code{mod (@var{x}, 1)} is a sawtooth function with period 1 with
+@code{mod (1, 1) = 0} and @code{mod (0, 1) = 0}.
 
-To find the principal argument (a number in the interval @code{(-%pi, %pi]}) of a 
-complex number, use the function @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, where 
-@var{x} is an argument.
+To find the principal argument (a number in the interval @code{(-%pi, %pi]}) of
+a complex number, use the function
+@code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, where @var{x} is an
+argument.
 
-When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for example), @code{mod}
-uses the same big float evaluation scheme that @code{floor} and @code{ceiling} uses.
-Again, it's possible, although unlikely, that @code{mod} could return an
-erroneous value in such cases.
+When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for 
+example), @code{mod} uses the same big float evaluation scheme that @code{floor}
+and @code{ceiling} uses.  Again, it's possible, although unlikely, that
+@code{mod} could return an erroneous value in such cases.
 
-For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several simplification 
-rules:
+For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several
+simplification rules:
 
 @c ===beg===
 @c mod (x, 0);
@@ -2159,7 +2277,10 @@ rules:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{oddp}
 @deffn {Function} oddp (@var{expr})
+
 is @code{true} if @var{expr} is an odd integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} is returned in all other cases.
@@ -2170,10 +2291,11 @@ is @code{true} if @var{expr} is an odd integer.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} psubst (@var{list}, @var{expr})
+@anchor{psubst}
+@deffn  {Function} psubst (@var{list}, @var{expr})
 @deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
 
-@code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}. See 
+@code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}.  See 
 @code{subst}.
 
 In distinction from @code{subst} the function @code{psubst} makes parallel 
@@ -2183,7 +2305,7 @@ See also @code{sublis} for making parallel substitutions.
 
 Example:
 
-The first example shows parallel substitution with @code{psubst}. The second
+The first example shows parallel substitution with @code{psubst}.  The second
 example shows the result for the function @code{subst}, which does a serial
 substitution.
 
@@ -2203,10 +2325,13 @@ substitution.
 @closecatbox
 @end deffn
 
-@deffn {Function} make_random_state (@var{n})
+@c -----------------------------------------------------------------------------
+@anchor{make_random_state}
+@deffn  {Function} make_random_state (@var{n})
 @deffnx {Function} make_random_state (@var{s})
 @deffnx {Function} make_random_state (true)
 @deffnx {Function} make_random_state (false)
+
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})
 
@@ -2234,7 +2359,10 @@ of the random number generator.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{set_random_state}
 @deffn {Function} set_random_state (@var{s})
+
 Copies @var{s} to the random number generator state.
 
 @code{set_random_state} always returns @code{done}.
@@ -2244,17 +2372,22 @@ Copies @var{s} to the random number generator state.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{random}
 @deffn {Function} random (@var{x})
-Returns a pseudorandom number. If @var{x} is an integer, @code{random (@var{x})} returns an
-integer from 0 through @code{@var{x} - 1} inclusive. If @var{x} is a floating point number,
-@code{random (@var{x})} returns a nonnegative floating point number less than @var{x}.
-@code{random} complains with an error if @var{x} is neither an integer nor a float,
-or if @var{x} is not positive.
+
+Returns a pseudorandom number.  If @var{x} is an integer,
+@code{random (@var{x})} returns an integer from 0 through @code{@var{x} - 1}
+inclusive.  If @var{x} is a floating point number, @code{random (@var{x})}
+returns a nonnegative floating point number less than @var{x}.  @code{random}
+complains with an error if @var{x} is neither an integer nor a float, or if
+@var{x} is not positive.
 
 The functions @code{make_random_state} and @code{set_random_state}
 maintain the state of the random number generator.
 
-The Maxima random number generator is an implementation of the Mersenne twister MT 19937.
+The Maxima random number generator is an implementation of the Mersenne twister
+MT 19937.
 
 Examples:
 
@@ -2303,17 +2436,18 @@ Examples:
 @opencatbox
 @category{Random numbers} @category{Numerical methods}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{rationalize}
 @deffn {Function} rationalize (@var{expr})
 
-Convert all double floats and big floats in the Maxima expression
-@var{expr} to their exact rational equivalents. If you are not familiar with
-the binary representation of floating point numbers, you might
-be surprised that @code{rationalize (0.1)} does not equal 1/10.  This behavior
-isn't special to Maxima -- the number 1/10 has a repeating, not a terminating,
-binary representation.
+Convert all double floats and big floats in the Maxima expression @var{expr} to
+their exact rational equivalents.  If you are not familiar with the binary
+representation of floating point numbers, you might be surprised that
+@code{rationalize (0.1)} does not equal 1/10.  This behavior isn't special to
+Maxima -- the number 1/10 has a repeating, not a terminating, binary
+representation.
 
 @c ===beg===
 @c rationalize (0.5);
@@ -2407,43 +2541,48 @@ Example use:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{round}
 @deffn {Function} round (@var{x})
 
-When @var{x} is a real number, returns the closest integer 
-to @var{x}.  Multiples of 1/2 are rounded to the nearest 
-even integer.  Evaluation of @var{x} is similar to 
-@code{floor} and @code{ceiling}.
+When @var{x} is a real number, returns the closest integer to @var{x}.
+Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
+@var{x} is similar to @code{floor} and @code{ceiling}.
 
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{sign}
 @deffn {Function} sign (@var{expr})
-Attempts to determine the sign of @var{expr}
-on the basis of the facts in the current data base.  It returns one of
-the following answers: @code{pos} (positive), @code{neg} (negative), @code{zero}, @code{pz}
-(positive or zero), @code{nz} (negative or zero), @code{pn} (positive or negative),
-or @code{pnz} (positive, negative, or zero, i.e. nothing known).
+
+Attempts to determine the sign of @var{expr} on the basis of the facts in the
+current data base.  It returns one of the following answers: @code{pos}
+(positive), @code{neg} (negative), @code{zero}, @code{pz} (positive or zero),
+@code{nz} (negative or zero), @code{pn} (positive or negative), or @code{pnz}
+(positive, negative, or zero, i.e. nothing known).
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{signum}
 @deffn {Function} signum (@var{x})
+
 For either real or complex numbers @var{x}, the signum function returns
 0 if @var{x} is zero; for a nonzero numeric input @var{x}, the signum function
 returns @code{abs(x)/x}.
 
-For non-numeric inputs, Maxima attempts to determine the sign of the
-input. When the sign is negative, zero, or positive, @code{signum}
-returns -1,0, 1, respectively. For all other values for the sign,
-@code{signum} a simplified but equivalent form. The simplifications
-include reflection (@code{signum(-x)} gives @code{-signum(x)})and
-multiplicative identity (@code{signum(x*y)} gives @code{signum(x) *
-signum(y)}).
+For non-numeric inputs, Maxima attempts to determine the sign of the input.
+When the sign is negative, zero, or positive, @code{signum} returns -1,0, 1,
+respectively.  For all other values for the sign, @code{signum} a simplified but
+equivalent form.  The simplifications include reflection (@code{signum(-x)}
+gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
+@code{signum(x) * signum(y)}).
 
 The @code{signum} function distributes over a list, a matrix, or an
 equation.  See @code{distribute_over}.
@@ -2454,16 +2593,18 @@ equation.  See @code{distribute_over}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} sort (@var{L}, @var{P})
+@anchor{sort}
+@deffn  {Function} sort (@var{L}, @var{P})
 @deffnx {Function} sort (@var{L})
-Sorts a list @var{L} according to a predicate @code{P} of two arguments, such 
+
+Sorts a list @var{L} according to a predicate @code{P} of two arguments, such
 that @code{@var{P} (@var{L}[k], @var{L}[k + 1])} is @code{true} for any two 
-successive elements. The predicate may be specified as the name of a function 
-or binary infix operator, or as a @code{lambda} expression. If specified as the
-name of an operator, the name is enclosed in "double quotes".
+successive elements.  The predicate may be specified as the name of a function 
+or binary infix operator, or as a @code{lambda} expression.  If specified as
+the name of an operator, the name is enclosed in "double quotes".
 
 The sorted list is returned as a new object; the argument @var{L} is not
-modified. To construct the return value, @code{sort} makes a shallow copy of
+modified.  To construct the return value, @code{sort} makes a shallow copy of
 the elements of @var{L}.
 @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 
@@ -2475,15 +2616,16 @@ If the predicate @var{P} is not a total order on the elements of @var{L}, then
 
 @code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
 That is, the default sorting order is ascending, as determined by 
-@code{orderlessp}. All Maxima atoms and expressions are comparable under 
+@code{orderlessp}.  All Maxima atoms and expressions are comparable under 
 @code{orderlessp}.
 
-The predicate @code{ordergreatp} sorts a list in descending order. The predicate
-@code{ordermagnitudep} sorts Maxima numbers, constant symbols with a numerical 
-value, or expressions which can be evaluated to a constant by magnitude. All 
-other elements of the list @var{L} are sorted by @code{orderlessp}. The 
-predicate @code{"<"} allows the ordering by magnitude too, but does not order
-completely if elements in the list @var{L} are not comparable under @code{"<"}.
+The predicate @code{ordergreatp} sorts a list in descending order.  The
+predicate @code{ordermagnitudep} sorts Maxima numbers, constant symbols with a
+numerical value, or expressions which can be evaluated to a constant by
+magnitude.  All other elements of the list @var{L} are sorted by
+@code{orderlessp}.  The predicate @code{"<"} allows the ordering by magnitude
+too, but does not order completely if elements in the list @var{L} are not
+comparable under @code{"<"}.
 
 Examples:
 
@@ -2544,37 +2686,45 @@ all other elements in ascending sorting order:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sqrt}
 @deffn {Function} sqrt (@var{x})
-The square root of @var{x}. It is represented internally by
+
+The square root of @var{x}.  It is represented internally by
 @code{@var{x}^(1/2)}.  See also @code{rootscontract}.
 
 @code{radexpand} if @code{true} will cause nth roots of factors of a product
 which are powers of n to be pulled outside of the radical, e.g.
-@code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is @code{true}.
+@code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is
+@code{true}.
 
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sqrtdispflag}
 @defvr {Option variable} sqrtdispflag
 Default value: @code{true}
 
-When @code{sqrtdispflag} is @code{false},
-causes @code{sqrt} to display with exponent 1/2.
+When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
+exponent 1/2.
 @c AND OTHERWISE ... ??
 
 @opencatbox
 @category{Mathematical functions} @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 
+@c -----------------------------------------------------------------------------
+@anchor{sublis}
 @deffn {Function} sublis (@var{list}, @var{expr})
-Makes multiple parallel substitutions into an expression. @var{list} is a list
-of equations. The left hand side of the equations must be an atom.
+
+Makes multiple parallel substitutions into an expression.  @var{list} is a list
+of equations.  The left hand side of the equations must be an atom.
 
 The variable @code{sublis_apply_lambda} controls simplification after
 @code{sublis}.
@@ -2596,9 +2746,12 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sublist}
 @deffn {Function} sublist (@var{list}, @var{p})
-Returns the list of elements of @var{list} for which the
-predicate @code{p} returns @code{true}.
+
+Returns the list of elements of @var{list} for which the predicate @code{p}
+returns @code{true}.
 
 Example:
 
@@ -2618,21 +2771,22 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sublis_apply_lambda}
 @defvr {Option variable} sublis_apply_lambda
 Default value: @code{true}
 
-Controls whether @code{lambda}'s
-substituted are applied in simplification after @code{sublis} is used or
-whether you have to do an @code{ev} to get things to apply. @code{true} means do the
-application.
+Controls whether @code{lambda}'s substituted are applied in simplification after
+@code{sublis} is used or whether you have to do an @code{ev} to get things to
+apply.  @code{true} means do the application.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{subnumsimp}
 @defvr {Option variable} subnumsimp
 Default value: @code{false}
 
@@ -2659,28 +2813,34 @@ subst: cannot substitute 100 for operator g in expression g
 @end defvr
 
 @c NEEDS CLARIFICATION, MORE EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{subst}
 @deffn {Function} subst (@var{a}, @var{b}, @var{c})
+
 Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
 complete subexpression of @var{c}.  For example, @code{x+y+z} is a complete
-subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not. When @var{b} does not have
-these characteristics, one may sometimes use @code{substpart} or @code{ratsubst}
-(see below).  Alternatively, if @var{b} is of the form @code{e/f} then one could
-use @code{subst (a*f, e, c)} while if @var{b} is of the form @code{e^(1/f)} then one could
-use @code{subst (a^f, e, c)}.  The @code{subst} command also discerns the @code{x^y} in @code{x^-y}
-so that @code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @var{a} and @var{b} may also be
-operators of an expression enclosed in double-quotes @code{"} or they may be function
-names.  If one wishes to substitute for the independent variable in
-derivative forms then the @code{at} function (see below) should be used.
+subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not.  When @var{b} does
+not have these characteristics, one may sometimes use @code{substpart} or
+@code{ratsubst} (see below).  Alternatively, if @var{b} is of the form
+@code{e/f} then one could use @code{subst (a*f, e, c)} while if @var{b} is of
+the form @code{e^(1/f)} then one could use @code{subst (a^f, e, c)}.  The
+@code{subst} command also discerns the @code{x^y} in @code{x^-y} so that
+@code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @var{a} and @var{b}
+may also be operators of an expression enclosed in double-quotes @code{"} or
+they may be function names.  If one wishes to substitute for the independent
+variable in derivative forms then the @code{at} function (see below) should be
+used.
 
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst} is an alias for @code{substitute}.
 
-The commands @code{subst (@var{eq_1}, @var{expr})} or 
+The commands @code{subst (@var{eq_1}, @var{expr})} or
 @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})} are other permissible
 forms.  The @var{eq_i} are equations indicating substitutions to be made.
 For each equation, the right side will be substituted for the left in the 
-expression @var{expr}. The equations are substituted in serial from left to
-right in @var{expr}. See the functions @code{sublis} and @code{psubst} for 
+expression @var{expr}.  The equations are substituted in serial from left to
+right in @var{expr}.  See the functions @code{sublis} and @code{psubst} for 
 making parallel substitutions.
 
 @code{exptsubst} if @code{true} permits substitutions
@@ -2705,7 +2865,7 @@ Examples:
 (%o2)                       a - %i b
 @end example
 
-The substitution is done in serial for a list of equations. Compare this with
+The substitution is done in serial for a list of equations.  Compare this with
 a parallel substitution:
 
 @c ===beg===
@@ -2728,7 +2888,11 @@ For further examples, do @code{example (subst)}.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+
+@c ----------------------------------------------------------------------------
+@anchor{substinpart}
+@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
 Similar to @code{substpart}, but @code{substinpart} works on the
 internal representation of @var{expr}.
 
@@ -2802,8 +2966,8 @@ message is given.
                               x     z
 @end example
 
-Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
-the same as calling @code{inpart} or @code{substinpart}.
+Also, setting the option @code{inflag} to @code{true} and calling @code{part}
+or @code{substpart} is the same as calling @code{inpart} or @code{substinpart}.
 
 @opencatbox
 @category{Expressions}
@@ -2811,12 +2975,18 @@ the same as calling @code{inpart} or @code{substinpart}.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
-Substitutes @var{x} for the subexpression
-picked out by the rest of the arguments as in @code{part}.  It returns the
-new value of @var{expr}.  @var{x} may be some operator to be substituted for an
-operator of @var{expr}.  In some cases @var{x} needs to be enclosed in double-quotes @code{"}
-(e.g.  @code{substpart ("+", a*b, 0)} yields @code{b + a}).
+
+@c -----------------------------------------------------------------------------
+@anchor{substpart}
+@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Substitutes @var{x} for the subexpression picked out by the rest of the
+arguments as in @code{part}.  It returns the new value of @var{expr}.  @var{x}
+may be some operator to be substituted for an operator of @var{expr}.  In some
+cases @var{x} needs to be enclosed in double-quotes @code{"} (e.g.
+@code{substpart ("+", a*b, 0)} yields @code{b + a}).
+
+Example:
 
 @c ===beg===
 @c 1/(x^2 + 2);
@@ -2841,8 +3011,8 @@ operator of @var{expr}.  In some cases @var{x} needs to be enclosed in double-qu
 (%o4)                    x + f(b, y) + a
 @end example
 
-Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
-the same as calling @code{inpart} or @code{substinpart}.
+Also, setting the option @code{inflag} to @code{true} and calling @code{part}
+or @code{substpart} is the same as calling @code{inpart} or @code{substinpart}.
 
 @opencatbox
 @category{Expressions}
@@ -2850,7 +3020,11 @@ the same as calling @code{inpart} or @code{substinpart}.
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{subvarp}
 @deffn {Function} subvarp (@var{expr})
+
 Returns @code{true} if @var{expr} is a subscripted variable, for example
 @code{a[i]}.
 
@@ -2859,9 +3033,13 @@ Returns @code{true} if @var{expr} is a subscripted variable, for example
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{symbolp}
 @deffn {Function} symbolp (@var{expr})
-Returns @code{true} if @var{expr} is a symbol, else @code{false}.
-In effect, @code{symbolp(x)} is equivalent to the predicate @code{atom(x) and not numberp(x)}.
+
+Returns @code{true} if @var{expr} is a symbol, else @code{false}.  In effect,
+@code{symbolp(x)} is equivalent to the predicate
+@code{atom(x) and not numberp(x)}.
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
@@ -2874,30 +3052,37 @@ See also @ref{Identifiers}.
 
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{vectorpotenial}
 @deffn {Function} vectorpotential (@var{givencurl})
-Returns the vector potential of a given
-curl vector, in the current coordinate system.
-@code{potentialzeroloc} has a similar role as for @code{potential}, but the order of
-the left-hand sides of the equations must be a cyclic permutation of
-the coordinate variables.
+
+Returns the vector potential of a given curl vector, in the current coordinate
+system.  @code{potentialzeroloc} has a similar role as for @code{potential}, but
+the order of the left-hand sides of the equations must be a cyclic permutation
+of the coordinate variables.
 
 @opencatbox
 @category{Package vect}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{xthru}
 @deffn {Function} xthru (@var{expr})
-Combines all terms of @var{expr} (which should be a sum) over a
-common denominator without expanding products and exponentiated sums
-as @code{ratsimp} does.  @code{xthru} cancels common factors in the numerator and
-denominator of rational expressions but only if the factors are
-explicit.
+
+Combines all terms of @var{expr} (which should be a sum) over a common
+denominator without expanding products and exponentiated sums as @code{ratsimp}
+does.  @code{xthru} cancels common factors in the numerator and denominator of
+rational expressions but only if the factors are explicit.
 
 @c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
 Sometimes it is better to use @code{xthru} before @code{ratsimp}ing an
-expression in order to cause explicit factors of the gcd of the
-numerator and denominator to be canceled thus simplifying the
-expression to be @code{ratsimp}ed.
+expression in order to cause explicit factors of the gcd of the numerator and
+denominator to be canceled thus simplifying the expression to be
+@code{ratsimp}ed.
+
+Examples:
 
 @c ===beg===
 @c ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
@@ -2927,12 +3112,16 @@ expression to be @code{ratsimp}ed.
 
 @c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
 @c DUNNO WHETHER WE CAN CLEAR THIS UP
+
+@c -----------------------------------------------------------------------------
+@anchor{zeroequiv}
 @deffn {Function} zeroequiv (@var{expr}, @var{v})
-Tests whether the expression @var{expr} in the variable
-@var{v} is equivalent to zero, returning @code{true}, @code{false}, or
-@code{dontknow}.
+
+Tests whether the expression @var{expr} in the variable @var{v} is equivalent
+to zero, returning @code{true}, @code{false}, or @code{dontknow}.
 
 @code{zeroequiv} has these restrictions:
+
 @enumerate
 @item
 Do not use functions that Maxima does not know how to
@@ -2941,14 +3130,12 @@ differentiate and evaluate.
 If the expression has poles on the real line, there may be errors
 in the result (but this is unlikely to occur).
 @item
-If the expression contains functions which are not solutions to
-first order differential equations (e.g.  Bessel functions) there may
-be incorrect results.
+If the expression contains functions which are not solutions to first order
+differential equations (e.g.  Bessel functions) there may be incorrect results.
 @item
-The algorithm uses evaluation at randomly chosen points for
-carefully selected subexpressions.  This is always a somewhat
-hazardous business, although the algorithm tries to minimize the
-potential for error.
+The algorithm uses evaluation at randomly chosen points for carefully selected
+subexpressions.  This is always a somewhat hazardous business, although the
+algorithm tries to minimize the potential for error.
 @end enumerate
 
 For example @code{zeroequiv (sin(2 * x) - 2 * sin(x) * cos(x), x)} returns

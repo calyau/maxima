@@ -4,22 +4,23 @@
 * Functions and Variables for Input and Output::  
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Comments, Files, Input and Output, Input and Output
 @section Comments
+@c -----------------------------------------------------------------------------
 
 A comment in Maxima input is any text between @code{/*} and @code{*/}.
 
-The Maxima parser treats a comment as whitespace for the purpose of
-finding tokens in the input stream;
-a token always ends at a comment.
-An input such as @code{a/* foo */b} contains two tokens, @code{a} and @code{b},
-and not a single token @code{ab}.
-Comments are otherwise ignored by Maxima;
-neither the content nor the location of comments is stored in parsed input expressions.
+The Maxima parser treats a comment as whitespace for the purpose of finding
+tokens in the input stream; a token always ends at a comment.  An input such as
+@code{a/* foo */b} contains two tokens, @code{a} and @code{b},
+and not a single token @code{ab}.  Comments are otherwise ignored by Maxima;
+neither the content nor the location of comments is stored in parsed input
+expressions.
 
-Comments can be nested to arbitrary depth.
-The @code{/*} and @code{*/} delimiters form matching pairs.
-There must be the same number of @code{/*} as there are @code{*/}.
+Comments can be nested to arbitrary depth.  The @code{/*} and @code{*/}
+delimiters form matching pairs.  There must be the same number of @code{/*}
+as there are @code{*/}.
 
 Examples:
 
@@ -50,10 +51,11 @@ Examples:
 @c -----------------------------------------------------------------------------
 @node Files, Functions and Variables for Input and Output, Comments, Input and Output
 @section Files
+@c -----------------------------------------------------------------------------
 
 A file is simply an area on a particular storage device which contains data 
-or text. Files on the disks are figuratively grouped into "directories".
-A directory is just a list of files. Commands which deal with files are:
+or text.  Files on the disks are figuratively grouped into "directories".
+A directory is just a list of files.  Commands which deal with files are:
 
 @code{save},
 @code{load},
@@ -67,33 +69,35 @@ A directory is just a list of files. Commands which deal with files are:
 
 When a file name is passed to functions like @code{plot2d}, @code{save}, or 
 @code{writefile} and the file name does not include a path, Maxima stores 
-the file in the current working directory. The current working directory 
+the file in the current working directory.  The current working directory 
 depends on the system like Windows or Linux and on the installation.
 
 
 @node Functions and Variables for Input and Output,  , Files, Input and Output
 @section Functions and Variables for Input and Output
 
+@c -----------------------------------------------------------------------------
+@anchor{__}
 @defvr {System variable} __
 @ifinfo
 @vrindex Current input expression
 @end ifinfo
-@code{__} is the input expression currently being evaluated.
-That is, while an input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
 
-@code{__} is assigned the input expression before the input is simplified or evaluated.
-However, the value of @code{__} is simplified (but not evaluated) when it is displayed.
+@code{__} is the input expression currently being evaluated.  That is, while an
+input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
 
-@code{__} is recognized by @code{batch} and @code{load}.
-In a file processed by @code{batch},
-@code{__} has the same meaning as at the interactive prompt.
-In a file processed by @code{load},
-@code{__} is bound to the input expression most recently entered at the interactive prompt
-or in a batch file;
-@code{__} is not bound to the input expressions in the file being processed.
-In particular, when @code{load (@var{filename})} is called from the interactive prompt,
-@code{__} is bound to @code{load (@var{filename})}
-while the file is being processed.
+@code{__} is assigned the input expression before the input is simplified or
+evaluated.  However, the value of @code{__} is simplified (but not evaluated)
+when it is displayed.
+
+@code{__} is recognized by @code{batch} and @code{load}.  In a file processed
+by @code{batch}, @code{__} has the same meaning as at the interactive prompt.
+In a file processed by @code{load}, @code{__} is bound to the input expression
+most recently entered at the interactive prompt or in a batch file; @code{__}
+is not bound to the input expressions in the file being processed.  In
+particular, when @code{load (@var{filename})} is called from the interactive
+prompt, @code{__} is bound to @code{load (@var{filename})} while the file is
+being processed.
 
 See also @code{_} and @code{%}.
 
@@ -128,26 +132,27 @@ Current input expression = --------------
 @opencatbox
 @category{Global variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{_}
 @defvr {System variable} _
 @ifinfo
 @vrindex Previous input
 @end ifinfo
 
-@code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
+@code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2},
+@code{%i3}, @dots{}).
 
-@code{_} is assigned the input expression before the input is simplified or evaluated.
-However, the value of @code{_} is simplified (but not evaluated) when it is displayed.
+@code{_} is assigned the input expression before the input is simplified or
+evaluated.  However, the value of @code{_} is simplified (but not evaluated)
+when it is displayed.
 
-@code{_} is recognized by @code{batch} and @code{load}.
-In a file processed by @code{batch},
-@code{_} has the same meaning as at the interactive prompt.
-In a file processed by @code{load},
-@code{_} is bound to the input expression most recently evaluated at the interactive prompt
-or in a batch file;
-@code{_} is not bound to the input expressions in the file being processed.
+@code{_} is recognized by @code{batch} and @code{load}.  In a file processed by
+@code{batch}, @code{_} has the same meaning as at the interactive prompt.
+In a file processed by @code{load}, @code{_} is bound to the input expression
+most recently evaluated at the interactive prompt or in a batch file; @code{_}
+is not bound to the input expressions in the file being processed.
 
 See also @code{__} and @code{%}.
 
@@ -198,41 +203,40 @@ Examples:
 @opencatbox
 @category{Console interaction} @category{Global variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {System variable} %
 @ifinfo
 @vrindex Previous output
 @end ifinfo
-@code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
-most recently computed by Maxima,
-whether or not it was displayed.
 
-@code{%} is recognized by @code{batch} and @code{load}.
-In a file processed by @code{batch},
-@code{%} has the same meaning as at the interactive prompt.
-In a file processed by @code{load},
-@code{%} is bound to the output expression most recently computed at the interactive prompt
-or in a batch file;
-@code{%} is not bound to output expressions in the file being processed.
+@code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3},
+@dots{}) most recently computed by Maxima, whether or not it was displayed.
+
+@code{%} is recognized by @code{batch} and @code{load}.  In a file processed by
+@code{batch}, @code{%} has the same meaning as at the interactive prompt.
+In a file processed by @code{load}, @code{%} is bound to the output expression
+most recently computed at the interactive prompt or in a batch file; @code{%}
+is not bound to output expressions in the file being processed.
 
 See also @code{_}, @code{%%}, and @code{%th}.
 
 @opencatbox
 @category{Console interaction} @category{Global variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%%}
 @defvr {System variable} %%
 @ifinfo
 @vrindex Previous result in compound expression
 @end ifinfo
-In compound statements,
-namely @code{block}, @code{lambda}, or @code{(@var{s_1}, ..., @var{s_n})},
-@code{%%} is the value of the previous statement.
-For example,
+
+In compound statements, namely @code{block}, @code{lambda}, or
+@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous
+statement.  For example,
 
 @example
 block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
@@ -242,10 +246,9 @@ block ([prev], prev: integrate (x^5, x),
 
 yield the same result, namely @code{21/2}.
 
-A compound statement may comprise other compound statements.
-Whether a statement be simple or compound, 
-@code{%%} is the value of the previous statement.
-For example,
+A compound statement may comprise other compound statements.  Whether a
+statement be simple or compound, @code{%%} is the value of the previous
+statement.  For example,
 
 @example
 block (block (a^n, %%*42), %%/6)
@@ -253,9 +256,9 @@ block (block (a^n, %%*42), %%/6)
 
 yields @code{7*a^n}.
 
-Within a compound statement, the value of @code{%%} may be inspected at a break prompt,
-which is opened by executing the @code{break} function.
-For example, at the break prompt opened by
+Within a compound statement, the value of @code{%%} may be inspected at a break
+prompt, which is opened by executing the @code{break} function.  For example,
+at the break prompt opened by
 
 @example
 block (a: 42, break ())$
@@ -263,27 +266,27 @@ block (a: 42, break ())$
 
 entering @code{%%;} yields @code{42}.
 
-At the first statement in a compound statement,
-or outside of a compound statement,
-@code{%%} is undefined.
+At the first statement in a compound statement, or outside of a compound
+statement, @code{%%} is undefined.
 
-@code{%%} is recognized by @code{batch} and @code{load},
-and it has the same meaning as at the interactive prompt.
+@code{%%} is recognized by @code{batch} and @code{load}, and it has the same
+meaning as at the interactive prompt.
 
 See also @code{%}.
 
 @opencatbox
 @category{Global variables}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{%dispflag}
 @defvr {Option variable} %edispflag
 Default value: @code{false}
 
 When @code{%edispflag} is @code{true}, Maxima displays @code{%e} to a negative
-exponent as a quotient. For example, @code{%e^-x} is displayed as @code{1/%e^x}.
+exponent as a quotient.  For example, @code{%e^-x} is displayed as
+@code{1/%e^x}.
 
 Example:
 
@@ -309,16 +312,19 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%th}
 @deffn {Function} %th (@var{i})
 @ifinfo
 @fnindex N'th previous output
 @end ifinfo
-The value of the @var{i}'th previous output expression.
-That is, if the next expression to be computed is the @var{n}'th output,
-@code{%th (@var{m})} is the (@var{n} - @var{m})'th output.
 
-@code{%th} is useful in @code{batch} files or for referring to a group of output expressions.
-For example,
+The value of the @var{i}'th previous output expression.  That is, if the next
+expression to be computed is the @var{n}'th output, @code{%th (@var{m})} is the
+(@var{n} - @var{m})'th output.
+
+@code{%th} is useful in @code{batch} files or for referring to a group of
+output expressions.  For example,
 
 @example
 block (s: 0, for i:1 thru 10 do s: s + %th (i))$
@@ -326,58 +332,59 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 sets @code{s} to the sum of the last ten output expressions.
 
-@code{%th} is recognized by @code{batch} and @code{load}.
-In a file processed by @code{batch},
-@code{%th} has the same meaning as at the interactive prompt.
-In a file processed by @code{load},
-@code{%th} refers to output expressions most recently computed at the interactive prompt
-or in a batch file;
-@code{%th} does not refer to output expressions in the file being processed.
+@code{%th} is recognized by @code{batch} and @code{load}.  In a file processed
+by @code{batch}, @code{%th} has the same meaning as at the interactive prompt.
+In a file processed by @code{load}, @code{%th} refers to output expressions most
+recently computed at the interactive prompt or in a batch file; @code{%th} does
+not refer to output expressions in the file being processed.
 
 See also @code{%}.
 
 @opencatbox
 @category{Console interaction}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{?}
 @deffn {Special symbol} ?
 @ifinfo
 @fnindex Fetch documentation
 @end ifinfo
-As prefix to a function or variable name, @code{?} signifies that the
-name is a Lisp name, not a Maxima name.
-For example, @code{?round} signifies the Lisp function @code{ROUND}.
-See @ref{Lisp and Maxima} for more on this point.
 
-The notation @code{? word} (a question mark followed a word, separated by whitespace)
-is equivalent to @code{describe("word")}.
-The question mark must occur at the beginning of an input line;
-otherwise it is not recognized as a request for documentation.
+As prefix to a function or variable name, @code{?} signifies that the name is a
+Lisp name, not a Maxima name.  For example, @code{?round} signifies the Lisp
+function @code{ROUND}.  See @ref{Lisp and Maxima} for more on this point.
+
+The notation @code{? word} (a question mark followed a word, separated by
+whitespace) is equivalent to @code{describe("word")}.  The question mark must
+occur at the beginning of an input line; otherwise it is not recognized as a
+request for documentation.
 
 @opencatbox
 @category{Help} @category{Console interaction}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{??}
 @deffn {Special symbol} ??
 @ifinfo
 @fnindex Fetch documentation (inexact search)
 @end ifinfo
 
 The notation @code{?? word} (@code{??} followed a word, separated by whitespace)
-is equivalent to @code{describe("word", inexact)}.
-The question mark must occur at the beginning of an input line;
-otherwise it is not recognized as a request for documentation.
+is equivalent to @code{describe("word", inexact)}.  The question mark must occur
+at the beginning of an input line; otherwise it is not recognized as a request
+for documentation.
 
 @opencatbox
 @category{Help} @category{Console interaction}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{absboxchar}
 @defvr {Option variable} absboxchar
 Default value: @code{!}
 
@@ -387,41 +394,43 @@ signs around expressions which are more than one line tall.
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{file_output_append}
 @defvr {Option variable} file_output_append
 Default value: @code{false}
 
-@code{file_output_append} governs whether file output functions
-append or truncate their output file.
-When @code{file_output_append} is @code{true},
-such functions append to their output file.
-Otherwise, the output file is truncated.
+@code{file_output_append} governs whether file output functions append or
+truncate their output file.  When @code{file_output_append} is @code{true}, such
+functions append to their output file.  Otherwise, the output file is truncated.
 
-@code{save}, @code{stringout}, and @code{with_stdout} respect @code{file_output_append}.
-Other functions which write output files do not respect @code{file_output_append}.
-In particular, plotting and translation functions always truncate their output file,
-and @code{tex} and @code{appendfile} always append.
+@code{save}, @code{stringout}, and @code{with_stdout} respect
+@code{file_output_append}.  Other functions which write output files do not
+respect @code{file_output_append}.  In particular, plotting and translation
+functions always truncate their output file, and @code{tex} and
+@code{appendfile} always append.
 @c WHAT ABOUT WRITEFILE ??
 
 @opencatbox
 @category{File output} @category{Global flags}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{appendfile}
 @deffn {Function} appendfile (@var{filename})
-Appends a console transcript to @var{filename}.
-@code{appendfile} is the same as @code{writefile}, 
-except that the transcript file, if it exists, is always appended.
 
-@code{closefile} closes the transcript file opened by @code{appendfile} or @code{writefile}.
+Appends a console transcript to @var{filename}.  @code{appendfile} is the same
+as @code{writefile}, except that the transcript file, if it exists, is always
+appended.
+
+@code{closefile} closes the transcript file opened by @code{appendfile} or
+@code{writefile}.
 
 @opencatbox
 @category{File output} @category{Console interaction}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -429,55 +438,49 @@ except that the transcript file, if it exists, is always appended.
 @deffnx {Function} batch (@var{filename}, @code{option})
 
 @code{batch(@var{filename})} reads Maxima expressions from @var{filename} and 
-evaluates them. @code{batch} searches for @var{filename} in the list 
-@code{file_search_maxima}. See @code{file_search}.
+evaluates them.  @code{batch} searches for @var{filename} in the list 
+@code{file_search_maxima}.  See @code{file_search}.
 
 @code{batch(@var{filename}, @code{demo})} is like @code{demo(@var{filename})}.
 In this case @code{batch} searches for @var{filename} in the list
-@code{file_search_demo}. See @code{demo}.
+@code{file_search_demo}.  See @code{demo}.
 
 @code{batch(@var{filename}, @code{test})} is like @code{run_testsuite} with the
-option @code{display_all=true}. For this case @code{batch} searches 
+option @code{display_all=true}.  For this case @code{batch} searches 
 @var{filename} in the list @code{file_search_maxima} and not in the list
-@code{file_search_tests} like @code{run_testsuite}. Furthermore, 
-@code{run_testsuite} runs tests which are in the list @code{testsuite_files}. 
+@code{file_search_tests} like @code{run_testsuite}.  Furthermore, 
+@code{run_testsuite} runs tests which are in the list @code{testsuite_files}.
 With @code{batch} it is possible to run any file in a test mode, which can be 
-found in the list @code{file_search_maxima}. This is useful, when writing a test
-file.
+found in the list @code{file_search_maxima}.  This is useful, when writing a
+test file.
 
-@var{filename} comprises a sequence of Maxima expressions,
-each terminated with @code{;} or @code{$}.
-The special variable @code{%} and the function @code{%th}
-refer to previous results within the file.
-The file may include @code{:lisp} constructs.
-Spaces, tabs, and newlines in the file are ignored.
-A suitable input file may be created by a text editor or by the @code{stringout}
-function.
+@var{filename} comprises a sequence of Maxima expressions, each terminated with
+@code{;} or @code{$}.  The special variable @code{%} and the function @code{%th}
+refer to previous results within the file.  The file may include @code{:lisp}
+constructs.  Spaces, tabs, and newlines in the file are ignored.  A suitable
+input file may be created by a text editor or by the @code{stringout} function.
 
-@code{batch} reads each input expression from @var{filename},
-displays the input to the console, 
-computes the corresponding output expression,
-and displays the output expression.
-Input labels are assigned to the input expressions
-and output labels are assigned to the output expressions.
-@code{batch} evaluates every input expression in the file
-unless there is an error.
-If user input is requested (by @code{asksign} or @code{askinteger}, for example)
-@code{batch} pauses to collect the requisite input and then continue.
+@code{batch} reads each input expression from @var{filename}, displays the input
+to the console, computes the corresponding output expression, and displays the
+output expression.  Input labels are assigned to the input expressions and
+output labels are assigned to the output expressions.  @code{batch} evaluates
+every input expression in the file unless there is an error.  If user input is
+requested (by @code{asksign} or @code{askinteger}, for example) @code{batch}
+pauses to collect the requisite input and then continue.
 
 @c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") 
 @c KEEPS GOING !!! DON'T KNOW ABOUT GCL !!!
-It may be possible to halt @code{batch} by typing @code{control-C} at the console.
-The effect of @code{control-C} depends on the underlying Lisp implementation.
+It may be possible to halt @code{batch} by typing @code{control-C} at the
+console.  The effect of @code{control-C} depends on the underlying Lisp
+implementation.
 
-@code{batch} has several uses,
-such as to provide a reservoir for working command lines,
-to give error-free demonstrations,
-or to help organize one's thinking in solving complex problems.
+@code{batch} has several uses, such as to provide a reservoir for working
+command lines, to give error-free demonstrations, or to help organize one's
+thinking in solving complex problems.
 
-@code{batch} evaluates its argument. @code{batch} returns the path of 
+@code{batch} evaluates its argument.  @code{batch} returns the path of
 @var{filename} as a string, when called with no second argument or with the 
-option @code{demo}. When called with the option @code{test}, the return value
+option @code{demo}.  When called with the option @code{test}, the return value
 is a an empty list @code{[]} or a list with @var{filename} and the numbers of
 the tests which have failed.
 
@@ -489,47 +492,55 @@ See also @code{load}, @code{batchload}, and @code{demo}.
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
-@deffn {Function} batchload (@var{filename})
-Reads Maxima expressions from @var{filename} and evaluates them,
-without displaying the input or output expressions
-and without assigning labels to output expressions.
-Printed output (such as produced by @code{print} or @code{describe})
-is displayed, however.
 
-The special variable @code{%} and the function @code{%th}
-refer to previous results from the interactive interpreter,
-not results within the file.
+@c -----------------------------------------------------------------------------
+@anchor{batchload}
+@deffn {Function} batchload (@var{filename})
+
+Reads Maxima expressions from @var{filename} and evaluates them, without
+displaying the input or output expressions and without assigning labels to
+output expressions.  Printed output (such as produced by @code{print} or
+@code{describe}) is displayed, however.
+
+The special variable @code{%} and the function @code{%th} refer to previous
+results from the interactive interpreter, not results within the file.
 The file cannot include @code{:lisp} constructs.
 
 @code{batchload} returns the path of @var{filename}, as a string.
 @code{batchload} evaluates its argument.
 
 See also @code{batch} and @code{load}.
-@c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
+@c batchload APPEARS TO HAVE THE SAME EFFECT AS load.
+@c WHY NOT GET RID OF batchload ???
 
 @opencatbox
 @category{Session management} @category{File input}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{closefile}
 @deffn {Function} closefile ()
+
 Closes the transcript file opened by @code{writefile} or @code{appendfile}.
 
 @opencatbox
 @category{File output} @category{Console interaction}
 @closecatbox
-
 @end deffn
 
 @c NEEDS CLARIFICATION !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{collapse}
 @deffn {Function} collapse (@var{expr})
-Collapses @var{expr} by causing all of its
-common (i.e., equal) subexpressions to share (i.e., use the same cells),
-thereby saving space.  (@code{collapse} is a subroutine used by the @code{optimize}
-command.)  Thus, calling @code{collapse} may be useful
-after loading in a @code{save} file.  You can collapse several expressions
-together by using @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarly, you can
+
+Collapses @var{expr} by causing all of its common (i.e., equal) subexpressions
+to share (i.e., use the same cells), thereby saving space.  (@code{collapse} is
+a subroutine used by the @code{optimize} command.)  Thus, calling
+@code{collapse} may be useful after loading in a @code{save} file.  You can
+collapse several expressions together by using
+@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarly, you can
 collapse the elements of the array @code{A} by doing
 @code{collapse (listarray ('A))}.
 
@@ -538,14 +549,15 @@ collapse the elements of the array @code{A} by doing
 @closecatbox
 @end deffn
 
-@deffn {Function} concat (@var{arg_1}, @var{arg_2}, ...)
-Concatenates its arguments.
-The arguments must evaluate to atoms.
-The return value is a symbol if the first argument is a symbol
-and a string otherwise.
+@c -----------------------------------------------------------------------------
+@anchor{concat}
+@deffn {Function} concat (@var{arg_1}, @var{arg_2}, @dots{})
 
-@code{concat} evaluates its arguments.
-The single quote @code{'} prevents evaluation.
+Concatenates its arguments.  The arguments must evaluate to atoms.  The return
+value is a symbol if the first argument is a symbol and a string otherwise.
+
+@code{concat} evaluates its arguments.  The single quote @code{'} prevents
+evaluation.
 
 @example
 (%i1) y: 7$
@@ -556,9 +568,9 @@ The single quote @code{'} prevents evaluation.
 (%o4)                          y44
 @end example
 
-A symbol constructed by @code{concat} may
-be assigned a value and appear in expressions.
-The @code{::} (double colon) assignment operator evaluates its left-hand side.
+A symbol constructed by @code{concat} may be assigned a value and appear in
+expressions.  The @code{::} (double colon) assignment operator evaluates its
+left-hand side.
 
 @example
 (%i5) a: concat ('y, z/2);
@@ -589,10 +601,12 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 @closecatbox
 @end deffn
 
-@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, ...)
+@c -----------------------------------------------------------------------------
+@anchor{sconcat}
+@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
 
-Concatenates its arguments into a string.
-Unlike @code{concat}, the arguments do @i{not} need to be atoms.
+Concatenates its arguments into a string.  Unlike @code{concat}, the arguments
+do @i{not} need to be atoms.
 
 @example
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
@@ -620,7 +634,9 @@ Unlike @code{concat}, the arguments do @i{not} need to be atoms.
 @c @end defvar
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} disp (@var{expr_1}, @var{expr_2}, ...)
+@anchor{disp}
+@deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
+
 is like @code{display} but only the value of the arguments are displayed rather
 than equations.  This is useful for complicated arguments which don't have names 
 or where only the value of the argument is of interest and not the name.
@@ -654,20 +670,25 @@ Examples:
 
 @c HMM, THIS NEXT ITEM IS DEFINED IN A SHARE FILE (itensor.lisp); 
 @c DOES ITS DESCRIPTION WANT TO BE ELSEWHERE ???
-@deffn {Function} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+
+@c -----------------------------------------------------------------------------
+@anchor{dispcon}
+@deffn  {Function} dispcon (@var{tensor_1}, @var{tensor_2}, @dots{})
 @deffnx {Function} dispcon (all)
-Displays the contraction properties of
-its arguments as were given to @code{defcon}.  @code{dispcon (all)} displays all the
-contraction properties which were defined.
+
+Displays the contraction properties of its arguments as were given to
+@code{defcon}.  @code{dispcon (all)} displays all the contraction properties
+which were defined.
 
 @opencatbox
 @category{Display functions}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} display (@var{expr_1}, @var{expr_2}, ...)
+@anchor{display}
+@deffn {Function} display (@var{expr_1}, @var{expr_2}, @dots{})
+
 Displays equations whose left side is @var{expr_i} unevaluated, and whose right
 side is the value of the expression centered on the line.  This function is 
 useful in blocks and @code{for} statements in order to have intermediate results 
@@ -702,6 +723,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{display2d}
 @defvr {Option variable} display2d
 Default value: @code{true}
 
@@ -731,13 +753,15 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{display_format_internal}
 @defvr {Option variable} display_format_internal
 Default value: @code{false}
 
-When @code{display_format_internal} is @code{true},
-expressions are displayed without being transformed in ways that
-hide the internal mathematical representation.  The display then
-corresponds to what @code{inpart} returns rather than @code{part}.
+When @code{display_format_internal} is @code{true}, expressions are displayed
+without being transformed in ways that hide the internal mathematical
+representation.  The display then corresponds to what @code{inpart} returns
+rather than @code{part}.
 
 Examples:
 
@@ -759,42 +783,44 @@ X*4/3;    ---        - X
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{dispterms}
 @deffn {Function} dispterms (@var{expr})
-Displays @var{expr} in parts one below the other.
-That is, first the operator of @var{expr} is displayed, then each term in
-a sum, or factor in a product, or part of a more general expression is
-displayed separately.  This is useful if @var{expr} is too large to be
-otherwise displayed.  For example if @code{P1}, @code{P2}, ...  are very large
-expressions then the display program may run out of storage space in
-trying to display @code{P1 + P2 + ...}  all at once.  However,
-@code{dispterms (P1 + P2 + ...)} displays @code{P1}, then below it @code{P2}, etc.  When not
-using @code{dispterms}, if an exponential expression is too wide to be
-displayed as @code{A^B} it appears as @code{expt (A, B)} (or as @code{ncexpt (A, B)} in
-the case of @code{A^^B}).
+
+Displays @var{expr} in parts one below the other.  That is, first the operator
+of @var{expr} is displayed, then each term in a sum, or factor in a product, or
+part of a more general expression is displayed separately.  This is useful if
+@var{expr} is too large to be otherwise displayed.  For example if @code{P1},
+@code{P2}, @dots{}  are very large expressions then the display program may run
+out of storage space in trying to display @code{P1 + P2 + ...}  all at once.
+However, @code{dispterms (P1 + P2 + ...)} displays @code{P1}, then below it
+@code{P2}, etc.  When not using @code{dispterms}, if an exponential expression
+is too wide to be displayed as @code{A^B} it appears as @code{expt (A, B)} (or
+as @code{ncexpt (A, B)} in the case of @code{A^^B}).
 
 @opencatbox
 @category{Display functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{error_size}
 @defvr {Option variable} error_size
 Default value: 10
 
-@code{error_size} modifies error messages according to the size of expressions which appear in them.
-If the size of an expression (as determined by the Lisp function @code{ERROR-SIZE})
-is greater than @code{error_size},
-the expression is replaced in the message by a symbol,
-and the symbol is assigned the expression.
+@code{error_size} modifies error messages according to the size of expressions
+which appear in them.  If the size of an expression (as determined by the Lisp
+function @code{ERROR-SIZE}) is greater than @code{error_size}, the expression is
+replaced in the message by a symbol, and the symbol is assigned the expression.
 The symbols are taken from the list @code{error_syms}.
 
-Otherwise, the expression is smaller than @code{error_size},
-and the expression is displayed in the message.
+Otherwise, the expression is smaller than @code{error_size}, and the expression
+is displayed in the message.
 
 See also @code{error} and @code{error_syms}.
 
@@ -839,42 +865,44 @@ Example expression is --------------
 @opencatbox
 @category{Debugging} @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{error_syms}
 @defvr {Option variable} error_syms
 Default value: @code{[errexp1, errexp2, errexp3]}
 
-In error messages,
-expressions larger than @code{error_size} are replaced by symbols, and the
-symbols are set to the expressions.  The symbols are taken from the
-list @code{error_syms}.
-The first too-large expression is replaced by @code{error_syms[1]},
-the second by @code{error_syms[2]}, and so on.
+In error messages, expressions larger than @code{error_size} are replaced by
+symbols, and the symbols are set to the expressions.  The symbols are taken from
+the list @code{error_syms}.  The first too-large expression is replaced by
+@code{error_syms[1]}, the second by @code{error_syms[2]}, and so on.
 
-If there are more too-large expressions than there are elements of @code{error_syms},
-symbols are constructed automatically,
-with the @var{n}-th symbol equivalent to @code{concat ('errexp, @var{n})}.
+If there are more too-large expressions than there are elements of
+@code{error_syms}, symbols are constructed automatically, with the @var{n}-th
+symbol equivalent to @code{concat ('errexp, @var{n})}.
 
 See also @code{error} and @code{error_size}.
 
 @opencatbox
 @category{Debugging} @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{expt}
 @deffn {Function} expt (@var{a}, @var{b})
-If an exponential expression is too wide to be displayed
-as @code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as @code{ncexpt (@var{a}, @var{b})} in the case of
-@code{@var{a}^^@var{b}}).
+
+If an exponential expression is too wide to be displayed as
+@code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as
+@code{ncexpt (@var{a}, @var{b})} in the case of @code{@var{a}^^@var{b}}).
 
 @c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
 @c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
 @code{expt} and @code{ncexpt} are not recognized in input.
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{exptdispflag}
 @defvr {Option variable} exptdispflag
 Default value: @code{true}
 
@@ -884,40 +912,44 @@ with negative exponents using quotients, e.g., @code{X^(-1)} as @code{1/X}.
 @opencatbox
 @category{Expressions} @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{filename_merge}
 @deffn {Function} filename_merge (@var{path}, @var{filename})
-Constructs a modified path from @var{path} and @var{filename}.
-If the final component of @var{path} is of the form @code{###.@var{something}},
-the component is replaced with @code{@var{filename}.@var{something}}.
-Otherwise, the final component is simply replaced by @var{filename}.
+
+Constructs a modified path from @var{path} and @var{filename}.  If the final
+component of @var{path} is of the form @code{###.@var{something}}, the component
+is replaced with @code{@var{filename}.@var{something}}.  Otherwise, the final
+component is simply replaced by @var{filename}.
 
 The result is a Lisp pathname object.
 
 @opencatbox
 @category{File input} @category{File output}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} file_search (@var{filename})
+@c -----------------------------------------------------------------------------
+@anchor{file_search}
+@deffn  {Function} file_search (@var{filename})
 @deffnx {Function} file_search (@var{filename}, @var{pathlist})
 
-@code{file_search} searches for the file @var{filename} and returns the path to the file
-(as a string) if it can be found; otherwise @code{file_search} returns @code{false}.
-@code{file_search (@var{filename})} searches in the default search directories,
-which are specified by the @code{file_search_maxima}, @code{file_search_lisp}, and @code{file_search_demo} variables.
+@code{file_search} searches for the file @var{filename} and returns the path to
+the file (as a string) if it can be found; otherwise @code{file_search} returns
+@code{false}.  @code{file_search (@var{filename})} searches in the default
+search directories, which are specified by the @code{file_search_maxima},
+@code{file_search_lisp}, and @code{file_search_demo} variables.
 
 @code{file_search} first checks if the actual name passed exists,
 before attempting to match it to ``wildcard'' file search patterns.
 See @code{file_search_maxima} concerning file search patterns.
 
-The argument @var{filename} can be a path and file name,
-or just a file name, or, if a file search directory includes a file search pattern,
-just the base of the file name (without an extension).
-For example,
+The argument @var{filename} can be a path and file name, or just a file name,
+or, if a file search directory includes a file search pattern, just the base of
+the file name (without an extension).  For example,
 
 @example
 file_search ("/home/wfs/special/zeta.mac");
@@ -925,67 +957,67 @@ file_search ("zeta.mac");
 file_search ("zeta");
 @end example
 
-all find the same file, assuming the file exists and @code{/home/wfs/special/###.mac}
-is in @code{file_search_maxima}.
+all find the same file, assuming the file exists and 
+@code{/home/wfs/special/###.mac} is in @code{file_search_maxima}.
 
-@code{file_search (@var{filename}, @var{pathlist})} searches only in the directories
-specified by @var{pathlist},
-which is a list of strings.
-The argument @var{pathlist} supersedes the default search directories,
-so if the path list is given, @code{file_search} searches only the ones specified,
-and not any of the default search directories.
-Even if there is only one directory in @var{pathlist}, it must still be given as a one-element list.
+@code{file_search (@var{filename}, @var{pathlist})} searches only in the
+directories specified by @var{pathlist}, which is a list of strings.  The
+argument @var{pathlist} supersedes the default search directories, so if the
+path list is given, @code{file_search} searches only the ones specified, and not
+any of the default search directories.  Even if there is only one directory in
+@var{pathlist}, it must still be given as a one-element list.
 
-The user may modify the default search directories. See @code{file_search_maxima}.
+The user may modify the default search directories.
+See @code{file_search_maxima}.
 
-@code{file_search} is invoked by @code{load} with @code{file_search_maxima} and @code{file_search_lisp}
-as the search directories.
+@code{file_search} is invoked by @code{load} with @code{file_search_maxima} and
+@code{file_search_lisp} as the search directories.
 
 @opencatbox
 @category{File input}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{file_search_maxima}
+@anchor{file_search_lisp}
+@anchor{file_search_demo}
+@anchor{file_search_usage}
+@anchor{file_search_tests}
 @defvr  {Option variable} file_search_maxima
 @defvrx {Option variable} file_search_lisp
 @defvrx {Option variable} file_search_demo
 @defvrx {Option variable} file_search_usage
 @defvrx {Option variable} file_search_tests
 
-These variables specify lists of directories to be searched
-by @code{load}, @code{demo}, and some other Maxima functions.
-The default values of these variables
-name various directories in the Maxima installation.
+These variables specify lists of directories to be searched by @code{load},
+@code{demo}, and some other Maxima functions.  The default values of these
+variables name various directories in the Maxima installation.
 
-The user can modify these variables,
-either to replace the default values or to append additional directories.
-For example,
+The user can modify these variables, either to replace the default values or to
+append additional directories.  For example,
 
 @example
 file_search_maxima: ["/usr/local/foo/###.mac",
     "/usr/local/bar/###.mac"]$
 @end example
 
-replaces the default value of @code{file_search_maxima},
-while
+replaces the default value of @code{file_search_maxima}, while
 
 @example
 file_search_maxima: append (file_search_maxima,
     ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
 @end example
 
-appends two additional directories.
-It may be convenient to put such an expression in the file @code{maxima-init.mac}
-so that the file search path is assigned automatically when Maxima starts.
+appends two additional directories.  It may be convenient to put such an
+expression in the file @code{maxima-init.mac} so that the file search path is
+assigned automatically when Maxima starts.
 
-Multiple filename extensions and multiple paths can be specified by
-special ``wildcard'' constructions.
-The string @code{###} expands into the sought-after name,
-while a comma-separated list enclosed in curly braces @code{@{foo,bar,baz@}} expands
-into multiple strings.
-For example, supposing the sought-after name is @code{neumann},
+Multiple filename extensions and multiple paths can be specified by special 
+``wildcard'' constructions.  The string @code{###} expands into the sought-after
+name, while a comma-separated list enclosed in curly braces
+@code{@{foo,bar,baz@}} expands into multiple strings.  For example, supposing
+the sought-after name is @code{neumann},
 
 @example
 "/home/@{wfs,gcj@}/###.@{lisp,mac@}"
@@ -1002,23 +1034,23 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{file_type}
 @deffn {Function} file_type (@var{filename})
 
 Returns a guess about the content of @var{filename}, based on the filename 
-extension. @var{filename} need not refer to an actual file; no attempt is made 
+extension.  @var{filename} need not refer to an actual file; no attempt is made 
 to open the file and inspect the content.
 
 The return value is a symbol, either @code{object}, @code{lisp}, or
-@code{maxima}. If the extension is matches one of the values in
-@code{file_type_maxima} @code{file_type} returns @code{maxima}. If the
+@code{maxima}.  If the extension is matches one of the values in
+@code{file_type_maxima} @code{file_type} returns @code{maxima}.  If the
 extension matchees one of the values in @code{file_type_lisp},
-@code{file_type} returns @code{lisp}. If none of the above,
+@code{file_type} returns @code{lisp}.  If none of the above,
 @code{file_type} returns @code{object}.
 
 See also @code{pathname_type}.
 
-See @code{file_type_maxima} and @code{file_type_lisp} for the default
-values.
+See @code{file_type_maxima} and @code{file_type_lisp} for the default values.
 
 Examples:
 
@@ -1037,6 +1069,8 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{file_type_lisp}
 @defvr {Option variable} file_type_lisp
 Default value:  @code{[l, lsp, lisp]}
 
@@ -1046,6 +1080,8 @@ as denoting a Lisp source file.
 See also @code{file_type}.
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{file_type_maxima}
 @defvr {Option variable} file_type_maxima
 Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
 
@@ -1055,28 +1091,30 @@ as denoting a Maxima source file.
 See also @code{file_type}.
 @end defvr
 
-@deffn {Function} grind (@var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{grind}
+@deffn  {Function} grind (@var{expr})
 @deffnx {Option variable} grind
-The function @code{grind} prints @var{expr}
-to the console in a form suitable for input to Maxima.
-@code{grind} always returns @code{done}.
 
-When @var{expr} is the name of a function or macro,
-@code{grind} prints the function or macro definition instead of just the name.
+The function @code{grind} prints @var{expr} to the console in a form suitable
+for input to Maxima.  @code{grind} always returns @code{done}.
+
+When @var{expr} is the name of a function or macro, @code{grind} prints the
+function or macro definition instead of just the name.
 
 See also @code{string}, which returns a string instead of printing its output.
 @code{grind} attempts to print the expression in a manner which makes it
 slightly easier to read than the output of @code{string}.
 
-When the variable @code{grind} is @code{true},
-the output of @code{string} and @code{stringout} has the same format as that of @code{grind};
-otherwise no attempt is made to specially format the output of those functions.
-The default value of the variable @code{grind} is @code{false}.
+When the variable @code{grind} is @code{true}, the output of @code{string} and
+@code{stringout} has the same format as that of @code{grind}; otherwise no
+attempt is made to specially format the output of those functions.  The default
+value of the variable @code{grind} is @code{false}.
 
-@code{grind} can also be specified as an argument of @code{playback}.
-When @code{grind} is present,
-@code{playback} prints input expressions in the same format as the @code{grind} function.
-Otherwise, no attempt is made to specially format input expressions.
+@code{grind} can also be specified as an argument of @code{playback}.  When
+@code{grind} is present, @code{playback} prints input expressions in the same
+format as the @code{grind} function.  Otherwise, no attempt is made to specially
+format input expressions.
 
 @code{grind} evaluates its argument.
 
@@ -1184,9 +1222,10 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @opencatbox
 @category{Display functions} @category{Display flags and variables}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ibase}
 @defvr {Option variable} ibase
 Default value: 10
 
@@ -1195,7 +1234,7 @@ Default value: 10
 @code{ibase} may be assigned any integer between 2 and 36 (decimal), inclusive.
 When @code{ibase} is greater than 10,
 the numerals comprise the decimal numerals 0 through 9
-plus letters of the alphabet A, B, C, ...,
+plus letters of the alphabet A, B, C, @dots{},
 as needed to make @code{ibase} digits in all.
 Letters are interpreted as digits only if the first digit is 0 through 9.
 Uppercase and lowercase letters are not distinguished.
@@ -1279,17 +1318,18 @@ it is interpreted in base 10.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{inchar}
 @defvr {Option variable} inchar
 Default value: @code{%i}
 
 @code{inchar} is the prefix of the labels of expressions entered by the user.
 Maxima automatically constructs a label for each input expression by 
-concatenating @code{inchar} and @code{linenum}. 
+concatenating @code{inchar} and @code{linenum}.
 
 @code{inchar} may be assigned any string or symbol, not necessarily a single 
-character. Because Maxima internally takes into account only the first char of
+character.  Because Maxima internally takes into account only the first char of
 the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char. Otherwise some commands like 
+should have a different first char.  Otherwise some commands like 
 @code{kill(inlables)} do not work as expected.
 
 @c ===beg===
@@ -1312,11 +1352,13 @@ See also @code{labels}.
 @closecatbox
 @end defvr
 
-@deffn {Function} ldisp (@var{expr_1}, ..., @var{expr_n})
-Displays expressions @var{expr_1}, ..., @var{expr_n} to the console
-as printed output.
-@code{ldisp} assigns an intermediate expression label to each argument
-and returns the list of labels.
+@c -----------------------------------------------------------------------------
+@anchor{ldisp}
+@deffn {Function} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
+
+Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
+printed output.  @code{ldisp} assigns an intermediate expression label to each
+argument and returns the list of labels.
 
 See also @code{disp}.
 
@@ -1346,18 +1388,18 @@ See also @code{disp}.
 @opencatbox
 @category{Display functions}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} ldisplay (@var{expr_1}, ..., @var{expr_n})
-Displays expressions @var{expr_1}, ..., @var{expr_n} to the console
-as printed output.
-Each expression is printed as an equation of the form @code{lhs = rhs}
-in which @code{lhs} is one of the arguments of @code{ldisplay}
-and @code{rhs} is its value.
-Typically each argument is a variable.
-@code{ldisp} assigns an intermediate expression label to each equation
-and returns the list of labels.
+@c -----------------------------------------------------------------------------
+@anchor{ldisplay}
+@deffn {Function} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
+
+Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
+printed output.  Each expression is printed as an equation of the form
+@code{lhs = rhs} in which @code{lhs} is one of the arguments of @code{ldisplay}
+and @code{rhs} is its value.  Typically each argument is a variable.
+@code{ldisp} assigns an intermediate expression label to each equation and
+returns the list of labels.
 
 See also @code{display}.
 
@@ -1387,10 +1429,10 @@ See also @code{display}.
 @opencatbox
 @category{Display functions}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{linechar}
 @defvr {Option variable} linechar
 Default value: @code{%t}
 
@@ -1412,29 +1454,30 @@ and @code{labels}.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{linel}
 @defvr {Option variable} linel
 Default value: 79
 
-@code{linel} is the assumed width (in characters) of the console display
-for the purpose of displaying expressions.
-@code{linel} may be assigned any value by the user,
-although very small or very large values may be impractical.
-Text printed by built-in Maxima functions, such as error messages and the output of @code{describe},
-is not affected by @code{linel}.
+@code{linel} is the assumed width (in characters) of the console display for the
+purpose of displaying expressions.  @code{linel} may be assigned any value by
+the user, although very small or very large values may be impractical.  Text
+printed by built-in Maxima functions, such as error messages and the output of
+@code{describe}, is not affected by @code{linel}.
 
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lispdisp}
 @defvr {Option variable} lispdisp
 Default value: @code{false}
 
-When @code{lispdisp} is @code{true},
-Lisp symbols are displayed with a leading question mark @code{?}.
-Otherwise,
-Lisp symbols are displayed with no leading mark.
+When @code{lispdisp} is @code{true}, Lisp symbols are displayed with a leading
+question mark @code{?}.  Otherwise, Lisp symbols are displayed with no leading
+mark.
 
 Examples:
 
@@ -1456,33 +1499,33 @@ Examples:
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{load}
 @deffn {Function} load (@var{filename})
-Evaluates expressions in @var{filename}, 
-thus bringing variables, functions, and other objects into Maxima.
-The binding of any existing object is clobbered by the binding recovered from @var{filename}. 
-To find the file,
-@code{load} calls @code{file_search} with @code{file_search_maxima} and @code{file_search_lisp}
-as the search directories.
-If @code{load} succeeds, it returns the name of the file.
-Otherwise @code{load} prints an error message.
 
-@code{load} works equally well for Lisp code and Maxima code.
-Files created by @code{save}, @code{translate_file}, and @code{compile_file}, which create Lisp code,
-and @code{stringout}, which creates Maxima code,
-can all be processed by @code{load}.
-@code{load} calls @code{loadfile} to load Lisp files and @code{batchload} to load Maxima files.
+Evaluates expressions in @var{filename}, thus bringing variables, functions, and
+other objects into Maxima.  The binding of any existing object is clobbered by
+the binding recovered from @var{filename}.  To find the file, @code{load} calls
+@code{file_search} with @code{file_search_maxima} and @code{file_search_lisp}
+as the search directories.  If @code{load} succeeds, it returns the name of the
+file.  Otherwise @code{load} prints an error message.
 
-@code{load} does not recognize @code{:lisp} constructs in Maxima files,
-and while processing @var{filename},
-the global variables @code{_}, @code{__}, @code{%}, and @code{%th} have whatever bindings
-they had when @code{load} was called.
+@code{load} works equally well for Lisp code and Maxima code.  Files created by
+@code{save}, @code{translate_file}, and @code{compile_file}, which create Lisp
+code, and @code{stringout}, which creates Maxima code, can all be processed by
+@code{load}.  @code{load} calls @code{loadfile} to load Lisp files and
+@code{batchload} to load Maxima files.
+
+@code{load} does not recognize @code{:lisp} constructs in Maxima files, and
+while processing @var{filename}, the global variables @code{_}, @code{__},
+@code{%}, and @code{%th} have whatever bindings they had when @code{load} was
+called.
 
 See also @code{loadfile}, @code{batch}, @code{batchload}, and @code{demo}.
-@code{loadfile} processes Lisp files;
-@code{batch}, @code{batchload}, and @code{demo} process Maxima files.
+@code{loadfile} processes Lisp files; @code{batch}, @code{batchload}, and
+@code{demo} process Maxima files.
 
 See @code{file_search} for more detail about the file search mechanism.
 
@@ -1491,10 +1534,10 @@ See @code{file_search} for more detail about the file search mechanism.
 @opencatbox
 @category{Session management} @category{File input}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{load_pathname}
 @defvr {System variable} load_pathname
 Default value: @code{false}
 
@@ -1531,24 +1574,30 @@ End of batchfile
 @closecatbox
 @end defvr
 
-
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@deffn {Function} loadfile (@var{filename})
-Evaluates Lisp expressions in @var{filename}.
-@code{loadfile} does not invoke @code{file_search}, so @code{filename} must include
-the file extension and as much of the path as needed to find the file.
 
-@code{loadfile} can process files created by @code{save}, @code{translate_file}, and @code{compile_file}.
-The user may find it more convenient to use @code{load} instead of @code{loadfile}.
+@c -----------------------------------------------------------------------------
+@anchor{loadfile}
+@deffn {Function} loadfile (@var{filename})
+
+Evaluates Lisp expressions in @var{filename}.  @code{loadfile} does not invoke
+@code{file_search}, so @code{filename} must include the file extension and as
+much of the path as needed to find the file.
+
+@code{loadfile} can process files created by @code{save}, @code{translate_file},
+and @code{compile_file}.  The user may find it more convenient to use
+@code{load} instead of @code{loadfile}.
 
 @opencatbox
 @category{Session management} @category{File input}
 @closecatbox
-
 @end deffn
 
 @c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
 @c I GUESS THIS COULD BE UPDATED TO DESCRIBE THE WAY IT ACTUALLY WORKS
+
+@c -----------------------------------------------------------------------------
+@anchor{loadprint}
 @defvr {Option variable} loadprint
 Default value: @code{true}
 
@@ -1571,9 +1620,10 @@ When @code{loadprint} is @code{false}, never print a message.
 @opencatbox
 @category{File input} @category{Global flags}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{obase}
 @defvr {Option variable} obase
 Default value: 10
 
@@ -1582,7 +1632,7 @@ Default value: 10
 @code{obase} may be assigned any integer between 2 and 36 (decimal), inclusive.
 When @code{obase} is greater than 10,
 the numerals comprise the decimal numerals 0 through 9
-plus capital letters of the alphabet A, B, C, ..., as needed.
+plus capital letters of the alphabet A, B, C, @dots{}, as needed.
 A leading 0 digit is displayed if the leading digit is otherwise a letter.
 The numerals for base 36, the largest acceptable base,
 comprise 0 through 9, and A through Z.
@@ -1623,10 +1673,10 @@ Examples:
 @opencatbox
 @category{Display flags and variables} @category{Console interaction}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{outchar}
 @defvr {Option variable} outchar
 Default value: @code{%o}
 
@@ -1661,28 +1711,30 @@ See also @code{labels}.
 @end defvr
 
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{packagefile}
 @defvr {Option variable} packagefile
 Default value: @code{false}
 
-Package designers who use @code{save}
-or @code{translate} to create packages (files) for others
-to use may want to set @code{packagefile: true} to prevent information
-from being added to Maxima's information-lists (e.g. @code{values},
-@code{functions}) except where necessary when the file is loaded in.
-In this way, the contents of the package will not get in the
-user's way when he adds his own data.  Note that this will not
-solve the problem of possible name conflicts.  Also note that
-the flag simply affects what is output to the package file.
-Setting the flag to @code{true} is also useful for creating Maxima
-init files.
+Package designers who use @code{save} or @code{translate} to create packages
+(files) for others to use may want to set @code{packagefile: true} to prevent
+information from being added to Maxima's information-lists (e.g.  @code{values},
+@code{functions}) except where necessary when the file is loaded in.  In this
+way, the contents of the package will not get in the user's way when he adds his
+own data.  Note that this will not solve the problem of possible name conflicts.
+Also note that the flag simply affects what is output to the package file.
+Setting the flag to @code{true} is also useful for creating Maxima init files.
 
 @opencatbox
 @category{Translation flags and variables}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{pathname_directory}
+@anchor{pathname_name}
+@anchor{pathname_type}
 @deffn  {Function} pathname_directory (@var{pathname})
 @deffnx {Function} pathname_name (@var{pathname})
 @deffnx {Function} pathname_type (@var{pathname})
@@ -1710,14 +1762,14 @@ Examples:
 @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
+@anchor{pfeformat}
 @defvr {Option variable} pfeformat
 Default value: @code{false}
 
-When @code{pfeformat} is @code{true}, a ratio of integers is
-displayed with the solidus (forward slash) character,
-and an integer denominator @code{n}
-is displayed as a leading multiplicative term @code{1/n}.
+When @code{pfeformat} is @code{true}, a ratio of integers is displayed with the
+solidus (forward slash) character, and an integer denominator @code{n} is
+displayed as a leading multiplicative term @code{1/n}.
 
 @example
 (%i1) pfeformat: false$
@@ -1739,13 +1791,14 @@ is displayed as a leading multiplicative term @code{1/n}.
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} print (@var{expr_1}, ..., @var{expr_n})
-Evaluates and displays @var{expr_1}, ..., @var{expr_n}
-one after another, from left to right,
-starting at the left edge of the console display.
+@c -----------------------------------------------------------------------------
+@anchor{print}
+@deffn {Function} print (@var{expr_1}, @dots{}, @var{expr_n})
+
+Evaluates and displays @var{expr_1}, @dots{}, @var{expr_n} one after another,
+from left to right, starting at the left edge of the console display.
 
 The value returned by @code{print} is the value of its last argument.
 @code{print} does not generate intermediate expression labels.
@@ -1780,21 +1833,19 @@ To display the contents of a file, see @code{printfile}.
 @opencatbox
 @category{Display functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{printfile}
 @deffn {Function} printfile (@var{path})
 
-Prints the file named by @var{path} to the console.
-@var{path} may be a string or a symbol;
-if it is a symbol, it is converted to a string.
+Prints the file named by @var{path} to the console.  @var{path} may be a string
+or a symbol; if it is a symbol, it is converted to a string.
 
-If @var{path} names a file which is accessible from the current working directory,
-that file is printed to the console.
-Otherwise,
-@code{printfile} attempts to locate the file by appending @var{path}
-to each of the elements of @code{file_search_usage}
-via @code{filename_merge}.
+If @var{path} names a file which is accessible from the current working
+directory, that file is printed to the console.  Otherwise, @code{printfile}
+attempts to locate the file by appending @var{path} to each of the elements of
+@code{file_search_usage} via @code{filename_merge}.
 
 @code{printfile} returns @var{path} if it names an existing file,
 or otherwise the result of a successful filename merge.
@@ -1809,9 +1860,12 @@ or otherwise the result of a successful filename merge.
 @c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
 @c AND THIS EXTREMELY NARROW, LIMITED FUNCTIONALITY ISN'T USEFUL TO USERS
 @c AND IT'S BROKEN: INCORRECT OUTPUT FOR CLISP, DIES ON GCL
-@deffn {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
+
+@c -----------------------------------------------------------------------------
+@anchor{tcl_output}
+@deffn  {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
 @deffnx {Function} tcl_output (@var{list}, @var{i0})
-@deffnx {Function} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+@deffnx {Function} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
 
 Prints elements of a list enclosed by curly braces @code{@{ @}},
 suitable as part of a program in the Tcl/Tk language.
@@ -1824,7 +1878,7 @@ prints @var{list}, beginning with element @var{i0} and printing elements
 is equivalent to @code{tcl_output (@var{list}, @var{i0}, 2)}.
 
 @code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
-prints the @var{i}'th elements of @var{list_1}, ..., @var{list_n}.
+prints the @var{i}'th elements of @var{list_1}, @dots{}, @var{list_n}.
 
 Examples:
 @c EXAMPLE INPUT
@@ -1860,13 +1914,15 @@ Examples:
  @{SIMP 1.000000000     11.00000000     
  @}
 @end example
-
 @end deffn
 
-@deffn {Function} read (@var{expr_1}, ..., @var{expr_n})
-Prints @var{expr_1}, ..., @var{expr_n}, then reads one expression from the console
-and returns the evaluated expression.
-The expression is terminated with a semicolon @code{;} or dollar sign @code{$}.
+@c -----------------------------------------------------------------------------
+@anchor{read}
+@deffn {Function} read (@var{expr_1}, @dots{}, @var{expr_n})
+
+Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
+console and returns the evaluated expression.  The expression is terminated with
+a semicolon @code{;} or dollar sign @code{$}.
 
 See also @code{readonly}.
 
@@ -1883,13 +1939,15 @@ foo is 42  -- enter new value.
 @opencatbox
 @category{Console interaction}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} readonly (@var{expr_1}, ..., @var{expr_n})
-Prints @var{expr_1}, ..., @var{expr_n}, then reads one expression from the console
-and returns the expression (without evaluation).
-The expression is terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
+@c -----------------------------------------------------------------------------
+@anchor{readonly}
+@deffn {Function} readonly (@var{expr_1}, @dots{}, @var{expr_n})
+
+Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
+console and returns the expression (without evaluation).  The expression is
+terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
 
 @example
 (%i1) aa: 7$
@@ -1909,11 +1967,12 @@ See also @code{read}.
 @opencatbox
 @category{Console interaction}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{reveal}
 @deffn {Function} reveal (@var{expr}, @var{depth})
+
 Replaces parts of @var{expr} at the specified integer @var{depth}
 with descriptive summaries.
 
@@ -1925,7 +1984,7 @@ where @var{n} is the number of operands of the sum.
 Products are replaced by @code{Product(@var{n})}
 where @var{n} is the number of operands of the product.
 @item
-Exponentials are replaced by @code{Expt}. 
+Exponentials are replaced by @code{Expt}.
 @item
 Quotients are replaced by @code{Quotient}.
 @item
@@ -1994,9 +2053,10 @@ Example:
 @opencatbox
 @category{Expressions} @category{Display functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{rmxchar}
 @defvr {Option variable} rmxchar
 Default value: @code{]}
 
@@ -2007,78 +2067,80 @@ See also @code{lmxchar}.
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Function} save (@var{filename}, values, functions, labels, ...)
-@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
-@deffnx {Function} save (@var{filename}, all)
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
 
-Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, ..., in @var{filename}.
-The arguments are the names of variables, functions, or other objects.
-If a name has no value or function associated with it, it is ignored.
-@code{save} returns @var{filename}.
+@c -----------------------------------------------------------------------------
+@anchor{save}
+@deffn  {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, @dots{})
+@deffnx {Function} save (@var{filename}, values, functions, labels, @dots{})
+@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @dots{})
+@deffnx {Function} save (@var{filename}, all)
+@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, @dots{})
+
+Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, @dots{},
+in @var{filename}.  The arguments are the names of variables, functions, or
+other objects.  If a name has no value or function associated with it, it is
+ignored.  @code{save} returns @var{filename}.
 
 @code{save} stores data in the form of Lisp expressions.
 The data stored by @code{save} may be recovered by @code{load (@var{filename})}.
 
-The global flag @code{file_output_append} governs
-whether @code{save} appends or truncates the output file.
-When @code{file_output_append} is @code{true},
-@code{save} appends to the output file.
-Otherwise, @code{save} truncates the output file.
-In either case, @code{save} creates the file if it does not yet exist.
+The global flag @code{file_output_append} governs whether @code{save} appends or
+truncates the output file.  When @code{file_output_append} is @code{true},
+@code{save} appends to the output file.  Otherwise, @code{save} truncates the
+output file.  In either case, @code{save} creates the file if it does not yet
+exist.
 
 The special form @code{save (@var{filename}, values, functions, labels, ...)}
 stores the items named by @code{values}, @code{functions}, @code{labels}, etc.
 The names may be any specified by the variable @code{infolists}.
 @code{values} comprises all user-defined variables.
 
-The special form @code{save (@var{filename}, [@var{m}, @var{n}])} stores the values of
-input and output labels @var{m} through @var{n}.
-Note that @var{m} and @var{n} must be literal integers.
-Input and output labels may also be stored one by one, e.g., @code{save ("foo.1", %i42, %o42)}.
+The special form @code{save (@var{filename}, [@var{m}, @var{n}])} stores the
+values of input and output labels @var{m} through @var{n}.  Note that @var{m}
+and @var{n} must be literal integers.  Input and output labels may also be
+stored one by one, e.g., @code{save ("foo.1", %i42, %o42)}.
 @code{save (@var{filename}, labels)} stores all input and output labels.
 When the stored labels are recovered, they clobber existing labels.
 
-The special form @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
-stores the values of @var{expr_1}, @var{expr_2}, ...,
-with names @var{name_1}, @var{name_2}, ....
-It is useful to apply this form to input and output labels, e.g., @code{save ("foo.1", aa=%o88)}.
-The right-hand side of the equality in this form may be any expression, which is evaluated.
-This form does not introduce the new names into the current Maxima environment,
-but only stores them in @var{filename}.
+The special form @code{save (@var{filename}, @var{name_1}=@var{expr_1},
+@var{name_2}=@var{expr_2}, ...)} stores the values of @var{expr_1},
+@var{expr_2}, @dots{}, with names @var{name_1}, @var{name_2}, @dots{}
+It is useful to apply this form to input and output labels, e.g.,
+@code{save ("foo.1", aa=%o88)}.  The right-hand side of the equality in this
+form may be any expression, which is evaluated.  This form does not introduce
+the new names into the current Maxima environment, but only stores them in
+@var{filename}.
 
 These special forms and the general form of @code{save} may be mixed at will.
 For example, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
 
-The special form @code{save (@var{filename}, all)} stores the current state of Maxima.
-This includes all user-defined variables, functions, arrays, etc., as well
-as some automatically defined items.
-The saved items include system variables,
-such as @code{file_search_maxima} or @code{showtime}, if they have been assigned new values by the user;
-see @code{myoptions}.
+The special form @code{save (@var{filename}, all)} stores the current state of
+Maxima.  This includes all user-defined variables, functions, arrays, etc., as
+well as some automatically defined items.  The saved items include system
+variables, such as @code{file_search_maxima} or @code{showtime}, if they have
+been assigned new values by the user; see @code{myoptions}.
 
 @code{save} evaluates @var{filename} and quotes all other arguments.
 
 @opencatbox
 @category{Session management} @category{File output}
 @closecatbox
-
 @end deffn
 
 @c NEEDS MORE WORK !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{savedef}
 @defvr {Option variable} savedef
 Default value: @code{true}
 
-When @code{savedef} is @code{true}, the Maxima version of a
-user function is preserved when the function is translated.
-This permits the definition to be displayed by @code{dispfun} and allows the function to
-be edited.
+When @code{savedef} is @code{true}, the Maxima version of a user function is
+preserved when the function is translated.  This permits the definition to be
+displayed by @code{dispfun} and allows the function to be edited.
 
 When @code{savedef} is @code{false}, the names of translated functions are
 removed from the @code{functions} list.
@@ -2086,12 +2148,15 @@ removed from the @code{functions} list.
 @opencatbox
 @category{Translation flags and variables}
 @closecatbox
-
 @end defvr
 
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
 @c MOVE THIS DESCRIPTION TO Itensor.texi
+
+@c -----------------------------------------------------------------------------
+@anchor{show}
 @deffn {Function} show (@var{expr})
+
 Displays @code{expr} with the indexed objects in it shown
 having covariant indices as subscripts, contravariant indices as
 superscripts.  The derivative indices are displayed as subscripts,
@@ -2100,20 +2165,24 @@ separated from the covariant indices by a comma.
 @opencatbox
 @category{Package itensor} @category{Display functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{showratvars}
 @deffn {Function} showratvars (@var{expr})
-Returns a list of the canonical rational expression (CRE) variables in expression @code{expr}.
+
+Returns a list of the canonical rational expression (CRE) variables in
+expression @code{expr}.
 
 See also @code{ratvars}.
 
 @opencatbox
 @category{Rational expressions} @category{Display functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{stardisp}
 @defvr {Option variable} stardisp
 Default value: @code{false}
 
@@ -2123,16 +2192,19 @@ displayed with an asterisk @code{*} between operands.
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} string (@var{expr})
-Converts @code{expr} to Maxima's linear notation
-just as if it had been typed in.
 
-The return value of @code{string} is a string,
-and thus it cannot be used in a computation.
+@c -----------------------------------------------------------------------------
+@anchor{string}
+@deffn {Function} string (@var{expr})
+
+Converts @code{expr} to Maxima's linear notation just as if it had been typed
+in.
+
+The return value of @code{string} is a string, and thus it cannot be used in a
+computation.
 
 @opencatbox
 @category{Strings}
@@ -2141,13 +2213,14 @@ and thus it cannot be used in a computation.
 
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
 @c @defvr {Option variable} stringdisp
+
+@c -----------------------------------------------------------------------------
+@anchor{stringdisp}
 @defvr {Option variable} stringdisp
 Default value: @code{false}
 
-When @code{stringdisp} is @code{true},
-strings are displayed enclosed in double quote marks.
-Otherwise,
-quote marks are not displayed.
+When @code{stringdisp} is @code{true}, strings are displayed enclosed in double
+quote marks.  Otherwise, quote marks are not displayed.
 
 @code{stringdisp} is always @code{true} when displaying a function definition.
 
@@ -2177,38 +2250,40 @@ Examples:
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@c -----------------------------------------------------------------------------
+@anchor{stringout}
+@deffn  {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
 @deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
 @deffnx {Function} stringout (@var{filename}, input)
 @deffnx {Function} stringout (@var{filename}, functions)
 @deffnx {Function} stringout (@var{filename}, values)
 
-@code{stringout} writes expressions to a file in the same form the
-expressions would be typed for input. The file can then be used
-as input for the @code{batch} or @code{demo} commands, and it may be edited for
-any purpose. @code{stringout} can be executed while @code{writefile} is in progress.
+@code{stringout} writes expressions to a file in the same form the expressions
+would be typed for input.  The file can then be used as input for the
+@code{batch} or @code{demo} commands, and it may be edited for any purpose.
+@code{stringout} can be executed while @code{writefile} is in progress.
 
-The global flag @code{file_output_append} governs
-whether @code{stringout} appends or truncates the output file.
-When @code{file_output_append} is @code{true},
-@code{stringout} appends to the output file.
-Otherwise, @code{stringout} truncates the output file.
-In either case, @code{stringout} creates the file if it does not yet exist.
+The global flag @code{file_output_append} governs whether @code{stringout}
+appends or truncates the output file.  When @code{file_output_append} is
+@code{true}, @code{stringout} appends to the output file.  Otherwise,
+@code{stringout} truncates the output file.  In either case, @code{stringout}
+creates the file if it does not yet exist.
 
 The general form of @code{stringout} writes the values of one or more 
-expressions to the output file. Note that if an expression is a
+expressions to the output file.  Note that if an expression is a
 variable, only the value of the variable is written and not the name
-of the variable. As a useful special case, the expressions may be
-input labels (@code{%i1}, @code{%i2}, @code{%i3}, ...) or output labels (@code{%o1}, @code{%o2}, @code{%o3}, ...).
+of the variable.  As a useful special case, the expressions may be
+input labels (@code{%i1}, @code{%i2}, @code{%i3}, @dots{}) or output labels
+(@code{%o1}, @code{%o2}, @code{%o3}, @dots{}).
 
-If @code{grind} is @code{true}, @code{stringout} formats the output using the @code{grind}
-format. Otherwise the @code{string} format is used. See @code{grind} and @code{string}.
+If @code{grind} is @code{true}, @code{stringout} formats the output using the
+@code{grind} format.  Otherwise the @code{string} format is used.  See
+@code{grind} and @code{string}.
 
-The special form @code{stringout (@var{filename}, [@var{m}, @var{n}])} writes the
-values of input labels m through n, inclusive. 
+The special form @code{stringout (@var{filename}, [@var{m}, @var{n}])} writes
+the values of input labels m through n, inclusive.
 
 The special form @code{stringout (@var{filename}, input)} writes all
 input labels to the file.
@@ -2217,48 +2292,46 @@ The special form @code{stringout (@var{filename}, functions)} writes all
 user-defined functions (named by the global list @code{functions}) to the file.
 
 The special form @code{stringout (@var{filename}, values)} writes all
-user-assigned variables (named by the global list @code{values})
-to the file. Each variable is printed as an
-assignment statement, with the name of the variable, a colon, and its
-value. Note that the general form of @code{stringout} does not print 
-variables as assignment statements.
+user-assigned variables (named by the global list @code{values}) to the file.
+Each variable is printed as an assignment statement, with the name of the
+variable, a colon, and its value.  Note that the general form of
+@code{stringout} does not print variables as assignment statements.
 
 @opencatbox
 @category{Session management} @category{File output}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} tex (@var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{tex}
+@deffn  {Function} tex (@var{expr})
 @deffnx {Function} tex (@var{expr}, @var{destination})
 @deffnx {Function} tex (@var{expr}, false)
 @deffnx {Function} tex (@var{label})
 @deffnx {Function} tex (@var{label}, @var{destination})
 @deffnx {Function} tex (@var{label}, false)
 
-Prints a representation of an expression
-suitable for the TeX document preparation system.
-The result is a fragment of a document,
-which can be copied into a larger document
-but not processed by itself.
+Prints a representation of an expression suitable for the TeX document
+preparation system.  The result is a fragment of a document, which can be copied
+into a larger document but not processed by itself.
 
-@code{tex (@var{expr})} prints a TeX representation of @var{expr} on the console.
+@code{tex (@var{expr})} prints a TeX representation of @var{expr} on the
+console.
 
-@code{tex (@var{label})} prints a TeX representation of the expression named by @var{label}
-and assigns it an equation label (to be displayed to the left of the expression).
-The TeX equation label is the same as the Maxima label.
+@code{tex (@var{label})} prints a TeX representation of the expression named by
+@var{label} and assigns it an equation label (to be displayed to the left of the
+expression).  The TeX equation label is the same as the Maxima label.
 
-@var{destination} may be an output stream or file name.
-When @var{destination} is a file name,
-@code{tex} appends its output to the file.
-The functions @code{openw} and @code{opena} create output streams.
+@var{destination} may be an output stream or file name.  When @var{destination}
+is a file name, @code{tex} appends its output to the file.  The functions
+@code{openw} and @code{opena} create output streams.
 
 @code{tex (@var{expr}, false)} and @code{tex (@var{label}, false)}
 return their TeX output as a string.
 
-@code{tex} evaluates its first argument after testing it to see if it is a label.
-Quote-quote @code{''} forces evaluation of the argument, thereby defeating the test
-and preventing the label.
+@code{tex} evaluates its first argument after testing it to see if it is a
+label.  Quote-quote @code{''} forces evaluation of the argument, thereby
+defeating the test and preventing the label.
 
 See also @code{texput}.
 
@@ -2299,13 +2372,15 @@ $$-\cos x$$
 @opencatbox
 @category{TeX output} @category{File output}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{tex1}
 @deffn {Function} tex1 (@var{e})
 
 Returns a string which represents the TeX output for the expressions @var{e}.
-The TeX output is not enclosed in delimiters for an equation or any other environment.
+The TeX output is not enclosed in delimiters for an equation or any other
+environment.
 
 Examples:
 
@@ -2318,38 +2393,41 @@ Examples:
 @end example
 @end deffn
 
-@deffn {Function} texput (@var{a}, @var{s})
+@c -----------------------------------------------------------------------------
+@anchor{texput}
+@deffn  {Function} texput (@var{a}, @var{s})
 @deffnx {Function} texput (@var{a}, @var{f})
 @deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
 @deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
 @deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Assign the TeX output for the atom @var{a},
-which can be a symbol or the name of an operator.
+Assign the TeX output for the atom @var{a}, which can be a symbol or the name
+of an operator.
 
-@code{texput (@var{a}, @var{s})} causes the @code{tex} function
-to interpolate the string @var{s} into the TeX output in place of @var{a}.
+@code{texput (@var{a}, @var{s})} causes the @code{tex} function to interpolate
+the string @var{s} into the TeX output in place of @var{a}.
 
-@code{texput (@var{a}, @var{f})} causes the @code{tex} function
-to call the function @var{f} to generate TeX output.
-@var{f} must accept one argument, which is an expression which has operator @var{a},
-and must return a string (the TeX output).
-@var{f} may call @code{tex1} to generate TeX output for the arguments of the input expression.
+@code{texput (@var{a}, @var{f})} causes the @code{tex} function to call the
+function @var{f} to generate TeX output.  @var{f} must accept one argument,
+which is an expression which has operator @var{a}, and must return a string
+(the TeX output).  @var{f} may call @code{tex1} to generate TeX output for the
+arguments of the input expression.
 
-@code{texput (@var{a}, @var{s}, @var{operator_type})},
-where @var{operator_type} is @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, or @code{nofix},
-causes the @code{tex} function to interpolate @var{s} into the TeX output in place of @var{a},
-and to place the interpolated text in the appropriate position.
+@code{texput (@var{a}, @var{s}, @var{operator_type})}, where @var{operator_type}
+is @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, or @code{nofix},
+causes the @code{tex} function to interpolate @var{s} into the TeX output in
+place of @var{a}, and to place the interpolated text in the appropriate
+position.
 
-@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
-causes the @code{tex} function to interpolate @var{s_1} and @var{s_2} into the TeX output
-on either side of the arguments of @var{a}.
-The arguments (if more than one) are separated by commas.
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)} causes the @code{tex}
+function to interpolate @var{s_1} and @var{s_2} into the TeX output on either
+side of the arguments of @var{a}.  The arguments (if more than one) are
+separated by commas.
 
-@code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
-causes the @code{tex} function to interpolate @var{s_1} and @var{s_2} into the TeX output
-on either side of the arguments of @var{a},
-with @var{s_3} separating the arguments.
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)} causes the
+@code{tex} function to interpolate @var{s_1} and @var{s_2} into the TeX output
+on either side of the arguments of @var{a}, with @var{s_3} separating the
+arguments.
 
 Examples:
 
@@ -2521,10 +2599,11 @@ $$ \langle a \, | \,b \rangle $$
 @opencatbox
 @category{TeX output}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} get_tex_environment (@var{op})
+@c -----------------------------------------------------------------------------
+@anchor{get_tex_environment}
+@deffn  {Function} get_tex_environment (@var{op})
 @deffnx {Function} set_tex_environment (@var{op}, @var{before}, @var{after})
 
 Customize the TeX environment output by @code{tex}.
@@ -2538,7 +2617,8 @@ is output; TeX environments associated with other operators are ignored.
 to the operator @var{op}; returns the default if no other environment
 has been assigned.
 
-@code{set_tex_environment} assigns the TeX environment for the operator @var{op}.
+@code{set_tex_environment} assigns the TeX environment for the operator
+@var{op}.
 
 Examples:
 
@@ -2572,10 +2652,11 @@ $$f(x):=1-x$$
 @opencatbox
 @category{TeX output}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} get_tex_environment_default ()
+@c -----------------------------------------------------------------------------
+@anchor{get_tex_enviroment_default}
+@deffn  {Function} get_tex_environment_default ()
 @deffnx {Function} set_tex_environment_default (@var{before}, @var{after})
 
 Customize the TeX environment output by @code{tex}.
@@ -2620,19 +2701,20 @@ g\left(x\right)+f\left(x\right)
 @opencatbox
 @category{TeX output}
 @closecatbox
-
 @end deffn
 
 @c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{system}
 @deffn {Function} system (@var{command})
-Executes @var{command} as a separate process.
-The command is passed to the default shell for execution.
-@code{system} is not supported by all operating
+
+Executes @var{command} as a separate process.  The command is passed to the
+default shell for execution.  @code{system} is not supported by all operating
 systems, but generally exists in Unix and Unix-like environments.
 
-Supposing @code{_hist.out}
-is a list of frequencies which you wish to plot as a bar graph
-using @code{xgraph}. 
+Supposing @code{_hist.out} is a list of frequencies which you wish to plot as a
+bar graph using @code{xgraph}.
 
 @example
 (%i1) (with_stdout("_hist.out",
@@ -2641,44 +2723,45 @@ using @code{xgraph}.
        system("xgraph -bar -brw .7 -nl < _hist.out"));
 @end example
 
-In order to make the plot be done in the background (returning control to Maxima)
-and remove the temporary file after it is done do:
+In order to make the plot be done in the background (returning control to
+Maxima) and remove the temporary file after it is done do:
 
 @example
 system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 @end example
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ttyoff}
 @defvr {Option variable} ttyoff
 Default value: @code{false}
 
 When @code{ttyoff} is @code{true}, output expressions are not displayed.
-Output expressions are still computed and assigned labels. See @code{labels}.
+Output expressions are still computed and assigned labels.  See @code{labels}.
 
-Text printed by built-in Maxima functions, such as error messages and the output of @code{describe},
-is not affected by @code{ttyoff}.
+Text printed by built-in Maxima functions, such as error messages and the output
+of @code{describe}, is not affected by @code{ttyoff}.
 
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Function} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-Evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
-and writes any output thus generated to a file @var{f} or output stream @var{s}.
-The evaluated expressions are not written to the output.
-Output may be generated by @code{print}, @code{display}, @code{grind},
-among other functions.
+@c -----------------------------------------------------------------------------
+@anchor{with_stdout}
+@deffn  {Function} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
+@deffnx {Function} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
 
-The global flag @code{file_output_append} governs
-whether @code{with_stdout} appends or truncates the output file @var{f}.
-When @code{file_output_append} is @code{true},
-@code{with_stdout} appends to the output file.
-Otherwise, @code{with_stdout} truncates the output file.
-In either case, @code{with_stdout} creates the file if it does not yet exist.
+Evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{} and writes any
+output thus generated to a file @var{f} or output stream @var{s}.  The evaluated
+expressions are not written to the output.  Output may be generated by
+@code{print}, @code{display}, @code{grind}, among other functions.
+
+The global flag @code{file_output_append} governs whether @code{with_stdout}
+appends or truncates the output file @var{f}.  When @code{file_output_append} is
+@code{true}, @code{with_stdout} appends to the output file.  Otherwise,
+@code{with_stdout} truncates the output file.  In either case,
+@code{with_stdout} creates the file if it does not yet exist.
 
 @code{with_stdout} returns the value of its final argument.
 
@@ -2714,36 +2797,38 @@ See also @code{writefile}.
 @opencatbox
 @category{File output}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{writefile}
 @deffn {Function} writefile (@var{filename})
+
 Begins writing a transcript of the Maxima session to @var{filename}.
 All interaction between the user and Maxima is then recorded in this file,
 @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
 just as it appears on the console.
 
-As the transcript is printed in the console output format,
-it cannot be reloaded into Maxima.
-To make a file containing expressions which can be reloaded,
-see @code{save} and @code{stringout}.
-@code{save} stores expressions in Lisp form, while @code{stringout} stores expressions in Maxima form.
+As the transcript is printed in the console output format, it cannot be reloaded
+into Maxima.  To make a file containing expressions which can be reloaded,
+see @code{save} and @code{stringout}.  @code{save} stores expressions in Lisp
+form, while @code{stringout} stores expressions in Maxima form.
 
 The effect of executing @code{writefile} when @var{filename} already exists
-depends on the underlying Lisp implementation;
-the transcript file may be clobbered, or the file may be appended.
-@code{appendfile} always appends to the transcript file.
+depends on the underlying Lisp implementation; the transcript file may be
+clobbered, or the file may be appended.  @code{appendfile} always appends to
+the transcript file.
 
-It may be convenient to execute @code{playback} after
-@code{writefile} to save the display of previous interactions.
-As @code{playback} displays only the input and output variables (@code{%i1}, @code{%o1}, etc.),
-any output generated by a print statement in a function 
-(as opposed to a return value) is not displayed by @code{playback}.
+It may be convenient to execute @code{playback} after @code{writefile} to save
+the display of previous interactions.  As @code{playback} displays only the
+input and output variables (@code{%i1}, @code{%o1}, etc.), any output generated
+by a print statement in a function (as opposed to a return value) is not
+displayed by @code{playback}.
 
-@code{closefile} closes the transcript file opened by @code{writefile} or @code{appendfile}.
+@code{closefile} closes the transcript file opened by @code{writefile} or
+@code{appendfile}.
 
 @opencatbox
 @category{File output} @category{Console interaction}
 @closecatbox
-
 @end deffn
+
