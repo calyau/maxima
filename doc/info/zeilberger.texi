@@ -96,7 +96,7 @@ Even more information including information on
 the linear system in Zeilberger's algorithm
 @end table
 
-For example:
+For example:@*
 @code{GosperVerbose}, @code{parGosperVeryVerbose},
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
@@ -106,7 +106,7 @@ For example:
 
 @deffn {Function} AntiDifference (@math{F_k}, @var{k})
 
-Returns the hypergeometric anti-difference of @math{F_k}, if it exists.
+Returns the hypergeometric anti-difference of @math{F_k}, if it exists.@*
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
 @opencatbox
