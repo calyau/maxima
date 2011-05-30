@@ -637,54 +637,6 @@ the drawing character is not stored with the box expression.
 @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@anchor{carg}
-@deffn {Function} carg (@var{z})
-
-Returns the complex argument of @var{z}.  The complex argument is an angle
-@code{theta} in @code{(-%pi, %pi]} such that @code{r exp (theta %i) = @var{z}}
-where @code{r} is the magnitude of @var{z}.
-
-@code{carg} is a computational function, not a simplifying function.
-@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
-
-See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
-@code{realpart}, and @code{imagpart}.
-
-Examples:
-
-@c ===beg===
-@c carg (1);
-@c carg (1 + %i);
-@c carg (exp (%i));
-@c carg (exp (%pi * %i));
-@c carg (exp (3/2 * %pi * %i));
-@c carg (17 * exp (2 * %i));
-@c ===end===
-@example
-(%i1) carg (1);
-(%o1)                           0
-(%i2) carg (1 + %i);
-                               %pi
-(%o2)                          ---
-                                4
-(%i3) carg (exp (%i));
-(%o3)                           1
-(%i4) carg (exp (%pi * %i));
-(%o4)                          %pi
-(%i5) carg (exp (3/2 * %pi * %i));
-                                %pi
-(%o5)                         - ---
-                                 2
-(%i6) carg (17 * exp (2 * %i));
-(%o6)                           2
-@end example
-
-@opencatbox
-@category{Complex variables}
-@closecatbox
-@end deffn
-
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
 
@@ -1565,25 +1517,6 @@ Returns the generalized factorial, defined as
 
 @opencatbox
 @category{Gamma and factorial functions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{impagpart}
-@deffn {Function} imagpart (@var{expr})
-
-Returns the imaginary part of the expression @var{expr}.
-
-@code{imagpart} is a computational function, not a simplifying function.
-@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
-@c SEE ALSO SF BUG REPORT # 902290
-
-See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform}, and
-@code{realpart}.
-
-@c NEED EXAMPLES HERE
-@opencatbox
-@category{Complex variables}
 @closecatbox
 @end deffn
 
@@ -2563,20 +2496,6 @@ the function itself.
 @closecatbox
 @end defvr
 
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{polarform}
-@deffn {Function} polarform (@var{expr})
-
-Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr},
-such that @code{r} and @code{theta} are purely real.
-
-@opencatbox
-@category{Complex variables} @category{Exponential and logarithm functions}
-@closecatbox
-@end deffn
-
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
 
@@ -2683,35 +2602,6 @@ Examples:
 
 @opencatbox
 @category{Sums and products}
-@closecatbox
-@end deffn
-
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{realpart}
-@deffn {Function} realpart (@var{expr})
-
-Returns the real part of @var{expr}.  @code{realpart} and @code{imagpart} will
-work on expressions involving trigonometic and hyperbolic functions,
-as well as square root, logarithm, and exponentiation.
-
-@opencatbox
-@category{Complex variables}
-@closecatbox
-@end deffn
-
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{rectform}
-@deffn {Function} rectform (@var{expr})
-
-Returns an expression @code{a + b %i} equivalent to @var{expr},
-such that @var{a} and @var{b} are purely real.
-
-@opencatbox
-@category{Complex variables}
 @closecatbox
 @end deffn
 
