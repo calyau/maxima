@@ -432,21 +432,6 @@ less than n.
 @closecatbox
 @end defvr
 
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{factlim}
-@defvr {Option variable} factlim
-Default value: -1
-
-@code{factlim} specifies the highest factorial which is
-automatically expanded.  If it is -1 then all integers are expanded.
-
-@opencatbox
-@category{Gamma and factorial functions}
-@closecatbox
-@end defvr
-
 @c NEEDS CLARIFICATION, EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -1089,20 +1074,6 @@ Examples:
 
 @opencatbox
 @category{Sums and products} @category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{sumsplitfact}
-@defvr {Option variable} sumsplitfact
-Default value: @code{true}
-
-When @code{sumsplitfact} is @code{false},
-@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
-@code{minfactorial} is applied after a @code{factcomb}.
-
-@opencatbox
-@category{Gamma and factorial functions} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
