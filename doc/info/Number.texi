@@ -95,46 +95,6 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{binomial}
-@deffn {Function} binomial (@var{x}, @var{y})
-
-The binomial coefficient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
-If @var{x} and @var{y} are integers, then the numerical value of the binomial
-coefficient is computed.  If @var{y}, or @var{x - y}, is an integer, the
-binomial coefficient is expressed as a polynomial.
-
-Examples:
-
-@c ===beg===
-@c binomial (11, 7);
-@c 11! / 7! / (11 - 7)!;
-@c binomial (x, 7);
-@c binomial (x + 7, x);
-@c binomial (11, y);
-@c ===end===
-@example
-(%i1) binomial (11, 7);
-(%o1)                          330
-(%i2) 11! / 7! / (11 - 7)!;
-(%o2)                          330
-(%i3) binomial (x, 7);
-        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
-(%o3)   -------------------------------------------------
-                              5040
-(%i4) binomial (x + 7, x);
-      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
-(%o4) -------------------------------------------------------
-                               5040
-(%i5) binomial (11, y);
-(%o5)                    binomial(11, y)
-@end example
-
-@opencatbox
-@category{Number theory}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{burn}
 @deffn {Function} burn (@var{n})
 
@@ -388,33 +348,6 @@ The Euler-Mascheroni constant, 0.5772156649015329 ....
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{factorial}
-@deffn {Function} factorial (@var{x})
-
-Represents the factorial function.  Maxima treats @code{factorial (@var{x})}
-the same as @code{@var{x}!}.
-See @code{!}.
-
-@opencatbox
-@category{Gamma and factorial functions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{factorial_expand}
-@defvr {Option variable} factorial_expand
-Default value: false
-
-The option variable @code{factorial_expand} controls the simplification of 
-expressions like @code{(n+1)!}, where @code{n} is an integer.
-See @code{!} for an example.
-
-@opencatbox
-@category{Gamma and factorial functions}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @anchor{fib}
 @deffn {Function} fib (@var{n})
 
@@ -565,36 +498,6 @@ Returns the least common multiple of its arguments.
 The arguments may be general expressions as well as integers.
 
 @code{load ("functs")} loads this function.
-
-@opencatbox
-@category{Number theory}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{minfactorial}
-@deffn {Function} minfactorial (@var{expr})
-
-Examines @var{expr} for occurrences of two factorials
-which differ by an integer.
-@code{minfactorial} then turns one into a polynomial times the other.
-
-@c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
-@c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!
-@c LOOKING AT THE minfactorial CODE DOESN'T HELP !!!
-@c If exp involves binomial coefficients then they will be
-@c converted into ratios of factorials.
-
-@example
-(%i1) n!/(n+2)!;
-                               n!
-(%o1)                       --------
-                            (n + 2)!
-(%i2) minfactorial (%);
-                                1
-(%o2)                    ---------------
-                         (n + 1) (n + 2)
-@end example
 
 @opencatbox
 @category{Number theory}
