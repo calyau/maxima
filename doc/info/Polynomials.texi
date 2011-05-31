@@ -385,27 +385,7 @@ CRE) form.
 @opencatbox
 @category{Polynomials}
 @closecatbox
-
 @end defvr
-
-@deffn {Function} factcomb (@var{expr})
-Tries to combine the coefficients of factorials in @var{expr}
-with the factorials themselves by converting, for example, @code{(n + 1)*n!}
-into @code{(n + 1)!}.
-
-@code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to be
-applied after a @code{factcomb}.
-
-@c Example:
-@c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
-@c THE PREVIOUS REVISION OF THIS FILE, BUT IN THIS CASE
-@c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
-@c (n + 1)^b*n!^b;
-@c factcomb (%);
-@opencatbox
-@category{Gamma and factorial functions}
-@closecatbox
-@end deffn
 
 @deffn {Function} factor (@var{expr})
 @deffnx {Function} factor (@var{expr}, @var{p})
