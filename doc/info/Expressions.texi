@@ -1509,17 +1509,6 @@ An indefinite integral is not free of its variable of integration.
 @closecatbox
 @end deffn
 
-@c IS THIS DEFINITION CORRECT ??
-@deffn {Function} genfact (@var{x}, @var{y}, @var{z})
-Returns the generalized factorial, defined as
-@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @var{x},
-@code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
-
-@opencatbox
-@category{Gamma and factorial functions}
-@closecatbox
-@end deffn
-
 @c -----------------------------------------------------------------------------
 @anchor{infix}
 @deffn  {Function} infix (@var{op})
