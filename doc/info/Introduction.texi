@@ -23,10 +23,10 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima can search the info pages.  Use the @kbd{describe} command to show
+Maxima can search the info pages.  Use the @mref{describe} command to show
 information about the command or all the commands and variables containing 
-a string. 
-The question mark @code{?} (exact search) and double question mark @code{??} 
+a string.
+The question mark @mref{?} (exact search) and double question mark @mref{??}@w{}
 (inexact search) are abbreviations for @code{describe}:
 
 @example
@@ -91,7 +91,7 @@ Enter space-separated numbers, `all' or `none': 5 4
 @end example
 
 To use a result in later calculations, you can assign it to a variable or
-refer to it by its automatically supplied label.  In addition, @kbd{%}
+refer to it by its automatically supplied label.  In addition, @mref{%}@w{}
 refers to the most recent calculated result:
 
 @example

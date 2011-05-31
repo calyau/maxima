@@ -42,11 +42,11 @@ Lisp code may be executed from within a Maxima session.  A single line of Lisp
 @noindent
 calls the Lisp function @code{foo} with Maxima variables @code{x} and @code{y}
 as arguments.  The @code{:lisp} construct can appear at the interactive prompt
-or in a file processed by @code{batch} or @code{demo}, but not in a file
-processed by @code{load}, @code{batchload}, @code{translate_file}, or
-@code{compile_file}.
+or in a file processed by @mref{batch} or @mrefcomma{demo} but not in a file
+processed by @mrefcomma{load} @mrefcomma{batchload}@w{}
+@mrefcomma{translate_file} or @mrefdot{compile_file}
 
-The function @code{to_lisp()} opens an interactive Lisp session.
+The function @mref{to_lisp} opens an interactive Lisp session.
 Entering @code{(to-maxima)} closes the Lisp session and returns to Maxima.
 @c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
 @c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
@@ -163,7 +163,7 @@ that Lisp on how to control GC.
 
 The Maxima on-line user's manual can be viewed in different forms.  From the
 Maxima interactive prompt, the user's manual is viewed as plain text by the
-@code{?} command (i.e., the @mref{describe} function).  The user's manual is
+@mref{?} command (i.e., the @mref{describe} function).  The user's manual is
 viewed as @code{info} hypertext by the @code{info} viewer program and as a
 web page by any ordinary web browser.
 
@@ -244,9 +244,9 @@ Evaluates Maxima expressions in @var{filename} and displays the results.
 user enters a carriage return.  (If running in Xmaxima, @code{demo} may need
 to see a semicolon @code{;} followed by a carriage return.)
 
-@code{demo} searches the list of directories @code{file_search_demo} to find
+@code{demo} searches the list of directories @mref{file_search_demo} to find
 @code{filename}.  If the file has the suffix @code{dem}, the suffix may be
-omitted.  See also @code{file_search}.
+omitted.  See also @mrefdot{file_search}
 
 @code{demo} evaluates its argument.
 @code{demo} returns the name of the demonstration file.
@@ -414,7 +414,7 @@ respectively.
 
 @code{example (@var{topic})} displays some examples of @var{topic}, which is a
 symbol or a string.  To get examples for operators like @code{if}, @code{do},
-or @code{lambda} the argument must be a string, e.g.  @code{example ("do")}.
+or @code{lambda} the argument must be a string, e.g. @code{example ("do")}.
 @code{example} is not case sensitive.  Most topics are function names.
 
 @code{example ()} returns the list of all recognized topics.

@@ -42,7 +42,7 @@ known bugs.
 run tests @code{rtest1} and @code{rtest2}, and displays each test.
 
 @code{run_testsuite} changes the Maxima environment.
-Typically a test script executes @code{kill} to establish a known environment
+Typically a test script executes @mref{kill} to establish a known environment
 (namely one without user-defined functions and variables)
 and then defines functions and variables appropriate to the test.
 
