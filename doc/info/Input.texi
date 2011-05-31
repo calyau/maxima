@@ -72,212 +72,10 @@ When a file name is passed to functions like @code{plot2d}, @code{save}, or
 the file in the current working directory.  The current working directory 
 depends on the system like Windows or Linux and on the installation.
 
-
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Input and Output,  , Files, Input and Output
 @section Functions and Variables for Input and Output
-
 @c -----------------------------------------------------------------------------
-@anchor{__}
-@defvr {System variable} __
-@ifinfo
-@vrindex Current input expression
-@end ifinfo
-
-@code{__} is the input expression currently being evaluated.  That is, while an
-input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
-
-@code{__} is assigned the input expression before the input is simplified or
-evaluated.  However, the value of @code{__} is simplified (but not evaluated)
-when it is displayed.
-
-@code{__} is recognized by @code{batch} and @code{load}.  In a file processed
-by @code{batch}, @code{__} has the same meaning as at the interactive prompt.
-In a file processed by @code{load}, @code{__} is bound to the input expression
-most recently entered at the interactive prompt or in a batch file; @code{__}
-is not bound to the input expressions in the file being processed.  In
-particular, when @code{load (@var{filename})} is called from the interactive
-prompt, @code{__} is bound to @code{load (@var{filename})} while the file is
-being processed.
-
-See also @code{_} and @code{%}.
-
-Examples:
-
-@c ===beg===
-@c print ("I was called as", __);
-@c foo (__);
-@c g (x) := (print ("Current input expression =", __), 0);
-@c [aa : 1, bb : 2, cc : 3];
-@c (aa + bb + cc)/(dd + ee + g(x));
-@c ===end===
-@example
-(%i1) print ("I was called as", __);
-I was called as print(I was called as, __) 
-(%o1)              print(I was called as, __)
-(%i2) foo (__);
-(%o2)                     foo(foo(__))
-(%i3) g (x) := (print ("Current input expression =", __), 0);
-(%o3) g(x) := (print("Current input expression =", __), 0)
-(%i4) [aa : 1, bb : 2, cc : 3];
-(%o4)                       [1, 2, 3]
-(%i5) (aa + bb + cc)/(dd + ee + g(x));
-                            cc + bb + aa
-Current input expression = -------------- 
-                           g(x) + ee + dd
-                                6
-(%o5)                        -------
-                             ee + dd
-@end example
-
-@opencatbox
-@category{Global variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{_}
-@defvr {System variable} _
-@ifinfo
-@vrindex Previous input
-@end ifinfo
-
-@code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2},
-@code{%i3}, @dots{}).
-
-@code{_} is assigned the input expression before the input is simplified or
-evaluated.  However, the value of @code{_} is simplified (but not evaluated)
-when it is displayed.
-
-@code{_} is recognized by @code{batch} and @code{load}.  In a file processed by
-@code{batch}, @code{_} has the same meaning as at the interactive prompt.
-In a file processed by @code{load}, @code{_} is bound to the input expression
-most recently evaluated at the interactive prompt or in a batch file; @code{_}
-is not bound to the input expressions in the file being processed.
-
-See also @code{__} and @code{%}.
-
-Examples:
-
-@c ===beg===
-@c 13 + 29;
-@c :lisp $_
-@c _;
-@c sin (%pi/2);
-@c :lisp $_
-@c _;
-@c a: 13$
-@c b: 29$
-@c a + b;
-@c :lisp $_
-@c _;
-@c a + b;
-@c ev (_);
-@c ===end===
-@example
-(%i1) 13 + 29;
-(%o1)                          42
-(%i2) :lisp $_
-((MPLUS) 13 29)
-(%i2) _;
-(%o2)                          42
-(%i3) sin (%pi/2);
-(%o3)                           1
-(%i4) :lisp $_
-((%SIN) ((MQUOTIENT) $%PI 2))
-(%i4) _;
-(%o4)                           1
-(%i5) a: 13$
-(%i6) b: 29$
-(%i7) a + b;
-(%o7)                          42
-(%i8) :lisp $_
-((MPLUS) $A $B)
-(%i8) _;
-(%o8)                         b + a
-(%i9) a + b;
-(%o9)                          42
-(%i10) ev (_);
-(%o10)                         42
-@end example
-
-@opencatbox
-@category{Console interaction} @category{Global variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@defvr {System variable} %
-@ifinfo
-@vrindex Previous output
-@end ifinfo
-
-@code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3},
-@dots{}) most recently computed by Maxima, whether or not it was displayed.
-
-@code{%} is recognized by @code{batch} and @code{load}.  In a file processed by
-@code{batch}, @code{%} has the same meaning as at the interactive prompt.
-In a file processed by @code{load}, @code{%} is bound to the output expression
-most recently computed at the interactive prompt or in a batch file; @code{%}
-is not bound to output expressions in the file being processed.
-
-See also @code{_}, @code{%%}, and @code{%th}.
-
-@opencatbox
-@category{Console interaction} @category{Global variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{%%}
-@defvr {System variable} %%
-@ifinfo
-@vrindex Previous result in compound expression
-@end ifinfo
-
-In compound statements, namely @code{block}, @code{lambda}, or
-@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous
-statement.  For example,
-
-@example
-block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
-block ([prev], prev: integrate (x^5, x),
-               ev (prev, x=2) - ev (prev, x=1));
-@end example
-
-yield the same result, namely @code{21/2}.
-
-A compound statement may comprise other compound statements.  Whether a
-statement be simple or compound, @code{%%} is the value of the previous
-statement.  For example,
-
-@example
-block (block (a^n, %%*42), %%/6)
-@end example
-
-yields @code{7*a^n}.
-
-Within a compound statement, the value of @code{%%} may be inspected at a break
-prompt, which is opened by executing the @code{break} function.  For example,
-at the break prompt opened by
-
-@example
-block (a: 42, break ())$
-@end example
-
-entering @code{%%;} yields @code{42}.
-
-At the first statement in a compound statement, or outside of a compound
-statement, @code{%%} is undefined.
-
-@code{%%} is recognized by @code{batch} and @code{load}, and it has the same
-meaning as at the interactive prompt.
-
-See also @code{%}.
-
-@opencatbox
-@category{Global variables}
-@closecatbox
-@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%dispflag}
@@ -311,77 +109,6 @@ Example:
 @category{Exponential and logarithm functions} @category{Display flags and variables}
 @closecatbox
 @end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{%th}
-@deffn {Function} %th (@var{i})
-@ifinfo
-@fnindex N'th previous output
-@end ifinfo
-
-The value of the @var{i}'th previous output expression.  That is, if the next
-expression to be computed is the @var{n}'th output, @code{%th (@var{m})} is the
-(@var{n} - @var{m})'th output.
-
-@code{%th} is useful in @code{batch} files or for referring to a group of
-output expressions.  For example,
-
-@example
-block (s: 0, for i:1 thru 10 do s: s + %th (i))$
-@end example
-
-sets @code{s} to the sum of the last ten output expressions.
-
-@code{%th} is recognized by @code{batch} and @code{load}.  In a file processed
-by @code{batch}, @code{%th} has the same meaning as at the interactive prompt.
-In a file processed by @code{load}, @code{%th} refers to output expressions most
-recently computed at the interactive prompt or in a batch file; @code{%th} does
-not refer to output expressions in the file being processed.
-
-See also @code{%}.
-
-@opencatbox
-@category{Console interaction}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{?}
-@deffn {Special symbol} ?
-@ifinfo
-@fnindex Fetch documentation
-@end ifinfo
-
-As prefix to a function or variable name, @code{?} signifies that the name is a
-Lisp name, not a Maxima name.  For example, @code{?round} signifies the Lisp
-function @code{ROUND}.  See @ref{Lisp and Maxima} for more on this point.
-
-The notation @code{? word} (a question mark followed a word, separated by
-whitespace) is equivalent to @code{describe("word")}.  The question mark must
-occur at the beginning of an input line; otherwise it is not recognized as a
-request for documentation.
-
-@opencatbox
-@category{Help} @category{Console interaction}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{??}
-@deffn {Special symbol} ??
-@ifinfo
-@fnindex Fetch documentation (inexact search)
-@end ifinfo
-
-The notation @code{?? word} (@code{??} followed a word, separated by whitespace)
-is equivalent to @code{describe("word", inexact)}.  The question mark must occur
-at the beginning of an input line; otherwise it is not recognized as a request
-for documentation.
-
-@opencatbox
-@category{Help} @category{Console interaction}
-@closecatbox
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{absboxchar}
@@ -434,6 +161,7 @@ appended.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{batch}
 @deffn  {Function} batch (@var{filename})
 @deffnx {Function} batch (@var{filename}, @code{option})
 
@@ -1314,42 +1042,6 @@ it is interpreted in base 10.
 @opencatbox
 @category{Console interaction}
 @closecatbox
-
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{inchar}
-@defvr {Option variable} inchar
-Default value: @code{%i}
-
-@code{inchar} is the prefix of the labels of expressions entered by the user.
-Maxima automatically constructs a label for each input expression by 
-concatenating @code{inchar} and @code{linenum}.
-
-@code{inchar} may be assigned any string or symbol, not necessarily a single 
-character.  Because Maxima internally takes into account only the first char of
-the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char.  Otherwise some commands like 
-@code{kill(inlables)} do not work as expected.
-
-@c ===beg===
-@c inchar: "input";
-@c expand((a+b)^3);
-@c ===end===
-@example
-(%i1) inchar: "input";
-(%o1)                                input
-(input1) expand ((a+b)^3);
-                            3        2      2      3
-(%o1)                      b  + 3 a b  + 3 a  b + a
-(input2)
-@end example
-
-See also @code{labels}.
-
-@opencatbox
-@category{Display flags and variables}
-@closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1430,29 +1122,6 @@ See also @code{display}.
 @category{Display functions}
 @closecatbox
 @end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{linechar}
-@defvr {Option variable} linechar
-Default value: @code{%t}
-
-@code{linechar} is the prefix of the labels of intermediate expressions 
-generated by Maxima. Maxima constructs a label for each intermediate expression 
-(if displayed) by concatenating @code{linechar} and @code{linenum}.
-
-@code{linechar} may be assigned any string or symbol, not necessarily a single 
-character. Because Maxima internally takes into account only the first char of
-the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char. Otherwise some commands like 
-@code{kill(inlables)} do not work as expected.
-
-Intermediate expressions might or might not be displayed. See @code{programmode}
-and @code{labels}.
-
-@opencatbox
-@category{Display flags and variables}
-@closecatbox
-@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{linel}
@@ -1672,41 +1341,6 @@ Examples:
 
 @opencatbox
 @category{Display flags and variables} @category{Console interaction}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{outchar}
-@defvr {Option variable} outchar
-Default value: @code{%o}
-
-@code{outchar} is the prefix of the labels of expressions computed by Maxima.
-Maxima automatically constructs a label for each computed expression by 
-concatenating @code{outchar} and @code{linenum}. 
-
-@code{outchar} may be assigned any string or symbol, not necessarily a single 
-character. Because Maxima internally takes into account only the first char of
-the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char. Otherwise some commands like 
-@code{kill(inlables)} do not work as expected.
-
-@c ===beg===
-@c outchar: "output";
-@c expand((a+b)^3);
-@c ===end===
-@example
-(%i1) outchar: "output";
-(output1)                           output
-(%i2) expand ((a+b)^3);
-                            3        2      2      3
-(output2)                  b  + 3 a b  + 3 a  b + a
-(%i3)
-@end example
-
-See also @code{labels}.
-
-@opencatbox
-@category{Display flags and variables}
 @closecatbox
 @end defvr
 
