@@ -317,20 +317,26 @@ Returns a string containing the characters from the current position in @var{str
 
 @end deffn
 
-@deffn {Function} sprint (@var{expr_1}, ..., @var{expr_n})
-Evaluates and displays its arguments one after the other `on a line' starting at the leftmost position.
-The numbers are printed with the '-' right next to the number,
-and it disregards line length. @code{newline()}, which will be autoloaded from @code{stringproc.lisp} 
-might be useful, if you whish to place intermediate line breaking.
+@c -----------------------------------------------------------------------------
+@anchor{sprint}
+@deffn {Function} sprint (@var{expr_1}, @dots{}, @var{expr_n})
+
+Evaluates and displays its arguments one after the other `on a line' starting at
+the leftmost position.  The numbers are printed with the '-' right next to the
+number, and it disregards line length.  @code{newline()}, which will be
+autoloaded from @code{stringproc.lisp} might be useful, if you whish to place
+intermediate line breaking.
+
+Example:
 
 @c ===beg===
-@c for n:0 thru 20 do sprint( fib(n) )$
+@c for n:0 thru 19 do sprint( fib(n) )$
 @c for n:0 thru 22 do ( 
 @c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
 @c ===end===
 @example
-(%i1) for n:0 thru 20 do sprint( fib(n) )$
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+(%i1) for n:0 thru 19 do sprint( fib(n) )$
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
 (%i2) for n:0 thru 22 do ( 
          sprint(fib(n)), if mod(n,10)=9 then newline() )$
 0 1 1 2 3 5 8 13 21 34 
@@ -341,7 +347,6 @@ might be useful, if you whish to place intermediate line breaking.
 @opencatbox
 @category{Package stringproc}
 @closecatbox
-
 @end deffn
 
 @node Functions and Variables for characters, Functions and Variables for strings, Functions and Variables for input and output, stringproc
