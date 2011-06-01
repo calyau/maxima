@@ -230,7 +230,7 @@
 (defun scan-token (flag)
   (do ((c (parse-tyipeek) (parse-tyipeek))
        (l () (cons c l)))
-      ((or (eql ch *parse-stream-eof*)
+      ((or (eql c *parse-stream-eof*)
            (and flag
                 (not (or (digit-char-p c (max 10 *read-base*))
                          (alphabetp c)
