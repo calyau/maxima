@@ -27,23 +27,22 @@
 
 @c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{abs}
-@deffn {Funktion} abs (@var{expr})
+@deffn {Funktion} abs (@var{z})
 
-Die Funktion @code{abs} ist die Betragsfunktion und f@"ur numerische und
-symbolische Rechnungen geeignet.  Ist das Argument @var{expr} eine reelle oder
+Die Funktion @code{abs} ist die Betragsfunktion und f@"ur das numerische und
+symbolische Rechnen geeignet.  Ist das Argument @var{z} eine reelle oder
 komplexe Zahl wird der Betrag berechnet.  Wenn m@"oglich werden allgemeine
 Ausdr@"ucke mit der Betragsfunktion vereinfacht.  Maxima kann Ausdr@"ucke mit
 der Betragsfunktion integrieren und ableiten sowie Grenzwerte von Ausdr@"ucken
-mit der Betragsfunktion ermitteln.  Siehe auch @mrefcomma{diff}@w{}
-@mref{integrate} und @mrefdot{limit}  Das Paket @mref{abs_integrate} erweitert
-Maximas M@"oglichkeiten, Integrale mit der Betragsfunktion zu berechnen.
+mit der Betragsfunktion ermitteln.  Das Paket @mref{abs_integrate} erweitert
+Maximas M@"oglichkeiten, Integrale mit der Betragsfunktion zu l@"osen.
 
 Die Betragsfunktion wird automatisch auf die Elemente von Listen und Matrizen
 sowie auf die beiden Seiten von Gleichungen angewendet.  Siehe
 @mrefdot{distribute_over}
 
 Siehe die Funktion @mrefcomma{cabs} um den Betrag eines komplexen Ausdrucks
-oder Funktion zu l@"osen.
+oder einer Funktion zu berechnen.
 
 Beispiele:
 
@@ -83,7 +82,7 @@ Vereinfachung von Ausdr@"ucken mit der Betragsfunktion.
 Ableitung und Integrale mit der Betragsfunktion.  Wird das Paket
 @nref{abs_integrate} geladen, k@"onnen weitere Integrale mit der Betragsfunktion
 gel@"ost werden.  Das letzte Beispiel zeigt die Laplacetransformation der
-Betragsfunktion.  Siehe auch @mrefdot{laplace}
+Betragsfunktion.  Siehe @mrefdot{laplace}
 
 @example
 (%i9) diff(x*abs(x),x),expand;
@@ -129,7 +128,7 @@ Betragsfunktion.  Siehe auch @mrefdot{laplace}
 Die Funktion @code{ceiling} ist f@"ur das numerische und symbolische Rechnen
 geeignet.
 
-Ist das Argument @var{expr} eine reelle Zahl, gibt @code{ceiling} die kleinste
+Ist das Argument @var{x} eine reelle Zahl, gibt @code{ceiling} die kleinste
 ganze Zahl zur@"uck, die gr@"o@ss{}er oder gleich @var{x} ist.
 
 Die Funktion @code{ceiling} gibt auch dann einen numerischen Wert zur@"uck, wenn
@@ -204,12 +203,12 @@ Siehe @mrefdot{floor}
 
 @c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{floor}
-@deffn {Funktion} floor (@var{expr})
+@deffn {Funktion} floor (@var{x})
 
 Die Funktion @code{floor} ist f@"ur das numerische und symbolische Rechnen
 geeignet.
 
-Ist das Argument @var{expr} eine reelle Zahl, gibt @code{floor} die gr@"o@ss{}te
+Ist das Argument @var{x} eine reelle Zahl, gibt @code{floor} die gr@"o@ss{}te
 ganze Zahl zur@"uck, die kleiner oder gleich @var{x} ist.
 
 Die Funktion @code{floor} gibt auch dann einen numerischen Wert zur@"uck, wenn
@@ -221,7 +220,7 @@ in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{floor}
 kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{floor} um drei Stellen erh@"oht.
 
-Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
+Ist das Argument @var{x} der Funktion ein komplexer Ausdruck, wird eine
 Substantivform zur@"uckgegeben.
 
 Wenn m@"oglich werden Ausdr@"ucke mit der Funktion @code{floor} von Maxima
@@ -326,10 +325,10 @@ Beispiel:
 
 Sind alle Argumente @var{x_1}, @dots{}, @var{x_n} Zahlen oder konstante
 Ausdr@"ucke wie zum Beispiel @code{1+%e} oder @code{sin(1)}, dann wird der
-gr@"o@ss{}te Zahlenwert zur@"uckgegeben.  Treten symbolische Argumente oder
-Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.  Die
-unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
-auftreten.
+gr@"o@ss{}te Zahlenwert zur@"uckgegeben.  Sind symbolische Variablen oder
+allgemeine Ausdr@"ucke unter den Argumenten, gibt Maxima einen vereinfachten
+Ausdruck zur@"uck.  Die unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf}@w{}
+k@"onnen als Argument auftreten.
 
 Die Vereinfachung der Funktion @code{max} kann kontrolliert werden, in dem mit
 der Funktion @mref{put} dem Symbol @code{trylevel} zu der Eigenschaft
@@ -385,10 +384,10 @@ Beispiele:
 
 Sind alle Argumente @var{x_1}, @dots{}, @var{x_n} Zahlen oder konstante
 Ausdr@"ucke wie zum Beispiel @code{1+%e} oder @code{sin(1)}, dann wird der
-kleinste Zahlenwert zur@"uckgegeben.  Treten symbolische Argumente oder
-Ausdr@"ucke auf, gibt Maxima einen vereinfachten Ausdruck zur@"uck.  Die
-unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf} k@"onnen als Argument
-auftreten.
+kleinste Zahlenwert zur@"uckgegeben.  Sind symbolische Variablen oder
+allgemeine Ausdr@"ucke unter den Argumenten, gibt Maxima einen vereinfachten
+Ausdruck zur@"uck.  Die unendliche Gr@"o@ss{}en @mref{inf} und @mref{minf}@w{}
+k@"onnen als Argument auftreten.
 
 Die Vereinfachung der Funktion @code{min} kann kontrolliert werden, in dem mit
 der Funktion @mref{put} dem Symbol @code{trylevel} zu der Eigenschaft
@@ -438,12 +437,12 @@ Beispiele:
 
 @c --- 20.02.2011 DK -----------------------------------------------------------
 @anchor{round}
-@deffn {Funktion} round (@var{expr})
+@deffn {Funktion} round (@var{x})
 
 Die Funktion @code{round} ist f@"ur das numerische und symbolische Rechnen
 geeignet.
 
-Ist das Argument @var{expr} eine reelle Zahl, gibt @code{round} die am
+Ist das Argument @var{x} eine reelle Zahl, gibt @code{round} die am
 n@"achsten liegende ganze Zahl zur@"uck.  Vielfache von 1/2 werden auf die 
 n@"achste gerade ganze Zahl gerundet.
 
@@ -456,7 +455,7 @@ in Gleitkommazahlen kann es zu Fehlern bei der Berechnung von @code{round}
 kommen.  Um diese zu minimieren, wird die Anzahl der Stellen
 @mref{fpprec} f@"ur die Berechnung von @code{round} um drei Stellen erh@"oht.
 
-Ist das Argument @var{expr} der Funktion ein komplexer Ausdruck, wird eine
+Ist das Argument @var{x} der Funktion ein komplexer Ausdruck, wird eine
 Substantivform zur@"uckgegeben.
 
 Wenn m@"oglich werden Ausdr@"ucke mit der Funktion @code{round} von Maxima
@@ -501,16 +500,16 @@ Information nutzen, um Ausdr@"ucke zu vereinfachen.
 
 @c --- 22.02.2011 DK -----------------------------------------------------------
 @anchor{signum}
-@deffn {Funktion} signum (@var{expr})
+@deffn {Funktion} signum (@var{z})
 
 Die Signumfunktion @code{signum} ist f@"ur das numerische und symbolische
-Rechnen geeignet.  Ist das Argument @var{expr} eine Zahl, ist das Ergebnis 0, 1
+Rechnen geeignet.  Ist das Argument @var{z} eine Zahl, ist das Ergebnis 0, 1
 oder -1, wenn die Zahl Null, positiv oder negativ ist.  Das Argument kann auch
 ein konstanter Ausdruck wie @code{%pi} oder @code{1+%e} sein.  Ist das Argument
-@var{expr} eine komplexe Zahl, vereinfacht die Funktion @code{signum(expr)} zu
-@code{expr/abs(expr)}.
+@var{z} eine komplexe Zahl, vereinfacht die der Ausdruck @code{signum(z)} zu
+@code{z/abs(z)}.
 
-Ist das Argument @var{expr} keine Zahl oder kein konstanter Ausdruck, versucht
+Ist das Argument @var{z} keine Zahl oder kein konstanter Ausdruck, versucht
 Maxima den Ausdruck zu vereinfachen.  Maxima kann die Funktion @code{signum}
 differenzieren.  Wird das Paket @nref{abs_integrate} geladen, kann Maxima
 Integrale mit der Funktion @code{signum} l@"osen.
@@ -593,13 +592,14 @@ der Funktion @code{cabs} bestimmen, sind: @code{mirror symmetry},
 
 @code{cabs} ist eine Verbfunktion, die nicht f@"ur das symbolische Rechnen
 geeignet ist.  F@"ur das symbolische Rechnen wie der Integration oder der
-Ableitung von Ausdr@"ucken muss die Betragsfunktion @code{abs} verwendet werden.
+Ableitung von Ausdr@"ucken mit der Betragsfunktion muss die Funktion @code{abs}
+verwendet werden.
 
 Das Ergebnis der Funktion @code{cabs} kann die Betragsfunktion @mref{abs} und
-die Arcustangensfunktion @mref{atan2} enthalten.
+den Arkustangens @mref{atan2} enthalten.
 
 @code{cabs} wird automatisch auf die Elemente von Listen und Matrizen sowie auf
-die beiden Seiten von Gleichungen angewendet.  Siehe @mrefdot{distribute_over}
+die beiden Seiten von Gleichungen angewendet.
 
 Siehe auch die Funktionen @mrefcomma{rectform} @mrefcomma{realpart}@w{}
 @mrefcomma{imagpart} @mrefcomma{carg} @mrefcomma{conjugate} und 
@@ -620,7 +620,7 @@ Zwei Beispiele mit der Wurzelfunktion @mref{sqrt} und der Sinusfunktion
 @end example
 
 Die Funktion @mref{erf} hat Spiegelsymmetrie, die hier f@"ur die Berechnung des
-komplexen Betrages angwendet wird.
+komplexen Betrages angewendet wird.
 
 @example
 (%i3) cabs(erf(x+%i*y));
@@ -1019,8 +1019,8 @@ Ist der Operator der doppelten Fakult@"at.
 
 F@"ur eine positive ganze Zahl @code{n}, wird @code{n!!} zu dem Produkt
 @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} vereinfacht, wobei @code{k} gleich
-@code{floor(n/2)} ist und @mref{floor} die gr@"o@ss{}te ganze Zahl liefert, die
-kleiner oder gleich @code{n/2} ist.
+@code{floor(n/2)} ist und @mref{floor} die gr@"o@ss{}te ganze Zahl als Ergebnis
+hat, die kleiner oder gleich @code{n/2} ist.
 
 F@"ur ein Argument @code{n}, das keine ganze positive Zahl ist, gibt @code{n!!}
 die Substantivform @code{genfact(n, n/2,2)} zur@"uck.  Siehe die Funktion
@@ -1047,7 +1047,7 @@ Beispiele:
 @anchor{binomial}
 @deffn {Funktion} binomial (@var{x}, @var{y})
 
-Ist der Binomialkoeffizient, der definiert ist als
+Ist der Binominialkoeffizient, der definiert ist als
 @ifnottex
 @example
                                   x!
@@ -1063,19 +1063,20 @@ Die Funktion @code{binomial} ist f@"ur das numerische und symbolische Rechnen
 geeignet.
 
 Sind die Argumente @var{x} oder @var{y} ganze Zahlen, wird der
-Binomialkoeffizient numerisch berechnet.  Sind die Argumente @var{x} und
-@var{y} reelle oder komplexe Gleitkommazahlen, wird der Binomialkoeffizient
-mit der entsprechenden verallgemeinerten Fakult@"at berechnet.  Siehe auch
-@mref{factorial} und @mrefdot{gamma}
+Binominialkoeffizient zu einer ganzen Zahl vereinfacht.  Sind die Argumente
+@var{x} und @var{y} reelle oder komplexe Gleitkommazahlen, wird der
+Binominialkoeffizient mit der entsprechenden verallgemeinerten Fakult@"at
+berechnet.  Siehe auch @mref{factorial} und @mrefdot{gamma}
 
 Ist das Argument @var{y} oder die Differenz @var{x-y} eine ganz Zahl, wird
-der Binomialkoeffizient zu einem Polynom vereinfacht.
+der Binominialkoeffizient zu einem Polynom vereinfacht.
 
-Mit den Funkionen @mref{makefact} oder @mref{makegamma} wird der
-Binomialkoeffizient in einen @"aquivalenten Ausdruck mit der Fakult@"at oder
-der Gammafunktion transformiert.
+Mit den Funktionen @mref{makefact} oder @mref{makegamma} werden
+Binominialkoeffizienten in einem Ausdruck durch @"aquivalente Ausdr@"ucke mit
+der Fakult@"at oder der Gammafunktion ersetzt.
 
-Maxima kennt die Ableitung des Binomialkoeffizienten.
+Maxima kennt die Ableitung des Binominialkoeffizienten nach den Argumenten
+@var{x} und @var{y}.
 
 Beispiele:
 
@@ -1105,24 +1106,24 @@ Beispiele:
 
 @c --- 25.02.2011 DK -----------------------------------------------------------
 @anchor{double_factorial}
-@deffn {Funktion} double_factorial (expr)
+@deffn {Funktion} double_factorial (z)
 
 Ist die doppelte Fakult@"at, die allgemein definiert ist als
 @ifnottex
 @example
-               2  1/4 (1 - cos(n %pi))  n/2       n
+               2  1/4 (1 - cos(z %pi))  z/2       z
              (---)                     2    gamma(- + 1)
               %pi                                 2
 @end example
 @end ifnottex
 @tex
-$$\left({{2}\over{\pi}}\right)^{{{1}\over{4}}\,\left(1-\cos \left(n\,
- \pi\right)\right)}\,2^{{{n}\over{2}}}\,\Gamma\left({{n}\over{2}}+1
+$$\left({{2}\over{\pi}}\right)^{{{1}\over{4}}\,\left(1-\cos \left(z\,
+ \pi\right)\right)}\,2^{{{z}\over{2}}}\,\Gamma\left({{z}\over{2}}+1
  \right)$$
 @end tex
 
 Die Funktion @code{double_factorial} ist f@"ur das numerische und symbolische
-Rechnen geeignet.  Ist das Argument @var{expr} eine ganze Zahl, eine
+Rechnen geeignet.  Ist das Argument @var{z} eine ganze Zahl, eine
 Gleitkommazahl, eine gro@ss{}e Gleitkommazahl oder eine komplexe Gleitkommazahl,
 dann wird ein numerisches Ergebnis berechnet.  F@"ur eine positive ganze Zahl
 ist das Ergebnis gleich dem Ergebnis des Operators der doppelten Fakult@"at
@@ -1193,7 +1194,7 @@ Die Ableitung der Funktion @code{double_factorial}.
 @anchor{factcomb}
 @deffn {Funktion} factcomb (@var{expr})
 
-Fasst Faktoren und Fakult@"aten im Ausdruck @var{expr} zusammen.  Zum Beispiel
+Fasst Faktoren mit Fakult@"aten im Ausdruck @var{expr} zusammen.  Zum Beispiel
 wird @code{(n+1)*n!} zu @code{(n+1)!} zusammengefasst.
 
 Hat die Optionsvariable @mref{sumsplitfact} den Wert @code{false}, wird nach
@@ -1223,7 +1224,7 @@ Beispiele:
 @c --- 26.02.2011 DK -----------------------------------------------------------
 @anchor{factorial}
 @anchor{!}
-@deffn  {Funktion} factorial (@var{x})
+@deffn  {Funktion} factorial (@var{z})
 @deffnx {Operator} !
 @ifinfo
 @fnindex Fakult@"at
@@ -1233,10 +1234,10 @@ Die Funktion @code{factorial} ist f@"ur das numerische und symbolische Rechnen
 der Fakult@"at geeignet.  Der Operator der Fakult@"at @code{!}, ist identisch
 mit der Funktion @code{factorial}.
 
-F@"ur eine ganze Zahl @code{x}, vereinfacht @code{x!} zum Produkt der ganzen 
-Zahlen von 1 bis einschlie@ss{}lich @code{x}.  @code{0!} vereinfacht zu 1.
-F@"ur reelle und komplexe Gleitkommazahlen wird @code{x!} mit der
-Verallgemeinerung @code{gamma(x+1)} berechnet.  Siehe die Funktion
+F@"ur eine ganze Zahl @code{n}, vereinfacht @code{n!} zum Produkt der ganzen
+Zahlen von 1 bis einschlie@ss{}lich @code{n}.  @code{0!} vereinfacht zu 1.
+F@"ur reelle und komplexe Gleitkommazahlen wird @code{z!} mit der
+Verallgemeinerung @code{gamma(z+1)} berechnet.  Siehe die Funktion
 @mrefdot{gamma}  F@"ur eine halbzahlige rationale Zahl @code{n/2}, vereinfacht
 @code{(n/2)!} zu einem rationalen Faktor multipliziert mit @code{sqrt(%pi)}.
 
@@ -1543,14 +1544,15 @@ Die Optionsvariable @mref{logsimp} kontrolliert die Vereinfachung der
 Exponentialfunktion f@"ur den Fall, dass im Argument @var{expr} die
 Logarithmusfunktion @mref{log} auftritt.  Hat die @code{logsimp} den Wert
 @code{true}, wird ein Ausdruck @code{%e^(n*log(x)} zu @code{x^n} vereinfacht,
-wenn @var{n} eine ganze Zahl ist.  Mit der Optionsvariablen @mref{%e_to_numlog}
-wird diese Vereinfachung f@"ur eine rationale Zahl @var{n} kontrolliert.
+wenn @var{n} eine ganze Zahl ist.  Mit der Optionsvariablen
+@mref{%e_to_numlog} wird diese Vereinfachung f@"ur eine rationale Zahl @var{n}
+kontrolliert.
 
 @item demoivre
 Ist eine Optionsvariable und eine Funktion, die auch als Auswertungsschalter
 @mref{evflag} definiert ist.  Hat die Optionsvariable @mref{demoivre} den Wert
 @code{true}, wird ein Ausdruck @code{%e^(x + %i y)} zu
-@code{%e^x (cos(y) + %i sin(y))} vereinfacht.  Siehe auch die Funktion
+@code{%e^x (cos(y) + %i sin(y))} vereinfacht.  Siehe auch die Optionsvariable
 @mrefdot{exponentialize}
 @end table
 
@@ -1633,10 +1635,12 @@ Verschiedene Beispiele mit der Logarithmusfunktion.
 (%i6) limit(log(x),x,0,plus);
 (%o6)                         minf
 (%i7) integrate(log(z)^n,z);
+@group
                                                     - n - 1
 (%o7) - gamma_incomplete(n + 1, - log(z)) (- log(z))
                                                             n + 1
                                                       log(z)
+@end group
 (%i8) laplace(log(t),t,s);
 @group
                         - log(s) - %gamma
@@ -1703,6 +1707,7 @@ Beispiele:
 @end deffn
 
 @c --- 12.03.2011 DK -----------------------------------------------------------
+@need 800
 @anchor{logconcoeffp}
 @defvr {Optionsvariable} logconcoeffp
 Standardwert: @code{false}
@@ -1776,6 +1781,7 @@ Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 @end defvr
 
 @c --- 12.03.2011 DK -----------------------------------------------------------
+@need 800
 @anchor{logsimp}
 @defvr {Optionsvariable} logsimp
 Standardwert: @code{true}
@@ -1918,18 +1924,9 @@ Verschiedene Beispiele mit der Wurzelfunktion.
                                       2    2 1/4     atan2(y, x)
                                   + (y  + x )    cos(-----------)
                                                           2
-(%i6) rectform(sqrt(x+%i*y));
-@group
-           2    2 1/4     atan2(y, x)
-(%o6) %i (y  + x )    sin(-----------)
-                               2
-                                      2    2 1/4     atan2(y, x)
-                                  + (y  + x )    cos(-----------)
-                                                          2
-@end group
-(%i7) integrate(sqrt(t)*(t+1)^-2,t,0,1);
+(%i6) integrate(sqrt(t)*(t+1)^-2,t,0,1);
                              %pi - 2
-(%o7)                        -------
+(%o6)                        -------
                                 4
 @end example
 @end deffn
@@ -2052,14 +2049,94 @@ Winkelfunktionen durch Logarithmusfunktionen ersetzt.  Der Standardwert von
 @end table
 @end deffn
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
+@c --- 01.06.2011 DK -----------------------------------------------------------
 @anchor{atan2}
 @deffn {Funktion} atan2 (@var{y}, @var{x})
-@c -- yields the value of @code{atan(@var{y}/@var{x})} in the interval 
-@c @code{-%pi} to @code{%pi}.
 
--- Gibt den Wert von @code{atan(@var{y}/@var{x})} im Intervall @code{-%pi}
-bis @code{%pi} zur@"uck.
+Ist der Arkustangens mit zwei Argumenten, der in Maxima wie folgt definiert ist:
+
+@verbatim
+     atan(y/x)           x>0
+     atan(y/x) + %pi     x<0 und y>=0
+     atan(y/x) - %pi     x<0 und y<0
+       %pi / 2           x=0 und y>0
+     - %pi / 2           x=0 und y<0
+     nicht definiert     x=0 und y=0
+@end verbatim
+
+Mit der obigen Definition ist der Wertebereich des Arkustangens
+@code{-%pi < atan2(y,x) <= %pi}.  Alternativ kann der Arkustangens mit zwei
+Argumenten definiert werden als
+
+@verbatim
+                              %i y + x
+     atan2(y, x) = - %i log(-------------)
+                                  2    2
+                            sqrt(y  + x )
+@end verbatim
+
+Der Arkustangens ist f@"ur das symbolische und numerische Rechnen geeignet.
+F@"ur reelle Argumente @var{x} und @var{y} deren Vorzeichen bestimmt werden
+kann, vereinfacht Maxima den Arkustangens wie oben in der Definition angegeben.
+Sind beide Argumente Gleitkommazahlen wird ein numerisches Ergebnis berechnet.
+Die numerische Berechnung f@"ur komplexe Gleitkommazahlen ist nicht
+implementiert.  Weiterhin kennt Maxima die speziellen Werte, wenn eines der
+Argumente @var{x} oder @var{y} unendlich ist.  @code{atan2(x, x)} und
+@code{atan2(x, -x)} werden von Maxima vereinfacht, wenn Maxima das Vorzeichen
+von @var{x} ermitteln kann.
+
+Die Vereinfachung des Arkustangens wird weiterhin von den folgenden
+Optionsvariablen kontrolliert:
+
+@table @code
+@item distribute_over
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und ist das
+Argument des Arkustangens eine Matrix, Liste oder Gleichung wird die Funktion
+auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der Standardwert
+ist @code{true}.
+
+@item trigsign
+Hat die Optionsvariable @mref{trigsign} den Wert @code{true}, vereinfacht
+Maxima @code{atan2(-y, x)} zu @code{- atan2(y, x)}.  Der Standardwert ist
+@code{true}.
+
+@item logarc
+Hat die Optionsvariable @mref{logarc} den Wert @code{true}, wird der
+Arkustangens durch einen Ausdruck mit der Logarithmusfunktionen ersetzt.
+Der Standardwert von @code{logarc} ist @code{false}.
+@end table
+
+Maxima kann Ausdr@"ucke mit dem Arkustangens ableiten und integrieren sowie die
+Grenzwerte von Ausdr@"ucken mit dem Arkustangens ermitteln.
+
+Beispiele:
+
+@example
+(%i1) atan2([-1, 1],[-1, 0, 1]);
+              3 %pi    %pi    %pi    3 %pi  %pi  %pi
+(%o1)     [[- -----, - ---, - ---], [-----, ---, ---]]
+                4       2      4       4     2    4
+(%i2) atan2(1,[-0.5, 0.5]);
+(%o2)         [2.034443935795703, 1.10714871779409]
+(%i3) assume(a>0)$
+
+(%i4) atan2(2*a, -2*a);
+                              3 %pi
+(%o4)                         -----
+                                4
+(%i5) diff(atan2(y,x), x);
+@group
+                                 y
+(%o5)                       - -------
+                               2    2
+                              y  + x
+@end group
+(%i6) integrate(atan2(y,x), x);
+                          2    2
+                   y log(y  + x )          y
+(%o6)              -------------- + x atan(-)
+                         2                 x
+@end example
 @end deffn
 
 @c --- 12.03.2011 DK -----------------------------------------------------------
@@ -2087,7 +2164,7 @@ Optionsvariablen und Auswertungsschaltern @mref{numer} und @mref{float}@w{}
 erzwungen werden.
 
 Die Winkelfunktionen sind gerade oder ungerade und haben Spiegelsymmetrie.
-Maxima wendet diese Symmetrieeigenschaften automatisch bei bei der Vereinfachung
+Maxima wendet diese Symmetrieeigenschaften automatisch bei der Vereinfachung
 von Ausdr@"ucken mit Winkelfunktionen an.
 
 Ist das Argument @var{z} eine Matrix, eine Liste oder eine Gleichung werden die
@@ -2654,6 +2731,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@need 900
 @node Hyperbelfunktionen, Zufallszahlen, Winkelfunktionen, Mathematische Funktionen
 @section Hyperbelfunktionen
 @c -----------------------------------------------------------------------------
@@ -2683,7 +2761,6 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 Die inversen Hyperbelfunktionen: Areasinus Hyperbolicus, Areakosinus
 Hyperbolicus, Areatangens Hyperbolicus, Areakotangens Hyperbolicus, Areakosekans
 Hyperbolicus, Areasekans Hyperbolicus.
-
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
@@ -2697,7 +2774,6 @@ Hyperbolicus, Areasekans Hyperbolicus.
 Die Hyperbelfunktionen: Sinus Hyperbolicus, Kosinus Hyperbolicus, Tangens
 Hyperbolicus, Kotangens Hyperbolicus, Kosekans Hyperbolicus, Sekans
 Hyperbolicus.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
