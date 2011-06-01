@@ -444,6 +444,9 @@
 
 (declare-top (special $numer $logarc $trigsign))
 
+;; atan2 distributes over lists, matrices, and equations
+(defprop $atan2 (mlist $matrix mequal) distribute_over)
+
 (defun simpatan2 (expr vestigial z)     ; atan2(y,x) ~ atan(y/x)
   (declare (ignore vestigial))
   (twoargcheck expr)
