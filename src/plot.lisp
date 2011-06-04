@@ -2063,8 +2063,8 @@ Several functions depending on the two variables v1 and v2:
                         (third lvars)
                         (rest ($listofvars (mfuncall fun (second lvars)
                                                      (third lvars))))))
-                  (merror
-                   (intl:gettext "plot3d: expected <expr. of v1 and v2>, [v1, min, max], [v2, min, max]")))))
+                  (mtell (intl:gettext "plot3d: expected <expr. of v1 and v2>, [v1, min, max], [v2, min, max]~%"))
+                  (mtell (intl:gettext "plot3d: keep going and hope for the best.~%")))))
           (let* ((pl
                   (draw3d
                    fun (third xrange) (fourth xrange) (third yrange)
