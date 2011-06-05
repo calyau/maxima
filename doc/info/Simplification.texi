@@ -669,63 +669,6 @@ definitions.
 @closecatbox
 @end defvr
 
-@c NEEDS CLARIFICATION, EXAMPLES
-@c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
-@c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
-@c NEED TO MENTION THIS IS AN evflag
-
-@c -----------------------------------------------------------------------------
-@anchor{numer}
-@defvr {Option variable} numer
-
-@code{numer} causes some mathematical functions (including exponentiation)
-with numerical arguments to be evaluated in floating point.  It causes
-variables in @code{expr} which have been given numerals to be replaced by
-their values.  It also sets the @code{float} switch on.
-
-See also @code{%enumer}.
-
-Examples:
-
-@c ===beg===
-@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
-@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
-@c ===end===
-@example
-(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
-                                        1
-(%o1)            [sqrt(2), sin(1), -----------]
-                                   sqrt(3) + 1
-(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
-(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
-@end example
-
-@opencatbox
-@category{Numerical evaluation} @category{Evaluation flags}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-@c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
-
-@c -----------------------------------------------------------------------------
-@anchor{numerval}
-@deffn {Function} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{var_n}, @var{expr_n})
-
-Declares the variables @code{x_1}, @dots{}, @var{x_n} to have
-numeric values equal to @code{expr_1}, @dots{}, @code{expr_n}.
-The numeric value is evaluated and substituted for the variable
-in any expressions in which the variable occurs if the @code{numer} flag is
-@code{true}.  See also @code{ev}.
-
-The expressions @code{expr_1}, @dots{}, @code{expr_n} can be any expressions,
-not necessarily numeric.
-
-@opencatbox
-@category{Declarations and inferences} @category{Numerical evaluation}
-@closecatbox
-@end deffn
-
 @c -----------------------------------------------------------------------------
 @anchor{opproperties}
 @defvr {System variable} opproperties
