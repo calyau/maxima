@@ -344,5 +344,25 @@ plot2d (foo29, [u, -1, 0]);
 /* same but now using default axis labels */
 plot3d(Bxt(x,r),[x,0,L],[r,0,R],[legend,"Axial field"]);
 
+/* from the mailing list 2011-05-26:
+ * "Wrong usage" error message when trying to plot with plot3d or contour_plot
+ * should expect this example to provoke an advisory message and make a plot
+ */
+
+block (local (fn, Fn, pw, fbn, fbnxcy, loww),
+ fn(x):=1/sqrt(2*%pi)*exp((-x^2)/2),
+ Fn(x):=integrate(fn(t),t,-inf,x),
+ pw(r1,r2,s1,s2):=1-Fn((r2-r1)/sqrt(s1^2+s2^2)),
+ fbn(x,y,r):=1/(2*%pi*sqrt(1-r^2))*exp((-(x^2-2*r*x*y+y^2))/(2*(1-r^2))),
+ fbnxcy(x,y,r) := fbn(x,y,r) / fn(y),
+ loww(rs2, ro, r, s1, s2) := quad_qagi(fbnxcy(rs1, rs2, r)*pw(rs1, ro, s1, s2), rs1, minf, inf),
+ plot3d( loww(rs2, 0, r, 1, 1)[1] , [rs2, -1.5, 2.5], [r, 0.1, 0.9] ));
+
+/* simpler version of the preceding one */
+
+block (local (foo),
+ foo(x, y) := if numberp(x) and numberp(y) then [x^2 - y^2] else funmake (foo, [x, y]),
+ plot3d (foo (a, b)[1], [a, -1, 1], [b, -1, 1]));
+
 "FINIS" $
 
