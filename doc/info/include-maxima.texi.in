@@ -88,6 +88,7 @@ Maxima infrastructure
 * Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
 * Help::                        Asking for help from within a Maxima session.
 * Command Line::                Maxima command line syntax.
+* Data Types and Structures::   Numbers, Strings, Lists, Arrays, and Structures.
 * Operators::                   Operators used in Maxima expressions.
 * Expressions::                 Expressions in Maxima.
 * Evaluation::                  Evaluating expressions.
@@ -211,7 +212,16 @@ Help
 Command Line
 
 * Introduction to Command Line::  
-* Functions and Variables for Command Line::  
+* Functions and Variables for Command Line::
+
+Data Types and Structures
+
+* Numbers::
+* Strings::
+* Constants::
+* Lists::
+* Arrays::
+* Structures::
 
 Operators
 
@@ -225,10 +235,11 @@ Operators
 
 Expressions
 
-* Introduction to Expressions::  
-* Complex::                     
-* Inequality::                  
-* Syntax::                      
+* Introduction to Expressions::
+* Nouns and Verbs::
+* Identifiers::
+* Inequality::
+* Syntax::
 * Functions and Variables for Expressions::
 
 Evaluation
@@ -273,9 +284,9 @@ Polynomials
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::  
 
-Constants
-
-* Functions and Variables for Constants::   
+@c Constants
+@c 
+@c * Functions and Variables for Constants::
 
 Logarithms
 
@@ -674,11 +685,16 @@ zeilberger
 @chapter Help
 @include Help.texi
 
-@node Command Line, Operators, Help, Top
+@node Command Line, Data Types and Structures, Help, Top
 @chapter Command Line
 @include Command.texi
 
-@node Operators, Expressions, Command Line, Top
+@node Data Types and Structures, Operators, Command Line, Top
+@chapter Data Types and Structures
+@include DataTypes.texi
+@include Constants.texi
+
+@node Operators, Expressions, Data Types and Structures, Top
 @chapter Operators
 @include Operators.texi
 
@@ -714,15 +730,15 @@ zeilberger
 @chapter Contexts
 @include Contexts.texi
 
-@node Polynomials, Constants, Contexts, Top
+@node Polynomials, Logarithms, Contexts, Top
 @chapter Polynomials
 @include Polynomials.texi
 
-@node Constants, Logarithms, Polynomials, Top
-@chapter Constants
-@include Constants.texi
+@c @node Constants, Logarithms, Polynomials, Top
+@c @chapter Constants
+@c @include Constants.texi
 
-@node Logarithms, Trigonometric, Constants, Top
+@node Logarithms, Trigonometric, Polynomials, Top
 @chapter Logarithms
 @include Logarithms.texi
 
