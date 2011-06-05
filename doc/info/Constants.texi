@@ -1,25 +1,52 @@
+@c -----------------------------------------------------------------------------
+@page
+@node Constants, , Strings, Data Types and Structures
+@section Constants
+@c -----------------------------------------------------------------------------
 
 @menu
 * Functions and Variables for Constants::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Constants,  , Constants, Constants
-@section Functions and Variables for Constants
+@subsection Functions and Variables for Constants
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{%e}
 @defvr {Constant} %e
 @ifinfo
 @vrindex e
 @vrindex Euler's number
 @vrindex Base of natural logarithm
 @end ifinfo
-@code{%e} represents the base of the natural logarithm, also known as Euler's number.
-The numeric value of @code{%e} is the double-precision floating-point value 2.718281828459045d0.
+
+@code{%e} represents the base of the natural logarithm, also known as Euler's
+number.  The numeric value of @code{%e} is the double-precision floating-point
+value 2.718281828459045d0.
 
 @opencatbox
 @category{Constants}
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%gamma}
+@defvr {Constant} %gamma
+@ifinfo
+@vrindex Euler-Mascheroni constant
+@end ifinfo
+The Euler-Mascheroni constant, 0.5772156649015329 ....
+@c DOUBTLESS THERE IS MORE TO SAY HERE.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%i}
 @defvr {Constant} %i
 @ifinfo
 @vrindex i
@@ -32,6 +59,8 @@ The numeric value of @code{%e} is the double-precision floating-point value 2.71
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{false}
 @defvr {Constant} false
 @code{false} represents the Boolean constant of the same name.
 Maxima implements @code{false} by the value @code{NIL} in Lisp.
@@ -41,6 +70,8 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{ind}
 @defvr {Constant} ind
 @ifinfo
 @vrindex Indeterminate
@@ -65,6 +96,8 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{inf}
 @defvr {Constant} inf
 @ifinfo
 @vrindex Real infinity
@@ -76,6 +109,8 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{infinity}
 @defvr {Constant}  infinity
 @ifinfo
 @vrindex Complex infinity
@@ -87,11 +122,14 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{minf}
 @defvr {Constant} minf
 @ifinfo
 @vrindex Minus infinity
 @vrindex Negative infinity
 @end ifinfo
+
 @code{minf} represents real minus (i.e., negative) infinity.
 
 @opencatbox
@@ -99,17 +137,20 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%phi}
 @defvr {Constant} %phi
 @ifinfo
 @vrindex phi
 @vrindex Golden mean
 @end ifinfo
 
-@code{%phi} represents the so-called @i{golden mean},
-@math{(1 + sqrt(5))/2}.
-The numeric value of @code{%phi} is the double-precision floating-point value 1.618033988749895d0.
+@code{%phi} represents the so-called @i{golden mean}, @math{(1 + sqrt(5))/2}.
+The numeric value of @code{%phi} is the double-precision floating-point value
+1.618033988749895d0.
 
-@code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of @code{%phi}.
+@code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of
+@code{%phi}.
 
 By default, Maxima does not know the algebraic properties of @code{%phi}.
 After evaluating @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
@@ -178,19 +219,26 @@ After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%pi}
 @defvr {Constant} %pi
 @ifinfo
 @vrindex pi
 @end ifinfo
+
 @code{%pi} represents the ratio of the perimeter of a circle to its diameter.
-The numeric value of @code{%pi} is the double-precision floating-point value 3.141592653589793d0.
+The numeric value of @code{%pi} is the double-precision floating-point value
+3.141592653589793d0.
 
 @opencatbox
 @category{Constants}
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{true}
 @defvr {Constant} true
+
 @code{true} represents the Boolean constant of the same name.
 Maxima implements @code{true} by the value @code{T} in Lisp.
 
@@ -199,6 +247,8 @@ Maxima implements @code{true} by the value @code{T} in Lisp.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{und}
 @defvr {Constant} und
 @ifinfo
 @vrindex Undefined
@@ -224,9 +274,12 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{zeroa}
 @defvr {Constant} zeroa
-@code{zeroa} represents an infinitesimal above zero. @code{zeroa} can be used in
-expressions. @code{limit} simplifies expressions which contain infinitesimals.
+
+@code{zeroa} represents an infinitesimal above zero.  @code{zeroa} can be used
+in expressions.  @code{limit} simplifies expressions which contain
+infinitesimals.
 
 See also @code{zerob} and @code{limit}.
 
@@ -240,9 +293,9 @@ Example:
 @c ===end===
 @example
 (%i1) limit(zeroa);
-(%o1)                                  0
+(%o1)                           0
 (%i2) limit(x+zeroa);
-(%o2)                                  x
+(%o2)                           x
 @end example
 
 @opencatbox
@@ -251,9 +304,12 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{zerob}
 @defvr {Constant} zerob
-@code{zerob} represents an infinitesimal below zero. @code{zerob} can be used in
-expressions. @code{limit} simplifies expressions which contain infinitesimals.
+
+@code{zerob} represents an infinitesimal below zero.  @code{zerob} can be used
+in expressions.  @code{limit} simplifies expressions which contain
+infinitesimals.
 
 See also @code{zeroa} and @code{limit}.
 
