@@ -1,16 +1,14 @@
 @menu
-* Introduction to Expressions::  
-* Complex::                     
+* Introduction to Expressions::
 * Nouns and Verbs::
 * Identifiers::
-* Strings::
-* Inequality::                  
-* Syntax::                      
-* Functions and Variables for Expressions::  
+* Inequality::
+* Syntax::
+* Functions and Variables for Expressions::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Expressions, Complex, Expressions, Expressions
+@node Introduction to Expressions, Nouns and Verbs, Expressions, Expressions
 @section Introduction to Expressions
 @c -----------------------------------------------------------------------------
 
@@ -59,28 +57,8 @@ term in the @i{comma expression} which actually gives back the value.
 (%o4)                        3628800
 @end example
 
-@c THIS REALLY NEEDS EXPANSION
-
 @c -----------------------------------------------------------------------------
-@node Complex, Nouns and Verbs, Introduction to Expressions, Expressions
-@section Complex
-@c -----------------------------------------------------------------------------
-
-A complex expression is specified in Maxima by adding the real part of the
-expression to @code{%i} times the imaginary part.  Thus the roots of the
-equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.
-Note that simplification of products of complex expressions can be effected by
-expanding the product.  Simplification of quotients, roots, and other functions
-of complex expressions can usually be accomplished by using the @code{realpart},
-@code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}
-functions.
-
-@opencatbox
-@category{Complex variables}
-@closecatbox
-
-@c -----------------------------------------------------------------------------
-@node Nouns and Verbs, Identifiers, Complex, Expressions
+@node Nouns and Verbs, Identifiers, Introduction to Expressions, Expressions
 @section Nouns and Verbs
 @c -----------------------------------------------------------------------------
 
@@ -158,7 +136,7 @@ Examples:
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Identifiers, Strings, Nouns and Verbs, Expressions
+@node Identifiers, Inequality, Nouns and Verbs, Expressions
 @section Identifiers
 @c -----------------------------------------------------------------------------
 
@@ -234,77 +212,7 @@ Examples:
 @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Strings, Inequality, Identifiers, Expressions
-@section Strings
-@c -----------------------------------------------------------------------------
-
-Strings (quoted character sequences) are enclosed in double quote marks @code{"}
-for input, and displayed with or without the quote marks, depending on the
-global variable @code{stringdisp}.
-
-Strings may contain any characters, including embedded tab, newline, and
-carriage return characters.  The sequence @code{\"} is recognized as a literal
-double quote, and @code{\\} as a literal backslash.  When backslash appears at
-the end of a line, the backslash and the line termination (either newline or
-carriage return and newline) are ignored, so that the string continues with the
-next line.  No other special combinations of backslash with another character
-are recognized; when backslash appears before any character other than @code{"},
-@code{\}, or a line termination, the backslash is ignored.  There is no way to
-represent a special character (such as tab, newline, or carriage return)
-except by embedding the literal character in the string.
-
-There is no character type in Maxima; a single character is represented as a
-one-character string.
-
-The @code{stringproc} add-on package contains many functions for working with
-strings.
-
-Examples:
-
-@c ===beg===
-@c s_1 : "This is a string.";
-@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
-@c s_3 : "Embedded line termination
-@c in this string.";
-@c s_4 : "Ignore the \
-@c line termination \
-@c characters in \
-@c this string.";
-@c stringdisp : false;
-@c s_1;
-@c stringdisp : true;
-@c s_1;
-@c ===end===
-@example
-(%i1) s_1 : "This is a string.";
-(%o1)               This is a string.
-(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
-(%o2) Embedded "double quotes" and backslash \ characters.
-(%i3) s_3 : "Embedded line termination
-in this string.";
-(%o3) Embedded line termination
-in this string.
-(%i4) s_4 : "Ignore the \
-line termination \
-characters in \
-this string.";
-(%o4) Ignore the line termination characters in this string.
-(%i5) stringdisp : false;
-(%o5)                         false
-(%i6) s_1;
-(%o6)                   This is a string.
-(%i7) stringdisp : true;
-(%o7)                         true
-(%i8) s_1;
-(%o8)                  "This is a string."
-@end example
-
-@opencatbox
-@category{Syntax}
-@closecatbox
-
-@c -----------------------------------------------------------------------------
-@node Inequality, Syntax, Strings, Expressions
+@node Inequality, Syntax, Identifiers, Expressions
 @section Inequality
 @c -----------------------------------------------------------------------------
 
