@@ -1,13 +1,14 @@
-
 @menu
 * Introduction to Lists::
 * Functions and Variables for Lists::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Lists, Functions and Variables for Lists, Lists, Lists
 @section Introduction to Lists
+@c -----------------------------------------------------------------------------
 
-Lists are the basic building block for Maxima and Lisp.   All data types
+Lists are the basic building block for Maxima and Lisp.  All data types
 other than arrays, hash tables, numbers are represented as Lisp lists,
 These Lisp lists have the form
 
@@ -16,8 +17,8 @@ These Lisp lists have the form
 @end example
 
 @noindent
-to indicate an expression @code{a+2}.   At Maxima level one would see
-the infix notation @code{a+2}.   Maxima also has lists which are printed
+to indicate an expression @code{a+2}.  At Maxima level one would see
+the infix notation @code{a+2}.  Maxima also has lists which are printed
 as
 
 @example
@@ -40,14 +41,20 @@ itself, since after it has been through the simplifier the list would become
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Lists,  , Introduction to Lists, Lists
 @section Functions and Variables for Lists
+@c -----------------------------------------------------------------------------
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} append (@var{list_1}, ..., @var{list_n})
+
+@c -----------------------------------------------------------------------------
+@anchor{append}
+@deffn {Function} append (@var{list_1}, @dots{}, @var{list_n})
+
 Returns a single list of the elements of @var{list_1} followed
-by the elements of @var{list_2}, ...  @code{append} also works on
+by the elements of @var{list_2}, @dots{}  @code{append} also works on
 general expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields
 @code{f(a,b,c,d,e)}.
 
@@ -59,10 +66,15 @@ Do @code{example(append);} for an example.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} assoc (@var{key}, @var{list}, @var{default})
+
+@c -----------------------------------------------------------------------------
+@anchor{assoc}
+@deffn  {Function} assoc (@var{key}, @var{list}, @var{default})
 @deffnx {Function} assoc (@var{key}, @var{list})
-This function searches for the @var{key} in the left hand side of the input @var{list}
-of the form @code{[x,y,z,...]} where each of the @var{list} elements is an expression of
+
+This function searches for the @var{key} in the left hand side of the input
+@var{list} of the form @code{[x,y,z,...]} where each of the @var{list} elements
+is an expression of
 a binary operand and 2 elements.  For example @code{x=1}, @code{2^3}, @code{[a,b]} etc.
 The @var{key} is checked againts the first operand.  @code{assoc} returns the second
 operand if the @code{key} is found.  If the @code{key} is not found it
@@ -76,10 +88,14 @@ and defaults to @code{false}.
 
 @c REPHRASE
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} atom (@var{expr})
+
 Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
-@code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
-@code{false} (asuming @code{a[1]} and @code{x} are unbound).
+@code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and
+@code{atom(sin(x))} are @code{false} (asuming @code{a[1]} and @code{x} are
+unbound).
 
 @opencatbox
 @category{Expressions} @category{Predicate functions}
@@ -88,17 +104,24 @@ Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{cons}
 @deffn {Function} cons (@var{expr}, @var{list})
-Returns a new list constructed of the element @var{expr} as
-its first element, followed by the elements of @var{list}.  @code{cons} also works
-on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+
+Returns a new list constructed of the element @var{expr} as its first element,
+followed by the elements of @var{list}.  @code{cons} also works on other
+expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{copylist}
 @deffn {Function} copylist (@var{list})
+
 Returns a copy of the list @var{list}.
 
 @opencatbox
@@ -106,11 +129,13 @@ Returns a copy of the list @var{list}.
 @closecatbox
 @end deffn
 
-@deffn {Function} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+@c -----------------------------------------------------------------------------
+@anchor{create_list}
+@deffn {Function} create_list (@var{form}, @var{x_1}, @var{list_1}, @dots{}, @var{x_n}, @var{list_n})
 
 Create a list by evaluating @var{form} with @var{x_1} bound to
 each element of @var{list_1}, and for each such binding bind @var{x_2}
-to each element of @var{list_2}, ....
+to each element of @var{list_2}, @dots{}
 The number of elements in the result will be
 the product of the number of elements in each list.
 Each variable @var{x_i} must actually be a symbol -- it will not be evaluated.
@@ -148,7 +173,9 @@ depend on the current value of @code{i}.
 @closecatbox
 @end deffn
 
-@deffn {Function} delete (@var{expr_1}, @var{expr_2})
+@c -----------------------------------------------------------------------------
+@anchor{delete}
+@deffn  {Function} delete (@var{expr_1}, @var{expr_2})
 @deffnx {Function} delete (@var{expr_1}, @var{expr_2}, @var{n})
 
 @code{delete(@var{expr_1}, @var{expr_2})}
@@ -255,7 +282,10 @@ Arguments which are @code{equal} but not "=" are not removed.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{eighth}
 @deffn {Function} eighth (@var{expr})
+
 Returns the 8'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -266,9 +296,13 @@ See @code{first} for more details.
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{endcons}
 @deffn {Function} endcons (@var{expr}, @var{list})
-Returns a new list consisting of the elements of
-@code{list} followed by @var{expr}.  @code{endcons} also works on general expressions, e.g.
+
+Returns a new list consisting of the elements of @code{list} followed by
+@var{expr}.  @code{endcons} also works on general expressions, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @opencatbox
@@ -276,7 +310,10 @@ Returns a new list consisting of the elements of
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fifth}
 @deffn {Function} fifth (@var{expr})
+
 Returns the 5'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -286,24 +323,31 @@ See @code{first} for more details.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{first}
 @deffn {Function} first (@var{expr})
-Returns the first part of @var{expr} which may result in the first
-element of a list, the first row of a matrix, the first term of a sum,
-etc.  Note that @code{first} and its related functions, @code{rest} and @code{last}, work
+
+Returns the first part of @var{expr} which may result in the first element of a
+list, the first row of a matrix, the first term of a sum, etc.  Note that
+@code{first} and its related functions, @code{rest} and @code{last}, work
 on the form of @var{expr} which is displayed not the form which is typed on
 input.  If the variable @code{inflag} is set to @code{true} however, these
 functions will look at the internal form of @var{expr}.  Note that the
-simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if @code{inflag}
-is @code{true} and @code{y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
-results).  The functions @code{second} .. @code{tenth} yield the second through the
-tenth part of their input argument.
+simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if
+@code{inflag} is @code{true} and @code{y} if @code{inflag} is @code{false}
+(@code{first(y+x)} gives the same results).  The functions @code{second} @dots{}
+@code{tenth} yield the second through the tenth part of their input argument.
 
 @opencatbox
 @category{Lists} @category{Expressions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fourth}
 @deffn {Function} fourth (@var{expr})
+
 Returns the 4'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -312,9 +356,12 @@ See @code{first} for more details.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{get}
 @deffn {Function} get (@var{a}, @var{i})
+
 Retrieves the user property indicated by @var{i} associated with
-atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
+atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
 
 @code{get} evaluates its arguments.
 
@@ -359,12 +406,17 @@ x is not numeric.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{join}
 @deffn {Function} join (@var{l}, @var{m})
-Creates a new list containing the elements of lists @var{l} and @var{m}, interspersed.
-The result has elements @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
-The lists @var{l} and @var{m} may contain any type of elements.
 
-If the lists are different lengths, @code{join} ignores elements of the longer list.
+Creates a new list containing the elements of lists @var{l} and @var{m},
+interspersed.  The result has elements @code{[@var{l}[1], @var{m}[1],
+@var{l}[2], @var{m}[2], ...]}.  The lists @var{l} and @var{m} may contain any
+type of elements.
+
+If the lists are different lengths, @code{join} ignores elements of the longer
+list.
 
 Maxima complains if @var{l} or @var{m} is not a list.
 
@@ -391,7 +443,11 @@ Examples:
 
 @c NEEDS EXAMPLES
 @c HOW IS "LAST" PART DETERMINED ??
+
+@c -----------------------------------------------------------------------------
+@anchor{last}
 @deffn {Function} last (@var{expr})
+
 Returns the last part (term, row, element, etc.) of the @var{expr}.
 
 @opencatbox
@@ -400,35 +456,42 @@ Returns the last part (term, row, element, etc.) of the @var{expr}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{length}
 @deffn {Function} length (@var{expr})
+
 Returns (by default) the number of parts in the external
 (displayed) form of @var{expr}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
 of terms (see @code{dispform}).
 
-The @code{length} command is affected by the
-@code{inflag} switch.  So, e.g. @code{length(a/(b*c));} gives 2 if
-@code{inflag} is @code{false} (Assuming @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is
-@code{true} (the internal representation is essentially @code{a*b^-1*c^-1}).
+The @code{length} command is affected by the @code{inflag} switch.  So, e.g.
+@code{length(a/(b*c));} gives 2 if @code{inflag} is @code{false} (Assuming
+@code{exptdispflag} is @code{true}), but 3 if @code{inflag} is @code{true} (the
+internal representation is essentially @code{a*b^-1*c^-1}).
 
 @opencatbox
 @category{Lists} @category{Expressions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{listarith}
 @defvr {Option variable} listarith
-default value: @code{true} - if @code{false} causes any arithmetic operations
-with lists to be suppressed; when @code{true}, list-matrix operations are
-contagious causing lists to be converted to matrices yielding a result
-which is always a matrix.  However, list-list operations should return
-lists.
+Default value: @code{true} 
+
+If @code{false} causes any arithmetic operations with lists to be suppressed;
+when @code{true}, list-matrix operations are contagious causing lists to be
+converted to matrices yielding a result which is always a matrix.  However,
+list-list operations should return lists.
 
 @opencatbox
 @category{Lists} @category{Global flags}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} listp (@var{expr})
 Returns @code{true} if @var{expr} is a list else @code{false}.
 
@@ -437,18 +500,22 @@ Returns @code{true} if @var{expr} is a list else @code{false}.
 @closecatbox
 @end deffn
 
-@deffn {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@c -----------------------------------------------------------------------------
+@anchor{makelist}
+@deffn  {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 @deffnx {Function} makelist (@var{expr}, @var{x}, @var{list})
-Constructs and returns a list,
-each element of which is generated from @var{expr}.
+
+Constructs and returns a list, each element of which is generated from
+@var{expr}.
 
 @code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} returns a list,
 the @code{j}'th element of which is equal to @code{ev (@var{expr}, @var{i}=j)}
 for @code{j} equal to @var{i_0} through @var{i_1}.
 
-@code{makelist (@var{expr}, @var{x}, @var{list})} returns a list,
-the @code{j}'th element of which is equal to @code{ev (@var{expr}, @var{x}=@var{list}[j])}
-for @code{j} equal to 1 through @code{length (@var{list})}.
+@code{makelist (@var{expr}, @var{x}, @var{list})} returns a list, the
+@code{j}'th element of which is equal to
+@code{ev (@var{expr}, @var{x}=@var{list}[j])} for @code{j} equal to 1 through
+@code{length (@var{list})}.
 
 Examples:
 
@@ -469,18 +536,21 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{member}
 @deffn {Function} member (@var{expr_1}, @var{expr_2})
 
 Returns @code{true} if @code{is(@var{expr_1} = @var{a})}
 for some element @var{a} in @code{args(@var{expr_2})},
 otherwise returns @code{false}.
 
-@code{expr_2} is typically a list,
-in which case @code{args(@var{expr_2}) = @var{expr_2}}
-and @code{is(@var{expr_1} = @var{a})} for some element @var{a} in @code{expr_2} is the test.
+@code{expr_2} is typically a list, in which case
+@code{args(@var{expr_2}) = @var{expr_2}} and @code{is(@var{expr_1} = @var{a})}
+for some element @var{a} in @code{expr_2} is the test.
 
-@code{member} does not inspect parts of the arguments of @code{expr_2},
-so it may return @code{false} even if @code{expr_1} is a part of some argument of @code{expr_2}.
+@code{member} does not inspect parts of the arguments of @code{expr_2}, so it
+may return @code{false} even if @code{expr_1} is a part of some argument of
+@code{expr_2}.
 
 See also @code{elementp}.
 
@@ -522,7 +592,10 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ninth}
 @deffn {Function} ninth (@var{expr})
+
 Returns the 9'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -532,10 +605,11 @@ See @code{first} for more details.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{pop}
 @deffn {Function} pop (@var{list})
 
 @code{pop} removes the first element from the list @var{list} and returns this 
-element. @var{list} must be a symbol, which is bound to a list and not the list 
+element.  @var{list} must be a symbol, which is bound to a list and not the list
 itself.
 
 If the argument @var{list} is not bound to a list or the list is empty, Maxima
@@ -551,11 +625,12 @@ See also @code{push} for examples.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{push}
 @deffn {Function} push (@var{item}, @var{list})
 
 @code{push} prepends the item @var{item} to the list @var{list} and returns a
-copy of the new list. @var{list} must be a symbol, which is bound to a list and
-not the list itself. @var{item} can be any Maxima symbol or expression.
+copy of the new list.  @var{list} must be a symbol, which is bound to a list and
+not the list itself.  @var{item} can be any Maxima symbol or expression.
 
 If the argument @var{list} is not bound to a list, Maxima generates an error
 message.
@@ -607,6 +682,8 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{unique}
 @deffn {Function} unique (@var{L})
 
 Returns the unique elements of the list @var{L}.
@@ -629,11 +706,16 @@ Example:
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Function} rest (@var{expr}, @var{n})
+
+@c -----------------------------------------------------------------------------
+@anchor{rest}
+@deffn  {Function} rest (@var{expr}, @var{n})
 @deffnx {Function} rest (@var{expr})
+
 Returns @var{expr} with its first @var{n} elements removed if @var{n} is
-positive and its last @code{- @var{n}} elements removed if @var{n} is negative.  If @var{n} is 1
-it may be omitted.  @var{expr} may be a list, matrix, or other expression.
+positive and its last @code{- @var{n}} elements removed if @var{n} is negative.
+If @var{n} is 1 it may be omitted.  @var{expr} may be a list, matrix, or other
+expression.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -642,7 +724,11 @@ it may be omitted.  @var{expr} may be a list, matrix, or other expression.
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{reverse}
 @deffn {Function} reverse (@var{list})
+
 Reverses the order of the members of the @var{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
 e.g.  @code{reverse(a=b);} gives @code{b=a}.
@@ -652,7 +738,10 @@ e.g.  @code{reverse(a=b);} gives @code{b=a}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{second}
 @deffn {Function} second (@var{expr})
+
 Returns the 2'nd item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -661,7 +750,10 @@ See @code{first} for more details.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{seventh}
 @deffn {Function} seventh (@var{expr})
+
 Returns the 7'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -670,7 +762,10 @@ See @code{first} for more details.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sixth}
 @deffn {Function} sixth (@var{expr})
+
 Returns the 6'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -679,6 +774,8 @@ See @code{first} for more details.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sublist_indices}
 @deffn {Function} sublist_indices (@var{L}, @var{P})
 
 Returns the indices of the elements @code{x} of the list @var{L} for which
@@ -688,6 +785,7 @@ this excludes @code{unknown} as well as @code{false}.
 @var{L} must be a literal list.
 
 Examples:
+
 @c ===beg===
 @c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], 
 @c                        lambda ([x], x='b));
@@ -698,7 +796,6 @@ Examples:
 @c map (maybe, [x > 0, x < 0, x < -2]);
 @c sublist_indices ([x > 0, x < 0, x < -2], identity);
 @c ===end===
-
 @example
 (%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
                        lambda ([x], x='b));
@@ -721,7 +818,10 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{tenth}
 @deffn {Function} tenth (@var{expr})
+
 Returns the 10'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
@@ -730,7 +830,10 @@ See @code{first} for more details.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{third}
 @deffn {Function} third (@var{expr})
+
 Returns the 3'rd item of expression or list @var{expr}.
 See @code{first} for more details.
 

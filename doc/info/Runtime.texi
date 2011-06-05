@@ -4,14 +4,16 @@
 * Functions and Variables for Runtime Environment::  
 @end menu
 
-
+@c -----------------------------------------------------------------------------
 @node Introduction for Runtime Environment, Interrupts, Runtime Environment, Runtime Environment
 @section Introduction for Runtime Environment
+@c -----------------------------------------------------------------------------
+
 @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
 @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
-@code{maxima-init.mac} is a file which is loaded automatically when Maxima starts.
-You can use @code{maxima-init.mac} to customize your Maxima environment.
-@code{maxima-init.mac}, if it exists, is typically placed in the
+@code{maxima-init.mac} is a file which is loaded automatically when Maxima
+starts.  You can use @code{maxima-init.mac} to customize your Maxima
+environment.  @code{maxima-init.mac}, if it exists, is typically placed in the
 directory named by @code{maxima_userdir},
 although it can be in any directory searched by the function @code{file_search}.
 
@@ -28,16 +30,18 @@ specified file
 @code{assoc_legendre_p}) are called but not yet defined.
 Thus you needn't remember to load the file before calling the functions.
 
-The statement @code{showtime: all} tells Maxima to set the @code{showtime} variable.
-The @code{maxima-init.mac} file can contain any other assignments or
+The statement @code{showtime: all} tells Maxima to set the @code{showtime}
+variable.  The @code{maxima-init.mac} file can contain any other assignments or
 other Maxima statements.
 
 @opencatbox
 @category{Session management}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
 @section Interrupts
+@c -----------------------------------------------------------------------------
 
 The user can stop a time-consuming computation with the
 ^C (control-C) character.
@@ -70,11 +74,18 @@ to resume from the point at which it was stopped.
 @closecatbox
 
 @c end concepts Runtime Environment
+
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Runtime Environment,  , Interrupts, Runtime Environment
 @section Functions and Variables for Runtime Environment
+@c -----------------------------------------------------------------------------
 
 @c NEEDS EXPANSION AND CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{feature}
 @defvr {Declaration} feature
+
 Maxima understands two distinct types of features,
 system features and features which apply to mathematical expressions.
 See also @code{status} for information about system features.
@@ -83,12 +94,15 @@ See also @code{features} and @code{featurep} for information about mathematical 
 @c OTHER STUFF ??
 
 @code{feature} itself is not the name of a function or variable.
-
 @end defvr
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
 @c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
+
+@c -----------------------------------------------------------------------------
+@anchor{featurep}
 @deffn {Function} featurep (@var{a}, @var{f})
+
 Attempts to determine whether the object @var{a} has the
 feature @var{f} on the basis of the facts in the current database.  If so,
 it returns @code{true}, else @code{false}.
@@ -111,30 +125,35 @@ See also @code{declare} and @code{features}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{maxima_tempdir}
 @defvr {System variable} maxima_tempdir
 
-@code{maxima_tempdir} names the directory in which Maxima creates some temporary files.
-In particular, temporary files for plotting are created in @code{maxima_tempdir}.
+@code{maxima_tempdir} names the directory in which Maxima creates some temporary
+files.  In particular, temporary files for plotting are created in
+@code{maxima_tempdir}.
 
-The initial value of @code{maxima_tempdir} is the user's home directory,
-if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+The initial value of @code{maxima_tempdir} is the user's home directory, if
+Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
 
 @code{maxima_tempdir} may be assigned a string which names a directory.
 
 @opencatbox
 @category{Global variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{maxima_userdir}
 @defvr {System variable} maxima_userdir
 
-@code{maxima_userdir} names a directory which Maxima searches to find Maxima and Lisp files.
-(Maxima searches some other directories as well;
+@code{maxima_userdir} names a directory which Maxima searches to find Maxima and
+Lisp files.  (Maxima searches some other directories as well;
 @code{file_search_maxima} and @code{file_search_lisp} are the complete lists.)
 
-The initial value of @code{maxima_userdir} is a subdirectory of the user's home directory,
-if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+The initial value of @code{maxima_userdir} is a subdirectory of the user's home
+directory, if Maxima can locate it; otherwise Maxima makes a guess about a
+suitable directory.
 
 @code{maxima_userdir} may be assigned a string which names a directory.
 However, assigning to @code{maxima_userdir} does not automatically change
@@ -144,14 +163,16 @@ those variables must be changed separately.
 @opencatbox
 @category{Global variables}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} room ()
+@c -----------------------------------------------------------------------------
+@anchor{room}
+@deffn  {Function} room ()
 @deffnx {Function} room (true)
 @deffnx {Function} room (false)
+
 Prints out a description of the state of storage and
-stack management in Maxima. @code{room} calls the Lisp function of 
+stack management in Maxima.  @code{room} calls the Lisp function of 
 the same name.
 
 @itemize @bullet
@@ -169,10 +190,12 @@ the same name.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{sstatus}
 @deffn {Function} sstatus (@var{keyword}, @var{item})
+
 When @var{keyword} is the symbol @code{feature}, @var{item} is put on the list
-of system features. After @code{sstatus (keyword, item)} is executed,
-@code{status (feature, item)} returns @code{true}. If @var{keyword} is the
+of system features.  After @code{sstatus (keyword, item)} is executed,
+@code{status (feature, item)} returns @code{true}.  If @var{keyword} is the
 symbol @code{nofeature}, @var{item} is deleted from the list of system features.
 This can be useful for package writers, to keep track of what features they have
 loaded in.
@@ -185,8 +208,10 @@ See also @code{status}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} status (@code{feature})
+@anchor{status}
+@deffn  {Function} status (@code{feature})
 @deffnx {Function} status (@code{feature}, @var{item})
+
 Returns information about the presence or absence of certain system-dependent 
 features.
 
@@ -216,12 +241,15 @@ information.
 @closecatbox
 @end deffn
 
-@deffn {Function} time (%o1, %o2, %o3, ...)
-Returns a list of the times, in seconds, taken to compute the output
-lines @code{%o1}, @code{%o2}, @code{%o3}, .... The time returned is Maxima's estimate of
-the internal computation time, not the elapsed time. @code{time} can only
-be applied to output line variables; for any other variables, @code{time}
-returns @code{unknown}.
+@c -----------------------------------------------------------------------------
+@anchor{time}
+@deffn {Function} time (%o1, %o2, %o3, @dots{})
+
+Returns a list of the times, in seconds, taken to compute the output lines
+@code{%o1}, @code{%o2}, @code{%o3}, @dots{} The time returned is Maxima's
+estimate of the internal computation time, not the elapsed time.  @code{time}
+can only be applied to output line variables; for any other variables,
+@code{time} returns @code{unknown}.
 
 Set @code{showtime: true} to make Maxima print out the computation time 
 and elapsed time with each output line.
@@ -231,14 +259,16 @@ and elapsed time with each output line.
 @closecatbox
 @end deffn
 
-@deffn {Function} timedate ()
+@c -----------------------------------------------------------------------------
+@anchor{timedate}
+@deffn  {Function} timedate ()
 @deffnx {Function} timedate (@var{T})
 
 @code{timedate()} with no argument
 returns a string representing the current time and date.
 The string has the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ},
-where the fields are
-year, month, day, hours, minutes, seconds, and time zone offset in hours and minutes.
+where the fields are year, month, day, hours, minutes, seconds, and time zone
+offset in hours and minutes.
 
 @code{timedate(@var{T})} returns the time @var{T}
 as a string with the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
@@ -278,6 +308,8 @@ timedate reports current time 2010-06-08 04:08:09+01:00
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{absolute_real_time}
 @deffn {Function} absolute_real_time ()
 
 Returns the number of seconds since midnight, January 1, 1900 UTC.
@@ -303,6 +335,8 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{elapsed_real_time}
 @deffn {Function} elapsed_real_time ()
 
 Returns the number of seconds (including fractions of a second)
@@ -331,11 +365,13 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{elapsed_run_time}
 @deffn {Function} elapsed_run_time ()
 
 Returns an estimate of the number of seconds (including fractions of a second)
-which Maxima has spent in computations since Maxima was most recently started or restarted.
-The return value is a floating-point number.
+which Maxima has spent in computations since Maxima was most recently started
+or restarted.  The return value is a floating-point number.
 
 See also @code{absolute_real_time} and @code{elapsed_real_time}.
 
@@ -358,3 +394,4 @@ Example:
 @category{Time and date functions}
 @closecatbox
 @end deffn
+
