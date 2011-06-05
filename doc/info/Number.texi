@@ -334,20 +334,6 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{%gamma}
-@defvr {Constant} %gamma
-@ifinfo
-@vrindex Euler-Mascheroni constant
-@end ifinfo
-The Euler-Mascheroni constant, 0.5772156649015329 ....
-@c DOUBTLESS THERE IS MORE TO SAY HERE.
-
-@opencatbox
-@category{Constants}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @anchor{fib}
 @deffn {Function} fib (@var{n})
 
