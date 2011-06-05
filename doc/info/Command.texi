@@ -29,7 +29,7 @@ input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
 evaluated.  However, the value of @code{__} is simplified (but not evaluated)
 when it is displayed.
 
-@code{__} is recognized by @code{batch} and @code{load}.  In a file processed
+@code{__} is recognized by @mref{batch} and @mrefdot{load}  In a file processed
 by @code{batch}, @code{__} has the same meaning as at the interactive prompt.
 In a file processed by @code{load}, @code{__} is bound to the input expression
 most recently entered at the interactive prompt or in a batch file; @code{__}
@@ -38,7 +38,7 @@ particular, when @code{load (@var{filename})} is called from the interactive
 prompt, @code{__} is bound to @code{load (@var{filename})} while the file is
 being processed.
 
-See also @code{_} and @code{%}.
+See also @mref{_} and @mrefdot{%}
 
 Examples:
 
@@ -87,13 +87,13 @@ Current input expression = --------------
 evaluated.  However, the value of @code{_} is simplified (but not evaluated)
 when it is displayed.
 
-@code{_} is recognized by @code{batch} and @code{load}.  In a file processed by
-@code{batch}, @code{_} has the same meaning as at the interactive prompt.
+@code{_} is recognized by @mref{batch} and @mrefdot{load}  In a file processed
+by @code{batch}, @code{_} has the same meaning as at the interactive prompt.
 In a file processed by @code{load}, @code{_} is bound to the input expression
 most recently evaluated at the interactive prompt or in a batch file; @code{_}
 is not bound to the input expressions in the file being processed.
 
-See also @code{__} and @code{%}.
+See also @mref{__} and @mrefdot{%}
 
 Examples:
 
@@ -154,13 +154,13 @@ Examples:
 @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3},
 @dots{}) most recently computed by Maxima, whether or not it was displayed.
 
-@code{%} is recognized by @code{batch} and @code{load}.  In a file processed by
-@code{batch}, @code{%} has the same meaning as at the interactive prompt.
+@code{%} is recognized by @mref{batch} and @mrefdot{load}  In a file processed
+by @code{batch}, @code{%} has the same meaning as at the interactive prompt.
 In a file processed by @code{load}, @code{%} is bound to the output expression
 most recently computed at the interactive prompt or in a batch file; @code{%}
 is not bound to output expressions in the file being processed.
 
-See also @code{_}, @code{%%}, and @code{%th}.
+See also @mrefcomma{_} @mrefcomma{%%} and @mrefdot{%th}
 
 @opencatbox
 @category{Console interaction} @category{Global variables}
@@ -174,7 +174,7 @@ See also @code{_}, @code{%%}, and @code{%th}.
 @vrindex Previous result in compound expression
 @end ifinfo
 
-In compound statements, namely @code{block}, @code{lambda}, or
+In compound statements, namely @mrefcomma{block} @mrefcomma{lambda} or
 @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous
 statement.  For example,
 
@@ -197,7 +197,7 @@ block (block (a^n, %%*42), %%/6)
 yields @code{7*a^n}.
 
 Within a compound statement, the value of @code{%%} may be inspected at a break
-prompt, which is opened by executing the @code{break} function.  For example,
+prompt, which is opened by executing the @mref{break} function.  For example,
 at the break prompt opened by
 
 @example
@@ -209,10 +209,10 @@ entering @code{%%;} yields @code{42}.
 At the first statement in a compound statement, or outside of a compound
 statement, @code{%%} is undefined.
 
-@code{%%} is recognized by @code{batch} and @code{load}, and it has the same
-meaning as at the interactive prompt.
+@code{%%} is recognized by @mref{batch} and @mrefcomma{load} and it has the
+same meaning as at the interactive prompt.
 
-See also @code{%}.
+See also @mrefdot{%}
 
 @opencatbox
 @category{Global variables}
@@ -239,13 +239,13 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 sets @code{s} to the sum of the last ten output expressions.
 
-@code{%th} is recognized by @code{batch} and @code{load}.  In a file processed
+@code{%th} is recognized by @mref{batch} and @mrefdot{load}  In a file processed
 by @code{batch}, @code{%th} has the same meaning as at the interactive prompt.
 In a file processed by @code{load}, @code{%th} refers to output expressions most
 recently computed at the interactive prompt or in a batch file; @code{%th} does
 not refer to output expressions in the file being processed.
 
-See also @code{%}.
+See also @mrefdot{%}
 
 @opencatbox
 @category{Console interaction}
@@ -266,7 +266,7 @@ function @code{ROUND}.  See @ref{Lisp and Maxima} for more on this point.
 The notation @code{? word} (a question mark followed a word, separated by
 whitespace) is equivalent to @code{describe("word")}.  The question mark must
 occur at the beginning of an input line; otherwise it is not recognized as a
-request for documentation.
+request for documentation.  See also @mrefdot{describe}
 
 @opencatbox
 @category{Help} @category{Console interaction}
@@ -283,7 +283,7 @@ request for documentation.
 The notation @code{?? word} (@code{??} followed a word, separated by whitespace)
 is equivalent to @code{describe("word", inexact)}.  The question mark must occur
 at the beginning of an input line; otherwise it is not recognized as a request
-for documentation.
+for documentation.  See also @mrefdot{describe}
 
 @opencatbox
 @category{Help} @category{Console interaction}
@@ -330,13 +330,13 @@ Default value: @code{%i}
 
 @code{inchar} is the prefix of the labels of expressions entered by the user.
 Maxima automatically constructs a label for each input expression by 
-concatenating @code{inchar} and @code{linenum}.
+concatenating @code{inchar} and @mrefdot{linenum}
 
 @code{inchar} may be assigned any string or symbol, not necessarily a single 
 character.  Because Maxima internally takes into account only the first char of
-the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char.  Otherwise some commands like 
-@code{kill(inlables)} do not work as expected.
+the prefix, the prefixes @code{inchar}, @mrefcomma{outchar} and
+@mref{linechar} should have a different first char.  Otherwise some commands
+like @code{kill(inlables)} do not work as expected.
 
 @c ===beg===
 @c inchar: "input";
@@ -383,10 +383,11 @@ may be combined, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
 
 @code{kill (labels)} unbinds all input, output, and intermediate expression
 labels created so far.  @code{kill (inlabels)} unbinds only input labels which
-begin with the current value of @code{inchar}.  Likewise, 
+begin with the current value of @mrefdot{inchar}  Likewise,
 @code{kill (outlabels)} unbinds only output labels which begin with the current
-value of @code{outchar}, and @code{kill (linelabels)} unbinds only intermediate
-expression labels which begin with the current value of @code{linechar}.
+value of @mrefcomma{outchar} and @code{kill (linelabels)} unbinds only
+intermediate expression labels which begin with the current value of
+@mrefdot{linechar}
 
 @code{kill (@var{n})}, where @var{n} is an integer,
 unbinds the @var{n} most recent input and output labels.
@@ -395,18 +396,19 @@ unbinds the @var{n} most recent input and output labels.
 @var{n}.
 
 @code{kill (@var{infolist})}, where @var{infolist} is any item in
-@code{infolists} (such as @code{values}, @code{functions}, or @code{arrays})
-unbinds all items in @var{infolist}.  See also @code{infolists}.
+@code{infolists} (such as @mrefcomma{values} @mrefcomma{functions} or
+@mref{arrays}) unbinds all items in @var{infolist}.
+See also @mrefdot{infolists}
 
 @code{kill (all)} unbinds all items on all infolists.  @code{kill (all)} does
-not reset global variables to their default values; see @code{reset} on this
+not reset global variables to their default values; see @mref{reset} on this
 point.
 
 @code{kill (allbut (@var{a_1}, ..., @var{a_n}))} unbinds all items on all
 infolists except for @var{a_1}, @dots{}, @var{a_n}.
 @code{kill (allbut (@var{infolist}))} unbinds all items except for the ones on
-@var{infolist}, where @var{infolist} is @code{values}, @code{functions},
-@code{arrays}, etc.
+@var{infolist}, where @var{infolist} is @mrefcomma{values}@w{}
+@mrefcomma{functions} @mrefcomma{arrays} etc.
 
 The memory taken up by a bound property is not released until all symbols are
 unbound from it.  In particular, to release the memory taken up by the value of
@@ -417,8 +419,8 @@ unbinding the symbol itself.
 defeats quotation.
 
 @code{kill (@var{symbol})} unbinds all properties of @var{symbol}.  In contrast,
-the functions @code{remvalue}, @code{remfunction}, @code{remarray}, and
-@code{remrule} unbind a specific property.
+the functions @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
+@mrefcomma{remarray} and @mref{remrule} unbind a specific property.
 
 @code{kill} always returns @code{done}, even if an argument has no binding.
 
@@ -433,10 +435,10 @@ the functions @code{remvalue}, @code{remfunction}, @code{remarray}, and
 @deffnx {System variable} labels
 
 Returns the list of input, output, or intermediate expression labels which begin
-with @var{symbol}.  Typically @var{symbol} is the value of @code{inchar},
-@code{outchar}, or @code{linechar}.  The label character may be given with or
-without a percent sign, so, for example, @code{i} and @code{%i} yield the same
-result.
+with @var{symbol}.  Typically @var{symbol} is the value of
+@mrefcomma{inchar} @mrefcomma{outchar} or @mrefdot{linechar}  The label
+character may be given with or without a percent sign, so, for example, @code{i}
+and @code{%i} yield the same result.
 
 If no labels begin with @var{symbol}, @code{labels} returns an empty list.
 
@@ -453,15 +455,16 @@ result an output label.  The output display is suppressed by terminating the
 input with @code{$} (dollar sign) instead of @code{;} (semicolon).  An output
 label is constructed and bound to the result, but not displayed, and the label
 may be referenced in the same way as displayed output labels.  See also
-@code{%}, @code{%%}, and @code{%th}.
+@mrefcomma{%} @mrefcomma{%%} and @mrefdot{%th}
 
-Intermediate expression labels can be generated by some functions.  The flag
-@code{programmode} controls whether @code{solve} and some other functions
-generate intermediate expression labels instead of returning a list of
-expressions.  Some other functions, such as @code{ldisplay}, always generate
+Intermediate expression labels can be generated by some functions.  The option
+variable @mref{programmode} controls whether @mref{solve} and some other
+functions generate intermediate expression labels instead of returning a list of
+expressions.  Some other functions, such as @mrefcomma{ldisplay} always generate
 intermediate expression labels.
 
-See also @code{inchar}, @code{outchar}, @code{linechar}, and @code{infolists}.
+See also @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar} and
+@mrefdot{infolists}
 
 @opencatbox
 @category{Display functions} @category{Display flags and variables} @category{Console interaction}
@@ -475,16 +478,16 @@ Default value: @code{%t}
 
 @code{linechar} is the prefix of the labels of intermediate expressions 
 generated by Maxima. Maxima constructs a label for each intermediate expression 
-(if displayed) by concatenating @code{linechar} and @code{linenum}.
+(if displayed) by concatenating @code{linechar} and @mrefdot{linenum}
 
 @code{linechar} may be assigned any string or symbol, not necessarily a single 
 character. Because Maxima internally takes into account only the first char of
-the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char. Otherwise some commands like 
+the prefix, the prefixes @mrefcomma{inchar} @mrefcomma{outchar} and
+@code{linechar} should have a different first char. Otherwise some commands like
 @code{kill(inlables)} do not work as expected.
 
-Intermediate expressions might or might not be displayed. See @code{programmode}
-and @code{labels}.
+Intermediate expressions might or might not be displayed.
+See @mref{programmode} and @mrefdot{labels}
 
 @opencatbox
 @category{Display flags and variables}
@@ -526,7 +529,7 @@ Default value: @code{false}
 
 When @code{nolabels} is @code{true}, input and output result labels (@code{%i}
 and @code{%o}, respectively) are displayed, but the labels are not bound to
-results, and the labels are not appended to the @code{labels} list.  Since
+results, and the labels are not appended to the @mref{labels} list.  Since
 labels are not bound to results, garbage collection can recover the memory taken
 up by the results.
 
@@ -537,7 +540,7 @@ Intermediate expression labels (@code{%t}) are not affected by @code{nolabels};
 whether @code{nolabels} is @code{true} or @code{false}, intermediate expression
 labels are bound and appended to the @code{labels} list.
 
-See also @code{batch}, @code{load}, and @code{labels}.
+See also @mrefcomma{batch} @mrefcomma{load} and @mrefdot{labels}
 
 @opencatbox
 @category{Global flags} @category{Session management}
@@ -569,13 +572,13 @@ Default value: @code{%o}
 
 @code{outchar} is the prefix of the labels of expressions computed by Maxima.
 Maxima automatically constructs a label for each computed expression by 
-concatenating @code{outchar} and @code{linenum}. 
+concatenating @code{outchar} and @mrefdot{linenum}
 
 @code{outchar} may be assigned any string or symbol, not necessarily a single 
 character. Because Maxima internally takes into account only the first char of
-the prefix, the prefixes @code{inchar}, @code{outchar}, and @code{linechar} 
-should have a different first char. Otherwise some commands like 
-@code{kill(inlables)} do not work as expected.
+the prefix, the prefixes @mrefcomma{inchar} @code{outchar} and
+@mref{linechar} should have a different first char.  Otherwise some commands
+like @code{kill(inlables)} do not work as expected.
 
 @c ===beg===
 @c outchar: "output";
@@ -610,8 +613,8 @@ See also @code{labels}.
 
 Displays input, output, and intermediate expressions, without recomputing them.
 @code{playback} only displays the expressions bound to labels; any other output
-(such as text printed by @code{print} or @code{describe}, or error messages) is
-not displayed.  See also @code{labels}.
+(such as text printed by @mref{print} or @mrefcomma{describe} or error messages)
+is not displayed.  See also @mrefdot{labels}
 
 @code{playback} quotes its arguments.  The quote-quote operator @code{'@w{}'}
 defeats quotation.  @code{playback} always returns @code{done}.
@@ -634,10 +637,10 @@ output expressions.
 @code{playback (input)} displays all input expressions generated so far.
 
 @code{playback (slow)} pauses between expressions and waits for the user to
-press @code{enter}.  This behavior is similar to @code{demo}.
+press @code{enter}.  This behavior is similar to @mrefdot{demo}
 @c WHAT DOES THE FOLLOWING MEAN ???
 @code{playback (slow)} is useful in conjunction with @code{save} or
-@code{stringout} when creating a secondary-storage file in order to pick out
+@mref{stringout} when creating a secondary-storage file in order to pick out
 useful expressions.
 
 @code{playback (time)} displays the computation time for each expression.
@@ -646,7 +649,7 @@ useful expressions.
 
 @code{playback (grind)} displays input expressions in the same format as the
 @code{grind} function.  Output expressions are not affected by the @code{grind}
-option.  See @code{grind}.
+option.  See @mrefdot{grind}
 
 Arguments may be combined, e.g., @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
@@ -669,8 +672,8 @@ Displays the property with the indicator @var{i} associated with the atom
 @var{a}.  @var{a} may also be a list of atoms or the atom @code{all} in which
 case all of the atoms with the given property will be used.  For example,
 @code{printprops ([f, g], atvalue)}.  @code{printprops} is for properties that
-cannot otherwise be displayed, i.e.  for @code{atvalue}, @code{atomgrad},
-@code{gradef}, and @code{matchdeclare}.
+cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
+@mrefcomma{atomgrad} @mrefcomma{gradef} and @mrefdot{matchdeclare}
 
 @opencatbox
 @category{Declarations and inferences} @category{Display functions}
@@ -682,9 +685,9 @@ cannot otherwise be displayed, i.e.  for @code{atvalue}, @code{atomgrad},
 @defvr {Option variable} prompt
 Default value: @code{_}
 
-@code{prompt} is the prompt symbol of the @code{demo} function,
+@code{prompt} is the prompt symbol of the @mref{demo} function,
 @code{playback (slow)} mode, and the Maxima break loop (as invoked by
-@code{break}).
+@mref{break}).
 
 @opencatbox
 @category{Global variables} @category{Console interaction}
@@ -700,7 +703,7 @@ Terminates the Maxima session.  Note that the function must be invoked as
 
 To stop a lengthy computation, type @code{control-C}.  The default action is to
 return to the Maxima prompt.  If @code{*debugger-hook*} is @code{nil},
-@code{control-C} opens the Lisp debugger.  See also @code{debugging}.
+@code{control-C} opens the Lisp debugger.  See also @ref{Debugging}.
 
 @opencatbox
 @category{Console interaction}
@@ -713,8 +716,8 @@ return to the Maxima prompt.  If @code{*debugger-hook*} is @code{nil},
 @deffnx {Function} remfunction (all)
 
 Unbinds the function definitions of the symbols @var{f_1}, @dots{}, @var{f_n}.
-The arguments may be the names of ordinary functions (created by @code{:=} or
-@code{define}) or macro functions (created by @code{::=}).
+The arguments may be the names of ordinary functions (created by @mref{:=} or
+@mref{define}) or macro functions (created by @mref{::=}).
 
 @code{remfunction (all)} unbinds all function definitions.
 
@@ -725,7 +728,7 @@ definition was unbound.  @code{false} is returned in place of any symbol for
 which there is no function definition.
 
 @code{remfunction} does not apply to array functions or subscripted functions.
-@code{remarray} applies to those types of functions.
+@mref{remarray} applies to those types of functions.
 
 @opencatbox
 @category{Function definition}
@@ -758,10 +761,10 @@ Default value: @code{false}
 When @code{showtime} is @code{true}, the computation time and elapsed time is
 printed with each output expression.
 
-The computation time is always recorded, so @code{time} and @code{playback} can
+The computation time is always recorded, so @mref{time} and @mref{playback} can
 display the computation time even when @code{showtime} is @code{false}.
 
-See also @code{timer}.
+See also @mrefdot{timer}
 
 @opencatbox
 @category{Display flags and variables} @category{Debugging}
@@ -810,12 +813,13 @@ Returning to Maxima
 Initial value: @code{[]}
 
 @code{values} is a list of all bound user variables (not Maxima options or
-switches).  The list comprises symbols bound by @code{:}, or @code{::}.
+switches).  The list comprises symbols bound by @mrefcomma{:} or @mrefdot{::}
 
 If the value of a variable is removed with the commands @code{kill}, 
-@code{remove}, or @code{remvalue} the variable is deleted from @code{values}.
+@mrefcomma{remove} or @mref{remvalue} the variable is deleted from
+@code{values}.
 
-See @code{functions} for a list of user defined functions.
+See @mref{functions} for a list of user defined functions.
 
 Examples:
 
