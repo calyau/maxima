@@ -34,9 +34,9 @@ SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
-  Operators.texi Expressions.texi Evaluation.texi Simplification.texi \
-  MathFunctions.texi Plotting.texi Input.texi \
-  Floating.texi Contexts.texi Polynomials.texi Constants.texi \
+  DataTypes.texi Constants.texi Operators.texi Expressions.texi \
+  Evaluation.texi Simplification.texi MathFunctions.texi Plotting.texi \
+  Input.texi Floating.texi Contexts.texi Polynomials.texi \
   Logarithms.texi Trigonometric.texi Special.texi \
   Limits.texi Differentiation.texi Integration.texi Equations.texi \
   Differential.texi Numerical.texi \
