@@ -4,15 +4,20 @@
 * Functions and Variables for Miscellaneous Options::  
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Miscellaneous Options, Share, Miscellaneous Options, Miscellaneous Options
 @section Introduction to Miscellaneous Options
+@c -----------------------------------------------------------------------------
 
 In this section various options are discussed which have a global effect
-on the operation of Maxima.   Also various lists such as the list of all
+on the operation of Maxima.  Also various lists such as the list of all
 user defined functions, are discussed.
 
+@c -----------------------------------------------------------------------------
 @node Share, Functions and Variables for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
 @section Share
+@c -----------------------------------------------------------------------------
+
 The Maxima "share" directory contains programs and other files 
 of interest to Maxima users, but not part of the core implementation of Maxima.
 These programs are typically loaded via @code{load} or @code{setup_autoload}.
@@ -22,27 +27,32 @@ within the user's file system.
 
 @c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
 @code{printfile ("share.usg")} prints an out-of-date list of share packages.
-Users may find it more informative to browse the share directory using a file system browser.
+Users may find it more informative to browse the share directory using a file
+system browser.
 
-
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Miscellaneous Options,  , Share, Miscellaneous Options
 @section Functions and Variables for Miscellaneous Options
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{aliases}
 @defvr {System variable} aliases
 Default value: @code{[]}
 
 @code{aliases} is the list of atoms which have a user defined alias (set up by
-the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring the atom a
-@code{noun} with @code{declare}).
+the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring
+the atom a @code{noun} with @code{declare}).
 
 @opencatbox
 @category{Declarations and inferences} @category{Global variables}
 @closecatbox
-
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
+@anchor{alphabetic}
 @defvr {Declaration} alphabetic
+
 @code{alphabetic} is a declaration type recognized by @code{declare}.
 The expression @code{declare(@var{s}, alphabetic)} tells Maxima to recognize
 as alphabetic all of the characters in @var{s}, which must be a string.
@@ -71,12 +81,14 @@ Example:
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end defvr
 
 @c THE FUNCTION APRPOS IS MOVED TO THE FILE HELP.TEXI
 
+@c -----------------------------------------------------------------------------
+@anchor{args}
 @deffn {Function} args (@var{expr})
+
 Returns the list of arguments of @code{expr},
 which may be any kind of expression other than an atom.
 Only the arguments of the top-level operator are extracted;
@@ -92,9 +104,10 @@ See also @code{substpart}, and @code{op}.
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{genindex}
 @defvr {Option variable} genindex
 Default value: @code{i}
 
@@ -104,9 +117,9 @@ next variable of summation when necessary.
 @opencatbox
 @category{Sums and products}
 @closecatbox
-
 @end defvr
 
+@anchor{gensumnum}
 @defvr {Option variable} gensumnum
 Default value: 0
 
@@ -117,10 +130,10 @@ of @code{genindex} with no numeric suffix.
 @opencatbox
 @category{Sums and products}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{gensym}
 @deffn  {Function} gensym ()
 @deffnx {Function} gensym (@var{x})
 
@@ -157,6 +170,8 @@ Examples:
 @end example
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{infolists}
 @defvr {System variable} infolists
 Default value: @code{[]}
 
@@ -173,7 +188,8 @@ options or switches, created by @code{:} or @code{::} or functional binding.
 @item functions
 All user-defined functions, created by @code{:=} or @code{define}.
 @item arrays
-All declared and undeclared arrays, created by @code{:}, @code{::}, or @code{:=}.
+All declared and undeclared arrays, created by @code{:}, @code{::}, or
+@code{:=}.
 @c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
 @item macros
 All user-defined macro functions.
@@ -185,8 +201,8 @@ All user-defined pattern matching and simplification rules, created
 by @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, or @code{defrule}.
 @item aliases
 All atoms which have a user-defined alias, created by the @code{alias},
-@code{ordergreat}, @code{orderless} functions or by declaring the atom as a @code{noun}
-with @code{declare}.
+@code{ordergreat}, @code{orderless} functions or by declaring the atom as a
+@code{noun} with @code{declare}.
 @item dependencies
 All atoms which have functional dependencies, created by the
 @code{depends} or @code{gradef} functions.
@@ -195,8 +211,8 @@ All functions which have user-defined derivatives, created by the
 @code{gradef} function.
 @c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
 @item props
-All atoms which have any property other than those mentioned
-above, such as properties established by @code{atvalue} or @code{matchdeclare}, etc.,
+All atoms which have any property other than those mentioned above, such as
+properties established by @code{atvalue} or @code{matchdeclare}, etc.,
 as well as properties established in the @code{declare} function.
 @item let_rule_packages
 All user-defined @code{let} rule packages
@@ -208,135 +224,48 @@ one is not explicitly set by the user.)
 @opencatbox
 @category{Declarations and inferences} @category{Global variables}
 @closecatbox
-
 @end defvr
-
-@deffn {Function} integerp (@var{expr})
-Returns @code{true} if @var{expr} is a literal numeric integer, otherwise @code{false}.
-
-@code{integerp} returns @code{false} if its argument is a symbol,
-even if the argument is declared integer.
-
-Examples:
-
-@example
-(%i1) integerp (0);
-(%o1)                         true
-(%i2) integerp (1);
-(%o2)                         true
-(%i3) integerp (-17);
-(%o3)                         true
-(%i4) integerp (0.0);
-(%o4)                         false
-(%i5) integerp (1.0);
-(%o5)                         false
-(%i6) integerp (%pi);
-(%o6)                         false
-(%i7) integerp (n);
-(%o7)                         false
-(%i8) declare (n, integer);
-(%o8)                         done
-(%i9) integerp (n);
-(%o9)                         false
-@end example
-
-@opencatbox
-@category{Predicate functions}
-@closecatbox
-
-@end deffn
-
-@defvr {Option variable} m1pbranch
-Default value: @code{false}
-
-@code{m1pbranch} is the principal branch for @code{-1} to a power.
-Quantities such as @code{(-1)^(1/3)} (that is, an "odd" rational exponent) and 
-@code{(-1)^(1/4)} (that is, an "even" rational exponent) are handled as follows:
-
-@c REDRAW THIS AS A TABLE
-@example
-              domain:real
-                            
-(-1)^(1/3):      -1         
-(-1)^(1/4):   (-1)^(1/4)   
-
-             domain:complex              
-m1pbranch:false          m1pbranch:true
-(-1)^(1/3)               1/2+%i*sqrt(3)/2
-(-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
-@end example
-
-@opencatbox
-@category{Expressions} @category{Global flags}
-@closecatbox
-
-@end defvr
-
-@deffn {Function} numberp (@var{expr})
-Returns @code{true} if @var{expr} is a literal integer, rational number, 
-floating point number, or bigfloat, otherwise @code{false}.
-
-@code{numberp} returns @code{false} if its argument is a symbol,
-even if the argument is a symbolic number such as @code{%pi} or @code{%i},
-or declared to be 
-@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational}, 
-@code{real}, @code{imaginary}, or @code{complex}.
-
-Examples:
-
-@example
-(%i1) numberp (42);
-(%o1)                         true
-(%i2) numberp (-13/19);
-(%o2)                         true
-(%i3) numberp (3.14159);
-(%o3)                         true
-(%i4) numberp (-1729b-4);
-(%o4)                         true
-(%i5) map (numberp, [%e, %pi, %i, %phi, inf, minf]);
-(%o5)      [false, false, false, false, false, false]
-(%i6) declare (a, even, b, odd, c, integer, d, rational,
-     e, irrational, f, real, g, imaginary, h, complex);
-(%o6)                         done
-(%i7) map (numberp, [a, b, c, d, e, f, g, h]);
-(%o7) [false, false, false, false, false, false, false, false]
-@end example
-
-@opencatbox
-@category{Predicate functions}
-@closecatbox
-
-@end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{properties}
 @deffn {Function} properties (@var{a})
+
 Returns a list of the names of all the
 properties associated with the atom @var{a}.
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{props}
 @defvr {Special symbol} props
+
 @code{props} are atoms which have any property other than those explicitly
-mentioned in @code{infolists}, such as specified by @code{atvalue}, @code{matchdeclare}, etc., 
-as well as properties specified in the @code{declare} function.
+mentioned in @code{infolists}, such as specified by @code{atvalue},
+@code{matchdeclare}, etc., as well as properties specified in the @code{declare}
+function.
 
 @opencatbox
 @category{Declarations and inferences} @category{Global variables}
 @closecatbox
-
 @end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{propvars}
 @deffn {Function} propvars (@var{prop})
+
 Returns a list of those atoms on the @code{props} list which
 have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
 returns a list of atoms which have atvalues.
@@ -344,20 +273,24 @@ returns a list of atoms which have atvalues.
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
 @c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{put}
 @deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
-Assigns @var{value} to the property (specified by @var{indicator}) of @var{atom}.
-@var{indicator} may be the name of any property, not just a system-defined property.
+
+Assigns @var{value} to the property (specified by @var{indicator}) of
+@var{atom}.  @var{indicator} may be the name of any property, not just a
+system-defined property.
 
 @code{rem} reverses the effect of @code{put}.
 
-@code{put} evaluates its arguments. 
+@code{put} evaluates its arguments.
 @code{put} returns @var{value}.
 
 Examples:
@@ -380,13 +313,15 @@ Examples:
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{qput}
 @deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
-Assigns @var{value} to the property (specified by @var{indicator}) of @var{atom}.
-This is the same as @code{put},
-except that the arguments are quoted.
+
+Assigns @var{value} to the property (specified by @var{indicator}) of
+@var{atom}.  This is the same as @code{put}, except that the arguments are
+quoted.
 
 Example:
 
@@ -411,35 +346,41 @@ Example:
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM remove ??
+
+@c -----------------------------------------------------------------------------
+@anchor{rem}
 @deffn {Function} rem (@var{atom}, @var{indicator})
+
 Removes the property indicated by @var{indicator} from @var{atom}.
 @code{rem} reverses the effect of @code{put}.
 
-@code{rem} returns @code{done} if @var{atom} had an @var{indicator} property when @code{rem} was called,
-or @code{false} if it had no such property.
+@code{rem} returns @code{done} if @var{atom} had an @var{indicator} property
+when @code{rem} was called, or @code{false} if it had no such property.
 
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM rem ??
-@deffn {Function} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Function} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+
+@c -----------------------------------------------------------------------------
+@anchor{remove}
+@deffn  {Function} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Function} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
 @deffnx {Function} remove ("@var{a}", operator)
 @deffnx {Function} remove (@var{a}, transfun)
 @deffnx {Function} remove (all, @var{p})
+
 Removes properties associated with atoms.
 
 @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
@@ -447,11 +388,12 @@ removes property @code{p_k} from atom @code{a_k}.
 
 @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
 removes properties @code{@var{p_1}, ..., @var{p_n}}
-from atoms @var{a_1}, ..., @var{a_m}.
+from atoms @var{a_1}, @dots{}, @var{a_m}.
 There may be more than one pair of lists.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-@code{remove (all, @var{p})} removes the property @var{p} from all atoms which have it.
+@code{remove (all, @var{p})} removes the property @var{p} from all atoms which
+have it.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 The removed properties may be system-defined properties such as
@@ -465,13 +407,14 @@ the translated Lisp version of a function.
 After executing this, the Maxima version of the function is executed
 rather than the translated version.
 
-@code{remove ("@var{a}", operator)} or, equivalently, @code{remove ("@var{a}", op)}
-removes from @var{a} the operator properties declared by
-@code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, or @code{nofix}.
-Note that the name of the operator must be written as a quoted string.
+@code{remove ("@var{a}", operator)} or, equivalently,
+@code{remove ("@var{a}", op)} removes from @var{a} the operator properties
+declared by @code{prefix}, @code{infix}, @code{nary}, @code{postfix},
+@code{matchfix}, or @code{nofix}.  Note that the name of the operator must be
+written as a quoted string.
 
-@code{remove} always returns @code{done} whether or not an atom has a specified property.
-This behavior is unlike the more specific remove functions
+@code{remove} always returns @code{done} whether or not an atom has a specified
+property.  This behavior is unlike the more specific remove functions
 @code{remvalue}, @code{remarray}, @code{remfunction}, and @code{remrule}.
 
 @code{remove} quotes its arguments.
@@ -480,13 +423,16 @@ This behavior is unlike the more specific remove functions
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
-
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Function} remvalue (@var{name_1}, ..., @var{name_n})
+
+@c -----------------------------------------------------------------------------
+@anchor{remvalue}
+@deffn  {Function} remvalue (@var{name_1}, @dots{}, @var{name_n})
 @deffnx {Function} remvalue (all)
-Removes the values of user variables @var{name_1}, ..., @var{name_n}
+
+Removes the values of user variables @var{name_1}, @dots{}, @var{name_n}
 (which can be subscripted) from the system.
 
 @code{remvalue (all)} removes the values of all variables in @code{values},
@@ -501,15 +447,19 @@ See also @code{values}.
 @end deffn
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rncombine}
 @deffn {Function} rncombine (@var{expr})
+
 Transforms @var{expr} by combining all terms of @var{expr} that have
 identical denominators or denominators that differ from each other by
 numerical factors only.  This is slightly different from the behavior
 of @code{combine}, which collects terms that have identical denominators.
 
 Setting @code{pfeformat: true} and using @code{combine} yields results similar
-to those that can be obtained with @code{rncombine}, but @code{rncombine} takes the
-additional step of cross-multiplying numerical denominator factors.
+to those that can be obtained with @code{rncombine}, but @code{rncombine} takes
+the additional step of cross-multiplying numerical denominator factors.
 This results in neater forms, and the possibility of recognizing some
 cancellations.
 
@@ -518,25 +468,29 @@ cancellations.
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{scalarp}
 @deffn {Function} scalarp (@var{expr})
-Returns @code{true} if @var{expr} is a number, constant, or variable
-declared @code{scalar} with @code{declare}, or composed entirely of numbers, constants, and such
-variables, but not containing matrices or lists.
+
+Returns @code{true} if @var{expr} is a number, constant, or variable declared
+@code{scalar} with @code{declare}, or composed entirely of numbers, constants,
+and such variables, but not containing matrices or lists.
 
 @opencatbox
 @category{Predicate functions} @category{Vectors} @category{Matrices}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
-Specifies that
-if any of @var{function_1}, ..., @var{function_n} are referenced and not yet defined,
-@var{filename} is loaded via @code{load}.
+@c -----------------------------------------------------------------------------
+@anchor{setup_autoload}
+@deffn {Function} setup_autoload (@var{filename}, @var{function_1}, @dots{}, @var{function_n})
+
+Specifies that if any of @var{function_1}, @dots{}, @var{function_n} are
+referenced and not yet defined, @var{filename} is loaded via @code{load}.
 @var{filename} usually contains definitions for the functions specified,
 although that is not enforced.
 
@@ -577,5 +531,5 @@ Warning - you are redefining the Macsyma function legendre_p
 @opencatbox
 @category{Function definition} @category{File input}
 @closecatbox
-
 @end deffn
+
