@@ -203,6 +203,25 @@ completing the computation
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{debugmode}
+@defvr {Option variable} debugmode
+Default value: @code{false}
+
+When a Maxima error occurs, Maxima will start the debugger if @code{debugmode}
+is @code{true}.  The user may enter commands to examine the call stack, set
+breakpoints, step through Maxima code, and so on.  See @code{debugging} for a
+list of debugger commands.
+
+Enabling @code{debugmode} will not catch Lisp errors.
+@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
+@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
+
+@opencatbox
+@category{Debugging} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{refcheck}
 @defvr {Option variable} refcheck
 Default value: @code{false}
