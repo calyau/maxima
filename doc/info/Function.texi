@@ -1939,6 +1939,31 @@ every time you take the first of a list of numbers.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{remfunction}
+@deffn  {Function} remfunction (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {Function} remfunction (all)
+
+Unbinds the function definitions of the symbols @var{f_1}, @dots{}, @var{f_n}.
+The arguments may be the names of ordinary functions (created by @mref{:=} or
+@mref{define}) or macro functions (created by @mref{::=}).
+
+@code{remfunction (all)} unbinds all function definitions.
+
+@code{remfunction} quotes its arguments.
+
+@code{remfunction} returns a list of the symbols for which the function
+definition was unbound.  @code{false} is returned in place of any symbol for
+which there is no function definition.
+
+@code{remfunction} does not apply to array functions or subscripted functions.
+@mref{remarray} applies to those types of functions.
+
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
 
