@@ -290,39 +290,6 @@ for documentation.  See also @mrefdot{describe}
 @closecatbox
 @end deffn
 
-@c NEEDS WORK, ESPECIALLY EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{alias}
-@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, @dots{}, @var{new_name_n}, @var{old_name_n})
-
-provides an alternate name for a (user or system) function, variable, array,
-etc.  Any even number of arguments may be used.
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{debugmode}
-@defvr {Option variable} debugmode
-Default value: @code{false}
-
-When a Maxima error occurs, Maxima will start the debugger if @code{debugmode}
-is @code{true}.  The user may enter commands to examine the call stack, set
-breakpoints, step through Maxima code, and so on.  See @code{debugging} for a
-list of debugger commands.
-
-Enabling @code{debugmode} will not catch Lisp errors.
-@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
-@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
-
-@opencatbox
-@category{Debugging} @category{Global flags}
-@closecatbox
-@end defvr
-
 @c -----------------------------------------------------------------------------
 @anchor{inchar}
 @defvr {Option variable} inchar
@@ -355,6 +322,63 @@ See also @code{labels}.
 
 @opencatbox
 @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{infolists}
+@defvr {System variable} infolists
+Default value: @code{[]}
+
+@code{infolists} is a list of the names of all of the information
+lists in Maxima. These are:
+
+@table @code
+@item labels
+All bound @code{%i}, @code{%o}, and @code{%t} labels.
+@item values
+All bound atoms which are user variables, not Maxima options or switches,
+created by @mref{:} or @mref{::} or functional binding.
+@c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
+@item functions
+All user-defined functions, created by @mref{:=} or @mrefdot{define}
+@item arrays
+All declared and undeclared arrays, created by @code{:}, @code{::}, or
+@code{:=}.
+@c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
+@item macros
+All user-defined macro functions, created by @mrefdot{::=}
+@item myoptions
+All options ever reset by the user (whether or not they
+are later reset to their default values).
+@item rules
+All user-defined pattern matching and simplification rules, created
+by @mrefcomma{tellsimp} @mrefcomma{tellsimpafter} @mrefcomma{defmatch} or
+@mrefdot{defrule}
+@item aliases
+All atoms which have a user-defined alias, created by the @mrefcomma{alias}@w{}
+@mrefcomma{ordergreat} @mref{orderless} functions or by declaring the atom as a
+@mref{noun} with @mrefdot{declare}
+@item dependencies
+All atoms which have functional dependencies, created by the
+@mref{depends} or @mref{gradef} functions.
+@item gradefs
+All functions which have user-defined derivatives, created by the
+@mref{gradef} function.
+@c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
+@item props
+All atoms which have any property other than those mentioned above, such as
+properties established by @mref{atvalue} or @mref{matchdeclare}, etc.,
+as well as properties established in the @mref{declare} function.
+@item let_rule_packages
+All user-defined @mref{let} rule packages
+plus the special package @mrefdot{default_let_rule_package}
+(@code{default_let_rule_package} is the name of the rule package used when
+one is not explicitly set by the user.)
+@end table
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
 @closecatbox
 @end defvr
 
@@ -681,6 +705,7 @@ cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@need 800
 @anchor{prompt}
 @defvr {Option variable} prompt
 Default value: @code{_}
@@ -711,27 +736,59 @@ return to the Maxima prompt.  If @code{*debugger-hook*} is @code{nil},
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{remfunction}
-@deffn  {Function} remfunction (@var{f_1}, @dots{}, @var{f_n})
-@deffnx {Function} remfunction (all)
+@anchor{read}
+@deffn {Function} read (@var{expr_1}, @dots{}, @var{expr_n})
 
-Unbinds the function definitions of the symbols @var{f_1}, @dots{}, @var{f_n}.
-The arguments may be the names of ordinary functions (created by @mref{:=} or
-@mref{define}) or macro functions (created by @mref{::=}).
+Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
+console and returns the evaluated expression.  The expression is terminated with
+a semicolon @code{;} or dollar sign @code{$}.
 
-@code{remfunction (all)} unbinds all function definitions.
+See also @mref{readonly}
 
-@code{remfunction} quotes its arguments.
+Example:
 
-@code{remfunction} returns a list of the symbols for which the function
-definition was unbound.  @code{false} is returned in place of any symbol for
-which there is no function definition.
-
-@code{remfunction} does not apply to array functions or subscripted functions.
-@mref{remarray} applies to those types of functions.
+@example
+(%i1) foo: 42$ 
+(%i2) foo: read ("foo is", foo, " -- enter new value.")$
+foo is 42  -- enter new value. 
+(a+b)^3;
+(%i3) foo;
+                                     3
+(%o3)                         (b + a)
+@end example
 
 @opencatbox
-@category{Function definition}
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{readonly}
+@deffn {Function} readonly (@var{expr_1}, @dots{}, @var{expr_n})
+
+Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
+console and returns the expression (without evaluation).  The expression is
+terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
+
+See also @mrefdot{read}
+
+Examples:
+
+@example
+(%i1) aa: 7$
+(%i2) foo: readonly ("Enter an expression:");
+Enter an expression: 
+2^aa;
+                                  aa
+(%o2)                            2
+(%i3) foo: read ("Enter an expression:");
+Enter an expression: 
+2^aa;
+(%o3)                            128
+@end example
+
+@opencatbox
+@category{Console interaction}
 @closecatbox
 @end deffn
 
