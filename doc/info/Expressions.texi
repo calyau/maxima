@@ -396,6 +396,20 @@ Incorrect syntax: # is not a prefix operator
 @section Functions and Variables for Expressions
 @c -----------------------------------------------------------------------------
 
+@c NEEDS WORK, ESPECIALLY EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{alias}
+@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, @dots{}, @var{new_name_n}, @var{old_name_n})
+
+provides an alternate name for a (user or system) function, variable, array,
+etc.  Any even number of arguments may be used.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @anchor{at}
 @deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
