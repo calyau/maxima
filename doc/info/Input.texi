@@ -1482,59 +1482,6 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{read}
-@deffn {Function} read (@var{expr_1}, @dots{}, @var{expr_n})
-
-Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
-console and returns the evaluated expression.  The expression is terminated with
-a semicolon @code{;} or dollar sign @code{$}.
-
-See also @code{readonly}.
-
-@example
-(%i1) foo: 42$ 
-(%i2) foo: read ("foo is", foo, " -- enter new value.")$
-foo is 42  -- enter new value. 
-(a+b)^3;
-(%i3) foo;
-                                     3
-(%o3)                         (b + a)
-@end example
-
-@opencatbox
-@category{Console interaction}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{readonly}
-@deffn {Function} readonly (@var{expr_1}, @dots{}, @var{expr_n})
-
-Prints @var{expr_1}, @dots{}, @var{expr_n}, then reads one expression from the
-console and returns the expression (without evaluation).  The expression is
-terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
-
-@example
-(%i1) aa: 7$
-(%i2) foo: readonly ("Enter an expression:");
-Enter an expression: 
-2^aa;
-                                  aa
-(%o2)                            2
-(%i3) foo: read ("Enter an expression:");
-Enter an expression: 
-2^aa;
-(%o3)                            128
-@end example
-
-See also @code{read}.
-
-@opencatbox
-@category{Console interaction}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{reveal}
 @deffn {Function} reveal (@var{expr}, @var{depth})
 
