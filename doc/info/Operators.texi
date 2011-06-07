@@ -1228,61 +1228,6 @@ applied to expressions of the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 @closecatbox
 @end defvr
 
-@c NEEDS TO BE REWORKED. NOT CONVINCED THIS SYMBOL NEEDS ITS OWN ITEM
-@c (SHOULD BE DESCRIBED IN CONTEXT OF EACH FUNCTION WHICH RECOGNIZES IT)
-
-@c -----------------------------------------------------------------------------
-@anchor{allbut}
-@defvr {Keyword} allbut
-
-works with the @code{part} commands (i.e.  @code{part}, @code{inpart},
-@code{substpart}, @code{substinpart}, @code{dpart}, and @code{lpart}).
-For example,
-
-@c ===beg===
-@c expr : e + d + c + b + a;
-@c part (expr, [2, 5]);
-@c ===end===
-@example
-(%i1) expr : e + d + c + b + a;
-(%o1)                   e + d + c + b + a
-(%i2) part (expr, [2, 5]);
-(%o2)                         d + a
-@end example
-
-while
-
-@c ===beg===
-@c expr : e + d + c + b + a;
-@c part (expr, allbut (2, 5));
-@c ===end===
-@example
-(%i1) expr : e + d + c + b + a;
-(%o1)                   e + d + c + b + a
-(%i2) part (expr, allbut (2, 5));
-(%o2)                       e + c + b
-@end example
-
-@code{allbut} is also recognized by @code{kill}.
-
-@c ===beg===
-@c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
-@c kill (allbut (cc, dd));
-@c [aa, bb, cc, dd];
-@c ===end===
-@example
-(%i1) [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
-(%o1)                 [11, 22, 33, 44, 55]
-(%i2) kill (allbut (cc, dd));
-(%o0)                         done
-(%i1) [aa, bb, cc, dd];
-(%o1)                   [aa, bb, 33, 44]
-@end example
-
-@code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of @code{kill(all)}
-except that it does not kill the symbols @var{a_1}, @var{a_2}, @dots{}
-@end defvr
-
 @c -----------------------------------------------------------------------------
 @anchor{antisymmetric}
 @defvr {Declaration} antisymmetric
