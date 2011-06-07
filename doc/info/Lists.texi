@@ -86,22 +86,6 @@ and defaults to @code{false}.
 @closecatbox
 @end deffn
 
-@c REPHRASE
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} atom (@var{expr})
-
-Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
-@code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and
-@code{atom(sin(x))} are @code{false} (asuming @code{a[1]} and @code{x} are
-unbound).
-
-@opencatbox
-@category{Expressions} @category{Predicate functions}
-@closecatbox
-@end deffn
-
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 
