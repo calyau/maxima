@@ -87,15 +87,16 @@ Maxima infrastructure
 * Introduction to Maxima::      Sample Maxima sessions.
 * Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
 * Help::                        Asking for help from within a Maxima session.
-* Command Line::                Maxima command line syntax.
+* Command Line::                Maxima command line syntax, Input, and Output.
 * Data Types and Structures::   Numbers, Strings, Lists, Arrays, and Structures.
-* Operators::                   Operators used in Maxima expressions.
 * Expressions::                 Expressions in Maxima.
+* Operators::                   Operators used in Maxima expressions.
 * Evaluation::                  Evaluating expressions.
 * Simplification::              Simplifying expressions.
 * Mathematical Functions::      Mathematical functions in Maxima.
+* Maximas Database::            Declarations, Contexts, Facts, and Properties.
 * Plotting::                    2D and 3D graphical output.
-* Input and Output::            File input and output.
+* File Input and Output::       File input and output.
 * Floating Point::              Low level numerical routines.
 * Contexts::                    Sets of assumed facts.
 
@@ -103,7 +104,6 @@ Support for specific areas of mathematics
 
 * Polynomials::                 Standard forms for polynomials, and
                                 functions operating on them.
-* Constants::                   Numerical constants.
 * Logarithms::                  Manipulation of expressions involving
                                 logarithms.
 * Trigonometric::               Manipulating expressions with trig and
@@ -204,15 +204,16 @@ Bugs
 
 Help
 
-* Lisp and Maxima::            
-* Garbage Collection::          
-* Documentation::               
-* Functions and Variables for Help::        
+* Lisp and Maxima::
+* Garbage Collection::
+* Documentation::
+* Functions and Variables for Help::
 
 Command Line
 
-* Introduction to Command Line::  
+* Introduction to Command Line::
 * Functions and Variables for Command Line::
+* Functions and Variables for Display::
 
 Data Types and Structures
 
@@ -223,6 +224,15 @@ Data Types and Structures
 * Arrays::
 * Structures::
 
+Expressions
+
+* Introduction to Expressions::
+* Nouns and Verbs::
+* Identifiers::
+* Inequality::
+* Syntax::
+* Functions and Variables for Expressions::
+
 Operators
 
 * nary::                        
@@ -232,15 +242,6 @@ Operators
 * Arithmetic operators::    
 * Relational operators::   
 * General operators::
-
-Expressions
-
-* Introduction to Expressions::
-* Nouns and Verbs::
-* Identifiers::
-* Inequality::
-* Syntax::
-* Functions and Variables for Expressions::
 
 Evaluation
 
@@ -256,6 +257,13 @@ Mathematical Functions
 * Functions for Complex Numbers::
 * Combinatorial Functions::
 
+Maximas Database
+
+* Introduction to Maximas Database::
+* Functions and Variables for Properties::
+* Functions and Variables for Facts::
+* Functions and Variables for Predicates::
+
 Plotting
 
 * Introduction to Plotting::
@@ -265,11 +273,11 @@ Plotting
 * Gnuplot Options::
 * Gnuplot_pipes Format Functions::
 
-Input and Output
+File Input and Output
 
 * Comments::
 * Files::                       
-* Functions and Variables for Input and Output::  
+* Functions and Variables for File Input and Output::
 
 Floating Point
 
@@ -282,11 +290,7 @@ Contexts
 Polynomials
 
 * Introduction to Polynomials::  
-* Functions and Variables for Polynomials::  
-
-@c Constants
-@c 
-@c * Functions and Variables for Constants::
+* Functions and Variables for Polynomials::
 
 Logarithms
 
@@ -689,20 +693,20 @@ zeilberger
 @chapter Command Line
 @include Command.texi
 
-@node Data Types and Structures, Operators, Command Line, Top
+@node Data Types and Structures, Expressions, Command Line, Top
 @chapter Data Types and Structures
 @include DataTypes.texi
 @include Constants.texi
 
-@node Operators, Expressions, Data Types and Structures, Top
-@chapter Operators
-@include Operators.texi
-
-@node Expressions, Evaluation, Operators, Top
+@node Expressions, Operators, Data Types and Structures, Top
 @chapter Expressions
 @include Expressions.texi
 
-@node Evaluation, Simplification, Expressions, Top
+@node Operators, Evaluation, Expressions, Top
+@chapter Operators
+@include Operators.texi
+
+@node Evaluation, Simplification, Operators, Top
 @chapter Evaluation
 @include Evaluation.texi
 
@@ -710,19 +714,23 @@ zeilberger
 @chapter Simplification
 @include Simplification.texi
 
-@node Mathematical Functions, Plotting, Simplification, Top
+@node Mathematical Functions, Maximas Database, Simplification, Top
 @chapter Mathematical Functions
 @include MathFunctions.texi
 
-@node Plotting, Input and Output, Mathematical Functions, Top
+@node Maximas Database, Plotting, Mathematical Functions, Top
+@chapter Maximas Database
+@include Database.texi
+
+@node Plotting, File Input and Output, Maximas Database, Top
 @chapter Plotting
 @include Plotting.texi
 
-@node Input and Output, Floating Point, Plotting, Top
-@chapter Input and Output
+@node File Input and Output, Floating Point, Plotting, Top
+@chapter File Input and Output
 @include Input.texi
 
-@node Floating Point, Contexts, Input and Output, Top
+@node Floating Point, Contexts, File Input and Output, Top
 @chapter Floating Point
 @include Floating.texi
 
