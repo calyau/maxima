@@ -36,20 +36,6 @@ system browser.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@anchor{aliases}
-@defvr {System variable} aliases
-Default value: @code{[]}
-
-@code{aliases} is the list of atoms which have a user defined alias (set up by
-the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring
-the atom a @code{noun} with @code{declare}).
-
-@opencatbox
-@category{Declarations and inferences} @category{Global variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @anchor{alphabetic}
 @defvr {Declaration} alphabetic
 
@@ -82,29 +68,6 @@ Example:
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
-
-@c THE FUNCTION APRPOS IS MOVED TO THE FILE HELP.TEXI
-
-@c -----------------------------------------------------------------------------
-@anchor{args}
-@deffn {Function} args (@var{expr})
-
-Returns the list of arguments of @code{expr},
-which may be any kind of expression other than an atom.
-Only the arguments of the top-level operator are extracted;
-subexpressions of @code{expr} appear as elements or subexpressions of elements
-of the list of arguments.
-
-The order of the items in the list may depend on the global flag @code{inflag}.
-
-@code{args (@var{expr})} is equivalent to @code{substpart ("[", @var{expr}, 0)}.
-See also @code{substpart}, and @code{op}.
-
-@c NEEDS EXAMPLES
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{genindex}
