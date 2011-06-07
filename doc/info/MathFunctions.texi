@@ -17,7 +17,7 @@ Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the
 complex modulus of @var{expr}.
 
 @code{abs} distributes over a list, a matrix, or an equation.
-See @code{distribute_over}.
+See @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}
@@ -36,7 +36,7 @@ If @var{x} is a constant expression (@code{10 * %pi}, for example),
 applies @code{ceiling} to the resulting big float.  Because @code{ceiling} uses
 floating point evaluation, it's possible, although unlikely, that @code{ceiling}
 could return an erroneous value for constant inputs.  To guard against errors,
-the floating point evaluation is done using three values for @code{fpprec}.
+the floating point evaluation is done using three values for @mrefdot{fpprec}
 
 For non-constant inputs, @code{ceiling} tries to return a simplified value.
 Here are examples of the simplifications that @code{ceiling} knows about:
@@ -71,7 +71,7 @@ Finally, for all inputs that are manifestly complex, @code{ceiling} returns
 a noun form.
 
 If the range of a function is a subset of the integers, it can be declared to
-be @code{integervalued}.  Both the @code{ceiling} and @code{floor} functions
+be @code{integervalued}.  Both the @code{ceiling} and @mref{floor} functions
 can use this information; for example:
 
 @c ===beg===
@@ -97,7 +97,7 @@ can use this information; for example:
 @deffn {Function} entier (@var{x})
 
 Returns the largest integer less than or equal to @var{x} where @var{x} is
-numeric.  @code{fix} (as in @code{fixnum}) is a synonym for this, so
+numeric.  @mref{fix} (as in @code{fixnum}) is a synonym for this, so
 @code{fix(@var{x})} is precisely the same.
 
 @opencatbox
@@ -117,7 +117,7 @@ evaluates @var{x} using big floating point numbers, and applies @code{floor} to
 the resulting big float. Because @code{floor} uses floating point evaluation,
 it's possible, although unlikely, that @code{floor} could return an erroneous
 value for constant inputs.  To guard against errors, the floating point
-evaluation is done using three values for @code{fpprec}.
+evaluation is done using three values for @mrefdot{fpprec}
 
 For non-constant inputs, @code{floor} tries to return a simplified value.  Here
 are examples of the simplifications that @code{floor} knows about:
@@ -152,7 +152,7 @@ Finally, for all inputs that are manifestly complex, @code{floor} returns
 a noun form.
 
 If the range of a function is a subset of the integers, it can be declared to
-be @code{integervalued}.  Both the @code{ceiling} and @code{floor} functions
+be @code{integervalued}.  Both the @mref{ceiling} and @code{floor} functions
 can use this information; for example:
 
 @c ===beg===
@@ -189,7 +189,8 @@ A synonym for @code{entier (@var{x})}.
 @deffn {Function} lmax (@var{L})
 
 When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.
-When @var{L} isn't a list or a set, signal an error.
+When @var{L} is not a list or a set, signal an error.
+See also @mref{lmin} and @mrefdot{max}
 
 @opencatbox
 @category{Mathematical functions} @category{Lists} @category{Sets}
@@ -201,7 +202,8 @@ When @var{L} isn't a list or a set, signal an error.
 @deffn {Function} lmin (@var{L})
 
 When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}.
-When @var{L} isn't a list or a set, signal an error.
+When @var{L} is not a list or a set, signal an error.
+See also @mref{lmax} and @mrefdot{min}
 
 @opencatbox
 @category{Mathematical functions} @category{Lists} @category{Sets}
@@ -220,6 +222,8 @@ expressions that are between two other arguments; for example,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}.  To set the value of @code{trylevel}
 to 2, use @code{put (trylevel, 2, maxmin)}.
 
+See also @mref{min} and @mrefdot{lmax}
+
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
@@ -237,6 +241,8 @@ expressions that are between two other arguments; for example,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}.  To set the value of @code{trylevel}
 to 2, use @code{put (trylevel, 2, maxmin)}.
 
+See also @mref{max} and @mrefdot{lmin}
+
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
@@ -248,7 +254,7 @@ to 2, use @code{put (trylevel, 2, maxmin)}.
 
 When @var{x} is a real number, returns the closest integer to @var{x}.
 Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
-@var{x} is similar to @code{floor} and @code{ceiling}.
+@var{x} is similar to @mref{floor} and @mrefdot{ceiling}
 
 @opencatbox
 @category{Mathematical functions}
@@ -271,7 +277,7 @@ gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
 @code{signum(x) * signum(y)}).
 
 The @code{signum} function distributes over a list, a matrix, or an
-equation.  See @code{distribute_over}.
+equation.  See @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}
@@ -305,8 +311,8 @@ where @code{r} is the magnitude of @var{z}.
 @code{carg} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 
-See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
-@code{realpart}, and @code{imagpart}.
+See also @mref{abs} (complex magnitude), @mrefcomma{polarform}@w{}
+@mrefcomma{rectform} @mrefcomma{realpart} and @mrefdot{imagpart}
 
 Examples:
 
@@ -379,7 +385,7 @@ Returns the complex conjugate of @var{x}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{impagpart}
+@anchor{imagpart}
 @deffn {Function} imagpart (@var{expr})
 
 Returns the imaginary part of the expression @var{expr}.
@@ -388,8 +394,8 @@ Returns the imaginary part of the expression @var{expr}.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform}, and
-@code{realpart}.
+See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
+@mrefcomma{rectform} and @mrefdot{realpart}
 
 @c NEED EXAMPLES HERE
 @opencatbox
@@ -417,8 +423,8 @@ such that @code{r} and @code{theta} are purely real.
 @anchor{realpart}
 @deffn {Function} realpart (@var{expr})
 
-Returns the real part of @var{expr}.  @code{realpart} and @code{imagpart} will
-work on expressions involving trigonometic and hyperbolic functions,
+Returns the real part of @var{expr}.  @code{realpart} and @mref{imagpart} will
+work on expressions involving trigonometric and hyperbolic functions,
 as well as square root, logarithm, and exponentiation.
 
 @opencatbox
@@ -523,7 +529,7 @@ Tries to combine the coefficients of factorials in @var{expr}
 with the factorials themselves by converting, for example, @code{(n + 1)*n!}
 into @code{(n + 1)!}.
 
-@code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to be
+@mref{sumsplitfact} if set to @code{false} will cause @mref{minfactorial} to be
 applied after a @code{factcomb}.
 
 @c Example:
@@ -556,26 +562,25 @@ value of @code{gamma (x+1)}.  For @code{x} equal to @code{n/2} where @code{n} is
 an odd integer, @code{x!} simplifies to a rational factor times 
 @code{sqrt (%pi)} (since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
 
-The option variables @code{factlim} and @code{gammalim} control the numerical 
+The option variables @mref{factlim} and @mref{gammalim} control the numerical
 evaluation of factorials for integer and rational arguments.  The functions 
-@code{minfactorial} and @code{factcomb} simplifies expressions containing 
-factorials.  See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
-@code{factcomb}.
+@mref{minfactorial} and @mref{factcomb} simplifies expressions containing
+factorials.
 
-The functions @code{gamma}, @code{bffac}, and @code{cbffac} are varieties of the
-gamma function.  @code{bffac} and @code{cbffac} are called internally by 
-@code{gamma} to evaluate the gamma function for real and complex numbers in 
-bigfloat precision.
+The functions @mrefcomma{gamma} @mrefcomma{bffac} and @mref{cbffac} are
+varieties of the gamma function.  @code{bffac} and @code{cbffac} are called
+internally by @code{gamma} to evaluate the gamma function for real and complex
+numbers in bigfloat precision.
 
-@code{makegamma} substitutes @code{gamma} for factorials and related functions.
+@mref{makegamma} substitutes @code{gamma} for factorials and related functions.
 
 Maxima knows the derivative of the factorial function and the limits for 
 specific values like negative integers.
 
-The option variable @code{factorial_expand} controls the simplification of 
+The option variable @mref{factorial_expand} controls the simplification of
 expressions like @code{(n+x)!}, where @code{n} is an integer.
 
-See also @code{binomial}.
+See also @mrefdot{binomial}
 
 The factorial of an integer is simplified to an exact number unless the operand 
 is greater than @code{factlim}.  The factorial for real and complex numbers is 
@@ -698,7 +703,7 @@ Default value: false
 
 The option variable @code{factorial_expand} controls the simplification of 
 expressions like @code{(n+1)!}, where @code{n} is an integer.
-See @code{!} for an example.
+See @mref{factorial} for an example.
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -757,7 +762,7 @@ Default value: @code{true}
 
 When @code{sumsplitfact} is @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
-@code{minfactorial} is applied after a @code{factcomb}.
+@mref{minfactorial} is applied after a @mrefdot{factcomb}
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Simplification flags and variables}
