@@ -156,6 +156,70 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{at}
+@deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
+@deffnx {Function} at (@var{expr}, @var{eqn})
+
+Evaluates the expression @var{expr} with the variables assuming the values as
+specified for them in the list of equations @code{[@var{eqn_1}, ...,
+@var{eqn_n}]} or the single equation @var{eqn}.
+
+If a subexpression depends on any of the variables for which a value is
+specified but there is no @code{atvalue} specified and it can't be otherwise
+evaluated, then a noun form of the @code{at} is returned which displays in a
+two-dimensional form.
+
+@code{at} carries out multiple substitutions in parallel.
+
+See also @code{atvalue}.  For other functions which carry out substitutions,
+see also @code{subst} and @code{ev}.
+
+Examples:
+
+@c ===beg===
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x, y)^2 - u(x, y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@c ===end===
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+@group
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end group
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Differential equations}
+@closecatbox
+@end deffn
+
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
 
 @c -----------------------------------------------------------------------------
