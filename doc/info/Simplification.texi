@@ -99,6 +99,7 @@ time.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{distribute_over}
 @defvr {Option variable} distribute_over
 Default value: @code{true}
 
