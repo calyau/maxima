@@ -411,66 +411,108 @@ etc.  Any even number of arguments may be used.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{at}
-@deffn  {Function} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
-@deffnx {Function} at (@var{expr}, @var{eqn})
+@anchor{aliases}
+@defvr {System variable} aliases
+Default value: @code{[]}
 
-Evaluates the expression @var{expr} with the variables assuming the values as
-specified for them in the list of equations @code{[@var{eqn_1}, ...,
-@var{eqn_n}]} or the single equation @var{eqn}.
-
-If a subexpression depends on any of the variables for which a value is
-specified but there is no @code{atvalue} specified and it can't be otherwise
-evaluated, then a noun form of the @code{at} is returned which displays in a
-two-dimensional form.
-
-@code{at} carries out multiple substitutions in parallel.
-
-See also @code{atvalue}.  For other functions which carry out substitutions,
-see also @code{subst} and @code{ev}.
-
-Examples:
-
-@c ===beg===
-@c atvalue (f(x,y), [x = 0, y = 1], a^2);
-@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
-@c printprops (all, atvalue);
-@c diff (4*f(x, y)^2 - u(x, y)^2, x);
-@c at (%, [x = 0, y = 1]);
-@c ===end===
-@example
-(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
-                                2
-(%o1)                          a
-(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
-(%o2)                        @@2 + 1
-(%i3) printprops (all, atvalue);
-                                !
-                  d             !
-                 --- (f(@@1, @@2))!       = @@2 + 1
-                 d@@1            !
-                                !@@1 = 0
-
-                                     2
-                          f(0, 1) = a
-
-(%o3)                         done
-(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
-                  d                          d
-(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
-                  dx                         dx
-(%i5) at (%, [x = 0, y = 1]);
-@group
-                                         !
-              2              d           !
-(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
-                             dx          !
-                                         !x = 0, y = 1
-@end group
-@end example
+@code{aliases} is the list of atoms which have a user defined alias (set up by
+the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring
+the atom a @code{noun} with @code{declare}).
 
 @opencatbox
-@category{Evaluation} @category{Differential equations}
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c NEEDS TO BE REWORKED. NOT CONVINCED THIS SYMBOL NEEDS ITS OWN ITEM
+@c (SHOULD BE DESCRIBED IN CONTEXT OF EACH FUNCTION WHICH RECOGNIZES IT)
+
+@c -----------------------------------------------------------------------------
+@anchor{allbut}
+@defvr {Keyword} allbut
+
+works with the @code{part} commands (i.e.  @code{part}, @code{inpart},
+@code{substpart}, @code{substinpart}, @code{dpart}, and @code{lpart}).
+For example,
+
+@c ===beg===
+@c expr : e + d + c + b + a;
+@c part (expr, [2, 5]);
+@c ===end===
+@example
+(%i1) expr : e + d + c + b + a;
+(%o1)                   e + d + c + b + a
+(%i2) part (expr, [2, 5]);
+(%o2)                         d + a
+@end example
+
+while
+
+@c ===beg===
+@c expr : e + d + c + b + a;
+@c part (expr, allbut (2, 5));
+@c ===end===
+@example
+(%i1) expr : e + d + c + b + a;
+(%o1)                   e + d + c + b + a
+(%i2) part (expr, allbut (2, 5));
+(%o2)                       e + c + b
+@end example
+
+@code{allbut} is also recognized by @code{kill}.
+
+@c ===beg===
+@c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
+@c kill (allbut (cc, dd));
+@c [aa, bb, cc, dd];
+@c ===end===
+@example
+(%i1) [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
+(%o1)                 [11, 22, 33, 44, 55]
+(%i2) kill (allbut (cc, dd));
+(%o0)                         done
+(%i1) [aa, bb, cc, dd];
+(%o1)                   [aa, bb, 33, 44]
+@end example
+
+@code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of @code{kill(all)}
+except that it does not kill the symbols @var{a_1}, @var{a_2}, @dots{}
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{args}
+@deffn {Function} args (@var{expr})
+
+Returns the list of arguments of @code{expr},
+which may be any kind of expression other than an atom.
+Only the arguments of the top-level operator are extracted;
+subexpressions of @code{expr} appear as elements or subexpressions of elements
+of the list of arguments.
+
+The order of the items in the list may depend on the global flag @code{inflag}.
+
+@code{args (@var{expr})} is equivalent to @code{substpart ("[", @var{expr}, 0)}.
+See also @code{substpart}, and @code{op}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c REPHRASE
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} atom (@var{expr})
+
+Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
+@code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and
+@code{atom(sin(x))} are @code{false} (asuming @code{a[1]} and @code{x} are
+unbound).
+
+@opencatbox
+@category{Expressions} @category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -559,6 +601,26 @@ the drawing character is not stored with the box expression.
 @closecatbox
 @end defvr
 
+@c NEEDS CLARIFICATION !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{collapse}
+@deffn {Function} collapse (@var{expr})
+
+Collapses @var{expr} by causing all of its common (i.e., equal) subexpressions
+to share (i.e., use the same cells), thereby saving space.  (@code{collapse} is
+a subroutine used by the @code{optimize} command.)  Thus, calling
+@code{collapse} may be useful after loading in a @code{save} file.  You can
+collapse several expressions together by using
+@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarly, you can
+collapse the elements of the array @code{A} by doing
+@code{collapse (listarray ('A))}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
 
@@ -622,448 +684,6 @@ Examples:
 
 @opencatbox
 @category{Predicate functions} @category{Constants}
-@closecatbox
-@end deffn
-
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c THIS ITEM IS EXTREMELY IMPORTANT
-@c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
-@c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-
-@c -----------------------------------------------------------------------------
-@anchor{declare}
-@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
-
-Assigns the atom or list of atoms @var{a_i} the property or list of properties
-@var{p_i}.  When @var{a_i} and/or @var{p_i} are lists, each of the atoms gets
-all of the properties.
-
-@code{declare} quotes its arguments.
-@code{declare} always returns @code{done}.
-
-
-As noted in the description for each declaration flag, for some flags
-@code{featurep(@var{object}, @var{feature})} returns @code{true} if @var{object}
-has been declared to have @var{feature}.  However, @code{featurep} does not
-recognize some flags; this is a bug.
-
-See also @code{features}.
-
-@code{declare} recognizes the following properties:
-
-@table @asis
-@item @code{evfun}
-Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
-is applied when @var{a_i} appears as a flag argument of @code{ev}.
-See @code{evfun}.
-
-@item @code{evflag}
-Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to
-@code{true} during the execution of @code{ev} when @var{a_i} appears as a flag
-argument of @code{ev}.  See @code{evflag}.
-
-@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
-
-@item @code{bindtest}
-Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
-
-@item @code{noun}
-Tells Maxima to parse @var{a_i} as a noun.  The effect of this is to replace
-instances of @var{a_i} with @code{'@var{a_i}} or @code{nounify(@var{a_i})},
-depending on the context.
-
-@item @code{constant}
-Tells Maxima to consider @var{a_i} a symbolic constant.
-@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
-@c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
-@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
-
-@item @code{scalar}
-Tells Maxima to consider @var{a_i} a scalar variable.
-
-@item @code{nonscalar}
-Tells Maxima to consider @var{a_i} a nonscalar variable.
-The usual application is to declare a variable as a symbolic vector or matrix.
-
-@item @code{nonarray}
-Tells Maxima to consider @var{a_i} not an array.  This declaration prevents
-multiple evaluation of a subscripted variable name.
-
-@item @code{mainvar}
-Tells Maxima to consider @var{a_i} a "main variable".  A main variable succeeds
-all other constants and variables in the canonical ordering of Maxima
-expressions, as determined by @code{ordergreatp}.
-
-@item @code{alphabetic}
-Tells Maxima to recognize all characters in @var{a_i} (which must be a string)
-as alphabetic characters.
-
-@item @code{feature}
-Tells Maxima to recognize @var{a_i} as the name of a feature.
-Other atoms may then be declared to have the @var{a_i} property.
-
-@item @code{rassociative}, @code{lassociative}
-Tells Maxima to recognize @var{a_i} as a right-associative or left-associative
-function.
-
-@item @code{nary}
-Tells Maxima to recognize @var{a_i} as an n-ary function.
-
-The @code{nary} declaration is not the same as calling the @code{nary} function.
-The sole effect of @code{declare(foo, nary)} is to instruct the Maxima
-simplifier to flatten nested expressions, for example, to simplify
-@code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
-
-@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
-Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
-@code{commutative} is the same as @code{symmetric}.
-
-@item @code{oddfun}, @code{evenfun}
-Tells Maxima to recognize @var{a_i} as an odd or even function.
-
-@item @code{outative}
-Tells Maxima to simplify @var{a_i} expressions by pulling constant factors out
-of the first argument.
-
-When @var{a_i} has one argument, a factor is considered constant if it is a
-literal or declared constant.
-
-When @var{a_i} has two or more arguments, a factor is considered constant if the
-second argument is a symbol and the factor is free of the second argument.
-
-@item @code{multiplicative}
-Tells Maxima to simplify @var{a_i} expressions by the substitution
-@code{@var{a_i}(x * y * z * ...)} @code{-->} 
-@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
-The substitution is carried out on the first argument only.
-
-@item @code{additive}
-Tells Maxima to simplify @var{a_i} expressions by the substitution
-@code{@var{a_i}(x + y + z + ...)} @code{-->}
-@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
-The substitution is carried out on the first argument only.
-
-@item @code{linear}
-Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
-
-@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
-
-@item @code{integer}, @code{noninteger}
-Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
-
-@item @code{even}, @code{odd}
-Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
-
-@item @code{rational}, @code{irrational}
-Tells Maxima to recognize @var{a_i} as a rational or irrational real variable.
-
-@item @code{real}, @code{imaginary}, @code{complex}
-Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex
-variable.
-
-@item @code{increasing}, @code{decreasing}
-Tells Maxima to recognize @var{a_i} as an increasing or decreasing function.
-@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
-@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
-@c REPORTED AS SF BUG # 1483194
-
-@item @code{posfun}
-Tells Maxima to recognize @var{a_i} as a positive function.
-
-@item @code{integervalued}
-Tells Maxima to recognize @var{a_i} as an integer-valued function.
-
-@end table
-
-Examples:
-
-@code{evfun} and @code{evflag} declarations.
-
-@c ===beg===
-@c declare (expand, evfun);
-@c (a + b)^3;
-@c (a + b)^3, expand;
-@c declare (demoivre, evflag);
-@c exp (a + b*%i);
-@c exp (a + b*%i), demoivre;
-@c ===end===
-@example
-(%i1) declare (expand, evfun);
-(%o1)                         done
-(%i2) (a + b)^3;
-                                   3
-(%o2)                       (b + a)
-(%i3) (a + b)^3, expand;
-                     3        2      2      3
-(%o3)               b  + 3 a b  + 3 a  b + a
-(%i4) declare (demoivre, evflag);
-(%o4)                         done
-(%i5) exp (a + b*%i);
-                             %i b + a
-(%o5)                      %e
-(%i6) exp (a + b*%i), demoivre;
-                      a
-(%o6)               %e  (%i sin(b) + cos(b))
-@end example
-
-@code{bindtest} declaration.
-
-@c ===beg===
-@c aa + bb;
-@c declare (aa, bindtest);
-@c aa + bb;
-@c aa : 1234;
-@c aa + bb;
-@c ===end===
-@example
-(%i1) aa + bb;
-(%o1)                        bb + aa
-(%i2) declare (aa, bindtest);
-(%o2)                         done
-(%i3) aa + bb;
-aa unbound variable
- -- an error.  Quitting.  To debug this try debugmode(true);
-(%i4) aa : 1234;
-(%o4)                         1234
-(%i5) aa + bb;
-(%o5)                       bb + 1234
-@end example
-
-@code{noun} declaration.
-
-@c ===beg===
-@c factor (12345678);
-@c declare (factor, noun);
-@c factor (12345678);
-@c ''%, nouns;
-@c ===end===
-@example
-(%i1) factor (12345678);
-                             2
-(%o1)                     2 3  47 14593
-(%i2) declare (factor, noun);
-(%o2)                         done
-(%i3) factor (12345678);
-(%o3)                   factor(12345678)
-(%i4) ''%, nouns;
-                             2
-(%o4)                     2 3  47 14593
-@end example
-
-@code{constant}, @code{scalar}, @code{nonscalar}, and @code{mainvar}
-declarations.
-
-@c ===beg===
-@c declare (bb, constant);
-@c declare (cc, scalar);
-@c declare (dd, nonscalar);
-@c declare (ee, mainvar);
-@c ===end===
-@example
-@end example
-
-@code{alphabetic} declaration.
-
-@c ===beg===
-@c xx\~yy\`\@ : 1729;
-@c declare ("~`@", alphabetic);
-@c xx~yy`@ + @yy`xx + `xx@@yy~;
-@c listofvars (%);
-@c ===end===
-@example
-(%i1) xx\~yy\`\@@ : 1729;
-(%o1)                         1729
-(%i2) declare ("~`@@", alphabetic);
-(%o2)                         done
-(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
-(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
-(%i4) listofvars (%);
-(%o4)                  [@@yy`xx, `xx@@@@yy~]
-@end example
-
-@code{feature} declaration.
-
-@c ===beg===
-@c declare (FOO, feature);
-@c declare (x, FOO);
-@c featurep (x, FOO);
-@c ===end===
-@example
-(%i1) declare (FOO, feature);
-(%o1)                         done
-(%i2) declare (x, FOO);
-(%o2)                         done
-(%i3) featurep (x, FOO);
-(%o3)                         true
-@end example
-
-@code{rassociative} and @code{lassociative} declarations.
-
-@c ===beg===
-@c declare (F, rassociative);
-@c declare (G, lassociative);
-@c ===end===
-@example
-@end example
-
-@code{nary} declaration.
-
-@c ===beg===
-@c H (H (a, b), H (c, H (d, e)));
-@c declare (H, nary);
-@c H (H (a, b), H (c, H (d, e)));
-@c ===end===
-@example
-(%i1) H (H (a, b), H (c, H (d, e)));
-(%o1)               H(H(a, b), H(c, H(d, e)))
-(%i2) declare (H, nary);
-(%o2)                         done
-(%i3) H (H (a, b), H (c, H (d, e)));
-(%o3)                   H(a, b, c, d, e)
-@end example
-
-@code{symmetric} and @code{antisymmetric} declarations.
-
-@c ===beg===
-@c S (b, a);
-@c declare (S, symmetric);
-@c S (b, a);
-@c S (a, c, e, d, b);
-@c T (b, a);
-@c declare (T, antisymmetric);
-@c T (b, a);
-@c T (a, c, e, d, b);
-@c ===end===
-@example
-(%i1) S (b, a);
-(%o1)                        S(b, a)
-(%i2) declare (S, symmetric);
-(%o2)                         done
-(%i3) S (b, a);
-(%o3)                        S(a, b)
-(%i4) S (a, c, e, d, b);
-(%o4)                   S(a, b, c, d, e)
-(%i5) T (b, a);
-(%o5)                        T(b, a)
-(%i6) declare (T, antisymmetric);
-(%o6)                         done
-(%i7) T (b, a);
-(%o7)                       - T(a, b)
-(%i8) T (a, c, e, d, b);
-(%o8)                   T(a, b, c, d, e)
-@end example
-
-@code{oddfun} and @code{evenfun} declarations.
-
-@c ===beg===
-@c o (- u) + o (u);
-@c declare (o, oddfun);
-@c o (- u) + o (u);
-@c e (- u) - e (u);
-@c declare (e, evenfun);
-@c e (- u) - e (u);
-@c ===end===
-@example
-(%i1) o (- u) + o (u);
-(%o1)                     o(u) + o(- u)
-(%i2) declare (o, oddfun);
-(%o2)                         done
-(%i3) o (- u) + o (u);
-(%o3)                           0
-(%i4) e (- u) - e (u);
-(%o4)                     e(- u) - e(u)
-(%i5) declare (e, evenfun);
-(%o5)                         done
-(%i6) e (- u) - e (u);
-(%o6)                           0
-@end example
-
-@code{outative} declaration.
-
-@c ===beg===
-@c F1 (100 * x);
-@c declare (F1, outative);
-@c F1 (100 * x);
-@c declare (zz, constant);
-@c F1 (zz * y);
-@c ===end===
-@example
-(%i1) F1 (100 * x);
-(%o1)                       F1(100 x)
-(%i2) declare (F1, outative);
-(%o2)                         done
-(%i3) F1 (100 * x);
-(%o3)                       100 F1(x)
-(%i4) declare (zz, constant);
-(%o4)                         done
-(%i5) F1 (zz * y);
-(%o5)                       zz F1(y)
-@end example
-
-@code{multiplicative} declaration.
-
-@c ===beg===
-@c F2 (a * b * c);
-@c declare (F2, multiplicative);
-@c F2 (a * b * c);
-@c ===end===
-@example
-(%i1) F2 (a * b * c);
-(%o1)                       F2(a b c)
-(%i2) declare (F2, multiplicative);
-(%o2)                         done
-(%i3) F2 (a * b * c);
-(%o3)                   F2(a) F2(b) F2(c)
-@end example
-
-@code{additive} declaration.
-
-@c ===beg===
-@c F3 (a + b + c);
-@c declare (F3, additive);
-@c F3 (a + b + c);
-@c ===end===
-@example
-(%i1) F3 (a + b + c);
-(%o1)                     F3(c + b + a)
-(%i2) declare (F3, additive);
-(%o2)                         done
-(%i3) F3 (a + b + c);
-(%o3)                 F3(c) + F3(b) + F3(a)
-@end example
-
-@code{linear} declaration.
-
-@c ===beg===
-@c 'sum (F(k) + G(k), k, 1, inf);
-@c declare (nounify (sum), linear);
-@c 'sum (F(k) + G(k), k, 1, inf);
-@c ===end===
-@example
-(%i1) 'sum (F(k) + G(k), k, 1, inf);
-                       inf
-                       ====
-                       \
-(%o1)                   >    (G(k) + F(k))
-                       /
-                       ====
-                       k = 1
-(%i2) declare (nounify (sum), linear);
-(%o2)                         done
-(%i3) 'sum (F(k) + G(k), k, 1, inf);
-@group
-                     inf          inf
-                     ====         ====
-                     \            \
-(%o3)                 >    G(k) +  >    F(k)
-                     /            /
-                     ====         ====
-                     k = 1        k = 1
-@end group
-@end example
-
-@opencatbox
-@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
