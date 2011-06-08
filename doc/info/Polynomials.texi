@@ -1194,12 +1194,34 @@ necessarily return @code{[@var{p_1}, ..., @var{p_n}]}:
 @closecatbox
 @end deffn
 
-@deffn {Function} quotient (@var{p_1}, @var{p_2})
-@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
-Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.
-The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
+@c -----------------------------------------------------------------------------
+@anchor{polymod}
+@deffn  {Function} polymod (@var{p})
+@deffnx {Function} polymod (@var{p}, @var{m})
 
-@code{quotient} returns the first element of the two-element list returned by @code{divide}.
+Converts the polynomial @var{p} to a modular representation with respect to the
+current modulus which is the value of the variable @code{modulus}.
+
+@code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
+instead of the current value of @code{modulus}.
+
+See @code{modulus}.
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{quotient}
+@deffn  {Function} quotient (@var{p_1}, @var{p_2})
+@deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+
+Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.  The
+arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
+
+@code{quotient} returns the first element of the two-element list returned by
+@code{divide}.
 
 @c NEED SOME EXAMPLES HERE
 @opencatbox
