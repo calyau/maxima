@@ -2137,6 +2137,41 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{psubst}
+@deffn  {Function} psubst (@var{list}, @var{expr})
+@deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
+
+@code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}.  See 
+@code{subst}.
+
+In distinction from @code{subst} the function @code{psubst} makes parallel 
+substitutions, if the first argument @var{list} is a list of equations.
+
+See also @code{sublis} for making parallel substitutions.
+
+Example:
+
+The first example shows parallel substitution with @code{psubst}.  The second
+example shows the result for the function @code{subst}, which does a serial
+substitution.
+
+@c ===beg===
+@c psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c subst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c ===end===
+@example
+(%i4) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o4)                           sin(b) + sin(a)
+(%i5) subst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o5)                              2 sin(a)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{rembox}
 @deffn  {Function} rembox (@var{expr}, unlabelled)
 @deffnx {Function} rembox (@var{expr}, @var{label})
@@ -2221,6 +2256,284 @@ Examples:
 @category{Expressions}
 @closecatbox
 @end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{sublis}
+@deffn {Function} sublis (@var{list}, @var{expr})
+
+Makes multiple parallel substitutions into an expression.  @var{list} is a list
+of equations.  The left hand side of the equations must be an atom.
+
+The variable @code{sublis_apply_lambda} controls simplification after
+@code{sublis}.
+
+See also @code{psubst} for making parallel substitutions.
+
+Example:
+
+@c ===beg===
+@c sublis ([a=b, b=a], sin(a) + cos(b));
+@c ===end===
+@example
+(%i1) sublis ([a=b, b=a], sin(a) + cos(b));
+(%o1)                    sin(b) + cos(a)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sublis_apply_lambda}
+@defvr {Option variable} sublis_apply_lambda
+Default value: @code{true}
+
+Controls whether @code{lambda}'s substituted are applied in simplification after
+@code{sublis} is used or whether you have to do an @code{ev} to get things to
+apply.  @code{true} means do the application.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{subnumsimp}
+@defvr {Option variable} subnumsimp
+Default value: @code{false}
+
+If @code{true} then the functions @code{subst} and @code{psubst} can substitute
+a subscripted variable @code{f[x]} with a number, when only the symbol @code{f}
+is given.
+
+See also @code{subst}.
+
+@example
+(%i1) subst(100,g,g[x]+2);
+
+subst: cannot substitute 100 for operator g in expression g
+                                                           x
+ -- an error. To debug this try: debugmode(true);
+
+(%i2) subst(100,g,g[x]+2),subnumsimp:true;
+(%o2)                          102
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, MORE EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{subst}
+@deffn {Function} subst (@var{a}, @var{b}, @var{c})
+
+Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
+complete subexpression of @var{c}.  For example, @code{x+y+z} is a complete
+subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not.  When @var{b} does
+not have these characteristics, one may sometimes use @code{substpart} or
+@code{ratsubst} (see below).  Alternatively, if @var{b} is of the form
+@code{e/f} then one could use @code{subst (a*f, e, c)} while if @var{b} is of
+the form @code{e^(1/f)} then one could use @code{subst (a^f, e, c)}.  The
+@code{subst} command also discerns the @code{x^y} in @code{x^-y} so that
+@code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @var{a} and @var{b}
+may also be operators of an expression enclosed in double-quotes @code{"} or
+they may be function names.  If one wishes to substitute for the independent
+variable in derivative forms then the @code{at} function (see below) should be
+used.
+
+@c UMM, REVERSE THIS AND MOVE IT TO substitute ??
+@code{subst} is an alias for @code{substitute}.
+
+The commands @code{subst (@var{eq_1}, @var{expr})} or
+@code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})} are other permissible
+forms.  The @var{eq_i} are equations indicating substitutions to be made.
+For each equation, the right side will be substituted for the left in the 
+expression @var{expr}.  The equations are substituted in serial from left to
+right in @var{expr}.  See the functions @code{sublis} and @code{psubst} for 
+making parallel substitutions.
+
+@code{exptsubst} if @code{true} permits substitutions
+like @code{y} for @code{%e^x} in @code{%e^(a*x)} to take place.
+
+@c WHAT IS THIS ABOUT ??
+When @code{opsubst} is @code{false},
+@code{subst} will not attempt to substitute into the operator of an expression.
+E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
+
+Examples:
+
+@c ===beg===
+@c subst (a, x+y, x + (x+y)^2 + y);
+@c subst (-%i, %i, a + b*%i);
+@c ===end===
+@example
+(%i1) subst (a, x+y, x + (x+y)^2 + y);
+                                    2
+(%o1)                      y + x + a
+(%i2) subst (-%i, %i, a + b*%i);
+(%o2)                       a - %i b
+@end example
+
+The substitution is done in serial for a list of equations.  Compare this with
+a parallel substitution:
+
+@c ===beg===
+@c subst([a=b, b=c], a+b);
+@c sublis([a=b, b=c], a+b);
+@c ===end===
+@example
+(%i3) subst([a=b, b=c], a+b);
+(%o3)                                 2 c
+(%i4) sublis([a=b, b=c], a+b);
+(%o4)                                c + b
+@end example
+
+@noindent
+For further examples, do @code{example (subst)}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c ----------------------------------------------------------------------------
+@anchor{substinpart}
+@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Similar to @code{substpart}, but @code{substinpart} works on the
+internal representation of @var{expr}.
+
+Examples:
+
+@c ===beg===
+@c x . 'diff (f(x), x, 2);
+@c substinpart (d^2, %, 2);
+@c substinpart (f1, f[1](x + 1), 0);
+@c ===end===
+@example
+(%i1) x . 'diff (f(x), x, 2);
+                              2
+                             d
+(%o1)                   x . (--- (f(x)))
+                               2
+                             dx
+(%i2) substinpart (d^2, %, 2);
+                                  2
+(%o2)                        x . d
+(%i3) substinpart (f1, f[1](x + 1), 0);
+(%o3)                       f1(x + 1)
+@end example
+
+If the last argument to a @code{part} function is a list of indices then
+several subexpressions are picked out, each one corresponding to an
+index of the list.  Thus
+
+@c ===beg===
+@c part (x + y + z, [1, 3]);
+@c ===end===
+@example
+(%i1) part (x + y + z, [1, 3]);
+(%o1)                         z + x
+@end example
+
+@code{piece} holds the value of the last expression selected when using the
+@code{part} functions.  It is set during the execution of the function and
+thus may be referred to in the function itself as shown below.
+If @code{partswitch} is set to @code{true} then @code{end} is returned when a
+selected part of an expression doesn't exist, otherwise an error
+message is given.
+
+@c ===beg===
+@c expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+@c part (expr, 2, [1, 3]);
+@c sqrt (piece/54);
+@c substpart (factor (piece), expr, [1, 2, 3, 5]);
+@c expr: 1/x + y/x - 1/z;
+@c substpart (xthru (piece), expr, [2, 3]);
+@c ===end===
+@example
+(%i1) expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+              3         2       2            3
+(%o1)     27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
+(%i2) part (expr, 2, [1, 3]);
+                                  2
+(%o2)                         54 y
+(%i3) sqrt (piece/54);
+(%o3)                        abs(y)
+(%i4) substpart (factor (piece), expr, [1, 2, 3, 5]);
+                               3
+(%o4)               (3 y + 2 x)  + y + x + 1
+(%i5) expr: 1/x + y/x - 1/z;
+                             1   y   1
+(%o5)                      - - + - + -
+                             z   x   x
+(%i6) substpart (xthru (piece), expr, [2, 3]);
+                            y + 1   1
+(%o6)                       ----- - -
+                              x     z
+@end example
+
+Also, setting the option @code{inflag} to @code{true} and calling @code{part}
+or @code{substpart} is the same as calling @code{inpart} or @code{substinpart}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{substpart}
+@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+
+Substitutes @var{x} for the subexpression picked out by the rest of the
+arguments as in @code{part}.  It returns the new value of @var{expr}.  @var{x}
+may be some operator to be substituted for an operator of @var{expr}.  In some
+cases @var{x} needs to be enclosed in double-quotes @code{"} (e.g.
+@code{substpart ("+", a*b, 0)} yields @code{b + a}).
+
+Example:
+
+@c ===beg===
+@c 1/(x^2 + 2);
+@c substpart (3/2, %, 2, 1, 2);
+@c a*x + f(b, y);
+@c substpart ("+", %, 1, 0);
+@c ===end===
+@example
+(%i1) 1/(x^2 + 2);
+                               1
+(%o1)                        ------
+                              2
+                             x  + 2
+(%i2) substpart (3/2, %, 2, 1, 2);
+                               1
+(%o2)                       --------
+                             3/2
+                            x    + 2
+(%i3) a*x + f(b, y);
+(%o3)                     a x + f(b, y)
+(%i4) substpart ("+", %, 1, 0);
+(%o4)                    x + f(b, y) + a
+@end example
+
+Also, setting the option @code{inflag} to @code{true} and calling @code{part}
+or @code{substpart} is the same as calling @code{inpart} or @code{substinpart}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 
 @c -----------------------------------------------------------------------------
 @anchor{sum}
@@ -2379,6 +2692,23 @@ Examples:
 
 @opencatbox
 @category{Sums and products}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{symbolp}
+@deffn {Function} symbolp (@var{expr})
+
+Returns @code{true} if @var{expr} is a symbol, else @code{false}.  In effect,
+@code{symbolp(x)} is equivalent to the predicate
+@code{atom(x) and not numberp(x)}.
+
+@c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
+@c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
+See also @ref{Identifiers}.
+
+@opencatbox
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
