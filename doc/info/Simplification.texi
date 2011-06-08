@@ -7,6 +7,42 @@
 @section Functions and Variables for Simplification
 @c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{additive}
+@defvr {Keyword} additive
+
+If @code{declare(f,additive)} has been executed, then:
+
+(1) If @code{f} is univariate, whenever the simplifier encounters @code{f}
+applied to a sum, @code{f} will be distributed over that sum.  I.e.
+@code{f(y+x)} will simplify to @code{f(y)+f(x)}.
+
+(2) If @code{f} is a function of 2 or more arguments, additivity is defined as
+additivity in the first argument to @code{f}, as in the case of @code{sum} or
+@code{integrate}, i.e.  @code{f(h(x)+g(x),x)} will simplify to
+@code{f(h(x),x)+f(g(x),x)}.  This simplification does not occur when @code{f} is
+applied to expressions of the form @code{sum(x[i],i,lower-limit,upper-limit)}.
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{antisymmetric}
+@defvr {Declaration} antisymmetric
+
+If @code{declare(h,antisymmetric)} is done, this tells the simplifier that
+@code{h} is antisymmetric.  E.g.  @code{h(x,z,y)} will simplify to 
+@code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
+@code{symmetric} or @code{commutative}, where n is the number of interchanges
+of two arguments necessary to convert it to that form.
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences}
+@closecatbox
+@end defvr
+
 @c After studying src/compar.lisp, it appears that askexp would
 @c work as advertised, except that it doesn't appear to be possible
 @c to open a break prompt with ^A or any other character.
@@ -71,6 +107,19 @@ computation. The return value of @code{asksign} is one of @code{pos},
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{commutative}
+@defvr {Declaration} commutative
+
+If @code{declare(h,commutative)} is done, this tells the simplifier that
+@code{h} is a commutative function.  E.g.  @code{h(x,z,y)} will simplify to
+@code{h(x, y, z)}.  This is the same as @code{symmetric}.
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences}
+@closecatbox
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 
@@ -1047,6 +1096,49 @@ not recognized by the Maxima simplifier.
 
 @opencatbox
 @category{Predicate functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{xthru}
+@deffn {Function} xthru (@var{expr})
+
+Combines all terms of @var{expr} (which should be a sum) over a common
+denominator without expanding products and exponentiated sums as @code{ratsimp}
+does.  @code{xthru} cancels common factors in the numerator and denominator of
+rational expressions but only if the factors are explicit.
+
+@c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
+Sometimes it is better to use @code{xthru} before @code{ratsimp}ing an
+expression in order to cause explicit factors of the gcd of the numerator and
+denominator to be canceled thus simplifying the expression to be
+@code{ratsimp}ed.
+
+Examples:
+
+@c ===beg===
+@c ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@c xthru (%);
+@c ===end===
+@example
+(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@group
+                                20
+                 1       (x + 2)   - 2 y       x
+(%o1)        --------- + --------------- - ---------
+                    19             20             20
+             (y + x)        (y + x)        (y + x)
+@end group
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
+@end example
+
+@opencatbox
+@category{Expressions}
 @closecatbox
 @end deffn
 
