@@ -235,13 +235,13 @@ Expressions
 
 Operators
 
-* nary::                        
-* nofix::                       
-* postfix::                     
-* prefix::                      
-* Arithmetic operators::    
-* Relational operators::   
-* General operators::
+* Introduction to operators::
+* Arithmetic operators::
+* Relational operators::
+* Logical operators::
+* Operators for Equations::
+* Assignment operators::
+* User defined operators::
 
 Evaluation
 
@@ -256,6 +256,10 @@ Mathematical Functions
 * Functions for Numbers::
 * Functions for Complex Numbers::
 * Combinatorial Functions::
+* Root Exponential and Logarithmic Functions::
+* Trigonometric Functions::
+* Hyperbolic Functions::
+* Random Numbers::
 
 Maximas Database
 
