@@ -2,6 +2,10 @@
 * Functions for Numbers::
 * Functions for Complex Numbers::
 * Combinatorial Functions::
+* Root Exponential and Logarithmic Functions::
+* Trigonometric Functions::
+* Hyperbolic Functions::
+* Random Numbers::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -285,7 +289,7 @@ equation.  See @mrefdot{distribute_over}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for Complex Numbers, Combinatorial Functions , Functions for Numbers, Mathematical Functions
+@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers, Mathematical Functions
 @section Functions for Complex Numbers
 @c -----------------------------------------------------------------------------
 
@@ -447,7 +451,7 @@ such that @var{a} and @var{b} are purely real.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Combinatorial Functions, , Functions for Complex Numbers, Mathematical Functions
+@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers, Mathematical Functions
 @section Combinatorial Functions
 @c -----------------------------------------------------------------------------
 
@@ -768,4 +772,168 @@ When @code{sumsplitfact} is @code{false},
 @category{Gamma and factorial functions} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions, Mathematical Functions
+@section Root, Exponential and Logarithmic Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrt}
+@deffn {Function} sqrt (@var{x})
+
+The square root of @var{x}.  It is represented internally by
+@code{@var{x}^(1/2)}.  See also @code{rootscontract}.
+
+@code{radexpand} if @code{true} will cause nth roots of factors of a product
+which are powers of n to be pulled outside of the radical, e.g.
+@code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is
+@code{true}.
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrtdispflag}
+@defvr {Option variable} sqrtdispflag
+Default value: @code{true}
+
+When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
+exponent 1/2.
+@c AND OTHERWISE ... ??
+
+@opencatbox
+@category{Mathematical functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Trigonometric Functions, Hyperbolic Functions, Root Exponential and Logarithmic Functions, Mathematical Functions
+@section Trigonometric Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Hyperbolic Functions, Random Numbers, Trigonometric Functions, Mathematical Functions
+@section Hyperbolic Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Random Numbers, , Hyperbolic Functions, Mathematical Functions
+@section Random Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{make_random_state}
+@deffn  {Function} make_random_state (@var{n})
+@deffnx {Function} make_random_state (@var{s})
+@deffnx {Function} make_random_state (true)
+@deffnx {Function} make_random_state (false)
+
+@c OMIT THIS FOR NOW. SEE COMMENT BELOW.
+@c @defunx make_random_state (@var{a})
+
+A random state object represents the state of the random number generator.
+The state comprises 627 32-bit words.
+
+@code{make_random_state (@var{n})} returns a new random state object
+created from an integer seed value equal to @var{n} modulo 2^32.
+@var{n} may be negative.
+
+@c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
+@c @code{make_random_state (@var{a})} returns a new random state object
+@c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
+
+@code{make_random_state (@var{s})} returns a copy of the random state @var{s}.
+
+@code{make_random_state (true)} returns a new random state object,
+using the current computer clock time as the seed.
+
+@code{make_random_state (false)} returns a copy of the current state
+of the random number generator.
+
+@opencatbox
+@category{Random numbers}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{set_random_state}
+@deffn {Function} set_random_state (@var{s})
+
+Copies @var{s} to the random number generator state.
+
+@code{set_random_state} always returns @code{done}.
+
+@opencatbox
+@category{Random numbers}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{random}
+@deffn {Function} random (@var{x})
+
+Returns a pseudorandom number.  If @var{x} is an integer,
+@code{random (@var{x})} returns an integer from 0 through @code{@var{x} - 1}
+inclusive.  If @var{x} is a floating point number, @code{random (@var{x})}
+returns a nonnegative floating point number less than @var{x}.  @code{random}
+complains with an error if @var{x} is neither an integer nor a float, or if
+@var{x} is not positive.
+
+The functions @code{make_random_state} and @code{set_random_state}
+maintain the state of the random number generator.
+
+The Maxima random number generator is an implementation of the Mersenne twister
+MT 19937.
+
+Examples:
+
+@c ===beg===
+@c s1: make_random_state (654321)$
+@c set_random_state (s1);
+@c random (1000);
+@c random (9573684);
+@c random (2^75);
+@c s2: make_random_state (false)$
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c set_random_state (s2);
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c ===end===
+@example
+(%i1) s1: make_random_state (654321)$
+(%i2) set_random_state (s1);
+(%o2)                         done
+(%i3) random (1000);
+(%o3)                          768
+(%i4) random (9573684);
+(%o4)                        7657880
+(%i5) random (2^75);
+(%o5)                11804491615036831636390
+(%i6) s2: make_random_state (false)$
+(%i7) random (1.0);
+(%o7)                   .2310127244107132
+(%i8) random (10.0);
+(%o8)                   4.394553645870825
+(%i9) random (100.0);
+(%o9)                   32.28666704056853
+(%i10) set_random_state (s2);
+(%o10)                        done
+(%i11) random (1.0);
+(%o11)                  .2310127244107132
+(%i12) random (10.0);
+(%o12)                  4.394553645870825
+(%i13) random (100.0);
+(%o13)                  32.28666704056853
+@end example
+
+@opencatbox
+@category{Random numbers} @category{Numerical methods}
+@closecatbox
+@end deffn
 
