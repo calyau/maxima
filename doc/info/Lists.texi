@@ -667,6 +667,125 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{sort}
+@deffn  {Function} sort (@var{L}, @var{P})
+@deffnx {Function} sort (@var{L})
+
+Sorts a list @var{L} according to a predicate @code{P} of two arguments, such
+that @code{@var{P} (@var{L}[k], @var{L}[k + 1])} is @code{true} for any two 
+successive elements.  The predicate may be specified as the name of a function 
+or binary infix operator, or as a @code{lambda} expression.  If specified as
+the name of an operator, the name is enclosed in "double quotes".
+
+The sorted list is returned as a new object; the argument @var{L} is not
+modified.  To construct the return value, @code{sort} makes a shallow copy of
+the elements of @var{L}.
+@c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
+
+@c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
+If the predicate @var{P} is not a total order on the elements of @var{L}, then 
+@code{sort} might run to completion without error, but the result is undefined.
+@code{sort} complains if the predicate evaluates to something other than 
+@code{true} or @code{false}.
+
+@code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
+That is, the default sorting order is ascending, as determined by 
+@code{orderlessp}.  All Maxima atoms and expressions are comparable under 
+@code{orderlessp}.
+
+The predicate @code{ordergreatp} sorts a list in descending order.  The
+predicate @code{ordermagnitudep} sorts Maxima numbers, constant symbols with a
+numerical value, or expressions which can be evaluated to a constant by
+magnitude.  All other elements of the list @var{L} are sorted by
+@code{orderlessp}.  The predicate @code{"<"} allows the ordering by magnitude
+too, but does not order completely if elements in the list @var{L} are not
+comparable under @code{"<"}.
+
+Examples:
+
+@c ===beg===
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 
+@c       19 - 3 * x]);
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], 
+@c       ordergreatp);
+@c sort ([%pi, 3, 4, %e, %gamma]);
+@c sort ([%pi, 3, 4, %e, %gamma], "<");
+@c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+@c sort (my_list);
+@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), 
+@c       reverse (b))));
+@c ===end===
+@example
+(%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c,
+      19 - 3 * x]);
+               5
+(%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
+               2
+(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9*c, 19 - 3*x],
+      ordergreatp);
+                                                   5
+(%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
+                                                   2
+(%i3) sort ([%pi, 3, 4, %e, %gamma]);
+(%o3)                [3, 4, %e, %gamma, %pi]
+(%i4) sort ([%pi, 3, 4, %e, %gamma], "<");
+(%o4)                [%gamma, %e, 3, %pi, 4]
+(%i5) my_list: [[aa,hh,uu], [ee,cc], [zz,xx,mm,cc], [%pi,%e]];
+(%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
+(%i6) sort (my_list);
+(%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
+@group
+(%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a),
+      reverse (b))));
+@end group
+(%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+@end example
+
+Order Maxima numbers, constants, and constants expressions by magnitude, and
+all other elements in ascending sorting order:
+
+@c ===beg===
+@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+@c      ordermagnitudep);
+@c ===end===
+@example
+(%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+           ordermagnitudep);
+(%o8) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
+                                                     %i + 1, 2 x]
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sublist}
+@deffn {Function} sublist (@var{list}, @var{p})
+
+Returns the list of elements of @var{list} for which the predicate @code{p}
+returns @code{true}.
+
+Example:
+
+@c ===beg===
+@c L: [1, 2, 3, 4, 5, 6];
+@c sublist (L, evenp);
+@c ===end===
+@example
+(%i1) L: [1, 2, 3, 4, 5, 6];
+(%o1)                  [1, 2, 3, 4, 5, 6]
+(%i2) sublist (L, evenp);
+(%o2)                       [2, 4, 6]
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{unique}
 @deffn {Function} unique (@var{L})
 
