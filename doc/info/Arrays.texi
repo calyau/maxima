@@ -879,6 +879,20 @@ Examples:
 @closecatbox
 @end deffn
 
+@c NEEDS EXPANSION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{subvarp}
+@deffn {Function} subvarp (@var{expr})
+
+Returns @code{true} if @var{expr} is a subscripted variable, for example
+@code{a[i]}.
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
 @c THIS IS REALLY CONFUSING
 
 @c -----------------------------------------------------------------------------
