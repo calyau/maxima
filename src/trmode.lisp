@@ -250,15 +250,5 @@
 	   (($complex) "to ask about this")
 	   (t "to see the documentation on"))))
 
-(defmfun fluidize (variable)
-  (mapc #'(lambda (v) (or (boundp v) (setf (symbol-value v) nil)))
-	;; what a sorry crock to have all these switches.
-	'(*in-compile* *in-compfile* *in-translate* *in-translate-file*))
-
-  (putprop variable t 'special)
-  (if (and $transcompile
-	   (or *in-compile* *in-compfile* *in-translate* *in-translate-file*))
-      (pushnew variable specials :test #'eq)))
-
 (defmspec $bind_during_translation (form)
   (mevaln (cddr form)))
