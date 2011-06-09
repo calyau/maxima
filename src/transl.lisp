@@ -221,7 +221,7 @@ APPLY means like APPLY.")
 
 (defun barfo (&rest l)
   (apply #'tr-tell
-	 (nconc l '("***BARFO*** gasp. Internal TRANSLATE error. i.e. *BUG*")))
+	 (nconc l '("translator: internal error.")))
   (cond (*transl-debug*
 	 (break "transl barfo ~S" t))
 	(t
@@ -300,11 +300,8 @@ APPLY means like APPLY.")
 
 (defun warn-meval (form &optional comment)
   (cond ((tr-warnp $tr_warn_meval)
-	 (tr-format
-	  "~%WARNING-> ~:M~
-		       ~%has caused a call to the evaluator to be output,~
-		       ~%due to lack of information. Code will not work compiled."
-	  form)
+	 (tr-format (intl:gettext "warning: translator emits call to MEVAL for expression: ~:M") form)
+	 (tr-format (intl:gettext "warning: translator can't figure out what else to do."))
 	 (cond (comment (dolist (v *translation-msgs-files*)
 			  (terpri v)
 			  (princ comment v))))
@@ -319,10 +316,7 @@ APPLY means like APPLY.")
 		     (not (covers mode newmode))
 		     (not (member (list var mode newmode) *warned-mode-vars* :test #'equal)))
 		(push (list var mode newmode) *warned-mode-vars*)
-		(tr-format
-		 "~%WARNING-> Assigning variable ~:M, whose mode is ~:M,~
-		 a value of mode ~:M."
-		 var mode newmode)
+		(tr-format (intl:gettext "warning: variable ~:M (declared type ~:M) assigned type ~:M.") var mode newmode)
 		(cond (comment
 		       (dolist (v *translation-msgs-files*)
 			 (terpri v)
@@ -333,11 +327,8 @@ APPLY means like APPLY.")
   (cond ((and (tr-warnp $tr_warn_fexpr)
 	      (not (member form *warned-fexprs* :test #'equal)))
 	 (push  form *warned-fexprs*)
-	 (tr-format
-	  "~%WARNING->~%~:M~
-		       ~%is a special function without a full LISP translation~
-		       ~%scheme. Use in compiled code may not work."
-	  form)
+	 (tr-format (intl:gettext "warning: ~:M is a special function without a full Lisp translation.") form)
+         (tr-format (intl:gettext "warning: calling ~:M in compiled code might not have the desired effect.") form)
 	 (cond (comment
 		(dolist (v *translation-msgs-files*)
 		  (terpri v)
@@ -463,6 +454,7 @@ APPLY means like APPLY.")
 	    `(,(car form) ,(car args)
 	      ((lambda) ((mlist) ,@(cdr args)) ,body))))
 	  ((member tr-unique a-args :test #'eq)
+	   ;; WHAT IS "BAD" ABOUT THE ARGUMENT LIST HERE ??
 	   (tr-tell "Bad argument list for a function to translate->" `((mlist),@args))
 	   (setq tr-abort t)
 	   nil)
@@ -545,7 +537,7 @@ APPLY means like APPLY.")
 
 
 (defun trfail (x)
-  (tr-tell x " failed to translate.") nil)
+  (tr-tell x (intl:gettext "translator: failed to translate.")) nil)
 
 (defmfun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
@@ -608,7 +600,7 @@ APPLY means like APPLY.")
 	   (setq whens (cond (($listp whens) (cdr whens))
 			     ((atom whens) (list whens))
 			     (t
-			      (tr-tell "Bad `eval-when' times" (cadr form))
+			      (tr-tell (intl:gettext "translator: 'eval-when' argument must be a list or atom; found:") (cadr form))
 			      nil)))
 	   (setq tr-whens (mapcar 'stripdollar whens))
 	   (cond ((member '$translate whens :test #'eq)
@@ -636,10 +628,11 @@ APPLY means like APPLY.")
 	((member  (caar form) '(mdefine mdefmacro) :test #'eq)
 	 (let ((name (caaadr form))
 	       (trl))
-	   (tr-format "~%Translating: ~:@M" name)
+	   (tr-format (intl:gettext "translator: translating ~:@M") name)
 	   (setq trl (tr-mdefine-toplevel form))
 	   (cond (tr-abort
-		  (tr-format "~%~:@M failed to Translate.  Continuing..." name)
+		  (tr-format (intl:gettext "translator: failed to translate ~:@M") name)
+		  (tr-format (intl:gettext "translator: keep going and hope for the best."))
 		  `(meval* ',form))
 		 (t trl))))
 	((eq 'mprogn (caar form))
@@ -693,9 +686,7 @@ APPLY means like APPLY.")
 	     ;; tailrecursion should always arrange for a counter
 	     ;; to check for mobylossage.
 	     ((> kount $tr_optimize_max_loop)
-	      (tr-format
-	       "~%Looping over ~A times in optimization of call to ~:@M~
-		    ~%macro expand MAXIMA-ERROR likely so punting at this level."
+	      (tr-format (intl:gettext "translator: I've looped ~A times in macro expansion; just give up and return ~:@M")
 	       $tr_optimize_max_loop (caar form))
 	      form)
 	   (setq new-form (toplevel-optimize-1 form))
@@ -974,7 +965,7 @@ APPLY means like APPLY.")
 	when (or (symbolp v) (and (stringp v) (setq v ($verbify v))))
 	do (setf (get v 'once-translated) t)
 	(pushnew v *declared-translated-functions*)
-	else do (merror "declare_translated: Arguments should be symbols or strings.")))
+	else do (merror (intl:gettext "declare_translated: arguments must be symbols or strings; found: ~:M") v)))
 
 (def%tr $declare (form)
   (do ((l (cdr form) (cddr l)) (nl))
@@ -1006,7 +997,7 @@ APPLY means like APPLY.")
 
 (def%tr $local (form)
   (cond (local
-	 (tr-format "Too many `local' statements in one block")
+	 (tr-format (intl:gettext "translator: there is already a 'local' in this block."))
 	 (setq tr-abort t))
 	(t
 	 (setq local t)))
@@ -1224,7 +1215,7 @@ APPLY means like APPLY.")
 
 (def%tr mreturn (form)
   (if (null inside-mprog)
-      (tr-format "`return' found not inside a `block' 'do': ~%~:M" form))
+      (tr-format (intl:gettext "translator: 'return' not within 'block' or 'do': ~:M") form))
   (setq need-prog? t)
   (setq form (translate (cadr form)))
   (setq return-mode (if return-mode (*union-mode (car form) return-mode)
@@ -1236,9 +1227,9 @@ APPLY means like APPLY.")
 
 (def%tr mgo (form)
   (if (null inside-mprog)
-      (tr-format "~%`go' found not inside a `block' or `do'. ~%~:M" form))
+      (tr-format (intl:gettext "translator: 'go' not within 'block' or 'do': ~:M") form))
   (if (not (symbolp (cadr form)))
-      (tr-format "~%`go' tag in form not symbolic.~%~:M" form))
+      (tr-format (intl:gettext "translator: 'go' tag must be a symbol: ~:M") form))
   (setq need-prog? t)
   `($any . (go ,(cadr form))))
 
@@ -1246,7 +1237,9 @@ APPLY means like APPLY.")
   (let     ((fn (cadr form)) (args (cddr form)) 
 	    (aryp (member 'array (cdar form) :test #'eq)))
     (cond ((atom fn) 
-	   (mformat *translation-msgs-files* "~%Illegal mqapply form:~%~:M" form)
+	   ;; I'm guessing (ATOM FN) is a parser error or other Lisp error,
+	   ;; so don't bother to translate the following error message.
+	   (mformat *translation-msgs-files* "translator: MQAPPLY operator must be a cons; found: ~:M" form)
 	   nil)
 	  ((eq (caar fn) 'mquote) 
 	   `($any list ',(cons (cadr fn) aryp) ,@(tr-args args)))
@@ -1258,10 +1251,7 @@ APPLY means like APPLY.")
 						      ($listp arg))
 						  'bogus)))
 				       (cdr (cadr fn))) :test #'eq)
-		  (tr-format
-		   "~%QUOTE or [] args are not allowed in mqapply forms.~%~
-		  ~:M"
-		   form)
+		  (tr-format (intl:gettext "translator: quote or list arguments are not allowed in MQAPPLY; found: ~:M") form)
 		  (setq tr-abort t)
 		  nil)
 		 (t
@@ -1425,7 +1415,8 @@ APPLY means like APPLY.")
 	   (tr-arraysetq var val))
 	  (t
 	   (unless (safe-get (caar var) 'mset_extension_operator)
-         (tr-format "~%Dubious first LHS argument to ~:@M~%~:M" (caar form) var))
+         (tr-format (intl:gettext "translator: no assignment operator known for ~:M") var)
+         (tr-format (intl:gettext "translator: just keep going and hope for the best.")))
 	   (setq val (translate val))
 	   `(,(car val) mset ',(translate-atoms var) ,(cdr val))))))
 
@@ -1523,7 +1514,7 @@ APPLY means like APPLY.")
   (and var (symbolp var) (not (eq var t))))
 
 (defun bad-var-warn (var)
-  (tr-format "~%Bad object to use as a variable:~%~:M~%" var))
+  (tr-format (intl:gettext "translator: ~:M cannot be used as a variable.") var))
 
 (defun tbind (var &aux old)
   (cond ((variable-p var)

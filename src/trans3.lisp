@@ -296,7 +296,7 @@
   (cond ((or (member '*bad* arg-info :test #'eq)
 	     (and (member t arg-info :test #'eq)
 		  (cdr (member t arg-info :test #'eq)))) ;;; the &REST is not the last one.
-	 (tr-tell (cadr form) " bad `lambda' list. -`translate'")
+	 (tr-tell (cadr form) "translator: unsupported argument list in lambda expression.")
 	 (setq tr-abort t)
 	 nil)
 	(t
