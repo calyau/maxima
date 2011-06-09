@@ -1363,3 +1363,7 @@ integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);
 /* Incorrect integral of log(1+a/(x*t)^2) - ID: 3291160 */
 integrate(log(1+7/(x^2)),x,1,inf);
 (14*atan(sqrt(7))-sqrt(7)*log(8))/sqrt(7);
+
+/* integral from minf to inf of an absolute value combo fails - ID: 3313531 */
+integrate(abs(x - 1) + abs(x + 1) - 2*abs(x),x,minf,inf);
+2;
