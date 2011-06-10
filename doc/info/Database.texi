@@ -457,6 +457,40 @@ declarations.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{nonarray}
+@deffn {Property} nonarray
+
+The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not
+an array.  This declaration prevents multiple evaluation, if @var{a} is a
+subscripted variable.
+
+Example:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
 
@@ -706,6 +740,72 @@ The real domain of @code{acos (x^2 + 1)} is empty.
 
 @opencatbox
 @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c CROSS REF declare, properties, ETC
+
+@c -----------------------------------------------------------------------------
+@anchor{constant}
+@deffn {Special operator} constant
+
+@code{declare (@var{a}, constant)} declares @var{a} to be a constant.
+See @mrefdot{declare}
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+@opencatbox
+@category{Declarations and inferences} @category{Constants}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{constantp}
+@deffn {Function} constantp (@var{expr})
+
+Returns @code{true} if @var{expr} is a constant expression, otherwise returns
+@code{false}.
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+An expression is considered a constant expression if its arguments are
+numbers (including rational numbers, as displayed with @code{/R/}),
+symbolic constants such as @mrefcomma{%pi} @mrefcomma{%e} and @mrefcomma{%i}@w{}
+variables bound to a constant or declared constant by @mrefcomma{declare}@w{}
+or functions whose arguments are constant.
+
+@code{constantp} evaluates its arguments.
+
+Examples:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Constants}
 @closecatbox
 @end deffn
 
