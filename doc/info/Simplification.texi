@@ -147,6 +147,40 @@ time.
 @closecatbox
 @end deffn
 
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{function_distrib}
+@deffn {Function} distrib (@var{expr})
+
+Distributes sums over products.  It differs from @code{expand} in that it works
+at only the top level of an expression, i.e., it doesn't recurse and it is
+faster than @code{expand}.  It differs from @code{multthru} in that it expands
+all sums at that level.
+
+Examples:
+
+@example
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+
 @c -----------------------------------------------------------------------------
 @anchor{distribute_over}
 @defvr {Option variable} distribute_over
@@ -650,6 +684,62 @@ the form @code{product (x[i], i, m, n)}.
 @category{Declarations and inferences} @category{Expressions} @category{Simplification}
 @closecatbox
 @end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{multthru}
+@deffn  {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
+
+Multiplies a factor (which should be a sum) of @var{expr} by the other factors
+of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
+where at least one factor, say @var{f_i}, is a sum of terms.  Each term in that
+sum is multiplied by the other factors in the product.  (Namely all the factors
+except @var{f_i}).  @code{multthru} does not expand exponentiated sums.
+This function is the fastest way to distribute products (commutative or
+noncommutative) over sums.  Since quotients are represented as products
+@code{multthru} can be used to divide sums by products as well.
+
+@code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in
+@var{expr_2} (which should be a sum or an equation) by @var{expr_1}.  If
+@var{expr_1} is not itself a sum then this form is equivalent to
+@code{multthru (@var{expr_1}*@var{expr_2})}.
+
+@example
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
+                           2
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
 
