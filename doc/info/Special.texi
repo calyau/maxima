@@ -11,8 +11,10 @@
 * Functions and Variables for Special Functions::  
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Special Functions, Bessel Functions, Special Functions, Special Functions
 @section Introduction to Special Functions
+@c -----------------------------------------------------------------------------
 
 Special function notation follows:
 
@@ -59,10 +61,15 @@ parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 @category{Bessel functions} @category{Airy functions} @category{Special functions}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Bessel Functions, Airy Functions, Introduction to Special Functions, Special Functions
-
 @section Bessel Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{bessel_j}
 @deffn {Function} bessel_j (@var{v}, @var{z})
+
 The Bessel function of the first kind of order @math{v} and argument @math{z}.
 
 @code{bessel_j} is defined as
@@ -91,7 +98,10 @@ although the infinite series is not used for computations.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{bessel_y}
 @deffn {Function} bessel_y (@var{v}, @var{z})
+
 The Bessel function of the second kind of order @math{v} and argument @math{z}.
 
 @code{bessel_y} is defined as
@@ -116,8 +126,12 @@ the limit as @math{v} approaches @math{n} is taken.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{bessel_i}
 @deffn {Function} bessel_i (@var{v}, @var{z})
-The modified Bessel function of the first kind of order @math{v} and argument @math{z}.
+
+The modified Bessel function of the first kind of order @math{v} and argument
+@math{z}.
 
 @code{bessel_i} is defined as
 @ifnottex
@@ -144,8 +158,12 @@ although the infinite series is not used for computations.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{bessel_k}
 @deffn {Function} bessel_k (@var{v}, @var{z})
-The modified Bessel function of the second kind of order @math{v} and argument @math{z}.
+
+The modified Bessel function of the second kind of order @math{v} and argument
+@math{z}.
 
 @code{bessel_k} is defined as
 @ifnottex
@@ -168,7 +186,9 @@ then the limit as @math{v} approaches @math{n} is taken.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{hankel_1}
 @deffn {Function} hankel_1 (@var{v}, @var{z})
+
 The Hankel function of the first kind of order @math{v} and argument @math{z}
 (A&S 9.1.3). @code{hankel_1} is defined as
 
@@ -247,7 +267,9 @@ order @math{v} is not supported. Maxima returns a noun form:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{hankel_2}
 @deffn {Function} hankel_2 (@var{v}, @var{z})
+
 The Hankel function of the second kind of order @math{v} and argument @math{z}
 (A&S 9.1.4). @code{hankel_2} is defined as
 
@@ -272,6 +294,8 @@ For examples see @code{hankel_1}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{besselexpand}
 @defvr {Option variable} besselexpand
 Default value: @code{false}
 
@@ -301,9 +325,9 @@ the Bessel function is expanded.
 @category{Bessel functions} @category{Simplification flags and variables} 
 @category{Special functions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
 The scaled modified Bessel function of the first kind of order
@@ -328,13 +352,16 @@ Identical to @code{scaled_bessel_i(0,z)}.
 @closecatbox
 @end deffn
 
-@deffn {Function} scaled_bessel_i1 (@var{z}) 
+@c -----------------------------------------------------------------------------
+@deffn {Function} scaled_bessel_i1 (@var{z})
+
 Identical to @code{scaled_bessel_i(1,z)}.
 @opencatbox
 @category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} %s [@var{u},@var{v}] (@var{z}) 
 Lommel's little s[u,v](z) function.  
 Probably Gradshteyn & Ryzhik 8.570.1.
@@ -343,10 +370,11 @@ Probably Gradshteyn & Ryzhik 8.570.1.
 @closecatbox
 @end deffn
 
-
-
+@c -----------------------------------------------------------------------------
 @node Airy Functions, Gamma and factorial Functions, Bessel Functions, Special Functions
 @section Airy Functions
+@c -----------------------------------------------------------------------------
+
 The Airy functions Ai(x) and Bi(x) are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 10.4. 
 
@@ -368,7 +396,7 @@ See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
 @deffn {Function} airy_dai (@var{x})
 The derivative of the Airy function Ai @code{airy_ai(x)}. 
 
@@ -379,6 +407,7 @@ See @code{airy_ai}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} airy_bi (@var{x})
 The Airy function Bi(x).  (A&S 10.4.3)
 
@@ -391,7 +420,7 @@ See @code{airy_ai}, @code{airy_dbi}.
 @closecatbox
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
 @deffn {Function} airy_dbi (@var{x})
 The derivative of the Airy Bi function @code{airy_bi(x)}.
 
@@ -402,14 +431,17 @@ See @code{airy_ai} and @code{airy_bi}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @node Gamma and factorial Functions, Exponential Integrals, Airy Functions, Special Functions
 @section Gamma and factorial Functions
+@c -----------------------------------------------------------------------------
 
 The gamma function and the related beta, psi and incomplete gamma 
 functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 6.
 
 @c -----------------------------------------------------------------------------
+@anchor{gamma}
 @deffn {Function} gamma (@var{z})
 
 The basic definition of the gamma function (A&S 6.1.1) is
@@ -599,6 +631,7 @@ $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;d
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gammalim}
 @defvr {Option variable} gammalim
 Default value: 1000000
 
@@ -617,6 +650,9 @@ simplification of the result of @code{gamma} of an integer argument as well.
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{makegamma}
 @deffn {Function} makegamma (@var{expr})
 Transforms instances of binomial, factorial, and beta
 functions in @var{expr} into gamma functions.
@@ -628,6 +664,7 @@ See also @code{makefact}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} beta (@var{a}, @var{b})
 The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 
 (A&S 6.2.1).

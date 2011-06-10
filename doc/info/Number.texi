@@ -334,20 +334,6 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{%gamma}
-@defvr {Constant} %gamma
-@ifinfo
-@vrindex Euler-Mascheroni constant
-@end ifinfo
-The Euler-Mascheroni constant, 0.5772156649015329 ....
-@c DOUBTLESS THERE IS MORE TO SAY HERE.
-
-@opencatbox
-@category{Constants}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @anchor{fib}
 @deffn {Function} fib (@var{n})
 
@@ -474,6 +460,18 @@ if @var{n} is a zero divisor modulo @var{m}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{isqrt}
+@deffn {Function} isqrt (@var{x})
+
+Returns the "integer square root" of the absolute value of @var{x}, which is an
+integer.
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{jacobi}
 @deffn {Function} jacobi (@var{p}, @var{q})
 
@@ -501,6 +499,50 @@ The arguments may be general expressions as well as integers.
 
 @opencatbox
 @category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mod}
+@deffn {Function} mod (@var{x}, @var{y})
+
+If @var{x} and @var{y} are real numbers and @var{y} is nonzero, return
+@code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.  Further for all real
+@var{x}, we have @code{mod (@var{x}, 0) = @var{x}}.  For a discussion of the
+definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of
+"Concrete Mathematics," by Graham, Knuth, and Patashnik.  The function
+@code{mod (@var{x}, 1)} is a sawtooth function with period 1 with
+@code{mod (1, 1) = 0} and @code{mod (0, 1) = 0}.
+
+To find the principal argument (a number in the interval @code{(-%pi, %pi]}) of
+a complex number, use the function
+@code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, where @var{x} is an
+argument.
+
+When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for 
+example), @code{mod} uses the same big float evaluation scheme that @code{floor}
+and @code{ceiling} uses.  Again, it's possible, although unlikely, that
+@code{mod} could return an erroneous value in such cases.
+
+For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several
+simplification rules:
+
+@c ===beg===
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
+@c ===end===
+@example
+(%i1) mod (x, 0);
+(%o1)                           x
+(%i2) mod (a*x, a*y);
+(%o2)                      a mod(x, y)
+(%i3) mod (0, x);
+(%o3)                           0
+@end example
+
+@opencatbox
+@category{Mathematical functions}
 @closecatbox
 @end deffn
 

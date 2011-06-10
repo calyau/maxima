@@ -1878,6 +1878,23 @@ this is a unit vector in the same direction as @var{x}.
 @closecatbox
 @end deffn
 
+@c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{vectorpotenial}
+@deffn {Function} vectorpotential (@var{givencurl})
+
+Returns the vector potential of a given curl vector, in the current coordinate
+system.  @code{potentialzeroloc} has a similar role as for @code{potential}, but
+the order of the left-hand sides of the equations must be a cyclic permutation
+of the coordinate variables.
+
+@opencatbox
+@category{Package vect}
+@closecatbox
+@end deffn
+
 @c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A DESCRIPTION HERE
 @deffn {Function} vectorsimp (@var{expr})
 Applies simplifications and expansions according

@@ -3,8 +3,10 @@
 * Functions and Variables for linearalgebra::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to linearalgebra, Functions and Variables for linearalgebra, linearalgebra, linearalgebra
 @section Introduction to linearalgebra
+@c -----------------------------------------------------------------------------
 
 @code{linearalgebra} is a collection of functions for linear algebra.
 
@@ -121,9 +123,11 @@ Example:
 @category{Linear algebra} @category{Share packages} @category{Package linearalgebra}
 @closecatbox
 
-
+@c -----------------------------------------------------------------------------
+@need 800
 @node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, linearalgebra
 @section Functions and Variables for linearalgebra
+@c -----------------------------------------------------------------------------
 
 @deffn {Function} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 
@@ -836,9 +840,11 @@ Example:
 (%o2)                       [       ]
                             [ 9  10 ]
 (%i3) matrix ([A, B]);
+@group
                      [ [ 1  2 ]  [ 7  8  ] ]
 (%o3)                [ [      ]  [       ] ]
                      [ [ 3  4 ]  [ 9  10 ] ]
+@end group
 (%i4) mat_unblocker (%);
                          [ 1  2  7  8  ]
 (%o4)                    [             ]
@@ -851,15 +857,6 @@ Example:
 
 @end deffn
 
-@deffn {Function} nonnegintegerp (@var{n})
-
-Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
-
-@opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
-@closecatbox
-
-@end deffn
 
 @deffn {Function} nullspace (@var{M})
 
@@ -908,10 +905,9 @@ value for @var{exponp}, you must supply @var{coeffp} with a value even if you wa
 to use the default for @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}.
-
-@code{polynomialp (@var{p}, @var{L})} is equivalent to
+The command @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)} and the
+command @code{polynomialp (@var{p}, @var{L})} is equivalent to
 @code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 
 The polynomial needn't be expanded:
@@ -1054,12 +1050,13 @@ default for @var{row} is complex conjugate of @var{col}. Example:
 @c ==end===
 @example
 (%i1)  toeplitz([1,2,3],[x,y,z]);
-
+@group
                                   [ 1  y  z ]
                                   [         ]
 (%o1)                             [ 2  1  y ]
                                   [         ]
                                   [ 3  2  1 ]
+@end group
 (%i2)  toeplitz([1,1+%i]);
 
                               [   1     1 - %I ]
@@ -1116,3 +1113,4 @@ is true for each element @var{e} of the matrix @var{M}.  If @var{M} is a block m
 @closecatbox
 
 @end deffn
+

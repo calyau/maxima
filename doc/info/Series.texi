@@ -4,16 +4,26 @@
 * Poisson series::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Series, Functions and Variables for Series, Series, Series
 @section Introduction to Series
+@c -----------------------------------------------------------------------------
+
 Maxima contains functions @code{taylor} and @code{powerseries} for finding the 
-series of differentiable functions.   It also has tools such as @code{nusum}
-capable of finding the closed form of some series.   Operations such as addition and multiplication work as usual on series. This section presents the global variables which control the expansion.
+series of differentiable functions.  It also has tools such as @code{nusum}
+capable of finding the closed form of some series.  Operations such as addition
+and multiplication work as usual on series.  This section presents the global
+variables which control the expansion.
+
 @c end concepts Series
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Series, Poisson series, Introduction to Series, Series
 @section Functions and Variables for Series
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{cauchysum}
 @defvr {Option variable} cauchysum
 Default value: @code{false}
 
@@ -54,10 +64,12 @@ Example:
 @opencatbox
 @category{Sums and products}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+@c -----------------------------------------------------------------------------
+@anchor{deftaylor}
+@deffn {Function} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, @dots{}, @var{f_n}(@var{x_n}), @var{expr_n})
+
 For each function @var{f_i} of one variable @var{x_i}, 
 @code{deftaylor} defines @var{expr_i} as the Taylor series about zero.
 @var{expr_i} is typically a polynomial in @var{x_i} or a summation;
@@ -66,8 +78,7 @@ more general expressions are accepted by @code{deftaylor} without complaint.
 @code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)}
 returns the series defined by @code{deftaylor}.
 
-@code{deftaylor} returns a list of the functions
-@var{f_1}, ..., @var{f_n}.
+@code{deftaylor} returns a list of the functions @var{f_1}, @dots{}, @var{f_n}.
 @code{deftaylor} evaluates its arguments.
 
 Example:
@@ -95,6 +106,8 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{maxtayorder}
 @defvr {Option variable} maxtayorder
 Default value: @code{true}
 
@@ -106,18 +119,19 @@ as many terms as are known to be correct.
 @opencatbox
 @category{Power series}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{niceindices}
 @deffn {Function} niceindices (@var{expr})
-Renames the indices of sums and products in @var{expr}.
-@code{niceindices} attempts to rename each index to the value of @code{niceindicespref[1]},
-unless that name appears in the summand or multiplicand,
-in which case @code{niceindices} tries
-the succeeding elements of @code{niceindicespref} in turn, until an unused variable is found.
-If the entire list is exhausted,
+
+Renames the indices of sums and products in @var{expr}.  @code{niceindices}
+attempts to rename each index to the value of @code{niceindicespref[1]}, unless
+that name appears in the summand or multiplicand, in which case
+@code{niceindices} tries the succeeding elements of @code{niceindicespref} in
+turn, until an unused variable is found.  If the entire list is exhausted,
 additional indices are constructed by appending integers to the value of
-@code{niceindicespref[1]}, e.g., @code{i0}, @code{i1}, @code{i2}, ....
+@code{niceindicespref[1]}, e.g., @code{i0}, @code{i1}, @code{i2}, @dots{}
 
 @code{niceindices} returns an expression.
 @code{niceindices} evaluates its argument.
@@ -152,6 +166,8 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{niceindicespref}
 @defvr {Option variable} niceindicespref
 Default value: @code{[i, j, k, l, m, n]}
 
@@ -186,10 +202,12 @@ Example:
 @opencatbox
 @category{Sums and products}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{nusum}
 @deffn {Function} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+
 Carries out indefinite hypergeometric summation of @var{expr} with
 respect to @var{x} using a decision procedure due to R.W. Gosper.
 @var{expr} and the result must be expressible as products of integer powers,
@@ -205,8 +223,8 @@ for the sum over intervals of variable length, not just e.g. 0 to
 inf.  Thus, since there is no formula for the general partial sum of
 the binomial series, @code{nusum} can't do it.
 
-@code{nusum} and @code{unsum} know a little about sums and differences of finite products.
-See also @code{unsum}.
+@code{nusum} and @code{unsum} know a little about sums and differences of
+finite products.  See also @code{unsum}.
 
 Examples:
 
@@ -249,7 +267,11 @@ Dependent equations eliminated:  (2 3)
 @end deffn
 
 @c THIS ITEM NEEDS SERIOUS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{pade}
 @deffn {Function} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+
 Returns a list of
 all rational functions which have the given Taylor series expansion
 where the sum of the degrees of the numerator and the denominator is
@@ -265,7 +287,8 @@ the numerator and denominator.
 @var{taylor_series} can also be a Laurent series, and the degree
 bounds can be @code{inf} which causes all rational functions whose total
 degree is less than or equal to the length of the power series to be
-returned.  Total degree is defined as @code{@var{numer_deg_bound} + @var{denom_deg_bound}}.
+returned.  Total degree is defined as @code{@var{numer_deg_bound} +
+@var{denom_deg_bound}}.
 Length of a power series is defined as
 @code{"truncation level" + 1 - min(0, "order of series")}.
 
@@ -320,6 +343,8 @@ in order to have enough unknown coefficients to solve.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{powerdisp}
 @defvr {Option variable} powerdisp
 Default value: @code{false}
 
@@ -334,11 +359,12 @@ By default, terms of a sum are displayed in order of decreasing power.
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{powerseries}
 @deffn {Function} powerseries (@var{expr}, @var{x}, @var{a})
+
 Returns the general form of the power series expansion for @var{expr} in the 
 variable @var{x} about the point @var{a} (which may be @code{inf} for infinity):
 @example
@@ -357,7 +383,7 @@ If @code{powerseries} is unable to expand @var{expr},
 @code{taylor} may give the first several terms of the series.
 
 When @code{verbose} is @code{true},
-@code{powerseries} prints progress messages. 
+@code{powerseries} prints progress messages.
 
 @example
 (%i1) verbose: true$
@@ -393,6 +419,8 @@ in the first simplification we have returned:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{psexpand}
 @defvr {Option variable} psexpand
 Default value: @code{false}
 
@@ -411,15 +439,18 @@ then terms with the same total degree in the variables are grouped together.
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} revert (@var{expr}, @var{x})
+@c -----------------------------------------------------------------------------
+@anchor{revert}
+@deffn  {Function} revert (@var{expr}, @var{x})
 @deffnx {Function} revert2 (@var{expr}, @var{x}, @var{n})
-These functions return the reversion of @var{expr}, a Taylor series about zero in the variable @var{x}.
-@code{revert} returns a polynomial of degree equal to the highest power in @var{expr}.
-@code{revert2} returns a polynomial of degree @var{n},
-which may be greater than, equal to, or less than the degree of @var{expr}.
+
+These functions return the reversion of @var{expr}, a Taylor series about zero
+in the variable @var{x}.  @code{revert} returns a polynomial of degree equal to
+the highest power in @var{expr}.  @code{revert2} returns a polynomial of degree
+@var{n}, which may be greater than, equal to, or less than the degree of
+@var{expr}.
 
 @code{load ("revert")} loads these functions.
 
@@ -461,41 +492,43 @@ Examples:
 @closecatbox
 @end deffn
 
-@deffn {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@c -----------------------------------------------------------------------------
+@anchor{taylor}
+@deffn  {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
 @deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
 @deffnx {Function} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, @dots{}], [@var{a_1}, @var{a_2}, @dots{}], [@var{n_1}, @var{n_2}, @dots{}])
+@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], @dots{})
 
-@code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expands the expression @var{expr}
-in a truncated Taylor or Laurent series in the variable @var{x}
+@code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expands the expression
+@var{expr} in a truncated Taylor or Laurent series in the variable @var{x}
 around the point @var{a},
 containing terms through @code{(@var{x} - @var{a})^@var{n}}.
 
-If @var{expr} is of the form @code{@var{f}(@var{x})/@var{g}(@var{x})}
-and @code{@var{g}(@var{x})} has no terms up to degree @var{n}
-then @code{taylor} attempts to expand @code{@var{g}(@var{x})} up to degree @code{2 @var{n}}.
-If there are still no nonzero terms, @code{taylor} doubles the
-degree of the expansion of @code{@var{g}(@var{x})}
-so long as the degree of the expansion is less than or equal to @code{@var{n} 2^taylordepth}.
+If @var{expr} is of the form @code{@var{f}(@var{x})/@var{g}(@var{x})} and
+@code{@var{g}(@var{x})} has no terms up to degree @var{n} then @code{taylor}
+attempts to expand @code{@var{g}(@var{x})} up to degree @code{2 @var{n}}.
+If there are still no nonzero terms, @code{taylor} doubles the degree of the
+expansion of @code{@var{g}(@var{x})} so long as the degree of the expansion is
+less than or equal to @code{@var{n} 2^taylordepth}.
 
 @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})}
 returns a truncated power series 
-of degree @var{n} in all variables @var{x_1}, @var{x_2}, ...
+of degree @var{n} in all variables @var{x_1}, @var{x_2}, @dots{}
 about the point @code{(@var{a}, @var{a}, ...)}.
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)}
-returns a truncated power series in the variables @var{x_1}, @var{x_2}, ...
-about the point @code{(@var{a_1}, @var{a_2}, ...)},
-truncated at @var{n_1}, @var{n_2}, ....
+@code{taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2},
+@var{a_2}, @var{n_2}], ...)} returns a truncated power series in the variables
+@var{x_1}, @var{x_2}, @dots{} about the point
+@code{(@var{a_1}, @var{a_2}, ...)}, truncated at @var{n_1}, @var{n_2}, @dots{}
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])}
-returns a truncated power series in the variables @var{x_1}, @var{x_2}, ...
-about the point @code{(@var{a_1}, @var{a_2}, ...)},
-truncated at @var{n_1}, @var{n_2}, ....
+@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1},
+@var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])} returns a truncated power series
+in the variables @var{x_1}, @var{x_2}, @dots{} about the point
+@code{(@var{a_1}, @var{a_2}, ...)}, truncated at @var{n_1}, @var{n_2}, @dots{}
 
-@code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])}
-returns an expansion of @var{expr} in negative powers of @code{@var{x} - @var{a}}.
+@code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])} returns an
+expansion of @var{expr} in negative powers of @code{@var{x} - @var{a}}.
 The highest order term is @code{(@var{x} - @var{a})^@var{-n}}.
 
 When @code{maxtayorder} is @code{true}, then during algebraic
@@ -513,6 +546,7 @@ then terms with the same total degree in the variables are grouped together.
 See also the @code{taylor_logexpand} switch for controlling expansion.
 
 Examples:
+
 @c EXAMPLES ADAPTED FROM example (taylor)
 @c taylor (sqrt (sin(x) + a*x + 1), x, 0, 3);
 @c %^2;
@@ -530,7 +564,6 @@ Examples:
 @c taylor (sin (y + x), [x, y], 0, 3);
 @c taylor (1/sin (y + x), x, 0, 3, y, 0, 3);
 @c taylor (1/sin (y + x), [x, y], 0, 3);
-
 @example
 (%i1) taylor (sqrt (sin(x) + a*x + 1), x, 0, 3);
                            2             2
@@ -648,21 +681,25 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{taylordepth}
 @defvr {Option variable} taylordepth
 Default value: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
-If there are still no nonzero terms, @code{taylor} doubles the
-degree of the expansion of @code{@var{g}(@var{x})}
-so long as the degree of the expansion is less than or equal to @code{@var{n} 2^taylordepth}.
+If there are still no nonzero terms, @code{taylor} doubles the degree of the
+expansion of @code{@var{g}(@var{x})} so long as the degree of the expansion is
+less than or equal to @code{@var{n} 2^taylordepth}.
 
 @opencatbox
 @category{Power series}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{taylorinfo}
 @deffn {Function} taylorinfo (@var{expr})
+
 Returns information about the Taylor series @var{expr}.
 The return value is a list of lists.
 Each list comprises the name of a variable,
@@ -694,7 +731,10 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{taylorp}
 @deffn {Function} taylorp (@var{expr})
+
 Returns @code{true} if @var{expr} is a Taylor series,
 and @code{false} otherwise.
 
@@ -704,27 +744,31 @@ and @code{false} otherwise.
 @end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
+
+@c -----------------------------------------------------------------------------
+@anchor{taylor_logexpand}
 @defvr {Option variable} taylor_logexpand
 Default value: @code{true}
 
 @code{taylor_logexpand} controls expansions of logarithms in
 @code{taylor} series.
 
-When @code{taylor_logexpand} is @code{true}, all logarithms are expanded fully so that
-zero-recognition problems involving logarithmic identities do not
+When @code{taylor_logexpand} is @code{true}, all logarithms are expanded fully
+so that zero-recognition problems involving logarithmic identities do not
 disturb the expansion process.  However, this scheme is not always
 mathematically correct since it ignores branch information.
 
-When @code{taylor_logexpand} is set to @code{false}, then the only expansion of logarithms
-that occur is that necessary to obtain a formal power series.
+When @code{taylor_logexpand} is set to @code{false}, then the only expansion of
+logarithms that occur is that necessary to obtain a formal power series.
 
 @c NEED EXAMPLES HERE
 @opencatbox
 @category{Power series} @category{Exponential and logarithm functions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{taylor_order_coefficients}
 @defvr {Option variable} taylor_order_coefficients
 Default value: @code{true}
 
@@ -740,10 +784,12 @@ coefficients of taylor series are ordered canonically.
 @opencatbox
 @category{Power series}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{taylor_simplifier}
 @deffn {Function} taylor_simplifier (@var{expr})
+
 Simplifies coefficients of the power series @var{expr}.
 @code{taylor} calls this function.
 
@@ -752,6 +798,8 @@ Simplifies coefficients of the power series @var{expr}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{taylor_truncate_polynomials}
 @defvr {Option variable} taylor_truncate_polynomials
 Default value: @code{true}
 
@@ -766,19 +814,25 @@ polynomials input to @code{taylor} are considered to have infinite precison.
 @opencatbox
 @category{Power series}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{taytorat}
 @deffn {Function} taytorat (@var{expr})
-Converts @var{expr} from @code{taylor} form to canonical rational expression (CRE) form.
-The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but faster.
+
+Converts @var{expr} from @code{taylor} form to canonical rational expression
+(CRE) form.  The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but
+faster.
 
 @opencatbox
 @category{Power series} @category{Rational expressions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{trunc}
 @deffn {Function} trunc (@var{expr})
+
 Annotates the internal representation of the general expression @var{expr}
 so that it is displayed as if its sums were truncated Taylor series.
 @var{expr} is not otherwise modified.
@@ -801,8 +855,12 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{unsum}
 @deffn {Function} unsum (@var{f}, @var{n})
-Returns the first backward difference @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
+
+Returns the first backward difference
+@code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
 Thus @code{unsum} in a sense is the inverse of @code{sum}.
 
 See also @code{nusum}.
@@ -842,6 +900,8 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{verbose}
 @defvr {Option variable} verbose
 Default value: @code{false}
 
@@ -851,13 +911,17 @@ When @code{verbose} is @code{true},
 @opencatbox
 @category{Power series}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @node Poisson series, , Functions and Variables for Series, Series
 @section Poisson series
+@c -----------------------------------------------------------------------------
 
 @c NEED EXAMPLES HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{intopois}
 @deffn {Function} intopois (@var{a})
 Converts @var{a} into a Poisson encoding.
 
@@ -866,13 +930,14 @@ Converts @var{a} into a Poisson encoding.
 @closecatbox
 @end deffn
 
-
-
-
 @c NEED EXAMPLES HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{outopois}
 @deffn {Function} outofpois (@var{a})
-Converts @var{a} from Poisson encoding to general
-representation.  If @var{a} is not in Poisson form, @code{outofpois} carries out the conversion,
+
+Converts @var{a} from Poisson encoding to general representation.  If @var{a} is
+not in Poisson form, @code{outofpois} carries out the conversion,
 i.e., the return value is @code{outofpois (intopois (@var{a}))}.
 This function is thus a canonical simplifier
 for sums of powers of sine and cosine terms of a particular type.
@@ -884,7 +949,11 @@ for sums of powers of sine and cosine terms of a particular type.
 
 @c NEED MORE INFO HERE
 @c NEED EXAMPLES HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{poisdiff}
 @deffn {Function} poisdiff (@var{a}, @var{b})
+
 Differentiates @var{a} with respect to @var{b}. @var{b} must occur only
 in the trig arguments or only in the coefficients.
 
@@ -893,10 +962,14 @@ in the trig arguments or only in the coefficients.
 @closecatbox
 @end deffn
 
-@c LOOKING AT THE CODE IN src/pois3.lisp, THIS FCN SEEMS TO COMPUTE THE EXPONENT BY MULTIPLYING IN A LOOP
-@c DUNNO HOW WE WANT TO EXPLAIN THAT
+@c LOOKING AT THE CODE IN src/pois3.lisp, THIS FCN SEEMS TO COMPUTE THE EXPONENT
+@c BY MULTIPLYING IN A LOOP DUNNO HOW WE WANT TO EXPLAIN THAT
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
+
+@c -----------------------------------------------------------------------------
+@anchor{poisexpt}
 @deffn {Function} poisexpt (@var{a}, @var{b})
+
 Functionally identical to @code{intopois (@var{a}^@var{b})}.
 @var{b} must be a positive integer.
 
@@ -906,16 +979,21 @@ Functionally identical to @code{intopois (@var{a}^@var{b})}.
 @end deffn
 
 @c WHAT IS THIS ABOUT ??
+
+@c -----------------------------------------------------------------------------
+@anchor{poisint}
 @deffn {Function} poisint (@var{a}, @var{b})
-Integrates in a similarly restricted sense (to
-@code{poisdiff}).  Non-periodic terms in @var{b} are dropped if @var{b} is in the trig
-arguments.
+
+Integrates in a similarly restricted sense (to @code{poisdiff}).  Non-periodic
+terms in @var{b} are dropped if @var{b} is in the trig arguments.
 
 @opencatbox
 @category{Poisson series}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{poislim}
 @defvr {Option variable} poislim
 Default value: 5
 
@@ -927,15 +1005,18 @@ can be set to [-2^(n-1)+1, 2^(n-1)].
 @opencatbox
 @category{Poisson series}
 @closecatbox
-
 @end defvr
 
 @c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
+
+@c -----------------------------------------------------------------------------
+@anchor{poismap}
 @deffn {Function} poismap (@var{series}, @var{sinfn}, @var{cosfn})
-will map the functions @var{sinfn} on the
-sine terms and @var{cosfn} on the cosine terms of the Poisson series given.
-@var{sinfn} and @var{cosfn} are functions of two arguments which are a coefficient
-and a trigonometric part of a term in series respectively.
+
+will map the functions @var{sinfn} on the sine terms and @var{cosfn} on the
+cosine terms of the Poisson series given.  @var{sinfn} and @var{cosfn} are
+functions of two arguments which are a coefficient and a trigonometric part of
+a term in series respectively.
 
 @opencatbox
 @category{Poisson series}
@@ -943,7 +1024,11 @@ and a trigonometric part of a term in series respectively.
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
+
+@c -----------------------------------------------------------------------------
+@anchor{poisplus}
 @deffn {Function} poisplus (@var{a}, @var{b})
+
 Is functionally identical to @code{intopois (a + b)}.
 
 @opencatbox
@@ -951,7 +1036,10 @@ Is functionally identical to @code{intopois (a + b)}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{poissimp}
 @deffn {Function} poissimp (@var{a})
+
 Converts @var{a} into a Poisson series for @var{a} in general
 representation.
 
@@ -961,7 +1049,11 @@ representation.
 @end deffn
 
 @c MORE INFO NEEDED HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{poisson}
 @defvr {Special symbol} poisson
+
 The symbol @code{/P/} follows the line label of Poisson series
 expressions.
 
@@ -970,22 +1062,27 @@ expressions.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{poissubst}
 @deffn {Function} poissubst (@var{a}, @var{b}, @var{c})
+
 Substitutes @var{a} for @var{b} in @var{c}.  @var{c} is a Poisson series.
 
-(1) Where @var{B} is a variable @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, or @var{z},
-then @var{a} must be an
-expression linear in those variables (e.g., @code{6*u + 4*v}).
+(1) Where @var{B} is a variable @var{u}, @var{v}, @var{w}, @var{x}, @var{y},
+or @var{z}, then @var{a} must be an expression linear in those variables (e.g.,
+@code{6*u + 4*v}).
 
 (2) Where @var{b} is other than those variables, then @var{a} must also be
 free of those variables, and furthermore, free of sines or cosines.
 
-@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} is a special type of substitution which
-operates on @var{a} and @var{b} as in type (1) above, but where @var{d} is a Poisson
-series, expands @code{cos(@var{d})} and @code{sin(@var{d})} to order @var{n} so as to provide the
-result of substituting @code{@var{a} + @var{d}} for @var{b} in @var{c}.  The idea is that @var{d} is an
+@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} is a special type
+of substitution which operates on @var{a} and @var{b} as in type (1) above, but
+where @var{d} is a Poisson series, expands @code{cos(@var{d})} and
+@code{sin(@var{d})} to order @var{n} so as to provide the result of substituting
+@code{@var{a} + @var{d}} for @var{b} in @var{c}.  The idea is that @var{d} is an
 expansion in terms of a small parameter.  For example,
-@code{poissubst (u, v, cos(v), %e, 3)} yields @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
+@code{poissubst (u, v, cos(v), %e, 3)} yields
+@code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
 @opencatbox
 @category{Poisson series}
@@ -993,7 +1090,11 @@ expansion in terms of a small parameter.  For example,
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
+
+@c -----------------------------------------------------------------------------
+@anchor{poistimes}
 @deffn {Function} poistimes (@var{a}, @var{b})
+
 Is functionally identical to @code{intopois (@var{a}*@var{b})}.
 
 @opencatbox
@@ -1002,7 +1103,11 @@ Is functionally identical to @code{intopois (@var{a}*@var{b})}.
 @end deffn
 
 @c HOW DOES THIS WORK ?? NEED MORE INFO AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{poistrim}
 @deffn {Function} poistrim ()
+
 is a reserved function name which (if the user has defined
 it) gets applied during Poisson multiplication.  It is a predicate
 function of 6 arguments which are the coefficients of the @var{u}, @var{v}, ..., @var{z}
@@ -1014,7 +1119,10 @@ that term) are eliminated during multiplication.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{printpois}
 @deffn {Function} printpois (@var{a})
+
 Prints a Poisson series in a readable format.  In common
 with @code{outofpois}, it will convert @var{a} into a Poisson encoding first, if
 necessary.

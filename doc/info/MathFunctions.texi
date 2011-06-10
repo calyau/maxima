@@ -2,6 +2,10 @@
 * Functions for Numbers::
 * Functions for Complex Numbers::
 * Combinatorial Functions::
+* Root Exponential and Logarithmic Functions::
+* Trigonometric Functions::
+* Hyperbolic Functions::
+* Random Numbers::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -17,7 +21,7 @@ Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the
 complex modulus of @var{expr}.
 
 @code{abs} distributes over a list, a matrix, or an equation.
-See @code{distribute_over}.
+See @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}
@@ -36,7 +40,7 @@ If @var{x} is a constant expression (@code{10 * %pi}, for example),
 applies @code{ceiling} to the resulting big float.  Because @code{ceiling} uses
 floating point evaluation, it's possible, although unlikely, that @code{ceiling}
 could return an erroneous value for constant inputs.  To guard against errors,
-the floating point evaluation is done using three values for @code{fpprec}.
+the floating point evaluation is done using three values for @mrefdot{fpprec}
 
 For non-constant inputs, @code{ceiling} tries to return a simplified value.
 Here are examples of the simplifications that @code{ceiling} knows about:
@@ -71,7 +75,7 @@ Finally, for all inputs that are manifestly complex, @code{ceiling} returns
 a noun form.
 
 If the range of a function is a subset of the integers, it can be declared to
-be @code{integervalued}.  Both the @code{ceiling} and @code{floor} functions
+be @code{integervalued}.  Both the @code{ceiling} and @mref{floor} functions
 can use this information; for example:
 
 @c ===beg===
@@ -97,7 +101,7 @@ can use this information; for example:
 @deffn {Function} entier (@var{x})
 
 Returns the largest integer less than or equal to @var{x} where @var{x} is
-numeric.  @code{fix} (as in @code{fixnum}) is a synonym for this, so
+numeric.  @mref{fix} (as in @code{fixnum}) is a synonym for this, so
 @code{fix(@var{x})} is precisely the same.
 
 @opencatbox
@@ -117,7 +121,7 @@ evaluates @var{x} using big floating point numbers, and applies @code{floor} to
 the resulting big float. Because @code{floor} uses floating point evaluation,
 it's possible, although unlikely, that @code{floor} could return an erroneous
 value for constant inputs.  To guard against errors, the floating point
-evaluation is done using three values for @code{fpprec}.
+evaluation is done using three values for @mrefdot{fpprec}
 
 For non-constant inputs, @code{floor} tries to return a simplified value.  Here
 are examples of the simplifications that @code{floor} knows about:
@@ -152,7 +156,7 @@ Finally, for all inputs that are manifestly complex, @code{floor} returns
 a noun form.
 
 If the range of a function is a subset of the integers, it can be declared to
-be @code{integervalued}.  Both the @code{ceiling} and @code{floor} functions
+be @code{integervalued}.  Both the @mref{ceiling} and @code{floor} functions
 can use this information; for example:
 
 @c ===beg===
@@ -189,7 +193,8 @@ A synonym for @code{entier (@var{x})}.
 @deffn {Function} lmax (@var{L})
 
 When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.
-When @var{L} isn't a list or a set, signal an error.
+When @var{L} is not a list or a set, signal an error.
+See also @mref{lmin} and @mrefdot{max}
 
 @opencatbox
 @category{Mathematical functions} @category{Lists} @category{Sets}
@@ -201,7 +206,8 @@ When @var{L} isn't a list or a set, signal an error.
 @deffn {Function} lmin (@var{L})
 
 When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}.
-When @var{L} isn't a list or a set, signal an error.
+When @var{L} is not a list or a set, signal an error.
+See also @mref{lmax} and @mrefdot{min}
 
 @opencatbox
 @category{Mathematical functions} @category{Lists} @category{Sets}
@@ -220,6 +226,8 @@ expressions that are between two other arguments; for example,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}.  To set the value of @code{trylevel}
 to 2, use @code{put (trylevel, 2, maxmin)}.
 
+See also @mref{min} and @mrefdot{lmax}
+
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
@@ -237,6 +245,8 @@ expressions that are between two other arguments; for example,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}.  To set the value of @code{trylevel}
 to 2, use @code{put (trylevel, 2, maxmin)}.
 
+See also @mref{max} and @mrefdot{lmin}
+
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
@@ -248,7 +258,7 @@ to 2, use @code{put (trylevel, 2, maxmin)}.
 
 When @var{x} is a real number, returns the closest integer to @var{x}.
 Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
-@var{x} is similar to @code{floor} and @code{ceiling}.
+@var{x} is similar to @mref{floor} and @mrefdot{ceiling}
 
 @opencatbox
 @category{Mathematical functions}
@@ -271,7 +281,7 @@ gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
 @code{signum(x) * signum(y)}).
 
 The @code{signum} function distributes over a list, a matrix, or an
-equation.  See @code{distribute_over}.
+equation.  See @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}
@@ -279,7 +289,7 @@ equation.  See @code{distribute_over}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for Complex Numbers, Combinatorial Functions , Functions for Numbers, Mathematical Functions
+@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers, Mathematical Functions
 @section Functions for Complex Numbers
 @c -----------------------------------------------------------------------------
 
@@ -305,8 +315,8 @@ where @code{r} is the magnitude of @var{z}.
 @code{carg} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 
-See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
-@code{realpart}, and @code{imagpart}.
+See also @mref{abs} (complex magnitude), @mrefcomma{polarform}@w{}
+@mrefcomma{rectform} @mrefcomma{realpart} and @mrefdot{imagpart}
 
 Examples:
 
@@ -379,7 +389,7 @@ Returns the complex conjugate of @var{x}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{impagpart}
+@anchor{imagpart}
 @deffn {Function} imagpart (@var{expr})
 
 Returns the imaginary part of the expression @var{expr}.
@@ -388,8 +398,8 @@ Returns the imaginary part of the expression @var{expr}.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform}, and
-@code{realpart}.
+See also @mrefcomma{abs} @mrefcomma{carg} @mrefcomma{polarform}@w{}
+@mrefcomma{rectform} and @mrefdot{realpart}
 
 @c NEED EXAMPLES HERE
 @opencatbox
@@ -417,8 +427,8 @@ such that @code{r} and @code{theta} are purely real.
 @anchor{realpart}
 @deffn {Function} realpart (@var{expr})
 
-Returns the real part of @var{expr}.  @code{realpart} and @code{imagpart} will
-work on expressions involving trigonometic and hyperbolic functions,
+Returns the real part of @var{expr}.  @code{realpart} and @mref{imagpart} will
+work on expressions involving trigonometric and hyperbolic functions,
 as well as square root, logarithm, and exponentiation.
 
 @opencatbox
@@ -441,7 +451,7 @@ such that @var{a} and @var{b} are purely real.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Combinatorial Functions, , Functions for Complex Numbers, Mathematical Functions
+@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers, Mathematical Functions
 @section Combinatorial Functions
 @c -----------------------------------------------------------------------------
 
@@ -523,7 +533,7 @@ Tries to combine the coefficients of factorials in @var{expr}
 with the factorials themselves by converting, for example, @code{(n + 1)*n!}
 into @code{(n + 1)!}.
 
-@code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to be
+@mref{sumsplitfact} if set to @code{false} will cause @mref{minfactorial} to be
 applied after a @code{factcomb}.
 
 @c Example:
@@ -556,26 +566,25 @@ value of @code{gamma (x+1)}.  For @code{x} equal to @code{n/2} where @code{n} is
 an odd integer, @code{x!} simplifies to a rational factor times 
 @code{sqrt (%pi)} (since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
 
-The option variables @code{factlim} and @code{gammalim} control the numerical 
+The option variables @mref{factlim} and @mref{gammalim} control the numerical
 evaluation of factorials for integer and rational arguments.  The functions 
-@code{minfactorial} and @code{factcomb} simplifies expressions containing 
-factorials.  See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
-@code{factcomb}.
+@mref{minfactorial} and @mref{factcomb} simplifies expressions containing
+factorials.
 
-The functions @code{gamma}, @code{bffac}, and @code{cbffac} are varieties of the
-gamma function.  @code{bffac} and @code{cbffac} are called internally by 
-@code{gamma} to evaluate the gamma function for real and complex numbers in 
-bigfloat precision.
+The functions @mrefcomma{gamma} @mrefcomma{bffac} and @mref{cbffac} are
+varieties of the gamma function.  @code{bffac} and @code{cbffac} are called
+internally by @code{gamma} to evaluate the gamma function for real and complex
+numbers in bigfloat precision.
 
-@code{makegamma} substitutes @code{gamma} for factorials and related functions.
+@mref{makegamma} substitutes @code{gamma} for factorials and related functions.
 
 Maxima knows the derivative of the factorial function and the limits for 
 specific values like negative integers.
 
-The option variable @code{factorial_expand} controls the simplification of 
+The option variable @mref{factorial_expand} controls the simplification of
 expressions like @code{(n+x)!}, where @code{n} is an integer.
 
-See also @code{binomial}.
+See also @mrefdot{binomial}
 
 The factorial of an integer is simplified to an exact number unless the operand 
 is greater than @code{factlim}.  The factorial for real and complex numbers is 
@@ -698,7 +707,7 @@ Default value: false
 
 The option variable @code{factorial_expand} controls the simplification of 
 expressions like @code{(n+1)!}, where @code{n} is an integer.
-See @code{!} for an example.
+See @mref{factorial} for an example.
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -757,10 +766,174 @@ Default value: @code{true}
 
 When @code{sumsplitfact} is @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
-@code{minfactorial} is applied after a @code{factcomb}.
+@mref{minfactorial} is applied after a @mrefdot{factcomb}
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Simplification flags and variables}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions, Mathematical Functions
+@section Root, Exponential and Logarithmic Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrt}
+@deffn {Function} sqrt (@var{x})
+
+The square root of @var{x}.  It is represented internally by
+@code{@var{x}^(1/2)}.  See also @code{rootscontract}.
+
+@code{radexpand} if @code{true} will cause nth roots of factors of a product
+which are powers of n to be pulled outside of the radical, e.g.
+@code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is
+@code{true}.
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrtdispflag}
+@defvr {Option variable} sqrtdispflag
+Default value: @code{true}
+
+When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
+exponent 1/2.
+@c AND OTHERWISE ... ??
+
+@opencatbox
+@category{Mathematical functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Trigonometric Functions, Hyperbolic Functions, Root Exponential and Logarithmic Functions, Mathematical Functions
+@section Trigonometric Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Hyperbolic Functions, Random Numbers, Trigonometric Functions, Mathematical Functions
+@section Hyperbolic Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Random Numbers, , Hyperbolic Functions, Mathematical Functions
+@section Random Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{make_random_state}
+@deffn  {Function} make_random_state (@var{n})
+@deffnx {Function} make_random_state (@var{s})
+@deffnx {Function} make_random_state (true)
+@deffnx {Function} make_random_state (false)
+
+@c OMIT THIS FOR NOW. SEE COMMENT BELOW.
+@c @defunx make_random_state (@var{a})
+
+A random state object represents the state of the random number generator.
+The state comprises 627 32-bit words.
+
+@code{make_random_state (@var{n})} returns a new random state object
+created from an integer seed value equal to @var{n} modulo 2^32.
+@var{n} may be negative.
+
+@c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
+@c @code{make_random_state (@var{a})} returns a new random state object
+@c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
+
+@code{make_random_state (@var{s})} returns a copy of the random state @var{s}.
+
+@code{make_random_state (true)} returns a new random state object,
+using the current computer clock time as the seed.
+
+@code{make_random_state (false)} returns a copy of the current state
+of the random number generator.
+
+@opencatbox
+@category{Random numbers}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{set_random_state}
+@deffn {Function} set_random_state (@var{s})
+
+Copies @var{s} to the random number generator state.
+
+@code{set_random_state} always returns @code{done}.
+
+@opencatbox
+@category{Random numbers}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{random}
+@deffn {Function} random (@var{x})
+
+Returns a pseudorandom number.  If @var{x} is an integer,
+@code{random (@var{x})} returns an integer from 0 through @code{@var{x} - 1}
+inclusive.  If @var{x} is a floating point number, @code{random (@var{x})}
+returns a nonnegative floating point number less than @var{x}.  @code{random}
+complains with an error if @var{x} is neither an integer nor a float, or if
+@var{x} is not positive.
+
+The functions @code{make_random_state} and @code{set_random_state}
+maintain the state of the random number generator.
+
+The Maxima random number generator is an implementation of the Mersenne twister
+MT 19937.
+
+Examples:
+
+@c ===beg===
+@c s1: make_random_state (654321)$
+@c set_random_state (s1);
+@c random (1000);
+@c random (9573684);
+@c random (2^75);
+@c s2: make_random_state (false)$
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c set_random_state (s2);
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c ===end===
+@example
+(%i1) s1: make_random_state (654321)$
+(%i2) set_random_state (s1);
+(%o2)                         done
+(%i3) random (1000);
+(%o3)                          768
+(%i4) random (9573684);
+(%o4)                        7657880
+(%i5) random (2^75);
+(%o5)                11804491615036831636390
+(%i6) s2: make_random_state (false)$
+(%i7) random (1.0);
+(%o7)                   .2310127244107132
+(%i8) random (10.0);
+(%o8)                   4.394553645870825
+(%i9) random (100.0);
+(%o9)                   32.28666704056853
+(%i10) set_random_state (s2);
+(%o10)                        done
+(%i11) random (1.0);
+(%o11)                  .2310127244107132
+(%i12) random (10.0);
+(%o12)                  4.394553645870825
+(%i13) random (100.0);
+(%o13)                  32.28666704056853
+@end example
+
+@opencatbox
+@category{Random numbers} @category{Numerical methods}
+@closecatbox
+@end deffn
 
