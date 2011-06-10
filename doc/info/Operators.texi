@@ -1155,6 +1155,135 @@ the function defined by @code{:=} accepts a variable number of arguments.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{infix}
+@deffn  {Function} infix (@var{op})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+
+Declares @var{op} to be an infix operator.  An infix operator is a function of
+two arguments, with the name of the function written between the arguments.
+For example, the subtraction operator @code{-} is an infix operator.
+
+@code{infix (@var{op})} declares @var{op} to be an infix operator with default
+binding powers (left and right both equal to 180) and parts of speech (left and
+right both equal to @code{any}).
+@c HOW IS pos DIFFERENT FROM lpos AND rpos ??
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} declares @var{op} to be an infix
+operator with stated left and right binding powers and default parts of speech
+(left and right both equal to @code{any}).
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
+declares @var{op} to be an infix operator with stated left and right binding
+powers and parts of speech @var{lpos}, @var{rpos}, and @var{pos} for the left
+operand, the right operand, and the operator result, respectively.
+
+"Part of speech", in reference to operator declarations, means expression type.
+Three types are recognized: @code{expr}, @code{clause}, and @code{any},
+indicating an algebraic expression, a Boolean expression, or any kind of
+expression, respectively.  Maxima can detect some syntax errors by comparing the
+declared part of speech to an actual expression.
+
+The precedence of @var{op} with respect to other operators derives from the left
+and right binding powers of the operators in question.  If the left and right
+binding powers of @var{op} are both greater the left and right binding powers of
+some other operator, then @var{op} takes precedence over the other operator.
+If the binding powers are not both greater or less, some more complicated
+relation holds.
+
+The associativity of @var{op} depends on its binding powers.  Greater left
+binding power (@var{lbp}) implies an instance of @var{op} is evaluated before
+other operators to its left in an expression, while greater right binding power
+(@var{rbp}) implies  an instance of @var{op} is evaluated before other operators
+to its right in an expression.  Thus greater @var{lbp} makes @var{op}
+right-associative, while greater @var{rbp} makes @var{op} left-associative.
+If @var{lbp} is equal to @var{rbp}, @var{op} is left-associative.
+
+See also @code{Syntax}.
+
+Examples:
+
+If the left and right binding powers of @var{op} are both greater
+the left and right binding powers of some other operator,
+then @var{op} takes precedence over the other operator.
+
+@c ===beg===
+@c :lisp (get '$+ 'lbp)
+@c :lisp (get '$+ 'rbp)
+@c infix ("##", 101, 101);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")");
+@c 1 + a ## b + 2;
+@c infix ("##", 99, 99);
+@c 1 + a ## b + 2;
+@c ===end===
+@example
+(%i1) :lisp (get '$+ 'lbp)
+100
+(%i1) :lisp (get '$+ 'rbp)
+100
+(%i1) infix ("##", 101, 101);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")");
+(%o2)       (a ## b) := sconcat("(", a, ",", b, ")")
+(%i3) 1 + a ## b + 2;
+(%o3)                       (a,b) + 3
+(%i4) infix ("##", 99, 99);
+(%o4)                          ##
+(%i5) 1 + a ## b + 2;
+(%o5)                       (a+1,b+2)
+@end example
+
+Greater @var{lbp} makes @var{op} right-associative,
+while greater @var{rbp} makes @var{op} left-associative.
+
+@c ===beg===
+@c infix ("##", 100, 99);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")")$
+@c foo ## bar ## baz;
+@c infix ("##", 100, 101);
+@c foo ## bar ## baz;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i3) foo ## bar ## baz;
+(%o3)                    (foo,(bar,baz))
+(%i4) infix ("##", 100, 101);
+(%o4)                          ##
+(%i5) foo ## bar ## baz;
+(%o5)                    ((foo,bar),baz)
+@end example
+
+Maxima can detect some syntax errors by comparing the
+declared part of speech to an actual expression.
+
+@c ===beg===
+@c infix ("##", 100, 99, expr, expr, expr);
+@c if x ## y then 1 else 0;
+@c infix ("##", 100, 99, expr, expr, clause);
+@c if x ## y then 1 else 0;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99, expr, expr, expr);
+(%o1)                          ##
+(%i2) if x ## y then 1 else 0;
+Incorrect syntax: Found algebraic expression where logical
+expression expected
+if x ## y then 
+             ^
+(%i2) infix ("##", 100, 99, expr, expr, clause);
+(%o2)                          ##
+(%i3) if x ## y then 1 else 0;
+(%o3)                if x ## y then 1 else 0
+@end example
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences} @category{Syntax}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} nary
 
 An @code{nary} operator is used to denote a function of any number of arguments,
