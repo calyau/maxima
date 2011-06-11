@@ -541,27 +541,6 @@ APPLY means like APPLY.")
 (defun translator-eval (x)
   (eval x))
 
-(defun apply-in$bind_during_translation (f form &rest l)
-  (cond ((not ($listp (cadr form)))
-	 (tr-format "Badly formed `bind_during_translation' variable list.~%~:M"
-		    (cadr form))
-	 (apply f form l))
-	(t
-	 (do ((l (cdr (cadr form)) (cdr l))
-	      (vars nil)
-	      (vals nil))
-	     ((null l)
-	      (mbinding (vars vals '$bind_during_translation)
-			(apply f form l)))
-	   (let ((p (car l)))
-	     (cond ((atom p) (push p vars) (push (meval p) vals))
-		   ((eq (caar p) 'msetq)
-		    (push (cadr p) vars) (push (meval (caddr p)) vals))
-		   (t
-		    (tr-format
-		     "Badly formed `bind_during_translation' binding~%~:M"
-		     p))))))))
-
 ;; This basically tells the msetq def%tr to use defparameter insetad
 ;; of setq because we're doing a setq at top-level, which isn't
 ;; specified by ANSI CL.
@@ -575,13 +554,6 @@ APPLY means like APPLY.")
   ;; Except msetq at top-level is special for ANSI CL.  See below.
   (setq form (toplevel-optimize form))
   (cond ((atom form) nil)
-	((eq (caar form) '$bind_during_translation)
-	 (apply-in$bind_during_translation
-	  #'(lambda (form) 
-	      `(progn
-		 'compile
-		 ,@(mapcar 'translate-macexpr-toplevel (cddr form))))
-	  form))
 	((eq (caar form) '$eval_when)
 	 (let ((whens (cadr form))
 	       (body (cddr form)) tr-whens)
@@ -936,12 +908,6 @@ APPLY means like APPLY.")
 	 `(,mode ,fun . ,args))
 	(t
 	 `(,mode simplify (,fun . ,args)))))
-
-(def%tr $bind_during_translation (form)
-  (apply-in$bind_during_translation
-   #'(lambda (form)
-       (translate `((mprogn) ,@(cddr form))))
-   form))
 
 (defmspec $declare_translated (fns)
   (setq fns (cdr fns))

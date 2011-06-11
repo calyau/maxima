@@ -249,6 +249,3 @@
 	   (($integer $integerp) '$fixnum)
 	   (($complex) "to ask about this")
 	   (t "to see the documentation on"))))
-
-(defmspec $bind_during_translation (form)
-  (mevaln (cddr form)))
