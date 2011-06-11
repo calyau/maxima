@@ -32,9 +32,6 @@
   "It TRUE messages about translation of the file are sent
 	 to the TTY also.")
 
-(defmvar $tr_windy t
-  "Generate helpful comments and programming hints.")
-
 (defvar *translation-msgs-files* nil
   "Where the warning and other comments goes.")
 

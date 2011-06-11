@@ -1688,9 +1688,8 @@ Veja tamb@'em @code{tr_array_as_ref},
 @code{tr_warn_fexpr}, 
 @code{tr_warn_meval},
 @code{tr_warn_mode},
-@code{tr_warn_undeclared}, 
-@code{tr_warn_undefined_variable},
-and @code{tr_windy}.
+@code{tr_warn_undeclared},
+e @code{tr_warn_undefined_variable}.
 
 @end deffn
 
@@ -1880,18 +1879,6 @@ Valor por omiss@~ao: @code{all}
 
 - Emite um alerta quando
 vari@'aveis globais indefinidas forem vistas.
-
-@end defvr
-
-@c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
-@c WHERE IT CAUSES A WARNING ABOUT USING kill.  
-@c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
-@c AND CUT OUT tr_windy FROM CODE AND DOCS.
-@defvr {Vari@'avel de op@value{cedilha}@~ao} tr_windy
-Valor por omiss@~ao: @code{true}
-
-- Gera coment@'arios "de grande ajuda" e
-dicas de programa@value{cedilha}@~ao.
 
 @end defvr
 

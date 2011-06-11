@@ -1059,7 +1059,6 @@ tr_warn_meval
 tr_warn_mode
 tr_warn_undeclared
 tr_warn_undefined_variable
-tr_windy
 ttyoff
 ueivects
 ufg

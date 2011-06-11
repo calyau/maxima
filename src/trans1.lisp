@@ -294,11 +294,6 @@
      '($any . '$**error**))))
 
 (def%tr $kill (form)
-  (cond ($tr_windy
-	 (tr-tell "
-Warning:" form
-"Use of KILL in translated program is not recommended. See GJC for
-a replacement form. Translating anyway though.")))
   `($any . (mapply '$kill ',(cdr form) nil)))
 
 ;;; Macsyma arrays are the biggest crock since STATUS PUNT NIL days.
