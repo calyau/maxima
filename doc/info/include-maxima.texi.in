@@ -123,7 +123,7 @@ Support for specific areas of mathematics
 * itensor::                     Indicial Tensor Manipulation.
 * ctensor::                     Component Tensor Manipulation.
 * atensor::                     Algebraic Tensor Manipulation.
-* Series::                      Taylor and power series.
+* Sums Products and Series::    Sums, Products, Taylor and power series.
 * Number Theory::               Number theory.
 * Symmetries::                  
 * Groups::                      Abstract algebra.
@@ -385,10 +385,12 @@ atensor
 * Introduction to atensor::     
 * Functions and Variables for atensor::     
 
-Series
+Sums, Products, and Series
 
-* Introduction to Series::      
-* Functions and Variables for Series::      
+* Sums and Products::
+* Introduction to Series::
+* Functions and Variables for Series::
+* Poisson series::
 
 Number Theory
 
@@ -812,15 +814,15 @@ zeilberger
 @chapter ctensor
 @include Ctensor.texi
 
-@node atensor, Series, ctensor, Top
+@node atensor, Sums Products and Series, ctensor, Top
 @chapter atensor
 @include Atensor.texi
 
-@node Series, Number Theory, atensor, Top
-@chapter Series
+@node Sums Products and Series, Number Theory, atensor, Top
+@chapter Sums, Products, and Series
 @include Series.texi
 
-@node Number Theory, Symmetries, Series, Top
+@node Number Theory, Symmetries, Sums Products and Series, Top
 @chapter Number Theory
 @include Number.texi
 
