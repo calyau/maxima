@@ -299,7 +299,7 @@
 Warning:" form
 "Use of KILL in translated program is not recommended. See GJC for
 a replacement form. Translating anyway though.")))
-  `($any . (apply '$kill ',(cdr form))))
+  `($any . (mapply '$kill ',(cdr form) nil)))
 
 ;;; Macsyma arrays are the biggest crock since STATUS PUNT NIL days.
 ;;; The basic idea of ARRAY(<frob>,type,dims...) is that
