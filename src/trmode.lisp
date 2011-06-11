@@ -68,7 +68,7 @@
 						`(defprop ,var assign-mode-check assign))
 					   (def-mtrvar ,(cadr form) ,(dtranslate (caddr form))))))))
 	(t
-	 (tr-tell (intl:gettext "translator: 'define_variable' must have 3 arguments; found: ~:M~%") form)
+	 (tr-format (intl:gettext "translator: 'define_variable' must have 3 arguments; found: ~:M~%") form)
 	 nil)))
 
 ;; the priority fails when a DEF-MTRVAR is done, then the user

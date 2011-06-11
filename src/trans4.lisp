@@ -149,12 +149,12 @@
 	(if (symbolp op)
 	    (funcall (or (get op 'tr-lisp->lisp) #'tr-lisp->lisp-default)
 		     exp)
-	    (progn (tr-tell (intl:gettext "translator: found a non-symbolic operator; I give up.~%"))
+	    (progn (tr-format (intl:gettext "translator: found a non-symbolic operator; I give up.~%"))
 		   (throw 'lisp->lisp-tr-lambda ()))))))
 
 (defun tr-lisp->lisp-default (exp)
   (cond ((macsyma-special-op-p (car exp))
-	 (tr-tell (intl:gettext "translator: unhandled special operator ~:@M~%") (car exp))
+	 (tr-format (intl:gettext "translator: unhandled special operator ~:@M~%") (car exp))
 	 (throw 'lisp->lisp-tr-lambda ()))
 	('else
 	 (tr-lisp->lisp-fun exp))))
@@ -227,7 +227,7 @@
 	 ;; and appears like a useless double-evaluation of arguments.
 	 form)
 	('else
-	 (tr-tell (intl:gettext "translator: found unbound MEVAL; I give up.~%"))
+	 (tr-format (intl:gettext "translator: found unbound MEVAL; I give up.~%"))
 	 (throw 'lisp->lisp-tr-lambda ()))))
 
 (defun-prop (is tr-lisp->lisp) (form)
@@ -236,5 +236,5 @@
 	      (eq (car form) 'quote))
 	 (cdr (translate `(($is) ,(cadr form)))))
 	('else
-	 (tr-tell (intl:gettext "translator: found unbound IS; I give up.~%"))
+	 (tr-format (intl:gettext "translator: found unbound IS; I give up.~%"))
 	 (throw 'lisp->lisp-tr-lambda ()))))
