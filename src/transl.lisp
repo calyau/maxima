@@ -207,21 +207,12 @@ APPLY means like APPLY.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defun tr-tell (&rest x &aux (tp t))
-  (do ((x x (cdr x)))
-      ((null x))
-    (cond ((atom (car x)) ;;; simple heuristic that seems to work.
-	   (cond ((or tp (> (flatc (car x)) 10.))
-		  (dolist (v *translation-msgs-files*) (terpri v))
-		  (setq tp nil)))
-	   (dolist (v *translation-msgs-files*)
-	     (princ (print-invert-case (stripdollar (car x))) v)))
-	  (t
-	   (dolist (v *translation-msgs-files*) (mgrind (car x) v))))))
+(defun tr-tell (&rest x)
+  (apply #'tr-format x))
 
 (defun barfo (&rest l)
   (apply #'tr-tell
-	 (nconc l '("translator: internal error.")))
+	 (nconc (list (intl:gettext "translator: internal error. Message: ~:M~%")) l))
   (cond (*transl-debug*
 	 (break "transl barfo ~S" t))
 	(t
@@ -455,7 +446,7 @@ APPLY means like APPLY.")
 	      ((lambda) ((mlist) ,@(cdr args)) ,body))))
 	  ((member tr-unique a-args :test #'eq)
 	   ;; WHAT IS "BAD" ABOUT THE ARGUMENT LIST HERE ??
-	   (tr-tell "Bad argument list for a function to translate->" `((mlist),@args))
+	   (tr-tell (intl:gettext "translator: unhandled argument list in function definition: ~:M~%") `((mlist),@args))
 	   (setq tr-abort t)
 	   nil)
 	  ((member (caar form) '(mdefine mdefmacro) :test #'eq)
@@ -537,7 +528,7 @@ APPLY means like APPLY.")
 
 
 (defun trfail (x)
-  (tr-tell x (intl:gettext "translator: failed to translate.")) nil)
+  (tr-tell x (intl:gettext "translator: failed to translate.~%")) nil)
 
 (defmfun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
@@ -600,7 +591,7 @@ APPLY means like APPLY.")
 	   (setq whens (cond (($listp whens) (cdr whens))
 			     ((atom whens) (list whens))
 			     (t
-			      (tr-tell (intl:gettext "translator: 'eval-when' argument must be a list or atom; found:") (cadr form))
+			      (tr-tell (intl:gettext "translator: 'eval-when' argument must be a list or atom; found: ~:M~%") (cadr form))
 			      nil)))
 	   (setq tr-whens (mapcar 'stripdollar whens))
 	   (cond ((member '$translate whens :test #'eq)
@@ -822,12 +813,8 @@ APPLY means like APPLY.")
 	     ;;; G(F,X):=F(X+1); case.
 	   ((and $tr_bound_function_applyp (tboundp function))
 	    (let ((new-form `(($apply) ,function ((mlist) ,@args))))
-	      (tr-tell function
-		       "in the form "
-		       form
-		       "has been used as a function, yet is a bound variable"
-		       "in this context. This code being translated as :"
-		       new-form)
+	      (tr-tell (intl:gettext "translator: ~:M is a bound variable in ~:M, but it is used as a function.~%") function form)
+	      (tr-tell (intl:gettext "translator: instead I'll translate it as: ~:M~%") new-form)
 	      (translate new-form)))
 	   ;; MFUNCTION-CALL cleverely punts this question to a FSUBR in the
 	   ;; interpreter, and a macro in the compiler. This is good style,
@@ -973,10 +960,8 @@ APPLY means like APPLY.")
       (setq nl (cons (cadr l) (cons (car l) nl)))))
 
 (def%tr $eval_when (form)
-  (tr-tell
-   "`eval_when' can only be used at top level in a file"
-   form
-   "it cannot be used inside an expression or function.")
+  (tr-tell (intl:gettext "translator: found 'eval_when' in a function or expression: ~:M~%") form)
+  (tr-tell (intl:gettext "translator: 'eval_when' can appear only at the top level in a file.~%"))
   (setq tr-abort t)
   '($any . nil))
 

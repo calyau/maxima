@@ -374,9 +374,7 @@ translated."
 		  (let ((it (translate-function ($verbify (car l)))))
 		    (if it (push it v))))
 		 (t
-		  (tr-tell
-		   (car l)
-		   " is an illegal argument to `translate'.")))))))
+		  (tr-tell (intl:gettext "translator: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
 
 
 (declare-top (special forms-to-compile-queue))
