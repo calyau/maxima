@@ -468,17 +468,18 @@ recognized.
 eva@-lu@-ates to @var{expr_1} if @var{cond_1} evaluates to @code{true},
 otherwise the expression evaluates to @var{expr_0}.
 
-@code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2}
-elseif ... else @var{expr_0}} evaluates to @var{expr_k} if @var{cond_k} is
-@code{true} and all preceding conditions are @code{false}.  If none of the
-conditions are @code{true}, the expression evaluates to @code{expr_0}.
+The command @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then
+@var{expr_2} elseif ... else @var{expr_0}} evaluates to @var{expr_k} if
+@var{cond_k} is @code{true} and all preceding conditions are @code{false}.  If
+none of the conditions are @code{true}, the expression evaluates to
+@code{expr_0}.
 
 A trailing @code{else false} is assumed if @code{else} is missing.  That is,
-@code{if @var{cond_1} then @var{expr_1}} is equivalent to @code{if @var{cond_1}
-then @var{expr_1} else false}, and @code{if @var{cond_1} then @var{expr_1}
-elseif ... elseif @var{cond_n} then @var{expr_n}} is equivalent to
+the command @code{if @var{cond_1} then @var{expr_1}} is equivalent to
+@code{if @var{cond_1} then @var{expr_1} else false}, and the command
 @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then
-@var{expr_n} else false}.
+@var{expr_n}} is equivalent to @code{if @var{cond_1} then @var{expr_1} elseif 
+... elseif @var{cond_n} then @var{expr_n} else false}.
 
 The alternatives @var{expr_0}, @dots{}, @var{expr_n} may be any Maxima
 expressions, including nested @code{if} expressions.  The alternatives are

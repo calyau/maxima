@@ -607,7 +607,8 @@ Declared unit conversions.
 @c ===beg===
 @c load (ezunits)$
 @c declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
-@c declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh, bell = 1800*s);
+@c declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh, 
+@c                          bell = 1800*s);
 @c 1 ` kW*s `` MWh;
 @c 1 ` kW/m^2 `` MMBtu/bell/ft^2;
 @c ===end===
@@ -615,7 +616,8 @@ Declared unit conversions.
 (%i1) load (ezunits)$
 (%i2) declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
 (%o2)                         done
-(%i3) declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh, bell = 1800*s);
+(%i3) declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh,
+                               bell = 1800*s);
 (%o3)                         done
 (%i4) 1 ` kW*s `` MWh;
 Computing conversions to base units; may take a moment. 
@@ -958,12 +960,14 @@ Unit conversions expressed by equations of multiplicative terms.
 
 @c ===beg===
 @c load (ezunits)$
-@c declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * day);
+@c declare_unit_conversion (nautical_mile = 1852 * m, 
+@c                          fortnight = 14 * day);
 @c 100 ` nautical_mile / fortnight `` m/s;
 @c ===end===
 @example
 (%i1) load (ezunits)$
-(%i2) declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * day);
+(%i2) declare_unit_conversion (nautical_mile = 1852 * m,
+                               fortnight = 14 * day);
 (%o2)                         done
 (%i3) 100 ` nautical_mile / fortnight `` m/s;
 Computing conversions to base units; may take a moment. 
@@ -1107,7 +1111,8 @@ Examples:
 @c ===beg===
 @c load (ezunits) $
 @c declare_fundamental_dimensions (money, cattle, happiness);
-@c declare_fundamental_units (dollar, money, goat, cattle, smile, happiness);
+@c declare_fundamental_units (dollar, money, goat, cattle,
+@c                            smile, happiness);
 @c dimensions (100 ` dollar/goat/km^2);
 @c dimensions (x ` smile/kg);
 @c fundamental_units (money*cattle/happiness);
@@ -1116,7 +1121,8 @@ Examples:
 (%i1) load (ezunits) $
 (%i2) declare_fundamental_dimensions (money, cattle, happiness);
 (%o2)                         done
-(%i3) declare_fundamental_units (dollar, money, goat, cattle, smile, happiness);
+(%i3) declare_fundamental_units (dollar, money, goat, cattle,
+                                 smile, happiness);
 (%o3)                 [dollar, goat, smile]
 (%i4) dimensions (100 ` dollar/goat/km^2);
                              money

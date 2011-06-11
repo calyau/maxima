@@ -54,7 +54,8 @@ Capture standard output into a file via the @code{with_stdout} function.
 (%i1) load (f90)$
 (%i2) foo : sin (3*x + 1) - cos (7*x - 2);
 (%o2)              sin(3 x + 1) - cos(7 x - 2)
-(%i3) with_stdout ("foo.f90", f90 (x = 0.25, y = 0.625, 'foo = foo, 'stop, 'end));
+(%i3) with_stdout ("foo.f90",
+                   f90 (x=0.25, y=0.625, 'foo=foo, 'stop, 'end));
 (%o3)                         false
 (%i4) printfile ("foo.f90");
 x = 0.25
