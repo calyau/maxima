@@ -458,6 +458,56 @@ declarations.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{get}
+@deffn {Function} get (@var{a}, @var{i})
+
+Retrieves the user property indicated by @var{i} associated with
+atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
+
+@code{get} evaluates its arguments.
+
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
+@example
+(%i1) put (%e, 'transcendental, 'type);
+(%o1)                    transcendental
+(%i2) put (%pi, 'transcendental, 'type)$
+(%i3) put (%i, 'algebraic, 'type)$
+(%i4) typeof (expr) := block ([q],
+        if numberp (expr)
+        then return ('algebraic),
+        if not atom (expr)
+        then return (maplist ('typeof, expr)),
+        q: get (expr, 'type),
+        if q=false
+        then errcatch (error(expr,"is not numeric.")) else q)$
+(%i5) typeof (2*%e + x*%pi);
+x is not numeric.
+(%o5)  [[transcendental, []], [algebraic, transcendental]]
+(%i6) typeof (2*%e + %pi);
+(%o6)     [transcendental, [algebraic, transcendental]]
+
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{nonarray}
 @deffn {Property} nonarray
 
