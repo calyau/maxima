@@ -1098,23 +1098,6 @@ For each member @var{m} of @var{list}, calls
 @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@anchor{lowpow}
-@deffn {Function} lopow (@var{expr}, @var{x})
-
-Returns the lowest exponent of @var{x} which explicitly appears in
-@var{expr}.  Thus
-
-@example
-(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
-(%o1)                       min(a, 2)
-@end example
-
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end deffn
-
 @c NEEDS WORK
 
 @c -----------------------------------------------------------------------------
@@ -1128,6 +1111,58 @@ to the one produced by @code{dpart} but it has a name in the top line.
 @category{Expressions}
 @closecatbox
 @end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{mainvar}
+@defvr {Declaration} mainvar
+
+You may declare variables to be @code{mainvar}.  The ordering scale for atoms is
+essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars < other
+variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)} with
+@code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: Care should be taken if
+you elect to use the above feature.  E.g., if you subtract an expression in
+which @code{x} is a @code{mainvar} from one in which @code{x} isn't a
+@code{mainvar}, resimplification e.g. with @code{ev (expr, simp)} may be
+necessary if cancellation is to occur.  Also, if you save an expression in which
+@code{x} is a @code{mainvar}, you probably should also save @code{x}.)
+
+@opencatbox
+@category{Declarations and inferences} @category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{noun}
+@defvr {Declaration} noun
+
+@code{noun} is one of the options of the @mref{declare} command.  It makes a
+function so declared a "noun", meaning that it won't be evaluated
+automatically.
+
+@opencatbox
+@category{Nouns and verbs}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{noundisp}
+@defvr {Option variable} noundisp
+Default value: @code{false}
+
+When @code{noundisp} is @code{true}, nouns display with
+a single quote.  This switch is always @code{true} when displaying function
+definitions.
+
+@opencatbox
+@category{Display flags and variables} @category{Nouns and verbs}
+@closecatbox
+@end defvr
 
 @c NEEDS WORK
 
@@ -1204,7 +1239,6 @@ Examples:
 @c op (F [x, y] (a, b, c));
 @c op (G [u, v, w]);
 @c ===end===
-
 @example
 (%i1) stringdisp: true$
 (%i2) op (a * b * c);
@@ -1257,6 +1291,22 @@ operator of @var{expr}.
 @category{Operators} @category{Predicate functions}
 @closecatbox
 @end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{option_opsubst}
+@defvr {Option variable} opsubst
+Default value: @code{true}
+
+When @code{opsubst} is @code{false}, @mref{subst} does not attempt to
+substitute into the operator of an expression.  E.g., 
+@code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
 
 @c NEEDS WORK
 
@@ -1552,12 +1602,12 @@ Examples:
 (%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
                                         3        2
 (%i2) pickapart (expr, 0);
-
+@group
                                           2
                                      sin(x )   b + a
 (%t2)       - log(sqrt(x + 1) + 1) + ------- + -----
                                         3        2
-
+@end group
 (%o2)                          %t2
 (%i3) pickapart (expr, 1);
 
@@ -1603,11 +1653,12 @@ Examples:
 (%i10) pickapart (expr, 4);
 
 (%t11)                     sqrt(x + 1)
-
+@group
                       2
                  sin(x )   b + a
 (%o11)           ------- + ----- - log(%t11 + 1)
                     3        2
+@end group
 (%i11) pickapart (expr, 5);
 
 (%t12)                        x + 1
@@ -1712,10 +1763,12 @@ Examples:
 @c ===end===
 @example
 (%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
+@group
                                   a d - b c
 (%o1)                sin(%pi x) + ---------
                                       2
                                      h
+@end group
 (%i2) dpart (dpart (expr, 1, 1), 2, 2);
                         """""""    a d - b c
 (%o2)               sin("%pi x") + ---------
@@ -1765,6 +1818,92 @@ Examples:
 
 @opencatbox
 @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{reveal}
+@deffn {Function} reveal (@var{expr}, @var{depth})
+
+Replaces parts of @var{expr} at the specified integer @var{depth}
+with descriptive summaries.
+
+@itemize @bullet
+@item
+Sums and differences are replaced by @code{Sum(@var{n})}
+where @var{n} is the number of operands of the sum.
+@item
+Products are replaced by @code{Product(@var{n})}
+where @var{n} is the number of operands of the product.
+@item
+Exponentials are replaced by @code{Expt}.
+@item
+Quotients are replaced by @code{Quotient}.
+@item
+Unary negation is replaced by @code{Negterm}.
+@item
+Lists are replaced by @code{List(@var{n})} where @var{n} ist the number of
+elements of the list.
+@end itemize
+
+When @var{depth} is greater than or equal to the maximum depth of @var{expr},
+@code{reveal (@var{expr}, @var{depth})} returns @var{expr} unmodified.
+
+@code{reveal} evaluates its arguments.
+@code{reveal} returns the summarized expression.
+
+Example:
+
+@c === beg ===
+@c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+@c reveal (e, 1);
+@c reveal (e, 2);
+@c reveal (e, 3);
+@c reveal (e, 4);
+@c reveal (e, 5);
+@c reveal (e, 6);
+@c === end ===
+@example
+(%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+                          2            2
+                         b  - 2 a b + a
+(%o1)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+(%i2) reveal (e, 1);
+(%o2)                       Quotient
+(%i3) reveal (e, 2);
+                             Sum(3)
+(%o3)                        ------
+                             Sum(3)
+(%i4) reveal (e, 3);
+@group
+                     Expt + Negterm + Expt
+(%o4)               ------------------------
+                    Product(2) + Expt + Expt
+@end group
+(%i5) reveal (e, 4);
+                       2                 2
+                      b  - Product(3) + a
+(%o5)         ------------------------------------
+                         Product(2)     Product(2)
+              2 Expt + %e           + %e
+(%i6) reveal (e, 5);
+                         2            2
+                        b  - 2 a b + a
+(%o6)              --------------------------
+                       Sum(2)     2 b     2 a
+                   2 %e       + %e    + %e
+(%i7) reveal (e, 6);
+                          2            2
+                         b  - 2 a b + a
+(%o7)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+@end example
+
+@opencatbox
+@category{Expressions} @category{Display functions}
 @closecatbox
 @end deffn
 
