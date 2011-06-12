@@ -371,7 +371,7 @@ translated."
 		  (let ((it (translate-function ($verbify (car l)))))
 		    (if it (push it v))))
 		 (t
-		  (tr-format (intl:gettext "translator: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
+		  (tr-format (intl:gettext "error: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
 
 
 (declare-top (special forms-to-compile-queue))

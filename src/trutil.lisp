@@ -35,7 +35,7 @@
 	   ;; push one with a priority of 1, which will be over-rided
 	   ;; by any user-specified settings.
 	   (if (eq $define_variable '$mode)
-	       (tr-format "~%Note: ~:M being given a default setting of ~:M"
+	       (tr-format (intl:gettext "note: variable ~:M being given a default assignment ~:M~%")
 			  var (if (atom val) val
 				  ;; strip off the quote
 				  (cadr val))))
@@ -83,7 +83,7 @@
 			 (caar form))
 		(mgrind form *translation-msgs-files*))
 	       ((and max (> nargs max))
-		(tr-format  "~%Error: Too many arguments supplied to ~:@M~%" (caar form))
+		(tr-format  (intl:gettext "error: too many arguments supplied to ~:@M~%") (caar form))
 		(mgrind form *translation-msgs-files*)))))
   nargs) ;; return the number of arguments.
 
