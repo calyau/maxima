@@ -306,6 +306,8 @@ the prefix, the prefixes @code{inchar}, @mrefcomma{outchar} and
 @mref{linechar} should have a different first char.  Otherwise some commands
 like @code{kill(inlables)} do not work as expected.
 
+Example:
+
 @c ===beg===
 @c inchar: "input";
 @c expand((a+b)^3);
@@ -604,6 +606,8 @@ character. Because Maxima internally takes into account only the first char of
 the prefix, the prefixes @mrefcomma{inchar} @code{outchar} and
 @mref{linechar} should have a different first char.  Otherwise some commands
 like @code{kill(inlables)} do not work as expected.
+
+Example:
 
 @c ===beg===
 @c outchar: "output";
@@ -957,11 +961,11 @@ signs around expressions which are more than one line tall.
 @anchor{disp}
 @deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
-is like @code{display} but only the value of the arguments are displayed rather
+is like @mref{display} but only the value of the arguments are displayed rather
 than equations.  This is useful for complicated arguments which don't have names 
 or where only the value of the argument is of interest and not the name.
 
-Examples:
+Example:
 
 @c ===beg===
 @c b[1,2]:x-x^2$
@@ -993,11 +997,11 @@ Examples:
 
 Displays equations whose left side is @var{expr_i} unevaluated, and whose right
 side is the value of the expression centered on the line.  This function is 
-useful in blocks and @code{for} statements in order to have intermediate results 
+useful in blocks and @mref{for} statements in order to have intermediate results
 displayed.  The arguments to @code{display} are usually atoms, subscripted 
-variables, or function calls.  See also @code{disp}.
+variables, or function calls.  See also @mrefdot{disp}
 
-Examples:
+Example:
 
 @c ===beg===
 @c b[1,2]:x-x^2$
@@ -1062,8 +1066,8 @@ Default value: @code{false}
 
 When @code{display_format_internal} is @code{true}, expressions are displayed
 without being transformed in ways that hide the internal mathematical
-representation.  The display then corresponds to what @code{inpart} returns
-rather than @code{part}.
+representation.  The display then corresponds to what @mref{inpart} returns
+rather than @mrefdot{part}
 
 Examples:
 
@@ -1112,14 +1116,17 @@ as @code{ncexpt (A, B)} in the case of @code{A^^B}).
 
 @c -----------------------------------------------------------------------------
 @anchor{expt}
-@deffn {Function} expt (@var{a}, @var{b})
+@anchor{ncexpt}
+@deffn  {Special symbol} expt (@var{a}, @var{b})
+@deffnx {Special symbol} ncexpt (@var{a}, @var{b})
 
 If an exponential expression is too wide to be displayed as
 @code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as
 @code{ncexpt (@var{a}, @var{b})} in the case of @code{@var{a}^^@var{b}}).
 
-@c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
-@c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
+@c THIS SEEMS LIKE A BUG TO ME.  expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
+@c ITSELF PRINTS THEM SOMETIMES.  THESE SHOULD JUST SIMPLIFY TO ^ AND ^^,
+@c RESPECTIVELY.
 @code{expt} and @code{ncexpt} are not recognized in input.
 @end deffn
 
@@ -1147,16 +1154,16 @@ for input to Maxima.  @code{grind} always returns @code{done}.
 When @var{expr} is the name of a function or macro, @code{grind} prints the
 function or macro definition instead of just the name.
 
-See also @code{string}, which returns a string instead of printing its output.
-@code{grind} attempts to print the expression in a manner which makes it
-slightly easier to read than the output of @code{string}.
+See also @mrefcomma{string} which returns a string instead of printing its
+output.  @code{grind} attempts to print the expression in a manner which makes
+it slightly easier to read than the output of @code{string}.
 
 When the variable @code{grind} is @code{true}, the output of @code{string} and
-@code{stringout} has the same format as that of @code{grind}; otherwise no
+@mref{stringout} has the same format as that of @code{grind}; otherwise no
 attempt is made to specially format the output of those functions.  The default
 value of the variable @code{grind} is @code{false}.
 
-@code{grind} can also be specified as an argument of @code{playback}.  When
+@code{grind} can also be specified as an argument of @mrefdot{playback}  When
 @code{grind} is present, @code{playback} prints input expressions in the same
 format as the @code{grind} function.  Otherwise, no attempt is made to specially
 format input expressions.
@@ -1290,7 +1297,7 @@ Whatever the value of @code{ibase},
 when an integer is terminated by a decimal point,
 it is interpreted in base 10.
 
-See also @code{obase}.
+See also @mrefdot{obase}
 
 Examples:
 
@@ -1369,7 +1376,9 @@ Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
 printed output.  @code{ldisp} assigns an intermediate expression label to each
 argument and returns the list of labels.
 
-See also @code{disp}.
+See also @mrefdot{disp}
+
+Examples:
 
 @example
 (%i1) e: (a+b)^3;
@@ -1407,10 +1416,12 @@ Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
 printed output.  Each expression is printed as an equation of the form
 @code{lhs = rhs} in which @code{lhs} is one of the arguments of @code{ldisplay}
 and @code{rhs} is its value.  Typically each argument is a variable.
-@code{ldisp} assigns an intermediate expression label to each equation and
+@mref{ldisp} assigns an intermediate expression label to each equation and
 returns the list of labels.
 
-See also @code{display}.
+See also @mrefdot{display}
+
+Examples:
 
 @example
 (%i1) e: (a+b)^3;
@@ -1449,7 +1460,7 @@ Default value: 79
 purpose of displaying expressions.  @code{linel} may be assigned any value by
 the user, although very small or very large values may be impractical.  Text
 printed by built-in Maxima functions, such as error messages and the output of
-@code{describe}, is not affected by @code{linel}.
+@mrefcomma{describe} is not affected by @code{linel}.
 
 @opencatbox
 @category{Display flags and variables}
@@ -1487,6 +1498,24 @@ Examples:
 @closecatbox
 @end defvr
 
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{negsumdispflag}
+@defvr {Option variable} negsumdispflag
+Default value: @code{true}
+
+When @code{negsumdispflag} is @code{true}, @code{x - y} displays as @code{x - y}
+instead of as @code{- y + x}.  Setting it to @code{false} causes the special
+check in display for the difference of two expressions to not be done.  One
+application is that thus @code{a + %i*b} and @code{a - %i*b} may both be
+displayed the same way.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
 @c -----------------------------------------------------------------------------
 @anchor{obase}
 @defvr {Option variable} obase
@@ -1502,7 +1531,7 @@ A leading 0 digit is displayed if the leading digit is otherwise a letter.
 The numerals for base 36, the largest acceptable base,
 comprise 0 through 9, and A through Z.
 
-See also @code{ibase}.
+See also @mrefdot{ibase}
 
 Examples:
 
@@ -1549,6 +1578,8 @@ When @code{pfeformat} is @code{true}, a ratio of integers is displayed with the
 solidus (forward slash) character, and an integer denominator @code{n} is
 displayed as a leading multiplicative term @code{1/n}.
 
+Examples:
+
 @example
 (%i1) pfeformat: false$
 (%i2) 2^16/7^3;
@@ -1572,6 +1603,24 @@ displayed as a leading multiplicative term @code{1/n}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{powerdisp}
+@defvr {Option variable} powerdisp
+Default value: @code{false}
+
+When @code{powerdisp} is @code{true},
+a sum is displayed with its terms in order of increasing power.
+Thus a polynomial is displayed as a truncated power series,
+with the constant term first and the highest power last.
+
+By default, terms of a sum are displayed in order of decreasing power.
+
+@c NEED AN EXAMPLE HERE
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{print}
 @deffn {Function} print (@var{expr_1}, @dots{}, @var{expr_n})
 
@@ -1581,11 +1630,13 @@ from left to right, starting at the left edge of the console display.
 The value returned by @code{print} is the value of its last argument.
 @code{print} does not generate intermediate expression labels.
 
-See also @code{display}, @code{disp}, @code{ldisplay}, and @code{ldisp}.
-Those functions display one expression per line, while @code{print} attempts
-to display two or more expressions per line.
+See also @mrefcomma{display} @mrefcomma{disp} @mrefcomma{ldisplay} and
+@mrefdot{ldisp}  Those functions display one expression per line, while
+@code{print} attempts to display two or more expressions per line.
 
-To display the contents of a file, see @code{printfile}.
+To display the contents of a file, see @mrefdot{printfile}
+
+Examples:
 
 @example
 (%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
@@ -1614,6 +1665,20 @@ To display the contents of a file, see @code{printfile}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{sqrtdispflag}
+@defvr {Option variable} sqrtdispflag
+Default value: @code{true}
+
+When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
+exponent 1/2.
+@c AND OTHERWISE ... ??
+
+@opencatbox
+@category{Mathematical functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{stardisp}
 @defvr {Option variable} stardisp
 Default value: @code{false}
@@ -1632,10 +1697,10 @@ displayed with an asterisk @code{*} between operands.
 Default value: @code{false}
 
 When @code{ttyoff} is @code{true}, output expressions are not displayed.
-Output expressions are still computed and assigned labels.  See @code{labels}.
+Output expressions are still computed and assigned labels.  See @mrefdot{labels}
 
 Text printed by built-in Maxima functions, such as error messages and the output
-of @code{describe}, is not affected by @code{ttyoff}.
+of @mrefcomma{describe} is not affected by @code{ttyoff}.
 
 @opencatbox
 @category{Display flags and variables}
