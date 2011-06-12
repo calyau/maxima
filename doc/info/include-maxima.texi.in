@@ -117,7 +117,6 @@ Support for specific areas of mathematics
 * Differential Equations::      Defining and solving differential equations.
 * Numerical::                   Numerical integration, Fourier
                                 transforms, etc.
-* Arrays::                      Creating and working with arrays.
 * Matrices and Linear Algebra:: Matrix operations.
 * Affine::                      
 * itensor::                     Indicial Tensor Manipulation.
@@ -134,9 +133,7 @@ Advanced facilities and programming
 * Miscellaneous Options::       Options with a global effect on Maxima.
 * Rules and Patterns::          User defined pattern matching and
                                 simplification rules.
-* Lists::                       Manipulation of lists.
 * Sets::                        Manipulation of sets.
-* Structures::                  Aggregated data.
 * Function Definition::         Defining functions.
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
@@ -353,10 +350,6 @@ Numerical
 * Introduction to Fourier series::
 * Functions and Variables for Fourier series::
 
-Arrays
-
-* Functions and Variables for Arrays::  
-
 Matrices and Linear Algebra
 
 * Introduction to Matrices and Linear Algebra::  
@@ -420,22 +413,12 @@ Miscellaneous Options
 Rules and Patterns
 
 * Introduction to Rules and Patterns::  
-* Functions and Variables for Rules and Patterns::  
-
-Lists
-
-* Introduction to Lists::       
-* Functions and Variables for Lists::       
+* Functions and Variables for Rules and Patterns::
 
 Sets
 
 * Introduction to Sets::       
-* Functions and Variables for Sets::       
-
-Structures
-
-* Introduction to Structures::       
-* Functions and Variables for Structures::       
+* Functions and Variables for Sets::
 
 Function Definition
 
@@ -703,6 +686,9 @@ zeilberger
 @chapter Data Types and Structures
 @include DataTypes.texi
 @include Constants.texi
+@include Lists.texi
+@include Arrays.texi
+@include defstruct.texi
 
 @node Expressions, Operators, Data Types and Structures, Top
 @chapter Expressions
@@ -748,10 +734,6 @@ zeilberger
 @chapter Polynomials
 @include Polynomials.texi
 
-@c @node Constants, Logarithms, Polynomials, Top
-@c @chapter Constants
-@c @include Constants.texi
-
 @node Logarithms, Trigonometric, Polynomials, Top
 @chapter Logarithms
 @include Logarithms.texi
@@ -790,15 +772,11 @@ zeilberger
 
 @c @include NonCommutative.texi
 
-@node Numerical, Arrays, Differential Equations, Top
+@node Numerical, Matrices and Linear Algebra, Differential Equations, Top
 @chapter Numerical
 @include Numerical.texi
 
-@node Arrays, Matrices and Linear Algebra, Numerical, Top
-@chapter Arrays
-@include Arrays.texi
-
-@node Matrices and Linear Algebra, Affine, Arrays, Top
+@node Matrices and Linear Algebra, Affine, Numerical, Top
 @chapter Matrices and Linear Algebra
 @include Matrices.texi
 
@@ -842,23 +820,15 @@ zeilberger
 @chapter Miscellaneous Options
 @include Miscellaneous.texi
 
-@node Rules and Patterns, Lists, Miscellaneous Options, Top
+@node Rules and Patterns, Sets, Miscellaneous Options, Top
 @chapter Rules and Patterns
 @include Rules.texi
 
-@node Lists, Sets, Rules and Patterns, Top
-@chapter Lists
-@include Lists.texi
-
-@node Sets, Structures, Lists, Top
+@node Sets, Function Definition, Rules and Patterns, Top
 @chapter Sets
 @include nset.texi
 
-@node Structures, Function Definition, Sets, Top
-@chapter Structures
-@include defstruct.texi
-
-@node Function Definition, Program Flow, Structures, Top
+@node Function Definition, Program Flow, Sets, Top
 @chapter Function Definition
 @include Function.texi
 
