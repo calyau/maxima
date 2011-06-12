@@ -28,7 +28,7 @@ a polynomial in another variable again represented in this form.  Thus
 the principal part of the CRE form of 3*X^2-1 is (X 2 3 0 -1) and that
 of 2*X*Y+X-3 is (Y 1 (X 1 2) 0 (X 1 1 0 -3)) assuming Y is the main
 variable, and is (X 1 (Y 1 2 0 1) 0 -3) assuming X is the main
-variable. "Main"-ness is usually determined by reverse alphabetical
+variable.  "Main"-ness is usually determined by reverse alphabetical
 order.  The "variables" of a CRE expression needn't be atomic.  In fact
 any subexpression whose main operator is not + - * / or ^ with integer
 power will be considered a "variable" of the expression (in CRE form) in
@@ -1058,6 +1058,23 @@ Examples:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lowpow}
+@deffn {Function} lopow (@var{expr}, @var{x})
+
+Returns the lowest exponent of @var{x} which explicitly appears in
+@var{expr}.  Thus
+
+@example
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 @c DESCRIBE lratsubst INDEPENDENTLY OF subst
 @c THIS ITEM NEEDS MORE WORK
 
@@ -1758,6 +1775,7 @@ to rational numbers is displayed.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ratsimp}
 @deffn  {Function} ratsimp (@var{expr})
 @deffnx {Function} ratsimp (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
