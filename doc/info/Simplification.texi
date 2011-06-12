@@ -576,27 +576,6 @@ See also @code{opproperties}.
 @closecatbox
 @end defvr
 
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{mainvar}
-@defvr {Declaration} mainvar
-
-You may declare variables to be @code{mainvar}.  The ordering scale for atoms is
-essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars < other
-variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)} with
-@code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: Care should be taken if
-you elect to use the above feature.  E.g., if you subtract an expression in
-which @code{x} is a @code{mainvar} from one in which @code{x} isn't a
-@code{mainvar}, resimplification e.g. with @code{ev (expr, simp)} may be
-necessary if cancellation is to occur.  Also, if you save an expression in which
-@code{x} is a @code{mainvar}, you probably should also save @code{x}.)
-
-@opencatbox
-@category{Declarations and inferences} @category{Expressions}
-@closecatbox
-@end defvr
-
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -760,55 +739,6 @@ than local use in your Maxima.
 @closecatbox
 @end defvr
 
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{negsumdispflag}
-@defvr {Option variable} negsumdispflag
-Default value: @code{true}
-
-When @code{negsumdispflag} is @code{true}, @code{x - y} displays as @code{x - y}
-instead of as @code{- y + x}.  Setting it to @code{false} causes the special
-check in display for the difference of two expressions to not be done.  One
-application is that thus @code{a + %i*b} and @code{a - %i*b} may both be
-displayed the same way.
-
-@opencatbox
-@category{Display flags and variables}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{noun}
-@defvr {Declaration} noun
-
-@code{noun} is one of the options of the @code{declare} command.  It makes a
-function so declared a "noun", meaning that it won't be evaluated
-automatically.
-
-@opencatbox
-@category{Nouns and verbs}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{noundisp}
-@defvr {Option variable} noundisp
-Default value: @code{false}
-
-When @code{noundisp} is @code{true}, nouns display with
-a single quote.  This switch is always @code{true} when displaying function
-definitions.
-
-@opencatbox
-@category{Display flags and variables} @category{Nouns and verbs}
-@closecatbox
-@end defvr
-
 @c -----------------------------------------------------------------------------
 @anchor{opproperties}
 @defvr {System variable} opproperties
@@ -821,22 +751,6 @@ by the Maxima simplifier:
 
 @opencatbox
 @category{Global variables} @category{Operators}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{option_opsubst}
-@defvr {Option variable} opsubst
-Default value: @code{true}
-
-When @code{opsubst} is @code{false}, @code{subst} does not attempt to
-substitute into the operator of an expression.  E.g., 
-@code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
-
-@opencatbox
-@category{Expressions}
 @closecatbox
 @end defvr
 
