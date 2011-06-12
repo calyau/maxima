@@ -866,20 +866,6 @@ which are powers of n to be pulled outside of the radical, e.g.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{sqrtdispflag}
-@defvr {Option variable} sqrtdispflag
-Default value: @code{true}
-
-When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
-exponent 1/2.
-@c AND OTHERWISE ... ??
-
-@opencatbox
-@category{Mathematical functions} @category{Display flags and variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @node Trigonometric Functions, Hyperbolic Functions, Root Exponential and Logarithmic Functions, Mathematical Functions
 @section Trigonometric Functions
 @c -----------------------------------------------------------------------------
