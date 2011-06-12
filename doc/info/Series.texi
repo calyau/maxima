@@ -11,6 +11,22 @@
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{bashindices}
+@deffn {Function} bashindices (@var{expr})
+
+Transforms the expression @var{expr} by giving each summation and product a
+unique index.  This gives @code{changevar} greater precision when it is working
+with summations or products.  The form of the unique index is
+@code{j@var{number}}. The quantity @var{number} is determined by referring to
+@code{gensumnum}, which can be changed by the user.  For example,
+@code{gensumnum:0$} resets it.
+
+@opencatbox
+@category{Sums and products}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{lsum}
 @deffn {Function} lsum (@var{expr}, @var{x}, @var{L})
 
@@ -588,24 +604,6 @@ in order to have enough unknown coefficients to solve.
 @category{Power series}
 @closecatbox
 @end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{powerdisp}
-@defvr {Option variable} powerdisp
-Default value: @code{false}
-
-When @code{powerdisp} is @code{true},
-a sum is displayed with its terms in order of increasing power.
-Thus a polynomial is displayed as a truncated power series,
-with the constant term first and the highest power last.
-
-By default, terms of a sum are displayed in order of decreasing power.
-
-@c NEED AN EXAMPLE HERE
-@opencatbox
-@category{Display flags and variables}
-@closecatbox
-@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{powerseries}
