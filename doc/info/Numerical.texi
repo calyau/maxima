@@ -5,26 +5,31 @@
 * Functions and Variables for Fourier series::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, Numerical, Numerical
 @section Introduction to fast Fourier transform
+@c -----------------------------------------------------------------------------
 
-The @code{fft} package comprises functions for the numerical (not symbolic) computation
-of the fast Fourier transform.
+The @code{fft} package comprises functions for the numerical (not symbolic)
+computation of the fast Fourier transform.
 
 @opencatbox
 @category{Fourier transform} @category{Numerical methods} @category{Share packages} @category{Package fft}
 @closecatbox
 
-
 @c end concepts Numerical
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for fast Fourier transform, Introduction to Fourier series, Introduction to fast Fourier transform, Numerical
 @section Functions and Variables for fast Fourier transform
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{polartorect}
 @deffn {Function} polartorect (@var{r}, @var{t})
 
-Translates complex values of the form @code{r %e^(%i t)} to the form @code{a + b %i},
-where @var{r} is the magnitude and @var{t} is the phase.
+Translates complex values of the form @code{r %e^(%i t)} to the form
+@code{a + b %i}, where @var{r} is the magnitude and @var{t} is the phase.
 @var{r} and @var{t} are 1-dimensional arrays of the same size.
 The array size need not be a power of 2.
 
@@ -39,18 +44,20 @@ b = r sin(t)
 
 @code{polartorect} is the inverse function of @code{recttopolar}.
 
-@code{load(fft)} loads this function. See also @code{fft}.
+@code{load(fft)} loads this function.  See also @code{fft}.
 
 @opencatbox
 @category{Package fft} @category{Complex variables}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{recttopolar}
 @deffn {Function} recttopolar (@var{a}, @var{b})
 
-Translates complex values of the form @code{a + b %i} to the form @code{r %e^(%i t)},
-where @var{a} is the real part and @var{b} is the imaginary part.
-@var{a} and @var{b} are 1-dimensional arrays of the same size.
+Translates complex values of the form @code{a + b %i} to the form
+@code{r %e^(%i t)}, where @var{a} is the real part and @var{b} is the imaginary
+part.  @var{a} and @var{b} are 1-dimensional arrays of the same size.
 The array size need not be a power of 2.
 
 The original values of the input arrays are
@@ -62,22 +69,24 @@ r = sqrt(a^2 + b^2)
 t = atan2(b, a)
 @end example
 
-The computed angle is in the range @code{-%pi} to @code{%pi}. 
+The computed angle is in the range @code{-%pi} to @code{%pi}.
 
 @code{recttopolar} is the inverse function of @code{polartorect}.
 
-@code{load(fft)} loads this function. See also @code{fft}.
+@code{load(fft)} loads this function.  See also @code{fft}.
 
 @opencatbox
 @category{Package fft} @category{Complex variables}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{inverse_fft}
 @deffn {Function} inverse_fft (@var{y})
 
 Computes the inverse complex fast Fourier transform.
-@var{y} is a list or array (named or unnamed) which contains the data to transform.
-The number of elements must be a power of 2.
+@var{y} is a list or array (named or unnamed) which contains the data to
+transform.  The number of elements must be a power of 2.
 The elements must be literal numbers (integers, rationals, floats, or bigfloats)
 or symbolic constants,
 or expressions @code{a + b*%i} where @code{a} and @code{b} are literal numbers
@@ -98,7 +107,8 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 
 @code{load(fft)} loads this function.
 
-See also @code{fft} (forward transform), @code{recttopolar}, and @code{polartorect}.
+See also @code{fft} (forward transform), @code{recttopolar}, and
+@code{polartorect}.
 
 Examples:
 
@@ -156,14 +166,15 @@ Complex data.
 @opencatbox
 @category{Package fft}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fft}
 @deffn {Function} fft (@var{x})
 
 Computes the complex fast Fourier transform.
-@var{x} is a list or array (named or unnamed) which contains the data to transform.
-The number of elements must be a power of 2.
+@var{x} is a list or array (named or unnamed) which contains the data to
+transform.  The number of elements must be a power of 2.
 The elements must be literal numbers (integers, rationals, floats, or bigfloats)
 or symbolic constants,
 or expressions @code{a + b*%i} where @code{a} and @code{b} are literal numbers
@@ -212,7 +223,8 @@ b[n/2] = 0
 
 @code{load(fft)} loads this function.
 
-See also @code{inverse_fft} (inverse transform), @code{recttopolar}, and @code{polartorect}.
+See also @code{inverse_fft} (inverse transform), @code{recttopolar}, and
+@code{polartorect}.
 
 Examples:
 
@@ -322,9 +334,10 @@ Computation of sine and cosine coefficients.
 @opencatbox
 @category{Package fft}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fortindent}
 @defvr {Option variable} fortindent
 Default value: 0
 
@@ -336,27 +349,30 @@ expressions to be printed farther to the right.
 @opencatbox
 @category{Translation and compilation}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{fortran}
 @deffn {Function} fortran (@var{expr})
+
 Prints @var{expr} as a Fortran statement.
 The output line is indented with spaces.
 If the line is too long, @code{fortran} prints continuation lines.
 @code{fortran} prints the exponentiation operator @code{^} as @code{**},
 and prints a complex number @code{a + b %i} in the form @code{(a,b)}.
 
-@var{expr} may be an equation. If so, @code{fortran} prints an assignment
+@var{expr} may be an equation.  If so, @code{fortran} prints an assignment
 statement, assigning the right-hand side of the equation to the left-hand side.
 In particular, if the right-hand side of @var{expr} is the name of a matrix,
-then @code{fortran} prints an assignment statement for each element of the matrix.
+then @code{fortran} prints an assignment statement for each element of the
+matrix.
 
 If @var{expr} is not something recognized by @code{fortran},
 the expression is printed in @code{grind} format without complaint.
 @code{fortran} does not know about lists, arrays, or functions.
 
 @code{fortindent} controls the left margin of the printed lines.
-0 is the normal margin (i.e., indented 6 spaces). Increasing @code{fortindent}
+0 is the normal margin (i.e., indented 6 spaces).  Increasing @code{fortindent}
 causes expressions to be printed further to the right.
 
 When @code{fortspaces} is @code{true}, @code{fortran} fills out
@@ -396,9 +412,10 @@ Examples:
 @opencatbox
 @category{Translation and compilation}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{fortspaces}
 @defvr {Option variable} fortspaces
 Default value: @code{false}
 
@@ -408,19 +425,21 @@ each printed line with spaces to 80 columns.
 @opencatbox
 @category{Translation and compilation}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} horner (@var{expr}, @var{x})
+@c -----------------------------------------------------------------------------
+@anchor{horner}
+@deffn  {Function} horner (@var{expr}, @var{x})
 @deffnx {Function} horner (@var{expr})
-Returns a rearranged representation of @var{expr} as
-in Horner's rule, using @var{x} as the main variable if it is specified.
-@code{x} may be omitted in which case the main variable of the canonical rational expression
-form of @var{expr} is used.
+
+Returns a rearranged representation of @var{expr} as in Horner's rule, using
+@var{x} as the main variable if it is specified.  @code{x} may be omitted in
+which case the main variable of the canonical rational expression form of
+@var{expr} is used.
 
 @code{horner} sometimes improves stability if @code{expr} is
 to be numerically evaluated.  It is also useful if Maxima is used to
-generate programs to be run in Fortran. See also @code{stringout}.
+generate programs to be run in Fortran.  See also @code{stringout}.
 
 @example
 (%i1) expr: 1e-155*x^2 - 5.5*x + 5.2e155;
@@ -442,10 +461,15 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @opencatbox
 @category{Numerical methods}
 @closecatbox
-
 @end deffn
 
-@deffn {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@c -----------------------------------------------------------------------------
+@anchor{find_root}
+@anchor{bf_find_root}
+@anchor{find_root_error}
+@anchor{find_root_abs}
+@anchor{find_root_rel}
+@deffn  {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
 @deffnx {Function} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
 @deffnx {Function} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
 @deffnx {Function} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
@@ -453,13 +477,13 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @deffnx {Option variable} find_root_abs
 @deffnx {Option variable} find_root_rel
 
-Finds a root of the expression @var{expr} or the function @var{f}
-over the closed interval @math{[@var{a}, @var{b}]}.
-The expression @var{expr} may be an equation,
-in which case @code{find_root} seeks a root of @code{lhs(@var{expr}) - rhs(@var{expr})}.
+Finds a root of the expression @var{expr} or the function @var{f} over the
+closed interval @math{[@var{a}, @var{b}]}.  The expression @var{expr} may be an
+equation, in which case @code{find_root} seeks a root of
+@code{lhs(@var{expr}) - rhs(@var{expr})}.
 
-Given that Maxima can evaluate @var{expr} or @var{f} over @math{[@var{a}, @var{b}]}
-and that @var{expr} or @var{f} is continuous,
+Given that Maxima can evaluate @var{expr} or @var{f} over
+@math{[@var{a}, @var{b}]} and that @var{expr} or @var{f} is continuous,
 @code{find_root} is guaranteed to find the root,
 or one of the roots if there is more than one.
 
@@ -471,7 +495,7 @@ If the function in question appears to be smooth enough,
 function is computed using bigfloat arithmetic and a bigfloat result
 is returned.  Otherwise, @code{bf_find_root} is identical to
 @code{find_root}, and the following description is equally applicable
-to @code{bf_find_root}. 
+to @code{bf_find_root}.
 
 The accuracy of @code{find_root} is governed by @code{abserr} and
 @code{relerr}, which are optional keyword arguments to
@@ -481,7 +505,7 @@ The accuracy of @code{find_root} is governed by @code{abserr} and
 @table @var
 @item abserr
 Desired absolute error of function value at root.  Default is
-@code{find_root_abs}. 
+@code{find_root_abs}.
 @item relerr
 Desired relative error of root.  Default is @code{find_root_rel}.
 @end table
@@ -492,8 +516,8 @@ approximants @var{x_0}, @var{x_1} differ by no more than @code{relerr
 * max(abs(x_0), abs(x_1))}.  The default values of
 @code{find_root_abs} and @code{find_root_rel} are both zero.
 
-@code{find_root} expects the function in question to have a different sign at the endpoints
-of the search interval.
+@code{find_root} expects the function in question to have a different sign at
+the endpoints of the search interval.
 When the function evaluates to a number at both endpoints
 and these numbers have the same sign,
 the behavior of @code{find_root} is governed by @code{find_root_error}.
@@ -502,13 +526,15 @@ When @code{find_root_error} is @code{true},
 Otherwise @code{find_root} returns the value of @code{find_root_error}.
 The default value of @code{find_root_error} is @code{true}.
 
-If @var{f} evaluates to something other than a number at any step in the search algorithm,
-@code{find_root} returns a partially-evaluated @code{find_root} expression.
+If @var{f} evaluates to something other than a number at any step in the search
+algorithm, @code{find_root} returns a partially-evaluated @code{find_root}
+expression.
 
-The order of @var{a} and @var{b} is ignored;
-the region in which a root is sought is @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
+The order of @var{a} and @var{b} is ignored; the region in which a root is
+sought is @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
 
 Examples:
+
 @c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
 @c f(x):=(mode_declare(x,float),sin(x)-x/2.0);
 @c interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
@@ -562,10 +588,12 @@ Examples:
 @opencatbox
 @category{Algebraic equations} @category{Numerical methods}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{newton}
 @deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+
 Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
 considering @var{expr} to be a function of one variable, @var{x}.
 The search begins with @code{@var{x} = @var{x_0}}
@@ -579,7 +607,8 @@ Thus it is not necessary that @var{expr} evaluate to a number.
 
 @code{load(newton1)} loads this function.
 
-See also @code{realroots}, @code{allroots}, @code{find_root}, and @code{mnewton}.
+See also @code{realroots}, @code{allroots}, @code{find_root}, and
+@code{mnewton}.
 
 Examples:
 
@@ -610,12 +639,12 @@ Examples:
 @opencatbox
 @category{Algebraic equations} @category{Numerical methods}
 @closecatbox
-
 @end deffn
 
-
+@c -----------------------------------------------------------------------------
 @node Introduction to Fourier series, Functions and Variables for Fourier series, Functions and Variables for fast Fourier transform, Numerical
 @section Introduction to Fourier series
+@c -----------------------------------------------------------------------------
 
 The @code{fourie} package comprises functions for the symbolic computation
 of Fourier series.
@@ -626,14 +655,19 @@ coefficients and some functions for manipulation of expressions.
 @category{Fourier transform} @category{Share packages} @category{Package fourie}
 @closecatbox
 
-
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Fourier series, , Introduction to Fourier series, Numerical
 @section Functions and Variables for Fourier series
+@c -----------------------------------------------------------------------------
 
 @c REPHRASE
+
+@c -----------------------------------------------------------------------------
+@anchor{equalp}
 @deffn {Function} equalp (@var{x}, @var{y})
-Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false} (doesn't give an
-error message like @code{equal (x, y)} would do in this case).
+
+Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
+(doesn't give an error message like @code{equal (x, y)} would do in this case).
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -641,14 +675,17 @@ error message like @code{equal (x, y)} would do in this case).
 @closecatbox
 @end deffn
 
-@deffn {Function} remfun (@var{f}, @var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{remfun}
+@deffn  {Function} remfun (@var{f}, @var{expr})
 @deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
-@code{remfun (@var{f}, @var{expr})}
-replaces all occurrences of @code{@var{f} (@var{arg})} by @var{arg} in @var{expr}.
 
-@code{remfun (@var{f}, @var{expr}, @var{x})}
-replaces all occurrences of @code{@var{f} (@var{arg})} by @var{arg} in @var{expr}
-only if @var{arg} contains the variable @var{x}.
+@code{remfun (@var{f}, @var{expr})} replaces all occurrences of @code{@var{f}
+(@var{arg})} by @var{arg} in @var{expr}.
+
+@code{remfun (@var{f}, @var{expr}, @var{x})} replaces all occurrences of
+@code{@var{f} (@var{arg})} by @var{arg} in @var{expr} only if @var{arg} contains
+the variable @var{x}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -656,8 +693,11 @@ only if @var{arg} contains the variable @var{x}.
 @closecatbox
 @end deffn
 
-@deffn {Function} funp (@var{f}, @var{expr})
+@c -----------------------------------------------------------------------------
+@anchor{funp}
+@deffn  {Function} funp (@var{f}, @var{expr})
 @deffnx {Function} funp (@var{f}, @var{expr}, @var{x})
+
 @code{funp (@var{f}, @var{expr})}
 returns @code{true} if @var{expr} contains the function @var{f}.
 
@@ -671,19 +711,23 @@ returns @code{true} if @var{expr} contains the function @var{f} and the variable
 @closecatbox
 @end deffn
 
-@deffn {Function} absint (@var{f}, @var{x}, @var{halfplane})
+@c -----------------------------------------------------------------------------
+@anchor{absint}
+@deffn  {Function} absint (@var{f}, @var{x}, @var{halfplane})
 @deffnx {Function} absint (@var{f}, @var{x})
 @deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
+
 @code{absint (@var{f}, @var{x}, @var{halfplane})}
 returns the indefinite integral of @var{f} with respect to
 @var{x} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
 @var{f} may contain expressions of the form
 @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
 
-@code{absint (@var{f}, @var{x})} is equivalent to @code{absint (@var{f}, @var{x}, pos)}.
+@code{absint (@var{f}, @var{x})} is equivalent to
+@code{absint (@var{f}, @var{x}, pos)}.
 
-@code{absint (@var{f}, @var{x}, @var{a}, @var{b})}
-returns the definite integral of @var{f} with respect to @var{x} from @var{a} to @var{b}.
+@code{absint (@var{f}, @var{x}, @var{a}, @var{b})} returns the definite integral
+of @var{f} with respect to @var{x} from @var{a} to @var{b}.
 @c SAME LIST AS ABOVE ??
 @var{f} may include absolute values.
 
@@ -694,7 +738,11 @@ returns the definite integral of @var{f} with respect to @var{x} from @var{a} to
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourier}
 @deffn {Function} fourier (@var{f}, @var{x}, @var{p})
+
 Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
 on the interval @code{[-p, p]}.
 
@@ -705,7 +753,11 @@ on the interval @code{[-p, p]}.
 @end deffn
 
 @c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
+
+@c -----------------------------------------------------------------------------
+@anchor{foursimp}
 @deffn {Function} foursimp (@var{l})
+
 Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
 @code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
 
@@ -715,6 +767,8 @@ Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sinnpiflag}
 @defvr {Option variable} sinnpiflag
 Default value: @code{true}
 
@@ -723,9 +777,10 @@ See @code{foursimp}.
 @opencatbox
 @category{Package fourie}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{cosnpiflag}
 @defvr {Option variable} cosnpiflag
 Default value: @code{true}
 
@@ -734,15 +789,17 @@ See @code{foursimp}.
 @opencatbox
 @category{Package fourie}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
+
+@c -----------------------------------------------------------------------------
+@anchor{fourexpand}
 @deffn {Function} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
-Constructs and returns the Fourier series from the list of
-Fourier coefficients @var{l} up through @var{limit} terms (@var{limit}
-may be @code{inf}). @var{x} and @var{p} have same meaning as in
-@code{fourier}.
+
+Constructs and returns the Fourier series from the list of Fourier coefficients
+@var{l} up through @var{limit} terms (@var{limit} may be @code{inf}).  @var{x}
+and @var{p} have same meaning as in @code{fourier}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -751,8 +808,13 @@ may be @code{inf}). @var{x} and @var{p} have same meaning as in
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourcos}
 @deffn {Function} fourcos (@var{f}, @var{x}, @var{p})
-Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, @var{p}]}.
+
+Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on
+@code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -761,8 +823,13 @@ Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on @
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{foursin}
 @deffn {Function} foursin (@var{f}, @var{x}, @var{p})
-Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, @var{p}]}.
+
+Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on
+@code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -771,8 +838,13 @@ Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on @co
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{totalfourier}
 @deffn {Function} totalfourier (@var{f}, @var{x}, @var{p})
-Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
+
+Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})),
+@var{x}, @var{p}, 'inf)}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -781,9 +853,13 @@ Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourint}
 @deffn {Function} fourint (@var{f}, @var{x})
-Constructs and returns a list of the Fourier integral coefficients of @code{@var{f}(@var{x})}
-defined on @code{[minf, inf]}.
+
+Constructs and returns a list of the Fourier integral coefficients of
+@code{@var{f}(@var{x})} defined on @code{[minf, inf]}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -792,8 +868,13 @@ defined on @code{[minf, inf]}.
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourintcos}
 @deffn {Function} fourintcos (@var{f}, @var{x})
-Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})} on @code{[0, inf]}.
+
+Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})}
+on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
 @opencatbox
@@ -802,11 +883,17 @@ Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})} on 
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{forintsin}
 @deffn {Function} fourintsin (@var{f}, @var{x})
-Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on @code{[0, inf]}.
+
+Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on
+@code{[0, inf]}.
 
 @c NEEDS EXAMPLES
 @opencatbox
 @category{Package fourie}
 @closecatbox
 @end deffn
+
