@@ -1,6 +1,6 @@
 @c -----------------------------------------------------------------------------
 @page
-@node Constants, , Strings, Data Types and Structures
+@node Constants, Lists, Strings, Data Types and Structures
 @section Constants
 @c -----------------------------------------------------------------------------
 
@@ -32,26 +32,13 @@ value 2.718281828459045d0.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{%gamma}
-@defvr {Constant} %gamma
-@ifinfo
-@vrindex Euler-Mascheroni constant
-@end ifinfo
-The Euler-Mascheroni constant, 0.5772156649015329 ....
-@c DOUBTLESS THERE IS MORE TO SAY HERE.
-
-@opencatbox
-@category{Constants}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
 @anchor{%i}
 @defvr {Constant} %i
 @ifinfo
 @vrindex i
 @vrindex Imaginary unit
 @end ifinfo
+
 @code{%i} represents the imaginary unit, @math{sqrt(- 1)}.
 
 @opencatbox
@@ -62,8 +49,24 @@ The Euler-Mascheroni constant, 0.5772156649015329 ....
 @c -----------------------------------------------------------------------------
 @anchor{false}
 @defvr {Constant} false
+
 @code{false} represents the Boolean constant of the same name.
 Maxima implements @code{false} by the value @code{NIL} in Lisp.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%gamma}
+@defvr {Constant} %gamma
+@ifinfo
+@vrindex Euler-Mascheroni constant
+@end ifinfo
+
+The Euler-Mascheroni constant, 0.5772156649015329 ....
+@c DOUBTLESS THERE IS MORE TO SAY HERE.
 
 @opencatbox
 @category{Constants}
@@ -79,7 +82,7 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 
 @code{ind} represents a bounded, indefinite result.
 
-See also @code{limit}.
+See also @mrefdot{limit}
 
 Example:
 
@@ -102,6 +105,7 @@ Example:
 @ifinfo
 @vrindex Real infinity
 @end ifinfo
+
 @code{inf} represents real positive infinity.
 
 @opencatbox
@@ -115,6 +119,7 @@ Example:
 @ifinfo
 @vrindex Complex infinity
 @end ifinfo
+
 @code{infinity} represents complex infinity.
 
 @opencatbox
@@ -149,12 +154,12 @@ Example:
 The numeric value of @code{%phi} is the double-precision floating-point value
 1.618033988749895d0.
 
-@code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of
+@mref{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of
 @code{%phi}.
 
 By default, Maxima does not know the algebraic properties of @code{%phi}.
 After evaluating @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
-@code{ratsimp} can simplify some expressions containing @code{%phi}.
+@mref{ratsimp} can simplify some expressions containing @code{%phi}.
 
 Examples:
 
@@ -256,7 +261,7 @@ Maxima implements @code{true} by the value @code{T} in Lisp.
 
 @code{und} represents an undefined result.
 
-See also @code{limit}.
+See also @mrefdot{limit}
 
 Example:
 
@@ -281,7 +286,7 @@ Example:
 in expressions.  @code{limit} simplifies expressions which contain
 infinitesimals.
 
-See also @code{zerob} and @code{limit}.
+See also @mref{zerob} and @mrefdot{limit}
 
 Example:
 
@@ -311,7 +316,7 @@ Example:
 in expressions.  @code{limit} simplifies expressions which contain
 infinitesimals.
 
-See also @code{zeroa} and @code{limit}.
+See also @mref{zeroa} and @mrefdot{limit}
 
 @opencatbox
 @category{Constants}
