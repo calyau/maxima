@@ -61,6 +61,28 @@ Examples:
 @closecatbox
 @end deffn
 
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{intosum}
+@deffn {Function} intosum (@var{expr})
+
+Moves multiplicative factors outside a summation to inside.
+If the index is used in the
+outside expression, then the function tries to find a reasonable
+index, the same as it does for @code{sumcontract}.  This is essentially the
+reverse idea of the @code{outative} property of summations, but note that it
+does not remove this property, it only bypasses it.
+
+@c WHAT ARE THESE CASES ??
+In some cases, a @code{scanmap (multthru, @var{expr})} may be necessary before
+the @code{intosum}.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @anchor{product}
 @deffn {Function} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
@@ -140,6 +162,24 @@ Examples:
 @category{Sums and products}
 @closecatbox
 @end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{simpsum}
+@defvr {Option variable} simpsum
+Default value: @code{false}
+
+When @code{simpsum} is @code{true}, the result of a @code{sum} is simplified.
+This simplification may sometimes be able to produce a closed form.  If
+@code{simpsum} is @code{false} or if the quoted form @code{'sum} is used, the
+value is a sum noun form which is a representation of the sigma notation used
+in mathematics.
+
+@opencatbox
+@category{Sums and products} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{sum}
@@ -265,6 +305,68 @@ Examples:
 @category{Sums and products}
 @closecatbox
 @end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{sumcontract}
+@deffn {Function} sumcontract (@var{expr})
+
+Combines all sums of an addition that have
+upper and lower bounds that differ by constants.  The result is an
+expression containing one summation for each set of such summations
+added to all appropriate extra terms that had to be extracted to form
+this sum.  @code{sumcontract} combines all compatible sums and uses one of
+the indices from one of the sums if it can, and then try to form a
+reasonable index if it cannot use any supplied.
+
+@c WHEN IS intosum NECESSARY BEFORE sumcontract ??
+It may be necessary to do an @code{intosum (@var{expr})} before the
+@code{sumcontract}.
+
+@opencatbox
+@category{Sums and products}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sumexpand}
+@defvr {Option variable} sumexpand
+Default value: @code{false}
+
+When @code{sumexpand} is @code{true}, products of sums and
+exponentiated sums simplify to nested sums.
+
+See also @code{cauchysum}.
+
+Examples:
+
+@example
+(%i1) sumexpand: true$
+(%i2) sum (f (i), i, 0, m) * sum (g (j), j, 0, n);
+@group
+                     m      n
+                    ====   ====
+                    \      \
+(%o2)                >      >     f(i1) g(i2)
+                    /      /
+                    ====   ====
+                    i1 = 0 i2 = 0
+@end group
+(%i3) sum (f (i), i, 0, m)^2;
+                     m      m
+                    ====   ====
+                    \      \
+(%o3)                >      >     f(i3) f(i4)
+                    /      /
+                    ====   ====
+                    i3 = 0 i4 = 0
+@end example
+
+@opencatbox
+@category{Sums and products} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @node Introduction to Series, Functions and Variables for Series, Sums and Products, Sums Products and Series
