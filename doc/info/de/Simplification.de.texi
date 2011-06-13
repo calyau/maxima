@@ -348,17 +348,17 @@ wird bei der Vereinfachung von Ausdr@"ucken von Maxima angewendet.
 Beispiele:
 
 @example
-(%i1) o (- u) + o (u);
-(%o1)                     o(u) + o(- u)
+(%i1) o (- x) + o (x);
+(%o1)                     o(x) + o(- x)
 (%i2) declare (o, oddfun);
 (%o2)                         done
-(%i3) o (- u) + o (u);
+(%i3) o (- x) + o (x);
 (%o3)                           0
-(%i4) e (- u) - e (u);
-(%o4)                     e(- u) - e(u)
+(%i4) e (- x) - e (x);
+(%o4)                     e(- x) - e(x)
 (%i5) declare (e, evenfun);
 (%o5)                         done
-(%i6) e (- u) - e (u);
+(%i6) e (- x) - e (x);
 (%o6)                           0
 @end example
 @end defvr
