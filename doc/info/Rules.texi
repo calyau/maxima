@@ -767,6 +767,36 @@ match variables.
 @closecatbox
 @end deffn
 
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{maxapplydepth}
+@defvr {Option variable} maxapplydepth
+Default value: 10000
+
+@code{maxapplydepth} is the maximum depth to which @code{apply1}
+and @code{apply2} will delve.
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end defvr
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{maxapplyheight}
+@defvr {Option variable} maxapplyheight
+Default value: 10000
+
+@code{maxapplyheight} is the maximum height to which @code{applyb1}
+will reach before giving up.
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end defvr
+
 @c NEEDS CLARIFICATION AND EXAMPLES
 
 @c -----------------------------------------------------------------------------
