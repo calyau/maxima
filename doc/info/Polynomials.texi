@@ -271,18 +271,6 @@ function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} combine (@var{expr})
-
-Simplifies the sum @var{expr} by combining terms with the same
-denominator into a single term.
-
-@c NEED EXAMPLE HERE
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @deffn {Function} content (@var{p_1}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns a list whose first element is
@@ -1851,6 +1839,19 @@ When @code{ratsimpexpons} is @code{true},
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
 @opencatbox
 @category{Simplification flags and variables} @category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{radsubstflag}
+@defvr {Option variable} radsubstflag
+Default value: @code{false}
+
+@code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make
+substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
+
+@opencatbox
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
