@@ -1786,10 +1786,6 @@ subst: cannot substitute 100 for operator g in expression g
 (%i2) subst(100,g,g[x]+2),subnumsimp:true;
 (%o2)                          102
 @end example
-
-@opencatbox
-@category{Expressions}
-@closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
