@@ -206,10 +206,6 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@defvr {Option variable} tr_windy
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end defvr
-
 @deffn {Function} compile_file (@var{filename})
 @deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
 @deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})

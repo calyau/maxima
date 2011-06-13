@@ -32,9 +32,6 @@
   "It TRUE messages about translation of the file are sent
 	 to the TTY also.")
 
-(defmvar $tr_windy t
-  "Generate helpful comments and programming hints.")
-
 (defvar *translation-msgs-files* nil
   "Where the warning and other comments goes.")
 
@@ -374,9 +371,7 @@ translated."
 		  (let ((it (translate-function ($verbify (car l)))))
 		    (if it (push it v))))
 		 (t
-		  (tr-tell
-		   (car l)
-		   " is an illegal argument to `translate'.")))))))
+		  (tr-format (intl:gettext "error: 'translate' argument must be an atom; found: ~:M~%") (car l))))))))
 
 
 (declare-top (special forms-to-compile-queue))

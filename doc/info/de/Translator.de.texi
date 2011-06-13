@@ -714,9 +714,8 @@ Siehe auch die folgenden Optionsvariablen:
 @code{tr_warn_fexpr}, 
 @code{tr_warn_meval},
 @code{tr_warn_mode},
-@code{tr_warn_undeclared}, 
-@code{tr_warn_undefined_variable} und
-@code{tr_windy}.
+@code{tr_warn_undeclared},
+und @code{tr_warn_undefined_variable}.
 @end flushleft
 
 @end deffn
@@ -1017,22 +1016,6 @@ Standardwert: @code{all}
 @c Gives a warning when undefined global variables are seen.
 
 Gebe eine Warnung aus, wenn undefinierte globale Variablen auftreten.
-
-@end defvr
-
-@c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
-@c WHERE IT CAUSES A WARNING ABOUT USING kill. 
-@c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
-@c AND CUT OUT tr_windy FROM CODE AND DOCS.
-
-@c --- 05.01.2011 DK -----------------------------------------------------------
-@anchor{tr_windy}
-@defvr {Optionsvariable} tr_windy
-Standardwert: @code{true}
-
-@c Generate helpful comments and programming hints.
-
-Generiere Kommentare und Hinweise zur Programmierung.
 
 @end defvr
 

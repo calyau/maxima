@@ -226,11 +226,7 @@
 (defun side-effect-free-check (varl form)
   (cond ((null varl) t)
 	(t
-	 (tr-tell "This form:" form
-		  "has side effects on these variables:"
-		  `((mlist) ,@varl)
-		  "which cannot be supported in the translated code."
-		  "(at this time)")
+	 (tr-format (intl:gettext "error: unsupported side effects on ~:M in expression ~M~%") `((mlist) ,@varl) form)
 	 nil)))
 
 
@@ -296,7 +292,7 @@
   (cond ((or (member '*bad* arg-info :test #'eq)
 	     (and (member t arg-info :test #'eq)
 		  (cdr (member t arg-info :test #'eq)))) ;;; the &REST is not the last one.
-	 (tr-tell (cadr form) "translator: unsupported argument list in lambda expression.")
+	 (tr-format (intl:gettext "error: unsupported argument list ~:M in lambda expression.~%") (cadr form))
 	 (setq tr-abort t)
 	 nil)
 	(t
