@@ -5,7 +5,7 @@
 @c Original    : Series.texi revision 1.21
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 05.11.2010
-@c Revision    : 27.02.2011
+@c Revision    : 12.06.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -60,12 +60,6 @@ Beispiel:
 @anchor{cauchysum}
 @defvr {Optionsvariable} cauchysum
 Standardwert: @code{false}
-
-@c When multiplying together sums with @code{inf} as their upper limit, if 
-@c @code{sumexpand} is @code{true} and @code{cauchysum} is @code{true} then the 
-@c Cauchy product will be used rather than the usual product. In the Cauchy 
-@c product the index of the inner summation is a function of the index of the 
-@c outer one rather than varying independently.
 
 Werden zwei Reihen miteinander multipliziert und die Optionsvariablen
 @mref{sumexpand} sowie @code{cauchysum} haben beide den Wert @code{true}, dann 
@@ -125,8 +119,8 @@ dem Zeichen @code{genindex} gebildet.  Siehe auch @mrefdot{genindex}
 Multipliziert Faktoren in eine Summe herein.  Tritt der Index der Summe als ein
 Faktor au@ss{}erhalb der Summe auf, wird von der Funktion @code{intosum} ein 
 neuer Index gebildet.  Summen haben die Eigenschaft @mrefcomma{outative} so dass 
-Faktoren aus der Summe herausgezogen werden.  Mit der Funktion @code{intosum} 
-wird diese Vereinfachung r@"uckg@"angig gemacht.
+Faktoren bei der Vereinfachung aus der Summe herausgezogen werden.  Mit der
+Funktion @code{intosum} wird diese Vereinfachung r@"uckg@"angig gemacht.
 
 Beispiel:
 
@@ -255,7 +249,7 @@ Beispiele:
 @deffn {Funktion} nusum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 
 Wendet den Gosper-Algorithmus der unbestimmten Summation f@"ur den Ausdruck 
-@var{expr} und den Index @var{i} an.  Der Index @var{i} l@"auft von @var{i_0} 
+@var{expr} und dem Index @var{i} an.  Der Index @var{i} l@"auft von @var{i_0} 
 bis @var{i_1}.  Der Ausdruck @var{expr} und das Ergebnis der Summation m@"ussen 
 als Produkte von ganzzahligen Exponentiationen, Fakult@"aten, Binomialen und
 rationalen Funktionen darstellbar sein.
@@ -429,9 +423,9 @@ Das Paket @code{simplify_sum} enth@"alt die Funktion
 @mrefcomma{simplify_sum} mit der Summen zu einer geschlossenen Form vereinfacht
 werden k@"onnen.
 
-Siehe auch @mrefcomma{sumcontract}  @mrefcomma{sumexpand} @mrefcomma{intosum}@ 
-@mrefcomma{bashindices} @mrefcomma{niceindices} @mrefcomma{nouns}@  
-@mrefcomma{evflag} @mref{cauchysum} und @mrefdot{zeilberger}
+Siehe auch @mrefcomma{sumcontract}  @mrefcomma{sumexpand}@w{}
+@mrefcomma{intosum} @mrefcomma{bashindices} @mrefcomma{niceindices}@w{}
+@mref{cauchysum} und @mrefdot{zeilberger}
 
 Beispiele:
 
@@ -622,8 +616,8 @@ Maxima kennt die Funktionen @mref{taylor} und @mrefcomma{powerseries} um die
 Reihenentwicklung von differenzierbaren Funktionen zu finden.  Maxima hat
 weiterhin Funktionen wie @mrefcomma{nusum} um geschlossene Formen von Reihen zu
 finden.  Operationen wie die Addition und Multiplikation arbeiten wie gewohnt
-f@"ur Reihen.  Das folgende Kapitel stellt die Variablen und Funktionen f@"ur 
-eine Reihenentwicklung dar.
+f@"ur Reihen.  Das folgende Kapitel beschreibt die Variablen und Funktionen
+f@"ur eine Reihenentwicklung.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Reihen, Poisson Reihen, Einf@"uhrung in Reihen, Summen Produkte und Reihen
@@ -758,7 +752,7 @@ In diesem Fall ist der Grad der Taylor-Reihenentwicklung @code{10}.
 Gibt eine geschlossene Form f@"ur die Reihenentwicklung des Ausdrucks @var{expr}
 in der Variablen @var{x} um den Punkt @var{a} zur@"uck.  Das Argument @var{a} 
 kann die Werte @code{inf} oder @code{infinity} haben.  Die Reihenentwicklung 
-für eine Funktion @code{f(x)} hat die allgemeine Form:
+f@"ur eine Funktion @code{f(x)} hat die allgemeine Form:
 @ifnottex
 @example
                   inf
@@ -857,8 +851,8 @@ then terms with the same total degree in the variables are grouped together.
 @c --- 27.02.2011 DK -----------------------------------------------------------
 @anchor{revert}
 @anchor{revert2}
-@deffn  {Function} revert (@var{expr}, @var{x})
-@deffnx {Function} revert2 (@var{expr}, @var{x}, @var{n})
+@deffn  {Funktion} revert (@var{expr}, @var{x})
+@deffnx {Funktion} revert2 (@var{expr}, @var{x}, @var{n})
 
 Die Funktion @code{revert} berechnet eine Taylorreihe in der Variablen @var{x}
 um den Entwicklungspunkt Null, die der Taylorreihe der inversen Funktion 
@@ -922,7 +916,7 @@ Taylorreihe der Inversen @code{log(x+1)} berechnet.
 @deffnx {Funktion} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], @dots{})
 
 @code{taylor(@var{expr}, @var{x}, @var{a}, @var{n})} entwickelt den Ausdruck
-@var{expr} in eine Taylor- oder Laurent-Reihentwicklung in der Variablen @var{x}
+@var{expr} in eine Taylor- oder Laurent-Reihenwicklung in der Variablen @var{x}
 um den Punkt @var{a}, die die Terme bis zur Ordnung @code{(@var{x} - 
 @var{a})^@var{n}} enth@"alt.
 
@@ -935,8 +929,8 @@ Entwicklung f@"ur @code{@var{g}(@var{x})} so lange, wie die Ordnung kleiner
 oder gleich @code{@var{n} 2^taylordepth} ist.  Siehe auch @mrefdot{taylordepth}
 
 @code{taylor(@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})} gibt
-die Reihenentwicklung der Ordung n in allen Variablen @var{x_1}, @var{x_2}, 
-@dots{} um den Punkt @code{(@var{a}, @var{a}, ...)} zur@"uck.
+die Reihenentwicklung der Ordnung @var{n} in allen Variablen @var{x_1},
+@var{x_2}, @dots{} um den Punkt @var{a} zur@"uck.
 
 Die beiden folgenden @"aquivalenten Kommandos @code{taylor(@var{expr}, 
 [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)} und 
@@ -1122,7 +1116,7 @@ Beispiele:
 @defvr {Optionsvariable} taylordepth
 Standardwert: 3
 
-Findet @code{taylor} keine von Null verschiedenen Terme in der
+Findet die Funktion @code{taylor} keine von Null verschiedenen Terme in der
 Reihenentwicklung, wird die Ordnung der Entwicklung solange erh@"oht wie sie
 kleiner oder gleich @code{2^taylordepth} ist.
 
@@ -1133,7 +1127,7 @@ Siehe auch @mrefdot{taylor}
 @anchor{taylorinfo}
 @deffn {Funktion} taylorinfo (@var{expr})
 
-Gibt Informationen über die Tayolorreihe @var{expr} zur@"uck.  Die R@"uckgabe
+Gibt Informationen @"uber die Taylorreihe @var{expr} zur@"uck.  Die R@"uckgabe
 ist eine Liste, die Listen mit den Namen der Variablen, den Entwicklungspunkten
 und den Ordnungen der Entwicklung enthalten.
 
@@ -1202,9 +1196,10 @@ Standardwert: @code{true}
 @c When @code{taylor_order_coefficients} is @code{true}, coefficients of taylor 
 @c series are ordered canonically.
 
-@code{taylor_order_coefficients} kontrolliert die Ordnung der Koeffizienten
-einer Taylorreihenentwicklung.  Hat @code{taylor_order_coefficients} den Wert
-@code{true}, werden die Koeffizienten kanonisch angeordnet.
+Die Optionsvariable @code{taylor_order_coefficients} kontrolliert die Ordnung
+der Koeffizienten einer Taylorreihenentwicklung.
+Hat @code{taylor_order_coefficients} den Wert @code{true}, werden die
+Koeffizienten kanonisch angeordnet.
 @end defvr
 
 @c --- 28.02.2011 DK -----------------------------------------------------------
@@ -1456,7 +1451,7 @@ Is functionally identical to @code{intopois (@var{a}*@var{b})}.
 
 is a reserved function name which (if the user has defined it) gets applied 
 during Poisson multiplication.  It is a predicate function of 6 arguments which 
-are the coefficients of the @var{u}, @var{v}, ..., @var{z} in a term.  Terms 
+are the coefficients of the @var{u}, @var{v}, @dots{}, @var{z} in a term.  Terms
 for which @code{poistrim} is @code{true} (for the coefficients of that term) 
 are eliminated during multiplication.
 @end deffn
@@ -1489,10 +1484,11 @@ outside of @code{cf}.
 @code{false}. @code{cf} returns a continued fraction, represented as a list.
 
 A continued fraction @code{a + 1/(b + 1/(c + ...))} is represented by the list 
-@code{[a, b, c, ...]}. The list elements @code{a}, @code{b}, @code{c}, ... must 
-evaluate to integers. @var{expr} may also contain @code{sqrt (n)} where @code{n} 
-is an integer. In this case @code{cf} will give as many terms of the continued 
-fraction as the value of the variable @code{cflength} times the period.
+@code{[a, b, c, ...]}. The list elements @code{a}, @code{b}, @code{c}, @dots{}
+must evaluate to integers. @var{expr} may also contain @code{sqrt (n)} where
+@code{n} is an integer. In this case @code{cf} will give as many terms of the
+continued fraction as the value of the variable @code{cflength} times the
+period.
 
 A continued fraction can be evaluated to a number by evaluating the arithmetic 
 representation returned by @code{cfdisrep}. See also @code{cfexpand} for another 
