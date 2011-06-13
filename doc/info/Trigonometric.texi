@@ -3,8 +3,10 @@
 * Functions and Variables for Trigonometric::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Trigonometric, Functions and Variables for Trigonometric, Trigonometric, Trigonometric
 @section Introduction to Trigonometric
+@c -----------------------------------------------------------------------------
 
 Maxima has many trigonometric functions defined.  Not all trigonometric
 identities are programmed, but it is possible for the user to add many
@@ -26,9 +28,13 @@ for details.
 @category{Trigonometric functions}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Trigonometric,  , Introduction to Trigonometric, Trigonometric
 @section Functions and Variables for Trigonometric
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{%piargs}
 @defvr {Option variable} %piargs
 Default value: @code{true}
 
@@ -48,7 +54,8 @@ Maxima knows some identities which can be applied when @math{\pi}, etc.,
 @ifnottex
 Maxima knows some identities which can be applied when @math{%pi}, etc.,
 @end ifnottex
-are multiplied by an integer variable (that is, a symbol declared to be integer).
+are multiplied by an integer variable (that is, a symbol declared to be
+integer).
 
 Examples:
 
@@ -99,10 +106,12 @@ Examples:
 @end example
 
 @iftex
-Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by an integer variable.
+Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by
+an integer variable.
 @end iftex
 @ifnottex
-Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by an integer variable.
+Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by
+an integer variable.
 @end ifnottex
 
 @c ===beg===
@@ -123,9 +132,10 @@ Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by a
 @opencatbox
 @category{Trigonometric functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{%iargs}
 @defvr {Option variable} %iargs
 Default value: @code{true}
 
@@ -189,10 +199,11 @@ Even when the argument is demonstrably real, the simplification is applied.
 @opencatbox
 @category{Trigonometric functions} @category{Hyperbolic functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} acos (@var{x})
+
 -- Arc Cosine.
 
 @opencatbox
@@ -200,7 +211,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} acosh (@var{x})
+
 -- Hyperbolic Arc Cosine.
 
 @opencatbox
@@ -208,7 +221,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} acot (@var{x})
+
 -- Arc Cotangent.
 
 @opencatbox
@@ -216,7 +231,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} acoth (@var{x})
+
 -- Hyperbolic Arc Cotangent.
 
 @opencatbox
@@ -224,7 +241,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} acsc (@var{x})
+
 -- Arc Cosecant.
 
 @opencatbox
@@ -232,7 +251,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} acsch (@var{x})
+
 -- Hyperbolic Arc Cosecant.
 
 @opencatbox
@@ -240,7 +261,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} asec (@var{x})
+
 -- Arc Secant.
 
 @opencatbox
@@ -248,7 +271,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} asech (@var{x})
+
 -- Hyperbolic Arc Secant.
 
 @opencatbox
@@ -256,7 +281,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} asin (@var{x})
+
 -- Arc Sine.
 
 @opencatbox
@@ -264,7 +291,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} asinh (@var{x})
+
 -- Hyperbolic Arc Sine.
 
 @opencatbox
@@ -272,7 +301,9 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} atan (@var{x})
+
 -- Arc Tangent.
 
 @opencatbox
@@ -280,16 +311,20 @@ Even when the argument is demonstrably real, the simplification is applied.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} atan2 (@var{y}, @var{x})
--- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi} to
-@code{%pi}.
+
+-- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi}
+to @code{%pi}.
 
 @opencatbox
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} atanh (@var{x})
+
 -- Hyperbolic Arc Tangent.
 
 @opencatbox
@@ -299,7 +334,10 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
 @defvr {Package} atrig1
+
 The @code{atrig1} package contains several additional simplification rules
 for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
@@ -312,7 +350,9 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cos (@var{x})
+
 -- Cosine.
 
 @opencatbox
@@ -320,7 +360,9 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cosh (@var{x})
+
 -- Hyperbolic Cosine.
 
 @opencatbox
@@ -328,7 +370,9 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} cot (@var{x})
+
 -- Cotangent.
 
 @opencatbox
@@ -336,7 +380,9 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} coth (@var{x})
+
 -- Hyperbolic Cotangent.
 
 @opencatbox
@@ -344,7 +390,9 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} csc (@var{x})
+
 -- Cosecant.
 
 @opencatbox
@@ -352,7 +400,9 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} csch (@var{x})
+
 -- Hyperbolic Cosecant.
 
 @opencatbox
@@ -361,6 +411,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{halfangles}
 @defvr {Option variable} halfangles
 Default value: @code{false}
 
@@ -392,7 +443,7 @@ arguments @var{z}:
 @end verbatim
 
 Maxima knows this factor and similar factors for the functions @code{sin}, 
-@code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 
+@code{cos}, @code{sinh}, and @code{cosh}.  For special values of the argument 
 @math{z} these factors simplify accordingly.
 
 Examples:
@@ -435,7 +486,10 @@ Examples:
 
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
 @defvr {Package} ntrig
+
 The @code{ntrig} package contains a set of simplification rules that are
 used to simplify trigonometric function whose arguments are of the form
 @code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
@@ -447,7 +501,9 @@ used to simplify trigonometric function whose arguments are of the form
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} sec (@var{x})
+
 -- Secant.
 
 @opencatbox
@@ -455,7 +511,9 @@ used to simplify trigonometric function whose arguments are of the form
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} sech (@var{x})
+
 -- Hyperbolic Secant.
 
 @opencatbox
@@ -463,7 +521,9 @@ used to simplify trigonometric function whose arguments are of the form
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} sin (@var{x})
+
 -- Sine.
 
 @opencatbox
@@ -471,7 +531,9 @@ used to simplify trigonometric function whose arguments are of the form
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} sinh (@var{x})
+
 -- Hyperbolic Sine.
 
 @opencatbox
@@ -479,7 +541,9 @@ used to simplify trigonometric function whose arguments are of the form
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} tan (@var{x})
+
 -- Tangent.
 
 @opencatbox
@@ -487,7 +551,9 @@ used to simplify trigonometric function whose arguments are of the form
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} tanh (@var{x})
+
 -- Hyperbolic Tangent.
 
 @opencatbox
@@ -496,7 +562,11 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{trigexpand}
 @deffn {Function} trigexpand (@var{expr})
+
 Expands trigonometric and hyperbolic functions of
 sums of angles and of multiple angles occurring in @var{expr}.  For best
 results, @var{expr} should be expanded.  To enhance user control of
@@ -546,6 +616,8 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{trigexpandplus}
 @defvr {Option variable} trigexpandplus
 Default value: @code{true}
 
@@ -558,23 +630,25 @@ Default value: @code{true}
 @opencatbox
 @category{Trigonometric functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{trigexpandtimes}
 @defvr {Option variable} trigexpandtimes
 Default value: @code{true}
 
-@code{trigexpandtimes} controls the "product" rule for
-@code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
-@code{trigexpand} switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
+@code{trigexpandtimes} controls the "product" rule for @code{trigexpand}.
+Thus, when the @code{trigexpand} command is used or the @code{trigexpand}
+switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
 will take place only if @code{trigexpandtimes} is @code{true}.
 
 @opencatbox
 @category{Trigonometric functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{triginverses}
 @defvr {Option variable} triginverses
 Default value: @code{true}
 
@@ -596,11 +670,13 @@ simplifications are turned off.
 @opencatbox
 @category{Trigonometric functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} trigreduce (@var{expr}, @var{x})
+@c -----------------------------------------------------------------------------
+@anchor{trigreduce}
+@deffn  {Function} trigreduce (@var{expr}, @var{x})
 @deffnx {Function} trigreduce (@var{expr})
+
 Combines products and powers of trigonometric
 and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
 It also tries to eliminate these functions when they occur in
@@ -620,16 +696,16 @@ See also @code{poissimp}.
 @end group
 @end example
 
-@c
+@c 
 @c     OBSOLETE
 @c     The behavior was changed in order to avoid calling expand in the core
 @c     simplifier (trigi.lisp rev 1.31)
 @c     See http://www.math.utexas.edu/pipermail/maxima/2008/010919.html.
-@c
+@c 
 @c The trigonometric simplification routines will use declared
 @c information in some simple cases.  Declarations about variables are
 @c used as follows, e.g.
-@c
+@c 
 @c ---beg---
 @c declare(j, integer, e, even, o, odd)$
 @c sin(x + (e + 1/2)*%pi);
@@ -648,20 +724,24 @@ See also @code{poissimp}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{trigsign}
 @defvr {Option variable} trigsign
 Default value: @code{true}
 
 When @code{trigsign} is @code{true}, it permits simplification of negative
-arguments to trigonometric functions. E.g., @code{sin(-x)} will become
+arguments to trigonometric functions.  E.g., @code{sin(-x)} will become
 @code{-sin(x)} only if @code{trigsign} is @code{true}.
 
 @opencatbox
 @category{Trigonometric functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{trigsimp}
 @deffn {Function} trigsimp (@var{expr})
+
 @iftex
 Employs the identities
 @tex
@@ -676,8 +756,8 @@ etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @end iftex
 @ifnottex
 Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
-@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
-etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan},
+@code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @end ifnottex
 
 @code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
@@ -692,13 +772,18 @@ able to further simplify the result.
 @end deffn
 
 @c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{trigrat}
 @deffn {Function} trigrat (@var{expr})
-Gives a canonical simplifyed quasilinear form of a
-trigonometrical expression; @var{expr} is a rational fraction of several @code{sin},
-@code{cos} or @code{tan}, the arguments of them are linear forms in some variables (or
-kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. The result is a
-simplified fraction with numerator and denominator linear in @code{sin} and @code{cos}.
-Thus @code{trigrat} linearize always when it is possible.
+
+Gives a canonical simplifyed quasilinear form of a trigonometrical expression;
+@var{expr} is a rational fraction of several @code{sin}, @code{cos} or
+@code{tan}, the arguments of them are linear forms in some variables (or
+kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients.
+The result is a simplified fraction with numerator and denominator linear in
+@code{sin} and @code{cos}.  Thus @code{trigrat} linearize always when it is
+possible.
 
 @c ===beg===
 @c trigrat(sin(3*a)/sin(a+%pi/3));
@@ -779,3 +864,4 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @category{Trigonometric functions} @category{Simplification functions}
 @closecatbox
 @end deffn
+
