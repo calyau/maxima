@@ -779,6 +779,76 @@ When @code{sumsplitfact} is @code{false},
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{%emode}
+@defvr {Option variable} %emode
+Default value: @code{true}
+
+When @code{%emode} is @code{true}, @code{%e^(%pi %i x)} is simplified as
+follows.
+
+@code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if
+@code{x} is a floating point number, an integer, or a multiple of 1/2, 1/3, 1/4,
+or 1/6, and then further simplified.
+
+For other numerical @code{x}, @code{%e^(%pi %i x)} simplifies to
+@code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k} for some integer @code{k}
+such that @code{abs(y) < 1}.
+
+When @code{%emode} is @code{false}, no special simplification of
+@code{%e^(%pi %i x)} is carried out.
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%enumer}
+@defvr {Option variable} %enumer
+Default value: @code{false}
+
+When @code{%enumer} is @code{true}, @code{%e} is replaced by its numeric value
+2.718@dots{}  whenever @code{numer} is @code{true}.
+
+When @code{%enumer} is @code{false}, this substitution is carried out
+only if the exponent in @code{%e^x} evaluates to a number.
+
+See also @mref{ev} and @mrefdot{numer}
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Exponential and logarithm functions} @category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c PROBABLY MORE TO BE SAID HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{exp}
+@deffn {Function} exp (@var{x})
+
+Represents the exponential function.  Instances of @code{exp (@var{x})} in input
+are simplified to @code{%e^@var{x}}; @code{exp} does not appear in simplified
+expressions.
+
+@code{demoivre} if @code{true} causes @code{%e^(a + b %i)} to simplify to
+@code{%e^(a (cos(b) + %i sin(b)))} if @code{b} is free of @code{%i}.
+See @mrefdot{demoivre}
+
+@code{%emode}, when @code{true}, causes @code{%e^(%pi %i x)} to be simplified.
+See @mrefdot{%emode}
+
+@code{%enumer}, when @code{true} causes @code{%e} to be replaced by
+2.718@dots{} whenever @code{numer} is @code{true}.  See @mrefdot{%enumer}
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{sqrt}
 @deffn {Function} sqrt (@var{x})
 
@@ -794,20 +864,6 @@ which are powers of n to be pulled outside of the radical, e.g.
 @category{Mathematical functions}
 @closecatbox
 @end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{sqrtdispflag}
-@defvr {Option variable} sqrtdispflag
-Default value: @code{true}
-
-When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
-exponent 1/2.
-@c AND OTHERWISE ... ??
-
-@opencatbox
-@category{Mathematical functions} @category{Display flags and variables}
-@closecatbox
-@end defvr
 
 @c -----------------------------------------------------------------------------
 @node Trigonometric Functions, Hyperbolic Functions, Root Exponential and Logarithmic Functions, Mathematical Functions

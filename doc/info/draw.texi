@@ -69,12 +69,13 @@ and objects. This scene is interpreted sequentially: @i{graphic options} affect 
 @i{graphic objects} placed on its right. Some @i{graphic options} affect the global
 appearence of the scene.
 
-This is the list of @i{graphic objects} available for scenes in three dimensions:
+This is the list of @i{graphic objects} available for scenes in three
+dimensions:@*
 @code{cylindrical}, @code{elevation_grid}, @code{explicit}, @code{implicit},
-@code{label}, @code{mesh}, @code{parametric}, @code{parametric_surface},
-@code{points}, @code{quadrilateral}, @code{spherical}, @code{triangle},
-@code{tube}, @code{vector}, and @code{geomap} (this one defined in
-package @code{worldmap}).
+@code{label}, @code{mesh}, @code{parametric},@*
+@code{parametric_surface}, @code{points}, @code{quadrilateral},
+@code{spherical}, @code{triangle}, @code{tube},@*
+@code{vector}, and @code{geomap} (this one defined in package @code{worldmap}).
 
 See also @code{draw} and @code{draw3d}.
 
@@ -563,26 +564,30 @@ polygons and labels.
 
 Colors can be given as names or in hexadecimal @i{rgb} code.
 
-Available color names are: 
-@code{white}, @code{black}, @code{gray0}, @code{grey0}, @code{gray10},
-@code{grey10}, @code{gray20}, @code{grey20}, @code{gray30}, @code{grey30},
-@code{gray40}, @code{grey40}, @code{gray50}, @code{grey50}, @code{gray60},
-@code{grey60}, @code{gray70}, @code{grey70}, @code{gray80}, @code{grey80},
-@code{gray90}, @code{grey90}, @code{gray100}, @code{grey100}, @code{gray},
-@code{grey}, @code{light_gray}, @code{light_grey}, @code{dark_gray},
-@code{dark_grey}, @code{red}, @code{light_red}, @code{dark_red}, @code{yellow},
-@code{light_yellow}, @code{dark_yellow}, @code{green}, @code{light_green},
-@code{dark_green}, @code{spring_green}, @code{forest_green}, @code{sea_green},
-@code{blue}, @code{light_blue}, @code{dark_blue}, @code{midnight_blue}, 
-@code{navy}, @code{medium_blue}, @code{royalblue}, @code{skyblue}, 
-@code{cyan}, @code{light_cyan}, @code{dark_cyan}, @code{magenta}, 
-@code{light_magenta}, @code{dark_magenta}, @code{turquoise}, 
-@code{light_turquoise}, @code{dark_turquoise}, @code{pink}, @code{light_pink},
-@code{dark_pink}, @code{coral}, @code{light_coral}, @code{orange_red},
-@code{salmon}, @code{light_salmon}, @code{dark_salmon}, @code{aquamarine},
-@code{khaki}, @code{dark_khaki}, @code{goldenrod}, @code{light_goldenrod},
-@code{dark_goldenrod}, @code{gold}, @code{beige}, @code{brown}, @code{orange},
-@code{dark_orange}, @code{violet}, @code{dark_violet}, @code{plum} and @code{purple}.
+Available color names are:
+@verbatim
+white            black            gray0            grey0 
+gray10           grey10           gray20           grey20     
+gray30           grey30           gray40           grey40     
+gray50           grey50           gray60           grey60     
+gray70           grey70           gray80           grey80
+gray90           grey90           gray100          grey100 
+gray             grey             light_gray       light_grey 
+dark_gray        dark_grey        red              light_red 
+dark_red         yellow           light_yellow     dark_yellow
+green            light_green      dark_green       spring_green
+forest_green     sea_green        blue             light_blue 
+dark_blue        midnight_blue    navy             medium_blue 
+royalblue        skyblue          cyan             light_cyan 
+dark_cyan        magenta          light_magenta    dark_magenta
+turquoise        light_turquoise  dark_turquoise   pink 
+light_pink       dark_pink        coral            light_coral 
+orange_red       salmon           light_salmon     dark_salmon 
+aquamarine       khaki            dark_khaki       goldenrod 
+light_goldenrod  dark_goldenrod   gold             beige 
+brown            orange           dark_orange      violet 
+dark_violet      plum             purple
+@end verbatim
 
 Cromatic componentes in hexadecimal code are introduced in the form @code{"#rrggbb"}.
 
@@ -1261,7 +1266,13 @@ set graphic option @code{font} to the name of the font.
 
 @item
 @i{Postscript}:
-Standard Postscript fonts are: @code{"Times-Roman"}, @code{"Times-Italic"}, @code{"Times-Bold"}, @code{"Times-BoldItalic"}, @code{"Helvetica"}, @code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"}, @code{"Helvetic-BoldOblique"}, @code{"Courier"}, @code{"Courier-Oblique"}, @code{"Courier-Bold"}, and @code{"Courier-BoldOblique"}.
+Standard Postscript fonts are:@*
+@code{"Times-Roman"}, @code{"Times-Italic"}, @code{"Times-Bold"},
+@code{"Times-BoldItalic"},@*
+@code{"Helvetica"}, @code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"},@*
+@code{"Helvetic-BoldOblique"}, @code{"Courier"},
+@code{"Courier-Oblique"}, @code{"Courier-Bold"},@*
+and @code{"Courier-BoldOblique"}.
   
 Example:
 @example
@@ -3640,15 +3651,16 @@ Example:
 
 
 
-@deffn  {Graphic object} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+@deffn  {Graphic object} cylindrical (@var{radius}, @var{z}, @var{minz}, @var{maxz}, @var{azi}, @var{minazi}, @var{maxazi})
 Draws 3D functions defined in cylindrical coordinates.
 
 @b{3D}
 
-@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
-plots function @code{@var{radius}(@var{z},@var{azi})} defined in cylindrical coordinates, with variable
-@var{z} taking values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values from
-@var{minazi} to @var{maxazi}.
+@code{cylindrical(@var{radius}, @var{z}, @var{minz}, @var{maxz}, @var{azi},
+@var{minazi}, @var{maxazi})} plots the function @code{@var{radius}(@var{z},
+@var{azi})} defined in cylindrical coordinates, with variable @var{z} taking
+values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values
+from @var{minazi} to @var{maxazi}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
@@ -3750,17 +3762,18 @@ Example:
 
 
 
-@deffn  {Graphic object} errors ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffn  {Graphic object} errors ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
 Draws points with error bars, horizontally, vertically or both, depending on the
 value of option @code{error_type}.
 
 @b{2D}
 
-If @code{error_type=x}, arguments to @code{errors} must be of the form 
-@code{[x,y,xdelta]} or @code{[x,y,xlow,xhigh]}. If @code{error_type=y}, 
-arguments must be of the form @code{[x,y,ydelta]} or @code{[x,y,ylow,yhigh]}.
-If @code{error_type=xy} or @code{error_type=boxes}, arguments to @code{errors}
-must be of the form @code{[x,y,xdelta,ydelta]} or @code{[x,y,xlow,xhigh,ylow,yhigh]}.
+If @code{error_type = x}, arguments to @code{errors} must be of the form
+@code{[x, y, xdelta]} or @code{[x, y, xlow, xhigh]}.  If @code{error_type = y}, 
+arguments must be of the form @code{[x, y, ydelta]} or
+@code{[x, y, ylow, yhigh]}.  If @code{error_type = xy} or
+@code{error_type = boxes}, arguments to @code{errors} must be of the form
+@code{[x, y, xdelta, ydelta]} or @code{[x, y, xlow, xhigh, ylow, yhigh]}.
 
 See also @code{error_type}.
 
@@ -3827,14 +3840,14 @@ Example:
 
 @b{3D}
 
-@code{explicit(@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
-plots explicit function @var{fcn}, with variable @var{var1} taking values
-from @var{minval1} to @var{maxval1} and variable @var{var2} taking values
-from @var{minval2} to @var{maxval2}.
+@code{explicit(@var{fcn}, @var{var1}, @var{minval1}, @var{maxval1}, @var{var2},
+@var{minval2}, @var{maxval2})} plots the explicit function @var{fcn}, with
+variable @var{var1} taking values from @var{minval1} to @var{maxval1} and
+variable @var{var2} taking values from @var{minval2} to @var{maxval2}.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
- and @code{color}.
+This object is affected by the following @i{graphic options}: @code{xu_grid},
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key},
+@code{enhanced3d}, and @code{color}.
 
 Example:
 
@@ -3954,7 +3967,7 @@ An xpm file is read and then rendered.
 
 See also @code{make_level_picture}, @code{make_rgb_picture} and @code{read_xpm}.
 
-URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
+@url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}@*
 contains more elaborated examples.
 
 @opencatbox
@@ -4145,9 +4158,9 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 
 @b{2D}
 
-@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} plots parametric function 
-@code{[@var{xfun},@var{yfun}]}, with parameter @var{par} taking values from 
-@var{parmin} to @var{parmax}.
+The command @code{parametric(@var{xfun}, @var{yfun}, @var{par}, @var{parmin},
+@var{parmax})} plots the parametric function @code{[@var{xfun}, @var{yfun}]},
+with parameter @var{par} taking values from @var{parmin} to @var{parmax}.
 
 Example:
 
@@ -4161,9 +4174,10 @@ Example:
 
 @b{3D}
 
-@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} plots parametric curve 
-@code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par} taking values from 
-@var{parmin} to @var{parmax}.
+@code{parametric(@var{xfun}, @var{yfun}, @var{zfun}, @var{par}, @var{parmin},
+@var{parmax})} plots the parametric curve @code{[@var{xfun}, @var{yfun},
+@var{zfun}]}, with parameter @var{par} taking values from @var{parmin} to
+@var{parmax}.
 
 Example:
 
@@ -4188,15 +4202,17 @@ Example:
 
 
 
-@deffn  {Graphic object} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+@deffn  {Graphic object} parametric_surface (@var{xfun}, @var{yfun}, @var{zfun}, @var{par1}, @var{par1min}, @var{par1max}, @var{par2}, @var{par2min}, @var{par2max})
 Draws parametric surfaces in 3D.
 
 @b{3D}
 
-@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
-plots parametric surface @code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par1}
-taking values from @var{par1min} to @var{par1max} and parameter @var{par2}
-taking values from @var{par2min} to @var{par2max}.
+The command @code{parametric_surface(@var{xfun}, @var{yfun}, @var{zfun},
+@var{par1}, @var{par1min}, @var{par1max}, @var{par2}, @var{par2min},
+@var{par2max})} plots the parametric surface @code{[@var{xfun}, @var{yfun},
+@var{zfun}]}, with parameter @var{par1} taking values from @var{par1min} to
+@var{par1max} and parameter @var{par2} taking values from @var{par2min} to
+@var{par2max}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
@@ -4330,11 +4346,11 @@ Drawing an array filled with function @code{read_array}.
 
 @b{3D}
 
-@code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} or 
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
-plots points @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
-If @var{matrix} is a three-column or three-row matrix, @code{points (@var{matrix})}
-draws the associated points.
+@code{points([[@var{x1}, @var{y1}, @var{z1}], [@var{x2}, @var{y2}, @var{z2}],
+...])} or @code{points([@var{x1}, @var{x2}, ...], [@var{y1}, @var{y2}, ...],
+[@var{z1}, @var{z2},...])} plots points @code{[@var{x1}, @var{y1}, @var{z1}]},
+@code{[@var{x2}, @var{y2}, @var{z2}]}, etc.  If @var{matrix} is a three-column
+or three-row matrix, @code{points (@var{matrix})} draws the associated points.
 
 When arguments are lisp arrays, @code{points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})}
 takes coordinates from the three 1D arrays.  If @var{2d_xyz_array} is a 2D array with three columns,
@@ -4452,15 +4468,16 @@ Example:
 
 
 
-@deffn  {Graphic object} polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {Graphic object} polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffn  {Graphic object} polygon ([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], @dots{}])
+@deffnx {Graphic object} polygon ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
 Draws polygons in 2D.
 
 @b{2D}
 
-@code{polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} or 
-@code{polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}:
-plots on the plane a polygon with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc..
+The commands @code{polygon([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], ...])}
+or @code{polygon([@var{x1}, @var{x2}, ...], [@var{y1}, @var{y2}, ...])} plot on
+the plane a polygon with vertices @code{[@var{x1}, @var{y1}]}, @code{[@var{x2},
+@var{y2}]}, etc.
 
 This object is affected by the following @i{graphic options}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
@@ -4491,12 +4508,15 @@ Draws a quadrilateral.
 
 @b{2D}
 
-@code{quadrilateral ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}], [@var{x4},@var{y4}])} draws a quadrilateral with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]},
-@code{[@var{x3},@var{y3}]}, and @code{[@var{x4},@var{y4}]}.
+@code{quadrilateral([@var{x1}, @var{y1}], [@var{x2}, @var{y2}], 
+[@var{x3}, @var{y3}], [@var{x4}, @var{y4}])} draws a quadrilateral with vertices
+@code{[@var{x1}, @var{y1}]}, @code{[@var{x2}, @var{y2}]}, 
+@code{[@var{x3}, @var{y3}]}, and @code{[@var{x4}, @var{y4}]}.
 
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
-@code{yaxis_secondary}, @code{line_type}, @code{transform} and @code{color}.
+This object is affected by the following @i{graphic options}:@*
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width},
+@code{key}, @code{xaxis_secondary}, @code{yaxis_secondary}, @code{line_type},
+@code{transform} and @code{color}.
 
 Example:
 
@@ -4508,12 +4528,15 @@ Example:
 
 @b{3D}
 
-@code{quadrilateral ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}], [@var{x4},@var{y4},@var{z4}])} draws a quadrilateral with vertices
-@code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]},
-@code{[@var{x3},@var{y3},@var{z3}]}, and @code{[@var{x4},@var{y4},@var{z4}]}.
+@code{quadrilateral([@var{x1}, @var{y1}, @var{z1}], [@var{x2}, @var{y2},
+@var{z2}], [@var{x3}, @var{y3}, @var{z3}], [@var{x4}, @var{y4}, @var{z4}])}
+draws a quadrilateral with vertices @code{[@var{x1}, @var{y1}, @var{z1}]},
+@code{[@var{x2}, @var{y2}, @var{z2}]}, @code{[@var{x3}, @var{y3}, @var{z3}]},
+and @code{[@var{x4}, @var{y4}, @var{z4}]}.
 
 This object is affected by the following @i{graphic options}: @code{line_type}, 
-@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
+@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and
+@code{transform}.
 
 @opencatbox
 @category{Package draw}
@@ -4587,15 +4610,16 @@ Example:
 
 
 
-@deffn  {Graphic object} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+@deffn  {Graphic object} spherical (@var{radius}, @var{azi}, @var{minazi}, @var{maxazi}, @var{zen}, @var{minzen}, @var{maxzen})
 Draws 3D functions defined in spherical coordinates.
 
 @b{3D}
 
-@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
-plots function @code{@var{radius}(@var{azi},@var{zen})} defined in spherical coordinates, with @i{azimuth}
-@var{azi} taking values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values from
-@var{minzen} to @var{maxzen}.
+@code{spherical(@var{radius}, @var{azi}, @var{minazi}, @var{maxazi}, @var{zen},
+@var{minzen}, @var{maxzen})} plots the function @code{@var{radius}(@var{azi},
+@var{zen})} defined in spherical coordinates, with @i{azimuth} @var{azi} taking
+values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values
+from @var{minzen} to @var{maxzen}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
@@ -4623,9 +4647,10 @@ Draws a triangle.
 @code{triangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}])} draws a triangle with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]},
 and @code{[@var{x3},@var{y3}]}.
 
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
-@code{yaxis_secondary}, @code{line_type}, @code{transform}, and @code{color}.
+This object is affected by the following @i{graphic options}:@*
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width},
+@code{key}, @code{xaxis_secondary}, @code{yaxis_secondary}, @code{line_type},
+@code{transform}, and @code{color}.
 
 Example:
 
@@ -5214,11 +5239,11 @@ A simple map defined by hand:
 (%i8) draw2d(geomap([0,1,2,3,4]))$
 @end example
 
-Auxiliary package @code{worldmap} sets global variable
+The auxiliary package @code{worldmap} sets the global variable
 @code{boundaries_array} to real world boundaries in
 (longitude, latitude) coordinates. These data are in the 
 public domain and come from 
-@url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
+@url{http://www-cger.nies.go.jp/@-grid-e/@-gridtxt/@-grid19.html}.
 Package @code{worldmap} defines also boundaries for countries,
 continents and coastlines as lists with the necessary components of 
 @code{boundaries_array} (see file @code{share/draw/worldmap.mac}

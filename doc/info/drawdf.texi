@@ -123,7 +123,8 @@ package include: @code{explicit}, @code{implicit}, @code{parametric},
 others supported by @code{draw2d} and @code{gr2d}.
 
 Commonly used @i{graphic options} inherited from the @code{draw}
-package include: @code{points_joined}, @code{color},
+package include:@*
+@code{points_joined}, @code{color},
 @code{point_type}, @code{point_size}, @code{line_width},
 @code{line_type}, @code{key}, @code{title}, @code{xlabel},
 @code{ylabel}, @code{user_preamble}, @code{terminal},

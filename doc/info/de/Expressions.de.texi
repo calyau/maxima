@@ -523,6 +523,58 @@ aufgerufen werden, die mehrere Argumente enth@"alt.
 Siehe auch die Funktion @mrefdot{optimize}
 @end deffn
 
+@c --- 21.10.2010 DK -----------------------------------------------------------
+@anchor{dispform}
+@deffn  {Funktion} dispform (@var{expr})
+@deffnx {Funktion} dispform (@var{expr}, all)
+
+@code{dispform} formatiert den Ausdruck @var{expr} von der internen Darstellung
+in eine externe Darstellung, wie sie f@"ur die Anzeige des Ausdrucks ben@"otigt 
+wird.  Bei der Formatierung sind Optionsvariablen wie @mref{dispflag} und
+@mref{powerdisp} wirksam.
+
+Beispiele f@"ur die interne und externe Darstellung von Ausdr@"ucken sind:
+
+@example
+          Interne Darstellung            Externe Darstellung
+------------------------------------------------------------
+-x      : ((MTIMES) -1 $x)               ((MMINUS) $x)
+sqrt(x) : ((MEXPT) $x ((RAT) 1 2))       ((%SQRT) $X)
+a/b     : ((MTIMES) $A ((MEXPT) $B -1))  ((MQUOTIENT) $A $B)
+@end example
+
+@code{dispform(@var{expr})} gibt die externe Darstellung nur f@"ur den ersten 
+Operator im Ausdruck zur@"uck.  @code{dispform(@var{expr}, all)} gibt die 
+externe Darstellung aller Operatoren im Ausdruck @var{expr} zur@"uck.
+
+Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{inflag}
+
+Beispiel:
+
+Die Funktion @code{dispform} kann genutzt werden, um die Wurzelfunktion in
+einem Ausdruck zu substituieren.  Die Wurzelfunktion ist nur in der externen
+Darstellung eines Ausdruckes vorhanden:
+
+@example
+(%i1) expr: sqrt(5)/(5+sqrt(2));
+                             sqrt(5)
+(%o1)                      -----------
+                           sqrt(2) + 5
+(%i2) subst(f,sqrt,expr);
+                             sqrt(5)
+(%o2)                      -----------
+                           sqrt(2) + 5
+(%i3) subst(f,sqrt,dispform(expr));
+                              f(5)
+(%o3)                      -----------
+                           sqrt(2) + 5
+(%i4) subst(f,sqrt,dispform(expr,all));
+                              f(5)
+(%o4)                       --------
+                            f(2) + 5
+@end example
+@end deffn
+
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{disolate}
 @deffn {Funktion} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
@@ -1711,6 +1763,33 @@ Standardwert: @code{true}
 Kontrolliert, ob Lambda-Ausdr@"ucke nach einer Substitution ausgewertet werden.
 Hat @code{sublis_apply_lambda} den Wert @code{true} werden Lambda-Ausdr@"ucke
 ausgewertet.  Ansonsten verbleiben diese nach der Substitution im Ausdruck.
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{subnumsimp}
+@defvr {Option variable} subnumsimp
+Default value: @code{false}
+
+If @code{true} then the functions @mref{subst} and @mref{psubst} can substitute
+a subscripted variable @code{f[x]} with a number, when only the symbol @code{f}
+is given.
+
+See also @mrefdot{subst}
+
+@example
+(%i1) subst(100,g,g[x]+2);
+
+subst: cannot substitute 100 for operator g in expression g
+                                                           x
+ -- an error. To debug this try: debugmode(true);
+
+(%i2) subst(100,g,g[x]+2),subnumsimp:true;
+(%o2)                          102
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
