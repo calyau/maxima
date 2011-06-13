@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
-@c Revision    : 10.05.2011
+@c Revision    : 12.06.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -20,20 +20,17 @@
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Grenzwerte, Funktionen und Variablen der Differentiation, Analysis, Analysis
 @section Funktionen und Variablen f@"ur Grenzwerte
+@c -----------------------------------------------------------------------------
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{lhospitallim}
 @defvr {Optionsvariable} lhospitallim
 Standardwert: 4
 
-@c @code{lhospitallim} is the maximum number of times L'Hospital's rule is used 
-@c in @code{limit}.  This prevents infinite looping in cases like
-@c @code{limit (cot(x)/csc(x), x, 0)}.
-
-@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen, f@"ur die die 
-L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.  Damit
-wird verhindert, dass @code{limit} in eine unendliche Schleife ger@"at.
-
+Die Optionsvariable @code{lhospitallim} enth@"alt die maximale Zahl an
+Iterationen, f@"ur die die L'Hospitalsche Regel von der Funktion
+@mref{limit} angewendet wird.  Damit wird verhindert, dass @code{limit} in eine
+unendliche Schleife ger@"at.
 @end defvr
 
 @c TODO: DAS KANN NOCH VIEL BESSER GEMACHT WERDEN.
@@ -45,35 +42,16 @@ wird verhindert, dass @code{limit} in eine unendliche Schleife ger@"at.
 @deffnx {Funktion} limit (@var{expr}, @var{x}, @var{val})
 @deffnx {Funktion} limit (@var{expr})
 
-@c Computes the limit of @var{expr} as the real variable @var{x} approaches the 
-@c value @var{val} from the direction @var{dir}.  @var{dir} may have the value 
-@c @code{plus} for a limit from above, @code{minus} for a limit from below, or
-@c may be omitted (implying a two-sided limit is to be computed).
-
 Berechnet den Grenzwert des Ausdrucks @var{expr}, wenn die reelle Variable
 @var{x} gegen den Wert @var{val} in Richtung @var{dir} geht.  Die Richtung
 @var{dir} kann die Werte @var{plus} f@"ur einen Grenzwert von oben und 
 @var{minus} f@"ur einen Grenzwert von unten haben.  F@"ur einen zweiseitigen 
 Grenzwert wird die Richtung @var{dir} nicht angegeben.
 
-@c @code{limit} uses the following special symbols: @code{inf} (positive 
-@c infinity) and @code{minf} (negative infinity).  On output it may also use 
-@c @code{und} (undefined), @code{ind} (indefinite but bounded) and 
-@c @code{infinity} (complex infinity).
-@c @code{infinity} (complex infinity) is returned when the limit of
-@c the absolute value of the expression is positive infinity, but
-@c the limit of the expression itself is not positive infinity or
-@c negative infinity.  This includes cases where the limit of the
-@c complex argument is a constant, as in @code{limit(log(x), x, minf)}, 
-@c cases where the complex argument oscillates, as in
-@c @code{limit((-2)^x, x, inf)}, and cases where the complex
-@c argument is different for either side of a two-sided limit, as in
-@c @code{limit(1/x, x, 0)} and @code{limit(log(x), x, 0)}.
-
 Maxima verwendet die folgenden Symbole f@"ur unendliche und infinitesimale 
-Gr@"o@ss{}en sowie undefinierte und unbestimmte Gr@"o@ss{}en, wie sie als 
+Gr@"o@ss{}en sowie undefinierte und unbestimmte Gr@"o@ss{}en, die als
 Ergebnis eines Grenzwertes oder als Wert f@"ur die Bestimmung eines Grenzwertes 
-auftreten:
+auftreten k@"onnen:
 
 @table @code
 @item inf      
@@ -83,13 +61,13 @@ negativ unendlich
 @item infinity 
 komplex unendlich
 @item zeroa
-postiv unendlich klein
+positiv unendlich klein
 @item zerob
 negativ unendlich klein
 @item und
-nicht definiert
+ein nicht definiertes Ergebnis
 @item ind
-unbestimmt
+ein unbestimmtes Ergebnis
 @end table
 
 @c TODO: DER FOLGENDE TEXT IST AUSKOMMENTIERT.
@@ -104,38 +82,21 @@ unbestimmt
 @c beiden Seiten des Grenzwertes verschieden ist, wie zum Beispiel in 
 @c @code{limit(1/x, x, 0)} und @code{limit(log(x), x, 0)}.
 
-@c @code{lhospitallim} is the maximum number of times L'Hospital's rule
-@c is used in @code{limit}.  This prevents infinite looping in cases like
-@c @code{limit (cot(x)/csc(x), x, 0)}.
+Die Optionsvariable @mref{lhospitallim} enth@"alt die maximale Zahl an
+Iterationen, f@"ur die die L'Hospitalsche Regel von der Funktion @code{limit}
+angewendet wird.
 
-@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen, f@"ur die die 
-L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird.
-
-@c @code{tlimswitch} when true will allow the @code{limit} command to use
-@c Taylor series expansion when necessary.
-
-Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
+Hat @mref{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
 Taylor-Rei@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden 
 bestimmt werden kann.
 
-@c @code{limsubst} prevents @code{limit} from attempting substitutions on
-@c unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
-@c giving 1.  Setting @code{limsubst} to @code{true} will allow such
-@c substitutions.
-
-Hat die Optionsvariable @code{limsubst} den Wert @code{false}, wird die 
+Hat die Optionsvariable @code{limsubst} den Wert @code{false}, wird die
 Ersetzung von @code{limit(f(g(x)),x,x0)} durch @code{f(limit(g(x),x,x0))} f@"ur
-eine unbekannte Funktion @code{f} verhindert. Siehe auch @mrefdot{limsubst}
-
-@c @code{limit} with one argument is often called upon to simplify constant 
-@c expressions, for example, @code{limit (inf-1)}.
+eine unbekannte Funktion @code{f} verhindert.  Siehe auch @mrefdot{limsubst}
 
 @code{limit} kann mit einem Argument aufgerufen werden, um Ausdr@"ucke
-zu vereinfachen, die unendliche oder infinitesimale Gr@"o@ss{}en enthalten.  
+zu vereinfachen, die unendliche oder infinitesimale Gr@"o@ss{}en enthalten.
 Zum Beispiel wird @code{limit(inf-1)} zu @code{inf} vereinfacht.
-
-@c For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
-@c Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
 Der Algorithmus ist in der folgenden Arbeit beschrieben: Wang, P., "Evaluation 
 of Definite Integrals by Symbolic Manipulation", Ph.D. thesis, MAC TR-92, 
@@ -143,12 +104,6 @@ October 1971.
 
 Beispiele:
 
-@c ===beg===
-@c limit(x*log(x),x,0,plus)
-@c limit((x+1)^(1/x),x,0)
-@c limit(%e^x/x,x,inf)
-@c limit(sin(1/x),x,0)
-@c ===end===
 @example
 (%i1) limit(x*log(x),x,0,plus)
 (%o1)                           0
@@ -159,17 +114,12 @@ Beispiele:
 (%i4) limit(sin(1/x),x,0)
 (%o4)                          ind
 @end example
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{limsubst}
 @defvr {Optionsvariable} limsubst
 Standardwert: @code{false}
-
-@c Prevents @code{limit} from attempting substitutions on unknown forms.  This
-@c is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
-@c @code{limsubst} to @code{true} will allow such substitutions.
 
 Ist eine Funktion @code{f} teil eines Ausdrucks f@"ur den Maxima den Grenzwert 
 sucht, dann wird folgende Ersetzung ausgef@"uhrt:
@@ -180,7 +130,7 @@ sucht, dann wird folgende Ersetzung ausgef@"uhrt:
 @end example
 
 Hat die Optionsvariable @code{limsubst} den Wert @code{false}, f@"uhrt 
-@code{limit} die oben gezeigte Ersetzung nicht f@"ur unbekannte Funktionen 
+@mref{limit} die oben gezeigte Ersetzung nicht f@"ur unbekannte Funktionen 
 @code{f} aus.  Dies vermeidet Fehler wie zum Beispiel ein Ergebnis von 1 f@"ur 
 den Grenzwert @code{limit (f(n)/f(n+1), n, inf)}.  Hat @code{limsubst} den Wert 
 @code{true}, f@"uhrt Maxima die oben gezeigte Ersetzung auch f@"ur unbekannte 
@@ -208,15 +158,11 @@ unbekannte Funktion als @code{f(10)} an.
 @deffnx {Funktion} tlimit (@var{expr}, @var{x}, @var{val})
 @deffnx {Funktion} tlimit (@var{expr})
 
-@c Take the limit of the Taylor series expansion of @code{expr} in @code{x}
-@c at @code{val} from direction @code{dir}.
-
-Bestimmt den Grenzwert mit Hilfe der Taylor-Reihenwicklung des Ausdrucks 
-@code{expr}, wenn die Variable @var{x} gegen den Wert @code{val} aus der 
-Richtung @var{dir} geht.  Diese Methode wird von @code{limit} angewendet, wenn 
-die Optionsvariable @code{tlimswitch} den Wert @code{true} ist.  Das ist der 
+Bestimmt den Grenzwert mit Hilfe der Taylor-Reihenwicklung des Ausdrucks
+@code{expr}, wenn die Variable @var{x} gegen den Wert @code{val} aus der
+Richtung @var{dir} geht.  Diese Methode wird von @code{limit} angewendet, wenn
+die Optionsvariable @mref{tlimswitch} den Wert @code{true} ist.  Das ist der
 Standardwert.
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -224,14 +170,7 @@ Standardwert.
 @defvr {Optionsvariable} tlimswitch
 Standardwert: @code{true}
 
-@c When @code{tlimswitch} is @code{true}, the @code{limit} command will use a 
-@c Taylor series expansion if the limit of the input expression cannot be 
-@c computed directly. This allows evaluation of limits such as 
-@c @code{limit(x/(x-1)-1/log(x),x,1,plus)}. When @code{tlimswitch} is 
-@c @code{false} and the limit of input expression cannot be computed directly, 
-@c @code{limit} will return an unevaluated limit expression.
-
-Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
+Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @mref{limit} eine
 Taylor-Rei@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden
 bestimmt werden kann.
 
@@ -240,48 +179,28 @@ bestimmt werden kann.
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der Differentiation, Integration, Funktionen und Variablen f@"ur Grenzwerte, Analysis
 @section Funktionen und Variablen der Differentiation
+@c -----------------------------------------------------------------------------
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{at}
 @deffn  {Funktion} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
 @deffnx {Funktion} at (@var{expr}, @var{eqn})
 
-@c Evaluates the expression @var{expr} with the variables assuming the values as
-@c specified for them in the list of equations @code{[@var{eqn_1}, ..., 
-@c @var{eqn_n}]} or the single equation @var{eqn}.
-
 Wertet den Ausdruck @var{expr} aus, wobei dessen Variablen die Werte annehmen, 
 die in der Liste der Gleichungen @code{[@var{eqn_1}, ..., @var{eqn_n}]} 
 oder in der einzelnen Gleichung @var{eqn} angegeben sind.
-
-@c If a subexpression depends on any of the variables for which a value is 
-@c specified but there is no atvalue specified and it can't be otherwise 
-@c evaluated, then a noun form of the @code{at} is returned which displays in a 
-@c two-dimensional form.
 
 Wenn ein Teilausdruck von einer Variablen abh@"angt, f@"ur die ein Wert 
 angegeben ist, aber kein @code{atvalue}, und er auch sonst nicht ausgewertet 
 werden kann, dann wird von @code{at} eine Substantivform zur@"uckgegeben.
 
-@c @code{at} carries out multiple substitutions in series, not parallel.
-
 @code{at} f@"uhrt mehrfache Ersetzungen parallel aus.
-
-@c See also @code{atvalue}. For other functions which carry out substitutions,
-@c see also @code{subst} and @code{ev}.
 
 Siehe auch @mrefdot{atvalue}  F@"ur andere Funktionen, die Ersetzungen 
 ausf@"uhren, siehe weiterhin @mref{subst} und @mrefdot{ev}
 
 Beispiele:
 
-@c ===beg===
-@c atvalue (f(x,y), [x = 0, y = 1], a^2);
-@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
-@c printprops (all, atvalue);
-@c diff (4*f(x, y)^2 - u(x, y)^2, x);
-@c at (%, [x = 0, y = 1]);
-@c ===end===
 @example
 (%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
                                 2
@@ -310,19 +229,11 @@ Beispiele:
                              dx          !
                                          !x = 0, y = 1
 @end example
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{antid}
 @deffn {Funktion} antid (@var{expr}, @var{x}, @var{u(x)})
-
-@c Returns a two-element list, such that an antiderivative of @var{expr} with 
-@c respect to @var{x} can be constructed from the list. The expression 
-@c @var{expr} may contain an unknown function @var{u} and its derivatives.
-@c Let @var{L}, a list of two elements, be the return value of @code{antid}.
-@c Then @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})} is an 
-@c antiderivative of @var{expr} with respect to @var{x}.
 
 Gibt eine Liste mit zwei Elementen zur@"uck aus denen die Stammfunktion des 
 Ausdrucks @var{expr} mit der Variablen @var{x} konstruiert werden kann.  Der
@@ -331,43 +242,21 @@ enthalten.  Ist @var{L} das Ergebnis der Funktion @code{antid}, dann ist der
 Ausdruck @code{@var{L}[1]+ 'integrate(@var{L}[2], @var{x})} die gesuchte 
 Stammfunktion des Ausdrucks @var{expr} mit der Variablen @var{x}.
 
-@c When @code{antid} succeeds entirely, the second element of the return value 
-@c is zero. Otherwise, the second element is nonzero, and the first element is 
-@c nonzero or zero. If @code{antid} cannot make any progress, the first element 
-@c is zero and the second nonzero.
-
 Kann @code{antid} die Stammfunktion vollst@"andig bestimmen, ist das zweite
 Element der Liste Null.  Hat @code{antid} keinerlei Erfolg, ist das erste 
 Element der Liste Null.  In anderen F@"allen enth@"alt das erste Elemente den
 integrierbaren Anteil des Ausdrucks @var{expr} und das zweite Element den nicht
 integrierbaren Anteil des Ausdrucks.
 
-@c @code{load ("antid")} loads this function. The @code{antid} package also 
-@c defines the functions @code{nonzeroandfreeof} and @code{linear}.
-
 Mit dem Kommando @code{load(antid)} wird die Funktion geladen.
 
-@c @code{antid} is related to @code{antidiff} as follows. Let @var{L}, a list of
-@c two elements, be the return value of @code{antid}. Then the return value of 
-@c @code{antidiff} is equal to @code{@var{L}[1]+'integrate(@var{L}[2], @var{x})}
-@c where @var{x} is the variable of integration.
-
-@code{antid} steht in folgender Beziehung zur Funktion @code{antidiff}: Ist 
+@code{antid} steht in folgender Beziehung zur Funktion @mrefdot{antidiff}  Ist
 @var{L} die Liste mit den Ergebnissen der Funktion @code{antid}, dann hat die
 Funktion @code{antidiff} das Ergebnis @code{@var{L}[1] + 'integrate(@var{L}[2], 
 @var{x})} mit @var{x} als der Variablen des Ausdrucks @var{expr}.
 
 Beispiele:
 
-@c ===beg===
-@c load ("antid")$
-@c expr: exp (z(x)) * diff (z(x), x) * y(x);
-@c a1: antid (expr, x, z(x));
-@c a2: antidiff (expr, x, z(x));
-@c a2 - (first (a1) + 'integrate (second (a1), x));
-@c antid (expr, x, y(x));
-@c antidiff (expr, x, y(x));
-@c ===end===
 @example
 (%i1) load ("antid")$
 (%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
@@ -404,34 +293,16 @@ Beispiele:
 @anchor{antidiff}
 @deffn {Funktion} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
 
-@c Returns an antiderivative of @var{expr} with respect to @var{x}. The 
-@c expression @var{expr} may contain an unknown function @var{u} and its 
-@c derivatives.
-
 Gibt die Stammfunktion des Ausdrucks @var{expr} mit der Variablen @var{x} 
 zur@"uck.  Der Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und 
 deren Ableitungen enthalten.
 
-@c When @code{antidiff} succeeds entirely, the resulting expression is free of 
-@c integral signs (that is, free of the @code{integrate} noun). Otherwise, 
-@c @code{antidiff} returns an expression which is partly or entirely within an 
-@c integral sign. If @code{antidiff} cannot make any progress, the return value 
-@c is entirely within an integral sign.
-
 Kann @code{antidiff} die Stammfunktion nicht oder nur teilweise bestimmen,
 enth@"alt das Ergebnis das Integral des nicht bestimmbaren Anteils.
 
-@c @code{load ("antid")} loads this function. The @code{antid} package also 
-@c defines the functions @code{nonzeroandfreeof} and @code{linear}.
-
 Mit dem Kommando @code{load(antid)} wird die Funktion geladen.
 
-@c @code{antidiff} is related to @code{antid} as follows. Let @var{L}, a list of
-@c two elements, be the return value of @code{antid}. Then the return value of 
-@c @code{antidiff} is equal to @code{@var{L}[1] + 'integrate (@var{L}[2], 
-@c @var{x})} where @var{x} is the variable of integration.
-
-@code{antidiff} steht in folgender Beziehung zur Funktion @code{antid}: Ist 
+@code{antidiff} steht in folgender Beziehung zur Funktion @mrefdot{antid}  Ist 
 @var{L} die Liste mit den Ergebnissen der Funktion @code{antid}, dann hat die
 Funktion @code{antidiff} das Ergebnis @code{@var{L}[1] + 'integrate(@var{L}[2], 
 @var{x})} mit @var{x} als der Variablen des Ausdrucks @var{expr}.
@@ -444,10 +315,7 @@ F@"ur Beispiele und weitere Ausf@"uhrungen siehe die Funktion @mrefdot{antid}
 @anchor{atomgrad}
 @defvr {Eigenschaft} atomgrad
 
-@c @code{atomgrad} is the atomic gradient property of an expression.
-@c This property is assigned by @code{gradef}.
-
-Wird f@"ur ein Symbol eine Ableitung mit der Funktion @code{gradef} definiert,
+Wird f@"ur ein Symbol eine Ableitung mit der Funktion @mref{gradef} definiert,
 dann erh@"alt das Symbol die Eigenschaft @code{atomgrad}.
 
 @end defvr
@@ -457,20 +325,9 @@ dann erh@"alt das Symbol die Eigenschaft @code{atomgrad}.
 @deffn  {Funktion} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, @dots{}, @var{x_m} = @var{a_m}], @var{c})
 @deffnx {Funktion} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 
-@c Assigns the value @var{c} to @var{expr} at the point @code{@var{x}=@var{a}}.
-@c Typically boundary values are established by this mechanism.
-
 Dem Ausdruck @var{expr} wird der Wert @var{c} am Punkt @code{@var{x} = @var{a}}
 zugewiesen.  Typischerweise werden Randwerte mit der Funktion @code{atvalue}
 definiert.
-
-@c @var{expr} is a function evaluation, @code{@var{f}(@var{x_1},...,@var{x_m})},
-@c or a derivative, @code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, 
-@c @var{n_1}, ..., @var{x_n}, @var{n_m})}
-@c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
-@c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
-@c in which the function arguments explicitly appear. @var{n_i} is the order of
-@c differentiation with respect to @var{x_i}.
 
 Der Ausdruck @var{expr} ist entweder eine Funktion @code{@var{f}(@var{x_1}, ..., 
 @var{x_m})} oder die Ableitung einer Funktion @code{diff(@var{f}(@var{x_1}, ...,
@@ -478,20 +335,9 @@ Der Ausdruck @var{expr} ist entweder eine Funktion @code{@var{f}(@var{x_1}, ...,
 m@"ussen explizit auftreten.  @var{n_i} ist die Ordnung der Ableitung 
 bez@"uglich der Variablen @var{x_i}.
 
-@c The point at which the atvalue is established is given by the list of 
-@c equations @code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}. If 
-@c there is a single variable @var{x_1}, the sole equation may be given without 
-@c enclosing it in a list.
-
 Die Randwerte werden durch die Liste @code{[@var{x_1} = @var{a_1}, ..., 
 @var{x_m} = @var{a_m}]} definiert.  Eine einzelne Gleichung muss nicht als Liste 
 angegeben werden.
-
-@c @code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} displays the 
-@c atvalues of the functions @code{@var{f_1}, @var{f_2}, ...} as specified by 
-@c calls to @code{atvalue}. @code{printprops (@var{f}, atvalue)} displays the 
-@c atvalues of one function @var{f}. @code{printprops (all, atvalue)} displays 
-@c the atvalues of all functions for which atvalues are defined.
 
 @code{printprops([@var{f_1}, @var{f_2}, ...], atvalue)} zeigt die Randwerte der
 Funktionen @code{@var{f_1}, @var{f_2}, ...} wie sie mit der Funktion 
@@ -499,27 +345,14 @@ Funktionen @code{@var{f_1}, @var{f_2}, ...} wie sie mit der Funktion
 nur die Randwerte f@"ur die Funktion @var{f}.  @code{printprops (all, atvalue)}
 zeigt die Randwerte aller Funktionen.
 
-@c The symbols @code{@@1}, @code{@@2}, ... represent the variables @var{x_1}, 
-@c @var{x_2}, ... when atvalues are displayed.
-
 Die Symbole @code{@@1}, @code{@@2}, @dots{} repr@"asentieren die Variablen 
 @var{x_1}, @var{x_2}, @dots{}, wenn die Randwerte angezeigt werden.
-
-@c @code{atvalue} evaluates its arguments. @code{atvalue} returns @var{c}, the 
-@c atvalue.
 
 @code{atvalue} wertet die Argumente aus.  @code{atvalue} gibt den Randwert
 @var{c} zur@"uck.
 
 Beispiele:
 
-@c ===beg===
-@c atvalue (f(x,y), [x = 0, y = 1], a^2);
-@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
-@c printprops (all, atvalue);
-@c diff (4*f(x,y)^2 - u(x,y)^2, x);
-@c at (%, [x = 0, y = 1]);
-@c ===end===
 @example
 (%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
                                 2
@@ -562,39 +395,27 @@ Beispiele:
 
 The exterior calculus of differential forms is a basic tool of differential 
 geometry developed by Elie Cartan and has important applications in the theory 
-of partial differential equations. The @code{cartan} package implements the 
+of partial differential equations.  The @code{cartan} package implements the 
 functions @code{ext_diff} and @code{lie_diff}, along with the operators 
 @code{~} (wedge product) and @code{|} (contraction of a form with a vector.)
 Type @code{demo (tensor)} to see a brief description of these commands along 
 with examples.
 
 @code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{del}
 @deffn {Funktion} del (@var{x})
 
-@c @code{del(@var{x})} represents the differential of the variable @math{x}.
-
 @code{del(@var{x})} repr@"asentiert das Differential der Variablen @var{x}.
-
-@c @code{diff} returns an expression containing @code{del} if an independent 
-@c variable is not specified. In this case, the return value is the so-called 
-@c "total differential".
 
 @code{diff} gibt Ausdr@"ucke zur@"uck, die Differentiale enthalten, wenn keine 
 Variablen angegeben sind, nach denen abgeleitet werden soll.  In diesem Fall
-gibt @code{diff} das totale Differential zur@"uck. 
+gibt @code{diff} das totale Differential zur@"uck.
 
 Beispiele:
 
-@c ===beg===
-@c diff (log (x));
-@c diff (exp (x*y));
-@c diff (x*y*z);
-@c ===end===
 @example
 (%i1) diff (log (x));
                              del(x)
@@ -606,18 +427,13 @@ Beispiele:
 (%i3) diff (x*y*z);
 (%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{delta}
 @deffn {Funktion} delta (@var{t})
 
-@c The Dirac Delta function.
-
 Die Diracsche Delta-Funktion.
-
-@c Currently only @code{laplace} knows about the @code{delta} function.
 
 Maxima kennt die Delta-Funktion nur im Zusammenhang mit 
 Laplace-Trans@-for@-ma@-tio@-nen.  Siehe @mrefdot{laplace}
@@ -642,87 +458,45 @@ p;
 @defvr {Systemvariable} dependencies
 Standardwert: @code{[]}
 
-@c @code{dependencies} is the list of atoms which have functional dependencies, 
-@c assigned by @code{depends} or @code{gradef}. The @code{dependencies} list is 
-@c cumulative: each call to @code{depends} or @code{gradef} appends additional 
-@c items.
-@c See @code{depends} and @code{gradef}.
-
 @code{dependencies} ist eine Liste der Symbole, f@"ur die eine Abh@"angigkeit 
 mit den Funktionen @code{depends} oder @code{gradef} definiert wurde.  Siehe
 @mref{depends} und @mrefdot{gradef}
-
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 12.06.2011 DK -----------------------------------------------------------
 @anchor{depends}
 @deffn {Funktion} depends (@var{f_1}, @var{x_1}, @dots{}, @var{f_n}, @var{x_n})
 
-@c Declares functional dependencies among variables for the purpose of computing 
-@c derivatives. In the absence of declared dependence, @code{diff(f, x)} yields 
-@c zero. If @code{depends (f, x)} is declared, @code{diff(f, x)} yields a 
-@c symbolic derivative (that is, a @code{diff} noun).
-
-Definiert die Abh@"angigkeit einer Funktion @var{f} von einer Variablen @var{x}. 
+Definiert die Abh@"angigkeit einer Funktion @var{f} von einer Variablen @var{x}.
 Ist keine Abh@"angigkeit definiert, dann hat die Ableitung @code{diff(f, x)} das 
 Ergebnis Null.  Wird mit dem Kommando @code{depends(f, x)} definiert, dass die
 Funktion @var{f} von der Variablen @var{x} abh@"angt, dann ist das Ergebnis der
 Ableitung die Substantivform @code{'diff(f,x,1)}.
-
-@c Each argument @var{f_1}, @var{x_1}, etc., can be the name of a variable or 
-@c array, or a list of names. Every element of @var{f_i} (perhaps just a single 
-@c element) is declared to depend on every element of @var{x_i} (perhaps just a 
-@c single element). If some @var{f_i} is the name of an array or contains the 
-@c name of an array, all elements of the array depend on @var{x_i}.
 
 Jedes Argument @var{f_1}, @var{x_1}, @dots{} kann der Name einer Variablen, 
 eines Arrays oder eine Liste mit Namen sein.  Jedes Symbol @var{f_i} h@"angt ab 
 von den Symbolen der Liste @var{x_i}.  Ist eines der Symbole @var{f_i} der Name
 eines Arrays, dann h@"angen alle Elemente des Arrays von @var{x_i} ab.
 
-@c @code{diff} recognizes indirect dependencies established by @code{depends}
-@c and applies the chain rule in these cases.
-
 @code{diff} erkennt indirekte Abh@"angigkeiten und wendet f@"ur diesen Fall
 die Kettenregel an.
 
-@c @code{remove(@var{f}, dependency)} removes all dependencies declared for 
-@c @var{f}.
-
 @code{remove(@var{f}, dependency)} entfernt alle Abh@"angigkeiten, die f@"ur
 @var{f} definiert wurden.
-
-@c @code{depends} returns a list of the dependencies established. The 
-@c dependencies are appended to the global variable @code{dependencies}. 
-@c @code{depends} evaluates its arguments.
 
 @code{depends} gibt eine Liste der Abh@"angigkeiten zur@"uck.  Die 
 Abh@"angigkeiten werden in die Informationsliste @code{dependencies} 
 eingetragen.  @code{depends} wertet die Argumente aus.
 
-@c @code{diff} is the only Maxima command which recognizes dependencies 
-@c established by @code{depends}. Other functions (@code{integrate}, 
-@c @code{laplace}, etc.) only recognize dependencies explicitly represented by 
-@c their arguments. For example, @code{integrate} does not recognize the 
-@c dependence of @code{f} on @code{x} unless explicitly represented as 
-@c @code{integrate (f(x), x)}.
-
-Die Funktion @code{diff} ist die einzige Maxima-Funktion, die Abh@"angigkeiten
+Die Funktion @mref{diff} ist die einzige Maxima-Funktion, die Abh@"angigkeiten
 erkennt, die mit @code{depends} definiert wurden.  Andere Funktionen wie
-@code{integrate} oder @code{laplace} erkennen keine Abh@"angigkeiten die mit der
-@code{depends} definiert wurden.  F@"ur diese Funktionen m@"ussen die 
+@mref{integrate} oder @mref{laplace} erkennen keine Abh@"angigkeiten, die mit
+der @code{depends} definiert wurden.  F@"ur diese Funktionen m@"ussen die
 Abh@"angigkeiten explizit angegeben werden, zum Beispiel als
 @code{integrate(f(x), x)}.
 
 Beispiele:
 
-@c ===beg===
-@c depends ([f, g], x);
-@c depends ([r, s], [u, v, w]);
-@c depends (u, t);
-@c dependencies;
-@c diff (r.s, u);
-@c ===end===
 @example
 (%i1) depends ([f, g], x);
 (%o1)                     [f(x), g(x)]
@@ -738,9 +512,6 @@ Beispiele:
                          du           du
 @end example
 
-@c ===beg==
-@c diff (r.s, t);
-@c ===end===
 @example
 (%i6) diff (r.s, t);
                       dr du           ds du
@@ -748,10 +519,6 @@ Beispiele:
                       du dt           du dt
 @end example
 
-@c ===beg===
-@c remove (r, dependency);
-@c diff (r.s, t);
-@c ===end===
 @example
 (%i7) remove (r, dependency);
 (%o7)                         done
@@ -760,7 +527,6 @@ Beispiele:
 (%o8)                       r . -- --
                                 du dt
 @end example
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -774,27 +540,34 @@ Standardwert: @code{false}
 
 Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
 mit einem tiefgestelltem Index angezeigt.  Ansonsten werden Ableitungen als
-@code{dy/dy} angezeigt.
+@code{dy/dx} angezeigt.
 
+Beispiel:
+
+@example
+(%i1) derivabbrev:false$
+
+(%i2) 'diff(y,x);
+                               dy
+(%o2)                          --
+                               dx
+(%i3) derivabbrev:true$
+
+(%i4) 'diff(y,x);
+(%o4)                          y
+                                x
+@end example
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{derivdegree}
 @deffn {Funktion} derivdegree (@var{expr}, @var{y}, @var{x})
 
-@c Returns the highest degree of the derivative of the dependent variable 
-@c @var{y} with respect to the independent variable @var{x} occuring in 
-@c @var{expr}.
-
 Gibt die h@"ochste Ableitung des Arguments @var{y} in Bezug auf die Variable
 @var{x} zur@"uck, die in dem Ausdruck @var{expr} enthalten ist.
 
 Beispiel:
 
-@c ===beg===
-@c 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
-@c derivdegree (%, y, x);
-@c ===end===
 @example
 (%i1) 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
                          3     2
@@ -805,16 +578,12 @@ Beispiel:
 (%i2) derivdegree (%, y, x);
 (%o2)                           2
 @end example
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @deffn {Auswertungsschalter} derivlist (@var{var_1}, @dots{}, @var{var_k})
 
-@c Causes only differentiations with respect to the indicated variables, within
-@c the @code{ev} command.
-
-@code{derivlist} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}. 
+@code{derivlist} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}.
 @code{ev} f@"uhrt nur die Ableitungen in Bezug auf die angegebenen Variablen
 @var{var_1}, @dots{}, @var{var_k} aus.
 
@@ -825,13 +594,9 @@ Beispiel:
 @defvr {Optionsvariable} derivsubst
 Standardwert: @code{false}
 
-@c When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
-@c @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
-
 Hat @code{derivsubst} den Wert @code{true}, werden Substitutionen auch in 
 Ausdr@"ucke mit Ableitungen ausgef@"uhrt.  Zum Beispiel hat dann
 @code{subst(x, 'diff(y, t), 'diff(y, t, 2))} das Ergebnis @code{'diff(x, t)}.
-
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -840,69 +605,40 @@ Ausdr@"ucke mit Ableitungen ausgef@"uhrt.  Zum Beispiel hat dann
 @deffnx {Funktion} diff (@var{expr}, @var{x}, @var{n})
 @deffnx {Funktion} diff (@var{expr}, @var{x})
 @deffnx {Funktion} diff (@var{expr})
-
-@c Returns the derivative or differential of @var{expr} with respect to some or 
-@c all variables in @var{expr}.
+@deffnx {Auswertungsschalter} diff
 
 Gibt die Ableitungen oder Differentiale des Ausdrucks @var{expr} in Bezug auf
 alle oder einige der Variablen des Ausdrucks zur@"uck.
 
-@c @code{diff (@var{expr}, @var{x}, @var{n})} returns the @var{n}'th derivative 
-@c of @var{expr} with respect to @var{x}.
-
 @code{diff(@var{expr}, @var{x}, @var{n})} gibt die n-te Ableitung des Ausdrucks
 @var{expr} in Bezug auf die Variable @var{x} zur@"uck.
-
-@c @code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
-@c returns the mixed partial derivative of @var{expr} with respect to @var{x_1},
-@c ..., @var{x_m}. It is equivalent to @code{diff (... (diff (@var{expr}, 
-@c @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
 
 @code{diff(@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})} gibt
 die partielle Ableitung des Ausdrucks @var{expr} in Bezug auf die Variablen
 @var{x_1}, ..., @var{x_m} zur@"uck.  Dies ist @"aquivalent zu @code{diff(... 
 (diff(@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
 
-@c @code{diff (@var{expr}, @var{x})} returns the first derivative of @var{expr} 
-@c with respect to the variable @var{x}.
-
 @code{diff(@var{expr}, @var{x})} gibt die erste Ableitung des Ausdrucks 
 @var{expr} in Bezug auf die Variable @var{x} zur@"uck.
-
-@c @code{diff (@var{expr})} returns the total differential of @var{expr}, that 
-@c is, the sum of the derivatives of @var{expr} with respect to each its 
-@c variables times the differential @code{del} of each variable.
-@c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
-@c No further simplification of @code{del} is offered.
 
 @code{diff(@var{expr})} gibt das totale Differential des Ausdrucks @var{expr}
 zur@"uck.  Siehe auch @mrefdot{del}
 
-@c The noun form of @code{diff} is required in some contexts, such as stating a
-@c differential equation. In these cases, @code{diff} may be quoted (as 
-@c @code{'diff}) to yield the noun form instead of carrying out the 
-@c differentiation.
-
 Wenn die Ableitungen nicht ausgef@"uhrt werden sollen, kann der
-@nxref{', Quote-Operator} @code{'} verwendet werden, um eine Substantivform der
+@mxref{', Quote-Operator} @code{'} verwendet werden, um eine Substantivform der
 Ableitung zu erhalten.
 
-@c When @code{derivabbrev} is @code{true}, derivatives are displayed as 
-@c subscripts. Otherwise, derivatives are displayed in the Leibniz notation, 
-@c @code{dy/dx}.
-
-Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
+Hat @mref{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
 mit einem tiefgestelltem Index angezeigt.  Ansonsten werden Ableitungen als
 @code{dy/dy} angezeigt.
 
+@code{diff} ist auch ein Auswertungsschalter f@"ur die Funktion @code{ev}.  Das 
+Kommando @code{ev(expr), diff} bewirkt, dass alle Ableitungen ausgef@"uhrt 
+werden, die im Ausdruck @var{expr} enthalten sind.  Siehe auch die Funktion 
+@mrefdot{ev}
+
 Beispiele:
 
-@c ===beg===
-@c diff (exp (f(x)), x, 2);
-@c derivabbrev: true$
-@c 'integrate (f(x, y), y, g(x), h(x));
-@c diff (%, x);
-@c ===end===
 @example
 (%i1) diff (exp (f(x)), x, 2);
 @group
@@ -954,24 +690,7 @@ or subscripted names like @code{X[1]}, @code{X[2]}, @dots{} to be used.  If
 @code{coordinates} has not been assigned a value, then the variables will be 
 treated as in (1) above.
 @end enumerate
-
 @end deffn
-
-@c MERGE THIS INTO @defun diff
-
-@c --- 20.11.2010 DK -----------------------------------------------------------
-@anchor{flag_diff}
-@defvr {Auswertungsschalter} diff
-
-@c When @code{diff} is present as an @code{evflag} in call to @code{ev},
-@c all differentiations indicated in @code{expr} are carried out.
-
-@code{diff} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}.  Das 
-Kommando @code{ev(expr), diff} bewirkt, dass alle Ableitungen ausgef@"uhrt 
-werden, die im Ausdruck @var{expr} enhalten sind.  Siehe auch die Funktion 
-@mrefdot{ev}
-
-@end defvr
 
 @c TODO: IN DAS KAPITEL TENSOREN VERSCHIEBEN?!
 @c       WIE UNTEN AUSGEFUEHRT FUNKTIONIERT DAS BEISPIEL NICHT. 
@@ -979,11 +698,6 @@ werden, die im Ausdruck @var{expr} enhalten sind.  Siehe auch die Funktion
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{dscalar}
 @deffn {Funktion} dscalar (@var{f})
-
-@c Applies the scalar d'Alembertian to the scalar function @var{f}.
-@c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
-@c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
-@c @code{load ("ctensor")} loads this function.
 
 Wendet den d'Alembert-Operator auf eine skalare Funktion @var{f} an.  Der
 d'Alembert-Operator ist die Verallgemeinerung des Gradienten auf den
@@ -1038,82 +752,40 @@ Das Kommando @code{load(ctensor)} l@"adt die Funktion.
 @deffn  {Funktion} gradef (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, @dots{}, @var{g_m})
 @deffnx {Funktion} gradef (@var{a}, @var{x}, @var{expr})
 
-@c Defines the partial derivatives (i.e., the components of the gradient) of the 
-@c function @var{f} or variable @var{a}.
-
 Definiert eine partielle Ableitung der Funktion @var{f} oder Variablen @var{a}.
 
-@c @code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
-@c defines @code{d@var{f}/d@var{x_i}} as @var{g_i}, where @var{g_i} is an 
-@c expression; @var{g_i} may be a function call, but not the name of a function.
-@c The number of partial derivatives @var{m} may be less than the number of 
-@c arguments @var{n}, in which case derivatives are defined with respect to 
-@c @var{x_1} through @var{x_m} only.
+Das Kommando @code{gradef(@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ...,
+@var{g_m})} definiert die partielle Ableitung @code{d@var{f}/d@var{x_i}} als
+@var{g_i}.  @var{g_i} ist ein Ausdruck.  @var{g_i} kann ein Funktionsaufruf
+sein, aber nicht der Name einer Funktion.  Die Anzahl der partiellen Ableitungen
+@var{m} kann kleiner als die Anzahl der Argumente @var{n} sein.
 
-Das Kommando @code{gradef(@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
-definiert die partielle Ableitung @code{d@var{f}/d@var{x_i}} als @var{g_i}.
-@var{g_i} ist ein Ausdruck.  @var{g_i} kann ein Funktionsaufruf sein, aber nicht
-der Name einer Funktion.  Die Anzahl der partiellen Ableitungen @var{m} kann
-kleiner sein als die Anzahl der Argumente @var{n}.
-
-@c @code{gradef (@var{a}, @var{x}, @var{expr})} defines the derivative of 
-@c variable @var{a} with respect to @var{x} as @var{expr}. This also establishes
-@c the dependence of @var{a} on @var{x} (via @code{depends (@var{a}, @var{x})}).
-
-@code{gradef(@var{a}, @var{x}, @var{expr})} definierte die Ableitung der
+@code{gradef(@var{a}, @var{x}, @var{expr})} definiert die Ableitung der
 Variablen @var{a} in Bezug auf die Variable @var{x} als @var{expr}.  Wie mit der
 Funktion @code{depends} wird @var{a} als abh@"angig von @var{x} deklariert.  Die
 Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen.  Siehe auch
 @mrefdot{depends}
 
-@c The first argument @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @var{a} is 
-@c quoted, but the remaining arguments @var{g_1}, ..., @var{g_m} are evaluated.
-@c @code{gradef} returns the function or variable for which the partial 
-@c derivatives are defined.
-
 Bis auf das erste Argument werden die Argumente der Funktion @code{gradef} 
 ausgewertet.  @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die 
 eine partielle Ableitung definiert wurde.
-
-@c @code{gradef} can redefine the derivatives of Maxima's built-in functions.
-@c For example, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefines the 
-@c derivative of @code{sin}.
 
 @code{gradef} kann die Ableitungen von vorhandenen Maxima-Funktionen neu 
 definieren.  Zum Beispiel definiert @code{gradef(sin(x), sqrt (1 - sin(x)^2))}
 eine neue Ableitung der Sinusfunktion.
 
-@c @code{gradef} cannot define partial derivatives for a subscripted function.
-
 @code{gradef} kann keine partiellen Ableitungen f@"ur indizierte Funktionen
 definieren.
-
-@c @code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} displays the partial
-@c derivatives of the functions @var{f_1}, ..., @var{f_n}, as defined by 
-@c @code{gradef}.
-@c @code{printprops([@var{a_n}, ..., @var{a_n}], atomgrad)} displays the partial 
-@c derivatives of the variables @var{a_n}, ..., @var{a_n}, as defined by 
-@c @code{gradef}.
 
 @code{printprops([@var{f_1}, ..., @var{f_n}], gradef)} zeigt die mit 
 @code{gradef} definierten partiellen Ableitungen der Funktionen @var{f_1}, 
 @dots{}, @var{f_n} an und @code{printprops([@var{a_n}, ..., @var{a_n}], 
 atomgrad)} zeigt die mit @code{gradef} definierten partiellen Ableitungen der 
-Variablen @var{a_n}, @dots{}, @var{a_n} an.
+Variablen @var{a_n}, @dots{}, @var{a_n} an.  Siehe @mrefdot{printprops}
 
-@c @code{gradefs} is the list of the functions for which partial derivatives 
-@c have been defined by @code{gradef}. @code{gradefs} does not include any 
-@c variables for which partial derivatives have been defined by @code{gradef}.
-
-@code{gradefs} ist eine Informationsliste, die die Funktionen enth@"alt, f@"ur 
+@mref{gradefs} ist eine Informationsliste, die die Funktionen enth@"alt, f@"ur
 die mit @code{gradef} eine Ableitung definierte wurde.  Die Liste enth@"alt 
 keine Variablen, f@"ur die Ableitungen definiert wurden.
-
-@c REPHRASE THIS NEXT BIT
-@c Gradients are needed when, for example, a function is not known explicitly 
-@c but its first derivatives are and it is desired to obtain higher order 
-@c derivatives.
-
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -1121,13 +793,8 @@ keine Variablen, f@"ur die Ableitungen definiert wurden.
 @defvr {Systemvariable} gradefs
 Standardwert: @code{[]}
 
-@c @code{gradefs} is the list of the functions for which partial derivatives 
-@c have been defined by @code{gradef}. @code{gradefs} does not include any 
-@c variables for which partial derivatives have been defined by @code{gradef}.
-
-@code{gradefs} ist eine Liste der Funktionen, f@"ur die eine Ableitung definiert
-wurde.
-
+@code{gradefs} ist eine Liste der Funktionen, f@"ur die eine Ableitung mit der
+Funktion @mref{gradef} definiert wurde.
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1146,41 +813,26 @@ wurde.
 @node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Integration, Integration
 @subsection Einf@"uhrung in die Integration
 
-@c Maxima has several routines for handling integration. The @code{integrate}
-@c function makes use of most of them.  There is also the @code{antid} package,
-@c which handles an unspecified function (and its derivatives, of course).  For
-@c numerical uses, there is a set of adaptive integrators from QUADPACK, named
-@c @code{quad_qag}, @code{quad_qags}, etc., which are described under the
-@c heading @code{QUADPACK}. Hypergeometric functions are being worked on,
-@c see @code{specint} for details. Generally speaking, Maxima only handles
-@c integrals which are integrable in terms of the "elementary functions"
-@c (rational functions, trigonometrics, logs, exponentials, radicals, etc.) and
-@c a few extensions (error function, dilogarithm).  It does not handle
-@c integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
-
-Maxima hat verschiedene Routinen um Integrale zu behandeln.  Die Funktion
-@code{integrate} nutzt diese.  Maxima hat ein Paket @code{antid}, welches
+Maxima hat verschiedene Algorithmen, um Integrale zu behandeln.  Die Funktion
+@mref{integrate} nutzt diese.  Maxima hat ein Paket @mref{antid}, welches
 Integrale mit einer unbekannten Funktion, deren Ableitung bekannt ist, 
 integrieren kann.  F@"ur die numerische Berechnung von Integralen hat Maxima
-das Paket @code{QUADPACK} mit Funktionen wie @code{quad_qag} oder 
-@code{quad_qags}.  Die Funktionen @code{laplace} und @code{specint} finden die
-Laplacetransformation.
+das Paket @code{QUADPACK} mit Funktionen wie @mref{quad_qag} oder
+@mrefdot{quad_qags}  Die Funktionen @mref{laplace} und @mref{specint} finden
+die Laplacetransformation.
 
 @c end concepts Integration
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der Integration, Einf@"uhrung in QUADPACK, Einf@"uhrung in die Integration, Integration
 @subsection Funktionen und Variablen der Integration
+@c -----------------------------------------------------------------------------
 
 @c NEEDS WORK
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{changevar}
 @deffn {Funktion} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
-
-@c Makes the change of variable given by @code{@var{f(x,y)} = 0} in all 
-@c integrals occurring in @var{expr} with integration with respect to @var{x}.
-@c The new variable is @var{y}.
 
 F@"uhrt eine Substitution der Integrationsvariablen, die als @var{f(x,y)=0} 
 angegeben wird, f@"ur die Variable @var{x} in allen Integralen durch, die in 
@@ -1213,20 +865,10 @@ angegeben wird, f@"ur die Variable @var{x} in allen Integralen durch, die in
 @end group
 @end example
 
-@c An expression containing a noun form, such as the instances of 
-@c @code{'integrate} above, may be evaluated by @code{ev} with the @code{nouns} 
-@c flag. For example, the expression returned by @code{changevar} above may be 
-@c evaluated by @code{ev (%o3, nouns)}.
-
 Ein Ausdruck mit einem Integral in einer Substantivform @code{'integrate} wie
-im obigen Beispiel kann mit der Funktion @code{ev} und dem Auswertungsschalter
-@code{nouns} ausgewertet werden.  Das Beispiel von oben kann zum Beispiel mit
+im obigen Beispiel kann mit der Funktion @mref{ev} und dem Auswertungsschalter
+@mref{nouns} ausgewertet werden.  Das Beispiel von oben kann zum Beispiel mit
 @code{ev(%o3, nouns)} ausgewertet werden.
-
-@c @code{changevar} may also be used to changes in the indices of a sum or
-@c product.  However, it must be realized that when a change is made in a
-@c sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
-@c higher degree function.  E.g.,
 
 Mit @code{changevar} k@"onnen auch die Indizes einer Summe oder eines Produktes
 substituiert werden.  Dabei muss beachtet werden, dass nur lineare 
@@ -1255,7 +897,6 @@ f@"ur Summen und Produkte sind.
                         n = - 2
 @end group
 @end example
-
 @end deffn
 
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
@@ -1264,11 +905,6 @@ f@"ur Summen und Produkte sind.
 @c -----------------------------------------------------------------------------
 @anchor{dblint}
 @deffn {Funktion} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
-
-@c A double-integral routine which was written in top-level Maxima and then 
-@c translated and compiled to machine code. Use @code{load (dblint)} to access 
-@c this package.  It uses the Simpson's rule method in both the x and y 
-@c directions to calculate
 
 Eine Routine, um ein bestimmtes doppeltes Integral mit der Simpsonschen Regel 
 numerisch zu berechnen.
@@ -1288,79 +924,30 @@ $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, d
 @end example
 @end ifnottex
 
-@c The function @var{f} must be a translated or compiled function of two 
-@c variables, and @var{r} and @var{s} must each be a translated or compiled
-@c function of one variable, while @var{a} and @var{b} must be floating point
-@c numbers. The routine has two global variables which determine the number of 
-@c divisions of the x and y intervals: @code{dblint_x} and @code{dblint_y}, 
-@c both of which are initially 10, and can be changed independently to other 
-@c integer values (there are @code{2*dblint_x+1} points computed in the x
-@c direction, and @code{2*dblint_y+1} in the y direction). The routine 
-@c subdivides the X axis and then for each value of X it first computes 
-@c @code{@var{r}(x)} and @code{@var{s}(x)}; then the Y axis between 
-@c @code{@var{r}(x)} and @code{@var{s}(x)} is subdivided and the integral along 
-@c the Y axis is performed using Simpson's rule; then the integral along the X 
-@c axis is done using Simpson's rule with the function values being the 
-@c Y-integrals. This procedure may be numerically unstable for a great variety 
-@c of reasons, but is reasonably fast: avoid using it on highly oscillatory 
-@c functions and functions with singularities (poles or branch points in the
-@c region).  The Y integrals depend on how far apart @code{@var{r}(x)} and 
-@c @code{@var{s}(x)} are, so if the distance @code{@var{s}(x) - @var{r}(x)} 
-@c varies rapidly with X, there may be substantial errors arising from 
-@c truncation with different step-sizes in the various Y integrals. One can 
-@c increase @code{dblint_x} and @code{dblint_y} in an effort to improve the 
-@c coverage of the region, at the expense of computation time. The function 
-@c values are not saved, so if the function is very time-consuming, you will 
-@c have to wait for re-computation if you change anything (sorry). It is 
-@c required that the functions @var{f}, @var{r}, and @var{s} be either 
-@c translated or compiled prior to calling @code{dblint}. This will result in 
-@c orders of magnitude speed improvement over interpreted code in many cases!
-
 Die Funktion @var{f} muss eine Funktion von zwei Variablen sein.  @var{r} und 
 @var{s} m@"ussen Funktionen einer Variablen sein.  @var{a} und @var{b} sind 
 Gleitkommazahlen.  Die Optionsvariablen @code{dblint_x} und @code{dblint_y} 
 kontrollieren die Anzahl der Unterteilungen des Integrationsintervalls f@"ur
 den Simpsonschen Algorithmus.  Der Standardwert ist jeweils 10.
 
-
-@c @code{demo (dblint)} executes a demonstration of @code{dblint} applied to an 
-@c example problem.
-@c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- 
-@c DON'T BOTHER TO MENTION IT. !!!
-@c @code{demo (dblint_1)} executes another demonstration.
-
 Das Kommando @code{demo(dblint)} zeigt ein Beispiel.
 
 Die numerischen Funktionen des Pakets @code{QUADPACK} sind gegen@"uber 
 @code{dblint} zu bevorzugen.
-
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{defint}
 @deffn {Funktion} defint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-@c Attempts to compute a definite integral. @code{defint} is called by 
-@c @code{integrate} when limits of integration are specified, i.e., when 
-@c @code{integrate} is called as @code{integrate (@var{expr}, @var{x}, @var{a}, 
-@c @var{b})}. Thus from the user's point of view, it is sufficient to call 
-@c @code{integrate}.
-@c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT 
-@c ALREADY PRESENT IN integrate !!!
-
 Sucht das bestimmte Integral eines Ausdrucks @var{expr} f@"ur die 
 Integrationsvariable @var{x} in den Grenzen @var{a} und @var{b}.  Diese Funktion
 wird ausgef@"uhrt, wenn ein bestimmtes Integral mit der Funktion 
-@code{integrate} gesucht wird.
-
-@c @code{defint} returns a symbolic expression, either the computed integral or 
-@c the noun form of the integral. See @code{quad_qag} and related functions for 
-@c numerical approximation of definite integrals.
+@mref{integrate} gesucht wird.
 
 @code{defint} gibt einen symbolischen Ausdruck als Ergebnis zur@"uck.  Ist das 
 Integral divergent generiert Maxima eine Fehlermeldung.  Kann @code{defint} 
 keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
-
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1368,13 +955,8 @@ keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
 @defvr {Option variable} erfflag
 Standardwert: @code{true}
 
-@c When @code{erfflag} is @code{false}, prevents @code{risch} from introducing 
-@c the @code{erf} function in the answer if there were none in the integrand to
-@c begin with.
-
-Hat @code{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
-keine Fehlerfunktion @code{erf} in die L@"osung eingef@"uhrt.
-
+Hat @code{erfflag} den Wert @code{false}, wird von der Funktion @mref{risch}@w{}
+nicht die Fehlerfunktion @mref{erf} in die L@"osung eingef@"uhrt.
 @end defvr
 
 @c NEEDS WORK
@@ -1383,18 +965,11 @@ keine Fehlerfunktion @code{erf} in die L@"osung eingef@"uhrt.
 @anchor{ilt}
 @deffn {Funktion} ilt (@var{expr}, @var{s}, @var{t})
 
-@c Computes the inverse Laplace transform of @var{expr} with respect to @var{s} 
-@c and parameter @var{t}.  @var{expr} must be a ratio of polynomials whose 
-@c denominator has only linear and quadratic factors. By using the functions 
-@c @code{laplace} and @code{ilt} together with the @code{solve} or 
-@c @code{linsolve} functions the user can solve a single differential or
-@c convolution integral equation or a set of them.
-
 Berechnet die Inverse Laplace-Transformation des Ausdrucks @var{expr} f@"ur die
 Variable @var{s} und den Parameter @var{t}.  @var{expr} muss eine rationale
 Funktion sein, in deren Nenner nur lineare und quadratische Faktoren auftreten.
-Mit den Funktionen @code{laplace} und @code{ilt} sowie den Funktionen 
-@code{solve} oder @code{linsolve} k@"onnen lineare Differentialgleichungen oder
+Mit den Funktionen @mref{laplace} und @code{ilt} sowie den Funktionen
+@mref{solve} oder @mref{linsolve} k@"onnen lineare Differentialgleichungen oder
 Systeme von linearen Differentialgleichungen gel@"ost werden.
 
 @example
@@ -1449,37 +1024,19 @@ pos;
 @defvr {Optionsvariable} intanalysis
 Standardwert: @code{true}
 
-@c When @code{true}, definite integration tries to find poles in the integrand 
-@c in the interval of integration. If there are, then the integral is evaluated
-@c appropriately as a principal value integral. If intanalysis is @code{false}, 
-@c this check is not performed and integration is done assuming there are no 
-@c poles.
-
 Hat @code{intanalysis} den Wert @code{true}, sucht Maxima nach Polen in einem 
 Integranden.  Existieren solche, wird der Cauchysche Hauptwert des Integrals
 bestimmt.  Hat @code{intanalysis} den Wert @code{false}, wird die Integration
 unter der Annahme ausgef@"uhrt, dass das Integral keine Pole im 
 Integrationsbereich hat.
 
-@c See also @code{ldefint}.
-
 Siehe auch @mrefdot{ldefint}
 
 Beispiele:
 
-@c Maxima can solve the following integrals, when @code{intanalysis} is set to
-@c @code{false}:
-
-Maxima kann die folgende Integral l@"osen, wenn @code{intanalysis} den Wert
+Maxima kann das folgende Integral l@"osen, wenn @code{intanalysis} den Wert
 @code{false} hat.
 
-@c ===beg===
-@c integrate(1/(sqrt(x+1)+1),x,0,1);
-@c integrate(1/(sqrt(x)+1),x,0,1),intanalysis:false;
-@c integrate(cos(a)/sqrt((tan(a))^2+1),a,-%pi/2,%pi/2);
-@c intanalysis:false$
-@c integrate(cos(a)/sqrt((tan(a))^2 +1),a,-%pi/2,%pi/2);
-@c ===end===
 @example
 (%i1) integrate(1/(sqrt(x)+1),x,0,1);
                                 1
@@ -1511,54 +1068,28 @@ The number 1 isn't in the domain of atanh
 @deffn  {Funktion} integrate (@var{expr}, @var{x})
 @deffnx {Funktion} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
 
-@c Attempts to symbolically compute the integral of @var{expr} with respect to 
-@c @var{x}. @code{integrate (@var{expr}, @var{x})} is an indefinite integral,
-@c while @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} is a definite 
-@c integral, with limits of integration @var{a} and @var{b}. The limits should 
-@c not contain @var{x}, although @code{integrate} does not enforce this 
-@c restriction. @var{a} need not be less than @var{b}. If @var{b} is equal to 
-@c @var{a}, @code{integrate} returns zero.
+Sucht die symbolische L@"osung des Integrals f@"ur den Ausdruck @var{expr} und
+der Integrationsvariablen @var{x}.  @code{integrate(@var{expr}, @var{x})} l@"ost
+das unbestimmte Integral.
+@code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})} sucht die L@"osung des
+bestimmten Integrals in den Integrationsgrenzen @var{a} und @var{b}.  Die
+Integrationsgrenzen d@"urfen die Integrationsvariable @var{x} nicht enthalten.
+F@"ur die Integrationsgrenzen muss nicht gelten @var{a} < @var{b}.  Sind die
+Integrationsgrenzen gleich, dann ist das Ergebnis der Integration Null.
 
-Sucht die symbolische L@"osung des Integrals f@"ur den Ausdruck @var{expr} f@"ur
-die Integrationsvariable @var{x}.  @code{integrate(@var{expr}, @var{x}} ist das
-unbestimmte Integral.  @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}
-sucht die L@"osung des bestimmten Integrals in den Integrationsgrenzen @var{a} 
-und @var{b}.  Die Integrationsgrenzen sollten die Integrationsvariable @var{x}
-nicht enthalten.  F@"ur die Integrationsgrenzen muss nicht gelten 
-@var{a} < @var{b}.  Sind die Integrationsgrenzen gleich, dann ist das Ergebnis
-der Integration Null.
-
-@c See @code{quad_qag} and related functions for numerical approximation of 
-@c definite integrals. See @code{residue} for computation of residues (complex 
-@c integration). See @code{antid} for an alternative means of computing  
-@c indefinite integrals.
-
-F@"ur die numerische L@"osung von Integrale siehe die Funktion @code{quad_gag} 
-und verwandte Funktionen.  Residuen eines Integranden k@"onnen mit der Funktion
-@code{residue} berechnet werden.  Einen alternativen Algorithmus f@"ur das 
-Berechnen von Integralen mit einer unbekannten Funktion bietet die Funktion 
-@code{antid}.
-
-@c The integral (an expression free of @code{integrate}) is returned if 
-@c @code{integrate} succeeds. Otherwise the return value is the noun form of 
-@c the integral (the quoted operator @code{'integrate}) or an expression 
-@c containing one or more noun forms. The noun form of @code{integrate} is 
-@c displayed with an integral sign.
+F@"ur die numerische L@"osung von Integrale siehe die Funktion
+@mref{quad_qag} und verwandte Funktionen.  Residuen eines Integranden k@"onnen
+mit der Funktion @mref{residue} berechnet werden.  Einen alternativen
+Algorithmus f@"ur das Berechnen von Integralen mit einer unbekannten Funktion
+bieten die Funktionen @mref{antid} und @mrefdot{antidiff}
 
 Findet @code{integrate} keine L@"osung wird eine Substantivform oder ein
 Ausdruck mit einer oder mehreren Substantivformen zur@"uckgegeben.
 
-@c In some circumstances it is useful to construct a noun form by hand, by 
-@c quoting @code{integrate} with a single quote, e.g., @code{'integrate 
-@c (@var{expr}, @var{x})}. For example, the integral may depend on some 
-@c parameters which are not yet computed. The noun may be applied to its 
-@c arguments by @code{ev (@var{i}, nouns)} where @var{i} is the noun form of 
-@c interest.
-
 Soll das Integral nicht sofort berechnet werden, kann die Substantivform des
 Integrals angegeben werden, zum Beispiel @code{'integrate(@var{expr}, @var{x})}.
-Die Berechnung des Integrals ist dann mit Funktion @code{ev} und dem 
-Auswertungsschalter @code{nouns} m@"oglich.
+Die Berechnung des Integrals ist dann mit Funktion @mref{ev} und dem
+Auswertungsschalter @mref{nouns} m@"oglich.
 
 @c TODO: DER FOLGENDE TEXT IST NICHT MEHR GANZ AKTUELL. UEBERSETZUNG FEHLT.
 
@@ -1594,43 +1125,22 @@ Auswertungsschalter @code{nouns} m@"oglich.
 @c without attempting heuristics first. See also @code{risch}.
 @c END EXPOSITION ON HEURISTICS
 
-@c @code{integrate} works only with functional relations represented explicitly 
-@c with the @code{f(x)} notation. @code{integrate} does not respect implicit 
-@c dependencies established by the @code{depends} function.
+Die Abh@"angigkeit der Funktionen im Integranden von Variablen muss explizit zum
+Beispiel mit @code{f(x)} angegeben werden.  @code{integrate} beachtet keine
+Abh@"angigkeit der mit den Funktion @mref{depends} definiert werden.
 
-Die Abh@"angigkeit der Funktionen im Integranden von Parametern im Integranden 
-muss explizit zum Beispiel mit @code{f(x)} angegeben werden.  @code{integrate}
-beachtet keine Abh@"angigkeit der mit den Funktion @code{depends} definiert 
-werden.
-
-@c @code{integrate} may need to know some property of a parameter in the 
-@c integrand. @code{integrate} will first consult the @code{assume} database,
-@c and, if the variable of interest is not there, @code{integrate} will ask the 
-@c user. Depending on the question, suitable responses are @code{yes;} or 
-@c @code{no;}, or @code{pos;}, @code{zero;}, or @code{neg;}.
-
-Ben@"otigt @code{integrate} Informationen zu einem Parameter, die nicht aus 
-Maximas Datenbank abgeleitet werden k@"onnen, wird der Nutzer nach den fehlenden
+Ben@"otigt @code{integrate} Informationen zu einem Parameter, die nicht aus dem
+aktuellen Kontext abgeleitet werden k@"onnen, wird der Nutzer nach den fehlenden
 Informationen gefragt.
-
-@c @code{integrate} is not, by default, declared to be linear. See 
-@c @code{declare} and @code{linear}.
 
 @code{integrate} ist standardm@"a@ss{}ig nicht als linear deklariert.  Siehe
 @mref{declare} und @mrefdot{linear}
 
-@c @code{integrate} attempts integration by parts only in a few special cases.
-
-Nur in einigen speziellen F@"allen versucht @code{integrate} eine partielle
-Integration anzuwenden.
+Nur in einigen speziellen F@"allen wendet @code{integrate} die Methode der
+partiellen Integration an.
 
 Beispiele:
 
-@itemize @bullet
-@c @item
-@c Elementary indefinite and definite integrals.
-
-@item
 Elementare unbestimmte und bestimme Integrale.
 
 @example
@@ -1661,10 +1171,6 @@ Elementare unbestimmte und bestimme Integrale.
 @end group
 @end example
 
-@c @item
-@c Use of @code{assume} and interactive query.
-
-@item
 Gebrauch von @code{assume} und interaktive Fragen.
 
 @example
@@ -1685,12 +1191,6 @@ neg;
 @end group
 @end example
 
-@c @item
-@c Change of variable. There are two changes of variable in this example: one 
-@c using a derivative established by @code{gradef}, and one using the derivation
-@c @code{diff(r(x))} of an unspecified function @code{r(x)}.
-
-@item
 Substitution der Integrationsvariablen.  In diesem Beispiel werden zwei 
 verschiedene Substitutionen vorgenommen.  Zuerst wird eine Ableitung der 
 Funktion mit der Funktion @code{gradef} definiert.  Die andere nutzt die 
@@ -1698,7 +1198,7 @@ Ableitung @code{diff(r(x))} einer unbekannten Funktion @code{r(x)}.
 
 @example
 @group
-(%i3) gradef (q(x), sin(x**2));
+(%i3) gradef (q(x), sin(x^2));
 (%o3)                         q(x)
 @end group
 @group
@@ -1715,16 +1215,8 @@ Ableitung @code{diff(r(x))} einer unbekannten Funktion @code{r(x)}.
 @end group
 @end example
 
-@c @item
-@c Return value contains the @code{'integrate} noun form. In this example, 
-@c Maxima can extract one factor of the denominator of a rational function, but 
-@c cannot factor the remainder or otherwise find its integral. @code{grind} 
-@c shows the noun form @code{'integrate} in the result. See also 
-@c @code{integrate_use_rootsof} for more on integrals of rational functions.
-
-@item
 Die L@"osung enth@"alt eine Substantivform f@"ur das Integral einer rationalen 
-Funktion.  Siehe auch @code{integrate_use_rootsof} f@"ur Informationen zu
+Funktion.  Siehe auch @mref{integrate_use_rootsof} f@"ur Informationen zu
 Integralen von rationalen Funktionen.
 
 @example
@@ -1749,18 +1241,10 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 @end group
 @end example
 
-@c @item
-@c Defining a function in terms of an integral. The body of a function is not 
-@c evaluated when the function is defined. Thus the body of @code{f_1} in this 
-@c example contains the noun form of @code{integrate}. The quote-quote operator 
-@c @code{'@w{}'} causes the integral to be evaluated, and the result becomes 
-@c the body of @code{f_2}.
-
-@item
 Definition einer Funktion als ein Integral.  Die rechte Seite einer
 Funktionsdefinition wird nicht ausgewertet.  Daher enth@"alt die 
-Funktionsdefinition das Integral in einer Substantivform.  Der 
-@nxref{'', Quote-Quote-Operator} @code{''} erzwingt die Auswertung der
+Funktionsdefinition das Integral in einer Substantivform.  Der
+@mxref{'', Quote-Quote-Operator} @code{''} erzwingt die Auswertung der
 Substantivform.
 
 @example
@@ -1786,8 +1270,6 @@ Substantivform.
 (%o4)                          600
 @end group
 @end example
-@end itemize
-
 @end deffn
 
 @c --- 28.11.2010 DK------------------------------------------------------------
@@ -1795,27 +1277,16 @@ Substantivform.
 @defvr {Optionsvariable} integration_constant
 Standardwert: @code{%c}
 
-@c When a constant of integration is introduced by indefinite integration of an 
-@c equation, the name of the constant is constructed by concatenating 
-@c @code{integration_constant} and @code{integration_constant_counter}.
-
 Wird eine symbolische Integrationskonstante f@"ur die L@"osung eines Integrals
 ben@"otigt, erzeugt Maxima diese durch Verkettung des Symbols 
 @code{integration_constant} mit einer laufenden Nummer, die der Wert der
-Optionsvariablen @code{integration_counter} ist.
-
-@c @code{integration_constant} may be assigned any symbol.
+Optionsvariablen @mref{integration_constant_counter} ist.
 
 Der Optionsvariablen @code{integration_constant} kann ein beliebiges Symbol
 zugewiesen werden.
 
 Beispiele:
 
-@c ===beg===
-@c integrate (x^2 = 1, x);
-@c integration_constant : 'k;
-@c integrate (x^2 = 1, x);
-@c ===end===
 @example
 @group
 (%i1) integrate (x^2 = 1, x);
@@ -1836,7 +1307,6 @@ Beispiele:
                            3
 @end group
 @end example
-
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1844,30 +1314,16 @@ Beispiele:
 @defvr {Systemvariable} integration_constant_counter
 Standardwert: 0
 
-@c When a constant of integration is introduced by indefinite integration of an 
-@c equation, the name of the constant is constructed by concatenating 
-@c @code{integration_constant} and @code{integration_constant_counter}.
-
 Wird eine symbolische Integrationskonstante f@"ur die L@"osung eines Integrals
 ben@"otigt, erzeugt Maxima diese durch Verkettung des Symbols 
-@code{integration_constant} mit einer laufenden Nummer, die der Wert der
-Optionsvariablen @code{integration_counter} ist.
-
-@c @code{integration_constant_counter} is incremented before constructing the 
-@c next integration constant.
+@mref{integration_constant} mit einer laufenden Nummer, die der Wert der
+Optionsvariablen @code{integration_constant_counter} ist.
 
 Der Wert der Systemvariablen @code{integration_constant_counter} wird vor der
 Erzeugung der Integrationskonstanten erh@"oht.
 
 Beispiele:
 
-@c ===beg===
-@c integrate (x^2 = 1, x);
-@c integrate (x^2 = 1, x);
-@c integrate (x^2 = 1, x);
-@c reset (integration_constant_counter);
-@c integrate (x^2 = 1, x);
-@c ===end===
 @example
 @group
 (%i1) integrate (x^2 = 1, x);
@@ -1910,18 +1366,10 @@ Beispiele:
 @defvr {Optionsvariable} integrate_use_rootsof
 Standardwert: @code{false}
 
-@c When @code{integrate_use_rootsof} is @code{true} and the denominator of
-@c a rational function cannot be factored, @code{integrate} returns the integral
-@c in a form which is a sum over the roots (not yet known) of the denominator.
-
 Hat @code{integrate_use_rootsof} den Wert @code{true} und der Nenner einer
 rationalen Funktion kann nicht faktorisiert werden, dann gibt @code{integrate}
 ein Integral zur@"uck, das eine Summe @"uber die unbekannten Wurzeln des Nenners
-enth@"alt. 
-
-@c For example, with @code{integrate_use_rootsof} set to @code{false},
-@c @code{integrate} returns an unsolved integral of a rational function in 
-@c noun form:
+enth@"alt.
 
 Hat zum Beispiel @code{integrate_use_rootsof} den Wert @code{false}, gibt
 @code{integrate} im Folgenden ein L@"osung zur@"uck, die eine Substantivform
@@ -1940,10 +1388,6 @@ enth@"alt.
                 7                 14             7 sqrt(3)
 @end group
 @end example
-
-@c Now we set the flag to be true and the unsolved part of the integral will be 
-@c expressed as a summation over the roots of the denominator of the rational 
-@c function:
 
 Mit dem Wert @code{true} f@"ur die Optionsvariable @code{integrate_use_rootsof}
 wird das ungel@"oste Integral als eine Summe @"uber die Wurzeln des Nenners der
@@ -1971,12 +1415,6 @@ rationalen Funktion zur@"uckgegeben.
 @end group
 @end example
 
-@c Alternatively the user may compute the roots of the denominator separately,
-@c and then express the integrand in terms of these roots, e.g., 
-@c @code{1/((x - a)*(x - b)*(x - c))} or @code{1/((x^2-(a+b)*x + a*b)*(x - c))}
-@c if the denominator is a cubic polynomial. Sometimes this will help Maxima 
-@c obtain a more useful result.
-
 Alternativ kann der Nutzer die Wurzeln des Nenners separat berechnen und den
 Integranden mit Hilfe der Wurzeln ausdr@"ucken.  Zum Beispiel als 
 @code{1/((x - a)*(x - b)*(x - c))} oder @code{1/((x^2-(a+b)*x + a*b)*(x - c))}
@@ -1989,20 +1427,8 @@ Maxima in einigen F@"allen eine L@"osung f@"ur ein Integral finden.
 @anchor{laplace}
 @deffn {Funktion} laplace (@var{expr}, @var{t}, @var{s})
 
-@c Attempts to compute the Laplace transform of @var{expr} with respect to the 
-@c variable @var{t} and transform parameter @var{s}.
-
 Sucht die Laplace-Transformation des Ausdrucks @var{expr} f@"ur die 
 Integrationsvariable @var{x} und den Parameter @var{s}.
-
-@c @code{laplace} recognizes in @var{expr} the functions @code{delta}, 
-@c @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, 
-@c and @code{erf}, as well as @code{derivative}, @code{integrate}, @code{sum}, 
-@c and @code{ilt}. If laplace fails to find a transform the function 
-@c @code{specint} is called. @code{specint} can find the laplace transform for 
-@c expressions with special functions like the bessel functions @code{bessel_j}, 
-@c @code{bessel_i}, ... and can handle the @code{unit_step} function. See also 
-@c @code{specint}.
 
 @code{laplace} findet die Laplace-Transformation f@"ur Ausdr@"ucke, die die
 Funktionen @code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, 
@@ -2011,9 +1437,6 @@ Funktionen @code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos},
 Kann @code{laplace} die Laplace-Transformation nicht finden, wird die Funktion
 @code{specint} aufgerufen.  @code{specint} kann die Laplace-Transformation f@"ur
 eine Vielzahl von speziellen Funktion berechnen.
-
-@c If @code{specint} cannot find a solution too, a noun @code{laplace} is 
-@c returned.
 
 Findet auch @code{specint} keine L@"osung ist das Ergebnis eine Substantivform.
 
@@ -2029,35 +1452,18 @@ Findet auch @code{specint} keine L@"osung ist das Ergebnis eine Substantivform.
 @c solution and eliminate the constants by solving the general solution for them
 @c and substituting their values back.
 
-@c @code{laplace} recognizes convolution integrals of the form
-@c @code{integrate (f(x) * g(t - x), x, 0, t)};
-@c other kinds of convolutions are not recognized.
-
 @code{laplace} erkennt die Faltung von Funktionen der Form
 @code{integrate (f(x) * g(t - x), x, 0, t)}.  Andere Faltungen werden nicht
 erkannt.
 
-@c Functional relations must be explicitly represented in @var{expr};
-@c implicit relations, established by @code{depends}, are not recognized.
-@c That is, if @var{f} depends on @var{x} and @var{y}, @code{f (x, y)} must 
-@c appear in @var{expr}.
-
-Funktionale Abh@"angigkeiten von Variablen m@"ussen explizit angegeben werden. 
-@code{laplace} erkennt keine Abh@"angigkeiten die mit der Funktion 
-@code{depends} definiert wurden.  Eine Funktion, die von den Variablen @var{x} 
+Funktionale Abh@"angigkeiten von Variablen m@"ussen explizit angegeben werden.
+@code{laplace} erkennt keine Abh@"angigkeiten, die mit der Funktion 
+@mref{depends} definiert wurden.  Eine Funktion die von den Variablen @var{x} 
 abh@"angt, muss als @code{f(x)} im Ausdruck @var{expr} auftreten.
 
-@c See also @code{ilt}, the inverse Laplace transform.
-
-Siehe auch @mrefcomma{ilt} f@"ur die Inverse Laplace-Transformation.
+Siehe auch @mref{ilt} f@"ur die Inverse Laplace-Transformation.
 
 Beispiele:
-
-@c GENERATED FROM THE FOLLOWING:
-@c laplace (exp (2*t + a) * sin(t) * t, t, s);
-@c laplace ('diff (f (x), x), x, s);
-@c diff (diff (delta (t), t), t);
-@c laplace (%, t, s);
 
 @example
 (%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
@@ -2115,7 +1521,6 @@ Beispiele:
                         (s - %i) (s + %i) (%e      - 1)
 
 @end example
-
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -2124,44 +1529,27 @@ Beispiele:
 @anchor{ldefint}
 @deffn {Funktion} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-@c Attempts to compute the definite integral of @var{expr} by using @code{limit}
-@c to evaluate the indefinite integral of @var{expr} with respect to @var{x} at 
-@c the upper limit @var{b} and at the lower limit @var{a}. If it fails to 
-@c compute the definite integral, @code{ldefint} returns an expression 
-@c containing limits as noun forms.
-
-Sucht die L@"osung des bestimmten Integrals f@"ur den Integranden @var{expr}. 
+Sucht die L@"osung des bestimmten Integrals f@"ur den Integranden @var{expr}.
 @code{ldefinit} bestimmt die Stammfunktion und sucht die Grenzwerte mit der
 Funktion @code{limit} an den Integrationsgrenzen @var{a} und @var{b}.  Kann ein
 Grenzwert nicht ermittelt werden, enth@"alt das Ergebnis die Substantivform
 des Grenzwertes.
-
-@c @code{ldefint} is not called from @code{integrate}, so executing 
-@c @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a different 
-@c result than @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
-@c @code{ldefint} always uses the same method to evaluate the definite integral,
-@c while @code{integrate} may employ various heuristics and may recognize some 
-@c special cases.
 
 @code{ldefint} wird nicht von der Funktion @code{integrate} aufgerufen.  Daher
 kann @code{ldefint} ein von @code{integrate} verschiedenes Ergebnis haben.
 @code{ldefint} verwendet immer denselben Algorithmus um eine L@"osung zu finden. 
 Dagegen wendet @code{integrate} verschiedene Algorithmen an, um nach einer
 L@"osung zu suchen.
-
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{residue}
 @deffn {Funktion} residue (@var{expr}, @var{z}, @var{z_0})
 
-@c Computes the residue in the complex plane of the expression @var{expr} when 
-@c the variable @var{z} assumes the value @var{z_0}.  The residue is the 
-@c coefficient of @code{(@var{z} - @var{z_0})^(-1)} in the Laurent series
-@c for @var{expr}.
-
 Berechnet das Residuum f@"ur den Ausdruck @var{expr}, wenn die Variable @var{z}
 gegen den Wert @var{z_0} geht.
+
+Beispiele:
 
 @example
 @group
@@ -2178,31 +1566,20 @@ gegen den Wert @var{z_0} geht.
                                 6
 @end group
 @end example
-
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{risch}
 @deffn {Funktion} risch (@var{expr}, @var{x})
 
-@c Integrates @var{expr} with respect to @var{x} using the transcendental case 
-@c of the Risch algorithm.  (The algebraic case of the Risch algorithm has not 
-@c been implemented.)  This currently handles the cases of nested exponentials 
-@c and logarithms which the main part of @code{integrate} can't do.  
-@c @code{integrate} will automatically apply @code{risch} if given these cases.
-
 Nutzt den transzendenten Risch-Algorithmus f@"ur die Integration des
 Ausdruck @var{expr} und der Integrationsvariable @var{x}.  Der algebraische
 Risch-Algorithmus ist nicht implementiert.  Der transzendente Risch-Algorithmus
 behandelt Integranden mit Exponential- und Logarithmusfunktionen.  Der 
-Risch-Algorithmus wird von @code{integrate} aufgerufen, wenn @code{integrate}
+Risch-Algorithmus wird von @mref{integrate} aufgerufen, wenn @code{integrate}
 keine Stammfunktion finden kann.
 
-@c @code{erfflag}, if @code{false}, prevents @code{risch} from introducing the 
-@c @code{erf} function in the answer if there were none in the integrand to 
-@c begin with.
-
-Hat @code{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
+Hat @mref{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
 keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
 
 @example
@@ -2220,7 +1597,6 @@ keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
 (%o2)                       x  erf(x)
 @end group
 @end example
-
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -2229,11 +1605,8 @@ keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
 @anchor{tldefint}
 @deffn {Funktion} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-@c Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
-
 Entspricht der Funktion @code{ldefint} mit dem Wert @code{true} f@"ur die 
 Optionsvariable @code{tlimswitch}.
-
 @end deffn
 
 @footnotestyle end
@@ -2241,17 +1614,10 @@ Optionsvariable @code{tlimswitch}.
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in QUADPACK, Funktionen und Variablen f@"ur QUADPACK, Funktionen und Variablen der Integration, Integration
 @subsection Einf@"uhrung in QUADPACK
+@c -----------------------------------------------------------------------------
 
 @c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM 
 @c http://www.netlib.org/slatec/src/qpdoc.f
-
-@c QUADPACK is a collection of functions for the numerical computation of 
-@c one-dimensional definite integrals. It originated from a joint project of
-@c R. Piessens @footnote{Applied Mathematics and Programming Division, K.U. 
-@c Leuven}, E. de Doncker @footnote{Applied Mathematics and Programming 
-@c Division, K.U. Leuven}, C. Ueberhuber @footnote{Institut f@"ur Mathematik, 
-@c T.U. Wien}, and D. Kahaner @footnote{National Bureau of Standards, 
-@c Washington, D.C., U.S.A}.
 
 QUADPACK ist eine Sammlung von Funktionen f@"ur die numerische Berechnung von
 eindimensionalen bestimmten Integralen.  QUADPACK hat den Ursprung in einem 
@@ -2261,39 +1627,19 @@ Division, K.U. Leuven}, C. Ueberhuber @footnote{Institut f@"ur Mathematik, T.U.
 Wien}, und D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., 
 U.S.A}.
 
-@c The QUADPACK library included in Maxima is an automatic translation (via the 
-@c program @code{f2cl}) of the Fortran source code of QUADPACK as it appears in
-@c the SLATEC Common Mathematical Library, Version 4.1 
-@c @footnote{@url{http://www.netlib.org/slatec}}. The SLATEC library is dated 
-@c July 1993, but the QUADPACK functions were written some years before. There 
-@c is another version of QUADPACK at Netlib 
-@c @footnote{@url{http://www.netlib.org/quadpack}}; it is not clear how that 
-@c version differs from the SLATEC version.
-
 Die QUADPACK Bibliothek, die in Maxima enthalten ist, ist eine automatische
 @"Ubersetzung des Fortran Quellcodes mit dem Programm @code{f2cl}, wie er in
 der SLATEC Common Mathematical Library, Version 4.1 
 @footnote{@url{http://www.netlib.org/slatec}} vorliegt.  Die SLATEC Bibliothek
 datiert auf Juli 1993.  Die QUADPACK Funktionen wurden bereits einige Jahre
 fr@"uher programmiert.  Es gibt eine weitere Version von QUADPACK bei Netlib
-@footnote{@url{http://www.netlib.org/quadpack}}. Es ist jedoch unklar worin sich
-diese von der SLATEC Version unterscheidet.
-
-@c The QUADPACK functions included in Maxima are all automatic, in the sense 
-@c that these functions attempt to compute a result to a specified accuracy,
-@c requiring an unspecified number of function evaluations. Maxima's Lisp 
-@c translation of QUADPACK also includes some non-automatic functions, but they 
-@c are not exposed at the Maxima level.
+@footnote{@url{http://www.netlib.org/quadpack}}.  Es ist jedoch unklar worin
+sich diese von der SLATEC Version unterscheidet.
 
 Alle QUADPACK-Funktionen versuchen automatisch ein bestimmtes Integral numerisch
 innerhalb eine spezifierten Genauigkeit zu berechnen.  Die @"Ubersetzung nach
 Lisp enth@"alt einige weitere nicht-automatische Funktionen, die jedoch nicht
 als Maxima Funktionen zur Verf@"ugung stehen.
-
-@c Further information about QUADPACK can be found in the QUADPACK book
-@c @footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. 
-@c Kahaner. @i{QUADPACK: A Subroutine Package for Automatic Integration.}
-@c Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
 
 Weitere Informationen @"uber QUADPACK k@"onnen in dem QUADPACK-Buch
 @footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. 
@@ -2302,60 +1648,31 @@ Berlin: Springer-Verlag, 1983, ISBN 0387125531.} nachgelesen werden.
 
 @c -----------------------------------------------------------------------------
 @subsubheading @"Ubersicht
+@c -----------------------------------------------------------------------------
 
 @table @code
-@c @item quad_qag
-@c Integration of a general function over a finite interval. @code{quad_qag} 
-@c implements a simple globally adaptive integrator using the strategy of Aind 
-@c (Piessens, 1973). The caller may choose among 6 pairs of Gauss-Kronrod 
-@c quadrature formulae for the rule evaluation component. The high-degree rules 
-@c are suitable for strongly oscillating integrands.
-
 @item quad_qag
-Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
-@code{quad_qag} implementiert eine globalen adaptiven Integrator auf
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
+@mref{quad_qag} implementiert eine globalen adaptiven Integrator auf
 Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
 Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
 h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
 
-@c @item quad_qags
-@c Integration of a general function over a finite interval. @code{quad_qags} 
-@c implements globally adaptive interval subdivision with extrapolation (de 
-@c Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
-
 @item quad_qags
-Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
-Die Funktion @code{quad_qags} implementiert die Strategie einer globalen   
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
+Die Funktion @mref{quad_qags} implementiert die Strategie einer globalen   
 adaptiven Unterteilung des Integrationsintervalls mit Extrapolation (de Doncker,
 1978).  Zus@"atzlich wird versucht, die Konvergenz der Integralapproximation mit
 Hilfe des Epsilon-Algorithmus (Wynn, 1956) zu beschleunigen.  Dies f@"uhrt zum 
 Beispiel bei Integranden mit Singularit@"aten, deren Lage und Typ unbekannt 
 sind, zu einer Effizienzsteigerung.
 
-@c @item quad_qagi
-@c Integration of a general function over an infinite or semi-infinite interval.
-@c The interval is mapped onto a finite interval and then the same strategy as 
-@c in @code{quad_qags} is applied.
-
 @item quad_qagi
-Integration einer allgemeinen Funktion @"uber ein unendliches oder 
-halb-un@-end@-lich@-es Intervall.  Das Intervall wird auf ein endliches 
-Intervall transformiert.  Das transformierte Integrationsproblem wird dann mit 
-einer geringf@"ugig modifizierten Algorithmus wie in @code{quad_qags} gel@"ost.
-
-@c @item quad_qawo
-@c @ifnottex
-@c Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a 
-@c finite interval, where @math{omega} is a constant.
-@c @end ifnottex
-@c @tex
-@c Integration of $\cos\left(\omega \, x\right) \, f\left(x\right)$ or
-@c $\sin\left(\omega \, x\right) \, f\left(x\right)$ over a finite interval,
-@c where $\omega$ is a constant.
-@c @end tex
-@c The rule evaluation component is based on the modified Clenshaw-Curtis 
-@c technique. @code{quad_qawo} applies adaptive subdivision with extrapolation, 
-@c similar to @code{quad_qags}.
+Die Funktion @mref{quad_qagi} f@"uhrt die Integration einer allgemeinen Funktion
+@"uber ein unendliches oder halb-un@-end@-lich@-es Intervall aus.  Das Intervall
+wird auf ein endliches Intervall transformiert.  Das transformierte
+Integrationsproblem wird dann mit einer geringf@"ugig modifizierten Algorithmus
+wie in @mref{quad_qags} gel@"ost.
 
 @item quad_qawo
 @ifnottex
@@ -2369,51 +1686,26 @@ $\cos\left(\omega \, x\right) \, f\left(x\right)$ oder
 $\sin\left(\omega \, x\right) \, f\left(x\right)$ @"uber ein endliches 
 Intervall, wobei $\omega$ eine Konstante ist.
 @end tex
-Der Algorithmus zur Integration basiert auf eine modifizierte 
+Der Algorithmus der Funktion @mref{quad_qawo} zur basiert auf eine modifizierte
 Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung des
-Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem 
-Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die 
+Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem
+Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die
 Konvergenz der Integralapproximation mit Hilfe des Epsilon-Algorithmus (Wynn, 
 1956) zu beschleunigen.
 
-@c @item quad_qawf
-@c Calculates a Fourier cosine or Fourier sine transform on a semi-infinite 
-@c interval. The same approach as in @code{quad_qawo} is applied on successive 
-@c finite intervals, and convergence acceleration by means of the Epsilon 
-@c algorithm (Wynn, 1956) is applied to the series of the integral 
-@c contributions.
-
 @item quad_qawf
-Berechnet die Sinus- oder Kosinus-Fouriertransformation @"uber ein 
-halb-un@-end@-lich@-es Intervall.  Dabei wird die global adaptive Routine
-@code{quad_qawo} sukzessive auf endliche Teilintervalle angewendet.  Zur
-Konvergenzbeschleunigung der resultierenden alternierenden Reihe wird dann
-der Epsilon-Algorithmus (Wynn, 1956) verwendet.
-
-@c @item quad_qaws
-@c @ifnottex
-@c Integration of @math{w(x) f(x)} over a finite interval @math{[a, b]}, where 
-@c @math{w} is a function of the form @math{(x - a)^alpha (b - x)^beta v(x)}
-@c and @math{v(x)} is 1 or @math{log(x - a)} or @math{log(b - x)} or 
-@c @math{log(x - a) log(b - x)}, and @math{alpha > -1} and @math{beta > -1}.
-@c @end ifnottex
-@c @tex
-@c Integration of $w\left(x\right) \, f\left(x\right)$ over a finite interval
-@c $\left[a, b\right]$, where $w$ is a function of the form
-@c $\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$
-@c and $v\left(x\right)$ is $1$ or $\log\left(x - a\right)$ or 
-@c $\log\left(b - x\right)$ or $\log\left(x - a\right) \, \log\left(b - 
-@c x\right)$, and $\alpha > -1$ and $\beta > -1$.
-@c @end tex
-@c A globally adaptive subdivision strategy is applied, with modified 
-@c Clenshaw-Curtis integration on the subintervals which contain @math{a} or 
-@c @math{b}.
+Die Funktion @mref{quad_qawf} berechnet die Sinus- oder
+Kosinus-Fou@-rier@-trans@-for@-ma@-tion @"uber ein halb-un@-end@-lich@-es
+Intervall.  Dabei wird die global adaptive Routine @mref{quad_qawo} sukzessive
+auf endliche Teilintervalle angewendet.  Zur Konvergenzbeschleunigung der
+resultierenden alternierenden Reihe wird dann der Epsilon-Algorithmus
+(Wynn, 1956) verwendet.
 
 @item quad_qaws
 @ifnottex
 Integration von @math{w(x) f(x)} @"uber ein endliches Intervall @math{[a, b]},
-wobei @math{w} eine Funktion der Form @math{(x - a)^alpha (b - x)^beta v(x)} ist
-und @math{v(x)} ist 1 oder @math{log(x - a)} oder @math{log(b - x)} oder 
+wobei @math{w} eine Funktion der Form @math{(x - a)^alpha (b - x)^beta v(x)}
+ist und @math{v(x)} ist 1 oder @math{log(x - a)} oder @math{log(b - x)} oder
 @math{log(x - a) log(b - x)}, und @math{alpha > -1} und @math{beta > -1}.
 @end ifnottex
 @tex
@@ -2424,50 +1716,37 @@ und $v\left(x\right)$ ist $1$ oder $\log\left(x - a\right)$ oder
 $\log\left(b - x\right)$ oder $\log\left(x - a\right) \, \log\left(b - 
 x\right)$, und $\alpha > -1$ und $\beta > -1$.
 @end tex
-@code{quad_qaws} ist speziell f@"ur die effiziente Berechnung von Integralen
+@mref{quad_qaws} ist speziell f@"ur die effiziente Berechnung von Integralen
 @"uber endliche Intervalle mit algebraischen oder algebraisch-logarithmischen
 Endpunktsingularit@"at konzipiert.  Eine globale adaptive Strategie mit 
-Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle, die
-keinen Endpunkt des Integrationsintervalls enthalten, kommt ein 
+Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle,
+die keinen Endpunkt des Integrationsintervalls enthalten, kommt ein
 Gau@ss{}-Kronrod-Formelpaar zur Anwendung.  Auf Randintervallen kommen 
 modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
 
-@c @item quad_qawc
-@c Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite 
-@c interval @math{(a, b)} and specified @math{c}. The strategy is globally 
-@c adaptive, and modified Clenshaw-Curtis integration is used on the subranges
-@c which contain the point @math{x = c}.
-
 @item quad_qawc
-Berechnet den Cauchyschen Hauptwert von @math{f(x)(x - c)} @"uber ein endliches
-Intervall @math{(a, b)} und dem Wert @math{c}.  Es wird eine modifizierte
-Clenshaw-Curtis-Formel angewendet, wenn @math{c} im Teilbereich enthalten ist,
-andernfalls wird eine globale adaptive Strategie mit einem 
-Gau@ss{}-Kronrod-Formelpaar angewendet.
+Die Funktion @mref{quad_qawc} berechnet den Cauchyschen Hauptwert von
+@math{f(x)(x - c)} @"uber ein endliches Intervall @math{(a, b)} und dem Wert
+@math{c}.  Es wird eine modifizierte Clenshaw-Curtis-Formel angewendet, wenn
+@math{c} im Teilbereich enthalten ist, andernfalls wird eine globale adaptive
+Strategie mit einem Gau@ss{}-Kronrod-Formelpaar angewendet.
 @end table
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur QUADPACK, , Einf@"uhrung in QUADPACK, Integration
 @subsection Funktionen und Variablen f@"ur QUADPACK
+@c -----------------------------------------------------------------------------
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
 @anchor{quad_qag}
 @deffn  {Funktion} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c Integration of a general function over a finite interval. @code{quad_qag} 
-@c implements a simple globally adaptive integrator using the strategy of Aind 
-@c (Piessens, 1973). The caller may choose among 6 pairs of Gauss-Kronrod 
-@c quadrature formulae for the rule evaluation component. The high-degree rules 
-@c are suitable for strongly oscillating integrands.
-
-Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
 @code{quad_qag} implementiert eine globalen adaptiven Integrator auf
 Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
 Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
 h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
-
-@c @code{quad_qag} computes the integral
 
 @code{quad_qag} berechnet das Integral
 
@@ -2478,129 +1757,60 @@ h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-@c The function to be integrated is @var{f(x)}, with dependent variable @var{x},
-@c and the function is to be integrated between the limits @var{a} and @var{b}.
-@c @var{key} is the integrator to be used and should be an integer between 1 and
-@c 6, inclusive.  The value of @var{key} selects the order of the Gauss-Kronrod 
-@c integration rule. High-order rules are suitable for strongly oscillating 
-@c integrands.
-
 Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird im 
-Integrationsintervall @var{a} und @var{b} integriert.  @var{key} w@"ahlt den Grad
-der Gau@ss{}-Kronrod-Quadratorformel aus und kann Werte von 1 bis 6 annehmen.
-Ein gr@"o@ss{}erer Grad ist geeignet f@"ur stark oszillierende Integranden.
-
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
+Integrationsintervall @var{a} und @var{b} integriert.  @var{key} w@"ahlt den
+Grad der Gau@ss{}-Kronrod-Quadratorformel aus und kann Werte von 1 bis 6
+annehmen.  Ein gr@"o@ss{}erer Grad ist geeignet f@"ur stark oszillierende
+Integranden.
 
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c The numerical integration is done adaptively by subdividing the integration 
-@c region into sub-intervals until the desired accuracy is achieved.
-
 Die numerische Integration wird adaptiv ausgef@"uhrt.  Der Integrationsbereich
 wird solange geteilt, bis die gew@"unschte Genauigkeit erreicht wird.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
 @table @var
-@c @item epsrel
-@c Desired relative error of approximation.  Default is 1d-8.
-
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
-
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 0.
-
 @item epsabs
 Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
 @code{0}.
-
-@c @item limit
-@c Size of internal work array.  @var{limit} is the maximum number of 
-@c subintervals to use.  Default is 200.
-
 @item limit
-Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
-ist @code{200}.
+Die maximale Zahl an Teilintervallen des adaptiven Algorithmus.  Der
+Standardwert ist @code{200}.
 @end table
-
-@c @code{quad_qag} returns a list of four elements:
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@c @item
-@c an approximation to the integral,
-
 @item eine numerische N@"aherung des Integrals,
-
-@c @item
-@c the estimated absolute error of the approximation,
-
 @item gesch@"atzer absoluter Fehler der N@"aherung,
-
-@c @item
-@c the number integrand evaluations,
-
 @item Anzahl der Auswertungen des Integranden,
-
-@c @item
-@c an error code.
-
 @item ein Fehlercode.
 @end itemize
-
-@c The error code (fourth element of the return value) can have the values:
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@c @item 0
-@c if no problems were encountered;
-
 @item 0
 wenn kein Fehler aufgetreten ist,
-
-@c @item 1
-@c if too many sub-intervals were done;
-
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
-
-@c @item 2
-@c if excessive roundoff error is detected;
-
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
-
-@c @item 3
-@c if extremely bad integrand behavior occurs;
-
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-
-@c @item 6
-@c if the input is invalid.
-
 @item 6
 wenn die Eingabe ung@"ultig ist.
 @end table
 
 Beispiele:
 
-@c ===beg===
-@c quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
-@c integrate (x^(1/2)*log(1/x), x, 0, 1);
-@c ===end===
 @example
 @group
 (%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
@@ -2613,7 +1823,6 @@ Beispiele:
                                 9
 @end group
 @end example
-
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
@@ -2621,19 +1830,13 @@ Beispiele:
 @deffn  {Funktion} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c Integration of a general function over a finite interval. @code{quad_qags} 
-@c implements globally adaptive interval subdivision with extrapolation (de 
-@c Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
-
-Integration einer allgemeinen Funktion @"uber ein endliches Intervall. 
+Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
 @code{quad_qags} implementiert die Strategie einer globalen adaptiven 
 Unterteilung des Integrationsintervalls mit Extrapolation (de Doncker, 1978).
 Zus@"atzlich wird versucht, die Konvergenz der Integralapproximation mit Hilfe
 des Epsilon-Algorithmus (Wynn, 1956) zu beschleunigen.  Dies f@"uhrt zum 
 Beispiel bei Integranden mit Singularit@"aten, deren Lage und Typ unbekannt 
-sind, zu einer Effizienzsteigerung. 
-
-@c @code{quad_qags} computes the integral
+sind, zu einer Effizienzsteigerung.
 
 @code{quad_qags} berechnet das Integral
 
@@ -2644,116 +1847,54 @@ sind, zu einer Effizienzsteigerung.
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
-@c The function to be integrated is @var{f(x)}, with dependent variable @var{x},
-@c and the function is to be integrated between the limits @var{a} and @var{b}.
-
 Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird im 
 Integrationsintervall @var{a} und @var{b} integriert.
-
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
 
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
 @table @var
-@c @item epsrel
-@c Desired relative error of approximation.  Default is 1d-8.
-
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
-
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 0.
-
 @item epsabs
 Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
 @code{0}.
-
-@c @item limit
-@c Size of internal work array.  @var{limit} is the maximum number of 
-@c subintervals to use.  Default is 200.
-
 @item limit
-Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
-ist @code{200}.
+Die maximale Zahl an Teilintervallen des adaptiven Algorithmus.  Der
+Standardwert ist @code{200}.
 @end table
-
-@c @code{quad_qag} returns a list of four elements:
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@c @item
-@c an approximation to the integral,
-
 @item eine numerische N@"aherung des Integrals,
-
-@c @item
-@c the estimated absolute error of the approximation,
-
 @item gesch@"atzer absoluter Fehler der N@"aherung,
-
-@c @item
-@c the number integrand evaluations,
-
 @item Anzahl der Auswertungen des Integranden,
-
-@c @item
-@c an error code.
-
 @item ein Fehlercode.
 @end itemize
-
-@c The error code (fourth element of the return value) can have the values:
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@c @item 0
-@c if no problems were encountered;
-
 @item 0
 wenn kein Fehler aufgetreten ist,
-
-@c @item 1
-@c if too many sub-intervals were done;
-
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
-
-@c @item 2
-@c if excessive roundoff error is detected;
-
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
-
-@c @item 3
-@c if extremely bad integrand behavior occurs;
-
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-
-@c @item 6
-@c if the input is invalid.
-
 @item 6
 wenn die Eingabe ung@"ultig ist.
 @end table
 
 Beispiele:
 
-@c ===beg===
-@c quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
-@c ===end===
 @example
 @group
 (%i1) quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
@@ -2761,12 +1902,8 @@ Beispiele:
 @end group
 @end example
 
-@c Note that @code{quad_qags} is more accurate and efficient than 
-@c @code{quad_qag} for this integrand.
-
-@code{quad_qags} ist genauer und effiziener als @code{quad_qag} f@"ur den obigen
-Integranden.
-
+@code{quad_qags} ist genauer und effizienter als @code{quad_qag} f@"ur den
+obigen Integranden.
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
@@ -2774,16 +1911,10 @@ Integranden.
 @deffn  {Funktion} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c Integration of a general function over an infinite or semi-infinite interval.
-@c The interval is mapped onto a finite interval and then the same strategy as 
-@c in @code{quad_qags} is applied.
-
 Integration einer allgemeinen Funktion @"uber ein unendliches oder 
 halb-unendliches Intervall.  Das Intervall wird auf ein endliches Intervall 
 transformiert.  Das transformierte Integrationsproblem wird dann mit einer
 geringf@"ugig modifizierten Algorithmus wie in @code{quad_qags} gel@"ost.
-
-@code{quad_qagi} evaluates one of the following integrals
 
 @code{quad_qagi} berechnet die folgenden Integrale
 
@@ -2808,123 +1939,57 @@ $$\int_\infty^a {f(x) \, dx}$$
 $$\int_{-\infty}^\infty {f(x) \, dx}$$
 @end tex
 
-@c The function to be integrated is @var{f(x)}, with dependent variable @var{x},
-@c and the function is to be integrated over an infinite range.
-
 Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird @"uber einen
 unendlichen Bereich integriert.
-
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
 
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c One of the limits of integration must be infinity.  If not, then 
-@c @code{quad_qagi} will just return the noun form.
-
 Eine der Grenzen des Integrationsbereiches kann unendlich sein.  Ist dies nicht
 der Fall gibt @code{quad_qagi} eine Substantivform zur@"uck.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
 @table @var
-@c @item epsrel
-@c Desired relative error of approximation.  Default is 1d-8.
-
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
-
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 0.
-
 @item epsabs
 Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
 @code{0}.
-
-@c @item limit
-@c Size of internal work array.  @var{limit} is the maximum number of 
-@c subintervals to use.  Default is 200.
-
 @item limit
-Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
-ist @code{200}.
+Die maximale Zahl an Teilintervallen des adaptiven Algorithmus.  Der
+Standardwert ist @code{200}.
 @end table
-
-@c @code{quad_qag} returns a list of four elements:
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@c @item
-@c an approximation to the integral,
-
 @item eine numerische N@"aherung des Integrals,
-
-@c @item
-@c the estimated absolute error of the approximation,
-
 @item gesch@"atzer absoluter Fehler der N@"aherung,
-
-@c @item
-@c the number integrand evaluations,
-
 @item Anzahl der Auswertungen des Integranden,
-
-@c @item
-@c an error code.
-
 @item ein Fehlercode.
 @end itemize
-
-@c The error code (fourth element of the return value) can have the values:
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@c @item 0
-@c if no problems were encountered;
-
 @item 0
 wenn kein Fehler aufgetreten ist,
-
-@c @item 1
-@c if too many sub-intervals were done;
-
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
-
-@c @item 2
-@c if excessive roundoff error is detected;
-
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
-
-@c @item 3
-@c if extremely bad integrand behavior occurs;
-
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-
-@c @item 6
-@c if the input is invalid.
-
 @item 6
 wenn die Eingabe ung@"ultig ist.
 @end table
 
 Beispiele:
 
-@c ===beg===
-@c quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
-@c integrate (x^2*exp(-4*x), x, 0, inf);
-@c ===end===
 @example
 @group
 (%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
@@ -2937,7 +2002,6 @@ Beispiele:
                                32
 @end group
 @end example
-
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
@@ -2945,17 +2009,11 @@ Beispiele:
 @deffn  {Funktion} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-@c Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite 
-@c interval. The strategy is globally adaptive, and modified Clenshaw-Curtis 
-@c integration is used on the subranges which contain the point @math{x = c}.
-
 Berechnet den Cauchyschen Hauptwert von @math{f(x)(x - c)} @"uber ein endliches
 Intervall @math{(a, b)} und dem Wert @math{c}.  Es wird eine modifizierte
 Clenshaw-Curtis-Formel angewendet, wenn @math{c} im Teilbereich enthalten ist,
 andernfalls wird eine globale adaptive Strategie mit einem 
 Gau@ss{}-Kronrod-Formelpaar angewendet.
-
-@c @code{quad_qawc} computes the Cauchy principal value of
 
 @code{quad_qawc} berechnet den Cauchyschen Hauptwert von
 
@@ -2966,120 +2024,54 @@ Gau@ss{}-Kronrod-Formelpaar angewendet.
 $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
-@c using the Quadpack QAWC routine.  The function to be integrated is
-@c @code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{x}, and 
-@c the function is to be integrated over the interval @var{a} to @var{b}.
-
 Die Funktion @code{@var{f(x)}/(@var{x} - @var{c})}, die von der Variablen
 @var{x} abh@"angt, wird in den Grenzen @var{a} und @var{b} integriert.
-
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
 
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
 @table @var
-@c @item epsrel
-@c Desired relative error of approximation.  Default is 1d-8.
-
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
-
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 0.
-
 @item epsabs
 Gew@"unschter absoluter Fehler der Approximation.  Der Standardwert ist 
 @code{0}.
-
-@c @item limit
-@c Size of internal work array.  @var{limit} is the maximum number of 
-@c subintervals to use.  Default is 200.
-
 @item limit
-Die maximale Zahl an Teilinterallen des adaptiven Algorithmus.  Der Standardwert
-ist @code{200}.
+Die maximale Zahl an Teilintervallen des adaptiven Algorithmus.  Der
+Standardwert ist @code{200}.
 @end table
-
-@c @code{quad_qag} returns a list of four elements:
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
 @itemize
-@c @item
-@c an approximation to the integral,
-
 @item eine numerische N@"aherung des Integrals,
-
-@c @item
-@c the estimated absolute error of the approximation,
-
 @item gesch@"atzer absoluter Fehler der N@"aherung,
-
-@c @item
-@c the number integrand evaluations,
-
 @item Anzahl der Auswertungen des Integranden,
-
-@c @item
-@c an error code.
-
 @item ein Fehlercode.
 @end itemize
-
-@c The error code (fourth element of the return value) can have the values:
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
-@c @item 0
-@c if no problems were encountered;
-
 @item 0
 wenn kein Fehler aufgetreten ist,
-
-@c @item 1
-@c if too many sub-intervals were done;
-
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
-
-@c @item 2
-@c if excessive roundoff error is detected;
-
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
-
-@c @item 3
-@c if extremely bad integrand behavior occurs;
-
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-
-@c @item 6
-@c if the input is invalid.
-
 @item 6
 wenn die Eingabe ung@"ultig ist.
 @end table
 
 Beispiele:
 
-@c ===beg===
-@c quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
-@c            'epsrel=1d-7);
-@c integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
-@c            x, 0, 5);
-@c ===end===
 @example
 @group
 (%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
@@ -3112,7 +2104,6 @@ Principal Value
 (%o3)                    - 3.130120337415917
 @end group
 @end example
-
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
@@ -3120,19 +2111,11 @@ Principal Value
 @deffn  {Funktion} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 @deffnx {Funktion} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
-@c Calculates a Fourier cosine or Fourier sine transform on a semi-infinite 
-@c interval using the Quadpack QAWF function. The same approach as in 
-@c @code{quad_qawo} is applied on successive finite intervals, and convergence
-@c acceleration by means of the Epsilon algorithm (Wynn, 1956) is applied to the
-@c series of the integral contributions.
-
 Berechnet die Sinus- oder Kosinus-Fouriertransformation @"uber ein 
 halb-unendliches Intervall.  Dabei wird die global adaptive Routine
 @code{quad_qawo} sukzessive auf endliche Teilintervalle angewendet.  Zur
 Konvergenzbeschleunigung der resultierenden alternierenden Reihe wird dann
 der Epsilon-Algorithmus (Wynn, 1956) verwendet.
-
-@c @code{quad_qawf} computes the integral
 
 @code{quad_qawf} berechnet das Integral
 
@@ -3142,8 +2125,6 @@ der Epsilon-Algorithmus (Wynn, 1956) verwendet.
 @tex
 $$\int_a^\infty f(x) \, w(x) \, dx$$
 @end tex
-
-@c The weight function @math{w} is selected by @var{trig}:
 
 Die Gewichtsfunktion @math{w} wird mit dem Schl@"usselwort @var{trig} 
 ausgew@"ahlt:
@@ -3155,52 +2136,27 @@ ausgew@"ahlt:
 @math{w(x) = sin (omega x)}
 @end table
 
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
-
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
-Schl@"usselwortargumente sind:
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.
+Die Schl@"usselwortargumente sind:
 
 @table @var
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 1d-10.
-
 @item epsabs
 Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist 
 @code{1.0e-10}.
-
-@c @item limit
-@c Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
-@c maximum number of subintervals to use.  Default is 200.
-
 @item limit
-@code{(@var{limit} - @var{limlst})/2} ist die maxima Zahl an Teilintervallen
+@code{(@var{limit} - @var{limlst})/2} ist die maximale Zahl an Teilintervallen
 des adaptiven Algorithmus.  Der Standardwert ist @code{200}.
-
-@c @item maxp1
-@c Maximum number of Chebyshev moments. Must be greater than 0.  Default is 100.
-
 @item maxp1
 Die maximale Anzahl an Chebyshev-Gewichten.  Der Wert muss gr@"o@ss{}er als 0 
 sein.  Der Standardwert ist @code{100}.
-
-@c @item limlst
-@c Upper bound on the number of cycles.  Must be greater than or equal to 3.  
-@c Default is 10.
-
 @item limlst
 Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 3 sein.  Der Standardwert ist 10.
 @end table
-
-@c @code{quad_qawf} returns a list of four elements:
 
 @code{quad_qawf} gibt eine Liste mit vier Elementen zur@"uck:
 
@@ -3217,9 +2173,9 @@ Der Fehlercode kann die folgenden Werte annehmen:
 @item 0
 wenn kein Fehler aufgetreten ist,
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
 @item 6
@@ -3228,11 +2184,6 @@ wenn die Eingabe ung@"ultig ist.
 
 Beispiele:
 
-@c ===beg===
-@c quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
-@c integrate (exp(-x^2)*cos(x), x, 0, inf);
-@c ev (%, numer);
-@c ===end===
 @example
 @group
 (%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
@@ -3250,39 +2201,12 @@ Beispiele:
 (%o3)                   .6901942235215714
 @end group
 @end example
-
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
 @anchor{quad_qawo}
 @deffn  {Funktion} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 @deffnx {Funktion} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
-
-@c Integration of
-@c @ifnottex
-@c @math{cos (omega x) f(x)}
-@c @end ifnottex
-@c @tex
-@c $\cos \left(\omega \, x\right) \, f\left(x\right)$
-@c @end tex
-@c or
-@c @ifnottex
-@c @math{sin (omega x) f(x)}
-@c @end ifnottex
-@c @tex
-@c $\sin \left(\omega \, x\right) \, f\left(x\right)$
-@c @end tex
-@c over a finite interval, where
-@c @ifnottex
-@c @math{omega}
-@c @end ifnottex
-@c @tex
-@c $\omega$
-@c @end tex
-@c is a constant.
-@c The rule evaluation component is based on the modified Clenshaw-Curtis 
-@c technique. @code{quad_qawo} applies adaptive subdivision with extrapolation, 
-@c similar to @code{quad_qags}.
 
 @ifnottex
 Berechnung von Integralen mit den trigonometrischen Gewichtsfunktionen 
@@ -3296,13 +2220,11 @@ $\sin\left(\omega \, x\right) \, f\left(x\right)$ @"uber ein endliches
 Intervall, wobei $\omega$ eine Konstante ist.
 @end tex
 Der Algorithmus basiert auf eine modifizierte 
-Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung des
-Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem 
+Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung
+des Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem
 Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die 
 Konvergenz der Integralapproximation mit Hilfe des Epsilon-Algorithmus zu 
 beschleunigen.
-
-@c @code{quad_qawo} computes the integral using the Quadpack QAWO routine:
 
 @code{quad_qawo} berechnet das Integral
 
@@ -3312,8 +2234,6 @@ beschleunigen.
 @tex
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
-
-@c The weight function @math{w} is selected by @var{trig}:
 
 Die Gewichtsfunktion @math{w} wird mit dem Schl@"usselwort @var{trig} 
 ausgew@"ahlt:
@@ -3335,43 +2255,21 @@ $w\left(x\right) = \sin \left(\omega \, x\right)$
 @end tex
 @end table
 
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
-
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
-Schl@"usselwortargumente sind:
-
-@c @table @var
-@c @item epsrel
-@c Desired relative error of approximation.  Default is 1d-8.
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 0.
-@c @item limit
-@c Size of internal work array.  @var{limit}/2 is the
-@c maximum number of subintervals to use.  Default is 200.
-@c @item maxp1
-@c Maximum number of Chebyshev moments.  Must be greater than 0.  Default
-@c is 100.
-@c @item limlst
-@c Upper bound on the number of cycles.  Must be greater than or equal to
-@c 3.  Default is 10.
-@c @end table
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.
+Die Schl@"usselwortargumente sind:
 
 @table @var
 @item epsrel
-Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert is 
+Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert ist
 @code{1.0e-8}
 @item epsabs
 Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist @code{0}.
 @item limit
-@code{@var{limit}/2} ist die maxima Zahl an Teilintervallen des adaptiven 
+@code{@var{limit}/2} ist die maximale Zahl an Teilintervallen des adaptiven 
 Algorithmus.  Der Standardwert ist @code{200}.
 @item maxp1
 Die maximale Anzahl an Chebyshev-Gewichten.  Der Wert muss gr@"o@ss{}er als 0 
@@ -3380,18 +2278,6 @@ sein.  Der Standardwert ist @code{100}.
 Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 3 sein.  Der Standardwert ist 10.
 @end table
-
-@c @code{quad_qawo} returns a list of four elements:
-@c @itemize
-@c @item
-@c an approximation to the integral,
-@c @item
-@c the estimated absolute error of the approximation,
-@c @item
-@c the number integrand evaluations,
-@c @item
-@c an error code.
-@c @end itemize
 
 @code{quad_qawo} gibt eine Liste mit vier Elementen zur@"uck:
 
@@ -3402,29 +2288,15 @@ Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 @item ein Fehlercode.
 @end itemize
 
-@c The error code (fourth element of the return value) can have the values:
-@c @table @code
-@c @item 0
-@c no problems were encountered;
-@c @item 1
-@c too many sub-intervals were done;
-@c @item 2
-@c excessive roundoff error is detected;
-@c @item 3
-@c extremely bad integrand behavior occurs;
-@c @item 6
-@c if the input is invalid.
-@c @end table
-
 Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
 @item 0
 wenn kein Fehler aufgetreten ist,
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
 @item 6
@@ -3433,12 +2305,6 @@ wenn die Eingabe ung@"ultig ist.
 
 Beispiele:
 
-@c ===beg===
-@c quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
-@c rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
-@c           x, 0, inf));
-@c ev (%, alpha=2, numer);
-@c ===end===
 @example
 @group
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
@@ -3458,18 +2324,12 @@ Beispiele:
 (%o3)                     1.376043390090716
 @end group
 @end example
-
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
 @anchor{quad_qaws}
 @deffn  {Funktion} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-
-@c Integration of @math{w(x) f(x)} over a finite interval, where @math{w(x)} is 
-@c a certain algebraic or logarithmic function. A globally adaptive subdivision 
-@c strategy is applied, with modified Clenshaw-Curtis integration on the 
-@c subintervals which contain the endpoints of the interval of integration.
 
 @ifnottex
 Integration von @math{w(x) f(x)} @"uber ein endliches Intervall @math{[a, b]},
@@ -3493,8 +2353,6 @@ keinen Endpunkt des Integrationsintervalls enthalten, kommt ein
 Gau@ss{}-Kronrod-Formelpaar zur Anwendung.  Auf Randintervallen kommen 
 modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
 
-@c @code{quad_qaws} computes the integral using the Quadpack QAWS routine:
-
 @code{quad_qaws} berechnet das Integral
 
 @ifnottex
@@ -3503,8 +2361,6 @@ modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
 @tex
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
-
-@c The weight function @math{w} is selected by @var{wfun}:
 
 Die Gewichtsfunktion wird mit dem Schl@"usselwort @var{wfun} ausgew@"ahlt:
 
@@ -3542,32 +2398,16 @@ $w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \,
 @end tex
 @end table
 
-@c The integrand may be specified as the name of a Maxima or Lisp function or 
-@c operator, a Maxima lambda expression, or a general Maxima expression.
-
 Der Integrand kann eine Maxima-Funktion, eine Lisp-Funktion, ein Operator, ein
 Maxima-Lambda-Ausdruck oder ein allgemeiner Maxima-Ausdruck sein.
 
-@c The keyword arguments are optional and may be specified in any order.
-@c They all take the form @code{key=val}.  The keyword arguments are:
-
-Die Schl@"usselwortargumente sind optional und k@"onnen in belieger Reihenfolge
-angegeben werden.  Sie haben die Form @code{key=val}.  Die 
-Schl@"usselwortargumente sind:
-
-@c @table @var
-@c @item epsrel
-@c Desired relative error of approximation.  Default is 1d-8.
-@c @item epsabs
-@c Desired absolute error of approximation.  Default is 0.
-@c @item limit
-@c Size of internal work array.  @var{limit}is the
-@c maximum number of subintervals to use.  Default is 200.
-@c @end table
+Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
+Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.
+Die Schl@"usselwortargumente sind:
 
 @table @var
 @item epsrel
-Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert is 
+Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert ist
 @code{1.0e-8}
 @item epsabs
 Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist @code{0}.
@@ -3575,18 +2415,6 @@ Gew@"unschter absoluter Fehler der N@"aherung.  Der Standardwert ist @code{0}.
 Maximale Anzahl der Teilintervalle des adaptiven Algorithmus.  Der Standardwert
 ist @code{200}.
 @end table
-
-@c @code{quad_qaws} returns a list of four elements:
-@c @itemize
-@c @item
-@c an approximation to the integral,
-@c @item
-@c the estimated absolute error of the approximation,
-@c @item
-@c the number integrand evaluations,
-@c @item
-@c an error code.
-@c @end itemize
 
 @code{quad_qaws} gibt eine Liste mit vier Elementen zur@"uck:
 
@@ -3597,29 +2425,15 @@ ist @code{200}.
 @item ein Fehlercode.
 @end itemize
 
-@c The error code (fourth element of the return value) can have the values:
-@c @table @code
-@c @item 0
-@c no problems were encountered;
-@c @item 1
-@c too many sub-intervals were done;
-@c @item 2
-@c excessive roundoff error is detected;
-@c @item 3
-@c extremely bad integrand behavior occurs;
-@c @item 6
-@c if the input is invalid.
-@c @end table
-
 Der Fehlercode kann die folgenden Werte annehmen:
 
 @table @code
 @item 0
 wenn kein Fehler aufgetreten ist,
 @item 1
-wenn zuviele Teilintervalle notwendig wurden,
+wenn zu viele Teilintervalle notwendig wurden,
 @item 2
-wenn @"ubem@"a@ss{}iger Rundungfehle aufgetreten sind,
+wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
 @item 3
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
 @item 6
@@ -3628,12 +2442,6 @@ wenn die Eingabe ung@"ultig ist.
 
 Beispiele:
 
-@c ===beg===
-@c quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
-@c            'epsabs=1d-9);
-@c integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
-@c ev (%, alpha=4, numer);
-@c ===end===
 @example
 @group
 (%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
@@ -3657,10 +2465,10 @@ pos;
 (%o3)                     8.750097361672829
 @end group
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@page
 @node Differentialgleichungen, Einf@"uhrung in Differentialgleichungen, Integration, Analysis
 @section Differentialgleichungen
 
@@ -3673,33 +2481,44 @@ pos;
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in Differentialgleichungen, Funktionen und Variablen f@"ur Differentialgleichungen, Differentialgleichungen, Differentialgleichungen
 @subsection Einf@"uhrung in Differentialgleichungen
+@c -----------------------------------------------------------------------------
 
-This section describes the functions available in Maxima to obtain
-analytic solutions for some specific types of first and second-order
-equations. To obtain a numerical solution for a system of differential
-equations, see the additional package @code{dynamics}. For graphical
-representations in phase space, see the additional package
-@code{plotdf}.
+Dieses Kapitel beschreibt die Funktionen, die in Maxima verf@"ugbar sind, um
+analytische L@"osungen f@"ur verschiedene Typen von Differentialgleichungen der
+1. und 2. Ordnung zu erhalten.  Eine numerische L@"osung kann mit den Funktionen
+in @ref{dynamics} berechnet werden.  F@"ur die graphische Darstellung von
+Differentialgleichungen siehe das Paket in @ref{plotdf}.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Differentialgleichungen,  , Einf@"uhrung in Differentialgleichungen, Differentialgleichungen
 @subsection Funktionen und Variablen f@"ur Differentialgleichungen
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{bc2}
 @deffn {Funktion} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
 
-Solves a boundary value problem for a second order differential equation.
-Here: @var{solution} is a general solution to the equation, as found by
-@code{ode2}; @var{xval1} specifies the value of the independent variable
-in a first point, in the form @code{@var{x} = @var{x1}}, and @var{yval1}
-gives the value of the dependent variable in that point, in the form
-@code{@var{y} = @var{y1}}. The expressions @var{xval2} and @var{yval2}
-give the values for these variables at a second point, using the same
-form.
+@c Solves a boundary value problem for a second order differential equation.
+@c Here: @var{solution} is a general solution to the equation, as found by
+@c @code{ode2}; @var{xval1} specifies the value of the independent variable
+@c in a first point, in the form @code{@var{x} = @var{x1}}, and @var{yval1}
+@c gives the value of the dependent variable in that point, in the form
+@c @code{@var{y} = @var{y1}}. The expressions @var{xval2} and @var{yval2}
+@c give the values for these variables at a second point, using the same
+@c form.
+@c See @code{ode2} for an example of its usage.
 
-See @code{ode2} for an example of its usage.
+L@"ost das Randwertproblem einer Differentialgleichung 2.@: Ordnung.  Das
+Argument @var{solution} ist eine allgemeine L@"osung, wie sie von der Funktion
+@mref{ode2} zur@"uckgegeben wird.  @var{xval1} gibt den Wert der unabh@"angigen
+Variablen im ersten Randpunkt an.  Der Randwert wird als ein Ausdruck
+@code{@var{x} = @var{x1}} angegeben.  Das Argument @var{yval1} gibt den Wert
+der abh@"angigen Variablen in diesem Punkt an.  Der Randwert wird als
+@code{@var{y} = @var{y1}} angegeben.  Mit den Argumenten @var{xval2} und
+@var{yval2} werden die entsprechenden Werte an einem zweiten Randpunkt
+angegeben.
 
+Siehe die Funktion @mref{ode2} f@"ur Beispiele.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -3707,197 +2526,259 @@ See @code{ode2} for an example of its usage.
 @deffn  {Funktion} desolve (@var{eqn}, @var{x})
 @deffnx {Funktion} desolve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
 
-The function @code{desolve} solves systems of linear ordinary
-differential equations using Laplace transform.  Here the @var{eqn}'s
-are differential equations in the dependent variables @var{x_1}, @dots{},
-@var{x_n}.  The functional dependence of @var{x_1}, @dots{}, @var{x_n} on an
-independent variable, for instance @var{x}, must be explicitly indicated
-in the variables and its derivatives. For example, this would not be the
-correct way to define two equations:
+@c The function @code{desolve} solves systems of linear ordinary
+@c differential equations using Laplace transform.  Here the @var{eqn}'s
+@c are differential equations in the dependent variables @var{x_1}, @dots{},
+@c @var{x_n}.  The functional dependence of @var{x_1}, @dots{}, @var{x_n} on an
+@c independent variable, for instance @var{x}, must be explicitly indicated
+@c in the variables and its derivatives. For example, this would not be the
+@c correct way to define two equations:
+
+Die Funktion @code{desolve} l@"ost lineare Systeme gew@"ohnlicher
+Differentialgleichungen mit Hilfe der Methode der Laplacetransformation.  Die
+Argumente @var{eqn_i} sind die Differentialgleichungen mit den abh@"angigen
+Variablen @var{x_1}, @dots{}, @var{x_n}.  Die funktionale Abh@"angigkeit der
+Variablen @var{x_1}, @dots{}, @var{x_n} zum Beispiel von einer Variablen @var{x}
+muss explizit f@"ur die Variablen und ihrer Ableitungen angegeben werden.  Zum
+Beispiel ist sind die folgenden zwei Gleichungen keine korrekte Definition: 
 
 @example
 eqn_1: 'diff(f,x,2) = sin(x) + 'diff(g,x);
 eqn_2: 'diff(f,x) + x^2 - f = 2*'diff(g,x,2);
 @end example
 
-The correct way would be:
+@c The correct way would be:
+
+Eine korrekte Definition der zwei Gleichungen ist
 
 @example
 eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
 eqn_2: 'diff(f(x),x) + x^2 - f(x) = 2*'diff(g(x),x,2);
 @end example
 
-The call to the function @code{desolve} would then be
+@c The call to the function @code{desolve} would then be
+
+Die Funktion @code{desolve} wird dann folgenderma@ss{}en aufgerufen
+
 @example
 desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @end example
 
-If initial conditions at @code{x=0} are known, they can be supplied before
-calling @code{desolve} by using @code{atvalue}.
+@c If initial conditions at @code{x=0} are known, they can be supplied before
+@c calling @code{desolve} by using @code{atvalue}.
 
-@c ===beg===
-@c 'diff(f(x),x)='diff(g(x),x)+sin(x);
-@c 'diff(g(x),x,2)='diff(f(x),x)-cos(x);
-@c atvalue('diff(g(x),x),x=0,a);
-@c atvalue(f(x),x=0,1);
-@c desolve([%o1,%o2],[f(x),g(x)]);
-@c [%o1,%o2],%o5,diff;
-@c ===end===
+Sind Anfangswerte f@"ur @code{x=0} bekannt, k@"onnen diese mit der Funktion
+@mref{atvalue} vor dem Aufruf der Funktion @code{desolve} angegeben werden.
+
 @example
-(%i1) @b{@t{'diff(f(x),x)='diff(g(x),x)+sin(x);}}
+(%i1) 'diff(f(x),x)='diff(g(x),x)+sin(x);
                  d           d
 (%o1)            -- (f(x)) = -- (g(x)) + sin(x)
                  dx          dx
-(%i2) @b{@t{'diff(g(x),x,2)='diff(f(x),x)-cos(x);}}
+(%i2) 'diff(g(x),x,2)='diff(f(x),x)-cos(x);
+@group
                   2
                  d            d
 (%o2)            --- (g(x)) = -- (f(x)) - cos(x)
                    2          dx
                  dx
-(%i3) @b{@t{atvalue('diff(g(x),x),x=0,a);}}
+@end group
+(%i3) atvalue('diff(g(x),x),x=0,a);
 (%o3)                           a
-(%i4) @b{@t{atvalue(f(x),x=0,1);}}
+(%i4) atvalue(f(x),x=0,1);
 (%o4)                           1
-(%i5) @b{@t{desolve([%o1,%o2],[f(x),g(x)]);}}
+(%i5) desolve([%o1,%o2],[f(x),g(x)]);
+@group
                   x
 (%o5) [f(x) = a %e  - a + 1, g(x) = 
-
                                                 x
                                    cos(x) + a %e  - a + g(0) - 1]
-(%i6) @b{@t{[%o1,%o2],%o5,diff;}}
+@end group
+(%i6) [%o1,%o2],%o5,diff;
              x       x      x                x
 (%o6)   [a %e  = a %e , a %e  - cos(x) = a %e  - cos(x)]
-
 @end example
 
-If @code{desolve} cannot obtain a solution, it returns @code{false}.
+@c If @code{desolve} cannot obtain a solution, it returns @code{false}.
 
+Kann @code{desolve} keine L@"osung finden, ist die R@"uckgabe @code{false}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ic1}
 @deffn {Funktion} ic1 (@var{solution}, @var{xval}, @var{yval})
 
-Solves initial value problems for first order differential equations.
-Here @var{solution} is a general solution to the equation, as found by
-@code{ode2}, @var{xval} gives an initial value for the independent
-variable in the form @code{@var{x} = @var{x0}}, and @var{yval} gives the
-initial value for the dependent variable in the form @code{@var{y} =
-@var{y0}}.
+@c Solves initial value problems for first order differential equations.
+@c Here @var{solution} is a general solution to the equation, as found by
+@c @code{ode2}, @var{xval} gives an initial value for the independent
+@c variable in the form @code{@var{x} = @var{x0}}, and @var{yval} gives the
+@c initial value for the dependent variable in the form @code{@var{y} =
+@c @var{y0}}.
 
-See @code{ode2} for an example of its usage.
+L@"ost das Anfangswertproblem f@"ur eine Differentialgleichung 1.@: Ordnung.
+Das Argument @var{solution} ist eine allgemeine L@"osung der
+Differentialgleichung, wie sie von der Funktion @code{ode2} zur@"uckgegeben
+wird.  Mit dem Argument @var{xval} wird der Anfangswert der unabh@"angigen
+Variablen in der Form @code{@var{x} = @var{x0}} angegeben.  Mit dem Argument
+@var{yval} wird der Anfangswert der unabh@"angigen Variablen in der Form
+@code{@var{y} = @var{y0}} angegeben.
 
+@c See @code{ode2} for an example of its usage.
+
+Siehe die Funktion @mref{ode2} f@"ur ein Beispiel.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ic2}
 @deffn {Funktion} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
 
-Solves initial value problems for second-order differential equations.
-Here @var{solution} is a general solution to the equation, as found by
-@code{ode2}, @var{xval} gives the initial value for the independent
-variable in the form @code{@var{x} = @var{x0}}, @var{yval} gives the
-initial value of the dependent variable in the form @code{@var{y} =
-@var{y0}}, and @var{dval} gives the initial value for the first
-derivative of the dependent variable with respect to independent
-variable, in the form @code{diff(@var{y},@var{x}) = @var{dy0}}
-(@code{diff} does not have to be quoted).
+@c Solves initial value problems for second-order differential equations.
+@c Here @var{solution} is a general solution to the equation, as found by
+@c @code{ode2}, @var{xval} gives the initial value for the independent
+@c variable in the form @code{@var{x} = @var{x0}}, @var{yval} gives the
+@c initial value of the dependent variable in the form @code{@var{y} =
+@c @var{y0}}, and @var{dval} gives the initial value for the first
+@c derivative of the dependent variable with respect to independent
+@c variable, in the form @code{diff(@var{y},@var{x}) = @var{dy0}}
+@c (@code{diff} does not have to be quoted).
 
-See @code{ode2} for an example of its usage.
+L@"ost das Anfangswertproblem f@"ur eine Differentialgleichung 2.@: Ordnung.
+Das Argument @var{solution} ist eine allgemeine L@"osung der
+Differentialgleichung, wie sie von der Funktion @code{ode2} zur@"uckgegeben
+wird.  Mit dem Argument @var{xval} wird der Anfangswert der unabh@"angigen
+Variablen in der Form @code{@var{x} = @var{x0}} angegeben.  Mit dem Argument
+@var{yval} wird der Anfangswert der abh@"angigen Variablen in der Form
+@code{@var{y} = @var{y0}} angegeben.  Mit dem Argument @var{dval} wird der
+Anfangswert der ersten Ableitung der abh@"angigen Variablen nach der
+unabh@"angigen Variablen in der Form @code{diff(@var{y},@var{x}) = @var{dy0}}
+angegeben.  Dem Symbol @code{diff} muss kein @mxref{', Quote-Operator} @code{'}
+vorangestellt werden.
 
+@c See @code{ode2} for an example of its usage.
+
+Siehe auch @mref{ode2} f@"ur ein Beispiel.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{ode2}
 @deffn {Funktion} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
 
-The function @code{ode2} solves an ordinary differential equation (ODE)
-of first or second order. It takes three arguments: an ODE given by
-@var{eqn}, the dependent variable @var{dvar}, and the independent
-variable @var{ivar}. When successful, it returns either an explicit or
-implicit solution for the dependent variable. @code{%c} is used to
-represent the integration constant in the case of first-order equations,
-and @code{%k1} and @code{%k2} the constants for second-order
-equations. The dependence of the dependent variable on the independent
-variable does not have to be written explicitly, as in the case of
-@code{desolve}, but the independent variable must always be given as the
-third argument.
+@c The function @code{ode2} solves an ordinary differential equation (ODE)
+@c of first or second order. It takes three arguments: an ODE given by
+@c @var{eqn}, the dependent variable @var{dvar}, and the independent
+@c variable @var{ivar}. When successful, it returns either an explicit or
+@c implicit solution for the dependent variable. @code{%c} is used to
+@c represent the integration constant in the case of first-order equations,
+@c and @code{%k1} and @code{%k2} the constants for second-order
+@c equations. The dependence of the dependent variable on the independent
+@c variable does not have to be written explicitly, as in the case of
+@c @code{desolve}, but the independent variable must always be given as the
+@c third argument.
 
-If @code{ode2} cannot obtain a solution for whatever reason, it returns
-@code{false}, after perhaps printing out an error message. The methods
-implemented for first order equations in the order in which they are
-tested are: linear, separable, exact - perhaps requiring an integrating
-factor, homogeneous, Bernoulli's equation, and a generalized homogeneous
-method. The types of second-order equations which can be solved are:
-constant coefficients, exact, linear homogeneous with non-constant
-coefficients which can be transformed to constant coefficients, the
-Euler or equi-dimensional equation, equations solvable by the method of
-variation of parameters, and equations which are free of either the
-independent or of the dependent variable so that they can be reduced to
-two first order linear equations to be solved sequentially.
+Die Funktion @code{ode2} l@"ost eine gew@"ohnliche Differentialgleichung der
+ersten oder zweiten Ordnung.  Die Funktion hat drei Argumente: die
+Differentialgleichung @var{eqn}, die abh@"angige Variable @code{dvar} und die
+unabh@"angige Variable @code{ivar}.  Ist die Funktion @code{ode2} erfolgreich
+wird eine explizite oder implizite L@"osung f@"ur die abh@"angige Variable
+zur@"uckgegeben.  Im Fall einer Differentialgleichung 1.@: Ordnung wird die
+Integrationskonstante mit @code{%c} bezeichnet.  F@"ur eine
+Differentialgleichung 2.@: Ordnung werden die Integrationskonstanten mit
+@code{%k1} und @code{%k2} bezeichnet.  Die Abh@"angigkeit der abh@"angigen
+Variable von der unabh@"angigen Variablen muss nicht explizit, wie im Fall von
+@mref{desolve} angegeben werden.
 
-In the course of solving ODE's, several variables are set purely for
-informational purposes: @code{method} denotes the method of solution
-used (e.g., @code{linear}), @code{intfactor} denotes any integrating
-factor used, @code{odeindex} denotes the index for Bernoulli's method or
-for the generalized homogeneous method, and @code{yp} denotes the
-particular solution for the variation of parameters technique.
+@c If @code{ode2} cannot obtain a solution for whatever reason, it returns
+@c @code{false}, after perhaps printing out an error message.  The methods
+@c implemented for first order equations in the order in which they are
+@c tested are: linear, separable, exact - perhaps requiring an integrating
+@c factor, homogeneous, Bernoulli's equation, and a generalized homogeneous
+@c method.  The types of second-order equations which can be solved are:
+@c constant coefficients, exact, linear homogeneous with non-constant
+@c coefficients which can be transformed to constant coefficients, the
+@c Euler or equi-dimensional equation, equations solvable by the method of
+@c variation of parameters, and equations which are free of either the
+@c independent or of the dependent variable so that they can be reduced to
+@c two first order linear equations to be solved sequentially.
 
-In order to solve initial value problems (IVP) functions @code{ic1} and
-@code{ic2} are available for first and second order equations, and to
-solve second-order boundary value problems (BVP) the function @code{bc2}
-can be used.
+Kann @code{ode2} keine L@"osung finden, ist die R@"uckgabe @code{false}.
+Gegebenenfalls wird eine Fehlermeldung ausgegeben.  Folgende Methoden werden
+f@"ur das L@"osen einer Differentialgleichung 1.@: Ordnung nacheinander
+angewendet: linear, separierbar, exakt - wenn notwendig unter Zuhilfenahme
+eines Integrationsfaktors, homogen, bernoullische Differentialgleichung und
+eine Methode f@"ur verallgemeinerte homogene Gleichungen.  F@"ur eine
+Differentialgleichung 2.@: Ordnung kommen die folgenden Methoden zur Anwendung:
+konstante Koeffizienten, exakt, linear homogen mit nicht-konstanten
+Koeffizienten, die zu konstanten Koeffizienten transformiert werden k@"onnen,
+eulersche Differentialgleichung, Variation der Parameter, Reduktion auf eine
+Differentialgleichung 1.@: Ordnung, wenn die Differentialgleichung entweder
+frei von der unabh@"angigen oder der abh@"angigen Variablen ist.
 
-Example:
+@c In the course of solving ODE's, several variables are set purely for
+@c informational purposes: @code{method} denotes the method of solution
+@c used (e.g., @code{linear}), @code{intfactor} denotes any integrating
+@c factor used, @code{odeindex} denotes the index for Bernoulli's method or
+@c for the generalized homogeneous method, and @code{yp} denotes the
+@c particular solution for the variation of parameters technique.
 
-@c ===beg===
-@c x^2*'diff(y,x) + 3*y*x = sin(x)/x;
-@c ode2(%,y,x);
-@c ic1(%o2,x=%pi,y=0);
-@c 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
-@c ode2(%,y,x);
-@c ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
-@c bc2(%o5,x=0,y=1,x=1,y=3);
-@c ===end===
+Im Laufe des L@"osungsverfahrens werden zur Information des Nutzers globale
+Variablen gesetzt: @code{method} bezeichnet die Methode, die von @code{ode2}
+zum Auffinden der L@"osung verwendet wurde.  @code{intfactor} bezeichnet einen
+verwendeten Integrationsfaktor.  @code{odeindex} bezeichnet den Index der
+bernoullischen Gleichung oder der verallgemeinerte Methode f@"ur eine homogene
+Differentialgleichung.  @code{yp} bezeichnet eine partikul@"are L@"osung, wenn
+die Variation der Parameter angewendet wird.
+
+@c In order to solve initial value problems (IVP) functions @code{ic1} and
+@c @code{ic2} are available for first and second order equations, and to
+@c solve second-order boundary value problems (BVP) the function @code{bc2}
+@c can be used.
+
+F@"ur das L@"osen von Anfangswertproblemen einer Differentialgleichung 1.@: oder
+2.@: Ordnung k@"onnen die Funktionen @mref{ic1} und @mref{ic2} verwendet werden.
+Ein Randwertproblem f@"ur eine Differentialgleichung 2.@: Ordnung kann mit der
+Funktion @mref{bc2} gel@"ost werden.
+
+Beispiele:
+
 @example
-(%i1) @b{@t{x^2*'diff(y,x) + 3*y*x = sin(x)/x;}}
+(%i1) x^2*'diff(y,x) + 3*y*x = sin(x)/x;
                       2 dy           sin(x)
 (%o1)                x  -- + 3 x y = ------
                         dx             x
-(%i2) @b{@t{ode2(%,y,x);}}
+(%i2) ode2(%,y,x);
                              %c - cos(x)
 (%o2)                    y = -----------
                                   3
                                  x
-(%i3) @b{@t{ic1(%o2,x=%pi,y=0);}}
+(%i3) ic1(%o2,x=%pi,y=0);
                               cos(x) + 1
 (%o3)                   y = - ----------
                                    3
                                   x
-(%i4) @b{@t{'diff(y,x,2) + y*'diff(y,x)^3 = 0;}}
+(%i4) 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
                          2
                         d y      dy 3
 (%o4)                   --- + y (--)  = 0
                           2      dx
                         dx
-(%i5) @b{@t{ode2(%,y,x);}}
+(%i5) ode2(%,y,x);
                       3
                      y  + 6 %k1 y
 (%o5)                ------------ = x + %k2
                           6
-(%i6) @b{@t{ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));}}
+(%i6) ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
                              3
                           2 y  - 3 y
 (%o6)                   - ---------- = x
                               6
-(%i7) @b{@t{bc2(%o5,x=0,y=1,x=1,y=3);}}
+(%i7) bc2(%o5,x=0,y=1,x=1,y=3);
+@group
                          3
                         y  - 10 y       3
 (%o7)                   --------- = x - -
                             6           2
-
+@end group
 @end example
-
 @end deffn
 
 @c --- End of file Calculus.de.texi --------------------------------------------
