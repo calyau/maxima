@@ -306,9 +306,10 @@
 				     (cddr exp)
 				     (not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp))))))
 				(solventh exp *g))
-			       (t (map2c #'solve1a
-					 (cond ($solvefactors (pfactor exp))
-					       (t (list exp 1))))))))))
+			       (t (cond ($solvefactors 
+					 (map2c (lambda (x y) (solve1a x (m* mult y)))
+						(pfactor exp)))
+					(t (solve1a exp mult)))))))))
 
      (cond (symbol (setq *roots (subst temp *var *roots))
 		   (setq *failures (subst temp *var *failures))))
@@ -326,8 +327,7 @@
 ;;; is an expression that can be undefined or infinity for certain values of
 ;;; the variable in question. But soon this will be no worry because I will
 ;;; add a list of  "possible bad roots" to what $SOLVE returns.
-;;; Solve is not fully recursive when it due to globals, $MULTIPLICIES
-;;; may be screwed here. (Solve should be made recursive)
+;;; Passes multiplicity to recursive calls to solve.
 
 (defun easy-cases (*exp *var mult)
   (cond ((or (atom *exp) (atom (car *exp))) nil)
@@ -337,18 +337,15 @@
 	   (solve (car terms) *var mult))
 	 'mtimes)
 
-	;; This code is commented out because it exposes a bug in the way
-	;; solve (or its friends) handles multiplicities. A previous 
-	;; version (1.2) had a typo (caar *exp) 'mexp ...) that prevented this
-	;; bug from manifesting.  Barton Willis, 12 May 2004
-	;;
-	;; In particular it causes test 137 in rtest15 and test 45 in
-	;; rtestint to fail.
-	#+nil
 	((eq (caar *exp) 'mexpt)
-	 (cond ((and (integerp  (caddr *exp))
+	 (cond ((and (freeof *var (cadr *exp))
+		     (not (zerop1 (cadr *exp))))
+		;; no solutions: c^x is never zero
+		'mexpt)
+
+	       ((and (integerp  (caddr *exp))
 		     (plusp (caddr *exp)))
-		(solve (cadr *exp) *var (caddr *exp))
+		(solve (cadr *exp) *var (m* mult (caddr *exp)))
 		'mexprat)))))
 
 ;;; Predicate to test for presence of troublesome trig functions to be

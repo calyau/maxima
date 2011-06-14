@@ -1367,3 +1367,7 @@ integrate(log(1+7/(x^2)),x,1,inf);
 /* integral from minf to inf of an absolute value combo fails - ID: 3313531 */
 integrate(abs(x - 1) + abs(x + 1) - 2*abs(x),x,minf,inf);
 2;
+
+/* definite integration - ID: 3315476 */
+integrate(1/2^x, x, 0, 1);
+1/(2*log(2));
