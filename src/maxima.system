@@ -18,6 +18,21 @@
 #+cmu
 (setf ext:*gc-verbose* nil)
 
+;; In server.lisp, we load up sb-bsd-sockets for sbcl.  This also
+;; causes asdf to be loaded.  Not normally a problem, but
+;; asdf::*output-translations* is not NIL when maxima is restarted.
+;; If you give maxima.core (as a binary distribution) to someone else,
+;; the translations are wrong.  The solution is to clear the
+;; translations before saving the core.
+;;
+;; This should really be done for all lisps that might have asdf2
+;; loaded.  Currently, I (rtoy) thinks this only happens with sbcl.
+;;
+;; (This issue was brought to my attention by Zach Beane, on irc.
+;; Solution by Nikodemus Siivola.)
+#+(and sbcl asdf2)
+(pushnew 'asdf::clear-configuration *save-hooks*)
+
 ;; If you want maxima to use long-floats for arithmetic, use this:
 #+(and nil (or clisp scl))
 (pushnew :flonum-long *features*)

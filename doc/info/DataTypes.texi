@@ -2,9 +2,9 @@
 * Numbers::
 * Strings::
 * Constants::
-@c * Lists::
-@c * Arrays::
-@c * Structures::
+* Lists::
+* Arrays::
+* Structures::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -50,9 +50,9 @@ functions.
 
 Converts all numbers and functions of numbers in @var{expr} to bigfloat numbers.
 The number of significant digits in the resulting bigfloats is specified by the
-global variable @code{fpprec}.
+global variable @mrefdot{fpprec}
 
-When @code{float2bf} is @code{false} a warning message is printed when
+When @mref{float2bf} is @code{false} a warning message is printed when
 a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
@@ -78,7 +78,7 @@ Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 Default value: @code{false}
 
 @code{bftorat} controls the conversion of bfloats to rational numbers.  When
-@code{bftorat} is @code{false}, @code{ratepsilon} will be used to control the
+@code{bftorat} is @code{false}, @mref{ratepsilon} will be used to control the
 conversion (this results in relatively small rational numbers).  When
 @code{bftorat} is @code{true}, the rational number generated will accurately
 represent the bfloat.
@@ -121,8 +121,9 @@ Returns @code{true} if @var{expr} is an even integer.
 @deffn {Function} float (@var{expr})
 
 Converts integers, rational numbers and bigfloats in @var{expr} to floating
-point numbers.  It is also an @code{evflag}, @code{float} causes non-integral
-rational numbers and bigfloat numbers to be converted to floating point.
+point numbers.  It is also an @mrefcomma{evflag} @code{float} causes
+non-integral rational numbers and bigfloat numbers to be converted to floating
+point.
 
 @opencatbox
 @category{Numerical evaluation} @category{Evaluation flags}
@@ -130,6 +131,7 @@ rational numbers and bigfloat numbers to be converted to floating point.
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{float2bf}
 @defvr {Option variable} float2bf
 Default value: @code{true}
  
@@ -163,7 +165,7 @@ Default value: 16
 numbers.  @code{fpprec} does not affect computations on ordinary floating point
 numbers.
 
-See also @code{bfloat} and @code{fpprintprec}.
+See also @mref{bfloat} and @mrefdot{fpprintprec}
 
 @opencatbox
 @category{Numerical evaluation}
@@ -279,10 +281,9 @@ Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
 Returns @code{true} if @var{expr} is a literal integer, rational number, 
 floating point number, or bigfloat, otherwise @code{false}.
 
-@code{numberp} returns @code{false} if its argument is a symbol,
-even if the argument is a symbolic number such as @code{%pi} or @code{%i},
-or declared to be 
-@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational}, 
+@code{numberp} returns @code{false} if its argument is a symbol, even if the
+argument is a symbolic number such as @code{%pi} or @code{%i}, or declared to be
+@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational},
 @code{real}, @code{imaginary}, or @code{complex}.
 
 Examples:
@@ -322,9 +323,9 @@ Examples:
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point.  It causes
 variables in @code{expr} which have been given numerals to be replaced by
-their values.  It also sets the @code{float} switch on.
+their values.  It also sets the @mref{float} switch on.
 
-See also @code{%enumer}.
+See also @mrefdot{%enumer}
 
 Examples:
 
@@ -354,7 +355,7 @@ Default value: @code{false}
 The option variable @code{numer_pbranch} controls the numerical evaluation of 
 the power of a negative integer, rational, or floating point number.  When
 @code{numer_pbranch} is @code{true} and the exponent is a floating point number
-or the option variable @code{numer} is @code{true} too, Maxima evaluates
+or the option variable @mref{numer} is @code{true} too, Maxima evaluates
 the numerical result using the principal branch.  Otherwise a simplified, but
 not an evaluated result is returned.
 
@@ -400,7 +401,7 @@ Declares the variables @code{x_1}, @dots{}, @var{x_n} to have
 numeric values equal to @code{expr_1}, @dots{}, @code{expr_n}.
 The numeric value is evaluated and substituted for the variable
 in any expressions in which the variable occurs if the @code{numer} flag is
-@code{true}.  See also @code{ev}.
+@code{true}.  See also @mrefdot{ev}
 
 The expressions @code{expr_1}, @dots{}, @code{expr_n} can be any expressions,
 not necessarily numeric.
@@ -571,7 +572,7 @@ integers, otherwise @code{false}.
 
 Strings (quoted character sequences) are enclosed in double quote marks @code{"}
 for input, and displayed with or without the quote marks, depending on the
-global variable @code{stringdisp}.
+global variable @mrefdot{stringdisp}
 
 Strings may contain any characters, including embedded tab, newline, and
 carriage return characters.  The sequence @code{\"} is recognized as a literal
@@ -659,7 +660,7 @@ evaluation.
 @end example
 
 A symbol constructed by @code{concat} may be assigned a value and appear in
-expressions.  The @code{::} (double colon) assignment operator evaluates its
+expressions.  The @mref{::} (double colon) assignment operator evaluates its
 left-hand side.
 
 @example
@@ -695,8 +696,8 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 @anchor{sconcat}
 @deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
 
-Concatenates its arguments into a string.  Unlike @code{concat}, the arguments
-do @i{not} need to be atoms.
+Concatenates its arguments into a string.  Unlike @mrefcomma{concat} the
+arguments do @i{not} need to be atoms.
 
 @example
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));

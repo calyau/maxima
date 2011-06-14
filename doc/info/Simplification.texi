@@ -9,7 +9,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{additive}
-@defvr {Keyword} additive
+@defvr {Declaration} additive
 
 If @code{declare(f,additive)} has been executed, then:
 
@@ -43,68 +43,15 @@ of two arguments necessary to convert it to that form.
 @closecatbox
 @end defvr
 
-@c After studying src/compar.lisp, it appears that askexp would
-@c work as advertised, except that it doesn't appear to be possible
-@c to open a break prompt with ^A or any other character.
-@c What should we do about askexp ???
-
 @c -----------------------------------------------------------------------------
-@anchor{askexp}
-@defvr {System variable} askexp
+@deffn {Function} combine (@var{expr})
 
-When @code{asksign} is called,
-@code{askexp} is the expression @code{asksign} is testing.
+Simplifies the sum @var{expr} by combining terms with the same
+denominator into a single term.
 
-At one time, it was possible for a user to inspect @code{askexp}
-by entering a Maxima break with control-A.
-
+@c NEED EXAMPLE HERE
 @opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end defvr
-
-@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-
-@c -----------------------------------------------------------------------------
-@anchor{askinteger}
-@deffn  {Function} askinteger (@var{expr}, integer)
-@deffnx {Function} askinteger (@var{expr})
-@deffnx {Function} askinteger (@var{expr}, even)
-@deffnx {Function} askinteger (@var{expr}, odd)
-
-@code{askinteger (@var{expr}, integer)} attempts to determine from the
-@code{assume} database whether @var{expr} is an integer.
-@code{askinteger} prompts the user if it cannot tell otherwise,
-@c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume
-@c DATABASE !!!
-and attempt to install the information in the database if possible.
-@code{askinteger (@var{expr})} is equivalent to
-@code{askinteger (@var{expr}, integer)}.
-
-@code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
-likewise attempt to determine if @var{expr} is an even integer or odd integer,
-respectively.
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-
-@c -----------------------------------------------------------------------------
-@anchor{asksign}
-@deffn {Function} asksign (@var{expr})
-
-First attempts to determine whether the specified
-expression is positive, negative, or zero.  If it cannot, it asks the
-user the necessary questions to complete its deduction.  The user's
-answer is recorded in the data base for the duration of the current
-computation. The return value of @code{asksign} is one of @code{pos},
-@code{neg}, or @code{zero}.
-
-@opencatbox
-@category{Declarations and inferences}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -112,8 +59,8 @@ computation. The return value of @code{asksign} is one of @code{pos},
 @anchor{commutative}
 @defvr {Declaration} commutative
 
-If @code{declare(h,commutative)} is done, this tells the simplifier that
-@code{h} is a commutative function.  E.g.  @code{h(x,z,y)} will simplify to
+If @code{declare(h, commutative)} is done, this tells the simplifier that
+@code{h} is a commutative function.  E.g.  @code{h(x, z, y)} will simplify to
 @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @opencatbox
@@ -144,6 +91,39 @@ time.
 
 @opencatbox
 @category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{function_distrib}
+@deffn {Function} distrib (@var{expr})
+
+Distributes sums over products.  It differs from @code{expand} in that it works
+at only the top level of an expression, i.e., it doesn't recurse and it is
+faster than @code{expand}.  It differs from @code{multthru} in that it expands
+all sums at that level.
+
+Examples:
+
+@example
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
+@end example
+
+@opencatbox
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -243,6 +223,33 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{evenfun}
+@anchor{oddfun}
+@defvr  {Declaration} evenfun
+@defvrx {Declaration} oddfun
+
+@code{declare(f, evenfun} or @code{declare(f, oddfun} tells Maxima to recognize
+the function @code{f} as an odd or even function.
+
+Examples:
+
+@example
+(%i1) o (- x) + o (x);
+(%o1)                     o(x) + o(- x)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- x) + o (x);
+(%o3)                           0
+(%i4) e (- x) - e (x);
+(%o4)                     e(- x) - e(x)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- x) - e (x);
+(%o6)                           0
+@end example
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -376,7 +383,7 @@ Expands expression @code{expr} with respect to the
 variables @var{x_1}, @dots{}, @var{x_n}.
 All products involving the variables appear explicitly.  The form returned
 will be free of products of sums of expressions that are not free of
-the variables.   @var{x_1}, @dots{}, @var{x_n}
+the variables.  @var{x_1}, @dots{}, @var{x_n}
 may be variables, operators, or expressions.
 
 By default, denominators are not expanded, but this can be controlled by
@@ -485,28 +492,6 @@ less than n.
 @c NEEDS CLARIFICATION, EXAMPLES
 
 @c -----------------------------------------------------------------------------
-@anchor{intosum}
-@deffn {Function} intosum (@var{expr})
-
-Moves multiplicative factors outside a summation to inside.
-If the index is used in the
-outside expression, then the function tries to find a reasonable
-index, the same as it does for @code{sumcontract}.  This is essentially the
-reverse idea of the @code{outative} property of summations, but note that it
-does not remove this property, it only bypasses it.
-
-@c WHAT ARE THESE CASES ??
-In some cases, a @code{scanmap (multthru, @var{expr})} may be necessary before
-the @code{intosum}.
-
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end deffn
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
 @anchor{lassociative}
 @defvr {Declaration} lassociative
 
@@ -539,57 +524,6 @@ See also @code{opproperties}.
 
 @opencatbox
 @category{Declarations and inferences} @category{Operators} @category{Simplification}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{mainvar}
-@defvr {Declaration} mainvar
-
-You may declare variables to be @code{mainvar}.  The ordering scale for atoms is
-essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars < other
-variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)} with
-@code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: Care should be taken if
-you elect to use the above feature.  E.g., if you subtract an expression in
-which @code{x} is a @code{mainvar} from one in which @code{x} isn't a
-@code{mainvar}, resimplification e.g. with @code{ev (expr, simp)} may be
-necessary if cancellation is to occur.  Also, if you save an expression in which
-@code{x} is a @code{mainvar}, you probably should also save @code{x}.)
-
-@opencatbox
-@category{Declarations and inferences} @category{Expressions}
-@closecatbox
-@end defvr
-
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{maxapplydepth}
-@defvr {Option variable} maxapplydepth
-Default value: 10000
-
-@code{maxapplydepth} is the maximum depth to which @code{apply1}
-and @code{apply2} will delve.
-
-@opencatbox
-@category{Function application}
-@closecatbox
-@end defvr
-
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{maxapplyheight}
-@defvr {Option variable} maxapplyheight
-Default value: 10000
-
-@code{maxapplyheight} is the maximum height to which @code{applyb1}
-will reach before giving up.
-
-@opencatbox
-@category{Function application}
 @closecatbox
 @end defvr
 
@@ -629,7 +563,7 @@ expanded with the @code{expand} command (see also @code{maxnegex}).
 @anchor{multiplicative}
 @defvr {Declaration} multiplicative
 
-@code{declare (f, multiplicative)} tells the Maxima simplifier that @code{f}
+@code{declare(f, multiplicative)} tells the Maxima simplifier that @code{f}
 is multiplicative.
 
 @enumerate
@@ -651,6 +585,87 @@ the form @code{product (x[i], i, m, n)}.
 @closecatbox
 @end defvr
 
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{multthru}
+@deffn  {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
+
+Multiplies a factor (which should be a sum) of @var{expr} by the other factors
+of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
+where at least one factor, say @var{f_i}, is a sum of terms.  Each term in that
+sum is multiplied by the other factors in the product.  (Namely all the factors
+except @var{f_i}).  @code{multthru} does not expand exponentiated sums.
+This function is the fastest way to distribute products (commutative or
+noncommutative) over sums.  Since quotients are represented as products
+@code{multthru} can be used to divide sums by products as well.
+
+@code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in
+@var{expr_2} (which should be a sum or an equation) by @var{expr_1}.  If
+@var{expr_1} is not itself a sum then this form is equivalent to
+@code{multthru (@var{expr_1}*@var{expr_2})}.
+
+@example
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
+                           2
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{declaration_nary}
+@defvr {Declaration} nary
+
+@code{declare(f, nary)} tells Maxima to recognize the function @code{f} as an
+n-ary function.
+
+The @code{nary} declaration is not the same as calling the
+@mxref{operator_nary, nary} function.  The sole effect of
+@code{declare(f, nary)} is to instruct the Maxima simplifier to flatten nested
+expressions, for example, to simplify @code{foo(x, foo(y, z))} to
+@code{foo(x, y, z)}.  See also @mrefdot{declare}
+
+Example:
+
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+@end defvr
+
 @c NEEDS CLARIFICATION, EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -670,55 +685,6 @@ than local use in your Maxima.
 @closecatbox
 @end defvr
 
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{negsumdispflag}
-@defvr {Option variable} negsumdispflag
-Default value: @code{true}
-
-When @code{negsumdispflag} is @code{true}, @code{x - y} displays as @code{x - y}
-instead of as @code{- y + x}.  Setting it to @code{false} causes the special
-check in display for the difference of two expressions to not be done.  One
-application is that thus @code{a + %i*b} and @code{a - %i*b} may both be
-displayed the same way.
-
-@opencatbox
-@category{Display flags and variables}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{noun}
-@defvr {Declaration} noun
-
-@code{noun} is one of the options of the @code{declare} command.  It makes a
-function so declared a "noun", meaning that it won't be evaluated
-automatically.
-
-@opencatbox
-@category{Nouns and verbs}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{noundisp}
-@defvr {Option variable} noundisp
-Default value: @code{false}
-
-When @code{noundisp} is @code{true}, nouns display with
-a single quote.  This switch is always @code{true} when displaying function
-definitions.
-
-@opencatbox
-@category{Display flags and variables} @category{Nouns and verbs}
-@closecatbox
-@end defvr
-
 @c -----------------------------------------------------------------------------
 @anchor{opproperties}
 @defvr {System variable} opproperties
@@ -734,29 +700,13 @@ by the Maxima simplifier:
 @closecatbox
 @end defvr
 
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{option_opsubst}
-@defvr {Option variable} opsubst
-Default value: @code{true}
-
-When @code{opsubst} is @code{false}, @code{subst} does not attempt to
-substitute into the operator of an expression.  E.g., 
-@code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
-
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end defvr
-
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
 @anchor{outative}
 @defvr {Declaration} outative
 
-@code{declare (f, outative)} tells the Maxima simplifier that constant factors
+@code{declare(f, outative)} tells the Maxima simplifier that constant factors
 in the argument of @code{f} can be pulled out.
 
 @enumerate
@@ -773,20 +723,6 @@ simplify to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @end enumerate
 
 @code{sum}, @code{integrate}, and @code{limit} are all @code{outative}.
-
-@opencatbox
-@category{Declarations and inferences} @category{Operators}
-@closecatbox
-@end defvr
-
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{posfun}
-@defvr {Declaration} posfun
-
-@code{declare (f, posfun)} declares @code{f} to be a positive function.
-@code{is (f(x) > 0)} yields @code{true}.
 
 @opencatbox
 @category{Declarations and inferences} @category{Operators}
@@ -879,19 +815,6 @@ If @code{radexpand} is @code{false}, or @code{radexpand} is @code{true} and
 
 @c CORRECT STATEMENT HERE ???
 Note that @code{domain} only matters when @code{radexpand} is @code{true}.
-
-@opencatbox
-@category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{radsubstflag}
-@defvr {Option variable} radsubstflag
-Default value: @code{false}
-
-@code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make
-substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
 @opencatbox
 @category{Simplification flags and variables}
@@ -993,86 +916,6 @@ assignment has occurred during the evaluation phase of the expression.
 @c NEEDS CLARIFICATION, EXAMPLES
 
 @c -----------------------------------------------------------------------------
-@anchor{simpsum}
-@defvr {Option variable} simpsum
-Default value: @code{false}
-
-When @code{simpsum} is @code{true}, the result of a @code{sum} is simplified.
-This simplification may sometimes be able to produce a closed form.  If
-@code{simpsum} is @code{false} or if the quoted form @code{'sum} is used, the
-value is a sum noun form which is a representation of the sigma notation used
-in mathematics.
-
-@opencatbox
-@category{Sums and products} @category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{sumcontract}
-@deffn {Function} sumcontract (@var{expr})
-
-Combines all sums of an addition that have
-upper and lower bounds that differ by constants.  The result is an
-expression containing one summation for each set of such summations
-added to all appropriate extra terms that had to be extracted to form
-this sum.  @code{sumcontract} combines all compatible sums and uses one of
-the indices from one of the sums if it can, and then try to form a
-reasonable index if it cannot use any supplied.
-
-@c WHEN IS intosum NECESSARY BEFORE sumcontract ??
-It may be necessary to do an @code{intosum (@var{expr})} before the
-@code{sumcontract}.
-
-@opencatbox
-@category{Sums and products}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{sumexpand}
-@defvr {Option variable} sumexpand
-Default value: @code{false}
-
-When @code{sumexpand} is @code{true}, products of sums and
-exponentiated sums simplify to nested sums.
-
-See also @code{cauchysum}.
-
-Examples:
-
-@example
-(%i1) sumexpand: true$
-(%i2) sum (f (i), i, 0, m) * sum (g (j), j, 0, n);
-@group
-                     m      n
-                    ====   ====
-                    \      \
-(%o2)                >      >     f(i1) g(i2)
-                    /      /
-                    ====   ====
-                    i1 = 0 i2 = 0
-@end group
-(%i3) sum (f (i), i, 0, m)^2;
-                     m      m
-                    ====   ====
-                    \      \
-(%o3)                >      >     f(i3) f(i4)
-                    /      /
-                    ====   ====
-                    i3 = 0 i4 = 0
-@end example
-
-@opencatbox
-@category{Sums and products} @category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c NEEDS CLARIFICATION, EXAMPLES
-
-@c -----------------------------------------------------------------------------
 @anchor{symmetric}
 @defvr {Declaration} symmetric
 
@@ -1086,18 +929,6 @@ simplifies to @code{h (x, y, z)}.
 @category{Declarations and inferences} @category{Operators}
 @closecatbox
 @end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{unknown}
-@deffn {Function} unknown (@var{expr})
-
-Returns @code{true} if and only if @var{expr} contains an operator or function
-not recognized by the Maxima simplifier.
-
-@opencatbox
-@category{Predicate functions} @category{Simplification functions}
-@closecatbox
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{xthru}

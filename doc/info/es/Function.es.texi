@@ -1612,9 +1612,8 @@ V@'eanse tambi@'en @code{tr_array_as_ref},
 @code{tr_warn_fexpr}, 
 @code{tr_warn_meval},
 @code{tr_warn_mode},
-@code{tr_warn_undeclared}, 
-@code{tr_warn_undefined_variable},
-y @code{tr_windy}.
+@code{tr_warn_undeclared},
+y @code{tr_warn_undefined_variable}.
 
 @end deffn
 
@@ -1743,13 +1742,6 @@ Determina cuando enviar mensajes sobre variables no declaradas.
 Valor por defecto: @code{all}
 
 Devuelve un aviso cuando se detectan variables globales no definidas.
-
-@end defvr
-
-@defvr {Variable opcional} tr_windy
-Valor por defecto: @code{true}
-
-Genera comentarios de ayuda y consejos sobre programaci@'on.
 
 @end defvr
 

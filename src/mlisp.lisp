@@ -1426,8 +1426,6 @@ wrapper for this."
        (dolist (1-char (coerce var 'list))
          (add2lnc 1-char *alphabet*)))
 
-	  ((eq prop 'special)(proclaim (list 'special var))
-	   (fluidize var))
 	  (mpropp
 	   (if (and (member prop '($scalar $nonscalar) :test #'eq)
 		    (mget var (if (eq prop '$scalar) '$nonscalar '$scalar)))
@@ -1565,7 +1563,7 @@ wrapper for this."
             (not (mgetl var '($nonscalar $scalar $mainvar $numer
                                         matchdeclare $atomgrad atvalues)))
             (not (getl var '(evfun evflag translated nonarray bindtest
-                                   sp2 operators opers special data autoload mode)))))
+                                   sp2 operators opers data autoload mode)))))
 	   (not (member var *builtin-$props* :test #'equal)))
       (delete var $props :count 1 :test #'equal)))
 

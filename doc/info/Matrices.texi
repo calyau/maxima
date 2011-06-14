@@ -3,8 +3,10 @@
 * Functions and Variables for Matrices and Linear Algebra::  
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to Matrices and Linear Algebra, Functions and Variables for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
 @section Introduction to Matrices and Linear Algebra
+@c -----------------------------------------------------------------------------
 
 @menu
 * Dot::                         
@@ -12,15 +14,20 @@
 * eigen::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Dot, Vectors, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
 @subsection Dot
-The operator @code{.} represents noncommutative multiplication and scalar product.
-When the operands are 1-column or 1-row matrices @code{a} and @code{b},
-the expression @code{a.b} is equivalent to @code{sum (a[i]*b[i], i, 1, length(a))}.
-If @code{a} and @code{b} are not complex, this is the scalar product,
-also called the inner product or dot product, of @code{a} and @code{b}.
-The scalar product is defined as @code{conjugate(a).b} when @code{a} and @code{b} are complex;
-@code{innerproduct} in the @code{eigen} package provides the complex scalar product.
+@c -----------------------------------------------------------------------------
+
+The operator @code{.} represents noncommutative multiplication and scalar
+product.  When the operands are 1-column or 1-row matrices @code{a} and
+@code{b}, the expression @code{a.b} is equivalent to
+@code{sum (a[i]*b[i], i, 1, length(a))}.  If @code{a} and @code{b} are not
+complex, this is the scalar product, also called the inner product or dot
+product, of @code{a} and @code{b}.  The scalar product is defined as
+@code{conjugate(a).b} when @code{a} and @code{b} are complex;
+@code{innerproduct} in the @code{eigen} package provides the complex scalar
+product.
 
 When the operands are more general matrices,
 the product is the matrix product @code{a} and @code{b}.
@@ -28,21 +35,24 @@ The number of rows of @code{b} must equal the number of columns of @code{a},
 and the result has number of rows equal to the number of rows of @code{a}
 and number of columns equal to the number of columns of @code{b}.
 
-To distinguish @code{.} as an arithmetic operator from 
-the decimal point in a floating point number,
-it may be necessary to leave spaces on either side.
-For example, @code{5.e3} is @code{5000.0} but @code{5 . e3} is @code{5} times @code{e3}.
+To distinguish @code{.} as an arithmetic operator from the decimal point in a
+floating point number, it may be necessary to leave spaces on either side.
+For example, @code{5.e3} is @code{5000.0} but @code{5 . e3} is @code{5}
+times @code{e3}.
 
 There are several flags which govern the simplification of
 expressions involving @code{.}, namely
-@code{dot}, @code{dot0nscsimp}, @code{dot0simp}, @code{dot1simp}, @code{dotassoc}, 
-@code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
-and @code{dotscrules}.
+@code{dot}, @code{dot0nscsimp}, @code{dot0simp}, @code{dot1simp},
+@code{dotassoc}, @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp},
+@code{dotident}, and @code{dotscrules}.
 
+@c -----------------------------------------------------------------------------
 @node Vectors, eigen, Dot, Introduction to Matrices and Linear Algebra
 @subsection Vectors
-@code{vect} is a package of functions for vector analysis.
-@code{load ("vect")} loads this package, and @code{demo ("vect")} displays a demonstration.
+@c -----------------------------------------------------------------------------
+
+@code{vect} is a package of functions for vector analysis.  @code{load ("vect")}
+loads this package, and @code{demo ("vect")} displays a demonstration.
 @c find maxima -name \*orth\* YIELDS NOTHING; ARE THESE FUNCTIONS IN ANOTHER FILE NOW ??
 @c and SHARE;VECT ORTH contains definitions of various orthogonal curvilinear coordinate systems.
 
@@ -69,9 +79,10 @@ commutative operator.  To get a commutative dot operator @code{.}, the command
 @category{Vectors} @category{Share packages} @category{Package vect}
 @closecatbox
 
-
+@c -----------------------------------------------------------------------------
 @node eigen, , Vectors, Introduction to Matrices and Linear Algebra
 @subsection eigen
+@c -----------------------------------------------------------------------------
 
 The package @code{eigen} contains several functions devoted to the
 symbolic computation of eigenvalues and eigenvectors.
@@ -84,22 +95,25 @@ of this package.
 @code{batch ("eigen")} executes the same demonstration,
 but without the user prompt between successive computations.
 
-The functions in the @code{eigen} package are
-@flushleft
+The functions in the @code{eigen} package are:@*
 @code{innerproduct}, @code{unitvector}, @code{columnvector}, @code{gramschmidt}, @code{eigenvalues},
 @code{eigenvectors}, @code{uniteigenvectors}, and @code{similaritytransform}.
-@end flushleft
 
 @opencatbox
 @category{Vectors} @category{Matrices} @category{Share packages} @category{Package eigen}
 @closecatbox
 
-
 @c end concepts Matrices and Linear Algebra
+
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
 @section Functions and Variables for Matrices and Linear Algebra
+@c -----------------------------------------------------------------------------
 
-@deffn {Function} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
+@c -----------------------------------------------------------------------------
+@anchor{addcol}
+@deffn {Function} addcol (@var{M}, @var{list_1}, @dots{}, @var{list_n})
+
 Appends the column(s) given by the one
 or more lists (or matrices) onto the matrix @var{M}.
 
@@ -108,7 +122,10 @@ or more lists (or matrices) onto the matrix @var{M}.
 @closecatbox
 @end deffn
 
-@deffn {Function} addrow (@var{M}, @var{list_1}, ..., @var{list_n})
+@c -----------------------------------------------------------------------------
+@anchor{addrow}
+@deffn {Function} addrow (@var{M}, @var{list_1}, @dots{}, @var{list_n})
+
 Appends the row(s) given by the one or
 more lists (or matrices) onto the matrix @var{M}.
 
@@ -117,7 +134,10 @@ more lists (or matrices) onto the matrix @var{M}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{adjoint}
 @deffn {Function} adjoint (@var{M})
+
 Returns the adjoint of the matrix @var{M}.
 The adjoint matrix is the transpose of the matrix of cofactors of @var{M}.
 
@@ -126,12 +146,15 @@ The adjoint matrix is the transpose of the matrix of cofactors of @var{M}.
 @closecatbox
 @end deffn
 
-@deffn {Function} augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@c -----------------------------------------------------------------------------
+@anchor{augcoefmatrix}
+@deffn {Function} augcoefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+
 Returns the augmented coefficient
-matrix for the variables @var{x_1}, ..., @var{x_n} of the system of linear equations
-@var{eqn_1}, ..., @var{eqn_m}.  This is the coefficient matrix with a column adjoined for
-the constant terms in each equation (i.e., those terms not dependent upon
-@var{x_1}, ..., @var{x_n}).
+matrix for the variables @var{x_1}, @dots{}, @var{x_n} of the system of linear
+equations @var{eqn_1}, @dots{}, @var{eqn_m}.  This is the coefficient matrix
+with a column adjoined for the constant terms in each equation (i.e., those
+terms not dependent upon @var{x_1}, @dots{}, @var{x_n}).
 
 @example
 (%i1) m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
@@ -147,15 +170,16 @@ the constant terms in each equation (i.e., those terms not dependent upon
 @end deffn
 
 @c --- 04.10.2010 --------------------------------------------------------------
-@deffn  {Function} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_m}], [@var{y_1},@var{y_2}, ..., @var{y_n}])
-@deffnx {Function} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_n}])
+@anchor{cauchy_matrix}
+@deffn  {Function} cauchy_matrix ([@var{x_1}, @var{x_2}, @dots{}, @var{x_m}], [@var{y_1}, @var{y_2}, @dots{}, @var{y_n}])
+@deffnx {Function} cauchy_matrix ([@var{x_1}, @var{x_2}, @dots{}, @var{x_n}])
 
 Returns a @code{n} by @var{m} Cauchy matrix with the elements @var{a[i,j]} 
-= 1/(@var{x_i}+@var{y_i}). The second argument of @code{cauchy_matrix} is 
-optional. For this case the elements of the Cauchy matrix are  
+= 1/(@var{x_i}+@var{y_i}).  The second argument of @code{cauchy_matrix} is 
+optional.  For this case the elements of the Cauchy matrix are  
 @var{a[i,j]} = 1/(@var{x_i}+@var{x_j}).
 
-Remark: In the literature the Cauchy matrix can be found defined in two forms. 
+Remark: In the literature the Cauchy matrix can be found defined in two forms.
 A second definition is @var{a[i,j]} = 1/(@var{x_i}-@var{y_i}).
 
 Examples:
@@ -191,7 +215,10 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{charpoly}
 @deffn {Function} charpoly (@var{M}, @var{x})
+
 Returns the characteristic polynomial for the matrix @var{M}
 with respect to variable @var{x}.  That is,
 @code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
@@ -234,10 +261,13 @@ with respect to variable @var{x}.  That is,
 @closecatbox
 @end deffn
 
-@deffn {Function} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@c -----------------------------------------------------------------------------
+@anchor{coefmatrix}
+@deffn {Function} coefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+
 Returns the coefficient matrix for the
-variables @var{x_1}, ..., @var{x_n} of the system of linear equations 
-@var{eqn_1}, ..., @var{eqn_m}.
+variables @var{x_1}, @dots{}, @var{x_n} of the system of linear equations
+@var{eqn_1}, @dots{}, @var{eqn_m}.
 
 @example
 (%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
@@ -251,7 +281,10 @@ variables @var{x_1}, ..., @var{x_n} of the system of linear equations
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{col}
 @deffn {Function} col (@var{M}, @var{i})
+
 Returns the @var{i}'th column of the matrix @var{M}.
 The return value is a matrix.
 @c EXAMPLE HERE
@@ -261,8 +294,12 @@ The return value is a matrix.
 @closecatbox
 @end deffn
 
-@deffn {Function} columnvector (@var{L})
+@c -----------------------------------------------------------------------------
+@anchor{columnvector}
+@anchor{covect}
+@deffn  {Function} columnvector (@var{L})
 @deffnx {Function} covect (@var{L})
+
 Returns a matrix of one column and @code{length (@var{L})} rows,
 containing the elements of the list @var{L}.
 
@@ -297,14 +334,17 @@ Warning - you are redefining the Macsyma function eigenvectors
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{copymatrix}
 @deffn {Function} copymatrix (@var{M})
+
 Returns a copy of the matrix @var{M}.  This is the only way
 to make a copy aside from copying @var{M} element by element.
 
-Note that an assignment of one matrix to another, as in @code{m2: m1},
-does not copy @code{m1}.
-An assignment @code{m2 [i,j]: x} or @code{setelmx (x, i, j, m2} also modifies @code{m1 [i,j]}.
-Creating a copy with @code{copymatrix} and then using assignment creates a separate, modified copy.
+Note that an assignment of one matrix to another, as in @code{m2: m1}, does not
+copy @code{m1}.  An assignment @code{m2 [i,j]: x} or @code{setelmx (x, i, j, m2}
+also modifies @code{m1 [i,j]}.  Creating a copy with @code{copymatrix} and then
+using assignment creates a separate, modified copy.
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -312,7 +352,10 @@ Creating a copy with @code{copymatrix} and then using assignment creates a separ
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{determinat}
 @deffn {Function} determinant (@var{M})
+
 Computes the determinant of @var{M} by a method similar to
 Gaussian elimination.
 
@@ -331,14 +374,16 @@ sparse determinants which is called when the switches
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{detout}
 @defvr {Option variable} detout
 Default value: @code{false}
 
 When @code{detout} is @code{true}, the determinant of a
 matrix whose inverse is computed is factored out of the inverse.
 
-For this switch to have an effect @code{doallmxops} and @code{doscmxops} should be
-@code{false} (see their descriptions).  Alternatively this switch can be
+For this switch to have an effect @code{doallmxops} and @code{doscmxops} should
+be @code{false} (see their descriptions).  Alternatively this switch can be
 given to @code{ev} which causes the other two to be set correctly.
 
 Example:
@@ -364,18 +409,22 @@ Example:
 @opencatbox
 @category{Matrices} @category{Evaluation flags}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{diagmatrix}
 @deffn {Function} diagmatrix (@var{n}, @var{x})
-Returns a diagonal matrix of size @var{n} by @var{n} with the
-diagonal elements all equal to @var{x}.
-@code{diagmatrix (@var{n}, 1)} returns an identity matrix (same as @code{ident (@var{n})}).
 
-@var{n} must evaluate to an integer, otherwise @code{diagmatrix} complains with an error message.
+Returns a diagonal matrix of size @var{n} by @var{n} with the diagonal elements
+all equal to @var{x}.  @code{diagmatrix (@var{n}, 1)} returns an identity matrix
+(same as @code{ident (@var{n})}).
 
-@var{x} can be any kind of expression, including another matrix.
-If @var{x} is a matrix, it is not copied; all diagonal elements refer to the same instance, @var{x}.
+@var{n} must evaluate to an integer, otherwise @code{diagmatrix} complains with
+an error message.
+
+@var{x} can be any kind of expression, including another matrix.  If @var{x} is
+a matrix, it is not copied; all diagonal elements refer to the same instance,
+@var{x}.
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -383,6 +432,8 @@ If @var{x} is a matrix, it is not copied; all diagonal elements refer to the sam
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{doallmxops}
 @defvr {Option variable} doallmxops
 Default value: @code{true}
 
@@ -396,9 +447,10 @@ individual @code{dot} switches govern which operations are performed.
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{domxexpt}
 @defvr {Option variable} domxexpt
 Default value: @code{true}
 
@@ -407,10 +459,9 @@ a matrix exponential, @code{exp (@var{M})} where @var{M} is a matrix,
 is interpreted as a matrix with element @code{[i,j} equal to @code{exp (m[i,j])}.
 Otherwise @code{exp (@var{M})} evaluates to @code{exp (@var{ev(M)}}.
 
-@code{domxexpt}
-affects all expressions of the form @code{@var{base}^@var{power}} where @var{base} is an
-expression assumed scalar or constant, and @var{power} is a list or
-matrix.
+@code{domxexpt} affects all expressions of the form
+@code{@var{base}^@var{power}} where @var{base} is an expression assumed scalar
+or constant, and @var{power} is a list or matrix.
 
 Example:
 
@@ -437,9 +488,10 @@ Example:
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{domxmxops}
 @defvr {Option variable} domxmxops
 Default value: @code{true}
 
@@ -452,9 +504,10 @@ operations); if this switch is @code{false} such operations are not carried out.
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{domxnctimes}
 @defvr {Option variable} domxnctimes
 Default value: @code{false}
 
@@ -466,24 +519,26 @@ matrices are carried out.
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dontfactor}
 @defvr {Option variable} dontfactor
 Default value: @code{[]}
 
-@code{dontfactor} may be set to a list of variables with respect
-to which factoring is not to occur.  (The list is initially empty.)
-Factoring also will not take place with respect to any variables which
-are less important, according the variable ordering assumed for canonical rational expression (CRE) form,
-than those on the @code{dontfactor} list.
+@code{dontfactor} may be set to a list of variables with respect to which
+factoring is not to occur.  (The list is initially empty.) Factoring also will
+not take place with respect to any variables which are less important, according
+the variable ordering assumed for canonical rational expression (CRE) form, than
+those on the @code{dontfactor} list.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{doscmxops}
 @defvr {Option variable} doscmxops
 Default value: @code{false}
 
@@ -495,9 +550,10 @@ carried out.
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{doscmxplus}
 @defvr {Option variable} doscmxplus
 Default value: @code{false}
 
@@ -509,9 +565,10 @@ a matrix result.  This switch is not subsumed under @code{doallmxops}.
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dot0nscsimp}
 @defvr {Option variable} dot0nscsimp
 Default value: @code{true}
 
@@ -523,9 +580,10 @@ and a nonscalar term is simplified to a commutative product.
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dot0simp}
 @defvr {Option variable} dot0simp
 Default value: @code{true}
 
@@ -538,9 +596,10 @@ a scalar term is simplified to a commutative product.
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dot1simp}
 @defvr {Option variable} dot1simp
 Default value: @code{true}
 
@@ -553,9 +612,10 @@ another term is simplified to a commutative product.
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dotassoc}
 @defvr {Option variable} dotassoc
 Default value: @code{true}
 
@@ -567,49 +627,55 @@ When @code{dotassoc} is @code{true}, an expression @code{(A.B).C} simplifies to
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dotconstrules}
 @defvr {Option variable} dotconstrules
 Default value: @code{true}
 
 When @code{dotconstrules} is @code{true}, a non-commutative product of a
 constant and another term is simplified to a commutative product.
 @c TERMINOLOGY: (1) SWITCH/FLAG/SOME OTHER TERM ?? (2) ASSIGN/SET/TURN ON/SOME OTHER TERM ??
-Turning on this flag effectively turns on @code{dot0simp}, @code{dot0nscsimp}, and
-@code{dot1simp} as well.
+Turning on this flag effectively turns on @code{dot0simp}, @code{dot0nscsimp},
+and @code{dot1simp} as well.
 
 @c NEED EXAMPLE HERE
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dotdistrib}
 @defvr {Option variable} dotdistrib
 Default value: @code{false}
 
-When @code{dotdistrib} is @code{true}, an expression @code{A.(B + C)} simplifies to @code{A.B + A.C}.
+When @code{dotdistrib} is @code{true}, an expression @code{A.(B + C)} simplifies
+to @code{A.B + A.C}.
 
 @c NEED EXAMPLE HERE
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dotexptsimp}
 @defvr {Option variable} dotexptsimp
 Default value: @code{true}
 
-When @code{dotexptsimp} is @code{true}, an expression @code{A.A} simplifies to @code{A^^2}.
+When @code{dotexptsimp} is @code{true}, an expression @code{A.A} simplifies to
+@code{A^^2}.
 
 @c NEED EXAMPLE HERE
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dotident}
 @defvr {Option variable} dotident
 Default value: 1
 
@@ -620,24 +686,27 @@ Default value: 1
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{dotscrules}
 @defvr {Option variable} dotscrules
 Default value: @code{false}
 
-When @code{dotscrules} is @code{true}, an expression @code{A.SC} or @code{SC.A} simplifies
-to @code{SC*A} and @code{A.(SC*B)} simplifies to @code{SC*(A.B)}.
+When @code{dotscrules} is @code{true}, an expression @code{A.SC} or @code{SC.A}
+simplifies to @code{SC*A} and @code{A.(SC*B)} simplifies to @code{SC*(A.B)}.
 @c HMM, DOES "SC" MEAN "SCALAR" HERE ?? CLARIFY
 
 @c NEED EXAMPLE HERE
 @opencatbox
 @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{echelon}
 @deffn {Function} echelon (@var{M})
+
 Returns the echelon form of the matrix @var{M},
 as produced by Gaussian elimination.
 The echelon form is computed from @var{M}
@@ -648,7 +717,8 @@ column elements under the first one in each row are all zero.
 @code{triangularize} also carries out Gaussian elimination,
 but it does not normalize the leading non-zero element in each row.
 
-@code{lu_factor} and @code{cholesky} are other functions which yield triangularized matrices.
+@code{lu_factor} and @code{cholesky} are other functions which yield
+triangularized matrices.
 
 @c ===beg===
 @c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
@@ -678,8 +748,12 @@ but it does not normalize the leading non-zero element in each row.
 @closecatbox
 @end deffn
 
-@deffn {Function} eigenvalues (@var{M})
+@c -----------------------------------------------------------------------------
+@anchor{eigenvalues}
+@anchor{eivals}
+@deffn  {Function} eigenvalues (@var{M})
 @deffnx {Function} eivals (@var{M})
+
 @c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; EXTEND THAT TO ALL FUNCTIONS ??
 @c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION ITEM
 Returns a list of two lists containing the eigenvalues of the matrix @var{M}.
@@ -699,10 +773,10 @@ package (except @code{innerproduct}, @code{unitvector}, @code{columnvector} and
 @c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE
 @c WHAT DOES "will not work" MEAN, ANYWAY ??
 
-In some cases the eigenvalues found by @code{solve} may be complicated expressions.
-(This may happen when @code{solve} returns a not-so-obviously real expression
-for an eigenvalue which is known to be real.)
-It may be possible to simplify the eigenvalues using some other functions.
+In some cases the eigenvalues found by @code{solve} may be complicated
+expressions.  (This may happen when @code{solve} returns a not-so-obviously real
+expression for an eigenvalue which is known to be real.)  It may be possible to
+simplify the eigenvalues using some other functions.
 @c WHAT ARE THOSE OTHER FUNCTIONS ??
 
 The package @code{eigen.mac} is loaded automatically when
@@ -718,7 +792,10 @@ After loading, all functions and variables in the package are available.
 @closecatbox
 @end deffn
 
-@deffn {Function} eigenvectors (@var{M})
+@c -----------------------------------------------------------------------------
+@anchor{eigenvectors}
+@anchor{eivects}
+@deffn  {Function} eigenvectors (@var{M})
 @deffnx {Function} eivects (@var{M})
 
 Computes eigenvectors of the matrix @var{M}.
@@ -747,18 +824,18 @@ whether the matrix is nondiagonalizable or diagonalizable after
 eigenvectors of the Hermitian matrix to be orthogonalized using the
 Gram-Schmidt algorithm.
 
-@code{knowneigvals} when @code{true} causes the @code{eigen} package to assume the
-eigenvalues of the matrix are known to the user and stored under the
-global name @code{listeigvals}.  @code{listeigvals} should be set to a list similar
+@code{knowneigvals} when @code{true} causes the @code{eigen} package to assume
+the eigenvalues of the matrix are known to the user and stored under the global
+name @code{listeigvals}.  @code{listeigvals} should be set to a list similar
 to the output @code{eigenvalues}.
 
-The function @code{algsys} is used here to solve for the eigenvectors. Sometimes if the
-eigenvalues are messy, @code{algsys} may not be able to find a solution.
-In some cases, it may be possible to simplify the eigenvalues by
-first finding them using @code{eigenvalues} command and then using other functions
-to reduce them to something simpler.
-Following simplification, @code{eigenvectors} can be called again
-with the @code{knowneigvals} flag set to @code{true}.
+The function @code{algsys} is used here to solve for the eigenvectors.
+Sometimes if the eigenvalues are messy, @code{algsys} may not be able to find a
+solution.  In some cases, it may be possible to simplify the eigenvalues by
+first finding them using @code{eigenvalues} command and then using other
+functions to reduce them to something simpler.  Following simplification,
+@code{eigenvectors} can be called again with the @code{knowneigvals} flag set
+to @code{true}.
 
 See also @code{eigenvalues}.
 
@@ -852,7 +929,10 @@ A matrix which has two eigenvectors for one eigenvalue (namely 2).
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ematrix}
 @deffn {Function} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+
 Returns an @var{m} by @var{n} matrix, all elements of which
 are zero except for the @code{[@var{i}, @var{j}]} element which is @var{x}.
 @c WOW, THAT SEEMS PRETTY SPECIALIZED ...
@@ -862,12 +942,14 @@ are zero except for the @code{[@var{i}, @var{j}]} element which is @var{x}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{entermatrix}
 @deffn {Function} entermatrix (@var{m}, @var{n})
+
 Returns an @var{m} by @var{n} matrix, reading the elements interactively.
 
-If @var{n} is equal to @var{m},
-Maxima prompts for the type of the matrix (diagonal, symmetric, antisymmetric, or general)
-and for each element.
+If @var{n} is equal to @var{m}, Maxima prompts for the type of the matrix
+(diagonal, symmetric, antisymmetric, or general) and for each element.
 Each response is terminated by a semicolon @code{;} or dollar sign @code{$}.
 
 If @var{n} is not equal to @var{m},
@@ -908,19 +990,20 @@ Matrix entered.
 @closecatbox
 @end deffn
 
-@deffn {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@c -----------------------------------------------------------------------------
+@anchor{genmatrix}
+@deffn  {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
 @deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
 @deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
-Returns a matrix generated from @var{a},
-taking element @code{@var{a}[@var{i_1},@var{j_1}]}
-as the upper-left element and @code{@var{a}[@var{i_2},@var{j_2}]}
-as the lower-right element of the matrix.
-Here @var{a} is a declared array (created by @code{array} but not by @code{make_array})
-or an undeclared array,
-or an array function,
-or a lambda expression of two arguments.
-(An array function is created like other functions with @code{:=} or @code{define},
-but arguments are enclosed in square brackets instead of parentheses.)
+
+Returns a matrix generated from @var{a}, taking element
+@code{@var{a}[@var{i_1}, @var{j_1}]} as the upper-left element and
+@code{@var{a}[@var{i_2}, @var{j_2}]} as the lower-right element of the matrix.
+Here @var{a} is a declared array (created by @code{array} but not by
+@code{make_array}) or an undeclared array, or an array function, or a lambda
+expression of two arguments.  (An array function is created like other functions
+with @code{:=} or @code{define}, but arguments are enclosed in square brackets
+instead of parentheses.)
 
 If @var{j_1} is omitted, it is assumed equal to @var{i_1}.
 If both @var{j_1} and @var{i_1} are omitted, both are assumed equal to 1.
@@ -986,7 +1069,9 @@ Examples:
 @closecatbox
 @end deffn
 
-@deffn {Function} gramschmidt (@var{x})
+@c -----------------------------------------------------------------------------
+@anchor{gramschmidt}
+@deffn  {Function} gramschmidt (@var{x})
 @deffnx {Function} gramschmidt (@var{x}, @var{F})
 
 Carries out the Gram-Schmidt orthogonalization algorithm on @var{x},
@@ -995,17 +1080,15 @@ which is either a matrix or a list of lists.
 The inner product employed by @code{gramschmidt} is @var{F}, if present,
 otherwise the inner product is the function @code{innerproduct}.
 
-If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.
-If @var{x} is a list of lists, the algorithm is applied to the sublists,
-which must have equal numbers of elements.
-In either case,
-the return value is a list of lists, the sublists of which are orthogonal
-and span the same space as @var{x}.
-If the dimension of the span of @var{x} is less than the number of rows or sublists,
-some sublists of the return value are zero.
+If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.  If
+@var{x} is a list of lists, the algorithm is applied to the sublists, which must
+have equal numbers of elements.  In either case, the return value is a list of
+lists, the sublists of which are orthogonal and span the same space as @var{x}.
+If the dimension of the span of @var{x} is less than the number of rows or
+sublists, some sublists of the return value are zero.
 
-@code{factor} is called at each stage of the algorithm to simplify intermediate results.
-As a consequence, the return value may contain factored integers.
+@code{factor} is called at each stage of the algorithm to simplify intermediate
+results.  As a consequence, the return value may contain factored integers.
 
 @code{load(eigen)} loads this function.
 
@@ -1062,7 +1145,10 @@ Gram-Schmidt algorithm using a specified inner product function.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ident}
 @deffn {Function} ident (@var{n})
+
 Returns an @var{n} by @var{n} identity matrix.
 
 @opencatbox
@@ -1070,11 +1156,15 @@ Returns an @var{n} by @var{n} identity matrix.
 @closecatbox
 @end deffn
 
-@deffn {Function} innerproduct (@var{x}, @var{y})
+@c -----------------------------------------------------------------------------
+@anchor{innerproduct}
+@anchor{inprod}
+@deffn  {Function} innerproduct (@var{x}, @var{y})
 @deffnx {Function} inprod (@var{x}, @var{y})
-Returns the inner product (also called the scalar product or dot product) of @var{x} and @var{y},
-which are lists of equal length, or both 1-column or 1-row matrices of equal length.
-The return value is @code{conjugate (x) . y},
+
+Returns the inner product (also called the scalar product or dot product) of
+@var{x} and @var{y}, which are lists of equal length, or both 1-column or 1-row
+matrices of equal length.  The return value is @code{conjugate (x) . y},
 where @code{.} is the noncommutative multiplication operator.
 
 @code{load ("eigen")} loads this function.
@@ -1088,7 +1178,11 @@ where @code{.} is the noncommutative multiplication operator.
 @end deffn
 
 @c THIS DESCRIPTION NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{invert}
 @deffn {Function} invert (@var{M})
+
 Returns the inverse of the matrix @var{M}.
 The inverse is computed by the adjoint method.
 
@@ -1118,7 +1212,8 @@ expand (adjoint (m)) / expand (determinant (m))
 invert (m) := adjoint (m) / determinant (m)
 @end example
 
-See @code{^^} (noncommutative exponent) for another method of inverting a matrix.
+See @code{^^} (noncommutative exponent) for another method of inverting a
+matrix.
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -1127,7 +1222,9 @@ See @code{^^} (noncommutative exponent) for another method of inverting a matrix
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{list_matrix_entries}
 @deffn {Function} list_matrix_entries (@var{M})
+
 Returns a list containing the elements of the matrix @var{M}.
 
 Example:
@@ -1145,6 +1242,8 @@ Example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{lmxchar}
 @defvr {Option variable} lmxchar
 Default value: @code{[}
 
@@ -1167,29 +1266,30 @@ Example:
 @opencatbox
 @category{Display flags and variables} @category{Matrices}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} matrix (@var{row_1}, ..., @var{row_n})
-Returns a rectangular matrix which has the rows @var{row_1}, ..., @var{row_n}.
-Each row is a list of expressions.
-All rows must be the same length.
+@c -----------------------------------------------------------------------------
+@anchor{matrix}
+@deffn {Function} matrix (@var{row_1}, @dots{}, @var{row_n})
 
-The operations @code{+} (addition), @code{-} (subtraction), @code{*} (multiplication),
-and @code{/} (division), are carried out element by element
-when the operands are two matrices, a scalar and a matrix, or a matrix and a scalar.
-The operation @code{^} (exponentiation, equivalently @code{**})
-is carried out element by element 
-if the operands are a scalar and a matrix or a matrix and a scalar,
-but not if the operands are two matrices.
+Returns a rectangular matrix which has the rows @var{row_1}, @dots{},
+@var{row_n}.  Each row is a list of expressions.  All rows must be the same
+length.
+
+The operations @code{+} (addition), @code{-} (subtraction), @code{*}
+(multiplication), and @code{/} (division), are carried out element by element
+when the operands are two matrices, a scalar and a matrix, or a matrix and a
+scalar.  The operation @code{^} (exponentiation, equivalently @code{**})
+is carried out element by element if the operands are a scalar and a matrix or
+a matrix and a scalar, but not if the operands are two matrices.
 @c WHAT DOES THIS NEXT PHRASE MEAN EXACTLY ??
 All operations are normally carried out in full,
 including @code{.} (noncommutative multiplication).
 
-Matrix multiplication is represented by the noncommutative multiplication operator @code{.}.
-The corresponding noncommutative exponentiation operator is @code{^^}.
-For a matrix @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2} and
-@code{@var{A}^^-1} is the inverse of @var{A}, if it exists.
+Matrix multiplication is represented by the noncommutative multiplication
+operator @code{.}.  The corresponding noncommutative exponentiation operator
+is @code{^^}.  For a matrix @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2}
+and @code{@var{A}^^-1} is the inverse of @var{A}, if it exists.
 
 There are switches for controlling simplification of expressions
 involving dot and matrix-list operations.
@@ -1198,7 +1298,7 @@ These are
 @code{domxmxops}, @code{doscmxops}, and @code{doscmxplus}.
 @c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
 
-There are additional options which are related to matrices. These are:
+There are additional options which are related to matrices.  These are:
 @code{lmxchar}, @code{rmxchar}, @code{ratmx}, @code{listarith}, @code{detout},
 @code{scalarmatrix},
 and @code{sparse}.
@@ -1297,7 +1397,7 @@ Scalar base to a matrix exponent, element by element.
 @end example
 @itemize @bullet
 @item
-Matrix base to a matrix exponent. This is not carried out element by element.
+Matrix base to a matrix exponent.  This is not carried out element by element.
 @c WHAT IS THIS ??
 @end itemize
 @example
@@ -1345,8 +1445,8 @@ is carried out element by element and so @code{b^^m} is the same as @code{b^m}.
 @end example
 @itemize @bullet
 @item
-A matrix raised to a -1 exponent with noncommutative exponentiation is the matrix inverse,
-if it exists.
+A matrix raised to a -1 exponent with noncommutative exponentiation is the
+matrix inverse, if it exists.
 @end itemize
 @example
 (%i14) x ^^ -1;
@@ -1368,7 +1468,10 @@ if it exists.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{matrixmap}
 @deffn {Function} matrixmap (@var{f}, @var{M})
+
 Returns a matrix with element @code{i,j} equal to @code{@var{f}(@var{M}[i,j])}.
 
 See also @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
@@ -1379,7 +1482,10 @@ See also @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{matrixp}
 @deffn {Function} matrixp (@var{expr})
+
 Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
 
 @opencatbox
@@ -1387,6 +1493,8 @@ Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{matrix_element_add}
 @defvr {Option variable} matrix_element_add
 Default value: @code{+}
 
@@ -1424,9 +1532,10 @@ Example:
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{matrix_element_mult}
 @defvr {Option variable} matrix_element_mult
 Default value: @code{*}
 
@@ -1474,9 +1583,10 @@ Example:
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{matrix_element_transpose}
 @defvr {Option variable} matrix_element_transpose
 Default value: @code{false}
 
@@ -1532,13 +1642,16 @@ Examples:
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
 @c IS THIS THE ONLY MATRIX TRACE FUNCTION ??
+
+@c -----------------------------------------------------------------------------
+@anchor{mattrace}
 @deffn {Function} mattrace (@var{M})
+
 Returns the trace (that is, the sum of the elements on the main diagonal) of
-the square matrix @var{M}.  
+the square matrix @var{M}.
 
 @code{mattrace} is called by @code{ncharpoly},
 an alternative to Maxima's @code{charpoly}.
@@ -1551,7 +1664,10 @@ an alternative to Maxima's @code{charpoly}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{minor}
 @deffn {Function} minor (@var{M}, @var{i}, @var{j})
+
 Returns the @var{i}, @var{j} minor of the matrix @var{M}.  That is, @var{M}
 with row @var{i} and column @var{j} removed.
 
@@ -1560,16 +1676,10 @@ with row @var{i} and column @var{j} removed.
 @closecatbox
 @end deffn
 
-@deffn {Function} ncexpt (@var{a}, @var{b})
-If a non-commutative exponential expression is too
-wide to be displayed as @code{@var{a}^^@var{b}} it appears as @code{ncexpt (@var{a},@var{b})}.
-
-@code{ncexpt} is not the name of a function or operator;
-the name only appears in output, and is not recognized in input.
-
-@end deffn
-
+@c -----------------------------------------------------------------------------
+@anchor{ncharpoly}
 @deffn {Function} ncharpoly (@var{M}, @var{x})
+
 Returns the characteristic polynomial of the matrix @var{M}
 with respect to @var{x}.  This is an alternative to Maxima's @code{charpoly}.
 
@@ -1579,9 +1689,9 @@ characteristic polynomial.  From these quantities the symmetric
 functions of the roots can be calculated, which are nothing more than
 the coefficients of the characteristic polynomial.  @code{charpoly} works by
 @c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
-forming the determinant of @code{@var{x} * ident [n] - a}.  Thus @code{ncharpoly} wins,
-for example, in the case of large dense matrices filled with integers,
-since it avoids polynomial arithmetic altogether.
+forming the determinant of @code{@var{x} * ident [n] - a}.  Thus
+@code{ncharpoly} wins, for example, in the case of large dense matrices filled
+with integers, since it avoids polynomial arithmetic altogether.
 
 @code{load ("nchrpl")} loads this file.
 
@@ -1591,9 +1701,11 @@ since it avoids polynomial arithmetic altogether.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{newdet}
 @deffn {Function} newdet (@var{M})
+
 Computes the determinant of the matrix @var{M} by the Johnson-Gentleman tree 
-minor algorithm. @code{newdet} returns the result in CRE form.
+minor algorithm.  @code{newdet} returns the result in CRE form.
 
 @opencatbox
 @category{Matrices}
@@ -1601,7 +1713,11 @@ minor algorithm. @code{newdet} returns the result in CRE form.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{nonscalar}
 @defvr {Declaration} nonscalar
+
 Makes atoms behave as does a list or matrix with respect to
 the dot operator.
 
@@ -1610,7 +1726,10 @@ the dot operator.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{nonscalarp}
 @deffn {Function} nonscalarp (@var{expr})
+
 Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains
 atoms declared as non-scalars, lists, or matrices.
 
@@ -1620,9 +1739,11 @@ atoms declared as non-scalars, lists, or matrices.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{permanent}
 @deffn {Function} permanent (@var{M})
+
 Computes the permanent of the matrix @var{M} by the Johnson-Gentleman tree
-minor algorithm. A permanent is like a determinant but with no sign changes.
+minor algorithm.  A permanent is like a determinant but with no sign changes.
 @code{permanent} returns the result in CRE form.
 
 See also @code{newdet}.
@@ -1632,7 +1753,10 @@ See also @code{newdet}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{rank}
 @deffn {Function} rank (@var{M})
+
 Computes the rank of the matrix @var{M}.  That is, the order of the
 largest non-singular subdeterminant of @var{M}.
 
@@ -1646,6 +1770,8 @@ equivalent to zero is indeed so.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{ratmx}
 @defvr {Option variable} ratmx
 Default value: @code{false}
 
@@ -1663,10 +1789,12 @@ which might not always be desired.
 @opencatbox
 @category{Matrices} @category{Rational expressions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{row}
 @deffn {Function} row (@var{M}, @var{i})
+
 Returns the @var{i}'th row of the matrix @var{M}.
 The return value is a matrix.
 
@@ -1675,6 +1803,8 @@ The return value is a matrix.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{scalarmatrixp}
 @defvr {Option variable} scalarmatrixp
 Default value: @code{true}
 
@@ -1685,16 +1815,20 @@ is simplified to a scalar, namely the sole element of the matrix.
 When @code{scalarmatrixp} is @code{all},
 then all 1 x 1 matrices are simplified to scalars.
 
-When @code{scalarmatrixp} is @code{false}, 1 x 1 matrices are not simplified to scalars.
+When @code{scalarmatrixp} is @code{false}, 1 x 1 matrices are not simplified
+to scalars.
 
 @opencatbox
 @category{Matrices} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
 @c I WONDER WHAT THIS IS ABOUT
+
+@c -----------------------------------------------------------------------------
+@anchor{scalefactors}
 @deffn {Function} scalefactors (@var{coordinatetransform})
+
 Here coordinatetransform
 evaluates to the form [[expression1, expression2, ...],
 indeterminate1, indeterminat2, ...], where indeterminate1,
@@ -1716,7 +1850,10 @@ coordinate system, there is a function with usage of the form
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{setelmx}
 @deffn {Function} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+
 Assigns @var{x} to the (@var{i}, @var{j})'th element of the matrix @var{M},
 and returns the altered matrix.
 
@@ -1728,20 +1865,24 @@ but returns @var{x} instead of @var{M}.
 @closecatbox
 @end deffn
 
-@deffn {Function} similaritytransform (@var{M})
+@c -----------------------------------------------------------------------------
+@anchor{similaritytransform}
+@anchor{simtran}
+@deffn  {Function} similaritytransform (@var{M})
 @deffnx {Function} simtran (@var{M})
-@code{similaritytransform} computes a similarity transform of the matrix @code{M}.
-It returns a list which is the output of the
-@code{uniteigenvectors} command.  In addition if the flag @code{nondiagonalizable}
-is @code{false} two global matrices @code{leftmatrix} and @code{rightmatrix} are computed.
-These matrices have the property that
-@code{leftmatrix . @var{M} . rightmatrix} is a diagonal matrix with the eigenvalues
-of @var{M} on the diagonal.  If @code{nondiagonalizable} is @code{true} the left and right
-matrices are not computed.
 
-If the flag @code{hermitianmatrix} is @code{true}
-then @code{leftmatrix} is the complex conjugate of the transpose of
-@code{rightmatrix}.  Otherwise @code{leftmatrix} is the inverse of @code{rightmatrix}.
+@code{similaritytransform} computes a similarity transform of the matrix
+@code{M}.  It returns a list which is the output of the @code{uniteigenvectors}
+command.  In addition if the flag @code{nondiagonalizable} is @code{false} two
+global matrices @code{leftmatrix} and @code{rightmatrix} are computed.  These
+matrices have the property that @code{leftmatrix . @var{M} . rightmatrix} is a
+diagonal matrix with the eigenvalues of @var{M} on the diagonal.  If
+@code{nondiagonalizable} is @code{true} the left and right matrices are not
+computed.
+
+If the flag @code{hermitianmatrix} is @code{true} then @code{leftmatrix} is the
+complex conjugate of the transpose of @code{rightmatrix}.  Otherwise
+@code{leftmatrix} is the inverse of @code{rightmatrix}.
 
 @code{rightmatrix} is the matrix the columns of which are the unit
 eigenvectors of @var{M}.  The other flags (see @code{eigenvalues} and
@@ -1761,27 +1902,32 @@ to be able to form @code{rightmatrix}.
 @defvr {Option variable} sparse
 Default value: @code{false}
 
-When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then @code{determinant}
-will use special routines for computing sparse determinants.
+When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then
+@code{determinant} will use special routines for computing sparse determinants.
 
 @opencatbox
 @category{Matrices}
 @closecatbox
-
 @end defvr
 
-@deffn {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
-@deffnx {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
-@deffnx {Function} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
-Returns a new matrix composed of the
-matrix @var{M} with rows @var{i_1}, ..., @var{i_m} deleted, and columns @var{j_1}, ..., @var{j_n} deleted.
+@c -----------------------------------------------------------------------------
+@anchor{submatrix}
+@deffn  {Function} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n})
+@deffnx {Function} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M})
+@deffnx {Function} submatrix (@var{M}, @var{j_1}, @dots{}, @var{j_n})
+
+Returns a new matrix composed of the matrix @var{M} with rows @var{i_1},
+@dots{}, @var{i_m} deleted, and columns @var{j_1}, @dots{}, @var{j_n} deleted.
 
 @opencatbox
 @category{Matrices}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{transpose}
 @deffn {Function} transpose (@var{M})
+
 Returns the transpose of @var{M}.
 
 If @var{M} is a matrix, the return value is another matrix @var{N}
@@ -1798,13 +1944,17 @@ and the return value is a noun expression @code{'transpose (@var{M})}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{triangularize}
 @deffn {Function} triangularize (@var{M})
+
 Returns the upper triangular form of the matrix @code{M},
 as produced by Gaussian elimination.
 The return value is the same as @code{echelon},
 except that the leading nonzero coefficient in each row is not normalized to 1.
 
-@code{lu_factor} and @code{cholesky} are other functions which yield triangularized matrices.
+@code{lu_factor} and @code{cholesky} are other functions which yield
+triangularized matrices.
 
 @c ===beg===
 @c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
@@ -1830,8 +1980,12 @@ except that the leading nonzero coefficient in each row is not normalized to 1.
 @closecatbox
 @end deffn
 
-@deffn {Function} uniteigenvectors (@var{M})
+@c -----------------------------------------------------------------------------
+@anchor{uniteigenvectors}
+@anchor{ueivects}
+@deffn  {Function} uniteigenvectors (@var{M})
 @deffnx {Function} ueivects (@var{M})
+
 Computes unit eigenvectors of the matrix @var{M}.
 The return value is a list of lists, the first sublist of which is the
 output of the @code{eigenvalues} command, and the other sublists of which are
@@ -1844,16 +1998,15 @@ The flags mentioned in the description of the
 
 When @code{knowneigvects} is @code{true}, the @code{eigen} package assumes
 that the eigenvectors of the matrix are known to the user and are
-stored under the global name @code{listeigvects}.  @code{listeigvects} should be set
-to a list similar to the output of the @code{eigenvectors} command.
+stored under the global name @code{listeigvects}.  @code{listeigvects} should
+be set to a list similar to the output of the @code{eigenvectors} command.
 
 @c FOLLOWING PARAGRAPH IS IN NEED OF SERIOUS CLARIFICATION
-If @code{knowneigvects} is set to @code{true} and the list of eigenvectors is given the
-setting of the flag @code{nondiagonalizable} may not be correct.  If that is
-the case please set it to the correct value.  The author assumes that
-the user knows what he is doing and will not try to diagonalize a
-matrix the eigenvectors of which do not span the vector space of the
-appropriate dimension.
+If @code{knowneigvects} is set to @code{true} and the list of eigenvectors is
+given the setting of the flag @code{nondiagonalizable} may not be correct.  If
+that is the case please set it to the correct value.  The author assumes that
+the user knows what he is doing and will not try to diagonalize a matrix the
+eigenvectors of which do not span the vector space of the appropriate dimension.
 
 @code{load ("eigen")} loads this function.
 
@@ -1864,8 +2017,12 @@ appropriate dimension.
 @closecatbox
 @end deffn
 
-@deffn {Function} unitvector (@var{x})
+@c -----------------------------------------------------------------------------
+@anchor{unitvector}
+@anchor{uvect}
+@deffn  {Function} unitvector (@var{x})
 @deffnx {Function} uvect (@var{x})
+
 Returns @math{@var{x}/norm(@var{x})};
 this is a unit vector in the same direction as @var{x}.
 
@@ -1878,7 +2035,6 @@ this is a unit vector in the same direction as @var{x}.
 @closecatbox
 @end deffn
 
-@c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
@@ -1895,10 +2051,14 @@ of the coordinate variables.
 @closecatbox
 @end deffn
 
-@c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A DESCRIPTION HERE
+@c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A
+@c DESCRIPTION HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{vectorsimp}
 @deffn {Function} vectorsimp (@var{expr})
-Applies simplifications and expansions according
-to the following global flags:
+
+Applies simplifications and expansions according to the following global flags:
 
 @flushleft
 @code{expandall}, @code{expanddot}, @code{expanddotplus}, @code{expandcross}, @code{expandcrossplus},
@@ -1908,8 +2068,8 @@ to the following global flags:
 and @code{expandlaplacianprod}.
 @end flushleft
 
-All these flags have default value @code{false}. The @code{plus} suffix refers to
-employing additivity or distributivity.  The @code{prod} suffix refers to the
+All these flags have default value @code{false}.  The @code{plus} suffix refers
+to employing additivity or distributivity.  The @code{prod} suffix refers to the
 expansion for an operand that is any kind of product.
 
 @table @code
@@ -1944,6 +2104,8 @@ These flags have all been declared @code{evflag}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{vect_cross}
 @defvr {Option variable} vect_cross
 Default value: @code{false}
 
@@ -1954,10 +2116,12 @@ When @code{vect_cross} is @code{true}, it allows DIFF(X~Y,T) to work where
 @opencatbox
 @category{Package vect} @category{Differential calculus}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{zeromatrix}
 @deffn {Function} zeromatrix (@var{m}, @var{n})
+
 Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
 @opencatbox
@@ -1965,46 +2129,3 @@ Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 @closecatbox
 @end deffn
 
-@defvr {Special symbol} [
-@defvrx {Special symbol} ]
-@ifinfo
-@fnindex List delimiters
-@fnindex Subscript operator
-@end ifinfo
-@code{[} and @code{]} mark the beginning and end, respectively, of a list.
-
-@code{[} and @code{]} also enclose the subscripts of
-a list, array, hash array, or array function.
-
-Examples:
-
-@example
-(%i1) x: [a, b, c];
-(%o1)                       [a, b, c]
-(%i2) x[3];
-(%o2)                           c
-(%i3) array (y, fixnum, 3);
-(%o3)                           y
-(%i4) y[2]: %pi;
-(%o4)                          %pi
-(%i5) y[2];
-(%o5)                          %pi
-(%i6) z['foo]: 'bar;
-(%o6)                          bar
-(%i7) z['foo];
-(%o7)                          bar
-(%i8) g[k] := 1/(k^2+1);
-                                  1
-(%o8)                     g  := ------
-                           k     2
-                                k  + 1
-(%i9) g[10];
-                                1
-(%o9)                          ---
-                               101
-@end example
-
-@opencatbox
-@category{Lists} @category{Operators}
-@closecatbox
-@end defvr

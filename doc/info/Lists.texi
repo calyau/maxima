@@ -1,3 +1,9 @@
+@c -----------------------------------------------------------------------------
+@page
+@node Lists, Arrays, Constants, Data Types and Structures
+@section Lists
+@c -----------------------------------------------------------------------------
+
 @menu
 * Introduction to Lists::
 * Functions and Variables for Lists::
@@ -5,7 +11,7 @@
 
 @c -----------------------------------------------------------------------------
 @node Introduction to Lists, Functions and Variables for Lists, Lists, Lists
-@section Introduction to Lists
+@subsection Introduction to Lists
 @c -----------------------------------------------------------------------------
 
 Lists are the basic building block for Maxima and Lisp.  All data types
@@ -43,8 +49,56 @@ itself, since after it has been through the simplifier the list would become
 
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for Lists,  , Introduction to Lists, Lists
-@section Functions and Variables for Lists
+@subsection Functions and Variables for Lists
 @c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{[}
+@anchor{]}
+@defvr  {Operator} [
+@defvrx {Operator} ]
+@ifinfo
+@fnindex List delimiters
+@fnindex Subscript operator
+@end ifinfo
+
+@code{[} and @code{]} mark the beginning and end, respectively, of a list.
+
+@code{[} and @code{]} also enclose the subscripts of
+a list, array, hash array, or array function.
+
+Examples:
+
+@example
+(%i1) x: [a, b, c];
+(%o1)                       [a, b, c]
+(%i2) x[3];
+(%o2)                           c
+(%i3) array (y, fixnum, 3);
+(%o3)                           y
+(%i4) y[2]: %pi;
+(%o4)                          %pi
+(%i5) y[2];
+(%o5)                          %pi
+(%i6) z['foo]: 'bar;
+(%o6)                          bar
+(%i7) z['foo];
+(%o7)                          bar
+(%i8) g[k] := 1/(k^2+1);
+                                  1
+(%o8)                     g  := ------
+                           k     2
+                                k  + 1
+(%i9) g[10];
+                                1
+(%o9)                          ---
+                               101
+@end example
+
+@opencatbox
+@category{Lists} @category{Operators}
+@closecatbox
+@end defvr
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -74,12 +128,11 @@ Do @code{example(append);} for an example.
 
 This function searches for the @var{key} in the left hand side of the input
 @var{list} of the form @code{[x,y,z,...]} where each of the @var{list} elements
-is an expression of
-a binary operand and 2 elements.  For example @code{x=1}, @code{2^3}, @code{[a,b]} etc.
-The @var{key} is checked againts the first operand.  @code{assoc} returns the second
-operand if the @code{key} is found.  If the @code{key} is not found it
-either returns the @var{default} value.  @var{default} is optional
-and defaults to @code{false}.
+is an expression of a binary operand and 2 elements.  For example @code{x=1},
+@code{2^3}, @code{[a,b]} etc.  The @var{key} is checked against the first
+operand.  @code{assoc} returns the second operand if the @code{key} is found.
+If the @code{key} is not found it either returns the @var{default} value.
+@var{default} is optional and defaults to @code{false}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -271,7 +324,7 @@ Arguments which are @code{equal} but not "=" are not removed.
 @deffn {Function} eighth (@var{expr})
 
 Returns the 8'th item of expression or list @var{expr}.
-See @code{first} for more details.
+See @mref{first} for more details.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -299,7 +352,7 @@ Returns a new list consisting of the elements of @code{list} followed by
 @deffn {Function} fifth (@var{expr})
 
 Returns the 5'th item of expression or list @var{expr}.
-See @code{first} for more details.
+See @mref{first} for more details.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -316,7 +369,7 @@ Returns the first part of @var{expr} which may result in the first element of a
 list, the first row of a matrix, the first term of a sum, etc.  Note that
 @code{first} and its related functions, @code{rest} and @code{last}, work
 on the form of @var{expr} which is displayed not the form which is typed on
-input.  If the variable @code{inflag} is set to @code{true} however, these
+input.  If the variable @mref{inflag} is set to @code{true} however, these
 functions will look at the internal form of @var{expr}.  Note that the
 simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if
 @code{inflag} is @code{true} and @code{y} if @code{inflag} is @code{false}
@@ -333,60 +386,10 @@ simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if
 @deffn {Function} fourth (@var{expr})
 
 Returns the 4'th item of expression or list @var{expr}.
-See @code{first} for more details.
+See @mref{first} for more details.
 
 @opencatbox
 @category{Lists} @category{Expressions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{get}
-@deffn {Function} get (@var{a}, @var{i})
-
-Retrieves the user property indicated by @var{i} associated with
-atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
-
-@code{get} evaluates its arguments.
-
-@c ===beg===
-@c put (%e, 'transcendental, 'type);
-@c put (%pi, 'transcendental, 'type)$
-@c put (%i, 'algebraic, 'type)$
-@c typeof (expr) := block ([q],
-@c         if numberp (expr)
-@c         then return ('algebraic),
-@c         if not atom (expr)
-@c         then return (maplist ('typeof, expr)),
-@c         q: get (expr, 'type),
-@c         if q=false
-@c         then errcatch (error(expr,"is not numeric.")) else q)$
-@c typeof (2*%e + x*%pi);
-@c typeof (2*%e + %pi);
-@c ===end===
-@example
-(%i1) put (%e, 'transcendental, 'type);
-(%o1)                    transcendental
-(%i2) put (%pi, 'transcendental, 'type)$
-(%i3) put (%i, 'algebraic, 'type)$
-(%i4) typeof (expr) := block ([q],
-        if numberp (expr)
-        then return ('algebraic),
-        if not atom (expr)
-        then return (maplist ('typeof, expr)),
-        q: get (expr, 'type),
-        if q=false
-        then errcatch (error(expr,"is not numeric.")) else q)$
-(%i5) typeof (2*%e + x*%pi);
-x is not numeric.
-(%o5)  [[transcendental, []], [algebraic, transcendental]]
-(%i6) typeof (2*%e + %pi);
-(%o6)     [transcendental, [algebraic, transcendental]]
-
-@end example
-
-@opencatbox
-@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
@@ -448,11 +451,11 @@ Returns the last part (term, row, element, etc.) of the @var{expr}.
 Returns (by default) the number of parts in the external
 (displayed) form of @var{expr}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
-of terms (see @code{dispform}).
+of terms (see @mref{dispform}).
 
-The @code{length} command is affected by the @code{inflag} switch.  So, e.g.
+The @code{length} command is affected by the @mref{inflag} switch.  So, e.g.
 @code{length(a/(b*c));} gives 2 if @code{inflag} is @code{false} (Assuming
-@code{exptdispflag} is @code{true}), but 3 if @code{inflag} is @code{true} (the
+@mref{exptdispflag} is @code{true}), but 3 if @code{inflag} is @code{true} (the
 internal representation is essentially @code{a*b^-1*c^-1}).
 
 @opencatbox
@@ -477,6 +480,7 @@ list-list operations should return lists.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} listp (@var{expr})
+
 Returns @code{true} if @var{expr} is a list else @code{false}.
 
 @opencatbox
@@ -536,7 +540,7 @@ for some element @var{a} in @code{expr_2} is the test.
 may return @code{false} even if @code{expr_1} is a part of some argument of
 @code{expr_2}.
 
-See also @code{elementp}.
+See also @mrefdot{elementp}
 
 Examples:
 
@@ -581,7 +585,7 @@ Examples:
 @deffn {Function} ninth (@var{expr})
 
 Returns the 9'th item of expression or list @var{expr}.
-See @code{first} for more details.
+See @mref{first} for more details.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -599,7 +603,7 @@ itself.
 If the argument @var{list} is not bound to a list or the list is empty, Maxima
 generates an error message.
 
-See also @code{push} for examples.
+See also @mref{push} for examples.
 
 @code{load(basic)} loads this function.
 
@@ -619,7 +623,7 @@ not the list itself.  @var{item} can be any Maxima symbol or expression.
 If the argument @var{list} is not bound to a list, Maxima generates an error
 message.
 
-See also @code{pop} to remove the first item from a list.
+See also @mref{pop} to remove the first item from a list.
 
 @code{load(basic)} loads this function.
 
@@ -666,6 +670,75 @@ Examples:
 @closecatbox
 @end deffn
 
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rest}
+@deffn  {Function} rest (@var{expr}, @var{n})
+@deffnx {Function} rest (@var{expr})
+
+Returns @var{expr} with its first @var{n} elements removed if @var{n} is
+positive and its last @code{- @var{n}} elements removed if @var{n} is negative.
+If @var{n} is 1 it may be omitted.  @var{expr} may be a list, matrix, or other
+expression.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+
+@c -----------------------------------------------------------------------------
+@anchor{reverse}
+@deffn {Function} reverse (@var{list})
+
+Reverses the order of the members of the @var{list} (not
+the members themselves).  @code{reverse} also works on general expressions,
+e.g.  @code{reverse(a=b);} gives @code{b=a}.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{second}
+@deffn {Function} second (@var{expr})
+
+Returns the 2'nd item of expression or list @var{expr}.
+See @mref{first} for more details.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{seventh}
+@deffn {Function} seventh (@var{expr})
+
+Returns the 7'th item of expression or list @var{expr}.
+See @mref{first} for more details.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sixth}
+@deffn {Function} sixth (@var{expr})
+
+Returns the 6'th item of expression or list @var{expr}.
+See @mref{first} for more details.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @anchor{sort}
 @deffn  {Function} sort (@var{L}, @var{P})
@@ -690,7 +763,7 @@ If the predicate @var{P} is not a total order on the elements of @var{L}, then
 
 @code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
 That is, the default sorting order is ascending, as determined by 
-@code{orderlessp}.  All Maxima atoms and expressions are comparable under 
+@mrefdot{orderlessp}  All Maxima atoms and expressions are comparable under
 @code{orderlessp}.
 
 The predicate @code{ordergreatp} sorts a list in descending order.  The
@@ -786,98 +859,6 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{unique}
-@deffn {Function} unique (@var{L})
-
-Returns the unique elements of the list @var{L}.
-
-When all the elements of @var{L} are unique,
-@code{unique} returns a shallow copy of @var{L},
-not @var{L} itself.
-
-If @var{L} is not a list, @code{unique} returns @var{L}.
-
-Example:
-
-@c ===beg===
-@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
-@c ===end===
-@example
-(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
-(%o1)              [1, 2, %e, %pi, [1], b + a]
-@end example
-@end deffn
-
-@c NEEDS EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{rest}
-@deffn  {Function} rest (@var{expr}, @var{n})
-@deffnx {Function} rest (@var{expr})
-
-Returns @var{expr} with its first @var{n} elements removed if @var{n} is
-positive and its last @code{- @var{n}} elements removed if @var{n} is negative.
-If @var{n} is 1 it may be omitted.  @var{expr} may be a list, matrix, or other
-expression.
-
-@opencatbox
-@category{Lists} @category{Expressions}
-@closecatbox
-@end deffn
-
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-
-@c -----------------------------------------------------------------------------
-@anchor{reverse}
-@deffn {Function} reverse (@var{list})
-
-Reverses the order of the members of the @var{list} (not
-the members themselves).  @code{reverse} also works on general expressions,
-e.g.  @code{reverse(a=b);} gives @code{b=a}.
-
-@opencatbox
-@category{Lists} @category{Expressions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{second}
-@deffn {Function} second (@var{expr})
-
-Returns the 2'nd item of expression or list @var{expr}.
-See @code{first} for more details.
-
-@opencatbox
-@category{Lists} @category{Expressions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{seventh}
-@deffn {Function} seventh (@var{expr})
-
-Returns the 7'th item of expression or list @var{expr}.
-See @code{first} for more details.
-
-@opencatbox
-@category{Lists} @category{Expressions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{sixth}
-@deffn {Function} sixth (@var{expr})
-
-Returns the 6'th item of expression or list @var{expr}.
-See @code{first} for more details.
-
-@opencatbox
-@category{Lists} @category{Expressions}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{sublist_indices}
 @deffn {Function} sublist_indices (@var{L}, @var{P})
 
@@ -922,11 +903,34 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{unique}
+@deffn {Function} unique (@var{L})
+
+Returns the unique elements of the list @var{L}.
+
+When all the elements of @var{L} are unique,
+@code{unique} returns a shallow copy of @var{L},
+not @var{L} itself.
+
+If @var{L} is not a list, @code{unique} returns @var{L}.
+
+Example:
+
+@c ===beg===
+@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+@c ===end===
+@example
+(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+(%o1)              [1, 2, %e, %pi, [1], b + a]
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{tenth}
 @deffn {Function} tenth (@var{expr})
 
 Returns the 10'th item of expression or list @var{expr}.
-See @code{first} for more details.
+See @mref{first} for more details.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -938,7 +942,7 @@ See @code{first} for more details.
 @deffn {Function} third (@var{expr})
 
 Returns the 3'rd item of expression or list @var{expr}.
-See @code{first} for more details.
+See @mref{first} for more details.
 
 @opencatbox
 @category{Lists} @category{Expressions}

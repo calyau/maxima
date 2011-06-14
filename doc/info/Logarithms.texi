@@ -1,27 +1,32 @@
-
 @menu
 * Functions and Variables for Logarithms::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for Logarithms,  , Logarithms, Logarithms
 @section Functions and Variables for Logarithms
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{%e_to_numlog}
 @defvr {Option variable} %e_to_numlog
 Default value: @code{false}
 
-When @code{true}, @code{r} some rational number, and
-@code{x} some expression, @code{%e^(r*log(x))} will be simplified into @code{x^r} .  It
-should be noted that the @code{radcan} command also does this transformation,
-and more complicated transformations of this ilk as well.
-The @code{logcontract} command "contracts" expressions containing @code{log}.
+When @code{true}, @code{r} some rational number, and @code{x} some expression,
+@code{%e^(r*log(x))} will be simplified into @code{x^r} .  It should be noted
+that the @code{radcan} command also does this transformation, and more
+complicated transformations of this ilk as well.  The @code{logcontract}
+command "contracts" expressions containing @code{log}.
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{li}
 @deffn {Function} li [@var{s}] (@var{z})
+
 Represents the polylogarithm function of order @var{s} and argument @var{z},
 defined by the infinite series
 
@@ -40,12 +45,12 @@ $${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
 @end example
 @end ifnottex
 
-@code{li [1]} is @code{- log (1 - z)}.
-@code{li [2]} and @code{li [3]} are the dilogarithm and trilogarithm functions, respectively.
+@code{li [1]} is @code{- log (1 - z)}.  @code{li [2]} and @code{li [3]} are the
+dilogarithm and trilogarithm functions, respectively.
 
-When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)},
-which in turn simplifies to a numerical value
-if @var{z} is a real or complex floating point number or the @code{numer} evaluation flag is present.
+When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)}, which
+in turn simplifies to a numerical value if @var{z} is a real or complex floating
+point number or the @code{numer} evaluation flag is present.
 
 When the order is 2 or 3,
 the polylogarithm simplifies to a numerical value
@@ -107,7 +112,9 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{log}
 @deffn {Function} log (@var{x})
+
 Represents the natural (base @math{e}) logarithm of @var{x}.
 
 Maxima does not have a built-in function for the base 10 logarithm or other 
@@ -151,24 +158,28 @@ command "contracts" expressions containing @code{log}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{logabs}
 @defvr {Option variable} logabs
 Default value: @code{false}
 
-When doing indefinite integration where
-logs are generated, e.g. @code{integrate(1/x,x)}, the answer is given in
-terms of @code{log(abs(...))} if @code{logabs} is @code{true}, but in terms of @code{log(...)} if
-@code{logabs} is @code{false}.  For definite integration, the @code{logabs:true} setting is
-used, because here "evaluation" of the indefinite integral at the
+When doing indefinite integration where logs are generated, e.g.
+@code{integrate(1/x,x)}, the answer is given in terms of @code{log(abs(...))}
+if @code{logabs} is @code{true}, but in terms of @code{log(...)} if
+@code{logabs} is @code{false}.  For definite integration, the @code{logabs:true}
+setting is used, because here "evaluation" of the indefinite integral at the
 endpoints is often needed.
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Integral calculus} @category{Global flags}
 @closecatbox
-
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Option variable} logarc
+
+@c -----------------------------------------------------------------------------
+@anchor{logarc}
+@defvr  {Option variable} logarc
 @defvrx {Function} logarc (@var{expr})
 
 When the global variable @code{logarc} is @code{true},
@@ -183,9 +194,10 @@ without setting the global variable @code{logarc}.
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Simplification functions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{logconcoeffp}
 @defvr {Option variable} logconcoeffp
 Default value: @code{false}
 
@@ -199,10 +211,12 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{logcontract}
 @deffn {Function} logcontract (@var{expr})
+
 Recursively scans the expression @var{expr}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
@@ -234,13 +248,14 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{logexpand}
 @defvr {Option variable} logexpand
 Default value: @code{false}
 
 If @code{true} causes @code{log(a^b)} to become @code{b*log(a)}.  If it is set 
 to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If 
 it is set to @code{super}, then @code{log(a/b)} will also simplify to 
-@code{log(a)-log(b)} for rational numbers @code{a/b}, @code{a#1}. 
+@code{log(a)-log(b)} for rational numbers @code{a/b}, @code{a#1}.
 (@code{log(1/b)}, for integer @code{b}, always simplifies.) If it is set to 
 @code{false}, that is the default value, all of these simplifications will be 
 turned off.
@@ -250,6 +265,8 @@ turned off.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lognegint}
 @defvr {Option variable} lognegint
 Default value: @code{false}
 
@@ -259,23 +276,25 @@ If @code{true} implements the rule
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{lognumer}
 @defvr {Option variable} lognumer
 Default value: @code{false}
 
-If @code{true} then negative floating point
-arguments to @code{log} will always be converted to their absolute value
-before the @code{log} is taken.  If @code{numer} is also @code{true}, then negative integer
-arguments to @code{log} will also be converted to their absolute value.
+If @code{true} then negative floating point arguments to @code{log} will always
+be converted to their absolute value before the @code{log} is taken.  If
+@code{numer} is also @code{true}, then negative integer arguments to @code{log}
+will also be converted to their absolute value.
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Numerical evaluation}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{logsimp}
 @defvr {Option variable} logsimp
 Default value: @code{true}
 
@@ -285,10 +304,12 @@ power containing @code{log}'s is done.
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{plog}
 @deffn {Function} plog (@var{x})
+
 Represents the principal branch of the complex-valued natural
 logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 

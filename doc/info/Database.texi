@@ -457,6 +457,104 @@ declarations.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{get}
+@deffn {Function} get (@var{a}, @var{i})
+
+Retrieves the user property indicated by @var{i} associated with
+atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
+
+@code{get} evaluates its arguments.
+
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
+@example
+(%i1) put (%e, 'transcendental, 'type);
+(%o1)                    transcendental
+(%i2) put (%pi, 'transcendental, 'type)$
+(%i3) put (%i, 'algebraic, 'type)$
+(%i4) typeof (expr) := block ([q],
+        if numberp (expr)
+        then return ('algebraic),
+        if not atom (expr)
+        then return (maplist ('typeof, expr)),
+        q: get (expr, 'type),
+        if q=false
+        then errcatch (error(expr,"is not numeric.")) else q)$
+(%i5) typeof (2*%e + x*%pi);
+x is not numeric.
+(%o5)  [[transcendental, []], [algebraic, transcendental]]
+(%i6) typeof (2*%e + %pi);
+(%o6)     [transcendental, [algebraic, transcendental]]
+
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{nonarray}
+@deffn {Property} nonarray
+
+The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not
+an array.  This declaration prevents multiple evaluation, if @var{a} is a
+subscripted variable.
+
+Example:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{posfun}
+@defvr {Declaration} posfun
+
+@code{declare (f, posfun)} declares @code{f} to be a positive function.
+@code{is (f(x) > 0)} yields @code{true}.
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
 
@@ -482,6 +580,71 @@ cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
 @node Functions and Variables for Facts, Functions and Variables for Predicates, Functions and Variables for Properties, Maximas Database
 @section Functions and Variables for Facts
 @c -----------------------------------------------------------------------------
+
+@c After studying src/compar.lisp, it appears that askexp would
+@c work as advertised, except that it doesn't appear to be possible
+@c to open a break prompt with ^A or any other character.
+@c What should we do about askexp ???
+
+@c -----------------------------------------------------------------------------
+@anchor{askexp}
+@defvr {System variable} askexp
+
+When @code{asksign} is called,
+@code{askexp} is the expression @code{asksign} is testing.
+
+At one time, it was possible for a user to inspect @code{askexp}
+by entering a Maxima break with control-A.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+
+@c -----------------------------------------------------------------------------
+@anchor{askinteger}
+@deffn  {Function} askinteger (@var{expr}, integer)
+@deffnx {Function} askinteger (@var{expr})
+@deffnx {Function} askinteger (@var{expr}, even)
+@deffnx {Function} askinteger (@var{expr}, odd)
+
+@code{askinteger (@var{expr}, integer)} attempts to determine from the
+@code{assume} database whether @var{expr} is an integer.
+@code{askinteger} prompts the user if it cannot tell otherwise,
+@c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume
+@c DATABASE !!!
+and attempt to install the information in the database if possible.
+@code{askinteger (@var{expr})} is equivalent to
+@code{askinteger (@var{expr}, integer)}.
+
+@code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
+likewise attempt to determine if @var{expr} is an even integer or odd integer,
+respectively.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+
+@c -----------------------------------------------------------------------------
+@anchor{asksign}
+@deffn {Function} asksign (@var{expr})
+
+First attempts to determine whether the specified
+expression is positive, negative, or zero.  If it cannot, it asks the
+user the necessary questions to complete its deduction.  The user's
+answer is recorded in the data base for the duration of the current
+computation. The return value of @code{asksign} is one of @code{pos},
+@code{neg}, or @code{zero}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{is}
@@ -709,6 +872,72 @@ The real domain of @code{acos (x^2 + 1)} is empty.
 @closecatbox
 @end deffn
 
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c CROSS REF declare, properties, ETC
+
+@c -----------------------------------------------------------------------------
+@anchor{constant}
+@deffn {Special operator} constant
+
+@code{declare (@var{a}, constant)} declares @var{a} to be a constant.
+See @mrefdot{declare}
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+@opencatbox
+@category{Declarations and inferences} @category{Constants}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{constantp}
+@deffn {Function} constantp (@var{expr})
+
+Returns @code{true} if @var{expr} is a constant expression, otherwise returns
+@code{false}.
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+An expression is considered a constant expression if its arguments are
+numbers (including rational numbers, as displayed with @code{/R/}),
+symbolic constants such as @mrefcomma{%pi} @mrefcomma{%e} and @mrefcomma{%i}@w{}
+variables bound to a constant or declared constant by @mrefcomma{declare}@w{}
+or functions whose arguments are constant.
+
+@code{constantp} evaluates its arguments.
+
+Examples:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Constants}
+@closecatbox
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @anchor{equal}
 @deffn {Function} equal (@var{a}, @var{b})
@@ -912,6 +1141,18 @@ Examples:
 
 @opencatbox
 @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unknown}
+@deffn {Function} unknown (@var{expr})
+
+Returns @code{true} if and only if @var{expr} contains an operator or function
+not recognized by the Maxima simplifier.
+
+@opencatbox
+@category{Predicate functions} @category{Simplification functions}
 @closecatbox
 @end deffn
 

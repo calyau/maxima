@@ -103,7 +103,6 @@ Informationslisten und Optionsvariablen:
    myoptions     optionset
 @end verbatim
 
-@noindent
 Weitere Informationslisten, die in anderen Kapiteln erl@"autert werden, sind:
 
 @verbatim
@@ -137,10 +136,9 @@ Symbole:
 @verbatim
    ?            ??
    playback     prompt     showtime
-   quit         system     to_lisp
+   quit         to_lisp
 @end verbatim
 
-@noindent
 Die Funktionen @mref{read} und @mref{readonly} geben Ausdr@"ucke auf der Konsole
 aus und lesen dann die Eingabe des Nutzers ein:
 
@@ -159,7 +157,6 @@ Optionsvariablen @mref{sqrtdispflag} kontrolliert.  Siehe @ref{Ausdr@"ucke}
 f@"ur Funktionen, die die interne und externe Darstellung von Ausdr@"ucken
 unterscheiden.
 
-@noindent
 Folgende Optionsvariablen und Symbole kontrollieren die Ausgabe auf der Konsole:
 
 @verbatim
@@ -171,13 +168,12 @@ Folgende Optionsvariablen und Symbole kontrollieren die Ausgabe auf der Konsole:
    sqrtdispflag       stardisp         ttyoff
 @end verbatim
 
-@noindent
 Mit folgenden Funktionen kann die Ausgabe auf der Konsole formatiert werden:
 
 @verbatim
-   disp               display          dispform
-   dispterms          grind            ldisp            
-   ldisplay           print
+   disp               display          dispterms
+   grind              ldisp            ldisplay
+   print
 @end verbatim
 
 @c -----------------------------------------------------------------------------
@@ -937,16 +933,6 @@ auch dann anzeigen, wenn @code{showtime} den Wert @code{false} hat.
 Siehe auch @mrefdot{timer}
 @end defvr
 
-@c --- 23.10.2010 DK -----------------------------------------------------------
-@anchor{system}
-@deffn {Funktion} system (@var{command})
- 
-@code{system(command)} f@"uhrt das Kommando @var{command} in einem eigenen 
-Prozess aus.  Das Kommando wird an die Standard-Shell @"ubergeben.
-@code{system} wird nicht von allen Betriebssystemen unterst@"utzt, steht aber im
-Allgemeinen unter Unix oder Unix @"ahnlichen Betriebssystemen zur Verf@"ugung.
-@end deffn
-
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{to_lisp}
 @deffn {Funktion} to_lisp ()
@@ -1086,58 +1072,6 @@ Beispiele:
                         .8414709848078965
 
 (%o3)                         done
-@end example
-@end deffn
-
-@c --- 21.10.2010 DK -----------------------------------------------------------
-@anchor{dispform}
-@deffn  {Funktion} dispform (@var{expr})
-@deffnx {Funktion} dispform (@var{expr}, all)
-
-@code{dispform} formatiert den Ausdruck @var{expr} von der internen Darstellung
-in eine externe Darstellung, wie sie f@"ur die Anzeige des Ausdrucks ben@"otigt 
-wird.  Bei der Formatierung sind Optionsvariablen wie @mref{dispflag} und
-@mref{powerdisp} wirksam.
-
-Beispiele f@"ur die interne und externe Darstellung von Ausdr@"ucken sind:
-
-@example
-          Interne Darstellung            Externe Darstellung
-------------------------------------------------------------
--x      : ((MTIMES) -1 $x)               ((MMINUS) $x)
-sqrt(x) : ((MEXPT) $x ((RAT) 1 2))       ((%SQRT) $X)
-a/b     : ((MTIMES) $A ((MEXPT) $B -1))  ((MQUOTIENT) $A $B)
-@end example
-
-@code{dispform(@var{expr})} gibt die externe Darstellung nur f@"ur den ersten 
-Operator im Ausdruck zur@"uck.  @code{dispform(@var{expr}, all)} gibt die 
-externe Darstellung aller Operatoren im Ausdruck @var{expr} zur@"uck.
-
-Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{inflag}
-
-Beispiel:
-
-Die Funktion @code{dispform} kann genutzt werden, um die Wurzelfunktion in einem
-Ausdruck zu substituieren.  Die Wurzelfunktion ist nur in der externen 
-Darstellung eines Ausdruckes vorhanden:
-
-@example
-(%i1) expr: sqrt(5)/(5+sqrt(2));
-                             sqrt(5)
-(%o1)                      -----------
-                           sqrt(2) + 5
-(%i2) subst(f,sqrt,expr);
-                             sqrt(5)
-(%o2)                      -----------
-                           sqrt(2) + 5
-(%i3) subst(f,sqrt,dispform(expr));
-                              f(5)
-(%o3)                      -----------
-                           sqrt(2) + 5
-(%i4) subst(f,sqrt,dispform(expr,all));
-                              f(5)
-(%o4)                       --------
-                            f(2) + 5
 @end example
 @end deffn
 

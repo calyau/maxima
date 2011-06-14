@@ -5,7 +5,7 @@
 @node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
 @section Functions and Variables for augmented_lagrangian
 
-@deffn {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffn  {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
 @deffnx {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
 @deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
 @deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
@@ -54,11 +54,11 @@ References:
 
 [2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
 @end ifnottex
-@tex
-[1] \texttt{http://\-www-fp.mcs.anl.gov/\-otc/\-Guide/\-OptWeb/\-continuous/\-constrained/\-nonlinearcon/\-auglag.html}
+@iftex
+[1] @url{http://www-fp.mcs.anl.gov/@-otc/@-Guide/@-OptWeb/@-continuous/@-constrained/@*nonlinearcon/@-auglag.html}
 
-[2] \texttt{http://\-www.cs.ubc.ca/\-spider/\-ascher/\-542/\-chap10.pdf}
-@end tex
+[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
+@end iftex
 
 Examples:
 
@@ -87,7 +87,7 @@ Examples:
 (%i6) yy: [1, 1];
 (%o6)                        [1, 1]
 (%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
-(%o7) [[x = 0.66665984108002, y = 0.33334027245545], 
+(%o7) [[x = 0.66665984108002, y = 0.33334027245545],
                                  %lambda = [- 1.333337940892525]]
 @end example
 
@@ -101,7 +101,8 @@ Same example as before, but this time the gradient is supplied as an argument.
 @c grad : [2*x, 4*y];
 @c C: [x + y - 1];
 @c yy: [1, 1];
-@c augmented_lagrangian_method ([FOM, grad], xx, C, yy, iprint = [-1, 0]);
+@c augmented_lagrangian_method ([FOM, grad], xx, C, yy, 
+@c                              iprint = [-1, 0]);
 @c ===end===
 @example
 (%i1) load (lbfgs)$
@@ -120,7 +121,8 @@ Same example as before, but this time the gradient is supplied as an argument.
 (%o7)                      [y + x - 1]
 (%i8) yy: [1, 1];
 (%o8)                        [1, 1]
-(%i9) augmented_lagrangian_method ([FOM, grad], xx, C, yy, iprint = [-1, 0]);
+(%i9) augmented_lagrangian_method ([FOM, grad], xx, C, yy,
+                                   iprint = [-1, 0]);
 (%o9) [[x = 0.666659841080025, y = .3333402724554462], 
                                  %lambda = [- 1.333337940892543]]
 @end example

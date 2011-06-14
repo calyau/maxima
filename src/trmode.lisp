@@ -68,7 +68,7 @@
 						`(defprop ,var assign-mode-check assign))
 					   (def-mtrvar ,(cadr form) ,(dtranslate (caddr form))))))))
 	(t
-	 (tr-tell "Wrong number of arguments" form)
+	 (tr-format (intl:gettext "error: 'define_variable' must have 3 arguments; found: ~:M~%") form)
 	 nil)))
 
 ;; the priority fails when a DEF-MTRVAR is done, then the user
@@ -249,16 +249,3 @@
 	   (($integer $integerp) '$fixnum)
 	   (($complex) "to ask about this")
 	   (t "to see the documentation on"))))
-
-(defmfun fluidize (variable)
-  (mapc #'(lambda (v) (or (boundp v) (setf (symbol-value v) nil)))
-	;; what a sorry crock to have all these switches.
-	'(*in-compile* *in-compfile* *in-translate* *in-translate-file*))
-
-  (putprop variable t 'special)
-  (if (and $transcompile
-	   (or *in-compile* *in-compfile* *in-translate* *in-translate-file*))
-      (pushnew variable specials :test #'eq)))
-
-(defmspec $bind_during_translation (form)
-  (mevaln (cddr form)))

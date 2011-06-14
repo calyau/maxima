@@ -34,10 +34,10 @@ means return the noun form of @code{f} applied to @code{[x]}.
 
 The single quote does not prevent simplification.
 
-When the global flag @code{noundisp} is @code{true}, nouns display with a single
+When the global flag @mref{noundisp} is @code{true}, nouns display with a single
 quote.  This switch is always @code{true} when displaying function definitions.
 
-See also the quote-quote operator @code{''} and @code{nouns}.
+See also the quote-quote operator @mxref{quote-quote, ''} and @mrefdot{nouns}
 
 Examples:
 
@@ -175,9 +175,9 @@ evaluation when evaluation is otherwise suppressed, such as in function
 definitions, lambda expressions, and expressions quoted by single quote
 @code{'}.
 
-Quote-quote is recognized by @code{batch} and @code{load}.
+Quote-quote is recognized by @mref{batch} and @mrefdot{load}
 
-See also the single-quote operator @code{'} and @code{nouns}.
+See also the single-quote operator @mxref{quote, '} and @mrefdot{nouns}
 
 Examples:
 
@@ -367,52 +367,52 @@ be any or all of the following.
 
 @itemize @bullet
 @item
-@code{simp} causes @var{expr} to be simplified regardless of the setting of the
+@mref{simp} causes @var{expr} to be simplified regardless of the setting of the
 switch @code{simp} which inhibits simplification if @code{false}.
 @item
-@code{noeval} supresses the evaluation phase of @code{ev} (see step (4) below).
+@mref{noeval} suppresses the evaluation phase of @code{ev} (see step (4) below).
 This is useful in conjunction with the other switches and in causing
 @var{expr} to be resimplified without being reevaluated.
 @item
-@code{nouns} causes the evaluation of noun forms (typically unevaluated
+@mref{nouns} causes the evaluation of noun forms (typically unevaluated
 functions such as @code{'integrate} or @code{'diff}) in @var{expr}.
 @item
-@code{expand} causes expansion.
+@mref{expand} causes expansion.
 @item
 @code{expand (@var{m}, @var{n})} causes expansion, setting the values of
-@code{maxposex} and @code{maxnegex} to @var{m} and @var{n} respectively.
+@mref{maxposex} and @mref{maxnegex} to @var{m} and @var{n} respectively.
 @item
-@code{detout} causes any matrix inverses computed in @var{expr} to have their
+@mref{detout} causes any matrix inverses computed in @var{expr} to have their
 determinant kept outside of the inverse rather than dividing through
 each element.
 @item
-@code{diff} causes all differentiations indicated in @var{expr} to be performed.
+@mref{diff} causes all differentiations indicated in @var{expr} to be performed.
 @item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causes only differentiations
-with respect to the indicated variables.
+with respect to the indicated variables.  See also @mrefdot{derivlist}
 @item
 @code{risch} causes integrals in @var{expr} to be evaluated using the Risch
-algorithm.  See @code{risch}.  The standard integration routine is invoked when
-using the special symbol @code{nouns}.
+algorithm.  See @mrefdot{risch}  The standard integration routine is invoked
+when using the special symbol @mrefdot{nouns}
 @item
-@code{float} causes non-integral rational numbers to be converted to floating
+@mref{float} causes non-integral rational numbers to be converted to floating
 point.
 @item
-@code{numer} causes some mathematical functions (including exponentiation)
+@mref{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point.  It causes
 variables in @var{expr} which have been given numervals to be replaced by
-their values.  It also sets the @code{float} switch on.
+their values.  It also sets the @mref{float} switch on.
 @item
-@code{pred} causes predicates (expressions which evaluate to @code{true} or
+@mref{pred} causes predicates (expressions which evaluate to @code{true} or
 @code{false}) to be evaluated.
 @item
-@code{eval} causes an extra post-evaluation of @var{expr} to occur.
+@mref{eval} causes an extra post-evaluation of @var{expr} to occur.
 (See step (5) below.)
 @code{eval} may occur multiple times.  For each instance of @code{eval}, the
 expression is evaluated again.
 @item
-@code{A} where @code{A} is an atom declared to be an evaluation flag (see
-@code{evflag}) causes @code{A} to be bound to @code{true} during the evaluation
+@code{A} where @code{A} is an atom declared to be an evaluation flag
+@mref{evflag} causes @code{A} to be bound to @code{true} during the evaluation
 of @var{expr}.
 @item
 @code{V: expression} (or alternately @code{V=expression}) causes @code{V} to be
@@ -423,9 +423,9 @@ its value during the evaluation of @var{expr}.  If more than one argument to
 a non-atomic expression then a substitution rather than a binding is performed.
 @item
 @code{F} where @code{F}, a function name, has been declared to be an evaluation
-function (see @code{evfun}) causes @code{F} to be applied to @var{expr}.
+function @mref{evfun} causes @code{F} to be applied to @var{expr}.
 @item
-Any other function names (e.g., @code{sum}) cause evaluation of occurrences
+Any other function names, e.g. @mrefcomma{sum} cause evaluation of occurrences
 of those names in @var{expr} as though they were verbs.
 @item
 In addition a function occurring in @var{expr} (say @code{F(x)}) may be defined
@@ -439,7 +439,7 @@ If the result is a list then the members of the list are treated as if they were
 additional arguments given to @code{ev}.  This permits a list of equations to be
 given (e.g. @code{[X=1, Y=A**2]}) or a list of names of equations (e.g.,
 @code{[%t1, %t2]} where @code{%t1} and @code{%t2} are equations) such as that
-returned by @code{solve}.
+returned by @mrefdot{solve}
 @end itemize
 
 The arguments of @code{ev} may be given in any order with the exception of
@@ -447,9 +447,9 @@ substitution equations which are handled in sequence, left to right, and
 evaluation functions which are composed, e.g., @code{ev (@var{expr}, ratsimp,
 realpart)} is handled as @code{realpart (ratsimp (@var{expr}))}.
 
-The @code{simp}, @code{numer}, and @code{float} switches may also be set locally
-in a block, or globally in Maxima so that they will remain in effect until being
-reset.
+The @mrefcomma{simp} @mrefcomma{numer} and @mref{float} switches may also be set
+locally in a block, or globally in Maxima so that they will remain in effect
+until being reset.
 
 If @var{expr} is a canonical rational expression (CRE), then the expression
 returned by @code{ev} is also a CRE, provided the @code{numer} and @code{float}
@@ -470,12 +470,12 @@ If any substitutions are indicated by the arguments, they are carried out now.
 
 @item
 The resulting expression is then re-evaluated (unless one of the arguments was
-@code{noeval}) and simplified according to the arguments.  Note that any
+@mref{noeval}) and simplified according to the arguments.  Note that any
 function calls in @var{expr} will be carried out after the variables in it are
 evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 
 @item
-For each instance of @code{eval} in the arguments, steps (3) and (4) are
+For each instance of @mref{eval} in the arguments, steps (3) and (4) are
 repeated.
 @end enumerate
 
@@ -548,7 +548,7 @@ Solution
 @defvr {Special symbol} eval
 
 As an argument in a call to @code{ev (@var{expr})}, @code{eval} causes an extra
-evaluation of @var{expr}.  See @code{ev}.
+evaluation of @var{expr}.  See @mrefdot{ev}
 
 Example:
 
@@ -774,7 +774,7 @@ Examples:
 @anchor{infeval}
 @defvr {Option variable} infeval
 
-Enables "infinite evaluation" mode.  @code{ev} repeatedly evaluates an
+Enables "infinite evaluation" mode.  @mref{ev} repeatedly evaluates an
 expression until it stops changing.  To prevent a variable, say @code{X}, from
 being evaluated away in this mode, simply include @code{X='X} as an argument to
 @code{ev}.  Of course expressions such as @code{ev (X, X=X+1, infeval)} will
@@ -792,7 +792,7 @@ generate an infinite loop.
 @anchor{noeval}
 @defvr {Special symbol} noeval
 
-@code{noeval} suppresses the evaluation phase of @code{ev}.  This is useful in
+@code{noeval} suppresses the evaluation phase of @mrefdot{ev}  This is useful in
 conjunction with other switches and in causing expressions      
 to be resimplified without being reevaluated.
 
@@ -807,10 +807,10 @@ to be resimplified without being reevaluated.
 @anchor{nouns}
 @defvr {Special symbol} nouns
 
-@code{nouns} is an @code{evflag}.  When used as an option to the @code{ev}
+@code{nouns} is an @mrefdot{evflag}  When used as an option to the @mref{ev}@w{}
 command, @code{nouns} converts all "noun" forms occurring in the expression
-being @code{ev}'d to "verbs", i.e., evaluates them.  See also @code{noun},
-@code{nounify}, @code{verb}, and @code{verbify}.
+being @code{ev}'d to "verbs", i.e., evaluates them.  See also
+@mrefcomma{noun} @mrefcomma{nounify} @code{verb}, and @mrefdot{verbify}
 
 @opencatbox
 @category{Evaluation flags} @category{Nouns and verbs}
@@ -823,7 +823,7 @@ being @code{ev}'d to "verbs", i.e., evaluates them.  See also @code{noun},
 
 As an argument in a call to @code{ev (@var{expr})}, @code{pred} causes 
 predicates (expressions which evaluate to @code{true} or @code{false}) to be 
-evaluated.  See @code{ev}.
+evaluated.  See @mrefdot{ev}
 
 Example:
 
