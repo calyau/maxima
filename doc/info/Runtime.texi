@@ -241,6 +241,34 @@ information.
 @closecatbox
 @end deffn
 
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{system}
+@deffn {Function} system (@var{command})
+
+Executes @var{command} as a separate process.  The command is passed to the
+default shell for execution.  @code{system} is not supported by all operating
+systems, but generally exists in Unix and Unix-like environments.
+
+Supposing @code{_hist.out} is a list of frequencies which you wish to plot as a
+bar graph using @code{xgraph}.
+
+@example
+(%i1) (with_stdout("_hist.out",
+           for i:1 thru length(hist) do (
+             print(i,hist[i]))),
+       system("xgraph -bar -brw .7 -nl < _hist.out"));
+@end example
+
+In order to make the plot be done in the background (returning control to
+Maxima) and remove the temporary file after it is done do:
+
+@example
+system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@end example
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @anchor{time}
 @deffn {Function} time (%o1, %o2, %o3, @dots{})
