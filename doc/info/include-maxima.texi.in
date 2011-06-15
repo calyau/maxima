@@ -98,16 +98,11 @@ Maxima infrastructure
 * Plotting::                    2D and 3D graphical output.
 * File Input and Output::       File input and output.
 * Floating Point::              Low level numerical routines.
-* Contexts::                    Sets of assumed facts.
 
 Support for specific areas of mathematics
 
 * Polynomials::                 Standard forms for polynomials, and
                                 functions operating on them.
-* Logarithms::                  Manipulation of expressions involving
-                                logarithms.
-* Trigonometric::               Manipulating expressions with trig and
-                                inverse trig functions.
 * Special Functions::           Special functions
 * Elliptic Functions::          Elliptic Functions and Integrals
 * Limits::                      Limits of expressions.
@@ -255,7 +250,6 @@ Mathematical Functions
 * Combinatorial Functions::
 * Root Exponential and Logarithmic Functions::
 * Trigonometric Functions::
-* Hyperbolic Functions::
 * Random Numbers::
 
 Maximas Database
@@ -282,25 +276,12 @@ File Input and Output
 
 Floating Point
 
-* Functions and Variables for Floating Point::  
-
-Contexts
-
-* Functions and Variables for Contexts::    
+* Functions and Variables for Floating Point::
 
 Polynomials
 
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::
-
-Logarithms
-
-* Functions and Variables for Logarithms::  
-
-Trigonometric
-
-* Introduction to Trigonometric::  
-* Functions and Variables for Trigonometric::  
 
 Special Functions
 
@@ -722,27 +703,15 @@ zeilberger
 @chapter File Input and Output
 @include Input.texi
 
-@node Floating Point, Contexts, File Input and Output, Top
+@node Floating Point, Polynomials, File Input and Output, Top
 @chapter Floating Point
 @include Floating.texi
 
-@node Contexts, Polynomials, Floating Point, Top
-@chapter Contexts
-@include Contexts.texi
-
-@node Polynomials, Logarithms, Contexts, Top
+@node Polynomials, Special Functions, Floating Point, Top
 @chapter Polynomials
 @include Polynomials.texi
 
-@node Logarithms, Trigonometric, Polynomials, Top
-@chapter Logarithms
-@include Logarithms.texi
-
-@node Trigonometric, Special Functions, Logarithms, Top
-@chapter Trigonometric
-@include Trigonometric.texi
-
-@node Special Functions, Elliptic Functions, Trigonometric, Top
+@node Special Functions, Elliptic Functions, Polynomials, Top
 @chapter Special Functions
 @include Special.texi
 
