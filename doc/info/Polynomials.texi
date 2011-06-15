@@ -2160,6 +2160,20 @@ containing some of the same factors.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{showratvars}
+@deffn {Function} showratvars (@var{expr})
+
+Returns a list of the canonical rational expression (CRE) variables in
+expression @code{expr}.
+
+See also @code{ratvars}.
+
+@opencatbox
+@category{Rational expressions} @category{Display functions}
+@closecatbox
+@end deffn
+
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
 
 @c -----------------------------------------------------------------------------
