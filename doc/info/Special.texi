@@ -440,6 +440,63 @@ The gamma function and the related beta, psi and incomplete gamma
 functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 6.
 
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
+@c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
+@c DON'T KNOW WHICH ONES ARE INTENDED FOR GENERAL USE !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED IN Number.texi: !!!
+@c burn, bzeta, bfzeta !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
+@c bfpsi, bffac, cbffac !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{bffac}
+@deffn {Function} bffac (@var{expr}, @var{n})
+
+Bigfloat version of the factorial (shifted gamma)
+function.  The second argument is how many digits to retain and return,
+it's a good idea to request a couple of extra.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bfpsi}
+@deffn  {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
+
+@code{bfpsi} is the polygamma function of real argument @var{z} and integer
+order @var{n}.  @code{bfpsi0} is the digamma function.
+@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to
+@code{bfpsi (0, @var{z}, @var{fpprec})}.
+
+These functions return bigfloat values.
+@var{fpprec} is the bigfloat precision of the return value.
+
+@c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
+@c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
+@c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{cbffac}
+@deffn {Function} cbffac (@var{z}, @var{fpprec})
+Complex bigfloat factorial.
+
+@code{load ("bffac")} loads this function.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Complex variables} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @anchor{gamma}
 @deffn {Function} gamma (@var{z})
