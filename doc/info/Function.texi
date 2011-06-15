@@ -2018,6 +2018,25 @@ which there is no function definition.
 @closecatbox
 @end deffn
 
+@c NEEDS MORE WORK !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{savedef}
+@defvr {Option variable} savedef
+Default value: @code{true}
+
+When @code{savedef} is @code{true}, the Maxima version of a user function is
+preserved when the function is translated.  This permits the definition to be
+displayed by @code{dispfun} and allows the function to be edited.
+
+When @code{savedef} is @code{false}, the names of translated functions are
+removed from the @code{functions} list.
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
 
