@@ -97,7 +97,6 @@ Maxima infrastructure
 * Maximas Database::            Declarations, Contexts, Facts, and Properties.
 * Plotting::                    2D and 3D graphical output.
 * File Input and Output::       File input and output.
-* Floating Point::              Low level numerical routines.
 
 Support for specific areas of mathematics
 
@@ -222,7 +221,6 @@ Expressions
 * Nouns and Verbs::
 * Identifiers::
 * Inequality::
-* Syntax::
 * Functions and Variables for Expressions::
 
 Operators
@@ -273,10 +271,6 @@ File Input and Output
 * Comments::
 * Files::                       
 * Functions and Variables for File Input and Output::
-
-Floating Point
-
-* Functions and Variables for Floating Point::
 
 Polynomials
 
@@ -699,15 +693,11 @@ zeilberger
 @chapter Plotting
 @include Plotting.texi
 
-@node File Input and Output, Floating Point, Plotting, Top
+@node File Input and Output, Polynomials, Plotting, Top
 @chapter File Input and Output
 @include Input.texi
 
-@node Floating Point, Polynomials, File Input and Output, Top
-@chapter Floating Point
-@include Floating.texi
-
-@node Polynomials, Special Functions, Floating Point, Top
+@node Polynomials, Special Functions, File Input and Output, Top
 @chapter Polynomials
 @include Polynomials.texi
 
