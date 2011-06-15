@@ -1804,6 +1804,20 @@ The return value is a matrix.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{rmxchar}
+@defvr {Option variable} rmxchar
+Default value: @code{]}
+
+@code{rmxchar} is the character drawn on the right-hand side of a matrix.
+
+See also @code{lmxchar}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{scalarmatrixp}
 @defvr {Option variable} scalarmatrixp
 Default value: @code{true}
