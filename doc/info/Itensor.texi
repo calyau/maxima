@@ -8,11 +8,14 @@
 * Functions and Variables for itensor::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Introduction to itensor, Functions and Variables for itensor, itensor, itensor
 @section Introduction to itensor
+@c -----------------------------------------------------------------------------
 
 Maxima implements symbolic tensor manipulation of two distinct types:
-component tensor manipulation (@code{ctensor} package) and indicial tensor manipulation (@code{itensor} package).
+component tensor manipulation (@code{ctensor} package) and indicial tensor
+manipulation (@code{itensor} package).
 
 Nota bene: Please see the note on 'new tensor notation' below.
 
@@ -77,7 +80,9 @@ the Hamiltonian associated with the theory's scalar field.
 @category{Tensors} @category{Share packages} @category{Package itensor}
 @closecatbox
 
+@c -----------------------------------------------------------------------------
 @subsection New tensor notation
+@c -----------------------------------------------------------------------------
 
 Earlier versions of the @code{itensor} package in Maxima used a notation that sometimes
 led to incorrect index ordering. Consider the following, for instance:
@@ -130,8 +135,9 @@ notation, there is a considerable chance that "new" tensors will fail to
 interoperate with certain functions or features. These bugs will be fixed
 as they are encountered... until then, caveat emptor!
 
-
+@c -----------------------------------------------------------------------------
 @subsection Indicial tensor manipulation
+@c -----------------------------------------------------------------------------
 
 The indicial tensor manipulation package may be loaded by
 @code{load(itensor)}. Demos are also available: try @code{demo(tensor)}.
@@ -260,15 +266,29 @@ specify the name of the metric, and perform some simple calculations.
 (%t22)                                 0
 @end example
 
-
-
 @c end concepts itensor
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for itensor,  , Introduction to itensor, itensor
-
 @section Functions and Variables for itensor
 @subsection Managing indexed objects
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{dispcon}
+@deffn  {Function} dispcon (@var{tensor_1}, @var{tensor_2}, @dots{})
+@deffnx {Function} dispcon (all)
+
+Displays the contraction properties of its arguments as were given to
+@code{defcon}.  @code{dispcon (all)} displays all the contraction properties
+which were defined.
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} entertensor (@var{name})
 
 is a function which, by prompting, allows one to create an indexed
@@ -281,6 +301,7 @@ null) is acceptable input (see the example under @code{covdiff}).
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} changename (@var{old}, @var{new}, @var{expr})
 
 will change the name of all indexed objects called @var{old} to @var{new}
@@ -294,6 +315,7 @@ renamed to @var{new}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} listoftens
 
 Lists all tensors in a tensorial expression, complete with their indices. E.g.,
@@ -316,6 +338,7 @@ Lists all tensors in a tensorial expression, complete with their indices. E.g.,
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} ishow (@var{expr})
 
 displays @var{expr} with the indexed objects in it shown having their
@@ -329,6 +352,7 @@ throughout this document).
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} indices (@var{expr})
 
 Returns a list of two elements.  The first is a list of the free
@@ -354,12 +378,12 @@ illegal. @code{indices} attempts to deal with these expressions in a
 reasonable manner; however, when it is called to operate upon such an
 illegal expression, its behavior should be considered undefined.
 
-
 @opencatbox
 @category{Package itensor}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} rename (@var{expr})
 @deffnx {Function} rename (@var{expr}, @var{count})
 
@@ -427,6 +451,24 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @closecatbox
 @end deffn
 
+@c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
+@c MOVE THIS DESCRIPTION TO Itensor.texi
+
+@c -----------------------------------------------------------------------------
+@anchor{show}
+@deffn {Function} show (@var{expr})
+
+Displays @code{expr} with the indexed objects in it shown
+having covariant indices as subscripts, contravariant indices as
+superscripts.  The derivative indices are displayed as subscripts,
+separated from the covariant indices by a comma.
+
+@opencatbox
+@category{Package itensor} @category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} flipflag
 
 Default: @code{false}. If @code{false} then the indices will be
@@ -445,6 +487,7 @@ under @code{rename}).
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} defcon (@var{tensor_1})
 @deffnx {Function} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
 gives @var{tensor_1} the property that the
@@ -468,6 +511,7 @@ contraction properties with @code{defcon}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} remcon (@var{tensor_1}, ..., @var{tensor_n})
 @deffnx {Function} remcon (all)
 removes all the contraction properties
@@ -479,6 +523,7 @@ properties from all indexed objects.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} contract (@var{expr})
 
 Carries out the tensorial contractions in @var{expr} which may be any
@@ -494,6 +539,7 @@ cancellations are unnecessary.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} indexed_tensor (@var{tensor})
 
 Must be executed before assigning components to a @var{tensor} for which
@@ -505,6 +551,7 @@ a built in value already exists as with @code{ichr1}, @code{ichr2},
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} components (@var{tensor}, @var{expr})
 
 permits one to assign an indicial value to an expression
@@ -625,6 +672,8 @@ Unbinds all values from @var{tensor} which were assigned with the
 @end deffn
 
 @c NEED LIST OF ARGUMENTS HERE
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} showcomps (@var{tensor})
 
 Shows component assignments of a tensor, as made using the @code{components}
@@ -677,6 +726,7 @@ rank higher than 2.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} idummy ()
 
 Increments @code{icounter} and returns as its value an index of the form
@@ -699,6 +749,7 @@ Is the prefix for dummy indices (see the example under @code{indices}).
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} icounter
 Default value: @code{1}
 
@@ -711,6 +762,7 @@ determined by the option @code{idummy} (default: @code{%}).
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} kdelta (@var{L1}, @var{L2})
 is the generalized Kronecker delta function defined in
 the @code{itensor} package with @var{L1} the list of covariant indices and @var{L2}
@@ -730,6 +782,7 @@ imply that @code{kdelta([i,j],[])} is a valid tensorial object.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} kdels (@var{L1}, @var{L2})
 
 Symmetrized Kronecker delta, used in some calculations. For instance:
@@ -758,6 +811,7 @@ Symmetrized Kronecker delta, used in some calculations. For instance:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} levi_civita (@var{L})
 is the permutation (or Levi-Civita) tensor which yields 1 if
 the list @var{L} consists of an even permutation of integers, -1 if it
@@ -769,6 +823,7 @@ repeated.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} lc2kdt (@var{expr})
 Simplifies expressions containing the Levi-Civita symbol, converting these
 to Kronecker-delta expressions when possible. The main difference between
@@ -852,6 +907,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} lc_l
 
 Simplification rule used for expressions containing the unevaluated Levi-Civita
@@ -884,6 +941,8 @@ For example:
 @end deffn
 
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} lc_u
 
 Simplification rule used for expressions containing the unevaluated Levi-Civita
@@ -896,6 +955,7 @@ For details, see @code{lc_l}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} canten (@var{expr})
 Simplifies @var{expr} by renaming (see @code{rename})
 and permuting dummy indices. @code{rename} is restricted to sums of tensor
@@ -913,6 +973,7 @@ set to @code{true}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} concan (@var{expr})
 Similar to @code{canten} but also performs index contraction.
 
@@ -921,8 +982,11 @@ Similar to @code{canten} but also performs index contraction.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Tensor symmetries
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} allsym
 
 Default: @code{false}. if @code{true} then all indexed objects
@@ -936,6 +1000,7 @@ unless @code{iframe_flag} is set to @code{true}.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
 
 Declares symmetry properties for @var{tensor} of @var{m} covariant and
@@ -990,12 +1055,12 @@ illustrates.
 
 @end example
 
-
 @opencatbox
 @category{Package itensor}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} remsym (@var{tensor}, @var{m}, @var{n})
 Removes all symmetry properties from @var{tensor} which has @var{m}
 covariant indices and @var{n} contravariant indices.
@@ -1005,6 +1070,7 @@ covariant indices and @var{n} contravariant indices.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} canform (@var{expr})
 @deffnx {Function} canform (@var{expr}, @var{rename})
 Simplifies @var{expr} by renaming dummy
@@ -1026,8 +1092,11 @@ The optional second parameter @var{rename}, if set to @code{false}, suppresses r
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Indicial tensor calculus
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
 is the usual Maxima differentiation function which has been expanded
@@ -1055,6 +1124,7 @@ the Einstein tensor and field equations from the action principle.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 Indicial differentiation. Unlike @code{diff}, which differentiates
 with respect to an independent variable, @code{idiff)} can be used
@@ -1074,6 +1144,7 @@ is chosen appropriately.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} liediff (@var{v}, @var{ten})
 
 Computes the Lie-derivative of the tensorial expression @var{ten} with
@@ -1101,6 +1172,7 @@ field. For example:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} rediff (@var{ten})
 
 Evaluates all occurrences of the @code{idiff} command in the tensorial
@@ -1111,6 +1183,7 @@ expression @var{ten}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} undiff (@var{expr})
 
 Returns an expression equivalent to @var{expr} but with all derivatives
@@ -1126,6 +1199,7 @@ in @var{expr} and then carry out the differentiation by saying
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} evundiff (@var{expr})
 
 Equivalent to the execution of @code{undiff}, followed by @code{ev} and
@@ -1192,6 +1266,7 @@ so @code{evundiff} is no longer necessary for expressions like this:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Set to zero, in
 @var{expr}, all occurrences of the @var{tensor_i} that have no derivative indices.
@@ -1201,6 +1276,7 @@ Set to zero, in
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Set to zero, in
 @var{expr}, all occurrences of the @var{tensor_i} that have derivative indices.
@@ -1210,6 +1286,7 @@ Set to zero, in
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} flushnd (@var{expr}, @var{tensor}, @var{n})
 Set to zero, in @var{expr}, all
 occurrences of the differentiated object @var{tensor} that have @var{n} or more
@@ -1233,6 +1310,7 @@ derivative indices as the following example demonstrates.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
 Gives @var{tensor_i} the coordinate differentiation property that the
@@ -1246,6 +1324,7 @@ been done then @code{idiff(x([],[i]),j)} gives @code{kdelta([i],[j])}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
 @deffnx {Function} remcoord (all)
 
@@ -1258,6 +1337,7 @@ removes this property from all indexed objects.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} makebox (@var{expr})
 Display @var{expr} in the same manner as @code{show}; however,
 any tensor d'Alembertian occurring in @var{expr} will be indicated using the
@@ -1269,6 +1349,7 @@ symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} conmetderiv (@var{expr}, @var{tensor})
 
 Simplifies expressions containing ordinary derivatives of
@@ -1296,6 +1377,7 @@ symbols as seen from the following:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} simpmetderiv (@var{expr})
 @deffnx {Function} simpmetderiv (@var{expr}[, @var{stop}])
 
@@ -1388,6 +1470,7 @@ and @code{conmetderiv} together to simplify contractions of the Weyl tensor.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} flush1deriv (@var{expr}, @var{tensor})
 
 Set to zero, in @code{expr}, all occurrences of @code{tensor} that have
@@ -1398,8 +1481,11 @@ exactly one derivative index.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Tensors in curved spaces
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} imetric (@var{g})
 @deffnx {System variable} imetric
 
@@ -1414,6 +1500,7 @@ the @code{imetric(@var{g})} command.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} idim (@var{n})
 Sets the dimensions of the metric. Also initializes the antisymmetry
 properties of the Levi-Civita symbols for the given dimension.
@@ -1423,6 +1510,7 @@ properties of the Levi-Civita symbols for the given dimension.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} ichr1 ([@var{i}, @var{j}, @var{k}])
 Yields the Christoffel symbol of the first kind via the
 definition
@@ -1439,6 +1527,7 @@ variable @code{imetric} must be assigned a name as in the example under @code{ch
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} ichr2 ([@var{i}, @var{j}], [@var{k}])
 Yields the Christoffel symbol of the second kind
 defined by the relation
@@ -1453,6 +1542,7 @@ defined by the relation
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
 Yields the Riemann
 curvature tensor in terms of the Christoffel symbols of the second
@@ -1471,6 +1561,7 @@ kind (@code{ichr2}).  The following notation is used:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
 Yields the covariant derivative of @var{expr} with
 respect to the variables @var{v_i} in terms of the Christoffel symbols of the
@@ -1525,6 +1616,7 @@ Enter a list of the derivative indices: [];
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} lorentz_gauge (@var{expr})
 Imposes the Lorentz condition by substituting 0 for all
 indexed objects in @var{expr} that have a derivative index identical to a
@@ -1535,6 +1627,7 @@ contravariant index.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} igeodesic_coords (@var{expr}, @var{name})
 
 Causes undifferentiated Christoffel symbols and
@@ -1581,7 +1674,9 @@ curvature tensor using the @code{igeodesic_coords} function.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Moving frames
+@c -----------------------------------------------------------------------------
 
 Maxima now has the ability to perform calculations using moving frames.
 These can be orthonormal frames (tetrads, vielbeins) or an arbitrary frame.
@@ -1658,7 +1753,7 @@ the @code{iframe_bracket_form} flag is set to @code{false}:
 
 @end example
 
-
+@c -----------------------------------------------------------------------------
 @deffn {Function} iframes ()
 
 Since in this version of Maxima, contraction identities for @code{ifr} and
@@ -1670,6 +1765,7 @@ function does nothing.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifb
 
 The frame bracket. The contribution of the frame metric to the connection
@@ -1713,7 +1809,7 @@ ifb    = (ifr    ifr    - ifr    ifr   ) ifri
 @closecatbox
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
 @defvr {Variable} icc1
 
 Connection coefficients of the first kind. In @code{itensor}, defined as
@@ -1738,6 +1834,7 @@ Lastly, of @code{inonmet_flag} is @code{false},
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} icc2
 
 Connection coefficients of the second kind. In @code{itensor}, defined as
@@ -1763,6 +1860,7 @@ Lastly, of @code{inonmet_flag} is @code{false},
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifc1
 
 Frame coefficient of the first kind (also known as Ricci-rotation
@@ -1785,6 +1883,7 @@ ifc1    = --------------------------------
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifc2
 
 Frame coefficient of the second kind. This tensor represents the contribution
@@ -1805,6 +1904,7 @@ ifc2   = ifg   ifc1
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifr
 
 The frame field. Contracts with the inverse frame field (@code{ifri}) to
@@ -1815,6 +1915,7 @@ form the frame metric (@code{ifg}).
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifri
 
 The inverse frame field. Specifies the frame base (dual basis vectors). Along
@@ -1826,6 +1927,7 @@ frames.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifg
 
 The frame metric. Defaults to @code{kdelta}, but can be changed using
@@ -1836,6 +1938,7 @@ The frame metric. Defaults to @code{kdelta}, but can be changed using
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ifgi
 
 The inverse frame metric. Contracts with the frame metric (@code{ifg})
@@ -1846,6 +1949,7 @@ to @code{kdelta}.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} iframe_bracket_form
 Default value: @code{true}
 
@@ -1856,13 +1960,16 @@ Specifies how the frame bracket (@code{ifb}) is computed.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @subsection Torsion and nonmetricity
+@c -----------------------------------------------------------------------------
 
 Maxima can now take into account torsion and nonmetricity. When the flag
 @code{itorsion_flag} is set to @code{true}, the contribution of torsion
 is added to the connection coefficients. Similarly, when the flag
 @code{inonmet_flag} is true, nonmetricity components are included.
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} inm
 
 The nonmetricity vector. Conformal nonmetricity is defined through the
@@ -1882,7 +1989,7 @@ g     =- g  inm
 @closecatbox
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
 @defvr {Variable} inmc1
 
 Covariant permutation of the nonmetricity vector components. Defined as
@@ -1903,6 +2010,7 @@ inmc1    = ------------------------------
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} inmc2
 
 Contravariant permutation of the nonmetricity vector components. Used
@@ -1926,6 +2034,7 @@ inmc2   = -------------------------------------------
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ikt1
 
 Covariant permutation of the torsion tensor (also known as contorsion).
@@ -1948,6 +2057,7 @@ ikt1    = ----------------------------------
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} ikt2
 
 Contravariant permutation of the torsion tensor (also known as contorsion).
@@ -1968,6 +2078,7 @@ ikt2   = g   ikt1
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Variable} itr
 
 The torsion tensor. For a metric with torsion, repeated covariant
@@ -2031,7 +2142,9 @@ by the following example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @subsection Exterior algebra
+@c -----------------------------------------------------------------------------
 
 The @code{itensor} package can perform operations on totally antisymmetric
 covariant tensor fields. A totally antisymmetric tensor field of rank
@@ -2128,6 +2241,7 @@ The behavior of the wedge product operator is controlled by the
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Operator} |
 @ifinfo
 @fnindex Contraction with a vector
@@ -2167,6 +2281,7 @@ the results will be incorrect.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} extdiff (@var{expr}, @var{i})
 
 Computes the exterior derivative of @var{expr} with respect to the index
@@ -2206,6 +2321,7 @@ For instance:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} hodge (@var{expr})
 
 Compute the Hodge-dual of @var{expr}. For instance:
@@ -2252,6 +2368,7 @@ Compute the Hodge-dual of @var{expr}. For instance:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} igeowedge_flag
 Default value: @code{false}
 
@@ -2266,8 +2383,9 @@ of the volume element.
 @closecatbox
 @end defvr
 
-
+@c -----------------------------------------------------------------------------
 @subsection Exporting TeX expressions
+@c -----------------------------------------------------------------------------
 
 The @code{itensor} package provides limited support for exporting tensor
 expressions to TeX. Since @code{itensor} expressions appear as function calls,
@@ -2275,6 +2393,7 @@ the regular Maxima @code{tex} command will not produce the expected
 output. You can try instead the @code{tentex} command, which attempts
 to translate tensor expressions into appropriately indexed TeX objects.
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} tentex (@var{expr})
 
 To use the @code{tentex} function, you must first load @code{tentex},
@@ -2310,12 +2429,15 @@ NB: This version of the @code{tentex} function is somewhat experimental.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Interfacing with ctensor
+@c -----------------------------------------------------------------------------
 
 The @code{itensor} package has the ability to generate Maxima code that can
 then be executed in the context of the @code{ctensor} package. The function that performs
 this task is @code{ic_convert}.
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} ic_convert (@var{eqn})
 
 Converts the @code{itensor} equation @var{eqn} to a @code{ctensor} assignment statement.
@@ -2369,7 +2491,9 @@ function.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @subsection Reserved words
+@c -----------------------------------------------------------------------------
 
 The following Maxima words are used by the @code{itensor} package internally and
 should not be redefined:
