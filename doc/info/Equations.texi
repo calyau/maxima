@@ -67,6 +67,19 @@ doing @code{concat ('%r, j)}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{algepsilon}
+@defvr {Option variable} algepsilon
+Default value: 10^8
+
+@c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
+@code{algepsilon} is used by @code{algsys}.
+
+@opencatbox
+@category{Algebraic equations}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{algexact}
 @defvr {Option variable} algexact
 Default value: @code{false}
