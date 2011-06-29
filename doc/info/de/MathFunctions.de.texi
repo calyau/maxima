@@ -2751,6 +2751,12 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @subsection Funktionen und Variablen f@"ur Hyperbelfunktionen
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{asinh}
+@anchor{acosh}
+@anchor{atanh}
+@anchor{acoth}
+@anchor{acsch}
+@anchor{asech}
 @deffn  {Funktion} asinh (@var{x})
 @deffnx {Funktion} acosh (@var{x})
 @deffnx {Funktion} atanh (@var{x})
@@ -2764,6 +2770,12 @@ Hyperbolicus, Areasekans Hyperbolicus.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{sinh}
+@anchor{cosh}
+@anchor{tanh}
+@anchor{coth}
+@anchor{csch}
+@anchor{sech}
 @deffn  {Funktion} sinh (@var{x})
 @deffnx {Funktion} cosh (@var{x})
 @deffnx {Funktion} tanh (@var{x})
