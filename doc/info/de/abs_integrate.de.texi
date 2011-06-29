@@ -4,7 +4,7 @@
 @c Language    : German
 @c Original    : New file
 @c Date        : 19.02.2011
-@c Revision    : 11.05.2011
+@c Revision    : 24.06.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -27,7 +27,7 @@ where @math{p} is a polynomial and @math{q} is a polynomial that
 terms, the @code{abs_integrate} package determines an antiderivative
 that is continuous on the entire real line.  Additionally, for an
 integrand that involves one or more parameters, the function
-@code{conditional_integrate} tries to determine an antiderivative that
+@mref{conditional_integrate} tries to determine an antiderivative that
 is valid for all parameter values.
 
 Examples: 
@@ -43,7 +43,7 @@ To use the @code{abs_integrate} package, you'll first need to load it:
 @end example
 
 To convert (%o2) into an expression involving the absolute value function,
-apply @code{signum_to_abs}; thus
+apply @mref{signum_to_abs}; thus
 
 @example
 (%i3) signum_to_abs(%);
@@ -67,8 +67,8 @@ for example
 @end example
 
 Additionally, @code{abs_integrate} is able to find antiderivatives of some
-integrands involving @code{max, min, signum}, and @code{unit_step};
-examples:
+integrands involving @mrefcomma{max} @mrefcomma{min} @mrefcomma{signum} and
+@mrefcomma{unit_step} examples:
 
 @example
 (%i5) integrate(max(x,x^2),x);
@@ -131,7 +131,7 @@ located at@*
 Default value: @code{['signum_int, 'abs_integrate_use_if]}
 
 The list @code{extra_integration_methods} is a list of functions for
-integration.  When @code{integrate} is unable to find an
+integration.  When @mref{integrate} is unable to find an
 antiderivative, Maxima uses the methods in
 @code{extra_integration_methods} to attempt to determine an
 antiderivative.
@@ -212,7 +212,7 @@ To use @code{load(abs_integrate)}
 Default value: @code{['abs_defint]}
 
 The list @code{extra_definite_integration_methods} is a list of extra
-functions for @i{definite} integration.  When @code{integrate} is
+functions for @i{definite} integration.  When @mref{integrate} is
 unable to find a definite integral, Maxima uses the methods in
 @code{extra_definite_integration_methods} to attempt to determine an
 antiderivative.
@@ -238,7 +238,7 @@ To use @code{load(abs_integrate)}.
 @deffn {Function} intfudu (@var{e}, @var{x})
 
 This function uses the derivative divides rule for integrands of the
-form @math{f(w(x)) * diff(w(x),x)} When @code{infudu} is unable to find
+form @math{f(w(x)) * diff(w(x),x)}.  When @code{infudu} is unable to find
 an antiderivative, it returns false.
 
 @example
@@ -273,8 +273,7 @@ fact to the hash table, say @math{integrate(f) = g}, do this:
 @end example
 
 An alternative to calling @code{intfudu} directly is to use the 
-@code{extra_integration_methods}
-mechanism; an example:
+@mref{extra_integration_methods} mechanism; an example:
 
 @c TODO: DAS FOLGENDE BEISPIEL IST NICHT MEHR KORREKT. MAXIMA KANN DIE
 @c       BESSELFUNKTIONEN STANDARDMAESSIG INTEGRIEREN.
@@ -311,7 +310,7 @@ Related functions @mrefdot{intfugudu}
 @deffn {Function} intfugudu (@var{e}, @var{x})
 
 This function uses the derivative divides rule for integrands of the
-form @math{f(w(x)) * g(w(x)) * diff(w(x),x)}.  When @code{infudu} is
+form @math{f(w(x)) * g(w(x)) * diff(w(x),x)}.  When @code{infugudu} is
 unable to find an antiderivative, it returns false.
 
 @example
@@ -368,7 +367,7 @@ To use @code{load(abs_integrate)}.
 @anchor{simp_assuming}
 @deffn {Macro} simp_assuming (@var{e}, @var{f_1}, @var{f_2}, @dots{}, @var{f_n})
 
-Appended the facts @math{f_1, f_2, ..., f_n} to the current context and
+Appended the facts @math{f_1, f_2, @dots{}, f_n} to the current context and
 simplify @math{e}.  The facts are removed before returning the simplified
 expression @math{e}.
 
@@ -464,7 +463,7 @@ min(q1, q2, ..., qn)} and @code{max(q1, q2, ..., qn)} by equivalent
                 2                               2
 @end example
 
-To convert @code{unit_step} to signum form, the function
+To convert @mref{unit_step} to signum form, the function
 @code{convert_to_signum} uses @math{unit_step(x) = (1 + signum(x))/2}.
 
 To use @code{load(abs_integrate)}.
