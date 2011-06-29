@@ -2,10 +2,10 @@
 @c File        : category-macros.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : category-macros.texi revision 1.4
+@c Original    : category-macros.texi revision 30.05.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 29.06.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -163,6 +163,7 @@
              ka-no-ni-scher
              Kon-stan-te
              Ko-or-di-na-ten-sys-tem
+             Laplace-trans-for-ma-tion
              letz-te
              ma-the-ma-ti-sche
              Maxima
