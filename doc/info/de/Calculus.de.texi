@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
-@c Revision    : 12.06.2011
+@c Revision    : 29.06.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -29,8 +29,8 @@ Standardwert: 4
 
 Die Optionsvariable @code{lhospitallim} enth@"alt die maximale Zahl an
 Iterationen, f@"ur die die L'Hospitalsche Regel von der Funktion
-@mref{limit} angewendet wird.  Damit wird verhindert, dass @code{limit} in eine
-unendliche Schleife ger@"at.
+@mref{limit} angewendet wird.  Damit wird verhindert, dass die Funktion
+@code{limit} in eine unendliche Schleife ger@"at.
 @end defvr
 
 @c TODO: DAS KANN NOCH VIEL BESSER GEMACHT WERDEN.
@@ -78,7 +78,7 @@ ein unbestimmtes Ergebnis
 @c schlie@ss{}t F@"alle ein, wo der Grenzwert eines komplexen Arguments eine 
 @c Konstante ist, wie zum Beispiel in @code{limit(log(x),x, minf)}.  F@"alle in 
 @c denen das komplexe Argument oszilliert, wie zum Beispiel in 
-@c @code{limit((-2)^x, x, inf)} und F@"alle, wo das komlexe Argument f@"ur die 
+@c @code{limit((-2)^x, x, inf)} und F@"alle, wo das komplexe Argument f@"ur die 
 @c beiden Seiten des Grenzwertes verschieden ist, wie zum Beispiel in 
 @c @code{limit(1/x, x, 0)} und @code{limit(log(x), x, 0)}.
 
@@ -149,7 +149,6 @@ unbekannte Funktion als @code{f(10)} an.
 (%i2) limit(f(x),x,10),limsubst:true;
 (%o2)                         f(10)
 @end example
-
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -173,7 +172,6 @@ Standardwert: @code{true}
 Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @mref{limit} eine
 Taylor-Rei@-hen@-ent@-wick@-lung, wenn der Grenzwert nicht mit anderen Methoden
 bestimmt werden kann.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -286,7 +284,6 @@ Beispiele:
                   ]              dx
                   /
 @end example
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -308,7 +305,6 @@ Funktion @code{antidiff} das Ergebnis @code{@var{L}[1] + 'integrate(@var{L}[2],
 @var{x})} mit @var{x} als der Variablen des Ausdrucks @var{expr}.
 
 F@"ur Beispiele und weitere Ausf@"uhrungen siehe die Funktion @mrefdot{antid}
-
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -317,7 +313,6 @@ F@"ur Beispiele und weitere Ausf@"uhrungen siehe die Funktion @mrefdot{antid}
 
 Wird f@"ur ein Symbol eine Ableitung mit der Funktion @mref{gradef} definiert,
 dann erh@"alt das Symbol die Eigenschaft @code{atomgrad}.
-
 @end defvr
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -383,7 +378,6 @@ Beispiele:
                                          !x = 0, y = 1
 @end group
 @end example
-
 @end deffn
 
 @c LOOKS LIKE cartan IS THE NAME OF A PACKAGE AND NOT A FUNCTION OR VARIABLE
@@ -450,7 +444,6 @@ p;
                                    - a s
 (%o1)                   sin(a b) %e
 @end example
-
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
@@ -530,16 +523,13 @@ Beispiele:
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
+@need 800
 @anchor{derivabbrev}
 @defvr {Optionsvariable} derivabbrev
 Standardwert: @code{false}
 
-@c When @code{derivabbrev} is @code{true}, symbolic derivatives (that is, 
-@c @code{diff} nouns) are displayed as subscripts. Otherwise, derivatives are 
-@c displayed in the Leibniz notation @code{dy/dx}.
-
 Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
-mit einem tiefgestelltem Index angezeigt.  Ansonsten werden Ableitungen als
+mit einem tiefgestellten Index angezeigt.  Ansonsten werden Ableitungen als
 @code{dy/dx} angezeigt.
 
 Beispiel:
@@ -585,8 +575,7 @@ Beispiel:
 
 @code{derivlist} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}.
 @code{ev} f@"uhrt nur die Ableitungen in Bezug auf die angegebenen Variablen
-@var{var_1}, @dots{}, @var{var_k} aus.
-
+@var{var_1}, @dots{}, @var{var_k} aus.  Siehe auch @mrefdot{ev}
 @end deffn
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
@@ -601,6 +590,7 @@ Ausdr@"ucke mit Ableitungen ausgef@"uhrt.  Zum Beispiel hat dann
 
 @c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{diff}
+@anchor{derivative}
 @deffn  {Funktion} diff (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m})
 @deffnx {Funktion} diff (@var{expr}, @var{x}, @var{n})
 @deffnx {Funktion} diff (@var{expr}, @var{x})
@@ -636,6 +626,8 @@ mit einem tiefgestelltem Index angezeigt.  Ansonsten werden Ableitungen als
 Kommando @code{ev(expr), diff} bewirkt, dass alle Ableitungen ausgef@"uhrt 
 werden, die im Ausdruck @var{expr} enthalten sind.  Siehe auch die Funktion 
 @mrefdot{ev}
+
+@code{derivative} ist ein Alias-Name der Funktion @code{diff}.
 
 Beispiele:
 
@@ -722,7 +714,6 @@ Das Kommando @code{load(ctensor)} l@"adt die Funktion.
 @c - -----------------------------------------------------
 @c                              2 r
 @c @end example
-
 @end deffn
 
 @c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
@@ -800,8 +791,8 @@ Funktion @mref{gradef} definiert wurde.
 @c -----------------------------------------------------------------------------
 @node Integration, Differentialgleichungen, Funktionen und Variablen der Differentiation, Analysis
 @section Integration
-
 @c -----------------------------------------------------------------------------
+
 @menu
 * Einf@"uhrung in die Integration::
 * Funktionen und Variablen der Integration::
@@ -812,6 +803,7 @@ Funktion @mref{gradef} definiert wurde.
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Integration, Integration
 @subsection Einf@"uhrung in die Integration
+@c -----------------------------------------------------------------------------
 
 Maxima hat verschiedene Algorithmen, um Integrale zu behandeln.  Die Funktion
 @mref{integrate} nutzt diese.  Maxima hat ein Paket @mref{antid}, welches
@@ -819,9 +811,10 @@ Integrale mit einer unbekannten Funktion, deren Ableitung bekannt ist,
 integrieren kann.  F@"ur die numerische Berechnung von Integralen hat Maxima
 das Paket @code{QUADPACK} mit Funktionen wie @mref{quad_qag} oder
 @mrefdot{quad_qags}  Die Funktionen @mref{laplace} und @mref{specint} finden
-die Laplacetransformation.
-
-@c end concepts Integration
+die Laplacetransformation.  Wird das Paket @code{abs_integrate} geladen, kann
+Maxima weitere Integrale l@"osen.  Dazu geh@"oren insbesondere Integrale mit
+der Betragsfunktion @mref{abs} und der Signum-Funktion @mrefdot{signum}  Siehe
+auch @ref{abs_integrate}.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen der Integration, Einf@"uhrung in QUADPACK, Einf@"uhrung in die Integration, Integration
@@ -915,11 +908,13 @@ $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, d
 @ifnottex
 @example
 @group
-/b /s(x)
-|  |
-|  |    f(x,y) dy dx
-|  |
-/a /r(x)
+      b  s(x)
+     /  /
+     [  [
+     I  I     f(x, y) dy dx
+     ]  ]
+     /  /
+      a  r(x)
 @end group
 @end example
 @end ifnottex
@@ -946,7 +941,7 @@ wird ausgef@"uhrt, wenn ein bestimmtes Integral mit der Funktion
 @mref{integrate} gesucht wird.
 
 @code{defint} gibt einen symbolischen Ausdruck als Ergebnis zur@"uck.  Ist das 
-Integral divergent generiert Maxima eine Fehlermeldung.  Kann @code{defint} 
+Integral divergent, generiert Maxima eine Fehlermeldung.  Kann @code{defint} 
 keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
 @end deffn
 
@@ -956,7 +951,7 @@ keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
 Standardwert: @code{true}
 
 Hat @code{erfflag} den Wert @code{false}, wird von der Funktion @mref{risch}@w{}
-nicht die Fehlerfunktion @mref{erf} in die L@"osung eingef@"uhrt.
+die Fehlerfunktion @mref{erf} nicht in die L@"osung eingef@"uhrt.
 @end defvr
 
 @c NEEDS WORK
@@ -1016,7 +1011,6 @@ pos;
                                                a  b  - 2 a  b + a
 @end group
 @end example
-
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1060,7 +1054,6 @@ The number 1 isn't in the domain of atanh
 (%o5)                                 ---
                                        2
 @end example
-
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1071,17 +1064,19 @@ The number 1 isn't in the domain of atanh
 Sucht die symbolische L@"osung des Integrals f@"ur den Ausdruck @var{expr} und
 der Integrationsvariablen @var{x}.  @code{integrate(@var{expr}, @var{x})} l@"ost
 das unbestimmte Integral.
+
 @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})} sucht die L@"osung des
 bestimmten Integrals in den Integrationsgrenzen @var{a} und @var{b}.  Die
 Integrationsgrenzen d@"urfen die Integrationsvariable @var{x} nicht enthalten.
 F@"ur die Integrationsgrenzen muss nicht gelten @var{a} < @var{b}.  Sind die
 Integrationsgrenzen gleich, dann ist das Ergebnis der Integration Null.
 
-F@"ur die numerische L@"osung von Integrale siehe die Funktion
+F@"ur die numerische L@"osung von Integralen siehe die Funktion
 @mref{quad_qag} und verwandte Funktionen.  Residuen eines Integranden k@"onnen
 mit der Funktion @mref{residue} berechnet werden.  Einen alternativen
-Algorithmus f@"ur das Berechnen von Integralen mit einer unbekannten Funktion
-bieten die Funktionen @mref{antid} und @mrefdot{antidiff}
+Algorithmus f@"ur das L@"osen von Integralen, die im Integranden eine unbekannte
+Funktion und deren Ableitung enthalten, bieten die Funktionen @mref{antid} und
+@mrefdot{antidiff}
 
 Findet @code{integrate} keine L@"osung wird eine Substantivform oder ein
 Ausdruck mit einer oder mehreren Substantivformen zur@"uckgegeben.
@@ -1127,7 +1122,7 @@ Auswertungsschalter @mref{nouns} m@"oglich.
 
 Die Abh@"angigkeit der Funktionen im Integranden von Variablen muss explizit zum
 Beispiel mit @code{f(x)} angegeben werden.  @code{integrate} beachtet keine
-Abh@"angigkeit der mit den Funktion @mref{depends} definiert werden.
+Abh@"angigkeit die mit der Funktion @mref{depends} definiert werden.
 
 Ben@"otigt @code{integrate} Informationen zu einem Parameter, die nicht aus dem
 aktuellen Kontext abgeleitet werden k@"onnen, wird der Nutzer nach den fehlenden
@@ -1235,10 +1230,6 @@ Integralen von rationalen Funktionen.
 (%o2)            ---------- - ------------------
                      73               73
 @end group
-@group
-(%i3) grind (%);
-log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
-@end group
 @end example
 
 Definition einer Funktion als ein Integral.  Die rechte Seite einer
@@ -1249,24 +1240,24 @@ Substantivform.
 
 @example
 @group
-(%i1) f_1 (a) := integrate (x^3, x, 1, a);
+(%i1) f_1(a) := integrate (x^3, x, 1, a);
                                      3
 (%o1)           f_1(a) := integrate(x , x, 1, a)
 @end group
 @group
-(%i2) ev (f_1 (7), nouns);
+(%i2) ev(f_1 (7), nouns);
 (%o2)                          600
 @end group
 @group
 (%i3) /* Note parentheses around integrate(...) here */
-      f_2 (a) := ''(integrate (x^3, x, 1, a));
+      f_2(a) := ''(integrate (x^3, x, 1, a));
                                    4
                                   a    1
 (%o3)                   f_2(a) := -- - -
                                   4    4
 @end group
 @group
-(%i4) f_2 (7);
+(%i4) f_2(7);
 (%o4)                          600
 @end group
 @end example
@@ -1340,36 +1331,29 @@ Beispiele:
                           3
 @end group
 @group
-(%i3) integrate (x^2 = 1, x);
-                           3
-                          x
-(%o3)                     -- = x + %c3
-                          3
+(%i3) reset (integration_constant_counter);
+(%o3)            [integration_constant_counter]
 @end group
 @group
-(%i4) reset (integration_constant_counter);
-(%o4)            [integration_constant_counter]
-@end group
-@group
-(%i5) integrate (x^2 = 1, x);
+(%i4) integrate (x^2 = 1, x);
                            3
                           x
-(%o5)                     -- = x + %c1
+(%o4)                     -- = x + %c1
                           3
 @end group
 @end example
-
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
+@need 800
 @anchor{integrate_use_rootsof}
 @defvr {Optionsvariable} integrate_use_rootsof
 Standardwert: @code{false}
 
 Hat @code{integrate_use_rootsof} den Wert @code{true} und der Nenner einer
-rationalen Funktion kann nicht faktorisiert werden, dann gibt @code{integrate}
-ein Integral zur@"uck, das eine Summe @"uber die unbekannten Wurzeln des Nenners
-enth@"alt.
+rationalen Funktion kann nicht faktorisiert werden, dann gibt
+@mref{integrate} ein Integral zur@"uck, das eine Summe @"uber die unbekannten
+Wurzeln des Nenners enth@"alt.
 
 Hat zum Beispiel @code{integrate_use_rootsof} den Wert @code{false}, gibt
 @code{integrate} im Folgenden ein L@"osung zur@"uck, die eine Substantivform
@@ -1418,9 +1402,8 @@ rationalen Funktion zur@"uckgegeben.
 Alternativ kann der Nutzer die Wurzeln des Nenners separat berechnen und den
 Integranden mit Hilfe der Wurzeln ausdr@"ucken.  Zum Beispiel als 
 @code{1/((x - a)*(x - b)*(x - c))} oder @code{1/((x^2-(a+b)*x + a*b)*(x - c))}
-ein kubisches Polynom mit drei Nullstellen im Nenner.  Auf diese Weise kann
-Maxima in einigen F@"allen eine L@"osung f@"ur ein Integral finden.
-
+f@"ur ein kubisches Polynom mit drei Nullstellen im Nenner.  Auf diese Weise
+kann Maxima in einigen F@"allen eine L@"osung f@"ur ein Integral finden.
 @end defvr
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1431,16 +1414,17 @@ Sucht die Laplace-Transformation des Ausdrucks @var{expr} f@"ur die
 Integrationsvariable @var{x} und den Parameter @var{s}.
 
 @code{laplace} findet die Laplace-Transformation f@"ur Ausdr@"ucke, die die
-Funktionen @code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, 
-@code{sinh}, @code{cosh} und @code{erf} sowie Ausdr@"ucke mit @code{derivative}, 
-@code{integrate}, @code{sum} und @code{ilt} enthalten.
+Funktionen @mrefcomma{delta} @mrefcomma{exp} @mrefcomma{log} @mrefcomma{sin}@w{}
+@mrefcomma{cos} @mrefcomma{sinh} @mref{cosh} und @mref{erf} sowie Ausdr@"ucke
+mit @mrefcomma{derivative} @mrefcomma{integrate} @mref{sum} und @mref{ilt}@w{}
+enthalten.
+
 Kann @code{laplace} die Laplace-Transformation nicht finden, wird die Funktion
-@code{specint} aufgerufen.  @code{specint} kann die Laplace-Transformation f@"ur
-eine Vielzahl von speziellen Funktion berechnen.
+@mref{specint} aufgerufen.  @code{specint} kann die Laplace-Transformation f@"ur
+eine Vielzahl von speziellen Funktionen im Integranden berechnen.  Findet auch
+@code{specint} keine L@"osung ist das Ergebnis eine Substantivform.
 
-Findet auch @code{specint} keine L@"osung ist das Ergebnis eine Substantivform.
-
-@c TODO: WELCHE MATHEMATIK WIRD HIER BESCHRIEBEN. UEBERSETZUNG FEHLT.
+@c TODO: WELCHE MATHEMATIK WIRD HIER BESCHRIEBEN.  UEBERSETZUNG FEHLT.
 
 @c REPHRASE THIS
 @c @var{expr} may also be a linear, constant coefficient differential equation 
@@ -1495,6 +1479,7 @@ Beispiele:
                                         (- + 1)
                                          s
 (%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
+@group
                                               s + 1
                       sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
                                                 s
@@ -1502,6 +1487,7 @@ Beispiele:
                                 3/2      s + 1
                                s    sqrt(-----)
                                            s
+@end group
 (%i8) assume(exp(%pi*s)>1)$
 (%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s)
         ,simpsum;
@@ -1530,16 +1516,16 @@ Beispiele:
 @deffn {Funktion} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
 Sucht die L@"osung des bestimmten Integrals f@"ur den Integranden @var{expr}.
-@code{ldefinit} bestimmt die Stammfunktion und sucht die Grenzwerte mit der
+@code{ldefint} bestimmt die Stammfunktion und sucht die Grenzwerte mit der
 Funktion @code{limit} an den Integrationsgrenzen @var{a} und @var{b}.  Kann ein
 Grenzwert nicht ermittelt werden, enth@"alt das Ergebnis die Substantivform
 des Grenzwertes.
 
 @code{ldefint} wird nicht von der Funktion @code{integrate} aufgerufen.  Daher
 kann @code{ldefint} ein von @code{integrate} verschiedenes Ergebnis haben.
-@code{ldefint} verwendet immer denselben Algorithmus um eine L@"osung zu finden. 
-Dagegen wendet @code{integrate} verschiedene Algorithmen an, um nach einer
-L@"osung zu suchen.
+@code{ldefint} verwendet immer denselben Algorithmus, um eine L@"osung zu
+finden.  Dagegen wendet @code{integrate} verschiedene Algorithmen an, um nach
+einer L@"osung zu suchen.
 @end deffn
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
@@ -1575,12 +1561,14 @@ Beispiele:
 Nutzt den transzendenten Risch-Algorithmus f@"ur die Integration des
 Ausdruck @var{expr} und der Integrationsvariable @var{x}.  Der algebraische
 Risch-Algorithmus ist nicht implementiert.  Der transzendente Risch-Algorithmus
-behandelt Integranden mit Exponential- und Logarithmusfunktionen.  Der 
+behandelt Integranden mit Exponential- und Logarithmusfunktionen.  Der
 Risch-Algorithmus wird von @mref{integrate} aufgerufen, wenn @code{integrate}
 keine Stammfunktion finden kann.
 
 Hat @mref{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
 keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
+
+Beispiele:
 
 @example
 @group
@@ -1627,33 +1615,33 @@ Division, K.U. Leuven}, C. Ueberhuber @footnote{Institut f@"ur Mathematik, T.U.
 Wien}, und D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., 
 U.S.A}.
 
-Die QUADPACK Bibliothek, die in Maxima enthalten ist, ist eine automatische
-@"Ubersetzung des Fortran Quellcodes mit dem Programm @code{f2cl}, wie er in
-der SLATEC Common Mathematical Library, Version 4.1 
+Die QUADPACK-Bibliothek, die in Maxima enthalten ist, ist eine automatische
+@"Uber@-set@-zung des Fortran Quellcodes mit dem Programm @code{f2cl} wie er
+in der SLATEC Common Mathematical Library, Version 4.1 
 @footnote{@url{http://www.netlib.org/slatec}} vorliegt.  Die SLATEC Bibliothek
 datiert auf Juli 1993.  Die QUADPACK Funktionen wurden bereits einige Jahre
 fr@"uher programmiert.  Es gibt eine weitere Version von QUADPACK bei Netlib
 @footnote{@url{http://www.netlib.org/quadpack}}.  Es ist jedoch unklar worin
 sich diese von der SLATEC Version unterscheidet.
 
-Alle QUADPACK-Funktionen versuchen automatisch ein bestimmtes Integral numerisch
-innerhalb eine spezifierten Genauigkeit zu berechnen.  Die @"Ubersetzung nach
-Lisp enth@"alt einige weitere nicht-automatische Funktionen, die jedoch nicht
-als Maxima Funktionen zur Verf@"ugung stehen.
+Alle QUADPACK-Funktionen versuchen automatisch, ein bestimmtes Integral
+numerisch innerhalb eine spezifizierten Genauigkeit zu berechnen.  Die
+@"Ubersetzung nach Lisp enth@"alt einige weitere nicht-automatische Funktionen,
+die jedoch nicht als Maxima Funktionen zur Verf@"ugung stehen.
 
-Weitere Informationen @"uber QUADPACK k@"onnen in dem QUADPACK-Buch
+Weitere Informationen @"uber das QUADPACK-Paket sind in dem QUADPACK-Buch
 @footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. 
 @c Kahaner. @i{QUADPACK: A Subroutine Package for Automatic Integration.}
-Berlin: Springer-Verlag, 1983, ISBN 0387125531.} nachgelesen werden.
+Berlin: Springer-Verlag, 1983, ISBN 0387125531.} enthalten.
 
 @c -----------------------------------------------------------------------------
-@subsubheading @"Ubersicht
+@subsubheading @"Ubersicht @"uber die Integrationsroutinen
 @c -----------------------------------------------------------------------------
 
 @table @code
 @item quad_qag
 Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
-@mref{quad_qag} implementiert eine globalen adaptiven Integrator auf
+@mref{quad_qag} implementiert einen globalen adaptiven Integrator auf
 Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
 Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
 h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
@@ -1689,7 +1677,7 @@ Intervall, wobei $\omega$ eine Konstante ist.
 Der Algorithmus der Funktion @mref{quad_qawo} zur basiert auf eine modifizierte
 Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung des
 Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem
-Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die
+Algorithmus von @mref{quad_qags} ist.  Zus@"atzlich wird versucht, die
 Konvergenz der Integralapproximation mit Hilfe des Epsilon-Algorithmus (Wynn, 
 1956) zu beschleunigen.
 
@@ -1698,7 +1686,7 @@ Die Funktion @mref{quad_qawf} berechnet die Sinus- oder
 Kosinus-Fou@-rier@-trans@-for@-ma@-tion @"uber ein halb-un@-end@-lich@-es
 Intervall.  Dabei wird die global adaptive Routine @mref{quad_qawo} sukzessive
 auf endliche Teilintervalle angewendet.  Zur Konvergenzbeschleunigung der
-resultierenden alternierenden Reihe wird dann der Epsilon-Algorithmus
+resultierenden alternierenden Reihe wird der Epsilon-Algorithmus
 (Wynn, 1956) verwendet.
 
 @item quad_qaws
@@ -1718,17 +1706,17 @@ x\right)$, und $\alpha > -1$ und $\beta > -1$.
 @end tex
 @mref{quad_qaws} ist speziell f@"ur die effiziente Berechnung von Integralen
 @"uber endliche Intervalle mit algebraischen oder algebraisch-logarithmischen
-Endpunktsingularit@"at konzipiert.  Eine globale adaptive Strategie mit 
-Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle,
+Endpunktsingularit@"aten konzipiert.  Eine globale adaptive Strategie mit 
+Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle
 die keinen Endpunkt des Integrationsintervalls enthalten, kommt ein
-Gau@ss{}-Kronrod-Formelpaar zur Anwendung.  Auf Randintervallen kommen 
-modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
+Gau@ss{}-Kronrod-Formelpaar und auf Randintervallen kommen modifizierte
+Clenshaw-Curtis-Formeln zur Anwendung.
 
 @item quad_qawc
 Die Funktion @mref{quad_qawc} berechnet den Cauchyschen Hauptwert von
 @math{f(x)(x - c)} @"uber ein endliches Intervall @math{(a, b)} und dem Wert
 @math{c}.  Es wird eine modifizierte Clenshaw-Curtis-Formel angewendet, wenn
-@math{c} im Teilbereich enthalten ist, andernfalls wird eine globale adaptive
+@math{c} im Teilbereich enthalten ist.  Andernfalls wird eine globale adaptive
 Strategie mit einem Gau@ss{}-Kronrod-Formelpaar angewendet.
 @end table
 
@@ -1742,24 +1730,32 @@ Strategie mit einem Gau@ss{}-Kronrod-Formelpaar angewendet.
 @deffn  {Funktion} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
-@code{quad_qag} implementiert eine globalen adaptiven Integrator auf
-Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
-Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
-h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
-
-@code{quad_qag} berechnet das Integral
+Die Funktion @code{quad_qag} berechnet das folgende Integral @"uber ein
+endliches Intervall.
 
 @ifnottex
-@math{integrate (f(x), x, a, b)}
+@verbatim
+           b
+          /
+          [
+          I  f(x) dx
+          ]
+          /
+           a
+@end verbatim
 @end ifnottex
 @tex
 $$\int_a^b {f(x) \, dx}$$
 @end tex
 
+@code{quad_qag} implementiert einen globalen adaptiven Integrator auf
+Grundlage der Strategie von Aind (Piessens, 1973).  Es kann aus 6 verschiedenen 
+Paaren von Gau@ss{}-Kronrad-Quadraturformeln ausgew@"ahlt werden.  Die Formeln 
+h@"oheren Grades sind f@"ur stark oszillierende Integranden geeignet.
+
 Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird im 
 Integrationsintervall @var{a} und @var{b} integriert.  @var{key} w@"ahlt den
-Grad der Gau@ss{}-Kronrod-Quadratorformel aus und kann Werte von 1 bis 6
+Grad der Gau@ss{}-Kronrod-Quadraturformel aus und kann Werte von 1 bis 6
 annehmen.  Ein gr@"o@ss{}erer Grad ist geeignet f@"ur stark oszillierende
 Integranden.
 
@@ -1773,7 +1769,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
@@ -1787,7 +1783,7 @@ Standardwert ist @code{200}.
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -1796,18 +1792,18 @@ Standardwert ist @code{200}.
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
 
@@ -1830,22 +1826,30 @@ Beispiele:
 @deffn  {Funktion} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-Integration einer allgemeinen Funktion @"uber ein endliches Intervall.
+Die Funktion @code{quad_qags} berechnet das folgende Integral @"uber ein
+endliches Intervall.
+
+@ifnottex
+@verbatim
+           b
+          /
+          [
+          I  f(x) dx
+          ]
+          /
+           a
+@end verbatim
+@end ifnottex
+@tex
+$$\int_a^b {f(x) \, dx}$$
+@end tex
+
 @code{quad_qags} implementiert die Strategie einer globalen adaptiven 
 Unterteilung des Integrationsintervalls mit Extrapolation (de Doncker, 1978).
 Zus@"atzlich wird versucht, die Konvergenz der Integralapproximation mit Hilfe
 des Epsilon-Algorithmus (Wynn, 1956) zu beschleunigen.  Dies f@"uhrt zum 
 Beispiel bei Integranden mit Singularit@"aten, deren Lage und Typ unbekannt 
 sind, zu einer Effizienzsteigerung.
-
-@code{quad_qags} berechnet das Integral
-
-@ifnottex
-@math{integrate (f(x), x, a, b)}
-@end ifnottex
-@tex
-$$\int_a^b {f(x) \, dx}$$
-@end tex
 
 Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird im 
 Integrationsintervall @var{a} und @var{b} integriert.
@@ -1857,7 +1861,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
@@ -1871,7 +1875,7 @@ Standardwert ist @code{200}.
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -1880,20 +1884,23 @@ Standardwert ist @code{200}.
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
+
+@code{quad_qags} ist genauer und effizienter als @mref{quad_qag} f@"ur das
+folgende Beispiel.
 
 @example
 @group
@@ -1901,9 +1908,6 @@ Beispiele:
 (%o1)   [.4444444444444448, 1.11022302462516E-15, 315, 0]
 @end group
 @end example
-
-@code{quad_qags} ist genauer und effizienter als @code{quad_qag} f@"ur den
-obigen Integranden.
 @end deffn
 
 @c --- 09.01.2011 DK -----------------------------------------------------------
@@ -1911,33 +1915,57 @@ obigen Integranden.
 @deffn  {Funktion} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-Integration einer allgemeinen Funktion @"uber ein unendliches oder 
-halb-unendliches Intervall.  Das Intervall wird auf ein endliches Intervall 
-transformiert.  Das transformierte Integrationsproblem wird dann mit einer
-geringf@"ugig modifizierten Algorithmus wie in @code{quad_qags} gel@"ost.
-
-@code{quad_qagi} berechnet die folgenden Integrale
+Die Funktion @code{quad_qagi} berechnet die folgenden Integrale @"uber ein
+unendliches oder halb-unendliches Intervall.
 
 @ifnottex
-@math{integrate (f(x), x, a, inf)}
+@verbatim
+           inf
+          /
+          [
+          I    f(x) dx
+          ]
+          /
+           a
+@end verbatim
 @end ifnottex
 @tex
 $$\int_a^\infty {f(x) \, dx}$$
 @end tex
 
 @ifnottex
-@math{integrate (f(x), x, minf, a)}
+@verbatim
+           a
+          /
+          [
+          I     f(x) dx
+          ]
+          /
+           minf
+@end verbatim
 @end ifnottex
 @tex
 $$\int_\infty^a {f(x) \, dx}$$
 @end tex
 
 @ifnottex
-@math{integrate (f(x), x, minf, inf)}
+@verbatim
+           inf
+          /
+          [
+          I     f(x) dx
+          ]
+          /
+           minf
+@end verbatim
 @end ifnottex
 @tex
 $$\int_{-\infty}^\infty {f(x) \, dx}$$
 @end tex
+
+Das Intervall wird auf ein endliches Intervall transformiert.  Das
+transformierte Integrationsproblem wird dann mit einem geringf@"ugig
+modifizierten Algorithmus wie in @mref{quad_qags} gel@"ost.
 
 Die Funktion @var{f(x)} mit der abh@"angigen Variablen @var{x} wird @"uber einen
 unendlichen Bereich integriert.
@@ -1952,7 +1980,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
@@ -1966,7 +1994,7 @@ Standardwert ist @code{200}.
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -1975,18 +2003,18 @@ Standardwert ist @code{200}.
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
 
@@ -2009,20 +2037,28 @@ Beispiele:
 @deffn  {Funktion} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 @deffnx {Funktion} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
-Berechnet den Cauchyschen Hauptwert von @math{f(x)(x - c)} @"uber ein endliches
-Intervall @math{(a, b)} und dem Wert @math{c}.  Es wird eine modifizierte
-Clenshaw-Curtis-Formel angewendet, wenn @math{c} im Teilbereich enthalten ist,
-andernfalls wird eine globale adaptive Strategie mit einem 
-Gau@ss{}-Kronrod-Formelpaar angewendet.
-
-@code{quad_qawc} berechnet den Cauchyschen Hauptwert von
+Die Funktion @code{quad_qawc} berechnet den Cauchyschen Hauptwert von
+@math{f(x)(x - c)} @"uber ein endliches Intervall @math{(a, b)} und dem Wert
+@math{c}.
 
 @ifnottex
-@math{integrate (f(x)/(x - c), x, a, b)}
+@verbatim
+           b
+          /
+          [  f(x)
+          I  ----- dx
+          ]  x - c
+          /
+           a
+@end verbatim
 @end ifnottex
 @tex
 $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
+
+Es wird eine modifizierte Clenshaw-Curtis-Formel angewendet, wenn @math{c} im
+Teilbereich enthalten ist, andernfalls wird eine globale adaptive Strategie mit
+einem Gau@ss{}-Kronrod-Formelpaar angewendet.
 
 Die Funktion @code{@var{f(x)}/(@var{x} - @var{c})}, die von der Variablen
 @var{x} abh@"angt, wird in den Grenzen @var{a} und @var{b} integriert.
@@ -2034,7 +2070,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.  Die
 Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsrel
 Gew@"unschter relativer Fehler der Approximation.  Der Standardwert ist 
 @code{1.0e-8}.
@@ -2048,7 +2084,7 @@ Standardwert ist @code{200}.
 
 @code{quad_qag} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -2057,18 +2093,18 @@ Standardwert ist @code{200}.
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
 
@@ -2111,20 +2147,29 @@ Principal Value
 @deffn  {Funktion} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 @deffnx {Funktion} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
-Berechnet die Sinus- oder Kosinus-Fouriertransformation @"uber ein 
-halb-unendliches Intervall.  Dabei wird die global adaptive Routine
-@code{quad_qawo} sukzessive auf endliche Teilintervalle angewendet.  Zur
-Konvergenzbeschleunigung der resultierenden alternierenden Reihe wird dann
-der Epsilon-Algorithmus (Wynn, 1956) verwendet.
-
-@code{quad_qawf} berechnet das Integral
+Die Funktion @code{quad_qawf} berechnet die Sinus- oder
+Kosinus-Fouriertransformation mit der Gewichtsfunktion @math{w} @"uber ein
+halb-unendliches Intervall.
 
 @ifnottex
-@math{integrate (f(x)*w(x), x, a, inf)}
+@verbatim
+           inf
+          /
+          [
+          I    f(x) w(x) dx
+          ]
+          /
+           a
+@end verbatim
 @end ifnottex
 @tex
 $$\int_a^\infty f(x) \, w(x) \, dx$$
 @end tex
+
+Zur Berechnung des Integrals wird die global adaptive Routine
+@mref{quad_qawo} sukzessive auf endliche Teilintervalle angewendet.  Zur
+Konvergenzbeschleunigung der resultierenden alternierenden Reihe wird
+der Epsilon-Algorithmus (Wynn, 1956) verwendet.
 
 Die Gewichtsfunktion @math{w} wird mit dem Schl@"usselwort @var{trig} 
 ausgew@"ahlt:
@@ -2160,7 +2205,7 @@ Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 
 @code{quad_qawf} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -2169,18 +2214,18 @@ Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
 
@@ -2209,31 +2254,37 @@ Beispiele:
 @deffnx {Funktion} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 @ifnottex
-Berechnung von Integralen mit den trigonometrischen Gewichtsfunktionen 
-@math{cos(omega x) f(x)} oder @math{sin(omega x) f(x)} @"uber ein endliches 
-Intervall, wobei @math{omega} eine Konstante ist.
+Die Funktion @code{quad_qawo} berechnet das folgende Integral mit den
+trigonometrischen Gewichtsfunktionen @math{cos(omega x) f(x)} oder
+@math{sin(omega x) f(x)} @"uber ein endliches Intervall, wobei @math{omega}
+eine Konstante ist.
+
+@verbatim
+           b
+          /
+          [
+          I  f(x) w(x) dx
+          ]
+          /
+           a
+@end verbatim
 @end ifnottex
+
 @tex
-Die Funktion @code{quad_qawo} berechnet Integrale mit den trigonometrischen 
-Gewichtsfunktionen $\cos\left(\omega \, x\right) \, f\left(x\right)$ oder
-$\sin\left(\omega \, x\right) \, f\left(x\right)$ @"uber ein endliches 
+Die Funktion @code{quad_qawo} berechnet das folgende Integral mit den
+trigonometrischen Gewichtsfunktionen
+$\cos\left(\omega \, x\right) \, f\left(x\right)$ oder
+$\sin\left(\omega \, x\right) \, f\left(x\right)$ @"uber ein endliches
 Intervall, wobei $\omega$ eine Konstante ist.
-@end tex
-Der Algorithmus basiert auf eine modifizierte 
-Clenshaw-Curtis-Technik.  @code{quad_qawo} wendet eine adaptive Unterteilung
-des Integrationsintervalls mit Extrapolation an, die vergleichbar mit dem
-Algorithmus von @code{quad_qags} ist.  Zus@"atzlich wird versucht, die 
-Konvergenz der Integralapproximation mit Hilfe des Epsilon-Algorithmus zu 
-beschleunigen.
 
-@code{quad_qawo} berechnet das Integral
-
-@ifnottex
-@math{integrate (f(x)*w(x), x, a, b)}
-@end ifnottex
-@tex
 $$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
+
+Der Algorithmus basiert auf eine modifizierte Clenshaw-Curtis-Technik.
+@code{quad_qawo} wendet eine adaptive Unterteilung des Integrationsintervalls
+mit Extrapolation an, die vergleichbar mit dem Algorithmus von
+@mref{quad_qags} ist.  Zus@"atzlich wird versucht, die Konvergenz der
+Integralapproximation mit Hilfe des Epsilon-Algorithmus zu beschleunigen.
 
 Die Gewichtsfunktion @math{w} wird mit dem Schl@"usselwort @var{trig} 
 ausgew@"ahlt:
@@ -2262,7 +2313,7 @@ Die Schl@"usselwortargumente sind optional und k@"onnen in beliebiger
 Reihenfolge angegeben werden.  Sie haben die Form @code{key=val}.
 Die Schl@"usselwortargumente sind:
 
-@table @var
+@table @code
 @item epsrel
 Gew@"unschter relativer Fehler der N@"aherung.  Der Standardwert ist
 @code{1.0e-8}
@@ -2281,7 +2332,7 @@ Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 
 @code{quad_qawo} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -2290,18 +2341,18 @@ Obere Grenze f@"ur die Anzahl an Zyklen.  Der Wert muss gr@"o@ss{}er oder gleich
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
 
@@ -2332,35 +2383,42 @@ Beispiele:
 @deffnx {Funktion} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 @ifnottex
-Integration von @math{w(x) f(x)} @"uber ein endliches Intervall @math{[a, b]},
-wobei @math{w} eine Funktion der Form @math{(x - a)^alpha (b - x)^beta v(x)}
-ist und @math{v(x)} ist 1 oder @math{log(x - a)} oder @math{log(b - x)} oder 
-@math{log(x - a) log(b - x)}, und @math{alpha > -1} und @math{beta > -1}.
+Die Funktion @code{quad_qaws} berechnet das Integral von @math{w(x) f(x)} @"uber
+ein endliches Intervall @math{[a, b]}, wobei @math{w} eine Funktion der Form
+@math{(x - a)^alpha (b - x)^beta v(x)} ist und @math{v(x)} ist 1 oder
+@math{log(x - a)} oder @math{log(b - x)} oder @math{log(x - a) log(b - x)}, und
+@math{alpha > -1} und @math{beta > -1}.
+
+@verbatim
+           b
+          /
+          [
+          I  f(x) w(x) dx
+          ]
+          /
+           a
+@end verbatim
 @end ifnottex
+
 @tex
-Integration von $w\left(x\right) \, f\left(x\right)$ @"uber ein endliches 
-Intervall $\left[a, b\right]$, wobei $w$ eine Funktion der Form 
-$\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$ ist 
+Die Funktion @code{quad_qaws} berechnet das Integral von von
+$w\left(x\right) \, f\left(x\right)$ @"uber ein endliches Intervall
+$\left[a, b\right]$, wobei $w$ eine Funktion der Form 
+$\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$ ist
 und $v\left(x\right)$ ist $1$ oder $\log\left(x - a\right)$ oder 
 $\log\left(b - x\right)$ oder $\log\left(x - a\right) \, \log\left(b - 
 x\right)$, und $\alpha > -1$ und $\beta > -1$.
+
+$$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
+
 @code{quad_qaws} ist speziell f@"ur die effiziente Berechnung von Integralen
 @"uber endliche Intervalle mit algebraischen oder algebraisch-logarithmischen
 Endpunktsingularit@"at konzipiert.  Eine globale adaptive Strategie mit 
-Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle, die
-keinen Endpunkt des Integrationsintervalls enthalten, kommt ein 
-Gau@ss{}-Kronrod-Formelpaar zur Anwendung.  Auf Randintervallen kommen 
-modifizierte Clenshaw-Curtis-Formeln zur Anwendung.
-
-@code{quad_qaws} berechnet das Integral
-
-@ifnottex
-@math{integrate (f(x)*w(x), x, a, b)}
-@end ifnottex
-@tex
-$$\int_a^b f(x) \, w(x) \, dx$$
-@end tex
+Unterteilung des Integrationsintervalls wird angewendet.  Auf Teilintervalle,
+die keinen Endpunkt des Integrationsintervalls enthalten, kommt ein 
+Gau@ss{}-Kronrod-Formelpaar und auf Randintervallen kommen modifizierte
+Clenshaw-Curtis-Formeln zur Anwendung.
 
 Die Gewichtsfunktion wird mit dem Schl@"usselwort @var{wfun} ausgew@"ahlt:
 
@@ -2418,7 +2476,7 @@ ist @code{200}.
 
 @code{quad_qaws} gibt eine Liste mit vier Elementen zur@"uck:
 
-@itemize
+@itemize @bullet
 @item eine numerische N@"aherung des Integrals,
 @item gesch@"atzer absoluter Fehler der N@"aherung,
 @item Anzahl der Auswertungen des Integranden,
@@ -2427,18 +2485,18 @@ ist @code{200}.
 
 Der Fehlercode kann die folgenden Werte annehmen:
 
-@table @code
-@item 0
+@itemize
+@item @code{0},
 wenn kein Fehler aufgetreten ist,
-@item 1
+@item @code{1},
 wenn zu viele Teilintervalle notwendig wurden,
-@item 2
+@item @code{2},
 wenn @"ubem@"a@ss{}iger Rundungsfehler aufgetreten sind,
-@item 3
+@item @code{3},
 wenn ein extrem schlechtes Verhalten des Integranden vorliegt,
-@item 6
+@item @code{6},
 wenn die Eingabe ung@"ultig ist.
-@end table
+@end itemize
 
 Beispiele:
 
