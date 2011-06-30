@@ -26,7 +26,7 @@ product.  When the operands are 1-column or 1-row matrices @code{a} and
 complex, this is the scalar product, also called the inner product or dot
 product, of @code{a} and @code{b}.  The scalar product is defined as
 @code{conjugate(a).b} when @code{a} and @code{b} are complex;
-@code{innerproduct} in the @code{eigen} package provides the complex scalar
+@mref{innerproduct} in the @code{eigen} package provides the complex scalar
 product.
 
 When the operands are more general matrices,
@@ -40,11 +40,11 @@ floating point number, it may be necessary to leave spaces on either side.
 For example, @code{5.e3} is @code{5000.0} but @code{5 . e3} is @code{5}
 times @code{e3}.
 
-There are several flags which govern the simplification of
-expressions involving @code{.}, namely
-@code{dot}, @code{dot0nscsimp}, @code{dot0simp}, @code{dot1simp},
-@code{dotassoc}, @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp},
-@code{dotident}, and @code{dotscrules}.
+There are several flags which govern the simplification of expressions
+involving @code{.}, namely @mrefcomma{dot0nscsimp} @mrefcomma{dot0simp}@w{}
+@mrefcomma{dot1simp} @mrefcomma{dotassoc} @mrefcomma{dotconstrules}@w{}
+@mrefcomma{dotdistrib} @mrefcomma{dotexptsimp} @mrefcomma{dotident} and
+@mrefdot{dotscrules}
 
 @c -----------------------------------------------------------------------------
 @node Vectors, eigen, Dot, Introduction to Matrices and Linear Algebra
@@ -66,8 +66,8 @@ There are also functions for deriving the scalar or vector potential
 of a field.
 
 The @code{vect} package contains these functions:
-@code{vectorsimp}, @code{scalefactors},
-@code{express}, @code{potential}, and @code{vectorpotential}.
+@mrefcomma{vectorsimp} @mrefcomma{scalefactors} @mrefcomma{express}@w{}
+@mrefcomma{potential} and @mrefdot{vectorpotential}
 @c REVIEW vect.usg TO ENSURE THAT TEXINFO HAS WHATEVER IS THERE
 @c PRINTFILE(VECT,USAGE,SHARE); for details.
 
@@ -96,8 +96,9 @@ of this package.
 but without the user prompt between successive computations.
 
 The functions in the @code{eigen} package are:@*
-@code{innerproduct}, @code{unitvector}, @code{columnvector}, @code{gramschmidt}, @code{eigenvalues},
-@code{eigenvectors}, @code{uniteigenvectors}, and @code{similaritytransform}.
+@mrefcomma{innerproduct} @mrefcomma{unitvector} @mrefcomma{columnvector}@w{}
+@mrefcomma{gramschmidt} @mrefcomma{eigenvalues} @mrefcomma{eigenvectors}@w{}
+@mrefcomma{uniteigenvectors} and @mrefdot{similaritytransform}
 
 @opencatbox
 @category{Vectors} @category{Matrices} @category{Share packages} @category{Package eigen}
@@ -342,7 +343,7 @@ Returns a copy of the matrix @var{M}.  This is the only way
 to make a copy aside from copying @var{M} element by element.
 
 Note that an assignment of one matrix to another, as in @code{m2: m1}, does not
-copy @code{m1}.  An assignment @code{m2 [i,j]: x} or @code{setelmx (x, i, j, m2}
+copy @code{m1}.  An assignment @code{m2 [i,j]: x} or @code{setelmx(x, i, j, m2)}
 also modifies @code{m1 [i,j]}.  Creating a copy with @code{copymatrix} and then
 using assignment creates a separate, modified copy.
 
@@ -353,20 +354,18 @@ using assignment creates a separate, modified copy.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{determinat}
+@anchor{determinant}
 @deffn {Function} determinant (@var{M})
 
 Computes the determinant of @var{M} by a method similar to
 Gaussian elimination.
 
 @c JUST HOW DOES ratmx AFFECT THE RESULT ??
-The form of the result depends upon the setting
-of the switch @code{ratmx}.
+The form of the result depends upon the setting of the switch @mrefdot{ratmx}
 
 @c IS A SPARSE DETERMINANT SOMETHING OTHER THAN THE DETERMINANT OF A SPARSE MATRIX ??
-There is a special routine for computing
-sparse determinants which is called when the switches
-@code{ratmx} and @code{sparse} are both @code{true}.
+There is a special routine for computing sparse determinants which is called
+when the switches @code{ratmx} and @mref{sparse} are both @code{true}.
 
 @c EXAMPLES NEEDED HERE
 @opencatbox
@@ -382,9 +381,9 @@ Default value: @code{false}
 When @code{detout} is @code{true}, the determinant of a
 matrix whose inverse is computed is factored out of the inverse.
 
-For this switch to have an effect @code{doallmxops} and @code{doscmxops} should
+For this switch to have an effect @mref{doallmxops} and @mref{doscmxops} should
 be @code{false} (see their descriptions).  Alternatively this switch can be
-given to @code{ev} which causes the other two to be set correctly.
+given to @mref{ev} which causes the other two to be set correctly.
 
 Example:
 
@@ -455,8 +454,8 @@ individual @code{dot} switches govern which operations are performed.
 Default value: @code{true}
 
 When @code{domxexpt} is @code{true},
-a matrix exponential, @code{exp (@var{M})} where @var{M} is a matrix,
-is interpreted as a matrix with element @code{[i,j} equal to @code{exp (m[i,j])}.
+a matrix exponential, @code{exp (@var{M})} where @var{M} is a matrix, is
+interpreted as a matrix with element @code{[i,j} equal to @code{exp (m[i,j])}.
 Otherwise @code{exp (@var{M})} evaluates to @code{exp (@var{ev(M)}}.
 
 @code{domxexpt} affects all expressions of the form
@@ -558,7 +557,7 @@ carried out.
 Default value: @code{false}
 
 When @code{doscmxplus} is @code{true}, scalar-matrix operations yield
-a matrix result.  This switch is not subsumed under @code{doallmxops}.
+a matrix result.  This switch is not subsumed under @mrefdot{doallmxops}
 @c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
 
 @c NEED EXAMPLE HERE
@@ -636,9 +635,10 @@ Default value: @code{true}
 
 When @code{dotconstrules} is @code{true}, a non-commutative product of a
 constant and another term is simplified to a commutative product.
-@c TERMINOLOGY: (1) SWITCH/FLAG/SOME OTHER TERM ?? (2) ASSIGN/SET/TURN ON/SOME OTHER TERM ??
-Turning on this flag effectively turns on @code{dot0simp}, @code{dot0nscsimp},
-and @code{dot1simp} as well.
+@c TERMINOLOGY: (1) SWITCH/FLAG/SOME OTHER TERM ??
+@c              (2) ASSIGN/SET/TURN ON/SOME OTHER TERM ??
+Turning on this flag effectively turns on @mrefcomma{dot0simp}@w{}
+@mrefcomma{dot0nscsimp} and @mref{dot1simp} as well.
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -714,10 +714,10 @@ by elementary row operations such that the first
 non-zero element in each row in the resulting matrix is one and the
 column elements under the first one in each row are all zero.
 
-@code{triangularize} also carries out Gaussian elimination,
-but it does not normalize the leading non-zero element in each row.
+@mref{triangularize} also carries out Gaussian elimination, but it does not
+normalize the leading non-zero element in each row.
 
-@code{lu_factor} and @code{cholesky} are other functions which yield
+@mref{lu_factor} and @mref{cholesky} are other functions which yield
 triangularized matrices.
 
 @c ===beg===
@@ -763,12 +763,11 @@ multiplicities of the eigenvalues in the corresponding order.
 
 @code{eivals} is a synonym for @code{eigenvalues}.
 
-@code{eigenvalues} calls the function @code{solve} to find the roots of the
-characteristic polynomial of the matrix.
-Sometimes @code{solve} may not be able to find the roots of the polynomial;
-in that case some other functions in this
-package (except @code{innerproduct}, @code{unitvector}, @code{columnvector} and
-@code{gramschmidt}) will not work.
+@code{eigenvalues} calls the function @mref{solve} to find the roots of the
+characteristic polynomial of the matrix.  Sometimes @code{solve} may not be able
+to find the roots of the polynomial; in that case some other functions in this
+package (except @mrefcomma{innerproduct} @mrefcomma{unitvector}@w{}
+@mref{columnvector} and @mref{gramschmidt}) will not work.
 @c WHICH ONES ARE THE FUNCTIONS WHICH DON'T WORK ??
 @c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE
 @c WHAT DOES "will not work" MEAN, ANYWAY ??
@@ -780,7 +779,7 @@ simplify the eigenvalues using some other functions.
 @c WHAT ARE THOSE OTHER FUNCTIONS ??
 
 The package @code{eigen.mac} is loaded automatically when
-@code{eigenvalues} or @code{eigenvectors} is referenced.
+@code{eigenvalues} or @mref{eigenvectors} is referenced.
 If @code{eigen.mac} is not already loaded,
 @code{load ("eigen")} loads it.
 After loading, all functions and variables in the package are available.
@@ -809,7 +808,7 @@ There may be one or more eigenvectors in each list.
 @code{eivects} is a synonym for @code{eigenvectors}.
 
 The package @code{eigen.mac} is loaded automatically when
-@code{eigenvalues} or @code{eigenvectors} is referenced.
+@mref{eigenvalues} or @code{eigenvectors} is referenced.
 If @code{eigen.mac} is not already loaded,
 @code{load ("eigen")} loads it.
 After loading, all functions and variables in the package are available.
@@ -829,7 +828,7 @@ the eigenvalues of the matrix are known to the user and stored under the global
 name @code{listeigvals}.  @code{listeigvals} should be set to a list similar
 to the output @code{eigenvalues}.
 
-The function @code{algsys} is used here to solve for the eigenvectors.
+The function @mref{algsys} is used here to solve for the eigenvectors.
 Sometimes if the eigenvalues are messy, @code{algsys} may not be able to find a
 solution.  In some cases, it may be possible to simplify the eigenvalues by
 first finding them using @code{eigenvalues} command and then using other
@@ -837,7 +836,7 @@ functions to reduce them to something simpler.  Following simplification,
 @code{eigenvectors} can be called again with the @code{knowneigvals} flag set
 to @code{true}.
 
-See also @code{eigenvalues}.
+See also @mrefdot{eigenvalues}
 
 Examples:
 
@@ -1000,10 +999,10 @@ Returns a matrix generated from @var{a}, taking element
 @code{@var{a}[@var{i_1}, @var{j_1}]} as the upper-left element and
 @code{@var{a}[@var{i_2}, @var{j_2}]} as the lower-right element of the matrix.
 Here @var{a} is a declared array (created by @code{array} but not by
-@code{make_array}) or an undeclared array, or an array function, or a lambda
+@mref{make_array}) or an undeclared array, or an array function, or a lambda
 expression of two arguments.  (An array function is created like other functions
-with @code{:=} or @code{define}, but arguments are enclosed in square brackets
-instead of parentheses.)
+with @mref{:=} or @mrefcomma{define} but arguments are enclosed in square
+brackets instead of parentheses.)
 
 If @var{j_1} is omitted, it is assumed equal to @var{i_1}.
 If both @var{j_1} and @var{i_1} are omitted, both are assumed equal to 1.
@@ -1074,11 +1073,11 @@ Examples:
 @deffn  {Function} gramschmidt (@var{x})
 @deffnx {Function} gramschmidt (@var{x}, @var{F})
 
-Carries out the Gram-Schmidt orthogonalization algorithm on @var{x},
-which is either a matrix or a list of lists.
-@var{x} is not modified by @code{gramschmidt}.
-The inner product employed by @code{gramschmidt} is @var{F}, if present,
-otherwise the inner product is the function @code{innerproduct}.
+Carries out the Gram-Schmidt orthogonalization algorithm on @var{x}, which is
+either a matrix or a list of lists.  @var{x} is not modified by
+@code{gramschmidt}.  The inner product employed by @code{gramschmidt} is
+@var{F}, if present, otherwise the inner product is the function
+@mrefdot{innerproduct}
 
 If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.  If
 @var{x} is a list of lists, the algorithm is applied to the sublists, which must
@@ -1087,7 +1086,7 @@ lists, the sublists of which are orthogonal and span the same space as @var{x}.
 If the dimension of the span of @var{x} is less than the number of rows or
 sublists, some sublists of the return value are zero.
 
-@code{factor} is called at each stage of the algorithm to simplify intermediate
+@mref{factor} is called at each stage of the algorithm to simplify intermediate
 results.  As a consequence, the return value may contain factored integers.
 
 @code{load(eigen)} loads this function.
@@ -1187,17 +1186,16 @@ Returns the inverse of the matrix @var{M}.
 The inverse is computed by the adjoint method.
 
 This allows a user to compute the inverse of a matrix with
-bfloat entries or polynomials with floating pt. coefficients without
+bfloat entries or polynomials with floating point coefficients without
 converting to cre-form.
 
-Cofactors are computed by the @code{determinant} function,
-so if @code{ratmx} is @code{false} the inverse is computed
-without changing the representation of the elements.
+Cofactors are computed by the @mref{determinant} function, so if @mref{ratmx} is
+@code{false} the inverse is computed without changing the representation of the
+elements.
 
-The current
-implementation is inefficient for matrices of high order.
+The current implementation is inefficient for matrices of high order.
 
-When @code{detout} is @code{true}, the determinant is factored out of the
+When @mref{detout} is @code{true}, the determinant is factored out of the
 inverse.
 
 The elements of the inverse are not automatically expanded.
@@ -1247,9 +1245,8 @@ Example:
 @defvr {Option variable} lmxchar
 Default value: @code{[}
 
-@code{lmxchar} is the character displayed as the left
-delimiter of a matrix.
-See also @code{rmxchar}.
+@code{lmxchar} is the character displayed as the left delimiter of a matrix.
+See also @mref{rmxchar}.
 
 Example:
 
@@ -1291,26 +1288,24 @@ operator @code{.}.  The corresponding noncommutative exponentiation operator
 is @code{^^}.  For a matrix @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2}
 and @code{@var{A}^^-1} is the inverse of @var{A}, if it exists.
 
-There are switches for controlling simplification of expressions
-involving dot and matrix-list operations.
-These are
-@code{doallmxops}, @code{domxexpt}
-@code{domxmxops}, @code{doscmxops}, and @code{doscmxplus}.
+There are switches for controlling simplification of expressions involving dot
+and matrix-list operations.  These are
+@mrefcomma{doallmxops} @mrefcomma{domxexpt} @mrefcomma{domxmxops}@w{}
+@mrefcomma{doscmxops} and @mrefdot{doscmxplus}
 @c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
 
 There are additional options which are related to matrices.  These are:
-@code{lmxchar}, @code{rmxchar}, @code{ratmx}, @code{listarith}, @code{detout},
-@code{scalarmatrix},
-and @code{sparse}.
+@mrefcomma{lmxchar} @mrefcomma{rmxchar} @mrefcomma{ratmx}@w{}
+@mrefcomma{listarith} @mrefcomma{detout} @mrefcomma{scalarmatrix} and
+@mrefdot{sparse}
 @c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
 
-There are a number of
-functions which take matrices as arguments or yield matrices as return values.
-See @code{eigenvalues}, @code{eigenvectors},
-@code{determinant},
-@code{charpoly}, @code{genmatrix}, @code{addcol}, @code{addrow}, 
-@code{copymatrix}, @code{transpose}, @code{echelon},
-and @code{rank}.
+There are a number of functions which take matrices as arguments or yield
+matrices as return values.
+See @mrefcomma{eigenvalues} @mrefcomma{eigenvectors} @mrefcomma{determinant}@w{}
+@mrefcomma{charpoly} @mrefcomma{genmatrix} @mrefcomma{addcol}@w{}
+@mrefcomma{addrow} @mrefcomma{copymatrix} @mrefcomma{transpose}@w{}
+@mrefcomma{echelon} and @mrefdot{rank}
 @c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
 
 Examples:
@@ -1474,7 +1469,8 @@ matrix inverse, if it exists.
 
 Returns a matrix with element @code{i,j} equal to @code{@var{f}(@var{M}[i,j])}.
 
-See also @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
+See also @mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{fullmapl} and
+@mrefdot{apply}
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -1506,7 +1502,7 @@ The assigned value may be the name of an operator enclosed in quote marks,
 the name of a function,
 or a lambda expression.
 
-See also @code{matrix_element_mult} and @code{matrix_element_transpose}.
+See also @mref{matrix_element_mult} and @mrefdot{matrix_element_transpose}
 
 Example:
 
@@ -1548,7 +1544,7 @@ or a lambda expression.
 
 The dot operator @code{.} is a useful choice in some contexts.
 
-See also @code{matrix_element_add} and @code{matrix_element_transpose}.
+See also @mref{matrix_element_add} and @mrefdot{matrix_element_transpose}
 
 Example:
 
@@ -1592,12 +1588,11 @@ Default value: @code{false}
 
 @code{matrix_element_transpose} is the operation 
 applied to each element of a matrix when it is transposed.
-@code{matrix_element_mult} can be assigned any unary operator.
+@mref{matrix_element_mult} can be assigned any unary operator.
 The assigned value may be the name of an operator enclosed in quote marks,
-the name of a function,
-or a lambda expression.
+the name of a function, or a lambda expression.
 
-When @code{matrix_element_transpose} equals @code{transpose},
+When @code{matrix_element_transpose} equals @mrefcomma{transpose}
 the @code{transpose} function is applied to every element.
 When @code{matrix_element_transpose} equals @code{nonscalars},
 the @code{transpose} function is applied to every nonscalar element.
@@ -1607,7 +1602,7 @@ while the @code{transpose} option always applies @code{transpose}.
 
 The default value, @code{false}, means no operation is applied.
 
-See also @code{matrix_element_add} and @code{matrix_element_mult}.
+See also @mref{matrix_element_add} and @mrefdot{matrix_element_mult}
 
 Examples:
 
@@ -1653,8 +1648,8 @@ Examples:
 Returns the trace (that is, the sum of the elements on the main diagonal) of
 the square matrix @var{M}.
 
-@code{mattrace} is called by @code{ncharpoly},
-an alternative to Maxima's @code{charpoly}.
+@code{mattrace} is called by @mrefcomma{ncharpoly} an alternative to Maxima's
+@mrefdot{charpoly}
 @c UMM, HOW IS THAT RELEVANT HERE ??
 
 @code{load ("nchrpl")} loads this function.
@@ -1681,7 +1676,7 @@ with row @var{i} and column @var{j} removed.
 @deffn {Function} ncharpoly (@var{M}, @var{x})
 
 Returns the characteristic polynomial of the matrix @var{M}
-with respect to @var{x}.  This is an alternative to Maxima's @code{charpoly}.
+with respect to @var{x}.  This is an alternative to Maxima's @mrefdot{charpoly}
 
 @code{ncharpoly} works by computing traces of powers of the given matrix,
 which are known to be equal to sums of powers of the roots of the
@@ -1718,8 +1713,7 @@ minor algorithm.  @code{newdet} returns the result in CRE form.
 @anchor{nonscalar}
 @defvr {Declaration} nonscalar
 
-Makes atoms behave as does a list or matrix with respect to
-the dot operator.
+Makes atoms behave as does a list or matrix with respect to the dot operator.
 
 @opencatbox
 @category{Declarations and inferences} @category{Vectors} @category{Matrices}
@@ -1783,7 +1777,7 @@ matrix inversion to be left in general representation.
 When @code{ratmx} is @code{true},
 the 4 operations mentioned above are performed in CRE form and the
 result of matrix inverse is in CRE form.  Note that this may
-cause the elements to be expanded (depending on the setting of @code{ratfac})
+cause the elements to be expanded (depending on the setting of @mref{ratfac})
 which might not always be desired.
 
 @opencatbox
@@ -1810,7 +1804,7 @@ Default value: @code{]}
 
 @code{rmxchar} is the character drawn on the right-hand side of a matrix.
 
-See also @code{lmxchar}.
+See also @mrefdot{lmxchar}
 
 @opencatbox
 @category{Display flags and variables}
@@ -1843,20 +1837,19 @@ to scalars.
 @anchor{scalefactors}
 @deffn {Function} scalefactors (@var{coordinatetransform})
 
-Here coordinatetransform
-evaluates to the form [[expression1, expression2, ...],
-indeterminate1, indeterminat2, ...], where indeterminate1,
-indeterminate2, etc. are the curvilinear coordinate variables and
-where a set of rectangular Cartesian components is given in terms of
-the curvilinear coordinates by [expression1, expression2, ...].
-@code{coordinates} is set to the vector [indeterminate1, indeterminate2,...],
-and @code{dimension} is set to the length of this vector.  SF[1], SF[2],
-..., SF[DIMENSION] are set to the coordinate scale factors, and @code{sfprod}
-is set to the product of these scale factors.  Initially, @code{coordinates}
-is [X, Y, Z], @code{dimension} is 3, and SF[1]=SF[2]=SF[3]=SFPROD=1,
-corresponding to 3-dimensional rectangular Cartesian coordinates.
-To expand an expression into physical components in the current
-coordinate system, there is a function with usage of the form
+Here @var{coordinatetransform} evaluates to the form 
+@code{[[expression1, expression2, ...], indeterminate1, indeterminat2, ...]},
+where @var{indeterminate1}, @var{indeterminate2}, etc. are the curvilinear
+coordinate variables and where a set of rectangular Cartesian components is
+given in terms of the curvilinear coordinates by
+@code{[expression1, expression2, ...]}.  @code{coordinates} is set to the vector
+@code{[indeterminate1, indeterminate2,...]}, and @code{dimension} is set to the
+length of this vector.  SF[1], SF[2], @dots{}, SF[DIMENSION] are set to the
+coordinate scale factors, and @code{sfprod} is set to the product of these scale
+factors.  Initially, @code{coordinates} is @code{[X, Y, Z]}, @code{dimension}
+is 3, and SF[1]=SF[2]=SF[3]=SFPROD=1, corresponding to 3-dimensional rectangular
+Cartesian coordinates.  To expand an expression into physical components in the
+current coordinate system, there is a function with usage of the form
 @c SOME TEXT HAS GONE MISSING HERE
 
 @opencatbox
@@ -1913,6 +1906,8 @@ to be able to form @code{rightmatrix}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{sparse}
 @defvr {Option variable} sparse
 Default value: @code{false}
 
@@ -2052,7 +2047,7 @@ this is a unit vector in the same direction as @var{x}.
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
-@anchor{vectorpotenial}
+@anchor{vectorpotential}
 @deffn {Function} vectorpotential (@var{givencurl})
 
 Returns the vector potential of a given curl vector, in the current coordinate

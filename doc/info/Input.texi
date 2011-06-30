@@ -67,10 +67,10 @@ A directory is just a list of files.  Commands which deal with files are:
 @code{closefile}, and
 @code{appendfile}.
 
-When a file name is passed to functions like @code{plot2d}, @code{save}, or 
-@code{writefile} and the file name does not include a path, Maxima stores 
-the file in the current working directory.  The current working directory 
-depends on the system like Windows or Linux and on the installation.
+When a file name is passed to functions like @mrefcomma{plot2d}@w{}
+@mrefcomma{save} or @mref{writefile} and the file name does not include a path,
+Maxima stores the file in the current working directory.  The current working
+directory depends on the system like Windows or Linux and on the installation.
 
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for File Input and Output,  , Files, File Input and Output
@@ -82,10 +82,10 @@ depends on the system like Windows or Linux and on the installation.
 @deffn {Function} appendfile (@var{filename})
 
 Appends a console transcript to @var{filename}.  @code{appendfile} is the same
-as @code{writefile}, except that the transcript file, if it exists, is always
-appended.
+as @mrefcomma{writefile} except that the transcript file, if it exists, is
+always appended.
 
-@code{closefile} closes the transcript file opened by @code{appendfile} or
+@mref{closefile} closes the transcript file opened by @code{appendfile} or
 @code{writefile}.
 
 @opencatbox
@@ -100,33 +100,34 @@ appended.
 
 @code{batch(@var{filename})} reads Maxima expressions from @var{filename} and 
 evaluates them.  @code{batch} searches for @var{filename} in the list 
-@code{file_search_maxima}.  See @code{file_search}.
+@mrefdot{file_search_maxima}  See also @mrefdot{file_search}
 
 @code{batch(@var{filename}, @code{demo})} is like @code{demo(@var{filename})}.
 In this case @code{batch} searches for @var{filename} in the list
-@code{file_search_demo}.  See @code{demo}.
+@mrefdot{file_search_demo}  See @mrefdot{demo}
 
-@code{batch(@var{filename}, @code{test})} is like @code{run_testsuite} with the
+@code{batch(@var{filename}, @code{test})} is like @mref{run_testsuite} with the
 option @code{display_all=true}.  For this case @code{batch} searches 
 @var{filename} in the list @code{file_search_maxima} and not in the list
-@code{file_search_tests} like @code{run_testsuite}.  Furthermore, 
-@code{run_testsuite} runs tests which are in the list @code{testsuite_files}.
-With @code{batch} it is possible to run any file in a test mode, which can be 
-found in the list @code{file_search_maxima}.  This is useful, when writing a
-test file.
+@mref{file_search_tests} like @code{run_testsuite}.  Furthermore,
+@code{run_testsuite} runs tests which are in the list
+@mrefdot{testsuite_files}  With @code{batch} it is possible to run any file in
+a test mode, which can be found in the list @code{file_search_maxima}.  This is
+useful, when writing a test file.
 
 @var{filename} comprises a sequence of Maxima expressions, each terminated with
-@code{;} or @code{$}.  The special variable @code{%} and the function @code{%th}
-refer to previous results within the file.  The file may include @code{:lisp}
-constructs.  Spaces, tabs, and newlines in the file are ignored.  A suitable
-input file may be created by a text editor or by the @code{stringout} function.
+@code{;} or @code{$}.  The special variable @mref{%} and the function
+@mref{%th} refer to previous results within the file.  The file may include
+@code{:lisp} constructs.  Spaces, tabs, and newlines in the file are ignored.
+A suitable input file may be created by a text editor or by the
+@mref{stringout} function.
 
 @code{batch} reads each input expression from @var{filename}, displays the input
 to the console, computes the corresponding output expression, and displays the
 output expression.  Input labels are assigned to the input expressions and
 output labels are assigned to the output expressions.  @code{batch} evaluates
 every input expression in the file unless there is an error.  If user input is
-requested (by @code{asksign} or @code{askinteger}, for example) @code{batch}
+requested (by @mref{asksign} or @mrefcomma{askinteger} for example) @code{batch}
 pauses to collect the requisite input and then continue.
 
 @c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") 
@@ -145,7 +146,7 @@ option @code{demo}.  When called with the option @code{test}, the return value
 is a an empty list @code{[]} or a list with @var{filename} and the numbers of
 the tests which have failed.
 
-See also @code{load}, @code{batchload}, and @code{demo}.
+See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
 
 @opencatbox
 @category{Session management} @category{File input}
@@ -160,17 +161,17 @@ See also @code{load}, @code{batchload}, and @code{demo}.
 
 Reads Maxima expressions from @var{filename} and evaluates them, without
 displaying the input or output expressions and without assigning labels to
-output expressions.  Printed output (such as produced by @code{print} or
-@code{describe}) is displayed, however.
+output expressions.  Printed output (such as produced by @mref{print} or
+@mref{describe}) is displayed, however.
 
-The special variable @code{%} and the function @code{%th} refer to previous
+The special variable @mref{%} and the function @mref{%th} refer to previous
 results from the interactive interpreter, not results within the file.
 The file cannot include @code{:lisp} constructs.
 
 @code{batchload} returns the path of @var{filename}, as a string.
 @code{batchload} evaluates its argument.
 
-See also @code{batch} and @code{load}.
+See also @mrefcomma{batch} and @mrefdot{load}
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load.
 @c WHY NOT GET RID OF batchload ???
 
@@ -183,7 +184,7 @@ See also @code{batch} and @code{load}.
 @anchor{closefile}
 @deffn {Function} closefile ()
 
-Closes the transcript file opened by @code{writefile} or @code{appendfile}.
+Closes the transcript file opened by @mref{writefile} or @mrefdot{appendfile}
 
 @opencatbox
 @category{File output} @category{Console interaction}
@@ -199,11 +200,11 @@ Default value: @code{false}
 truncate their output file.  When @code{file_output_append} is @code{true}, such
 functions append to their output file.  Otherwise, the output file is truncated.
 
-@code{save}, @code{stringout}, and @code{with_stdout} respect
+@mrefcomma{save} @mrefcomma{stringout} and @mref{with_stdout} respect
 @code{file_output_append}.  Other functions which write output files do not
 respect @code{file_output_append}.  In particular, plotting and translation
-functions always truncate their output file, and @code{tex} and
-@code{appendfile} always append.
+functions always truncate their output file, and @mref{tex} and
+@mref{appendfile} always append.
 @c WHAT ABOUT WRITEFILE ??
 
 @opencatbox
@@ -237,12 +238,13 @@ The result is a Lisp pathname object.
 @code{file_search} searches for the file @var{filename} and returns the path to
 the file (as a string) if it can be found; otherwise @code{file_search} returns
 @code{false}.  @code{file_search (@var{filename})} searches in the default
-search directories, which are specified by the @code{file_search_maxima},
-@code{file_search_lisp}, and @code{file_search_demo} variables.
+search directories, which are specified by the
+@mrefcomma{file_search_maxima} @mrefcomma{file_search_lisp} and
+@mref{file_search_demo} variables.
 
 @code{file_search} first checks if the actual name passed exists,
 before attempting to match it to ``wildcard'' file search patterns.
-See @code{file_search_maxima} concerning file search patterns.
+See @mref{file_search_maxima} concerning file search patterns.
 
 The argument @var{filename} can be a path and file name, or just a file name,
 or, if a file search directory includes a file search pattern, just the base of
@@ -265,10 +267,10 @@ any of the default search directories.  Even if there is only one directory in
 @var{pathlist}, it must still be given as a one-element list.
 
 The user may modify the default search directories.
-See @code{file_search_maxima}.
+See @mrefdot{file_search_maxima}
 
-@code{file_search} is invoked by @code{load} with @code{file_search_maxima} and
-@code{file_search_lisp} as the search directories.
+@code{file_search} is invoked by @mref{load} with @code{file_search_maxima} and
+@mref{file_search_lisp} as the search directories.
 
 @opencatbox
 @category{File input}
@@ -287,9 +289,9 @@ See @code{file_search_maxima}.
 @defvrx {Option variable} file_search_usage
 @defvrx {Option variable} file_search_tests
 
-These variables specify lists of directories to be searched by @code{load},
-@code{demo}, and some other Maxima functions.  The default values of these
-variables name various directories in the Maxima installation.
+These variables specify lists of directories to be searched by
+@mrefcomma{load} @mrefcomma{demo} and some other Maxima functions.  The default
+values of these variables name various directories in the Maxima installation.
 
 The user can modify these variables, either to replace the default values or to
 append additional directories.  For example,
@@ -309,6 +311,7 @@ file_search_maxima: append (file_search_maxima,
 appends two additional directories.  It may be convenient to put such an
 expression in the file @code{maxima-init.mac} so that the file search path is
 assigned automatically when Maxima starts.
+See also @ref{Introduction for Runtime Environment}.
 
 Multiple filename extensions and multiple paths can be specified by special 
 ``wildcard'' constructions.  The string @code{###} expands into the sought-after
@@ -340,14 +343,14 @@ to open the file and inspect the content.
 
 The return value is a symbol, either @code{object}, @code{lisp}, or
 @code{maxima}.  If the extension is matches one of the values in
-@code{file_type_maxima} @code{file_type} returns @code{maxima}.  If the
-extension matchees one of the values in @code{file_type_lisp},
-@code{file_type} returns @code{lisp}.  If none of the above,
-@code{file_type} returns @code{object}.
+@code{file_type_maxima}, @code{file_type} returns @code{maxima}.  If the
+extension matches one of the values in @code{file_type_lisp}, @code{file_type}
+returns @code{lisp}.  If none of the above, @code{file_type} returns
+@code{object}.
 
-See also @code{pathname_type}.
+See also @mrefdot{pathname_type}
 
-See @code{file_type_maxima} and @code{file_type_lisp} for the default values.
+See @mref{file_type_maxima} and @mref{file_type_lisp} for the default values.
 
 Examples:
 
@@ -374,7 +377,7 @@ Default value:  @code{[l, lsp, lisp]}
 @code{file_type_lisp} is a list of file extensions that maxima recognizes
 as denoting a Lisp source file.
 
-See also @code{file_type}.
+See also @mrefdot{file_type}
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -385,7 +388,7 @@ Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
 @code{file_type_maxima} is a list of file extensions that maxima recognizes
 as denoting a Maxima source file.
 
-See also @code{file_type}.
+See also @mrefdot{file_type}
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -395,26 +398,26 @@ See also @code{file_type}.
 Evaluates expressions in @var{filename}, thus bringing variables, functions, and
 other objects into Maxima.  The binding of any existing object is clobbered by
 the binding recovered from @var{filename}.  To find the file, @code{load} calls
-@code{file_search} with @code{file_search_maxima} and @code{file_search_lisp}
-as the search directories.  If @code{load} succeeds, it returns the name of the
-file.  Otherwise @code{load} prints an error message.
+@mref{file_search} with @mref{file_search_maxima} and
+@mref{file_search_lisp} as the search directories.  If @code{load} succeeds, it
+returns the name of the file.  Otherwise @code{load} prints an error message.
 
 @code{load} works equally well for Lisp code and Maxima code.  Files created by
-@code{save}, @code{translate_file}, and @code{compile_file}, which create Lisp
-code, and @code{stringout}, which creates Maxima code, can all be processed by
-@code{load}.  @code{load} calls @code{loadfile} to load Lisp files and
-@code{batchload} to load Maxima files.
+@mrefcomma{save} @mrefcomma{translate_file} and @mrefcomma{compile_file} which
+create Lisp code, and @mrefcomma{stringout} which creates Maxima code, can all
+be processed by @code{load}.  @code{load} calls @mref{loadfile} to load Lisp
+files and @mref{batchload} to load Maxima files.
 
 @code{load} does not recognize @code{:lisp} constructs in Maxima files, and
 while processing @var{filename}, the global variables @code{_}, @code{__},
 @code{%}, and @code{%th} have whatever bindings they had when @code{load} was
 called.
 
-See also @code{loadfile}, @code{batch}, @code{batchload}, and @code{demo}.
-@code{loadfile} processes Lisp files; @code{batch}, @code{batchload}, and
-@code{demo} process Maxima files.
+See also @mrefcomma{loadfile} @mrefcomma{batch} @mrefcomma{batchload} and
+@mrefdot{demo}  @code{loadfile} processes Lisp files; @code{batch},
+@code{batchload}, and @code{demo} process Maxima files.
 
-See @code{file_search} for more detail about the file search mechanism.
+See @mref{file_search} for more detail about the file search mechanism.
 
 @code{load} evaluates its argument.
 
@@ -428,8 +431,8 @@ See @code{file_search} for more detail about the file search mechanism.
 @defvr {System variable} load_pathname
 Default value: @code{false}
 
-When a file is loaded with the functions @code{load}, @code{loadfile} or 
-@code{batchload} the system variable @code{load_pathname} is bound to the 
+When a file is loaded with the functions @mrefcomma{load} @mref{loadfile} or
+@mref{batchload} the system variable @code{load_pathname} is bound to the
 pathname of the file which is processed.
 
 The variable @code{load_pathname} can be accessed from the file during the
@@ -468,12 +471,12 @@ End of batchfile
 @deffn {Function} loadfile (@var{filename})
 
 Evaluates Lisp expressions in @var{filename}.  @code{loadfile} does not invoke
-@code{file_search}, so @code{filename} must include the file extension and as
-much of the path as needed to find the file.
+@mrefcomma{file_search} so @code{filename} must include the file extension and
+as much of the path as needed to find the file.
 
-@code{loadfile} can process files created by @code{save}, @code{translate_file},
-and @code{compile_file}.  The user may find it more convenient to use
-@code{load} instead of @code{loadfile}.
+@code{loadfile} can process files created by @mrefcomma{save}@w{}
+@mrefcomma{translate_file} and @mrefdot{compile_file}  The user may find it
+more convenient to use @mref{load} instead of @code{loadfile}.
 
 @opencatbox
 @category{Session management} @category{File input}
@@ -499,7 +502,7 @@ a file is loaded by the function @code{loadfile}.
 @item
 When @code{loadprint} is @code{'autoload},
 print a message only if a file is automatically loaded.
-See @code{setup_autoload}.
+See @mrefdot{setup_autoload}
 @item
 When @code{loadprint} is @code{false}, never print a message.
 @end itemize
@@ -516,14 +519,15 @@ When @code{loadprint} is @code{false}, never print a message.
 @defvr {Option variable} packagefile
 Default value: @code{false}
 
-Package designers who use @code{save} or @code{translate} to create packages
+Package designers who use @mref{save} or @mref{translate} to create packages
 (files) for others to use may want to set @code{packagefile: true} to prevent
-information from being added to Maxima's information-lists (e.g.  @code{values},
-@code{functions}) except where necessary when the file is loaded in.  In this
-way, the contents of the package will not get in the user's way when he adds his
-own data.  Note that this will not solve the problem of possible name conflicts.
-Also note that the flag simply affects what is output to the package file.
-Setting the flag to @code{true} is also useful for creating Maxima init files.
+information from being added to Maxima's information-lists (e.g.
+@mrefcomma{values} @mref{functions}) except where necessary when the file is
+loaded in.  In this way, the contents of the package will not get in the user's
+way when he adds his own data.  Note that this will not solve the problem of
+possible name conflicts.  Also note that the flag simply affects what is output
+to the package file.  Setting the flag to @code{true} is also useful for
+creating Maxima init files.
 
 @opencatbox
 @category{Translation flags and variables}
@@ -571,7 +575,7 @@ or a symbol; if it is a symbol, it is converted to a string.
 If @var{path} names a file which is accessible from the current working
 directory, that file is printed to the console.  Otherwise, @code{printfile}
 attempts to locate the file by appending @var{path} to each of the elements of
-@code{file_search_usage} via @code{filename_merge}.
+@mref{file_search_usage} via @mrefdot{filename_merge}
 
 @code{printfile} returns @var{path} if it names an existing file,
 or otherwise the result of a successful filename merge.
@@ -660,17 +664,18 @@ ignored.  @code{save} returns @var{filename}.
 
 @code{save} stores data in the form of Lisp expressions.
 The data stored by @code{save} may be recovered by @code{load (@var{filename})}.
+See @mrefdot{load}
 
-The global flag @code{file_output_append} governs whether @code{save} appends or
+The global flag @mref{file_output_append} governs whether @code{save} appends or
 truncates the output file.  When @code{file_output_append} is @code{true},
 @code{save} appends to the output file.  Otherwise, @code{save} truncates the
 output file.  In either case, @code{save} creates the file if it does not yet
 exist.
 
 The special form @code{save (@var{filename}, values, functions, labels, ...)}
-stores the items named by @code{values}, @code{functions}, @code{labels}, etc.
-The names may be any specified by the variable @code{infolists}.
-@code{values} comprises all user-defined variables.
+stores the items named by @mrefcomma{values} @mrefcomma{functions}@w{}
+@mrefcomma{labels} etc.  The names may be any specified by the variable
+@mrefdot{infolists}  @code{values} comprises all user-defined variables.
 
 The special form @code{save (@var{filename}, [@var{m}, @var{n}])} stores the
 values of input and output labels @var{m} through @var{n}.  Note that @var{m}
@@ -694,8 +699,8 @@ For example, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
 The special form @code{save (@var{filename}, all)} stores the current state of
 Maxima.  This includes all user-defined variables, functions, arrays, etc., as
 well as some automatically defined items.  The saved items include system
-variables, such as @code{file_search_maxima} or @code{showtime}, if they have
-been assigned new values by the user; see @code{myoptions}.
+variables, such as @mref{file_search_maxima} or @mrefcomma{showtime} if they
+have been assigned new values by the user; see @mrefdot{myoptions}
 
 @code{save} evaluates @var{filename} and quotes all other arguments.
 
@@ -714,10 +719,10 @@ been assigned new values by the user; see @code{myoptions}.
 
 @code{stringout} writes expressions to a file in the same form the expressions
 would be typed for input.  The file can then be used as input for the
-@code{batch} or @code{demo} commands, and it may be edited for any purpose.
-@code{stringout} can be executed while @code{writefile} is in progress.
+@mref{batch} or @mref{demo} commands, and it may be edited for any purpose.
+@code{stringout} can be executed while @mref{writefile} is in progress.
 
-The global flag @code{file_output_append} governs whether @code{stringout}
+The global flag @mref{file_output_append} governs whether @code{stringout}
 appends or truncates the output file.  When @code{file_output_append} is
 @code{true}, @code{stringout} appends to the output file.  Otherwise,
 @code{stringout} truncates the output file.  In either case, @code{stringout}
@@ -730,7 +735,7 @@ of the variable.  As a useful special case, the expressions may be
 input labels (@code{%i1}, @code{%i2}, @code{%i3}, @dots{}) or output labels
 (@code{%o1}, @code{%o2}, @code{%o3}, @dots{}).
 
-If @code{grind} is @code{true}, @code{stringout} formats the output using the
+If @mref{grind} is @code{true}, @code{stringout} formats the output using the
 @code{grind} format.  Otherwise the @code{string} format is used.  See
 @code{grind} and @code{string}.
 
@@ -741,10 +746,10 @@ The special form @code{stringout (@var{filename}, input)} writes all
 input labels to the file.
 
 The special form @code{stringout (@var{filename}, functions)} writes all
-user-defined functions (named by the global list @code{functions}) to the file.
+user-defined functions (named by the global list @mref{functions}) to the file.
 
 The special form @code{stringout (@var{filename}, values)} writes all
-user-assigned variables (named by the global list @code{values}) to the file.
+user-assigned variables (named by the global list @mref{values}) to the file.
 Each variable is printed as an assignment statement, with the name of the
 variable, a colon, and its value.  Note that the general form of
 @code{stringout} does not print variables as assignment statements.
@@ -785,7 +790,7 @@ return their TeX output as a string.
 label.  Quote-quote @code{''} forces evaluation of the argument, thereby
 defeating the test and preventing the label.
 
-See also @code{texput}.
+See also @mrefdot{texput}
 
 Examples:
 
@@ -1163,17 +1168,17 @@ g\left(x\right)+f\left(x\right)
 Evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{} and writes any
 output thus generated to a file @var{f} or output stream @var{s}.  The evaluated
 expressions are not written to the output.  Output may be generated by
-@code{print}, @code{display}, @code{grind}, among other functions.
+@mrefcomma{print} @mrefcomma{display} @mrefcomma{grind} among other functions.
 
-The global flag @code{file_output_append} governs whether @code{with_stdout}
-appends or truncates the output file @var{f}.  When @code{file_output_append} is
-@code{true}, @code{with_stdout} appends to the output file.  Otherwise,
+The global flag @mref{file_output_append} governs whether @code{with_stdout}
+appends or truncates the output file @var{f}.  When @code{file_output_append}
+is @code{true}, @code{with_stdout} appends to the output file.  Otherwise,
 @code{with_stdout} truncates the output file.  In either case,
 @code{with_stdout} creates the file if it does not yet exist.
 
 @code{with_stdout} returns the value of its final argument.
 
-See also @code{writefile}.
+See also @mrefdot{writefile}
 
 @c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
 @c Note the binding of display2d to be
@@ -1218,21 +1223,21 @@ just as it appears on the console.
 
 As the transcript is printed in the console output format, it cannot be reloaded
 into Maxima.  To make a file containing expressions which can be reloaded,
-see @code{save} and @code{stringout}.  @code{save} stores expressions in Lisp
+see @mref{save} and @mrefdot{stringout}  @code{save} stores expressions in Lisp
 form, while @code{stringout} stores expressions in Maxima form.
 
 The effect of executing @code{writefile} when @var{filename} already exists
 depends on the underlying Lisp implementation; the transcript file may be
-clobbered, or the file may be appended.  @code{appendfile} always appends to
+clobbered, or the file may be appended.  @mref{appendfile} always appends to
 the transcript file.
 
-It may be convenient to execute @code{playback} after @code{writefile} to save
+It may be convenient to execute @mref{playback} after @code{writefile} to save
 the display of previous interactions.  As @code{playback} displays only the
 input and output variables (@code{%i1}, @code{%o1}, etc.), any output generated
 by a print statement in a function (as opposed to a return value) is not
 displayed by @code{playback}.
 
-@code{closefile} closes the transcript file opened by @code{writefile} or
+@mref{closefile} closes the transcript file opened by @code{writefile} or
 @code{appendfile}.
 
 @opencatbox
