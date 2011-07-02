@@ -206,7 +206,6 @@
        $ctranspose
        $identfor
        $matrix_size
-       $mytest
        $require_list 
        $require_matrix
        $require_nonempty_matrix 
