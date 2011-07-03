@@ -65,11 +65,12 @@ symbol /T/ follows the line label of such expressions.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
+@anchor{algebraic}
 @defvr {Option variable} algebraic
 Default value: @code{false}
 
-@code{algebraic} must be set to @code{true} in order for the
-simplification of algebraic integers to take effect.
+@code{algebraic} must be set to @code{true} in order for the simplification of
+algebraic integers to take effect.
 
 @opencatbox
 @category{Simplification flags and variables}
@@ -286,8 +287,10 @@ Examples:
 
 @example
 (%i1) content (2*x*y + 4*x^2*y^2, y);
+@group
                                    2
 (%o1)                   [2 x, 2 x y  + y]
+@end group
 @end example
 
 @opencatbox
@@ -378,12 +381,41 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ezgcd}
 @deffn {Function} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, @dots{})
 
-Returns a list whose first element is the g.c.d of the polynomials @var{p_1},
-@var{p_2}, @var{p_3}, @dots{}  and whose remaining elements are the
-polynomials divided by the g.c.d.  This always uses the @code{ezgcd}
-algorithm.
+Returns a list whose first element is the greatest common divisor of the
+polynomials @var{p_1}, @var{p_2}, @var{p_3}, @dots{} and whose remaining
+elements are the polynomials divided by the greatest common divisor.  This
+always uses the @code{ezgcd} algorithm.
+
+See also @mrefcomma{gcd} @mrefcomma{gcdex} @mrefcomma{gcdivide} and
+@mrefdot{poly_gcd}
+
+Examples:
+
+The three polynomials have the greatest common divisor @code{2*x-3}.  The
+gcd is first calculated with the function @code{gcd} and then with the function
+@code{ezgcd}.
+
+@example
+(%i4) p1 : 6*x^3-17*x^2+14*x-3;
+                        3       2
+(%o4)                6 x  - 17 x  + 14 x - 3
+(%i5) p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
+                    4       3       2
+(%o5)            4 x  - 14 x  + 12 x  + 2 x - 3
+(%i6) p3 : -8*x^3+14*x^2-x-3;
+                          3       2
+(%o6)                - 8 x  + 14 x  - x - 3
+
+(%i8) gcd(p1, gcd(p2, p3));
+(%o8)                        2 x - 3
+
+(%i7) ezgcd(p1, p2, p3);
+                   2               3      2           2
+(%o7) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
+@end example
 
 @opencatbox
 @category{Polynomials}
@@ -403,6 +435,7 @@ Default value: @code{true}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{factor}
 @deffn  {Function} factor (@var{expr})
 @deffnx {Function} factor (@var{expr}, @var{p})
 
@@ -804,6 +837,7 @@ equation as first argument.
 @c THIS ITEM NEEDS A LOT OF WORK
 
 @c -----------------------------------------------------------------------------
+@anchor{gcd}
 @deffn {Function} gcd (@var{p_1}, @var{p_2}, @var{x_1}, @dots{})
 
 Returns the greatest common divisor of @var{p_1} and @var{p_2}.  The flag
@@ -811,18 +845,50 @@ Returns the greatest common divisor of @var{p_1} and @var{p_2}.  The flag
 @code{ez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd},
 subresultant @code{prs}, reduced, or modular algorithm, respectively.  If
 @code{gcd} @code{false} then @code{gcd (@var{p_1}, @var{p_2}, @var{x})} always
-returns 1 for all @var{x}.  Many functions (e.g.  @code{ratsimp}, @code{factor},
-etc.) cause gcd's to be taken implicitly.  For homogeneous polynomials it is
-recommended that @code{gcd} equal to @code{subres} be used.  To take the gcd
-when an algebraic is present, e.g., @code{gcd (@var{x}^2 - 2*sqrt(2)*
-@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} must be @code{true} and
-@code{gcd} must not be @code{ez}.
+returns 1 for all @var{x}.  Many functions (e.g. @mrefcomma{ratsimp}@w{}
+@mrefcomma{factor} etc.) cause gcd's to be taken implicitly.  For homogeneous
+polynomials it is recommended that @code{gcd} equal to @code{subres} be used.
+To take the gcd when an algebraic is present, e.g.,
+@code{gcd (@var{x}^2 - 2*sqrt(2)* @var{x} + 2, @var{x} - sqrt(2))}, the option
+variable @mref{algebraic} must be @code{true} and @code{gcd} must not be
+@code{ez}.
 
 The @code{gcd} flag, default: @code{spmod}, if @code{false} will also prevent
 the greatest common divisor from being taken when expressions are converted to
 canonical rational expression (CRE) form.  This will sometimes speed the
 calculation if gcds are not required.
-@c NEEDS EXAMPLES HERE
+
+See also @mrefcomma{ezgcd} @mrefcomma{gcdex} @mrefcomma{gcdivide} and
+@mrefdot{poly_gcd}
+
+Example:
+
+@example
+(%i1) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o1)                6 x  + 19 x  + 19 x + 6
+(%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o2)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i3) gcd(p1, p2);
+                            2
+(%o3)                    6 x  + 13 x + 6
+(%i4) p1/gcd(p1, p2), ratsimp;
+(%o4)                         x + 1
+(%i5) p2/gcd(p1, p2), ratsimp;
+                              3
+(%o5)                        x  + x
+@end example
+
+@mref{ezgcd} returns a list whose first element is the greatest common divisor
+of the polynomials @var{p_1} and @var{p_2}, and whose remaining elements are
+the polynomials divided by the greatest common divisor.
+
+@example
+(%i6) ezgcd(p1, p2);
+                    2                     3
+(%o6)           [6 x  + 13 x + 6, x + 1, x  + x]
+@end example
 
 @opencatbox
 @category{Polynomials} @category{Rational expressions}
@@ -832,6 +898,7 @@ calculation if gcds are not required.
 @c IN NEED OF SERIOUS CLARIFICATION HERE
 
 @c -----------------------------------------------------------------------------
+@anchor{gcdex}
 @deffn  {Function} gcdex (@var{f}, @var{g})
 @deffnx {Function} gcdex (@var{f}, @var{g}, @var{x})
 
@@ -839,7 +906,7 @@ Returns a list @code{[@var{a}, @var{b}, @var{u}]} where @var{u} is the greatest
 common divisor (gcd) of @var{f} and @var{g}, and @var{u} is equal to
 @code{@var{a} @var{f} + @var{b} @var{g}}.  The arguments @var{f} and @var{g}
 should be univariate polynomials, or else polynomials in @var{x} a supplied
-@b{main} variable since we need to be in a principal ideal domain for this to
+main variable since we need to be in a principal ideal domain for this to
 work.  The gcd means the gcd regarding @var{f} and @var{g} as univariate
 polynomials with coefficients being rational functions in the other variables.
 
@@ -849,9 +916,18 @@ and the next one is built as if @code{q = quotient(r[i]/r[i+1])} then
 @code{L[i+2]: L[i] - q L[i+1]}, and it terminates at @code{L[i+1]} when the
 remainder @code{r[i+2]} is zero.
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+The arguments @var{f} and @var{g} can be integers.  For this case the function
+@mref{igcdex} is called by @code{gcdex}.
+
+See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdivide} and
+@mrefdot{poly_gcd}
+
+Examples:
+
+@c ===beg===
 @c gcdex (x^2 + 1, x^3 + 4);
 @c % . [x^2 + 1, x^3 + 4, -1];
+@c ===end===
 @example
 (%i1) gcdex (x^2 + 1, x^3 + 4);
 @group
@@ -868,8 +944,9 @@ remainder @code{r[i+2]} is zero.
 Note that the gcd in the following is @code{1} since we work in @code{k(y)[x]},
 not the  @code{y+1} we would expect in @code{k[y, x]}.
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c gcdex (x*(y + 1), y^2 - 1, x);
+@c ===end===
 @example
 (%i1) gcdex (x*(y + 1), y^2 - 1, x);
 @group
@@ -1682,6 +1759,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ratfac}
 @defvr {Option variable} ratfac
 Default value: @code{false}
 
@@ -1807,10 +1885,12 @@ Examples:
 (%o2)                  sin(-----) = %e x
                            x + 1
 (%i3) ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+@group
                        3/2
                 (x - 1)    - sqrt(x - 1) (x + 1)
 (%o3)           --------------------------------
                      sqrt((x - 1) (x + 1))
+@end group
 (%i4) ratsimp (%);
                            2 sqrt(x - 1)
 (%o4)                    - -------------

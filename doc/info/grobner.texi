@@ -579,13 +579,32 @@ Returns the lowest common multiple of @var{poly1} and @var{poly2}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{poly_gcd}
 @deffn {Function} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
+
 Returns the greatest common divisor of @var{poly1} and @var{poly2}.
+
+See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} and
+@mrefdot{gcdivide}
+
+Example:
+
+@example
+(%i1) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o1)                6 x  + 19 x  + 19 x + 6
+(%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o2)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i3) poly_gcd(p1, p2, [x]);
+                            2
+(%o3)                    6 x  + 13 x + 6
+@end example
 
 @opencatbox
 @category{Package grobner}
 @closecatbox
-
 @end deffn
 
 @deffn {Function} poly_grobner_equal (@var{polylist1}, @var{polylist2}, @var{varlist})

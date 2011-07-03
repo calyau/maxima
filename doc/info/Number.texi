@@ -421,6 +421,37 @@ Pollard's rho method and elliptic curve method.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{igcdex}
+@deffn {Function} igcdex (@var{n}, @var{k})
+
+Returns a list @code{[@var{a}, @var{b}, @var{u}]} where @var{u} is the greatest
+common divisor of @var{n} and @var{k}, and @var{u} is equal to
+@code{@var{a} @var{n} + @var{b} @var{k}}.  The arguments @var{n} and @var{k}
+must be integers.
+
+@code{igcdex} implements the Euclidean algorithm.  See also @mrefdot{gcdex}
+
+The command @code{load(gcdex)} loads the function.
+
+Examples:
+
+@example
+(%i1) load(gcdex)$
+
+(%i2) igcdex(30,18);
+(%o2)                      [- 1, 2, 6]
+(%i3) igcdex(1526757668, 7835626735736);
+(%o3)            [845922341123, - 164826435, 4]
+(%i4) igcdex(fib(20), fib(21));
+(%o4)                   [4181, - 2584, 1]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{inrt}
 @deffn {Function} inrt (@var{x}, @var{n})
 
