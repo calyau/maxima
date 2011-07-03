@@ -2,9 +2,9 @@
 @c File     : simplifications.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : simplifications.texi revision 1.11
+@c Original : simplifications.texi revision 03.07.2011
 @c Date     : 08.11.2010
-@c Revision : 18.02.2011
+@c Revision : 03.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -332,14 +332,49 @@ To use this function write first @code{load(functs)}.
 @anchor{gcdivide}
 @deffn {Function} gcdivide (@var{p}, @var{q})
 
-When @code{takegcd} is @code{true},
+When the option variable @code{takegcd} is @code{true} which is the default,
 @code{gcdivide} divides the polynomials @var{p} and @var{q} by their greatest
-common divisor and returns the ratio of the results.
+common divisor and returns the ratio of the results.  @code{gcdivde} calls the
+function @mref{ezgcd} to divide the polynomials by the greatest common divisor.
 
-When @code{takegcd} is @code{false},
-@code{gcdivide} returns the ratio @code{@var{p}/@var{q}}.
+When @code{takegcd} is @code{false}, @code{gcdivide} returns the ratio
+@code{@var{p}/@var{q}}.
 
 To use this function write first @code{load(functs)}.
+
+See also @mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} and
+@mrefdot{poly_gcd}
+
+Example:
+
+@example
+(%i1) load(functs)$
+
+(%i2) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o2)                6 x  + 19 x  + 19 x + 6
+(%i3) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o3)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i4) gcdivide(p1, p2);
+                             x + 1
+(%o4)                        ------
+                              3
+                             x  + x
+(%i5) takegcd:false;
+(%o5)                         false
+(%i6) gcdivide(p1, p2);
+                       3       2
+                    6 x  + 19 x  + 19 x + 6
+(%o6)          ----------------------------------
+                  5       4       3       2
+               6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i7) ratsimp(%);
+                             x + 1
+(%o7)                        ------
+                              3
+                             x  + x
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------

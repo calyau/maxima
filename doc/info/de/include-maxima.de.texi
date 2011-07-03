@@ -2,10 +2,10 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : include-maxima.texi.in 27.03.2011
+@c Original    : include-maxima.texi.in 15.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 28.05.2011
+@c Revision    : 30.06.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -150,8 +150,7 @@ Spezifische Gebiete der Mathematik
                                 Poissonreihen.
 * Analysis::                    Grenzwerte, Differentiation, Integration,
                                 Differentialgleichungen.
-* Polynome::                    (Englisch) Standard forms for polynomials, and
-                                functions operating on them.
+* Polynome::                    Polynome und rationale Funktionen.
 * Gleichungen::                 L@"osen von Gleichungen.
 * Lineare Algebra::             Matrizen und Vektoren.
 * Tensoren::                    (Englisch) Methoden der Tensorrechnung.
@@ -332,8 +331,8 @@ Analysis
 * Differentialgleichungen::
 
 Polynome
-* Introduction to Polynomials::  
-* Functions and Variables for Polynomials::  
+* Einf@"uhrung in Polynome::
+* Funktionen und Variablen f@"ur Polynome::
 
 Gleichungen
 * Funktionen und Variablen f@"ur Gleichungen::
