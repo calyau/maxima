@@ -399,22 +399,22 @@ gcd is first calculated with the function @code{gcd} and then with the function
 @code{ezgcd}.
 
 @example
-(%i4) p1 : 6*x^3-17*x^2+14*x-3;
+(%i1) p1 : 6*x^3-17*x^2+14*x-3;
                         3       2
-(%o4)                6 x  - 17 x  + 14 x - 3
-(%i5) p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
+(%o1)                6 x  - 17 x  + 14 x - 3
+(%i2) p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
                     4       3       2
-(%o5)            4 x  - 14 x  + 12 x  + 2 x - 3
-(%i6) p3 : -8*x^3+14*x^2-x-3;
+(%o2)            4 x  - 14 x  + 12 x  + 2 x - 3
+(%i3) p3 : -8*x^3+14*x^2-x-3;
                           3       2
-(%o6)                - 8 x  + 14 x  - x - 3
+(%o3)                - 8 x  + 14 x  - x - 3
 
-(%i8) gcd(p1, gcd(p2, p3));
-(%o8)                        2 x - 3
+(%i4) gcd(p1, gcd(p2, p3));
+(%o4)                        2 x - 3
 
-(%i7) ezgcd(p1, p2, p3);
+(%i5) ezgcd(p1, p2, p3);
                    2               3      2           2
-(%o7) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
+(%o5) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
 @end example
 
 @opencatbox
