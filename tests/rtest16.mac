@@ -2084,3 +2084,25 @@ x^5-5*x^4/2+5*x^3/3-x/6$
 reset(zerobern);
 [zerobern];
 
+/* Bug ID: 2905929 - gcdex
+ */
+
+q0[2] : 6;
+6$
+ratdisrep(gcdex(x-7, x-8));
+[1,-1,1]$
+
+is(equal(gcdex(z^2-1, 0, z), [1,0,z^2-1]));
+true;
+
+is(equal(gcdex(0, z^2-1, z), [0, 1, z^2-1]));
+true;
+
+/* Examples from Maxima Manual */
+is(equal(gcdex(x^2+1, x^3+4), [-(x^2+4*x-1)/17,(x+4)/17,1]));
+true$
+is(equal(gcdex(x*(y+1), y^2-1, x), [0,1/(y^2-1),1]));
+true$
+
+kill(q0);
+done;
