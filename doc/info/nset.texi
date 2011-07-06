@@ -1242,7 +1242,8 @@ Represents the Kronecker delta function.
 for all pairs of arguements, and it simplifies to 0 when @var{xi} and
 @var{yj} are not equal for some pair of arguments. Equality is
 determined using @code{is(equal(xi,xj))} and inequality by
-@code{is(notequal(xi,xj))}.
+@code{is(notequal(xi,xj))}. For exactly one argument, @code{kron_delta}
+signals an error.
 
 Examples:
 
