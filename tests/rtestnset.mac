@@ -1236,6 +1236,55 @@ kron_delta(3 + %i/7,1 + %i/7);
 kron_delta(1 + %i/5,1 + %i/7);
 0$
 
+/* new kronecker delta tests for multivariable version */
+
+(map('forget, facts()),0);
+0$
+
+errcatch(kron_delta(x));
+[]$
+
+kron_delta();
+1$
+
+kron_delta(sqrt(2), 1/sqrt(2), %pi);
+0$
+
+kron_delta(a,b,a);
+kron_delta(a,b)$
+
+subst(a=c, kron_delta(a,b,rat(c)));
+kron_delta(c,b)$
+
+kron_delta(a,b)-kron_delta(-a,-b);
+0$
+
+kron_delta(a,-b)-kron_delta(-a,b);
+0$
+
+kron_delta(a,b,-c)-kron_delta(-a,-b,c);
+0$
+
+kron_delta(-a,b,-c)-kron_delta(a,-b,c);
+0$
+
+conjugate(kron_delta(a+%i,b,c));
+kron_delta(a+%i,b,c)$
+
+cabs(kron_delta(a,b,23 +%i));
+kron_delta(a,b,23 + %i)$
+
+abs(kron_delta(l,s,s));
+kron_delta(l,s)$
+
+sign(kron_delta(u,n,k,1));
+pz$
+
+featurep(kron_delta(a+%i, cos(x - %i), 42/19),'integer);
+true$
+
+/* end new kronecker delta tests */
+
 every(f,[]);
 true$
 
