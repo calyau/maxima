@@ -1234,12 +1234,12 @@ Examples:
 
 @end deffn
 
-@deffn {Function} kron_delta (@var{x1}, @var{x2}, ..., @var{xp})
+@deffn {Function} kron_delta (@var{x1}, @var{x2}, @dots{}, @var{xp})
 
 Represents the Kronecker delta function.
 
 @code{kron_delta} simplifies to 1 when @var{xi} and @var{yj} are equal
-for all pairs of arguements, and it simplifies to 0 when @var{xi} and
+for all pairs of arguments, and it simplifies to 0 when @var{xi} and
 @var{yj} are not equal for some pair of arguments. Equality is
 determined using @code{is(equal(xi,xj))} and inequality by
 @code{is(notequal(xi,xj))}. For exactly one argument, @code{kron_delta}
