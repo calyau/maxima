@@ -2,10 +2,10 @@
 @c File        : Nset.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Nset.texi revision 14.03.2011
+@c Original    : Nset.texi revision 08.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 06.06.2011
+@c Revision    : 09.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -890,126 +890,39 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 24.04.2011 DK -----------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{kron_delta}
-@deffn {Funktion} kron_delta (@var{x}, @var{y})
+@deffn {Funktion} kron_delta (@var{x_1}, @var{x_2}, @dots{}, @var{x_p})
 
 Ist die Kronecker-Delta-Funktion.
 
-@code{kron_delta} vereinfacht zu 1, wenn @var{x} und @var{y} identisch sind oder
-von Maxima als identisch gezeigt werden k@"onnen.  Das Ergebnis ist 0, wenn
-Maxima zeigen kann, das @var{x} und @var{y} nicht identisch sind.  In anderen
-F@"allen wird @code{kron_delta} zu einer Substantivform vereinfacht.
+@c @code{kron_delta} simplifies to 1 when @var{xi} and @var{yj} are equal
+@c for all pairs of arguments, and it simplifies to 0 when @var{xi} and
+@c @var{yj} are not equal for some pair of arguments. Equality is
+@c determined using @code{is(equal(xi,xj))} and inequality by
+@c @code{is(notequal(xi,xj))}. For exactly one argument, @code{kron_delta}
+@c signals an error.
 
-@c TODO: DAS SCHEINT NICHT ZU STIMMEN.  NICHT UEBERSETZT.
-
-@c @code{kron_delta} implements a cautious policy with respect to floating point
-@c expressions: if the difference @code{@var{x} - @var{y}} is a floating point
-@c number, @code{kron_delta} simplifies to a noun expression when @var{x} is
-@c apparently equivalent to @var{y}.
-
-Im Besonderen vereinfacht @code{kron_delta(@var{x}, @var{y})} zum Ergebnis 1,
-wenn @code{is(x = y)} das Ergebnis @code{true} hat.  @code{kron_delta}
-vereinfacht auch dann zu 1, wenn @code{sign(abs(@var{x} - @var{y}))} das
-Ergebnis @code{zero} hat und @code{@var{x} - @var{y}} keine Gleitkommazahl ist.
-@code{kron_delta} vereinfacht zu 0, wenn @code{sign(abs(@var{x} - @var{y}))}
-das Ergebnis @code{pos} hat.
-
-Hat @code{sign(abs(@var{x} - @var{y}))} ein von @code{pos} oder @code{zero}
-verschiedenes Ergebnis oder ist das Ergebnis @code{zero}, aber
-@code{@var{x} - @var{y}} ist eine Gleitkommazahl, dann gibt @code{kron_delta}
-eine Substantivform zur@"uck.
-
-@code{kron_delta} ist als symmetrisch deklariert.  Daher ist
-@code{kron_delta(@var{x}, @var{y})} @"aquivalent zu
-@code{kron_delta(@var{y}, @var{x})}.
+@code{kron_delta} vereinfacht zu @code{1}, wenn die Argumente @var{x_i} und
+@var{y_i} f@"ur alle Paare gleich sind, und zu @code{0}, wenn @var{x_i} und 
+@var{y_i} nicht gleich sind f@"ur irgendein Paar der Argumente.  Die Gleichheit
+wird festgestellt mit @code{is(equal(xi,xj))} und die Ungleichheit mit
+@code{is(notequal(xi,xj))}.  Wird nur ein Argument angegeben, signalisiert
+die Funktion @code{kron_delta} einen Fehler.
 
 Beispiele:
 
-Die Argumente der Funktion @code{kron_delta} sind identisch.  @code{kron_delta}
-vereinfacht zu 1.
-
 @example
-(%i1) kron_delta (a, a);
-(%o1)                           1
-(%i2) kron_delta (x^2 - y^2, x^2 - y^2);
-(%o2)                           1
-(%i3) float (kron_delta (1/10, 0.1));
-(%o3)                           1
-@end example
-
-Die Argumente der Funktion @code{kron_delta} sind @"aquivalent und die
-Differenz ist keine Gleitkommazahl.  @code{kron_delta} vereinfacht zu 1.
-
-@example
-(%i1) assume (equal (x, y));
-(%o1)                     [equal(x, y)]
-(%i2) kron_delta (x, y);
-(%o2)                           1
-@end example
-
-Die Argumente der Funktion @code{kron_delta} sind nicht @"aquivalent.
-@code{kron_delta} vereinfacht zu 0.
-
-@example
-(%i1) kron_delta (a + 1, a);
-(%o1)                           0
-(%i2) assume (a > b)$
-(%i3) kron_delta (a, b);
-(%o3)                           0
-(%i4) kron_delta (1/5, 0.7);
-(%o4)                           0
-@end example
-
-Maxima kann nicht entscheiden, ob die Argumente @"aquivalent sind.
-@code{kron_delta} vereinfacht zu einer Substantivform.
-
-@example
-(%i1) kron_delta (a, b);
-(%o1)                   kron_delta(a, b)
-(%i2) assume(x >= y)$
-(%i3) kron_delta (x, y);
-(%o3)                   kron_delta(x, y)
-@end example
-
-Die Argumente der Funktion @code{kron_delta} sind @"aquivalent, aber die
-Differenz ist eine Gleitkommazahl.  @code{kron_delta} vereinfacht zu einer
-Substantivform.
-
-@example
-(%i1) 1/4 - 0.25;
-(%o1)                          0.0
-(%i2) 1/10 - 0.1;
-(%o2)                          0.0
-(%i3) 0.25 - 0.25b0;
-Warning:  Float to bigfloat conversion of 0.25
-(%o3)                         0.0b0
-(%i4) kron_delta (1/4, 0.25);
-                                  1
-(%o4)                  kron_delta(-, 0.25)
-                                  4
-(%i5) kron_delta (1/10, 0.1);
-                                  1
-(%o5)                  kron_delta(--, 0.1)
-                                  10
-(%i6) kron_delta (0.25, 0.25b0);
-Warning:  Float to bigfloat conversion of 0.25
-(%o6)               kron_delta(0.25, 2.5b-1)
-@end example
-
-@code{kron_delta} ist symmetrisch.
-
-@example
-(%i1) kron_delta (x, y);
-(%o1)                   kron_delta(x, y)
-(%i2) kron_delta (y, x);
-(%o2)                   kron_delta(x, y)
-(%i3) kron_delta (x, y) - kron_delta (y, x);
-(%o3)                           0
-(%i4) is (equal (kron_delta (x, y), kron_delta (y, x)));
-(%o4)                         true
-(%i5) is (kron_delta (x, y) = kron_delta (y, x));
-(%o5)                         true
+(%i1) kron_delta(a,a);
+(%o1)                                  1
+(%i2) kron_delta(a,b,a,b);
+(%o2)                          kron_delta(a, b)
+(%i3) kron_delta(a,a,b,a+1);
+(%o3)                                  0
+(%i4) assume(equal(x,y));
+(%o4)                            [equal(x, y)]
+(%i5) kron_delta(x,y);
+(%o5)                                  1
 @end example
 @end deffn
 
