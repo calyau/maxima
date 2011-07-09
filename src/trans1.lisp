@@ -17,8 +17,6 @@
 
 (macsyma-module trans1)
 
-(transl-module trans1)
-
 ;;;;;;;; THE FOLLOWING ARE MOSTLY FROM JPG MLISP ;;;;;;;;;;;;;;;;;;;;;
 
 ;;; APPLY(F,[X]) is an idiom for funcall.

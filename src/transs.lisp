@@ -12,8 +12,6 @@
 
 (macsyma-module transs)
 
-(transl-module transs)
-
 (defmvar *transl-file-debug* nil
   "set this to T if you don't want to have the temporary files
 	used automaticaly deleted in case of errors.")
@@ -338,17 +336,6 @@ translated."
 (defun new-comment-line ()
   (terpri*)
   (princ* ";;;"))
-
-(defun print-transl-modules ()
-  (new-comment-line)
-  (print-module 'transl-autoload)
-  (do ((j 0 (1+ j))
-       (s (delete 'transl-autoload (copy-list transl-modules) :test #'equal)
-	  (cdr s)))
-      ((null s))
-    (if (= 0 (rem j 3)) (new-comment-line))
-    (print-module (car s))))
-
 
 (defun print-abort-msg (fun from)
   (mformat *translation-msgs-files*

@@ -14,8 +14,6 @@
 
 (macsyma-module trmode)
 
-(transl-module trmode)
-
 (defmvar $mode_checkp t "if true, modedeclare checks the modes of bound variables.")
 (defmvar $mode_check_warnp t "if true, mode errors are described.")
 (defmvar $mode_check_errorp nil "if true, modedeclare calls error.")

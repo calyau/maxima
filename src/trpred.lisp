@@ -11,7 +11,6 @@
 (in-package :maxima)
 
 (macsyma-module trpred)
-(transl-module trpred)
 
 (defvar wrap-an-is 'is-boole-check "How to verify booleans")
 

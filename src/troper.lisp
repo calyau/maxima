@@ -12,8 +12,6 @@
 
 (macsyma-module troper)
 
-(transl-module troper)
-
 ;;; The basic OPERATORS properties translators.
 
 (def%tr mminus (form)

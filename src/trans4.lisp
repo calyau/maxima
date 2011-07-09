@@ -15,8 +15,6 @@
 
 (macsyma-module trans4)
 
-(transl-module trans4)
-
 ;;; These are translation properties for various operators.
 
 (def%tr mnctimes (form)

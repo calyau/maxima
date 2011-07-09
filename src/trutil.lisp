@@ -12,8 +12,6 @@
 
 (macsyma-module trutil)
 
-(transl-module trutil)
-
 ;;; takes a list, and returns a cons of an a-list of (gensym . exp)
 ;;; and the origonal list with gensyms substututed for non-atom elements
 ;;; of the list. This could be used to define subr-like makros.

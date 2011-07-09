@@ -19,8 +19,6 @@
 ;;; Since it is so small, and compiles so quickly it sometimes serves
 ;;; as a fix (i.e. hack) file. so be careful.
 
-(transl-module trdata)
-
 ;;; MODEDECLARE(FUNCTION(LENGTH),FIXNUM)
 
 ;;I think all this can be done at load time only:--wfs
@@ -81,27 +79,4 @@
 	    $union $intersection $setdiff $symdiff
 	    $mapset $predset |${| $elementof))
 
-    (defprop $realpart $realpart lisp-function-to-use)
-
-
-    (setq transl-modules '(transs
-			   transl
-			   trutil
-			   trans1
-			   trans2
-			   trans3
-			   trans4
-			   trans5
-			   transf
-			   troper
-			   trpred
-
-			   mtags
-			   mdefun
-			   transq
-			   fcall
-			   acall
-			   trdata
-			   mcompi
-			   trmode
-			   trhook)))
+    (defprop $realpart $realpart lisp-function-to-use))

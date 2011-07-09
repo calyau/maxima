@@ -19,8 +19,6 @@
 (macsyma-module trans2)
 
 
-(transl-module trans2)
-
 (def%tr $random (form) `($fixnum . ($random ,@(tr-args (cdr form)))))
 
 (def%tr mequal (form)
