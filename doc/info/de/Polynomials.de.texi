@@ -5,7 +5,7 @@
 @c Original    : Polynomials.texi revision 03.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 11.12.2010
-@c Revision    : 05.07.2011
+@c Revision    : 09.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -22,7 +22,7 @@
 
 Polynome werden in einer allgemeinen Darstellung oder in einer kanonischen
 Darstellung (CRE - Cannonical Rational Expressions) gespeichert.  Die 
-CRE-Darstellung ist die Standardform f@"ur Operationen mit Polynomen und wird 
+CRE-Darstellung ist die Standardform f@"ur Operationen mit Polynomen und wird
 intern von Funktionen wie @mref{factor} oder @mref{ratsimp} verwendet.
 
 Ausdr@"ucke in einer CRE-Form sind besonders f@"ur die Darstellung von Polynomen
@@ -74,7 +74,7 @@ Standardwert: @code{false}
 @c TODO: BESCHREIBUNG IST ZU KURZ. BEISPIELE FEHLEN.
 
 Die Optionsvariable @code{algebraic} muss den Wert @code{true} haben, damit
-algebraische ganze Zahlen vereinfacht werden.
+algebraische Zahlen vereinfacht werden.
 @end defvr
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
@@ -1522,8 +1522,8 @@ lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x))
 @c is equal to @var{p}.
 @c The degree of @var{p_i} is greater than 1 for @var{i} less than @var{n}.
 
-Der Grad des Polynoms @var{p_i} ist gr@"o@ss{}er als 1 f@"ur @var{i} kleiner als
-@var{n}.
+Der Grad des Polynoms @var{p_i} ist gr@"o@ss{}er als 1 f@"ur @var{i} kleiner
+als @var{n}.
 
 @c Such a decomposition is not unique.
 
@@ -1597,8 +1597,8 @@ Polynom @var{p} als Ergebnis hat, hat @code{polydecomp (compose ([@var{p_1},
 @c Converts the polynomial @var{p} to a modular representation with respect to 
 @c the current modulus which is the value of the variable @code{modulus}.
 
-Konvertiert das Polynom @var{p} in eine modulare Darstellung bez@"uglich dem
-aktuellen Modul.  Das Modul ist der Wert der Variablen @code{modulus}.
+Konvertiert das Polynom @var{p} in eine modulare Darstellung bez@"uglich
+dem aktuellen Modul.  Das Modul ist der Wert der Variablen @code{modulus}.
 
 @c @code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
 @c instead of the current value of @code{modulus}.
@@ -1683,11 +1683,11 @@ Beispiel:
 
 Konvertiert einen Ausdruck @var{expr} in die CRE-Form.  Der Ausdruck wird so 
 expandiert und so gruppiert, dass alle Terme einen gemeinsamen Nenner haben und
-der gr@"o@ss{}te gemeinsame Teiler gek@"urzt ist.  Weiterhin werden Gleitkommazahlen
-in rationale Zahlungen umgewandelt.  Die Toleranz der Umwandlung wird von der
-Optionsvariablen @mref{ratepsilon} kontrolliert.  Die Variablen im Ausdruck
-werden entsprechend der Funktion @mref{ratvars} gem@"a@ss{} der angegebenen Argumente
-@var{x_1}, @dots{}, @var{x_n} angeordnet.
+der gr@"o@ss{}te gemeinsame Teiler gek@"urzt ist.  Weiterhin werden
+Gleitkommazahlen in rationale Zahlungen umgewandelt.  Die Toleranz der
+Umwandlung wird von der Optionsvariablen @mref{ratepsilon} kontrolliert.  Die
+Variablen im Ausdruck werden entsprechend der Funktion @mref{ratvars}
+gem@"a@ss{} der angegebenen Argumente @var{x_1}, @dots{}, @var{x_n} angeordnet.
 
 @c @code{rat} does not generally simplify functions other than addition
 @c @code{+}, subtraction @code{-}, multiplication @code{*}, division @code{/},
@@ -1717,18 +1717,18 @@ andere interne Darstellung als @code{0} hat.
 @c but the factors within each part may not be relatively prime.
 
 Hat die Optionsvariable @mref{ratfac} den Wert @code{true}, wird ein Ausdruck
-von der Funktion @code{rat} nur teilweise faktorisiert.  Bei der Ausf@"uhrung von
-Operationen wird bleibt der Ausdruck so vollst@"andig als m@"oglich in seiner
-faktorisierten Form, ohne dass eine Faktorisierung ausgef@"uhrt wird.  Damit
-kann Rechenzeit eingespart werden.
+von der Funktion @code{rat} nur teilweise faktorisiert.  Bei der Ausf@"uhrung
+von Operationen wird bleibt der Ausdruck so vollst@"andig als m@"oglich in
+seiner faktorisierten Form, ohne dass eine Faktorisierung ausgef@"uhrt wird.
+Damit kann Rechenzeit eingespart werden.
 
 @c @code{ratprint} if @code{false} suppresses the printout of the message
 @c informing the user of the conversion of floating point numbers to
 @c rational numbers.
 
 Hat die Optionsvariable @mref{ratprint} den Wert @code{false}, werden
-Meldungen unterdr@"uckt, wenn eine Gleitkommazahl in eine rationale umgewandelt
-wird.
+Meldungen unterdr@"uckt, wenn eine Gleitkommazahl in eine rationale
+umgewandelt wird.
 
 @c @code{keepfloat} if @code{true} prevents floating point numbers from being
 @c converted to rational numbers.
@@ -1760,96 +1760,173 @@ Beispiele:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratalgdenom}
-@defvr {Option variable} ratalgdenom
-Default value: @code{true}
+@defvr {Optionsvariable} ratalgdenom
+Standardwert: @code{true}
 
-When @code{ratalgdenom} is @code{true}, allows rationalization of
-denominators with respect to radicals to take effect.
-@code{ratalgdenom} has an effect only when canonical rational expressions (CRE)
-are used in algebraic mode.
+@c When @code{ratalgdenom} is @code{true}, allows rationalization of
+@c denominators with respect to radicals to take effect.
+@c @code{ratalgdenom} has an effect only when canonical rational expressions
+@c (CRE) are used in algebraic mode.
+
+Hat die Optionsvariable @code{ratalgdenom} den Wert @code{true}, versucht
+Maxima den Nenner beim Auftreten von Wurzeln rational zu machen.
+@code{ratalgdenom} wirkt sich nur aus, wenn die Optionsvariable
+@mref{algebraic} den Wert @code{true} hat und der Ausdruck in einer CRE-Form
+vorliegt.
+
+Beispiele:
+
+@example
+(%i1) algebraic:true$
+
+(%i2) ratalgdenom:false$
+
+(%i3) rat(sqrt(3)/sqrt(2));
+                             sqrt(3)
+(%o3)/R/                     -------
+                             sqrt(2)
+(%i4) ratalgdenom:true$
+
+(%i5) rat(sqrt(3)/sqrt(2));
+                         sqrt(2) sqrt(3)
+(%o5)/R/                 ---------------
+                                2
+(%i6) algebraic:false$
+
+(%i7) rat(sqrt(3)/sqrt(2));
+                             sqrt(3)
+(%o7)/R/                     -------
+                             sqrt(2)
+@end example
 @end defvr
 
 @c THIS ITEM NEEDS MORE WORK
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratcoef}
-@deffn  {Function} ratcoef (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} ratcoef (@var{expr}, @var{x})
+@deffn  {Funktion} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffnx {Funktion} ratcoef (@var{expr}, @var{x})
 
-Returns the coefficient of the expression @code{@var{x}^@var{n}}
-in the expression @var{expr}.
-If omitted, @var{n} is assumed to be 1.
+@c Returns the coefficient of the expression @code{@var{x}^@var{n}}
+@c in the expression @var{expr}.
+@c If omitted, @var{n} is assumed to be 1.
 
-The return value is free
-(except possibly in a non-rational sense) of the variables in @var{x}.
-If no coefficient of this type exists, 0 is returned.
+Gibt den Koeffizienten des Ausdrucks @code{@var{x}^@var{n}} in dem Argument
+@var{expr} zur@"uck.  Wenn das Argument @var{n} nicht angegeben ist, wird
+der Wert zu @code{1} angenommen.
 
-@code{ratcoef}
-expands and rationally simplifies its first argument and thus it may
-produce answers different from those of @code{coeff} which is purely
-syntactic.
-@c MOVE THIS TO EXAMPLES SECTION
-Thus @code{ratcoef ((x + 1)/y + x, x)} returns @code{(y + 1)/y} whereas
-@code{coeff} returns 1.
+@c The return value is free
+@c (except possibly in a non-rational sense) of the variables in @var{x}.
+@c If no coefficient of this type exists, 0 is returned.
 
-@code{ratcoef (@var{expr}, @var{x}, 0)}, viewing @var{expr} as a sum,
-returns a sum of those terms which do not contain @var{x}.
-@c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
-Therefore if @var{x} occurs to any negative powers, @code{ratcoef} should not
-be used.
+Die R@"uckgabe ist frei von der Variablen @var{x}.  Existiert kein Koeffizient
+@code{@var{x}^@var{n}} dann ist die R@"uckgabe @code{0}.
 
-@c WHAT IS THE INTENT HERE ??
-Since @var{expr} is rationally
-simplified before it is examined, coefficients may not appear quite
-the way they were envisioned.
+@c @code{ratcoef}
+@c expands and rationally simplifies its first argument and thus it may
+@c produce answers different from those of @code{coeff} which is purely
+@c syntactic.
+   @c MOVE THIS TO EXAMPLES SECTION
+@c Thus @code{ratcoef ((x + 1)/y + x, x)} returns @code{(y + 1)/y} whereas
+@c @code{coeff} returns 1.
 
-Example:
+@code{ratcoef} expandiert und vereinfacht das Argument @var{expr}.  Daher kann
+@code{ratcoef} ein anderes Ergebnis als die Funktion @mref{coeff} haben, die
+keine Vereinfachungen ausf@"uhrt.  Daher @code{ratcoef((x + 1)/y + x, x)} das
+Ergebnis @code{(y + 1)/y} und nicht das Ergebnis @code{1} wie es von der
+Funktion @code{coeff} zur@"uckgegeben wird.
+
+@c @code{ratcoef (@var{expr}, @var{x}, 0)}, viewing @var{expr} as a sum,
+@c returns a sum of those terms which do not contain @var{x}.
+   @c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
+@c Therefore if @var{x} occurs to any negative powers, @code{ratcoef} should not
+@c be used.
+
+@code{ratcoef(@var{expr}, @var{x}, 0)} gibt eine Summe der Terme zur@"uck, die
+die Variable @var{x} nicht enthalten.
+
+   @c WHAT IS THE INTENT HERE ??
+@c Since @var{expr} is rationally
+@c simplified before it is examined, coefficients may not appear quite
+@c the way they were envisioned.
+
+Beispiele:
 
 @example
 (%i1) s: a*x + b*x + 5$
 (%i2) ratcoef (s, a + b);
 (%o2)                           x
 @end example
-@c NEED MORE EXAMPLES HERE
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratdenom}
-@deffn {Function} ratdenom (@var{expr})
+@deffn {Funktion} ratdenom (@var{expr})
 
-Returns the denominator of @var{expr},
-after coercing @var{expr} to a canonical rational expression (CRE).
-The return value is a CRE.
+@c Returns the denominator of @var{expr},
+@c after coercing @var{expr} to a canonical rational expression (CRE).
+@c The return value is a CRE.
 
-@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} is coerced to a CRE by @code{rat}
-if it is not already a CRE.
-This conversion may change the form of @var{expr} by putting all terms
-over a common denominator.
+Gibt den Nenner des Argumentes @var{expr} zur@"uck.  @code{ratdenom} wandelt
+den Ausdruck zuerst in eine CRE-Form um und gibt das Ergebnis in einer 
+CRE-Form zur@"uck.
 
-@code{denom} is similar, but returns an ordinary expression instead of a CRE.
-Also, @code{denom} does not attempt to place all terms over a common
-denominator, and thus some expressions which are considered ratios by
-@code{ratdenom} are not considered ratios by @code{denom}.
+   @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+@c @var{expr} is coerced to a CRE by @code{rat}
+@c if it is not already a CRE.
+@c This conversion may change the form of @var{expr} by putting all terms
+@c over a common denominator.
 
-@c NEEDS AN EXAMPLE HERE
+Das Argument @var{expr} wird von der Funktion @mref{rat} in eine CRE-Form
+gebracht, falls @var{expr} nicht bereits in einer CRE-Form vorliegt.  Diese
+Transformation kann den Ausdruck @var{expr} ver@"andern, da alle Terme @"uber
+einen gemeinsamen Nenner zusammengefasst werden.
+
+@c @code{denom} is similar, but returns an ordinary expression instead of a CRE.
+@c Also, @code{denom} does not attempt to place all terms over a common
+@c denominator, and thus some expressions which are considered ratios by
+@c @code{ratdenom} are not considered ratios by @code{denom}.
+
+Die Funktion @mref{denom} ist vergleichbar.  @code{denom} wandelt den Ausdruck
+jedoch nicht eine CRE-Form um und hat als Ergebnis einen Ausdruck in der
+Standardform.  Daher k@"onnen sich die Ergebnisse von @code{ratdenom} und 
+@code{denom} voneinander unterscheiden.
+
+Beispiel:
+
+@example
+(%i1) expr: expand((x^2+2*x+3)/(x-1));
+                        2
+                       x       2 x      3
+(%o1)                 ----- + ----- + -----
+                      x - 1   x - 1   x - 1
+(%i2) ratdenom(expr);
+(%o2)/R/                      x - 1
+(%i3) denom(expr);
+(%o3)                           1
+@end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratdenomdivide}
-@defvr {Option variable} ratdenomdivide
-Default value: @code{true}
+@defvr {Optionsvariable} ratdenomdivide
+Standardwert: @code{true}
 
-When @code{ratdenomdivide} is @code{true},
-@code{ratexpand} expands a ratio in which the numerator is a sum 
-into a sum of ratios,
-all having a common denominator.
-Otherwise, @code{ratexpand} collapses a sum of ratios into a single ratio,
-the numerator of which is the sum of the numerators of each ratio.
+@c When @code{ratdenomdivide} is @code{true},
+@c @code{ratexpand} expands a ratio in which the numerator is a sum 
+@c into a sum of ratios,
+@c all having a common denominator.
+@c Otherwise, @code{ratexpand} collapses a sum of ratios into a single ratio,
+@c the numerator of which is the sum of the numerators of each ratio.
 
-Examples:
+Hat die Optionsvariable @code{ratdenomdivide} den Wert @code{true}, expandiert
+die Funktion @mref{ratexpand} einen Quotienten der im Z@"ahler eine Summe hat,
+in eine Summe der Quotienten.  Ansonsten werden die Terme @"uber einen
+gemeinsamen Nenner zusammengefasst.
+
+Beispiele:
 
 @example
 (%i1) expr: (x^2 + x + 1)/(y^2 + 7);
@@ -1889,25 +1966,42 @@ Examples:
 @end example
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratdiff}
-@deffn {Function} ratdiff (@var{expr}, @var{x})
+@deffn {Funktion} ratdiff (@var{expr}, @var{x})
 
-Differentiates the rational expression @var{expr} with respect to @var{x}.
-@var{expr} must be a ratio of polynomials or a polynomial in @var{x}.
-The argument @var{x} may be a variable or a subexpression of @var{expr}.
-@c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
-@c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
-@c HOW TO DESCRIBE THAT ??
+@c Differentiates the rational expression @var{expr} with respect to @var{x}.
+@c @var{expr} must be a ratio of polynomials or a polynomial in @var{x}.
+@c The argument @var{x} may be a variable or a subexpression of @var{expr}.
+   @c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
+   @c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
+   @c HOW TO DESCRIBE THAT ??
 
-The result is equivalent to @code{diff}, although perhaps in a different form.
-@code{ratdiff} may be faster than @code{diff}, for rational expressions.
+Differenziert einen rationalen Ausdruck @var{expr} nach der Variablen @var{x}.
+@var{expr} muss eine rationale Funktion oder ein Polynom in der Variablen
+@var{x} sein.  Das Argument @var{x} kann ein Teilausdruck des Argumentes
+@var{expr} sein.
 
-@code{ratdiff} returns a canonical rational expression (CRE) if @code{expr} is
-a CRE.  Otherwise, @code{ratdiff} returns a general expression.
+@c The result is equivalent to @code{diff}, although perhaps in a different
+@c form.  @code{ratdiff} may be faster than @code{diff}, for rational
+@c expressions.
 
-@code{ratdiff} considers only the dependence of @var{expr} on @var{x},
-and ignores any dependencies established by @code{depends}.
+Das Ergebnis ist @"aquivalent zum Ergebnis der Funktion @mrefcomma{diff}@w{}
+kann aber eine andere Form haben.  F@"ur rationale Funktionen kann die
+Funktion @code{ratdiff} schneller sein.
+
+@c @code{ratdiff} returns a canonical rational expression (CRE) if @code{expr}
+@c is a CRE.  Otherwise, @code{ratdiff} returns a general expression.
+
+@code{ratdiff} gibt das Ergebnis in einer CRE-Form zur@"uck, wenn das Argument
+in einer CRE-Form vorliegt.  Ansonsten ist das Ergebnis in der Standardform.
+
+@c @code{ratdiff} considers only the dependence of @var{expr} on @var{x},
+@c and ignores any dependencies established by @code{depends}.
+
+@code{ratdiff} beachtet nur die Abh@"angigkeit des Ausdrucks von der Variablen
+@var{x}.  Abh@"angigkeiten die mit der Funktion @mref{depends} definiert werden,
+werden von der Funktion @code{ratdiff} ignoriert.
 
 @c WHAT THIS IS ABOUT -- ratdiff (rat (factor (expr)), x) AND
 @c ratdiff (factor (rat (expr)), x) BOTH SUCCEED COMMENTING THIS OUT UNTIL
@@ -1915,7 +2009,7 @@ and ignores any dependencies established by @code{depends}.
 @c However, @code{ratdiff} should not be used on factored CRE forms;
 @c use @code{diff} instead for such expressions.
 
-Example:
+Beispiele:
 
 @example
 (%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
@@ -1947,55 +2041,95 @@ Example:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratdisrep}
-@deffn {Function} ratdisrep (@var{expr})
+@deffn {Funktion} ratdisrep (@var{expr})
 
-Returns its argument as a general expression.
-If @var{expr} is a general expression, it is returned unchanged.
+@c Returns its argument as a general expression.
+@c If @var{expr} is a general expression, it is returned unchanged.
 
-Typically @code{ratdisrep} is called to convert a canonical rational expression
-(CRE) into a general expression.
-@c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
-This is sometimes convenient if one wishes to stop the "contagion", or
-use rational functions in non-rational contexts.
+Gibt das Argument @var{expr} als einen allgemeinen Ausdruck zur@"uck.  Ist
+@var{expr} bereits ein allgemeiner Ausdruck, wird dieser unver@"andert
+zur@"uckgegeben.
 
-See also @code{totaldisrep}.
+@c Typically @code{ratdisrep} is called to convert a canonical rational
+@c expression (CRE) into a general expression.
+
+@c TODO: FOLGENDE BEMERKUNG NICHT UEBERSETZT
+
+   @c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
+@c This is sometimes convenient if one wishes to stop the "contagion", or
+@c use rational functions in non-rational contexts.
+
+Im Allgemeinen wird die Funktion @code{ratdisrep} aufgerufen, um einen
+Ausdruck von der CRE-Form in einen allgemeinen Ausdruck umzuwandeln.
+
+@c See also @code{totaldisrep}.
+
+Siehe auch die Funktion @mrefdot{totaldisrep}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratexpand}
-@deffn  {Function} ratexpand (@var{expr})
-@deffnx {Option variable} ratexpand
+@deffn  {Funktion} ratexpand (@var{expr})
+@deffnx {Optionsvariable} ratexpand
 
-Expands @var{expr} by multiplying out products of sums and
-exponentiated sums, combining fractions over a common denominator,
-cancelling the greatest common divisor of the numerator and
-denominator, then splitting the numerator (if a sum) into its
-respective terms divided by the denominator.
+@c Expands @var{expr} by multiplying out products of sums and
+@c exponentiated sums, combining fractions over a common denominator,
+@c cancelling the greatest common divisor of the numerator and
+@c denominator, then splitting the numerator (if a sum) into its
+@c respective terms divided by the denominator.
 
-The return value of @code{ratexpand} is a general expression,
-even if @var{expr} is a canonical rational expression (CRE).
+Expandiert das Argument @var{expr} indem Produkte und Potenzen von Summen
+ausmultipliziert, Br@"uche @"uber einen gemeinsamen Nenner dargestellt werden
+und der gr@"o@ss{}te gemeinsamen Teiler heraus gek@"urzt wird.  Ist der Z@"ahler
+eine Summe, wird er in seine Terme aufgespalten, die jeweils durch den Nenner
+dividiert werden.
 
-@c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
-The switch @code{ratexpand} if @code{true} will cause CRE
-expressions to be fully expanded when they are converted back to
-general form or displayed, while if it is @code{false} then they will be put
-into a recursive form.
-See also @code{ratsimp}.
+@c The return value of @code{ratexpand} is a general expression,
+@c even if @var{expr} is a canonical rational expression (CRE).
 
-When @code{ratdenomdivide} is @code{true},
-@code{ratexpand} expands a ratio in which the numerator is a sum 
-into a sum of ratios,
-all having a common denominator.
-Otherwise, @code{ratexpand} collapses a sum of ratios into a single ratio,
-the numerator of which is the sum of the numerators of each ratio.
+Die R@"uckgabe der Funktion @code{ratexpand} ist ein allgemeiner Ausdruck, auch
+wenn das Argument @var{expr} ein Ausdruck in der CRE-Form ist.
 
-When @code{keepfloat} is @code{true}, prevents floating
-point numbers from being rationalized when expressions which contain
-them are converted to canonical rational expression (CRE) form.
+   @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
+@c The switch @code{ratexpand} if @code{true} will cause CRE
+@c expressions to be fully expanded when they are converted back to
+@c general form or displayed, while if it is @code{false} then they will be put
+@c into a recursive form.
+@c See also @code{ratsimp}.
 
-Examples:
+@c TODO: DIE OPTIONSVARIABLE RATEXPAND HAT KEINEN EINFLUSS AUF DIE VEREINFACHUNG
+@c       DER FUNKTION RATEXPAND. BESSER EINEN EIGENEN EINTRAG???
+
+Die Optionsvariable @code{ratexpand} kontrolliert die Vereinfachung der Funktion
+@code{ratsimp}.  Hat @code{ratexpand} den Wert @code{true}, wird ein Ausdruck
+vollst@"andig ausmultipliziert. Ist der Wert @code{false}, wird der Ausdruck
+nur bez@"uglich der Hauptvariablen ausmultipliziert.  Zum Beispiel hat 
+@code{ratsimp((x+1)*(y+1))} das Ergebnis @code{x y + y + x + 1}, wenn
+@code{ratexpand} den Wert @code{true} hat, ansonsten ist das Ergebnis
+@code{(x + 1) y + x + 1}.  Siehe auch die Funktion @mrefdot{ratsimp}
+
+@c When @code{ratdenomdivide} is @code{true},
+@c @code{ratexpand} expands a ratio in which the numerator is a sum 
+@c into a sum of ratios, all having a common denominator.
+@c Otherwise, @code{ratexpand} collapses a sum of ratios into a single ratio,
+@c the numerator of which is the sum of the numerators of each ratio.
+
+Hat die Optionsvariable @mref{ratdenomdivide} den Wert @code{true}, expandiert
+die Funktion @mref{ratexpand} einen Quotienten der im Z@"ahler eine Summe hat,
+in eine Summe der Quotienten.  Ansonsten werden die Terme @"uber einen
+gemeinsamen Nenner zusammengefasst.
+
+@c When @code{keepfloat} is @code{true}, prevents floating
+@c point numbers from being rationalized when expressions which contain
+@c them are converted to canonical rational expression (CRE) form.
+
+Hat die Optionsvariable @mref{keepfloat} den Wert @code{true}, werden
+Gleitkommazahlen im Argument @var{expr} nicht in rationale Zahlen umgewandelt,
+wenn der Ausdruck in eine CRE-Form umgewandelt wird.
+
+Beispiele:
 
 @example
 (%i1) ratexpand ((2*x - 3*y)^3);
@@ -2020,102 +2154,177 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratfac}
-@defvr {Option variable} ratfac
-Default value: @code{false}
+@defvr {Optionsvariable} ratfac
+Standardwert: @code{false}
 
-When @code{ratfac} is @code{true}, canonical rational expressions (CRE) are
-manipulated in a partially factored form.
+@c When @code{ratfac} is @code{true}, canonical rational expressions (CRE) are
+@c manipulated in a partially factored form.
+@c During rational operations the expression is maintained as fully factored as
+@c possible without calling @code{factor}.
+@c This should always save space and may save time in some computations.
 
-During rational operations the expression is maintained as fully factored as
-possible without calling @code{factor}.
-This should always save space and may save time in some computations.
-The numerator and denominator are made relatively prime, for example
-@code{rat ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2)},
-but the factors within each part may not be relatively prime.
+@c TODO: DAS FOLGENDE NICHT UEBERSETZT
 
-In the @code{ctensr} (Component Tensor Manipulation) package,
-Ricci, Einstein, Riemann, and Weyl tensors and the scalar curvature 
-are factored automatically when @code{ratfac} is @code{true}.
-@i{@code{ratfac} should only be
-set for cases where the tensorial components are known to consist of
-few terms.}
+@c The numerator and denominator are made relatively prime, for example
+@c @code{rat ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2)},
+@c but the factors within each part may not be relatively prime.
 
-The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
-both be used at the same time.
+Hat die Optionsvariable @code{ratfac} den Wert @code{true}, werden Ausdr@"ucke
+in einer CRE-Form nur teilweise faktorisiert.  Bei der Ausf@"uhrung
+von Operationen bleibt der Ausdruck so vollst@"andig als m@"oglich in
+seiner faktorisierten Form, ohne dass eine Faktorisierung mit der Funktion
+@mref{factor} ausgef@"uhrt wird.  Auf diese Weise kann Rechenzeit eingespart
+werden.
 
+@c TODO: NICHT UEBERSETZT.  GEHOERT IN DAS KAPITEL TENSOREN?!
+
+@c In the @code{ctensr} (Component Tensor Manipulation) package,
+@c Ricci, Einstein, Riemann, and Weyl tensors and the scalar curvature 
+@c are factored automatically when @code{ratfac} is @code{true}.
+@c @i{@code{ratfac} should only be
+@c set for cases where the tensorial components are known to consist of
+@c few terms.}
+
+@c The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
+@c both be used at the same time.
+
+Der @mref{ratweight}-Mechanismus ist nicht kompatibel mit dem Setzen der
+Variablen @code{ratfac}.
+ 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratnumer}
-@deffn {Function} ratnumer (@var{expr})
+@deffn {Funktion} ratnumer (@var{expr})
 
-Returns the numerator of @var{expr},
-after coercing @var{expr} to a canonical rational expression (CRE).
-The return value is a CRE.
+@c Returns the numerator of @var{expr},
+@c after coercing @var{expr} to a canonical rational expression (CRE).
+@c The return value is a CRE.
 
-@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} is coerced to a CRE by @code{rat}
-if it is not already a CRE.
-This conversion may change the form of @var{expr} by putting all terms
-over a common denominator.
+Gibt den Z@"ahler des Argumentes @var{expr} zur@"uck.  @code{ratnumer} wandelt
+den Ausdruck zuerst in eine CRE-Form um und gibt das Ergebnis in einer 
+CRE-Form zur@"uck.
 
-@code{num} is similar, but returns an ordinary expression instead of a CRE.
-Also, @code{num} does not attempt to place all terms over a common denominator,
-and thus some expressions which are considered ratios by @code{ratnumer}
-are not considered ratios by @code{num}.
+   @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+@c @var{expr} is coerced to a CRE by @code{rat}
+@c if it is not already a CRE.
+@c This conversion may change the form of @var{expr} by putting all terms
+@c over a common denominator.
+
+Das Argument @var{expr} wird von der Funktion @mref{rat} in eine CRE-Form
+gebracht, falls @var{expr} nicht bereits in einer CRE-Form vorliegt.  Diese
+Transformation kann den Ausdruck @var{expr} ver@"andern, da alle Terme @"uber
+einen gemeinsamen Nenner zusammengefasst werden.
+
+@c @code{num} is similar, but returns an ordinary expression instead of a CRE.
+@c Also, @code{num} does not attempt to place all terms over a common
+@c denominator, and thus some expressions which are considered ratios by
+@c @code{ratnumer} are not considered ratios by @code{num}.
+
+Die Funktion @mref{num} ist vergleichbar.  @code{num} wandelt den Ausdruck
+jedoch nicht eine CRE-Form um und hat als Ergebnis einen Ausdruck in der
+Standardform.  Daher k@"onnen sich die Ergebnisse von @code{ratnumer} und 
+@code{num} voneinander unterscheiden.
 
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratp}
-@deffn {Function} ratp (@var{expr})
+@deffn {Funktion} ratp (@var{expr})
 
-Returns @code{true} if @var{expr} is a canonical rational expression (CRE) or
-extended CRE, otherwise @code{false}.
+@c Returns @code{true} if @var{expr} is a canonical rational expression (CRE) or
+@c extended CRE, otherwise @code{false}.
 
-CRE are created by @code{rat} and related functions.
-Extended CRE are created by @code{taylor} and related functions.
+Gibt das Ergebnis @code{true} zur@"uck, wenn das Argument @var{expr} in einer
+CRE-Form oder einer erweiterten CRE-Form vorliegt.
+
+@c CRE are created by @code{rat} and related functions.
+@c Extended CRE are created by @code{taylor} and related functions.
+
+CRE-Formen werden von der Funktion @mref{rat} und verwandten Funktionen erzeugt.
+Erweiterte CRE-Formen werden von der Funktion @mref{taylor} und verwandten
+Funktionen erzeugt.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratprint}
-@defvr {Option variable} ratprint
-Default value: @code{true}
+@defvr {Optionsvariable} ratprint
+Standardwert: @code{true}
 
-When @code{ratprint} is @code{true},
-a message informing the user of the conversion of floating point numbers
-to rational numbers is displayed.
+@c When @code{ratprint} is @code{true},
+@c a message informing the user of the conversion of floating point numbers
+@c to rational numbers is displayed.
+
+Hat die Optionsvariable @code{ratprint} den Wert @code{true}, gibt Maxima eine
+Meldung aus, wenn eine Gleitkommazahl in eine rationale Zahl umgewandelt wird.
+
+Beispiel:
+
+@example
+(%i1) ratprint:true;
+(%o1)                         true
+(%i2) rat(0.75*x);
+
+rat: replaced 0.75 by 3/4 = 0.75
+                               3 x
+(%o2)/R/                       ---
+                                4
+(%i3) ratprint:false;
+(%o3)                         false
+(%i4) rat(0.75*x);
+                               3 x
+(%o4)/R/                       ---
+                                4
+@end example
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratsimp}
-@deffn  {Function} ratsimp (@var{expr})
-@deffnx {Function} ratsimp (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {Funktion} ratsimp (@var{expr})
+@deffnx {Funktion} ratsimp (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-Simplifies the expression @var{expr} and all of its subexpressions,
-including the arguments to non-rational functions.
-The result is returned as the quotient of two polynomials in a recursive form,
-that is, the coefficients of the main variable are polynomials in the other
-variables.  Variables may include non-rational functions
-(e.g., @code{sin (x^2 + 1)}) and the arguments to any such functions are also
-rationally simplified.
+@c Simplifies the expression @var{expr} and all of its subexpressions,
+@c including the arguments to non-rational functions.
+@c The result is returned as the quotient of two polynomials in a recursive
+@c form, that is, the coefficients of the main variable are polynomials in the
+@c other variables.  Variables may include non-rational functions
+@c (e.g., @code{sin (x^2 + 1)}) and the arguments to any such functions are also
+@c rationally simplified.
 
-@code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}
-enables rational simplification with the
-specification of variable ordering as in @code{ratvars}.
+Vereinfacht den Ausdruck @var{expr} und alle Teilausdr@"ucke, einschlie@ss{}lich
+der nicht rationalen Anteile.  Das Ergebnis ist ein Quotient aus zwei Polynomen
+in einer rekursiven Form.  In der rekursiven Form ist das Polynom nach der
+Hauptvariablen vollst@"andig ausmultipliziert und ein Polynom in allen anderen
+Variablen.  Variable k@"onnen auch nicht-rationale Ausdr@"ucke wie
+@code{sin(x^2 + 1)} sein.
 
-When @code{ratsimpexpons} is @code{true},
-@code{ratsimp} is applied to the exponents of expressions during simplification.
+@c @code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}
+@c enables rational simplification with the
+@c specification of variable ordering as in @code{ratvars}.
 
-See also @code{ratexpand}.
-Note that @code{ratsimp} is affected by some of the
-flags which affect @code{ratexpand}.
+@code{ratsimp(@var{expr}, @var{x_1}, ..., @var{x_n})} vereinfacht einen Ausdruck
+mit einer Ordnung der Variablen wie sie von der Funktion @mref{ratvars}@w{}
+definiert wird.
 
-Examples:
+@c When @code{ratsimpexpons} is @code{true}, @code{ratsimp} is applied to the
+@c exponents of expressions during simplification.
+
+Hat die Optionsvariable @mref{ratsimpexpons} den Wert @code{true}, wird
+@code{ratsimp} auch auf die Exponenten von Ausdr@"ucke angewendet.
+
+@c See also @code{ratexpand}.
+@c Note that @code{ratsimp} is affected by some of the
+@c flags which affect @code{ratexpand}.
+
+Siehe auch die Funktion @mrefdot{ratexpand}  Die Funktion @code{ratsimp} wird
+auch von einigen Schaltern kontrolliert, die Einfluss auf @code{ratexpand}
+haben.
+
+Beispiele:
 
 @example
 (%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
@@ -2149,15 +2358,37 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratsimpexpons}
-@defvr {Option variable} ratsimpexpons
-Default value: @code{false}
+@defvr {Optionsvariable} ratsimpexpons
+Standardwert: @code{false}
 
-When @code{ratsimpexpons} is @code{true},
-@code{ratsimp} is applied to the exponents of expressions during simplification.
+@c When @code{ratsimpexpons} is @code{true}, @code{ratsimp} is applied to the
+@c exponents of expressions during simplification.
 
-@c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
+Hat die Optionsvariable @code{ratsimpexpons} den Wert @code{true}, wird
+@code{ratsimp} auch auf die Exponenten von Ausdr@"ucke angewendet.
+
+Beispiel:
+
+@example
+(%i1) expr: x^(a+1/a);
+                             a + 1/a
+(%o1)                       x
+(%i2) ratsimpexpons: false;
+(%o2)                         false
+(%i3) ratsimp(expr);
+                             a + 1/a
+(%o3)                       x
+(%i4) ratsimpexpons: true;
+(%o4)                         true
+(%i5) ratsimp(expr);
+                               2
+                              a  + 1
+                              ------
+                                a
+(%o5)                        x
+@end example
 @end defvr
 
 @c --- 06.01.2011 DK -----------------------------------------------------------
@@ -2167,31 +2398,58 @@ Standardwert: @code{false}
 
 @c @code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make 
 @c substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
+@c When @code{radsubstflag} is @code{true},
+@c @code{ratsubst} makes substitutions for radicals in expressions
+@c which don't explicitly contain them.
 
-Hat @code{radsubstflag} den Wert @code{true}, wird verhindert, dass die Funktion
-@code{ratsubst} zum Beispiel @code{u} f@"ur @code{sqrt(x)} in @code{x} 
-substituiert.
+Hat @code{radsubstflag} den Wert @code{true}, werden Wurzeln von der Funktion
+@mref{ratsubst} auch dann substituiert, wenn diese nicht explizit im Ausdruck
+enthalten sind.
+
+Beispiel:
+
+@example
+(%i1) radsubstflag: false$
+(%i2) ratsubst (u, sqrt(x), x);
+(%o2)                           x
+(%i3) radsubstflag: true$
+(%i4) ratsubst (u, sqrt(x), x);
+                                2
+(%o4)                          u
+@end example
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratsubst}
-@deffn {Function} ratsubst (@var{a}, @var{b}, @var{c})
+@deffn {Funktion} ratsubst (@var{a}, @var{b}, @var{c})
 
-Substitutes @var{a} for @var{b} in @var{c} and returns the resulting expression.
-@c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
-@var{b} may be a sum, product, power, etc.
+@c Substitutes @var{a} for @var{b} in @var{c} and returns the resulting
+@c expression.
+   @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE - NOT LIKELY THE CASE
+@c @var{b} may be a sum, product, power, etc.
 
-@c WHAT, EXACTLY, DOES ratsubst KNOW ??
-@code{ratsubst} knows something of the meaning of expressions
-whereas @code{subst} does a purely syntactic substitution.
-Thus @code{subst (a, x + y, x + y + z)} returns @code{x + y + z}
-whereas @code{ratsubst} returns @code{z + a}.
+Substituiert @var{a} f@"ur @var{b} in den Ausdruck @var{c} und gibt das Ergebnis
+der Substitution zur@"uck.
 
-When @code{radsubstflag} is @code{true},
-@code{ratsubst} makes substitutions for radicals in expressions
-which don't explicitly contain them.
+   @c WHAT, EXACTLY, DOES ratsubst KNOW ??
+@c @code{ratsubst} knows something of the meaning of expressions
+@c whereas @code{subst} does a purely syntactic substitution.
+@c Thus @code{subst (a, x + y, x + y + z)} returns @code{x + y + z}
+@c whereas @code{ratsubst} returns @code{z + a}.
 
-Examples:
+Im Unterschied zu @mref{subst} kann @code{ratsubst} auch Teilausdr@"ucke im
+Ausdruck @var{c} substituieren.  So hat @code{subst(a, x + y, x + y + z)} das
+Ergebnis @code{x + y + z} und @code{ratsubst} das Ergebnis @code{z + a}.
+
+@c When @code{radsubstflag} is @code{true},
+@c @code{ratsubst} makes substitutions for radicals in expressions
+@c which don't explicitly contain them.
+
+Hat @code{radsubstflag} den Wert @code{true}, werden Wurzeln von der Funktion
+@code{ratsubst} auch dann substituiert, wenn diese nicht explizit im Ausdruck
+enthalten sind.
+
+Beispiel:
 
 @example
 (%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
@@ -2218,50 +2476,82 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratvars}
-@deffn  {Function} ratvars (@var{x_1}, @dots{}, @var{x_n})
-@deffnx {Function} ratvars ()
-@deffnx {System variable} ratvars
+@deffn  {Funktion} ratvars (@var{x_1}, @dots{}, @var{x_n})
+@deffnx {Funktion} ratvars ()
+@deffnx {Systemvariable} ratvars
 
-Declares main variables @var{x_1}, ..., @var{x_n} for rational expressions.
-@var{x_n}, if present in a rational expression, is considered the main variable.
-Otherwise, @var{x_[n-1]} is considered the main variable if present,
-and so on through the preceding variables to @var{x_1}, which is considered the
-main variable only if none of the succeeding variables are present.
+@c Declares main variables @var{x_1}, ..., @var{x_n} for rational expressions.
+@c @var{x_n}, if present in a rational expression, is considered the main
+@c variable.  Otherwise, @var{x_[n-1]} is considered the main variable if
+@c present, and so on through the preceding variables to @var{x_1}, which is
+@c considered the main variable only if none of the succeeding variables are
+@c present.
 
-If a variable in a rational expression is not present in the @code{ratvars}
-list, it is given a lower priority than @var{x_1}.
+Deklariert die Variablen @var{x_1}, @dots{}, @var{x_n} zu Hauptvariablen einer
+rationalen Funktion.  Ist die Variable @var{x_n} in einem Ausdruck vorhanden,
+wird diese zur Hauptvariablen.  Ist @var{x_n} nicht im Ausdruck vorhanden, 
+wird einer der vorhergehenden Variablen @var{x_i} zur Hauptvariablen.
 
-The arguments to @code{ratvars} can be either variables or non-rational
-functions such as @code{sin(x)}.
+@c If a variable in a rational expression is not present in the @code{ratvars}
+@c list, it is given a lower priority than @var{x_1}.
 
-The variable @code{ratvars} is a list of the arguments of 
-the function @code{ratvars} when it was called most recently.
-Each call to the function @code{ratvars} resets the list.
-@code{ratvars ()} clears the list.
+Eine Variable einer rationalen Funktion, die nicht unter den @var{x_1}, @dots{},
+@var{x_n} ist, erh@"alt eine geringe Priorit@"at als @var{x_1}.
+
+@c The arguments to @code{ratvars} can be either variables or non-rational
+@c functions such as @code{sin(x)}.
+
+Die Argumente der Funktion @code{ratvars} k@"onnen auch nicht-rationale
+Ausdr@"ucke wie @code{sin(x)} sein.
+
+@c The variable @code{ratvars} is a list of the arguments of 
+@c the function @code{ratvars} when it was called most recently.
+@c Each call to the function @code{ratvars} resets the list.
+@c @code{ratvars ()} clears the list.
+
+Die Systemvariable @code{ratvars} enth@"alt die Liste der zuletzt mit der
+Funktion @code{ratvars} zu Hauptvariablen erkl@"arten Variablen.  Jeder Aufruf
+der Funktion @code{ratvars} setzt diese Liste zur@"uck.  Der Aufruf ohne
+Argumente @code{ratvars()} l@"oscht die Systemvariable @code{ratvars}.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratweight}
-@deffn  {Function} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
-@deffnx {Function} ratweight ()
+@deffn  {Funktion} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
+@deffnx {Funktion} ratweight ()
 
-Assigns a weight @var{w_i} to the variable @var{x_i}.
-This causes a term to be replaced by 0 if its weight exceeds the
-value of the variable @code{ratwtlvl} (default yields no truncation).
-The weight of a term is the sum of the products of the
-weight of a variable in the term times its power.
-For example, the weight of @code{3 x_1^2 x_2} is @code{2 w_1 + w_2}.
-Truncation according to @code{ratwtlvl} is carried out only when multiplying
-or exponentiating canonical rational expressions (CRE).
+@c Assigns a weight @var{w_i} to the variable @var{x_i}.
+@c This causes a term to be replaced by 0 if its weight exceeds the
+@c value of the variable @code{ratwtlvl} (default yields no truncation).
+@c The weight of a term is the sum of the products of the
+@c weight of a variable in the term times its power.
+@c For example, the weight of @code{3 x_1^2 x_2} is @code{2 w_1 + w_2}.
+@c Truncation according to @code{ratwtlvl} is carried out only when multiplying
+@c or exponentiating canonical rational expressions (CRE).
 
-@code{ratweight ()} returns the cumulative list of weight assignments.
+@c @code{ratweight ()} returns the cumulative list of weight assignments.
 
-Note: The @code{ratfac} and @code{ratweight} schemes are incompatible and may
-not both be used at the same time.
+Weist der Variablen @var{x_i} ein Gewicht @var{w_i} zu.  Hat ein Term einer
+rationalen Funktion ein gr@"o@ss{}eres Gewicht als der Wert der Variablen
+@mref{ratwtlvl} wird der Term durch @code{0} ersetzt.  Das Gewicht eines Terms
+wird anhand der mit @code{ratweight} den Variablen zugewiesenen Gewichte
+ermittelt.  Die Gewichte der Variablen in einem Term werden mit der Potenz
+der Variablen multipliziert und dann addiert.  Zum Beispiel hat der Term
+@code{3 x_1^2 x_2} das Gewicht @code{2 w_1 + w_2}.  Terme die den Wert
+von @code{ratwtlvl} @"ubersteigen, werden nur dann entfernt, wenn rationale
+Funktionen in einer CRE-Form multipliziert oder potenziert werden.
 
-Examples:
+@code{ratweight()} gibt die Liste der zugewiesenen Gewichte zur@"uck.
+
+@c Note: The @code{ratfac} and @code{ratweight} schemes are incompatible and
+@c may not both be used at the same time.
+
+Der @mref{ratweight}-Mechanismus ist nicht kompatibel mit dem Setzen der
+Variablen @code{ratfac}.
+
+Beispiele:
 
 @example
 (%i1) ratweight (a, 1, b, 1);
@@ -2276,27 +2566,38 @@ Examples:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratweights}
 @defvr {System variable} ratweights
-Default value: @code{[]}
+Standardwert: @code{[]}
 
-@code{ratweights} is the list of weights assigned by @code{ratweight}.
-The list is cumulative:
-each call to @code{ratweight} places additional items in the list.
+@c @code{ratweights} is the list of weights assigned by @code{ratweight}.
+@c The list is cumulative:
+@c each call to @code{ratweight} places additional items in the list.
 
-@c DO WE REALLY NEED TO MENTION THIS ??
-@code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
+Die Systemvariable @code{ratweights} enth@"alt die Liste der Gewichte die
+Variablen mit der Funktion @mref{ratweights} zugewiesen sind.
+
+   @c DO WE REALLY NEED TO MENTION THIS ??
+@c @code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
+
+Die Gewichte k@"onnen mit dem Kommando @code{kill(ratweights)} gel@"oscht
+werden.
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 09.07.2011 DK -----------------------------------------------------------
 @anchor{ratwtlvl}
-@defvr {Option variable} ratwtlvl
-Default value: @code{false}
+@defvr {Optionsvariable} ratwtlvl
+Standardwert: @code{false}
 
-@code{ratwtlvl} is used in combination with the @code{ratweight}
-function to control the truncation of canonical rational expressions (CRE).
-For the default value of @code{false}, no truncation occurs.
+@c @code{ratwtlvl} is used in combination with the @code{ratweight}
+@c function to control the truncation of canonical rational expressions (CRE).
+@c For the default value of @code{false}, no truncation occurs.
+
+Die Optionsvariable wird im Zusammenhang mit den @mref{ratweight}-Mechanismus
+genutzt und kontrolliert das Entfernen von Termen einer rationalen Funktion in
+einer CRE-Form, wenn deren Gewicht den Wert von @code{ratwtlvl} @"ubersteigt.
+Mit dem Standardwert @code{false} werden keine Terme entfernt.
 @end defvr
 
 @c --- 19.02.2011 DK -----------------------------------------------------------
@@ -2305,8 +2606,8 @@ For the default value of @code{false}, no truncation occurs.
 @deffnx {Funktion} remainder (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 Berechnet den Rest der Polynomdivision von @var{p_1} und @var{p_2} f@"ur die
-Variable @var{x_n}.  Die anderen Variablen @var{x_1}, @dots{}, @var{x_n-1} haben
-dieselbe Bedeutung wie f@"ur die Funktion @mrefdot{ratvars}
+Variable @var{x_n}.  Die anderen Variablen @var{x_1}, @dots{}, @var{x_n-1}
+haben dieselbe Bedeutung wie f@"ur die Funktion @mrefdot{ratvars}
 
 @code{remainder} gibt das zweite Element des Ergebnisses der Funktion
 @mref{divide} zur@"uck.
@@ -2337,8 +2638,8 @@ Beispiel:
 @c coefficients of @var{x} in @var{p_1} and @var{p_2}, which equals zero
 @c if and only if @var{p_1} and @var{p_2} have a non-constant factor in common.
 
-Berechnet die Resultante der Polynome @var{p_1} und @var{p_2} und eliminiert die
-unabh@"angige Variable @var{x}.  Die Resultante ist die Determinante der 
+Berechnet die Resultante der Polynome @var{p_1} und @var{p_2} und eliminiert
+die unabh@"angige Variable @var{x}.  Die Resultante ist die Determinante der
 Sylvestermatrix f@"ur die beiden Polynome.  Das Ergebnis ist Null, wenn die
 beiden Polynome @var{p_1} und @var{p_2} einen gemeinsamen Faktor haben.
 
@@ -2409,7 +2710,7 @@ Standardwert: @code{false}
 @c functions in order to speed up later factorizations of expressions
 @c containing some of the same factors.
 
-Hat die Optionsvariable @mref{savefactors} den Wert @code{true}, versuchen
+Hat die Optionsvariable @code{savefactors} den Wert @code{true}, versuchen
 einige Funktionen bei der Vereinfachung eine bereits vorhandene Faktorisierung
 zu erhalten, um weitere Vereinfachungen zu beschleunigen.
 @end defvr
@@ -2447,7 +2748,7 @@ Siehe auch die Funktion @mrefdot{ratvars}
 @c degree greater than 1 can be found.
 
 Entspricht der Funktion @mref{factor} mit dem Unterschied, dass faktorisierte
-Polynome quadratfrei sind.  
+Polynome quadratfrei sind.
 
 Beispiel:
 
@@ -2465,31 +2766,54 @@ Beispiel:
 @deffn  {Funktion} tellrat (@var{p_1}, @dots{}, @var{p_n})
 @deffnx {Funktion} tellrat ()
 
- Adds to the ring of algebraic integers known to Maxima the elements which are 
- the solutions of the polynomials @var{p_1}, ..., @var{p_n}.  Each argument 
- @var{p_i} is a polynomial with integer coefficients.
+@c Adds to the ring of algebraic integers known to Maxima the elements which are
+@c the solutions of the polynomials @var{p_1}, ..., @var{p_n}.  Each argument
+@c @var{p_i} is a polynomial with integer coefficients.
 
- @code{tellrat (@var{x})} effectively means substitute 0 for @var{x} in 
- rational functions.
+F@"ugt dem Ring der ganzen Zahlen, die algebraische Zahlen hinzu, die L@"osungen
+der minimalen Polynome @var{p_1}, @dots{}, @var{p_n} sind.  Jedes Argument
+@var{p_i} ist ein Polynom, dessen Koeffizienten ganze Zahlen sind.
 
- @code{tellrat ()} returns a list of the current substitutions.
+@c @code{tellrat (@var{x})} effectively means substitute 0 for @var{x} in
+@c rational functions.
 
- @code{algebraic} must be set to @code{true} in order for the simplification 
- of algebraic integers to take effect.
+@code{tellrat(@var{x})} bedeutet, dass in einer rationalen Funktion die
+Variable @var{x} mit dem Wert @code{0} substituiert wird.
 
- Maxima initially knows about the imaginary unit @code{%i} and all roots of 
- integers.
+@c @code{tellrat ()} returns a list of the current substitutions.
 
- There is a command @code{untellrat} which takes kernels and removes 
- @code{tellrat} properties.
+@code{tellrat()} gibt eine Liste der minimalen Polynome zur@"uck.
 
- When @code{tellrat}'ing a multivariate polynomial, e.g., 
- @code{tellrat (x^2 - y^2)}, there would be an ambiguity as to whether to 
- substitute @code{@var{y}^2} for @code{@var{x}^2} or vice versa.  Maxima 
- picks a particular ordering, but if the user wants to specify which, e.g.
- @code{tellrat (y^2 = x^2)} provides a syntax which says replace
- @code{@var{y}^2} by @code{@var{x}^2}.
+@c @code{algebraic} must be set to @code{true} in order for the simplification
+@c of algebraic integers to take effect.
 
+Die Optionsvariable @mref{algebraic} muss den Wert @code{true} haben, damit
+die Vereinfachungen von algebraischen Zahlen ausgef@"uhrt wird.
+
+@c Maxima initially knows about the imaginary unit @code{%i} and all roots of 
+@c integers.
+
+Maxima kennt bereits die Erweiterungen um die Imagin@"are Einheit @code{%i} und
+die Wurzeln der ganzen Zahlen.
+
+@c There is a command @code{untellrat} which takes kernels and removes
+@c @code{tellrat} properties.
+
+Die Funktion @mref{untellrat} entfernt die Eigenschaften, die mit der Funktion
+@code{tellrat} definiert wurden.
+
+@c When @code{tellrat}'ing a multivariate polynomial, e.g.,
+@c @code{tellrat (x^2 - y^2)}, there would be an ambiguity as to whether to
+@c substitute @code{@var{y}^2} for @code{@var{x}^2} or vice versa.  Maxima 
+@c picks a particular ordering, but if the user wants to specify which, e.g.
+@c @code{tellrat (y^2 = x^2)} provides a syntax which says replace
+@c @code{@var{y}^2} by @code{@var{x}^2}.
+
+Hat ein minimales Polynom mehrere Variablen, wie zum Beispiel in
+@code{tellrat(x^2 - y^2)}, dann entsteht eine Mehrdeutigkeit, da Maxima nicht
+ermitteln kann, ob @var{x^2} f@"ur @var{y^2} zu ersetzten ist, oder umgekehrt.
+In diesem Fall kann die Syntax @code{tellrat (y^2 = x^2)} genutzt werden, die
+besagt, dass @var{y^2} durch @var{x^2} zu ersetzen ist.
 
 @c CAN'T TELL WHAT THIS IS ABOUT -- 
 @c tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
@@ -2544,7 +2868,7 @@ CRE-Form, dann entspricht @code{totaldisrep} der Funktion @code{ratdisrep}.
 @c equations, lists, matrices, etc., which have some subexpressions in CRE form.
 
 @code{totaldisrep} ist insbesondere hilfreich, wenn Gleichungen, Listen oder
-Matrizen in eine allgmeine Form zu konvertieren sind.
+Matrizen in eine allgemeine Form zu konvertieren sind.
 
 @c NEED EXAMPLES HERE
 @end deffn
