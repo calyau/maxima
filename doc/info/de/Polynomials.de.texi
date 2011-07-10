@@ -1209,7 +1209,7 @@ Beispiele:
 
 @c --- 03.07.2011 DK -----------------------------------------------------------
 @anchor{intfaclim}
-@defvr {Option variable} intfaclim
+@defvr {Optionsvariable} intfaclim
 Standardwert: @code{true}
 
 @c If @code{true}, maxima will give up factorization of
@@ -1380,7 +1380,7 @@ als erstes Argument angegeben werden.
 
 @c --- 05.07.2011 DK -----------------------------------------------------------
 @anchor{modulus}
-@defvr {Option variable} modulus
+@defvr {Optionsvariable} modulus
 Standardwert: @code{false}
 
 @c When @code{modulus} is a positive number @var{p}, operations on rational
@@ -2701,7 +2701,7 @@ Beispiele:
 
 @c -----------------------------------------------------------------------------
 @anchor{savefactors}
-@defvr {Option variable} savefactors
+@defvr {Optionsvariable} savefactors
 Standardwert: @code{false}
 
 @c "certain functions" -- WHICH ONES ??
