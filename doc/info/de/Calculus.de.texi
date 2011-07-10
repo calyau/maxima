@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
-@c Revision    : 29.06.2011
+@c Revision    : 10.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -947,7 +947,7 @@ keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
 
 @c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{erfflag}
-@defvr {Option variable} erfflag
+@defvr {Optionsvariable} erfflag
 Standardwert: @code{true}
 
 Hat @code{erfflag} den Wert @code{false}, wird von der Funktion @mref{risch}@w{}
