@@ -1868,7 +1868,8 @@ Standardwert: @code{false}
 Wechselt die Darstellung eines Exponentiellen Integrals in eine der anderen
 Funktionen @mrefcomma{gamma_incomplete} @mrefcomma{expintegral_e1}@w{}
 @mrefcomma{expintegral_ei} @mrefcomma{expintegral_li}@w{}
-@mref{expintegral_trig} oder @mrefdot{expinegral_hyp}
+@mrefcomma{expintegral_si} @mrefcomma{expintegral_ci}@w{}
+@mrefcomma{expintegral_shi} oder @mrefdot{expintegral_chi}
 @end defvr
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
@@ -1878,7 +1879,7 @@ Standardwert: @code{false}
 
 Expandiert das Exponentielle Integral @code{E[n](z)} für halbzahlige, gerade
 Ordnung @var{n} nach den Funktionen @mref{erfc} und @mrefdot{erf} sowie für
-positive ganze Zahlen nach der Funktion @mrefdot{expint_ei}
+positive ganze Zahlen nach der Funktion @mrefdot{expintegral_ei}
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1983,6 +1984,7 @@ Darstellung mit der Funktion @mref{erf} transformiert.
 @end defvr
 
 @c --- 10.07.2011 DK -----------------------------------------------------------
+@anchor{hypergeometric_representation}
 @defvr {Optionsvariable} hypergeometric_representation
 Standardwert: @code{false}
 
