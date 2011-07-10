@@ -28,7 +28,7 @@
   ;; right now MUST be used in the SAME file.
   `(putprop ',name
     (or (get ',same-as 'translate)
-     (maxima-error "No TRANSLATE property to alias. ~a" ',same-as))
+     (maxima-error "DEF-SAME%TR: ~a has no TRANSLATE property, so I can't make an alias." ',same-as))
     'translate))
 
 ;;; declarations for the TRANSL PACKAGE.

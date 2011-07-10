@@ -400,9 +400,9 @@
 (defun sp1log2 (e)
   (and $verbose
        (prog2
-         (mtell "trigreduce: can't expand~%~%")
+         (mtell (intl:gettext "trigreduce: failed to expand.~%~%"))
 	 (show-exp (list '(%log) e))
-	 (mtell "trigreduce: try again after applying the rule:~2%~M~%~%"
+	 (mtell (intl:gettext "trigreduce: try again after applying rule:~2%~M~%~%")
 		(list '(mlable) nil
 		      (out-of
 		       (list '(mequal)
@@ -497,7 +497,7 @@
 (defun cosh^n (%n v) (sc^n %n v '(%cosh) (not (oddp %n)) 1))
 
 (defun sc^n (%n v fn fl coef)
-  (cond ((minusp %n) (merror "Bug in `trigreduce'.  Please report.")))
+  (cond ((minusp %n) (merror "trigreduce: internal error; %N must be nonnegative, found: ~M") %n))
   (m* (list '(rat) 1 (expt 2 %n))
       (m+ (cond (fl (list '(%binomial) %n (ash %n -1))) (t 0))
 	  (maxima-substitute v 'trig-var

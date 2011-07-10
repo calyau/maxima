@@ -95,7 +95,7 @@
   (setf (get x 'distribute_over) '(mlist $matrix mequal)))
 
 (defun domain-error (x f)
-  (merror "The number ~:M isn't in the domain of ~A" (complexify x) f))
+  (merror (intl:gettext "~A: argument ~:M isn't in the domain of ~A.") f (complexify x) f))
 
 ;; Build a hash table 'cl-flonum-op' that maps Maxima function names 
 ;; to their CL equivalents. 
@@ -611,7 +611,7 @@
       (cond ((zerop1 sin-of-coeff-pi) 
 	     0)		;; tan(integer*%pi)
 	    ((zerop1 cos-of-coeff-pi)
-	     (merror "~M isn't in the domain of tan" x))
+	     (merror (intl:gettext "tan: ~M isn't in the domain of tan.") x))
 	    (cos-of-coeff-pi
 	     (div sin-of-coeff-pi cos-of-coeff-pi))))
        
@@ -911,9 +911,9 @@
 ;; This should give more information somehow.
 
 (defun dbz-err ()
-  (cond ((not errorsw) (merror "Division by zero"))
+  (cond ((not errorsw) (merror (intl:gettext "Division by zero attempted.")))
 	(t (throw 'errorsw t))))
 
 (defun dbz-err1 (func)
-  (cond ((not errorsw) (merror "Division by zero in ~A function" func))
+  (cond ((not errorsw) (merror (intl:gettext "~A: division by zero attempted.") func))
 	(t (throw 'errorsw t))))

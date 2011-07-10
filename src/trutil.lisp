@@ -77,7 +77,7 @@
 	     (min (or (car args-p) (cdr args-p)))
 	     (max (cdr args-p)))
 	 (cond ((and min (< nargs min))
-		(mformat *translation-msgs-files* "~%Error: Too few arguments supplied to ~:@M~%"
+		(mformat *translation-msgs-files* (intl:gettext "error: too few arguments supplied to ~:@M~%")
 			 (caar form))
 		(mgrind form *translation-msgs-files*))
 	       ((and max (> nargs max))

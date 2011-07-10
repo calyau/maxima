@@ -35,7 +35,7 @@
 
 (defopt expt$ (bas exp)
   (if (not (integerp exp))
-      `(maxima-error "Internal TRANSL error. ~a ~a" ,bas ,exp))
+      `(maxima-error "EXPT$: exponent must be an integer; found: ~a" ,exp))
   (let* ((abs-exp (abs exp))
 	 (full-exp (cond ((not (> exp *max-expt$-expand*))
 			  `(internal-expt$ ,bas ,abs-exp))
