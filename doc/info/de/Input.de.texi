@@ -2,10 +2,10 @@
 @c File        : Input.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Input.texi revision 14.02.2011
+@c Original    : Input.texi revision 30.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 02.11.2010
-@c Revision    : 19.04.2011
+@c Revision    : 10.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -327,7 +327,7 @@ Siehe auch die Funktion @mrefdot{file_type}
 
 @c --- 19.04.2011 DK -----------------------------------------------------------
 @anchor{file_type_maxima}
-@defvr {Option variable} file_type_maxima
+@defvr {Optionsvariable} file_type_maxima
 Standardwert:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
 
 Die Optionsvariable @code{file_type_maxima} enth@"alt die Dateiendungen, die
