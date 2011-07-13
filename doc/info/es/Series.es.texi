@@ -1,15 +1,318 @@
 @c english version 1.21
 @menu
+* Sumas y productos::
 * Introducci@'on a las series::
 * Funciones y variables para las series::
 * Series de Poisson::
 @end menu
 
-@node Introducci@'on a las series, Funciones y variables para las series, Series, Series
+
+
+
+@node Sumas y productos, Introducci@'on a las series, Series, Series
+@section Sumas y productos
+
+
+
+@deffn {Funci@'on} bashindices (@var{expr})
+Transforma la expresi@'on @var{expr} d@'andole a cada suma y producto un @'unico @'{@dotless{i}}ndice. Esto le da a @code{changevar} mayor precisi@'on cuando opera con sumas y productos. La forma del @'unico @'{@dotless{i}}ndice es @code{j@var{number}}. La cantidad @var{number} se determina en funci@'on de @code{gensumnum}, valor que puede cambiar el usuario.  Por ejemplo, haciendo @code{gensumnum:0$}.
+
+@end deffn
+
+
+
+
+@deffn {Funci@'on} lsum (@var{expr}, @var{x}, @var{L})
+Representa la suma de @var{expr} para cada elemento @var{x} en @var{L}.
+
+Se retornar@'a la forma nominal @code{'lsum} si el argumento @var{L} no es una lista.
+
+Ejemplos:
+
+@c ===beg===
+@c lsum (x^i, i, [1, 2, 7]);
+@c lsum (i^2, i, rootsof (x^3 - 1));
+@c ===end===
+@example
+(%i1) lsum (x^i, i, [1, 2, 7]);
+                            7    2
+(%o1)                      x  + x  + x
+(%i2) lsum (i^2, i, rootsof (x^3 - 1));
+                     ====
+                     \      2
+(%o2)                 >    i
+                     /
+                     ====
+                                   3
+                     i in rootsof(x  - 1)
+@end example
+@end deffn
+
+
+
+@deffn {Funci@'on} intosum (@var{expr})
+Mueve los factores multiplicativos que est@'an fuera de un sumatorio hacia dentro de @'este. Si el @'{@dotless{i}}ndice aparece en la expresi@'on exterior, entonce @code{intosum} busca un @'{@dotless{i}}ndice razonable, lo mismo que hace con @code{sumcontract}. Se trata de la operaci@'on contraria a extraer factores comunes de los sumatorios.
+
+@c WHAT ARE THESE CASES ??
+En algunos caos puede ser necesario hacer @code{scanmap (multthru, @var{expr})} antes que @code{intosum}.
+
+@end deffn
+
+
+
+
+@deffn {Funci@'on} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+Representa el producto de los valores de @code{expr} seg@'un el @'{@dotless{i}}ndice @var{i} var@'{@dotless{i}}a de @var{i_0} hasta @var{i_1}.
+La forma nominal @code{'product} se presenta en forma de letra pi may@'uscula.
+
+La funci@'on @code{product} eval@'ua @var{expr} y los l@'{@dotless{i}}mites inferior y superior, @var{i_0} y @var{i_1}, pero no eval@'ua el @'{@dotless{i}}ndice @var{i}.
+
+Si la diferencia entre los l@'{@dotless{i}}mites superior e inferior es un n@'umero entero, la expresi@'on @var{expr} se eval@'ua para cada valor del @'{@dotless{i}}ndice @var{i}, siendo el resultado un producto en forma expl@'{@dotless{i}}cita.
+
+En caso contrario, el rango del @'{@dotless{i}}ndice no est@'a definido, aplic@'andose entonces algunas reglas que permitan simplificar el producto.
+Cuando la variable global @code{simpproduct} valga @code{true}, se aplicar@'an reglas adicionales.
+En ciertos casos, la simplificaci@'on dar@'a lugar a un resultado que ya no tenga el formato del producto; en caso contrario se devolver@'a una forma nominal @code{'product}.
+
+V@'eanse tambi@'en @code{nouns} y @code{evflag}.
+
+
+Ejemplos:
+
+@c ===beg===
+@c product (x + i*(i+1)/2, i, 1, 4);
+@c product (i^2, i, 1, 7);
+@c product (a[i], i, 1, 7);
+@c product (a(i), i, 1, 7);
+@c product (a(i), i, 1, n);
+@c product (k, k, 1, n);
+@c product (k, k, 1, n), simpproduct;
+@c product (integrate (x^k, x, 0, 1), k, 1, n);
+@c product (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
+
+@example
+(%i1) product (x + i*(i+1)/2, i, 1, 4);
+(%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
+(%i2) product (i^2, i, 1, 7);
+(%o2)                       25401600
+(%i3) product (a[i], i, 1, 7);
+(%o3)                 a  a  a  a  a  a  a
+                       1  2  3  4  5  6  7
+(%i4) product (a(i), i, 1, 7);
+(%o4)          a(1) a(2) a(3) a(4) a(5) a(6) a(7)
+(%i5) product (a(i), i, 1, n);
+                             n
+                           /===\
+                            ! !
+(%o5)                       ! !  a(i)
+                            ! !
+                           i = 1
+(%i6) product (k, k, 1, n);
+                               n
+                             /===\
+                              ! !
+(%o6)                         ! !  k
+                              ! !
+                             k = 1
+(%i7) product (k, k, 1, n), simpproduct;
+(%o7)                          n!
+(%i8) product (integrate (x^k, x, 0, 1), k, 1, n);
+                             n
+                           /===\
+                            ! !    1
+(%o8)                       ! !  -----
+                            ! !  k + 1
+                           k = 1
+(%i9) product (if k <= 5 then a^k else b^k, k, 1, 10);
+                              15  40
+(%o9)                        a   b
+@end example
+
+@end deffn
+
+
+
+@defvr {Variable opcional} simpsum
+Valor por defecto: @code{false}
+
+Si @code{simpsum} vale @code{true}, se simplifica el resultado de un sumatorio @code{sum}. Esta simplificaci@'on podr@'a producir en ocasiones una expresi@'on compacta.  Si @code{simpsum} vale @code{false} o si se utiliza la forma apostrofada @code{'sum}, el valor es una forma nominal que representa la notaci@'on sigma habitual en matem@'aticas.
+
+@end defvr
+
+
+
+@deffn {Funci@'on} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+
+Representa la suma de los valores de @code{expr} seg@'un el @'{@dotless{i}}ndice @var{i} var@'{@dotless{i}}a de @var{i_0} hasta @var{i_1}.
+La forma nominal @code{'sum} se presenta en forma de letra sigma may@'uscula.
+
+La funci@'on @code{sum} eval@'ua su sumando @var{expr} y los l@'{@dotless{i}}mites inferior y superior, @var{i_0} y @var{i_1}, pero no eval@'ua el @'{@dotless{i}}ndice @var{i}.
+
+Si la diferencia entre los l@'{@dotless{i}}mites superior e inferior es un n@'umero entero, el sumando @var{expr} se eval@'ua para cada valor del @'{@dotless{i}}ndice @var{i}, siendo el resultado una suma en forma expl@'{@dotless{i}}cita.
+
+En caso contrario, el rango del @'{@dotless{i}}ndice no est@'a definido, aplic@'andose entonces algunas reglas que permitan simplificar la suma.
+Cuando la variable global @code{simpsum} valga @code{true}, se aplicar@'an reglas adicionales.
+En ciertos casos, la simplificaci@'on dar@'a lugar a un resultado que ya no tenga el formato del sumatorio; en caso contrario se devolver@'a una forma nominal @code{'product}.
+
+Cuando @code{cauchysum} vale @code{true}, el producto de sumatorios se expresa como un producto de Cauchy, en cuyo caso el @'{@dotless{i}}ndice del sumatorio interior es funci@'on del @'{@dotless{i}}ndice del exterior, en lugar de variar independientemente.
+
+La variable global @code{genindex} guarda el prefijo alfab@'etico a utilizar cuando sea necesario generar autom@'aticamente el siguiente @'{@dotless{i}}ndice de sumatorio.
+
+La variable global @code{gensumnum} guarda el sufijo num@'erico a utilizar cuando sea necesario generar autom@'aticamente el siguiente @'{@dotless{i}}ndice de sumatorio. Si @code{gensumnum} vale @code{false}, un @'{@dotless{i}}ndice generado autom@'aticamente constar@'a s@'olo de @code{genindex}, sin sufijo num@'erico.
+
+V@'eanse tambi@'en @code{sumcontract}, @code{intosum},
+@code{bashindices}, @code{niceindices},
+@code{nouns} y @code{evflag}.
+
+Ejemplos:
+
+@c ===beg===
+@c sum (i^2, i, 1, 7);
+@c sum (a[i], i, 1, 7);
+@c sum (a(i), i, 1, 7);
+@c sum (a(i), i, 1, n);
+@c sum (2^i + i^2, i, 0, n);
+@c sum (2^i + i^2, i, 0, n), simpsum;
+@c sum (1/3^i, i, 1, inf);
+@c sum (1/3^i, i, 1, inf), simpsum;
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+@c sum (integrate (x^k, x, 0, 1), k, 1, n);
+@c sum (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
+
+@example
+(%i1) sum (i^2, i, 1, 7);
+(%o1)                          140
+(%i2) sum (a[i], i, 1, 7);
+(%o2)           a  + a  + a  + a  + a  + a  + a
+                 7    6    5    4    3    2    1
+(%i3) sum (a(i), i, 1, 7);
+(%o3)    a(7) + a(6) + a(5) + a(4) + a(3) + a(2) + a(1)
+(%i4) sum (a(i), i, 1, n);
+                            n
+                           ====
+                           \
+(%o4)                       >    a(i)
+                           /
+                           ====
+                           i = 1
+(%i5) sum (2^i + i^2, i, 0, n);
+                          n
+                         ====
+                         \       i    2
+(%o5)                     >    (2  + i )
+                         /
+                         ====
+                         i = 0
+(%i6) sum (2^i + i^2, i, 0, n), simpsum;
+                              3      2
+                   n + 1   2 n  + 3 n  + n
+(%o6)             2      + --------------- - 1
+                                  6
+(%i7) sum (1/3^i, i, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o7)                        >    --
+                            /      i
+                            ====  3
+                            i = 1
+(%i8) sum (1/3^i, i, 1, inf), simpsum;
+                                1
+(%o8)                           -
+                                2
+(%i9) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+                              inf
+                              ====
+                              \     1
+(%o9)                      30  >    --
+                              /      2
+                              ====  i
+                              i = 1
+(%i10) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+                                  2
+(%o10)                       5 %pi
+(%i11) sum (integrate (x^k, x, 0, 1), k, 1, n);
+                            n
+                           ====
+                           \       1
+(%o11)                      >    -----
+                           /     k + 1
+                           ====
+                           k = 1
+(%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10));
+          10    9    8    7    6    5    4    3    2
+(%o12)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
+@end example
+
+@end deffn
+
+
+
+@deffn {Funci@'on} sumcontract (@var{expr})
+Combina todos los sumatorios de una suma cuyos l@'{@dotless{i}}mites inferiores y superiores difieren por constantes. El resultado es una expresi@'on que contiene un sumatorio para conjunto de tales sumatorios. La funci@'on @code{sumcontract} combina todos los sumatorios compatibles y utiliza uno de los @'{@dotless{i}}ndices de uno de los sumatorios si puede, si no formar@'a un @'{@dotless{i}}ndice que sea razonable.
+
+@c WHEN IS intosum NECESSARY BEFORE sumcontract ??
+Puede ser necesario hacer @code{intosum (@var{expr})} antes que @code{sumcontract}.
+
+@end deffn
+
+
+
+@defvr {Variable opcional} sumexpand
+Valor por defecto: @code{false}
+
+Si @code{sumexpand} vale @code{true}, productos de sumatorios y de sumatorios con exponentes se reducen a sumatorios anidados.
+
+V@'ease tambi@'en @code{cauchysum}.
+
+Ejemplos:
+
+@example
+(%i1) sumexpand: true$
+(%i2) sum (f (i), i, 0, m) * sum (g (j), j, 0, n);
+                     m      n
+                    ====   ====
+                    \      \
+(%o2)                >      >     f(i1) g(i2)
+                    /      /
+                    ====   ====
+                    i1 = 0 i2 = 0
+(%i3) sum (f (i), i, 0, m)^2;
+                     m      m
+                    ====   ====
+                    \      \
+(%o3)                >      >     f(i3) f(i4)
+                    /      /
+                    ====   ====
+                    i3 = 0 i4 = 0
+@end example
+
+@end defvr
+
+
+
+
+
+
+
+
+
+@node Introducci@'on a las series, Funciones y variables para las series, Sumas y productos, Series
 @section Introducci@'on a las series
 
 Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular las series de las funciones diferenciables. Tambi@'en tiene herramientas como @code{nusum} capaces de encontrar la expresi@'on compacta de algunas series. Operaciones como la suma y la multiplicaci@'on operan de la forma habitual en el contexto de las series. Esta secci@'on presenta las variables globales que controlan la expansi@'on.
 @c end concepts Series
+
+
+
+
+
+
+
+
+
 
 @node Funciones y variables para las series, Series de Poisson, Introducci@'on a las series, Series
 @section Funciones y variables para las series
@@ -17,7 +320,6 @@ Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular
 @defvr {Variable opcional} cauchysum
 Valor por defecto: @code{false}
 
-@c REPHRASE
 Cuando se multiplican sumatorios infinitos, si @code{sumexpand} vale @code{true} y @code{cauchysum} vale @code{true}, entonces se utilizar@'a el producto  de Cauchy en lugar del usual. En el producto de Cauchy  el @'{@dotless{i}}ndice de la suma interna es funci@'on del @'{@dotless{i}}ndice de la exterior en lugar de variar de forma independiente. Un ejemplo aclara esta idea:
 
 @example
@@ -44,6 +346,8 @@ Cuando se multiplican sumatorios infinitos, si @code{sumexpand} vale @code{true}
 @end example
 
 @end defvr
+
+
 
 @deffn {Funci@'on} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
 Para cada funci@'on @var{f_i} de variable @var{x_i},  @code{deftaylor} define @var{expr_i} como una serie de Taylor alrededor de cero. La expresi@'on @var{expr_i} ser@'a un polinomio en  @var{x_i} o una suma; @code{deftaylor} admite tambi@'en expresiones m@'as generales.
@@ -74,12 +378,17 @@ Ejemplo:
 
 @end deffn
 
+
+
 @defvr {Variable opcional} maxtayorder
 Valor por defecto: @code{true}
 
 Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaci@'on algebraica de series truncadas de Taylor, la funci@'on @code{taylor} trata de retener tantos t@'erminos correctos como sea posible.
 
 @end defvr
+
+
+
 
 @deffn {Funci@'on} niceindices (@var{expr})
 Cambia las etiquetas de los @'{@dotless{i}}ndices de sumas y productos de @var{expr}. La funci@'on @code{niceindices} trata de cambiar cada @'{@dotless{i}}ndice al valor de @code{niceindicespref[1]}, a menos que esa etiqueta aparezca ya en el sumando o factor, en cuyo caso  @code{niceindices} realiza intentos con los siguientes elementos de  @code{niceindicespref}, hasta que encuentre una variable que que no est@'e en uso. Si todas las variables de la lista han sido ya revisadas, se formar@'an nuevos @'{@dotless{i}}nices a@~nadiendo n@'umeros enteros al valor de @code{niceindicespref[1]}, como @code{i0}, @code{i1}, @code{i2}, ....
@@ -112,6 +421,8 @@ Ejemplo:
 @end deffn
 
 
+
+
 @defvr {Variable opcional} niceindicespref
 Valor por defecto: @code{[i, j, k, l, m, n]}
 
@@ -142,6 +453,9 @@ Ejemplo:
 @end example
 
 @end defvr
+
+
+
 
 @deffn {Funci@'on} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
 Calcula la suma hipergeom@'etrica indefinida de  @var{expr} con respecto a la variable  @var{x} utilizando una procedimiento de decisi@'on debido a R.W. Gosper. La expresi@'on @var{expr} y el resultado deben poder ser escritos como productos de potencias enteras, factoriales, coeficientes binomiales y funciones racionales.
@@ -188,6 +502,10 @@ Dependent equations eliminated:  (2 3)
 @end example
 
 @end deffn
+
+
+
+
 
 @deffn {Funci@'on} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
 Devuelve la lista de todas las funciones racionales que tienen el desarrollo de Taylor dado, en las que la suma de los grados del numerador y denominador es menor o igual que el nivel de truncamiento de la serie de potencias.
@@ -241,15 +559,7 @@ No hay ninguna funci@'on racional de grado 4 en numerador y denominador con este
 
 @end deffn
 
-@defvr {Variable opcional} powerdisp
-Valor por defecto: @code{false}
 
-Si @code{powerdisp} vale @code{true}, se muestran las sumas con sus t@'erminos ordenados de menor a mayor potencia. As@'{@dotless{i}}, un polinomio se presenta como una serie de potencias truncada con el t@'ermino constante al principio y el de mayor potencia al final.
-
-Por defecto, los t@'erminos de una suma se muestran en el orden de las potencias decrecientes.
-
-@c NEED AN EXAMPLE HERE
-@end defvr
 
 
 @deffn {Funci@'on} powerseries (@var{expr}, @var{x}, @var{a})
@@ -303,6 +613,10 @@ in the first simplification we have returned:
 
 @end deffn
 
+
+
+
+
 @defvr {Variable opcional} psexpand
 Valor por defecto: @code{false}
 
@@ -315,6 +629,10 @@ Si @code{psexpand} vale @code{false}, las expresines multivariantes se presentan
 Si @code{psexpand} vale  @code{multi}, los t@'erminos de igual grado son agrupados.
 
 @end defvr
+
+
+
+
 
 @deffn {Funci@'on} revert (@var{expr}, @var{x})
 @deffnx {Funci@'on} revert2 (@var{expr}, @var{x}, @var{n})
@@ -358,6 +676,11 @@ Ejemplos:
 @end example
 
 @end deffn
+
+
+
+
+
 
 @deffn {Funci@'on} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
 @deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
@@ -517,6 +840,8 @@ Ejemplos:
 @end deffn
 
 
+
+
 @defvr {Variable opcional} taylordepth
 Valor por defecto: 3
 
@@ -525,6 +850,8 @@ Si todav@'{@dotless{i}}a no hay t@'erminos no nulos, la funci@'on @code{taylor} 
 tantas veces como sea necesario para que el grado del desarrollo sea menor o igual que @code{@var{n} 2^taylordepth}.
 
 @end defvr
+
+
 
 
 @deffn {Funci@'on} taylorinfo (@var{expr})
@@ -554,10 +881,14 @@ Ejemplo:
 @end deffn
 
 
+
+
 @deffn {Funci@'on} taylorp (@var{expr})
 Devuelve @code{true} si @var{expr} es un desarrollo de Taylor y @code{false} en caso contrario.
 
 @end deffn
+
+
 
 
 @defvr {Variable opcional} taylor_logexpand
@@ -569,6 +900,9 @@ Si @code{taylor_logexpand} vale @code{true}, todos los logaritmos se expanden co
 
 @c NEED EXAMPLES HERE
 @end defvr
+
+
+
 
 
 @defvr {Variable opcional} taylor_order_coefficients
@@ -583,10 +917,16 @@ Si @code{taylor_order_coefficients} vale @code{true}, los coeficientes del desar
 @c NEED EXAMPLES HERE
 @end defvr
 
+
+
+
+
 @deffn {Funci@'on} taylor_simplifier (@var{expr})
 Simplifica los coeficientes de la serie de potencias @var{expr}. Esta funci@'on es llamada desde la funci@'on @code{taylor}.
 
 @end deffn
+
+
 
 
 @defvr {Variable opcional} taylor_truncate_polynomials
@@ -607,6 +947,7 @@ Convierte @var{expr} del formato de @code{taylor} al formato CRE (Canonical Rati
 @end deffn
 
 
+
 @deffn {Funci@'on} trunc (@var{expr})
 Devuelve la representaci@'on interna de la expresi@'on @var{expr} de tal forma como si sus sumas fuesen una serie truncada de Taylor. La expresi@'on @var{expr} no sufre ninguna otra modificaci@'on.
 
@@ -624,6 +965,8 @@ Ejemplo:
 @end example
 
 @end deffn
+
+
 
 
 @deffn {Funci@'on} unsum (@var{f}, @var{n})
@@ -676,6 +1019,10 @@ Si @code{verbose} vale @code{true}, la funci@'on @code{powerseries} va imprimien
 
 
 
+
+
+
+
 @node Series de Poisson, , Funciones y variables para las series, Series
 @section Series de Poisson
 
@@ -684,6 +1031,8 @@ Si @code{verbose} vale @code{true}, la funci@'on @code{powerseries} va imprimien
 Convierte @var{a} en un codificado Poisson.
 
 @end deffn
+
+
 
 
 @deffn {Funci@'on} outofpois (@var{a})
@@ -768,6 +1117,4 @@ Id@'entico a @code{intopois (@var{a}*@var{b})}.
 Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{outofpois}, si es necesario convertir@'a @var{a} primero en una codificaci@'on de Poisson.
 
 @end deffn
-
-
 

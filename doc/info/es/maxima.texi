@@ -93,10 +93,11 @@ proponer ideas y comentar sus experiencias con Maxima:
 Infraestructura de Maxima
 
 * Introducci@'on a Maxima::            Muestra de sesiones con Maxima.
-* Detecci@'on e informe de fallos::    Gesti@'on de fallos en Maxima.
+* Detecci@'on e informe de fallos::    Gesti@'on de fallos.
 * Ayuda::                              Solicitando ayuda desde una sesi@'on de Maxima.
-* L@'{@dotless{i}}nea de Comandos::    Sintaxis de los comandos de Maxima.
-* Operadores::                         Operadores utilizados en expresiones de Maxima.
+* L@'{@dotless{i}}nea de comandos::    Sintaxis de los comandos de Maxima.
+* Operadores::                         Operadores internos y definidos por el usuario.
+* Evaluaci@'on::                       Evaluando expresiones.
 * Expresiones::                        Expresiones de Maxima.
 * Simplificaci@'on::                   Simplificando expresiones.
 * Gr@'aficos::                         Gr@'aficos en dos y tres dimensiones.
@@ -208,33 +209,38 @@ Ayuda
 * Documentaci@'on::               
 * Funciones y variables para la ayuda:: 
 
-L@'{@dotless{i}}nea de Comandos
+L@'{@dotless{i}}nea de comandos
 
-* Introducci@'on a la L@'{@dotless{i}}nea de Comandos::
-* Funciones y variables para  la L@'{@dotless{i}}nea de Comandos::
+* Introducci@'on a la l@'{@dotless{i}}nea de comandos::
+* Funciones y variables para la l@'{@dotless{i}}nea de comandos::
+* Funciones y variables para la impresi@'on::
 
 Operadores
 
-* n-arios::
-* no-fijos::
-* postfijos::
-* prefijos::
+* Introducci@'on a los operadores::
 * Operadores aritm@'eticos::
 * Operadores relacionales::
-* Operadores generales::
+* Operadores l@'ogicos::
+* Operadores para ecuaciones::
+* Operadores de asignaci@'on::
+* Operadores definidos por el usuario::
+
+Evaluaci@'on
+
+* Introducci@'on a la evaluaci@'on::
+* Funciones y variables para la evaluaci@'on::
 
 Expresiones
 
 * Introducci@'on a las expresiones::
-* Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::
 * Desigualdades::
-* Sintaxis::
 * Funciones y variables para expresiones::
 
 Simplificaci@'on
 
+* Introducci@'on a la simplificaci@'on::
 * Funciones y variables para simplificaci@'on::
 
 Gr@'aficos
@@ -323,7 +329,8 @@ M@'etodos num@'ericos
 
 Arrays
 
-* Funciones y variables para Arrays::
+* Introducci@'on a los arrays::
+* Funciones y variables para los arrays::
 
 Matrices y @'Algebra Lineal
 
@@ -351,7 +358,8 @@ atensor
 
 Series
 
-* Introducci@'on a las series::      
+* Sumas y productos::
+* Introducci@'on a las series::
 * Funciones y variables para las series::
 * Series de Poisson::
 
@@ -637,19 +645,23 @@ zeilberger
 @chapter Detecci@'on e informe de fallos
 @include Bugs.es.texi
 
-@node Ayuda, L@'{@dotless{i}}nea de Comandos, Detecci@'on e informe de fallos, Top
+@node Ayuda, L@'{@dotless{i}}nea de comandos, Detecci@'on e informe de fallos, Top
 @chapter Ayuda
 @include Help.es.texi
 
-@node L@'{@dotless{i}}nea de Comandos, Operadores, Ayuda, Top
-@chapter L@'{@dotless{i}}nea de Comandos
+@node L@'{@dotless{i}}nea de comandos, Operadores, Ayuda, Top
+@chapter L@'{@dotless{i}}nea de comandos
 @include Command.es.texi
 
-@node Operadores, Expresiones, L@'{@dotless{i}}nea de Comandos, Top
+@node Operadores, Evaluaci@'on, L@'{@dotless{i}}nea de comandos, Top
 @chapter Operadores
 @include Operators.es.texi
 
-@node Expresiones, Simplificaci@'on, Operadores, Top
+@node Evaluaci@'on, Expresiones, Operadores, Top
+@chapter Evaluaci@'on
+@include Evaluation.es.texi
+
+@node Expresiones, Simplificaci@'on, Evaluaci@'on, Top
 @chapter Expresiones
 @include Expressions.es.texi
 

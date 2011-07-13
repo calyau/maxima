@@ -1,10 +1,97 @@
-@c english version 1.18
+@c English version 2011-06-12
 @menu
-* Funciones y variables para Arrays::  
+* Introducci@'on a los arrays::
+* Funciones y variables para los arrays::
 @end menu
 
-@node Funciones y variables para Arrays,  , Arrays, Arrays
-@section Funciones y variables para Arrays
+
+
+@node Introducci@'on a los arrays, Funciones y variables para los arrays, Arrays, Arrays
+@section Introducci@'on a los arrays
+
+Los arrays m@'as flexibles son aquellos que no necesitan ser declarados, llamados
+tambi@'en, en ingl@'es, @i{hashed-arrays}, y se basan en que a una variable
+subindicada se le puede asignar un valor cualquiera. Los @'{@dotless{i}}ndices
+no necesitan ser n@'umeros enteros, admiti@'endose s@'{@dotless{i}}mbolos o
+expresiones. Los arrays no declarados crecen din@'amicamente seg@'un se le van
+asignando valores a sus elementos. En el siguiente ejemplo se muestra c@'omo
+se va construyendo un array no declarado @code{a}. Para obtener un listado de
+los elementos de un array se utiliza la funci@'on @code{listarray}.
+
+@example 
+(%i1) a[1,2]: 99;
+(%o1)                          99
+(%i2) a[x,y]: x^y;
+                                y
+(%o2)                          x
+(%i3) listarray(a);
+                                  y
+(%o3)                       [99, x ]
+@end example
+
+Otro tipo de arrays son los declarados, los cuales admiten hasta cinco dimensiones
+y pueden guardar valores de un tipo concreto, como @code{fixnum} para enteros o
+@code{flonum} para reales de coma flotante. Maxima distingue dos tipos de arrays
+declarados; los primeros se pueden definir declarando un s@'{@dotless{i}}mbolo
+como array, haciendo uso de la funci@'on @code{array}; los segundos son arrays
+de Lisp, en los que un s@'{@dotless{i}}mbolo se declara como tal con la
+funci@'on @code{make_array}.
+
+En el primer ejemplo se declara el s@'{@dotless{i}}mbolo @code{a} como array,
+mientras que en el segundo se declara @code{b} como array de Lisp.
+
+@example
+(%i1) array(a, fixnum, 2, 2);
+(%o1)                           a
+(%i2) b: make_array(fixnum, 2, 2);
+(%o2)              @{Array:  #2A((0 0) (0 0))@}
+@end example
+
+Cuando a la variable opcional @code{use_fast_arrays} se le asigna el valor
+@code{true}, la funci@'on @code{array} tambi@'en generar@'a un array de Lisp.
+Tal es lo que sucede en el ejemplo siguiente, en el que el s@'{@dotless{i}}mbolo
+@code{c} queda declarado como array de Lisp. T@'engase en cuenta que por este
+m@'etodo no se puede asignar el tipo de array, ya que al introducirle el tipo
+@code{fixnum} se genera un mensaje de error.
+
+@example
+(%i3) use_fast_arrays: true;
+(%o3)                         true
+(%i4) array(c, 2, 2);
+(%o4)    #2A((NIL NIL NIL) (NIL NIL NIL) (NIL NIL NIL))
+(%i5) c;
+(%o5)    #2A((NIL NIL NIL) (NIL NIL NIL) (NIL NIL NIL))
+(%i6) array(c, fixnum, 2, 2);
+
+make_array: dimensions must be integers; found [fixnum + 1, 3, 3]
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+Maxima tambi@'en dispone de funciones array, que pueden almacenar
+valores de funciones, y de funciones subindicadas.
+
+Se puede encontrar m@'as informaci@'on en las descripciones de las
+funciones. Los siguientes s@'{@dotless{i}}mbolos y funciones de Maxima
+permiten trabajar con arrays:
+
+@verbatim
+   array         arrayapply     arrayinfo   
+   arraymake     arrays         fillarray
+   listarray     make_array     rearray
+   remarray      subvar         subvarp
+   use_fast_arrays
+@end verbatim
+
+
+
+
+
+
+
+
+
+@node Funciones y variables para los arrays, , Introducci@'on a los arrays, Arrays
+@section Funciones y variables para los arrays
 
 @deffn {Funci@'on} array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Funci@'on} array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})
@@ -271,10 +358,6 @@ Ejemplos:
 
 @end defvr
 
-@deffn {Funci@'on} bashindices (@var{expr})
-Transforma la expresi@'on @var{expr} d@'andole a cada suma y producto un @'unico @'{@dotless{i}}ndice. Esto le da a @code{changevar} mayor precisi@'on cuando opera con sumas y productos. La forma del @'unico @'{@dotless{i}}ndice es @code{j@var{number}}. La cantidad @var{number} se determina en funci@'on de @code{gensumnum}, valor que puede cambiar el usuario.  Por ejemplo, haciendo @code{gensumnum:0$}.
-
-@end deffn
 
 @deffn {Funci@'on} fillarray (@var{A}, @var{B})
 Rellena el array @var{A} con los valores de @var{B}, que puede ser una lista o array.
@@ -609,6 +692,14 @@ Ejemplos:
 @end deffn
 
 
+
+@deffn {Funci@'on} subvarp (@var{expr})
+Devuelve @code{true} si @var{expr} es una variable subindicada, como @code{a[i]}.
+
+@end deffn
+
+
+
 @c THIS IS REALLY CONFUSING
 @defvr {Variable opcional} use_fast_arrays
 Valor por defecto: @code{false}
@@ -618,3 +709,5 @@ Si @code{use_fast_arrays} vale @code{true} entonces tan solo se reconocen dos ti
 @c AQUI QUEDAN TRES PARRAFOS SIN TRADUCIR
  
 @end defvr
+
+
