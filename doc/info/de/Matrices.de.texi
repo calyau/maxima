@@ -2,10 +2,10 @@
 @c File        : Matrices.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Matrices.texi revision 01.04.2011
+@c Original    : Matrices.texi revision 03.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 10.12.2010
-@c Revision    : 10.05.2011
+@c Revision    : 10.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -655,7 +655,7 @@ vereinfacht.
 
 @c --- 09.12.2010 DK -----------------------------------------------------------
 @anchor{dot0simp}
-@defvr {Option variable} dot0simp
+@defvr {Optionsvariable} dot0simp
 Standardwert: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??

@@ -14,15 +14,12 @@
 @defvr {System variable} %rnum_list
 Default value: @code{[]}
 
-@code{%rnum_list} is the list of variables introduced in solutions
-by @code{solve} and @code{algsys}.
-@code{%r} variables are added to @code{%rnum_list} in the order they
-are created.
-This is convenient for doing substitutions into the
-solution later on.
+@code{%rnum_list} is the list of variables introduced in solutions by
+@mref{solve} and @mrefdot{algsys}  @code{%r} variables are added to
+@code{%rnum_list} in the order they are created.  This is convenient for doing
+substitutions into the solution later on.
 @c WHAT DOES THIS STATEMENT MEAN ??
-It's recommended to use this list rather than
-doing @code{concat ('%r, j)}.
+It's recommended to use this list rather than doing @code{concat ('%r, j)}.
 
 @c ===beg===
 @c solve ([x + y = 3], [x,y]);
@@ -72,7 +69,7 @@ doing @code{concat ('%r, j)}.
 Default value: 10^8
 
 @c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
-@code{algepsilon} is used by @code{algsys}.
+@code{algepsilon} is used by @mrefdot{algsys}
 
 @opencatbox
 @category{Algebraic equations}
@@ -84,19 +81,17 @@ Default value: 10^8
 @defvr {Option variable} algexact
 Default value: @code{false}
 
-@code{algexact} affects the behavior of @code{algsys} as follows:
+@code{algexact} affects the behavior of @mref{algsys} as follows:
 
-If @code{algexact} is @code{true},
-@code{algsys} always calls @code{solve} and then uses @code{realroots}
-on @code{solve}'s failures.
+If @code{algexact} is @code{true}, @code{algsys} always calls @mref{solve} and
+then uses @mref{realroots} on @code{solve}'s failures.
 
-If @code{algexact} is @code{false}, @code{solve} is called only if
-the eliminant was not univariate, or if it was a quadratic or
-biquadratic.
+If @code{algexact} is @code{false}, @code{solve} is called only if the
+eliminant was not univariate, or if it was a quadratic or biquadratic.
 
-Thus @code{algexact: true} doesn't guarantee only exact
-solutions, just that @code{algsys} will first try as hard as it can to give
-exact solutions, and only yield approximations when all else fails.
+Thus @code{algexact: true} does not guarantee only exact solutions, just that
+@code{algsys} will first try as hard as it can to give exact solutions, and
+only yield approximations when all else fails.
 
 @c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
 
@@ -110,76 +105,77 @@ exact solutions, and only yield approximations when all else fails.
 @deffn  {Function} algsys ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
 @deffnx {Function} algsys ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
 
-Solves the simultaneous polynomials @var{expr_1}, @dots{}, @var{expr_m}
-or polynomial equations @var{eqn_1}, @dots{}, @var{eqn_m}
-for the variables @var{x_1}, @dots{}, @var{x_n}.
-An expression @var{expr} is equivalent to an equation @code{@var{expr} = 0}.
-There may be more equations than variables or vice versa.
+Solves the simultaneous polynomials @var{expr_1}, @dots{}, @var{expr_m} or
+polynomial equations @var{eqn_1}, @dots{}, @var{eqn_m} for the variables
+@var{x_1}, @dots{}, @var{x_n}.  An expression @var{expr} is equivalent to an
+equation @code{@var{expr} = 0}.  There may be more equations than variables or
+vice versa.
 
-@code{algsys} returns a list of solutions,
-with each solution given as a list of equations stating values of the variables
-@var{x_1}, @dots{}, @var{x_n} which satisfy the system of equations.
-If @code{algsys} cannot find a solution, an empty list @code{[]} is returned.
+@code{algsys} returns a list of solutions, with each solution given as a list
+of equations stating values of the variables @var{x_1}, @dots{}, @var{x_n}
+which satisfy the system of equations.  If @code{algsys} cannot find a solution,
+an empty list @code{[]} is returned.
 
-The symbols @code{%r1}, @code{%r2}, @dots{},
-are introduced as needed to represent arbitrary parameters in the solution;
-these variables are also appended to the list @code{%rnum_list}.
+The symbols @code{%r1}, @code{%r2}, @dots{}, are introduced as needed to
+represent arbitrary parameters in the solution; these variables are also
+appended to the list @mrefdot{%rnum_list}
 
 The method is as follows:
 
-(1) First the equations are factored and split into subsystems.
+@enumerate
+@item
+First the equations are factored and split into subsystems.
 
-(2) For each subsystem @var{S_i}, an equation @var{E} and a variable @var{x} are
-selected.
-The variable is chosen to have lowest nonzero degree.
-Then the resultant of @var{E} and @var{E_j} with respect to @var{x} is computed
-for each of the remaining equations @var{E_j} in the subsystem @var{S_i}.
-This yields a new subsystem @var{S_i'} in one fewer variables, as @var{x} has
-been eliminated.  The process now returns to (1).
+@item
+For each subsystem @var{S_i}, an equation @var{E} and a variable @var{x} are
+selected.  The variable is chosen to have lowest nonzero degree.  Then the
+resultant of @var{E} and @var{E_j} with respect to @var{x} is computed for each
+of the remaining equations @var{E_j} in the subsystem @var{S_i}.  This yields a
+new subsystem @var{S_i'} in one fewer variables, as @var{x} has been eliminated.
+The process now returns to (1).
 
-(3) Eventually, a subsystem consisting of a single equation is
-obtained.  If the equation is multivariate and no approximations in
-the form of floating point numbers have been introduced, then @code{solve} is
-called to find an exact solution.
+@item
+Eventually, a subsystem consisting of a single equation is obtained.  If the
+equation is multivariate and no approximations in the form of floating point
+numbers have been introduced, then @mref{solve} is called to find an exact
+solution.
 
-In some cases, @code{solve} is not be able to find a solution,
-or if it does the solution may be a very large expression.
+In some cases, @code{solve} is not be able to find a solution, or if it does
+the solution may be a very large expression.
 
 @c REMAINDER OF (3) IS PRETTY COMPLEX. HOW CAN IT BE CLARIFIED ??
-If the equation is univariate and is either linear, quadratic, or
-biquadratic, then again @code{solve} is called if no approximations have
-been introduced.  If approximations have been introduced or the
-equation is not univariate and neither linear, quadratic, or
-biquadratic, then if the switch @code{realonly} is @code{true}, the function
-@code{realroots} is called to find the real-valued solutions.  If
-@code{realonly} is @code{false}, then @code{allroots} is called which looks
-for real and complex-valued solutions.
+If the equation is univariate and is either linear, quadratic, or biquadratic,
+then again @code{solve} is called if no approximations have been introduced.
+If approximations have been introduced or the equation is not univariate and
+neither linear, quadratic, or biquadratic, then if the switch
+@mref{realonly} is @code{true}, the function @mref{realroots} is called to find
+the real-valued solutions.  If @code{realonly} is @code{false}, then
+@mref{allroots} is called which looks for real and complex-valued solutions.
 
-If @code{algsys} produces a solution which has
-fewer significant digits than required, the user can change the value
-of @code{algepsilon} to a higher value.
+If @code{algsys} produces a solution which has fewer significant digits than
+required, the user can change the value of @mref{algepsilon} to a higher value.
 
-If @code{algexact} is set to
-@code{true}, @code{solve} will always be called.
+If @code{algexact} is set to @code{true}, @code{solve} will always be called.
 @c algepsilon IS IN Floating.texi -- MAY WANT TO BRING IT INTO THIS FILE
 
-(4) Finally, the solutions obtained in step (3) are substituted into
+@item
+Finally, the solutions obtained in step (3) are substituted into
 previous levels and the solution process returns to (1).
 @c "PREVIOUS LEVELS" -- WHAT ARE THOSE ??
+@end enumerate
 
-When @code{algsys} encounters a multivariate equation which contains
-floating point approximations (usually due to its failing to find
-exact solutions at an earlier stage), then it does not attempt to
-apply exact methods to such equations and instead prints the message:
+When @code{algsys} encounters a multivariate equation which contains floating
+point approximations (usually due to its failing to find exact solutions at an
+earlier stage), then it does not attempt to apply exact methods to such
+equations and instead prints the message:
 "@code{algsys} cannot solve - system too complicated."
 
-Interactions with @code{radcan} can produce large or complicated
-expressions.
-In that case, it may be possible to isolate parts of the result
-with @code{pickapart} or @code{reveal}.
+Interactions with @mref{radcan} can produce large or complicated expressions.
+In that case, it may be possible to isolate parts of the result with
+@mref{pickapart} or @mrefdot{reveal}
 
-Occasionally, @code{radcan} may introduce an imaginary unit
-@code{%i} into a solution which is actually real-valued.
+Occasionally, @code{radcan} may introduce an imaginary unit @code{%i} into a
+solution which is actually real-valued.
 
 Examples:
 
@@ -237,15 +233,14 @@ Examples:
 Computes numerical approximations of the real and complex roots of the
 polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
-The flag @code{polyfactor} when @code{true} causes
-@code{allroots} to factor the polynomial over the real numbers if the
-polynomial is real, or over the complex numbers, if the polynomial is
-complex.
+The flag @mref{polyfactor} when @code{true} causes @code{allroots} to factor
+the polynomial over the real numbers if the polynomial is real, or over the
+complex numbers, if the polynomial is complex.
 
 @code{allroots} may give inaccurate results in case of multiple roots.
 If the polynomial is real, @code{allroots (%i*@var{p})}) may yield
-more accurate approximations than @code{allroots (@var{p})},
-as @code{allroots} invokes a different algorithm in that case.
+more accurate approximations than @code{allroots (@var{p})}, as @code{allroots}
+invokes a different algorithm in that case.
 
 @code{allroots} rejects non-polynomials.  It requires that the numerator
 after @code{rat}'ing should be a polynomial, and it requires that the
@@ -253,20 +248,21 @@ denominator be at most a complex number.  As a result of this @code{allroots}
 will always return an equivalent (but factored) expression, if
 @code{polyfactor} is @code{true}.
 
-For complex polynomials an algorithm by Jenkins and Traub is
-used (Algorithm 419, @i{Comm. ACM}, vol. 15, (1972), p. 97).
-For real polynomials the algorithm used is due to Jenkins (Algorithm 493,
-@i{ACM TOMS}, vol. 1, (1975), p.178).
+For complex polynomials an algorithm by Jenkins and Traub is used
+(Algorithm 419, @i{Comm. ACM}, vol. 15, (1972), p. 97).  For real polynomials
+the algorithm used is due to Jenkins (Algorithm 493, @i{ACM TOMS}, vol. 1,
+(1975), p.178).
 
 Examples:
 
-@c EXAMPLES GENERATED BY THESE INPUTS:
+@c ===beg===
 @c eqn: (1 + 2*x)^3 = 13.5*(1 + x^5);
 @c soln: allroots (eqn);
 @c for e in soln
 @c         do (e2: subst (e, eqn), disp (expand (lhs(e2) - rhs(e2))));
 @c polyfactor: true$
 @c allroots (eqn);
+@c ===end===
 @example
 (%i1) eqn: (1 + 2*x)^3 = 13.5*(1 + x^5);
                             3          5
@@ -313,9 +309,9 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 Computes numerical approximations of the real and complex roots of the
 polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
-In all respects, @code{bfallroots} is identical to @code{allroots} except 
+In all respects, @code{bfallroots} is identical to @code{allroots} except
 that @code{bfallroots} computes the roots using bigfloats.  See 
-@ref{allroots} for more information.
+@mref{allroots} for more information.
 
 @opencatbox
 @category{Polynomials} @category{Numerical methods}
@@ -330,7 +326,7 @@ Default value: @code{true}
 @c WHAT IS THE CONTEXT HERE ?? (TO WHICH OTHER FUNCTION DOES THIS APPLY ??)
 @c --- According to the documentation, to linsolve
 When @code{backsubst} is @code{false}, prevents back substitution in
-@code{linsolve} after the equations have been triangularized.  This may
+@mref{linsolve} after the equations have been triangularized.  This may
 be helpful in very big problems where back substitution would cause
 the generation of extremely large expressions.
 
@@ -360,12 +356,12 @@ the generation of extremely large expressions.
 @defvr {Option variable} breakup
 Default value: @code{true}
 
-When @code{breakup} is @code{true}, @code{solve} expresses solutions of cubic
+When @code{breakup} is @code{true}, @mref{solve} expresses solutions of cubic
 and quartic equations in terms of common subexpressions, which are assigned to
 intermediate expression labels (@code{%t1}, @code{%t2}, etc.).
 Otherwise, common subexpressions are not identified.
 
-@code{breakup: true} has an effect only when @code{programmode} is @code{false}.
+@code{breakup: true} has an effect only when @mref{programmode} is @code{false}.
 
 Examples:
 
@@ -457,10 +453,10 @@ Solution:
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN ??
-If set to @code{false} within a @code{block} will inhibit
-the display of output generated by the solve functions called from
-within  the @code{block}.  Termination of the @code{block} with a dollar sign,
-$, sets @code{dispflag} to @code{false}.
+If set to @code{false} within a @code{block} will inhibit the display of output
+generated by the solve functions called from within the @code{block}.
+Termination of the @code{block} with a dollar sign, $, sets @code{dispflag} to
+@code{false}.
 
 @opencatbox
 @category{Algebraic equations} @category{Display flags and variables}
@@ -505,17 +501,17 @@ and obvious generalizations are missing.
 @defvr {Option variable} globalsolve
 Default value: @code{false}
 
-When @code{globalsolve} is @code{true},
-solved-for variables are assigned the solution values found by @code{linsolve},
-and by @code{solve} when solving two or more linear equations.
+When @code{globalsolve} is @code{true}, solved-for variables are assigned the
+solution values found by @code{linsolve}, and by @mref{solve} when solving two
+or more linear equations.
 
-When @code{globalsolve} is @code{false}, solutions found by @code{linsolve} and
+When @code{globalsolve} is @code{false}, solutions found by @mref{linsolve} and
 by @code{solve} when solving two or more linear equations are expressed as
 equations, and the solved-for variables are not assigned.
 
 When solving anything other than two or more linear equations, @code{solve}
 ignores @code{globalsolve}.  Other functions which solve equations (e.g.,
-@code{algsys}) always ignore @code{globalsolve}.
+@mref{algsys}) always ignore @code{globalsolve}.
 
 Examples:
 
@@ -614,19 +610,18 @@ to use @code{@var{f}(@var{x})} as an initial guess.
 @defvr {Option variable} ieqnprint
 Default value: @code{true}
 
-@code{ieqnprint} governs the behavior of the result
-returned by the @code{ieqn} command. When @code{ieqnprint} is
-@code{false}, the lists returned by the @code{ieqn} function are of the form
+@code{ieqnprint} governs the behavior of the result returned by the
+@mref{ieqn} command.  When @code{ieqnprint} is @code{false}, the lists returned
+by the @code{ieqn} function are of the form
 
    [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]
 
 where @var{flag} is absent if the solution is exact.
 
-Otherwise, it is the
-word @code{approximate} or @code{incomplete} corresponding to an inexact or
-non-closed form solution, respectively. If a series method was used,
-@var{nterms} gives the number of terms taken (which could be less than the n
-given to @code{ieqn} if an error prevented generation of further terms).
+Otherwise, it is the word @code{approximate} or @code{incomplete} corresponding
+to an inexact or non-closed form solution, respectively.  If a series method was
+used, @var{nterms} gives the number of terms taken (which could be less than
+the n given to @code{ieqn} if an error prevented generation of further terms).
 
 @opencatbox
 @category{Integral equations}
@@ -637,19 +632,17 @@ given to @code{ieqn} if an error prevented generation of further terms).
 @anchor{lhs}
 @deffn {Function} lhs (@var{expr})
 
-Returns the left-hand side (that is, the first argument)
-of the expression @var{expr},
-when the operator of @var{expr}
-is one of the relational operators @code{< <= = # equal notequal >= >},
+Returns the left-hand side (that is, the first argument) of the expression
+@var{expr}, when the operator of @var{expr} is one of the relational operators
+@code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-one of the assignment operators @code{:= ::= : ::},
-or a user-defined binary infix operator, as declared by @code{infix}.
+one of the assignment operators @code{:= ::= : ::}, or a user-defined binary
+infix operator, as declared by @mrefdot{infix}
 
-When @var{expr} is an atom or
-its operator is something other than the ones listed above,
-@code{lhs} returns @var{expr}.
+When @var{expr} is an atom or its operator is something other than the ones
+listed above, @code{lhs} returns @var{expr}.
 
-See also @code{rhs}.
+See also @mrefdot{rhs}
 
 Examples:
 
@@ -712,23 +705,20 @@ Examples:
 Solves the list of simultaneous linear equations for the list of variables.
 The expressions must each be polynomials in the variables and may be equations.
 
-When @code{globalsolve} is @code{true},
-each solved-for variable is bound to its value in the solution of the equations.
+When @mref{globalsolve} is @code{true}, each solved-for variable is bound to
+its value in the solution of the equations.
 
-When @code{backsubst} is @code{false}, @code{linsolve}
-does not carry out back substitution after
-the equations have been triangularized.  This may be necessary in very
-big problems where back substitution would cause the generation of
-extremely large expressions.
+When @mref{backsubst} is @code{false}, @code{linsolve} does not carry out back
+substitution after the equations have been triangularized.  This may be
+necessary in very big problems where back substitution would cause the
+generation of extremely large expressions.
 
-When @code{linsolve_params} is @code{true},
-@code{linsolve} also generates the @code{%r} symbols
-used to represent arbitrary parameters described in the manual under
-@code{algsys}.
-Otherwise, @code{linsolve} solves an under-determined system of
-equations with some variables expressed in terms of others.
+When @mref{linsolve_params} is @code{true}, @code{linsolve} also generates the
+@code{%r} symbols used to represent arbitrary parameters described in the manual
+under @mrefdot{algsys}  Otherwise, @code{linsolve} solves an under-determined
+system of equations with some variables expressed in terms of others.
 
-When @code{programmode} is @code{false}, @code{linsolve} displays the solution
+When @mref{programmode} is @code{false}, @code{linsolve} displays the solution
 with intermediate expression (@code{%t}) labels, and returns the list of labels.
 
 @c ===beg===
@@ -804,12 +794,12 @@ Solution
 @c DO ANY FUNCTIONS OTHER THAN linsolve RESPECT linsolvewarn ??
 
 @c -----------------------------------------------------------------------------
-@anchor{linesolvewarn}
+@anchor{linsolvewarn}
 @defvr {Option variable} linsolvewarn
 Default value: @code{true}
 
-When @code{linsolvewarn} is @code{true},
-@code{linsolve} prints a message "Dependent equations eliminated".
+When @code{linsolvewarn} is @code{true}, @mref{linsolve} prints a message
+"Dependent equations eliminated".
 
 @opencatbox
 @category{Linear equations}
@@ -821,11 +811,11 @@ When @code{linsolvewarn} is @code{true},
 @defvr {Option variable} linsolve_params
 Default value: @code{true}
 
-When @code{linsolve_params} is @code{true}, @code{linsolve} also generates
+When @code{linsolve_params} is @code{true}, @mref{linsolve} also generates
 the @code{%r} symbols used to represent arbitrary parameters described in
-the manual under @code{algsys}.
-Otherwise, @code{linsolve} solves an under-determined system of
-equations with some variables expressed in terms of others.
+the manual under @mrefdot{algsys}  Otherwise, @code{linsolve} solves an
+under-determined system of equations with some variables expressed in terms of
+others.
 
 @opencatbox
 @category{Linear equations}
@@ -837,9 +827,8 @@ equations with some variables expressed in terms of others.
 @defvr {System variable} multiplicities
 Default value: @code{not_set_yet}
 
-@code{multiplicities} is set to a list of the
-multiplicities of the individual solutions returned by @code{solve} or
-@code{realroots}.
+@code{multiplicities} is set to a list of the multiplicities of the individual
+solutions returned by @mref{solve} or @mrefdot{realroots}
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
@@ -851,11 +840,9 @@ multiplicities of the individual solutions returned by @code{solve} or
 @anchor{nroots}
 @deffn {Function} nroots (@var{p}, @var{low}, @var{high})
 
-Returns the number of real roots of the real
-univariate polynomial @var{p} in the half-open interval
-@code{(@var{low}, @var{high}]}.
-The endpoints of the interval may be @code{minf} or @code{inf}.
-infinity and plus infinity.
+Returns the number of real roots of the real univariate polynomial @var{p} in
+the half-open interval @code{(@var{low}, @var{high}]}.  The endpoints of the
+interval may be @code{minf} or @code{inf}.
 
 @code{nroots} uses the method of Sturm sequences.
 
@@ -876,10 +863,11 @@ infinity and plus infinity.
 @anchor{nthroot}
 @deffn {Function} nthroot (@var{p}, @var{n})
 
-where p is a polynomial with integer coefficients and
-n is a positive integer returns q, a polynomial over the integers, such
-that q^n=p or prints an error message indicating that p is not a perfect
-nth power. This routine is much faster than @code{factor} or even @code{sqfr}.
+where @var{p} is a polynomial with integer coefficients and @var{n} is a
+positive integer returns @code{q}, a polynomial over the integers, such that
+@code{q^n = p} or prints an error message indicating that @var{p} is not a
+perfect nth power.  This routine is much faster than @mref{factor} or even
+@mrefdot{sqfr}
 
 @opencatbox
 @category{Polynomials}
@@ -891,10 +879,10 @@ nth power. This routine is much faster than @code{factor} or even @code{sqfr}.
 @defvr {Option variable} polyfactor
 Default value: @code{false}
 
-The option variable @code{polyfactor} when @code{true} causes @code{allroots} 
-and @code{bfallroots} to factor the polynomial over the real numbers if the
-polynomial is real, or over the complex numbers, if the polynomial is
-complex.
+The option variable @code{polyfactor} when @code{true} causes
+@mref{allroots} and @mref{bfallroots} to factor the polynomial over the real
+numbers if the polynomial is real, or over the complex numbers, if the
+polynomial is complex.
 
 See @code{allroots} for an example.
 
@@ -908,16 +896,15 @@ See @code{allroots} for an example.
 @defvr {Option variable} programmode
 Default value: @code{true}
 
-When @code{programmode} is @code{true},
-@code{solve}, @code{realroots}, @code{allroots}, and @code{linsolve}
-return solutions as elements in a list.
+When @code{programmode} is @code{true}, @mrefcomma{solve}@w{}
+@mrefcomma{realroots} @mrefcomma{allroots} and @mref{linsolve} return solutions
+as elements in a list.
 @c WHAT DOES BACKSUBSTITUTION HAVE TO DO WITH RETURN VALUES ??
-(Except when @code{backsubst} is set to @code{false}, in which case
+(Except when @mref{backsubst} is set to @code{false}, in which case
 @code{programmode: false} is assumed.)
 
-When @code{programmode} is @code{false}, @code{solve}, etc.
-create intermediate expression labels
-@code{%t1}, @code{t2}, etc., and assign the solutions to them.
+When @code{programmode} is @code{false}, @code{solve}, etc. create intermediate
+expression labels @code{%t1}, @code{t2}, etc., and assign the solutions to them.
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
@@ -930,8 +917,8 @@ create intermediate expression labels
 @defvr {Option variable} realonly
 Default value: @code{false}
 
-When @code{realonly} is @code{true}, @code{algsys} returns only
-those solutions which are free of @code{%i}.
+When @code{realonly} is @code{true}, @mref{algsys} returns only those solutions
+which are free of @code{%i}.
 
 @opencatbox
 @category{Algebraic equations}
@@ -946,26 +933,25 @@ those solutions which are free of @code{%i}.
 @deffnx {Function} realroots (@var{eqn})
 
 Computes rational approximations of the real roots of the polynomial @var{expr}
-or polynomial equation @var{eqn} of one variable,
-to within a tolerance of @var{bound}.
-Coefficients of @var{expr} or @var{eqn} must be literal numbers;
+or polynomial equation @var{eqn} of one variable, to within a tolerance of
+@var{bound}.  Coefficients of @var{expr} or @var{eqn} must be literal numbers;
 symbol constants such as @code{%pi} are rejected.
 
 @code{realroots} assigns the multiplicities of the roots it finds
-to the global variable @code{multiplicities}.
+to the global variable @mrefdot{multiplicities}
 
-@code{realroots} constructs a Sturm sequence to bracket each root,
-and then applies bisection to refine the approximations.
-All coefficients are converted to rational equivalents before searching for
-roots, and computations are carried out by exact rational arithmetic.
-Even if some coefficients are floating-point numbers, the results are rational
-(unless coerced to floats by the @code{float} or @code{numer} flags).
+@code{realroots} constructs a Sturm sequence to bracket each root, and then
+applies bisection to refine the approximations.  All coefficients are converted
+to rational equivalents before searching for roots, and computations are carried
+out by exact rational arithmetic.  Even if some coefficients are floating-point
+numbers, the results are rational (unless coerced to floats by the
+@mref{float} or @mref{numer} flags).
 
 When @var{bound} is less than 1, all integer roots are found exactly.
 When @var{bound} is unspecified, it is assumed equal to the global variable
-@code{rootsepsilon}.
+@mrefdot{rootsepsilon}
 
-When the global variable @code{programmode} is @code{true}, @code{realroots}
+When the global variable @mref{programmode} is @code{true}, @code{realroots}
 returns a list of the form @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
 When @code{programmode} is @code{false}, @code{realroots} creates intermediate
 expression labels @code{%t1}, @code{%t2}, @dots{},
@@ -1011,19 +997,17 @@ Examples:
 @anchor{rhs}
 @deffn {Function} rhs (@var{expr})
 
-Returns the right-hand side (that is, the second argument)
-of the expression @var{expr},
-when the operator of @var{expr}
-is one of the relational operators @code{< <= = # equal notequal >= >},
+Returns the right-hand side (that is, the second argument) of the expression
+@var{expr}, when the operator of @var{expr} is one of the relational operators
+@code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-one of the assignment operators @code{:= ::= : ::},
-or a user-defined binary infix operator, as declared by @code{infix}.
+one of the assignment operators @code{:= ::= : ::}, or a user-defined binary
+infix operator, as declared by @mrefdot{infix}
 
-When @var{expr} is an atom or
-its operator is something other than the ones listed above,
-@code{rhs} returns 0.
+When @var{expr} is an atom or its operator is something other than the ones
+listed above, @code{rhs} returns 0.
 
-See also @code{lhs}.
+See also @mrefdot{lhs}
 
 Examples:
 
@@ -1084,8 +1068,8 @@ Examples:
 @defvr {Option variable} rootsconmode
 Default value: @code{true}
 
-@code{rootsconmode} governs the behavior of the
-@code{rootscontract} command.  See @code{rootscontract} for details.
+@code{rootsconmode} governs the behavior of the @code{rootscontract} command.
+See @mref{rootscontract} for details.
 
 @opencatbox
 @category{Expressions} @category{Simplification flags and variables}
@@ -1098,16 +1082,15 @@ Default value: @code{true}
 @anchor{rootscontract}
 @deffn {Function} rootscontract (@var{expr})
 
-Converts products of roots into roots of products.
-For example,
+Converts products of roots into roots of products.  For example,
 @code{rootscontract (sqrt(x)*y^(3/2))} yields @code{sqrt(x*y^3)}.
 
-When @code{radexpand} is @code{true} and @code{domain} is @code{real},
-@code{rootscontract} converts @code{abs} into @code{sqrt}, e.g.,
+When @mref{radexpand} is @code{true} and @mref{domain} is @code{real},
+@code{rootscontract} converts @mref{abs} into @mref{sqrt}, e.g.,
 @code{rootscontract (abs(x)*sqrt(y))} yields @code{sqrt(x^2*y)}.
 
-There is an option @code{rootsconmode}
-affecting @code{rootscontract} as follows:
+There is an option @mref{rootsconmode} affecting @code{rootscontract} as
+follows:
 
 @example
 Problem            Value of        Result of applying
@@ -1127,12 +1110,12 @@ key to the @code{rootsconmode: true} examples is simply that 2 divides into 4
 but not into 3.  @code{rootsconmode: all} involves taking the least common
 multiple of the denominators of the exponents.
 
-@code{rootscontract} uses @code{ratsimp} in a manner similar to
-@code{logcontract}.
+@code{rootscontract} uses @mref{ratsimp} in a manner similar to
+@mrefdot{logcontract}
 
 Examples:
 
-@c FOLLOWING ADAPTED FROM example (rootscontract)
+@c ===beg===
 @c rootsconmode: false$
 @c rootscontract (x^(1/2)*y^(3/2));
 @c rootscontract (x^(1/2)*y^(1/4));
@@ -1147,6 +1130,7 @@ Examples:
 @c                     *sqrt(sqrt(1 + x) - sqrt(x)));
 @c rootsconmode: true$
 @c rootscontract (sqrt(5 + sqrt(5)) - 5^(1/4)*sqrt(1 + sqrt(5)));
+@c ===end===
 @example
 (%i1) rootsconmode: false$
 (%i2) rootscontract (x^(1/2)*y^(3/2));
@@ -1187,10 +1171,10 @@ Examples:
 @defvr {Option variable} rootsepsilon
 Default value: 1.0e-7
 
-@code{rootsepsilon} is the tolerance which establishes the
-confidence interval for the roots found by the @code{realroots} function.
-@c IS IT GUARANTEED THAT |ACTUAL - ESTIMATE| < rootepsilon OR IS IT SOME OTHER NOTION ??
-@c NEED EXAMPLE HERE
+@code{rootsepsilon} is the tolerance which establishes the confidence interval
+for the roots found by the @mref{realroots} function.
+@c IS IT GUARANTEED THAT |ACTUAL - ESTIMATE| < rootepsilon OR IS IT SOME OTHER
+@c NOTION ?? NEED EXAMPLE HERE
 
 @opencatbox
 @category{Polynomials} @category{Numerical methods}
@@ -1232,19 +1216,19 @@ solved for, say @code{F(X)}, then it is first solved for @code{F(X)} (call the
 result @var{C}), then the equation @code{F(X)=C} can be solved for @var{X}
 provided the inverse of the function @var{F} is known.
 
-@code{breakup} if @code{false} will cause @code{solve} to express the solutions
+@mref{breakup} if @code{false} will cause @code{solve} to express the solutions
 of cubic or quartic equations as single expressions rather than as made
 up of several common subexpressions which is the default.
 
-@code{multiplicities} - will be set to a list of the multiplicities of the
-individual solutions returned by @code{solve}, @code{realroots}, or
-@code{allroots}.  Try @code{apropos (solve)} for the switches which affect
-@code{solve}.  @code{describe} may then by used on the individual switch names
+@mref{multiplicities} - will be set to a list of the multiplicities of the
+individual solutions returned by @code{solve}, @mrefcomma{realroots} or
+@mrefdot{allroots}  Try @code{apropos (solve)} for the switches which affect
+@code{solve}.  @mref{describe} may then by used on the individual switch names
 if their purpose is not clear.
 
 @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 solves a system of simultaneous (linear or non-linear) polynomial equations by
-calling @code{linsolve} or @code{algsys} and returns a list of the solution
+calling @mref{linsolve} or @mref{algsys} and returns a list of the solution
 lists in the variables.  In the case of @code{linsolve} this list would contain
 a single list of solutions.  It takes two lists as arguments.  The first list
 represents the equations to be solved; the second list is a
@@ -1253,15 +1237,14 @@ variables in the equations is equal to the number of equations, the
 second argument-list may be omitted.
 
 @c I think this is not true --hgeyer
-@c
+@c 
 @c if no unique
 @c solution exists, then @code{singular} will be displayed.
 
-When @code{programmode} is @code{false},
-@code{solve} displays solutions with intermediate expression (@code{%t}) labels,
-and returns the list of labels.
+When @mref{programmode} is @code{false}, @code{solve} displays solutions with
+intermediate expression (@code{%t}) labels, and returns the list of labels.
 
-When @code{globalsolve} is @code{true} and the problem is to solve two or more
+When @mref{globalsolve} is @code{true} and the problem is to solve two or more
 linear equations, each solved-for variable is bound to its value in the solution
 of the equations.
 
@@ -1373,8 +1356,7 @@ y = - .1535675710019696]]
 (%o12)                          0
 @end example
 
-The symbols @code{%r} are used to denote arbitrary constants in a
-solution.
+The symbols @code{%r} are used to denote arbitrary constants in a solution.
 
 @example
 (%i1) solve([x+y=1,2*x+2*y=2],[x,y]);
@@ -1383,19 +1365,19 @@ solve: dependent equations eliminated: (2)
 (%o1)                      [[x = 1 - %r1, y = %r1]]
 @end example
 
-@xref{algsys}, and
-@xref{%rnum_list}, for more information.
+See @mref{algsys} and @mref{%rnum_list} for more information.
 
 @opencatbox
 @category{Algebraic equations}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} solvedecomposes
 Default value: @code{true}
 
 When @code{solvedecomposes} is @code{true}, @code{solve} calls
-@code{polydecomp} if asked to solve polynomials.
+@mref{polydecomp} if asked to solve polynomials.
 @c OTHERWISE WHAT HAPPENS -- CAN'T SOLVE POLYNOMIALS, OR SOME OTHER METHOD IS USED ??
 
 @opencatbox
@@ -1408,9 +1390,9 @@ When @code{solvedecomposes} is @code{true}, @code{solve} calls
 @defvr {Option variable} solveexplicit
 Default value: @code{false}
 
-When @code{solveexplicit} is @code{true}, inhibits @code{solve} from
-returning implicit solutions, that is, solutions of the form @code{F(x) = 0}
-where @code{F} is some function.
+When @code{solveexplicit} is @code{true}, inhibits @mref{solve} from returning
+implicit solutions, that is, solutions of the form @code{F(x) = 0} where
+@code{F} is some function.
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
@@ -1424,9 +1406,9 @@ where @code{F} is some function.
 Default value: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-When @code{solvefactors} is @code{false}, @code{solve} does not try to
-factor the expression.  The @code{false} setting may be desired in some cases
-where factoring is not necessary.
+When @code{solvefactors} is @code{false}, @mref{solve} does not try to factor
+the expression.  The @code{false} setting may be desired in some cases where
+factoring is not necessary.
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
@@ -1439,7 +1421,7 @@ where factoring is not necessary.
 @defvr {Option variable} solvenullwarn
 Default value: @code{true}
 
-When @code{solvenullwarn} is @code{true}, @code{solve} prints a warning message
+When @code{solvenullwarn} is @code{true}, @mref{solve} prints a warning message
 if called with either a null equation list or a null variable list.  For
 example, @code{solve ([], [])} would print two warning messages and return
 @code{[]}.
@@ -1454,9 +1436,9 @@ example, @code{solve ([], [])} would print two warning messages and return
 @defvr {Option variable} solveradcan
 Default value: @code{false}
 
-When @code{solveradcan} is @code{true}, @code{solve} calls @code{radcan}
-which makes @code{solve} slower but will allow certain problems
-containing exponentials and logarithms to be solved.
+When @code{solveradcan} is @code{true}, @mref{solve} calls @mref{radcan}@w{}
+which makes @code{solve} slower but will allow certain problems containing
+exponentials and logarithms to be solved.
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
@@ -1470,10 +1452,9 @@ containing exponentials and logarithms to be solved.
 Default value: @code{true}
 
 @c MAYBE THIS CAN BE CLARIFIED
-When @code{solvetrigwarn} is @code{true},
-@code{solve} may print a message saying that it is using inverse
-trigonometric functions to solve the equation, and thereby losing
-solutions.
+When @code{solvetrigwarn} is @code{true}, @mref{solve} may print a message
+saying that it is using inverse trigonometric functions to solve the equation,
+and thereby losing solutions.
 @c NEED AN EXAMPLE HERE
 
 @opencatbox

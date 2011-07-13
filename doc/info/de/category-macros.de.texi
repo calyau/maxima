@@ -143,6 +143,7 @@
              Er-geb-nis
              Ex-po-nen-tial-funk-tion
              Fra-ge-zei-chen
+             Fres-nel-funk-tion
              Funk-tion
              ge-kenn-zeich-net
              ge-ne-riert
@@ -150,6 +151,7 @@
              Glei-chung
              Glei-chung-en
              Glei-chungs-sys-tem
+             Glei-chungs-sys-tems
              Gleit-kom-ma-zah-len
              Glo-ba-le
              Gnuplot
