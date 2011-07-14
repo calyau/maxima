@@ -161,6 +161,7 @@
              Hilfs-pro-gram-me
              In-for-ma-tio-nen
              In-te-gra-tions-in-ter-valls
+             In-te-gra-tions-va-ri-ab-le
              Iso-li-nien
              ka-no-ni-scher
              Kon-stan-te
