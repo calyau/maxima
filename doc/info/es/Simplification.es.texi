@@ -113,8 +113,8 @@ apropiada.
 
 Si las t@'ecnicas anteriores no devuelven el resultado esperado por el usuario,
 @'este puede extender a voluntad las reglas que pueda aplicar Maxima; para m@'as
-informaci@'on al respecto, v@'ease el cap@'{@dotless{i}}tulo dedicado a los
-modelos y reglas.
+informaci@'on al respecto, v@'ease el cap@'{@dotless{i}}tulo dedicado a las
+reglas y patrones.
 
 
 
