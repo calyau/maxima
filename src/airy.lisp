@@ -30,6 +30,7 @@
 (defmfun $airy_ai (z)
   "Airy function Ai(z)"
   (simplify (list '(%airy_ai) (resimplify z))))
+
 (defprop $airy_ai %airy_ai alias)
 (defprop $airy_ai %airy_ai verb)
 (defprop %airy_ai $airy_ai reversealias)
@@ -37,7 +38,10 @@
 (defprop %airy_ai simp-%airy_ai operators)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
 
-;; Airy Ai function has mirror symmetry
+;; airy_ai distributes over lists, matrices, and equations
+(defprop %airy_ai (mlist $matrix mequal) distribute_over)
+
+;; airy_ai has mirror symmetry
 (defprop %airy_ai t commutes-with-conjugate)
 
 ;; Integral of Ai(z)
@@ -86,6 +90,7 @@
 (defmfun $airy_dai (z)
   "Derivative dAi/dz of Airy function Ai(z)"
   (simplify (list '(%airy_dai) (resimplify z))))
+
 (defprop $airy_dai %airy_dai alias)
 (defprop $airy_dai %airy_dai verb)
 (defprop %airy_dai $airy_dai reversealias)
@@ -94,7 +99,10 @@
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 (defprop %airy_dai ((z) ((%airy_ai) z)) integral)
 
-;; Airy Ai' function has mirror symmetry
+;; airy_dai distributes over lists, matrices, and equations
+(defprop %airy_dai (mlist $matrix mequal) distribute_over)
+
+;; airy_dai has mirror symmetry
 (defprop %airy_dai t commutes-with-conjugate)
 
 (defun airy-dai (z)
@@ -118,6 +126,7 @@
 (defmfun $airy_bi (z)
   "Airy function Bi(z)"
   (simplify (list '(%airy_bi) (resimplify z))))
+
 (defprop $airy_bi %airy_bi alias)
 (defprop $airy_bi %airy_bi verb)
 (defprop %airy_bi $airy_bi reversealias)
@@ -125,7 +134,10 @@
 (defprop %airy_bi simp-%airy_bi operators)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
 
-;; Airy Bi function has mirror symmetry
+;; airy_bi distributes over lists, matrices, and equations
+(defprop %airy_bi (mlist $matrix mequal) distribute_over)
+
+;; airy_bi has mirror symmetry
 (defprop %airy_bi t commutes-with-conjugate)
 
 ;; Integral of Bi(z)
@@ -173,6 +185,7 @@
 (defmfun $airy_dbi (z)
   "Derivative dBi/dz of Airy function Bi(z)"
   (simplify (list '(%airy_dbi) (resimplify z))))
+
 (defprop $airy_dbi %airy_dbi alias)
 (defprop $airy_dbi %airy_dbi verb)
 (defprop %airy_dbi $airy_dbi reversealias)
@@ -181,7 +194,10 @@
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 (defprop %airy_dbi ((z) ((%airy_bi) z)) integral)
 
-;; Airy Bi' function has mirror symmetry
+;; airy_dbi distributes over lists, matrices, and equations
+(defprop %airy_dbi (mlist $matrix mequal) distribute_over)
+
+;; airy_dbi has mirror symmetry
 (defprop %airy_dbi t commutes-with-conjugate)
 
 (defun airy-dbi (z)
