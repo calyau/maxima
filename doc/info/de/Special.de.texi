@@ -5,14 +5,14 @@
 @c Original    : Special.texi revision 15.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 13.11.2010
-@c Revision    : 11.07.2011
+@c Revision    : 14.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 @menu
 * Einf@"uhrung f@"ur spezielle Funktionen::
-* Besselfunktionen und verwandte Funktionen::
+* Bessel-Funktionen und verwandte Funktionen::
 * Gammafunktionen und verwandte Funktionen::
 * Exponentielle Integrale::
 * Fehlerfunktionen::
@@ -22,150 +22,167 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung f@"ur spezielle Funktionen, Besselfunktionen und verwandte Funktionen, Spezielle Funktionen, Spezielle Funktionen
+@node Einf@"uhrung f@"ur spezielle Funktionen, Bessel-Funktionen und verwandte Funktionen, Spezielle Funktionen, Spezielle Funktionen
 @section Einf@"uhrung f@"ur spezielle Funktionen
 @c -----------------------------------------------------------------------------
 
 Spezielle Funktionen haben die folgenden Notationen:
 
 @example
-bessel_j (index, expr)         Bessel function, 1st kind
-bessel_y (index, expr)         Bessel function, 2nd kind
-bessel_i (index, expr)         Modified Bessel function, 1st kind
-bessel_k (index, expr)         Modified Bessel function, 2nd kind
+bessel_j (v, z)                Bessel-Funktion der 1. Art
+bessel_y (v, z)                Bessel-Funktion der 2. Art
+bessel_i (v, z)                Modifizierte Bessel-Funktion der 1. Art
+bessel_k (v, z)                Modifizierte Bessel-Funktion der 2. Art
 
-hankel_1 (v,z)                 Hankel function of the 1st kind
-hankel_2 (v,z)                 Hankel function of the 2nd kind
-struve_h (v,z)                 Struve H function
-struve_l (v,z)                 Struve L function
+hankel_1 (v, z)                Hankel-Funktion der 1. Art
+hankel_2 (v, z)                Hankel-Funktion der 2. Art
 
-assoc_legendre_p[v,u] (z)      Legendre function of degree v and order u 
-assoc_legendre_q[v,u] (z)      Legendre function, 2nd kind
+airy_ai (z)                    Airy-Funktion Ai(z)
+airy_bi (z)                    Airy-Funktion Bi(z)
+airy_dai (z)                   Ableitung der Airy-Funktion Ai(z)
+airy_dbi (z)                   Ableitung der Airy-Funktion Bi(z)
 
-%f[p,q] ([], [], expr)         Generalized Hypergeometric function
-gamma()                        Gamma function
-gammagreek(a,z)                Incomplete gamma function
-gammaincomplete(a,z)           Tail of incomplete gamma function
-hypergeometric(l1, l2, z)      Hypergeometric function
-@c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
-slommel
-%m[u,k] (z)                    Whittaker function, 1st kind
-%w[u,k] (z)                    Whittaker function, 2nd kind
-erfc (z)                       Complement of the erf function
+struve_h (v, z)                Struve-Funktion H[v](z)
+struve_l (v, z)                Struve-Funktion L[v](z)
 
-expintegral_e (v,z)            Exponential integral E
-expintegral_e1 (z)             Exponential integral E1
-expintegral_ei (z)             Exponential integral Ei
-expintegral_li (z)             Logarithmic integral Li
-expintegral_si (z)             Exponential integral Si
-expintegral_ci (z)             Exponential integral Ci
-expintegral_shi (z)            Exponential integral Shi
-expintegral_chi (z)            Exponential integral Chi
+%f[p,q] ([], [], z)            Hypergeometrische Funktion
+gamma()                        Gammafunktion
+gammagreek(a, z)               unvollst@"andige Gamma-Funktion
+gammaincomplete(a,z)           unvollst@"andige Gamma-Funktion
+hypergeometric(l1, l2, z)      Hypergeometrische Funktion
 
-kelliptic (z)                  Complete elliptic integral of the first 
-                               kind (K)
-parabolic_cylinder_d (v,z)     Parabolic cylinder D function
+%m[u,k] (z)                    Whittaker-Funktion der 1. Art
+%w[u,k] (z)                    Whittaker-Funktion der 2. Art
+
+erf (z)                        Fehlerfunktion
+erfc (z)                       Komplement@"are Fehlerfunktion
+erfi (z)                       imagin@"are Fehlerfunktion
+
+expintegral_e (v,z)            Exponentielles Integral E
+expintegral_e1 (z)             Exponentielles Integral E1
+expintegral_ei (z)             Exponentielles integral Ei
+expintegral_li (z)             Logarithmisches Integral Li
+expintegral_si (z)             Exponentielles Integral Si
+expintegral_ci (z)             Exponentielles Integral Ci
+expintegral_shi (z)            Exponentielles Integral Shi
+expintegral_chi (z)            Exponentielles Integral Chi
+
+parabolic_cylinder_d (v,z)     Parabolische Zylinderfunktion D
 @end example
 
 @c -----------------------------------------------------------------------------
-@node Besselfunktionen und verwandte Funktionen, Gammafunktionen und verwandte Funktionen, Einf@"uhrung f@"ur spezielle Funktionen, Spezielle Funktionen
+@node Bessel-Funktionen und verwandte Funktionen, Gammafunktionen und verwandte Funktionen, Einf@"uhrung f@"ur spezielle Funktionen, Spezielle Funktionen
 @need 800
-@section Besselfunktionen und verwandte Funktionen
+@section Bessel-Funktionen und verwandte Funktionen
 @c -----------------------------------------------------------------------------
 
 @menu
-* Besselfunktionen::
-* Hankelfunktionen::
-* Airyfunktionen::
-* Struvefunktionen::
+* Bessel-Funktionen::
+* Hankel-Funktionen::
+* Airy-Funktionen::
+* Struve-Funktionen::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Besselfunktionen, Hankelfunktionen, Besselfunktionen und verwandte Funktionen, Besselfunktionen und verwandte Funktionen
-@subsection Besselfunktionen
+@node Bessel-Funktionen, Hankel-Funktionen, Bessel-Funktionen und verwandte Funktionen, Bessel-Funktionen und verwandte Funktionen
+@subsection Bessel-Funktionen
 @c -----------------------------------------------------------------------------
 
-@c --- 27.03.2011 DK -----------------------------------------------------------
+@c --- 12.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_j}
 @deffn {Funktion} bessel_j (@var{v}, @var{z})
 
-Die Besselfunktion der ersten Art der Ordnung @math{v} und dem Argument
+Die Bessel-Funktion der ersten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  @code{bessel_j} ist definiert als
 
 @ifnottex
 @example
-                inf
-                ====       k  - v - 2 k  v + 2 k
-                \     (- 1)  2          z
-                 >    --------------------------
-                /        k! gamma(v + k + 1)
-                ====
-                k = 0
+               inf
+               ====             k
+               \           (- 1)           z 2 k + v
+      J (z) =   >    -------------------  (-)
+       v       /     k! gamma(v + k + 1)   2
+               ====
+               k = 0
 @end example
 @end ifnottex
 @tex
-$$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
- }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
+$$J_{v}(z)=\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}}\over{k!
+ \,\Gamma\left(v+k+1\right)}}}\,\left({{z}\over{2}}\right)^{2
+ \,k+v}$$
 @end tex
 
 Die Reihenentwicklung wird nicht f@"ur die numerische Berechnung genutzt.
 
-Die Besselfunktion @code{bessel_j} ist f@"ur das numerische und symbolische
+Die Bessel-Funktion @code{bessel_j} ist f@"ur das numerische und symbolische
 Rechnen geeignet.
 
 Maxima berechnet @code{bessel_j} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
 @mref{float} oder der Optionsvariablen @mref{numer} kann die numerische
-Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
-Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
-Fall gibt Maxima eine Substantivform zur@"uck.
+Auswertung erzwungen werden, wenn die Argumente ganze oder rationale Zahlen
+sind.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht
+implementiert.  In diesem Fall gibt Maxima eine Substantivform zur@"uck.
 
-Die Besselfunktion hat die folgenden Eigenschaften, die mit
+@code{bessel_j} hat die folgenden Eigenschaften, die mit mit der Funktion
 @mref{properties} angezeigt werden und auf das symbolische Rechnen Einfluss
 haben:
 
 @table @code
 @item conjugate function
 @code{bessel_j} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
-reelle Zahl ist.
+reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
+@mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
 @item complex characteristic
 Maxima kennt den Realteil und den Imagin@"arteil von @code{bessel_j} f@"ur
 spezielle Argumente @math{v} und @math{z}.
 @item limit function
 Maxima kennt spezielle Grenzwerte der Funktion @code{bessel_j}.
 @item integral
-Maxima kennt das Integral der Funktion @code{bessel_j} in Bezug auf das 
-Argument @math{z}.
+Maxima kennt das Integral der Funktion @code{bessel_j} f@"ur die
+Integrationsvariable @math{z}.
 @item gradef
-Maxima kennt die Ableitungen der Funktion @code{bessel_j} in Bezug auf die
-Argumente @math{v} und @math{z}.
+Maxima kennt die Ableitungen der Funktion @code{bessel_j} nach den
+Argumenten @math{v} und @math{z}.
 @end table
 
-Die Vereinfachung der Besselfunktion @code{bessel_j} wird von den folgenden
+Die Vereinfachung der Bessel-Funktion @code{bessel_j} wird von den folgenden
 Optionsvariablen kontrolliert:
 
 @table @code
 @item distribute_over
-Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und ist das
-Argument der Besselfunktion eine Matrix, Liste oder Gleichung wird die Funktion
-auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der Standardwert
-ist @code{true}.
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und sind
+die Argumente von @code{bessel_j} eine Matrix, Liste oder Gleichung wird die
+Funktion auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der
+Standardwert ist @code{true}.
 @item besselexpand
-Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, werden
-Besselfunktion mit einer halbzahligen Ordnung @math{v} als Sinus- und
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, wird
+@code{bessel_j} mit einer halbzahligen Ordnung @math{v} als Sinus- und
 Kosinusfunktionen entwickelt.
 @item bessel_reduce
-Hat die Optionsvariable @mref{bessel_reduce} den Wert @code{true}, werden 
-Besselfunktionen mit einer ganzzahligen Ordnung @math{n} nach Besselfunktionen
-mit der niedrigsten Ordnung @math{0} und @math{1} entwickelt.
+Hat die Optionsvariable @mref{bessel_reduce} den Wert @code{true}, wird
+@code{bessel_j} mit einer ganzzahligen Ordnung @math{n} nach Bessel-Funktionen
+@code{bessel_j} mit der niedrigsten Ordnung @code{0} und @code{1} entwickelt.
+@item hypergeometric_representation
+Hat die Optionsvariable @mref{hypergeometric_representation} den Wert
+@code{true}, dann wird @code{bessel_j} als hypergeometrische Funktion
+dargestellt.
 @end table
 
-Zus@"atzlich kennt Maxima die geraden und ungeraden Symmetrieeigenschaften der
-Besselfunktionen f@"ur eine ganzzahlige Ordnung @math{v}.
+Weiterhin kennt Maxima die geraden und ungeraden Symmetrieeigenschaften von
+@code{bessel_j}.  F@"ur eine ganze Zahl @math{n} vereinfacht daher
+@code{bessel_j(-n, z)} zu @code{(-1)^n bessel_j(n, z)}.
+
+Maxima kennt noch die Funktion @mrefcomma{spherical_bessel_j} die im Paket
+@code{orthopoly} definiert ist.   Siehe auch die anderen Bessel-Funktionen
+@mrefcomma{bessel_y} @mref{bessel_i} und @mref{bessel_k} sowie die
+weiteren mit den Bessel-Funktionen verwandten Funktionen wie die
+Hankel-Funktionen in @ref{Hankel-Funktionen}, Airy-Funktionen in
+@ref{Airy-Funktionen} und Struve-Funktionen in @ref{Struve-Funktionen}.
 
 Beispiele:
 
-Numerisches Rechnen mit der Besselfunktion.  F@"ur gro@ss{}e Gleitkommazahlen
+Numerisches Rechnen mit der Bessel-Funktion.  F@"ur gro@ss{}e Gleitkommazahlen
 ist die numerische Berechnung nicht implementiert.
 
 @example
@@ -176,7 +193,7 @@ ist die numerische Berechnung nicht implementiert.
 (%o2)    [bessel_j(1, 5.0b-1), bessel_j(1, %i + 5.0b-1)]
 @end example
 
-Vereinfachungen der Besselfunktion mit den Optionsvariablen @code{besselexpand}
+Vereinfachungen der Bessel-Funktion mit den Optionsvariablen @code{besselexpand}
 und @code{bessel_reduce}.
 
 @example
@@ -192,13 +209,17 @@ und @code{bessel_reduce}.
                         x
 @end example
 
-Ableitungen und Integrale der Besselfunktion.
+Ableitungen und Integrale der Bessel-Funktion.  Das letzte Beispiel zeigt
+die Laplace-Transformation der Bessel-Funktion mit der Funktion
+@mrefdot{laplace}
 
 @example
 (%i5) diff(bessel_j(2,x), x);
+@group
                  bessel_j(1, x) - bessel_j(3, x)
 (%o5)            -------------------------------
                                 2
+@end group
 (%i6) diff(bessel_j(v,x), x);
              bessel_j(v - 1, x) - bessel_j(v + 1, x)
 (%o6)        ---------------------------------------
@@ -225,7 +246,7 @@ Ableitungen und Integrale der Besselfunktion.
                                s
 @end example
 
-Besselfunktionen als L@"osung einer linearen Differentialgleichung zweiter
+Bessel-Funktionen als L@"osung einer linearen Differentialgleichung zweiter
 Ordnung.
 
 @example
@@ -244,117 +265,312 @@ Ordnung.
 @end example
 @end deffn
 
-@c --- 27.03.2011 DK -----------------------------------------------------------
+@c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_y}
 @deffn {Funktion} bessel_y (@var{v}, @var{z})
 
-Die Besselfunktion der zweiten Art der Ordnung @math{v} und dem Argument 
+Die Bessel-Funktion der zweiten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  @code{bessel_y} ist definiert als
 
 @ifnottex
 @example
-              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
-              -------------------------------------------
-                             sin(%pi v)
+              cos(%pi v) J (z) - J   (z)
+                          v       - v
+      Y (z) = --------------------------
+       v              sin(%pi v)
 @end example
 @end ifnottex
-
 @tex
-$${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
- \sin \left(\pi\,v\right)}}$$
+$$Y_{v}(z)={{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{\sin 
+ \left(\pi\,v\right)}}$$
 @end tex
 
 f@"ur den Fall, dass @math{v} keine ganze Zahl ist.  Ist @math{v} eine ganze
-Zahl @math{n}, dann wird die Besselfunktion @code{bessel_y} als der Grenzwert
-definiert, wenn @math{v} gegen die ganze Zahl @math{n} geht.
+Zahl @math{n}, dann wird die Bessel-Funktion @code{bessel_y} wie folgt als
+ein Grenzwert definiert
 
-Die Besselfunktion @code{bessel_y} ist f@"ur das numerische und symbolische
+@ifnottex
+@example
+      Y (z) = limit  Y (z)
+       n      v -> n  v
+@end example
+@end ifnottex
+@tex
+$$Y_{n}(z)=\lim_{v\rightarrow n}{Y_{v}(z)}$$
+@end tex
+
+Die Bessel-Funktion @code{bessel_y} ist f@"ur das numerische und symbolische
 Rechnen geeignet.
 
 Maxima berechnet @code{bessel_y} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
 @mref{float} oder der Optionsvariablen @mref{numer} kann die numerische
-Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
-Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
-Fall gibt Maxima eine Substantivform zur@"uck.
+Auswertung erzwungen werden, wenn die Argumente ganze oder rationale Zahlen
+sind.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht
+implementiert.  In diesem Fall gibt Maxima eine Substantivform zur@"uck.
+
+@code{bessel_y} hat die folgenden Eigenschaften, die mit mit der Funktion
+@mref{properties} angezeigt werden und auf das symbolische Rechnen Einfluss
+haben:
+
+@table @code
+@item conjugate function
+@code{bessel_y} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
+@mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
+@item complex characteristic
+Maxima kennt den Realteil und den Imagin@"arteil von @code{bessel_y} f@"ur
+spezielle Argumente @math{v} und @math{z}.
+@item limit function
+Maxima kennt spezielle Grenzwerte der Funktion @code{bessel_y}.
+@item integral
+Maxima kennt das Integral der Funktion @code{bessel_y} f@"ur die
+Integrationsvariable @math{z}.
+@item gradef
+Maxima kennt die Ableitungen der Funktion @code{bessel_y} nach den
+Argumenten @math{v} und @math{z}.
+@end table
+
+Die Vereinfachung der Bessel-Funktion @code{bessel_y} wird von den folgenden
+Optionsvariablen kontrolliert:
+
+@table @code
+@item distribute_over
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und sind
+die Argumente von @code{bessel_y} eine Matrix, Liste oder Gleichung wird die
+Funktion auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der
+Standardwert ist @code{true}.
+@item besselexpand
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, wird
+@code{bessel_y} mit einer halbzahligen Ordnung @math{v} als Sinus- und
+Kosinusfunktionen entwickelt.
+@item bessel_reduce
+Hat die Optionsvariable @mref{bessel_reduce} den Wert @code{true}, wird
+@code{bessel_y} mit einer ganzzahligen Ordnung @math{n} nach Bessel-Funktionen
+@code{bessel_y} mit der niedrigsten Ordnung @code{0} und @code{1} entwickelt.
+@item hypergeometric_representation
+Hat die Optionsvariable @mref{hypergeometric_representation} den Wert
+@code{true}, dann wird @code{bessel_y} als hypergeometrische Funktion
+dargestellt.  Es ist zu beachten, dass die hypergeometrische Funktion nur f@"ur
+eine nicht ganzzahlige Ordnung @math{v} g@"ultig ist.
+@end table
+
+Weiterhin kennt Maxima die geraden und ungeraden Symmetrieeigenschaften von
+@code{bessel_y}.  F@"ur eine ganze Zahl @math{n} vereinfacht daher
+@code{bessel_y(-n, z)} zu @code{(-1)^n bessel_y(n, z)}.
+
+Maxima kennt noch die Funktion @mrefcomma{spherical_bessel_y} die im Paket
+@code{orthopoly} definiert ist.   Siehe auch die anderen Bessel-Funktionen
+@mrefcomma{bessel_j} @mref{bessel_i} und @mref{bessel_k} sowie die
+weiteren mit den Bessel-Funktionen verwandten Funktionen wie die
+Hankel-Funktionen in @ref{Hankel-Funktionen}, Airy-Funktionen in
+@ref{Airy-Funktionen} und Struve-Funktionen in @ref{Struve-Funktionen}.
+
+Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 @end deffn
 
-@c --- 27.03.2011 DK -----------------------------------------------------------
+@c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_i}
 @deffn {Funktion} bessel_i (@var{v}, @var{z})
 
-Die modifizierte Besselfunktion der ersten Art der Ordnung @math{v} und dem 
+Die modifizierte Bessel-Funktion der ersten Art der Ordnung @math{v} und dem 
 Argument @math{v}.  @code{bessel_i} ist definiert als
 
 @ifnottex
 @example
-                    inf
-                    ====   - v - 2 k  v + 2 k
-                    \     2          z
-                     >    -------------------
-                    /     k! gamma(v + k + 1)
-                    ====
-                    k = 0
+               inf
+               ====
+               \              1            z 2 k + v
+      I (z) =   >    -------------------  (-)
+       v       /     k! gamma(v + k + 1)   2
+               ====
+               k = 0
 @end example
 @end ifnottex
 @tex
-$$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
- \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
+$$I_{v}(z)=\sum_{k=0}^{\infty }{{{1}\over{k!\,\Gamma\left(v+k+1
+ \right)}}}\,\left({{z}\over{2}}\right)^{2\,k+v}$$
 @end tex
 
 Die Reihenentwicklung wird nicht f@"ur die numerische Berechnung genutzt.
 
-Die Besselfunktion @code{bessel_i} ist f@"ur das numerische und symbolische
+Die Bessel-Funktion @code{bessel_i} ist f@"ur das numerische und symbolische
 Rechnen geeignet.
 
 Maxima berechnet @code{bessel_i} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
 @mref{float} oder der Optionsvariablen @mref{numer} kann die numerische
-Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
-Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
-Fall gibt Maxima eine Substantivform zur@"uck.
+Auswertung erzwungen werden, wenn die Argumente ganze oder rationale Zahlen
+sind.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht
+implementiert.  In diesem Fall gibt Maxima eine Substantivform zur@"uck.
+
+@code{bessel_i} hat die folgenden Eigenschaften, die mit mit der Funktion
+@mref{properties} angezeigt werden und auf das symbolische Rechnen Einfluss
+haben:
+
+@table @code
+@item conjugate function
+@code{bessel_i} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
+@mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
+@item complex characteristic
+Maxima kennt den Realteil und den Imagin@"arteil von @code{bessel_i} f@"ur
+spezielle Argumente @math{v} und @math{z}.
+@item limit function
+Maxima kennt spezielle Grenzwerte der Funktion @code{bessel_i}.
+@item integral
+Maxima kennt das Integral der Funktion @code{bessel_i} f@"ur die
+Integrationsvariable @math{z}.
+@item gradef
+Maxima kennt die Ableitungen der Funktion @code{bessel_i} nach den
+Argumenten @math{v} und @math{z}.
+@end table
+
+Die Vereinfachung der Bessel-Funktion @code{bessel_i} wird von den folgenden
+Optionsvariablen kontrolliert:
+
+@table @code
+@item distribute_over
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und sind
+die Argumente von @code{bessel_i} eine Matrix, Liste oder Gleichung wird die
+Funktion auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der
+Standardwert ist @code{true}.
+@item besselexpand
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, wird
+@code{bessel_i} mit einer halbzahligen Ordnung @math{v} als Hyperbelfunktionen
+entwickelt.
+@item bessel_reduce
+Hat die Optionsvariable @mref{bessel_reduce} den Wert @code{true}, wird
+@code{bessel_i} mit einer ganzzahligen Ordnung @math{n} nach Bessel-Funktionen
+@code{bessel_i} mit der niedrigsten Ordnung @code{0} und @code{1} entwickelt.
+@item hypergeometric_representation
+Hat die Optionsvariable @mref{hypergeometric_representation} den Wert
+@code{true}, dann wird @code{bessel_i} als hypergeometrische Funktion
+dargestellt.
+@end table
+
+Weiterhin kennt Maxima die geraden und ungeraden Symmetrieeigenschaften von
+@code{bessel_i}.  F@"ur eine ganze Zahl @math{n} vereinfacht daher
+@code{bessel_i(-n, z)} zu @code{bessel_i(n, z)}.
+
+Siehe auch die anderen Bessel-Funktionen @mrefcomma{bessel_j}@w{}
+@mref{bessel_y} und @mref{bessel_k} sowie die weiteren mit den Bessel-Funktionen
+verwandten Funktionen wie die Hankel-Funktionen in @ref{Hankel-Funktionen},
+Airy-Funktionen in @ref{Airy-Funktionen} und Struve-Funktionen in
+@ref{Struve-Funktionen}.
+
+Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 @end deffn
 
-@c --- 27.03.2011 DK -----------------------------------------------------------
+@c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{bessel_k}
 @deffn {Funktion} bessel_k (@var{v}, @var{z})
 
-Die modifizierte Besselfunktion der zweiten Art der Ordnung @math{v} und dem
+Die modifizierte Bessel-Funktion der zweiten Art der Ordnung @math{v} und dem
 Argument @math{z}.  @code{bessel_k} ist definiert als
 
 @ifnottex
 @example
-           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
-           -------------------------------------------------
-                                  2
+              %pi csc(%pi u) (I   (z) - I (z))
+                               - v       u
+      K (z) = --------------------------------
+       v                     2
 @end example
 @end ifnottex
 @tex
-$${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
+$$K_{v}(z)={{\pi\,\csc \left(\pi\,u\right)\,\left(I_{-v}(z)-I_{u}(z)
+ \right)}\over{2}}$$
 @end tex
 
 f@"ur den Fall, dass @math{v} keine ganze Zahl ist.  Ist @math{v} eine ganze
-Zahl @math{n}, dann wird die Besselfunktion @code{bessel_k} als der Grenzwert
-definiert, wenn @math{v} gegen die ganze Zahl @math{n} geht.
+Zahl @math{n}, dann wird die Bessel-Funktion @code{bessel_k} wie folgt als
+Grenzwert definiert
 
-Die Besselfunktion @code{bessel_k} ist f@"ur das numerische und symbolische
+@ifnottex
+@example
+(%o5) K (z) = limit  K (z)
+       n      v -> n  v
+@end example
+@end ifnottex
+@tex
+$$K_{n}(z)=\lim_{v\rightarrow n}{K_{v}(z)}$$
+@end tex
+
+Die Bessel-Funktion @code{bessel_k} ist f@"ur das numerische und symbolische
 Rechnen geeignet.
 
 Maxima berechnet @code{bessel_k} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
 @mref{float} oder der Optionsvariablen @mref{numer} kann die numerische
-Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
-Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
-Fall gibt Maxima eine Substantivform zur@"uck.
+Auswertung erzwungen werden, wenn die Argumente ganze oder rationale Zahlen
+sind.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht
+implementiert.  In diesem Fall gibt Maxima eine Substantivform zur@"uck.
+
+@code{bessel_k} hat die folgenden Eigenschaften, die mit mit der Funktion
+@mref{properties} angezeigt werden und auf das symbolische Rechnen Einfluss
+haben:
+
+@table @code
+@item conjugate function
+@code{bessel_k} hat Spiegelsymmetrie, wenn das Argument @var{z} keine negative
+reelle Zahl ist.  Die Spiegelsymmetrie wird zum Beispiel von der Funktion
+@mref{conjugate} f@"ur die Vereinfachung eines Ausdrucks genutzt.
+@item complex characteristic
+Maxima kennt den Realteil und den Imagin@"arteil von @code{bessel_k} f@"ur
+spezielle Argumente @math{v} und @math{z}.
+@item limit function
+Maxima kennt spezielle Grenzwerte der Funktion @code{bessel_k}.
+@item integral
+Maxima kennt das Integral der Funktion @code{bessel_k} f@"ur die
+Integrationsvariable @math{z}.
+@item gradef
+Maxima kennt die Ableitungen der Funktion @code{bessel_k} nach den
+Argumenten @math{v} und @math{z}.
+@end table
+
+Die Vereinfachung der Bessel-Funktion @code{bessel_k} wird von den folgenden
+Optionsvariablen kontrolliert:
+
+@table @code
+@item distribute_over
+Hat die Optionsvariable @mref{distribute_over} den Wert @code{true} und sind
+die Argumente von @code{bessel_k} eine Matrix, Liste oder Gleichung wird die
+Funktion auf die Elemente oder beiden Seiten der Gleichung angewendet.  Der
+Standardwert ist @code{true}.
+@item besselexpand
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, wird
+@code{bessel_k} mit einer halbzahligen Ordnung @math{v} als Exponentialfunktion
+entwickelt.
+@item bessel_reduce
+Hat die Optionsvariable @mref{bessel_reduce} den Wert @code{true}, wird
+@code{bessel_k} mit einer ganzzahligen Ordnung @math{n} nach Bessel-Funktionen
+@code{bessel_k} mit der niedrigsten Ordnung @code{0} und @code{1} entwickelt.
+@item hypergeometric_representation
+Hat die Optionsvariable @mref{hypergeometric_representation} den Wert
+@code{true}, dann wird @code{bessel_k} als hypergeometrische Funktion
+dargestellt.  Es ist zu beachten, dass die hypergeometrische Funktion nur f@"ur
+eine nicht ganzzahlige Ordnung @math{v} g@"ultig ist.
+@end table
+
+Weiterhin kennt Maxima die geraden und ungeraden Symmetrieeigenschaften von
+@code{bessel_k}.  F@"ur eine ganze Zahl @math{n} vereinfacht daher
+@code{bessel_k(-n, z)} zu @code{bessel_y(n, z)}.
+
+Siehe auch die anderen Bessel-Funktionen @mrefcomma{bessel_j} @mref{bessel_y}
+und @mref{bessel_i} sowie die weiteren mit den Bessel-Funktionen verwandten
+Funktionen wie die Hankel-Funktionen in @ref{Hankel-Funktionen}, Airy-Funktionen
+in @ref{Airy-Funktionen} und Struve-Funktionen in @ref{Struve-Funktionen}.
+
+Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 @end deffn
 
 @c --- 31.03.2011 DK -----------------------------------------------------------
 @anchor{bessel_reduce}
 @defvr {Optionsvariable} bessel_reduce
-Standardwert: false
+Standardwert: @code{false}
 
 Hat die Optionsvariable @code{bessel_reduce} den Wert @code{true}, werden 
-Besselfunktionen mit einer ganzzahligen Ordnung @math{n} nach Besselfunktionen
+Bessel-Funktionen mit einer ganzzahligen Ordnung @math{n} nach Bessel-Funktionen
 mit der niedrigsten Ordnung @math{0} und @math{1} entwickelt.
 @end defvr
 
@@ -364,28 +580,49 @@ mit der niedrigsten Ordnung @math{0} und @math{1} entwickelt.
 Standardwert: @code{false}
 
 Hat die Optionsvariable @code{besselexpand} den Wert @code{true}, werden
-Besselfunktion mit einer halbzahligen Ordnung @math{v} als Sinus- und
-Kosinusfunktionen entwickelt.  Die Optionsvariable @code{besselexpand}
-kontrolliert auch die Entwicklung der Hankelfunktionen @mref{hankel_1} und
-@mref{hankel_2} sowie der Struvefunktionen @mref{struve_h} und
-@mrefdot{struve_l}
+Bessel-Funktion mit einer halbzahligen Ordnung @math{v} als Sinus-,
+Kosinus-, Hyperbel- oder Exponentialfunktionen entwickelt.  Die Optionsvariable
+@code{besselexpand} kontrolliert auch die Entwicklung der Hankel-Funktionen
+@mref{hankel_1} und @mref{hankel_2} sowie der Struve-Funktionen @mref{struve_h}
+und @mrefdot{struve_l}
 
 Beispiele:
 
 @example
 (%i1) besselexpand: false$
-(%i2) bessel_j (3/2, z);
-                                    3
-(%o2)                      bessel_j(-, z)
-                                    2
+
+(%i2) bessel_j(3/2, z);
+                                  3
+(%o2)                    bessel_j(-, z)
+                                  2
 (%i3) besselexpand: true$
-(%i4) bessel_j (3/2, z);
-                                        sin(z)   cos(z)
-                       sqrt(2) sqrt(z) (------ - ------)
-                                           2       z
-                                          z
-(%o4)                  ---------------------------------
-                                   sqrt(%pi)
+
+(%i4) bessel_j(3/2, z);
+                                 sin(z)   cos(z)
+                sqrt(2) sqrt(z) (------ - ------)
+                                    2       z
+                                   z
+(%o4)           ---------------------------------
+                            sqrt(%pi)
+@end example
+
+Weitere Beispiele f@"ur die Entwicklungen der Funktionen @mref{bessel_k} und
+@mrefdot{struve_h}
+
+@example
+(%i5) bessel_k(3/2, z);
+                                1        - z
+                     sqrt(%pi) (- + 1) %e
+                                z
+(%o5)                -----------------------
+                         sqrt(2) sqrt(z)
+
+(%i6) struve_h(3/2, z);
+                                           2
+                  2 z sin(z) + 2 cos(z) - z  - 2
+(%o6)           - ------------------------------
+                                         3/2
+                      sqrt(2) sqrt(%pi) z
 @end example
 @end defvr
 
@@ -393,20 +630,25 @@ Beispiele:
 @anchor{scaled_bessel_i}
 @deffn {Funktion} scaled_bessel_i (@var{v}, @var{z}) 
 
-Die skalierte modifizierte Besselfunktion der ersten Art der Ordnung
-@math{v} und dem Argument @math{z}.  Diese ist definiert als 
-@code{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}.
+Die skalierte modifizierte Bessel-Funktion der ersten Art der Ordnung
+@math{v} mit dem Argument @math{z}.  Diese ist definiert als
+
+@example
+                                                - abs(z)
+      scaled_bessel_i(v, z) = bessel_i(v, z) %e
+@end example
+
 @code{scaled_bessel_i} liefert ein numerisches Ergebnis, wenn die Argumente 
 @math{v} und @math{z} Zahlen sind.  Die Funktion kann geeignet sein, wenn
 @code{bessel_i} f@"ur gro@ss{}e Argumente @math{z} numerisch berechnet werden
 soll.  Ganze, rationale oder gro@ss{}e Gleitkommazahlen werden in
 Gleitkommazahlen mit doppelter Genauigkeit umgewandelt.  Sind die Argumente
-keine Zahlen, wird ein vereinfachter Ausdruck mit der Funktion @mref{bessel_i}
-zur@"uckgegeben.
+keine Zahlen, wird ein vereinfachter Ausdruck mit der Funktion
+@mref{bessel_i} zur@"uckgegeben.
 
 @code{scaled_bessel_i} ist eine Verbfunktion, die nicht f@"ur das symbolische
-Rechnen geeignet ist.  F@"ur das symbolische Rechnen kann die Funktion
-@mref{bessel_i} verwendet werden.
+Rechnen geeignet ist.  F@"ur das symbolische Rechnen ist die Funktion
+@mref{bessel_i} zu verwenden.
 
 Beispiele:
 
@@ -436,22 +678,28 @@ Entspricht @code{scaled_bessel_i(1,z)}.  Siehe @mrefdot{scaled_bessel_i}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Hankelfunktionen, Airyfunktionen, Besselfunktionen, Besselfunktionen und verwandte Funktionen
-@subsection Hankelfunktionen
+@node Hankel-Funktionen, Airy-Funktionen, Bessel-Funktionen, Bessel-Funktionen und verwandte Funktionen
+@subsection Hankel-Funktionen
 @c -----------------------------------------------------------------------------
 
-@c --- 27.03.2011 DK -----------------------------------------------------------
+@c --- 13.07.2011 DK -----------------------------------------------------------
 @anchor{hankel_1}
 @deffn {Funktion} hankel_1 (@var{v}, @var{z})
 
-Die Hankelfunktion der ersten Art der Ordnung @math{v} und dem Argument
+Die Hankel-Funktion der ersten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe A@w{ }&@w{ }S 9.1.3.  @code{hankel_1} ist definiert als
 
+@ifnottex
 @example
-   bessel_j(v,z) + %i * bessel_y(v,z)
+      H1 (z) = J (z) + %i Y (z)
+        v       v          v
 @end example
+@end ifnottex
+@tex
+$${\it H1}_{v}(z)=J_{v}(z)+i\,Y_{v}(z)$$
+@end tex
 
-Die Hankelfunktion @code{hankel_1} ist f@"ur das numerische und symbolische
+Die Hankel-Funktion @code{hankel_1} ist f@"ur das numerische und symbolische
 Rechnen geeignet.
 
 Maxima berechnet @code{hankel_1} numerisch f@"ur reelle und komplexe
@@ -462,56 +710,57 @@ Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
 Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, werden
-Hankelfunktionen @code{hankel_1} mit einer halbzahligen Ordnung @math{v} als
+Hankel-Funktionen @code{hankel_1} mit einer halbzahligen Ordnung @math{v} als
 Sinus- und Kosinusfunktionen entwickelt.
 
-Maxima kennt die Ableitung der Hankelfunktion @code{hankel_1} nach dem zweiten
+Maxima kennt die Ableitung der Hankel-Funktion @code{hankel_1} nach dem zweiten
 Argument @code{z}.
 
-Siehe auch die Funktion @mrefdot{hankel_1}
+Siehe auch die Funktion @mref{hankel_2} sowie die Bessel-Funktionen in
+@ref{Bessel-Funktionen}.
 
 Beispiele:
 
 Numerische Berechnung.
 
 @example
-(%i1) hankel_1(1,0.5);
-(%o1)              .2422684576748738 - 1.471472392670243 %i
-(%i2) hankel_1(1,0.5+%i);
-(%o2)             - .2558287994862166 %i - 0.239575601883016
+(%i1) hankel_1(1, 0.5);
+(%o1)       .2422684576748738 - 1.471472392670243 %i
+(%i2) hankel_1(1, 0.5+%i);
+(%o2)      - .2558287994862166 %i - 0.239575601883016
 @end example
 
 F@"ur eine komplex Ordnung kann Maxima keinen numerischen Wert berechnet.  Das
 Ergebnis ist eine Substantivform.
 
 @example
-(%i3) hankel_1(%i,0.5+%i);
-(%o3)                       hankel_1(%i, %i + 0.5)
+(%i3) hankel_1(%i, 0.5+%i);
+(%o3)                hankel_1(%i, %i + 0.5)
 @end example
 
-Entwicklung der Hankelfunktion @code{hankel_1}, wenn die Optionsvariable
+Entwicklung der Hankel-Funktion @code{hankel_1}, wenn die Optionsvariable
 @code{besselexpand} den Wert @code{true} hat.
 
 @example
-(%i4) hankel_1(1/2,z),besselexpand:true;
-                      sqrt(2) sin(z) - sqrt(2) %i cos(z)
-(%o4)                 ----------------------------------
-                              sqrt(%pi) sqrt(z)
+(%i4) hankel_1(1/2, z), besselexpand:true;
+               sqrt(2) sin(z) - sqrt(2) %i cos(z)
+(%o4)          ----------------------------------
+                       sqrt(%pi) sqrt(z)
 @end example
 
-Ableitung der Hankelfunktion @code{hankel_1} nach dem Argument @var{z}.  Die
+Ableitung der Hankel-Funktion @code{hankel_1} nach dem Argument @var{z}.  Die
 Ableitung nach der Ordnung @var{v} ist nicht implementiert.  Maxima gibt eine
 Substantivform zur@"uck.
 
 @example
-(%i5) diff(hankel_1(v,z),z);
-                    hankel_1(v - 1, z) - hankel_1(v + 1, z)
-(%o5)               ---------------------------------------
-                                       2
-(%i6) diff(hankel_1(v,z),v);
-                             d
-(%o6)                        -- (hankel_1(v, z))
-                             dv
+(%i5)  diff(hankel_1(v,z), z);
+             hankel_1(v - 1, z) - hankel_1(v + 1, z)
+(%o5)        ---------------------------------------
+                                2
+(%i6)  diff(hankel_1(v,z), v);
+                       d
+(%o6)                  -- (hankel_1(v, z))
+                       dv
 @end example
 @end deffn
 
@@ -519,14 +768,20 @@ Substantivform zur@"uck.
 @anchor{hankel_2}
 @deffn {Funktion} hankel_2 (@var{v}, @var{z})
 
-Die Hankelfunktion der zweiten Art der Ordnung @math{v} und dem Argument
+Die Hankel-Funktion der zweiten Art der Ordnung @math{v} und dem Argument
 @math{z}.  Siehe A@w{ }&@w{ }S 9.1.4.  @code{hankel_2} ist definiert als
 
+@ifnottex
 @example
-   bessel_j(v,z) - %i * bessel_y(v,z)
+      H2 (z) = J (z) - %i Y (z)
+        v       v          v
 @end example
+@end ifnottex
+@tex
+$${\it H2}_{v}(z)=J_{v}(z)-i\,Y_{v}(z)$$
+@end tex
 
-Die Hankelfunktion @code{hankel_2} ist f@"ur das numerische und symbolische
+Die Hankel-Funktion @code{hankel_2} ist f@"ur das numerische und symbolische
 Rechnen geeignet.
 
 Maxima berechnet @code{hankel_2} numerisch f@"ur reelle und komplexe
@@ -537,99 +792,230 @@ Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
 Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, werden
-Hankelfunktionen @code{hankel_2} mit einer halbzahligen Ordnung @math{v} als
+Hankel-Funktionen @code{hankel_2} mit einer halbzahligen Ordnung @math{v} als
 Sinus- und Kosinusfunktionen entwickelt.
 
-Maxima kennt die Ableitung der Hankelfunktion @code{hankel_2} nach dem zweiten
+Maxima kennt die Ableitung der Hankel-Funktion @code{hankel_2} nach dem zweiten
 Argument @code{z}.
 
-F@"ur Beispiele siehe @mrefdot{hankel_1}
+F@"ur Beispiele siehe @mrefdot{hankel_1}  Siehe auch die Bessel-Funktionen in
+@ref{Bessel-Funktionen}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Airyfunktionen, Struvefunktionen, Hankelfunktionen, Besselfunktionen und verwandte Funktionen
-@subsection Airyfunktionen
+@node Airy-Funktionen, Struve-Funktionen, Hankel-Funktionen, Bessel-Funktionen und verwandte Funktionen
+@subsection Airy-Funktionen
 @c -----------------------------------------------------------------------------
 
 Die Airy-Funktionen @math{Ai(z)} und @math{Bi(z)} sind definiert in Abramowitz
 und Stegun, @i{Handbook of Mathematical Functions}, Kapitel 10.4.  Die
 Funktionen @code{y = Ai(z)} und @code{y = Bi(z)} sind zwei linear unabh@"angige
-L@"osungen der Airy-Differentialgleichung @code{diff (y(z), z, 2) - z y(z) = 0}.
+L@"osungen der Airy-Differentialgleichung.
 
-Ist das Argument @code{z} eine reelle oder komplexe Gleitkommazahl, werden die
-Airy-Funktionen numerisch berechnet.
+@example
+       2
+      d y
+      --- - y z = 0
+        2
+      dz
+@end example
 
-@c --- 29.05.2011 DK -----------------------------------------------------------
+@c --- 14.07.2011.2011 DK -----------------------------------------------------------
 @anchor{airy_ai}
 @deffn {Funktion} airy_ai (@var{z})
 
 Die Airy-Funktion @math{Ai(z)} (A & S 10.4.2).
 
-Die Ableitung @code{diff (airy_ai(z), z)} ist @code{airy_dai(z)}.  Siehe die
-Funktion @mrefdot{airy_dai}
+Die Airy-Funktion @code{airy_ai} ist f@"ur das symbolische und numerische
+Rechnen geeignet.  Ist das Argument @code{z} eine reelle oder komplexe
+Gleitkommazahl, wird @code{airy_ai} numerisch berechnet.  Mit der
+Optionsvariablen @mref{numer} oder der Funktion @mref{float} kann die
+numerische Berechnung erzwungen werden, wenn das Argument eine ganze oder
+rationale Zahl ist.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen
+ist nicht implementiert.
+
+Maxima kennt den speziellen Wert f@"ur das Argument @code{0}.
+
+Ist das Argument eine Liste, Matrix oder Gleichung wird die Funktion
+@code{airy_ai} auf die Elemente der Liste oder beide Seiten der Gleichung
+angewendet.  Siehe auch @mrefdot{distribute_over}
+
+Die Ableitung @code{diff(airy_ai(z), z)} ist als @code{airy_dai(z)}
+implementiert.  Siehe die Funktion @mrefdot{airy_dai}
+
+Weiterhin kennt Maxima das Integral der Airy-Funktion @code{airy_ai}.
 
 Siehe auch die Funktionen @mref{airy_bi} und @mrefdot{airy_dbi}
+
+Beispiele:
+
+Numerische Berechnung f@"ur Gleitkommazahlen.  F@"ur ganze und rationale Zahlen
+wird eine Substantivform zur@"uckgegeben.  Maxima kennt den speziellen Wert
+f@"ur das Argument @code{0}.
+
+@example
+(%i1) airy_ai([0.5, 1.0+%i]);
+(%o1) [.2316936064808335, .06045830837183824
+                                          - .1518895658771814 %i]
+(%i2) airy_ai([1, 1/2]);
+@group
+                                         1
+(%o2)               [airy_ai(1), airy_ai(-)]
+                                         2
+@end group
+(%i3) airy_ai(0);
+                                1
+(%o3)                     -------------
+                           2/3       2
+                          3    gamma(-)
+                                     3
+@end example
+
+Ableitungen und Integral der Airy-Funktion @code{airy_ai}.
+
+@example
+(%i4) diff(airy_ai(z), z);
+(%o4)                      airy_dai(z)
+(%i5) diff(airy_ai(z), z, 2);
+(%o5)                     z airy_ai(z)
+(%i6) diff(airy_ai(z), z, 3);
+(%o6)              z airy_dai(z) + airy_ai(z)
+(%i7) integrate(airy_ai(z), z);
+                                   3
+                      1    2  4   z
+      hypergeometric([-], [-, -], --) z
+                      3    3  3   9
+(%o7) ---------------------------------
+                 2/3       2
+                3    gamma(-)
+                           3
+                                                            3
+                  1/6       2                  2    4  5   z    2
+                 3    gamma(-) hypergeometric([-], [-, -], --) z
+                            3                  3    3  3   9
+               - ------------------------------------------------
+                                      4 %pi
+@end example
 @end deffn
 
-@c --- 29.05.2011 DK -----------------------------------------------------------
+@c --- 14.07.2011 DK -----------------------------------------------------------
 @anchor{airy_dai}
 @deffn {Funktion} airy_dai (@var{z})
 
 Die Ableitung der Airy-Funktion @mrefdot{airy_ai}
+
+Die Ableitung der Airy-Funktion @code{airy_dai} ist f@"ur das symbolische und
+numerische Rechnen geeignet.  Ist das Argument @var{z} eine reelle oder
+komplexe Gleitkommazahl, wird @code{airy_dai} numerisch berechnet.  Mit der
+Optionsvariablen @mref{numer} oder der Funktion @mref{float} kann die
+numerische Berechnung erzwungen werden, wenn das Argument eine ganze oder
+rationale Zahl ist.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen
+ist nicht implementiert.
+
+Maxima kennt den speziellen Wert f@"ur das Argument @code{0}.
+
+Ist das Argument eine Liste, Matrix oder Gleichung wird die Funktion
+@code{airy_dai} auf die Elemente der Liste oder beide Seiten der Gleichung
+angewendet.  Siehe auch @mrefdot{distribute_over}
+
+Maxima kennt die Ableitung und das Integral der Funktion @code{airy_dai}.
+
+Siehe auch die Airy-Funktionen @mref{airy_bi} und @mrefdot{airy_dbi}
+
+F@"ur Beispiele siehe die Funktion @mrefdot{airy_ai}
 @end deffn
 
-@c --- 29.05.2011 DK -----------------------------------------------------------
+@c --- 14.07.2011 DK -----------------------------------------------------------
+@need 1000
 @anchor{airy_bi}
 @deffn {Funktion} airy_bi (@var{z})
 
 Die Airy-Funktion Bi(z) (A & S 10.4.3).
 
-Die Ableitung @code{diff(airy_bi(z), z)} ist @code{airy_dbi(z)}.  Siehe die
-Funktion @mrefdot{airy_dbi}
+Die Airy-Funktion @code{airy_bi} ist f@"ur das symbolische und numerische
+Rechnen geeignet.  Ist das Argument @code{z} eine reelle oder komplexe
+Gleitkommazahl, wird @code{airy_bi} numerisch berechnet.  Mit der
+Optionsvariablen @mref{numer} oder der Funktion @mref{float} kann die
+numerische Berechnung erzwungen werden, wenn das Argument eine ganze oder
+rationale Zahl ist.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen
+ist nicht implementiert.
 
-Siehe auch die Funktionen @mref{airy_ai} und @mrefdot{airy_dbi}
+Maxima kennt den speziellen Wert f@"ur das Argument @code{0}.
+
+Ist das Argument eine Liste, Matrix oder Gleichung wird die Funktion
+@code{airy_bi} auf die Elemente der Liste oder beide Seiten der Gleichung
+angewendet.  Siehe auch @mrefdot{distribute_over}
+
+Die Ableitung @code{diff(airy_bi(z), z)} ist als @code{airy_dbi(z)}
+implementiert.  Siehe die Funktion @mrefdot{airy_dbi}
+
+Weiterhin kennt Maxima das Integral der Airy-Funktion @code{airy_bi}.
+
+Siehe auch die Funktionen @mref{airy_ai} und @mrefdot{airy_dai}
+
+F@"ur Beispiele siehe die Funktion @mrefdot{airy_ai}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.07.2011 DK -----------------------------------------------------------
 @anchor{airy_dbi}
 @deffn {Funktion} airy_dbi (@var{z})
 
 Die Ableitung der Airy-Funktion @mrefdot{airy_bi}
+
+Die Ableitung der Airy-Funktion @code{airy_dbi} ist f@"ur das symbolische und
+numerische Rechnen geeignet.  Ist das Argument @var{z} eine reelle oder
+komplexe Gleitkommazahl, wird @code{airy_dbi} numerisch berechnet.  Mit der
+Optionsvariablen @mref{numer} oder der Funktion @mref{float} kann die
+numerische Berechnung erzwungen werden, wenn das Argument eine ganze oder
+rationale Zahl ist.  Die numerische Berechnung f@"ur gro@ss{}e Gleitkommazahlen
+ist nicht implementiert.
+
+Maxima kennt den speziellen Wert f@"ur das Argument @code{0}.
+
+Ist das Argument eine Liste, Matrix oder Gleichung wird die Funktion
+@code{airy_dbi} auf die Elemente der Liste oder beide Seiten der Gleichung
+angewendet.  Siehe auch @mrefdot{distribute_over}
+
+Maxima kennt die Ableitung und das Integral der Funktion @code{airy_dbi}.
+
+Siehe auch die Airy-Funktionen @mref{airy_ai} und @mrefdot{airy_dai}
+
+F@"ur Beispiele siehe die Funktion @mrefdot{airy_ai}
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Struvefunktionen, , Airyfunktionen, Besselfunktionen und verwandte Funktionen
-@subsection Struvefunktionen
+@node Struve-Funktionen, , Airy-Funktionen, Bessel-Funktionen und verwandte Funktionen
+@subsection Struve-Funktionen
 @c -----------------------------------------------------------------------------
 
 @c --- 27.03.2011---------------------------------------------------------------
 @anchor{struve_h}
 @deffn {Funktion} struve_h (@var{v}, @var{z})
 
-Die Struvefunktion H der Ordnung @math{v} und dem Argument @math{z}.  Siehe
-Abramowitz und Stegun, Handbook of Mathematical Functions, Kapitel 12.  Die
-Definition ist
+Die Struve-Funktion @math{H} der Ordnung @math{v} mit dem Argument
+@math{z}.  Siehe Abramowitz und Stegun, Handbook of Mathematical Functions,
+Kapitel 12.  Die Definition ist
 
 @ifnottex
 @example
-            inf
-            ====                  k  2 k
-    z v + 1 \                (- 1)  z
-   (-)       >    ----------------------------------
-    2       /      2 k           3                3
-            ====  2    gamma(k + -) gamma(v + k + -)
-            k = 0                2                2
+                       inf
+                       ====                  k  2 k
+               z v + 1 \                (- 1)  z
+      H (z) = (-)       >    ----------------------------------
+       v       2       /      2 k           3                3
+                       ====  2    gamma(k + -) gamma(v + k + -)
+                       k = 0                2                2
 @end example
 @end ifnottex
 @tex
-$$\left({{z}\over{2}}\right)^{v+1}\,\sum_{k=0}^{\infty }{{{\left(-1
+$$H_{v}(z)=\left({{z}\over{2}}\right)^{v+1}\,\sum_{k=0}^{\infty }{{{\left(-1
  \right)^{k}\,z^{2\,k}}\over{2^{2\,k}\,\Gamma\left(k+{{3}\over{2}}
  \right)\,\Gamma\left(v+k+{{3}\over{2}}\right)}}}$$
 @end tex
 
-Die Struvefunktion @code{struve_h} ist f@"ur das numerische und symbolische
-Rechnen geeignet.  Im Unterschied zu den @nref{Besselfunktionen} ist jedoch die
-Implementation der Funktion @code{struve_h} weniger vollst@"andig.
+Die Struve-Funktion @code{struve_h} ist f@"ur das numerische und symbolische
+Rechnen geeignet.  Im Unterschied zu den @nref{Bessel-Funktionen} ist jedoch
+die Implementation der Funktion @code{struve_h} weniger vollst@"andig.
 
 Maxima berechnet @code{struve_h} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
@@ -638,14 +1024,14 @@ Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
 Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
-Hat die Optionsvariable @code{besselexpand} den Wert @code{true}, wird die
-Struvefunktion @code{struve_h} mit einer halbzahligen Ordnung @math{v} als
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, wird die
+Struve-Funktion @code{struve_h} mit einer halbzahligen Ordnung @math{v} als
 Sinus- und Kosinusfunktionen entwickelt.
 
-Maxima kennt die Ableitung der Struvefunktion @code{struve_h} nach dem Argument
-@math{z}.
+Maxima kennt die Ableitung der Struve-Funktion @code{struve_h} nach dem
+Argument @math{z}.
 
-Siehe auch die Struvefunktion @mrefdot{struve_l}
+Siehe auch die Struve-Funktion @mrefdot{struve_l}
 
 Beispiele:
 
@@ -675,30 +1061,30 @@ Beispiele:
 @anchor{struve_l}
 @deffn {Funktion} struve_l (@var{v}, @var{z})
 
-Die modifizierte Struvefunktion L der Ordnung @math{v} und dem Argument
+Die modifizierte Struve-Funktion @math{L} der Ordnung @math{v} und dem Argument
 @math{z}.  Siehe Abramowitz und Stegun, Handbook of Mathematical Functions, 
 Kapitel 12.  Die Definition ist
 
 @ifnottex
 @example
-            inf
-            ====                  2 k
-    z v + 1 \                    z
-   (-)       >    ----------------------------------
-    2       /      2 k           3                3
-            ====  2    gamma(k + -) gamma(v + k + -)
-            k = 0                2                2
+                       inf
+                       ====                  2 k
+               z v + 1 \                    z
+      L (z) = (-)       >    ----------------------------------
+       v       2       /      2 k           3                3
+                       ====  2    gamma(k + -) gamma(v + k + -)
+                       k = 0                2                2
 @end example
 @end ifnottex
 @tex
-$$\left({{z}\over{2}}\right)^{v+1}\,\sum_{k=0}^{\infty }{{{z^{2\,k}
+$$L_{v}(z)=\left({{z}\over{2}}\right)^{v+1}\,\sum_{k=0}^{\infty }{{{z^{2\,k}
  }\over{2^{2\,k}\,\Gamma\left(k+{{3}\over{2}}\right)\,\Gamma\left(v+k
  +{{3}\over{2}}\right)}}}$$
 @end tex
 
-Die Struvefunktion @code{struve_l} ist f@"ur das numerische und symbolische
-Rechnen geeignet.  Im Unterschied zu den @nref{Besselfunktionen} ist jedoch die
-Implementation der Funktion @code{struve_l} weniger vollst@"andig.
+Die Struve-Funktion @code{struve_l} ist f@"ur das numerische und symbolische
+Rechnen geeignet.  Im Unterschied zu den @nref{Bessel-Funktionen} ist jedoch
+die Implementation der Funktion @code{struve_l} weniger vollst@"andig.
 
 Maxima berechnet @code{struve_l} numerisch f@"ur reelle und komplexe
 Gleitkommazahlen als Argumente f@"ur @math{v} und @math{z}.  Mit der Funktion
@@ -707,14 +1093,14 @@ Auswertung erzwungen werden, wenn die Argumente Zahlen sind.  Die numerische
 Berechnung f@"ur gro@ss{}e Gleitkommazahlen ist nicht implementiert.  In diesem
 Fall gibt Maxima eine Substantivform zur@"uck.
 
-Hat die Optionsvariable @code{besselexpand} den Wert @code{true}, wird die
-Struvefunktion @code{struve_l} mit einer halbzahligen Ordnung @math{v} als
+Hat die Optionsvariable @mref{besselexpand} den Wert @code{true}, wird die
+Struve-Funktion @code{struve_l} mit einer halbzahligen Ordnung @math{v} als
 Sinus- und Kosinusfunktionen entwickelt.
 
-Maxima kennt die Ableitung der Struvefunktion @code{struve_l} nach dem Argument
-@math{z}.
+Maxima kennt die Ableitung der Struve-Funktion @code{struve_l} nach dem
+Argument @math{z}.
 
-Siehe auch die Struvefunktion @mrefdot{struve_h}
+Siehe auch die Struve-Funktion @mrefdot{struve_h}
 
 Beispiele:
 
@@ -741,7 +1127,7 @@ Beispiele:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Gammafunktionen und verwandte Funktionen, Exponentielle Integrale, Besselfunktionen und verwandte Funktionen, Spezielle Funktionen
+@node Gammafunktionen und verwandte Funktionen, Exponentielle Integrale, Bessel-Funktionen und verwandte Funktionen, Spezielle Funktionen
 @section Gammafunktionen und verwandte Funktionen
 @c -----------------------------------------------------------------------------
 
@@ -2840,8 +3226,8 @@ un@-voll@-st@"an@-di@-ge Gammafunkion @mrefcomma{gamma_incomplete} die
 Fehlerfunktionen @mref{erf} und @mrefcomma{erfc} nicht jedoch die Funktion
 @mrefcomma{erfi} die jedoch in eine andere Fehlerfunktion transformiert werden
 kann, die Exponentiellen Integrale wie zum Beispiel @mrefcomma{expintegral_e1}
-die Besselfunktionen wie zum Beispiel @mrefcomma{bessel_j} einschlie@ss{}lich
-der Produkte von Besselfunktionen, Hankelfunktionen wie zum Beispiel
+die Bessel-Funktionen wie zum Beispiel @mrefcomma{bessel_j} einschlie@ss{}lich
+der Produkte von Bessel-Funktionen, Hankel-Funktionen wie zum Beispiel
 @mrefcomma{hankel_1} Hermite @mref{hermite} und Laguerre Polynome
 @mrefdot{laguerre}  Weiterhin kann @code{specint} Integranden mit der
 Hypergeometrische Funktion @code{%f[p,q]([],[],z)}, die Whittaker Funktion der
