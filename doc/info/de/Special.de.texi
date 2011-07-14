@@ -373,7 +373,7 @@ Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 @anchor{bessel_i}
 @deffn {Funktion} bessel_i (@var{v}, @var{z})
 
-Die modifizierte Bessel-Funktion der ersten Art der Ordnung @math{v} und dem 
+Die modifizierte Bessel-Funktion der ersten Art der Ordnung @math{v} mit dem 
 Argument @math{v}.  @code{bessel_i} ist definiert als
 
 @ifnottex
@@ -466,7 +466,7 @@ Siehe die Funktion @mref{bessel_j} f@"ur Beispiele mit Bessel-Funktionen.
 @anchor{bessel_k}
 @deffn {Funktion} bessel_k (@var{v}, @var{z})
 
-Die modifizierte Bessel-Funktion der zweiten Art der Ordnung @math{v} und dem
+Die modifizierte Bessel-Funktion der zweiten Art der Ordnung @math{v} mit dem
 Argument @math{z}.  @code{bessel_k} ist definiert als
 
 @ifnottex
@@ -768,7 +768,7 @@ Substantivform zur@"uck.
 @anchor{hankel_2}
 @deffn {Funktion} hankel_2 (@var{v}, @var{z})
 
-Die Hankel-Funktion der zweiten Art der Ordnung @math{v} und dem Argument
+Die Hankel-Funktion der zweiten Art der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe A@w{ }&@w{ }S 9.1.4.  @code{hankel_2} ist definiert als
 
 @ifnottex
@@ -1061,7 +1061,7 @@ Beispiele:
 @anchor{struve_l}
 @deffn {Funktion} struve_l (@var{v}, @var{z})
 
-Die modifizierte Struve-Funktion @math{L} der Ordnung @math{v} und dem Argument
+Die modifizierte Struve-Funktion @math{L} der Ordnung @math{v} mit dem Argument
 @math{z}.  Siehe Abramowitz und Stegun, Handbook of Mathematical Functions, 
 Kapitel 12.  Die Definition ist
 
@@ -3123,7 +3123,7 @@ Die parabolischen Zylinderfunktionen k@"onnen als Ergebnis der Funktion
 @c Represents the polylogarithm function of order @var{s} and argument @var{z},
 @c defined by the infinite series
 
-Ist der Polylogarithmus der Ordnung @var{s} und dem Argument @var{z}.  Der
+Ist der Polylogarithmus der Ordnung @var{s} mit dem Argument @var{z}.  Der
 Polylogarithmus wird durch die folgende Reihe definiert werden:
 
 @tex
