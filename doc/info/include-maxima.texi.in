@@ -136,6 +136,7 @@ Additional packages
 
 * asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
+* Bernstein::                   Bernstein polynomials.
 * bode::                        Bode gain and phase plots.
 * cobyla::                      Nonlinear optimization with inequality constraints.
 * contrib_ode::                 Additional routines for ODEs
@@ -419,6 +420,10 @@ asympa
 augmented_lagrangian
 
 * Functions and Variables for augmented_lagrangian::
+
+Bernstein
+
+* Functions and Variables for Bernstein::
 
 bode
 
@@ -803,11 +808,15 @@ zeilberger
 @chapter asympa
 @include asympa.texi
 
-@node augmented_lagrangian, bode, asympa, Top
+@node augmented_lagrangian, Bernstein, asympa, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, cobyla, augmented_lagrangian, Top
+@node Bernstein, bode, augmented_lagrangian, Top
+@chapter Bernstein
+@include bernstein.texi
+
+@node bode, cobyla, Bernstein, Top
 @chapter bode
 @include bode.texi
 
