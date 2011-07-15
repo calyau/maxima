@@ -740,6 +740,7 @@ lapack/blas/ztrmv.lisp \
 lapack/blas/ztrsm.lisp \
 lapack/blas/ztrsv.lisp \
 lapack/dgemm.lisp \
+lapack/dgeqrf.lisp \
 lapack/dgesv.lisp \
 lapack/eigensys.lisp \
 lapack/lapack/dbdsdc.lisp \
@@ -845,6 +846,7 @@ lapack/lapack.system \
 lapack/lapack/zlange.lisp \
 lapack/lapack/zlassq.lisp \
 lapack/load-lapack.lisp \
+lapack/rtest_dgeqrf.mac \
 lbfgs/f2cl-lbfgs.lisp \
 lbfgs/lb1.lisp \
 lbfgs/lb2.lisp \
