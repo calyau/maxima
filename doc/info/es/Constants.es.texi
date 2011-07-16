@@ -1,4 +1,4 @@
-@c version 1.24
+@c English version 2011-06-12
 @menu
 * Funciones y variables para Constantes::   
 @end menu
@@ -34,6 +34,18 @@ El s@'{@dotless{i}}mbolo @code{false} representa al valor l@'ogico
 "falso". Maxima implementa @code{false} con el valor @code{NIL} de
 Lisp.
 @end defvr
+
+
+
+@defvr {Constante} %gamma
+@ifinfo
+@vrindex Constante de Euler-Mascheroni
+@end ifinfo
+Es la constante de Euler-Mascheroni, 0.5772156649015329 ....
+
+@end defvr
+
+
 
 @defvr {Constante} ind
 @ifinfo
