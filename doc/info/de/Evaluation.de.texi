@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 10.05.2011
+@c Revision    : 16.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -28,7 +28,6 @@ Jede Eingabe eines Ausdrucks @var{expr} wird von Maxima ausgewertet.  Symbole,
 die keinen Wert haben, und Zahlen werden zu sich selbst ausgewertet.  Symbole,
 die einen Wert haben, werden durch ihren Wert ersetzt.
 
-@noindent
 Beispiele:
 
 Im ersten Beispiel werden Symbole und Zahlen zu sich selbst ausgewertet.  Im 
@@ -56,7 +55,6 @@ beiden Formen auftreten.  Typische Beispiele sind die Differentiation mit der
 Funktion @mref{diff} oder die Integration mit der Funktion @mrefdot{integrate}
 Siehe zum diesem Thema auch @ref{Substantive und Verben}.
 
-@noindent
 Beispiele:
 
 Die Variable @code{a} erh@"alt einen Wert.  Im ersten Fall liegt die Funktion
@@ -64,9 +62,9 @@ Die Variable @code{a} erh@"alt einen Wert.  Im ersten Fall liegt die Funktion
 auf die Argumente @code{a*x^2} und @var{x} angewendet wird.  Im zweiten Fall
 liegt die Funktion @code{diff} in ihrer Substantivform vor.  Dies wird hier
 durch den @mxref{', Quote-Operator} @code{'} bewirkt.  Jetzt wird die Funktion
-nicht angewendet.  Das Ergebnis ein symbolischer Ausdruck f@"ur die Ableitung.
-Da auch in diesem Fall die Argumente ausgewertet werden, wird auch hier der Wert
-@code{1/2} f@"ur die Variable @code{a} eingesetzt.
+nicht angewendet.  Das Ergebnis ist ein symbolischer Ausdruck f@"ur die
+Ableitung.  Da auch in diesem Fall die Argumente ausgewertet werden, wird auch
+hier der Wert @code{1/2} f@"ur die Variable @code{a} eingesetzt.
 
 @example
 (%i1) a:1/2;
@@ -88,7 +86,6 @@ Nicht alle Maxima-Funktionen werten die Argumente aus.  Die Dokumentation der
 Funktionen gibt h@"aufig einen Hinweis darauf, ob die Argumente ausgewertet
 werden oder nicht.
 
-@noindent
 Beispiel:
 
 Die Funktion @mref{properties} wertet das Argument nicht aus.  Dies ist f@"ur
