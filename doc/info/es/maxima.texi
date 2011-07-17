@@ -100,10 +100,10 @@ Infraestructura de Maxima
 * Evaluaci@'on::                       Evaluando expresiones.
 * Expresiones::                        Expresiones de Maxima.
 * Simplificaci@'on::                   Simplificando expresiones.
+* Base de datos de Maxima::            Declaraciones, contextos, hechos y propiedades.
 * Gr@'aficos::                         Gr@'aficos en dos y tres dimensiones.
 * Lectura y escritura::                Lectura y escritura de archivos
 * Aritm@'etica de punto flotante::     Rutinas num@'ericas de bajo nivel.
-* Contextos::                          Imposici@'on de restricciones a variables.
 
 Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 
@@ -243,6 +243,13 @@ Simplificaci@'on
 * Introducci@'on a la simplificaci@'on::
 * Funciones y variables para simplificaci@'on::
 
+Base de datos de Maxima
+
+* Introducci@'on a la base de datos de Maxima::
+* Funciones y variables para las propiedades::
+* Funciones y variables para los hechos::
+* Funciones y variables para los predicados::
+
 Gr@'aficos
 
 * Funciones y variables para gr@'aficos::
@@ -256,10 +263,6 @@ Lectura y escritura
 Aritm@'etica de punto flotante
 
 * Funciones y variables para la aritm@'etica de punto flotante::
-
-Contextos
-
-* Funciones y variables para Contextos::
 
 Polinomios
 
@@ -665,11 +668,15 @@ zeilberger
 @chapter Expresiones
 @include Expressions.es.texi
 
-@node Simplificaci@'on, Gr@'aficos, Expresiones, Top
+@node Simplificaci@'on, Base de datos de Maxima, Expresiones, Top
 @chapter Simplificaci@'on
 @include Simplification.es.texi
 
-@node Gr@'aficos, Lectura y escritura, Simplificaci@'on, Top
+@node Base de datos de Maxima, Gr@'aficos, Simplificaci@'on, Top
+@chapter Base de datos de Maxima
+@include Database.es.texi
+
+@node Gr@'aficos, Lectura y escritura, Base de datos de Maxima, Top
 @chapter Gr@'aficos
 @include Plotting.es.texi
 
@@ -677,15 +684,11 @@ zeilberger
 @chapter Lectura y escritura
 @include Input.es.texi
 
-@node Aritm@'etica de punto flotante, Contextos, Lectura y escritura, Top
+@node Aritm@'etica de punto flotante, Polinomios, Lectura y escritura, Top
 @chapter Aritm@'etica de punto flotante
 @include Floating.es.texi
 
-@node Contextos, Polinomios, Aritm@'etica de punto flotante, Top
-@chapter Contextos
-@include Contexts.es.texi
-
-@node Polinomios, Constantes, Contextos, Top
+@node Polinomios, Constantes, Aritm@'etica de punto flotante, Top
 @chapter Polinomios
 @include Polynomials.es.texi
 
