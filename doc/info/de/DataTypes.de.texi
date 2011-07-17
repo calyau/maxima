@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 25.04.2011
+@c Revision    : 17.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -20,7 +20,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Zahlen, Zeichenketten, Datentypen und -strukturen, Datentypen und -strukturen
+@node Zahlen, Zeichenketten, Datentypen und Strukturen, Datentypen und Strukturen
 @section Zahlen
 @c -----------------------------------------------------------------------------
 
@@ -764,7 +764,7 @@ Beispiele:
 
 @page
 @c -----------------------------------------------------------------------------
-@node Zeichenketten, Funktionen und Variablen f@"ur Konstante, Zahlen, Datentypen und -strukturen
+@node Zeichenketten, Funktionen und Variablen f@"ur Konstante, Zahlen, Datentypen und Strukturen
 @section Zeichenketten
 @c -----------------------------------------------------------------------------
 

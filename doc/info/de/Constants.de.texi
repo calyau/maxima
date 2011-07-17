@@ -2,17 +2,17 @@
 @c File        : Constants.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Constants.texi revision 1.24
+@c Original    : Constants.texi revision 12.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.03.2011
-@c Revision    : 31.03.2011
+@c Revision    : 17.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 @page
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Konstante, Listen, Zeichenketten, Datentypen und -strukturen
+@node Funktionen und Variablen f@"ur Konstante, Listen, Zeichenketten, Datentypen und Strukturen
 @section Funktionen und Variablen f@"ur Konstante
 @c -----------------------------------------------------------------------------
 

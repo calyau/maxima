@@ -2,10 +2,10 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : include-maxima.texi.in 15.06.2011
+@c Original    : include-maxima.texi.in 15.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 10.07.2011
+@c Revision    : 17.07.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -130,7 +130,7 @@ Dr. Dieter Kaiser, 14.02.2011
 * Programmfehler::              Programmfehler finden und berichten.
 * Hilfe::                       Hilfe in einer Maxima-Sitzung erhalten.
 * Kommandozeile::               Eingaben und Ausgaben der Konsole.
-* Datentypen und -strukturen::  Ganze, rationale und Gleitkommazahlen,
+* Datentypen und Strukturen::   Ganze, rationale und Gleitkommazahlen,
                                 Konstante, Zeichenketten, Listen und Arrays.
 * Ausdr@"ucke::                 Ausdr@"ucke in Maxima.
 * Operatoren::                  Operatoren in Maxima.
@@ -248,7 +248,7 @@ Kommandozeile
 * Funktionen und Variablen der Eingabe::
 * Funktionen und Variablen der Ausgabe::
 
-Datentypen und -strukturen
+Datentypen und Strukturen
 * Zahlen::
 * Zeichenketten::
 * Funktionen und Variablen f@"ur Konstante::
@@ -617,19 +617,19 @@ Glossar
 @chapter Hilfe
 @include Help.de.texi
 
-@node Kommandozeile, Datentypen und -strukturen, Hilfe, Top
+@node Kommandozeile, Datentypen und Strukturen, Hilfe, Top
 @chapter Kommandozeile
 @include Command.de.texi
 
-@node Datentypen und -strukturen, Ausdr@"ucke, Kommandozeile, Top
-@chapter Datentypen und -strukturen
+@node Datentypen und Strukturen, Ausdr@"ucke, Kommandozeile, Top
+@chapter Datentypen und Strukturen
 @include DataTypes.de.texi
 @include Constants.de.texi
 @include Lists.de.texi
 @include Arrays.de.texi
 @include Defstruct.de.texi
 
-@node Ausdr@"ucke, Operatoren, Datentypen und -strukturen, Top
+@node Ausdr@"ucke, Operatoren, Datentypen und Strukturen, Top
 @chapter Ausdr@"ucke
 @include Expressions.de.texi
 
