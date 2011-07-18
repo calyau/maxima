@@ -516,6 +516,15 @@ Selecciona la misma expresi@'on que @code{part}, pero en lugar de devolver esa e
 
 
 
+@defvr {Variable opcional} exptisolate
+Valor por defecto: @code{false}
+
+V@'ease @code{isolate}.
+
+@end defvr
+
+
+
 @defvr {Variable opcional} exptsubst
 Valor por defecto: @code{false}
 

@@ -100,6 +100,7 @@ Infraestructura de Maxima
 * Evaluaci@'on::                       Evaluando expresiones.
 * Expresiones::                        Expresiones de Maxima.
 * Simplificaci@'on::                   Simplificando expresiones.
+* Funciones matem@'aticas::            Funciones matem@'aticas en Maxima.
 * Base de datos de Maxima::            Declaraciones, contextos, hechos y propiedades.
 * Gr@'aficos::                         Gr@'aficos en dos y tres dimensiones.
 * Lectura y escritura::                Lectura y escritura de archivos
@@ -109,8 +110,6 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 
 * Polinomios::                         Operaciones con polinomios.
 * Constantes::                         Constantes num@'ericas.
-* Logaritmos::                         Transformaci@'on y c@'alculo de expresiones logar@'{@dotless{i}}tmicas.
-* Trigonometr@'{@dotless{i}}a::        Transformaci@'on y c@'alculo de expresiones trigonom@'etricas.
 * Funciones Especiales::               Funciones especiales.
 * Funciones el@'{@dotless{i}}pticas::  Funciones e integrales el@'{@dotless{i}}pticas.
 * L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites.
@@ -243,6 +242,15 @@ Simplificaci@'on
 * Introducci@'on a la simplificaci@'on::
 * Funciones y variables para simplificaci@'on::
 
+Funciones matem@'aticas
+
+* Funciones para los n@'umeros::
+* Funciones para los n@'umeros complejos::
+* Funciones combinatorias::
+* Funciones radicales exponenciales y logar@'{@dotless{i}}tmicas::
+* Funciones trigonom@'etricas::
+* N@'umeros aleatorios::
+
 Base de datos de Maxima
 
 * Introducci@'on a la base de datos de Maxima::
@@ -272,15 +280,6 @@ Polinomios
 Constantes
 
 * Funciones y variables para Constantes::
-
-Logaritmos
-
-* Funciones y variables para logaritmos::
-
-Trigonometr@'{@dotless{i}}a
-
-* Introducci@'on a la trigonometr@'{@dotless{i}}a::
-* Funciones y variables para trigonometr@'{@dotless{i}}a::
 
 Funciones Especiales
 
@@ -668,11 +667,15 @@ zeilberger
 @chapter Expresiones
 @include Expressions.es.texi
 
-@node Simplificaci@'on, Base de datos de Maxima, Expresiones, Top
+@node Simplificaci@'on, Funciones matem@'aticas, Expresiones, Top
 @chapter Simplificaci@'on
 @include Simplification.es.texi
 
-@node Base de datos de Maxima, Gr@'aficos, Simplificaci@'on, Top
+@node Funciones matem@'aticas, Base de datos de Maxima, Simplificaci@'on, Top
+@chapter Funciones matem@'aticas
+@include MathFunctions.es.texi
+
+@node Base de datos de Maxima, Gr@'aficos, Funciones matem@'aticas, Top
 @chapter Base de datos de Maxima
 @include Database.es.texi
 
@@ -692,19 +695,11 @@ zeilberger
 @chapter Polinomios
 @include Polynomials.es.texi
 
-@node Constantes, Logaritmos, Polinomios, Top
+@node Constantes, Funciones Especiales, Polinomios, Top
 @chapter Constantes
 @include Constants.es.texi
 
-@node Logaritmos, Trigonometr@'{@dotless{i}}a, Constantes, Top
-@chapter Logaritmos
-@include Logarithms.es.texi
-
-@node Trigonometr@'{@dotless{i}}a, Funciones Especiales, Logaritmos, Top
-@chapter Trigonometr@'{@dotless{i}}a
-@include Trigonometric.es.texi
-
-@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Trigonometr@'{@dotless{i}}a, Top
+@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Constantes, Top
 @chapter Funciones Especiales
 @include Special.es.texi
 
