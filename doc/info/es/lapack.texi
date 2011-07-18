@@ -1,4 +1,4 @@
-@c english version 1.8
+@c English version 2011-07-18
 @menu
 * Introducci@'on a lapack::
 * Funciones y variables para lapack::
@@ -95,6 +95,52 @@ Ejemplo:
                      [ 0.0       0.0      ]
 @end example
 @end deffn
+
+
+
+@deffn {Funci@'on} dgeqrf (@var{A})
+
+Calcula la descomposici@'on QR de la matriz @var{A}.
+Todos los elementos de @var{A} deben ser enteros o n@'umeros
+reales. No es necesario que @var{A} tenga
+el mismo n@'umero de filas que de columnas.
+
+La funci@'on devuelve una lista con dos elementos; el primero es
+la matriz cuadrada ortonormal @var{Q}, con el mismo n@'umero de
+filas que @var{A}, y el segundo es la matriz triangular superior @var{R},
+de iguales dimensiones que @var{A}. El producto @code{@var{Q} . @var{R}}, 
+siendo "." el operador de la multiplicaci@'on matricial, es igual a
+@var{A}, ignorando errores de redondeo.
+
+@c ===beg===
+@c load (lapack)$
+@c fpprintprec : 6;
+@c M : matrix ([1, -3.2, 8], [-11, 2.7, 5.9]);
+@c [q, r] : dgeqrf (M);
+@c q . r - M;
+@c mat_norm (%);
+@c ===end===
+@example
+(%i1) load (lapack) $
+(%i2) fpprintprec : 6 $
+(%i3) M : matrix ([1, -3.2, 8], [-11, 2.7, 5.9]) $
+(%i4) [q, r] : dgeqrf (M);
+       [ - .0905357  .995893  ]
+(%o4) [[                      ], 
+       [  .995893    .0905357 ]
+                               [ - 11.0454   2.97863   5.15148 ]
+                               [                               ]]
+                               [     0      - 2.94241  8.50131 ]
+(%i5) q . r - M;
+         [ - 7.77156E-16   1.77636E-15   - 8.88178E-16 ]
+(%o5)    [                                             ]
+         [      0.0       - 1.33227E-15   8.88178E-16  ]
+(%i6) mat_norm (%, 1);
+(%o6)                      3.10862E-15
+@end example
+
+@end deffn
+
 
 
 
