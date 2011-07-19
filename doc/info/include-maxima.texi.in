@@ -175,6 +175,7 @@ Additional packages
 * stats::                       Statistical inference package.
 * stirling::                    Stirling formula.
 * stringproc::                  String processing.
+* to_poly_solve::               to_poly_solve package.
 * unit::                        Units and dimensions package.
 * zeilberger::                  Functions for hypergeometric summation.
 
@@ -628,6 +629,10 @@ stringproc
 * Functions and Variables for characters::
 * Functions and Variables for strings::
 
+to_poly_solve
+
+* Functions and Variables for to_poly_solve::
+
 unit
 
 * Introduction to Units::       
@@ -964,11 +969,15 @@ zeilberger
 @chapter stirling
 @include stirling.texi
 
-@node stringproc, unit, stirling, Top
+@node stringproc, to_poly_solve, stirling, Top
 @chapter stringproc
 @include stringproc.texi
 
-@node unit, zeilberger, stringproc, Top
+@node to_poly_solve, unit, stringproc, Top
+@chapter to_poly_solve
+@include to_poly_solve.texi
+
+@node unit, zeilberger, to_poly_solve, Top
 @chapter unit
 @include unit.texi
 

@@ -53,7 +53,7 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi \
   implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
   contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
   asympa.texi Deleted.texi minpack.texi cobyla.texi drawdf.texi fractals.texi finance.texi\
-  bernstein.texi defstruct.texi
+  bernstein.texi to_poly_solve.texi defstruct.texi
 
 figurefiles = \
 figures/introduction1.gif\
