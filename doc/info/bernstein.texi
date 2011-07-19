@@ -124,5 +124,3 @@ Maxima signals an error when the first argument isn't a polynomial.
 To use @code{bernstein_expand}, first @code{load("bernstein")}.
 
 @end deffn
-
-
