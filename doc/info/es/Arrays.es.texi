@@ -1,4 +1,9 @@
 @c English version 2011-06-12
+@page
+@node Arrays, Estructuras, Listas, Tipos de datos y estructuras
+@section Arrays
+
+
 @menu
 * Introducci@'on a los arrays::
 * Funciones y variables para los arrays::
@@ -7,7 +12,7 @@
 
 
 @node Introducci@'on a los arrays, Funciones y variables para los arrays, Arrays, Arrays
-@section Introducci@'on a los arrays
+@subsection Introducci@'on a los arrays
 
 Los arrays m@'as flexibles son aquellos que no necesitan ser declarados, llamados
 tambi@'en, en ingl@'es, @i{hashed-arrays}, y se basan en que a una variable
@@ -91,7 +96,7 @@ permiten trabajar con arrays:
 
 
 @node Funciones y variables para los arrays, , Introducci@'on a los arrays, Arrays
-@section Funciones y variables para los arrays
+@subsection Funciones y variables para los arrays
 
 @deffn {Funci@'on} array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Funci@'on} array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})

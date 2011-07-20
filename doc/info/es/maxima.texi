@@ -96,6 +96,7 @@ Infraestructura de Maxima
 * Detecci@'on e informe de fallos::    Gesti@'on de fallos.
 * Ayuda::                              Solicitando ayuda desde una sesi@'on de Maxima.
 * L@'{@dotless{i}}nea de comandos::    Sintaxis de los comandos de Maxima.
+* Tipos de datos y estructuras::       N@'umeros, cadenas de texto, listas, arrays y estructuras.
 * Operadores::                         Operadores internos y definidos por el usuario.
 * Evaluaci@'on::                       Evaluando expresiones.
 * Expresiones::                        Expresiones de Maxima.
@@ -103,13 +104,11 @@ Infraestructura de Maxima
 * Funciones matem@'aticas::            Funciones matem@'aticas en Maxima.
 * Base de datos de Maxima::            Declaraciones, contextos, hechos y propiedades.
 * Gr@'aficos::                         Gr@'aficos en dos y tres dimensiones.
-* Lectura y escritura::                Lectura y escritura de archivos
-* Aritm@'etica de punto flotante::     Rutinas num@'ericas de bajo nivel.
+* Lectura y escritura::                Lectura y escritura de archivos.
 
 Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 
 * Polinomios::                         Operaciones con polinomios.
-* Constantes::                         Constantes num@'ericas.
 * Funciones Especiales::               Funciones especiales.
 * Funciones el@'{@dotless{i}}pticas::  Funciones e integrales el@'{@dotless{i}}pticas.
 * L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites.
@@ -118,7 +117,6 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Ecuaciones::                         Definici@'on y resoluci@'on de ecuaciones.
 * Ecuaciones Diferenciales::           Definici@'on y resoluci@'on de ecuaciones diferenciales.
 * M@'etodos num@'ericos::              Integraci@'on num@'erica, transformadas de Fourier, etc.
-* Arrays::                             Creaci@'on y manipulaci@'on de arrays.
 * Matrices y @'Algebra Lineal::        Operaciones matriciales.
 * Afines::                             
 * itensor::                            Manipulaci@'on indexada de tensores
@@ -135,9 +133,7 @@ Funcionalidades avanzadas y programaci@'on
 * Miscel@'anea de opciones::    Opciones que afectan globalmente el comportamiento de Maxima.
 * Reglas y patrones::           Patrones de definidos por el usuario y
                                 reglas de simplificaci@'on.
-* Listas::                      Manipulaci@'on de listas.
 * Conjuntos::                   Operaciones con conjuntos.
-* Estructuras::                 Agregaci@'on de datos.
 * Definici@'on de Funciones::   Programando funciones.
 * Programaci@'on::              Programaci@'on en Maxima.
 * Depurado::                    Depuraci@'on de fallos en programas Maxima.
@@ -214,6 +210,15 @@ L@'{@dotless{i}}nea de comandos
 * Funciones y variables para la l@'{@dotless{i}}nea de comandos::
 * Funciones y variables para la impresi@'on::
 
+Tipos de datos y estructuras
+
+* N@'umeros::
+* Cadenas de texto::
+* Constantes::
+* Listas::
+* Arrays::
+* Estructuras::
+
 Operadores
 
 * Introducci@'on a los operadores::
@@ -268,18 +273,10 @@ Lectura y escritura
 * Archivos::
 * Funciones y variables para lectura y escritura:: 
 
-Aritm@'etica de punto flotante
-
-* Funciones y variables para la aritm@'etica de punto flotante::
-
 Polinomios
 
 * Introducci@'on a los polinomios::
 * Funciones y variables para polinomios::
-
-Constantes
-
-* Funciones y variables para Constantes::
 
 Funciones Especiales
 
@@ -328,11 +325,6 @@ M@'etodos num@'ericos
 * Series de Fourier::
 * Funciones y variables para los m@'etodos num@'ericos::
 * Funciones y variables para las series de Fourier::
-
-Arrays
-
-* Introducci@'on a los arrays::
-* Funciones y variables para los arrays::
 
 Matrices y @'Algebra Lineal
 
@@ -394,20 +386,10 @@ Reglas y patrones
 * Introducci@'on a reglas y patrones::
 * Funciones y variables sobre reglas y patrones::
 
-Listas
-
-* Introducci@'on a las listas::
-* Funciones y variables para listas::
-
 Conjuntos
 
 * Introducci@'on a los conjuntos::
 * Funciones y variables para los conjuntos::
-
-Estructuras
-
-* Introducci@'on a las estructuras::       
-* Funciones y variables para las estructuras:: 
 
 Definici@'on de Funciones
 
@@ -651,11 +633,19 @@ zeilberger
 @chapter Ayuda
 @include Help.es.texi
 
-@node L@'{@dotless{i}}nea de comandos, Operadores, Ayuda, Top
+@node L@'{@dotless{i}}nea de comandos, Tipos de datos y estructuras, Ayuda, Top
 @chapter L@'{@dotless{i}}nea de comandos
 @include Command.es.texi
 
-@node Operadores, Evaluaci@'on, L@'{@dotless{i}}nea de comandos, Top
+@node Tipos de datos y estructuras, Operadores, L@'{@dotless{i}}nea de comandos, Top
+@chapter Tipos de datos y estructuras
+@include DataTypes.es.texi
+@include Constants.es.texi
+@include Lists.es.texi
+@include Arrays.es.texi
+@include defstruct.texi
+
+@node Operadores, Evaluaci@'on, Tipos de datos y estructuras, Top
 @chapter Operadores
 @include Operators.es.texi
 
@@ -683,23 +673,15 @@ zeilberger
 @chapter Gr@'aficos
 @include Plotting.es.texi
 
-@node Lectura y escritura, Aritm@'etica de punto flotante, Gr@'aficos, Top
+@node Lectura y escritura, Polinomios, Gr@'aficos, Top
 @chapter Lectura y escritura
 @include Input.es.texi
 
-@node Aritm@'etica de punto flotante, Polinomios, Lectura y escritura, Top
-@chapter Aritm@'etica de punto flotante
-@include Floating.es.texi
-
-@node Polinomios, Constantes, Aritm@'etica de punto flotante, Top
+@node Polinomios, Funciones Especiales, Lectura y escritura, Top
 @chapter Polinomios
 @include Polynomials.es.texi
 
-@node Constantes, Funciones Especiales, Polinomios, Top
-@chapter Constantes
-@include Constants.es.texi
-
-@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Constantes, Top
+@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Polinomios, Top
 @chapter Funciones Especiales
 @include Special.es.texi
 
@@ -727,15 +709,11 @@ zeilberger
 @chapter Ecuaciones Diferenciales
 @include Differential.es.texi
 
-@node M@'etodos num@'ericos, Arrays, Ecuaciones Diferenciales, Top
+@node M@'etodos num@'ericos, Matrices y @'Algebra Lineal, Ecuaciones Diferenciales, Top
 @chapter M@'etodos num@'ericos
 @include Numerical.es.texi
 
-@node Arrays, Matrices y @'Algebra Lineal, M@'etodos num@'ericos, Top
-@chapter Arrays
-@include Arrays.es.texi
-
-@node Matrices y @'Algebra Lineal, Afines, Arrays, Top
+@node Matrices y @'Algebra Lineal, Afines, M@'etodos num@'ericos, Top
 @chapter Matrices y @'Algebra Lineal
 @include Matrices.es.texi
 
@@ -779,23 +757,15 @@ zeilberger
 @chapter Miscel@'anea de opciones
 @include Miscellaneous.es.texi
 
-@node Reglas y patrones, Listas, Miscel@'anea de opciones, Top
+@node Reglas y patrones, Conjuntos, Miscel@'anea de opciones, Top
 @chapter Reglas y patrones
 @include Rules.es.texi
 
-@node Listas, Conjuntos, Reglas y patrones, Top
-@chapter Listas
-@include Lists.es.texi
-
-@node Conjuntos, Estructuras, Listas, Top
+@node Conjuntos, Definici@'on de Funciones, Reglas y patrones, Top
 @chapter Conjuntos
 @include nset.es.texi
 
-@node Estructuras, Definici@'on de Funciones, Conjuntos, Top
-@chapter Estructuras
-@include defstruct.texi
-
-@node Definici@'on de Funciones, Programaci@'on, Estructuras, Top
+@node Definici@'on de Funciones, Programaci@'on, Conjuntos, Top
 @chapter Definici@'on de Funciones
 @include Function.es.texi
 
