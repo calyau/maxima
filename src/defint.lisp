@@ -877,10 +877,76 @@ in the interval of integration.")
 	  ((eq a '$neg)  -1)
 	  (t 1.))))
 
+;; Substitute a and b into integral e
+;;
+;; Looks for discontinuties in integral, and works around them.
+;; For example, in  
+;;
+;; integrate(x^(2*n)*exp(-(x)^2),x)    ==>
+;; -gamma_incomplete((2*n+1)/2,x^2)*x^(2*n+1)*abs(x)^(-2*n-1)/2
+;; 
+;; the integral has a discontinuity at x=0.
+;;
+(defun intsubs (e a b)
+  (let ((edges (cond ((not $intanalysis)
+		      '$no)		;don't do any checking.
+		    (t (discontinuities-in-interval 
+			(let (($algebraic t)) 
+			  (sratsimp e))
+			var a b)))))
+
+    (cond ((or (eq edges '$no)
+	       (eq edges '$unknown))
+	   (whole-intsubs e a b))
+	  (t
+	   (do* ((l edges (cdr l))
+		 (total nil)
+		 (a1 (car l) (car l))
+		 (b1 (cadr l) (cadr l)))
+		((null (cdr l)) (if (every (lambda (x) x) total)
+				    (m+l total)))
+		(push
+		 (whole-intsubs e a1 b1)
+		 total))))))
+
+;; look for terms with a negative exponent
+(defun discontinuities-denom (exp)
+  (cond ((atom exp) 1)
+	((eq (caar exp) 'mtimes)
+	 (m*l (mapcar #'discontinuities-denom (cdr exp))))
+	((and (eq (caar exp) 'mexpt)
+	      (eq ($sign (caddr exp)) '$neg))
+	 (m^ (cadr exp) (m- (caddr exp))))
+	(t 1)))
+
+;; returns list of places where exp might be discontinuous in var.
+;; list begins with ll and ends with ul, and include any values between
+;; ll and ul.
+;; return '$no or '$unknown if no discontinuities found.
+(defun discontinuities-in-interval (exp var ll ul)
+  (let* ((denom (discontinuities-denom exp))
+	 (roots (real-roots denom var)))
+    (cond ((eq roots '$failure)
+	   '$unknown)
+	  ((eq roots '$no)
+	   '$no)
+	  (t (do ((dummy roots (cdr dummy))
+		  (pole-list nil))
+		 ((null dummy)
+		  (cond (pole-list
+			 (append (list ll)
+				 (sortgreat pole-list)
+				 (list ul)))
+			(t '$no)))
+		 (let ((soltn (caar dummy)))
+		   ;; (multiplicity (cdar dummy)) ;; not used
+		   (if (strictly-in-interval soltn ll ul)
+		       (push soltn pole-list))))))))
+
 
 ;; Carefully substitute the integration limits A and B into the
 ;; expression E.
-(defun intsubs (e a b)
+(defun whole-intsubs (e a b)
   (cond ((easy-subs e a b))
 	(t (setq *current-assumptions*
 		 (make-defint-assumptions 'ask)) ;get forceful!
@@ -3467,6 +3533,15 @@ in the interval of integration.")
       (let ((lesseq-ul (ask-greateq ul place))
 	    (greateq-ll (ask-greateq place ll)))
 	(if (and (eq lesseq-ul '$yes) (eq greateq-ll '$yes)) '$yes '$no))))
+
+;; returns true or nil
+(defun strictly-in-interval (place ll ul)
+  ;; real values for ll and ul; place can be imaginary.
+  (and (equal ($imagpart place) 0)
+       (or (eq ul '$inf) 
+	   (eq ($asksign (m+ ul (m- place))) '$pos))
+       (or (eq ll '$minf) 
+	   (eq ($asksign (m+ place (m- ll))) '$pos))))
 
 (defun real-roots (exp var)
   (let (($solvetrigwarn (cond (defintdebug t) ;Rest of the code for

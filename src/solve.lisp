@@ -337,6 +337,10 @@
 	   (solve (car terms) *var mult))
 	 'mtimes)
 
+	((eq (caar *exp) 'mabs)		;; abs(x) = 0  <=>  x = 0
+	 (solve (cadr *exp) *var mult)
+	 'mabs)
+
 	((eq (caar *exp) 'mexpt)
 	 (cond ((and (freeof *var (cadr *exp))
 		     (not (zerop1 (cadr *exp))))
