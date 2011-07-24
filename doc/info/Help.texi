@@ -1,161 +1,10 @@
-@menu
-* Lisp and Maxima::            
-* Garbage Collection::          
+@menu       
 * Documentation::               
 * Functions and Variables for Help::        
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Lisp and Maxima, Garbage Collection, Help, Help
-@section Lisp and Maxima
-@c -----------------------------------------------------------------------------
-
-Maxima is written in Lisp, and it is easy to access Lisp functions and variables
-from Maxima and vice versa.  Lisp and Maxima symbols are distinguished by a
-naming convention.  A Lisp symbol which begins with a dollar sign @code{$}
-corresponds to a Maxima symbol without the dollar sign.
-
-@c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
-@c This includes special Maxima variables such as @code{%} and input and output
-@c labels, which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
-
-A Maxima symbol which begins with a question mark @code{?} corresponds to a Lisp
-symbol without the question mark.  For example, the Maxima symbol @code{foo}
-corresponds to the Lisp symbol @code{$FOO}, while the Maxima symbol @code{?foo}
-corresponds to the Lisp symbol @code{FOO}.  Note that @code{?foo} is written
-without a space between @code{?} and @code{foo}; otherwise it might be mistaken
-for @code{describe ("foo")}.
-
-Hyphen @code{-}, asterisk @code{*}, or other special characters in Lisp symbols
-must be escaped by backslash @code{\} where they appear in Maxima code.  For
-example, the Lisp identifier @code{*foo-bar*} is written @code{?\*foo\-bar\*}
-in Maxima.
-
-Lisp code may be executed from within a Maxima session.  A single line of Lisp
-(containing one or more forms) may be executed by the special command
-@code{:lisp}.  For example,
-
-@example
-(%i1) :lisp (foo $x $y)
-@end example
-
-@noindent
-calls the Lisp function @code{foo} with Maxima variables @code{x} and @code{y}
-as arguments.  The @code{:lisp} construct can appear at the interactive prompt
-or in a file processed by @mref{batch} or @mrefcomma{demo} but not in a file
-processed by @mrefcomma{load} @mrefcomma{batchload}@w{}
-@mrefcomma{translate_file} or @mrefdot{compile_file}
-
-The function @mref{to_lisp} opens an interactive Lisp session.
-Entering @code{(to-maxima)} closes the Lisp session and returns to Maxima.
-@c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
-@c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
-@c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
-@c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
-
-Lisp functions and variables which are to be visible in Maxima as functions and
-variables with ordinary names (no special punctuation) must have Lisp names
-beginning with the dollar sign @code{$}.
-
-Maxima is case-sensitive, distinguishing between lowercase and uppercase letters
-in identifiers.  There are some rules governing the translation of names between
-Lisp and Maxima.
-
-@enumerate
-@item
-A Lisp identifier not enclosed in vertical bars corresponds to a Maxima
-identifier in lowercase.  Whether the Lisp identifier is uppercase, lowercase,
-or mixed case, is ignored.  E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo}
-all correspond to Maxima @code{foo}.  But this is because @code{$foo},
-@code{$FOO} and @code{$Foo} are converted by the Lisp reader by default to the
-Lisp symbol @code{$FOO}.
-@item
-A Lisp identifier which is all uppercase or all lowercase and enclosed in
-vertical bars corresponds to a Maxima identifier with case reversed.  That is,
-uppercase is changed to lowercase and lowercase to uppercase.  E.g., Lisp
-@code{|$FOO|} and @code{|$foo|} correspond to Maxima @code{foo} and @code{FOO},
-respectively.
-@item
-A Lisp identifier which is mixed uppercase and lowercase and enclosed in
-vertical bars corresponds to a Maxima identifier with the same case.  E.g.,
-Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
-@end enumerate
-
-The @code{#$} Lisp macro allows the use of Maxima expressions in Lisp code.
-@code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima
-expression @var{expr}.
-
-@example
-(msetq $foo #$[x, y]$)
-@end example
-
-@noindent
-This has the same effect as entering
-
-@example
-(%i1) foo: [x, y];
-@end example
-
-@noindent
-The Lisp function @code{displa} prints an expression in Maxima format.
-
-@example
-(%i1) :lisp #$[x, y, z]$ 
-((MLIST SIMP) $X $Y $Z)
-(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
-[x, y, z]
-NIL
-@end example
-
-Functions defined in Maxima are not ordinary Lisp functions.  The Lisp function
-@code{mfuncall} calls a Maxima function.  For example:
-
-@example
-(%i1) foo(x,y) := x*y$
-(%i2) :lisp (mfuncall '$foo 'a 'b)
-((MTIMES SIMP) A B)
-@end example
-
-Some Lisp functions are shadowed in the Maxima package, namely the following.
-
-@verbatim
-   complement     continue      //
-   float          functionp     array
-   exp            listen        signum
-   atan           asin          acos
-   asinh          acosh         atanh
-   tanh           cosh          sinh
-   tan            break         gcd
-@end verbatim
-
-@opencatbox
-@category{Programming}
-@closecatbox
-
-@c -----------------------------------------------------------------------------
-@node Garbage Collection, Documentation, Lisp and Maxima, Help
-@section Garbage Collection
-@c -----------------------------------------------------------------------------
-
-Symbolic computation tends to create a good deal of garbage (temporary or
-intermediate results that are eventually not used), and effective handling of
-this can be crucial to successful completion of some programs.
-
-@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
-@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
-@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-Under GCL, on UNIX systems where the mprotect system call is available
-(including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
-is available.  This limits the collection to pages which have been recently
-written to.  See the GCL documentation under ALLOCATE and GBC.  At the Lisp
-level doing (setq si::*notify-gbc* t) will help you determine which areas might
-need more space.
-
-For other Lisps that run Maxima, we refer the reader to the documentation for
-that Lisp on how to control GC.
-
-@c -----------------------------------------------------------------------------
-@node Documentation, Functions and Variables for Help, Garbage Collection, Help
+@node Documentation, Functions and Variables for Help, Help, Help
 @section Documentation
 @c -----------------------------------------------------------------------------
 
@@ -273,56 +122,6 @@ _
 (%o5)                   a (%t5 e + %t4 b)
 
 _
-(%i5) demo ("rncomb");
-
-batching /home/wfs/maxima/share/simplification/rncomb.dem
- At the _ prompt, type ';' followed by enter to get next demo
-(%i6)                     load(rncomb)
-
-_
-                             z         x
-(%i7)               exp1 : ----- + ---------
-                           y + x   2 (y + x)
-                          z         x
-(%o7)                   ----- + ---------
-                        y + x   2 (y + x)
-
-_
-(%i8)                     combine(exp1)
-                          z         x
-(%o8)                   ----- + ---------
-                        y + x   2 (y + x)
-
-_
-(%i9)                     rncombine(%)
-                             2 z + x
-(%o9)                       ---------
-                            2 (y + x)
-
-_
-                             d   c   b   a
-(%i10)                exp2 : - + - + - + -
-                             3   3   2   2
-                          d   c   b   a
-(%o10)                    - + - + - + -
-                          3   3   2   2
-
-_
-(%i11)                    combine(exp2)
-@group
-                      2 d + 2 c + 3 (b + a)
-(%o11)                ---------------------
-                                6
-
-_
-@end group
-(%i12)                   rncombine(exp2)
-                      2 d + 2 c + 3 b + 3 a
-(%o12)                ---------------------
-                                6
-
-_
-(%i13) 
 @end example
 
 @opencatbox
@@ -431,32 +230,23 @@ Examples:
 @c ===beg===
 @c example(append);
 @c example("lambda");
-@c example("allROOTS");
 @c ===end===
 @example
 (%i1) example(append);
-(%i2) append([x+y,0,-3.2],[2.5E+20,x])
-(%o2)                    [y + x, 0, - 3.2, 2.5E+20, x]
-(%o2)                                done
+(%i2) append([x+y,0,-3.2],[2.5e+20,x])
+(%o2)             [y + x, 0, - 3.2, 2.5e+20, x]
+(%o2)                         done
 (%i3) example("lambda");
+
 (%i4) lambda([x,y,z],z^2+y^2+x^2)
-                                           2    2    2
-(%o4)                   lambda([x, y, z], z  + y  + x )
+                                    2    2    2
+(%o4)            lambda([x, y, z], z  + y  + x )
 (%i5) %(1,2,a)
-                                     2
-(%o5)                               a  + 5
+                              2
+(%o5)                        a  + 5
 (%i6) a+2+1
-(%o6)                                a + 3
-(%o6)                                done
-(%i7) example("allROOTS");
-(%i8) (1+2*x)^3 = 13.5*(1+x^5)
-                                   3          5
-(%o8)                     (2 x + 1)  = 13.5 (x  + 1)
-(%i9) allroots(%)
-(%o9) [x = .8296749902129361, x = - 1.015755543828121, 
-x = .9659625152196369 %i - .4069597231924075, 
-x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
-(%o9)                                done
+(%o6)                         a + 3
+(%o6)                         done
 @end example
 
 @opencatbox
