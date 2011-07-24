@@ -197,8 +197,6 @@ Bugs
 
 Help
 
-* Lisp and Maxima::
-* Garbage Collection::
 * Documentation::
 * Functions and Variables for Help::
 
@@ -406,6 +404,8 @@ Function Definition
 
 Program Flow
 
+* Lisp and Maxima::
+* Garbage Collection::
 * Introduction to Program Flow::  
 * Functions and Variables for Program Flow::  
 
