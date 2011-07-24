@@ -2,10 +2,10 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : include-maxima.texi.in 15.07.2011
+@c Original    : include-maxima.texi.in 19.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 17.07.2011
+@c Revision    : 23.07.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -177,6 +177,7 @@ Zus@"atzliche Pakete (Englisch)
 * affine::                      
 * asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
+* bernstein::                   Bernstein polynomials.
 * bode::                        Bode gain and phase plots.
 * cobyla::                      Nonlinear optimization with inequality 
                                 constraints.
@@ -217,6 +218,7 @@ Zus@"atzliche Pakete (Englisch)
 * stirling::                    Stirling formula.
 * stringproc::                  String processing.
 * symmetries::                  
+* to_poly_solve::               to_poly_solve package.
 * unit::                        Units and dimensions package.
 * zeilberger::                  Functions for hypergeometric summation.
 @sp 1
@@ -420,6 +422,9 @@ asympa
 augmented_lagrangian
 * Functions and Variables for augmented_lagrangian::
 
+bernstein
+* Functions and Variables for Bernstein::
+
 bode
 * Functions and Variables for bode::
 
@@ -586,6 +591,9 @@ symmetries
 * Introduction to Symmetries::
 * Functions and Variables for Symmetries::
 
+to_poly_solve
+* Functions and Variables for to_poly_solve::
+
 unit
 * Introduction to Units::       
 * Functions and Variables for Units::
@@ -745,11 +753,15 @@ Glossar
 @chapter asympa
 @include asympa.de.texi
 
-@node augmented_lagrangian, bode, asympa, Top
+@node augmented_lagrangian, bernstein, asympa, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.de.texi
 
-@node bode, cobyla, augmented_lagrangian, Top
+@node bernstein, bode, augmented_lagrangian, Top
+@chapter bernstein
+@include bernstein.de.texi
+
+@node bode, cobyla, bernstein, Top
 @chapter bode
 @include bode.de.texi
 
@@ -901,11 +913,15 @@ Glossar
 @chapter stringproc
 @include stringproc.de.texi
 
-@node symmetries, unit, stringproc, Top
+@node symmetries, to_poly_solve, stringproc, Top
 @chapter symmetries
 @include symmetries.de.texi
 
-@node unit, zeilberger, symmetries, Top
+@node to_poly_solve, unit, symmetries, Top
+@chapter to_poly_solve
+@include to_poly_solve.de.texi
+
+@node unit, zeilberger, to_poly_solve, Top
 @chapter unit
 @include unit.de.texi
 
