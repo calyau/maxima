@@ -198,19 +198,20 @@ Beispiele:
 @c ===end===
 @example
 (%i1) example(append);
-(%i2) append([x+y,0,-3.2],[2.5E+20,x])
-(%o2)                    [y + x, 0, - 3.2, 2.5E+20, x]
-(%o2)                                done
+(%i2) append([x+y,0,-3.2],[2.5e+20,x])
+(%o2)             [y + x, 0, - 3.2, 2.5e+20, x]
+(%o2)                         done
 (%i3) example("lambda");
+
 (%i4) lambda([x,y,z],z^2+y^2+x^2)
-                                           2    2    2
-(%o4)                   lambda([x, y, z], z  + y  + x )
+                                    2    2    2
+(%o4)            lambda([x, y, z], z  + y  + x )
 (%i5) %(1,2,a)
-                                     2
-(%o5)                               a  + 5
+                              2
+(%o5)                        a  + 5
 (%i6) a+2+1
-(%o6)                                a + 3
-(%o6)                                done
+(%o6)                         a + 3
+(%o6)                         done
 @end example
 @end deffn
 
