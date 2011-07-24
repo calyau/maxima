@@ -1251,6 +1251,7 @@ If @var{expr} is not a ratio, @var{expr} is returned.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{polydecomp}
 @deffn {Function} polydecomp (@var{p}, @var{x})
 
 Decomposes the polynomial @var{p} in the variable @var{x}
@@ -2257,6 +2258,7 @@ See also @code{ratvars}.
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
 
 @c -----------------------------------------------------------------------------
+@anchor{sqfr}
 @deffn {Function} sqfr (@var{expr})
 
 is similar to @code{factor} except that the polynomial factors are
