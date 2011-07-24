@@ -723,6 +723,8 @@ Standardwert: @code{false}
 Hat @code{optionset} den Wert @code{true}, gibt Maxima eine Meldung aus, wenn 
 einer Optionsvariablen ein Wert zugewiesen wird.
 
+Beispiel:
+
 @example
 (%i1) optionset:true;
 assignment: assigning to option optionset
@@ -1293,7 +1295,7 @@ bb+aa^10
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{ibase}
 @defvr {Optionsvariable} ibase
-Standardwert: 10
+Standardwert: @code{10}
 
 @code{ibase} enth@"alt die Basis der ganzen Zahlen, welche von Maxima eingelesen
 werden.
@@ -1430,7 +1432,7 @@ Beispiele:
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{linel}
 @defvr {Optionsvariable} linel
-Standardwert: 79
+Standardwert: @code{79}
 
 Die Optionsvariable @code{linel} enth@"alt die Anzahl der Zeichen einer Zeile
 der Ausgabe.  @code{linel} k@"onnen beliebige positive ganze Zahlen zugewiesen
@@ -1474,7 +1476,7 @@ Hat @code{negsumdispflag} den Wert @code{false}, wird die Differenz als
 @anchor{obase}
 @need 800
 @defvr {Optionsvariable} obase
-Standardwert: 10
+Standardwert: @code{10}
 
 @code{obase} enth@"alt die Basis f@"ur ganze Zahlen f@"ur die Ausgabe von
 Maxima.  @code{obase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36
