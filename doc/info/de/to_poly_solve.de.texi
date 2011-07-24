@@ -236,9 +236,11 @@ Thus @math{or} isn't associative or commutative.
 @b{Limitations:} The conjunction @code{%or} simplifies inequations
 @i{locally, not globally}.  This means that conjunctions such as
 
+@c TODO: VEREINFACHT IN MAXIMA 5.24POST ZU TRUE.
+
 @example
 (%i1) (x < 1) %or (x >= 1);
-(%o1)                         true
+(%o1) (x > 1) %or (x >= 1)
 @end example
 
 do @i{not} simplify to true.  Further, the Fourier elimination code ignores
@@ -775,28 +777,26 @@ When @code{sign} can determine that the input is a positive or negative real
 number, @code{parg} will return a non-noun form for a non-constant input.
 Here are two examples:
 
-@c TODO: DIE ERGEBNISSE MACHEN KEINEN SINN.  BUG?
+@c TODO: IN MAXIMA 5.24POST IST DAS ERSTE ERGEBNIS EINE SUBSTANTIVFORM.
 
 @example
 (%i3) parg(abs(x));
 (%o3)                     parg(abs(x))
 (%i4) parg(-x^2-1);
-                                 2
-(%o4)                    parg(- x  - 1)
+(%o4)                          %pi
 @end example
 
 @b{Note} The @code{sign} function mostly ignores the variables that are declared
 to be complex (@code{declare(x,complex)}); for variables that are declared
 to be complex, the @code{parg} can return incorrect values; for example
 
-@c TODO: DAS ERGEBNISS HAT SICH GEAENDERT.
+@c TODO: IN MAXIMA 4.24POST EINE SUBSTANTIVFORM.
 
 @example
 (%i5) declare(x, complex)$
 
 (%i6) parg(x^2 + 1);
-                                2
-(%o6)                     parg(x  + 1)
+(%o6) 0
 @end example
 
 @b{Related function:} @code{carg, isreal_p}
@@ -816,7 +816,7 @@ of @code{realpart} and @code{imagpart} to algebraically equivalent expressions
 involving the @code{conjugate}.
 
 @example
-(%i1) declare(x,complex)$
+(%i1) declare(x, complex)$
 
 (%i2) real_imagpart_to_conjugate(realpart(x) +  imagpart(x) = 3);
           conjugate(x) + x   %i (x - conjugate(x))
@@ -868,9 +868,11 @@ conjunctions and disjunctions of inequations.
 @b{Limitations:} The function @code{simp_inequality} is limited in at least two
 ways; first, the simplifications are local; thus
 
+@c TODO: IN MAXIMA 5.24POST THE RESULT IS SIMPLIFIED.
+
 @example
 (%i1) simp_inequality((x > minf) %and (x < 0));
-(%o1)                         x < 0
+(%o1) (x>1) %and (x<1)
 @end example
 
 And second, @code{simp_inequality} doesn't consult the fact database:
