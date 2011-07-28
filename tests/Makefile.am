@@ -120,6 +120,7 @@ rtest_translator.mac \
 rtest_ask.mac \
 rtest_sqrt.mac \
 rtest_carg.mac \
+rtest_log.mac \
 README.how-to \
 testsuite.lisp \
 wester_problems/wester-gpl-permission-message.txt \
