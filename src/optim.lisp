@@ -58,10 +58,10 @@
 (defun opmexpt (x)
   (let ((*base (opformat (cadr x))) (exp (opformat (caddr x))) xnew negexp)
     (setq negexp
-	  (cond ((and (numberp exp) (minusp exp)) (- exp))
+	  (cond ((and (realp exp) (minusp exp)) (- exp))
 		((and (ratnump exp) (minusp (cadr exp)))
 		 (list (car exp) (- (cadr exp)) (caddr exp)))
-		((and (mtimesp exp) (numberp (cadr exp)) (minusp (cadr exp)))
+		((and (mtimesp exp) (realp (cadr exp)) (minusp (cadr exp)))
 		 (if (equal (cadr exp) -1)
 		     (if (null (cdddr exp)) (caddr exp)
 			 (cons (car exp) (cddr exp)))
