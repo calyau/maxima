@@ -341,7 +341,7 @@
 		     (cdr l)))))
 
 (defmfun pminusp (p)
-  (if (numberp p) (minusp p)
+  (if (realp p) (minusp p)
       (pminusp (p-lc p))))
 
 (defmfun pminus (p)

@@ -1339,7 +1339,7 @@ relational knowledge is contained in the default context GLOBAL.")
 (defun signdiff-special (xlhs xrhs)
   ;; xlhs may be a constant
   (let ((sgn nil))
-    (when (or (and (numberp xrhs) (minusp xrhs)
+    (when (or (and (realp xrhs) (minusp xrhs)
 		   (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
 	      (and (mexptp xlhs)

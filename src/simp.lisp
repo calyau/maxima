@@ -235,7 +235,7 @@
 (defmfun mmminusp (x) (and (not (atom x)) (eq (caar x) 'mminus)))
 
 (defmfun mnegp (x)
-  (cond ((numberp x) (minusp x))
+  (cond ((realp x) (minusp x))
         ((or (ratnump x) ($bfloatp x)) (minusp (cadr x)))))
 
 (defmfun mqapplyp (e) (and (not (atom e)) (eq (caar e) 'mqapply)))
@@ -2194,10 +2194,10 @@
             (return res))
            ((eq gr '$%i)
             (return (%itopot pot)))
-           ((and (numberp gr) (minusp gr) (mevenp pot))
+           ((and (realp gr) (minusp gr) (mevenp pot))
             (setq gr (- gr))
             (go cont))
-           ((and (numberp gr) (minusp gr) (moddp pot))
+           ((and (realp gr) (minusp gr) (moddp pot))
             (return (mul2 -1 (power (- gr) pot))))
            ((and (equal gr -1) (maxima-integerp pot) (mminusp pot))
             (setq pot (neg pot))
