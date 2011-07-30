@@ -155,6 +155,9 @@ contrib/amatrix/rtest_amatrix.mac \
 contrib/amatrix/rtest_wilcoxon.mac \
 contrib/amatrix/wilcoxon.mac \
 contrib/augmented_lagrangian.mac \
+contrib/bernstein/bernstein.lisp \
+contrib/bernstein/bernstein_utilities.mac \
+contrib/bernstein/rtest_bernstein.mac \
 contrib/bitwise/bitwise.lisp \
 contrib/bitwise/bitwise_specification.txt \
 contrib/bitwise/rtest_bitwise.mac \
