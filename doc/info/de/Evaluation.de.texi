@@ -2,10 +2,10 @@
 @c File        : Evaluation.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : New file
+@c Original    : Evaluation.texi revision 01.08.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 16.07.2011
+@c Revision    : 01.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -336,12 +336,13 @@ angewendet und ist nicht Teil eines Maxima-Ausdrucks.
 (%i4) ''(aa + cc);
 (%o4)                         6912
 (%i5) display (_, op (_), args (_));
+@group
                            _ = dd + bb
 
                          op(dd + bb) = +
 
                     args(dd + bb) = [dd, bb]
-
+@end group
 (%o5)                         done
 @end example
 
@@ -360,27 +361,27 @@ und Aus@-dr@"u@-cken, auf die der Quote-Operator angewendet wurde.
 (%t4)           foo_1b(x) := integrate(log(x), x)
 
 (%o4)                      [%t3, %t4]
-(%i4) integrate (log (x), x);
-(%o4)                     x log(x) - x
-(%i5) foo_2a (x) := ''%;
-(%o5)               foo_2a(x) := x log(x) - x
-(%i6) foo_2b (x) := %;
-(%o6)                    foo_2b(x) := %
-(%i7) dispfun (foo_2a, foo_2b);
-(%t7)               foo_2a(x) := x log(x) - x
+(%i5) integrate (log (x), x);
+(%o5)                     x log(x) - x
+(%i6) foo_2a (x) := ''%;
+(%o6)               foo_2a(x) := x log(x) - x
+(%i7) foo_2b (x) := %;
+(%o7)                    foo_2b(x) := %
+(%i8) dispfun (foo_2a, foo_2b);
+(%t8)               foo_2a(x) := x log(x) - x
 
-(%t8)                    foo_2b(x) := %
+(%t9)                    foo_2b(x) := %
 
-(%o8)                      [%t7, %t8]
-(%i8) F : lambda ([u], diff (sin (u), u));
-(%o8)             lambda([u], diff(sin(u), u))
-(%i9) G : lambda ([u], ''(diff (sin (u), u)));
-(%o9)                  lambda([u], cos(u))
-(%i10) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
-(%o10)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
+(%o9)                      [%t8, %t9]
+(%i10) F : lambda ([u], diff (sin (u), u));
+(%o10)            lambda([u], diff(sin(u), u))
+(%i11) G : lambda ([u], ''(diff (sin (u), u)));
+(%o11)                 lambda([u], cos(u))
+(%i12) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+(%o12)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
                     k                  k
-(%i11) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
-(%o11)             b  + a  + b  + a  + b  + a
+(%i13) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+(%o13)             b  + a  + b  + a  + b  + a
                     3    3    2    2    1    1
 @end example
 @end deffn
