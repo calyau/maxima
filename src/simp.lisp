@@ -2267,14 +2267,15 @@
                      (equal (cadr gr) -1))
                  (equal -1 ($num gr)) ; only for -1
                  ;; Do not simplify for a complex base.
-                 (not (member ($csign gr) '($complex $imaginary))))
+                 (not (member ($csign gr) '($complex $imaginary)))
+                 (and (eq $domain '$real) $radexpand))
             ;; (-1/x)^a -> 1/(-x)^a for x negative
             ;; For all other cases (-1)^a/x^a
             (if (eq ($csign (setq w ($denom gr))) '$neg)
                 (return (inv (power (neg w) pot)))
                 (return (div (power -1 pot)
                              (power w pot)))))
-          ((not $radexpand) (go up)))
+           ((or (eq $domain '$complex) (not $radexpand)) (go up)))
      (return (do ((l (cdr gr) (cdr l)) (res (ncons 1)) (rad))
                  ((null l)
                   (cond ((equal res '(1))
@@ -2293,7 +2294,7 @@
                ;; Check with $csign to be more complete. This prevents wrong 
                ;; simplifications like sqrt(-z^2)->%i*sqrt(z^2) for z complex.
                (setq z ($csign (car l)))
-               (if (member z '($complex $imaginary)) 
+               (if (member z '($complex $imaginary))
                    (setq z '$pnz)) ; if appears complex, unknown sign
                (setq w (cond ((member z '($neg $nz) :test #'eq)
                               (setq rad (cons -1 rad))
@@ -2323,11 +2324,11 @@
      (setq w (testt (tms (simplifya y t) 1 (cons '(mtimes) res))))
      (cond (rulesw (setq rulesw nil res (cdr w))))
      (go start)
-
-  retno 
+     
+  retno
      (return (exptrl gr pot))
      
-  atgr  
+  atgr
      (cond ((zerop1 pot) (go retno))
            ((onep1 pot)
             (let ((y (mget gr '$numer)))
@@ -2412,17 +2413,22 @@
      (cond ((or (eq $radexpand '$all)
                 ;; b is an integer or an odd rational
                 (simplexpon pot)
-                (and (not (member ($csign (caddr gr)) '($complex $imaginary)))
+                (and (eq $domain '$complex)
+                     (not (member ($csign (caddr gr)) '($complex $imaginary)))
                          ;; z >= 0 and a not a complex
-                     (or (member (setq z ($csign (cadr gr))) '($pos $pz $zero))
+                     (or (member ($csign (cadr gr)) '($pos $pz $zero))
                          ;; -1 < a <= 1
                          (and (mnump (caddr gr))
                               (eq ($sign (sub 1 (take '(mabs) (caddr gr))))
                                   '$pos))))
+                (and (eq $domain '$real)
+                     (member ($csign (cadr gr)) '($pos $pz $zero)))
                 ;; (1/z)^a -> 1/z^a when z a constant complex
-                (and (equal (caddr gr) -1)
-                     (eq z '$complex)
-                     ($constantp (cadr gr)))
+                (and (eql (caddr gr) -1)
+                     (or (and $radexpand
+                              (eq $domain '$real))
+                         (and (eq ($csign (cadr gr)) '$complex)
+                              ($constantp (cadr gr)))))
                 ;; This does (1/z)^a -> 1/z^a. This is in general wrong.
                 ;; We switch this type of simplification on, when
                 ;; $ratsimpexpons is T. E.g. radcan sets this flag to T.
@@ -2430,29 +2436,26 @@
                 ;; this simplification.
                 (and $ratsimpexpons
                      (equal (caddr gr) -1))
-                (and (eq $domain '$real)
-                     (odnump (caddr gr))
-                     ;; Again not correct in general.
-                     ;; At first exclude the sqrt function.
-                     (not (alike1 pot '((rat simp) 1 2)))
-                     (not (alike1 pot '((rat simp) -1 2)))))
+                (and $radexpand
+                     (eq $domain '$real)
+                     (odnump (caddr gr))))
             ;; Simplify (z^a)^b -> z^(a*b)
-            (setq pot (mult pot (caddr gr)) gr (cadr gr)))
+            (setq pot (mul pot (caddr gr))
+                  gr (cadr gr)))
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
                  (not (decl-complexp (cadr gr)))
                  (evnump (caddr gr)))
             ;; Simplify (x^a)^b -> abs(x)^(a*b)
-            (setq pot (mult pot (caddr gr)) gr (radmabs (cadr gr))))
-           ((and (mminusp (caddr gr))
-                 ;; Again not correct in general.
-                 ;; At first exclude the sqrt function.
-                 (not (alike1 pot '((rat simp) 1 2)))
-                 (not (alike1 pot '((rat simp) -1 2))))
+            (setq pot (mul pot (caddr gr))
+                  gr (radmabs (cadr gr))))
+           ((and $radexpand
+                 (eq $domain '$real)
+                 (mminusp (caddr gr)))
             ;; Simplify (1/z^a)^b -> 1/(z^a)^b
             (setq pot (neg pot)
-                  gr (list (car gr) (cadr gr) (neg (caddr gr)))))
+                  gr (power (cadr gr) (neg (caddr gr)))))
            (t (go up)))
      (go cont)))
 

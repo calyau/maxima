@@ -12,6 +12,9 @@
 kill(all);
 done;
 
+(reset(domain), reset(radexpand), done);
+done;
+
 /* ---------- Specific values ----------------------------------------------- */
 
 sqrt([0, 0.0, 0.0b0]);
@@ -350,9 +353,8 @@ sqrt(z)*sqrt(-z-1);
 radcan(sqrt(z)/sqrt(z+1));
 sqrt(z)/sqrt(z+1);
 
-/* The result of radcan is not correct */
 radcan(sqrt(z/(z-1)));
-sqrt(-z)/sqrt(1-z);
+sqrt(z)/sqrt(z-1);
 
 /* radcan always simplifies sqrt(z1/z2) -> sqrt(z1)/sqrt(z2). 
  * That is not correct.
@@ -361,8 +363,8 @@ sqrt(-z)/sqrt(1-z);
 declare([z1,z2],complex);
 done;
 
-radcan(sqrt(z1/z2)); /* Wrong: radcan gives sqrt(z1)/sqrt(z2) */
-sqrt(z1/z2);
+radcan(sqrt(z1/z2));
+sqrt(z1)/sqrt(z2);
 
 /* More examples of this type */
 
@@ -370,18 +372,24 @@ radcan(sqrt(z/(1-z)));
 sqrt(z)*sqrt(1/(1-z));
 
 radcan(sqrt(-z/(1+z)));
-sqrt(-z)*sqrt(1/(1+z));
+sqrt(z)*sqrt(1/(-1+-z));
 
 /* --- Power of arguments --- */
 
 sqrt([z^2, x^2, xp^2, xn^2]);
 [sqrt(z^2), abs(x), xp, -xn];
 
+(domain:complex, done);
+done;
+
 res:sqrt(-z^2); /* Wrong: Maxima simplifies to %i*sqrt(z) */
 sqrt(-z^2);
 
 res,z=%i; /* We insert %i and get a wrong sign */
 1;
+
+(reset(domain), done);
+done;
 
 /* --- Exponent of arguments --- */
 
@@ -405,6 +413,9 @@ sqrt(exp(%i*y));
  * or complex numbers. We check this. This way we can detect simplification
  * errors for the sqrt function.
  */
+ 
+(domain:complex, done);
+done;
 
 /* --- Example 1 --- */
 
@@ -974,6 +985,9 @@ true;
 closeto(float(rectform(res)),0.0,1e-15), z=1/2-%i;
 true;
 
+(reset(domain), done);
+done;
+
 /* ---------- Complex characteristics --------------------------------------- */
 
 /* --- Real part --- */
@@ -1103,6 +1117,9 @@ sqrt(z);
 
 hgfred([-1/2,b],[b],1-z);
 sqrt(z);
+
+(reset(domain), done);
+done;
 
 /* ---------- End of file rtest_sqrt.mac ------------------------------------ */
 
