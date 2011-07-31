@@ -41,9 +41,12 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Manual de Maxima}
+@sp 2
+@center Traducci@'on espa@~nola
+@page
 @page
 @vskip 0pt plus 1filll
-@i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
+Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.
 
 Maxima desciende del sistema Macsyma, desarrollado en el MIT 
 (Massachusetts Institute of Technology) entre los a@~nos 1968 y 
@@ -58,12 +61,29 @@ de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000
 el proyecto Maxima en SourceForge con el fin de mantener y seguir
 desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
+@sp 1
 Los usuarios de habla hispana disponen de una lista de correos
 en la que podr@'an participar para recabar informaci@'on,
 proponer ideas y comentar sus experiencias con Maxima:
 
 @url{https://lists.sourceforge.net/lists/listinfo/maxima-lang-es}
 
+@sp 1
+@i{Nota de la traducci@'on}: Este manual es una traducci@'on de
+la versi@'on original en ingl@'es. En la versi@'on 5.25 se han
+introducido cambios sustanciales que afectan, fundamentalmente,
+a una reordenaci@'on de los contenidos, a la desaparici@'on de
+algunas secciones y a la aparici@'on de otras nuevas. Adem@'as,
+se han a@~nadido introducciones a algunas secciones provenientes
+de la versi@'on alemana; me ha parecido conveniente incorporarlas
+a la versi@'on espa@~nola por ser clarificadoras de algunos 
+conceptos b@'asicos de Maxima, aunque todav@'{@dotless{i}}a no
+forman parte de la versi@'on inglesa de referencia. 
+
+@sp 1
+Mario Rodr@'{@dotless{i}}guez Riotorto. (@code{mario ARROBA edu PUNTO xunta PUNTO es})
+
+@page
 
 
 @end titlepage
@@ -75,15 +95,43 @@ proponer ideas y comentar sus experiencias con Maxima:
 @node Top, Introducci@'on a Maxima, (dir), (dir)
 @top
 
-@i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
+Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.
 
-Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
+Maxima desciende del sistema Macsyma, desarrollado en el MIT 
+(Massachusetts Institute of Technology) entre los a@~nos 1968 y 
+1982 como parte del proyecto MAC. El MIT pas@'o una copia del 
+c@'odigo fuente al DOE (Department of Energy) en 1982, en una 
+versi@'on conocida como DOE-Macsyma. Una de estas copias fue 
+mantenida por el Profesor William F. Schelter de la Universidad 
+de Texas desde el a@~no 1982 hasta su fallecimiento en 2001.
+En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de
+Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente
+de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000
+el proyecto Maxima en SourceForge con el fin de mantener y seguir
+desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
+@sp 1
 Los usuarios de habla hispana disponen de una lista de correos
 en la que podr@'an participar para recabar informaci@'on,
 proponer ideas y comentar sus experiencias con Maxima:
 
 @url{https://lists.sourceforge.net/lists/listinfo/maxima-lang-es}
+
+@sp 1
+@i{Nota de la traducci@'on}: Este manual es una traducci@'on de
+la versi@'on original en ingl@'es. En la versi@'on 5.25 se han
+introducido cambios sustanciales que afectan, fundamentalmente,
+a una reordenaci@'on de los contenidos, a la desaparici@'on de
+algunas secciones y a la aparici@'on de otras nuevas. Adem@'as,
+se han a@~nadido introducciones a algunas secciones provenientes
+de la versi@'on alemana; me ha parecido conveniente incorporarlas
+a la versi@'on espa@~nola por ser clarificadoras de algunos 
+conceptos b@'asicos de Maxima, aunque todav@'{@dotless{i}}a no
+forman parte de la versi@'on inglesa de referencia. 
+
+@sp 1
+Mario Rodr@'{@dotless{i}}guez Riotorto. (@code{mario ARROBA edu PUNTO xunta PUNTO es})
+
 @end ifnottex
 
 @c includes
@@ -141,6 +189,7 @@ Funcionalidades avanzadas y programaci@'on
 Paquetes adicionales
 
 * augmented_lagrangian::        Paquete augmented_lagrangian.
+* Bernstein::                   Polinomios de Bernstein.
 * bode::                        Gr@'aficos de Bode.
 * cobyla::                      Optimizaci@'on no lineal con restricciones en desigualdades.
 * contrib_ode::                 Procedimientos adicionales para EDOs.
@@ -178,6 +227,7 @@ Paquetes adicionales
 * stats::                       Inferencia estad@'{@dotless{i}}stica.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Procesamiento de cadenas.
+* to_poly_solve::               Paquete to_poly_solve.
 * unit::                        Unidades f@'{@dotless{i}}sicas y dimensiones.
 * zeilberger::                  Funciones para series hipergeom@'etricas.
 
@@ -265,7 +315,12 @@ Base de datos de Maxima
 
 Gr@'aficos
 
+* Introducci@'on a los gr@'aficos::
+* Formatos gr@'aficos::
 * Funciones y variables para gr@'aficos::
+* Opciones gr@'aficas::
+* Opciones para Gnuplot::
+* Funciones para el formato Gnuplot_pipes::
 
 Lectura y escritura
 
@@ -412,6 +467,10 @@ Depurado
 augmented_lagrangian
 
 * Funciones y variables para augmented_lagrangian::
+
+Bernstein
+
+* Funciones y variables para Bernstein::
 
 bode
 
@@ -603,6 +662,10 @@ stringproc
 * Funciones y variables para caracteres::
 * Funciones y variables para cadenas::
 
+to_poly_solve
+
+* Funciones y variables para to_poly_solve::
+
 unit
 
 * Introducci@'on a units::
@@ -777,11 +840,15 @@ zeilberger
 @chapter Depurado
 @include Debugging.es.texi
 
-@node augmented_lagrangian, bode, Depurado, Top
+@node augmented_lagrangian, Bernstein, Depurado, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, cobyla, augmented_lagrangian, Top
+@node Bernstein, bode, augmented_lagrangian, Top
+@chapter Bernstein
+@include bernstein.texi
+
+@node bode, cobyla, Bernstein, Top
 @chapter bode
 @include bode.texi
 
@@ -925,11 +992,15 @@ zeilberger
 @chapter stirling
 @include stirling.texi
 
-@node stringproc, unit, stirling, Top
+@node stringproc, to_poly_solve, stirling, Top
 @chapter stringproc
 @include stringproc.texi
 
-@node unit, zeilberger, stringproc, Top
+@node to_poly_solve, unit, stringproc, Top
+@chapter to_poly_solve
+@include to_poly_solve.texi
+
+@node unit, zeilberger, to_poly_solve, Top
 @chapter unit
 @include unit.texi
 
