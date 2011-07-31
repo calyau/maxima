@@ -6,6 +6,9 @@
 kill(all);
 done;
 
+(reset(domain), reset(radexpand), done);
+done;
+
 /* Integrals for the Incomplete Gamma function */
 
 integrate(gamma_incomplete(a,z),z);
