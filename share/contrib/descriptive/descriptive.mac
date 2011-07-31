@@ -184,10 +184,9 @@ subsample(mat,cond,[cols]):=
 /* equals the number of classes we want; 10 by default, OR     */
 /* equals a list containing the class limits and the number of */
 /* classes we want, OR a list containing only the limits.      */
-/* Argument 'lis' must be a list of (2 or 3) real numbers.     */
 /* If sample values are all equal, this function returns only  */
 /* one class of amplitude 2                                    */
-continuous_freq(lis,[opt]):=block([numer:true,nc,mini,maxi,lim,amp,fr,ult,n,k],
+continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k],
    if length(opt) = 1 and listofnumbersp(opt[1])
       then ( mini: opt[1][1],
 	     maxi: opt[1][2],
@@ -544,11 +543,8 @@ extract_options(s,[mo]):=
 
 /* Plots scatter diagrams. */
 scatterplot_description(m,[select]):=
-  block([scen,localopts,nclass:10],
-    [select, localopts]: extract_options(select,'nclasses),
-    for k in localopts do
-      if lhs(k) = 'nclasses then nclass: rhs(k),
-
+  block([localopts],
+    [select, localopts]: extract_options(select,'nclasses,'htics,'frequency),
     if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
       then  (/* m is a list of numbers or a column or a row matrix */
              if matrixp(m)
@@ -638,7 +634,7 @@ histogram_description(m,[select]):=
                        else m: transpose(m)[1],
 
                /* frequency table */
-               fr: continuous_freq(m,my_nclasses),
+               fr: float(continuous_freq(m,my_nclasses)),
                if member(my_frequency, ['relative, 'percent])
                  then fr: [first(fr), second(fr) / apply("+", second(fr))],
                if my_frequency = 'percent
@@ -1060,17 +1056,16 @@ stemplot(m,[select]):=
 /* arguments are specific options in equation format (option = value).     */
 /*                                                                         */
 /* Specific options:                                                       */
-/*     - stars_colors ([]): list of colors for bars. If the list is shorter*/
+/*     - stars_colors ([]): list of colors for stars. If the list is shorter*/
 /*            than the number of samples, colors are generated randomly.   */
 /*     - frequency (absolute): 'absolute' or 'relative'.                   */
 /*     - ordering (orderlessp): 'orderlessp' or 'ordergreatp'.             */
 /*     - sample_keys ([]): entries for legend.                             */
 /*     - star_center ([0,0]): a pair of numbers                            */
 /*     - star_radius (1): a positive number.                               */
-/*                                                                         */
 /* Draw options affecting this object:                                     */
 /*     - key                                                               */
-/*     - color (used for labels)                                           */
+/*     - color                                                             */
 /*     - line_width                                                        */
 /* starplot modifies the following options:                                */
 /*     - xtics                                                             */
