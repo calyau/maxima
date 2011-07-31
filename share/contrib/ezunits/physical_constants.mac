@@ -260,7 +260,7 @@ texput (%V_m, "V_m");
 declare (%n_0, physical_constant);
 declare (%n_0, constant);
 qput (%n_0, "Loschmidt constant $N_A/V_m$", description);
-declare_constvalue (%n_0, 2.6867774e25 ` m^3);
+declare_constvalue (%n_0, 2.6867774e25 ` 1/m^3);
 qput (%n_0, 1.7e-6, RSU);
 texput (%n_0, "n_0");
 
