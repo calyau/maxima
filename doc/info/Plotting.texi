@@ -33,6 +33,12 @@ executed again with the appropriate external program.  If a Maxima plotting
 command fails to show anything, that file can be inspected to look for
 possible sources of problems.
 
+Together with the plotting functions described in this chapter, package
+@code{draw} adds other functionalities. Note that some plotting options
+are named equal in both plotting contexts, but with different syntax;
+if you want to access the draw information related to these options, you
+have to type @code{?? opt}, where @code{opt} is the name of the option.
+
 @opencatbox
 @category{Plotting}
 @closecatbox
@@ -869,7 +875,7 @@ in any of the plotting commands (@var{plot2d}, @var{plot3d}, @var{contour_plot},
 @var{implicit_plot}) or in the function @var{set_plot_option}; the
 exceptions will be specified in the following list.
 
-@defvr {Plot option} adapth_depth [adapth_depth, @var{integer}]
+@defvr {Plot option} adapt_depth [adapt_depth, @var{integer}]
 
 The maximum number of splittings used by the adaptive plotting routine.
 
@@ -890,7 +896,7 @@ or @code{y} only the x or y axis will be shown, and if it is equal to
 @code{true}, both axes will be shown.  This option is used only by plot2d
 and implicit_plot.
 
-Default value: true
+Default value: @code{true}
 
 @opencatbox
 @category{Plotting}
@@ -899,7 +905,7 @@ Default value: true
 
 @c -----------------------------------------------------------------------------
 @anchor{azimut}
-@defvr {Plot option} azimut [azimuth, @var{number}]
+@defvr {Plot option} azimuth [azimuth, @var{number}]
 
 A plot3d plot can be thought of as starting with its x and y axis
 in the horizontal and vertical axis, as in plot2d, and the z axis
@@ -943,7 +949,7 @@ color if there is only one color).
 
 If there are more curves or surfaces than colors, the colors will be repeated
 in sequence.  When using gnuplot, the colors could be: blue, red, green,
-magenta, black, cyan or black; in xmaxima the colors can be those or a
+magenta, black, or cyan; in xmaxima the colors can be those or a
 string starting with the character # and followed by six hexadecimal
 digits: two for the red component, two for green component and two for
 the blue component.  If given the name of an unknown color, black will be
