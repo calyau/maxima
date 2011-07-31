@@ -1596,25 +1596,19 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;; Determine the sign of log(expr). This function changes the special variable sign.
 
 (defun sign-log (x)
-  (setq x (cadr x)) ;; looking at sign of log(x)
-  (cond ((eq t (meqp x 1)) (setf sign '$zero)) ;; log(1) = 0.
-	;; for x on the unit circle and x # 1, log(x) is pure imaginary
-	((and  *complexsign* (eq t (meqp 1 (take '(mabs) x))) (eq t (mnqp x 1)))
-	 (setf sign '$imaginary))
-	;; log(x) is positive for x > 1
-	((eq t (mgrp x 1)) (setf sign '$pos))
-	((eq t (mgqp x 1)) (setf sign '$pz))
-	;; log(x) is negative for 0 < x < 1.
-	((and (eq t (mgrp x 0)) (eq t (mgrp 1 x))) (setf sign '$neg))
-
-	;; log(x) is real for x > 0
-	((eq t (mgrp x 0)) (setf sign '$pnz))
-
-	;; Nothing is known.  Return $complex if allowed, 
-	;;  otherwise pnz
-	(*complexsign* (setf sign '$complex)) 
-	(t (setf sign '$pnz)))
-  sign)
+  (setq x (cadr x))
+  (setq sign
+	(cond ((eq t (mgrp x 0))
+	       (cond ((eq t (mgrp 1 x)) '$neg)
+		     ((eq t (meqp x 1)) '$zero);; log(1) = 0.
+		     ((eq t (mgqp 1 x)) '$nz)
+		     ((eq t (mgrp x 1)) '$pos)
+		     ((eq t (mgqp x 1)) '$pz)
+		     ((eq t (mnqp x 1)) '$pn)
+		     (t '$pnz)))
+	      ((and  *complexsign* (eql 1 (cabs x))) '$imaginary)
+	      (*complexsign* '$complex)
+	      (t '$pnz))))
 
 (defun sign-mabs (x)
   (sign (cadr x))
