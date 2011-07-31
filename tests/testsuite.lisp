@@ -36,7 +36,7 @@
         "rtestifactor"
         ((mlist simp) "rtest_equal" 157 160)
         "rtest_abs"
-        ((mlist simp) "rtest_taylor" 88 91 94 96 99 118 119 120 121 123 124 133)
+        ((mlist simp) "rtest_taylor" 88 91 94 96 99 118 119 120 121 123 124)
         ((mlist simp) "rtest_dot")
         "rtest_mset"
         "rtest_boolean"
@@ -49,10 +49,11 @@
         "rtest_signum"
         "rtest_lambert_w"
         "rtest_elliptic"
-        ((mlist simp) "rtest_integrate" 13 14 21 22 32)
+        "rtest_integrate"
         "rtest_integrate_special"
         "rtest_ask"
-        ((mlist simp) "rtest_sqrt" 76 78 79 80)
+        ((mlist simp) "rtest_sqrt" 89)
         ((mlist simp) "rtest_carg" 40 41)
         ((mlist simp) "rtest_log" 11)
+        ((mlist simp) "rtest_power" 19 20 26 58 62 65)
 	))
