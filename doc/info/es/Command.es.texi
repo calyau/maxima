@@ -1,4 +1,4 @@
-@c English version 2011-06-12.
+@c English version 2011-07-24.
 @menu
 * Introducci@'on a la l@'{@dotless{i}}nea de comandos::
 * Funciones y variables para la l@'{@dotless{i}}nea de comandos::
@@ -350,42 +350,56 @@ V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
 @vrindex Resultado anterior en una sentencia compuesta
 @end ifinfo
 
-En una sentencia compuesta, como @code{block}, @code{lambda} o @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} es el valor de la sentencia previa.
+En una sentencia compuesta, como @code{block}, @code{lambda} o 
+@code{(@var{s_1}, ..., @var{s_n})}, @code{%%} es el valor de la sentencia previa.
 Por ejemplo,
 
-@example
-block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
-block ([prev], prev: integrate (x^5, x),
-               ev (prev, x=2) - ev (prev, x=1));
-@end example
+Cuando se escribe al comienzo de una sentencia compuesta, o fuera de ella,
+@code{%%} no est@'a definido.
 
-devuelven el mismo resultado  @code{21/2}.
+@code{%%} es reconocido por @code{batch} y @code{load}, interpret@'andose
+de la misma manera que se acaba de indicar.
+
+V@'ease tambi@'en @code{%}
+
+Ejemplos:
+
+Los siguientes dos ejemplos devuelven el mismo resultado.
+
+@example
+(%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+                               21
+(%o1)                          --
+                               2
+(%i2) block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
+                               21
+(%o2)                          --
+                               2
+
+@end example
 
 Una sentencia compuesta puede contener otras sentencias compuestas.
-Independientemente de que una sentencia sea simple o compuesta, @code{%%} es el valor de la sentencia previa.
-Por ejemplo,
+Independientemente de que una sentencia sea simple o compuesta, @code{%%} es 
+el valor de la sentencia previa.
 
 @example
-block (block (a^n, %%*42), %%/6)
+(%i3) block (block (a^n, %%*42), %%/6);
+                                 n
+(%o3)                         7 a
 @end example
 
-devuelve @code{7*a^n}.
-
-Dentro de una sentencia compuesta, el valor de @code{%%} puede inspeccionarse en un punto de interrupci@'on que se abra ejecutando la funci@'on @code{break}. Por ejemplo, en el punto de interrupci@'on abierto por
+Dentro de una sentencia compuesta, el valor de @code{%%} puede inspeccionarse en un punto de interrupci@'on que se abra ejecutando la funci@'on @code{break}. Por ejemplo, escribiendo @code{%%;} en el siguiente ejemplo se obtiene @code{42}.
 
 @example
-block (a: 42, break ())$
+(%i4) block (a: 42, break ())$
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_%%;
+42
+_
 @end example
 
-introduciendo @code{%%;} se obtiene @code{42}.
-
-En la primera sentencia de una sentencia compuesta, o fuera de una sentencia compuesta, @code{%%} no est@'a definido.
-
-La variable @code{%%} es reconocida por  @code{batch} y por @code{load}.
-Cuando un fichero es procesado por @code{batch}, la variable @code{%%}
-tiene el mismo significado que en el modo interactivo.
-
-V@'ease tambi@'en @code{%}.
 @end defvr
 
 
@@ -399,25 +413,29 @@ Es el valor de la expresi@'on de la @var{i}-@'esima salida anterior.
 Esto es, si la siguiente expresi@'on a calcular es la salida @var{n}-@'esima,
 @code{%th (@var{m})} es la salida  (@var{n} - @var{m})-@'esima.
 
-La funci@'on @code{%th} es @'util en archivos tipo @code{batch} o para hacer referencia a un grupo de expresiones de salida.
-Por ejemplo,
+@code{%th} es reconocido por @code{batch} y @code{load}, interpret@'andose
+de la misma manera que se acaba de indicar. Cuando un fichero es procesado
+por @code{load}, @code{%th} se refiere a los c@'alculos m@'as recientes;
+@code{%th} no hace referencia a las expresiones de salida incluidas en el
+propio fichero que se est@'a procesando.
+
+V@'eanse tambi@'en @code{%} y @code{%%}
+
+Ejemplo:
+
+@code{%th} es @'util en ficheros @code{batch} para hacer referencia a grupos de resultados
+reci@'en obtenidos.  En este ejemplo se asigna a @code{s} la suma de los cinco resultados.
 
 @example
-block (s: 0, for i:1 thru 10 do s: s + %th (i))$
+(%i1) 1;2;3;4;5;
+(%o1)                           1
+(%o2)                           2
+(%o3)                           3
+(%o4)                           4
+(%o5)                           5
+(%i6) block (s: 0, for i:1 thru 5 do s: s + %th(i), s);
+(%o6)                          15
 @end example
-
-asigna a @code{s} la suma de las diez @'ultimas expresiones de salida.
-
-La variable @code{%th} es reconocida por  @code{batch} y por @code{load}.
-Cuando un fichero es procesado por @code{batch}, la variable @code{%th}
-tiene el mismo significado que en el modo interactivo.
-Cuando un fichero es procesado por @code{load}, a la variable @code{%th}
-se le asigna la @'ultima expresi@'on introducida, bien desde el modo
-interactivo, bien en un fichero por lotes; en ning@'un caso se le asigna 
-a @code{%th} una expresi@'on de entrada del fichero que est@'a siendo procesado.
-
-V@'ease tambi@'en @code{%}.
-
 @end deffn
 
 
@@ -470,20 +488,22 @@ prefijo, los prefijos @code{inchar}, @code{outchar} y @code{linechar}
 deben comenzar con caracteres diferentes; en caso contrario, sentencias
 como @code{kill(inlables)} pueden dar resultados inesperados.
 
+V@'ease tambi@'en @code{labels}.
+
+Ejemplo:
+
 @c ===beg===
 @c inchar: "input";
 @c expand((a+b)^3);
 @c ===end===
 @example
 (%i1) inchar: "input";
-(%o1)                                input
-(input1) expand ((a+b)^3);
-                            3        2      2      3
-(%o1)                      b  + 3 a b  + 3 a  b + a
-(input2)
+(%o1)                         input
+(input2) expand((a+b)^3);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(input3)
 @end example
-
-V@'ease tambi@'en @code{labels}.
 
 @end defvr
 
@@ -700,6 +720,16 @@ muy @'util si el usuario duda con frecuencia de la correctitud de alguna
 opci@'on y quiere estar seguro de la variable a la que @'el asign@'o un
 valor fue verdaramente una variable opci@'on (o interruptor). 
 
+Ejemplo:
+
+@example
+(%i1) optionset:true;
+assignment: assigning to option optionset
+(%o1)                         true
+(%i2) gamma_expand:true;
+assignment: assigning to option gamma_expand
+(%o2)                         true
+@end example
 @end defvr
 
 
@@ -718,21 +748,22 @@ prefijo, los prefijos @code{inchar}, @code{outchar} y @code{linechar}
 deben comenzar con caracteres diferentes; en caso contrario, sentencias
 como @code{kill(inlables)} pueden dar resultados inesperados.
 
+V@'ease tambi@'en @code{labels}.
+
+Ejemplo:
+
 @c ===beg===
 @c outchar: "output";
 @c expand((a+b)^3);
 @c ===end===
 @example
 (%i1) outchar: "output";
-(output1)                           output
-(%i2) expand ((a+b)^3);
-                            3        2      2      3
-(output2)                  b  + 3 a b  + 3 a  b + a
+(output1)                    output
+(%i2) expand((a+b)^3);
+                     3        2      2      3
+(output2)           b  + 3 a b  + 3 a  b + a
 (%i3)
 @end example
-
-V@'ease tambi@'en @code{labels}.
-
 @end defvr
 
 
@@ -981,7 +1012,7 @@ Valor por defecto: @code{false}
 
 Si @code{%edispflag} vale @code{true}, Maxima muestra @code{%e} elevado
 a un exponente negativo como un cociente. Por ejemplo, @code{%e^-x} se
-muestra como @code{1/%e^x}.
+muestra como @code{1/%e^x}. V@'ease tambi@'en @code{exptdispflag}.
 
 Ejemplo:
 
@@ -1010,6 +1041,13 @@ Valor por defecto: @code{!}
 
 La variable @code{absboxchar} es el car@'acter utilizado para representar el valor absoluto de una expresi@'on que ocupa m@'as de una l@'{@dotless{i}}nea de altura.
 
+Ejemplo:
+
+@example
+(%i1) abs((x^3+1));
+                            ! 3    !
+(%o1)                       !x  + 1!
+@end example
 @end defvr
 
 
@@ -1019,6 +1057,8 @@ Es como @code{display} pero s@'olo se muestran los valores de
 los argumentos, no las ecuaciones. Es @'util para argumentos 
 complicados que no tienen nombre o en situaciones en las que 
 solamente es de inter@'es el valor del argumento pero no su nombre.
+
+V@'eanse tambi@'en @code{ldisp} y @code{print}.
 
 Ejemplos:
 
@@ -1046,7 +1086,13 @@ Ejemplos:
 @deffn {Funci@'on} display (@var{expr_1}, @var{expr_2}, ...)
 
 Muestra las ecuaciones cuyos miembros izquierdos son 
-@var{expr_i} sin evaluar y cuyos miembros derechos son los valores de las expresiones. Esta funci@'on es @'util en los bloques y en las sentencias @code{for} para mostrar resultados intermedios.  Los argumentos de @code{display} suelen ser @'atomos, variables subindicadas o llamadas a funciones. V@'ease tambi@'en @code{disp}.
+@var{expr_i} sin evaluar y cuyos miembros derechos son los 
+valores de las expresiones. Esta funci@'on es @'util en los 
+bloques y en las sentencias @code{for} para mostrar resultados 
+intermedios.  Los argumentos de @code{display} suelen ser @'atomos, 
+variables subindicadas o llamadas a funciones.
+
+V@'eanse tambi@'en @code{ldisplay}, @code{disp} y @code{ldisp}.
 
 Ejemplos:
 
@@ -1126,8 +1172,33 @@ X*4/3;    ---        - X
 
 @deffn {Funci@'on} dispterms (@var{expr})
 Muestra @var{expr} en partes, una debajo de la otra.
-Esto es, primero se muestra el operador de @var{expr}, luego cada t@'ermino si se trata de una suma, o cada factor si es un producto, o si no se muestra separadamente la parte de una expresi@'on m@'as general. Es @'util si @var{expr} es demasiado grande para representarla de otra forma.  Por ejemplo, si @code{P1}, @code{P2}, ...  son expresiones muy grandes, entonces el programa de representaci@'on puede superar el espacio de almacenamiento tratando de mostrar @code{P1 + P2 + ...} todo junto.  Sin embargo, @code{dispterms (P1 + P2 + ...)} muestra @code{P1}, debajo  @code{P2}, etc.  Cuando una expresi@'on exponencial es demasiado ancha para ser representada como @code{A^B}, si no se utiliza @code{dispterms}, entonces aparecer@'a como @code{expt (A, B)} (o como @code{ncexpt (A, B)}, en lugar de @code{A^^B}).
+Esto es, primero se muestra el operador de @var{expr}, luego 
+cada t@'ermino si se trata de una suma, o cada factor si es un 
+producto, o si no se muestra separadamente la parte de una expresi@'on 
+m@'as general. Es @'util si @var{expr} es demasiado grande para 
+representarla de otra forma.  Por ejemplo, si @code{P1}, @code{P2}, ...  
+son expresiones muy grandes, entonces el programa de representaci@'on 
+puede superar el espacio de almacenamiento tratando de mostrar 
+@code{P1 + P2 + ...} todo junto.  Sin embargo, @code{dispterms (P1 + P2 + ...)} 
+muestra @code{P1}, debajo  @code{P2}, etc.  Cuando una expresi@'on exponencial 
+es demasiado ancha para ser representada como @code{A^B}, si no se utiliza 
+@code{dispterms}, entonces aparecer@'a como @code{expt (A, B)} (o como 
+@code{ncexpt (A, B)}, en lugar de @code{A^^B}).
 
+Ejemplo:
+
+@example
+(%i1) dispterms(2*a*sin(x)+%e^x);
+
++
+
+2 a sin(x)
+
+  x
+%e
+
+(%o1)                         done
+@end example
 @end deffn
 
 
@@ -1145,7 +1216,25 @@ Las funciones @code{expt} y @code{ncexpt} no se reconocen en una entrada.
 @defvr {Variable opcional} exptdispflag
 Valor por defecto: @code{true}
 
-Si @code{exptdispflag} vale @code{true}, Maxima muestra las expresiones con exponentes negativos como cocientes; por ejemplo, @code{X^(-1)} se muestra como @code{1/X}.
+Si @code{exptdispflag} vale @code{true}, Maxima muestra las expresiones con 
+exponentes negativos como cocientes. V@'ease tambi@'en @code{%edispflag}.
+
+Ejemplo:
+
+@example
+(%i1) exptdispflag:true;
+(%o1)                         true
+(%i2) 10^-x;
+                                1
+(%o2)                          ---
+                                 x
+                               10
+(%i3) exptdispflag:false;
+(%o3)                         false
+(%i4) 10^-x;
+                                - x
+(%o4)                         10
+@end example
 
 @end defvr
 
@@ -1281,7 +1370,7 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 
 
 @defvr {Variable opcional} ibase
-Valor por defecto: 10
+Valor por defecto: @code{10}
 
 @code{ibase} es la base en la que Maxima lee valores enteros.
 
@@ -1376,7 +1465,7 @@ diez.
 Muestra las expresiones @var{expr_1}, ..., @var{expr_n} en la consola con el formato de salida;
 @code{ldisp} asigna una etiqueta a cada argumento y devuelve la lista de etiquetas.
 
-V@'ease tambi@'en @code{disp}.
+V@'eanse tambi@'en @code{disp}, @code{display} y @code{ldisplay}.
 
 @example
 (%i1) e: (a+b)^3;
@@ -1412,7 +1501,7 @@ en la que @code{lhs} es uno de los argumentos de @code{ldisplay}
 y @code{rhs} su valor. Normalmente, cada argumento ser@'a el nombre de una variable. La funci@'on
 @code{ldisp} asigna una etiqueta a cada ecuaci@'on y devuelve la lista de etiquetas.
 
-V@'ease tambi@'en @code{display}.
+V@'eanse tambi@'en @code{disp}, @code{display} y @code{ldisp}.
 
 @example
 (%i1) e: (a+b)^3;
@@ -1441,7 +1530,7 @@ V@'ease tambi@'en @code{display}.
 
 
 @defvr {Variable opcional} linel
-Valor por defecto: 79
+Valor por defecto: @code{79}
 
 La variable @code{linel} es la anchura (medida en n@'umero de caracteres) de la consola que se le da a Maxima para que muestre las expresiones. A @code{linel} se le puede asignar cualquier valor, pero si @'este es muy peque@~no o grande resultar@'a de poca utilidad. El texto que impriman las funciones internas de Maxima, como los mensajes de error y las salidas de la funci@'on @code{describe}, no se ve afectado por el valor de @code{linel}.
 
@@ -1483,7 +1572,7 @@ en lugar de @code{- y + x}.  D@'andole el valor @code{false} se realiza un an@'a
 
 
 @defvr {Variable opcional} obase
-Valor por defecto: 10
+Valor por defecto: @code{10}
 
 @code{obase} es la base en la que Maxima imprime los n@'umeros enteros.
 
@@ -1567,7 +1656,20 @@ Si @code{powerdisp} vale @code{true}, se muestran las sumas con sus t@'erminos o
 
 Por defecto, los t@'erminos de una suma se muestran en el orden de las potencias decrecientes.
 
-@c NEED AN EXAMPLE HERE
+Ejemplo:
+
+@example
+(%i1) powerdisp:true;
+(%o1)                         true
+(%i2) x^2+x^3+x^4;
+                           2    3    4
+(%o2)                     x  + x  + x
+(%i3) powerdisp:false;
+(%o3)                         false
+(%i4) x^2+x^3+x^4;
+                           4    3    2
+(%o4)                     x  + x  + x
+@end example
 @end defvr
 
 
