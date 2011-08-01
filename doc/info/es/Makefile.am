@@ -5,7 +5,7 @@ langsdir = /es
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = \
 Affine.es.texi           Equations.es.texi     Lists.es.texi          Rules.es.texi \
-Arrays.es.texi           Expressions.es.texi   Logarithms.es.texi     Runtime.es.texi \
+Arrays.es.texi           Expressions.es.texi   Runtime.es.texi \
 Atensor.es.texi          Floating.es.texi      Matrices.es.texi       Series.es.texi \
 Bugs.es.texi             Function.es.texi      graphs.texi            grobner.texi           \
 Simplification.es.texi   Command.es.texi       Groups.es.texi         Miscellaneous.es.texi \
