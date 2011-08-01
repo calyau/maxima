@@ -2127,7 +2127,9 @@ in the interval of integration.")
 ;;;because of various assumptions made.
 (defun sin-cos-intsubs (exp var ll ul)
   (cond ((mplusp exp)
-	 (m+l (mapcar #'sin-cos-intsubs1 (cdr exp))))
+	 (let ((l (mapcar #'sin-cos-intsubs1 (cdr exp))))
+	   (if (not (some #'null l))
+	       (m+l l))))
 	(t (sin-cos-intsubs1 exp))))
 
 (defun sin-cos-intsubs1 (exp)
