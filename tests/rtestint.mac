@@ -1377,3 +1377,7 @@ integrate(1/2^x, x, 0, 1);
 integrate(exp(sqrt(x)-x), x, 0, inf);
 %e^(1/4)*gamma_incomplete(1,1/4)-%e^(1/4)*gamma_incomplete(1/2,1/4)/2
                                        +%e^(1/4)*sqrt(%pi);
+
+/* integrate(log(t)*log(t+1),t,0,1) gives Lisp error - ID: 3381012 */
+integrate(log(t)*log(t+1),t,0,1);
+-2*log(2)-%pi^2/12+2;
