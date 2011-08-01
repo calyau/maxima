@@ -249,10 +249,8 @@ Fallos
 
 Ayuda
 
-* Lisp y Maxima::            
-* Recolector de basura::          
-* Documentaci@'on::               
-* Funciones y variables para la ayuda:: 
+* Documentaci@'on::
+* Funciones y variables para la ayuda::
 
 L@'{@dotless{i}}nea de comandos
 
@@ -455,8 +453,10 @@ Definici@'on de Funciones
 
 Programaci@'on
 
-* Introducci@'on a la programaci@'on::
-* Funciones y variables para la programaci@'on::
+* Lisp y Maxima::
+* Recolector de basura::
+* Introducci@'on a la programaci@'on::  
+* Funciones y variables para la programaci@'on:: 
 
 Depurado
 
