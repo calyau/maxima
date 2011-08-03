@@ -1195,6 +1195,7 @@ equation may be given as first argument.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{modulus}
 @defvr {Option variable} modulus
 Default value: @code{false}
 
@@ -1215,10 +1216,33 @@ If @var{expr} is already in canonical rational expression (CRE) form when
 
 Typically @code{modulus} is set to a prime number.  If @code{modulus} is set to
 a positive non-prime integer, this setting is accepted, but a warning message is
-displayed.  Maxima will allow zero or a negative integer to be assigned to
-@code{modulus}, although it is not clear if that has any useful consequences.
+displayed.  Maxima signals an error, when zero or a negative integer is
+assigned to @code{modulus}.
 
-@c NEED EXAMPLES HERE
+Examples:
+
+@example
+(%i1) modulus:7;
+(%o1)                           7
+(%i2) polymod([0,1,2,3,4,5,6,7]);
+(%o2)            [0, 1, 2, 3, - 3, - 2, - 1, 0]
+(%i3) modulus:false;
+(%o3)                         false
+(%i4) poly:x^6+x^2+1;
+                            6    2
+(%o4)                      x  + x  + 1
+(%i5) factor(poly);
+                            6    2
+(%o5)                      x  + x  + 1
+(%i6) modulus:13;
+(%o6)                          13
+(%i7) factor(poly);
+                      2        4      2
+(%o7)               (x  + 6) (x  - 6 x  - 2)
+(%i8) polymod(%);
+                            6    2
+(%o8)                      x  + x  + 1
+@end example
 @opencatbox
 @category{Integers}
 @closecatbox
@@ -1346,7 +1370,7 @@ current modulus which is the value of the variable @code{modulus}.
 @code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
 instead of the current value of @code{modulus}.
 
-See @code{modulus}.
+See @mrefdot{modulus}
 
 @opencatbox
 @category{Polynomials}
@@ -1586,11 +1610,13 @@ Examples:
                     y  + 7   y  + 7   y  + 7
 (%i4) ratdenomdivide: false$
 (%i5) ratexpand (expr);
+@group
                             2
                            x  + x + 1
 (%o5)                      ----------
                               2
                              y  + 7
+@end group
 (%i6) expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
                                      2
                            b        a
@@ -1742,10 +1768,12 @@ Examples:
                                2   x - 1
                         (x + 1)
 (%i3) expand (expr);
+@group
                     x              1           1
 (%o3)          ------------ - ------------ + -----
                 2              2             x - 1
                x  + 2 x + 1   x  + 2 x + 1
+@end group
 (%i4) ratexpand (expr);
                         2
                      2 x                 2
