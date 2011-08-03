@@ -1145,8 +1145,10 @@ wrapper for this."
 	((eq x '$dotassoc) (cput 'mnctimes y 'associative))
 	((eq x 'modulus)
 	 (cond ((null y))
-	       ((integerp y)
-	        (if (or (not (primep y)) (member y '(1 0 -1)))
+	       ((and (integerp y) (plusp y))
+	        ;; modulus must be an integer > 0. Give a warning if not
+	        ;; a prime number.
+	        (if (not (primep y))
 	            (mtell (intl:gettext "warning: assigning ~:M, a non-prime, to 'modulus'~&") y)))
 	       (t (mseterr x y))))
 	((eq x '$setcheck)
