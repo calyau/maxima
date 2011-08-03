@@ -5,7 +5,7 @@
 @c Original    : Polynomials.texi revision 03.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 11.12.2010
-@c Revision    : 09.07.2011
+@c Revision    : 03.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1378,7 +1378,7 @@ als erstes Argument angegeben werden.
 @end example
 @end deffn
 
-@c --- 05.07.2011 DK -----------------------------------------------------------
+@c --- 03.08.2011 DK -----------------------------------------------------------
 @anchor{modulus}
 @defvr {Optionsvariable} modulus
 Standardwert: @code{false}
@@ -1393,7 +1393,7 @@ Standardwert: @code{false}
 @c @var{a}.
    @c NEED EXAMPLES OF "BALANCED MODULUS" HERE
 
-Hat die Optionsvariable @code{modulus} eine positive Zahl @var{p} als Wert
+Hat die Optionsvariable @code{modulus} eine positive Zahl @var{p} als Wert,
 werden Operationen f@"ur rationale Zahlen, wie von der Funktion @mref{rat} und
 verwandte Funktionen, modulo @var{p} ausgef@"uhrt.
 
@@ -1424,6 +1424,34 @@ werden, um korrekte Ergebnisse zu erzielen.
 Typischerweise erh@"alt die Optionsvariable @code{modulus} eine Primzahl als
 Wert.  Erh@"alt @code{modulus} eine positive ganze Zahl als Wert, die nicht eine
 Primzahl ist, wird die Zuweisung akzeptiert, jedoch eine Warnung ausgegeben.
+Wird Null oder eine negative Zahl zugewiesen signalisiert Maxima einen Fehler.
+
+Beispiele:
+
+@example
+(%i1) modulus:7;
+(%o1)                           7
+(%i2) polymod([0,1,2,3,4,5,6,7]);
+(%o2)            [0, 1, 2, 3, - 3, - 2, - 1, 0]
+(%i3) modulus:false;
+(%o3)                         false
+(%i4) poly:x^6+x^2+1;
+                            6    2
+(%o4)                      x  + x  + 1
+(%i5) factor(poly);
+                            6    2
+(%o5)                      x  + x  + 1
+(%i6) modulus:13;
+(%o6)                          13
+(%i7) factor(poly);
+@group
+                      2        4      2
+(%o7)               (x  + 6) (x  - 6 x  - 2)
+@end group
+(%i8) polymod(%);
+                            6    2
+(%o8)                      x  + x  + 1
+@end example
 @end defvr
 
 @c APPARENTLY OBSOLETE: ONLY EFFECT OF $newfac COULD BE TO CAUSE NONEXISTENT
@@ -1754,9 +1782,11 @@ Beispiele:
                               2    2
                            4 y  + x
 (%i2) rat (%, y, a, x);
+@group
                             2 a + 2 y
 (%o2)/R/                    ---------
                              x + 2 y
+@end group
 @end example
 @end deffn
 
@@ -2136,10 +2166,12 @@ Beispiele:
                      3         2       2        3
 (%o1)          - 27 y  + 54 x y  - 36 x  y + 8 x
 (%i2) expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+@group
                          x - 1       1
 (%o2)                   -------- + -----
                                2   x - 1
                         (x + 1)
+@end group
 (%i3) expand (expr);
                     x              1           1
 (%o3)          ------------ - ------------ + -----
@@ -2345,10 +2377,12 @@ Beispiele:
                      sqrt((x - 1) (x + 1))
 @end group
 (%i4) ratsimp (%);
+@group
                            2 sqrt(x - 1)
 (%o4)                    - -------------
                                  2
                            sqrt(x  - 1)
+@end group
 (%i5) x^(a + 1/a), ratsimpexpons: true;
                                2
                               a  + 1
@@ -2700,6 +2734,7 @@ Beispiele:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@need 1000
 @anchor{savefactors}
 @defvr {Optionsvariable} savefactors
 Standardwert: @code{false}
@@ -2833,8 +2868,10 @@ Beispiele:
                                   1/3
                             %i + 3
 (%i2) ev (ratdisrep (rat(%)), algebraic);
+@group
              2/3      1/3              2/3      1/3
 (%o2)    (4 3    - 2 3    - 4) %i + 2 3    + 4 3    - 2
+@end group
 (%i3) tellrat (1 + a + a^2);
                             2
 (%o3)                     [a  + a + 1]
