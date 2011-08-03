@@ -1251,14 +1251,19 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defun sign-any (x)
   (cond ((and *complexsign*
-	      (or (and (atom x) (decl-complexp x))
-		  (and (not (atom x)) (decl-complexp (caar x)))))
-	 ;; In Complex Mode look for symbols declared to be complex.
-	 (when *debug-compar*
-	   (format t "~&SIGN-ANY with ~A~&   Symbol declared to be complex found.~%" x))
-	 (if (and (atom x) ($featurep x '$imaginary))
-	     (setq sign '$imaginary)
-	     (setq sign '$complex)))
+              (symbolp x)
+              (decl-complexp x))
+         ;; In Complex Mode look for symbols declared to be complex.
+         (if ($featurep x '$imaginary)
+             (setq sign '$imaginary)
+             (setq sign '$complex)))
+        ((and *complexsign*
+              (not (atom x))
+              (decl-complexp (caar x)))
+         ;; A function f(x), where f is declared to be imaginary or complex.
+         (if ($featurep (caar x) '$imaginary)
+             (setq sign '$imaginary)
+             (setq sign '$complex)))
 	(t
 	 (dcompare x 0)
 	 (if (and $assume_pos
