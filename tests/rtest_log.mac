@@ -284,6 +284,12 @@ log(2/3*((x-1)^3)^(a/b)*(2*y-3)^(b/a)), domain:complex, logexpand:all;
 log(2/3*((x-1)^3)^(a/b)*(2*y-3)^(b/a)), domain:complex, logexpand:super;
 3*a*log(x-1)/b + b*log(2*y-3)/a+log(2)-log(3)$
 
+/* Bug ID: 3377347 - log(1/(1+%i)) gives error
+ * Check this case.
+ */
+log(1/(1+%i)),logexpand:false;
+-log(1+%i);
+
 /* ----- Complex characteristics -------------------------------------------- */
 
 realpart(log(x+%i*y));
