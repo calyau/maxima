@@ -1392,7 +1392,7 @@
         ((mexptp y)
          (cond ((or (and $logexpand (eq $domain '$real))
                     (member $logexpand '($all $super))
-                    (and (eq ($sign (cadr y)) '$pos)
+                    (and (eq ($csign (cadr y)) '$pos)
                          (not (member ($csign (caddr y))
                                       '($complex $imaginary)))))
                 ;; Simplify log(x^a) -> a*log(x), where x > 0 and a is real
