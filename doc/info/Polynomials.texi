@@ -93,11 +93,26 @@ default, will be used.
 @c WHAT IS THIS ABOUT EXACTLY ??
 
 @c -----------------------------------------------------------------------------
+@anchor{bezout}
 @deffn {Function} bezout (@var{p1}, @var{p2}, @var{x})
 
-an alternative to the @code{resultant} command.  It
+an alternative to the @mref{resultant} command.  It
 returns a matrix.  @code{determinant} of this matrix is the desired resultant.
 
+Examples:
+
+@example
+(%i1) bezout(a*x+b, c*x^2+d, x);
+                         [ b c  - a d ]
+(%o1)                    [            ]
+                         [  a     b   ]
+(%i2) determinant(%);
+                            2      2
+(%o2)                      a  d + b  c
+(%i3) resultant(a*x+b, c*x^2+d, x);
+                            2      2
+(%o3)                      a  d + b  c
+@end example
 @opencatbox
 @category{Polynomials}
 @closecatbox
@@ -259,9 +274,11 @@ function.
 (%i1) coeff ([4*a, -3*a, 2*a], a);
 (%o1)                      [4, - 3, 2]
 (%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+@group
                           [  a    b  ]
 (%o2)                     [          ]
                           [ - c  - d ]
+@end group
 (%i3) coeff (a*u - b*v = 7*u + 3*v, u);
 (%o3)                         a = 7
 @end example
@@ -522,11 +539,13 @@ Examples:
                                            2
                     (x + 3) (x + b) (x + c)
 (%i9) ratsimp (%);
+@group
                 4                  3
 (%o9) (x + 2)/(x  + (2 c + b + 3) x
 
      2                       2             2                   2
  + (c  + (2 b + 6) c + 3 b) x  + ((b + 3) c  + 6 b c) x + 3 b c )
+@end group
 (%i10) partfrac (%, x);
            2                   4                3
 (%o10) - (c  - 4 c - b + 6)/((c  + (- 2 b - 6) c
@@ -1671,11 +1690,13 @@ Example:
 @c ratdiff (expr, a + b);
 @example
 (%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+@group
                            3
                         4 x  + 10 x - 11
 (%o1)                   ----------------
                               5
                              x  + 5
+@end group
 (%i2) ratdiff (expr, x);
                     7       5       4       2
                  8 x  + 40 x  - 55 x  - 60 x  - 50
@@ -2191,6 +2212,7 @@ each call to @code{ratweight} places additional items in the list.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@need 1000
 @defvr {Option variable} ratwtlvl
 Default value: @code{false}
 
@@ -2220,39 +2242,78 @@ of the two-element list returned by @code{divide}.
 @closecatbox
 @end deffn
 
-@c CAN PROBABLY BE CLARIFIED
-
 @c -----------------------------------------------------------------------------
-@deffn  {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
-@deffnx {Variable} resultant
+@anchor{resultant}
+@deffn {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
 
-Computes the resultant of the two polynomials @var{p_1} and @var{p_2},
-eliminating the variable @var{x}.
-The resultant is a determinant of the coefficients of @var{x}
-in @var{p_1} and @var{p_2},
-which equals zero
-if and only if @var{p_1} and @var{p_2} have a non-constant factor in common.
+The function @code{resultant} computes the resultant of the two polynomials
+@var{p_1} and @var{p_2}, eliminating the variable @var{x}.  The resultant is a
+determinant of the coefficients of @var{x} in @var{p_1} and @var{p_2}, which
+equals zero if and only if @var{p_1} and @var{p_2} have a non-constant factor
+in common.
 
-If @var{p_1} or @var{p_2} can be factored,
-it may be desirable to call @code{factor} before calling @code{resultant}.
+If @var{p_1} or @var{p_2} can be factored, it may be desirable to call
+@mref{factor} before calling @code{resultant}.
 
-The variable @code{resultant} controls which algorithm will be used to compute
-the resultant.
-@c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
-@code{subres} for subresultant prs,
-@code{mod} for modular resultant algorithm,
-and @code{red} for reduced prs.
-On most problems @code{subres} should be best.
-On some large degree univariate or bivariate problems @code{mod} may be better.
+The option variable @code{resultant} controls which algorithm will be used to
+compute the resultant.  See the option variable
+@mxrefdot{option_resultant, resultant}
 
-The function @code{bezout} takes the same arguments as @code{resultant} and
+The function @mref{bezout} takes the same arguments as @code{resultant} and
 returns a matrix.  The determinant of the return value is the desired resultant.
 
-@c NEED AN EXAMPLE HERE
+Examples:
+
+@example
+(%i1) resultant(2*x^2+3*x+1, 2*x^2+x+1, x);
+(%o1)                           8
+(%i2) resultant(x+1, x+1, x);
+(%o2)                           0
+(%i3) resultant((x+1)*x, (x+1), x);
+(%o3)                           0
+(%i4) resultant(a*x^2+b*x+1, c*x + 2, x);
+                         2
+(%o4)                   c  - 2 b c + 4 a
+
+(%i5) bezout(a*x^2+b*x+1, c*x+2, x);
+@group
+                        [ 2 a  2 b - c ]
+(%o5)                   [              ]
+                        [  c      2    ]
+@end group
+(%i6) determinant(%);
+(%o6)                   4 a - (2 b - c) c
+@end example
 @opencatbox
 @category{Polynomials}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{option_resultant}
+@defvr {Option variable} resultant
+Default value: @code{subres}
+
+The option variable @code{resultant} controls which algorithm will be used to
+compute the resultant with the function @mrefdot{resultant}  The possible
+values are:
+
+@table @code
+@item subres
+for the subresultant polynomial remainder sequence (PRS) algorithm,
+@item mod
+for the modular resultant algorithm, and 
+@item red
+for the reduced polynomial remainder sequence (PRS) algorithm.
+@end table
+
+On most problems the default value @code{subres} should be best.  On some
+large degree univariate or bivariate problems @code{mod} may be better.
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @defvr {Option variable} savefactors
