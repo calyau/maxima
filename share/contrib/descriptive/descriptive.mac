@@ -1071,7 +1071,7 @@ stemplot(m,[select]):=
 /*     - xtics                                                             */
 starplot_description([args]):=
   block([lastsample: 0, nargs: length(args), freqs: [], samplespace,
-         sspacesize, nsamples, before, localopts, maxfreq, angle,
+         sspacesize, nsamples, before, localopts, maxfreq, angle, cpnts,
          /* specific options */
          my_stars_colors: [], my_frequency: 'absolute, my_ordering: 'orderlessp,
          my_sample_keys: [], my_star_center: [0,0], my_star_radius: 1],
@@ -1144,14 +1144,25 @@ starplot_description([args]):=
       then my_stars_colors: append(my_stars_colors,
                                   makelist(random_color(),k,length(my_stars_colors)+1,nsamples)),
 
+    /* calculate circle points */
+    cpnts: makelist(
+             block(
+               [this_ang: k*angle],
+               [cos(this_ang), sin(this_ang)]),
+           k, 1, sspacesize),
+
+    /* return draw object */
     append(
       /* draw the radii and the circular grid */
       ['points_joined = true, 'point_type = 'dot, 'color = 'black],
-      makelist(
-        block([this_ang: k*angle],
-          points([my_star_center + [0,0], 
-                  my_star_center + my_star_radius*[cos(this_ang), sin(this_ang)]])),
-        k, 1, sspacesize),
+
+      map(lambda([z], points([my_star_center, z+my_star_center])),
+          my_star_radius*cpnts),
+
+      [apply(label, maplist(cons,
+                            samplespace,
+                            map(lambda([z], z+my_star_center), 1.05*my_star_radius*cpnts)))],
+
       before,
       /* draw the stars */
       makelist(
@@ -1159,13 +1170,12 @@ starplot_description([args]):=
           'key = my_sample_keys[s],
           block([pnts],
             pnts: makelist(
-                    block([pos, this_ang],
+                    block([pos],
                       pos: ?position(samplespace[k], freqs[s][1]),
                       if pos = false
                         then my_star_center
-                        else (this_ang: k * angle,
-                              my_star_radius * freqs[s][2][pos] / 
-                                      maxfreq * [cos(this_ang), sin(this_ang)] + my_star_center) ),
+                        else my_star_radius * freqs[s][2][pos] / 
+                                      maxfreq * cpnts[k] + my_star_center),
                     k, 1, sspacesize),
             points(cons(last(pnts), pnts)) ) ],
         s, 1, nsamples),
