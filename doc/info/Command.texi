@@ -1079,6 +1079,9 @@ Default value: @code{true}
 When @code{display2d} is @code{false}, the console display is a string 
 (1-dimensional) form rather than a display (2-dimensional) form.
 
+See also @mref{leftjust} to switch between a left justified and a centered
+display of equations.
+
 Example:
 
 @c ===beg===
@@ -1311,9 +1314,11 @@ matrix([aa,17],[29,bb])$
         9        10
  + 10 aa  bb + aa
 (%i12) grind (expr);
+@group
 bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
      +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
      +10*aa^9*bb+aa^10$
+@end group
 (%o12)                        done
 (%i13) string (expr);
 (%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
@@ -1525,6 +1530,33 @@ Examples:
 @category{Display functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{leftjust}
+@defvr {Option variable} leftjust
+Default value: @code{false}
+
+When @code{leftjust} is @code{true}, equations in 2D-display are drawn left
+justified rather than centered.
+
+See also @mref{display2d} to switch between 1D- and 2D-display.
+
+Example:
+
+@example
+(%i1) expand((x+1)^3);
+                        3      2
+(%o1)                  x  + 3 x  + 3 x + 1
+(%i2) leftjust:true$
+(%i3) expand((x+1)^3);
+       3      2
+(%o3) x  + 3 x  + 3 x + 1
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{linel}
