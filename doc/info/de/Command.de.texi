@@ -2,10 +2,10 @@
 @c File        : Command.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Command.texi revision 14.03.2011
+@c Original    : Command.texi revision 10.08.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 25.04.2011
+@c Revision    : 10.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1107,13 +1107,16 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c --- 10.08.2010 DK -----------------------------------------------------------
 @anchor{display2d}
 @defvr {Optionsvariable} display2d
 Standardwert: @code{true}
 
 Hat @code{display2d} den Wert @code{false}, werden Ausdr@"ucke auf der Konsole
 linear und nicht zweidimensional angezeigt.
+
+Siehe auch die Optionsvariable @mrefcomma{leftjust} um Formeln linksb@"undig
+auszugeben.
 
 Beispiel:
 
@@ -1261,11 +1264,13 @@ matrix([aa,17],[29,bb])$
 @{17,29,aa,bb@}$
 (%o8)                         done
 (%i9) exp (aa / (bb + 17)^29);
+@group
                                 aa
                             -----------
                                      29
                             (bb + 17)
 (%o9)                     %e
+@end group
 (%i10) grind (%);
 %e^(aa/(bb+17)^29)$
 (%o10)                        done
@@ -1429,7 +1434,32 @@ Beispiele:
 @end example
 @end deffn
 
+@c --- 10.08.2011 DK -----------------------------------------------------------
+@anchor{leftjust}
+@defvr {Optionsvariable} leftjust
+Standardwert: @code{false}
+
+Hat die Optionsvariable @code{leftjust} den Wert @code{true}, werden Formeln
+linksb@"undig und nicht zentriert ausgegeben.
+
+Siehe auch die Optionsvariable @mrefcomma{display2d} um zwischen der 
+1D- und 2D-Anzeige umzuschalten.
+
+Beispiel:
+
+@example
+(%i1) expand((x+1)^3);
+                        3      2
+(%o1)                  x  + 3 x  + 3 x + 1
+(%i2) leftjust:true$
+(%i3) expand((x+1)^3);
+       3      2
+(%o3) x  + 3 x  + 3 x + 1
+@end example
+@end defvr
+
 @c --- 23.10.2010 --------------------------------------------------------------
+@need 800
 @anchor{linel}
 @defvr {Optionsvariable} linel
 Standardwert: @code{79}
