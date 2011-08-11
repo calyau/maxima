@@ -307,26 +307,42 @@
 (defprop mset 180. lbp)
 (defprop mset 20. rbp)
 
+;;; ----------------------------------------------------------------------------
+
+;; Formating a mdefine or mdefmacro expression
+
 (defprop mdefine msz-mdef grind)
 (defprop mdefine (#\: #\=) strsym)
-(defprop mdefine 180. lbp)
-(defprop mdefine 20. rbp)
+(defprop mdefine 180 lbp)
+(defprop mdefine  20 rbp)
 
 (defprop mdefmacro msz-mdef grind)
 (defprop mdefmacro (#\: #\: #\=) strsym)
-(defprop mdefmacro 180. lbp)
-(defprop mdefmacro 20. rbp)
+(defprop mdefmacro 180 lbp)
+(defprop mdefmacro  20 rbp)
 
 (defun msz-mdef (x l r)
   (setq l (msize (cadr x) l (copy-list (strsym (caar x))) lop (caar x))
-	r (msize (caddr x) nil r (caar x) rop))
-  (setq x (cons (- (car l) (caadr l)) (cddr l)))
-  (if (and (not (atom (cadr r))) (not (atom (caddr r)))
-	   (< (+ (car l) (caadr r) (caaddr r)) linel))
-      (setq x (nconc x (list (cadr r) (caddr r)))
-	    r (cons (car r) (cdddr r))))
-  (cons (+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))
-
+        r (msize (caddr x) nil r (caar x) rop))
+  (cond ((not (atom (cadr l)))
+         ;; An expression like g(x):=x:
+         ;;   left side  l = (6 (2 #\g #\( ) (4 #\x #\) #\: #\= ))
+         ;;   right side r = (1 #\x )
+         ;; the result is (7 (2 #\g #\( ) (4 #\x #\) #\: #\= ) (1 #\x ))
+         (setq x (cons (- (car l) (caadr l)) (cddr l)))
+         (if (and (not (atom (cadr r)))
+                  (not (atom (caddr r)))
+                  (< (+ (car l) (caadr r) (caaddr r)) linel))
+             (setq x (nconc x (list (cadr r) (caddr r)))
+                   r (cons (car r) (cdddr r))))
+         (cons (+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))
+        (t
+         ;; An expression like x f :=x or f x:=x, where f is a postfix or a
+         ;; prefix operator. Example for a postfix operator:
+         ;;   left side  l = (5 #\x #\space #\f #\: #\= )
+         ;;   right side r = (1 #\x)
+         ;; the result is (6 (5 #\x #\space #\f #\: #\=) (1 #\x))
+         (cons (+ (car l) (car r)) (cons l (ncons r))))))
 
 (defprop mfactorial msize-postfix grind)
 (defprop mfactorial 160. lbp)
