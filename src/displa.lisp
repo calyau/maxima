@@ -1016,11 +1016,18 @@
 (displa-def $matrix dim-$matrix)
 
 (defun dim-$matrix (form result)
-  (prog (dmstr rstr cstr consp)
+  (prog (dmstr rstr cstr consp cols)
+     (setq cols (if ($listp (cadr form)) (length (cadr form)) 0))
      (if (or (null (cdr form))
-	     (memalike '((mlist simp)) (cdr form))
-	     (dolist (row (cdr form)) (if (not ($listp row)) (return t))))
-	 (return (dimension-function form result)))
+             (memalike '((mlist simp)) (cdr form))
+             ;; Check if the matrix has lists as rows with a equal number of
+             ;; columns.
+             (dolist (row (cdr form))
+               (if (or (not ($listp row))
+                       (not (eql cols (length row))))
+                   (return t))))
+         ;; The matrix is not well formed. Display the matrix in linear mode.
+         (return (dimension-function form result)))
      (do ((l (cdadr form) (cdr l))) ((null l))
        (setq dmstr (cons nil dmstr) cstr (cons 0 cstr)))
      (do ((r (cdr form) (cdr r)) (h1 0) (d1 0))
