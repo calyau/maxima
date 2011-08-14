@@ -328,10 +328,18 @@ block ([L : [], s : +2], for i:1 thru 10 step s do L : cons (s : -s, L), L);
 block ([L : [], s : -2], for i:10 thru 1 step s do L : cons (s : -s, L), L);
 [2, -2, 2, -2, 2];
 
-/* bug reported to mailing list 2009-05-13 "reset ( radexpand,  domain )" */
-
+/* bug reported to mailing list 2009-05-13 "reset ( radexpand,  domain )"
+ *
+ * display2d is a resetable option variable. We save the value of display2d
+ * and restore it after the reset. This allows to run the testsuite in both
+ * display modes.
+ */
+(save:display2d, done);
+done$
 (reset (), [radexpand, domain]);
 [true, real];
+(display2d:save, done);
+done$
 
 [radexpand, domain] : [all, complex];
 [all, complex];
