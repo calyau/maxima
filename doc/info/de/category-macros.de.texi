@@ -80,6 +80,15 @@
 @end ifnothtml
 @end macro
 
+@macro mrefparen {nodename}
+@ifhtml
+@code{@ref{\nodename\}})
+@end ifhtml
+@ifnothtml
+@code{\nodename\})
+@end ifnothtml
+@end macro
+
 @macro nref {nodename}
 @ifhtml
 @ref{\nodename\}
@@ -141,6 +150,7 @@
              ent-hal-ten
              ent-spre-chend
              Er-geb-nis
+             ex-pli-zit
              Ex-po-nen-tial-funk-tion
              Fra-ge-zei-chen
              Fres-nel-funk-tion
@@ -176,6 +186,7 @@
              O-pe-ra-to-ren
              Op-tions-va-ri-ablen
              Re-gel-pa-ket
+             Re-gel-pa-ke-tes
              Rei-hen-ent-wick-lung
              Ska-lar-pro-dukt    
              Sei-ten-ef-fek-te
@@ -188,6 +199,7 @@
              ver-ein-fach-en
              Ver-ein-fach-ung
              ver-ein-facht
+             Ver-schach-te-lungs-tie-fe
              ver-schie-de-ne
              ver-ti-ka-len
              Ver-zeich-nis
