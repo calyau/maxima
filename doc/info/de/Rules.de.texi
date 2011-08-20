@@ -2,10 +2,10 @@
 @c File        : Rules.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Rules.texi revision 19.03.2011
+@c Original    : Rules.texi revision 13.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 19.04.2011
+@c Revision    : 20.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -20,46 +20,76 @@
 @section Einf@"uhrung in Muster und Regeln
 @c -----------------------------------------------------------------------------
 
-Dieses Kapitel beschreibt die nutzerdefinierte Mustererkennung und
-Vereinfachungsregeln.  Es gibt zwei verschiedene Gruppen an Funktionen, die eine
-etwas unterschiedliche Mustererkennung implementieren.  Die eine Gruppe
-enth@"alt die Funktionen @mrefcomma{tellsimp} @mrefcomma{tellsimpafter}@w{}
-@mrefcomma{defmatch} @mrefcomma{defrule} @mrefcomma{apply1} @mref{applyb1} und
-@mrefdot{apply2}  In der anderen Gruppe sind die Funktionen @mref{let} und
-@mref{letsimp} enthalten.  Beide Mustererkennungsverfahren verwenden die
-Funktion @mrefcomma{matchdeclare} um Muster zu definieren.
+Dieses Kapitel beschreibt nutzerdefinierte Muster und Regeln f@"ur die
+Vereinfachung von Ausdr@"ucken.  Es gibt zwei verschiedene Gruppen von
+Funktionen, die einen unterschiedlichen Musterabgleich implementieren.
+Die eine Gruppe enth@"alt die Funktionen @mrefcomma{tellsimp}@w{}
+@mrefcomma{tellsimpafter} @mrefcomma{defmatch} @mrefcomma{defrule}@w{}
+@mrefcomma{apply1} @mref{applyb1} und @mrefdot{apply2}  In der anderen Gruppe
+sind die Funktionen @mref{let} und @mref{letsimp} enthalten.  Mit beiden
+Methoden k@"onnen Muster definiert werden, die Mustervariable enthalten, die
+mit der Funktion @mref{matchdeclare} definiert werden.
 
 Regeln, die mit den Funktionen @code{tellsimp} und @code{tellsimpafter}
 definiert werden, werden von Maxima automatisch bei der Vereinfachung von
-Ausdr@"ucken angewendet.  Regeln die mit den Funktionen @code{defmatch}, 
+Ausdr@"ucken angewendet.  Regeln, die mit den Funktionen @code{defmatch}, 
 @code{defrule} oder @code{let} definiert werden, werden durch den Aufruf einer 
-Funktion angewendet.
+Funktion auf einen Ausdruck angewendet.
 
-Es gibt zus@"atzliche Mechanismen wie @mrefcomma{tellrat} um Regeln auf Polynome
-anzuwenden und weitere Funktionen der kommutativen und nicht-kommutativen
-Algebra in dem @mref{affine}-Paket.
+Es gibt zus@"atzliche Methoden wie die Definition von minimalen Polynomen mit
+der Funktion @mrefcomma{tellrat} um Einfluss auf die Vereinfachung von 
+Polynomen zu nehmen, und weitere Funktionen der kommutativen und
+nicht-kommutativen Algebra, die in dem Paket @ref{affine} definiert sind.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Muster und Regeln, , Einf@"uhrung in Muster und Regeln, Muster und Regeln
 @section Funktionen und Variablen f@"ur Muster und Regeln
 @c -----------------------------------------------------------------------------
 
-@c --- 18.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
+@anchor{announce_rules_firing}
+@defvr {Optionsvariable} announce_rules_firing
+Standardwert: @code{false}
+
+Hat die Optionsvariable @code{announce_rules_firing} den Wert @code{true},
+wenn mit den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} eine Regel
+definiert wird, dann wird eine Meldung ausgegeben, wenn die Regel angewendet
+wird.  Diese Optionsvariable ist n@"utzlich, wenn die Anwendung von
+nutzerdefinierten Regeln f@"ur die Fehlersuche kontrolliert werden soll.
+
+Beispiel:
+
+@example
+(%i1) announce_rules_firing:true;
+(%o1)                         true
+(%i2) tellsimpafter(tan(x), sin(x)/cos(x));
+(%o2)                 [tanrule1, simp-%tan]
+(%i3) tan(x);
+
+By tanrule1 , tan(x) --> sin(x)/cos(x) 
+                             sin(x)
+(%o3)                        ------
+                             cos(x)
+@end example
+@end defvr
+
+@c --- 17.08.2011 DK -----------------------------------------------------------
 @anchor{apply1}
 @deffn {Funktion} apply1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Wendet die Regel @var{rule_1} auf den Ausdruck @var{expr} solange an, bis die
-Anwendung fehlschl@"agt.  Dann wird die Regel von links nach rechts auf alle
-Teilausdr@"ucke von @var{expr} angewendet.  Ist @var{expr_2} das Ergebnis, dann
-wird die Regel @var{rule_2} auf gleiche Weise auf den Ausdruck @var{expr_2}
-angewendet.  Zuletzt wird die Regel @var{rule_n} angewendet.  Das letzte
-Ergebnis wird zur@"uckgegeben.
+Wendet die Regel @var{rule_1} auf den Ausdruck @var{expr} solange an, bis sich
+das Ergebnis nicht mehr @"andert.  Die Regel wird zuerst auf der obersten Ebene
+des Ausdrucks und dann nacheinander von links nach rechts auf die
+Teilausdr@"ucke angewendet.  Ist @var{expr_1} das Ergebnis der Anwendung der
+Regel @var{rule_1}, dann wird die Regel @var{rule_2} auf gleiche Weise auf den
+Ausdruck @var{expr_1} angewendet.  Zuletzt wird die Regel @var{rule_n}
+angewendet.  Das letzte Ergebnis wird zur@"uckgegeben.
 
-Die Optionsvariable @mref{maxapplydepth} ist die gr@"o@ss{}te
-Verschachtelungstiefe f@"ur die die Funktionen @code{apply1} und
-@mref{apply2} auf einen Ausdruck angewendet werden.
+Die Optionsvariable @mref{maxapplydepth} enth@"alt die gr@"o@ss{}te
+Verschachtelungstiefe, f@"ur die die Funktionen @code{apply1} und
+@code{apply2} auf einen Ausdruck angewendet werden.
 
-Siehe auch @mrefcomma{applyb1} @mref{apply2} und @mrefdot{let}
+Siehe auch die Funktionen @mrefcomma{applyb1} @mref{apply2} und @mrefdot{let}
 
 Beispiele:
 
@@ -83,25 +113,62 @@ Beispiele:
                              sin(x)
 @end group
 @end example
+
+Die folgenden Beispiele zeigen, wie mit der Optionsvariablen
+@code{maxapplydepth} die Tiefe kontrolliert wird, in der eine Regel
+auf die Teilausdr@"ucke angewendet wird.
+
+@example
+(%i1) expr: tan(x)+exp(a+2*tan(x));
+                                2 tan(x) + a
+(%o1)                tan(x) + %e
+(%i2) defrule(trig, tan(x), sin(x)/cos(x));
+                                      sin(x)
+(%o2)                trig : tan(x) -> ------
+                                      cos(x)
+(%i3) maxapplydepth:1;
+(%o3)                           1
+(%i4) apply1(expr, trig);
+                     sin(x)     2 tan(x) + a
+(%o4)                ------ + %e
+                     cos(x)
+(%i5) maxapplydepth:4;
+(%o5)                           4
+(%i6) apply1(expr, trig);
+                                2 sin(x)
+                                -------- + a
+                     sin(x)      cos(x)
+(%o6)                ------ + %e
+                     cos(x)
+@end example
 @end deffn
 
-@c --- 18.03.2011 DK -----------------------------------------------------------
+@c --- 17.08.2011 DK -----------------------------------------------------------
 @anchor{apply2}
 @deffn {Funktion} apply2 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Zun@"achst werden nacheinander die Regeln @var{rule_1}, @var{rule_2}, @dots{} 
-auf einen Ausdruck angewendet.  Schl@"agt die Anwendung aller Regeln fehl, dann 
-werden die Regeln nacheinander auf Teilausdr@"ucke von @var{expr} angewendet.
-Kann eine der Regeln erfolgreich angewendet werden, wird die Anwendung aller 
-Regeln auf den Teilausdruck wiederholt.
+Zun@"achst werden nacheinander die Regeln @var{rule_1}, @var{rule_2}, @dots{}
+auf den Ausdruck @var{expr} angewendet.  Schl@"agt die Anwendung aller Regeln
+fehl, werden die Regeln nacheinander auf die Teilausdr@"ucke des Argumentes
+@var{expr} angewendet.  Kann eine der Regeln erfolgreich angewendet werden,
+wird die Anwendung aller Regeln auf den Teilausdruck wiederholt.
 
-Die Optionsvariable @mref{maxapplydepth} ist die gr@"o@ss{}te
-Verschachtelungstiefe f@"ur die die Funktionen @mref{apply1} und @code{apply2}
+Im Unterschied zur Funktion @mref{apply1} werden von der Funktion @code{apply2}
+immer alle Regeln angewendet.  Sind jedoch die Regeln, die als Argumente
+@"ubergeben werden, zirkul@"ar definiert, so f@"uhrt Maxima eine Endlosschleife
+aus.  Siehe dazu auch die Beispiele unten.
+
+Die Optionsvariable @mref{maxapplydepth} enth@"alt die gr@"o@ss{}te
+Verschachtelungstiefe, f@"ur die die Funktionen @code{apply1} und @code{apply2}
 auf einen Ausdruck angewendet werden.
 
-Siehe auch @mrefcomma{apply1} @mref{applyb1} und @mrefdot{let}
+Siehe auch die Funktionen @mrefcomma{apply1} @mref{applyb1} und @mrefdot{let}
 
 Beispiele:
+
+Im Unterschied zur Funktion @mref{apply1} ist in diesem Fall das Ergebnis
+immer @code{sin(x)/cos(x)}, da alle Regeln wiederholt auf einen Teilausdruck
+angewendet werden, wenn sich der Ausdruck f@"ur eine Regel @"andert.
 
 @example
 (%i1) defrule(trig1, tan(x), sin(x)/cos(x));
@@ -123,135 +190,185 @@ Beispiele:
                              sin(x)
 @end group
 @end example
+
+Das folgende Beispiel zeigt eine zirkul@"are Definition der Ersetzungsregeln
+@code{trig1} und @code{trig2}.  Mit der Funktion @code{apply1} h@"angt das
+Ergebnis von der Reihenfolge der Anwendung der Regeln ab.  Die Anwendung der
+Funktion @code{apply2} f@"uhrt f@"ur dieses Beispiel zu einer Endlosschleife.
+
+@example
+(%i1) defrule(trig1, tan(x), sin(x)/cos(x));
+                                      sin(x)
+(%o1)               trig1 : tan(x) -> ------
+                                      cos(x)
+(%i2) defrule(trig2, sin(x)/cos(x), tan(x));
+                            sin(x)
+(%o2)               trig2 : ------ -> tan(x)
+                            cos(x)
+(%i3) expr: tan(x) + exp(sin(x)/cos(x));
+                                   sin(x)
+                                   ------
+                                   cos(x)
+(%o3)                   tan(x) + %e
+(%i4) apply1(expr, trig1, trig2);
+                                   tan(x)
+(%o4)                   tan(x) + %e
+(%i5) apply1(expr, trig2, trig1);
+                                   sin(x)
+                                   ------
+                        sin(x)     cos(x)
+(%o5)                   ------ + %e
+                        cos(x)
+@end example
 @end deffn
 
-@c --- 18.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{applyb1}
 @deffn {Funktion} applyb1 (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
 
-Wendet wiederholt die Regel @var{rule_1} auf den tiefsten Teilausdruck an.
-Schl@"agt die Anwendung fehlt, wird der Teilausdruck eine Ebene h@"oher 
-betrachtet, bis @var{rule_1} auf die oberste Ebene des Ausdrucks @var{expr}
-angewendet wird.  Danach wird auf gleiche Weise die Regel @var{rule_2}
-auf den Ausdruck @var{expr} angewendet.  Nachdem die letzte Regel @var{rule_n}
-angewendet wurde, wird das Ergebnis zur@"uckgegeben.
+Wendet die Regel @var{rule_1} auf den tiefsten Teilausdruck in der Baumstruktur
+eines Ausdrucks an.  Schl@"agt die Anwendung fehl, wird der Teilausdruck eine
+Ebene h@"oher betrachtet, bis @var{rule_1} auf die oberste Ebene des Ausdrucks
+@var{expr} angewendet wird.  Danach wird auf gleiche Weise die Regel
+@var{rule_2} auf den Ausdruck @var{expr} angewendet.  Nachdem die letzte Regel
+@var{rule_n} angewendet wurde, wird das Ergebnis zur@"uckgegeben.
 
 @code{applyb1} ist vergleichbar mit @mref{apply1} mit dem Unterschied, dass
 die Regeln Bottum-Up angewendet werden.
 
-@mref{maxapplyheight} ist die gr@"o@ss{}te Verschachtelungstiefe f@"ur die
-@code{applyb1} angewendet wird.
+Die Optionsvariable @mref{maxapplyheight} enth@"alt den Wert der gr@"o@ss{}ten
+Verschachtelungstiefe, f@"ur die @code{applyb1} angewendet wird.
 
-Siehe auch @mrefcomma{apply1} @mref{apply2} und @mrefdot{let}
+Siehe auch die Funktionen @mrefcomma{apply1} @mref{apply2} und @mrefdot{let}
 
+Beispiel:
+
+Das folgende Beispiel zeigt, wie die Regel @code{trig} zuerst auf die
+unterste Ebene des Ausdrucks angewendet wird.  Dazu wird die Optionsvariable
+zun@"achst auf den Wert @code{1} gesetzt und dann auf den Wert @code{4}
+erh@"oht.
+
+@example
+(%i1) matchdeclare(x, true);
+(%o1)                         done
+(%i2) defrule(trig, tan(x), sin(x)/cos(x));
+                                      sin(x)
+(%o2)                trig : tan(x) -> ------
+                                      cos(x)
+(%i3) expr: exp(a+2*tan(b+exp(tan(x))));
+                              tan(x)
+                      2 tan(%e       + b) + a
+(%o3)               %e
+(%i4) maxapplyheight:1;
+(%o4)                           1
+(%i5) applyb1(expr, trig);
+@group
+                              sin(x)
+                              ------
+                              cos(x)
+                      2 tan(%e       + b) + a
+(%o5)               %e
+@end group
+(%i6) maxapplyheight:4;
+(%o6)                           4
+(%i7) applyb1(expr, trig);
+                              sin(x)
+                              ------
+                              cos(x)
+                      2 sin(%e       + b)
+                      ------------------- + a
+                             sin(x)
+                             ------
+                             cos(x)
+                       cos(%e       + b)
+(%o7)               %e
+@end example
 @end deffn
 
-@c --- 18.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{clear_rules}
 @deffn {Funktion} clear_rules ()
 
-F@"uhrt das Kommando @code{kill(rules)} aus und setzt den Z@"ahler f@"ur die
-Benennung der Regeln der Addition, der Multiplikation und der Exponentiation
-zur@"uck.  Siehe auch @mrefdot{kill}
+F@"uhrt das Kommando @code{kill(rules)} aus und setzt die internen Z@"ahler
+f@"ur die Benennung der Regeln f@"ur die Addition, die Multiplikation und die
+Exponentiation auf den Anfangswert zur@"uck.  Siehe auch die Funktion
+@mrefdot{kill}
 @end deffn
 
-@c --- 20.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{current_let_rule_package}
 @defvr {Optionsvariable} current_let_rule_package
 Standardwert: @code{default_let_rule_package}
 
-@code{current_let_rule_package} enth@"alt den Namen des Regel-Paketes, das von 
-den @code{let}-Funktionen verwendet wird.  Der Optionsvariablen kann jedes mit 
-dem Kommando @code{let} definierte Regelpaket zugewiesen werden.
+Die Optionsvariable @code{current_let_rule_package} enth@"alt den Namen des
+aktuellen Regelpaketes, das von den @code{let}-Funktionen verwendet wird.  Der
+Optionsvariablen kann jedes mit dem Kommando @code{let} definierte Regelpaket
+zugewiesen werden.
 
-Wird das Kommando @code{letsimp(expr, rule_pkg_name} ausgef@"uhrt, dann wird 
+Wird das Kommando @code{letsimp(expr, rule_pkg_name)} ausgef@"uhrt, dann wird 
 f@"ur das aktuelle Kommando das Paket @code{rule_pkg_name} verwendet.  Der 
 Wert der Variablen @code{current_let_rule_package} wird nicht ge@"andert.
+
+Siehe auch die Optionsvariable @mrefdot{default_let_rule_package}
 @end defvr
 
-@c --- 20.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{default_let_rule_package}
 @defvr {Optionsvariable} default_let_rule_package
 Standardwert: @code{default_let_rule_package}
 
-@code{default_let_rule_package} ist der Name des Regelpaketes, das verwendet 
-wird, wenn kein Regelpaket mit der Funktion @code{let} explizit definiert wurde.
+Die Optionsvariable @code{default_let_rule_package} bezeichnet das Regelpaket,
+das verwendet wird, wenn kein Regelpaket mit der Funktion @code{let} explizit
+definiert und der Wert der Optionsvariablen @mref{current_let_rule_package}@w{}
+nicht ge@"andert wurde.
 @end defvr
 
-@c --- 20.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{defmatch}
 @deffn  {Funktion} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
 @deffnx {Funktion} defmatch (@var{progname}, @var{pattern})
 
-@c Defines a function @code{@var{progname}(@var{expr}, @var{x_1}, ..., 
-@c @var{x_n})} which tests @var{expr} to see if it matches @var{pattern}.
+Definiert eine Aussagefunktion @code{@var{progname}(@var{expr})} oder
+@code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}, die einen
+Ausdruck @var{expr} testet, um zu pr@"ufen, ob dieser das Muster @var{pattern}
+enth@"alt.
 
-Definiert eine Aussagefunktion @code{@var{progname}(@var{expr}, @var{x_1}, ...,
-@var{x_n})}, die einen Ausdruck @var{expr} testet, um zu pr@"ufen, ob dieser
-das Muster @var{pattern} enth@"alt.
+Das Argument @var{pattern} ist ein Ausdruck mit den Musterargumenten @var{x_1},
+@dots{}, @var{x_n}.  Die Musterargumente k@"onnen entfallen.  Der Ausdruck kann
+weiterhin Mustervariablen enthalten, die mit der Funktion
+@mref{matchdeclare} definiert sind.  Alle anderen Variablen und Bezeichner
+entsprechen sich selbst bei einem Musterabgleich.
 
-@c @var{pattern} is an expression containing the pattern arguments @var{x_1}, 
-@c ..., @var{x_n} (if any) and some pattern variables (if any).  The pattern 
-@c arguments are given explicitly as arguments to @code{defmatch} while the 
-@c pattern variables are declared by the @code{matchdeclare} function.  Any 
-@c variable not declared as a pattern variable in @code{matchdeclare} or as a 
-@c pattern argument in @code{defmatch} matches only itself.
+Das erste Argument der Aussagefunktion @var{progname} ist ein Ausdruck
+@var{expr}, f@"ur den gepr@"uft wird, ob das Muster @var{pattern} enthalten ist.
+Die weiteren Argumente der Funktion @code{progname} sind die Variablen, die den
+Musterargumenten @var{x_1}, @dots{}, @var{x_n} des Musters @var{pattern}
+entsprechen.
 
-@var{pattern} ist ein Ausdruck, der die Musterargumente @var{x_1}, @dots{}, 
-@var{x_n} enth@"alt, sowie weitere Mustervariablen enthalten kann, die mit der
-Funktion @mref{matchdeclare} deklariert sind.  Alle Variable, die nicht als
-Musterargumente der Funktion @code{defmatch} oder als Mustervariable mit
-@code{matchdeclare} definiert sind, entsprechen sich selbst.
+Ist der Musterabgleich erfolgreich, gibt die Aussagefunktion @var{progname} eine
+Liste mit Gleichungen zur@"uck.  Die linke Seiten der Gleichungen sind die
+Musterargumente und Mustervariablen und die rechten Seiten sind die
+Teilausdr@"ucke, f@"ur die der Musterabgleich eine @"Ubereinstimmung gefunden
+hat.  Die erhaltenen Ergebnisse des Musterabgleichs werden den mit
+@mref{matchdeclare} definierten Mustervariablen, jedoch nicht den
+Musterargumenten der Funktion @code{defmatch} zugewiesen.  Ist der
+Musterabgleich nicht erfolgreich, ist die R@"uckgabe @code{false}.
 
-@c The first argument to the created function @var{progname} is an expression to
-@c be matched against the pattern and the other arguments are the actual 
-@c arguments which correspond to the dummy variables @var{x_1}, ..., @var{x_n} 
-@c in the pattern.
+Ein Muster, das keine Musterargumente oder Mustervariablen enth@"alt, hat den
+R@"uckgabewert @code{true}, wenn der Musterabgleich erfolgreich ist.
 
-Das erste Argument der definierten Aussagefunktion @var{progname} ist ein
-Ausdruck, f@"ur den das Muster gepr@"uft wird.  Die weiteren Argumente sind die
-Variablen, die den Musterargumenten @var{x_1}, @dots{}, @var{x_n} des Musters
-@var{pattern} entsprechen.
-
-@c If the match is successful, @var{progname} returns a list of equations whose 
-@c left sides are the pattern arguments and pattern variables, and whose right 
-@c sides are the subexpressions which the pattern arguments and variables 
-@c matched.  The pattern variables, but not the pattern arguments, are assigned 
-@c the subexpressions they match.  If the match fails, @var{progname} returns 
-@c @code{false}.
-
-Ist der Test erfolgreich, gibt die Aussagefunktion @var{progname} eine Liste
-mit Gleichungen zur@"uck.  Die linke Seite der Gleichungen sind die
-Musterargumente und Mustervariablen und die rechte Seite sind die
-Teilausdr@"ucke f@"ur die eine @"Ubereinstimmung gefunden wurde.  Den
-Mustervariablen, jedoch nicht den Musterargumenten, werden die Ergebnisse
-zugewiesen.  Ist der Test nicht erfolgreich, ist die R@"uckgabe @code{false}.
-
-@c A literal pattern (that is, a pattern which contains neither pattern 
-@c arguments nor pattern variables) returns @code{true} if the match succeeds.
-
-Ein Muster, dass keine Musterargumente oder Mustervariablen enth@"alt, hat den
-R@"uckgabewert @code{true}, wenn der Test erfolgreich ist.
-
-@c See also @code{matchdeclare}, @code{defrule}, @code{tellsimp}, and 
-@c @code{tellsimpafter}.
-
-Siehe auch @mrefcomma{matchdeclare} @mrefcomma{defrule} @mref{tellsimp} und
-@mrefdot{tellsimpafter}
+Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defrule}@w{}
+@mref{tellsimp} und @mrefdot{tellsimpafter}
 
 Beispiele:
 
-@c Define a function @code{linearp(expr, x)} which tests @code{expr} to see if 
-@c it is of the form @code{a*x + b} such that @code{a} and @code{b} do not 
-@c contain @code{x} and @code{a} is nonzero.  This match function matches 
-@c expressions which are linear in any variable, because the pattern argument 
-@c @code{x} is given to @code{defmatch}.
-
-Definiere eine Funktion @code{linearp(expr, x)}, die testet, ob ein Ausdruck
+Definition einer Funktion @code{linearp(expr, x)}, die pr@"uft, ob ein Ausdruck
 @var{expr} die Form @code{a*x+b} hat, wobei @code{a} und @code{b} die Variable
 @var{x} nicht enthalten und @code{a} von Null verschieden ist.  Die Definition
 enth@"alt das Musterargument @var{x}, so dass die Linearit@"at des Ausdrucks
-f@"ur eine beliebige Variable getestet werden kann.
+f@"ur eine beliebige Variable getestet werden kann.  Den Mustervariablen
+@code{a} und @code{b} werden die Teilausdr@"ucke des Musterabgleichs zugewiesen,
+nicht jedoch dem Musterargument @code{x}.
 
 @example
 (%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), 
@@ -273,16 +390,10 @@ f@"ur eine beliebige Variable getestet werden kann.
 (%o6)                           x
 @end example
 
-@c Define a function @code{linearp(expr)} which tests @code{expr} to see if it 
-@c is of the form @code{a*x + b} such that @code{a} and @code{b} do not contain 
-@c @code{x} and @code{a} is nonzero.  This match function only matches 
-@c expressions linear in @code{x}, not any other variable, because no pattern 
-@c argument is given to @code{defmatch}.
-
-Wie oben wird eine Testfunktion definiert, die pr@"uft ob ein Ausdruck
+Wie oben wird eine Aussagefunktion definiert, die pr@"uft, ob ein Ausdruck
 @var{expr} linear ist.  In diesem Fall wird kein Musterargument angegeben.  Der 
-Test kann nur feststellen, ob ein Ausdruck linear in der Variablen @var{x} ist.
-Eine andere Variable ist nicht m@"oglich.
+Musterabgleich kann nur feststellen, ob ein Ausdruck linear in der Variablen
+@var{x} ist.  Eine andere Variable ist nicht m@"oglich.
 
 @example
 (%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b,
@@ -297,10 +408,7 @@ Eine andere Variable ist nicht m@"oglich.
 (%o4)                  [b = y , a = y + 4]
 @end example
 
-@c Define a function @code{checklimits(expr)} which tests @code{expr} to see if 
-@c it is a definite integral.
-
-Definiere eine Testfunktion @code{checklimits(expr)}, die pr@"uft, ob ein
+Definition eine Aussagefunktion @code{checklimits(expr)}, die pr@"uft, ob ein
 Ausdruck @var{expr} ein bestimmtes Integral ist.
 
 @example
@@ -331,35 +439,28 @@ Ausdruck @var{expr} ein bestimmtes Integral ist.
 @end example
 @end deffn
 
-@c --- 20.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{defrule}
 @deffn {Funktion} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 
-@c Defines and names a replacement rule for the given pattern.  If the rule 
-@c named @var{rulename} is applied to an expression (by @code{apply1}, 
-@c @code{applyb1}, or @code{apply2}), every subexpression matching the pattern 
-@c will be replaced by the replacement.  All variables in the replacement which 
-@c have been assigned values by the pattern match are assigned those values in 
-@c the replacement which is then simplified.
-
-Definiert eine Regeln, um das Muster @var{pattern} durch den Ausdruck
-@var{replacement} zu ersetzen.  Wird die Regeln mit dem Namen @var{rulename}
+Definiert eine Regel, um das Muster @var{pattern} durch den Ausdruck
+@var{replacement} zu ersetzen.  Wird die Regel mit dem Namen @var{rulename}
 mit den Funktionen @mrefcomma{apply1} @mref{apply2} oder @mref{applyb1} auf 
-einen Ausdruck angewendet, wird alle Teilausdr@"ucke, die dem Muster
-@var{pattern} entsprechen durch den Ausdruck @var{replacement} ersetzt.
+einen Ausdruck angewendet, werden alle Teilausdr@"ucke, die dem Muster
+@var{pattern} entsprechen, durch den Ausdruck @var{replacement} ersetzt.
+Mustervariablen, die durch den Musterabgleich einen Wert erhalten haben,
+werden eingesetzt und der Ausdruck wird vereinfacht.
 
-@c The rules themselves can be treated as functions which transform an 
-@c expression by one operation of the pattern match and replacement.  If the 
-@c match fails, the rule function returns @code{false}.
-
-Die Regel @var{rulename} kann auch als eine Funktion angewendet werden, die,
-falls vorhanden, das Muster @var{pattern} durch @var{replacement} ersetzt.
+Die Regel @var{rulename} kann als eine Funktion aufgefasst werden, die einen
+Ausdruck durch Anwendung des Musterabgleichs und der Einsetzung transformiert.
+Schl@"agt der Musterabgleich fehl, gibt die Regel den Wert @code{false}
+zur@"uck.
 
 Beispiele:
 
-Es wird eine Regel definiert, um den Ausdruck @code{sin(x)^2} nach 
-@code{1-cos(x)^2} transformiert.  Diese Definition funktioniert nur f@"ur einen
-Ausdruck @var{sin(x)^2}.
+Es wird eine Regel definiert, die den Ausdruck @code{sin(x)^2} nach
+@code{1-cos(x)^2} transformiert.  Diese Definition funktioniert nur, wenn das
+Argument der Sinusfunktion das Symbol @code{x} ist.
 
 @example
 (%i1) defrule(trig, sin(x)^2, 1-cos(x)^2);
@@ -372,10 +473,10 @@ Ausdruck @var{sin(x)^2}.
 (%o3)                         false
 @end example
 
-In diesem Fall wird zun@"achst mit der Funktion @mref{matchdeclare} eine 
+In diesem Beispiel wird zun@"achst mit der Funktion @mref{matchdeclare} eine 
 Mustervariable @var{a} definiert, der jeder Ausdruck zugewiesen werden kann und
-die als Argument der Ersetzungsregel verwendet wird.  Jetzt kann das Argument
-der Sinusfunktion ein beliebiger Ausdruck sein.
+die als Argument der Regel verwendet wird.  Jetzt kann das Argument der
+Sinusfunktion ein beliebiger Ausdruck sein.
 
 @example
 (%i1) matchdeclare(a, true);
@@ -391,8 +492,8 @@ der Sinusfunktion ein beliebiger Ausdruck sein.
 (%o4)                     1 - cos (%e )
 @end example
 
-Die Ersetzungsregel kann mit der Funktion @mref{apply1} auf verschachtelte
-Ausdr@"ucke angewendet werden.
+Die Regel kann mit der Funktion @mref{apply1} auf verschachtelte Ausdr@"ucke
+angewendet werden.
 
 @example
 (%i5) trig(exp(sin(x)^2));
@@ -404,33 +505,23 @@ Ausdr@"ucke angewendet werden.
 @end example
 @end deffn
 
-@c --- 20.03.2011 DK -----------------------------------------------------------
+@c --- 18.08.2011 DK -----------------------------------------------------------
 @anchor{disprule}
 @deffn  {Funktion} disprule (@var{rulename_1}, @dots{}, @var{rulename_2})
 @deffnx {Funktion} disprule (all)
 
-@c Display rules with the names @var{rulename_1}, ..., @var{rulename_n}, as 
-@c returned by @code{defrule}, @code{tellsimp}, or @code{tellsimpafter}, or a 
-@c pattern defined by @code{defmatch}.  Each rule is displayed with an 
-@c intermediate expression label (@code{%t}).
-
-Zeigt die Regeln mit den Namen @var{rulename_1}, @dots{}, @var{rulename_n} an.
-Den einzelnen Regeln werden mit einer Zwischenmarke 
-@mxref{linechar, %t} angezeigt.
-
-@c @code{disprule (all)} displays all rules.
+Zeigt die Regeln mit den Namen @var{rulename_1}, @dots{}, @var{rulename_n} an,
+wie sie von den Funktionen @mrefcomma{defrule} @mref{tellsimp} oder
+@mref{tellsimpafter} zur@"uckgegeben werden, oder ein Muster, das mit der
+Funktion @mref{defmatch} definiert ist.  Die Regeln werden mit einer
+Zwischenmarke @mxref{linechar, %t} angezeigt.
 
 Mit dem Kommando @code{disprule(all)} werden alle Regeln angezeigt.
-
-@c @code{disprule} quotes its arguments.  @code{disprule} returns the list of 
-@c intermediate expression labels corresponding to the displayed rules.
 
 @code{disprule} wertet die Argumente nicht aus.  Der R@"uckgabewert ist eine
 Liste mit den Zwischenmarken, denen eine Regel zugewiesen wurde.
 
-@c See also @code{letrules}, which displays rules defined by @code{let}.
-
-Sieh auch die Funktion @mrefcomma{letrules} die die Regeln ausgibt, die mit
+Siehe auch die Funktion @mrefcomma{letrules} die die Regeln anzeigt, die mit
 der Funktion @mref{let} definiert wurden.
 
 Beispiele:
@@ -456,119 +547,62 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 26.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{let}
-@deffn  {Funktion} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n})
+@deffn  {Funktion} let (@var{prod}, @var{repl})
+@deffnx {Funktion} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n})
 @deffnx {Funktion} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, @dots{}, @var{arg_n}], @var{package_name})
 
-@c Defines a substitution rule for @code{letsimp} such that @var{prod} is
-@c replaced by @var{repl}.  @var{prod} is a product of positive or negative
-@c powers of the following terms:
-
-Definiert eine Ersetzungsregel, die mit der Funktion @mref{letsimp} auf einen
-Ausdruck angewendet wird, so dass @var{prod} durch @var{repl} ersetzt wird.
+Definiert eine Regel, die mit der Funktion @mref{letsimp} auf einen Ausdruck
+angewendet werden kann, so dass @var{prod} durch @var{repl} ersetzt wird.
 Das Argument @var{prod} ist ein Produkt von positiven oder negativen Potenzen
 der folgenden Terme:
 
-@c @itemize @bullet
-@c @item
-@c Atoms which @code{letsimp} will search for literally unless previous to 
-@c calling @code{letsimp} the @code{matchdeclare} function is used to associate 
-@c a predicate with the atom.  In this case @code{letsimp} will match the atom 
-@c to any term of a product satisfying the predicate.
-@c @item
-@c Kernels such as @code{sin(x)}, @code{n!}, @code{f(x,y)}, etc.  As with atoms
-@c above @code{letsimp} will look for a literal match unless @code{matchdeclare}
-@c is used to associate a predicate with the argument of the kernel.
-@c @end itemize
-
 @itemize @bullet
 @item
-Atome, nach denen die Funktion @code{letsimp} w@"ortlich sucht, wenn kein Muster
-mit der Funktion @mref{matchdeclare} definiert wurde, sowie Atome, denen mit der
-Funktion @code{matchdeclare} eine Aussagefunktion zugeordnet wurde.
+Atome, nach denen die Funktion @code{letsimp} w@"ortlich sucht, wenn diese keine
+Mustervariablen sind, die mit Funktion @mref{matchdeclare} definiert wurden,
+sowie Atome, die Mustervariablen sind.  In diesem Fall f@"uhrt die Funktion
+@code{letsimp} einen Musterabgleich f@"ur die Atome durch, auf die die mit
+der Funktion @code{matchdeclare} zugeordnete Aussagefunktion zutrifft.
 
 @item
 Terme wie @code{sin(x)}, @code{n!} oder @code{f(x,y)}.  Wie f@"ur Atome
-sucht die Funktion @code{letsimp} nach w@"ortlichen @"Ubereinstimmungen, sowie
-nach @"Ubereinstimmungen, die mit der Funktion @code{matchdeclare} f@"ur einen
-Ausdruck definiert wurde.
+sucht die Funktion @code{letsimp} nach w@"ortlichen @"Ubereinstimmungen,
+au@ss{}er wenn die Argumente der Terme Mustervariablen sind, die mit der
+Funktion @mref{matchdeclare} definiert sind.  In diesem Fall wird ein
+Musterabgleich ausgef@"uhrt.
 @end itemize
-
-@c A term to a positive power will only match a term having at least that power.
-@c A term to a negative power on the other hand will only match a term with a
-@c power at least as negative.  In the case of negative powers in @var{prod} the
-@c switch @code{letrat} must be set to @code{true}. See also @code{letrat}.
 
 Ein Term mit einer positiven Potenz stimmt mit einem Ausdruck nur dann
 @"uberein, wenn dieser mindestens dieselbe Potenz hat.  Entsprechend gilt f@"ur
 einen Term mit einer negativen Potenz, dass dieser dann mit einem Ausdruck
 @"ubereinstimmt, wenn dieser mindestens dieselbe negative Potenz hat.  F@"ur
-negative Potenzen muss weiterhin die Optionsvariable @mref{letrat} den Wert
-@code{true} haben.
+negative Potenzen wird eine @"Ubereinstimmung nur dann gefunden, wenn
+die Optionsvariable @mref{letrat} den Wert @code{true} hat.
 
-@c If a predicate is included in the @code{let} function followed by a list of
-@c arguments, a tentative match (i.e. one that would be accepted if the
-@c predicate were omitted) is accepted only if 
-@c @code{predname (arg_1', ..., arg_n')} evaluates to @code{true} where 
-@c @var{arg_i'} is the value matched to @var{arg_i}.  The @var{arg_i} may be the
-@c name of any atom or the argument of any kernel appearing in @var{prod}.
-@c @var{repl} may be any rational expression.  @c ONLY RATIONAL -- REALLY ??
-@c If any of the atoms or arguments from @var{prod} appear in @var{repl} the
-@c appropriate substitutions are made.
-@c @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
-
-Hat die Funktion @code{let} eine Aussagefunktion @var{predname} als Argument,
-mit dem Argumenten @var{arg_1}, @dots{}, @var{arg_n}, wird eine vorl@"aufige
-@"Ubereinstimmung dann festgestellt wenn der Ausdruck 
-@code{predname(arg_1', ..., arg_n')} das Ergebnis @code{true} hat.  Die
-Argumente @var{arg_i} k@"onnen die Namen von Variablen oder Termen sein, die
-im Ausdruck @var{pred} auftreten.  @var{repl} kann ein beliebiger rationaler 
-Ausdruck sein.  Treten irgendwelche der Symbole oder Argumente aus @var{prod}
-im Argument @var{repl} auf, wird die entsprechende Substitution ausgef@"uhrt.
-
-@c The global flag @code{letrat} controls the simplification of quotients by 
-@c @code{letsimp}.  When @code{letrat} is @code{false}, @code{letsimp} simplifies
-@c the numerator and denominator of @var{expr} separately, and does not simplify 
-@c the quotient.  Substitutions such as @code{n!/n} goes to @code{(n-1)!} then 
-@c fail.  When @code{letrat} is @code{true}, then the numerator, denominator, and
-@c the quotient are simplified in that order.
+Hat die Funktion @code{let} eine Aussagefunktion @var{predname} als Argument
+mit den Argumenten @var{arg_1}, @dots{}, @var{arg_n}, wird eine
+@"Ubereinstimmung dann festgestellt, wenn der Ausdruck
+@code{predname(arg_1', ..., arg_n')} das Ergebnis @code{true} hat.  Dabei sind
+die Argumente @var{arg_i'} die Werte aus dem Musterabgleich.  Die Argumente
+@var{arg_i} k@"onnen die Namen von Variablen oder Termen sein, die im Ausdruck
+@var{pred} auftreten.  @var{repl} kann ein beliebiger rationaler Ausdruck sein.
+Treten irgendwelche der Symbole oder Argumente aus @var{prod} im Argument
+@var{repl} auf, wird die entsprechende Substitution ausgef@"uhrt.
 
 Die Optionsvariable @mref{letrat} kontrolliert die Vereinfachung von Quotienten
 durch @mrefdot{letsimp}  Hat @code{letrat} den Wert @code{false}, werden der
 Z@"ahler und der Nenner eines Bruches einzeln vereinfacht.  Der Bruch als ganzes
 wird dagegen nicht vereinfacht.  Hat die Optionsvariable @code{letrat} den Wert
-@code{false}, werden nacheinander der Z@"ahler, der Nenner und dann der Bruch
+@code{true}, werden nacheinander der Z@"ahler, der Nenner und dann der Bruch
 vereinfacht.
 
-@c These substitution functions allow you to work with several rule packages at
-@c once.  Each rule package can contain any number of @code{let} rules and is
-@c referenced by a user-defined name.  @code{let ([@var{prod}, @var{repl}, 
-@c @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})} adds the
-@c rule @var{predname} to the rule package @var{package_name}.  
-@c @code{letsimp (@var{expr}, @var{package_name})} applies the rules in
-@c @var{package_name}.  @code{letsimp (@var{expr}, @var{package_name1}, 
-@c @var{package_name2}, ...)} is equivalent to @code{letsimp (@var{expr},
-@c @var{package_name1})} followed by @code{letsimp (%, @var{package_name2})}, ....
-
 Die Funktion @mref{letsimp} kann mit verschiedenen Regelpaketen arbeiten.  Jedes
-Regelpaket kann eine beliebige Anzahl an @code{let}-Regeln enthalten und 
-erh@"alt vom Nutzer einen Namen.  Das Kommando @code{let([@var{prod}, 
-@var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})}
-f@"ugt die Regel @var{predname} dem Paket @var{package_name} hinzu.  Das 
-Kommando @code{letsimp(@var{expr}, @var{package_name1}, @var{package_name2}, 
-...)} ist @"aquivalent zu @code{letsimp(@var{expr}, @var{package_name1})}, dem
-das Kommando @code{letsimp(%, @var{package_name2})}, @dots{} folgt.
-
-@c @code{current_let_rule_package} is the name of the rule package that is
-@c presently being used.  This variable may be assigned the name of any rule
-@c package defined via the @code{let} command.  Whenever any of the functions 
-@c comprising the @code{let} package are called with no package name, the
-@c package named by @code{current_let_rule_package} is used.  If a call such as
-@c @code{letsimp (@var{expr}, @var{rule_pkg_name})} is made, the rule package 
-@c @var{rule_pkg_name} is used for that @code{letsimp} command only, and 
-@c @code{current_let_rule_package} is not changed.  If not otherwise specified,
-@c @code{current_let_rule_package} defaults to @code{default_let_rule_package}.
+Regelpaket kann eine beliebige Anzahl an Regeln enthalten.  Das Kommando
+@code{let([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ...,
+@var{arg_n}], @var{package_name})} f@"ugt die Regel @var{predname} dem Paket
+@var{package_name} hinzu.
 
 Die Optionsvariable @mref{current_let_rule_package} enth@"alt den Namen des
 Regelpaketes, das aktuell von der Funktion @code{letsimp} verwendet wird.  Der
@@ -580,6 +614,32 @@ verwendet.  Wenn nicht anders spezifiziert, hat @code{current_let_rule_package}
 den Standardwert @mrefdot{default_let_rule_package}
 
 Beispiele:
+
+Die Funktion @code{isintegerp} pr@"uft auch, ob Variablen oder Ausdr@"ucke eine
+ganze Zahl repr@"asentieren.  Es wird eine Regel definiert, die dann angewendet
+wird, wenn das Argument eine ganze Zahl repr@"asentiert.  Achtung: Die Regel
+wird nicht angewendet, wenn das Argument nicht das Symbol @code{x}, sondern zum
+Beispiel eine Zahl ist, da keine Mustervariable mit @mref{matchdeclare}@w{}
+definiert ist.
+
+@example
+(%i1) isintegerp(x) := featurep(x, integer)$
+
+(%i2) let(tan(x), sin(x)/cos(x), isintegerp, x);
+(%o2) tan(x) --> sin(x)/cos(x) where isintegerp(x)
+
+(%i3) letsimp(tan(x));
+(%o3) tan(x)
+
+(%i4) declare(x, integer)$
+
+(%i5) letsimp(tan(x));
+(%o5) sin(x)/cos(x)
+(%i6) letsimp(tan(1));
+(%o6) tan(1)
+@end example
+
+Weitere Beispiele:
 
 @example
 (%i1) matchdeclare ([a, a1, a2], true)$
@@ -602,22 +662,25 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 21.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
+@anchor{let_rule_packages}
+@defvr {Optionsvariable} let_rule_packages
+Standardwert: @code{[default_let_rule_package]}
+
+@code{let_rule_packages} ist eine Informationsliste mit den vom Nutzer mit der
+Funktion @mref{let} definierten Regeln.
+@end defvr
+
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{letrat}
 @defvr {Optionsvariable} letrat
 Standardwert: @code{false}
 
-@c When @code{letrat} is @code{false}, @code{letsimp} simplifies the numerator 
-@c and denominator of a ratio separately, and does not simplify the quotient.
+Hat die Optionsvariable @code{letrat} den Wert @code{false}, werden von der
+Funktion @mref{letsimp} der Z@"ahler und der Nenner eines Bruches einzeln
+vereinfacht.  Der Bruch als ganzes wird dagegen nicht vereinfacht.
 
-Hat die Optionsvariable @code{letrat} den Wert @code{false}, werden der Z@"ahler
-und der Nenner eines Bruches einzeln vereinfacht.  Der Bruch als ganzes wird
-dagegen nicht vereinfacht.
-
-@c When @code{letrat} is @code{true}, the numerator, denominator, and their
-@c quotient are simplified in that order.
-
-Hat die Optionsvariable @code{letrat} den Wert @code{false}, werden nacheinander
+Hat die Optionsvariable @code{letrat} den Wert @code{true}, werden nacheinander
 der Z@"ahler, der Nenner und dann der Bruch vereinfacht.
 
 Beispiele:
@@ -639,33 +702,24 @@ Beispiele:
 @end example
 @end defvr
 
-@c --- 21.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{letrules}
 @deffn  {Funktion} letrules ()
 @deffnx {Funktion} letrules (@var{package_name})
 
-@c Displays the rules in a rule package.  @code{letrules ()} displays the rules
-@c in the current rule package.  @code{letrules (@var{package_name})} displays 
-@c the rules in @var{package_name}.
-
-Zeigt die Regeln eines Regel-Paketes an.  Das Kommando @code{letrules()} zeigt
-die Regeln des aktuellen Regel-Paketes an, das in der Optionsvariablen
-@mref{current_let_rule_package} enthalten ist.  Das Kommando 
+Zeigt die Regeln eines Regelpaketes an.  Das Kommando @code{letrules()} zeigt
+die Regeln des aktuellen Regelpaketes an, das durch die Optionsvariable
+@mref{current_let_rule_package} bezeichnet wird.  Das Kommando
 @code{letrules(@var{package_name})} zeigt die Regeln des Paketes
 @var{package_name} an.
 
-@c The current rule package is named by @code{current_let_rule_package}.  If 
-@c not otherwise specified, @code{current_let_rule_package} defaults to 
-@c @code{default_let_rule_package}.
-
-Wenn der Optionsvariablen @code{current_let_rule_package} kein Paket zugewiesen
-wurde, enth@"alt es den Standardwert @mrefdot{default_let_rule_package}
-
-@c See also @code{disprule}, which displays rules defined by @code{tellsimp}
-@c and @code{tellsimpafter}.
+Wenn der Optionsvariablen @code{current_let_rule_package} kein Name eines
+Paketes zugewiesen wurde, enth@"alt es den Standardwert
+@mrefdot{default_let_rule_package}
 
 Siehe auch die Funktion @mrefcomma{disprule} um Regeln anzuzeigen, die mit
-@mrefcomma{tellsimp} @mref{tellsimpafter} und @mref{defrule} definiert wurden.
+den Funktionen @mrefcomma{tellsimp} @mref{tellsimpafter} und @mref{defrule}@w{}
+definiert wurden.
 
 Beispiel:
 
@@ -684,12 +738,16 @@ wird, dann werden die Regeln auch mit dem Kommando @code{letrules()} angezeigt.
 (%o2)                   tan(x) --> ------
                                    cos(x)
 (%i3) letrules(trigrules);
+@group
                                    sin(x)
                         tan(x) --> ------
                                    cos(x)
+@end group
 
+@group
                         2               2
                      sin (x) --> 1 - cos (x)
+@end group
 
 (%o3)                         done
 (%i4) letrules();
@@ -708,189 +766,114 @@ wird, dann werden die Regeln auch mit dem Kommando @code{letrules()} angezeigt.
 @end example
 @end deffn
 
-@c --- 24.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{letsimp}
 @deffn  {Funktion} letsimp (@var{expr})
 @deffnx {Funktion} letsimp (@var{expr}, @var{package_name})
 @deffnx {Funktion} letsimp (@var{expr}, @var{package_name_1}, @dots{}, @var{package_name_n})
 
-@c Repeatedly applies the substitution rules defined by @code{let} until no
-@c further change is made to @var{expr}.  @code{letsimp (@var{expr})} uses the
-@c rules from @code{current_let_rule_package}.
-
-Wendet die Substitutionsregeln, die mit der Funktion @mref{let} definiert sind,
-solange an, bis sich das Argument @var{expr} nicht mehr @"andert.  
-@code{letsimp(@var{expr})} wendet die Regeln der Optionsvariablen
-@mref{current_let_rule_package} an.
-
-@c @code{letsimp (@var{expr}, @var{package_name})} uses the rules from 
-@c @var{package_name} without changing @code{current_let_rule_package}.
+Wendet die Regeln, die mit der Funktion @mref{let} definiert sind,
+solange an, bis sich das Argument @var{expr} nicht mehr @"andert.
+@code{letsimp(@var{expr})} wendet die aktuellen Regeln an, die mit der
+Optionsvariablen @mref{current_let_rule_package} bezeichnet werden.
 
 @code{letsimp(@var{expr}), @var{package_name})} wendet die Regeln des
-Argumentes @var{package_name} an.  Die Optionsvariable 
-@code{current_let_rule_package} @"andert ihren Wert nicht.
+Argumentes @var{package_name} an.  Die Optionsvariable
+@code{current_let_rule_package} @"andert ihren Wert nicht.  Es k@"onnen auch
+mehrere Regelpakete @var{package_name_1}, @dots{}, @var{package_name_n}
+angegeben werden.
 
-@c @code{letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})}
-@c is equivalent to @code{letsimp (@var{expr}, @var{package_name_1}}, followed 
-@c by @code{letsimp (%, @var{package_name_2})}, and so on.
-
-@code{letsimp(@var{expr}, @var{package_name_1}, ..., @var{package_name_n})}
-ist @"aquivalent zum Kom@-man@-do @code{letsimp(@var{expr}, 
-@var{package_name_1})} dem @code{letsimp(%, @var{package_name_2})} folgt u.s.w.
+Die Optionsvariable @mref{letrat} kontrolliert die Vereinfachung von Quotienten
+durch @code{letsimp}.  Hat @code{letrat} den Wert @code{false}, werden der
+Z@"ahler und der Nenner eines Bruches einzeln vereinfacht.  Der Bruch als ganzes
+wird dagegen nicht vereinfacht.  Hat die Optionsvariable @code{letrat} den Wert
+@code{true}, werden nacheinander der Z@"ahler, der Nenner und dann der Bruch
+vereinfacht.
 @end deffn
 
-@c --- 19.11.2010 DK -----------------------------------------------------------
-@anchor{let_rule_packages}
-@defvr {Optionsvariable} let_rule_packages
-Standardwert: @code{[default_let_rule_package]}
-
-@c @code{let_rule_packages} is a list of all user-defined let rule packages 
-@c plus the default package @code{default_let_rule_package}.
-
-@code{let_rule_packages} ist eine Informationsliste mit den vom Nutzer 
-definierten @code{let}-Regeln.
-@end defvr
-
-@c -----------------------------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{matchdeclare}
 @deffn {Funktion} matchdeclare (@var{a_1}, @var{pred_1}, @dots{}, @var{a_n}, @var{pred_n})
 
-@c Associates a predicate @var{pred_k} with a variable or list of variables
-@c @var{a_k} so that @var{a_k} matches expressions for which the predicate 
-@c returns anything other than @code{false}.
+Mit der Funktion @code{matchdeclare} werden Mustervariablen definiert.
+@code{matchdeclare} ordnet eine Aussagefunktion @var{pred_k} einer Variable
+oder eine Liste von Variablen @var{a_k} zu, so dass @var{a_k} bei einem
+Musterabgleich mit Ausdr@"ucken @"ubereinstimmt, f@"ur die die Aussage ein
+anderes Ergebnis als @code{false} hat.
 
-Assoziiert eine Aussage @var{pred_k} mit einer Variable oder eine Liste von
-Variablen @var{a_k}, so dass @var{a_k} mit Ausdr@"ucken @"ubereinstimmt, f@"ur
-die die Aussage ein anderes Ergebnis als @code{false} zur@"uck gibt.
+Eine Aussagefunktion @var{pred_i} kann durch den Namen einer Funktion, einen
+Lambda-Ausdruck, einen Funktionsaufruf, einen Lambda-Ausdruck, dem das letzte
+Argument fehlt, oder die Werte @code{true} oder @code{all} bezeichnet werden.
+Ist die Aussagefunktion ein Funktionsaufruf oder ein Lambda-Aufruf, dann wird
+der zu testende Ausdruck der Liste der Argumente hinzugef@"ugt.  Die Argumente
+werden ausgewertet, wenn der Musterabgleich ausgef@"uhrt wird.  Ist die Aussage
+der Name einer Funktion oder ein Lambda-Ausdruck, ist die zu testende Aussage
+das einzige Argument.  Die Aussagefunktion braucht noch nicht definiert zu sein,
+wenn mit @code{matchdeclare} eine Mustervariable eingef@"uhrt wird, da die
+Aussagefunktion erst aufgerufen wird, wenn ein Musterabgleich durchgef@"uhrt
+wird.
 
-@c A predicate is the name of a function, or a lambda expression, or a function 
-@c call or lambda call missing the last argument, or @code{true} or @code{all}.
-@c Any expression matches @code{true} or @code{all}.  If the predicate is 
-@c specified as a function call or lambda call, the expression to be tested is 
-@c appended to the list of arguments; the arguments are evaluated at the time 
-@c the match is evaluated.  Otherwise, the predicate is specified as a function 
-@c name or lambda expression, and the expression to be tested is the sole 
-@c argument.  A predicate function need not be defined when @code{matchdeclare} 
-@c is called; the predicate is not evaluated until a match is attempted.
+Eine Aussagefunktion kann einen logischen Ausdruck oder die Werte @code{true}
+oder @code{false} zur@"uckgeben.  Logische Ausdr@"ucke werden von der Funktion
+@mref{is} ausgewertet, wenn die Regel angewendet wird.  Daher ist es nicht
+notwendig, dass die Aussagefunktion selbst die Funktion @code{is} aufruft.
 
-Eine Aussage ist der Name einer Funktion, ein Lambda-Ausdruck, ein 
-Funktionsaufruf, ein Lambda-Ausdruck, dem das letzte Argument fehlt, oder die
-Werte @code{true} oder @code{all}.  Ist die Aussage ein Funktionsaufruf oder
-ein Lambda-Aufruf, dann wird der zu testende Ausdruck an die Liste der
-Argumente angef@"ugt.  Die Argumente werden ausgewertet, wenn die 
-@"Ubereinstimmung ausgewertet wird.  Ist die Aussage der Name einer Funktion
-oder ein Lambda-Ausdruck, ist die zu testende Aussage das einzige Argument.
-Eine Aussagefunktion braucht nicht definiert zu sein, wenn @code{matchdeclare}
-aufgerufen wird.  Die Aussage wird nicht eher ausgewertet, bevor eine 
-@"Ubereinstimmung getestet wird.
+Wenn f@"ur einen Ausdruck eine @"Ubereinstimmung bei einem Musterabgleich
+gefunden wird, wird der Mustervariablen der Ausdruck zugewiesen.  Jedoch nicht
+f@"ur Mustervariablen, die Argumente der Addition @code{+} oder Multiplikation
+@code{*} sind.  Diese Operatoren werden besonders behandelt.  Andere Maxima oder
+vom Nutzer definierte N-ary-Operatoren werden dagegen wie normale Funktionen
+behandelt.
 
-@c A predicate may return a Boolean expression as well as @code{true} or 
-@c @code{false}.  Boolean expressions are evaluated by @code{is} within the 
-@c constructed rule function, so it is not necessary to call @code{is} within 
-@c the predicate.
+Im Falle der Addition und der Multiplikation kann der Mustervariablen ein
+einzelner Term zugewiesen werden, f@"ur den der Musterabgleich zu einer
+@"Uberstimmung f@"uhrt, oder auch eine Summe oder ein Produkt von Termen.  Die
+mehrfache @"Ubereinstimmung hat Vorrang.  Aussagefunktionen werden in der
+Reihenfolge ausgewertet, in der die der Aussagefunktion zugeordneten
+Mustervariablen im Muster auftreten.  F@"uhrt der Musterabgleich f@"ur einen
+Term zu einer @"Ubereinstimmung mit mehreren Aussagefunktionen, dann wird der
+Term der Mustervariablen zugeordnet f@"ur den die erste Aussagefunktion
+zutrifft.  Jede Aussagefunktion wird zun@"achst auf alle Argumente einer Summe
+oder eines Produktes angewendet, bevor die n@"achste Aussagefunktion ausgewertet
+wird.  Wird f@"ur die Zahlen 0 oder 1 eine @"Ubereinstimmung gefunden und es
+sind keine weiteren Terme vorhanden, wird der Mustervariablen 0 oder 1
+zugewiesen.
 
-Eine Aussage kann einen logischen Ausdruck oder die Werte @code{true} oder
-@code{false} zur@"uck geben.  Logische Ausdr@"ucke werden von @mref{is}@w{}
-von der definierten Regel ausgewertet.  Daher ist es nicht notwendig, dass die
-Aussage selbst die Funktion @code{is} aufruft.
-
-@c If an expression satisfies a match predicate, the match variable is assigned
-@c the expression, except for match variables which are operands of addition
-@c @code{+} or multiplication @code{*}.  Only addition and multiplication are
-@c handled specially; other n-ary operators (both built-in and user-defined) are
-@c treated like ordinary functions.
-@c WOULD BE GREAT TO EXTEND PART+/PART* PROCESSING TO ALL N-ARY OPERATORS
-
-Wenn f@"ur ein Ausdruck eine @"Ubereinstimmung gefunden wird, wird der
-Mustervariablen der Ausdruck zugewiesen.  Jedoch nicht f@"ur Mustervariablen, 
-die Argumente der Addition @code{+} oder Multiplikation @code{*} sind.  Diese 
-Operatoren werden besonders behandelt.  Andere Maxima oder vom Nutzer definierte
-N-ary-Operatoren werden dagegen wie andere Funktionen behandelt.
-
-@c In the case of addition and multiplication, the match variable may be
-@c assigned a single expression which satisfies the match predicate, or a sum 
-@c or product (respectively) of such expressions.  Such multiple-term matching 
-@c is greedy: predicates are evaluated in the order in which their associated 
-@c variables appear in the match pattern, and a term which satisfies more than 
-@c one predicate is taken by the first predicate which it satisfies.  Each 
-@c predicate is tested against all operands of the sum or product before the 
-@c next predicate is evaluated.  In addition, if 0 or 1 (respectively) satisfies
-@c a match predicate, and there are no other terms which satisfy the predicate, 
-@c 0 or 1 is assigned to the match variable associated with the predicate.
-
-Im Falle der Addition und Multiplikation kann der Mustervariablen ein einzelner
-Term zugewiesen werden, welcher mit der Aussage @"ubereinstimmt, aber auch 
-eine Summe oder ein Produkt solcher Ausdr@"ucke.  Die mehrfache
-@"Ubereinstimmung ist vorrangig: Aussagen werden in der Reihenfolge ausgewertet,
-in der die Mustervariablen im Musterausdruck auftreten.  Stimmt ein Termin mit
-mehreren Aussagen @"uberein, wird der Term der ersten Aussage zugeordnet, die
-zutrifft.  Jede Aussage wird zun@"achst auf alle Argumente einer Summe oder
-eines Produktes angewendet, bevor die n@"achste Aussage ausgewertet wird.  Wird
-f@"ur die Zahlen 0 oder 1 eine @"Ubereinstimmung gefunden und es sind keine
-weiteren Terme vorhanden, wird der Mustervariablen 0 oder 1 zugewiesen.
-
-@c The algorithm for processing addition and multiplication patterns makes some
-@c match results (for example, a pattern in which a "match anything" variable
-@c appears) dependent on the ordering of terms in the match pattern and in the
-@c expression to be matched.  However, if all match predicates are mutually
-@c exclusive, the match result is insensitive to ordering, as one match 
-@c predicate cannot accept terms matched by another.
-
-Der Algorithmus, um Muster mit der Addition und Multiplikation zu verarbeiten,
-ist f@"ur manche @"Ubereinstimmungen abh@"angig von der Anordnung der Terme im
-Muster und im Ausdruck f@"ur den eine @"Ubereinstimmung gesucht wird.  Solange
-sich jedoch die einzelnen Muster gegeneinander ausschlie@ss{}en, wird das
-Ergebnis nicht von der Reihenfolge der Argumente beeinflu@ss{}t.
-
-@c Calling @code{matchdeclare} with a variable @var{a} as an argument changes 
-@c the @code{matchdeclare} property for @var{a}, if one was already declared; 
-@c only the most recent @code{matchdeclare} is in effect when a rule is defined.
-@c Later changes to the @code{matchdeclare} property (via @code{matchdeclare} or
-@c @code{remove}) do not affect existing rules.
+Der Algorithmus, um Muster abzugleichen, die die Addition oder die
+Multiplikation als Operanden enthalten, kann von der Anordnung der Terme im
+Muster oder im zu pr@"ufenden Ausdruck abh@"angen.  Solange sich jedoch die
+einzelnen Aussagefunktionen gegeneinander ausschlie@ss{}en, wird das Ergebnis
+nicht von der Reihenfolge der Argumente beeinflu@ss{}t.
 
 Der Aufruf von @code{matchdeclare} f@"ur eine Variable @var{a} @"uberschreibt
-einen vorhergehenden Aufruf von @code{matchdeclare} f@"ur diese Variable.  Nur
-die letzte Definition ist wirksam, wenn eine Regel definiert wird.  Sp@"atere
-@"Anderungen der @code{matchdeclare}-Eigenschaft eines Symbols haben keinen
-Einfluss auf definierte Regeln.
-
-@c @code{propvars (matchdeclare)} returns the list of all variables for which
-@c there is a @code{matchdeclare} property.  @code{printprops (@var{a},
-@c matchdeclare)} returns the predicate for variable @code{a}.
-@c @code{printprops (all, matchdeclare)} returns the list of predicates for all
-@c @code{matchdeclare} variables.  @code{remove (@var{a}, matchdeclare)} removes
-@c the @code{matchdeclare} property from @var{a}.
+eine vorhergehende Definition f@"ur diese Variable.  Wird eine Regel definiert,
+ist die letzte mit @code{matchdeclare} definierte Zuordnung zu einer
+Aussagefunktion wirksam.  Der erneute Aufruf von @code{matchdeclare} f@"ur eine
+Variable hat keinen Einfluss auf bereits vorhandene Regeln.
 
 Das Kommando @code{propvars(matchdeclare)} gibt eine Liste der Variablen
-zur@"uck, f@"ur die eine @code{matchdeclare}-Eigenschaft definiert ist.
-@code{printprops(@var{a}, matchdeclare)} gibt die der Variable
-zugeordnete Aussage zur@"uck.  @code{printprops(all, matchdeclare)} gibt die
-Aussagen aller Variablen mit einer @code{matchdeclare}-Eigenschaft zur@"uck.
-@code{remove(@var{a}, matchdeclare)} entfernt die 
-@code{matchdeclare}-Eigenschaft f@"ur die Variable @var{a}.
+zur@"uck, die mit @code{matchdeclare} als Mustervariable definiert sind.
+@code{printprops(@var{a}, matchdeclare)} gibt die der Variable @var{a}
+zugeordnete Aussagefunktion zur@"uck.  @code{printprops(all, matchdeclare)}
+gibt die Aussagefunktionen aller Mustervariablen zur@"uck.  Mit dem Kommando
+@code{remove(@var{a}, matchdeclare)} wird die Definition von @var{a} als
+Mustervariable entfernt.  Siehe auch die Funktionen @mrefcomma{propvars}@w{}
+@mref{printprops} und @mrefdot{remove}
 
-@c The functions @code{defmatch}, @code{defrule}, @code{tellsimp},
-@c @code{tellsimpafter}, and @code{let} construct rules which test expressions
-@c against patterns.
-
-Die Funktion @mrefcomma{defmatch} @mrefcomma{defrule} @mrefcomma{tellsimp}@w{}
-@mref{tellsimpafter} und @mref{let} konstruieren Regeln, die Ausdr@"ucke gegen
-Muster testen.
-
-@c @code{matchdeclare} quotes its arguments.
-@c @code{matchdeclare} always returns @code{done}.
+Mit den Funktionen @mrefcomma{defmatch} @mrefcomma{defrule}@w{}
+@mrefcomma{tellsimp} @mref{tellsimpafter} und @mref{let} werden Regeln
+definiert, die f@"ur Ausdr@"ucke einen Musterabgleich ausf@"uhren, wobei die
+Mustervariablen mit den Werten belegt werden, f@"ur die eine @"Ubereinstimmung
+gefunden wird.
 
 @code{matchdeclare} wertet die Argumente nicht aus.  @code{matchdeclare} gibt
 immer @code{done} als Ergebnis zur@"uck.
 
 Beispiele:
 
-@c A predicate is the name of a function, or a lambda expression, or a function
-@c call or lambda call missing the last argument, or @code{true} or @code{all}.
-
-Eine Aussage ist der Name einer Funktion, ein Lambda-Ausdruck, ein 
-Funktionsaufruf, ein Lambda-Ausdruck, dem das letzte Argument fehlt, oder die
-Werte @code{true} oder @code{all}.
+Eine Aussagefunktion kann mit dem Namen einer Funktion, einem Lambda-Ausdruck,
+einem Funktionsaufruf, einem Lambda-Ausdruck, dem das letzte Argument fehlt,
+oder den Werten @code{true} oder @code{all} bezeichnet werden.
 
 @example
 (%i1) matchdeclare (aa, integerp);
@@ -907,11 +890,8 @@ Werte @code{true} oder @code{all}.
 (%o6)                         done
 @end example
 
-@c If an expression satisfies a match predicate, the match variable is assigned
-@c the expression.
-
-Stimmt ein Ausdruck mit einer Musteraussage @"uberein, wird der Ausdruck der
-Mustervariable zugewiesen.
+Wird f@"ur einen Ausdruck beim Musterabgleich eine @"Ubereinstimmung gefunden,
+wird dieser der Mustervariablen zugewiesen.
 
 @example
 (%i1) matchdeclare (aa, integerp, bb, atom);
@@ -922,10 +902,6 @@ Mustervariable zugewiesen.
 (%i3) r1 (%pi^8);
 (%o3)               [integer = 8, atom = %pi]
 @end example
-
-@c In the case of addition and multiplication, the match variable may be 
-@c assigned a single expression which satisfies the match predicate, or a sum 
-@c or product (respectively) of such expressions.
 
 Im Falle der Addition und Multiplikation kann der Mustervariablen ein einzelner
 Term zugewiesen werden, welcher mit der Aussage @"ubereinstimmt, aber auch 
@@ -948,13 +924,9 @@ bb aa partitions `product'
 (%o5)    [all atoms = 8, all nonatoms = (b + a) sin(x)]
 @end example
 
-@c When matching arguments of @code{+} and @code{*}, if all match predicates
-@c are mutually exclusive, the match result is insensitive to ordering,
-@c as one match predicate cannot accept terms matched by another.
-
 Wird nach @"Ubereinstimmungen f@"ur die Argumente der Operatoren @code{+} oder
-@code{*} gesucht und schlie@ss{}en sich die Aussagen gegeneinander aus, ist das
-Ergebnis unabh@"angig von der Anordnung der Terme.
+@code{*} gesucht und schlie@ss{}en sich die Aussagefunktionen gegeneinander
+aus, ist das Ergebnis unabh@"angig von der Anordnung der Terme.
 
 @example
 (%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
@@ -977,11 +949,8 @@ bb aa partitions `product'
                                                  c
 @end example
 
-@c The functions @code{propvars} and @code{printprops} return information about
-@c match variables.
-
 Die Funktionen @mref{propvars} und @mref{printprops} geben Informationen @"uber
-Mustervariablen.
+Mustervariablen aus.
 
 @example
 (%i1) matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
@@ -1000,96 +969,66 @@ Mustervariablen.
 @end example
 @end deffn
 
-@c --- 18.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{maxapplydepth}
 @defvr {Optionsvariable} maxapplydepth
 Standardwert: 10000
 
-@code{maxapplydepth} ist die maximale Tiefe f@"ur die die Funktionen
-@mref{apply1} und @mref{apply2} rekursiv auf einen Ausdruck angewendet werden.
+@code{maxapplydepth} ist die maximale Verschachtelungstiefe f@"ur die die
+Funktionen @mref{apply1} und @mref{apply2} auf die Baumstruktur eines Ausdrucks
+angewendet werden.
 @end defvr
 
-@c --- 18.10.2010 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{maxapplyheight}
 @defvr {Optionsvariable} maxapplyheight
 Standardwert: 10000
 
-@c @code{maxapplyheight} is the maximum height to which @code{applyb1} will 
-@c reach before giving up.
-
-@code{maxapplyheight} ist die maximale Gr@"o@ss{}e die @code{applyb1} erreichen
-kann, bevor die Funktion aufgibt.
+@code{maxapplyheight} ist die Verschachtelungstiefe f@"ur die die Funktion
+@mref{applyb1} Bottom-up auf die Baumstruktur eines Ausdrucks angewendet wird.
 @end defvr
 
-@c --- 26.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{remlet}
-@need 1000
 @deffn  {Funktion} remlet (@var{prod}, @var{package_name})
 @deffnx {Funktion} remlet ()
 @deffnx {Funktion} remlet (all)
 @deffnx {Funktion} remlet (all, @var{package_name})
 
-@c Deletes the substitution rule, @var{prod} --> repl, most recently defined by
-@c the @code{let} function.  If name is supplied the rule is deleted from the 
-@c rule package name.
+Entfernt die Regel @var{prod} --> @var{repl}, die zuletzt mit der Funktion
+@mref{let} definiert wurde.  Wird mit dem Argument @var{package_name}
+ein Paket angegeben, wird die Regeln aus dem entsprechenden Paket entfernt.
 
-Entfernt die Ersetzungsregel @var{prod} --> @var{repl} die zuletzt mit der
-Funktion @mref{let} definiert wurde.  Wird mit dem Argument @var{package_name}
-ein Paket angegeben, wird die Regeln aus dem Paket entsprechenden Paket
-entfernt.
-
-@c @code{remlet()} and @code{remlet(all)} delete all substitution rules from the
-@c current rule package.  If the name of a rule package is supplied, e.g.
-@c @code{remlet (all, @var{name})}, the rule package @var{name} is also deleted.
-
-@code{remlet()} und @code{remlet(all)} entfernen alle Ersetzungsregeln aus dem
-aktuellen Paket, das in @mref{current_let_rule_package} enthalten ist.  Wird
-ein Regelpaket als Argument angegeben, werden zus@"atzlich die Regeln dieses
+@code{remlet()} und @code{remlet(all)} entfernen alle Regeln aus dem aktuellen
+Paket, das mit @mref{current_let_rule_package} bezeichnet ist.  Wird der Name
+eines Regelpaketes als Argument angegeben, werden zus@"atzlich die Regeln dieses
 Paketes entfernt.
 
-@c If a substitution is to be changed using the same product, @code{remlet} need
-@c not be called, just redefine the substitution using the same product 
-@c (literally) with the @code{let} function and the new replacement and/or 
-@c predicate name.  Should @code{remlet (@var{prod})} now be called the original
-@c substitution rule is revived.
-
 Soll eine vorhandene Ersetzungsregel durch eine neue Definition ersetzt werden,
-muss die Regel zuvor nicht mit @code{remlet} entfernt werden.  Die neue
-Definition @"uberschreibt eine vorhandene Regel.
+muss die Regel nicht zuvor mit @code{remlet} entfernt werden.  Die neue
+Definition @"uberschreibt eine vorhandene Regel.  Wurde eine vorhandene Regel
+@"uberschrieben und wird die letzte Regel entfernt, dann ist die vorhergehende
+Regel wieder aktiv.
 
-@c See also @code{remrule}, which removes a rule defined by @code{tellsimp} or
-@c @code{tellsimpafter}.
-
-Siehe auch @mrefcomma{remrule} um Regeln zu entfernen, die mit 
-@mref{tellsimp} oder @mref{tellsimpafter} definiert sind.
+Siehe auch die Funktion @mrefcomma{remrule} um Regeln zu entfernen, die mit
+den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} definiert sind.
 @end deffn
 
-@c --- 26.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{remrule}
 @deffn  {Funktion} remrule (@var{op}, @var{rulename})
 @deffnx {Funktion} remrule (@var{op}, all)
 
-@c Removes rules defined by @code{tellsimp} or @code{tellsimpafter}.
-
-Entfernt Regeln die mit den Funktionen @mref{tellsimp} oder 
-@mrefdot{tellsimpafter} definiert wurden.
-
-@c @code{remrule (@var{op}, @var{rulename})} removes the rule with the name 
-@c @var{rulename} from the operator @var{op}.  When @var{op} is a built-in or 
-@c user-defined operator (as defined by @code{infix}, @code{prefix}, etc.),
-@c @var{op} and @var{rulename} must be enclosed in double quote marks.
+Entfernt Regeln, die mit den Funktionen @mref{tellsimp} oder 
+@mrefdot{tellsimpafter} definiert sind.
 
 @code{remrule(@var{op}, @var{rulename})} entfernt die Regel mit dem Namen
 @var{rulename} vom Operator @var{op}.  Ist der Operator @var{op} ein 
 Maxima-Operator oder ein nutzerdefinierter Operator, der mit Funktionen wie
 @mref{infix} oder @mref{prefix} definiert wurde, muss der Name des Operators
-@var{op} in Anf@"uhrungszeichen angegeben werden.
-
-@c @code{remrule (@var{op}, all)} removes all rules for the operator @var{op}.
+@var{op} als eine Zeichenkette in Anf@"uhrungszeichen angegeben werden.
 
 @code{remrule(@var{op}, all)} entfernt alle Regeln des Operators @var{op}.
-
-@c See also @code{remlet}, which removes a rule defined by @code{let}.
 
 Siehe auch die Funktion @mrefcomma{remlet} um Regeln zu entfernen, die mit der
 Funktion @mref{let} definiert sind.
@@ -1129,51 +1068,42 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 19.11.2010 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{rules}
 @defvr {Systemvariable} rules
 Standardwert: @code{[]}
 
-Enth@"alt die vom Nutzer mit den Funktionen @code{tellsimp}, 
-@code{tellsimpafter}, @code{defmatch} oder @code{defrule} definierten Regeln.
-Siehe auch @mrefdot{infolists}
+@code{rules} ist eine Informationsliste , die die vom Nutzer mit den Funktionen
+@code{tellsimp}, @code{tellsimpafter}, @code{defmatch} oder @code{defrule}
+definierten Regeln enth@"alt.
+
+Regeln die mit der Funktion @mref{let} definiert sind, sind nicht in der Liste
+@code{rules} enthalten.  Diese Regeln werden in Paketen organisiert, die in 
+der Systemvariablen @mref{let_rule_packages} aufgelistet werden.
+
+Siehe auch die Systemvariable @mrefdot{infolists}
 @end defvr
 
-@c --- 26.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{tellsimp}
 @deffn {Funktion} tellsimp (@var{pattern}, @var{replacement})
 
-@c is similar to @code{tellsimpafter} but places new information before old so 
-@c that it is applied before the built-in simplification rules.
-
 @code{tellsimp} ist vergleichbar mit der Funktion @mrefcomma{tellsimpafter}@w{}
-wobei @code{tellsimp} die Vereinfachungsregel vor der Anwendung der eingebauten
-Vereinfachungen ausgef@"uhrt wird.
+wobei mit @code{tellsimp} Regeln f@"ur die Vereinfachung von Ausdr@"ucken
+definiert werden, die noch vor den Regeln angewendet werden, die intern in
+Maxima bekannt sind.
 
-@c @code{tellsimp} is used when it is important to modify the expression before 
-@c the simplifier works on it, for instance if the simplifier "knows" something 
-@c about the expression, but what it returns is not to your liking.  If the 
-@c simplifier "knows" something about the main operator of the expression, but 
-@c is simply not doing enough for you, you probably want to use 
-@c @code{tellsimpafter}.
+@code{tellsimp} wird daher eingesetzt, wenn Maxima Regeln f@"ur die
+Vereinfachung des Ausdruckes kennt, es jedoch notwendig ist, noch vor Anwendung
+dieser Regeln den Ausdruck auf eine andere Art zu modifizieren.  F@"ur den Fall
+das Maxima den Ausdruck nicht ausreichend vereinfacht, kann es besser sein, eine
+Regel mit der Funktion @mref{tellsimpafter} zu definieren.
 
-@code{tellsimp} wird eingesetzt, wenn Maxima Regeln f@"ur die Vereinfachung des
-Ausdruckes kennt, es jedoch notwendig ist, noch vor Anwendung dieser Regeln
-den Ausdruck auf eine andere Art zu modifizieren.  F@"ur den Fall das Maxima
-den Ausdruck nicht ausreichend vereinfacht, kann es besser sein, eine
-Vereinfachungsregel mit @mref{tellsimpafter} zu definieren.
+Das Argument @var{pattern} kann keine Summe, kein Produkt, keine einzelne
+Variable und keine Zahl sein.
 
-@c The pattern may not be a sum, product, single variable, or number.
-
-Das Argument @var{pattern} kann keine Summe, Produkte, eine einzelne Variable
-oder eine Zahl sein.
-
-@c @code{rules} is the list of rules defined by @code{tellsimpafter},
-@c @code{defrule}, @code{defmatch}, and @code{tellsimp}.
-
-@code{rules} ist eine Informationsliste, die alle Regeln enth@"alt die mit den
-@mrefcomma{tellsimpafter} @mrefcomma{defrule} @mref{defmatch} und
-@mref{tellsimp} definiert sind.
+Regeln die mit @code{tellsimp} definiert werden, werden in die Informationsliste
+@mref{rules} aufgenommen.
 
 Beispiele:
 
@@ -1219,124 +1149,61 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 26.03.2011 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{tellsimpafter}
 @deffn {Funktion} tellsimpafter (@var{pattern}, @var{replacement})
 
-@c Defines a simplification rule which the Maxima simplifier applies after 
-@c built-in simplification rules.  @var{pattern} is an expression, comprising 
-@c pattern variables (declared by @code{matchdeclare}) and other atoms and 
-@c operators, considered literals for the purpose of pattern matching.
-@c @var{replacement} is substituted for an actual expression which matches 
-@c @var{pattern}; pattern variables in @var{replacement} are assigned the values
-@c matched in the actual expression.
+Definiert eine Regel f@"ur die Vereinfachung eines Ausdrucks, die nach Anwendung
+der Regeln angewendet wird, die Maxima intern anwendet.  @var{pattern} ist ein
+Ausdruck, der Mustervariablen enth@"alt, die mit der Funktion
+@mref{matchdeclare} definiert sind und weitere Symbole und Operatoren, f@"ur
+die die w@"ortliche @"Ubereinstimmung bei einem Musterabgleich angenommen wird.
+@var{replacement} wird in den Ausdruck substituiert, wenn der Musterabgleich
+das Muster @var{pattern} im Ausdruck findet.  Den Mustervariablen in
+@var{replacement} werden die Werte des Musterabgleichs zugewiesen.
 
-Definiert eine Vereinfachungsregel, die nach Anwendung der eingebauten Regeln
-angewendet wird.  @var{pattern} ist ein Ausdruck, der Mustervariablen enth@"alt,
-die mit der Funktion @mref{matchdeclare} definiert werden und weitere Symbole
-und Operatoren, f@"ur die die w@"ortliche @"Ubereinstimmung in einem Ausdruck 
-angenommen wird.  @var{replacement} wird in den Ausdruck substituiert, wenn
-@var{pattern} im Ausdruck gefunden wird.  Mustervariablen in @var{replacement}
-werden die Werte des gepr@"uften Ausdrucks zugewiesen.
-
-@c @var{pattern} may be any nonatomic expression in which the main operator is 
-@c not a pattern variable; the simplification rule is associated with the main 
-@c operator.  The names of functions (with one exception, described below), 
-@c lists, and arrays may appear in @var{pattern} as the main operator only as 
-@c literals (not pattern variables); this rules out expressions such as 
-@c @code{aa(x)} and @code{bb[y]} as patterns, if @code{aa} and @code{bb} are 
-@c pattern variables.  Names of functions, lists, and arrays which are pattern 
-@c variables may appear as operators other than the main operator in 
-@c @var{pattern}.
-
-Das Argument @var{pattern} kann ein beliebiger Ausdruck sein, in dem der 
-Hauptoperator keine Mustervariable ist.  Die Vereinfachungsregel wird mit dem
-Hauptoperator assoziiert.  Der Name von Funktionen, mit einer unten 
-beschriebenen Ausnahme, Listen und Arrays k@"onnen in @var{pattern} nur als
-eine w@"ortliche @"Ubereinstimmung und nicht in Mustervariablen auftreten.
-Daher k@"onnen Ausdr@"ucke wie @code{aa(x)} oder @code{bb[y]} nicht als Muster
-verwendet werden, wenn @code{aa} oder @code{bb} Mustervariablen sind.  Die Namen
+Das Muster @var{pattern} kann ein beliebiger Ausdruck sein, in dem der 
+Hauptoperator keine Mustervariable ist.  Die neue Regel wird nach dem
+Hauptoperator des Musters benannt und diesem zugeordnet.  Der Name von
+Funktionen, mit einer unten beschriebenen Ausnahme, Listen und Arrays k@"onnen
+in @var{pattern} nicht als eine Mustervariable auftreten.  Daher k@"onnen
+Ausdr@"ucke wie @code{aa(x)} oder @code{bb[y]} nicht als Muster verwendet
+werden, wenn @code{aa} oder @code{bb} Mustervariablen sind.  Die Namen
 von Funktionen, Listen und Arrays, welche Mustervariablen sind, k@"onnen dann
-in @var{pattern} auftreten, wenn sie nicht der Hauptoperator sind.
-
-@c There is one exception to the above rule concerning names of functions.
-@c The name of a subscripted function in an expression such as @code{aa[x](y)}
-@c may be a pattern variable, because the main operator is not @code{aa} but 
-@c rather the Lisp atom @code{mqapply}.  This is a consequence of the 
-@c representation of expressions involving subscripted functions.
+in dem Muster @var{pattern} auftreten, wenn sie nicht der Hauptoperator sind.
 
 Es gibt eine Ausnahme der oben genannten Einschr@"ankung f@"ur die Verwendung
 von Funktionsnamen.  Der Name einer indizierten Funktion wie @code{aa[x](y)}
 kann eine Mustervariable sein, da der Hauptoperator nicht @code{aa} ist, sondern
-das Lisp-Symbol @code{mqapply}.  Dies ist eine Konsequenz der internen
+das interne Symbol @code{mqapply}.  Dies ist eine Konsequenz der internen
 Darstellung einer indizierten Funktion.
 
-@c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR 
-@c REFERENCE
-@c The main operator of an expression @code{expr} is @code{caar $expr}.
-@c For most kinds of expressions,
-@c the main operator is the operator returned by @code{op (@var{pattern})};
-@c the sole exception is the operator @code{mqapply},
-@c which appears in indexed function expressions (e.g., @code{foo[i](x)}).
-
-@c @c NEED TO REVIEW THIS PARAGRAPH FOR ACCURACY
-@c Simplification rules are applied after evaluation (if not suppressed through 
-@c quotation or the flag @code{noeval}).  Rules established by 
-@c @code{tellsimpafter} are applied in the order they were defined, and after 
-@c any built-in rules.  Rules are applied bottom-up, that is, applied first to 
-@c subexpressions before application to the whole expression.
-@c @c NO IT IS MORE COMPLICATED THAN THIS, ALTHOUGH IN SOME CIRCUMSTANCE IT 
-@c @c APPEARS TO BE THE CASE:
-@c @c For a given expression, at most one rule per operator is applied.
-@c It may be necessary to repeatedly simplify a result (for example, via the 
-@c quote-quote operator @code{'@w{}'} or the flag @code{infeval}) to ensure that
-@c all rules are applied.
-
 Regeln f@"ur die Vereinfachung werden nach der Auswertung eines Ausdrucks
-angewendet, sofern die Auswertung zum Beispiel mit dem Schalter
-@mref{noeval} nicht unterdr@"uckt wurde.  Regeln, die mit @code{tellsimpafter}
-definiert sind, werden nach den vorhandenen Maxima-Regeln und in der Reihenfolge
-angewendet werden, in der sie definiert sind.  Die Regeln f@"ur die
+angewendet, sofern die Auswertung, zum Beispiel mit dem Schalter
+@mrefcomma{noeval} nicht unterdr@"uckt wurde.  Regeln, die mit
+@code{tellsimpafter} definiert sind, werden nach den internen Regeln und in der
+Reihenfolge angewendet, in der sie definiert sind.  Die Regeln f@"ur die
 Vereinfachung werden zun@"achst f@"ur Teilausdr@"ucke und zuletzt f@"ur den
 ganzen Ausdruck angewendet.  Es kann notwendig sein, Regeln f@"ur die
 Vereinfachung mehrfach zum Beispiel mit dem @nxref{'', Quote-Quote-Operator}@w{}
-@code{''} oder dem Schalter @mref{infeval} anzuwenden, um sicher zu gehen, dass
-alle Regeln angewendet werden.
+@code{''} oder dem Auswertungsschalter @mref{infeval} anzuwenden, um zu
+erreichen, dass alle Regeln angewendet werden.
 
-@c Pattern variables are treated as local variables in simplification rules.
-@c Once a rule is defined, the value of a pattern variable does not affect the
-@c rule, and is not affected by the rule.  An assignment to a pattern variable
-@c which results from a successful rule match does not affect the current
-@c assignment (or lack of it) of the pattern variable.  However, as with all
-@c atoms in Maxima, the properties of pattern variables (as declared by
-@c @code{put} and related functions) are global.
+Mustervariable werden als lokale Variablen in Regeln f@"ur die Vereinfachung
+behandelt.  Sobald eine Regel definiert ist, beeinflusst die Zuweisung eines
+Wertes an die Mustervariable nicht die Regel und die Variable wird nicht von
+der Regel beeinflusst.  Die Zuweisung an eine Mustervariable, die aufgrund eines
+erfolgreichen Musterabgleichs vorgenommen wird, beeinflusst nicht den aktuellen
+Wert der Variablen.  Jedoch sind die Eigenschaften der Mustervariablen, wie sie
+zum Beispiel auch mit der Funktion @mref{put} definiert werden k@"onnen, global
+in Maxima.
 
-Mustervariable werden als lokale Variablen in Vereinfachungsregeln behandelt.
-Sobald eine Regel definiert ist, beeinflusst die Zuweisung eines Wertes an die
-Mustervariable nicht die Regel und die Variable wird nicht von der Regel
-beeinflusst.  Die Zuweisung an eine Mustervariable, die aufgrund einer
-erfolgreichen @"Ubereinstimmung des Musters mit einem Ausdruck vorgenommen wird,
-beeinflusst nicht den aktuellen Wert der Variablen.  Jedoch sind die
-Eigenschaften der Mustervariablen, wie sie zum Beispiel auch mit der Funktion
-@mref{put} definiert werden k@"onnen, global in Maxima.
-
-@c The rule constructed by @code{tellsimpafter} is named after the main operator
-@c of @var{pattern}.  Rules for built-in operators, and user-defined operators
-@c defined by @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, and 
-@c @code{nofix}, have names which are Lisp identifiers.
-@c @c SLIGHTLY TOO MUCH DETAIL
-@c @c (that is, the name is written with a leading question mark @code{?} in
-@c @c Maxima).
-@c Rules for other functions have names which are Maxima identifiers.
-@c @c SLIGHTLY TOO MUCH DETAIL
-@c @c (that is, the name begins with dollar sign @code{$}).
-
-Die mit @code{tellsimpafter} definierte Regel wird nach dem Hauptoperator des
-Argumentes @var{pattern} benannt.  Regeln der Maxima-Operatoren und mit den
-Funktionen @mrefcomma{infix} @mrefcomma{prefix} @mrefcomma{postfix}@w{}
-@mref{matchfix} und @mref{nofix} definierte Operatoren haben einen
-Lisp-Bezeichner als Namen.  Alle anderen Regeln haben Maxima-Bezeichner als
-Namen.
+Eine mit @code{tellsimpafter} definierte Regel wird nach dem Hauptoperator des
+Musters @var{pattern} benannt.  Regeln f@"ur Maxima-Operatoren und f@"ur
+Funktionen, die mit @mrefcomma{infix} @mrefcomma{prefix} @mrefcomma{postfix}@w{}
+@mref{matchfix} und @mref{nofix} als Operator definiert sind, haben einen
+Lisp-Bezeichner als Namen.  Alle anderen Regeln erhalten einen Maxima-Bezeichner
+als Namen.
 
 @c TODO: TECHNISCHES DETAIL WIRD ZUNAECHST WEGGELASSEN.
 
@@ -1354,28 +1221,15 @@ Namen.
 @c the construct @code{:lisp (trace $foorule1)} traces the function,
 @c and @code{:lisp (symbol-function '$foorule1)} displays its definition.
 
+@code{tellsimpafter} wertet die Argumente nicht aus.  @code{tellsimpafter} gibt
+eine Liste der Regeln zur@"uck, die f@"ur den Hauptoperator des Musters
+@var{pattern} definiert sind.
 
-@c @code{tellsimpafter} quotes its arguments.  @code{tellsimpafter} returns the
-@c list of rules for the main operator of @var{pattern}, including the newly 
-@c established rule.
-@c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR 
-@c IN RETURN VALUE ??
-
-@code{tellsimpafter} werden die Argumente nicht aus.  @code{tellsimpafter} gibt
-eine Liste der Regeln des Hauptoperators des Argumentes @var{pattern}
-einschlie@ss{}lich der neu definierten Regeln zur@"uck.
-
-@c See also @code{matchdeclare}, @code{defmatch}, @code{defrule},
-@c @code{tellsimp}, @code{let}, @code{kill}, @code{remrule}, and
-@c @code{clear_rules}.
-
-Siehe auch @mrefcomma{matchdeclare} @mrefcomma{defmatch} @mrefcomma{defrule}@w{}
-@mrefcomma{tellsimp} @mrefcomma{kill} @mref{remrule} und @mrefdot{clear_rules}
+Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defmatch}@w{}
+@mrefcomma{defrule} @mrefcomma{tellsimp} @mref{remrule} und
+@mrefdot{clear_rules}
 
 Beispiele:
-
-@c @var{pattern} may be any nonatomic expression in which the main operator is
-@c not a pattern variable.
 
 Das Muster @var{pattern} kann ein beliebiger Ausdruck sein, in dem der
 Hauptoperator nicht die Mustervariable ist.
@@ -1399,12 +1253,9 @@ Hauptoperator nicht die Mustervariable ist.
 (%o7)                    bar(foo(u - v))
 @end example
 
-@c Rules are applied in the order they were defined.  If two rules can match an
-@c expression, the rule which was defined first is applied.
-
-Regeln werden in der Reihenfolge angewendet, in der sie definiert wurden.
-K@"onnen zwei Regeln mit einem Ausdruck @"ubereinstimmen, wird die zuerst
-definierte Regel angewendet.
+Regeln werden in der Reihenfolge angewendet, in der sie definiert sind.
+Treffen zwei Regeln bei einem Musterabgleich zu, wird die zuerst definierte
+Regel angewendet.
 
 @example
 (%i1) matchdeclare (aa, integerp);
@@ -1417,12 +1268,10 @@ definierte Regel angewendet.
 (%o4)                       bar_1(42)
 @end example
 
-@c Pattern variables are treated as local variables in simplification rules.
-@c (Compare to @code{defmatch}, which treats pattern variables as global
-@c variables.)
-
-Mustervariable werden als lokale Variable in Vereinfachungsregeln behandelt.  Im
-Unterschied dazu behandelt @mref{defmatch} Mustervariable als globale Variable.
+Mustervariable werden als lokale Variable beim Musterabgleich der mit der
+Funktion @code{tellsimpafter} definierten Regel behandelt.  Im Unterschied dazu
+werden von Regeln, die mit @mref{defmatch} definiert sind, Mustervariable als
+globale Variable behandelt.
 
 @example
 (%i1) matchdeclare (aa, integerp, bb, atom);
@@ -1436,11 +1285,6 @@ Unterschied dazu behandelt @mref{defmatch} Mustervariable als globale Variable.
 (%i5) bb;
 (%o5)                         12345
 @end example
-
-@c As with all atoms, properties of pattern variables are global even though
-@c values are local.  In this example, an assignment property is declared via
-@c @code{define_variable}.  This is a property of the atom @code{bb} throughout
-@c Maxima.
 
 Die Eigenschaften von Mustervariablen sind global, auch wenn die Werte lokal 
 sind.  In diesem Beispiel wird eine Eigenschaft f@"ur die Zuweisung an eine
@@ -1461,12 +1305,8 @@ Error: bb was declared mode boolean, has value: %e
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-@c Rules are named after main operators.  Names of rules for built-in and 
-@c user-defined operators are Lisp identifiers, while names for other functions 
-@c are Maxima identifiers.
-
 Regeln werden nach dem Hauptoperator benannt.  Die Namen der Regeln f@"ur
-Maxima-Funktionen und nutzerdefinierten Operatoren sind Lisp-Bezeichner.  Alle
+Maxima-Funktionen und nutzerdefinierte Operatoren sind Lisp-Bezeichner.  Alle
 anderen Namen sind Maxima-Bezeichner.
 
 @example
@@ -1495,8 +1335,6 @@ anderen Namen sind Maxima-Bezeichner.
 (%i12) rules;
 (%o12)        [foorule2, foorule3, +rule1, *rule1]
 @end example
-
-@c A worked example: anticommutative multiplication.
 
 Ein ausgearbeitetes Beispiel der nicht-kommutativen Multiplikation.
 
