@@ -166,7 +166,7 @@ Fortgeschrittene M@"oglichkeiten und Programmierung
 * Funktionsdefinitionen::       Definition von Maxima-Funktionen.
 * Laufzeitumgebung::            Anpassung der Maxima-Umgebung.
 * Programmierung::              Maxima-Programme schreiben.
-* @"Ubersetzer::                Maxima-Programme @"ubersetzen und komplieren.
+* @"Ubersetzer::                Maxima-Programme @"ubersetzen und kompilieren.
 * Fehlersuche::                 Fehlersuche in Programmen.
 * Verschiedenes::               Sonstige Funktionen und Variablen.
 @sp 1
