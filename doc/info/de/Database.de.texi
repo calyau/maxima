@@ -2,10 +2,10 @@
 @c File        : Database.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : New file
+@c Original    : Database.texi revision 15.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 22.10.2010
-@c Revision    : 28.05.2011
+@c Revision    : 20.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -672,24 +672,155 @@ Beispiel:
 @end example
 @end deffn
 
-@c --- 29.12.2010 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{properties}
 @deffn {Funktion} properties (@var{a})
 
-Gibt eine Liste mit den Eigenschaften zur@"uck, die das Atom @var{a} von Maxima
-oder dem Nutzer erhalten hat.
+Gibt eine Liste mit den Eigenschaften zur@"uck, die das Symbol @var{a} von
+Maxima oder dem Nutzer erhalten hat.  Die R@"uckgabe kann jede Eigenschaft
+enthalten, die mit der Funktion @mref{declare} einem Symbol zugewiesen ist.
+Diese Eigenschaften sind:
 
-@c TODO: HIER FEHLT EINE AUFLISTUNG DER MOEGLICHEN EIGENSCHAFTEN.
+@verbatim
+   linear         additive       multiplicative
+   outative       commutative    symmetric      
+   antisymmetric  nary           lassociativ
+   rassociative   evenfun        oddfun
+   bindtest       feature        alphabetic
+   scalar         nonscalar      nonarray
+   constant       integer        noninteger
+   even           odd            rational
+   irrational     real           imaginary
+   complex        increasing     decreasing
+   posfun         integervalued
+@end verbatim
 
+Die folgenden Eintr@"age beschreiben Eigenschaften, die Variablen haben
+k@"onnen:
+
+@table @code
+@item value
+Der Variable ist mit dem Operatoren @mref{:} oder @mref{::} ein Wert zugewiesen.
+@item system value
+Die Variable ist eine Optionsvariable oder Systemvariable, die von Maxima
+definiert ist.
+@item numer
+Die Variable hat einen numerischen Wert auf der Eigenschaftsliste, der mit
+der Funktion @mref{numerval} zugewiesen ist.
+@item assign property
+Die Variable hat eine eine Funktion auf der Eigenschaftsliste, die die Zuweisung
+eines Wertes kontrolliert.
+@end table
+
+Eintr@"age, die die Eigenschaften von Funktionen beschreiben:
+
+@table @code
+@item function
+Eine mit dem Operator @mref{:=} oder der Funktion @mref{define} definierte
+Nutzerfunktion.
+@item macro
+Eine mit dem Operator @mref{::=} definierte Makrofunktion.
+@item system function
+Ein interne Maxima-Funktion.
+@item special evaluation form
+Eine Maxima-Spezialform, die die Argumente nicht auswertet.
+@item transfun
+Wird eine Nutzerfunktion mit @mref{translate} @"ubersetzt oder mit der Funktion
+@mref{compile} kompiliert, erh@"alt sie die Eigenschaft @code{transfun}.
+Interne Maxima-Funktionen, die mit dem Lisp-Makro @code{defmfun} definiert
+werden, haben ebenfalls diese Eigenschaft.
+@item deftaylor
+F@"ur die Funktion ist eine Taylorreihenentwicklung definiert.
+@item gradef
+Die Funktion hat eine Ableitung.
+@item integral
+Die Funktion hat eine Stammfunktion.
+@item distribute over bags
+Ist das Argument der Funktion eine Liste, Matrix oder Gleichung so wird die
+Funktion auf die Elemente oder beide Seiten der Gleichung angewendet.
+@item limit function
+Es existiert eine Funktion f@"ur die Behandlung spezieller Grenzwerte.
+@item conjugate function
+Es existiert eine Funktion, um die konjugiert komplexe Funktion f@"ur spezielle
+Wertebereiche zu ermitteln.
+@item mirror symmetry
+Die Funktion hat die Eigenschaft der Spiegelsymmetrie.
+@item complex characteristic
+Es existiert eine Funktion, um den Realteil und den Imagin@"arteil der Funktion
+f@"ur spezielle Wertebereiche zu ermitteln.
+@item user autoload function
+Die Funktion wird automatisch beim ersten Aufruf aus einer Datei geladen.  Der
+Nutzer kann mit dem Funktion @mref{setup_autoload} eine solche Funktion
+definieren.
+@end table
+
+Weitere Eigenschaften, die Symbole erhalten k@"onnen:
+
+@table @code
+@item operator
+Das Symbol ist ein Maxima-Operator oder ein nutzerdefinierte Operator.
+
+@item rule
+Die Funktion oder der Operator haben eine Regel f@"ur die Vereinfachung.
+
+@item alias
+
+@item database info
+Das Symbol hat Eintr@"age in Maximas Datenbank.
+
+@item hashed array, declared array, complete array
+Ein Hashed-Array, ein deklariertes Array oder ein Array dessen Elemente
+einen bestimmten Typ haben.
+
+@item array function
+Eine Array-Funktion die mit dem Operator @mref{:=} definiert ist.
+
+@item atvalue
+Dem Symbol ist mit der Funktion @mref{atvalue} ein Wert an einer Stelle
+zugewiesen.
+
+@item atomgrad
+F@"ur das Symbol ist mit der Funktion @mref{gradef} eine Ableitung definiert.
+
+@item dependency
+F@"ur das Symbol ist eine Abh@"angigkeit mit der Funktion @mref{depends}
+definiert.
+
+@item matchdeclare
+Das Symbol ist eine mit @mref{matchdeclare} definierte Mustervariable, der eine
+Aussagefunktion zugeordnet ist.
+
+@item modedeclare
+F@"ur das Symbol ist mit der Funktion @mref{mode_declare} ein Typ definiert.
+
+@item user properties
+
+@item context
+Das Symbol bezeichnet einen Kontext.
+
+@item activecontext
+Das Symbol bezeichnet einen aktiven Kontextes.
+@end table
 @end deffn
 
-@c --- 19.11.2010 DK -----------------------------------------------------------
+@c --- 20.08.2011 DK -----------------------------------------------------------
 @anchor{props}
 @defvr {Systemvariable} props
 Standardwert: @code{[]}
 
-@code{props} ist eine Liste der Symbole, die eine Eigenschaft mit den Funktionen
-@code{declare}, @code{atvalue} oder @code{matchdeclare} erhalten haben.
+@code{props} ist eine Liste der Symbole, die vom Nutzer eine Eigenschaft
+erhalten haben, die in die Lisp-Eigenschaftsliste des Symbols eingetragen wird.
+Neben den Funktionen @mref{put} und @mrefcomma{qput} mit denen der Nutzer
+direkt eine Eigenschaft zu einem Symbol in die Lisp-Eigenschaftsliste eintragen
+kann, legen auch Maxima-Funktionen Eigenschaften zu Symbolen in der 
+Eigenschaftsliste ab und tragen diese Symbole in die Systemvariable @code{props}
+ein.  Zu diesen Funktionen geh@"oren zum Beispiel @mrefcomma{declare}@w{}
+@mrefcomma{numerval} @mrefcomma{matchdeclare} @mrefcomma{mode_declare}@w{}
+@mref{gradef} oder @mrefdot{setup_autoload}
+
+Nach dem Start von Maxima sollte die Systemvariable @code{props} keine Symbole
+enthalten.  Das ist jedoch nicht der Fall und kann als ein Fehler betrachtet
+werden, der in Zukunft zu beheben ist.
 @end defvr
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
