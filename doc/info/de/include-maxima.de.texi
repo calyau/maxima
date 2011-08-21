@@ -312,7 +312,7 @@ Eingabe und Ausgabe
 * Kommentare::
 * Dateien::
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
-* Funktionen und Variablen f@"ur die Tex-Ausgabe::
+* Funktionen und Variablen f@"ur die TeX-Ausgabe::
 * Funktionen und Variablen f@"ur die Fortran-Ausgabe::
 
 Mengen

@@ -14,7 +14,7 @@
 * Kommentare::
 * Dateien::
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
-* Funktionen und Variablen f@"ur die Tex-Ausgabe::
+* Funktionen und Variablen f@"ur die TeX-Ausgabe::
 * Funktionen und Variablen f@"ur die Fortran-Ausgabe::
 @end menu
 
@@ -72,7 +72,7 @@ Folgende Funktionen und Variablen arbeiten mit Dateien:
 @end verbatim
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Funktionen und Variablen f@"ur die Tex-Ausgabe, Dateien, Eingabe und Ausgabe
+@node Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Funktionen und Variablen f@"ur die TeX-Ausgabe, Dateien, Eingabe und Ausgabe
 @section Funktionen und Variablen f@"ur die Eingabe und Ausgabe
 @c -----------------------------------------------------------------------------
 
@@ -640,8 +640,8 @@ Mit @mref{closefile} wird die Aufzeichnung beendet.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Tex-Ausgabe, Funktionen und Variablen f@"ur die Fortran-Ausgabe, Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Eingabe und Ausgabe
-@section Funktionen und Variablen f@"ur die Tex-Ausgabe
+@node Funktionen und Variablen f@"ur die TeX-Ausgabe, Funktionen und Variablen f@"ur die Fortran-Ausgabe, Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Eingabe und Ausgabe
+@section Funktionen und Variablen f@"ur die TeX-Ausgabe
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
@@ -963,7 +963,7 @@ g\left(x\right)+f\left(x\right)
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Fortran-Ausgabe, , Funktionen und Variablen f@"ur die Tex-Ausgabe, Eingabe und Ausgabe
+@node Funktionen und Variablen f@"ur die Fortran-Ausgabe, , Funktionen und Variablen f@"ur die TeX-Ausgabe, Eingabe und Ausgabe
 @section Funktionen und Variablen f@"ur die Fortran-Ausgabe
 @c -----------------------------------------------------------------------------
 
