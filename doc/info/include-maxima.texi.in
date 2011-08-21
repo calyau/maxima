@@ -269,8 +269,10 @@ Plotting
 File Input and Output
 
 * Comments::
-* Files::                       
+* Files::
 * Functions and Variables for File Input and Output::
+* Functions and Variables for TeX Output::
+* Functions and Variables for Fortran Output::
 
 Polynomials
 
