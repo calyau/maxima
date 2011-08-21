@@ -2,21 +2,25 @@
 * Functions and Variables for f90::
 @end menu
 
+@c -----------------------------------------------------------------------------
 @node Functions and Variables for f90,  , f90, f90
 @section Functions and Variables for f90
+@c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{function_f90}
+@deffn {Function} f90 (@var{expr_1}, @dots{}, @var{expr_n})
 
-@deffn {Function} f90 (@var{expr_1}, ..., @var{expr_n})
-
-Prints one or more expressions @var{expr_1}, ..., @var{expr_n}
+Prints one or more expressions @var{expr_1}, @dots{}, @var{expr_n}
 as a Fortran 90 program.
 Output is printed to the standard output.
 
-@code{f90} prints output in the so-called "free form" input format for Fortran 90:
-there is no special attention to column positions.
-Long lines are split at a fixed width with the ampersand @code{&} continuation character.
+@code{f90} prints output in the so-called "free form" input format for
+Fortran 90: there is no special attention to column positions.
+Long lines are split at a fixed width with the ampersand @code{&} continuation
+character.
 
-@code{load(f90)} loads this function.
+@code{load(f90)} loads this function.  See also the function @mrefdot{fortran}
 
 Examples:
 
@@ -42,7 +46,7 @@ foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2&
 @end example
 
 Multiple expressions.
-Capture standard output into a file via the @code{with_stdout} function.
+Capture standard output into a file via the @mref{with_stdout} function.
 
 @c ===beg===
 @c load (f90)$
@@ -69,6 +73,5 @@ end
 @opencatbox
 @category{Translation and compilation} @category{Share packages} @category{Package f90}
 @closecatbox
-
 @end deffn
 
