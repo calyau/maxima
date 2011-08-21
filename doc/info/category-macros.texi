@@ -70,3 +70,12 @@
 @end ifnothtml
 @end macro
 
+@macro mrefparen {nodename}
+@ifhtml
+@code{@ref{\nodename\}})
+@end ifhtml
+@ifnothtml
+@code{\nodename\})
+@end ifnothtml
+@end macro
+
