@@ -133,6 +133,28 @@ Examples:
 @end example
 @end deffn
 
+@c STILL EXISTS, NEEDS CLARIFICATION !!!
+
+@c -----------------------------------------------------------------------------
+@anchor{packagefile}
+@defvr {Option variable} packagefile
+Default value: @code{false}
+
+Package designers who use @mref{save} or @mref{translate} to create packages
+(files) for others to use may want to set @code{packagefile: true} to prevent
+information from being added to Maxima's information-lists (e.g.
+@mrefcomma{values} @mref{functions}) except where necessary when the file is
+loaded in.  In this way, the contents of the package will not get in the user's
+way when he adds his own data.  Note that this will not solve the problem of
+possible name conflicts.  Also note that the flag simply affects what is output
+to the package file.  Setting the flag to @code{true} is also useful for
+creating Maxima init files.
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 
@@ -438,5 +460,66 @@ Warning - you are redefining the Macsyma function legendre_p
 @opencatbox
 @category{Function definition} @category{File input}
 @closecatbox
+@end deffn
+
+@c RECOMMEND CUTTING THIS ITEM AND CUTTING $tcl_output IN src/plot.lisp
+@c THIS REALLY, REALLY SEEMS LIKE CRUFT:
+@c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
+@c AND THIS EXTREMELY NARROW, LIMITED FUNCTIONALITY ISN'T USEFUL TO USERS
+@c AND IT'S BROKEN: INCORRECT OUTPUT FOR CLISP, DIES ON GCL
+
+@c -----------------------------------------------------------------------------
+@anchor{tcl_output}
+@deffn  {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Function} tcl_output (@var{list}, @var{i0})
+@deffnx {Function} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
+
+Prints elements of a list enclosed by curly braces @code{@{ @}},
+suitable as part of a program in the Tcl/Tk language.
+
+@code{tcl_output (@var{list}, @var{i0}, @var{skip})}
+prints @var{list}, beginning with element @var{i0} and printing elements
+@code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
+
+@code{tcl_output (@var{list}, @var{i0})}
+is equivalent to @code{tcl_output (@var{list}, @var{i0}, 2)}.
+
+@code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
+prints the @var{i}'th elements of @var{list_1}, @dots{}, @var{list_n}.
+
+Examples:
+@c EXAMPLE INPUT
+@c tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
+@c tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
+@c tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
+@c tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
+@c tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
+
+@c EXAMPLE OUTPUT: CLISP
+@c OUTPUT IS OK FOR FIRST TWO, BROKEN FOR OTHERS
+@c GCL OUTPUT: SAME FOR FIRST TWO
+@c GCL FAILS ON OTHERS (IN EACH CASE COMPLAINING ELEMENTS ARE "not of type (OR RATIONAL LISP:FLOAT)"
+@example
+(%i1) tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
+
+ @{1.000000000     4.000000000     
+ @}
+(%i2) tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
+
+ @{2.000000000     5.000000000     
+ @}
+(%i3) tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
+
+ @{((RAT SIMP) 3 7) ((RAT SIMP) 11 13) 
+ @}
+(%i4) tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
+
+ @{$Y1 $Y2 $Y3 
+ @}
+(%i5) tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
+
+ @{SIMP 1.000000000     11.00000000     
+ @}
+@end example
 @end deffn
 
