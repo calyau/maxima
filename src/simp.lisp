@@ -1195,7 +1195,8 @@
            ;; Implement the simplification of
            ;;   v*a^(c+n)+w*a^(c+m) -> (v*a^n+w*a^m)*a^c
            ;; where a, v, w, and (n-m) are integers.
-           ((and (or (mexptp (setq x2 (cadr fm)))
+           ((and (or (and (mexptp (setq x2 (cadr fm)))
+                          (setq v 1))
                      (and (mtimesp x2)
                           (not (alike1 x1 x2))
                           (null (cadddr x2))
