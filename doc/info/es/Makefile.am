@@ -24,7 +24,9 @@ numericalio.texi    opsubst.texi                   orthopoly.texi      plotdf.te
 romberg.texi        minpack.texi                   stirling.texi       cobyla.texi  \
 simplex.texi        simplifications.texi           solve_rec.texi      stats.texi \
 stringproc.texi     unit.texi                      zeilberger.texi     dynamics.texi \
-lbfgs.texi          drawdf.texi      finance.texi      fractals.texi      defstruct.texi
+lbfgs.texi          drawdf.texi      finance.texi      fractals.texi      defstruct.texi \
+DataTypes.es.texi   Evaluation.es.texi   MathFunctions.es.texi   Database.es.texi  \
+bernstein.texi      to_poly_solve.texi
 
 
 
