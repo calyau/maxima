@@ -2133,3 +2133,18 @@ grind("g"(x):=x);
 done$
 grind("g"(x)::=x);
 done$
+
+/* -----------------------------------------------------------------------------
+ * Bug ID: 3396631 - equal terms produce different results
+ * Correcting a bug in plusin revision 23.08.2011
+ * -------------------------------------------------------------------------- */
+5*sqrt(5)+2*sqrt(3)+6*sqrt(5);
+11*sqrt(5)+2*sqrt(3)$
+5*sqrt(5)+4*sqrt(3)+6*sqrt(5);
+11*sqrt(5)+4*sqrt(3)$
+5*sqrt(5)+3*sqrt(5)+5*sqrt(3)+3*sqrt(3)+2*sqrt(75)+2*sqrt(45);
+14*sqrt(5)+2*3^(5/2)$
+5*sqrt(5)+5*sqrt(3)+3*sqrt(3)+2*sqrt(75)+2*sqrt(45)+3*sqrt(5);
+14*sqrt(5)+2*3^(5/2)$
+5*sqrt(5)+5*sqrt(3)+2*sqrt(75)+2*sqrt(45)+3*sqrt(5)+3*sqrt(3);
+14*sqrt(5)+2*3^(5/2)$
