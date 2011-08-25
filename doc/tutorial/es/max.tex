@@ -1,15 +1,10 @@
-\documentclass[11pt,titlepage,a4paper]{article}
+\documentclass[11pt,titlepage,a4paper]{book}
 	\pagestyle{headings}
 	\title{\textbf{\Huge{Primeros pasos en Maxima}}}
 	\author{\Large{Mario Rodr\'{\i}guez Riotorto}\\
 	  \\
-	  www.telefonica.net/web2/biomates\\
+	  http://riotorto.users.sourceforge.net\\
 	  }
-
-\setlength{\oddsidemargin}{0.5cm}
-\setlength{\textwidth}{15cm}
-\setlength{\topmargin}{1.2cm}
-\setlength{\textheight}{21cm}
 
 \usepackage{graphicx}
 \usepackage{lscape}
@@ -44,7 +39,7 @@
 
 \makeindex
 
-\hyphenation{Ruf-fi-ni e-xer-ci-cios}
+\hyphenation{co-rres-pon-dien-te}
 
 %versión: 06-03-08
 % Para generar el documento pdf con el índice alfabético:
@@ -60,16 +55,14 @@
 
 \maketitle
 
-\newpage
 \thispagestyle{empty}
-\mbox{}
 \newpage
 
 
 
 \thispagestyle{empty}
 \begin{quote}
-Copyright \copyright 2004-2008 Mario Rodríguez Riotorto
+Copyright \copyright 2004-2011 Mario Rodríguez Riotorto
 
 Este documento es libre; se puede redistribuir y/o
 modificar bajo los términos de la GNU General Public License
@@ -84,21 +77,22 @@ the Free Software Foundation. See the
 GNU General Public License for more details at \\
 http://www.gnu.org/copyleft/gpl.html}
 \end{quote}
+
 \newpage
 \thispagestyle{empty}
-\mbox{}
-\newpage
+
+
 
 
 
 
 \addtocounter{page}{-3}
 \tableofcontents
-\newpage
 
 
-\newpage
-\section{Introducción}
+
+
+\chapter{Introducción}
 
 Este es un manual introductorio al entorno de cálculo simbólico Maxima, directo sucesor del legendario Macsyma.
 
@@ -112,14 +106,14 @@ El concepto y la organización interna del programa están basados en la tesis doc
 
 El año 1982 es clave. El MIT transfiere una copia de Macsyma a la empresa Symbolics Inc. para su explotación económica, haciendo el código propietario, y otra al Departamento de Energía, copia ésta que será conocida con el nombre de DOE-Macsyma. En 1992 la versión comercial de Macsyma sería adquirida por una empresa que se llamaría precisamente Macsyma Inc, y el programa iría perdiendo fuelle progresivamente ante la presencia en el mercado de otros programas similares como Maple o Mathematica, ambos los dos inspirados en sus orígenes en el propio Macsyma.
 
-Pero ocurrieron dos historias paralelas. Desde el año 1982, y hasta su fallecimiento en el 2001, William Schelter de la Universidad de Texas mantuvo una versión de este programa adaptada al estándar Common Lisp, la cual ya se conocía con el nombre de Maxima para diferenciarla de la versión comercial. En el año 1998 Schelter había conseguido del DOE permiso para distribuir Maxima bajo la licencia GNU-GPL (www.gnu.org); con este paso, muchas más personas empezaron a dirigir su mirada hacia Maxima, justo en el momento en el que la versión comercial estaba declinando. Actualmente, el proyecto está siendo mantenido por un grupo de desarrolladores originarios de varios países, asistidos y ayudados por otras muchas personas interesadas en Maxima y que mantienen un cauce de comunicación a través de la lista de correo
+Pero ocurrieron dos historias paralelas. Desde el año 1982, y hasta su fallecimiento en el 2001, William Schelter de la Universidad de Texas mantuvo una versión de este programa adaptada al estándar Common Lisp en base a DOE-Macsyma, la cual ya se conoce con el nombre de Maxima para diferenciarla de la versión comercial. En el año 1998 Schelter había conseguido del DOE permiso para distribuir Maxima bajo la licencia GNU-GPL (www.gnu.org); con este paso, muchas más personas empezaron a dirigir su mirada hacia Maxima, justo en el momento en el que la versión comercial estaba declinando. Actualmente, el proyecto está siendo mantenido por un grupo de desarrolladores originarios de varios países, asistidos y ayudados por otras muchas personas interesadas en Maxima y que mantienen un cauce de comunicación a través de la lista de correo
 \begin{center}
 http://maxima.sourceforge.net/maximalist.html
 \end{center}
 
 Además, desde el año 2006, se ha activado una lista de correos para usuarios de habla hispana en
 \begin{center}
-http://sourceforge.net/mailarchive/forum.php?forum\_id=50322
+http://lists.sourceforge.net/lists/listinfo/maxima-lang-es
 \end{center}
 
 Puesto que Maxima se distribuye bajo la licencia GNU-GPL, tanto el código fuente como los manuales son de libre acceso a través de la página web del proyecto,
@@ -153,21 +147,26 @@ Finalmente, un recuerdo a William Schelter. Gracias a él disponemos hoy de un Ma
 
 
 \newpage
-\section{Despegando con Maxima}
+\chapter{Despegando con Maxima}
 
-\subsection{Instalación}
+\section{Instalación}
 
-Maxima funciona en Windows, Linux y Mac-OS.
+Maxima funciona en Windows, Mac y Linux.
 
 En Windows, la instalación consiste en descargar el binario \verb|exe| desde el enlace correspondiente en la página del proyecto y ejecutarlo. 
 
+En Mac, es necesario descargar el fichero con extensión \verb|dmg|, hacer doble clic sobre él y arrastrar los iconos de Maxima, wxMaxima y Gnuplot a la carpeta Aplicaciones. El proceso detallado se explica aquí:
+\begin{center}
+http://www.faq-mac.com/41547/instalacion-maximawxmaxima-mac-javier-arantegui
+\end{center}
+
 En Linux, la mayoría de las distribuciones tienen ficheros precompilados en sus respectivos repositorios con las extensiones \verb|rpm| o \verb|deb|, según el caso. Sin embargo, en algunas distribuciones las versiones oficiales no suelen estar muy actualizadas, por lo que podría ser recomendable proceder con la compilación de las fuentes, tal como se expone a continuación.
 
-Las siguientes indicaciones hacen referencia al sistema operativo Linux.
+Las siguientes indicaciones sobre la compilación hacen referencia al sistema operativo Linux.
 
-Si se quiere instalar Maxima en su estado actual de desarrollo, será necesario descargar los ficheros fuente completos del CVS de Sourceforge y proceder posteriormente a su compilación. Se deberá tener operativo un entorno Common Lisp en la máquina (\verb|clisp|, \verb|cmucl|, \verb|sbcl| o \verb|gcl| son todas ellas alternativas válidas), así como todos los programas que permitan ejecutar las instrucciones que se indican a continuación, incluidas las dependencias \verb|tcl-tk| y \verb|gnuplot|. \emph{Grosso modo}, estos son los pasos a seguir para tener Maxima operativo en el sistema\footnote{Se supone que se trabaja con clisp, con codificación unicode y que queremos el sistema de ayuda en inglés y español.}:
+Si se quiere instalar Maxima en su estado actual de desarrollo, será necesario descargar los ficheros fuente completos desde el repositorio de Sourceforge y proceder posteriormente a su compilación. Se deberá tener operativo un entorno Common Lisp en la máquina (\verb|clisp|, \verb|cmucl|, \verb|sbcl| o \verb|gcl| son todas ellas alternativas válidas), así como todos los programas que permitan ejecutar las instrucciones que se indican a continuación, incluidas las dependencias \verb|tcl-tk| y \verb|gnuplot|. \emph{Grosso modo}, estos son los pasos a seguir para tener Maxima operativo en el sistema\footnote{Se supone que se trabaja con clisp, con codificación unicode y que queremos el sistema de ayuda en inglés y español.}:
 \begin{enumerate}
-\item Descargar las fuentes a un directorio local siguiendo las instrucciones que se indican en el enlace al CVS de la página del proyecto.
+\item Descargar las fuentes a un directorio local siguiendo las instrucciones que se indican en el enlace al repositorio de la página del proyecto.
 \item Acceder a la carpeta local de nombre \verb|maxima| y ejecutar las instrucciones
 \begin{verbatim}
 ./bootstrap
@@ -187,11 +186,11 @@ xmaxima
 \end{verbatim}
 \end{enumerate}
 
-Otro entorno gráfico es Wxmaxima\footnote{http://wxmaxima.sourceforge.net} (Figura~\ref{fig:wxmaxima}), que se distribuye conjuntamente con el ejecutable para Windows. En Linux, una vez instalado Maxima, se podrá instalar este entorno separadamente.
+Otro entorno gráfico es Wxmaxima\footnote{http://wxmaxima.sourceforge.net} (Figura~\ref{fig:wxmaxima}), que se distribuye conjuntamente con los ejecutables para Windows y Mac. En Linux, una vez instalado Maxima, se podrá instalar este entorno separadamente.
 
 Una cuarta alternativa, que resulta muy vistosa por hacer uso de \TeX, es la de ejecutar Maxima desde el editor Texmacs\footnote{http://www.texmacs.org} (Figura~\ref{fig:texmacs}).
 
-Emacs es un editor clásico en sistemas Unix. Aunque hay varios formas de ejecutar Maxima desde Emacs, con el modo Imaxima\footnote{http://members3.jcom.home.ne.jp/imaxima} se consigue que los resultados estén formateados en \TeX. 
+Emacs es un editor clásico en sistemas Unix. Aunque hay varias formas de ejecutar Maxima desde Emacs, con el modo Imaxima\footnote{http://members3.jcom.home.ne.jp/imaxima} (Figura~\ref{fig:imaxima}) se consigue que los resultados estén formateados en \TeX. 
 
 También se han desarrollado en los últimos años entornos web para Maxima\footnote{http://maxima.sourceforge.net/relatedprojects.shtml}.
 
@@ -227,25 +226,32 @@ También se han desarrollado en los últimos años entornos web para Maxima\footnot
 \end{center}
 \end{figure}
 
+\begin{figure}[t]
+\begin{center}
+\includegraphics[scale=0.6]{imaxima.pdf} 
+\caption{Maxima en Emacs.}
+\label{fig:imaxima}
+\end{center}
+\end{figure}
 
 
 
 
 
-\subsection{Una primera sesión}
+
+\section{Una primera sesión}
 
 En esta sesión se intenta realizar un primer acercamiento al programa a fin de familiarizarse con el estilo operativo de Maxima, dejando sus habilidades matemáticas para más adelante.
 
 Una vez accedemos a Maxima, lo primero que vamos a ver será la siguiente información:
 
 \begin{Verbatim}
-Maxima 5.14.0 http://maxima.sourceforge.net
-Using Lisp CLISP 2.38 (2006-01-24)
+Maxima 5.25.0 http://maxima.sourceforge.net
+using Lisp CLISP 2.48 (2009-07-28)
 Distributed under the GNU Public License. See the file COPYING.
 Dedicated to the memory of William Schelter.
-This is a development version of Maxima. The function bug_report()
-provides bug reporting information.
-(%i1)
+The function bug_report() provides bug reporting information.
+(%i1) 
 \end{Verbatim}
 
 En primer lugar nos informa sobre la versión de Maxima que se está ejecutando y la URL del proyecto, a continuación indica qué entorno Lisp está dándole soporte al programa y la nota legal sobre la licencia, por supuesto GNU-GPL. Finaliza con un recordatorio a Schelter y cómo debemos proceder si encontramos un fallo en el programa, ayudando así a su mejora. Tras esta cabecera, muy importante, aparece el indicador \verb|(%i1)| esperando nuestra primera pregunta (\verb|i| de \emph{input}). Si queremos calcular una simple suma tecleamos la operación deseada seguida de un punto y coma (\verb|;|)\index{1@; (punto y coma)} y una pulsación de la tecla retorno
@@ -277,7 +283,7 @@ El punto y coma actúa también como un separador cuando escribimos varias instruc
 \]
 conviene prestar atención al hecho de que la asignación de un valor a una variable se hace con los dos puntos (\verb|:|)\index{35@: (operador de asignación)}, no con el signo de igualdad, que se reserva para las ecuaciones.
 
-Es posible que no deseemos los resultados intermedios que Maxima va calculando o, como en este caso, las asignaciones a las variables que va haciendo; en tales situaciones conviene hacer uso del delimitador \verb|$|\index{3@\$}, que no devuelve los resultados que va calculando. Repitiendo el cálculo de la forma 
+Es posible que no deseemos los resultados intermedios que Maxima va calculando o, como en este caso, las asignaciones a las variables que va haciendo; en tales situaciones debe hacerse uso del delimitador \verb|$|\index{3@\$}, que no devuelve los resultados que va calculando. Repitiendo el cálculo de la forma 
 \begin{Verbatim}
 (%i5) x:34578$ y:984003$ x*y;
 \end{Verbatim}
@@ -464,7 +470,7 @@ A fin de no perder los resultados de una sesión con Maxima, quizás con el objeto
 (%i28) save("mi.sesion",y,resultado=%o9,ecuacion=%i9)$
 \end{Verbatim}
 
-véase que el primer argumento de \verb|save|\index{save} es el nombre del archivo, junto con su ruta si se considera necesario, que la variable \verb|y| se escribe tal cual, pero que las referencias de las entradas y salidas deben ir acompañadas de un nombre que las haga posteriormente reconocibles.
+Véase que el primer argumento de \verb|save|\index{save} es el nombre del archivo, junto con su ruta si se considera necesario, que la variable \verb|y| se escribe tal cual, pero que las referencias de las entradas y salidas deben ir acompañadas de un nombre que las haga posteriormente reconocibles.
 
 Por último, la forma correcta de abandonar la sesión de Maxima es mediante
 \index{quit}\begin{Verbatim}
@@ -512,7 +518,7 @@ La función \verb|save| guarda las expresiones matemáticas en formato Lisp, pero 
 
 Continuemos experimentando con esta segunda sesión de Maxima que acabamos de iniciar. 
 
-Maxima está escrito en Lisp, por lo que ya se puede intuir su potencia a la hora de trabajar con listas; en el siguiente diálogo, el texto escrito entre las marcas \verb|/*| e \verb|*/| son comentarios que no afectan a los cálculos,
+Maxima está escrito en Lisp, por lo que ya se puede intuir su potencia a la hora de trabajar con listas; en el siguiente diálogo, el texto escrito entre las marcas \verb|/*| y \verb|*/| son comentarios que no afectan a los cálculos,
 
 \begin{Verbatim}
 (%i7) /* Se le asigna a la variable x una lista */
@@ -591,7 +597,7 @@ Un aspecto a tener en cuenta es que el comportamiento de Maxima está controlado 
 (%i17) numer:false$  /*se reinstaura valor por defecto */
 \end{Verbatim}
 
-Sin embargo, en ciertos contextos será preferible el uso de la función \verb|float|\index{float},
+Sin embargo, en general será preferible el uso de la función \verb|float|\index{float},
 \begin{Verbatim}
 (%i18) float(sqrt(8)/12);
 \end{Verbatim}
@@ -650,7 +656,7 @@ Ya se ha comentado más arriba cómo solicitar ayuda de Maxima. Algunos usuarios e
 
 \begin{Verbatim}
 (%i24)
-system("(mozilla /usr/local/share/maxima/5.14.0/doc/html/es.utf8/maxima.html)&")$
+system("(mozilla /usr/local/share/maxima/5.25.0/doc/html/es.utf8/maxima.html)&")$
 \end{Verbatim}
 
 Este proceso se puede automatizar si la instrucción anterior se guarda en un fichero de nombre \verb|maxima-init.mac| y se guarda en una carpeta oculta de nombre \verb|.maxima| en el directorio principal del usuario\footnote{En Linux}. Así, cada vez que arranque Maxima, se abrirá el navegador con el manual de referencia del programa.
@@ -661,13 +667,13 @@ Este proceso se puede automatizar si la instrucción anterior se guarda en un fic
 
 
 \newpage
-\section{Números, estructuras de datos y sus operaciones}
+\chapter{Números, estructuras de datos y sus operaciones}
 
 
 
 
 
-\subsection{Operaciones aritméticas}
+\section{Operaciones aritméticas}
 
 Maxima puede trabajar con números enteros tan grandes como sea necesario,
 
@@ -820,7 +826,7 @@ En lo que concierne a la división, puede ser necesario conocer el cociente enter
 
 
 
-\subsection{Números complejos}
+\section{Números complejos}
 
 Como ya se comentó más arriba, la unidad imaginaria $\sqrt{-1}$ se representa en Maxima mediante el símbolo \verb|%i|\index{i},
 \begin{Verbatim}
@@ -941,7 +947,7 @@ Por último, el conjugado de un número complejo se calcula con la función \verb|c
 
 
 
-\subsection{Listas}
+\section{Listas}
 \label{listas}
 
 Las listas son objetos muy potentes a la hora de representar estructuras de datos; de hecho, toda expresión de Maxima se representa internamente como una lista, lo que no es de extrañar habida cuenta de que Maxima está programado en Lisp (\emph{List Processing}). Veamos cómo podemos ver la representación interna, esto es en Lisp, de una sencilla expresión tal como $1+3a$,
@@ -1233,7 +1239,7 @@ El cálculo del módulo de un vector se puede hacer mediante la definición previa 
 
 
 
-\subsection{Arrays}
+\section{Arrays}
 \label{arrays}
 
 Los arrays son estructuras que almacenan datos secuencial o matricialmente. Se diferencian de las listas en que éstas pueden alterar su estructura interna y los arrays no; pero la ventaja frente a las listas estriba en que el acceso a un dato cualquiera es directo, mientras que en las listas, al ser estructuras dinámicas, para acceder al $n$-ésimo dato, un puntero debe recorrer todos los elementos de la lista desde el que ocupa el primer lugar. Así pues, se recomienda el uso de arrays cuando se vaya a utilizar una secuencia larga de cantidades cuya estructura se va a mantener inalterable; en general, se mejorarán los tiempos de procesamiento.
@@ -1372,7 +1378,7 @@ Nótense aquí un par de diferencias respecto de la función \verb|array|: el númer
 
 
 
-\subsection{Cadenas}
+\section{Cadenas}
 
 Una cadena se construye escribiendo un texto o cualquier otra expresión entre comillas dobles. Vamos a hacer algunos ejemplos básicos,
 \begin{Verbatim}
@@ -1622,7 +1628,7 @@ Véase que el resultado de \verb|parse_string| ya no es una cadena, sino una expr
 
 
 
-\subsection{Conjuntos}
+\section{Conjuntos}
 
 Se define a continuación un conjunto mediante la función \verb|set|\index{set},
 \begin{Verbatim}
@@ -1767,7 +1773,7 @@ Por último ya, el producto cartesiano de tres conjuntos,
 
 
 
-\subsection{Grafos}
+\section{Grafos}
 
 El soporte para el desarrollo de algoritmos en el ámbito de la teoría de grafos se encuentra en el módulo \verb|graphs|\index{graphs}. Se trata de un paquete de reciente creación que aporta la infraestructura básica para el trabajo con grafos, orientados o no. No se admiten bucles ni aristas múltiples.
 
@@ -2015,10 +2021,10 @@ El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y pond
 
 
 \newpage
-\section{Álgebra}
+\chapter{Álgebra}
 
 
-\subsection{Transformaciones simbólicas}
+\section{Transformaciones simbólicas}
 
 Sin duda, una de las capacidades más destacables de Maxima es su habilidad para manipular expresiones algebraicas. Desarrollemos un ejemplo que empieza por asignar a la variable \verb|q| una expresión literal:
 \begin{Verbatim}
@@ -2447,7 +2453,7 @@ Otras funciones útiles en este contexto y que el usuario podrá consultar en la d
 
 
 
-\subsection{Ecuaciones}
+\section{Ecuaciones}
 
 Almacenar una ecuación en una variable es tan simple como hacer
 \begin{Verbatim}
@@ -2732,7 +2738,7 @@ En los anteriores ejemplos, el primer argumento es una lista con la ecuación o e
 
 
 
-\subsection{Matrices}
+\section{Matrices}
 
 La definición de una matriz es extremadamente simple en Maxima,
 \index{matrix}\begin{Verbatim}
@@ -3202,7 +3208,7 @@ El lector interesado puede obtener información sobre otras funciones matriciales
 
 
 
-\subsection{Patrones y reglas}
+\section{Patrones y reglas}
 
 En un programa de cálculo simbólico, éste no sólo debe tener información sobre una función u operación a partir de su definición, sino que también habrá propiedades y reglas de transformación de expresiones de las que un programa como Maxima debe tener noticia.
 
@@ -3398,10 +3404,10 @@ Otra función útil en estos contextos es \verb|declare|\index{declare}, con la qu
 
 
 \newpage
-\section{Cálculo}
+\chapter{Cálculo}
 
 
-\subsection{Funciones matemáticas}
+\section{Funciones matemáticas}
 
 En Maxima están definidas un gran número de funciones, algunas de las cuales se presentan en la 
 Figura~\ref{fig:funciones}. A continuación se desarrollan algunos ejemplos sobre su uso.
@@ -3587,7 +3593,7 @@ i\,\sinh 1\leqno{\tt (\%o14)}
 
 
 
-\subsection{Límites}
+\section{Límites}
 
 Sin más preámbulos, veamos algunos ejemplos de cómo calcular límites con la asistencia de Maxima. En primer lugar vemos que es posible hacer que la variable se aproxime al infinito ($x \rightarrow \infty$) haciendo uso del símbolo \verb|inf|\index{inf}, o que se aproxime al menos infinito ($x \rightarrow -\infty$) haciendo uso de \verb|minf|\index{minf},
 \index{limit}\begin{Verbatim}
@@ -3653,7 +3659,7 @@ donde Maxima nos responde con el símbolo \verb|und|\index{und} de \emph{undefine
 
 
 
-\subsection{Derivadas}
+\section{Derivadas}
 
 Maxima controla el cálculo de derivadas mediante la instrucción \verb|diff|\index{diff}. A continuación se presentan algunos ejemplos sobre su uso,
 \begin{Verbatim}
@@ -3856,7 +3862,7 @@ El paquete \verb|pdiff|\index{pdiff}, que se encuentra en la carpeta \verb|share
 
 
 
-\subsection{Integrales}
+\section{Integrales}
 
 La función de Maxima que controla el cálculo de integrales es \verb|integrate|\index{integrate}, tanto para las definidas como indefinidas; empecemos por estas últimas,
 \begin{Verbatim}
@@ -4006,7 +4012,7 @@ Nótese que si $x>0$, la $f(x)$ anterior es precisamente la función de densidad d
 
 
 
-\subsection{Ecuaciones diferenciales}
+\section{Ecuaciones diferenciales}
 
 Con Maxima se pueden resolver analíticamente algunas ecuaciones diferenciales ordinarias de primer y segundo orden mediante la instrucción \verb|ode2|\index{ode2}.
 
@@ -4357,7 +4363,7 @@ Para más información sobre la sintaxis de esta función, ejecútese \verb|? rk|. E
 
 
 
-\subsection{Vectores y campos vectoriales}
+\section{Vectores y campos vectoriales}
 \label{vectores}
 
 En Maxima, los vectores se introducen como simples listas (Sección~\ref{listas}), siendo el caso que con ellas se pueden realizar las operaciones de adición, producto por un número y producto escalar de vectores,
@@ -4541,10 +4547,10 @@ Por último, el paquete \verb|vect| incluye también la definición del producto ve
 
 
 \newpage
-\section{Análisis de datos}
+\chapter{Análisis de datos}
 \label{sec:estad}
 
-\subsection{Probabilidad}
+\section{Probabilidad}
 \label{probinf}
 
 El paquete \emph{distrib}\index{distrib} contiene la definición de las funciones de distribución de probabilidad más comunes, tanto discretas (binomial, de Poisson, de Bernoulli, geométrica, uniforme discreta, hipergeométrica y binomial negativa), como continuas (normal, $t$ de Student, $\chi^2$ de Pearson, $F$ de Snedecor, exponencial, lognormal, gamma, beta, uniforme continua, logística, de Pareto, de Weibull, de Rayleigh, de Laplace, de Cauchy y de Gumbel). Para cada una de ellas se puede calcular la probabilidad acumulada, la función de densidad, los cuantiles, medias, varianzas y los coeficientes de asimetría y curtosis:
@@ -4735,7 +4741,7 @@ Para más información sobre estas y otras funciones de simulación estocástica, te
 
 
 
-\subsection{Estadística descriptiva}
+\section{Estadística descriptiva}
 
 Maxima es capaz de realizar ciertos tipos de procesamiento de datos. El paquete \verb|descriptive|\index{descriptive}, junto con otros, es el que nos puede ayudar en este tipo de tareas.
 
@@ -4969,7 +4975,7 @@ Hay varios tipos de diagramas estadísticos programados en el paquete \verb|descr
 \end{figure}
 
 
-\subsection{Estadística inferencial}
+\section{Estadística inferencial}
 
 El paquete \verb|stats|\index{stats} contiene algunos procedimientos clásicos de estadística inferencial. Cada uno de estos procedimientos devuelve un objeto de tipo \verb|inference_result|\index{inference\_result}, el cual guarda todos los resultados obtenidos, aunque sólo muestre una selección de ellos por defecto, los que se consideran de más relevancia; el resto permanecen ocultos y sólo serán visibles a petición del usuario. Los siguientes ejemplos aclararán su uso.
 
@@ -5173,7 +5179,7 @@ Consúltese el manual de referencia de Maxima para ver qué otros tests están prog
 
 
 
-\subsection{Interpolación}
+\section{Interpolación}
 
 El paquete \verb|interpol|\index{interpol} permite abordar el problema de la interpolación desde tres enfoques: lineal, polinomio de Lagrange y \emph{splines} cúbicos.
 
@@ -5370,7 +5376,7 @@ Con esto hemos obtenido dos interpoladores distintos por el método de los \emph{
 
 
 \newpage
-\section{Gráficos}
+\chapter{Gráficos}
 \label{graficos}
 
 
@@ -5378,7 +5384,7 @@ Maxima no está habilitado para realizar él mismo gráficos, por lo que necesitará
 
 
 
-\subsection{El módulo ''plot''}
+\section{El módulo ''plot''}
 
 Las funciones \verb|plot2d|\index{plot2d} y \verb|plot3d|\index{plot3d} son las que se utilizan por defecto. Veamos un ejemplo de cada una de ellas.
 
@@ -5443,7 +5449,7 @@ El resto de esta sección lo dedicaremos a hacer una somera descripción del paque
 
 
 
-\subsection{El módulo ''draw''}
+\section{El módulo ''draw''}
 
 Aquí, las funciones a utilizar son \verb|draw2d|\index{draw2d}, \verb|draw3d|\index{draw3d} y \verb|draw|\index{draw}, para escenas en 2d, 3d y para gráficos múltiples y animaciones, respectivamente. Puesto que se trata de un módulo adicional, será necesario cargarlo en memoria antes de hacer uso de él. Empecemos por un ejemplo comentado.
 
@@ -5645,10 +5651,10 @@ Se comienza definiendo las dos escenas a representar, la función explícita y el 
 
 
 \newpage
-\section{Programando en Maxima}
+\chapter{Programando en Maxima}
 
 
-\subsection{Programación a nivel de Maxima}
+\section{Programación a nivel de Maxima}
 
 
 Esencialmente, programar consiste en escribir secuencialmente un grupo de sentencias sintácticamente correctas que el intérprete pueda leer y luego ejecutar; la manera más sencilla de empaquetar varias sentencias es mediante paréntesis, siendo el resultado del programa la salida de la última sentencia:
@@ -6054,7 +6060,7 @@ prueba.mac:4::             /* se detiene al comienzo de la línea 4 */
 
 
 
-\subsection{Programación a nivel de Lisp}
+\section{Programación a nivel de Lisp}
 
 
 A veces se presentan circunstancias en las que es mejor hacer programas para Maxima directamente en Lisp\index{lisp}; tal es el caso de las funciones que no requieran de mucho procesamiento simbólico, como funciones de cálculo numérico o la creación de nuevas estructuras de datos.
