@@ -27,7 +27,7 @@ orthopoly.de.texi plotdf.de.texi romberg.de.texi simplex.de.texi \
 simplifications.de.texi solve_rec.de.texi stats.de.texi stirling.de.texi \
 stringproc.de.texi symmetries.de.texi to_poly_solve.de.texi unit.de.texi \
 zeilberger.de.texi \
-Glossary.de.texi
+Glossary.de.texi Number.de.texi Indices.de.texi
 
 
 all-local: maxima-index.lisp maxima.html contents.hhc
