@@ -1,0 +1,2564 @@
+@menu
+* Introduction to Function Definition::  
+* Function::                    
+* Macros::                      
+* Functions and Variables for Function Definition::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Function Definition, Function, Function Definition, Function Definition
+@section Introduction to Function Definition
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Function, Macros, Introduction to Function Definition, Function Definition
+@c NEEDS WORK, THIS TOPIC IS IMPORTANT
+@c MENTION DYNAMIC SCOPE (VS LEXICAL SCOPE)
+@section Function
+@c -----------------------------------------------------------------------------
+
+@opencatbox
+@category{Function definition} @category{Programming}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@subsection Ordinary functions
+@c -----------------------------------------------------------------------------
+
+Maximaの中で関数を定義するためには、
+@code{:=}演算子を使います。
+例えば、
+
+@example
+f(x) := sin(x)
+@end example
+
+@noindent
+は関数 @code{f}を定義します。
+匿名関数も @code{lambda}を使って生成することができます。
+例えば、
+
+@example
+f(i,j) := block ([], ...);
+map (lambda ([i], i+1), l)
+@end example
+
+@noindent
+は、項それぞれに1を足したリストを返しますが、
+
+@example
+lambda ([i, j], ...)
+@end example
+
+@noindent
+を@code{f}の代わりに使うことができます。
+
+(訳注: 元マニュアルの編集ミスでしょうか。以下の内容が一貫すると思います。
+@example
+f(i) := i+1;
+map (f, l)
+@end example
+
+@noindent
+は、項それぞれに1を足したリストを返しますが、
+
+@example
+lambda ([i], i+1)
+@end example
+
+@noindent
+を@code{f}の代わりに使うことができます。)
+
+
+
+余分な引数のリストに割り当てられる最後の引数を持つことで、
+引数が可変の関数も定義できます:
+
+(訳注:
+最後の引数変数を@code{[]}でくくると、残りの引数のリストがその引数変数に割り当てられます。)
+
+@example
+(%i1) f ([u]) := u;
+(%o1)                      f([u]) := u
+(%i2) f (1, 2, 3, 4);
+(%o2)                     [1, 2, 3, 4]
+(%i3) f (a, b, [u]) := [a, b, u];
+(%o3)               f(a, b, [u]) := [a, b, u]
+(%i4) f (1, 2, 3, 4, 5, 6);
+(%o4)                 [1, 2, [3, 4, 5, 6]]
+@end example
+
+関数の右辺は式です。
+従って、もし一連の式が欲しいなら、
+
+@example
+f(x) := (expr1, expr2, ...., exprn);
+@end example
+
+とします。 @var{exprn}の値が関数が返すものになります。
+
+もし関数内部のある式から@code{return}したいなら、
+@code{block}と@code{return}を使わなければいけません。
+
+@example
+block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
+@end example
+
+はそれ自身式で、関数定義の右辺にとって代わることができます。
+この際、最後の式よりも早くreturnが起こるかもしれません。
+
+@c COPY THIS STUFF TO @defun block AS NEEDED
+@c ESPECIALLY STUFF ABOUT LOCAL VARIABLES
+ブロックの中の最初の@code{[]}は、
+@code{[a: 3, b, c: []]}のように、変数と変数割り当てのリストを含むかもしれません。
+@code{[a: 3, b, c: []]}は、３つの変数@code{a},@code{b},@code{c}が
+コードが、@code{block}内部や@code{block}内部からコールされた関数内部で実行される限り、
+グローバル値を参照しないように、しかしむしろ特別な値を持つようにします。
+変数がブロックの開始から抜ける時間まで続くので、これは、@i{動的}バインドと呼ばれます。
+一旦@code{block}から戻るか、そこから出ると、(もし存在するなら）変数の古い値が戻されます。
+この方法で変数を保護することは確かによい考えです。
+ブロック変数に関する割り当ては、並列に行われることに注意してください。
+これは、もし先に@code{c: a}を使ったら、@code{c}の値はブロックにちょうど入った時、まだ
+@code{a}がバインドされる前の@code{a}の値であることを意味します。
+例えば、
+
+@example
+block ([a: a], expr1, ... a: a+3, ..., exprn)
+@end example
+
+のような何かを実行することは、
+@code{a}の外部の値を変更されないよう保護しますが、その値がなんだったかアクセス可能にします。
+割り当ての右辺は、バインドが起こる前に入る文脈の中で評価されます。
+Using just 
+ただ@code{block ([x], ...}を使うことは、
+ちょうどまるで新しいMaximaセッションに入ったかのように、@code{x}がそれ自身を値として持つようにします。
+
+関数の実際の引数は、ブロックの変数と厳密に同じ方法で扱われます。
+例えば、
+
+@example
+f(x) := (expr1, ..., exprn);
+@end example
+
+と
+
+@example
+f(1);
+@end example
+
+では、式の評価に関して、まるで
+
+@example
+block ([x: 1], expr1, ..., exprn)
+@end example
+
+を実行したかのような類似の文脈を持ちます。
+
+定義の右辺がランタイムで計算される時、
+関数内部では、@code{define}とたぶん@code{buildq}を使うことが役に立ちます。
+
+Inside functions, when the right hand side of a definition, may be computed at runtime, it is useful to use @code{define} and possibly @code{buildq}.
+
+@c -----------------------------------------------------------------------------
+@subsection Array functions
+@c -----------------------------------------------------------------------------
+
+配列関数は、初めて与えられた引数でコールされた時、関数値を記憶し、
+同じ引数が与えられた時、再計算することなしに記憶した値を返します。
+そんな関数はしばしば@i{メモ化関数}と呼ばれます。
+
+配列関数名は、(グローバルリスト@code{functions}ではなく)
+グローバルリスト@code{arrays}に追加されます。
+
+@code{arrayinfo}は
+記憶された値を持つ引数のリストを返し、
+@code{listarray}は記憶された値を返します。
+@code{dispfun}と@code{fundef}は配列関数の定義を返します。
+
+@code{arraymake}は、通常の関数に対する@code{funmake}のように、
+配列関数コールを構成します。
+@code{arrayapply}は、
+通常の関数に対する@code{apply}のように、
+配列関数をその引数に適用します。
+配列関数に対して、@code{map}に厳密に似たものはありません。
+@code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})}または
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}
+―@var{L}はリストです―は、目的からそれほど遠くありませんけれども。
+
+@code{remarray}は、
+通常の関数に対する@code{remfunction}のように、
+(記憶された関数値も含めて、)配列関数の定義を削除します。
+
+@code{kill(@var{a}[@var{x}])}は、配列関数@var{a}の引数@var{x}に関して記憶された
+値を削除します;
+次回、引数@var{x}で@var{a}がコールされた時、
+関数値は再計算されます。
+しかしながら、
+関数定義も削除する@code{kill(@var{a})}または@code{remarray(@var{a})}を除いて、
+記憶された値すべてを一度に削除する方法はありません。
+
+@c -----------------------------------------------------------------------------
+@node Macros, Functions and Variables for Function Definition, Function, Function Definition
+@section Macros
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{buildq}
+@deffn {関数} buildq (@var{L}, @var{expr})
+
+リスト@var{L}で指名された変数を式 @var{expr}に
+並列に代入します。@var{expr}は評価しません。
+@code{buildq}が代入を実行した後、
+結果の式は整理はされますが、評価されません。
+
+@var{L}の要素はシンボルまたは割り当て式@code{@var{symbol}: @var{value}}です。
+割り当て式は並列に評価されます。
+すなわち、ある変数が割り当ての右辺へバインドされるのは、
+@code{buildq}がコールされた文脈でのバインドです。
+変数リスト@var{L}内でその変数がバインドされるのではありません。
+もし@var{L}の中のある変数に明示的な割り当てがないなら、
+@code{buildq}でのバインドは、
+@code{buildq}がコールされた文脈でのそれと同じです。
+
+そして、@var{L}で指名された変数は並列に@var{expr}に代入されます。
+すなわち、すべての変数への代入は他の代入がされる前に決まります。
+だから、１つの変数の代入は他には一切効果を持ちません。
+
+もし
+任意の変数 @var{x}が @var{expr}の中で @code{splice (@var{x})}のように現れるなら、
+@var{x}はリストにバインドされなければいけませんし、
+リストは、代入の代わりに@var{expr} に接合(内挿)されます。
+
+@var{expr}の中の@var{L}に現れない任意の変数は、
+たとえそれらが@code{buildq}がコールされた文脈の中でバインドを持っていても、
+逐語的に結果に繰り越されます。
+
+例
+
+@code{a}は明示的に @code{x}にバインドされ、
+一方で @code{b}は、コールする文脈で同じバインド(すなわち29)を持ち、
+@code{c}は逐語的に繰り越されます。
+結果の式は、明示的な評価 @code{''%}まで評価されません。
+
+@c ===beg===
+@c (a: 17, b: 29, c: 1729)$
+@c buildq ([a: x, b], a + b + c);
+@c ''%;
+@c ===end===
+@example
+(%i1) (a: 17, b: 29, c: 1729)$
+(%i2) buildq ([a: x, b], a + b + c);
+(%o2)                      x + c + 29
+(%i3) ''%;
+(%o3)                       x + 1758
+@end example
+
+@code{e}はリストにバインドされ、
+@code{foo}の引数の中でそのように現れ、
+@code{bar}の引数の中に内挿されます。
+
+@c ===beg===
+@c buildq ([e: [a, b, c]], foo (x, e, y));
+@c buildq ([e: [a, b, c]], bar (x, splice (e), y));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], foo (x, e, y));
+(%o1)                 foo(x, [a, b, c], y)
+(%i2) buildq ([e: [a, b, c]], bar (x, splice (e), y));
+(%o2)                  bar(x, a, b, c, y)
+@end example
+
+代入の後、結果は整理されます。
+もし代入の前に整理が適用されたら、これら２つの結果は同じになったはずです。
+@c ===beg===
+@c buildq ([e: [a, b, c]], splice (e) + splice (e));
+@c buildq ([e: [a, b, c]], 2 * splice (e));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
+(%o1)                    2 c + 2 b + 2 a
+(%i2) buildq ([e: [a, b, c]], 2 * splice (e));
+(%o2)                        2 a b c
+@end example
+
+@var{L}の中の変数は並列にバインドされます;
+もし順次バインドされたなら、
+最初の結果は、@code{foo (b, b)}になったはずです。
+代入は並列に実行されます;
+二番目の結果を@code{subst}の結果と比較してください。
+@code{subst}は代入を順次実行します。
+
+@c ===beg===
+@c buildq ([a: b, b: a], foo (a, b));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], 
+@c               bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], 
+@c              bar (u, v, w, x, y, z));
+@c ===end===
+@example
+(%i1) buildq ([a: b, b: a], foo (a, b));
+(%o1)                       foo(b, a)
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u],
+              bar (u, v, w, x, y, z));
+(%o2)                 bar(v, w, x, y, z, u)
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u],
+             bar (u, v, w, x, y, z));
+(%o3)                 bar(u, u, u, u, u, u)
+@end example
+
+変数や式が左辺に、それらの値が右辺にある等式のリストを構成します。
+@code{macroexpand}は@code{show_values}が返す式を表示します。
+
+@c ===beg===
+@c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+@c (a: 17, b: 29, c: 1729)$
+@c show_values (a, b, c - a - b);
+@c macroexpand (show_values (a, b, c - a - b));
+@c ===end===
+@example
+(%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+(%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
+(%i2) (a: 17, b: 29, c: 1729)$
+(%i3) show_values (a, b, c - a - b);
+(%o3)          [a = 17, b = 29, c - b - a = 1683]
+(%i4) macroexpand (show_values (a, b, c - a - b));
+(%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
+@end example
+
+複数の引数を持つ関数が与えられたとして、
+引数のいくつかが固定されたもう１つの関数を生成します。
+
+@c ===beg===
+@c curry (f, [a]) :=
+@c         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+@c by3 : curry ("*", 3);
+@c by3 (a + b);
+@c ===end===
+@example
+(%i1) curry (f, [a]) :=
+        buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+(%i2) by3 : curry ("*", 3);
+(%o2)        lambda([[x]], apply(*, append([3], x)))
+(%i3) by3 (a + b);
+(%o3)                       3 (b + a)
+@end example
+
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{macroexpand}
+@deffn {関数} macroexpand (@var{expr})
+
+@code{expr}がマクロ関数コールの時、
+@var{expr}のマクロ展開を、評価はせずに、返します。
+そうでなければ、@code{macroexpand}は@var{expr}を返します。
+
+もし@var{expr}の展開が別のマクロ関数コールをもたらすなら、
+そのマクロ関数コールも展開されます。
+
+@code{macroexpand}は引数をクォートします。
+しかしながら、もしマクロ関数コールの展開が副作用を持つなら，
+それらの副作用が実行されます。
+
+@code{::=}, @code{macros}, @code{macroexpand1}も参照してください。
+
+例
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand (h (y));
+                              y - a
+(%o4)                         -----
+                               99
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{macroexpand1}
+@deffn {関数} macroexpand1 (@var{expr})
+
+@code{expr}がマクロ関数コールの時、
+@var{expr}のマクロ展開を、評価せずに、返します。
+そうでなければ、@code{macroexpand1}は@var{expr}を返します。
+
+@code{macroexpand}は引数をクォートします。
+しかしながら、もしマクロ関数コールの展開が副作用を持つなら，
+それらの副作用が実行されます。
+
+もし@var{expr}の展開が別のマクロ関数コールをもたらすなら、
+そのマクロ関数コールは展開されません。
+
+@code{::=}, @code{macros}, @code{macroexpand}も参照してください。
+
+例
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand1 (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand1 (h (y));
+(%o4)                       g(y - a)
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{macros}
+@defvr {Global variable} macros
+デフォルト値: @code{[]}
+
+@code{macros}は、ユーザー定義のマクロ関数のリストです。
+マクロ関数定義演算子@code{::=}は、このリストに新しいマクロ関数を入れ、
+@code{kill}, @code{remove}, @code{remfunction}はリストからマクロ関数を削除します。
+
+@code{infolists}も参照してください。
+
+@opencatbox
+@category{Function definition} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{splice}
+@deffn {関数} splice (@var{a})
+
+@code{splice}が@code{buildq}内部に現れた時だけ、
+アトム@var{a}で指名されたリストを式に接合(内挿)します;
+そうでなければ、@code{splice}は未定義関数として扱われます。
+もし
+@code{buildq}内部で
+@var{a}単独として(@code{splice}なしに)現れたら、
+@var{a}はリストとして、結果の中に代入されます(内挿されません)。
+@code{splice}の引数はアトムだけを取り得ます;
+リストリテラルやリストをもたらす式を取ることはできません。
+
+通常、@code{splice}は、関数や演算子の引数を提供します。
+関数@code{f}に対して、
+@code{buildq}内部の式@code{f (splice (@var{a}))}は、
+@code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}に展開されます。
+演算子@code{o}に対して、
+@code{buildq}内部の式@code{"o" (splice (@var{a})}は、
+@code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)}に展開されます。
+ここで@code{o}は、任意のタイプの演算子を取り得ます(通常は複数の引数を取るものです)。
+演算子はダブルクォート@code{"}でくくられなければいけないことに注意してください。
+
+例
+
+@c ===beg===
+@c buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+@c buildq ([x: [1, %pi]], "/" (splice (x)));
+@c matchfix ("<>", "<>");
+@c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+@c ===end===
+@example
+(%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+                       foo(1, %pi, z - y)
+(%o1)                -----------------------
+                     length([1, %pi, z - y])
+(%i2) buildq ([x: [1, %pi]], "/" (splice (x)));
+                                1
+(%o2)                          ---
+                               %pi
+(%i3) matchfix ("<>", "<>");
+(%o3)                          <>
+(%i4) buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+(%o4)                   <>1, %pi, z - y<>
+@end example
+
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
+@c end concepts Function Definition
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Function Definition,  , Macros, Function Definition
+@section Functions and Variables for Function Definition
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{apply}
+@deffn {関数} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+
+@code{@var{F}(@var{x_1}, ..., @var{x_n})}を構成、評価します。
+
+@code{apply}は、配列関数を通常の関数と区別しようとはしません;
+@var{F}が配列関数の名前の時、@code{apply}は@code{@var{F}(...)}(カギ括弧の代わりに括弧での関数コール）を評価します。
+@code{arrayapply}は、この場合、カギ括弧ありで関数コールを評価します。
+
+例:
+
+@code{apply}は、引数を評価します。
+この例では、@code{min}が@code{L}の値に適用されます。
+
+@c ===beg===
+@c L : [1, 5, -10.2, 4, 3];
+@c apply (min, L);
+@c ===end===
+@example
+(%i1) L : [1, 5, -10.2, 4, 3];
+(%o1)                 [1, 5, - 10.2, 4, 3]
+(%i2) apply (min, L);
+(%o2)                        - 10.2
+@end example
+
+@code{apply}は、たとえ関数@var{F}が引数をクォートする場合でも、引数を評価します。
+
+@c ===beg===
+@c F (x) := x / 1729;
+@c fname : F;
+@c dispfun (F);
+@c dispfun (fname);
+@c apply (dispfun, [fname]);
+@c ===end===
+@example
+(%i1) F (x) := x / 1729;
+                                   x
+(%o1)                     F(x) := ----
+                                  1729
+(%i2) fname : F;
+(%o2)                           F
+(%i3) dispfun (F);
+                                   x
+(%t3)                     F(x) := ----
+                                  1729
+
+(%o3)                         [%t3]
+(%i4) dispfun (fname);
+fname is not the name of a user function.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) apply (dispfun, [fname]);
+@group
+                                   x
+(%t5)                     F(x) := ----
+                                  1729
+@end group
+(%o5)                         [%t5]
+@end example
+
+@code{apply}は関数名@var{F}を評価します。
+シングルクオート@code{'}は評価を無効にします。
+@code{demoivre}はグローバル変数の名前であり、また、関数でもあります。
+
+@c ===beg===
+@c demoivre;
+@c demoivre (exp (%i * x));
+@c apply (demoivre, [exp (%i * x)]);
+@c apply ('demoivre, [exp (%i * x)]);
+@c ===end===
+@example
+(%i1) demoivre;
+(%o1)                         false
+(%i2) demoivre (exp (%i * x));
+(%o2)                  %i sin(x) + cos(x)
+(%i3) apply (demoivre, [exp (%i * x)]);
+demoivre evaluates to false
+Improper name or value in functional position.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) apply ('demoivre, [exp (%i * x)]);
+(%o4)                  %i sin(x) + cos(x)
+@end example
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{block}
+@deffn  {関数} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {関数} block (@var{expr_1}, ..., @var{expr_n})
+
+@code{block}は@var{expr_1}, ..., @var{expr_n}を順に評価し、評価された最後の式の値を返します。
+順序は@code{go}, @code{throw}, @code{return}関数によって変更することができます。
+最後の式は、@code{return}もしくは@code{throw}を含む式が評価されないなら、@var{expr_n}です。
+いくつかの変数@var{v_1}, ..., @var{v_m}がブロックにローカルに宣言できます;
+これらは同じ名前のグローバル変数と区別されます。
+変数がローカルに宣言されないなら、リストは省略できます。
+ブロック内では、@var{v_1}, ..., @var{v_m}以外の変数はグローバル変数です。
+
+@code{block}は（存在するなら）変数@var{v_1}, ..., @var{v_m}の現在の値を保存し、
+変数がそれ自身に評価されるよう変数のバインドを解除します。
+ローカル変数はブロック内部で任意の値にバインドできますが、
+ブロックが終了するとき保存された値が戻され、
+ブロック内で割り当てられた値は失われます。
+
+@code{block}内部の宣言@code{local(@var{v_1}, ..., @var{v_m})}は
+シンボル@var{v_1}, ..., @var{v_m}に関連付けられた性質を保存し、
+他の式を評価する前に、性質を取り除き、ブロック終了時に元に戻します。
+いくつかの宣言は、@code{:=}、@code{array}, @code{dependencies}, @code{atvalue}, @code{matchdeclare},
+@code{atomgrad}, @code{constant}, @code{nonscalar}その他を含むシンボルの性質として実装されます。
+@code{local}の効果は、ブロック内部のみで有効な宣言を作ります;
+そうでなければ、ブロック内部の宣言は実際にグローバル宣言となります。
+
+@code{block}は他の@code{block}内部でも現れます。
+ローカル変数が、新しいブロックが評価されるたびに確立されます。
+ローカル変数は、内包するブロックではグローバルです。
+ブロックの中で、変数がローカルでないなら、その値は内包するブロックによって割り当てられた最新の値です。
+そうでなければ、グローバル環境の変数の値になります。
+このポリシーは「動的スコープ」の普通の理解と一致します。
+
+ブロックの値は、最後の文もしくはブロックから陽に終了するのに使われる関数@code{function}の引数の値です。
+関数@code{go}は、@code{go}の引数でタグされたブロックの文に制御を移すのに使われます。
+例えば、@code{block ([x], x:1, loop, x: x+1, ..., go(loop), ...)}。
+@code{go}の引数はブロック内部に現れるタグの名前でなければなりません。
+@code{go}を含んだブロック以外のブロック内部のタグへ飛ぶのに@code{go}を使うことはできません。
+
+ブロックは、典型的な場合、関数定義の右辺に現れますが、他の場所でも使うことができます。
+
+@opencatbox
+@category{Expressions} @category{Programming}
+@closecatbox
+@end deffn
+
+@c REPHRASE, NEEDS EXAMPLE
+
+@c -----------------------------------------------------------------------------
+@anchor{break}
+@deffn {関数} break (@var{expr_1}, ..., @var{expr_n})
+
+@var{expr_1}, ..., @var{expr_n}を評価し、印字し、それから
+ユーザーが環境を検査し変更できるところでMaximaブレイクを引き起こします。
+@code{exit;}をタイプすると、計算が再開されます。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c FOR SOME REASON throw IS IN SOME OTHER FILE. MOVE throw INTO THIS FILE.
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{catch}
+@deffn {関数} catch (@var{expr_1}, ..., @var{expr_n})
+
+@var{expr_1}, ..., @var{expr_n}を１つずつ評価します;
+もしどれかが形式@code{throw (arg)}の式の評価に至るなら、
+@code{catch}の値は@code{throw (arg)}の値であり、もう式は評価されません。
+これの「非局所的リターン」は
+入れ子の任意の深さを通過して、@code{throw}を含む最も近い@code{catch}に飛びます。
+もし@code{throw}を含む@code{catch}がないなら、
+エラーメッセージが印字されます。
+
+もし引数の評価が
+いかなる@code{throw}の評価にも至らないなら、
+@code{catch}の値は@var{expr_n}の値です。
+
+@example
+(%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
+(%i2) g(l) := catch (map (''%, l))$
+(%i3) g ([1, 2, 3, 7]);
+(%o3)               [f(1), f(2), f(3), f(7)]
+(%i4) g ([1, 2, -3, 7]);
+(%o4)                          - 3
+@end example
+
+@c REWORD THIS PART.
+もし@code{l}が非負数だけから成るなら、
+@code{l}の要素それぞれの@code{f}のリストを返します;
+そうでなければ、@code{g}は "catches" the
+first negative element of 
+@code{l}の最初の負の要素を「キャッチ」して、それを「スロー」します。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{compfile}
+@deffn  {関数} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} compfile (@var{filename}, functions)
+@deffnx {関数} compfile (@var{filename}, all)
+
+Maxima関数をLispに翻訳し、翻訳したコードをファイル@var{filename}に書き込みます。
+
+@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})}は
+指定された関数を翻訳します。
+@code{compfile (@var{filename}, functions)}と
+@code{compfile (@var{filename}, all)}はユーザー定義関数をすべて翻訳します。
+
+Lisp翻訳は評価されず、出力ファイルはLispコンパイラによって処理もされません。
+@c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
+@code{translate}はLisp翻訳を生成し評価します。
+@code{compile_file}はMaximaをLispに翻訳し、Lispコンパイラを実行します。
+
+@code{translate}, @code{translate_file}, @code{compile_file}も参照してください。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
+@c TO EVENTUALLY CALL AN OBSOLETE FUNCTION SPRIN1.
+@c RECOMMENDATION IS TO CUT THIS ITEM, AND CUT $compgrind FROM src/transs.lisp
+@c @defvar compgrind
+@c デフォルト値: @code{false}
+@c 
+@c When @code{compgrind} is @code{true}, function definitions printed by
+@c @code{compfile} are pretty-printed.
+@c 
+@c @end defvar
+
+@c -----------------------------------------------------------------------------
+@anchor{compile}
+@deffn  {関数} compile (@var{f_1}, ..., @var{f_n})
+@deffnx {関数} compile (functions)
+@deffnx {関数} compile (all)
+
+Maxima関数@var{f_1}, ..., @var{f_n}をLispに翻訳し、
+Lisp翻訳を評価し、
+翻訳された関数それぞれについてLisp関数@code{COMPILE}をコールします。
+@code{compile}は、コンパイルされた関数名のリストを返します。
+
+@code{compile (all)}や@code{compile (functions)}は、
+ユーザー定義関数すべてをコンパイルします。
+
+@code{compile}は引数をクォートします; 
+クォートクォート演算子@code{'@w{}'}はクォートに優先します。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{define}
+@deffn  {関数} define (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{expr})
+@deffnx {関数} define (@var{f}[@var{x_1}, @dots{}, @var{x_n}], @var{expr})
+@deffnx {関数} define (funmake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@deffnx {関数} define (arraymake (@var{f}, [@var{x_1}, @dots{}, @var{x_n}]), @var{expr})
+@deffnx {関数} define (ev (@var{expr_1}), @var{expr_2})
+
+引数@var{x_1}, @dots{}, @var{x_n}を持ち、
+@var{expr}の中身を持つ@var{f}という名前の関数を定義します。
+@code{define}は、いつも（陽にクオートされていない限り）、２番目の引数を評価します。
+定義された関数は、（かっこでくくられた引数を持つ）通常のMaxima関数
+もしくは（カギ括弧でくくられた引数を持つ）配列関数です。
+
+最後の関数の引数@var{x_n}が要素１つのリストの時、
+@code{define}によって定義される関数は、可変な数の引数を受け入れます。
+実際の引数は、形式的な引数, @var{x_1}, ..., @var{x_(n - 1)}に１対１に割り当てられます。
+実際の引数がさらに存在するなら@var{x_n}にリストとして割り当てられます。
+
+@code{define}の最初の引数が@code{@var{f}(@var{x_1}, ..., @var{x_n})}もしくは
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]}の形の式の時、
+関数の引数は評価されますが、既にその名前の関数や変数があったとしても@var{f}は評価されません。
+
+最初の引数が演算子@code{funmake}もしくは@code{arraymake}, @code{ev}を伴う式の時、
+最初の引数は評価されます；これは、本体だけでなく、関数名が計算されることを許します。
+
+すべての関数定義は同じ名前空間で現れます;
+関数gの中で関数@code{f}を定義することは、@code{f}のスコープを@code{g}に自動的に限定することにはなりません。
+しかしながら、@code{local(f)}は、関数@code{f}の定義を、
+@code{local}が現れたブロックや他の合成式内部でのみ有効とします。
+
+もしある形式的な引数@var{x_k}が（評価の後）クォートされたシンボルならば、
+@code{define}によって定義される関数は、対応する実際の引数を評価しません。
+そうでければ、すべての実際の引数は評価されます。
+
+@code{:=}や@code{::=}も参照してください。
+
+例:
+
+@code{define}は、(陽にクォートされない限り)いつも二番目の引数を評価します
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c define (F1 (x, y), expr);
+@c F1 (a, b);
+@c F2 (x, y) := expr;
+@c F2 (a, b);
+@c ===end===
+@example
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) define (F1 (x, y), expr);
+(%o2)              F1(x, y) := cos(y) - sin(x)
+(%i3) F1 (a, b);
+(%o3)                    cos(b) - sin(a)
+(%i4) F2 (x, y) := expr;
+(%o4)                   F2(x, y) := expr
+(%i5) F2 (a, b);
+(%o5)                    cos(y) - sin(x)
+@end example
+
+@code{define}が定義する関数は、通常のMaxima関数も配列関数も取り得ます。
+
+@c ===beg===
+@c define (G1 (x, y), x.y - y.x);
+@c define (G2 [x, y], x.y - y.x);
+@c ===end===
+@example
+(%i1) define (G1 (x, y), x.y - y.x);
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) define (G2 [x, y], x.y - y.x);
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+最後の、または唯一の引数@var{x_n}が１要素のリストの時、
+@code{define}が定義した関数は可変の数の引数を受け付けます。
+
+@c ===beg===
+@c define (H ([L]), '(apply ("+", L)));
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) define (H ([L]), '(apply ("+", L)));
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+最初の引数が
+演算子@code{funmake}, @code{arraymake}, または@code{ev}を含む式なら、
+最初の引数は評価されます。
+
+@c ===beg===
+@c [F : I, u : x];
+@c funmake (F, [u]);
+@c define (funmake (F, [u]), cos(u) + 1);
+@c define (arraymake (F, [u]), cos(u) + 1);
+@c define (foo (x, y), bar (y, x));
+@c define (ev (foo (x, y)), sin(x) - cos(y));
+@c ===end===
+@example
+(%i1) [F : I, u : x];
+(%o1)                        [I, x]
+(%i2) funmake (F, [u]);
+(%o2)                         I(x)
+(%i3) define (funmake (F, [u]), cos(u) + 1);
+(%o3)                  I(x) := cos(x) + 1
+(%i4) define (arraymake (F, [u]), cos(u) + 1);
+(%o4)                   I  := cos(x) + 1
+                         x
+(%i5) define (foo (x, y), bar (y, x));
+(%o5)                foo(x, y) := bar(y, x)
+(%i6) define (ev (foo (x, y)), sin(x) - cos(y));
+(%o6)             bar(y, x) := sin(x) - cos(y)
+@end example
+
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
+@c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
+@c @deffn {関数} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+
+@c -----------------------------------------------------------------------------
+@anchor{define_variable}
+@deffn {関数} define_variable (@var{name}, @var{default_value}, @var{mode})
+
+グローバル変数をMaxima環境に導入します。
+@c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable
+@c MORE USEFUL IN TRANSLATED CODE ??
+@code{define_variable}は、ユーザーが書いたパッケージで役に立ちます。
+パッケージはしばしば翻訳されたりコンパイルされたりします。
+
+@code{define_variable}は以下のステップを実行します:
+
+@enumerate
+@item
+@code{mode_declare (@var{name}, @var{mode})}は、
+@var{name}のモードを翻訳器に宣言します。
+可能なモードのリストについては、@code{mode_declare}を参照してください。
+
+@item
+もし変数がバインドされていなければ、@var{default_value}が@var{name}に割り当てられます。
+
+@item
+@code{declare (@var{name}, special)}はそれをspecialと宣言します。
+@c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
+
+@item
+@var{name}が宣言されたモードのただ１つの割り当てられた値であることを
+保証するために、
+@var{name}をテスト関数に関連づけます。
+
+@end enumerate
+
+
+@c FOLLOWING STATEMENT APPEARS TO BE OUT OF DATE.
+@c EXAMINING DEFMSPEC $DEFINE_VARIABLE AND DEF%TR $DEFINE_VARIABLE IN src/trmode.lisp,
+@c IT APPEARS THAT THE 4TH ARGUMENT IS NEVER REFERRED TO.
+@c EXECUTING translate_file ON A MAXIMA BATCH FILE WHICH CONTAINS
+@c define_variable (foo, 2222, integer, "THIS IS FOO");
+@c DOES NOT PUT "THIS IS FOO" INTO THE LISP FILE NOR THE UNLISP FILE.
+@c The optional 4th argument is a documentation string.  When
+@c @code{translate_file} is used on a package which includes documentation
+@c strings, a second file is output in addition to the Lisp file which
+@c will contain the documentation strings, formatted suitably for use in
+@c manuals, usage files, or (for instance) @code{describe}.
+
+@code{value_check}プロパティは、
+@code{define_variable}を介して
+@code{any}以外のモードに定義された任意の変数に割り当てられることができます。
+@code{value_check}プロパティは、１変数のラムダ式または関数名です。
+それは値を変数に割り当てようとする時にコールされます。
+@code{value_check}関数の引数は期待値です。
+
+@code{define_variable}は@code{default_value}を評価し、
+@code{name}と@code{mode}をクォートします。
+@code{define_variable}は@code{name}の現在値を返します。
+それは、もし@code{name}がそこでバインドされてないなら@code{default_value}で
+そうでないなら@code{name}の以前の値です。
+
+例:
+
+@code{foo}はブーリアン変数で、初期値@code{true}を持ちます。
+
+@c ===beg===
+@c define_variable (foo, true, boolean);
+@c foo;
+@c foo: false;
+@c foo: %pi;
+@c foo;
+@c ===end===
+@example
+(%i1) define_variable (foo, true, boolean);
+(%o1)                         true
+(%i2) foo;
+(%o2)                         true
+(%i3) foo: false;
+(%o3)                         false
+(%i4) foo: %pi;
+Error: foo was declared mode boolean, has value: %pi
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) foo;
+(%o5)                         false
+@end example
+
+@code{bar}は整数変数で、素数でなければいけません。
+
+@c ===beg===
+@c define_variable (bar, 2, integer);
+@c qput (bar, prime_test, value_check);
+@c prime_test (y) := if not primep(y) then 
+@c                            error (y, "is not prime.");
+@c bar: 1439;
+@c bar: 1440;
+@c bar;
+@c ===end===
+@example
+(%i1) define_variable (bar, 2, integer);
+(%o1)                           2
+(%i2) qput (bar, prime_test, value_check);
+(%o2)                      prime_test
+(%i3) prime_test (y) := if not primep(y) then
+                           error (y, "is not prime.");
+(%o3) prime_test(y) := if not primep(y)
+
+                                   then error(y, "is not prime.")
+(%i4) bar: 1439;
+(%o4)                         1439
+(%i5) bar: 1440;
+1440 is not prime.
+#0: prime_test(y=1440)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) bar;
+(%o6)                         1439
+@end example
+
+@code{baz_quux}は、値を割り当てられない変数です。
+モード@code{any_check}は@code{any}のようですが、
+@code{any_check}は@code{value_check}メカニズムを可能にしますが、
+@code{any}はそうしません。
+
+@c ===beg===
+@c define_variable (baz_quux, 'baz_quux, any_check);
+@c F: lambda ([y], if y # 'baz_quux then 
+@c                  error ("Cannot assign to `baz_quux'."));
+@c qput (baz_quux, ''F, value_check);
+@c baz_quux: 'baz_quux;
+@c baz_quux: sqrt(2);
+@c baz_quux;
+@c ===end===
+@example
+(%i1) define_variable (baz_quux, 'baz_quux, any_check);
+(%o1)                       baz_quux
+(%i2) F: lambda ([y], if y # 'baz_quux then
+                 error ("Cannot assign to `baz_quux'."));
+(%o2) lambda([y], if y # 'baz_quux
+
+                        then error(Cannot assign to `baz_quux'.))
+(%i3) qput (baz_quux, ''F, value_check);
+(%o3) lambda([y], if y # 'baz_quux
+
+                        then error(Cannot assign to `baz_quux'.))
+(%i4) baz_quux: 'baz_quux;
+(%o4)                       baz_quux
+(%i5) baz_quux: sqrt(2);
+Cannot assign to `baz_quux'.
+#0: lambda([y],if y # 'baz_quux then
+                 error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) baz_quux;
+(%o6)                       baz_quux
+@end example
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{dispfun}
+@deffn  {関数} dispfun (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} dispfun (all)
+
+ユーザー定義関数@var{f_1}, ..., @var{f_n}の定義を表示します。
+引数それぞれは、(@code{::=}で定義された)マクロ名、
+(@code{:=}や@code{define}で定義された)通常の関数、
+(@code{:=}y@code{define}で定義された、しかし引数をカギ括弧@code{[ ]}でくくった)
+配列関数、
+(@code{:=}y@code{define}で定義された、しかしいくつかの引数をカギ括弧@code{[ ]}で、他の引数を括弧@code{( )}でくくった)添字付き関数、
+特別な添字の値で選択された添字付き関数の族の１つ、
+定数添字で定義された添字付き関数、
+のいずれかを取り得ます。
+
+@code{dispfun (all)}は、
+@code{functions}, @code{arrays}, @code{macros}リストで与えられた中で、
+定数添字で定義された添字付き関数を除いたユーザー定義関数すべてを表示します。
+
+@code{dispfun}は
+表示された関数それぞれのために
+(@code{%t1}, @code{%t2}, など)
+中間式ラベルを生成し、関数定義をラベルに割り当てます。
+対照的に、@code{fundef}は関数定義を返します。
+
+@code{dispfun}は引数をクォートします; 
+クォートクォート演算子@code{'@w{}'}はクォートに優先します。
+@code{dispfun}は表示された関数に対応する中間式ラベルのリストを返します。
+
+例:
+
+@c ===beg===
+@c m(x, y) ::= x^(-y);
+@c f(x, y) :=  x^(-y);
+@c g[x, y] :=  x^(-y);
+@c h[x](y) :=  x^(-y);
+@c i[8](y) :=  8^(-y);
+@c dispfun (m, f, g, h, h[5], h[10], i[8]);
+@c ''%;
+@c ===end===
+@example
+(%i1) m(x, y) ::= x^(-y);
+                                     - y
+(%o1)                   m(x, y) ::= x
+(%i2) f(x, y) :=  x^(-y);
+                                     - y
+(%o2)                    f(x, y) := x
+(%i3) g[x, y] :=  x^(-y);
+                                    - y
+(%o3)                     g     := x
+                           x, y
+(%i4) h[x](y) :=  x^(-y);
+                                    - y
+(%o4)                     h (y) := x
+                           x
+(%i5) i[8](y) :=  8^(-y);
+                                    - y
+(%o5)                     i (y) := 8
+                           8
+(%i6) dispfun (m, f, g, h, h[5], h[10], i[8]);
+                                     - y
+(%t6)                   m(x, y) ::= x
+@group
+                                     - y
+(%t7)                    f(x, y) := x
+@end group
+
+                                    - y
+(%t8)                     g     := x
+                           x, y
+
+                                    - y
+(%t9)                     h (y) := x
+                           x
+
+                                    1
+(%t10)                     h (y) := --
+                            5        y
+                                    5
+
+                                     1
+(%t11)                    h  (y) := ---
+                           10         y
+                                    10
+
+                                    - y
+(%t12)                    i (y) := 8
+                           8
+
+(%o12)       [%t6, %t7, %t8, %t9, %t10, %t11, %t12]
+(%i12) ''%;
+                     - y              - y            - y
+(%o12) [m(x, y) ::= x   , f(x, y) := x   , g     := x   , 
+                                            x, y
+                  - y           1              1             - y
+        h (y) := x   , h (y) := --, h  (y) := ---, i (y) := 8   ]
+         x              5        y   10         y   8
+                                5             10
+@end example
+
+@opencatbox
+@category{Function definition} @category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fullmap}
+@deffn {関数} fullmap (@var{f}, @var{expr_1}, @dots{})
+
+@code{map}と似ていますが、@code{fullmap}は、主演算子が同じでなくなるまで、
+部分式すべてに再帰的にマッピングを続けます。
+
+@code{fullmap}は、ある行列操作のための整理に使われています;
+このように、Maximaは時々、たとえ@code{fullmap}がユーザーに陽にコールされなくても、
+@code{fullmap}に関係したエラーメッセージを生成します。
+
+例:
+
+@c ===beg===
+@c a + b * c;
+@c fullmap (g, %);
+@c map (g, %th(2));
+@c ===end===
+@example
+(%i1) a + b * c;
+(%o1)                        b c + a
+(%i2) fullmap (g, %);
+(%o2)                   g(b) g(c) + g(a)
+(%i3) map (g, %th(2));
+(%o3)                     g(b c) + g(a)
+@end example
+
+@opencatbox
+@category{Function application} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fullmapl}
+@deffn {関数} fullmapl (@var{f}, @var{list_1}, @dots{})
+
+@code{fullmap}に似ていますが、@code{fullmapl}はリストや行列にのみマップします。
+
+例:
+
+@c ===beg===
+@c fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+@c ===end===
+@example
+(%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+(%o1)                [[a + 3, 4], [4, 3.5]]
+@end example
+
+@opencatbox
+@category{Function application} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{functions}
+@defvr {システム変数} functions
+デフォルト値: @code{[]}
+
+@code{functions}は、現在のセッションでの通常のMaxima関数のリストです。
+通常の関数は、@code{define}や@code{:=}で構成された関数であり、
+括弧@code{()}でコールされます。
+関数はMaximaプロンプトで定義することができ、また、
+@code{load}や@code{batch}がロードするMaximaファイルの中で定義することができます。
+
+(例えば@code{F[x]}のように、カギ括弧でコールされる)配列関数と
+(例えば@code{F[x](y)}のように、カギ括弧と括弧でコールされる)添字付き関数は、
+@code{functions}ではなくグローバル変数@code{arrays}にリストされます。
+
+Lisp関数はどのリストにも保持されません。
+
+例:
+
+@c ===beg===
+@c F_1 (x) := x - 100;
+@c F_2 (x, y) := x / y;
+@c define (F_3 (x), sqrt (x));
+@c G_1 [x] := x - 100;
+@c G_2 [x, y] := x / y;
+@c define (G_3 [x], sqrt (x));
+@c H_1 [x] (y) := x^y;
+@c functions;
+@c arrays;
+@c ===end===
+@example
+(%i1) F_1 (x) := x - 100;
+(%o1)                   F_1(x) := x - 100
+(%i2) F_2 (x, y) := x / y;
+                                      x
+(%o2)                    F_2(x, y) := -
+                                      y
+(%i3) define (F_3 (x), sqrt (x));
+(%o3)                   F_3(x) := sqrt(x)
+(%i4) G_1 [x] := x - 100;
+(%o4)                    G_1  := x - 100
+                            x
+(%i5) G_2 [x, y] := x / y;
+                                     x
+(%o5)                     G_2     := -
+                             x, y    y
+(%i6) define (G_3 [x], sqrt (x));
+(%o6)                    G_3  := sqrt(x)
+                            x
+(%i7) H_1 [x] (y) := x^y;
+                                      y
+(%o7)                     H_1 (y) := x
+                             x
+(%i8) functions;
+(%o8)              [F_1(x), F_2(x, y), F_3(x)]
+(%i9) arrays;
+(%o9)                 [G_1, G_2, G_3, H_1]
+@end example
+
+@opencatbox
+@category{Function definition} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{fundef}
+@deffn {関数} fundef (@var{f})
+
+関数@var{f}の定義を返します。
+
+@c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
+引数は、(@code{::=}で定義された）マクロの名前か、
+(@code{:=}もしくは@code{define}で定義された）通常の関数か、
+(@code{:=}や@code{define}で定義され、引数がカギ括弧でくくられた）配列関数か、
+(@code{:=}や@code{define}で定義され、いくつかの引数がカギ括弧でくくられ、残りがかっこでくくられた）添字関数か、
+特別な添字の値によって選択された添字関数族の１つか、一定の添字で定義された添字関数です。
+
+@code{fundef}は引数をクォートします;
+クォートクォート演算子@code{'@w{}'}はクォートに優先します。
+
+@code{fundef (@var{f})}は@var{f}の定義を返します。
+対照的に、@code{dispfun (@var{f})}は中間式ラベルを生成し、ラベルに定義を割り当てます。
+
+@c PROBABLY NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{funmake}
+@deffn {関数} funmake (@var{F}, [@var{arg_1}, @dots{}, @var{arg_n}])
+
+式@code{@var{F}(@var{arg_1}, ..., @var{arg_n})}を返します。
+戻り値は整理されますが、評価されません。
+だから関数@var{F}はたとえ存在してもコールされません。
+
+@code{funmake}は配列関数と通常の関数を区別しようとしません;
+@var{F}が配列関数名の時、
+@code{funmake}は@code{@var{F}(...)}を返します
+(すなわち、カギ括弧の代わりに括弧での関数コール)。
+@code{arraymake}は、この場合，カギ括弧での関数コールを返します。
+
+@code{funmake}は引数を評価します。
+
+例:
+
+通常のMaxima関数に適用された@code{funmake}。
+
+@c ===beg===
+@c F (x, y) := y^2 - x^2;
+@c funmake (F, [a + 1, b + 1]);
+@c ''%;
+@c ===end===
+@example
+(%i1) F (x, y) := y^2 - x^2;
+                                   2    2
+(%o1)                  F(x, y) := y  - x
+(%i2) funmake (F, [a + 1, b + 1]);
+(%o2)                    F(a + 1, b + 1)
+(%i3) ''%;
+                              2          2
+(%o3)                  (b + 1)  - (a + 1)
+@end example
+
+マクロに適用された@code{funmake}。
+
+@c ===beg===
+@c G (x) ::= (x - 1)/2;
+@c funmake (G, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) G (x) ::= (x - 1)/2;
+                                  x - 1
+(%o1)                    G(x) ::= -----
+                                    2
+(%i2) funmake (G, [u]);
+(%o2)                         G(u)
+(%i3) ''%;
+                              u - 1
+(%o3)                         -----
+                                2
+@end example
+
+添字付き関数に適用された@code{funmake}。
+
+@c ===beg===
+@c H [a] (x) := (x - 1)^a;
+@c funmake (H [n], [%e]);
+@c ''%;
+@c funmake ('(H [n]), [%e]);
+@c ''%;
+@c ===end===
+@example
+(%i1) H [a] (x) := (x - 1)^a;
+                                        a
+(%o1)                   H (x) := (x - 1)
+                         a
+(%i2) funmake (H [n], [%e]);
+                                       n
+(%o2)               lambda([x], (x - 1) )(%e)
+(%i3) ''%;
+                                    n
+(%o3)                       (%e - 1)
+(%i4) funmake ('(H [n]), [%e]);
+(%o4)                        H (%e)
+                              n
+(%i5) ''%;
+                                    n
+(%o5)                       (%e - 1)
+@end example
+
+いかなる種類の関数にも定義されていないシンボルへ適用された
+@code{funmake}
+
+@c ===beg===
+@c funmake (A, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) funmake (A, [u]);
+(%o1)                         A(u)
+(%i2) ''%;
+(%o2)                         A(u)
+@end example
+
+@code{funmake}は引数を評価しますが、戻り値を評価しません。
+
+@c ===beg===
+@c det(a,b,c) := b^2 -4*a*c;
+@c (x : 8, y : 10, z : 12);
+@c f : det;
+@c funmake (f, [x, y, z]);
+@c ''%;
+@c ===end===
+@example
+(%i1) det(a,b,c) := b^2 -4*a*c;
+                                    2
+(%o1)              det(a, b, c) := b  - 4 a c
+(%i2) (x : 8, y : 10, z : 12);
+(%o2)                          12
+(%i3) f : det;
+(%o3)                          det
+(%i4) funmake (f, [x, y, z]);
+(%o4)                    det(8, 10, 12)
+(%i5) ''%;
+(%o5)                         - 284
+@end example
+
+Maximaは@code{funmake}の戻り値を整理します。
+
+@c ===beg===
+@c funmake (sin, [%pi / 2]);
+@c ===end===
+@example
+(%i1) funmake (sin, [%pi / 2]);
+(%o1)                           1
+@end example
+
+@opencatbox
+@category{Function application} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lambda}
+@deffn  {関数} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {関数} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {関数} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+ラムダ式 (すなわち、匿名関数)を定義し返します。
+関数は要求された引数@var{x_1}, ..., @var{x_m}を持ち、
+また、オプション引数@var{L}を持つかもしれません。オプション引数は関数本体の中にリストとして現れます。
+関数の戻り値は@var{expr_n}です。
+ラムダ式は変数に割り当てることができ、通常の関数のように評価できます。
+ラムダ式は関数名が期待されるいくつかのコンテキストで現れるかもしれません。
+
+関数が評価される時、
+バインドされていないローカル変数@var{x_1}, ..., @var{x_m}が生成されます。
+@code{lambda}は
+@code{block}の中や別の@code{lambda}の中で現れるかもしれません;
+ローカル変数は、別の@code{block}や@code{lambda}が評価される度に毎回確立されます。
+ローカル変数は内包する@code{block}や@code{lambda}にはグローバルのように見えます。
+もし変数がローカルでないなら、
+その値は、(もし割り当てられたなら)内包する@code{block}や@code{lambda}で直近に割り当てられた値です。
+そうでなければ、グローバル環境での変数の値です。
+このポリシーは「動的スコープ」の普通の理解と一致するかもしれません。
+
+ローカル変数が確立された後、
+@var{expr_1}から@var{expr_n}までが順に評価されます。
+特殊変数@code{%%}―直前の式の値を表します―が認識されます。
+@code{throw}と@code{catch}も式のリストの中に現れるかもしれません。
+
+@code{block}で囲まれない限り
+@code{return}はラムダ式の中には現れません。
+@code{block}で囲まれた場合、
+ブロックがたまたま @var{expr_n}に至るということでない限り、
+@code{return}はラムダ式の戻り値ではなくブロックの戻り値を定義します。
+同様に、@code{go}は、@code{block}で囲まれない限りラムダ式の中に現れません。
+
+@code{lambda}は引数をクォートします;
+クォートクォート演算子@code{'@w{}'}はクォートに優先します。
+
+例:
+
+@itemize @bullet
+@item
+ラムダ式は変数に割り当てることができ、通常の関数のように評価できます。
+@end itemize
+
+@c ===beg===
+@c f: lambda ([x], x^2);
+@c f(a);
+@c ===end===
+@example
+(%i1) f: lambda ([x], x^2);
+                                      2
+(%o1)                    lambda([x], x )
+(%i2) f(a);
+                                2
+(%o2)                          a
+@end example
+@itemize @bullet
+@item
+ラムダ式は
+関数評価が期待される文脈で現れるかもしれません。
+@end itemize
+
+@c ===beg===
+@c lambda ([x], x^2) (a);
+@c apply (lambda ([x], x^2), [a]);
+@c map (lambda ([x], x^2), [a, b, c, d, e]);
+@c ===end===
+@example
+(%i3) lambda ([x], x^2) (a);
+                                2
+(%o3)                          a
+(%i4) apply (lambda ([x], x^2), [a]);
+                                2
+(%o4)                          a
+(%i5) map (lambda ([x], x^2), [a, b, c, d, e]);
+                        2   2   2   2   2
+(%o5)                 [a , b , c , d , e ]
+@end example
+@itemize @bullet
+@item
+引数変数はローカル変数です。
+他の変数はグローバル変数のように見えます。
+ある特殊な評価が@code{'@w{}'}のようにある方法で強制されない限り、
+グローバル変数はラムダ式が評価される時評価されます。
+@end itemize
+
+@c ===beg===
+@c a: %pi$
+@c b: %e$
+@c g: lambda ([a], a*b);
+@c b: %gamma$
+@c g(1/2);
+@c g2: lambda ([a], a*''b);
+@c b: %e$
+@c g2(1/2);
+@c ===end===
+@example
+(%i6) a: %pi$
+(%i7) b: %e$
+(%i8) g: lambda ([a], a*b);
+(%o8)                   lambda([a], a b)
+(%i9) b: %gamma$
+(%i10) g(1/2);
+                             %gamma
+(%o10)                       ------
+                               2
+(%i11) g2: lambda ([a], a*''b);
+(%o11)                lambda([a], a %gamma)
+(%i12) b: %e$
+(%i13) g2(1/2);
+                             %gamma
+(%o13)                       ------
+                               2
+@end example
+@itemize @bullet
+@item
+ラムダ式は入れ子にできます。
+外側のラムダ式の中のローカル変数は、
+同じ名前のローカル変数がマスクしない限り、
+内側の式にはグローバルに見えます。
+@end itemize
+
+@c ===beg===
+@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@c h(%pi, %gamma);
+@c ===end===
+@example
+(%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+                                                   1
+(%o14)    lambda([a, b], h2 : lambda([a], a b), h2(-))
+                                                   2
+(%i15) h(%pi, %gamma);
+                             %gamma
+(%o15)                       ------
+                               2
+@end example
+@itemize @bullet
+@item
+@code{lambda}は引数をクォートするので、
+以下のラムダ式@code{i}は
+"@code{a}を掛ける"関数を定義しません。
+以下のラムダ式@code{i2}のように、
+そんな関数は@code{buildq}を介して定義することができます。
+@end itemize
+
+@c ===beg===
+@c i: lambda ([a], lambda ([x], a*x));
+@c i(1/2);
+@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+@c i2(1/2);
+@c i2(1/2)(%pi);
+@c ===end===
+@example
+(%i16) i: lambda ([a], lambda ([x], a*x));
+(%o16)            lambda([a], lambda([x], a x))
+(%i17) i(1/2);
+(%o17)                  lambda([x], a x)
+(%i18) i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+(%o18)    lambda([a], buildq([a : a], lambda([x], a x)))
+(%i19) i2(1/2);
+                                     x
+(%o19)                   lambda([x], -)
+                                     2
+(%i20) i2(1/2)(%pi);
+                               %pi
+(%o20)                         ---
+                                2
+@end example
+@itemize @bullet
+@item
+ラムダ式は、可変の数の引数を取ることができます。
+それは、唯一のまたは最後の引数として@code{[@var{L}]}で指定されます。
+引数は関数本体の中にリストとして現れます。
+@end itemize
+
+@c ===beg===
+@c f : lambda ([aa, bb, [cc]], aa * cc + bb);
+@c f (foo, %i, 17, 29, 256);
+@c g : lambda ([[aa]], apply ("+", aa));
+@c g (17, 29, x, y, z, %e);
+@c ===end===
+@example
+(%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
+(%o1)          lambda([aa, bb, [cc]], aa cc + bb)
+(%i2) f (foo, %i, 17, 29, 256);
+(%o2)       [17 foo + %i, 29 foo + %i, 256 foo + %i]
+(%i3) g : lambda ([[aa]], apply ("+", aa));
+(%o3)             lambda([[aa]], apply(+, aa))
+(%i4) g (17, 29, x, y, z, %e);
+(%o4)                  z + y + x + %e + 46
+@end example
+
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{local}
+@deffn {関数} local (@var{v_1}, @dots{}, @var{v_n})
+
+シンボル@var{v_1}, ..., @var{v_n}に関連付けられた性質を保存し、
+他の式を評価する前にすべての性質を取り除き、
+@code{local}が現れたブロックや他の合成式の終了時に保存した性質を元に戻します。
+
+いくつかの宣言は、@code{:=}、@code{array}, @code{dependencies}, @code{atvalue}, @code{matchdeclare},
+ @code{atomgrad}, @code{constant}, @code{nonscalar}その他を含むシンボルの性質として実装されます。
+@code{local}の効果は、ブロック内部のみで有効な宣言を作ります;
+そうでなければ、ブロック内部の宣言は実際にグローバル宣言となります。
+
+@code{local}は、@code{block}や関数定義の本体や@code{lambda}式の中に現れます。
+それぞれの中で１カ所だけ許されます。
+
+@code{local}は引数をクォートします。
+@code{local}は@code{done}を返します。
+
+例:
+
+ローカル関数定義。
+
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
+@end example
+
+@opencatbox
+@category{Function definition} @category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{macroexpansion}
+@defvr {オプション変数} macroexpansion
+デフォルト値: @code{false}
+
+@code{macroexpansion}は
+マクロ関数コールを
+マクロ関数の展開(すなわち戻り値)で
+置き換えるかどうかを制御します。
+展開を記憶する代価で、置き換えは次の式評価をスピードアップするかもしれません。
+
+@table @code
+@item false
+マクロ関数コールをマクロ関数の展開で置き換えられません。
+
+@item expand
+マクロ関数コールが初めて評価された時、展開が記憶されます。
+展開は次のコール時に再計算されません;
+(@code{print}やグローバル変数への割り当てのような)いかなる副作用も
+最初にマクロ関数コールが評価された時だけ起こります。
+式の中の展開は、同じマクロ関数コールを持つ他の式に影響を与えません。
+@item displace
+マクロ関数コールが初めて評価された時、展開でコールを置き換え、
+マクロ関数がコールされた式を変更します。
+展開は次のコールで再計算されません;
+(@code{print}やグローバル変数への割り当てのような)いかなる副作用も
+最初にマクロ関数コールが評価された時だけ起こります。
+式の中の展開は、同じマクロ関数コールを持つ他の式に影響を与えません。
+@end table
+
+例
+
+@code{macroexpansion}が@code{false}の時、
+コールする式が評価される時毎回マクロ関数がコールされ、
+コールする式は変更されません。
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
+@c macroexpansion: false;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: false;
+(%o4)                         false
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+@code{macroexpansion}が@code{expand}の時、
+マクロ関数は一度コールされ、
+コールする式は変更されません。
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
+@c macroexpansion: expand;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: expand;
+(%o4)                        expand
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+@code{macroexpansion}が@code{expand}の時、
+マクロ関数は一度コールされ、
+コールする式が変更されます。
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
+@c macroexpansion: displace;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: displace;
+(%o4)                       displace
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                 x - 99
+(%t6)                    f(x) := ------
+                                 x + 99
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+@opencatbox
+@category{Function application} @category{Global flags}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_checkp}
+@defvr {オプション変数} mode_checkp
+デフォルト値: @code{true}
+
+@c WHAT DOES THIS MEAN ??
+@code{mode_checkp}が@code{true}の時、
+@code{mode_declare}はバインドされた変数のモードをチェックします。
+@c NEED SOME EXAMPLES HERE.
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_check_errorp}
+@defvr {オプション変数} mode_check_errorp
+デフォルト値: @code{false}
+
+@c WHAT DOES THIS MEAN ??
+@code{mode_check_errorp}が@code{true}の時、
+@code{mode_declare}はエラーをコールします。
+@c NEED SOME EXAMPLES HERE.
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_check_warnp}
+@defvr {オプション変数} mode_check_warnp
+デフォルト値: @code{true}
+
+@c WHAT DOES THIS MEAN ??
+@code{mode_check_warnp}が@code{true}の時、
+モードエラーが記述されます。
+@c NEED SOME EXAMPLES HERE.
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_declare}
+@deffn {関数} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
+
+@code{mode_declare}は、
+その後の関数の翻訳やコンパイルのために
+変数と関数のモードを宣言するのに使われます。
+@code{mode_declare}は、通常、
+関数定義の始めやMaximaスクリプトの始めに置かれたり、対話プロンプトで実行されたりします。
+
+@code{mode_declare}の引数は、
+変数とモードから成る対です。
+モードは
+@code{boolean}, @code{fixnum}, @code{number}, @code{rational}, @code{float}のいずれか１つです。
+変数それぞれは、
+同じモードを持つように宣言される変数すべてのリストも取り得ます。
+
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+もし変数が配列で、かつ、参照される配列のすべての要素が値を持つなら、
+なら、
+@example
+array(yi, dim1, dim2, ...)
+@end example
+よりむしろ@code{array (yi, complete, dim1, dim2, @dots{})}を
+最初に配列のバインドを宣言する時に使うべきです。
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+もし配列の要素すべてが
+モード@code{fixnum} (@code{float})なら、
+@code{complete}の代わりに@code{fixnum} (@code{float})を使ってください。
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+もし配列のすべての要素が同じモード―@code{m}としましょう―なら、
+効率的な翻訳のためには、
+
+@example
+mode_declare (completearray (yi), m))
+@end example
+
+を使うべきです。
+
+配列を使う数値コードは、例えば、10 x 10の浮動小数点配列のために
+
+@example
+mode_declare (completearray (a [10, 10]), float)
+@end example
+
+というように、期待される配列サイズを宣言することでより速く実行されるかもしれません
+
+引数として@code{function (f_1, f_2, ...)}を使うことで
+関数の結果のモードを宣言することができます;
+ここで@code{f_1}, @code{f_2}, @dots{}は関数名です。
+例えば、式
+
+@example
+mode_declare ([function (f_1, f_2, ...)], fixnum)
+@end example
+
+は、
+@code{f_1}, @code{f_2}, ...が返す値が1ワード整数であることを宣言します。
+
+@code{modedeclare}は@code{mode_declare}と同義です。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c WHAT IS THIS ABOUT ??
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{mode_identity}
+@deffn {関数} mode_identity (@var{arg_1}, @var{arg_2})
+
+@code{mode_declare}と@code{macros}で
+例えば、flonumsのリストのリストや他の合成データオブジェクトを宣言するのに
+使われる特殊形式。
+@code{mode_identity}の最初の引数は、@code{mode_declare}に与えられるような
+プリミティブな値モード名(すなわち、@code{float}, @code{fixnum}, @code{number},
+@code{list}, @code{any}のいずれか)であり、
+二番目の引数は、評価され、@code{mode_identity}の値として返される式です。
+しかしながら、もし戻り値が最初の引数で宣言されたモードによって許されていないなら、
+エラーか警告がシグナルされます。
+重要なことは、MaximaによってLisp翻訳器に命じた式のモードが、二番目の引数のなかで続く一切から独立して、最初の引数として与えられるそれだということです。
+例えば、@code{x: 3.3; mode_identity (fixnum, x);}はエラーをもたらします。
+@code{mode_identity (flonum, x)}は3.3を返します。
+これは多くの使い道があります。例えば、もし@code{first (l)}が数を返すと知っていたなら、
+@code{mode_identity (number, first (l))}と書くかもしれません。
+しかしながら、それをするもっと効率的な方法は、
+
+@example
+firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+@end example
+
+のように新しいプリミティブを定義し、
+そして数のリストの最初の要素を取る時毎回@code{firstnumb}を使うことです。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{remfunction}
+@deffn  {関数} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {関数} remfunction (all)
+
+シンボル@var{f_1}, ..., @var{f_n}の関数定義をアンバインドします。
+引数は、（@code{:=}もしくは@code{define}で生成された）通常の関数名もしくは（@code{::=}で生成された）マクロ関数をとります。
+
+@code{remfunction (all)}は関数定義すべてをアンバインドします。
+
+@code{remfunction}は引数をクォートします。
+
+@code{remfunction}は、関数定義はアンバインドされたシンボルのリストを返します。
+シンボルに関数定義がなければ、シンボルの代わりに@code{false}を返します。
+
+@code{remfunction}は配列関数すなわち添字付き関数には適用されません。
+これらのタイプの関数には@code{remarray}を適用します。
+
+@opencatbox
+@category{Function definition}
+@closecatbox
+@end deffn
+
+@c NEEDS MORE WORK !!!
+@defvr {オプション変数} savedef
+デフォルト値: @code{true}
+
+@code{savedef}が@code{true}の時、
+関数が解釈される時に
+ユーザー関数のMaximaバージョンが保持されます。
+これは、定義が@code{dispfun}によって表示されることを許し、
+関数が編集されることを許します。
+
+@code{savedef}が@code{false}の時、
+解釈された関数の名前は、@code{functions}リストから取り除かれます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+
+@end defvr
+
+@c IS THERE ANY REASON TO SET transcompile: false ??
+@c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
+
+@c -----------------------------------------------------------------------------
+@anchor{transcompile}
+@defvr {オプション変数} transcompile
+デフォルト値: @code{true}
+
+@code{transcompile}が@code{true}の時、
+@code{translate}と@code{translate_file}は
+翻訳コードをコンパイルにより適したものにする宣言を生成します。
+@c BUT THE DECLARATIONS DON'T SEEM TO BE NECESSARY, SO WHAT'S THE POINT AGAIN ??
+
+@code{compfile}は実行中@code{transcompile: true}を設定します。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{translate}
+@deffn {関数} translate (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} translate (functions)
+@deffnx {関数} translate (all)
+
+ユーザー定義関数@var{f_1}, @dots{}, @var{f_n}をMaxima言語からLispに翻訳し、
+Lisp翻訳を評価します。
+通常、翻訳された関数は元の関数より速く実行されます。
+
+@code{translate (all)}や@code{translate (functions)}は、
+ユーザー定義関数すべてを翻訳します。
+
+翻訳される関数は、
+より効率的なコードを生成するために可能な時は
+先頭に@code{mode_declare}コールを含むべきです。
+例えば:
+
+@example
+f (x_1, x_2, ...) := block ([v_1, v_2, ...],
+    mode_declare (v_1, mode_1, v_2, mode_2, ...), ...)
+@end example
+
+@noindent
+
+ここで、@var{x_1}, @var{x_2}, ... は関数のパラメータであり、
+@var{v_1}, @var{v_2}, ...はローカル変数です。
+
+もし@code{savedef}が@code{false}なら(以下を参照してください)
+翻訳された関数の名前は、@code{functions}リストから削除され、
+@code{props}リストに加えられます。
+
+完全にデバッグされない限り、関数は翻訳すべきではありません。
+
+式は整理されていると仮定されます;
+もしされていないなら、厳密ですが、最適でないコードが生成されます。
+従って、
+ユーザーは
+@code{simp}スイッチを@code{false}―翻訳される式の整理を抑制します―
+に設定すべきではありません。
+
+スイッチ@code{translate}は、もし@code{true}なら、
+ユーザー関数のLispへの自動翻訳をもたらします。
+
+LispとMaximaのバージョンの間である非互換性が存在する可能性があるので、
+翻訳された関数は
+翻訳前にした方法を同一に動作するわけではないことに注意してください。
+原則として、
+もし変数のいずれかが@code{mode_declare}された標準有理式(CRE)なら
+複数の引数を取る@code{rat}関数と@code{ratvars}関数は使うべきではありません。
+また、
+@code{prederror: false}設定は翻訳されません。
+@c WHAT ABOUT % AND %% ???
+
+@code{savedef} - もし@code{true}なら、
+関数が@code{translate}された時、Maximaバージョンのユーザー関数を残すようにします。
+これは、定義を@code{dispfun}で表示することを可能にし、
+関数を編集することを可能にします。
+
+@code{transrun} - もし@code{false}なら、
+すべての関数について、翻訳バージョンではなく、
+インタープリトされるバージョン(まだあると仮定して)が実行されるようにします。
+
+@code{translate}が返す結果は、翻訳された関数名のリストです。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{translate_file}
+@deffn  {関数} translate_file (@var{maxima_filename})
+@deffnx {関数} translate_file (@var{maxima_filename}, @var{lisp_filename})
+
+MaximaコードのファイルをLispコードのファイルに翻訳します。
+@code{translate_file}は３つのファイル名のリストを返します:
+Maximaファイル名、Lispファイル名、翻訳についての追加情報を含むファイル名。
+@code{translate_file}は引数を評価します。
+
+@code{translate_file ("foo.mac"); load("foo.LISP")}は、
+例えば、@code{'@w{}'}と@code{%}の利用といった若干の制約を除いて、
+コマンド@code{batch ("foo.mac")}と同じです。
+@c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
+
+@code{translate_file (@var{maxima_filename})}は
+Maximaファイル@var{maxima_filename}を
+同様に名付けらたLispファイルに翻訳します。
+例えば、@code{foo.mac}は@code{foo.LISP}に翻訳されます。
+Maximaのファイル名はディレクトリ名を含むかもしれません。
+その場合、Lisp出力ファイルは、Maxima入力が来たのと同じディレクトリに書かれます。
+
+@code{translate_file (@var{maxima_filename}, @var{lisp_filename})}は、
+Maximaファイル@var{maxima_filename}をLispファイル@var{lisp_filename}に翻訳します。
+@code{translate_file}は、どんなものでも、@code{lisp_filename}の
+ファイル名の拡張子を無視します;
+Lisp出力ファイルのファイル名の拡張子は、いつも@code{LISP}です。
+Lispファイル名はディレクトリ名を含むかもしれません。
+その場合、Lisp出力ファイルは指定されたディレクトリに書かれます。
+
+@code{translate_file}は、翻訳器のファイル
+様々な度合いの厳しさの翻訳器警告メッセージのファイルも書き出します。
+このファイルのファイル名拡張子は @code{UNLISP}です。
+このファイルは、翻訳されたコードの中のバグを追跡するために、
+あいまいかもしれませんが、価値ある情報を含むかもしれません。
+@code{UNLISP}ファイルはいつもMaxima入力が来るのと同じディレクトリに書かれます。
+
+@code{translate_file}は
+Lispコードがコンパイルされるすぐに宣言や定義が効力を発揮するようにするLispコードを発行します。
+このトピックに関してさらに知るには@code{compile_file}を参照してください。
+
+@c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
+@flushleft
+@code{tr_array_as_ref},
+@c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
+@c WE DON'T WANT TO MENTION IT
+@c @code{tr_bind_mode_hook}, 
+@code{tr_bound_function_applyp},
+@c tr_exponent EXISTS AND WORKS AS ADVERTISED IN src/troper.lisp
+@c NOT OTHERWISE DOCUMENTED; ITS EFFECT SEEMS TOO WEAK TO MENTION
+@code{tr_exponent},
+@code{tr_file_tty_messagesp}, 
+@code{tr_float_can_branch_complex},
+@code{tr_function_call_default}, 
+@code{tr_numer},
+@code{tr_optimize_max_loop}, 
+@code{tr_semicompile},
+@code{tr_state_vars}, 
+@code{tr_warnings_get},
+@code{tr_warn_bad_function_calls},
+@code{tr_warn_fexpr}, 
+@code{tr_warn_meval},
+@code{tr_warn_mode},
+@code{tr_warn_undeclared}, 
+@code{tr_warn_undefined_variable}
+@end flushleft
+も参照してください。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{transrun}
+@defvr {オプション変数} transrun
+デフォルト値: @code{true}
+
+@code{transrun}が@code{false}の時、
+すべての関数について、翻訳バージョンではなく、
+インタープリトされるバージョン(まだあると仮定して)が実行されるようにします。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
+@c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_array_as_ref}
+@defvr {オプション変数} tr_array_as_ref
+デフォルト値: @code{true}
+
+もし@code{translate_fast_arrays}が@code{false}なら、
+@code{translate_file}が発行するLispコードの中の配列参照は、
+@code{tr_array_as_ref}によって影響されます。
+@code{tr_array_as_ref}が@code{true}の時、
+配列名は評価されます。
+そうでなければ、配列名は翻訳されたコードの中で文字リテラルとして現れます。
+
+もし@code{translate_fast_arrays}が@code{true}なら、
+@code{tr_array_as_ref}は効果を持ちません。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
+@c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_bound_function_applyp}
+@defvr {オプション変数} tr_bound_function_applyp
+デフォルト値: @code{true}
+
+@code{tr_bound_function_applyp}が@code{true}の時、
+もし(関数引数のような)バインドされた変数が関数として使われていることが見つかったら
+Maximaは警告を与えます。
+@c WHAT DOES THIS MEAN ??
+@code{tr_bound_function_applyp}は、
+そんな場合に生成されたコードに影響しません。
+
+例えば、
+@code{g (f, x) := f (x+1)}のような式は警告メッセージをトリガーします。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_file_tty_message}
+@defvr {オプション変数} tr_file_tty_messagesp
+デフォルト値: @code{false}
+
+@code{tr_file_tty_messagesp}が@code{true}の時、
+ファイルの翻訳中に
+@code{translate_file}が生成するメッセージがコンソールに表示され、
+@code{false}の時、ファイルの翻訳に関するメッセージは
+UNLISPファイルに挿入されるだけです。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
+@c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
+@c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_float_can_branch_complex}
+@defvr {オプション変数} tr_float_can_branch_complex
+デフォルト値: @code{true}
+
+Maxima-to-Lisp翻訳器に
+ translator to assume that
+関数@code{acos}, @code{asin}, @code{asec}, @code{acsc}が複素数の結果を返すことができることを仮定するように命じます。
+
+@code{tr_float_can_branch_complex}の表面上の効果は以下の通りです。
+しかしながら、このフラグは翻訳器出力上の効果を持ちません。
+
+@code{true}の時、
+たとえ (@code{mode_declare}が設定したように)@code{x}がモード@code{float}でも
+@code{acos(x)}はモード@code{any}です。
+@code{false}の時、
+@code{x}がモード@code{float}の時だけ
+@code{acos(x)}はモード@code{float}です。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_function_call_default}
+@defvr {オプション変数} tr_function_call_default
+デフォルト値: @code{general}
+
+@code{false}は、あきらめて@code{meval}をコールすることを意味し、
+@code{expr}は、引数が固定されたLisp関数を仮定することを意味します。
+@code{general}、デフォルトは
+@code{mexprs}や@code{mlexprs}にはよいが@code{macros}にはよくないコードを与えます。
+@code{general}は、コンパイルされたコードの中で変数バインドが正確であることを保証します。
+@code{general}モードでは、
+F(X)を翻訳する時、もしFがバインドされた変数なら、
+@code{apply (f, [x])}を意味すると仮定され、適切な警告と合わせてそのように翻訳されます。
+これをオフにする必要はありません。
+デフォルト設定で警告メッセージがないことは、
+Maximaインタープリタと、翻訳、コンパイルされたコードの完全互換性を意味します。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_numer}
+@defvr {オプション変数} tr_numer
+デフォルト値: @code{false}
+
+@code{tr_numer}が@code{true}の時、
+@code{numer}プロパティは
+それらを持つアトム、例えば、@code{%pi}に使われます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_optimize_max_loop}
+@defvr {オプション変数} tr_optimize_max_loop
+デフォルト値: 100
+
+@code{tr_optimize_max_loop}は、
+翻訳器のマクロ展開と最適化パスが形式を検討する際繰り返す最大回数です。
+これはマクロ展開エラーや終了しない最適化プロパティをキャッチします。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_semicompile}
+@defvr {オプション変数} tr_semicompile
+デフォルト値: @code{false}
+
+@code{tr_semicompile}が@code{true}の時、
+@code{translate_file}と@code{compfile}は、
+マクロ展開されたが、Lispコンパイラによって機械語にコンパイルされない形式を出力します。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+
+@end defvr
+
+@c ARE ANY OF THESE OBSOLETE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_state_vars}
+@defvr {システム変数} tr_state_vars
+デフォルト値:
+@example
+[transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
+tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
+tr_function_call_default, tr_array_as_ref,tr_numer]
+@end example
+
+翻訳された出力の形式に影響するスイッチのリスト。
+@c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
+翻訳器をデバッグしようとする時
+この情報はシステムの人たちに役に立ちます。
+翻訳された生成物を与えられた状態で生成されるべきだったものと比較することによって、
+バグを追跡することが可能です。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+
+@end defvr
+
+@c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
+@c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
+@c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warnings_get}
+@deffn {関数} tr_warnings_get ()
+
+現在の翻訳の間に翻訳器が与える警告のリストを印字します。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} tr_warn_bad_function_calls
+デフォルト値: @code{true}
+
+- 翻訳時にされた不適切な宣言のせいで正確でないかもしれない関数コールが行われている時、
+警告を与えます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_fexpr}
+@defvr {オプション変数} tr_warn_fexpr
+デフォルト値: @code{compfile}
+
+- もしFEXPRに遭遇したら、警告を与えます。
+FEXPRは、通常、翻訳コードの中で出力されるべきではありません。
+合法で特殊なプログラム形式はすべて翻訳されます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_meval}
+@defvr {オプション変数} tr_warn_meval
+デフォルト値: @code{compfile}
+
+- もし関数@code{meval}がコールされたら、警告を与えます。
+もし@code{meval}がコールされたら、それは翻訳の中の問題を示します。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_mode}
+@defvr {オプション変数} tr_warn_mode
+デフォルト値: @code{all}
+
+- 変数がそのモードに不適切な値を割り当てられた時、警告を与えます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_undeclared}
+@defvr {オプション変数} tr_warn_undeclared
+デフォルト値: @code{compile}
+
+- 未宣言変数についての警告をいつTTYに送るかを決めます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tr_warn_undefined_variable}
+@defvr {オプション変数} tr_warn_undefined_variable
+デフォルト値: @code{all}
+
+- 未定義のグローバル変数が見られた時、警告を与えます。
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{compile_file}
+@deffn  {関数} compile_file (@var{filename})
+@deffnx {関数} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {関数} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+
+Maximaファイル@var{filename}をLispに翻訳し、Lispコンパイラを実行し、
+もし翻訳とコンパイルが成功したら、コンパイルされたコードをMaximaにロードします。
+
+@code{compile_file}は４つのファイル名のリストを返します:
+元のMaximaファイル、Lisp翻訳、翻訳時ノート、コンパイルされたコード。
+もしコンパイルが失敗したら、4番目の項目は@code{false}です。
+
+Lispコードがコンパイルされると(コンパイルされたコードをロードすることなしに)すぐに
+いくつかの宣言と定義は効力を発揮します。
+これらは@code{:=}演算子で定義された関数、
+@code{::=}演算子で定義されたマクロ、
+@c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
+@code{alias}, @code{declare},
+@code{define_variable},  @code{mode_declare},
+@code{infix}, @code{matchfix},
+@code{nofix}, @code{postfix}, @code{prefix},
+@code{compfile}
+を含みます。
+
+コンパイルされたコードがロードされるまで
+割り当てと関数コールは評価されません。
+特に、Maximaファイルの中で、
+(@code{tr_numer}, など)翻訳フラグへの割り当ては翻訳時に効果を持ちません。
+
+@c @code{compile_file} may mistake warnings for errors and
+@c return @code{false} as the name of the compiled code when, in fact,
+@c the compilation succeeded. This is a bug. 
+@c REPORTED AS SOURCEFORGE BUG # 1103722.
+
+@var{filename}は@code{:lisp}文を含むことができません。
+
+@code{compile_file}は引数を評価します。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{declare_translated}
+@deffn {関数} declare_translated (@var{f_1}, @var{f_2}, @dots{})
+
+MaximaコードのファイルをLispに翻訳する時、
+ファイルの中で見る関数が翻訳された関数としてコールされるか、コンパイルされた関数としてコールされるか、また、どの関数がMaxima関数か未定義なのか、翻訳器が知ることは重要です。
+この宣言をファイルの先頭に置くことは、
+たとえまだLisp関数値を持たないシンボルがコール時にそれを持つだろうが、
+それを知らせます。
+@code{fn}がLisp関数になるつもりであることを翻訳器が知らない時、
+@code{(MFUNCTION-CALL fn arg1 arg2 ...)}が生成されます。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn

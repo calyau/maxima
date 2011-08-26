@@ -1,0 +1,2318 @@
+@c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
+@menu
+* Introduction to Polynomials::  
+* Functions and Variables for Polynomials::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Polynomials, Functions and Variables for Polynomials, Polynomials, Polynomials
+@section Introduction to Polynomials
+@c -----------------------------------------------------------------------------
+
+多項式は、Maximaの中では、一般形もしくは、標準有理式(CRE)形として記憶されます。
+後者は標準形であり、factor, ratsimpなどのような演算によって内部で使われます。
+
+標準有理式は、特に
+（RATFACが@code{true}に設定された時の部分的に因数分解された多項式や有理関数はもちろん）
+展開された多項式や有理関数に適したある種の表現を構成します。
+このCRE形では、変数の（最もメインから最小にまでの）順序付けは、
+式それぞれに仮定されます。
+多項式は、一連の式の対が続く主変数から成るリストによって再帰的に表現されます。
+それぞれの対の最初のメンバーは、その項の主変数の指数であり、
+２番目のメンバーは、その項の係数で、係数は、数、もしくは、再度の形式で表現された別の変数の多項式です。
+このように、3*X^2-1のCRE形の主要な部分は、(X 2 3 0 -1)であり、
+2*X*Y+X-3のそれは、
+Yが主変数と仮定すると(Y 1 (X 1 2) 0 (X 1 1 0 -3)) であり、
+Xが主変数と仮定すると(X 1 (Y 1 2 0 1) 0 -3)です。
+「主」であることは、普通、アルファベットの逆順で決定されます。
+CRE式の「変数」はアトムである必要はありません。
+実査、主演算子が+ - * /でも、整数べきの^でもない任意の部分式は、
+それが式の中で現れると、（CRE形の）式の「変数」と考えられます。
+例えば、式X+SIN(X+1)+2*SQRT(X)+1のCRE変数は、XとSQRT(X)、SIN(X+1)です。
+もしユーザーがRATVARS関数を使って変数の順序付けを指定しないなら、
+Maximaはアルファベットの順序付けを選びます。
+一般に、CREは、有理式、すなわち、分子と分母が共通因子を持たず、分母が正の多項式の比を表します。
+内部形は、本質的に、変数順序付けリストが先行する多項式の対（分子と分母）です。
+もし表示される式がCRE形なら、もしくはもしCRE形の部分式を含むなら、
+シンボル/R/が行ラベルに続きます。
+式をCRE形に変換することに関してはRAT関数を参照してください。
+拡張CRE形は、テイラー級数の表現に使われます。
+有理式の概念が拡張され、変数の指数は、単に正の整数ではなく、正の有理数も負の有理数も取ることができ、係数はそれ自身単なる多項式ではなく上で記載された有理式を取ることができます。
+これらは内部的にはCRE形に似ていて、その一般化である再帰多項式形によって表現されます。
+それは、切り詰めの次数のような追加の情報を持ちます。
+CRE形として、そんな式の行ラベルにはシンボル/T/が続きます。
+
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+
+@c end concepts Polynomials
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynomials
+@section Functions and Variables for Polynomials
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{algebraic}
+@defvr {オプション変数} algebraic
+デフォルト値: @code{false}
+
+代数的整数の整理の効果が現れるようにするためには、
+@code{algebraic}は@code{true}に設定されなければいけません。
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} berlefact
+デフォルト値: @code{true}
+
+@code{berlefact}が@code{false}の時、
+Kroneckerの因数分解アルゴリズムが使われます。
+そうでなければ、Berlekampのアルゴリズム―これがデフォルトですーが使われます。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end defvr
+
+@c WHAT IS THIS ABOUT EXACTLY ??
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} bezout (@var{p1}, @var{p2}, @var{x})
+
+@code{resultant}コマンドの代替。
+行列を返します。
+この行列の@code{determinant}は、望みの結果です。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c REWORD THIS ITEM -- COULD BE MORE CONCISE
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} bothcoef (@var{expr}, @var{x})
+
+最初のメンバーが@var{expr}の中の@var{x}の
+（もし@var{expr}がCRE形なら@code{ratcoef}が見つけるような）
+係数であり、
+２番目のメンバーが@var{expr}の残りの部分であるリストを返します。
+例えば、
+@code{@var{expr} = A*@var{x} + B}の@code{[A, B]}。
+
+例:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c islinear (expr, x) := block ([c],
+@c         c: bothcoef (rat (expr, x), x),
+@c         is (freeof (x, c) and c[1] # 0))$
+@c islinear ((r^2 - (x - r)^2)/x, x);
+
+@example
+(%i1) islinear (expr, x) := block ([c],
+        c: bothcoef (rat (expr, x), x),
+        is (freeof (x, c) and c[1] # 0))$
+(%i2) islinear ((r^2 - (x - r)^2)/x, x);
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} coeff (@var{expr}, @var{x}, @var{n})
+@deffnx {関数} coeff (@var{expr}, @var{x})
+
+@var{expr}の@code{@var{x}^@var{n}}の係数を返します。
+ここで、@var{expr}は@var{x}の多項式か単項式です。
+
+@code{coeff(@var{expr}, @var{x}^@var{n})}は
+@code{coeff(@var{expr}, @var{x}, @var{n})}と同値です。
+@code{coeff(@var{expr}, @var{x}, 0)}は
+@var{x}を含まない@var{expr}の剰余項を返します。
+もし省略されたら、@var{n}は1が仮定されます。
+
+@var{x}は単純変数か添字付き変数か、演算子1つとその引数のすべてから構成されるexprの部分式です。
+
+@code{expand}か@code{factor}を適用することで、
+@var{expr}と同値な式の係数を計算することが可能かもしれません。
+@code{coeff}自身は@code{expand}や@code{factor}や他のいかなる関数も
+適用しません。
+
+例:
+
+@code{coeff}は@var{expr}の@code{@var{x}^@var{n}}の係数を返します。
+
+@c ===beg===
+@c coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
+@c ===end===
+@example
+(%i1) coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
+                                3
+(%o1)                          b
+@end example
+
+@code{coeff(@var{expr}, @var{x}^@var{n})}は
+@code{coeff(@var{expr}, @var{x}, @var{n})}と同値です。
+
+@c ===beg===
+@c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
+@c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
+@c ===end===
+@example
+(%i1) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
+(%o1)                         - c
+                                 3
+(%i2) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
+(%o2)                         - c
+                                 3
+@end example
+
+@code{coeff(@var{expr}, @var{x}, 0)}は
+@var{expr}の@var{x}を含まない剰余項です。
+
+@c ===beg===
+@c coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
+@c ===end===
+@example
+(%i1) coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
+                            3  3
+(%o1)                      c  u  + a u
+@end example
+
+@var{x}は単純変数か添字付き変数か、演算子1つとその引数のすべてから構成されるexprの部分式です。
+
+@c ===beg===
+@c coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
+@c coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
+@c coeff (sin(1+x)*sin(x) + sin(1+x)^3*sin(x)^3, sin(1+x)^3);
+@c coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
+@c ===end===
+@example
+(%i1) coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
+(%o1)                        - 2 %pi
+(%i2) coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
+(%o2)                        - 2 %pi
+(%i3) coeff (sin(1+x)*sin(x) + sin(1+x)^3*sin(x)^3, sin(1+x)^3);
+                                3
+(%o3)                        sin (x)
+(%i4) coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
+(%o4)                         c - d
+@end example
+
+@code{coeff}自身は@code{expand}や@code{factor}や他のいかなる関数も
+適用しません。
+
+@c ===beg===
+@c coeff (c*(a + b)^3, a);
+@c expand (c*(a + b)^3);
+@c coeff (%, a);
+@c coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
+@c factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
+@c coeff (%, (a + b)^3);
+@c ===end===
+@example
+(%i1) coeff (c*(a + b)^3, a);
+(%o1)                           0
+(%i2) expand (c*(a + b)^3);
+                 3          2        2        3
+(%o2)           b  c + 3 a b  c + 3 a  b c + a  c
+(%i3) coeff (%, a);
+                                2
+(%o3)                        3 b  c
+(%i4) coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
+(%o4)                           0
+(%i5) factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
+                                  3
+(%o5)                      (b + a)  c
+(%i6) coeff (%, (a + b)^3);
+(%o6)                           c
+@end example
+
+@code{coeff}はリスト、行列、等式上を散逸します。
+
+@c ===beg===
+@c coeff ([4*a, -3*a, 2*a], a);
+@c coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+@c coeff (a*u - b*v = 7*u + 3*v, u);
+@c ===end===
+@example
+(%i1) coeff ([4*a, -3*a, 2*a], a);
+(%o1)                      [4, - 3, 2]
+(%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+                          [  a    b  ]
+(%o2)                     [          ]
+                          [ - c  - d ]
+(%i3) coeff (a*u - b*v = 7*u + 3*v, u);
+(%o3)                         a = 7
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} content (@var{p_1}, @var{x_1}, @dots{}, @var{x_n})
+最初のメンバーが、多項式変数@var{p_1}の@var{x_n}
+に関する項の係数（これが中身です）の最大公約数であり、
+２番目のメンバーが中身で多項式@var{p_1}を割ったものであるリストを返します。
+@c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
+@c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
+
+例:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c content (2*x*y + 4*x^2*y^2, y);
+
+@example
+(%i1) content (2*x*y + 4*x^2*y^2, y);
+@group
+                                   2
+(%o1)                   [2 x, 2 x y  + y]
+@end group
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} denom (@var{expr})
+
+有理式@var{expr}の分母を返します。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} divide (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+
+メインの多項式変数@var{x_n}に関して、
+多項式@var{p_2}で割った多項式@var{p_1}の商と余りを計算します。
+@c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
+他の変数は、@code{ratvars}関数の中でようなものです。
+結果は、最初の要素が商で、２番目の要素が余りのリストです。
+
+例:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c divide (x + y, x - y, x);
+@c divide (x + y, x - y);
+
+@example
+(%i1) divide (x + y, x - y, x);
+(%o1)                       [1, 2 y]
+(%i2) divide (x + y, x - y);
+(%o2)                      [- 1, 2 x]
+@end example
+
+@noindent
+@code{y}は２番目の例の主変数であることに注意してください。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} eliminate ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_k}])
+
+連続する結果を取ることによって、式（もしくは0に等しいと仮定された式）から変数を消去します。
+これは、@var{k}個の変数@var{x_1}, ..., @var{x_k}が消去された
+@code{@var{n} - @var{k}}個の式のリストを返します。
+最初、@var{x_1}が消去され、@code{@var{n} - 1}個の式をもたらし、
+そして、変数@var{x_2}が消去され、などなど。
+もし@code{@var{k} = @var{n}}なら、
+変数@var{x_1}, ..., @var{x_k}に依らないリストの中の単一式が返されます。
+この場合、最後の変数について最後の結果を解くため、@code{solve}がコールされます。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr1: 2*x^2 + y*x + z;
+@c expr2: 3*x + 5*y - z - 1;
+@c expr3: z^2 + x - y^2 + 5;
+@c eliminate ([expr3, expr2, expr1], [y, z]);
+@example
+(%i1) expr1: 2*x^2 + y*x + z;
+                                      2
+(%o1)                    z + x y + 2 x
+(%i2) expr2: 3*x + 5*y - z - 1;
+(%o2)                  - z + 5 y + 3 x - 1
+(%i3) expr3: z^2 + x - y^2 + 5;
+                          2    2
+(%o3)                    z  - y  + x + 5
+(%i4) eliminate ([expr3, expr2, expr1], [y, z]);
+             8         7         6          5          4
+(%o4) [7425 x  - 1170 x  + 1299 x  + 12076 x  + 22887 x
+
+                                    3         2
+                            - 5154 x  - 1291 x  + 7688 x + 15376]
+@end example
+
+@opencatbox
+@category{Polynomials} @category{Algebraic equations}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ezgcd}
+@deffn {関数} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, @dots{})
+最初の要素が、多項式@var{p_1}, @var{p_2}, @var{p_3}, @dots{}の最大公約数で、
+残りの要素が、多項式を最大公約数で割ったものであるリストを返します。
+これはいつも@code{ezgcd}アルゴリズムを使います。
+
+@mref{gcd}, @mref{gcdex}, @mref{gcdivide}, @mref{poly_gcd}も参照してください。
+
+例:
+
+三つの多項式は最大公約数 @code{2*x-3}を持ちます。
+GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd}で計算されます。
+
+@example
+(%i1) p1 : 6*x^3-17*x^2+14*x-3;
+                        3       2
+(%o1)                6 x  - 17 x  + 14 x - 3
+(%i2) p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
+                    4       3       2
+(%o2)            4 x  - 14 x  + 12 x  + 2 x - 3
+(%i3) p3 : -8*x^3+14*x^2-x-3;
+                          3       2
+(%o3)                - 8 x  + 14 x  - x - 3
+
+(%i4) gcd(p1, gcd(p2, p3));
+(%o4)                        2 x - 3
+
+(%i5) ezgcd(p1, p2, p3);
+                   2               3      2           2
+(%o5) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} facexpand
+デフォルト値: @code{true}
+
+@code{facexpand}は、@code{factor}が返すこれ以上小さくできない因子が
+展開された形式（デフォルト）か再帰的（正規のCRE）形式かを制御します。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{factor}
+@deffn  {関数} factor (@var{expr})
+@deffnx {関数} factor (@var{expr}, @var{p})
+
+任意の数の変数と関数を含んだ式@var{expr}を整数上既約な因子に因数分解します。
+@code{factor (@var{expr}, @var{p})}は@var{expr}を、
+有理数体上で、最小多項式が@var{p}である要素で因数分解します。
+
+@code{factor}は、整数を素因数分解するのに@code{ifactor}関数を使います。
+
+@code{factorflag}が@code{false}なら有理式の整数因子の素因数分解を抑制します。
+
+@code{dontfactor}は、因数分解しない変数のリストに設定されます。
+（初期状態では空です。）
+因数分解は、@code{dontfactor}リスト上のそれらより（CRE形式で仮定された変数順序を使って）重要でない変数に関しても
+実行されません。
+
+@code{savefactors}が@code{true}なら、
+同じ因子のいくつかを含む式の後の因数分解をスピードアップするために、因子の積である式の因子が、ある関数によって保存されます。
+
+@code{berlefact}が @code{false}ならKroneckerの因数分解アルゴリズムが使われ、
+そうでなければ、デフォルトであるBerlekampのアルゴリズムが使われます。
+
+@code{intfaclim}が@code{true}なら、
+もし自明な割り算やPollardのロー法の後、因子が見つからないなら、整数の素因数分解をあきらめます。
+@code{false}に設定されていれば（これはユーザーが陽に@code{factor}をコールする場合です）整数の完全な素因数分解が企てられます。
+@code{intfaclim}のユーザー設定は内部で@code{factor}がコールされた時に使われます。
+@code{intfaclim}はMaximaが大きな整数を素因数分解するのにありえない長い時間を使うことを妨げるようにリセットされます。
+
+例:
+
+@c EXAMPLES BELOW ADAPTED FROM examples (factor)
+@c factor (2^63 - 1);
+@c factor (-8*y - 4*x + z^2*(2*y + x));
+@c -1 - 2*x - x^2 + y^2 + 2*x*y^2 + x^2*y^2;
+@c block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
+@c factor (1 + %e^(3*x));
+@c factor (1 + x^4, a^2 - 2);
+@c factor (-y^2*z^2 - x*z^2 + x^2*y^2 + x^3);
+@c (2 + x)/(3 + x)/(b + x)/(c + x)^2;
+@c ratsimp (%);
+@c partfrac (%, x);
+@c map ('factor, %);
+@c ratsimp ((x^5 - 1)/(x - 1));
+@c subst (a, x, %);
+@c factor (%th(2), %);
+@c factor (1 + x^12);
+@c factor (1 + x^99);
+@example
+(%i1) factor (2^63 - 1);
+                    2
+(%o1)              7  73 127 337 92737 649657
+(%i2) factor (-8*y - 4*x + z^2*(2*y + x));
+(%o2)               (2 y + x) (z - 2) (z + 2)
+(%i3) -1 - 2*x - x^2 + y^2 + 2*x*y^2 + x^2*y^2;
+                2  2        2    2    2
+(%o3)          x  y  + 2 x y  + y  - x  - 2 x - 1
+(%i4) block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
+@group
+                       2
+                     (x  + 2 x + 1) (y - 1)
+(%o4)                ----------------------
+                           36 (y + 1)
+@end group
+(%i5) factor (1 + %e^(3*x));
+                      x         2 x     x
+(%o5)              (%e  + 1) (%e    - %e  + 1)
+(%i6) factor (1 + x^4, a^2 - 2);
+                    2              2
+(%o6)             (x  - a x + 1) (x  + a x + 1)
+(%i7) factor (-y^2*z^2 - x*z^2 + x^2*y^2 + x^3);
+                       2
+(%o7)              - (y  + x) (z - x) (z + x)
+(%i8) (2 + x)/(3 + x)/(b + x)/(c + x)^2;
+                             x + 2
+(%o8)               ------------------------
+                                           2
+                    (x + 3) (x + b) (x + c)
+(%i9) ratsimp (%);
+                4                  3
+(%o9) (x + 2)/(x  + (2 c + b + 3) x
+
+     2                       2             2                   2
+ + (c  + (2 b + 6) c + 3 b) x  + ((b + 3) c  + 6 b c) x + 3 b c )
+(%i10) partfrac (%, x);
+           2                   4                3
+(%o10) - (c  - 4 c - b + 6)/((c  + (- 2 b - 6) c
+
+     2              2         2                2
+ + (b  + 12 b + 9) c  + (- 6 b  - 18 b) c + 9 b ) (x + c))
+
+                 c - 2
+ - ---------------------------------
+     2                             2
+   (c  + (- b - 3) c + 3 b) (x + c)
+
+                         b - 2
+ + -------------------------------------------------
+             2             2       3      2
+   ((b - 3) c  + (6 b - 2 b ) c + b  - 3 b ) (x + b)
+
+                         1
+ - ----------------------------------------------
+             2
+   ((b - 3) c  + (18 - 6 b) c + 9 b - 27) (x + 3)
+(%i11) map ('factor, %);
+@group
+              2
+             c  - 4 c - b + 6                 c - 2
+(%o11) - ------------------------- - ------------------------
+                2        2                                  2
+         (c - 3)  (c - b)  (x + c)   (c - 3) (c - b) (x + c)
+
+                       b - 2                        1
+            + ------------------------ - ------------------------
+                             2                          2
+              (b - 3) (c - b)  (x + b)   (b - 3) (c - 3)  (x + 3)
+@end group
+(%i12) ratsimp ((x^5 - 1)/(x - 1));
+                       4    3    2
+(%o12)                x  + x  + x  + x + 1
+(%i13) subst (a, x, %);
+                       4    3    2
+(%o13)                a  + a  + a  + a + 1
+(%i14) factor (%th(2), %);
+                       2        3        3    2
+(%o14)   (x - a) (x - a ) (x - a ) (x + a  + a  + a + 1)
+(%i15) factor (1 + x^12);
+                       4        8    4
+(%o15)               (x  + 1) (x  - x  + 1)
+(%i16) factor (1 + x^99);
+                 2            6    3
+(%o16) (x + 1) (x  - x + 1) (x  - x  + 1)
+
+   10    9    8    7    6    5    4    3    2
+ (x   - x  + x  - x  + x  - x  + x  - x  + x  - x + 1)
+
+   20    19    17    16    14    13    11    10    9    7    6
+ (x   + x   - x   - x   + x   + x   - x   - x   - x  + x  + x
+
+    4    3            60    57    51    48    42    39    33
+ - x  - x  + x + 1) (x   + x   - x   - x   + x   + x   - x
+
+    30    27    21    18    12    9    3
+ - x   - x   + x   + x   - x   - x  + x  + 1)
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} factorflag
+デフォルト値: @code{false}
+
+@c WHAT IS THIS ABOUT EXACTLY ??
+@code{factorflag}が@code{false}の時、
+有理式の整数因子の素因素分解を抑制します。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} factorout (@var{expr}, @var{x_1}, @var{x_2}, @dots{})
+
+和@var{expr}を
+形式@code{f (@var{x_1}, @var{x_2}, @dots{})*g}の項の和に再整理します。
+ここで、@code{g}は、いかなる@var{x_i}も含まない式の積で、@code{f}は因数分解されています。
+
+オプション変数@code{keepfloat}は@code{factorout}に無視されることに注意してください。
+
+例:
+
+@c ===beg===
+@c expand (a*(x+1)*(x-1)*(u+1)^2);
+@c factorout(%,x);
+@c ===end===
+@example
+(%i1) expand (a*(x+1)*(x-1)*(u+1)^2);
+             2  2          2      2      2
+(%o1)     a u  x  + 2 a u x  + a x  - a u  - 2 a u - a
+(%i2) factorout(%,x);
+         2
+(%o2) a u  (x - 1) (x + 1) + 2 a u (x - 1) (x + 1)
+                                              + a (x - 1) (x + 1)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} factorsum (@var{expr})
+
+@var{expr}の因子（それらは和です）の中の項を
+それらの和が因数分解可能な項のグループにグループ化しようとします。
+@code{factorsum}は、
+@code{expand ((x + y)^2 + (z + w)^2)}の結果を回復できますが、
+項が共通の変数を持つので、
+@code{expand ((x + 1)^2 + (x + y)^2)}は回復できません。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
+@c factorsum (%);
+@example
+(%i1) expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
+           2      2                            2      2
+(%o1) a x z  + a z  + 2 a w x z + 2 a w z + a w  x + v  x
+
+                                     2        2    2            2
+                        + 2 u v x + u  x + a w  + v  + 2 u v + u
+(%i2) factorsum (%);
+                                   2          2
+(%o2)            (x + 1) (a (z + w)  + (v + u) )
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} fasttimes (@var{p_1}, @var{p_2})
+
+多項式の掛け算のための特殊なアルゴリズムを使って、
+多項式@var{p_1}と@var{p_2}の積を返します。
+@code{p_1}と@code{p_2}は、
+多変数で、密で、ほぼ同じサイズであるべきです。
+@code{n_1}が@code{p_1}の次数で、
+@code{n_2}が@code{p_2}の次数だとすると、
+古典的な掛け算は、
+@code{n_1 n_2}のオーダーですが、
+@code{fasttimes}は、@code{max (n_1, n_2)^1.585}のオーダーです。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} fullratsimp (@var{expr})
+
+@code{fullratsimp}は、ratsimpと式の非有理的整理を、式変形されなくなるまで繰り返し適応し、結果を返します。
+
+非有理式が含まれる時、@code{ratsimp}を１回コールと、その後の非有理的（「一般」）整理だけでは、
+整理された結果を返すのに十分でないかもしれません。
+時々、複数回のコールが必要とされます。
+@code{fullratsimp}はこのプロセスを楽にしてくれます。
+
+@code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}は@code{ratsimp}や@code{rat}と同様
+複数の引数を取ります。
+
+例:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
+@c ratsimp (expr);
+@c fullratsimp (expr);
+@c rat (expr);
+
+@example
+(%i1) expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
+                       a/2     2   a/2     2
+                     (x    - 1)  (x    + 1)
+(%o1)                -----------------------
+                              a
+                             x  - 1
+(%i2) ratsimp (expr);
+                          2 a      a
+                         x    - 2 x  + 1
+(%o2)                    ---------------
+                              a
+                             x  - 1
+(%i3) fullratsimp (expr);
+                              a
+(%o3)                        x  - 1
+(%i4) rat (expr);
+                       a/2 4       a/2 2
+                     (x   )  - 2 (x   )  + 1
+(%o4)/R/             -----------------------
+                              a
+                             x  - 1
+@end example
+
+@opencatbox
+@category{Simplification functions} @category{Rational expressions}
+@opencatbox
+@end deffn
+
+@c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
+@c THIS ITEM NEEDS MORE WORK
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} fullratsubst (@var{a}, @var{b}, @var{c})
+
+結果が変わらなくなるまで、自身を再帰的にコールすることを除いて、
+@code{ratsubst}と同じです。
+置き換える式と置き換えられる式が１つ以上の変数を共通に持つ時、
+この関数は役に立ちます。
+
+@code{fullratsubst}は、@code{lratsubst}のフォーマットでも引数を受け付けます。
+すなわち、最初の引数は、１つの代入等式もしくは、そんな等式のリストで、
+一方、２番目の引数は処理される式というものです。
+
+@code{load ("lrats")}は、@code{fullratsubst}と@code{lratsubst}をロードします。
+
+例:
+
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
+@c CAN PROBABLY CUT OUT THE lratsubst STUFF (lratsubst HAS ITS OWN DESCRIPTION)
+@c load ("lrats")$
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c lratsubst (a^2 = b, a^3);
+@c ratsubst (b*a, a^2, a^3);
+@c fullratsubst (b*a, a^2, a^3);
+@c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+@c fullratsubst (a^2 = b*a, a^3);
+@c errcatch (fullratsubst (b*a^2, a^2, a^3));
+
+@example
+(%i1) load ("lrats")$
+@end example
+@itemize @bullet
+@item
+@code{subst}は多重代入を実行できます。
+@code{lratsubst}は@code{subst}に類似しています。
+@end itemize
+@example
+(%i2) subst ([a = b, c = d], a + c);
+(%o2)                         d + b
+(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o3)                (d + a c) e + a d + b c
+@end example
+@itemize @bullet
+@item
+もしただ１つの代入が望まれるなら、
+最初の引数として１つの等式を与えます。
+@end itemize
+@example
+(%i4) lratsubst (a^2 = b, a^3);
+(%o4)                          a b
+@end example
+@itemize @bullet
+@item
+@code{fullratsubst}は、
+結果が変わらなくなるまで再帰することを除いて、
+@code{ratsubst}と同値です。
+@end itemize
+@example
+(%i5) ratsubst (b*a, a^2, a^3);
+                               2
+(%o5)                         a  b
+(%i6) fullratsubst (b*a, a^2, a^3);
+                                 2
+(%o6)                         a b
+@end example
+@itemize @bullet
+@item
+@code{fullratsubst}も、
+最初の引数として、等式のリストもしくは１つの式を受け入れます。
+@end itemize
+@example
+(%i7) fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+(%o7)                           b
+(%i8) fullratsubst (a^2 = b*a, a^3);
+                                 2
+(%o8)                         a b
+@end example
+@itemize @bullet
+@item
+@c REWORD THIS SENTENCE
+@code{fullratsubst}は、不確定な再帰を起こすかもしれません。
+@end itemize
+@example
+(%i9) errcatch (fullratsubst (b*a^2, a^2, a^3));
+
+*** - Lisp stack overflow. RESET
+@end example
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c GCD IS A VARIABLE AND A FUNCTION
+@c THIS ITEM NEEDS A LOT OF WORK
+@c -----------------------------------------------------------------------------
+@anchor{gcd}
+@deffn {関数} gcd (@var{p_1}, @var{p_2}, @var{x_1}, @dots{})
+
+@var{p_1}と@var{p_2}の最大公約数を返します。
+フラグ@code{gcd}は、どのアルゴリズムを利用するか決めます。
+@code{gcd}を@code{ez}, @code{subres}, @code{red}, もしくは@code{spmod}
+設定することは、それぞれ、@code{ezgcd}, 部分終結式@code{prs}, 被約, もしくはモジュラーアルゴリズムを選択します。
+もし@code{gcd}が@code{false}なら、
+@code{gcd (@var{p_1}, @var{p_2}, @var{x})}は、すべての@var{x}に関していつも1を返します。
+（例えば、@code{ratsimp}, @code{factor}, など）多くの関数は、
+陰にgcdを計算します。
+斉次多項式に関して、
+@code{subres}に等しい@code{gcd}を使うことが推奨されます。
+例えば、@code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}のように、代数的数が含まれる時
+ @code{algebraic}は@code{true}でなくてはいけません。また、@code{gcd}は@code{ez}であってはいけません。
+
+@code{gcd}フラグ―デフォルトは@code{spmod}―は、
+もし@code{false}なら、
+式が標準有理式(CRE)形に変換される時も、最大公約数を計算させません。
+もしgcdが要求されないなら、これは、時々計算のスピードを上げます。
+
+@mref{ezgcd}, @mref{gcdex}, @mref{gcdivide}, @mref{poly_gcd}も参照してください。
+
+例:
+
+@example
+(%i1) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o1)                6 x  + 19 x  + 19 x + 6
+(%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o2)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i3) gcd(p1, p2);
+                            2
+(%o3)                    6 x  + 13 x + 6
+(%i4) p1/gcd(p1, p2), ratsimp;
+(%o4)                         x + 1
+(%i5) p2/gcd(p1, p2), ratsimp;
+                              3
+(%o5)                        x  + x
+@end example
+
+@mref{ezgcd}は
+一番目の要素が多項式 @var{p_1}と @var{p_2}の最大公約数で、
+残りの要素が最大公約数で多項式を割ったもので構成されるリストを返します。
+
+@example
+(%i6) ezgcd(p1, p2);
+                    2                     3
+(%o6)           [6 x  + 13 x + 6, x + 1, x  + x]
+@end example
+
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c IN NEED OF SERIOUS CLARIFICATION HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{gcdex}
+@deffn  {関数} gcdex (@var{f}, @var{g})
+@deffnx {関数} gcdex (@var{f}, @var{g}, @var{x})
+
+リスト@code{[@var{a}, @var{b}, @var{u}]}を返します。
+ここで、@var{u}は@var{f}と@var{g}の最大公約数(gcd)であり、
+かつ、@code{@var{a} @var{f} + @var{b} @var{g}}は@var{u}に等しいです。
+引数@var{f}と@var{g}は、１変数多項式であるか、
+そうでなければ、指定された@b{主}変数@var{x}の多項式でなければいけません。
+これが機能するには単項イデアル整域にある必要があるからです。
+gcdは、他の変数の有理関数係数を持つ１変数多項式としての@var{f}と@var{g}に関するgcdを意味します。
+
+@code{gcdex}は、ユークリッドのアルゴリズムを実行します。
+すべてが@code{[f, g, -1]}に直角の@code{L[i]: [a[i], b[i], r[i]]}の列を持ち、
+@code{q = quotient(r[i]/r[i+1])}なら@code{L[i+2]: L[i] - q L[i+1]}となるように次を組み立て、
+余り@code{r[i+2]}がゼロの時、@code{L[i+1]}で終了します。
+
+引数 @var{f}と @var{g}は整数であり得ます。
+この場合、@code{gcdex}は関数 @mref{igcdex}を呼び出します。
+
+@mref{ezgcd}, @mref{gcd}, @mref{gcdivide}, @mref{poly_gcd}も参照してください。
+
+例:
+
+@c ===beg===
+@c gcdex (x^2 + 1, x^3 + 4);
+@c % . [x^2 + 1, x^3 + 4, -1];
+@c ===end===
+@example
+(%i1) gcdex (x^2 + 1, x^3 + 4);
+@group
+                       2
+                      x  + 4 x - 1  x + 4
+(%o1)/R/           [- ------------, -----, 1]
+                           17        17
+@end group
+(%i2) % . [x^2 + 1, x^3 + 4, -1];
+(%o2)/R/                        0
+@end example
+
+@c SORRY FOR BEING DENSE BUT WHAT IS THIS ABOUT EXACTLY
+以下のgcdは、
+@code{k(y)[x]}に関して働くので@code{1}です。
+@code{k[y, x]}で期待する@code{y+1}ではないことに注意してください。
+
+@c ===beg===
+@c gcdex (x*(y + 1), y^2 - 1, x);
+@c ===end===
+@example
+(%i1) gcdex (x*(y + 1), y^2 - 1, x);
+@group
+                               1
+(%o1)/R/                 [0, ------, 1]
+                              2
+                             y  - 1
+@end group
+@end example
+
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+
+@c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} gcfactor (@var{n})
+
+ガウス整数
+すなわち、@var{a}と@var{b}が有理整数(元々の整数)
+である形式@code{@var{a} + @var{b} @code{%i}}
+の数、@var{n}をガウス整数上に因数分解します。
+因子は、@var{a}と@var{b}を非負にすることによって正規化されます。
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Integers}
+@closecatbox
+@end deffn
+
+@c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} gfactor (@var{expr})
+
+多項式@var{expr}をガウス整数（虚数単位@code{%i}を付け加えた整数）上で因数分解します。
+@c "This is like" -- IS IT THE SAME OR NOT ??
+@var{a}が@code{%i}となる@code{factor (@var{expr}, @var{a}^2+1)}ようなものです。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c gfactor (x^4 - 1);
+@example
+(%i1) gfactor (x^4 - 1);
+(%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c DESCRIBE THIS INDEPENDENTLY OF factorsum
+@c THIS ITEM NEEDS MORE WORK
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} gfactorsum (@var{expr})
+
+@code{factorsum}に似ていますが、
+@code{factor}の代わりに@code{gfactor}を適用します。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} hipow (@var{expr}, @var{x})
+
+@var{expr}の中で、@var{x}の、陽に示された最も大きな指数を返します。
+@var{x}は変数もしくは一般式です。
+もし@var{x}が@var{expr}の中に現れないなら、
+@code{hipow}は@code{0}を返します。
+
+@code{hipow}は、@code{expr}に等価な式を考慮しません。
+特に、@code{hipow}は、@code{expr}を展開しないので、
+@code{hipow (@var{expr}, @var{x})}と@code{hipow (expand (@var{expr}, @var{x}))}
+は、違った結果をもたらすかもしれません。
+
+例:
+
+@example
+(%i1) hipow (y^3 * x^2 + x * y^4, x);
+(%o1)                           2
+(%i2) hipow ((x + y)^5, x);
+(%o2)                           1
+(%i3) hipow (expand ((x + y)^5), x);
+(%o3)                           5
+(%i4) hipow ((x + y)^5, x + y);
+(%o4)                           5
+(%i5) hipow (expand ((x + y)^5), x + y);
+(%o5)                           0
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c I SUSPECT THE FOLLOWING TEXT IS OUTDATED DUE TO CHANGES IN INTEGER FACTORING CODE
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} intfaclim
+デフォルト値: true
+
+もし@code{true}なら、
+もし試し割りとPollardのロー法の後、因子が見つからなければ、
+Maximaは、整数の素因素分解をあきらめ、素因数分解は完了しません。
+
+@code{intfaclim}が@code{false}の時、
+ (これは、ユーザーが明示的に@code{factor}をコールした場合です）
+完全な素因数分解が試みられます。
+@code{divisors}, @code{divsum} や@code{totient}の中で因子が計算される時は、
+@code{intfaclim}は@code{false}に設定されます
+@c ANY OTHERS ??
+
+@c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
+@code{factor}への内部コールは、
+@code{intfaclim}のユーザー指定の値を考慮します。
+@code{intfaclim}を@code{true}に設定することは、
+大きな整数を素因数分解するのに費やす時間を少なくするかもしれません。
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Integers}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} keepfloat
+デフォルト値: @code{false}
+
+@code{keepfloat}が@code{true}の時、
+浮動小数点数を含む式が標準有理式(CRE)形に変換される時、
+浮動小数点が有理数化されないようにします。
+
+関数@code{solve}とそれを呼び出す関数(例えば@code{eigenvalues})は、
+現在、このフラグを無視し、とにかく浮動小数点数を変換することに注意してください。
+
+例:
+
+@c ===beg===
+@c rat(x/2.0);
+@c rat(x/2.0), keepfloat;
+@c ===end===
+@example
+(%i1) rat(x/2.0);
+
+`rat' replaced 0.5 by 1/2 = 0.5
+                                       x
+(%o1)/R/                               -
+                                       2
+(%i2) rat(x/2.0), keepfloat;
+
+(%o2)/R/                     E        0.5 x
+@end example
+
+@code{solve} ignores @code{keepfloat}:
+
+@c ===beg===
+@c solve(1.0-x,x), keepfloat;
+@c ===end===
+@example
+(%i3) solve(1.0-x,x), keepfloat;
+
+`rat' replaced 1.0 by 1/1 = 1.0
+(%o3)                               [x = 1]
+@end example
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{lowpow}
+@deffn {関数} lopow (@var{expr}, @var{x})
+
+@var{expr}の中に陽に現れる@var{x}の最小の指数を返します。
+例えば、
+
+@example
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c DESCRIBE lratsubst INDEPENDENTLY OF subst
+@c THIS ITEM NEEDS MORE WORK
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} lratsubst (@var{L}, @var{expr})
+
+@code{subst}の代わりに@code{ratsubst}を使うことを除いて、
+@code{subst (@var{L}, @var{expr})}に類似しています。
+
+@code{lratsubst}の最初の引数は、
+@code{subst}が受け付けるそれと同一のフォーマットの等式もしくは等式のリストです。
+代入は、等式のリストによって与えられた順、すなわち、左から右に、実行されます。
+
+@code{load ("lrats")}は、@code{fullratsubst}と@code{lratsubst}をロードします。
+
+例:
+
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
+@c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
+@c load ("lrats")$
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c lratsubst (a^2 = b, a^3);
+@example
+(%i1) load ("lrats")$
+@end example
+@itemize @bullet
+@item
+@code{subst}は多重代入を実行できます。
+@code{lratsubst}は@code{subst}に似ています。
+@end itemize
+@example
+(%i2) subst ([a = b, c = d], a + c);
+(%o2)                         d + b
+(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o3)                (d + a c) e + a d + b c
+@end example
+@itemize @bullet
+@item
+もし代入１つだけを望むなら、
+１つの等式を最初の引数として与えることができます。
+@end itemize
+@example
+(%i4) lratsubst (a^2 = b, a^3);
+(%o4)                          a b
+@end example
+
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} modulus
+デフォルト値: @code{false}
+
+@code{modulus}が正の数@var{p}の時、
+（@code{rat}や関連の関数が返すように）有理数上の演算は、
+「バランスさせた」モジュラス系と呼ばれるものを使って、
+@var{p}を法とする合同変換が実行されます。
+「バランスさせた」モジュラス系では、
+@code{@var{n} modulo @var{p}}は、
+@code{@var{a} @var{p} + @var{k}}が@var{n}に等しくなるようなある整数@var{a}が存在するような整数@var{k}と定義され、@var{k}は、
+@var{p}が奇数の時、
+@code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}の中から、
+@var{p}が偶数の時、@code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]}の中から
+選ばれます。
+@c NEED EXAMPLES OF "BALANCED MODULUS" HERE
+
+@c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
+@c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
+@code{modulus}が再設定された時、もし@var{expr}が既に標準有理式(CRE)形なら、
+正しい結果を得るためには、
+例えば@code{expr: rat (ratdisrep (expr))}というように、@var{expr}を再ratする必要があるかもしれません。
+
+典型的には、@code{modulus}は素数が設定されます。
+もし@code{modulus}が正の合成数に設定されたら、
+この設定は受け入れられますが、警告メッセージが表示されます。
+Maximaは、ゼロや負の整数が@code{modulus}に割り当てられるのを許します。
+それが役に立つ結果を持つかどうか明らかではありませんが。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Integers}
+@closecatbox
+@end defvr
+
+@c APPARENTLY OBSOLETE: ONLY EFFECT OF $newfac COULD BE TO CAUSE NONEXISTENT FUNCTION NMULTFACT
+@c TO BE CALLED (IN FUNCTION FACTOR72 IN src/factor.lisp CIRCA LINE 1400)
+@c $newfac NOT USED IN ANY OTHER CONTEXT (ASIDE FROM DECLARATIONS)
+@c COMMENT IT OUT NOW, CUT IT ON THE NEXT PASS THROUGH THIS FILE
+@c @defvar newfac
+@c デフォルト値: @code{false}
+@c 
+@c When @code{newfac} is @code{true}, @code{factor} will use the new factoring
+@c routines.
+@c 
+@c @end defvar
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} num (@var{expr})
+
+もし@var{expr}が比なら、その分子を返します。
+もし@var{expr}が比でないなら、@var{expr}が返されます。
+
+@code{num}は引数を評価します。
+
+@c NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{polydecomp}
+@deffn {関数} polydecomp (@var{p}, @var{x})
+
+変数@var{x}の多項式@var{p}を@var{x}の多項式の関数合成に分解します。
+@code{polydecomp}は、
+
+@example
+lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x))
+  ...))
+@end example
+
+が@var{p}に等しいようなリスト@code{[@var{p_1}, ..., @var{p_n}]}を返します。
+@var{n}より小さい@var{i}について@var{p_i}の次数は1より大きいです。
+
+このような分解は一意的ではありません。
+
+例:
+
+@c ===beg===
+@c polydecomp (x^210, x);
+@c p : expand (subst (x^3 - x - 1, x, x^2 - a));
+@c polydecomp (p, x);
+@c ===end===
+@example
+(%i1) polydecomp (x^210, x);
+                          7   5   3   2
+(%o1)                   [x , x , x , x ]
+(%i2) p : expand (subst (x^3 - x - 1, x, x^2 - a));
+                6      4      3    2
+(%o2)          x  - 2 x  - 2 x  + x  + 2 x - a + 1
+(%i3) polydecomp (p, x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+以下の関数は、@code{x}の関数として、
+@code{L = [e_1, ..., e_n]}を合成します;
+それはpolydecompの逆です。
+
+@c ===beg===
+@c compose (L, x) :=
+@c   block ([r : x], for e in L do r : subst (e, x, r), r) $
+@c ===end===
+@example
+compose (L, x) :=
+  block ([r : x], for e in L do r : subst (e, x, r), r) $
+@end example
+
+@code{compose}を使って、上の例を再表現します:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+@c ===end===
+@example
+(%i3) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+@code{compose (polydecomp (@var{p}, @var{x}), @var{x})}はいつも
+（展開されていない）@var{p}を返しますが、
+@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})}は、
+必ずしも@code{[@var{p_1}, ..., @var{p_n}]}を返さ@i{ない}ことに注意してください。
+
+@c ===beg===
+@c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+@c polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+@c ===end===
+@example
+(%i4) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+                          2       2
+(%o4)                   [x  + 2, x  + 1]
+(%i5) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+                      2       2
+                     x  + 3  x  + 5
+(%o5)               [------, ------, 2 x + 1]
+                       4       2
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{polymod}
+@deffn  {関数} polymod (@var{p})
+@deffnx {関数} polymod (@var{p}, @var{m})
+
+多項式@var{p}を、変数@code{modulus}の値である現在の法に関してモジュラー表現に変換します。
+
+@code{polymod (@var{p}, @var{m})}は、
+@code{modulus}の現在値の代わりに法@var{m}を使うように指定します。
+
+@code{modulus}を参照してください。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
+@c NEEDS WORK (IF KEPT)
+
+@c -----------------------------------------------------------------------------
+@anchor{powers}
+@deffn {関数} powers (@var{expr}, @var{x})
+
+@var{expr}に現れる@var{x}のべきを返します。
+
+@code{load (powers)} loads this function.
+@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
+@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
+
+@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
+@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
+@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
+@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
+@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
+@c 
+@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
+@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
+@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
+@c AND MANY OTHER SIMILAR USEFUL HACKS.
+
+@opencatbox
+@category{Expressions} @category{Polynomials}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{quotient}
+@deffn  {関数} quotient (@var{p_1}, @var{p_2})
+@deffnx {関数} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+
+多項式@var{p_1}を多項式@var{p_2}で割った結果を返します。
+引数@var{x_1}, @dots{}, @var{x_n}は、@code{ratvars}と同様に解釈されます。
+
+@code{quotient}は、@code{divide}が返す２要素リストの最初の要素を返します。
+
+@c NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c THIS ITEM CAN PROBABLY BE IMPROVED
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} rat (@var{expr})
+@deffnx {関数} rat (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+
+@var{expr}を標準有理式(CRE)形式に変換します。
+展開し、共通の分母上ですべての項を結合し、通分し、@code{ratepsilon}の許容誤差内で浮動小数点を有理数に変換します。
+変数は、もし指定されたなら、@code{ratvars}のように@var{x_1}, @dots{}, @var{x_n}に従って並び替えられます。
+
+@code{rat}は一般に、加算@code{+}, 減算@code{-}, 乗算@code{*}, 除算@code{/}と整数べきの指数を除いた関数を
+整理しません。
+一方で@code{ratsimp}はこれらの場合を扱います。
+CRE形式の中のアトム(数と変数）は一般形式でのそれと同じではないことに注意してください。
+例えば、@code{rat(x) - x}は@code{rat(0)}を出力します。
+これは0とは違う内部表現を持ちます。
+
+@c WHAT'S THIS ABOUT EXACTLY ??
+@code{ratfac}が@code{true}の時、
+@code{rat}は、CREの一部因数分解された形式を出力します。
+有理演算の最中、因数分解パッケージをコールなしに、式は可能な限り因数分解され続けます。
+これにより常に、いくつかの計算でメモリと時間を節約することになります。
+分子と分母は互いに素になり（例えば、@code{((x^2 - 1)^4/(x + 10^2)}は@code{(x - 1)^4 (x + 1)^2}を出力します）、
+それぞれの部分の中の因子は互いに素とは限りません。
+
+@code{ratprint}が@code{false}ならユーザーに浮動小数点を有理数に変換したことを通知するメッセージの出力を抑制します。
+
+@code{keepfloat}が@code{true}なら、浮動小数点が有理数に変換されることを抑制します。
+
+@code{ratexpand}と@code{ratsimp}も参照してください。
+
+例:
+@c ===beg===
+@c ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
+@c       (4*y^2 + x^2);
+@c rat (%, y, a, x);
+@c ===end===
+@example
+(%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
+      (4*y^2 + x^2);
+@group
+                                           4
+                                  (x - 2 y)
+              (y + a) (2 y + x) (------------ + 1)
+                                   2      2 2
+                                 (x  - 4 y )
+(%o1)         ------------------------------------
+                              2    2
+                           4 y  + x
+@end group
+(%i2) rat (%, y, a, x);
+                            2 a + 2 y
+(%o2)/R/                    ---------
+                             x + 2 y
+@end example
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@defvr {オプション変数} ratalgdenom
+デフォルト値: @code{true}
+
+@code{ratalgdenom}が@code{true}の時、
+根号に関する分母の有理化が有効になることを許します。
+@code{ratalgdenom}は、
+標準有理式(CRE)が代数モードで使われる時だけ、効果を持ちます。
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c THIS ITEM NEEDS MORE WORK
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffnx {関数} ratcoef (@var{expr}, @var{x})
+
+式@var{expr}の中の式@code{@var{x}^@var{n}}の係数を返します。
+@var{n}を省略した場合、@var{n}は1が仮定されます。
+
+戻り値は、（非有理な意味で可能な場合を除いて、）xの中の変数の制約を受けません。
+このタイプの係数が存在しなければ、0を返します。
+
+@code{ratcoef}は最初の引数を展開し、有理的に整理するので、
+純粋に構文法的な@code{coeff}のそれとは違った答えを生成することがあります。
+@c MOVE THIS TO EXAMPLES SECTION
+このように、@code{ratcoef ((x + 1)/y + x, x)}は@code{(y + 1)/y}を返しますが、@code{coeff}は1を返します。
+
+@code{ratcoef (@var{expr}, @var{x}, 0)}は、@var{expr}をsumとして見て、
+@var{x}を含まない項の和を返します。
+@c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
+ゆえに、もし@var{x}の負のべき乗が存在するなら、@var{ratcoef}を使うべきではありません。
+
+@c WHAT IS THE INTENT HERE ??
+@var{expr}は検査される前に有理的に整理されるので、
+係数は、想像された形とは全く違って現れることがあります。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c s: a*x + b*x + 5$
+@c ratcoef (s, a + b);
+@example
+(%i1) s: a*x + b*x + 5$
+(%i2) ratcoef (s, a + b);
+(%o2)                           x
+@end example
+@c NEED MORE EXAMPLES HERE
+
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratdenom (@var{expr})
+
+@var{expr}を標準有理式(CRE)に強制した後、@var{expr}の分母を返します。
+戻り値はCREです。
+
+@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+@var{expr}は、もしまだCREでないなら、@code{rat}によってCREに強制的に変換されます。
+この変換は、すべての項を共通の分母上に置くことによって、
+@var{expr}の形式を変えます。
+
+@code{denom}は似ていますが、
+CREではなく通常の式を返します。
+また、@code{denom}は共通の分母上にすべての項を置こうとはしませんし、
+@code{ratdenom}によって比と見なされるいくつかの式は、@code{denom}には比と見なされません。
+
+@c NEEDS AN EXAMPLE HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} ratdenomdivide
+デフォルト値: @code{true}
+
+@code{ratdenomdivide}が@code{true}の時、
+@code{ratexpand}は、分子が和である比を、共通の分母を持つ比の和に展開します。
+そうでなければ、@code{ratexpand}は比の和を１つの比に縮約します。
+その比の分子はそれぞれの比の分子の和です。
+
+例:
+
+@example
+(%i1) expr: (x^2 + x + 1)/(y^2 + 7);
+                            2
+                           x  + x + 1
+(%o1)                      ----------
+                              2
+                             y  + 7
+(%i2) ratdenomdivide: true$
+(%i3) ratexpand (expr);
+                       2
+                      x        x        1
+(%o3)               ------ + ------ + ------
+                     2        2        2
+                    y  + 7   y  + 7   y  + 7
+(%i4) ratdenomdivide: false$
+(%i5) ratexpand (expr);
+                            2
+                           x  + x + 1
+(%o5)                      ----------
+                              2
+                             y  + 7
+(%i6) expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
+                                     2
+                           b        a
+(%o6)                    ------ + ------
+                          2        2
+                         b  + 3   b  + 3
+(%i7) ratexpand (expr2);
+                                  2
+                             b + a
+(%o7)                        ------
+                              2
+                             b  + 3
+@end example
+
+@opencatbox
+@category{Simplification flags and variables} @category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratdiff (@var{expr}, @var{x})
+
+有理式@var{expr}を@var{x}に関して微分します。
+@var{expr}は@var{x}の多項式もしくは多項式の商でなければなりません。
+引数@var{x}は@var{expr}の変数もしくは部分式を取り得ます。
+@c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
+@c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
+@c HOW TO DESCRIBE THAT ??
+
+たぶん違った形式になりますが、結果は、@code{diff}と同値です。
+有理式の場合、@code{ratdiff}は@code{diff}より速いでしょう。
+
+@code{ratdiff}は、もし@var{expr}が標準有理式(CRE)なら、標準有理式を返します。
+そうでなければ、一般式を返します。
+
+@code{ratdiff}は、@var{expr}の@var{x}への依存のみを考慮し、@code{depends}で規定された依存性は無視します。
+
+@c WHAT THIS IS ABOUT -- ratdiff (rat (factor (expr)), x) AND ratdiff (factor (rat (expr)), x) BOTH SUCCEED
+@c COMMENTING THIS OUT UNTIL SOMEONE CAN ESTABLISH SOME CRE'S FOR WHICH ratdiff FAILS
+@c However, @code{ratdiff} should not be used on factored CRE forms;
+@c use @code{diff} instead for such expressions.
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+@c ratdiff (expr, x);
+@c expr: f(x)^3 - f(x)^2 + 7;
+@c ratdiff (expr, f(x));
+@c expr: (a + b)^3 + (a + b)^2;
+@c ratdiff (expr, a + b);
+@example
+(%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+                           3
+                        4 x  + 10 x - 11
+(%o1)                   ----------------
+                              5
+                             x  + 5
+(%i2) ratdiff (expr, x);
+                    7       5       4       2
+                 8 x  + 40 x  - 55 x  - 60 x  - 50
+(%o2)          - ---------------------------------
+                          10       5
+                         x   + 10 x  + 25
+(%i3) expr: f(x)^3 - f(x)^2 + 7;
+                         3       2
+(%o3)                   f (x) - f (x) + 7
+(%i4) ratdiff (expr, f(x));
+                           2
+(%o4)                   3 f (x) - 2 f(x)
+(%i5) expr: (a + b)^3 + (a + b)^2;
+                              3          2
+(%o5)                  (b + a)  + (b + a)
+(%i6) ratdiff (expr, a + b);
+                    2                    2
+(%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
+@end example
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratdisrep (@var{expr})
+
+一般式として引数を返します。
+もし@var{expr}が一般式なら、戻り値は引数から変わりません。
+
+典型的には、@code{ratdisrep}は、
+標準有理式(CRE)を一般式に変換するためにコールされます。
+@c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
+もし「伝染」を止めたかったり、非有理文脈で有理関数を使いたいなら、
+これは、時々便利です。
+
+@code{totaldisrep}も参照してください。
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} ratexpand (@var{expr})
+@deffnx {オプション変数} ratexpand
+
+@var{expr}を展開します。
+指数和や和の積を展開し、共通分母上の分数を結合し、通分し、（もし和なら）分子を分母で割ったそれぞれの項に分割します。
+
+たとえ@var{expr}が標準有理式(CRE)でも、@code{ratexpand}の戻り値は一般式です。
+
+@c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
+スイッチ@code{ratexpand}が@code{true}なら、CRE式は、一般式や表示形式に変換された時フルに展開されます。
+一方もし@code{false}なら再帰形式に変換します。
+@code{ratsimp}も参照してください。
+
+@code{ratdenomdivide}が@code{true}の時、
+@code{ratexpand}は、分子が和である比を、共通の分母を持つ比の和に展開します。
+そうでなければ、@code{ratexpand}は日の和を、その分子がそれぞれの比の分子の和である単一の比にまとめます。
+
+@code{keepfloat}が@code{true}の時、
+浮動小数点を含んだ式がCRE形式に変換される時、浮動小数点が有理化されるのを抑制します。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ratexpand ((2*x - 3*y)^3);
+@c expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+@c expand (expr);
+@c ratexpand (expr);
+@example
+(%i1) ratexpand ((2*x - 3*y)^3);
+                     3         2       2        3
+(%o1)          - 27 y  + 54 x y  - 36 x  y + 8 x
+(%i2) expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+                         x - 1       1
+(%o2)                   -------- + -----
+                               2   x - 1
+                        (x + 1)
+(%i3) expand (expr);
+                    x              1           1
+(%o3)          ------------ - ------------ + -----
+                2              2             x - 1
+               x  + 2 x + 1   x  + 2 x + 1
+(%i4) ratexpand (expr);
+                        2
+                     2 x                 2
+(%o4)           --------------- + ---------------
+                 3    2            3    2
+                x  + x  - x - 1   x  + x  - x - 1
+@end example
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ratfac}
+@defvr {オプション変数} ratfac
+デフォルト値: @code{false}
+
+@code{ratfac}が@code{true}の時、
+標準有理式(CRE)は部分的に因数分解された形式で操作されます。
+
+有理演算の間、
+式は、@code{factor}をコールすることなしに、
+可能な限り最大限因数分解されるよう維持されます。
+これは、いつも保存領域を節約し、いくつかの計算では時間も節約ことがあります。
+分子と分母は互いに素になります。
+例えば、@code{rat ((x^2 - 1)^4/(x + 1)^2)}は、
+@code{(x - 1)^4 (x + 1)^2)}をもたらしますが、
+それぞれの部分の中の因子は互いに素ではないかもしれません。
+
+@code{ctensr}（成分テンソル操作）パッケージでは、
+@code{ratfac}が@code{true}の時、
+リッチ、アインシュタイン、リーマン、そしてワイルテンソルとスカラー曲率は、
+自動的に因数分解されます。
+@i{@code{ratfac}は、テンソルの成分が２、３の項から成ると知られている場合だけ
+設定すべきです。}
+
+@code{ratfac}と@code{ratweight}体系は互換性はなく、
+同時には使えないかもしれません。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratnumer (@var{expr})
+
+@var{expr}を標準有理式(CRE)に強制変換した後、その分子を返します。
+戻り値はCREです。
+
+@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+もしまだCREでないなら、@var{expr}は、@code{rat}によってCREに強制変換されます。
+この変換は、
+共通の分母上にすべての項を置くことによって、
+@var{expr}の形式を変えるかもしれません。
+
+@code{num}は似ていますが、
+CREではなく通常の式を返します。
+また、@code{num}は共通の分母上にすべての項を置こうとはしませんし、
+@code{ratnumer}によって比と見なされるいくつかの式は、@code{num}には比と見なされません。
+
+@c NEEDS AN EXAMPLE HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratp (@var{expr})
+
+もし@var{expr}が標準有理式(CRE)もしくは拡張CREなら、@code{true}を返し、
+そうでなければ、@code{false}を返します。
+
+CREは、@code{rat}と関連関数によって生成されます。
+拡張CREは、@code{taylor}と関連関数によって生成されます。
+
+@opencatbox
+@category{Predicate functions} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} ratprint
+デフォルト値: @code{true}
+
+@code{ratprint}が@code{true}の時、
+ユーザーに浮動小数点を有理数に変換したことを通知するメッセージが表示されます。
+
+@opencatbox
+@category{Rational expressions} @category{Numerical evaluation} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ratsimp}
+@deffn  {関数} ratsimp (@var{expr})
+@deffnx {関数} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+
+式@var{exp}とその部分式の全てを有理的に整理します（非有理的関数の引数も含みます）。
+結果は二つの多項式の商として、再帰的形式—主変数の係数が他の変数の多項式である形式—で返されます。
+変数は(例えば、@code{sin(z^2+1)}のような)非有理関数を含むかもしれませんが、
+どんな非有理関数の引数もまた、有理的に整理されます。
+
+@code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}は、@code{ratvars}で指定した場合と同様に、
+変数の順序指定に従って有理的に整理します。
+
+@code{ratsimpexpons}が@code{true}の時、
+@code{ratsimp}は式の指数にも適用されます。
+
+@code{ratexpand}も参照してください。
+@code{ratsimp}は、@code{ratexpand}に影響するフラグのいくつかに影響されることに注意してください。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+@c ratsimp (%);
+@c ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+@c ratsimp (%);
+@c x^(a + 1/a), ratsimpexpons: true;
+@example
+(%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+@group
+                                         2      2
+                   x         (log(x) + 1)  - log (x)
+(%o1)        sin(------) = %e
+                  2
+                 x  + x
+@end group
+(%i2) ratsimp (%);
+                             1          2
+(%o2)                  sin(-----) = %e x
+                           x + 1
+(%i3) ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+@group
+                       3/2
+                (x - 1)    - sqrt(x - 1) (x + 1)
+(%o3)           --------------------------------
+                     sqrt((x - 1) (x + 1))
+@end group
+(%i4) ratsimp (%);
+                           2 sqrt(x - 1)
+(%o4)                    - -------------
+                                 2
+                           sqrt(x  - 1)
+(%i5) x^(a + 1/a), ratsimpexpons: true;
+                               2
+                              a  + 1
+                              ------
+                                a
+(%o5)                        x
+@end example
+
+@opencatbox
+@category{Simplification functions} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} ratsimpexpons
+デフォルト値: @code{false}
+
+@code{ratsimpexpons}が@code{true}の時、
+式整理の間、@code{ratsimp}が式の指数に適用されます。
+
+@c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
+@opencatbox
+@category{Simplification flags and variables} @category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{radsubstflag}
+@defvr {オプション変数} radsubstflag
+デフォルト値: @code{false}
+
+@code{radsubstflag}がもし @code{true}なら、
+@code{ratsubst}が
+@code{x}に関して@code{sqrt (x)}に @code{u}を代入するような代入をできるようにします。
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ratsubst}
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratsubst (@var{a}, @var{b}, @var{c})
+
+@var{c}の中の@var{b}に@var{a}を代入し、結果の式を返します。
+@c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
+@var{b}はsumでもproductでもpowerなどでも問題ありません。
+
+@c WHAT, EXACTLY, DOES ratsubst KNOW ??
+@code{subst}は純粋に構文法的代入ですが、@code{ratsubst}は式の意味の何かを知っています。
+ゆえに、@code{subst (a, x + y, x + y + z)}は@code{x + y + z}を返す一方、
+@code{ratsubst}は@code{z + a}を返します。
+
+@code{ratsubstflag}が@code{true}の時、@code{ratsubst}は、式が陽には含んでいない根への代入を実行します。
+
+@code{ratsubst}はオプション変数@code{keepfloat}の値@code{true}を無視します。
+
+例:
+
+@c EXAMPLES BELOW ADAPTED FROM examples (ratsubst)
+@c WITH SOME ADDITIONAL STUFF
+
+@c ==beg===
+@c ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
+@c cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
+@c ratsubst (1 - sin(x)^2, cos(x)^2, %);
+@c ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+@c radsubstflag: false$
+@c ratsubst (u, sqrt(x), x);
+@c radsubstflag: true$
+@c ratsubst (u, sqrt(x), x);
+@c ===end===
+@example
+(%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
+                              3      4
+(%o1)                      a x  y + a
+(%i2) cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
+               4         3         2
+(%o2)       cos (x) + cos (x) + cos (x) + cos(x) + 1
+(%i3) ratsubst (1 - sin(x)^2, cos(x)^2, %);
+            4           2                     2
+(%o3)    sin (x) - 3 sin (x) + cos(x) (2 - sin (x)) + 3
+(%i4) ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+@group
+                        4           2
+(%o4)                cos (x) - 2 cos (x) + 1
+@end group
+(%i5) radsubstflag: false$
+(%i6) ratsubst (u, sqrt(x), x);
+(%o6)                           x
+(%i7) radsubstflag: true$
+(%i8) ratsubst (u, sqrt(x), x);
+                                2
+(%o8)                          u
+@end example
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} ratvars (@var{x_1}, @dots{}, @var{x_n})
+@deffnx {関数} ratvars ()
+@deffnx {システム変数} ratvars
+
+有理式に関して主変数@var{x_1}, ..., @var{x_n}を宣言します。
+もし有理式の中に存在するなら、@var{x_n}は主変数と見なされます。
+そうでなければ、もし存在すれば、@var{x_[n-1]}が主変数と見なされます。
+と、先行する変数を通して@var{x_1}まで続きます。
+@var{x_1}は、続く変数が存在しなかった時だけ主変数と見なされます。
+
+もし有理式の中の変数が@code{ratvars}リストの中に存在しなかったら、
+その変数には、@var{x_1}よりも低い優先順位が与えられます。
+
+@code{ratvars}の引数は、変数もしくは@code{sin(x)}のような非有理関数であり得ます。
+
+変数@code{ratvars}は、直近にコールされたときの関数@code{ratvars}の引数のリストです。
+関数@code{ratvars}のコールそれぞれは、リストを再設定します。
+@code{ratvars ()}はリストをクリアします。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} ratvarswitch
+デフォルト値: @code{true}
+
+MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リストを保持します。
+もし@code{ratvarswitch}が@code{true}なら、
+すべての評価は新しいリスト@code{VARLIST}で開始します。
+これがデフォルトの振る舞いです。
+そうでなければ、以前の評価からの主変数は
+内部リスト@code{VARLIST}から取り除かれません。
+
+主変数は関数@code{ratvars}で宣言されるのですが、
+それはオプション変数@code{ratvarswitch}によって影響されません。
+
+例:
+
+もし @code{ratvarswitch}が@code{true}, すべての評価は
+新しいリスト@code{VARLIST}で始まります。
+
+@c === beg ===
+@c ratvarswitch:true$
+@c rat(2*x+y^2);
+@c :lisp varlist
+@c rat(2*a+b^2);
+@c :lisp varlist
+@c === end ===
+@example
+(%i1) ratvarswitch:true$
+
+(%i2) rat(2*x+y^2);
+                             2
+(%o2)/R/                    y  + 2 x
+(%i3) :lisp varlist
+($X $Y)
+
+(%i3) rat(2*a+b^2);
+                             2
+(%o3)/R/                    b  + 2 a
+
+(%i4) :lisp varlist
+($A $B)
+@end example
+
+もし@code{ratvarswitch}が@code{false}なら、
+直前の評価からの主変数はまだ存在しています。
+
+@c === beg ===
+@c ratvarswitch:false$
+@c rat(2*x+y^2);
+@c :lisp varlist
+@c rat(2*a+b^2);
+@c :lisp varlist
+@c === end ===
+@example
+(%i4) ratvarswitch:false$
+
+(%i5) rat(2*x+y^2);
+                             2
+(%o5)/R/                    y  + 2 x
+(%i6) :lisp varlist
+($X $Y)
+
+(%i6) rat(2*a+b^2);
+                             2
+(%o6)/R/                    b  + 2 a
+
+(%i7) :lisp varlist
+($A $B $X $Y)
+@end example
+
+@opencatbox
+@category{Rational expressions} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
+@deffnx {関数} ratweight ()
+
+重み@var{w_i}を変数@var{x_i}に割り当てます。
+これは、もし重みが変数@code{ratwtlvl}の値を越えるなら、項を0に置き換えるようにします。
+（デフォルトでは切り詰めはもたらしません。）
+項の重みは、項の中の変数の重みの積の和に変数の指数を掛けたものです。
+例えば、@code{3 x_1^2 x_2}の重みは@code{2 w_1 + w_2}です。
+@code{ratwtlvl}に従った切り詰めは、
+標準有理式(CRE)を掛けたり、指数化する時だけ実行されます。
+
+@code{ratweight ()}は、重み割り当ての累積リストを返します。
+
+注意：@code{ratfac}と@code{ratweight}体系は互換性はなく、
+同時には使えないかもしれません。
+
+例:
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ratweight (a, 1, b, 1);
+@c expr1: rat(a + b + 1)$
+@c expr1^2;
+@c ratwtlvl: 1$
+@c expr1^2;
+@example
+(%i1) ratweight (a, 1, b, 1);
+(%o1)                     [a, 1, b, 1]
+(%i2) expr1: rat(a + b + 1)$
+(%i3) expr1^2;
+                  2                  2
+(%o3)/R/         b  + (2 a + 2) b + a  + 2 a + 1
+(%i4) ratwtlvl: 1$
+(%i5) expr1^2;
+(%o5)/R/                  2 b + 2 a + 1
+@end example
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {システム変数} ratweights
+デフォルト値: @code{[]}
+
+@code{ratweights}は、@code{ratweight}で割り当てられた重みのリストです。
+リストは累積されます:
+@code{ratweight}のコールそれぞれは、リストに項目を追加します。
+
+@c DO WE REALLY NEED TO MENTION THIS ??
+@code{kill (ratweights)}と@code{save (ratweights)}はともに期待通り動作します。
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} ratwtlvl
+デフォルト値: @code{false}
+
+@code{ratwtlvl}は、
+標準有理式(CRE)の切り詰めを制御するために、
+@code{ratweight}関数と組み合わせて使われます。
+デフォルト値の@code{false}では、切り詰めは起こりません。
+
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} remainder (@var{p_1}, @var{p_2})
+@deffnx {関数} remainder (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+
+多項式@var{p_1}を多項式@var{p_2}で割った余りを返します。
+引数@var{x_1}, ..., @var{x_n}は、@code{ratvars}と同様に解釈されます。
+
+@code{remainder}は、@code{divide}が返す２要素リストの２番目の要素を返します。
+
+@c NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c CAN PROBABLY BE CLARIFIED
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffnx {変数} resultant
+
+変数@var{x}を消去して、２つの多項式@var{p_1}と@var{p_2}の終結式を計算します。
+終結式は@var{p_1}と@var{p_2}の中の@var{x}の係数の判別式です。
+それは、@var{p_1}と@var{p_2}が共通に定数でない因子を持つ時だけゼロに等しいです。
+
+もし@var{p_1}もしくは@var{p_2}が因数分解できるなら、
+@code{resultant}をコールする前に@code{factor}をコールするのが望ましいかもしれません。
+
+変数@code{resultant}は、
+どのアルゴリズムが計算に使われるか制御します。
+@c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
+部分終結式prsには@code{subres}
+モジュラー終結式アルゴリズムには@code{mod}
+通分prsには@code{red}。
+大抵の問題では、@code{subres}が最適です。
+いくつかの大きな次数の１変数もしくは２変数問題では、@code{mod}がよりよいかもしれません。
+
+関数@code{bezout}は、@code{resultant}と同じ引数を取り、
+行列を返します。
+戻り値の判別式は望みの終結式です。
+
+@c NEED AN EXAMPLE HERE
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@defvr {オプション変数} savefactors
+デフォルト値: @code{false}
+
+@c "certain functions" -- WHICH ONES ??
+@code{savefactors}が@code{true}の時、
+同じ因子のいくつかを含む式の因数分解を後でする時にスピードアップするために、
+因子の積である式の因子がある関数によって保存されるようにします。
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} showratvars (@var{expr})
+式@code{expr}の中の標準有理式 (CRE)変数のリストを返します。
+
+@code{ratvars}も参照してください。
+
+@opencatbox
+@category{Rational expressions} @category{Display functions}
+@closecatbox
+
+@end deffn
+
+@c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
+
+@c -----------------------------------------------------------------------------
+@anchor{sqfr}
+@deffn {関数} sqfr (@var{expr})
+
+多項式因子が「平方にならない」ことを除いて、
+@code{factor}に似ています。
+すなわち、それらは、次数１だけの因子を持ちます。
+このアルゴリズムは、@code{factor}の最初の段階でも使われるのですが、
+多項式は、n階微分と共通に nよりも大きな次数のすべての因子を持つという事実を使います。
+このように、それぞれの変数に関する微分の多項式との最大公約数を取ることによって、
+1よりも大きな次数の因子を見つけることができます。
+
+例:
+@c FOLLOWING GENERATED FROM THIS EXPRESSION
+@c sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
+
+@example
+(%i1) sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
+                                2   2
+(%o1)                  (2 x + 1)  (x  - 1)
+@end example
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
+@end deffn
+
+@c THIS ITEM STILL NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} tellrat (@var{p_1}, ..., @var{p_n})
+@deffnx {関数} tellrat ()
+
+多項式@var{p_1}, ..., @var{p_n}の解である要素を
+Maximaに知られている代数的整数の環に加えます。
+それぞれの引数@var{p_i}は、整数係数の多項式です。
+
+@code{tellrat (@var{x})}は、実際には、
+有理関数の中で@var{x}に0を代入することを意味します。
+
+@code{tellrat ()}は、現在の代入のリストを返します。
+
+代数的整数の整理が効果を持つようにするために、
+@code{algebraic}は、@code{true}に設定されなければいけません。
+
+Maximaは、起動の際には、虚数単位と整数の根すべてについて知っています。
+
+核を取り、@code{tellrat}プロパティを削除するコマンド@code{untellrat}があります。
+
+例えば、@code{tellrat (x^2 - y^2)}のように、
+多変数多項式を@code{tellrat}する時、
+@code{@var{y}^2}を@code{@var{x}^2}に代入するのか逆なのかといった
+あいまいさがあります。
+Maximaは、特定の順序付けを選びますが、
+もしユーザーがどちらか指定したいなら、
+例えば，@code{tellrat (y^2 = x^2)}は
+@code{@var{y}^2}を@code{@var{x}^2}で置き換えることを示す構文法を供給します。
+
+@c CAN'T TELL WHAT THIS IS ABOUT -- tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
+@c DOES NOT YIELD AN ERROR, SO WHAT IS THE POINT ABOUT ratalgdenom ??
+@c When you @code{tellrat} reducible polynomials, you want to be careful not to
+@c attempt to rationalize a denominator with a zero divisor.  E.g.
+@c tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w)); will give "quotient by
+@c zero".  This error can be avoided by setting @code{ratalgdenom} to @code{false}.
+
+例:
+
+@c EXAMPLE ADAPTED FROM example (tellrat)
+@c 10*(%i + 1)/(%i + 3^(1/3));
+@c ev (ratdisrep (rat(%)), algebraic);
+@c tellrat (1 + a + a^2);
+@c 1/(a*sqrt(2) - 1) + a/(sqrt(3) + sqrt(2));
+@c ev (ratdisrep (rat(%)), algebraic);
+@c tellrat (y^2 = x^2);
+@example
+(%i1) 10*(%i + 1)/(%i + 3^(1/3));
+                           10 (%i + 1)
+(%o1)                      -----------
+                                  1/3
+                            %i + 3
+(%i2) ev (ratdisrep (rat(%)), algebraic);
+             2/3      1/3              2/3      1/3
+(%o2)    (4 3    - 2 3    - 4) %i + 2 3    + 4 3    - 2
+(%i3) tellrat (1 + a + a^2);
+                            2
+(%o3)                     [a  + a + 1]
+(%i4) 1/(a*sqrt(2) - 1) + a/(sqrt(3) + sqrt(2));
+                      1                 a
+(%o4)           ------------- + -----------------
+                sqrt(2) a - 1   sqrt(3) + sqrt(2)
+(%i5) ev (ratdisrep (rat(%)), algebraic);
+         (7 sqrt(3) - 10 sqrt(2) + 2) a - 2 sqrt(2) - 1
+(%o5)    ----------------------------------------------
+                               7
+(%i6) tellrat (y^2 = x^2);
+                        2    2   2
+(%o6)                 [y  - x , a  + a + 1]
+@end example
+
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} totaldisrep (@var{expr})
+
+@var{expr}のすべての部分式を標準有理式(CRE)から一般形に変換して、
+結果を返します。
+もし@var{expr}がそれ自身CRE形なら、@code{totaldisrep}は、@code{ratdisrep}と同一です。
+
+@code{totaldisrep}は、
+CRE形の部分式を持つ等式やリストや行列などの式をratdisrepするために役に立つかもしれません。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} untellrat (@var{x_1}, @dots{}, @var{x_n})
+@var{x_1}, @dots{}, @var{x_n}から
+@code{tellrat}プロパティを
+削除します。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+@end deffn

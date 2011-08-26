@@ -1,0 +1,868 @@
+@menu
+* Introduction to simplification::
+* Package absimp::
+* Package facexp::
+* Package functs::
+* Package ineq::
+* Package rducon::
+* Package scifac::
+* Package sqdnst::
+@end menu
+
+@node Introduction to simplification, Package absimp, simplification, simplification
+@section Introduction to simplification
+
+ディレクトリ@code{maxima/share/simplification}は
+整理ルールと整理関数を実装するいくつかのスクリプトと整理に関係しないいくつかの関数を含みます。
+
+@c Adapted from absimp.usg ----------------------
+
+@node Package absimp, Package facexp, Introduction to simplification, simplification
+@section Package absimp
+
+@code{absimp}パッケージは
+@code{abs}と@code{signum}関数のために
+組み込み整理ルールを拡張する
+パターンマッチングルールを含みます。
+@code{absimp}は、
+組み込み@code{assume}関数で、また、
+偶数や奇数に関して@code{modedeclare (m, even, n, odd)}のような宣言によって
+確立された関係を考慮します。
+
+@code{absimp}は
+@code{abs}と@code{signum}を使って
+@code{unitramp}と@code{unitstep}関数を定義します。
+
+@code{load (absimp)}はこのパッケージをロードします。
+@code{demo (absimp)}はこのパッケージのデモを表示します。
+
+例:
+
+@c ===beg===
+@c load (absimp)$
+@c (abs (x))^2;
+@c diff (abs (x), x);
+@c cosh (abs (x));
+@c ===end===
+@example
+(%i1) load (absimp)$
+(%i2) (abs (x))^2;
+                                       2
+(%o2)                                 x
+(%i3) diff (abs (x), x);
+                                      x
+(%o3)                               ------
+                                    abs(x)
+(%i4) cosh (abs (x));
+(%o4)                               cosh(x)
+@end example
+
+@c disol.usg: "disolate" already in doc/info/Expressions.texi
+
+@c elim.usg: "eliminate" already in doc/info/Polynomials.texi
+
+@opencatbox
+@category{Simplification functions} @category{Rules and patterns} @category{Share packages} @category{Package absimp}
+@closecatbox
+
+
+@c Adapted from facexp.usg ----------------------
+@c ALL OF THE TEXT IN FACEXP.USG IS VERY VAGUE.
+@c I HAVE NO IDEA WHAT THESE FUNCTIONS DO.
+@c ALL OF THESE ITEMS NEED TO BE HEAVILY REVISED
+@c (ASSUMING THIS PACKAGE IS SOMETHING WE WANT TO INVEST TIME IN)
+@node Package facexp, Package functs, Package absimp, simplification
+@section Package facexp
+
+@c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
+@code{facexp}パッケージは、
+制御された展開によって式を構造化する能力をユーザーに与えるいくつかの関連関数を含みます。
+式が物理的意味を持つ変数を含むとき、この能力は特に役に立ちます。
+そんな式の最も簡潔な形式は、それらの変数に関して式を完全に展開し、
+その後係数を因数分解することで得られることがしばしばあるからです。
+この手続きは標準のMaxima関数を使って実行することは難しくありませんが、
+追加の微調整も望まれていて、これらの仕上げは適用するのが更に難しくなることがあります。
+
+関数@code{facsum}とその関連形式は、
+この方法で式の構造を制御するための便利な手段を提供します。
+別の関数@code{collectterms}は、
+この形式に既に整理された複数の式を
+式全体を再整理することなく、足し合わせるのに使うことができます。
+式が非常に大きいとき、この関数は役に立つかもしれません。
+
+@c CAN'T FIND ANY SUCH FILE "DIAGEVAL".
+@c THERE ARE COMMENTED-OUT DEFNS OF FACTENEXPAND, FACEXPTEN, AND FACTORFACEXPTEN
+@c IN FACEXP (AND NOWHERE ELSE).
+@c COMMENTING OUT THIS TEXT FOR NOW.
+@c Note:  @code{factenexpand}, @code{facexpten}, and @code{factorfacexpten}  are available  only
+@c after loading @code{diageval}. They are special functions used for  tensor
+@c manipulation.
+
+@code{load (facexp)}はこのパッケージをロードします。
+@code{demo (facexp)}はこのパッケージのデモを見せます。
+
+@opencatbox
+@category{Expressions} @category{Share packages} @category{Package facexp}
+@closecatbox
+
+
+@c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
+@c SOME EXAMPLES WOULD HELP HERE
+@deffn {関数} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+引数@var{arg_1}, ..., @var{arg_n}に依存する
+@var{expr}の形式を返します。
+引数は@code{ratvars}に適した任意の形式か、そんな形式のリストを取り得ます。
+もし引数がリストでなければ、
+返される形式は、引数に関して完全に展開され、引数の係数は因数分解されます。
+これらの係数は、非合理的な意味合いを除いて引数に依存しません。
+
+引数のいずれかがリストなら、リストすべては1つのリストに結合されて、
+引数の係数に対して@code{factor}をコールする代わりに
+@code{facsum}は、
+これらの係数に対して自分自身をコールします。
+この再帰コールに関しては、上記で新しく構成されたリストが新しい引数リストとして使われます。
+この処理は、リストの中に望まれた要素を入れ子にすることで、任意の深さまで繰り返すことができます。
+
+
+It is possible that one may wish to @code{facsum} with respect  to more
+complicated subexpressions,  such as  
+@code{log (x + y)}のような、より複雑な部分式に関して
+@code{facsum}したいかも知れません。
+そんな引数も許されています。
+
+@c CUTTING THIS OUT, BECAUSE IT IS OBVIOUSLY NOT CORRECT
+@c SEE EXAMPLE IN BUG REPORT ID: 2834336 - ratsimp vs facsum
+@c With no variable specification, for example @code{facsum (@var{expr})}, the 
+@c result returned is the same as that returned by @code{ratsimp (@var{expr})}.
+
+時々、ユーザーは
+式に関して、先頭演算子によってのみ指定された上記形式いずれかが欲しいかもしれません。
+例えば、
+すべての@code{log}に関して@code{facsum}したかもしれません。
+この場合、
+この方法で扱われる特定の@code{log}か、
+代わりに式@code{operator (log)}や@code{'operator (log)}
+を引数に含むことができます。
+もし
+演算子@var{op_1}, ..., @var{op_n}に関して
+式@var{expr}を@code{facsum}したいなら、
+@code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}を評価します。
+@code{operator}形式はリスト引数の中でも可能です。
+
+更に、
+スイッチ@code{facsum_combine}と@code{nextlayerfactor}の設定は
+@code{facsum}の結果に影響するかもしれません。
+
+@opencatbox
+@category{Package facexp} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@defvr {グローバル変数} nextlayerfactor
+デフォルト値: @code{false}
+
+@code{nextlayerfactor}が@code{true}の時、
+@code{facsum}の再帰コールが
+引数の係数の因数分解された形式の因子に適用されます。
+
+@code{false}の時、
+@code{facsum}は、
+@code{facsum}への再帰コールが起こる時はいつでも、全体としてそれぞれの係数に適用されます。
+
+
+@code{facsum}の引数リストに
+アトム@code{nextlayerfactor}を入れると、
+@code{nextlayerfactor: true}の効果がありますが、
+式の次のレベル@i{だけ}に関してです。
+
+@code{nextlayerfactor}はいつも
+@code{true}か@code{false}にバインドされているので、
+@code{facsum}の引数リストの中に現れる時はいつでも、
+シングルクォートで表さなければいけません。
+
+@opencatbox
+@category{Package facexp} @category{Expressions}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} facsum_combine
+デフォルト値: @code{true}
+
+引数が多項式の商の時、
+@code{facsum_combine}は
+@code{facsum}が返す最終結果の形式を制御します。
+もし@code{facsum_combine}が@code{false}なら、
+形式は既に記述したような完全に展開された和として返されますが、
+もし@code{true}なら、
+返される式は、既に記述した形式の多項式の比です。
+
+有理式の分子と分母両方を@code{facsum}したいが、
+分母が分子の項ずつに掛けられたくない時、
+このスイッチの@code{true}設定は役に立ちます。
+
+@opencatbox
+@category{Package facexp} @category{Expressions}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
+@var{expr}の因子に関して引数として
+@var{arg_1}, ... @var{arg_n}を付けて@code{facsum}をコールすることで得られる
+@var{expr}の形式を返します。
+もし@var{expr}の因子のいずれかがべきに累乗されるなら、
+因子と指数と両方がこの方法で処理されます。
+
+@opencatbox
+@category{Package facexp} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{collectterms}
+@deffn {関数} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+
+もしいくつかの式が@code{facsum}もしくは@code{factorfacsum}, @code{factenexpand}, @code{facexpten},
+ @code{factorfacexpten}で整理されていて、それらが一緒に加算されているなら、
+関数@code{collectterms}を使ってそれらを結合することが望まれる場合があります。
+@code{collectterms}は、@code{nextlayerfactor}を除いてこれらの他の関連した関数に渡すことができる引数すべてを
+引数として取ることができます。
+@code{collectterms}の利点は、@code{facsum}と似た形式を返すことです。
+しかし、既に@code{facsum}で処理された加算形式なのでこの処理を繰り返す必要はありません。
+この能力は加算する式が非常に大きい時特に役立ちます。
+
+@opencatbox
+@category{Package facexp} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c Adapted from functs.usg ----------------------
+
+@c conjugate already described in doc/info/Matrices.texi
+@node Package functs, Package ineq, Package facexp, simplification
+@section Package functs
+
+@opencatbox
+@category{Share packages} @category{Package functs}
+@closecatbox
+
+@deffn {関数} rempart (@var{expr}, @var{n})
+式@var{expr}からパーツ@var{n}を取り除きます。
+
+もし@var{n}が形式@code{[@var{l}, @var{m}]}のリストなら、
+パーツ@var{l}から@var{m}までが取り除かれます。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
+変数@var{x}に関する式のリスト[@var{f_1}, ..., @var{f_n}]の
+Wronskian行列を返します。
+Wronskian行列の行列式は、
+式のリストのWronskian行列式です。
+
+@code{wronskian}を使うには、最初に@code{load(functs)}してください。例えば:
+
+@c ===beg===
+@c load (functs)$
+@c wronskian([f(x), g(x)],x);
+@c ===end===
+@example
+(%i1) load(functs)$
+(%i2) wronskian([f(x), g(x)],x);
+(%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
+@end example
+
+@opencatbox
+@category{Package functs} @category{Differential calculus}
+@closecatbox
+
+@end deffn
+
+@c adjoint already described in doc/info/Matrices.texi
+
+@deffn {関数} tracematrix (@var{M})
+行列@var{M}の跡(対角要素の和)を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Matrices}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} rational (@code{z})
+分母を有理化するように、
+@var{z}の分子と分母に分母の複素共役を掛けます。
+もし与えられたものがそうであれば、正準有理式(CRE)形式を返し、
+そうでないなら、一般形式を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} logand (@code{x},@code{y})
+引数x, yの(ビット)論理"積"を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} logor (@code{x},@code{y})
+引数x, yの(ビット)論理"和"を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} logxor (@code{x},@code{y})
+引数x, yの(ビット)"排他的論理和"を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
+
+@c kronecker superseded by kron_delta in src/nset.lisp
+
+@deffn {関数} nonzeroandfreeof (@var{x}, @var{expr})
+もし @var{expr}がゼロでなく、
+@code{freeof (@var{x}, @var{expr})}が@code{true}を返すなら、
+@code{true}を返します。
+そうでなければ、@code{false}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} linear (@var{expr}, @var{x})
+@var{expr}が変数@var{x}に関して線形の式の時、
+@code{linear}は@code{@var{a}*@var{x} + @var{b}}を返します。
+ここで、@var{a}はゼロでなく、@var{a}と@var{b}は@var{x}に依存しません。
+そうでなければ、@code{linear}は@var{expr}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gcdivide}
+@deffn {関数} gcdivide (@var{p}, @var{q})
+
+@code{takegcd}が@code{true}の時、
+@code{gcdivide}は多項式@var{p}と@var{q}を最大公約多項式で割り、
+結果の比を返します。
+
+@code{takegcd}が@code{false}の時、
+@code{gcdivide}は比@code{@var{p}/@var{q}}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@mref{ezgcd}, @mref{gcd}, @mref{gcdex}, @mref{poly_gcd}も参照してください。
+
+例:
+
+@example
+(%i1) load(functs)$
+
+(%i2) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o2)                6 x  + 19 x  + 19 x + 6
+(%i3) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o3)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i4) gcdivide(p1, p2);
+                             x + 1
+(%o4)                        ------
+                              3
+                             x  + x
+(%i5) takegcd:false;
+(%o5)                         false
+(%i6) gcdivide(p1, p2);
+                       3       2
+                    6 x  + 19 x  + 19 x + 6
+(%o6)          ----------------------------------
+                  5       4       3       2
+               6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i7) ratsimp(%);
+                             x + 1
+(%o7)                        ------
+                              3
+                             x  + x
+@end example
+
+@opencatbox
+@category{Package functs} @category{Polynomials}
+@closecatbox
+@end deffn
+
+@c lcm already described in doc/info/Number.texi
+
+@deffn {関数} arithmetic (@var{a}, @var{d}, @var{n})
+算術級数@code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}の第@var{n}項を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Sums and products}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} geometric (@var{a}, @var{r}, @var{n})
+幾何級数@code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}の第@var{n}項を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Sums and products}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
+調和級数@code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}の第@var{n}項を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Sums and products}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} arithsum (@var{a}, @var{d}, @var{n})
+算術級数の1から@var{n}までの和を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Sums and products}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} geosum (@var{a}, @var{r}, @var{n})
+幾何級数の1から@var{n}までの和を返します。
+もし@var{n}が無限大(@code{inf})なら、
+@var{r}の絶対値が1未満でのみ、和は有限です。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Sums and products}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} gaussprob (@var{x})
+Gaussian確率函数@code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} gd (@var{x})
+Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} agd (@var{x})
+逆Gudermannian函数@code{log (tan (%pi/4 + x/2)))}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} vers (@var{x})
+正矢(せいし)@code{1 - cos (x)}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} covers (@var{x})
+余矢(よし)@code{1 - sin (@var{x})}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} exsec (@var{x})
+外正割(exsecant)@code{sec (@var{x}) - 1}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} hav (@var{x})
+半正矢@code{(1 - cos(x))/2}を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
+@deffn {関数} combination (@var{n}, @var{r})
+一度に@var{r}個を取る@var{n}個のオブジェクトの組み合わせの数を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
+@deffn {関数} permutation (@var{n}, @var{r})
+@var{n}個のオブジェクトの集合から選択された@var{r}個のオブジェクトの置換の数を返します。
+
+この関数を使うには、最初に@code{load(functs)}を書いてください。
+
+@opencatbox
+@category{Package functs} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@c Adapted from ineq.usg ----------------------
+@c THIS PACKAGE IS INTERESTING BUT THIS TEXT NEEDS WORK AND EXAMPLES
+@node Package ineq, Package rducon, Package functs, simplification
+@section Package ineq
+
+@code{ineq}パッケージは不等式の整理規則を含みます。
+
+セッション例:
+
+@c ===beg===
+@c load(ineq)$
+@c a>=4;  /* a sample inequality */
+@c (b>c)+%; /* add a second, strict inequality */
+@c 7*(x<y); /* multiply by a positive number */
+@c -2*(x>=3*z); /* multiply by a negative number */
+@c (1+a^2)*(1/(1+a^2)<=1); /* Maxima knows that 1+a^2 > 0 */
+@c assume(x>0)$ x*(2<3); /* assuming x>0 */
+@c a>=b; /* another inequality */
+@c 3+%; /* add something */
+@c %-3; /* subtract it out */
+@c a>=c-b; /* yet another inequality */
+@c b+%; /* add b to both sides */
+@c %-c; /* subtract c from both sides */
+@c -%;  /* multiply by -1 */
+@c (z-1)^2>-2*z; /* determining truth of assertion */
+@c expand(%)+2*z; /* expand this and add 2*z to both sides */
+@c %,pred;
+@c ===end===
+@example
+(%i1) load(ineq)$
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+(%i2) a>=4;  /* a sample inequality */
+(%o2)                               a >= 4
+(%i3) (b>c)+%; /* add a second, strict inequality */
+(%o3)                            b + a > c + 4
+(%i4) 7*(x<y); /* multiply by a positive number */
+(%o4)                              7 x < 7 y
+(%i5) -2*(x>=3*z); /* multiply by a negative number */
+(%o5)                           - 2 x <= - 6 z
+(%i6) (1+a^2)*(1/(1+a^2)<=1); /* Maxima knows that 1+a^2 > 0 */
+                                        2
+(%o6)                             1 <= a  + 1
+(%i7) assume(x>0)$ x*(2<3); /* assuming x>0 */
+(%o7)                              2 x < 3 x
+(%i8) a>=b; /* another inequality */
+(%o8)                               a >= b
+(%i9) 3+%; /* add something */
+(%o9)                           a + 3 >= b + 3
+(%i10) %-3; /* subtract it out */
+(%o10)                              a >= b
+(%i11) a>=c-b; /* yet another inequality */
+(%o11)                            a >= c - b
+(%i12) b+%; /* add b to both sides */
+(%o12)                            b + a >= c
+(%i13) %-c; /* subtract c from both sides */
+(%o13)                         - c + b + a >= 0
+(%i14) -%;  /* multiply by -1 */
+(%o14)                          c - b - a <= 0
+(%i15) (z-1)^2>-2*z; /* determining truth of assertion */
+                                      2
+(%o15)                         (z - 1)  > - 2 z
+(%i16) expand(%)+2*z; /* expand this and add 2*z to both sides */
+                                   2
+(%o16)                            z  + 1 > 0
+(%i17) %,pred;
+(%o17)                               true
+@end example
+
+不等式の回りで括弧を使うことについて注意してください;
+ユーザーが@code{(A > B) + (C = 5)}と入力した時、
+結果は@code{A + C > B + 5}ですが、@code{A > B + C = 5}は構文エラーであり、
+@code{(A > B + C) = 5}は完全に何か他のものです。
+
+規則定義の完全なリストを見るには、
+@code{disprule (all)}を実行してください。
+
+Maximaが不等式に掛けられる量の符号を決定できない時、
+ユーザーは問い合わせを受けるでしょう。
+
+最もありふれた仕様の欠陥を以下に例示します:
+
+@c ===beg===
+@c eq: a > b;
+@c 2*eq;
+@c % - eq;
+@c ===end===
+@example
+(%i1) eq: a > b;
+(%o1)                              a > b
+(%i2) 2*eq;
+(%o2)                            2 (a > b)
+(%i3) % - eq;
+(%o3)                              a > b
+@end example
+
+別の問題は0掛ける不等式です;
+これを0にするデフォルト動作はそのままです。
+しかし、
+もし@code{X*@var{some_inequality}}とタイプして、
+Maximaが@code{X}の符号を尋ね、
+@code{zero} (または@code{z})と答えたなら、
+プログラムは@code{X*@var{some_inequality}}を返し、
+@code{X}が0という情報を使いません。
+そんな時は、
+データベースは、決定の際、@code{X}を評価する目的ではなく、比較目的のためだけに使われるので、
+@code{ev (%, x: 0)}を実行すべきです。
+
+パッケージがロードされた時、
+整理器が、パッケージなしよりたくさんの規則を検証するよう強制されるので、
+ユーザーはより遅い応答に気がつくかもしれません。
+だから、これらを利用した後、規則を取り除きたいかもしれません。
+(あなたが定義したかもしれないものすべてを含み)規則すべてを消すには、
+@code{kill (rules)}してください;
+もしくは、もっと選択的にそれらのうちのいくつかだけ消すかもしれません;
+もしくは、特定の規則に@code{remrule}を使ってください。
+
+もし自分の規則を定義した後、このパッケージをロードするなら、
+同じ名前を持つあなたの規則をつぶすでしょう。
+このパッケージの規則は以下の通りです:
+@code{*rule1}, ..., @code{*rule8},
+@code{+rule1}, ..., @code{+rule18},
+そして、それを参照するには、
+@code{"+"}に関する最初の規則を限定して取り除くための@code{remrule ("+", "+rule1")}とか、
+二番目の乗法規則の定義を表示するための@code{disprule ("*rule2")}とか、
+規則名を引用符で囲まなければいけません。
+
+@opencatbox
+@category{Simplification functions} @category{Rules and patterns} @category{Share packages} @category{Package ineq}
+@closecatbox
+
+
+@c lrats.usg: "lratsubst" and "fullratsubst" already in doc/info/Polynomials.texi
+
+@c Adapted from rducon.usg ----------------------
+@c THIS IS AN INTERESTING FUNCTION BUT THIS TEXT NEEDS WORK AND EXAMPLES
+@node Package rducon, Package scifac, Package ineq, simplification
+@section Package rducon
+
+@opencatbox
+@category{Expressions} @category{Share packages} @category{Package rducon}
+@closecatbox
+
+
+@deffn {関数} reduce_consts (@var{expr})
+@var{expr}の定部分式を構成された定アトムで置き換え、
+これら構成された定数すべての定義を等式のリスト@code{const_eqns}に保存し、
+修正された@var{expr}を返します。
+@var{expr}のそれらのパーツは、関数@code{constantp}が施された時@code{true}を返す
+定数です。
+それゆえ、
+@code{reduce_consts}を呼び出す前に、
+@example
+declare ([@var{objects to be given the constant property}], constant)$
+@end example
+をして、自分の式に現れる定数量のデータベースを設定すべきです。
+
+もしこれらの数式計算の後、Fortran出力を生成する予定があるなら、
+最初のコードセクションの1つはすべての定数の計算であるべきです。
+このコードセグメントを生成するには、
+@example
+map ('fortran, const_eqns)$
+@end example
+を実行してください。
+
+@code{reduce_consts}に影響する@code{const_eqns}
+を除いた変数は以下の通りです:
+@code{const_prefix} (デフォルト値: @code{xx})
+定部分式を表すために@code{reduce_consts}が生成するシンボルすべてに接頭として付けるのに使われる文字列です。
+
+@code{const_counter} (デフォルト値: 1)は
+@code{reduce_consts}が見つける定部分式それぞれを表すためのユニークなシンボルを生成するのに使われる整数添字です。
+
+@code{load (rducon)}はこの関数をロードします。
+@code{demo (rducon)}はこの関数のデモを見せます。
+
+@opencatbox
+@category{Package rducon} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@c rncomb.usg: "rncombine" already in doc/info/Miscellaneous.texi
+
+@c Adapted from scifac.usg ----------------------
+@node Package scifac, Package sqdnst, Package rducon, simplification
+@section Package scifac
+
+@opencatbox
+@category{Expressions} @category{Share packages} @category{Package scifac}
+@closecatbox
+
+
+@deffn {関数} gcfac (@var{expr})
+@code{gcfac}は
+科学者が式をより簡単にしようとする時に適用するのと同じ発見的方法の適用を試みる
+因数分解関数です。
+@code{gcfac}は単項式タイプの因数分解に限られます。
+和に関しては、@code{gcfac}は以下を行います:
+
+@enumerate
+@item
+整数上で素因数分解します。
+@item
+項の複雑さに関わらず、生じる項の最大の冪を係数として因数分解します。
+@item
+項の隣同士の対を因数分解する時に、(1)と(2)を使います。
+@item
+式がもはや変化しなくなるまで、
+これらのテクニックを繰り返し、再帰的に適用します。
+@end enumerate
+
+対のすべての可能な再配列の中から最も簡潔な対因数分解された結果を産むものを見つけることの
+組み合わせ的に困難な性質のため、
+項目(3)は必ずしも、対での因数分解の最善の仕事をしません。
+
+@code{load (scifac)}はこの関数をロードします。
+@code{demo (scifac)}はこの関数のデモを見せます。
+
+@opencatbox
+@category{Package scifac} @category{Expressions}
+@closecatbox
+
+@end deffn
+
+@c Adapted from sqdnst.usg ----------------------
+@c THIS FUNCTION IS INTERESTING BUT THIS TEXT NEEDS WORK. HOW DEEPLY CAN SQRT BE NESTED ??
+@node Package sqdnst,  , Package scifac, simplification
+@section Package sqdnst
+
+@deffn {関数} sqrtdenest (@var{expr})
+可能なら、簡単で、数値的で、二項無理数(binomial surds)の@code{sqrt}をdenestします。
+
+例えば、
+
+@c ===beg===
+@c load (sqdnst)$
+@c sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
+@c sqrtdenest(%);
+@c ===end===
+@example
+(%i1) load (sqdnst)$
+(%i2) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
+                                    sqrt(3)
+                               sqrt(------- + 1)
+                                       2
+(%o2)                        ---------------------
+                             sqrt(11 sqrt(2) - 12)
+(%i3) sqrtdenest(%);
+                                  sqrt(3)   1
+                                  ------- + -
+                                     2      2
+(%o3)                            -------------
+                                    1/4    3/4
+                                 3 2    - 2
+@end example
+
+時々、
+@code{(19601-13860 sqrt(2))^(7/4)}に対してのように、
+@code{sqrtdenest}を複数回適用することが役立ちます。
+
+@code{load (sqdnst)}はこの関数をロードします。
+
+@opencatbox
+@category{Expressions} @category{Share packages} @category{Package sqdnst}
+@closecatbox
+
+@end deffn
+
+@c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already in doc/info/Simplification.texi

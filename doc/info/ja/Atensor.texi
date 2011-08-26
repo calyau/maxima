@@ -1,0 +1,314 @@
+@menu
+* Introduction to atensor::
+* Functions and Variables for atensor::
+@end menu
+
+@node Introduction to atensor, Functions and Variables for atensor, atensor, atensor
+@section Introduction to atensor
+
+@code{atensor}は、代数テンソル操作パッケージです。
+@code{atensor}を使うには、@code{load(atensor)}をタイプしてください。
+続いて、@code{init_atensor}関数コールしてください。
+
+@code{atensor}の本質は非可換(ドット)積演算子 ("@code{.}")の整理ルール一式です
+@code{atensor}はいくつかの代数型を認識します;
+@code{init_atensor}関数がコールされた時、
+対応する整理ルールが有効になります。
+
+@code{atensor}の能力は、
+四元数代数を2つの基底ベクトルを持つClifford代数 Cl(0,2)として
+定義することで実演することができます。
+3つの四元数虚数単位は2つの基底ベクトルとその積、すなわち以下の通りです:
+
+@example
+    i = v     j = v     k = v  . v
+         1         2         1    2
+@end example
+
+@code{atensor}パッケージは
+四元数代数に関する組み込みの定義を持ちますが、
+この例では使わず、四元数乗算表を行列として組むよう試みます:
+
+@example
+(%i1) load(atensor);
+(%o1)       /share/tensor/atensor.mac
+(%i2) init_atensor(clifford,0,0,2);
+(%o2)                                done
+(%i3) atensimp(v[1].v[1]);
+(%o3)                                 - 1
+(%i4) atensimp((v[1].v[2]).(v[1].v[2]));
+(%o4)                                 - 1
+(%i5) q:zeromatrix(4,4);
+                                [ 0  0  0  0 ]
+                                [            ]
+                                [ 0  0  0  0 ]
+(%o5)                           [            ]
+                                [ 0  0  0  0 ]
+                                [            ]
+                                [ 0  0  0  0 ]
+(%i6) q[1,1]:1;
+(%o6)                                  1
+(%i7) for i thru adim do q[1,i+1]:q[i+1,1]:v[i];
+(%o7)                                done
+(%i8) q[1,4]:q[4,1]:v[1].v[2];
+(%o8)                               v  . v
+                                     1    2
+(%i9) for i from 2 thru 4 do for j from 2 thru 4 do
+      q[i,j]:atensimp(q[i,1].q[1,j]);
+(%o9)                                done
+(%i10) q;
+@group
+                   [    1        v         v      v  . v  ]
+                   [              1         2      1    2 ]
+                   [                                      ]
+                   [   v         - 1     v  . v    - v    ]
+                   [    1                 1    2      2   ]
+(%o10)             [                                      ]
+                   [   v      - v  . v     - 1      v     ]
+                   [    2        1    2              1    ]
+                   [                                      ]
+                   [ v  . v      v        - v       - 1   ]
+                   [  1    2      2          1            ]
+@end group
+@end example
+
+@code{atensor}は
+添字付きシンボルを基底ベクトルと認識します。
+シンボルは@code{asymbol}の中に記憶されたものであり、
+添字は1から@code{adim}まで間です。
+添字付きシンボルだけに関して
+双一次形式
+@code{sf}, @code{af}, @code{av}が評価されます。
+評価は
+@code{fun(v[i],v[j])}に
+@code{aform[i,j]}の値を代入します
+ここで、@code{v}は @code{asymbol}の値を表し、
+@code{fun}は @code{af}か @code{sf}を示します;
+あるいは、
+@code{av(v[i],v[j])}に @code{v[aform[i,j]]}を代入します。
+
+言うまでもなく、関数 @code{sf}, @code{af}, @code{av}は再定義するこができます。
+
+@code{atensor}パッケージがロードされる時、以下のフラグが設定されます:
+
+@example
+dotscrules:true;
+dotdistrib:true;
+dotexptsimp:false;
+@end example
+
+もし非結合代数で実験したいなら、
+@code{dotassoc}を @code{false}に設定することも考えるかもしれません。
+しかし、この場合、
+@code{atensimp}はいつも
+望みの整理を得ることができるわけではありません。
+
+@opencatbox
+@category{Tensors} @category{Share packages} @category{Package atensor}
+@closecatbox
+
+@c end concepts atensor
+@node Functions and Variables for atensor,  , Introduction to atensor, atensor
+
+@section Functions and Variables for atensor
+
+@deffn {関数} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {関数} init_atensor (@var{alg_type})
+
+特定の代数型で
+@code{atensor}パッケージを初期化します。
+@var{alg_type}は以下のいずれかであり得ます:
+
+@code{universal}: 普遍代数は交換規則を持ちません。
+
+@code{grassmann}: Grassman代数は交換関係 @code{u.v+v.u=0}で定義されます。
+
+@code{clifford}: Clifford代数は
+交換関係 @code{u.v+v.u=-2*sf(u,v)}で定義されます。
+ここで、 @code{sf}は対称スカラ値函数です。
+この代数では、 @var{opt_dims}は、
+代数の正の次元数、縮退次元数、負の次元数をそれぞれ表す3つの非負整数までありえます。
+もしいずれかの @var{opt_dims}値が供給されたら、
+@code{atensor}は
+@code{adim}と @code{aform}の値を適切に構成します。
+そうでなければ、
+@code{adim}はデフォルトが0で、 @code{aform}は未定義です。
+
+@code{symmetric}: 対称代数は交換関係 @code{u.v-v.u=0}で定義されます。
+
+@code{symplectic}: シンプレクティック代数は
+交換関係 @code{u.v-v.u=2*af(u,v)}で定義されます。
+ここで、 @code{af}は反対称スカラ値函数です。
+シンプレクティック代数では、
+@var{opt_dims}は
+非縮退次元数、縮退次元数をそれぞれ表す2つの非負整数までありえます。
+もしいずれかの @var{opt_dims}値が供給されたら、
+@code{atensor}は
+@code{adim}と @code{aform}の値を適切に構成します。
+そうでなければ、
+@code{adim}はデフォルトが0で、 @code{aform}は未定義です。
+
+@code{lie_envelop}: Lie包絡代数は交換関係 @code{u.v-v.u=2*av(u,v)}で定義されます。
+ここで、 @code{av}は反対称函数です。
+
+@code{init_atensor}関数はいくつかの予め定義された代数型も認識します:
+
+@code{complex}は複素数代数をClifford代数 Cl(0,1)として実装します。
+@code{init_atensor(complex)}をコールすることは
+@code{init_atensor(clifford,0,0,1)}と同値です。
+
+@code{quaternion}は四元数代数を実装します。
+@code{init_atensor (quaternion)}をコールすることは
+@code{init_atensor (clifford,0,0,2)}と同値です。
+
+@code{pauli}はPauliスピノール代数をClifford代数 Cl(3,0)として実装します。
+@code{init_atensor(pauli)}をコールすることは
+@code{init_atensor(clifford,3)}と同値です。
+
+@code{dirac}はDiracスピノール代数をClifford代数 Cl(3,1)として実装します。
+@code{init_atensor(dirac)}をコールすることは
+@code{init_atensor(clifford,3,0,1)}と同値です。
+
+@opencatbox
+@category{Package atensor}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} atensimp (@var{expr})
+
+@code{init_atensor}のコールで構成された規則に従って、
+代数テンソル式 @var{expr}を整理します。
+整理は、
+適用可能な場所への
+交換関係の再帰的な適用と@code{sf}, @code{af}, @code{av}のコールの決定を含みます。
+複雑な式に関してさえ、
+関数がいつでも終了することを確実にするために
+保護手段が使われます。
+
+@opencatbox
+@category{Package atensor} @category{Simplification functions}
+@closecatbox
+
+@end deffn
+
+@c @deffn {関数} alg_type
+@c 
+@c 代数型。有効な値は @code{universal}, @code{grassmann},
+@c @code{clifford}, @code{symmetric}, @code{symplectic}, @code{lie_envelop}です。
+@c 
+@c @opencatbox
+@c @category{Package atensor}
+@c @closecatbox
+@c 
+@c @end deffn
+
+@defvr {変数} adim
+デフォルト値: 0
+
+代数の次元。
+@code{atensor}は
+添字付きオブジェクトが有効な基底ベクトルか決定するのに
+@code{adim}の値を使います。
+@code{abasep}を参照してください。
+
+@opencatbox
+@category{Package atensor} @category{Global variables}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} aform
+デフォルト値: @code{ident(3)}
+
+双一次形式@code{sf}, @code{af}, @code{av}のデフォルト値。
+デフォルトは、単位行列 @code{ident(3)}です。
+
+@opencatbox
+@category{Package atensor} @category{Global variables}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} asymbol
+デフォルト値: @code{v}
+
+基底ベクトルのシンボル。
+
+@opencatbox
+@category{Package atensor} @category{Global variables}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} sf (@var{u}, @var{v})
+
+交換関係で使われる対称スカラ関数。
+デフォルトの実装は
+両方の引数が@code{abasep}を使った基底ベクトルかチェックし、
+もしそうなら、行列 @code{aform}から対応する値を代入します。
+
+@opencatbox
+@category{Package atensor}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} af (@var{u}, @var{v})
+
+交換関係で使われる反対称スカラ関数。
+デフォルトの実装は
+両方の引数が@code{abasep}を使った基底ベクトルかチェックし、
+もしそうなら、行列 @code{aform}から対応する値を代入します。
+
+@opencatbox
+@category{Package atensor}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} av (@var{u}, @var{v})
+
+交換関係で使われる反対称スカラ関数。
+デフォルトの実装は
+両方の引数が@code{abasep}を使った基底ベクトルかチェックし、
+もしそうなら、行列 @code{aform}から対応する値を代入します。
+
+例えば:
+
+@example
+(%i1) load(atensor);
+(%o1)       /share/tensor/atensor.mac
+(%i2) adim:3;
+(%o2)                                  3
+(%i3) aform:matrix([0,3,-2],[-3,0,1],[2,-1,0]);
+                               [  0    3   - 2 ]
+                               [               ]
+(%o3)                          [ - 3   0    1  ]
+                               [               ]
+                               [  2   - 1   0  ]
+(%i4) asymbol:x;
+(%o4)                                  x
+(%i5) av(x[1],x[2]);
+(%o5)                                 x
+                                       3
+@end example
+
+@opencatbox
+@category{Package atensor}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} abasep (@var{v})
+
+引数が @code{atensor}基底ベクトルかチェックします。
+すなわち、@code{asymbol}の値と同じシンボルと
+1と @code{adim}の間の数値の添字を持つ添字付きシンボルかどうか、チェックします。
+
+@opencatbox
+@category{Package atensor} @category{Predicate functions}
+@closecatbox
+
+@end deffn

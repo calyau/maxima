@@ -1,0 +1,267 @@
+@menu
+* Documentation::
+* Functions and Variables for Help::        
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Documentation, Functions and Variables for Help, Help, Help
+@section Documentation
+@c -----------------------------------------------------------------------------
+
+@c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
+
+このMaximaのオンラインユーザーズマニュアルは、違った形でも見ることができます。
+Maximaの対話プロンプトから@code{?}コマンド（すなわち@code{describe}関数）を使うと、テキスト形式でユーザーズマニュアルが表示されます。@code{info}ビューアを使うと、ユーザーズマニュアルは、@code{info}ハイパーテキストとして表示され、通常のウェブブラウザを使えば、ウェブページとして表示されます。
+
+@mref{example}はたくさんのMaxima関数の使用例を表示します。
+例えば、
+
+@example
+(%i1) example (integrate);
+@end example
+
+は、
+
+@example
+(%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
+(%o2) test(f) := block([u], u : integrate(f, x),
+                                         ratsimp(f - diff(u, x)))
+(%i3) test(sin(x))
+(%o3)                           0
+(%i4) test(1/(x+1))
+(%o4)                           0
+(%i5) test(1/(x^2+1))
+(%o5)                           0
+@end example
+
+という感じでさらに出力を表示します。
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Help,  , Documentation, Help
+@section Functions and Variables for Help
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{apropos}
+@deffn {関数} apropos (@var{string})
+
+@var{string}を含むMaxima上の名前を検索します。
+例えば、@code{apropos ("exp")}は、
+（@code{expand}, @code{exp}, @code{exponentialize}のように）
+@code{exp}を名前の一部として含むフラグ、関数すべてのリストを返します。
+このように、もしなにかの名前の一部だけ覚えていたなら、
+このコマンドを使って名前の残りを見つけることができます。
+同様に、 @code{apropos ("tr_")}とすれば、翻訳器に関係した多くのスイッチのリストを
+見つけることができます。翻訳器に関係したスイッチのほとんどは@code{tr_}で始まります。
+
+@code{apropos("")}は、Maximaの名前すべてのリストを返します。
+
+もし名前が見つからなければ、@code{apropos}は空のリスト@code{[]}を返します。
+
+例:
+
+@code{"gamma"}を含むMaximaシンボルすべてを表示します:
+
+@c ===beg===
+@c apropos("gamma");
+@c ===end===
+@example
+(%i1) apropos("gamma");
+(%o1) [%gamma, gamma, gammagreek, gammalim, gamma_expand, gammagreek, 
+gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
+prefer_gamma_incomplete,
+gamma_incomplete_generalized_regularized]
+@end example
+
+@opencatbox
+@category{Help}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{demo}
+@deffn {関数} demo (@var{filename})
+
+@var{filename}の中のMaxima式を評価し、結果を表示します。
+@code{demo}はそれぞれの式を評価した後 停止し、
+ユーザーがリターンキーを入力すると続きを実行します。
+(Xmaximaで走らせている場合、
+@code{demo}はセミコロン@code{;}に続けて改行を入力する必要があります。)
+
+@code{demo}は、@var{filname}のファイルを探すため、
+ディレクトリ@code{file_search_demo}のリストを検索します。
+もしファイルの拡張子が@code{.dem}なら、拡張子は省略できます。
+@code{file_search}も参照してください。
+
+@code{demo}は引数を評価します。
+@code{demo}はデモンストレーションファイルの名前を返します。
+
+例:
+
+@example
+(%i1) demo ("disol");
+
+batching /home/wfs/maxima/share/simplification/disol.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i2)                      load(disol)
+
+_
+(%i3)           exp1 : a (e (g + f) + b (d + c))
+(%o3)               a (e (g + f) + b (d + c))
+
+_
+(%i4)                disolate(exp1, a, b, e)
+(%t4)                         d + c
+
+(%t5)                         g + f
+
+(%o5)                   a (%t5 e + %t4 b)
+
+_
+@end example
+
+@opencatbox
+@category{Help} @category{Console interaction} @category{File input}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{describe}
+@deffn  {関数} describe (@var{string})
+@deffnx {関数} describe (@var{string}, exact)
+@deffnx {関数} describe (@var{string}, inexact)
+@ifinfo
+@fnindex Help
+@end ifinfo
+
+@code{describe(@var{string})}は@code{describe(@var{string}, exact)}と同値です。
+
+@code{describe(@var{string}, exact)}は（大文字小文字は区別せず）@var{string}に等しいタイトルを持った項目があれば、それを見つけます。
+
+@code{describe(@var{string}, inexact)}はタイトルの中に@var{string}を含むすべての項目を見つけます。
+もし複数あれば、Maximaはユーザーに項目を選択するよう尋ねます。
+
+対話プロンプトでは、
+@code{? foo}(@code{?}と@code{foo}の間にスペース)は
+@code{describe("foo", exact)}と同値であり、
+@code{?? foo}は@code{describe("foo", inexact)}と同値です。
+
+@code{describe("", inexact)}は、オンラインマニュアルでドキュメント化されたすべてのトピックのリストを出力します。
+
+@code{describe}は引数をクォートします。
+@code{describe}は、ドキュメントが見つかれば@code{true}を返し、見つからなければ@code{false}を返します。
+
+@ref{Documentation}も参照してください。
+
+例:
+
+@example
+(%i1) ?? integ
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for
+    Integration)
+ 9: integration_constant_counter  (Functions and Variables for
+    Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
+Enter space-separated numbers, `all' or `none': 7 8
+
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a
+     definite integral, [...]
+     
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of
+     a rational function cannot be factored, `integrate' returns
+     the integral in a form which is a sum over the roots (not yet
+     known) of the denominator.
+     [...]
+@end example
+
+この例では、項目7と8を選択しました。
+（@code{[...]}でほのめかされているように出力は省略されています。）
+@code{all}や@code{none}を入力すると、項目すべてを選択したり、１つも選ばなかったりできます。
+それぞれ@code{a}もしくは@code{n}と省略形を使うことができます。
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{example}
+@deffn  {関数} example (@var{topic})
+@deffnx {関数} example ()
+
+@code{example (@var{topic})}は、@var{topic}の例をいくつか表示します。
+@var{topic}はシンボルもしくは文字列です。
+@code{if}や@code{do}、@code{lambda}のような演算子の例を得るには、引数は文字列でなければなりません。例えば、 @code{example ("do")}。
+@code{example}は、大文字小文字を区別しません。トピックのほとんどは関数名です。
+
+@code{example ()}はわかっているトピックすべてのリストを表示します。
+
+例を含むファイル名は、グローバル変数@mref{manual_demo}で与えられます。デフォルトは@code{"manual.demo"}です。
+
+@code{example}は引数をクォートします。
+@code{example}はエラーがあったり引数がなかったりしなければ@code{done}を返します。
+引数がない場合には
+わかっているトピックすべてのリストを表示します。
+
+例:
+
+@c ===beg===
+@c example(append);
+@c example("lambda");
+@c ===end===
+@example
+(%i1) example(append);
+(%i2) append([x+y,0,-3.2],[2.5e+20,x])
+(%o2)                    [y + x, 0, - 3.2, 2.5e+20, x]
+(%o2)                                done
+(%i3) example("lambda");
+
+(%i4) lambda([x,y,z],z^2+y^2+x^2)
+                                           2    2    2
+(%o4)                   lambda([x, y, z], z  + y  + x )
+(%i5) %(1,2,a)
+                                     2
+(%o5)                               a  + 5
+(%i6) a+2+1
+(%o6)                                a + 3
+(%o6)                                done
+@end example
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{manual_demo}
+@defvr {オプション変数} manual_demo
+デフォルト値: @code{"manual.demo"}
+
+@code{manual_demo}は、
+関数@code{example}のための例が入っているファイルの名前を指定します。
+@mref{example}を参照してください。
+
+@opencatbox
+@category{Help} @category{Global variables}
+@closecatbox
+@end defvr

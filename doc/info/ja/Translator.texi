@@ -1,0 +1,28 @@
+@menu
+* Translation Policies::
+* About Terms in Japanese::
+@end menu
+
+@node Translation Policies, About Terms in Japanese,  , Translator's Comments
+@section Translation Policies
+とにかく、質より量ということで訳を進めました。品質を高めるべく、少しずつ見直しを進めています。
+訳者自身が意味を理解していない文もありましたので、誤訳、迷訳についてはご指摘いただければ幸いです。
+
+できるだけ多くの人に参考になるようにと、章のレベルに応じて、訳語を変えたところがあります。
+例えば、足し算と加算を使い分けたりしました。その結果、文体に一貫性が欠ける部分があるかと思いますが、意図を汲み取っていただければ幸いです。
+
+章や節などのノード名は、訳すとtexi2htmlに不具合があるので、英文そのままとしました。
+
+@node About Terms in Japanese,  , Translation Policies, Translator's Comments
+@section About Terms in Japanese
+
+@table @asis
+@item simplification
+simplificationとevaluationがMaximaの基礎となっていますが、simplificationは、対応する日本語がないと思いました。Maximaに関する他の記事では、簡易化、簡素化、簡単化などと訳されているようです。一番近いニュアンスは、「式の整理をすること」と思いましたので、「整理」もしくは「式整理」と訳しました。
+reduceの訳語には簡約を使いました。
+@item function
+functionは、数学的な定義に基づく場合とプログラミング的な定義に基づく場合があるので、前者を函数、後者を関数と漢字を充てました。
+@end table
+@opencatbox
+@category{Help}
+@closecatbox

@@ -1,0 +1,600 @@
+@menu
+* Introduction to contrib_ode::
+* Functions and Variables for contrib_ode::
+* Possible improvements to contrib_ode::
+* Test cases for contrib_ode::
+* References for contrib_ode::
+@end menu
+
+@node Introduction to contrib_ode, Functions and Variables for contrib_ode, contrib_ode, contrib_ode
+
+@section Introduction to contrib_ode 
+
+Maximaの常微分方程式(ODE)ソルバ@code{ode2}は
+一階と二階の初等線形ODEを解きます。
+関数@code{contrib_ode}は
+線形と非線形一階ODEと線形斉次二階ODEに関する追加の方法で
+@code{ode2}を拡張します。
+コードは、まだ開発中で、コールの順序は将来のリリースで変わるかもしれません。
+一旦コードが安定化したら、投稿ディレクトリから移して、Maximaに統合されるかもしれません。
+
+このパッケージは、
+使用前に
+コマンド@code{load('contrib_ode)}でロードしなければいけません。
+
+@code{contrib_ode}のコール取り決めは
+@code{ode2}と同一です。
+３つの引数を取ります:
+ODE (右辺が0なら左辺だけでもいいです)、
+従属変数、独立変数。
+成功した時、解のリストを返します。
+
+解の形式は
+@code{ode2}と異なります。
+非線形方程式は複数解を持つので、
+@code{contrib_ode}は解のリストを返します。
+解それぞれは複数の形式を持ちます:
+@itemize @bullet
+@item
+従属変数の陽解、
+
+@item
+従属変数の陰解、
+
+@item
+変数@code{%t}を使ったパラメトリック解、または、
+
+@item
+変数@code{%u}に関する別のODEへの変換
+
+@end itemize
+
+@code{%c}は
+一階方程式の積分定数を表すのに使われます。
+@code{%k1}と@code{%k2}は
+二階方程式の定数を表すのに使われます。
+もし@code{contrib_ode}が
+いかなる理由でも解を得られないなら、
+たぶんエラーメッセージを印字した後、
+@code{false}を返します。
+
+一階非線形ODEは複数解を持ち得るので、
+解のリストを返す必要があります。
+例えば:
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
+
+                    dy 2             dy
+(%o2)            x (--)  - (x y + 1) -- + y = 0
+                    dx               dx
+(%i3) contrib_ode(eqn,y,x);
+
+                                             x
+(%o3)             [y = log(x) + %c, y = %c %e ]
+(%i4) method;
+
+(%o4)                        factor
+@end example
+
+以下の例の二番目の解のように、
+非線形ODEは積分定数を持たない特異解を持ち得ます:
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
+
+                       dy 2     dy
+(%o2)                 (--)  + x -- - y = 0
+                       dx       dx
+(%i3) contrib_ode(eqn,y,x);
+
+                                           2
+                                 2        x
+(%o3)              [y = %c x + %c , y = - --]
+                                          4
+(%i4) method;
+
+(%o4)                       clairault
+@end example
+
+
+以下のODEは
+ダミー変数@code{%t}を使った
+２つのパラメトリック解を持ちます。
+この場合、パラメトリック解を操作して、陽解を与えることができます。
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:'diff(y,x)=(x+y)^2;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:'diff(y,x)=(x+y)^2;
+
+                          dy          2
+(%o2)                     -- = (y + x)
+                          dx
+(%i3) contrib_ode(eqn,y,x);
+
+(%o3) [[x = %c - atan(sqrt(%t)), y = - x - sqrt(%t)], 
+                     [x = atan(sqrt(%t)) + %c, y = sqrt(%t) - x]]
+(%i4) method;
+
+(%o4)                       lagrange
+@end example
+
+以下の例(Kamke 1.112)は、陰解を例示します。
+
+@c ===beg===
+@c load('contrib_ode)$
+@c assume(x>0,y>0);
+@c eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) assume(x>0,y>0);
+
+(%o2)                    [x > 0, y > 0]
+(%i3) eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
+
+                     dy           2    2
+(%o3)              x -- - x sqrt(y  + x ) - y
+                     dx
+(%i4) contrib_ode(eqn,y,x);
+
+                                  y
+(%o4)                  [x - asinh(-) = %c]
+                                  x
+(%i5) method;
+
+(%o5)                          lie
+@end example
+
+ 
+以下のRiccati方程式は
+変数@code{%u}に関する線形二階ODEに変換されます。
+Maximaは
+新しいODEを解くことができません。
+だから、未評価で返されます。
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
+
+                    2 dy      2  2      n
+(%o2)              x  -- = c x  y  + b x  + a
+                      dx
+(%i3) contrib_ode(eqn,y,x);
+
+               d%u
+               ---                            2
+               dx        2     n - 2   a     d %u
+(%o3)  [[y = - ----, %u c  (b x      + --) + ---- c = 0]]
+               %u c                     2      2
+                                       x     dx
+(%i4) method;
+
+(%o4)                        riccati
+@end example
+
+
+一階ODEに対して、@code{contrib_ode}は@code{ode2}をコールします。
+その後、以下の方法を試します:
+因数分解、Clairault, Lagrange, Riccati,
+Abel, Lie対称性を使った方法
+もしAbel方法が失敗したら、
+Lie方法はAbel方程式には試みられませんが、
+もしRiccati方法が未解決二階ODEを返したら、
+Lie方法が試みられます。
+
+二階ODEに対して、@code{contrib_ode}は@code{ode2}をコールし、その後@code{odelin}をコールします。
+
+もしコマンド
+@code{put('contrib_ode,true,'verbose)}が実行されたら、
+長いデバッグトレースとメッセージが表示されます。
+
+@opencatbox
+@category{Differential equations} @category{Share packages} @category{Package contrib_ode}
+@closecatbox
+
+
+@node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
+@section Functions and Variables for contrib_ode
+
+@deffn {関数} contrib_ode (@var{eqn}, @var{y}, @var{x})
+
+独立変数@var{x}と従属変数@var{y}に関するODE @var{eqn}の解のリストを返します。
+
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} odelin (@var{eqn}, @var{y}, @var{x})
+
+@code{odelin}は
+独立変数@var{x}と従属変数@var{y}に関する
+一階および二階線形斉次ODEを解きます。
+ODEの基本的な解一式を返します。
+
+二階ODEに対して、@code{odelin}は、
+与えられた特殊関数を使って解を探索する
+BronsteinとLafailleによる方法
+を使います。
+
+@c ===beg===
+@c load('contrib_ode)$
+@c odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
+@c ===end===
+@example
+(%i1) load('contrib_ode);
+
+(%i2) odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
+...trying factor method
+...solving 7 equations in 4 variables
+...trying the Bessel solver
+...solving 1 equations in 2 variables
+...trying the F01 solver
+...solving 1 equations in 3 variables
+...trying the spherodial wave solver
+...solving 1 equations in 4 variables
+...trying the square root Bessel solver
+...solving 1 equations in 2 variables
+...trying the 2F1 solver
+...solving 9 equations in 5 variables
+       gauss_a(- 6, - 2, - 3, - x)  gauss_b(- 6, - 2, - 3, - x)
+(%o2) @{---------------------------, ---------------------------@}
+                    4                            4
+                   x                            x
+
+@end example
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ode_check (@var{eqn}, @var{soln})
+
+可能な解@var{soln}を代入した後、
+ODE @var{eqn}の値を返します。
+もし@var{soln}が@var{eqn}の解なら
+値はゼロと同値です。
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:'diff(y,x,2)+(a*x+b)*y;
+@c ans:[y = bessel_y(1/3,2*(a*x+b)^(3/2)/(3*a))*%k2*sqrt(a*x+b)
+@c          +bessel_j(1/3,2*(a*x+b)^(3/2)/(3*a))*%k1*sqrt(a*x+b)];
+@c ode_check(eqn,ans[1]);
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:'diff(y,x,2)+(a*x+b)*y;
+
+                         2
+                        d y
+(%o2)                   --- + (a x + b) y
+                          2
+                        dx
+(%i3) ans:[y = bessel_y(1/3,2*(a*x+b)^(3/2)/(3*a))*%k2*sqrt(a*x+b)
+         +bessel_j(1/3,2*(a*x+b)^(3/2)/(3*a))*%k1*sqrt(a*x+b)];
+
+                                  3/2
+                    1  2 (a x + b)
+(%o3) [y = bessel_y(-, --------------) %k2 sqrt(a x + b)
+                    3       3 a
+                                          3/2
+                            1  2 (a x + b)
+                 + bessel_j(-, --------------) %k1 sqrt(a x + b)]
+                            3       3 a
+(%i4) ode_check(eqn,ans[1]);
+
+(%o4)                           0
+@end example
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@defvr {システム変数} method
+
+変数@code{method}は成功した解法に設定されます。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} %c
+
+@code{%c}は一階ODEの積分定数です。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} %k1
+
+@code{%k1}は二階ODEの最初の積分定数です。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} %k2
+
+@code{%k2}は二階ODEの二番目の積分定数です。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+
+@code{gauss_a(a,b,c,x)}と@code{gauss_b(a,b,c,x)}は2F1幾何関数です。
+それらは超幾何微分方程式
+@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x diff(y,x) - aby = 0} 
+の任意の２つの独立解を表します(A&S 15.5.1)。
+
+これらの関数は
+@code{odelin}と@code{contrib_ode}が返すODEの解の中でだけ使われます。
+これらの関数の定義と使用はMaimaの将来のリリースで変わるかもしれません。
+
+@code{gauss_b}, @code{dgauss_a}, @code{gauss_b}も参照してください。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+See @code{gauss_a}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+@code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}の@var{x}に関する導関数。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+@code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}の@var{x}に関する導関数。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} kummer_m (@var{a}, @var{b}, @var{x})
+
+Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 13.1.2の中で定義される
+KummerのM関数
+
+この関数は
+@code{odelin}と@code{contrib_ode}が返すODEの解の中でだけ使われます。
+この関数の定義と使用はMaimaの将来のリリースで変わるかもしれません。
+
+@code{kummer_u}, @code{dkummer_m}, @code{dkummer_u}も参照してください。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} kummer_u (@var{a}, @var{b}, @var{x})
+
+Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 13.1.3の中で定義される
+KummerのU関数
+
+@code{kummer_m}を参照してください。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} dkummer_m (@var{a}, @var{b}, @var{x})
+@code{kummer_m(@var{a}, @var{b}, @var{x})}の@var{x}に関する導関数。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} dkummer_u (@var{a}, @var{b}, @var{x})
+@code{kummer_u(@var{a}, @var{b}, @var{x})}の@var{x}に関する導関数。
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
+@end deffn
+
+
+
+@node Possible improvements to contrib_ode, Test cases for contrib_ode, Functions and Variables for contrib_ode, contrib_ode
+@section Possible improvements to contrib_ode
+
+
+これらのルーチンは開発進行中です。まだ以下をする必要があります:
+
+@itemize @bullet
+
+@item
+FACTOR方法@code{ode1_factor}を多重根で機能するように拡張すること。
+
+@item
+FACTOR方法@code{ode1_factor}を
+より高次因子を解こうとするように拡張すること。
+現在、線形因子を解こうとするだけです。
+
+@item
+LAGRANGEルーチン@code{ode1_lagrange}を複素根より実根を優先するように直すこと。
+
+@item
+Riccati方程式のための他の方法を追加すること。
+
+@item
+第二種Abel方程式の検出を改善すること。
+今のパターンマッチングは弱いです。
+
+@item
+Work on the Lie対称群ルーチン@code{ode1_lie}に関する仕事。
+2,3の相当な問題があります:
+いくつかの部分が未実装です;
+いくつかのテストケースが無限ループのようです;
+他のテストケースではクラッシュします;
+さらに他では非常に複雑な「解」を返します。
+本当にリリースの準備ができていたか疑っています。
+
+@item
+もっとテストケースを追加すること。
+
+@end itemize
+
+@node Test cases for contrib_ode, References for contrib_ode, Possible improvements to contrib_ode, contrib_ode
+@section Test cases for contrib_ode
+
+
+Murphy, Kamke, Zwillingerと他で
+ルーチンはおおよそ千のテストケース上でテストされています。
+これらはテストサブディレクトリに含まれています。
+
+@itemize @bullet
+@item
+The Clairaultルーチン@code{ode1_clairault}は、
+特異解を含み、
+MurphyとKamkeの中のClairault方程式の
+知られている解すべてを見つけます。
+
+@item
+他のルーチンは、多重解が存在する時に
+しばしば単一界を返します。
+
+@item
+@code{ode1_lie}の「解」のいくつかは過度に複雑でチェックが不可能です。
+
+@item
+いくつかのクラッシュがあります。
+
+@end itemize
+
+@node References for contrib_ode, ,Test cases for contrib_ode, contrib_ode
+@section References for contrib_ode
+
+
+@enumerate
+@item
+E. Kamke, Differentialgleichungen Losungsmethoden und Losungen, Vol 1,
+    Geest & Portig, Leipzig, 1961
+
+@item
+G. M. Murphy, Ordinary Differential Equations and Their Solutions,
+    Van Nostrand, New York, 1960
+
+@item
+D. Zwillinger, Handbook of Differential Equations, 3rd edition,
+    Academic Press, 1998
+
+@item
+F. Schwarz, Symmetry Analysis of Abel's Equation, Studies in
+    Applied Mathematics, 100:269-294 (1998)
+
+@item
+F. Schwarz, Algorithmic Solution of Abel's Equation,
+    Computing 61, 39-49 (1998)
+
+@item
+E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
+    ODE Patterns, Computer Physics Communications 113 (1998), p 239.
+@ifnottex
+    (@url{http://lie.uwaterloo.ca/papers/ode_vii.pdf})
+@end ifnottex
+@tex
+    (\texttt{http://lie.uwaterloo.ca/\-papers/\-ode\_vii.pdf})
+@end tex
+
+@item
+E. S. Cheb-Terrab, T. Kolokolnikov,  First Order ODEs,
+    Symmetries and Linear Transformations, European Journal of
+    Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
+@c @ifnottex
+    (@url{http://arxiv.org/abs/math-ph/0007023},@*
+    @url{http://lie.uwaterloo.ca/papers/ode_iv.pdf})
+@c @end ifnottex
+@c @tex
+@c     (\texttt{http://\-arxiv.org/\-abs/\-math-ph/\-0007023},
+@c     \texttt{http://\-lie.uwaterloo.ca/\-papers/\-ode\_iv.pdf})
+@c @end tex
+
+@item
+G. W. Bluman, S. C. Anco, Symmetry and Integration Methods for
+    Differential Equations, Springer, (2002)
+
+@item 
+M. Bronstein, S. Lafaille,
+Solutions of linear ordinary differential equations in terms
+of special functions,
+Proceedings of ISSAC 2002, Lille, ACM Press, 23-28. 
+(@url{http://www-sop.inria.fr/cafe/Manuel.Bronstein/publications/issac2002.pdf})
+
+
+@end enumerate

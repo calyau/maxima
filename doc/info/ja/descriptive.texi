@@ -1,0 +1,2663 @@
+@menu
+* Introduction to descriptive::
+* Functions and Variables for data manipulation::
+* Functions and Variables for descriptive statistics::
+* Functions and Variables for statistical graphs::
+@end menu
+
+@node Introduction to descriptive, Functions and Variables for data manipulation, descriptive, descriptive
+@section Introduction to descriptive
+
+パッケージ@code{descriptive}は記述統計計算とグラフ作成を行うための関数一式を含みます。
+ソースコードと一緒にMaximaツリーに３つのデータセットがあります:
+@code{pidigits.data}, @code{wind.data}, @code{biomed.data}
+
+パッケージ@code{descriptive}の関数の参考文献として、
+どんな統計マニュアルでも使うことができます。
+
+コメント、バグ、提案は、
+@var{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
+
+以下は、
+@code{descriptive}の中の記述関数が
+引数やリスト、行列の性質に依存して如何に機能するかを示す
+簡単な例です。
+
+@c ===beg===
+@c load (descriptive)$
+@c /* univariate sample */   mean ([a, b, c]);
+@c matrix ([a, b], [c, d], [e, f]);
+@c /* multivariate sample */ mean (%);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) /* univariate sample */   mean ([a, b, c]);
+                            c + b + a
+(%o2)                       ---------
+                                3
+@end group
+@group
+(%i3) matrix ([a, b], [c, d], [e, f]);
+                            [ a  b ]
+                            [      ]
+(%o3)                       [ c  d ]
+                            [      ]
+                            [ e  f ]
+@end group
+@group
+(%i4) /* multivariate sample */ mean (%);
+                      e + c + a  f + d + b
+(%o4)                [---------, ---------]
+                          3          3
+@end group
+@end example
+
+多変数標本では、平均は列それぞれに関して計算されることに注意してください。
+
+異なるサイズかもしれない複数の標本の場合、
+Maxima関数@code{map}が標本それぞれに対して望みの結果を得るのに使うことができます。
+
+@c ===beg===
+@c load (descriptive)$
+@c map (mean, [[a, b, c], [d, e]]);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) map (mean, [[a, b, c], [d, e]]);
+                        c + b + a  e + d
+(%o2)                  [---------, -----]
+                            3        2
+@end group
+@end example
+
+この場合、サイズ３と２の２つの標本がリストに格納されました。
+
+１変数標本は以下のようにリストに格納されなければいけません。
+
+@c ===beg===
+@c s1 : [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
+@c ===end===
+@example
+@group
+(%i1) s1 : [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
+(%o1)           [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
+@end group
+@end example
+
+多変数標本は以下のように行列に格納されなければいけません。
+
+@c ===beg===
+@c s2 : matrix ([13.17, 9.29], [14.71, 16.88], [18.50, 16.88],
+@c              [10.58, 6.63], [13.33, 13.25], [13.21,  8.12]);
+@c ===end===
+@example
+@group
+(%i1) s2 : matrix ([13.17, 9.29], [14.71, 16.88], [18.50, 16.88],
+             [10.58, 6.63], [13.33, 13.25], [13.21,  8.12]);
+                        [ 13.17  9.29  ]
+                        [              ]
+                        [ 14.71  16.88 ]
+                        [              ]
+                        [ 18.5   16.88 ]
+(%o1)                   [              ]
+                        [ 10.58  6.63  ]
+                        [              ]
+                        [ 13.33  13.25 ]
+                        [              ]
+                        [ 13.21  8.12  ]
+@end group
+@end example
+
+この場合、
+列の数は確率変数次元に等しく、行の数はサプルのサイズです。
+
+データは手で入力することができますが、
+大きな標本は普通プレインテキストファイルの中に格納されています。
+例えば、ファイル@code{pidigits.data}は
+数@code{%pi}の最初の100桁を含みます:
+@example
+@group
+      3
+      1
+      4
+      1
+      5
+      9
+      2
+      6
+      5
+      3 ...
+@end group
+@end example
+
+Maximaでこれらの桁をロードするためには、
+
+@c ===beg===
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c length (s1);
+@c ===end===
+@example
+(%i1) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i2) length (s1);
+(%o2)                          100
+@end group
+@end example
+
+他方、ファイル@code{wind.data}は
+アイルランド共和国の５つの気象台の毎日の平均風速を含みます。
+(これは１２の気象台で取得されたデータセットの一部です。
+元のファイルはStatLib Data Repositoryから無料でダウンロードでき、
+その分析はHaslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50
+で議論されてます。)
+以下ではデータをロードします:
+
+@c ===beg===
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c length (s2);
+@c s2 [%]; /* last record */
+@c ===end===
+@example
+(%i1) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i2) length (s2);
+(%o2)                          100
+@end group
+@group
+(%i3) s2 [%]; /* last record */
+(%o3)            [3.58, 6.0, 4.58, 7.62, 11.25]
+@end group
+@end example
+
+いくつかの標本は数値でないデータを含みます。
+例えば、ファイル@code{biomed.data}
+(StatLib Data Repositoryからダウンロードされた別のもっと大きなものの一部)は、
+異なる年齢の、２つのグループ@code{A}と@code{B}の患者から測定された４つの血圧を含みます。
+
+@c ===beg===
+@c s3 : read_matrix (file_search ("biomed.data"))$
+@c length (s3);
+@c s3 [1]; /* first record */
+@c ===end===
+@example
+(%i1) s3 : read_matrix (file_search ("biomed.data"))$
+@group
+(%i2) length (s3);
+(%o2)                          100
+@end group
+@group
+(%i3) s3 [1]; /* first record */
+(%o3)            [A, 30, 167.0, 89.0, 25.6, 364]
+@end group
+@end example
+
+最初の個人はグループ@code{A}に属し、30歳で、血圧は167.0, 89.0, 25.6 and 364でした。
+
+カテゴリデータを扱う時には気をつけなければいけません。
+次の例では、シンボル@code{a}が以前のある時点で値に割り当てられ、
+その後、カテゴリ値@code{a}を持つ標本が取られます。
+
+@c ===beg===
+@c a : 1$
+@c matrix ([a, 3], [b, 5]);
+@c ===end===
+@example
+(%i1) a : 1$
+@group
+(%i2) matrix ([a, 3], [b, 5]);
+                            [ 1  3 ]
+(%o2)                       [      ]
+                            [ b  5 ]
+@end group
+@end example
+
+@opencatbox
+@category{Descriptive statistics} @category{Share packages} @category{Package descriptive}
+@closecatbox
+
+@node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, descriptive
+@section Functions and Variables for data manipulation
+
+
+
+
+@deffn {関数} continuous_freq (@var{list})
+@deffnx {関数} continuous_freq (@var{list}, @var{m})
+@code{continuous_freq}の引数は数のリストでなければいけません。
+範囲を区間に分割し、それらの中に値がいくつあるか数えます。
+二番目の引数はオプションで、
+欲しいクラス数(デフォルトが10)か、
+クラス境界と欲しいクラスを含むリストか
+境界だけ含むリストのいずれかです。
+引数 @var{list}は(2個か3個の)実数のリストでなければいけません。
+もしサンプル値がすべて等しいなら、この関数は振幅2の1クラスだけ返します。
+
+例:
+
+オプション引数は欲しいクラス数を示します。
+出力の最初のリストは区間境界を含み、二番目は対応する個数を含みます:
+区間@code{[0, 1.8]}すなわち0か1である桁が16あり、
+@code{(1.8, 3.6]}すなわち2か3である桁が24あり、など。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c continuous_freq (s1, 5);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) continuous_freq (s1, 5);
+(%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
+@end example
+
+オプション引数は、境界-2と12を持つクラスを7個欲しいことを示します。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c continuous_freq (s1, [-2,12,7]);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) continuous_freq (s1, [-2,12,7]);
+(%o3) [[- 2, 0, 2, 4, 6, 8, 10, 12], [8, 20, 22, 17, 20, 13, 0]]
+@end example
+
+オプション引数は、境界-2と12を持つクラスをデフォルト個欲しいことを示します:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c continuous_freq (s1, [-2,12]);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) continuous_freq (s1, [-2,12]);
+                3  4  11  18     32  39  46  53
+(%o3)  [[- 2, - -, -, --, --, 5, --, --, --, --, 12], 
+                5  5  5   5      5   5   5   5
+               [0, 8, 20, 12, 18, 9, 8, 25, 0, 0]]
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} discrete_freq (@var{list})
+数値的、記述的両方の離散標本の中の絶対頻度を数えます。
+唯一の引数はリストです。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c discrete_freq (s1);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) discrete_freq (s1);
+(%o3) [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                             [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
+@end group
+@end example
+
+最初のリストは標本値を与え、二番目はそれらの絶対頻度を与えます。
+コマンド@code{? col}と@code{? transpose}は最後の入力を理解するのを助けるはずです。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} subsample (@var{data_matrix}, @var{predicate_function})
+@deffnx {関数} subsample (@var{data_matrix}, @var{predicate_function}, @var{col_num1}, @var{col_num2}, ...)
+これはMaxima @code{submatrix}関数の変形の一種です。
+最初の引数はデータ行列であり、二番目は述語関数であり、
+オプションの付加引数は返す列の番号です。
+その振る舞いは例を使ってよりよく理解されます。
+
+以下は最初の測候所での風速が18より大きかった多変量レコードです。
+ラムダ式の中で@var{i}番目の成分は@code{v[i]}として参照されることを参考にしてください。
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c subsample (s2, lambda([v], v[1] > 18));
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i3) subsample (s2, lambda([v], v[1] > 18));
+              [ 19.38  15.37  15.12  23.09  25.25 ]
+              [                                   ]
+              [ 18.29  18.66  19.08  26.08  27.63 ]
+(%o3)         [                                   ]
+              [ 20.25  21.46  19.95  27.71  23.38 ]
+              [                                   ]
+              [ 18.79  18.96  14.46  26.38  21.84 ]
+@end group
+@end example
+
+以下の例では、測候所番号1で16以上で、かつ、測候所番号4で25ノットより小さな風速
+のレコードの一番目、二番目、五番目の成分だけをリクエストします。
+標本は、測候所1, 2, 5からのデータだけを含みます。
+この場合、述語関数は通常のMaxima関数として定義されます。
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c g(x):= x[1] >= 16 and x[4] < 25$
+@c subsample (s2, g, 1, 2, 5);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) g(x):= x[1] >= 16 and x[4] < 25$
+@group
+(%i4) subsample (s2, g, 1, 2, 5);
+                     [ 19.38  15.37  25.25 ]
+                     [                     ]
+                     [ 17.33  14.67  19.58 ]
+(%o4)                [                     ]
+                     [ 16.92  13.21  21.21 ]
+                     [                     ]
+                     [ 17.25  18.46  23.87 ]
+@end group
+@end example
+
+以下は@code{biomed.data}のカテゴリ変数の例です。
+38歳より年上のグループ@code{B}の患者に対応するレコードが欲しいです。
+@c ===beg===
+@c load (descriptive)$
+@c s3 : read_matrix (file_search ("biomed.data"))$
+@c h(u):= u[1] = B and u[2] > 38 $
+@c subsample (s3, h);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+(%i3) h(u):= u[1] = B and u[2] > 38 $
+@group
+(%i4) subsample (s3, h);
+                [ B  39  28.0  102.3  17.1  146 ]
+                [                               ]
+                [ B  39  21.0  92.4   10.3  197 ]
+                [                               ]
+                [ B  39  23.0  111.5  10.0  133 ]
+                [                               ]
+                [ B  39  26.0  92.6   12.3  196 ]
+(%o4)           [                               ]
+                [ B  39  25.0  98.7   10.0  174 ]
+                [                               ]
+                [ B  39  21.0  93.2   5.9   181 ]
+                [                               ]
+                [ B  39  18.0  95.0   11.3  66  ]
+                [                               ]
+                [ B  39  39.0  88.5   7.6   168 ]
+@end group
+@end example
+
+統計解析には血圧だけを使うかもしれません。
+@c ===beg===
+@c load (descriptive)$
+@c s3 : read_matrix (file_search ("biomed.data"))$
+@c subsample (s3, lambda([v], v[1] = B and v[2] > 38),
+@c            3, 4, 5, 6);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+@group
+(%i3) subsample (s3, lambda([v], v[1] = B and v[2] > 38),
+                 3, 4, 5, 6);
+                   [ 28.0  102.3  17.1  146 ]
+                   [                        ]
+                   [ 21.0  92.4   10.3  197 ]
+                   [                        ]
+                   [ 23.0  111.5  10.0  133 ]
+                   [                        ]
+                   [ 26.0  92.6   12.3  196 ]
+(%o3)              [                        ]
+                   [ 25.0  98.7   10.0  174 ]
+                   [                        ]
+                   [ 21.0  93.2   5.9   181 ]
+                   [                        ]
+                   [ 18.0  95.0   11.3  66  ]
+                   [                        ]
+                   [ 39.0  88.5   7.6   168 ]
+@end group
+@end example
+
+いかは@code{s3}の多変量平均です。
+@c ===beg===
+@c load (descriptive)$
+@c s3 : read_matrix (file_search ("biomed.data"))$
+@c mean (s3);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+@group
+(%i3) mean (s3);
+       65 B + 35 A  317          6 NA + 8144.999999999999
+(%o3) [-----------, ---, 87.178, ------------------------, 
+           100      10                     100
+                                                    3 NA + 19587
+                                            18.123, ------------]
+                                                        100
+@end group
+@end example
+
+ここで、一番目の成分は、@code{A}と@code{B}はカテゴリなので意味がなく、
+二番目の成分は個々人の平均の歳の有理表現であり、
+四番目と最後の値はある奇妙な振る舞いを示しています。
+これは、
+This is because symbol 
+シンボル@code{NA}が@var{non available}データを示すようにここで使われているからで、
+二つの平均は無意味です。
+情報のある種の喪失を意味しますが、
+可能な解は@code{NA}シンボルを持つ行を行列から取り除くことです。
+@c ===beg===
+@c load (descriptive)$
+@c s3 : read_matrix (file_search ("biomed.data"))$
+@c g(v):= v[4] # NA and v[6] # NA $
+@c mean (subsample (s3, g, 3, 4, 5, 6));
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+(%i3) g(v):= v[4] # NA and v[6] # NA $
+@group
+(%i4) mean (subsample (s3, g, 3, 4, 5, 6));
+(%o4) [79.4923076923077, 86.2032967032967, 16.93186813186813, 
+                                                            2514
+                                                            ----]
+                                                             13
+@end group
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+@node Functions and Variables for descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for data manipulation, descriptive
+@section Functions and Variables for descriptive statistics
+
+
+
+@deffn {関数} mean (@var{list})
+@deffnx {関数} mean (@var{matrix})
+これは標本平均です。以下のように定義されます。
+@ifnottex
+@example
+                       n
+                     ====
+             _   1   \
+             x = -    >    x
+                 n   /      i
+                     ====
+                     i = 1
+@end example
+@end ifnottex
+@tex
+$${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c mean (s1);
+@c %, numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c mean (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) mean (s1);
+                               471
+(%o3)                          ---
+                               100
+@end group
+@group
+(%i4) %, numer;
+(%o4)                         4.71
+@end group
+(%i5) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i6) mean (s2);
+(%o6)     [9.9485, 10.1607, 10.8685, 15.7166, 14.8441]
+@end group
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} var (@var{list})
+@deffnx {関数} var (@var{matrix})
+これは標本分散です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                     n
+                   ====
+           2   1   \          _ 2
+          s  = -    >    (x - x)
+               n   /       i
+                   ====
+                   i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c var (s1), numer;
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) var (s1), numer;
+(%o3)                   8.425899999999999
+@end group
+@end example
+
+関数@code{var1}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} var1 (@var{list})
+@deffnx {関数} var1 (@var{matrix})
+これは標本分散です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                     n
+                   ====
+               1   \          _ 2
+              ---   >    (x - x)
+              n-1  /       i
+                   ====
+                   i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c var1 (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c var1 (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) var1 (s1), numer;
+(%o3)                    8.5110101010101
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) var1 (s2);
+(%o5) [17.39586540404041, 15.13912778787879, 15.63204924242424, 
+                            32.50152569696971, 24.66977392929294]
+@end group
+@end example
+
+関数@code{var}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} std (@var{list})
+@deffnx {関数} std (@var{matrix})
+これは分母@math{n}の分散である関数@code{var}の平方根です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c std (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c std (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) std (s1), numer;
+(%o3)                   2.902740084816414
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) std (s2);
+(%o5) [4.149928523480858, 3.871399812729241, 3.933920277534866, 
+                            5.672434260526957, 4.941970881136392]
+@end group
+@end example
+
+関数@code{var}と@code{std1}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} std1 (@var{list})
+@deffnx {関数} std1 (@var{matrix})
+これは分母@math{n-1}の分散である関数@code{var1}の平方根です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c std1 (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c std1 (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) std1 (s1), numer;
+(%o3)                   2.917363553109228
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) std1 (s2);
+(%o5) [4.170835096721089, 3.89090320978032, 3.953738641137555, 
+                            5.701010936401517, 4.966867617451963]
+@end group
+@end example
+
+See also functions @code{var1} and @code{std}.
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} noncentral_moment (@var{list}, @var{k})
+@deffnx {関数} noncentral_moment (@var{matrix}, @var{k})
+次数@math{k}の非中心モーメントです。以下のように定義されます。
+@ifnottex
+@example
+@group
+                       n
+                     ====
+                 1   \      k
+                 -    >    x
+                 n   /      i
+                     ====
+                     i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c noncentral_moment (s1, 1), numer; /* the mean */
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c noncentral_moment (s2, 5);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) noncentral_moment (s1, 1), numer; /* the mean */
+(%o3)                         4.71
+@end group
+@group
+(%i5) s2 : read_matrix (file_search ("wind.data"))$
+@end group
+@group
+(%i6) noncentral_moment (s2, 5);
+(%o6) [319793.8724761505, 320532.1923892463,
+      391249.5621381556, 2502278.205988911, 1691881.797742255]
+@end group
+@end example
+
+関数@code{central_moment}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} central_moment (@var{list}, @var{k})
+@deffnx {関数} central_moment (@var{matrix}, @var{k})
+次数@math{k}の中心モーメントです。以下のように定義されます。
+@ifnottex
+@example
+@group
+                    n
+                  ====
+              1   \          _ k
+              -    >    (x - x)
+              n   /       i
+                  ====
+                  i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c central_moment (s1, 2), numer; /* the variance */
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c central_moment (s2, 3);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) central_moment (s1, 2), numer; /* the variance */
+(%o3)                   8.425899999999999
+@end group
+(%i5) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i6) central_moment (s2, 3);
+(%o6) [11.29584771375004, 16.97988248298583, 5.626661952750102,
+                             37.5986572057918, 25.85981904394192]
+@end group
+@end example
+
+関数@code{noncentral_moment}と@code{mean}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} cv (@var{list})
+@deffnx {関数} cv (@var{matrix})
+変動係数は標本標準偏差(@code{std})を平均@code{mean}で割った商です。
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c cv (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c cv (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) cv (s1), numer;
+(%o3)                   .6193977819764815
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) cv (s2);
+(%o5) [.4192426091090204, .3829365309260502, 0.363779605385983, 
+                            .3627381836021478, .3346021393989506]
+@end group
+@end example
+
+関数@code{std}と@code{mean}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} smin (@var{list})
+@deffnx {関数} smin (@var{matrix})
+これは標本@var{list}の最小値です。
+引数が行列の時、
+@code{smin}は
+統計変数に関連付けられた列の最小値を含むリストを返します。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c smin (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c smin (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) smin (s1);
+(%o3)                           0
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) smin (s2);
+(%o5)             [0.58, 0.5, 2.67, 5.25, 5.17]
+@end group
+@end example
+
+See also function @code{smax}.
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} smax (@var{list})
+@deffnx {関数} smax (@var{matrix})
+これは標本@var{list}の最大値です。
+引数が行列の時、
+@code{smax}は
+統計変数に関連付けられた列の最大値を含むリストを返します。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c smax (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c smax (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) smax (s1);
+(%o3)                           9
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) smax (s2);
+(%o5)          [20.25, 21.46, 20.04, 29.63, 27.63]
+@end group
+@end example
+
+関数@code{smin}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} range (@var{list})
+@deffnx {関数} range (@var{matrix})
+範囲は極値の差です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c range (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c range (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) range (s1);
+(%o3)                           9
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) range (s2);
+(%o5)          [19.67, 20.96, 17.37, 24.38, 22.46]
+@end group
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} quantile (@var{list}, @var{p})
+@deffnx {関数} quantile (@var{matrix}, @var{p})
+これは標本@var{list}の@var{p}分位数です。@var{p}は@math{[0, 1]}の範囲の数です。
+標本分位数にはいくつかの定義がありますが
+(Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365)、
+パッケージ@code{descriptive}では線形内挿に基づいたものが実装されています。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c /* 1st and 3rd quartiles */ 
+@c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c quantile (s2, 1/4);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) /* 1st and 3rd quartiles */
+         [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+(%o3)                      [2.0, 7.25]
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) quantile (s2, 1/4);
+(%o5)    [7.2575, 7.477500000000001, 7.82, 11.28, 11.48]
+@end group
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} median (@var{list})
+@deffnx {関数} median (@var{matrix})
+一旦標本が順に並べられると、
+もし標本サイズが奇数ならメジアンは中央値であり、
+そうでなければ2つの中央値の平均です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c median (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c median (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) median (s1);
+                                9
+(%o3)                           -
+                                2
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) median (s2);
+(%o5)         [10.06, 9.855, 10.73, 15.48, 14.105]
+@end group
+@end example
+
+メジアンは1/2分位数です。
+
+関数@code{quantile}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} qrange (@var{list})
+@deffnx {関数} qrange (@var{matrix})
+四分位範囲は
+三番目と一番目の分位数の差
+@code{quantile(@var{list},3/4) - quantile(@var{list},1/4)}
+です。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c qrange (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c qrange (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) qrange (s1);
+                               21
+(%o3)                          --
+                               4
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) qrange (s2);
+(%o5) [5.385, 5.572499999999998, 6.022500000000001, 
+                            8.729999999999999, 6.649999999999999]
+@end group
+@end example
+
+関数@code{quantile}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} mean_deviation (@var{list})
+@deffnx {関数} mean_deviation (@var{matrix})
+平均偏差です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                     n
+                   ====
+               1   \          _
+               -    >    |x - x|
+               n   /       i
+                   ====
+                   i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c mean_deviation (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c mean_deviation (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) mean_deviation (s1);
+                               51
+(%o3)                          --
+                               20
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) mean_deviation (s2);
+(%o5) [3.287959999999999, 3.075342, 3.23907, 4.715664000000001, 
+                                               4.028546000000002]
+@end group
+@end example
+
+関数@code{mean}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} median_deviation (@var{list})
+@deffnx {関数} median_deviation (@var{matrix})
+メジアン偏差です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                 n
+               ====
+           1   \
+           -    >    |x - med|
+           n   /       i
+               ====
+               i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
+@end tex
+ここで@code{med}は@var{list}のメジアンです。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c median_deviation (s1);
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c median_deviation (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) median_deviation (s1);
+                                5
+(%o3)                           -
+                                2
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) median_deviation (s2);
+(%o5)           [2.75, 2.755, 3.08, 4.315, 3.31]
+@end group
+@end example
+
+関数@code{mean}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} harmonic_mean (@var{list})
+@deffnx {関数} harmonic_mean (@var{matrix})
+調和平均です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                  n
+               --------
+                n
+               ====
+               \     1
+                >    --
+               /     x
+               ====   i
+               i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
+@c harmonic_mean (y), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c harmonic_mean (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
+@group
+(%i3) harmonic_mean (y), numer;
+(%o3)                   3.901858027632205
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) harmonic_mean (s2);
+(%o5) [6.948015590052786, 7.391967752360356, 9.055658197151745, 
+                            13.44199028193692, 13.01439145898509]
+@end group
+@end example
+
+関数@code{mean}と@code{geometric_mean}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+
+@end deffn
+
+
+
+@deffn {関数} geometric_mean (@var{list})
+@deffnx {関数} geometric_mean (@var{matrix})
+幾何平均です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                 /  n      \ 1/n
+                 | /===\   |
+                 |  ! !    |
+                 |  ! !  x |
+                 |  ! !   i|
+                 | i = 1   |
+                 \         /
+@end group
+@end example
+@end ifnottex
+@tex
+$$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
+@c geometric_mean (y), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c geometric_mean (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
+@group
+(%i3) geometric_mean (y), numer;
+(%o3)                   4.454845412337012
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) geometric_mean (s2);
+(%o5) [8.82476274347979, 9.22652604739361, 10.0442675714889, 
+                            14.61274126349021, 13.96184163444275]
+@end group
+@end example
+
+関数@code{mean}と@code{harmonic_mean}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} kurtosis (@var{list})
+@deffnx {関数} kurtosis (@var{matrix})
+尖度係数です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                    n
+                  ====
+            1     \          _ 4
+           ----    >    (x - x)  - 3
+              4   /       i
+           n s    ====
+                  i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c kurtosis (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c kurtosis (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) kurtosis (s1), numer;
+(%o3)                  - 1.273247946514421
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) kurtosis (s2);
+(%o5) [- .2715445622195385, 0.119998784429451, 
+     - .4275233490482861, - .6405361979019522, - .4952382132352935]
+@end group
+@end example
+
+関数@code{mean}, @code{var}, @code{skewness}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} skewness (@var{list})
+@deffnx {関数} skewness (@var{matrix})
+歪度係数です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                    n
+                  ====
+            1     \          _ 3
+           ----    >    (x - x)
+              3   /       i
+           n s    ====
+                  i = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
+@end tex
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c skewness (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c skewness (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) skewness (s1), numer;
+(%o3)                  .009196180476450424
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) skewness (s2);
+(%o5) [.1580509020000978, .2926379232061854, .09242174416107717, 
+                            .2059984348148687, .2142520248890831]
+@end group
+@end example
+
+関数@code{mean}, @code{var}, @code{kurtosis}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} pearson_skewness (@var{list})
+@deffnx {関数} pearson_skewness (@var{matrix})
+Pearsonの歪度係数です。以下のように定義されます。
+@ifnottex
+@example
+@group
+                _
+             3 (x - med)
+             -----------
+                  s
+@end group
+@end example
+@end ifnottex
+@tex
+$${{3\,\left(\bar{x}-med\right)}\over{s}}$$
+@end tex
+ここで @var{med}は@var{list}のメジアンです。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c pearson_skewness (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c pearson_skewness (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) pearson_skewness (s1), numer;
+(%o3)                   .2159484029093895
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) pearson_skewness (s2);
+(%o5) [- .08019976629211892, .2357036272952649, 
+         .1050904062491204, .1245042340592368, .4464181795804519]
+@end group
+@end example
+
+関数@code{mean}, @code{var}, @code{median}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} quartile_skewness (@var{list})
+@deffnx {関数} quartile_skewness (@var{matrix})
+分位歪度係数です。以下のように定義されます。
+@ifnottex
+@example
+@group
+               c    - 2 c    + c
+                3/4      1/2    1/4
+               --------------------
+                   c    - c
+                    3/4    1/4
+@end group
+@end example
+@end ifnottex
+@tex
+$${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
+ _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
+@end tex
+ここで@math{c_p}は標本@var{list}の@var{p}分位数です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c quartile_skewness (s1), numer;
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c quartile_skewness (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
+(%i3) quartile_skewness (s1), numer;
+(%o3)                  .04761904761904762
+@end group
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i5) quartile_skewness (s2);
+(%o5) [- 0.0408542246982353, .1467025572005382, 
+       0.0336239103362392, .03780068728522298, .2105263157894735]
+@end group
+@end example
+
+関数@code{quantile}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} cov (@var{matrix})
+多変量標本の共分散行列です。以下のように定義されます。
+@ifnottex
+@example
+@group
+              n
+             ====
+          1  \           _        _
+      S = -   >    (X  - X) (X  - X)'
+          n  /       j        j
+             ====
+             j = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
+@end tex
+ここで@math{X_j}は標本行列の@math{j}番目の行です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c fpprintprec : 7$  /* change precision for pretty output */
+@c cov (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) fpprintprec : 7$  /* change precision for pretty output */
+@group
+(%i4) cov (s2);
+      [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
+      [                                                  ]
+      [ 13.61811  14.98774  13.30448  15.15834  14.9711  ]
+      [                                                  ]
+(%o4) [ 14.37217  13.30448  15.47573  17.32544  16.18171 ]
+      [                                                  ]
+      [ 19.39624  15.15834  17.32544  32.17651  20.44685 ]
+      [                                                  ]
+      [ 15.42162  14.9711   16.18171  20.44685  24.42308 ]
+@end group
+@end example
+
+関数@code{cov1}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} cov1 (@var{matrix})
+多変量標本の共分散行列です。以下のように定義されます。
+@ifnottex
+@example
+@group
+              n
+             ====
+         1   \           _        _
+   S  = ---   >    (X  - X) (X  - X)'
+    1   n-1  /       j        j
+             ====
+             j = 1
+@end group
+@end example
+@end ifnottex
+@tex
+$${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
+@end tex
+ここで@math{X_j}は標本行列の@math{j}番目の行です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c fpprintprec : 7$ /* change precision for pretty output */
+@c cov1 (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) fpprintprec : 7$ /* change precision for pretty output */
+@group
+(%i4) cov1 (s2);
+      [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
+      [                                                  ]
+      [ 13.75567  15.13913  13.43887  15.31145  15.12232 ]
+      [                                                  ]
+(%o4) [ 14.51734  13.43887  15.63205  17.50044  16.34516 ]
+      [                                                  ]
+      [ 19.59216  15.31145  17.50044  32.50153  20.65338 ]
+      [                                                  ]
+      [ 15.5774   15.12232  16.34516  20.65338  24.66977 ]
+@end group
+@end example
+
+関数@code{cov}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} global_variances (@var{matrix})
+@deffnx {関数} global_variances (@var{matrix}, @var{logical_value})
+関数@code{global_variances}は大域分散尺度のリストを返します:
+
+@itemize @bullet
+@item
+@var{total variance}: @code{trace(S_1)},
+@item
+@var{mean variance}: @code{trace(S_1)/p},
+@item
+@var{generalized variance}: @code{determinant(S_1)},
+@item
+@var{generalized standard deviation}: @code{sqrt(determinant(S_1))},
+@item
+@var{efective variance} @code{determinant(S_1)^(1/p)}, (以下の文献で定義されています: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@item
+@var{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
+@end itemize
+ここで@var{p}は多変量確率変数の次元であり、
+@math{S_1}は@code{cov1}が返す共分散行列です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c global_variances (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i3) global_variances (s2);
+(%o3) [105.338342060606, 21.06766841212119, 12874.34690469686, 
+         113.4651792608501, 6.636590811800795, 2.576158149609762]
+@end group
+@end example
+
+関数@code{global_variances}はオプションの論理引数を取ります:
+@code{global_variances(x,true)}は、
+Maximaに@code{x}がデータ行列であることを伝え、@code{global_variances(x)}と同様に作られます。
+一方、@code{global_variances(x,false)}は
+@code{x}がデータ行列ではなく、共分散行列であることを意味し、再計算は避けられます。
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c s : cov1 (s2)$
+@c global_variances (s, false);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) s : cov1 (s2)$
+@group
+(%i4) global_variances (s, false);
+(%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
+         113.4651792608501, 6.636590811800795, 2.576158149609762]
+@end group
+@end example
+
+@code{cov}と@code{cov1}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} cor (@var{matrix})
+@deffnx {関数} cor (@var{matrix}, @var{logical_value})
+多変量標本の相関行列です。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c fpprintprec : 7 $
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c cor (s2);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) fpprintprec : 7 $
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i4) cor (s2);
+      [   1.0     .8476339  .8803515  .8239624  .7519506 ]
+      [                                                  ]
+      [ .8476339    1.0     .8735834  .6902622  0.782502 ]
+      [                                                  ]
+(%o4) [ .8803515  .8735834    1.0     .7764065  .8323358 ]
+      [                                                  ]
+      [ .8239624  .6902622  .7764065    1.0     .7293848 ]
+      [                                                  ]
+      [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+@end group
+@end example
+
+関数@code{cor}はオプションの論理引数を取ります:
+@code{cor(x,true)}は、
+Maximaに@code{x}がデータ行列であることを伝え、@code{cor(x)}と同様に作られます。
+一方、@code{cor(x,false)}は
+@code{x}がデータ行列ではなく、共分散行列であることを意味し、再計算は避けられます。
+
+@c ===beg===
+@c load (descriptive)$
+@c fpprintprec : 7 $
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c s : cov1 (s2)$
+@c cor (s, false); /* this is faster */
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) fpprintprec : 7 $
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) s : cov1 (s2)$
+@group
+(%i5) cor (s, false); /* this is faster */
+      [   1.0     .8476339  .8803515  .8239624  .7519506 ]
+      [                                                  ]
+      [ .8476339    1.0     .8735834  .6902622  0.782502 ]
+      [                                                  ]
+(%o5) [ .8803515  .8735834    1.0     .7764065  .8323358 ]
+      [                                                  ]
+      [ .8239624  .6902622  .7764065    1.0     .7293848 ]
+      [                                                  ]
+      [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+@end group
+@end example
+
+@code{cov}と@code{cov1}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} list_correlations (@var{matrix})
+@deffnx {関数} list_correlations (@var{matrix}, @var{logical_value})
+関数@code{list_correlations}は相関尺度のリストを返します:
+
+@itemize @bullet
+
+@item
+@var{precision matrix}: 共分散行列@math{S_1}の逆行列,
+@ifnottex
+@example
+@group
+       -1     ij
+      S   = (s  )             
+       1         i,j = 1,2,...,p
+@end group
+@end example
+@end ifnottex
+@tex
+$${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
+@end tex
+
+@item
+@var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)},
+@ifnottex
+@example
+@group
+       2          1
+      R  = 1 - -------
+       i        ii
+               s   s
+                    ii
+@end group
+@end example
+@end ifnottex
+@tex
+$${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
+@end tex
+変数の残りが独立変数として使われるとき
+これらは@math{X_i}上の線形多変量回帰モデルの適合度の指標です。
+
+@item
+@var{partial correlation matrix}: @math{(i, j)}成分が以下の行列
+@ifnottex
+@example
+@group
+                         ij
+                        s
+      r        = - ------------
+       ij.rest     / ii  jj\ 1/2
+                   |s   s  |
+                   \       /
+@end group
+@end example
+@end ifnottex
+@tex
+$${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
+@end tex
+
+@end itemize
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c z : list_correlations (s2)$
+@c fpprintprec : 5$ /* for pretty output */
+@c z[1];  /* precision matrix */
+@c z[2];  /* multiple correlation vector */
+@c z[3];  /* partial correlation matrix */
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) z : list_correlations (s2)$
+(%i4) fpprintprec : 5$ /* for pretty output */
+@group
+(%i5) z[1];  /* precision matrix */
+      [  .38486   - .13856   - .15626   - .10239    .031179  ]
+      [                                                      ]
+      [ - .13856   .34107    - .15233    .038447   - .052842 ]
+      [                                                      ]
+(%o5) [ - .15626  - .15233    .47296    - .024816  - .10054  ]
+      [                                                      ]
+      [ - .10239   .038447   - .024816   .10937    - .034033 ]
+      [                                                      ]
+      [ .031179   - .052842  - .10054   - .034033   .14834   ]
+@end group
+@group
+(%i6) z[2];  /* multiple correlation vector */
+(%o6)      [.85063, .80634, .86474, .71867, .72675]
+@end group
+@group
+(%i7) z[3];  /* partial correlation matrix */
+      [  - 1.0     .38244   .36627   .49908   - .13049 ]
+      [                                                ]
+      [  .38244    - 1.0    .37927  - .19907   .23492  ]
+      [                                                ]
+(%o7) [  .36627    .37927   - 1.0    .10911    .37956  ]
+      [                                                ]
+      [  .49908   - .19907  .10911   - 1.0     .26719  ]
+      [                                                ]
+      [ - .13049   .23492   .37956   .26719    - 1.0   ]
+@end group
+@end example
+
+関数@code{list_correlations}もオプションの論理引数を取ります:
+@code{list_correlations(x,true)}は、
+Maximaに@code{x}がデータ行列であることを伝え、
+@code{list_correlations(x)}と同様に作られます。
+一方、@code{list_correlations(x,false)}は
+@code{x}がデータ行列ではなく、共分散行列であることを意味し、再計算は避けられます。
+
+@code{cov}と@code{cov1}も参照してください。
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@node Functions and Variables for statistical graphs,  , Functions and Variables for descriptive statistics, descriptive
+@section Functions and Variables for statistical graphs
+
+
+
+@deffn  {関数} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} barsplot_description (@dots{})
+
+1変量、多変量どちらの標本でも離散統計変数の棒グラフをプロットします
+
+@var{data}は1標本を意味する結果のリストかもしれませんし、
+それぞれサイズ@var{m}の@var{n}個の標本を意味する@var{m}行@var{n}列の行列かもしれません。
+
+利用可能なオプションは以下のものです:
+
+@itemize @bullet
+
+@item
+@code{draw}パッケージで定義されたもの。
+@item
+@var{box_width} (デフォルト, @code{3/4}): 長方形の相対幅。
+値は範囲@code{[0,1]}内でなければいけません。
+
+@item
+@var{grouping} (デフォルト, @code{clustered}):
+複数の標本をいかに表示するか示します。
+有効な値: @code{clustered}と @code{stacked}。
+
+@item
+@var{groups_gap} (デフォルト, @code{1}): 棒の2つの隣り合うグループの隙間を表す正の整数。
+
+@item
+@var{bars_colors} (デフォルト, @code{[]}): 複数の標本のための色のリスト。
+指定された色よりもたくさん標本がある時は、
+追加で必要な色はランダムに選ばれます。
+更に詳しくは@code{color}を参照してください。
+
+@item
+@var{frequency} (デフォルト, @code{absolute}): 縦座標のスケールを示します。
+可能な値: @code{absolute}, @code{relative}, @code{percent}。
+
+@item
+@var{ordering} (デフォルト, @code{orderlessp}): 可能な値は@code{orderlessp}か@code{ordergreatp}です。
+統計的結果がどちら向きに@var{x}軸に並んでいるかを示します。
+
+@item
+@var{sample_keys} (デフォルト, @code{[]}): 凡例に使われる文字列のリスト。
+リストの長さが0か標本の長さ以外なら、
+エラーメッセージを返します。
+
+@item
+@var{start_at} (デフォルト, @code{0}): x軸上のどこからプロットされるか示します。
+
+@item
+@code{barsplot}が内部で割り当てる
+@code{xtics}を除くすべてのグローバル @code{draw}オプション
+もしこのオプションに自分の値を設定し、複雑なシーンを構築したいなら、
+@code{barsplot_description}を使用してください。
+以下の例を参照してください。
+
+@item
+以下のローカル @code{draw}オプション: @code{key}, @code{color}, 
+@code{fill_color}, @code{fill_density}, @code{line_width}。
+@code{bars}も参照してください。
+
+@end itemize
+
+関数@code{barsplot_description}は
+他のグラフィックオブジェクトと一緒に複雑なシーンを生成するために
+グラフィックオブジェクトを生成します。
+wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを生成するための
+関数@code{wxbarsplot}もあります。
+
+例:
+
+行列形式での1変量標本。絶対頻度。
+
+@c ===beg===
+@c load (descriptive)$
+@c m : read_matrix (file_search ("biomed.data"))$
+@c barsplot(
+@c   col(m,2),
+@c   title        = "Ages",
+@c   xlabel       = "years",
+@c   box_width    = 1/2,
+@c   fill_density = 3/4)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) m : read_matrix (file_search ("biomed.data"))$
+@group
+(%i3) barsplot(
+        col(m,2),
+        title        = "Ages",
+        xlabel       = "years",
+        box_width    = 1/2,
+        fill_density = 3/4)$
+@end group
+@end example
+
+異なるサイズの2つの標本。
+相対頻度とユーザー宣言の色を使って。
+
+@c ===beg===
+@c load (descriptive)$
+@c l1:makelist(random(10),k,1,50)$
+@c l2:makelist(random(10),k,1,100)$
+@c barsplot(
+@c    l1,l2,
+@c    box_width = 1,
+@c    fill_density = 1,
+@c    bars_colors = [black, grey],
+@c    frequencies = relative,
+@c    sample_keys = ["A", "B"])$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) l1:makelist(random(10),k,1,50)$
+(%i3) l2:makelist(random(10),k,1,100)$
+@group
+(%i4) barsplot(
+        l1,l2,
+        box_width    = 1,
+        fill_density = 1,
+        bars_colors  = [black, grey],
+        frequencies = relative,
+        sample_keys = ["A", "B"])$
+@end group
+@end example
+
+サイズが等しい4つの非数標本。
+
+@c ===beg===
+@c load (descriptive)$
+@c barsplot(
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   title      = "Asking for something to four groups",
+@c   ylabel     = "# of individuals",
+@c   groups_gap = 3,
+@c   fill_density = 0.5,
+@c   ordering = ordergreatp)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) barsplot(
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        title  = "Asking for something to four groups",
+        ylabel = "# of individuals",
+        groups_gap   = 3,
+        fill_density = 0.5,
+        ordering     = ordergreatp)$
+@end group
+@end example
+
+スタックバー。
+
+@c ===beg===
+@c load (descriptive)$
+@c barsplot(
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   title      = "Asking for something to four groups",
+@c   ylabel     = "# of individuals",
+@c   grouping   = stacked,,
+@c   fill_density = 0.5,
+@c   ordering = ordergreatp)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) barsplot(
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        title  = "Asking for something to four groups",
+        ylabel = "# of individuals",
+        grouping     = stacked,,
+        fill_density = 0.5,
+        ordering     = ordergreatp)$
+@end group
+@end example
+
+複数プロット文脈での@code{barsplot}。
+
+@example
+(%i1) load (descriptive)$
+(%i2) l1:makelist(random(10),k,1,50)$
+(%i3) l2:makelist(random(10),k,1,100)$
+(%i4) bp1 : 
+        barsplot_description(
+         l1,
+         box_width = 1,
+         fill_density = 0.5,
+         bars_colors = [blue],
+         frequency = relative)$
+(%i5) bp2 : 
+        barsplot_description(
+         l2,
+         box_width = 1,
+         fill_density = 0.5,
+         bars_colors = [red],
+         frequency = relative)$
+(%i6) draw(gr2d(bp1), gr2d(bp2))$
+@end example
+
+棒グラフ関連オプションについては、パッケージ@code{draw}の@code{bars}を参照してください。
+関数@code{histogram}と@code{piechart}も参照してください。
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn  {関数} boxplot (@var{data})
+@deffnx {関数} boxplot (@var{data}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} boxplot_description ( @dots{})
+
+この関数は箱ひげ図をプロットします。
+引数@var{data}はリストだったり行列だったりします。
+箱ひげ図は主に異なる標本の比較に使われるので、リストはあまり興味深くありません。
+行列の場合には多変量統計変数の複数成分おw比較することが可能です。
+しかし、できる限り異なる標本サイズの標本のリストも許すようにしています。
+実際、これは、パッケージ@code{descriptive}の中で
+この種のデータ構造を許容する唯一の関数です
+
+利用可能なオプションは以下のものです:
+
+@itemize @bullet
+
+@item
+@var{box_width} (デフォルト, @code{3/4}): 箱の相対幅。
+この値は範囲@code{[0,1]}内でなければいけません。
+
+@item
+@var{box_orientation} (デフォルト, @code{vertical}): 可能な値: @code{vertical}
+と @code{horizontal}。
+
+@item
+@code{boxplot}が内部で割り当てる
+@code{points_joined}, @code{point_size}, @code{point_type},
+@code{xtics}, @code{ytics}, @code{xrange}, @code{yrange}を除く
+すべての @code{draw}オプション。
+もしこのオプションに自分の値を設定し、複雑なシーンを構築したいなら、
+@code{boxplot_description}を使用してください。
+
+@item
+以下のローカル @code{draw}オプション: @code{key}, @code{color},  @code{line_width}。
+
+@end itemize
+
+関数@code{boxplot_description}は
+他のグラフィックオブジェクトと一緒に複雑なシーンを生成するために
+グラフィックオブジェクトを生成します。
+wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを生成するための
+関数@code{wxbarsplot}もあります。
+
+例:
+
+多変量標本の箱ひげ図。
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix(file_search("wind.data"))$
+@c boxplot(s2,
+@c   box_width  = 0.2,
+@c   title      = "Windspeed in knots",
+@c   xlabel     = "Stations",
+@c   color      = red,
+@c   line_width = 2)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix(file_search("wind.data"))$
+@group
+(%i3) boxplot(s2,
+        box_width  = 0.2,
+        title      = "Windspeed in knots",
+        xlabel     = "Stations",
+        color      = red,
+        line_width = 2)$
+@end group
+@end example
+
+異なるサイズの3つの標本の箱ひげ図。
+
+@c ===beg===
+@c load (descriptive)$
+@c A :
+@c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
+@c   [8, 10, 7, 9, 12, 8, 10],
+@c   [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
+@c boxplot (A, box_orientation = horizontal)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) A :
+       [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
+        [8, 10, 7, 9, 12, 8, 10],
+        [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
+@end group
+(%i3) boxplot (A, box_orientation = horizontal)$
+@end example
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+
+
+@deffn  {関数} histogram (@var{list})
+@deffnx {関数} histogram (@var{list}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} histogram (@var{one_column_matrix})
+@deffnx {関数} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} histogram (@var{one_row_matrix})
+@deffnx {関数} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} histogram_description (@dots{})
+この関数は一連の標本からヒストグラムをプロットします。
+標本データは数のリストか一次元行列に保存しなければいけません。
+
+利用可能なオプションは以下のものです:
+
+@itemize @bullet
+
+@item
+@var{nclasses} (デフォルト, @code{10}): ヒストグラムのクラス数、もしくは
+クラスの境界と数か境界だけを含むリスト。
+
+@item
+@var{frequency} (デフォルト, @code{absolute}): 縦座標のスケールを示します。
+可能な値: @code{absolute}, @code{relative}, @code{percent}。
+
+@item
+@var{htics} (デフォルト, @code{auto}): ヒストグラムチックのフォーマット。
+可能な値: @code{auto}, @code{endpoints}, @code{intervals}, かラベルのリスト。
+
+@item
+@code{histogram}が内部で割り当てる@code{xrange}, @code{yrange}, @code{xtics}を除く
+すべてのグローバル @code{draw}オプション。
+もしこれらのオプションに自分の値を設定したいなら、
+@code{histogram_description}を利用してください。
+以下の例を参照してください。
+
+@item
+以下のローカル @code{draw}オプション: @code{key}, @code{color}, 
+@code{fill_color}, @code{fill_density}と @code{line_width}.
+@code{bars}も参照してください。
+
+@end itemize
+
+関数 @code{histogram_description}は他のグラフィックオブジェクトと一緒に
+複雑なシーンを生成するのに適したグラフィックオブジェクトを生成します。
+wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを生成する
+関数@code{wxhistogram}もあります。
+
+例:
+
+8クラスを持つ簡単なヒストグラム。
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c histogram (
+@c      s1,
+@c      nclasses     = 8,
+@c      title        = "pi digits",
+@c      xlabel       = "digits",
+@c      ylabel       = "Absolute frequency",
+@c      fill_color   = grey,
+@c      fill_density = 0.6)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) histogram (
+           s1,
+           nclasses     = 8,
+           title        = "pi digits",
+           xlabel       = "digits",
+           ylabel       = "Absolute frequency",
+           fill_color   = grey,
+           fill_density = 0.6)$
+@end example
+
+
+ヒストグラムの境界を-2と12に、クラス数を3に設定します。
+また予め定義されたチックを導入します:
+
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) histogram (
+           s1,
+           nclasses     = [-2,12,3],
+           htics        = ["A", "B", "C"],
+           terminal     = png,
+           fill_color   = "#23afa0",
+           fill_density = 0.6)$
+@end example
+
+@code{xrange}を設定しシーンの中に明示的な曲線を足すのに
+@code{histogram_description}を利用します:
+
+@example
+(%i1) load (descriptive)$
+(%i2) ( load("distrib"),
+        m: 14, s: 2,
+        s2: random_normal(m, s, 1000) ) $
+(%i3) draw2d(
+        grid   = true,
+        xrange = [5, 25],
+        histogram_description(
+          s2,
+          nclasses     = 9,
+          frequency    = relative,
+          fill_density = 0.5),
+        explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s))$
+@end example
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+
+
+
+@deffn {関数} piechart (@var{list})
+@deffnx {関数} piechart (@var{list}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} piechart (@var{one_column_matrix})
+@deffnx {関数} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} piechart (@var{one_row_matrix})
+@deffnx {関数} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} piechart_description (@dots{})
+
+@code{barsplot}に似ていますが、長方形の代わりに扇をプロットします。
+
+利用可能なオプションは以下のものです:
+
+@itemize @bullet
+
+@item
+@var{sector_colors} (デフォルト, @code{[]}): セクタの色のリスト。
+指定した色よりも多くセクタがあるときは、必要な色の超過分がランダムに選ばれます。
+それらについて更に知るには @code{color}を参照してください。
+
+@item
+@var{pie_center} (デフォルト, @code{[0,0]}): 円グラフの中心。
+
+@item
+@var{pie_radius}　(デフォルト, @code{1}): 円グラフの半径。
+
+@item
+@code{piechart}が内部で割り当てる@code{key}を除いたすべてのグローバル @code{draw}オプション。
+もしこのオプションに自分の値を設定し、複雑なシーンを構築したいなら、
+@code{piechart_description}を利用してください。
+
+@item
+以下のローカル @code{draw}オプション: @code{key}, @code{color},
+@code{fill_display}, @code{line_width}。
+@code{ellipse}も参照してください。
+
+@end itemize
+
+関数 @code{piechart_description}は他のグラフィックオブジェクトと一緒に
+複雑なシーンを生成するのに適したグラフィックオブジェクトを生成します。
+wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを生成する
+関数@code{wxhistogram}もあります。
+
+例:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c piechart(
+@c   s1,
+@c   xrange = [-1.1, 1.3],
+@c   yrange = [-1.1, 1.1],
+@c   title  = "Digit frequencies in pi")$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) piechart(
+        s1,
+        xrange = [-1.1, 1.3],
+        yrange = [-1.1, 1.1],
+        title  = "Digit frequencies in pi")$
+@end example
+
+関数@code{barsplot}も参照してください。
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+
+
+@deffn  {関数} scatterplot (@var{list})
+@deffnx {関数} scatterplot (@var{list}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} scatterplot (@var{matrix})
+@deffnx {関数} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} scatterplot_description (@dots{})
+
+1変量(@var{list})や多変量(@var{matrix})の標本の散布図をプロットします。
+
+利用可能なオプションは @code{histogram}が許すものと同じです。
+
+関数 @code{scatterplot_description}は他のグラフィックオブジェクトと一緒に
+複雑なシーンを生成するのに適したグラフィックオブジェクトを生成します。
+wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを生成する
+関数@code{wxscatterplot}もあります。
+
+例:
+
+シミュレーティッドGauss標本の1変量散布図。
+
+@c ===beg===
+@c load (descriptive)$
+@c load (distrib)$
+@c scatterplot(
+@c   random_normal(0,1,200),
+@c   xaxis      = true,
+@c   point_size = 2,
+@c   dimensions = [600,150]$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) load (distrib)$
+@group
+(%i3) scatterplot(
+        random_normal(0,1,200),
+        xaxis      = true,
+        point_size = 2,
+        dimensions = [600,150])$
+@end group
+@end example
+
+二次元散布図。
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(
+@c  submatrix(s2, 1,2,3),
+@c  title      = "Data from stations #4 and #5",
+@c  point_type = diamant,
+@c  point_size = 2,
+@c  color      = blue)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i3) scatterplot(
+       submatrix(s2, 1,2,3),
+       title      = "Data from stations #4 and #5",
+       point_type = diamant,
+       point_size = 2,
+       color      = blue)$
+@end group
+@end example
+
+3次元散布図。
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(submatrix (s2, 1,2), nclasses=4)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(submatrix (s2, 1,2), nclasses=4)$
+@end example
+
+5つのクラスのヒストグラムと5次元散布図。
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(
+@c   s2,
+@c   nclasses     = 5,
+@c   frequency    = relative,
+@c   fill_color   = blue,
+@c   fill_density = 0.3,
+@c   xtics        = 5)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i3) scatterplot(
+        s2,
+        nclasses     = 5,
+        frequency    = relative,
+        fill_color   = blue,
+        fill_density = 0.3,
+        xtics        = 5)$
+@end group
+@end example
+
+2次元か3次元で孤立点か線で結んだ点をプロットすることについては、
+@code{points}を参照してください。
+@code{histogram}も参照してください。
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+@deffn {関数} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
+@deffnx {関数} starplot_description (@dots{})
+
+1変量、多変量どちらの標本でも離散統計変数のスターダイアグラムをプロットします
+
+@var{data}は1標本を意味する結果のリストかもしれませんし、
+それぞれサイズ@var{m}の@var{n}個の標本を意味する@var{m}行@var{n}列の行列かもしれません。
+
+利用可能なオプションは以下のものです:
+
+@itemize @bullet
+
+@item
+@var{stars_colors} (デフォルト, @code{[]}): 多変量標本の色のリスト。
+指定した色よりも多くセクタがあるときは、必要な色の超過分がランダムに選ばれます。
+それらについて更に知るには @code{color}を参照してください。
+
+@item
+@var{frequency} (デフォルト, @code{absolute}): 半径のスケールを示します。
+可能な値: @code{absolute}, @code{relative}, @code{percent}。
+
+@item
+@var{ordering} (デフォルト, @code{orderlessp}): 可能な値は@code{orderlessp}か@code{ordergreatp}です。
+統計的結果がどちら向きに@var{x}軸に並んでいるかを示します。
+
+@item
+@var{sample_keys} (デフォルト, @code{[]}): 凡例に使われる文字列のリスト。
+リストの長さが0か標本の長さ以外なら、
+エラーメッセージを返します。
+
+@item
+@var{star_center} (デフォルト, @code{[0,0]}): ダイアグラムの中心。
+
+@item
+@var{star_radius} (デフォルト, @code{1}): ダイアグラムの半径。
+
+@item
+@code{starplot}が内部で割り当てる@code{points_joined}, @code{point_type}, @code{key}を除いたすべてのグローバル @code{draw}オプション。
+もしこのオプションに自分の値を設定し、複雑なシーンを構築したいなら、
+@code{starplot_description}を利用してください。
+
+@item
+以下のローカル @code{draw}オプション: @code{line_width}。
+
+@end itemize
+
+関数 @code{starplot_description}は他のグラフィックオブジェクトと一緒に
+複雑なシーンを生成するのに適したグラフィックオブジェクトを生成します。
+wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを生成する
+関数@code{wxstarplot}もあります。
+
+例:
+
+絶対頻度に基づいたプロット。
+ユーザーが定義した位置と半径。
+
+@example
+(%i1) load (descriptive)$
+(%i2) l1: makelist(random(10),k,1,50)$
+(%i3) l2: makelist(random(10),k,1,200)$
+@group
+(%i4) starplot(
+        l1, l2,
+        stars_colors = [blue,red],
+        sample_keys = ["1st sample", "2nd sample"],
+        star_center = [1,2],
+        star_radius = 4,
+        proportional_axes = xy,
+        line_width = 2 ) $ 
+@end group
+@end example
+
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} stemplot (@var{data})
+@deffnx {関数} stemplot (@var{data}, @var{option})
+
+幹葉図をプロットします。
+
+固有の利用可能なオプションは:
+
+@itemize @bullet
+
+@item
+@var{leaf_unit} (デフォルト, @code{1}): 葉の単位を示します;
+10のべきでなければいけません。
+
+@end itemize
+
+例:
+
+@example
+(%i1) load (descriptive)$
+(%i2) load(distrib)$
+@group
+(%i3) stemplot(
+        random_normal(15, 6, 100),
+        leaf_unit = 0.1);
+-5|4
+ 0|37
+ 1|7
+ 3|6
+ 4|4
+ 5|4
+ 6|57
+ 7|0149
+ 8|3
+ 9|1334588
+10|07888
+11|01144467789
+12|12566889
+13|24778
+14|047
+15|223458
+16|4
+17|11557
+18|000247
+19|4467799
+20|00
+21|1
+22|2335
+23|01457
+24|12356
+25|455
+27|79
+key: 6|3 =  6.3
+(%o3)                  done
+@end group
+@end example
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
+@end deffn
+

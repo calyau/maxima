@@ -1,0 +1,484 @@
+@menu
+* Introduction to zeilberger::
+* Functions and Variables for zeilberger::
+@end menu
+
+@node Introduction to zeilberger, Functions and Variables for zeilberger, zeilberger, zeilberger
+@section Introduction to zeilberger
+
+@code{zeilberger}は
+超幾何定総和に関するZeilbergerのアルゴリズムと
+超幾何不定総和に関するGosperのアルゴリズムの実装します。
+
+@code{zeilberger}は
+Axel Rieseによって開発された「フィルタリング」最適化法を利用します。
+
+@code{zeilberger}はFabrizio Carusoによって開発されました。
+
+@code{load (zeilberger)}はこのパッケージをロードします。
+
+@opencatbox
+@category{Sums and products} @category{Share packages} @category{Package zeilberger}
+@closecatbox
+
+@subsubsection The indefinite summation problem
+
+@code{zeilberger}は
+超幾何不定総和に関するGosperのアルゴリズムの実装します。
+@math{k}の超幾何項@math{F_k}が与えられたとして、
+超幾何反差(anti-difference)、すなわち、以下のような超幾何項@math{f_k}
+を見つけることを望みます。
+
+@tex
+$$F_k = f_{k+1} - f_k.$$
+@end tex
+@ifnottex
+@math{F_k = f_(k+1) - f_k}.
+@end ifnottex
+
+@subsubsection The definite summation problem
+
+@code{zeilberger}は
+超幾何定総和に関するGosperのアルゴリズムの実装します。
+適当な(@math{n}と@math{k}に関する)超幾何項
+@tex
+$F_{n,k}$
+@end tex
+@ifnottex
+@math{F_(n,k)}
+@end ifnottex
+と正の整数@math{d}が与えられたとして、
+@tex
+$F_{n,k}$
+@end tex
+@ifnottex
+@math{F_(n,k)}
+@end ifnottex
+に関する(@math{n}に関する)多項式係数を持つ@math{d}次の線形漸化式と、
+@tex
+$$a_0 \, F_{n,k} + \ldots + a_d \, F_{n+d}, ~ k = \Delta_K \left(R\left(n,k\right) F_{n,k}\right),$$
+@end tex
+@ifnottex
+@math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_k(R(n,k) F_(n,k))},
+@end ifnottex
+のような@math{n}と@math{k}に関する有理函数@math{R}を見つけることを望みます。
+
+@tex
+\noindent
+@end tex
+ここで、
+@tex
+$\Delta_k$
+@end tex
+@ifnottex
+@math{Delta_k}
+@end ifnottex
+は @math{k}-順方向差分演算子です。すなわち、
+@tex
+$\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k$.
+@end tex
+@ifnottex
+@math{Delta_k(t_k) := t_(k+1) - t_k}.
+@end ifnottex
+
+@subsection Verbosity levels
+
+以下の接尾辞の1つを追加することでコールされる出力が冗長なバージョンのコマンドもあります:
+
+@table @code
+@item Summary
+終わりにサマリだけが表示されます。
+@item Verbose
+中間ステップでのある情報。
+@item VeryVerbose
+更なる情報。
+@item Extra
+Zeilbergerのアルゴリズムでの線形系上の情報を含む更なる情報。
+@end table
+
+例えば:@*
+@code{GosperVerbose}, @code{parGosperVeryVerbose},
+@code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
+
+
+@node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
+@section Functions and Variables for zeilberger
+
+@deffn {関数} AntiDifference (@math{F_k}, @var{k})
+
+もし存在すれば、@math{F_k}の超幾何反差を返します。@*
+そうでなければ、 @code{AntiDifference}は
+@code{no_hyp_antidifference}を返します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} Gosper (@math{F_k}, @var{k})
+もし存在すれば、
+@math{F_k}に対する有理証(rational certificate)、
+すなわち、
+以下のような有理函数を返します。
+@tex
+$F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
+@end tex
+@ifnottex
+@math{F_k = R(k+1) F_(k+1) - R(k) F_k},
+@end ifnottex
+そうでなければ、 @code{Gosper}は @code{no_hyp_sol}を返します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
+
+もし @math{F_k}が超幾何反差を持つなら、
+@math{@var{k} = @var{a}}から @math{@var{k} = @var{b}}までの
+@math{F_k}の和を返します。
+そうでなければ、 @code{GosperSum}は @code{nongosper_summable}を返します。
+
+例:
+
+@c ===beg===
+@c load (zeilberger)$
+@c GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
+@c GosperSum (1 / (4*k^2 - 1), k, 1, n);
+@c GosperSum (x^k, k, 1, n);
+@c GosperSum ((-1)^k*a! / (k!*(a - k)!), k, 1, n);
+@c GosperSum (k*k!, k, 1, n);
+@c GosperSum ((k + 1)*k! / (k + 1)!, k, 1, n);
+@c GosperSum (1 / ((a - k)!*k!), k, 1, n);
+@c ===end===
+@example
+(%i1) load (zeilberger)$
+@group
+(%i2) GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
+Dependent equations eliminated:  (1)
+                           3       n + 1
+                      (n + -) (- 1)
+                           2               1
+(%o2)               - ------------------ - -
+                                  2        4
+                      2 (4 (n + 1)  - 1)
+@end group
+@group
+(%i3) GosperSum (1 / (4*k^2 - 1), k, 1, n);
+                                3
+                          - n - -
+                                2       1
+(%o3)                  -------------- + -
+                                2       2
+                       4 (n + 1)  - 1
+@end group
+@group
+(%i4) GosperSum (x^k, k, 1, n);
+                          n + 1
+                         x          x
+(%o4)                    ------ - -----
+                         x - 1    x - 1
+@end group
+@group
+(%i5) GosperSum ((-1)^k*a! / (k!*(a - k)!), k, 1, n);
+                                n + 1
+                a! (n + 1) (- 1)              a!
+(%o5)       - ------------------------- - ----------
+              a (- n + a - 1)! (n + 1)!   a (a - 1)!
+@end group
+@group
+(%i6) GosperSum (k*k!, k, 1, n);
+Dependent equations eliminated:  (1)
+(%o6)                     (n + 1)! - 1
+@end group
+@group
+(%i7) GosperSum ((k + 1)*k! / (k + 1)!, k, 1, n);
+                  (n + 1) (n + 2) (n + 1)!
+(%o7)             ------------------------ - 1
+                          (n + 2)!
+@end group
+@group
+(%i8) GosperSum (1 / ((a - k)!*k!), k, 1, n);
+(%o8)                  NON_GOSPER_SUMMABLE
+@end group
+@end example
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+
+@iftex
+@deffn {関数} parGosper (@math{F_{n,k}}, @var{k}, @var{n}, @var{d})
+
+@tex
+$F_{n,k}$.
+@end tex
+に対して次数@var{d}の漸化式を見つけようとします。
+
+アルゴリズムは解の列 @math{[s_1, s_2, ..., s_m]}をもたらします。
+解それぞれは形式
+
+@tex
+$$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
+@end tex
+
+を持ちます。
+
+もし漸化式を見つけられないなら、
+@code{parGosper}は @code{[]}を返します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+@end iftex
+
+@ifnottex
+@deffn {関数} parGosper (@math{F_(n,k)}, @var{k}, @var{n}, @var{d})
+
+@math{F_(n,k)}に対して次数@var{d}の漸化式を見つけようとします。
+
+アルゴリズムは解の列 @math{[s_1, s_2, ..., s_m]}をもたらします。
+解それぞれは形式
+
+@math{[R(n, k), [a_0, a_1, ..., a_d]].}
+
+を持ちます。
+
+もし漸化式を見つけられないなら、
+@code{parGosper}は @code{[]}を返します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+@end ifnottex
+
+@iftex
+@deffn {関数} Zeilberger (@math{F_{n,k}}, @var{k}, @var{n})
+
+@tex
+$F_{n,k}$
+@end tex
+の超幾何不定総和を計算しようとします。
+
+@code{Zeilberger}は最初に @code{Gosper}を呼び出し、
+もしそれが解を見つけるのに失敗したら、
+次数 1, 2, 3, ..., から @code{MAX_ORD}までを使って
+@code{parGosper}を呼び出します。
+
+もしZeilbergerが
+@code{MAX_ORD}に達する前に
+停止して、解を返します。
+
+アルゴリズムは解の列 @math{[s_1, s_2, ..., s_m]}をもたらします。
+解それぞれは形式
+
+@tex
+$$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
+@end tex
+
+を持ちます。
+
+もし解を見つけられなかったら、
+@code{Zeilberger}は @code{[]}を返します。
+
+@code{Zeilberger}は
+@code{Gosper_in_Zeilberger}が @code{true}の時だけ
+@code{Gosper}を呼び出します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+@end iftex
+
+@ifnottex
+@deffn {関数} Zeilberger (@math{F_(n,k)}, @var{k}, @var{n})
+
+@math{F_(n,k)}の超幾何不定総和を計算しようとします。
+
+@code{Zeilberger}は最初に @code{Gosper}を呼び出し、
+もしそれが解を見つけるのに失敗したら、
+次数 1, 2, 3, ..., から @code{MAX_ORD}までを使って
+@code{parGosper}を呼び出します。
+もしZeilbergerが
+@code{MAX_ORD}に達する前に
+停止して、解を返します。
+
+アルゴリズムは解の列 @math{[s_1, s_2, ..., s_m]}をもたらします。
+解それぞれは形式
+
+@math{[R(n,k), [a_0, a_1, ..., a_d]].}
+
+を持ちます。
+
+もし解を見つけられなかったら、
+@code{Zeilberger}は @code{[]}を返します。
+
+@code{Zeilberger}は
+@code{Gosper_in_Zeilberger}が @code{true}の時だけ
+@code{Gosper}を呼び出します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end deffn
+@end ifnottex
+
+
+
+@section General global variables
+
+@defvr {グローバル変数} MAX_ORD
+デフォルト値: 5
+
+@code{MAX_ORD}は
+@code{Zeilberger}が試みる漸化式の最大次数です。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} simplified_output
+デフォルト値: @code{false}
+
+@code{simplified_output}が @code{true}の時、
+@code{zeilberger}パッケージの関数は
+解の更なる整理を試みます。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} linear_solver
+デフォルト値: @code{linsolve}
+
+@code{linear_solver}は
+Zeilbergerのアルゴリズムで方程式系を解くのに使うソルバを指定します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} warnings
+デフォルト値: @code{true}
+
+@code{warnings}が @code{true}の時、
+@code{zeilberger}パッケージの関数は
+実行中に警告メッッセージを印字します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} Gosper_in_Zeilberger
+デフォルト値: @code{true}
+
+@code{Gosper_in_Zeilberger}が @code{true}の時、
+@code{Zeilberger}関数は
+@code{parGosper}をコールする前に
+@code{Gosper}をコールします。
+そうでないなら、 @code{Zeilberger}はすぐに @code{parGosper}に向かいます。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} trivial_solutions
+デフォルト値: @code{true}
+
+@code{trivial_solutions}が @code{true}の時、
+@code{Zeilberger}は
+零に等しい証を持つ解か、
+すべての係数が零に等しい解
+を返します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@section Variables related to the modular test
+
+@defvr {グローバル変数} mod_test
+デフォルト値: @code{false}
+
+@code{mod_test}が @code{true}の時、
+@code{parGosper}は
+解を持たない系を除くためにモジュラーテストを実行します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} modular_linear_solver
+デフォルト値: @code{linsolve}
+
+@code{modular_linear_solver}は
+@code{parGosper}でのモジュラーテストが使う線形ソルバを指定します。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} ev_point
+デフォルト値: @code{big_primes[10]}
+
+@code{parGosper}でモジュラーテストを実行する時
+@code{ev_point}で変数 @var{n}が評価されます。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} mod_big_prime
+デフォルト値: @code{big_primes[1]}
+
+@code{mod_big_prime}は
+@code{parGosper}でモジュラーテストが使う法です。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+
+@defvr {グローバル変数} mod_threshold
+デフォルト値: 4
+
+@code{mod_threshold}は
+@code{parGosper}でのモジュラーテストが試みられる際の最大次数です。
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
+@end defvr
+

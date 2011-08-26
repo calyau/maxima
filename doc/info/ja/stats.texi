@@ -1,0 +1,1726 @@
+@menu
+* Introduction to stats::
+* Functions and Variables for inference_result::
+* Functions and Variables for stats::
+* Functions and Variables for special distributions::
+@end menu
+
+@node Introduction to stats, Functions and Variables for inference_result, Top, Top
+@section Introduction to stats
+
+
+パッケージ@code{stats}は古典的な統計推定や仮説検定手続き一式を含みます。
+
+これらの関数すべては、
+母集団推定と意思決定のための必要な結果を含む
+@code{inference_result} Maximaオブジェクトを返します。
+
+グローバル変数@code{stats_numer}は
+結果が、浮動小数点やシンボル、有理フォーマットのいずれかで与えられるか制御します;
+デフォルト値は@code{true}で、結果は浮動小数点フォーマットで返されます。
+
+パッケージ@code{descriptive}はデータ構造(リストと行列)を操作するためのいくつかのユーティリティを含みます;
+例えば、部分サンプルを抽出するためのもの。
+プレインテキストファイルからデータを読むためのパッケージ@code{numericalio}の使い方
+に関するいくつかの例も含みます。
+詳細は@code{descriptive}と@code{numericalio}を参照してください。
+
+パッケージ@code{stats}は、パッケージ@code{descriptive}, @code{distrib}, 
+@code{inference_result}をロードします。
+
+コメント、バグ、提案は、作者@var{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
+
+@opencatbox
+@category{Statistical inference} @category{Share packages} @category{Package stats}
+@closecatbox
+
+@node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
+@section Functions and Variables for inference_result
+
+@deffn {関数} inference_result (@var{title}, @var{values}, @var{numbers})
+
+statsの関数が返す型の @code{inference_result}オブジェクトを構成します。
+引数 @var{title}は手続き名の文字列です;
+@var{values}は形式 @code{symbol = value}の要素を持つリストであり、
+@var{numbers}は
+どの値がデフォルトで表示されるか示している
+1から @code{length(@var{values})}までの範囲の正の整数のリストです。
+
+例:
+
+これ
+長方形に関する結果を示す簡単な例です。
+このオブジェクトのタイトルは
+文字列 @code{"Rectangle"}であり、
+, it stores five results, named
+@code{'base}, @code{'height}, @code{'diagonal}, @code{'area}, @code{'perimeter}
+と名付けられた5つの結果を格納しますが、
+一番目、二番目、五番目と四番目だけが表示されます。
+@code{'diagonal}はこのオブジェクトに格納されますが、表示されません;
+その値にアクセスするには関数 @code{take_inference}を利用してください。
+
+@c ===beg===
+@c load (inference_result)$
+@c b: 3$ h: 2$
+@c inference_result("Rectangle",
+@c                  ['base=b,
+@c                   'height=h,
+@c                   'diagonal=sqrt(b^2+h^2),
+@c                   'area=b*h,
+@c                   'perimeter=2*(b+h)],
+@c                  [1,2,5,4] );
+@c take_inference('diagonal,%);
+@c ===end===
+@example
+(%i1) load(inference_result)$
+(%i2) b: 3$ h: 2$
+(%i3) inference_result("Rectangle",
+                        ['base=b,
+                         'height=h,
+                         'diagonal=sqrt(b^2+h^2),
+                         'area=b*h,
+                         'perimeter=2*(b+h)],
+                        [1,2,5,4] );
+                        |   Rectangle
+                        |
+                        |    base = 3
+                        |
+(%o3)                   |   height = 2
+                        |
+                        | perimeter = 10
+                        |
+                        |    area = 6
+(%i4) take_inference('diagonal,%);
+(%o4)                        sqrt(13)
+@end example
+
+@code{take_inference}も参照してください。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+@deffn {関数} inferencep (@var{obj})
+
+@var{obj}が @code{inference_result}オブジェクトか否かに依存して、
+@code{true}か @code{false}を返します。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+@deffn {関数} items_inference (@var{obj})
+
+@var{obj}に格納された項目名のリストを返します。
+@var{obj}は @code{inference_result}オブジェクトでなければいけません。
+
+例:
+
+@code{inference_result}オブジェクトは
+@code{'pi}と @code{'e}と名付けられた2つの値を格納しますが、
+二番目だけが表示されます。
+@code{items_inference}関数は、
+表示されるされないに関係なく、項目すべての名前を返します。
+
+@c ===beg===
+@c load (inference_result)$
+@c inference_result("Hi", ['pi=%pi,'e=%e],[2]);
+@c items_inference(%);
+@c ===end===
+@example
+(%i1) load(inference_result)$
+(%i2) inference_result("Hi", ['pi=%pi,'e=%e],[2]);
+                            |   Hi
+(%o2)                       |
+                            | e = %e
+(%i3) items_inference(%);
+(%o3)                        [pi, e]
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} take_inference (@var{n}, @var{obj})
+@deffnx {関数} take_inference (@var{name}, @var{obj})
+@deffnx {関数} take_inference (@var{list}, @var{obj})
+
+もし @var{n}が正の整数なら、
+@var{obj}に格納された @var{n}番目の値を返します。
+もし @var{name}が項目名なら、そう名付けられた項目を返します。
+もし一番目の引数が数やシンボルのリストなら、
+関数 @code{take_inference}は対応する結果のリストを返します。
+
+例:
+
+@code{inference_result}オブジェクトが与えられたとして、
+関数 @code{take_inference}は
+それに格納されたある情報を抽出するためにコールされます。
+
+@c ===beg===
+@c load (inference_result)$
+@c b: 3$ h: 2$
+@c sol:inference_result("Rectangle",
+@c                      ['base=b,
+@c                       'height=h,
+@c                       'diagonal=sqrt(b^2+h^2),
+@c                       'area=b*h,
+@c                       'perimeter=2*(b+h)],
+@c                      [1,2,5,4] );
+@c take_inference('base,sol);
+@c take_inference(5,sol);
+@c take_inference([1,'diagonal],sol);
+@c take_inference(items_inference(sol),sol);
+@c ===end===
+@example
+(%i1) load(inference_result)$
+(%i2) b: 3$ h: 2$
+(%i3) sol: inference_result("Rectangle",
+                            ['base=b,
+                             'height=h,
+                             'diagonal=sqrt(b^2+h^2),
+                             'area=b*h,
+                             'perimeter=2*(b+h)],
+                            [1,2,5,4] );
+                        |   Rectangle
+                        |
+                        |    base = 3
+                        |
+(%o3)                   |   height = 2
+                        |
+                        | perimeter = 10
+                        |
+                        |    area = 6
+(%i4) take_inference('base,sol);
+(%o4)                           3
+(%i5) take_inference(5,sol);
+(%o5)                          10
+(%i6) take_inference([1,'diagonal],sol);
+(%o6)                     [3, sqrt(13)]
+(%i7) take_inference(items_inference(sol),sol);
+(%o7)                [3, 2, sqrt(13), 6, 10]
+@end example
+
+@code{inference_result}と @code{take_inference}も参照してください。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@node Functions and Variables for stats, Functions and Variables for special distributions, Functions and Variables for inference_result, Top
+@section Functions and Variables for stats
+
+
+@defvr {オプション変数} stats_numer
+デフォルト値: @code{true}
+
+もし @code{stats_numer}が @code{true}なら、
+推定統計的関数は浮動小数点数で結果を返します。
+もし @code{false}なら、
+結果は記号と有理フォーマットで与えられます。
+
+@opencatbox
+@category{Package stats} @category{Numerical evaluation}
+@closecatbox
+
+@end defvr
+
+
+
+@deffn {関数} test_mean (@var{x})
+@deffnx {関数} test_mean (@var{x}, @var{options} ...)
+
+これは平均t検定です。
+引数 @var{x}は1次元標本を含むリストか列行列です。
+もしオプション @code{'asymptotic}が @code{true}なら、
+@i{中心極限定理}に基づいた漸近検定も実行します。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'mean}, デフォルト @code{0}, はチェックされる平均値です。
+
+@item
+@code{'alternative}, デフォルト @code{'twosided}, は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater}, @code{'less}。
+
+@item
+@code{'dev}, デフォルト @code{'unknown}, は既知の時の標準偏差値です;
+有効な値は次の通りです: @code{'unknown}か正の式。
+
+@item
+@code{'conflevel}, デフォルト @code{95/100}, は信頼区間の信頼度です;
+(0,1)内の値を取る式でなければいけません。
+
+@item
+@code{'asymptotic}, デフォルト @code{false}, は正確確率t検定か、
+@i{中心極限定理}に基づいた漸近検定かどちらを実行するかを示します;
+有効な値は @code{true}と @code{false}です。
+
+@end itemize
+
+関数 @code{test_mean}の出力は
+以下の結果を示す@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'mean_estimate}: 標本平均。
+
+@item
+@code{'conf_level}: ユーザーが選択した信頼度。
+
+@item
+@code{'conf_interval}: 母平均の信頼度。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無と対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するために使われる標本統計の値。
+
+@item
+@code{'distribution}: パラメータと合わせて、標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値
+
+@end enumerate
+
+例:
+
+未知の分散で正確確率 @var{t}検定を実行します。
+片側対立 @math{H_1: mean<50}に対して
+帰無仮説は @math{H_0: mean=50}です;
+結果に従うと、@math{p}値が大きすぎ、
+@math{H_0}を却下する証拠がありません。
+
+@c ===beg===
+@c load (stats)$
+@c data: [78,64,35,45,45,75,43,74,42,42]$
+@c test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) data: [78,64,35,45,45,75,43,74,42,42]$
+(%i3) test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
+          |                 MEAN TEST
+          |
+          |            mean_estimate = 54.3
+          |
+          |              conf_level = 0.9
+          |
+          | conf_interval = [minf, 61.51314273502712]
+          |
+(%o3)     |  method = Exact t-test. Unknown variance.
+          |
+          | hypotheses = H0: mean = 50 , H1: mean < 50
+          |
+          |       statistic = .8244705235071678
+          |
+          |       distribution = [student_t, 9]
+          |
+          |        p_value = .7845100411786889
+@end example
+
+今回、Maximaは @i{中心極限定理}に基づく漸近検定を実行します。
+両側対立 @math{H_1: not equal(mean, 50)}に対して
+帰無仮説は @math{H_0: equal(mean, 50)}です;
+結果に従うと、
+@math{p}値は非常に小さく、
+対立 @math{H_1}を指示して、@math{H_0}は却下すべきです。
+. Note that, as indicated by the 
+@code{Method}成分が示すように、
+この手続きは多くの標本に適用すべきです。
+
+@c ===beg===
+@c load (stats)$
+@c test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
+@c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
+@c         45,51,123,54,151],
+@c         'asymptotic=true,'mean=50);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
+              98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
+              45,51,123,54,151],
+              'asymptotic=true,'mean=50);
+          |                       MEAN TEST
+          |
+          |           mean_estimate = 74.88571428571429
+          |
+          |                   conf_level = 0.95
+          |
+          | conf_interval = [57.72848600856194, 92.04294256286663]
+          |
+(%o2)     |    method = Large sample z-test. Unknown variance.
+          |
+          |       hypotheses = H0: mean = 50 , H1: mean # 50
+          |
+          |             statistic = 2.842831192874313
+          |
+          |             distribution = [normal, 0, 1]
+          |
+          |             p_value = .004471474652002261
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} test_means_difference (@var{x1}, @var{x2})
+@deffnx {関数} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
+
+これは2つの標本の平均の差 @var{t}検定です。
+引数 @var{x1}と @var{x2}は2つの独立標本を含むリストか列行列です。
+異なる未知の分散の場合
+(以下のオプション @code{'dev1}, @code{'dev2}, @code{'varequal}を参照してください)、
+自由度の次数はWelch近似を使って計算されます。
+もしオプション @code{'asymptotic}が @code{true}に設定されているなら
+@i{中心極限定理}に基づく漸近検定も実行します。
+
+オプション:
+
+@itemize @bullet
+
+@item
+
+@item
+@code{'alternative}, デフォルト @code{'twosided}, は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater}, @code{'less}。
+
+@item
+@code{'dev1}, デフォルト @code{'unknown},
+既知の時、これは@var{x1}標本の標準偏差値です;
+有効な値は次の通りです: @code{'unknown}もしくは正の式。
+
+@item
+@code{'dev2}, デフォルト @code{'unknown}, 
+既知の時、これは@var{x2}標本の標準偏差値です;
+有効な値は次の通りです: @code{'unknown}もしくは正の式。
+
+@item
+@code{'varequal}, デフォルト @code{false},
+分散を等しいと考えるか等しくないと考えるか;
+このオプションは
+　@code{'dev1}と @code{'dev2}の両方もしくはいずれかが @code{'unknown}の時だけ
+有効です。
+
+@item
+@code{'conflevel}, デフォルト @code{95/100},
+信頼区間の信頼度;
+(0,1)内の値を取る式でなければいけません。
+
+@item
+@code{'asymptotic}, デフォルト @code{false},
+正確確率 @var{t}検定か
+@i{中心極限定理}に基づく漸近検定どちらを実行するかを示します;
+有効な値は @code{true}と @code{false}です。
+
+@end itemize
+
+関数 @code{test_means_difference}の出力は
+以下の結果を示す@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'diff_estimate}: 平均差推定。
+
+@item
+@code{'conf_level}: ユーザーが選択した信頼度。
+
+@item
+@code{'conf_interval}: 平均差の信頼区間。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+例:
+
+母平均 @math{m_1}と @math{m_2}で対立 @math{H_1: m_1>m_2}に対して
+2つの小さな標本 @var{x} @var{y}で平均が等しいか検定します;
+分散は未知で異なると仮定されます。
+
+@c equivalent code for R:
+@c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
+@c y <- c(1.2,6.9,38.7,20.4,17.2)
+@c t.test(x,y,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+@c y: [1.2,6.9,38.7,20.4,17.2]$
+@c test_means_difference(x,y,'alternative='greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+(%i3) y: [1.2,6.9,38.7,20.4,17.2]$
+(%i4) test_means_difference(x,y,'alternative='greater);
+            |              DIFFERENCE OF MEANS TEST
+            |
+            |         diff_estimate = 20.31999999999999
+            |
+            |                 conf_level = 0.95
+            |
+            |    conf_interval = [- .04597417812882298, inf]
+            |
+(%o4)       |        method = Exact t-test. Welch approx.
+            |
+            | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
+            |
+            |           statistic = 1.838004300728477
+            |
+            |    distribution = [student_t, 8.62758740184604]
+            |
+            |            p_value = .05032746527991905
+@end example
+
+前と同じ検定、
+しかし今回は分散が等しいと仮定されます。
+
+@c equivalent code for R:
+@c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
+@c y <- c(1.2,6.9,38.7,20.4,17.2)
+@c t.test(x,y,var.equal=T,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+@c y: [1.2,6.9,38.7,20.4,17.2]$
+@c test_means_difference(x,y,'alternative='greater,
+@c                                                  'varequal=true);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+(%i3) y: matrix([1.2],[6.9],[38.7],[20.4],[17.2])$
+(%i4) test_means_difference(x,y,'alternative='greater,
+                                                 'varequal=true);
+            |              DIFFERENCE OF MEANS TEST
+            |
+            |         diff_estimate = 20.31999999999999
+            |
+            |                 conf_level = 0.95
+            |
+            |     conf_interval = [- .7722627696897568, inf]
+            |
+(%o4)       |   method = Exact t-test. Unknown equal variances
+            |
+            | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
+            |
+            |           statistic = 1.765996124515009
+            |
+            |           distribution = [student_t, 9]
+            |
+            |            p_value = .05560320992529344
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} test_variance (@var{x})
+@deffnx {関数} test_variance (@var{x}, @var{options}, ...)
+
+これは分散 @var{chi^2}検定です。
+引数 @var{x}は
+正規母集団から取られた1次元標本を含む
+リストか列行列です。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'mean}, デフォルト @code{'unknown},
+は、既知の時、母平均です。
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater}, @code{'less}.
+
+@item
+@code{'variance}, デフォルト @code{1},
+これはチェックされる分散値(正)です。
+
+@item
+@code{'conflevel}, デフォルト @code{95/100},
+信頼区間の信頼度;
+(0,1)内の値を取る式でなければいけません。
+
+
+@end itemize
+
+関数 @code{test_variance}の出力は
+以下の結果を示す@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'var_estimate}: 標本分散。
+
+@item
+@code{'conf_level}: ユーザーが選択した信頼度。
+
+@item
+@code{'conf_interval}: 母分散の信頼区間。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使う標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の @math{p}値。
+
+@end enumerate
+
+例:
+
+平均が未知の母集団の分散が200以上か検定します。
+
+@c ===beg===
+@c load (stats)$
+@c x: [203,229,215,220,223,233,208,228,20]$
+@c test_variance(x,'alternative='greater,'variance=200);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [203,229,215,220,223,233,208,228,209]$
+(%i3) test_variance(x,'alternative='greater,'variance=200);
+             |                  VARIANCE TEST
+             |
+             |              var_estimate = 110.75
+             |
+             |                conf_level = 0.95
+             |
+             |     conf_interval = [57.13433376937479, inf]
+             |
+(%o3)        | method = Variance Chi-square test. Unknown mean.
+             |
+             |    hypotheses = H0: var = 200 , H1: var > 200
+             |
+             |                 statistic = 4.43
+             |
+             |             distribution = [chi2, 8]
+             |
+             |           p_value = .8163948512777689
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {関数} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
+
+これは2つの正規母集団の分散比 @var{F}検定です。
+引数 @var{x1}と @var{x2}は
+2つの独立標本を含むリストか列行列です。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater}, @code{'less}.
+
+@item
+@code{'mean1}, デフォルト @code{'unknown},
+既知の時、これは@var{x1}が取られた母集団の平均です。
+
+@item
+@code{'mean2}, デフォルト @code{'unknown},
+既知の時、これは@var{x2}が取られた母集団の平均です。
+
+@item
+@code{'conflevel}, デフォルト @code{95/100},
+比の信頼区間の信頼度;
+(0,1)内の値を取る式でなければいけません。
+
+@end itemize
+
+関数 @code{test_variance_ratio}の出力は
+以下の結果を示す@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'ratio_estimate}: 標本分散比。
+
+@item
+@code{'conf_level}: ユーザーが選択した信頼度。
+
+@item
+@code{'conf_interval}: 分散比の信頼区間。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+
+例:
+
+前者が後者より大きいという対立仮説に対して、
+2つの正規母集団の分散の等しさが
+
+@c equivalent code for R:
+@c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
+@c y <- c(1.2,6.9,38.7,20.4,17.2)
+@c var.test(x,y,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+@c y: [1.2,6.9,38.7,20.4,17.2]$
+@c test_variance_ratio(x,y,'alternative='greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+(%i3) y: [1.2,6.9,38.7,20.4,17.2]$
+(%i4) test_variance_ratio(x,y,'alternative='greater);
+              |              VARIANCE RATIO TEST
+              |
+              |       ratio_estimate = 2.316933391522034
+              |
+              |               conf_level = 0.95
+              |
+              |    conf_interval = [.3703504689507268, inf]
+              |
+(%o4)         | method = Variance ratio F-test. Unknown means.
+              |
+              | hypotheses = H0: var1 = var2 , H1: var1 > var2
+              |
+              |         statistic = 2.316933391522034
+              |
+              |            distribution = [f, 5, 4]
+              |
+              |          p_value = .2179269692254457
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn {関数} test_proportion (@var{x}, @var{n})
+@deffnx {関数} test_proportion (@var{x}, @var{n}, @var{options} ...)
+
+出現率推定。
+引数 @var{x}は
+未知の確率でのBernoulli実験の@var{n}回試行での成功回数です。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'proportion}, デフォルト @code{1/2},
+はチェックされる出現率の値です。
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater}, @code{'less}.
+
+@item
+@code{'conflevel}, デフォルト @code{95/100},
+比の信頼区間の信頼度;
+(0,1)内の値を取る式でなければいけません。
+
+@item
+@code{'asymptotic}, デフォルト @code{false},
+二項分布に基づく正確確率 @var{t}検定か
+@i{中心極限定理}に基づく漸近検定どちらを実行するかを示します;
+有効な値は @code{true}と @code{false}です。
+
+@item
+@code{'correct}, デフォルト @code{true},
+Yates補正が適用されるかどうかを示します。
+
+@end itemize
+
+The output of function
+関数 @code{test_proportion}の出力は
+以下の結果を示す
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'sample_proportion}: 標本出現率。
+
+@item
+@code{'conf_level}: ユーザーが選択した信頼度。
+
+@item
+@code{'conf_interval}: 出現率のWilson信頼区間。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+例:
+
+正確確率検定を実行します。
+片側対立 @math{H_1: p<1/2}に対して、
+帰無仮説は @math{H_0: p=1/2}です。
+
+@c ===beg===
+@c load (stats)$
+@c test_proportion(45, 103, alternative = less);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) test_proportion(45, 103, alternative = less);
+         |            PROPORTION TEST              
+         |                                         
+         | sample_proportion = .4368932038834951   
+         |                                         
+         |           conf_level = 0.95             
+         |                                         
+         | conf_interval = [0, 0.522714149150231]  
+         |                                         
+(%o2)    |     method = Exact binomial test.       
+         |                                         
+         | hypotheses = H0: p = 0.5 , H1: p < 0.5  
+         |                                         
+         |             statistic = 45              
+         |                                         
+         |  distribution = [binomial, 103, 0.5]    
+         |                                         
+         |      p_value = .1184509388901454 
+@end example
+
+両側漸近検定。信頼度は99/100です。
+
+@c ===beg===
+@c load (stats)$
+@c fpprintprec:7$
+@c test_proportion(45, 103, 
+@c               conflevel = 99/100, asymptotic=true);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) fpprintprec:7$
+(%i3) test_proportion(45, 103, 
+                  conflevel = 99/100, asymptotic=true);
+      |                 PROPORTION TEST                  
+      |                                                  
+      |           sample_proportion = .43689             
+      |                                                  
+      |                conf_level = 0.99                 
+      |                                                  
+      |        conf_interval = [.31422, .56749]          
+      |                                                  
+(%o3) | method = Asympthotic test with Yates correction.
+      |                                                  
+      |     hypotheses = H0: p = 0.5 , H1: p # 0.5       
+      |                                                  
+      |               statistic = .43689                 
+      |                                                  
+      |      distribution = [normal, 0.5, .048872]       
+      |                                                  
+      |                p_value = .19662
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn {関数} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
+@deffnx {関数} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+
+2つの出現率の差の推定。
+引数 @var{x1}は
+一番目の母集団でのBernoulli実験の
+@var{n1}回の試行での成功回数であり、
+@var{x2}と @var{n2}は
+二番目の母集団での対応する値です。
+標本は独立で、検定は漸近です。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+は対立仮説です;
+有効な値は次の通りです: @code{'twosided} (@code{p1 # p2}), @code{'greater} (@code{p1 > p2}), @code{'less} (@code{p1 < p2}).
+
+@item
+@code{'conflevel}, デフォルト @code{95/100},
+比の信頼区間の信頼度;
+(0,1)内の値を取る式でなければいけません。
+
+@item
+@code{'correct}, デフォルト @code{true},
+はYates補正が適用されるかどうかを示します。
+
+@end itemize
+
+関数 @code{test_proportions_difference}の出力は
+以下の結果を示す
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'proportions}: 2つの標本出現率のリスト。
+
+@item
+@code{'conf_level}: ユーザーが選択した信頼度。
+
+@item
+@code{'conf_interval}: 出現率の差 @code{p1 - p2}の信頼区間。
+
+@item
+@code{'method}: 推定手続きと
+標本サイズのいずれかが10より小さい場合の警告メッセージ
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+例:
+
+機械が250個のうち、10個の欠陥製品を製造しました。
+その機械は、ある保守作業のあと、
+150個のうち、4個の欠陥製品を製造しました。
+機械が改善したか知るために、
+対立 @code{H0:p1>p2}に対して
+帰無仮説 @code{H0:p1=p2}を検定します。
+ここで、
+@code{p1}と @code{p2}は
+保守の前と後で製造された製品が欠陥である確率です。
+p値に従うと、対立を受け入れる十分な証拠はありません。
+
+@c ===beg===
+@c load (stats)$
+@c fpprintprec:7$
+@c test_proportions_difference(10, 250, 4, 150,
+@c                             alternative = greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) fpprintprec:7$
+(%i3) test_proportions_difference(10, 250, 4, 150,
+                                alternative = greater);
+      |       DIFFERENCE OF PROPORTIONS TEST         
+      |                                              
+      |       proportions = [0.04, .02666667]        
+      |                                              
+      |              conf_level = 0.95               
+      |                                              
+      |      conf_interval = [- .02172761, 1]        
+      |                                              
+(%o3) | method = Asymptotic test. Yates correction.  
+      |                                              
+      |   hypotheses = H0: p1 = p2 , H1: p1 > p2     
+      |                                              
+      |            statistic = .01333333             
+      |                                              
+      |    distribution = [normal, 0, .01898069]     
+      |                                              
+      |             p_value = .2411936 
+@end example
+
+データが未知の時の漸近正規分布の正確確率標準偏差。
+
+@c ===beg===
+@c load(stats)$
+@c stats_numer: false$
+@c sol: test_proportions_difference(x1,n1,x2,n2)$
+@c last(take_inference('distribution,sol));
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) stats_numer: false$
+(%i3) sol: test_proportions_difference(x1,n1,x2,n2)$
+(%i4) last(take_inference('distribution,sol));
+               1    1                  x2 + x1
+              (-- + --) (x2 + x1) (1 - -------)
+               n2   n1                 n2 + n1
+(%o4)    sqrt(---------------------------------)
+                           n2 + n1
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} test_sign (@var{x})
+@deffnx {関数} test_sign (@var{x}, @var{options} ...)
+
+これは連続母集団のメジアンに関するノンパラメトリック符号検定です。
+引数 @var{x}は1次元標本を含むリストか列行列です。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater}, @code{'less}.
+
+@item
+@code{'median}, デフォルト @code{0}, はチェックされるメジアン値です。
+
+@end itemize
+
+関数 @code{test_sign}の出力は
+以下の結果を示す
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'med_estimate}: 標本メジアン。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+例:
+
+対立 @math{H_1: median > 6}に対して、
+標本が採られた母集団がメジアン6を持つかどうかチェックします。
+
+@c ===beg===
+@c load (stats)$
+@c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
+@c test_sign(x,'median=6,'alternative='greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
+(%i3) test_sign(x,'median=6,'alternative='greater);
+               |                  SIGN TEST
+               |
+               |              med_estimate = 5.1
+               |
+               |      method = Non parametric sign test.
+               |
+(%o3)          | hypotheses = H0: median = 6 , H1: median > 6
+               |
+               |                statistic = 7
+               |
+               |      distribution = [binomial, 10, 0.5]
+               |
+               |         p_value = .05468749999999989
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@deffn {関数} test_signed_rank (@var{x})
+@deffnx {関数} test_signed_rank (@var{x}, @var{options} ...)
+
+これは
+連続母集団のメジアンに関する推定を行う
+Wilcoxonの符号順位検定です。
+引数 @var{x}は
+1次元標本を含む
+リストか列行列です。
+もし標本サイズが20より大きいか、複数の零すなわち引き分けがあれば、
+正規近似を実行します
+
+@code{pdf_rank_test}と @code{cdf_rank_test}も参照してください。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'median}, デフォルト @code{0},
+はチェックされるメジアン値です。
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater} and @code{'less}.
+
+@end itemize
+
+関数 @code{test_signed_rank}の出力は
+以下の結果を持つ
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'med_estimate}: 標本メジアン。
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+例:
+
+対立 @math{H_1: median > 15}に対して
+帰無仮説 @math{H_0: median = 15}をチェックします。
+引き分けがないので、これは正確確率検定です。
+
+@c equivalent code for R:
+@c x <- c(17.1,15.9,13.7,13.4,15.5,17.6)
+@c wilcox.test(x,mu=15,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
+@c test_signed_rank(x,median=15,alternative=greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [17.1,15.9,13.7,13.4,15.5,17.6]$
+(%i3) test_signed_rank(x,median=15,alternative=greater);
+                 |             SIGNED RANK TEST
+                 |
+                 |           med_estimate = 15.7
+                 |
+                 |           method = Exact test
+                 |
+(%o3)            | hypotheses = H0: med = 15 , H1: med > 15
+                 |
+                 |              statistic = 14
+                 |
+                 |     distribution = [signed_rank, 6]
+                 |
+                 |            p_value = 0.28125
+@end example
+
+Checks the null hypothesis @math{H_0: equal(median, 2.5)} against the 
+alternative @math{H_1: not equal(median, 2.5)}. This is an approximated test,
+since there are ties.
+
+@c equivalent code for R:
+@c y<-c(1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1)
+@c wilcox.test(y,mu=2.5)
+
+@c ===beg===
+@c load (stats)$
+@c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
+@c test_signed_rank(y,median=2.5);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
+(%i3) test_signed_rank(y,median=2.5);
+             |                 SIGNED RANK TEST
+             |
+             |                med_estimate = 2.9
+             |
+             |          method = Asymptotic test. Ties
+             |
+(%o3)        |    hypotheses = H0: med = 2.5 , H1: med # 2.5
+             |
+             |                 statistic = 76.5
+             |
+             | distribution = [normal, 60.5, 17.58195097251724]
+             |
+             |           p_value = .3628097734643669
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {関数} test_rank_sum (@var{x1}, @var{x2}, @var{option})
+
+これは
+2つの連続母集団のメジアンを比較するWilcoxon-Mann-Whitney検定です。
+最初の2つの引数 @var{x1}と @var{x2}は
+2つの独立標本のデータを持つリストか列行列です。
+もし標本サイズのいずれかが10より大きいか、
+引き分けがあるなら、
+正規近似を実行します。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, デフォルト @code{'twosided},
+は対立仮説です;
+有効な値は次の通りです: @code{'twosided}, @code{'greater} and @code{'less}.
+
+@end itemize
+
+The output of function
+関数 @code{test_rank_sum}の出力は
+以下の結果を持つ
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'method}: 推定手続き。
+
+@item
+@code{'hypotheses}: 検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: 検定の@math{p}値。
+
+@end enumerate
+
+例:
+
+母集団が似たメジアンを持つかチェックします。
+標本サイズは小さく、正確確率検定がされます。
+
+@c equivalent code for R:
+@c x <- c(12,15,17,38,42,10,23,35,28)
+@c y <- c(21,18,25,14,52,65,40,43)
+@c wilcox.test(x,y)
+
+@c ===beg===
+@c load (stats)$
+@c x:[12,15,17,38,42,10,23,35,28]$
+@c y:[21,18,25,14,52,65,40,43]$
+@c test_rank_sum(x,y);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x:[12,15,17,38,42,10,23,35,28]$
+(%i3) y:[21,18,25,14,52,65,40,43]$
+(%i4) test_rank_sum(x,y);
+              |                 RANK SUM TEST
+              |
+              |              method = Exact test
+              |
+              | hypotheses = H0: med1 = med2 , H1: med1 # med2
+(%o4)         |
+              |                 statistic = 22
+              |
+              |        distribution = [rank_sum, 9, 8]
+              |
+              |          p_value = .1995886466474702
+@end example
+
+次は、
+より大きな標本で引き分けを含み、
+手続きは正規近似をします。
+対立仮説は @math{H_1: median1 < median2}です。
+
+@c equivalent code for R:
+@c x <- c(39,42,35,13,10,23,15,20,17,27)
+@c y <- c(20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15)
+@c wilcox.test(x,y,alternative="less")
+
+@c ===beg===
+@c load (stats)$
+@c x: [39,42,35,13,10,23,15,20,17,27]$
+@c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
+@c test_rank_sum(x,y,'alternative='less);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x: [39,42,35,13,10,23,15,20,17,27]$
+(%i3) y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
+(%i4) test_rank_sum(x,y,'alternative='less);
+             |                  RANK SUM TEST
+             |
+             |          method = Asymptotic test. Ties
+             |
+             |  hypotheses = H0: med1 = med2 , H1: med1 < med2
+(%o4)        |
+             |                 statistic = 48.5
+             |
+             | distribution = [normal, 79.5, 18.95419580097078]
+             |
+             |           p_value = .05096985666598441
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {関数} test_normality (@var{x})
+
+正規性のShapiro-Wilk検定。
+引数 @var{x}は
+数のリストであり、
+標本サイズは2より大きく、5000以下でなければいけません。
+そうでないなら、関数 @code{test_normality}はエラーメッセージをシグナルします。
+
+参考文献:
+
+  [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
+
+関数 @code{test_normality}の出力は
+以下の結果を持つ
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'statistic}: @var{W}統計値
+
+@item
+@code{'p_value}: 正規仮定の@math{p}値。
+
+@end enumerate
+
+例:
+
+サイズ9の標本に基づいて母集団の正規性をチェックします。
+
+@c equivalent code for R:
+@c x <- c(12,15,17,38,42,10,23,35,28)
+@c shapiro.test(x)
+
+@c ===beg===
+@c load (stats)$
+@c x:[12,15,17,38,42,10,23,35,28]$
+@c test_normality(x);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) x:[12,15,17,38,42,10,23,35,28]$
+(%i3) test_normality(x);
+                       |      SHAPIRO - WILK TEST
+                       |
+(%o3)                  | statistic = .9251055695162436
+                       |
+                       |  p_value = .4361763918860381
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@deffn {関数} simple_linear_regression (@var{x})
+@deffnx {関数} simple_linear_regression (@var{x} @var{option})
+
+単回帰 @math{y_i=a+b x_i+e_i}。
+ここで、 @math{e_i}は @math{N(0,sigma)}の独立確率変数です
+引数 @var{x}は2つの列行列か対のリストでなければいけません。
+
+オプション:
+
+@itemize @bullet
+
+@item
+@code{'conflevel}, デフォルト @code{95/100},
+比の信頼区間の信頼度;
+(0,1)内の値を取る式でなければいけません。
+
+@item
+@code{'regressor}, デフォルト @code{'x},
+独立変数名。
+
+@end itemize
+
+関数 @code{simple_linear_regression}の出力は
+以下の結果を持つ
+@code{inference_result} Maximaオブジェクトです:
+
+@enumerate
+
+@item
+@code{'model}: 適合方程式。
+新しい予測を行うのに役立ちます。
+以下の例を参照してください。
+
+@item
+@code{'means}: 二変量平均。
+
+@item
+@code{'variances}: 両方の変数の分散。
+
+@item
+@code{'correlation}: 相関係数。
+
+@item
+@code{'adc}: 調整済み決定係数。
+
+@item
+@code{'a_estimation}: パラメータ @var{a}の推定。
+
+@item
+@code{'a_conf_int}: パラメータ @var{a}の信頼区間。
+
+@item
+@code{'b_estimation}: パラメータ @var{b}の推定。
+
+@item
+@code{'b_conf_int}:　パラメータ @var{b}の信頼区間。
+
+@item
+@code{'hypotheses}: パラメータ @var{b}について検定される帰無、対立仮説。
+
+@item
+@code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
+
+@item
+@code{'distribution}: パラメータを伴う標本統計分布。
+
+@item
+@code{'p_value}: @var{b}についての検定の@math{p}値。
+
+@item
+@code{'v_estimation}: 不偏分散推定もしくは残差分散。
+
+@item
+@code{'v_conf_int}: 分散信頼区間。
+
+@item
+@code{'cond_mean_conf_int}: 条件付き平均の信頼区間。
+以下の例を参照してください。
+
+@item
+@code{'new_pred_conf_int}: 新しい予測の信頼区間。
+以下の例を参照してください。
+
+@item
+@code{'residuals}: 予測に関して並べ替えられた対(予測, 残差)のリスト
+これは適合度分析に役に立ちます。
+以下の例を参照してください。
+
+@end enumerate
+
+Only items
+上の項目 1, 4, 14, 9, 10, 11, 12, 13だけが
+この順で、デフォルトで表示されます。
+残りは
+ユーザーが関数 @code{items_inference}と @code{take_inference}を利用するまで
+隠されたままです。
+
+例:
+
+線形モデルの二変量標本へのフィッティング。
+入力 @code{%i4}は
+回帰線と一緒に標本をプロットします;
+入力 @code{%i5}は
+@code{x=113}が与えられたとして
+@code{y}を計算します;
+@code{x=113}の時
+平均と、新しい予測の信頼区間も計算されます。
+
+@c ===beg===
+@c load (stats)$
+@c s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
+@c                                                 [145,169.8]]$
+@c z:simple_linear_regression(s,conflevel=0.99);
+@c plot2d([[discrete, s], take_inference(model,z)],
+@c           [x,120,150],
+@c           [gnuplot_curve_styles, ["with points","with lines"]] )$
+@c take_inference(model,z), x=133;
+@c take_inference(means,z);
+@c take_inference(new_pred_conf_int,z), x=133;
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
+                                                [145,169.8]]$
+(%i3) z:simple_linear_regression(s,conflevel=0.99);
+           |               SIMPLE LINEAR REGRESSION
+           |
+           |   model = 1.405999999999985 x - 31.18999999999804
+           |
+           |           correlation = .9611685255255155
+           |
+           |           v_estimation = 13.57966666666665
+           |
+(%o3)      | b_conf_int = [.04469633662525263, 2.767303663374718]
+           |
+           |          hypotheses = H0: b = 0 ,H1: b # 0
+           |
+           |            statistic = 6.032686683658114
+           |
+           |            distribution = [student_t, 3]
+           |
+           |             p_value = 0.0038059549413203
+(%i4) plot2d([[discrete, s], take_inference(model,z)],
+        [x,120,150],
+        [gnuplot_curve_styles, ["with points","with lines"]] )$
+(%i5) take_inference(model,z), x=133;
+(%o5)                         155.808
+(%i6) take_inference(means,z);
+(%o6)                     [135.0, 158.62]
+(%i7) take_inference(new_pred_conf_int,z), x=133;
+(%o7)              [132.0728595995113, 179.5431404004887]
+@end example
+
+@opencatbox
+@category{Package stats} @category{Statistical estimation}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+
+@node Functions and Variables for special distributions, , Functions and Variables for stats, Top
+@section Functions and Variables for special distributions
+
+
+@deffn {関数} pdf_signed_rank (@var{x}, @var{n})
+符号順位統計の正確確率分布の確率密度関数。
+引数 @var{x}は実数であり、
+@var{n}は正の整数です。
+
+@code{test_signed_rank}も参照してください。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cdf_signed_rank (@var{x}, @var{n})
+符号順位統計の正確確率分布の累積密度関数。
+引数 @var{x}は実数であり、
+@var{n}は正の整数です。
+
+@code{test_signed_rank}も参照してください。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+順位和統計の正確確率分布の確率密度関数。
+引数 @var{x}は実数であり、
+@var{n}と @var{m}はともに正の整数です。
+
+@code{test_rank_sum}も参照してください。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+順位和統計の正確確率分布の累積密度関数。
+引数 @var{x}は実数であり、
+@var{n}と @var{m}はともに正の整数です。
+
+@code{test_rank_sum}も参照してください。
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+

@@ -1,0 +1,2198 @@
+@menu
+* Introduction to Matrices and Linear Algebra::  
+* Functions and Variables for Matrices and Linear Algebra::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Matrices and Linear Algebra, Functions and Variables for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
+@section Introduction to Matrices and Linear Algebra
+@c -----------------------------------------------------------------------------
+
+@menu
+* Dot::                         
+* Vectors::                     
+* eigen::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Dot, Vectors, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
+@subsection Dot
+@c -----------------------------------------------------------------------------
+
+演算子@code{.}は、非可換乗算とスカラー積を表します。
+オペランドが、1列行列または1行行列@code{a}と@code{b}の時、
+式@code{a.b}は、@code{sum (a[i]*b[i], i, 1, length(a))}と同値です。
+もし@code{a}と@code{b}が複素数でないなら、これはスカラー積であり、
+@code{a}と@code{b}の内積すなわちドット積もコールされます。
+@code{a}と@code{b}が複素数の時、スカラー積は
+@code{conjugate(a).b}として定義されます;
+@code{eigen}パッケージの@code{innerproduct}は、複素スカラー積を供給します。
+
+オペランドがもっと一般的な行列の時、
+積は、@code{a}と@code{b}の行列積です。
+
+@code{b}の行数は、@code{a}の列数と等しくなければいけなく、
+結果は、@code{a}の行数と等しい行数と
+@code{b}の列数と等しい列数を持ちます。
+
+@code{.}を算術演算子として
+浮動小数点数の小数点と区別するために、
+どちらかの側にスペースを残す必要があるかもしれません。
+例えば、@code{5.e3}は@code{5000.0}ですが、@code{5 . e3}は@code{5}掛ける@code{e3}です。
+
+@code{.}を含む式の整理を支配する
+いくつかのフラグがあります。
+すなわち、@mref{dot0nscsimp}, @mref{dot0simp}, @mref{dot1simp}, @mref{dotassoc}, 
+@mref{dotconstrules}, @mref{dotdistrib}, @mref{dotexptsimp}, @mref{dotident},
+ @mref{dotscrules}。
+
+@c -----------------------------------------------------------------------------
+@node Vectors, eigen, Dot, Introduction to Matrices and Linear Algebra
+@subsection Vectors
+@c -----------------------------------------------------------------------------
+
+@code{vect}は、ベクトル解析のための関数のパッケージです。
+@code{load ("vect")}は、このパッケージをロードし、
+@code{demo ("vect")}は、デモンストレーションを表示します。
+@c find maxima -name \*orth\* YIELDS NOTHING; ARE THESE FUNCTIONS IN ANOTHER FILE NOW ??
+@c and SHARE;VECT ORTH contains definitions of various orthogonal curvilinear coordinate systems.
+
+ベクトル解析パッケージは、
+グラディエント、ダイバージェンス、カール、ラプラシアン演算子と一緒に、
+ドット積やクロス積を含むシンボリックな式を結合したり整理したりすることができます。
+これらの演算子の和や積上の分配は、
+任意の特定の直交座標系の成分への展開を含む、様々な他の展開と同様に、
+いくつかのフラグで決定されます。
+場のスカラーポテンシャルやベクトルポテンシャルを演繹するための関数もあります。
+
+The @code{vect}パッケージは以下の関数を含みます:
+@mref{vectorsimp}, @mref{scalefactors},
+@mref{express}, @mref{potential}, @mref{vectorpotential}.
+@c REVIEW vect.usg TO ENSURE THAT TEXINFO HAS WHATEVER IS THERE
+@c PRINTFILE(VECT,USAGE,SHARE); for details.
+
+デフォルトでは、@code{vect}パッケージはドット演算子@code{.}を可換演算子とは宣言しません。
+可換ドット演算子@code{.}を得るには、コマンド@code{declare(".", commutative)}を実行しなければいけません。
+
+@opencatbox
+@category{Vectors} @category{Share packages} @category{Package vect}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node eigen, , Vectors, Introduction to Matrices and Linear Algebra
+@subsection eigen
+@c -----------------------------------------------------------------------------
+
+パッケージ@code{eigen}は、
+固有値や固有ベクトルのシンボリックな計算に充てられた
+いくつかの関数を含みます。
+もし@code{eigenvalues}または@code{eigenvectors}の１つが呼び出されたなら、
+Maximaは、パッケージを自動的にロードします。
+パッケージは@code{load ("eigen")}として陽にロードすることもできます。
+
+@code{demo ("eigen")}は、このパッケージの能力のデモンストレーションを表示します。
+@code{batch ("eigen")}は、
+連続する計算の間のユーザープロンプトなしに、
+同じデモンストレーションを実行します。
+
+@code{eigen}パッケージの関数は、
+@mref{innerproduct}, @mref{unitvector}, @mref{columnvector},
+@mref{gramschmidt}, @mref{eigenvalues}, @mref{eigenvectors}, @mref{uniteigenvectors}, @mref{similaritytransform}です。
+
+@opencatbox
+@category{Vectors} @category{Matrices} @category{Share packages} @category{Package eigen}
+@closecatbox
+
+@c end concepts Matrices and Linear Algebra
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
+@section Functions and Variables for Matrices and Linear Algebra
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{addcol}
+@deffn {関数} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
+
+１つまたは複数のリスト(または行列)が与える列を
+行列@var{M}に追加します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{addrow}
+@deffn {関数} addrow (@var{M}, @var{list_1}, ..., @var{list_n})
+
+１つまたは複数のリスト(または行列)が与える行を
+行列@var{M}に追加します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{adjoint}
+@deffn {関数} adjoint (@var{M})
+
+行列@var{M}の余因子行列を返します。
+余因子行列は、@var{M}の余因子の行列の転置です。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{augcoefmatrix}
+@deffn {関数} augcoefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+
+線形方程式系@var{eqn_1}, @dots{}, @var{eqn_m}の
+変数@var{x_1}, @dots{}, @var{x_n}に関する拡大係数行列を返します。
+これは、
+それぞれの方程式の定数項(@var{x_1}, @dots{}, @var{x_n}に依存しないそれらの項)
+に関して隣接した列を持つ係数行列です。
+
+@example
+(%i1) m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
+(%i2) augcoefmatrix (m, [x, y]);
+                       [ 2  1 - a  - 5 b ]
+(%o2)                  [                 ]
+                       [ a    b      c   ]
+@end example
+
+@opencatbox
+@category{Linear equations} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c --- 04.10.2010 --------------------------------------------------------------
+@anchor{cauchy_matrix}
+@deffn  {関数} cauchy_matrix ([@var{x_1},@var{x_2}, @dots{}, @var{x_m}], [@var{y_1},@var{y_2}, @dots{}, @var{y_n}])
+@deffnx {関数} cauchy_matrix ([@var{x_1},@var{x_2}, @dots{}, @var{x_n}])
+
+要素@var{a[i,j]} = 1/(@var{x_i}+@var{y_i})を持つ、
+@code{n}掛ける@var{m}のCauchy行列を返します。
+@code{cauchy_matrix}の第二引数はオプションです。
+この場合、Cauchy行列の要素は@var{a[i,j]} = 1/(@var{x_i}+@var{x_j})です。
+
+注意: 文献によると、Cauchy行列は2つの形式で定義されたものが見られます。
+2つ目の定義は@var{a[i,j]} = 1/(@var{x_i}-@var{y_i})です。
+
+例:
+
+@c === beg ===
+@c cauchy_matrix([x1,x2],[y1,y2]);
+@c cauchy_matrix([x1,x2]);
+@c === end ===
+@example
+(%i1) cauchy_matrix([x1,x2],[y1,y2]);
+@group
+                      [    1        1    ]
+                      [ -------  ------- ]
+                      [ y1 + x1  y2 + x1 ]
+(%o1)                 [                  ]
+                      [    1        1    ]
+                      [ -------  ------- ]
+                      [ y1 + x2  y2 + x2 ]
+@end group
+
+(%i2) cauchy_matrix([x1,x2]);
+                      [   1         1    ]
+                      [  ----    ------- ]
+                      [  2 x1    x2 + x1 ]
+(%o2)                 [                  ]
+                      [    1       1     ]
+                      [ -------   ----   ]
+                      [ x2 + x1   2 x2   ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{charpoly}
+@deffn {関数} charpoly (@var{M}, @var{x})
+
+行列@var{M}の変数@var{x}に関する特性多項式を返します。
+すなわち、
+@code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}です。
+
+@example
+(%i1) a: matrix ([3, 1], [2, 4]);
+                            [ 3  1 ]
+(%o1)                       [      ]
+                            [ 2  4 ]
+(%i2) expand (charpoly (a, lambda));
+                           2
+(%o2)                lambda  - 7 lambda + 10
+(%i3) (programmode: true, solve (%));
+(%o3)               [lambda = 5, lambda = 2]
+(%i4) matrix ([x1], [x2]);
+                             [ x1 ]
+(%o4)                        [    ]
+                             [ x2 ]
+(%i5) ev (a . % - lambda*%, %th(2)[1]);
+                          [ x2 - 2 x1 ]
+(%o5)                     [           ]
+                          [ 2 x1 - x2 ]
+(%i6) %[1, 1] = 0;
+(%o6)                     x2 - 2 x1 = 0
+(%i7) x2^2 + x1^2 = 1;
+                            2     2
+(%o7)                     x2  + x1  = 1
+(%i8) solve ([%th(2), %], [x1, x2]);
+@group
+                  1               2
+(%o8) [[x1 = - -------, x2 = - -------], 
+               sqrt(5)         sqrt(5)
+
+                                             1             2
+                                    [x1 = -------, x2 = -------]]
+                                          sqrt(5)       sqrt(5)
+@end group
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{coefmatrix}
+@deffn {関数} coefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+
+線形方程式系@var{eqn_1}, @dots{}, @var{eqn_m}の
+変数@var{x_1}, @dots{}, @var{x_n}に関する係数行列を返します。
+
+@example
+(%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
+                                 [ 2  1 - a ]
+(%o1)                            [          ]
+                                 [ a    b   ]
+@end example
+
+@opencatbox
+@category{Linear equations} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{col}
+@deffn {関数} col (@var{M}, @var{i})
+
+行列@var{M}の@var{i}番目の列を返します。
+戻り値は行列です。
+@c EXAMPLE HERE
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{columnvector}
+@anchor{covect}
+@deffn  {関数} columnvector (@var{L})
+@deffnx {関数} covect (@var{L})
+
+リスト@var{L}の要素を含む１列@code{length (@var{L})}行の行列を返します。
+
+@code{covect}は、@code{columnvector}と同義です。
+
+@code{load ("eigen")}はこの関数をロードします。
+
+@c FOLLOWING COMMENT PRESERVED. WHAT DOES THIS MEAN ??
+もしこのパッケージの関数の出力の一部を行列計算で使いたいなら、これは役に立ちます。
+
+例:
+
+@c HMM, SPURIOUS "redefining the Macsyma function".
+@c LEAVE IT HERE SINCE THAT'S WHAT A USER ACTUALLY SEES.
+@example
+(%i1) load ("eigen")$
+Warning - you are redefining the Macsyma function eigenvalues
+Warning - you are redefining the Macsyma function eigenvectors
+(%i2) columnvector ([aa, bb, cc, dd]);
+                             [ aa ]
+                             [    ]
+                             [ bb ]
+(%o2)                        [    ]
+                             [ cc ]
+                             [    ]
+                             [ dd ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{copymatrix}
+@deffn {関数} copymatrix (@var{M})
+行列@var{M}のコピーを返します。
+これは、@var{M}を要素毎にコピーすることは別にして、コピーを作る唯一の方法です。
+
+@code{m2: m1}のように、１つの行列のもう１つへの割り当ては@code{m1}をコピーしない
+ことに注意してください。
+An assignment 
+割り当て@code{m2 [i,j]: x}または@code{setelmx (x, i, j, m2}は、
+@code{m1 [i,j]}も変更します。
+Creating a copy with 
+@code{copymatrix}を使ってコピーを生成し、割り当てを使うことは、
+別個の変更されたコピーを生成します。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{determinant}
+@deffn {関数} determinant (@var{M})
+
+@var{M}の行列式をガウスの消去法と似た方法で計算します。
+
+@c JUST HOW DOES ratmx AFFECT THE RESULT ??
+結果の形式は、スイッチ@mref{ratmx}の設定に依ります。
+
+@c IS A SPARSE DETERMINANT SOMETHING OTHER THAN THE DETERMINANT OF A SPARSE MATRIX ??
+スイッチ@code{ratmx}と@mref{sparse}がともに@code{true}の時コールされる
+粗な行列式を計算するための特殊なルーチンがあります。
+
+@c EXAMPLES NEEDED HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{detout}
+@defvr {オプション変数} detout
+デフォルト値: @code{false}
+
+@code{detout}が@code{true}の時、
+逆行列が計算された行列の行列式は、逆行列から因子として外に出されます。
+
+このスイッチが効果を持つには、
+@mref{doallmxops}と@mref{doscmxops}は、@code{false}でなければいけません。
+(それらの記述を参照してください。)
+@code{ev}は他の２つを正しく設定するので、
+代わりに、このスイッチを@mref{ev}に与えるという方法もあります。
+
+例:
+
+@example
+(%i1) m: matrix ([a, b], [c, d]);
+                            [ a  b ]
+(%o1)                       [      ]
+                            [ c  d ]
+(%i2) detout: true$
+(%i3) doallmxops: false$
+(%i4) doscmxops: false$
+(%i5) invert (m);
+                          [  d   - b ]
+                          [          ]
+                          [ - c   a  ]
+(%o5)                     ------------
+                           a d - b c
+@end example
+@c THERE'S MORE TO THIS STORY: detout: false$ invert (m); RETURNS THE SAME THING.
+@c IT APPEARS THAT doallmxops IS CRUCIAL HERE.
+
+@opencatbox
+@category{Matrices} @category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{diagmatrix}
+@deffn {関数} diagmatrix (@var{n}, @var{x})
+
+対角要素すべてが@var{x}に等しい、
+サイズが@var{n}掛ける@var{n}の対角線行列を返します。
+@code{diagmatrix (@var{n}, 1)}は、
+(@code{ident (@var{n})}と同じように)単位行列を返します。
+
+@var{n}は、整数に評価されなければいけなく、そうでなければ、
+@code{diagmatrix}はエラーメッセージを出力します。
+
+@var{x}は、別の行列を含む、任意の種類の式を取り得ます
+もし@var{x}が行列なら、それはコピーされません;
+対角要素すべては、同じインスタンス@var{x}を参照します。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{doallmxops}
+@defvr {オプション変数} doallmxops
+デフォルト値: @code{true}
+
+@code{doallmxops}が@code{true}の時、
+@c UMM, WHAT DOES THIS MEAN EXACTLY ??
+行列に関係する演算すべてが実行されます。
+@code{false}の時、
+ then the setting of the
+個々の@code{dot}スイッチの設定が、どの演算を実行するか決めます。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{domxexpt}
+@defvr {オプション変数} domxexpt
+デフォルト値: @code{true}
+
+@code{domxexpt}が@code{true}の時、
+行列の指数関数, @code{exp (@var{M})} ただし@var{M}は行列,
+は、要素@code{[i,j}が@code{exp (m[i,j])}に等しい行列として解釈されます。
+
+そうでなければ、@code{exp (@var{M})}は、@code{exp (@var{ev(M)}}に評価されます。
+
+@code{domxexpt}は、
+形式@code{@var{base}^@var{power}}の式すべてに影響します。
+ここで、@var{base}はスカラーまたは定数と仮定された式、
+@var{power}は、リストまたは行列です。
+
+例:
+
+@example
+(%i1) m: matrix ([1, %i], [a+b, %pi]);
+                         [   1    %i  ]
+(%o1)                    [            ]
+                         [ b + a  %pi ]
+(%i2) domxexpt: false$
+(%i3) (1 - c)^m;
+                             [   1    %i  ]
+                             [            ]
+                             [ b + a  %pi ]
+(%o3)                 (1 - c)
+(%i4) domxexpt: true$
+(%i5) (1 - c)^m;
+                  [                      %i  ]
+                  [    1 - c      (1 - c)    ]
+(%o5)             [                          ]
+                  [        b + a         %pi ]
+                  [ (1 - c)       (1 - c)    ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{domxmxops}
+@defvr {オプション変数} domxmxops
+デフォルト値: @code{true}
+
+@code{domxmxops}が@code{true}の時、
+行列-行列演算、行列-リスト演算すべてが実行されます
+(しかし、スカラー-行列演算は実行されません);
+もしこのスイッチが@code{false}なら、
+演算は実行されません。
+@c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{domxnctimes}
+@defvr {オプション変数} domxnctimes
+デフォルト値: @code{false}
+
+@code{domxnctimes}が@code{true}の時、
+行列の非可換積が実行されます。
+@c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dontfactor}
+@defvr {オプション変数} dontfactor
+デフォルト値: @code{[]}
+
+ある変数に関する因数分解が起こらないよう、
+@code{dontfactor}をその変数のリストに設定することができます。
+(リストは初期には空です。)
+標準有理式(CRE)形で仮定される変数順序に従って、
+@code{dontfactor}リスト上のそれらよりも重要でない変数に関しても
+因数分解は、
+行われなくなります。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{doscmxops}
+@defvr {オプション変数} doscmxops
+デフォルト値: @code{false}
+
+@code{doscmxops}が@code{true}の時、
+スカラー-行列演算が実行されます。
+@c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{doscmxplus}
+@defvr {オプション変数} doscmxplus
+デフォルト値: @code{false}
+
+@code{doscmxplus}が@code{true}の時、
+スカラー-行列演算は、行列の結果をもたらします。
+このスイッチは、@mref{doallmxops}の下に包括されません。
+@c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dot0nscsimp}
+@defvr {オプション変数} dot0nscsimp
+デフォルト値: @code{true}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+@code{dot0nscsimp}が@code{true}の時、
+ゼロと非スカラー項の非可換積は、可換積に整理されます。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dot0simp}
+@defvr {オプション変数} dot0simp
+デフォルト値: @code{true}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+@code{dot0simp}が@code{true}の時、
+ゼロとスカラー項の非可換積は、
+可換積に整理されます。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dot1simp}
+@defvr {オプション変数} dot1simp
+デフォルト値: @code{true}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+@code{dot1simp}が@code{true}の時、
+１ともう１つの項の非可換積は、可換積に整理されます。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dotassoc}
+@defvr {オプション変数} dotassoc
+デフォルト値: @code{true}
+
+@code{dotassoc}が@code{true}の時、
+式@code{(A.B).C}は@code{A.(B.C)}に整理されます。
+@c "." MEANS NONCOMMUTATIVE MULTIPLICATION RIGHT ??
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dotconstrules}
+@defvr {オプション変数} dotconstrules
+デフォルト値: @code{true}
+
+@code{dotconstrules}が@code{true}の時、
+定数ともう１つの項の非可換積は、可換積に整理されます。
+@c TERMINOLOGY: (1) SWITCH/FLAG/SOME OTHER TERM ??
+@c              (2) ASSIGN/SET/TURN ON/SOME OTHER TERM ??
+このフラグをオンにすることは、事実上、
+@mref{dot1simp}はもちろん、@mref{dot0simp}, @mref{dot0nscsimp}もオンにします。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dotdistrib}
+@defvr {オプション変数} dotdistrib
+デフォルト値: @code{false}
+
+@code{dotdistrib}が@code{true}の時、
+式@code{A.(B + C)}は@code{A.B + A.C}に整理されます。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dotexptsimp}
+@defvr {オプション変数} dotexptsimp
+デフォルト値: @code{true}
+
+@code{dotexptsimp}が@code{true}の時、
+式@code{A.A}は@code{A^^2}に整理されます。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dotident}
+@defvr {オプション変数} dotident
+デフォルト値: 1
+
+@code{dotident}は@code{X^^0}が返す値です。
+@c "RETURNED" ?? IS THIS A SIMPLIFICATION OR AN EVALUATION ??
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{dotscrules}
+@defvr {オプション変数} dotscrules
+デフォルト値: @code{false}
+
+@code{dotscrules}が@code{true}の時、
+式@code{A.SC}または@code{SC.A}は、@code{SC*A}に整理され、
+@code{A.(SC*B)}は@code{SC*(A.B)}に整理されます。
+
+@c HMM, DOES "SC" MEAN "SCALAR" HERE ?? CLARIFY
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{echelon}
+@deffn {関数} echelon (@var{M})
+
+ガウスの消去法で生成される、行列@var{M}の階段形を返します。
+階段形は、@var{M}から初等行演算によって計算され、
+それぞれの行の最初の非ゼロ要素が１で、
+その要素の下の列要素がすべてゼロであるような行列です。
+
+@mref{triangularize}もガウスの消去法を実行しますが、
+それぞれの行の先頭の非ゼロ要素を規格化しません。
+
+@mref{lu_factor}と@mref{cholesky}は、他の、三角行列をもたらす関数です。
+
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c echelon (M);
+@c ===end===
+@example
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) echelon (M);
+                  [ 1  - 8  - 5      - 2     ]
+                  [                          ]
+                  [         28       11      ]
+                  [ 0   1   --       --      ]
+(%o2)             [         37       37      ]
+                  [                          ]
+                  [              37 bb - 119 ]
+                  [ 0   0    1   ----------- ]
+                  [              37 aa - 313 ]
+@end example
+
+@opencatbox
+@category{Linear equations} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{eigenvalues}
+@anchor{eivals}
+@deffn  {関数} eigenvalues (@var{M})
+@deffnx {関数} eivals (@var{M})
+
+@c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; EXTEND THAT TO ALL FUNCTIONS ??
+@c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION ITEM
+行列@var{M}の固有値を含む２つのリストのリストを返します。
+戻り値の最初の部分リストは、行列の固有値のリストで、
+二番目の部分リストは、対応する順序で固有値の重複度のリストです。
+
+@code{eivals}は、@code{eigenvalues}と同義です。
+
+@code{eigenvalues}は、
+行列の特性多項式の根を見つけるために、
+関数@mref{solve}をコールします。
+時々、
+@code{solve}は、多項式の根を見つけられないかもしれません;
+その場合、このパッケージの
+(@mref{innerproduct}, @mref{unitvector}, @mref{columnvector},
+@mref{gramschmidt}を除いた)いくつかの他の関数はうまく動かないでしょう。
+@c WHICH ONES ARE THE FUNCTIONS WHICH DON'T WORK ??
+@c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE
+@c WHAT DOES "will not work" MEAN, ANYWAY ??
+
+いくつかの場合、@code{solve}が見つける固有値は、
+複雑な式かもしれません。
+(これは、
+@code{solve}が
+実数とわかっている固有値について
+見てもすぐにはわからない実数式を返す時、起こることがあります。)
+他のいくつかの関数を使って固有値を整理することが可能なことがあります。
+@c WHAT ARE THOSE OTHER FUNCTIONS ??
+
+パッケージ@code{eigen.mac}は、
+@code{eigenvalues}や@mref{eigenvectors}が参照された時、
+自動的にロードされます。
+もし@code{eigen.mac}がまだロードされていないなら、
+@code{load ("eigen")}はそれをロードします。
+ロードした後は、パッケージの中の関数と変数すべてが利用可能です。
+@c REFER TO OVERVIEW OF PACKAGE (INCLUDING LIST OF FUNCTIONS) HERE
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{eigenvectors}
+@anchor{eivects}
+@deffn  {関数} eigenvectors (@var{M})
+@deffnx {関数} eivects (@var{M})
+
+行列@var{M}の固有ベクトルを計算します。
+戻り値は、２つの要素のリストです。
+最初のものは、@var{M}の固有値のリストと固有値の重複度のリストです。
+二番目のものは、固有ベクトルのリストのリストです。
+固有値それぞれに対して固有ベクトルのリストが１つあります。
+リストそれぞれの中には、固有ベクトルが１つの時も複数のときもあります。
+
+@code{eivects}は、@code{eigenvectors}と同義です。
+
+パッケージ@code{eigen.mac}は、
+@mref{eigenvalues}や@code{eigenvectors}が参照された時、
+自動的にロードされます。
+もし@code{eigen.mac}がまだロードされていないなら、
+@code{load ("eigen")}はそれをロードします。
+ロードした後は、パッケージの中の関数と変数すべてが利用可能です。
+
+この関数に影響するフラグは以下の通りです:
+
+@code{nondiagonalizable}は、
+@code{eigenvectors}が戻った後、行列が対角化不可能か可能かに依って
+@code{true}か@code{false}に設定されます。
+
+@code{hermitianmatrix}が@code{true}の時、
+エルミート行列の縮退した固有ベクトルが、グラム-シュミットアルゴリズムを使って直交化されるようにします。
+
+@code{knowneigvals}が@code{true}の時、
+ causes the 
+@code{eigen}パッケージが、
+行列の固有値がユーザーに知られていて、グローバル名@code{listeigvals}の下記憶されていることを仮定するようにします。
+@code{listeigvals}は、
+出力@code{eigenvalues}に似たリストに設定されなければいけません。
+
+ここで、関数@mref{algsys}が固有ベクトルについて解くために使われます。
+もし固有値がごちゃごちゃしているなら、
+@code{algsys}は、時々、解を見つけられないかもしれません。
+いくつかの場合、
+最初に@code{eigenvalues}コマンドを使って固有値を見つけ、
+それらをもっと簡潔な何かに換算するために他の関数を使うことによって、
+固有値を整理することが可能かもしれません。
+整理に続いて、
+@code{true}に設定された@code{knowneigvals}フラグとともに
+再び@code{eigenvectors}をコールすることができます。
+
+@mref{eigenvalues}も参照してください。
+
+例:
+
+固有値１つにただ１つの固有ベクトルを持つ行列。
+
+@c ===beg===
+@c M1 : matrix ([11, -1], [1, 7]);
+@c [vals, vecs] : eigenvectors (M1);
+@c for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+@c   mult[i] = vals[2][i], vec[i] = vecs[i]);
+@c ===end===
+@example
+(%i1) M1 : matrix ([11, -1], [1, 7]);
+                           [ 11  - 1 ]
+(%o1)                      [         ]
+                           [ 1    7  ]
+(%i2) [vals, vecs] : eigenvectors (M1);
+(%o2) [[[9 - sqrt(3), sqrt(3) + 9], [1, 1]], 
+                        [[[1, sqrt(3) + 2]], [[1, 2 - sqrt(3)]]]]
+(%i3) for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+  mult[i] = vals[2][i], vec[i] = vecs[i]);
+                       val  = 9 - sqrt(3)
+                          1
+
+                            mult  = 1
+                                1
+
+                    vec  = [[1, sqrt(3) + 2]]
+                       1
+
+                       val  = sqrt(3) + 9
+                          2
+
+                            mult  = 1
+                                2
+
+                    vec  = [[1, 2 - sqrt(3)]]
+                       2
+
+(%o3)                         done
+@end example
+
+１つの固有値(ここでは2)に２つの固有ベクトルを持つ行列。
+
+@c ===beg===
+@c M1 : matrix ([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]);
+@c [vals, vecs] : eigenvectors (M1);
+@c for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+@c   mult[i] = vals[2][i], vec[i] = vecs[i]);
+@c ===end===
+@example
+(%i1) M1 : matrix ([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], 
+                   [0, 0, 0, 2]);
+                         [ 0  1  0  0 ]
+                         [            ]
+                         [ 0  0  0  0 ]
+(%o1)                    [            ]
+                         [ 0  0  2  0 ]
+                         [            ]
+                         [ 0  0  0  2 ]
+(%i2) [vals, vecs] : eigenvectors (M1);
+(%o2) [[[0, 2], [2, 2]], [[[1, 0, 0, 0]],
+                                   [[0, 0, 1, 0], [0, 0, 0, 1]]]]
+(%i3) for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+  mult[i] = vals[2][i], vec[i] = vecs[i]);
+                            val  = 0
+                               1
+
+                            mult  = 2
+                                1
+
+                      vec  = [[1, 0, 0, 0]]
+                         1
+
+                            val  = 2
+                               2
+
+                            mult  = 2
+                                2
+
+               vec  = [[0, 0, 1, 0], [0, 0, 0, 1]]
+                  2
+
+(%o3)                         done
+@end example
+
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ematrix}
+@deffn {関数} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+
+値が@var{x}の@code{[@var{i}, @var{j}]}要素を除いて、すべての要素がゼロの
+@var{m}行@var{n}列行列を返します。
+@c WOW, THAT SEEMS PRETTY SPECIALIZED ...
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{entermatrix}
+@deffn {関数} entermatrix (@var{m}, @var{n})
+
+対話的に要素を読み、@var{m}行@var{n}列行列を返します。
+
+もし@var{n}が@var{m}と等しいなら、
+Maximaは、行列のタイプ(対角、対称、反対称、一般)の入力を促し、
+それぞれの要素の入力を促します。
+応答それぞれは、セミコロン@code{;}かドル記号@code{$}で終了させます。
+
+もし@var{n}が@var{m}と等しくなければ、
+Maximaは、それぞれの要素の入力を促します。
+
+要素は、任意の式を取り得、また、その式は評価されます。
+@code{entermatrix}は引数を評価します。
+
+@example
+(%i1) n: 3$
+(%i2) m: entermatrix (n, n)$
+
+Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric 
+4. General
+Answer 1, 2, 3 or 4 : 
+1$
+Row 1 Column 1: 
+(a+b)^n$
+Row 2 Column 2: 
+(a+b)^(n+1)$
+Row 3 Column 3: 
+(a+b)^(n+2)$
+
+Matrix entered.
+(%i3) m;
+                [        3                     ]
+                [ (b + a)      0         0     ]
+                [                              ]
+(%o3)           [                  4           ]
+                [    0      (b + a)      0     ]
+                [                              ]
+                [                            5 ]
+                [    0         0      (b + a)  ]
+@end example
+
+@opencatbox
+@category{Console interaction} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{genmatrix}
+@deffn  {関数} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@deffnx {関数} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
+@deffnx {関数} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+
+@var{a}から生成される行列を返します。
+返される行列は、要素@code{@var{a}[@var{i_1},@var{j_1}]}を
+左上の要素として取り、
+@code{@var{a}[@var{i_2},@var{j_2}]}を
+右下の要素として取ります。
+ここで、@var{a}は、
+(@mref{make_array}ではなく@code{array}が生成する)宣言配列か、
+未宣言配列か、配列関数か、２つの引数を持つラムダ式のいずれかです。
+(配列関数は、他の関数のように、@mref{:=}や@mref{define}で生成されますが、
+引数は括弧の代わりにカギ括弧でくくられます。)
+
+もし@var{j_1}が省略されたら、
+それは、@var{i_1}と等しいと仮定されます。
+もし@var{j_1}と@var{i_1}両方が省略されたら、
+両方とも1と等しいと仮定されます。
+
+もし配列の選択された要素@code{i,j}が未定義なら、
+行列は、シンボル要素@code{@var{a}[i,j]}を含みます。
+
+例:
+
+@c ===beg===
+@c h [i, j] := 1 / (i + j - 1);
+@c genmatrix (h, 3, 3);
+@c array (a, fixnum, 2, 2);
+@c a [1, 1] : %e;
+@c a [2, 2] : %pi;
+@c genmatrix (a, 2, 2);
+@c genmatrix (lambda ([i, j], j - i), 3, 3);
+@c genmatrix (B, 2, 2);
+@c ===end===
+@example
+(%i1) h [i, j] := 1 / (i + j - 1);
+                                    1
+(%o1)                  h     := ---------
+                        i, j    i + j - 1
+(%i2) genmatrix (h, 3, 3);
+                           [    1  1 ]
+                           [ 1  -  - ]
+                           [    2  3 ]
+                           [         ]
+                           [ 1  1  1 ]
+(%o2)                      [ -  -  - ]
+                           [ 2  3  4 ]
+                           [         ]
+                           [ 1  1  1 ]
+                           [ -  -  - ]
+                           [ 3  4  5 ]
+(%i3) array (a, fixnum, 2, 2);
+(%o3)                           a
+(%i4) a [1, 1] : %e;
+(%o4)                          %e
+(%i5) a [2, 2] : %pi;
+(%o5)                          %pi
+(%i6) genmatrix (a, 2, 2);
+                           [ %e   0  ]
+(%o6)                      [         ]
+                           [ 0   %pi ]
+(%i7) genmatrix (lambda ([i, j], j - i), 3, 3);
+                         [  0    1   2 ]
+                         [             ]
+(%o7)                    [ - 1   0   1 ]
+                         [             ]
+                         [ - 2  - 1  0 ]
+(%i8) genmatrix (B, 2, 2);
+                        [ B      B     ]
+                        [  1, 1   1, 2 ]
+(%o8)                   [              ]
+                        [ B      B     ]
+                        [  2, 1   2, 2 ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gramschmidt}
+@deffn  {関数} gramschmidt (@var{x})
+@deffnx {関数} gramschmidt (@var{x}, @var{F})
+
+@var{x}に対してグラム-シュミット直交化アルゴリズムを実行します。
+@var{x}は、行列かリストのリストのいずれかです。
+@code{gramschmidt}は@var{x}を変更しません。
+もし引数にあれば、@code{gramschmidt}は@var{F}を内積として使います。
+そうでなければ、内積は関数@code{innerproduct}です。
+
+もし@var{x}が行列なら、
+アルゴリズムは @var{x}の行に適用されます。
+もし@var{x}がリストのリストなら、
+アルゴリズムは部分リストに適用されます。
+部分リストは、要素数が同じでなければいけません。
+いずれの場合も、
+戻り値は、リストのリストです。
+この部分リストは互いに直交し、@var{x}と同じ空間を埋めます。
+もし、@var{x}の全範囲の次元が行や部分リストの数よりちいさいなら、
+戻り値の部分リストのいくつかはゼロです。
+
+中間結果を整理するために、アルゴリズムのそれぞれの段階で@code{factor}がコールされます。
+結果として、戻り値は、素因数分解された整数を含みます。
+
+@code{load(eigen)}はこの関数をロードします。
+
+例:
+
+デフォルトの内積関数を使ったグラム-シュミットアルゴリズム。
+
+@c ===beg===
+@c load (eigen)$
+@c x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
+@c y: gramschmidt (x);
+@c map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+@c ===end===
+@example
+(%i1) load (eigen)$
+(%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
+                         [ 1   2   3  ]
+                         [            ]
+(%o2)                    [ 9   18  30 ]
+                         [            ]
+                         [ 12  48  60 ]
+(%i3) y: gramschmidt (x);
+                       2      2            4     3
+                      3      3   3 5      2  3  2  3
+(%o3)  [[1, 2, 3], [- ---, - --, ---], [- ----, ----, 0]]
+                      2 7    7   2 7       5     5
+(%i4) map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+(%o4)                       [0, 0, 0]
+@end example
+
+指定した内積関数を使ったグラム-シュミットアルゴリズム。
+
+@c ===beg===
+@c load (eigen)$
+@c ip (f, g) := integrate (f * g, u, a, b);
+@c y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
+@c map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
+@c ===end===
+@example
+(%i1) load (eigen)$
+(%i2) ip (f, g) := integrate (f * g, u, a, b);
+(%o2)          ip(f, g) := integrate(f g, u, a, b)
+(%i3) y : gramschmidt([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
+                               %pi cos(u) - 2
+(%o3)              [1, sin(u), --------------]
+                                    %pi
+(%i4) map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), 
+                                                a= -%pi/2, b=%pi/2;
+(%o4)                       [0, 0, 0]
+@end example
+
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ident}
+@deffn {関数} ident (@var{n})
+
+@var{n}行@var{n}列の単位行列を返します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{innerproduct}
+@anchor{inprod}
+@deffn  {関数} innerproduct (@var{x}, @var{y})
+@deffnx {関数} inprod (@var{x}, @var{y})
+
+@var{x}と@var{y}の(スカラー積やドット積とも呼ばれる)内積を返します。
+@var{x}と@var{y}は、等しい長さのリストか、ともに等しい長さの1列行列か1行行列です。
+戻り値は、@code{conjugate (x) . y}です。
+ここで、@code{.}は非可換乗算演算子です。
+
+@code{load ("eigen")}はこの関数をロードします。
+
+@code{inprod}は、@code{innerproduct}と同義です。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c THIS DESCRIPTION NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{invert}
+@deffn {関数} invert (@var{M})
+
+行列@var{M}の逆行列を返します。
+逆行列は随伴法で計算されます。
+
+これは、ユーザーが
+要素が多倍長浮動小数点の行列や
+要素が浮動小数点係数多項式の行列の逆行列を、
+CRE形に変換することなしに計算することを可能にします。
+
+余因子は、@mref{determinant}関数で計算されるので、
+もし@mref{ratmx}が@code{false}なら、
+要素の表現を変えることなしに、逆行列が計算されます。
+
+現在の実装は、高次の行列には非効率的です。
+
+@mref{detout}が@code{true}の時、
+行列式は、逆行列から係数として外に出されます。
+
+逆行列の要素は自動的には展開されません。
+もし@var{M}が多項式の要素を持つなら、
+@code{expand (invert (m)), detout}が、見た目がよりよい出力を生成することができます。
+もし全体を行列式で割られたものが望ましいなら、
+@code{xthru (%)}で達成することができます。
+また、代わりに最初から以下のようにしても達成できます。
+
+@example
+expand (adjoint (m)) / expand (determinant (m))
+invert (m) := adjoint (m) / determinant (m)
+@end example
+
+行列の逆を計算する別の方法について@code{^^} (非可換べき乗)を参照してください。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{list_matrix_entries}
+@deffn {関数} list_matrix_entries (@var{M})
+
+行列@var{M}の要素を含むリストを返します。
+
+例:
+
+@c ===beg===
+@c list_matrix_entries(matrix([a,b],[c,d]));
+@c ===end===
+@example
+(%i1) list_matrix_entries(matrix([a,b],[c,d]));
+(%o1)                     [a, b, c, d]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lmxchar}
+@defvr {オプション変数} lmxchar
+デフォルト値: @code{[}
+
+@code{lmxchar}は、行列の左区切り記号として表示される文字です。
+@mref{rmxchar}も参照してください。
+
+例:
+
+@example
+(%i1) lmxchar: "|"$
+(%i2) matrix ([a, b, c], [d, e, f], [g, h, i]);
+                           | a  b  c ]
+                           |         ]
+(%o2)                      | d  e  f ]
+                           |         ]
+                           | g  h  i ]
+@end example
+
+@opencatbox
+@category{Display flags and variables} @category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{matrix}
+@deffn {関数} matrix (@var{row_1}, ..., @var{row_n})
+
+行@var{row_1}, ..., @var{row_n}を持つ長方形行列を返します。
+行それぞれは、式のリストです。
+すべての行は同じ長さでなければいけません。
+
+オペランドが、２つの行列、スカラーと行列、行列とスカラーのいずれかの時、
+演算@code{+} (足し算), @code{-} (引き算), @code{*} (掛け算),
+@code{/} (割り算)は要素毎に実行されます。
+もしオペランドが、スカラーと行列、行列とスカラーのいずれかなら、
+演算@code{^} (べき乗, @code{**}と同値)は、要素毎に実行されますが、
+もしオペランドが２つの行列なら要素毎には実行されません。
+@c WHAT DOES THIS NEXT PHRASE MEAN EXACTLY ??
+@code{.} (非可換乗算)を含むすべての演算は、通常、完全に実行されます。
+
+行列の掛け算は、非可換乗算演算子@code{.}で表されます。
+対応する非可換べき乗演算子は@code{^^}です。
+行列 @code{@var{A}}に関して、
+@code{@var{A}.@var{A} = @var{A}^^2}であり、
+もし存在するなら、@code{@var{A}^^-1}は@var{A}の逆行列です。
+
+ドット演算や行列-リスト演算を含む式の整理を制御するためのスイッチがあります。
+それらは、
+@mref{doallmxops}, @mref{domxexpt}
+@mref{domxmxops}, @mref{doscmxops}, @mref{doscmxplus}です。
+@c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
+
+行列に関係する付加的なオプションがあります。
+それらは以下の通りです:
+@mref{lmxchar}, @mref{rmxchar}, @mref{ratmx}, @mref{listarith}, @mref{detout},
+@code{scalarmatrix},
+ @mref{sparse}
+@c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
+
+行列を引数として取ったり、行列を戻り値としてもたらしたりするたくさんの関数があります。
+@mref{eigenvalues}, @mref{eigenvectors},
+@mref{determinant},
+@mref{charpoly}, @mref{genmatrix}, @mref{addcol}, @mref{addrow}, 
+@mref{copymatrix}, @mref{transpose}, @mref{echelon},
+@mref{rank}を参照してください。
+@c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
+
+例:
+
+@itemize @bullet
+@item
+リストからの行列の組み立て。
+@end itemize
+@example
+(%i1) x: matrix ([17, 3], [-8, 11]);
+                           [ 17   3  ]
+(%o1)                      [         ]
+                           [ - 8  11 ]
+(%i2) y: matrix ([%pi, %e], [a, b]);
+                           [ %pi  %e ]
+(%o2)                      [         ]
+                           [  a   b  ]
+@end example
+@itemize @bullet
+@item
+足し算、要素毎に。
+@end itemize
+@example
+(%i3) x + y;
+                      [ %pi + 17  %e + 3 ]
+(%o3)                 [                  ]
+                      [  a - 8    b + 11 ]
+@end example
+@itemize @bullet
+@item
+引き算、要素毎に。
+@end itemize
+@example
+(%i4) x - y;
+                      [ 17 - %pi  3 - %e ]
+(%o4)                 [                  ]
+                      [ - a - 8   11 - b ]
+@end example
+@itemize @bullet
+@item
+掛け算。要素毎に。
+@end itemize
+@example
+(%i5) x * y;
+                        [ 17 %pi  3 %e ]
+(%o5)                   [              ]
+                        [ - 8 a   11 b ]
+@end example
+@itemize @bullet
+@item
+割り算。要素毎に。
+@end itemize
+@example
+(%i6) x / y;
+                        [ 17       - 1 ]
+                        [ ---  3 %e    ]
+                        [ %pi          ]
+(%o6)                   [              ]
+                        [   8    11    ]
+                        [ - -    --    ]
+                        [   a    b     ]
+@end example
+@itemize @bullet
+@item
+行列のスカラーべき、要素毎に。
+@end itemize
+@example
+(%i7) x ^ 3;
+                         [ 4913    27  ]
+(%o7)                    [             ]
+                         [ - 512  1331 ]
+@end example
+@itemize @bullet
+@item
+スカラー基数の行列べき、要素毎に。
+@end itemize
+@example
+(%i8) exp(y); 
+                         [   %pi    %e ]
+                         [ %e     %e   ]
+(%o8)                    [             ]
+                         [    a     b  ]
+                         [  %e    %e   ]
+@end example
+@itemize @bullet
+@item
+行列基数の行列べき。これは要素毎には実行されません。
+@c WHAT IS THIS ??
+@end itemize
+@example
+(%i9) x ^ y;
+                                [ %pi  %e ]
+                                [         ]
+                                [  a   b  ]
+                     [ 17   3  ]
+(%o9)                [         ]
+                     [ - 8  11 ]
+@end example
+@itemize @bullet
+@item
+非可換行列乗算。
+@end itemize
+@example
+(%i10) x . y;
+                  [ 3 a + 17 %pi  3 b + 17 %e ]
+(%o10)            [                           ]
+                  [ 11 a - 8 %pi  11 b - 8 %e ]
+(%i11) y . x;
+                [ 17 %pi - 8 %e  3 %pi + 11 %e ]
+(%o11)          [                              ]
+                [  17 a - 8 b     11 b + 3 a   ]
+@end example
+@itemize @bullet
+@item
+非可換行列べき乗
+スカラー基数@var{b}の行列べき@var{M}は、要素毎に実行され、
+@code{b^^m}は@code{b^m}と同じです。
+@end itemize
+@example
+(%i12) x ^^ 3;
+                        [  3833   1719 ]
+(%o12)                  [              ]
+                        [ - 4584  395  ]
+(%i13) %e ^^ y;
+@group
+                         [   %pi    %e ]
+                         [ %e     %e   ]
+(%o13)                   [             ]
+                         [    a     b  ]
+                         [  %e    %e   ]
+@end group
+@end example
+@itemize @bullet
+@item
+行列の-1指数の非可換べき乗は存在するなら、逆行列のことです。
+@end itemize
+@example
+(%i14) x ^^ -1;
+                         [ 11      3  ]
+                         [ ---  - --- ]
+                         [ 211    211 ]
+(%o14)                   [            ]
+                         [  8    17   ]
+                         [ ---   ---  ]
+                         [ 211   211  ]
+(%i15) x . (x ^^ -1);
+                            [ 1  0 ]
+(%o15)                      [      ]
+                            [ 0  1 ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{matrixmap}
+@deffn {関数} matrixmap (@var{f}, @var{M})
+
+@code{@var{f}(@var{M}[i,j])}に等しい要素@code{i,j}を持つ行列を返します。
+
+@mref{map}, @mref{fullmap}, @mref{fullmapl}, @mref{apply}も参照してください。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{matrixp}
+@deffn {関数} matrixp (@var{expr})
+
+もし@var{expr}が行列なら@code{true}を返し，そうでなければ、@code{false}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{matrix_element_add}
+@defvr {オプション変数} matrix_element_add
+デフォルト値: @code{+}
+
+@code{matrix_element_add}は、
+行列乗算の中で足し算の代わりに呼び出される演算です。
+@code{matrix_element_add}は、
+任意のn項演算子(すなわち、任意の数の引数を扱う関数)に割り当てられます。
+割り当てられた値は、クォートマークでくくられた演算子の名前か、
+関数名かラムダ式を取り得ます。
+
+@mref{matrix_element_mult}と@mref{matrix_element_transpose}も参照してください。
+
+例:
+
+@example
+(%i1) matrix_element_add: "*"$
+(%i2) matrix_element_mult: "^"$
+(%i3) aa: matrix ([a, b, c], [d, e, f]);
+                           [ a  b  c ]
+(%o3)                      [         ]
+                           [ d  e  f ]
+(%i4) bb: matrix ([u, v, w], [x, y, z]);
+@group
+                           [ u  v  w ]
+(%o4)                      [         ]
+                           [ x  y  z ]
+@end group
+(%i5) aa . transpose (bb);
+                     [  u  v  w   x  y  z ]
+                     [ a  b  c   a  b  c  ]
+(%o5)                [                    ]
+                     [  u  v  w   x  y  z ]
+                     [ d  e  f   d  e  f  ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{matrix_element_mult}
+@defvr {オプション変数} matrix_element_mult
+デフォルト値: @code{*}
+
+@code{matrix_element_mult}は、
+行列乗算の中で掛け算の代わりに呼び出される演算です。
+@code{matrix_element_mult}は、
+任意の二項演算子に割り当てられます。
+割り当てられた値は、クォートマークでくくられた演算子の名前か、関数名か、
+ラムダ式を取り得ます。
+
+ドット演算子@code{.}は、いくつかの文脈で役に立つ選択です。
+
+@mref{matrix_element_add}と@mref{matrix_element_transpose}も参照してください。
+
+例:
+
+@example
+(%i1) matrix_element_add: lambda ([[x]], sqrt (apply ("+", x)))$
+(%i2) matrix_element_mult: lambda ([x, y], (x - y)^2)$
+(%i3) [a, b, c] . [x, y, z];
+                          2          2          2
+(%o3)         sqrt((c - z)  + (b - y)  + (a - x) )
+(%i4) aa: matrix ([a, b, c], [d, e, f]);
+                           [ a  b  c ]
+(%o4)                      [         ]
+                           [ d  e  f ]
+(%i5) bb: matrix ([u, v, w], [x, y, z]);
+                           [ u  v  w ]
+(%o5)                      [         ]
+                           [ x  y  z ]
+(%i6) aa . transpose (bb);
+               [             2          2          2  ]
+               [ sqrt((c - w)  + (b - v)  + (a - u) ) ]
+(%o6)  Col 1 = [                                      ]
+               [             2          2          2  ]
+               [ sqrt((f - w)  + (e - v)  + (d - u) ) ]
+
+                         [             2          2          2  ]
+                         [ sqrt((c - z)  + (b - y)  + (a - x) ) ]
+                 Col 2 = [                                      ]
+                         [             2          2          2  ]
+                         [ sqrt((f - z)  + (e - y)  + (d - x) ) ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{matrix_element_transpose}
+@defvr {オプション変数} matrix_element_transpose
+デフォルト値: @code{false}
+
+@code{matrix_element_transpose}は、
+転置される時、行列のそれぞれの要素に適用される演算です。
+@mref{matrix_element_mult}は、任意の単項演算子に割り当てられます。
+割り当てられた値はクォートマークでくくられた演算子の名前か、
+関数名か、ラムダ式を取り得ます。
+
+@code{matrix_element_transpose}が@mref{transpose}に等しい時、
+@code{transpose}関数が要素すべてに適用されます。
+@code{matrix_element_transpose}が@code{nonscalars}に等しい時、
+@code{transpose}関数は非スカラー要素すべてに適用されます。
+もしある要素がアトムなら、@code{nonscalars}オプションは
+アトムが宣言された非スカラーの時だけ@code{transpose}を適用します。
+一方、@code{transpose}オプションはいつも@code{transpose}を適用します。
+
+デフォルト値, @code{false},はいかなる演算も適用しないことを意味します。
+
+@mref{matrix_element_add}と@mref{matrix_element_mult}も参照してください。
+
+例:
+
+@example
+(%i1) declare (a, nonscalar)$
+(%i2) transpose ([a, b]);
+                        [ transpose(a) ]
+(%o2)                   [              ]
+                        [      b       ]
+(%i3) matrix_element_transpose: nonscalars$
+(%i4) transpose ([a, b]);
+                        [ transpose(a) ]
+(%o4)                   [              ]
+                        [      b       ]
+(%i5) matrix_element_transpose: transpose$
+(%i6) transpose ([a, b]);
+                        [ transpose(a) ]
+(%o6)                   [              ]
+                        [ transpose(b) ]
+(%i7) matrix_element_transpose: lambda ([x], realpart(x)
+      - %i*imagpart(x))$
+(%i8) m: matrix ([1 + 5*%i, 3 - 2*%i], [7*%i, 11]);
+                     [ 5 %i + 1  3 - 2 %i ]
+(%o8)                [                    ]
+                     [   7 %i       11    ]
+(%i9) transpose (m);
+                      [ 1 - 5 %i  - 7 %i ]
+(%o9)                 [                  ]
+                      [ 2 %i + 3    11   ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c IS THIS THE ONLY MATRIX TRACE FUNCTION ??
+
+@c -----------------------------------------------------------------------------
+@anchor{mattrace}
+@deffn {関数} mattrace (@var{M})
+
+正方行列@var{M}の跡(すなわち、主対角上の要素の和)を返します。
+
+@code{mattrace}は、@mref{ncharpoly}―Maximaの@mref{charpoly}の代わり―
+によってコールされます。
+@c UMM, HOW IS THAT RELEVANT HERE ??
+
+@code{load ("nchrpl")}はこの関数をロードします。
+
+@opencatbox
+@category{Matrices} @category{Package nchrpl}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{minor}
+@deffn {関数} minor (@var{M}, @var{i}, @var{j})
+
+行列@var{M}の@var{i}, @var{j}小行列を返します。
+すなわち、行@var{i}と列@var{j}を除いた@var{M}です。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ncharpoly}
+@deffn {関数} ncharpoly (@var{M}, @var{x})
+行列@var{M}の
+@var{x}に関する特性多項式を返します。
+これはMaximaの@mref{charpoly}の代わりです。
+
+@code{ncharpoly}は、与えられた行列のべきの跡を計算することで機能します。
+それは、特性多項式の根のべきの和に等しいことが知られています。
+それらの量から根の対称関数を計算することができます。
+それらは、特性多項式の係数以上のなにものでもありません。
+@code{charpoly}は、
+@c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
+@code{@var{x} * ident [n] - a}の行列式を形成することで機能します。
+このように、
+@code{ncharpoly}
+は完全に多項式算術を避けるので、
+例えば、整数で埋められた大きな密な行列の場合、@code{ncharpoly}が勝ります。
+
+@code{load ("nchrpl")}はこのファイルをロードします。
+
+@opencatbox
+@category{Matrices} @category{Package nchrpl}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{newdet}
+@deffn {関数} newdet (@var{M})
+
+行列@var{M}の行列式を
+ジョンソン-ジェントルマンのtree minorアルゴリズムを使って計算します。
+@code{newdet}はCRE形式で結果を返します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{nonscalar}
+@defvr {宣言} nonscalar
+
+アトムをドット演算子に関してリストか行列のように振る舞うようにします。
+
+@opencatbox
+@category{Declarations and inferences} @category{Vectors} @category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{nonscalarp}
+@deffn {関数} nonscalarp (@var{expr})
+
+もし@var{expr}が非スカラー、すなわち、
+非スカラーとして宣言されたアトムかリスト、行列を含むなら、
+@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Vectors} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{permanent}
+@deffn {関数} permanent (@var{M}, @var{n})
+
+行列@var{M}のパーマネントを計算します。
+パーマネントは行列式のようですが、符号が変わりません。
+@code{permanent}はCRE形式で結果を返します。
+
+@code{newdet}も参照してください。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{rank}
+@deffn {関数} rank (@var{M})
+
+行列@var{M}のランクを計算します。
+すなわち、@var{M}の、最も大きな非特異な小行列式の次数です。
+
+@c STATEMENT NEEDS CLARIFICATION
+もし@var{rank}がゼロと同値の行列要素が確かにそうであることを決定することができないなら、
+、間違った答えを返します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ratmx}
+@defvr {オプション変数} ratmx
+デフォルト値: @code{false}
+
+@code{ratmx}が@code{false}の時、
+行列要素の表現で、行列式と行列の足し算、引き算、掛け算が実行され、
+逆行列の結果は一般表現のまま残されます。
+
+@code{ratmx}が@code{true}の時、
+上で述べた４つの演算は、CRE形式で実行され、
+逆行列の結果もCRE形式になります。
+これは、(@code{ratfac}の設定に依って)
+いつも望まれているわけではないですが、
+要素が展開されるようになるかもしれないことに注意してください。
+
+@opencatbox
+@category{Matrices} @category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{row}
+@deffn {関数} row (@var{M}, @var{i})
+
+行列@var{M}の@var{i}番目の行を返します。
+戻り値は行列です。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{rmxchar}
+@defvr {オプション変数} rmxchar
+デフォルト値: @code{]}
+
+@code{rmxchar}は、行列の右辺に描かれる文字です。
+
+@code{lmxchar}も参照してください。
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{scalarmatrixp}
+@defvr {オプション変数} scalarmatrixp
+デフォルト値: @code{true}
+
+@code{scalarmatrixp}が@code{true}の時、
+1 x 1行列が行列のドット積を計算した結果として生成される時はいつでも、
+スカラー、すなわち、行列の唯一の要素、に整理されます。
+
+@code{scalarmatrixp}が@code{all}の時、
+すべての1 x 1行列はスカラーに整理されます。
+
+@code{scalarmatrixp}が@code{false}の時、
+1 x 1行列はスカラーに整理されません。
+
+@opencatbox
+@category{Matrices} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c I WONDER WHAT THIS IS ABOUT
+
+@c -----------------------------------------------------------------------------
+@anchor{scalefactors}
+@deffn {関数} scalefactors (@var{coordinatetransform})
+
+ここで、
+coordinatetransformは、形式
+[[expression1, expression2, ...],
+indeterminate1, indeterminat2, ...]
+に評価されます。また、
+indeterminate1,
+indeterminate2, などは曲線座標変数であり、
+直交カーテシアン成分の集合は、
+[expression1, expression2, ...]によって、曲線座標を使って与えられます。
+
+@code{coordinates}が
+ベクトル[indeterminate1, indeterminate2,...]に設定され、
+@code{dimension}がこのベクトルの長さに設定されます。
+SF[1], SF[2], @dots{}, SF[DIMENSION]は、座標スケールファクタに設定され、
+@code{sfprod}は、これらのスケールファクタの積に設定されます。
+初期には、3次元直交カーテシアン座標に対応して、
+@code{coordinates}は[X, Y, Z]であり、
+@code{dimension}は3であり、SF[1]=SF[2]=SF[3]=SFPROD=1です。
+式を現在の座標形の物理成分に展開するために、
+形式?を利用する関数があります。
+@c SOME TEXT HAS GONE MISSING HERE
+
+@opencatbox
+@category{Package vect}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{setelmx}
+@deffn {関数} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+
+@var{x}を行列@var{M}の(@var{i}, @var{j})番目の要素に割り当て、
+変わった行列を返します。
+
+@code{@var{M} [@var{i}, @var{j}]: @var{x}}は同じ効果を持ちますが、
+@var{M}の代わりに@var{x}を返します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{similaritytransform}
+@anchor{simtran}
+@deffn  {関数} similaritytransform (@var{M})
+@deffnx {関数} simtran (@var{M})
+
+@code{similaritytransform}は、
+行列@code{M}の相似変換を計算します。
+@code{uniteigenvectors}コマンドの出力であるリストを返します。
+更に、もしフラグ@code{nondiagonalizable}が@code{false}なら、
+２つのグローバル行列@code{leftmatrix}と@code{rightmatrix}が計算されます。
+これらの行列は、
+@code{leftmatrix . @var{M} . rightmatrix}が
+@var{M}の固有値を対角上に持つ対角行列となるという性質を持ちます。
+もし@code{nondiagonalizable}が@code{true}なら、
+左右の行列は計算されません。
+
+もしフラグ@code{hermitianmatrix}が@code{true}なら、
+@code{leftmatrix}は、@code{rightmatrix}の転置の複素共役です。
+そうでなければ、@code{leftmatrix}は@code{rightmatrix}の逆行列です。
+
+@code{rightmatrix}は、列が@var{M}の単位固有ベクトルである行列です。
+他のフラグ(@code{eigenvalues}と@code{eigenvectors}を参照してください)は、
+@code{similaritytransform}は、
+@code{rightmatrix}を形成することができるようになるために、パッケージの中の他の関数をコールするので、
+同じ効果を持ちます。
+
+@code{load ("eigen")}はこの関数をロードします。
+
+@code{simtran}は、@code{similaritytransform}と同義です。
+
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sparse}
+@defvr {オプション変数} sparse
+デフォルト値: @code{false}
+
+@code{sparse}が@code{true}の時、
+かつ、もし@code{ratmx}が@code{true}なら、
+@code{determinant}は、粗な行列式を計算するために特別なルーチンを使います。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{submatrix}
+@deffn  {関数} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n})
+@deffnx {関数} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M})
+@deffnx {関数} submatrix (@var{M}, @var{j_1}, @dots{}, @var{j_n})
+
+行@var{i_1}, @dots{}, @var{i_m}が取り除かれ、
+列@var{j_1}, @dots{}, @var{j_n}が取り除かれた
+行列@var{M}から構成された新しい行列を返します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{transpose}
+@deffn {関数} transpose (@var{M})
+@var{M}の転置を返します。
+
+もし@var{M}が行列なら、
+戻り値は、@code{N[i,j] = M[j,i]}であるような別の行列@var{N}です。
+
+もし@var{M}がリストなら、
+返し値は、@code{N[i,1] = M[i]}であるような、@code{length (m)}行1列の行列@var{N}です。
+
+そうでなければ@var{M}はシンボルで、
+戻り値は、名詞式@code{'transpose (@var{M})}です。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{triangularize}
+@deffn {関数} triangularize (@var{M})
+
+ガウスの消去法で生成されるような、行列@code{M}の右上三角化行列を返します。
+戻り値は、
+それぞれの行の先頭の非ゼロ係数が1に規格化されないことを除いて、
+@code{echelon}と同じです。
+
+@code{lu_factor}と@code{cholesky}は、三角化行列をもらたす他の関数です。
+
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c triangularize (M);
+@c ===end===
+@example
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) triangularize (M);
+             [ - 1   8         5            2      ]
+             [                                     ]
+(%o2)        [  0   - 74     - 56         - 22     ]
+             [                                     ]
+             [  0    0    626 - 74 aa  238 - 74 bb ]
+@end example
+
+@opencatbox
+@category{Linear equations} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{uniteigenvectors}
+@anchor{ueivects}
+@deffn  {関数} uniteigenvectors (@var{M})
+@deffnx {関数} ueivects (@var{M})
+
+行列@var{M}の単位固有ベクトルを計算します。
+戻り値は、リストのリストです。
+最初の部分リストは@code{eigenvalues}コマンドの出力であり、
+他の部分リストは、固有値それぞれに対応する行列の単位固有ベクトルです。
+
+@c COPY DESCRIPTIONS OF THOSE FLAGS HERE
+@code{eigenvectors}コマンドでの記述で言及されたフラグは、
+これに関しても同じ効果を持ちます。
+
+@code{knowneigvects}が@code{true}の時、
+@code{eigen}パッケージは、
+行列の固有ベクトルがユーザーに知られていて、
+グローバル名@code{listeigvects}の下に記憶されていることを仮定します。
+@code{listeigvects}は、
+@code{eigenvectors}コマンドの出力に似たリストに設定されなければいけません。
+
+@c FOLLOWING PARAGRAPH IS IN NEED OF SERIOUS CLARIFICATION
+もし@code{knowneigvects}が@code{true}に設定されていて、
+固有ベクトルのリストが与えれているなら、
+フラグ@code{nondiagonalizable}の設定は正しくないかもしれません。
+もしこの場合に該当するなら、正しい値に設定してください。
+作者は、ユーザーがしていることを知っていること、
+固有値が適切な次元のベクトル空間を作り出さない行列を対角化しようとはしないことを
+仮定しています。
+
+@code{load ("eigen")}はこの関数をロードします。
+
+@code{ueivects}は@code{uniteigenvectors}と同義です。
+
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unitvector}
+@anchor{uvect}
+@deffn  {関数} unitvector (@var{x})
+@deffnx {関数} uvect (@var{x})
+
+@math{@var{x}/norm(@var{x})}を返します;
+これは、@var{x}と同じ向きの単位ベクトルです。
+
+@code{load ("eigen")}はこの関数をロードします。
+
+@code{uvect}は、@code{unitvector}と同義です。
+
+@opencatbox
+@category{Package eigen}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{vectorpotential}
+@deffn {関数} vectorpotential (@var{givencurl})
+
+現在の座標系で与えられた回転ベクトルのベクトルポテンシャルを返します。
+@code{potentialzeroloc}が @code{potential}に対して似たような役割を持ちますが、
+等式の左辺側の次数は座標変数の巡回置換でなければいけません。
+
+@opencatbox
+@category{Package vect}
+@closecatbox
+@end deffn
+
+@c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
+@c NEEDS EXAMPLES
+@deffn {関数} vectorpotential (@var{givencurl})
+現在の座標系で、与えられた回転ベクトルのベクトルポテンシャルを返します。
+@code{potentialzeroloc}は、@code{potential}と同様の役割を持ちますが、
+等式の左辺の順序が座標の巡回置換でなければいけません。
+
+@opencatbox
+@category{Package vect}
+@closecatbox
+@end deffn
+
+@c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A
+@c DESCRIPTION HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{vectorsimp}
+@deffn {関数} vectorsimp (@var{expr})
+以下のグローバルフラグに従って整理と展開を適用します:
+
+@flushleft
+@code{expandall}, @code{expanddot}, @code{expanddotplus}, @code{expandcross}, @code{expandcrossplus},
+@code{expandcrosscross}, @code{expandgrad}, @code{expandgradplus}, @code{expandgradprod},
+@code{expanddiv}, @code{expanddivplus}, @code{expanddivprod}, @code{expandcurl}, @code{expandcurlplus},
+@code{expandcurlcurl}, @code{expandlaplacian}, @code{expandlaplacianplus},
+ @code{expandlaplacianprod}.
+@end flushleft
+
+これらのフラグすべては、デフォルト値@code{false}を持ちます。
+@code{plus}接尾辞は、加算性や分配性の利用に関係します。
+@code{prod}接尾辞は、任意の種類の積のオペランドに関する展開に関係します。
+
+@table @code
+@item expandcrosscross
+@math{p ~ (q ~ r)}を@math{(p . r)*q - (p . q)*r}に整理します。
+@item expandcurlcurl
+@math{curl curl p}を@math{grad div p + div grad p}に整理します。
+@item expandlaplaciantodivgrad
+@math{laplacian p}を@math{div grad p}に整理します。
+@item expandcross
+@code{expandcrossplus}と@code{expandcrosscross}を有効にします。
+@item expandplus
+@flushleft
+@code{expanddotplus}, @code{expandcrossplus}, @code{expandgradplus},
+@code{expanddivplus}, @code{expandcurlplus}, @code{expandlaplacianplus}を有効にします。
+@end flushleft
+@item expandprod
+@code{expandgradprod}, @code{expanddivprod}, @code{expandlaplacianprod}を有効にします。
+@end table
+
+@c EXPLAIN THE IMPORT OF THIS STATEMENT
+これらのフラグはすべて@code{evflag}として宣言されています。
+
+
+@c SEEMS SOME TEXT HAS GONE MISSING HERE; COMMENT OUT FRAGMENT PENDING
+@c RECOVERY AND/OR RECONSTRUCTION OF THIS PARAGRAPH
+@c For orthogonal curvilinear coordinates, the global variables
+@c COORDINATES[[X,Y,Z]], DIMENSION[3], SF[[1,1,1]], and SFPROD[1] are set
+@c by the function invocation
+
+@opencatbox
+@category{Package vect} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{vect_cross}
+@defvr {オプション変数} vect_cross
+デフォルト値: @code{false}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+@code{vect_cross}が@code{true}の時、
+~がSHARE;VECTの中で定義されているところ
+ (とにかく、VECT_CROSSが@code{true}に設定されているところ)
+でDIFF(X~Y,T)が機能するようにします。
+
+@opencatbox
+@category{Package vect} @category{Differential calculus}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zeromatrix}
+@deffn {関数} zeromatrix (@var{m}, @var{n})
+
+要素すべてがゼロの@var{m}行@var{n}列行列を返します。
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+

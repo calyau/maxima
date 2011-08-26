@@ -1,0 +1,885 @@
+@menu
+* Introduction to fast Fourier transform::                     
+* Functions and Variables for fast Fourier transform::
+* Introduction to Fourier series::
+* Functions and Variables for Fourier series::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, Numerical, Numerical
+@section Introduction to fast Fourier transform
+@c -----------------------------------------------------------------------------
+
+@code{fft}パッケージは、高速Fourier変換の（数式計算ではなく）数値計算に関する関数を含みます。
+
+@opencatbox
+@category{Fourier transform} @category{Numerical methods} @category{Share packages} @category{Package fft}
+@closecatbox
+
+@c end concepts Numerical
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for fast Fourier transform, Introduction to Fourier series, Introduction to fast Fourier transform, Numerical
+@section Functions and Variables for fast Fourier transform
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{polartorect}
+@deffn {関数} polartorect (@var{r}, @var{t})
+
+形式@code{r %e^(%i t)}の複素値を形式@code{a + b %i}に変換します。
+ここで、@var{r}は大きさで、@var{t}は位相です。
+@var{r}と@var{t}は、同じサイズの１次元配列です。
+配列のサイズは2のべき乗である必要はありません。
+
+関数が戻ると、入力配列の元の値は、実部@code{a}と虚部@code{b}に置き換えられます。
+出力は、以下のように計算されます。
+
+@example
+a = r cos(t)
+b = r sin(t)
+@end example
+
+@code{polartorect}は、@code{recttopolar}の逆関数です。
+
+@code{load(fft)}はこの関数をロードします。
+@code{fft}も参照してください。
+
+@opencatbox
+@category{Package fft} @category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{recttopolar}
+@deffn {関数} recttopolar (@var{a}, @var{b})
+
+形式@code{a + b %i}の複素値を形式@code{r %e^(%i t)}に変換します。
+ここで、@var{a}は実部で、@var{b}は虚部です。
+@var{a}と@var{b}は同じサイズの１次元配列です。
+配列のサイズは2のべき乗である必要はありません。
+
+関数が戻ると、入力配列の元の値は、大きさ@code{r}と偏角@code{t}に置き換えられます。
+出力は、以下のように計算されます。
+
+@example
+r = sqrt(a^2 + b^2)
+t = atan2(b, a)
+@end example
+
+計算された偏角は、@code{-%pi}から@code{%pi}の範囲の中にあります。
+
+@code{recttopolar}は@code{polartorect}の逆関数です。
+
+@code{load(fft)}はこの関数をロードします。
+@code{fft}も参照してください。
+
+@opencatbox
+@category{Package fft} @category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inverse_fft}
+@deffn {関数} inverse_fft (@var{y})
+
+複素逆高速Fourier変換を計算します。
+@var{y}は、変換されるデータを含むリストもしくは配列です。
+要素の数は2のべき乗でなければいけません。
+要素は、数リテラル（整数、有理数、浮動小数点、多倍長浮動小数点）、シンボル定数、
+もしくは、@code{a}と@code{b}が数リテラルもしくはシンボル定数である式@code{a + b*%i}
+でなければいけません。
+
+@code{inverse_fft}は、@var{y}と同じタイプの新しいオブジェクトを返します。
+@var{y}は変更されません。
+結果はいつも浮動小数点、もしくは@code{a}と@code{b}が浮動小数点であるところの式
+@code{a + b*%i}として計算されます。
+
+逆離散Fourier変換は、以下のように定義されます。
+@code{x}を逆変換の出力とします。
+@code{j}が0から@code{n - 1}まで変わる中、
+
+@example
+x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
+@end example
+
+@code{load(fft)}はこの関数をロードします。
+
+@code{fft} (正変換), @code{recttopolar}, @code{polartorect}も参照してください。
+
+例:
+
+実数データ。
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 2, 3, 4, -1, -2, -3, -4] $
+@c L1 : inverse_fft (L);
+@c L2 : fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
+(%i4) L1 : inverse_fft (L);
+(%o4) [0.0, 14.49 %i - .8284, 0.0, 2.485 %i + 4.828, 0.0, 
+                       4.828 - 2.485 %i, 0.0, - 14.49 %i - .8284]
+(%i5) L2 : fft (L1);
+(%o5) [1.0, 2.0 - 2.168L-19 %i, 3.0 - 7.525L-20 %i, 
+4.0 - 4.256L-19 %i, - 1.0, 2.168L-19 %i - 2.0, 
+7.525L-20 %i - 3.0, 4.256L-19 %i - 4.0]
+(%i6) lmax (abs (L2 - L));
+(%o6)                       3.545L-16
+@end example
+
+複素数データ
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+@c L1 : inverse_fft (L);
+@c L2 : fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $                 
+(%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+(%i4) L1 : inverse_fft (L);
+(%o4) [4.0, 2.711L-19 %i + 4.0, 2.0 %i - 2.0, 
+- 2.828 %i - 2.828, 0.0, 5.421L-20 %i + 4.0, - 2.0 %i - 2.0, 
+2.828 %i + 2.828]
+(%i5) L2 : fft (L1);
+(%o5) [4.066E-20 %i + 1.0, 1.0 %i + 1.0, 1.0 - 1.0 %i, 
+1.55L-19 %i - 1.0, - 4.066E-20 %i - 1.0, 1.0 - 1.0 %i, 
+1.0 %i + 1.0, 1.0 - 7.368L-20 %i]
+(%i6) lmax (abs (L2 - L));                    
+(%o6)                       6.841L-17
+@end example
+
+@opencatbox
+@category{Package fft}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fft}
+@deffn {関数} fft (@var{x})
+
+複素高速Fourier変換を計算します。
+@var{x}は、変換されるデータを含むリストもしくは配列です。
+要素の数は2のべき乗でなければいけません。
+要素は、数リテラル（整数、有理数、浮動小数点、多倍長浮動小数点）、シンボル定数、
+もしくは、@code{a}と@code{b}が数リテラルもしくはシンボル定数である式@code{a + b*%i}
+でなければいけません。
+
+@code{fft}は、@var{x}と同じタイプの新しいオブジェクトを返します。
+@var{x}は変更されません。
+結果はいつも浮動小数点、もしくは@code{a}と@code{b}が浮動小数点であるところの式
+@code{a + b*%i}として計算されます。
+
+離散Fourier変換は、以下のように定義されます。
+@code{y}を変換の出力とします。
+@code{k}が0から@code{n - 1}まで変わる中、
+
+@example
+y[k] = (1/n) sum(x[j] exp(-2 %i %pi j k / n), j, 0, n - 1)
+@end example
+
+データ@var{x}が実数の時、
+実係数@code{a}と@code{b}は以下のように計算することができます。
+@example
+x[j] = sum(a[k]*cos(2*%pi*j*k/n)+b[k]*sin(2*%pi*j*k/n), k, 0, n/2)
+@end example
+
+ここで、
+
+@example
+a[0] = realpart (y[0])
+b[0] = 0
+@end example
+
+そして、@code{k}が1からn/2 - 1まで変わる中、
+
+@example
+a[k] = realpart (y[k] + y[n - k])
+b[k] = imagpart (y[n - k] - y[k])
+@end example
+
+そして、
+
+@example
+a[n/2] = realpart (y[n/2])
+b[n/2] = 0
+@end example
+
+@code{load(fft)}はこの関数をロードします。
+
+@code{inverse_fft} (逆変換), @code{recttopolar}, @code{polartorect}も参照してください。
+
+例:
+
+実数データ。
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 2, 3, 4, -1, -2, -3, -4] $
+@c L1 : fft (L);
+@c L2 : inverse_fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
+(%i4) L1 : fft (L);
+(%o4) [0.0, - 1.811 %i - .1036, 0.0, .6036 - .3107 %i, 0.0, 
+                         .3107 %i + .6036, 0.0, 1.811 %i - .1036]
+(%i5) L2 : inverse_fft (L1);
+(%o5) [1.0, 2.168L-19 %i + 2.0, 7.525L-20 %i + 3.0, 
+4.256L-19 %i + 4.0, - 1.0, - 2.168L-19 %i - 2.0, 
+- 7.525L-20 %i - 3.0, - 4.256L-19 %i - 4.0]
+(%i6) lmax (abs (L2 - L));
+(%o6)                       3.545L-16
+@end example
+
+複素数データ
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+@c L1 : fft (L);
+@c L2 : inverse_fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+(%i4) L1 : fft (L);
+(%o4) [0.5, .3536 %i + .3536, - 0.25 %i - 0.25, 
+0.5 - 6.776L-21 %i, 0.0, - .3536 %i - .3536, 0.25 %i - 0.25, 
+0.5 - 3.388L-20 %i]
+(%i5) L2 : inverse_fft (L1);
+(%o5) [1.0 - 4.066E-20 %i, 1.0 %i + 1.0, 1.0 - 1.0 %i, 
+- 1.008L-19 %i - 1.0, 4.066E-20 %i - 1.0, 1.0 - 1.0 %i, 
+1.0 %i + 1.0, 1.947L-20 %i + 1.0]
+(%i6) lmax (abs (L2 - L));
+(%o6)                       6.83L-17
+@end example
+
+サインとコサイン係数の計算。
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 2, 3, 4, 5, 6, 7, 8] $
+@c n : length (L) $
+@c x : make_array (any, n) $
+@c fillarray (x, L) $
+@c y : fft (x) $
+@c a : make_array (any, n/2 + 1) $
+@c b : make_array (any, n/2 + 1) $
+@c a[0] : realpart (y[0]) $
+@c b[0] : 0 $
+@c for k : 1 thru n/2 - 1 do
+@c    (a[k] : realpart (y[k] + y[n - k]),
+@c     b[k] : imagpart (y[n - k] - y[k]));
+@c a[n/2] : y[n/2] $
+@c b[n/2] : 0 $
+@c listarray (a);
+@c listarray (b);
+@c f(j) := sum (a[k] * cos (2*%pi*j*k / n) + b[k] * sin (2*%pi*j*k / n), k, 0, n/2) $
+@c makelist (float (f (j)), j, 0, n - 1);
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, 5, 6, 7, 8] $
+(%i4) n : length (L) $
+(%i5) x : make_array (any, n) $
+(%i6) fillarray (x, L) $
+(%i7) y : fft (x) $
+(%i8) a : make_array (any, n/2 + 1) $
+(%i9) b : make_array (any, n/2 + 1) $
+(%i10) a[0] : realpart (y[0]) $
+(%i11) b[0] : 0 $
+(%i12) for k : 1 thru n/2 - 1 do
+   (a[k] : realpart (y[k] + y[n - k]),
+    b[k] : imagpart (y[n - k] - y[k]));
+(%o12)                        done
+(%i13) a[n/2] : y[n/2] $
+(%i14) b[n/2] : 0 $
+(%i15) listarray (a);
+(%o15)          [4.5, - 1.0, - 1.0, - 1.0, - 0.5]
+(%i16) listarray (b);
+(%o16)           [0, - 2.414, - 1.0, - .4142, 0]
+(%i17) f(j) := sum (a[k]*cos(2*%pi*j*k/n) + b[k]*sin(2*%pi*j*k/n), 
+                    k, 0, n/2) $
+(%i18) makelist (float (f (j)), j, 0, n - 1);
+(%o18)      [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+@end example
+
+@opencatbox
+@category{Package fft}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fortindent}
+@defvr {オプション変数} fortindent
+デフォルト値: 0
+
+@code{fortindent}は、@code{fortran}コマンドが表示する式の
+式の左マージンインデントを制御します。
+0は、標準のプリントアウト(すなわち6スペース)を与え、
+正の値は、式を更に右に印字するようにします。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{fortran}
+@deffn {関数} fortran (@var{expr})
+
+Fortran文として@var{expr}を印字します。
+出力行は、スペースでインデントされます。
+もし行が長過ぎるなら、
+@code{fortran}は継続行を印字します。
+@code{fortran}は、指数演算子@code{^}を@code{**}として印字し、
+複素数@code{a + b %i}を形式@code{(a,b)}で印字します。
+
+@var{expr}は等式も取り、もしそうなら、@code{fortran}は、
+等式の右辺を左辺に割り当てる割り当て文を印字します。
+特に、もし@var{expr}の右辺が行列名なら、
+@code{fortran}は、行列の要素それぞれに対する割り当て文を印字します。
+
+もし@var{expr}が@code{fortran}が認識する何かでないなら、
+エラーなしに、式が@code{grind}フォーマットで印字されます。
+@code{fortran}は、リスト、配列、関数について知りません。
+
+@code{fortindent}は、@code{fortran}コマンドが表示する式の
+式の左マージンインデントを制御します。
+0は、標準のプリントアウト(すなわち6スペース)を与え、
+正の値は、式を更に右に印字するようにします。
+
+@code{fortspaces}が@code{true}の時、
+@code{fortran}は、印字行それぞれを80カラムまでスペースで埋めます。
+
+@code{fortran}は引数を評価します;
+引数のクォートは評価を無効にします。
+@code{fortran}はいつも@code{done}を返します。
+
+例:
+
+@verbatim
+(%i1) expr: (a + b)^12$
+(%i2) fortran (expr);
+      (b+a)**12                                                                 
+(%o2)                         done
+(%i3) fortran ('x=expr);
+      x = (b+a)**12                                                             
+(%o3)                         done
+(%i4) fortran ('x=expand (expr));
+      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792
+     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b
+     2   **3+66*a**10*b**2+12*a**11*b+a**12
+(%o4)                         done
+(%i5) fortran ('x=7+5*%i);
+      x = (7,5)                                                                 
+(%o5)                         done
+(%i6) fortran ('x=[1,2,3,4]);
+      x = [1,2,3,4]                                                             
+(%o6)                         done
+(%i7) f(x) := x^2$
+(%i8) fortran (f);
+      f                                                                         
+(%o8)                         done
+@end verbatim
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fortspaces}
+@defvr {オプション変数} fortspaces
+デフォルト値: @code{false}
+
+@code{fortspaces}が@code{true}の時、
+@code{fortran}は、印字行それぞれを80カラムまでスペースで埋めます。
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{horner}
+@deffn  {関数} horner (@var{expr}, @var{x})
+@deffnx {関数} horner (@var{expr})
+
+Horner規則に従って、もし指定されないなら@var{x}を主変数として使い、
+@var{expr}の再配列された表現を返します。
+@code{x}は、@var{expr}の標準有理式形の主変数が使われる場合には、省略できます。
+
+もし@code{expr}が数値的に評価されるものなら、
+@code{horner}は、時々、安定性が改善されます。
+また、もしMaximaがFortranで走らせるプログラムを生成するのに使われるなら、
+役に立ちます。
+@code{stringout}も参照してください。
+
+@example
+(%i1) expr: 1e-155*x^2 - 5.5*x + 5.2e155;
+                           2
+(%o1)            1.0E-155 x  - 5.5 x + 5.2E+155
+(%i2) expr2: horner (%, x), keepfloat: true;
+(%o2)            (1.0E-155 x - 5.5) x + 5.2E+155
+(%i3) ev (expr, x=1e155);
+Maxima encountered a Lisp error:
+
+ floating point overflow
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+(%i4) ev (expr2, x=1e155);
+(%o4)                       7.0E+154
+@end example
+
+@opencatbox
+@category{Numerical methods}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{find_root}
+@anchor{bf_find_root}
+@anchor{find_root_error}
+@anchor{find_root_abs}
+@anchor{find_root_rel}
+@deffn  {関数} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {関数} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {関数} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {関数} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {オプション変数} find_root_error
+@deffnx {オプション変数} find_root_abs
+@deffnx {オプション変数} find_root_rel
+
+式@var{expr}もしくは関数@var{f}の根を、閉区間@math{[@var{a}, @var{b}]}上で見つけます。
+式@var{expr}は等式でも問題ありません。
+その場合、@code{find_root}は@code{lhs(@var{expr}) - rhs(@var{expr})}の根を探します。
+
+Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価可能であり、
+@var{expr}もしくは@var{f}は連続と仮定して、@code{find_root}は根もしくは、
+もし複数の根があるなら、根の１つを見つけることを保証します。
+
+@code{find_root}は初め、２分木探索を適用します。
+もし対象の関数が十分滑らかなら，@code{find_root}は代わりに線形内挿を適用します。
+
+@code{f_find_root}は@code{find_root}の多倍長浮動小数点版です。
+関数は多倍長浮動小数点数値を使って計算され、多倍長浮動小数点の結果が返されます。
+そうでなければ、@code{bf_find_root}は@code{find_root}と同一で、以下の記述は@code{bf_find_root}に同様に適用されます。
+
+@code{find_root}の精度は@code{abserr}と@code{relerr}に支配されます。
+それらは@code{fine_root}へのオプションのキーワード引数です。
+これらのキーワード引数は形式@code{key=val}を取ります。
+キーワード引数は
+@table @var
+@item abserr
+根での関数値の望まれる絶対エラー。デフォルトは、@code{find_root_abs}です。
+@item relerr
+根の望まれる相対エラー。デフォルトは@code{find_root_rel}です。
+@end table
+
+懸案の関数が@code{abserr}以下の何かに評価される時、または、
+近似値@var{x_0}, @var{x_1}の差が@code{relerr * max(abs(x_0), abs(x_1))}以下になるなら、@code{find_root}は停止します。
+
+@code{find_root_abs}と@code{find_root_rel}のデフォルト値はともに零です。
+
+@code{find_root}は、探索区間の端で対象の関数が異なる符号を持つことを期待します。
+関数が両方の終端での数に評価されて、それらの数が同じ符号を持つ時、
+@code{find_root}の振る舞いは、@code{find_root_error}に支配されます。
+@code{find_root_error}が@code{true}の時、
+@code{find_root}はエラーメッセージを出力します。
+そうでなければ、@code{find_root}は@code{find_root_error}の値を返します。
+@code{find_root_error}のデフォルト値は@code{true}です。
+
+もし@var{f}が探索アルゴリズムの中の任意のステップで、数以外の何かに評価するなら、
+@code{find_root}は、部分的に評価された@code{find_root}式を返します。
+@var{a}と@var{b}の順序は無視されます;
+根が探索される区間は@math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}です。
+
+例:
+@c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
+@c f(x):=(mode_declare(x,float),sin(x)-x/2.0);
+@c interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
+@c interpolate(f(x),x,0.1,%pi);            time= 68 msec
+@c translate(f);
+@c interpolate(f(x),x,0.1,%pi);            time= 26 msec
+@c interpolate(f,0.1,%pi);                 time=  5 msec
+
+@c ===beg===
+@c f(x) := sin(x) - x/2;
+@c find_root (sin(x) - x/2, x, 0.1, %pi);
+@c find_root (sin(x) = x/2, x, 0.1, %pi);
+@c find_root (f(x), x, 0.1, %pi);
+@c find_root (f, 0.1, %pi);
+@c find_root (exp(x) = y, x, 0, 100);
+@c find_root (exp(x) = y, x, 0, 100), y = 10;
+@c log (10.0);
+@c fpprec:32;
+@c 32;
+@c bf_find_root (exp(x) = y, x, 0, 100), y = 10;
+@c log(10b0);
+@c ===end===
+@example
+(%i1) f(x) := sin(x) - x/2;
+                                        x
+(%o1)                  f(x) := sin(x) - -
+                                        2
+(%i2) find_root (sin(x) - x/2, x, 0.1, %pi);
+(%o2)                   1.895494267033981
+(%i3) find_root (sin(x) = x/2, x, 0.1, %pi);
+(%o3)                   1.895494267033981
+(%i4) find_root (f(x), x, 0.1, %pi);
+(%o4)                   1.895494267033981
+(%i5) find_root (f, 0.1, %pi);
+(%o5)                   1.895494267033981
+(%i6) find_root (exp(x) = y, x, 0, 100);
+                            x
+(%o6)           find_root(%e  = y, x, 0.0, 100.0)
+(%i7) find_root (exp(x) = y, x, 0, 100), y = 10;
+(%o7)                   2.302585092994046
+(%i8) log (10.0);
+(%o8)                   2.302585092994046
+(%i9) fpprec:32;
+(%o9)                           32
+(%i10) bf_find_root (exp(x) = y, x, 0, 100), y = 10;
+(%o10)                  2.3025850929940456840179914546844b0
+(%i11) log(10b0);
+(%o11)                  2.3025850929940456840179914546844b0
+@end example
+
+@opencatbox
+@category{Algebraic equations} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{newton}
+@deffn {関数} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+
+@var{expr}を@var{x}の１変数関数と考えて、
+Newton法による、@code{@var{expr} = 0}の近似解を返します。
+探索は、@code{@var{x} = @var{x_0}}で始まり、
+(@var{x}の現在値で評価された@var{expr}を使った)@code{abs(@var{expr}) < @var{eps}}が成り立つまで続きます。
+
+終了テスト@code{abs(@var{expr}) < @var{eps}}が@code{true}または@code{false}に評価される限り、
+@code{newton}は、未定義変数が@var{expr}の中に現れることを許します。
+
+このように、
+@var{expr}は数に評価される必要はありません。
+
+@code{load(newton1)}はこの関数をロードします。
+
+@code{realroots}, @code{allroots}, @code{find_root}, @code{mnewton}も参照してください。
+
+例:
+
+@c ===beg===
+@c load (newton1);
+@c newton (cos (u), u, 1, 1/100);
+@c ev (cos (u), u = %);
+@c assume (a > 0);
+@c newton (x^2 - a^2, x, a/2, a^2/100);
+@c ev (x^2 - a^2, x = %);
+@c ===end===
+@example
+(%i1) load (newton1);
+(%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
+(%i2) newton (cos (u), u, 1, 1/100);
+(%o2)                   1.570675277161251
+(%i3) ev (cos (u), u = %);
+(%o3)                 1.2104963335033528E-4
+(%i4) assume (a > 0);
+(%o4)                        [a > 0]
+(%i5) newton (x^2 - a^2, x, a/2, a^2/100);
+(%o5)                  1.00030487804878 a
+(%i6) ev (x^2 - a^2, x = %);
+                                           2
+(%o6)                6.098490481853958E-4 a
+@end example
+
+@opencatbox
+@category{Algebraic equations} @category{Numerical methods}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Fourier series, Functions and Variables for Fourier series, Functions and Variables for fast Fourier transform, Numerical
+@section Introduction to Fourier series
+@c -----------------------------------------------------------------------------
+
+@code{fourie}パッケージは、Fourier級数のシンボル計算のための関数を含みます。
+
+@code{fourie}パッケージの中には
+Fourier積分係数を計算する関数や、式の操作のためのいくつかの関数があります。
+
+@opencatbox
+@category{Fourier transform} @category{Share packages} @category{Package fourie}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Fourier series, , Introduction to Fourier series, Numerical
+@section Functions and Variables for Fourier series
+@c -----------------------------------------------------------------------------
+
+@c REPHRASE
+
+@c -----------------------------------------------------------------------------
+@anchor{equalp}
+@deffn {関数} equalp (@var{x}, @var{y})
+
+もし@code{equal (@var{x}, @var{y})}なら、@code{true}を返し、
+そうでないなら、@code{false}を返します。
+ (この場合、@code{equal (x, y)}がするようなエラーメッセージを与えません。)
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{remfun}
+@deffn  {関数} remfun (@var{f}, @var{expr})
+@deffnx {関数} remfun (@var{f}, @var{expr}, @var{x})
+
+@code{remfun (@var{f}, @var{expr})}は、
+@var{expr}の中の@code{@var{f} (@var{arg})}すべてを@var{arg}で置き換えます。
+
+@code{remfun (@var{f}, @var{expr}, @var{x})}は、
+@var{expr}の中の@code{@var{f} (@var{arg})}を
+@var{arg}が変数@var{x}を含むときだけ
+@var{arg}で置き換えます。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{funp}
+@deffn  {関数} funp (@var{f}, @var{expr})
+@deffnx {関数} funp (@var{f}, @var{expr}, @var{x})
+
+@code{funp (@var{f}, @var{expr})}は、
+もし@var{expr}が関数@var{f}を含むなら
+@code{true}を返します。
+
+@code{funp (@var{f}, @var{expr}, @var{x})}は、
+もし@var{expr}が関数@var{f}を含み、変数
+@var{x}が@var{f}のインスタンスの１つの引数のどこかにあるなら、
+@code{true}を返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{absint}
+@deffn  {関数} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {関数} absint (@var{f}, @var{x})
+@deffnx {関数} absint (@var{f}, @var{x}, @var{a}, @var{b})
+
+@code{absint (@var{f}, @var{x}, @var{halfplane})}は、
+与えられた半平面(@code{pos}, @code{neg}, または@code{both})での
+@var{f}の@var{x}に関する不定積分を返します。
+@var{f}は、形式
+@code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}
+の式を含むことができます。
+
+@code{absint (@var{f}, @var{x})}は@code{absint (@var{f}, @var{x}, pos)}と同値です。
+
+@code{absint (@var{f}, @var{x}, @var{a}, @var{b})}は、
+@var{f}の
+@var{x}に関する
+@var{a}から@var{b}までの定積分
+を返します。
+
+@c SAME LIST AS ABOVE ??
+@var{f}は、絶対値を含むことができます。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie} @category{Integral calculus}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourier}
+@deffn {関数} fourier (@var{f}, @var{x}, @var{p})
+
+区間@code{[-p, p]}上で定義された@code{@var{f}(@var{x})}のFourier係数のリストを返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
+
+@c -----------------------------------------------------------------------------
+@anchor{foursimp}
+@deffn {関数} foursimp (@var{l})
+
+もし@code{sinnpiflag}が@code{true}なら、@code{sin (n %pi)}を0に整理します。
+もし@code{cosnpiflag}が@code{true}なら、@code{cos (n %pi)}を@code{(-1)^n}に整理します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie} @category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sinnpiflag}
+@defvr {オプション変数} sinnpiflag
+デフォルト値: @code{true}
+
+@code{foursimp}を参照してください。
+
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{cosnpiflag}
+@defvr {オプション変数} cosnpiflag
+デフォルト値: @code{true}
+
+@code{foursimp}を参照してください。
+
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end defvr
+
+@c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
+
+@c -----------------------------------------------------------------------------
+@anchor{fourexpand}
+@deffn {関数} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+
+Fourier係数@var{l}のリストから
+@var{limit}項までのFourier級数を構成し、返します。
+(@var{limit}は@code{inf}もあり得ます。)
+@var{x}と@var{p}は、@code{fourier}におけるものと同じ意味を持ちます。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourcos}
+@deffn {関数} fourcos (@var{f}, @var{x}, @var{p})
+
+@code{[0, @var{p}]}上で定義された
+@code{@var{f}(@var{x})}のFourierコサイン係数を返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{foursin}
+@deffn {関数} foursin (@var{f}, @var{x}, @var{p})
+
+@code{[0, @var{p}]}上で定義された
+@code{@var{f}(@var{x})}のFourierサイン係数を返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{totalfourier}
+@deffn {関数} totalfourier (@var{f}, @var{x}, @var{p})
+
+@code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}を返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourint}
+@deffn {関数} fourint (@var{f}, @var{x})
+
+@code{[minf, inf]}上で定義された
+@code{@var{f}(@var{x})}のFourier積分係数のリストを構成し、返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourintcos}
+@deffn {関数} fourintcos (@var{f}, @var{x})
+@code{[0, inf]}上の@code{@var{f}(@var{x})}のFourierコサイン積分係数を返します。
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{forintsin}
+@deffn {関数} fourintsin (@var{f}, @var{x})
+@code{[0, inf]}上の@code{@var{f}(@var{x})}のFourierサイン積分係数を返します。
+
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn

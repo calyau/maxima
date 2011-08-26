@@ -1,0 +1,276 @@
+@menu
+* Introduction to drawdf::
+* Functions and Variables for drawdf::
+@end menu
+
+@node Introduction to drawdf, Functions and Variables for drawdf, drawdf, drawdf
+@section Introduction to drawdf
+
+関数@code{drawdf}は
+一階常微分方程式(ODE)や
+二連立自律一階ODE系の方向場を描画します。
+
+これは追加パッケージなので、利用するには、最初に
+@code{load(drawdf)}でロードしなければいけません。
+Drawdfは@code{draw}パッケージ上に構築されています。これはGnuplot 4.2を要求します。
+
+単一のODEの方向場をプロットするには、ODEを以下の形式で書かなければいけません:
+@ifnottex
+@example
+       dy
+       -- = F(x,y)
+       dx
+@end example
+@end ifnottex
+@tex
+$${{dy}\over{dx}} = F(x,y)$$
+@end tex
+
+そして関数@var{F}を@code{drawdf}の引数に与えなければいけません。
+もし独立変数と従属変数が、上の式のように@var{x}と@var{y}でないなら、
+drawdfコマンドへの引数として与えられるリストの中に明示的に
+それら2つの変数を指名しなければいけません。
+(例を見てください。)
+
+2つの自励ODEの組の方向場をプロットするには、
+それらを以下の形式で書かなければいけません。
+@ifnottex
+@example
+       dx             dy
+       -- = G(x,y)    -- = F(x,y) 
+       dt             dt
+@end example
+@end ifnottex
+@tex
+$${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
+@end tex
+
+そして@code{drawdf}の引数は2つの関数@var{G}と@var{F}を
+その順に持つリストでなければいけません;
+すなわち、リストの最初の式は水平軸上に表された変数の時間導関数であり、
+二番目の式は垂直軸上に表された変数の時間導関数です。
+それら2つの変数は@var{x}と@var{y}である必要はありませんが、
+もしそうでないなら、
+drawdfに与えられる二番目の引数は
+2つの変数を、最初のものが水平軸上のものを、その後垂直軸上のものを指定する別のリストでなければいけません。
+
+もしただ1つのODEが与えられるなら、
+@code{drawdf}は、
+暗に@code{x=t},@code{G(x,y)=1}と認め、
+非自励方程式を2つの自励方程式系に変換します。
+
+@opencatbox
+@category{Differential equations} @category{Plotting}
+@category{Share packages} @category{Package drawdf}
+@category{Package draw}
+@closecatbox
+
+
+@node Functions and Variables for drawdf,  , Introduction to drawdf, drawdf
+@section Functions and Variables for drawdf
+
+@subsection Functions
+
+@deffn {関数} drawdf (@var{dydx}, ...options and objects...)
+@deffnx {関数} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
+@deffnx {関数} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
+
+関数@code{drawdf}は、
+オプションの解曲線や@code{draw}パッケージを使う他のグラフィックスと一緒に、
+2D方向場を描きます。
+
+最初の引数は導関数を指定し、式か2つの式のリストでなければいけません。
+@var{dydx}, @var{dxdt}, @var{dydt}は@var{x}と@var{y}に依存する式です。
+@var{dvdu}, @var{dudt}, @var{dvdt}は@var{u}と@var{v}に依存する式です。
+
+もし独立変数と従属変数が@var{x}と@var{y}でないなら、
+それらの名前を、導関数に続いてすぐに、
+2つの名前のリスト@code{[}@var{u},@var{v}@code{]}のとしてか、
+形式@code{[}@var{u},@var{umin},@var{umax}@code{]}と
+@code{[}@var{v},@var{vmin},@var{vmax}@code{]}の2つのリストとしてのいずれか
+のように,指定しなければいけません。
+
+残りの引数は@i{グラフィックオプション}か@i{グラフィックオブジェクト},
+任意の深さで入れ子になったグラフィックオプションやオブジェクトを含むリストです。
+@code{drawdf}がサポートするグラフィックオプションとオブジェクトの集合は
+@code{draw}パッケージの@code{draw2d}と@code{gr2d}がサポートするもの上位集合です。
+
+引数は順次解釈されます:
+@i{グラフィックオプション}は続く@i{グラフィックオブジェクト}すべてに影響します。
+更に、@i{グラフィックオブジェクト}は指定された順にキャンバス上に描かれ、
+先に描かれたグラフィックスを見えなくするかもしれません。
+いくつかの@i{グラフィックオプション}はシーンのグローバルな外観に影響します。
+
+@code{drawdf}がサポートする追加の@i{グラフィックオブジェクト}は以下を含みます:
+@code{solns_at}, @code{points_at}, @code{saddles_at}, @code{soln_at},
+@code{point_at}, @code{saddle_at}.
+
+@code{drawdf}がサポートする追加の@i{グラフィックオプション}は以下を含みます:
+@code{field_degree}, @code{soln_arrows}, @code{field_arrows},
+@code{field_grid}, @code{field_color}, @code{show_field},
+@code{tstep}, @code{nsteps}, @code{duration}, @code{direction},
+@code{field_tstep}, @code{field_nsteps}, @code{field_duration}.
+
+@code{draw}パッケージから受け継がれた、共通に使われる@i{グラフィックオブジェクト}は
+以下を含みます: @code{explicit}, @code{implicit}, @code{parametric},
+@code{polygon}, @code{points}, @code{vector}, @code{label},
+@code{draw2d}と@code{gr2d}がサポートする他のすべてのもの。
+
+@code{draw}パッケージから受け継がれた、共通に使われる@i{グラフィックオプション}は
+以下を含みます:@*
+@code{points_joined}, @code{color},
+@code{point_type}, @code{point_size}, @code{line_width},
+@code{line_type}, @code{key}, @code{title}, @code{xlabel},
+@code{ylabel}, @code{user_preamble}, @code{terminal},
+@code{dimensions}, @code{file_name},
+@code{draw2d}と@code{gr2d}がサポートする他のすべてのもの。
+
+@code{draw2d}も参照してください。
+
+wxMaximaやImaximaのユーザーは@code{wxdrawdf}を代わりに使うかもしれません。
+それは、
+グラフィックスが@code{wxdraw}を使うノートブック内で描かれることを除いて、
+@code{drawdf}と同一です。
+
+この関数を利用するには、最初に@code{load(drawdf)}を書いてください。
+
+例:
+
+@example
+(%i1) load(drawdf)$
+(%i2) drawdf(exp(-x)+y)$        /* default vars: x,y */
+(%i3) drawdf(exp(-t)+y, [t,y])$ /* default range: [-10,10] */
+(%i4) drawdf([y,-9*sin(x)-y/5], [x,1,5], [y,-2,2])$
+@end example
+
+下位互換のために、@code{drawdf}はplotdfがサポートしたパラメータのほとんどを
+受け付けます。
+
+@example
+(%i5) drawdf(2*cos(t)-1+y, [t,y], [t,-5,10], [y,-4,9],
+             [trajectory_at,0,0])$
+@end example
+
+@code{soln_at}と@code{solns_at}は、
+少し強化された4次のRunge Kutta数値積分器を使って、
+指定された点を通る解曲線を描きます。
+
+@example
+(%i6) drawdf(2*cos(t)-1+y, [t,-5,10], [y,-4,9],
+             solns_at([0,0.1],[0,-0.1]),
+             color=blue, soln_at(0,0))$
+@end example
+
+@code{field_degree=2}とすると、
+それぞれのグリッド点での1次と2次の導関数に基づいて、
+場が二次のスプラインで構成されます。
+@code{field_grid=[}@var{COLS},@var{ROWS}@code{]}は
+グリッドの列と行の数を指定します。
+
+@example
+(%i7) drawdf(2*cos(t)-1+y, [t,-5,10], [y,-4,9],
+             field_degree=2, field_grid=[20,15],
+             solns_at([0,0.1],[0,-0.1]),
+             color=blue, soln_at(0,0))$
+@end example
+
+@code{soln_arrows=true}は
+解曲線に矢印を加え、
+(デフォルトでは)方向場からそれらを削除します。
+また、解曲線を強調するようにデフォルトの色を変えます。
+
+@example
+(%i8) drawdf(2*cos(t)-1+y, [t,-5,10], [y,-4,9],
+             soln_arrows=true,
+             solns_at([0,0.1],[0,-0.1],[0,0]))$
+@end example
+
+@code{duration=40}は数値積分の時間間隔を指定します(デフォルトは10))。
+もし解がプロット領域から遠くに移動し過ぎたり、
+導関数が複素数や無限大になったりしても、積分は自動的に停止します。
+ここでも、 @code{field_degree=2}を指定して二次スプラインをプロットします。
+以下の方程式は捕食者-被食者系をモデル化します。
+
+@example
+(%i9) drawdf([x*(1-x-y), y*(3/4-y-x/2)], [x,0,1.1], [y,0,1],
+             field_degree=2, duration=40,
+             soln_arrows=true, point_at(1/2,1/2),
+             solns_at([0.1,0.2], [0.2,0.1], [1,0.8], [0.8,1],
+                      [0.1,0.1], [0.6,0.05], [0.05,0.4],
+                      [1,0.01], [0.01,0.75]))$
+@end example
+
+@code{field_degree='solns}とすると、
+場は、4次のRunge Kuttaで計算された多くの小さな解曲線で構成され、
+この場合、より良い結果をもたらします。
+
+@example
+(%i10) drawdf([x*(1-x-y), y*(3/4-y-x/2)], [x,0,1.1], [y,0,1],
+              field_degree='solns, duration=40,
+              soln_arrows=true, point_at(1/2,1/2),
+              solns_at([0.1,0.2], [0.2,0.1], [1,0.8],
+                       [0.8,1], [0.1,0.1], [0.6,0.05],
+                       [0.05,0.4], [1,0.01], [0.01,0.75]))$
+@end example
+
+@code{saddles_at}は
+自動的にそれぞれの鞍部で方程式を線形化しようとし、
+セパラトリクスを含む、それぞれの固有ベクトルに対応した数値解をプロットしようとします。
+@code{tstep=0.05}は
+数値積分器の最大時間ステップを指定します(デフォルトは0.1)。
+xとyのステップを小さく保つために、小さ目の時間ステップが時々使われます。
+以下の方程式は減衰振り子をモデル化します。
+
+@example
+(%i11) drawdf([y,-9*sin(x)-y/5], tstep=0.05,
+              soln_arrows=true, point_size=0.5,
+              points_at([0,0], [2*%pi,0], [-2*%pi,0]),
+              field_degree='solns,
+              saddles_at([%pi,0], [-%pi,0]))$
+@end example
+
+@code{show_field=false}は場を完全に抑制します。
+
+@example
+(%i12) drawdf([y,-9*sin(x)-y/5], tstep=0.05,
+              show_field=false, soln_arrows=true,
+              point_size=0.5,
+              points_at([0,0], [2*%pi,0], [-2*%pi,0]),
+              saddles_at([3*%pi,0], [-3*%pi,0],
+                         [%pi,0], [-%pi,0]))$
+@end example
+
+@code{drawdf}は、認識しないパラメータすべてを@code{draw2d}や@code{gr2d}に渡します。
+なので、@code{draw}パッケージのフルパワーを@code{drawdf}と組み合わせられます。
+
+@example
+(%i13) drawdf(x^2+y^2, [x,-2,2], [y,-2,2], field_color=gray,
+              key="soln 1", color=black, soln_at(0,0),
+              key="soln 2", color=red, soln_at(0,1),
+              key="isocline", color=green, line_width=2,
+              nticks=100, parametric(cos(t),sin(t),t,0,2*%pi))$
+@end example
+
+@code{drawdf}はグラフィクオプションやオブジェクトの入れ子のリストを受け付けます。
+なので、makelistやグラフィックスを生成する他の関数コールの便利な使用が可能です。
+
+@example
+(%i14) colors : ['red,'blue,'purple,'orange,'green]$
+(%i15) drawdf([x-x*y/2, (x*y - 3*y)/4],
+              [x,2.5,3.5], [y,1.5,2.5],
+              field_color = gray,
+              makelist([ key   = concat("soln",k),
+                         color = colors[k],
+                         soln_at(3, 2 + k/20) ],
+                       k,1,5))$
+@end example
+
+@opencatbox
+@category{Package drawdf}
+@closecatbox
+
+@end deffn
+

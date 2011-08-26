@@ -1,0 +1,987 @@
+@menu
+* Functions and Variables for Differentiation::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Differentiation,  , Differentiation, Differentiation
+@section Functions and Variables for Differentiation
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{antid}
+@deffn {関数} antid (@var{expr}, @var{x}, @var{u(x)}) 
+
+@var{expr}の@var{x}に関する不定積分がリストから構成できるような、
+２要素リストを返します。
+式@var{expr}は、未知の関数@var{u}とその導関数を含むことができます。
+
+Let 
+２要素リスト@var{L}が@code{antid}の戻り値だとします。
+@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}は
+@var{expr}の@var{x}に関する不定積分です。
+
+@code{antid}が完全に成功した時、
+戻り値の２番目の要素はゼロです。
+そうでなければ、２番目の要素は非ゼロで、最初の要素は非ゼロまたはゼロです。
+もし@code{antid}が全く進展できなければ、
+最初の要素はゼロで、２番目は非ゼロです。
+
+@code{load ("antid")}はこの関数をロードします。
+@code{antid}パッケージは、関数@code{nonzeroandfreeof}と@code{linear}も定義します。
+
+@code{antid}は、以下のように@code{antidiff}と関係します。
+２要素リスト@var{L}が@code{antid}の戻り値とします。
+@code{antidiff}の戻り値は、@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}に
+等しいです。
+ここで、@var{x}は積分変数です。
+
+例:
+
+@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+@c load ("antid")$
+@c expr: exp (z(x)) * diff (z(x), x) * y(x);
+@c a1: antid (expr, x, z(x));
+@c a2: antidiff (expr, x, z(x));
+@c a2 - (first (a1) + 'integrate (second (a1), x));
+@c antid (expr, x, y(x));
+@c antidiff (expr, x, y(x));
+@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
+@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
+@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
+@example
+(%i1) load ("antid")$
+(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
+                            z(x)  d
+(%o2)                y(x) %e     (-- (z(x)))
+                                  dx
+(%i3) a1: antid (expr, x, z(x));
+                       z(x)      z(x)  d
+(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
+                                       dx
+(%i4) a2: antidiff (expr, x, z(x));
+                            /
+                     z(x)   [   z(x)  d
+(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
+                            ]         dx
+                            /
+(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
+(%o5)                           0
+(%i6) antid (expr, x, y(x));
+                             z(x)  d
+(%o6)             [0, y(x) %e     (-- (z(x)))]
+                                   dx
+(%i7) antidiff (expr, x, y(x));
+                  /
+                  [        z(x)  d
+(%o7)             I y(x) %e     (-- (z(x))) dx
+                  ]              dx
+                  /
+@end example
+
+@opencatbox
+@category{Integral calculus}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{antidiff}
+@deffn {関数} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+
+@var{expr}の@var{x}に関する不定積分を返します。
+式@var{expr}は、未知の関数@var{u}とその導関数を含むことができます。
+
+@code{antidiff}が完全に成功した時、
+結果の式は、積分記号を含みません(すなわち、@code{integrate}名詞を含みません)。
+そうでなければ、@code{antidiff}は
+部分的にまたは完全に積分記号内にある式を返します。
+もし@code{antidiff}が全く進展ができないなら、
+戻り値は完全に積分記号内にあります。
+
+@code{load ("antid")}はこの関数をロードします。
+@code{antid}パッケージは、関数@code{nonzeroandfreeof}と@code{linear}も定義します。
+
+@code{antidiff}は、以下のように@code{antid}と関係します。
+２要素リスト@var{L}が@code{antid}の戻り値とします。
+@code{antidiff}の戻り値は、@code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}に
+等しいです。
+ここで、@var{x}は積分変数です。
+
+例:
+
+@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+@c load ("antid")$
+@c expr: exp (z(x)) * diff (z(x), x) * y(x);
+@c a1: antid (expr, x, z(x));
+@c a2: antidiff (expr, x, z(x));
+@c a2 - (first (a1) + 'integrate (second (a1), x));
+@c antid (expr, x, y(x));
+@c antidiff (expr, x, y(x));
+@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
+@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
+@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
+@example
+(%i1) load ("antid")$
+(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
+                            z(x)  d
+(%o2)                y(x) %e     (-- (z(x)))
+                                  dx
+(%i3) a1: antid (expr, x, z(x));
+                       z(x)      z(x)  d
+(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
+                                       dx
+(%i4) a2: antidiff (expr, x, z(x));
+                            /
+                     z(x)   [   z(x)  d
+(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
+                            ]         dx
+                            /
+(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
+(%o5)                           0
+(%i6) antid (expr, x, y(x));
+                             z(x)  d
+(%o6)             [0, y(x) %e     (-- (z(x)))]
+                                   dx
+(%i7) antidiff (expr, x, y(x));
+                  /
+                  [        z(x)  d
+(%o7)             I y(x) %e     (-- (z(x))) dx
+                  ]              dx
+                  /
+@end example
+
+@opencatbox
+@category{Integral calculus}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{at}
+@deffn  {関数} at (@var{expr}, [@var{eqn_1}, @dots{}, @var{eqn_n}])
+@deffnx {関数} at (@var{expr}, @var{eqn})
+等式のリスト@code{[@var{eqn_1}, ..., @var{eqn_n}]}
+もしくは１つの等式@var{eqn}の中で指定されたように値を仮定された変数で、
+式@var{expr}を評価します。
+
+もしも部分式が、値が指定される変数のいずれかに依存するが
+指定の@code{atvalue}がなく、他の方法で評価できないなら、
+@code{at}の名詞形が返され、２次元形式で表示されます。
+
+@code{at}は多重代入を並列に実行します。
+
+@code{atvalue}も参照してください。
+代入を実行する他の関数に関しては、@code{subst}や@code{ev}も参照してください。
+
+例:
+
+@c ===beg===
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x, y)^2 - u(x, y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@c ===end===
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+@group
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end group
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Differential equations}
+@closecatbox
+@end deffn
+
+@c I SUSPECT THERE IS MORE TO BE SAID HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{atomgrad}
+@defvr {Property} atomgrad
+
+@code{atomgrad}は、式のアトムのグラディエントプロパティです。
+このプロパティは@code{gradef}で割り当てられます。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Differential calculus}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{atvalue}
+@deffn  {関数} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffnx {関数} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+
+値@var{c}を
+点@code{@var{x} = @var{a}}の@var{expr}に割り当てます。
+典型的には、境界値はこのメカニズムによって確立されます。
+
+@var{expr}は、関数引数が陽に現れる
+関数評価
+@code{@var{f}(@var{x_1}, ..., @var{x_m})}または
+導関数
+@code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
+です。
+@c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
+@c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
+@var{n_i}は、@var{x_i}に関する微分の階数です。
+
+atvalueが確立される点は、等式のリスト@code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}
+によって与えられます。
+もし１変数@var{x_1}なら、
+リストとしてくくられることなしに１つの等式は与えられます。
+
+@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)}は
+@code{atvalue}コールによって指定されるような
+関数@code{@var{f_1}, @var{f_2}, ...}のatvalueを表示します。
+
+@code{printprops (@var{f}, atvalue)}は、
+１関数@var{f}のatvalueを表示します。
+@code{printprops (all, atvalue)}は、
+atvaluesが定義された関数すべてのatvalueを表示します。
+
+atvaluesが表示される時、
+シンボル@code{@@1}, @code{@@2}, @dots{} は
+変数@var{x_1}, @var{x_2}, @dots{}を表します。
+
+@code{atvalue}は引数を評価します。
+@code{atvalue}はatvalue@var{c}を返します。
+
+例:
+
+@c FOLLOWING ADAPTED FROM example (atvalue)
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x,y)^2 - u(x,y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x,y)^2 - u(x,y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end example
+
+@opencatbox
+@category{Differential equations} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c LOOKS LIKE cartan IS THE NAME OF A PACKAGE AND NOT A FUNCTION OR VARIABLE
+@c PROBABLY SHOULD SPLIT OUT cartan AND ITS CONTENTS INTO ITS OWN TEXINFO FILE
+@c ext_diff AND lie_diff NOT DOCUMENTED (OTHER THAN HERE)
+
+@c -----------------------------------------------------------------------------
+@anchor{cartan}
+@deffn {関数} cartan
+
+微分形式の外積代数は
+エリーカルタンによって開発された微分幾何の基本ツールであり、
+偏微分方程式論での有用な応用を持ちます。
+@code{cartan}パッケージは、
+演算子@code{~} (ウェッジ積)と@code{|} (形式のベクトルとの縮約)と一緒に、
+関数@code{ext_diff}と@code{lie_diff}を実装します。
+例と一緒にこれらのコマンドの簡潔な記述を見るには、@code{demo (tensor)}を実行してください。
+
+@code{cartan}は、F.B. EstabrookとH.D. Wahlquistによって実装されました。
+
+@opencatbox
+@category{Differential geometry}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{del}
+@deffn {関数} del (@var{x})
+
+@code{del (@var{x})}は、変数@math{x}の微分を表します。
+
+もし独立変数が指定されないなら、
+@code{diff}は、@code{del}を含む式を返します。
+この場合、戻り値は「全微分」と呼ばれるものです。
+
+例:
+
+@c GENERATED FROM THE FOLLOWING
+@c diff (log (x));
+@c diff (exp (x*y));
+@c diff (x*y*z);
+@example
+(%i1) diff (log (x));
+                             del(x)
+(%o1)                        ------
+                               x
+(%i2) diff (exp (x*y));
+                     x y              x y
+(%o2)            x %e    del(y) + y %e    del(x)
+(%i3) diff (x*y*z);
+(%o3)         x y del(z) + x z del(y) + y z del(x)
+@end example
+
+@opencatbox
+@category{Differential calculus}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{delta}
+@deffn {関数} delta (@var{t})
+
+Diracのデルタ関数
+
+今のところ、@code{laplace}だけが@code{delta}を知っています。
+
+例:
+
+@example
+(%i1) laplace (delta (t - a) * sin(b*t), t, s);
+Is  a  positive, negative, or zero?
+
+p;
+                                   - a s
+(%o1)                   sin(a b) %e
+@end example
+
+@opencatbox
+@category{Mathematical functions} @category{Laplace transform}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{dependencies}
+@defvr {システム変数} dependencies
+デフォルト値: @code{[]}
+
+@code{dependencies}は、
+@code{depends}や@code{gradef}によって割り当てられた、関数依存を持つアトムのリストです。
+@code{dependencies}リストは累積的です:
+each call to 
+@code{depends}や@code{gradef}のコールそれぞれは、上乗せの項目を追加します。
+
+@code{depends}と@code{gradef}を参照してください。
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{depends}
+@deffn {関数} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+
+導関数を計算するために、変数の間の関数依存を宣言します。
+宣言された依存関係なしでは、
+@code{diff (f, x)}はゼロをもたらします。
+もし@code{depends (f, x)}が宣言されたら、
+@code{diff (f, x)}はシンボリックな導関数(すなわち、@code{diff}名詞)をもたらします。
+
+それぞれの引数@var{f_1}, @var{x_1}, などは、
+変数や配列の名前、または名前のリストをとり得ます。
+@var{f_i} (多分ただ１つの要素)のすべての要素は、
+@var{x_i} (多分ただ１つの要素)のすべての要素に依存するように宣言されます。
+もしいくつかの@var{f_i}が、配列名だったり、配列名を含むなら、
+配列の要素すべては@var{x_i}に依存します。
+
+@code{diff}は、@code{depends}によって確立された間接的依存関係を認識し、
+これらの場合に連鎖規則を適用します。
+
+@code{remove (@var{f}, dependency)}は、@var{f}に関して宣言された
+依存関係すべてを取り除きます。
+
+@code{depends}は、確立された依存関係のリストを返します。
+依存関係はグローバル変数@code{dependencies}に適用されます。
+@code{depends}は引数を評価します。
+
+@code{diff}は、
+@code{depends}によって確立された依存関係を認識する唯一のMaximaコマンドです。
+他の関数(@code{integrate}, @code{laplace}, など)は、
+引数によって陽に表現された依存関係だけを認識します。
+例えば、@code{integrate}は、
+@code{integrate (f(x), x)}のように陽に表現されないなら、
+@code{f}の@code{x}への依存性を認識しません。
+
+@c GENERATED BY THE FOLLOWING
+@c depends ([f, g], x);
+@c depends ([r, s], [u, v, w]);
+@c depends (u, t);
+@c dependencies;
+@c diff (r.s, u);
+@example
+(%i1) depends ([f, g], x);
+(%o1)                     [f(x), g(x)]
+(%i2) depends ([r, s], [u, v, w]);
+(%o2)               [r(u, v, w), s(u, v, w)]
+(%i3) depends (u, t);
+(%o3)                        [u(t)]
+(%i4) dependencies;
+(%o4)      [f(x), g(x), r(u, v, w), s(u, v, w), u(t)]
+(%i5) diff (r.s, u);
+                         dr           ds
+(%o5)                    -- . s + r . --
+                         du           du
+@end example
+
+@c GENERATED BY THE FOLLOWING
+@c diff (r.s, t);
+@example
+(%i6) diff (r.s, t);
+                      dr du           ds du
+(%o6)                 -- -- . s + r . -- --
+                      du dt           du dt
+@end example
+
+@c GENERATED BY THE FOLLOWING
+@c remove (r, dependency);
+@c diff (r.s, t);
+@example
+(%i7) remove (r, dependency);
+(%o7)                         done
+(%i8) diff (r.s, t);
+                                ds du
+(%o8)                       r . -- --
+                                du dt
+@end example
+
+@opencatbox
+@category{Differential calculus} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{derivabrev}
+@defvr {オプション変数} derivabbrev
+デフォルト値: @code{false}
+
+@code{derivabbrev}が@code{true}の時、
+シンボリックな導関数(すなわち、@code{diff}名詞)が下付き添字として表示されます。
+そうでなければ、導関数はライプニッツ表記@code{dy/dx}で表示されます。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Differential calculus} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c SEEMS LIKE THIS STATEMENT COULD BE LESS CLUMSY
+
+@c -----------------------------------------------------------------------------
+@anchor{derivdegree}
+@deffn {関数} derivdegree (@var{expr}, @var{y}, @var{x})
+
+@var{expr}に現れる独立変数@var{x}に関する
+従属変数@var{y}の微分の最高階数を返します。
+
+例:
+
+@c GENERATED FROM THE FOLLOWING
+@c 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
+@c derivdegree (%, y, x);
+@example
+(%i1) 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
+                         3     2
+                        d y   d y    2 dy
+(%o1)                   --- + --- + x  --
+                          3     2      dx
+                        dz    dx
+(%i2) derivdegree (%, y, x);
+(%o2)                           2
+@end example
+
+@opencatbox
+@category{Differential calculus} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c I HAVE NO IDEA WHAT THIS DOES
+
+@c -----------------------------------------------------------------------------
+@anchor{derivlist}
+@deffn {関数} derivlist (@var{var_1}, @dots{}, @var{var_k})
+
+@code{ev}コマンド内にて、指摘された変数に関する微分のみを起こします。
+
+@opencatbox
+@category{Differential calculus} @category{Evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{derivsubst}
+@defvr {オプション変数} derivsubst
+デフォルト値: @code{false}
+
+@code{derivsubst}が@code{true}の時、
+@code{subst (x, 'diff (y, t), 'diff (y, t, 2))}
+のような非構文法的代入は@code{'diff (x, t)}をもらします。
+
+@opencatbox
+@category{Differential calculus} @category{Expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{diff}
+@deffn  {関数} diff (@var{expr}, @var{x_1}, @var{n_1}, @dots{}, @var{x_m}, @var{n_m})
+@deffnx {関数} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {関数} diff (@var{expr}, @var{x})
+@deffnx {関数} diff (@var{expr})
+
+@var{expr}の中のすべての変数の中のいくつかに関する、@var{expr}の導関数すなわち微分を返します。
+
+@code{diff (@var{expr}, @var{x}, @var{n})}は@var{x}に関する@var{expr}の@var{n}階微分を返します。
+
+@code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}は
+@var{x_1}, ..., @var{x_m}に関する@var{expr}の偏微分を返します。
+これは、@code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}と同値です。
+
+@code{diff (@var{expr}, @var{x})}は変数@var{x}に関する@var{expr}の1階微分を返します。
+
+@code{diff (@var{expr})}は@var{expr}の全微分を返します。
+すなわち、それぞれの変数に関する@var{expr}の微分に変数それぞれの微分@code{del}を掛けたものの和を返します。
+@c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
+@code{del}の更なる整理は提供されません。
+
+@code{diff}の名詞形式が、微分方程式を記述する時など、いくつかの文脈で要求されます。
+これらの場合、@code{diff}は、微分が実行される代わりに名詞形式を出力するために
+(@code{'diff}として)クォートされるかもしれません。
+
+@code{derivabbrev}が@code{true}の時、導関数は下付き添字として表示されます。
+そうでなければ、導関数はライブニツ記法の@code{dy/dx}で表示されます。
+
+例:
+
+@c GENERATED FROM THE FOLLOWING
+@c diff (exp (f(x)), x, 2);
+@c derivabbrev: true$
+@c 'integrate (f(x, y), y, g(x), h(x));
+@c diff (%, x);
+@example
+(%i1) diff (exp (f(x)), x, 2);
+                     2
+              f(x)  d               f(x)  d         2
+(%o1)       %e     (--- (f(x))) + %e     (-- (f(x)))
+                      2                   dx
+                    dx
+(%i2) derivabbrev: true$
+(%i3) 'integrate (f(x, y), y, g(x), h(x));
+                         h(x)
+                        /
+                        [
+(%o3)                   I     f(x, y) dy
+                        ]
+                        /
+                         g(x)
+(%i4) diff (%, x);
+       h(x)
+      /
+      [
+(%o4) I     f(x, y)  dy + f(x, h(x)) h(x)  - f(x, g(x)) g(x)
+      ]            x                     x                  x
+      /
+       g(x)
+@end example
+
+テンソルパッケージのために、以下の変更が取り込まれています:
+
+(1) @var{expr}の中の任意のインデックスされたオブジェクトの導関数は、追加された引数として添えられた変数@var{x_i}を持ちます。
+そして導関数のインデックスはすべてソートされます。
+
+(2) @var{x_i}は、1から変数@code{dimension} [デフォルト値: 4]の値までの整数を取ります。
+これにより、例えば @code{[x, y, z, t]}など
+座標名のリストして設定されたリスト@code{coordinates}の@var{x_i}番目のメンバーに関する微分が実行されます。
+もし@code{coordinates}がアトムの変数にバインドされているなら、@var{x_i}で下付き添字された変数が、微分の変数として使われます。
+これにより、座標名や@code{X[1]}, @code{X[2]}, @dots{}のような下付き添字された名前の配列が使えることになります。
+もし@code{coordinates}に値が割り当てられていないなら、変数は上の(1)のように扱われます。
+
+@c NEED EXAMPLES FOR TENSOR STUFF
+@opencatbox
+@category{Differential calculus}
+@closecatbox
+@end deffn
+
+@c MERGE THIS INTO @defun diff
+
+@c -----------------------------------------------------------------------------
+@anchor{symbol_diff}
+@defvr {特殊シンボル} diff
+
+@code{ev}コールの中で、@code{evflag}として@code{diff}が存在する時、
+@code{expr}の中で表現されたすべての微分は実行されます。
+
+@c NEED EXAMPLE HERE
+@end defvr
+
+@c NOT SURE HOW THIS IS SUPPOSED TO WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{dscalar}
+@deffn {関数} dscalar (@var{f})
+
+スカラーのダランベルシアンをスカラー関数に@var{f}に適用します。
+
+@c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
+@c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
+@code{load ("ctensor")}はこの関数をロードします。
+
+@c FOLLOWING EXAMPLE DOESN'T WORK; I GET dscalar (field) ==> 0
+@c (I GET 0 FOR THE ctensor VERSION OF dscalar, AND SAME FOR
+@c THE DEFN OF dscalar GIVEN IN archive/share/lisp/ctensr.trl)
+@c INCIDENTALLY dependencies IS DOCUMENTED ONLY AS A VARIABLE
+
+@c @example
+@c (%i41) dependencies(field(r));
+@c (%o41)                           [field(r)]
+@c (%i42) dscalar(field);
+@c (%o43)
+@c     -m
+@c   %e  ((field  n - field  m + 2 field   ) r + 4 field )
+@c              r  r       r  r         r r             r
+@c 
+@c - -----------------------------------------------------
+@c                              2 r
+@c @end example
+
+@opencatbox
+@category{Differential calculus} @category{Package ctensor}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{express}
+@deffn {関数} express (@var{expr})
+
+@c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
+@c The result uses the noun form of any
+@c derivatives arising from expansion of the vector differential
+@c operators.  To force evaluation of these derivatives, the built-in @code{ev}
+@c function can be used together with the @code{diff} evflag, after using the
+@c built-in @code{depends} function to establish any new implicit dependencies.
+
+微分演算子名詞を偏微分を使った式に展開します。
+@code{express}は、演算子@code{grad}, @code{div}, @code{curl}, @code{laplacian}を
+認識します。
+@code{express}は、外積@code{~}も展開します。
+
+expressの戻り値の中のシンボリックな導関数(すなわち、@code{diff}名詞)は、
+@code{ev}関数コールまたはコマンドラインに@code{diff}を含むことによって、評価されることができます。
+この文脈では、@code{diff}は@code{evfun}として振る舞います。
+
+@code{load ("vect")}はこの関数をロードします。
+@c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN WHICH DOES ALL THE WORK
+
+例:
+
+@c GENERATED FROM THE FOLLOWING
+@c load ("vect")$
+@c grad (x^2 + y^2 + z^2);
+@c express (%);
+@c ev (%, diff);
+@c div ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c curl ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c laplacian (x^2 * y^2 * z^2);
+@c express (%);
+@c ev (%, diff);
+@c [a, b, c] ~ [x, y, z];
+@c express (%);
+@example
+(%i1) load ("vect")$
+(%i2) grad (x^2 + y^2 + z^2);
+                              2    2    2
+(%o2)                  grad (z  + y  + x )
+(%i3) express (%);
+       d    2    2    2   d    2    2    2   d    2    2    2
+(%o3) [-- (z  + y  + x ), -- (z  + y  + x ), -- (z  + y  + x )]
+       dx                 dy                 dz
+(%i4) ev (%, diff);
+(%o4)                    [2 x, 2 y, 2 z]
+(%i5) div ([x^2, y^2, z^2]);
+                              2   2   2
+(%o5)                   div [x , y , z ]
+(%i6) express (%);
+                   d    2    d    2    d    2
+(%o6)              -- (z ) + -- (y ) + -- (x )
+                   dz        dy        dx
+(%i7) ev (%, diff);
+(%o7)                    2 z + 2 y + 2 x
+(%i8) curl ([x^2, y^2, z^2]);
+                               2   2   2
+(%o8)                   curl [x , y , z ]
+(%i9) express (%);
+       d    2    d    2   d    2    d    2   d    2    d    2
+(%o9) [-- (z ) - -- (y ), -- (x ) - -- (z ), -- (y ) - -- (x )]
+       dy        dz       dz        dx       dx        dy
+(%i10) ev (%, diff);
+(%o10)                      [0, 0, 0]
+(%i11) laplacian (x^2 * y^2 * z^2);
+                                  2  2  2
+(%o11)                laplacian (x  y  z )
+(%i12) express (%);
+         2                2                2
+        d     2  2  2    d     2  2  2    d     2  2  2
+(%o12)  --- (x  y  z ) + --- (x  y  z ) + --- (x  y  z )
+          2                2                2
+        dz               dy               dx
+(%i13) ev (%, diff);
+                      2  2      2  2      2  2
+(%o13)             2 y  z  + 2 x  z  + 2 x  y
+(%i14) [a, b, c] ~ [x, y, z];
+(%o14)                [a, b, c] ~ [x, y, z]
+(%i15) express (%);
+(%o15)          [b z - c y, c x - a z, a y - b x]
+@end example
+
+@opencatbox
+@category{Differential calculus} @category{Vectors} @category{Operators}
+@closecatbox
+@end deffn
+
+@c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
+@c "gendiff is all bugs: should be deprecated"
+@c @defun gendiff
+@c Sometimes @code{diff(e,x,n)} can be reduced even though N is
+@c symbolic.
+@c 
+@c @example
+@c batch("gendif")$
+@c @end example
+@c 
+@c and you can try, for example,
+@c 
+@c @example
+@c diff(%e^(a*x),x,q)
+@c @end example
+@c 
+@c by using @code{gendiff} rather than @code{diff}.  Unevaluable
+@c items come out quoted.  Some items are in terms of @code{genfact}, which
+@c see.
+@c
+@c @end defun
+
+@c -----------------------------------------------------------------------------
+@anchor{gradef}
+@deffn  {関数} gradef (@var{f}(@var{x_1}, @dots{}, @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffnx {関数} gradef (@var{a}, @var{x}, @var{expr})
+
+関数@var{f}もしくは変数@var{a}の偏微分（すなわち、勾配の成分）を定義します。
+
+@code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}は、
+@code{d@var{f}/d@var{x_i}}を@var{g_i}として定義します。
+ここで、@var{g_i}は式です; @var{g_i}は関数コールでもあり得ますが、関数名ではありません。
+偏微分の数@var{m}は、引数の数@var{n}よりもちいさいかもしれません。
+その場合、微分は@var{x_1}から@var{x_m}までのみに関して定義されます。
+
+@code{gradef (@var{a}, @var{x}, @var{expr})}は、
+変数@var{a}の@var{x}に関する微分を@var{expr}と定義します。
+これは、 (@code{depends (@var{a}, @var{x})}を介して)
+@var{a}の@var{x}への依存性を確立もします。
+
+最初の引数@code{@var{f}(@var{x_1}, ..., @var{x_n})}または@var{a}はクォートされますが、
+残りの引数@var{g_1}, ..., @var{g_m}は評価されます。
+@code{gradef}は偏微分が定義された関数や変数を返します。
+
+@code{gradef}は、Maximaの組み込み関数の微分を再定義できます。
+例えば、@code{gradef (sin(x), sqrt (1 - sin(x)^2))}は、
+@code{sin}の微分を再定義します。
+
+@code{gradef}は、添字付き関数の偏微分を定義できません。
+
+@code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)}は、
+関数@var{f_1}, ..., @var{f_n}の偏微分を
+@code{gradef}で定義されたように、表示します。
+
+@code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)}は、
+変数@var{a_n}, ..., @var{a_n}の偏微分を
+@code{gradef}で定義されたように、表示します。
+
+@code{gradefs}は、偏微分が@code{gradef}によって定義された
+関数のリストです。
+@code{gradefs}は、
+偏微分が@code{gradef}によって定義されたいかなる変数も含みません。
+
+@c REPHRASE THIS NEXT BIT
+例えば、関数が陽に知られていないが、一階微分が知られていて、
+高階の微分を得ることが望まれる時、勾配が必要です。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Differential calculus} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gradefs}
+@defvr {システム変数} gradefs
+デフォルト値: @code{[]}
+
+@code{gradefs}は、偏微分が@code{gradef}によって定義された
+関数のリストです。
+@code{gradefs}は、
+偏微分が@code{gradef}によって定義されたいかなる変数も含みません。
+
+@opencatbox
+@category{Differential calculus} @category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{laplace}
+@deffn {関数} laplace (@var{expr}, @var{t}, @var{s})
+
+変数@var{t}に関するラブラス変換@var{expr}を計算し、パラメータ@var{s}に変換しようとします。
+
+@code{laplace}は、
+@var{expr}の中で、
+@code{derivative}, @code{integrate}, @code{sum}, @code{ilt}はもちろん、
+関数@code{delta}, @code{exp},
+@code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf}
+を認識します。
+もし、laplaceが変換を見つけられなかったら、
+関数@code{specint}がコールされます。
+@code{specint}は、
+ベッセル関数@code{bessel_j}, @code{bessel_i}, @dots{}のような
+特殊関数を含む式のラプラス変換を見つけることができ、
+@code{unit_step}関数を扱うことができます。
+@code{specint}も参照してください。
+
+もし@code{specint}も解を見つけられないなら、
+名詞@code{laplace}が返されます。
+
+@c REPHRASE THIS
+@var{expr}は、従属変数の@code{atvalue}が使われる線形定数係数微分方程式であるかもしれません。
+@c "used" -- USED HOW ??
+要求されるatvalueは、
+変換が計算される前か後に供給されるかもしれません。
+初期条件がゼロで指定されなければいけないので、
+もし他に課される境界条件を持つなら
+一般解にそれらを課すことができ、それらに関して一般解を解き、それらの値を代入し返すことによって、
+定数を消去できます。
+
+@code{laplace}は、形式
+@code{integrate (f(x) * g(t - x), x, 0, t)}の畳み込み積分を認識します;
+他の種類の畳み込みは認識されません。
+
+関数関係は、 @var{expr}で陽に表現されなければいけません;
+@code{depends}で確立した暗黙の関係は認識されません。
+例えば、もし@var{f}が@var{x}と@var{y}に依存するなら、
+@code{f (x, y)}が@var{expr}の中に現れなければいけません。
+
+逆ラプラス変換@code{ilt}も参照してください。
+
+例:
+
+@c GENERATED FROM THE FOLLOWING:
+@c laplace (exp (2*t + a) * sin(t) * t, t, s);
+@c laplace ('diff (f (x), x), x, s);
+@c diff (diff (delta (t), t), t);
+@c laplace (%, t, s);
+@example
+(%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
+                            a
+                          %e  (2 s - 4)
+(%o1)                    ---------------
+                           2           2
+                         (s  - 4 s + 5)
+(%i2) laplace ('diff (f (x), x), x, s);
+(%o2)             s laplace(f(x), x, s) - f(0)
+(%i3) diff (diff (delta (t), t), t);
+                          2
+                         d
+(%o3)                    --- (delta(t))
+                           2
+                         dt
+(%i4) laplace (%, t, s);
+                            !
+               d            !         2
+(%o4)        - -- (delta(t))!      + s  - delta(0) s
+               dt           !
+                            !t = 0
+(%i5) assume(a>0)$
+(%i6) laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
+                                              - a - 1
+                         gamma(a)   gamma(a) s
+(%o6)                    -------- - -----------------
+                            s            1     a
+                                        (- + 1)
+                                         s
+(%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
+                                              s + 1
+                      sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
+                                                s
+(%o7)                 -----------------------------------
+                                3/2      s + 1
+                               s    sqrt(-----)
+                                           s
+(%i8) assume(exp(%pi*s)>1)$
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),
+         simpsum;
+@group
+                         %i                         %i
+              ------------------------ - ------------------------
+                              - %pi s                    - %pi s
+              (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
+(%o9)         ---------------------------------------------------
+                                       2
+@end group
+(%i9) factor(%);
+                                      %pi s
+                                    %e
+(%o9)                   -------------------------------
+                                             %pi s
+                        (s - %i) (s + %i) (%e      - 1)
+
+@end example
+
+@opencatbox
+@category{Laplace transform} @category{Differential equations}
+@closecatbox
+@end deffn

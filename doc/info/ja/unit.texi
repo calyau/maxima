@@ -1,0 +1,778 @@
+@menu
+* Introduction to Units::
+* Functions and Variables for Units::
+@end menu
+
+@node Introduction to Units, Functions and Variables for Units, unit, unit
+@section Introduction to Units
+
+@emph{unit}パッケージは、ユーザーが
+任意の単位間での変換したり、方程式の中の次元を扱うことを可能にします。
+このパッケージの機能はオリジナルのMaxima単位パッケージとは根本的に違います - 
+オリジナルは定義の基本的なリストでしたが、
+このパッケージは、ユーザーが
+次元基底毎に最後の答えが翻訳される単位を選ぶことを可能にするようなルールセットを使います。
+表示でそれらを混ぜる代わりに単位を分離し、
+ユーザーが
+個々の答えに関連付けられた単位を容易に識別することを可能にします。
+演繹された単位に整理する間、巧みな制御を供給することはもちろん、
+ユーザーが式を基本的な基底単位に整理することを可能にします。
+次元解析が可能で、変換と整理オプションを管理するために様々なツールが利用可能です。
+カスタマイズ可能な自動変換に加えて、
+@emph{units}はこれまでの手動変換オプションも提供します。
+
+注意 - 単位変換が正確でない時、Maximaは
+分数に帰着する近似を行います。
+これは、単位を整理するのに使われる手法の結果です。
+このタイプの代入を警告するメッセージは、
+この状況はしばしば起こり、警告が出力を群れをなしておおうので、
+(通常オンですが)単位の場合デフォルトでディセーブルにされています。
+(単位変換の後、ratprintの存在している状態は復元されます。
+だから、そうでなければ、ユーザーのその設定への変更は保持されます。)
+もしユーザーが単位に関するこの情報を必要とするなら、
+単位変換プロセスからの警告の印字を再アクティベートするために
+@emph{unitverbose:on}を設定できます。
+
+@emph{unit}はMaximaに、share/contrib/unitディレクトリに含まれます。
+通常のMaximaのパッケージローディング慣例に従います：
+
+@example
+@group
+(%i1) load("unit")$
+*******************************************************************
+*                       Units version 0.50                        *
+*          Definitions based on the NIST Reference on             *
+*              Constants, Units, and Uncertainty                  *
+*       Conversion factors from various sources including         *
+*                   NIST and the GNU units package                *
+*******************************************************************
+
+Redefining necessary functions...
+WARNING: DEFUN/DEFMACRO: redefining function TOPLEVEL-MACSYMA-EVAL ...
+WARNING: DEFUN/DEFMACRO: redefining function MSETCHK ...
+WARNING: DEFUN/DEFMACRO: redefining function KILL1 ...
+WARNING: DEFUN/DEFMACRO: redefining function NFORMAT ...
+Initializing unit arrays...
+Done.
+@end group
+@end example
+
+WARNINGメッセージが予想されますが、心配の原因ではありません - 
+それらは
+@emph{unit}パッケージが本来のMaximaで既に定義されている関数を再定義していることを示しています。
+これは単位を適切には使うために必要です。
+ユーザーは、もし他のパッケージがこれらの関数に他の変更を加えたならそれらの変更はこのロードプロセスによって上書きされることに気づくべきです。
+
+@emph{unit.mac}ファイルは、
+パッケージに必要なlisp関数を含む
+lispファイル@emph{unit-functions.lisp}もロードします。
+
+Clifford Yappは主作者です。
+彼は、
+Nebraska大学Kearney校(UNK)のBarton Willis, Robert Dodier,
+そしてMaximaメーリングリストの他の大胆不敵な人々から
+価値ある援助を受けました。
+
+たぶん多くのバグがあります。知らせてください。
+@code{float}と@code{numer}は期待の動作をしません。
+
+TODO : 次元機能、温度の扱い、略語表示、仲間。単位を含む量の足し算の例を示す。
+
+@opencatbox
+@category{Physical units} @category{Share packages} @category{Package unit}
+@closecatbox
+
+
+@node Functions and Variables for Units,  , Introduction to Units, unit
+@section Functions and Variables for Units
+
+@deffn {関数} setunits (@var{list})
+デフォルトでは、 @emph{unit}パッケージは
+組み立てられた次元はどんなものでも使いませんが、
+MKS単位を使ってすべての単位を7つの基本的な次元に変換します。
+@example
+@group
+(%i2) N;
+                                     kg m
+(%o2)                                ----
+                                       2
+                                      s
+@end group
+@group
+(%i3) dyn;
+                                   1      kg m
+(%o3)                           (------) (----)
+                                 100000     2
+                                           s
+@end group
+@group
+(%i4) g;
+                                    1
+(%o4)                             (----) (kg)
+                                   1000
+@end group
+@group
+(%i5) centigram*inch/minutes^2;
+                                  127        kg m
+(%o5)                       (-------------) (----)
+                             1800000000000     2
+                                              s
+@end group
+@end example
+
+いくつかの場合、これは望みの振る舞いです。
+もしユーザーが他の単位を使いたいなら、
+これは
+@code{setunits}コマンドで達成されます:
+@example
+@group
+(%i6) setunits([centigram,inch,minute]);
+(%o6)                                done
+@end group
+@group
+(%i7) N;
+                            1800000000000   %in cg
+(%o7)                      (-------------) (------)
+                                 127            2
+                                            %min
+@end group
+@group
+(%i8) dyn;
+                               18000000   %in cg
+(%o8)                         (--------) (------)
+                                 127          2
+                                          %min
+@end group
+@group
+(%i9) g;
+(%o9)                             (100) (cg)
+@end group
+@group
+(%i10) centigram*inch/minutes^2;
+                                    %in cg
+(%o10)                              ------
+                                        2
+                                    %min
+@end group
+@end example
+
+単位の設定は実に柔軟性があります。
+例えば、もしキログラム、メータ、秒に、それらの次元のデフォルトとして戻りたいなら、
+以下のようにできます:
+@example
+@group
+(%i11) setunits([kg,m,s]);
+(%o11)                               done
+@end group
+@group
+(%i12) centigram*inch/minutes^2;
+                                  127        kg m
+(%o12)                      (-------------) (----)
+                             1800000000000     2
+                                              s
+@end group
+@end example
+
+組立単位もこのコマンドで扱います:
+@example
+@group
+(%i17) setunits(N);
+(%o17)                               done
+@end group
+@group
+(%i18) N;
+(%o18)                                 N
+@end group
+@group
+(%i19) dyn;
+                                    1
+(%o19)                           (------) (N)
+                                  100000
+@end group
+@group
+(%i20) kg*m/s^2;
+(%o20)                                 N
+@end group
+@group
+(%i21) centigram*inch/minutes^2;
+                                    127
+(%o21)                        (-------------) (N)
+                               1800000000000
+@end group
+@end example
+
+Notice that the 
+@emph{unit}パッケージは
+質量、長さ、力として二乗された逆時間の非MKS組み合わせを認識し、
+それをNewtonのものに変換したことに注目してください。
+これは一般にMaximaがどのように働くかを示します。
+例えば、もしNewtonのものよりダインを好むなら、
+単に以下をします:
+@example
+@group
+(%i22) setunits(dyn);
+(%o22)                               done
+@end group
+@group
+(%i23) kg*m/s^2;
+(%o23)                          (100000) (dyn)
+@end group
+@group
+(%i24) centigram*inch/minutes^2;
+                                  127
+(%o24)                         (--------) (dyn)
+                                18000000
+@end group
+@end example
+
+任意の力に整理することを中断するには、
+uforgetコマンドを使います:
+@example
+@group
+(%i26) uforget(dyn);
+(%o26)                               false
+@end group
+@group
+(%i27) kg*m/s^2;
+                                     kg m
+(%o27)                               ----
+                                       2
+                                      s
+@end group
+@group
+(%i28) centigram*inch/minutes^2;
+                                  127        kg m
+(%o28)                      (-------------) (----)
+                             1800000000000     2
+                                              s
+@end group
+@end example
+これは、
+@code{uforget(N)}か @code{uforget(%force)}を使って
+同じようにうまく働きました。
+
+@code{uforget}も参照してください。
+この関数を使うには、最初に @code{load("unit")}を書いてください。
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} uforget (@var{list})
+デフォルトでは、 @emph{unit}パッケージは
+、NKS単位を使って、単位すべてを7つの基本次元に変換します。
+この振る舞いは
+@code{setunits}コマンドを使って変えることができます。
+その後、ユーザーは、
+@code{uforget}コマンドを使って，
+特定の次元に関してデフォルトの振る舞いに戻すことができます:
+@example
+@group
+(%i13) setunits([centigram,inch,minute]);
+(%o13)                               done
+@end group
+@group
+(%i14) centigram*inch/minutes^2;
+                                    %in cg
+(%o14)                              ------
+                                        2
+                                    %min
+@end group
+@group
+(%i15) uforget([cg,%in,%min]);
+(%o15)                      [false, false, false]
+@end group
+@group
+(%i16) centigram*inch/minutes^2;
+                                  127        kg m
+(%o16)                      (-------------) (----)
+                             1800000000000     2
+                                              s
+@end group
+@end example
+
+@code{uforget}は単位ではなく次元上で働きます。
+だから、特定の次元の任意の単位は機能します。
+次元それ自身も合法な引数です。
+
+@code{setunits}も参照してください。
+この関数を使うには、最初に @code{load("unit")}を書いてください。
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} convert (@var{expr}, @var{list})
+グローバル環境をリセットすることがやりすぎの時、
+@code{convert}コマンドがあります。
+これは1回変換を許します。
+変換に使うのに、1つの引数か単位のリストを受け付けることができます。
+変換演算がされた時、
+望みの結果が再変換されるのを避けるために
+正常なグローバル評価系は迂回されます。
+結果として、
+もしこの振る舞いを制御しているグローバル環境(@code{ratprint})が真なら、
+不正確な計算に対して、"rat"警告が見られるでしょう。
+これは
+グローバル変換の精度の抜き取り検査に
+役に立ちます。
+別の特長は
+たとえグローバル環境が組立次元に整理するように設定されても
+@code{convert}はユーザーに基本次元変換することを許すことです。
+
+@example
+@group
+(%i2) kg*m/s^2;
+                                     kg m
+(%o2)                                ----
+                                       2
+                                      s
+@end group
+@group
+(%i3) convert(kg*m/s^2,[g,km,s]);
+                                     g km
+(%o3)                                ----
+                                       2
+                                      s
+@end group
+@group
+(%i4) convert(kg*m/s^2,[g,inch,minute]);
+
+`rat' replaced 39.37007874015748 by 5000/127 = 39.37007874015748
+                              18000000000   %in g
+(%o4)                        (-----------) (-----)
+                                  127           2
+                                            %min
+@end group
+@group
+(%i5) convert(kg*m/s^2,[N]);
+(%o5)                                  N
+@end group
+@group
+(%i6) convert(kg*m^2/s^2,[N]);
+(%o6)                                 m N
+@end group
+@group
+(%i7) setunits([N,J]);
+(%o7)                                done
+@end group
+@group
+(%i8) convert(kg*m^2/s^2,[N]);
+(%o8)                                 m N
+@end group
+@group
+(%i9) convert(kg*m^2/s^2,[N,inch]);
+
+`rat' replaced 39.37007874015748 by 5000/127 = 39.37007874015748
+                                 5000
+(%o9)                           (----) (%in N)
+                                 127
+@end group
+@group
+(%i10) convert(kg*m^2/s^2,[J]);
+(%o10)                                 J
+@end group
+@group
+(%i11) kg*m^2/s^2;
+(%o11)                                 J
+@end group
+@group
+(%i12) setunits([g,inch,s]);
+(%o12)                               done
+@end group
+@group
+(%i13) kg*m/s^2;
+(%o13)                                 N
+@end group
+@group
+(%i14) uforget(N);
+(%o14)                               false
+@end group
+@group
+(%i15) kg*m/s^2;
+                                5000000   %in g
+(%o15)                         (-------) (-----)
+                                  127       2
+                                           s
+@end group
+@group
+(%i16) convert(kg*m/s^2,[g,inch,s]);
+
+`rat' replaced 39.37007874015748 by 5000/127 = 39.37007874015748
+                                5000000   %in g
+(%o16)                         (-------) (-----)
+                                  127       2
+                                           s
+@end group
+@end example
+
+See also 
+@code{setunits}と @code{uforget}も参照してください。
+この関数を使うには、最初に @code{load("unit")}を書いてください。
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
+@end deffn
+
+
+@defvr {オプション変数} usersetunits
+デフォルト値: none
+
+もしユーザーが
+記述されたものよりもデフォルト単位の振る舞いを持ちたいなら、
+それらは
+@emph{maxima-init.mac}と @emph{usersetunits}変数を利用することができます。
+@emph{unit}パッケージは
+この変数がリストに割り当てられているかを見るためにスタートアップ時にチェックします。
+もし割り当てられているなら、そのリスト上でsetunitsを使い、
+そのリストからの単位をデフォルトに取ります。
+@code{uforget}は
+自身のデフォルト上にusersetunitsで定義された振る舞いに戻します。
+例えば、
+もし
+以下を含む@emph{maxima-init.mac}ファイルを持っているなら:
+@example
+usersetunits : [N,J];
+@end example
+we would see the following behavior:
+@example
+@group
+(%i1) load("unit")$
+*******************************************************************
+*                       Units version 0.50                        *
+*          Definitions based on the NIST Reference on             *
+*              Constants, Units, and Uncertainty                  *
+*       Conversion factors from various sources including         *
+*                   NIST and the GNU units package                *
+*******************************************************************
+
+Redefining necessary functions...
+WARNING: DEFUN/DEFMACRO: redefining function
+ TOPLEVEL-MACSYMA-EVAL ...
+WARNING: DEFUN/DEFMACRO: redefining function MSETCHK ...
+WARNING: DEFUN/DEFMACRO: redefining function KILL1 ...
+WARNING: DEFUN/DEFMACRO: redefining function NFORMAT ...
+Initializing unit arrays...
+Done.
+User defaults found...
+User defaults initialized.
+@end group
+@group
+(%i2) kg*m/s^2;
+(%o2)                                  N
+@end group
+@group
+(%i3) kg*m^2/s^2;
+(%o3)                                  J
+@end group
+@group
+(%i4) kg*m^3/s^2;
+(%o4)                                 J m
+@end group
+@group
+(%i5) kg*m*km/s^2;
+(%o5)                             (1000) (J)
+@end group
+@group
+(%i6) setunits([dyn,eV]);
+(%o6)                                done
+@end group
+@group
+(%i7) kg*m/s^2;
+(%o7)                           (100000) (dyn)
+@end group
+@group
+(%i8) kg*m^2/s^2;
+(%o8)                     (6241509596477042688) (eV)
+@end group
+@group
+(%i9) kg*m^3/s^2;
+(%o9)                    (6241509596477042688) (eV m)
+@end group
+@group
+(%i10) kg*m*km/s^2;
+(%o10)                   (6241509596477042688000) (eV)
+@end group
+@group
+(%i11) uforget([dyn,eV]);
+(%o11)                           [false, false]
+@end group
+@group
+(%i12) kg*m/s^2;
+(%o12)                                 N
+@end group
+@group
+(%i13) kg*m^2/s^2;
+(%o13)                                 J
+@end group
+@group
+(%i14) kg*m^3/s^2;
+(%o14)                                J m
+@end group
+@group
+(%i15) kg*m*km/s^2;
+(%o15)                            (1000) (J)
+@end group
+@end example
+@code{usersetunits}なしでは、
+初期の入力はMKSに変換されたでしょうし、
+uforgetはMKS規則への復帰をもたらしたでしょう。
+なるほど、
+ユーザーの好みは両方のケースで考慮されます。
+もし望まれるなら、これらはまだオーバーライドされることができることに注目してください。
+この整理を完全に消すには - 
+すなわち、ユーザーデフォルトを出荷デフォルトに再設定するには - 
+@code{dontusedimension}コマンドをつかうことができます。
+@code{usedimension}が@code{uforget}を使用上自由にする時だけ
+@code{uforget}はユーザー設定を再び戻すことができますが、
+代わりに、
+@code{kill(usersetunits)}は
+ユーザーデフォルトの知識すべてをセッションから完全に削除します。
+以下は
+これらの様々なオプションがいかに働くかを示すいくつかの例です。
+@example
+@group
+(%i2) kg*m/s^2;
+(%o2)                                  N
+@end group
+@group
+(%i3) kg*m^2/s^2;
+(%o3)                                  J
+@end group
+@group
+(%i4) setunits([dyn,eV]);
+(%o4)                                done
+@end group
+@group
+(%i5) kg*m/s^2;
+(%o5)                           (100000) (dyn)
+@end group
+@group
+(%i6) kg*m^2/s^2;
+(%o6)                     (6241509596477042688) (eV)
+@end group
+@group
+(%i7) uforget([dyn,eV]);
+(%o7)                          [false, false]
+@end group
+@group
+(%i8) kg*m/s^2;
+(%o8)                                  N
+@end group
+@group
+(%i9) kg*m^2/s^2;
+(%o9)                                  J
+@end group
+@group
+(%i10) dontusedimension(N);
+(%o10)                             [%force]
+@end group
+@group
+(%i11) dontusedimension(J);
+(%o11)                         [%energy, %force]
+@end group
+@group
+(%i12) kg*m/s^2;
+                                     kg m
+(%o12)                               ----
+                                       2
+                                      s
+@end group
+@group
+(%i13) kg*m^2/s^2;
+                                         2
+                                     kg m
+(%o13)                               -----
+                                       2
+                                      s
+@end group
+@group
+(%i14) setunits([dyn,eV]);
+(%o14)                               done
+@end group
+@group
+(%i15) kg*m/s^2;
+                                     kg m
+(%o15)                               ----
+                                       2
+                                      s
+@end group
+@group
+(%i16) kg*m^2/s^2;
+                                         2
+                                     kg m
+(%o16)                               -----
+                                       2
+                                      s
+@end group
+@group
+(%i17) uforget([dyn,eV]);
+(%o17)                         [false, false]
+@end group
+@group
+(%i18) kg*m/s^2;
+                                     kg m
+(%o18)                               ----
+                                       2
+                                      s
+@end group
+@group
+(%i19) kg*m^2/s^2;
+                                         2
+                                     kg m
+(%o19)                               -----
+                                       2
+                                      s
+@end group
+@group
+(%i20) usedimension(N);
+Done.  To have Maxima simplify to this dimension, use
+setunits([unit]) to select a unit.
+(%o20)                               true
+@end group
+@group
+(%i21) usedimension(J);
+Done.  To have Maxima simplify to this dimension, use
+setunits([unit]) to select a unit.
+(%o21)                               true
+@end group
+@group
+(%i22) kg*m/s^2;
+                                     kg m
+(%o22)                               ----
+                                       2
+                                      s
+@end group
+@group
+(%i23) kg*m^2/s^2;
+                                         2
+                                     kg m
+(%o23)                               -----
+                                       2
+                                      s
+@end group
+@group
+(%i24) setunits([dyn,eV]);
+(%o24)                               done
+@end group
+@group
+(%i25) kg*m/s^2;
+(%o25)                          (100000) (dyn)
+@end group
+@group
+(%i26) kg*m^2/s^2;
+(%o26)                    (6241509596477042688) (eV)
+@end group
+@group
+(%i27) uforget([dyn,eV]);
+(%o27)                           [false, false]
+@end group
+@group
+(%i28) kg*m/s^2;
+(%o28)                                 N
+@end group
+@group
+(%i29) kg*m^2/s^2;
+(%o29)                                 J
+@end group
+@group
+(%i30) kill(usersetunits);
+(%o30)                               done
+@end group
+@group
+(%i31) uforget([dyn,eV]);
+(%o31)                          [false, false]
+@end group
+@group
+(%i32) kg*m/s^2;
+                                     kg m
+(%o32)                               ----
+                                       2
+                                      s
+@end group
+@group
+(%i33) kg*m^2/s^2;
+                                         2
+                                     kg m
+(%o33)                               -----
+                                       2
+                                      s
+@end group
+@end example
+不運にも、
+このオプションの広い多様性は
+最初は少し混乱するものですが、
+一旦、ユーザーがそれらを使うのに成長すれば、
+それらがワーキング環境上でまさに完全な制御を持つことをユーザーは見いだすに違いありません。
+
+@c One other significant customization option available is the @code{setunitprefix}
+@c command.  Normally, abbreviations used in this package are as close to those
+@c used in standard texts as possible.  Some people, however, prefer to use those
+@c symbols for normal work and have units labeled in some other fasion.
+@c @code{setunitprefix} is provided for this case.  Here is an example of its use:
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
+@end defvr
+
+
+@deffn {関数} metricexpandall (@var{x})
+望みの計量単位すべてを自動的に生成するグローバル単位リストを再構築します。
+@var{x}は
+ユーザーがいくつの計量接頭子の定義を望むか指定するのに使われる数値引数です。
+引数は、より低い数字の単位を定義するより高い数字それぞれを持つような
+以下のようなものです:
+@example
+@group
+           0 - none. Only base units
+           1 - kilo, centi, milli
+(default)  2 - giga, mega, kilo, hecto, deka, deci, centi, milli,
+               micro, nano
+           3 - peta, tera, giga, mega, kilo, hecto, deka, deci,
+               centi, milli, micro, nano, pico, femto
+           4 - all
+@end group
+@end example
+通常は、Maximaは
+これは非常にたくさんの数の単位をもたらすので、完全な展開を定義しませんが、
+多少なりとも完全な方法でリストを再構築するのに
+@code{metricexpandall}を使うことができます。
+@emph{unit.mac}ファイルの中の適切な変数は @var{%unitexpand}です。
+@c This should be made configurable as a maxima-init.mac controllable option.
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
+@end deffn
+
+@defvr {変数} %unitexpand
+デフォルト値: @code{2}
+
+これは
+@emph{unit}の初期ロードの最中に
+@code{metricexpandall}に供給される
+値です。
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
+@end defvr
+
+
+@c @deffn {関数} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
+@c @end deffn
+
+@c @defvr {オプション変数} variablename
+@c デフォルト値: @code{true}
+@c @end defvr
+

@@ -1,0 +1,218 @@
+@menu
+* Functions and Variables for romberg::
+@end menu
+
+@node Functions and Variables for romberg, , Top, Top
+@section Functions and Variables for romberg
+
+@deffn {関数} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {関数} romberg (@var{F}, @var{a}, @var{b})
+
+Romberg法による数値積分を計算します。
+
+@code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}は
+積分@code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}の概算を返します。
+
+@var{expr}は、
+@var{x}が浮動小数点値にバインドされた時
+浮動小数点値に評価される
+式でなければいけません。
+
+@code{romberg(@var{F}, @var{a}, @var{b})}は
+積分@code{integrate(@var{F}(x), x, @var{a}, @var{b})}の概算を返します。
+ここで、@code{x}は@var{F}の名付けられない唯一の引数を表します;
+実際の引数は@code{x}と名付けられません。
+@var{F}は、
+引数が浮動小数点値の時、浮動小数点値を返す
+MaximaかLispの関数でなければいけません。
+@var{F}は翻訳またはコンパイルされたMaxima関数を指定することができます。
+
+@code{romberg}の精度は
+グローバル変数@code{rombergabs}と@code{rombergtol}によって決定されます。
+@code{romberg}は
+連続する近似の間の絶対差が@code{rombergabs}よりも小さい時か、
+連続する近似に関する相対差が@code{rombergtol}よりも小さい時、
+成功のうちに終了します。
+従って、
+@code{rombergabs}が0.0 (デフォルト)の時、
+相対誤差テストだけが@code{romberg}に効果を持ちます。
+
+@code{romberg}は
+あきらめる前に、せいぜい@code{rombergit}回、ステップサイズを半分にします;
+それゆえ、関数評価の最大回数は@code{2^rombergit}です。
+もし
+@code{rombergabs}や@code{rombergtol}によって確立される誤差基準が満たされないなら、
+@code{romberg}はエラーメッセージを印字します。
+@code{romberg}はいつも、少なくとも@code{rombergmin}回の繰り返しを行います;
+これは、被積分関数が振動的な時、見せかけの終了を防ぐつもりの発見的方法です。
+
+@code{romberg}は、
+積分変数を特定の値にバインド(する前ではなく)した後、
+被積分関数を繰り返し評価します。
+この評価ポリシーは、多次元積分を計算するための
+@code{romberg}の入れ子のコールを可能にします。
+しかしながら、誤差計算は
+入れ子の積分の誤差を考慮しないので、エラーは過小評価されるかもしれません。
+また、多次元問題のために特別に工夫された方法はより少ない関数評価で同じ精度をもたらす可能性があります。
+
+@code{load(romberg)}はこの関数をロードします。
+
+@code{QUADPACK}、数値積分関数のコレクションも参照してください。
+
+例:
+
+1次元積分。
+@c ===beg===
+@c load (romberg);
+@c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) 
+@c               + 1/((x - 3)^2 + 1/200);
+@c rombergtol : 1e-6;
+@c rombergit : 15;
+@c estimate : romberg (f(x), x, -5, 5);
+@c exact : integrate (f(x), x, -5, 5);
+@c abs (estimate - exact) / exact, numer;
+@c ===end===
+
+@example
+(%i1) load (romberg);
+(%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
+(%i2) f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000)
+              + 1/((x - 3)^2 + 1/200);
+                    1                 1                1
+(%o2) f(x) := -------------- + --------------- + --------------
+                     2    1           2    1            2    1
+              (x - 1)  + ---   (x - 2)  + ----   (x - 3)  + ---
+                         100              1000              200
+(%i3) rombergtol : 1e-6;
+(%o3)                 9.9999999999999995E-7
+(%i4) rombergit : 15;
+(%o4)                          15
+(%i5) estimate : romberg (f(x), x, -5, 5);
+(%o5)                   173.6730736617464
+(%i6) exact : integrate (f(x), x, -5, 5);
+(%o6) 10 sqrt(10) atan(70 sqrt(10))
+ + 10 sqrt(10) atan(30 sqrt(10)) + 10 sqrt(2) atan(80 sqrt(2))
+ + 10 sqrt(2) atan(20 sqrt(2)) + 10 atan(60) + 10 atan(40)
+(%i7) abs (estimate - exact) / exact, numer;
+(%o7)                7.5527060865060088E-11
+@end example
+
+@code{romberg}の入れ子のコールで実装された
+2次元積分。
+@c ===beg===
+@c load (romberg);
+@c g(x, y) := x*y / (x + y);
+@c rombergtol : 1e-6;
+@c estimate : romberg (romberg (g(x, y), y, 0, x/2), x, 1, 3);
+@c assume (x > 0);
+@c integrate (integrate (g(x, y), y, 0, x/2), x, 1, 3);
+@c exact : radcan (%);
+@c abs (estimate - exact) / exact, numer;
+@c ===end===
+
+@example
+(%i1) load (romberg);
+(%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
+(%i2) g(x, y) := x*y / (x + y);
+                                    x y
+(%o2)                   g(x, y) := -----
+                                   x + y
+(%i3) rombergtol : 1e-6;
+(%o3)                 9.9999999999999995E-7
+(%i4) estimate : romberg (romberg (g(x, y), y, 0, x/2), x, 1, 3);
+(%o4)                   0.81930239628356
+(%i5) assume (x > 0);
+(%o5)                        [x > 0]
+(%i6) integrate (integrate (g(x, y), y, 0, x/2), x, 1, 3);
+                                          3
+                                    2 log(-) - 1
+                    9                     2        9
+(%o6)       - 9 log(-) + 9 log(3) + ------------ + -
+                    2                    6         2
+(%i7) exact : radcan (%);
+                    26 log(3) - 26 log(2) - 13
+(%o7)             - --------------------------
+                                3
+(%i8) abs (estimate - exact) / exact, numer;
+(%o8)                1.3711979871851024E-10
+@end example
+
+@opencatbox
+@category{Package romberg} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@defvr {オプション変数} rombergabs
+デフォルト値: 0.0
+
+@code{romberg}の精度は、
+グローバル変数@code{rombergabs}と@code{rombergtol}で決定されます。
+@code{romberg}は
+連続する近似の間の絶対差が@code{rombergabs}よりも小さい時か、
+連続する近似に関する相対差が@code{rombergtol}よりも小さい時、
+成功のうちに終了します。
+従って、
+@code{rombergabs}が0.0 (デフォルト)の時、
+相対誤差テストだけが@code{romberg}に効果を持ちます。
+
+@code{rombergit}と@code{rombergmin}も参照してください。
+
+@opencatbox
+@category{Package romberg}
+@closecatbox
+
+@end defvr
+
+@defvr {オプション変数} rombergit
+デフォルト値: 11
+
+@code{romberg}は
+あきらめる前に、せいぜい@code{rombergit}回、ステップサイズを半分にします;
+それゆえ、関数評価の最大回数は@code{2^rombergit}です。
+@code{romberg}はいつも、少なくとも@code{rombergmin}回の繰り返しを行います;
+これは、被積分関数が振動的な時、見せかけの終了を防ぐつもりの発見的方法です。
+
+@code{rombergabs}と@code{rombergtol}も参照してください。
+
+@opencatbox
+@category{Package romberg}
+@closecatbox
+
+@end defvr
+
+@defvr {オプション変数} rombergmin
+デフォルト値: 0
+
+@code{romberg}はいつも、少なくとも@code{rombergmin}回の繰り返しを行います;
+これは、被積分関数が振動的な時、見せかけの終了を防ぐつもりの発見的方法です。
+
+@code{rombergit}, @code{rombergabs}, @code{rombergtol}も参照してください。
+
+@opencatbox
+@category{Package romberg}
+@closecatbox
+
+@end defvr
+
+@defvr {オプション変数} rombergtol
+デフォルト値: 1e-4
+
+@code{romberg}の精度は
+グローバル変数@code{rombergabs}と@code{rombergtol}によって決定されます。
+@code{romberg}は
+連続する近似の間の絶対差が@code{rombergabs}よりも小さい時か、
+連続する近似に関する相対差が@code{rombergtol}よりも小さい時、
+成功のうちに終了します。
+従って、
+@code{rombergabs}が0.0 (デフォルト)の時、
+相対誤差テストだけが@code{romberg}に効果を持ちます。
+
+@code{rombergit}と@code{rombergmin}も参照してください。
+
+@opencatbox
+@category{Package romberg}
+@closecatbox
+
+@end defvr
+

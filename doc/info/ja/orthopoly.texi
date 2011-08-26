@@ -1,0 +1,1131 @@
+@menu
+* Introduction to orthogonal polynomials::
+* Functions and Variables for orthogonal polynomials::
+@end menu
+
+@node Introduction to orthogonal polynomials, Functions and Variables for orthogonal polynomials, orthopoly, orthopoly
+@section Introduction to orthogonal polynomials
+
+@code{orthopoly}は、
+Chebyshev, Laguerre, Hermite, Jacobi, Legendre, 超球(Gegenbauer)
+多項式を含むいくつかの種類の直交多項式のシンボリックな評価と数値評価のためのパッケージです。
+さらに、@code{orthopoly}には球Bessel, 球Hankel, 球調和関数のサポートが含まれます。
+
+ほとんどの部分に関して、
+@code{orthopoly}は
+Abramowitz and Stegunの@i{Handbook of Mathematical Functions}, Chapter 22 (10th printing, December 1972)の慣例に従います;
+加えて、
+Gradshteyn and Ryzhikの@i{Table of Integrals, Series, and Products} (1980 corrected and enlarged edition)と
+Eugen Merzbacherの@i{Quantum Mechanics} (2nd edition, 1970)を使います。
+
+@c INSTALLATION INSTRUCTIONS NO LONGER RELEVANT
+@c BUT MAYBE SOME OF THESE FILES SHOULD BE MENTIONED IN ANOTHER CONTEXT
+@c This will create a directory @code{orthopoly_x} (again x is the release 
+@c identifier) that contains the source file @code{orthopoly.lisp}, user 
+@c documentation in html and texi formats, a sample maxima initialization file 
+@c @code{orthopoly-init.lisp}, a README file, a testing routine 
+@c @code{test_orthopoly.mac}, and two demonstration files.
+
+@c Start Maxima and compile orthopoly. To do this, use the command
+@c 
+@c (c1) compile_file("orthopoly.lisp");
+
+University of Nebraska at Kearney (UNK)のBarton Willisが
+@code{orthopoly}パッケージとドキュメンテーションを書きました。
+パッケージはGNU General Public License (GPL)の下で公開されています。
+
+@opencatbox
+@category{Orthogonal polynomials} @category{Share packages} @category{Package orthopoly}
+@closecatbox
+
+@subsection Getting Started with orthopoly
+
+@code{load (orthopoly)}は@code{orthopoly}パッケージをロードします。
+
+3次のLegendre多項式を見つけるには、
+
+@c ===beg===
+@c legendre_p (3, x);
+@c ===end===
+@example
+(%i1) legendre_p (3, x);
+                      3             2
+             5 (1 - x)    15 (1 - x)
+(%o1)      - ---------- + ----------- - 6 (1 - x) + 1
+                 2             2
+@end example
+
+これを@var{x}の冪の和として表すには、
+@var{ratsimp}か@var{rat}を結果に適用してください。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c [ratsimp (%), rat (%)];
+@c ===end===
+@example
+(%i2) [ratsimp (%), rat (%)];
+                        3           3
+                     5 x  - 3 x  5 x  - 3 x
+(%o2)/R/            [----------, ----------]
+                         2           2
+@end example
+
+あるいはまた、
+@code{legendre_p}の第二引数 (「主」変数)を正準有理形(CRE)にしてください。
+
+@c ===beg===
+@c legendre_p (3, rat (x));
+@c ===end===
+@example
+(%i1) legendre_p (3, rat (x));
+                              3
+                           5 x  - 3 x
+(%o1)/R/                   ----------
+                               2
+@end example
+
+浮動小数点評価に関して、
+@code{orthopoly}はランニング誤差解析を使って
+誤差の上限を推定します。
+例えば、
+
+@c ===beg===
+@c jacobi_p (150, 2, 3, 0.2);
+@c ===end===
+@example
+(%i1) jacobi_p (150, 2, 3, 0.2);
+(%o1) interval(- 0.062017037936715, 1.533267919277521E-11)
+@end example
+
+区間(interval)は形式form @code{interval (@var{c}, @var{r})}を取ります。
+ここで、@var{c}は中央値、@var{r}は区間の半径です。
+Maximaは区間上の算術をサポートしていないので、
+グラフィックスなどいくつかの状況では
+誤差を抑制し、区間の中央値だけ出力したいでしょう。
+これをするには、オプション変数@code{orthopoly_returns_intervals}を
+@code{false}に設定してください。
+
+@c ===beg===
+@c orthopoly_returns_intervals : false;
+@c jacobi_p (150, 2, 3, 0.2);
+@c ===end===
+@example
+(%i1) orthopoly_returns_intervals : false;
+(%o1)                         false
+(%i2) jacobi_p (150, 2, 3, 0.2);
+(%o2)                  - 0.062017037936715
+@end example
+
+更に知るにはセクション@pxref{Floating point Evaluation}を参照してください。
+
+@code{orthopoly}のほとんどの関数は@code{gradef}プロパティを持ちます;
+例えば、
+
+@c ===beg===
+@c diff (hermite (n, x), x);
+@c diff (gen_laguerre (n, a, x), x);
+@c ===end===
+@example
+(%i1) diff (hermite (n, x), x);
+(%o1)                     2 n H     (x)
+                               n - 1
+(%i2) diff (gen_laguerre (n, a, x), x);
+              (a)               (a)
+           n L   (x) - (n + a) L     (x) unit_step(n)
+              n                 n - 1
+(%o2)      ------------------------------------------
+                               x
+@end example
+
+
+二番目の例の単位階段関数は、
+@var{n}が0で評価することによって、そうでなければ生じる誤差を抑制します。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c ev (%, n = 0);
+@c ===end===
+@example
+(%i3) ev (%, n = 0);
+(%o3)                           0
+@end example
+
+@code{gradef}プロパティは「主」変数にのみ適用されます;
+他の引数に関する導関数は、普通、エラーメッセージに帰着します;
+例えば、
+
+@c ===beg===
+@c diff (hermite (n, x), x);
+@c diff (hermite (n, x), n);
+@c ===end===
+@example
+(%i1) diff (hermite (n, x), x);
+(%o1)                     2 n H     (x)
+                               n - 1
+(%i2) diff (hermite (n, x), n);
+
+Maxima doesn't know the derivative of hermite with respect the first
+argument
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+一般に、@code{orthopoly}の関数はリストや行列上に写像します。
+写像を完全に評価するには、
+オプション変数@code{doallmxops}と@code{listarith}はともに
+@code{true}(デフォルト値)でなければいけません。
+行列上への写像を見るには、以下を考えてください。
+
+@c ===beg===
+@c hermite (2, x);
+@c m : matrix ([0, x], [y, 0]);
+@c hermite (2, m);
+@c ===end===
+@example
+(%i1) hermite (2, x);
+                                     2
+(%o1)                    - 2 (1 - 2 x )
+(%i2) m : matrix ([0, x], [y, 0]);
+                            [ 0  x ]
+(%o2)                       [      ]
+                            [ y  0 ]
+(%i3) hermite (2, m);
+               [                             2  ]
+               [      - 2        - 2 (1 - 2 x ) ]
+(%o3)          [                                ]
+               [             2                  ]
+               [ - 2 (1 - 2 y )       - 2       ]
+@end example
+
+二番目の例では、値の@code{i, j}要素は@code{hermite (2, m[i,j])}です;
+次の例で見るように、これは、
+計算@code{-2 + 4 m . m}と同じではありません。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c -2 * matrix ([1, 0], [0, 1]) + 4 * m . m;
+@c ===end===
+@example
+(%i4) -2 * matrix ([1, 0], [0, 1]) + 4 * m . m;
+                    [ 4 x y - 2      0     ]
+(%o4)               [                      ]
+                    [     0      4 x y - 2 ]
+@end example
+
+定義域外の点で関数を評価すると、
+一般に、@code{orthopoly}は未評価関数を返します。
+例えば、
+
+@c ===beg===
+@c legendre_p (2/3, x);
+@c ===end===
+@example
+(%i1) legendre_p (2/3, x);
+(%o1)                        P   (x)
+                              2/3
+@end example
+
+@code{orthopoly}はTexへの翻訳をサポートします;
+端末上での2次元出力も行います。
+
+@c ===beg===
+@c spherical_harmonic (l, m, theta, phi);
+@c tex (%);
+@c jacobi_p (n, a, a - b, x/2);
+@c tex (%);
+@c ===end===
+@example
+(%i1) spherical_harmonic (l, m, theta, phi);
+                          m
+(%o1)                    Y (theta, phi)
+                          l
+(%i2) tex (%);
+$$Y_@{l@}^@{m@}\left(\vartheta,\varphi\right)$$
+(%o2)                         false
+(%i3) jacobi_p (n, a, a - b, x/2);
+                          (a, a - b) x
+(%o3)                    P          (-)
+                          n          2
+(%i4) tex (%);
+$$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
+(%o4)                         false
+@end example
+
+@subsection Limitations
+
+式がいくつかの直交多項式を記号順で含む時、
+式が実際に0になる可能性がありますが、
+まだMaximaはそれを零に整理することができません。
+もしそんな量で割るなら、困ったことになるでしょう。
+例えば、
+以下の式は
+1より大きな整数 @var{n}で零になりますが、
+まだMaximaはそれを零に整理することができません。
+
+@c ===beg===
+@c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) 
+@c       + (1 - n) * legendre_p (n - 2, x);
+@c ===end===
+@example
+(%i1) (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x)
+      + (1 - n) * legendre_p (n - 2, x);
+(%o1)  (2 n - 1) P     (x) x - n P (x) + (1 - n) P     (x)
+                  n - 1           n               n - 2
+@end example
+
+特定の @var{n}では式を零に換算できます。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c ev (% ,n = 10, ratsimp);
+@c ===end===
+@example
+(%i2) ev (% ,n = 10, ratsimp);
+(%o2)                           0
+@end example
+
+一般に、直交多項式の多項式形は
+浮動小数点評価に関しては不適当です。
+以下は例です。
+
+@c ACTUALLY NEEDS load(orthopoly); BEFORE ANYTHING ELSE
+@c ===beg===
+@c p : jacobi_p (100, 2, 3, x)$
+@c subst (0.2, x, p);
+@c jacobi_p (100, 2, 3, 0.2);
+@c float(jacobi_p (100, 2, 3, 2/10));
+@c ===end===
+@example 
+(%i1) p : jacobi_p (100, 2, 3, x)$
+
+(%i2) subst (0.2, x, p);
+(%o2)                3.4442767023833592E+35
+(%i3) jacobi_p (100, 2, 3, 0.2);
+(%o3)  interval(0.18413609135169, 6.8990300925815987E-12)
+(%i4) float(jacobi_p (100, 2, 3, 2/10));
+(%o4)                   0.18413609135169
+@end example
+
+真値は約0.184です;
+この計算は
+極端な減算消去誤差に苦しみます。
+多項式を展開し評価すると、よりよい結果を与えます。
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c p : expand (p)$
+@c subst (0.2, x, p);
+@c ===end===
+@example
+(%i5) p : expand(p)$
+(%i6) subst (0.2, x, p);
+(%o6) 0.18413609766122982
+@end example
+
+これは一般的な規則ではありません;
+多項式を展開することはいつも、
+数値評価により適した式を生じるわけではありません。
+数値評価する最もよい方法は
+断然、1つ以上の関数引数を浮動小数点数にすることです。
+それをすることで、
+特別な浮動小数点アルゴリズムが評価に使われます。
+
+Maximaの @code{float}関数は幾分でたらめです;
+もし
+@code{float}を記号次数や順序パラメータを持つ直交多項式を含む式に適用するなら、
+これらのパラメータは
+浮動小数点に変換されるかもしれません;
+その後、式は完全には評価されません。
+以下を考えてください。
+
+@c ===beg===
+@c assoc_legendre_p (n, 1, x);
+@c float (%);
+@c ev (%, n=2, x=0.9);
+@c ===end===
+@example
+(%i1) assoc_legendre_p (n, 1, x);
+                               1
+(%o1)                         P (x)
+                               n
+(%i2) float (%);
+                              1.0
+(%o2)                        P   (x)
+                              n
+(%i3) ev (%, n=2, x=0.9);
+                             1.0
+(%o3)                       P   (0.9)
+                             2
+@end example
+
+(%o3)の式は浮動小数点に評価されません;
+@code{orthopoly}は
+整数を要求するところで浮動小数点値を認識しません。
+同様に、
+数値評価
+recognize floating point values where it requires an integer. Similarly, 
+numerical evaluation of the 
+@code{pochhammer_max_index}を越える位数の
+@code{pochhammer}関数は迷惑かもしれません;
+以下を考えてください。
+
+@c ===beg===
+@c x :  pochhammer (1, 10), pochhammer_max_index : 5;
+@c ===end===
+@example
+(%i1) x :  pochhammer (1, 10), pochhammer_max_index : 5;
+(%o1)                         (1)
+                                 10
+@end example
+
+@code{float}を適用することは
+@var{x}を浮動小数点に評価しません。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c float (x);
+@c ===end===
+@example
+(%i2) float (x);
+(%o2)                       (1.0)
+                                 10.0
+@end example
+
+@var{x}を浮動小数点に評価するには、
+@code{pochhammer_max_index}を11以上にバインドして、
+@code{float}を @var{x}に適用する必要があります。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c float (x), pochhammer_max_index : 11;
+@c ===end===
+@example
+(%i3) float (x), pochhammer_max_index : 11;
+(%o3)                       3628800.0
+@end example
+
+@code{pochhammer_max_index}のデフォルト値は100です;
+@code{orthopoly}をロードした後、値を変えてください。
+
+最後に、参考書は直交多項式の定義を変えることを承知してください;
+一般的にAbramowitz and Stegunの慣例を使っています。
+
+orhtopolyのバグを疑う前に、
+いくつかの特殊なケースをチェックして、
+あなたの定義が@code{orthopoly}が使っているものと一致しているかを明らかにしてください。
+
+定義はしばしば規格化について異なります;
+時々、著者は
+@math{(-1, 1)}以外の区間上で直交な族を作る関数の「シフト」版を使います。
+例えば、
+@math{(0, 1)}上で直交するLegendre多項式を定義するのに、
+以下を定義します。
+
+@c ===beg===
+@c shifted_legendre_p (n, x) := legendre_p (n, 2*x - 1)$
+@c shifted_legendre_p (2, rat (x));
+@c legendre_p (2, rat (x));
+@c ===end===
+@example
+(%i1) shifted_legendre_p (n, x) := legendre_p (n, 2*x - 1)$
+
+(%i2) shifted_legendre_p (2, rat (x));
+                            2
+(%o2)/R/                 6 x  - 6 x + 1
+(%i3) legendre_p (2, rat (x));
+                               2
+                            3 x  - 1
+(%o3)/R/                    --------
+                               2
+@end example
+
+@anchor{Floating point Evaluation}
+@subsection Floating point Evaluation
+
+@code{orthopoly}の関数のほとんどは
+浮動小数点評価中の誤差を見積もるのに、
+ランニング誤差解析を使います;
+例外は球Bessel関数と第二種Legendreの陪多項式です。
+数値評価のため、
+球Bessel関数はSLATEC関数をコールします。
+第二種Legendreの陪多項式の数値評価のために特別な方法は使われません。
+
+ランニング誤差解析は
+(丸め単位としても知られている)計算機イプシロンの二次か高次の
+誤差を無視します。
+2,3の他の誤差も無視します。
+(ありそうにありませんが、)実際の誤差は推定を越える可能性があります。
+
+区間は形式 @code{interval (@var{c}, @var{r})}を持ちます。
+ここで、
+@var{c}は区間の中心で、
+@var{r}は半径です。
+区間の中心は複素数であり得ますし、
+半径はいつも正の実数です。
+
+以下は例です。
+
+@c ===beg===
+@c fpprec : 50$
+@c y0 : jacobi_p (100, 2, 3, 0.2);
+@c y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
+@c ===end==
+
+@example
+(%i1) fpprec : 50$
+
+(%i2) y0 : jacobi_p (100, 2, 3, 0.2);
+(%o2) interval(0.1841360913516871, 6.8990300925815987E-12)
+(%i3) y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
+(%o3) 1.8413609135168563091370224958913493690868904463668b-1
+@end example
+
+実際の誤差が誤差推定よりも小さいことをテストしましょう。
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
+@c ===beg===
+@c is (abs (part (y0, 1) - y1) < part (y0, 2));
+@c ===end===
+@example
+(%i4) is (abs (part (y0, 1) - y1) < part (y0, 2));
+(%o4)                         true
+@end example
+
+なるほど、この例では、
+誤差推定は真の誤差の上限です。
+
+Maximaは区間の算術をサポートしていません。
+
+@c ===beg===
+@c legendre_p (7, 0.1) + legendre_p (8, 0.1);
+@c ===end===
+@example
+(%i1) legendre_p (7, 0.1) + legendre_p (8, 0.1);
+(%o1) interval(0.18032072148437508, 3.1477135311021797E-15)
+        + interval(- 0.19949294375000004, 3.3769353084291579E-15)
+@end example
+
+ユーザーは区間算数を行う計算をする演算子を定義できます。
+区間の足し算を定義するには、
+以下を定義できます。
+
+@c ===beg===
+@c infix ("@+")$
+@c "@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) 
+@c       + part (y, 2))$
+@c legendre_p (7, 0.1) @+ legendre_p (8, 0.1);
+@c ===end===
+@example
+(%i1) infix ("@@+")$
+
+(%i2) "@@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2)
+      + part (y, 2))$
+
+(%i3) legendre_p (7, 0.1) @@+ legendre_p (8, 0.1);
+(%o3) interval(- 0.019172222265624955, 6.5246488395313372E-15)
+@end example
+
+引数が複素数の時、特殊な浮動小数点ルーチンがコールされます。
+例えば、
+
+@c ===beg===
+@c legendre_p (10, 2 + 3.0*%i);
+@c ===end===
+@example
+(%i1) legendre_p (10, 2 + 3.0*%i);
+(%o1) interval(- 3.876378825E+7 %i - 6.0787748E+7, 
+                                           1.2089173052721777E-6)
+@end example
+
+これを真値と比較しましょう。
+
+@c ===beg===
+@c float (expand (legendre_p (10, 2 + 3*%i)));
+@c ===end===
+@example
+(%i1) float (expand (legendre_p (10, 2 + 3*%i)));
+(%o1)          - 3.876378825E+7 %i - 6.0787748E+7
+@end example
+
+更に、
+引数が多倍長浮動小数点の時、
+特殊な浮動小数点ルーチンがコールされます;
+しかしながら、多倍長浮動小数点は
+倍精度浮動小数点に変換され、最終結果は倍精度です。
+
+@c ===beg===
+@c ultraspherical (150, 0.5b0, 0.9b0);
+@c ===end===
+@example
+(%i1) ultraspherical (150, 0.5b0, 0.9b0);
+(%o1) interval(- 0.043009481257265, 3.3750051301228864E-14)
+@end example
+
+@subsection Graphics and @code{orthopoly}
+
+直交多項式を含む式をプロットするには、
+2つのことをしなければいけません:
+@enumerate
+@item 
+オプション変数 @code{orthopoly_returns_intervals}を @code{false}に設定する。
+@item
+@code{orthopoly}関数のすべてのコールをクォートする。
+@end enumerate
+もし関数コールがクォートされていないなら、
+Maximaはプロットする前にそれらを多項式に評価します;
+結果として、
+特殊な浮動小数点コードはコールされません。
+以下は、Legendre多項式を含む式をどうやってプロットするかの例です。
+
+@c ===beg===
+@c plot2d ('(legendre_p (5, x)), [x, 0, 1]), 
+@c                         orthopoly_returns_intervals : false;
+@c ===end===
+@example
+(%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]),
+                        orthopoly_returns_intervals : false;
+(%o1)
+@end example
+
+@ifnotinfo
+@image{figures/orthopoly1,8cm}
+@end ifnotinfo
+
+式 @code{legendre_p (5, x)}@i{全体}をクォートします;
+これは
+@code{'legendre_p (5, @var{x})}を使って関数名をクォートするだけとは違います。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+
+@subsection Miscellaneous Functions
+
+@code{orthopoly}パッケージは
+Pochhammerシンボルと単位階段函数を定義します。
+@code{orthopoly}は@code{gradef}文の中で
+Kroneckerのデルタ函数と単位階段函数を使います。
+
+Pochhammerシンボルをガンマ函数の商に変換するには、
+@code{makegamma}を使ってください。
+
+@c ===beg===
+@c makegamma (pochhammer (x, n));
+@c makegamma (pochhammer (1/2, 1/2));
+@c ===end===
+@example
+(%i1) makegamma (pochhammer (x, n));
+                          gamma(x + n)
+(%o1)                     ------------
+                            gamma(x)
+(%i2) makegamma (pochhammer (1/2, 1/2));
+                                1
+(%o2)                       ---------
+                            sqrt(%pi)
+@end example
+
+Pochhammerシンボルの導函数は
+@code{psi}函数を使って与えられます。
+
+@c ===beg===
+@c diff (pochhammer (x, n), x);
+@c diff (pochhammer (x, n), n);
+@c ===end===
+@example
+(%i1) diff (pochhammer (x, n), x);
+(%o1)             (x)  (psi (x + n) - psi (x))
+                     n     0             0
+(%i2) diff (pochhammer (x, n), n);
+(%o2)                   (x)  psi (x + n)
+                           n    0
+@end example
+
+(%o1)の式に注意する必要があります;
+@code{psi}函数の差分は
+@code{@var{x} = -1, -2, .., -@var{n}}の時
+多項式です。
+これらの多項式は
+@var{n}が正の整数の時、
+導函数を@code{@var{n} - 1}次多項式にするように、
+@code{pochhammer (@var{x}, @var{n})}の因子を相殺します。
+
+Pochhammerシンボルは
+ガンマ函数の商としての表現を通して
+負の位数で定義されます。
+以下を考えてください。
+
+@c ===beg===
+@c q : makegamma (pochhammer (x, n));
+@c sublis ([x=11/3, n= -6], q);
+@c ===end===
+@example
+(%i1) q : makegamma (pochhammer (x, n));
+                          gamma(x + n)
+(%o1)                     ------------
+                            gamma(x)
+(%i2) sublis ([x=11/3, n= -6], q);
+                               729
+(%o2)                        - ----
+                               2240
+@end example
+
+代わりに、この結果を直接得ることができます。
+
+@c ===beg===
+@c pochhammer (11/3, -6);
+@c ===end===
+@example
+(%i1) pochhammer (11/3, -6);
+                               729
+(%o1)                        - ----
+                               2240
+@end example
+
+単位階段函数は左連続です;
+従って、
+
+@c ===beg===
+@c [unit_step (-1/10), unit_step (0), unit_step (1/10)];
+@c ===end===
+@example
+(%i1) [unit_step (-1/10), unit_step (0), unit_step (1/10)];
+(%o1)                       [0, 0, 1]
+@end example
+
+もし零で左連続でも右連続でもない単位階段函数が必要なら、
+@code{signum}を使って自分のものを定義してください;
+例えば、
+
+@c ===beg===
+@c xunit_step (x) := (1 + signum (x))/2$
+@c [xunit_step (-1/10), xunit_step (0), xunit_step (1/10)];
+@c ===end===
+@example
+(%i1) xunit_step (x) := (1 + signum (x))/2$
+
+(%i2) [xunit_step (-1/10), xunit_step (0), xunit_step (1/10)];
+                                1
+(%o2)                       [0, -, 1]
+                                2
+@end example
+
+@code{unit_step}自身を再定義しないでください;
+@code{orthopoly}の中のあるコードは
+単位階段函数が左連続であることを要求します。
+
+
+@subsection Algorithms
+
+一般的に、
+@code{orthopoly}は
+直交多項式の超幾何表現を使うことで記号評価をします
+超幾何函数は
+(ドキュメント化されていない)関数 @code{hypergeo11}と @code{hypergeo21}を使って
+評価されます。
+例外は半整数Bessel函数と第二種Legendreの陪函数です。
+半整数Bessel函数は明示的な表現を使って評価されます。
+第二種Legendreの陪函数は再帰を使って評価されます。
+
+浮動小数点評価のために、
+函数のほとんどを超幾何形式に再び変換します;
+順方向再帰を使って超幾何函数を評価します。
+ここでも、
+例外は半整数Bessel函数と第二種Legendreの陪函数です。
+数値的に、
+半整数Bessel函数はSLATECコードを使って評価されます。
+
+
+@node Functions and Variables for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
+@section Functions and Variables for orthogonal polynomials
+
+@deffn {関数} assoc_legendre_p (@var{n}, @var{m}, @var{x})
+次数 @var{n}と位数 @var{m}の第一種Legendre陪函数。
+
+参考文献: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
+(second equation), page 334, and 8.2.5, page 333.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} assoc_legendre_q (@var{n}, @var{m}, @var{x})
+次数 @var{n}と位数 @var{m}の第二種Legendre陪函数。
+
+参考文献: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} chebyshev_t (@var{n}, @var{x})
+第一種Chebyshev函数。
+
+参考文献: Abramowitz and Stegun, equation 22.5.47, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} chebyshev_u (@var{n}, @var{x})
+第二種Chebyshev函数。
+
+参考文献: Abramowitz and Stegun, equation 22.5.48, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} gen_laguerre (@var{n}, @var{a}, @var{x})
+次数 @var{n}の一般化Laguerre多項式。
+
+参考文献: Abramowitz and Stegun, equation 22.5.54, page 780.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} hermite (@var{n}, @var{x})
+Hermite多項式。
+
+参考文献: Abramowitz and Stegun, equation 22.5.55, page 780.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} intervalp (@var{e})
+もし入力が区間なら @code{true}を、
+そうでないなら @code{false}を返します。
+
+@opencatbox
+@category{Package orthopoly} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+Jacobiの多項式。
+
+Jacobiの多項式は実際には
+@var{a}と @var{b}すべてに対して定義されます;
+しかし、Jacobi多項式の重み
+@code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}}は
+@code{@var{a} <= -1}か @code{@var{b} <= -1}で可積分でありません。
+
+参考文献: Abramowitz and Stegun, equation 22.5.42, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} laguerre (@var{n}, @var{x})
+Laguerre多項式。
+
+参考文献: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} legendre_p (@var{n}, @var{x})
+第一種Legendre多項式。
+
+参考文献: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} legendre_q (@var{n}, @var{x})
+第二種Legendre多項式。
+
+参考文献: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} orthopoly_recur (@var{f}, @var{args})
+引数 @var{args}を持つ直交函数族 @var{f}の漸化式を返します。
+再帰は多項式次数に関してです。
+
+@c ===beg===
+@c orthopoly_recur (legendre_p, [n, x]);
+@c ===end===
+@example
+(%i1) orthopoly_recur (legendre_p, [n, x]);
+                (2 n - 1) P     (x) x + (1 - n) P     (x)
+                           n - 1                 n - 2
+(%o1)   P (x) = -----------------------------------------
+         n                          n
+@end example
+
+@code{orthopoly_recur}の二番目の引数は
+関数 @var{f}の正しい数の引数のリストでなければいけません;
+もしそうでないなら、Maximaはエラーをシグナルします。
+
+@c ===beg===
+@c orthopoly_recur (jacobi_p, [n, x]);
+@c ===end===
+@example
+(%i1) orthopoly_recur (jacobi_p, [n, x]);
+
+Function jacobi_p needs 4 arguments, instead it received 2
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+更に、
+@var{f}が直交多項式族の1つの名前でないなら、
+エラーがシグナルされます。
+
+@c ===beg===
+@c orthopoly_recur (foo, [n, x]);
+@c ===end===
+@example
+(%i1) orthopoly_recur (foo, [n, x]);
+
+A recursion relation for foo isn't known to Maxima
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@defvr {変数} orthopoly_returns_intervals
+デフォルト値: @code{true}
+
+@code{orthopoly_returns_intervals}が @code{true}の時、
+浮動小数点の結果が形式 @code{interval (@var{c}, @var{r})}
+で返されます。
+ここで、 @var{c}は区間の中心で、
+@var{r}は半径です。
+中心は複素数であり得ます;
+その場合、区間は複素平面上の円です。
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} orthopoly_weight (@var{f}, @var{args})
+
+3つの要素のリストを返します;
+一番目の要素は
+リスト @var{args}が与える引数を持つ直交多項式族 @var{f}の重みの公式です;
+二番目と三番目の要素は
+直交性の区間の下限と上限を与えます。
+例えば、
+
+@c ===beg===
+@c w : orthopoly_weight (hermite, [n, x]);
+@c integrate (w[1] * hermite (3, x) * hermite (2, x), x, w[2], w[3]);
+@c ===end===
+@example
+(%i1) w : orthopoly_weight (hermite, [n, x]);
+                            2
+                         - x
+(%o1)                 [%e    , - inf, inf]
+(%i2) integrate(w[1]*hermite(3, x)*hermite(2, x), x, w[2], w[3]);
+(%o2)                           0
+@end example
+
+@var{f}の主変数はシンボルでなければいけません;
+そうでないなら、Maximaはエラーをシグナルします。
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} pochhammer (@var{n}, @var{x})
+Pochhammerシンボル。
+@code{@var{n} <= pochhammer_max_index}の非負整数 @var{n}に対して、
+式 @code{pochhammer (@var{x}, @var{n})}は
+@code{@var{n} > 0}の時、
+積 @code{@var{x} (@var{x} + 1) (@var{x} + 2) ... (@var{x} + n - 1)}
+を評価します。
+@code{@var{n} = 0}の時は1です。
+負の @var{n}に対しては、
+@code{pochhammer (@var{x}, @var{n})}は
+@code{(-1)^@var{n} / pochhammer (1 - @var{x}, -@var{n})}として定義されます。
+従って、
+
+@c ===beg===
+@c pochhammer (x, 3);
+@c pochhammer (x, -3);
+@c ===end===
+@example
+(%i1) pochhammer (x, 3);
+(%o1)                   x (x + 1) (x + 2)
+(%i2) pochhammer (x, -3);
+                                 1
+(%o2)               - -----------------------
+                      (1 - x) (2 - x) (3 - x)
+@end example
+
+Pochhammerシンボルをガンマ函数の商に変換するには、
+(Abramowitz and Stegun, equation 6.1.22を参照してください)
+@code{makegamma}を使ってください;
+例えば、
+
+@c ===beg===
+@c makegamma (pochhammer (x, n));
+@c ===end===
+@example
+(%i1) makegamma (pochhammer (x, n));
+                          gamma(x + n)
+(%o1)                     ------------
+                            gamma(x)
+@end example
+
+@var{n}が @code{pochhammer_max_index}を越えるか、
+@var{n}が記号の時、
+@code{pochhammer}は名詞形を返します。
+
+@c ===beg===
+@c pochhammer (x, n);
+@c ===end===
+@example
+(%i1) pochhammer (x, n);
+(%o1)                         (x)
+                                 n
+@end example
+
+@opencatbox
+@category{Package orthopoly} @category{Gamma and factorial functions}
+@closecatbox
+
+@end deffn
+
+@defvr {変数} pochhammer_max_index
+デフォルト値: 100
+
+@code{pochhammer (@var{n}, @var{x})}は
+@code{@var{n} <= pochhammer_max_index}の時だけ
+積を展開します。
+
+例:
+
+@c ===beg===
+@c pochhammer (x, 3), pochhammer_max_index : 3;
+@c pochhammer (x, 4), pochhammer_max_index : 3;
+@c ===end===
+@example
+(%i1) pochhammer (x, 3), pochhammer_max_index : 3;
+(%o1)                   x (x + 1) (x + 2)
+(%i2) pochhammer (x, 4), pochhammer_max_index : 3;
+(%o2)                         (x)
+                                 4
+@end example
+
+参考文献: Abramowitz and Stegun, equation 6.1.16, page 256.
+
+@opencatbox
+@category{Package orthopoly} @category{Gamma and factorial functions}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} spherical_bessel_j (@var{n}, @var{x})
+第一種球Bessel函数。
+
+参考文献: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} spherical_bessel_y (@var{n}, @var{x})
+第二種球Bessel函数。
+
+参考文献: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} spherical_hankel1 (@var{n}, @var{x})
+第一種球Hankel函数。
+
+参考文献: Abramowitz and Stegun, equation 10.1.36, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} spherical_hankel2 (@var{n}, @var{x})
+第二種球Hankel函数。
+
+参考文献: Abramowitz and Stegun, equation 10.1.17, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+球調和函数。
+
+参考文献: Merzbacher 9.64.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} unit_step (@var{x})
+左連続の単位階段函数;なので
+@code{unit_step (@var{x})}は@code{@var{x} <= 0}で0であり、
+@code{@var{x} > 0}で1です。
+
+もし0で値1/2を取る単位階段函数が欲しいなら、
+@code{(1 + signum (@var{x}))/2}を使ってください。
+
+@opencatbox
+@category{Package orthopoly} @category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ultraspherical (@var{n}, @var{a}, @var{x})
+(Gegenbauer多項式としても知られている)超球多項式。
+
+参考文献: Abramowitz and Stegun, equation 22.5.46, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
+@end deffn

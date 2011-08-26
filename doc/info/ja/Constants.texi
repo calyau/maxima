@@ -1,0 +1,323 @@
+@c -----------------------------------------------------------------------------
+@page
+@node Constants, Lists, Strings, Data Types and Structures
+@section Constants
+@c -----------------------------------------------------------------------------
+
+@menu
+* Functions and Variables for Constants::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Constants,  , Constants, Constants
+@section Functions and Variables for Constants
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{%e}
+@defvr {定数} %e
+@ifinfo
+@vrindex e
+@vrindex Euler's number
+@vrindex Base of natural logarithm
+@end ifinfo
+@code{%e}はEuler数としても知られる自然対数の基数を表します。
+@code{%e}の数値は倍精度浮動小数点数2.718281828459045d0です。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%i}
+@defvr {定数} %i
+@ifinfo
+@vrindex i
+@vrindex Imaginary unit
+@end ifinfo
+
+@code{%i}は虚数単位@math{sqrt(- 1)}を表します。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{false}
+@defvr {定数} false
+
+@code{false}は同じ名前のブーリアン定数を表します。
+Maximaは、Lispの値@code{NIL}で@code{false}を実装しています。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%gamma}
+@defvr {定数} %gamma
+@ifinfo
+@vrindex Euler-Mascheroni constant
+@end ifinfo
+
+Euler-Macheroni定数0.5772156649015329 ....
+@c DOUBTLESS THERE IS MORE TO SAY HERE.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ind}
+@defvr {定数} ind
+@ifinfo
+@vrindex Indeterminate
+@end ifinfo
+
+@code{ind}は有界で不定の結果を表します。
+
+@mref{limit}も参照してください。
+
+例:
+
+@c ===beg===
+@c limit (sin(1/x), x, 0);
+@c ===end===
+@example
+(%i1) limit (sin(1/x), x, 0);
+(%o1)                          ind
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{inf}
+@defvr {定数} inf
+@ifinfo
+@vrindex Real infinity
+@end ifinfo
+
+@code{inf}は実数の正の無限大を表します。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{infinity}
+@defvr {定数}  infinity
+@ifinfo
+@vrindex Complex infinity
+@end ifinfo
+
+@code{infinity}は複素数の無限大を表します。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{minf}
+@defvr {定数} minf
+@ifinfo
+@vrindex Minus infinity
+@vrindex Negative infinity
+@end ifinfo
+
+@code{minf}は実数のマイナスの（すなわち負の）無限大を表します。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%phi}
+@defvr {定数} %phi
+@ifinfo
+@vrindex phi
+@vrindex Golden mean
+@end ifinfo
+
+@code{%phi}は@i{黄金比}と呼ばれる@math{(1 + sqrt(5))/2}を表します。
+@code{%phi}の数値は倍精度浮動小数点数1.618033988749895d0です。
+
+@mref{fibtophi}は、@code{%phi}を使って
+フィボナッチ数@code{fib(n)}を表現します。
+
+デフォルトでは、Maximaは
+@code{%phi}の代数的プロパティを知りません。
+@code{tellrat(%phi^2 - %phi - 1)}と@code{algebraic: true}を評価した後、
+@mref{ratsimp}は @code{%phi}を含むいくつかの式を整理できます。
+
+例:
+
+@code{fibtophi}は、@code{%phi}を使って
+フィボナッチ数@code{fib(n)}を表現します。
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+デフォルトでは、Maximaは
+@code{%phi}の代数的プロパティを知りません。
+@code{tellrat(%phi^2 - %phi - 1)}と@code{algebraic: true}を評価した後、
+@code{ratsimp}は @code{%phi}を含むいくつかの式を整理できます。
+
+@c ===beg===
+@c e : expand ((%phi^2 - %phi - 1) * (A + 1));
+@c ratsimp (e);
+@c tellrat (%phi^2 - %phi - 1);
+@c algebraic : true;
+@c ratsimp (e);
+@c ===end===
+@example
+(%i1) e : expand ((%phi^2 - %phi - 1) * (A + 1));
+                 2                      2
+(%o1)        %phi  A - %phi A - A + %phi  - %phi - 1
+(%i2) ratsimp (e);
+                  2                     2
+(%o2)        (%phi  - %phi - 1) A + %phi  - %phi - 1
+(%i3) tellrat (%phi^2 - %phi - 1);
+                            2
+(%o3)                  [%phi  - %phi - 1]
+(%i4) algebraic : true;
+(%o4)                         true
+(%i5) ratsimp (e);
+(%o5)                           0
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%pi}
+@defvr {定数} %pi
+@ifinfo
+@vrindex pi
+@end ifinfo
+
+@code{%pi}は直径に体する円周の比を表します。
+@code{%pi}の数値は倍精度浮動小数点数3.141592653589793d0です。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{true}
+@defvr {定数} true
+
+@code{true}は同じ名前のブーリアン定数を表します。
+MaximaはLispの値@code{T}で@code{true}を実装しています。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{und}
+@defvr {定数} und
+@ifinfo
+@vrindex Undefined
+@end ifinfo
+
+@code{und}は未定義の結果を表します。
+
+@mref{limit}も参照してください。
+
+例:
+
+@c ===beg===
+@c limit (x*sin(x), x, inf);
+@c ===end===
+@example
+(%i1) limit (x*sin(x), x, inf);
+(%o1)                          und
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zeroa}
+@defvr {定数} zeroa
+
+@code{zeroa}はゼロの上の無限小を表します。
+@code{zeroa}は式の中で使うことができます。
+@code{limit}は無限小を含む式を整理します。
+
+@mref{zerob}と@mref{limit}も参照してください。
+
+例:
+
+@code{limit}は無限小を含む式を整理します:
+
+@c ===beg===
+@c limit(zeroa);
+@c limit(zeroa+x);
+@c ===end===
+@example
+(%i1) limit(zeroa);
+(%o1)                           0
+(%i2) limit(x+zeroa);
+(%o2)                           x
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zerob}
+@defvr {定数} zerob
+
+@code{zerob}はゼロの下の無限小を表します。
+@code{zerob}は式の中で使うことができます。
+@code{limit}は無限小を含む式を整理します。
+
+@mref{zeroa}と@mref{limit}も参照してください。
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
