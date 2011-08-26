@@ -1,0 +1,1672 @@
+@menu
+* Introduction to Maximas Database::
+* Functions and Variables for Properties::
+* Functions and Variables for Facts::
+* Functions and Variables for Predicates::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Maximas Database, Functions and Variables for Properties, Maximas Database, Maximas Database
+@section Introduction to Maximas Database
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Properties, Functions and Variables for Facts, Introduction to Maximas Database, Maximas Database
+@section Functions and Variables for Properties
+@c -----------------------------------------------------------------------------
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c THIS ITEM IS EXTREMELY IMPORTANT
+@c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
+@c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
+
+@c -----------------------------------------------------------------------------
+@anchor{declare}
+@deffn {関数} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
+
+アトムやアトムのリスト@var{a_i}に、プロパティやプロパティのリスト@var{p_i}を割り当てます。
+@var{a_i}や@var{p_i}がリストの時、
+アトムのそれぞれは、プロパティすべてを得ます。
+
+@code{declare}は引数をクォートします。
+@code{declare}はいつも@code{done}を返します。
+
+それぞれの宣言フラグに関する記述で注意しているように、
+いくつかのフラグに関して、
+もし@var{object}が@var{feature}を持つよう宣言されているなら、
+@code{featurep(@var{object}, @var{feature})}は、
+@code{true}を返します。
+しかしながら、@code{featurep}はいくつかのフラグを認識しません;
+これはバグです。
+
+@code{features}も参照してください。
+
+@code{declare}は以下のプロパティを認識します:
+
+@table @asis
+@item @code{evfun}
+@code{ev}のフラグ引数として@var{a_i}が現れた時
+@var{a_i}で名付けられた関数を適用するように
+@code{ev}に伝えます。
+@code{evfun}を参照してください。
+
+@item @code{evflag}
+@code{ev}のフラグ引数として@var{a_i}が現れた時
+@code{ev}の実行中@var{a_i}が@code{true}にバインドされるように
+@code{ev}に伝えます。
+@code{evflag}を参照してください。
+
+@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{bindtest}
+@var{a_i}がバインドされていない状態に評価された時、
+Maximaにエラーをトリガーするように伝えます。
+
+@item @code{noun}
+@var{a_i}を名詞としてパースするようにMaximaに伝えます。
+この効果は、@var{a_i}のインスタンスを@code{'@var{a_i}}や@code{nounify(@var{a_i})}
+で置き換えることです。どちらに置き換えるかは文脈に依存します。
+
+@item @code{constant}
+@var{a_i}をシンボル定数と考えるようにMaximaに伝えます。
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+
+@item @code{scalar}
+@var{a_i}をスカラー変数と考えるようにMaximaに伝えます。
+
+@item @code{nonscalar}
+@var{a_i}を非スカラー変数と考えるようにMaximaに伝えます。
+普通の使い方は、変数をシンボルベクトルや行列として宣言することです。
+
+@item @code{nonarray}
+Maximaに@var{a_i}を配列でないものと考えるように伝えます。
+この宣言は添字付き変数名の多重評価を抑制します。
+
+@item @code{mainvar}
+@var{a_i}を「主変数」と考えるようにMaximaに伝えます。
+@code{ordergreatp}で決定されるように、
+Maximaの式の標準順序では、主変数は他のすべての定数や変数に続きます。
+
+@item @code{alphabetic}
+（文字列の）@var{a_i}の中の文字すべてをアルファベット文字として認識するように
+Maximaに伝えます。
+
+@item @code{feature}
+@var{a_i}をfeature名として認識するようにMaximaに伝えます。
+他のアトムは、@var{a_i}プロパティを持つように定義されます。
+
+@item @code{rassociative}, @code{lassociative}
+@var{a_i}を右結合、もしくは左結合関数として認識するようにMaximaに伝えます。
+
+@item @code{nary}
+@var{a_i}をn項関数として認識するようにMaximaに伝えます。
+
+@code{nary}宣言は、@code{nary}関数をコールするのとは同じではありません。
+@code{declare(foo, nary)}だけの効果は、Maxima整理器を
+ネストされた式を平坦にするように指示することです。
+例えば、@code{foo(x, foo(y, z))}を@code{foo(x, y, z)}に整理します。
+
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+@var{a_i}を対称もしくは反対称関数として認識するようにMaximaに伝えます。
+@code{commutative}は@code{symmetric}と同じです。
+
+@item @code{oddfun}, @code{evenfun}
+@var{a_i}を偶関数もしくは奇関数として認識するようにMaximaに伝えます。
+
+@item @code{outative}
+@var{a_i}式を最初の引数から定数因子を引き出すことで整理するようにMaximaに伝えます。
+
+@var{a_i}が１つ引数を持つ時、
+もしリテラル定数や宣言定数なら、因子は定数とみなされます。
+
+@var{a_i}が２つ以上の引数を持つ時、
+もし２番目の引数がシンボルであり、因子が２番目の引数の制約を受けなければ、
+因子は定数とみなされます。
+
+@item @code{multiplicative}
+代入@code{@var{a_i}(x * y * z * ...)} @code{-->}
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+によって、@var{a_i}式を整理するようにMaximaに伝えます。
+代入は、１番目の引数のみで実行されます。
+
+@item @code{additive}
+代入@code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+によって、@var{a_i}式を整理するようにMaximaに伝えます。
+代入は、１番目の引数のみで実行されます。
+
+@item @code{linear}
+@var{a_i}を@code{outative}かつ@code{additive}に宣言することと同値です。
+
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{integer}, @code{noninteger}
+@var{a_i}を整数もしくは非整数変数として認識するようにMaximaに伝えます。
+
+@item @code{even}, @code{odd}
+@var{a_i}を偶数変数もしくは奇数変数として認識するようにMaximaに伝えます。
+
+@item @code{rational}, @code{irrational}
+@var{a_i}を有理変数もしくは非有理実変数として認識するようにMaximaに伝えます。
+
+@item @code{real}, @code{imaginary}, @code{complex}
+@var{a_i}を実変数もしくは純虚数変数もしくは複素変数として認識するようにMaximaに伝えます。
+
+@item @code{increasing}, @code{decreasing}
+@var{a_i}を単調増加関数もしくは単調減少関数として認識するようにMaximaに伝えます。
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
+
+@item @code{posfun}
+@var{a_i}を正関数として認識するようにMaximaに伝えます。
+
+@item @code{integervalued}
+@var{a_i}を整数値を返す関数として認識するようにMaximaに伝えます。
+
+@end table
+
+例:
+
+@code{evfun}と@code{evflag}宣言。
+
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+@code{bindtest}宣言。
+
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+@code{noun}宣言。
+
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+@code{constant}, @code{scalar}, @code{nonscalar}, @code{mainvar}宣言。
+
+@c ===beg===
+@c declare (bb, constant);
+@c declare (cc, scalar);
+@c declare (dd, nonscalar);
+@c declare (ee, mainvar);
+@c ===end===
+@example
+@end example
+
+@code{alphabetic}宣言。
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
+@example
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
+@end example
+
+@code{feature}宣言。
+
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+@code{rassociative}, @code{lassociative}宣言。
+
+@c ===beg===
+@c declare (F, rassociative);
+@c declare (G, lassociative);
+@c ===end===
+@example
+@end example
+
+@code{nary}宣言。
+
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+@code{symmetric}, @code{antisymmetric}宣言。
+
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+@code{oddfun}, @code{evenfun}宣言。
+
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+@code{outative}宣言。
+
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+@code{multiplicative}宣言。
+
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+@code{additive}宣言。
+
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+@code{linear}宣言。
+
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+@group
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end group
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{features}
+@defvr {宣言} features
+
+Maximaは、関数や変数のある数学的プロパティを認識します。
+それらは「フィーチャー」と呼ばれます。
+
+@code{declare (@var{x}, @var{foo})}は、
+プロパティ@var{foo}を関数もしくは変数@var{x}に与えます。
+
+@code{declare (@var{foo}, feature)}は、
+新しいフィーチャー@var{foo}を宣言します。
+例えば、
+@code{declare ([red, green, blue], feature)}は、
+３つの新しいフィーチャー@code{red}, @code{green}, @code{blue}を宣言します。
+
+もし@var{x}が@var{foo}プロパティを持つなら、
+述語論理@code{featurep (@var{x}, @var{foo})}は、@code{true}を返し、
+そうでなければ、@code{false}を返します。
+
+インフォリスト@code{features}は既知のフィーチャーのリストです。
+それらは、
+
+@verbatim
+   integer        noninteger      even
+   odd            rational        irrational
+   real           imaginary       complex
+   analytic       increasing      decreasing
+   oddfun         evenfun         posfun
+   commutative    lassociative    rassociative
+   symmetric      antisymmetric
+@end verbatim
+
+プラス、任意のユーザー定義フィーチャーです。
+
+@code{features}は、数学的フィーチャーのリストです。
+非数学的で、システム依存のフィーチャーのリストもあります。
+@code{status}を参照してください。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{get}
+@deffn {関数} get (@var{a}, @var{i})
+
+@var{i}が示すアトム @var{a}のユーザープロパティを検索し、
+もしaがプロパティ @var{i}を持たないなら、 @code{false}を返します。
+
+@code{get}は、引数を評価します。
+
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
+@example
+(%i1) put (%e, 'transcendental, 'type);
+(%o1)                    transcendental
+(%i2) put (%pi, 'transcendental, 'type)$
+(%i3) put (%i, 'algebraic, 'type)$
+(%i4) typeof (expr) := block ([q],
+        if numberp (expr)
+        then return ('algebraic),
+        if not atom (expr)
+        then return (maplist ('typeof, expr)),
+        q: get (expr, 'type),
+        if q=false
+        then errcatch (error(expr,"is not numeric.")) else q)$
+(%i5) typeof (2*%e + x*%pi);
+x is not numeric.
+(%o5)  [[transcendental, []], [algebraic, transcendental]]
+(%i6) typeof (2*%e + %pi);
+(%o6)     [transcendental, [algebraic, transcendental]]
+
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{nonarray}
+@deffn {プロパティ} nonarray
+
+コマンド@code{declare(a, nonarray)}はMaximaに
+@var{a}が配列でないものと考えるように伝えます。
+もし@var{a}が添字付き変数なら、この宣言は多重評価を抑制します。
+
+例:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{posfun}
+@defvr {宣言} posfun
+@code{declare (f, posfun)}は、
+@code{f}を正の関数と宣言します。
+@code{is (f(x) > 0)}は@code{true}を出力します。
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK ESPECIALLY EXAMPLES
+@c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
+
+@c -----------------------------------------------------------------------------
+@anchor{printprops}
+@deffn {関数} printprops (@var{a}, @var{i})
+@deffnx {関数} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {関数} printprops (all, @var{i})
+
+アトム@var{a}に関連付けられた指標@var{i}の属性を表示します。
+@var{a}は、アトムのリストもしくはアトム@code{all}もありえます。
+その場合，与えられたプロパティを持つすべてのアトムに適用します。
+例えば、 @code{printprops ([f, g], atvalue)}。
+@code{printprops}は、表示できないプロパティ、
+すなわち@mref{atvalue}, @mref{atomgrad}, @mref{gradef}, @mref{matchdeclare}のためのものです。
+
+@opencatbox
+@category{Declarations and inferences} @category{Display functions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Facts, Functions and Variables for Predicates, Functions and Variables for Properties, Maximas Database
+@section Functions and Variables for Facts
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{activate}
+@deffn {関数} activate (@var{context_1}, @dots{}, @var{context_n})
+文脈@var{context_1}, @dots{}, @var{context_n}をアクティベートします。
+これらの文脈に関する事実は、演繹し情報を検索するために利用可能となります。
+これらの文脈に関する事実は、@code{facts ()}によってリストされません。
+
+変数@code{activecontexts}は、
+@code{activate}関数を使ってアクティブになった文脈のリストです。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{activecontexts}
+@defvr {システム変数} activecontexts
+デフォルト値: @code{[]}
+
+変数@code{activecontexts}は、
+アクティブである文脈と対照的に、
+@code{activate}関数を使ってアクティブになった文脈のリストです。
+ゆえに、それらは現在の文脈の部分文脈です。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c After studying src/compar.lisp, it appears that askexp would
+@c work as advertised, except that it doesn't appear to be possible
+@c to open a break prompt with ^A or any other character.
+@c What should we do about askexp ???
+
+@c -----------------------------------------------------------------------------
+@anchor{askexp}
+@defvr {システム変数} askexp
+@code{asksign}がコールされた時、
+@code{askexp}は、@code{asksign}がテストしている式です。
+
+以前は、control-AでMaximaブレイクに入ることによって、
+ユーザーが@code{askexp}を検査することができました。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+
+@c -----------------------------------------------------------------------------
+@anchor{askinteger}
+@deffn  {関数} askinteger (@var{expr}, integer)
+@deffnx {関数} askinteger (@var{expr})
+@deffnx {関数} askinteger (@var{expr}, even)
+@deffnx {関数} askinteger (@var{expr}, odd)
+
+@code{askinteger (@var{expr}, integer)}は、
+@code{assume}データベースから、@var{expr}が整数かどうかを決定しようとします。
+そうでなく、もし決定できなければ、@code{askinteger}はユーザーに入力を促し、
+@c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume
+@c DATABASE !!!
+可能ならばデータベースに情報をインストールしようとします。
+@code{askinteger (@var{expr})}は、
+@code{askinteger (@var{expr}, integer)}と同値です。
+
+同様に、
+@code{askinteger (@var{expr}, even)}や@code{askinteger (@var{expr}, odd)}は、
+それぞれ、@var{expr}が偶数か奇数か、決定しようとします。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+
+@c -----------------------------------------------------------------------------
+@anchor{asksign}
+@deffn {関数} asksign (@var{expr})
+
+最初に、指定された式が正か負かゼロか決定しようとします。
+できなければ、演繹を完了するのに必要な質問をユーザーに尋ねます。
+ユーザーの答えは、現在の計算の演繹のため、データベースに記録されます。
+@code{asksign}の戻り値は、@code{pos}, @code{neg}もしくは@code{zero}のいずれか１つです。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{assume}
+@deffn {関数} assume (@var{pred_1}, @dots{}, @var{pred_n})
+
+述語論理@var{pred_1}, @dots{}, @var{pred_n}を現在の文脈に追加します。
+もし述語論理が現在の文脈と矛盾していたり、冗長だったりしたなら、文脈に追加されません。
+文脈は@code{assume}がコールされる毎に述語論理を累積していきます。
+
+@code{assume}は、文脈に追加された述語論理を要素に持つリストか、
+適用されたアトム@code{redundant}もしくは@code{inconsistent}を返します。
+
+述語論理@var{pred_1}, @dots{}, @var{pred_n}は
+関係演算子@code{< <= equal notequal >= >}を持つ式のみ許されます。
+述語論理はリテラル等号@code{=}やリテラル不等号@code{#}の式は使えません。
+@code{integerp}のような述語関数も使えません。
+
+形式@code{@var{pred_1} and ...and @var{pred_n}}の合成された述語論理が認識されます。
+しかし、@code{@var{pred_1} or ... or @var{pred_n}}は認識されません。
+もし@code{pred_k}が関係述語論理なら、@code{not @var{pred_k}}は認識されます。
+形式@code{not (@var{pred_1} and @var{pred_2})}の式や
+@code{not (@var{pred_1} or @var{pred_2})}は認識されません。
+
+Maximaの推論メカニズムはそれほど強くありません;
+@code{is}によって決定されない多くの明らかな結果があります。
+これは既知の弱みです。
+
+@code{assume}は複素数を伴う述語論理を扱いません。
+もし述語論理が複素数を含むなら、@code{assume}は@code{inconsistent}か@code{redundant}を返します。
+
+@code{assume}は引数を評価します。
+
+@code{is}や@code{facts}, @code{forget}, @code{context}, @code{declare}も参照してください。
+
+例:
+
+@c ===beg===
+@c assume (xx > 0, yy < -1, zz >= 0);
+@c assume (aa < bb and bb < cc);
+@c facts ();
+@c is (xx > yy);
+@c is (yy < -yy);
+@c is (sinh (bb - aa) > 0);
+@c forget (bb > aa);
+@c prederror : false;
+@c is (sinh (bb - aa) > 0);
+@c is (bb^2 < cc^2);
+@c ===end===
+@example
+(%i1) assume (xx > 0, yy < -1, zz >= 0);
+(%o1)              [xx > 0, yy < - 1, zz >= 0]
+(%i2) assume (aa < bb and bb < cc);
+(%o2)                  [bb > aa, cc > bb]
+(%i3) facts ();
+(%o3)     [xx > 0, - 1 > yy, zz >= 0, bb > aa, cc > bb]
+(%i4) is (xx > yy);
+(%o4)                         true
+(%i5) is (yy < -yy);
+(%o5)                         true
+(%i6) is (sinh (bb - aa) > 0);
+(%o6)                         true
+(%i7) forget (bb > aa);
+(%o7)                       [bb > aa]
+(%i8) prederror : false;
+(%o8)                         false
+(%i9) is (sinh (bb - aa) > 0);
+(%o9)                        unknown
+(%i10) is (bb^2 < cc^2);
+(%o10)                       unknown
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{assumescalar}
+@defvr {オプション変数} assumescalar
+デフォルト値: @code{true}
+
+@code{assumescalar}は、
+@code{nonscalarp (expr)}が@code{false}であるような式@code{expr}が、
+ある変換に関してスカラーのように振る舞うと仮定されるかどうかを決めるのを助けます。
+
+Let 
+@code{expr}がリストや行列以外の任意の式を表してるとし、
+@code{[1, 2, 3]}が任意のリストや行列を表しているとすると、
+もし@code{assumescalar}が@code{true}、
+もしくは@code{scalarp (expr)}が@code{true}、
+もしくは@code{constantp (expr)}が@code{true}なら、
+@code{expr . [1, 2, 3]}は、@code{[expr, 2 expr, 3 expr]}をもたらします。
+
+もし@code{assumescalar}が@code{true}なら、
+そんな式は可換演算子に関してだけスカラーのように振る舞いますが、
+非可換乗算@code{.}に関してはそうは振る舞いません。
+
+@code{assumescalar}が@code{false}の時
+そんな式は、非スカラーのように振る舞います。
+
+@code{assumescalar}が@code{all}の時、
+そんな式は、上でリストされた演算子すべてに関してスカラーのように振る舞います。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{assume_pos}
+@defvr {オプション変数} assume_pos
+デフォルト値: @code{false}
+
+@code{assume_pos}が@code{true}で、
+パラメータ@var{x}の符号が現在の文脈や他の考慮から決定できない時、
+@c WHAT ARE THOSE OTHER CONSIDERATIONS ??
+@code{sign}や@code{asksign (@var{x})}は、@code{true}を返します。
+これは、@code{integrate}や他の計算から起こるような、
+自動生成される@code{asksign}問い合わせを事前に防ぐことができます。
+
+デフォルトでは、パラメータは@code{symbolp (@var{x})}もしくは
+@code{subvarp (@var{x})}のような@var{x}です。
+パラメータとして考えられる式のクラスは、
+変数@code{assume_pos_pred}を介して、ある程度変えることができます。
+
+@code{sign}と@code{asksign}は、
+式の中のオペランドの符号から式の符号を演繹しようとします。
+例えば、もし@code{a}や@code{b}がともに正なら、
+@code{a + b}も正です。
+
+しかしながら、@code{asksign}問い合わせすべてを迂回する方法はありません。
+特に、@code{asksign}引数が、差@code{@var{x} - @var{y}}もしくは
+対数@code{log(@var{x})}の時、
+たとえ@code{assume_pos}が@code{true}で、@code{assume_pos_pred}が
+引数すべてに@code{true}を返す関数であっても、
+@code{asksign}は、いつもユーザーからの入力を要請します。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{assume_pos_pred}
+@defvr {オプション変数} assume_pos_pred
+デフォルト値: @code{false}
+
+@code{assume_pos_pred}が関数名や、引数@var{x}のラムダ式に割り当てられている時、
+その関数は、
+@var{x}が、@code{assume_pos}のためのパラメータと考えられるかどうかを決定するために
+コールされます。
+@code{assume_pos}が@code{false}の時、
+@code{assume_pos_pred}は、無視されます。
+
+@code{assume_pos_pred}関数は、引数@var{x}で@code{sign}と@code{asksign}によってコールされます。
+ここで、@var{x}はアトム、添字付き変数、関数コール式のいずれかです。
+もし@code{assume_pos_pred}関数が@code{true}を返すなら、
+@var{x}は、@code{assume_pos}のためのパラメータと考えられます。
+
+デフォルトでは、パラメータは、@code{symbolp (@var{x})}もしくは@code{subvarp (@var{x})}のような@var{x}です。
+
+@code{assume}と@code{assume_pos}も参照してください。
+
+例:
+
+@c ===beg===
+@c assume_pos: true$
+@c assume_pos_pred: symbolp$
+@c sign (a);
+@c sign (a[1]);
+@c assume_pos_pred: lambda ([x], display (x), true)$
+@c asksign (a);
+@c asksign (a[1]);
+@c asksign (foo (a));
+@c asksign (foo (a) + bar (b));
+@c asksign (log (a));
+@c asksign (a - b);
+@c ===end===
+@example
+(%i1) assume_pos: true$
+(%i2) assume_pos_pred: symbolp$
+(%i3) sign (a);
+(%o3)                          pos
+(%i4) sign (a[1]);
+(%o4)                          pnz
+(%i5) assume_pos_pred: lambda ([x], display (x), true)$
+(%i6) asksign (a);
+                              x = a
+
+(%o6)                          pos
+(%i7) asksign (a[1]);
+                             x = a
+                                  1
+
+(%o7)                          pos
+(%i8) asksign (foo (a));
+                           x = foo(a)
+
+(%o8)                          pos
+(%i9) asksign (foo (a) + bar (b));
+                           x = foo(a)
+
+                           x = bar(b)
+
+(%o9)                          pos
+(%i10) asksign (log (a));
+                              x = a
+
+Is  a - 1  positive, negative, or zero?
+
+p;
+(%o10)                         pos
+(%i11) asksign (a - b);
+                              x = a
+
+                              x = b
+
+                              x = a
+
+                              x = b
+
+Is  b - a  positive, negative, or zero?
+
+p;
+(%o11)                         neg
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{context}
+@defvr {オプション変数} context
+デフォルト値: @code{initial}
+
+@code{context}は、@code{assume}と@code{forget}によって保守される事実の集まりの名前です。
+
+@code{assume}は、@code{context}と名付けられた集まりに事実を追加する一方、
+@code{forget}は、事実を取り除きます。
+
+@code{context}を名前@var{foo}にバインドすることは、
+現在の文脈を@var{foo}に変えます。
+もし指定された文脈@var{foo}がまだ存在しないなら、
+@code{newcontext}のコールによって自動的に生成されます。
+@c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
+指定された文脈は自動的にアクティベートされます。
+
+文脈メカニズムの一般的な記述に関しては、@code{contexts}を参照してください。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
+@c SOME EXAMPLES WILL HELP A LOT HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{option_contexts}
+@defvr {オプション変数} contexts
+デフォルト値: @code{[initial, global]}
+
+@code{contexts}は、
+現在アクティブな文脈を含んでいる、現在存在する文脈のリストです。
+
+文脈メカニズムは、ユーザーが
+文脈と呼ばれる事実の集まりにバインドし、名付けることを可能にします。
+一旦これがなされると、ユーザーは、
+文脈を単にアクティベートしたりデアクティベートすることで、
+たくさんの数の事実をMaximaに仮定させたり忘れさせたりできます。
+
+任意のシンボルのアトムは、文脈となりえ、
+その文脈の中に含まれた事実は、
+@code{forget}をコールすることで１つ１つ破壊されるまで、
+あるいは、それらが属する文脈を破壊するために@code{kill}をコールすることで、全体として破壊されるまで、記憶装置に保持されます。
+
+文脈は階層的に存在します。
+その根はいつも文脈@code{global}であり、
+文脈@code{global}は、いくつかの関数が必要とするMaximaについての情報を含みます。
+アクティブな文脈の部分文脈である任意の文脈の中の事実すべてそうであるように、
+与えられた文脈の中では、
+その文脈の中の事実すべては、「アクティブ」（それらが演繹や探索に使われるという意味）
+です。
+
+新鮮なMaximaが起動された時、
+ユーザーは、@code{initial}と呼ばれる文脈の中にいます。
+それは、部分文脈として@code{global}を持ちます。
+
+@code{facts}, @code{newcontext},
+@code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, @code{forget}も参照してください。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{deactivate}
+@deffn {関数} deactivate (@var{context_1}, @dots{}, @var{context_n})
+
+特定の文脈@var{context_1}, @dots{}, @var{context_n}をデアクティベートします。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{facts}
+@deffn {関数} facts (@var{item})
+@deffnx {関数} facts ()
+
+もし@var{item}が文脈の名前なら、
+@code{facts (@var{item})}は指定された文脈の@code{facts}のリストを返します。
+
+もし@var{item}が文脈の名前でなければ、
+@code{facts (@var{item})}は現在の文脈の中で、
+@var{item}について知っている@code{facts}のリストを返します。
+異なる文脈中のアクティブな@code{facts}はリストされません。
+
+@code{facts ()}（すなわち引数なし）は現在の文脈をリストします。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{forget}
+@deffn {関数} forget (@var{pred_1}, @dots{}, @var{pred_n})
+@deffnx {関数} forget (@var{L})
+@code{assume}で規定された述語論理を取り除きます。
+述語論理は以前に規定されたものと同値の（必ずしも同一である必要なない）式です。
+
+@code{forget (@var{L})}（@var{L}は述語論理のリスト）は、
+リスト上のそれぞれの項目を忘れます。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{is}
+@deffn {関数} is (@var{expr})
+
+@code{assume}データベースの中の事実から述語論理@var{expr}が確かか否かを決定
+しようとします。
+
+もし述語論理が確かに@code{true}もしくは@code{false}なら、
+@code{is}は、それぞれ@code{true}もしくは@code{false}を返します。
+そうでなければ、戻り値は、グローバルフラグ@code{prederror}に依存します。
+@code{prederror}が@code{true}の時、
+@code{is}はエラーメッセージを出力します。
+そうでなければ、@code{is}は@code{unknown}を出力します。
+
+@code{ev(@var{expr}, pred)}
+(対話プロンプトでは、@code{@var{expr}, pred}と書けます)
+は、@code{is(@var{expr})}と同値です。
+
+@code{assume}, @code{facts}, @code{maybe}も参照してください。
+
+例:
+
+@code{is}は述語論理の評価を引き起こします。
+
+@c ===beg===
+@c %pi > %e;
+@c is (%pi > %e);
+@c ===end===
+@example
+(%i1) %pi > %e;
+(%o1)                       %pi > %e
+(%i2) is (%pi > %e);
+(%o2)                         true
+@end example
+
+@code{is}は、@code{assume}データベースから述語論理を演繹しようとします。
+
+@c ===beg===
+@c assume (a > b);
+@c assume (b > c);
+@c is (a < b);
+@c is (a > c);
+@c is (equal (a, c));
+@c ===end===
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) assume (b > c);
+(%o2)                        [b > c]
+(%i3) is (a < b);
+(%o3)                         false
+(%i4) is (a > c);
+(%o4)                         true
+(%i5) is (equal (a, c));
+(%o5)                         false
+@end example
+
+もし@code{is}が@code{assume}データベースから述語論理を証明もしくは否定できなかったら、
+グローバルフラグ@code{prederror}が@code{is}の振る舞いを決めます。
+
+@c ===beg===
+@c assume (a > b);
+@c prederror: true$
+@c is (a > 0);
+@c prederror: false$
+@c is (a > 0);
+@c ===end===
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) prederror: true$
+(%i3) is (a > 0);
+Maxima was unable to evaluate the predicate:
+a > 0
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) prederror: false$
+(%i5) is (a > 0);
+(%o5)                        unknown
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{killcontext}
+@deffn {関数} killcontext (@var{context_1}, @dots{}, @var{context_n})
+
+文脈@var{context_1}, @dots{}, @var{context_n}を消します。
+
+もし文脈の１つが現在の文脈なら、
+新しい文脈は、
+消されなかった現在の文脈の最初の利用可能な部分文脈になるでしょう。
+もし最初の利用可能な消されなかった文脈が@code{global}なら、
+@code{initial}が代わりに使われます。
+もし@code{initial}文脈が消されたら、
+新しい、空の@code{initial}文脈が生成されます。
+
+@code{killcontext}は、現在アクティブな文脈を消すことを拒否します。
+なぜなら、それは現在の文脈の部分文脈、もしくは
+関数@code{activate}の使用によってアクティブになっているから。
+
+@code{killcontext}は、引数を評価します。
+@code{killcontext}は、@code{done}を返します。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{maybe}
+@deffn {関数} maybe (@var{expr})
+
+述語論理@var{expr}が@code{assume}データベースの事実から正しいかどうかを
+決定しようとします。
+
+もし述語論理が確かに@code{true}もしくは@code{false}なら、
+@code{maybe}は、それぞれ@code{true}もしくは@code{false}を返します。
+そうでなければ、@code{maybe}は@code{unknown}を返します。
+
+@code{maybe}は、@code{prederror: false}での@code{is}と関数的に同値です。
+しかし、@code{prederror}に値を実際に割り当てることなく結果が計算されます。
+
+@code{assume}, @code{facts}, @code{is}も参照してください。
+
+例:
+
+@c ===beg===
+@c maybe (x > 0);
+@c assume (x > 1);
+@c maybe (x > 0);
+@c ===end===
+@example
+(%i1) maybe (x > 0);
+(%o1)                        unknown
+(%i2) assume (x > 1);
+(%o2)                        [x > 1]
+(%i3) maybe (x > 0);
+(%o3)                         true
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{newcontext}
+@deffn {関数} newcontext (@var{name})
+
+@var{name}と呼ばれる新しい、空の文脈を生成します。
+@var{name}は、唯一の部分文脈として@code{global}を持ちます。
+新しく生成された文脈は現在アクティブな文脈になります。
+
+@code{newcontext}は、引数を評価します。
+@code{newcontext}は、@var{name}を返します。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sign}
+@deffn {関数} sign (@var{expr})
+現在のデータベースの事実に基づいて@var{expr}の符号を決定しようとします。
+以下の答えの１つを返します;
+@code{pos} (positive), @code{neg} (negative), @code{zero}, @code{pz}
+(正もしくはゼロ), @code{nz} (負もしくはゼロ), @code{pn} (正もしくは負),
+or @code{pnz} (正、負もしくはゼロ、すなわちなにもわからない).
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{supcontext}
+@deffn {関数} supcontext (@var{name}, @var{context})
+@deffnx {関数} supcontext (@var{name})
+
+@var{name}と呼ばれる新しい文脈を生成します。
+@var{name}は、部分文脈として@var{context}を持ちます。
+@var{context}は存在しなければいけません。
+
+もし@var{context}が指定されないなら、
+現在の文脈が仮定されます。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Predicates, , Functions and Variables for Facts, Maximas Database
+@section Functions and Variables for Predicates
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{charfun}
+@deffn {関数} charfun (@var{p})
+
+述語論理@var{p}が@code{false}に評価される時、0を返します;
+述語論理@var{p}が@code{true}に評価される時、1を返します。
+述語論理が@code{true}も@code{false}でもない何かに評価される時(unknown), 
+名詞形を返します。
+
+例:
+
+@c ===beg===
+@c charfun (x < 1);
+@c subst (x = -1, %);
+@c e : charfun ('"and" (-1 < x, x < 1))$
+@c [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+@c ===end===
+@example
+(%i1) charfun (x < 1);
+(%o1)                    charfun(x < 1)
+(%i2) subst (x = -1, %);
+(%o2)                           1
+(%i3) e : charfun ('"and" (-1 < x, x < 1))$
+(%i4) [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+(%o4)                       [0, 1, 0]
+@end example
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{compare}
+@deffn {関数} compare (@var{x}, @var{y})
+
+@code{is (@var{x} @var{op} @var{y})}が
+@code{true}に評価されるような比較演算子@var{op}
+(@code{<},@code{<=},@code{>},@code{>=},@code{=},@code{#})を返します;
+@var{x}か@var{y}が @code{%i}に依存して、@code{@var{x} # @code{y}}の時、
+@code{notcomparable}を返します;
+該当する演算子がなかったり、Maximaが演算子を決定できなかった時には
+@code{unknown}を返します。
+
+例:
+
+@c ===beg===
+@c compare (1, 2);
+@c compare (1, x);
+@c compare (%i, %i);
+@c compare (%i, %i + 1);
+@c compare (1/x, 0);
+@c compare (x, abs(x));
+@c ===end===
+@example
+(%i1) compare (1, 2);
+(%o1)                           <
+(%i2) compare (1, x);
+(%o2)                        unknown
+(%i3) compare (%i, %i);
+(%o3)                           =
+(%i4) compare (%i, %i + 1);
+(%o4)                     notcomparable
+(%i5) compare (1/x, 0);
+(%o5)                           #
+(%i6) compare (x, abs(x));
+(%o6)                          <=
+@end example
+
+関数@code{compare}は引数の実領域が空でないか決定しようとはしません; 従って、
+
+@c ===beg===
+@c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+@c ===end===
+@example
+(%i1) compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+(%o1)                           <
+@end example
+
+@c IT IS NOT QUITE TRUE, WHAT ABOUT x=0 ?
+@code{acos (x^2 + 1)}の実領域は空です。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c CROSS REF declare, properties, ETC
+
+@c -----------------------------------------------------------------------------
+@anchor{constant}
+@deffn {特殊演算子} constant
+
+@code{declare (@var{a}, constant)}は、@var{a}を定数に宣言します。
+@mref{declare}を参照してください。
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+@opencatbox
+@category{Declarations and inferences} @category{Constants}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{constantp}
+@deffn {関数} constantp (@var{expr})
+
+もし@var{expr}が定数式なら、@code{true}を返します。
+そうでなければ、@code{false}を返します。
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+もし引数が、（@code{/R/}をつけて表示される有理数を含む）数や
+@mref{%pi}, @mref{%e}, @mref{%i}にようなシンボル定数、
+定数にバインドされた変数、@mref{declare}で宣言された定数、
+引数が定数の関数のいずれかなら、
+式は定数式と考えられます。
+
+@code{constantp}は引数を評価します。
+
+例:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Constants}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{equal}
+@deffn {関数} equal (@var{a}, @var{b})
+
+同値、すなわち、同じ値であることを表します。
+
+@code{equal}はそれ自身で評価も整理もされません。
+関数@code{is}は、@code{equal}をブーリアン値に評価しようとします。
+@code{is(equal(@var{a}, @var{b})}は、
+もし@var{a}と@var{b}が、@code{ratisimp(@var{a} - @var{b})}を評価することで決定されるように、
+変数の可能な値すべてで等しいときだけ@code{true}を返します;
+もし@code{ratsimp}が0を返したら、２つの式は同値と考えれます。
+２つの式は構文法的に等しくなくても（すなわち同一でなくても）同値でありえます。
+
+@code{is}が@code{equal}を@code{true}もしくは@code{false}への換算に失敗した時、
+結果は、グローバルフラグ@code{prederror}に依ります。
+@code{prederror}が@code{true}の時、@code{is}はエラーメッセージを出力します。
+そうでなければ、@code{is}は@code{unknown}を返します。
+
+@code{is}に加えて、
+いくつかの他の演算子、@code{if}, @code{and}, @code{or}, @code{not}は
+@code{equal}と@code{notequal}を@code{true}もしくは@code{false}に評価します。
+
+@c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE CORRECT
+@c Declarations (integer, complex, etc)
+@c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
+@c All variables are effectively assumed to be real-valued.
+
+@code{equal}の否定が@code{notequal}です。
+
+例:
+
+@code{equal}はそれ自身で評価も整理もされません。
+
+@c ===beg===
+@c equal (x^2 - 1, (x + 1) * (x - 1));
+@c equal (x, x + 1);
+@c equal (x, y);
+@c ===end===
+@example
+(%i1) equal (x^2 - 1, (x + 1) * (x - 1));
+                        2
+(%o1)            equal(x  - 1, (x - 1) (x + 1))
+(%i2) equal (x, x + 1);
+(%o2)                    equal(x, x + 1)
+(%i3) equal (x, y);
+(%o3)                      equal(x, y)
+@end example
+
+関数@code{is}は、@code{equal}をブーリアン値に評価しようとします。
+@code{is(equal(@var{a}, @var{b})}は、
+@code{ratisimp(@var{a} - @var{b})}が0を返すとき@code{true}を返します。
+２つの式は構文法的に等しくなくても（すなわち同一でなくても）同値でありえます。
+
+@c ===beg===
+@c ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+@c is (equal (x^2 - 1, (x + 1) * (x - 1)));
+@c is (x^2 - 1 = (x + 1) * (x - 1));
+@c ratsimp (x - (x + 1));
+@c is (equal (x, x + 1));
+@c is (x = x + 1);
+@c ratsimp (x - y);
+@c is (equal (x, y));
+@c is (x = y);
+@c ===end===
+@example
+(%i1) ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+(%o1)                           0
+(%i2) is (equal (x^2 - 1, (x + 1) * (x - 1)));
+(%o2)                         true
+(%i3) is (x^2 - 1 = (x + 1) * (x - 1));
+(%o3)                         false
+(%i4) ratsimp (x - (x + 1));
+(%o4)                          - 1
+(%i5) is (equal (x, x + 1));
+(%o5)                         false
+(%i6) is (x = x + 1);
+(%o6)                         false
+(%i7) ratsimp (x - y);
+(%o7)                         x - y
+(%i8) is (equal (x, y));
+(%o8)                        unknown
+(%i9) is (x = y);
+(%o9)                         false
+@end example
+
+@code{is}が、@code{equal}を@code{true}もしくは@code{false}への換算に失敗したとき、
+結果は、グローバルフラグ@code{prederror}に依ります。
+
+@c ===beg===
+@c [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+@c ratsimp (aa - bb);
+@c prederror : true;
+@c is (equal (aa, bb));
+@c prederror : false;
+@c is (equal (aa, bb));
+@c ===end===
+@example
+(%i1) [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+                    2             2
+(%o1)             [x  + 2 x + 1, x  - 2 x - 1]
+(%i2) ratsimp (aa - bb);
+(%o2)                        4 x + 2
+(%i3) prederror : true;
+(%o3)                         true
+(%i4) is (equal (aa, bb));
+Maxima was unable to evaluate the predicate:
+       2             2
+equal(x  + 2 x + 1, x  - 2 x - 1)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) prederror : false;
+(%o5)                         false
+(%i6) is (equal (aa, bb));
+(%o6)                        unknown
+@end example
+
+いくつかの演算子が@code{equal}や@code{notequal}を
+@code{true}もしくは@code{false}に評価します。
+
+@c ===beg===
+@c if equal (y, y - 1) then FOO else BAR;
+@c eq_1 : equal (x, x + 1);
+@c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+@c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+@c ===end===
+@example
+(%i1) if equal (y, y - 1) then FOO else BAR;
+(%o1)                          BAR
+(%i2) eq_1 : equal (x, x + 1);
+(%o2)                    equal(x, x + 1)
+(%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+                         2                   2
+(%o3)             equal(y  + 2 y + 1, (y + 1) )
+(%i4) [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+(%o4)                  [false, true, true]
+@end example
+
+@code{not @var{expr}}は、@var{expr}の評価を伴うので、
+@code{not equal(@var{a}, @var{b})}は、@code{is(notequal(@var{a}, @var{b}))}と同値です。
+
+@c ===beg===
+@c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+@c is (notequal (2*z, 2*z - 1));
+@c ===end===
+@example
+(%i1) [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+(%o1)            [notequal(2 z, 2 z - 1), true]
+(%i2) is (notequal (2*z, 2*z - 1));
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{notequal}
+@deffn {関数} notequal (@var{a}, @var{b})
+
+@code{equal(@var{a}, @var{b})}の否定を表します。
+
+例:
+
+@c ===beg===
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c not equal (a, b);
+@c maybe (notequal (a, b));
+@c assume (a > b);
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c maybe (notequal (a, b));
+@c ===end===
+@example
+(%i1) equal (a, b);
+(%o1)                      equal(a, b)
+(%i2) maybe (equal (a, b));
+(%o2)                        unknown
+(%i3) notequal (a, b);
+(%o3)                    notequal(a, b)
+(%i4) not equal (a, b);
+(%o4)                    notequal(a, b)
+(%i5) maybe (notequal (a, b));
+(%o5)                        unknown
+(%i6) assume (a > b);
+(%o6)                        [a > b]
+(%i7) equal (a, b);
+(%o7)                      equal(a, b)
+(%i8) maybe (equal (a, b));
+(%o8)                         false
+(%i9) notequal (a, b);
+(%o9)                    notequal(a, b)
+(%i10) maybe (notequal (a, b));
+(%o10)                        true
+@end example
+
+@opencatbox
+@category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unknown}
+@deffn {関数} unknown (@var{expr})]
+
+@var{expr}がMaximaの整理器が認識しない演算子や関数を含む時だけ、
+@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
+@c DUNNO WHETHER WE CAN CLEAR THIS UP
+
+@c -----------------------------------------------------------------------------
+@anchor{zeroequiv}
+@deffn {関数} zeroequiv (@var{expr}, @var{v})
+
+変数@var{v}の式@var{expr}がゼロと同値かどうかテストし、
+@code{true}, @code{false}, もしくは@code{dontknow}を返します。
+
+@code{zeroequiv}は以下の制限を持ちます:
+
+@enumerate
+@item
+Maximaが微分や評価する方法を知らない関数を使わない。
+@item
+もし式が実線上で極を持つなら、
+結果としてエラーになります。（しかしこれは起こりにくいことです。）
+@item
+もし式が１階微分方程式の解ではない関数（例えばベッセル関数）を含むなら、
+正しくない結果になるかもしれません。
+@item
+アルゴリズムは、注意深く選ばれた部分式に関してランダムに選ばれた点での評価を使います。
+アルゴリズムはエラーの可能性を細小にしようとしますが、これはいつも危険な仕事です。
+@end enumerate
+
+例えば、@code{zeroequiv (sin(2 * x) - 2 * sin(x) * cos(x), x)}は@code{true}を返し、
+@code{zeroequiv (%e^x + x, x)}は@code{false}を返します。
+一方、
+@code{zeroequiv (log(a * b) - log(a) - log(b), a)}は、
+余分なパラメータ@code{b}があるので、@code{dontknow}を返します。
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn

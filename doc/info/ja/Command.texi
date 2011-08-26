@@ -1,0 +1,1768 @@
+@menu
+* Introduction to Command Line::
+* Functions and Variables for Command Line::
+* Functions and Variables for Display::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Command Line, Functions and Variables for Command Line, Command Line, Command Line
+@section Introduction to Command Line
+@c -----------------------------------------------------------------------------
+
+@c end concepts Command Line
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Command Line, Functions and Variables for Display, Introduction to Command Line, Command Line
+@section Functions and Variables for Command Line
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{__}
+@defvr {システム変数} __
+@ifinfo
+@vrindex Current input expression
+@end ifinfo
+
+@code{__}は、現在評価中の入力式です。
+すなわち、入力式 @var{expr}が評価されている間、 @code{__}は @var{expr}です。
+
+@code{__}は、入力が整理されたり評価されたりする前に入力式に割り当てられます。
+しかし表示される時、@code{__}の値は（評価はされませんが）整理されます。
+
+@mref{batch}と @mref{load}は @code{__}を認識します。
+@code{batch}が処理するファイル内では、
+@code{__}は対話プロンプトでのそれと同じ意味になります。
+@code{load}が処理するファイル内では、
+@code{__}は対話プロンプトやバッチファイルの中で直前に入力された入力式にバインドされています;
+@code{__}は処理中のファイル内の入力式にはバインドされません。
+特に、 @code{load (@var{filename})}が対話プロンプトからコールされた時、
+@code{__}は、ファイルが処理されている間、
+@code{load (@var{filename})}にバインドされます。
+
+@mref{_}や @mref{%}も参照してください。
+
+例:
+
+@c ===beg===
+@c print ("I was called as", __);
+@c foo (__);
+@c g (x) := (print ("Current input expression =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("I was called as", __);
+I was called as print(I was called as, __) 
+(%o1)              print(I was called as, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Current input expression =", __), 0);
+(%o3) g(x) := (print("Current input expression =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                            cc + bb + aa
+Current input expression = -------------- 
+                           g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@opencatbox
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{_}
+@defvr {システム変数} _
+@ifinfo
+@vrindex Previous input
+@end ifinfo
+
+@code{_}は直前の入力式です。
+(例えば、@code{%i1}, @code{%i2}, @code{%i3}, @dots{})
+
+@code{_}は、入力が整理されたり評価されたりする前に、入力式に割り当てられます。
+しかし、
+@code{_}の値は、表示される時（評価はされませんが）整理されます。
+
+@mref{batch}と @mref{load}は @code{_}を認識します。
+@code{batch}が処理するファイル内では、
+@code{_}は対話プロンプトでのそれと同じ意味になります。
+@code{load}が処理するファイル内では、
+@code{_}は、対話プロンプトやバッチファイルの中で、直前に入力された入力式にバインドされます;
+@code{_}は処理中のファイル内の入力式にはバインドされません。
+
+@mref{__}や @mref{%}も参照してください。
+
+例:
+
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%}
+@defvr {システム変数} %
+@ifinfo
+@vrindex Previous output
+@end ifinfo
+
+@code{%}はMaximaが直前に計算した出力式です。
+(例えば、 @code{%o1}, @code{%o2}, @code{%o3}, @dots{})
+出力の表示には無関係です。
+
+@code{batch}と @code{load}は@code{%}を認識します。
+@code{batch}が処理するファイル内では、
+@code{%}は対話プロンプトでのそれと同じ意味になります。
+@code{load}が処理するファイル内では、
+@code{%}は、対話プロンプトやバッチファイルの中で、直前に計算された出力式にバインドされます;
+@code{%}は、処理中のファイル内の出力式にはバインドされません。
+
+@mref{_}, @mref{%%}, @mref{%th}も参照してください。
+
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%%}
+@defvr {システム変数} %%
+@ifinfo
+@vrindex Previous result in compound expression
+@end ifinfo
+
+合成文、すなわち@code{block}, @code{lambda},
+もしくは@code{(@var{s_1}, ..., @var{s_n})}の中で、 @code{%%}は前の文の値です。
+
+合成文の最初の文もしくは合成文の外側では@code{%%}は未定義です。
+
+@code{%%}は、@mref{batch}や @mref{load}で認識され、
+対話プロンプトでのそれと同じ意味になります。
+
+@code{%}も参照してください。
+
+例:
+
+以下の二つの例は同じ結果になります。
+
+@example
+(%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+                               21
+(%o1)                          --
+                               2
+(%i2) block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
+                               21
+(%o2)                          --
+                               2
+
+@end example
+
+合成文は他の合成文を含むかもしれません。
+文が単文か合成文かに関係なく、
+@code{%%}は前の文の値です。
+
+@example
+(%i3) block (block (a^n, %%*42), %%/6);
+                                 n
+(%o3)                         7 a
+@end example
+
+合成文の中ではブレイクプロンプトで@code{%%}の値を検査することができます。
+ブレイクプロンプトは @code{break}関数を実行することで開きます。
+例えば、以下の例で@code{%%;}を入力すると、@code{42}が出力されます。
+
+@example
+(%i4) block (a: 42, break ())$
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_%%;
+42
+_
+@end example
+
+@opencatbox
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%th}
+@deffn {関数} %th (@var{i})
+@ifinfo
+@fnindex N'th previous output
+@end ifinfo
+
+@var{i}番前の出力式の値。
+すなわち、計算される次の式を@var{n}番目の出力とすると
+@code{%th (@var{m})}は、(@var{n} - @var{m})番目の出力です。
+
+@code{batch}と@code{load}は@code{%th}を認識されます。
+@code{batch}が処理するファイル内では、
+@code{%th}は、対話プロンプトでのそれと同じ意味になります。
+@code{load}が処理するファイル内では、
+@code{%th}は、対話プロンプトやバッチファイルの中で、直前に計算された出力式にバインドされます;
+@code{%th}は、処理中のファイル内の出力式にはバインドされません。
+
+@mref{%}と @mref{%%}も参照してください。
+
+例:
+
+@code{batch}ファイルの中でとか、出力式のグループを参照する時@code{%th}は役立ちます。
+この例は@code{s}を最後の5つの出力式の和に設定します。
+
+@example
+(%i1) 1;2;3;4;5;
+(%o1)                           1
+(%o2)                           2
+(%o3)                           3
+(%o4)                           4
+(%o5)                           5
+(%i6) block (s: 0, for i:1 thru 5 do s: s + %th(i), s);
+(%o6)                          15
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+
+@c -----------------------------------------------------------------------------
+@anchor{?}
+@deffn {特殊シンボル} ?
+@ifinfo
+@fnindex Fetch documentation
+@end ifinfo
+
+関数名や変数名の前置としての@code{?}は、
+名前が、Maximaの名前ではなくLispの名前であることを意味します。
+例えば、@code{?round}は、Lisp関数@code{ROUND}を意味します。
+この点に関して更に知るには@ref{Lisp and Maxima}を参照してください。
+
+表記@code{? word} (空白を空けて単語が続くクエスチョンマーク)は
+@code{describe("word")}と同値です。
+クエスチョンマークは入力ラインの先頭になければいけません;
+そうでなければドキュメンテーションのリクエストとして認識されません。
+@mref{describe}も参照してください。
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{??}
+@deffn {特殊シンボル} ??
+@ifinfo
+@fnindex Fetch documentation (inexact search)
+@end ifinfo
+
+表記@code{?? word}(空白を空けて単語が続く@code{??})は
+@code{describe("word", inexact)}と同値です。
+クエスチョンマークは入力行の先頭になければいけません;
+そうでなければドキュメンテーションのリクエストとして認識されません。
+@mref{describe}も参照してください。
+
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inchar}
+@defvr {オプション変数} inchar
+デフォルト値: @code{%i}
+
+@code{inchar}はユーザーが入力した式のラベルの前置です。
+Maximaは、
+@code{inchar}と@mref{linenum}を連結することで、
+入力式それぞれのラベルを自動的に構成します。
+
+@code{inchar}は単一文字である必要はなく、
+任意の文字列もしくはシンボルを割り当てられます。
+Maximaは内部的に前置の最初の文字だけを考慮するので、
+前置@code{inchar}, @mref{outchar}, @mref{linechar}は異なる最初の文字を持たなければいけません。
+そうでなければ@code{kill(inlables)}のようないくつかのコマンドは期待通りに動きません。
+
+@code{labels}も参照してください。
+
+例:
+
+@c ===beg===
+@c inchar: "input";
+@c expand((a+b)^3);
+@c ===end===
+@example
+(%i1) inchar: "input";
+(%o1)                         input
+(input2) expand((a+b)^3);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(input3)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{infolists}
+@defvr {システム変数} infolists
+デフォルト値: @code{[]}
+
+@code{infolists}はMaximaに関する情報リストすべての名前のリストです。
+これらは以下の通りです:
+
+@table @code
+@item labels
+すべてのバインドされた@code{%i}, @code{%o}, @code{%t}ラベル
+@item values
+@mref{:}や@mref{::}や関数バインドが生成する、
+ユーザー変数であって、Maximaオプションやスイッチでない、
+すべてのバインドされたアトム
+@c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
+@item functions
+@mref{:=}や@mref{define}が生成するすべてのユーザー定義関数
+@item arrays
+@code{:}, @code{::}, または@code{:=}が生成するすべての宣言配列と未宣言配列
+@c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
+@item macros
+@mref{::=}が生成したすべてのユーザー定義マクロ関数
+@item myoptions
+(それらが後にデフォルト値に再設定されようがされまいが)
+ユーザーが再設定したすべてのオプション
+@item rules
+@mref{tellsimp}, @mref{tellsimpafter}, @mref{defmatch},
+または@mref{defrule}が生成するすべてのユーザー定義パターンマッチングと整理規則
+@item aliases
+@mref{alias}, @mref{ordergreat}, @mref{orderless}関数が生成するか、
+@mref{declare}を使ってアトムを@mref{noun}として宣言することで生成された、
+ユーザー定義エーリアスを持つすべてのアトム
+@item dependencies
+@mref{depends}や@mref{gradef}関数が生成する関数依存性を持つすべてのアトム
+@item gradefs
+@mref{gradef}関数が生成するユーザー定義の導関数を持つすべての関数
+@c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
+@item props
+@mref{declare}関数で確立されるプロパティはもちろん、
+@mref{atvalue}や@mref{matchdeclare}などが確立するプロパティで、
+上で述べたもの以外の任意のプロパティを持つすべてのアトム
+@item let_rule_packages
+特別パッケージ@mref{default_let_rule_package}に加えて
+すべてのユーザー定義@mref{let}規則パッケージ 
+(@code{default_let_rule_package}は、
+ユーザーが陽に設定していない時使われる規則パッケージの名前です。)
+@end table
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c REVIEW FOR ACCURACY AND COMPLETENESS
+@c THIS ITEM IS VERY IMPORTANT !!
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{kill}
+@deffn  {関数} kill (@var{a_1}, @dots{}, @var{a_n})
+@deffnx {関数} kill (labels)
+@deffnx {関数} kill (inlabels, outlabels, linelabels)
+@deffnx {関数} kill (@var{n})
+@deffnx {関数} kill ([@var{m}, @var{n}])
+@deffnx {関数} kill (values, functions, arrays, @dots{})
+@deffnx {関数} kill (all)
+@deffnx {関数} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
+
+引数@var{a_1}, @dots{}, @var{a_n}からすべてのバインド（値、関数、配列、ルール）を解除します。
+引数@var{a_k}はシンボルか配列要素を取り得ます。
+@var{a_k}が配列要素の時、@code{kill}は配列の他の要素には影響することなくその要素をアンバインドします。
+
+いくつかの特殊な引数が認識されます。
+例えば、@code{kill (inlabels, functions, allbut (foo, bar))}のように、異なる引数の種類が組み合わされます。
+
+@code{kill (labels)}はそれまでに作られた入力、出力、中間式のラベルすべてをアンバインドします。
+@code{kill (inlabels)}は @mref{inchar}の現在の値で始まる入力ラベルのみをアンバインドします。
+同様に、
+@code{kill (outlabels)}は @mref{outchar}の現在の値で始まる出力ラベルのみをアンバインドし、
+@code{kill (linelabels)}は @mref{linechar}の現在の値で始まる中間式ラベルのみをアンバインドします。
+
+@code{kill (}@emph{n}@code{)}（nは整数）は入力、出力ラベルの最近のn個をアンバインドします。
+
+@code{kill ([@var{m}, @var{n}])}は入力、出力ラベル@var{m}から@var{n}までをアンバインドします。
+
+@code{kill (@var{infolist})}は @var{infolist}の中のすべての項目をアンバインドします。
+ここで、@var{infolist}は（@mref{values}, @mref{functions}, @mref{arrays}のような)
+@code{infolists}の中の任意の項目です。
+@code{infolists}も参照してください。
+
+@code{kill (all)}はinfolistsのすべての項目をアンバインドします。
+@code{kill (all)}はグローバル変数をデフォルト値にリセットしません;
+この点に関しては@mref{reset}を参照してください。
+
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}は、
+@var{a_1}, ..., @var{a_n}を除いて
+すべてのinfolistsの中のすべての項目をアンバインドします。
+@code{kill (allbut (@var{infolist}))}は
+@var{infolist}（@var{infolist}は@mref{values}, @mref{functions}, @mref{arrays}など）
+上の項目を除いてすべての項目をアンバインドします。
+
+バインドされたプロパティによって使われたメモリは、すべてのシンボルがプロパティからアンバインドされるまで解放されません。
+特に、シンボルの値によって使われているメモリを解放するには、
+シンボルそのもののアンバインドだけでなく、バインドされた値を表示する出力ラベルをアンバインドします。
+
+@code{kill}は引数をクォートします。
+引数を評価するにはクォートクォート演算子@code{'@w{}'}を使います。
+
+@code{kill (@var{symbol})}はシンボルのすべてのプロパティをアンバインドします。
+対照的に、関数@mref{remvalue}, @mref{remfunction}, @mref{remarray},
+@mref{remrule}は特定のプロパティをアンバインドします。
+
+@code{kil}は常に、たとえ引数がバインドされていなくても、@code{done}を返します。
+
+@opencatbox
+@category{Evaluation} @category{Console interaction} @category{Session management}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{labels}
+@deffn {関数} labels (@var{symbol})
+@deffnx {システム変数} labels
+
+@var{symbol}で始まる入力、出力、中間式ラベルのリストを返します。
+@var{symbol}は、@mref{inchar}, @mref{outchar}, もしくは@mref{linechar}の値が典型的です。
+ラベル文字はパーセント記号ありでもあしでもかまいませんので、
+例えば、@code{i}と@code{%i}は同じ結果になります。
+
+もし@var{symbol}で始まるラベルがなければ、@code{labels}は空のリストを返します。
+
+関数@code{labels}は引数をクォートします。
+引数を評価するにはクォートクォート演算子@code{'@w{}'}を使います。
+例えば，
+@code{labels (''inchar)}は、現在の入力ラベル文字で始まる入力ラベルを返します。
+
+変数@code{labels}は入力、出力、中間式ラベルのリストです。
+@code{inchar}, @code{outchar}, もしくは@code{linechar}が再定義されても、以前のラベルすべてを含みます。
+
+デフォルトで、Maximaはそれぞれのユーザー入力式の結果を表示し、結果に出力ラベルが与えられます。
+入力を@code{;}(セミコロン)の代わりに@code{$}(ドル記号)で終了することで、出力表示は抑制されます。
+出力ラベルが構成され、結果にバインドされますが、表示されません。
+ラベルは表示された出力ラベルと同じ方法で参照できます。
+@mref{%}や@mref{%%}, @mref{%th}も参照してください。
+
+いくつかの関数では中間式ラベルが生成されることがあります。
+フラグ@mref{programmode}は
+@mref{solve}や他の関数が式のリストを返す代わりに中間式ラベルを生成するかどうかを制御します。
+@mref{ldisplay}のようないくつかの他の関数は常に中間式ラベルを生成します。
+
+@mref{inchar}や@mref{outchar}, @mref{linechar}, @mref{infolists}も参照してください。
+
+@opencatbox
+@category{Display functions} @category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{linechar}
+@defvr {オプション変数} linechar
+デフォルト値: @code{%t}
+
+@code{linechar}は
+Maximaが生成する中間式のラベルの前置です。
+Maximaは（もし表示されるなら）
+@code{linechar}と@mref{linenum}を連結することで
+中間式それぞれのラベルを構成します。
+
+@code{linechar}は単一文字である必要はなく、
+任意の文字列もしくはシンボルを割り当てられます。
+Maximaは内部的に
+前置の最初の文字だけを考慮するので、
+前置@mref{inchar}, @mref{outchar}, @code{linechar}は異なる最初の文字を持たなければいけません。
+そうでなければ @code{kill(inlables)}のようないくつかのコマンドは期待通りに動きません。
+
+中間式は表示されるかもしれませんし、表示されないかもしれません。
+@mref{programmode}と@mref{labels}も参照してください。
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
+
+@c -----------------------------------------------------------------------------
+@anchor{linenum}
+@defvr {システム変数} linenum
+
+入力出力式の現在のペアの行番号。
+
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{myoptions}
+@defvr {システム変数} myoptions
+デフォルト値: @code{[]}
+
+@code{myoptions}はユーザーが再設定したオプションすべてのリストです。
+初期値に再設定されたか否かに関わらずです。
+
+@opencatbox
+@category{Global variables} @category{Session management} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{nolabels}
+@defvr {オプション変数} nolabels
+デフォルト値: @code{false}
+
+@code{nolabels}は@code{true}であれば、
+入力と出力結果のラベル（それぞれ@code{%i}と@code{%o}）は表示されますが、
+ラベルは結果にバインドされず、@mref{labels}リストにも追加されません。
+ラベルは結果にバインドされないので、
+ガーベッジコレクションは結果が使ったメモリを回復することができます。
+
+そうでなければ、入力と出力の結果のラベルは結果にバインドされ、@code{labels}リストに追加されます。
+
+中間式ラベル(@code{%t})は@code{nolabels}に影響されません;
+@code{nolabels}が@code{true}でも@code{false}でも、中間式ラベルはバインドされ、@code{labels}リストに追加されます。
+
+@mref{batch}や@mref{load}、 @mref{labels}も参照してください。
+
+@opencatbox
+@category{Global flags} @category{Session management}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{optionset}
+@defvr {オプション変数} optionset
+デフォルト値: @code{false}
+
+@code{optionset}が@code{true}の時、Maximaは、Maximaオプションが再設定されるといつでも、メッセージを表示します。
+もしユーザーがあるオプションの綴りが怪しく、割り当てた変数が本当にオプション変数か確認したいなら便利です。
+
+例:
+
+@example
+(%i1) optionset:true;
+assignment: assigning to option optionset
+(%o1)                         true
+(%i2) gamma_expand:true;
+assignment: assigning to option gamma_expand
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Global flags} @category{Session management} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{outchar}
+@defvr {オプション変数} outchar
+デフォルト値: @code{%o}
+
+@code{outchar}はMaximaが計算した式のラベルの前置です。
+@code{outchar}と@mref{linenum}を連結することで、
+Maximaは計算された式それぞれのラベルを自動的に構成します。
+@code{outchar}は、単一文字である必要はなく、
+任意の文字列もしくはシンボルを割り当てられます。
+Maximaは内部的に前置の最初の文字だけを考慮するので、
+前置@mref{inchar}, @code{outchar}, @mref{linechar}は異なる最初の文字を持たなければいけません。
+そうでなければ、@code{kill(inlables)}のようないくつかのコマンドは期待通りに動きません。
+
+@code{labels}も参照してください。
+
+例:
+
+@c ===beg===
+@c outchar: "output";
+@c expand((a+b)^3);
+@c ===end===
+@example
+(%i1) outchar: "output";
+(output1)                    output
+(%i2) expand((a+b)^3);
+                     3        2      2      3
+(output2)           b  + 3 a b  + 3 a  b + a
+(%i3)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{playback}
+@deffn  {関数} playback ()
+@deffnx {関数} playback (@var{n})
+@deffnx {関数} playback ([@var{m}, @var{n}])
+@deffnx {関数} playback ([@var{m}])
+@deffnx {関数} playback (input)
+@deffnx {関数} playback (slow)
+@deffnx {関数} playback (time)
+@deffnx {関数} playback (grind)
+
+入力、出力、中間式を表示します。再計算はしません。
+@code{playback}はラベルにバインドされた式表示するだけです;
+（@mref{print}や@mref{describe}で表示されたテキストやエラーメッセージなど）他の出力は表示されません。
+@mref{labels}も参照してください。
+
+@code{playback}は引数をクォートします。
+引数を評価するにはクォートクォート演算子@code{''}を使います。
+@code{playback}は常に@code{done}を返します。
+
+@code{playback ()}（引数なし）は今までに生成された入力、出力、中間式すべてを表示します。
+たとえ計算時に@code{$}終端子で出力が抑制されていても、
+出力式は表示されます。
+
+@code{playback (@var{n})}は最近の@var{n}個の式を表示します。
+入力、出力、中間式それぞれを１と数えます。
+
+@code{playback ([@var{m}, @var{n}])}は
+@var{m}番目から@var{n}番目までの入力、出力、中間式を表示します。
+
+@code{playback ([@var{m}])}は @code{playback ([@var{m}, @var{m}])}と同値です;
+これは普通、入力と出力の式のペアを１つ表示します。
+
+@code{playback (input)}は今までに生成された入力式をすべて表示します。
+
+@code{playback (slow)}は式の間でポーズし、ユーザーが
+@code{enter}を入力するのを待ちます。
+これは @mref{demo}と似たような振る舞いです。
+@c WHAT DOES THE FOLLOWING MEAN ???
+@code{playback (slow)}は、@code{save}や@mref{stringout}と関連して、
+役立つ式を取り出すために２次記憶ファイルを生成するときに便利です。
+
+@code{playback (time)}はそれぞれの式の計算時間を表示します。
+@c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
+@c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
+
+@code{playback (grind)}は入力式を @code{grind}関数と同じ形式で表示します。
+出力式は @code{grind}オプションで影響を受けません。
+@mref{grind}を参照してください。
+
+例えば、@code{playback ([5, 10], grind, time, slow)}のように、
+引数を組み合わせられます。
+@c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
+
+@opencatbox
+@category{Display functions} @category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{prompt}
+@defvr {オプション変数} prompt
+デフォルト値: @code{_}
+
+@code{prompt}は、@mref{demo}関数や@code{playback (slow)}モード、
+（@mref{break}で呼び出された）Maximaブレイクループのプロンプトシンボルです。
+
+@opencatbox
+@category{Global variables} @category{Console interaction}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{quit}
+@deffn {関数} quit ()
+
+Maximaセッションを終了します。
+関数は、@code{quit}ではなく、@code{quit();}もしくは@code{quit()$}として呼び出さなければいけないことに注意してください。
+
+長い計算を中断するには @code{control-C}をタイプしてください。
+デフォルトの動作では Maximaプロンプトに戻ります。
+もし@code{*debugger-hook*}が@code{nil}なら、
+@code{control-C}はLispデバッガを開きます。
+@code{debugging}も参照してください。
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{read}
+@deffn {関数} read (@var{expr_1}, @dots{}, @var{expr_n})
+
+@var{expr_1}, @dots{}, @var{expr_n}を表示し、
+コンソールから式１つを読み込み、評価された式を返します。
+式はセミコロン@code{;}もしくはドル記号@code{$}で終了します。
+
+@mref{readonly}も参照してください。
+
+@example
+(%i1) foo: 42$ 
+(%i2) foo: read ("foo is", foo, " -- enter new value.")$
+foo is 42  -- enter new value. 
+(a+b)^3;
+(%i3) foo;
+                                     3
+(%o3)                         (b + a)
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{readonly}
+@deffn {関数} readonly (@var{expr_1}, @dots{}, @var{expr_n})
+
+@var{expr_1}, @dots{}, @var{expr_n}を表示し、
+コンソールから式を１つ読み込み、
+式を（評価せずに）返します。
+式はセミコロン@code{;}もしくはドル記号@code{$}で終了します。
+
+@mref{read}も参照してください。
+
+例:
+
+@example
+(%i1) aa: 7$
+(%i2) foo: readonly ("Enter an expression:");
+Enter an expression: 
+2^aa;
+                                  aa
+(%o2)                            2
+(%i3) foo: read ("Enter an expression:");
+Enter an expression: 
+2^aa;
+(%o3)                            128
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{reset}
+@deffn {関数} reset ()
+
+多くのグローバル変数やオプション、いくつかの他の変数をデフォルト値に再設定します。
+
+@code{reset}は Lispリスト@code{*variable-initial-values*}上の変数を処理します。
+Lispマクロ@code{defmvar}は（他の動作の間に）このリストに変数を置きます。
+すべてではありませんが多くのグローバル変数やオプションがdefmvarによって定義されており、
+また、@code{defmvar}で定義されたいくつかの変数はグローバル変数でもオプションでもありません。
+
+@opencatbox
+@category{Session management}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{showtime}
+@defvr {オプション変数} showtime
+デフォルト値: @code{false}
+
+@code{showtime}が@code{true}の時、出力式と一緒に計算時間と経過時間を表示します。
+
+計算時間は常に記録されており、
+@code{showtime}が@code{false}の時でも、
+@mref{time}や@mref{playback}で計算時間を表示することができます。
+
+@mref{timer}も参照してください。
+
+@opencatbox
+@category{Display flags and variables} @category{Debugging}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{to_lisp}
+@deffn {関数} to_lisp ()
+
+Maximaの下のLispシステムに入ります。@code{(to-maxima)}でMaximaに戻ります。
+
+例:
+
+関数を定義し、Maximaの下のLispシステムに入ります。
+定義をプロパティリスト上で検査します。そして、関数定義を抽出し、因数分解し、
+変数$resultに格納します。
+変数はMaximaに戻った後、Maximaで使うことができます。
+
+@example
+(%i1) f(x):=x^2+x;
+                                  2
+(%o1)                    f(x) := x  + x
+(%i2) to_lisp();
+Type (to-maxima) to restart, ($quit) to quit Maxima.
+
+MAXIMA> (symbol-plist '$f)
+(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) 
+                             ((MPLUS) ((MEXPT) $X 2) $X))))
+MAXIMA> (setq $result ($factor (caddr (mget '$f 'mexpr))))
+((MTIMES SIMP FACTORED) $X ((MPLUS SIMP IRREDUCIBLE) 1 $X))
+MAXIMA> (to-maxima)
+Returning to Maxima
+(%o2)                         true
+(%i3) result;
+(%o3)                       x (x + 1)
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{values}
+@defvr {システム変数} values
+初期値: @code{[]}
+
+@code{values}は（Maximaのオプションやスイッチではなく）バインドされたユーザー変数すべてのリストです。
+リストは、@mref{:}や@mref{::}でバインドされたシンボルを含みます。
+
+もし変数の値がコマンド@code{kill}や, @mref{remove}, @mref{remvalue}で削除されたら、
+変数は@code{values}から削除されます。
+
+ユーザー定義関数のリストに関しては @mref{functions}を参照してください。
+
+例:
+
+最初、@code{values}はシンボル@code{a}, @code{b}, @code{c}を示しますが、
+@code{d}も―それは値にバインドされていません―ユーザー関数@code{f}も示しません。
+値は変数から削除されます。@code{values}は空のリストです。
+
+@c ===beg===
+@c [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
+@c values;
+@c [kill(a), remove(b,value), remvalue(c)];
+@c values;
+@c ===end===
+@example
+(%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
+                                           2
+(%o1)              [99, 9, 90, d, f(x) := x ]
+(%i2) values;
+(%o2)                       [a, b, c]
+(%i3) [kill(a), remove(b,value), remvalue(c)];
+(%o3)                   [done, done, [c]]
+(%i4) values;
+(%o4)                          []
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Display, , Functions and Variables for Command Line, Command Line
+@section Functions and Variables for Display
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{%edispflag}
+@defvr {オプション変数} %edispflag
+デフォルト値: @code{false}
+
+@code{%edispflag}が@code{true}の時、
+Maximaは @code{%e}の負の指数乗を商として表示します。
+例えば、@code{%e^-x}は @code{1/%e^x}と表示されます。
+@mref{exptdispflag}も参照してください。
+
+例:
+
+@c ===beg===
+@c %e^-10;
+@c %edispflag:true$
+@c %e^-10;
+@c ===end===
+@example
+(%i1) %e^-10;
+                               - 10
+(%o1)                        %e
+(%i2) %edispflag:true$
+(%i3) %e^-10;
+                               1
+(%o3)                         ----
+                                10
+                              %e
+@end example
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{absboxchar}
+@defvr {オプション変数} absboxchar
+デフォルト値: @code{!}
+
+@code{absboxchar}は１行より広い式の回りに絶対値記号を描くのに使われる文字です。
+
+例:
+
+@example
+(%i1) abs((x^3+1));
+                            ! 3    !
+(%o1)                       !x  + 1!
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c AFTER REVIEWING src/displa.lisp, IT LOOKS LIKE THIS VARIABLE HAS NO EFFECT
+@c CUT IT ON THE NEXT PASS
+@c @defvar cursordisp
+@c デフォルト値: @code{true}
+@c 
+@c When @code{cursordisp} is @code{true}, expressions are drawn by
+@c the displayer in logical sequence.  This only works with a console
+@c which can do cursor movement.  If @code{false}, expressions are
+@c printed line by line.
+@c 
+@c @code{cursordisp} is always @code{false} when a @code{writefile} is in
+@c effect.
+@c 
+@c @end defvar
+
+@c -----------------------------------------------------------------------------
+@anchor{disp}
+@deffn {関数} disp (@var{expr_1}, @var{expr_2}, @dots{})
+
+@mref{display}のようですが、
+等式ではなく引数の値だけが表示されます。
+これは名前を持たない複雑な引数や引数の値だけに興味があって
+名前には興味がない引数に役立ちます。
+
+@mref{ldisp}と@mref{print}も参照してください。
+
+例:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c disp(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) disp(x, b[1,2], sin(1.0));
+                               123
+
+                                  2
+                             x - x
+
+                        .8414709848078965
+
+(%o3)                         done
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{display}
+@deffn {関数} display (@var{expr_1}, @var{expr_2}, @dots{})
+
+左辺が未評価の@var{expr_i}で、右辺が式の値の等式を行の中央に表示します。
+この関数は、中間結果を表示するのにブロックや@mref{for}文の中で役立ちます。
+@code{display}の引数は、通常アトムや、添字付き変数、関数コールです。
+@code{disp}も参照してください。
+
+@mref{ldisplay}, @mref{disp}, @mref{ldisp}も参照してください。
+
+例:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c display(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) display(x, b[1,2], sin(1.0));
+                             x = 123
+
+                                      2
+                         b     = x - x
+                          1, 2
+
+                  sin(1.0) = .8414709848078965
+
+(%o3)                         done
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{display2d}
+@defvr {オプション変数} display2d
+デフォルト値: @code{true}
+
+@code{display2d}が@code{false}の時、
+コンソール表示は（２次元）形式ではなく文字列（１次元）形式です。
+
+例:
+
+@c ===beg===
+@c x/(x^2+1);
+@c display2d:false$
+@c x/(x^2+1);
+@c ===end===
+@example
+(%i1) x/(x^2+1);
+                               x
+(%o1)                        ------
+                              2
+                             x  + 1
+(%i2) display2d:false$
+(%i3) x/(x^2+1);
+(%o3) x/(x^2+1)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{display_format_internal}
+@defvr {オプション変数} display_format_internal
+デフォルト値: @code{false}
+
+@code{display_format_internal}が@code{true}の時、
+式は数学的内部表現を隠すように変換されることなく表示されます。
+表示は@code{part}ではなく@code{inpart}が返すものに対応します。
+
+例:
+
+@example
+User     part       inpart
+a-b;      a - b     a + (- 1) b
+
+           a            - 1
+a/b;       -         a b
+           b
+                       1/2
+sqrt(x);   sqrt(x)    x
+
+          4 X        4
+X*4/3;    ---        - X
+           3         3
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c IS THIS FUNCTION STILL USEFUL ???
+@c REPHRASE, NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{dispterms}
+@deffn {関数} dispterms (@var{expr})
+@var{expr}をパーツ毎に一行ずつ使って表示します。
+すなわち、最初に@var{expr}の演算子が表示され、
+それぞれの項が別々に表示されます。
+もし@var{expr}が他の方法で表示するには大きすぎるなら、
+これは役に立ちます。
+例えば、もし@code{P1}, @code{P2}, ...が非常に大きな式なら、
+@code{P1 + P2 + ...}を一度に表示しようとする場合、
+表示プログラムは保存の空き領域を使い尽くすかもしれません。
+しかしながら、
+@code{dispterms (P1 + P2 + ...)}は、
+@code{P1}を表示し、その下に@code{P2}を表示し、という具合です。
+@code{dispterms}を使わない時、
+もし指数式が@code{A^B}のように表示するには広すぎるなら、
+それは@code{expt (A, B)}
+(もしくは@code{A^^B}の場合、@code{ncexpt (A, B)}）のように現れます。
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{expt}
+@anchor{ncexpt}
+@deffn  {関数} expt (@var{a}, @var{b})
+@deffnx {関数} ncexpt (@var{a}, @var{b})
+
+もし指数式が@code{@var{a}^@var{b}}のように表示するには広すぎるなら、
+@code{expt (@var{a}, @var{b})}
+(もしくは、@code{@var{a}^^@var{b}}の場合、@code{ncexpt (@var{a}, @var{b})}
+のように現れます。
+
+@c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
+@c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
+@code{expt}や@code{ncexpt}は入力では認識されません。
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{exptdispflag}
+@defvr {オプション変数} exptdispflag
+デフォルト値: @code{true}
+
+@code{exptdispflag}が@code{true}の時、
+Maximaは式を商を使って負の指数の式を表示します。
+
+例:
+
+@example
+(%i1) exptdispflag:true;
+(%o1)                         true
+(%i2) 10^-x;
+                                1
+(%o2)                          ---
+                                 x
+                               10
+(%i3) exptdispflag:false;
+(%o3)                         false
+(%i4) 10^-x;
+                                - x
+(%o4)                         10
+@end example
+
+@opencatbox
+@category{Expressions} @category{Display flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{grind}
+@deffn {関数} grind (@var{expr})
+@deffnx {オプション変数} grind
+
+関数@code{grind}は
+コンソールにMaximaへの入力に適した形で@var{expr}を印刷します。
+@code{grind}はいつも@code{done}を返します。
+
+@var{expr}が関数名やマクロ名の時、
+@code{grind}は、名前だけでなく関数やマクロ定義を出力します。
+
+@mref{string}も参照してください。
+それは出力を印刷する代わりに文字列を返します。
+@code{grind}は
+@code{string}の出力より若干読みやすい方法で
+式を印刷しようとします。
+
+変数@code{grind}が@code{true}の時、
+@code{string}や@code{stringout}の出力は
+@code{grind}のそれと同じフォーマットです;
+そうでなければ、それらの関数の出力を特別にフォーマットしようとはしません。
+変数@code{grind}のデフォルト値は@code{false}です。
+
+@code{grind}は @code{playback}の引数としても指定できます。
+@code{grind}が存在する時、
+@code{playback}は @code{grind}関数と同じフォーマットで入力式を印刷します。
+そうでなければ、入力式を特にフォーマットしようとはしません。
+
+@code{grind}は引数を評価します。
+
+例:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c expr: expand ((aa + bb)^10);
+@c grind (expr);
+@c string (expr);
+@c cholesky (A):= block ([n : length (A), L : copymatrix (A),
+@c   p : makelist (0, i, 1, length (A))], 
+@c   for i thru n do for j : i thru n do
+@c   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), 
+@c   if i = j then @c   p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
+@c   for i thru n do L[i, i] : 1 / p[i],
+@c   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c grind (cholesky);
+@c string (fundef (cholesky));
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) expr: expand ((aa + bb)^10);
+         10           9        2   8         3   7         4   6
+(%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
+         5   5         6   4         7   3        8   2
+ + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
+        9        10
+ + 10 aa  bb + aa
+(%i12) grind (expr);
+bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
+     +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
+     +10*aa^9*bb+aa^10$
+(%o12)                        done
+(%i13) string (expr);
+(%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
++252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
+bb+aa^10
+(%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
+  p : makelist (0, i, 1, length (A))], for i thru n do
+  for j : i thru n do
+  (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
+  if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]),
+  for i thru n do L[i, i] : 1 / p[i],
+  for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+(%i15) grind (cholesky);
+cholesky(A):=block(
+         [n:length(A),L:copymatrix(A),
+          p:makelist(0,i,1,length(A))],
+         for i thru n do
+             (for j from i thru n do
+                  (x:L[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),
+                   if i = j then p[i]:1/sqrt(x)
+                       else L[j,i]:x*p[i])),
+         for i thru n do L[i,i]:1/p[i],
+         for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
+(%o15)                        done
+(%i16) string (fundef (cholesky));
+(%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
+t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
+[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),if i = j then p[i]:1/sqrt(x\
+) else L[j,i]:x*p[i])),for i thru n do L[i,i]:1/p[i],for i thru \
+n do (for j from i+1 thru n do L[i,j]:0),L)
+@end example
+
+@opencatbox
+@category{Display functions} @category{Display flags and variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ibase}
+@defvr {オプション変数} ibase
+デフォルト値: @code{10}
+
+@code{ibase}は Maximaが読む整数の基数です。
+
+@code{ibase}は2から(十進数で)36までの任意の整数を割り当てられます。
+@code{ibase}が10よりも大きい時、
+数値は十進数字0から9に加えて、
+@code{ibase}ディジットに必要なアルファベットA, B, C, @dots{}で構成されます。
+最初のディジットが0から9の時だけ文字はディジットとして解釈されます。
+大文字小文字は区別されません。
+許容される最も大きな基数36の数値は0から9までとAからZまでから構成されます。
+
+@code{ibase}の値がいくつでも、
+整数が小数点で終了する時は基数10として解釈されます。
+
+@mref{obase}も参照してください。
+
+例:
+
+@code{ibase} less than 10.
+
+@c ===beg===
+@c ibase : 2 $
+@c obase;
+@c 1111111111111111;
+@c ===end===
+@example
+(%i1) ibase : 2 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1111111111111111;
+(%o3)                         65535
+@end example
+
+10より大きな@code{ibase}。
+最初のディジットが0から9までの時だけ文字はディジットとして解釈されます。
+
+@c ===beg===
+@c ibase : 16 $
+@c obase;
+@c 1000;
+@c abcd;
+@c symbolp (abcd);
+@c 0abcd;
+@c symbolp (0abcd);
+@c ===end===
+@example
+(%i1) ibase : 16 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1000;
+(%o3)                         4096
+(%i4) abcd;
+(%o4)                         abcd
+(%i5) symbolp (abcd);
+(%o5)                         true
+(%i6) 0abcd;
+(%o6)                         43981
+(%i7) symbolp (0abcd);
+(%o7)                         false
+@end example
+
+整数が小数点で終了する時、基数10として解釈されます。
+
+@c ===beg===
+@c ibase : 36 $
+@c obase;
+@c 1234;
+@c 1234.;
+@c ===end===
+@example
+(%i1) ibase : 36 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1234;
+(%o3)                         49360
+(%i4) 1234.;
+(%o4)                         1234
+@end example
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ldisp}
+@deffn {関数} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
+
+式@var{expr_1}, ..., @var{expr_n}をコンソールに印刷出力として表示します。
+@code{ldisp}は
+引数それぞれに中間式ラベルを割り当て、ラベルのリストを返します。
+
+@mref{disp}, @mref{display}, @mref{ldisplay}も参照してください。
+
+例:
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisp (e, f);
+                                   3
+(%t3)                       (b + a)
+
+                     3        2      2      3
+(%t4)               b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                   3
+(%o4)                       (b + a)
+(%i5) %t4;
+                     3        2      2      3
+(%o5)               b  + 3 a b  + 3 a  b + a
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ldisplay}
+@deffn {関数} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
+
+式@var{expr_1}, ..., @var{expr_n}をコンソールに印刷出力として表示します。
+式それぞれは、
+@code{lhs}が@code{ldisplay}の引数の１つで、@code{rhs}がその値の、
+形式@code{lhs = rhs}の等式として表示されます。
+典型的には引数それぞれは変数です。
+@code{ldisp}は式それぞれに中間式ラベルを割り当て、ラベルのリストを返します。
+
+@mref{display}, @mref{disp}も参照してください。
+
+例:
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisplay (e, f);
+                                     3
+(%t3)                     e = (b + a)
+
+                       3        2      2      3
+(%t4)             f = b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                     3
+(%o4)                     e = (b + a)
+(%i5) %t4;
+                       3        2      2      3
+(%o5)             f = b  + 3 a b  + 3 a  b + a
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{linel}
+@defvr {オプション変数} linel
+デフォルト値: @code{79}
+
+@code{linel}はコンソールディスプレイの仮定された(文字単位の)幅です。
+@code{linel}はユーザーによって任意の値に割り当てられます。
+非常に小さい値や非常に大きな値は実用的ではありませんが。
+エラーメッセージや@mref{describe}の出力のように、
+Maximaの組み込み関数が表示するテキストは@code{linel}の影響を受けません。
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@need 800
+@anchor{lispdisp}
+@defvr {オプション変数} lispdisp
+デフォルト値: @code{false}
+
+@code{lispdisp}が@code{true}の時、
+Lispシンボルはクエスチョンマーク@code{?}を先頭文字として表示されます。
+そうでなければ、Lispシンボルは先頭文字を持ちません。
+
+例:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{negsumdispflag}
+@defvr {オプション変数} negsumdispflag
+デフォルト値: @code{true}
+
+@code{negsumdispflag}が@code{true}の時、
+@code{x - y}は @code{- y + x}でなく@code{x - y}と表示されます。
+@code{false}に設定すると、
+２つの式の違いに関する表示での特殊なチェックがされないようになります。
+１つの応用は、例えば、@code{a + %i*b}と@code{a - %i*b}を同じ表示にすることです。
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{obase}
+@defvr {オプション変数} obase
+デフォルト値: @code{10}
+
+@code{obase}はMaximaが表示する整数の基数です。
+
+@code{obase}は2から(十進数で)36までの任意の整数を割り当てられます。
+@code{obase}が10よりも大きい時、
+数値は十進数字0から9に加えて、
+必要な大文字アルファベットA, B, C, ...で構成されます。
+もし先頭ディジットがそうでなければ文字なら、0ディジットが先頭に表示されます。
+許容される最も大きな基数36の数値は0から9までとAからZまでから構成されます。
+
+@mref{ibase}も参照してください。
+
+例:
+
+@c ===beg===
+@c obase : 2;
+@c 2^8 - 1;
+@c obase : 8;
+@c 8^8 - 1;
+@c obase : 16;
+@c 16^8 - 1;
+@c obase : 36;
+@c 36^8 - 1;
+@c ===end===
+@example
+(%i1) obase : 2;
+(%o1)                          10
+(%i2) 2^8 - 1;
+(%o10)                      11111111
+(%i3) obase : 8;
+(%o3)                          10
+(%i4) 8^8 - 1;
+(%o4)                       77777777
+(%i5) obase : 16;
+(%o5)                          10
+(%i6) 16^8 - 1;
+(%o6)                       0FFFFFFFF
+(%i7) obase : 36;
+(%o7)                          10
+(%i8) 36^8 - 1;
+(%o8)                       0ZZZZZZZZ
+@end example
+
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{pfeformat}
+@defvr {オプション変数} pfeformat
+デフォルト値: @code{false}
+
+@code{pfeformat}が@code{true}の時、
+整数の比は斜線（スラッシュ）文字で表示され、
+整数分母@code{n}は掛け算項@code{1/n}として先に表示されます。
+
+@example
+(%i1) pfeformat: false$
+(%i2) 2^16/7^3;
+                              65536
+(%o2)                         -----
+                               343
+(%i3) (a+b)/8;
+                              b + a
+(%o3)                         -----
+                                8
+(%i4) pfeformat: true$ 
+(%i5) 2^16/7^3;
+(%o5)                       65536/343
+(%i6) (a+b)/8;
+(%o6)                      1/8 (b + a)
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{powerdisp}
+@defvr {オプション変数} powerdisp
+デフォルト値: @code{false}
+
+@code{powerdisp}が@code{true}の時、
+べきを増やす順に項を使って和が表示されます。
+例えば、
+多項式は切り詰められたべき級数として表示され、
+最初に定数項最後に最高次項となります。
+
+デフォルトでは和の項はべきを減らす順に表示されます。
+
+@c NEED AN EXAMPLE HERE
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{print}
+@deffn {関数} print (@var{expr_1}, @dots{}, @var{expr_n})
+
+@var{expr_1}, @dots{}, @var{expr_n}を１つ１つ、左から右へ評価し、
+コンソールディスプレイの左端から表示します。
+
+@code{print}が返す値は最後の引数の値です。
+@code{print}は中間式ラベルを生成しません。
+
+@mref{display}, @mref{disp}, @mref{ldisplay}, @mref{ldisp}も参照してください。
+これらの関数は一行ずつ１つの式を表示しますが、
+@code{print}は一行に２つ以上の式を表示しようとします。
+
+ファイルの中身を表示するには @mref{printfile}を参照してください。
+
+例:
+
+@example
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+            3        2      2      3
+(a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
+
+                                              10 log(a) - log(b) 
+(%i2) r;
+(%o2)                  10 log(a) - log(b)
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+                           (a+b)^3 is
+
+                     3        2      2      3
+                    b  + 3 a b  + 3 a  b + a
+
+                         log (a^10/b) is
+
+                       10 log(a) - log(b)
+@end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrtdispflag}
+@defvr {オプション変数} sqrtdispflag
+デフォルト値: @code{true}
+
+@code{sqrtdispflag}が@code{false}の時、
+@code{sqrt}を指数1/2で表示するようにします。
+@c AND OTHERWISE ... ??
+
+@opencatbox
+@category{Mathematical functions} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{stardisp}
+@defvr {オプション変数} stardisp
+デフォルト値: @code{false}
+
+@code{stardisp}が@code{true}の時
+掛け算はオペランドの間のアスタリスク@code{*}で表示されます。
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ttyoff}
+@defvr {オプション変数} ttyoff
+デフォルト値: @code{false}
+
+@code{ttyoff}が@code{true}の時、
+出力式は表示されません。
+出力式は計算され、ラベルに割り当てられます。
+@code{labels}を参照してください。
+
+エラーメッセージや@code{describe}の出力のように、組み込みMaxima関数によって出力されたテキストは @code{ttyoff}の影響を受けません。
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+

@@ -1,0 +1,71 @@
+@menu
+* Functions and Variables for ggf::
+@end menu
+
+@node Functions and Variables for ggf,  , ggf, ggf
+@section Functions and Variables for ggf
+
+@defvr {オプション変数} GGFINFINITY
+デフォルト値: 3
+
+これは関数@code{ggf}のオプション変数です。
+
+母関数の連分数を計算する時、
+(厳密に)@var{GGFINFINITY}より大きな次数を持つ
+部分商は捨てられます。
+現在のコンバージェントは母関数の正確な値として考えられます;
+部分商すべての次数はたいてい0か1です;
+もしより大きな値を使うなら、
+十分精度の高い計算を行うために十分な項を与えるべきです。
+
+@code{ggf}も参照してください。
+
+@opencatbox
+@category{Package ggf}
+@closecatbox
+
+@end defvr
+
+
+@defvr {オプション変数} GGFCFMAX
+デフォルト値: 3
+
+これは
+関数@code{ggf}のオプション変数です。
+
+母関数の連分数を計算する時、
+もし
+@var{GGFCFMAX}個の部分商を計算した後、よい結果が見つからないなら
+(@var{GGFINFINITY}フラグを参照してください)、
+母関数は２つの多項式の分数でないように考えられ、
+関数は抜けます。
+もっと複雑な母関数のためにより大きな値を自由に入れてください。
+
+@code{ggf}も参照してください。
+
+@opencatbox
+@category{Package ggf}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} ggf (@var{l})
+(もし母関数が２つの多項式の分数なら)
+与えられた最初の数項に対する、
+数列の母関数を計算します。
+@var{l}は数のリストです。
+
+解は２つの多項式の分数として返されます。
+解が見つからなかったら、@code{done}を返します。
+
+この関数は
+グローバル変数@var{GGFINFINITY}と@var{GGFCFMAX}で制御されます。
+@var{GGFINFINITY}と@var{GGFCFMAX}も参照してください。
+
+この関数を使うには、最初に@code{load("ggf")}を書いてください。
+
+@opencatbox
+@category{Generating functions} @category{Share packages} @category{Package ggf}
+@closecatbox
+
+@end deffn

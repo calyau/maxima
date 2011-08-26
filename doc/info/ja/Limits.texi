@@ -1,0 +1,127 @@
+@menu
+* Functions and Variables for Limits::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Limits,  , Limits, Limits
+@section Functions and Variables for Limits
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{lhospitallim}
+@defvr {オプション変数} lhospitallim
+Default: 4
+
+@code{lhospitallim}は、
+@code{limit}の中で使われるロピタルの規則の回数の最大数です。
+これは
+@code{limit (cot(x)/csc(x), x, 0)}のような場合の
+無限ループを防ぎます。
+
+
+@opencatbox
+@category{Limits}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{limit}
+@deffn  {関数} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {関数} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {関数} limit (@var{expr})
+
+実変数@var{x}が値@var{val}に方向@var{dir}に近づく時の
+@var{expr}の極限を計算します。
+@var{dir}は、上からの極限には値@code{plus}を、下からの極限には@code{minus}を持ち、
+また、 (両側極限が計算されることを暗示して)省略することもあります。
+
+@code{limit}は以下の特殊シンボルを使います:
+ @code{inf} (正の無限大)と@code{minf} (負の無限大)
+出力時には、@code{und} (未定義), @code{ind} (不定しかし有界), @code{infinity} (複素無限大)も使うことがあります。
+
+式の絶対値の極限は正の無限大ですが、式自体の極限は正の無限大でも負の無限大でもない時、
+@code{infinity}(複素数の無限大)が返されます。
+これは、@code{limit(log(x), x, minf)}のように複素偏角の極限が定数である場合、
+@code{limit((-2)^x, x, inf)}のように複素偏角が振動する場合、
+@code{limit(1/x, x, 0)}や@code{limit(log(x), x, 0)}のように複素偏角が左右の極限のいずれかで異なる場合を、
+を含みます。
+
+@code{lhospitallim}は、
+@code{limit}の中で使われるロピタルの規則の回数の最大数です。
+これは
+@code{limit (cot(x)/csc(x), x, 0)}のような場合の
+無限ループを防ぎます。
+
+@code{tlimswitch}が@code{true}の時、
+必要な時@code{limit}コマンドがテイラー級数展開を使うことを許します。
+
+@code{limsubst}は、
+@code{limit}が未知の形式の上の代入を試みることを防ぎます。
+これは、1を与える@code{limit (f(n)/f(n+1), n, inf)}のようなバグを避けるためです。
+@code{limsubst}を@code{true}に設定することはそんな代入を許します。
+
+例えば、@code{limit (inf-1)}のように、
+定数式を整理するために、引数１つの@code{limit}がしばしばコールされます。
+
+@c MERGE EXAMPLES INTO THIS FILE
+@code{example (limit)}はいくつかの例を表示します。
+
+方法に関して、
+Wang, P., "Evaluation of Definite Integrals by Symbolic
+Manipulation", Ph.D. thesis, MAC TR-92, October 1971を参照してください。
+
+@opencatbox
+@category{Limits}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{limsubst}
+@defvr {オプション変数} limsubst
+デフォルト値: @code{false} - 
+@code{limit}が未知の形式の上の代入を試みることを防ぎます。
+
+これは、1を与える@code{limit (f(n)/f(n+1), n, inf)}のようなバグを避けるためです。
+@code{limsubst}を@code{true}に設定することはそんな代入を許します。
+@code{limit}が未知の形式上で代入をしようとするのを防ぎます。
+
+@opencatbox
+@category{Limits}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{tlimit}
+@deffn  {関数} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {関数} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {関数} tlimit (@var{expr})
+
+@code{expr}の@code{x}に関する@code{val}
+でのテイラー級数展開の方向@code{dir}からの極限を取ります。
+
+@opencatbox
+@category{Limits}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{tlimswitch}
+@defvr {オプション変数} tlimswitch
+デフォルト値: @code{true}
+
+@code{tlimswitch}が@code{true}の時、
+@code{limit}コマンドは
+もし入力式が直接計算できないなら、
+テイラー級数展開を使います。
+これは、@code{limit(x/(x-1)-1/log(x),x,1,plus)}のような
+極限の評価を許します。
+@code{tlimswitch}が@code{false}で、
+入力式の極限は直接には計算できない時は、
+@code{limit}は、未評価の極限式を返します。
+
+@opencatbox
+@category{Limits}
+@closecatbox
+
+@end defvr
+

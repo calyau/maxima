@@ -1,0 +1,98 @@
+@menu
+* Introduction to mnewton::
+* Functions and Variables for mnewton::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to mnewton, Functions and Variables for mnewton, mnewton, mnewton
+@section Introduction to mnewton
+@c -----------------------------------------------------------------------------
+
+@code{mnewton}は
+１変数または多変数の非線形方程式を解くための
+Newton法の実装です。
+
+@opencatbox
+@category{Numerical methods} @category{Share packages} @category{Package mnewton}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for mnewton,  , Introduction to mnewton, mnewton
+@section Functions and Variables for mnewton
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{newtonepsilon}
+@defvr {オプション変数} newtonepsilon
+デフォルト値: @code{10.0^(-fpprec/2)}
+
+@code{mnewton}関数が解に向かって収束した時を決定する精度。
+もし@code{newtonepsilon}が多倍長浮動小数点なら、@code{mnewton}計算は多倍長浮動小数点でされます。
+@code{mnewton}も参照してください。
+
+@opencatbox
+@category{Package mnewton}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{newtonmaxiter}
+@defvr {オプション変数} newtonmaxiter
+デフォルト値: @code{50}
+
+もし収束しないか収束が遅すぎるなら
+@code{mnewton}関数を止める繰り返しの最大数。
+
+@code{mnewton}も参照してください。
+
+@opencatbox
+@category{Package mnewton}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{function_mnewton}
+@deffn {関数} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+
+Newton法を使った複数非線形関数の解。
+@var{FuncList}は解くべき関数のリスト、
+@var{VarList}は変数名のリスト、
+@var{GuessList}は初期近似のリストです。
+
+解は
+@code{solve()}が返すのと同じフォーマットで返されます。
+もし解が見つからないなら、@code{[]}が返されます。
+
+この関数は
+グローバル変数@code{newtonepsilon}と@code{newtonmaxiter}によって制御されます。
+
+@example
+(%i1) load("mnewton")$
+
+(%i2) mnewton([x1+3*log(x1)-x2^2, 2*x1^2-x1*x2-5*x1+1],
+              [x1, x2], [5, 5]);
+(%o2) [[x1 = 3.756834008012769, x2 = 2.779849592817897]]
+(%i3) mnewton([2*a^a-5],[a],[1]);
+(%o3)             [[a = 1.70927556786144]]
+(%i4) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
+(%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
+@end example
+
+変数@code{newtonepsilon}は近似の精度を制御します。
+それはまた、計算が浮動小数点で実行されるか、多倍長浮動小数点で実行されるかを制御します。
+
+@example
+(%i1) (load("mnewton"), fpprec : 25, newtonepsilon : bfloat(10^(-fpprec+5)))$
+
+(%i2) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
+(%o2) [[u = 1.066618389595406772591173b0, v = 1.552564766841786450100418b0]]
+@end example
+
+この関数を使うためには、最初に@code{load("mnewton")}を書いてください。
+@code{newtonepsilon}と@code{newtonmaxiter}も参照してください。
+
+@opencatbox
+@category{Package mnewton}
+@closecatbox
+@end deffn
+

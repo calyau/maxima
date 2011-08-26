@@ -1,0 +1,972 @@
+@c end concepts Simplification
+@menu
+* Functions and Variables for Simplification::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Simplification,  , Simplification, Simplification
+@section Functions and Variables for Simplification
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{additive}
+@defvr {キーワード} additive
+
+もし@code{declare(f, additive)}が実行されると:
+
+(1) もし@code{f}が1変数関数なら、@code{f}が和に適用された時はいつでも、
+@code{f}は和の上に分配整理されます。
+例えば、@code{f(y+x)}は、@code{f(y)+f(x)}に整理されます。
+
+(2) もし@code{f}が2変数以上の関数なら、
+@code{sum}や@code{integrate}の場合と同様に
+加法性が第一番目の引数に対して定義されます。
+例えば、@code{f(h(x)+g(x),x)}は@code{f(h(x),x)+f(g(x),x)}に整理されます。
+@code{f}が@code{sum(x[i],i,lower-limit,upper-limit)}の形の式に適用されたときには
+この整理はされません。
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{antisymmetric}
+@defvr {宣言} antisymmetric
+もし@code{declare(h,antisymmetric)}が実行されると、
+@code{h}は反対称として整理されます。
+例えば、@code{h(x,z,y)}は@code{-h(x,y,z)}と整理されます。
+即ち、@code{symmetric}か@code{commutative}で得られた結果に(-1)^nを掛けたものとなります。
+ここで、nはその形に変換するのに必要な置換の回数です。
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} combine (@var{expr})
+同じ分母を持つ項を単一の項に結合することによって和@var{expr}を整理します。
+
+@c NEED EXAMPLE HERE
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{commutative}
+@defvr {宣言} commutative
+
+もし@code{declare(h,commutative)}が実行されたなら、
+@code{h}は可換関数として整理されます。
+例えば、@code{h(x,z,y)}は@code{h(x,y,z)}に整理されます。
+これは@code{symmetric}と同じです。
+
+@opencatbox
+@category{Operators} @category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{demoivre}
+@deffn  {関数} demoivre (@var{expr})
+@deffnx {オプション変数} demoivre
+
+関数@code{demoivre (expr)}は、
+グローバル変数@code{demoivre}を設定することなしに式を変換します。
+
+変数@code{demoivre}が@code{true}の時、
+複素数の指数関数は、円関数の項で表した同値な式に変換されます:
+もし@code{b}が@code{%i}を含まなければ、
+@code{exp (a + b*%i)}は、@code{%e^a * (cos(b) + %i*sin(b))}に整理されます。
+@code{a}と@code{b}は展開されません。
+
+@code{demoivre}のデフォルト値は@code{false}です。
+
+@code{exponentialize}は、円関数や双曲関数を指数関数形に変換します。
+@code{demoivre}と@code{exponentialize}は、同時に両方trueにはできません。
+
+@opencatbox
+@category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{function_distrib}
+@deffn {関数} distrib (@var{expr})
+
+和を積上に分配します。
+式のトップレベルのみで働き、すなわち、再帰的でなく、
+@code{expand}より速い点で、@code{expand}とは違います。
+トップレベルの和すべてを展開する点で、@code{multthru}とは違います。
+
+例:
+
+@example
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{distribute_over}
+@defvr {オプション変数} distribute_over
+デフォルト値: @code{true}
+
+@code{distribute_over}は、
+リストや行列や等式のようなバッグ(重複を許す集合)上の関数のマッピングを制御します。
+今回、すべてのMaxima関数がこのプロパティを持つ訳ではありません。
+このプロパティはコマンド@code{properties}で調べることが可能です。
+
+@code{distribute_over}を値@code{false}に設定した時、
+関数のマッピングはオフにスイッチされます。
+
+例:
+
+@code{sin}関数はリスト上にマップします:
+
+@c ===beg===
+@c sin([x,1,1.0]);
+@c ===end===
+@example
+(%i1) sin([x,1,1.0]);
+(%o1)                 [sin(x), sin(1), .8414709848078965]
+@end example
+
+@code{mod}は
+リスト上にマップされる２変数関数です。
+入れ子のリスト上のマッピングも可能です:
+
+@c ===beg===
+@c mod([x,11,2*a],10);
+@c mod([[x,y,z],11,2*a],10);
+@c ===end===
+@example
+(%i2) mod([x,11,2*a],10);
+(%o2)                    [mod(x, 10), 1, 2 mod(a, 5)]
+(%i3) mod([[x,y,z],11,2*a],10);
+(%o3)       [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
+@end example
+
+@code{floor}関数の行列や等式上のマッピング:
+
+@c ===beg===
+@c floor(matrix([a,b],[c,d]));
+@c floor(a=b);
+@c ===end===
+@example
+(%i4) floor(matrix([a,b],[c,d]));
+                            [ floor(a)  floor(b) ]
+(%o4)                       [                    ]
+                            [ floor(c)  floor(d) ]
+(%i5) floor(a=b);
+(%o5)                         floor(a) = floor(b)
+@end example
+
+１変数以上の関数は、任意の引数上、または、すべての引数上にマップします:
+
+@c ===beg===
+@c expintegral_e([1,2],[x,y]);
+@c ===end===
+@example
+(%i6) expintegral_e([1,2],[x,y]);
+(%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
+       [expintegral_e(2, x), expintegral_e(2, y)]]
+@end example
+
+関数がプロパティdistribute_overを持つかチェックします:
+
+@c ===beg===
+@c properties(abs);
+@c ===end===
+@example
+(%i7) properties(abs);
+(%o7) [integral, distributes over bags, noun, rule, gradef]
+@end example
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{domain}
+@defvr {オプション変数} domain
+デフォルト値: @code{real}
+
+@code{domain}が@code{complex}に設定されている時、
+@code{sqrt (x^2)}は、@code{abs(x)}を返さず、@code{sqrt (x^2)}
+のままを保ちます。
+
+@c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !!!
+@c The notion of a "domain" of simplification is still in its infancy,
+@c and controls little more than this at the moment.
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{evenfun}
+@anchor{oddfun}
+@defvr  {宣言} evenfun
+@defvrx {宣言} oddfun
+
+@code{declare(f, evenfun}や @code{declare(f, oddfun}は
+関数 @code{f}を奇関数か偶関数として認識するように指示します。
+
+例:
+
+@example
+(%i1) o (- x) + o (x);
+(%o1)                     o(x) + o(- x)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- x) + o (x);
+(%o3)                           0
+(%i4) e (- x) - e (x);
+(%o4)                     e(- x) - e(x)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- x) - e (x);
+(%o6)                           0
+@end example
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{expand}
+@deffn  {関数} expand (@var{expr})
+@deffnx {関数} expand (@var{expr}, @var{p}, @var{n})
+
+式@var{expr}を展開します。
+指数和や和の積の積を実行し、有理式の分子をそれぞれの項に分割し、
+（可換、非可換な）積が@var{expr}のすべてのレベルの和で分配されます。
+
+多項式の場合、もっと効率的なアルゴリズムの@code{ratexpand}を普通使うべきです。
+
+@code{maxnegex}と@code{maxposex}はそれぞれ、展開される最大の負と正の指数を制御します。
+
+@code{expand (expr, p, n)}は、
+@var{expr}を、@code{maxposex}に@var{p}を@code{maxnegex}に@var{n}を使って展開します。
+これは、式のすべてではなく、一部を展開するために役立ちます。
+
+@code{expon} - 自動的に展開される最大の負のべきの指数（@code{expand}のコールに独立して）。
+例えば、もしも@code{expon}が4なら@code{(x+1)^(-5)}は自動では展開されません。
+
+@code{expop} - 自動的に展開される最大の正の指数。
+もし@code{expop}が3以上なら、@code{(x+1)^3}は自動的に展開されます。
+もし@code{n}が@code{expop}よりも大きい時@code{(x+1)^n}が展開されるのが望まれるなら、
+@code{maxposex}が@code{n}より小さくない場合のみ、@code{expand ((x+1)^n)}の実行が行われます。
+
+@code{ev}で使われる@code{expand}フラグによって展開が実行されます。
+
+ファイル@file{share/simplification/facexp.mac}は、
+@c I should really use a macro which expands to something like
+@c @uref{file://...,,simplification/facexp.mac}.  But texi2html
+@c currently supports @uref only with one argument.
+@c Worse, the `file:' scheme is OS and browser dependent.
+ユーザーに制御された展開によって式を構成する機能を提供するいくつかの関連関数
+（特に自動ロードされる@code{facsum}, @code{factorfacsum}と@code{collectterms}）と
+変数(@code{nextlayerfactor}と@code{facsum_combine})を含みます。
+@c MERGE share/simplification/facexp.usg INTO THIS FILE OR CREATE NEW FILE facexp.texi
+簡単な関数の記述が@file{simplification/facexp.usg}にあります。
+@code{demo("facexp")}でデモが実行できます。
+
+例:
+
+@c ===beg===
+@c expr:(x+1)^2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2);
+@c expr:(x+1)^-2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2,2);
+@c ===end===
+@example
+(%i1) expr:(x+1)^2*(y+1)^3;
+                               2        3
+(%o1)                   (x + 1)  (y + 1)
+(%i2) expand(expr);
+       2  3        3    3      2  2        2      2      2
+(%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
+                                                      2
+                                     + 6 x y + 3 y + x  + 2 x + 1
+(%i3) expand(expr,2);
+               2        3              3          3
+(%o3)         x  (y + 1)  + 2 x (y + 1)  + (y + 1)
+(%i4) expr:(x+1)^-2*(y+1)^3;
+                                   3
+                            (y + 1)
+(%o4)                       --------
+                                   2
+                            (x + 1)
+(%i5) expand(expr);
+            3               2
+           y             3 y            3 y             1
+(%o5) ------------ + ------------ + ------------ + ------------
+       2              2              2              2
+      x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
+(%i6) expand(expr,2,2);
+@group
+                                   3
+                            (y + 1)
+(%o6)                     ------------
+                           2
+                          x  + 2 x + 1
+@end group
+@end example
+
+展開なしに式を再整理します:
+
+@c ===beg===
+@c expr:(1+x)^2*sin(x);
+@c exponentialize:true;
+@c expand(expr,0,0);
+@c ===end===
+@example
+(%i7) expr:(1+x)^2*sin(x);
+                                       2
+(%o7)                           (x + 1)  sin(x)
+(%i8) exponentialize:true;
+(%o8)                                true
+(%i9) expand(expr,0,0);
+                                   2    %i x     - %i x
+                         %i (x + 1)  (%e     - %e      )
+(%o9)                  - -------------------------------
+                                        2
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{expandwrt}
+@deffn {関数} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+
+式@code{expr}を、変数@var{x_1}, ..., @var{x_n}に関して展開します。
+変数を含む積すべては陽に現れます。
+返される形式は、変数を含む式の和の積を含みません。
+@var{x_1}, ..., @var{x_n}は、変数、演算子、式であり得ます。
+
+デフォルトでは、分母は展開されませんが、これは、スイッチ@code{expandwrt_denom}によって
+制御することができます。
+
+この関数は@file{simplification/stopex.mac}から自動ロードされます。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{expandwert_denom}
+@defvr {オプション変数} expandwrt_denom
+デフォルト値: @code{false}
+
+@code{expandwrt_denom}は、@code{expandwrt}によって有理式の扱いを制御します。
+もし@code{true}なら、式の分子も分母も@code{expandwrt}の引数に従って展開されますが、
+もし@code{expandwrt_denom}が@code{false}なら、分子だけがその方法で展開されます。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS A STAND-ALONE DESCRIPTION (NOT "IS SIMILAR TO")
+@c NEEDS EXAMPLES
+@c -----------------------------------------------------------------------------
+@anchor{expandwrt_factored}
+@deffn {関数} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+
+@code{expandwrt}に似ていますが、積の式を幾分違って扱います。
+@code{expandwrt_factored}は、@code{expr}の、
+変数@var{x_1}, ..., @var{x_n}を含む因子上でだけ展開します。
+
+@c NOT SURE WHY WE SHOULD MENTION THIS HERE
+この関数は、@file{simplification/stopex.mac}から自動ロードされます。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{expon}
+@defvr {オプション変数} expon
+デフォルト値: 0
+
+@code{expon}は、(@code{expand}のコールに依らず)自動的に展開される負のべき乗の最大指数です。
+例えば、
+もし@code{expon}が4なら、
+@code{(x+1)^(-5)}は自動的には展開されません。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+
+@c -----------------------------------------------------------------------------
+@anchor{exponentialize}
+@deffn {関数} exponentialize (@var{expr})
+@deffnx {オプション変数} exponentialize
+
+関数@code{exponentialize (expr)}は、
+@var{expr}の中の円関数や双曲関数を指数関数に変換します。
+グローバル変数@code{exponentialize}を設定する必要はありません。
+
+変数@code{exponentialize}が@code{true}の時、
+円関数や双曲関数すべては指数関数形に変換されます。
+デフォルト値は@code{false}です。
+
+@code{demoivre}は複素数の指数関数を円関数に変換します。
+@code{exponentialize}や@code{demoivre}は同時にtrueにすることはできません。
+
+@opencatbox
+@category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{expop}
+@defvr {オプション変数} expop
+デフォルト値: 0
+
+@code{expop}は、自動的に展開される最高の正の指数です。
+例えば、@code{(x + 1)^3}が入力された時、
+@code{expop}が3以下の時だけ自動的に展開されます。
+もし、@code{n}が@code{expop}より大きい@code{(x + 1)^n}が展開されることを望むなら、
+@code{expand ((x + 1)^n)}の実行は、
+@code{maxposex}がn以上の時だけ機能します。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c -----------------------------------------------------------------------------
+@anchor{lassociative}
+@defvr {宣言} lassociative
+
+@code{declare (g, lassociative)}は、
+Maximaの整理器に
+@code{g}が左結合であることを告げます。
+例えば、@code{g (g (a, b), g (c, d))}は@code{g (g (g (a, b), c), d)}に整理されます。
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators} @category{Simplification}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c WHAT'S UP WITH THE QUOTE MARKS ??
+
+@c -----------------------------------------------------------------------------
+@anchor{linear}
+@defvr {宣言} linear
+
+Maximaの演算子のプロパティの１つ。
+そう宣言された1変数関数@code{f}に関して、
+"expansion" @code{f(x + y)}は@code{f(x) + f(y)}を出力し、
+@code{a}が定数の@code{f(a*x)}は、@code{a*f(x)}を出力します。
+２つ以上の引数の関数に関しては、
+「線形性」は、@code{sum}や@code{integrate}の場合のように定義されます。
+すなわち、@code{a}と@code{b}が@code{x}に独立の場合，
+@code{f (a*x + b, x)}は@code{a*f(x,x) + b*f(1,x)}を出力します。
+
+@code{linear}は、@code{additive}かつ@code{outative}と同値です。
+@code{opproperties}も参照してください。
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators} @category{Simplification}
+@closecatbox
+@end defvr
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{maxnegex}
+@defvr {オプション変数} maxnegex
+デフォルト値: 1000
+
+@code{maxnegex}は、
+@code{expand}コマンドによって展開される最大の負の指数です。
+（@code{maxposex})も参照してください。）
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{maxposex}
+@defvr {オプション変数} maxposex
+デフォルト値: 1000
+
+@code{maxposex}は、
+@code{expand}コマンドで展開される最大指数です。
+（@code{maxnegex})も参照してください。）
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{multiplicative}
+@defvr {宣言} multiplicative
+
+@code{declare (f, multiplicative)}は、Maxima整理器に
+@code{f}が乗法的であることを告げます。
+
+@enumerate
+@item
+もし@code{f}が１変数関数なら、
+整理器が積に適用された@code{f}に出会うといつでも、
+@code{f}はその積上に分配されます。
+例えば、@code{f(x*y)}は@code{f(x)*f(y)}に整理されます。
+
+@item
+もし@code{f}が多変数関数なら、
+乗法性は、@code{f}の最初の引数の乗法性として定義されます。
+例えば、
+@code{f (g(x) * h(x), x)}は、@code{f (g(x) ,x) * f (h(x), x)}に整理されます。
+@end enumerate
+
+この式整理は、@code{f}が@code{product (x[i], i, m, n)}の形の式に適用された時にはなされません。
+
+@opencatbox
+@category{Declarations and inferences} @category{Expressions} @category{Simplification}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{multthru}
+@deffn  {関数} multthru (@var{expr})
+@deffnx {関数} multthru (@var{expr_1}, @var{expr_2})
+
+@var{expr}の（和の）因子に@var{expr}の他の因子を掛ける。
+すなわち、@var{expr}は@code{@var{f_1} @var{f_2} ... @var{f_n}}です。
+ここで、少なくとも１つの因子、@var{f_i}としましょう、は項の和です。
+この和の各項に、積の中の他の因子を掛けます。
+（すなわち、@var{f_i}を除いた因子すべてです。）
+@code{multthru}は、指数化された和を展開しません。
+この関数は、（可換であれ非可換であれ）積を和上に分配する最も速い方法です。
+割り算は積として表現されるので、
+@code{multthru}は積によって和を割ることにも使うことができます。
+
+@code{multthru (@var{expr_1}, @var{expr_2})}は、
+（和もしくは等式の）@var{expr_2}の中の各項に@var{expr_1}を掛けます。
+もし@var{expr_1}がそれ自身和でなければ、
+この形式は@code{multthru (@var{expr_1}*@var{expr_2})}と同値です。
+
+@example
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
+                           2
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{declaration_nary}
+@defvr {宣言} nary
+
+@code{declare(f, nary)}はMaximaに
+関数 @code{f}をn項関数として認識するよう指示します。
+
+@code{nary}宣言は
+@mxref{operator_nary, nary}関数をコールするのと同じではありません。
+@code{declare(f, nary)}は唯一の効果は
+例えば、 @code{foo(x, foo(y, z))}を
+@code{foo(x, y, z)}に整理するように
+入れ子の式をフラットにするようMaxima整理器に指示することです。
+@mrefdot{declare}も参照してください。
+
+例:
+
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{negdistrib}
+@defvr {オプション変数} negdistrib
+デフォルト値: @code{true}
+
+@code{negdistrib}が@code{true}の時,
+ -1が式上に分配されます。
+例えば、@code{-(x + y)}は@code{- y - x}になります。
+@code{false}に設定すると、@code{- (x + y)}はそのまま表示されることになるでしょう。
+これは時々役に立ちますが、非常に注意してください;
+@code{simp}フラグ同様に、
+当然のことながら、Maximaの中でローカルな使用以外には、
+これは、@code{false}に設定したくないフラグの１つです。
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{opproperties}
+@defvr {システム変数} opproperties
+
+@code{opproperties}は、Maximaの整理器が認識する特殊演算子プロパティのリストです:
+@code{linear}, @code{additive}, @code{multiplicative}, @code{outative}, @code{evenfun},
+@code{oddfun}, @code{commutative}, @code{symmetric}, @code{antisymmetric}, @code{nary}, 
+@code{lassociative}, @code{rassociative}.
+
+@opencatbox
+@category{Global variables} @category{Operators}
+@closecatbox
+@end defvr
+
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{outative}
+@defvr {宣言} outative
+
+@code{declare (f, outative)}は、Maximaの整理器に
+@code{f}の引数の中の定数因子が外に出すことができることを告げます。
+
+@enumerate
+@item
+もし@code{f}が1変数関数なら、
+整理器が積に適用された@code{f}に出会うといつでも、その積は定数因子と、ていすうでない因子に分割され、定数因子が外に出されます。
+例えば、@code{f(a*x)}は、@code{a}を定数とすると、@code{a*f(x)}に整理されます。
+非アトムな定数因子は外に出されません。
+@item
+もし@code{f}が多変数関数なら、
+outativityは、@code{sum}や@code{integrate}の場合のように定義されます。
+すなわち、@code{f (a*g(x), x)}は、@code{a}が@code{x}に依らないとすると、
+@code{a * f(g(x), x)}に整理されます。
+@end enumerate
+
+@code{sum}, @code{integrate}, @code{limit}はすべて@code{outative}です。
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{radcan}
+@deffn {関数} radcan (@var{expr})
+
+対数関数、指数関数、累乗根を含む@var{expr}を、与えられ場変数の順序で式の大きなクラス上の標準形式に整理します;
+関数的に同値な形式は特殊な形式にマップされます。
+式の幾分大きなクラスのため、@code{radcan}は正規の形式を生成します。
+このクラスの２つの式は、必ずしも、同じ結果ではありませんが、それらの差は@code{radcan}によって0に整理されます。
+
+いくつかの式のため、@code{radcan}は特殊な時間消費をします。
+これは、因数分解や指数関数の部分分解展開に基づいた整理のための式のコンポーネントの間のある関係を探求するコストです。
+
+@c %e_to_numlog NEEDS ITS OWN @defvar !!!
+
+@c %e_to_numlog HAS NO EFFECT ON RADCAN. RADCAN ALWAYS SIMPLIFIES 
+@c exp(a*log(x)) --> x^a. Commenting the following out. 11/2009
+@c When @code{%e_to_numlog} is @code{true}, @code{%e^(r*log(expr))} simplifies 
+@c to @code{expr^r} if @code{r} is a rational number.
+
+@c RADEXPAND CONTROLS THE SIMPLIFICATION OF THE POWER FUNCTION, E.G.
+@c (x*y)^a --> x^a*y^a AND (x^a)^b --> x^(a*b), IF RADEXPAND HAS THE VALUE 'ALL.
+@c THE VALUE OF RADEXPAND HAS NO EFFECT ON RADCAN. RADCAN ALWAYS SIMPLIFIES
+@c THE ABOVE EXPRESSIONS. COMMENTING THE FOLLOWING OUT. 11/2009
+@c When @code{radexpand} is @code{false}, certain transformations are inhibited.
+@c @code{radcan (sqrt (1-x))} remains @code{sqrt (1-x)} and is not simplified 
+@c to @code{%i sqrt (x-1)}. @code{radcan (sqrt (x^2 - 2*x + 1))} remains 
+@c @code{sqrt (x^2 - 2*x + 1)} and is not simplified to @code{x - 1}.
+
+例:
+
+@c ===beg===
+@c radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+@c radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+@c radcan((%e^x-1)/(1+%e^(x/2)));
+@c ===end===
+@example
+(%i1) radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+                                           a/2
+(%o1)                            log(x + 1)
+
+(%i2) radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+(%o2)                                  2
+
+(%i3) radcan((%e^x-1)/(1+%e^(x/2)));
+                                     x/2
+(%o3)                              %e    - 1
+@end example
+
+@opencatbox
+@category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{radexpand}
+@defvr {オプション変数} radexpand
+デフォルト値: @code{true}
+
+@code{radexpand}は、根号のいくつかの整理を制御します。
+
+@code{radexpand}が@code{all}の時
+n乗の積の因子のn番目の根を根号の外に出すようにします。
+例えば、もし@code{radexpand}が@code{all}なら、
+@code{sqrt (16*x^2)}は@code{4*x}に整理されます。
+
+@c EXPRESS SIMPLIFICATON RULES IN GENERAL CASE, NOT SPECIAL CASE
+特に、@code{sqrt (x^2)}を考えます。
+@itemize @bullet
+@item
+もし@code{radexpand}が@code{all}もしくは@code{assume (x > 0)}が実行されたなら、
+@code{sqrt(x^2)}は@code{x}に整理されます。
+@item
+もし@code{radexpand}が@code{true}、かつ@code{domain}が@code{real}(これはデフォルトです)なら、
+@code{sqrt(x^2)}は@code{abs(x)}に整理されます。
+@item
+もし@code{radexpand}が@code{false}、もしくは、@code{radexpand}が@code{true}かつ@code{domain}が@code{complex}なら、
+@code{sqrt(x^2)}は整理されません。
+@end itemize
+
+@c CORRECT STATEMENT HERE ???
+@code{domain}は、@code{radexpand}が@code{true}の時だけ意味を持つことに注意してください。
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rassociative}
+@defvr {宣言} rassociative
+
+@code{declare (g, rassociative)}は、
+Maximaの整理器に
+@code{g}が右結合であることを告げます。
+例えば、
+@code{g(g(a, b), g(c, d))}は、@code{g(a, g(b, g(c, d)))}に整理されます。
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{scsimp}
+@deffn {関数} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+
+順次的な相対整理(Sequential Comparative Simplification) (Stouteによる方法)。
+@code{scsimp}は、
+規則@var{rule_1}, ..., @var{rule_n}に従って、
+@var{expr}を整理しようとします。
+もしより小さな式が得られたら、
+プロセスは繰り返されます。
+そうでなければ、すべての整理が試された後、
+元の答えを返します。
+
+@c MERGE EXAMPLES INTO THIS FILE
+@code{example (scsimp)}はいくつかの例を表示します。
+
+@opencatbox
+@category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{simp}
+@defvr {オプション変数} simp
+デフォルト値: @code{true}
+
+@code{simp}は整理を有効にします。
+これは標準です。
+@code{simp}は@code{evflag}でもあります。
+それは関数@code{ev}に認識されます。@code{ev}を参照してください。
+
+@code{simp}が
+値@code{false}で@code{evflag}として使われる時、
+式の評価フェイズの間だけ
+整理は抑制されます。
+フラグは評価フェイズに続く整理を抑制できません。
+
+例:
+
+整理がグローバルにオフにスイッチされます。
+式@code{sin(1.0)}は数値に整理されません。
+@code{simp}-フラグは整理をオンにスイッチします。
+
+@c ===beg===
+@c simp:false;
+@c sin(1.0);
+@c sin(1.0),simp;
+@c ===end===
+@example
+(%i1) simp:false;
+(%o1)                                false
+(%i2) sin(1.0);
+(%o2)                              sin(1.0)
+(%i3) sin(1.0),simp;
+(%o3)                          .8414709848078965
+@end example
+
+整理が再びオンにスイッチされます。
+@code{simp}-フラグは完全に整理を抑制できません。
+割り当ては式の評価フェイズの間に起こるので、
+出力は整理された式を示しますが、
+変数@code{x}は、値として未整理の式を持ちます。
+
+@c ===beg===
+@c simp:true;
+@c x:sin(1.0),simp:false;
+@c :lisp $x
+@c ===end===
+@example
+(%i4) simp:true;
+(%o4)                                true
+(%i5) x:sin(1.0),simp:false;
+(%o5)                          .8414709848078965
+(%i6) :lisp $X
+((%SIN) 1.0)
+@end example
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{symmetric}
+@defvr {宣言} symmetric
+
+@code{declare (h, symmetric)}は、Maximaの整理器に
+@code{h}が対称関数であることを告げます。
+例えば、@code{h (x, z, y)}は@code{h (x, y, z)}に整理されます。
+
+@code{commutative}は@code{symmetric}と同義です。
+
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{xthru}
+@deffn {関数} xthru (@var{expr})
+
+（和でなければいけない）@var{expr}のすべての項を、
+共通分母上で、@code{ratsimp}がするように積や指数和を展開することなしに結合させます。
+@code{xthru}は、因子が陽であるときだけ、有理式の分子と分母の共通因子を消去します。
+
+@c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
+分子と分母の最大公約数の陽因子を消去するために、式を@code{ratsimp}する前に@code{xthru}を使うのがよい場合があります。
+
+@c ===beg===
+@c ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@c xthru (%);
+@c ===end===
+@example
+(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@group
+                                20
+                 1       (x + 2)   - 2 y       x
+(%o1)        --------- + --------------- - ---------
+                    19             20             20
+             (y + x)        (y + x)        (y + x)
+@end group
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+
+

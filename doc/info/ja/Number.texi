@@ -1,0 +1,840 @@
+@menu
+* Functions and Variables for Number Theory::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Number Theory,  , Number Theory, Number Theory
+@section Functions and Variables for Number Theory
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{bern}
+@deffn {関数} bern (@var{n})
+
+整数@var{n}について@var{n}番目のBernoulli数を返します。
+@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
+@c OR JUST PRETEND IT'S "RETURNED" ???
+もし@code{zerobern}が@code{false}なら
+ゼロに等しいBernoulli数は抑制されます。
+
+@code{burn}も参照してください。
+
+@example
+(%i1) zerobern: true$
+(%i2) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+                  1  1       1      1        1
+(%o2)       [1, - -, -, 0, - --, 0, --, 0, - --]
+                  2  6       30     42       30
+(%i3) zerobern: false$
+(%i4) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            1  1    1   5     691   7    3617  43867
+(%o4) [1, - -, -, - --, --, - ----, -, - ----, -----]
+            2  6    30  66    2730  6    510    798
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bernpoly}
+@deffn {関数} bernpoly (@var{x}, @var{n})
+
+変数@var{x}に関する@var{n}番目のBernoulli多項式を返します。
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bfzeta}
+@deffn {関数} bfzeta (@var{s}, @var{n})
+
+引数@var{s}に関するRiemannのゼータ関数を返します。
+戻り値は多倍長浮動小数点(bfloat)です;
+@var{n}は戻り値の小数点以下の桁数です。
+
+@opencatbox
+@category{Number theory} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bfhzeta}
+@deffn {関数} bfhzeta (@var{s}, @var{h}, @var{n})
+
+引数@var{s}と@var{h}に関するHurwitzのゼータ関数を返します。
+戻り値は多倍長浮動小数点(bfloat)です;
+@var{n}は戻り値の小数点以下の桁数です。
+
+Hurwitzゼータ関数は以下のように定義されます。
+
+@tex
+$$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
+@end tex
+@ifnottex
+@example
+                        inf
+                        ====
+                        \        1
+         zeta (s,h)  =   >    --------
+                        /            s
+                        ====  (k + h)
+                        k = 0
+@end example
+@end ifnottex
+
+@code{load ("bffac")}はこの関数をロードします。
+
+@opencatbox
+@category{Number theory} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{burn}
+@deffn {関数} burn (@var{n})
+
+@var{n}番目のBernoulli数の近似の有理数をを返します。
+@code{burn}は、(有理)Bernoulli数が
+まあまあの効率で(超越的)ゼータによって近似できるという観察を利用します。
+
+@example
+                   n - 1  1 - 2 n
+              (- 1)      2        zeta(2 n) (2 n)!
+     B(2 n) = ------------------------------------
+                                2 n
+                             %pi
+@end example
+
+@code{bern}は、返す前にインデックス@var{n}までのBernoulli数すべてを計算するので、
+@code{burn}は、大きな、孤立した@var{n}(たぶん105以上の@var{n})
+に対して@code{bern}より効率的かもしれません。
+@code{burn}は、255よりおおきな偶数@var{n}に対して近似を呼び出します。
+奇数と255以下の@var{n}に対しては、関数@code{bern}が呼び出されます。
+
+@code{load ("bffac")}はこの関数をロードします。@code{bern}も参照してください。
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{cf}
+@deffn {関数} cf (@var{expr})
+
+@var{expr}を連分数に変換します。
+@var{expr}は、
+連分数と整数の平方根から成る式です。
+式の中のオペランドは　代数演算子を組み合わせられます。
+連分数と平方根は別にして、式の中の因子は整数か有理数でなければいけません。
+Maximaは、
+@code{cf}の外側で連分数に関する演算について知りません。
+
+@code{listarith}を@code{false}にバインドした後、
+@code{cf}は、引数を評価します。
+@code{cf}は、リストとして表現された連分数を返します。
+
+連分数@code{a + 1/(b + 1/(c + ...))}は、
+リスト@code{[a, b, c, ...]}で表現されます。
+リストの要素@code{a}, @code{b}, @code{c}, ...は、
+整数に評価されなければいけません。
+@var{expr}は、 may also contain 
+@code{sqrt (n)}も含むかもしれません。@code{n}は整数です。
+この場合、@code{cf}は、
+変数@code{cflength}の値掛ける周期と同じ数の連分数の項を与えます。
+
+連分数は、
+@code{cfdisrep}が返す代数表現を評価することで、
+数に評価することができます。
+連分数を評価する別の方法に関しては、
+@code{cfexpand}も参照してください。
+
+@code{cfdisrep}, @code{cfexpand}, @code{cflength}も参照してください。
+
+例:
+
+@itemize @bullet
+@item
+@var{expr}は、連分数と整数の平方根から成る式です。
+
+@example
+(%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
+(%o1)               [59, 17, 2, 1, 1, 1, 27]
+(%i2) cf ((3/17)*[1, -2, 5]/sqrt(11) + (8/13));
+(%o2)        [0, 1, 1, 1, 3, 2, 1, 4, 1, 9, 1, 9, 2]
+@end example
+
+@item
+@code{cflength}は、
+連分数の何周期を代数的無理数のために計算するかを制御します。
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
+
+@item
+連分数は、@code{cfdisrep}が返す代数的表現を評価することによって評価されることができます。
+
+@example
+(%i1) cflength: 3$
+(%i2) cfdisrep (cf (sqrt (3)))$
+(%i3) ev (%, numer);
+(%o3)                   1.731707317073171
+@end example
+
+@item
+Maximaは、
+@code{cf}の外側で連分数に関する演算について知りません。
+
+@example
+(%i1) cf ([1,1,1,1,1,2] * 3);
+(%o1)                     [4, 1, 5, 2]
+(%i2) cf ([1,1,1,1,1,2]) * 3;
+(%o2)                  [3, 3, 3, 3, 3, 6]
+@end example
+
+@end itemize
+
+@opencatbox
+@category{Continued fractions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION -- MAKE EXPLICIT HOW list IS RELATED TO a, b, c, ...
+@c ALSO, CAN list CONTAIN ANYTHING OTHER THAN LITERAL INTEGERS ??
+
+@c -----------------------------------------------------------------------------
+@anchor{cfdisrep}
+@deffn {関数} cfdisrep (@var{list})
+
+連分数@code{[a, b, c, ...]}のリスト表現から、
+形式@code{a + 1/(b + 1/(c + ...))}の通常の代数式を構成し返します。
+
+@example
+(%i1) cf ([1, 2, -3] + [1, -2, 1]);
+(%o1)                     [1, 1, 1, 2]
+(%i2) cfdisrep (%);
+                                  1
+(%o2)                     1 + ---------
+                                    1
+                              1 + -----
+                                      1
+                                  1 + -
+                                      2
+@end example
+
+@opencatbox
+@category{Continued fractions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{cfexpand}
+@deffn {関数} cfexpand (@var{x})
+
+連分数@var{x}のコンバージェントの
+最後(列1)とその１つ前(列2)の
+分子と分母の行列を返します。
+
+@example
+(%i1) cf (rat (ev (%pi, numer)));
+
+`rat' replaced 3.141592653589793 by 103993/33102 =3.141592653011902
+(%o1)                  [3, 7, 15, 1, 292]
+(%i2) cfexpand (%); 
+                         [ 103993  355 ]
+(%o2)                    [             ]
+                         [ 33102   113 ]
+(%i3) %[1,1]/%[2,1], numer;
+(%o3)                   3.141592653011902
+@end example
+
+@opencatbox
+@category{Continued fractions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{cflength}
+@defvr {オプション変数} cflength
+デフォルト値: 1
+
+@code{cflength}は、
+値@code{cflength}掛ける周期として
+関数@code{cf}が与える連分数の項の数を制御します。
+従って、デフォルトは1周期を与えます。
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
+
+@opencatbox
+@category{Continued fractions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{divsum}
+@deffn {関数} divsum (@var{n}, @var{k})
+@deffnx {関数} divsum (@var{n})
+
+@code{divsum (@var{n}, @var{k})}は、
+@var{n}の約数の@var{k}乗した和を返します。
+
+@code{divsum (@var{n})}は
+@var{n}の約数の和を返します。
+
+@example
+(%i1) divsum (12);
+(%o1)                          28
+(%i2) 1 + 2 + 3 + 4 + 6 + 12;
+(%o2)                          28
+(%i3) divsum (12, 2);
+(%o3)                          210
+(%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
+(%o4)                          210
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{euler}
+@deffn {関数} euler (@var{n})
+
+非負の整数@var{n}に対して
+@var{n}番目のEuler数を返します。
+
+Euler-Mascheroni定数に関しては、@code{%gamma}を参照してください。
+
+@example
+(%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fib}
+@deffn {関数} fib (@var{n})
+第@var{n}項のFibonacci数を返します。
+@code{fib(0)}は0に等しく、@code{fib(1)}は1に等しく、
+@code{fib (-@var{n})}は@code{(-1)^(@var{n} + 1) * fib(@var{n})}に等しい。
+
+@code{fib}をコールした後，
+@code{prevfib}は@code{fib (@var{x} - 1)}、
+計算された最後の１つ前のFibonacci数に等しい。
+
+@example
+(%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fibtophi}
+@deffn {関数} fibtophi (@var{expr})
+
+@var{expr}に関するFibonacci数を
+定数@code{%phi}を使って表現します。
+@code{%phi}は、@code{(1 + sqrt(5))/2}, 近似的に1.61803399です。
+
+例:
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ifactors}
+@deffn {関数} ifactors (@var{n})
+
+正の整数@var{n}に対して、
+@var{n}の素因数分解を返します。
+もし@code{n=p1^e1..pk^nk}が
+@var{n}の素因数への分解なら、
+ifactorsは@code{[[p1, e1], ... , [pk, ek]]}を返します。
+
+使われる素因数分解法は9973までの素数による試行除算と、
+Pollardのロー法、楕円曲線法です。
+
+@example
+(%i1) ifactors(51575319651600);
+(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
+(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
+(%o2)                        51575319651600
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{igcdex}
+@deffn {関数} igcdex (@var{n}, @var{k})
+
+リスト @code{[@var{a}, @var{b}, @var{u}]}を返します。
+ここで、 @var{u}は@var{n}と @var{k}の最大公約数で、
+@var{u}は @code{@var{a} @var{n} + @var{b} @var{k}}に等しいです。
+引数 @var{n}と @var{k}は整数でなければいけません。
+
+@code{igcdex}はユークリッドのアルゴリズムを実装します。
+@mrefdot{gcdex}も参照してください。
+
+コマンド @code{load(gcdex)}はこの関数をロードします。
+
+例:
+
+@example
+(%i1) load(gcdex)$
+
+(%i2) igcdex(30,18);
+(%o2)                      [- 1, 2, 6]
+(%i3) igcdex(1526757668, 7835626735736);
+(%o3)            [845922341123, - 164826435, 4]
+(%i4) igcdex(fib(20), fib(21));
+(%o4)                   [4181, - 2584, 1]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inrt}
+@deffn {関数} inrt (@var{x}, @var{n})
+
+@var{x}の絶対値の整数@var{n}乗根を返します。
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], inrt (10^a, 3)), l);
+(%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{inv_mod}
+@deffn {関数} inv_mod (@var{n}, @var{m})
+
+@var{m}を法とする@var{n}の逆元を計算します。
+もし@var{n}が@var{m}を法とするゼロ因子なら、
+@code{inv_mod (n,m)}は@code{false}を返します。
+
+@example
+(%i1) inv_mod(3, 41);
+(%o1)                           14
+(%i2) ratsimp(3^-1), modulus=41;
+(%o2)                           14
+(%i3) inv_mod(3, 42);
+(%o3)                          false
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{isqrt}
+@deffn {関数} isqrt (@var{x})
+
+整数 @var{x}の絶対値の「整数平方根」を返します。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{jacobi}
+@deffn {関数} jacobi (@var{p}, @var{q})
+
+@var{p}と@var{q}のJacobi記号を返します。
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], jacobi (a, 9)), l);
+(%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lcm}
+@deffn {関数} lcm (@var{expr_1}, ..., @var{expr_n})
+
+引数の最小公倍数を返します。
+引数は、整数はもちろん一般式を取り得ます。
+
+@code{load ("functs")}はこの関数をロードします。
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mod}
+@deffn {関数} mod (@var{x}, @var{y})
+
+もし@var{x}と@var{y}が実数で、@var{y}がゼロでないなら、
+@code{@var{x} - @var{y} * floor(@var{x} / @var{y})}を返します。
+さらにすべての実数@var{x}に関して、@code{mod (@var{x}, 0) = @var{x}}が成り立ちます。
+定義@code{mod (@var{x}, 0) = @var{x}}の議論に関しては、
+Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参照してください。
+関数@code{mod (@var{x}, 1)} は、周期が1で@code{mod (1, 1) = 0}、@code{mod (0, 1) = 0}ののこぎり波関数です。
+
+複素数の偏角の主値（区間@code{(-%pi, %pi]}での数）を見つけるためには、
+関数@code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}を使います。
+@var{x}は引数です。
+
+@var{x}と@var{y}が定数式(例えば、@code{10 * %pi})の時、
+@code{mod}は、@code{floor}や@code{ceiling}が使うのと同じ多倍長浮動小数点評価スキームを
+使います。
+再び同様に、まれですが、@code{mod}は間違った値を返すことがありえます。
+
+数値でない引数@var{x}や@var{y}に関して,@code{mod}は、いくつかの式整理規則を知っています:
+
+
+@c ===beg===
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
+@c ===end===
+@example
+(%i1) mod (x, 0);
+(%o1)                           x
+(%i2) mod (a*x, a*y);
+(%o2)                      a mod(x, y)
+(%i3) mod (0, x);
+(%o3)                           0
+@end example
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{next_prime}
+@deffn {関数} next_prime (@var{n})
+
+@var{n}よりも大きな最も小さな素数を返します。
+
+@example
+(%i1) next_prime(27);
+(%o1)                       29
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{partfrac}
+@deffn {関数} partfrac (@var{expr}, @var{var})
+
+主変数@var{var}に関する部分分数式@var{expr}を展開します。
+@code{partfrac}は、完全な部分分数分解を行います。
+利用したアルゴリズムは、
+部分分数展開(元の分母の因子)の分母は互いに素であるという事実に基づいています。
+分子は分母の線形結合として書け、結果が展開ということになります。
+
+@example
+(%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
+                      2       2        1
+(%o1)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+(%i2) ratsimp (%);
+                                 x
+(%o2)                 - -------------------
+                         3      2
+                        x  + 4 x  + 5 x + 2
+(%i3) partfrac (%, x);
+                      2       2        1
+(%o3)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{power_mod}
+@deffn {関数} power_mod (@var{a}, @var{n}, @var{m})
+
+@code{a^n mod m}を計算するために
+剰余アルゴリズムを使います。
+ここで、@var{a}と@var{n}は整数で、@var{m}は正の整数です。
+もし@var{n}が負なら、@code{inv_mod}が剰余逆元を見つけるために使われます。
+
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                          2
+<(%i2) mod(3^15,5);
+(%o2)                          2
+(%i3) power_mod(2, -1, 5);
+(%o3)                          3
+(%i4) inv_mod(2,5);
+(%o4)                          3
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{primep}
+@deffn {関数} primep (@var{n})
+
+素数テスト。
+もし@code{primep (@var{n})}が@code{false}を返すなら、
+@var{n}は合成数であり、
+もし@code{true}を返すなら、@var{n}は非常に高い確立で素数です。
+
+341550071728321より小さな@var{n}に対して、
+Miller-Rabinのテストの決定的バージョンが使われます。
+もし@code{primep (@var{n})}が@code{true}を返すなら、
+@var{n}は素数です。
+
+341550071728321よりの大きな@var{n}に対して、
+@code{primep}は、
+@code{primep_number_of_tests}個のMiller-Rabinの疑似素数テストと
+1つのLucasの疑似素数テストを使います。
+@var{n}がMiller-Rabinのテスト１つを通過する確率は
+1/4より小さいです。
+@code{primep_number_of_tests}に関してデフォルト値25を使うと、
+通過した@var{n}が合成である確率は
+10^-15よりもはるかに小さいです。
+
+@opencatbox
+@category{Predicate functions} @category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{primep_number_of_tests}
+@defvr {オプション変数} primep_number_of_tests
+デフォルト値: 25
+
+@code{primep}の中で使われるMiller-Rabinのテストの回数。
+
+
+@opencatbox
+@category{Predicate functions} @category{Number theory}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{prev_time}
+@deffn {関数} prev_prime (@var{n})
+
+@var{n}よりも小さな最大の素数を返します。
+
+@example
+(%i1) prev_prime(27);
+(%o1)                       23
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{qunit}
+@deffn {関数} qunit (@var{n})
+
+実二次数体@code{sqrt (@var{n})}の基本単数、
+すなわち、ノルムが1の要素を返します。
+ここで、@var{n}は整数です。
+これは、結果的にペル方程式@code{a^2 - @var{n} b^2 = 1}を解くことになります。
+
+@example
+(%i1) qunit (17);
+(%o1)                     sqrt(17) + 4
+(%i2) expand (% * (sqrt(17) - 4));
+(%o2)                           1
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{totient}
+@deffn {関数} totient (@var{n})
+
+@var{n}以下の、
+@var{n}と互いに素な整数の数を返します。
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {オプション変数} zerobern
+デフォルト値: @code{true}
+
+@code{zerobern}が@code{false}の時、
+@code{bern}はBernoulli数を除外し、@code{euler}はゼロに等しいEuler数を除外します。
+@code{bern}と@code{euler}を参照してください。
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zeta}
+@deffn {関数} zeta (@var{n})
+
+Riemannのゼータ関数を返します。
+もし@var{x}が負の整数、0, 1,または、正の偶数なら、
+Reimannのゼータ関数は厳密な値に整理されます。
+正の偶数に対しては、
+加えて、オプション変数@code{zeta%pi}は@code{true}でなければいけません。
+(@code{zeta%pi}を参照してください。)
+浮動小数点または多倍長浮動小数点数に対して、Reimannゼータ関数は数値的に評価されます。
+Maximaは、
+有理非整数、浮動小数点数、複素数の引数を含む
+他の引数すべてに対して、また、もし@code{zeta%pi}が値@code{false}なら偶数に対して、
+名詞形@code{zeta (@var{n})}を返します。
+
+@code{zeta(1)}は未定義ですが、
+Maximaは上からと下からの極限@code{limit(zeta(x), x, ,1)}を知っています。
+
+@code{bfzeta}と@code{zeta%pi}も参照してください。
+
+例：
+
+
+@c ===beg===
+@c zeta([-2, -1, 0, 0.5, 2, 3,1+%i]);
+@c limit(zeta(x),x,1,plus);
+@c limit(zeta(x),x,1,minus);
+@c ===end===
+@example
+(%i1) zeta([-2, -1, 0, 0.5, 2, 3, 1+%i]);
+                                             2
+            1     1                       %pi
+(%o1) [0, - --, - -, - 1.460354508809586, ----, zeta(3), 
+            12    2                        6
+                                                    zeta(%i + 1)]
+(%i2) limit(zeta(x),x,1,plus);
+(%o2)                          inf
+(%i3) limit(zeta(x),x,1,minus);
+(%o3)                         minf
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zeta%pi}
+@defvr {オプション変数} zeta%pi
+デフォルト値: @code{true}
+
+@code{zeta%pi}が@code{true}の時、
+偶数@code{n}に対して、@code{zeta}は@code{%pi^n}に比例する式を返します。
+そうでないなら、
+偶数@code{n}に対して、@code{zeta}は名詞形@code{zeta (n)}を返します。
+
+例:
+
+@c ===beg===
+@c zeta%pi: true$
+@c zeta (4);
+@c zeta%pi: false$
+@c zeta (4);
+@c ===end===
+@example
+(%i1) zeta%pi: true$
+(%i2) zeta (4);
+                                 4
+                              %pi
+(%o2)                         ----
+                               90
+(%i3) zeta%pi: false$
+(%i4) zeta (4);
+(%o4)                        zeta(4)
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end defvr

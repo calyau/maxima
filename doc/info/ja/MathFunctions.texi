@@ -1,0 +1,2131 @@
+@menu
+* Functions for Numbers::
+* Functions for Complex Numbers::
+* Combinatorial Functions::
+* Root Exponential and Logarithmic Functions::
+* Trigonometric Functions::
+* Random Numbers::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions for Numbers, Functions for Complex Numbers, Mathematical Functions, Mathematical Functions
+@section Functions for Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{abs}
+@deffn {関数} abs (@var{expr})
+
+@var{expr}の絶対値を返します。もし@var{expr}が複素数なら、@var{expr}の絶対値(modulus)を返します。
+
+@code{abs}はリスト上、行列上、等式上に分配されます。
+@mref{distribute_over}を参照してください。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ceiling}
+@deffn {関数} ceiling (@var{x})
+
+@var{x}が実数の時、@var{x}以上の最小の整数を返します。
+
+もし@var{x}が定数式(例えば@code{10 * %pi})なら、
+@code{ceiling}は、@var{x}を多倍長浮動小数点数を使って評価し、
+その多倍長浮動小数点数に@code{ceiling}を適用します。
+@code{ceiling}は浮動小数点を使うので、ほとんど起こりえませんが、
+@code{ceiling}は定数入力に対して間違った値を返す可能性があります。
+このエラーを起こさないようにするには、@code{fpprec}の３つの値を使って浮動小数点評価を行います。
+
+定数でない入力に関しては、@code{ceiling}は整理された値を返そうとします。
+以下は、@code{ceiling}が知っている式整理の例です:
+
+@c ===beg===
+@c ceiling (ceiling (x));
+@c ceiling (floor (x));
+@c declare (n, integer)$
+@c [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
+@c assume (x > 0, x < 1)$
+@c ceiling (x);
+@c tex (ceiling (a));
+@c ===end===
+@example
+(%i1) ceiling (ceiling (x));
+(%o1)                      ceiling(x)
+(%i2) ceiling (floor (x));
+(%o2)                       floor(x)
+(%i3) declare (n, integer)$
+(%i4) [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
+(%o4)                [n, abs(n), max(n, 6)]
+(%i5) assume (x > 0, x < 1)$
+(%i6) ceiling (x);
+(%o6)                           1
+(%i7) tex (ceiling (a));
+$$\left \lceil a \right \rceil$$
+(%o7)                         false
+@end example
+
+関数@code{ceiling}は、自動ではリストや行列上にマップしません。
+最終的に、明らかに複雑な入力すべてに対して、@code{ceiling}は名詞形を返します。
+
+もし関数の範囲が整数の部分集合なら、
+@code{integervalued}に宣言できます。
+@code{ceiling}、@code{floor}関数両方とも、この情報を使います; 例えば:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare (f, integervalued)$
+(%i2) floor (f(x));
+(%o2)                         f(x)
+(%i3) ceiling (f(x) - 1);
+(%o3)                       f(x) - 1
+@end example
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{entier}
+@deffn {関数} entier (@var{x})
+@var{x}が数値の場合、@var{x}以下の最大の整数を返します。
+（@code{fixnum}における）@code{fix}はこれの別名で、
+@code{fix(@var{x})}は正確に同じです。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{floor}
+@deffn {関数} floor (@var{x})
+
+@var{x}が実数の時、@var{x}以下の最大の整数を返します。
+
+もし@var{x}が定数式(例えば@code{10 * %pi})なら、
+@code{floor}は、多倍長浮動小数点数を使って@var{x}を評価し、
+結果の多倍長浮動小数点に@code{floor}を適用します。
+@code{floor}は浮動小数点を使うので、ほとんど起こりえませんが、
+@code{floor}は定数入力に対して間違った値を返す可能性があります。
+このエラーを起こさないようにするには、@code{fpprec}の３つの値を使って浮動小数点評価を行います。
+
+定数でない入力に関しては、@code{floor}は整理された値を返そうとします。
+以下は、@code{ceiling}が知っている式整理の例です:
+
+@c ===beg===
+@c floor (ceiling (x));
+@c floor (floor (x));
+@c declare (n, integer)$
+@c [floor (n), floor (abs (n)), floor (min (n, 6))];
+@c assume (x > 0, x < 1)$
+@c floor (x);
+@c tex (floor (a));
+@c ===end===
+@example
+(%i1) floor (ceiling (x));
+(%o1)                      ceiling(x)
+(%i2) floor (floor (x));
+(%o2)                       floor(x)
+(%i3) declare (n, integer)$
+(%i4) [floor (n), floor (abs (n)), floor (min (n, 6))];
+(%o4)                [n, abs(n), min(n, 6)]
+(%i5) assume (x > 0, x < 1)$
+(%i6) floor (x);
+(%o6)                           0
+(%i7) tex (floor (a));
+$$\left \lfloor a \right \rfloor$$
+(%o7)                         false
+@end example
+
+関数@code{floor}は、自動ではリストや行列上にマップしません。
+最終的に、明らかに複雑な入力すべてに対して、@code{floor}は名詞形を返します。
+
+もし関数の範囲が整数の部分集合なら、
+@code{integervalued}に宣言できます。
+@code{ceiling}、@code{floor}関数両方とも、この情報を使います; 例えば:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare (f, integervalued)$
+(%i2) floor (f(x));
+(%o2)                         f(x)
+(%i3) ceiling (f(x) - 1);
+(%o3)                       f(x) - 1
+@end example
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fix}
+@deffn {関数} fix (@var{x})
+@code{entier (@var{x})}の別名です。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lmax}
+@deffn {関数} lmax (@var{L})
+
+@var{L}がリストもしくは集合の時、@code{apply ('max, args (@var{L}))}を返します。
+@var{L}がリストでも集合でもない時、エラーを示します。
+
+@opencatbox
+@category{Mathematical functions} @category{Lists} @category{Sets}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lmin}
+@deffn {関数} lmin (@var{L})
+
+@var{L}がリストもしくは集合の時、@code{apply ('min, args (@var{L}))}を返します。
+@var{L}がリストでも集合でもない時、エラーを示します。
+
+@opencatbox
+@category{Mathematical functions} @category{Lists} @category{Sets}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{max}
+@deffn {関数} max (@var{x_1}, ..., @var{x_n})
+
+式@var{x_1}から@var{x_n}の中の最大値に関して整理された値を返します。
+@code{get (trylevel, maxmin)}が２以上の時、
+@code{max}は、式整理@code{max (e, -e) --> |e|}を使います。
+@code{get (trylevel, maxmin)}が３以上の時、
+@var{max}は、２つの他の引数の間の式を消去しようとします;
+例えば、@code{max (x, 2*x, 3*x) --> max (x, 3*x)}。
+@code{trylevel}を2に設定するには、@code{put (trylevel, 2, maxmin)}を使います。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{min}
+@deffn {関数} min (@var{x_1}, ..., @var{x_n})
+
+式@var{x_1}から@var{x_n}の中の最小値に関して整理された値を返します。
+@code{get (trylevel, maxmin)}が２以上の時、
+@code{max}は、式整理@code{max (e, -e) --> |e|}を使います。
+@code{get (trylevel, maxmin)}が３以上の時、
+@var{max}は、２つの他の引数の間の式を消去しようとします;
+例えば、@code{max (x, 2*x, 3*x) --> max (x, 3*x)}。
+@code{trylevel}を2に設定するには、@code{put (trylevel, 2, maxmin)}を使います。
+
+@mref{max}や @mrefdot{lmin}も参照してください。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{round}
+@deffn {関数} round (@var{x})
+
+@var{x}が実数の時、@var{x}に最も近い整数を返します。
+1/2を掛けてroundして2を掛けると、最も近い偶数に丸められます。
+@var{x}の評価は、@code{floor}や@code{ceiling}に似ています。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{signum}
+@deffn {関数} signum (@var{x})
+実数か複素数@var{x}に対して、もし@var{x}が0ならsignum関数は0を返します;
+非ゼロ数値入力@var{x}に対して、signum関数は@code{abs(x)/x}を返します。
+
+非数値入力に対して、Maximaは入力の符号を決定しようと試みます。
+符号が負、ゼロ、正いずれかの時、@code{signum}はそれぞれ、-1, 0, 1を返します。
+符号に関する他の値すべてに対して、@code{signum}は式整理された同値形を返します。
+式整理は(@code{signum(-x)}は@code{-signum(x)}を与える)反転と
+(@code{signum(x*y)}は@code{signum(x) * signum(y)}を与える)乗法恒等式を含みます。
+
+@code{signum}関数はリスト、行列もしくは等式上に分配されます。
+@mref{distribute_over}を参照してください。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Functions for Complex Numbers, Combinatorial Functions, Functions for Numbers, Mathematical Functions
+@section Functions for Complex Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{cabs}
+@deffn {関数} cabs (@var{expr})
+@var{expr}の複素数の絶対値を返します。
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} carg (@var{z})
+@var{z}の複素偏角を返します。
+複素偏角は、
+@code{r exp (theta %i) = @var{z}}（@code{r}は@var{z}の絶対値）を満たす
+@code{(-%pi, %pi]}の間の角@code{theta}です。
+
+@code{carg}は、計算関数であって、式整理関数ではありません。
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+
+@code{abs} (複素絶対値), @code{polarform}, @code{rectform},
+@code{realpart}, @code{imagpart}も参照してください。
+
+例:
+
+@c ===beg===
+@c carg (1);
+@c carg (1 + %i);
+@c carg (exp (%i));
+@c carg (exp (%pi * %i));
+@c carg (exp (3/2 * %pi * %i));
+@c carg (17 * exp (2 * %i));
+@c ===end===
+@example
+(%i1) carg (1);
+(%o1)                           0
+(%i2) carg (1 + %i);
+                               %pi
+(%o2)                          ---
+                                4
+(%i3) carg (exp (%i));
+(%o3)                           1
+(%i4) carg (exp (%pi * %i));
+(%o4)                          %pi
+(%i5) carg (exp (3/2 * %pi * %i));
+                                %pi
+(%o5)                         - ---
+                                 2
+(%i6) carg (17 * exp (2 * %i));
+(%o6)                           2
+@end example
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{conjugate}
+@deffn {関数} conjugate (@var{x})
+@var{x}の複素共役を返します。
+
+@c ===beg===
+@c declare ([aa, bb], real, cc, complex, ii, imaginary);
+@c conjugate (aa + bb*%i);
+@c conjugate (cc);
+@c conjugate (ii);
+@c conjugate (xx + yy);
+@c ===end===
+@example
+(%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
+
+(%o1)                         done
+(%i2) conjugate (aa + bb*%i);
+
+(%o2)                      aa - %i bb
+(%i3) conjugate (cc);
+
+(%o3)                     conjugate(cc)
+(%i4) conjugate (ii);
+
+(%o4)                         - ii
+(%i5) conjugate (xx + yy);
+
+(%o5)             conjugate(yy) + conjugate(xx)
+@end example
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{imagpart}
+@deffn {関数} imagpart (@var{expr})
+式@var{expr}の虚部を返します。
+
+@code{imagpart}は、計算関数であり、整理関数ではありません。
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
+
+@code{abs}, @code{carg}, @code{polarform}, @code{rectform}, @code{realpart}も
+参照してください。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{polarform}
+@deffn {関数} polarform (@var{expr})
+@var{expr}と同値な式@code{r %e^(%i theta)}を返します。
+ここで、@code{r}と@code{theta}は純粋な実数です。
+
+@opencatbox
+@category{Complex variables} @category{Exponential and logarithm functions}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{realpart}
+@deffn {関数} realpart (@var{expr})
+@var{expr}の実部を返します。
+@code{realpart}と@code{imagpart}は、
+平方根、対数関数、指数関数はもちろん三角関数や双曲関数を含む式上で機能します。
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rectform}
+@deffn {関数} rectform (@var{expr})
+@var{expr}と同値な式@code{a + b %i}を返します。
+ここで@var{a}と@var{b}は純粋な実数です。
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Combinatorial Functions, Root Exponential and Logarithmic Functions, Functions for Complex Numbers, Mathematical Functions
+@section Combinatorial Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{!!}
+@deffn {演算子} !!
+@ifinfo
+@fnindex 二重階乗
+@end ifinfo
+二重階乗演算子。
+
+整数や浮動小数点、有理数 @code{n}に対して、 @code{n!!}は、
+積 @code{n (n-2) (n-4) (n-6) ... (n - 2 (k - 1))}
+（@code{k}は @code{entier (n/2)}、すなわち @code{n/2}以下の最大整数に等しい）に評価します。
+この定義は、非整数の引数に対して他の出版物の定義と一致しないことに注意してください。
+@c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
+
+偶数(もしくは奇数) @code{n}に対して、 @code{n!!}は、2(もしくは1)からnまでのすべての偶数
+(もしくは奇数)の積に評価されます。
+
+整数でも浮動小数点でも有理数でもない引数 @code{n}に対して、
+@code{n!!}は名詞形 @code{genfact (n, n/2, 2)}を返します。
+@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{binomial}
+@deffn {関数} binomial (@var{x}, @var{y})
+二項係数@code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}。
+もし@var{x}と@var{y}が整数なら、
+二項係数の数値が計算されます。
+もし@var{y}もしくは@var{x - y}が整数なら、
+二項係数は多項式として表現されます。
+
+例:
+
+@c ===beg===
+@c binomial (11, 7);
+@c 11! / 7! / (11 - 7)!;
+@c binomial (x, 7);
+@c binomial (x + 7, x);
+@c binomial (11, y);
+@c ===end===
+@example
+(%i1) binomial (11, 7);
+(%o1)                          330
+(%i2) 11! / 7! / (11 - 7)!;
+(%o2)                          330
+(%i3) binomial (x, 7);
+        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
+(%o3)   -------------------------------------------------
+                              5040
+(%i4) binomial (x + 7, x);
+      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
+(%o4) -------------------------------------------------------
+                               5040
+(%i5) binomial (11, y);
+(%o5)                    binomial(11, y)
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{factcomb}
+@deffn {関数} factcomb (@var{expr})
+例えば、@code{(n + 1)*n!}を@code{(n + 1)!}に変換することによって、
+@var{expr}の中の階乗の係数を階乗それ自身と結合しようとします。
+
+もし@code{sumsplitfact}が@code{false}に設定されたなら、
+@code{minfactorial}が@code{factcomb}の後適用されるようになります。
+
+@c 例:
+@c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
+@c THE PREVIOUS REVISION OF THIS FILE, BUT IN THIS CASE
+@c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
+@c (n + 1)^b*n!^b;
+@c factcomb (%);
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{!}
+@anchor{factorial}
+@deffn  {関数} factorial
+@deffnx {演算子} !
+@ifinfo
+@fnindex 階乗
+@end ifinfo
+階乗演算子。
+
+（整数、有理数、実数を含む）負の整数を除いた任意の複素数 @code{x}に対して、
+@code{x!}は @code{gamma(x+1)}として定義されます。
+
+整数 @code{x}に対して、 @code{x!}は1からxまでの整数の積に整理されます。
+@code{0!}は1に整理されます。
+浮動小数点または多倍長浮動小数点精度の実数または複素数 @code{x}に対して、
+@code{x!}は @code{gamma(x+1)}の値に整理されます。
+@code{x}が @code{n/2}（@code{n}は奇数）に等しい時、
+（@code{gamma (1/2)}は@code{sqrt (%pi)}に等しいから）
+@code{x!}は有理因子に@code{sqrt (%pi)}を掛けたものに整理されます。
+
+変数 @mref{factlim}, @mref{gammalim}は整数や有理数の引数の階乗の数値評価を制御します。
+関数 @mref{minfactorial}, @mref{factcomb}は階乗を含む式の整理を制御します。
+@code{factlim}, @code{gammalim}, @code{minfactorial}, @code{factcomb}を参照してください。
+
+関数 @mref{gamma}, @mref{bffac}, @mref{cbffac}はガンマ関数の変形です。
+多倍長浮動小数点精度の実数と複素数のガンマ関数を評価するために、
+@code{gamma}は内部で @code{bffac}や @code{cbffac}をコールします。
+
+@mref{makegamma}は階乗や関係した関数に@code{gamma}を代入します。
+
+Maximaは階乗関数の導関数や、負の整数のような特殊な値の極限を知っています。
+
+オプション変数 @mref{factorial_expand}は
+@code{(n+x)!}のような式の整理を制御します。
+ここで@code{n}は整数です。
+
+@code{binomial}も参照してください。
+
+オペランドが@code{factlim}より大きくないなら、整数の階乗は正確な値に整理されます。
+実数と複素数の階乗は浮動小数点または多倍長浮動小数点精度に評価されます。
+
+@c ===beg===
+@c factlim : 10;
+@c [0!, (7/2)!, 8!, 20!];
+@c [4,77!, (1.0+%i)!];
+@c [2.86b0!, 1.0b0+%i)!];
+@c ===end===
+@example
+(%i1) factlim : 10;
+(%o1)                          10
+(%i2) [0!, (7/2)!, 8!, 20!];
+@group
+                            105 sqrt(%pi)
+(%o2)                   [1, -------------, 40320, 20!]
+                                 16
+@end group
+(%i3) [4.77!, (1.0+%i)!];
+(%o3)    [81.44668037931197, 
+          .3430658398165454 %i + .6529654964201665]
+(%i4) [2.86b0!, (1.0b0+%i)!];
+(%o4) [5.046635586910012b0, 
+       3.430658398165454b-1 %i + 6.529654964201667b-1]
+@end example
+
+既知の定数や一般式の階乗は整理されません。
+オペランドを評価した後階乗を整理できたとしても整理はされません。
+
+@c ===beg===
+@c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+@c ev (%, numer, %enumer);
+@c ===end===
+@example
+(%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+(%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
+(%i2) ev (%, numer, %enumer);
+(%o2) [.3430658398165454 %i + .6529654964201665, 
+       7.188082728976031, 
+       4.260820476357003, 1.227580202486819]
+@end example
+
+@c REMOVING THIS EXAMPLE. IT IS NOT SPECIFIC FOR THE FACTORIAL FUNCTION:
+@c The factorial of an unbound symbol is not simplified.
+
+@c ===beg===
+@c kill (foo);
+@c foo!;
+@c ===end===
+@example
+(%i1) kill (foo);
+(%o1)                         done
+(%i2) foo!;
+(%o2)                         foo!
+@end example
+
+階乗の計算は整理であって、評価ではありません。
+従って、@code{x!}はクォートされた式の中でも置き換えられます。
+
+@c ===beg===
+@c '([0!, (7/2)!, 4.77!, 8!, 20!]);
+@c ===end===
+@example
+(%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
+          105 sqrt(%pi)
+(%o1) [1, -------------, 81.44668037931199, 40320, 
+               16
+                                             2432902008176640000]
+@end example
+
+Maximaは階乗関数の導関数を知っています。
+
+@c ===beg===
+@c diff(x!,x);
+@c ===end===
+@example
+(%i1) diff(x!,x);
+(%o1)                           x! psi (x + 1)
+                                      0
+@end example
+
+オプション変数@code{factorial_expand}は、
+階乗関数を含む式の展開と整理を制御します。
+
+@c ===beg===
+@c (n+1)!/n!,factorial_expand:true;
+@c ===end===
+@example
+(%i1) (n+1)!/n!,factorial_expand:true;
+(%o1)                                n + 1
+@end example
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Operators}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{factlim}
+@defvr {オプション変数} factlim
+デフォルト値: -1
+
+@code{factlim}は、自動的に展開される最高の階乗を指定します。
+もし-1なら、すべての整数は展開されます。
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{factorial_expand}
+@defvr {オプション変数} factorial_expand
+デフォルト値: false
+
+オプション変数@code{factorial_expand}は
+@code{(n+1)!}のような式の整理を制御します。
+ここで@code{n}は整数です。
+例は@code{!}を参照してください。
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end defvr
+
+@c IS THIS DEFINITION CORRECT ??
+
+@c -----------------------------------------------------------------------------
+@anchor{genfact}
+@deffn {関数} genfact (@var{x}, @var{y}, @var{z})
+一般化された階乗を返します。
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}のように定義されます。
+それゆえに、整数@var{x}に関して、
+@code{genfact (x, x, 1) = x!}であり、@code{genfact (x, x/2, 2) = x!!}です。
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{minfactorial}
+@deffn {関数} minfactorial (@var{expr})
+
+整数だけ違う２つの階乗の出現に関して
+@var{expr}を検査します。
+そして、@code{minfactorial}は、
+一方を多項式掛ける他方に変えます。
+
+@c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
+@c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!
+@c LOOKING AT THE minfactorial CODE DOESN'T HELP !!!
+@c If exp involves binomial coefficients then they will be
+@c converted into ratios of factorials.
+
+@example
+(%i1) n!/(n+2)!;
+                               n!
+(%o1)                       --------
+                            (n + 2)!
+(%i2) minfactorial (%);
+                                1
+(%o2)                    ---------------
+                         (n + 1) (n + 2)
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sumsplitfact}
+@defvr {オプション変数} sumsplitfact
+デフォルト値: @code{true}
+
+@code{sumsplitfact}が@code{false}の時、
+@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
+@code{minfactorial}は、@code{factcomb}の後に適用されます。
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Root Exponential and Logarithmic Functions, Trigonometric Functions, Combinatorial Functions, Mathematical Functions
+@section Root, Exponential and Logarithmic Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{%e_to_numlog}
+@defvr {オプション変数} %e_to_numlog
+デフォルト値: @code{false}
+
+@code{true}の時、
+@code{r}をある有理数、@code{x}をある式とすると、
+@code{%e^(r*log(x))}は@code{x^r}に整理されます。
+@code{radcan}コマンドもこの変換を行い、その上この同類のさらに複雑な変換をすることに注意すべきです。
+@code{logcontract}コマンドは@code{log}を含む式を「短縮」します。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%emode}
+@defvr {オプション変数} %emode
+デフォルト値: @code{true}
+
+@code{%emode}が@code{true}の時、
+@code{%e^(%pi %i x)}は以下のように整理されます。
+
+もし@code{x}が浮動小数点、整数、もしくは1/2, 1/3, 1/4, 1/6の整数倍なら、
+@code{%e^(%pi %i x)}は@code{cos (%pi x) + %i sin (%pi x)}に整理された後、
+さらに整理されます。
+
+他の数値@code{x}に関して、
+@code{%e^(%pi %i x)}は、@code{%e^(%pi %i y)}に整理されます。
+ここで@code{y}は@code{x - 2 k}（@code{k}は@code{abs(y) < 1}が成り立つような整数）です。
+
+@code{%emode}が@code{false}の時には、
+@code{%e^(%pi %i x)}の特別な整理は実行されません。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%enumer}
+@defvr {オプション変数} %enumer
+デフォルト値: @code{false}
+
+@code{%enumer}が@code{true}の時、
+@code{numer}が@code{true}の時はいつでも、
+@code{%e}は数値2.718...に置き換えられます。
+
+@code{%enumer}が@code{false}の時、
+@code{%e^x}の指数が数に評価される時だけ、
+この代入が実行されます。
+
+@mref{ev}, @mref{numer}も参照してください。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Exponential and logarithm functions} @category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c PROBABLY MORE TO BE SAID HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{exp}
+@deffn {関数} exp (@var{x})
+
+指数関数を表します。
+入力にある@code{exp (@var{x})}のインスタンスは、@code{%e^@var{x}}に整理されます;
+@code{exp}は整理された式の中には現れません。
+
+もし@code{demoivre}が@code{true}で、かつ、
+@code{b}が@code{%i}を含まないなら、
+@code{%e^(a + b %i)}は@code{%e^(a (cos(b) + %i sin(b)))}に整理されます。
+@mref{demoivre}を参照してください。
+
+@code{%emode}が@code{true}の時、
+@code{%e^(%pi %i x)}は整理されます。
+@mref{%emode}を参照してください。
+
+@code{%enumer}が@code{true}の時、
+@code{numer}が@code{true}の時にはいつでも
+@code{%e}は2.718...に置き換えれます。
+@mref{%enumer}を参照してください。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
+@end deffn
+
+
+@c -----------------------------------------------------------------------------
+@anchor{li}
+@deffn {関数} li [@var{s}] (@var{z})
+
+次数@var{s}、引数@var{z}の多重対数関数を表します。
+これは、以下の無限級数で定義されます。
+
+@tex
+$${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
+@end tex
+@ifnottex
+@example
+                                 inf
+                                 ====   k
+                                 \     z
+                        Li (z) =  >    --
+                          s      /      s
+                                 ====  k
+                                 k = 1
+@end example
+@end ifnottex
+
+@code{li [1]}は、@code{- log (1 - z)}です。
+@code{li [2]}と@code{li [3]}は、それぞれ、dilogarithm関数、trilogarithm関数です。
+
+次数が1の時、多重対数関数は@code{- log (1 - z)}に整理され、
+もし@var{z}が実数もしくは複素数の浮動小数点数、もしくは、@code{numer}評価フラグが有効なら、さらに数値に整理されます。
+
+次数が2もしくは3の時、
+もし@var{z}が実数の浮動小数点数、もしくは@code{numer}評価フラグが有効なら、
+多重対数関数は数値に整理されます。
+
+例:
+
+@c ===beg===
+@c assume (x > 0);
+@c integrate ((log (1 - t)) / t, t, 0, x);
+@c li [2] (7);
+@c li [2] (7), numer;
+@c li [3] (7);
+@c li [2] (7), numer;
+@c L : makelist (i / 4.0, i, 0, 8);
+@c map (lambda ([x], li [2] (x)), L);
+@c map (lambda ([x], li [3] (x)), L);
+@c ===end===
+@example
+(%i1) assume (x > 0);
+(%o1)                        [x > 0]
+(%i2) integrate ((log (1 - t)) / t, t, 0, x);
+(%o2)                       - li (x)
+                                2
+(%i3) li [2] (7);
+(%o3)                        li (7)
+                               2
+(%i4) li [2] (7), numer;
+(%o4)        1.24827317833392 - 6.113257021832577 %i
+(%i5) li [3] (7);
+(%o5)                        li (7)
+                               3
+(%i6) li [2] (7), numer;
+(%o6)        1.24827317833392 - 6.113257021832577 %i
+(%i7) L : makelist (i / 4.0, i, 0, 8);
+(%o7)   [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+(%i8) map (lambda ([x], li [2] (x)), L);
+@group
+(%o8) [0, .2676526384986274, .5822405249432515, 
+.9784693966661848, 1.64493407, 2.190177004178597
+ - .7010261407036192 %i, 2.374395264042415
+ - 1.273806203464065 %i, 2.448686757245154
+ - 1.758084846201883 %i, 2.467401098097648
+ - 2.177586087815347 %i]
+@end group
+(%i9) map (lambda ([x], li [3] (x)), L);
+(%o9) [0, .2584613953442624, 0.537213192678042, 
+.8444258046482203, 1.2020569, 1.642866878950322
+ - .07821473130035025 %i, 2.060877505514697
+ - .2582419849982037 %i, 2.433418896388322
+ - .4919260182322965 %i, 2.762071904015935
+ - .7546938285978846 %i]
+@end example
+
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{log}
+@deffn {関数} log (@var{x})
+
+@var{x}の自然対数（基数@math{e}の対数）を表します。
+
+Maximaは、基数10や他の基数の対数の組み込み関数を持ちません。
+@code{log10(x) := log(x) / log(10)}は、役立つ定義です。
+
+対数の整理と評価は、いくつかのグローバルフラグによって管理されます:
+
+@table @code
+@item @code{logexpand}
+@code{log(a^b)}を@code{b*log(a)}にします。
+もし@code{all}に設定されているなら、
+@code{log(a*b)}も@code{log(a)+log(b)}に整理されます。
+もし@code{super}に設定されているなら,
+有理数@code{a/b}ただし@code{a#1}について@code{log(a/b)}も@code{log(a)-log(b)}に整理されます。
+(整数@code{b}に関して@code{log(1/b)}はいつも整理されます。)
+もし@code{false}に設定されているなら、
+これらのすべての整理は止められます。
+
+@item @code{logsimp}
+もし@code{false}なら、
+@code{%e}は、@code{log}を含む累乗へ整理がなされます。
+
+@item @code{lognumer}
+もし@code{true}なら、
+引数は、@code{log}の計算の前に絶対値に変換されます。
+もし@code{numer}も@code{true}なら、
+@code{log}の引数に負の整数を与えたとき、
+引数は、@code{log}の計算の前に絶対値に変換されます。
+
+@item @code{lognegint}
+もし@code{true}なら、正の整数@code{n}に対して規則
+@code{log(-n)} -> @code{log(n)+%i*%pi}
+が実装されます。
+
+@item @code{%e_to_numlog}
+@code{true}の時、
+@code{r}をある有理数、@code{x}をある式とすると、
+式@code{%e^(r*log(x))}は@code{x^r}に整理されます。
+@code{radcan}コマンドもこの変換を行い、その上この同類のさらに複雑な変換をすることに注意すべきです。
+@code{logcontract}コマンドは@code{log}を含む式を「短縮」します。
+@end table
+
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{logabs}
+@defvr {オプション変数} logabs
+デフォルト値: @code{false}
+
+例えば@code{integrate(1/x,x)}のように、logが生成される不定積分を実行する時、
+もし@code{logabs}が@code{true}なら
+もし@code{logabs}が@code{false}なら
+答えは、@code{log(...)}の形で与えられます。
+定積分については、
+終端での不定積分の「評価」がしばしば必要になるので、@code{logabs:true}設定が使われます。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Integral calculus} @category{Global flags}
+@closecatbox
+
+@end defvr
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{logarc}
+@defvr  {オプション変数} logarc
+@defvrx {関数} logarc (@var{expr})
+
+グローバル変数@code{logarc}が@code{true}の時、
+逆円関数や逆双曲線関数は、同値の対数関数に置き換えられます。
+@code{logarc}のデフォルト値は@code{false}です。
+
+関数@code{logarc(@var{expr})}は、
+グローバル変数@code{logarc}を設定することなしに、式@var{expr}に対して上記置き換えを実行します。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Simplification functions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{logconcoeffp}
+@defvr {オプション変数} logconcoeffp
+デフォルト値: @code{false}
+
+@code{logcontract}を使った時、どの係数が短縮されるかを制御します。
+引数１つの述語論理関数の名前に設定することができます。
+例えば、もしSQRTを生成したいなら、
+@code{logconcoeffp:'logconfun$
+logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
+すると、
+@code{logcontract(1/2*log(x));}は@code{log(sqrt(x))}を与えるでしょう。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{logcontract}
+@deffn {関数} logcontract (@var{expr})
+
+形式@code{a1*log(b1) + a2*log(b2) + c}の部分式を
+@code{log(ratsimp(b1^a1 * b2^a2)) + c}に変換しながら、
+再帰的に式@var{expr}を走査します。
+
+@c ===beg===
+@c 2*(a*log(x) + 2*a*log(y))$
+@c logcontract(%);
+@c ===end===
+@example
+(%i1) 2*(a*log(x) + 2*a*log(y))$
+(%i2) logcontract(%);
+                                 2  4
+(%o2)                     a log(x  y )
+@end example
+
+@code{declare(n,integer);}を実行すると、
+@code{logcontract(2*a*n*log(x));}は、@code{a*log(x^(2*n))}に整理されます。
+この方法で「短縮」される係数は、ここで2や@code{n}に当たるもので、@code{featurep(coeff,integer)}を満たします。
+ユーザーは、
+オプション@code{logconcoeffp}を引数１つの述語論理関数名に設定することで、
+どの係数を短縮するか制御できます。
+例えば、もしSQRTを生成したいなら、
+@code{logconcoeffp:'logconfun$
+logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
+すると、
+@code{logcontract(1/2*log(x));}は@code{log(sqrt(x))}を与えるでしょう。
+
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{logexpand}
+@defvr {オプション変数} logexpand
+デフォルト値: @code{false}
+
+もし@code{true}なら、
+@code{log(a^b)}が@code{b*log(a)}になるようにします。
+もし@code{all}に設定されているなら、
+@code{log(a*b)}も@code{log(a)+log(b)}に整理されます。
+もし@code{super}に設定されているなら,
+有理数@code{a/b}ただし@code{a#1}について@code{log(a/b)}も@code{log(a)-log(b)}に整理されます。
+(整数@code{b}に関して@code{log(1/b)}はいつも整理されます。)
+もし@code{false}に設定されているなら、
+これらのすべての整理は止められます。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{lognegint}
+@defvr {オプション変数} lognegint
+デフォルト値: @code{false}
+
+もし@code{true}なら、正の整数@code{n}に対して規則
+@code{log(-n)} -> @code{log(n)+%i*%pi}
+が実装されます。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{lognumer}
+@defvr {オプション変数} lognumer
+デフォルト値: @code{false}
+
+もし@code{true}なら、
+引数は、@code{log}の計算の前に絶対値に変換されます。
+もし@code{numer}も@code{true}なら、
+@code{log}の引数に負の整数を与えたとき、
+引数は、@code{log}の計算の前に絶対値に変換されます。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{logsimp}
+@defvr {オプション変数} logsimp
+デフォルト値: @code{true}
+
+もし@code{false}なら、
+@code{%e}は、@code{log}を含む累乗へ整理がなされます。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{plog}
+@deffn {関数} plog (@var{x})
+
+@code{-%pi} < @code{carg(@var{x})} <= @code{+%pi}を虚部係数とする複素数値の自然対数の主値を表します。
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Complex variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sqrt}
+@deffn {関数} sqrt (@var{x})
+@var{x}の平方根。
+内部的には@code{@var{x}^(1/2)}で表現されます。
+@code{rootscontract}も参照してください。
+
+@code{radexpand}が@code{true}なら、nのべき乗となる積の因子のn番目の根を
+累乗根の外部に押し出すようにします。
+例えば、
+@code{radexpand}が@code{true}の時だけ、@code{sqrt(16*x^2)}は@code{4*x}になります。
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@page
+@node Trigonometric Functions, Random Numbers, Root Exponential and Logarithmic Functions, Mathematical Functions
+@section Trigonometric Functions
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Trigonometric::
+* Functions and Variables for Trigonometric::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Trigonometric, Functions and Variables for Trigonometric, Trigonometric Functions, Trigonometric Functions
+@subsection Introduction to Trigonometric
+@c -----------------------------------------------------------------------------
+
+Maximaは、定義されたたくさんの三角関数を持ちます。
+すべての三角恒等式がプログラムされているわけではありませんが、
+ユーザーは、システムのパターンマッチング能力を使ってそれらの多くを追加することができます。
+Maximaで定義された三角関数は以下の通りです:
+@code{acos},
+@code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
+@code{acsch}, @code{asec}, @code{asech}, @code{asin},
+@code{asinh}, @code{atan}, @code{atanh}, @code{cos},
+@code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch},
+@code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan},
+@code{tanh}。
+特に三角関数を扱うためのたくさんのコマンドがあります。
+@code{trigexpand}, @code{trigreduce}, スイッチ@code{trigsign}を参照してください。
+２つの共用パッケージ@code{ntrig}, @code{atrig1}は、
+Maximaに組み込まれた整理規則を拡張します。
+詳しくは、@code{describe(@var{command})}を実行してください。
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Trigonometric,  , Introduction to Trigonometric, Trigonometric Functions
+@subsection Functions and Variables for Trigonometric
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{%piargs}
+@defvr {オプション変数} %piargs
+デフォルト値: @code{true}
+
+@code{%piargs}が@code{true}の時で、
+引数が
+@iftex
+@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, @math{\pi/6}のいずれか
+@end iftex
+@ifnottex
+@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, @math{%pi/6}のいずれか
+@end ifnottex
+の整数倍の時は、
+三角関数は、代数定数に整理されます。
+
+
+Maximaは、
+@iftex
+@math{\pi}
+@end iftex
+@ifnottex
+@math{%pi}
+@end ifnottex
+などが、整数変数（すなわち、整数に宣言されたシンボル）倍された時適用できる
+いくつかの恒等式を知っています。
+
+例:
+
+@c ===beg===
+@c %piargs : false$
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c %piargs : true$
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+@c        cos (sqrt(2)*%pi/3)];
+@c ===end===
+@example
+(%i1) %piargs : false$
+@group
+(%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                %pi       %pi
+(%o2)            [sin(%pi), sin(---), sin(---)]
+                                 2         3
+@end group
+@group
+(%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                      %pi       %pi       %pi
+(%o3)            [sin(---), sin(---), sin(---)]
+                       4         5         6
+@end group
+(%i4) %piargs : true$
+@group
+(%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                sqrt(3)
+(%o5)                    [0, 1, -------]
+                                   2
+@end group
+@group
+(%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                         1         %pi   1
+(%o6)                [-------, sin(---), -]
+                      sqrt(2)       5    2
+@end group
+@group
+(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+       cos (sqrt(2)*%pi/3)];
+                1    1               sqrt(2) %pi
+(%o7)          [-, - -, sqrt(3), cos(-----------)]
+                2    2                    3
+@end group
+@end example
+
+@iftex
+@math{\pi} and @math{\pi/2}
+@end iftex
+@ifnottex
+@math{%pi} and @math{%pi/2}
+@end ifnottex
+が整数変数にかけられた時、いくつかの恒等式が適用されます。
+
+@c ===beg===
+@c declare (n, integer, m, even)$
+@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+@c        cos (%pi/2 * m)];
+@c ===end===
+@example
+(%i1) declare (n, integer, m, even)$
+(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+       cos (%pi/2 * m)];
+                                      m/2
+(%o2)                  [0, 1, 0, (- 1)   ]
+@end example
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{%iargs}
+@defvr {オプション変数} %iargs
+デフォルト値: @code{true}
+
+@code{%iargs}が@code{true}の時、
+引数が明らかに、虚数単位
+@iftex
+@math{i}
+@end iftex
+@ifnottex
+@math{%i}
+@end ifnottex
+を掛けたものの時、
+三角関数は双曲線関数に整理されます。
+
+引数が明らかに実数の時でさえ、整理は実行されます;
+Maximaは、ただ、引数が、
+@iftex
+@math{i}
+@end iftex
+@ifnottex
+@math{%i}
+@end ifnottex
+を文字通り掛けたものかどうかを考慮します。
+
+例:
+
+@c ===beg===
+@c %iargs : false$
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c %iargs : true$
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c ===end===
+@example
+(%i1) %iargs : false$
+(%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o2)           [sin(%i x), cos(%i x), tan(%i x)]
+(%i3) %iargs : true$
+(%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end example
+
+引数が明らかに実数の時でさえ、整理は実行されます。
+
+@c ===beg===
+@c declare (x, imaginary)$
+@c [featurep (x, imaginary), featurep (x, real)];
+@c sin (%i * x);
+@c ===end===
+@example
+(%i1) declare (x, imaginary)$
+@group
+(%i2) [featurep (x, imaginary), featurep (x, real)];
+(%o2)                     [true, false]
+@end group
+@group
+(%i3) sin (%i * x);
+(%o3)                      %i sinh(x)
+@end group
+@end example
+
+@opencatbox
+@category{Trigonometric functions} @category{Hyperbolic functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} acos (@var{x})
+-- 逆余弦
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} acosh (@var{x})
+-- 逆双曲余弦
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} acot (@var{x})
+-- 逆余接
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} acoth (@var{x})
+-- 逆双曲余接
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} acsc (@var{x})
+-- 逆余割
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} acsch (@var{x})
+-- 逆双曲余割
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} asec (@var{x})
+-- 逆正割
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} asech (@var{x})
+-- 逆双曲正割
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} asin (@var{x})
+-- 逆正弦
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} asinh (@var{x})
+-- 逆双曲正弦
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} atan (@var{x})
+-- 逆正接
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} atan2 (@var{y}, @var{x})
+-- @code{-%pi}から@code{%pi}までの間の@code{atan(@var{y}/@var{x})}の値をもたらします。
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} atanh (@var{x})
+-- 逆双曲正接
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
+@defvr {パッケージ} atrig1
+@code{atrig1}パッケージは、逆三角関数のためのいくつかの追加の整理規則を含みます。
+Maximaが既に知っている規則と合わせて、
+以下の角度が完全に実装されます:
+@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, @code{%pi/2}。
+他の3象限の対応する角度も利用可能です。
+これらを使うには、@code{load(atrig1);}を実行してください。
+
+@opencatbox
+@category{Trigonometric functions} @category{Package atrig1}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} cos (@var{x})
+-- 余弦
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} cosh (@var{x})
+-- 双曲余弦
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} cot (@var{x})
+-- 余接
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} coth (@var{x})
+-- 双曲余接
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} csc (@var{x})
+-- 余割
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} csch (@var{x})
+-- 双曲余割
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{halfangles}
+@defvr {オプション変数} halfangles
+デフォルト値: @code{false}
+
+@code{halfangles}が@code{true}の時、
+引数@code{@var{expr}/2}の三角関数は、@var{expr}の関数に整理されます。
+
+区間@code{0 < x < 2*%pi}の実引数@var{x}に関して、
+半角の正弦は簡単な公式に整理されます:
+
+@example
+                         sqrt(1 - cos(x))
+                         ----------------
+                             sqrt(2)
+@end example
+
+複雑な因子は
+すべての複素引数@var{z}でこの公式を正しくするために必要です:
+
+@verbatim
+           realpart(z)
+     floor(-----------)
+              2 %pi
+(- 1)                   (1 - unit_step(- imagpart(z))
+
+                            realpart(z)            realpart(z)
+                      floor(-----------) - ceiling(-----------)
+                               2 %pi                  2 %pi
+                ((- 1)                                          + 1))
+@end verbatim
+
+Maximaは、この因子と、
+関数@code{sin}, @code{cos}, @code{sinh}, @code{cosh}に関する類似の因子を知っています。
+引数@math{z}の特別な値に関して、
+これらの因子は相応に整理されます。
+
+例:
+
+@c ===beg===
+@c halfangles : false$
+@c sin (x / 2);
+@c halfangles : true$
+@c sin (x / 2);
+@c assume(x>0, x<2*%pi)$
+@c sin(x / 2);
+@c ===end===
+@example
+(%i1) halfangles:false;
+(%o1)                                false
+(%i2) sin(x/2);
+                                        x
+(%o2)                               sin(-)
+                                        2
+(%i3) halfangles:true;
+(%o3)                                true
+(%i4) sin(x/2);
+                                                    x
+                                            floor(-----)
+                                                  2 %pi
+                      sqrt(1 - cos(x)) (- 1)
+(%o4)                 ----------------------------------
+                                   sqrt(2)
+(%i5) assume(x>0, x<2*%pi)$
+(%i6) sin(x/2);
+                               sqrt(1 - cos(x))
+(%o6)                          ----------------
+                                   sqrt(2)
+@end example
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+
+@c -----------------------------------------------------------------------------
+@defvr {パッケージ} ntrig
+@code{ntrig}パッケージは、
+引数が形式@code{@var{f}(@var{n} %pi/10)}
+―@var{f}は関数
+@code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec}, @code{cot}のいずれか―
+の三角関数を整理するのに使われる整理規則の集合を含みます。
+@c NEED TO LOAD THIS PACKAGE ??
+
+@opencatbox
+@category{Trigonometric functions} @category{Package ntrig}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} sec (@var{x})
+-- 正割
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} sech (@var{x})
+-- 双曲正割
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} sin (@var{x})
+-- 正弦
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} sinh (@var{x})
+-- 双曲正弦
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} tan (@var{x})
+-- 正接
+
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} tanh (@var{x})
+-- 双曲正接
+
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{trigexpand}
+@deffn {関数} trigexpand (@var{expr})
+@var{expr}の中に現れる角の和や角の倍数の三角関数、双曲線関数を展開します。
+最もよい結果では、@var{expr}は展開されるべきです。
+整理のユーザー制御を強化するために、
+この関数は、一度に１レベルのみ、角の和もしくは角の倍数を展開します。
+ただちにサインとコサインへの完全な展開を得るには、
+スイッチ@code{trigexpand: true}を設定してください。
+
+@code{trigexpand}は、以下のグローバルフラグによって決定されます:
+
+@table @code
+@item trigexpand
+もし@code{true}なら、
+続いて現れるサインやコサインを含んでいる式すべての展開を起こします。
+@item halfangles
+もし@code{true}なら、
+半角が整理されます。
+@item trigexpandplus
+@code{trigexpand}の「和」規則を制御します。
+和（例えば@code{sin(x + y)}）の展開は、
+@code{trigexpandplus}が@code{true}の時だけ起こります。
+@item trigexpandtimes
+@code{trigexpand}の「積」規則を制御します。
+積(例えば@code{sin(2 x)})の展開は、
+@code{trigexpandtimes}が@code{true}の時だけ起こります。
+@end table
+
+例:
+
+@c ===beg===
+@c x+sin(3*x)/sin(x),trigexpand=true,expand;
+@c trigexpand(sin(10*x+y));
+@c ===end===
+@example
+(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
+@group
+                         2           2
+(%o1)               - sin (x) + 3 cos (x) + x
+@end group
+(%i2) trigexpand(sin(10*x+y));
+(%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
+@end example
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{trigexpandplus}
+@defvr {オプション変数} trigexpandplus
+デフォルト値: @code{true}
+
+@code{trigexpandplus}は、@code{trigexpand}の「和」規則を制御します。
+@code{trigexpand}コマンドが使われるか、もしくは
+@code{trigexpand}スイッチが@code{true}に設定されている時
+和(例えば@code{sin(x+y))})の展開は、
+@code{trigexpandplus}が@code{true}の時だけ起こります。
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{trigexpandtimes}
+@defvr {オプション変数} trigexpandtimes
+デフォルト値: @code{true}
+
+@code{trigexpandtimes}は、@code{trigexpand}の「積」規則を制御します。
+@code{trigexpand}コマンドが使われるか、もしくは、
+@code{trigexpand}スイッチが@code{true}に設定されている時、
+積(例えば@code{sin(2*x)})の展開は、
+@code{trigexpandtimes}が@code{true}の時だけ起こります。
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{triginverses}
+@defvr {オプション変数} triginverses
+デフォルト値: @code{true}
+
+@code{triginverses}は、
+三角関数や双曲線関数とそれらの逆関数の合成の整理を制御します。
+
+もし@code{all}なら、
+例えば、@code{atan(tan(@var{x}))}
+と@code{tan(atan(@var{x}))}のどちらも@var{x}に整理されます。
+
+もし@code{true}なら、
+@code{@var{arcfun}(@var{fun}(@var{x}))}の整理は止められます。
+
+もし@code{false}なら、
+@code{@var{arcfun}(@var{fun}(@var{x}))}と
+@code{@var{fun}(@var{arcfun}(@var{x}))}のどちらの整理も止められます。
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{trigreduce}
+@deffn {関数} trigreduce (@var{expr}, @var{x})
+@deffnx {関数} trigreduce (@var{expr})
+@var{x}を引数とする三角と双曲の正弦、余弦の積とべきを
+@var{x}の倍数のそれらに結合します。
+これらの関数が分母に現れた時、これらを消去しようともします。
+もし@var{x}が省略されたら、@var{expr}の中の変数すべてが使われます。
+
+@code{poissimp}も参照してください。
+
+@c ===beg===
+@c trigreduce(-sin(x)^2+3*cos(x)^2+x);
+@c ===end===
+@example
+(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
+@group
+               cos(2 x)      cos(2 x)   1        1
+(%o1)          -------- + 3 (-------- + -) + x - -
+                  2             2       2        2
+@end group
+@end example
+
+@c 
+@c     OBSOLETE
+@c     The behavior was changed in order to avoid calling expand in the core
+@c     simplifier (trigi.lisp rev 1.31)
+@c     See http://www.math.utexas.edu/pipermail/maxima/2008/010919.html.
+@c 
+@c The trigonometric simplification routines will use declared
+@c information in some simple cases.  Declarations about variables are
+@c used as follows, e.g.
+@c 
+@c ---beg---
+@c declare(j, integer, e, even, o, odd)$
+@c sin(x + (e + 1/2)*%pi);
+@c sin(x + (o + 1/2)*%pi);
+@c ---end---
+@c @example
+@c (%i1) declare(j, integer, e, even, o, odd)$
+@c (%i2) sin(x + (e + 1/2)*%pi);
+@c (%o2)                        cos(x)
+@c (%i3) sin(x + (o + 1/2)*%pi);
+@c (%o3)                       - cos(x)
+@c @end example
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{trigsign}
+@defvr {オプション変数} trigsign
+デフォルト値: @code{true}
+
+@code{trigsign}が@code{true}の時、
+三角関数への負の引数の整理を認めます。
+例えば、@code{sin(-x)}は、
+@code{trigsign}が@code{true}の時だけ、
+@code{-sin(x)}になります。
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{trigsimp}
+@deffn {関数} trigsimp (@var{expr})
+@code{tan}, @code{sec}などを含む式を@code{sin}, @code{cos}, @code{sinh}, @code{cosh}に整理するために、
+恒等式
+@iftex
+@tex
+$\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
+@end tex
+@end iftex
+@ifnottex
+@math{sin(x)^2 + cos(x)^2 = 1}
+@end ifnottex
+と
+@iftex
+@tex
+$\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
+@end tex
+@end iftex
+@ifnottex
+@math{cosh(x)^2 - sinh(x)^2 = 1}
+@end ifnottex
+を使います。
+
+@code{trigreduce}, @code{ratsimp}, @code{radcan}
+は、結果を更に整理できるかもしれません。
+
+@code{demo ("trgsmp.dem")}は、@code{trigsimp}のいくつかの例を表示します。
+@c MERGE EXAMPLES INTO THIS ITEM
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{trigrat}
+@deffn {関数} trigrat (@var{expr})
+三角関数の整理された標準疑似線形形式を与えます;
+@var{expr}は、@code{sin}, @code{cos}もしくは@code{tan}のいくつかの有理分数であり、
+それらの引数は、整数係数を持つ、いくつかの変数（もしくは核）と@code{%pi/@var{n}} (@var{n}は整数)の線形形式です。
+結果は、分子と分母が@code{sin}と@code{cos}に関して線形の整理された分数です。
+@code{trigrat}はいつも可能なときは線形化します。
+
+@c ===beg===
+@c trigrat(sin(3*a)/sin(a+%pi/3));
+@c ===end===
+@example
+@group
+(%i1) trigrat(sin(3*a)/sin(a+%pi/3));
+(%o1)            sqrt(3) sin(2 a) + cos(2 a) - 1
+@end group
+@end example
+
+以下の例は、
+Davenport, Siret, and Tournierの@i{Calcul Formel}, Masson (もしくは英語版ではAddison-Wesley), 1.5.5節, モーレイの定理から取られました。
+
+@c ===beg===
+@c c : %pi/3 - a - b$
+@c bc : sin(a)*sin(3*c)/sin(a+b);
+@c ba : bc, c=a, a=c;
+@c ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
+@c trigrat (ac2);
+@c ===end===
+@example
+(%i1) c : %pi/3 - a - b$
+(%i2) bc : sin(a)*sin(3*c)/sin(a+b);
+@group
+                                          %pi
+                  sin(a) sin(3 (- b - a + ---))
+                                           3
+(%o2)             -----------------------------
+                           sin(b + a)
+@end group
+(%i3) ba : bc, c=a, a=c;
+@group
+                                         %pi
+                    sin(3 a) sin(b + a - ---)
+                                          3
+(%o3)               -------------------------
+                                  %pi
+                          sin(a - ---)
+                                   3
+@end group
+(%i4) ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
+@group
+         2         2         %pi
+      sin (3 a) sin (b + a - ---)
+                              3
+(%o4) ---------------------------
+                2     %pi
+             sin (a - ---)
+                       3
+                                       %pi
+ - (2 sin(a) sin(3 a) sin(3 (- b - a + ---)) cos(b)
+                                        3
+             %pi            %pi
+ sin(b + a - ---))/(sin(a - ---) sin(b + a))
+              3              3
+      2       2              %pi
+   sin (a) sin (3 (- b - a + ---))
+                              3
+ + -------------------------------
+                2
+             sin (b + a)
+@end group
+(%i5) trigrat (ac2);
+@group
+(%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+ - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
+ - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
+ + 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
+ + sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
+ + sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
+ - 9)/4
+@end group
+@end example
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@page
+@node Random Numbers, , Trigonometric Functions, Mathematical Functions
+@section Random Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{make_random_state}
+@deffn  {関数} make_random_state (@var{n})
+@deffnx {関数} make_random_state (@var{s})
+@deffnx {関数} make_random_state (true)
+@deffnx {関数} make_random_state (false)
+
+@c OMIT THIS FOR NOW. SEE COMMENT BELOW.
+@c @defunx make_random_state (@var{a})
+
+ランダムステートオブジェクトは、乱数生成器の状態を表します。
+状態は、627個の32ビットワードで構成されます。
+
+@code{make_random_state (@var{n})}は、
+@var{n}を2^32で割った余りに等しい整数シードの値から新しいランダムステートオブジェクトを
+生成します。@var{n}は負でもいいです。
+
+@c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
+@c @code{make_random_state (@var{a})} returns a new random state object
+@c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
+
+@code{make_random_state (@var{s})}は、ランダムステート@var{s}のコピーを返します。
+
+@code{make_random_state (true)}は、新しいランダムステートオブジェクトを返します。
+シードとしてコンピュータの現在時刻を使います。
+
+@code{make_random_state (false)}は、乱数生成器の現在のステートのコピーを返します。
+
+@opencatbox
+@category{Random numbers}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{set_random_state}
+@deffn {関数} set_random_state (@var{s})
+@var{s}を乱数生成器状態にコピーします。
+
+@code{set_random_state}はいつも@code{done}を返します。
+
+@opencatbox
+@category{Random numbers}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{random}
+@deffn {関数} random (@var{x})
+
+疑似乱数を返します。
+もし@var{x}が整数なら、@code{random (@var{x})}は、0から@code{@var{x} - 1}までの
+整数を返します。
+もし@var{x}が浮動小数点なら、@code{random (@var{x})}は、@var{x}より小さい非負の浮動小数点を返します。
+もし@var{x}が整数でも浮動小数点でもなかったり、@var{x}が正でなければ、
+@code{random}は、エラーを出力します。
+
+関数@code{make_random_state}と@code{set_random_state}は、
+乱数生成器の状態を保守します。
+
+Maximaの乱数生成器は、メルセンヌ・ツイスタ MT 19937の実装です。
+
+例:
+
+@c ===beg===
+@c s1: make_random_state (654321)$
+@c set_random_state (s1);
+@c random (1000);
+@c random (9573684);
+@c random (2^75);
+@c s2: make_random_state (false)$
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c set_random_state (s2);
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c ===end===
+@example
+(%i1) s1: make_random_state (654321)$
+(%i2) set_random_state (s1);
+(%o2)                         done
+(%i3) random (1000);
+(%o3)                          768
+(%i4) random (9573684);
+(%o4)                        7657880
+(%i5) random (2^75);
+(%o5)                11804491615036831636390
+(%i6) s2: make_random_state (false)$
+(%i7) random (1.0);
+(%o7)                   .2310127244107132
+(%i8) random (10.0);
+(%o8)                   4.394553645870825
+(%i9) random (100.0);
+(%o9)                   32.28666704056853
+(%i10) set_random_state (s2);
+(%o10)                        done
+(%i11) random (1.0);
+(%o11)                  .2310127244107132
+(%i12) random (10.0);
+(%o12)                  4.394553645870825
+(%i13) random (100.0);
+(%o13)                  32.28666704056853
+@end example
+
+@opencatbox
+@category{Random numbers} @category{Numerical methods}
+@closecatbox
+@end deffn

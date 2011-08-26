@@ -1,0 +1,115 @@
+@menu
+* Functions and Variables for Bug Detection and Reporting::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Bug Detection and Reporting
+@section Functions and Variables for Bug Detection and Reporting
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{run_testsuite}
+@deffn {関数} run_testsuite ([@var{options}])
+
+Maximaのテストスイートを走らせます。
+望みの答えを生成したテストは「パス」とみなされます。
+望みの答えを生成しないテストも同様ですが、既知のバグとしてマークされています。
+
+@code{run_testsuite}は、以下のオプションキーワード引数を取ります。
+
+@table @var
+@item display_all
+テストすべてを表示します。
+通常は、テストが失敗しない限りテストを表示しません。
+（デフォルトでは @code{false}に設定されます。）
+@item display_known_bugs
+既知のバグとしてマークされているテストを表示します。
+（デフォルトでは @code{false}に設定されます。）
+@item tests
+これは、実行するテストのリストです。
+それぞれのテストは文字列かシンボルで指定することができます。
+デフォルトではテストすべてを実行します。
+テストの完全な組は @mref{testsuite_files}で指定されています。
+@item time
+時間情報を表示します。
+もし @code{true}ならそれぞれのテストファイルにかかった時間を表示します。
+もし @code{all}なら @code{display_all}が @code{true}の時、
+それぞれ個々のテストにかかった時間を示します。
+デフォルトは@code{false}で、時間情報を示しません。
+@end table
+
+例えば、 @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}は、
+テスト @code{rtest5}だけを走らせ、既知のバグとしてマークされているテストを表示します。
+
+@code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])}は、
+テスト @code{rtest1}と @code{rtest2}を走らせ、
+テストそれぞれを表示します。
+
+@code{run_testsuite}は、Maxima環境を変更します。
+通常は、テストスクリプトは
+既知の環境（すなわちユーザー定義の関数や変数のない環境）を確立するために
+@mref{kill}を実行し、
+それからテストにふさわしい関数や変数を定義します。
+
+@code{run_testsuite}は @code{done}を返します。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{testsuite_files}
+@defvr {オプション変数} testsuite_files
+
+@code{testsuite_files}は @mref{run_testsuite}が実行するテスト一式です。
+それは実行するテストを含むファイル名のリストです。
+もしファイルの中のテストのいくつかが失敗することが既知なら、
+ファイル名をリストする代わりに、
+ファイル名と失敗するテスト番号を含むリストを使います。
+
+例えば、以下はデフォルトのテスト一式の一部です:
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+これは、ファイル"rtest13s", "rtest14"から成るテストスイートを指定しますが、
+"rtest14" は失敗することが既知の２つのテスト57と63を含みます。
+
+@opencatbox
+@category{Debugging} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{bug_report}
+@deffn {関数} bug_report ()
+
+MaximaとLispのバージョン番号を表示し、Maximaプロジェクトのバグレポートウェブサイトへのリンクを与えます。
+バージョン情報は@mref{build_info}がレポートするものと同じです。
+
+バグをレポートする時、
+MaximaとLispのバージョン情報をバグレポートにコピーしてもらえると助かります。
+
+@code{bug_report}は空の文字列 @code{""}を返します。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{build_info}
+@deffn {関数} build_info ()
+
+Maximaビルドのパラメータのまとめを表示します。
+
+@code{build_info}は空の文字列 @code{""}を返します。
+@mrefdot{bug_report}も参照してください。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+

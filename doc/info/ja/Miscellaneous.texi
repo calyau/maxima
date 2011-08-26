@@ -1,0 +1,454 @@
+@menu
+* Introduction to Miscellaneous Options::  
+* Share::                       
+* Functions and Variables for Miscellaneous Options::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Miscellaneous Options, Share, Miscellaneous Options, Miscellaneous Options
+@section Introduction to Miscellaneous Options
+@c -----------------------------------------------------------------------------
+
+この節では、Maximaの操作上、グローバルな効果を持つ様々なオプションが論じられます。
+すべてのユーザー定義関数のリストのような様々なリストも論じられます。
+
+@c -----------------------------------------------------------------------------
+@node Share, Functions and Variables for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
+@section Share
+@c -----------------------------------------------------------------------------
+
+Maximaの「共有」ディレクトリは、Maximaユーザーのためのものですが、
+Maximaのコア実装の部分ではない、プログラムと他のファイルを含みます。
+これらのプログラムは、通常、 @code{load}や @code{setup_autoload}によってロードされます。
+
+@code{:lisp *maxima-sharedir*}は、
+ユーザーのファイルシステム内の共有ディレクトリの位置を表示します。
+
+@c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
+@code{printfile ("share.usg")}は、
+共有パッケージの期限切れリストを印字します。
+ユーザーは、
+ファイルシステムブラウザを使って共有ディレクトリをブラウズすることがもっと情報が得られることを知るでしょう。
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Miscellaneous Options,  , Share, Miscellaneous Options
+@section Functions and Variables for Miscellaneous Options
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{alphabetic}
+@defvr {宣言} alphabetic
+
+@code{alphabetic}は、 @code{declare}が認識する宣言タイプです。
+式 @code{declare(@var{s}, alphabetic)}は、Maximaに
+@var{s}―は文字列でなければいけません―の中の文字のすべてをalphabeticとして認識するように
+命じます。
+
+@ref{Identifiers}も参照してください。
+
+例:
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
+@example
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{genindex}
+@defvr {オプション変数} genindex
+デフォルト値: @code{i}
+
+@code{genindex}は、
+必要な時、和の次の変数を生成するために使われる
+アルファベットの接頭辞です。
+
+@opencatbox
+@category{Sums and products}
+@closecatbox
+@end defvr
+
+@anchor{gensumnum}
+@defvr {オプション変数} gensumnum
+デフォルト値: 0
+
+@code{gensumnum}は、
+和の次の変数を生成するために使われる
+数値接尾辞です。
+もし@code{false}に設定されているなら、
+インデックスは数値接尾辞なしで@code{genindex}だけから成ります。
+
+@opencatbox
+@category{Sums and products}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gensym}
+@deffn  {関数} gensym ()
+@deffnx {関数} gensym (@var{x})
+
+@code{gensym()}は新鮮なシンボルを生成し、返します。
+
+新しいシンボルの名前は、
+デフォルトでは"g"の接頭辞と
+Lisp内部カウンタの値がデフォルトの数の十進表現である接尾辞の連結です。
+
+もし@var{x}が供給されて、それが文字列なら、
+このgensymへの呼び出しに限って、
+その文字列は"g"の代わりに接頭辞として使われます。
+
+もし@var{x}が供給されて、それが整数なら、
+このgensymへの呼び出しに限って、
+内部Lisp整数の値の代わりに接尾辞として使われます。
+
+もし陽な接尾辞が供給されないなら、また、その時だけ、
+Lisp内部整数は、使われた後1だけ増分されます。
+
+例:
+
+@c ===beg===
+@c gensym();
+@c gensym("new");
+@c gensym(123);
+@c ===end===
+@example
+(%i1) gensym();
+(%o1)                         g887
+(%i2) gensym("new");
+(%o2)                        new888
+(%i3) gensym(123);
+(%o3)                         g123
+@end example
+@end deffn
+
+
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{properties}
+@deffn {関数} properties (@var{a})
+
+アトム@var{a}に関連づけられたプロパティすべての名前のリストを返します。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c WHAT IS HIDDEN IN THE "etc" HERE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{props}
+@defvr {特殊シンボル} props
+
+@code{props}は、
+@code{declare}関数で指定されたプロパティはもちろん、
+@code{atvalue}, @code{matchdeclare}, などが指定したような、
+@code{infolists}で陽に言及されたもの以外の任意のプロパティ、を持つアトムです。
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{propvars}
+@deffn {関数} propvars (@var{prop})
+
+@code{props}リスト上の、
+@var{prop}が示すプロパティを持つアトムのリストを返します。
+従って，
+@code{propvars (atvalue)}は、atvalueを持つアトムのリストを返します。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
+@end deffn
+
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
+@c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
+
+@c -----------------------------------------------------------------------------
+@anchor{put}
+@deffn {関数} put (@var{atom}, @var{value}, @var{indicator})
+
+@var{value}を@var{atom}の(@var{indicator}が指定する)プロパティに割り当てます。
+@var{indicator}は、任意のプロパティの名前を取り得ますが、
+システム定義のプロパティは取りません。
+
+@code{rem}は@code{put}の効果をひっくり返します。
+
+@code{put}は引数を評価します。
+@code{put}は@var{value}を返します。
+
+例:
+
+@example
+(%i1) put (foo, (a+b)^5, expr);
+                                   5
+(%o1)                       (b + a)
+(%i2) put (foo, "Hello", str);
+(%o2)                         Hello
+(%i3) properties (foo);
+(%o3)            [[user properties, str, expr]]
+(%i4) get (foo, expr);
+                                   5
+(%o4)                       (b + a)
+(%i5) get (foo, str);
+(%o5)                         Hello
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{qput}
+@deffn {関数} qput (@var{atom}, @var{value}, @var{indicator})
+
+@var{value}を@var{atom}の(@var{indicator}が指定する)プロパティに割り当てます。
+これは、引数がクォートされることを除いて、@code{put}と同じです。
+
+例:
+
+@example
+(%i1) foo: aa$ 
+(%i2) bar: bb$
+(%i3) baz: cc$
+(%i4) put (foo, bar, baz);
+(%o4)                          bb
+(%i5) properties (aa);
+(%o5)                [[user properties, cc]]
+(%i6) get (aa, cc);
+(%o6)                          bb
+(%i7) qput (foo, bar, baz);
+(%o7)                          bar
+(%i8) properties (foo);
+(%o8)            [value, [user properties, baz]]
+(%i9) get ('foo, 'baz);
+(%o9)                          bar
+@end example
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
+@c HOW IS THIS DIFFERENT FROM remove ??
+
+@c -----------------------------------------------------------------------------
+@anchor{rem}
+@deffn {関数} rem (@var{atom}, @var{indicator})
+
+@var{atom}から、@var{indicator}が示すプロパティを取り除きます。
+@code{rem}は@code{put}の効果をひっくり返します。
+
+@code{rem}が呼び出された時、もし@var{atom}が@var{indicator}プロパティを持っていたなら、@code{rem}は@code{done}を返します。もしそんなプロパティを持っていなかったら@code{false}を返します。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
+@c HOW IS THIS DIFFERENT FROM rem ??
+
+@c -----------------------------------------------------------------------------
+@anchor{remove}
+@deffn  {関数} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {関数} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], ...)
+@deffnx {関数} remove ("@var{a}", operator)
+@deffnx {関数} remove (@var{a}, transfun)
+@deffnx {関数} remove (all, @var{p})
+アトムに関連づけられたプロパティを取り除きます。
+
+@code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+は、アトム@code{a_k}からプロパティ@code{p_k}を取り除きます。
+
+@code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
+は、
+アトム@var{a_1}, @dots{}, @var{a_m}から
+プロパティ@code{@var{p_1}, ..., @var{p_n}}を
+取り除きます。
+リストのペアは複数を取り得ます。
+
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+@code{remove (all, @var{p})}は、
+プロパティ@var{p}を、それを持つアトムすべてから取り除きます。
+
+@c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
+取り除かれるプロパティは、
+@code{function}, @code{macro}, @code{mode_declare}のようなシステム定義のプロパティ
+かもしれません。
+@code{remove}は@code{put}で定義されたプロパティを取り除きません。
+
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+@c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
+翻訳されたLispバージョンの関数を取り除くために
+プロパティは、@code{transfun}を取ることができます。
+これを実行した後は、翻訳バージョンでなく、Maximaバージョンの関数が実行されます。
+
+@code{remove ("@var{a}", operator)}または、同値な, @code{remove ("@var{a}", op)}
+は、
+@var{a}から
+@code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, @code{nofix}が宣言した演算子プロパティを取り除きます。
+演算子名はクォートされた文字列として書かれなければいけないことに注意してください。
+
+アトムが指定されたプロパティを持とうが持ちまいが、
+@code{remove}は、いつも@code{done}を返します。
+この振る舞いは、もっと具体的な削除関数@code{remvalue}, @code{remarray}, @code{remfunction}, @code{remrule}と似ていません。
+
+@code{remove}は引数をクォートします。
+
+@c IN SERIOUS NEED OF EXAMPLES HERE
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{remvalue}
+@deffn  {関数} remvalue (@var{name_1}, ..., @var{name_n})
+@deffnx {関数} remvalue (all)
+
+(添字付きもありえる)ユーザー変数@var{name_1}, ..., @var{name_n}の値をシステムから
+取り除きます。
+
+@code{remvalue (all)}は、
+ removes the values of all variables in 
+@code{values}―(Maximaが自動的に割り当てたものと対照的に)
+ユーザーが名前を与えた変数すべてのリスト―
+の中の変数すべての値を取り除きます。
+
+@code{values}も参照してください。
+
+@opencatbox
+@category{Evaluation}
+@closecatbox
+@end deffn
+
+@c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{rncombine}
+@deffn {関数} rncombine (@var{expr})
+
+同一の分母や、たがいに数値因子だけことなる分母を持つ
+@var{expr}のすべての項を結合することで、
+@var{expr}を変換します。
+これは、@code{combine}の振る舞いとわずかに違います。
+@code{combine}は、同一分母を持つ項を集めます。
+
+@code{pfeformat: true}を設定し、@code{combine}を使うことは、
+@code{rncombine}を使って得られるものと似た結果をもたらしますが、
+@code{rncombine}は、
+クロス積の数値的分母因子のおまけのステップを実行します。
+これは、きれいな形式と、いくつかの相殺を認識する可能性を生みます。
+
+@code{load(rncomb)}はこの関数をロードします。
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{scalarp}
+@deffn {関数} scalarp (@var{expr})
+
+もし@var{expr}が、数か、定数、
+@code{declare}で@code{scalar}と宣言された変数、
+数と定数とそんな変数から完全に構成され、行列やリストを含まない変数なら、
+@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Vectors} @category{Matrices}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{setup_autoload}
+@deffn {関数} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
+
+もし@var{function_1}, ..., @var{function_n}のいずれかが、
+参照されたがまだ定義されていないなら、
+@code{load}を通じて@var{filename}がロードされるように指定します。
+@var{filename}は、
+強制はされませんが、普通、指定された関数の定義を含みます。
+
+@code{setup_autoload}は配列関数については機能しません。
+
+@code{setup_autoload}は引数をクォートします。
+
+例:
+
+@c EXAMPLE GENERATED FROM FOLLOWING INPUT
+@c legendre_p (1, %pi);
+@c setup_autoload ("specfun.mac", legendre_p, ultraspherical);
+@c ultraspherical (2, 1/2, %pi);
+@c legendre_p (1, %pi);
+@c legendre_q (1, %pi);
+@example
+(%i1) legendre_p (1, %pi);
+(%o1)                  legendre_p(1, %pi)
+(%i2) setup_autoload ("specfun.mac", legendre_p, ultraspherical);
+(%o2)                         done
+(%i3) ultraspherical (2, 1/2, %pi);
+Warning - you are redefining the Macsyma function ultraspherical
+Warning - you are redefining the Macsyma function legendre_p
+                            2
+                 3 (%pi - 1)
+(%o3)            ------------ + 3 (%pi - 1) + 1
+                      2
+(%i4) legendre_p (1, %pi);
+(%o4)                          %pi
+(%i5) legendre_q (1, %pi);
+                              %pi + 1
+                      %pi log(-------)
+                              1 - %pi
+(%o5)                 ---------------- - 1
+                             2
+@end example
+
+@opencatbox
+@category{Function definition} @category{File input}
+@closecatbox
+@end deffn

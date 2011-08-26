@@ -1,0 +1,931 @@
+@c -----------------------------------------------------------------------------
+@page
+@node Arrays, Structures, Lists, Data Types and Structures
+@section Arrays
+@c -----------------------------------------------------------------------------
+
+@menu
+* Functions and Variables for Arrays::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Arrays,  , Arrays, Arrays
+@section Functions and Variables for Arrays
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{array}
+@deffn  {関数} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {関数} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffnx {関数} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
+
+@math{n}次元の配列を生成します。
+@math{n}は5以下を取り得ます。
+@math{i}番目の次元のための添字は0から@var{dim_i}まで動く整数です。
+
+@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})}は
+一般的な配列を生成します。
+
+@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})}は
+指定されたタイプの要素を持つ配列を生成します。
+@var{type}には
+制限されたサイズの整数には@code{fixnum}が使え、
+また、浮動小数点には@code{flonum}が使えます。
+
+@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+は同じ次元の@math{m}個の配列を生成します。
+@c SAME TYPE AS WELL ??
+
+@c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
+もしユーザーが対応する配列を宣言する前に添字付き変数に割り当てたら、
+未宣言配列が生成されます。
+(ハッシュコーディングが添字上でされるので)別名ハッシュド配列と知られる未宣言配列は、
+宣言配列よりもっと一般的です。
+ユーザーは最大サイズを宣言せず、さらなる要素が値に割り当てられる時、ハッシュすることで
+それらは動的に成長します。
+未宣言配列の添字は数である必要すらありません。
+しかしながら、
+配列がむしろ疎でないなら、
+未宣言のまま放っておくより、可能な時に宣言した方がおそらく効率的です。
+@code{array}関数は未宣言配列を宣言配列に変換するのに使うことができます。
+@c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{arrayapply}
+@deffn {関数} arrayapply (@var{A}, [@var{i_1}, @dots{} @var{i_n}])
+@code{@var{A} [@var{i_1}, ..., @var{i_n}]}を評価します。
+ここで、@var{A}は配列、@var{i_1}, @dots{}, @var{i_n}は整数です。
+
+これは、最初の引数が関数の代わりに配列だということを除いて、
+@mref{apply}を連想させます。
+
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{arrayinfo}
+@deffn {関数} arrayinfo (@var{A})
+
+配列@var{A}に関する情報を返します。
+引数@var{A}は、宣言配列、未宣言(ハッシュド)配列、配列関数、または添字付き関数を取り得ます。
+
+宣言配列では、
+@code{arrayinfo}は、
+アトム@code{declared}と、次元数、それぞれの次元のサイズを含むリストを返します。
+配列の要素は、バインドされたものもそうでないものも、@code{listarray}で返されます。
+
+未宣言配列(ハッシュド配列)では、
+@code{arrayinfo}は、
+アトム@code{hashed}と、添字の数、値を持つすべての要素の添字を含むリストを返します。
+値は @code{listarray}で返されます。
+
+配列関数では、
+@code{arrayinfo}は、
+アトム@code{hashed}と、添字の数、
+記憶された関数値がある添字の値すべてを含むリストを返します。
+記憶された関数値は、@code{listarray}で返されます。
+
+添字付き関数では、、
+@code{arrayinfo}は、
+ returns a list comprising the 
+アトム@code{hashed}と、添字の数、
+ラムダ式がある添字の値すべてを含むリストを返します。
+ラムダ式は @code{listarray}で返されます。
+
+@mref{listarray}も参照してください。
+
+例:
+
+宣言配列に適用された@code{arrayinfo}と@code{listarray}。
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c arrayinfo (aa);
+@c listarray (aa);
+@c ===end===
+@example
+@group
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+@end group
+@group
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+@end group
+@group
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+@end group
+@group
+(%i4) arrayinfo (aa);
+(%o4)                 [declared, 2, [2, 3]]
+@end group
+@group
+(%i5) listarray (aa);
+(%o5) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end group
+@end example
+
+未宣言(ハッシュド)配列に適用された@code{arrayinfo}と@code{listarray}。
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c arrayinfo (bb);
+@c listarray (bb);
+@c ===end===
+@example
+@group
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+@end group
+@group
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+@end group
+@group
+(%i3) arrayinfo (bb);
+(%o3)               [hashed, 1, [BAR], [FOO]]
+@end group
+@group
+(%i4) listarray (bb);
+                              3         2
+(%o4)                 [(c - d) , (b + a) ]
+@end group
+@end example
+
+配列関数に適用された@code{arrayinfo}と@code{listarray}。
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c arrayinfo (cc);
+@c listarray (cc);
+@c ===end===
+@example
+@group
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+@end group
+@group
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+@end group
+@group
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+@end group
+@group
+(%i4) arrayinfo (cc);
+(%o4)              [hashed, 2, [4, z], [u, v]]
+@end group
+@group
+(%i5) listarray (cc);
+                              z  v
+(%o5)                        [-, -]
+                              4  u
+@end group
+@end example
+
+添字付き関数に適用された@code{arrayinfo}と@code{listarray}。
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c arrayinfo (dd);
+@c listarray (dd);
+@c ===end===
+@example
+@group
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+@end group
+@group
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+@end group
+@group
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+@end group
+@group
+(%i4) arrayinfo (dd);
+(%o4)             [hashed, 1, [b + a], [v - u]]
+@end group
+@group
+(%i5) listarray (dd);
+                         b + a                v - u
+(%o5)      [lambda([y], y     ), lambda([y], y     )]
+@end group
+@end example
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{arraymake}
+@deffn {関数} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+式@code{@var{A}[@var{i_1}, ..., @var{i_n}]}を返します。
+結果は未評価の配列参照です。
+
+@code{arraymake}は、
+戻り値は、未評価関数コールの代わりに未評価の配列参照だということを除いて、
+@mref{funmake}を連想させます。
+
+例:
+@c ===beg===
+@c arraymake (A, [1]);
+@c arraymake (A, [k]);
+@c arraymake (A, [i, j, 3]);
+@c array (A, fixnum, 10);
+@c fillarray (A, makelist (i^2, i, 1, 11));
+@c arraymake (A, [5]);
+@c ''%;
+@c L : [a, b, c, d, e];
+@c arraymake ('L, [n]);
+@c ''%, n = 3;
+@c A2 : make_array (fixnum, 10);
+@c fillarray (A2, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+@c arraymake ('A2, [8]);
+@c ''%;
+@c ===end===
+@example
+@group
+(%i1) arraymake (A, [1]);
+(%o1)                          A
+                                1
+@end group
+@group
+(%i2) arraymake (A, [k]);
+(%o2)                          A
+                                k
+@end group
+@group
+(%i3) arraymake (A, [i, j, 3]);
+(%o3)                       A
+                             i, j, 3
+@end group
+@group
+(%i4) array (A, fixnum, 10);
+(%o4)                           A
+@end group
+@group
+(%i5) fillarray (A, makelist (i^2, i, 1, 11));
+(%o5)                           A
+@end group
+@group
+(%i6) arraymake (A, [5]);
+(%o6)                          A
+                                5
+@end group
+@group
+(%i7) ''%;
+(%o7)                          36
+@end group
+@group
+(%i8) L : [a, b, c, d, e];
+(%o8)                    [a, b, c, d, e]
+@end group
+@group
+(%i9) arraymake ('L, [n]);
+(%o9)                          L
+                                n
+@end group
+@group
+(%i10) ''%, n = 3;
+(%o10)                          c
+@end group
+@group
+(%i11) A2 : make_array (fixnum, 10);
+(%o11)          @{Array:  #(0 0 0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i12) fillarray (A2, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o12)          @{Array:  #(1 2 3 4 5 6 7 8 9 10)@}
+@end group
+@group
+(%i13) arraymake ('A2, [8]);
+(%o13)                         A2
+                                 8
+@end group
+@group
+(%i14) ''%;
+(%o14)                          9
+@end group
+@end example
+
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{arrays}
+@defvr {システム変数} arrays
+デフォルト値: @code{[]}
+
+@code{arrays}は割り当てられた配列のリストです。
+これらは、@code{array}で宣言された配列、
+(なにかw配列要素に割り当てられた)陰の定義で構成されたハッシュド配列、
+@code{:=}と@code{define}で定義された配列関数を含みます。
+@mref{make_array}で定義された配列は含まれません。
+
+@mref{array}, @mref{arrayapply}, @mref{arrayinfo}, @mref{arraymake}, 
+@mref{fillarray}, @mref{listarray}, @mref{rearray}も参照してください。
+@c IS THIS AN EXHAUSTIVE LIST ??
+
+例:
+
+@c ===beg===
+@c array (aa, 5, 7);
+@c bb [FOO] : (a + b)^2;
+@c cc [x] := x/100;
+@c dd : make_array ('any, 7);
+@c arrays;
+@c ===end===
+@example
+@group
+(%i1) array (aa, 5, 7);
+(%o1)                          aa
+@end group
+@group
+(%i2) bb [FOO] : (a + b)^2;
+                                   2
+(%o2)                       (b + a)
+@end group
+@group
+(%i3) cc [x] := x/100;
+                                   x
+(%o3)                      cc  := ---
+                             x    100
+@end group
+@group
+(%i4) dd : make_array ('any, 7);
+(%o4)       @{Array:  #(NIL NIL NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i5) arrays;
+(%o5)                     [aa, bb, cc]
+@end group
+@end example
+
+@opencatbox
+@category{Arrays} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{fillarray}
+@deffn {関数} fillarray (@var{A}, @var{B})
+
+配列@var{A}を@var{B}から埋めます。
+ここで、@var{B}はリストか配列です。
+
+もし生成時に特定のタイプが@var{A}のために宣言されたら、
+その同じタイプの要素でだけ埋めることができます;
+もし違ったタイプの要素をコピーする試みがなされたらエラーです。
+
+もし配列@var{A}と@var{B}の次元が違ったら、
+@var{A}は行優先順で埋められます。
+もし@var{B}の中の要素が十分でないなら、
+@var{A}の残りを埋めるのに最後の要素が使われます。
+もし多すぎるなら、残りは無視されます。
+
+@code{fillarray}は最初の引数を返します。
+
+例:
+
+9個の要素の配列を生成し、リストから埋めます。
+@c ===beg===
+@c array (a1, fixnum, 8);
+@c listarray (a1);
+@c fillarray (a1, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+@c listarray (a1);
+@c ===end===
+@example
+@group
+(%i1) array (a1, fixnum, 8);
+(%o1)                          a1
+@end group
+@group
+(%i2) listarray (a1);
+(%o2)              [0, 0, 0, 0, 0, 0, 0, 0, 0]
+@end group
+@group
+(%i3) fillarray (a1, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+(%o3)                          a1
+@end group
+@group
+(%i4) listarray (a1);
+(%o4)              [1, 2, 3, 4, 5, 6, 7, 8, 9]
+@end group
+@end example
+
+配列を埋めるのに要素が足らない時、
+最後の要素が繰り返されます。
+要素が多すぎる時、余分の要素は無視されます。
+@c ===beg===
+@c a2 : make_array (fixnum, 8);
+@c fillarray (a2, [1, 2, 3, 4, 5]);
+@c fillarray (a2, [4]);
+@c fillarray (a2, makelist (i, i, 1, 100));
+@c ===end===
+@example
+@group
+(%i1) a2 : make_array (fixnum, 8);
+(%o1)             @{Array:  #(0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i2) fillarray (a2, [1, 2, 3, 4, 5]);
+(%o2)             @{Array:  #(1 2 3 4 5 5 5 5)@}
+@end group
+@group
+(%i3) fillarray (a2, [4]);
+(%o3)             @{Array:  #(4 4 4 4 4 4 4 4)@}
+@end group
+@group
+(%i4) fillarray (a2, makelist (i, i, 1, 100));
+(%o4)             @{Array:  #(1 2 3 4 5 6 7 8)@}
+@end group
+@end example
+
+多次元配列は行優先順に埋められます。
+
+@c ===beg===
+@c a3 : make_array (fixnum, 2, 5);
+@c fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+@c a4 : make_array (fixnum, 5, 2);
+@c fillarray (a4, a3);
+@c ===end===
+@example
+@group
+(%i1) a3 : make_array (fixnum, 2, 5);
+(%o1)        @{Array:  #2A((0 0 0 0 0) (0 0 0 0 0))@}
+@end group
+@group
+(%i2) fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o2)        @{Array:  #2A((1 2 3 4 5) (6 7 8 9 10))@}
+@end group
+@group
+(%i3) a4 : make_array (fixnum, 5, 2);
+(%o3)     @{Array:  #2A((0 0) (0 0) (0 0) (0 0) (0 0))@}
+@end group
+@group
+(%i4) fillarray (a4, a3);
+(%o4)     @{Array:  #2A((1 2) (3 4) (5 6) (7 8) (9 10))@}
+@end group
+@end example
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{listarray}
+@deffn {関数} listarray (@var{A})
+
+配列@var{A}の要素のリストを返します。
+引数@var{A}は、宣言配列、未宣言(ハッシュド)配列、配列関数、添字付き関数を取り得ます。
+
+要素は行優先順にリストされます。
+すなわち、要素は、最初のインデックスに従って振り分けられ、次に二番目のインデックスに従って、などなど。
+インデックス値の振り分け順は、
+@mref{orderless}が確立する順と同じです。
+
+未宣言配列や、配列関数、添字付き関数では、
+要素は@mref{arrayinfo}が返すインデックス値に対応します。
+
+宣言された一般配列のバインドされていない要素(すなわち、@code{fixnum}でも@code{flonum}でもない要素)は、 @code{#####}として返されます。
+宣言された@code{fixnum}配列または@code{flonum}配列のバイドされていない要素は、
+それぞれ0または0.0として返されます。
+未宣言配列、配列関数、添字付き関数のバインドされていない要素は返されません。
+
+例:
+
+宣言配列に適用された@code{listarray}と@code{arrayinfo}。
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c listarray (aa);
+@c arrayinfo (aa);
+@c ===end===
+@example
+@group
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+@end group
+@group
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+@end group
+@group
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+@end group
+@group
+(%i4) listarray (aa);
+(%o4) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end group
+@group
+(%i5) arrayinfo (aa);
+(%o5)                 [declared, 2, [2, 3]]
+@end group
+@end example
+
+未宣言(ハッシュド)配列に適用された@code{listarray}と@code{arrayinfo}。
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c listarray (bb);
+@c arrayinfo (bb);
+@c ===end===
+@example
+@group
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+@end group
+@group
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+@end group
+@group
+(%i3) listarray (bb);
+                              3         2
+(%o3)                 [(c - d) , (b + a) ]
+@end group
+@group
+(%i4) arrayinfo (bb);
+(%o4)               [hashed, 1, [BAR], [FOO]]
+@end group
+@end example
+
+配列関数に適用された@code{listarray}と@code{arrayinfo}。
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c listarray (cc);
+@c arrayinfo (cc);
+@c ===end===
+@example
+@group
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+@end group
+@group
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+@end group
+@group
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+@end group
+@group
+(%i4) listarray (cc);
+                              z  v
+(%o4)                        [-, -]
+                              4  u
+@end group
+@group
+(%i5) arrayinfo (cc);
+(%o5)              [hashed, 2, [4, z], [u, v]]
+@end group
+@end example
+
+添字付き関数に適用された@code{listarray}と@code{arrayinfo}。
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c listarray (dd);
+@c arrayinfo (dd);
+@c ===end===
+@example
+@group
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+@end group
+@group
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+@end group
+@group
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+@end group
+@group
+(%i4) listarray (dd);
+                         b + a                v - u
+(%o4)      [lambda([y], y     ), lambda([y], y     )]
+@end group
+@group
+(%i5) arrayinfo (dd);
+(%o5)             [hashed, 1, [b + a], [v - u]]
+@end group
+@end example
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{make_array}
+@deffn {関数} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+
+Lisp配列を生成し、返します。
+@var{type}は、@code{any}, @code{flonum}, @code{fixnum}, @code{hashed}, 
+@code{functional}を取り得ます。
+@math{n}個のインデックスがあり、
+@math{i}番目のインデックスは0から@math{@var{dim_i} - 1}まで動きます。
+
+@code{make_array}の@mref{array}に対する利点は、
+戻り値が名前を持たないことであり、
+一旦、それへのポインタが消えると、それも消えます。
+例えば、もし@code{y: make_array (...)}なら、
+@code{y}は領域を取るオブジェクトを指しますが、
+@code{y: false}の後、@code{y}はそのオブジェクトをもはや指さないので、
+オブジェクトはガーベッジコレクトされることができます。
+
+@c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
+@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED TO WORK
+@c COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
+@c RESTORE IT WHEN MAKE_ARRAY ('FUNCTIONAL, ...) IS FIXED
+@c @code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
+@c @code{make_array} in this case is the function to call to calculate array
+@c elements, and the rest of the arguments are passed recursively to
+@c @code{make_array} to generate the "memory" for the array function object.
+
+例:
+
+@c ===beg===
+@c A1 : make_array (fixnum, 10);
+@c A1 [8] : 1729;
+@c A1;
+@c A2 : make_array (flonum, 10);
+@c A2 [2] : 2.718281828;
+@c A2;
+@c A3 : make_array (any, 10);
+@c A3 [4] : x - y - z;
+@c A3;
+@c A4 : make_array (fixnum, 2, 3, 5);
+@c fillarray (A4, makelist (i, i, 1, 2*3*5));
+@c A4 [0, 2, 1];
+@c ===end===
+@example
+@group
+(%i1) A1 : make_array (fixnum, 10);
+(%o1)           @{Array:  #(0 0 0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i2) A1 [8] : 1729;
+(%o2)                         1729
+@end group
+@group
+(%i3) A1;
+(%o3)          @{Array:  #(0 0 0 0 0 0 0 0 1729 0)@}
+@end group
+@group
+(%i4) A2 : make_array (flonum, 10);
+(%o4) @{Array:  #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@}
+@end group
+@group
+(%i5) A2 [2] : 2.718281828;
+(%o5)                      2.718281828
+@end group
+@group
+(%i6) A2;
+(%o6) 
+     @{Array:  #(0.0 0.0 2.718281828 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@}
+@end group
+@group
+(%i7) A3 : make_array (any, 10);
+(%o7) @{Array:  #(NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i8) A3 [4] : x - y - z;
+(%o8)                      - z - y + x
+@end group
+@group
+(%i9) A3;
+(%o9) @{Array:  #(NIL NIL NIL NIL ((MPLUS SIMP) $X ((MTIMES SIMP)\
+ -1 $Y) ((MTIMES SIMP) -1 $Z))
+  NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i10) A4 : make_array (fixnum, 2, 3, 5);
+(%o10) @{Array:  #3A(((0 0 0 0 0) (0 0 0 0 0) (0 0 0 0 0)) ((0 0 \
+0 0 0) (0 0 0 0 0) (0 0 0 0 0)))@}
+@end group
+@group
+(%i11) fillarray (A4, makelist (i, i, 1, 2*3*5));
+(%o11) @{Array:  #3A(((1 2 3 4 5) (6 7 8 9 10) (11 12 13 14 15))
+    ((16 17 18 19 20) (21 22 23 24 25) (26 27 28 29 30)))@}
+@end group
+@group
+(%i12) A4 [0, 2, 1];
+(%o12)                         12
+@end group
+@end example
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
+@c -----------------------------------------------------------------------------
+@anchor{rearray}
+@deffn {関数} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+
+配列の次元を変えます。
+新しい配列は
+行優先順に古いものの配列で埋められます。
+もし古い配列が小さすぎるなら、
+残りの要素は、
+配列のタイプに依って、
+@code{false}, @code{0.0}または@code{0}で埋められます。
+配列のタイプは変えられません。
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{remarray}
+@deffn {関数} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {関数} remarray (all)
+
+配列と関数に関連づけられた配列を削除し、占められた領域を開放します。
+引数は、宣言配列、未宣言(ハッシュド)配列、配列関数、添字付き関数を取り得ます。
+
+@code{remarray (all)}は、
+グローバルリスト@mref{arrays}の中の項目すべてを削除します。
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+もしハッシュド配列の中の値を再定義することが望ましいなら、この関数を使うことが必要になるかもしれません。
+
+@code{remarray}は削除された配列のリストを返します。
+
+@code{remarray}はクォートします。
+
+@opencatbox
+@category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{subvar}
+@deffn {関数} subvar (@var{x}, @var{i})
+
+添字付き式@code{@var{x}[@var{i}]}を評価します。
+
+@code{subvar}は引数を評価します。
+
+@code{arraymake (@var{x}, [@var{i}]}は
+式@code{@var{x}[@var{i}]}を構成しますが、
+それを評価はしません。
+
+例:
+
+@c ===beg===
+@c x : foo $
+@c i : 3 $
+@c subvar (x, i);
+@c foo : [aa, bb, cc, dd, ee]$
+@c subvar (x, i);
+@c arraymake (x, [i]);
+@c ''%;
+@c ===end===
+@example
+(%i1) x : foo $
+(%i2) i : 3 $
+@group
+(%i3) subvar (x, i);
+(%o3)                         foo
+                                 3
+@end group
+(%i4) foo : [aa, bb, cc, dd, ee]$
+@group
+(%i5) subvar (x, i);
+(%o5)                          cc
+@end group
+@group
+(%i6) arraymake (x, [i]);
+(%o6)                         foo
+                                 3
+@end group
+@group
+(%i7) ''%;
+(%o7)                          cc
+@end group
+@end example
+
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{subvarp}
+@deffn {関数} subvarp (@var{expr})
+
+もし@var{expr}が例えば@code{a[i]}のように添字された変数なら、@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c THIS IS REALLY CONFUSING
+
+@c -----------------------------------------------------------------------------
+@anchor{use_fast_arrays}
+@defvr {オプション変数} use_fast_arrays
+
+もし@code{true}なら、配列の２つのタイプだけが認識されます:
+
+@enumerate
+@item
+整数でインデックスされたいくつかの次元を持つができ、
+情報入力としてLispまたはMaximaオブジェクトを保てるart-q配列(Common Lispでのt)。
+そんな配列を構成するには、
+@code{a:make_array(any,3,4);}を入力してください。
+@code{a}は、12個の枠を持つ配列を値として持ち、インデックスはゼロベースです
+
+@item
+もし@code{b[x+1]:y^2}を実行したら、生成された配列のデフォルト値でハッシュテーブル配列
+(@code{b}はまだ配列でもリストでも行列でもありません --
+もしこれらの１つなら、@code{x+1}は、art-q配列やリスト、行列の有効な添字ではないので
+、エラーが起こります。)
+(キーとしても知られている)インデックスは、任意のオブジェクトを取り得ます。
+一度の１つのキーだけを取ります((@code{b[x+1,u]:y}は@code{u}を無視します。)。
+参照は、@code{b[x+1] ==> y^2}によってされます。
+もちろん、キーは、例えば、
+@code{b[[x+1,u]]:y}が有効なように
+リストを取り得ます。
+これは古いMaximaハッシュ配列と非互換ですが、コンシングを保ちます。
+@end enumerate
+
+配列をシンボルの値として記憶することの利点は、
+関数のローカル変数についての普通の慣例が配列にも適用することです。
+ハッシュテーブルタイプは、
+Maximaハッシャの古いタイプよりも
+少ないコンシングを使い、もっと効率的です。
+翻訳され、コンパイルされたコードに関する一貫した振る舞いを得るためには、
+@code{translate_fast_arrays}を@code{true}に設定してください。
+
+@opencatbox
+@category{Arrays} @category{Global flags}
+@closecatbox
+@end defvr

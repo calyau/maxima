@@ -1,0 +1,271 @@
+@c end concepts Affine
+@menu
+* Introduction to Affine::
+* Functions and Variables for Affine::
+@end menu
+
+@node Introduction to Affine, Functions and Variables for Affine, Affine, Affine
+@section Introduction to Affine
+
+@code{affine}は多項式の群を扱うパッケージです。
+
+@opencatbox
+@category{Polynomials} @category{Groebner bases} @category{Share packages} @category{Package affine}
+@closecatbox
+
+
+@node Functions and Variables for Affine,  , Introduction to Affine, Affine
+@section Functions and Variables for Affine
+
+@deffn {関数} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+変数@var{x_1}, ..., @var{x_n}に関する連立線形方程式@var{expr_1}, ..., @var{expr_m}
+を解きます。
+@var{expr_i}それぞれは、等式か一般式を取り得ます;
+もし一般式として与えられたら、
+形式@code{@var{expr_i} = 0}の等式として扱われます。
+
+戻り値は、
+形式@code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]}
+の等式のリストです。
+ここで、@var{a_1}, ..., @var{a_n}はすべて@var{x_1}, ..., @var{x_n}を含みません。
+
+@code{fast_linsolve}は、
+粗な方程式系に対して@code{linsolve}より速いです。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+等式@var{expr_1}, ..., @var{expr_m}のグレブナー基底を返します。
+等式に関係する他の関数を整理するためには、
+その後、関数@code{polysimp}を使うことができます。
+
+@example
+grobner_basis ([3*x^2+1, y*x])$
+
+polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
+@end example
+
+@code{polysimp(f)}は、
+@var{f}が@var{expr_1}, ..., @var{expr_m}によって生成されたイデアルに含まれるときだけ、
+すなわち、@var{f}が@var{expr_1}, ..., @var{expr_m}の要素の多項式結合の時だけ、
+0をもたらします。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION IN A SERIOUS WAY
+@deffn {関数} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {関数} set_up_dot_simplifications (@var{eqns})
+The @var{eqns}は、非可換変数を含む多項式方程式です
+@code{current_variables}の値は、次数を計算するために使われる変数のリストです。
+手続きが終了するためには、方程式は斉次でなければいけません。
+
+もし
+@var{f}の次数上の@code{dot_simplifications}に関する重複整理をチェックしたら、
+以下は真です:
+@var{f}が方程式によって生成されたイデアルに含まれる時だけ、
+すなわち、@var{f}が方程式の要素の多項式結合の時だけ、
+@code{dotsimp (@var{f})}は、0をもたらします。
+
+次数は@code{nc_degree}で返されるものです。
+これは、さらに、個々の変数の重みに影響されます。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+重み
+@var{w_1}, ..., @var{w_n}
+それぞれを@var{x_1}, ..., @var{x_n}に割り当てます。
+これらは、@code{nc_degree}を計算する時に使われる重みです。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} nc_degree (@var{p})
+非可換多項式@var{p}の次数を返します。
+@code{declare_weights}を参照してください。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
+@deffn {関数} dotsimp (@var{f})
+@var{f}が方程式によって生成されたイデアルに含まれる時だけ、
+すなわち、@var{f}が方程式の要素の多項式結合の時だけ、
+0を返します。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+もし@code{set_up_dot_simplifications}が以前に実行されていたら、
+与えられた次数@var{n}での変数@var{x_1}, ..., @var{x_n}に関する中心多項式
+を見つけます。
+
+例えば:
+@example
+set_up_dot_simplifications ([y.x + x.y], 3);
+fast_central_elements ([x, y], 2);
+[y.y, x.x];
+@end example
+
+@code{load(affine)} loads this function.
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@c THIS IS NOT AT ALL CLEAR
+@deffn {関数} check_overlaps (@var{n}, @var{add_to_simps})
+次数@var{n}までの重複をチェックします。
+すなわち、@code{dotsimp}が正しく機能するように、
+それぞれの次数で十分な整理規則を持つことを確認します。
+もしあらかじめ単項式の空間次元が何か知っているなら、
+このプロセスは、スピードアップできます。
+もし有限グローバル次元なら、
+@code{hilbert}が使われるべきです。
+もし単項式次元を知らないなら、
+@code{rank_function}を指定しないでください。
+オプションの三番目の引数@code{reset}は、
+@code{false}は、物事の再設定についてわざわざ問い合わせないように言います。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+次数@var{n}の変数@var{x_1}, ..., @var{x_n}に関する現在のドット整理に関係した
+独立な単項式のリストを返します。
+
+@code{load(affine)} loads this function.
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} monomial_dimensions (@var{n})
+カレント代数に関する次数@var{n}までのヒルベルト級数を計算します。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+
+非可換単項式@var{m_1}, ..., @var{m_n}の
+非可換多項式@var{p_1}, ..., @var{p_n}
+の係数のリストを作ります。
+係数はスカラーでなければいけません。
+単項式のリストを組み立てるには、@code{list_nc_monomials}を使ってください。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@deffn {関数} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {関数} list_nc_monomials (@var{p})
+
+多項式@var{p}または多項式のリスト@var{p_1}, ..., @var{p_n}
+の中に現れる非可換単項式のリストを返します。
+
+@code{load(affine)}はこの関数をロードします。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+@end deffn
+
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun pcoeff (poly monom [variables-to-exclude-from-cof (list-variables monom)])
+@c
+@c This function is called from Lisp level, and uses internal poly format.
+@c @example
+@c
+@c CL-MAXIMA>>(setq me (st-rat #$x^2*u+y+1$))
+@c (#:Y 1 1 0 (#:X 2 (#:U 1 1) 0 1))
+@c
+@c CL-MAXIMA>>(pcoeff me (st-rat #$x^2$))
+@c (#:U 1 1)
+@c @end example
+@c @noindent
+@c
+@c Rule: if a variable appears in monom it must be to the exact power,
+@c and if it is in variables to exclude it may not appear unless it was
+@c in monom to the exact power.  (pcoeff pol 1 ..) will exclude variables
+@c like substituting them to be zero.
+@c
+@c @end defun
+
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun new-disrep (poly)
+@c
+@c From Lisp this returns the general Maxima format for an arg which is
+@c in st-rat form:
+@c
+@c @example
+@c (displa(new-disrep (setq me (st-rat #$x^2*u+y+1$))))
+@c
+@c        2
+@c y + u x  + 1
+@c @end example
+@c
+@c @end defun
+
+@defvr {オプション変数} all_dotsimp_denoms
+デフォルト値: @code{false}
+
+@code{all_dotsimp_denoms}がリストの時、
+@code{dotsimp}が出会う分母がリストに追加されます。
+@code{all_dotsimp_denoms}は、
+@code{dotsimp}をコールする前に
+空のリスト@code{[]}に初期化されるかもしれません。
+
+デフォルトでは、@code{dotsimp}は分母を集めません。
+
+@opencatbox
+@category{Package affine}
+@closecatbox
+
+@end defvr
+
+
+
