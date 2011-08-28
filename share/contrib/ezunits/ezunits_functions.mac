@@ -494,7 +494,7 @@ simp : true;
  */
 
 declare_unit_conversion (degree = %pi/180);
-matchdeclare (uu, lambda ([e], unitp(e) and units(e) = 'degree));
+matchdeclare (uu, lambda ([e], unitp(e) and dimensions(e) = 1));
 map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot]);
 
 /* Subscript applied to "`" expression => exchange "`" with subscript
