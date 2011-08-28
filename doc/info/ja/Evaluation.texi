@@ -1,0 +1,827 @@
+@menu
+* Functions and Variables for Evaluation::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Evaluation,  , Evaluation, Evaluation
+@section Functions and Variables for Evaluation
+@c -----------------------------------------------------------------------------
+
+@c NEEDS EXAMPLES
+@c THIS ITEM IS VERY IMPORTANT !!
+
+@c -----------------------------------------------------------------------------
+@anchor{quote}
+@deffn {演算子} '
+@ifinfo
+@fnindex クォート演算子
+@end ifinfo
+
+シングルクォート演算子@code{'}は評価を抑制します。
+
+シンボルにシングルクォートを用いると、シンボルが評価されません。
+
+関数コールにシングルクォートを用いると、
+関数の引数は（抑制されない限り）評価されますが、関数コールは評価されません。結果は、関数コールの名詞形です。
+
+括弧でくくられた式にシングルクォートを用いると、
+式の中のすべてのシンボルと関数コールは評価されません。
+@c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
+例えば、@code{'(f(x))}は、式@code{f(x)}を評価しないことを意味します。
+@code{'f(x)}（@code{f(x)}ではなく@code{f}へ適用されたシングルクォート）は@code{[x]}に適用された@code{f}の名詞形を返します。
+
+シングルクォートは式整理を抑制しません。
+
+グローバルフラグ @mref{noundisp}が @code{true}の時、名詞はシングルクォート付きで表示されます。
+このスイッチは関数定義を表示するときには、常に@code{true}です。
+
+クォートクォート演算子 @mxref{quote-quote, ''}と @mref{nouns}も参照ください。
+
+例:
+
+シンボルにシングルクォートを用いると、シンボルが評価されません。
+
+@c ===beg===
+@c aa: 1024;
+@c aa^2;
+@c 'aa^2;
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) aa^2;
+(%o2)                        1048576
+(%i3) 'aa^2;
+                                 2
+(%o3)                          aa
+(%i4) ''%;
+(%o4)                        1048576
+@end example
+
+関数コールにシングルクォートを用いると、関数の引数は評価されますが、関数コールが評価されません。
+結果は、関数コールの名詞形です。
+
+@c ===beg===
+@c x0: 5;
+@c x1: 7;
+@c integrate (x^2, x, x0, x1);
+@c 'integrate (x^2, x, x0, x1);
+@c %, nouns;
+@c ===end===
+@example
+(%i1) x0: 5;
+(%o1)                           5
+(%i2) x1: 7;
+(%o2)                           7
+(%i3) integrate (x^2, x, x0, x1);
+                               218
+(%o3)                          ---
+                                3
+(%i4) 'integrate (x^2, x, x0, x1);
+                             7
+                            /
+                            [   2
+(%o4)                       I  x  dx
+                            ]
+                            /
+                             5
+(%i5) %, nouns;
+                               218
+(%o5)                          ---
+                                3
+@end example
+
+括弧でくくられた式にシングルクォートを用いると、式の中のすべてのシンボルと関数コールは評価されません。
+
+@c ===beg===
+@c aa: 1024;
+@c bb: 19;
+@c sqrt(aa) + bb;
+@c '(sqrt(aa) + bb);
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) bb: 19;
+(%o2)                          19
+(%i3) sqrt(aa) + bb;
+(%o3)                          51
+(%i4) '(sqrt(aa) + bb);
+(%o4)                     bb + sqrt(aa)
+(%i5) ''%;
+(%o5)                          51
+@end example
+
+シングルクォートは式整理を抑制しません。
+
+@c ===beg===
+@c sin (17 * %pi) + cos (17 * %pi);
+@c '(sin (17 * %pi) + cos (17 * %pi));
+@c ===end===
+@example
+(%i1) sin (17 * %pi) + cos (17 * %pi);
+(%o1)                          - 1
+(%i2) '(sin (17 * %pi) + cos (17 * %pi));
+(%o2)                          - 1
+@end example
+
+Maximaは組み込み数学関数による浮動小数点演算を整理とみなします。
+
+@c ===beg===
+@c sin(1.0);
+@c '(sin(1.0));
+@c ===end===
+@example
+(%i1) sin(1.0);
+(%o1)                          .8414709848078965
+(%i2) '(sin(1.0));
+(%o2)                          .8414709848078965
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Operators}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{quote-quote}
+@deffn {演算子} ''
+@ifinfo
+@fnindex クォートクォート演算子
+@end ifinfo
+クォートクォート演算子@code{'@w{}'}(シングルクォートマーク２つ）は、入力式の中の評価を部分修正します。
+
+一般式@var{expr}にクォートクォートを用いると、入力式の中の@var{expr}に@var{expr}の値を代入します。
+
+式の演算子にクォートクォートを用いると、（もし動詞でないなら）演算子は名詞から動詞に変わります。
+
+クォートクォート演算子は入力パーサが適用します;
+クォートクォート演算子はパースされた入力式の一部としては格納されません。
+クォートクォート演算子は、パースされるといつもすぐに適用され、クォートできません。
+このように、関数定義やラムダ式、シングルクォート@code{'}でクォートされた式の中のように通常評価が抑制される時も、
+クォートクォートがあると評価を実行します。
+
+@mref{batch}や@mref{load}はクォートクォートを認識します。
+
+シングルクォート演算子 @mxref{quote, '}と @mref{nouns}も参照ください。
+
+例:
+
+一般式@var{expr}にクォートクォートを用いると、入力式の中の@var{expr}に@var{expr}の値を代入します。
+
+@c ===beg===
+@c expand ((a + b)^3);
+@c [_, ''_];
+@c [%i1, ''%i1];
+@c [aa : cc, bb : dd, cc : 17, dd : 29];
+@c foo_1 (x) := aa - bb * x;
+@c foo_1 (10);
+@c ''%;
+@c ''(foo_1 (10));
+@c foo_2 (x) := ''aa - ''bb * x;
+@c foo_2 (10);
+@c [x0 : x1, x1 : x2, x2 : x3];
+@c x0;
+@c ''x0;
+@c '' ''x0;
+@c ===end===
+@example
+(%i1) expand ((a + b)^3);
+                     3        2      2      3
+(%o1)               b  + 3 a b  + 3 a  b + a
+(%i2) [_, ''_];
+                         3    3        2      2      3
+(%o2)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i3) [%i1, ''%i1];
+                         3    3        2      2      3
+(%o3)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i4) [aa : cc, bb : dd, cc : 17, dd : 29];
+(%o4)                   [cc, dd, 17, 29]
+(%i5) foo_1 (x) := aa - bb * x;
+(%o5)                 foo_1(x) := aa - bb x
+(%i6) foo_1 (10);
+(%o6)                      cc - 10 dd
+(%i7) ''%;
+(%o7)                         - 273
+(%i8) ''(foo_1 (10));
+(%o8)                         - 273
+(%i9) foo_2 (x) := ''aa - ''bb * x;
+(%o9)                 foo_2(x) := cc - dd x
+(%i10) foo_2 (10);
+(%o10)                        - 273
+(%i11) [x0 : x1, x1 : x2, x2 : x3];
+(%o11)                    [x1, x2, x3]
+(%i12) x0;
+(%o12)                         x1
+(%i13) ''x0;
+(%o13)                         x2
+(%i14) '' ''x0;
+(%o14)                         x3
+@end example
+
+式の演算子にクォートクォートを用いると、（もし動詞でないなら）演算子は名詞から動詞に変わります。
+
+@c ===beg==
+@c declare (foo, noun);
+@c foo (x) := x - 1729;
+@c foo (100);
+@c ''foo (100);
+@c ===end==
+@example
+(%i1) declare (foo, noun);
+(%o1)                         done
+(%i2) foo (x) := x - 1729;
+(%o2)                 ''foo(x) := x - 1729
+(%i3) foo (100);
+(%o3)                       foo(100)
+(%i4) ''foo (100);
+(%o4)                        - 1629
+@end example
+
+クォートクォート演算子は入力パーサが適用します；
+クォートクォート演算子はパースされた入力式の一部としては格納されません。
+
+@c ===beg===
+@c [aa : bb, cc : dd, bb : 1234, dd : 5678];
+@c aa + cc;
+@c display (_, op (_), args (_));
+@c ''(aa + cc);
+@c display (_, op (_), args (_));
+@c ===end===
+@example
+(%i1) [aa : bb, cc : dd, bb : 1234, dd : 5678];
+(%o1)                 [bb, dd, 1234, 5678]
+(%i2) aa + cc;
+(%o2)                        dd + bb
+(%i3) display (_, op (_), args (_));
+                           _ = cc + aa
+
+                         op(cc + aa) = +
+
+                    args(cc + aa) = [cc, aa]
+
+(%o3)                         done
+(%i4) ''(aa + cc);
+(%o4)                         6912
+(%i5) display (_, op (_), args (_));
+                           _ = dd + bb
+
+                         op(dd + bb) = +
+
+                    args(dd + bb) = [dd, bb]
+
+(%o5)                         done
+@end example
+
+関数定義やラムダ式、シングルクォート@code{'}でクォートされた式の中のように
+通常評価が抑制される時も、
+クォートクォートがあると評価を実行します。
+
+@c ===beg===
+@c foo_1a (x) := ''(integrate (log (x), x));
+@c foo_1b (x) := integrate (log (x), x);
+@c dispfun (foo_1a, foo_1b);
+@c integrate (log (x), x);
+@c foo_2a (x) := ''%;
+@c foo_2b (x) := %;
+@c dispfun (foo_2a, foo_2b);
+@c F : lambda ([u], diff (sin (u), u));
+@c G : lambda ([u], ''(diff (sin (u), u)));
+@c '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+@c '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+@c ===end===
+@example
+(%i1) foo_1a (x) := ''(integrate (log (x), x));
+(%o1)               foo_1a(x) := x log(x) - x
+(%i2) foo_1b (x) := integrate (log (x), x);
+(%o2)           foo_1b(x) := integrate(log(x), x)
+(%i3) dispfun (foo_1a, foo_1b);
+(%t3)               foo_1a(x) := x log(x) - x
+
+(%t4)           foo_1b(x) := integrate(log(x), x)
+
+(%o4)                      [%t3, %t4]
+(%i5) integrate (log (x), x);
+(%o5)                     x log(x) - x
+(%i6) foo_2a (x) := ''%;
+(%o6)               foo_2a(x) := x log(x) - x
+(%i7) foo_2b (x) := %;
+(%o7)                    foo_2b(x) := %
+(%i8) dispfun (foo_2a, foo_2b);
+(%t8)               foo_2a(x) := x log(x) - x
+
+(%t9)                    foo_2b(x) := %
+
+(%o9)                      [%t7, %t8]
+(%i10) F : lambda ([u], diff (sin (u), u));
+(%o10)             lambda([u], diff(sin(u), u))
+(%i11) G : lambda ([u], ''(diff (sin (u), u)));
+(%o11)                  lambda([u], cos(u))
+(%i12) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+(%o12)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
+                    k                  k
+(%i13) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+(%o13)             b  + a  + b  + a  + b  + a
+                    3    3    2    2    1    1
+@end example
+
+@opencatbox
+@category{Evaluation} @category{Operators}
+@closecatbox
+@end deffn
+
+@c end concepts Command Line
+@node Functions and Variables for Command Line,  , Introduction to Command Line, Command Line
+@section Functions and Variables for Command Line
+
+@c NEEDS WORK, ESPECIALLY EXAMPLES
+@deffn {関数} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+(利用者もしくはシステム)関数や変数、配列等に対して別名を与えます。
+任意の偶数個の引数を取ります。
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+@c VERY IMPORTANT !!
+
+@c -----------------------------------------------------------------------------
+@anchor{ev}
+@deffn {関数} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+
+引数@var{arg_1}, @dots{}, @var{arg_n}で指定された環境下で
+式@var{expr}を評価します。
+引数は、スイッチ（ブーリアンフラグ）だったり、割り当てだったり、
+等式だったり、関数だったりします。
+@var{ev}は評価の結果（別の式）を返します。
+
+評価は以下のようにステップを追って実行されます。
+
+@enumerate
+@item
+最初に、以下の任意のもしくはすべての引数をスキャンして環境を準備します。
+
+@itemize @bullet
+@item
+@mref{simp}を引数に指定すると@var{expr}を整理します。@code{false}なら整理を抑制するスイッチ@code{simp}の設定に関わらずです。
+@item
+@mref{noeval}を引数に指定すると@code{ev}の評価フェイズを抑制します。
+（以下のステップ(4)を参照してください。）
+これは、他のスイッチとの連携時や、@var{expr}を再評価せずに再整理をさせる時に役に立ちます。
+@item
+@mref{nouns}を引数に指定すると@var{expr}の中の名詞形式
+（典型的には、@code{'integrate}や@code{'diff}のような未評価関数）を評価します。
+@item
+@mref{expand}を引数に指定すると展開します。
+@item
+@code{expand (@var{m}, @var{n})}を引数に指定すると、
+@mref{maxposex}と@mref{maxnegex}の値をそれぞれ@var{m}と@var{n}に設定して、展開します。
+@item
+@mref{detout}を引数に指定すると、@var{expr}の中で計算されるどんな逆行列も、逆行列の外側に行列式を保つようにします。
+@item
+@mref{diff}を引数に指定すると@var{expr}の中のすべての微分を実行します。
+@item
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)}を引数に指定すると指定された変数に関する微分のみを実行します。
+@item
+@code{risch}を引数に指定すると
+@var{expr}の中の積分をRischアルゴリズムを使って評価します。
+@mref{risch}を参照してください。
+特殊なシンボル@mref{nouns}を使った時には標準の積分ルーチンが呼び出されます。
+@item
+@mref{float}を引数に指定すると非整数有理数を浮動小数点に変換します。
+@item
+@mref{numer}を引数に指定すると数値引数が指定された（指数関数を含む）いくつかの数学関数を浮動小数点に評価します。
+また、@var{expr}の中の numerval宣言された変数は、宣言された値に置き換えられます。
+また、@mref{float}スイッチをオンにします。
+@item
+@mref{pred}を引数に指定すると述語（@code{true}もしくは@code{false}に評価される式）を評価します。
+@item
+@mref{eval}を引数に指定すると@var{expr}の特別な後評価をします。（ステップ(5)を参照。）
+@code{eval}は複数回起こるかもしれません。@code{eval}のそれぞれのインスタンスのために、式は再評価されます。
+@item
+評価フラグ（@mref{evflag}を参照）として宣言されたアトム@code{A}を引数に指定すると、
+@var{expr}の評価の最中、@code{A}が@code{true}にバインドされます。
+@item
+@code{V: expression}（もしくは代わりに@code{V=expression}）を引数に指定すると、
+@var{expr}の評価の最中、@code{V}が@code{expression}の値にバインドされます。
+もし@code{V}がMaximaオプションなら、@var{expr}の評価の最中、@code{V}の値に@code{expression}が使われることに注意してください。
+もし@code{ev}の複数の引数がこのタイプの場合、並列してバインドされます。
+もし@code{V}が非アトムの式なら、バインドではなく、代入が実行されます。
+@item
+関数名 @code{F}が評価関数(@mref{evfun}参照)として宣言されている場合、
+@code{F}を引数に指定すると @code{F}が @var{expr}に適用されます。
+@item
+他のどんな関数名（例えば、@mref{sum})でも引数に指定すると、
+@var{expr}の中にそれらの名前が現れた時それらが動詞であるかのように評価します。
+@item
+加えて、exprの中で出現する関数（@code{F(x)}としましょう）を、
+@var{expr}の今回の評価の目的のため、
+@code{F(X) := expression}を@code{ev}の引数に与えて、局所的に定義することができます。
+@item
+もし以上で言及しなかったアトム、添字付き変数、または、添字付き式が引数として与えられたら、
+それを評価して、
+もしその結果が等式もしくは割り当てであったら、示されたバインドもしくは代入を実行します。
+もしその結果がリストなら、リストのメンバが、 @code{ev}に与えられた追加の引数であるかのように扱います。
+これにより、 @mref{solve}が返すような、与えられた等式のリスト
+（例えば、 @code{[X=1,Y=A**2]})や
+等式の名前のリスト（例えば、 @code{[%t1, %t2]}。ここで @code{%t1}, @code{%t2}は等式）が使えます。
+@end itemize
+
+@code{ev}の引数は、代入等式と評価関数以外はどんな順序で与えてもかまいません。
+代入等式は左から右へ順に扱われ、
+評価関数は、例えば、 @code{ev (@var{expr}, ratsimp, realpart)}は
+@code{realpart (ratsimp (@var{expr}))}と扱われるように、合成されます。
+
+@mref{simp}, @mref{numer}, @mref{float}スイッチは、ブロックの中でローカルにも、
+またMaximaの中でグローバルにも設定でき、その場合，リセットされるまで効果を保ちます。
+
+@code{numer}と@code{float}スイッチがともに@code{true}でない場合、
+もし@var{expr}が標準有理式(CRE)なら、@code{ev}が返す式もまたCREです。
+
+@item
+step (1)の最中に、引数の中のもしくは引数の値の、等式の左辺に現れる添字なしの変数のリストを作ります。
+@var{expr}の中の変数（添字なし変数や配列関数に関連づけられていない添字付き変数）は、
+先のリストに現れるものを除いて、グローバルな値に置き換えられます。
+普通、 @var{expr}は、ただのラベルだったり
+(以下の例の @code{%i2}のように） @code{%}だったりするので、
+その場合，このステップは単にラベルされた式を取り出し、
+@code{ev}はその式に対して機能することになります。
+
+@item
+引数で指定されたどんな代入文もすぐ実行されます。
+
+@item
+（引数で@mref{noeval}が指定されていない限り）結果の式は再評価され、
+引数に従って整理されます。
+@var{expr}の中のどんな関数コールもその中の変数が評価された後実行されること、
+@code{ev(F(x))}は @code{F(ev(x))}のように振る舞うことに注意してください。
+
+@item
+引数の中の@mref{eval}のそれぞれのインスタンスのために、step (3)(4)を繰り返します。
+@end enumerate
+
+例:
+
+@c ===beg===
+@c sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
+@c ev (%, numer, expand, diff, x=2, y=1);
+@c ===end===
+@example
+(%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
+                                     d                    2
+(%o1)              cos(y) + sin(x) + -- (sin(w)) + (w + 1)
+                                     dw
+(%i2) ev (%, numer, expand, diff, x=2, y=1);
+                             2
+(%o2)              cos(w) + w  + 2 w + cos(1) + 2.449599732693821
+@end example
+
+@code{ev}のために、代わりのトップレベルの文法が提供されています。
+それによって、@code{ev()}なしに引数をタイプして入力するだけでよくなります。
+すなわち、単に以下のように書けます。
+
+@example
+@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@end example
+
+これは、例えば、関数やブロックの中など、他の式の一部としては許されません。
+
+以下の例では並列のバインドプロセスに注意してください。
+
+@example
+(%i3) programmode: false;
+(%o3)                                false
+(%i4) x+y, x: a+y, y: 2;
+(%o4)                              y + a + 2
+(%i5) 2*x - 3*y = 3$
+(%i6) -3*x + 2*y = -4$
+(%i7) solve ([%o5, %o6]);
+Solution
+
+                                          1
+(%t7)                               y = - -
+                                          5
+
+                                         6
+(%t8)                                x = -
+                                         5
+(%o8)                            [[%t7, %t8]]
+(%i8) %o6, %o8;
+(%o8)                              - 4 = - 4
+(%i9) x + 1/x > gamma (1/2);
+                                   1
+(%o9)                          x + - > sqrt(%pi)
+                                   x
+(%i10) %, numer, x=1/2;
+(%o10)                      2.5 > 1.772453850905516
+(%i11) %, pred;
+(%o11)                               true
+@end example
+
+@opencatbox
+@category{Evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{eval}
+@defvr {特殊シンボル} eval
+
+@code{ev (@var{expr})}のコールの引数として、
+@code{eval}は
+@var{expr}の追加の評価をもたらします。
+@mref{ev}を参照してください。
+
+例:
+
+@c ===beg===
+@c [a:b,b:c,c:d,d:e];
+@c a;
+@c ev(a);
+@c ev(a),eval;
+@c a,eval,eval;
+@c ===end===
+@example
+(%i1) [a:b,b:c,c:d,d:e];
+(%o1)                            [b, c, d, e]
+(%i2) a;
+(%o2)                                  b
+(%i3) ev(a);
+(%o3)                                  c
+(%i4) ev(a),eval;
+(%o4)                                  e
+(%i5) a,eval,eval;
+(%o5)                                  e
+@end example
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{evflag}
+@defvr {プロパティ} evflag
+
+シンボル@code{x}が@code{evflag}プロパティを持つ時、
+式@code{ev(@var{expr}, @var{x})}や対話プロンプトでの@code{@var{expr}, @var{x}}は、
+@code{ev(@var{expr}, @var{x} = true)}と同値です。
+すなわち、@var{expr}が評価される間、@var{x}は@code{true}にバインドされます。
+
+式@code{declare(@var{x}, evflag)}は、変数@var{x}に@code{evflag}プロパティを与えます。
+
+デフォルトで@code{evflag}プロパティを持つフラグは以下の通りです:
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
+@c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
+
+@verbatim
+   algebraic          cauchysum       demoivre
+   dotscrules         %emode          %enumer
+   exponentialize     exptisolate     factorflag
+   float              halfangles      infeval
+   isolate_wrt_times  keepfloat       letrat
+   listarith          logabs          logarc 
+   logexpand          lognegint       lognumer 
+   m1pbranch          numer_pbranch   programmode 
+   radexpand          ratalgdenom     ratfac 
+   ratmx              ratsimpexpons   simp 
+   simpproduct        simpsum         sumexpand
+   trigexpand
+@end verbatim
+
+例:
+
+@c ===beg===
+@c sin (1/2);
+@c sin (1/2), float;
+@c sin (1/2), float=true;
+@c simp : false;
+@c 1 + 1;
+@c 1 + 1, simp;
+@c simp : true;
+@c sum (1/k^2, k, 1, inf);
+@c sum (1/k^2, k, 1, inf), simpsum;
+@c declare (aa, evflag);
+@c if aa = true then YES else NO;
+@c if aa = true then YES else NO, aa;
+@c ===end===
+@example
+(%i1) sin (1/2);
+                                 1
+(%o1)                        sin(-)
+                                 2
+(%i2) sin (1/2), float;
+(%o2)                   0.479425538604203
+(%i3) sin (1/2), float=true;
+(%o3)                   0.479425538604203
+(%i4) simp : false;
+(%o4)                         false
+(%i5) 1 + 1;
+(%o5)                         1 + 1
+(%i6) 1 + 1, simp;
+(%o6)                           2
+(%i7) simp : true;
+(%o7)                         true
+(%i8) sum (1/k^2, k, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o8)                        >    --
+                            /      2
+                            ====  k
+                            k = 1
+(%i9) sum (1/k^2, k, 1, inf), simpsum;
+                                 2
+                              %pi
+(%o9)                         ----
+                               6
+(%i10) declare (aa, evflag);
+(%o10)                        done
+(%i11) if aa = true then YES else NO;
+(%o11)                         NO
+(%i12) if aa = true then YES else NO, aa;
+(%o12)                         YES
+@end example
+
+@opencatbox
+@category{Evaluation flags} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{evfun}
+@defvr {プロパティ} evfun
+
+関数@var{F}が@code{evfun}プロパティを持つ時、
+式@code{ev(@var{expr}, @var{F})}や（対話プロンプトでの）@code{@var{expr}, @var{F}}は、
+@code{@var{F}(ev(@var{expr}))}と同値です。
+
+もし２つ以上の@code{evfun}関数@var{F}, @var{G}などが指定されたなら、関数は指定された順に適用されます。
+
+式@code{declare(@var{F}, evfun)}は、関数@var{F}に@code{evfun}プロパティを与えます。
+
+デフォルトで@code{evfun}プロパティを持つ関数は以下の通りです:
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
+@c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
+
+@verbatim
+   bfloat          factor       fullratsimp
+   logcontract     polarform    radcan
+   ratexpand       ratsimp      rectform
+   rootscontract   trigexpand   trigreduce
+@end verbatim
+
+例:
+
+@c ===beg===
+@c x^3 - 1;
+@c x^3 - 1, factor;
+@c factor (x^3 - 1);
+@c cos(4 * x) / sin(x)^4;
+@c cos(4 * x) / sin(x)^4, trigexpand;
+@c cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+@c ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+@c declare ([F, G], evfun);
+@c (aa : bb, bb : cc, cc : dd);
+@c aa;
+@c aa, F;
+@c F (aa);
+@c F (ev (aa));
+@c aa, F, G;
+@c G (F (ev (aa)));
+@c ===end===
+@example
+(%i1) x^3 - 1;
+                              3
+(%o1)                        x  - 1
+(%i2) x^3 - 1, factor;
+                                2
+(%o2)                 (x - 1) (x  + x + 1)
+(%i3) factor (x^3 - 1);
+                                2
+(%o3)                 (x - 1) (x  + x + 1)
+(%i4) cos(4 * x) / sin(x)^4;
+@group
+                            cos(4 x)
+(%o4)                       --------
+                               4
+                            sin (x)
+@end group
+(%i5) cos(4 * x) / sin(x)^4, trigexpand;
+                 4           2       2         4
+              sin (x) - 6 cos (x) sin (x) + cos (x)
+(%o5)         -------------------------------------
+                                4
+                             sin (x)
+(%i6) cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+                           2         4
+                      6 cos (x)   cos (x)
+(%o6)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i7) ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+                           2         4
+                      6 cos (x)   cos (x)
+(%o7)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i8) declare ([F, G], evfun);
+(%o8)                         done
+(%i9) (aa : bb, bb : cc, cc : dd);
+(%o9)                          dd
+(%i10) aa;
+(%o10)                         bb
+(%i11) aa, F;
+(%o11)                        F(cc)
+(%i12) F (aa);
+(%o12)                        F(bb)
+(%i13) F (ev (aa));
+(%o13)                        F(cc)
+(%i14) aa, F, G;
+(%o14)                      G(F(cc))
+(%i15) G (F (ev (aa)));
+(%o15)                      G(F(cc))
+@end example
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c NEEDS WORK
+
+@c -----------------------------------------------------------------------------
+@anchor{infeval}
+@defvr {オプション変数} infeval
+
+「無限評価」モードにします。@code{ev}は、値が変わらなくなるまで式を繰り返し評価します。
+このモードで変数(@code{X}とします）が評価されることを避けるには、単に@code{X='X}を@code{ev}の引数として含めます。
+@code{ev (X, X=X+1, infeval)}のような式は、もちろん、無限ループを引き起こします。
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c NEED TO MENTION THIS IS AN evflag
+
+@c -----------------------------------------------------------------------------
+@anchor{noeval}
+@defvr {特殊シンボル} noeval
+
+@code{noeval}は、@mref{ev}の評価フェイズを抑制します。
+これは、他のスイッチとの関連や、
+式を再評価することなしに再整理するのに役に立ちます。
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{nouns}
+@defvr {特殊シンボル} nouns
+
+@code{nouns}は@mref{evflag}の１つです。
+@mref{ev}コマンドのオプションとして使われる時、
+@code{nouns}は、式の中に現れる「名詞」形すべてを「動詞」に@mref{ev}します。すなわち、それらを評価します。
+@mref{noun}, @mref{nounify}, @code{verb}, @mref{verbify}も参照してください。
+
+@opencatbox
+@category{Evaluation flags} @category{Nouns and verbs}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{pred}
+@defvr {特殊シンボル} pred
+
+@code{ev (@var{expr})}のコールでの引数として、
+@code{pred}は、
+述語論理(@code{true}または@code{false}に評価される式)を評価するようにします。
+@mref{ev}を参照してください。
+
+例:
+
+@c ===beg===
+@c 1<2;
+@c 1<2,pred;
+@c ===end===
+@example
+(%i1) 1<2;
+(%o1)                                1 < 2
+(%i2) 1<2,pred;
+(%o2)                                true
+@end example
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr

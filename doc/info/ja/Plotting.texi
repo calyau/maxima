@@ -1,0 +1,1593 @@
+@menu
+* Introduction to Plotting::
+* Plotting Formats::
+* Functions and Variables for Plotting::
+* Plotting Options::
+* Gnuplot Options::
+* Gnuplot_pipes Format Functions::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Plotting, Plotting Formats, Plotting, Plotting
+@section Introduction to Plotting
+@c -----------------------------------------------------------------------------
+
+Maximaは、プロットするために、外部のプロットパッケージを使います
+（以下のPlottingフォーマットを参照してください）。
+プロット関数は、点一式を計算し、コマンド一式と一緒にプロットパッケージに渡します。
+その情報は、パイプを通したり、
+データが保存されたファイル名と共にプログラムをコールすることで、
+外部のプログラムに渡されます。
+データファイルは名前@code{maxout.interface}を与えられます。
+@code{interface}は使われるプロットインターフェース名
+(gnuplot, xmaxima, mgnuplotまたはgnuplot_pipes)です。
+
+@code{maxout.interface}ファイルが使われる場合、
+システム変数@var{maxima_tempdir}で指定されたディレクトリに生成されます。
+場所は変更できます; その変数に、Maximaが新しいファイルを作ることができる有効なディレクトリ
+を示す文字列を割り当てることで。
+
+プロットが生成さられた後でも、
+ファイル@code{maxout.interface}は、
+適切な外部のプログラムで再度実行することができます。
+もしMaximaのプロットコマンドが何かを表示するのに失敗したなら、
+問題の可能性のある元をファイルで調べることができます。
+
+この章で記述されたプロット関数と合わせて、
+パッケージ @code{draw}は他の機能を加えます。
+いくつかのプロットオプションはどちらのプロット文脈でも同じ名前が付けられていますが、
+異なる構文を持つことに注意してください;
+もしこれらのオプションに関係した描画情報をアクセスしたいなら、
+@code{?? opt}とタイプしなければいけません。ここで、@code{opt}はオプション名です。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Plotting Formats, Functions and Variables for Plotting, Introduction to Plotting, Plotting
+@section Plotting Formats
+@c -----------------------------------------------------------------------------
+
+現在、Maximaが使う２つの外部のプロットプログラムがあります:
+GnuplotとXmaximaです。
+これらのプログラムに対して様々な異なるフォーマットがあります。
+それらは、オプション@code{plot_format}で選択することができます。
+(Plotting Options節を参照してください。)
+
+プロットフォーマットは以下の通りです:
+
+@itemize @bullet
+@item
+@strong{gnuplot} (Windowsでのデフォルト)
+
+外部のプログラムgnuplotを起動するのに使われます。
+gnuplotはあなたのシステムにインストールされていなければいけません。
+すべてのプロットコマンドとデータは、ファイル@code{maxout.gnuplot}に保存されます。
+
+@item
+@strong{gnuplot_pipes} (Windows以外のプラットフォームでのデフォルト)
+
+このフォーマットはWindowsプラットフォームでは利用できません。
+@code{gnuplot}フォーマットと似ていますが、
+データがファイル@code{maxout.gnuplot_pipes}に保存される一方、
+コマンドがパイプを通してgnuplotに送られるところが違います。
+gnuplotパイプが関数@code{gnuplot_close()}で閉じられない限り、
+１つのgnuplotプロセスが開き続けて、続きのプロットコマンドは同じプロセスに送られ、
+以前のプロットを置き換えます。
+このフォーマットが使われる時、関数@code{gnuplot_replot}は
+スクリーン上に既に表示されたプロットを変更するのに使うことができます。
+(@code{gnuplot_replot}を参照してください。)
+
+このフォーマットはスクリーンへのプロットするのにだけ使うべきです;
+ファイルへのプロットには@code{gnuplot}フォーマットを使ったほうがいいです。
+
+@item
+値: @code{mgnuplot}
+
+Mgnuplotは、gnuplotのTkベースのラッパーです。
+Maximaディストリビューションに含まれます。
+Mgnuplotはgnuplotの基本的なGUIを提供しますが、gnuplotの素のインターフェースより
+総合的な特長が少ないです。
+Mgnuplotは、gnuplotとTckl/Tkを別途インストールする必要があります。
+
+@item
+@strong{xmaxima}
+
+XmaximaはMaxima用Tcl/Tkグラフィカルインターフェースです。
+これもまた、コンソールや他のグラフィカルインターフェースからMaximaを走らせた時、
+生成されるプロットを表示するのに使うことができます。
+このフォーマットを使うには、xmaximaプログラム―これはMaximaと一緒に配布されます―
+をインストールする必要があります。
+もしMaximaをxmaxima自身から走らせるなら、
+このフォーマットは、MaximaとXmaximaの間の通信に使われているのと同じソケットを通して、
+プロット関数にデータとコマンドを送らせます。
+コンソールや他のインターフェースから使われる時、
+xmaximaプログラムはそのファイルの位置の名前を引数として起動されます。
+
+以前のバージョンでは、このフォーマットは@code{openmath}と呼ばれていました;
+その古い名前はまだ@code{xmaxima}に対する同義語として受け付けられます。
+
+@end itemize
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Plotting, Plotting Options, Plotting Formats, Plotting
+@section Functions and Variables for Plotting
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{contour_plot}
+@deffn {関数} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, @dots{})
+
+@var{expr}の等高線を、領域@var{x_range}、@var{y_range}でプロットします。
+他の引数は、@code{plot3d}と同じように扱われます。
+
+この関数は、プロットフォーマットが@code{gnuplot}か@code{gnuplot_pipes}の時だけ、
+動作します。
+付加パッケージ@code{implicit_plot}も等高線をプロットするのに使われ、
+それは任意のフォーマットで動作します。
+@code{implicit_plot}も参照してください。
+
+例:
+
+@c ===beg===
+@c contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4])$
+@c ===end===
+@example
+(%i1) contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4])$
+@end example
+
+@ifnotinfo
+@image{figures/contour1,8cm}
+@end ifnotinfo
+
+@c ===beg===
+@c F(x, y) := x^3 + y^2;
+@c contour_plot (F, [u, -4, 4], [v, -4, 4])$
+@c ===end===
+@example
+@group
+(%i1) F(x, y) := x^3 + y^2;
+                                   3    2
+(%o1)                  F(x, y) := x  + y
+@end group
+(%i2) contour_plot (F, [u, -4, 4], [v, -4, 4])$
+@end example
+
+@ifnotinfo
+@image{figures/contour2,8cm}
+@end ifnotinfo
+
+@code{plot3d}が受け付ける任意のオプションを足すことができます;
+例えば、オプション@code{legend}にfalseの値を入れると、凡例を取り除きます。
+Gnuplotはデフォルトで3つの高等線を示すように選びます。
+レベルの数を増やすには、カスタムのgnuplot前置きを指定する必要があります;
+
+@c ===beg===
+@c contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
+@c               [legend,false],
+@c               [gnuplot_preamble, "set cntrparam levels 12"])$
+@c ===end===
+@example
+@group
+(%i1) contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
+                    [legend,false],
+                    [gnuplot_preamble, "set cntrparam levels 12"])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/contour3,8cm}
+@end ifnotinfo
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{get_plot_option}
+@deffn {関数} get_plot_option (@var{keyword}, @var{index})
+
+グローバル変数@code{plot_options}に保存されている
+名前@var{keyword}を持つオプションの値を返します。
+添字で1の値はキーワード自身を返します;
+2番の値はキーワードに続く一番目のパラメータを返す、などなど。
+
+@code{plot_options}や@code{set_plot_option}、Plotting Optionの節も参照してください。
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{make_transform}
+@deffn {関数} make_transform ([@var{var1}, @var{var2}, @var{var3}], @var{fx}, @var{fy}, @var{fz})
+
+plot3dのオプション@code{transform_xy}で使われるのに適した関数を返します。
+3つの変数@var{var1}, @var{var2}, @var{var3}は3つのダミー変数名です。
+それらは、plot3dコマンドが与える3変数
+(最初2つの独立変数と、その後それら2つの変数に依存する関数)を表します。
+3つの関数@var{fx}, @var{fy}, @var{fz}は、
+それら3変数にだけ依存しなければいけなく、プロットすべき対応するx, y, z座標を与えます。
+デフォルトで定義された2つの変換があります;
+@code{polar_to_xy}と@code{spherical_to_xyz};
+それら2つの変換に関するドキュメンテーションを参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{polar_to_xy}
+@deffn {システム関数} polar_to_xy
+
+plot3dの@code{transform_xy}オプションに対する値として与えることができます。
+その効果はplot3dの2つの独立変数をz軸からの距離と方位角(極座標)として通訳し、
+それらをxとy座標に変換することです。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{plot2d}
+@deffn  {関数} plot2d (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{})
+@deffnx {関数} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{})
+@deffnx {関数} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
+
+ここで、@var{plot}, @var{plot_1}, @dots{}, @var{plot_n}は式か関数名、もしくは以下のいずれかの形式のリストです:
+
+@code{[discrete, [@var{x1}, ..., @var{xn}], [@var{y1}, ..., @var{yn}]]},
+@code{[discrete, [[@var{x1}, @var{y1}],
+..., [@var{xn}, ..., @var{yn}]]}, 
+または@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}]}.
+
+１つもしくは複数の式を１変数か1パラメータの関数としてプロット表示します。
+
+@code{plot2d}は1つもしくは複数のプロットを2次元に表示します。
+プロットを定義するのに式や関数名を使う時には、
+それらは１変数@var{var}だけに依存すべきであり、
+変数名とその最小値と最大値を提供するために@var{x_range}の使用が必須です;
+@var{x_range}の構文法は以下の通りです:
+
+@code{[@var{variable}, @var{min}, @var{max}]}
+
+プロットを、離散形式やパラメトリック形式で定義することもできます。
+離散形式は既定の座標で表された点の集合をプロットするのに使われます。
+離散プロットは、キーワード@var{discrete}で始まり、
+値についてのリスト1つか2つが続くリストで定義されます。
+もし2つのリストが与えられたら、それらは同じ長さを持たなければいけません;
+1番目のリストはプロットされる点のx座標として、
+2番目のリストはy座標として解釈されます。
+もし@var{discrete}キーワードの後、1つのリストだけ与えられたら、
+リスト上のそれぞれの要素は、点のxとy座標に対応する2つの値を持つリストでなければいけません。
+
+パラメトリックプロットは、
+キーワード@var{parametric}で始まり、
+2つの式か関数名と、パラメータの範囲が続くリストで定義されます。
+パラメータの範囲は、パラメータ名とその最小値、最大値が続くリストでなければいけません:
+
+@code{[@var{param}, @var{min}, @var{max}]}。
+
+@var{param}が@var{min}から@var{max}に増えるにつれ、
+2つの式または関数で与えられる座標の点によって描かれる軌跡をプロットは表示します。
+
+垂直軸の範囲は以下の形式を持つオプション引数です:
+
+@code{[y, @var{min}, @var{max}]}(キーワード@var{y}はいつも垂直軸に使われます)。
+
+もしこのオプションを使ったなら、
+プロットが到達する値と別に、ちょうどオプションの垂直範囲をプロットは表示します。
+もし垂直範囲を指定しなかったなら、プロット点のy座標の最小値と最大値に従って、
+垂直範囲が設定されます。
+
+他のすべてのオプションも、
+キーワードで始まり、1つか複数の値が続くリストでなければいけません。
+@code{plot_options}を参照してください。
+
+もし複数のプロットがプロットされるなら、式のそれぞれを識別するために凡例が書かれます。
+その凡例で使われるラベルは、オプション@var{legend}で与えることができます。
+もしそのオプションが使われないなら、Maximaは式や関数名からラベルを生成します。
+
+@c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
+@strong{例:}
+
+よくある関数のプロット:
+
+@c ===beg===
+@c plot2d (sin(x), [x, -%pi, %pi])$
+@c ===end===
+@example
+(%i1) plot2d (sin(x), [x, -%pi, %pi])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting2,8cm}
+@end ifnotinfo
+
+もし関数の増大が速すぎるなら、yオプションを使って、垂直軸の値を制限する必要があるかもしれません:
+
+@c ===beg===
+@c plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
+@c ===end===
+@example
+@group
+(%i1) plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
+plot2d: some values were clipped.
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting3,8cm}
+@end ifnotinfo
+
+プロットの外観は使うプロットプログラムに依存して異なるかもしれません。
+プロットボックスが使用不可能になっている時、Xmaximaは矢印を使って軸をプロットします:
+
+@c ===beg===
+@c plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], 
+@c                 [box, false], [plot_format, xmaxima])$
+@c ===end===
+@example
+@group
+(%i1) plot2d ( x^2-1, [x, -3, 3], [y, -2, 10],
+                      [box, false], [plot_format, xmaxima])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting1,8cm}
+@end ifnotinfo
+
+対数プロットの例:
+
+@c ===beg===
+@c plot2d (exp(3*s), [s, -2, 2], [logy])$
+@c ===end===
+@example
+(%i11) plot2d (exp(3*s), [s, -2, 2], [logy])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting4,8cm}
+@end ifnotinfo
+
+関数を名前でプロット:
+
+@c ===beg===
+@c F(x) := x^2 $
+@c :lisp (defun |$g| (x) (m* x x x))
+@c H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+@c plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
+@c ===end===
+@example
+(%i1) F(x) := x^2 $
+@group
+(%i2) :lisp (defun |$g| (x) (m* x x x))
+$g
+@end group
+(%i2) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+(%i3) plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting5,8cm}
+@end ifnotinfo
+
+パラメトリックに定義されたバタフライカーブのプロット:
+
+@c ===beg===
+@c r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
+@c plot2d([parametric, r*sin(t), r*cos(t), 
+@c        [t, -8*%pi, 8*%pi], [nticks, 2000]])$
+@c ===end===
+@example
+(%i1) r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
+(%i2) plot2d([parametric, r*sin(t), r*cos(t), 
+             [t, -8*%pi, 8*%pi], [nticks, 2000]])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting6,8cm}
+@end ifnotinfo
+
+7点だけでプロットする時の2回転「円」:
+
+@c ===beg===
+@c plot2d ([parametric, cos(t), sin(t),
+@c         [t, -2*%pi, 2*%pi], [nticks, 8]])$
+@c ===end===
+@example
+@group
+(%i1) plot2d ([parametric, cos(t), sin(t),
+              [t, -2*%pi, 2*%pi], [nticks, 8]])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting7,8cm}
+@end ifnotinfo
+
+円のパラメトリック表現と一緒に、よくある関数のプロット。
+プロットのサイズは、円を丸く、楕円のように変形しないように、
+xとyオプションで調整されています。
+これらの値は、このプロットを生成するのに使われたPostscript端末ではうまく機能します;
+あなたはあなたのスクリーンのために値を調整しなければいけないかもしれません。
+
+@c ===beg===
+@c plot2d([[parametric, cos(t), sin(t),
+@c         [t,0,2*%pi], [nticks, 80]],
+@c         abs(x)], [x,-2,2], [y, -1.5, 1.5])$
+@c ===end===
+@example
+@group
+(%i1) plot2d([[parametric, cos(t), sin(t),
+              [t,0,2*%pi], [nticks, 80]],
+        abs(x)], [x,-2,2], [y, -1.5, 1.5])$
+plot2d: some values were clipped.
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting8,8cm}
+@end ifnotinfo
+
+x座標、y座標を別々に定義した点の離散集合のプロット:
+
+@c ===beg===
+@c plot2d ([discrete, [10, 20, 30, 40, 50],
+@c                    [.6, .9, 1.1, 1.3, 1.4]])$
+@c ===end===
+@example
+@group
+(%i1) plot2d ([discrete, [10, 20, 30, 40, 50],
+                         [.6, .9, 1.1, 1.3, 1.4]])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting9,8cm}
+@end ifnotinfo
+
+それぞれの点を別々に定義し、点を繋ぐ線をなくした、前の例で示された同じ点:
+
+@c ===beg===
+@c plot2d([discrete, [[10, .6], [20, .9], [30, 1.1], 
+@c                    [40, 1.3], [50, 1.4]]],
+@c                   [style, points])$
+@c ===end===
+@example
+@group
+(%i1) plot2d([discrete, [[10, .6], [20, .9], [30, 1.1],
+                         [40, 1.3], [50, 1.4]]],
+                        [style, points])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting10,8cm}
+@end ifnotinfo
+
+この例では、3つの列を持つテーブルがファイル''data.txt''に保存され、
+読み込まれ、2番目、3番目の列は2つの軸上にプロットされます:
+
+@c ===beg===
+@c with_stdout ("data.txt", for x:0 thru 10 do
+@c                              print (x, x^2, x^3))$
+@c data: transpose ( read_matrix ("data.txt"))$
+@c plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
+@c   [style,points], [point_type,diamond], [color,red])$
+@c ===end===
+@example
+(%i1) with_stdout ("data.txt", for x:0 thru 10 do 
+                                   print (x, x^2, x^3))$
+(%i2) data: transpose ( read_matrix ("data.txt"))$
+@group
+(%i3) plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
+  [style,points], [point_type,diamond], [color,red])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting11,8cm}
+@end ifnotinfo
+
+実験データ点を、データを予測する理論的関数と一緒にプロット:
+
+@c ===beg===
+@c xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
+@c plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
+@c         [style, points, lines], [color, red, blue],
+@c         [point_type, asterisk],
+@c         [legend, "experiment", "theory"],
+@c         [xlabel, "pendulum's length (cm)"],
+@c         [ylabel, "period (s)"])$
+@c ===end===
+@example
+(%i1) xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
+@group
+(%i2) plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
+        [style, points, lines], [color, red, blue],
+        [point_type, asterisk],
+        [legend, "experiment", "theory"],
+        [xlabel, "pendulum's length (cm)"],
+        [ylabel, "period (s)"])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting12,8cm}
+@end ifnotinfo
+
+プロットオプションに関する節も参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{plot3d}
+@deffn  {関数} plot3d (@var{expr}, @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+@deffnx {関数} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+
+２変数関数もしくはパラメトリック形式で定義された、１つか複数の表面のプロットを表示します。
+
+プロットされる関数は、式か関数名として指定できます。
+違った側面から表面を見るためにマウスを使ってプロットを回転することができます。
+
+@strong{例:}
+
+よくある関数のプロット:
+
+@c ===beg===
+@c plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2])$
+@c ===end===
+@example
+(%i1) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2]);
+@end example
+
+@ifnotinfo
+@image{figures/plotting13,8cm}
+@end ifnotinfo
+
+無限大に発散する関数を制限するためのzオプションの使用(この場合、関数はxとy軸上でマイナス無限だい);
+これは線のみ陰影なしでプロットする仕方も示します。
+
+@c ===beg===
+@c plot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
+@c          [palette, false], [color, magenta, blue])$
+@c ===end===
+@example
+@group
+(%i1) plot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
+               [palette, false], [color, magenta, blue])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting14,8cm}
+@end ifnotinfo
+
+zの無限大は、いかなる漸近線上にも落ちないグリッドを選ぶことによっても避けることができます;
+この例は事前に定義されたパレットの1つ、この場合4番目のものを選択する仕方も示します:
+
+@c ===beg===
+@c plot3d( log (x^2*y^2), [x, -2, 2], [y, -2, 2],
+@c    [grid, 29, 29],
+@c    [palette, get_plot_option(palette,5)])$
+@c ===end===
+@example
+@group
+(%i1) plot3d( log (x^2*y^2), [x, -2, 2], [y, -2, 2], 
+         [grid, 29, 29],
+         [palette, get_plot_option(palette,5)])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting15,8cm}
+@end ifnotinfo
+
+同じ領域を共有する同じプロットでの2つの表面;
+gnuplotでは2つの表面は同じパレットを使用します:
+
+@c ===beg===
+@c plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2),
+@c         [x, -3, 3], [y, -2, 2]])$
+@c ===end===
+@example
+(%i1) plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2),
+              [x, -3, 3], [y, -2, 2]])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting16,8cm}
+@end ifnotinfo
+
+異なる領域を持つ、同じ2つの表面;
+xmaximaでは、それぞれの表面は、オプションパレットで定義されたリストから選ばれた
+異なるパレットを使います:
+
+@c ===beg===
+@c plot3d ( [[2^(-x^2 + y^2),[x,-2,2],[y,-2,2]],
+@c    4*sin(3*(x^2+y^2))/(x^2+y^2),
+@c    [x, -3, 3], [y, -2, 2]], [plot_format,xmaxima])$
+@c ===end===
+@example
+@group
+(%i1) plot3d ( [[2^(-x^2 + y^2),[x,-2,2],[y,-2,2]],
+         4*sin(3*(x^2+y^2))/(x^2+y^2),
+         [x, -3, 3], [y, -2, 2]], [plot_format,xmaxima])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting17,8cm}
+@end ifnotinfo
+
+パラメトリックに定義されたKleinの壷のプロット:
+
+@c ===beg===
+@c expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0$
+@c expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
+@c expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
+@c plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+@c         [y, -%pi, %pi], [grid, 40, 40])$
+@c ===end===
+@example
+(%i1) expr_1:5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0)-10.0$
+(%i2) expr_2:-5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
+(%i3) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
+@group
+(%i4) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+        [y, -%pi, %pi], [grid, 40, 40])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting18,8cm}
+@end ifnotinfo
+
+球座標から直交座標に変換するのにあらかじめ定義された変換@code{spherical_to_xyz}
+を使った球調和のプロット。
+@code{spherical_to_xyz}に関するドキュメンテーションを参照してください。
+
+@c ===beg===
+@c plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi],
+@c         [phi, 0, 2*%pi],
+@c         [transform_xy, spherical_to_xyz], [grid,30,60])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi],
+              [phi, 0, 2*%pi],
+              [transform_xy, spherical_to_xyz], [grid,30,60])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting19,8cm}
+@end ifnotinfo
+
+円筒座標から直交座標に変換するのにあらかじめ定義された変換@code{polar_to_xyz}
+を使った球面調和関数のプロット。
+@code{polarl_to_xyz}に関するドキュメンテーションを参照してください。
+この例は境界ボックスと凡例を消去する仕方も示します。
+@c ===beg===
+@c plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
+@c    [grid, 12, 80],
+@c    [transform_xy, polar_to_xy], [box, false],
+@c    [legend,false])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
+         [grid, 12, 80],
+         [transform_xy, polar_to_xy], [box, false],
+         [legend,false])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting20,8cm}
+@end ifnotinfo
+
+球座標から直交座標への変換を使っての球のプロット。
+xmaximaでは、球の対称形を維持するように3つの軸は同じ比でスケールされます。
+同一色で異なる陰影のパレットが使われます:
+
+@c ===beg===
+@c plot3d ( 5, [theta, 0, %pi], [phi, 0, 2*%pi],
+@c    [plot_format,xmaxima],
+@c    [transform_xy, spherical_to_xyz],
+@c    [palette,[value,0.65,0.7,0.1,0.9]])$
+@c ===end===
+@example
+@group
+(%i1) plot3d ( 5, [theta, 0, %pi], [phi, 0, 2*%pi],
+         [plot_format,xmaxima],
+         [transform_xy, spherical_to_xyz],
+         [palette,[value,0.65,0.7,0.1,0.9]])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting21,8cm}
+@end ifnotinfo
+
+行列を使った2変数関数の定義。
+関数の定義の中のシングルクォートに注意してください。
+行列が整数添字を要求する状況に実際に至る時、plot3dが失敗しないためのものです。
+
+@c ===beg===
+@c M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
+@c           [1, 2, 3, 3])$
+@c f(x, y) := float('M [round(x), round(y)])$
+@c plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 4, 4])$
+@c ===end===
+@example
+(%i1) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
+                [1, 2, 3, 3])$
+(%i2) f(x, y) := float('M [round(x), round(y)])$
+@group
+(%i3) plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 4, 4])$
+apply: subscript must be an integer; found: round(x)
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting22,8cm}
+@end ifnotinfo
+
+elevationを零の等しく設定することで，
+表面は地図として見ることができます。
+その地図は、それぞれの色は違ったレベルを表現します。
+オプション@code{colorbox}は、
+色とレベルの対応を示すのに使われます。
+メッシュ線を使用不可にし、色が見やすいようにしています。
+@c ===beg===
+@c plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+@c         [mesh_lines_color, false], [elevation, 0], [azimuth, 0],
+@c         [colorbox, true], [grid, 150, 150])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+        [mesh_lines_color, false], [elevation, 0], [azimuth, 0],
+        [colorbox, true], [grid, 150, 150])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotting23,8cm}
+@end ifnotinfo
+
+プロットオプションについての節も参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{plot_options}
+@defvr {システム変数} plot_options
+
+このリストの要素は、プロットのデフォルトオプションを指定します。
+もし@code{plot2d}もしくは@code{plot3d}がコールされる時、オプションが指定されたら、
+その値は、デフォルトオプションより優先されます。
+そうでなければ、@code{plot_options}の中の値が使われます。
+デフォルトオプションは、@code{set_plot_option}を使って割り当てられます。
+それぞれのプロットコマンドに特化したローカルオプションがあり、それらは、この、グローバルオプションのリストには含まれません。
+
+@code{plot_options}のそれぞれの要素は、２つ以上の項目のリストです。
+最初の項目はオプション名で、残りはオプションに割り当てられる値です。
+いくつかの場合、割り当てられた値はリストであり、複数の項目からなることがあります。
+
+@code{set_plot_option}と@code{get_option}、プロットオプションの節も参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{set_plot_option}
+@deffn {関数} set_plot_option (@var{option})
+
+プロットオプションの節にリストされているオプションのほとんどを受け付け、
+それらをグローバル変数@code{plot_options}に保存します。
+
+@code{set_plot_option}は引数を評価し、
+(与えられたオプションを変更した後、)完全なリスト@code{plot_options}を返します。
+
+@code{plot_options}と@code{get_option}、プロットオプションの節も参照してください。
+
+
+例:
+
+@code{grid}値の変更。
+
+@c ===beg===
+@c set_plot_option ([grid, 30, 40]);
+@c ===end===
+@example
+(%i1) set_plot_option ([grid, 30, 40]);
+@group
+(%o1) [[t, - 3, 3], [grid, 30, 40], [transform_xy, false], 
+[run_viewer, true], [axes, true], [plot_format, gnuplot_pipes], 
+[color, blue, red, green, magenta, black, cyan], 
+[point_type, bullet, circle, plus, times, asterisk, box, square, 
+triangle, delta, wedge, nabla, diamond, lozenge], 
+[palette, [hue, 0.25, 0.7, 0.8, 0.5], 
+[hue, 0.65, 0.8, 0.9, 0.55], [hue, 0.55, 0.8, 0.9, 0.4], 
+[hue, 0.95, 0.7, 0.8, 0.5]], [gnuplot_term, default], 
+[gnuplot_out_file, false], [nticks, 29], [adapt_depth, 5], 
+[gnuplot_preamble, ], [gnuplot_default_term_command, 
+set term pop], [gnuplot_dumb_term_command, set term dumb 79 22], 
+[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript ¥
+eps enhanced color solid 24], [plot_realpart, false]]
+@end group
+@end example
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{spherical_to_xyz}
+@deffn {システム関数} spherical_to_xyz
+
+plot3dの@code{transform_xy}オプションに対する値として与えることができます。
+その効果はplot3dでの2つの独立変数と関数を点の球座標
+(1番目はz軸に対する角度、次にxy射影のx軸に対する角度、最後に原点からの距離)
+として解釈し、それらをx,y,z座標に変換することです。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Plotting Options, Gnuplot Options, Functions and Variables for Plotting, Plotting
+@section Plotting Options
+@c -----------------------------------------------------------------------------
+
+すべてのオプションは、この節のキーワードの1つで始まり、
+1つ以上の値が続くリストで構成されます。
+オプションのほとんどは
+(@var{plot2d}, @var{plot3d}, @var{contour_plot}, @var{implicit_plot})
+どのプロットコマンドでも。また関数@var{set_plot_option}の中でも使うことができます;
+例外は以下のリストで指定されます。
+
+@defvr {プロットオプション} adapt_depth [adapt_depth, @var{integer}]
+
+適応プロットルーチンで使われる分割の最大数です。
+
+デフォルト値: 5
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{axes}
+@defvr {プロットオプション} axes [axes, @var{symbol}]
+
+ここで、@var{symbol}は@code{true}, @code{false}, @code{x}, @code{y}のいずれかでありえます。
+もし@code{false}なら、軸は表示されません;
+もし@code{x}か@code{y}に等しいなら、xかy軸のみが表示され、
+@code{true}に等しいなら、両方の軸が表示されます。
+このオプションはplot2dとimplicit_plotだけが使います。
+
+デフォルト値: @code{true}
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{azimut}
+@defvr {プロットオプション} azimuth [azimuth, @var{number}]
+
+plot3dプロットは
+plot2dと同様の水平軸と垂直軸に関してx軸とy軸と、
+紙から垂直に出てくるz軸で始まるものと考えることができます。
+z軸はその後x軸の回りに@code{elevation}に等しい角度だけ回転され、
+その後、xy平面は新しいz軸の回りに角度@code{azimuth}だけ回転されます。
+このオプションはazimuthに関する値を単位、度で設定します。
+
+デフォルト値: 30
+
+@code{elevation}も参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{option_box}
+@defvr {プロットオプション} box [box, @var{symbol}]
+
+もし@code{true}に設定されるなら、
+境界枠がプロットに表示されます;
+もし@code{false}に設定されるなら、
+枠は表示されません。
+
+デフォルト値: @code{true}
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{color}
+@defvr {プロットオプション} color [color, @var{color_1}, @dots{}, @var{color_n}]
+
+plot2dとimplicit_plotでは、様々な曲線の色を定義します。
+plot3dでは、パレットが使われない時、表面のメッシュ線の色を定義します;
+表面の片方の側面は色@code{color_1}を持ち、逆の側面は@var{color_2}を(またはもし1つの色しかないなら、同じ色を)持ちます。
+
+もし色よりも曲線や表面が多いなら、色は順に繰り返されます。
+gnuplotを使う時、色は、 青、赤、緑、マゼンタ、シアンまたは黒です;
+xmaximaでは、色はそれらもしくは文字#で始まり、6桁の16進数字が続く文字列です;
+2つは赤成分、2つは緑成分、2つが青成分です。
+もし未知の色の名前が与えられたら、黒が代わりに使われます。
+
+デフォルト値: blue, red, green, magenta, black, byan
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{colorbox}
+@defvr {プロットオプション} colorbox [colorbox, @var{symbol}]
+
+ここで、@var{symbol}は@code{true}か@code{false}であり得ます。
+もし@code{true}なら、
+plot3dはzの違った値を表現するために、
+違った色のパレットを使う時はいつでも、
+zの値の大きさに従って使われた色を示す枠が右に示されます。
+このオプションはxmaximaでは機能しません。
+
+デフォルト値: @code{false}
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{elevation}
+@defvr {プロットオプション} elevation [elevation, @var{number}]
+
+plot3dプロットは
+plot2dでの水平と垂直軸にxとy軸に
+紙から直立に立ったz軸から始まると考えられます。
+その後、z軸はx軸の回りを @code{elevation}に等しい角度だけ回転し、
+xy平面は新しいz軸の回りを @code{azimuth}角度だけ回転します。
+このオプションはelevationの値を度単位で設定します。
+
+デフォルト値: 60
+
+@code{azimuth}も参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{grid}
+
+@defvr {プロットオプション} grid [grid, @var{integer}, @var{integer}]
+
+3次元プロットのためにx方向、y方向で使われるグリッド点の数を設定します。
+
+デフォルト値: 30, 30
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{legend}
+@defvr {プロットオプション} legend [legend, @var{string_1}, @dots{}, @var{string_n}]
+@defvrx {プロットオプション} legend [legend, @var{false}]
+
+複数のプロットが示される時、プロットのラベルを指定します。
+もし与えられたラベルの数より多くの式があるなら、ラベルは繰り返されます。
+もし値@code{false}が与えられるなら、凡例は表示されません。
+デフォルトでは、式や関数の名前が使われます。また、点の離散集合に関しては、
+単語discrete1, discrete2, @dots{}が使われます。
+このオプションは@var{set_plot_optiion}で設定することができます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{logx}
+@defvr {プロットオプション} logx [logx]
+
+水平軸を対数的にスケールするようにします。
+@var{set_plot_option}では使うことはできません。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{logy}
+@defvr {プロットオプション} logy [logy]
+
+垂直軸を対数的にスケールするようにします。
+@var{set_plot_option}では使うことはできません。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{mesh_lines_color}
+@defvr {Plot option} mesh_lines_color [mesh_lines_color, @var{color}]
+
+パレットが使われる時、plot3dがメッシュ線を描くのに使う色を設定します。
+オプション @code{color}と同じ色を受け付けます。
+(@code{color}で許される色のリストを参照してください。)
+値 @code{false}を与えて、メッシュ線を完全に消すこともできます。
+
+デフォルト値: black
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{nticks}
+@defvr {プロットオプション} nticks [nticks, @var{integer}]
+
+plot2dで関数をプロットする時、
+関数をプロットするための適応プロットルーチンによって使われる点の数の初期値を与えます。
+plot2dやplot3dでパラメトリック関数をプロットする時、
+プロットで表示される点の数を設定します。
+
+デフォルト値: 29
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{palette}
+@defvr {プロットオプション} palette [palette, [@var{palette_1}], ..., [@var{palette_n}]]
+@defvrx {プロットオプション} palette [palette, @var{false}]
+
+1つのパレットか複数のパレットのリストで構成されます。
+それぞれのパレットは4つの数が続くキーワード付きリストです。
+最初の3つの数は、0と1の間でなければならず、
+zの最小値に割り当てられる基本色の色調と飽和、値を定義します。
+キーワードは3つの属性(色調、飽和、値)のいずれかがzの値に従っての増えることを指定します。
+その最後の数は1よりも大きいこともマイナスでもありえます;
+変更された属性の対応する値は法1で丸められます。
+
+gnuplotはリストの中の最初のパレットだけを使います;
+xmaximaは、複数の表面が一緒にプロットされる時、リストの中のパレットを順に使います;
+パレットの数が尽きたら、それらは順に繰り返されます。
+
+メッシュ線の色はオプション@code{mesh_lines_color}で与えられます。
+もし@code{palette}が値@code{false}を与えられたら、
+表面は陰影されず、曲線のメッシュだけで表されます。
+その場合、線の色はオプション@code{color}で決定されます。
+
+デフォルト値: [hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55], [hue, 0.55, 0.8, 0.9, 0.4], [hue, 0.95, 0.7, 0.8, 0.5]
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{plot_format}
+@defvr {プロットオプション} plot_format [plot_format, @var{format}]
+
+ここで@var{format}は以下のいずれかです;
+gnuplot, xmaxima, mgnuplot, gnuplot_pipes.
+
+プロットで使われるフォーマットを設定します。
+
+デフォルト値: Windowsシステムではgnuplot, 他のシステムではgnuplot_pipes
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{plot_real_part}
+@defvr {プロットオプション} plot_real_part [plot_real_part, @var{symbol}]
+
+@code{true}に設定される時、プロットされる関数は
+実数値がプロットされる複素関数と見なされます;
+これは@code{realpart(@var{function})}をプロットすることと同値です。
+もし@code{false}に設定されたら、
+関数が実数値を与えない時には何も表示されません。
+例えば、@code{x}が負の時、@code{log(x)}は、
+実数値が@code{log(abs(x))}に等しい複素数値を与えます;
+もし@code{plot_real_part} が@code{true}だったなら、
+@code{log(-5)}は@code{log(5)}としてプロットされますが、
+もし@code{plot_real_part} が@code{false}だったなら、
+何もプロットされません。
+
+デフォルト値: @code{false}
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{point_type}
+@defvr {プロットオプション} point_type [point_type, @var{type_1}, @dots{}, @var{type_n}]
+
+gnuplotでは、
+, each set of points to be plotted with the style 
+スタイル``points''か``linespoints''でプロットされた点のそれぞれの集合は
+このリストから取られたオブジェクトで順に表されます。
+もしこのリスト内のオブジェクト以上に点の集合があるなら、
+それらは順に繰り返されます。
+使うことができる可能なオブジェクト: bullet, circle, plus, times,
+asterisk, box, square,triangle, delta, wedge, nabla, diamond, lozenge
+
+デフォルト値: bullet, circle, plus, times, asterisk, box, square,triangle, delta, wedge, nabla, diamond, lozenge
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{psfile}
+@defvr {プロットオプション} psfile [psfile, @var{string}]
+
+このオプションは、プロットをスクリーンに表示する代わりに、
+@var{string}に等しい名前のポストスクリプトファイルに保存します。
+デフォルトでは、そのファイルは、変数@var{maxima_tempdir}で定義されたディレクトリに
+生成されます;
+変数の値を変えて、違うディレクトリにファイルを保存できます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{run_viewer}
+@defvr {プロットオプション} run_viewer [run_viewer, @var{symbol}]
+
+プロットフォーマット用の適切なビューアを走らせるかどうか制御します。
+
+@c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? OR IS NOTHING GENERATED ??
+デフォルト値: @code{true}
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{style}
+@defvr  {プロットオプション} style [style, @var{type_1}, @dots{}, @var{type1_n}]
+@defvrx {プロットオプション} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
+
+様々な関数やデータ一式のために2dプロットで使われるスタイル。
+単語@var{style}の後には、１つ以上のスタイルが続きます。
+もし与えられたスタイルよりも多くの関数やデータ集合があったら、スタイルは繰り返されます。
+それぞれのスタイルは、実線のためには@var{lines}、孤立点のためには@var{points}、
+線分と孤立点のためには@var{linespoints}、点線のためには@var{dots}を取り得ます。
+Gnuplotでは、@var{impulses}スタイルも使えます。
+
+スタイルのそれぞれは、いくつかの追加のパラメータとリストの中に入れることができます。
+@var{lines}は、１つか２つの数を取ります: 線の太さと、色を指定する整数。
+デフォルトの色コードは、1: 青, 2: 赤, 3: マゼンタ, 4: オレンジ, 5: ブラウン, 6: ライム, 7: アクア、です。
+もしX11ではない端末でGnuplotを使うなら、これらの色は、違っているかもしれません;
+例えば、もしオプション[@var{gnuplot_term},@var{ps}]を使うなら、色インデックス4は、
+オレンジではなく、黒に対応します。
+
+@var{points}は、１つか２つか３つのパラメータを取ります; 最初のパラメータは、点の半径、
+２番目のパラメータは、同じ色を選択する（@var{lines}で使われるコードと同じ）整数、
+３番目のパラメータは現在、Gnuplotでだけ使われており、点の代わりにいくつかのオブジェクトに対応します。オブジェクトのデフォルト値は、1: 黒丸, 2: 白丸, 3: 十字, 4: ×,
+5: 米印, 6: 黒四角, 7: 白四角, 8: 黒三角, 9: 白三角, 10: 黒逆三角, 11: 白逆三角,
+12: 黒菱形, 13: 白菱形、です。
+
+@var{linesdots}は、４つまでのパラメータを取ります;
+線の太さ、点の半径、色、点を置き換えるオブジェクトのタイプ。
+
+デフォルト値: @var{lines} (太さ1で、オプション@code{color}で与えられた最初の色を持つ線で結んだ点一式をプロットします)
+
+@code{color}と@code{point_type}も参照してください。
+ 
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c I think $t is not being used anymore. (J. Villate)
+
+@c -----------------------------------------------------------------------------
+@anchor{t}
+@defvr {プロットオプション} t [t, @var{min}, @var{max}]
+
+パラメトリックプロットのデフォルトの範囲。
+
+デフォルト値: -3, 3
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{transform_xy}
+@defvr {プロットオプション} transform_xy [transform_xy, @var{symbol}]
+
+ここで、@var{symbol}は@code{false}か
+関数@code{transform_xy}を使うことで得られる結果をとり得ます。
+もし@code{false}と違うなら、
+plot3dで3座標を変換するのに使われます。
+
+デフォルト値: @code{false}
+
+@code{make_transform}, @code{polar_to_xy}, @code{spherical_to_xyz}を参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{x}
+@defvr {プロットオプション} x [x, @var{min}, @var{max}]
+
+2dプロットコマンドの最初の(またはplot3dの最初の二つのどちらかの)
+オプションとして使われる時、
+1番目の独立変数がxであることを示し、その範囲を設定します。
+最初のオプションの後(またはplot3dでは2番目のオプションの後)、
+プロット内で示される有効な水平領域を定義するために、
+再び使うことができます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{xlabel}
+@defvr {プロットオプション} xlabel [xlabel, @var{string}]
+
+1番目の軸をラベルする@var{string}を指定します;
+もしこのオプションが使われないなら、
+plot2dかimplicit_plotで関数をプロットする時、そのラベルは独立変数の名前です。
+plot3dで表面を、もしくはcontour_plotで等高線をプロットする時、
+そのラベルは1番目の変数の名前です。
+パラメトリックプロットの場合、1番目の式です。
+@var{set_plot_option}では使うことはできません。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{y}
+@defvr {プロットオプション} y [y, @var{min}, @var{max}]
+plot3dでの最初の2つのオプションの1つとして使われる時、
+独立変数の1つがyであることを示し、その範囲を設定します。
+そうでなければ、
+プロットで示される2番目の変数の有効領域を定義します。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{ylabel}
+@defvr {プロットオプション} ylabel [ylabel, @var{string}]
+
+二番目の軸をラベルする@var{string}を指定します;
+もしこのオプションが使われないなら、
+plot2dやimplicit_plotで関数をプロットする時、そのラベルは、''y''となり、
+plot3dで表面をプロットするときや、contour_plotで等高線をプロットする時、
+二番目の変数名となり、
+パラメトリックプロットの場合には、二番目の式になります。
+@var{set_plot_option}では使うことはできません。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{z}
+@defvr {プロットオプション} z [z, @var{min}, @var{max}]
+プロットで示されるzの値の有効範囲を設定するためにplot3dで使われます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{zlabel}
+@defvr {プロットオプション} zlabel [zlabel, @var{string}]
+
+plot3dを使う時、第三軸をラベルする@var{string}を指定します。
+もしこのオプションが使われないなら、
+そのラベルは、
+表面をプロットする時は``z''となり、
+パラメトリックプロットの場合には三番目の式になります。
+@var{set_plot_option}では使うことはできません。
+また、plot2d, implicit_plotでは無視されます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Gnuplot Options, Gnuplot_pipes Format Functions, Plotting Options, Plotting
+@section Gnuplot Options
+@c -----------------------------------------------------------------------------
+
+gnuplotに特化したプロットオプションがいくつかあります。
+これらのオプションのいくつかは、gnuplotコマンドそのもので、文字列として指定されます。
+詳細はgnuplotドキュメンテーションを参照してください。
+ほとんどの場合、これらのオプションは、
+より一般的な上記のオプションの１つで置き換えることができます;
+これらの場合、より一般的な形式を使うことをお勧めします。
+
+@defvr {プロットオプション} gnuplot_term
+
+gnuplot用の出力端末タイプを設定します。
+@itemize @bullet
+@item
+@strong{default} (デフォルト値)
+
+Gnuplot出力が、別のグラフィカルなウィンドウに表示されます。
+
+@item
+@strong{dumb}
+
+Gnuplot出力が、Mグラフィックスの"ASCIIアート"近似で、Maximaコンソールに表示されます。
+
+@item
+@strong{ps}
+
+Gnuplotが、ポストスクリプトページ記述言語でコマンドを生成します。
+もしオプション@code{gnuplot_out_file}が@var{filename}に設定されているなら、
+gnuplotは、@var{filename}にポストスクリプトコマンドを書きます。
+そうでなければ、@code{maxplot.ps}ファイルとして保存します。
+
+@item
+他のいかなる有効なgnuplot端末仕様
+
+Gnuplotは、png, jpeg, svgのような多くの他のグラフィカルフォーマットで出力を
+生成することができます。
+これらのフォーマットすべてでプロットを生成するに、@code{gnuplot_term}に
+任意のサポートされたgnuplot端末名(シンボル)もしくは、任意の有効なオプションを伴う
+gnuplot端末フル仕様(文字列)さえ設定できます。
+例えば、@code{[gnuplot_term,png]}は、PNG (Portable Network Graphics)形式で
+出力を生成する一方、@code{[gnuplot_term,"png size 1000,1000"]}は、
+1000x1000ピクセルサイズのPNGを生成します。
+
+もしオプション@code{gnuplot_out_file}が@var{filename}に設定されたら、
+gnuplotは、@var{filename}に出力を書き込みます。
+そうでなければ、@code{maxplot.@var{term}}ファイルに書き込みます。
+ここで、@var{term}はgnuplot端末名です。
+@end itemize
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_out_file}
+@defvr {プロットオプション} gnuplot_out_file
+
+@code{gnuplot_term}オプションと関連して使われる時、
+Gnuplotがサポートするグラフィックフォーマットの１つで、
+ファイルにプロットを保存するのに使われます。
+もしポストスクリプトファイルを生成したければ、
+代わりにオプション @code{psfile}を使うことができます。
+これは、Openmathでも機能し、たった１つのオプションで同じことができます。
+
+@example
+[gnuplot_term, png], [gnuplot_out_file, "graph3.png"]
+@end example
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_pm3d}
+@defvr {プロットオプション} gnuplot_pm3d
+
+@code{false}の値では、PM3Dモードの使用を抑制するのに使われます。
+PM3Dモードはデフォルトで使用可能です。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_preamble}
+@defvr {プロットオプション} gnuplot_preamble
+
+プロットを描く前に、gnuplotコマンドを挿入します。
+有効などんなgnuplotコマンドも使うことができます。
+複数のコマンドは、セミコロンで分離されなければいけません。
+示される例はログスケールプロットを生成します。
+@code{gnuplot_preamble}のデフォルト値は、空の文字列@code{""}です。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_curve_titles}
+@defvr {プロットオプション} gnuplot_curve_titles
+
+これは、上記で記載した@emph{legend}で置き換えられた古いオプションです。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_curve_styles}
+@defvr {プロットオプション} gnuplot_curve_styles
+
+これは、上記で記載した@emph{style}で置き換えられた古いオプションです。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_default_term_command}
+@defvr {プロットオプション} gnuplot_default_term_command
+
+デフォルト端末の端末タイプを設定するgnuplotコマンド。
+デフォルト値は、@code{set term pop}です。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_dumb_term_command}
+@defvr {プロットオプション} gnuplot_dumb_term_command
+
+ダム端末の端末タイプを設定するgnuplotコマンド。
+デフォルト値は、@code{"set term dumb 79 22"}です。
+これは、79文字 x 22文字のテキスト出力を生成します。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_ps_term_command}
+@defvr {プロットオプション} gnuplot_ps_term_command
+
+ポストスクリプト端末の端末タイプを設定するgnuplotコマンド。
+デフォルト値は、
+@code{"set size 1.5, 1.5; set term postscript eps enhanced color solid 24"},
+です。
+これは、サイズをgnuplotのデフォルトの1.5倍に設定し、フォントサイズを24に設定などします。
+@code{set term postscript}の詳細については、gnuplotドキュメンテーションを
+参照してください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Gnuplot_pipes Format Functions,  , Gnuplot Options, Plotting
+@section Gnuplot_pipes Format Functions
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_start}
+@deffn {関数} gnuplot_start ()
+
+@code{gnuplot_pipes}フォーマットでのプロットのため使われるgnuplotへのパイプを開きます。
+プロットの前に手動でパイプを開く必要はありません。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_close}
+@deffn {関数} gnuplot_close ()
+
+@code{gnuplot_pipes}フォーマットで使われたgnuplotへのパイプを閉じます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_restart}
+@deffn {関数} gnuplot_restart ()
+
+@code{gnuplot_pipes}フォーマットで使われたgnuplotへのパイプを閉じて、
+新しいパイプを開きます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_replot}
+@deffn {関数} gnuplot_replot ()
+@deffnx {関数} gnuplot_replot (@var{s})
+
+gnuplotウィンドウを更新します。
+もし@code{gnuplot_replot}が、文字列@var{s}の中のgnuplotコマンドを引数としてコールされたなら、
+@code{s}はウィンドウが再プロットされる前にgnuplotに送られます。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_reset}
+@deffn {関数} gnuplot_reset ()
+
+@code{gnuplot_pipes}フォーマットと一緒に使われるgnuplotの状態をリセットします。
+gnuplotウィンドウを更新するには、
+@code{gnuplot_reset}の後に@code{gnuplot_replot}をコールください。
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@end deffn

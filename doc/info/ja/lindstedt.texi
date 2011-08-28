@@ -1,0 +1,48 @@
+@menu
+* Functions and Variables for lindstedt::
+@end menu
+
+@node Functions and Variables for lindstedt,  , lindstedt, lindstedt
+@section Functions and Variables for lindstedt
+
+
+@deffn {関数} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+これはLindstedtコードで最初のパスです。
+摂動方程式上の初期条件が
+@math{i>0}に対して
+@math{z[i]=0, z'[i]=0}で、
+入力した初期条件―(@var{%k1}と@var{%k2}だけでなく)任意の定数があり得ます―で問題を解くことができます。
+@var{ic}は初期条件のリストです。
+
+初期条件が与えられない時、
+摂動方程式の中の定数がゼロ次方程式解と同じなので、問題が起こります。
+また、Van der Pol方程式のように、摂動方程式の初期条件が@math{i>0}に対して
+@math{z[i]=0, z'[i]=0}でない時、問題が起こります。
+
+例:
+@example
+(%i1) load("makeOrders")$
+
+(%i2) load("lindstedt")$
+
+(%i3) Lindstedt('diff(x,t,2)+x-(e*x^3)/6,e,2,[1,0]);
+          2
+         e  (cos(5 T) - 24 cos(3 T) + 23 cos(T))
+(%o3) [[[---------------------------------------
+                          36864
+   e (cos(3 T) - cos(T))
+ - --------------------- + cos(T)],
+            192
+          2
+       7 e    e
+T = (- ---- - -- + 1) t]]
+       3072   16
+@end example
+
+この関数を使うには、最初に@code{load("makeOrders")}と@code{load("lindstedt")}を書いてください。
+
+@opencatbox
+@category{Differential equations} @category{Share packages} @category{Package lindstedt}
+@closecatbox
+
+@end deffn

@@ -1,0 +1,347 @@
+@menu
+* Introduction to solve_rec::
+* Functions and Variables for solve_rec::
+@end menu
+
+@node Introduction to solve_rec, Functions and Variables for solve_rec, solve_rec, solve_rec
+@section Introduction to solve_rec
+
+@code{solve_rec}は多項式係数を持つ線形漸化式を解くためのパッケージです。
+
+デモが
+@code{demo(solve_rec);}で利用可能です。
+
+例:
+
+@example
+(%i1) load("solve_rec")$
+@group
+(%i2) solve_rec((n+4)*s[n+2] + s[n+1] - (n+1)*s[n], s[n]);
+                                    n
+                 %k  (2 n + 3) (- 1)          %k
+                   1                            2
+(%o2)       s  = -------------------- + ---------------
+             n     (n + 1) (n + 2)      (n + 1) (n + 2)
+@end group
+@end example
+
+@opencatbox
+@category{Linear recurrences} @category{Share packages} @category{Package solve_rec}
+@closecatbox
+
+@node Functions and Variables for solve_rec,  , Introduction to solve_rec, solve_rec
+@section Functions and Variables for solve_rec
+
+@deffn {関数} reduce_order (@var{rec}, @var{sol}, @var{var})
+
+特殊解@var{sol}が知られている時、
+線形漸化式@var{rec}の次数を減らします。
+
+例:
+
+@example
+@group
+(%i3) rec: x[n+2] = x[n+1] + x[n]/n;
+                                      x
+                                       n
+(%o3)               x      = x      + --
+                     n + 2    n + 1   n
+@end group
+@group
+(%i4) solve_rec(rec, x[n]);
+WARNING: found some hypergeometrical solutions! 
+(%o4)                    x  = %k  n
+                          n     1
+@end group
+@group
+(%i5) reduce_order(rec, n, x[n]);
+(%t5)                    x  = n %z
+                          n       n
+
+                           n - 1
+                           ====
+                           \
+(%t6)                %z  =  >     %u
+                       n   /        %j
+                           ====
+                           %j = 0
+
+(%o6)             (- n - 2) %u     - %u
+                              n + 1     n
+@end group
+@group
+(%i6) solve_rec((n+2)*%u[n+1] + %u[n], %u[n]);
+                                     n
+                            %k  (- 1)
+                              1
+(%o6)                 %u  = ----------
+                        n    (n + 1)!
+
+だから一般解は以下の通りです。
+
+             n - 1
+             ====        j
+             \      (- 1)
+       %k  n  >    -------- + %k  n
+         2   /     (j + 1)!     1
+             ====
+             j = 0
+@end group
+@end example
+
+@opencatbox
+@category{Package solve_rec}
+@closecatbox
+
+@end deffn
+
+@defvr {オプション変数} simplify_products
+デフォルト値: @code{true}
+
+もし@code{simplify_products}が@code{true}なら、
+@code{solve_rec}は答えの積をを整理しようとします。
+
+以下も参照してください: @code{solve_rec}.
+
+@opencatbox
+@category{Package solve_rec}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} simplify_sum (@var{expr})
+
+@var{expr}に現れるすべての和を閉形式に整理しようとします。
+
+この関数を初めて使うには、
+@code{load(simplify_sum)}で
+@code{simplify_sum}パッケージをロードしてください。
+
+例:
+
+@c ===beg===
+@c load("simplify_sum")$
+@c sum(binomial(n+k,k)/2^k, k, 1, n) + sum(binomial(2*n, 2*k), k, 1,n);
+@c simplify_sum(%);
+@c ===end===
+@example
+(%i1) load("simplify_sum")$
+@group
+(%i2) sum(binomial(n+k,k)/2^k,k,1,n)+sum(binomial(2*n,2*k),k,1,n);
+        n                          n
+       ====                       ====
+       ¥     binomial(n + k, k)   ¥
+(%o2)   >    ------------------ +  >    binomial(2 n, 2 k)
+       /              k           /
+       ====          2            ====
+       k = 1                      k = 1
+@end group
+@group
+(%i3) simplify_sum(%);
+
+                         2 n - 1    n
+(%o3)                   2        + 2  - 2
+@end group
+@end example
+
+@opencatbox
+@category{Package solve_rec} @category{Sums and products} @category{Simplification functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+変数@var{var}に関して多項式係数を持つ線形漸化式@var{eqn}の超幾何解について解きます。
+オプション引数@var{init}は初期条件です。
+
+@code{solve_rec}は、
+定数係数の線形漸化式を解くことができ、
+多項式係数の斉次線形漸化式の超幾何解と多項式係数の有理解を見つけ、
+Ricatti型漸化式を解くことができます。
+
+超幾何解を見つけるのに使われるアルゴリズムの実行時間は
+主係数と最小次数(trailing)係数の次数に関して指数的であることに注意してください。
+
+この関数を使うには、
+最初に
+@code{load(solve_rec);}で@code{solve_rec}パッケージをロードしてください。
+
+
+定係数の線形漸化式の例:
+
+@example
+@group
+(%i2) solve_rec(a[n]=a[n-1]+a[n-2]+n/2^n, a[n]);
+                        n          n
+           (sqrt(5) - 1)  %k  (- 1)
+                            1           n
+(%o2) a  = ------------------------- - ----
+       n               n                  n
+                      2                5 2
+                                                n
+                                   (sqrt(5) + 1)  %k
+                                                    2    2
+                                 + ------------------ - ----
+                                            n              n
+                                           2            5 2
+@end group
+@end example
+
+多項式係数の線形漸化式の例:
+
+@example
+@group
+(%i7) 2*x*(x+1)*y[x] - (x^2+3*x-2)*y[x+1] + (x-1)*y[x+2];
+                         2
+(%o7) (x - 1) y      - (x  + 3 x - 2) y      + 2 x (x + 1) y
+               x + 2                   x + 1                x
+@end group
+@group
+(%i8) solve_rec(%, y[x], y[1]=1, y[3]=3);
+                              x
+                           3 2    x!
+(%o9)                 y  = ---- - --
+                       x    4     2
+@end group
+@end example
+
+Ricatti型漸化式の例:
+
+@example
+@group
+(%i2) x*y[x+1]*y[x] - y[x+1]/(x+2) + y[x]/(x-1) = 0;
+                            y         y
+                             x + 1     x
+(%o2)         x y  y      - ------ + ----- = 0
+                 x  x + 1   x + 2    x - 1
+@end group
+(%i3) solve_rec(%, y[x], y[3]=5)$
+@group
+(%i4) ratsimp(minfactorial(factcomb(%)));
+                                   3
+                               30 x  - 30 x
+(%o4) y  = - -------------------------------------------------
+       x        6      5       4       3       2
+             5 x  - 3 x  - 25 x  + 15 x  + 20 x  - 12 x - 1584
+@end group
+@end example
+
+
+以下も参照してください: @code{solve_rec_rat}, @code{simplify_products}, and @code{product_use_gamma}.
+
+@opencatbox
+@category{Package solve_rec}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+
+線形漸化式の有理解について解きます。
+引数の記述についてはsolve_recを参照してください。
+
+この関数を使うには、
+最初に
+@code{load(solve_rec);}で@code{solve_rec}パッケージをロードしてください。
+
+例:
+
+@example
+@group
+(%i1) (x+4)*a[x+3] + (x+3)*a[x+2] - x*a[x+1] + (x^2-1)*a[x];
+(%o1)  (x + 4) a      + (x + 3) a      - x a
+                x + 3            x + 2      x + 1
+                                                   2
+                                               + (x  - 1) a
+                                                            x
+@end group
+@group
+(%i2) solve_rec_rat(% = (x+2)/(x+1), a[x]);
+                       1
+(%o2)      a  = ---------------
+            x   (x - 1) (x + 1)
+@end group
+@end example
+
+
+以下も参照してください: @code{solve_rec}.
+
+@opencatbox
+@category{Package solve_rec}
+@closecatbox
+
+@end deffn
+
+@defvr {オプション変数} product_use_gamma
+デフォルト値: @code{true}
+
+積を整理する時、
+もし@code{product_use_gamma}が@code{true}なら、
+@code{solve_rec}は式の中にガンマ函数を導入します。
+
+
+以下も参照してください: @code{simplify_products}, @code{solve_rec}.
+
+@opencatbox
+@category{Package solve_rec}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffnx {関数} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+
+和
+
+@example
+@group
+     hi
+    ====
+    \
+     >     summand
+    /
+    ====
+  k = lo
+@end group
+@end example
+
+が満たす漸化式を返します。
+ここで、被和(summand)は@var{k}と@var{n}に対して超幾何的です。
+もし@var{lo}と@var{hi}が省略されたら、
+それらは@code{lo = -inf}、@code{hi = inf}と仮定されます。
+
+この関数を初めて使うには、
+@code{load(simplify_sum)}で
+@code{simplify_sum}パッケージをロードしてください。
+
+例:
+
+@example
+(%i1) load("simplify_sum")$
+@group
+(%i2) summand: binom(n,k);
+(%o2)                           binomial(n, k)
+@end group
+@group
+(%i3) summand_to_rec(summand,k,n);
+(%o3)                      2 sm  - sm      = 0
+                               n     n + 1
+@end group
+@group
+(%i7) summand: binom(n, k)/(k+1);
+                                binomial(n, k)
+(%o7)                           --------------
+                                    k + 1
+@end group
+@group
+(%i8) summand_to_rec(summand, [k, 0, n], n);
+(%o8)               2 (n + 1) sm  - (n + 2) sm      = - 1
+                                n             n + 1
+@end group
+@end example
+
+@opencatbox
+@category{Package solve_rec}
+@closecatbox
+
+@end deffn

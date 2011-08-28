@@ -1,0 +1,329 @@
+@menu
+* Introduction to plotdf::
+* Functions and Variables for plotdf::
+@end menu
+
+@node Introduction to plotdf, Functions and Variables for plotdf, plotdf, plotdf
+@section Introduction to plotdf
+
+関数@code{plotdf}は、
+1次常微分方程式(ODE)や2つの自励1次ODE系の
+(勾配場とも呼ばれる)方向場のプロットを生成します。
+
+PlotdfはXmaximaを要求します。
+コンソールや他のMaximaインターフェースから使うことができますが、
+結果のファイルはXmaximaに送られ、プロットされます。
+plotdfを使ってみる前にXmaximaをインストールしたことを確認してください。
+
+単一のODEの方向場をプロットするには、ODEを以下の形式で書かなければいけません:
+@ifnottex
+@example
+       dy
+       -- = F(x,y)
+       dx
+@end example
+@end ifnottex
+@tex
+$${{dy}¥over{dx}} = F(x,y)$$
+@end tex
+
+そして関数@var{F}を@code{plotdf}の引数に与えなければいけません。
+もし独立変数と従属変数が、上の式のように@var{x}と@var{y}でないなら、
+plotdfコマンドへの引数として与えられるリストの中に明示的に
+それら2つの変数を指名しなければいけません。
+(例を見てください。)
+
+2つの自励ODEの組の方向場をプロットするには、
+それらを以下の形式で書かなければいけません。
+@ifnottex
+@example
+       dx             dy
+       -- = G(x,y)    -- = F(x,y) 
+       dt             dt
+@end example
+@end ifnottex
+@tex
+$${{dx}¥over{dt}} = G(x,y) ¥qquad {{dy}¥over{dt}} = F(x,y)$$
+@end tex
+
+そして@code{plotdf}の引数は2つの関数@var{G}と@var{F}を
+その順に持つリストでなければいけません;
+すなわち、リストの最初の式は水平軸上に表された変数の時間導関数であり、
+二番目の式は垂直軸上に表された変数の時間導関数です。
+それら2つの変数は@var{x}と@var{y}である必要はありませんが、
+もしそうでないなら、
+plotdfに与えられる二番目の引数は
+2つの変数を、最初のものが水平軸上のものを、その後垂直軸上のものを指定する別のリストでなければいけません。
+
+もしただ1つのODEが与えられるなら、
+@code{plotdf}は、
+暗に@code{x=t},@code{G(x,y)=1}と認め、
+非自励方程式を2つの自励方程式系に変換します。
+
+@opencatbox
+@category{Differential equations} @category{Share packages} @category{Package plotdf}
+@closecatbox
+
+@node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
+@section Functions and Variables for plotdf
+
+@deffn {関数} plotdf (@var{dydx}, ...options...)
+@deffnx {関数} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffnx {関数} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
+@deffnx {関数} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+
+2次元@var{x}と@var{y}に方向場を表示します。
+
+最初の引数は導関数を指定し、式か2つの式のリストでなければいけません。
+@var{dydx}, @var{dxdt}, @var{dydt}は@var{x}と@var{y}に依存する式です。
+@var{dvdu}, @var{dudt}, @var{dvdt}は@var{u}と@var{v}に依存する式です。
+それら2つの変数に加えて、
+@code{parameters}オプションで与えられる数値を持つか(オプション構文法は以下に与えられます)、
+@var{sliders}オプションで指定される許される値の範囲の
+パラメータ一式にも、式は依存するかもしれません。
+
+コマンド内やメニューで選択して、いくつかの他のオプションを与えることができます。
+プロット上でクリックしたり、オプション@code{trajectory_at}を使って、
+積分曲線を得ることができます。
+@code{direction}オプションを使って、積分の方向を制御できます。
+オプションは、@emph{forward}, @emph{backward}, @emph{both}のいずれかの値を取り得ます。
+@code{nsteps}で積分ステップの数を与えることができ、
+@code{tstep}オプションでそれらの間の時間間隔を設定できます。
+積分にはAdams Moulton法が使われます;
+4次の適応Runge-Kutta法に切り替えることも可能です。
+
+
+@b{プロットウィンドウメニュー:}
+
+プロットウィンドウのメニューには以下のオプションがあります:
+@emph{Zoom}, はマウスの振る舞いを変えて、プロット領域上で左ボタンをクリックすることで
+ズームインできるようになります。
+ある点近くをクリックする毎に、クリックした点を中心にしてプロットが拡大されます。
+@key{Shift}キーを押しながらクリックすると、
+以前の倍率にズームアウトします。
+ある点をクリックした時、軌跡の計算を再開するには、
+メニューから@emph{Integrate}を選択してください。
+
+メニューの中のオプション@emph{Config}を使って，
+使用中のODE(s)や様々な他の設定を変えることができます。
+構成の変更がされた後、新しい設定を稼働するには、
+メニューオプション@emph{Replot}を選択しなければいけません。
+もし、座標の組を
+@emph{Config}ダイアログメニューの場@emph{Trajectory at}に入れて、
+@key{enter}キーを押したら、
+既に示されているものに加えて、新しい積分曲線が表示されます。
+@emph{Replot}が選択された時は、
+入れられた最後の積分曲線だけが表示されます。
+
+右マウスボタンを押しながらカーソルを動かすと、
+プロットを横や上下にドラッグできます。
+ステップ数や@var{t}の初期値、x, yの中心や範囲のような追加パラメータは、
+Configメニューで設定できます。
+
+プロットのコピーは、メニューオプション@emph{Save}を使って、
+ポストスクリプトファイルとして保存できます。
+
+@b{プロットオプション:}
+
+@code{plotdf}コマンドはいくつかのコマンドを含むかもしれません。
+それぞれのコマンドは複数の項目のリストです。
+最初の項目はオプション名で、
+残りはオプションに割り当てられる値から成ります。
+
+@code{plotdf}が認識するオプションは以下の通りです:
+
+@itemize @bullet
+@item
+@dfn{tstep}は、独立変数@var{t}に関する増分の長さを定義します。
+積分曲線を計算するのに使われます。
+もしただ1つの式@var{dydx}が@code{plotdf}に与えられたら、
+@var{x}変数は@var{t}に直接比例することになります。
+デフォルト値は0.1です。
+
+@item
+@dfn{nsteps}は、
+積分曲線を計算するのに、独立変数に対して使われる長さ@code{tstep}のステップ回数を定義します。
+デフォルト値は100です。
+
+@item
+@dfn{direction}は
+積分曲線を計算する際に従う独立変数の方向を定義します。
+可能な値は、
+@code{forward}―これは増分@code{tstep}で独立変数を@code{nsteps}回増やします―
+@code{backward}―これは独立変数を減らします―
+または@code{both}―これは
+@code{nsteps}回前進、 @code{nsteps}回後進で拡げた積分曲線に導きます―
+キーワード@code{right}と@code{left}を、
+@code{forward}と@code{backward}の別称として使うことができます。
+デフォルト値は@code{both}です。
+
+@item
+@dfn{tinitial}は
+積分曲線を計算するために使われる変数@var{t}の初期値です。
+微分方程式が自励なので、
+その設定は@var{t}の関数として曲線のプロットでだけ現れます。
+デフォルト値は0です。
+
+@item
+@dfn{versus_t}は
+独立変数@var{t}の2つの関数@var{x}, @var{y}としての
+積分曲線のプロットを使って二番目のプロットウィンドウを生成するために
+使われます。
+もし@code{versus_t}が0と異なる任意の値を与えられたら、
+二番目のプロットウィンドウが表示されます。
+二番目のプロットウィンドウは、
+メインプロットウィンドウのメニューに似た別のメニューを含みます。
+デフォルト値は0です。
+
+@item
+@dfn{trajectory_at}は
+積分曲線の開始点のための座標@var{xinitial}と@var{yinitial}を定義します。
+オプションはデフォルトで空です。
+
+@item
+@dfn{parameters}は
+微分方程式の定義の中で使われるパラメータとその数値のリストを定義します。
+パラメータの名前と値は、
+コンマで分離された組@code{name=value}の列を持つ文字列で与えなければいけません。
+
+@item
+@dfn{sliders}は
+スライダーボタンを使って対話的に変更されるパラメータと
+それらのパラメータの変動範囲のリストです。
+パラメータの名前と範囲は、
+コンマで分離された要素@code{name=min:max}の列を持つ文字列で与えなければいけません。
+
+@item
+@dfn{xfun}は
+方向場の上にセミコロンで分離された表示される@var{x}の関数の列を持つ文字列を定義します。
+これらの関数はMaximaではなくTclでパースされます。
+
+@item
+@dfn{x}には2つの数が続かなければいけません。
+2つの数は水平軸上で表示される最小値と最大値を設定します。
+もし水平軸上の変数が@var{x}でないなら、
+このオプションは水平軸上の変数名を持たなければいけません。
+デフォルトの水平範囲は-10から10です。
+
+@item
+@dfn{y}には2つの数が続かなければいけません。
+2つの数は垂直軸上で表示される最小値と最大値を設定します。
+もし垂直軸上の変数が@var{y}でないなら、
+このオプションは垂直軸上の変数名を持たなければいけません。
+デフォルトの垂直範囲は-10から10です。
+@end itemize
+
+@strong{例:}
+
+@itemize @bullet
+@item
+微分方程式@math{y' = exp(-x) + y}の方向場と@math{(2, -0.1)}を通過する解を表示するために:
+@c ===beg===
+@c plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+@c ===end===
+@example
+(%i1) plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+@end example
+
+@ifnotinfo
+@image{figures/plotdf1,8cm}
+@end ifnotinfo
+
+@item
+方程式@math{diff(y,x) = x - y^2}の方向場と
+初期条件@math{y(-1) = 3}の解を得るために、
+以下のコマンドをつかうことができます:
+@c ===beg===
+@c plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
+@c          [trajectory_at,-1,3], [direction,forward],
+@c          [y,-5,5], [x,-4,16])$
+@c ===end===
+@example
+@group
+(%i1) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
+         [trajectory_at,-1,3], [direction,forward],
+         [y,-5,5], [x,-4,16])$
+@end group
+@end example
+
+グラフは関数@math{y = sqrt(x)}も表示します。
+
+@ifnotinfo
+@image{figures/plotdf2,8cm}
+@end ifnotinfo
+
+@item
+以下の例は、
+2つの方程式@math{dz/dt = v}と@math{dv/dt = -k*z/m}で定義される調和振動子の方向場と、
+@math{(z,v) = (6,0)}を通る積分曲線を、
+(@math{k}は2に固定で)@math{m}の値を対話的に変えられるスライダーと一緒に、
+表示します。
+@c ===beg===
+@c plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
+@c            [sliders,"m=1:5"], [trajectory_at,6,0])$
+@c ===end===
+@example
+@group
+(%i1) plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
+           [sliders,"m=1:5"], [trajectory_at,6,0])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotdf3,8cm}
+@end ifnotinfo
+
+@item
+Duffing方程式@math{m*x''+c*x'+k*x+b*x^3 = 0}の方向場をプロットするために、
+変数@math{y=x'}を導入し、以下のように使います:
+@c ===beg===
+@c plotdf([y,-(k*x + c*y + b*x^3)/m],
+@c              [parameters,"k=-1,m=1.0,c=0,b=1"],
+@c              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+@c ===end===
+@example
+@group
+(%i1) plotdf([y,-(k*x + c*y + b*x^3)/m],
+             [parameters,"k=-1,m=1.0,c=0,b=1"],
+             [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotdf4,8cm}
+@end ifnotinfo
+
+@item
+質量@math{m}の値を変更するのに使うことができるスライダーと一緒に
+与えられた初期条件の解と減衰振り子の方向場と
+時間の関数として2つの状態変数のプロットを一緒に:
+
+@c ===beg===
+@c plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
+@c         [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
+@c         [trajectory_at,1.05,-9],[tstep,0.01],
+@c         [a,-10,2], [w,-14,14], [direction,forward],
+@c         [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
+@c ===end===
+@example
+@group
+(%i1) plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
+        [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
+        [trajectory_at,1.05,-9],[tstep,0.01],
+        [a,-10,2], [w,-14,14], [direction,forward],
+        [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
+@end group
+@end example
+
+@ifnotinfo
+@image{figures/plotdf5,8cm}@image{figures/plotdf6,8cm}
+@end ifnotinfo
+
+@end itemize
+
+@opencatbox
+@category{Package plotdf} @category{Plotting} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+

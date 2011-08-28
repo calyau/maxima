@@ -1,0 +1,76 @@
+@menu
+* Functions and Variables for stirling::
+@end menu
+
+@node Functions and Variables for stirling,  , stirling, stirling
+@section Functions and Variables for stirling
+
+@deffn {関数} stirling (@var{z},@var{n})
+@deffnx {関数} stirling (@var{z},@var{n},@var{pred})
+
+@code{gamma(x)}を
+@math{O(1/x^(2n-1))}Stirling公式で置き換えます。
+@var{n}が非負の整数の時、エラーを知らせます。
+オプションの三番目の引数@code{pred}があると、
+@code{pred}がtrueの時だけ
+Stirling公式は適用されます。
+
+参照文献: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
+
+例:
+@example
+(%i1) load (stirling)$
+
+(%i2) stirling(gamma(%alpha+x)/gamma(x),1);
+       1/2 - x             x + %alpha - 1/2
+(%o2) x        (x + %alpha)
+                                   1           1
+                            --------------- - ---- - %alpha
+                            12 (x + %alpha)   12 x
+                          %e
+(%i3) taylor(%,x,inf,1);
+                    %alpha       2    %alpha
+          %alpha   x       %alpha  - x       %alpha
+(%o3)/T/ x       + -------------------------------- + . . .
+                                 2 x
+(%i4) map('factor,%);
+                                       %alpha - 1
+         %alpha   (%alpha - 1) %alpha x
+(%o4)   x       + -------------------------------
+                                  2
+@end example
+
+関数@code{stirling}は変数'gamma'と関数gammaの違いを知っています:
+
+@example
+(%i5) stirling(gamma + gamma(x),0);
+                                    x - 1/2   - x
+(%o5)    gamma + sqrt(2) sqrt(%pi) x        %e
+(%i6) stirling(gamma(y) + gamma(x),0);
+                         y - 1/2   - y
+(%o6) sqrt(2) sqrt(%pi) y        %e
+                                              x - 1/2   - x
+                         + sqrt(2) sqrt(%pi) x        %e
+@end example
+
+変数@code{k}を含む項だけに
+Stirling公式を適用するために
+オプションの三番目の引数を使います;
+例えば、
+@example
+(%i7) makegamma(pochhammer(a,k)/pochhammer(b,k));
+(%o7) (gamma(b)*gamma(k+a))/(gamma(a)*gamma(k+b))
+(%i8) stirling(%,1, lambda([s], not(freeof(k,s))));
+(%o8) (%e^(b-a)*gamma(b)*(k+a)^(k+a-1/2)*(k+b)^(-k-b+1/2))/gamma(a)
+@end example
+項@code{gamma(a)}と@code{gamma(b)}は、
+@code{k}を含まないので、
+Stirling公式はこれら２つの項に適用されませんでした。
+
+この関数を使うには、最初に@code{load("stirling")}を書いてください。
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Share packages} @category{Package stirling}
+@closecatbox
+
+@end deffn

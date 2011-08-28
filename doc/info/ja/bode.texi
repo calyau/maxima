@@ -1,0 +1,125 @@
+@menu
+* Functions and Variables for bode::
+@end menu
+
+@node Functions and Variables for bode,  , bode, bode
+@section Functions and Variables for bode
+
+
+@deffn {関数} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+Bodeのゲイン線図を描く関数。
+
+例 (1から7までは
+@example
+@url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
+@end example
+から、8はRon Crummettから):
+@example
+(%i1) load("bode")$
+
+(%i2) H1 (s) := 100 * (1 + s) / ((s + 10) * (s + 100))$
+
+(%i3) bode_gain (H1 (s), [w, 1/1000, 1000])$
+
+(%i4) H2 (s) := 1 / (1 + s/omega0)$
+
+(%i5) bode_gain (H2 (s), [w, 1/1000, 1000]), omega0 = 10$
+
+(%i6) H3 (s) := 1 / (1 + s/omega0)^2$
+
+(%i7) bode_gain (H3 (s), [w, 1/1000, 1000]), omega0 = 10$
+
+(%i8) H4 (s) := 1 + s/omega0$
+
+(%i9) bode_gain (H4 (s), [w, 1/1000, 1000]), omega0 = 10$
+
+(%i10) H5 (s) := 1/s$
+
+(%i11) bode_gain (H5 (s), [w, 1/1000, 1000])$
+
+(%i12) H6 (s) := 1/((s/omega0)^2 + 2 * zeta * (s/omega0) + 1)$
+
+(%i13) bode_gain (H6 (s), [w, 1/1000, 1000]), 
+                  omega0 = 10, zeta = 1/10$
+
+(%i14) H7 (s) := (s/omega0)^2 + 2 * zeta * (s/omega0) + 1$
+
+(%i15) bode_gain (H7 (s), [w, 1/1000, 1000]),
+                  omega0 = 10, zeta = 1/10$
+
+(%i16) H8 (s) := 0.5 / (0.0001 * s^3 + 0.002 * s^2 + 0.01 * s)$
+
+(%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
+@end example
+
+この関数を使うためには、最初に@code{load("bode")}を書いてください。
+@code{bode_phase}も参照してください。
+
+@opencatbox
+@category{Plotting} @category{Package bode}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+Bodeの位相線図を描く関数。
+
+例 (1から7までは
+@example
+@url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
+@end example
+から、8はRon Crummettから):
+@example
+(%i1) load("bode")$
+
+(%i2) H1 (s) := 100 * (1 + s) / ((s + 10) * (s + 100))$
+
+(%i3) bode_phase (H1 (s), [w, 1/1000, 1000])$
+
+(%i4) H2 (s) := 1 / (1 + s/omega0)$
+
+(%i5) bode_phase (H2 (s), [w, 1/1000, 1000]), omega0 = 10$
+
+(%i6) H3 (s) := 1 / (1 + s/omega0)^2$
+
+(%i7) bode_phase (H3 (s), [w, 1/1000, 1000]), omega0 = 10$
+
+(%i8) H4 (s) := 1 + s/omega0$
+
+(%i9) bode_phase (H4 (s), [w, 1/1000, 1000]), omega0 = 10$
+
+(%i10) H5 (s) := 1/s$
+
+(%i11) bode_phase (H5 (s), [w, 1/1000, 1000])$
+
+(%i12) H6 (s) := 1/((s/omega0)^2 + 2 * zeta * (s/omega0) + 1)$
+
+(%i13) bode_phase (H6 (s), [w, 1/1000, 1000]), 
+                   omega0 = 10, zeta = 1/10$
+
+(%i14) H7 (s) := (s/omega0)^2 + 2 * zeta * (s/omega0) + 1$
+
+(%i15) bode_phase (H7 (s), [w, 1/1000, 1000]), 
+                   omega0 = 10, zeta = 1/10$
+
+(%i16) H8 (s) := 0.5 / (0.0001 * s^3 + 0.002 * s^2 + 0.01 * s)$
+
+(%i17) bode_phase (H8 (s), [w, 1/1000, 1000])$
+
+(%i18) block ([bode_phase_unwrap : false],
+              bode_phase (H8 (s), [w, 1/1000, 1000]));
+
+(%i19) block ([bode_phase_unwrap : true], 
+              bode_phase (H8 (s), [w, 1/1000, 1000]));
+@end example
+
+この関数を使うためには、最初に@code{load("bode")}を書いてください。
+@code{bode_gain}も参照してください。
+
+@opencatbox
+@category{Plotting} @category{Package bode}
+@closecatbox
+
+@end deffn
+

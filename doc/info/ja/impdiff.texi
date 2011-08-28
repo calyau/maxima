@@ -1,0 +1,23 @@
+@menu
+* Functions and Variables for impdiff::
+@end menu
+
+@node Functions and Variables for impdiff,  , impdiff, impdiff
+@section Functions and Variables for impdiff
+
+@deffn {関数} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+このサブルーチンは多変数関数の陰導関数を計算します。
+@var{f}は配列関数で、
+インデックスは@var{indvarlist}順の微分の階数です;
+@var{indvarlist}は独立変数リストです;
+@var{orderlist}は望みの次数です;
+@var{depvar}は従属変数です。
+
+この関数を使うには、最初に@code{load("impdiff")}を書いてください。
+
+@opencatbox
+@category{Differential calculus} @category{Share packages} @category{Package impdiff}
+@closecatbox
+
+@end deffn
+

@@ -1,0 +1,2722 @@
+@menu
+* Introduction to Sets::       
+* Functions and Variables for Sets::       
+@end menu
+
+@node Introduction to Sets, Functions and Variables for Sets, Sets, Sets
+@section Introduction to Sets
+
+Maximaは、
+陽な列挙によって定義された有限集合のために、
+積集合や和集合のような、集合関数を提供します。
+Maximaは、リストと集合を別のオブジェクトとして扱います。
+この特長は、
+リストまたは集合であるメンバーがリストであったり集合であったりする集合を扱うことを可能にします。
+
+有限集合のための関数に加えて、
+Maximaは、
+組み合わせ論に関係したいくつかの関数を提供します;
+これらは、第一種と第二種スターリング数、ベル数、第一種と第二種の多項係数、
+非負整数の分割、と2,3の他の関数です。
+Maximaは、クロネッカーのデルタ関数も定義します。
+
+@subsection Usage
+
+メンバー@code{a_1, ..., a_n}の集合を構成するには、
+@code{set(a_1, ..., a_n)}または@code{@{a_1, ..., a_n@}}を書いてください;
+空集合を構成するには、
+@code{set()}または@code{@{@}}を書いてください。
+入力では、
+@code{set(...)}と@code{@{ ... @}}は同値です。
+集合は、いつも中括弧で表示されます。
+
+もしメンバーが一度以上リストされているなら、
+整理は、冗長なメンバーを消去します。
+
+@c ===beg===
+@c set();
+@c set(a, b, a);
+@c set(a, set(b));
+@c set(a, [b]);
+@c {};
+@c {a, b, a};
+@c {a, {b}};
+@c {a, [b]};
+@c ===end===
+@example
+(%i1) set();
+(%o1)                          @{@}
+(%i2) set(a, b, a);
+(%o2)                        @{a, b@}
+(%i3) set(a, set(b));
+(%o3)                       @{a, @{b@}@}
+(%i4) set(a, [b]);
+(%o4)                       @{a, [b]@}
+(%i5) @{@};
+(%o5)                          @{@}
+(%i6) @{a, b, a@};
+(%o6)                        @{a, b@}
+(%i7) @{a, @{b@}@};
+(%o7)                       @{a, @{b@}@}
+(%i8) @{a, [b]@};
+(%o8)                       @{a, [b]@}
+@end example
+
+２つの要素志望@var{x}と@var{y}は、
+@code{is(@var{x} = @var{y})}が@code{true}をもたらす
+(すなわち、集合構成の目的で同じと見なされる)
+時だけ
+冗長です。
+@c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+@code{is(@var{x} = @var{y})}が@code{false}をもたらす一方、
+@code{is(equal(@var{x}, @var{y}))}は、@code{true}をもたらす可能性があることに
+注意してください;
+その場合、要素@var{x}と@var{y}は異なったものと見なされます。
+
+@c ===beg===
+@c x: a/c + b/c;
+@c y: a/c + b/c;
+@c z: (a + b)/c;
+@c is (x = y);
+@c is (y = z);
+@c is (equal (y, z));
+@c y - z;
+@c ratsimp (%);
+@c {x, y, z};
+@c ===end===
+@example
+(%i1) x: a/c + b/c;
+                              b   a
+(%o1)                         - + -
+                              c   c
+(%i2) y: a/c + b/c;
+                              b   a
+(%o2)                         - + -
+                              c   c
+(%i3) z: (a + b)/c;
+                              b + a
+(%o3)                         -----
+                                c
+(%i4) is (x = y);
+(%o4)                         true
+(%i5) is (y = z);
+(%o5)                         false
+(%i6) is (equal (y, z));
+(%o6)                         true
+(%i7) y - z;
+                           b + a   b   a
+(%o7)                    - ----- + - + -
+                             c     c   c
+(%i8) ratsimp (%);
+(%o8)                           0
+(%i9) @{x, y, z@};
+                          b + a  b   a
+(%o9)                    @{-----, - + -@}
+                            c    c   c
+@end example
+
+リストの要素から集合を構成するには、@code{setify}を使ってください。
+
+@c ===beg===
+@c setify ([b, a]);
+@c ===end===
+@example
+(%i1) setify ([b, a]);
+(%o1)                        @{a, b@}
+@end example
+
+もし@code{is(x = y)}が@code{true}に評価されるなら、
+集合の元@code{x}と@code{y}は等しいです。
+従って、@code{rat(x)}と@code{x}は集合の元として等しいです;
+結果として、
+
+@c ===beg===
+@c {x, rat(x)};
+@c ===end===
+@example
+(%i1) @{x, rat(x)@};
+(%o1)                          @{x@}
+@end example
+
+さらに、
+@code{is((x - 1)*(x + 1) = x^2 - 1)}は@code{false}に評価されるので、
+@code{(x - 1)*(x + 1)}と@code{x^2 - 1}は集合の異なる元です;
+従って、
+
+@c ===beg===
+@c {(x - 1)*(x + 1), x^2 - 1};
+@c ===end===
+@example
+(%i1) @{(x - 1)*(x + 1), x^2 - 1@};
+                                       2
+(%o1)               @{(x - 1) (x + 1), x  - 1@}
+@end example
+
+この集合を1元集合に縮小するには、
+@code{rat}を集合の元それぞれに適用してください:
+
+@c ===beg===
+@c {(x - 1)*(x + 1), x^2 - 1};
+@c map (rat, %);
+@c ===end===
+@example
+(%i1) @{(x - 1)*(x + 1), x^2 - 1@};
+                                       2
+(%o1)               @{(x - 1) (x + 1), x  - 1@}
+(%i2) map (rat, %);
+                              2
+(%o2)/R/                    @{x  - 1@}
+@end example
+
+他の集合から冗長性を取り除くために、
+他の整理関数を使う必要があるかもしれません。
+以下は、@code{trigsimp}を使った例です:
+
+@c ===beg===
+@c {1, cos(x)^2 + sin(x)^2};
+@c map (trigsimp, %);
+@c ===end===
+@example
+(%i1) @{1, cos(x)^2 + sin(x)^2@};
+                            2         2
+(%o1)                @{1, sin (x) + cos (x)@}
+(%i2) map (trigsimp, %);
+(%o2)                          @{1@}
+@end example
+
+元が、冗長でなく、並べ換えられている時
+集合は整理されてます。
+集合関数の現在のバージョンは、
+集合を順に並べるためにMaxima関数@code{orderlessp}を使います;
+しかしながら、
+@i{集合関数の将来のバージョンは、違う並び替え関数を使うかもしれません。}
+
+代入のような、集合に関するいくつかの演算は、
+再整理を自動的に強制します;
+例えば、
+
+@c ===beg===
+@c s: {a, b, c}$
+@c subst (c=a, s);
+@c subst ([a=x, b=x, c=x], s);
+@c map (lambda ([x], x^2), set (-1, 0, 1));
+@c ===end===
+@example
+(%i1) s: @{a, b, c@}$
+(%i2) subst (c=a, s);
+(%o2)                        @{a, b@}
+(%i3) subst ([a=x, b=x, c=x], s);
+(%o3)                          @{x@}
+(%i4) map (lambda ([x], x^2), set (-1, 0, 1));
+(%o4)                        @{0, 1@}
+@end example
+
+Maximaは、リストと集合を異なるオブジェクトとして扱います;
+@code{union}や@code{intersection}のような関数は、
+もし引数のいずれかがしゅうごうでないなら、文句を言います。
+もしリストに集合関数を適用する必要があるなら、
+集合に変換するために、
+@code{setify}関数を使ってください。
+例えば、
+
+@c ===beg===
+@c union ([1, 2], {a, b});
+@c union (setify ([1, 2]), {a, b});
+@c ===end===
+@example
+(%i1) union ([1, 2], @{a, b@});
+Function union expects a set, instead found [1,2]
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i2) union (setify ([1, 2]), @{a, b@});
+(%o2)                     @{1, 2, a, b@}
+@end example
+
+集合@code{s}の集合要素のうち述語論理@code{f}を満たすすべての要素を抽出するためには、
+use @code{subset(s, f)}を使ってください。
+(@i{述語論理}はブーリアン値関数です。)
+例えば、
+与えられた集合の中で、変数@code{z}に依存しない等式を見つけるには、
+以下を使ってください。
+
+@c ===beg===
+@c subset ({x + y + z, x - y + 4, x + y - 5}, 
+@c                                     lambda ([e], freeof (z, e)));
+@c ===end===
+@example
+(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@},
+                                    lambda ([e], freeof (z, e)));
+(%o1)               @{- y + x + 4, y + x - 5@}
+@end example
+
+節@ref{Functions and Variables for Sets}は、
+Maximaの集合関数の完全なリストを持ちます。
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@subsection Set Member Iteration
+
+集合の元上を反復する２つの方法があります。
+１つの方法は@code{map}の使用です;
+例えば:
+
+@c ===beg===
+@c map (f, {a, b, c});
+@c ===end===
+@example
+(%i1) map (f, @{a, b, c@});
+(%o1)                  @{f(a), f(b), f(c)@}
+@end example
+
+他の方法は、
+@code{for @var{x} in @var{s} do}を使うことです。
+
+@c ===beg===
+@c s: {a, b, c};
+@c for si in s do print (concat (si, 1));
+@c ===end===
+@example
+(%i1) s: @{a, b, c@};
+(%o1)                       @{a, b, c@}
+(%i2) for si in s do print (concat (si, 1));
+a1 
+b1 
+c1 
+(%o2)                         done
+@end example
+
+Maxima関数@code{first}と@code{rest}は、
+集合に対して正しく機能します。
+集合に適用されると、
+@code{first}は、最初に表示される集合の要素を返します;
+それは、実装依存かもしれません。
+もし@code{s}が集合なら
+@code{rest(s)}は、@code{disjoin(first(s), s)}と同値です。
+現在、
+集合に対して正しく機能する他のMaxima関数があります。
+集合関数の将来のバージョンでは、
+@code{first}と@code{rest}は、違うように機能するかもしれませんし、そうでないかもしれません。
+
+@subsection Bugs
+
+集合関数は、
+集合の元を並び換えるために、
+Maxima関数@code{orderlessp}を使い、
+集合の元の同一性をテストするために(Lispレベルの)関数@code{like}を使います。
+これらの関数の両方は、
+もし標準有理式(CRE)形式の式を含むリストや行列が元の集合を使おうとするなら、現れる既知のバグを持ちます。
+例は以下の通りです。
+
+@c ===beg===
+@c {[x], [rat (x)]};
+@c ===end===
+@example
+(%i1) @{[x], [rat (x)]@};
+Maxima encountered a Lisp error:
+
+  The value #:X1440 is not of type LIST.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+@end example
+
+この式は、Maximaがエラーで停止する原因となります。
+(エラーメッセージはMaximaが使うLispのバージョンに依ります。)
+もう１つの例は、以下の通りです。
+
+@c ===beg===
+@c setify ([[rat(a)], [rat(b)]]);
+@c ===end===
+@example
+(%i1) setify ([[rat(a)], [rat(b)]]);
+Maxima encountered a Lisp error:
+
+  The value #:A1440 is not of type LIST.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+@end example
+
+これらのバグは、
+@code{orderlessp}と@code{like}の中にあるバグに原因します;
+それらは、集合関数の中のバグが原因ではありません。
+例証するには、以下の式を試してください。
+
+@c ===beg===
+@c orderlessp ([rat(a)], [rat(b)]);
+@c is ([rat(a)] = [rat(a)]);
+@c ===end===
+@example
+(%i1) orderlessp ([rat(a)], [rat(b)]);
+Maxima encountered a Lisp error:
+
+  The value #:B1441 is not of type LIST.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+(%i2) is ([rat(a)] = [rat(a)]);
+(%o2)                         false
+@end example
+
+これらのバグが直されるまで、
+CRE形式の式を含むリストや行を元に持つ集合を構成しないでください;
+しかしながら、CRE形式の元を持つ集合は、問題ないはずです:
+
+@c ===beg===
+@c {x, rat (x)};
+@c ===end===
+@example
+(%i1) @{x, rat (x)@};
+(%o1)                          @{x@}
+@end example
+
+Maximaの@code{orderlessp}は、
+集合関数で問題の原因となる可能性がある
+もう１つのバグを持ちます。
+それは、すなわち、順序付け述語論理@code{orderlessp}が推移的でないことです。
+これを示す最も簡単な既知の例は、以下の通りです。
+
+@c ===beg===
+@c q: x^2$
+@c r: (x + 1)^2$
+@c s: x*(x + 2)$
+@c orderlessp (q, r);
+@c orderlessp (r, s);
+@c orderlessp (q, s);
+@c ===end===
+@example
+(%i1) q: x^2$
+(%i2) r: (x + 1)^2$
+(%i3) s: x*(x + 2)$
+(%i4) orderlessp (q, r);
+(%o4)                         true
+(%i5) orderlessp (r, s);
+(%o5)                         true
+(%i6) orderlessp (q, s);
+(%o6)                         false
+@end example
+
+このバグは、一般的にMaximaの関数はもちろん、集合関数すべてにおいて、
+問題の原因となる可能性があります。
+確実ではありませんが、
+もし集合の元すべてがCRE形式であるか、@code{ratsimp}を使って整理されていれば、
+このバグはたぶん避けられます。
+
+@c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
+Maximaの@code{orderless}と@code{ordergreat}メカニズムは、
+集合関数と互換性がありません。
+もし、@code{orderless}か@code{ordergreat}のいずれかを使う必要があるなら、
+いかなる集合を構成する前に、これらの関数をコールしてください。
+そして、@code{unorder}をコールしないでください。
+
+@c APPARENTLY THIS NEXT BIT REFERS TO BUG REPORT 798571
+@c EXAMPLE WITH kron_delta (1/sqrt(2), sqrt(2)/2); NOW WORKS AS EXPECTED
+@c COMMENT OUT PENDING CONSTRUCTION OF ANOTHER EXAMPLE WHICH TRIGGERS THE BUG
+@c
+@c Maxima's sign function has a bug that may cause the Kronecker
+@c delta function to misbehave; for example:
+@c 
+@c @c ===beg===
+@c @c kron_delta (1/sqrt(2), sqrt(2)/2);
+@c @c ===end===
+@c @example
+@c (%i1) kron_delta (1/sqrt(2), sqrt(2)/2);
+@c (%o1)                           0
+@c @end example
+@c 
+@c The correct value is 1; the bug is related to the @code{sign} bug
+@c 
+@c @c ===beg===
+@c @c sign (1/sqrt(2) - sqrt(2)/2);
+@c @c ===end===
+@c @example
+@c (%i1) sign (1/sqrt(2) - sqrt(2)/2);
+@c (%o1)                          pos
+@c @end example
+
+もし集合関数のバグかもしれないと思う何かを見つけたら、
+どうかMaximaのバグデータベースに報告してください。
+@code{bug_report}を参照してください。
+
+@subsection Authors
+
+マサチューセッツ州ケンブリッジ市のStavros Macrakisと、
+ネブラスカ大学カーニー校(UNK)のBarton Willisが、
+Maximaの集合関数とそれらのドキュメンテーションを書きました。
+
+@node Functions and Variables for Sets,  , Introduction to Sets, Sets
+@section Functions and Variables for Sets
+
+@anchor{adjoin}
+@deffn {関数} adjoin (@var{x}, @var{a}) 
+
+集合@var{a}に要素@code{@{@var{x}@}}を加えた集合を返します。
+
+もし@var{a}が集合リテラルでないなら、
+@code{adjoin}は文句を言います。
+
+@code{adjoin(@var{x}, @var{a})}と@code{union(set(@var{x}), @var{a})}は同値です;
+しかしながら、@code{adjoin}は@code{union}より幾分早いかもしれません。
+
+@code{disjoin}も参照してください。
+
+例:
+
+@c ===beg===
+@c adjoin (c, {a, b});
+@c adjoin (a, {a, b});
+@c ===end===
+@example
+(%i1) adjoin (c, @{a, b@});
+(%o1)                       @{a, b, c@}
+(%i2) adjoin (a, @{a, b@});
+(%o2)                        @{a, b@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{belln}
+@deffn {関数} belln (@var{n})
+
+@math{n}番目のベル数を返します。
+@code{belln(n)}は@var{n}個のメンバーを持つ集合の分割の数です。
+
+非負整数@var{n}に対して、
+@code{belln(@var{n})}は@math{n}番目のベル数に整理されます。
+@code{belln}は他のいかなる引数に関して整理されません。
+
+@code{belln}は等式、リスト、行列、集合上に分配されます。
+
+例:
+
+非負整数に適用された@code{belln}。
+
+@c ===beg===
+@c makelist (belln (i), i, 0, 6);
+@c is (cardinality (set_partitions ({})) = belln (0));
+@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = 
+@c                        belln (6));
+@c ===end===
+@example
+(%i1) makelist (belln (i), i, 0, 6);
+(%o1)               [1, 1, 2, 5, 15, 52, 203]
+(%i2) is (cardinality (set_partitions (@{@})) = belln (0));
+(%o2)                         true
+(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) =
+                       belln (6));
+(%o3)                         true
+@end example
+
+非負整数でない引数に適用された@code{belln}。
+
+@c ===beg===
+@c [belln (x), belln (sqrt(3)), belln (-9)];
+@c ===end===
+@example
+(%i1) [belln (x), belln (sqrt(3)), belln (-9)];
+(%o1)        [belln(x), belln(sqrt(3)), belln(- 9)]
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{cardinality}
+@deffn {関数} cardinality (@var{a})
+
+集合@var{a}の異なる要素の数を返します。
+
+整理がディセーブルされた時でも、
+@code{cardinality}は冗長な要素を無視します。
+
+例:
+
+@c ===beg===
+@c cardinality ({});
+@c cardinality ({a, a, b, c});
+@c simp : false;
+@c cardinality ({a, a, b, c});
+@c ===end===
+@example
+(%i1) cardinality (@{@});
+(%o1)                           0
+(%i2) cardinality (@{a, a, b, c@});
+(%o2)                           3
+(%i3) simp : false;
+(%o3)                         false
+(%i4) cardinality (@{a, a, b, c@});
+(%o4)                           3
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{cartesian_product}
+@deffn {関数} cartesian_product (@var{b_1}, ... , @var{b_n})
+Returns a set of lists of the form 
+形式@code{[@var{x_1}, ..., @var{x_n}]}のリストの集合を返します。
+ここで、@var{x_1}, ..., @var{x_n}はそれぞれ、
+集合@var{b_1}, ... , @var{b_n}の要素です。
+
+もし任意の引数が集合リテラルでないなら、
+@code{cartesian_product}は文句を言います。
+
+例:
+
+@c ===beg===
+@c cartesian_product ({0, 1});
+@c cartesian_product ({0, 1}, {0, 1});
+@c cartesian_product ({x}, {y}, {z});
+@c cartesian_product ({x}, {-1, 0, 1});
+@c ===end===
+@example
+(%i1) cartesian_product (@{0, 1@});
+(%o1)                      @{[0], [1]@}
+(%i2) cartesian_product (@{0, 1@}, @{0, 1@});
+(%o2)           @{[0, 0], [0, 1], [1, 0], [1, 1]@}
+(%i3) cartesian_product (@{x@}, @{y@}, @{z@});
+(%o3)                      @{[x, y, z]@}
+(%i4) cartesian_product (@{x@}, @{-1, 0, 1@});
+(%o4)              @{[x, - 1], [x, 0], [x, 1]@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+
+@anchor{disjoin}
+@deffn {関数} disjoin (@var{x}, @var{a})
+元@var{x}を持たない集合@var{a}を返します。
+もし@var{x}が@var{a}のメンバーでないなら、
+変更なしに@var{a}を返します。
+
+もし@var{a}が集合リテラルでないなら、
+@code{disjoin}は文句を言います。
+
+@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})},
+@code{setdifference(@var{a}, set(@var{x}))}はすべて同値です。
+これらの中で、
+@code{disjoin}は一般的に他より速いです。
+
+例:
+
+@c ===beg===
+@c disjoin (a, {a, b, c, d});
+@c disjoin (a + b, {5, z, a + b, %pi});
+@c disjoin (a - b, {5, z, a + b, %pi});
+@c ===end===
+@example
+(%i1) disjoin (a, @{a, b, c, d@});
+(%o1)                       @{b, c, d@}
+(%i2) disjoin (a + b, @{5, z, a + b, %pi@});
+(%o2)                      @{5, %pi, z@}
+(%i3) disjoin (a - b, @{5, z, a + b, %pi@});
+(%o3)                  @{5, %pi, b + a, z@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{disjointp}
+@deffn {関数} disjointp (@var{a}, @var{b}) 
+
+集合@var{a}と@var{b}がばらばらなら、
+@code{true}を返します。
+
+もし@var{a}か@var{b}が集合リテラルでないなら、
+@code{disjointp}は文句を言います。
+
+例:
+
+@c ===beg===
+@c disjointp ({a, b, c}, {1, 2, 3});
+@c disjointp ({a, b, 3}, {1, 2, 3});
+@c ===end===
+@example
+(%i1) disjointp (@{a, b, c@}, @{1, 2, 3@});
+(%o1)                         true
+(%i2) disjointp (@{a, b, 3@}, @{1, 2, 3@});
+(%o2)                         false
+@end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@anchor{divisors}
+@deffn {関数} divisors (@var{n})
+
+@var{n}の約数の集合を表します。
+
+@var{n}がゼロでない整数の時、
+@code{divisors(@var{n})}は整数の集合に整理されます。
+約数の集合は元1と@var{n}を含みます。
+負の整数の約数は、その絶対値の約数です。
+
+@code{divisors}は、等式、リスト、行列、集合上に分配されます。
+
+例:
+
+28は完全数であることを検証できます:
+(自身を除いた)約数が28です。
+
+@c ===beg===
+@c s: divisors(28);
+@c lreduce ("+", args(s)) - 28;
+@c ===end===
+@example
+(%i1) s: divisors(28);
+(%o1)                 @{1, 2, 4, 7, 14, 28@}
+(%i2) lreduce ("+", args(s)) - 28;
+(%o2)                          28
+@end example
+
+@code{divisors}は整理関数です。
+@code{divisors(a)}の中で@code{a}に8を代入することは、
+@code{divisors(8)}を再評価せずに約数をもたらします。
+
+@c ===beg===
+@c divisors (a);
+@c subst (8, a, %);
+@c ===end===
+@example
+(%i1) divisors (a);
+(%o1)                      divisors(a)
+(%i2) subst (8, a, %);
+(%o2)                     @{1, 2, 4, 8@}
+@end example
+
+@code{divisors}は、等式、リスト、行列、集合上に分配されます。
+
+@c ===beg===
+@c divisors (a = b);
+@c divisors ([a, b, c]);
+@c divisors (matrix ([a, b], [c, d]));
+@c divisors ({a, b, c});
+@c ===end===
+@example
+(%i1) divisors (a = b);
+(%o1)               divisors(a) = divisors(b)
+(%i2) divisors ([a, b, c]);
+(%o2)        [divisors(a), divisors(b), divisors(c)]
+(%i3) divisors (matrix ([a, b], [c, d]));
+                  [ divisors(a)  divisors(b) ]
+(%o3)             [                          ]
+                  [ divisors(c)  divisors(d) ]
+(%i4) divisors (@{a, b, c@});
+(%o4)        @{divisors(a), divisors(b), divisors(c)@}
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+@anchor{elementp}
+@deffn {関数} elementp (@var{x}, @var{a})
+@var{x}が集合@var{a}の元の時だけ@code{true}を返します。
+
+もし@var{a}が集合リテラルでないなら、
+@code{elementp}は文句を言います。
+
+例:
+
+@c ===beg===
+@c elementp (sin(1), {sin(1), sin(2), sin(3)});
+@c elementp (sin(1), {cos(1), cos(2), cos(3)});
+@c ===end===
+@example
+(%i1) elementp (sin(1), @{sin(1), sin(2), sin(3)@});
+(%o1)                         true
+(%i2) elementp (sin(1), @{cos(1), cos(2), cos(3)@});
+(%o2)                         false
+@end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@anchor{emptyp}
+@deffn {関数} emptyp (@var{a})
+
+@var{a}が空の集合か空のリストの時だけ、@code{true}を返します。
+
+例:
+
+@c ===beg===
+@c map (emptyp, [{}, []]);
+@c map (emptyp, [a + b, {{}}, %pi]);
+@c ===end===
+@example
+(%i1) map (emptyp, [@{@}, []]);
+(%o1)                     [true, true]
+(%i2) map (emptyp, [a + b, @{@{@}@}, %pi]);
+(%o2)                 [false, false, false]
+@end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+       
+@anchor{equiv_classes}
+@deffn {関数} equiv_classes (@var{s}, @var{F})
+集合@var{s}の
+同値関係@var{F}に関する
+同値クラスの集合を返します。
+
+@var{F}は@var{s}の@var{s}との直積集合上の２変数関数です。
+The return value of 
+@var{F}の戻り値は、@code{true}か@code{false}、もしくは、
+@code{is(@var{expr})}が@code{true}か@code{false}のような
+式@var{expr}です。
+
+@var{F}が同値関数でない時、
+@code{equiv_classes}は不平なくそれを受け入れますが、
+その場合、結果は、一般に正しくありません。
+
+@c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
+@c @var{F} may be a relational operator (built-in or user-defined),
+@c an ordinary Maxima function, a Lisp function, a lambda expression,
+@c a macro, or a subscripted function.
+
+例:
+
+同値関係が
+@code{true}か@code{false}を返すラムダ式です。
+
+@c ===beg===
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, 
+@c                         lambda ([x, y], is (equal (x, y))));
+@c ===end===
+@example
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@},
+                        lambda ([x, y], is (equal (x, y))));
+(%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
+@end example
+
+同値関係が、@code{is}が@code{true}か@code{false}に評価される
+関係関数の名前です。
+
+@c ===beg===
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, equal);
+@c ===end===
+@example
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, equal);
+(%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
+@end example
+
+同値クラスが3の倍数だけ違う数です。
+
+@c ===beg===
+@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, 
+@c                      lambda ([x, y], remainder (x - y, 3) = 0));
+@c ===end===
+@example
+(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@},
+                     lambda ([x, y], remainder (x - y, 3) = 0));
+(%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{every}
+@deffn {関数} every (@var{f}, @var{s})
+@deffnx {関数} every (@var{f}, @var{L_1}, ..., @var{L_n})
+
+もし述語論理@var{f}が与えられた引数すべてで@code{true}なら、
+@code{true}を返します。
+
+ある集合が二番目の引数として与えられたとして、
+もし@code{is(@var{f}(@var{a_i}))}が
+@var{s}の中の@var{a_i}すべてに関して
+@code{true}を返すなら
+@code{every(@var{f}, @var{s})}は@code{true}です。
+@code{every}は、
+@var{s}の中の@var{a_i}すべてに関して@var{f}を評価するかもしれないししないかもしれません。
+集合は順序付けされていないので、
+@code{every}は任意の順序で@code{@var{f}(@var{a_i})}を評価します。
+
+非キスとして１つか複数のリストが与えられたとして、
+もし@code{is(@var{f}(@var{x_1}, ..., @var{x_n}))}が
+@var{L_1}, ..., @var{L_n}それぞれの中の@var{x_1}, ..., @var{x_n}すべてに対して
+@code{true}を返すなら、
+@code{every(@var{f}, @var{L_1}, ..., @var{L_n})}は@code{true}を返します。
+@code{every}は、
+@var{x_1}, ..., @var{x_n}のすべての組み合わせに対して@var{f}を評価するかもしれないししないかもしれません。
+@code{every}はインデックスを増やす順序でリストを評価します。
+
+空の集合@code{@{@}}または空のリスト@code{[]}が引数として与えられたとして、
+@code{every}は@code{false}を返します。
+
+グローバルフラグ@code{maperror}が@code{true}の時、
+リスト@var{L_1}, ..., @var{L_n}すべては等しい長さを持たなければいけません。
+@code{maperror}が@code{false}の時、
+リスト引数は、最短のリストの長さに効果的に切り詰められます。
+
+(@code{is}を介して)
+@code{true}か@code{false}以外の何かに評価される述語論理@var{f}の戻り値は、
+@code{prederror}によって決定されます。
+@code{prederror}が@code{true}の時、
+そんな値は@code{false}として扱われ、
+@code{every}の戻り値は@code{false}です。
+@code{prederror}が@code{false}の時、
+そんな値は@code{unknown}として扱われ、
+@code{every}の戻り値は@code{unknown}です。
+
+例:
+
+１つの集合に適用された@code{every}。
+述語論理は１引数関数です。
+
+@c ===beg===
+@c every (integerp, {1, 2, 3, 4, 5, 6});
+@c every (atom, {1, 2, sin(3), 4, 5 + y, 6});
+@c ===end===
+@example
+(%i1) every (integerp, @{1, 2, 3, 4, 5, 6@});
+(%o1)                         true
+(%i2) every (atom, @{1, 2, sin(3), 4, 5 + y, 6@});
+(%o2)                         false
+@end example
+
+２つのリストに適用された@code{every}。
+述語論理は２引数関数です。
+
+@c ===beg===
+@c every ("=", [a, b, c], [a, b, c]);
+@c every ("#", [a, b, c], [a, b, c]);
+@c ===end===
+@example
+(%i1) every ("=", [a, b, c], [a, b, c]);
+(%o1)                         true
+(%i2) every ("#", [a, b, c], [a, b, c]);
+(%o2)                         false
+@end example
+
+@code{true}か@code{false}以外の何かに評価される
+述語論理@var{f}の戻り値は、
+グローバルフラグ@code{prederror}によって決定されます。
+
+@c ===beg===
+@c prederror : false;
+@c map (lambda ([a, b], is (a < b)), [x, y, z], 
+@c                    [x^2, y^2, z^2]);
+@c every ("<", [x, y, z], [x^2, y^2, z^2]);
+@c prederror : true;
+@c every ("<", [x, y, z], [x^2, y^2, z^2]);
+@c ===end===
+@example
+(%i1) prederror : false;
+(%o1)                         false
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+                   [x^2, y^2, z^2]);
+(%o2)              [unknown, unknown, unknown]
+(%i3) every ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o3)                        unknown
+(%i4) prederror : true;
+(%o4)                         true
+(%i5) every ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o5)                         false
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+ 
+@anchor{extremal_subset}
+@deffn {関数} extremal_subset (@var{s}, @var{f}, max)
+@deffnx {関数} extremal_subset (@var{s}, @var{f}, min)
+
+関数@var{f}が最大または最小値を取る、
+@var{s}の部分集合を返します。
+
+@code{extremal_subset(@var{s}, @var{f}, max)}は、
+実数値関数@var{f}が最大値を取る、
+集合またはリスト@var{s}の部分集合を返します。
+
+@code{extremal_subset(@var{s}, @var{f}, min)}は、
+実数値関数@var{f}が最小値を取る、
+集合またはリスト@var{s}の部分集合を返します。
+
+例:
+
+@c ===beg===
+@c extremal_subset ({-2, -1, 0, 1, 2}, abs, max);
+@c extremal_subset ({sqrt(2), 1.57, %pi/2}, sin, min);
+@c ===end===
+@example
+(%i1) extremal_subset (@{-2, -1, 0, 1, 2@}, abs, max);
+(%o1)                       @{- 2, 2@}
+(%i2) extremal_subset (@{sqrt(2), 1.57, %pi/2@}, sin, min);
+(%o2)                       @{sqrt(2)@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{flatten}
+@deffn {関数} flatten (@var{expr})
+
+@var{expr}と同じ演算子を持つ部分式の引数を集め、
+これらの集めた引数から式を構成します。
+
+@code{expr}の主演算子と違った演算子の部分式は、
+たとえそれらが、逆に@code{expr}に関するものと同じ演算子の部分式を含んだとしても、
+変更なしにコピーされます。
+
+引数の数が演算子に関して宣言された引数と違う
+式を@code{flatten}が構成する可能性があるかもしれません;
+これは、整理器や評価器からのエラーメッセージを起こさせるかもしれません。
+@code{flatten}はそんな状況を検出しようとしません。
+
+特別な表現の式、例えば、標準有理式(CRE)、はflattenできません;
+そんな場合、@code{flatten}は引数を変更なしに返します。
+
+例:
+
+リストに適用すると、@code{flatten}はリストの要素すべてを集めます。
+
+@c ===beg===
+@c flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
+@c ===end===
+@example
+(%i1) flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
+(%o1)            [a, b, c, d, e, f, g, h, i, j]
+@end example
+
+集合に適用すると、@code{flatten}は集合の元すべてを集めます。
+
+@c ===beg===
+@c flatten ({a, {b}, {{c}}});
+@c flatten ({a, {[a], {a}}});
+@c ===end===
+@example
+(%i1) flatten (@{a, @{b@}, @{@{c@}@}@});
+(%o1)                       @{a, b, c@}
+(%i2) flatten (@{a, @{[a], @{a@}@}@});
+(%o2)                       @{a, [a]@}
+@end example
+
+@code{flatten}は、主演算子をn項に宣言する効果に似ています。
+しかしながら、@code{flatten}は、
+主演算子と違う演算子を持つ部分式上に影響を持ちません。
+一方、n項宣言はそれらに影響します。
+
+@c ===beg===
+@c expr: flatten (f (g (f (f (x)))));
+@c declare (f, nary);
+@c ev (expr);
+@c ===end===
+@example
+(%i1) expr: flatten (f (g (f (f (x)))));
+(%o1)                     f(g(f(f(x))))
+(%i2) declare (f, nary);
+(%o2)                         done
+(%i3) ev (expr);
+(%o3)                      f(g(f(x)))
+@end example
+
+@code{flatten}は、他の任意の演算子と同じように添字付き関数を扱います。
+
+@c ===beg===
+@c flatten (f[5] (f[5] (x, y), z));
+@c ===end===
+@example
+(%i1) flatten (f[5] (f[5] (x, y), z));
+(%o1)                      f (x, y, z)
+                            5
+@end example
+
+引数の数が演算子に関して宣言された引数と違う
+式を@code{flatten}が構成する可能性があるかもしれません;
+
+@c ===beg===
+@c 'mod (5, 'mod (7, 4));
+@c flatten (%);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) 'mod (5, 'mod (7, 4));
+(%o1)                   mod(5, mod(7, 4))
+(%i2) flatten (%);
+(%o2)                     mod(5, 7, 4)
+(%i3) ''%, nouns;
+Wrong number of arguments to mod
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{full_listify}
+@deffn {関数} full_listify (@var{a})
+@var{a}の中のすべての集合演算子をリスト演算子で置き換え、
+結果を返します。
+@code{full_listify}は、
+たとえ主演算子が@code{set}でなくても
+入れ子の部分式の中の集合演算子を置き換えます。
+
+@code{listify}は主演算子だけを置き換えます。
+
+例:
+
+@c ===beg===
+@c full_listify ({a, b, {c, {d, e, f}, g}});
+@c full_listify (F (G ({a, b, H({c, d, e})})));
+@c ===end===
+@example
+(%i1) full_listify (@{a, b, @{c, @{d, e, f@}, g@}@});
+(%o1)               [a, b, [c, [d, e, f], g]]
+(%i2) full_listify (F (G (@{a, b, H(@{c, d, e@})@})));
+(%o2)              F(G([a, b, H([c, d, e])]))
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{fullsetify}
+@deffn {関数} fullsetify (@var{a})
+@var{a}がリストの時、
+リスト演算子を集合演算子で置き換え、
+@code{fullsetify}を集合であるメンバーそれぞれに適用します。
+@var{a}がリストでない時、変更なしで返します。
+
+@code{setify}は主演算子だけを置き換えます。
+
+例:
+
+
+@code{f([b])}の主演算子はリストでないので、
+行@code{(%o2)}で、
+@code{f}の引数は集合に変換されません。
+
+@c ===beg===
+@c fullsetify ([a, [a]]);
+@c fullsetify ([a, f([b])]);
+@c ===end===
+@example
+(%i1) fullsetify ([a, [a]]);
+(%o1)                       @{a, @{a@}@}
+(%i2) fullsetify ([a, f([b])]);
+(%o2)                      @{a, f([b])@}
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{identity}
+@deffn {関数} identity (@var{x})
+
+任意の引数@var{x}に対して@var{x}を返します。
+
+例:
+
+@code{identity}は、
+引数が既にブーリアン値の時、
+述語論理として使うことができます。
+
+@c ===beg===
+@c every (identity, [true, true]);
+@c ===end===
+@example
+(%i1) every (identity, [true, true]);
+(%o1)                         true
+@end example
+@end deffn
+
+@anchor{integer_partitions}
+@deffn {関数} integer_partitions (@var{n})
+@deffnx {関数} integer_partitions (@var{n}, @var{len})
+
+@var{n}の整数分割を返します。
+すなわち、和が@var{n}になる整数のリストです。
+
+@code{integer_partitions(@var{n})}は、
+整数@var{n}の分割すべての集合を返します。
+分割それぞれは、大きい順に並べられたリストです。
+
+@code{integer_partitions(@var{n}, @var{len})}は、
+長さ@var{len}以下の分割すべてを返します;
+この場合、
+@var{len}より少ない項を持つ分割それぞれには、
+厳密に@var{len}項持つ分割にするように、ゼロが足されます。
+分割それぞれは、大きい順に並べられたリストです。
+
+リスト@math{[a_1, ..., a_m]}は、
+(1) @math{a_i}それぞれが非ゼロ整数、かつ、
+(2) @math{a_1 + ... + a_m = n.}
+の時、非負整数@math{n}の分割です。
+従って0は分割を持ちません。
+
+例:
+
+@c ===beg===
+@c integer_partitions (3);
+@c s: integer_partitions (25)$
+@c cardinality (s);
+@c map (lambda ([x], apply ("+", x)), s);
+@c integer_partitions (5, 3);
+@c integer_partitions (5, 2);
+@c ===end===
+@example
+(%i1) integer_partitions (3);
+(%o1)               @{[1, 1, 1], [2, 1], [3]@}
+(%i2) s: integer_partitions (25)$
+(%i3) cardinality (s);
+(%o3)                         1958
+(%i4) map (lambda ([x], apply ("+", x)), s);
+(%o4)                         @{25@}
+(%i5) integer_partitions (5, 3);
+(%o5) @{[2, 2, 1], [3, 1, 1], [3, 2, 0], [4, 1, 0], [5, 0, 0]@}
+(%i6) integer_partitions (5, 2);
+(%o6)               @{[3, 2], [4, 1], [5, 0]@}
+@end example
+
+条件を満たす分割すべてを見つけるには、
+関数@code{subset}を使ってください;
+以下は素数から成る10の分割すべてを見つける例です。
+
+@c ===beg===
+@c s: integer_partitions (10)$
+@c cardinality (s);
+@c xprimep(x) := integerp(x) and (x > 1) and primep(x)$
+@c subset (s, lambda ([x], every (xprimep, x)));
+@c ===end===
+@example
+(%i1) s: integer_partitions (10)$
+(%i2) cardinality (s);
+(%o2)                          42
+(%i3) xprimep(x) := integerp(x) and (x > 1) and primep(x)$
+(%i4) subset (s, lambda ([x], every (xprimep, x)));
+(%o4) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+@anchor{intersect}
+@deffn {関数} intersect (@var{a_1}, ..., @var{a_n})
+
+@code{intersect}は、以下に見る@code{intersection}と同じです。
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{intersection}
+@deffn {関数} intersection (@var{a_1}, ..., @var{a_n})
+集合@var{a_1}から@var{a_n}までに共通な
+要素を含む
+集合を返します。
+
+もし引数のいずれかが集合リテラルでないなら、
+@code{intersection}は文句を言います。
+
+例:
+
+@c ===beg===
+@c S_1 : {a, b, c, d};
+@c S_2 : {d, e, f, g};
+@c S_3 : {c, d, e, f};
+@c S_4 : {u, v, w};
+@c intersection (S_1, S_2);
+@c intersection (S_2, S_3);
+@c intersection (S_1, S_2, S_3);
+@c intersection (S_1, S_2, S_3, S_4);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c, d@};
+(%o1)                     @{a, b, c, d@}
+(%i2) S_2 : @{d, e, f, g@};
+(%o2)                     @{d, e, f, g@}
+(%i3) S_3 : @{c, d, e, f@};
+(%o3)                     @{c, d, e, f@}
+(%i4) S_4 : @{u, v, w@};
+(%o4)                       @{u, v, w@}
+(%i5) intersection (S_1, S_2);
+(%o5)                          @{d@}
+(%i6) intersection (S_2, S_3);
+(%o6)                       @{d, e, f@}
+(%i7) intersection (S_1, S_2, S_3);
+(%o7)                          @{d@}
+(%i8) intersection (S_1, S_2, S_3, S_4);
+(%o8)                          @{@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} kron_delta (@var{x}, @var{y}, @dots{}, @var{xp})
+
+クロネッカーのデルタ関数を表します。
+
+@code{kron_delta}は、
+@var{xi}と@var{yj}が引数のすべての対で等しい時
+1に整理され、
+@var{xi}と@var{yj}が引数のある対で等しくない時
+0に整理されます。
+等号は@code{is(equal(xi,j))}を使って決定され、
+不等号は@code{is(notsqual(xi,xj))}を使って決定されます。
+厳密に1つの引数に対して、@code{kron_delta}はエラーをシグナルします。
+
+例:
+
+@c ===beg===
+@c kron_delta(a,a);
+@c kron_delta(a,b,a,b);
+@c kron_delta(a,a,b,a+1);
+@c assume(equal(x,y));
+@c kron_delta(x,y);
+@c ===end===
+@example
+(%i1) kron_delta(a,a);
+(%o1)                                  1
+(%i2) kron_delta(a,b,a,b);
+(%o2)                          kron_delta(a, b)
+(%i3) kron_delta(a,a,b,a+1);
+(%o3)                                  0
+(%i4) assume(equal(x,y));
+(%o4)                            [equal(x, y)]
+(%i5) kron_delta(x,y);
+(%o5)                                  1
+@end example
+
+
+@end deffn
+
+@anchor{listify}
+@deffn {関数} listify (@var{a})
+
+@var{a}が集合の時、
+@var{a}の元を含む
+リストを返します。
+そうでなければ、@code{listify}は@var{a}を返します。
+
+@code{full_listify}は
+@var{a}の中の集合演算子をリスト演算子に置き換えます。
+
+例:
+
+@c ===beg===
+@c listify ({a, b, c, d});
+@c listify (F ({a, b, c, d}));
+@c ===end===
+@example
+(%i1) listify (@{a, b, c, d@});
+(%o1)                     [a, b, c, d]
+(%i2) listify (F (@{a, b, c, d@}));
+(%o2)                    F(@{a, b, c, d@})
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{lreduce}
+@deffn {関数} lreduce (@var{F}, @var{s})
+@deffnx {関数} lreduce (@var{F}, @var{s}, @var{s_0})
+
+二項関数@var{F}を合成によってn項関数に拡張します。
+ここで@var{s}はリストです。
+
+@code{lreduce(@var{F}, @var{s})}は@code{F(... F(F(s_1, s_2), s_3), ... s_n)}を返します。
+
+オプション引数@var{s_0}が存在する時、
+結果は@code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}と同値です。
+
+関数@var{F}は、最初の@i{leftmost}の元に適用されます。
+だから、"lreduce"と名付けられています。
+
+@code{rreduce}, @code{xreduce}, @code{tree_reduce}も参照してください。
+
+例:
+
+オプション引数なしの@code{lreduce}。
+
+@c ===beg===
+@c lreduce (f, [1, 2, 3]);
+@c lreduce (f, [1, 2, 3, 4]);
+@c ===end===
+@example
+(%i1) lreduce (f, [1, 2, 3]);
+(%o1)                     f(f(1, 2), 3)
+(%i2) lreduce (f, [1, 2, 3, 4]);
+(%o2)                  f(f(f(1, 2), 3), 4)
+@end example
+
+オプション引数ありの@code{lreduce}。
+
+@c ===beg===
+@c lreduce (f, [1, 2, 3], 4);
+@c ===end===
+@example
+(%i1) lreduce (f, [1, 2, 3], 4);
+(%o1)                  f(f(f(4, 1), 2), 3)
+@end example
+
+組み込み二項演算子に適用された@code{lreduce}。
+@code{/}は割り算演算子。
+
+@c ===beg===
+@c lreduce ("^", args ({a, b, c, d}));
+@c lreduce ("/", args ({a, b, c, d}));
+@c ===end===
+@example
+(%i1) lreduce ("^", args (@{a, b, c, d@}));
+                               b c d
+(%o1)                       ((a ) )
+(%i2) lreduce ("/", args (@{a, b, c, d@}));
+                                a
+(%o2)                         -----
+                              b c d
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{makeset}
+@deffn {関数} makeset (@var{expr}, @var{x}, @var{s})
+
+式@var{expr}から生成された元を持つ集合を返します。
+ここで、@var{x}は@var{expr}の中の変数のリストであり、
+@var{s}はリストの集合かリストです。
+集合の元それぞれを生成するために、
+@var{expr}は、
+@var{s}の元に並列にバインドされた変数@var{x}で評価されます。
+
+@var{s}の元それぞれは
+@var{x}と同じ長さを持たなければいけません。
+変数@var{x}のリストは、添字の付かないシンボルのリストでなければいけません。
+たとえシンボルが１つしかない場合でも、@var{x}は１要素のリストでなければいけなく、
+@var{s}の元それぞれは１要素のリストでなければいけません。
+
+@c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
+@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
+
+@code{makelist}も参照してください。
+
+例:
+
+@c ===beg===
+@c makeset (i/j, [i, j], [[1, a], [2, b], [3, c], [4, d]]);
+@c S : {x, y, z}$
+@c S3 : cartesian_product (S, S, S);
+@c makeset (i + j + k, [i, j, k], S3);
+@c makeset (sin(x), [x], {[1], [2], [3]});
+@c ===end===
+@example
+(%i1) makeset (i/j, [i, j], [[1, a], [2, b], [3, c], [4, d]]);
+                           1  2  3  4
+(%o1)                     @{-, -, -, -@}
+                           a  b  c  d
+(%i2) S : @{x, y, z@}$
+(%i3) S3 : cartesian_product (S, S, S);
+(%o3) @{[x, x, x], [x, x, y], [x, x, z], [x, y, x], [x, y, y], 
+[x, y, z], [x, z, x], [x, z, y], [x, z, z], [y, x, x], 
+[y, x, y], [y, x, z], [y, y, x], [y, y, y], [y, y, z], 
+[y, z, x], [y, z, y], [y, z, z], [z, x, x], [z, x, y], 
+[z, x, z], [z, y, x], [z, y, y], [z, y, z], [z, z, x], 
+[z, z, y], [z, z, z]@}
+(%i4) makeset (i + j + k, [i, j, k], S3);
+(%o4) @{3 x, 3 y, y + 2 x, 2 y + x, 3 z, z + 2 x, z + y + x, 
+                                       z + 2 y, 2 z + x, 2 z + y@}
+(%i5) makeset (sin(x), [x], @{[1], [2], [3]@});
+(%o5)               @{sin(1), sin(2), sin(3)@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{moebius}
+@deffn {関数} moebius (@var{n})
+
+メビウス関数を表します。
+
+@var{n}が@math{k}個の異なる素数の積の時、
+@code{moebius(@var{n})}は@math{(-1)^k}に整理されます;
+@math{@var{n} = 1}の時、1に整理されます;
+他の正の数すべてに対して、0に整理されます。
+
+@code{moebius}は等式、リスト、行列、集合上に分配されます。
+
+例:
+
+@c ===beg===
+@c moebius (1);
+@c moebius (2 * 3 * 5);
+@c moebius (11 * 17 * 29 * 31);
+@c moebius (2^32);
+@c moebius (n);
+@c moebius (n = 12);
+@c moebius ([11, 11 * 13, 11 * 13 * 15]);
+@c moebius (matrix ([11, 12], [13, 14]));
+@c moebius ({21, 22, 23, 24});
+@c ===end===
+@example
+(%i1) moebius (1);
+(%o1)                           1
+(%i2) moebius (2 * 3 * 5);
+(%o2)                          - 1
+(%i3) moebius (11 * 17 * 29 * 31);
+(%o3)                           1
+(%i4) moebius (2^32);
+(%o4)                           0
+(%i5) moebius (n);
+(%o5)                      moebius(n)
+(%i6) moebius (n = 12);
+(%o6)                    moebius(n) = 0
+(%i7) moebius ([11, 11 * 13, 11 * 13 * 15]);
+(%o7)                      [- 1, 1, 1]
+(%i8) moebius (matrix ([11, 12], [13, 14]));
+                           [ - 1  0 ]
+(%o8)                      [        ]
+                           [ - 1  1 ]
+(%i9) moebius (@{21, 22, 23, 24@});
+(%o9)                      @{- 1, 0, 1@}
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+ 
+@anchor{multinomial_coeff}
+@deffn {関数} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffnx {関数} multinomial_coeff ()
+
+多項係数を返します。
+
+@var{a_k}それぞれが非負の整数の時、
+多項係数は、
+@code{@var{a_1} + ... + @var{a_n}}個の別々のオブジェクトを
+@math{k}番目の枠の中に@var{a_k}の要素を持つ@math{n}個の枠に置く方法の数を与えます。
+
+一般に、@code{multinomial_coeff (@var{a_1}, ..., @var{a_n})}は
+@code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}と同値です。
+
+@code{multinomial_coeff()} (引数なし)は1に評価されます。
+
+@code{minfactorial}は@code{multinomial_coeff}が返す値を整理することができます。
+
+例:
+
+@c ===beg===
+@c multinomial_coeff (1, 2, x);
+@c minfactorial (%);
+@c multinomial_coeff (-6, 2);
+@c minfactorial (%);
+@c ===end===
+@example
+(%i1) multinomial_coeff (1, 2, x);
+                            (x + 3)!
+(%o1)                       --------
+                              2 x!
+(%i2) minfactorial (%);
+                     (x + 1) (x + 2) (x + 3)
+(%o2)                -----------------------
+                                2
+(%i3) multinomial_coeff (-6, 2);
+                             (- 4)!
+(%o3)                       --------
+                            2 (- 6)!
+(%i4) minfactorial (%);
+(%o4)                          10
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+@anchor{num_distinct_partitions}
+@deffn {関数} num_distinct_partitions (@var{n})
+@deffnx {関数} num_distinct_partitions (@var{n}, list)
+
+@var{n}が非負の整数の時、
+@var{n}の異なる整数分割の数を返します。
+そうでなければ、@code{num_distinct_partitions}は名詞形を返します。
+
+@code{num_distinct_partitions(@var{n}, list)}は、
+1, 2, 3, ..., @var{n}の異なる分割の数のリストを返します。
+
+@var{n}の異なる分割は、
+@math{@var{n} = k_1 + ... + k_m}となるような
+異なる正の整数@math{k_1}, ..., @math{k_m}のリストです。
+
+例:
+
+@c ===beg===
+@c num_distinct_partitions (12);
+@c num_distinct_partitions (12, list);
+@c num_distinct_partitions (n);
+@c ===end===
+@example
+(%i1) num_distinct_partitions (12);
+(%o1)                          15
+(%i2) num_distinct_partitions (12, list);
+(%o2)      [1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 15]
+(%i3) num_distinct_partitions (n);
+(%o3)              num_distinct_partitions(n)
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+@anchor{num_partitions}
+@deffn {関数} num_partitions (@var{n})
+@deffnx {関数} num_partitions (@var{n}, list)
+
+@var{n}が非負の整数の時、
+@var{n}の整数分割の数を返します。
+そうでなければ、@code{num_partitions}は名詞式を返します。
+
+@code{num_partitions(@var{n}, list)}は、
+1, 2, 3, ..., @var{n}の整数分割の数のリストを返します。
+
+非負の整数@var{n}に対して、
+@code{num_partitions(@var{n})}は
+@code{cardinality(integer_partitions(@var{n}))}と等しいです;
+しかしながら、@code{num_partitions}は、
+分割の集合を実際には構成しないので、はるかに速いです。
+
+例:
+
+@c ===beg===
+@c num_partitions (5) = cardinality (integer_partitions (5));
+@c num_partitions (8, list);
+@c num_partitions (n);
+@c ===end===
+@example
+(%i1) num_partitions (5) = cardinality (integer_partitions (5));
+(%o1)                         7 = 7
+(%i2) num_partitions (8, list);
+(%o2)            [1, 1, 2, 3, 5, 7, 11, 15, 22]
+(%i3) num_partitions (n);
+(%o3)                   num_partitions(n)
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+
+
+@anchor{partition_set}
+@deffn {関数} partition_set (@var{a}, @var{f})
+
+集合@var{a}を述語論理@var{f}に従って分割します。
+
+@code{partition_set}は２つの集合のリストを返します。
+最初の集合は
+@var{f}が@code{false}に評価される
+@var{a}の要素から成り、
+二番目は@var{a}の他の要素すべてから成ります。
+@code{partition_set}は
+@code{is}を@var{f}の戻り値に適用しません。
+
+もし@var{a}が集合リテラルなら
+@code{partition_set}は文句を言います。
+
+@code{subset}も参照してください。
+
+例:
+
+@c ===beg===
+@c partition_set ({2, 7, 1, 8, 2, 8}, evenp);
+@c partition_set ({x, rat(y), rat(y) + z, 1}, 
+@c                      lambda ([x], ratp(x)));
+@c ===end===
+@example
+(%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
+(%o1)                   [@{1, 7@}, @{2, 8@}]
+(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@},
+                     lambda ([x], ratp(x)));
+(%o2)/R/              [@{1, x@}, @{y, y + z@}]
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{permutations}
+@deffn {関数} permutations (@var{a})
+
+リストまたは集合@var{a}の元の異なる順列すべての集合を返します。
+順列それぞれは、集合でなくリストです。
+
+@var{a}がリストの時、
+@var{a}の重複した元が順列の中に含まれます。
+
+もし@var{a}がリストリテラルや集合リテラルでないなら、
+@code{permutations}は文句を言います。
+
+@code{random_permutation}も参照してください。
+
+例:
+
+@c ===beg===
+@c permutations ([a, a]);
+@c permutations ([a, a, b]);
+@c ===end===
+@example
+(%i1) permutations ([a, a]);
+(%o1)                       @{[a, a]@}
+(%i2) permutations ([a, a, b]);
+(%o2)           @{[a, a, b], [a, b, a], [b, a, a]@}
+@end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{powerset}
+@deffn {関数} powerset (@var{a})
+@deffnx {関数} powerset (@var{a}, @var{n})
+
+@var{a}の部分集合すべての集合、または、その集合の部分集合を返します。
+
+@code{powerset(@var{a})}は
+集合@var{a}の部分集合すべての集合を返します。
+@code{powerset(@var{a})}は@code{2^cardinality(@var{a})}個の元を持ちます。
+
+@code{powerset(@var{a}, @var{n})}は、
+濃度@var{n}を持つ@var{a}の部分集合すべての集合を返します。
+
+もし@var{a}が集合リテラルでないか、
+@var{n}が非負の整数でないなら、
+@code{powerset}は文句を言います。
+
+例:
+
+@c ===beg===
+@c powerset ({a, b, c});
+@c powerset ({w, x, y, z}, 4);
+@c powerset ({w, x, y, z}, 3);
+@c powerset ({w, x, y, z}, 2);
+@c powerset ({w, x, y, z}, 1);
+@c powerset ({w, x, y, z}, 0);
+@c ===end===
+@example
+(%i1) powerset (@{a, b, c@});
+(%o1) @{@{@}, @{a@}, @{a, b@}, @{a, b, c@}, @{a, c@}, @{b@}, @{b, c@}, @{c@}@}
+(%i2) powerset (@{w, x, y, z@}, 4);
+(%o2)                    @{@{w, x, y, z@}@}
+(%i3) powerset (@{w, x, y, z@}, 3);
+(%o3)     @{@{w, x, y@}, @{w, x, z@}, @{w, y, z@}, @{x, y, z@}@}
+(%i4) powerset (@{w, x, y, z@}, 2);
+(%o4)   @{@{w, x@}, @{w, y@}, @{w, z@}, @{x, y@}, @{x, z@}, @{y, z@}@}
+(%i5) powerset (@{w, x, y, z@}, 1);
+(%o5)                 @{@{w@}, @{x@}, @{y@}, @{z@}@}
+(%i6) powerset (@{w, x, y, z@}, 0);
+(%o6)                         @{@{@}@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} random_permutation (@var{a})
+
+クヌースのシャッフルアルゴリズムで構成されるような、
+集合またはリスト@var{a}のランダムな順列を返します。
+
+戻り値は、たとえ要素すべてが偶然同じでも
+引数とは別の新しいリストです。
+しかしながら、引数の要素はコピーされません。
+
+例:
+
+@c ===beg===
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c ===end===
+@example
+(%i1) random_permutation ([a, b, c, 1, 2, 3]);
+(%o1)                  [c, 1, 2, 3, a, b]
+(%i2) random_permutation ([a, b, c, 1, 2, 3]);
+(%o2)                  [b, 3, 1, c, a, 2]
+(%i3) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o3)                 [y + 2, z + 3, x + 1]
+(%i4) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o4)                 [x + 1, y + 2, z + 3]
+@end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{rreduce}
+@deffn {関数} rreduce (@var{F}, @var{s})
+@deffnx {関数} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+
+合成によって二項関数@var{F}をn項関数に拡張します。
+ここで、@var{s}はリストです。
+
+@code{rreduce(@var{F}, @var{s})}は
+@code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}を返します。
+オプション引数@var{s_@{n + 1@}}が存在する時、
+結果は、@code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}
+と同値です。
+
+関数@var{F}は、最初@i{rightmost}のリスト要素に適用されます。
+だから名前が"rreduce"です。
+
+@code{lreduce}, @code{tree_reduce}, @code{xreduce}も参照してください。
+
+例:
+
+オプション引数なしの@code{rreduce}。
+
+@c ===beg===
+@c rreduce (f, [1, 2, 3]);
+@c rreduce (f, [1, 2, 3, 4]);
+@c ===end===
+@example
+(%i1) rreduce (f, [1, 2, 3]);
+(%o1)                     f(1, f(2, 3))
+(%i2) rreduce (f, [1, 2, 3, 4]);
+(%o2)                  f(1, f(2, f(3, 4)))
+@end example
+
+オプション引数ありの@code{rreduce}。
+
+@c ===beg===
+@c rreduce (f, [1, 2, 3], 4);
+@c ===end===
+@example
+(%i1) rreduce (f, [1, 2, 3], 4);
+(%o1)                  f(1, f(2, f(3, 4)))
+@end example
+
+組み込み二項演算子に適用された@code{rreduce}。
+@code{/}は割り算演算子。
+
+@c ===beg===
+@c rreduce ("^", args ({a, b, c, d}));
+@c rreduce ("/", args ({a, b, c, d}));
+@c ===end===
+@example
+(%i1) rreduce ("^", args (@{a, b, c, d@}));
+                                 d
+                                c
+                               b
+(%o1)                         a
+(%i2) rreduce ("/", args (@{a, b, c, d@}));
+                               a c
+(%o2)                          ---
+                               b d
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{setdifference}
+@deffn {関数}  setdifference (@var{a}, @var{b})
+
+集合@var{a}の中の、集合@var{b}にない要素を含む集合を返します。
+
+もし@var{a}か@var{b}が集合リテラルでないなら、
+@code{setdifference}は文句を言います。
+
+例:
+
+@c ===beg===
+@c S_1 : {a, b, c, x, y, z};
+@c S_2 : {aa, bb, c, x, y, zz};
+@c setdifference (S_1, S_2);
+@c setdifference (S_2, S_1);
+@c setdifference (S_1, S_1);
+@c setdifference (S_1, {});
+@c setdifference ({}, S_1);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c, x, y, z@};
+(%o1)                  @{a, b, c, x, y, z@}
+(%i2) S_2 : @{aa, bb, c, x, y, zz@};
+(%o2)                 @{aa, bb, c, x, y, zz@}
+(%i3) setdifference (S_1, S_2);
+(%o3)                       @{a, b, z@}
+(%i4) setdifference (S_2, S_1);
+(%o4)                     @{aa, bb, zz@}
+(%i5) setdifference (S_1, S_1);
+(%o5)                          @{@}
+(%i6) setdifference (S_1, @{@});
+(%o6)                  @{a, b, c, x, y, z@}
+(%i7) setdifference (@{@}, S_1);
+(%o7)                          @{@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{setequalp}
+@deffn {関数} setequalp (@var{a}, @var{b})
+
+集合@var{a}と@var{b}が同じ要素数を持ち、
+@c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+@code{listify}が決定した順序で考えて
+@var{a}の要素の中の@code{x}と
+@var{b}の要素の中の@code{y}に対して
+@code{is(@var{x} = @var{y})}が@code{true}なら、
+@code{true}を返します。
+そうでなければ、@code{setequalp}は@code{false}を返します。
+
+例:
+
+@c ===beg===
+@c setequalp ({1, 2, 3}, {1, 2, 3});
+@c setequalp ({a, b, c}, {1, 2, 3});
+@c setequalp ({x^2 - y^2}, {(x + y) * (x - y)});
+@c ===end===
+@example
+(%i1) setequalp (@{1, 2, 3@}, @{1, 2, 3@});
+(%o1)                         true
+(%i2) setequalp (@{a, b, c@}, @{1, 2, 3@});
+(%o2)                         false
+(%i3) setequalp (@{x^2 - y^2@}, @{(x + y) * (x - y)@});
+(%o3)                         false
+@end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@anchor{setify}
+@deffn {関数} setify (@var{a})
+
+リスト@var{a}の要素から集合を構成します。
+リスト@var{a}の重複した要素は削除され、
+要素は、述語論理@code{orderlessp}に従って並び替えられます。
+
+もし@var{a}が集合リテラルでないなら、
+@code{setify}は文句を言います。
+
+例:
+
+@c ===beg===
+@c setify ([1, 2, 3, a, b, c]);
+@c setify ([a, b, c, a, b, c]);
+@c setify ([7, 13, 11, 1, 3, 9, 5]);
+@c ===end===
+@example
+(%i1) setify ([1, 2, 3, a, b, c]);
+(%o1)                  @{1, 2, 3, a, b, c@}
+(%i2) setify ([a, b, c, a, b, c]);
+(%o2)                       @{a, b, c@}
+(%i3) setify ([7, 13, 11, 1, 3, 9, 5]);
+(%o3)                @{1, 3, 5, 7, 9, 11, 13@}
+@end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{setp}
+@deffn {関数} setp (@var{a})
+
+@var{a}がMaximaの集合の時だけ、@code{true}を返します。
+
+@code{setp}は、
+整理された集合はもちろん、未整理の集合(すなわち、冗長な元を持つ集合)に対して、
+@code{true}を返します。
+
+@c NOT SURE WE NEED TO MENTION THIS. OK FOR NOW
+@code{setp}はMaxima関数
+@code{setp(a) := not atom(a) and op(a) = 'set}
+と同値です。
+
+例:
+
+@c ===beg===
+@c simp : false;
+@c {a, a, a};
+@c setp (%);
+@c ===end===
+@example
+(%i1) simp : false;
+(%o1)                         false
+(%i2) @{a, a, a@};
+(%o2)                       @{a, a, a@}
+(%i3) setp (%);
+(%o3)                         true
+@end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@anchor{set_partitions}
+@deffn {関数} set_partitions (@var{a})
+@deffnx {関数} set_partitions (@var{a}, @var{n})
+
+@var{a}の分割すべての集合、または、その集合の部分集合を返します。
+
+@code{set_partitions(@var{a}, @var{n})}は
+@var{n}個の空でないばらばらの部分集合への
+@var{a}の分解すべての集合を返します。
+
+@code{set_partitions(@var{a})}は分割すべての集合を返します。
+
+@code{stirling2}は集合の分割の集合の濃度を返します。
+
+集合の集合@math{P}は
+
+@enumerate
+@item
+@math{P}の元それぞれが空でない集合
+@item
+@math{P}の別の元はばらばらである。
+@item
+@math{P}の元の和集合が@math{S}に等しい
+@end enumerate
+時、
+集合@math{S}の分割です。
+
+例:
+
+条件1と2が空ゆえに真なので、空集合はそれ自身の分割です。
+
+@c ===beg===
+@c set_partitions ({});
+@c ===end===
+@example
+(%i1) set_partitions (@{@});
+(%o1)                         @{@{@}@}
+@end example
+
+集合の分割の集合の濃度は、
+@code{stirling2}を使って見つけられます。
+
+@c ===beg===
+@c s: {0, 1, 2, 3, 4, 5}$
+@c p: set_partitions (s, 3)$ 
+@c cardinality(p) = stirling2 (6, 3);
+@c ===end===
+@example
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
+(%i2) p: set_partitions (s, 3)$ 
+(%i3) cardinality(p) = stirling2 (6, 3);
+(%o3)                        90 = 90
+@end example
+
+@code{p}の元それぞれは
+@var{n} = 3個の元を持たなければいけません;
+チェックしましょう。
+
+@c ===beg===
+@c s: {0, 1, 2, 3, 4, 5}$
+@c p: set_partitions (s, 3)$ 
+@c map (cardinality, p);
+@c ===end===
+@example
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
+(%i2) p: set_partitions (s, 3)$ 
+(%i3) map (cardinality, p);
+(%o3)                          @{3@}
+@end example
+
+最後に、
+@code{p}の元それぞれに対して、
+元の和集合は@code{s}に等しくなければいけません;
+チェックしましょう。
+
+@c ===beg===
+@c s: {0, 1, 2, 3, 4, 5}$
+@c p: set_partitions (s, 3)$ 
+@c map (lambda ([x], apply (union, listify (x))), p);
+@c ===end===
+@example
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
+(%i2) p: set_partitions (s, 3)$ 
+(%i3) map (lambda ([x], apply (union, listify (x))), p);
+(%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{some}
+@deffn {関数} some (@var{f}, @var{a})
+@deffnx {関数} some (@var{f}, @var{L_1}, ..., @var{L_n})
+
+もし与えられた引数のうち１つ以上で述語論理@var{f}が@code{true}なら
+@code{true}を返します。
+
+二番目の引数として集合１つが与えられたとして、
+もし
+@var{s}の中の１つ以上の@var{a_i}に対して
+@code{is(@var{f}(@var{a_i}))}が@code{true}を返すなら、
+@code{some(@var{f}, @var{s})}は@code{true}を返します。
+@code{some}は
+@var{s}の中の@var{a_i}すべてに対して
+@var{f}を評価するかどうかわかりません。
+集合は順序がないので、
+@code{some}は任意の順序で@code{@var{f}(@var{a_i})}評価するかもしれません。
+
+引数として２つ以上のリストが与えられたとして、
+@code{some(@var{f}, @var{L_1}, ..., @var{L_n})}は@code{true}を返します。
+もし
+@var{L_1}, ..., @var{L_n}それぞれの中の１つ以上の@var{x_1}, ..., @var{x_n}で
+@code{is(@var{f}(@var{x_1}, ..., @var{x_n}))}が@code{true}を返すなら、
+@code{some}は
+いくつかの組み合わせ@var{x_1}, ..., @var{x_n}に対して
+@var{f}を評価するかどうかわかりません。
+@code{some}はインデックスを増加する順序でリストを評価します。
+
+引数として空集合@code{@{@}}または空のリスト@code{[]}が与えられたとして、
+@code{some}は@code{false}を返します。
+
+グローバルフラグ@code{maperror}が@code{true}の時、
+すべてのリスト@var{L_1}, ..., @var{L_n}は同じ長さを持たなければいけません。
+@code{maperror}が@code{false}の時、
+リスト引数は、最短のリストの長さに効果的に切り詰められます。
+
+(@code{is}を介して)@code{true}か@code{false}以外の何かに評価される
+述語論理@var{f}の戻り値は、
+グローバルフラグ@code{prederror}によって決定されます。
+@code{prederror}が@code{true}の時、
+そんな値は@code{false}として扱われます。
+@code{prederror}が@code{false}の時、
+そんな値は@code{unknown}として扱われます。
+
+例:
+
+集合１つに適用された@code{some}。
+述語論理は引数１つの関数です。
+
+@c ===beg===
+@c some (integerp, {1, 2, 3, 4, 5, 6});
+@c some (atom, {1, 2, sin(3), 4, 5 + y, 6});
+@c ===end===
+@example
+(%i1) some (integerp, @{1, 2, 3, 4, 5, 6@});
+(%o1)                         true
+(%i2) some (atom, @{1, 2, sin(3), 4, 5 + y, 6@});
+(%o2)                         true
+@end example
+
+２つのリストに適用された@code{some}。
+述語論理は引数２つの関数です。
+
+@c ===beg===
+@c some ("=", [a, b, c], [a, b, c]);
+@c some ("#", [a, b, c], [a, b, c]);
+@c ===end===
+@example
+(%i1) some ("=", [a, b, c], [a, b, c]);
+(%o1)                         true
+(%i2) some ("#", [a, b, c], [a, b, c]);
+(%o2)                         false
+@end example
+
+@code{true}か@code{false}以外の何かに評価される述語論理@var{f}の戻り値は、
+グローバルフラグ@code{prederror}によって決定されます。
+
+@c ===beg===
+@c prederror : false;
+@c map (lambda ([a, b], is (a < b)), [x, y, z], 
+@c            [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z + 1]);
+@c prederror : true;
+@c some ("<", [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z + 1]);
+@c ===end===
+@example
+(%i1) prederror : false;
+(%o1)                         false
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+           [x^2, y^2, z^2]);
+(%o2)              [unknown, unknown, unknown]
+(%i3) some ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o3)                        unknown
+(%i4) some ("<", [x, y, z], [x^2, y^2, z + 1]);
+(%o4)                         true
+(%i5) prederror : true;
+(%o5)                         true
+(%i6) some ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o6)                         false
+(%i7) some ("<", [x, y, z], [x^2, y^2, z + 1]);
+(%o7)                         true
+@end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{stirling1}
+@deffn {関数} stirling1 (@var{n}, @var{m})
+
+第一種のスターリング数を表します。
+
+@var{n}と@var{m}が非負の整数の時、
+@code{stirling1 (@var{n}, @var{m})}の大きさは
+@var{m}個の巡回置換を持つ@var{n}個の元を持つ集合の順列の数です。
+詳細はGraham, Knuth and Patashnik @i{Concrete Mathematics}を参照してください。
+Maximaは、
+0より小さい@var{m}に対して
+@code{stirling1 (@var{n}, @var{m})}を定義するために
+再帰関係を使います;
+0より小さい@var{n}と非整数引数に対して未定義です。
+
+@code{stirling1}は整理関数です。
+Maximaは以下の恒等式を知っています。
+
+@c COPIED VERBATIM FROM SRC/NSET.LISP
+@enumerate
+@item
+@math{stirling1(0, n) = kron_delta(0, n)} (Ref. [1])
+@item
+@math{stirling1(n, n) = 1} (Ref. [1])
+@item
+@math{stirling1(n, n - 1) = binomial(n, 2)} (Ref. [1])
+@item
+@math{stirling1(n + 1, 0) = 0} (Ref. [1])
+@item
+@math{stirling1(n + 1, 1) = n!} (Ref. [1])
+@item
+@math{stirling1(n + 1, 2) = 2^n  - 1} (Ref. [1])
+@end enumerate
+
+これらの恒等式は
+引数が、整数リテラルまたは整数と宣言されたシンボルで、かつ、
+最初の引数が非負の時、
+適用されます。
+@code{stirling1}は、非整数引数に対して整理しません。
+
+参考文献:
+
+[1] Donald Knuth, @i{The Art of Computer Programming,}
+third edition, Volume 1, Section 1.2.6, Equations 48, 49, and 50.
+
+例:
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling1 (n, n);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling1 (n, n);
+(%o3)                           1
+@end example
+
+@code{stirling1}は非整数引数に対して整理しません。
+
+@c ===beg===
+@c stirling1 (sqrt(2), sqrt(2));
+@c ===end===
+@example
+(%i1) stirling1 (sqrt(2), sqrt(2));
+(%o1)              stirling1(sqrt(2), sqrt(2))
+@end example
+
+Maximaは
+@code{stirling1}に恒等式を適用します。
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling1 (n + 1, n);
+@c stirling1 (n + 1, 1);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling1 (n + 1, n);
+                            n (n + 1)
+(%o3)                       ---------
+                                2
+(%i4) stirling1 (n + 1, 1);
+(%o4)                          n!
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+@anchor{stirling2}
+@deffn {関数} stirling2 (@var{n}, @var{m})
+
+第二種スターリング数を表します。
+
+@var{n}と@var{m}が非負の整数の時、
+@code{stirling2 (@var{n}, @var{m})}は、
+濃度@var{n}の集合が@var{m}個のばらばらの部分集合に分割できる方法の数です。
+Maximaは、
+0より小さい@var{m}に対して
+@code{stirling2 (@var{n}, @var{m})}を定義するために
+再帰関係を使います;
+0より小さい@var{n}と非整数の引数に対して未定義です。
+
+@code{stirling2}は整理関数です。
+Maximaは以下の恒等式を知っています。
+
+@c COPIED VERBATIM FROM SRC/NSET.LISP
+@enumerate
+@item
+@math{stirling2(0, n) = kron_delta(0, n)} (Ref. [1])
+@item
+@math{stirling2(n, n) = 1} (Ref. [1])
+@item
+@math{stirling2(n, n - 1) = binomial(n, 2)} (Ref. [1])
+@item
+@math{stirling2(n + 1, 1) = 1} (Ref. [1])
+@item
+@math{stirling2(n + 1, 2) = 2^n  - 1} (Ref. [1])
+@item
+@math{stirling2(n, 0) = kron_delta(n, 0)} (Ref. [2])
+@item
+@math{stirling2(n, m) = 0} when @math{m > n} (Ref. [2])
+@item
+@math{stirling2(n, m) = sum((-1)^(m - k) binomial(m k) k^n,i,1,m) / m!}
+when @math{m} and @math{n} are integers, and @math{n} is nonnegative. (Ref. [3])
+@end enumerate
+
+引数が整数リテラルまたは整数と宣言されたシンボルで、かつ、最初の引数が非負の時、
+これらの恒等式が適用されます。
+@code{stirling2}は非整数引数に対して整理されません。
+
+参考文献:
+
+[1] Donald Knuth. @i{The Art of Computer Programming},
+third edition, Volume 1, Section 1.2.6, Equations 48, 49, and 50.
+
+[2] Graham, Knuth, and Patashnik. @i{Concrete Mathematics}, Table 264.
+
+[3] Abramowitz and Stegun. @i{Handbook of Mathematical Functions}, Section 24.1.4.
+
+例:
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling2 (n, n);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling2 (n, n);
+(%o3)                           1
+@end example
+
+@code{stirling2}は非整数引数に対して整理されません。
+
+@c ===beg===
+@c stirling2 (%pi, %pi);
+@c ===end===
+@example
+(%i1) stirling2 (%pi, %pi);
+(%o1)                  stirling2(%pi, %pi)
+@end example
+
+Maximaは
+@code{stirling2}に恒等式を適用します。
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling2 (n + 9, n + 8);
+@c stirling2 (n + 1, 2);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling2 (n + 9, n + 8);
+                         (n + 8) (n + 9)
+(%o3)                    ---------------
+                                2
+(%i4) stirling2 (n + 1, 2);
+                              n
+(%o4)                        2  - 1
+@end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
+@end deffn
+
+@anchor{subset}
+@deffn {関数} subset (@var{a}, @var{f})
+
+述語論理@var{f}を満たす
+集合@var{a}の部分集合を返します。
+
+@code{subset}は、
+@var{f}が@code{false}以外の何かを返す、@var{a}の要素から成る集合を返します。
+@code{subset}は
+@code{is}を@var{f}の戻り値に適用しません。
+
+もし@var{a}が集合リテラルでないなら
+@code{subset}は文句を言います。
+
+@code{partition_set}も参照してください。
+
+例:
+
+@c ===beg===
+@c subset ({1, 2, x, x + y, z, x + y + z}, atom);
+@c subset ({1, 2, 7, 8, 9, 14}, evenp);
+@c ===end===
+@example
+(%i1) subset (@{1, 2, x, x + y, z, x + y + z@}, atom);
+(%o1)                     @{1, 2, x, z@}
+(%i2) subset (@{1, 2, 7, 8, 9, 14@}, evenp);
+(%o2)                      @{2, 8, 14@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@anchor{subsetp}
+@deffn {関数} subsetp (@var{a}, @var{b})
+
+集合@var{a}が@var{b}の部分集合の時だけ、
+@code{true}を返します。
+
+もし@var{a}か@var{b}のいずれかが集合リテラルでないなら、
+@code{subsetp}は文句を言います。
+
+例:
+
+@c ===beg===
+@c subsetp ({1, 2, 3}, {a, 1, b, 2, c, 3});
+@c subsetp ({a, 1, b, 2, c, 3}, {1, 2, 3});
+@c ===end===
+@example
+(%i1) subsetp (@{1, 2, 3@}, @{a, 1, b, 2, c, 3@});
+(%o1)                         true
+(%i2) subsetp (@{a, 1, b, 2, c, 3@}, @{1, 2, 3@});
+(%o2)                         false
+@end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@anchor{symmdifference}
+@deffn {関数} symmdifference (@var{a_1}, @dots{}, @var{a_n})
+
+集合@var{a_1}, @dots{}, @var{a_n}の対称差を返します。
+
+２つの引数が与えられたとして、
+@code{symmdifference ( @var{a}, @var{b})}は
+@code{union (setdifference ( @var{a}, @var{b}), setdifference (@var{b}, @var{a}))}と同じです。
+
+もし引数が集合リテラルでないなら、
+@code{symmdifference}は文句を言います。
+
+例:
+
+@c ===beg===
+@c S_1 : {a, b, c};
+@c S_2 : {1, b, c};
+@c S_3 : {a, b, z};
+@c symmdifference ();
+@c symmdifference (S_1);
+@c symmdifference (S_1, S_2);
+@c symmdifference (S_1, S_2, S_3);
+@c symmdifference ({}, S_1, S_2, S_3);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c@};
+(%o1)                       @{a, b, c@}
+(%i2) S_2 : @{1, b, c@};
+(%o2)                       @{1, b, c@}
+(%i3) S_3 : @{a, b, z@};
+(%o3)                       @{a, b, z@}
+(%i4) symmdifference ();
+(%o4)                          @{@}
+(%i5) symmdifference (S_1);
+(%o5)                       @{a, b, c@}
+(%i6) symmdifference (S_1, S_2);
+(%o6)                        @{1, a@}
+(%i7) symmdifference (S_1, S_2, S_3);
+(%o7)                        @{1, b, z@}
+(%i8) symmdifference (@{@}, S_1, S_2, S_3);
+(%o8)                        @{1,b, z@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
+@anchor{tree_reduce}
+@deffn {関数} tree_reduce (@var{F}, @var{s})
+@deffnx {関数} tree_reduce (@var{F}, @var{s}, @var{s_0})
+
+合成によって二項関数@var{F}をn項関数に拡張します。
+ここで@var{s}は集合かリストです。
+
+@code{tree_reduce}は以下と同値です:
+新しいリスト@code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]}を形成するために
+@var{F}を要素の連続する対に適用します。
+もし奇数個の要素があるなら、
+最後の要素は変化なしに通過させます。
+そして、リストが１つの要素になるまで繰り返します。１つの要素になった時、それが戻り値です。
+
+オプションの引数@var{s_0}がある時，
+結果は
+@code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}と同値です。
+
+浮動小数点数の足し算に関して、
+@code{tree_reduce}は、
+@code{rreduce}や@code{lreduce}よりも小さな丸め誤差を持つ和を返します。
+
+@var{s}の要素と部分的な結果は
+最小深度の二項木の中に配列されます。
+だから名前が"tree_reduce"です。
+
+例:
+
+偶数個の要素を持つリストに適用された@code{tree_reduce}。
+
+@c ===beg===
+@c tree_reduce (f, [a, b, c, d]);
+@c ===end===
+@example
+(%i1) tree_reduce (f, [a, b, c, d]);
+(%o1)                  f(f(a, b), f(c, d))
+@end example
+
+奇数個の要素を持つリストに適用された@code{tree_reduce}。
+
+@c ===beg===
+@c tree_reduce (f, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) tree_reduce (f, [a, b, c, d, e]);
+(%o1)               f(f(f(a, b), f(c, d)), e)
+@end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
+@end deffn
+
+@anchor{union}
+@deffn {関数} union (@var{a_1}, ..., @var{a_n})
+集合@var{a_1}から@var{a_n}の和集合を返します。
+
+@code{union()} (引数なし)は空集合を返します。
+
+もし引数が集合リテラルでないなら、
+@code{union}は文句を言います。
+
+例:
+
+@c ===beg===
+@c S_1 : {a, b, c + d, %e};
+@c S_2 : {%pi, %i, %e, c + d};
+@c S_3 : {17, 29, 1729, %pi, %i};
+@c union ();
+@c union (S_1);
+@c union (S_1, S_2);
+@c union (S_1, S_2, S_3);
+@c union ({}, S_1, S_2, S_3);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c + d, %e@};
+(%o1)                   @{%e, a, b, d + c@}
+(%i2) S_2 : @{%pi, %i, %e, c + d@};
+(%o2)                 @{%e, %i, %pi, d + c@}
+(%i3) S_3 : @{17, 29, 1729, %pi, %i@};
+(%o3)                @{17, 29, 1729, %i, %pi@}
+(%i4) union ();
+(%o4)                          @{@}
+(%i5) union (S_1);
+(%o5)                   @{%e, a, b, d + c@}
+(%i6) union (S_1, S_2);
+(%o6)              @{%e, %i, %pi, a, b, d + c@}
+(%i7) union (S_1, S_2, S_3);
+(%o7)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
+(%i8) union (@{@}, S_1, S_2, S_3);
+(%o8)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+@c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
+@anchor{xreduce}
+@deffn {関数} xreduce (@var{F}, @var{s})
+@deffnx {関数} xreduce (@var{F}, @var{s}, @var{s_0})
+
+合成によって関数@var{F}をn項関数に拡張します。
+または、もし@var{F}が既にn項関数なら@var{F}を@var{s}に適用します。
+@var{F}がn項関数でない時、
+@code{xreduce}は@code{lreduce}と同じです。
+引数@var{s}はリストです。
+
+n項関数として知られている関数は、
+足し算@code{+}, 掛け算@code{*}, @code{and}, @code{or}, @code{max},
+@code{min}, @code{append}を含みます。
+関数は、
+@code{declare(@var{F}, nary)}によってもn項と宣言されるかもしれません。
+これらの関数に対して、
+@code{xreduce}は
+@code{rreduce}や@code{lreduce}よりも速いことが期待されます。
+
+オプション引数@var{s_0}がある時、
+結果は、@code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}と同値です。
+
+@c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
+@c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
+浮動小数点の足し算は、厳密には結合的ではありません;
+そうはそうかもしれませんが、
+@var{s}が浮動小数点を含む時、
+@code{xreduce}はMaximaのn項足し算を適用します。
+
+例:
+
+n項と知られている関数に適用された@code{xreduce}。
+@code{F}は引数すべてで、一度コールされます。
+
+@c ===beg===
+@c declare (F, nary);
+@c F ([L]) := L;
+@c xreduce (F, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) declare (F, nary);
+(%o1)                         done
+(%i2) F ([L]) := L;
+(%o2)                      F([L]) := L
+(%i3) xreduce (F, [a, b, c, d, e]);
+(%o3)         [[[[[("[", simp), a], b], c], d], e]
+@end example
+
+n項とわかっていない関数に適用された@code{xreduce}。
+@code{G}は、
+毎回２つの引数で複数回コールされます。
+
+@c ===beg===
+@c G ([L]) := L;
+@c xreduce (G, [a, b, c, d, e]);
+@c lreduce (G, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) G ([L]) := L;
+(%o1)                      G([L]) := L
+(%i2) xreduce (G, [a, b, c, d, e]);
+(%o2)         [[[[[("[", simp), a], b], c], d], e]
+(%i3) lreduce (G, [a, b, c, d, e]);
+(%o3)                 [[[[a, b], c], d], e]
+@end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
+@end deffn

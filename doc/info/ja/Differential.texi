@@ -1,0 +1,226 @@
+@menu
+* Introduction to Differential Equations::  
+* Functions and Variables for Differential Equations::  
+@end menu
+
+@node Introduction to Differential Equations, Functions and Variables for Differential Equations, Differential Equations, Differential Equations
+@section Introduction to Differential Equations
+
+この節は、
+一次と二次方程式のいくつかの特定のタイプの解析解を得るためのMaximaで利用可能な関数を
+記述します。
+微分方程式系の数値解を得るには、
+付加パッケージ@code{dynamics}を参照してください。
+位相空間でのグラフィカルな表現に関して、
+付加パッケージ@code{plotdf}を参照してください。
+
+@node Functions and Variables for Differential Equations,  , Introduction to Differential Equations, Differential Equations
+@section Functions and Variables for Differential Equations
+
+
+@deffn {関数} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+二階微分方程式の境界値問題を解きます。
+ここで: @var{solution}は、@code{ode2}が見つけるような方程式の一般解です;
+@var{xval1}は、独立変数の最初の点の値を、形式@code{@var{x} = @var{x1}}で指定し、
+@var{yval1}は、その点の従属変数の値を、形式@code{@var{y} = @var{y1}}で与えます。
+式@var{xval2}と@var{yval2}は、
+それらの変数の二番目の点での値を、同じ形式を使って与えます。
+
+用法の例については@code{ode2}を参照してください。
+
+@opencatbox
+@category{Differential equations}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} desolve (@var{eqn}, @var{x})
+@deffnx {関数} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+関数@code{desolve}は、ラプラス変換を使って線形常微分方程式系を解きます。
+ここで、@var{eqn}群は、従属変数@var{x_1}, ..., @var{x_n}に関する微分方程式です。
+@var{x_1}, ..., @var{x_n}の独立変数、例えば@var{x}、への関数依存性は、
+変数や導関数の中で陽に示されなければいけません。
+例えば、これは、２つの方程式を定義する正しい方法ではありません:
+
+@example
+eqn_1: 'diff(f,x,2) = sin(x) + 'diff(g,x);
+eqn_2: 'diff(f,x) + x^2 - f = 2*'diff(g,x,2);
+@end example
+
+正しい方法は以下の通りです:
+
+@example
+eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
+eqn_2: 'diff(f(x),x) + x^2 - f(x) = 2*'diff(g(x),x,2);
+@end example
+
+関数@code{desolve}のコールは、
+@example
+desolve([eqn_1, eqn_2], [f(x),g(x)]);
+@end example
+です。
+
+もし@code{x=0}の初期条件が既知なら、
+それらは、@code{atvalue}を使って、@code{desolve}コールの前に供給することができます。
+
+@c ===beg===
+@c 'diff(f(x),x)='diff(g(x),x)+sin(x);
+@c 'diff(g(x),x,2)='diff(f(x),x)-cos(x);
+@c atvalue('diff(g(x),x),x=0,a);
+@c atvalue(f(x),x=0,1);
+@c desolve([%o1,%o2],[f(x),g(x)]);
+@c [%o1,%o2],%o5,diff;
+@c ===end===
+@example
+(%i1) @b{@t{'diff(f(x),x)='diff(g(x),x)+sin(x);}}
+                 d           d
+(%o1)            -- (f(x)) = -- (g(x)) + sin(x)
+                 dx          dx
+(%i2) @b{@t{'diff(g(x),x,2)='diff(f(x),x)-cos(x);}}
+@group
+                  2
+                 d            d
+(%o2)            --- (g(x)) = -- (f(x)) - cos(x)
+                   2          dx
+                 dx
+@end group
+(%i3) @b{@t{atvalue('diff(g(x),x),x=0,a);}}
+(%o3)                           a
+(%i4) @b{@t{atvalue(f(x),x=0,1);}}
+(%o4)                           1
+(%i5) @b{@t{desolve([%o1,%o2],[f(x),g(x)]);}}
+                  x
+(%o5) [f(x) = a %e  - a + 1, g(x) = 
+
+                                                x
+                                   cos(x) + a %e  - a + g(0) - 1]
+(%i6) @b{@t{[%o1,%o2],%o5,diff;}}
+             x       x      x                x
+(%o6)   [a %e  = a %e , a %e  - cos(x) = a %e  - cos(x)]
+
+@end example
+
+もし@code{desolve}が解を得られないなら、
+@code{false}を返します。
+
+@opencatbox
+@category{Differential equations} @category{Laplace transform}
+@closecatbox
+@end deffn
+
+@deffn {関数} ic1 (@var{solution}, @var{xval}, @var{yval})
+一階微分方程式の初期値問題を解きます。
+ここで、@var{solution}は、@code{ode2}が見つけるような、方程式の一般解であり、
+@var{xval}は、独立変数の初期値を、形式@code{@var{x} = @var{x0}}で与え、
+@var{yval}は、従属変数の初期値を、形式@code{@var{y} = @var{y0}}で与えます。
+
+用法の例については@code{ode2}を参照してください。
+
+@opencatbox
+@category{Differential equations}
+@closecatbox
+@end deffn
+
+@deffn {関数} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
+二階微分方程式の初期値を解きます。
+ここで、 @var{solution}は、@code{ode2}が見つけるような、
+方程式の一般解のであり、
+@var{xval}は、独立変数の初期値を、形式@code{@var{x} = @var{x0}}で与え、
+@var{yval}は、従属変数の初期値を、形式@code{@var{y} = @var{y0}}で与え、
+@var{dval}は、従属変数の独立変数に関する一階導関数の初期値を、
+形式@code{diff(@var{y},@var{x}) = @var{dy0}}で、与えます。
+(@code{diff}はクォートされる必要はありません。)
+
+用法の例については、@code{ode2}を参照してください。
+
+@opencatbox
+@category{Differential equations}
+@closecatbox
+@end deffn
+
+@deffn {関数} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+関数@code{ode2}は、一階または二階常微分方程式(ODE)を解きます。
+３つの引数を取ります:
+@var{eqn}で与えられるODE、従属変数@var{dvar}、独立変数@var{ivar}。
+成功した時、従属変数に関する陽解または陰解を返します。
+一階方程式の場合、@code{%c}が積分定数を表し、
+二階方程式の場合、@code{%k1}と@code{%k2}が定数を表します。
+従属変数の独立変数への依存性は、
+@code{desolve}の場合のように、陽に書かれる必要はありませんが、
+独立変数はいつも三番目の引数として与えられなければいけません。
+
+たとえどんな理由でも、もし@code{ode2}が解を得られなかったら、
+おそらく、エラーメッセージを表示した後、@code{false}を返します。
+一階方程式用に実装された方法は、試される順番に、線形、分離、厳密―おそらく因子の積分を要求します―、斉次、ベルヌーイの等式、一般化斉次法、です。
+解ける二階方程式のタイプは、定係数、厳密、定数係数に変換可能な非定数係数線形斉次、
+オイラーまたは等次元方程式、パラメータ変動法で解ける方程式、
+独立変数または従属変数を含まなくて、順に解かれる２つの一階線形方程式に換算できる方程式、
+です。
+
+ODEを解く間、いくつかの変数が純粋に参考目的で設定されます:
+@code{method}は、使われた解法(例えば、@code{linear})を示し、
+@code{intfactor}は、任意の使われた積分因子を示し、
+@code{odeindex}は、ベルヌーイ法または一般化斉次法のインデックスを示し、
+@code{yp}は、パラメータ変動手法の特殊解を示します。
+
+初期値問題(IVP)を解くためには、
+一階と二階方程式のためには関数@code{ic1}と@code{ic2}が利用可能であり、
+二階境界値問題(BVP)を解くためには、
+@code{bc2}を使うことができます。
+
+例:
+
+@c ===beg===
+@c x^2*'diff(y,x) + 3*y*x = sin(x)/x;
+@c ode2(%,y,x);
+@c ic1(%o2,x=%pi,y=0);
+@c 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
+@c ode2(%,y,x);
+@c ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
+@c bc2(%o5,x=0,y=1,x=1,y=3);
+@c ===end===
+@example
+(%i1) @b{@t{x^2*'diff(y,x) + 3*y*x = sin(x)/x;}}
+                      2 dy           sin(x)
+(%o1)                x  -- + 3 x y = ------
+                        dx             x
+(%i2) @b{@t{ode2(%,y,x);}}
+                             %c - cos(x)
+(%o2)                    y = -----------
+                                  3
+                                 x
+(%i3) @b{@t{ic1(%o2,x=%pi,y=0);}}
+                              cos(x) + 1
+(%o3)                   y = - ----------
+                                   3
+                                  x
+(%i4) @b{@t{'diff(y,x,2) + y*'diff(y,x)^3 = 0;}}
+                         2
+                        d y      dy 3
+(%o4)                   --- + y (--)  = 0
+                          2      dx
+                        dx
+(%i5) @b{@t{ode2(%,y,x);}}
+                      3
+                     y  + 6 %k1 y
+(%o5)                ------------ = x + %k2
+                          6
+(%i6) @b{@t{ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));}}
+@group
+                             3
+                          2 y  - 3 y
+(%o6)                   - ---------- = x
+                              6
+@end group
+(%i7) @b{@t{bc2(%o5,x=0,y=1,x=1,y=3);}}
+                         3
+                        y  - 10 y       3
+(%o7)                   --------- = x - -
+                            6           2
+
+@end example
+
+@opencatbox
+@category{Differential equations}
+@closecatbox
+@end deffn

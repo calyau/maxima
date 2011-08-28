@@ -1,0 +1,534 @@
+@menu
+* Introduction to dynamics::
+* Functions and Variables for dynamics::
+@end menu
+
+@node Introduction to dynamics, Functions and Variables for dynamics, dynamics, dynamics
+@section Introduction to dynamics
+
+追加パッケージ@code{dynamics}には、
+離散力学系とフラクタルの様々なグラフィックス表現を生成するためのいくつかの関数と、
+微分方程式系を数値的に解くための4次Runge-Kutta法の実装が含まれています。
+
+このパッケージの関数を使うには、
+最初に@code{load("dynamics")}でパッケージをロードしなければいけません。
+
+@b{Maxima 5.12で導入された変更}
+
+Maxima 5.12以来、現在まで、dynamicsパッケージは
+グラフを処理するのに関数@code{plot2d}を使います。
+(@code{julia}や@code{mandelbrot}を除いて)
+グラフィックスを生成するコマンドは@code{plot2d}のいかなるオプションも受け付けます。
+オプションには、プロットスタイルや色を使ったり、
+一方の、または両方の軸を対数スケールで表したり、
+様々なグラフィカルインターフェイス全体に渡って変更を加えるものを含みます。
+古いオプション@var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
+@var{ycenter}, @var{yradius}, @var{xaxislabel}, @var{yaxislabel}は
+この新しいバージョンでは受け付けられません。
+
+現在，すべてのプログラムは、
+以前のバージョンのように@var{x}と@var{y}だけでなく、
+任意の変数名を受け付けます。
+２つの要求パラメータが2つのプログラムで変えられました:
+@code{evolution2d}は、現在、
+２つの独立変数を陽に指定するリストを要求し、
+@code{orbits}の水平範囲はもはやステップサイズを要求しません;
+範囲は、変数名と最小値、最大値だけを指定しなければいけません;
+ステップ数は、現在、オプション@var{nticks}で変えることができます。
+
+
+@opencatbox
+@category{Dynamical systems} @category{Share packages} @category{Package dynamics}
+@closecatbox
+
+@node Functions and Variables for dynamics,  , Introduction to dynamics, dynamics
+@section Functions and Variables for dynamics
+
+@deffn {関数} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ..., options, ...);
+
+いわゆるカオスゲームを実装します:
+初期点(@var{x0}, @var{y0})がプロットされ、
+@var{m}個の点@code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}の１つがランダムに選択されます。
+プロットされる次の点はプロットされた以前の点からランダムに選ばれた点までの線分上で、
+ランダム点からその線分の長さに@var{b}を掛けた距離にあります。
+手続きは
+@var{n}回繰り返されます。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} evolution (@var{F}, @var{y0}, @var{n}, ..., options, ...);
+
+２次元グラフに、
+点の水平座標が整数0, 1, 2, ..., @var{n}、
+垂直座標が再帰関係
+@ifnottex
+@example
+        y(n+1) = F(y(n))
+@end example
+@end ifnottex
+@tex
+$$y_{n+1} = F(y_n)$$
+@end tex
+で定義された数列の対応する値@var{y(n)}である
+@var{n+1}個の点を描きます。
+ここで、初期値@var{y(0)}は@var{y0}に等しいです。
+@var{F}は１変数にだけ依存する式でなければいけません。
+(例の中では、@var{y}に依存していますが、他のいかなる変数を使うことができます),
+@var{y0}は実数でなければいけなく、@var{n}は正の整数でなければいけません。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
+
+再帰関係を伴う二次元離散力学系によって定義された点列の中の最初の@var{n+1}点を
+二次元プロットで、
+表示します。
+初期値@var{u0}と@var{v0}を持つ
+@ifnottex
+@example
+        u(n+1) = F(u(n), v(n))    v(n+1) = G(u(n), v(n))
+@end example
+@end ifnottex
+@tex
+$$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
+@end tex
+
+@var{F}と@var{G}は2変数@var{u}と@var{v}のみに依存する式2つでなければいけません。
+変数はリストの中に明示的に指名されなければいけません。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
+
+反復関数系法を実装します。
+この方法は関数@code{chaosgame}で記述した方法に似ていますが、
+現在点からランダムに選ばれた点にセグメントを縮める代わりに、
+そのセグメントの2成分はランダムに選ばれた点に対応する2行2列行列@var{Ai}を乗算されます。
+
+@var{m}個のアトラクティブな点の１つのランダムな選択を
+重み@var{r1},...,@var{rm}で定義された非均一な確率分布で作ることができます。
+それらの重みは累積形で与えられます;
+例えば、
+もし確率0.2, 0.5, 0.3を持つ3点があるなら、
+重み@var{r1}, @var{r2}と@var{r3}は2, 7, 10とできます。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} julia (@var{x}, @var{y}, ...@var{options}...)
+
+複素数(@var{x} + i @var{y})に関するJulia集合の表現のグラフィックスファイルを生成します。
+パラメータ@var{x}と@var{y}は実数でなければいけません。
+ファイルは、XPMグラフィックスフォーマットでカレントディレクトリかユーザーディレクトリに生成されます。
+プログラムは走らせるのに数秒かかるかもしれません。終了後、生成したファイル名と共にメッセージが印字されます。
+
+Julia集合に属さない点には、異なる色が割り当てられます。
+繰り返し回数に従って、その点から始まり、半径2の収束円から動く数列を取ります。
+繰り返しの最大回数はオプション@var{levels}で設定されます;
+その回数の繰り返しの後、もし数列がまだ収束円内なら、
+点はオプション@var{color}で定義された色で塗られます。
+
+Julia集合に属さない点に使われる色すべては、同じ@var{saturation}と@var{value}を持ちますが、
+@var{hue}と(@var{hue} + @var{huerange})の間に一様に分布する、違った色相角を持ちます。
+
+@var{options}はオプションの列です。
+受け付けられるオプションのリストは以下の節で与えられます。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} mandelbrot (@var{options})
+
+Mandelbrot集合の表現のグラフィックスファイルを生成します。
+ファイルは、XPMグラフィックスフォーマットでカレントディレクトリかユーザーディレクトリに生成されます。
+プログラムは走らせるのに数秒かかるかもしれません。終了後、生成したファイル名と共にメッセージが印字されます。
+
+Mandelbrot集合に属さない点には、異なる色が割り当てられます。
+繰り返し回数に従って、その点から始まり、半径2の収束円から動く数列を取ります。
+繰り返しの最大回数はオプション@var{levels}で設定されます;
+その回数の繰り返しの後、もし数列がまだ収束円内なら、
+点はオプション@var{color}で定義された色で塗られます。
+
+Mandelbrot集合に属さない点に使われる色すべては、同じ@var{saturation}と@var{value}を持ちますが、
+@var{hue}と(@var{hue} + @var{huerange})の間に一様に分布する、違った色相角を持ちます。
+
+@var{options}はオプションの列です。
+受け付けられるオプションのリストは以下の節で与えられます。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
+
+パラメータ@var{x}を持つ一次元離散力学系の族に関する軌道図を描画します;
+この種の図は一次元離散系の分岐の研究に使われます。
+
+関数@var{F(y)}は、
+関数@code{evolution}の場合と同様に値@var{y0}で始まる数列を定義しますが、
+この場合、その関数は、@var{x0}から@var{xf}までの区間内の値を取り、
+@var{xstep}の増分を持つパラメータ@var{x}にも依存します。
+パラメータ@var{x}に使われるそれぞれの値は水平軸に示されます。
+垂直軸は、
+数列に@var{n1}回の時間発展させた後得られる数列@var{y(n1+1)},..., @var{y(n1+n2+1)}の@var{n2}個の値を示します。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} rk (@var{ODE}, @var{var}, @var{initial}, @var{domain})
+@deffnx {関数} rk ([@var{ODE1},...,@var{ODEm}], [@var{v1},...,@var{vm}], [@var{init1},...,@var{initm}], @var{domain})
+
+4次のRunge-Kutta法を使って、最初の形式は一階常微分方程式一つを数値的に解き、二番目の形式はそれらm個の方程式系を解きます。
+@var{var}は従属変数を表します。
+@var{ODE}は独立変数と従属変数にだけ依存する式でなければいけません。
+そして、独立変数に関する従属変数の導関数を定義します。
+
+独立変数は@code{domain}で指定されます。
+それは4つの要素のリストでなければいけません。
+例えば:
+@example
+[t, 0, 10, 0.1]
+@end example
+リストの最初の要素は独立変数を特定し、二番目と三番目の要素はその変数の初期値と最終値であり、
+最後の要素はその区間内で使用されるべき増加分を設定します。
+
+もし@var{m}この方程式が解かれようとしているなら、
+@var{m}個の従属変数@var{v1}, @var{v2}, ..., @var{vm}が存在しなければいけません。
+それらの変数の初期値は@var{init1}, @var{init2}, ..., @var{initm}となります。
+以前の場合と同様、@code{domain}で定義されたただ1つの独立変数が残っています。
+@var{ODE1}, ..., @var{ODEm}は
+独立変数に関する従属変数それぞれの導関数を定義する式です。
+それらの式に現れるかもしれない変数は独立変数と任意の従属変数だけです。
+従属変数と厳密に同じ順序でリストの中に導関数@var{ODE1}, ..., @var{ODEm}を与えることが重要です;
+例えば、リストの三番目の要素は三番目の従属変数の導関数と解釈されます。
+
+プログラムは
+方程式を独立変数の初期値から最終値まで一定の増加分を使って積分しようとします。
+もしあるステップで従属変数の1つが大きすぎる絶対値を取ったら、
+積分はその点で中断されます。
+結果は、なされた繰り返しの回数と同じ数の要素を持つリストです。
+結果リストの中のそれぞれの要素は、それ自身@var{m}+1個の要素を持つもう一つのリストです:
+独立変数の値にその点に対応する従属変数の値が続きます。
+
+@opencatbox
+@category{Package dynamics} @category{Differential equations} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} staircase (@var{F}, @var{y0}, @var{n}, ...options...);
+
+再帰関係によって定義された数列に関する階段図形を描画します。
+@ifnottex
+@example
+        y(n+1) = F(y(n))
+@end example
+@end ifnottex
+@tex
+$$y_{n+1} = F(y_n)$$
+@end tex
+
+入力パラメータの解釈と許される値は
+関数@code{evolution}に関するものと同じです。
+階段図形は線@var{G(y)} @code{=} @var{y}と共に関数@var{F(y)}のプロットから構成されます。
+垂直区間は、
+その線上の点(@var{y0}, @var{y0})から
+関数@var{F}と交差する点まで描画されます。
+水平区間はその点から線上の点(@var{y1}, @var{y1})に届くまで描画されます。
+手続きは点(@var{yn}, @var{yn})に届くまで@var{n}回繰り返されます。
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
+@end deffn
+
+@b{オプション}
+
+それぞれのオプションは複数の項目のリストです。
+最初の項目はオプション名で、残りはオプションの引数からなります。
+
+関数@code{evolution}, @code{evolution2d}, @code{staircase}, @code{orbits}, @code{ifs}, @code{chaosgame}が受け付けるオプションは
+は@code{plot2d}に関するオプションと同じです。
+@code{orbits}は、それらのオプションに加えて、
+垂直方向に表される異なる点の最大数を設定する特別なオプション@var{pixels}を受け付けます。
+
+以下のオプションを
+関数@code{julia}と@code{mandelbrot}は受け付けます:
+
+@itemize @bullet
+@item
+@dfn{size}は1つか2つの引数を取ります。
+もし1つだけ引数が与えられたら、
+生成されるグラフィックスファイルの幅と高さはピクセル単位でその値に等しくなります。
+もし引数2つが与えられたら、それらは幅と高さを定義します。
+デフォルト値は、幅と高さ両方に関して400ピクセルです。
+もし2つの値が等しくないなら、集合は歪んで現れます。
+
+@item
+@dfn{levels}は繰り返しの最大数を定義します。
+これは集合に属さない点に使われる色の数にも等しいです。
+デフォルト値は12です;
+値が大きくなると、処理時間が長くなります。
+
+@item
+@dfn{huerange}は
+集合に属さない点の色相に使われる色相角の範囲を定義します。
+デフォルト値は360です。これは色が色相のすべての範囲に広がることを意味します。
+360より大きな値は、色相範囲の繰り返しを意味し、
+負の値は、繰り返し回数が増えるにつれ、
+色相角を減らすように使うことができます。
+
+@item
+@dfn{hue}は、
+集合に属さない点に使われる最初の色の色相を度単位で設定します。
+デフォルト値は300度です。これはマゼンダに対応します;
+他の標準的な色の値は、赤には0、オレンジには45、黄には60、緑には120、シアンには180、
+青には240です。
+オプション@var{huerange}も参照してください。
+
+@item
+@dfn{saturation}は集合に属さない点に使われる飽和値を設定します。
+0と1の間でなければいけません。
+デフォルト値は、0.46です。
+
+@item
+@dfn{value}は
+集合に属さない点に使われる色の値を設定します。
+0と1の間でなければいけません;
+値が高くなると、色が明るくなります。
+デフォルト値は、0.96です。
+
+@item
+@dfn{color}には、
+集合の点を表すのに使われる色の色相、飽和、値を定義する
+3つのパラメータが続きます。
+デフォルト値は３つのパラメータすべてが0であり、黒に対応します。
+許される値の範囲の説明に関して、
+オプション@var{hue}, @var{saturation}, @var{value}を参照してください。
+
+
+@item
+@dfn{center}には、2つの実パラメータが続きます。
+これは、表示される領域の中心点の複素平面上の座標を与えます。
+デフォルト値は両座標に関して0(原点)です。
+
+@item
+@dfn{radius}は表示される正方形領域内の最大円の半径を設定します。
+デフォルト値は2です。
+
+@item
+@dfn{filename}は
+結果のグラフが保存されるファイル名を与えます。
+拡張子.xpmがその名前に加えられます。
+もしファイルが既に存在しているなら、
+関数が生成したファイルで置き換えられます。
+デフォルト値はJulia集合にはjulia、
+Mandelbrot集合にはmandelbrotです。
+
+@end itemize
+
+@b{例}
+
+以下の数列のグファフィックス表現と階段図形:
+2, cos(2), cos(cos(2)),...
+
+@example
+(%i1) load("dynamics")$
+
+(%i2) evolution(cos(y), 2, 11);
+
+(%i3) staircase(cos(y), 1, 11, [y, 0, 1.2]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics1,8cm}
+@image{figures/dynamics2,8cm}
+@end ifnotinfo
+
+もしシステムが遅いなら、
+以下の例のように繰り返し回数を減らさなければいけないでしょう。
+そして、もしモニタ上のドットが小さすぎるなら、
+@code{[}@var{style},@code{[}@var{points},0.8@code{]]}のように、
+違ったスタイルを試したくなるかもしれません。
+
+パラメータ@var{a}を持つ二次写像の軌跡図。
+@ifnottex
+@example
+        x(n+1) = a + x(n)^2
+@end example
+@end ifnottex
+@tex
+$$x_{n+1} = a + x_n^2$$
+@end tex
+
+@example
+(%i4) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics3,8cm}
+@end ifnotinfo
+
+
+x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するには、以下を使ってください:
+@example
+(%i5) orbits(x^2+a, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
+             [nticks, 400], [style,dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics4,8cm}
+@end ifnotinfo
+
+フラクタルに導かれる二次元系の発展:
+
+@example
+(%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
+
+(%i7) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
+
+(%i8) evolution2d([f,g], [x,y], [-0.5,0], 50000, [style,dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics5,8cm}
+@end ifnotinfo
+
+そしてそのフラクタルの小さな領域の拡大:
+
+@example
+(%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
+                  [y,-0.4,-0.2], [style, dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics6,8cm}
+@end ifnotinfo
+
+カオスゲームで得られるSierpinski三角形のプロット:
+
+@example
+(%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
+                 30000, [style, dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics7,8cm}
+@end ifnotinfo
+
+反復函数系で得られるBarnsleyのシダ:
+
+@example
+(%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
+
+(%i11) a2: matrix([0.2,-0.26],[0.23,0.22])$
+
+(%i12) a3: matrix([-0.15,0.28],[0.26,0.24])$
+
+(%i13) a4: matrix([0,0],[0,0.16])$
+
+(%i14) p1: [0,1.6]$
+
+(%i15) p2: [0,1.6]$
+
+(%i16) p3: [0,0.44]$
+
+(%i17) p4: [0,0]$
+
+(%i18) w: [85,92,99,100]$
+
+(%i19) ifs(w, [a1,a2,a3,a4], [p1,p2,p3,p4], [5,0], 50000, [style,dots]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics8,8cm}
+@end ifnotinfo
+
+Mandelbrot集合の12色のグラフィックス表現を納めた
+@emph{dynamics9.xpm}という名前のファイルを生成するには、
+以下を使ってください:
+
+@example
+mandelbrot([filename,"dynamics9"])$
+@end example
+
+@ifnotinfo
+@image{figures/dynamics9,8cm}
+@end ifnotinfo
+
+そして数(-0.55 + i 0.6)に関するJulia集合は以下で得られます:
+@example
+julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
+      [hue, 240], [huerange, -180], [filename, "dynamics10"])$
+@end example
+
+the graph will be saved in the file 
+グラフはファイル@emph{dynamics10.xpm}に保存されます。
+x方向に-0.3から0.3まで、y方向に0.3から0.9までの領域を表示します。
+青から始まり黄で終わる36色が使われます。
+
+@ifnotinfo
+@image{figures/dynamics10,8cm}
+@end ifnotinfo
+
+微分方程式
+
+@ifnottex
+@example
+          dx/dt = t - x^2
+@end example
+@end ifnottex
+@tex
+$${{dx}\over{dt}} = t - x^2$$ 
+@end tex
+
+を、初期値x(t=0) = 1で、0から8までのtの区間で0.1の増分で
+数値的に解くには、以下を使ってください:
+
+@example
+(%i20) results: rk(t-x^2,x,1,[t,0,8,0.1])$
+@end example
+
+結果はリスト@code{results}に保存されます。
+
+系
+
+@ifnottex
+@example
+        dx/dt = 4-x^2-4*y^2     dy/dt = y^2-x^2+1
+@end example
+@end ifnottex
+@tex
+$$\cases{{\displaystyle{dx}\over\displaystyle{dt}} = 4-x^2-4y^2 &\cr &\cr {\displaystyle{dy}\over\displaystyle{dt}} = y^2-x^2+1}$$
+@end tex
+
+を、t=0のxとyの初期値がそれぞれ-1.25, 0.75で、0から4までの区間で、
+数値的に解くには:
+
+@example
+(%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
+@end example
