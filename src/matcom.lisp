@@ -486,7 +486,7 @@
        '(x ans a3)
        (if oldstuff
          (list 'setq 'x (list oldstuff 'x 'ans 'a3))
-         '(declare (ignore a3)))
+         (list 'setq 'x (list 'simpargs1 'x 'ans 'a3)))
        (list
 	'cond
 	'(*afterflag x)

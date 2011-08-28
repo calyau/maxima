@@ -901,3 +901,11 @@ calorie/(cm^2*minute) = 'units(h_c)*K;
 solve (eqn, units (h_c));
 ['units(h_c) = calorie/(cm^2*minute*K)];
 
+/* tickles bug in tellsimpafter: this example triggers an error
+ * unless built-in simplifications are applied so that MRAT is
+ * simplified away by the time GREAT is called.
+ */
+(kill (a, b, c, x), block ([x : (rat (1) ` a) * (1 ` b + c)], expand (x)));
+1 ` a*b + c ` a;
+
+
