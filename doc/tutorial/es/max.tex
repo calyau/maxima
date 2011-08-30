@@ -659,7 +659,14 @@ Ya se ha comentado más arriba cómo solicitar ayuda de Maxima. Algunos usuarios e
 system("(mozilla /usr/local/share/maxima/5.25.0/doc/html/es.utf8/maxima.html)&")$
 \end{Verbatim}
 
-Este proceso se puede automatizar si la instrucción anterior se guarda en un fichero de nombre \verb|maxima-init.mac| y se guarda en una carpeta oculta de nombre \verb|.maxima| en el directorio principal del usuario\footnote{En Linux}. Así, cada vez que arranque Maxima, se abrirá el navegador con el manual de referencia del programa.
+Este proceso se puede automatizar si la instrucción anterior se guarda en un fichero de nombre \verb|maxima-init.mac| y se guarda en la carpeta hacia la que apunta la variable \verb|maxima_userdir|; por ejemplo, en Linux,
+
+\begin{Verbatim}
+(%i25) maxima_userdir;
+\end{Verbatim}
+$$\mbox{{}/home/xefe/.maxima{}}\leqno{\tt (\%o25)}$$
+
+El fichero \verb|maxima-init.mac| se lee cada vez que arranca Maxima y se ejecutan las instrucciones contenidas en él; se puede utilizar para cargar automáticamente módulos adicionales que vayamos a utilizar con frecuencia, funciones especiales definidas por nosotros o, como en este caso, para que se abra el navegador con las páginas del manual.
 
 
 
@@ -667,13 +674,14 @@ Este proceso se puede automatizar si la instrucción anterior se guarda en un fic
 
 
 \newpage
-\chapter{Números, estructuras de datos y sus operaciones}
+\chapter{Números y sus operaciones}
 
 
 
 
 
-\section{Operaciones aritméticas}
+
+\section{Enteros y decimales}
 
 Maxima puede trabajar con números enteros tan grandes como sea necesario,
 
@@ -768,7 +776,8 @@ Evaluation took 0.86 seconds (0.85 elapsed) using 48.571 MB.
  \,268501\,10567201\,13334701\,1182468601\,1133836730401\end{array}    \leqno{\tt (\%o8)}
 \]
 \begin{Verbatim}
-(%i9) showtime:false$  /* desactivamos la información de los tiempos */
+(%i9) /* desactivamos la información de los tiempos */
+      showtime: false$
 \end{Verbatim}
 El texto que se escribe entre \verb|/*| y \verb|*/| son comentarios que Maxima ignora.
 
@@ -826,6 +835,8 @@ En lo que concierne a la división, puede ser necesario conocer el cociente enter
 
 
 
+
+
 \section{Números complejos}
 
 Como ya se comentó más arriba, la unidad imaginaria $\sqrt{-1}$ se representa en Maxima mediante el símbolo \verb|%i|\index{i},
@@ -860,7 +871,7 @@ i+{{7}\over{2}}\leqno{\tt (\%o4)}
 (%i7) z1 / z2;     /* división */
 \end{Verbatim}
 \[
-{{5\,i+3}\over{{{1}\over{2}}-4\,i}}\leqno{\tt (\%o25)}
+{{5\,i+3}\over{{{1}\over{2}}-4\,i}}\leqno{\tt (\%o7)}
 \]
 
 Es posible que estos dos últimos resultados nos parezcan frustrantes y los deseemos en otro formato; a tal efecto podemos pedir a Maxima que nos devuelva \verb|(%o6)| y \verb|(%o7)| en forma cartesiana,
@@ -913,7 +924,7 @@ Antes hemos optado por los resultados en formato cartesiano; pero también es pos
 0.8923076923076924\,i-1.138461538461538\leqno{\tt (\%o14)}
 \]
 
-La norma de un número complejo se calcula con la función \verb|abs|\index{abs} y admite el argumento tanto en forma cartesiana como polar,
+El módulo de un número complejo se calcula con la función \verb|abs|\index{abs} y se le puede pasar el número tanto en su forma cartesiana como polar,
 \begin{Verbatim}
 (%i15) abs(%o9);
 \end{Verbatim}
@@ -927,22 +938,97 @@ La norma de un número complejo se calcula con la función \verb|abs|\index{abs} y
 {{2\,\sqrt{34}}\over{\sqrt{65}}}\leqno{\tt (\%o16)}
 \]
 
+El argumento de un número complejo se calcula con la función \verb|carg|\index{carg}, que devuelve un ángulo en el intervalo $(-\pi, \pi]$,
+\begin{Verbatim}
+(%i17) carg(%o9);
+\end{Verbatim}
+$$\pi-\arctan \left({{29}\over{37}}\right)\leqno{\tt (\%o17)}$$
+
 Por último, el conjugado de un número complejo se calcula con la función \verb|conjugate|\index{conjugate}. Como se ve en este ejemplo, el resultado dependerá del formato del argumento, cartesiano o polar,
 \begin{Verbatim}
-(%i17) conjugate(%o9);       /*forma cartesiana*/
+(%i18) conjugate(%o9);       /*forma cartesiana*/
 \end{Verbatim}
 \[
--{{58\,i}\over{65}}-{{74}\over{65}}\leqno{\tt (\%o17)}
+-{{58\,i}\over{65}}-{{74}\over{65}}\leqno{\tt (\%o18)}
 \]
 \begin{Verbatim}
-(%i18) conjugate(%o12);      /*forma polar*/
+(%i19) conjugate(%o12);      /*forma polar*/
 \end{Verbatim}
 \[
 -{{2\,\sqrt{34}\,e^{i\,\arctan \left({{29}\over{37}}\right)}}\over{
- \sqrt{65}}}\leqno{\tt (\%o18)}
+ \sqrt{65}}}\leqno{\tt (\%o19)}
 \]
 
 
+
+
+\section{Combinatoria}
+
+Ya hemos visto el cálculo del factorial de un número natural, bien con el operador \verb|!|, bien con la función \verb|factorial|\index{factorial}; así podemos calcular el número de permutacions de $n$ elementos, $P_n = n!$,
+
+\begin{Verbatim}
+(%i1) /* permutaciones de 23 elementos */
+      factorial(23);
+\end{Verbatim}
+$$25852016738884976640000\leqno{\tt (\%o1)}$$
+
+El cálculo del número de variaciones con repetición de $m$ elementos tomados de $n$ en $n$, $VR_m^n = m^n$, no necesita de ninguna función especial,
+
+\begin{Verbatim}
+(%i2) /* VR de 17 tomados de 4 en 4 */
+      17^4;
+\end{Verbatim}
+$$83521\leqno{\tt (\%o2)}$$
+
+Sin embargo, para calcular el número de variaciones sin repetición de $m$ elementos tomados de $n$ en $n$, 
+$V_m^n = m!/(m-n)!$, debemos hacer uso de la función \verb|permutation|\index{permutation} definida en el módulo \verb|functs|, que tendremos que cargar en memoria previamente,
+
+\begin{Verbatim}
+(%i3) load("functs")$
+(%i4) /* V de 17 tomados de 4 en 4 */
+      permutation(17,4);
+\end{Verbatim}
+$$57120\leqno{\tt (\%o4)}$$
+
+Nótese que podemos calcular $P_{23}$ con esta misma función, sin llamar al factorial,
+
+\begin{Verbatim}
+(%i5) /* permutaciones de 23 elementos, otra vez */
+      permutation(23,23);
+\end{Verbatim}
+$$25852016738884976640000\leqno{\tt (\%o5)}$$
+
+El número de combinaciones de $m$ elementos tomados de $n$ en $n$, $C_m^n = V_m^n / P_n$, se puede calcular con la función \verb|combination|\index{combination}, también definida en el paquete de funciones \verb|functs|,
+
+\begin{Verbatim}
+(%i5) /* combinaciones de 30 elementos, tomados de 5 en 5 */
+      combination(30,5);
+\end{Verbatim}
+$$142506\leqno{\tt (\%o5)}$$
+
+El número de permutaciones de $n$ elementos, con repeticiones $a_1, \ldots, a_k$,
+$$
+P_n^{a_1, \ldots, a_r} = \frac{(a_1+ \ldots + a_r)!}{a_1! \cdot \ldots \cdot a_r!},
+$$
+siendo $a_1+ \ldots + a_r = n$, se calcula con la función \verb|multinomial_coeff|\index{multinomial\_coeff },
+
+\begin{Verbatim}
+(%i6) /* permutaciones con repetición de 5 elementos,
+         con repeticiones 2, 2 y 1 */
+      multinomial_coeff(2,2,1);
+\end{Verbatim}
+$$30\leqno{\tt (\%o6)}$$
+
+En relación con la combinatoria, véase también la Sección~\ref{grafos} sobre grafos.
+
+
+
+
+
+
+
+\newpage
+\chapter{Estructuras de datos}
 
 
 
@@ -952,10 +1038,9 @@ Por último, el conjugado de un número complejo se calcula con la función \verb|c
 
 Las listas son objetos muy potentes a la hora de representar estructuras de datos; de hecho, toda expresión de Maxima se representa internamente como una lista, lo que no es de extrañar habida cuenta de que Maxima está programado en Lisp (\emph{List Processing}). Veamos cómo podemos ver la representación interna, esto es en Lisp, de una sencilla expresión tal como $1+3a$,
 \index{31@:lisp}\begin{Verbatim}
-(%i1) :lisp #$1+3*a$
-((MPLUS SIMP) 1 ((MTIMES SIMP) 3 $a))
+(%i1) ?print(1+3*a)$
+((MPLUS SIMP) 1 ((MTIMES SIMP) 3 $A))
 \end{Verbatim}
-Nótese que el formato general es de la forma \verb|:lisp #$expr$|, siendo \verb|expr| una expresión cualquiera en Maxima.
 
 Pero al nivel del usuario que no está interesado en las interioridades de Maxima, también se puede trabajar con listas como las definidas a continuación, siempre encerradas entre corchetes,
 \index{34@[...]}\index{32@``...''}\begin{Verbatim}
@@ -1011,7 +1096,7 @@ Vemos que los elementos de una lista pueden a su vez ser también listas, expresi
 {{\sqrt{3}}\over{2}}\leqno{\tt (\%o9)}
 \]
 \begin{Verbatim}
-(%i10) length(r); /* cuantos hay? */
+(%i10) length(r); /* ¿cuántos hay? */
 \end{Verbatim}
 \[
 4\leqno{\tt (\%o10)}
@@ -1024,19 +1109,20 @@ Vemos que los elementos de una lista pueden a su vez ser también listas, expresi
   \right]  , 1 \right] \leqno{\tt (\%o11)}
 \]
 \begin{Verbatim}
-(%i12) member(a,r); /* es a un elemento?*/
+(%i12) member(a,r); /* ¿es a un elemento?*/
 \end{Verbatim}
 \[
 \mathrm{false}\leqno{\tt (\%o12)}
 \]
 \begin{Verbatim}
-(%i13) member([a,3],r); /* lo es [a,3]? */
+(%i13) member([a,3],r); /* ¿lo es [a,3]? */
 \end{Verbatim}
 \[
 \mathrm{true}\leqno{\tt (\%o13)}
 \]
 \begin{Verbatim}
-(%i14) sort(q: [7,a,1,d,5,3,b]); /* asigno valor a q y ordeno */
+(%i14) /* asigno valor a q y ordeno */
+       sort(q: [7,a,1,d,5,3,b]);
 \end{Verbatim}
 \[
 \left[ 1 , 3 , 5 , 7 , a , b , d \right] \leqno{\tt (\%o14)}
@@ -1118,7 +1204,7 @@ La función \verb|apply|\index{apply} permite suministrar a otra función todos lo
 \]
 aunque estas dos operaciones hubiese sido quizás más apropiado haberlas realizado con las funciones \verb|sum|\index{sum} y \verb|product|\index{product}.
 
-A veces interesará aplicar una misma función a varios elementos de una lista de forma independiente, para lo que haremos uso de \verb|map|\index{map}; a continuación un ejemplo de cálculo de factoriales y otro trigonométrico,
+A veces interesará aplicar una misma función a varios elementos de una lista de forma independiente, para lo que haremos uso de \verb|map|\index{map}. A continuación un ejemplo de cálculo de factoriales y otro trigonométrico; en este último, no es necesario aplicar \verb|map|, ya que algunas funciones se distribuyen automáticamente sobre los elementos de una lista,
 \begin{Verbatim}
 (%i26) map("!",s);
 \end{Verbatim}
@@ -1129,7 +1215,7 @@ A veces interesará aplicar una misma función a varios elementos de una lista de 
   \right]\end{array}  \leqno{\tt (\%o26)}
 \]
 \begin{Verbatim}
-(%i27) map(sin,s);
+(%i27) sin(s);
 \end{Verbatim}
 \[
 \left[ \sin 2 , \sin 4 , \sin 6 , \sin 8 , \sin 10 , \sin 12 , 
@@ -1150,7 +1236,7 @@ Como se ve, la función \emph{lambda} admite dos argumentos; el primero es una li
 de argumentos, siendo el segundo la expresión que indica qué se hace con los elementos de la lista anterior.
 
 
-Por último, las listas también pueden ser utilizadas en operaciones aritméticas,
+Por último, las listas también pueden ser utilizadas en operaciones aritméticas. Algunas de las operaciones que se aplican a continuación no están definidas matemáticamente, por lo que Maxima se toma la libertad de definirlas por su cuenta, lo que redunda en un ahorro de código por parte del usuario y en un estilo de programación más compacto,
 \index{14@+}\index{15@-}\index{16@*}\index{17@/}\index{18@\^\ }\index{21@.}\begin{Verbatim}
 (%i29) [1,2,3]+[a,b,c];
 \end{Verbatim}
@@ -1194,7 +1280,7 @@ Por último, las listas también pueden ser utilizadas en operaciones aritméticas,
 \left[ 3^{a} , 3^{b} , 3^{c} \right] \leqno{\tt (\%o35)}
 \]
 
-En Maxima, las listas se pueden interpretar como vectores; para más información, acúdase a la Sección~\ref{vectores}
+En Maxima, las listas se pueden interpretar como vectores; para más información, acúdase a la Sección~\ref{vectores}.
 
 Para que estas operaciones puedan realizarse sin problemas, la variable global \verb|listarith|\index{listarith} debe tomar el valor \verb|true|, en caso contrario el resultado será bien distinto,
 \begin{Verbatim}
@@ -1242,7 +1328,7 @@ El cálculo del módulo de un vector se puede hacer mediante la definición previa 
 \section{Arrays}
 \label{arrays}
 
-Los arrays son estructuras que almacenan datos secuencial o matricialmente. Se diferencian de las listas en que éstas pueden alterar su estructura interna y los arrays no; pero la ventaja frente a las listas estriba en que el acceso a un dato cualquiera es directo, mientras que en las listas, al ser estructuras dinámicas, para acceder al $n$-ésimo dato, un puntero debe recorrer todos los elementos de la lista desde el que ocupa el primer lugar. Así pues, se recomienda el uso de arrays cuando se vaya a utilizar una secuencia larga de cantidades cuya estructura se va a mantener inalterable; en general, se mejorarán los tiempos de procesamiento.
+Los arrays son estructuras que almacenan datos secuencial o matricialmente. Se diferencian de las listas en que éstas pueden alterar su estructura interna y los arrays no; pero la ventaja frente a las listas estriba en que el acceso a un dato cualquiera es directo, mientras que en las listas, al ser estructuras dinámicas, para acceder al $n$-ésimo dato, un puntero debe recorrer todos los elementos de la lista desde el que ocupa el primer lugar. Así pues, se recomienda el uso de arrays cuando se vaya a utilizar una secuencia larga de expresiones cuya estructura se va a mantener inalterable; en general, se mejorarán los tiempos de procesamiento.
 
 Si queremos construir un array, lo debemos declarar previamente mediante la función \verb|array|\index{array}, indicando su nombre y dimensiones; a continuación le asignaríamos valores a sus elementos,
 \begin{Verbatim}
@@ -1342,7 +1428,7 @@ a-b\leqno{\tt (\%o17)}
 \]
 Esta generalidad en la estructura de los arrays no declarados tiene la contrapartida de restarle eficiencia en el procesamiento de los datos almacenados, siendo preferible, siempre que sea posible, la utilización de los declarados.
 
-Ya por último, junto con los arrays declarados y no declarados mencionados, es posible trabajar a nivel de Maxima con arrays de lisp. En este caso su construcción se materializa con la función \verb|make_array|\index{make\_array},
+Ya por último, junto con los arrays declarados y no declarados mencionados, es posible trabajar a nivel de Maxima con arrays de Lisp. En este caso su construcción se materializa con la función \verb|make_array|\index{make\_array},
 \begin{Verbatim}
 (%i18) a: make_array(flonum,5);
 \end{Verbatim}
@@ -1622,6 +1708,8 @@ En algunos contextos el usuario tiene almacenada una expresión sintácticamente c
 
 Véase que el resultado de \verb|parse_string| ya no es una cadena, sino una expresión correcta de Maxima sin evaluar, cuya evaluación se solicita a continuación con la doble comilla simple.
 
+Para más información sobre el procesamiento de cadenas de texto, se sugiere la lectura del capítulo \verb|stringproc| del manual de referencia.
+
 
 
 
@@ -1640,7 +1728,9 @@ Se define a continuación un conjunto mediante la función \verb|set|\index{set},
   , \mbox{{}Sancho{}} , a , \left \{a , b \right \} , b \right \}\leqno{\tt (\%o1)}
 \]
 
-Como se ve, se admiten objetos de muy diversa naturaleza como elementos de un conjunto: números, expresiones, el conjunto vacío (\verb|{}|), listas, otros conjuntos o cadenas de caracteres. Cuando se trabaja con listas, puede ser de utilidad considerar sus componentes como elementos de un conjunto, luego se necesita una función que nos transforme una lista en conjunto,
+Como se ve, se admiten objetos de muy diversa naturaleza como elementos de un conjunto: números, expresiones, el conjunto vacío (\verb|{}|), listas, otros conjuntos o cadenas de caracteres. Se habrá observado que al construir un conjunto se eliminan las repeticiones de elementos, cual es el caso del símbolo $a$ en la lista anterior.
+
+Cuando se trabaja con listas, puede ser de utilidad considerar sus componentes como elementos de un conjunto, luego se necesita una función que nos transforme una lista en conjunto,
 \index{setify}\begin{Verbatim}
 (%i2) [[2,k],sqrt(2),set(b,a),[k,2],"Panza"];
 \end{Verbatim}
@@ -1773,9 +1863,12 @@ Por último ya, el producto cartesiano de tres conjuntos,
 
 
 
-\section{Grafos}
 
-El soporte para el desarrollo de algoritmos en el ámbito de la teoría de grafos se encuentra en el módulo \verb|graphs|\index{graphs}. Se trata de un paquete de reciente creación que aporta la infraestructura básica para el trabajo con grafos, orientados o no. No se admiten bucles ni aristas múltiples.
+
+\section{Grafos}
+\label{grafos}
+
+El soporte para el desarrollo de algoritmos en el ámbito de la teoría de grafos se encuentra en el módulo \verb|graphs|\index{graphs}. Se trata de un paquete de funciones que aporta la infraestructura básica para el trabajo con grafos, orientados o no. No se admiten bucles ni aristas múltiples.
 
 \index{create\_graph}\begin{Verbatim}
 (%i1) load(graphs)$
@@ -1887,8 +1980,7 @@ Adjacencies:
   7 :  1  2  3  4  5
 \end{Verbatim}
 
-Pedimos ahora a Maxima que nos represente gráficamente el complementario de \verb|g|, cuyo aspecto es del apartado \emph{c)} de la 
-Figura~\ref{fig:graph}.
+Pedimos ahora a Maxima que nos represente gráficamente el complementario de \verb|g|, cuyo aspecto es el del apartado \emph{c)} de la Figura~\ref{fig:graph}.
 
 \begin{Verbatim}
 (%i12) draw_graph(gc, show_id=true, terminal=eps)$
@@ -2013,7 +2105,7 @@ Por último ya, un ejemplo de cálculo de la ruta más corta. Se genera un grafo or
           terminal    = eps)$
 \end{Verbatim}
 
-El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y ponderaciones en las aristas y arcos. El lector interesado podrá consultar la documentación correspondiente\footnote{A partir de la versión 5.14 de Maxima}. 
+El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y ponderaciones en las aristas y arcos. El lector interesado podrá consultar la documentación correspondiente en el manual de referencia. 
 
 
 
@@ -2026,6 +2118,9 @@ El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y pond
 
 \section{Transformaciones simbólicas}
 
+
+\subsubsection{Expresiones algebraicas}
+
 Sin duda, una de las capacidades más destacables de Maxima es su habilidad para manipular expresiones algebraicas. Desarrollemos un ejemplo que empieza por asignar a la variable \verb|q| una expresión literal:
 \begin{Verbatim}
 (%i1) q: (x+3)^5-(x-a)^3+(x+b)^(-1)+(x-1/4)^(-5);
@@ -2035,7 +2130,7 @@ Sin duda, una de las capacidades más destacables de Maxima es su habilidad para 
  \left(x-{{1}\over{4}}\right)^5}}\leqno{\tt (\%o1)}
 \]
 
-Se observa que en principio Maxima no realiza ningún cálculo. La función \verb|expand|\index{expand} se encarga de desarrollar las potencias,
+Se observa que en principio Maxima no realiza ningún cálculo. La función \verb|expand|\index{expand} se encarga de desarrollar las potencias y los productos algebraicos,
 \begin{Verbatim}
 (%i2) expand(q);
 \end{Verbatim}
@@ -2049,14 +2144,14 @@ Se observa que en principio Maxima no realiza ningún cálculo. La función \verb|e
 
 No obstante es posible que no nos interese desplegar toda la expresión, entre otras cosas para evitar una respuesta farragosa y difícil de interpretar; en tal caso podemos utilizar \verb|expand|\index{expand} añadiéndole dos argumentos y operar de la manera siguiente
 \begin{Verbatim}
-(%i3) q,expand(3,2);
+(%i3) expand(q,3,2);
 \end{Verbatim}
 \[
 {{1}\over{x+b}}+\left(x+3\right)^5-x^3+3\,a\,x^2-3\,a^2\,x+{{1
  }\over{\left(x-{{1}\over{4}}\right)^5}}+a^3\leqno{\tt (\%o3)}
 \]
 
-Con el primer argumento indicamos que queremos la expansión de todas aquellas potencias con exponente positivo menor o igual a 3 y de las que teniendo el exponente negativo no excedan en valor absoluto de 2.
+Con los argumentos adicionales indicamos que queremos la expansión de todas aquellas potencias con exponente positivo menor o igual a 3 y de las que teniendo el exponente negativo no excedan en valor absoluto de 2.
 
 Dada una expresión con valores literales, podemos desear sustituir alguna letra por otra expresión; por ejemplo, si queremos hacer los cambios $a=2$, $b=2c$ en el último resultado obtenido,
 \begin{Verbatim}
@@ -2067,14 +2162,14 @@ Dada una expresión con valores literales, podemos desear sustituir alguna letra 
  \left(x-{{1}\over{4}}\right)^5}}+8\leqno{\tt (\%o4)}
 \]
 
-En estos dos últimos ejemplos (\verb|%i3| y \verb|%i4|) se presentaron sentencias en las que había elementos separados por comas (\verb|,|)\index{2@, (coma)}. Esta es una forma simplificada de utilizar la función \verb|ev|, que evalúa la primera expresión asignando los valores que se le van indicando a continuación; por ejemplo, \verb|(%i3)| se podía haber escrito de la forma \verb|ev(q,expand(3,2))| o \verb|expand(q,3,2)| y \verb|(%i4)| como \verb|ev(%,a=2,b=2*c)|. El uso de la variante con \verb|ev|\index{ev} está más indicado para ser utilizado dentro de expresiones más amplias. Obsérvese el resultado siguiente
+En el ejemplo \verb|%i4| se presenta una sentencia en la que hay elementos separados por comas (\verb|,|)\index{2@, (coma)}. Esta es una forma simplificada de utilizar la función \verb|ev|, que evalúa la primera expresión asignando los valores que se le van indicando a continuación; por ejemplo, \verb|(%i4)| se podría haber escrito como \verb|ev(%,a=2,b=2*c)|. El uso de la variante con \verb|ev|\index{ev} está más indicado para ser utilizado dentro de expresiones más amplias. Obsérvese el resultado siguiente
 \begin{Verbatim}
 (%i5) 3*x^2 + ev(x^4,x=5);
 \end{Verbatim}
 \[
 3\,x^2+625\leqno{\tt (\%o5)}
 \]
-donde la sustitución $x=5$ se ha realizado exclusivamente dentro del entorno delimitado por la función \verb|ev|.
+donde la sustitución $x=5$ se ha realizado exclusivamente dentro del contexto delimitado por la función \verb|ev|.
 
 De forma más general, la función \verb|subst|\index{subst} sustituye subexpresiones enteras. En el siguiente ejemplo, introducimos una expresión algebraica y a continuación sustituimos todos los binomios \verb|x+y| por la letra \verb|k|,
 \begin{Verbatim}
@@ -2160,288 +2255,331 @@ En \verb|(%i12)| y \verb|(%i13)| definimos los polinomios \verb|p1| y \verb|p2|,
 \left(x-1\right)\,\left(x+1\right)^2\leqno{\tt (\%o17)}
 \]
 
+Hay varias funciones en Maxima que se pueden utilizar para extraer coeficientes de expresiones algebraicas; una de ellas es \verb|ratcoef|\index{ratcoef}. Dado el polinomio $(x-y)^4$, podemos querer extraer el coeficiente de $x^2 y^2$,
+
+\begin{Verbatim}
+(%i18) ratcoef((x-y)^4, x^2*y^2);
+\end{Verbatim}
+$$6\leqno{\tt (\%o18)}$$
+
+Cuando tenemos expandido un polinomio de varias variables, podemos querer transformarlo en otro univariante con coeficientes literales; aquí puede ser de ayuda la función \verb|rat|\index{rat},
+
+\begin{Verbatim}
+(%i19) q: m^2*x^2+x^2+2*b*m*x-6*m*x-4*x+b^2-6*b+13;
+\end{Verbatim}
+$$m^2\,x^2+x^2+2\,b\,m\,x-6\,m\,x-4\,x+b^2-6\,b+13\leqno{\tt (\%o19)}$$
+\begin{Verbatim}
+(%i20) rat(q, x);
+\end{Verbatim}
+$$\left(m^2+1\right)\,x^2+\left(\left(2\,b-6\right)\,m-4\right)\,x+b^
+ 2-6\,b+13\leqno{\tt (\%o20)}$$
+
+Llamando nuevamente a \verb|ratcoef| podemos extraer el coeficiente del término de primer grado respecto de $x$,
+
+\begin{Verbatim}
+(%i21) ratcoef(%,x);
+\end{Verbatim}
+$$\left(2\,b-6\right)\,m-4\leqno{\tt (\%o21)}$$
+
+Otro ejemplo ilstrativo de \verb|rat| en acción,
+
+\begin{Verbatim}
+(%i22) rat((x^b+a*x^b+x)^2, x^b);
+\end{Verbatim}
+$$\left(a^2+2\,a+1\right)\,\left(x^{b}\right)^2+\left(2\,a+2\right)\,
+ x\,x^{b}+x^2\leqno{\tt (\%o22)}$$
+
 Si en algún momento queremos inhibir las simplificaciones, podemos hacer uso de la variable global \verb|simp|\index{simp}, cuyo valor por defecto es \verb|true|,
 
 \begin{Verbatim}
-(%i18) simp: false$
-(%i19) 2 + 2 + a + a;
+(%i23) simp: false$
+(%i24) 2 + 2 + a + a;
 \end{Verbatim}
 \[
-2+2+a+a\leqno{\tt (\%o19)}
+2+2+a+a\leqno{\tt (\%o24)}
 \]
 \begin{Verbatim}
-(%i20) simp: true$
-(%i21) %o19;
+(%i25) simp: true$
+(%i26) %o24;
 \end{Verbatim}
 \[
-2\,a+4\leqno{\tt (\%o21)}
+2\,a+4\leqno{\tt (\%o26)}
 \]
 
 Veamos ahora algunas transformaciones que se pueden hacer con fracciones algebraicas.
 
 \begin{Verbatim}
-(%i22) expr:(x^2-x)/(x^2+x-6)-5/(x^2-4);
+(%i27) expr:(x^2-x)/(x^2+x-6)-5/(x^2-4);
 \end{Verbatim}
 \[
-{{x^2-x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o22)}
+{{x^2-x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o27)}
 \]
 
 Podemos factorizar esta expresión,
 
 \index{factor}\begin{Verbatim}
-(%i23) factor(expr);
+(%i28) factor(expr);
 \end{Verbatim}
 \[
 {{\left(x-3\right)\,\left(x^2+4\,x+5\right)}\over{\left(x-2\right)
- \,\left(x+2\right)\,\left(x+3\right)}}\leqno{\tt (\%o23)}
+ \,\left(x+2\right)\,\left(x+3\right)}}\leqno{\tt (\%o28)}
 \]
 
 La expansión devuelve el siguiente resultado,
 
 \index{expand}\begin{Verbatim}
-(%i24) expand(expr);
+(%i29) expand(expr);
 \end{Verbatim}
 \[
-{{x^2}\over{x^2+x-6}}-{{x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o24)}
+{{x^2}\over{x^2+x-6}}-{{x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o29)}
 \]
 
 Ahora descomponemos la fracción algebraica \verb|expr| en fracciones simples,
 
 \index{partfrac}\begin{Verbatim}
-(%i25) partfrac(expr,x);
+(%i30) partfrac(expr,x);
 \end{Verbatim}
 \[
 -{{12}\over{5\,\left(x+3\right)}}+{{5}\over{4\,\left(x+2\right)}}-
- {{17}\over{20\,\left(x-2\right)}}+1\leqno{\tt (\%o25)}
+ {{17}\over{20\,\left(x-2\right)}}+1\leqno{\tt (\%o30)}
 \]
 
 Por último, transformamos la misma expresión a su forma canónica CRE (\emph{Cannonical Rational Expression}), que es un formato que Maxima utiliza para reducir expresiones algebraicas equivalentes a una forma única,
 
 \index{radcan}\begin{Verbatim}
-(%i26) radcan(expr);
+(%i31) radcan(expr);
 \end{Verbatim}
 \[
-{{x^3+x^2-7\,x-15}\over{x^3+3\,x^2-4\,x-12}}\leqno{\tt (\%o26)}
+{{x^3+x^2-7\,x-15}\over{x^3+3\,x^2-4\,x-12}}\leqno{\tt (\%o31)}
 \]
 
 La función \verb|ratsimp|\index{ratsimp} también simplifica cualquier expresión racional, así como las subexpresiones racionales que son argumentos de funciones cualesquiera. El resultado se devuelve como el cociente de dos polinomios. En ocasiones no es suficiente con una sola ejecución de \verb|ratsimp|, por lo que será necesario aplicarla más veces, esto es lo que hace precisamente la función \verb|fullratsimp|\index{fullratsimp}; concretemos esto con un ejemplo:
 \begin{Verbatim}
-(%i27) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
+(%i32) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
 \end{Verbatim}
 \[
 {{\left(x^{{{a}\over{2}}}-1\right)^2\,\left(x^{{{a}\over{2}}}+1
- \right)^2}\over{x^{a}-1}}\leqno{\tt (\%o27)}
+ \right)^2}\over{x^{a}-1}}\leqno{\tt (\%o32)}
 \]
 \begin{Verbatim}
-(%i28) ratsimp(%);  /* simplificamos una vez */
+(%i33) ratsimp(%);  /* simplificamos una vez */
 \end{Verbatim}
 \[
-{{x^{2\,a}-2\,x^{a}+1}\over{x^{a}-1}}\leqno{\tt (\%o28)}
+{{x^{2\,a}-2\,x^{a}+1}\over{x^{a}-1}}\leqno{\tt (\%o33)}
 \]
 \begin{Verbatim}
-(%i29) ratsimp(%);  /* simplificamos otra vez */
+(%i34) ratsimp(%);  /* simplificamos otra vez */
 \end{Verbatim}
 \[
-x^{a}-1\leqno{\tt (\%o29)}
+x^{a}-1\leqno{\tt (\%o34)}
 \]
 \begin{Verbatim}
-(%i30) fullratsimp(%o27);   /* simplificamos todo de una vez! */
+(%i35) fullratsimp(%o32);   /* ¡simplificamos todo de una vez! */
 \end{Verbatim}
 \[
-x^{a}-1\leqno{\tt (\%o30)}
+x^{a}-1\leqno{\tt (\%o35)}
 \]
 
 Dada una fracción algebraica, podemos obtener separadamente el numerador y el denominador,
 \index{num}\index{denom}\begin{Verbatim}
-(%i31) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
+(%i36) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
 \end{Verbatim}
 \[
-{{x^3-4\,x^2+4\,x-2}\over{x^2+x+1}}\leqno{\tt (\%o31)}
+{{x^3-4\,x^2+4\,x-2}\over{x^2+x+1}}\leqno{\tt (\%o36)}
 \]
 \begin{Verbatim}
-(%i32) num(fr);
+(%i37) num(fr);
 \end{Verbatim}
 \[
-x^3-4\,x^2+4\,x-2\leqno{\tt (\%o32)}
+x^3-4\,x^2+4\,x-2\leqno{\tt (\%o37)}
 \]
 \begin{Verbatim}
-(%i33) denom(fr);
+(%i38) denom(fr);
 \end{Verbatim}
 \[
-x^2+x+1\leqno{\tt (\%o33)}
+x^2+x+1\leqno{\tt (\%o38)}
 \]
 
 Maxima nunca puede adivinar a priori las intenciones del usuario para con las expresiones con las que está trabajando, por ello sigue la política de no tomar ciertas decisiones, por lo que a veces puede parecer que no hace lo suficiente o que no sabe hacerlo. Esta forma \emph{vaga} de proceder la suple con una serie de funciones y variables globales que permitirán al usuario darle al motor simbólico ciertas directrices sobre qué debe hacer con las expresiones, cómo reducirlas o transformarlas. Sin ánimo de ser exhaustivos, siguen algunos ejemplos en los que se controlan transformaciones de tipo logarítmico y trigonométrico.
 
+
+
+\subsubsection{Expresiones logarítmicas}
+
 Las expresiones que contienen logaritmos suelen ser ambiguas a la hora de reducirlas. Transformamos a continuación la misma expresión según diferentes criterios,
 
 \begin{Verbatim}
-(%i34) log(x^r)-log(x*y) + a*log(x/y);
+(%i1) log(x^r)-log(x*y) + a*log(x/y);
 \end{Verbatim}
 \[
 -\log \left(x\,y\right)+a\,\log \left({{x}\over{y}}\right)+r\,\log 
- x\leqno{\tt (\%o34)}
+ x\leqno{\tt (\%o1)}
 \]
 
 En principio, ha hecho la transformación $\log x^r \rightarrow r \log x$. Esto se controla con la variable global \verb|logexpand|\index{logexpand}, cuyo valor por defecto es \verb|true|, lo cual sólo permite la reducción recién indicada. Si también queremos que nos expanda los logaritmos de productos y divisiones, le cambiaremos el valor a esta variable global, tal como se indica a continuación,
 
 \begin{Verbatim}
-(%i35) logexpand: super$
-(%i36) log(x^r)-log(x*y) + a*log(x/y);
+(%i2) logexpand: super$
+(%i3) log(x^r)-log(x*y) + a*log(x/y);
 \end{Verbatim}
 \[
--\log y+a\,\left(\log x-\log y\right)+r\,\log x-\log x\leqno{\tt (\%o36)}
+-\log y+a\,\left(\log x-\log y\right)+r\,\log x-\log x\leqno{\tt (\%o3)}
 \]
 
 \begin{Verbatim}
-(%i37) /* pedimos que nos simplifique la expresión anterior */
+(%i4) /* pedimos que nos simplifique la expresión anterior */
        ratsimp(%);
 \end{Verbatim}
 \[
-\left(-a-1\right)\,\log y+\left(r+a-1\right)\,\log x\leqno{\tt (\%o37)}
+\left(-a-1\right)\,\log y+\left(r+a-1\right)\,\log x\leqno{\tt (\%o4)}
 \]
 
 En caso de no querer que nos haga transformación alguna sobre la expresión de entrada, simplemente haremos
 
 \begin{Verbatim}
-(%i38) logexpand: false$
-(%i39) log(x^r)-log(x*y) + a*log(x/y);
+(%i5) logexpand: false$
+(%i6) log(x^r)-log(x*y) + a*log(x/y);
 \end{Verbatim}
 \[
 -\log \left(x\,y\right)+a\,\log \left({{x}\over{y}}\right)+\log x^{
- r}\leqno{\tt (\%o39)}
+ r}\leqno{\tt (\%o6)}
 \]
 
 Devolvemos ahora la variable \verb|logexpand| a su estado por defecto,
 
 \begin{Verbatim}
-(%i40) logexpand: true$
+(%i7) logexpand: true$
 \end{Verbatim}
 
 La función \verb|logcontract|\index{logcontract} es la que nos va a permitir compactar expresiones logarítmicas,
 
 \begin{Verbatim}
-(%i41) logcontract(2*(a*log(x) + 2*a*log(y)));
+(%i8) logcontract(2*(a*log(x) + 2*a*log(y)));
 \end{Verbatim}
 \[
-a\,\log \left(x^2\,y^4\right)\leqno{\tt (\%o41)}
+a\,\log \left(x^2\,y^4\right)\leqno{\tt (\%o8)}
 \]
 
 Por defecto, Maxima contrae los coeficientes enteros; para incluir en este caso la variable $a$ dentro del logaritmo le asignaremos la propiedad de ser un número entero,
 
 \begin{Verbatim}
-(%i42) declare(a, integer)$
-(%i43) ''%i41;  /* fuerza reevaluación de expresión nominal */
+(%i9) declare(a, integer)$
+(%i10) ''%i8;  /* fuerza reevaluación de expresión nominal */
 \end{Verbatim}
 \[
-\log \left(x^{2\,a}\,y^{4\,a}\right)\leqno{\tt (\%o43)}
+\log \left(x^{2\,a}\,y^{4\,a}\right)\leqno{\tt (\%o10)}
 \]
 
 Esta es una forma de hacerlo, pero Maxima permite un mayor refinamiento sobre este particular haciendo uso de la variable global \verb|logconcoeffp|\index{logconcoeffp}.
 
+
+
+
+\subsubsection{Expresiones trigonométricas}
+
 Toda esta casuística de diferentes formas de representar una misma expresión aumenta considerablemente con aquéllas en las que intervienen las funciones trigonométricas e hiperbólicas. Empecemos con la función \verb|trigexpand|\index{trigexpand}, cuyo comportamiento se controla con las variables globales \verb|trigexpand| (que le es homónima), \verb|trigexpandplus|\index{trigexpandplus} y \verb|trigexpandtimes|\index{trigexpandtimes}, cuyos valores por defectos son, respectivamente, \verb|false|, \verb|true| y \verb|true|. Puestos a experimentar, definamos primero una expresión trigonométrica e interpretamos algunos resultados,
 
 \begin{Verbatim}
-(%i44) expr: x+sin(3*x+y)/sin(x);
+(%i1) expr: x+sin(3*x+y)/sin(x);
 \end{Verbatim}
 \[
-{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o44)}
+{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o1)}
 \]
 
 \begin{Verbatim}
-(%i45) trigexpand(expr); /* aquí trigexpand vale false */
+(%i2) trigexpand(expr); /* aquí trigexpand vale false */
 \end{Verbatim}
 \[
 {{\cos \left(3\,x\right)\,\sin y+\sin \left(3\,x\right)\,\cos y
- }\over{\sin x}}+x\leqno{\tt (\%o45)}
+ }\over{\sin x}}+x\leqno{\tt (\%o2)}
 \]
 
 Vemos que sólo se desarrolló la suma del numerador; ahora cambiamos el valor lógico de \verb|trigexpand|,
 
 \begin{Verbatim}
-(%i46) trigexpand(expr), trigexpand=true;
+(%i3) trigexpand(expr), trigexpand=true;
 \end{Verbatim}
 \[
 {{\left(\cos ^3x-3\,\cos x\,\sin ^2x\right)\,\sin y+\left(3\,\cos ^2
- x\,\sin x-\sin ^3x\right)\,\cos y}\over{\sin x}}+x\leqno{\tt (\%o46)}
+ x\,\sin x-\sin ^3x\right)\,\cos y}\over{\sin x}}+x\leqno{\tt (\%o3)}
 \]
  
 Cuando la asignación de la variable global se hace como se acaba de indicar, sólo tiene efecto temporal durante esa ejecución, sin haberse alterado a nivel global. Podemos ordenar a Maxima que simplifique la expresión anterior,
 
 \begin{Verbatim}
-(%i47) ratsimp(%);
+(%i4) ratsimp(%);
 \end{Verbatim}
 \[
 -{{\left(3\,\cos x\,\sin ^2x-\cos ^3x\right)\,\sin y+\left(\sin ^3x
- -3\,\cos ^2x\,\sin x\right)\,\cos y-x\,\sin x}\over{\sin x}}\leqno{\tt (\%o47)}
+ -3\,\cos ^2x\,\sin x\right)\,\cos y-x\,\sin x}\over{\sin x}}\leqno{\tt (\%o4)}
 \]
 
 Podemos inhibir el desarrollo de la suma,
 
 \begin{Verbatim}
-(%i48) trigexpand(expr), trigexpandplus=false;
+(%i5) trigexpand(expr), trigexpandplus=false;
 \end{Verbatim}
 \[
-{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o48)}
+{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o5)}
 \]
 
 Otra variable global de interés, que no tiene nada que ver con la función \verb|trigexpand|, es \verb|halfangles|\index{halfangles}, con valor \verb|false| por defecto, que controla si se reducen los argumentos trigonométricos con denominador dos,
 
 \begin{Verbatim}
-(%i49) sin(x/2);
+(%i6) sin(x/2);
 \end{Verbatim}
 \[
-\sin \left({{x}\over{2}}\right)\leqno{\tt (\%o49)}
+\sin \left({{x}\over{2}}\right)\leqno{\tt (\%o6)}
 \]
 
 \begin{Verbatim}
-(%i50) sin(x/2), halfangles=true;
+(%i7) sin(x/2), halfangles=true;
 \end{Verbatim}
 \[
-{{\sqrt{1-\cos x}}\over{\sqrt{2}}}\leqno{\tt (\%o50)}
+{{\sqrt{1-\cos x}}\over{\sqrt{2}}}\leqno{\tt (\%o7)}
 \]
 
 La función \verb|trigsimp|\index{trigsimp} fuerza el uso de las identidades fundamentales $\sin^2 x + \cos^2 x = 1$ y $\cosh^2 x - \sinh^2 x = 1$ para simplificar expresiones,
 
 \begin{Verbatim}
-(%i51) 5*sin(x)^2 + 4*cos(x)^2;
+(%i8) 5*sin(x)^2 + 4*cos(x)^2;
 \end{Verbatim}
 \[
-5\,\sin ^2x+4\,\cos ^2x\leqno{\tt (\%o51)}
+5\,\sin ^2x+4\,\cos ^2x\leqno{\tt (\%o8)}
 \]
 
 \begin{Verbatim}
-(%i52) trigsimp(%);
+(%i9) trigsimp(%);
 \end{Verbatim}
 \[
-\sin ^2x+4\leqno{\tt (\%o52)}
+\sin ^2x+4\leqno{\tt (\%o9)}
 \]
 
 Como un último ejemplo, veamos cómo reducir productos y potencias de funciones trigonométricas a combinaciones lineales,
 
 \begin{Verbatim}
-(%i53) -sin(x)^2+3*cos(x)^2*tan(x);
+(%i10) -sin(x)^2+3*cos(x)^2*tan(x);
 \end{Verbatim}
 \[
-3\,\cos ^2x\,\tan x-\sin ^2x\leqno{\tt (\%o53)}
+3\,\cos ^2x\,\tan x-\sin ^2x\leqno{\tt (\%o10)}
 \]
 
 \begin{Verbatim}
-(%i54) trigreduce(%);
+(%i11) trigreduce(%);
 \end{Verbatim}
 \[
 {{3\,\sin \left(2\,x\right)}\over{2}}+{{\cos \left(2\,x\right)
- }\over{2}}-{{1}\over{2}}\leqno{\tt (\%o54)}
+ }\over{2}}-{{1}\over{2}}\leqno{\tt (\%o11)}
 \]
 
 Y si queremos transformar expresiones trigonométricas en complejas,
 
 \begin{Verbatim}
-(%i55) exponentialize(%);
+(%i12) exponentialize(%);
 \end{Verbatim}
 \[
 {{e^{2\,i\,x}+e^ {- 2\,i\,x }}\over{4}}-{{3\,i\,\left(e^{2\,i\,x}-e
- ^ {- 2\,i\,x }\right)}\over{4}}-{{1}\over{2}}\leqno{\tt (\%o55)}
+ ^ {- 2\,i\,x }\right)}\over{4}}-{{1}\over{2}}\leqno{\tt (\%o12)}
 \]
 
 Otras funciones útiles en este contexto y que el usuario podrá consultar en la documentación son: \verb|triginverses|\index{triginverses}, \verb|trigsign|\index{trigsign} y \verb|trigrat|\index{trigrat}.
@@ -2728,6 +2866,60 @@ y el sistema
 \]
 
 En los anteriores ejemplos, el primer argumento es una lista con la ecuación o ecuaciones a resolver, las cuales se suponen igualadas a cero; el segundo argumento es la lista de variables y el último el valor inicial a partir del cual se generará el algoritmo y cuya elección determinará las diferentes soluciones del problema.
+
+
+
+
+
+
+
+
+
+\section{Inecuaciones}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
