@@ -182,7 +182,8 @@
              Maxima
              Mgnuplot
              Mus-ter-er-ken-nungs-ver-fah-ren
-             O-pe-ra-tor 
+             O-pe-ra-ti-o-nen
+             O-pe-ra-tor
              O-pe-ra-to-ren
              Op-tions-va-ri-ablen
              Re-gel-pa-ket
