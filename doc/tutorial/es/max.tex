@@ -972,54 +972,118 @@ Ya hemos visto el cálculo del factorial de un número natural, bien con el operad
 \end{Verbatim}
 $$25852016738884976640000\leqno{\tt (\%o1)}$$
 
+Esto nos da el número de ordenaciones diferentes que se pueden hacer con $n$ objetos; si queremos generarlas podemos hacer uso de la función \verb|permutations|\index{permutations},
+
+\begin{Verbatim}
+(%i2) permutations([1,2,3]);
+\end{Verbatim}
+$$\left \{\left[ 1 , 2 , 3 \right]  , \left[ 1 , 3 , 2 \right]  , 
+ \left[ 2 , 1 , 3 \right]  , \left[ 2 , 3 , 1 \right]  , \left[ 3 , 1
+  , 2 \right]  , \left[ 3 , 2 , 1 \right]  \right \}\leqno{\tt (\%o2)}$$
+
+Cuando se trabaja con factoriales, la función \verb|minfactorial|\index{minfactorial} puede ayudarnos a simplificar algunas expresiones,
+
+\begin{Verbatim}
+(%i3) n!/(n+2)!;
+\end{Verbatim}
+$${{n!}\over{\left(n+2\right)!}}\leqno{\tt (\%o3)}$$
+\begin{Verbatim}
+(%i4) minfactorial (%);
+\end{Verbatim}
+$${{1}\over{\left(n+1\right)\,\left(n+2\right)}}\leqno{\tt (\%o4)}$$
+
 El cálculo del número de variaciones con repetición de $m$ elementos tomados de $n$ en $n$, $VR_m^n = m^n$, no necesita de ninguna función especial,
 
 \begin{Verbatim}
-(%i2) /* VR de 17 tomados de 4 en 4 */
+(%i5) /* VR de 17 tomados de 4 en 4 */
       17^4;
 \end{Verbatim}
-$$83521\leqno{\tt (\%o2)}$$
+$$83521\leqno{\tt (\%o5)}$$
 
 Sin embargo, para calcular el número de variaciones sin repetición de $m$ elementos tomados de $n$ en $n$, 
 $V_m^n = m!/(m-n)!$, debemos hacer uso de la función \verb|permutation|\index{permutation} definida en el módulo \verb|functs|, que tendremos que cargar en memoria previamente,
 
 \begin{Verbatim}
-(%i3) load("functs")$
-(%i4) /* V de 17 tomados de 4 en 4 */
+(%i6) load("functs")$
+(%i7) /* V de 17 tomados de 4 en 4 */
       permutation(17,4);
 \end{Verbatim}
-$$57120\leqno{\tt (\%o4)}$$
+$$57120\leqno{\tt (\%o7)}$$
 
 Nótese que podemos calcular $P_{23}$ con esta misma función, sin llamar al factorial,
 
 \begin{Verbatim}
-(%i5) /* permutaciones de 23 elementos, otra vez */
+(%i8) /* permutaciones de 23 elementos, otra vez */
       permutation(23,23);
 \end{Verbatim}
-$$25852016738884976640000\leqno{\tt (\%o5)}$$
+$$25852016738884976640000\leqno{\tt (\%o8)}$$
 
-El número de combinaciones de $m$ elementos tomados de $n$ en $n$, $C_m^n = V_m^n / P_n$, se puede calcular con la función \verb|combination|\index{combination}, también definida en el paquete de funciones \verb|functs|,
+El número de combinaciones de $m$ elementos tomados de $n$ en $n$, $C_m^n = V_m^n / P_n$, se puede calcular con la función \verb|binomial|\index{binomial},
 
 \begin{Verbatim}
-(%i5) /* combinaciones de 30 elementos, tomados de 5 en 5 */
-      combination(30,5);
+(%i9) /* combinaciones de 30 elementos, tomados de 5 en 5 */
+      binomial(30,5);
 \end{Verbatim}
-$$142506\leqno{\tt (\%o5)}$$
+$$142506\leqno{\tt (\%o9)}$$
 
 El número de permutaciones de $n$ elementos, con repeticiones $a_1, \ldots, a_k$,
 $$
 P_n^{a_1, \ldots, a_r} = \frac{(a_1+ \ldots + a_r)!}{a_1! \cdot \ldots \cdot a_r!},
 $$
-siendo $a_1+ \ldots + a_r = n$, se calcula con la función \verb|multinomial_coeff|\index{multinomial\_coeff },
+siendo $a_1+ \ldots + a_r = n$, se calcula con la función \verb|multinomial_coeff|\index{multinomial\_coeff},
 
 \begin{Verbatim}
-(%i6) /* permutaciones con repetición de 5 elementos,
+(%i10) /* permutaciones con repetición de 5 elementos,
          con repeticiones 2, 2 y 1 */
       multinomial_coeff(2,2,1);
 \end{Verbatim}
-$$30\leqno{\tt (\%o6)}$$
+$$30\leqno{\tt (\%o10)}$$
 
-En relación con la combinatoria, véase también la Sección~\ref{grafos} sobre grafos.
+La función \verb|stirling1|\index{stirling1} calcula el número de Stirling de primera especie, $s(n,k)$, que se define de la forma
+\[
+(-1)^{n-k} \cdot s(n,k) = \mbox{Card} \{\sigma | \sigma \mbox{ es permutación de } \{1, \ldots, n\} \land \sigma \mbox{ tiene } k \mbox{ ciclos}\}
+\]
+
+\begin{Verbatim}
+(%i11) stirling1(5,2);
+\end{Verbatim}
+$$-50\leqno{\tt (\%o11)}$$
+
+Por otro lado, la función \verb|stirling2|\index{stirling2} calcula el número de Stirling de segunda especie, $S(n,k)$, que se define de la forma
+ \[
+S(n,k) = \mbox{Card} \{\pi | \pi \mbox{ es partición de } \{1, \ldots, n\} \land \mbox{Card}(\pi) = k \}
+\]
+
+\begin{Verbatim}
+(%i12) stirling2(3,2);
+\end{Verbatim}
+$$3\leqno{\tt (\%o12)}$$
+
+Esto es, hay 3 particiones de $\{1,2,3\}$ formadas por dos subconjuntos, las cuales podemos obtener invocando la función 
+\verb|set_partitions|\index{set\_partitions},
+
+\begin{Verbatim}
+(%i13) set_partitions ({1,2,3}, 2);
+\end{Verbatim}
+$$\left \{\left \{\left \{1 \right \} , \left \{2 , 3 \right \}
+  \right \} , \left \{\left \{1 , 2 \right \} , \left \{3 \right \}
+  \right \} , \left \{\left \{1 , 3 \right \} , \left \{2 \right \}
+  \right \} \right \}\leqno{\tt (\%o13)}$$
+
+El número de Bell, que calculamos con la función \verb|belln|\index{belln} es el número total de particiones que admite un conjunto finito,
+\[
+B(n) = \sum_{k=1}^{n} S(n,k).
+\]
+
+\begin{Verbatim}
+(%i14) /* número de particiones en un conjunto de cardinalidad 3 */
+       belln(3);
+\end{Verbatim}
+$$5\leqno{\tt (\%o14)}$$
+
+En relación con la combinatoria, véanse también las secciones \ref{conjuntos} y \ref{grafos}, sobre conjuntos y grafos, respectivamente.
+
+
 
 
 
@@ -1717,6 +1781,7 @@ Para más información sobre el procesamiento de cadenas de texto, se sugiere la l
 
 
 \section{Conjuntos}
+\label{conjuntos}
 
 Se define a continuación un conjunto mediante la función \verb|set|\index{set},
 \begin{Verbatim}
@@ -1859,7 +1924,15 @@ Por último ya, el producto cartesiano de tres conjuntos,
   , y \right]  \right \}\end{array}       \leqno{\tt (\%o16)}
 \]
 
+Ya por último, el conjunto de las partes de un conjunto, o conjunto potencia, lo podemos obtener con la función \verb|powerset|\index{powerset}
 
+\begin{Verbatim}
+(%i17) powerset({1,a,sqrt(2)});
+\end{Verbatim}
+$$\left \{\left \{ \right \} , \left \{1 \right \} , \left \{1 , 
+ \sqrt{2} \right \} , \left \{1 , \sqrt{2} , a \right \} , \left \{1
+  , a \right \} , \left \{\sqrt{2} \right \} , \left \{\sqrt{2} , a
+  \right \} , \left \{a \right \} \right \}\leqno{\tt (\%o17)}$$
 
 
 
