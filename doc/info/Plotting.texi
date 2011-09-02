@@ -13,7 +13,7 @@
 @c -----------------------------------------------------------------------------
 
 Maxima uses an external plotting package to make the plots (see the
-section on Plotting formats). The plotting functions calculate a set of
+section on Plotting formats).  The plotting functions calculate a set of
 points and pass them to the plotting package together with a set of
 commands.  That information can be passed to the external program either
 through a pipe or by calling the program with the name of a file where
@@ -24,7 +24,7 @@ gnuplot_pipes).
 
 The @code{maxout.interface} file, in the cases when it is used, is
 created in the directory specified by the system variable
-@var{maxima_tempdir}.  That location can be changed; by assigning to that
+@mrefdot{maxima_tempdir}  That location can be changed; by assigning to that
 variable a string that represents a valid directory where Maxima can
 create new files.
 
@@ -34,7 +34,7 @@ command fails to show anything, that file can be inspected to look for
 possible sources of problems.
 
 Together with the plotting functions described in this chapter, package
-@code{draw} adds other functionalities. Note that some plotting options
+@ref{draw} adds other functionalities.  Note that some plotting options
 are named equal in both plotting contexts, but with different syntax;
 if you want to access the draw information related to these options, you
 have to type @code{?? opt}, where @code{opt} is the name of the option.
@@ -50,7 +50,7 @@ have to type @code{?? opt}, where @code{opt} is the name of the option.
 
 There are currently two external plotting programs that Maxima use: Gnuplot
 and Xmaxima.  There are various different formats for those programs,
-which can be selected with the option @code{plot_format} (see
+which can be selected with the option @mref{plot_format} (see
 the Plotting Options section).
 
 The plotting formats are the following:
@@ -72,9 +72,9 @@ to gnuplot through a pipe, while the data are saved into the file
 @code{maxout.gnuplot_pipes}.  A single gnuplot process is kept open
 and subsequent plot commands will be sent to the same process, replacing
 previous plots, unless the gnuplot pipe is closed with the function
-@code{gnuplot_close()}.  When this format is used, the function
-@code{gnuplot_replot} can be used to modify a plot that has already
-displayed on the screen (see @code{gnuplot_replot}).
+@mrefdot{gnuplot_close}  When this format is used, the function
+@mref{gnuplot_replot} can be used to modify a plot that has already
+displayed on the screen.
 
 This format should only be used to plot to the screen; for plotting to files
 it is better to use the @code{gnuplot} format.
@@ -121,12 +121,12 @@ old name will still be accepted as a synonym for @code{xmaxima}.
 
 It plots the contours (curves of equal value) of @var{expr}
 over the region @var{x_range} by @var{y_range}.
-Any additional arguments are treated the same as in @code{plot3d}.
+Any additional arguments are treated the same as in @mrefdot{plot3d}
 
 This function only works when the plot format is either @code{gnuplot}
 or @code{gnuplot_pipes}.  The additional package @code{implicit_plot} can
 also be used to plot contours and it works for any format.  See
-@code{implicit_plot}.
+@mrefdot{implicit_plot}
 
 Examples:
 
@@ -136,9 +136,8 @@ Examples:
 @example
 (%i1) contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4])$
 @end example
-
 @ifnotinfo
-@image{figures/contour1,8cm}
+@image{figures/contour1,8.7cm}
 @end ifnotinfo
 
 @c ===beg===
@@ -153,13 +152,12 @@ Examples:
 @end group
 (%i2) contour_plot (F, [u, -4, 4], [v, -4, 4])$
 @end example
-
 @ifnotinfo
-@image{figures/contour2,8cm}
+@image{figures/contour2,8.7cm}
 @end ifnotinfo
 
 You can add any options accepted by @code{plot3d}; for instance, the
-option @code{legend} with a value of false, to remove the
+option @mref{legend} with a value of false, to remove the
 legend.  Gnuplot chooses, by default, 3 contours to show.  To increase the
 number of levels, it is necessary to specify a custom gnuplot preamble:
 
@@ -175,9 +173,8 @@ number of levels, it is necessary to specify a custom gnuplot preamble:
                     [gnuplot_preamble, "set cntrparam levels 12"])$
 @end group
 @end example
-
 @ifnotinfo
-@image{figures/contour3,8cm}
+@image{figures/contour3,8.7cm}
 @end ifnotinfo
 
 @opencatbox
@@ -194,15 +191,48 @@ global variable @code{plot_options}.  A value of 1 for the index will
 return the keyword itself; a value of 2 turn returns the first parameter
 following the keyword, and so on.
 
-See also @code{plot_options}, @code{set_plot_option} and the section on
+See also @mrefcomma{plot_options} @mref{set_plot_option} and the section on
 Plotting Options.
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{implicit_plot}
+@deffn  {Function} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Function} implicit_plot ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range})
+
+Displays a plot of one or more expressions in implicit
+form.  @var{expr} is the expression to be plotted, @var{x_range} the
+range of the horizontal axis and @var{y_range} the range of vertical
+axis.  @code{implicit_plot} respects global setting for the Gnuplot
+driver set by the @var{set_plot_option} function.  Options can also be passed
+to @code{implicit_plot} function as optional arguments.
+
+@code{implicit_plot} works by tracking sign changes on the area
+given by @var{x_range} and @var{y_range} and can fail for complicated
+expressions.
+
+@code{load(implicit_plot)} loads this function.
+
+Example:
+@example
+(%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
+ [gnuplot_preamble, "set zeroaxis"]);
+@end example
+
+@ifnotinfo
+@image{figures/implicit_plot,8cm}
+@end ifnotinfo
+
+@opencatbox
+@category{Plotting} @category{Share packages} @category{Package implicit_plot}
+@closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{make_transform}
 @deffn {Function} make_transform ([@var{var1}, @var{var2}, @var{var3}], @var{fx}, @var{fy}, @var{fz})
 
-Returns a function suitable to be used in the option @code{transform_xy}
+Returns a function suitable to be used in the option @mref{transform_xy}@w{}
 of plot3d.  The three variables @var{var1}, @var{var2}, @var{var3} are
 three dummy variable names, which represent the 3 variables given by the
 plot3d command (first the two independent variables and then the
@@ -210,7 +240,7 @@ function that depends on those two variables).  The three functions
 @var{fx}, @var{fy}, @var{fz} must depend only on those 3 variables, and
 will give the corresponding x, y and z coordinates that should be
 plotted.  There are two transformations defined by default:
-@code{polar_to_xy} and @code{spherical_to_xyz}; see the documentation
+@mref{polar_to_xy} and @mrefdot{spherical_to_xyz} See the documentation
 for those two transformations.
 
 @opencatbox
@@ -222,7 +252,7 @@ for those two transformations.
 @anchor{polar_to_xy}
 @deffn {System function} polar_to_xy
 
-It can be given as value for the @code{transform_xy} option of
+It can be given as value for the @mref{transform_xy} option of
 plot3d.  Its effect will be to interpret the two independent variables in
 plot3d as the distance from the z axis and the azimuthal angle (polar
 coordinates), and transform them into x and y coordinates.
@@ -282,11 +312,11 @@ the minimum and maximum values of the second coordinate of the plot
 points.
 
 All other options should also be lists, starting with a keyword and
-followed by one or more values.  See @code{plot_options}.
+followed by one or more values.  See @mrefdot{plot_options}
 
 If there are several plots to be plotted, a legend will be
 written to identity each of the expressions.  The labels that should be
-used in that legend can be given with the option @var{legend}.  If that
+used in that legend can be given with the option @mrefdot{legend}  If that
 option is not used, Maxima will create labels from the expressions or
 function names.
 
@@ -659,7 +689,7 @@ Plot of a Klein bottle, defined parametrically:
 
 Plot of a spherical harmonic, using of the predefined transformations,
 @code{spherical_to_xyz}, to transform from spherical to rectangular
-coordinates.  See the documentation for @code{spherical_to_xyz}.
+coordinates.  See the documentation for @mrefdot{spherical_to_xyz}
 
 @c ===beg===
 @c plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi],
@@ -680,7 +710,7 @@ coordinates.  See the documentation for @code{spherical_to_xyz}.
 
 Use of the predefined function @code{polar_to_xy} to transform from
 cylindrical to rectangular coordinates.  See the documentation for
-@code{polar_to_xy}.  This example also shows how to eliminate the
+@mrefdot{polar_to_xy}  This example also shows how to eliminate the
 bounding box and the legend.
 
 @c ===beg===
@@ -752,7 +782,7 @@ apply: subscript must be an integer; found: round(x)
 
 By setting the elevation equal to zero, a surface can be seen as a map
 in which each color represents a different level.  The option
-@code{colorbox} is used to show the correspondence among colors and
+@mref{colorbox} is used to show the correspondence among colors and
 levels, and the mesh lines are disabled to make the colors easier to see.
 
 @c ===beg===
@@ -784,7 +814,7 @@ See also the section about Plotting Options.
 @defvr {System variable} plot_options
 
 Elements of this list state the default options for plotting.
-If an option is present in a @code{plot2d} or @code{plot3d} call,
+If an option is present in a @mref{plot2d} or @mref{plot3d} call,
 that value takes precedence over the default option.
 Otherwise, the value in @code{plot_options} is used.
 Default options are assigned by @code{set_plot_option}.  There are other
@@ -796,7 +826,7 @@ first item is the name of the option, and the remainder comprises the
 value or values assigned to the option.  In some cases, the assigned
 value is a list, which may include several items.
 
-See also @code{set_plot_option}, @code{get_option} and the section on
+See also @mrefcomma{set_plot_option} @mref{get_plot_option} and the section on
 Plotting Options.
 
 @opencatbox
@@ -814,12 +844,12 @@ saves them into the global variable @code{plot_options}.
 @code{set_plot_option} evaluates its argument and returns the complete
 list @code{plot_options} (after modifying the option given).
 
-See also @code{plot_options}, @code{get_option} and the section on
+See also @mrefcomma{plot_options} @mref{get_plot_option} and the section on
 Plotting Options.
 
 Example:
 
-Modification of the @code{grid} values.
+Modification of the @mref{grid} values.
 
 @c ===beg===
 @c set_plot_option ([grid, 30, 40]);
@@ -852,9 +882,9 @@ eps enhanced color solid 24], [plot_realpart, false]]
 @anchor{spherical_to_xyz}
 @deffn {System function} spherical_to_xyz
 
-It can be given as value for the @code{transform_xy} option of
-plot3d.  Its effect will be to interpret the two independent variables
-and the function in plot3d as the spherical coordinates of a point
+It can be given as value for the @mref{transform_xy} option of
+@mrefdot{plot3d}  Its effect will be to interpret the two independent variables
+and the function in @code{plot3d} as the spherical coordinates of a point
 (first, the angle with the z axis, then the angle of the xy projection
 with the x axis and finally the distance from the origin) and transform
 them into x, y and z coordinates.
@@ -871,15 +901,17 @@ them into x, y and z coordinates.
 
 All options consist of a list starting with one of the keywords in this
 section, followed by one or more values.  Most of the options can be used
-in any of the plotting commands (@var{plot2d}, @var{plot3d}, @var{contour_plot},
-@var{implicit_plot}) or in the function @var{set_plot_option}; the
-exceptions will be specified in the following list.
+in any of the plotting commands (@mrefcomma{plot2d} @mrefcomma{plot3d}@w{}
+@mrefcomma{contour_plot} @mrefparen{implicit_plot} or in the function
+@mrefdot{set_plot_option}  The exceptions will be specified in the following
+list.
 
+@c -----------------------------------------------------------------------------
+@anchor{adapt_depth}
 @defvr {Plot option} adapt_depth [adapt_depth, @var{integer}]
+Default value: @code{5}
 
 The maximum number of splittings used by the adaptive plotting routine.
-
-Default value: 5
 
 @opencatbox
 @category{Plotting}
@@ -889,6 +921,7 @@ Default value: 5
 @c -----------------------------------------------------------------------------
 @anchor{axes}
 @defvr {Plot option} axes [axes, @var{symbol}] 
+Default value: @code{true}
 
 Where @var{symbol} can be either @code{true}, @code{false}, @code{x} or
 @code{y}.  If @code{false}, no axes will be shown; if equal to @code{x}
@@ -896,16 +929,15 @@ or @code{y} only the x or y axis will be shown, and if it is equal to
 @code{true}, both axes will be shown.  This option is used only by plot2d
 and implicit_plot.
 
-Default value: @code{true}
-
 @opencatbox
 @category{Plotting}
 @closecatbox
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@anchor{azimut}
+@anchor{azimuth}
 @defvr {Plot option} azimuth [azimuth, @var{number}]
+Default value: @code{30}
 
 A plot3d plot can be thought of as starting with its x and y axis
 in the horizontal and vertical axis, as in plot2d, and the z axis
@@ -914,9 +946,7 @@ around the x axis an angle equals to @code{elevation} and then the xy
 plane is rotated around the new z axis an angle @code{azimuth}.  This
 option sets the value for the azimuth, in degrees.
 
-Default value: 30
-
-See also  @code{elevation}.
+See also @mrefdot{elevation}
 
 @opencatbox
 @category{Plotting}
@@ -926,11 +956,10 @@ See also  @code{elevation}.
 @c -----------------------------------------------------------------------------
 @anchor{option_box}
 @defvr {Plot option} box [box, @var{symbol}]
+Default value: @code{true}
 
 If set to @code{true}, a bounding box will be drawn for the plot; if set
 to @code{false}, no box will be drawn.
-
-Default value: @code{true}
 
 @opencatbox
 @category{Plotting}
@@ -940,22 +969,22 @@ Default value: @code{true}
 @c -----------------------------------------------------------------------------
 @anchor{color}
 @defvr {Plot option} color [color, @var{color_1}, @dots{}, @var{color_n}]
+Default value: @code{blue}, @code{red}, @code{green}, @code{magenta},
+@code{black}, @code{cyan}
 
-In plot2d and implicit_plot, it defines the color (or colors) for the
-various curves.  In plot3d, it defines the colors used for the mesh lines
-of the surfaces, when no palette is being used; one side of the surface
-will have color @var{color_1} and the other @var{color_2} (or the same
+In @mref{plot2d} and @mrefcomma{implicit_plot} it defines the color (or colors)
+for the various curves.  In @mrefcomma{plot3d} it defines the colors used for
+the mesh lines of the surfaces, when no palette is being used; one side of the
+surface will have color @var{color_1} and the other @var{color_2} (or the same
 color if there is only one color).
 
 If there are more curves or surfaces than colors, the colors will be repeated
-in sequence.  When using gnuplot, the colors could be: blue, red, green,
-magenta, black, or cyan; in xmaxima the colors can be those or a
-string starting with the character # and followed by six hexadecimal
-digits: two for the red component, two for green component and two for
-the blue component.  If given the name of an unknown color, black will be
-used instead.
- 
-Default value: blue, red, green, magenta, black, cyan
+in sequence.  When using gnuplot, the colors could be: @code{blue}, @code{red},
+@code{green}, @code{magenta}, @code{black}, or @code{cyan}; in xmaxima the
+colors can be those or a string starting with the character # and followed by
+six hexadecimal digits: two for the red component, two for green component and
+two for the blue component.  If given the name of an unknown color, black will
+be used instead.
 
 @opencatbox
 @category{Plotting}
@@ -965,14 +994,13 @@ Default value: blue, red, green, magenta, black, cyan
 @c -----------------------------------------------------------------------------
 @anchor{colorbox}
 @defvr {Plot option} colorbox [colorbox, @var{symbol}]
+Default value: @code{false}
 
 Where @var{symbol} can be either @code{true} or @code{false}.  If
-@code{true}, whenever plot3d uses a palette of different colors to
+@code{true}, whenever @mref{plot3d} uses a palette of different colors to
 represent the different values of z, a box will be shown on the right,
 indicating the colors used according to the scale of values of z.  This
 option does not work in xmaxima.
-
-Default value: @code{false}
 
 @opencatbox
 @category{Plotting}
@@ -982,17 +1010,16 @@ Default value: @code{false}
 @c -----------------------------------------------------------------------------
 @anchor{elevation}
 @defvr {Plot option} elevation [elevation, @var{number}]
+Default value: @code{60}
 
-A plot3d plot can be thought of as starting with its x and y axis
-in the horizontal and vertical axis, as in plot2d, and the z axis
+A @mref{plot3d} plot can be thought of as starting with its x and y axis
+in the horizontal and vertical axis, as in @mrefcomma{plot2d} and the z axis
 coming out of the paper perpendicularly.  The z axis is then rotated
 around the x axis an angle equals to @code{elevation} and then the xy
 plane is rotated around the new z axis an angle @code{azimuth}.  This
 option sets the value for the elevation, in degrees.
 
-Default value: 60
-
-See also  @code{azimuth}.
+See also @mrefdot{azimuth}
 
 @opencatbox
 @category{Plotting}
@@ -1002,11 +1029,10 @@ See also  @code{azimuth}.
 @c -----------------------------------------------------------------------------
 @anchor{grid}
 @defvr {Plot option} grid [grid, @var{integer}, @var{integer}]
+Default value: @code{30}, @code{30}
 
 Sets the number of grid points to use in the x- and y-directions
 for three-dimensional plotting.
-
-Default value: 30, 30
 
 @opencatbox
 @category{Plotting}
@@ -1023,7 +1049,7 @@ there are more plots than the number of labels given, they will be
 repeated.  If given the value @code{false}, no legends will be shown.  By
 default, the names of the expressions or functions will be used, or the
 words discrete1, discrete2, @dots{}, for discrete sets of points.  This
-option can not be set with @var{set_plot_option}.
+option can not be set with @mrefdot{set_plot_option}
 
 @opencatbox
 @category{Plotting}
@@ -1035,7 +1061,7 @@ option can not be set with @var{set_plot_option}.
 @defvr {Plot option} logx [logx]
 
 Makes the horizontal axes to be scaled logarithmically.  It can not be
-used with @var{set_plot_option}.
+used with @mrefdot{set_plot_option}
 
 @opencatbox
 @category{Plotting}
@@ -1047,7 +1073,7 @@ used with @var{set_plot_option}.
 @defvr {Plot option} logy [logy]
 
 Makes the vertical axes to be scaled logarithmically.  It can not be used
-with @var{set_plot_option}.
+with @mrefdot{set_plot_option}
 
 @opencatbox
 @category{Plotting}
@@ -1057,13 +1083,12 @@ with @var{set_plot_option}.
 @c -----------------------------------------------------------------------------
 @anchor{mesh_lines_color}
 @defvr {Plot option} mesh_lines_color [mesh_lines_color, @var{color}]
+Default value: @code{black}
 
 It sets the color used by plot3d to draw the mesh lines, when a palette is
-being used.  It accepts the same colors as for the option @code{color}
+being used.  It accepts the same colors as for the option @mref{color}@w{}
 (see the list of allowed colors in @code{color}).  It can also be given a
 value @code{false} to eliminate completely the mesh lines.
-
-Default value: black
 
 @opencatbox
 @category{Plotting}
@@ -1073,13 +1098,12 @@ Default value: black
 @c -----------------------------------------------------------------------------
 @anchor{nticks}
 @defvr {Plot option} nticks [nticks, @var{integer}]
+Default value: @code{29}
 
-When plotting functions with plot2d, it is gives the initial number of
-points used by the adaptive plotting routine for plotting
-functions.  When plotting parametric functions with plot2d or plot3d,
-it sets the number of points that will be shown for the plot.
-
-Default value: 29
+When plotting functions with @mrefcomma{plot2d} it is gives the initial number
+of points used by the adaptive plotting routine for plotting functions.  When
+plotting parametric functions with plot2d or @mrefcomma{plot3d} it sets the
+number of points that will be shown for the plot.
 
 @opencatbox
 @category{Plotting}
@@ -1090,6 +1114,9 @@ Default value: 29
 @anchor{palette}
 @defvr  {Plot option} palette [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]]
 @defvrx {Plot option} palette [palette, @var{false}]
+Default value: @code{[hue, 0.25, 0.7, 0.8, 0.5]},
+@code{[hue, 0.65, 0.8, 0.9, 0.55]}, @code{[hue, 0.55, 0.8, 0.9, 0.4]},
+@code{[hue, 0.95, 0.7, 0.8, 0.5]}
 
 It can consist of one palette or a list of several palettes.  Each
 palette is a list with a keyword followed by four numbers.  The first
@@ -1107,13 +1134,10 @@ together; if the number of palettes is exhausted, they will be repeated
 sequentially.
 
 The color of the mesh lines will be given by the option
-@code{mesh_lines_color}.  If @code{palette} is given the value
+@mrefdot{mesh_lines_color}  If @code{palette} is given the value
 @code{false}, the surfaces will not be shaded but represented with a
 mesh of curves only.  In that case, the colors of the lines will be
-determined by the option @code{color}.
-
-Default value: [hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55], 
-[hue, 0.55, 0.8, 0.9, 0.4], [hue, 0.95, 0.7, 0.8, 0.5]
+determined by the option @mrefdot{color}
 
 @opencatbox
 @category{Plotting}
@@ -1123,13 +1147,13 @@ Default value: [hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55],
 @c -----------------------------------------------------------------------------
 @anchor{plot_format}
 @defvr {Plot option} plot_format [plot_format, @var{format}]
+Default value: @code{gnuplot}, in Windows systems, or @code{gnuplot_pipes} in
+other systems.
 
 Where @var{format} is one of the following: gnuplot, xmaxima, mgnuplot or
 gnuplot_pipes.
 
 It sets the format to be used for plotting.
-
-Default value: gnuplot, in Windows systems, or gnuplot_pipes in other systems.
 
 @opencatbox
 @category{Plotting}
@@ -1139,18 +1163,17 @@ Default value: gnuplot, in Windows systems, or gnuplot_pipes in other systems.
 @c -----------------------------------------------------------------------------
 @anchor{plot_real_part}
 @defvr {Plot option} plot_real_part [plot_realpart, @var{symbol}]
+Default value: @code{false}
 
-When set to @code{true}, the functions to be plotted will be considered
+If set to @code{true}, the functions to be plotted will be considered
 as complex functions whose real value should be plotted; this is
-equivalent to plotting @code{realpart(@var{function})}.  I set to
+equivalent to plotting @code{realpart(@var{function})}.  If set to
 @code{false}, nothing will be plotted when the function does not give a
 real value.  For instance, when @code{x} is negative, @code{log(x)} gives
 a complex value, with real value equal to @code{log(abs(x))}; if
 @code{plot_real_part} were @code{true}, @code{log(-5)} would be plotted
 as @code{log(5)}, while nothing would be plotted if
 @code{plot_real_part} were @code{false}.
-
-Default value: @code{false}
 
 @opencatbox
 @category{Plotting}
@@ -1160,16 +1183,18 @@ Default value: @code{false}
 @c -----------------------------------------------------------------------------
 @anchor{point_type}
 @defvr {Plot option} point_type [point_type, @var{type_1}, @dots{}, @var{type_n}]
+Default value: @code{bullet}, @code{circle}, @code{plus}, @code{times},
+@code{asterisk}, @code{box}, @code{square}, @code{triangle}, @code{delta},
+@code{wedge}, @code{nabla}, @code{diamond}, @code{lozenge}
 
 In gnuplot, each set of points to be plotted with the style ``points''
 or ``linespoints'' will be represented with objects taken from this
 list, in sequential order.  If there are more sets of points than objects
 in this list, they will be repeated sequentially.
-The possible objects that can be used are: bullet, circle, plus, times,
-asterisk, box, square,triangle, delta, wedge, nabla, diamond or lozenge
-
-Default value: bullet, circle, plus, times, asterisk, box, square,triangle,
-delta, wedge, nabla, diamond, lozenge
+The possible objects that can be used are: @code{bullet}, @code{circle},
+@code{plus}, @code{times}, @code{asterisk}, @code{box}, @code{square},
+@code{triangle}, @code{delta}, @code{wedge}, @code{nabla}, @code{diamond},
+@code{lozenge}
 
 @opencatbox
 @category{Plotting}
@@ -1182,8 +1207,8 @@ delta, wedge, nabla, diamond, lozenge
 
 Saves the plot into a Postscript file with name equal to @var{string},
 rather than showing it in the screen.  By default, the file will be
-created in the directory defined by the variable @var{maxima_tempdir};
-the value of that variable can be changed to save the file in a
+created in the directory defined by the variable @mrefdot{maxima_tempdir}@w{}
+The value of that variable can be changed to save the file in a
 different directory.
 
 @opencatbox
@@ -1194,12 +1219,12 @@ different directory.
 @c -----------------------------------------------------------------------------
 @anchor{run_viewer}
 @defvr {Plot option} run_viewer [run_viewer, @var{symbol}]
+@c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? 
+@c OR IS NOTHING GENERATED ??
+Default value: @code{true}
 
 Controls whether or not the appropriate viewer for the plot format should be
 run.
-
-@c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? OR IS NOTHING GENERATED ??
-Default value: @code{true}
 
 @opencatbox
 @category{Plotting}
@@ -1210,6 +1235,8 @@ Default value: @code{true}
 @anchor{style}
 @defvr  {Plot option} style [style, @var{type_1}, @dots{}, @var{type1_n}]
 @defvrx {Plot option} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
+Default value: @code{lines} (will plot all sets of points joined with
+lines of thickness 1 and the first color given by the option @mref{color}).
 
 The styles that will be used for the various functions or sets of data
 in a 2d plot.  The word @var{style} must be followed by one or more
@@ -1219,13 +1246,13 @@ given, the styles will be repeated.  Each style can be either
 @var{linespoints} for segments and points, or @var{dots} for small
 isolated dots.  Gnuplot accepts also an @var{impulses} style.
 
-Each of the styles can be enclosed inside a list with some aditional
+Each of the styles can be enclosed inside a list with some additional
 parameters.  @var{lines} accepts one or two numbers: the width of the
 line and an integer that identifies a color.  The default color codes
 are: 1: blue, 2: red, 3: magenta, 4: orange, 5: brown, 6: lime and 7:
 aqua.  If you use Gnuplot with a terminal different than X11,
 those colors might be different; for example, if you use the option
-[@var{gnuplot_term},@var{ps}], color index 4 will correspond to black,
+[@var{gnuplot_term}, @var{ps}], color index 4 will correspond to black,
 instead of orange.
 
 @var{points} accepts one two or three parameters; the first parameter
@@ -1241,10 +1268,7 @@ triangles, 10: filled inverted triangles, 11: open inverted triangles,
 @var{linesdots} accepts up to four parameters: line width, points
 radius, color and type of object to replace the points.
 
-Default value: @var{lines} (will plot all sets of points joined with
-lines of thickness 1 and the first color given by the option @code{color}).
-
-See also @code{color} and @code{point_type}.
+See also @mref{color} and @mrefdot{point_type}
  
 @opencatbox
 @category{Plotting}
@@ -1256,10 +1280,9 @@ See also @code{color} and @code{point_type}.
 @c -----------------------------------------------------------------------------
 @anchor{t}
 @defvr {Plot option} t [t, @var{min}, @var{max}]
+Default value: @code{-3}, @code{3}
 
 Default range for parametric plots.
-
-Default value: -3, 3
 
 @opencatbox
 @category{Plotting}
@@ -1269,15 +1292,14 @@ Default value: -3, 3
 @c -----------------------------------------------------------------------------
 @anchor{transform_xy}
 @defvr {Plot option} transform_xy [transform_xy, @var{symbol}]
+Default value: @code{false}
 
 Where @var{symbol} is either @code{false} or the result obtained by
 using the function @code{transform_xy}.  If different from @code{false},
 it will be used to transform the 3 coordinates in plot3d.
 
-Default value: @code{false}
-
-See @code{make_transform}, @code{polar_to_xy} and
-@code{spherical_to_xyz}.
+See @mrefcomma{make_transform} @mref{polar_to_xy} and
+@mrefdot{spherical_to_xyz}
 
 @opencatbox
 @category{Plotting}
@@ -1288,8 +1310,8 @@ See @code{make_transform}, @code{polar_to_xy} and
 @anchor{x}
 @defvr {Plot option} x [x, @var{min}, @var{max}]
 
-When used as the first option in a 2d-plotting command (or any of the
-first two in plot3d), it indicates that the first independent variable
+When used as the first option in a @mref{plot2d} command (or any of the
+first two in @mref{plot3d}), it indicates that the first independent variable
 is x and it sets its range.  It can also be used again after the first
 option (or after the second option in plot3d) to define the effective
 horizontal domain that will be shown in the plot.
@@ -1303,12 +1325,12 @@ horizontal domain that will be shown in the plot.
 @anchor{xlabel}
 @defvr {Plot option} xlabel [xlabel, @var{string}]
 
-Specifies the @var{string} that will label the first axis; if this
-option is not used, that label will be the name of the independent
-variable, when plotting functions with plot2d or implicit_plot, or the
-name of the first variable, when plotting surfaces with plot3d or
-contours with contour_plot, or the first expression in the case of a
-parametric plot.  It can not be used with @var{set_plot_option}.
+Specifies the @var{string} that will label the first axis; if this option is
+not used, that label will be the name of the independent variable, when plotting
+functions with @mref{plot2d} or @mrefcomma{implicit_plot} or the name of the
+first variable, when plotting surfaces with @mref{plot3d} or contours with
+@mrefcomma{contour_plot} or the first expression in the case of a parametric
+plot.  It can not be used with @mrefdot{set_plot_option}
 
 @opencatbox
 @category{Plotting}
@@ -1319,9 +1341,9 @@ parametric plot.  It can not be used with @var{set_plot_option}.
 @anchor{y}
 @defvr {Plot option} y [y, @var{min}, @var{max}]
 
-When used as one of the first two options in plot3d, it indicates that
-one of the independent variables is y and it sets its range.  Otherwise,
-It defines the effective domain of the second variable that will be
+When used as one of the first two options in @mrefcomma{plot3d} it indicates
+that one of the independent variables is y and it sets its range.  Otherwise,
+it defines the effective domain of the second variable that will be
 shown in the plot.
 
 @opencatbox
@@ -1335,10 +1357,10 @@ shown in the plot.
 
 Specifies the @var{string} that will label the second axis; if this
 option is not used, that label will be ``y'', when plotting functions
-with plot2d or implicit_plot, or the name of the second variable, when
-plotting surfaces with plot3d or contours with contour_plot, or the
-second expression in the case of a parametric plot.  It can not be used
-with @var{set_plot_option}.
+with @mref{plot2d} or @mrefcomma{implicit_plot} or the name of the second
+variable, when plotting surfaces with @mref{plot3d} or contours with
+@mrefcomma{contour_plot} or the second expression in the case of a parametric
+plot.  It can not be used with @mrefdot{set_plot_option}
 
 @opencatbox
 @category{Plotting}
@@ -1349,7 +1371,7 @@ with @var{set_plot_option}.
 @anchor{z}
 @defvr {Plot option} z [z, @var{min}, @var{max}]
 
-Used in plot3d to set the effective range of values of z that will be
+Used in @mref{plot3d} to set the effective range of values of z that will be
 shown in the plot.
 
 @opencatbox
@@ -1362,10 +1384,10 @@ shown in the plot.
 @defvr {Plot option} zlabel [zlabel, @var{string}]
 
 Specifies the @var{string} that will label the third axis, when using
-plot3d.  If this option is not used, that label will be ``z'', when
+@mrefdot{plot3d}  If this option is not used, that label will be ``z'', when
 plotting surfaces, or the third expression in the case of a parametric
-plot.  It can not be used with @var{set_plot_option} and it will be
-ignored by plot2d and implicit_plot.
+plot.  It can not be used with @mref{set_plot_option} and it will be
+ignored by @mref{plot2d} and @mrefdot{implicit_plot}
 
 @opencatbox
 @category{Plotting}
@@ -1384,6 +1406,8 @@ cases, there exist a corresponding plotting option that will produce a
 similar result and whose use is more recommended than the gnuplot
 specific option.
 
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_term}
 @defvr {Plot option} gnuplot_term
 
 Sets the output terminal type for gnuplot.
@@ -1403,7 +1427,7 @@ approximation to graphics.
 @strong{ps}
 
 Gnuplot generates commands in the PostScript page description language.
-If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot
+If the option @mref{gnuplot_out_file} is set to @var{filename}, gnuplot
 writes the PostScript commands to @var{filename}.  Otherwise, it is
 saved as @code{maxplot.ps} file.
 
@@ -1414,13 +1438,12 @@ Gnuplot can generate output in many other graphical formats such
 as png, jpeg, svg etc.  To create plot in all these formats the
 @code{gnuplot_term} can be set to any supported gnuplot term name (symbol) 
 or even full gnuplot term specification with any valid options (string).
-For example @code{[gnuplot_term,png]} creates output in PNG (Portable
-Network Graphics) format while @code{[gnuplot_term,"png size 1000,1000"]}
-creates PNG of 1000x1000 pixels size.
-If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot 
+For example @code{[gnuplot_term, png]} creates output in PNG (Portable
+Network Graphics) format while @code{[gnuplot_term, "png size 1000,1000"]}
+creates PNG of 1000 x 1000 pixels size.
+If the option @mref{gnuplot_out_file} is set to @var{filename}, gnuplot
 writes the output to @var{filename}.  Otherwise, it is saved as 
-@code{maxplot.@var{term}} file, where @var{term} is gnuplot 
-terminal name.
+@code{maxplot.@var{term}} file, where @var{term} is gnuplot terminal name.
 @end itemize
 
 @opencatbox
@@ -1432,10 +1455,10 @@ terminal name.
 @anchor{gnuplot_out_file}
 @defvr {Plot option} gnuplot_out_file
 
-When used in conjunction with the @code{gnuplot_term} option, it can be
+When used in conjunction with the @mref{gnuplot_term} option, it can be
 used to save the plot in a file, in one of the graphic formats supported
 by Gnuplot.  If you want to create a Postscript file, you can use the
-option @code{psfile} instead, which will also work in Openmath, and does
+option @mref{psfile} instead, which will also work in Openmath, and does
 the same thing with just one option.
 
 @example
@@ -1477,7 +1500,7 @@ value for @code{gnuplot_preamble} is the empty string @code{""}.
 @anchor{gnuplot_curve_titles}
 @defvr {Plot option} gnuplot_curve_titles
 
-This is an old option that has been replaced by @emph{legend} described
+This is an old option that has been replaced by @mref{legend} described
 above.
 
 @opencatbox
@@ -1489,7 +1512,7 @@ above.
 @anchor{gnuplot_curve_styles}
 @defvr {Plot option} gnuplot_curve_styles
 
-This is an obsolete option that has been replaced by @emph{style}.
+This is an obsolete option that has been replaced by @mrefdot{style}
 
 @opencatbox
 @category{Plotting}
@@ -1501,7 +1524,7 @@ This is an obsolete option that has been replaced by @emph{style}.
 @defvr {Plot option} gnuplot_default_term_command
 
 The gnuplot command to set the terminal type for the default
-terminal.  The default value is @code{set term pop}.
+terminal.  The default value is @code{"set term pop"}.
 
 @opencatbox
 @category{Plotting}
@@ -1595,8 +1618,8 @@ before reploting the window.
 @anchor{gnuplot_reset}
 @deffn {Function} gnuplot_reset ()
 
-Resets the state of gnuplot used with the @code{gnuplot_pipes} format.  To
-update the gnuplot window call @code{gnuplot_replot} after @code{gnuplot_reset}.
+Resets the state of gnuplot used with the @code{gnuplot_pipes} format  To
+update the gnuplot window call @mref{gnuplot_replot} after @code{gnuplot_reset}.
 
 @opencatbox
 @category{Plotting}
