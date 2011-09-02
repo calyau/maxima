@@ -650,7 +650,7 @@ sowie Atome, die Mustervariablen sind.  In diesem Fall f@"uhrt die Funktion
 der Funktion @code{matchdeclare} zugeordnete Aussagefunktion zutrifft.
 
 @item
-Terme wie @code{sin(x)}, @code{n!} oder @code{f(x,y)}.  Wie f@"ur Atome
+Terme wie @code{sin(x)}, @code{n!} oder @code{f(x,y)}:  wie f@"ur Atome
 sucht die Funktion @code{letsimp} nach w@"ortlichen @"Ubereinstimmungen,
 au@ss{}er wenn die Argumente der Terme Mustervariablen sind, die mit der
 Funktion @mref{matchdeclare} definiert sind.  In diesem Fall wird ein
@@ -696,14 +696,15 @@ ein Regelpaket als Argument @"ubergeben, wird dieses anstatt dem in
 verwendet.  Wenn nicht anders spezifiziert, hat @code{current_let_rule_package}
 den Standardwert @mrefdot{default_let_rule_package}
 
+Die Informationsliste @mref{let_rule_packages} enth@"alt die definierten
+Regelpakete.  Mit der Funktion @mref{letrules} k@"onnen alle definierten Regeln
+oder Regeln einzelner Pakete angezeigt werden.
+
 Beispiele:
 
 Die Funktion @code{isintegerp} pr@"uft auch, ob Variablen oder Ausdr@"ucke eine
 ganze Zahl repr@"asentieren.  Es wird eine Regel definiert, die dann angewendet
-wird, wenn das Argument eine ganze Zahl repr@"asentiert.  Achtung: Die Regel
-wird nicht angewendet, wenn das Argument nicht das Symbol @code{x}, sondern zum
-Beispiel eine Zahl ist, da keine Mustervariable mit @mref{matchdeclare}@w{}
-definiert ist.
+wird, wenn das Argument eine ganze Zahl repr@"asentiert.
 
 @example
 (%i1) isintegerp(x) := featurep(x, integer)$
@@ -860,7 +861,7 @@ solange an, bis sich das Argument @var{expr} nicht mehr @"andert.
 @code{letsimp(@var{expr})} wendet die aktuellen Regeln an, die mit der
 Optionsvariablen @mref{current_let_rule_package} bezeichnet werden.
 
-@code{letsimp(@var{expr}), @var{package_name})} wendet die Regeln des
+@code{letsimp(@var{expr}, @var{package_name})} wendet die Regeln des
 Argumentes @var{package_name} an.  Die Optionsvariable
 @code{current_let_rule_package} @"andert ihren Wert nicht.  Es k@"onnen auch
 mehrere Regelpakete @var{package_name_1}, @dots{}, @var{package_name_n}
@@ -892,7 +893,7 @@ der zu testende Ausdruck der Liste der Argumente hinzugef@"ugt.  Die Argumente
 werden ausgewertet, wenn der Musterabgleich ausgef@"uhrt wird.  Ist die Aussage
 der Name einer Funktion oder ein Lambda-Ausdruck, ist die zu testende Aussage
 das einzige Argument.  Die Aussagefunktion braucht noch nicht definiert zu sein,
-wenn mit @code{matchdeclare} eine Mustervariable eingef@"uhrt wird, da die
+wenn mit @code{matchdeclare} eine Mustervariable definiert wird, da die
 Aussagefunktion erst aufgerufen wird, wenn ein Musterabgleich durchgef@"uhrt
 wird.
 
@@ -1067,8 +1068,9 @@ angewendet werden.
 @defvr {Optionsvariable} maxapplyheight
 Standardwert: 10000
 
-@code{maxapplyheight} ist die Verschachtelungstiefe f@"ur die die Funktion
-@mref{applyb1} Bottom-up auf die Baumstruktur eines Ausdrucks angewendet wird.
+@code{maxapplyheight} ist die maximale Verschachtelungstiefe f@"ur die die
+Funktion @mref{applyb1} Bottom-up auf die Baumstruktur eines Ausdrucks
+angewendet wird.
 @end defvr
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
@@ -1087,9 +1089,9 @@ Paket, das mit @mref{current_let_rule_package} bezeichnet ist.  Wird der Name
 eines Regelpaketes als Argument angegeben, werden zus@"atzlich die Regeln dieses
 Paketes entfernt.
 
-Soll eine vorhandene Ersetzungsregel durch eine neue Definition ersetzt werden,
-muss die Regel nicht zuvor mit @code{remlet} entfernt werden.  Die neue
-Definition @"uberschreibt eine vorhandene Regel.  Wurde eine vorhandene Regel
+Soll eine vorhandene Regel durch eine neue Definition ersetzt werden, muss die
+Regel nicht zuvor mit @code{remlet} entfernt werden.  Die neue Definition
+@"uberschreibt eine vorhandene Regel.  Wurde eine vorhandene Regel
 @"uberschrieben und wird die letzte Regel entfernt, dann ist die vorhergehende
 Regel wieder aktiv.
 
@@ -1103,7 +1105,7 @@ den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} definiert sind.
 @deffnx {Funktion} remrule (@var{op}, all)
 
 Entfernt Regeln, die mit den Funktionen @mref{tellsimp} oder 
-@mrefdot{tellsimpafter} definiert sind.
+@mref{tellsimpafter} definiert sind.
 
 @code{remrule(@var{op}, @var{rulename})} entfernt die Regel mit dem Namen
 @var{rulename} vom Operator @var{op}.  Ist der Operator @var{op} ein 
@@ -1162,7 +1164,8 @@ definierten Regeln enth@"alt.
 
 Regeln, die mit der Funktion @mref{let} definiert sind, sind nicht in der Liste
 @code{rules} enthalten.  Diese Regeln werden in Paketen organisiert, die in
-der Systemvariablen @mref{let_rule_packages} aufgelistet werden.
+der Systemvariablen @mref{let_rule_packages} aufgelistet und mit der Funktion
+@mref{letrules} angezeigt werden.
 
 Siehe auch die Systemvariable @mrefdot{infolists}
 @end defvr
@@ -1237,7 +1240,7 @@ Beispiele:
 @deffn {Funktion} tellsimpafter (@var{pattern}, @var{replacement})
 
 Definiert eine Regel f@"ur die Vereinfachung eines Ausdrucks, die nach Anwendung
-der Regeln angewendet wird, die Maxima intern anwendet.  @var{pattern} ist ein
+der Regeln angewendet wird, die Maxima intern kennt.  @var{pattern} ist ein
 Ausdruck, der Mustervariablen enth@"alt, die mit der Funktion
 @mref{matchdeclare} definiert sind und weitere Symbole und Operatoren, f@"ur
 die die w@"ortliche @"Ubereinstimmung bei einem Musterabgleich angenommen wird.
@@ -1315,7 +1318,7 @@ Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defmatch}@w{}
 Beispiele:
 
 Das Muster @var{pattern} kann ein beliebiger Ausdruck sein, in dem der
-Hauptoperator nicht die Mustervariable ist.
+Hauptoperator keine Mustervariable ist.
 
 @example
 (%i1) matchdeclare (aa, atom, [ll, mm], listp, xx, true)$
