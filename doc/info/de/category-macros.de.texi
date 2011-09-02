@@ -138,6 +138,7 @@
              Aus-drucks
              aus-ge-wer-tet
              Aus-wer-tung
+             Aus-wer-tungs-schal-ter
              be-rech-net
              be-stimm-tes
              be-zeich-net
