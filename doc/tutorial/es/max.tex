@@ -2950,49 +2950,96 @@ En los anteriores ejemplos, el primer argumento es una lista con la ecuación o e
 
 \section{Inecuaciones}
 
+Las rutinas para resolver inecuaciones las guarda Maxima en el paquete de funciones \verb|fourier_elim|, por lo que primero las debemos cargar en memoria,
+
+\begin{Verbatim}
+(%i1) load("fourier_elim")$
+\end{Verbatim}
+
+Ciertos mensajes de avisos que nos devuelve Maxima los podemos olvidar, ya que solo nos indican que algunas macros del sistema han tenido que ser redefinidas.
+
+Vamos a resolver una inecuación de primer grado,
+
+\begin{Verbatim}
+(%i2) ine : (5*x-16)/6 + (x+8)/12 < (x+1)/3;
+\end{Verbatim}
+$${{5\,x-16}\over{6}}+{{x+8}\over{12}}<{{x+1}\over{3}}\leqno{\tt (\%o2)}$$
+
+La función clave a llamar se llama precisamente \verb|fourier_elim|\index{realroots} y la sintaxis es similar a la de \verb|solve|; el primer argumento a pasarle es la lista de inecuaciones, de momento una sola, y el segundo la lista de incógnitas, también una sola,
+
+\begin{Verbatim}
+(%i3) fourier_elim([ine], [x]);
+\end{Verbatim}
+$$\left[ x<4 \right] \leqno{\tt (\%o3)}$$
+
+Vamos a ver ahora en qué intervalos de la recta el polinomio $x^4+5 x^3+5 x^2-5 x-6$ toma valores positivos,
+
+\begin{Verbatim}
+(%i4) p : x^4+5*x^3+5*x^2-5*x-6 $
+\end{Verbatim}
+\begin{Verbatim}
+(%i5) fourier_elim([p > 0],[x]);
+\end{Verbatim}
+$$\left[ 1<x \right] \lor \left[ -2<x , x<-1 \right] \lor \left[ x<-3
+  \right] \leqno{\tt (\%o5)}$$
+
+Tal como se ha visto hasta ahora, la función \verb|fourier_elim| nos devuelve los resultados como disyunciones de listas, interpretándose cada una de ellas como una conjunción lógica de proposiciones; así, el último resultado habría que interpretarlo como
+
+$$(1<x) \lor ( -2<x \land x<-1 ) \lor (x<-3).$$
+
+El resultado anterior cambia sensiblemente cuando admitimos la igualdad en la inecuación,
+
+\begin{Verbatim}
+(%i6) fourier_elim([p >= 0],[x]);
+\end{Verbatim}
+$$\left[ x=-3 \right] \lor \left[ x=-2 \right] \lor \left[ x=-1
+  \right] \lor \left[ x=1 \right] \lor \left[ 1<x \right] \lor 
+ \left[ -2<x , x<-1 \right] \lor \left[ x<-3 \right] \leqno{\tt (\%o6)}$$
+
+Abordamos ahora la resolución de un sistema de inecuaciones lineales con una incógnita,
+
+\begin{Verbatim}
+(%i7) fourier_elim(
+        [(x+2)/4 <= x/2-3, (8-x)/3 < (1+x)/2-1],
+        [x]);
+\end{Verbatim}
+$$\left[ x=14 \right] \lor \left[ 14<x \right] \leqno{\tt (\%o7)}$$
+
+Ahora con tres,
+
+\begin{Verbatim}
+(%i8) fourier_elim(
+        [0 < x, 
+         x < 1, 
+         0 < y+x*y, 
+         y-2*z+x < 1, 
+         0 < z,
+         x+y+z < 4],
+        [z,x,y] );
+\end{Verbatim}
+$$\left[ {\it max}\left(0 , {{y}\over{2}}+{{x}\over{2}}-{{1}\over{2}}
+ \right)<z , z<-y-x+4 , 0<x , x<{\it min}\left(1 , 3-y\right) , 0<y
+  , y<3 \right] \leqno{\tt (\%o8)}$$
+
+Otros ejemplos de inecuaciones no lineales,
+
+\begin{Verbatim}
+(%i9) fourier_elim([max(x,y) < 1, min(x,y) > -1],[x,y]);
+\end{Verbatim}
+$$\left[ -1<x , x<1 , -1<y , y<1 \right] \leqno{\tt (\%o19)}$$
+
+\begin{Verbatim}
+(%i10) fourier_elim([abs(x) + abs(x/2) + abs(x/3) #  1],[x]);
+\end{Verbatim}
+$$\left[ x=0 \right] \lor \left[ 0<x , x<{{6}\over{11}} \right] \lor 
+ \left[ -{{6}\over{11}}<x , x<0 \right] \lor \left[ x<-{{6}\over{11}}
+  \right] \lor \left[ {{6}\over{11}}<x \right] \leqno{\tt (\%o10)}$$
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\begin{Verbatim}
+(%i11) fourier_elim([log(x) < log(a)],[x,a]);
+\end{Verbatim}
+$$\left[ 0<x , x<a , 0<a \right] \leqno{\tt (\%o11)}$$
 
 
 
