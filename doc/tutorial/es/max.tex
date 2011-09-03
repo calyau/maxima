@@ -2255,7 +2255,7 @@ De forma más general, la función \verb|subst|\index{subst} sustituye subexpresio
 (%i7) subst(k,x+y,%);
 \end{Verbatim}
 \[
--{{k}\over{z}}+k^2+{{1}\over{k}}\leqno{\tt (\%o44)}
+-{{k}\over{z}}+k^2+{{1}\over{k}}\leqno{\tt (\%o7)}
 \]
 
 No obstante, el siguiente resultado nos sugiere que debemos ser precavidos con el uso de esta función, ya que Maxima no siempre interpretará como subexpresión aquella que para nosotros sí lo es:
@@ -2266,211 +2266,218 @@ No obstante, el siguiente resultado nos sugiere que debemos ser precavidos con e
 y+x+k\leqno{\tt (\%o8)}
 \]
 
+La función \verb|subst| realiza una simple sustitución sintáctica que, si bien es suficiente en la mayor parte de los casos, a veces se queda corta como en la situación anterior; la función \verb|ratsubst|\index{ratsubst} es capaz de utilizar información semántica y obtene mejores resultados,
+
+\index{subst}\begin{Verbatim}
+(%i9) ratsubst(sqrt(k),x+y,(x+y)^2+(x+y));
+\end{Verbatim}
+$$k+\sqrt{k}\leqno{\tt (\%o9)}$$
+
 Como una aplicación práctica de \verb|subst|, veamos cómo podemos utilizarla para obtener el conjugado de un número complejo,
 \begin{Verbatim}
-(%i9) subst(-%i,%i,a+b*%i);
+(%i10) subst(-%i,%i,a+b*%i);
 \end{Verbatim}
 \[
-a-i\,b\leqno{\tt (\%o9)}
+a-i\,b\leqno{\tt (\%o10)}
 \]
 
 La operación inversa de la expansión es la factorización. Expandamos y factoricemos sucesivamente un polinomio para comprobar los resultados,
 \index{expand}\index{factor}\begin{Verbatim}
-(%i10) expand((a-2)*(b+1)^2*(a+b)^5);
+(%i11) expand((a-2)*(b+1)^2*(a+b)^5);
 \end{Verbatim}
 \[
 \begin{array}{c}
 a\,b^7-2\,b^7+5\,a^2\,b^6-8\,a\,b^6-4\,b^6+10\,a^3\,b^5-10\,a^2\,b^5
  -19\,a\,b^5-2\,b^5+10\,a^4\,b^4-  \\ 35\,a^2\,b^4-10\,a\,b^4+5\,a^5\,b^3+10
   \,a^4\,b^3-30\,a^3\,b^3-20\,a^2\,b^3+a^6\,b^2+8\,a^5\,b^2-10\,a^4\,b
- ^2- \\ 20\,a^3\,b^2+2\,a^6\,b+a^5\,b-10\,a^4\,b+a^6-2\,a^5 \end{array} \leqno{\tt (\%o10)}
+ ^2- \\ 20\,a^3\,b^2+2\,a^6\,b+a^5\,b-10\,a^4\,b+a^6-2\,a^5 \end{array} \leqno{\tt (\%o11)}
 \]
 \begin{Verbatim}
-(%i11) factor(%);
+(%i12) factor(%);
 \end{Verbatim}
 \[
-\left(a-2\right)\,\left(b+1\right)^2\,\left(b+a\right)^5\leqno{\tt (\%o11)}
+\left(a-2\right)\,\left(b+1\right)^2\,\left(b+a\right)^5\leqno{\tt (\%o12)}
 \]
 
 El máximo común divisor de un conjunto de polinomios se calcula con la función \verb|gcd|\index{gcd} y el mínimo común múltiplo con \verb|lcm|\index{lcm}
 \begin{Verbatim}
-(%i12) p1: x^7-4*x^6-7*x^5+8*x^4+11*x^3-4*x^2-5*x;
+(%i13) p1: x^7-4*x^6-7*x^5+8*x^4+11*x^3-4*x^2-5*x;
 \end{Verbatim}
 \[
-x^7-4\,x^6-7\,x^5+8\,x^4+11\,x^3-4\,x^2-5\,x\leqno{\tt (\%o12)}
+x^7-4\,x^6-7\,x^5+8\,x^4+11\,x^3-4\,x^2-5\,x\leqno{\tt (\%o13)}
 \]
 \begin{Verbatim}
-(%i13) p2: x^4-2*x^3-4*x^2+2*x+3;
+(%i14) p2: x^4-2*x^3-4*x^2+2*x+3;
 \end{Verbatim}
 \[
-x^4-2\,x^3-4\,x^2+2\,x+3\leqno{\tt (\%o13)}
+x^4-2\,x^3-4\,x^2+2\,x+3\leqno{\tt (\%o14)}
 \]
 \begin{Verbatim}
-(%i14) gcd(p1,p2);
+(%i15) gcd(p1,p2);
 \end{Verbatim}
 \[
-x^3+x^2-x-1\leqno{\tt (\%o14)}
+x^3+x^2-x-1\leqno{\tt (\%o15)}
 \]
 \begin{Verbatim}
-(%i15) load(functs)$
-(%i16) lcm(p1,p2);
+(%i16) load(functs)$
+(%i17) lcm(p1,p2);
 \end{Verbatim}
 \[
 \left(x-5\right)\,\left(x-3\right)\,\left(x-1\right)^2\,x\,\left(x+1
- \right)^3\leqno{\tt (\%o16)}
+ \right)^3\leqno{\tt (\%o17)}
 \]
 
-En \verb|(%i12)| y \verb|(%i13)| definimos los polinomios \verb|p1| y \verb|p2|, a continuación calculamos su máximo común divisor (mcd) en \verb|(%i14)| y antes de pedir el mínimo común múltiplo en \verb|(%i16)| cargamos el paquete \verb|functs| en el que se encuentra definida la función \verb|lcm|. Es posible que deseemos disponer del mcd factorizado, por lo que hacemos
+En \verb|(%i13)| y \verb|(%i14)| definimos los polinomios \verb|p1| y \verb|p2|, a continuación calculamos su máximo común divisor (mcd) en \verb|(%i15)| y antes de pedir el mínimo común múltiplo en \verb|(%i17)| cargamos el paquete \verb|functs| en el que se encuentra definida la función \verb|lcm|. Es posible que deseemos disponer del mcd factorizado, por lo que hacemos
 \index{factor}\begin{Verbatim}
-(%i17) factor(%o14);
+(%i18) factor(%o15);
 \end{Verbatim}
 \[
-\left(x-1\right)\,\left(x+1\right)^2\leqno{\tt (\%o17)}
+\left(x-1\right)\,\left(x+1\right)^2\leqno{\tt (\%o18)}
 \]
 
 Hay varias funciones en Maxima que se pueden utilizar para extraer coeficientes de expresiones algebraicas; una de ellas es \verb|ratcoef|\index{ratcoef}. Dado el polinomio $(x-y)^4$, podemos querer extraer el coeficiente de $x^2 y^2$,
 
 \begin{Verbatim}
-(%i18) ratcoef((x-y)^4, x^2*y^2);
+(%i19) ratcoef((x-y)^4, x^2*y^2);
 \end{Verbatim}
-$$6\leqno{\tt (\%o18)}$$
+$$6\leqno{\tt (\%o19)}$$
 
 Cuando tenemos expandido un polinomio de varias variables, podemos querer transformarlo en otro univariante con coeficientes literales; aquí puede ser de ayuda la función \verb|rat|\index{rat},
 
 \begin{Verbatim}
-(%i19) q: m^2*x^2+x^2+2*b*m*x-6*m*x-4*x+b^2-6*b+13;
+(%i20) q: m^2*x^2+x^2+2*b*m*x-6*m*x-4*x+b^2-6*b+13;
 \end{Verbatim}
-$$m^2\,x^2+x^2+2\,b\,m\,x-6\,m\,x-4\,x+b^2-6\,b+13\leqno{\tt (\%o19)}$$
+$$m^2\,x^2+x^2+2\,b\,m\,x-6\,m\,x-4\,x+b^2-6\,b+13\leqno{\tt (\%o20)}$$
 \begin{Verbatim}
-(%i20) rat(q, x);
+(%i21) rat(q, x);
 \end{Verbatim}
 $$\left(m^2+1\right)\,x^2+\left(\left(2\,b-6\right)\,m-4\right)\,x+b^
- 2-6\,b+13\leqno{\tt (\%o20)}$$
+ 2-6\,b+13\leqno{\tt (\%o21)}$$
 
 Llamando nuevamente a \verb|ratcoef| podemos extraer el coeficiente del término de primer grado respecto de $x$,
 
 \begin{Verbatim}
-(%i21) ratcoef(%,x);
+(%i22) ratcoef(%,x);
 \end{Verbatim}
-$$\left(2\,b-6\right)\,m-4\leqno{\tt (\%o21)}$$
+$$\left(2\,b-6\right)\,m-4\leqno{\tt (\%o22)}$$
 
 Otro ejemplo ilstrativo de \verb|rat| en acción,
 
 \begin{Verbatim}
-(%i22) rat((x^b+a*x^b+x)^2, x^b);
+(%i23) rat((x^b+a*x^b+x)^2, x^b);
 \end{Verbatim}
 $$\left(a^2+2\,a+1\right)\,\left(x^{b}\right)^2+\left(2\,a+2\right)\,
- x\,x^{b}+x^2\leqno{\tt (\%o22)}$$
+ x\,x^{b}+x^2\leqno{\tt (\%o23)}$$
 
 Si en algún momento queremos inhibir las simplificaciones, podemos hacer uso de la variable global \verb|simp|\index{simp}, cuyo valor por defecto es \verb|true|,
 
 \begin{Verbatim}
-(%i23) simp: false$
-(%i24) 2 + 2 + a + a;
+(%i24) simp: false$
+(%i25) 2 + 2 + a + a;
 \end{Verbatim}
 \[
-2+2+a+a\leqno{\tt (\%o24)}
+2+2+a+a\leqno{\tt (\%o25)}
 \]
 \begin{Verbatim}
-(%i25) simp: true$
-(%i26) %o24;
+(%i26) simp: true$
+(%i27) %o25;
 \end{Verbatim}
 \[
-2\,a+4\leqno{\tt (\%o26)}
+2\,a+4\leqno{\tt (\%o27)}
 \]
 
 Veamos ahora algunas transformaciones que se pueden hacer con fracciones algebraicas.
 
 \begin{Verbatim}
-(%i27) expr:(x^2-x)/(x^2+x-6)-5/(x^2-4);
+(%i28) expr:(x^2-x)/(x^2+x-6)-5/(x^2-4);
 \end{Verbatim}
 \[
-{{x^2-x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o27)}
+{{x^2-x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o28)}
 \]
 
 Podemos factorizar esta expresión,
 
 \index{factor}\begin{Verbatim}
-(%i28) factor(expr);
+(%i29) factor(expr);
 \end{Verbatim}
 \[
 {{\left(x-3\right)\,\left(x^2+4\,x+5\right)}\over{\left(x-2\right)
- \,\left(x+2\right)\,\left(x+3\right)}}\leqno{\tt (\%o28)}
+ \,\left(x+2\right)\,\left(x+3\right)}}\leqno{\tt (\%o29)}
 \]
 
 La expansión devuelve el siguiente resultado,
 
 \index{expand}\begin{Verbatim}
-(%i29) expand(expr);
+(%i30) expand(expr);
 \end{Verbatim}
 \[
-{{x^2}\over{x^2+x-6}}-{{x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o29)}
+{{x^2}\over{x^2+x-6}}-{{x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o30)}
 \]
 
 Ahora descomponemos la fracción algebraica \verb|expr| en fracciones simples,
 
 \index{partfrac}\begin{Verbatim}
-(%i30) partfrac(expr,x);
+(%i31) partfrac(expr,x);
 \end{Verbatim}
 \[
 -{{12}\over{5\,\left(x+3\right)}}+{{5}\over{4\,\left(x+2\right)}}-
- {{17}\over{20\,\left(x-2\right)}}+1\leqno{\tt (\%o30)}
+ {{17}\over{20\,\left(x-2\right)}}+1\leqno{\tt (\%o31)}
 \]
 
 Por último, transformamos la misma expresión a su forma canónica CRE (\emph{Cannonical Rational Expression}), que es un formato que Maxima utiliza para reducir expresiones algebraicas equivalentes a una forma única,
 
 \index{radcan}\begin{Verbatim}
-(%i31) radcan(expr);
+(%i32) radcan(expr);
 \end{Verbatim}
 \[
-{{x^3+x^2-7\,x-15}\over{x^3+3\,x^2-4\,x-12}}\leqno{\tt (\%o31)}
+{{x^3+x^2-7\,x-15}\over{x^3+3\,x^2-4\,x-12}}\leqno{\tt (\%o32)}
 \]
 
 La función \verb|ratsimp|\index{ratsimp} también simplifica cualquier expresión racional, así como las subexpresiones racionales que son argumentos de funciones cualesquiera. El resultado se devuelve como el cociente de dos polinomios. En ocasiones no es suficiente con una sola ejecución de \verb|ratsimp|, por lo que será necesario aplicarla más veces, esto es lo que hace precisamente la función \verb|fullratsimp|\index{fullratsimp}; concretemos esto con un ejemplo:
 \begin{Verbatim}
-(%i32) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
+(%i33) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
 \end{Verbatim}
 \[
 {{\left(x^{{{a}\over{2}}}-1\right)^2\,\left(x^{{{a}\over{2}}}+1
- \right)^2}\over{x^{a}-1}}\leqno{\tt (\%o32)}
+ \right)^2}\over{x^{a}-1}}\leqno{\tt (\%o33)}
 \]
 \begin{Verbatim}
-(%i33) ratsimp(%);  /* simplificamos una vez */
+(%i34) ratsimp(%);  /* simplificamos una vez */
 \end{Verbatim}
 \[
-{{x^{2\,a}-2\,x^{a}+1}\over{x^{a}-1}}\leqno{\tt (\%o33)}
+{{x^{2\,a}-2\,x^{a}+1}\over{x^{a}-1}}\leqno{\tt (\%o34)}
 \]
 \begin{Verbatim}
-(%i34) ratsimp(%);  /* simplificamos otra vez */
-\end{Verbatim}
-\[
-x^{a}-1\leqno{\tt (\%o34)}
-\]
-\begin{Verbatim}
-(%i35) fullratsimp(%o32);   /* ¡simplificamos todo de una vez! */
+(%i35) ratsimp(%);  /* simplificamos otra vez */
 \end{Verbatim}
 \[
 x^{a}-1\leqno{\tt (\%o35)}
 \]
+\begin{Verbatim}
+(%i36) fullratsimp(%o32);   /* ¡simplificamos todo de una vez! */
+\end{Verbatim}
+\[
+x^{a}-1\leqno{\tt (\%o36)}
+\]
 
 Dada una fracción algebraica, podemos obtener separadamente el numerador y el denominador,
 \index{num}\index{denom}\begin{Verbatim}
-(%i36) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
+(%i37) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
 \end{Verbatim}
 \[
-{{x^3-4\,x^2+4\,x-2}\over{x^2+x+1}}\leqno{\tt (\%o36)}
+{{x^3-4\,x^2+4\,x-2}\over{x^2+x+1}}\leqno{\tt (\%o37)}
 \]
 \begin{Verbatim}
-(%i37) num(fr);
+(%i38) num(fr);
 \end{Verbatim}
 \[
-x^3-4\,x^2+4\,x-2\leqno{\tt (\%o37)}
+x^3-4\,x^2+4\,x-2\leqno{\tt (\%o38)}
 \]
 \begin{Verbatim}
-(%i38) denom(fr);
+(%i39) denom(fr);
 \end{Verbatim}
 \[
-x^2+x+1\leqno{\tt (\%o38)}
+x^2+x+1\leqno{\tt (\%o39)}
 \]
 
 Maxima nunca puede adivinar a priori las intenciones del usuario para con las expresiones con las que está trabajando, por ello sigue la política de no tomar ciertas decisiones, por lo que a veces puede parecer que no hace lo suficiente o que no sabe hacerlo. Esta forma \emph{vaga} de proceder la suple con una serie de funciones y variables globales que permitirán al usuario darle al motor simbólico ciertas directrices sobre qué debe hacer con las expresiones, cómo reducirlas o transformarlas. Sin ánimo de ser exhaustivos, siguen algunos ejemplos en los que se controlan transformaciones de tipo logarítmico y trigonométrico.
@@ -3511,6 +3518,69 @@ Veamos ahora cómo obtener algunas matrices especiales: la hessiana de una funció
 \]
 
 El lector interesado puede obtener información sobre otras funciones matriciales accediendo a la documentación sobre el paquete \verb|linearalgebra|\index{linearalgebra}. 
+
+Veamos ahora cómo trabajar con matrices por bloques. Puesto que los elementos de una matriz pueden ser objetos de cualquier tipo, definamos los elementos como matrices,
+
+\begin{Verbatim}
+(%i57) m: matrix([matrix([1,0],[0,-1]),matrix([0,1],[1,0])],
+                 [matrix([0,1],[1,0]),matrix([1,0],[0,-1])]) ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}1&0\cr 0&-1\cr \end{pmatrix} & \begin{pmatrix}0&1\cr 1&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&1\cr 1&0\cr \end{pmatrix}&\begin{pmatrix}1&0\cr 0&-1\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o57)}$$
+
+Podemos ahora hacer algunas operaciones básicas con esta matriz,
+
+\begin{Verbatim}
+(%i58) m + m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}2&0\cr 0&-2\cr \end{pmatrix} & \begin{pmatrix}0&2\cr 2&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&2\cr 2&0\cr \end{pmatrix}&\begin{pmatrix}2&0\cr 0&-2\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o58)}$$
+
+\begin{Verbatim}
+(%i59) m - m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix} & \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o59)}$$
+
+\begin{Verbatim}
+(%i60) 3 * m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}3&0\cr 0&-3\cr \end{pmatrix} & \begin{pmatrix}0&3\cr 3&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&3\cr 3&0\cr \end{pmatrix}&\begin{pmatrix}3&0\cr 0&-3\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o60)}$$
+
+Veamos lo que pasa con la multiplicación matricial,
+
+\begin{Verbatim}
+(%i61) m . m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}1&1\cr 1&1\cr \end{pmatrix} & \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}1&1\cr 1&1\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o61)}$$
+
+Este resultado es incorrecto porque en la multiplicación matricial, los productos entre elementos se hacen con el operador \verb|*|, que es el correcto cuando los elementos son números; pero cuando los elementos son también matrices, la multiplicación de elementos debe realizarse con el operador del producto matricial. En el ejemplo anterior, los bloques se multiplicaron elemento a elemento. Para indicarle a Maxima la operación correcta, debemos hacer uso de la variable global \verb|matrix_element_mult|\index{matrix_element_mult},
+
+\begin{Verbatim}
+(%i62) matrix_element_mult : "." $
+\end{Verbatim}
+\begin{Verbatim}
+(%i63) m . m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}2&0\cr 0&2\cr \end{pmatrix} & \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}2&0\cr 0&2\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o63)}$$
+
+
+
 
 
 
