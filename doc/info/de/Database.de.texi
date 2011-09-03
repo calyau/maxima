@@ -133,7 +133,7 @@ Die Zeichen @code{"~"}, @code{"@@"} und @code{`} als alphabetisch erkl@"art.
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{bindtest}
-@deffn {Eigenschaft} bindtest
+@defvr {Eigenschaft} bindtest
 
 Hat ein Symbol @var{x} die Eigenschaft @code{bindtest} und wird es ausgewertet,
 ohne das dem Symbol bisher ein Wert zugewiesen wurde, signalisiert Maxima einen 
@@ -154,11 +154,11 @@ aa unbound variable
 (%i5) aa + bb;
 (%o5)                       bb + 1234
 @end example
-@end deffn
+@end defvr
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{constant}
-@deffn {Eigenschaft} constant
+@defvr {Eigenschaft} constant
 
 Das Kommando @code{declare(@var{a}, constant)} deklariert ein Symbol @var{a}
 als konstant.  Die Funktion @mref{constantp} hat f@"ur dieses Symbol dann das
@@ -178,7 +178,7 @@ Beispiel:
 (%i4) constantp(c);
 (%o4)                         false
 @end example
-@end deffn
+@end defvr
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{constantp}
@@ -948,9 +948,9 @@ Eigenschaften sein.
 
 @code{remove("@var{a}", operator)} oder @code{remove("@var{a}", op)}
 entfernen vom Atom @var{a} die Operatoreigenschaften, die mit den Funktionen
-@code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} oder
-@code{nofix} definiert wurden.  Die Namen von Operatoren m@"ussen als eine 
-Zeichenkette angegeben werden.
+@mrefcomma{prefix} @mrefcomma{infix} @mrefcomma{nary} @mrefcomma{postfix}@w{}
+@mref{matchfix} oder @mref{nofix} definiert wurden.  Die Namen von Operatoren
+m@"ussen als eine Zeichenkette angegeben werden.
 
 @code{remove} gibt immer @code{done} zur@"uck.
 @end deffn
