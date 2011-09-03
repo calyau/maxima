@@ -35,34 +35,20 @@ system browser.
 @section Functions and Variables for Miscellaneous Options
 @c -----------------------------------------------------------------------------
 
+@c After studying src/compar.lisp, it appears that askexp would
+@c work as advertised, except that it doesn't appear to be possible
+@c to open a break prompt with ^A or any other character.
+@c What should we do about askexp ???
+
 @c -----------------------------------------------------------------------------
-@anchor{alphabetic}
-@defvr {Declaration} alphabetic
+@anchor{askexp}
+@defvr {System variable} askexp
 
-@code{alphabetic} is a declaration type recognized by @code{declare}.
-The expression @code{declare(@var{s}, alphabetic)} tells Maxima to recognize
-as alphabetic all of the characters in @var{s}, which must be a string.
+When @code{asksign} is called,
+@code{askexp} is the expression @code{asksign} is testing.
 
-See also @ref{Identifiers}.
-
-Example:
-
-@c ===beg===
-@c xx\~yy\`\@ : 1729;
-@c declare ("~`@", alphabetic);
-@c xx~yy`@ + @yy`xx + `xx@@yy~;
-@c listofvars (%);
-@c ===end===
-@example
-(%i1) xx\~yy\`\@@ : 1729;
-(%o1)                         1729
-(%i2) declare ("~`@@", alphabetic);
-(%o2)                         done
-(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
-(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
-(%i4) listofvars (%);
-(%o4)                  [@@yy`xx, `xx@@@@yy~]
-@end example
+At one time, it was possible for a user to inspect @code{askexp}
+by entering a Maxima break with control-A.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -155,204 +141,6 @@ creating Maxima init files.
 @closecatbox
 @end defvr
 
-@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{properties}
-@deffn {Function} properties (@var{a})
-
-Returns a list of the names of all the
-properties associated with the atom @var{a}.
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c WHAT IS HIDDEN IN THE "etc" HERE ??
-
-@c -----------------------------------------------------------------------------
-@anchor{props}
-@defvr {Special symbol} props
-
-@code{props} are atoms which have any property other than those explicitly
-mentioned in @code{infolists}, such as specified by @code{atvalue},
-@code{matchdeclare}, etc., as well as properties specified in the @code{declare}
-function.
-
-@opencatbox
-@category{Declarations and inferences} @category{Global variables}
-@closecatbox
-@end defvr
-
-@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{propvars}
-@deffn {Function} propvars (@var{prop})
-
-Returns a list of those atoms on the @code{props} list which
-have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
-returns a list of atoms which have atvalues.
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
-@c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
-
-@c -----------------------------------------------------------------------------
-@anchor{put}
-@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
-
-Assigns @var{value} to the property (specified by @var{indicator}) of
-@var{atom}.  @var{indicator} may be the name of any property, not just a
-system-defined property.
-
-@code{rem} reverses the effect of @code{put}.
-
-@code{put} evaluates its arguments.
-@code{put} returns @var{value}.
-
-Examples:
-
-@example
-(%i1) put (foo, (a+b)^5, expr);
-                                   5
-(%o1)                       (b + a)
-(%i2) put (foo, "Hello", str);
-(%o2)                         Hello
-(%i3) properties (foo);
-(%o3)            [[user properties, str, expr]]
-(%i4) get (foo, expr);
-                                   5
-(%o4)                       (b + a)
-(%i5) get (foo, str);
-(%o5)                         Hello
-@end example
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{qput}
-@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
-
-Assigns @var{value} to the property (specified by @var{indicator}) of
-@var{atom}.  This is the same as @code{put}, except that the arguments are
-quoted.
-
-Example:
-
-@example
-(%i1) foo: aa$ 
-(%i2) bar: bb$
-(%i3) baz: cc$
-(%i4) put (foo, bar, baz);
-(%o4)                          bb
-(%i5) properties (aa);
-(%o5)                [[user properties, cc]]
-(%i6) get (aa, cc);
-(%o6)                          bb
-(%i7) qput (foo, bar, baz);
-(%o7)                          bar
-(%i8) properties (foo);
-(%o8)            [value, [user properties, baz]]
-(%i9) get ('foo, 'baz);
-(%o9)                          bar
-@end example
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
-@c HOW IS THIS DIFFERENT FROM remove ??
-
-@c -----------------------------------------------------------------------------
-@anchor{rem}
-@deffn {Function} rem (@var{atom}, @var{indicator})
-
-Removes the property indicated by @var{indicator} from @var{atom}.
-@code{rem} reverses the effect of @code{put}.
-
-@code{rem} returns @code{done} if @var{atom} had an @var{indicator} property
-when @code{rem} was called, or @code{false} if it had no such property.
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
-
-@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
-@c HOW IS THIS DIFFERENT FROM rem ??
-
-@c -----------------------------------------------------------------------------
-@anchor{remove}
-@deffn  {Function} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Function} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
-@deffnx {Function} remove ("@var{a}", operator)
-@deffnx {Function} remove (@var{a}, transfun)
-@deffnx {Function} remove (all, @var{p})
-
-Removes properties associated with atoms.
-
-@code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
-removes property @code{p_k} from atom @code{a_k}.
-
-@code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-removes properties @code{@var{p_1}, ..., @var{p_n}}
-from atoms @var{a_1}, @dots{}, @var{a_m}.
-There may be more than one pair of lists.
-
-@c VERIFY THAT THIS WORKS AS ADVERTISED
-@code{remove (all, @var{p})} removes the property @var{p} from all atoms which
-have it.
-
-@c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
-The removed properties may be system-defined properties such as
-@code{function}, @code{macro}, or @code{mode_declare}.
-@code{remove} does not remove properties defined by @code{put}.
-
-@c VERIFY THAT THIS WORKS AS ADVERTISED
-@c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
-A property may be @code{transfun} to remove
-the translated Lisp version of a function.
-After executing this, the Maxima version of the function is executed
-rather than the translated version.
-
-@code{remove ("@var{a}", operator)} or, equivalently,
-@code{remove ("@var{a}", op)} removes from @var{a} the operator properties
-declared by @code{prefix}, @code{infix}, @code{nary}, @code{postfix},
-@code{matchfix}, or @code{nofix}.  Note that the name of the operator must be
-written as a quoted string.
-
-@code{remove} always returns @code{done} whether or not an atom has a specified
-property.  This behavior is unlike the more specific remove functions
-@code{remvalue}, @code{remarray}, @code{remfunction}, and @code{remrule}.
-
-@code{remove} quotes its arguments.
-
-@c IN SERIOUS NEED OF EXAMPLES HERE
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-@end deffn
 
 @c NEEDS EXAMPLES
 
@@ -396,21 +184,6 @@ cancellations.
 
 @opencatbox
 @category{Expressions}
-@closecatbox
-@end deffn
-
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{scalarp}
-@deffn {Function} scalarp (@var{expr})
-
-Returns @code{true} if @var{expr} is a number, constant, or variable declared
-@code{scalar} with @code{declare}, or composed entirely of numbers, constants,
-and such variables, but not containing matrices or lists.
-
-@opencatbox
-@category{Predicate functions} @category{Vectors} @category{Matrices}
 @closecatbox
 @end deffn
 
