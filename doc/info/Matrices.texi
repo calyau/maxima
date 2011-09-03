@@ -1712,31 +1712,6 @@ minor algorithm.  @code{newdet} returns the result in CRE form.
 @closecatbox
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-
-@c -----------------------------------------------------------------------------
-@anchor{nonscalar}
-@defvr {Declaration} nonscalar
-
-Makes atoms behave as does a list or matrix with respect to the dot operator.
-
-@opencatbox
-@category{Declarations and inferences} @category{Vectors} @category{Matrices}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{nonscalarp}
-@deffn {Function} nonscalarp (@var{expr})
-
-Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains
-atoms declared as non-scalars, lists, or matrices.
-
-@opencatbox
-@category{Predicate functions} @category{Vectors} @category{Matrices}
-@closecatbox
-@end deffn
-
 @c -----------------------------------------------------------------------------
 @anchor{permanent}
 @deffn {Function} permanent (@var{M})
