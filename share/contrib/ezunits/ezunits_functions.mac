@@ -86,6 +86,8 @@ matchdeclare
     cc%, constantp,
     ccn0%, constantp_not0,
     ccn1%, constantp_not1,
+    /* dl = "dimensionless" */
+    dl%, lambda ([e], dimensions (e) = 1),
     mm%, mult_expr_nontrivialconstfactorsp,
     nd%, nondimensional,
     pp%, lambda ([e], not atom(e) and op(e) = "+"),
@@ -93,6 +95,8 @@ matchdeclare
     xx%, nonconstantp);
 
 simp: false$
+/* tellsimpafter rules are applied in order of declaration; tellsimp, the other way around */
+tellsimp (cc% `` dl%, apply_units_conversion (cc%, dl%));
 tellsimp (uu% `` nd%, apply_units_conversion (uu%, nd%));
 tellsimp (pp% `` nd%, apply ("+", map (buildq ([nd%], lambda ([e], e `` nd%)), args (pp%))));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
@@ -484,6 +488,7 @@ simp : true;
  * Well, go ahead for now, in the absence of evidence to the contrary.
  */
 
+simp : false;
 declare_unit_conversion (degree = %pi/180);
 matchdeclare (uu, lambda ([e], unitp(e) and dimensions(e) = 1));
 map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot]);
@@ -511,3 +516,5 @@ tellsimpafter ((aa ` bb) @ cc, buildq ([aa, bb, cc], (aa @ cc) ` bb));
 matchdeclare ([aa, bb], all);
 tellsimpafter ('realpart (aa ` bb), 'realpart (aa) ` bb);
 tellsimpafter ('imagpart (aa ` bb), 'imagpart (aa) ` bb);
+
+simp : true;
