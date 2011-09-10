@@ -16,8 +16,6 @@
 
 (defun chrct* () (- linel chrps))
 
-(defvar fortranp nil)
-
 (defmspec $grind (x)
   (setq x (cdr x))
   (let (y)
@@ -133,7 +131,7 @@
 
 (defun msize (x l r lop rop)
   (setq x (nformat x))
-  (cond ((atom x) (if fortranp (msz (makestring x) l r) (msize-atom x l r)))
+  (cond ((atom x) (msize-atom x l r))
         ((and (atom (car x)) (setq x (cons '(mprogn) x)) nil))
 	((or (<= (lbp (caar x)) (rbp lop)) (> (lbp rop) (rbp (caar x))))
 	 (msize-paren x l r))
@@ -274,6 +272,43 @@
 (defprop mprogn ((#\( ) #\) ) strsym)
 
 (defprop mlist msize-matchfix grind)
+
+;;; ----------------------------------------------------------------------------
+
+;; Formating a mlable-expression
+
+(defprop mlable msize-mlable grind)
+
+(defun msize-mlable (x l r)
+  (declare (special *display-labels-p*))
+  (if *display-labels-p*
+      (setq l (cons (msize (cadr x) (list #\( ) (list #\) #\ ) nil nil) l)))
+  (msize (caddr x) l r lop rop))
+
+;;; ----------------------------------------------------------------------------
+
+;; Formating a mtext-expression
+
+(defprop mtext msize-mtext grind)
+
+(defun msize-mtext (x l r)
+  (setq x (cdr x))
+  (if (null x)
+      (msz nil l r)
+      (do ((nl) (w 0))
+          ((null (cdr x))
+           (setq nl (cons (if (atom (car x))
+                              (msz (makestring (car x)) l r)
+                              (msize (car x) l r lop rop))
+                          nl))
+           (cons (+ w (caar nl)) (nreverse nl)))
+        (setq nl (cons (if (atom (car x))
+                           (msz (makestring (car x)) l r)
+                           (msize (car x) l r lop rop))
+                       nl)
+              w (+ w (caar nl))
+              x (cdr x)
+              l nil))))
 
 (defprop mqapply msz-mqapply grind)
 

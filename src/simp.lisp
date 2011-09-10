@@ -646,11 +646,11 @@
 	  x))
 
 ;;;-----------------------------------------------------------------------------
-;;; ADDK (XX YY)                                                   27.09.2010/DK
+;;; ADDK (X Y)                                                   27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   XX     - a Maxima number
-;;;   YY     - a Maxima number
+;;;   X      - a Maxima number
+;;;   Y      - a Maxima number
 ;;;   result - a simplified Maxima number
 ;;;
 ;;; Description:
@@ -682,12 +682,12 @@
 ;;;   numbers the result is wrong or a Lisp error is generated.
 ;;;-----------------------------------------------------------------------------
 
-(defun addk (xx yy)
-  (cond ((equal xx 0) yy)
-	((equal yy 0) xx)
-	((and (numberp xx) (numberp yy)) (+ xx yy))
-	((or ($bfloatp xx) ($bfloatp yy)) ($bfloat (list '(mplus) xx yy)))
-	(t (prog (g a b (x xx)(y yy))
+(defun addk (x y)
+  (cond ((eql x 0) y)
+	((eql y 0) x)
+	((and (numberp x) (numberp y)) (+ x y))
+	((or ($bfloatp x) ($bfloatp y)) ($bfloat (list '(mplus) x y)))
+	(t (prog (g a b)
 	      (cond ((numberp x)
 		     (cond ((floatp x) (return (+ x (fpcofrat y))))
 			   (t (setq x (list '(rat) x 1)))))
@@ -697,15 +697,11 @@
 	      (setq g (gcd (caddr x) (caddr y)))
 	      (setq a (truncate (caddr x) g)
 	            b (truncate (caddr y) g))
-	      (setq g (timeskl (list '(rat) 1 g)
+	      (return (timeskl (list '(rat) 1 g)
 			       (list '(rat)
 				     (+ (* (cadr x) b)
 					   (* (cadr y) a))
-				     (* a b))))
-	      (return (cond ((numberp g) g)
-			    ((equal (caddr g) 1) (cadr g))
-			    ($float (fpcofrat g))
-	                    (t g)))))))
+				     (* a b))))))))
 
 ;;;-----------------------------------------------------------------------------
 ;;; *RED1 (X)                                                      27.09.2010/DK

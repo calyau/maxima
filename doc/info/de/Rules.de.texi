@@ -26,9 +26,9 @@ Funktionen, die einen unterschiedlichen Musterabgleich implementieren.
 Die eine Gruppe enth@"alt die Funktionen @mrefcomma{tellsimp}@w{}
 @mrefcomma{tellsimpafter} @mrefcomma{defmatch} @mrefcomma{defrule}@w{}
 @mrefcomma{apply1} @mref{applyb1} und @mrefdot{apply2}  In der anderen Gruppe
-sind die Funktionen @mref{let} und @mref{letsimp} enthalten.  Mit beiden
-Methoden k@"onnen Muster definiert werden, die Mustervariable enthalten, die
-mit der Funktion @mref{matchdeclare} definiert werden.
+sind die Funktionen @mref{let} und @mref{letsimp} enthalten.  Beide Methoden
+verwenden Mustervariablen, die mit der Funktion @mref{matchdeclare} definiert
+werden.
 
 Regeln, die mit den Funktionen @code{tellsimp} und @code{tellsimpafter}
 definiert werden, werden von Maxima automatisch bei der Vereinfachung von
@@ -36,10 +36,10 @@ Ausdr@"ucken angewendet.  Regeln, die mit den Funktionen @code{defmatch},
 @code{defrule} oder @code{let} definiert werden, werden durch den Aufruf einer 
 Funktion auf einen Ausdruck angewendet.
 
-Es gibt zus@"atzliche Methoden wie die Definition von minimalen Polynomen mit
+Maxima kennt weitere Methoden wie die Definition von minimalen Polynomen mit
 der Funktion @mrefcomma{tellrat} um Einfluss auf die Vereinfachung von 
-Polynomen zu nehmen, und weitere Funktionen der kommutativen und
-nicht-kommutativen Algebra, die in dem Paket @ref{affine} definiert sind.
+Polynomen zu nehmen, oder Funktionen der kommutativen und nicht-kommutativen
+Algebra, die in dem Paket @ref{affine} definiert sind.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Muster und Regeln, , Einf@"uhrung in Muster und Regeln, Muster und Regeln
@@ -51,11 +51,16 @@ nicht-kommutativen Algebra, die in dem Paket @ref{affine} definiert sind.
 @defvr {Optionsvariable} announce_rules_firing
 Standardwert: @code{false}
 
-Hat die Optionsvariable @code{announce_rules_firing} den Wert @code{true},
-wenn mit den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} eine Regel
-definiert wird, dann wird eine Meldung ausgegeben, wenn die Regel angewendet
-wird.  Diese Optionsvariable ist n@"utzlich, wenn die Anwendung von
-nutzerdefinierten Regeln f@"ur die Fehlersuche kontrolliert werden soll.
+Hat die Optionsvariable @code{announce_rules_firing} den Wert @code{true} und
+wird mit den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} eine Regel
+definiert, dann wird immer dann eine Meldung ausgegeben, wenn die Regel
+angewendet wird.  @code{announce_rules_firing} hat keinen Einfluss auf Regeln,
+die bereits definiert sind.  Die Meldung von Regeln kann auch nicht durch das
+Setzen von @code{announce_rules_firing} auf den Wert @code{false} abgeschaltet
+werden.
+
+Diese Optionsvariable ist n@"utzlich, wenn die Anwendung von nutzerdefinierten
+Regeln f@"ur die Fehlersuche kontrolliert werden soll.
 
 Beispiel:
 
@@ -89,7 +94,8 @@ Die Optionsvariable @mref{maxapplydepth} enth@"alt die gr@"o@ss{}te
 Verschachtelungstiefe, f@"ur die die Funktionen @code{apply1} und
 @code{apply2} auf einen Ausdruck angewendet werden.
 
-Siehe auch die Funktionen @mrefcomma{applyb1} @mref{apply2} und @mrefdot{let}
+Siehe auch die Funktionen @mref{applyb1} und @mrefcomma{apply2} um Regeln auf
+einen Ausdruck anzuwenden, die mit der Funktion @mref{defrule} definiert sind.
 
 Beispiele:
 
@@ -126,20 +132,22 @@ auf die Teilausdr@"ucke angewendet wird.
                                       sin(x)
 (%o2)                trig : tan(x) -> ------
                                       cos(x)
-(%i3) maxapplydepth:1;
+(%i3) maxapplydepth: 1;
 (%o3)                           1
 (%i4) apply1(expr, trig);
                      sin(x)     2 tan(x) + a
 (%o4)                ------ + %e
                      cos(x)
-(%i5) maxapplydepth:4;
+(%i5) maxapplydepth: 4;
 (%o5)                           4
 (%i6) apply1(expr, trig);
+@group
                                 2 sin(x)
                                 -------- + a
                      sin(x)      cos(x)
 (%o6)                ------ + %e
                      cos(x)
+@end group
 @end example
 @end deffn
 
@@ -156,13 +164,15 @@ wird die Anwendung aller Regeln auf den Teilausdruck wiederholt.
 Im Unterschied zur Funktion @mref{apply1} werden von der Funktion @code{apply2}
 immer alle Regeln angewendet.  Sind jedoch die Regeln, die als Argumente
 @"ubergeben werden, zirkul@"ar definiert, so f@"uhrt Maxima eine Endlosschleife
-aus.  Siehe dazu auch die Beispiele unten.
+aus.  Siehe dazu auch das Beispiel unten.
 
 Die Optionsvariable @mref{maxapplydepth} enth@"alt die gr@"o@ss{}te
 Verschachtelungstiefe, f@"ur die die Funktionen @code{apply1} und @code{apply2}
 auf einen Ausdruck angewendet werden.
 
-Siehe auch die Funktionen @mrefcomma{apply1} @mref{applyb1} und @mrefdot{let}
+Siehe auch die Funktionen @mref{apply1} und @mrefcomma{applyb1} um Regeln
+auf einen Ausdruck anzuwenden, die mit der Funktion @mref{defrule} definiert
+sind.
 
 Beispiele:
 
@@ -191,10 +201,10 @@ angewendet werden, wenn sich der Ausdruck f@"ur eine Regel @"andert.
 @end group
 @end example
 
-Das folgende Beispiel zeigt eine zirkul@"are Definition der Ersetzungsregeln
-@code{trig1} und @code{trig2}.  Mit der Funktion @code{apply1} h@"angt das
-Ergebnis von der Reihenfolge der Anwendung der Regeln ab.  Die Anwendung der
-Funktion @code{apply2} f@"uhrt f@"ur dieses Beispiel zu einer Endlosschleife.
+Das folgende Beispiel zeigt eine zirkul@"are Definition der Regeln @code{trig1}
+und @code{trig2}.  Mit der Funktion @code{apply1} h@"angt das Ergebnis von der
+Reihenfolge der Anwendung der Regeln ab.  Die Anwendung der Funktion
+@code{apply2} f@"uhrt f@"ur dieses Beispiel zu einer Endlosschleife.
 
 @example
 (%i1) defrule(trig1, tan(x), sin(x)/cos(x));
@@ -234,19 +244,20 @@ Ebene h@"oher betrachtet, bis @var{rule_1} auf die oberste Ebene des Ausdrucks
 @var{rule_n} angewendet wurde, wird das Ergebnis zur@"uckgegeben.
 
 @code{applyb1} ist vergleichbar mit @mref{apply1} mit dem Unterschied, dass
-die Regeln Bottum-Up angewendet werden.
+die Regeln Bottom-Up angewendet werden.
 
 Die Optionsvariable @mref{maxapplyheight} enth@"alt den Wert der gr@"o@ss{}ten
 Verschachtelungstiefe, f@"ur die @code{applyb1} angewendet wird.
 
-Siehe auch die Funktionen @mrefcomma{apply1} @mref{apply2} und @mrefdot{let}
+Siehe auch die Funktionen @mref{apply1} und @mrefcomma{apply2} um Regeln auf
+einen Ausdruck anzuwenden, die mit der Funktion @mref{defrule} definiert sind.
 
 Beispiel:
 
 Das folgende Beispiel zeigt, wie die Regel @code{trig} zuerst auf die
 unterste Ebene des Ausdrucks angewendet wird.  Dazu wird die Optionsvariable
-zun@"achst auf den Wert @code{1} gesetzt und dann auf den Wert @code{4}
-erh@"oht.
+@code{maxapplyheight} zun@"achst auf den Wert @code{1} gesetzt und dann auf den
+Wert @code{4} erh@"oht.
 
 @example
 (%i1) matchdeclare(x, true);
@@ -256,10 +267,12 @@ erh@"oht.
 (%o2)                trig : tan(x) -> ------
                                       cos(x)
 (%i3) expr: exp(a+2*tan(b+exp(tan(x))));
+@group
                               tan(x)
                       2 tan(%e       + b) + a
 (%o3)               %e
-(%i4) maxapplyheight:1;
+@end group
+(%i4) maxapplyheight: 1;
 (%o4)                           1
 (%i5) applyb1(expr, trig);
 @group
@@ -269,7 +282,7 @@ erh@"oht.
                       2 tan(%e       + b) + a
 (%o5)               %e
 @end group
-(%i6) maxapplyheight:4;
+(%i6) maxapplyheight: 4;
 (%o6)                           4
 (%i7) applyb1(expr, trig);
                               sin(x)
@@ -291,8 +304,67 @@ erh@"oht.
 
 F@"uhrt das Kommando @code{kill(rules)} aus und setzt die internen Z@"ahler
 f@"ur die Benennung der Regeln f@"ur die Addition, die Multiplikation und die
-Exponentiation auf den Anfangswert zur@"uck.  Siehe auch die Funktion
-@mrefdot{kill}
+Exponentiation auf den Anfangswert zur@"uck.  Mit dem Kommando
+@code{kill(rules)} werden alle Regeln entfernt, ohne dass die internen Z@"ahler
+zur@"uckgesetzt werden.  Siehe auch die Funktion @mrefdot{kill}
+
+Beispiel:
+
+@example
+(%i1) tellsimpafter(a+b, add(a,b));
+(%o1)                   [+rule1, simplus]
+(%i2) tellsimpafter(a*b, mul(a,b));
+(%o2)                  [*rule1, simptimes]
+(%i3) tellsimpafter(a^b, expt(a,b));
+(%o3)                  [^rule1, simpexpt]
+(%i4) rules;
+(%o4)               [+rule1, *rule1, ^rule1]
+(%i5) clear_rules();
+(%o5)                         done
+(%i6) rules;
+(%o6)                          []
+@end example
+
+Das folgende Beispiel zeigt einen Programmfehler von Maxima.  Die Funktion
+@mref{trigsimp} ist mit Hilfe von Regeln implementiert.  Die Regeln werden
+automatisch beim ersten Aufruf der Funktion @code{trigsimp} geladen und in die
+Liste @mref{rules} eingetragen.  Werden die Regeln mit der Funktion
+@code{clear_rules} oder @code{kill} gel@"oscht, f@"uhrt der n@"achste Aufruf
+der Funktion @code{trigsimp} zu einem Fehler.
+
+@example
+(%i1) trigsimp(sin(x)^2+cos(x)^2);
+(%o1)                           1
+(%i2) rules;
+(%o2) [trigrule1, trigrule2, trigrule3, trigrule4, htrigrule1, 
+                              htrigrule2, htrigrule3, htrigrule4]
+(%i3) disprule(trigrule1, trigrule2, trigrule3, trigrule4)$
+                                        sin(a)
+(%t3)             trigrule1 : tan(a) -> ------
+                                        cos(a)
+
+                                          1
+(%t4)             trigrule2 : sec(a) -> ------
+                                        cos(a)
+
+                                          1
+(%t5)             trigrule3 : csc(a) -> ------
+                                        sin(a)
+
+                                        cos(a)
+(%t6)             trigrule4 : cot(a) -> ------
+                                        sin(a)
+
+(%i7) clear_rules();
+(%o7)                         done
+(%i8) rules;
+(%o8)                          []
+(%i9) trigsimp(sin(x)^2+cos(x)^2);
+
+apply1: no such rule: trigrule1
+#0: trigsimp(x=sin(x)^2+cos(x)^2)(trgsmp.mac line 71)
+ -- an error. To debug this try: debugmode(true);
+@end example
 @end deffn
 
 @c --- 18.08.2011 DK -----------------------------------------------------------
@@ -301,8 +373,9 @@ Exponentiation auf den Anfangswert zur@"uck.  Siehe auch die Funktion
 Standardwert: @code{default_let_rule_package}
 
 Die Optionsvariable @code{current_let_rule_package} enth@"alt den Namen des
-aktuellen Regelpaketes, das von den @code{let}-Funktionen verwendet wird.  Der
-Optionsvariablen kann jedes mit dem Kommando @code{let} definierte Regelpaket
+aktuellen Regelpaketes, das von den Funktionen @mrefcomma{let}@w{}
+@mrefcomma{letrules} @mref{letsimp} und @mref{remlet} verwendet wird.  Der
+Optionsvariablen kann jedes mit der Funktion @code{let} definierte Regelpaket
 zugewiesen werden.
 
 Wird das Kommando @code{letsimp(expr, rule_pkg_name)} ausgef@"uhrt, dann wird 
@@ -313,6 +386,7 @@ Siehe auch die Optionsvariable @mrefdot{default_let_rule_package}
 @end defvr
 
 @c --- 18.08.2011 DK -----------------------------------------------------------
+@need 800
 @anchor{default_let_rule_package}
 @defvr {Optionsvariable} default_let_rule_package
 Standardwert: @code{default_let_rule_package}
@@ -323,7 +397,7 @@ definiert und der Wert der Optionsvariablen @mref{current_let_rule_package}@w{}
 nicht ge@"andert wurde.
 @end defvr
 
-@c --- 18.08.2011 DK -----------------------------------------------------------
+@c --- 30.08.2011 DK -----------------------------------------------------------
 @anchor{defmatch}
 @deffn  {Funktion} defmatch (@var{progname}, @var{pattern}, @var{x_1}, @dots{}, @var{x_n})
 @deffnx {Funktion} defmatch (@var{progname}, @var{pattern})
@@ -346,7 +420,7 @@ Musterargumenten @var{x_1}, @dots{}, @var{x_n} des Musters @var{pattern}
 entsprechen.
 
 Ist der Musterabgleich erfolgreich, gibt die Aussagefunktion @var{progname} eine
-Liste mit Gleichungen zur@"uck.  Die linke Seiten der Gleichungen sind die
+Liste mit Gleichungen zur@"uck.  Die linken Seiten der Gleichungen sind die
 Musterargumente und Mustervariablen und die rechten Seiten sind die
 Teilausdr@"ucke, f@"ur die der Musterabgleich eine @"Ubereinstimmung gefunden
 hat.  Die erhaltenen Ergebnisse des Musterabgleichs werden den mit
@@ -356,6 +430,9 @@ Musterabgleich nicht erfolgreich, ist die R@"uckgabe @code{false}.
 
 Ein Muster, das keine Musterargumente oder Mustervariablen enth@"alt, hat den
 R@"uckgabewert @code{true}, wenn der Musterabgleich erfolgreich ist.
+
+Die Aussagefunktion @code{progname} wird in die Informationsliste
+@mref{rules} eingetragen.
 
 Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defrule}@w{}
 @mref{tellsimp} und @mrefdot{tellsimpafter}
@@ -390,10 +467,10 @@ nicht jedoch dem Musterargument @code{x}.
 (%o6)                           x
 @end example
 
-Wie oben wird eine Aussagefunktion definiert, die pr@"uft, ob ein Ausdruck
-@var{expr} linear ist.  In diesem Fall wird kein Musterargument angegeben.  Der 
-Musterabgleich kann nur feststellen, ob ein Ausdruck linear in der Variablen
-@var{x} ist.  Eine andere Variable ist nicht m@"oglich.
+Wie im letzten Beispiel wird eine Aussagefunktion definiert, die pr@"uft, ob ein
+Ausdruck @var{expr} linear ist.  In diesem Fall wird kein Musterargument
+angegeben.  Der Musterabgleich kann nur feststellen, ob ein Ausdruck linear in
+der Variablen @var{x} ist.  Eine andere Variable ist nicht m@"oglich.
 
 @example
 (%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b,
@@ -439,26 +516,30 @@ Ausdruck @var{expr} ein bestimmtes Integral ist.
 @end example
 @end deffn
 
-@c --- 18.08.2011 DK -----------------------------------------------------------
+@c --- 30.08.2011 DK -----------------------------------------------------------
 @anchor{defrule}
 @deffn {Funktion} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 
 Definiert eine Regel, um das Muster @var{pattern} durch den Ausdruck
 @var{replacement} zu ersetzen.  Wird die Regel mit dem Namen @var{rulename}
-mit den Funktionen @mrefcomma{apply1} @mref{apply2} oder @mref{applyb1} auf 
+mit den Funktionen @mrefcomma{apply1} @mref{apply2} oder @mref{applyb1} auf
 einen Ausdruck angewendet, werden alle Teilausdr@"ucke, die dem Muster
-@var{pattern} entsprechen, durch den Ausdruck @var{replacement} ersetzt.
-Mustervariablen, die durch den Musterabgleich einen Wert erhalten haben,
-werden eingesetzt und der Ausdruck wird vereinfacht.
+@var{pattern} entsprechen, durch den Ausdruck @var{replacement} ersetzt.  Sind
+Mustervariablen vorhanden, die durch den Musterabgleich einen Wert erhalten
+haben, werden die Werte eingesetzt und der Ausdruck wird vereinfacht.
 
 Die Regel @var{rulename} kann als eine Funktion aufgefasst werden, die einen
-Ausdruck durch Anwendung des Musterabgleichs und der Einsetzung transformiert.
+Ausdruck durch Anwendung eines Musterabgleichs transformiert.  Die Regel kann
+wie ein Funktionsaufruf auf einen Ausdruck angewendet werden.
+
 Schl@"agt der Musterabgleich fehl, gibt die Regel den Wert @code{false}
 zur@"uck.
 
+Die Regel wird in die Informationsliste @mref{rules} eingetragen.
+
 Beispiele:
 
-Es wird eine Regel definiert, die den Ausdruck @code{sin(x)^2} nach
+Es wird eine Regel @code{trig} definiert, die den Ausdruck @code{sin(x)^2} nach
 @code{1-cos(x)^2} transformiert.  Diese Definition funktioniert nur, wenn das
 Argument der Sinusfunktion das Symbol @code{x} ist.
 
@@ -473,9 +554,9 @@ Argument der Sinusfunktion das Symbol @code{x} ist.
 (%o3)                         false
 @end example
 
-In diesem Beispiel wird zun@"achst mit der Funktion @mref{matchdeclare} eine 
-Mustervariable @var{a} definiert, der jeder Ausdruck zugewiesen werden kann und
-die als Argument der Regel verwendet wird.  Jetzt kann das Argument der
+In diesem Beispiel wird zun@"achst mit der Funktion @mref{matchdeclare} eine
+Mustervariable @code{a} definiert, der jeder Ausdruck zugewiesen werden kann
+und die als Argument der Regel verwendet wird.  Jetzt kann das Argument der
 Sinusfunktion ein beliebiger Ausdruck sein.
 
 @example
@@ -492,8 +573,8 @@ Sinusfunktion ein beliebiger Ausdruck sein.
 (%o4)                     1 - cos (%e )
 @end example
 
-Die Regel kann mit der Funktion @mref{apply1} auf verschachtelte Ausdr@"ucke
-angewendet werden.
+Die Regel kann mit der Funktion @mref{apply1} auf Ausdr@"ucke angewendet werden,
+wobei Teilausdr@"ucke, die das Muster enthalten transformiert werden.
 
 @example
 (%i5) trig(exp(sin(x)^2));
@@ -505,24 +586,26 @@ angewendet werden.
 @end example
 @end deffn
 
-@c --- 18.08.2011 DK -----------------------------------------------------------
+@c --- 30.08.2011 DK -----------------------------------------------------------
 @anchor{disprule}
-@deffn  {Funktion} disprule (@var{rulename_1}, @dots{}, @var{rulename_2})
+@deffn  {Funktion} disprule (@var{rulename_1}, @dots{}, @var{rulename_n})
 @deffnx {Funktion} disprule (all)
 
 Zeigt die Regeln mit den Namen @var{rulename_1}, @dots{}, @var{rulename_n} an,
-wie sie von den Funktionen @mrefcomma{defrule} @mref{tellsimp} oder
-@mref{tellsimpafter} zur@"uckgegeben werden, oder ein Muster, das mit der
+die mit den Funktionen @mrefcomma{defrule} @mref{tellsimp} oder
+@mref{tellsimpafter} definiert sind, oder ein Muster, das mit der
 Funktion @mref{defmatch} definiert ist.  Die Regeln werden mit einer
 Zwischenmarke @mxref{linechar, %t} angezeigt.
 
-Mit dem Kommando @code{disprule(all)} werden alle Regeln angezeigt.
+Mit dem Kommando @code{disprule(all)} werden alle Regeln und Muster angezeigt,
+die der Nutzer definiert hat und in der Informationsliste @mref{rules}@w{}
+enthalten sind.
 
 @code{disprule} wertet die Argumente nicht aus.  Der R@"uckgabewert ist eine
 Liste mit den Zwischenmarken, denen eine Regel zugewiesen wurde.
 
 Siehe auch die Funktion @mrefcomma{letrules} die die Regeln anzeigt, die mit
-der Funktion @mref{let} definiert wurden.
+der Funktion @mref{let} definiert sind.
 
 Beispiele:
 
@@ -561,13 +644,13 @@ der folgenden Terme:
 @itemize @bullet
 @item
 Atome, nach denen die Funktion @code{letsimp} w@"ortlich sucht, wenn diese keine
-Mustervariablen sind, die mit Funktion @mref{matchdeclare} definiert wurden,
+Mustervariablen sind, die mit Funktion @mref{matchdeclare} definiert sind,
 sowie Atome, die Mustervariablen sind.  In diesem Fall f@"uhrt die Funktion
 @code{letsimp} einen Musterabgleich f@"ur die Atome durch, auf die die mit
 der Funktion @code{matchdeclare} zugeordnete Aussagefunktion zutrifft.
 
 @item
-Terme wie @code{sin(x)}, @code{n!} oder @code{f(x,y)}.  Wie f@"ur Atome
+Terme wie @code{sin(x)}, @code{n!} oder @code{f(x,y)}:  wie f@"ur Atome
 sucht die Funktion @code{letsimp} nach w@"ortlichen @"Ubereinstimmungen,
 au@ss{}er wenn die Argumente der Terme Mustervariablen sind, die mit der
 Funktion @mref{matchdeclare} definiert sind.  In diesem Fall wird ein
@@ -613,14 +696,15 @@ ein Regelpaket als Argument @"ubergeben, wird dieses anstatt dem in
 verwendet.  Wenn nicht anders spezifiziert, hat @code{current_let_rule_package}
 den Standardwert @mrefdot{default_let_rule_package}
 
+Die Informationsliste @mref{let_rule_packages} enth@"alt die definierten
+Regelpakete.  Mit der Funktion @mref{letrules} k@"onnen alle definierten Regeln
+oder Regeln einzelner Pakete angezeigt werden.
+
 Beispiele:
 
 Die Funktion @code{isintegerp} pr@"uft auch, ob Variablen oder Ausdr@"ucke eine
 ganze Zahl repr@"asentieren.  Es wird eine Regel definiert, die dann angewendet
-wird, wenn das Argument eine ganze Zahl repr@"asentiert.  Achtung: Die Regel
-wird nicht angewendet, wenn das Argument nicht das Symbol @code{x}, sondern zum
-Beispiel eine Zahl ist, da keine Mustervariable mit @mref{matchdeclare}@w{}
-definiert ist.
+wird, wenn das Argument eine ganze Zahl repr@"asentiert.
 
 @example
 (%i1) isintegerp(x) := featurep(x, integer)$
@@ -668,7 +752,7 @@ Weitere Beispiele:
 Standardwert: @code{[default_let_rule_package]}
 
 @code{let_rule_packages} ist eine Informationsliste mit den vom Nutzer mit der
-Funktion @mref{let} definierten Regeln.
+Funktion @mref{let} definierten Regelpaketen.
 @end defvr
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
@@ -777,7 +861,7 @@ solange an, bis sich das Argument @var{expr} nicht mehr @"andert.
 @code{letsimp(@var{expr})} wendet die aktuellen Regeln an, die mit der
 Optionsvariablen @mref{current_let_rule_package} bezeichnet werden.
 
-@code{letsimp(@var{expr}), @var{package_name})} wendet die Regeln des
+@code{letsimp(@var{expr}, @var{package_name})} wendet die Regeln des
 Argumentes @var{package_name} an.  Die Optionsvariable
 @code{current_let_rule_package} @"andert ihren Wert nicht.  Es k@"onnen auch
 mehrere Regelpakete @var{package_name_1}, @dots{}, @var{package_name_n}
@@ -809,7 +893,7 @@ der zu testende Ausdruck der Liste der Argumente hinzugef@"ugt.  Die Argumente
 werden ausgewertet, wenn der Musterabgleich ausgef@"uhrt wird.  Ist die Aussage
 der Name einer Funktion oder ein Lambda-Ausdruck, ist die zu testende Aussage
 das einzige Argument.  Die Aussagefunktion braucht noch nicht definiert zu sein,
-wenn mit @code{matchdeclare} eine Mustervariable eingef@"uhrt wird, da die
+wenn mit @code{matchdeclare} eine Mustervariable definiert wird, da die
 Aussagefunktion erst aufgerufen wird, wenn ein Musterabgleich durchgef@"uhrt
 wird.
 
@@ -984,8 +1068,9 @@ angewendet werden.
 @defvr {Optionsvariable} maxapplyheight
 Standardwert: 10000
 
-@code{maxapplyheight} ist die Verschachtelungstiefe f@"ur die die Funktion
-@mref{applyb1} Bottom-up auf die Baumstruktur eines Ausdrucks angewendet wird.
+@code{maxapplyheight} ist die maximale Verschachtelungstiefe f@"ur die die
+Funktion @mref{applyb1} Bottom-up auf die Baumstruktur eines Ausdrucks
+angewendet wird.
 @end defvr
 
 @c --- 20.08.2011 DK -----------------------------------------------------------
@@ -1004,9 +1089,9 @@ Paket, das mit @mref{current_let_rule_package} bezeichnet ist.  Wird der Name
 eines Regelpaketes als Argument angegeben, werden zus@"atzlich die Regeln dieses
 Paketes entfernt.
 
-Soll eine vorhandene Ersetzungsregel durch eine neue Definition ersetzt werden,
-muss die Regel nicht zuvor mit @code{remlet} entfernt werden.  Die neue
-Definition @"uberschreibt eine vorhandene Regel.  Wurde eine vorhandene Regel
+Soll eine vorhandene Regel durch eine neue Definition ersetzt werden, muss die
+Regel nicht zuvor mit @code{remlet} entfernt werden.  Die neue Definition
+@"uberschreibt eine vorhandene Regel.  Wurde eine vorhandene Regel
 @"uberschrieben und wird die letzte Regel entfernt, dann ist die vorhergehende
 Regel wieder aktiv.
 
@@ -1020,7 +1105,7 @@ den Funktionen @mref{tellsimp} oder @mref{tellsimpafter} definiert sind.
 @deffnx {Funktion} remrule (@var{op}, all)
 
 Entfernt Regeln, die mit den Funktionen @mref{tellsimp} oder 
-@mrefdot{tellsimpafter} definiert sind.
+@mref{tellsimpafter} definiert sind.
 
 @code{remrule(@var{op}, @var{rulename})} entfernt die Regel mit dem Namen
 @var{rulename} vom Operator @var{op}.  Ist der Operator @var{op} ein 
@@ -1073,13 +1158,14 @@ Beispiele:
 @defvr {Systemvariable} rules
 Standardwert: @code{[]}
 
-@code{rules} ist eine Informationsliste , die die vom Nutzer mit den Funktionen
+@code{rules} ist eine Informationsliste, die die vom Nutzer mit den Funktionen
 @code{tellsimp}, @code{tellsimpafter}, @code{defmatch} oder @code{defrule}
 definierten Regeln enth@"alt.
 
-Regeln die mit der Funktion @mref{let} definiert sind, sind nicht in der Liste
-@code{rules} enthalten.  Diese Regeln werden in Paketen organisiert, die in 
-der Systemvariablen @mref{let_rule_packages} aufgelistet werden.
+Regeln, die mit der Funktion @mref{let} definiert sind, sind nicht in der Liste
+@code{rules} enthalten.  Diese Regeln werden in Paketen organisiert, die in
+der Systemvariablen @mref{let_rule_packages} aufgelistet und mit der Funktion
+@mref{letrules} angezeigt werden.
 
 Siehe auch die Systemvariable @mrefdot{infolists}
 @end defvr
@@ -1154,7 +1240,7 @@ Beispiele:
 @deffn {Funktion} tellsimpafter (@var{pattern}, @var{replacement})
 
 Definiert eine Regel f@"ur die Vereinfachung eines Ausdrucks, die nach Anwendung
-der Regeln angewendet wird, die Maxima intern anwendet.  @var{pattern} ist ein
+der Regeln angewendet wird, die Maxima intern kennt.  @var{pattern} ist ein
 Ausdruck, der Mustervariablen enth@"alt, die mit der Funktion
 @mref{matchdeclare} definiert sind und weitere Symbole und Operatoren, f@"ur
 die die w@"ortliche @"Ubereinstimmung bei einem Musterabgleich angenommen wird.
@@ -1232,7 +1318,7 @@ Siehe auch die Funktionen @mrefcomma{matchdeclare} @mrefcomma{defmatch}@w{}
 Beispiele:
 
 Das Muster @var{pattern} kann ein beliebiger Ausdruck sein, in dem der
-Hauptoperator nicht die Mustervariable ist.
+Hauptoperator keine Mustervariable ist.
 
 @example
 (%i1) matchdeclare (aa, atom, [ll, mm], listp, xx, true)$

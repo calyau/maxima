@@ -82,7 +82,8 @@ and develop DOE Macsyma, now called Maxima.
 @c includes
 
 @menu
-Maxima infrastructure
+
+@b{Maxima infrastructure}
 
 * Introduction to Maxima::      Sample Maxima sessions.
 * Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
@@ -99,7 +100,6 @@ Maxima infrastructure
 * File Input and Output::       File input and output.
 
 Support for specific areas of mathematics
-
 * Polynomials::                 Standard forms for polynomials, and
                                 functions operating on them.
 * Special Functions::           Special functions
@@ -122,7 +122,6 @@ Support for specific areas of mathematics
 * Groups::                      Abstract algebra.
 
 Advanced facilities and programming
-
 * Runtime Environment::         Customization of the Maxima environment.
 * Miscellaneous Options::       Options with a global effect on Maxima.
 * Rules and Patterns::          User defined pattern matching and
@@ -133,7 +132,6 @@ Advanced facilities and programming
 * Debugging::                   Debugging Maxima programs.
 
 Additional packages
-
 * asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
 * Bernstein::                   Bernstein polynomials.
@@ -154,7 +152,6 @@ Additional packages
 * graphs::                      Graph theory package.
 * grobner::                     Functions for working with Groebner bases.
 * impdiff::                     Implicit derivatives.
-* implicit_plot::               Implicit plots package.
 * interpol::                    Interpolation package.
 * lapack::                      LAPACK functions for linear algebra.
 * lbfgs::                       L-BFGS unconstrained minimization package.
@@ -179,35 +176,28 @@ Additional packages
 * unit::                        Units and dimensions package.
 * zeilberger::                  Functions for hypergeometric summation.
 
-
 Index
-
 * Function and Variable Index:: Index.
 
 @comment @detailmenu
  --- The Detailed Node Listing ---
 
 Introduction
-
 * Introduction to Maxima::
 
 Bugs
-
 * Bug Detection and Reporting::
 
 Help
-
 * Documentation::
 * Functions and Variables for Help::
 
 Command Line
-
 * Introduction to Command Line::
 * Functions and Variables for Command Line::
 * Functions and Variables for Display::
 
 Data Types and Structures
-
 * Numbers::
 * Strings::
 * Constants::
@@ -216,7 +206,6 @@ Data Types and Structures
 * Structures::
 
 Expressions
-
 * Introduction to Expressions::
 * Nouns and Verbs::
 * Identifiers::
@@ -224,7 +213,6 @@ Expressions
 * Functions and Variables for Expressions::
 
 Operators
-
 * Introduction to operators::
 * Arithmetic operators::
 * Relational operators::
@@ -234,15 +222,12 @@ Operators
 * User defined operators::
 
 Evaluation
-
 * Functions and Variables for Evaluation::
 
 Simplification
-
 * Functions and Variables for Simplification::
 
 Mathematical Functions
-
 * Functions for Numbers::
 * Functions for Complex Numbers::
 * Combinatorial Functions::
@@ -251,14 +236,12 @@ Mathematical Functions
 * Random Numbers::
 
 Maximas Database
-
 * Introduction to Maximas Database::
 * Functions and Variables for Properties::
 * Functions and Variables for Facts::
 * Functions and Variables for Predicates::
 
 Plotting
-
 * Introduction to Plotting::
 * Plotting Formats::
 * Functions and Variables for Plotting::    
@@ -267,7 +250,6 @@ Plotting
 * Gnuplot_pipes Format Functions::
 
 File Input and Output
-
 * Comments::
 * Files::
 * Functions and Variables for File Input and Output::
@@ -275,12 +257,10 @@ File Input and Output
 * Functions and Variables for Fortran Output::
 
 Polynomials
-
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::
 
 Special Functions
-
 * Introduction to Special Functions:: 
 * Bessel Functions::
 * Airy Functions::
@@ -293,42 +273,34 @@ Special Functions
 * Functions and Variables for Special Functions::  
 
 Elliptic Functions
-
 * Introduction to Elliptic Functions and Integrals::
 * Functions and Variables for Elliptic Functions::
 * Functions and Variables for Elliptic Integrals::
 
 Limits
-
 * Functions and Variables for Limits::      
 
 Differentiation
-
 * Functions and Variables for Differentiation::  
 
 Integration
-
 * Introduction to Integration::  
 * Functions and Variables for Integration::  
 
 Equations
-
 * Functions and Variables for Equations::   
 
 Differential Equations
-
 * Introduction to Differential Equations::  
 * Functions and Variables for Differential Equations::  
 
 Numerical
-
 * Introduction to fast Fourier transform::                     
 * Functions and Variables for fast Fourier transform::
 * Introduction to Fourier series::
 * Functions and Variables for Fourier series::
 
 Matrices and Linear Algebra
-
 * Introduction to Matrices and Linear Algebra::  
 * Dot::                         
 * Vectors::                     
@@ -336,110 +308,89 @@ Matrices and Linear Algebra
 * Functions and Variables for Matrices and Linear Algebra::  
 
 Affine
-
 * Introduction to Affine::
 * Functions and Variables for Affine::      
 
 itensor
-
 * Introduction to itensor::      
 * Functions and Variables for itensor::      
 
 ctensor
-
 * Introduction to ctensor::     
 * Functions and Variables for ctensor::     
 
 atensor
-
 * Introduction to atensor::     
 * Functions and Variables for atensor::     
 
 Sums, Products, and Series
-
 * Sums and Products::
 * Introduction to Series::
 * Functions and Variables for Series::
 * Poisson series::
 
 Number Theory
-
 * Functions and Variables for Number Theory::  
 
 Symmetries
-
 * Introduction to Symmetries::
 * Functions and Variables for Symmetries::  
 
 Groups
-
 * Functions and Variables for Groups::      
 
 Runtime Environment
-
 * Introduction for Runtime Environment::  
 * Interrupts::                  
 * Functions and Variables for Runtime Environment::  
 
 Miscellaneous Options
-
 * Introduction to Miscellaneous Options::  
 * Share::                       
 * Functions and Variables for Miscellaneous Options::  
 
 Rules and Patterns
-
 * Introduction to Rules and Patterns::  
 * Functions and Variables for Rules and Patterns::
 
 Sets
-
 * Introduction to Sets::       
 * Functions and Variables for Sets::
 
 Function Definition
-
 * Introduction to Function Definition::  
 * Function::                    
 * Macros::                      
 * Functions and Variables for Function Definition::  
 
 Program Flow
-
 * Lisp and Maxima::
 * Garbage Collection::
 * Introduction to Program Flow::  
 * Functions and Variables for Program Flow::  
 
 Debugging
-
 * Functions and Variables for Debugging::   
 
 asympa
-
 * Introduction to asympa::
 * Functions and variables for asympa::
 
 augmented_lagrangian
-
 * Functions and Variables for augmented_lagrangian::
 
 Bernstein
-
 * Functions and Variables for Bernstein::
 
 bode
-
 * Functions and Variables for bode::
 
 cobyla
-
 * Introduction to cobyla::
 * Functions and Variables for cobyla::
 * Examples for cobyla::
 
 contrib_ode
-
 * Introduction to contrib_ode::
 * Functions and Variables for contrib_ode::
 * Possible improvements to contrib_ode::
@@ -447,56 +398,46 @@ contrib_ode
 * References for contrib_ode::
 
 descriptive
-
 * Introduction to descriptive::
 * Functions and Variables for data manipulation::
 * Functions and Variables for descriptive statistics::
 * Functions and Variables for statistical graphs::
 
 diag
-
 * Functions and Variables for diag::
 
 distrib
-
 * Introduction to distrib::
 * Functions and Variables for continuous distributions::
 * Functions and Variables for discrete distributions::
 
 draw
-
 * Introduction to draw::
 * Functions and Variables for draw::
 * Functions and Variables for pictures::
 * Functions and Variables for worldmap::
 
 drawdf
-
 * Introduction to drawdf::
 * Functions and Variables for drawdf::
 
 dynamics
-
 * Introduction to dynamics::
 * Functions and Variables for dynamics::
 
 ezunits
-
 * Introduction to ezunits::
 * Introduction to physical_constants::
 * Functions and Variables for ezunits::
 
 f90
-
 * Functions and Variables for f90::
 
 finance
-
 * Introduction to finance::
 * Functions and Variables for finance::
 
 fractals
-
 * Introduction to fractals::
 * Definitions for IFS fractals::
 * Definitions for complex fractals::
@@ -504,101 +445,77 @@ fractals
 * Definitions for Peano maps::
 
 ggf
-
 * Functions and Variables for ggf::
 
 graphs
-
 * Introduction to graphs::
 * Functions and Variables for graphs::
 
 grobner
-
 * Introduction to grobner::
 * Functions and Variables for grobner::
 
 impdiff
-
 * Functions and Variables for impdiff::
 
-implicit_plot
-
-* Functions and Variables for implicit_plot::
-
 interpol
-
 * Introduction to interpol::
 * Functions and Variables for interpol::
 
 lapack
-
 * Introduction to lapack::
 * Functions and Variables for lapack::
 
 lbfgs
-
 * Introduction to lbfgs::
 * Functions and Variables for lbfgs::
 
 lindstedt
-
 * Functions and Variables for lindstedt::
 
 linearalgebra
-
 * Introduction to linearalgebra::
 * Functions and Variables for linearalgebra::
 
 lsquares
-
-* Introduction to lsquares
+* Introduction to lsquares::
 * Functions and Variables for lsquares::
 
 makeOrders
-
 * Functions and Variables for makeOrders::
 
 minpack
-
 * Introduction to minpack::
 * Functions and Variables for minpack::
 
 mnewton
-
 * Introduction to mnewton::
 * Functions and Variables for mnewton::
 
 numericalio
-
 * Introduction to numericalio::
 * Functions and Variables for plain-text input and output::
 * Functions and Variables for binary input and output::
 
 opsubst
-
 * Functions and Variables for opsubst::
 
 orthopoly
-
 * Introduction to orthogonal polynomials::
 * Functions and Variables for orthogonal polynomials::
 
 plotdf
-
 * Introduction to plotdf::
 * Functions and Variables for plotdf::
 
 romberg
-
 * Functions and Variables for romberg::
 
 simplex
-
 * Introduction to simplex::
 * Functions and Variables for simplex::
 
 simplification
-
 * Introduction to simplification::
 * Package absimp::
 * Package facexp::
@@ -609,39 +526,32 @@ simplification
 * Package sqdnst::
 
 solve_rec
-
 * Introduction to solve_rec::
 * Functions and Variables for solve_rec::
 
 stats
-
 * Introduction to stats::
 * Functions and Variables for inference_result::
 * Functions and Variables for stats::
 * Functions and Variables for special distributions::
 
 stirling
-
 * Functions and Variables for stirling::
 
 stringproc
-
 * Introduction to string processing::
 * Functions and Variables for input and output::
 * Functions and Variables for characters::
 * Functions and Variables for strings::
 
 to_poly_solve
-
 * Functions and Variables for to_poly_solve::
 
 unit
-
 * Introduction to Units::       
 * Functions and Variables for Units::
 
 zeilberger
-
 * Introduction to zeilberger::
 * Functions and Variables for zeilberger::
 
@@ -887,15 +797,11 @@ zeilberger
 @chapter grobner
 @include grobner.texi
 
-@node impdiff, implicit_plot, grobner, Top
+@node impdiff, interpol, grobner, Top
 @chapter impdiff
 @include impdiff.texi
 
-@node implicit_plot, interpol, impdiff, Top
-@chapter implicit_plot
-@include implicit_plot.texi
-
-@node interpol, lapack, implicit_plot, Top
+@node interpol, lapack, impdiff, Top
 @chapter interpol
 @include interpol.texi
 

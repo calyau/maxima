@@ -138,6 +138,7 @@
              Aus-drucks
              aus-ge-wer-tet
              Aus-wer-tung
+             Aus-wer-tungs-schal-ter
              be-rech-net
              be-stimm-tes
              be-zeich-net
@@ -182,7 +183,8 @@
              Maxima
              Mgnuplot
              Mus-ter-er-ken-nungs-ver-fah-ren
-             O-pe-ra-tor 
+             O-pe-ra-ti-o-nen
+             O-pe-ra-tor
              O-pe-ra-to-ren
              Op-tions-va-ri-ablen
              Re-gel-pa-ket

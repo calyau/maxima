@@ -80,51 +80,6 @@ to resume from the point at which it was stopped.
 @section Functions and Variables for Runtime Environment
 @c -----------------------------------------------------------------------------
 
-@c NEEDS EXPANSION AND CLARIFICATION
-
-@c -----------------------------------------------------------------------------
-@anchor{feature}
-@defvr {Declaration} feature
-
-Maxima understands two distinct types of features,
-system features and features which apply to mathematical expressions.
-See also @code{status} for information about system features.
-See also @code{features} and @code{featurep} for information about mathematical features.
-@c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
-@c OTHER STUFF ??
-
-@code{feature} itself is not the name of a function or variable.
-@end defvr
-
-@c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
-@c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
-
-@c -----------------------------------------------------------------------------
-@anchor{featurep}
-@deffn {Function} featurep (@var{a}, @var{f})
-
-Attempts to determine whether the object @var{a} has the
-feature @var{f} on the basis of the facts in the current database.  If so,
-it returns @code{true}, else @code{false}.
-
-Note that @code{featurep} returns @code{false} when neither @var{f}
-nor the negation of @var{f} can be established.
-
-@code{featurep} evaluates its argument.
-
-See also @code{declare} and @code{features}.
-
-@example
-(%i1) declare (j, even)$
-(%i2) featurep (j, integer);
-(%o2)                           true
-@end example
-
-@opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
-@closecatbox
-@end deffn
-
 @c -----------------------------------------------------------------------------
 @anchor{maxima_tempdir}
 @defvr {System variable} maxima_tempdir

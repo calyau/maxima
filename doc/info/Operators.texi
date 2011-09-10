@@ -1587,7 +1587,7 @@ Matchfix operators are ordinary user-defined functions.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{operator_nary}
+@anchor{function_nary}
 @deffn  {Function} nary (@var{op})
 @deffnx {Function} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
 
