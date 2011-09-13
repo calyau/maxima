@@ -1669,8 +1669,8 @@ Beispiele:
 
 @c --- 13.09.2011 DK -----------------------------------------------------------
 @anchor{coord}
-@deffn {Funktion} coord (@var{tensor_1}, @var{tensor_2}, @dots{})
-@deffn {Systemvariable} coord
+@deffn  {Funktion} coord (@var{tensor_1}, @var{tensor_2}, @dots{})
+@deffnx {Systemvariable} coord
 
 @c Gives @var{tensor_i} the coordinate differentiation property that the
 @c derivative of contravariant vector whose name is one of the
@@ -1722,7 +1722,7 @@ entfernt diese Eigenschaft f@"ur alle tensoriellen Gr@"o@ss{}en.
 @c @code{g([],[i,j])*p([m],[n],i,j)}.
 
 Zeigt das Argument @var{expr} auf die gleiche Weise an wie die Funktion
-@mref{show} mit dem Unterschied, dass der d’Alembert-Operator @var{name} im
+@mref{ishow} mit dem Unterschied, dass der d’Alembert-Operator @var{name} im
 Ausdruck durch @code{[]} ersetzt wird.
 
 Beispiel:
