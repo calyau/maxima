@@ -2,21 +2,29 @@
 @c File        : Atensor.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Atensor.texi revision 1.10
+@c Original    : Atensor.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
+@c Revision    : 04.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@c @menu
-@c * Introduction to atensor::
-@c * Functions and Variables for atensor::
-@c @end menu
+@c -----------------------------------------------------------------------------
+@page
+@node Paket atensor, , Paket ctensor, Tensoren
+@section Paket atensor
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einf@"uhrung in atensor::
+* Funktionen und Variablen f@"ur atensor::
+@end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to atensor, Functions and Variables for atensor, Functions and Variables for ctensor, Tensoren
-@section Introduction to atensor
+@node Einf@"uhrung in atensor, Funktionen und Variablen f@"ur atensor, Paket atensor, Paket atensor
+@subsection Einf@"uhrung in atensor
+@c -----------------------------------------------------------------------------
 
 @code{atensor} is an algebraic tensor manipulation package. To use 
 @code{atensor}, type @code{load(atensor)}, followed by a call to the 
@@ -41,19 +49,6 @@ Although the @code{atensor} package has a built-in definition for the
 quaternion algebra, it is not used in this example, in which we
 endeavour to build the quaternion multiplication table as a matrix:
 
-@c ===beg===
-@c load(atensor);
-@c init_atensor(clifford,0,0,2);
-@c atensimp(v[1].v[1]);
-@c atensimp((v[1].v[2]).(v[1].v[2]));
-@c q:zeromatrix(4,4);
-@c q[1,1]:1;
-@c for i thru adim do q[1,i+1]:q[i+1,1]:v[i];
-@c q[1,4]:q[4,1]:v[1].v[2];
-@c for i from 2 thru 4 do for j from 2 thru 4 do
-@c    q[i,j]:atensimp(q[i,1].q[1,j]);
-@c q;
-@c ===end===
 @example
 (%i1) load(atensor);
 (%o1)       /share/tensor/atensor.mac
@@ -123,8 +118,9 @@ consider setting @code{dotassoc} to @code{false}. In this case, however,
 simplifications.
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for atensor,  , Introduction to atensor, Tensoren
-@section Functions and Variables for atensor
+@node Funktionen und Variablen f@"ur atensor, , Einf@"uhrung in atensor, Paket atensor
+@subsection Funktionen und Variablen f@"ur atensor
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{init_atensor}
@@ -182,7 +178,6 @@ Cl(3,0). A call to @code{init_atensor(pauli)} is equivalent to
 @code{dirac} implements the algebra of Dirac-spinors as the Clifford-algebra
 Cl(3,1). A call to @code{init_atensor(dirac)} is equivalent to
 @code{init_atensor(clifford,3,0,1)}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -195,7 +190,6 @@ recursive application of commutation relations and resolving calls
 to @code{sf}, @code{af}, and @code{av} where applicable. A
 safeguard is used to ensure that the function always terminates, even
 for complex expressions.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -204,7 +198,6 @@ for complex expressions.
 
 The algebra type. Valid values are @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -214,7 +207,6 @@ Default value: 0
 
 The dimensionality of the algebra. @code{atensor} uses the value of @code{adim}
 to determine if an indexed object is a valid base vector.  See @code{abasep}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -224,7 +216,6 @@ Default value: @code{ident(3)}
 
 Default values for the bilinear forms @code{sf}, @code{af}, and
 @code{av}. The default is the identity matrix @code{ident(3)}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -233,7 +224,6 @@ Default values for the bilinear forms @code{sf}, @code{af}, and
 Default value: @code{v}
 
 The symbol for base vectors.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -244,7 +234,6 @@ A symmetric scalar function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
 using @code{abasep} and if that is the case, substitutes the
 corresponding value from the matrix @code{aform}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -255,7 +244,6 @@ An antisymmetric scalar function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
 using @code{abasep} and if that is the case, substitutes the
 corresponding value from the matrix @code{aform}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -269,13 +257,6 @@ corresponding value from the matrix @code{aform}.
 
 For instance:
 
-@c ===beg===
-@c load(atensor);
-@c adim:3;
-@c aform:matrix([0,3,-2],[-3,0,1],[2,-1,0]);
-@c asymbol:x;
-@c  av(x[1],x[2]);
-@c ===end===
 @example
 (%i1) load(atensor);
 (%o1)       /share/tensor/atensor.mac
@@ -293,7 +274,6 @@ For instance:
 (%o5)                                 x
                                        3
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -304,7 +284,6 @@ Checks if its argument is an @code{atensor} base vector. That is, if it is
 an indexed symbol, with the symbol being the same as the value of
 @code{asymbol}, and the index having a numeric value between 1
 and @code{adim}.
-
 @end deffn
 
 @c --- End of file Atensor.de.texi ---------------------------------------------
