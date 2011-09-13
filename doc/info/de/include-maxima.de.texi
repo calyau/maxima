@@ -2,10 +2,10 @@
 @c File        : include-maxima.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : include-maxima.texi.in 19.07.2011
+@c Original    : include-maxima.texi.in 02.09.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 23.07.2011
+@c Revision    : 04.09.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -347,12 +347,10 @@ Lineare Algebra
 * Funktionen und Variablen der linearen Algebra::
 
 Tensoren
-* Introduction to itensor::
-* Functions and Variables for itensor::
-* Introduction to ctensor::
-* Functions and Variables for ctensor::
-* Introduction to atensor::
-* Functions and Variables for atensor::
+* Tensorpakete in Maxima::
+* Paket itensor::
+* Paket ctensor::
+* Paket atensor::
 
 Zahlentheorie
 * Funktionen und Variablen der Zahlentheorie::
