@@ -5,7 +5,7 @@
 @c Original    : category-macros.texi revision 30.05.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 29.06.2011
+@c Revision    : 13.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -126,7 +126,8 @@
 @end macro
 
 @iftex
-@hyphenation{al-ter-nie-ren-den
+@hyphenation{ab-ge-lei-te-ten
+             al-ter-nie-ren-den
              an-ge-ge-ben
              an-ge-ge-ben-er
              an-ge-wen-det
@@ -142,6 +143,7 @@
              be-rech-net
              be-stimm-tes
              be-zeich-net
+             boole-scher
              Da-ten-bank
              de-fi-nier-ten
              Dol-lar-zei-chen
@@ -179,6 +181,7 @@
              Ko-or-di-na-ten-sys-tem
              Laplace-trans-for-ma-tion
              letz-te
+             li-ne-ar-en
              ma-the-ma-ti-sche
              Maxima
              Mgnuplot
