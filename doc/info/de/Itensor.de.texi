@@ -517,7 +517,7 @@ Funktion gegeben.
 @c 4) Using Maxima's pattern matching capabilities, specifically the
 @c @code{defrule} and @code{applyb1} commands:
 
-4) Mit Mustern und Regeln: Im folgenden wird ein Beispiel mit den Funktionen
+4) Mit Mustern und Regeln: Im Folgenden wird ein Beispiel mit den Funktionen
 @mref{defrule} und @mref{applyb1} gezeigt.
 
 @example
@@ -1213,6 +1213,7 @@ Beispiel:
 (%i4) components(g([i,j],[]),lg);
 (%o4)                                done
 (%i5) showcomps(g([i,j],[]));
+@group
                   [         r                                     ]
                   [ sqrt(-------)  0       0              0       ]
                   [      r - 2 m                                  ]
@@ -1224,6 +1225,7 @@ Beispiel:
                   [                                      r - 2 m  ]
                   [       0        0       0        sqrt(-------) ]
                   [                                         r     ]
+@end group
 (%o5)                                false
 @end example
 @end deffn
@@ -1286,10 +1288,10 @@ Weiterhin ist die Form @code{symoper(all)} m@"oglich.  In diesem Fall wird
 die entsprechende Symmetrieeigenschaft f@"ur alle Indizes angenommen.
 
 Ist zum Beispiel @code{b} ein Tensor mit 5 kovarianten Indizes, dann wird mit
-@code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} definiert, dass @code{b}
-symmetrisch in den Indizes @code{1} und @code{2}, antisymmetrisch in den 
-Indizes @code{3} und @code{4} sowie zyklisch in allen kontravarianten Indizes
-ist.
+@code{decsym(b, 5, 3, [sym(1,2), anti(3,4)], [cyc(all)])} definiert, dass
+@code{b} symmetrisch in den Indizes @code{1} und @code{2}, antisymmetrisch in
+den Indizes @code{3} und @code{4} sowie zyklisch in allen kontravarianten
+Indizes ist.
 
 Symmetrieeigenschaften, die mit der Funktion @code{decsym} definiert werden,
 werden von der Funktion @mref{canform} angewendet.
@@ -1546,7 +1548,7 @@ Funktion @mref{idiff} ersetzt sind.
 @c Equivalent to the execution of @code{undiff}, followed by @code{ev} and
 @c @code{rediff}.
 
-Ist @"aquivalent zur Ausf@"uhrung der Funktion @mrefcomma{undiff} dem die
+Ist @"aquivalent zur Ausf@"uhrung der Funktion @mrefcomma{undiff} der die
 Funktionen @mref{ev} und @mref{rediff} nachfolgen.
 
 @c The point of this operation is to easily evalute expressions that cannot
@@ -1597,18 +1599,20 @@ Ausdruck mit @code{evundiff} ausgewertet werden:
 @c Christoffel-symbols also could not be evaluated.  This has been fixed now,
 @c so @code{evundiff} is no longer necessary for expressions like this:
 
-Ableitungen der Christoffel-Symbole k@"onnen ohne Verwendung der Funktion
-@code{evundiff} ausgewertet werden:
+Um Christoffel-Symbole abzuleiten, wird die Funktion @code{evundiff}
+nicht ben@"otigt:
 
 @example
 (%i5) imetric(g);
 (%o5)                                done
 (%i6) ishow(ichr2([i,j],[k],l))$
+@group
        k %3
       g     (g         - g         + g        )
               j %3,i l    i j,%3 l    i %3,j l
 (%t6) -----------------------------------------
                           2
+@end group
 
                          k %3
                         g     (g       - g       + g      )
@@ -1811,14 +1815,14 @@ was aus den Symmetrien der Christoffel-Symbole folgt.
 Die Funktion @code{simpmetderiv} akzeptiert einen optionalen Parameter
 @var{stop}.  Ist dieser vorhanden, stoppt die Funktion nach der ersten
 erfolgreichen Substitution in einem Produkt.  @code{simpmetderiv} beachtet
-ferner die Optionsvariable @mref{flipflag}, welche die Ordnung der Indizes
+ferner die Optionsvariable @mrefcomma{flipflag} welche die Ordnung der Indizes
 kontrolliert.
 
 @c See also @code{weyl.dem} for an example that uses @code{simpmetderiv}
 @c and @code{conmetderiv} together to simplify contractions of the Weyl tensor.
 
 Siehe auch @code{weyl.dem} f@"ur Beispiele der Funktionen @code{simpmetderiv}
-und @mref{conmetderiv}, die die Vereinfachung des Weyl-Tensors zeigen.
+und @mrefcomma{conmetderiv} die die Vereinfachung des Weyl-Tensors zeigen.
 
 @c TODO: DAS FOLGENDE IST NICHT UEBERSETZT
 
@@ -1873,57 +1877,74 @@ errexp1 has improper indices
 @c Set to zero, in @code{expr}, all occurrences of @code{tensor} that have
 @c exactly one derivative index.
 
-Setzt alle tensoriellen Größen, die genau einen Ableitungsindex haben, auf
-den Wert Null.
+Setzt alle tensoriellen Gr@"o@ss{}en, die genau einen Ableitungsindex haben,
+auf den Wert Null.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@need 1200
 @node Tensoren in gekr@"ummten R@"aumen, Begleitende Vielbeine, Tensoranalysis, Funktionen und Variablen f@"ur itensor
 @subsubsection Tensoren in gekr@"ummten R@"aumen
 @c -----------------------------------------------------------------------------
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{imetric}
 @deffn  {Funktion} imetric (@var{g})
-@deffnx {System variable} imetric
+@deffnx {Systemvariable} imetric
 
-Specifies the metric by assigning the variable @code{imetric : @var{g}} in
-addition, the contraction properties of the metric @var{g} are set up by
-executing the commands @code{defcon(@var{g}), defcon(@var{g}, @var{g}, kdelta)}.
-The variable @code{imetric} (unbound by default), is bound to the metric, 
-assigned by the @code{imetric(@var{g})} command.
+@c Specifies the metric by assigning the variable @code{imetric : @var{g}} in
+@c addition, the contraction properties of the metric @var{g} are set up by
+@c executing the commands @code{defcon(@var{g}), defcon(@var{g}, @var{g},
+@c kdelta)}.  The variable @code{imetric} (unbound by default), is bound to the
+@c metric, assigned by the @code{imetric(@var{g})} command.
+
+Spezifiziert die Metrik, indem der Variablen @code{imetric} der Wert @code{g}
+zugewiesen wird.  Die Eigenschaften f@"ur die Verj@"ungung von Tensoren werden
+mit den Kommandos @code{defcon(@var{g})} und
+@code{defcon(@var{g}, @var{g}, kdelta)} initialisiert.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{idim}
-@deffn {Function} idim (@var{n})
+@deffn {Funktion} idim (@var{n})
 
-Sets the dimensions of the metric.  Also initializes the antisymmetry
-properties of the Levi-Civita symbols for the given dimension.
+@c Sets the dimensions of the metric.  Also initializes the antisymmetry
+@c properties of the Levi-Civita symbols for the given dimension.
+
+@code{idim} enthält die Dimension der Metrik.  Mit dem Setzen von @code{idim}
+werden auch die antisymmetrischen Eigenschaften des Levi-Civita-Symbols
+f@"ur die Dimension initialisiert.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{ichr1}
-@deffn {Function} ichr1 ([@var{i}, @var{j}, @var{k}])
+@deffn {Funktion} ichr1 ([@var{i}, @var{j}, @var{k}])
 
-Yields the Christoffel symbol of the first kind via the
-definition
+@c Yields the Christoffel symbol of the first kind via the definition
+
+Gibt das Christoffel-Symbol der ersten Art zur@"uck, das definiert ist als
 
 @example
        (g      + g      - g     )/2 .
          ik,j     jk,i     ij,k
 @end example
 
-To evaluate the Christoffel symbols for a particular metric, the variable
-@code{imetric} must be assigned a name as in the example under @code{chr2}.
+@c To evaluate the Christoffel symbols for a particular metric, the variable
+@c @code{imetric} must be assigned a name as in the example under @code{chr2}.
+
+Um das Christoffel-Symbol für eine spezielle Metrik auszuwerten, muss der
+Optionsvariablen @mref{imetric} ein Wert zugewiesen werden.  Siehe dazu das
+Beispiel zu @mrefdot{ichr2}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{ichr2}
-@deffn {Function} ichr2 ([@var{i}, @var{j}], [@var{k}])
+@deffn {Funktion} ichr2 ([@var{i}, @var{j}], [@var{k}])
 
-Yields the Christoffel symbol of the second kind
-defined by the relation
+@c Yields the Christoffel symbol of the second kind
+@c defined by the relation
+
+Gibt das Christoffel-Symbol der zweiten Art zur@"uck, das definiert ist als
 
 @example
                        ks
@@ -1932,13 +1953,16 @@ defined by the relation
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{icurvature}
-@deffn {Function} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
+@deffn {Funktion} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
 
-Yields the Riemann
-curvature tensor in terms of the Christoffel symbols of the second
-kind (@code{ichr2}).  The following notation is used:
+@c Yields the Riemann
+@c curvature tensor in terms of the Christoffel symbols of the second
+@c kind (@code{ichr2}).  The following notation is used:
+
+Gibt den Riemannschen Kr@"ummungstensor in einer Darstellung mit
+Christoffel-Symbolen zur@"uck:
 
 @example
             h             h            h         %1         h
@@ -1950,14 +1974,19 @@ kind (@code{ichr2}).  The following notation is used:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{covdiff}
-@deffn {Function} covdiff (@var{expr}, @var{v_1}, @var{v_2}, @dots{})
+@deffn {Funktion} covdiff (@var{expr}, @var{v_1}, @var{v_2}, @dots{})
 
-Yields the covariant derivative of @var{expr} with
-respect to the variables @var{v_i} in terms of the Christoffel symbols of the
-second kind (@code{ichr2}).  In order to evaluate these, one should use
-@code{ev(@var{expr},ichr2)}.
+@c Yields the covariant derivative of @var{expr} with
+@c respect to the variables @var{v_i} in terms of the Christoffel symbols of the
+@c second kind (@code{ichr2}).  In order to evaluate these, one should use
+@c @code{ev(@var{expr},ichr2)}.
+
+Gibt die kovariante Ableitung des Ausdruck @var{expr} nach den Variablen
+@var{v_i} in einer Darstellung mit Christoffel-Symbolen der zweiten Art
+@mref{ichr2} zur@"uck.  Um den erhaltenen Ausdruck auszuwerten, kann das 
+Kommando @code{ev(@var{expr}, ichr2)}.
 
 @example
 (%i1) load(itensor);
@@ -2002,26 +2031,40 @@ Enter a list of the derivative indices: [];
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 14.09.2011 DK -----------------------------------------------------------
 @anchor{lorentz gauge}
-@deffn {Function} lorentz_gauge (@var{expr})
+@deffn {Funktion} lorentz_gauge (@var{expr})
 
-Imposes the Lorentz condition by substituting 0 for all
-indexed objects in @var{expr} that have a derivative index identical to a
-contravariant index.
+@c Imposes the Lorentz condition by substituting 0 for all
+@c indexed objects in @var{expr} that have a derivative index identical to a
+@c contravariant index.
+
+Wendet die Lorenz-Eichung an, indem alle indizierten Gr@"o@ss{}en in @var{expr}
+zu Null gesetzt werden, die einen zu einem kontravarianten Index identischen
+Ableitungsindex haben.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 15.09.2011 DK -----------------------------------------------------------
 @anchor{igeodesic_coords}
-@deffn {Function} igeodesic_coords (@var{expr}, @var{name})
+@deffn {Funktion} igeodesic_coords (@var{expr}, @var{name})
 
-Causes undifferentiated Christoffel symbols and
-first derivatives of the metric tensor vanish in @var{expr}.  The @var{name}
-in the @code{igeodesic_coords} function refers to the metric @var{name}
-(if it appears in @var{expr}) while the connection coefficients must be
-called with the names @code{ichr1} and/or @code{ichr2}.  The following example
-demonstrates the verification of the cyclic identity satisfied by the Riemann
-curvature tensor using the @code{igeodesic_coords} function.
+@c Causes undifferentiated Christoffel symbols and
+@c first derivatives of the metric tensor vanish in @var{expr}.  The @var{name}
+@c in the @code{igeodesic_coords} function refers to the metric @var{name}
+@c (if it appears in @var{expr}) while the connection coefficients must be
+@c called with the names @code{ichr1} and/or @code{ichr2}.
+
+Bewirkt, dass nicht abgeleitete Christoffel-Symbole und erste Ableitungen des
+Metriktensors im Ausdruck @var{expr} verschwinden.  Das Argument @var{name}
+bezeichnet die Metrik @var{name}, wenn im Ausdruck @var{expr} vorhanden und die
+Christoffel-Symbole werden mit @var{ichr1} und @var{ichr2} bezeichnet.
+
+@c TODO: DAS FOLGENDE NICHT UEBERSETZT
+@c The following
+@c example demonstrates the verification of the cyclic identity satisfied by
+@c the Riemann curvature tensor using the @code{igeodesic_coords} function.
+
+Beispiele:
 
 @example
 (%i1) load(itensor);
