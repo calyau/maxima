@@ -530,8 +530,8 @@ makeOrders
 * Functions and Variables for makeOrders::
 
 mnewton
-* Introduction to mnewton::
-* Functions and Variables for mnewton::
+* Einf@"uhrung in mnewton::
+* Funktionen und Variablen f@"ur mnewton::
 
 numericalio
 * Introduction to numericalio::
