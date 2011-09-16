@@ -396,7 +396,8 @@ contrib/mcclim/postscriptoutput.png \
 contrib/mcclim/README \
 contrib/meijer_g.tex \
 contrib/meijer_gv2.mac \
-contrib/mnewton.mac \
+contrib/mnewton/mnewton.mac \
+contrib/mnewton/rtest_mnewton.mac \
 contrib/multiadditive.lisp \
 contrib/namespaces/foo.mac \
 contrib/namespaces/namespaces.lisp \
@@ -494,7 +495,6 @@ contrib/rand/Wkb \
 contrib/README \
 contrib/rtestdefstruct.mac \
 contrib/rtest_lsquares.mac \
-contrib/rtest_mnewton.mac \
 contrib/rtest_opproperties.mac \
 contrib/rtest_sequence.mac \
 contrib/rtest_solve_rat_ineq.mac \
@@ -1140,7 +1140,6 @@ utils/mactex-utilities.lisp \
 vector/rtest_vect.mac \
 vector/vect.dem \
 vector/vect.mac \
-vector/vect.mac.orig \
 vector/vector.dem \
 vector/vector.mac \
 vector/vector_rebuild.lisp \
