@@ -92,10 +92,8 @@ matchdeclare
     dl%, lambda ([e], dimensions (e) = 1),
     mm%, mult_expr_nontrivialconstfactorsp,
     nd%, nondimensionalp,
-    nu%, lambda ([e], not unitp (e)),
     pp%, lambda ([e], not atom(e) and op(e) = "+"),
     uu%, unitp,
-    ww1%, lambda ([e], e = 1 or not nondimensionalp (e) and not unitp (e)),
     xx%, nonconstantp);
 
 simp: false$
@@ -104,8 +102,8 @@ tellsimp (nd% `` dl%, apply_units_conversion (nd%, dl%));
 tellsimp (uu% `` aa%, apply_units_conversion (uu%, aa%));
 tellsimp (pp% `` aa%, apply ("+", map (buildq ([aa%], lambda ([e], e `` aa%)), args (pp%))));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
-tellsimpafter (nd% * uu% * ww1%, ww1% * multiply_with_units (nd%, uu%));
-tellsimpafter (nu% + uu%, add_with_units (nu%, uu%));
+tellsimpafter (aa% * nd% * uu%, aa% * multiply_with_units (nd%, uu%));
+tellsimpafter (aa% + uu%, add_with_units (aa%, uu%));
 
 tellsimpafter (aa% ` (xx% + ccn0%), (aa% - ccn0%)`xx%);
 tellsimpafter (aa% ` mm%, (constant_factors(mm%) * aa%) ` everything_else(mm%));
