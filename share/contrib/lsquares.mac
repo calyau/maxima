@@ -254,7 +254,7 @@ lsquares_mse ('data%, variables, equation) := block
    (if not atom (data%)
         then block ([temp : ?gentemp (sconcat ("$M"))], temp :: data%, data% : temp),
 
-    makelist ('data% [i, j], j, 1, length (variables)),
+    makelist ('data% ['i, j], j, 1, length (variables)),
     map ("=", variables, %%),
     sublis (%%, (lhs (equation) - rhs (equation))^2),
     buildq
@@ -265,7 +265,7 @@ lsquares_mse ('data%, variables, equation) := block
 /* Some evaluation gyrations can be avoided by working with an array ...
  *
 lsquares_mse_with_array (data%,variables,equation):=block
-   (makelist(data%[i,j],j,0,length(variables)-1),
+   (makelist(data%['i,j],j,0,length(variables)-1),
     map("=",variables,%%),
     sublis(%%,(lhs(equation)-rhs(equation))^2),
     buildq([n:array_nrows(data%),summand:%%],
