@@ -205,7 +205,7 @@ Zus@"atzliche Pakete (Englisch)
 * lsquares::                    Least squares.
 * makeOrders::                  Polynomial utility.
 * minpack::                     MINPACK functions for minimization and roots
-* mnewton::                     Newton's method.
+* mnewton::                     Newton-Verfahren
 * numericalio::                 Reading and writing files.
 * opsubst::                     Substitutions utility.
 * orthopoly::                   Orthogonal polynomials.

@@ -22,8 +22,10 @@
 @c @code{mnewton} is an implementation of Newton's method for solving nonlinear
 @c equations in one or more variables.
 
-Das Paket @code{mnewton} implementiert das Newton-Verfahren f@"ur das numerische
-L@"osen nichtlinear Gleichungen in einer oder mehrerer Variablen.
+Das Paket mnewton implementiert das Newton-Verfahren mit der Funktion
+@mref{mnewton} f@"ur das numerische L@"osen nichtlinear Gleichungen in einer
+oder mehrerer Variablen.  Die Funktion @mref{newton} ist eine weitere
+Implementierung, die im Paket newton1 enthalten ist.
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur mnewton,  , Einf@"uhrung in mnewton, mnewton
@@ -39,7 +41,9 @@ Standardwert: @code{1.0e-8}
 @c towards the solution. See also @code{mnewton}.
 
 Genauigkeit mit der getestet wird, wie gut die Funktion @mref{mnewton} sich der
-L@"osung angen@"ahert hat.
+L@"osung angen@"ahert hat.  Unterschreitet die @"Anderung der Approximation
+den Wert @code{newtonepsilon}, bricht der Algorithmus ab und gibt das Ergebnis
+zur@"uck.
 @end defvr
 
 @c --- 15.09.2011 DK -----------------------------------------------------------
@@ -50,13 +54,13 @@ Standardwert: @code{50}
 @c Maximum number of iterations to stop the @code{mnewton} function if it does
 @c not converge or if it converges too slowly. See also @code{mnewton}.
 
-Obere Grenze f@"ur die Anzahl an Iterationen, falls die Funktion @mref{mnewton}
-nicht oder sehr langsam konvergiert.
+Obere Grenze f@"ur die Anzahl an Iterationen, falls die Funktion
+@mref{mnewton} nicht oder sehr langsam konvergiert.
 @end defvr
 
 @c --- 15.09.2011 DK -----------------------------------------------------------
 @anchor{function_mnewton}
-@deffn {Funktion} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+@deffn {Funktion} mnewton (@var{FuncList}, @var{VarList}, @var{GuessList})
 
 @c Multiple nonlinear functions solution using the Newton method. @var{FuncList}
 @c is the list of functions to solve, @var{VarList} is the list of variable
@@ -83,7 +87,9 @@ gefunden werden, ist die R@"uckgabe eine leere Liste @code{[]}.
 @c To use this function write first @code{load("mnewton")}. See also 
 @c @code{newtonepsilon} and @code{newtonmaxiter}.
 
-Die Funktion wird mit dem Kommando @code{load(mnewton)} geladen.
+Die Funktion wird mit dem Kommando @code{load(mnewton)} geladen.  Siehe die
+Funktion @mref{newton} f@"ur eine alternative Implementierung des
+Newton-Verfahrens.
 
 Beispiele:
 
@@ -106,7 +112,7 @@ Beispiele:
 Die Optionsvariable @mref{newtonepsilon} kontrolliert die Genauigkeit der
 Approximation.  Weiterhin kontrolliert die Optionsvariable, ob die Berechnung
 mit Gleitkommazahlen in doppelter oder gro@ss{}er Genauigkeit durchgef@"uhrt
-werden.
+wird.
 
 @example
 (%i1) load(mnewton)$
@@ -116,6 +122,68 @@ werden.
 (%i3) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
 (%o3) [[u = 1.066618389595406772591173b0, 
                                v = 1.552564766841786450100418b0]]
+@end example
+@end deffn
+
+@c --- 16.09.2011 DK -----------------------------------------------------------
+@anchor{newton}
+@deffn {Funktion} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+
+@c Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
+@c considering @var{expr} to be a function of one variable, @var{x}.
+@c The search begins with @code{@var{x} = @var{x_0}}
+@c and proceeds until @code{abs(@var{expr}) < @var{eps}}
+@c (with @var{expr} evaluated at the current value of @var{x}).
+
+Die Funktion @code{newton} gibt eine N@"aherungsl@"osung der Gleichung
+@code{@var{expr} = 0} zur@"uck, die mit dem Newton-Verfahren berechnet wird.
+Der Ausdruck @var{expr} ist eine Funktion einer Variablen @var{x}.  Der
+Anfangswert ist @code{ @var{x} = @var{x_0}}.  Der Algorithmus bricht ab, wenn
+@code{abs(@var{expr}) < @var{eps}}, wobei der Ausdruck @var{expr} f@"ur den
+aktuellen N@"aherungswert @var{x} ausgewertet wird.
+
+@c @code{newton} allows undefined variables to appear in @var{expr},
+@c so long as the termination test @code{abs(@var{expr}) < @var{eps}} evaluates
+@c to @code{true} or @code{false}.
+@c Thus it is not necessary that @var{expr} evaluate to a number.
+
+@code{newton} erlaubt symbolische Variablen im Ausdruck @var{expr}, wenn der
+Ausdruck @code{abs(@var{expr}) < @var{eps}} zu @code{true} oder @code{false}
+ausgewertet werden kann.  Daher ist es nicht notwendig, dass der Ausdruck
+@var{expr} zu einer Zahl ausgewertet werden kann.
+
+@c @code{load(newton1)} loads this function.
+
+Das Kommando @code{load(newton1)} l@"adt die Funktion.
+
+@c See also @code{realroots}, @code{allroots}, @code{find_root}, and 
+@c @code{mnewton}.
+
+Siehe auch die Funktionen @mrefcomma{realroots} @mref{allroots} und
+@mrefcomma{find_root} um numerische L@"osungen von Gleichungen zu finden.
+Das Paket mnewton enth@"alt mit der Funktion @mref{mnewton} eine weitere
+Implementation des Newton-Verfahrens.
+
+Achtung: Auch mit @code{load(newton)} wird eine Funktion mit dem Namen
+@code{newton} geladen, die sich jedoch in ihrer Syntax von der hier
+beschriebenen Funktion unterscheidet und auch nicht dokumentiert ist.
+
+Beispiele:
+
+@example
+(%i1) load (newton1);
+(%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
+(%i2) newton (cos (u), u, 1, 1/100);
+(%o2)                   1.570675277161251
+(%i3) ev (cos (u), u = %);
+(%o3)                 1.2104963335033528E-4
+(%i4) assume (a > 0);
+(%o4)                        [a > 0]
+(%i5) newton (x^2 - a^2, x, a/2, a^2/100);
+(%o5)                  1.00030487804878 a
+(%i6) ev (x^2 - a^2, x = %);
+                                           2
+(%o6)                6.098490481853958E-4 a
 @end example
 @end deffn
 
