@@ -20,6 +20,7 @@ remove_constvalue (a) ::= buildq ([a], rem (a, 'constvalue));
  */
 
 declare (dimensional, feature);
+declare (nondimensional, feature);
 
 declare_units (a%, u%) :=
   block (local (a%, u%), 
@@ -77,6 +78,7 @@ units(e%) :=
   else if unitop_p(e%) then second(e%)
   else if featurep (op(e%), 'dimensional) then units(op(e%))
   else if op(e%) = "^" then units (first (e%)) ^ second (e%)
+  else if nondimensionalp (e%) then 1
   else apply (op(e%), map (units, args(e%))));
 
 d(e%) := dimension (units (e%));
@@ -89,19 +91,19 @@ matchdeclare
     /* dl = "dimensionless" */
     dl%, lambda ([e], dimensions (e) = 1),
     mm%, mult_expr_nontrivialconstfactorsp,
-    nd%, nondimensional,
+    nd%, nondimensionalp,
     pp%, lambda ([e], not atom(e) and op(e) = "+"),
     uu%, unitp,
     xx%, nonconstantp);
 
 simp: false$
 /* tellsimpafter rules are applied in order of declaration; tellsimp, the other way around */
-tellsimp (cc% `` dl%, apply_units_conversion (cc%, dl%));
-tellsimp (uu% `` nd%, apply_units_conversion (uu%, nd%));
-tellsimp (pp% `` nd%, apply ("+", map (buildq ([nd%], lambda ([e], e `` nd%)), args (pp%))));
+tellsimp (nd% `` dl%, apply_units_conversion (nd%, dl%));
+tellsimp (uu% `` aa%, apply_units_conversion (uu%, aa%));
+tellsimp (pp% `` aa%, apply ("+", map (buildq ([aa%], lambda ([e], e `` aa%)), args (pp%))));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
-tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
-tellsimpafter (nd% + uu%, add_with_units (nd%, uu%));
+tellsimpafter (aa% * nd% * uu%, aa% * multiply_with_units (nd%, uu%));
+tellsimpafter (aa% + uu%, add_with_units (aa%, uu%));
 
 tellsimpafter (aa% ` (xx% + ccn0%), (aa% - ccn0%)`xx%);
 tellsimpafter (aa% ` mm%, (constant_factors(mm%) * aa%) ` everything_else(mm%));
@@ -122,9 +124,23 @@ constantp_not0 (x%) := constantp(x%) and x% # 0;
 nonconstantp (x%) := not constantp (x%);
 mult_exprp (e%) := not atom(e%) and atom (op(e%)) and (nounify (op(e%)) = nounify ("*") or nounify (op(e%)) = nounify ("/"));
 mult_expr_nontrivialconstfactorsp (e%) := mult_exprp (e%) and constant_factors (e%) # 1;
-nondimensional (e%) := atom(e%) or (op(e%) # "`" and apply ("and", map (nondimensional, args(e%))));
-nondimensional_not1 (e%) := e% # 1 and nondimensional (e%);
-nondimensional_not0 (e%) := e% # 0 and nondimensional (e%);
+nondimensionalp (e%) :=
+  if atom (e%) then (not symbolp (e%) or not featurep (e%, 'dimensional))
+  elseif featurep (nounify (op (e%)), 'nondimensional) then true
+  else
+   (get (nounify (op (e%)), 'nondimensionalp),
+    if %% # false then apply (%%, args (e%)));
+nondimensional_not1 (e%) := e% # 1 and nondimensionalp (e%);
+nondimensional_not0 (e%) := e% # 0 and nondimensionalp (e%);
+
+(map (nounify, [sin, cos, tan, asin, acos, atan, atan2, log, exp, sinh, cosh, tanh, asinh, acosh, atanh]),
+  apply (declare, [%%, 'nondimensional]));
+/* HMM. MAYBE THESE RULES FOR "^" AND "/" ARE TOO STRICT. LET IT STAND FOR NOW. */
+put (nounify ("^"), lambda ([a%, b%], nondimensionalp (a%) and nondimensionalp (b%)), 'nondimensionalp);
+put (nounify ("/"), lambda ([a%, b%], nondimensionalp (a%) and nondimensionalp (b%)), 'nondimensionalp);
+put (nounify (sqrt), lambda ([a%], nondimensionalp (a%)), 'nondimensionalp);
+put (nounify ("+"), lambda ([[a%]], every (nondimensionalp, a%)), 'nondimensionalp);
+put (nounify ("*"), lambda ([[a%]], every (nondimensionalp, a%)), 'nondimensionalp);
 
 add_with_units (x%, u%) :=
   if unitp (u%) then
@@ -180,7 +196,8 @@ simplify_units (e%) := block
     e%);
 
 /* Compile matchdeclare predicate functions in hopes of greater speed */
-compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nondimensional, unitop_p, unitp, nonconstantp);
+/* Don't compile nondimensionalp due to bug in translator: %% is handled incorrectly. */
+compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, /* nondimensionalp, */ unitop_p, unitp, nonconstantp);
 
 known_unit_conversions : {};
 
@@ -491,7 +508,10 @@ simp : true;
 simp : false;
 declare_unit_conversion (degree = %pi/180);
 matchdeclare (uu, lambda ([e], unitp(e) and dimensions(e) = 1));
-map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot]);
+map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot, atan]);
+
+matchdeclare (aa, unitp, bb, lambda ([e], dimensions (e) = dimensions (aa)));
+tellsimp (atan2 (aa, bb), atan2 (qty (aa), qty (bb `` units (aa))));
 
 /* Subscript applied to "`" expression => exchange "`" with subscript
  * Note that this applies only to literal "`" expressions.

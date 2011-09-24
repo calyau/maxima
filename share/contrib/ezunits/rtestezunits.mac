@@ -908,4 +908,36 @@ solve (eqn, units (h_c));
 (kill (a, b, c, x), block ([x : (rat (1) ` a) * (1 ` b + c)], expand (x)));
 1 ` a*b + c ` a;
 
+/* "*" rule now splits arguments into 3 types:
+ * dimensional, nondimensional, and terms not known to be either one.
+ * Thanks to Stefan Karrmann for suggesting it.
+ */
+(kill (a, b, c, d, e, f, g, h, foo, bar),
+  exp (a ` b) * (c ` d) * (e ` f) * g * h);
+exp (a ` b) * (c * e * g * h ` d * f);
+
+(c ` d) * (e ` f) * g * h;
+c * e * g * h ` d * f;
+
+(c ` d) * (e ` f) * (g ` h);
+c * e * g ` d * f * h;
+
+foo (a ` b) * bar (c ` d) * (e ` f) * (g ` h) * 2 * %pi;
+foo (a ` b) * bar (c ` d) * (2 * %pi * e * g ` f * h);
+
+sin (a ` b) * bar (c ` d) * (e ` f) * (g ` h) * 2 * %pi;
+bar (c ` d) * (2 * %pi * e * g * sin (a ` b) ` f * h);
+
+exp (a ` b) + c ` d + e ` d + g + h;
+exp (a ` b) + (c + e) ` d  + g + h;
+
+c ` d + e ` d + g + h;
+(c + e) ` d  + g + h;
+
+c ` d + e ` d;
+(c + e) ` d;
+
+foo (a ` b) + c ` d + e ` d + 2 + %pi;
+(c + e) ` d + foo (a ` b) + 2 + %pi;
+
 
