@@ -5,7 +5,7 @@
 @c Original    : Operators.texi revision 03.09.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 14.09.2011
+@c Revision    : 24.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -191,9 +191,7 @@ der Operatoren sind @code{"+"} und @code{"-"}.
 
 Die Subtraktion @code{a - b} wird von Maxima intern als Addition
 @code{a + (- b)} dargestellt.  In der Ausgabe wird der Ausdruck @code{a + (- b)}
-als Subtraktion @code{a - b} angezeigt.  Maxima erkennt @code{"-"} nur als den 
-Namen der un@"aren Negation, nicht jedoch als den bin@"aren Operator der
-Subtraktion.
+als Subtraktion @code{a - b} angezeigt.
 
 Die Division @code{a / b} wird von Maxima intern als Multiplikation
 @code{a * b^(- 1)} dargestellt.  In der Ausgabe wird der Ausdruck
@@ -682,7 +680,7 @@ Unable to evaluate predicate a
 @section Operatoren f@"ur Gleichungen
 @c -----------------------------------------------------------------------------
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 24.09.2011 DK -----------------------------------------------------------
 @anchor{#}
 @deffn {Operator} #
 @ifinfo
@@ -692,23 +690,25 @@ Unable to evaluate predicate a
 Ist der Operator f@"ur eine Ungleichung.  @code{#} ist ein Infix-Operator mit
 zwei Operanden.
 
-Die Ungleichung wird nicht ausgewertet.  Jedoch werden die Operanden, das sind
-die linke und rechte Seite der Ungleichung ausgewertet.  Die Funktionen
-@mrefcomma{is} @mrefcomma{maybe} die logischen Operatoren @mrefcomma{and}@w{}
-@mref{or} und @mref{not} sowie die Funktionen f@"ur die Definition von
-Programmanweisungen wie @mrefcomma{if} @mref{while} oder @mref{unless}@w{}
-erzwingen die Auswertung einer Ungleichung.
+Mit dem Operator @code{#} wird eine Ungleichung @code{a # b} formuliert, wobei
+die Operanden @code{a} und @code{b} jeweils die linke und die rechte Seite der
+Ungleichung sind und beliebige Ausdr@"ucke sein k@"onnen.  Die Operanden werden
+ausgewertet, nicht jedoch die Ungleichung selbst.
 
-Wegen der Regeln f@"ur die Auswertung von Aussagen und weil 
-@code{not @var{expr}} die Auswertung des Argumentes @var{expr} bewirkt, ist der 
-Ausdruck @code{not (@var{a} = @var{b})} @"aquivalent zu 
-@code{is(@var{a} # @var{b})} und nicht zu @code{@var{a} # @var{b}}.
+Die Funktionen @mrefcomma{is} @mrefcomma{maybe} die logischen Operatoren
+@mrefcomma{and} @mref{or} und @mref{not} sowie die Funktionen f@"ur die
+Definition von Programmanweisungen wie @mrefcomma{if} @mref{while} oder
+@mref{unless} erzwingen die Auswertung einer Ungleichung.
+
+Wegen der Regeln f@"ur die Auswertung von Aussagen und weil @code{not expr} die
+Auswertung des Argumentes @code{expr} bewirkt, ist der Ausdruck
+@code{not (a = b)} @"aquivalent zu @code{is(a # b)} und nicht zu @code{a # b}.
 
 Die Funktionen @mref{rhs} und @mref{lhs} geben die rechte und die linke Seite
 einer Gleichung oder Ungleichung zur@"uck.
 
-Siehe auch den Operator @mref{=} f@"ur Gleichungen sowie die Funktionen
-@mref{equal} und @mrefdot{notequal}
+Siehe auch den Operator @mrefcomma {=} um eine Gleichung zu formulieren, sowie
+die Funktionen @mref{equal} und @mrefdot{notequal}
 
 Beispiele:
 
@@ -728,7 +728,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 09.10.2010 DK -----------------------------------------------------------
+@c --- 24.09.2011 DK -----------------------------------------------------------
 @need 900
 @anchor{=}
 @deffn {Operator} =
@@ -737,38 +737,40 @@ Beispiele:
 @fnindex gleich (Gleichheit)
 @end ifinfo
 
-Ist der Operator f@"ur eine Gleichung.
+Ist der Operator f@"ur eine Gleichung.  @code{=} ist ein Infix-Operator mit
+zwei Operanden.
 
-Ein Ausdruck @code{@var{a} = @var{b}} repr@"asentiert eine nicht ausgewertete
-Gleichung, welche zutreffen kann oder auch nicht.  Nicht ausgewertete
-Gleichungen k@"onnen zum Beispiel als Argument der Funktionen @mref{solve} und
-@mref{algsys} auftreten.
+Mit dem Operator @code{=} wird eine Gleichung @code{a = b} formuliert, wobei die
+Operanden @code{a} und @code{b} jeweils die linke und die rechte Seite der
+Gleichung sind und beliebige Ausdr@"ucke sein k@"onnen.  Die Operanden werden
+ausgewertet, nicht jedoch die Gleichung selbst.  Nicht ausgewertete Gleichungen
+k@"onnen als Argument von Funktionen wie zum Beispiel den Funktionen
+@mrefcomma{solve} @mref{algsys} oder @mref{ev} auftreten.
 
 Die Funktion @mref{is} wertet eine Gleichung @code{=} zu einem booleschen Wert
-aus.  @code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}}
-zum Wert @code{true} aus, wenn @var{a} und @var{b} identische Ausdr@"ucke sind.
-Das trifft zu, wenn @var{a} und @var{b} identische Atome sind oder wenn ihre
-Operatoren sowie die Argumente identisch sind.  In jedem anderen Fall ist das
-Ergebnis @code{false}.  Das Ergebnis der Auswertung ist nie @code{unkown}.  Hat
-@code{is(@var{a} = @var{b})} das Ergebnis @code{true}, werden @code{a} und
-@code{b} als syntaktisch gleich bezeichnet.  Im Unterschied dazu gilt f@"ur
-@"aquivalente Ausdr@"ucke, dass @code{is(equal(@var{a}, @var{b}))} den Wert
-@code{true} hat.  Ausdr@"ucke k@"onnen @"aquivalent aber syntaktisch
-verschieden sein.
+aus.  @code{is(a = b)} wertet die Gleichung @code{a = b} zum Wert @code{true}
+aus, wenn @code{a} und @code{b} identische Ausdr@"ucke sind.  Das trifft zu,
+wenn @code{a} und @code{b} identische Atome sind oder wenn ihre Operatoren sowie
+die Operanden identisch sind.  In jedem anderen Fall ist das Ergebnis
+@code{false}.  Das Ergebnis der Auswertung ist nie @code{unkown}.  Hat
+@code{is(a = b)} das Ergebnis @code{true}, werden @code{a} und @code{b} als
+syntaktisch gleich bezeichnet.  Im Unterschied dazu gilt f@"ur @"aquivalente
+Ausdr@"ucke, dass @code{is(equal(a, b))} den Wert @code{true} hat.  Ausdr@"ucke
+k@"onnen @"aquivalent aber syntaktisch verschieden sein.
 
 Eine Ungleichung wird mit dem Operator @mref{#} formuliert.  Wie f@"ur den
-Operator @code{=} wird ein Ausdruck @code{@var{a} # @var{b}} nicht ausgewertet.
-Eine Auswertung erfolgt mit @code{is(@var{a} # @var{b})}, welche die Werte
+Operator @code{=} f@"ur eine Gleichung wird eine Ungleichung @code{a # b} nicht
+ausgewertet.  Eine Auswertung erfolgt mit @code{is(a # b)}, welche die Werte
 @code{true} oder @code{false} als Ergebnis hat.
 
 Neben @code{is} werten auch die Operatoren @mrefcomma{if} @mrefcomma{and}@w{}
-@mref{or} und @mref{not} die Operatoren @code{=} und @code{#} zu den Werten
-@code{true} oder @code{false} aus.
+@mref{or} und @mref{not} Gleichungen mit dem Operator @code{=} oder
+Ungleichungen mit dem Operator @code{#} zu den Werten @code{true} oder
+@code{false} aus.
 
 Wegen der Regeln f@"ur die Auswertung von Aussagen und weil im Ausdruck
-@code{not @var{expr}} das Argument @var{expr} ausgewertet wird, ist
-@code{not @var{a} = @var{b}} @"aquivalent zu @code{is(@var{a} # @var{b})} und
-nicht zu @code{@var{a} # @var{b}}.
+@code{not expr} der Operand @code{expr} ausgewertet wird, ist
+@code{not a = b} @"aquivalent zu @code{is(a # b)} und nicht zu @code{a # b}.
 
 Die Funktionen @mref{rhs} und @mref{lhs} geben die rechte und die linke Seite
 einer Gleichung oder Ungleichung zur@"uck.
@@ -778,8 +780,7 @@ Siehe auch den Operator @mref{#} f@"ur Ungleichungen sowie die Funktionen
 
 Beispiele:
 
-Ein Ausdruck @code{@var{a} = @var{b}} repr@"asentiert eine nicht ausgewertete
-Gleichung.
+Ein Ausdruck @code{a = b} repr@"asentiert eine nicht ausgewertete Gleichung.
 
 @example
 (%i1) eq_1 : a * x - 5 * y = 17;
@@ -801,9 +802,9 @@ Gleichung.
 (%o5)                  [17 = 17, 29 = 29]
 @end example
 
-@code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}} zu
-@code{true} aus, wenn @var{a} und @var{b} syntaktisch gleich sind.  Ausdr@"ucke 
-k@"onnen @"aquivalent sein, ohne syntaktisch gleich zu sein.
+@code{is(a = b)} wertet die Gleichung @code{a = b} zu @code{true} aus, wenn
+@code{a} und @code{b} syntaktisch gleich sind.  Ausdr@"ucke k@"onnen
+@"aquivalent sein, ohne syntaktisch gleich zu sein.
 
 @example
 (%i1) a : (x + 1) * (x - 1);
@@ -833,8 +834,8 @@ aus.
 (%o4)                  [false, true, true]
 @end example
 
-Da @code{ not @var{expr} } die Auswertung des Ausdrucks @var{expr} bewirkt, ist
-@code{not (@var{a} = @var{b})} @"aquivalent zu @code{ is(@var{a} # @var{b})}.
+Da @code{not expr} die Auswertung des Ausdrucks @code{expr} bewirkt, ist
+@code{not (a = b)} @"aquivalent zu @code{is(a # b)}.
 
 @example
 (%i1) [2 * x # 3 * x, not (2 * x = 3 * x)];
