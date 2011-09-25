@@ -2,10 +2,10 @@
 @c File        : DataTypes.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : New file
+@c Original    : DataTypes.texi revision 25.09.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 17.07.2011
+@c Revision    : 25.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -778,6 +778,13 @@ Beispiele:
 @subsection Einf@"uhrung in Zeichenketten
 @c -----------------------------------------------------------------------------
 
+@cindex backslash
+@ifnotinfo
+@cindex \
+@end ifnotinfo
+@ifinfo
+@cindex \\
+@end ifinfo
 Zeichenketten werden bei der Eingabe in Anf@"uhrungszeichen gesetzt.  Sie werden 
 standardm@"a@ss{}ig ohne Anf@"uhrungszeichen ausgegeben.  Hat die 
 Optionsvariable @mref{stringdisp} den Wert @code{true}, werden Zeichenketten mit
