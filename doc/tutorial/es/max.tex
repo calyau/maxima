@@ -58,7 +58,7 @@
 \thispagestyle{empty}
 \newpage
 
-
+\newpage
 
 \thispagestyle{empty}
 \begin{quote}
@@ -3566,7 +3566,7 @@ $$\begin{pmatrix}
     \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}1&1\cr 1&1\cr \end{pmatrix}\cr 
   \end{pmatrix} \leqno{\tt (\%o61)}$$
 
-Este resultado es incorrecto porque en la multiplicación matricial, los productos entre elementos se hacen con el operador \verb|*|, que es el correcto cuando los elementos son números; pero cuando los elementos son también matrices, la multiplicación de elementos debe realizarse con el operador del producto matricial. En el ejemplo anterior, los bloques se multiplicaron elemento a elemento. Para indicarle a Maxima la operación correcta, debemos hacer uso de la variable global \verb|matrix_element_mult|\index{matrix_element_mult},
+Este resultado es incorrecto porque en la multiplicación matricial, los productos entre elementos se hacen con el operador \verb|*|, que es el correcto cuando los elementos son números; pero cuando los elementos son también matrices, la multiplicación de elementos debe realizarse con el operador del producto matricial. En el ejemplo anterior, los bloques se multiplicaron elemento a elemento. Para indicarle a Maxima la operación correcta, debemos hacer uso de la variable global \verb|matrix_element_mult|\index{matrix\_element\_mult},
 
 \begin{Verbatim}
 (%i62) matrix_element_mult : "." $
@@ -3830,7 +3830,11 @@ Figura~\ref{fig:funciones}. A continuación se desarrollan algunos ejemplos sobre
 \verb|acosh(x)|   &    $\mbox{arccosh}(x)$      \\ \hline
 \verb|atanh(x)|   &    $\mbox{arctanh}(x)$      \\ \hline
 \verb|gamma(x)|  &    $\Gamma(x)=\int_0^\infty e^{-u}u^{x-1}du, \forall x>0$      \\ \hline
-\verb|beta(x,y)| &  $\beta(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}$     \\ \hline
+\verb|gamma_incomplete(a,x)|  &  
+      $\Gamma(a,x)=\int_x^\infty e^{-t}t^{a-1}dt$      \\ \hline
+\verb|beta(a,b)| &  $\mbox{B}(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$     \\ \hline
+\verb|beta_incomplete(a,b,x)| &  
+      $\mbox{B}(a,b,x)=\int_0^x (1-t)^{b-1} t^{a-1}dt$   \\ \hline
 \verb|erf(x)|    &    $\mbox{erf}(x)=\int_0^x \frac{2}{\sqrt{\pi}}e^{-u^2}du$      \\ \hline
 \end{tabular}
 \end{center}
@@ -4022,7 +4026,7 @@ $\lim_{x \rightarrow 1} \frac{1}{x-1}$, para el que podemos hacer
 (%i5) limit(1/(x-1),x,1);
 \end{Verbatim}
 \[
-\mbox{und}\leqno{\tt (\%o5)}
+\mbox{infinity}\leqno{\tt (\%o5)}
 \]
 donde Maxima nos responde con el símbolo \verb|und|\index{und} de \emph{undefined} o indefinido. En tales situaciones podemos indicarle al asistente que la variable $x$ se aproxima a 1 por la derecha ($x \rightarrow 1^+$) o por la izquierda ($x \rightarrow 1^-$),
 \index{plus}\index{minus}\begin{Verbatim}
@@ -4176,10 +4180,9 @@ lo que se interpretará como $2x dx$. Si en la expresión a derivar hay más de una
 (%i16) diff(x^2+y^3=2*x*y);
 \end{Verbatim}
 \[
-3\,y^2\,{\it del}\left(y\right)+\left(3\,y^2\,\left({{d}\over{d\,x
- }}\,y\right)+2\,x\right)\,{\it del}\left(x\right)=2\,x\,{\it del}
- \left(y\right)+\left(2\,x\,\left({{d}\over{d\,x}}\,y\right)+2\,y
- \right)\,{\it del}\left(x\right)\leqno{\tt (\%o16)}
+\left(3\,y^2\,\left({{d}\over{d\,x}}\,y\right)+2\,x\right)\,
+ {\it del}\left(x\right)=\left(2\,x\,\left({{d}\over{d\,x}}\,y\right)
+ +2\,y\right)\,{\it del}\left(x\right)\leqno{\tt (\%o16)}
 \]
 
 Recuérdese que durante este cálculo estaba todavía activa la dependencia declarada en la entrada \verb|(%i13)|.
@@ -4280,7 +4283,7 @@ Ahora un par de ejemplos sobre la integral definida,
  }\over{3}}-{{\log 2}\over{3}}\right)\leqno{\tt (\%o3)}
 \]
 \begin{Verbatim}
-(%i4) %,numer;   /*aproximación decimal*/
+(%i4) float(%);   /*aproximación decimal*/
 \end{Verbatim}
 \[
 0.9107277692015807\leqno{\tt (\%o4)}
@@ -4391,6 +4394,43 @@ De esta manera, la transformada de Fourier de $f(x)=k e^{-k x}$ es
 
 Nótese que si $x>0$, la $f(x)$ anterior es precisamente la función de densidad de una variable aleatoria exponencial de parámetro $k$, por lo que este último resultado coincide precisamente con la función característica de esta misma distribución.
 
+Puesto que hablamos de la transformada de Fourier, quizás sea este un buen lugar para mencionar la transformada discreta de Fourier. Su cálculo se hace con el algoritmo de la transformada rápida, implementado en la función \verb|fft|\index{fft}, que admite como argumento una lista o array de datos cuya longitud debe ser una potencia de dos. La función inversa está programada en la función \verb|inverse_fft|\index{inverse\_fft}. Para más información, consúltese la documentación correspondiente a estas funciones.
+
+Como comentario final, queda hacer notar que la función \verb|integrate| admite integrandos matriciales, tal como indica el siguiente ejemplo.
+
+\begin{Verbatim}
+(%i16) M: matrix([sin(x), x^2+1],[cos(x), exp(x)]);
+\end{Verbatim}
+$$\begin{pmatrix}\sin x&x^2+1\cr \cos x&e^{x}\cr \end{pmatrix}\leqno{\tt (\%o16)}$$
+\begin{Verbatim}
+(%i17) 'integrate(M, x) = integrate(M, x);
+\end{Verbatim}
+$$\int {\begin{pmatrix}\sin x&x^2+1\cr \cos x&e^{x}\cr \end{pmatrix}}{\;dx}=\begin{pmatrix}-
+ \cos x&{{x^3}\over{3}}+x\cr \sin x&e^{x}\cr \end{pmatrix}\leqno{\tt (\%o17)}$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4414,7 +4454,7 @@ siendo obligatorio el uso de la comilla simple (\verb|'|) antes de \verb|diff| a
 \[
 {{2\,y-1}\over{2\,y^2}}={\it \%c}-{{2\,x-1}\over{2\,x^2}}\leqno{\tt (\%o2)}
 \]
-donde \verb|%C| representa una constante, que se ajustará de acuerdo a la condición inicial que se le imponga a la ecuación. Supóngase que se sabe que cuando $x=2$, debe verificarse que $y=-3$, lo cual haremos saber a Maxima a través de la función \verb|ic1|\index{ic1},
+donde \verb|%c| representa una constante, que se ajustará de acuerdo a la condición inicial que se le imponga a la ecuación. Supóngase que se sabe que cuando $x=2$, debe verificarse que $y=-3$, lo cual haremos saber a Maxima a través de la función \verb|ic1|\index{ic1},
 \begin{Verbatim}
 (%i3) ic1(%o2,x=2,y=-3);
 \end{Verbatim}
@@ -4497,6 +4537,7 @@ y=-{{35\,e^{x+1}}\over{6\,e^3-6}}+{{x^2+2\,x+2}\over{2}}+{{15\,e^3+20
  }\over{6\,e^3-6}}\leqno{\tt (\%o12)}
 \]
 Nótese que este cálculo se le solicita a Maxima con \verb|bc2|.
+
 
 La resolución de sistemas de ecuaciones diferenciales se hace con llamadas a la función \verb|desolve|\index{desolve}. En este contexto es preciso tener en cuenta que se debe utilizar notación funcional dentro de la expresión \verb|diff|; un ejemplo aclarará este punto, resolviendo el sistema
 \[
@@ -5857,7 +5898,9 @@ Aquí, las funciones a utilizar son \verb|draw2d|\index{draw2d}, \verb|draw3d|\in
          terminal      = eps )$
 \end{Verbatim}
 
-Los argumentos de \verb|draw2d| se dividen en tres grupos: \emph{objetos gráficos} (en el ejemplo, \verb|explicit|\index{explicit}, \verb|parametric|\index{parametric} y \verb|points|\index{points}), \emph{opciones locales} (que afectan directamente a la representación de los objetos gráficos, como \verb|key|\index{key}, \verb|color|\index{color}, \verb|line_width|\index{line\_width}, \verb|nticks|\index{nticks}, \verb|line_type|\index{line\_type}, \verb|points_joined|\index{points\_joined} y \verb|line_width|\index{line\_width}) y \emph{opciones globales} (que hacen referencia a aspectos generales del gráfico, como \verb|title|\index{title} y \verb|terminal|\index{terminal}). Todos estos argumentos se interpretan secuencialmente, de forma que al asignar un cierto valor a una opción local, ésta afectará a todos los objetos gráficos que le sigan. En este ejemplo, \verb|line_width| comienza teniendo valor 1, que es el asignado por defecto, luego se le da el valor 3 para la representación de la curva paramétrica y finalmente se le devuelve el valor original antes de representar los segmentos que unen los puntos aleatoriamente generados. En cambio, las dos opciones globales, \verb|title| y \verb|terminal|, aunque se colocaron al final, podrían haberse ubicado en cualquier otro lugar. 
+Los argumentos de \verb|draw2d| se dividen en tres grupos: \emph{objetos gráficos} (en el ejemplo, \verb|explicit|\index{explicit}, \verb|parametric|\index{parametric} y \verb|points|\index{points}), \emph{opciones locales} (que afectan directamente a la representación de los objetos gráficos, como \verb|key|\index{key}, \verb|color|\index{color}, \verb|line_width|\index{line\_width}, \verb|nticks|\index{nticks}, \verb|line_type|\index{line\_type}, \verb|points_joined|\index{points\_joined} y \verb|line_width|\index{line\_width}) y \emph{opciones globales} (que hacen referencia a aspectos generales del gráfico, como \verb|title|\index{title} y \verb|terminal|\index{terminal}). Las opciones se indican como igualdades, escribiendo a la izquierda el nombre de la opción y a la derecha el valor que se le quiera asignar, a la vez que los objetos gráficos tienen el formato igual que las llamadas a funciones, esto es, el nombre del objeto a dibujar seguido, entre paréntesis, de los parámetros que definen al objeto.
+
+Todos estos argumentos se interpretan secuencialmente, de forma que al asignar un cierto valor a una opción local, ésta afectará a todos los objetos gráficos que le sigan. En este ejemplo, \verb|line_width| comienza teniendo valor 1, que es el asignado por defecto, luego se le da el valor 3 para la representación de la curva paramétrica y finalmente se le devuelve el valor original antes de representar los segmentos que unen los puntos aleatoriamente generados. En cambio, las dos opciones globales, \verb|title| y \verb|terminal|, aunque se colocaron al final, podrían haberse ubicado en cualquier otro lugar. 
 
 Siguiendo con los gráficos en dos dimensiones, el siguiente ejemplo muestra una escena en la que intervienen los objetos \verb|ellipse|\index{ellipse}, \verb|image|\index{image}, \verb|label|\index{label}, \verb|vector|\index{vector} y, ya lo conocemos, \verb|explicit|. Antes de ejecutar esta instrucción es necesario leer el fichero gráfico \verb|gatos.xpm|\footnote{El formato gráfico XPM es el único que puede leer Maxima.}
 
@@ -5971,27 +6014,27 @@ En el siguiente ejemplo hacemos una proyección esférica del hemisferio sur, que 
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.55]{draw1.pdf} 
-\includegraphics[scale=0.55]{draw2.pdf} \\
+\includegraphics[scale=0.5]{draw1.pdf} 
+\includegraphics[scale=0.5]{draw2.pdf} \\
 \emph{a)} \hspace{6.5cm}  \emph{b)} \\
-\includegraphics[scale=0.55]{draw3.pdf} 
-\includegraphics[scale=0.55]{draw4.pdf} \\
+\includegraphics[scale=0.5]{draw3.pdf} 
+\includegraphics[scale=0.5]{draw4.pdf} \\
 \emph{c)} \hspace{6.5cm}  \emph{d)} \\
-\includegraphics[scale=0.55]{draw5.pdf} 
-\includegraphics[scale=0.55]{draw6.pdf} \\
+\includegraphics[scale=0.5]{draw5.pdf} 
+\includegraphics[scale=0.5]{draw6.pdf} \\
 \emph{e)} \hspace{6.5cm}  \emph{f)} \\
-\includegraphics[scale=0.55]{draw7.pdf} \\
+\includegraphics[scale=0.5]{draw7.pdf} \\
 \emph{g)} \\
 \caption{Gráficos generados con el paquete draw: \emph{a)} y \emph{b)} con draw2d; \emph{c)}, \emph{d)}, \emph{e)} y \emph{f)} con draw3d; \emph{g)}, un gráfico múltiple.}
 \label{fig:draw}
 \end{center}
 \end{figure}
 
-Además de los objetos gráficos tridimensionales ya vistos, también se hayan definidos \verb|points|, \verb|vector| y, a partir de la versión 5.14 de Maxima, \verb|implicit|.
+Además de los objetos gráficos tridimensionales ya vistos, también se hayan definidos \verb|points|, \verb|vector| e \verb|implicit|.
 
 También es posible generar múltiples gráficos en un mismo fichero o hacer animaciones en formato GIF o en la ventana gráfica. Para ver más ejemplos de gráficos generados con el paquete \verb|draw|, se recomienda acceder a la dirección
 \begin{center}
-http://www.telefonica.net/web2/biomates/maxima/gpdraw
+http://riotorto.users.sourceforge.net/gnuplot
 \end{center}
 o consultar el sistema de ayuda de Maxima.
 
@@ -6091,7 +6134,7 @@ d\leqno{\tt (\%o6)}
 A la hora de hacer un programa, lo habitual es empaquetarlo como cuerpo de una función, de forma que sea sencillo utilizar el código escrito tantas veces como sea necesario sin más que escribir el nombre de la función con los argumentos necesarios; la estructura de la definición de una función necesita el uso del operador \verb|:=|
 
 \begin{Verbatim}
-                           f(<arg1>,<arg2>,...):=<expr>
+                  f(<arg1>,<arg2>,...):=<expr>
 \end{Verbatim}
 
 donde \verb|<expr>| es una única sentencia o un bloque con variables locales; véanse los siguientes ejemplos:
@@ -6227,17 +6270,17 @@ Pero ante la presencia de un operador lógico o una sentencia condicional, \verb|
 En cuanto a los bucles, \verb|for|\index{for} es muy versátil; tiene las siguientes variantes:
 
 \begin{Verbatim}
-                for <var>:<val1> step <val2> thru <val3> do <expr>
-                for <var>:<val1> step <val2> while <cond> do <expr>
-                for <var>:<val1> step <val2> unless <cond> do <expr>
+         for <var>:<val1> step <val2> thru <val3> do <expr>
+         for <var>:<val1> step <val2> while <cond> do <expr>
+         for <var>:<val1> step <val2> unless <cond> do <expr>
 \end{Verbatim}
 
 Cuando el incremento de la variable es la unidad, se puede obviar la parte de la sentencia relativa a \verb|step|\index{step}, dando lugar a los esquemas
 
 \index{thru}\index{while}\index{unless}\begin{Verbatim}
-                    for <var>:<val1> thru <val3> do <expr>
-                    for <var>:<val1> while <cond> do <expr>
-                    for <var>:<val1> unless <cond> do <expr>
+              for <var>:<val1> thru <val3> do <expr>
+              for <var>:<val1> while <cond> do <expr>
+              for <var>:<val1> unless <cond> do <expr>
 \end{Verbatim}
 
 Cuando no sea necesaria la presencia de una variable de recuento de iteraciones, también se podrá prescindir de los \verb|for|, como en
@@ -6394,7 +6437,7 @@ lo cual se debe al hecho de que la función \verb|map| no reconoce el argumento c
 Cuando se hace un programa, lo habitual es escribir el código con un editor de texto y almacenarlo en un archivo con extensión \verb|mac|. Una vez dentro de Maxima, la instrucción
 
 \begin{Verbatim}
-                              load("ruta/fichero.mac")$
+                    load("ruta/fichero.mac")$
 \end{Verbatim}
 leerá las funciones escritas en él y las cargará en la memoria, listas para ser utilizadas.
 
