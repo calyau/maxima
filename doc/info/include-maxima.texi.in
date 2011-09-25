@@ -12,6 +12,7 @@
 
 @c %**start of header
 @synindex vr fn
+@synindex cp fn
 @settitle Maxima @VERSION@ Manual
 @c %**end of header
 @setchapternewpage odd
