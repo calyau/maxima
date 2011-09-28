@@ -108,7 +108,7 @@
     (when (> xx xmax) (setf xmax xx))))
 
 (defmacro check-extremes-y ()
-  '(let ()
+  '(when (numberp yy)
     (when (< yy ymin) (setf ymin yy))
     (when (> yy ymax) (setf ymax yy))))
 
@@ -116,12 +116,6 @@
   '(let ()
     (when (< zz zmin) (setf zmin zz))
     (when (> zz zmax) (setf zmax zz))))
-
-
-
-
-
-
 
 ;; Controls whether the actual graphics object must
 ;; be plotted against the primary or the secondary axes,
@@ -135,10 +129,6 @@
            (if (get-option '$yaxis_secondary)
                "y2"
                "y1")))
-
-
-
-
 
 (defstruct gr-object
    name command groups points)
@@ -1180,19 +1170,20 @@
          (x-step (/ (- xmax xmin) ($float nticks) 2))
          (ymin most-positive-double-float)
          (ymax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          x-samples y-samples yy result pltcmd result-array)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (setq fcn (coerce-float-fun fcn `((mlist) ,var)))
     (if (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
     (flet ((fun (x) (funcall fcn x)))
-      (dotimes (k (1+ (* 2 nticks)))
-        (let* ((x (+ xmin (* k x-step)))
-               (y (fun x)))
-          (when (numberp y)    ; check for non numeric y, as in 1/0
-             (push x x-samples)
-             (push y y-samples)  ) ))
+        (dotimes (k (1+ (* 2 nticks)))
+          (let ((x (+ xmin (* k x-step))))
+            (push x x-samples)
+            (push (fun x) y-samples)))
       (setf x-samples (nreverse x-samples))
       (setf y-samples (nreverse y-samples))
+
       ;; For each region, adaptively plot it.
       (do ((x-start x-samples (cddr x-start))
            (x-mid (cdr x-samples) (cddr x-mid))
@@ -1208,12 +1199,9 @@
                                            depth 1e-5)))
           (when (not (null result))
             (setf sublst (cddr sublst)))
-          ;; clean non numeric pairs
           (do ((lst sublst (cddr lst)))
               ((null lst) 'done)
-            (when (numberp (second lst))
-              (setf result (append result (list (first lst) (second lst)))))))))
-
+            (setf result (append result (list (first lst) (second lst))))))))
       (cond ((null (get-option '$filled_func))
                (cond
                  ((> *draw-transform-dimensions* 0)
@@ -1278,7 +1266,8 @@
                   :points  (list result-array )))
             (t
                (let (fcn2 yy2 (count -1))
-                  (setf result-array (make-array (* (/ (length result) 2) 3) :element-type 'flonum))
+                  (setf result-array (make-array (* (/ (length result) 2) 3)
+                                                 :element-type 'flonum))
                   (setq fcn2 (coerce-float-fun (get-option '$filled_func) `((mlist), var)))
                   (flet ((fun (x) (funcall fcn2 x)))
                     (do ((xx result (cddr xx)))
@@ -1299,7 +1288,7 @@
                   :name   'explicit
                   :command pltcmd
                   :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3
-                  :points  (list result-array ))))  ))
+                  :points  (list result-array))))  ))
 
 
 
@@ -3187,12 +3176,28 @@
                  (k (length vect))
                  (ncol (caar glis))
                  (l 0)
-                 (m (cadar glis)))
+                 (m (cadar glis))
+                 (non-numeric-interval nil)
+                 pair)
              (cond
                 ((= m 0)     ; no blank lines
                    (do ((cont 0 (+ cont ncol)))
                        ((= cont k) 'done)
-                     (write-subarray (subseq vect cont (+ cont ncol)) datastorage))  )
+                     (setf pair (subseq vect cont (+ cont ncol)))
+                     ; control of non numeric y values,
+                     ; code related to draw_realpart
+                     (cond
+                       (non-numeric-interval
+                         (when (numberp (aref pair 1))
+                           (setf non-numeric-interval nil)
+                           (write-subarray pair datastorage) ))
+                       (t
+                         (cond
+                           ((numberp (aref pair 1))
+                             (write-subarray pair datastorage))
+                           (t
+                             (setf non-numeric-interval t)
+                             (format datastorage "~%")))))) )
                 (t           ; blank lines every m lines
                    (do ((cont 0 (+ cont ncol)))
                        ((= cont k) 'done)

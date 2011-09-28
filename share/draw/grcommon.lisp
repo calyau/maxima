@@ -164,6 +164,7 @@
       (gethash '$filled_func *gr-options*)     nil         ; false, true (y axis) or an expression
       (gethash '$xaxis_secondary *gr-options*) nil
       (gethash '$yaxis_secondary *gr-options*) nil
+      (gethash '$draw_realpart *gr-options*)   t
 
       ; transformation option
       (gethash '$transform *gr-options*) '$none
@@ -800,7 +801,7 @@
         $axis_right $axis_3d $surface_hide $xaxis $yaxis $zaxis $unit_vectors
         $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
         $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis
-        $ytics_secondary_axis $ztics_axis) ; true or false
+        $ytics_secondary_axis $ztics_axis $draw_realpart) ; true or false
           (update-boolean-option opt val))
       ($filled_func  ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
@@ -957,6 +958,12 @@
         (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) (* 100 val))))
 
       (otherwise (merror "draw: unknown option ~M " opt))  ) )
+
+
+
+
+
+
 
 
 
