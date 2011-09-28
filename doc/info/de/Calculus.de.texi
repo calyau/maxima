@@ -684,38 +684,6 @@ treated as in (1) above.
 @end enumerate
 @end deffn
 
-@c TODO: IN DAS KAPITEL TENSOREN VERSCHIEBEN?!
-@c       WIE UNTEN AUSGEFUEHRT FUNKTIONIERT DAS BEISPIEL NICHT. 
-
-@c --- 20.11.2010 DK -----------------------------------------------------------
-@anchor{dscalar}
-@deffn {Funktion} dscalar (@var{f})
-
-Wendet den d'Alembert-Operator auf eine skalare Funktion @var{f} an.  Der
-d'Alembert-Operator ist die Verallgemeinerung des Gradienten auf den
-vierdimensionalen Minkowski-Raum.
-
-Das Kommando @code{load(ctensor)} l@"adt die Funktion.
-
-@c FOLLOWING EXAMPLE DOESN'T WORK; I GET dscalar (field) ==> 0
-@c (I GET 0 FOR THE ctensor VERSION OF dscalar, AND SAME FOR
-@c THE DEFN OF dscalar GIVEN IN archive/share/lisp/ctensr.trl)
-@c INCIDENTALLY dependencies IS DOCUMENTED ONLY AS A VARIABLE
-
-@c @example
-@c (%i41) dependencies(field(r));
-@c (%o41)                           [field(r)]
-@c (%i42) dscalar(field);
-@c (%o43)
-@c     -m
-@c   %e  ((field  n - field  m + 2 field   ) r + 4 field )
-@c              r  r       r  r         r r             r
-@c 
-@c - -----------------------------------------------------
-@c                              2 r
-@c @end example
-@end deffn
-
 @c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
 @c "gendiff is all bugs: should be deprecated"
 @c @defun gendiff
