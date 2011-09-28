@@ -5,7 +5,7 @@
 @c Original    : Itensor.texi revision 15.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 20.11.2010
-@c Revision    : 13.09.2011
+@c Revision    : 24.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1904,16 +1904,17 @@ mit den Kommandos @code{defcon(@var{g})} und
 @code{defcon(@var{g}, @var{g}, kdelta)} initialisiert.
 @end deffn
 
-@c --- 14.09.2011 DK -----------------------------------------------------------
+@c --- 24.09.2011 DK -----------------------------------------------------------
 @anchor{idim}
 @deffn {Funktion} idim (@var{n})
 
 @c Sets the dimensions of the metric.  Also initializes the antisymmetry
 @c properties of the Levi-Civita symbols for the given dimension.
 
-@code{idim} enthält die Dimension der Metrik.  Mit dem Setzen von @code{idim}
-werden auch die antisymmetrischen Eigenschaften des Levi-Civita-Symbols
-f@"ur die Dimension initialisiert.
+Die Funktion @code{idim} setzt die Dimension der Metrik zu @var{n}.  Die
+Variable @code{dim} auf den Wert @var{n} gesetzt und die antisymmetrischen
+Eigenschaften des Levi-Civita-Symbols f@"ur die Dimension @var{n}
+werden initialisiert.
 @end deffn
 
 @c --- 14.09.2011 DK -----------------------------------------------------------
@@ -1932,7 +1933,7 @@ Gibt das Christoffel-Symbol der ersten Art zur@"uck, das definiert ist als
 @c To evaluate the Christoffel symbols for a particular metric, the variable
 @c @code{imetric} must be assigned a name as in the example under @code{chr2}.
 
-Um das Christoffel-Symbol für eine spezielle Metrik auszuwerten, muss der
+Um das Christoffel-Symbol f@"ur eine spezielle Metrik auszuwerten, muss der
 Optionsvariablen @mref{imetric} ein Wert zugewiesen werden.  Siehe dazu das
 Beispiel zu @mrefdot{ichr2}
 @end deffn
@@ -2767,25 +2768,40 @@ Kontext des Paketes @code{ctensor} ausgef@"uhrt werden kann.  Die Funktion
 @mref{ic_convert} erzeugt den Maxima-Code.
 
 
-@c -----------------------------------------------------------------------------
+@c --- 25.09.2011 DK -----------------------------------------------------------
 @anchor{ic_convert}
-@deffn {Function} ic_convert (@var{eqn})
+@deffn {Funktion} ic_convert (@var{eqn})
 
-Converts the @code{itensor} equation @var{eqn} to a @code{ctensor} assignment
-statement.  Implied sums over dummy indices are made explicit while indexed
-objects are transformed into arrays (the array subscripts are in the
-order of covariant followed by contravariant indices of the indexed
-objects). The derivative of an indexed object will be replaced by the
-noun form of @code{diff} taken with respect to @code{ct_coords} subscripted
-by the derivative index. The Christoffel symbols @code{ichr1} and @code{ichr2}
-will be translated to @code{lcs} and @code{mcs}, respectively and if
-@code{metricconvert} is @code{true} then all occurrences of the metric
-with two covariant (contravariant) indices will be renamed to @code{lg}
-(@code{ug}). In addition, @code{do} loops will be introduced summing over
-all free indices so that the
-transformed assignment statement can be evaluated by just doing
-@code{ev}. The following examples demonstrate the features of this
-function.
+@c Converts the @code{itensor} equation @var{eqn} to a @code{ctensor} assignment
+@c statement.  Implied sums over dummy indices are made explicit while indexed
+@c objects are transformed into arrays (the array subscripts are in the
+@c order of covariant followed by contravariant indices of the indexed
+@c objects). The derivative of an indexed object will be replaced by the
+@c noun form of @code{diff} taken with respect to @code{ct_coords} subscripted
+@c by the derivative index. The Christoffel symbols @code{ichr1} and
+@c @code{ichr2} will be translated to @code{lcs} and @code{mcs}, respectively
+@c and if @code{metricconvert} is @code{true} then all occurrences of the metric
+@c with two covariant (contravariant) indices will be renamed to @code{lg}
+@c (@code{ug}). In addition, @code{do} loops will be introduced summing over
+@c all free indices so that the transformed assignment statement can be
+@c evaluated by just doing @code{ev}. The following examples demonstrate the
+@c features of this function.
+
+Konvertiert eine @code{itensor}-Gleichung @var{eqn} in einen
+@code{ctensor}-Ausdruck.  Implizite Summen @"uber Dummy-Indizes werden explizit
+ausgef@"uhrt und indizierte Gr@"o@ss{}en werden in Arrays umgewandelt.  Die
+Indizes der Arrays sind in der Reihenfolge der kovarianten und dann der
+kontravarianten Indizes der indizierte Gr@"o@ss{}e.  Die Ableitung einer
+indizierten Gr@"o@ss{}e wird durch die Substantivform der Ableitung
+@mref{diff} nach der Variablen @mref{ct_coords} ersetzt, die den Index der
+Ableitung erh@"alt.  Die Christoffel-Symbole @mref{ichr1} und @mref{ichr2}@w{}
+werden zu den Funktionen @code{lcs} und @code{mcs} transformiert.  Hat
+@code{metricconvert} den Wert @code{true}, dann wird der Metriktensor mit zwei
+kovarianten Indizes durch @mref{lg} und mit zwei kontravarianten Indizes durch
+@mref{ug} ersetzt.  Weiterhin werden @code{do}-Schleifen f@"ur die Summation
+@"uber die freien Indizes eingef@"uhrt.
+
+Beispiele:
 
 @example
 (%i1) load(itensor);
