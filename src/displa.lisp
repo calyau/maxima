@@ -769,8 +769,8 @@
      (return result)))
 
 (displa-def mminus dimension-prefix "- ")
-(displa-def mplus  dim-mplus)
 
+(displa-def mplus  dim-mplus)
 (defprop munaryplus (#\+ #\space) dissym)
 
 (defun dim-mplus (form result)
@@ -806,6 +806,50 @@
 			    h (max h height)
 			    d (max d depth))
 		      (checkbreak result w)))))))
+
+(displa-def mminus dim-mminus)
+(defprop munaryminus (#\- #\space) dissym)
+
+(defun dim-mminus (form result)
+  (cond ((and (null (cddr form))
+              (not (member (cadar form) '(trunc exact) :test #'eq)))
+         (if (null (cdr form))
+             (dimension-function form result)
+             (dimension-prefix (cons '(munaryminus) (cdr form)) result)))
+        (t
+         (setq result (dimension (cadr form) result lop 'mminus 0 0))
+         (checkbreak result width)
+         (do ((l (cddr form) (cdr l))
+              (w width)
+              (h height)
+              (d depth)
+              (trunc (member 'trunc (cdar form) :test #'eq))
+              (dissym))
+             ((null l)
+              (cond (trunc
+                     (setq width (+ 8 w)
+                           height h
+                           depth d)
+                     (push-string " + . . ." result)))
+              result)
+           (if (mmminusp (car l))
+               (setq dissym '(#\space #\+ #\space) form (cadar l))
+               (setq dissym '(#\space #\- #\space) form (car l)))
+           (cond ((and (not trunc) (null (cdr l)))
+                  (setq result (dimension form (append dissym result)
+                                          'mminus rop (+ 3 w) right)
+                        width (+ 3 w width)
+                        height (max h height)
+                        depth (max d depth))
+                  (return result))
+                 (t
+                  (setq result
+                        (dimension form (append dissym result)
+                                   'mminus 'mminus (+ 3 w) 0)
+                        w (+ 3 w width)
+                        h (max h height)
+                        d (max d depth))
+                  (checkbreak result w)))))))
 
 (displa-def %sum   dim-%sum 110.)
 (displa-def %limit dim-%limit 110. 110.)
