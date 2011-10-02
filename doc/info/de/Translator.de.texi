@@ -5,6 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 28.12.2010
+@c Revision    : 01.10.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -17,12 +18,14 @@
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in den @"Ubersetzer, Funktionen und Variablen des @"Ubersetzers, @"Ubersetzer, @"Ubersetzer
 @section Einf@"uhrung in den @"Ubersetzer
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen des @"Ubersetzers, , Einf@"uhrung in den @"Ubersetzer, @"Ubersetzer
 @section Funktionen und Variablen des @"Ubersetzers
+@c -----------------------------------------------------------------------------
 
-@c --- 28.12.2010 DK -----------------------------------------------------------
+@c --- 01.10.2011 DK -----------------------------------------------------------
 @anchor{compfile}
 @deffn  {Funktion} compfile (@var{filename}, @var{f_1}, @dots{}, @var{f_n})
 @deffnx {Funktion} compfile (@var{filename}, functions)
@@ -30,18 +33,16 @@
 
 @c Translates Maxima functions into Lisp and writes the translated code into the
 @c file @var{filename}.
-
-@"Ubersetzt Maxima-Funktionen nach Lisp und schreibt den @"ubersetzten Code in 
-die Datei @var{filename}.
-
 @c @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
 @c specified functions. @code{compfile(@var{filename}, functions)} and 
 @c @code{compfile(@var{filename}, all)} translate all user-defined functions.
 
-@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} @"ubersetzt die
-Funktionen @var{f_1}, @dots{}, @var{f_n}.  @code{compfile(@var{filename}, 
-functions)} und @code{compfile(@var{filename}, all)} @"ubersetzen alle 
-nutzerdefinierten Funktionen.
+@"Ubersetzt Maxima-Funktionen nach Lisp und schreibt den @"ubersetzten Code in 
+die Datei @var{filename}.  Mit dem Kommando @code{compfile(@var{filename}
+@var{f_1}, ..., @var{f_n})} werden die als Argument angegebenen Funktionen
+@var{f_1}, @dots{}, @var{f_n} @"ubersetzt.  Die Kommandos
+@code{compfile(@var{filename}, functions)} oder @code{compfile(@var{filename},
+all)} @"ubersetzen dagegen alle vom Nutzer definierten Funktionen.
 
 @c The Lisp translations are not evaluated, nor is the output file processed by 
 @c the Lisp compiler.
@@ -50,15 +51,14 @@ nutzerdefinierten Funktionen.
 @c translates Maxima into Lisp, and then executes the Lisp compiler. 
 
 Die Lisp-@"Ubersetzungen werden nicht ausgewertet.  Auch wird die Ausgabedatei
-nicht kompiliert.  @code{translate} generiert und wertert Lisp-@"Ubersetzungen
-aus.  Die Funktion @code{compile_file} @"ubersetzt Maxima nach Lisp und f@"uhrt 
+nicht kompiliert.  @code{translate} generiert und wertet Lisp-@"Ubersetzungen
+aus.  Die Funktion @code{compile_file} @"ubersetzt Maxima nach Lisp und f@"uhrt
 dann den Lisp-Compiler aus.
 
 @c See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 
-Siehe auch @mrefcomma{translate} @mref{translate_file} und 
+Siehe auch die Funktionen @mrefcomma{translate} @mref{translate_file} und
 @mrefdot{compile_file}
-
 @end deffn
 
 @c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
