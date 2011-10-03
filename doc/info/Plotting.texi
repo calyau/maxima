@@ -1162,7 +1162,7 @@ It sets the format to be used for plotting.
 
 @c -----------------------------------------------------------------------------
 @anchor{plot_real_part}
-@defvr {Plot option} plot_real_part [plot_realpart, @var{symbol}]
+@defvr {Plot option} plot_realpart [plot_realpart, @var{symbol}]
 Default value: @code{false}
 
 If set to @code{true}, the functions to be plotted will be considered
@@ -1171,9 +1171,9 @@ equivalent to plotting @code{realpart(@var{function})}.  If set to
 @code{false}, nothing will be plotted when the function does not give a
 real value.  For instance, when @code{x} is negative, @code{log(x)} gives
 a complex value, with real value equal to @code{log(abs(x))}; if
-@code{plot_real_part} were @code{true}, @code{log(-5)} would be plotted
+@code{plot_realpart} were @code{true}, @code{log(-5)} would be plotted
 as @code{log(5)}, while nothing would be plotted if
-@code{plot_real_part} were @code{false}.
+@code{plot_realpart} were @code{false}.
 
 @opencatbox
 @category{Plotting}

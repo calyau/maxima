@@ -1,4 +1,4 @@
-@c English version 2011-05-30
+@c English version 2011-10-03
 @menu
 * Introducci@'on a los gr@'aficos::
 * Formatos gr@'aficos::
@@ -1067,7 +1067,7 @@ o @code{gnuplot_pipes}.
 
 
 
-@defvr {Opci@'on para plot} plot_real_part [plot_realpart, @var{symbol}]
+@defvr {Opci@'on para plot} plot_realpart [plot_realpart, @var{symbol}]
 Valor por defecto: @code{false}
 
 Cuando vale @code{true}, se representa gr@'aficamente la parte real
@@ -1075,9 +1075,9 @@ de las funciones; equivale a ejecutar @code{realpart(@var{funci@'on})}.
 Si vale @code{false}, no se representa nada cuando la funci@'on
 no devuelva un valor real. Por ejemplo, si @code{x} es negativo, 
 @code{log(x)} devuelve un valor negativo cuya parte real es @code{log(abs(x))};
-en tal caso, si @code{plot_real_part} vale @code{true}, @code{log(-5)}
+en tal caso, si @code{plot_realpart} vale @code{true}, @code{log(-5)}
 se representa como @code{log(5)}, mientras que no se representa nada 
-si @code{plot_real_part} vale @code{false}.
+si @code{plot_realpart} vale @code{false}.
 
 @end defvr
 
