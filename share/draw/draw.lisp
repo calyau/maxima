@@ -113,9 +113,29 @@
     (when (> yy ymax) (setf ymax yy))))
 
 (defmacro check-extremes-z ()
-  '(let ()
+  '(when (numberp zz)
     (when (< zz zmin) (setf zmin zz))
     (when (> zz zmax) (setf zmax zz))))
+
+
+
+
+; zzz
+;(defmacro check-extremes-z ()
+;  '(let ()
+;    (when (< zz zmin) (setf zmin zz))
+;    (when (> zz zmax) (setf zmax zz))))
+
+
+
+
+
+
+
+
+
+
+
 
 ;; Controls whether the actual graphics object must
 ;; be plotted against the primary or the secondary axes,
@@ -1697,11 +1717,13 @@
          (ymax most-negative-double-float)
          (zmin most-positive-double-float)
          (zmax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (nx (+ xu_grid 1))
          (ny (+ yv_grid 1))
          ($numer t)
          (count -1)
          ncols result)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
@@ -2027,9 +2049,11 @@
          (xmax most-negative-double-float)
          (ymin most-positive-double-float)
          (ymax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (tt ($float parmin))
          (eps (/ (- tmax tmin) (- nticks 1)))
          result f1 f2 xx yy)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (if (< tmax tmin)
        (merror "draw2d (parametric): illegal range"))
     (setq f1 (coerce-float-fun xfun `((mlist), par)))
@@ -2173,10 +2197,12 @@
          (ymax most-negative-double-float)
          (zmin most-positive-double-float)
          (zmax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (tt tmin)
          (eps (/ (- tmax tmin) (- nticks 1)))
          (count -1)
          ncols result f1 f2 f3 xx yy zz)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "parametric" '(0 1 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1)))
@@ -2251,12 +2277,14 @@
          (ymax most-negative-double-float)
          (zmin most-positive-double-float)
          (zmax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (ueps (/ (- umax umin) (- ugrid 1)))
          (veps (/ (- vmax vmin) (- vgrid 1)))
          (nu (+ ugrid 1))
          (nv (+ vgrid 1))
          (count -1)
          ncols result f1 f2 f3 xx yy zz uu vv)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "parametric_surface" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
@@ -2843,6 +2871,7 @@
             (format nil "set xlabel '~a'~%" (get-option '$xlabel))
             (format nil "set ylabel '~a'~%" (get-option '$ylabel))
             (format nil "set zlabel '~a'~%" (get-option '$zlabel))
+            (format nil "set datafile missing 'NIL'~%")
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
@@ -3009,7 +3038,6 @@
 
     (setf isanimatedgif
           (equal (get-option '$terminal) '$animated_gif))
-
     (setf
        gfn (plot-temp-file (get-option '$gnuplot_file_name))
        dfn (plot-temp-file (get-option '$data_file_name)))
@@ -3177,27 +3205,28 @@
                  (ncol (caar glis))
                  (l 0)
                  (m (cadar glis))
-                 (non-numeric-interval nil)
-                 pair)
+                 (non-numeric-region nil)
+                 coordinates)
              (cond
                 ((= m 0)     ; no blank lines
                    (do ((cont 0 (+ cont ncol)))
                        ((= cont k) 'done)
-                     (setf pair (subseq vect cont (+ cont ncol)))
+                     (setf coordinates (subseq vect cont (+ cont ncol)))
                      ; control of non numeric y values,
                      ; code related to draw_realpart
                      (cond
-                       (non-numeric-interval
-                         (when (numberp (aref pair 1))
-                           (setf non-numeric-interval nil)
-                           (write-subarray pair datastorage) ))
+                       (non-numeric-region
+                         (when (numberp (aref coordinates 1))
+                           (setf non-numeric-region nil)
+                           (write-subarray coordinates datastorage) ))
                        (t
                          (cond
-                           ((numberp (aref pair 1))
-                             (write-subarray pair datastorage))
+                           ((numberp (aref coordinates 1))
+                             (write-subarray coordinates datastorage))
                            (t
-                             (setf non-numeric-interval t)
+                             (setf non-numeric-region t)
                              (format datastorage "~%")))))) )
+
                 (t           ; blank lines every m lines
                    (do ((cont 0 (+ cont ncol)))
                        ((= cont k) 'done)
