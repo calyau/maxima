@@ -3407,7 +3407,13 @@ See also @code{random}. To make use of this function, write first @code{load(dis
 
 
 @deffn {Function} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
+Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)}
+random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+Being @var{n1} the number of objects of class A, @var{n2} the number of objects of class B, and
+@var{n} the size of the sample without replacement, this function returns the probability of
+event "exactly @var{x} objects are of class A". 
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3417,7 +3423,11 @@ Returns the value at @var{x} of the probability function of a @math{Hypergeometr
 
 
 @deffn {Function} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
+Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} 
+random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. 
+See @code{pdf_hypergeometric} for a more complete description.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}

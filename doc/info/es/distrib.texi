@@ -1,4 +1,4 @@
-@c English version 1.14
+@c English version 2011-10-03
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -2347,12 +2347,23 @@ V@'ease tambi@'en @code{random}. Para hacer uso de esta funci@'on, ejec@'utese p
 
 
 @deffn {Funci@'on} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una 
+variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} 
+enteros positivos y @math{n<=n1+n2}. Siendo @var{n1} el n@'umero de objetos de la clase A, 
+@var{n2} el n@'umero de objetos de la clase B y @var{n} el tama@~no de una muestra sin 
+reemplazamiento, esta funci@'on devuelve la probabilidad del suceso 
+"extraer exactamente @var{x} objetos de la clase A".
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on of una variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on of una variable 
+aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros 
+positivos y @math{n<=n1+n2}. V@'ease @code{pdf_hypergeometric} para una descripci@'on m@'as completa.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
