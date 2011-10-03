@@ -117,26 +117,6 @@
     (when (< zz zmin) (setf zmin zz))
     (when (> zz zmax) (setf zmax zz))))
 
-
-
-
-; zzz
-;(defmacro check-extremes-z ()
-;  '(let ()
-;    (when (< zz zmin) (setf zmin zz))
-;    (when (> zz zmax) (setf zmax zz))))
-
-
-
-
-
-
-
-
-
-
-
-
 ;; Controls whether the actual graphics object must
 ;; be plotted against the primary or the secondary axes,
 ;; both horizontal and vertical. Secondary axes in 3D
