@@ -4969,8 +4969,288 @@ Por último, el paquete \verb|vect| incluye también la definición del producto ve
 
 
 
+
+
 \newpage
-\chapter{Análisis de datos}
+\chapter{Gráficos}
+\label{graficos}
+
+
+Maxima no está habilitado para realizar él mismo gráficos, por lo que necesitará de un programa externo que realice esta tarea. Nosotros nos limitaremos a ordenar qué tipo de gráfico queremos y Maxima se encargará de comunicárselo a la aplicación gráfica que esté activa en ese momento, que por defecto será Gnuplot. La otra herramienta gráfica es Openmath, un programa Tcl-tk que se distribuye conjuntamente con Maxima.
+
+
+
+\section{El módulo ''plot''}
+
+Las funciones \verb|plot2d|\index{plot2d} y \verb|plot3d|\index{plot3d} son las que se utilizan por defecto. Veamos un ejemplo de cada una de ellas.
+
+\begin{Verbatim}
+(%i1) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
+(%i2) plot2d([[discrete,xy], 2*%pi*sqrt(u/980)], [u,0,50],
+               [style, [points,5,2,6], [lines,1,1]],
+               [legend,"Datos experimentais","Predicion da teoria"],
+               [xlabel,"Lonxitude do pendulo (cm)"], [ylabel,"periodo (s)"],
+               [gnuplot_preamble,
+                 "set terminal postscript eps;set out 'plot2d.eps'"])$
+\end{Verbatim}
+
+Se ha definido en el ejemplo una lista de puntos empíricos a representar, junto con su función teórica, pidiendo su representación gráfica en el dominio $[0,50]$. El resto de código hace referencia a diversas opciones: \verb|style|, \verb|legend|, \verb|xlabel|, \verb|ylabel| y \verb|gnuplot_preamble|, esta última permite escribir código de Gnuplot para que éste lo ejecute; aquí se le pide que devuelva el gráfico en formato Postscript. El ejemplo siguiente genera una superficie explícita. Las dos salidas gráficas se representan en la Figura~\ref{fig:plot} 
+
+\begin{Verbatim}
+(%i3) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
+        [gnuplot_preamble,
+           "set terminal postscript eps;set out 'plot3d.eps'"])$
+\end{Verbatim}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.55]{plot2d.pdf} 
+\includegraphics[scale=0.55]{plot3d.pdf} \\
+\caption{Gráficos generados por las funciones plot2d y plot3d.}
+\label{fig:plot}
+\end{center}
+\end{figure}
+
+El control de las opciones gráficas se consigue manipulando la variable global \verb|plot_options|\index{plot\_options}, cuyo estado por defecto es
+\begin{verbatim}
+(%i4) plot_options;
+(%o4) [[x, - 1.755559702014e+305, 1.755559702014e+305], 
+[y, - 1.755559702014e+305, 1.755559702014e+305], 
+[t, - 3, 3], [GRID, 30, 30], [VIEW_DIRECTION, 1, 1, 1], 
+[COLOUR_Z, FALSE], [TRANSFORM_XY, FALSE], 
+[RUN_VIEWER, TRUE], [PLOT_FORMAT, GNUPLOT], 
+[GNUPLOT_TERM, DEFAULT], [GNUPLOT_OUT_FILE, FALSE], 
+[NTICKS, 10], [ADAPT_DEPTH, 10], [GNUPLOT_PM3D, FALSE], 
+[GNUPLOT_PREAMBLE, ], [GNUPLOT_CURVE_TITLES, [DEFAULT]], 
+[GNUPLOT_CURVE_STYLES, [with lines 3, with lines 1, 
+with lines 2, with lines 5, with lines 4, with lines 6, 
+with lines 7]], [GNUPLOT_DEFAULT_TERM_COMMAND, ], 
+[GNUPLOT_DUMB_TERM_COMMAND, set term dumb 79 22], 
+[GNUPLOT_PS_TERM_COMMAND, set size 1.5, 1.5;set term postsc#
+ript eps enhanced color solid 24]]
+\end{verbatim}
+
+Para mayor información sobre el significado de cada uno de los elementos de esta lista, así como de las funciones \verb|plot2d| y \verb|plot3d|, consúltese la documentación. 
+
+Por defecto, Maxima invocará al programa Gnuplot para la generación de gráficos, pero quizás prefiramos el programa Openmath, que forma parte de la distribución de Maxima; en tal caso tendríamos que modificar previamente las opciones guardadas en \verb|plot_options| y a continuación solicitar el gráfico deseado, como en este caso en el que se representa la función gamma y su inversa.
+
+\index{set\_plot\_option}\begin{verbatim}
+(%i5) set_plot_option([plot_format, openmath])$
+(%i6) plot2d([gamma(x),1/gamma(x)],[x,-4.5,5],[y,-10,10])$
+\end{verbatim}
+
+El resto de esta sección lo dedicaremos a hacer una somera descripción del paquete \verb|draw|, un proyecto consistente en el desarrollo de un interfaz que permita aprovechar al máximo las habilidades gráficas de Gnuplot.
+
+
+
+
+
+\section{El módulo ''draw''}
+
+Aquí, las funciones a utilizar son \verb|draw2d|\index{draw2d}, \verb|draw3d|\index{draw3d} y \verb|draw|\index{draw}, para escenas en 2d, 3d y para gráficos múltiples y animaciones, respectivamente. Puesto que se trata de un módulo adicional, será necesario cargarlo en memoria antes de hacer uso de él. Empecemos por un ejemplo comentado.
+
+\begin{Verbatim}
+(%i1) load(draw)$
+(%i2) draw2d(
+         key           = "Cubic poly",
+         explicit(%pi*x^3+sqrt(2)*x^2+10,x,0,2),
+         color         = blue,
+         key           = "Parametric curve",
+         line_width    = 3,
+         nticks        = 50,
+         parametric(2*cos(rrr)+3, rrr, rrr, 0, 6*%pi),
+         line_type     = dots,
+         points_joined = true,
+         point_type    = diamant,
+         point_size    = 3,
+         color         = red,
+         line_width    = 1,
+         key           = "Empiric data",
+         points(makelist(random(40.0),k,1,5)),
+         title         = "DRAWING CURVES",
+         terminal      = eps )$
+\end{Verbatim}
+
+Los argumentos de \verb|draw2d| se dividen en tres grupos: \emph{objetos gráficos} (en el ejemplo, \verb|explicit|\index{explicit}, \verb|parametric|\index{parametric} y \verb|points|\index{points}), \emph{opciones locales} (que afectan directamente a la representación de los objetos gráficos, como \verb|key|\index{key}, \verb|color|\index{color}, \verb|line_width|\index{line\_width}, \verb|nticks|\index{nticks}, \verb|line_type|\index{line\_type}, \verb|points_joined|\index{points\_joined} y \verb|line_width|\index{line\_width}) y \emph{opciones globales} (que hacen referencia a aspectos generales del gráfico, como \verb|title|\index{title} y \verb|terminal|\index{terminal}). Las opciones se indican como igualdades, escribiendo a la izquierda el nombre de la opción y a la derecha el valor que se le quiera asignar, a la vez que los objetos gráficos tienen el formato igual que las llamadas a funciones, esto es, el nombre del objeto a dibujar seguido, entre paréntesis, de los parámetros que definen al objeto.
+
+Todos estos argumentos se interpretan secuencialmente, de forma que al asignar un cierto valor a una opción local, ésta afectará a todos los objetos gráficos que le sigan. En este ejemplo, \verb|line_width| comienza teniendo valor 1, que es el asignado por defecto, luego se le da el valor 3 para la representación de la curva paramétrica y finalmente se le devuelve el valor original antes de representar los segmentos que unen los puntos aleatoriamente generados. En cambio, las dos opciones globales, \verb|title| y \verb|terminal|, aunque se colocaron al final, podrían haberse ubicado en cualquier otro lugar. 
+
+Siguiendo con los gráficos en dos dimensiones, el siguiente ejemplo muestra una escena en la que intervienen los objetos \verb|ellipse|\index{ellipse}, \verb|image|\index{image}, \verb|label|\index{label}, \verb|vector|\index{vector} y, ya lo conocemos, \verb|explicit|. Antes de ejecutar esta instrucción es necesario leer el fichero gráfico \verb|gatos.xpm|\footnote{El formato gráfico XPM es el único que puede leer Maxima.}
+
+\begin{Verbatim}
+(%i3) cats: read_xpm("gatos.xpm")$
+(%i4) draw2d(
+         terminal    = eps,
+         yrange      = [-4,10],
+         ellipse(5,3,8,6,0,360),
+         image(cats,0,0,10,7),
+         line_width  = 2,
+         head_length = 0.3,
+         color       = blue,
+         label(["This is Francisco",-1,-0.5]),
+         vector([-1,0],[2,4]),
+         color       = green,
+         vector([11,7],[-2,-1]),
+         label(["This is Manolita",11,8]),
+         explicit(sin(x)-2,x,-4,15) )$
+\end{Verbatim}
+
+Junto con los objetos gráficos introducidos en los ejemplos, cuyos resultados se pueden ver en los apartados \emph{a)} y \emph{b)} de la Figura~\ref{fig:draw}, también existen \verb|polygon|\index{polygon}, \verb|rectangle|\index{rectangle}, \verb|polar|\index{polar}, \verb|implicit|\index{implicit} y \verb|geomap|\index{geomap}, este último para mapas cartográficos.
+
+Mostramos a continuación algunas escenas tridimensionales. En primer lugar, el valor absoluto de la función $\Gamma$ de Euler, junto con sus líneas de contorno.
+
+\begin{Verbatim}
+(%i5) gamma2(x,y):=
+        block([re,im,g:gamma(x+%i*y)],
+          re:realpart(g),
+          im:imagpart(g),
+          sqrt(re^2+im^2))$
+(%i6) draw3d(
+        zrange         = [0,6],
+        xu_grid        = 50,
+        yv_grid        = 50,
+        surface_hide   = true,
+        contour        = surface,
+        contour_levels = [0,0.5,6], /* de 0 a 6 en saltos de 0.5 */
+        color          = cyan,
+        terminal       = eps,
+        explicit(gamma2(x,y),x,-4,4,y,-2,2))$
+\end{Verbatim}
+
+Una superficie paramétrica, que junto con la anterior escena, se pueden ver ambas en la Figura~\ref{fig:draw}, apartados \emph{c)} y \emph{d)}.
+
+\begin{Verbatim}
+(%i7) draw3d(
+        terminal       = eps,
+        title          = "Figure 8 - Klein bottle",
+        rot_horizontal = 360,
+        xrange         = [-3.4,3.4],
+        yrange         = [-3.4,3.4],
+        zrange         = [-1.4,1.4],
+        xtics          = none,
+        ytics          = none,
+        ztics          = none,
+        axis_3d        = false,
+        surface_hide   = true,
+        parametric_surface((2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*cos(u),
+                           (2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*sin(u),
+                           sin(u/2)*sin(v) + cos(u/2)*sin(2*v),
+                           u, -%pi, 360*%pi/180-%pi, v, 0, 2*%pi) )$
+\end{Verbatim}
+
+En el gráfico siguiente se combinan varios objetos: una superficie explícita, dos curvas paramétricas y dos etiquetas, cuyo aspecto es el mostrado en el apartado \emph{e)} de la Figura~\ref{fig:draw}.
+
+\begin{Verbatim}
+(%i8) draw3d(
+        color          = green,
+        explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+        color          = blue,
+        parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+        color          = brown,
+        line_width     = 2,
+        parametric(t^2,sin(t),2+t,t,0,2),
+        surface_hide   = true,
+        title          = "Surface & curves",
+        color          = red,
+        label(["UP",-2,0,3]),
+        label(["DOWN",2,0,-3]),
+        rot_horizontal = 10,
+        rot_vertical   = 84,
+        terminal       = eps )$
+\end{Verbatim}
+
+En el siguiente ejemplo hacemos una proyección esférica del hemisferio sur, que se ve en el apartado \emph{f)} de la Figura~\ref{fig:draw}. El paquete  \verb|worldmap|\index{worldmap} carga en memoria las coordenadas latitud--longitud de las líneas fronterizas y costeras de todos los países del mundo, así como algunas funciones necesarias para su manipulación y procesamiento,
+
+\begin{Verbatim}
+(%i9) load(worldmap)$
+(%i10) draw3d(
+        surface_hide   = true,
+        rot_horizontal = 60,
+        rot_vertical   = 131,
+        color          = cyan,
+        parametric_surface(
+               cos(phi)*cos(theta),
+               cos(phi)*sin(theta),
+               sin(phi),
+               theta,-%pi,%pi,
+               phi,-%pi/2,%pi/2),
+        color          = red,
+        geomap([South_America,Africa,Australia],
+               [spherical_projection,0,0,0,1]),
+        color          = blue,
+        geomap([South_America,Africa,Australia],
+               [cylindrical_projection,0,0,0,1,2]),
+        terminal       = eps)$
+\end{Verbatim}
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.5]{draw1.pdf} 
+\includegraphics[scale=0.5]{draw2.pdf} \\
+\emph{a)} \hspace{6.5cm}  \emph{b)} \\
+\includegraphics[scale=0.5]{draw3.pdf} 
+\includegraphics[scale=0.5]{draw4.pdf} \\
+\emph{c)} \hspace{6.5cm}  \emph{d)} \\
+\includegraphics[scale=0.5]{draw5.pdf} 
+\includegraphics[scale=0.5]{draw6.pdf} \\
+\emph{e)} \hspace{6.5cm}  \emph{f)} \\
+\includegraphics[scale=0.5]{draw7.pdf} \\
+\emph{g)} \\
+\caption{Gráficos generados con el paquete draw: \emph{a)} y \emph{b)} con draw2d; \emph{c)}, \emph{d)}, \emph{e)} y \emph{f)} con draw3d; \emph{g)}, un gráfico múltiple.}
+\label{fig:draw}
+\end{center}
+\end{figure}
+
+Además de los objetos gráficos tridimensionales ya vistos, también se hayan definidos \verb|points|, \verb|vector| e \verb|implicit|.
+
+También es posible generar múltiples gráficos en un mismo fichero o hacer animaciones en formato GIF o en la ventana gráfica. Para ver más ejemplos de gráficos generados con el paquete \verb|draw|, se recomienda acceder a la dirección
+\begin{center}
+http://riotorto.users.sourceforge.net/gnuplot
+\end{center}
+o consultar el sistema de ayuda de Maxima.
+
+Ya como colofón, un ejemplo de gráfico múltiple en el que se muestra también cómo dar sombreado a las superficies tridimensionales. El resultado en el apartado \emph{g)} de la Figura~\ref{fig:draw}.
+
+\begin{Verbatim}
+(%i11) escena1:
+         gr3d(surface_hide = true,
+              enhanced3d   = true,
+              palette      = gray,
+              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
+\end{Verbatim}
+
+\begin{Verbatim}
+(%i12) escena2:
+         gr3d(surface_hide  = true,
+              enhanced3d    = true,
+              palette       = gray,
+              user_preamble = "set pm3d map",
+              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
+\end{Verbatim}
+
+\begin{Verbatim}
+(%i13) draw(
+        columns    = 2,
+        terminal   = eps_color,
+        eps_width  = 20,
+        eps_height = 8,
+        escena1, escena2)$
+\end{Verbatim}
+
+Se comienza definiendo las dos escenas a representar, la función explícita y el gráfico de densidades, en sendos objetos \verb|gr3d|, ya que ambos son de naturaleza tridimensional. Estos objetos se pasan luego a la función \verb|draw| como argumentos, junto con algunas opciones globales. La función \verb|draw| es realmente la que ha generado también los gráficos anteriores, siendo \verb|draw2d| y \verb|draw3d| sinónimos de \verb|draw(gr2d(...))| y \verb|draw(gr3d(...))|, respectivamente.
+
+
+
+
+
+
+
+
+
+\newpage
+\chapter{Probabilidades y estadística}
 \label{sec:estad}
 
 \section{Probabilidad}
@@ -5491,114 +5771,19 @@ Si la población de referencia no es normal y la muestra es pequeña, siempre se p
 \right. \leqno{\tt (\%o8)}
 \]
 
-Existe en Maxima la posibilidad de ajustar por mínimos cuadrados a datos empíricos los parámetros de curvas arbitrarias mediante las funciones del paquete \verb|lsquares|\index{lsquares}. Vamos a simular una muestra de tamaño 100 de valores $x$ en el intervalo $[0,10]$. Con estas abscisas calculamos después las ordenadas a partir de la suma de una señal determinista ($f$) más un ruido gaussiano. Para hacer la simulación necesitamos cargar en primer lugar al paquete \verb|distrib|.
-
-\index{random\_continuous\_uniform}\begin{Verbatim}
-(%i9) load(distrib)$
-(%i10) abs: makelist(random_continuous_uniform(0,10),k,1,100)$
-(%i11) f(x):=3*(x-5)^2$
-(%i12) data: apply(matrix,makelist([x, f(x)+random_normal(0,1)],x,abs))$
-\end{Verbatim}
-
-Aunque la señal determinista obedece a una función polinómica de segundo grado, si no lo sabemos a priori intentamos ajustar un polinomio cúbico:
-
-\index{lsquares\_estimates}\begin{Verbatim}
-(%i13) load(lsquares)$
-(%i14) param: lsquares_estimates(data,[x,y],
-                                 y=a*x^3+b*x^2+c*x+d,[a,b,c,d]), numer;
-\end{Verbatim}
-\[
-\begin{array}{c}
-\left[ \left[ a=-0.002705800223881305 , b=3.018798873646606 \right. \right.
-  , \\  \left. \left. c=-29.94151342602112 , d=74.78603431944423 \right]  \right] \end{array} \leqno{\tt (\%o14)}
-\]
-
-Vemos claramente que el término de tercer grado es supérfluo, por lo que reajustamos al de segundo grado,
-
-\begin{Verbatim}
-(%i15) param: lsquares_estimates (data,[x,y],y=b*x^2+c*x+d,[b,c,d]),numer;
-\end{Verbatim}
-\[
-\left[ \left[ b=2.979110687882263 , c=-29.78353057922009 , d=74.64523259993118
-  \right]  \right] \leqno{\tt (\%o15)}
-\]
-
-Ahora estamos en disposición de estudiar los residuos para valorar el ajuste. En primer lugar calculamos el error cuadrático medio del residuo, definido como
-
-\[
-\mbox{MSE} =  \frac{1}{n} \sum_{i=1}^{n} \left( \mbox{rhs}(e_i) -  \mbox{lhs}(e_i) \right)^2,
-\]
-siendo $n$ el tamaño de la muestra y $\mbox{rhs}(e_i)$ y $\mbox{lhs}(e_i)$ los miembros derecho e izquierdo, respectivamente, de la expresión a ajustar. Para el caso que nos ocupa, el valor calculado es
-
-\index{lsquares\_residual\_mse}\begin{Verbatim}
-(%i16) lsquares_residual_mse(data, [x,y], y=b*x^2+c*x+d, first(param));
-\end{Verbatim}
-\[
-1.144872557335554\leqno{\tt (\%o16)}
-\]
-
-\index{lsquares\_residuals}También podemos calcular el vector de los residuos, definidos como $\mbox{lhs}(e_i) - \mbox{rhs}(e_i)$, $\forall i$, para a continuación representarlos gráficamente junto con los datos y la curva ajustada, tal como se aprecia en la Figura~\ref{fig:lsquares}.
-
-\index{draw}\begin{Verbatim}
-(%i17) res: lsquares_residuals(data, [x,y], y=b*x^2+c*x+d, first(param))$
-(%i18) load(draw)$ /* necesitaremos las rutinas gráficas */
-(%i19) scene1: gr2d(points(data),
-                    explicit(ev(b*x^2+c*x+d,first(param)),x,0,10))$
-(%i20) scene2: gr2d(points_joined = true,
-                    points(res))$
-(%i21) draw(terminal = eps, scene1, scene2)$
-\end{Verbatim}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=1.0]{lsquares.pdf}
-\caption{Resultados gráficos del ajuste por mínimos cuadrados.}
-\label{fig:lsquares}
-\end{center}
-\end{figure}
-
-Nosotros ya sabemos que el ruido del proceso simulado es gaussiano de esperanza nula. En una situación real, este dato lo desconoceremos y nos interesará contrastar la hipótesis de normalidad y la de la nulidad de la media de los residuos. El paquete \verb|stats| tiene algunos procedimientos inferenciales, entre los cuales están las funciones \verb|test_normality| y \verb|test_mean|; primero cargamos el paquete y contrastamos la hipótesis de normalidad,
-
-\index{test\_normality}\begin{Verbatim}
-(%i22) load(stats)$
-(%i23) test_normality(res);
-\end{Verbatim}
-\[
-\left|
-  \begin{array}{c}
-    \mbox{{}SHAPIRO - WILK TEST{}}   \\
-       {\it statistic} = 0.986785359052448  \\
-       {\it p\_value} = 0.423354600782769
-  \end{array}
-\right. \leqno{\tt (\%o31)}
-\]
-
-El $p$-valor es lo suficientemente alto como para no rechazar la hipótesis nula de normalidad; ahora contrastamos la nulidad de la esperanza del ruido,
-
-\index{test\_mean}\begin{Verbatim}
-(%i24) test_mean(res);
-\end{Verbatim}
-\[
-\left|
-  \begin{array}{c}
-       \mbox{{}MEAN TEST{}}  \\
-       {\it mean\_estimate} = -1.002451472320587 \times 10^{-7}  \\
-       {\it conf\_level} = 0.95 \\
-       {\it conf\_interval} = \left[ -.2133782738324136 , .2133780733421191 \right] \\
-       {\it method} = \mbox{{}Exact t-test. Unknown variance.{}} \\
-       {\it hypotheses} = \mbox{{}H0: mean = 0 , H1: mean} \neq \mbox{{}0{}} \\
-       {\it statistic} = 9.321855844715968 \times 10^{-7} \\
-       {\it distribution} = \left[ {\it student\_t} , 99 \right] \\
-       {\it p\_value} = .9999992583830712
-  \end{array}
-\right. \leqno{\tt (\%o32)}
-\]
-
-Sin duda admitiríamos la hipótesis nula como válida.
-
 Consúltese el manual de referencia de Maxima para ver qué otros tests están programados en el paquete \verb|stats|, así como las opciones que se pueden utilizar en cada caso.
 
 
+
+
+
+
+
+
+
+\newpage
+\chapter{Otros métodos numéricos}
+\label{sec:numericos}
 
 
 
@@ -5798,275 +5983,226 @@ Con esto hemos obtenido dos interpoladores distintos por el método de los \emph{
 
 
 
-\newpage
-\chapter{Gráficos}
-\label{graficos}
+\section{Ajuste por mínimos cuadrados}
 
 
-Maxima no está habilitado para realizar él mismo gráficos, por lo que necesitará de un programa externo que realice esta tarea. Nosotros nos limitaremos a ordenar qué tipo de gráfico queremos y Maxima se encargará de comunicárselo a la aplicación gráfica que esté activa en ese momento, que por defecto será Gnuplot. La otra herramienta gráfica es Openmath, un programa Tcl-tk que se distribuye conjuntamente con Maxima.
+Existe en Maxima la posibilidad de ajustar por mínimos cuadrados a datos empíricos los parámetros de curvas arbitrarias mediante las funciones del paquete \verb|lsquares|\index{lsquares}. Vamos a simular una muestra de tamaño 100 de valores $x$ en el intervalo $[0,10]$. Con estas abscisas calculamos después las ordenadas a partir de la suma de una señal determinista ($f$) más un ruido gaussiano. Para hacer la simulación necesitamos cargar en primer lugar al paquete \verb|distrib|.
 
-
-
-\section{El módulo ''plot''}
-
-Las funciones \verb|plot2d|\index{plot2d} y \verb|plot3d|\index{plot3d} son las que se utilizan por defecto. Veamos un ejemplo de cada una de ellas.
-
-\begin{Verbatim}
-(%i1) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
-(%i2) plot2d([[discrete,xy], 2*%pi*sqrt(u/980)], [u,0,50],
-               [style, [points,5,2,6], [lines,1,1]],
-               [legend,"Datos experimentais","Predicion da teoria"],
-               [xlabel,"Lonxitude do pendulo (cm)"], [ylabel,"periodo (s)"],
-               [gnuplot_preamble,
-                 "set terminal postscript eps;set out 'plot2d.eps'"])$
+\index{random\_continuous\_uniform}\begin{Verbatim}
+(%i1) load(distrib)$
+(%i2) abs: makelist(random_continuous_uniform(0,10),k,1,100)$
+(%i3) f(x):=3*(x-5)^2$
+(%i4) data: apply(matrix,makelist([x, f(x)+random_normal(0,1)],x,abs))$
 \end{Verbatim}
 
-Se ha definido en el ejemplo una lista de puntos empíricos a representar, junto con su función teórica, pidiendo su representación gráfica en el dominio $[0,50]$. El resto de código hace referencia a diversas opciones: \verb|style|, \verb|legend|, \verb|xlabel|, \verb|ylabel| y \verb|gnuplot_preamble|, esta última permite escribir código de Gnuplot para que éste lo ejecute; aquí se le pide que devuelva el gráfico en formato Postscript. El ejemplo siguiente genera una superficie explícita. Las dos salidas gráficas se representan en la Figura~\ref{fig:plot} 
+Aunque la señal determinista obedece a una función polinómica de segundo grado, si no lo sabemos a priori intentamos ajustar un polinomio cúbico:
+
+\index{lsquares\_estimates}\begin{Verbatim}
+(%i5) load(lsquares)$
+(%i6) param: lsquares_estimates(data,[x,y],
+                                y=a*x^3+b*x^2+c*x+d,[a,b,c,d]), numer;
+\end{Verbatim}
+\[
+\begin{array}{c}
+\left[ \left[ a=-0.002705800223881305 , b=3.018798873646606 \right. \right.
+  , \\  \left. \left. c=-29.94151342602112 , d=74.78603431944423 \right]  \right] \end{array} \leqno{\tt (\%o6)}
+\]
+
+Vemos claramente que el término de tercer grado es supérfluo, por lo que reajustamos al de segundo grado,
 
 \begin{Verbatim}
-(%i3) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
-        [gnuplot_preamble,
-           "set terminal postscript eps;set out 'plot3d.eps'"])$
+(%i7) param: lsquares_estimates(data,[x,y],
+                                y=b*x^2+c*x+d,[b,c,d]), numer;
+\end{Verbatim}
+\[
+\left[ \left[ b=2.979110687882263 , c=-29.78353057922009 , d=74.64523259993118
+  \right]  \right] \leqno{\tt (\%o7)}
+\]
+
+Ahora estamos en disposición de estudiar los residuos para valorar el ajuste. En primer lugar calculamos el error cuadrático medio del residuo, definido como
+
+\[
+\mbox{MSE} =  \frac{1}{n} \sum_{i=1}^{n} \left( \mbox{rhs}(e_i) -  \mbox{lhs}(e_i) \right)^2,
+\]
+siendo $n$ el tamaño de la muestra y $\mbox{rhs}(e_i)$ y $\mbox{lhs}(e_i)$ los miembros derecho e izquierdo, respectivamente, de la expresión a ajustar. Para el caso que nos ocupa, el valor calculado es
+
+\index{lsquares\_residual\_mse}\begin{Verbatim}
+(%i8) lsquares_residual_mse(data, [x,y], y=b*x^2+c*x+d, first(param));
+\end{Verbatim}
+\[
+1.144872557335554\leqno{\tt (\%o8)}
+\]
+
+\index{lsquares\_residuals}También podemos calcular el vector de los residuos, definidos como $\mbox{lhs}(e_i) - \mbox{rhs}(e_i)$, $\forall i$, para a continuación representarlos gráficamente junto con los datos y la curva ajustada, tal como se aprecia en la Figura~\ref{fig:lsquares}.
+
+\index{draw}\begin{Verbatim}
+(%i9) res: lsquares_residuals(data, [x,y],
+                              y=b*x^2+c*x+d, first(param))$
+(%i10) load(draw)$ /* necesitaremos las rutinas gráficas */
+(%i10) scene1: gr2d(points(data),
+                    explicit(ev(b*x^2+c*x+d,first(param)),x,0,10))$
+(%i12) scene2: gr2d(points_joined = true,
+                    points(res))$
+(%i13) draw(terminal = eps, scene1, scene2)$
 \end{Verbatim}
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.55]{plot2d.pdf} 
-\includegraphics[scale=0.55]{plot3d.pdf} \\
-\caption{Gráficos generados por las funciones plot2d y plot3d.}
-\label{fig:plot}
+\includegraphics[scale=1.0]{lsquares.pdf}
+\caption{Resultados gráficos del ajuste por mínimos cuadrados.}
+\label{fig:lsquares}
 \end{center}
 \end{figure}
 
-El control de las opciones gráficas se consigue manipulando la variable global \verb|plot_options|\index{plot\_options}, cuyo estado por defecto es
-\begin{verbatim}
-(%i4) plot_options;
-(%o4) [[x, - 1.755559702014e+305, 1.755559702014e+305], 
-[y, - 1.755559702014e+305, 1.755559702014e+305], 
-[t, - 3, 3], [GRID, 30, 30], [VIEW_DIRECTION, 1, 1, 1], 
-[COLOUR_Z, FALSE], [TRANSFORM_XY, FALSE], 
-[RUN_VIEWER, TRUE], [PLOT_FORMAT, GNUPLOT], 
-[GNUPLOT_TERM, DEFAULT], [GNUPLOT_OUT_FILE, FALSE], 
-[NTICKS, 10], [ADAPT_DEPTH, 10], [GNUPLOT_PM3D, FALSE], 
-[GNUPLOT_PREAMBLE, ], [GNUPLOT_CURVE_TITLES, [DEFAULT]], 
-[GNUPLOT_CURVE_STYLES, [with lines 3, with lines 1, 
-with lines 2, with lines 5, with lines 4, with lines 6, 
-with lines 7]], [GNUPLOT_DEFAULT_TERM_COMMAND, ], 
-[GNUPLOT_DUMB_TERM_COMMAND, set term dumb 79 22], 
-[GNUPLOT_PS_TERM_COMMAND, set size 1.5, 1.5;set term postsc#
-ript eps enhanced color solid 24]]
-\end{verbatim}
+Nosotros ya sabemos que el ruido del proceso simulado es gaussiano de esperanza nula. En una situación real, este dato lo desconoceremos y nos interesará contrastar la hipótesis de normalidad y la de la nulidad de la media de los residuos. El paquete \verb|stats| tiene algunos procedimientos inferenciales, entre los cuales están las funciones \verb|test_normality| y \verb|test_mean|; primero cargamos el paquete y contrastamos la hipótesis de normalidad,
 
-Para mayor información sobre el significado de cada uno de los elementos de esta lista, así como de las funciones \verb|plot2d| y \verb|plot3d|, consúltese la documentación. 
+\index{test\_normality}\begin{Verbatim}
+(%i14) load(stats)$
+(%i15) test_normality(res);
+\end{Verbatim}
+\[
+\left|
+  \begin{array}{c}
+    \mbox{{}SHAPIRO - WILK TEST{}}   \\
+       {\it statistic} = 0.986785359052448  \\
+       {\it p\_value} = 0.423354600782769
+  \end{array}
+\right. \leqno{\tt (\%o15)}
+\]
 
-Por defecto, Maxima invocará al programa Gnuplot para la generación de gráficos, pero quizás prefiramos el programa Openmath, que forma parte de la distribución de Maxima; en tal caso tendríamos que modificar previamente las opciones guardadas en \verb|plot_options| y a continuación solicitar el gráfico deseado, como en este caso en el que se representa la función gamma y su inversa.
+El $p$-valor es lo suficientemente alto como para no rechazar la hipótesis nula de normalidad; ahora contrastamos la nulidad de la esperanza del ruido,
 
-\index{set\_plot\_option}\begin{verbatim}
-(%i5) set_plot_option([plot_format, openmath])$
-(%i6) plot2d([gamma(x),1/gamma(x)],[x,-4.5,5],[y,-10,10])$
-\end{verbatim}
+\index{test\_mean}\begin{Verbatim}
+(%i16) test_mean(res);
+\end{Verbatim}
+\[
+\left|
+  \begin{array}{c}
+       \mbox{{}MEAN TEST{}}  \\
+       {\it mean\_estimate} = -1.002451472320587 \times 10^{-7}  \\
+       {\it conf\_level} = 0.95 \\
+       {\it conf\_interval} = \left[ -.2133782738324136 , .2133780733421191 \right] \\
+       {\it method} = \mbox{{}Exact t-test. Unknown variance.{}} \\
+       {\it hypotheses} = \mbox{{}H0: mean = 0 , H1: mean} \neq \mbox{{}0{}} \\
+       {\it statistic} = 9.321855844715968 \times 10^{-7} \\
+       {\it distribution} = \left[ {\it student\_t} , 99 \right] \\
+       {\it p\_value} = .9999992583830712
+  \end{array}
+\right. \leqno{\tt (\%o16)}
+\]
 
-El resto de esta sección lo dedicaremos a hacer una somera descripción del paquete \verb|draw|, un proyecto consistente en el desarrollo de un interfaz que permita aprovechar al máximo las habilidades gráficas de Gnuplot.
+Sin duda admitiríamos la hipótesis nula como válida.
 
 
 
 
 
-\section{El módulo ''draw''}
 
-Aquí, las funciones a utilizar son \verb|draw2d|\index{draw2d}, \verb|draw3d|\index{draw3d} y \verb|draw|\index{draw}, para escenas en 2d, 3d y para gráficos múltiples y animaciones, respectivamente. Puesto que se trata de un módulo adicional, será necesario cargarlo en memoria antes de hacer uso de él. Empecemos por un ejemplo comentado.
+
+
+\section{Optimización con restricciones}
+
+El paquete \verb|augmented_lagrangian|\index{augmented\_lagrangian} permite minimizar funciones bajo restricciones expresables en forma de igualdades. Concretamente, si queremos obtener el valor mínimo de la función $f(x,y) = x^2 + 2 y^2$, entre aquellos puntos que cumplen la condición $x+y=1$, podemos hacer uso de la función 
+\verb|augmented_lagrangian_method|\index{augmented\_lagrangian\_method}.
+
+En primer lugar debemos cargar en memoria el programa correspondiente,
 
 \begin{Verbatim}
-(%i1) load(draw)$
-(%i2) draw2d(
-         key           = "Cubic poly",
-         explicit(%pi*x^3+sqrt(2)*x^2+10,x,0,2),
-         color         = blue,
-         key           = "Parametric curve",
-         line_width    = 3,
-         nticks        = 50,
-         parametric(2*cos(rrr)+3, rrr, rrr, 0, 6*%pi),
-         line_type     = dots,
-         points_joined = true,
-         point_type    = diamant,
-         point_size    = 3,
-         color         = red,
-         line_width    = 1,
-         key           = "Empiric data",
-         points(makelist(random(40.0),k,1,5)),
-         title         = "DRAWING CURVES",
-         terminal      = eps )$
+(%i1) load ("augmented_lagrangian")$
 \end{Verbatim}
 
-Los argumentos de \verb|draw2d| se dividen en tres grupos: \emph{objetos gráficos} (en el ejemplo, \verb|explicit|\index{explicit}, \verb|parametric|\index{parametric} y \verb|points|\index{points}), \emph{opciones locales} (que afectan directamente a la representación de los objetos gráficos, como \verb|key|\index{key}, \verb|color|\index{color}, \verb|line_width|\index{line\_width}, \verb|nticks|\index{nticks}, \verb|line_type|\index{line\_type}, \verb|points_joined|\index{points\_joined} y \verb|line_width|\index{line\_width}) y \emph{opciones globales} (que hacen referencia a aspectos generales del gráfico, como \verb|title|\index{title} y \verb|terminal|\index{terminal}). Las opciones se indican como igualdades, escribiendo a la izquierda el nombre de la opción y a la derecha el valor que se le quiera asignar, a la vez que los objetos gráficos tienen el formato igual que las llamadas a funciones, esto es, el nombre del objeto a dibujar seguido, entre paréntesis, de los parámetros que definen al objeto.
-
-Todos estos argumentos se interpretan secuencialmente, de forma que al asignar un cierto valor a una opción local, ésta afectará a todos los objetos gráficos que le sigan. En este ejemplo, \verb|line_width| comienza teniendo valor 1, que es el asignado por defecto, luego se le da el valor 3 para la representación de la curva paramétrica y finalmente se le devuelve el valor original antes de representar los segmentos que unen los puntos aleatoriamente generados. En cambio, las dos opciones globales, \verb|title| y \verb|terminal|, aunque se colocaron al final, podrían haberse ubicado en cualquier otro lugar. 
-
-Siguiendo con los gráficos en dos dimensiones, el siguiente ejemplo muestra una escena en la que intervienen los objetos \verb|ellipse|\index{ellipse}, \verb|image|\index{image}, \verb|label|\index{label}, \verb|vector|\index{vector} y, ya lo conocemos, \verb|explicit|. Antes de ejecutar esta instrucción es necesario leer el fichero gráfico \verb|gatos.xpm|\footnote{El formato gráfico XPM es el único que puede leer Maxima.}
+Introducimos la función objetivo y la restricción, la cual guardamos en una lista, dando por sentado que la expresión que la define está igualada a cero,
 
 \begin{Verbatim}
-(%i3) cats: read_xpm("gatos.xpm")$
-(%i4) draw2d(
-         terminal    = eps,
-         yrange      = [-4,10],
-         ellipse(5,3,8,6,0,360),
-         image(cats,0,0,10,7),
-         line_width  = 2,
-         head_length = 0.3,
-         color       = blue,
-         label(["This is Francisco",-1,-0.5]),
-         vector([-1,0],[2,4]),
-         color       = green,
-         vector([11,7],[-2,-1]),
-         label(["This is Manolita",11,8]),
-         explicit(sin(x)-2,x,-4,15) )$
+(%i2) f(x,y) := x^2 + 2*y^2 $
+(%i3) c: [x + y - 1] $
 \end{Verbatim}
 
-Junto con los objetos gráficos introducidos en los ejemplos, cuyos resultados se pueden ver en los apartados \emph{a)} y \emph{b)} de la Figura~\ref{fig:draw}, también existen \verb|polygon|\index{polygon}, \verb|rectangle|\index{rectangle}, \verb|polar|\index{polar}, \verb|implicit|\index{implicit} y \verb|geomap|\index{geomap}, este último para mapas cartográficos.
-
-Mostramos a continuación algunas escenas tridimensionales. En primer lugar, el valor absoluto de la función $\Gamma$ de Euler, junto con sus líneas de contorno.
+A continuación hacemos la llamada a la función correspondiente, en la que introducimos la función, la lista de variables independientes, las restricciones, un vector con una solución inicial aproximada y una opción que controla la salida de resultados intermedios. El valor que nos devuelve la función es una lista con dos elementos, siendo el primero la solución y el segundo el valor de un parámetro del algoritmo.
 
 \begin{Verbatim}
-(%i5) gamma2(x,y):=
-        block([re,im,g:gamma(x+%i*y)],
-          re:realpart(g),
-          im:imagpart(g),
-          sqrt(re^2+im^2))$
-(%i6) draw3d(
-        zrange         = [0,6],
-        xu_grid        = 50,
-        yv_grid        = 50,
-        surface_hide   = true,
-        contour        = surface,
-        contour_levels = [0,0.5,6], /* de 0 a 6 en saltos de 0.5 */
-        color          = cyan,
-        terminal       = eps,
-        explicit(gamma2(x,y),x,-4,4,y,-2,2))$
+(%i4) sol: augmented_lagrangian_method(
+                f(x,y), [x, y], c, [1, 1], iprint=[-1,0]);
 \end{Verbatim}
+$$\left[ \left[ x=.6666598410800233 , y=.3333402724554476 \right]  , 
+ {\it \%lambda}=\left[ -1.333337940892538 \right]  \right] \leqno{\tt (\%o4)}$$
 
-Una superficie paramétrica, que junto con la anterior escena, se pueden ver ambas en la Figura~\ref{fig:draw}, apartados \emph{c)} y \emph{d)}.
+Podemos asignar la solución a las variables \verb|x0| y \verb|y0| y a continuación \verb|z0|, el valor mínimo alcanzado,
 
 \begin{Verbatim}
-(%i7) draw3d(
-        terminal       = eps,
-        title          = "Figure 8 - Klein bottle",
-        rot_horizontal = 360,
-        xrange         = [-3.4,3.4],
-        yrange         = [-3.4,3.4],
-        zrange         = [-1.4,1.4],
-        xtics          = none,
-        ytics          = none,
-        ztics          = none,
-        axis_3d        = false,
-        surface_hide   = true,
-        parametric_surface((2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*cos(u),
-                           (2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*sin(u),
-                           sin(u/2)*sin(v) + cos(u/2)*sin(2*v),
-                           u, -%pi, 360*%pi/180-%pi, v, 0, 2*%pi) )$
+(%i5) [x0,y0]: map(rhs, first(sol)) $
+(%i6) z0: f(x0,y0);
 \end{Verbatim}
+$$0.666666818190186\leqno{\tt (\%o6)}$$
 
-En el gráfico siguiente se combinan varios objetos: una superficie explícita, dos curvas paramétricas y dos etiquetas, cuyo aspecto es el mostrado en el apartado \emph{e)} de la Figura~\ref{fig:draw}.
+Para facilitar la visualización del problema, podemos plantearnos la realización de un gráfico, Figura~\ref{fig:lagran},
 
 \begin{Verbatim}
+(%i7) load("draw") $
 (%i8) draw3d(
-        color          = green,
-        explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-        color          = blue,
-        parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
-        color          = brown,
-        line_width     = 2,
-        parametric(t^2,sin(t),2+t,t,0,2),
-        surface_hide   = true,
-        title          = "Surface & curves",
-        color          = red,
-        label(["UP",-2,0,3]),
-        label(["DOWN",2,0,-3]),
-        rot_horizontal = 10,
-        rot_vertical   = 84,
-        terminal       = eps )$
+        terminal = eps,
+        view = [93, 143],
+        enhanced3d = [z,x,z],
+        explicit(x^2 + 2*y^2, x, -2, 2, y, -2, 2),
+
+        color = red,
+        enhanced3d = [-z,x,z],
+        parametric_surface(x, -x+1, z, x, -2, 2, z, -1, 5),
+
+        enhanced3d = false,
+        color = black,
+        point_size = 2,
+        points([[x0,y0,z0]]))$
 \end{Verbatim}
-
-En el siguiente ejemplo hacemos una proyección esférica del hemisferio sur, que se ve en el apartado \emph{f)} de la Figura~\ref{fig:draw}. El paquete  \verb|worldmap|\index{worldmap} carga en memoria las coordenadas latitud--longitud de las líneas fronterizas y costeras de todos los países del mundo, así como algunas funciones necesarias para su manipulación y procesamiento,
-
-\begin{Verbatim}
-(%i9) load(worldmap)$
-(%i10) draw3d(
-        surface_hide   = true,
-        rot_horizontal = 60,
-        rot_vertical   = 131,
-        color          = cyan,
-        parametric_surface(
-               cos(phi)*cos(theta),
-               cos(phi)*sin(theta),
-               sin(phi),
-               theta,-%pi,%pi,
-               phi,-%pi/2,%pi/2),
-        color          = red,
-        geomap([South_America,Africa,Australia],
-               [spherical_projection,0,0,0,1]),
-        color          = blue,
-        geomap([South_America,Africa,Australia],
-               [cylindrical_projection,0,0,0,1,2]),
-        terminal       = eps)$
-\end{Verbatim}
-
-
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.5]{draw1.pdf} 
-\includegraphics[scale=0.5]{draw2.pdf} \\
-\emph{a)} \hspace{6.5cm}  \emph{b)} \\
-\includegraphics[scale=0.5]{draw3.pdf} 
-\includegraphics[scale=0.5]{draw4.pdf} \\
-\emph{c)} \hspace{6.5cm}  \emph{d)} \\
-\includegraphics[scale=0.5]{draw5.pdf} 
-\includegraphics[scale=0.5]{draw6.pdf} \\
-\emph{e)} \hspace{6.5cm}  \emph{f)} \\
-\includegraphics[scale=0.5]{draw7.pdf} \\
-\emph{g)} \\
-\caption{Gráficos generados con el paquete draw: \emph{a)} y \emph{b)} con draw2d; \emph{c)}, \emph{d)}, \emph{e)} y \emph{f)} con draw3d; \emph{g)}, un gráfico múltiple.}
-\label{fig:draw}
+\includegraphics[scale=1.6]{lagran.pdf}
+\caption{Minimización con restricciones.}
+\label{fig:lagran}
 \end{center}
 \end{figure}
 
-Además de los objetos gráficos tridimensionales ya vistos, también se hayan definidos \verb|points|, \verb|vector| e \verb|implicit|.
 
-También es posible generar múltiples gráficos en un mismo fichero o hacer animaciones en formato GIF o en la ventana gráfica. Para ver más ejemplos de gráficos generados con el paquete \verb|draw|, se recomienda acceder a la dirección
-\begin{center}
-http://riotorto.users.sourceforge.net/gnuplot
-\end{center}
-o consultar el sistema de ayuda de Maxima.
 
-Ya como colofón, un ejemplo de gráfico múltiple en el que se muestra también cómo dar sombreado a las superficies tridimensionales. El resultado en el apartado \emph{g)} de la Figura~\ref{fig:draw}.
 
-\begin{Verbatim}
-(%i11) escena1:
-         gr3d(surface_hide = true,
-              enhanced3d   = true,
-              palette      = gray,
-              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
-\end{Verbatim}
 
-\begin{Verbatim}
-(%i12) escena2:
-         gr3d(surface_hide  = true,
-              enhanced3d    = true,
-              palette       = gray,
-              user_preamble = "set pm3d map",
-              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
-\end{Verbatim}
+
+
+\section{Programación lineal}
+
+El paquete \verb|simplex|\index{simplex} dispone de las funciones \verb|minimize_lp|\index{minimize\_lp} y \verb|maximize_lp|\index{maximize\_lp} para la resolución de problemas de programación lineal. Nos planteamos el siguiente problema:
+
+\begin{eqnarray*}
+\mbox{Max.}      & F(x_1, x_2, x_3, x_4)  & =    2 x_1 + 4 x_2 + x_3 + x_4 \\
+\mbox{sujeto a } & x_1 + 3 x_2 + x_4      & \leq 4 \\
+                  & 2 x_1 + x_2           & \leq 3 \\
+                  & x_2 + 4 x_3 + x_4     & \leq 3 \\
+                  & x_1, x_2, x_3, x_4    & \in  \R^+
+\end{eqnarray*}
+que seguidamente pasamos a resolver cargando previamente en memoria el programa y definiendo la función objetivo y las restricciones asociadas al problema,
 
 \begin{Verbatim}
-(%i13) draw(
-        columns    = 2,
-        terminal   = eps_color,
-        eps_width  = 20,
-        eps_height = 8,
-        escena1, escena2)$
+(%i1) load("simplex") $
+(%i2) F : 2*x1 + 4*x2 + x3 + x4 $
+(%i3) r1 : x1 + 3*x2 + x4 <= 4 $
+(%i4) r2 : 2*x1 + x2 <= 3 $
+(%i5) r3 : x2 + 4*x3 + x4 <= 3 $
+(%i6) r4 : x1 >= 0 $
+(%i7) r5 : x2 >= 0 $
+(%i8) r6 : x3 >= 0 $
+(%i9) r7 : x4 >= 0 $
 \end{Verbatim}
 
-Se comienza definiendo las dos escenas a representar, la función explícita y el gráfico de densidades, en sendos objetos \verb|gr3d|, ya que ambos son de naturaleza tridimensional. Estos objetos se pasan luego a la función \verb|draw| como argumentos, junto con algunas opciones globales. La función \verb|draw| es realmente la que ha generado también los gráficos anteriores, siendo \verb|draw2d| y \verb|draw3d| sinónimos de \verb|draw(gr2d(...))| y \verb|draw(gr3d(...))|, respectivamente.
+A continuación resolvemos el problema invocando la función \verb|maximize_lp|,
+
+\begin{Verbatim}
+(%i10) maximize_lp(F, [r1, r2, r3, r4, r5, r6, r7]);
+\end{Verbatim}
+$$\left[ {{13}\over{2}} , \left[ {\it x_3}={{1}\over{2}} , {\it x_4}=
+ 0 , {\it x_2}=1 , {\it x_1}=1 \right]  \right] \leqno{\tt (\%o10)}$$
+
+El primer elemento de la lista es el valor máximo que alcanza la función objetivo y el segundo es la lista que contiene la solución.
 
 
 
