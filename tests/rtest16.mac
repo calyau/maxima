@@ -520,6 +520,15 @@ gruntz( (x*x^(1/x)-x)/log(x), x, inf);
 gruntz(exp(-1/x)/x^6,x,0,plus);
 0;
 
+/* limit gives the wrong answer - ID: 3410704 */
+limit(sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2))
+	 /(sqrt((t+2/t^2)^2+4)*((t^2+4)^(3/2)-t^3-4*t)), t, inf);
+1;
+
+/* Inaccurate Limit Evaluation - ID: 3276461 */
+radcan(limit((-4*x^2-10*x+24)/((4*x+8)^(1/3)+2), x, -4));
+66;
+
 /*
  * Bug [ 1854888 ] hgfred([5],[5], 1) doesn't simplify
  */
@@ -734,13 +743,16 @@ ratsimp(hgfred([-3/2,1],[-1/2], t));
 /*
  * Bug 2793827: internal error in integrate
  */
-(assume(n>0),0);
+(assume(n>0),declare(n,integer),0);
 0;
 
 integrate((g32475^n*(g32475*n-n-1)/(g32475-1)^2+1/(g32475-1)^2)/(1-g32475)
  -(g32475^(2*n+1)*(g32475*n-n-1)/(g32475-1)^2+g32475^(n+1)/(g32475-1)^2)
   /(1-g32475),g32475,0,1);
 (n+1)^2/2-1/2;
+
+kill(all);
+done;
 
 /*
  * Bug 609464 : 1+%e,numer and %e^%e,numer

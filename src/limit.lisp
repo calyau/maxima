@@ -648,10 +648,6 @@ It appears in LIMIT and DEFINT.......")
 						-1))
 			       var
 			       val)))
-	   ((and (radicalp n var) (radicalp dn var))
-	    (return (radlim (m* n (m^ dn -1))
-			    n
-			    dn)))
 	   ((and lhprogress?
 		 (/#alike n (car lhprogress?))
 		 (/#alike dn (cdr lhprogress?)))
@@ -1005,7 +1001,7 @@ It appears in LIMIT and DEFINT.......")
 	  ((eq (setq ans (no-err-sub (ridofab v) e)) t)
 	   nil)
 
-	  ((and (member v '($zeroa $zerob) :test #'eq) (=0 ans))
+	  ((and (member v '($zeroa $zerob) :test #'eq) (=0 ($radcan ans)))
 	   (setq ans (behavior e var v))
 	   (cond ((equal ans 1) '$zeroa)
 		 ((equal ans -1) '$zerob)
