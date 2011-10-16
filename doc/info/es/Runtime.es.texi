@@ -1,4 +1,4 @@
-@c version 1.25
+@c English version 2011-06-15
 @menu
 * Introducci@'on al entorno de ejecuci@'on::   
 * Interrupciones::  
@@ -169,6 +169,32 @@ para m@'as informaci@'on.
 @end deffn
 
 
+
+
+@deffn {Funci@'on} system (@var{command})
+Ejecuta la instrucci@'on @var{command} como un proceso independiente de Maxima.
+La instrucci@'on se le pasa a la consola del sistema para su ejecuci@'on.
+La funci@'on @code{system} no est@'a soportada por todos los sistemas operativos, pero suele estarlo en todos los entornos  Unix y similares.
+
+Suponiendo que @code{_hist.out} es una lista de frecuencias que se quieren representar en un diagrama de barras utilizando el programa @code{xgraph},
+
+@example
+(%i1) (with_stdout("_hist.out",
+           for i:1 thru length(hist) do (
+             print(i,hist[i]))),
+       system("xgraph -bar -brw .7 -nl < _hist.out"));
+@end example
+
+A fin de hacer el diagrama y eliminar el archivo temporal posteriormente, h@'agase:
+
+@example
+system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@end example
+
+@end deffn
+
+
+
 @deffn {Funci@'on} time (%o1, %o2, %o3, ...)
 
 Devuelve una lista de los tiempos, en segundos, que fueron necesarios para calcular los resultados de las salidas @code{%o1}, @code{%o2}, @code{%o3}, .... Los tiempos devueltos son estimaciones hechas por Maxima del tiempo interno de computaci@'on. La funci@'on @code{time} s@'olo puede utilizarse para variables correspondientes a l@'{@dotless{i}}neas de salida; para cualquier otro tipo de variables, @code{time} devuelve @code{unknown}.
@@ -296,7 +322,3 @@ Ejemplo:
 @end example
 
 @end deffn
-
-
-
-

@@ -1,0 +1,232 @@
+@c -----------------------------------------------------------------------------
+@page
+@node Structures, , Arrays, Data Types and Structures
+@section Structures
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Structures::       
+* Functions and Variables for Structures::       
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Structures, Functions and Variables for Structures, Structures, Structures
+@subsection Introduction to Structures
+@c -----------------------------------------------------------------------------
+
+Maximaは構造体と呼ばれる簡単なデータ集合体を提供します。
+構造体は
+引数が名前(フィールド名)によって識別され、式全体が演算子(構造体名)によって識別される式です。
+フィールド名は任意の式を取り得ます。
+
+構造体は@code{defstruct}関数によって定義されます;
+グローバル変数@code{structures}はユーザー定義の構造体のリストです。
+関数@code{new}は構造体のインスタンスを生成します。
+@code{@@}演算子はフィールドを参照します。
+@code{kill(@var{S})}は構造体定義@var{S}を取り除き、
+@code{kill(@var{x}@@ @var{a})}は
+構造体インスタンス@var{x}のフィールド@var{a}をアンバインドします。
+
+(@code{display2d}を@code{true}で使う)プリティプリンティングのコンソール表示では、
+構造体インスタンスは、
+左辺側にフィールド名、右辺側に値の式として表されたそれぞれのフィールドの値と一緒に
+表示されます。
+(等式は単に表示物です; 値だけが実際に保存されます。)
+(@code{grind}を介してか、@code{display2d}を@code{false}で使う)1次元表示では
+構造体はフィールド名ないで表示されます。
+
+フィールド値はラムダ式でありえますが、フィールド名を関数名として使う方法はありません。
+フィールドの値はあるタイプに制約することもできません;
+任意のフィールドにはどんな種類の式に割り当てることができます。
+フィールドを、違った文脈でアクセス可能にしたり不可能する方法はありません;
+すべてのフィールドはいつも可視です。
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Structures,  , Introduction to Structures, Structures
+@subsection Functions and Variables for Structures
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@defvr {グローバル変数} structures
+
+@code{structures}は
+@code{defstruct}で定義されたユーザー定義の構造体のリストです。
+
+@opencatbox
+@category{Structures} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
+@deffnx {関数} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+
+構造体を定義します。
+構造体はシンボル@var{S}と関連付けられた名前フィールドのリスト@var{a_1}, @dots{}, @var{a_n}です。
+
+構造体のインスタンスは演算子@var{S}と正確に@code{n}個の引数を持つただの式です。
+@code{new(@var{S})}は構造体@var{S}の新しいインスタンスを生成します。
+
+ただのシンボル@var{a}である引数はフィールド名を指定します。
+等式@code{@var{a} = @var{v}}である引数は
+フィールド名@var{a}とデフォルト値@var{v}を指定します。
+デフォルト値は任意の式を取り得ます。
+
+@code{defstruct}は
+ユーザー定義の構造体のリスト@code{structures}上に@var{S}を入れます。
+
+@code{kill(@var{S})}は
+ユーザー定義の構造体のリストから@var{S}を取り除き、構造体定義を取り除きます。
+
+例:
+
+@c ===beg===
+@c defstruct (foo (a, b, c));
+@c structures;
+@c new (foo);
+@c defstruct (bar (v, w, x = 123, y = %pi));
+@c structures;
+@c new (bar);
+@c kill (foo);
+@c structures;
+@c ===end===
+@example
+(%i1) defstruct (foo (a, b, c));
+(%o1)                    [foo(a, b, c)]
+(%i2) structures;
+(%o2)                    [foo(a, b, c)]
+(%i3) new (foo);
+(%o3)                     foo(a, b, c)
+(%i4) defstruct (bar (v, w, x = 123, y = %pi));
+(%o4)             [bar(v, w, x = 123, y = %pi)]
+(%i5) structures;
+(%o5)      [foo(a, b, c), bar(v, w, x = 123, y = %pi)]
+(%i6) new (bar);
+(%o6)              bar(v, w, x = 123, y = %pi)
+(%i7) kill (foo);
+(%o7)                         done
+(%i8) structures;
+(%o8)             [bar(v, w, x = 123, y = %pi)]
+@end example
+
+@opencatbox
+@category{Structures}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {関数} new (@var{S})
+@deffnx {関数} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+
+@code{new}は構造体の新しいインスタンスを生成します。
+
+@code{new(@var{S})}は
+構造体@var{S}の新しいインスタンスを生成します。
+それぞれのフィールドは、もしデフォルト値があればデフォルト値を割り当てられ、
+もしデフォルト値が構造体定義で指定されなかったなら、割り当てなしになります。
+
+@code{new(@var{S}(@var{v_1}, ..., @var{v_n}))}は
+フィールドが値@var{v_1}, @dots{}, @var{v_n}に割り当てられた
+構造体@var{S}の新しいインスタンスを生成します。
+
+例:
+
+@c ===beg===
+@c defstruct (foo (w, x = %e, y = 42, z));
+@c new (foo);
+@c new (foo (1, 2, 4, 8));
+@c ===end===
+@example
+(%i1) defstruct (foo (w, x = %e, y = 42, z));
+(%o1)              [foo(w, x = %e, y = 42, z)]
+(%i2) new (foo);
+(%o2)               foo(w, x = %e, y = 42, z)
+(%i3) new (foo (1, 2, 4, 8));
+(%o3)            foo(w = 1, x = 2, y = 4, z = 8)
+@end example
+
+@opencatbox
+@category{Structures}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {演算子} @@
+
+@code{@@}構造体フィールドアクセス演算子です。
+式@code{@var{x}@@ @var{a}}は
+構造体インスタンス@var{x}のフィールド@var{a}の値を参照します。
+フィールド名は評価されません。
+
+もし@var{x}のフィールド@var{a}が値を割り当てられていないなら、
+@code{@var{x}@@ @var{a}}はそれ自身に評価されます。
+
+@code{kill(@var{x}@@ @var{a})}は
+@var{x}のフィールド値@var{a}を値を取り除きます。
+
+例:
+
+@c ===beg===
+@c defstruct (foo (x, y, z));
+@c u : new (foo (123, a - b, %pi));
+@c u@z;
+@c u@z : %e;
+@c u;
+@c kill (u@z);
+@c u;
+@c u@z;
+@c ===end===
+@example
+(%i1) defstruct (foo (x, y, z));
+(%o1)                    [foo(x, y, z)]
+(%i2) u : new (foo (123, a - b, %pi));
+(%o2)           foo(x = 123, y = a - b, z = %pi)
+(%i3) u@@z;
+(%o3)                          %pi
+(%i4) u@@z : %e;
+(%o4)                          %e
+(%i5) u;
+(%o5)            foo(x = 123, y = a - b, z = %e)
+(%i6) kill (u@@z);
+(%o6)                         done
+(%i7) u;
+(%o7)              foo(x = 123, y = a - b, z)
+(%i8) u@@z;
+(%o8)                          u@@z
+@end example
+
+フィールド名は評価されません。
+
+@c ===beg===
+@c defstruct (bar (g, h));
+@c x : new (bar);
+@c x@h : 42;
+@c h : 123;
+@c x@h;
+@c x@h : 19;
+@c x;
+@c h;
+@c ===end===
+@example
+(%i1) defstruct (bar (g, h));
+(%o1)                      [bar(g, h)]
+(%i2) x : new (bar);
+(%o2)                       bar(g, h)
+(%i3) x@@h : 42;
+(%o3)                          42
+(%i4) h : 123;
+(%o4)                          123
+(%i5) x@@h;
+(%o5)                          42
+(%i6) x@@h : 19;
+(%o6)                          19
+(%i7) x;
+(%o7)                    bar(g, h = 19)
+(%i8) h;
+(%o8)                          123
+@end example
+
+@opencatbox
+@category{Structures} @category{Operators}
+@closecatbox
+@end deffn

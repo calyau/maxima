@@ -2,10 +2,10 @@
 @c File        : Input.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Input.texi revision 14.02.2011
+@c Original    : Input.texi revision 21.08.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 02.11.2010
-@c Revision    : 19.04.2011
+@c Revision    : 21.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -14,7 +14,7 @@
 * Kommentare::
 * Dateien::
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
-* Funktionen und Variablen f@"ur die Tex-Ausgabe::
+* Funktionen und Variablen f@"ur die TeX-Ausgabe::
 * Funktionen und Variablen f@"ur die Fortran-Ausgabe::
 @end menu
 
@@ -59,20 +59,20 @@ Beispiele:
 
 Folgende Funktionen und Variablen arbeiten mit Dateien:
 
-@example
-appendfile           batch                 batchload     
-closefile            file_output_append    filename_merge        
-file_search          file_search_maxima    file_search_lisp      
-file_search_demo     file_search_usage     file_search_tests     
-file_type            load                  load_pathname         
-loadfile             loadprint             printfile             
-pathname_directory   pathname_name         pathname_type
-save                 stringout             with_stdout
-writefile
-@end example
+@verbatim
+   appendfile           batch                 batchload
+   closefile            file_output_append    filename_merge
+   file_search          file_search_maxima    file_search_lisp
+   file_search_demo     file_search_usage     file_search_tests
+   file_type            file_type_lisp        file_type_maxima
+   load                 load_pathname         loadfile
+   loadprint            pathname_directory    pathname_name
+   pathname_type        printfile             save
+   stringout            with_stdout           writefile
+@end verbatim
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Funktionen und Variablen f@"ur die Tex-Ausgabe, Dateien, Eingabe und Ausgabe
+@node Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Funktionen und Variablen f@"ur die TeX-Ausgabe, Dateien, Eingabe und Ausgabe
 @section Funktionen und Variablen f@"ur die Eingabe und Ausgabe
 @c -----------------------------------------------------------------------------
 
@@ -327,7 +327,7 @@ Siehe auch die Funktion @mrefdot{file_type}
 
 @c --- 19.04.2011 DK -----------------------------------------------------------
 @anchor{file_type_maxima}
-@defvr {Option variable} file_type_maxima
+@defvr {Optionsvariable} file_type_maxima
 Standardwert:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
 
 Die Optionsvariable @code{file_type_maxima} enth@"alt die Dateiendungen, die
@@ -640,8 +640,8 @@ Mit @mref{closefile} wird die Aufzeichnung beendet.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Tex-Ausgabe, Funktionen und Variablen f@"ur die Fortran-Ausgabe, Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Eingabe und Ausgabe
-@section Funktionen und Variablen f@"ur die Tex-Ausgabe
+@node Funktionen und Variablen f@"ur die TeX-Ausgabe, Funktionen und Variablen f@"ur die Fortran-Ausgabe, Funktionen und Variablen f@"ur die Eingabe und Ausgabe, Eingabe und Ausgabe
+@section Funktionen und Variablen f@"ur die TeX-Ausgabe
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
@@ -963,16 +963,16 @@ g\left(x\right)+f\left(x\right)
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur die Fortran-Ausgabe, , Funktionen und Variablen f@"ur die Tex-Ausgabe, Eingabe und Ausgabe
+@node Funktionen und Variablen f@"ur die Fortran-Ausgabe, , Funktionen und Variablen f@"ur die TeX-Ausgabe, Eingabe und Ausgabe
 @section Funktionen und Variablen f@"ur die Fortran-Ausgabe
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @defvr {Option variable} fortindent
-Default value: 0
+Default value: @code{0}
 
 @code{fortindent} controls the left margin indentation of
-expressions printed out by the @code{fortran} command.  0 gives normal
+expressions printed out by the @mref{fortran} command.  @code{0} gives normal
 printout (i.e., 6 spaces), and positive values will causes the
 expressions to be printed farther to the right.
 @end defvr
@@ -994,19 +994,22 @@ then @code{fortran} prints an assignment statement for each element of the
 matrix.
 
 If @var{expr} is not something recognized by @code{fortran},
-the expression is printed in @code{grind} format without complaint.
+the expression is printed in @mref{grind} format without complaint.
 @code{fortran} does not know about lists, arrays, or functions.
 
 @code{fortindent} controls the left margin of the printed lines.
-0 is the normal margin (i.e., indented 6 spaces). Increasing @code{fortindent}
-causes expressions to be printed further to the right.
+@code{0} is the normal margin (i.e., indented 6 spaces). Increasing
+@code{fortindent} causes expressions to be printed further to the right.
 
-When @code{fortspaces} is @code{true}, @code{fortran} fills out
+When @mref{fortspaces} is @code{true}, @code{fortran} fills out
 each printed line with spaces to 80 columns.
 
 @code{fortran} evaluates its arguments;
 quoting an argument defeats evaluation.
 @code{fortran} always returns @code{done}.
+
+See also the function @mxref{function_f90, f90} for printing one or more
+expressions as a Fortran 90 program.
 
 Examples:
 

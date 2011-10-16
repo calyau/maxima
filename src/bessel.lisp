@@ -260,6 +260,15 @@
                  (take '(%bessel_j) (- order 1) arg))
             (take '(%bessel_j) (- order 2) arg)))
       
+      ($hypergeometric_representation
+        ;; Return Hypergeometric representation of bessel_j
+        (mul (inv (take '(%gamma) (add order 1)))
+             (power (div arg 2) order)
+             (take '($hypergeometric)
+                   (list '(mlist))
+                   (list '(mlist) (add order 1))
+                   (neg (div (mul arg arg) 4)))))
+      
       (t
        (eqtest (list '(%bessel_j) order arg) expr)))))
 
@@ -564,6 +573,28 @@
                  (inv arg) 
                  (take '(%bessel_y) (- order 1) arg))
             (take '(%bessel_y) (- order 2) arg)))
+      
+      ($hypergeometric_representation
+        ;; Return Hypergeometric representation of bessel_y
+        (add (mul -1
+                  (power 2 order)
+                  (inv (power arg order))
+                  (take '(%gamma) order)
+                  (inv '$%pi)
+                  (take '($hypergeometric)
+                        (list '(mlist))
+                        (list '(mlist) (sub 1 order))
+                        (mul -1 (div (mul arg arg) 4))))
+             (mul -1
+                  (inv (power 2 order))
+                  (power arg order)
+                  (take '(%cos) (mul order '$%pi))
+                  (take '(%gamma) (neg order))
+                  (inv '$%pi)
+                  (take '($hypergeometric)
+                        (list '(mlist))
+                        (list '(mlist) (add 1 order))
+                        (mul -1 (div (mul arg arg) 4))))))
       
       (t
        (eqtest (list '(%bessel_y) order arg) expr)))))
@@ -875,6 +906,15 @@
                  (take '(%bessel_i) (- order 1) arg))
             (take '(%bessel_i) (- order 2) arg)))
       
+      ($hypergeometric_representation
+        ;; Return Hypergeometric representation of bessel_i
+        (mul (inv (take '(%gamma) (add order 1)))
+             (power (div arg 2) order)
+             (take '($hypergeometric)
+                   (list '(mlist))
+                   (list '(mlist) (add order 1))
+                   (div (mul arg arg) 4))))
+      
       (t
        (eqtest (list '(%bessel_i) order arg) expr)))))
 
@@ -1170,6 +1210,23 @@
                  (inv arg) 
                  (take '(%bessel_k) (- order 1) arg))
             (take '(%bessel_k) (- order 2) arg)))
+      
+      ($hypergeometric_representation
+        ;; Return Hypergeometric representation of bessel_k
+        (add (mul (power 2 (sub order 1))
+                  (take '(%gamma) order)
+                  (inv (power arg order))
+                  (take '($hypergeometric)
+                        (list '(mlist))
+                        (list '(mlist) (sub 1 order))
+                        (div (mul arg arg) 4)))
+             (mul (inv (power 2 (add order 1)))
+                   (power arg order)
+                   (take '(%gamma) (neg order))
+                   (take '($hypergeometric)
+                         (list '(mlist))
+                         (list '(mlist) (add order 1))
+                         (div (mul arg arg) 4)))))
       
       (t
        (eqtest (list '(%bessel_k) order arg) expr)))))

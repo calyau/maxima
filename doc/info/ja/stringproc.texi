@@ -1,0 +1,1172 @@
+@menu
+* Introduction to string processing::
+* Functions and Variables for input and output::
+* Functions and Variables for characters::
+* Functions and Variables for strings::
+@end menu
+
+@node Introduction to string processing, Functions and Variables for input and output, stringproc, stringproc
+@section Introduction to string processing
+
+@code{stringproc.lisp}は、
+ enlarges 
+Maximaの文字列を扱う機能を拡大し、
+ファイル入出力に関するいくつかの役立つ関数を追加します。
+
+質問とバグに関して、van.nek at arcor.deにメールしてください。
+
+Maximaでは、
+文字列は、"text"とタイプすることで簡単に構成することができます。
+@code{stringp}は文字列かテストします。
+
+@c ===beg===
+@c m: "text";
+@c stringp(m);
+@c ===end===
+@example
+(%i1) m: "text";
+(%o1)                         text
+(%i2) stringp(m);
+(%o2)                         true
+@end example
+
+文字は長さ1の文字列として表されます。
+これらはLisp文字ではありません。
+テストは
+@code{charp}で行うことができます。
+(関連として、@code{lcharp}と
+@code{cunlisp}を使ったLisp文字からMaxima文字への変換)
+
+
+@c ===beg===
+@c c: "e";
+@c [charp(c),lcharp(c)];
+@c supcase(c);
+@c charp(%);
+@c ===end===
+@example
+(%i1) c: "e";
+(%o1)                           e
+(%i2) [charp(c),lcharp(c)];
+(%o2)                     [true, false]
+(%i3) supcase(c);
+(%o3)                           E
+(%i4) charp(%);
+(%o4)                         true
+@end example
+
+@code{stringproc.lisp}の中の、文字を返す関数すべては、Maxima文字を返します。
+導入された文字が長さ1の文字列だという事実のおかげで、たくさんの文字列関数を文字にも使うことができます。
+既に見たように、
+@code{supcase}は１例です。
+
+Maxima文字列の最初の文字は位置1にあることを知ることは重要です。
+これは、Maximaリストの中の最初の要素も位置1にあるという事実によって設計されています。
+例えば、@code{charat}や@code{charlist}の定義を見てください。
+
+応用として、
+文字列関数はしばしばファイルを扱う時に使われます。
+@code{stringproc.lisp}の中に役立つストリーム関数、印字関数を見つけるでしょう。
+以下の例はここで導入された関数のいくつかがいかに働くか示します。
+
+例: 
+
+@code{openw}は、ファイルへの出力ストリームを返し、
+@code{printf}は、このファイルへのフォーマットされた書き込みを可能にします。
+詳細は@code{printf}を参照してください。
+
+@example
+(%i1) s: openw("E:/file.txt");
+(%o1)                    #<output stream E:/file.txt>
+(%i2) for n:0 thru 10 do printf( s, "~d ", fib(n) );
+(%o2)                                done
+(%i3) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
+              42,1.234,sqrt(2),%pi,1.0e-2,1.0e-2,1.0b-2 );
+(%o3)                                false
+(%i4) close(s);
+(%o4)                                true
+@end example
+
+ストリームを閉じた後、今度は入力方向で再び開くことができます。
+@code{readline}は行全体を１つの文字列として返します。
+現在、@code{stringproc}パッケージは
+文字列を操作するたくさんの関数を提供しています。
+@code{split}や@code{tokens}でトークン化できます。
+
+@example
+(%i5) s: openr("E:/file.txt");
+(%o5)                     #<input stream E:/file.txt>
+(%i6) readline(s);
+(%o6)                     0 1 1 2 3 5 8 13 21 34 55 
+(%i7) line: readline(s);
+(%o7)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i8) list: tokens(line);
+(%o8)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
+(%i9) map( parse_string, list );
+(%o9)            [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i10) float(%);
+(%o10) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01,
+                                                     0.01, 0.01]
+(%i11) readline(s);
+(%o11)                               false
+(%i12) close(s)$
+@end example
+
+ファイルの終わりに来ると、
+@code{readline}は@code{false}を返します。
+
+@opencatbox
+@category{Strings} @category{Share packages} @category{Package stringproc}
+@closecatbox
+
+
+@node Functions and Variables for input and output, Functions and Variables for characters, Introduction to string processing, stringproc
+@section Functions and Variables for input and output
+
+例: 
+
+@c ===beg===
+@c s: openw("E:/file.txt");
+@c control: 
+@c  "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
+@c printf( s,control, 'true,[1,2,3],42 )$
+@c close(s);
+@c s: openr("E:/file.txt");
+@c while stringp( tmp:readline(s) ) do print(tmp)$
+@c close(s)$
+@c ===end===
+@example
+(%i1) s: openw("E:/file.txt");
+(%o1)                     #<output stream E:/file.txt>
+(%i2) control: 
+"~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2t\
+and an integer: ~20t~d~%"$
+(%i3) printf( s,control, 'true,[1,2,3],42 )$
+(%o3)                                false
+(%i4) close(s);
+(%o4)                                true
+(%i5) s: openr("E:/file.txt");
+(%o5)                     #<input stream E:/file.txt>
+(%i6) while stringp( tmp:readline(s) ) do print(tmp)$
+  An atom:          true 
+  and a list:       one two three  
+  and an integer:   42 
+(%i7) close(s)$
+@end example
+
+@deffn {関数} close (@var{stream}) 
+@var{stream}を閉じて、
+もし@var{stream}が開いていたら
+@code{true}を返します。
+
+@opencatbox
+@category{File input} @category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} flength (@var{stream})
+@var{stream}の中の要素の数を返します。
+
+@opencatbox
+@category{File input} @category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} fposition (@var{stream})
+@deffnx {関数} fposition (@var{stream}, @var{pos})
+もし@var{pos}が使われてないなら、
+@var{stream}の中の現在位置を返します。
+もし@var{pos}が使われているなら、
+@code{fposition}は@var{stream}の中の位置を設定します。
+@var{pos}は正の数でなければいけません。
+@var{stream}の最初の要素は位置1にあります。
+
+@opencatbox
+@category{File input} @category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} freshline () 
+@deffnx {関数} freshline (@var{stream}) 
+もし位置が行の最初でないなら
+(@var{stream}に)改行を書きます。
+@code{newline}も参照してください。
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} newline () 
+@deffnx {関数} newline (@var{stream}) 
+(@var{stream}に)改行を書きます。
+@code{newline()}の使用の例に関しては、
+@code{sprint}を参照してください。
+@code{newline()}が期待通りに動かない
+いくつかの場合があることに注意してください。
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} opena (@var{file}) 
+@var{file}への出力ストリームを返します。
+もし存在しているファイルを開いたら、
+@code{opena}はファイルの終わりに要素を追加します。
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} openr (@var{file}) 
+@var{file}への入力ストリームを返します。
+もし@var{file}が存在しないなら、生成されます。
+
+@opencatbox
+@category{File input} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} openw (@var{file}) 
+@var{file}への出力ストリームを返します。
+もし@var{file}が存在しないなら、生成されます。
+もし存在しているファイルを開いたら、@code{openw}は
+@var{file}を破壊的に変更します。
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} printf (@var{dest}, @var{string})
+@deffnx {関数} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
+Common Lisp関数FORMATをMaximaで利用可能にします。
+(gcl.infoから:
+「フォーマットは
+制御文字列の文字を出力し、波形記号がディレクティブを挿入することを守ることで、
+フォーマットされた出力を生成します。
+波形記号の後の文字は多分、前置パラメータと修飾語が先行し、
+望まれるフォーマットの種類を指定します。
+ほとんどのディレクティブは、出力を生成するために1つまたは複数の引数を使います。」)
+
+以下の記述と例は@code{printf}を使うアイデアを与えるかもしれません。
+さらなる情報に関して、Lisp参考文献を参照してください。
+
+@example
+   ~%       改行
+   ~&       行のフレッシュ
+   ~t       タブ
+   ~$       通貨記号
+   ~d       10進整数
+   ~b       2進整数
+   ~o       8進整数
+   ~x       16進整数
+   ~br      b進整数
+   ~r       整数を一字一字
+   ~p       複数形
+   ~f       浮動小数点
+   ~e       科学的記数法
+   ~g       大きさに応じて~fまたは~e
+   ~h       多倍長浮動小数点
+   ~a       Maxima関数文字列を使う
+   ~s       ~aと同様, しかし"ダブルコーテーション"で囲まれた出力
+   ~~       ~
+   ~<       行揃え, ~> 終端
+   ~(       大文字小文字変換, ~) 終端
+   ~[       選択, ~] 終端
+   ~@{       繰り返し, ~@} 終端
+@end example
+
+選択ディレクティブ@code{~[}は添字がゼロから始まることに注意してください。
+ディレクティブ~*がサポートされていないことにも注意してください。
+
+@c ===beg===
+@c printf( false, "~a ~a ~4f ~a ~@@r", 
+@c         "String",sym,bound,sqrt(12),144), bound = 1.234;
+@c printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+@c printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+@c         mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
+@c control: "~:(~r~) bird~p ~[is~;are~] singing."$
+@c printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+@c ===end===
+@example
+(%i1) printf( false, "~a ~a ~4f ~a ~@@r", 
+              "String",sym,bound,sqrt(12),144), bound = 1.234;
+(%o1)                 String sym 1.23 2*sqrt(3) CXLIV
+(%i2) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+(%o2)                          one 2 THREE 
+(%i3) printf(true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+          mat = args(matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]))$
+      1.1       2.0       3.3 
+      4.0       5.0       6.0 
+      7.0       8.9       9.0 
+(%i4) control: "~:(~r~) bird~p ~[is~;are~] singing."$
+(%i5) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+(%o5)                    Two birds are singing.
+@end example
+
+もし@var{dest}がストリームか@code{true}なら、
+@code{printf}は@code{false}を返します。
+そうでないなら、@code{printf}は出力を含む文字列を返します。
+
+@opencatbox
+@category{File output} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} readline (@var{stream}) 
+@var{stream}の現在位置から行の終わりまでの文字を含む文字列か、
+もしファイルの終わりが来たら@var{false}を返します。
+
+@opencatbox
+@category{File input} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sprint}
+@deffn {関数} sprint (@var{expr_1}, @dots{}, @var{expr_n})
+
+引数を順に評価し、一番左から始まる「一行」に表示します。
+数は数の右隣に'-'と共に印字され、行の長さを無視します。
+もし中間行ブレークを置きたいなら、
+@code{newline()}―@code{stringproc.lisp} から自動ロードされます―
+が役に立つかもしれません。
+
+例:
+
+@c ===beg===
+@c for n:0 thru 19 do sprint( fib(n) )$
+@c for n:0 thru 22 do ( 
+@c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
+@c ===end===
+@example
+(%i1) for n:0 thru 19 do sprint( fib(n) )$
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
+(%i2) for n:0 thru 22 do ( 
+         sprint(fib(n)), if mod(n,10)=9 then newline() )$
+0 1 1 2 3 5 8 13 21 34 
+55 89 144 233 377 610 987 1597 2584 4181 
+6765 10946 17711 
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+@end deffn
+
+@node Functions and Variables for characters, Functions and Variables for strings, Functions and Variables for input and output, stringproc
+@section Functions and Variables for characters
+
+@deffn {関数} alphacharp (@var{char})    
+もし@var{char}がアルファベット文字なら@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} alphanumericp (@var{char}) 
+もし@var{char}がアルファベット文字か数字なら@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ascii (@var{int}) 
+ASCIIコード@var{int}( -1 < int < 256 )に対応する文字を返します。
+
+@c ===beg===
+@c for n from 0 thru 255 do ( 
+@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), 
+@c       if n=96 then newline() )$
+@c ===end===
+@example
+(%i1) for n from 0 thru 255 do ( 
+   tmp: ascii(n), if alphacharp(tmp) then sprint(tmp),
+      if n=96 then newline() )$
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cequal (@var{char_1}, @var{char_2})          
+もし@var{char_1}と@var{char_2}が同じなら@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cequalignore (@var{char_1}, @var{char_2})    
+@code{cequal}と同様ですが、文字の大小を無視します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cgreaterp (@var{char_1}, @var{char_2})       
+もし@var{char_1}のASCIIコードが@var{char_2}のそれより大きいなら@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cgreaterpignore (@var{char_1}, @var{char_2})
+@code{cgreaterp}と同様ですが、文字の大小を無視します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} charp (@var{obj}) 
+もし@var{obj}がMaxima-文字なら@code{true}を返します。
+例えばイントロダクションを参照してください。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cint (@var{char}) 
+@var{char}のASCIIコードを返します。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} clessp (@var{char_1}, @var{char_2})
+もし@var{char_1}のASCIIコードが@var{char_2}のそれより小さいなら@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} clesspignore (@var{char_1}, @var{char_2})
+@code{clessp}と同様ですが、文字の大小を無視します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} constituent (@var{char})   
+もし@var{char}がグラフィック文字であり、スペース文字でないなら、
+@code{true}を返します。
+グラフィック文字は見ることができる文字とスペース文字です。
+(@code{constituent}は、Paul Graham, ANSI Common Lisp, 1996, page 67で定義されています。)
+
+@c ===beg===
+@c for n from 0 thru 255 do ( 
+@c    tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
+@c ===end===
+@example
+(%i1) for n from 0 thru 255 do ( 
+tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
+! " #  %  ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @@ A B
+C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c
+d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} cunlisp (@var{lisp_char}) 
+Lisp文字をMaxima文字に変換します。
+(必要としないでしょう。)
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} digitcharp (@var{char})    
+もし@var{char}が0から9までの数字なら、
+@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} lcharp (@var{obj}) 
+もし @var{obj}がLisp文字なら、@code{true}を返します。
+(必要としないでしょう。)
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} lowercasep (@var{char})    
+もし@var{char}が小文字なら、@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@defvr {変数} newline 
+改行文字。
+
+@opencatbox
+@category{Global variables} @category{Package stringproc}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} space   
+スペース文字。
+
+@opencatbox
+@category{Global variables} @category{Package stringproc}
+@closecatbox
+
+@end defvr
+
+@defvr {変数} tab     
+タブ文字。
+
+@opencatbox
+@category{Global variables} @category{Package stringproc}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} uppercasep (@var{char})    
+もし@var{char}が大文字なら、@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@node Functions and Variables for strings,  , Functions and Variables for characters, stringproc
+@section Functions and Variables for strings
+
+@deffn {関数} stringp (@var{obj}) 
+もし@var{obj}が文字列なら、@code{true}を返します。
+例はイントロダクションを参照してください。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} charat (@var{string}, @var{n}) 
+@var{string}の@var{n}番目の文字を返します。
+@var{string}の一番目の文字は@var{n} = 1で返されます。
+
+@c ===beg===
+@c charat("Lisp",1);
+@c ===end===
+@example
+(%i1) charat("Lisp",1);
+(%o1)                           L
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} charlist (@var{string}) 
+@var{string}の文字すべてのリストを返します。
+
+@c ===beg===
+@c charlist("Lisp");
+@c %[1];
+@c ===end===
+@example
+(%i1) charlist("Lisp");
+(%o1)                     [L, i, s, p]
+(%i2) %[1];
+(%o2)                           L
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} eval_string (@var{str})
+文字列@var{str}をMaxima式としてパースし、評価します。
+文字列@var{str}は終端子(ドル記号@code{$}またはセミコロン@code{;})
+を持つかもしれませんし持たないかもしれません。
+
+もし複数あるなら、最初の式だけがパースされ、評価されます。
+
+もし@var{str}が文字列でないならエラーが出力されます。
+
+例:
+
+@c ===beg===
+@c eval_string ("foo: 42; bar: foo^2 + baz");
+@c eval_string ("(foo: 42, bar: foo^2 + baz)");
+@c ===end===
+@example
+(%i1) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                       42
+(%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o2)                   baz + 1764
+@end example
+
+@code{parse_string}も参照してください。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} parse_string (@var{str})
+文字列@var{str}をMaxima式としてパースします(評価しません)。
+文字列@var{str}は終端子(ドル記号@code{$}またはセミコロン@code{;})
+を持つかもしれませんし持たないかもしれません。
+
+もし複数あるなら、最初の式だけがパースされ、評価されます。
+
+もし@var{str}が文字列でないならエラーが出力されます。
+
+例:
+
+@c ===beg===
+@c parse_string ("foo: 42; bar: foo^2 + baz");
+@c parse_string ("(foo: 42, bar: foo^2 + baz)");
+@c ===end===
+@example
+(%i1) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                    foo : 42
+(%i2) parse_string ("(foo: 42, bar: foo^2 + baz)");
+                                   2
+(%o2)          (foo : 42, bar : foo  + baz)
+@end example
+
+@code{eval_string}も参照してください。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} scopy (@var{string}) 
+@var{string}のコピーを新しい文字列として返します。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sdowncase (@var{string}) 
+@deffnx {関数} sdowncase (@var{string}, @var{start}) 
+@deffnx {関数} sdowncase (@var{string}, @var{start}, @var{end}) 
+@code{supcase}と同様ですが、大文字が小文字に変換されます。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sequal (@var{string_1}, @var{string_2}) 
+もし@var{string_1}と@var{string_2}が同じ長さで、同じ文字を含むなら、
+@code{true}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sequalignore (@var{string_1}, @var{string_2})
+@code{sequal}と同様ですが、文字の大小を無視します。
+
+@opencatbox
+@category{Predicate functions} @category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sexplode (@var{string})
+@code{sexplode}は関数@code{charlist}の別名です。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} simplode (@var{list})  
+@deffnx {関数} simplode (@var{list}, @var{delim})  
+@code{simplode}は式のリストを取り、それらを結合して文字列にします。
+もしデリミタ@var{delim}が指定されないなら、
+@code{simplode}はデリミタを使いません。
+@var{delim}は任意の文字列を取り得ます。
+
+@c ===beg===
+@c simplode(["xx[",3,"]:",expand((x+y)^3)]);
+@c simplode( sexplode("stars")," * " );
+@c simplode( ["One","more","coffee."]," " );
+@c ===end===
+@example
+(%i1) simplode(["xx[",3,"]:",expand((x+y)^3)]);
+(%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+(%i2) simplode( sexplode("stars")," * " );
+(%o2)                   s * t * a * r * s
+(%i3) simplode( ["One","more","coffee."]," " );
+(%o3)                   One more coffee.
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sinsert (@var{seq}, @var{string}, @var{pos})  
+@code{substring (@var{string}, 1, @var{pos} - 1)}と
+文字列@var{seq}、@code{substring (@var{string}, @var{pos})}
+の結合となる文字列を返します。
+@var{string}の一番目の文字は位置1にあることに注意してください。
+
+@c ===beg===
+@c s: "A submarine."$
+@c concat( substring(s,1,3),"yellow ",substring(s,3) );
+@c sinsert("hollow ",s,3);
+@c ===end===
+@example
+(%i1) s: "A submarine."$
+(%i2) concat( substring(s,1,3),"yellow ",substring(s,3) );
+(%o2)                  A yellow submarine.
+(%i3) sinsert("hollow ",s,3);
+(%o3)                  A hollow submarine.
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sinvertcase (@var{string})  
+@deffnx {関数} sinvertcase (@var{string}, @var{start})  
+@deffnx {関数} sinvertcase (@var{string}, @var{start}, @var{end})  
+位置@var{start}から@var{end}までのそれぞれの文字を逆順にすることを除いて
+@var{string}を返します。
+もし@var{end}が与えられないなら、
+@var{start}から
+@var{string}の終わりまでのすべての文字列が置き換えられます。
+
+@c ===beg===
+@c sinvertcase("sInvertCase");
+@c ===end===
+@example
+(%i1) sinvertcase("sInvertCase");
+(%o1)                      SiNVERTcASE
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} slength (@var{string}) 
+@var{string}の中の文字の数を返します。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} smake (@var{num}, @var{char}) 
+@var{num}個の文字@var{char}を持つ新しい文字列を返します。
+
+@c ===beg===
+@c smake(3,"w");
+@c ===end===
+@example
+(%i1) smake(3,"w");
+(%o1)                          www
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} smismatch (@var{string_1}, @var{string_2}) 
+@deffnx {関数} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
+@var{string_1}と@var{string_2}が異なる@var{string_1}の最初の文字の位置、または
+@code{false}を返します。
+マッチングのデフォルトのテスト関数は@code{sequal}です。
+もし@code{smismatch}が文字の大小を無視なければいけないなら、
+テストとして@code{sequalignore}を使ってください。
+
+@c ===beg===
+@c smismatch("seven","seventh");
+@c ===end===
+@example
+(%i1) smismatch("seven","seventh");
+(%o1)                           6
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} split (@var{string})  
+@deffnx {関数} split (@var{string}, @var{delim})  
+@deffnx {関数} split (@var{string}, @var{delim}, @var{multiple})  
+@var{string}のすべてのトークンのリストを返します。
+それぞれのトークンはパースされていない文字列です。
+@code{split}は@var{delim}をデリミタとして使います。
+もし@var{delim}が与えられないなら、
+スペース文字がデフォルトのデリミタです。
+@var{multiple}はデフォルトで@code{true}のブーリアン変数です。
+重複デリミタが1つとして読まれます。
+これは、
+もしタブが複数スペース文字として保存されているなら、
+役立ちます。
+もし@var{multiple}が@code{false}に設定されるなら、
+それぞれのデリミタが有効です。
+
+@c ===beg===
+@c split("1.2   2.3   3.4   4.5");
+@c split("first;;third;fourth",";",false);
+@c ===end===
+@example
+(%i1) split("1.2   2.3   3.4   4.5");
+(%o1)                 [1.2, 2.3, 3.4, 4.5]
+(%i2) split("first;;third;fourth",";",false);
+(%o2)               [first, , third, fourth]
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sposition (@var{char}, @var{string}) 
+@var{string}の中で、@var{char}とマッチする最初の文字の位置を返します。
+@var{string}の一番目の文字は位置1にあります。
+文字の大小を無視した文字のマッチに関しては，
+@code{ssearch}を参照してください。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sremove (@var{seq}, @var{string})  
+@deffnx {関数} sremove (@var{seq}, @var{string}, @var{test})  
+@deffnx {関数} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {関数} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@var{string}同様文字列を返しますが、
+@var{seq}とマッチする部分文字列すべてなしに返します。
+マッチのデフォルトのテスト関数は@code{sequal}です。
+もし@code{sremove}が@var{seq}を検索する間文字の大小を無視しなければいけないなら、
+テストとして@code{sequalignore}を使ってください。
+探索を限定するには@var{start}と@var{end}を使ってください。
+@var{string}の一番目の文字は位置1にあることに注意してください。
+
+@c ===beg===
+@c sremove("n't","I don't like coffee.");
+@c sremove ("DO ",%,'sequalignore);
+@c ===end===
+@example
+(%i1) sremove("n't","I don't like coffee.");
+(%o1)                   I do like coffee.
+(%i2) sremove ("DO ",%,'sequalignore);
+(%o2)                    I like coffee.
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sremovefirst (@var{seq}, @var{string})  
+@deffnx {関数} sremovefirst (@var{seq}, @var{string}, @var{test})  
+@deffnx {関数} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {関数} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@code{seq}とマッチする最初の文字列だけが削除されることを除いて、
+@code{sremove}同様です。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} sreverse (@var{string}) 
+@var{string}の文字すべてが逆順の文字列を返します。
+
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ssearch (@var{seq}, @var{string})  
+@deffnx {関数} ssearch (@var{seq}, @var{string}, @var{test})  
+@deffnx {関数} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {関数} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+文字列@var{seq}とマッチする@var{string}の最初の部分文字列の位置を返します。
+マッチのためのデフォルトのテスト関数は@code{sequal}です。
+もし@code{ssearch}が文字の大小を無視しなければいけないなら、
+テストとして@code{sequalignore}を使ってください。
+検索を限定するには、@var{start}と@var{end}を使ってください。
+@var{string}の一番目の文字は位置1にあることに注意してください。
+
+@example
+(%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
+(%o1)                                  4
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ssort (@var{string}) 
+@deffnx {関数} ssort (@var{string}, @var{test}) 
+@code{test (@var{c}, @var{d})}が@code{false}、かつ、@code{test (@var{d}, @var{c})}が@code{true}であるような2つの連続する文字@var{c}と@var{d}がないような順で
+@var{string}の文字すべてを含む文字列を返します。
+
+ソートのためのデフォルトのテスト関数は@var{clessp}です。
+テスト関数一式は@code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}です。
+
+@c ===beg===
+@c ssort("I don't like Mondays.");
+@c ssort("I don't like Mondays.",'cgreaterpignore);
+@c ===end===
+@example
+(%i1) ssort("I don't like Mondays.");
+(%o1)                    '.IMaddeiklnnoosty
+(%i2) ssort("I don't like Mondays.",'cgreaterpignore);
+(%o2)                 ytsoonnMlkIiedda.'   
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ssubst (@var{new}, @var{old}, @var{string}) 
+@deffnx {関数} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {関数} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {関数} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+@var{string}の中の@var{old}にマッチするすべての部分文字列を
+@var{new}で置き換えた文字列を返します。
+@var{old}と@var{new}は同じ長さである必要はありません。
+マッチのためのデフォルトのテスト関数は@code{sequal}です。
+もし@code{ssubst}がoldを検索する間大文字小文字を無視すべきなら、
+テストとして@code{sequalignore}を使ってください。
+検索を制限するには、@var{start}と@var{end}を使ってください。
+@var{string}の一番目の文字は位置1にあることに注意してください。
+
+@c ===beg===
+@c ssubst("like","hate","I hate Thai food. I hate green tea.");
+@c ssubst("Indian","thai",%,'sequalignore,8,12);
+@c ===end===
+@example
+(%i1) ssubst("like","hate","I hate Thai food. I hate green tea.");
+(%o1)          I like Thai food. I like green tea.
+(%i2) ssubst("Indian","thai",%,'sequalignore,8,12);
+(%o2)         I like Indian food. I like green tea.
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} ssubstfirst (@var{new}, @var{old}, @var{string}) 
+@deffnx {関数} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {関数} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {関数} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+@var{old}とマッチする最初の部分文字列だけを置き換えることを除いて、
+@code{subst}と同様です。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} strim (@var{seq},@var{string}) 
+@var{string}の両端から@var{seq}に現れるすべての文字を除いた文字列を返します。
+
+@c ===beg===
+@c "/* comment */"$
+@c strim(" /*",%);
+@c slength(%);
+@c ===end===
+@example
+(%i1) "/* comment */"$
+(%i2) strim(" /*",%);
+(%o2)                        comment
+(%i3) slength(%);
+(%o3)                           7
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} striml (@var{seq}, @var{string}) 
+@var{string}の左端だけトリムすることを除いて
+@code{strim}と同様です。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} strimr (@var{seq}, @var{string}) 
+@var{string}の右端だけトリムすることを除いて
+@code{strim}と同様です。
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} substring (@var{string}, @var{start})
+@deffnx {関数} substring (@var{string}, @var{start}, @var{end}) 
+位置@var{start}で始まり位置@var{end}で終わる
+@var{string}の部分文字列を返します。
+位置@var{end}の文字は含まれません。
+もし@var{end}が与えられないなら、部分文字列は文字列の残りを含みます。
+@var{string}の一番目の文字は位置1にあることに注意してください。
+
+@c ===beg===
+@c substring("substring",4);
+@c substring(%,4,6);
+@c ===end===
+@example
+(%i1) substring("substring",4);
+(%o1)                        string
+(%i2) substring(%,4,6);
+(%o2)                          in
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} supcase (@var{string}) 
+@deffnx {関数} supcase (@var{string}, @var{start}) 
+@deffnx {関数} supcase (@var{string}, @var{start}, @var{end}) 
+@var{string}の位置@var{start}から@var{end}までの小文字を対応する大文字に置き換えた
+文字列を返します。
+もし@var{end}が与えられないなら、
+@var{start}から@var{string}の終わりまでのすべての小文字が置き換えられます。
+
+@c ===beg===
+@c supcase("english",1,2);
+@c ===end===
+@example
+(%i1) supcase("english",1,2);
+(%o1)                        English
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} tokens (@var{string}) 
+@deffnx {関数} tokens (@var{string}, @var{test}) 
+@var{string}から抽出されたトークンのリストを返します。
+トークンは、文字があるテスト関数を満たす部分文字列です。
+もしテストが与えられないなら、
+@var{constituent}がデフォルトテストとして使われます。
+@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}}はテスト関数一式です。
+(The Lisp-version of 
+@code{tokens}のLispバージョンはPaul Grahamによって書かれました。 ANSI Common Lisp, 1996, page 67.)
+
+@c ===beg===
+@c tokens("24 October 2005");
+@c tokens("05-10-24",'digitcharp);
+@c map(parse_string,%);
+@c ===end===
+@example
+(%i1) tokens("24 October 2005");
+(%o1)                  [24, October, 2005]
+(%i2) tokens("05-10-24",'digitcharp);
+(%o2)                     [05, 10, 24]
+(%i3) map(parse_string,%);
+(%o3)                      [5, 10, 24]
+@end example
+
+@opencatbox
+@category{Package stringproc}
+@closecatbox
+
+@end deffn

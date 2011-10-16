@@ -1,4 +1,4 @@
-@c English version 1.14
+@c English version 2011-10-03
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -233,6 +233,7 @@ Distribuciones discretas:
    Uniforme discreta    (*discrete_uniform)
    Hipergeom@'etrica      (*hypergeometric)
    Binomial negativa    (*negative_binomial)
+   Finita discreta      (*general_finite_discrete)
 @end example
 
 Por ejemplo, @code{pdf_student_t(x,n)} es la funci@'on de densidad de la distribuci@'on de Student con @var{n} grados de libertad, @code{std_pareto(a,b)} es la desviaci@'on t@'{@dotless{i}}pica de la distribuci@'on de Pareto de par@'ametros @var{a} y @var{b}, y @code{kurtosis_poisson(m)} es el coeficiente de curtosis de la distribuci@'on de Poisson de media @var{m}.
@@ -1858,6 +1859,121 @@ Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @section Funciones y variables para distribuciones discretas
 
 
+
+@deffn {Funci@'on} pdf_general_finite_discrete (@var{x},@var{v})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}, tal que @code{Pr(X=i) = v_i}. El vector @math{v} puede ser una lista de expresiones no negativas, cuyas componentes se normalizar@'an para obtener un vector de probabilidades. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+
+@c ===beg===
+@c load (distrib)$
+@c pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+@c pdf_general_finite_discrete(2, [1, 4, 2]);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+                                4
+(%o2)                           -
+                                7
+(%i3) pdf_general_finite_discrete(2, [1, 4, 2]);
+                                4
+(%o3)                           -
+                                7
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} cdf_general_finite_discrete (@var{x},@var{v})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+
+@c ===beg===
+@c load (distrib)$
+@c cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+@c cdf_general_finite_discrete(2, [1, 4, 2]);
+@c cdf_general_finite_discrete(2+1/2, [1, 4, 2]);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+                                5
+(%o2)                           -
+                                7
+(%i3) cdf_general_finite_discrete(2, [1, 4, 2]);
+                                5
+(%o3)                           -
+                                7
+(%i4) cdf_general_finite_discrete(2+1/2, [1, 4, 2]);
+                                5
+(%o4)                           -
+                                7
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} quantile_general_finite_discrete (@var{q},@var{v})
+Devuelve el @var{q}-cuantil de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+@end deffn
+
+
+@deffn {Funci@'on} mean_general_finite_discrete (@var{v})
+Devuelve la media de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+@end deffn
+
+
+@deffn {Funci@'on} var_general_finite_discrete (@var{v})
+Devuelve la varianza de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+@end deffn
+
+
+@deffn {Funci@'on} std_general_finite_discrete (@var{v})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+@end deffn
+
+
+@deffn {Funci@'on} skewness_general_finite_discrete (@var{v})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+@end deffn
+
+
+@deffn {Funci@'on} kurtosis_general_finite_discrete (@var{v})
+Devuelve el coeficiente de curtosis de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+@end deffn
+
+
+@deffn {Funci@'on} random_general_finite_discrete (@var{v})
+@deffnx {Funci@'on} random_general_finite_discrete (@var{v},@var{m})
+Devuelve un valor aleatorio de una variable aleatoria general discreta finita, con vector de probabilidades @math{v}. Llamando a @code{random_general_finite_discrete} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no @var{n}.
+
+V@'ease @code{pdf_general_finite_discrete} para m@'as detalles.
+
+@c ===beg===
+@c load (distrib)$
+@c random_general_finite_discrete([1,3,1,5]);
+@c random_general_finite_discrete([1,3,1,5], 10);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) random_general_finite_discrete([1,3,1,5]);
+(%o2)                          4
+(%i3) random_general_finite_discrete([1,3,1,5], 10);
+(%o3)           [4, 2, 2, 3, 2, 4, 4, 1, 2, 2]
+@end example
+@end deffn
+
+
 @deffn {Funci@'on} pdf_binomial (@var{x},@var{n},@var{p})
 Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria @i{Binomial}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
@@ -2231,12 +2347,23 @@ V@'ease tambi@'en @code{random}. Para hacer uso de esta funci@'on, ejec@'utese p
 
 
 @deffn {Funci@'on} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una 
+variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} 
+enteros positivos y @math{n<=n1+n2}. Siendo @var{n1} el n@'umero de objetos de la clase A, 
+@var{n2} el n@'umero de objetos de la clase B y @var{n} el tama@~no de una muestra sin 
+reemplazamiento, esta funci@'on devuelve la probabilidad del suceso 
+"extraer exactamente @var{x} objetos de la clase A".
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on of una variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on of una variable 
+aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros 
+positivos y @math{n<=n1+n2}. V@'ease @code{pdf_hypergeometric} para una descripci@'on m@'as completa.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 

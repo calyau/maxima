@@ -30,7 +30,7 @@ Continuous distributions:                   Discrete distributions:
    Exponential         (*exp)                 Discrete uniform     (*discrete_uniform)
    Lognormal           (*lognormal)           Hypergeometric       (*hypergeometric)
    Gamma               (*gamma)               Negative binomial    (*negative_binomial)
-   Beta                (*beta)
+   Beta                (*beta)                Finite discrete      (*general_finite_discrete)
    Continuous uniform  (*continuous_uniform)
    Logistic            (*logistic)
    Pareto              (*pareto)
@@ -168,7 +168,7 @@ controlib(n):=
 
 /* If n1, n2 and n are all three positive integers, it returns 1.
    It at least one of them is not a positive integer, the 
-   function returns -1. If there is not enough informations, the
+   function returns -1. If there is not enough information, the
    output is 0 */
 controliii(n1,n2,n):=block([t:n1+n2],
    if integerp(n1) and sign(n1)='pos and
@@ -182,6 +182,22 @@ controliii(n1,n2,n):=block([t:n1+n2],
               member(sign(n),['neg,'zero,'nz]) or sign(t-n)='neg
               then -1
               else 0  )$
+
+/* If v is a not a list the function returns -1. If some of
+   the components is negative or declared as negative, the
+   output is -2. If all the components are greater or equal
+   than zero, the output is 1. If there is not enough information,
+   function controlv returns 0. */
+controlv(v):=
+   if not listp(v) or length(v)=0
+      then -1
+   elseif some(lambda([z], sign(z)='neg), v)
+      then -2
+   elseif every(lambda([z], numberp(z) and member(sign(z), ['pos,'zero,'pz])), float(v))
+      then 1
+      else 0 $
+
+
 
 
 
@@ -1928,4 +1944,129 @@ random_negative_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if integerp(n) and numberp(fp)
       then return(?rndnegbinom(float(n),fp,no)),
    funmake('random_negative_binomial,append([n,p],num)) )$
+
+
+
+
+/*         GENERAL FINITE DISCRETE MODEL          */
+
+
+
+pdf_general_finite_discrete(x,v):=block([cv: controlv(v)],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1 and numberp(x)
+    then
+      if sign(x-floor(x))='zero and 1<=x and x<=length(v)
+        then v[floor(x)] / apply("+", v)
+        else 0
+    else
+      funmake('pdf_discrete_model,[x,v])) $
+
+cdf_general_finite_discrete(x,v):=block([cv: controlv(v),s:0,pa],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1 and numberp(x)
+    then
+      if 1<=x and x<=length(v)
+        then (pa: makelist(s:s+k, k, v/apply("+",v)),
+              pa[floor(x)])
+      elseif x > length(v)
+        then 1
+        else 0
+    else
+      funmake('cdf_discrete_model,[x,v])) $
+
+quantile_general_finite_discrete(q,v):=block([cv: controlv(v),cq:controlq(q),s:0,pa,k:1],
+  if cv=-1 or cq=-1 then error("Illegal parameter"),
+  if cv=-2 then error("Negative values not allowed"),
+  if cv=1 and cq=1
+    then (
+      pa: makelist(s:s+k, k, v/apply("+",v)),
+      while (q>pa[k]) do k: k+1,
+      k)
+    else
+      funmake('quantile_discrete_model,[q,v]))$
+
+mean_general_finite_discrete(v):=block([cv: controlv(v),p],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1
+    then (
+      p: v / apply("+", v),
+      makelist(k,k,1,length(v)).p )
+    else
+      funmake('mean_discrete_model,[v])) $
+
+var_general_finite_discrete(v):=block([cv: controlv(v),p,x,m],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1
+    then (
+      p: v / apply("+", v),
+      x: makelist(k,k,1,length(v)),
+      m: x . p,
+      (makelist(k,k,1,length(v)) - m)^2 . p )
+    else
+      funmake('var_discrete_model,[v])) $
+
+std_general_finite_discrete(v):=block([cv: controlv(v),p,x,m],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1
+    then (
+      p: v / apply("+", v),
+      x: makelist(k,k,1,length(v)),
+      m: x . p,
+      sqrt((makelist(k,k,1,length(v)) - m)^2 . p))
+    else
+      funmake('std_discrete_model,[v])) $
+
+skewness_general_finite_discrete(v):=block([cv: controlv(v),p,x,m],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1
+    then (
+      p: v / apply("+", v),
+      x: makelist(k,k,1,length(v)),
+      m: x . p,
+      (makelist(k,k,1,length(v)) - m)^3 . p / var_discrete_model(v)^(3/2))
+    else
+      funmake('skewness_discrete_model,[v])) $
+
+kurtosis_general_finite_discrete(v):=block([cv: controlv(v),p,x,m],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1
+    then (
+      p: v / apply("+", v),
+      x: makelist(k,k,1,length(v)),
+      m: x . p,
+      (makelist(k,k,1,length(v)) - m)^4 . p / var_discrete_model(v)^2 - 3)
+    else
+      funmake('kurtosis_discrete_model,[v])) $
+
+random_general_finite_discrete(v,[num]):=block([cv: controlv(v),no,fp,pa,r,k,s:0],
+  if cv = -1 then error("Illegal parameter"),
+  if cv = -2 then error("Negative values not allowed"),
+  if cv = 1
+    then (
+      if length(num) = 0 then no: 0 else no: num[1],
+      fp: float(v),
+      fp: fp / apply("+", fp),
+      pa: makelist(s:s+k, k, fp),
+      if no = 0
+        then
+          (r: random(1.0),
+           k: 1,
+           while (r>pa[k]) do k: k+1,
+           k)
+        else
+          makelist(
+            (r: random(1.0),
+             k: 1,
+             while (r>pa[k]) do k: k+1,
+             k), i, no) )
+  else
+    funmake('random_discrete_model,append([v],num)) )$
 

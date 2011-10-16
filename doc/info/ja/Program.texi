@@ -1,0 +1,1196 @@
+@menu
+* Lisp and Maxima::
+* Garbage Collection::
+* Introduction to Program Flow::  
+* Functions and Variables for Program Flow::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Lisp and Maxima, Garbage Collection, Program Flow, Program Flow
+@section Lisp and Maxima
+@c -----------------------------------------------------------------------------
+
+MaximaはLispで書かれており、
+Lisp関数や変数をMaximaからアクセスしたり、その逆が簡単にできます。
+LispとMaximaのシンボルは命名の慣例で区別されます。
+ドル記号@code{$}で始まるLispシンボルは、ドル記号なしのMaximaシンボルに対応します。
+@c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
+@c This includes special Maxima variables such as @code{%} and input and output labels,
+@c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
+クエスチョンマーク@code{?}で始まるMaximaシンボルは、クエスチョンマークなしのLispシンボルに対応します。
+例えば、Maximaシンボル@code{foo}はLispシンボル@code{$FOO}に対応し、
+Maximaシンボル@code{?foo}はLispシンボル@code{FOO}に対応します。
+@code{?foo}は、@code{?}と@code{foo}の間にスペースを入れずに書くことに注意してください。でないと、それは@code{describe ("foo")}に間違えられます。
+
+Lispシンボルの中に、ハイフン@code{-}やアスタリスク@code{*}、他の特殊文字があれば、
+Maximaのコードの中では、バックスラッシュ@code{\}でエスケープしないといけません。
+例えば、Lispの識別子 @code{*foo-bar*}は、Maximaでは、@code{?\*foo\-bar\*}と書きます。
+
+Maximaセッションの中で、Lispコードを実行できます。
+特殊コマンド@code{:lisp}を使って、
+（１つか複数のフォームを含む）Lispの一行を実行できます。例えば、
+
+@example
+(%i1) :lisp (foo $x $y)
+@end example
+
+@noindent
+は、Lisp関数@code{foo}をMaxima変数@code{x}, @code{y}を引数としてコールします。
+@code{:lisp}構成子は
+対話プロンプトや@code{batch}や@code{demo}によって処理されるファイルの中で使えますが、
+@code{load}, @code{batchload}, @code{translate_file}, @code{compile_file}が
+処理するファイルの中では使えません。
+
+関数@code{to_lisp()}を実行すると、対話的なLispセッションが始まります。
+@code{(to-maxima)}を入力すると、Lispセッションを終了してMaximaに戻ります。
+@c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
+@c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
+@c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
+@c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
+
+Lispの関数や変数を、Maximaで通常の関数名、変数名(特殊な句読点のない名前)に見せるには、
+Lispの名前をドル記号@code{$}で始めなければなりません。
+
+Maximaでは、識別子の中の大文字、小文字が区別されます。
+LispとMaximaの間の名前変換を決めるルールがあります。
+
+@enumerate
+@item
+縦棒で囲まれていないLisp識別子は、Maximaの小文字の識別子に対応します。
+Lisp識別子が大文字でも小文字でも混ざっていても無視されます。
+例えば、Lispの@code{$foo}や@code{$FOO}、@code{$Foo}はすべて
+Maximaの@code{foo}に対応します。
+でも、これはデフォルトで、
+Lispリーダが@code{$foo}, @code{$FOO}, @code{$Foo}を
+Lispシンボル@code{$FOO}に変換するからです。
+@item
+すべて大文字かすべて小文字で、縦棒で囲まれたLisp識別子は、大文字小文字を逆にしたMaximaの識別子に対応します。
+例えば、Lispの@code{|$FOO|}, @code{|$foo|}はそれぞれ、Maximaの@code{foo}, @code{FOO}に対応します。
+@item
+大文字小文字が混ざっていて、縦棒で囲まれたLisp識別子は、そのままMaximaの識別子に対応します。
+例えば、Lispの@code{|$Foo|}はMaximaの@code{Foo}に対応します。
+@end enumerate
+
+@code{#$}Lispマクロを使うと、Maximaの式をLispコードの中で使うことができます。
+@code{#$@var{expr}$}はMaximaの式@var{expr}と同値なLispの式に展開されます。
+
+@example
+(msetq $foo #$[x, y]$)
+@end example
+
+@noindent
+これは以下のように入力するのと同じ効果です。
+
+@example
+(%i1) foo: [x, y];
+@end example
+
+@noindent
+Lisp関数@code{displa}は、Maximaフォーマットで式を表示します。
+
+@example
+(%i1) :lisp #$[x, y, z]$ 
+((MLIST SIMP) $X $Y $Z)
+(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
+[x, y, z]
+NIL
+@end example
+
+Maximaで定義された関数は、通常のLisp関数ではありません。
+Lisp関数@code{mfuncall}は、Maxima関数をコールします。
+例えば:
+
+@example
+(%i1) foo(x,y) := x*y$
+(%i2) :lisp (mfuncall '$foo 'a 'b)
+((MTIMES SIMP) A B)
+@end example
+
+以下のLisp関数は、Maximaパッケージの中でシャドウされています。
+
+@verbatim
+   complement     continue      //
+   float          functionp     array
+   exp            listen        signum
+   atan           asin          acos
+   asinh          acosh         atanh
+   tanh           cosh          sinh
+   tan            break         gcd
+@end verbatim
+
+@opencatbox
+@category{Programming}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Garbage Collection, Introduction to Program Flow, Lisp and Maxima, Program Flow
+@section Garbage Collection
+@c -----------------------------------------------------------------------------
+
+数式処理は膨大なゴミ(最終的には使われない一時的な、もしくは中間の結果)を生む傾向があり、
+ゴミの効率的な取り扱いは、プログラムをうまく完了させるために非常に重要な場合があります。
+
+@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
+@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
+@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
+(SunOS 4.0やBSDの幾つかを含む)mprotectシステムコールが利用可能なUNIXシステム
+上でのGCLでは、階層化(stratified)ガーベッジコレクションが利用可能です。
+これは、ガーベッジコレクションを最近書き込まれたページに限定します。
+GCLドキュメントのALLOCATEやGBCを参照してください。
+Lispレベルで(setq si::*notify-gbc* t)を実行すると、どの領域がより多くの空間を必要としているか決めるのに役立つでしょう。
+
+Maximaを走らせる他のLispについては、
+そのLispのGCの制御の仕方に関するドキュメントを調べてください。
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Program Flow, Functions and Variables for Program Flow, Garbage Collection, Program Flow
+@section Introduction to Program Flow
+@c -----------------------------------------------------------------------------
+
+Maximaは、
+@code{go}のようなもっとプリミティブな構成子はもちろん、
+繰り返しのために@code{do}ループを提供します。
+
+@c end concepts Program Flow
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Program Flow,  , Introduction to Program Flow, Program Flow
+@section Functions and Variables for Program Flow
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{backtrace}
+@deffn  {関数} backtrace ()
+@deffnx {関数} backtrace (@var{n})
+
+コールスタック、すなわち、
+現在アクティブな関数をコールした関数のリスト、を印字します。
+
+@code{backtrace()}はコールスタック全体を印字します。
+
+@code{backtrace (@var{n})}は、
+現在アクティブな関数を含めて、@var{n}個の直近の関数を印字します。
+
+@c IS THIS STATMENT REALLY NEEDED ?? 
+@c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING CONTEXT??)
+@code{backtrace}は、
+(デバッグの文脈でだけでなく、)
+スクリプト、関数、対話プロンプトからコールすることができます。
+
+例:
+
+@itemize @bullet
+@item
+@code{backtrace()}はコールスタック全体を印字します。
+
+@example
+(%i1) h(x) := g(x/7)$
+(%i2) g(x) := f(x-11)$
+(%i3) f(x) := e(x^2)$
+(%i4) e(x) := (backtrace(), 2*x + 13)$
+(%i5) h(10);
+#0: e(x=4489/49)
+#1: f(x=-67/7)
+#2: g(x=10/7)
+#3: h(x=10)
+                              9615
+(%o5)                         ----
+                               49
+@end example
+@end itemize
+
+@itemize @bullet
+@item
+@code{backtrace (@var{n})}は、
+現在アクティブな関数を含めて、@var{n}個の直近の関数を印字します。
+
+@example
+(%i1) h(x) := (backtrace(1), g(x/7))$
+(%i2) g(x) := (backtrace(1), f(x-11))$
+(%i3) f(x) := (backtrace(1), e(x^2))$
+(%i4) e(x) := (backtrace(1), 2*x + 13)$
+(%i5) h(10);
+#0: h(x=10)
+#0: g(x=10/7)
+#0: f(x=-67/7)
+#0: e(x=4489/49)
+                              9615
+(%o5)                         ----
+                               49
+@end example
+@end itemize
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{do}
+@deffn {特殊演算子} do
+
+@code{do}文は繰り返しを実行するために使われます。
+その強力な一般性のために、
+@code{do}文は２編で記述されます。
+最初、通常の形式が
+(Fortran, Algol, PL/I, など)いくつかの他のプログラミング言語の中で使われるそれ
+との類似で与えられます;
+それから、他の特長が言及されます。
+
+この形式の、終了条件に関してだけ違う３つの別形があります。
+それらは:
+
+@itemize @bullet
+@item
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      thru @var{limit} do @var{body}}
+@item
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      while @var{condition} do @var{body}}
+@item
+@code{for @var{variable}: @var{initial_value} step @var{increment}
+      unless @var{condition} do @var{body}}
+@end itemize
+
+@c UGH. DO WE REALLY NEED TO MENTION THIS??
+(代わりに、@code{step}は終了条件や範囲の後与えられるかもしれません。)
+
+@var{initial_value}, @var{increment}, @var{limit}, @var{body}は、
+任意の式を取り得ます。
+もし増分が1なら、 "@code{step 1}"は省略できます。
+
+@code{do}文の実行は、最初
+@var{initial_value}を @var{variable} (今後、制御変数と呼びます)
+に割り当てることによって処理されます。
+そして:
+(1) もし制御変数が @code{thru}指定の範囲を越えたら、もしくは、
+@code{unless}の条件が @code{true}なら、
+もしくは、 @code{while}の条件が @code{false}なら、
+@code{do}は終了します。
+(2) @var{body}が評価されます。
+(3) 増分が制御変数に足されます。
+終了条件が満たされるまで、
+いずれかが満たされる時 @code{do}が終了する複数の終了条件を与えることもできます。
+
+一般的に、 @code{thru}テストは、
+もし @var{increment}が非負なら、制御変数が @var{limit}よりも大きい時、
+または、もし @var{increment}が負なら、制御変数が @var{limit}よりも小さい時、
+満たされます。
+@var{increment}と @var{limit}は、この不等式が決定できる限り、数値でない式も取り得ます。
+しかしながら、
+@code{do}文が入力された時
+@var{increment}が構文法的に負(例えば負の数)でない限り、
+Maximaは、 @code{do}が実行される時、正と仮定します。
+もし正でないなら、
+@code{do}は適切に終了しないかもしれません。
+
+@var{limit}, @var{increment}, 終了条件は、ループを通して毎回評価されることに注意してください。
+もしこれらのいずれかがおおくの計算を含み、
+@var{body}の実行中すべてで変わらない結果をもたらすなら、
+@code{do}に先立って変数をそれらの値に設定し、その変数を
+@code{do}形式の中で使うことはもっと効率的です。
+
+@code{do}文が通常返す値は、アトム @code{done}です。
+しかしながら、
+早い時点で @code{do}から抜けて任意の望みの値を与えるために、
+関数 @code{return}を @var{body}の中で使うことができます。
+しかしながら、 @code{block}の中で起こる @code{do}の中の @code{return}は、
+@code{do}だけから抜けて、 @code{block}からは抜けないことに注意してください。
+@code{do}から囲んでいる @code{block}に抜けるために、
+@code{go}関数は使えないことにも注意してください。
+
+制御変数はいつも @code{do}にローカルです。
+
+従って、
+@code{do}の外側の同じ名前を持つ変数の値に影響することなく、任意の変数が使えます。
+制御変数は、 @code{do}が終了した後、バインドされていません。
+
+@example
+(%i1) for a:-3 thru 26 step 7 do display(a)$
+                             a = - 3
+
+                              a = 4
+
+                             a = 11
+
+                             a = 18
+
+                             a = 25
+@end example
+
+@example
+(%i1) s: 0$
+(%i2) for i: 1 while i <= 10 do s: s+i;
+(%o2)                         done
+(%i3) s;
+(%o3)                          55
+@end example
+
+条件@code{while i <= 10}は、
+@code{unless i > 10}と、また、@code{thru 10}と同値であることに注意してください。
+
+@example
+(%i1) series: 1$
+(%i2) term: exp (sin (x))$
+(%i3) for p: 1 unless p > 7 do
+          (term: diff (term, x)/p, 
+           series: series + subst (x=0, term)*x^p)$
+(%i4) series;
+                  7    6     5    4    2
+                 x    x     x    x    x
+(%o4)            -- - --- - -- - -- + -- + x + 1
+                 90   240   15   8    2
+@end example
+
+以上は、@code{e^sin(x)}のTaylor級数の8項を与えます。
+
+
+@example
+(%i1) poly: 0$
+(%i2) for i: 1 thru 5 do
+          for j: i step -1 thru 1 do
+              poly: poly + i*x^j$
+(%i3) poly;
+                  5      4       3       2
+(%o3)          5 x  + 9 x  + 12 x  + 14 x  + 15 x
+(%i4) guess: -3.0$
+(%i5) for i: 1 thru 10 do
+          (guess: subst (guess, x, 0.5*(x + 10/x)),
+           if abs (guess^2 - 10) < 0.00005 then return (guess));
+(%o5)                  - 3.162280701754386
+@end example
+
+この例は、
+Newton-Raphson反復を最大10回使って、
+10の負の平方根を計算します。
+もし収束基準が満たされないなら、
+戻り値は@code{done}になります。
+
+いつもある量を制御変数に加える代わりに、
+繰り返しそれぞれで量をある他の方法で換えたい時があるかもしれません。
+この場合、
+@code{step @var{increment}}の代わりに
+@code{next @var{expression}}を使うことができます。
+これは、ループの間、
+制御変数が毎回@var{expression}の評価結果に設定されるようにします。
+
+@example
+(%i6) for count: 2 next 3*count thru 20 do display (count)$
+                            count = 2
+
+                            count = 6
+
+                           count = 18
+@end example
+
+@c UGH. DO WE REALLY NEED TO MENTION THIS??
+@code{for @var{variable}: @var{value} ...do...}の代わりとして、
+構文法@code{for @var{variable} from @var{value} ...do...}が使えます。
+これは、
+@code{from @var{value}}を
+@code{step}や@code{next}値の後や終了条件の後に置くことを許します。
+もし@code{from @var{value}}が省略されたら、
+初期値として1が使われます。
+
+制御変数が実際には決して使われないような繰り返しを実行することに興味があることがあるかもしれません。
+それゆえに、
+貧弱な初期推測を使って5の平方根を計算する以下の例にあるように、
+初期化と更新情報を省略して終了条件だけ与えることが許されます。
+
+@example
+(%i1) x: 1000$
+(%i2) thru 20 do x: 0.5*(x + 5.0/x)$
+(%i3) x;
+(%o3)                   2.23606797749979
+(%i4) sqrt(5), numer;
+(%o4)                   2.23606797749979
+@end example
+
+もし望むなら、終了条件さえ完全に省略し、
+無限に@var{body}を評価し続ける@code{do @var{body}}だけを与えることもできます。
+この場合、関数@code{return}が@code{do}の実行を終了するのに使われるべきです。
+
+@example
+(%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
+          do (y: ev(df), x: x - f(x)/y, 
+              if abs (f (x)) < 5e-6 then return (x)))$
+(%i2) sqr (x) := x^2 - 5.0$
+(%i3) newton (sqr, 1000);
+(%o3)                   2.236068027062195
+@end example
+
+@c DUNNO IF WE NEED THIS LEVEL OF DETAIL; THIS ARTICLE IS GETTING PRETTY LONG
+(@code{return}が実行された時、
+@code{x}の現在値を
+@code{do}の値として返そうとすることに注意してください。
+@code{do}がブロックの最後の文なので、
+@code{block}から抜けて、
+@code{do}の値が
+@code{block}の値として返されます。)
+
+@code{do}のもう１つ別の形式がMaximaで利用可能です。構文法は:
+
+@example
+for @var{variable} in @var{list} @var{end_tests} do @var{body}
+@end example
+
+@var{list}の要素は、
+@var{body}の繰り返しのそれぞれで
+@code{variable}に連続的に割り当てられる任意の式です。
+オプションの終了テスト@var{end_tests}は、
+@code{do}の実行を終了するのに使うことができます;
+そうでなければ、
+@var{list}が使い果たされた時、または、
+@var{body}の中で
+@code{return}が実行された時、
+終了します。
+ (実際には、@code{list}は非アトムの任意の式を取り得えて、連続的な部分が取られます。)
+
+@example
+(%i1)  for f in [log, rho, atan] do ldisp(f(1))$
+(%t1)                                  0
+(%t2)                                rho(1)
+                                     %pi
+(%t3)                                 ---
+                                      4
+(%i4) ev(%t3,numer);
+(%o4)                             0.78539816
+@end example
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{errcatch}
+@deffn {関数} errcatch (@var{expr_1}, @dots{}, @var{expr_n})
+
+@var{expr_1}, @dots{}, @var{expr_n}を１つずつ評価し、
+もしエラーが起こらないなら、@code{[@var{expr_n}]} (リスト)を返します。
+もしいずれかの引数の評価中にエラーが起こったら、
+@code{errcatch} はエラーが伝搬することを抑制し、
+引数をこれ以上評価せずに空のリスト@code{[]}を返します。
+
+@code{errcatch}は
+もしエラーがチャッチされないなら@code{batch}を終了させるエラーが起こるかもしれないと疑うような
+@code{batch}ファイルで役立ちます。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{error}
+@deffn  {関数} error (@var{expr_1}, ..., @var{expr_n})
+@deffnx {システム変数} error
+
+@var{expr_1}, ..., @var{expr_n}を評価して印字します。
+そして、エラーがあれば、トップレベルMaximaか直近の@code{errcatch}に戻るようにします。
+
+変数@code{error}はエラーを記述するリストに設定されます。
+@code{error}の最初の要素はフォーマット文字列です。
+引数@var{expr_1}, ..., @var{expr_n}の中の文字列すべてを結合したものです。
+残りの要素は文字列でない引数の値です。
+
+@code{errormsg()}は@code{error}をフォーマットし印字します。
+これは直近のエラーメッセージを効果的に再印字します。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{error_size}
+@defvr {オプション変数} error_size
+デフォルト値: 10
+
+@code{error_size}は、
+現れる式のサイズに従って、エラーメッセージを変更します。
+もし式のサイズが、Lisp関数@code{ERROR-SIZE}によって決定されるように）
+@code{error_size}より大きいなら、
+式は、メッセージの中で、シンボルで置き換えられ、
+シンボルは式に割り当てられます。
+シンボルはリスト@code{error_syms}から取られます。
+
+そうでなければ、式は@code{error_size}より小さく、
+メッセージの中に式が表示されます。
+
+@code{error}と@code{error_syms}も参照してください。
+
+例:
+@c OUTPUT GENERATED BY THE FOLLOWING
+@c U: (C^D^E + B + A)/(cos(X-1) + 1)$
+@c error_size: 20$
+@c error ("Example expression is", U);
+@c errexp1;
+@c error_size: 30$
+@c error ("Example expression is", U);
+
+@code{U}のサイズは、@code{ERROR-SIZE}で決められるように、24です。
+
+@example
+(%i1) U: (C^D^E + B + A)/(cos(X-1) + 1)$
+
+(%i2) error_size: 20$
+
+(%i3) error ("Example expression is", U);
+
+Example expression is errexp1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) errexp1;
+                            E
+                           D
+                          C   + B + A
+(%o4)                    --------------
+                         cos(X - 1) + 1
+(%i5) error_size: 30$
+
+(%i6) error ("Example expression is", U);
+
+                         E
+                        D
+                       C   + B + A
+Example expression is --------------
+                      cos(X - 1) + 1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+@opencatbox
+@category{Debugging} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{error_syms}
+@defvr {オプション変数} error_syms
+デフォルト値: @code{[errexp1, errexp2, errexp3]}
+
+エラーメッセージの中で、
+@code{error_size}より大きな式はシンボルで置き換えられ、
+シンボルは式に設定されます。
+シンボルはリスト@code{error_syms}から取られます。
+最初の大きすぎる式は、@code{error_syms[1]}で置き換えられ、
+２番目は、@code{error_syms[2]}で置き換えられ、などなど。
+
+もし大きすぎる式が@code{error_syms}の要素よりもあれば、
+シンボルは自動的に構成されます。
+@var{n}番目のシンボルは@code{concat ('errexp, @var{n})}と同値です。
+
+@code{error}と@code{error_size}も参照してください。
+
+@opencatbox
+@category{Debugging} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{errormsg}
+@deffn {関数} errormsg ()
+
+直近のエラーメッセージを再印字します。
+変数@code{error}はメッセージを保持し、
+@code{errormsg}はそれをフォーマットし印字します。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{option_errormsg}
+@defvr {オプション変数} errormsg
+デフォルト値: @code{true}
+
+@code{false}の時、エラーメッセージの出力は抑制されます。
+
+オプション変数@code{errormsg}は
+ブロックの中でローカル値に設定することはできません。
+@code{errormsg}のグローバル値が常に存在します。
+
+@c ===beg===
+@c errormsg;
+@c sin(a,b);
+@c errormsg:false;
+@c sin(a,b);
+@c ===end===
+@example
+(%i1) errormsg;
+(%o1)                                true
+(%i2) sin(a,b);
+Wrong number of arguments to sin
+ -- an error. To debug this try: debugmode(true);
+(%i3) errormsg:false;
+(%o3)                                false
+(%i4) sin(a,b);
+
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+オプション変数@code{errormsg}はブロックの中でローカル値に設定できません。
+
+@c ===beg===
+@c f(bool):=block([errormsg:bool], print ("value of errormsg is",errormsg))$
+@c errormsg:true;
+@c f(false);
+@c errormsg:false;
+@c f(true);
+@c ===end===
+@example
+(%i1) f(bool):=block([errormsg:bool], 
+                     print ("value of errormsg is",errormsg))$
+(%i2) errormsg:true;
+(%o2)                                true
+(%i3) f(false);
+value of errormsg is true 
+(%o3)                                true
+(%i4) errormsg:false;
+(%o4)                                false
+(%i5) f(true);
+value of errormsg is false 
+(%o5)                                false
+@end example
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end defvr
+
+@c REPHRASE
+@c AT LEAST SHOULD LIST VARIANTS HERE
+
+@c -----------------------------------------------------------------------------
+@anchor{for}
+@deffn {特殊演算子} for
+
+繰り返しで使われます。
+Maximaの繰り返し機能の記述に関しては、@code{do}を参照してください。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{go}
+@deffn {関数} go (@var{tag})
+
+制御を
+@code{go}の引数でタグ付けされたブロックの文に移すために
+@code{block}内部で使われます。
+文をタグ付けするには、
+その文の前に、
+アトムの引数を
+@code{block}の中の別の文として
+先行させてください。
+例えば:
+
+@example
+block ([x], x:1, loop, x+1, ..., go(loop), ...)
+@end example
+
+@code{go}の引数は、同じ@code{block}の中に現れるタグの名前でなければいけません。
+@code{go}を含む@code{block}以外の@code{block}の中のタグに移るために、
+@code{go}を使うことはできません。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
+@c THIS ITEM IS IMPORTANT
+
+@c -----------------------------------------------------------------------------
+@anchor{if}
+@deffn {特殊演算子} if
+
+条件評価を表します。
+@code{if}式の様々な形が認識されます。
+
+@code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
+は、
+もし@var{cond_1}が@code{true}評価されたら@var{expr_1}に*評*価*され、
+そうでなければ式は@var{expr_0}に評価されます。
+
+コマンド @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}は、
+もし@var{cond_k}が@code{true}、かつ、先行する条件がすべて@code{false}なら、
+@var{expr_k}に評価されます。
+もし条件のいずれも@code{true}でないなら、式は@code{expr_0}に評価されます。
+
+もし@code{else}がないなら、
+最後に@code{else false}が仮定されます。
+すなわち、コマンド @code{if @var{cond_1} then @var{expr_1}}は、
+@code{if @var{cond_1} then @var{expr_1} else false}と同値で、
+コマンド @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}は、
+@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}と同値です。
+
+選択肢@var{expr_0}, @dots{}, @var{expr_n}は、任意のMaxima式を取り得ます。
+入れ子の@code{if}式もあり得ます。
+選択肢は、
+対応する条件が@code{true}でない限り、
+整理も評価もされません。
+
+条件@var{cond_1}, ..., @var{cond_n}は、潜在的に、また、実際に
+@code{true}か@code{false}に評価される式です。
+条件が実際には@code{true}にも@code{false}にも評価されない時、
+@code{if}の振る舞いはグローバルフラグ@code{prederror}で決定されます。
+@code{prederror}が@code{true}の時、
+もし評価された条件のいずれかが@code{true}にも@code{false}にもならなかったら
+、エラーになります。
+そうでなければ、@code{true}にも@code{false}にも評価されない条件が受け入れられ、
+結果は条件式になります。
+
+条件は以下のように、他の要素間の関係演算子と論理演算子からなります。
+
+@c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS
+@c - REFORMAT THIS TABLE USING TEXINFO MARKUP (MAYBE)
+@example
+演算                 シンボル     タイプ
+ 
+小なり                <           関係 中置
+以下                  <=          関係 中置
+等号 (構文法的)        =           関係 中置
+不等号 (構文法的)      #           関係 中置
+等号 (値)             equal       関係 関数
+不等号 (値)           notequal    関係 関数
+以上                  >=          関係 中置
+大なり                >           関係 中置
+かつ                  and         論理 中置
+または                or          論理 中置
+否定                  not         論理 前置
+@end example
+
+@opencatbox
+@category{Programming} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+@c THIS ITEM IS IMPORTANT
+
+@c -----------------------------------------------------------------------------
+@anchor{map}
+@deffn {関数} map (@var{f}, @var{expr_1}, @dots{}, @var{expr_n})
+
+@code{map}は、主演算子（訳注：内部表現の最上位階層のリストに対応する演算子）は
+式@var{expr_1}, ..., @var{expr_n}のそれと同じ演算子を使い、
+そのサブパーツは、引数式の対応するサブパーツに@var{f}を適用した結果である式を返します。
+@var{f}は@math{n}個の引数の関数名か、@math{n}個の引数のラムダ形式です。
+(訳注：また、@var{expr_1}, @dots{}, @var{expr_n}は内部表現に階層リスト構造を持つ式です。）
+
+@code{maperror} - もし@code{maperror}が@code{fals}eなら、
+マッピング関数のすべては、(1)もし@var{expr_i}のすべてが同じ長さでなければ、
+最も短い@var{expr_i}が完了した時点で停止し、
+(2)もし@var{expr_i}が同じタイプのオブジェクトでなければ、
+@var{f}をリスト[@var{expr_1}, @var{expr_2}, ...]に適用します。
+もし@code{maperror}が@code{true}なら、上の２つの場合、エラーメッセージを出力します。
+
+この関数の用法の１つは、ある関数（例えば、@code{partfrac})を非常に長い式に適用する際、
+計算の間にリスト保存領域を枯渇させるため式全体に適応するのが不可能な場合に、
+それぞれの項に関数をマップすることです。
+
+@c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR 
+@c AND SHOW HOW THE RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
+@example
+(%i1) map(f,x+a*y+b*z);
+(%o1)                        f(b z) + f(a y) + f(x)
+(%i2) map(lambda([u],partfrac(u,x)),x+1/(x^3+4*x^2+5*x+2));
+                           1       1        1
+(%o2)                     ----- - ----- + -------- + x
+                         x + 2   x + 1          2
+                                         (x + 1)
+(%i3) map(ratsimp, x/(x^2+x)+(y^2+y)/y);
+                                      1
+(%o3)                            y + ----- + 1
+                                    x + 1
+(%i4) map("=",[a,b],[-0.5,3]);
+(%o4)                          [a = - 0.5, b = 3]
+
+
+@end example
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mapatom}
+@deffn {関数} mapatom (@var{expr})
+
+@var{expr}がマップルーチンでアトムとして扱われる時だけ@code{true}を返します。
+"Mapatoms"はアトム、(有理数を含む)数、添字付き変数です。
+@c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{maperror}
+@defvr {オプション変数} maperror
+デフォルト値: @code{true}
+
+@code{maperror}が@code{false}の時は、
+マップ関数すべてに、以下の例のようにさせます。
+
+@example
+map (@var{f}, @var{expr_1}, @var{expr_2}, @dots{})
+@end example
+
+に対しては、
+(1) もし@var{expr_i}のすべてが同じ長さでないなら、
+最も短い@var{expr_i}の終わりまで完了した時、停止するようにさせ、
+(2) もし@var{expr_i}すべてが同じタイプのオブジェクトでないなら、
+@var{f}を[@var{expr_1}, @var{expr_2}, ...]に適用するようにさせます。
+
+もし@code{maperror}が@code{true}なら、
+上の２つの例に関して、エラーメッセージが表示されます。
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{mapprint}
+@defvr {オプション変数} mapprint
+デフォルト値: @code{true}
+
+@code{mapprint}が@code{true}の時、
+@code{map}, @code{mapl}, @code{fullmap}からの様々な情報メッセージが
+一定の状況で生成されます。
+これらは
+@code{map}が@code{apply}を使ったり、@code{map}が
+最短のリストで切り詰めているような状況を含みます。
+
+もし@code{mapprint}が@code{false}なら、これらのメッセージは抑制されます
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{maplist}
+@deffn {関数} maplist (@var{f}, @var{expr_1}, @dots{}, @var{expr_n})
+式@var{expr_1}, @dots{}, @var{expr_n}のパーツに@var{f}を適用した結果のリストを返します。
+@var{f}は、関数名かラムダ式です。
+
+@code{maplist}は@code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}とは違います。
+mapは主演算子が@var{expr_i}と同じ式を返します。
+(整理と@code{map}が@code{apply}を行う場合は例外です。)
+
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{prederror}
+@defvr {オプション変数} prederror
+デフォルト値: @code{false}
+
+@code{prederror}が@code{true}の時、
+@code{if}文の述語論理か@code{is}関数が
+@code{true}か@code{false}に評価されるのに失敗した時はいつでも
+エラーメッセージが表示されます。
+
+もし@code{false}なら、この場合，代わりに@code{unknown}が返されます。
+@code{prederror: false}モードは翻訳コードではサポートされません;
+しかしながら、@code{maybe}は翻訳コードでサポートされます。
+
+@code{is}と@code{maybe}も参照してください。
+
+@opencatbox
+@category{Programming} @category{Predicate functions}
+@closecatbox
+@end defvr
+
+@deffn {関数} return (@var{value})
+引数を連れて、陽にブロックから抜けるために使われます。
+もっと情報を知るには、@code{block}も参照してください。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+@deffn {関数} scanmap (@var{f}, @var{expr})
+@deffnx {関数} scanmap (@var{f}, @var{expr}, bottomup)
+トップダウン法で、@var{f}を@var{expr}に再帰的に適用します。
+完全な因数分解が望まれる時、これは最も役に立ちます。
+例えば:
+
+@example
+(%i1) exp:(a^2+2*a+1)*y + x^2$
+(%i2) scanmap(factor,exp);
+                                    2      2
+(%o2)                         (a + 1)  y + x
+@end example
+
+Note the way in which 
+@code{scanmap}が与えられた関数@code{factor}を
+@var{expr}の構成部分式に適用する方法に注意してください;
+もし
+@var{expr}の別の形がscanmapに適用されるなら、結果は異なるかもしれません。
+従って、
+@code{scanmap}が
+@code{exp}の展開形に適用される時、
+@code{%o2}が再現されません:
+
+@example
+(%i3) scanmap(factor,expand(exp));
+                           2                  2
+(%o3)                      a  y + 2 a y + y + x
+@end example
+
+@code{scanmap}が
+与えられた関数を指数関数を含む部分式すべてに再帰的に適用する方法の別の例です:
+
+@example
+(%i4) expr : u*v^(a*x+b) + c$
+(%i5) scanmap('f, expr);
+                    f(f(f(a) f(x)) + f(b))
+(%o5) f(f(f(u) f(f(v)                      )) + f(c))
+@end example
+
+@code{scanmap (@var{f}, @var{expr}, bottomup)}は、
+ボトムアップ法で
+@var{f}を
+@var{expr}に適用します。
+例えば、未定義@code{f}に関して、
+
+@example
+scanmap(f,a*x+b) ->
+   f(a*x+b) -> f(f(a*x)+f(b)) -> f(f(f(a)*f(x))+f(b))
+scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
+    -> f(f(a)*f(x))+f(b) ->
+     f(f(f(a)*f(x))+f(b))
+@end example
+
+この場合、両方の方法で同じ答えを得ます。
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{throw}
+@deffn {関数} throw (@var{expr})
+
+@var{expr}を評価し、
+直近の@code{catch}に値を投げ戻します。
+@code{throw}は、
+@code{catch}と一緒に、非ローカルリターンメカニズムとして使われます。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c NEED MORE HERE !!
+@c AT LEAST SHOULD LIST ACCEPTABLE VARIANTS
+
+@c -----------------------------------------------------------------------------
+@anchor{while}
+@anchor{unless}
+@deffn  {特殊演算子} while
+@deffnx {特殊演算子} unless
+@code{do}を参照してください。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{outermap}
+@deffn {関数} outermap (@var{f}, @var{a_1}, @dots{}, @var{a_n})
+
+関数@var{f}を
+外積@var{a_1}掛ける@var{a_2} ... 掛ける@var{a_n}の要素のそれぞれに適用します。
+
+@var{f}は
+@math{n}個の引数の関数の名前か、
+@math{n}個の引数のラムダ式
+です。
+
+それぞれの引数@var{a_k}は、
+リストか、入れ子のリストか、行列か、他の任意の種類の式を取り得ます。
+
+@code{outermap}戻り値は、入れ子の構造です。
+@var{x}を戻り値とします。
+すると、
+@var{x}は最初のリストか入れ子のリストか行列引数と同じ構造を持ち、
+@code{@var{x}[i_1]...[i_m]}は、
+二番目のリストか入れ子のリストか行列引数と同じ構造を持ち、
+@code{@var{x}[i_1]...[i_m][j_1]...[j_n]}は、
+三番目のリストか入れ子のリストか行列引数と同じ構造を持ち、
+以下同様。
+ここで、@var{m}, @var{n}, ...は、
+引数それぞれの要素
+をアクセスするために要求される
+インデックスの数(リストには１つ、行列には２つ、入れ子のリストには１つ以上)です。
+リストや行列でない引数は戻り値の構造に影響を与えません。
+
+Note that the effect of 
+@code{outermap}の効果は
+@var{f}を
+@code{cartesian_product}によって返される
+外積の要素のそれぞれに適用することのそれと違います。
+
+@code{outermap}は、戻り値で引数の構造を保ちますが、
+@code{cartesian_product}は違います。
+
+@code{outermap}は引数を評価します。
+
+@code{map}, @code{maplist}, @code{apply}も参照してください。
+@c CROSS REF OTHER FUNCTIONS HERE ??
+
+例:
+
+@code{outermap}の初等的な例。
+よりはっきり引数の組み合わせを示すために、
+@code{F}は未定義のままです。
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+@c outermap ("+", [a, b, c], [1, 2, 3]);
+@c ===end===
+@example
+(%i1) outermap(F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) outermap(F, matrix([a, b],[c, d]), matrix([1, 2],[3, 4]));
+         [ [ F(a, 1)  F(a, 2) ]  [ F(b, 1)  F(b, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(a, 3)  F(a, 4) ]  [ F(b, 3)  F(b, 4) ] ]
+(%o2)    [                                            ]
+         [ [ F(c, 1)  F(c, 2) ]  [ F(d, 1)  F(d, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(c, 3)  F(c, 4) ]  [ F(d, 3)  F(d, 4) ] ]
+(%i3) outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+       [ F(a, x, 1)  F(a, x, 2) ]  [ F(b, x, 1)  F(b, x, 2) ]
+(%o3) [[                        ], [                        ]]
+       [ F(a, x, 3)  F(a, x, 4) ]  [ F(b, x, 3)  F(b, x, 4) ]
+(%i4) outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+       [ [ F(a, 1, x) ]  [ F(a, 2, x) ] ]
+(%o4) [[ [            ]  [            ] ], 
+       [ [ F(a, 1, y) ]  [ F(a, 2, y) ] ]
+                              [ [ F(b, 1, x) ]  [ F(b, 2, x) ] ]
+                              [ [            ]  [            ] ]]
+                              [ [ F(b, 1, y) ]  [ F(b, 2, y) ] ]
+(%i5) outermap ("+", [a, b, c], [1, 2, 3]);
+(%o5) [[a + 1, a + 2, a + 3], [b + 1, b + 2, b + 3], 
+                                           [c + 1, c + 2, c + 3]]
+@end example
+
+@code{outermap}の戻り値のより密な検査。
+最初の、二番目の、三番目の引数は、それぞれ、行列、リスト、行列です。
+戻り値は行列です。
+その行列の要素それぞれはリストで、
+それぞれのリストの要素それぞれは行列です。
+
+@c ===beg===
+@c arg_1 :  matrix ([a, b], [c, d]);
+@c arg_2 : [11, 22];
+@c arg_3 : matrix ([xx, yy]);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
+@c                                                    arg_2, arg_3);
+@c xx_1 : xx_0 [1][1];
+@c xx_2 : xx_0 [1][1] [1];
+@c xx_3 : xx_0 [1][1] [1] [1][1];
+@c [op (arg_1), op (arg_2), op (arg_3)];
+@c [op (xx_0), op (xx_1), op (xx_2)];
+@c ===end===
+@example
+(%i1) arg_1 :  matrix ([a, b], [c, d]);
+                            [ a  b ]
+(%o1)                       [      ]
+                            [ c  d ]
+(%i2) arg_2 : [11, 22];
+(%o2)                       [11, 22]
+(%i3) arg_3 : matrix ([xx, yy]);
+(%o3)                      [ xx  yy ]
+(%i4) xx_0 : outermap(lambda([x, y, z], x / y + z), arg_1,
+                                                   arg_2, arg_3);
+               [  [      a        a  ]  [      a        a  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+(%o4)  Col 1 = [                                              ]
+               [  [      c        c  ]  [      c        c  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+@group
+                 [  [      b        b  ]  [      b        b  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+         Col 2 = [                                              ]
+                 [  [      d        d  ]  [      d        d  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+@end group
+(%i5) xx_1 : xx_0 [1][1];
+           [      a        a  ]  [      a        a  ]
+(%o5)     [[ xx + --  yy + -- ], [ xx + --  yy + -- ]]
+           [      11       11 ]  [      22       22 ]
+(%i6) xx_2 : xx_0 [1][1] [1];
+                      [      a        a  ]
+(%o6)                 [ xx + --  yy + -- ]
+                      [      11       11 ]
+(%i7) xx_3 : xx_0 [1][1] [1] [1][1];
+                                  a
+(%o7)                        xx + --
+                                  11
+(%i8) [op (arg_1), op (arg_2), op (arg_3)];
+(%o8)                  [matrix, [, matrix]
+(%i9) [op (xx_0), op (xx_1), op (xx_2)];
+(%o9)                  [matrix, [, matrix]
+@end example
+
+@code{outermap}は、戻り値の中で引数の構造を保持します。
+@code{cartesian_product}は保持しません。
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c setify (flatten (%));
+@c map (lambda ([L], apply (F, L)), 
+@c                      cartesian_product ({a, b, c}, {1, 2, 3}));
+@c is (equal (%, %th (2)));
+@c ===end===
+@example
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) setify (flatten (%));
+(%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i3) map(lambda([L], apply(F, L)),
+                     cartesian_product(@{a, b, c@}, @{1, 2, 3@}));
+(%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i4) is (equal (%, %th (2)));
+(%o4)                         true
+@end example
+
+@opencatbox
+@category{Function application}
+@closecatbox
+@end deffn

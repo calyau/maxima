@@ -1,4 +1,4 @@
-@c version 1.58
+@c English version 2011-10-03
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -831,6 +831,34 @@ En este caso queremos un fichero eps con dimensiones A4.
         terminal   = 'eps,
         explicit(x^2-y^2,x,-2,2,y,-2,2)) $
 @end example
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} draw_realpart
+Valor por defecto: @code{true}
+
+Cuando vale @code{true}, las funciones a dibujar se consideran funciones complejas cuyas
+partes reales se deben dibujar; cuando la opci@'on vale @code{false}, no se dibujar@'a
+nada en caso de que la funci@'on no devuelve valores reales.
+
+Esta opci@'on afecta a los objetos @code{explicit} y @code{parametric} en 2D y 3D, y al
+objeto @code{parametric_surface}.
+
+Ejemplo:
+
+La opci@'on @code{draw_realpart} afecta a los objetos @code{explicit} y @code{parametric}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        draw_realpart = false,
+        explicit(sqrt(x^2  - 4*x) - x, x, -1, 5),
+        color         = red,
+        draw_realpart = true,
+        parametric(x,sqrt(x^2  - 4*x) - x + 1, x, -1, 5) );
+@end example
+
 @end defvr
 
 
@@ -3393,7 +3421,7 @@ Dibuja funciones expl@'{@dotless{i}}citas en 2D y 3D.
 con la variable @var{var} tomando valores desde @var{minval} hasta @var{maxval}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{adapt_depth}, @code{draw_realpart}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{filled_func}, @code{fill_color} y @code{color}.
 
 Ejemplo:
@@ -3415,7 +3443,7 @@ dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn}, con la variable
 @code{var1} tomando valores desde @var{minval1} hasta @var{maxval1} y 
 la variable @var{var2} tomando valores desde @var{minval2} hasta @var{maxval2}.
 
-Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}:  @code{xu_grid}, 
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{draw_realpart}, @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}
  y @code{color}.
 
@@ -3761,7 +3789,7 @@ dibuja la superficie param@'etrica @code{[@var{xfun},@var{yfun},@var{zfun}]},
 con el par@'ametro @var{par1} tomando valores desde @var{par1min} hasta @var{par1max}
 y el par@'ametro @var{par2} tomando valores desde @var{par2min} hasta @var{par2max}.
 
-Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{draw_realpart}, @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}
 y @code{color}.
 

@@ -1,4 +1,4 @@
-@c english version 1.41
+@c English version 2011-07-03
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::
@@ -251,35 +251,6 @@ Warning - you are redefining the Macsyma function eigenvectors
 
 @end deffn
 
-@deffn {Funci@'on} conjugate (@var{x})
-Devuelve el conjugado complejo de @var{x}.
-
-@c ===beg===
-@c declare ([aa, bb], real, cc, complex, ii, imaginary);
-@c conjugate (aa + bb*%i);
-@c conjugate (cc);
-@c conjugate (ii);
-@c conjugate (xx + yy);
-@c ===end===
-@example
-(%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
-
-(%o1)                         done
-(%i2) conjugate (aa + bb*%i);
-
-(%o2)                      aa - %i bb
-(%i3) conjugate (cc);
-
-(%o3)                     conjugate(cc)
-(%i4) conjugate (ii);
-
-(%o4)                         - ii
-(%i5) conjugate (xx + yy);
-
-(%o5)             conjugate(yy) + conjugate(xx)
-@end example
-
-@end deffn
 
 @deffn {Funci@'on} copymatrix (@var{M})
 Devuelve una copia de la matriz @var{M}. Esta es la @'unica
@@ -1305,12 +1276,7 @@ Devuelve el menor @code{(@var{i}, @var{j})} de la matriz @var{M}.  Esto es, la p
 
 @end deffn
 
-@deffn {Funci@'on} ncexpt (@var{a}, @var{b})
-Si una expresi@'on exponencial no conmutativa es demasiado grande para mostrarse en la forma @code{@var{a}^^@var{b}} entonces aparece como @code{ncexpt (@var{a},@var{b})}.
 
-El nombre @code{ncexpt} no corresponde al de una funci@'on u operador, sino que tan solo aparece en la salida y no se reconoce como una entrada v@'alida.
-
-@end deffn
 
 @deffn {Funci@'on} ncharpoly (@var{M}, @var{x})
 Devuelve el polinomio caracter@'{@dotless{i}}stico de la matriz @var{M} respecto de la variable @var{x}. Es una alternativa a la funci@'on @code{charpoly} de Maxima.
@@ -1366,6 +1332,19 @@ Si @code{ratmx} vale @code{true}, las cuatro operaciones citadas m@'as arriba se
 Devuelve la @var{i}-@'esima fila de la matriz @var{M}. El valor que devuelve tiene formato de matriz.
 
 @end deffn
+
+
+
+@defvr {Variable opcional} rmxchar
+Valor por defecto: @code{]}
+
+La variable @code{rmxchar} es el car@'acter que se dibuja al lado derecho de una matriz.
+
+V@'ease tambi@'en @code{lmxchar}.
+
+@end defvr
+
+
 
 @defvr {Variable opcional} scalarmatrixp
 Valor por defecto: @code{true}
@@ -1482,6 +1461,21 @@ Para utilizar esta fucni@'on es necesario cargarla haciendo @code{load ("eigen")
 El nombre @code{uvect} es sin@'onimo de @code{unitvector}.
 
 @end deffn
+
+
+
+
+@deffn {Funci@'on} vectorpotential (@var{givencurl})
+Devuelve el vector potencial de un vector rotacional en el sistema
+de coordenadas actual. 
+@code{potentialzeroloc} tiene un rol similar al de @code{potential}, 
+pero el orden del miembro izquierdo de las ecuaciones debe ser una
+permutaci@'on c@'{@dotless{i}}clica de las coordenadas. 
+
+@end deffn
+
+
+
 
 @c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A DESCRIPTION HERE
 @deffn {Funci@'on} vectorsimp (@var{expr})

@@ -767,11 +767,7 @@ Ejemplo:
 
 @end deffn
 
-@deffn {Funci@'on} nonnegintegerp (@var{n})
 
-Devuelve @code{true} si y solo si @code{@var{n} >= 0}, siendo @var{n} un entero.
-
-@end deffn
 
 @deffn {Funci@'on} nullspace (@var{M})
 

@@ -140,7 +140,7 @@
 	    (setq e (reverse (cdr e))) (go b)))
      a    (setq e (cdr e))
      b    (cond ((null e)
-		 (return (if (and (numberp expon) (minusp expon)) 1 0)))
+		 (return (if (and (realp expon) (minusp expon)) 1 0)))
 		((and (mexptp (car e)) (alike1 expon (caddar e)))
 		 (return (cadar e))))
      (go a)))

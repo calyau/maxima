@@ -12,8 +12,6 @@
 
 (macsyma-module transs)
 
-(transl-module transs)
-
 (defmvar *transl-file-debug* nil
   "set this to T if you don't want to have the temporary files
 	used automaticaly deleted in case of errors.")
@@ -63,7 +61,7 @@
 (defmspec $compfile (forms)
     (setq forms (cdr forms))
     (if (eq 1 (length forms))
-      (merror "compfile: bravely refusing to write file of length 0"))
+      (merror (intl:gettext "compfile: no functions specified; I refuse to create an empty file.")))
     (bind-transl-state
      (setq $transcompile t
 	   *in-compfile* t)
@@ -95,7 +93,7 @@
 			      (setq t-error (print-abort-msg item 'compfile)))
 			     (t
 			      (when $compgrind
-				(mformat transl-file "~2%;; Function ~:@M~%" item))
+				(mformat transl-file (intl:gettext "~2%;; Function ~:@M~%") item))
 			      (print* t-item))))))
           (pathname out-file-name))
 	 ;; unwind-protected
@@ -103,7 +101,7 @@
 	 (if t-error (delete-file transl-file))))))
 
 (defun compile-function (f)
-  (mformat  *translation-msgs-files* "~%Translating ~:@M" f)
+  (mformat  *translation-msgs-files* (intl:gettext "~%Translating ~:@M") f)
   (let ((fun (tr-mfun f)))
     (cond (tr-abort  nil)
 	  (t fun))))
@@ -233,18 +231,18 @@ translated."
 	   *untranslated-functions-called*))
     (when hint
       (format  stream
-	       "~2%/* The compiler might be able to optimize some function calls
-   if you prepend the following declaration to your maxima code: */~%")
+	       (intl:gettext "~2%/* The compiler might be able to optimize some function calls
+   if you prepend the following declaration to your Maxima code: */~%"))
       (mgrind `(($eval_when) $translate (($declare_translated) ,@hint))
 	      stream)
       (format stream "$"))
     (when *untranslated-functions-called*
-      (format stream "~2%/* The following functions are not known to be translated.~%")
+      (format stream (intl:gettext "~2%/* The following functions are not known to be translated:~%"))
       (mgrind `((mlist) ,@(nreverse *untranslated-functions-called*)) stream)
       (format stream "$ */"))
     (fresh-line stream)
     (when (or hint *untranslated-functions-called*)
-      (format t "~&See the `unlisp' file for possible optimizations.~%"))))
+      (format t (intl:gettext "~&translator: see the 'unlisp' file for possible optimizations.~%")))))
 
 (defun translate-file (in-file-name out-file-name &optional (ttymsgsp $tr_file_tty_messagesp)
 		       &aux warn-file translated-file *translation-msgs-files*
@@ -274,19 +272,19 @@ translated."
 	   (multiple-value-bind (secs mins hours day month year dow dst tz)
 	       (decode-universal-time (get-universal-time))
 	     (declare (ignore dow))
-	     (format out-stream ";;; Translated on: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%"
+	     (format out-stream (intl:gettext ";;; Translated on: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%")
 		     year month day hours mins secs (timezone-iso8601-name dst tz))))
-	 (format out-stream ";;; Maxima System version: ~A~%" *autoconf-version*)
-	 (format out-stream ";;; Lisp type:    ~A~%" (lisp-implementation-type))
-	 (format out-stream ";;; Lisp version: ~A~%" (lisp-implementation-version))
-	 (format out-stream "~%(in-package :maxima)")
-	 (format warn-stream "~%This is the unlisp file for ~A "
+	 (format out-stream (intl:gettext ";;; Maxima version: ~A~%") *autoconf-version*)
+	 (format out-stream (intl:gettext ";;; Lisp implementation: ~A~%") (lisp-implementation-type))
+	 (format out-stream (intl:gettext ";;; Lisp version: ~A~%") (lisp-implementation-version))
+	 (format out-stream "(in-package :maxima)~%")
+	 (format warn-stream (intl:gettext "This is the unlisp file for ~A~%")
 		 (namestring (pathname in-stream)))
 	 (mformat out-stream
-		  "~%;;** Variable settings were **~%~%")
+		  (intl:gettext ";;** Translator flags were: **~%~%"))
 	 (loop for v in (cdr $tr_state_vars)
 		do (mformat out-stream   ";; ~:M: ~:M;~%" v (symbol-value v)))
-	 (mformat *terminal-io* "~%Translation begun on ~A.~%"
+	 (mformat *terminal-io* (intl:gettext "translator: begin translating ~A.~%")
 		  (pathname in-stream))
 	 (call-batch1 in-stream out-stream)
 	 (insert-necessary-function-declares warn-stream)
@@ -339,27 +337,16 @@ translated."
   (terpri*)
   (princ* ";;;"))
 
-(defun print-transl-modules ()
-  (new-comment-line)
-  (print-module 'transl-autoload)
-  (do ((j 0 (1+ j))
-       (s (delete 'transl-autoload (copy-list transl-modules) :test #'equal)
-	  (cdr s)))
-      ((null s))
-    (if (= 0 (rem j 3)) (new-comment-line))
-    (print-module (car s))))
-
-
 (defun print-abort-msg (fun from)
   (mformat *translation-msgs-files*
-	   "~:@M failed to Translate.~
-	    ~%~A will continue, but file output will be aborted."
+	   (intl:gettext "compfile: failed to translate ~:@M.~
+	    ~A will continue, but file output will be aborted.~%") ;; WTF DOES THIS MEAN ???
 	   fun from))
 
 (defmspec $translate (functs)
   (setq functs (cdr functs))
-  (cond ((and functs ($listp (car functs)))
-	 (merror "Use the function `translate_file'"))
+  (cond ((and functs (stringp (car functs)))
+	 (merror (intl:gettext "translate: call 'translate_file' to translate a file; found: ~M") (car functs)))
 	(t
 	 (cond ((or (member '$functions functs :test #'eq)
 		    (member '$all functs :test #'eq))

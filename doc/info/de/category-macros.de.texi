@@ -5,7 +5,7 @@
 @c Original    : category-macros.texi revision 30.05.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 29.06.2011
+@c Revision    : 13.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -80,6 +80,15 @@
 @end ifnothtml
 @end macro
 
+@macro mrefparen {nodename}
+@ifhtml
+@code{@ref{\nodename\}})
+@end ifhtml
+@ifnothtml
+@code{\nodename\})
+@end ifnothtml
+@end macro
+
 @macro nref {nodename}
 @ifhtml
 @ref{\nodename\}
@@ -117,7 +126,8 @@
 @end macro
 
 @iftex
-@hyphenation{al-ter-nie-ren-den
+@hyphenation{ab-ge-lei-te-ten
+             al-ter-nie-ren-den
              an-ge-ge-ben
              an-ge-ge-ben-er
              an-ge-wen-det
@@ -129,9 +139,11 @@
              Aus-drucks
              aus-ge-wer-tet
              Aus-wer-tung
+             Aus-wer-tungs-schal-ter
              be-rech-net
              be-stimm-tes
              be-zeich-net
+             boole-scher
              Da-ten-bank
              de-fi-nier-ten
              Dol-lar-zei-chen
@@ -141,8 +153,10 @@
              ent-hal-ten
              ent-spre-chend
              Er-geb-nis
+             ex-pli-zit
              Ex-po-nen-tial-funk-tion
              Fra-ge-zei-chen
+             Fres-nel-funk-tion
              Funk-tion
              ge-kenn-zeich-net
              ge-ne-riert
@@ -150,6 +164,7 @@
              Glei-chung
              Glei-chung-en
              Glei-chungs-sys-tem
+             Glei-chungs-sys-tems
              Gleit-kom-ma-zah-len
              Glo-ba-le
              Gnuplot
@@ -159,24 +174,29 @@
              Hilfs-pro-gram-me
              In-for-ma-tio-nen
              In-te-gra-tions-in-ter-valls
+             In-te-gra-tions-va-ri-ab-le
              Iso-li-nien
              ka-no-ni-scher
              Kon-stan-te
              Ko-or-di-na-ten-sys-tem
              Laplace-trans-for-ma-tion
              letz-te
+             li-ne-ar-en
              ma-the-ma-ti-sche
              Maxima
              Mgnuplot
              Mus-ter-er-ken-nungs-ver-fah-ren
-             O-pe-ra-tor 
+             O-pe-ra-ti-o-nen
+             O-pe-ra-tor
              O-pe-ra-to-ren
              Op-tions-va-ri-ablen
              Re-gel-pa-ket
+             Re-gel-pa-ke-tes
              Rei-hen-ent-wick-lung
              Ska-lar-pro-dukt    
              Sei-ten-ef-fek-te
              Spei-cher
+             Un-gleich-ung
              Trans-for-ma-tio-nen
              Trans-po-nier-ung
              un-ge-ra-de
@@ -185,6 +205,7 @@
              ver-ein-fach-en
              Ver-ein-fach-ung
              ver-ein-facht
+             Ver-schach-te-lungs-tie-fe
              ver-schie-de-ne
              ver-ti-ka-len
              Ver-zeich-nis

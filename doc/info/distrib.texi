@@ -230,6 +230,7 @@ Discrete distributions:
    Discrete uniform     (*discrete_uniform)
    hypergeometric       (*hypergeometric)
    Negative binomial    (*negative_binomial)
+   Finite discrete      (*general_finite_discrete)
 @end example
 
 For example, @code{pdf_student_t(x,n)} is the density function of the Student distribution with @var{n} degrees of freedom, @code{std_pareto(a,b)} is the standard deviation of the Pareto distribution with parameters @var{a} and @var{b} and @code{kurtosis_poisson(m)} is the kurtosis coefficient of the Poisson distribution with mean @var{m}.
@@ -2647,9 +2648,170 @@ To make use of this function, write first @code{load(distrib)}.
 @section Functions and Variables for discrete distributions
 
 
+@deffn {Function} pdf_general_finite_discrete (@var{x},@var{v})
+Returns the value at @var{x} of the probability function of a general finite discrete random variable, with vector probabilities @math{v}, such that @code{Pr(X=i) = v_i}. Vector @math{v} can be a list of nonnegative expressions, whose components will be normalized to get a vector of probabilities. To make use of this function, write first @code{load(distrib)}.
+
+@c ===beg===
+@c load (distrib)$
+@c pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+@c pdf_general_finite_discrete(2, [1, 4, 2]);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) pdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+                                4
+(%o2)                           -
+                                7
+(%i3) pdf_general_finite_discrete(2, [1, 4, 2]);
+                                4
+(%o3)                           -
+                                7
+@end example
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} cdf_general_finite_discrete (@var{x},@var{v})
+Returns the value at @var{x} of the distribution function of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@c ===beg===
+@c load (distrib)$
+@c cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+@c cdf_general_finite_discrete(2, [1, 4, 2]);
+@c cdf_general_finite_discrete(2+1/2, [1, 4, 2]);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) cdf_general_finite_discrete(2, [1/7, 4/7, 2/7]);
+                                5
+(%o2)                           -
+                                7
+(%i3) cdf_general_finite_discrete(2, [1, 4, 2]);
+                                5
+(%o3)                           -
+                                7
+(%i4) cdf_general_finite_discrete(2+1/2, [1, 4, 2]);
+                                5
+(%o4)                           -
+                                7
+@end example
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} quantile_general_finite_discrete (@var{q},@var{v})
+Returns the @var{q}-quantile of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} mean_general_finite_discrete (@var{v})
+Returns the mean of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} var_general_finite_discrete (@var{v})
+Returns the variance of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} std_general_finite_discrete (@var{v})
+Returns the standard deviation of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} skewness_general_finite_discrete (@var{v})
+Returns the skewness coefficient of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} kurtosis_general_finite_discrete (@var{v})
+Returns the kurtosis coefficient of a general finite discrete random variable, with vector probabilities @math{v}.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} random_general_finite_discrete (@var{v})
+@deffnx {Function} random_general_finite_discrete (@var{v},@var{m})
+Returns a general finite discrete random variate, with vector probabilities @math{v}. Calling @code{random_general_finite_discrete} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+
+See @code{pdf_general_finite_discrete} for more details.
+
+@c ===beg===
+@c load (distrib)$
+@c random_general_finite_discrete([1,3,1,5]);
+@c random_general_finite_discrete([1,3,1,5], 10);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) random_general_finite_discrete([1,3,1,5]);
+(%o2)                          4
+(%i3) random_general_finite_discrete([1,3,1,5], 10);
+(%o3)           [4, 2, 2, 3, 2, 4, 4, 1, 2, 2]
+@end example
+
+@opencatbox
+@category{Package distrib} @category{Random numbers}
+@closecatbox
+
+@end deffn
+
+
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
-
+                                  4
+(%o6)                             -
+                                  7
 @opencatbox
 @category{Package distrib}
 @closecatbox
@@ -3245,7 +3407,13 @@ See also @code{random}. To make use of this function, write first @code{load(dis
 
 
 @deffn {Function} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
+Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)}
+random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+Being @var{n1} the number of objects of class A, @var{n2} the number of objects of class B, and
+@var{n} the size of the sample without replacement, this function returns the probability of
+event "exactly @var{x} objects are of class A". 
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3255,7 +3423,11 @@ Returns the value at @var{x} of the probability function of a @math{Hypergeometr
 
 
 @deffn {Function} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
+Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} 
+random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. 
+See @code{pdf_hypergeometric} for a more complete description.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}

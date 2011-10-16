@@ -1,4 +1,4 @@
-@c version 1.61
+@c English version 2011-06-15
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -373,6 +373,45 @@ V@'eanse @code{airy_ai} y @code{airy_bi}.
 Las funciones gamma, beta, psi y gamma incompleta est@'an
 definidas en el cap@'{@dotless{i}}tulo 6 de Abramowitz y Stegun,
 @i{Handbook of Mathematical Functions}.
+
+
+
+
+@deffn {Funci@'on} bffac (@var{expr}, @var{n})
+Versi@'on para "bigfloat" de la funci@'on factorial (Gamma desplazada). El segundo argumento indica cu@'antos d@'{@dotless{i}}gitos se conservan y devuelven, pudiendo utilizarse para obtener algunas cifras extra.
+
+@end deffn
+
+@defvr {Variable optativa} algepsilon
+Valor por defecto: 10^8
+
+El valor de @code{algepsilon} es usado por @code{algsys}.
+
+@end defvr
+
+
+
+@deffn {Funci@'on} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Funci@'on} bfpsi0 (@var{z}, @var{fpprec})
+La funci@'on @code{bfpsi} es la poligamma de argumento real @var{z} y de orden el entero @var{n}. La funci@'on @code{bfpsi0} es la digamma.  La llamada @code{bfpsi0 (@var{z}, @var{fpprec})} equivale a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+
+Estas funciones devuelven valores "bigfloat". La variable @var{fpprec} es la precisi@'on "bigfloat" del valor de retorno.
+
+@c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
+@c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
+@c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+@end deffn
+
+
+
+@deffn {Funci@'on} cbffac (@var{z}, @var{fpprec})
+Calcula el factorial de n@'umeros complejos de punto flotante grandes.
+
+La instrucci@'on @code{load ("bffac")} carga esta funci@'on.
+
+@end deffn
+
 
 
 @deffn {Funci@'on} gamma (@var{x})

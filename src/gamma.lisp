@@ -2656,12 +2656,11 @@
                      (power '$%pi '((rat simp) 1 2)) z)))))))
 
     ($hypergeometric_representation
-      (mul 
-        (div (mul '$%pi (power z 3)) 6)
-        (list '(%hypergeometric simp)
-          (list '(mlist simp) '((rat simp) 3 4))
-          (list '(mlist simp) '((rat simp) 3 2) '((rat simp) 7 4))
-          (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+      (mul (div (mul '$%pi (power z 3)) 6)
+           (take '($hypergeometric)
+                 (list '(mlist) (div 3 4))
+                 (list '(mlist) (div 3 2) (div 7 4))
+                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
      (eqtest (list '(%fresnel_s) z) expr))))
@@ -2796,10 +2795,10 @@
 
     ($hypergeometric_representation
       (mul z
-        (list '(%hypergeometric simp)
-          (list '(mlist simp) '((rat simp) 1 4))
-          (list '(mlist simp) '((rat simp) 1 2) '((rat simp) 5 4))
-          (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+           (take '($hypergeometric)
+                 (list '(mlist) (div 1 4))
+                 (list '(mlist) (div 1 2) (div 5 4))
+                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
       (eqtest (list '(%fresnel_c) z) expr))))

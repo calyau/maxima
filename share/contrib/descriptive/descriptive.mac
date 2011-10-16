@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2010 Mario Rodriguez Riotorto
+Copyright (C) 2005-2011 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -101,11 +101,14 @@ Multivariate descriptive statistics:
       multiple correlation coefficients
       partial correlation coefficients
 
-Statistical diagrams
-   dataplot: data visualization in 2D and 3D
-   histogram: frequencies for continuous data
-   barsplot: frequencies for discrete, numeric or categorical, data
-   boxplot: box diagrams
+Statistical diagrams:
+   - scatterplot
+   - histogram
+   - barsplot
+   - boxplot
+   - piechart
+   - stemplot
+   - starplot
 
 References:
    Johnson, A.J., Wichern, D.W. (1998) Applied Multivariate Statistical
@@ -175,32 +178,41 @@ subsample(mat,cond,[cols]):=
     apply('matrix, tempmat))$
 
 
-/* Divides the range in intervals and counts how many values */
-/* are inside them. The second argument is optional and      */
-/* equals the number of classes we want; 10 by default.      */
-/* Argument 'lis' must be a list of real numbers.            */
-/* If sample values are all equal, this function returns only */
-/* one class of amplitude 2                                  */
-continuous_freq(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
-   if length(opt)=1
-      then nc:opt[1]
-      else nc:10,   /* default number of classes */
-   mini: lmin(lis),
+
+/* Divides the range in intervals and counts how many values   */
+/* are inside them. The second argument is optional and either */
+/* equals the number of classes we want; 10 by default, OR     */
+/* equals a list containing the class limits and the number of */
+/* classes we want, OR a list containing only the limits.      */
+/* If sample values are all equal, this function returns only  */
+/* one class of amplitude 2                                    */
+continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k],
+   if length(opt) = 1 and listofnumbersp(opt[1])
+      then ( mini: opt[1][1],
+	     maxi: opt[1][2],
+             if length(opt[1]) = 3   /* min, max, and number of classes given */
+               then nc: opt[1][3]
+             elseif length(opt[1]) = 2  /* min and max */
+               then nc:10
+               else error("continuous_freq: incorrect number of elements in optional argument."))
+      else ( mini: lmin(lis),
+             maxi: lmax(lis),
+             if length(opt)=1
+                then nc:opt[1]  /* only number of classes given */
+                else nc:10 ),   /* default number of classes */
    lim:[mini],
-   amp:(lmax(lis)-mini)/nc,
+   amp:(maxi-mini)/nc,
    if amp=0
      then [[lis[1]-1,lis[1]+1],[length(lis)]]
      else ( for i:1 thru nc do lim:endcons(mini+amp*i,lim),
-            lis:sort(lis),
             fr:makelist(0,i,1,nc),
-            n:length(lis),
-            k:1,
-            for c:1 thru nc-1 do
-               while lis[k]<=lim[c+1] do(
-                  fr[c]:fr[c]+1,
-                  k:k+1),
-            fr[nc]: n-apply("+",fr),
+            for i:1 thru length(lis) do (
+               if lis[i]=mini
+                 then index: 1
+                 else index: ceiling((lis[i]-mini)/amp),
+               fr[index]:fr[index]+1 ),
             [lim,fr])   )$
+
 
 
 /* Counts the frequency of each element in 'lis', its elements */
@@ -511,10 +523,14 @@ list_correlations(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
 /*          PLOTTING FUNCTIONS           */
 
 
+random_color():=
+  block([obase : 16, col : "#"],
+    for i : 1 thru 6 do
+       col : concat(col,
+                    block([sz : concat(random(16))],
+                          substring(sz, slength(sz)))),
+    col)$
 
-
-
-/* This auxiliary function helps to separate draw and specific local options */
 extract_options(s,[mo]):=
   block([ss:[],mmo:[]],
     for k in s do
@@ -524,69 +540,89 @@ extract_options(s,[mo]):=
     [ss,mmo] )$
 
 
-random_color():=
-  block([obase : 16, col : "#"],
-    for i : 1 thru 6 do
-       col : concat(col,
-                    block([sz : concat(random(16))],
-                          substring(sz, slength(sz)))),
-    col)$
-
 
 /* Plots scatter diagrams. */
-scatterplot(m,[select]):=
-  block([scen,localopts,nclass:10],
-    [select, localopts]: extract_options(select,'nclasses),
-    for k in localopts do
-      if lhs(k) = 'nclasses then nclass: rhs(k),
-
+scatterplot_description(m,[select]):=
+  block([localopts],
+    [select, localopts]: extract_options(select,'nclasses,'htics,'frequency),
     if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
       then  (/* m is a list of numbers or a column or a row matrix */
              if matrixp(m)
                then if length(m)=1
                       then m: m[1]
                       else m: transpose(m)[1],
-             scen: append(select,
-                          [points(makelist([x,0],x,m))]),
-             if draw_compound
-               then apply('draw2d,scen)
-               else scen )
+             gr2d(select, points(makelist([x,0],x,m))))
       elseif listp(m) and every('identity,map(lambda([z],listofnumbersp(z) and length(z)=2),m)) or
              matrixp(m) and length(m[1])=2 then
              /* m is a two-dimensional sample */
-             (scen: append(select,[points(args(m))]),
-              if draw_compound
-                then apply('draw2d,scen)
-                else scen)
+             gr2d(select, points(args(m)))
       elseif matrixp(m) and length(m[1])>2 then
              /* m is an d-dimensional (d>2) sample */
-             (scen: block([n: length(m[1]), draw_compound:false, gr],
-                     gr: ['columns = n],
-                     for i:1 thru n do
-                       for j:1 thru n do
-                         gr: endcons(if i=j
-                                       then apply('gr2d,append(apply('histogram, append([col(m,i)],select,localopts))))
-                                       else apply('gr2d,append(apply('scatterplot, append([subsample(m,lambda([v],true),i,j)],select)))) ,
-                                     gr),
-                     gr),
-             if draw_compound
-               then draw(scen)
-               else scen )
+             block([n: length(m[1]), gr],
+               gr: ['columns = n],
+               for i:1 thru n do
+                 for j:1 thru n do
+                   gr: endcons(
+                         if i=j
+                           then gr2d(apply('histogram_description,
+                                           append([col(m,i)],select,localopts)))
+                           else apply('scatterplot_description,
+                                      append([subsample(m,lambda([v],true),i,j)],select)) ,
+                         gr),
+               gr)
       else error("sorry, can't plot the scatter diagram for these data")) $
+scatterplot([desc]) := draw(apply('scatterplot_description, desc)) $
+wxscatterplot([desc]) := wxdraw(apply('scatterplot_description, desc)) $
 
 
 
-/* Plots histograms. Argument 'm' must be a list, a one column matrix or a       */
-/* one row matrix. The second and consecutive arguments are either draw options  */
-/* or the specific 'nclasses' option (10 by default) to control number of classes*/
-histogram(m,[select]):=
-   block([fr,amp,scen,localopts,nclass:10],
-      [select, localopts]: extract_options(select,'nclasses),
+/* Histograms. Argument 'm' must be a list, a one column matrix or a */
+/* one row matrix.                                                   */
+/*                                                                   */
+/* Specific options (defaults in parentheses):                       */
+/*     - nclasses (10): number of classes, a positive integer.       */
+/*     - frequency (absolute): 'absolute', 'relative' or 'percent'   */
+/*     - htics (auto): 'auto, 'endpoints, 'intervals, list of labels */
+/*                                                                   */
+/* Draw options affecting this object:                               */
+/*     - key                                                         */
+/*     - color (used for labels)                                     */
+/*     - fill_color                                                  */
+/*     - fill_density                                                */
+/*     - line_width                                                  */
+/* histogram modifies the following options:                         */
+/*     - xrange                                                      */
+/*     - yrange                                                      */
+/*     - xtics                                                       */
+histogram_description(m,[select]):=
+   block([fr,amp,scen,before,localopts,num_classes,len_option,lbels,
+          /* specific options */
+          my_nclasses:10, my_frequency:'absolute, my_htics:'auto],
+      [before, localopts]: extract_options(select,'nclasses,'frequency,'htics),
+
       for k in localopts do
-        if lhs(k) = 'nclasses then nclass: rhs(k),
+        if lhs(k) = 'nclasses
+          then my_nclasses: rhs(k)
+        elseif lhs(k) = 'frequency
+          then my_frequency: rhs(k)
+        elseif lhs(k) = 'htics
+          then my_htics: rhs(k),
 
-      if not intergerp(nclass) or nclass < 3
-        then error("histogram: number of classes must be an integer greater than two"),
+      if listp(my_nclasses)
+        then ( len_option: length(my_nclasses),
+               if len_option = 2
+                 then num_classes: 10
+               elseif len_option = 3
+                 then num_classes: third(my_nclasses)
+                 else error("histogram: the second argument is not a list of two or three elements") )
+        elseif not integerp(my_nclasses) or my_nclasses < 3
+          then error("histogram: number of classes must be an integer greater than two")
+          else num_classes: my_nclasses,
+      if not member(my_frequency, ['absolute, 'relative, 'percent])
+        then error("histogram: frenquency must be either absolute, relative or percent"),
+      if not member(my_htics, ['auto, 'endpoints, 'intervals]) and
+         not listp(my_htics)
+        then error("histogram: incorrect format in option htics"),
 
       /* if m is a list of numbers or a column or a row matrix then */
       /* plots a simple histogram.                                  */
@@ -598,87 +634,130 @@ histogram(m,[select]):=
                        else m: transpose(m)[1],
 
                /* frequency table */
-               fr: continuous_freq(m,nclass),
+               fr: float(continuous_freq(m,my_nclasses)),
+               if member(my_frequency, ['relative, 'percent])
+                 then fr: [first(fr), second(fr) / apply("+", second(fr))],
+               if my_frequency = 'percent
+                 then fr[2]: fr[2] * 100.0,
                amp: fr[1][2]-fr[1][1],
-               scen:append(select,
-                           [apply('bars,
-                                  makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,nclass)),
-                            'xrange = [fr[1][1]-amp/2, fr[1][nclass+1]+amp/2],
-                            'yrange = lmax(fr[2])*[-0.05, 1.05]  ] ),
-              if draw_compound
-                then draw2d(scen)
-                else scen )
-        else error("sorry, can't plot the histogram for these data") )$
+
+               /* histogram tics */
+               if my_htics = 'auto
+                 then my_htics: []
+               elseif my_htics = 'endpoints
+                 then my_htics: xtics = [fr[1][1],amp,fr[1][num_classes+1]]
+               elseif my_htics = 'intervals
+                 then ( lbels: [concat("[",fr[1][1],",",fr[1][2],"]")],
+			lbels: append(lbels, makelist(concat("(",fr[1][k],",",fr[1][k+1],"]"),k,2,num_classes)),
+			lbels: makelist([lbels[k],fr[1][k]+amp/2],k,1,num_classes),
+			my_htics: xtics = makeset([a,b],[a,b],lbels) )
+               elseif listp(my_htics)
+                 then ( if length(my_htics) < num_classes
+		          then my_htics: append(my_htics, makelist("",k,length(my_htics)+1,num_classes)),
+		        lbels: makelist([my_htics[k],fr[1][k]+amp/2],k,1,num_classes),
+		        my_htics: xtics = makeset([a,b],[a,b],lbels) ),
+
+               scen: [before,
+                      'xrange = [fr[1][1]-amp/2, fr[1][num_classes+1]+amp/2],
+                      'yrange = lmax(fr[2])*[-0.05, 1.05],
+                      my_htics,
+                      apply('bars,
+                            makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,num_classes))])
+        else error("histogram: can't plot the histogram for these data") )$
+histogram([desc]) := draw2d(apply(histogram_description, desc)) $
+wxhistogram([desc]) := wxdraw2d(apply(histogram_description, desc)) $
 
 
 
 /* Plots bar charts for discrete or categorical data, both for one or more */
 /* samples.  This function admits an arbitrary number of arguments.        */
 /* The first arguments are lists or matrices with sample data. The rest of */
-/* arguments are options in equation format (option = value). Options can  */
-/* be the same used by package draw and/or those which are specific to this*/
-/* function, namely            */
-/*    - box_width,             */
-/*    - groups_gap,            */
-/*    - bars_colors,           */
-/*    - relative_frequencies,  */
-/*    - ordering,              */
-/*    - sample_keys            */
-barsplot([args]):=
-  block([lastsample: 0, nargs: length(args), drawopts, localopts,
-          freqs: [], samplespace, sspacesize, nsamples, scene, totalgap,
-         /* default options */
-         my_box_width: 3/4, my_groups_gap: 1, my_relative_frequencies: false,
-         my_ordering: 'orderlessp, my_bars_colors: [], my_sample_keys: [] ],
+/* arguments are specific options in equation format (option = value).     */
+/*                                                                         */
+/* Specific options:                                                       */
+/*     - box_width (3/4): a number between zero and 1.                     */
+/*     - grouping (clustered): or 'stacked'.                               */
+/*     - groups_gap (1): distance between clusters, must be a positive     */
+/*            integer.                                                     */
+/*     - bars_colors ([]): list of colors for bars. If the list is shorter */
+/*            than the number of samples, colors are generated randomly.   */
+/*     - frequency (absolute): 'absolute', 'relative' or 'percent'.        */
+/*     - ordering (orderlessp): 'orderlessp' or 'ordergreatp'.             */
+/*     - sample_keys ([]): entries for legend.                             */
+/*     - start_at (0): starting point on the x axis.                       */
+/*                                                                         */
+/* Draw options affecting this object:                                     */
+/*     - key                                                               */
+/*     - color (used for labels)                                           */
+/*     - fill_color                                                        */
+/*     - fill_density                                                      */
+/*     - line_width                                                        */
+/* barsplot modifies the following options:                                */
+/*     - xtics                                                             */
+barsplot_description([args]):=
+  block([lastsample: 0, nargs: length(args), freqs: [], samplespace,
+         sspacesize, nsamples, totalgap, expr, before, localopts,
+         /* specific options */
+         my_box_width: 3/4, my_groups_gap: 1, my_frequency: 'absolute,
+         my_ordering: 'orderlessp, my_bars_colors: [], my_sample_keys: [],
+         my_grouping: 'clustered, my_start_at: 0 ],
 
-    /* check for data */
-    for i:1 thru nargs do
-      if listp(args[i]) or matrixp(args[i])
-        then lastsample: lastsample + 1,
+    /* looks for data */
+    for i:1 thru nargs while (listp(args[i]) or matrixp(args[i])) do
+      lastsample: lastsample + 1,
 
-    /* check for barsplot options */
-    [drawopts, localopts]: extract_options(makelist(args[k],k,lastsample + 1,nargs),
-                                           'box_width, 'groups_gap, 'bars_colors,
-                                           'relative_frequencies, 'ordering, 'sample_keys),
+    [before, localopts]:
+      extract_options(
+        makelist(args[k],k,lastsample+1,length(args)),
+       'box_width,'grouping,'groups_gap,'bars_colors,'frequency,'ordering,'sample_keys,'start_at),
+
     for k in localopts do
       if lhs(k) = 'box_width
         then my_box_width: float(rhs(k))
+      elseif lhs(k) = 'grouping
+        then my_grouping: rhs(k)
       elseif lhs(k) = 'groups_gap
         then my_groups_gap: rhs(k)
       elseif lhs(k) = 'bars_colors
         then my_bars_colors: rhs(k)
-      elseif lhs(k) = 'relative_frequencies
-        then my_relative_frequencies: rhs(k)
+      elseif lhs(k) = 'frequency
+        then my_frequency: rhs(k)
       elseif lhs(k) = 'ordering
         then my_ordering: rhs(k)
       elseif lhs(k) = 'sample_keys
-        then my_sample_keys: rhs(k),
+        then my_sample_keys: rhs(k)
+      elseif lhs(k) = 'start_at
+        then my_start_at: float(rhs(k)),
+
     if my_box_width > 1 or my_box_width < 0
       then error("barsplot: illegal value for box_width"),
+    if not member(my_grouping, ['clustered, 'stacked])
+      then error("barsplot: unrecognized grouping style"),
     if not integerp(my_groups_gap) or my_groups_gap < 1
       then error("barsplot: illegal value for groups_gap"),
     if not listp(my_bars_colors)
       then error("barsplot: illegal value for bars_colors"),
-    if my_relative_frequencies # true and my_relative_frequencies # false
-      then error("barsplot: illegal value for relative_frequencies"),
+    if not member(my_frequency, ['absolute, 'relative, 'percent])
+      then error("barsplot: frenquency must be either absolute, relative or percent"),
     if not member(my_ordering, [orderlessp, ordergreatp])
       then error("barsplot: illegal value for ordering"),
     if not (my_sample_keys = []
             or listp(my_sample_keys) and every('stringp, my_sample_keys))
       then error("barsplot: illegal value for sample_keys"),
+    if not numberp(my_start_at)
+      then error("barsplot: non numeric value for start_at option"),
 
     /* get absolute frequencies */
     for k: 1 thru lastsample do (
       if listp(args[k])
-        then freqs: cons(discrete_freq(args[k]), freqs)
+        then freqs: endcons(discrete_freq(args[k]), freqs)
       elseif matrixp(args[k])
         then for c in args(transpose(args[k])) do
-               freqs: cons(discrete_freq(c), freqs)
+               freqs: endcons(discrete_freq(c), freqs)
         else error("barsplot: unknown data format")),
 
     /* transform freqs into a more suitable form */
-    samplespace: listify(setify(apply('append,map('first,freqs)))),
-    samplespace : sort(samplespace, my_ordering),
+    samplespace: sort(listify(setify(apply('append,map('first,freqs)))), my_ordering),
     sspacesize: length(samplespace),
     nsamples: length(freqs),
     if my_sample_keys = []
@@ -695,54 +774,105 @@ barsplot([args]):=
              k,samplespace),
 
     /* transform to relative frequencies, if necessary */
-    if my_relative_frequencies
+    if member(my_frequency, ['relative, 'percent])
       then block([samplesizes: apply("+",freqs)],
                  freqs: map(lambda([z], z/samplesizes), freqs)),
+    if my_frequency = 'percent
+      then freqs: 100.0 * freqs,
 
     /* complete my_bars_colors with random colors, if necessary */
     if nsamples > length(my_bars_colors)
       then my_bars_colors: append(my_bars_colors,
-                              makelist(random_color(),k,length(my_bars_colors)+1,nsamples)),
-    totalgap: nsamples + my_groups_gap,
-    scene: append(drawopts,
-                  ['yrange = [0, lmax(flatten(freqs)) * 1.05],
-                   xtics = setify(makelist([string(samplespace[k]),
-                                            (k-1)*totalgap + (nsamples+1)/2],
-                                           k, 1, sspacesize))],
-                  apply(append,
-                        makelist(
-                          [fill_color = my_bars_colors[m],
-                           key = my_sample_keys[m],
-                           apply('bars,
-                                 makelist(
-                                   block(
-                                     [pos: (k-1)*totalgap + m],
-                                     [pos, freqs[k][m], my_box_width]),
-                                   k,1,sspacesize))],
-                        m,1,nsamples)) ),
+                                  makelist(random_color(),k,length(my_bars_colors)+1,nsamples)),
+    if my_grouping = 'clustered
+      then ( /* clustered bars */
+        totalgap: nsamples + my_groups_gap,
+        append(
+           before,
+           [points([[my_start_at,0]]), xtics = 'none],
+           makelist(
+                ['fill_color = my_bars_colors[m],
+                 'key = my_sample_keys[m],
+                 apply('bars,
+                       makelist(
+                         [my_start_at+(k-1)*totalgap + m, freqs[k][m], my_box_width],
+                         k,1,sspacesize))],
+                 m,1,nsamples),
+           [apply(
+               label,
+               makelist(
+                  [string(samplespace[k]),
+                   my_start_at+(k-1)*totalgap + (nsamples+1)/2,
+                   lmax(freqs[k])],
+                  k, 1, sspacesize))],
+           ['key=""] ))
+      else ( /* stacked bars */
+        totalgap: my_groups_gap,
+        freqs: map(lambda([z], reverse(makelist(block([s:0], for i:1 thru k do s: s+z[i], s),k,1,length(z)))), freqs),
+        append(
+           before,
+           [points([[my_start_at,0]]), xtics = 'none],
+           makelist(
+                ['fill_color = my_bars_colors[m],
+                 'key = my_sample_keys[m],
+                 apply('bars,
+                       makelist(
+                         [my_start_at+(k-1)*totalgap, freqs[k][m], my_box_width],
+                         k,1,sspacesize))],
+                 m,1,nsamples),
+           [apply(
+               label,
+               makelist(
+                  [string(samplespace[k]),
+                   my_start_at+(k-1)*totalgap,
+                   lmax(freqs[k])],
+                  k, 1, sspacesize))],
+           ['key=""] )) )$
+barsplot([desc]) := draw2d(apply(barsplot_description, desc)) $
+wxbarsplot([desc]) := wxdraw2d(apply(barsplot_description, desc)) $
 
-    if draw_compound
-      then draw2d(scene)
-      else scene)$
 
 
+/* Plots pie charts for discrete or categorical data. Argument 'm' must be a */
+/* list, a one column matrix or a one row matrix. The rest of  arguments are */
+/* specific options in equation format (option = value).                     */
+/*                                                                           */
+/* Specific options:                                                         */
+/*     - sector_colors ([]): list of colors for sectors. If the list is      */
+/*       shorter than the number of sectors, colors are generated randomly.  */
+/*     - pie_center ([0,0]): a pair of numbers                               */
+/*     - pie_radius (1): a positive number.                                  */
+/*                                                                           */
+/* Draw options affecting this object:                                       */
+/*     - key                                                                 */
+/*     - color (used for labels)                                             */
+/*     - fill_density                                                        */
+/*     - line_width                                                          */
+/* This object modifies the following options:                               */
+/*     - key                                                                 */
+piechart_description(m,[select]):=
+   block([fr,tot,degrees,ini,end:0,alpha,hexcolor,conver:float(%pi/180),
+          sectors,before,localopts,
+         /* specific options */
+         my_sector_colors:[],my_pie_center:[0,0],my_pie_radius:1],
+      [before, localopts]: extract_options(select,'sector_colors,'pie_center,'pie_radius),
 
-
-/* Plots pie charts for discrete or categorical data. Argument 'm' must be a  */
-/* list, a one column matrix or a one row matrix. The second and consecutive  */
-/* arguments are either draw options or the specific 'pie_center' ([0,0] by   */
-/* default) or 'pie_radius' (1 by default) options to control the center and  */
-/* the radius of the diagram, respectively.                                   */
-piechart(m,[select]):=
-   block([fr,tot,scen,degrees,ini,end:0,alpha,hexcolor,conver:float(%pi/180),
-          sectors,localopts,piecent:[0,0],pierad:1],
-      [select, localopts]: extract_options(select,'pie_center,'pie_radius),
       for k in localopts do
-        if     lhs(k) = 'pie_center then piecent: float(rhs(k))
-        elseif lhs(k) = 'pie_radius then pierad: float(rhs(k)),
+        if lhs(k) = 'sector_colors
+          then my_sector_colors: rhs(k)
+        elseif lhs(k) = 'pie_center
+          then my_pie_center: float(rhs(k))
+        elseif lhs(k) = 'pie_radius
+          then my_pie_radius: float(rhs(k)),
 
-      if pierad <= 0
-         then error("pie radius must be greater than zero"),
+      if not listp(my_sector_colors)
+        then error("piechart: illegal value for sector_colors"),
+      if not numberp(my_pie_radius) or my_pie_radius <= 0
+        then error("piechart: radius must be greater than zero"),
+      if not listp(my_pie_center) or length(my_pie_center) # 2 or
+         not every(numberp, my_pie_center)
+        then error("piechart: center must be a list of numbers"),
+
       if listofexpr(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
         then (/* transform input data into a list */
               if matrixp(m)
@@ -754,36 +884,68 @@ piechart(m,[select]):=
                fr: discrete_freq(m),
                tot: length(fr[1]),
                degrees: 360.0 * fr[2] / apply("+", fr[2]),
-               sectors: makelist((ini: end,
-                                  end: ini + degrees[i],
-                                  alpha: ini+degrees[i]/2.0,
-                                  hexcolor: random_color(),
-                                  [ 'color = hexcolor,  
-                                    'fill_color = hexcolor,
-                                    'key = string(fr[1][i]),
-                                    ellipse(piecent[1],piecent[2],
-                                            pierad,pierad,
-                                            ini,degrees[i]) ])
-                                  ,i,1,tot),
-               scen:append(select, flatten(sectors)),
-              if draw_compound
-                then draw2d(scen)
-                else scen )
-        else error("sorry, can't plot the piechart for these data") )$
+
+               /* complete my_sector_colors with random colors, if necessary */
+               if tot > length(my_sector_colors)
+                 then my_sector_colors:
+                         append(my_sector_colors,
+                                makelist(random_color(),k,length(my_sector_colors)+1,tot)),
+
+               /* build the object */
+               [before,
+                makelist((ini: end,
+                          end: ini + degrees[i],
+                          alpha: ini+degrees[i]/2.0,
+                          hexcolor: random_color(),
+                          [ 'color = my_sector_colors[i],
+                            'fill_color = my_sector_colors[i],
+                            'key = string(fr[1][i]),
+                            ellipse(my_pie_center[1],my_pie_center[2],
+                                    my_pie_radius,my_pie_radius,
+                                    ini,degrees[i]) ])
+                                  ,i,1,tot)] )
+        else error("piechart: can't plot the piechart for these data") )$
+piechart([desc]) := draw2d(apply(piechart_description, desc)) $
+wxpiechart([desc]) := wxdraw2d(apply(piechart_description, desc)) $
 
 
 
 /* Plots box-whisker diagrams. Argument 'm' must be a list of numbers or a matrix. */
-/* The second and consecutive arguments are either draw options or the specific    */
-/* 'box_width' option (3/4 by default) to control boxes widths.                     */
-boxplot(m,[select]):=
-   block([fr,tot,scen,top:0,bot:inf,localopts,boxwidth:3/4],
-      [select, localopts]: extract_options(select,'box_width),
-      for k in localopts do
-        if lhs(k) = 'box_width then boxwidth: float(rhs(k)),
+/* The second and consecutive arguments are specific options.                      */
+/*                                                                                 */
+/* Specific options:                                                               */
+/*     - box_width (3/4): widths for boxes                                         */
+/*     - box_orientation (vertical): 'vertical' or 'horizontal'                    */
+/*                                                                                 */
+/* Draw options affecting this object:                                             */
+/*     - key                                                                       */
+/*     - color                                                                     */
+/*     - line_width                                                                */
+/* This object modifies the following options:                                     */
+/*     - points_joined                                                             */
+/*     - point_size                                                                */
+/*     - point_type                                                                */
+/*     - xtics                                                                     */
+/*     - ytics                                                                     */
+/*     - xrange                                                                    */
+/*     - yrange                                                                    */
+boxplot_description(m,[select]):=
+   block([fr,tot,top:0,bot:inf,before,localopts,p,
+          /* specific options*/
+          my_box_width:3/4, my_box_orientation:'vertical],
+      [before, localopts]: extract_options(select,'box_width,'box_orientation),
 
-      if boxwidth > 1 or boxwidth < 0
-         then error("boxes width is out of range"),
+      for k in localopts do
+        if lhs(k) = 'box_width
+          then my_box_width: float(rhs(k))
+        elseif lhs(k) = 'box_orientation
+          then my_box_orientation: rhs(k),
+
+      if not floatp(my_box_width) or my_box_width < 0 or my_box_width > 1
+        then error("boxplot: illegal value for box_width"),
+      if not member(my_box_orientation, ['vertical, 'horizontal])
+	 then error("boxplot: illegal value for box_orientation"),
+
       /* if m is not a row matrix, transpose it */
       if matrixp(m) and length(m)>1
          then m: transpose(m),
@@ -795,35 +957,229 @@ boxplot(m,[select]):=
       if listoflistsp(m) or matrixp(m)
         then(
           tot: length(m),
-          scen: append(select,
-                       ['points_joined = true,
-                        'point_size = 0,
-                        'point_type = 'dot],
-                       flatten(
-                         makelist(map('points,
-                                      block([mi: float(smin(m[x])),
-                                             ma: float(smax(m[x])),
-                                             q1: float(quantile(m[x],0.25)),
-                                             q2: float(quantile(m[x],0.5)),
-                                             q3: float(quantile(m[x],0.75)),
-                                             w:  float(boxplot_width),
-                                             w2: boxwidth/2,
-                                             w4: boxwidth/4,
-                                             A,B,C,D,E,F,G,H,I,J,K,L,M,N],
-                                        top: max(top,ma),
-                                        bot: min(bot,mi),
-                                        A: [x-w2,q1],     B: [x-w2,q3],     C: [x+w2,q3],
-                                        D: [x+w2,q1],     E: [x-w2,q2],     F: [x+w2,q2],
-                                        G: [x,q3],        H: [x,ma],        I: [x-w4,ma],
-                                        J: [x+w4,ma],     K: [x,q1],        L: [x,mi],
-                                        M: [x-w4,mi],     N: [x+w4,mi],
-                                        [[A,B,C,D,A],[E,F],[G,H],[I,J],[K,L],[M,N]])),
-                                x,1,tot)),
-                       ['xtics  = setify(makelist(k,k,1,tot)),
-                        'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
-                        'yrange = (top-bot)*0.05*[-1,+1]+[bot,top] ] ),
-              if draw_compound
-                then draw2d(scen)
-                else scen )
+          append(before,
+                 ['points_joined = true,
+                  'point_size = 0,
+                  'point_type = 'dot],
+                 flatten(
+                   makelist(map('points,
+                                block([mi: float(smin(m[x])),
+                                       ma: float(smax(m[x])),
+                                       q1: float(quantile(m[x],0.25)),
+                                       q2: float(quantile(m[x],0.5)),
+                                       q3: float(quantile(m[x],0.75)),
+                                       w:  float(boxplot_width),
+                                       w2: my_box_width/2,
+                                       w4: my_box_width/4,
+                                       A,B,C,D,E,F,G,H,I,J,K,L,M,N],
+                                  top: max(top,ma),
+                                  bot: min(bot,mi),
+                                  A: [x-w2,q1],     B: [x-w2,q3],     C: [x+w2,q3],
+                                  D: [x+w2,q1],     E: [x-w2,q2],     F: [x+w2,q2],
+                                  G: [x,q3],        H: [x,ma],        I: [x-w4,ma],
+                                  J: [x+w4,ma],     K: [x,q1],        L: [x,mi],
+                                  M: [x-w4,mi],     N: [x+w4,mi],
+                                  p: [A,B,C,D,E,F,G,H,I,J,K,L,M,N],
+                                  if my_box_orientation = 'horizontal then p: map(reverse,p),
+                                  [ [p[1],p[2],p[3],p[4],p[1]],
+                                    [p[5],p[6]],
+                                    [p[7],p[8]],
+                                    [p[9],p[10]],
+                                    [p[11],p[12]],[p[13],p[14]] ] )),
+                          x,1,tot)),
+                 
+                  if my_box_orientation = 'vertical
+                    then [ 'xtics  = setify(makelist(k,k,1,tot)),
+                           'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
+                           'yrange = (top-bot)*0.05*[-1,+1]+[bot,top] ]
+                    else [ 'ytics  = setify(makelist(k,k,1,tot)),
+                           'yrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
+                           'xrange = (top-bot)*0.05*[-1,+1]+[bot,top] ]    ) )
         else error("sorry, can't plot the box-whisker plot for these data") )$
+boxplot([desc]) := draw2d(apply(boxplot_description, desc)) $
+wxboxplot([desc]) := wxdraw2d(apply(boxplot_description, desc)) $
+
+
+
+/* Plots stem and leaf diagrams. Argument 'm' must be a list, a one  */
+/* column matrix or a one row matrix.                                */
+/*                                                                   */
+/* Specific options:                                                 */
+/*     - leaf_unit (1): indicates the unit of the leaves; must be a  */
+/*          power of 10                                              */
+stemplot(m,[select]):=
+   block([localopts,d,s,si,l,lf,index,n,key,offset,
+          /* specific options*/
+          my_leaf_unit: 1],
+      [select, localopts]: extract_options(select,'leaf_unit),
+
+      for k in localopts do
+        if lhs(k) = 'leaf_unit then my_leaf_unit: rhs(k),
+
+      if numberp(my_leaf_unit) and my_leaf_unit > 0
+        then my_leaf_unit: 10^round(log(my_leaf_unit)/log(10))
+        else error("stemplot: illegal value for option leaf_unit"),
+
+      if listofexpr(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
+        then (/* transform input data into a list */
+              if matrixp(m)
+                then if length(m)=1
+                       then m: m[1]
+                       else m: transpose(m)[1],
+
+              d:  my_leaf_unit*map('round,m/my_leaf_unit),
+              s:  map('floor,d/(10*my_leaf_unit)),
+              l:  map('floor,d/my_leaf_unit),
+              l:  l-10*s,
+              si: listify(setify(s)),
+              lf: makelist([],i,1,length(si)),
+              for k:1 thru length(s) do (
+                index:1,
+                while s[k]>si[index] do index:index+1,
+                lf[index]:append(lf[index],[l[k]])   ),
+              lf: map('sort,lf),
+              offset: slength(concat("",si[length(si)])),
+              for k:1 thru length(si) do (
+                lv: "",
+                for n:1 thru length(lf[k]) do lv:concat(lv,lf[k][n]),
+                printf(true,concat("~",offset,"d|",lv,"~%"),si[k])  ),
+              key: 63*my_leaf_unit,
+              print("key: 6|3 = ",if my_leaf_unit<1 then float(key) else key),
+              'done )
+        else error("stemplot: can't plot the stemplot for these data")  )$
+
+
+
+/* Plots star charts for discrete or categorical data, both for one or more*/
+/* samples.  This function admits an arbitrary number of arguments.        */
+/* The first arguments are lists or matrices with sample data. The rest of */
+/* arguments are specific options in equation format (option = value).     */
+/*                                                                         */
+/* Specific options:                                                       */
+/*     - stars_colors ([]): list of colors for stars. If the list is shorter*/
+/*            than the number of samples, colors are generated randomly.   */
+/*     - frequency (absolute): 'absolute' or 'relative'.                   */
+/*     - ordering (orderlessp): 'orderlessp' or 'ordergreatp'.             */
+/*     - sample_keys ([]): entries for legend.                             */
+/*     - star_center ([0,0]): a pair of numbers                            */
+/*     - star_radius (1): a positive number.                               */
+/* Draw options affecting this object:                                     */
+/*     - key                                                               */
+/*     - color                                                             */
+/*     - line_width                                                        */
+/* starplot modifies the following options:                                */
+/*     - xtics                                                             */
+starplot_description([args]):=
+  block([lastsample: 0, nargs: length(args), freqs: [], samplespace,
+         sspacesize, nsamples, before, localopts, maxfreq, angle, cpnts,
+         /* specific options */
+         my_stars_colors: [], my_frequency: 'absolute, my_ordering: 'orderlessp,
+         my_sample_keys: [], my_star_center: [0,0], my_star_radius: 1],
+
+    /* looks for data */
+    for i:1 thru nargs while (listp(args[i]) or matrixp(args[i])) do
+      lastsample: lastsample + 1,
+
+    [before, localopts]:
+      extract_options(
+        makelist(args[k],k,lastsample+1,length(args)),
+        'stars_colors,'frequency,'ordering,'sample_keys,'star_center,'star_radius),
+
+    for k in localopts do
+      if lhs(k) = 'stars_colors
+        then my_stars_colors: rhs(k)
+      elseif lhs(k) = 'frequency
+        then my_frequency: rhs(k)
+      elseif lhs(k) = 'ordering
+        then my_ordering: rhs(k)
+      elseif lhs(k) = 'sample_keys
+        then my_sample_keys: rhs(k)
+      elseif lhs(k) = 'star_center
+        then my_star_center: float(rhs(k))
+      elseif lhs(k) = 'star_radius
+        then my_star_radius: float(rhs(k)),
+
+    if not listp(my_stars_colors)
+      then error("starplot: illegal value for stars_colors"),
+    if not member(my_frequency, ['absolute, 'relative])
+      then error("starplot: frenquency must be either absolute, relative or percent"),
+    if not member(my_ordering, [orderlessp, ordergreatp])
+      then error("starplot: illegal value for ordering"),
+    if not (my_sample_keys = []
+            or listp(my_sample_keys) and every('stringp, my_sample_keys))
+      then error("starplot: illegal value for sample_keys"),
+    if not numberp(my_star_radius) or my_star_radius <= 0
+      then error("starplot: radius must be greater than zero"),
+    if not listp(my_star_center) or length(my_star_center) # 2 or
+       not every(numberp, my_star_center)
+      then error("starplot: center must be a list of numbers"),
+
+    /* get absolute frequencies */
+    for k: 1 thru lastsample do (
+      if listp(args[k])
+        then freqs: endcons(discrete_freq(args[k]), freqs)
+      elseif matrixp(args[k])
+        then for c in args(transpose(args[k])) do
+               freqs: endcons(discrete_freq(c), freqs)
+        else error("starplot: unknown data format")),
+    samplespace: sort(listify(setify(apply('append,map('first,freqs)))), my_ordering),
+    sspacesize: length(samplespace),
+    nsamples: length(freqs),
+    angle: float(2*%pi/sspacesize),
+    if my_sample_keys = []
+      then my_sample_keys : makelist("",k,1,nsamples),
+    if nsamples # length(my_sample_keys)
+      then error("starplot: incorrect number of elements in sample_keys"),
+
+    /* transform to relative frequencies, if necessary */
+    if member(my_frequency, ['relative, 'percent])
+      then freqs: makelist(block([ssinv: float(1 / apply("+", second(k)))],
+                             if my_frequency = 'percent then ssinv: 100*ssinv,
+                             [first(k), ssinv*second(k)]),
+                           k, freqs),
+    maxfreq: lmax(flatten(map(second, freqs))),
+
+    /* complete my_stars_colors with random colors, if necessary */
+    if nsamples > length(my_stars_colors)
+      then my_stars_colors: append(my_stars_colors,
+                                  makelist(random_color(),k,length(my_stars_colors)+1,nsamples)),
+
+    /* calculate circle points */
+    cpnts: makelist(
+             block(
+               [this_ang: k*angle],
+               [cos(this_ang), sin(this_ang)]),
+           k, 1, sspacesize),
+
+    /* return draw object */
+    append(
+      /* draw the radii and the circular grid */
+      ['points_joined = true, 'point_type = 'dot, 'color = 'black],
+
+      map(lambda([z], points([my_star_center, z+my_star_center])),
+          my_star_radius*cpnts),
+
+      [apply(label, maplist(cons,
+                            samplespace,
+                            map(lambda([z], z+my_star_center), 1.05*my_star_radius*cpnts)))],
+
+      before,
+      /* draw the stars */
+      makelist(
+        [ 'color = my_stars_colors[s],
+          'key = my_sample_keys[s],
+          block([pnts],
+            pnts: makelist(
+                    block([pos],
+                      pos: ?position(samplespace[k], freqs[s][1]),
+                      if pos = false
+                        then my_star_center
+                        else my_star_radius * freqs[s][2][pos] / 
+                                      maxfreq * cpnts[k] + my_star_center),
+                    k, 1, sspacesize),
+            points(cons(last(pnts), pnts)) ) ],
+        s, 1, nsamples),
+      ['key = ""])    )$
+starplot([desc]) := draw2d(apply(starplot_description, desc)) $
+wxstarplot([desc]) := wxdraw2d(apply(starplot_description, desc)) $
 

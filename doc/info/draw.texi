@@ -922,6 +922,38 @@ We want an eps file with A4 portrait dimensions.
 
 
 
+@defvr {Graphic option} draw_realpart
+Default value: @code{true}
+
+When @code{true}, functions to be drawn are considered as complex functions whose
+real part value should be plotted; when @code{false}, nothing will be plotted when
+the function does not give a real value. 
+
+This option affects objects @code{explicit} and @code{parametric} in 2D and 3D, and
+@code{parametric_surface}.
+
+Example:
+
+Option @code{draw_realpart} affects objects @code{explicit} and @code{parametric}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        draw_realpart = false,
+        explicit(sqrt(x^2  - 4*x) - x, x, -1, 5),
+        color         = red,
+        draw_realpart = true,
+        parametric(x,sqrt(x^2  - 4*x) - x + 1, x, -1, 5) );
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @defvr {Graphic option} enhanced3d
 Default value: @code{none}
 
@@ -3823,7 +3855,7 @@ Draws explicit functions in 2D and 3D.
 with variable @var{var} taking values from @var{minval} to @var{maxval}.
 
 This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{adapt_depth}, @code{draw_realpart}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{filled_func}, @code{fill_color} and @code{color}.
 
 Example:
@@ -3845,7 +3877,7 @@ Example:
 variable @var{var1} taking values from @var{minval1} to @var{maxval1} and
 variable @var{var2} taking values from @var{minval2} to @var{maxval2}.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid},
+This object is affected by the following @i{graphic options}: @code{draw_realpart}, @code{xu_grid},
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key},
 @code{enhanced3d}, and @code{color}.
 
@@ -4214,7 +4246,7 @@ The command @code{parametric_surface(@var{xfun}, @var{yfun}, @var{zfun},
 @var{par1max} and parameter @var{par2} taking values from @var{par2min} to
 @var{par2max}.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+This object is affected by the following @i{graphic options}: @code{draw_realpart}, @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
  and @code{color}.
 

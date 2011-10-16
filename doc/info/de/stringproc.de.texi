@@ -2,9 +2,9 @@
 @c File     : stringproc.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : stringproc.texi revision 1.15
+@c Original : stringproc.texi revision 31.05.2011
 @c Date     : 08.11.2010
-@c Revision : 24.03.2011
+@c Revision : 18.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -27,7 +27,7 @@ and adds some useful functions for file in/output.
 For questions and bugs please mail to van.nek at arcor.de .
 
 In Maxima a string is easily constructed by typing "text".
-@code{stringp} tests for strings.
+@mref{stringp} tests for strings.
 
 @example
 (%i1) m: "text";
@@ -38,8 +38,8 @@ In Maxima a string is easily constructed by typing "text".
 
 Characters are represented as strings of length 1.
 These are not Lisp characters.
-Tests can be done with @code{charp} (respectively @code{lcharp}
-and conversion from Lisp to Maxima characters with @code{cunlisp}).
+Tests can be done with @mref{charp} (respectively @mref{lcharp}@w{}
+and conversion from Lisp to Maxima characters with @mref{cunlisp}).
 
 @example
 (%i1) c: "e";
@@ -53,23 +53,23 @@ and conversion from Lisp to Maxima characters with @code{cunlisp}).
 @end example
 
 All functions in @code{stringproc.lisp} that return characters, return 
-Maxima-characters.  Due to the fact, that the introduced characters are strings 
+Maxima characters.  Due to the fact, that the introduced characters are strings 
 of length 1, you can use a lot of string functions also for characters.
-As seen, @code{supcase} is one example.
+As seen, @mref{supcase} is one example.
 
-It is important to know, that the first character in a Maxima-string is at 
+It is important to know, that the first character in a Maxima string is at 
 position 1.  This is designed due to the fact that the first element in a 
-Maxima-list is at position 1 too.  See definitions of @code{charat} and 
-@code{charlist} for examples.
+Maxima list is at position 1 too.  See definitions of @mref{charat} and
+@mref{charlist} for examples.
 
-In applications string-functions are often used when working with files.
-You will find some useful stream- and print-functions in @code{stringproc.lisp}.
+In applications string functions are often used when working with files.
+You will find some useful stream and print functions in @code{stringproc.lisp}.
 The following example shows some of the here introduced functions at work.
 
 Example: 
 
-@code{openw} returns an output stream to a file, @code{printf} then allows 
-formatted writing to this file. See @code{printf} for details.
+@mref{openw} returns an output stream to a file, @code{printf} then allows
+formatted writing to this file.  See @mref{printf} for details.
 
 @example
 (%i1) s: openw("E:/file.txt");
@@ -83,10 +83,10 @@ formatted writing to this file. See @code{printf} for details.
 (%o4)                                true
 @end example
 
-After closing the stream you can open it again, this time with input direction. 
-@code{readline} returns the entire line as one string. The @code{stringproc} 
-package now offers a lot of functions for manipulating strings. Tokenizing can 
-be done by @code{split} or @code{tokens}.
+After closing the stream you can open it again, this time with input direction.
+@mref{readline} returns the entire line as one string.  The @code{stringproc}
+package now offers a lot of functions for manipulating strings.  Tokenizing can 
+be done by @mref{split} or @mrefdot{tokens}
 
 @example
 (%i5) s: openr("E:/file.txt");
@@ -146,7 +146,7 @@ Closes @var{stream} and returns @code{true} if @var{stream} had been open.
 @anchor{flength}
 @deffn {Function} flength (@var{stream})
 
-Returns the number of elements in @var{stream}. 
+Returns the number of elements in @var{stream}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -166,7 +166,7 @@ position 1.
 @deffnx {Function} freshline (@var{stream})
 
 Writes a new line (to @var{stream}), if the position is not at the beginning of 
-a line.  See also @code{newline}.
+a line.  See also @mrefdot{newline}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -174,9 +174,9 @@ a line.  See also @code{newline}.
 @deffn  {Function} newline () 
 @deffnx {Function} newline (@var{stream})
 
-Writes a new line (to @var{stream}).  See @code{sprint} for an example of using 
+Writes a new line (to @var{stream}).  See @mref{sprint} for an example of using
 @code{newline()}.  Note that there are some cases, where @code{newline()} does 
-not work as expected. 
+not work as expected.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -209,7 +209,7 @@ If an existing file is opened, @code{openw} destructively modifies @var{file}.
 @deffn  {Function} printf (@var{dest}, @var{string})
 @deffnx {Function} printf (@var{dest}, @var{string}, @var{expr_1}, @dots{}, @var{expr_n})
 
-Makes the Common Lisp function FORMAT available in Maxima. 
+Makes the Common Lisp function FORMAT available in Maxima.
 (From gcl.info: "format produces formatted output by outputting the characters
 of control-string string and observing that a tilde introduces a directive.
 The character after the tilde, possibly preceded by prefix parameters and 
@@ -244,7 +244,7 @@ The following description and the examples may give an idea of using
    ~@{       iteration, ~@} terminates
 @end example
 
-Note that the selection directive @code{~[} is zero-indexed.
+Note that the selection directive @code{~[} is zero indexed.
 Also note that the directive ~* is not supported.
 
 @example
@@ -263,8 +263,8 @@ Also note that the directive ~* is not supported.
 (%o5)                    Two birds are singing.
 @end example
 
-If @var{dest} is a stream or @code{true}, then @code{printf} returns @code{false}.
-Otherwise, @code{printf} returns a string containing the output.
+If @var{dest} is a stream or @code{true}, then @code{printf} returns
+@code{false}.  Otherwise, @code{printf} returns a string containing the output.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -282,7 +282,7 @@ is encountered.
 
 Evaluates and displays its arguments one after the other `on a line' starting 
 at the leftmost position.  The numbers are printed with the '-' right next to 
-the number, and it disregards line length. @code{newline()}, which will be 
+the number, and it disregards line length.  @code{newline()}, which will be 
 autoloaded from @code{stringproc.lisp} might be useful, if you whish to place 
 intermediate line breaking.
 
@@ -308,14 +308,14 @@ Examples:
 @anchor{alphacharp}
 @deffn {Function} alphacharp (@var{char})
 
-Returns @code{true} if @var{char} is an alphabetic character. 
+Returns @code{true} if @var{char} is an alphabetic character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{alphanumericp}
 @deffn {Function} alphanumericp (@var{char})
 
-Returns @code{true} if @var{char} is an alphabetic character or a digit. 
+Returns @code{true} if @var{char} is an alphabetic character or a digit.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -340,14 +340,14 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 @anchor{cequal}
 @deffn {Function} cequal (@var{char_1}, @var{char_2})
 
-Returns @code{true} if @var{char_1} and @var{char_2} are the same. 
+Returns @code{true} if @var{char_1} and @var{char_2} are the same.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cequalignore}
 @deffn {Function} cequalignore (@var{char_1}, @var{char_2})
 
-Like @code{cequal} but ignores case. 
+Like @mref{cequal} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -355,21 +355,21 @@ Like @code{cequal} but ignores case.
 @deffn {Function} cgreaterp (@var{char_1}, @var{char_2})
 
 Returns @code{true} if the ASCII number of @var{char_1} is greater than the 
-number of @var{char_2}. 
+number of @var{char_2}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{cgreaterpignore}
 @deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2})
 
-Like @code{cgreaterp} but ignores case. 
+Like @mref{cgreaterp} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{charp}
 @deffn {Function} charp (@var{obj})
 
-Returns @code{true} if @var{obj} is a Maxima-character.
+Returns @code{true} if @var{obj} is a Maxima character.
 See introduction for example.
 @end deffn
 
@@ -385,14 +385,14 @@ Returns the ASCII number of @var{char}.
 @deffn {Function} clessp (@var{char_1}, @var{char_2})
 
 Returns @code{true} if the ASCII number of @var{char_1} is less than the number 
-of @var{char_2}. 
+of @var{char_2}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{clesspignore}
 @deffn {Function} clesspignore (@var{char_1}, @var{char_2})
 
-Like @code{clessp} but ignores case. 
+Like @mref{clessp} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -419,7 +419,7 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 @anchor{cunlisp}
 @deffn {Function} cunlisp (@var{lisp_char})
 
-Converts a Lisp-character into a Maxima-character.
+Converts a Lisp character into a Maxima character.
 (You won't need it.)
 @end deffn
 
@@ -427,14 +427,14 @@ Converts a Lisp-character into a Maxima-character.
 @anchor{digitcharp}
 @deffn {Function} digitcharp (@var{char})
 
-Returns @code{true} if @var{char} is a digit. 
+Returns @code{true} if @var{char} is a digit.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{lcharp}
 @deffn {Function} lcharp (@var{obj})
 
-Returns @code{true} if @var{obj} is a Lisp-character.
+Returns @code{true} if @var{obj} is a Lisp character.
 (You won't need it.)
 @end deffn
 
@@ -442,14 +442,14 @@ Returns @code{true} if @var{obj} is a Lisp-character.
 @anchor{lowercasep}
 @deffn {Function} lowercasep (@var{char})
 
-Returns @code{true} if @var{char} is a lowercase character. 
+Returns @code{true} if @var{char} is a lowercase character.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{newline_variable}
 @defvr {Variable} newline
 
-The newline character. 
+The newline character.
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -505,7 +505,7 @@ Example:
 @anchor{charlist}
 @deffn {Function} charlist (@var{string})
 
-Returns the list of all characters in @var{string}. 
+Returns the list of all characters in @var{string}.
 
 Example:
 
@@ -528,7 +528,7 @@ than one.
 
 Complain if @var{str} is not a string.
 
-See also @code{parse_string}.
+See also @mrefdot{parse_string}
 
 Examples:
 
@@ -551,7 +551,7 @@ than one.
 
 Complain if @var{str} is not a string.
 
-See also @code{eval_string}.
+See also @mrefdot{eval_string}
 
 Examples:
 
@@ -577,7 +577,7 @@ Returns a copy of @var{string} as a new string.
 @deffnx {Function} sdowncase (@var{string}, @var{start}) 
 @deffnx {Function} sdowncase (@var{string}, @var{start}, @var{end})
 
-Like @code{supcase}, but uppercase characters are converted to lowercase. 
+Like @mrefcomma{supcase} but uppercase characters are converted to lowercase.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -585,21 +585,21 @@ Like @code{supcase}, but uppercase characters are converted to lowercase.
 @deffn {Function} sequal (@var{string_1}, @var{string_2})
 
 Returns @code{true} if @var{string_1} and @var{string_2} are the same length 
-and contain the same characters. 
+and contain the same characters.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sequalignore}
 @deffn {Function} sequalignore (@var{string_1}, @var{string_2})
 
-Like @code{sequal} but ignores case. 
+Like @mref{sequal} but ignores case.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sexplode}
 @deffn {Function} sexplode (@var{string})
 
-@code{sexplode} is an alias for function @code{charlist}.
+@code{sexplode} is an alias for function @mrefdot{charlist}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -671,7 +671,7 @@ Returns the number of characters in @var{string}.
 @anchor{smake}
 @deffn {Function} smake (@var{num}, @var{char})
 
-Returns a new string with a number of @var{num} characters @var{char}. 
+Returns a new string with a number of @var{num} characters @var{char}.
 
 Example:
 
@@ -688,8 +688,8 @@ Example:
 
 Returns the position of the first character of @var{string_1} at which 
 @var{string_1} and @var{string_2} differ or @code{false}.  Default test function
-for matching is @code{sequal}.  If @code{smismatch} should ignore case, use 
-@code{sequalignore} as test.
+for matching is @mrefdot{sequal}  If @code{smismatch} should ignore case, use 
+@mref{sequalignore} as test.
 
 Example:
 
@@ -730,7 +730,7 @@ Examples:
 
 Returns the position of the first character in @var{string} which matches 
 @var{char}.  The first character in @var{string} is in position 1.
-For matching characters ignoring case see @code{ssearch}.
+For matching characters ignoring case see @mrefdot{ssearch}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -741,9 +741,9 @@ For matching characters ignoring case see @code{ssearch}.
 @deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
  
 Returns a string like @var{string} but without all substrings matching 
-@var{seq}.  Default test function for matching is @code{sequal}.  If 
+@var{seq}.  Default test function for matching is @mrefdot{sequal}  If 
 @code{sremove} should ignore case while searching for @var{seq}, use 
-@code{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
+@mref{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
 Note that the first character in @var{string} is in position 1.
 
 Examples:
@@ -764,14 +764,14 @@ Examples:
 @deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 
 Like @code{sremove} except that only the first substring that matches @code{seq}
-is removed. 
+is removed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{sreverse}
 @deffn {Function} sreverse (@var{string}) 
 
-Returns a string with all the characters of @var{string} in reverse order. 
+Returns a string with all the characters of @var{string} in reverse order.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -782,8 +782,8 @@ Returns a string with all the characters of @var{string} in reverse order.
 @deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 
 Returns the position of the first substring of @var{string} that matches the 
-string @var{seq}.  Default test function for matching is @code{sequal}.  If 
-@code{ssearch} should ignore case, use @code{sequalignore} as test.  Use 
+string @var{seq}.  Default test function for matching is @mrefdot{sequal}  If
+@code{ssearch} should ignore case, use @mref{sequalignore} as test.  Use
 @var{start} and @var{end} to limit searching.  Note that the first character in 
 @var{string} is in position 1.
 
@@ -803,9 +803,10 @@ Example:
 Returns a string that contains all characters from @var{string} in an order such
 there are no two successive characters @var{c} and @var{d} such that
 @code{test (@var{c}, @var{d})} is @code{false} and @code{test (@var{d}, 
-@var{c})} is @code{true}.  Default test function for sorting is @var{clessp}.
-The set of test functions is @code{@{clessp, clesspignore, cgreaterp, 
-cgreaterpignore, cequal, cequalignore@}}.
+@var{c})} is @code{true}.  Default test function for sorting is
+@mrefdot{clessp}  The set of test functions is @code{@{@mrefcomma{clessp}@w{}
+@mrefcomma{clesspignore} @mrefcomma{cgreaterp} @mrefcomma{cgreaterpignore}@w{}
+@mrefcomma{cequal} @mref{cequalignore}@}}.
 
 Example:
 
@@ -826,10 +827,10 @@ Example:
 
 Returns a string like @var{string} except that all substrings matching @var{old}
 are replaced by @var{new}.  @var{old} and @var{new} need not to be of the same 
-length.  Default test function for matching is @code{sequal}.  If @code{ssubst} 
-should ignore case while searching for old, use @code{sequalignore} as test.
-Use @var{start} and @var{end} to limit searching.  Note that the first character
-in @var{string} is in position 1.
+length.  Default test function for matching is @mrefdot{sequal}  If
+@code{ssubst} should ignore case while searching for old, use 
+@mref{sequalignore} as test.  Use @var{start} and @var{end} to limit searching.
+Note that the first character in @var{string} is in position 1.
 
 Examples:
 
@@ -848,8 +849,8 @@ Examples:
 @deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
 @deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
 
-Like @code{subst} except that only the first substring that matches @var{old}
-is replaced. 
+Like @mref{subst} except that only the first substring that matches @var{old}
+is replaced.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -857,7 +858,7 @@ is replaced.
 @deffn {Function} strim (@var{seq},@var{string}) 
 
 Returns a string like @var{string}, but with all characters that appear in 
-@var{seq} removed from both ends. 
+@var{seq} removed from both ends.
 
 Examples:
 
@@ -874,14 +875,14 @@ Examples:
 @anchor{striml}
 @deffn {Function} striml (@var{seq}, @var{string}) 
 
-Like @code{strim} except that only the left end of @var{string} is trimmed.
+Like @mref{strim} except that only the left end of @var{string} is trimmed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{strimr}
 @deffn {Function} strimr (@var{seq}, @var{string}) 
 
-Like @code{strim} except that only the right end of string is trimmed.
+Like @mref{strim} except that only the right end of string is trimmed.
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -928,12 +929,17 @@ Example:
 @deffn  {Function} tokens (@var{string}) 
 @deffnx {Function} tokens (@var{string}, @var{test}) 
 
-Returns a list of tokens, which have been extracted from @var{string}.  The 
-tokens are substrings whose characters satisfy a certain test function.  If 
-test is not given, @var{constituent} is used as the default test.
-@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, 
-characterp, alphanumericp@}} is the set of test functions.  (The Lisp-version 
-of @code{tokens} is written by Paul Graham. ANSI Common Lisp, 1996, page 67.)
+@c TODO: IM ORIGINAL WIRD NOCH DIE FUNKTION CHARACTERP GENANNT.
+
+Returns a list of tokens, which have been extracted from the argument
+@var{string}.  The tokens are substrings, whose characters satisfy a certain
+test function.  If the argument @var{test} is not given, the test
+@code{constituent} is used as the default test.  The set of test functions is
+@code{@{@mrefcomma{constituent} @mrefcomma{alphacharp}@w{}
+@mrefcomma{digitcharp} @mrefcomma{lowercasep} @mrefcomma{uppercasep}@w{}
+@mrefcomma{charp} @mref{alphanumericp}@}}.
+(The Lisp-version of @code{tokens} is written by Paul Graham.
+ANSI Common Lisp, 1996, page 67.)
 
 Examples:
 

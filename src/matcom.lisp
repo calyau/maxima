@@ -367,8 +367,9 @@
      (setq name pt) 
      (setq rhs (copy-tree (simplifya (cadr l) nil)))
      (cond ((alike1 pt rhs) (merror (intl:gettext "tellsimp: circular rule attempted.")))
-	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
-	    (merror (intl:gettext "tellsimp: pattern must not be an atom or a matchdeclare variable; found: ~A") (fullstrip1 (getop name))))
+	   ((atom pt) (merror (intl:gettext "tellsimp: pattern must not be an atom; found: ~A") (fullstrip1 (getop name))))
+	   ((mget (setq name (caar pt)) 'matchdeclare)
+	    (merror (intl:gettext "tellsimp: main operator of pattern must not be match variable; found: ~A") (fullstrip1 (getop name))))
 	   ((member name '(mplus mtimes) :test #'eq)
 	    (mtell (intl:gettext "tellsimp: warning: putting rules on '+' or '*' is inefficient, and may not work.~%"))))
      (setq *a* (genref))
@@ -461,8 +462,9 @@
      (setq name pt)
      (setq rhs (copy-tree (simplifya (cadr l) nil)))
      (cond ((alike1 pt rhs) (merror (intl:gettext "tellsimpafter: circular rule attempted.")))
-	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
-	    (merror (intl:gettext "tellsimpafter: pattern must not be an atom or a matchdeclare variable; found: ~A") (fullstrip1 (getop name)))))
+	   ((atom pt) (merror (intl:gettext "tellsimpafter: pattern must not be an atom; found: ~A") (fullstrip1 (getop name))))
+	   ((mget (setq name (caar pt)) 'matchdeclare)
+	    (merror (intl:gettext "tellsimpafter: main operator of pattern must not be match variable; found: ~A") (fullstrip1 (getop name)))))
      (setq *a* (genref))
      (setq plustimes (member name '(mplus mtimes) :test #'eq))
      (if (atom (if plustimes (errset (compilematch *a* pt))
@@ -484,7 +486,7 @@
        '(x ans a3)
        (if oldstuff
          (list 'setq 'x (list oldstuff 'x 'ans 'a3))
-         '(declare (ignore a3)))
+         (list 'setq 'x (list 'simpargs1 'x 'ans 'a3)))
        (list
 	'cond
 	'(*afterflag x)

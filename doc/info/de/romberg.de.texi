@@ -2,7 +2,9 @@
 @c File     : romberg.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Original : romberg.texi revision 28.11.2007
 @c Date     : 08.11.2010
+@c Revision : 20.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -14,78 +16,72 @@
 @c -----------------------------------------------------------------------------
 @node Functions and Variables for romberg, , Top, Top
 @section Functions and Variables for romberg
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@anchor{function_romberg}
+@deffn  {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
 @deffnx {Function} romberg (@var{F}, @var{a}, @var{b})
 
 Computes a numerical integration by Romberg's method.
 
-@code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}
-returns an estimate of the integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
+@code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})} returns an estimate of
+the integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
 @var{expr} must be an expression which evaluates to a floating point value
 when @var{x} is bound to a floating point value.
 
-@code{romberg(@var{F}, @var{a}, @var{b})}
-returns an estimate of the integral @code{integrate(@var{F}(x), x, @var{a}, @var{b})}
-where @code{x} represents the unnamed, sole argument of @var{F};
-the actual argument is not named @code{x}.
+@code{romberg(@var{F}, @var{a}, @var{b})} returns an estimate of the integral
+@code{integrate(@var{F}(x), x, @var{a}, @var{b})} where @code{x} represents the
+unnamed, sole argument of @var{F}; the actual argument is not named @code{x}.
 @var{F} must be a Maxima or Lisp function which returns a floating point value
-when the argument is a floating point value.
-@var{F} may name a translated or compiled Maxima function.
+when the argument is a floating point value.  @var{F} may name a translated or
+compiled Maxima function.
 
 The accuracy of @code{romberg} is governed by the global variables
-@code{rombergabs} and @code{rombergtol}.
-@code{romberg} terminates successfully when
-the absolute difference between successive approximations is less than @code{rombergabs},
-or the relative difference in successive approximations is less than @code{rombergtol}.
-Thus when @code{rombergabs} is 0.0 (the default)
-only the relative error test has any effect on @code{romberg}.
+@mref{rombergabs} and @mrefdot{rombergtol}  @code{romberg} terminates
+successfully when the absolute difference between successive approximations is
+less than @code{rombergabs}, or the relative difference in successive
+approximations is less than @code{rombergtol}.  Thus when @code{rombergabs} is
+@code{0.0} (the default) only the relative error test has any effect on
+@code{romberg}.
 
-@code{romberg} halves the stepsize at most @code{rombergit} times before it gives up;
-the maximum number of function evaluations is therefore @code{2^rombergit}.
-If the error criterion established by @code{rombergabs} and @code{rombergtol}
-is not satisfied, @code{romberg} prints an error message.
-@code{romberg} always makes at least @code{rombergmin} iterations;
-this is a heuristic intended to prevent spurious termination when the integrand is oscillatory.
+@code{romberg} halves the stepsize at most @mref{rombergit} times before it
+gives up; the maximum number of function evaluations is therefore
+@code{2^rombergit}.  If the error criterion established by @code{rombergabs}
+and @code{rombergtol} is not satisfied, @code{romberg} prints an error message.
+@code{romberg} always makes at least @mref{rombergmin} iterations; this is a
+heuristic intended to prevent spurious termination when the integrand is
+oscillatory.
 
 @code{romberg} repeatedly evaluates the integrand after binding the variable
-of integration to a specific value (and not before).
-This evaluation policy makes it possible to nest calls to @code{romberg},
-to compute multidimensional integrals.
-However, the error calculations do not take the errors of nested integrations
-into account, so errors may be underestimated.
-Also, methods devised especially for multidimensional problems may yield
-the same accuracy with fewer function evaluations.
+of integration to a specific value (and not before).  This evaluation policy
+makes it possible to nest calls to @code{romberg}, to compute multidimensional
+integrals.  However, the error calculations do not take the errors of nested
+integrations into account, so errors may be underestimated.  Also, methods
+devised especially for multidimensional problems may yield the same accuracy
+with fewer function evaluations.
 
 @code{load(romberg)} loads this function.
 
-See also @code{QUADPACK}, a collection of numerical integration functions.
+See also @ref{Einf@"uhrung in QUADPACK}, a collection of numerical integration
+functions.
 
 Examples:
 
 A 1-dimensional integration.
-@c ===beg===
-@c load (romberg);
-@c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) 
-@c               + 1/((x - 3)^2 + 1/200);
-@c rombergtol : 1e-6;
-@c rombergit : 15;
-@c estimate : romberg (f(x), x, -5, 5);
-@c exact : integrate (f(x), x, -5, 5);
-@c abs (estimate - exact) / exact, numer;
-@c ===end===
 
 @example
 (%i1) load (romberg);
 (%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
 (%i2) f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000)
               + 1/((x - 3)^2 + 1/200);
+@group
                     1                 1                1
 (%o2) f(x) := -------------- + --------------- + --------------
                      2    1           2    1            2    1
               (x - 1)  + ---   (x - 2)  + ----   (x - 3)  + ---
                          100              1000              200
+@end group
 (%i3) rombergtol : 1e-6;
 (%o3)                 9.9999999999999995E-7
 (%i4) rombergit : 15;
@@ -101,16 +97,6 @@ A 1-dimensional integration.
 @end example
 
 A 2-dimensional integration, implemented by nested calls to @code{romberg}.
-@c ===beg===
-@c load (romberg);
-@c g(x, y) := x*y / (x + y);
-@c rombergtol : 1e-6;
-@c estimate : romberg (romberg (g(x, y), y, 0, x/2), x, 1, 3);
-@c assume (x > 0);
-@c integrate (integrate (g(x, y), y, 0, x/2), x, 1, 3);
-@c exact : radcan (%);
-@c abs (estimate - exact) / exact, numer;
-@c ===end===
 
 @example
 (%i1) load (romberg);
@@ -138,78 +124,63 @@ A 2-dimensional integration, implemented by nested calls to @code{romberg}.
 (%i8) abs (estimate - exact) / exact, numer;
 (%o8)                1.3711979871851024E-10
 @end example
-
-@c @opencatbox
-@c @category{Package romberg} @category{Numerical methods}
-@c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{rombergabs}
 @defvr {Option variable} rombergabs
-Default value: 0.0
+Default value: @code{0.0}
 
-The accuracy of @code{romberg} is governed by the global variables
-@code{rombergabs} and @code{rombergtol}.
-@code{romberg} terminates successfully when
-the absolute difference between successive approximations is less than @code{rombergabs},
-or the relative difference in successive approximations is less than @code{rombergtol}.
-Thus when @code{rombergabs} is 0.0 (the default)
-only the relative error test has any effect on @code{romberg}.
+The accuracy of @mref{romberg} is governed by the global variables
+@code{rombergabs} and @mrefdot{rombergtol}  @code{romberg} terminates
+successfully when the absolute difference between successive approximations is
+less than @code{rombergabs}, or the relative difference in successive
+approximations is less than @code{rombergtol}.  Thus when @code{rombergabs} is
+@code{0.0} (the default) only the relative error test has any effect on
+@code{romberg}.
 
-See also @code{rombergit} and @code{rombergmin}.
-
-@c @opencatbox
-@c @category{Package romberg}
-@c @closecatbox
+See also @mref{rombergit} and @mrefdot{rombergmin}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{rombergit}
 @defvr {Option variable} rombergit
-Default value: 11
+Default value: @code{11}
 
-@code{romberg} halves the stepsize at most @code{rombergit} times before it gives up;
-the maximum number of function evaluations is therefore @code{2^rombergit}.
-@code{romberg} always makes at least @code{rombergmin} iterations;
-this is a heuristic intended to prevent spurious termination when the integrand is oscillatory.
+@mref{romberg} halves the stepsize at most @code{rombergit} times before it
+gives up; the maximum number of function evaluations is therefore
+@code{2^rombergit}.  @code{romberg} always makes at least @mref{rombergmin}@w{}
+iterations; this is a heuristic intended to prevent spurious termination when
+the integrand is oscillatory.
 
-See also @code{rombergabs} and @code{rombergtol}.
-
-@c @opencatbox
-@c @category{Package romberg}
-@c @closecatbox
+See also @mref{rombergabs} and @mrefdot{rombergtol}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{rombergmin}
 @defvr {Option variable} rombergmin
-Default value: 0
+Default value: @code{0}
 
-@code{romberg} always makes at least @code{rombergmin} iterations;
-this is a heuristic intended to prevent spurious termination when the integrand is oscillatory.
+@mref{romberg} always makes at least @code{rombergmin} iterations; this is a
+heuristic intended to prevent spurious termination when the integrand is
+oscillatory.
 
-See also @code{rombergit}, @code{rombergabs}, and @code{rombergtol}.
-
-@c @opencatbox
-@c @category{Package romberg}
-@c @closecatbox
+See also @mrefcomma{rombergit} @mrefcomma{rombergabs} and @mrefdot{rombergtol}
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{rombergtol}
 @defvr {Option variable} rombergtol
-Default value: 1e-4
+Default value: @code{1e-4}
 
-The accuracy of @code{romberg} is governed by the global variables
-@code{rombergabs} and @code{rombergtol}.
-@code{romberg} terminates successfully when
-the absolute difference between successive approximations is less than @code{rombergabs},
-or the relative difference in successive approximations is less than @code{rombergtol}.
-Thus when @code{rombergabs} is 0.0 (the default)
-only the relative error test has any effect on @code{romberg}.
+The accuracy of @mref{romberg} is governed by the global variables
+@mref{rombergabs} and @code{rombergtol}.  @code{romberg} terminates successfully
+when the absolute difference between successive approximations is less than
+@code{rombergabs}, or the relative difference in successive approximations is
+less than @code{rombergtol}.  Thus when @code{rombergabs} is @code{0.0} (the
+default) only the relative error test has any effect on @code{romberg}.
 
-See also @code{rombergit} and @code{rombergmin}.
-
-@c @opencatbox
-@c @category{Package romberg}
-@c @closecatbox
+See also @mref{rombergit} and @mrefdot{rombergmin}
 @end defvr
 
 @c --- End of file romberg.de.texi ---------------------------------------------

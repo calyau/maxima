@@ -1,4 +1,4 @@
-@c english version 1.35
+@c English version 2011-07-03
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -67,38 +67,8 @@ Ejec@'utese @code{load (bffac)} antes de hacer uso de esta funci@'on.
 
 @end deffn
 
-@deffn {Funci@'on} binomial (@var{x}, @var{y})
-Es el coeficiente binomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
-Si @var{x} y @var{y} son enteros, entonces se calcula el valor num@'erico 
-del coeficiente binomial. Si @var{y} o @var{x - y} son enteros, 
-el coeficiente binomial se expresa como un polinomio.
 
-Ejemplos:
 
-@c ===beg===
-@c binomial (11, 7);
-@c 11! / 7! / (11 - 7)!;
-@c binomial (x, 7);
-@c binomial (x + 7, x);
-@c binomial (11, y);
-@c ===end===
-@example
-(%i1) binomial (11, 7);
-(%o1)                          330
-(%i2) 11! / 7! / (11 - 7)!;
-(%o2)                          330
-(%i3) binomial (x, 7);
-        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
-(%o3)   -------------------------------------------------
-                              5040
-(%i4) binomial (x + 7, x);
-      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
-(%o4) -------------------------------------------------------
-                               5040
-(%i5) binomial (11, y);
-(%o5)                    binomial(11, y)
-@end example
-@end deffn
 
 @deffn {Funci@'on} burn (@var{n})
 Siendo @var{n} entero, Devuelve un n@'umero racional que aproxima el 
@@ -124,6 +94,8 @@ Para utilizar esta funci@'on hay que cargarla antes en memoria escribiendo
 @code{load ("bffac")}. V@'ease tambi@'en @code{bern}.
 
 @end deffn
+
+
 
 
 @deffn {Funci@'on} cf (@var{expr})
@@ -189,6 +161,8 @@ Maxima no sabe sobre operaciones con fracciones continuas m@'as de lo que aporta
 @end deffn
 
 
+
+
 @deffn {Funci@'on} cfdisrep (@var{lista})
 Construye y devuelve una expresi@'on aritm@'etica ordinaria de la forma  @code{a + 1/(b + 1/(c + ...))} a partir de la representaci@'on en formato lista de la fracci@'on continua  @code{[a, b, c, ...]}.
 
@@ -206,6 +180,8 @@ Construye y devuelve una expresi@'on aritm@'etica ordinaria de la forma  @code{a
 @end example
 
 @end deffn
+
+
 
 
 @deffn {Funci@'on} cfexpand (@var{x})
@@ -245,6 +221,9 @@ La variable @code{cflength} controla el n@'umero de t@'erminos de la fracci@'on 
 
 @end defvr
 
+
+
+
 @deffn {Funci@'on} divsum (@var{n}, @var{k})
 @deffnx {Funci@'on} divsum (@var{n})
 
@@ -278,30 +257,7 @@ Para la constante de Euler-Mascheroni, v@'ease @code{%gamma}.
 
 @end deffn
 
-@defvr {Constante} %gamma
-@ifinfo
-@vrindex Constante de Euler-Mascheroni
-@end ifinfo
-Es la constante de Euler-Mascheroni, 0.5772156649015329 ....
 
-@end defvr
-
-@deffn {Funci@'on} factorial (@var{x})
-Representa la funci@'on factorial. Maxima considera @code{factorial (@var{x})} lo mismo que @code{@var{x}!}.
-V@'ease @code{!}.
-
-@end deffn
-
-
-@defvr {Variable opcional} factorial_expand
-Valor por defecto: false
-
-La variable @code{factorial_expand} controla la simplificaci@'on
-de expresiones tales como @code{(n+1)!}, siendo @code{n} un entero. 
-
-V@'ease @code{!} para un ejemplo.
-
-@end defvr
 
 
 @deffn {Funci@'on} fib (@var{n})
@@ -352,6 +308,9 @@ Ejemplos:
 
 @end deffn
 
+
+
+
 @deffn {Funci@'on} ifactors (@var{n})
 Devuelve la factorizaci@'on del argumento @var{n}, siendo @'este un 
 n@'umero entero positivo. Si @code{n=p1^e1..pk^nk} es la descomposici@'on 
@@ -369,6 +328,36 @@ el@'{@dotless{i}}ptica.
 @end example
 
 @end deffn
+
+
+
+@deffn {Funci@'on} igcdex (@var{n}, @var{k})
+
+Devuelve la lista @code{[@var{a}, @var{b}, @var{u}]}, donde @var{u} es
+el m@'aximo com@'un divisor de @var{n} y @var{k}, siendo @var{u}
+igual a @code{@var{a} @var{n} + @var{b} @var{k}}. Los argumentos
+@var{n} y @var{k} deben ser enteros.
+
+@code{igcdex} implementa el algoritmo de Euclides. V@'ease tambi@'en @code{gcdex}.
+
+La instrucci@'on @code{load(gcdex)} carga esta funci@'on.
+
+Ejemplos:
+
+@example
+(%i1) load(gcdex)$
+
+(%i2) igcdex(30,18);
+(%o2)                      [- 1, 2, 6]
+(%i3) igcdex(1526757668, 7835626735736);
+(%o3)            [845922341123, - 164826435, 4]
+(%i4) igcdex(fib(20), fib(21));
+(%o4)                   [4181, - 2584, 1]
+@end example
+
+@end deffn
+
+
 
 
 @deffn {Funci@'on} inrt (@var{x}, @var{n})
@@ -398,6 +387,16 @@ si @var{n} es un divisor nulo m@'odulo @var{m}.
 
 @end deffn
 
+
+@deffn {Funci@'on} isqrt (@var{x})
+Devuelve la "ra@'{@dotless{i}}z cuadrada entera"
+del valor absoluto de @var{x},
+el cual debe ser un entero.
+
+@end deffn
+
+
+
 @deffn {Funci@'on} jacobi (@var{p}, @var{q})
 Devuelve el s@'{@dotless{i}}mbolo de Jacobi para @var{p} y @var{q}.
 
@@ -415,6 +414,39 @@ Devuelve el m@'{@dotless{i}}nimo com@'un m@'ultiplo de sus argumentos. Los argum
 Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
 
 @end deffn
+
+
+
+
+@deffn {Funci@'on} mod (@var{x}, @var{y})
+
+Si @var{x} e @var{y} son n@'umeros reales e @var{y} es distinto de cero,
+devuelve @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
+Para todos los reales @var{x}, se tiene @code{mod (@var{x}, 0) = @var{x}}. Para informaci@'on sobre la definici@'on de  @code{mod (@var{x}, 0) = @var{x}}, v@'ease la secci@'on 3.4 de "Concrete Mathematics", 
+by Graham, Knuth, and Patashnik. La funci@'on @code{mod (@var{x}, 1)} es de diente de sierra con periodo unidad y con @code{mod (1, 1) = 0} y @code{mod (0, 1) = 0}.
+
+Para encontrar el argumento principal (un n@'umero del intervalo @code{(-%pi, %pi]}) de un n@'umero complejo, h@'agase uso de la funci@'on @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, donde @var{x} es un argumento.
+
+Si @var{x} e @var{y} son expresiones constantes (por ejemplo, @code{10 * %pi}), @code{mod} utiliza el mismo esquema de evaluaci@'on basado en n@'umeros grandes en coma flotante (big floats) que @code{floor} y @code{ceiling}. Tambi@'en es posible, pero improbable, que @code{mod} pueda retornar un valor err@'oneo en tales casos.
+
+Para argumentos no num@'ericos @var{x} o @var{y}, @code{mod} aplica algunas reglas de simplificaci@'on:
+
+@c ===beg===
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
+@c ===end===
+@example
+(%i1) mod (x, 0);
+(%o1)                           x
+(%i2) mod (a*x, a*y);
+(%o2)                      a mod(x, y)
+(%i3) mod (0, x);
+(%o3)                           0
+@end example
+@end deffn
+
+
 
 @deffn {Funci@'on} next_prime (@var{n})
 Devuelve el menor de los primos mayores que @var{n}.
@@ -449,6 +481,9 @@ Expande la expresi@'on @var{expr} en fracciones parciales respecto de la variabl
 @end example
 
 @end deffn
+
+
+
 
 @deffn {Funci@'on} power_mod (@var{a}, @var{n}, @var{m})
 Utiliza un algoritmo modular para calcular @code{a^n mod m},
@@ -489,6 +524,9 @@ sea compuesto es menor que 10^-15.
 
 @end deffn
 
+
+
+
 @defvr {Variable opcional} primep_number_of_tests
 Valor por defecto: 25
 
@@ -517,6 +555,8 @@ Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero;
 
 @end deffn
 
+
+
 @deffn {Funci@'on} totient (@var{n})
 Devuelve el n@'umero de enteros menores o iguales a @var{n} que son primos relativos con @var{n}.
 @end deffn
@@ -528,6 +568,8 @@ Si @code{zerobern} vale @code{false}, @code{bern} excluye los n@'umeros de Berno
 y @code{euler} excluye los n@'umeros de Euler que sean iguales a cero.
 V@'ease @code{bern} y @code{euler}.
 @end defvr
+
+
 
 
 @deffn {Funci@'on} zeta (@var{n})
@@ -573,6 +615,10 @@ Ejemplos:
 
 @end deffn
 
+
+
+
+
 @defvr {Variable opcional} zeta%pi
 Valor por defecto: @code{true}
 
@@ -598,5 +644,5 @@ Ejemplos:
 (%o4)                        zeta(4)
 @end example
 
-
 @end defvr
+

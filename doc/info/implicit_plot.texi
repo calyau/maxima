@@ -5,34 +5,5 @@
 @node Functions and Variables for implicit_plot,  , implicit_plot, implicit_plot
 @section Functions and Variables for implicit_plot
 
-@deffn {Function} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Function} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@c THE FUNCTION IMPLICIT_PLOT HAS BEEN MOVED TO THE FILE PLOTTING.TEXI
 
-Displays a plot of one or more expressions in implicit
-form. @var{expr} is the expression to be plotted, @var{x_range} the
-range of the horizontal axis and @var{y_range} the range of vertical
-axis. @code{implicit_plot} respects global setting for the gnuplot
-driver set by the @var{set_plot_option} function. Options can also be passed to
-@code{implicit_plot} function as optional arguments.
-
-@code{implicit_plot} works by tracking sign changes on the area
-given by @var{x_range} and @var{y_range} and can fail for complicated
-expressions.
-
-@code{load(implicit_plot)} loads this function.
-
-Example:
-@example
-(%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
- [gnuplot_preamble, "set zeroaxis"]);
-@end example
-
-@ifnotinfo
-@image{figures/implicit_plot,8cm}
-@end ifnotinfo
-
-@opencatbox
-@category{Plotting} @category{Share packages} @category{Package implicit_plot}
-@closecatbox
-
-@end deffn

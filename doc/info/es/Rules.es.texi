@@ -1,4 +1,4 @@
-@c english version 1.37
+@c English version 2011-06-13
 @menu
 * Introducci@'on a reglas y patrones::  
 * Funciones y variables sobre reglas y patrones::  
@@ -479,102 +479,22 @@ bb aa partitions `product'
 @end deffn
 
 
-@deffn {Funci@'on} matchfix (@var{ldelimiter}, @var{rdelimiter})
-@deffnx {Funci@'on} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 
-Declara un operador "matchfix" con delimitadores a la izquierda y derecha, @var{ldelimiter} y @var{rdelimiter}, respectivamente. Los delimitadores son cadenas alfanum@'ericas.
+@defvr {Variable opcional} maxapplydepth
+Valor por defecto: 10000
 
-Un operador "matchfix" es una funci@'on con un n@'umero arbitrario de argumentos, de manera que los argumentos se presentan entre los delimitadores de la izquierda y derecha. Los delimitadores pueden ser cualquier tipo de cadena, en tanto que el analizador sint@'actico pueda distinguirlos de los operandos y de expresiones con operadores. En la pr@'actica esto excluye delimitadores como @code{%}, @code{,}, @code{$} y @code{;},  necesitando aislar los delimitadores con espacios en blanco. El delimitador de la derecha puede ser igual o diferente del de la izquierda.
+La variable @code{maxapplydepth} es la m@'axima profundidad a la que van a introducirse @code{apply1} y  @code{apply2}.
 
-Un delimitador de la izquierda s@'olo puede asociarse con un @'unico delimitador de la derecha; dos operadores "matchfix" diferentes no pueden tener el mismo delimitador por la izquierda.
+@end defvr
 
-Un operador ya existente puede declararse como operador "matchfix" sin necesidad de que cambie el resto de propiedades. En particular, los operadores de Maxima tales como la suma @code{+} pueden ser declarados como "matchfix".
 
-La llamada @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})} 
-declara el argumento @var{arg_pos} y el resultado @var{pos}, as@'{@dotless{i}}
-como los delimitadores  @var{ldelimiter} y @var{rdelimiter}.
+@defvr {Variable opcional} maxapplyheight
+Valor por defecto: 10000
 
-Los argumentos @var{arg_pos} y @var{pos} son tipos de funciones,
-reconoci@'endose como tales: @code{expr}, @code{clause} y @code{any},
-los cuales hacen referencia a una expresi@'on algebraica, booleana o
-de cualquier otro tipo, respectivamente.
-Maxima puede detectar ciertos errores sint@'acticos comparando el
-tipo de expresi@'on declarado con el de la expresi@'on actual.
+La variable @code{maxapplyheight} es la m2'axima altura a la que escalar@'a @code{applyb1} antes de detenerse.
 
-La funci@'on que ejecutar@'a una operaci@'on "matchfix" ser@'a una t@'{@dotless{i}}pica funci@'on definida por el usuario. La funci@'on de operador se define por el m@'etodo habitual con  @code{:=} o @code{define}. Los argumentos pueden escribirse entre los delimitadores, o con el delimitador izquierdo como una cadena precedida de ap@'ostrofo y seguidamente los argumentos entre par@'entesis. La llamada @code{dispfun (@var{ldelimiter})} muestra la definici@'on de la funci@'on.
+@end defvr
 
-El @'unico operador "matchfix" de Maxima es el constructor de listas @code{[ ]}. Los par@'entesis  @code{( )} y las comillas dobles  @code{" "}  act@'uan como operadores "matchfix", pero son tratados como operadores "matchfix" por el analizador sint@'actico de Maxima.
-
-Ejemplos:
-
-@itemize @bullet
-@item
-Los delimitadores pueden ser practicamente cualquier cadena.
-@end itemize
-@c ===beg===
-@c matchfix ("@@", "~");
-@c @@ a, b, c ~;
-@c matchfix (">>", "<<");
-@c >> a, b, c <<;
-@c matchfix ("foo", "oof");
-@c foo a, b, c oof;
-@c >> w + foo x, y oof + z << / @@ p, q ~;
-@c ===end===
-@example
-(%i1) matchfix ("@@@@", "~");
-(%o1)                          @@@@
-(%i2) @@@@ a, b, c ~;
-(%o2)                      @@@@a, b, c~
-(%i3) matchfix (">>", "<<");
-(%o3)                          >>
-(%i4) >> a, b, c <<;
-(%o4)                      >>a, b, c<<
-(%i5) matchfix ("foo", "oof");
-(%o5)                          foo
-(%i6) foo a, b, c oof;
-(%o6)                     fooa, b, coof
-(%i7) >> w + foo x, y oof + z << / @@@@ p, q ~;
-                     >>z + foox, yoof + w<<
-(%o7)                ----------------------
-                            @@@@p, q~
-@end example
-
-@itemize @bullet
-@item
-Los operadores "matchfix" son funciones definidas por el usuario.
-@end itemize
-@example
-(%i1) matchfix ("!-", "-!");
-(%o1)                         "!-"
-(%i2) !- x, y -! := x/y - y/x;
-                                    x   y
-(%o2)                   !-x, y-! := - - -
-                                    y   x
-(%i3) define (!-x, y-!, x/y - y/x);
-                                    x   y
-(%o3)                   !-x, y-! := - - -
-                                    y   x
-(%i4) define ("!-" (x, y), x/y - y/x);
-                                    x   y
-(%o4)                   !-x, y-! := - - -
-                                    y   x
-(%i5) dispfun ("!-");
-                                    x   y
-(%t5)                   !-x, y-! := - - -
-                                    y   x
-
-(%o5)                         done
-(%i6) !-3, 5-!;
-                                16
-(%o6)                         - --
-                                15
-(%i7) "!-" (3, 5);
-                                16
-(%o7)                         - --
-                                15
-@end example
-
-@end deffn
 
 @deffn {Funci@'on} remlet (@var{prod}, @var{nombre})
 @deffnx {Funci@'on} remlet ()
@@ -875,4 +795,36 @@ Un ejemplo de producto anticonmutativo.
 Ejecuta @code{kill (rules)} y despu@'es inicializa el siguiente n@'umero de regla a 1 para la adici@'on @code{+}, multiplicaci@'on @code{*} y exponenciaci@'on @code{^}.
 
 @end deffn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -2,10 +2,10 @@
 @c File        : Plotting.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Plotting.texi revision 1.53
+@c Original    : Plotting.texi revision 31.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 23.10.2010
-@c Revision    : 08.04.2011
+@c Revision    : 31.07.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -58,6 +58,16 @@ durch die Systemvariable @mref{maxima_tempdir} bezeichnet wird.
 Die Datei @code{maxout.interface} kann wiederholt an das Grafikprogramm
 @"ubergeben werden.  Gibt Maxima keine Grafik aus, kann diese Datei gepr@"uft 
 werden, um m@"ogliche Fehler festzustellen.
+
+Das Paket @code{draw} ist eine Alternative, um Funktionsgraphen und eine
+Vielzahl anderer Graphen zu erstellen.  Das Paket @code{draw} hat einen
+gr@"o@ss{}eren Umfang an Funktionalit@"aten und ist flexibler, wenn der Graph 
+besondere Formatierungen enthalten soll.  Einige Grafikoptionen sind in beiden 
+beiden Grafikpaketen vorhanden, k@"onnen sich aber in der Syntax unterscheiden.
+Mit dem Kommando @code{? opt}, wobei @code{opt} eine Grafikoption ist, wird
+m@"oglicherweise nur die Dokumentation der Standard-Grafikroutinen angezeigt.
+Um auch die entsprechende Grafikoption des Paketes @code{draw} zu sehen, kann
+@code{?? opt} auf der Kommandozeile eingegeben werden.  Siehe @ref{draw}.
 
 @c -----------------------------------------------------------------------------
 @node Grafikformate, Funktionen und Variablen f@"ur die grafische Darstellung, Einf@"uhrung in die grafische Darstellung, Grafische Darstellung
@@ -1348,7 +1358,7 @@ Siehe auch @mrefdot{logx}
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{mesh_lines_color}
 @defvr {Grafikoption} mesh_lines_color [mesh_lines_color, @var{color}]
-Standardwert: black
+Standardwert: @code{black}
 
 @c It sets the color used by plot3d to draw the mesh lines, when a palette is
 @c being used. It accepts the same colors as for the option @code{color}
@@ -1364,7 +1374,7 @@ f@"ur die Grafikoption @mrefdot{color} Hat @code{mesh_lines_color} Wert
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{nticks}
 @defvr {Grafikoption} nticks [nticks, @var{integer}]
-Standardwert: 29
+Standardwert: @code{29}
 
 @c When plotting functions with plot2d, it is gives the initial number of
 @c points used by the adaptive plotting routine for plotting
@@ -1435,7 +1445,6 @@ wird in diesem Fall mit der Grafikoption @mref{color} festgelegt.
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{plot_format}
 @defvr {Grafikoption} plot_format [plot_format, @var{format}]
-
 Standardwert: @code{gnuplot} f@"ur Windows, ansonsten @code{gnuplot_pipes}
 
 @c It sets the format to be used for plotting.
@@ -1528,7 +1537,6 @@ Kontrolliert, ob die Bildschirmausgabe des Grafikformats gestartet wird.
 @anchor{style}
 @defvr  {Grafikoption} style [style, @var{type_1}, @dots{}, @var{type1_n}]
 @defvrx {Grafikoption} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
-
 Standardwert: @code{lines}
 
 @c The styles that will be used for the various functions or sets of data
@@ -1609,7 +1617,6 @@ Funktion @mrefdot{plot2d}  Die Variable einer parametrischen Kurve muss mit
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{transform_xy}
 @defvr {Grafikoption} transform_xy [transform_xy, @var{symbol}]
-
 Standardwert: @code{false}
 
 @c Where @var{symbol} is either @code{false} or the result obtained by

@@ -1,4 +1,4 @@
-@c version 1.19
+@c English version 2011-06-06
 @menu
 * Depuraci@'on del c@'odigo fuente::
 * Claves de depuraci@'on::
@@ -142,6 +142,21 @@ Retorna a Maxima desde cualquier nivel del depurador sin completar el c@'omputo.
 
 @node Funciones y variables para depurado, , Claves de depuraci@'on, Depurado
 @section Funciones y variables para depurado
+
+
+@defvr {Variable opcional} debugmode
+Valor por defecto: @code{false}
+
+Cuando en Maxima ocurre un error, Maxima inicializar@'a el depurador si @code{debugmode} tiene el valor @code{true}. 
+El usuario puede ingresar comandos para examinar la pila de llamadas, los puntos de interrupci@'on; en pocas palabras ir a trav@'es del c@'odigo de Maxima. Vea @code{debugging} para una lista de los comandos del depurador.  
+
+Habilitando @code{debugmode} no se capturar@'an los errores tipo Lisp. 
+
+@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
+@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
+
+@end defvr
+
 
 @defvr {Variable opcional} refcheck
 Valor por defecto: @code{false}
@@ -331,3 +346,4 @@ Dadas las funciones @var{f_1}, ..., @var{f_n},
 La llamada a @code{untrace} devuelve una lista con las funciones para las que el rastreo se ha desactivado.
 
 @end deffn
+

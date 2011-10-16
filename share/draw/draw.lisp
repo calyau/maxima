@@ -108,20 +108,14 @@
     (when (> xx xmax) (setf xmax xx))))
 
 (defmacro check-extremes-y ()
-  '(let ()
+  '(when (numberp yy)
     (when (< yy ymin) (setf ymin yy))
     (when (> yy ymax) (setf ymax yy))))
 
 (defmacro check-extremes-z ()
-  '(let ()
+  '(when (numberp zz)
     (when (< zz zmin) (setf zmin zz))
     (when (> zz zmax) (setf zmax zz))))
-
-
-
-
-
-
 
 ;; Controls whether the actual graphics object must
 ;; be plotted against the primary or the secondary axes,
@@ -135,10 +129,6 @@
            (if (get-option '$yaxis_secondary)
                "y2"
                "y1")))
-
-
-
-
 
 (defstruct gr-object
    name command groups points)
@@ -1180,19 +1170,20 @@
          (x-step (/ (- xmax xmin) ($float nticks) 2))
          (ymin most-positive-double-float)
          (ymax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          x-samples y-samples yy result pltcmd result-array)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (setq fcn (coerce-float-fun fcn `((mlist) ,var)))
     (if (< xmax xmin)
        (merror "draw2d (explicit): illegal range"))
     (flet ((fun (x) (funcall fcn x)))
-      (dotimes (k (1+ (* 2 nticks)))
-        (let* ((x (+ xmin (* k x-step)))
-               (y (fun x)))
-          (when (numberp y)    ; check for non numeric y, as in 1/0
-             (push x x-samples)
-             (push y y-samples)  ) ))
+        (dotimes (k (1+ (* 2 nticks)))
+          (let ((x (+ xmin (* k x-step))))
+            (push x x-samples)
+            (push (fun x) y-samples)))
       (setf x-samples (nreverse x-samples))
       (setf y-samples (nreverse y-samples))
+
       ;; For each region, adaptively plot it.
       (do ((x-start x-samples (cddr x-start))
            (x-mid (cdr x-samples) (cddr x-mid))
@@ -1208,12 +1199,9 @@
                                            depth 1e-5)))
           (when (not (null result))
             (setf sublst (cddr sublst)))
-          ;; clean non numeric pairs
           (do ((lst sublst (cddr lst)))
               ((null lst) 'done)
-            (when (numberp (second lst))
-              (setf result (append result (list (first lst) (second lst)))))))))
-
+            (setf result (append result (list (first lst) (second lst))))))))
       (cond ((null (get-option '$filled_func))
                (cond
                  ((> *draw-transform-dimensions* 0)
@@ -1278,7 +1266,8 @@
                   :points  (list result-array )))
             (t
                (let (fcn2 yy2 (count -1))
-                  (setf result-array (make-array (* (/ (length result) 2) 3) :element-type 'flonum))
+                  (setf result-array (make-array (* (/ (length result) 2) 3)
+                                                 :element-type 'flonum))
                   (setq fcn2 (coerce-float-fun (get-option '$filled_func) `((mlist), var)))
                   (flet ((fun (x) (funcall fcn2 x)))
                     (do ((xx result (cddr xx)))
@@ -1299,7 +1288,7 @@
                   :name   'explicit
                   :command pltcmd
                   :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3
-                  :points  (list result-array ))))  ))
+                  :points  (list result-array))))  ))
 
 
 
@@ -1708,11 +1697,13 @@
          (ymax most-negative-double-float)
          (zmin most-positive-double-float)
          (zmax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (nx (+ xu_grid 1))
          (ny (+ yv_grid 1))
          ($numer t)
          (count -1)
          ncols result)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "explicit" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
@@ -2038,9 +2029,11 @@
          (xmax most-negative-double-float)
          (ymin most-positive-double-float)
          (ymax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (tt ($float parmin))
          (eps (/ (- tmax tmin) (- nticks 1)))
          result f1 f2 xx yy)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (if (< tmax tmin)
        (merror "draw2d (parametric): illegal range"))
     (setq f1 (coerce-float-fun xfun `((mlist), par)))
@@ -2184,10 +2177,12 @@
          (ymax most-negative-double-float)
          (zmin most-positive-double-float)
          (zmax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (tt tmin)
          (eps (/ (- tmax tmin) (- nticks 1)))
          (count -1)
          ncols result f1 f2 f3 xx yy zz)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "parametric" '(0 1 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1)))
@@ -2262,12 +2257,14 @@
          (ymax most-negative-double-float)
          (zmin most-positive-double-float)
          (zmax most-negative-double-float)
+         (*plot-realpart* *plot-realpart*)
          (ueps (/ (- umax umin) (- ugrid 1)))
          (veps (/ (- vmax vmin) (- vgrid 1)))
          (nu (+ ugrid 1))
          (nv (+ vgrid 1))
          (count -1)
          ncols result f1 f2 f3 xx yy zz uu vv)
+    (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "parametric_surface" '(0 2 3 99))
     (when (= *draw-enhanced3d-type* 99)
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
@@ -2854,6 +2851,7 @@
             (format nil "set xlabel '~a'~%" (get-option '$xlabel))
             (format nil "set ylabel '~a'~%" (get-option '$ylabel))
             (format nil "set zlabel '~a'~%" (get-option '$zlabel))
+            (format nil "set datafile missing 'NIL'~%")
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
@@ -3020,7 +3018,6 @@
 
     (setf isanimatedgif
           (equal (get-option '$terminal) '$animated_gif))
-
     (setf
        gfn (plot-temp-file (get-option '$gnuplot_file_name))
        dfn (plot-temp-file (get-option '$data_file_name)))
@@ -3187,12 +3184,29 @@
                  (k (length vect))
                  (ncol (caar glis))
                  (l 0)
-                 (m (cadar glis)))
+                 (m (cadar glis))
+                 (non-numeric-region nil)
+                 coordinates)
              (cond
                 ((= m 0)     ; no blank lines
                    (do ((cont 0 (+ cont ncol)))
                        ((= cont k) 'done)
-                     (write-subarray (subseq vect cont (+ cont ncol)) datastorage))  )
+                     (setf coordinates (subseq vect cont (+ cont ncol)))
+                     ; control of non numeric y values,
+                     ; code related to draw_realpart
+                     (cond
+                       (non-numeric-region
+                         (when (numberp (aref coordinates 1))
+                           (setf non-numeric-region nil)
+                           (write-subarray coordinates datastorage) ))
+                       (t
+                         (cond
+                           ((numberp (aref coordinates 1))
+                             (write-subarray coordinates datastorage))
+                           (t
+                             (setf non-numeric-region t)
+                             (format datastorage "~%")))))) )
+
                 (t           ; blank lines every m lines
                    (do ((cont 0 (+ cont ncol)))
                        ((= cont k) 'done)

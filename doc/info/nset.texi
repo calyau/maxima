@@ -1234,162 +1234,39 @@ Examples:
 
 @end deffn
 
-@deffn {Function} kron_delta (@var{x}, @var{y})
+@deffn {Function} kron_delta (@var{x1}, @var{x2}, @dots{}, @var{xp})
 
 Represents the Kronecker delta function.
 
-@code{kron_delta} simplifies to 1 when @var{x} and @var{y} are identical or demonstrably equivalent,
-and it simplifies to 0 when @var{x} and @var{y} are demonstrably not equivalent.
-Otherwise,
-it is not certain whether @var{x} and @var{y} are equivalent,
-and @code{kron_delta} simplifies to a noun expression.
-@code{kron_delta} implements a cautious policy with respect to floating point expressions:
-if the difference @code{@var{x} - @var{y}} is a floating point number,
-@code{kron_delta} simplifies to a noun expression when @var{x} is apparently equivalent to @var{y}.
-
-Specifically,
-@code{kron_delta(@var{x}, @var{y})} simplifies to 1
-when @code{is(x = y)} is @code{true}.
-@code{kron_delta} also simplifies to 1
-when @code{sign(abs(@var{x} - @var{y}))} is @code{zero}
-and @code{@var{x} - @var{y}} is not a floating point number
-(neither an ordinary float nor a bigfloat).
-@code{kron_delta} simplifies to 0
-when @code{sign(abs(@var{x} - @var{y}))} is @code{pos}.
-
-Otherwise, @code{sign(abs(@var{x} - @var{y}))} is
-something other than @code{pos} or @code{zero},
-or it is @code{zero} and @code{@var{x} - @var{y}}
-is a floating point number.
-In these cases, @code{kron_delta} returns a noun expression.
-
-@code{kron_delta} is declared to be symmetric.
-That is,
-@code{kron_delta(@var{x}, @var{y})} is equal to @code{kron_delta(@var{y}, @var{x})}.
+@code{kron_delta} simplifies to 1 when @var{xi} and @var{yj} are equal
+for all pairs of arguments, and it simplifies to 0 when @var{xi} and
+@var{yj} are not equal for some pair of arguments. Equality is
+determined using @code{is(equal(xi,xj))} and inequality by
+@code{is(notequal(xi,xj))}. For exactly one argument, @code{kron_delta}
+signals an error.
 
 Examples:
 
-The arguments of @code{kron_delta} are identical.
-@code{kron_delta} simplifies to 1.
-
 @c ===beg===
-@c kron_delta (a, a);
-@c kron_delta (x^2 - y^2, x^2 - y^2);
-@c float (kron_delta (1/10, 0.1));
+@c kron_delta(a,a);
+@c kron_delta(a,b,a,b);
+@c kron_delta(a,a,b,a+1);
+@c assume(equal(x,y));
+@c kron_delta(x,y);
 @c ===end===
 @example
-(%i1) kron_delta (a, a);
-(%o1)                           1
-(%i2) kron_delta (x^2 - y^2, x^2 - y^2);
-(%o2)                           1
-(%i3) float (kron_delta (1/10, 0.1));
-(%o3)                           1
+(%i1) kron_delta(a,a);
+(%o1)                                  1
+(%i2) kron_delta(a,b,a,b);
+(%o2)                          kron_delta(a, b)
+(%i3) kron_delta(a,a,b,a+1);
+(%o3)                                  0
+(%i4) assume(equal(x,y));
+(%o4)                            [equal(x, y)]
+(%i5) kron_delta(x,y);
+(%o5)                                  1
 @end example
 
-The arguments of @code{kron_delta} are equivalent,
-and their difference is not a floating point number.
-@code{kron_delta} simplifies to 1.
-
-@c ===beg===
-@c assume (equal (x, y));
-@c kron_delta (x, y);
-@c ===end===
-@example
-(%i1) assume (equal (x, y));
-(%o1)                     [equal(x, y)]
-(%i2) kron_delta (x, y);
-(%o2)                           1
-@end example
-
-The arguments of @code{kron_delta} are not equivalent.
-@code{kron_delta} simplifies to 0.
-
-@c ===beg===
-@c kron_delta (a + 1, a);
-@c assume (a > b)$
-@c kron_delta (a, b);
-@c kron_delta (1/5, 0.7);
-@c ===end===
-@example
-(%i1) kron_delta (a + 1, a);
-(%o1)                           0
-(%i2) assume (a > b)$
-(%i3) kron_delta (a, b);
-(%o3)                           0
-(%i4) kron_delta (1/5, 0.7);
-(%o4)                           0
-@end example
-
-The arguments of @code{kron_delta} might or might not be equivalent.
-@code{kron_delta} simplifies to a noun expression.
-
-@c ===beg===
-@c kron_delta (a, b);
-@c assume(x >= y)$
-@c kron_delta (x, y);
-@c ===end===
-@example
-(%i1) kron_delta (a, b);
-(%o1)                   kron_delta(a, b)
-(%i2) assume(x >= y)$
-(%i3) kron_delta (x, y);
-(%o3)                   kron_delta(x, y)
-@end example
-
-The arguments of @code{kron_delta} are equivalent,
-but their difference is a floating point number.
-@code{kron_delta} simplifies to a noun expression.
-
-@c ===beg===
-@c 1/4 - 0.25;
-@c 1/10 - 0.1;
-@c 0.25 - 0.25b0;
-@c kron_delta (1/4, 0.25);
-@c kron_delta (1/10, 0.1);
-@c kron_delta (0.25, 0.25b0);
-@c ===end===
-@example
-(%i1) 1/4 - 0.25;
-(%o1)                          0.0
-(%i2) 1/10 - 0.1;
-(%o2)                          0.0
-(%i3) 0.25 - 0.25b0;
-Warning:  Float to bigfloat conversion of 0.25
-(%o3)                         0.0b0
-(%i4) kron_delta (1/4, 0.25);
-                                  1
-(%o4)                  kron_delta(-, 0.25)
-                                  4
-(%i5) kron_delta (1/10, 0.1);
-                                  1
-(%o5)                  kron_delta(--, 0.1)
-                                  10
-(%i6) kron_delta (0.25, 0.25b0);
-Warning:  Float to bigfloat conversion of 0.25
-(%o6)               kron_delta(0.25, 2.5b-1)
-@end example
-
-@code{kron_delta} is symmetric.
-
-@c ===beg===
-@c kron_delta (x, y);
-@c kron_delta (y, x);
-@c kron_delta (x, y) - kron_delta (y, x);
-@c is (equal (kron_delta (x, y), kron_delta (y, x)));
-@c is (kron_delta (x, y) = kron_delta (y, x));
-@c ===end===
-@example
-(%i1) kron_delta (x, y);
-(%o1)                   kron_delta(x, y)
-(%i2) kron_delta (y, x);
-(%o2)                   kron_delta(x, y)
-(%i3) kron_delta (x, y) - kron_delta (y, x);
-(%o3)                           0
-(%i4) is (equal (kron_delta (x, y), kron_delta (y, x)));
-(%o4)                         true
-(%i5) is (kron_delta (x, y) = kron_delta (y, x));
-(%o5)                         true
-@end example
 
 @end deffn
 

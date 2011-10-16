@@ -1,0 +1,440 @@
+@menu
+* Introduction for Runtime Environment::  
+* Interrupts::                  
+* Functions and Variables for Runtime Environment::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction for Runtime Environment, Interrupts, Runtime Environment, Runtime Environment
+@section Introduction for Runtime Environment
+@c -----------------------------------------------------------------------------
+
+@c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
+@c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
+@code{maxima-init.mac}は、Maximaがスタートする時自動的にロードされるファイルです。
+自分のMaxima環境をカスタマイズするために
+@code{maxima-init.mac}を使うことができます。
+@code{maxima-init.mac}は、もし存在するなら、
+関数@code{file_search}が検索する任意のディレクトリで大丈夫ですが、
+通常は、
+@code{maxima_userdir}で名付けらたディレクトリの中に置かれます。
+
+これは、@code{maxima-init.mac}ファイルの例です:
+
+@example
+setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
+showtime:all;
+@end example
+
+この例では、@code{setup_autoload}は、Maximaに
+もし関数(@code{ultraspherical},
+@code{assoc_legendre_p})のいずれかがコールされて、まだ定義されていなかったら、
+指定されたファイル(@code{specfun.mac})をロードするように命じます。
+このように、関数をコールする前にファイルをロードすることを覚えておく必要はありません。
+
+文@code{showtime: all}は、Maximaに@code{showtime}変数を設定することを命じます。
+@code{maxima-init.mac}ファイルは、
+他の任意の割り当てやMaxima文を含むことができます。
+
+@opencatbox
+@category{Session management}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
+@section Interrupts
+@c -----------------------------------------------------------------------------
+
+ユーザーは、時間のかかる計算を^C (control-C)文字で止めることができます。
+デフォルトの動作は、計算を止めて、別のユーザープロンプトを印字することでです。
+この場合、止められた計算の再開することはできません。
+
+もし
+
+@example
+:lisp (setq *debugger-hook* nil)
+@end example
+
+@noindent
+を実行することによって、
+Lisp変数@code{*debugger-hook*}が@code{nil}に設定されているなら、
+^Cを受け取ると、Maximaは、Lispデバッガに入り、
+ユーザーは、Lisp環境を検査するためにデバッガを使うことができます。
+止められた計算は、Lispデバッガの中で、
+@code{continue}を入力することで、再開することができます。
+(計算を完了まで走らせる以外に)
+LispデバッガからMaximaに戻る方法は、
+Lispのバージョンそれぞれで異なります。
+
+Unixシステム上では、文字^Z (control-Z)は、
+Maximaが完全に止まるようにし、
+制御は、シェルスクリプトに戻ります。
+@code{fg}コマンドは、Maximaが
+止められた点から再開するようにします。
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
+
+@c end concepts Runtime Environment
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Runtime Environment,  , Interrupts, Runtime Environment
+@section Functions and Variables for Runtime Environment
+@c -----------------------------------------------------------------------------
+
+@c NEEDS EXPANSION AND CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{feature}
+@defvr {宣言} feature
+
+Maximaは、システムフィーチャと数学式に適用されるフィーチャの、
+２つの異なるタイプのフィーチャを理解します。
+See also 
+システムフィーチャについての情報に関しては、@code{status}も参照してください。
+数学的フィーチャについての情報に関しては、
+@code{features}と@code{featurep}も参照してください。
+@c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
+@c OTHER STUFF ??
+
+@code{feature}それ自身は、関数名でも変数名でもありません。
+@end defvr
+
+@c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
+@c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
+
+@c -----------------------------------------------------------------------------
+@anchor{featurep}
+@deffn {関数} featurep (@var{a}, @var{f})
+
+現在のデータベースの中の事実に基づいて
+オブジェクト@var{a}が
+フィーチャ@var{f}を持つかどうか
+を決定しようとします。
+もしそうなら、@code{true}を返し、そうでなければ@code{false}を返します。
+
+@code{featurep}は、
+@var{f}も@var{f}の否定も確立できない時は、
+@code{false}を返すことに注意してください。
+
+@code{featurep}は、引数を評価します。
+
+@code{declare}と@code{features}も参照してください。
+
+@example
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
+@end example
+
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{maxima_tempdir}
+@defvr {システム変数} maxima_tempdir
+
+@code{maxima_tempdir}は、Maximaが一時的なファイルを生成するディレクトリを
+指名します。
+特に、プロットのための一時ファイルが
+@code{maxima_tempdir}に生成されます。
+
+@code{maxima_tempdir}の初期値は、
+もしMaximaが置くことができるなら、ユーザーのホームディレクトリです;
+そうでなければ、Maximaは適切なディレクトリについて推量します。
+
+@code{maxima_tempdir}は、ディレクトリを指名する文字列に割り当てられます。
+
+@opencatbox
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{maxima_userdir}
+@defvr {システム変数} maxima_userdir
+
+@code{maxima_userdir}は、
+Maximaが、MaximaやLispファイルを見つけるために検索するディレクトリを指名します。
+(Maximaは、他のディレクトリも検索します;
+@code{file_search_maxima}と@code{file_search_lisp}は、完全なリストです。)
+
+@code{maxima_userdir}の初期値は、
+もしMaximaが置くことができなら、
+ユーザーのホームディレクトリのサブディレクトリです;
+そうでなければ、Maximaは適切なディレクトリについて推量します。
+
+@code{maxima_userdir}は、ディレクトリを指名する文字列に割り当てられます。
+しかしながら、
+@code{maxima_userdir}への割り当ては、自動的には
+@code{file_search_maxima}と@code{file_search_lisp}を変えません;
+それらの変数は、別々に変更しなければいけません。
+
+@opencatbox
+@category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{room}
+@deffn  {関数} room ()
+@deffnx {関数} room (true)
+@deffnx {関数} room (false)
+
+Maximaの記憶装置とスタックマネージメントの状態の描写を印字します。
+@code{room}は、同じ名前のLisp関数をコールします。
+
+@itemize @bullet
+@item
+@code{room ()}は、適度の描写を印字します。
+@item
+@code{room (true)}は、言葉数の多い描写を印字します。
+@item
+@code{room (false)}は、簡潔な描写を印字します。
+@end itemize
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sstatus}
+@deffn {関数} sstatus (@var{keyword}, @var{item})
+
+@var{keyword}がシンボル@code{feature}の時、@var{item}がシステムフィーチャのリスト上に追加されます。
+@code{sstatus (keyword, item)}が実行された後、
+@code{status (feature, item)}は@code{true}を返します。
+もし@var{keyword}がシンボル@code{nofeature}なら、
+@var{item}はシステムフィーチャのリストから削除されます。
+これはパッケージ作者が、搭載したフィーチャの追跡をするのに役に立つかもしれません。
+
+@code{status}も参照してください。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{status}
+@deffn  {関数} status (@code{feature})
+@deffnx {関数} status (@code{feature}, @var{item})
+いくつかのシステム依存のフィーチャの存在と不在についての情報を返す。
+
+@itemize @bullet
+@item
+@code{status (feature)}は、システムフィーチャのリストを返します。
+これらは、Lispのバージョン、オペレーティングシステムのタイプなどを含みます。
+リストは、１つのLispタイプからもう１つに変わるかもしれません。
+
+@item
+@code{status (feature, item)}は、
+もし@var{item}が@code{status (feature)}が返す項目のリスト上にあるなら、
+@code{true}を返し、そうでなければ、@code{false}を返します。
+@code{status}は、引数@var{item}をクォートします。
+クォート-クォート演算子@code{'@w{}'}は、クォーテーションに優先されます。
+名前が、ハイフンのように特殊文字を含むフィーチャは、
+文字列引数として与えられなければいけません。例えば、
+@code{status (feature, "ansi-cl")}。
+@end itemize
+
+@code{sstatus}も参照してください。
+
+変数@code{features}は、
+数式に適用される
+フィーチャのリストを含みます。
+もっと情報を知るには、@code{features}と@code{featurep}を参照してください。
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c -----------------------------------------------------------------------------
+@anchor{system}
+@deffn {関数} system (@var{command})
+
+別のプロセスとして@var{command}を実行します。
+コマンドは実行のためデフォルトのシェルに渡されます。
+@code{system}は、オペレーティングシステムすべてではサポートされませんが、
+一般にUnixとUnixライクな環境では存在します。
+
+@code{_hist.out}が、
+@code{xgraph}を使ってバーグラフとしてプロットしたい頻度のリストだと仮定します。
+
+@example
+(%i1) (with_stdout("_hist.out",
+           for i:1 thru length(hist) do (
+             print(i,hist[i]))),
+       system("xgraph -bar -brw .7 -nl < _hist.out"));
+@end example
+
+プロットをバックグラウンドで（Maximaに制御を戻すように）させるようにし、終了した後、一次ファルを削除するようにするためには、以下のようにします:
+
+@example
+system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@end example
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{time}
+@deffn {関数} time (%o1, %o2, %o3, @dots{})
+
+出力行@code{%o1}, @code{%o2}, @code{%o3}, @dots{}を計算するために使った
+時間のリストを秒で返します。
+返された時間は、内部計算時間のMaximaの概算であって、経過時間ではありません。
+@code{time}は、出力行変数にだけ適用されます;
+他の変数に関して、@code{time}は@code{unknown}を返します。
+
+Maximaに出力行それぞれに計算時間と経過時間を印字させるには、
+@code{showtime: true}を設定してください。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{timedate}
+@deffn  {関数} timedate ()
+@deffnx {関数} timedate (@var{T})
+
+引数なしの@code{timedate()}は現在時刻と日付を表す文字列を返します。
+文字列は、フォーマット@code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}を持ちます。
+ここで、欄は、年、月、日、時、分、秒、時間と分のタイムゾーンオフセットです。
+
+@code{timedate(@var{T})}は
+フォーマット@code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}の文字列として
+時刻@var{T}を返します。
+@var{T}は
+@code{absolute_real_time}が返すような
+1990年1月1日の真夜中以来の秒数として解釈されます。
+
+例:
+
+引数なしの@code{timedate()}は現在時刻と日付を表す文字列を返します。
+
+@c ===beg===
+@c d : timedate ();
+@c print ("timedate reports current time", d)$
+@c ===end===
+@example
+(%i1) d : timedate ();
+(%o1)                      2010-06-08 04:08:09+01:00
+(%i2) print ("timedate reports current time", d) $
+timedate reports current time 2010-06-08 04:08:09+01:00
+@end example
+
+引数ありの@code{timedate}は引数を表す文字列を返します。
+
+@c ===beg===
+@c timedate (0);
+@c timedate (absolute_real_time () - 7*24*3600);
+@c ===end===
+@example
+(%i1) timedate (0);
+(%o1)                      1900-01-01 01:00:00+01:00
+(%i2) timedate (absolute_real_time () - 7*24*3600);
+(%o2)                      2010-06-01 04:19:51+01:00
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{absolute_real_time}
+@deffn {関数} absolute_real_time ()
+
+協定世界時で1900年1月1日の深夜以来の
+秒数を返します。
+戻り値は整数です。
+
+@code{elapsed_real_time}と@code{elapsed_run_time}も参照してください。
+
+例:
+
+@c ===beg===
+@c absolute_real_time ();
+@c 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+@c ===end===
+@example
+(%i1) absolute_real_time ();
+(%o1)                      3385045277
+(%i2) 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+(%o2)                   2007.265612087104
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{elapsed_real_time}
+@deffn {関数} elapsed_real_time ()
+
+Maximaがもっとも最近スタートしたか再スタートして以来の
+(1秒の小数を含む)秒数を返します。
+戻り値は浮動小数点数です。
+
+@code{absolute_real_time}と@code{elapsed_run_time}も参照してください。
+
+例:
+
+@c ===beg===
+@c elapsed_real_time ();
+@c expand ((a + b)^500)$
+@c elapsed_real_time ();
+@c ===end===
+@example
+(%i1) elapsed_real_time ();
+(%o1)                       2.559324
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_real_time ();
+(%o3)                       7.552087
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{elapsed_run_time}
+@deffn {関数} elapsed_run_time ()
+
+Maximaがもっとも最近スタートしたか再スタートして以来
+Maximaが計算に費やした
+(1秒の小数を含む)秒数の概算を返します。
+戻り値は浮動小数点数です。
+
+@code{absolute_real_time}と@code{elapsed_real_time}も参照してください。
+
+例:
+
+@c ===beg===
+@c elapsed_run_time ();
+@c expand ((a + b)^500)$
+@c elapsed_run_time ();
+@c ===end===
+@example
+(%i1) elapsed_run_time ();
+(%o1)                         0.04
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_run_time ();
+(%o3)                         1.26
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn

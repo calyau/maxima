@@ -366,9 +366,11 @@
 (defun getfncoeff (a form)
   (cond ((null a) 0)
 	((equal (car a) 0) (getfncoeff (cdr a) form))
-	((eq (caaar a) 'mplus) (ratpl (getfncoeff (cdar a) form)
-				      (getfncoeff (cdr a) form)))
-	((eq (caaar a) 'mtimes)
+	((and (listp (car a))
+	      (eq (caaar a) 'mplus) (ratpl (getfncoeff (cdar a) form)
+					   (getfncoeff (cdr a) form))))
+	((and (listp (car a))
+	      (eq (caaar a) 'mtimes))
 	 (destructuring-let (((coef . newfn) (getfnsplit (cdar a))))
            ;; (car a) is a mtimes expression. We insert coef and newfn as the
            ;; new arguments to the mtimes expression. This causes problems if

@@ -12,8 +12,6 @@
 
 (macsyma-module trans5)
 
-(transl-module trans5)
-
 ;;; these are TRANSLATE properies for the FSUBRS in JPG;COMM >
 
 ;;; LDISPLAY is one of the most beastly of all macsyma idiot

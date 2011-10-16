@@ -1,0 +1,139 @@
+@menu
+* Functions and Variables for augmented_lagrangian::
+@end menu
+
+@node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Functions and Variables for augmented_lagrangian
+
+@deffn  {関数} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {関数} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffnx {関数} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
+@deffnx {関数} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
+
+ゼロに等しい制約@var{C}を保ちながら、
+式@var{FOM}の変数@var{xx}に関する近似最小を返します。
+@var{yy}は
+@var{xx}の初期推量のリストです。
+利用した方法は拡張Lagrange法です。(文献[1]と[2]を参照してください。)
+
+もしあるなら、@var{grad}は
+@var{FOM}の@var{xx}に関するグラディエントであり、
+@var{xx}の変数それぞれに関する式のリストとして表されます。
+もしないなら、グラディエントは自動的に構成されます。
+
+@var{FOM}と、もしあるなら@var{grad}の要素それぞれは、
+関数名やラムダ式ではなく、通常の式でなければいけません。
+
+@code{optional_args}は、
+@code{@var{symbol} = @var{value}}として指定される、
+追加の引数を表します。
+認識されるオプション引数は以下の通りです:
+
+@table @code
+@item niter
+拡張Lagrangeアルゴリズムの繰り返しの回数
+@item lbfgs_tolerance
+LBFGSに供給される許容誤差
+@item iprint
+LBFGSに供給される
+IPRINTパラメータ(メッセージ出力を制御する２つの整数のリスト)
+@item %lambda
+拡張Lagrangeを計算するために使われる
+@code{%lambda}の初期値
+@end table
+
+この実装は
+擬似Newtonアルゴリズムであるメモリ制限付きBFGS (LBFGS)アルゴリズムを適用することで
+拡張Lagraneを最小化します。
+
+@code{load(augmented_lagrangian)}はこの関数をロードします。
+
+@code{lbfgs}も参照してください。
+
+参考文献:
+
+@ifnottex
+[1] @url{http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html}
+
+[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
+@end ifnottex
+@iftex
+[1] @url{http://www-fp.mcs.anl.gov/@-otc/@-Guide/@-OptWeb/@-continuous/@-constrained/@*nonlinearcon/@-auglag.html}
+
+[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
+@end iftex
+
+例:
+
+@c ===beg===
+@c load (lbfgs);
+@c load (augmented_lagrangian);
+@c FOM: x^2 + 2*y^2;
+@c xx: [x, y];
+@c C: [x + y - 1];
+@c yy: [1, 1];
+@c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+@c ===end===
+@example
+(%i1) load (lbfgs);
+(%o1)     /maxima/share/lbfgs/lbfgs.mac
+(%i2) load (augmented_lagrangian);
+(%o2) 
+   /maxima/share/contrib/augmented_lagrangian.mac
+(%i3) FOM: x^2 + 2*y^2;
+                               2    2
+(%o3)                       2 y  + x
+(%i4) xx: [x, y];
+(%o4)                        [x, y]
+(%i5) C: [x + y - 1];
+(%o5)                      [y + x - 1]
+(%i6) yy: [1, 1];
+(%o6)                        [1, 1]
+(%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+(%o7) [[x = 0.66665984108002, y = 0.33334027245545],
+                                 %lambda = [- 1.333337940892525]]
+@end example
+
+前と同じ例ですが、今回は
+グラディエントが引数として供給されます。
+
+@c ===beg===
+@c load (lbfgs)$
+@c load (augmented_lagrangian)$
+@c FOM: x^2 + 2*y^2;
+@c xx: [x, y];
+@c grad : [2*x, 4*y];
+@c C: [x + y - 1];
+@c yy: [1, 1];
+@c augmented_lagrangian_method ([FOM, grad], xx, C, yy, 
+@c                              iprint = [-1, 0]);
+@c ===end===
+@example
+(%i1) load (lbfgs)$
+(%i2) load (augmented_lagrangian)$
+(%i3) FOM: x^2 + 2*y^2;
+                               2    2
+(%o3)                       2 y  + x
+(%i4) FOM: x^2 + 2*y^2;
+                               2    2
+(%o4)                       2 y  + x
+(%i5) xx: [x, y];
+(%o5)                        [x, y]
+(%i6) grad : [2*x, 4*y];
+(%o6)                      [2 x, 4 y]
+(%i7) C: [x + y - 1];
+(%o7)                      [y + x - 1]
+(%i8) yy: [1, 1];
+(%o8)                        [1, 1]
+(%i9) augmented_lagrangian_method ([FOM, grad], xx, C, yy,
+                                   iprint = [-1, 0]);
+(%o9) [[x = 0.666659841080025, y = .3333402724554462], 
+                                 %lambda = [- 1.333337940892543]]
+@end example
+
+@opencatbox
+@category{Numerical methods} @category{Optimization} @category{Share packages} @category{Package augmented_lagrangian}
+@closecatbox
+
+@end deffn
+

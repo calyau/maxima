@@ -1,0 +1,76 @@
+@menu
+* Functions and Variables for f90::
+@end menu
+
+@node Functions and Variables for f90,  , f90, f90
+@section Functions and Variables for f90
+
+
+@deffn {関数} f90 (@var{expr_1}, ..., @var{expr_n})
+
+１つ以上の式@var{expr_1}, ..., @var{expr_n}を
+Fortran 90プログラムとして印字します。
+出力は標準出力に印字されます。
+
+@code{f90}は
+Fortran 90のいわゆる「自由形式」入力フォーマットで出力を印字します:
+列位置に特別な注意はありません。
+長い行は、
+アンパサンド@code{&}継続文字で固定幅に分割されます。
+
+@code{load(f90)}はこの関数をロードします。
+
+例:
+
+@c ===beg===
+@c load (f90)$
+@c foo : expand ((xxx + yyy + 7)^4);
+@c f90 ('foo = foo);
+@c ===end===
+@example
+(%i1) load (f90)$
+(%i2) foo : expand ((xxx + yyy + 7)^4);
+         4            3         3        2    2             2
+(%o2) yyy  + 4 xxx yyy  + 28 yyy  + 6 xxx  yyy  + 84 xxx yyy
+          2        3             2
+ + 294 yyy  + 4 xxx  yyy + 84 xxx  yyy + 588 xxx yyy + 1372 yyy
+      4         3          2
+ + xxx  + 28 xxx  + 294 xxx  + 1372 xxx + 2401
+(%i3) f90 ('foo = foo);
+foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2&
++294*yyy**2+4*xxx**3*yyy+84*xxx**2*yyy+588*xxx*yyy+1372*yyy+xxx**&
+4+28*xxx**3+294*xxx**2+1372*xxx+2401
+(%o3)                         false
+@end example
+
+複数式。
+@code{with_stdout}関数を介して標準出力をファイルにとらえます。
+
+@c ===beg===
+@c load (f90)$
+@c foo : sin (3*x + 1) - cos (7*x - 2);
+@c with_stdout ("foo.f90", f90 (x = 0.25, y = 0.625, 'foo = foo, 'stop, 'end));
+@c printfile ("foo.f90");
+@c ===end===
+@example
+(%i1) load (f90)$
+(%i2) foo : sin (3*x + 1) - cos (7*x - 2);
+(%o2)              sin(3 x + 1) - cos(7 x - 2)
+(%i3) with_stdout ("foo.f90",
+                   f90 (x = 0.25, y = 0.625, 'foo = foo, 'stop, 'end));
+(%o3)                         false
+(%i4) printfile ("foo.f90");
+x = 0.25
+y = 0.625
+foo = sin(3*x+1)-cos(7*x-2)
+stop
+end
+(%o4)                        foo.f90
+@end example
+
+@opencatbox
+@category{Translation and compilation} @category{Share packages} @category{Package f90}
+@closecatbox
+
+@end deffn
+

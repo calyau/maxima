@@ -125,7 +125,7 @@
         (t
          (merror
           (intl:gettext
-           "palette: wrong keyword ~M. Must be hue, saturation, value or gray")
+           "palette: no such keyword ~M. Must be hue, saturation, value or gray")
           (first palette)))))))
 
 (defun xmaxima-palletes (n &aux (palettes (cddr ($get_plot_option '$palette))))

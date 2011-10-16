@@ -1,0 +1,398 @@
+@menu
+* Introduction to numericalio::
+* Functions and Variables for plain-text input and output::
+* Functions and Variables for binary input and output::
+@end menu
+
+@node Introduction to numericalio, Functions and Variables for plain-text input and output, numericalio, numericalio
+@section Introduction to numericalio
+
+@code{numericalio}は
+ファイルやストリームを読み書きする関数のコレクションです。
+プレインテキスト入出力のための関数は、
+数(整数、浮動小数点、多倍長浮動小数点)やシンボル、文字列を読み書きできます。
+バイナリ入出力のための関数は、
+浮動小数点数だけを読み書きできます。
+
+もし既に入力データを記憶すべきリスト、行列、配列オブジェクトがあるなら、
+@code{numericalio}入力関数群はデータをそのオブジェクトに書き込むことができます。
+そうでなければ、
+@code{numericalio}はデータを記憶するオブジェクトの構造をある程度推測し、
+そのオブジェクトを返します。
+
+@opencatbox
+@category{File input} @category{File output} @category{Share packages} @category{Package numericalio}
+@closecatbox
+
+@subsection Plain-text input and output
+
+プレインテキスト入出力では、
+読み書きする項目それぞれがアトムであることが仮定されます:
+整数、浮動小数点数、多倍長浮動小数点、文字列、シンボルであり、
+有理数や複素数や他のどんなアトムでない式でもありません。
+@code{numericalio}関数群は、アトムでない式に直面した時、
+何か適当なことを試みるかもしれませんが、
+結果はここで規定されず、変更の対象となります。
+
+入力ファイルと出力ファイルどちらのアトムも、
+Maximaバッチファイルや対話コンソールでのものと同じフォーマットを持ちます。
+特に、文字列はダブルクォートで括られ、
+バックスラッシュ@code{\}は次の文字の任意の特殊解釈を抑制し、
+クエスチョンマーク@code{?}は
+(Maximaシンボルではなく、)Lispシンボルを意味するシンボルの始まりとして認識されます。
+(分割された行をつなぎ合わせる)いかなる継続文字も認識されません。
+
+@subsection Separator flag values for input
+
+プレインテキスト入出力のための関数は、オプションの引数@var{separator_flag}
+を取ります。
+それはどの文字がデータを分離するかを示します。
+
+プレインテキスト入力では、
+@var{separator_flag}の以下の値が認識されます:
+コンマで区切られた値のための@code{comma}、
+垂直バー文字@code{|}で区切られた値のための@code{pipe}、
+セミコロン@code{;}で区切られた値のための@code{semicolon}、
+空白かタブ文字で区切られた値のための@code{space}。
+もしファイル名が@code{.csv}で終わり、
+@var{separator_flag}が指定されていないなら、
+@code{comma}が仮定されます。
+もしファイル名が@code{.csv}以外の何かで終わり、
+@code{separator_flag}が指定されていないなら、
+@code{space}が仮定されます。
+
+プレインテキスト入力では、
+複数続く空白とタブ文字は1つの区切り文字として数えられます．
+しかしながら、複数のコンマ、パイプまたはセミコロンは意味を持ちます。
+連続するコンマ、パイプ、セミコロン文字は
+(空白やタブが間に入ろうが入るまいが)
+区切り文字の間に@code{false}を持つと見なされます。
+例えば、@code{1234,,Foo}は
+@code{1234,false,Foo}と同じと扱われます。
+
+@subsection Separator flag values for output
+
+プレインテキスト出力では、
+@code{comma}, @code{pipe}, @code{semicolon}, そして@code{space}はもちろん、
+タブ文字で区切られた値のための@code{tab}も、
+@var{separator_flag}の値として認識されます。
+
+プレインテキスト出力では、
+@code{false}アトムは以下のように書かれます:
+リスト@code{[1234, false, Foo]}は@code{1234,false,Foo}と書かれ、
+出力を@code{1234,,Foo}につぶすことはありません。
+
+@subsection Binary floating-point input and output
+
+@code{numericalio}関数群は8バイトIEEE754浮動小数点数を読み書きすることができます。
+これらの数は、
+@code{assume_external_byte_order}で設定されたグローバルフラグに従って、
+最下位バイトから順でも最上位バイトから順でも記憶することができます。
+
+もし指定されないなら、
+@code{numericalio}は外部バイト順は最上位バイトからと仮定します。
+
+他の種類の数は8バイト浮動小数点に強制変換されます;
+@code{numericalio}はアトムでないバイナリデータを読み書きできません。
+
+いくつかのLisp実装は
+IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)を認識しません。
+@code{numericalio}でそんな値を読み込むことの効果は未定義です。
+
+@code{numericalio}は
+バイトストリームを読んだり書いたりするためのストリームを開く
+関数を含みます。
+
+
+@node Functions and Variables for plain-text input and output, Functions and Variables for binary input and output, Introduction to numericalio, numericalio
+@section Functions and Variables for plain-text input and output
+
+@deffn {関数} read_matrix (@var{S})
+@deffnx {関数} read_matrix (@var{S}, @var{M})
+@deffnx {関数} read_matrix (@var{S}, @var{separator_flag})
+@deffnx {関数} read_matrix (@var{S}, @var{M}, @var{separator_flag})
+
+@code{read_matrix(@var{S})}は、
+ソース@var{S}を読み込み、行列として内容全体を返します。
+行列のサイズは入力データから推論されます;
+ファイルの行それぞれは行列の1行になります。
+もし複数の行が異なる長さを持つなら、
+@code{read_matrix}はエラーを出力します。
+
+@code{read_matrix(@var{S}, @var{M})}は、
+@var{M}が一杯になるか、ソースが尽きるまで、
+ソース@var{S}を行列@var{M}に読み込みます。
+入力データは行優先順に行列に読み込まれます;
+入力は@var{M}と同じ行数と列数を持つ必要はありません。
+
+ソース@var{S}はファイル名かストリームかもしれません。
+
+@var{separator_flag}の認識される値は
+@code{comma}, @code{pipe}, @code{semicolon}, @code{space}です。
+もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} read_array (@var{S}, @var{A})
+@deffnx {関数} read_array (@var{S}, @var{A}, @var{separator_flag})
+
+@var{A}が一杯になるか、ソースが尽きるまで、
+ソース@var{S}を配列@var{A}に読み込みます。
+入力データは列優先順に配列に読み込まれます;
+入力は@var{A}の次元に一致する必要はありません。
+
+ソース@var{S}はファイル名かストリームかもしれません。
+
+@var{separator_flag}の認識される値は
+@code{comma}, @code{pipe}, @code{semicolon}, @code{space}です。
+もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} read_hashed_array (@var{S}, @var{A})
+@deffnx {関数} read_hashed_array (@var{S}, @var{A}, @var{separator_flag})
+
+ソース@var{S}が読み込まれ、ハッシュ配列として内容全体が返されます。
+ソース@var{S}はファイル名かストリームかもしれません。
+
+@code{read_hashed_array}は、
+それぞれの行の最初の項目をハッシュキーとして扱い、
+行の残りを(リストとして)キーと結合します。
+例えば、
+行@code{567 12 17 32 55}は
+@code{A[567]: [12, 17, 32, 55]$}と同値です。
+行数は要素数と同じである必要はありません。
+
+@var{separator_flag}の認識される値は
+@code{comma}, @code{pipe}, @code{semicolon}, @code{space}です。
+もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} read_nested_list (@var{S})
+@deffnx {関数} read_nested_list (@var{S}, @var{separator_flag})
+
+ソース@var{S}を読み込み、
+入れ子のリストとして内容全体を返します。
+ソース@var{S}はファイル名かストリームかもしれません。
+
+@code{read_nested_list}は
+入力のそれぞれの行について部分リストを持つリストを返します。
+行数は要素数と同じである必要はありません。
+空の行は無視され@i{ません}: 空の行は空の部分リストをもたらします。
+
+@var{separator_flag}の認識される値は
+@code{comma}, @code{pipe}, @code{semicolon}, @code{space}です。
+もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} read_list (@var{S})
+@deffnx {関数} read_list (@var{S}, @var{L})
+@deffnx {関数} read_list (@var{S}, @var{separator_flag})
+@deffnx {関数} read_list (@var{S}, @var{L}, @var{separator_flag})
+
+@code{read_list(@var{S})}は、
+ソース@var{S}を読み込み、
+フラットなリストとして内容全体を返します。
+
+@code{read_list(@var{S}, @var{L})}は、
+@var{L}が一杯になるかソースが尽きるまで、
+ソース@var{S}を
+リスト@var{L}に読み込みます。
+
+ソース@var{S}はファイル名かストリームかもしれません。
+
+@var{separator_flag}の認識される値は
+@code{comma}, @code{pipe}, @code{semicolon}, @code{space}です。
+もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} write_data (@var{X}, @var{D})
+@deffnx {関数} write_data (@var{X}, @var{D}, @var{separator_flag})
+
+オブジェクト@var{X}をデスティネーション@var{D}に書き出します。
+
+@code{write_data}は行列を
+行につき一行で行優先順に書き出します。
+
+@code{write_data}は
+@code{array}や@code{make_array}で生成された配列を
+行優先順でスラブ毎に改行して書き出します。
+高次元スラブは更に改行で分割されます。
+
+@code{write_data}はハッシュ配列を
+1行に、キーそれぞれに結合したリストが続くように書き出します。
+
+@code{write_data}は入れ子のリストを
+それぞれの部分リストを1行に書き出します。
+
+@code{write_data}はフラットなリストすべてを1行に書き出します。
+
+デスティネーション@var{D}はファイル名かストリームかもしれません。
+デスティネーションがファイル名の時、
+グローバル変数@code{file_output_append}は
+出力ファイルに追加されるか上書きされるか決定します。
+デスティネーションがストリームの時、
+@code{write_data}は
+データすべてが書かれた後、特殊なアクションを取ります;
+特にストリームは開いたままとなります。
+
+@var{separator_flag}の認識される値は
+@code{comma}, @code{pipe}, @code{semicolon}, @code{space}です。
+もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File output}
+@closecatbox
+
+@end deffn
+
+@node Functions and Variables for binary input and output, , Functions and Variables for plain-text input and output, numericalio
+@section Functions and Variables for binary input and output
+
+@deffn {関数} assume_external_byte_order (@var{byte_order_flag})
+@code{numericalio}に
+バイナリデータを読み書きするためのバイトオーダーを知らせます。
+@var{byte_order_flag}の2つの値が認識されます:
+リトルエンディアンバイトオーダーとも呼ばれる最下位バイト優先を示す@code{lsb};
+と
+ビッグエンディアンバイトオーダーとも呼ばれる最上位バイト優先を示す@code{msb}。
+
+もし指定されないなら、
+@code{numericalio}は外部のバイトオーダーは最上位バイト優先を仮定します。
+
+@opencatbox
+@category{Package numericalio}
+@closecatbox
+@end deffn
+
+@deffn {関数} openr_binary (@var{file_name})
+@var{file_name}という名前のファイルを読むための
+8ビット符号なしバイトの入力ストリームを返します。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+@end deffn
+
+@deffn {関数} openw_binary (@var{file_name})
+@var{file_name}という名前のファイルに書き込むための
+8ビット符号なしバイトの出力ストリームを返します。
+
+@opencatbox
+@category{Package numericalio} @category{File output}
+@closecatbox
+@end deffn
+
+@deffn {関数} opena_binary (@var{file_name})
+@var{file_name}という名前のファイルに追加するための
+8ビット符号なしバイトの出力ストリームを返します。
+
+@opencatbox
+@category{Package numericalio} @category{File output}
+@closecatbox
+@end deffn
+
+@deffn {関数} read_binary_matrix (@var{S}, @var{M})
+@var{M}が一杯になるかソースが尽きるまで、
+ソース@var{S}から行列@var{M}にバイナリの8バイト浮動小数点数を読み込みます。
+@var{M}の要素は行優先順で読み込まれます。
+
+ソース@var{S}はファイル名かストリームかもしれません。
+
+ソースの要素のバイトオーダーは
+@code{assume_external_byte_order}で指定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+@end deffn
+
+@deffn {関数} read_binary_array (@var{S}, @var{A})
+@var{A}が一杯になるかソースが尽きるまで、
+ソース@var{S}から配列@var{A}にバイナリの8バイト浮動小数点数を読み込みます。
+@var{M}の要素は行優先順で読み込まれます。
+
+ソース@var{S}はファイル名かストリームかもしれません。
+
+ソースの要素のバイトオーダーは
+@code{assume_external_byte_order}で指定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+@end deffn
+
+@deffn {関数} read_binary_list (@var{S})
+@deffnx {関数} read_binary_list (@var{S}, @var{L})
+@code{read_binary_list(@var{S})}は
+バイナリ8バイト浮動小数点数の数列として
+ソース@var{S}の内容全体を読み込み、それをリストとして返します。
+ソース@var{S}はファイル名かストリームかもしれません。
+
+@code{read_binary_list(@var{S}, @var{L})}は
+リスト@var{L}が一杯になるかソースが尽きるまで、
+ソース@var{S}から
+バイナリ8バイト浮動小数点数を読み込みます。
+
+ソースの要素のバイトオーダーは
+@code{assume_external_byte_order}で指定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+@end deffn
+
+@deffn {関数} write_binary_data (@var{X}, @var{D})
+
+Writes the object 
+バイナリ8バイトIEEE 754浮動小数点数で構成される
+オブジェクト@var{X}を
+ディスティネーション@var{D}に書き込みます。
+他の種類の数は8バイト浮動小数点に強制変換されます。
+@code{write_binary_data}は非数データを書くことはできません。
+
+The object 
+オブジェクト@var{X}はリストか、入れ子のリスト、行列、
+もしくは、@code{array}か@code{make_array}で生成された配列であり得ます;
+@var{X}は未宣言配列や他のいかなる種類のオブジェクトもありえません。
+@code{write_binary_data}は
+入れ子のリスト、行列、配列を行優先順に書き込みます。
+
+デスティネーション@var{D}はファイル名かストリームかもしれません。
+デスティネーションがファイル名の時、
+グローバル変数@code{file_output_append}が
+出力ファイルに追加されるか上書きされるか決めます。
+デスティネーションがストリームの時、
+データすべてが書かれた後@code{write_binary_data}は特別な動作は何もしません;
+特に、ストリームは開かれたままです。
+
+デスティネーションの要素のバイトオーダーは
+@code{assume_external_byte_order}で指定されます。
+
+@opencatbox
+@category{Package numericalio} @category{File output}
+@closecatbox
+@end deffn

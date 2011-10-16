@@ -17,7 +17,7 @@
 @documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
-Ver. 5.24
+Ver. 5.25
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
@@ -41,9 +41,12 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Manual de Maxima}
+@sp 2
+@center Traducci@'on espa@~nola
+@page
 @page
 @vskip 0pt plus 1filll
-@i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
+Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.
 
 Maxima desciende del sistema Macsyma, desarrollado en el MIT 
 (Massachusetts Institute of Technology) entre los a@~nos 1968 y 
@@ -58,12 +61,29 @@ de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000
 el proyecto Maxima en SourceForge con el fin de mantener y seguir
 desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
+@sp 1
 Los usuarios de habla hispana disponen de una lista de correos
 en la que podr@'an participar para recabar informaci@'on,
 proponer ideas y comentar sus experiencias con Maxima:
 
 @url{https://lists.sourceforge.net/lists/listinfo/maxima-lang-es}
 
+@sp 1
+@i{Nota de la traducci@'on}: Este manual es una traducci@'on de
+la versi@'on original en ingl@'es. En la versi@'on 5.25 se han
+introducido cambios sustanciales que afectan, fundamentalmente,
+a una reordenaci@'on de los contenidos, a la desaparici@'on de
+algunas secciones y a la aparici@'on de otras nuevas. Adem@'as,
+se han a@~nadido introducciones a algunas secciones provenientes
+de la versi@'on alemana; me ha parecido conveniente incorporarlas
+a la versi@'on espa@~nola por ser clarificadoras de algunos 
+conceptos b@'asicos de Maxima, aunque todav@'{@dotless{i}}a no
+forman parte de la versi@'on inglesa de referencia. 
+
+@sp 1
+Mario Rodr@'{@dotless{i}}guez Riotorto. (@code{mario ARROBA edu PUNTO xunta PUNTO es})
+
+@page
 
 
 @end titlepage
@@ -75,15 +95,43 @@ proponer ideas y comentar sus experiencias con Maxima:
 @node Top, Introducci@'on a Maxima, (dir), (dir)
 @top
 
-@i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
+Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.
 
-Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
+Maxima desciende del sistema Macsyma, desarrollado en el MIT 
+(Massachusetts Institute of Technology) entre los a@~nos 1968 y 
+1982 como parte del proyecto MAC. El MIT pas@'o una copia del 
+c@'odigo fuente al DOE (Department of Energy) en 1982, en una 
+versi@'on conocida como DOE-Macsyma. Una de estas copias fue 
+mantenida por el Profesor William F. Schelter de la Universidad 
+de Texas desde el a@~no 1982 hasta su fallecimiento en 2001.
+En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de
+Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente
+de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000
+el proyecto Maxima en SourceForge con el fin de mantener y seguir
+desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
+@sp 1
 Los usuarios de habla hispana disponen de una lista de correos
 en la que podr@'an participar para recabar informaci@'on,
 proponer ideas y comentar sus experiencias con Maxima:
 
 @url{https://lists.sourceforge.net/lists/listinfo/maxima-lang-es}
+
+@sp 1
+@i{Nota de la traducci@'on}: Este manual es una traducci@'on de
+la versi@'on original en ingl@'es. En la versi@'on 5.25 se han
+introducido cambios sustanciales que afectan, fundamentalmente,
+a una reordenaci@'on de los contenidos, a la desaparici@'on de
+algunas secciones y a la aparici@'on de otras nuevas. Adem@'as,
+se han a@~nadido introducciones a algunas secciones provenientes
+de la versi@'on alemana; me ha parecido conveniente incorporarlas
+a la versi@'on espa@~nola por ser clarificadoras de algunos 
+conceptos b@'asicos de Maxima, aunque todav@'{@dotless{i}}a no
+forman parte de la versi@'on inglesa de referencia. 
+
+@sp 1
+Mario Rodr@'{@dotless{i}}guez Riotorto. (@code{mario ARROBA edu PUNTO xunta PUNTO es})
+
 @end ifnottex
 
 @c includes
@@ -93,23 +141,22 @@ proponer ideas y comentar sus experiencias con Maxima:
 Infraestructura de Maxima
 
 * Introducci@'on a Maxima::            Muestra de sesiones con Maxima.
-* Detecci@'on e informe de fallos::    Gesti@'on de fallos en Maxima.
+* Detecci@'on e informe de fallos::    Gesti@'on de fallos.
 * Ayuda::                              Solicitando ayuda desde una sesi@'on de Maxima.
-* L@'{@dotless{i}}nea de Comandos::    Sintaxis de los comandos de Maxima.
-* Operadores::                         Operadores utilizados en expresiones de Maxima.
+* L@'{@dotless{i}}nea de comandos::    Sintaxis de los comandos de Maxima.
+* Tipos de datos y estructuras::       N@'umeros, cadenas de texto, listas, arrays y estructuras.
+* Operadores::                         Operadores internos y definidos por el usuario.
+* Evaluaci@'on::                       Evaluando expresiones.
 * Expresiones::                        Expresiones de Maxima.
 * Simplificaci@'on::                   Simplificando expresiones.
+* Funciones matem@'aticas::            Funciones matem@'aticas en Maxima.
+* Base de datos de Maxima::            Declaraciones, contextos, hechos y propiedades.
 * Gr@'aficos::                         Gr@'aficos en dos y tres dimensiones.
-* Lectura y escritura::                Lectura y escritura de archivos
-* Aritm@'etica de punto flotante::     Rutinas num@'ericas de bajo nivel.
-* Contextos::                          Imposici@'on de restricciones a variables.
+* Lectura y escritura::                Lectura y escritura de archivos.
 
 Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 
 * Polinomios::                         Operaciones con polinomios.
-* Constantes::                         Constantes num@'ericas.
-* Logaritmos::                         Transformaci@'on y c@'alculo de expresiones logar@'{@dotless{i}}tmicas.
-* Trigonometr@'{@dotless{i}}a::        Transformaci@'on y c@'alculo de expresiones trigonom@'etricas.
 * Funciones Especiales::               Funciones especiales.
 * Funciones el@'{@dotless{i}}pticas::  Funciones e integrales el@'{@dotless{i}}pticas.
 * L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites.
@@ -118,7 +165,6 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Ecuaciones::                         Definici@'on y resoluci@'on de ecuaciones.
 * Ecuaciones Diferenciales::           Definici@'on y resoluci@'on de ecuaciones diferenciales.
 * M@'etodos num@'ericos::              Integraci@'on num@'erica, transformadas de Fourier, etc.
-* Arrays::                             Creaci@'on y manipulaci@'on de arrays.
 * Matrices y @'Algebra Lineal::        Operaciones matriciales.
 * Afines::                             
 * itensor::                            Manipulaci@'on indexada de tensores
@@ -135,9 +181,7 @@ Funcionalidades avanzadas y programaci@'on
 * Miscel@'anea de opciones::    Opciones que afectan globalmente el comportamiento de Maxima.
 * Reglas y patrones::           Patrones de definidos por el usuario y
                                 reglas de simplificaci@'on.
-* Listas::                      Manipulaci@'on de listas.
 * Conjuntos::                   Operaciones con conjuntos.
-* Estructuras::                 Agregaci@'on de datos.
 * Definici@'on de Funciones::   Programando funciones.
 * Programaci@'on::              Programaci@'on en Maxima.
 * Depurado::                    Depuraci@'on de fallos en programas Maxima.
@@ -145,6 +189,7 @@ Funcionalidades avanzadas y programaci@'on
 Paquetes adicionales
 
 * augmented_lagrangian::        Paquete augmented_lagrangian.
+* Bernstein::                   Polinomios de Bernstein.
 * bode::                        Gr@'aficos de Bode.
 * cobyla::                      Optimizaci@'on no lineal con restricciones en desigualdades.
 * contrib_ode::                 Procedimientos adicionales para EDOs.
@@ -182,6 +227,7 @@ Paquetes adicionales
 * stats::                       Inferencia estad@'{@dotless{i}}stica.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Procesamiento de cadenas.
+* to_poly_solve::               Paquete to_poly_solve.
 * unit::                        Unidades f@'{@dotless{i}}sicas y dimensiones.
 * zeilberger::                  Funciones para series hipergeom@'etricas.
 
@@ -203,43 +249,76 @@ Fallos
 
 Ayuda
 
-* Lisp y Maxima::            
-* Recolector de basura::          
-* Documentaci@'on::               
-* Funciones y variables para la ayuda:: 
+* Documentaci@'on::
+* Funciones y variables para la ayuda::
 
-L@'{@dotless{i}}nea de Comandos
+L@'{@dotless{i}}nea de comandos
 
-* Introducci@'on a la L@'{@dotless{i}}nea de Comandos::
-* Funciones y variables para  la L@'{@dotless{i}}nea de Comandos::
+* Introducci@'on a la l@'{@dotless{i}}nea de comandos::
+* Funciones y variables para la l@'{@dotless{i}}nea de comandos::
+* Funciones y variables para la impresi@'on::
+
+Tipos de datos y estructuras
+
+* N@'umeros::
+* Cadenas de texto::
+* Constantes::
+* Listas::
+* Arrays::
+* Estructuras::
 
 Operadores
 
-* n-arios::
-* no-fijos::
-* postfijos::
-* prefijos::
+* Introducci@'on a los operadores::
 * Operadores aritm@'eticos::
 * Operadores relacionales::
-* Operadores generales::
+* Operadores l@'ogicos::
+* Operadores para ecuaciones::
+* Operadores de asignaci@'on::
+* Operadores definidos por el usuario::
+
+Evaluaci@'on
+
+* Introducci@'on a la evaluaci@'on::
+* Funciones y variables para la evaluaci@'on::
 
 Expresiones
 
 * Introducci@'on a las expresiones::
-* Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::
 * Desigualdades::
-* Sintaxis::
 * Funciones y variables para expresiones::
 
 Simplificaci@'on
 
+* Introducci@'on a la simplificaci@'on::
 * Funciones y variables para simplificaci@'on::
+
+Funciones matem@'aticas
+
+* Funciones para los n@'umeros::
+* Funciones para los n@'umeros complejos::
+* Funciones combinatorias::
+* Funciones radicales exponenciales y logar@'{@dotless{i}}tmicas::
+* Funciones trigonom@'etricas::
+* N@'umeros aleatorios::
+
+Base de datos de Maxima
+
+* Introducci@'on a la base de datos de Maxima::
+* Funciones y variables para las propiedades::
+* Funciones y variables para los hechos::
+* Funciones y variables para los predicados::
 
 Gr@'aficos
 
+* Introducci@'on a los gr@'aficos::
+* Formatos gr@'aficos::
 * Funciones y variables para gr@'aficos::
+* Opciones gr@'aficas::
+* Opciones para Gnuplot::
+* Funciones para el formato Gnuplot_pipes::
 
 Lectura y escritura
 
@@ -247,31 +326,10 @@ Lectura y escritura
 * Archivos::
 * Funciones y variables para lectura y escritura:: 
 
-Aritm@'etica de punto flotante
-
-* Funciones y variables para la aritm@'etica de punto flotante::
-
-Contextos
-
-* Funciones y variables para Contextos::
-
 Polinomios
 
 * Introducci@'on a los polinomios::
 * Funciones y variables para polinomios::
-
-Constantes
-
-* Funciones y variables para Constantes::
-
-Logaritmos
-
-* Funciones y variables para logaritmos::
-
-Trigonometr@'{@dotless{i}}a
-
-* Introducci@'on a la trigonometr@'{@dotless{i}}a::
-* Funciones y variables para trigonometr@'{@dotless{i}}a::
 
 Funciones Especiales
 
@@ -321,10 +379,6 @@ M@'etodos num@'ericos
 * Funciones y variables para los m@'etodos num@'ericos::
 * Funciones y variables para las series de Fourier::
 
-Arrays
-
-* Funciones y variables para Arrays::
-
 Matrices y @'Algebra Lineal
 
 * Introducci@'on a las matrices y el @'algebra lineal::
@@ -351,7 +405,8 @@ atensor
 
 Series
 
-* Introducci@'on a las series::      
+* Sumas y productos::
+* Introducci@'on a las series::
 * Funciones y variables para las series::
 * Series de Poisson::
 
@@ -384,20 +439,10 @@ Reglas y patrones
 * Introducci@'on a reglas y patrones::
 * Funciones y variables sobre reglas y patrones::
 
-Listas
-
-* Introducci@'on a las listas::
-* Funciones y variables para listas::
-
 Conjuntos
 
 * Introducci@'on a los conjuntos::
 * Funciones y variables para los conjuntos::
-
-Estructuras
-
-* Introducci@'on a las estructuras::       
-* Funciones y variables para las estructuras:: 
 
 Definici@'on de Funciones
 
@@ -408,8 +453,10 @@ Definici@'on de Funciones
 
 Programaci@'on
 
-* Introducci@'on a la programaci@'on::
-* Funciones y variables para la programaci@'on::
+* Lisp y Maxima::
+* Recolector de basura::
+* Introducci@'on a la programaci@'on::  
+* Funciones y variables para la programaci@'on:: 
 
 Depurado
 
@@ -420,6 +467,10 @@ Depurado
 augmented_lagrangian
 
 * Funciones y variables para augmented_lagrangian::
+
+Bernstein
+
+* Funciones y variables para Bernstein::
 
 bode
 
@@ -611,6 +662,10 @@ stringproc
 * Funciones y variables para caracteres::
 * Funciones y variables para cadenas::
 
+to_poly_solve
+
+* Funciones y variables para to_poly_solve::
+
 unit
 
 * Introducci@'on a units::
@@ -637,59 +692,59 @@ zeilberger
 @chapter Detecci@'on e informe de fallos
 @include Bugs.es.texi
 
-@node Ayuda, L@'{@dotless{i}}nea de Comandos, Detecci@'on e informe de fallos, Top
+@node Ayuda, L@'{@dotless{i}}nea de comandos, Detecci@'on e informe de fallos, Top
 @chapter Ayuda
 @include Help.es.texi
 
-@node L@'{@dotless{i}}nea de Comandos, Operadores, Ayuda, Top
-@chapter L@'{@dotless{i}}nea de Comandos
+@node L@'{@dotless{i}}nea de comandos, Tipos de datos y estructuras, Ayuda, Top
+@chapter L@'{@dotless{i}}nea de comandos
 @include Command.es.texi
 
-@node Operadores, Expresiones, L@'{@dotless{i}}nea de Comandos, Top
+@node Tipos de datos y estructuras, Operadores, L@'{@dotless{i}}nea de comandos, Top
+@chapter Tipos de datos y estructuras
+@include DataTypes.es.texi
+@include Constants.es.texi
+@include Lists.es.texi
+@include Arrays.es.texi
+@include defstruct.texi
+
+@node Operadores, Evaluaci@'on, Tipos de datos y estructuras, Top
 @chapter Operadores
 @include Operators.es.texi
 
-@node Expresiones, Simplificaci@'on, Operadores, Top
+@node Evaluaci@'on, Expresiones, Operadores, Top
+@chapter Evaluaci@'on
+@include Evaluation.es.texi
+
+@node Expresiones, Simplificaci@'on, Evaluaci@'on, Top
 @chapter Expresiones
 @include Expressions.es.texi
 
-@node Simplificaci@'on, Gr@'aficos, Expresiones, Top
+@node Simplificaci@'on, Funciones matem@'aticas, Expresiones, Top
 @chapter Simplificaci@'on
 @include Simplification.es.texi
 
-@node Gr@'aficos, Lectura y escritura, Simplificaci@'on, Top
+@node Funciones matem@'aticas, Base de datos de Maxima, Simplificaci@'on, Top
+@chapter Funciones matem@'aticas
+@include MathFunctions.es.texi
+
+@node Base de datos de Maxima, Gr@'aficos, Funciones matem@'aticas, Top
+@chapter Base de datos de Maxima
+@include Database.es.texi
+
+@node Gr@'aficos, Lectura y escritura, Base de datos de Maxima, Top
 @chapter Gr@'aficos
 @include Plotting.es.texi
 
-@node Lectura y escritura, Aritm@'etica de punto flotante, Gr@'aficos, Top
+@node Lectura y escritura, Polinomios, Gr@'aficos, Top
 @chapter Lectura y escritura
 @include Input.es.texi
 
-@node Aritm@'etica de punto flotante, Contextos, Lectura y escritura, Top
-@chapter Aritm@'etica de punto flotante
-@include Floating.es.texi
-
-@node Contextos, Polinomios, Aritm@'etica de punto flotante, Top
-@chapter Contextos
-@include Contexts.es.texi
-
-@node Polinomios, Constantes, Contextos, Top
+@node Polinomios, Funciones Especiales, Lectura y escritura, Top
 @chapter Polinomios
 @include Polynomials.es.texi
 
-@node Constantes, Logaritmos, Polinomios, Top
-@chapter Constantes
-@include Constants.es.texi
-
-@node Logaritmos, Trigonometr@'{@dotless{i}}a, Constantes, Top
-@chapter Logaritmos
-@include Logarithms.es.texi
-
-@node Trigonometr@'{@dotless{i}}a, Funciones Especiales, Logaritmos, Top
-@chapter Trigonometr@'{@dotless{i}}a
-@include Trigonometric.es.texi
-
-@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Trigonometr@'{@dotless{i}}a, Top
+@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Polinomios, Top
 @chapter Funciones Especiales
 @include Special.es.texi
 
@@ -717,15 +772,11 @@ zeilberger
 @chapter Ecuaciones Diferenciales
 @include Differential.es.texi
 
-@node M@'etodos num@'ericos, Arrays, Ecuaciones Diferenciales, Top
+@node M@'etodos num@'ericos, Matrices y @'Algebra Lineal, Ecuaciones Diferenciales, Top
 @chapter M@'etodos num@'ericos
 @include Numerical.es.texi
 
-@node Arrays, Matrices y @'Algebra Lineal, M@'etodos num@'ericos, Top
-@chapter Arrays
-@include Arrays.es.texi
-
-@node Matrices y @'Algebra Lineal, Afines, Arrays, Top
+@node Matrices y @'Algebra Lineal, Afines, M@'etodos num@'ericos, Top
 @chapter Matrices y @'Algebra Lineal
 @include Matrices.es.texi
 
@@ -769,23 +820,15 @@ zeilberger
 @chapter Miscel@'anea de opciones
 @include Miscellaneous.es.texi
 
-@node Reglas y patrones, Listas, Miscel@'anea de opciones, Top
+@node Reglas y patrones, Conjuntos, Miscel@'anea de opciones, Top
 @chapter Reglas y patrones
 @include Rules.es.texi
 
-@node Listas, Conjuntos, Reglas y patrones, Top
-@chapter Listas
-@include Lists.es.texi
-
-@node Conjuntos, Estructuras, Listas, Top
+@node Conjuntos, Definici@'on de Funciones, Reglas y patrones, Top
 @chapter Conjuntos
 @include nset.es.texi
 
-@node Estructuras, Definici@'on de Funciones, Conjuntos, Top
-@chapter Estructuras
-@include defstruct.texi
-
-@node Definici@'on de Funciones, Programaci@'on, Estructuras, Top
+@node Definici@'on de Funciones, Programaci@'on, Conjuntos, Top
 @chapter Definici@'on de Funciones
 @include Function.es.texi
 
@@ -797,11 +840,15 @@ zeilberger
 @chapter Depurado
 @include Debugging.es.texi
 
-@node augmented_lagrangian, bode, Depurado, Top
+@node augmented_lagrangian, Bernstein, Depurado, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, cobyla, augmented_lagrangian, Top
+@node Bernstein, bode, augmented_lagrangian, Top
+@chapter Bernstein
+@include bernstein.texi
+
+@node bode, cobyla, Bernstein, Top
 @chapter bode
 @include bode.texi
 
@@ -945,11 +992,15 @@ zeilberger
 @chapter stirling
 @include stirling.texi
 
-@node stringproc, unit, stirling, Top
+@node stringproc, to_poly_solve, stirling, Top
 @chapter stringproc
 @include stringproc.texi
 
-@node unit, zeilberger, stringproc, Top
+@node to_poly_solve, unit, stringproc, Top
+@chapter to_poly_solve
+@include to_poly_solve.texi
+
+@node unit, zeilberger, to_poly_solve, Top
 @chapter unit
 @include unit.texi
 

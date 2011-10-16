@@ -1,4 +1,4 @@
-@c version 1.22
+@c English version 2011-06-07
 @menu
 * Funciones y variables para la diferenciaci@'on::  
 @end menu
@@ -121,6 +121,63 @@ Ejemplos:
 @end example
 
 @end deffn
+
+
+
+
+@deffn {Funci@'on} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Funci@'on} at (@var{expr}, @var{eqn})
+Eval@'ua la expresi@'on @var{expr} asignando a las variables los valores especificados para ellas en la lista de ecuaciones @code{[@var{eqn_1}, ..., @var{eqn_n}]} o en la ecuaci@'on simple @var{eqn}.
+
+Si una subexpresi@'on depende de cualquiera de las variables para la cual se especifica un valor, pero  no puede ser evaluado, entonces @code{at} devuelve una forma nominal.
+
+La funci@'on @code{at} realiza m@'ultiples sustituciones en serie, no en paralelo.
+
+V@'ease tambi@'en @code{atvalue}.
+Para otras funciones que tambi@'en llevan a cabo sustituciones, cons@'ultense @code{subst} y @code{ev}.
+
+Ejemplos:
+@c COPIED FROM example(at)
+
+@c ===beg===
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x, y)^2 - u(x, y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@c ===end===
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end example
+
+@end deffn
+
+
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
 @defvr {Propiedad} atomgrad
@@ -634,3 +691,4 @@ Ejemplos:
 @end example
 
 @end deffn
+

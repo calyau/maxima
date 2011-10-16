@@ -9,7 +9,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{additive}
-@defvr {Declaration} additive
+@defvr {Property} additive
 
 If @code{declare(f,additive)} has been executed, then:
 
@@ -23,6 +23,22 @@ additivity in the first argument to @code{f}, as in the case of @code{sum} or
 @code{f(h(x),x)+f(g(x),x)}.  This simplification does not occur when @code{f} is
 applied to expressions of the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
+Example:
+
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
 @closecatbox
@@ -30,13 +46,44 @@ applied to expressions of the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{antisymmetric}
-@defvr {Declaration} antisymmetric
+@defvr {Property} antisymmetric
 
 If @code{declare(h,antisymmetric)} is done, this tells the simplifier that
 @code{h} is antisymmetric.  E.g.  @code{h(x,z,y)} will simplify to 
 @code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
 @code{symmetric} or @code{commutative}, where n is the number of interchanges
 of two arguments necessary to convert it to that form.
+
+Examples:
+
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
 
 @opencatbox
 @category{Operators} @category{Declarations and inferences}
@@ -57,7 +104,7 @@ denominator into a single term.
 
 @c -----------------------------------------------------------------------------
 @anchor{commutative}
-@defvr {Declaration} commutative
+@defvr {Property} commutative
 
 If @code{declare(h, commutative)} is done, this tells the simplifier that
 @code{h} is a commutative function.  E.g.  @code{h(x, z, y)} will simplify to
@@ -228,11 +275,11 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @c -----------------------------------------------------------------------------
 @anchor{evenfun}
 @anchor{oddfun}
-@defvr  {Declaration} evenfun
-@defvrx {Declaration} oddfun
+@defvr  {Property} evenfun
+@defvrx {Property} oddfun
 
 @code{declare(f, evenfun} or @code{declare(f, oddfun} tells Maxima to recognize
-the function @code{f} as an odd or even function.
+the function @code{f} as an even or odd function.
 
 Examples:
 
@@ -493,7 +540,7 @@ less than n.
 
 @c -----------------------------------------------------------------------------
 @anchor{lassociative}
-@defvr {Declaration} lassociative
+@defvr {Property} lassociative
 
 @code{declare (g, lassociative)} tells the Maxima simplifier that @code{g} is
 left-associative.  E.g., @code{g (g (a, b), g (c, d))} will simplify to
@@ -509,7 +556,7 @@ left-associative.  E.g., @code{g (g (a, b), g (c, d))} will simplify to
 
 @c -----------------------------------------------------------------------------
 @anchor{linear}
-@defvr {Declaration} linear
+@defvr {Property} linear
 
 One of Maxima's operator properties.  For univariate @code{f} so
 declared, "expansion" @code{f(x + y)} yields @code{f(x) + f(y)},
@@ -521,6 +568,36 @@ for @code{a} and @code{b} free of @code{x}.
 
 @code{linear} is equivalent to @code{additive} and @code{outative}.
 See also @code{opproperties}.
+
+Example:
+
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+@group
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end group
+@end example
 
 @opencatbox
 @category{Declarations and inferences} @category{Operators} @category{Simplification}
@@ -561,7 +638,7 @@ expanded with the @code{expand} command (see also @code{maxnegex}).
 
 @c -----------------------------------------------------------------------------
 @anchor{multiplicative}
-@defvr {Declaration} multiplicative
+@defvr {Property} multiplicative
 
 @code{declare(f, multiplicative)} tells the Maxima simplifier that @code{f}
 is multiplicative.
@@ -579,6 +656,22 @@ defined as multiplicativity in the first argument to @code{f}, e.g.,
 
 This simplification does not occur when @code{f} is applied to expressions of
 the form @code{product (x[i], i, m, n)}.
+
+Example:
+
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
 
 @opencatbox
 @category{Declarations and inferences} @category{Expressions} @category{Simplification}
@@ -642,14 +735,14 @@ noncommutative) over sums.  Since quotients are represented as products
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{declaration_nary}
-@defvr {Declaration} nary
+@anchor{property_nary}
+@defvr {Property} nary
 
 @code{declare(f, nary)} tells Maxima to recognize the function @code{f} as an
 n-ary function.
 
 The @code{nary} declaration is not the same as calling the
-@mxref{operator_nary, nary} function.  The sole effect of
+@mxref{function_nary, nary} function.  The sole effect of
 @code{declare(f, nary)} is to instruct the Maxima simplifier to flatten nested
 expressions, for example, to simplify @code{foo(x, foo(y, z))} to
 @code{foo(x, y, z)}.  See also @mrefdot{declare}
@@ -704,7 +797,7 @@ by the Maxima simplifier:
 
 @c -----------------------------------------------------------------------------
 @anchor{outative}
-@defvr {Declaration} outative
+@defvr {Property} outative
 
 @code{declare(f, outative)} tells the Maxima simplifier that constant factors
 in the argument of @code{f} can be pulled out.
@@ -723,6 +816,28 @@ simplify to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @end enumerate
 
 @code{sum}, @code{integrate}, and @code{limit} are all @code{outative}.
+
+Example:
+
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
 
 @opencatbox
 @category{Declarations and inferences} @category{Operators}
@@ -825,7 +940,7 @@ Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 
 @c -----------------------------------------------------------------------------
 @anchor{rassociative}
-@defvr {Declaration} rassociative
+@defvr {Property} rassociative
 
 @code{declare (g, rassociative)} tells the Maxima
 simplifier that @code{g} is right-associative.  E.g.,
@@ -917,7 +1032,7 @@ assignment has occurred during the evaluation phase of the expression.
 
 @c -----------------------------------------------------------------------------
 @anchor{symmetric}
-@defvr {Declaration} symmetric
+@defvr {Property} symmetric
 
 @code{declare (h, symmetric)} tells the Maxima
 simplifier that @code{h} is a symmetric function.  E.g., @code{h (x, z, y)} 

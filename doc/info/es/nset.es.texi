@@ -1,4 +1,4 @@
-@c english version 1.29
+@c english version 2011-07-6
 @menu
 * Introducci@'on a los conjuntos::       
 * Funciones y variables para los conjuntos::       
@@ -1112,162 +1112,37 @@ Ejemplos:
 @end example
 @end deffn
 
-@deffn {Funci@'on} kron_delta (@var{x}, @var{y})
+@deffn {Funci@'on} kron_delta (@var{x1}, @var{y1}, @dots{}, @var{xp}, @var{yp})
 
 Es la funci@'on delta de Kronecker.
 
-La funci@'on @code{kron_delta} devuelve 1 cuando @var{x} e
-@var{y} son id@'enticos o equivalentes, devolviendo 0 si @var{x} e
-@var{y} no son id@'enticos. Cuando no est@'a claro si ambas
-expresiones son equivalentes, @code{kron_delta} devuelve una
-forma nominal. Si la diferencia @code{@var{x} - @var{y}} es un n@'umero
-decimal en coma flotante, @code{kron_delta} dar@'a como resultado una
-expresi@'on nominal, a@'un cuando @var{x} e @var{y} sean aparentemente
-equivalentes.
-
-Concretando, 
-@code{kron_delta(@var{x}, @var{y})} devuelve 1 si 
-@code{is(x = y)} retorna @code{true};
-@code{kron_delta} tambi@'en devuelve 1 si 
-@code{sign(abs(@var{x} - @var{y}))} retorna @code{zero}
-y @code{@var{x} - @var{y}} no es un decimal en coma
-flotante (ni ordinario ni @i{bigfloat});
-@code{kron_delta} devuelve 0 si 
-@code{sign(abs(@var{x} - @var{y}))} retorna @code{pos}.
-
-Cuando @code{sign(abs(@var{x} - @var{y}))} es cualquier
-otra cosa diferente a @code{pos} o @code{zero},
-o si es @code{zero} siendo @code{@var{x} - @var{y}}
-un decimal en coma flotante, entonces @code{kron_delta}
-devuelve una expresi@'on nominal.
-
-La funci@'on @code{kron_delta} est@'a declarada como sim@'etrica,
-esto es, @code{kron_delta(@var{x}, @var{y})} es igual a
-@code{kron_delta(@var{y}, @var{x})}.
+La funci@'on @code{kron_delta} devuelve 1 cuando @var{xi} y
+@var{yi} son iguales para todos los pares, devolviendo 0 si existe
+un par en el que @var{xi} y @var{yi} no sean iguales. La igualdad
+se determina utilizando @code{is(equal(xi,xj))} y la desigualdad
+con @code{is(notequal(xi,xj))}. En caso de un solo argumento,
+@code{kron_delta} devuelve un mensaje de error.
 
 Ejemplos:
 
-Si los argumentos de @code{kron_delta} son id@'enticos,
-@code{kron_delta} devuelve 1,
-
 @c ===beg===
-@c kron_delta (a, a);
-@c kron_delta (x^2 - y^2, x^2 - y^2);
-@c float (kron_delta (1/10, 0.1));
+@c kron_delta(a,a);
+@c kron_delta(a,b,a,b);
+@c kron_delta(a,a,b,a+1);
+@c assume(equal(x,y));
+@c kron_delta(x,y);
 @c ===end===
 @example
-(%i1) kron_delta (a, a);
-(%o1)                           1
-(%i2) kron_delta (x^2 - y^2, x^2 - y^2);
-(%o2)                           1
-(%i3) float (kron_delta (1/10, 0.1));
-(%o3)                           1
-@end example
-
-Si los argumentos de @code{kron_delta} son equivalentes y
-su diferencia no es un decimal en coma flotante, 
-@code{kron_delta} devuelve 1,
-
-@c ===beg===
-@c assume (equal (x, y));
-@c kron_delta (x, y);
-@c ===end===
-@example
-(%i1) assume (equal (x, y));
-(%o1)                     [equal(x, y)]
-(%i2) kron_delta (x, y);
-(%o2)                           1
-@end example
-
-Si los argumentos de @code{kron_delta} no son equivalentes,
-@code{kron_delta} devuelve 0,
-
-@c ===beg===
-@c kron_delta (a + 1, a);
-@c assume (a > b)$
-@c kron_delta (a, b);
-@c kron_delta (1/5, 0.7);
-@c ===end===
-@example
-(%i1) kron_delta (a + 1, a);
-(%o1)                           0
-(%i2) assume (a > b)$
-(%i3) kron_delta (a, b);
-(%o3)                           0
-(%i4) kron_delta (1/5, 0.7);
-(%o4)                           0
-@end example
-
-Si no es posible determinar la equivalencia de los argumentos
-de @code{kron_delta}, @'esta devuelve una forma
-nominal,
-
-@c ===beg===
-@c kron_delta (a, b);
-@c assume(x >= y)$
-@c kron_delta (x, y);
-@c ===end===
-@example
-(%i1) kron_delta (a, b);
-(%o1)                   kron_delta(a, b)
-(%i2) assume(x >= y)$
-(%i3) kron_delta (x, y);
-(%o3)                   kron_delta(x, y)
-@end example
-
-Si los argumentos de @code{kron_delta} son equivalentes,
-pero su diferencia es un decimal en coma flotante,
-@code{kron_delta} devuelve forma nominal,
-
-@c ===beg===
-@c 1/4 - 0.25;
-@c 1/10 - 0.1;
-@c 0.25 - 0.25b0;
-@c kron_delta (1/4, 0.25);
-@c kron_delta (1/10, 0.1);
-@c kron_delta (0.25, 0.25b0);
-@c ===end===
-@example
-(%i1) 1/4 - 0.25;
-(%o1)                          0.0
-(%i2) 1/10 - 0.1;
-(%o2)                          0.0
-(%i3) 0.25 - 0.25b0;
-Warning:  Float to bigfloat conversion of 0.25
-(%o3)                         0.0b0
-(%i4) kron_delta (1/4, 0.25);
-                                  1
-(%o4)                  kron_delta(-, 0.25)
-                                  4
-(%i5) kron_delta (1/10, 0.1);
-                                  1
-(%o5)                  kron_delta(--, 0.1)
-                                  10
-(%i6) kron_delta (0.25, 0.25b0);
-Warning:  Float to bigfloat conversion of 0.25
-(%o6)               kron_delta(0.25, 2.5b-1)
-@end example
-
-La funci@'on @code{kron_delta} es sim@'etrica.
-
-@c ===beg===
-@c kron_delta (x, y);
-@c kron_delta (y, x);
-@c kron_delta (x, y) - kron_delta (y, x);
-@c is (equal (kron_delta (x, y), kron_delta (y, x)));
-@c is (kron_delta (x, y) = kron_delta (y, x));
-@c ===end===
-@example
-(%i1) kron_delta (x, y);
-(%o1)                   kron_delta(x, y)
-(%i2) kron_delta (y, x);
-(%o2)                   kron_delta(x, y)
-(%i3) kron_delta (x, y) - kron_delta (y, x);
-(%o3)                           0
-(%i4) is (equal (kron_delta (x, y), kron_delta (y, x)));
-(%o4)                         true
-(%i5) is (kron_delta (x, y) = kron_delta (y, x));
-(%o5)                         true
+(%i1) kron_delta(a,a);
+(%o1)                                  1
+(%i2) kron_delta(a,b,a,b);
+(%o2)                          kron_delta(a, b)
+(%i3) kron_delta(a,a,b,a+1);
+(%o3)                                  0
+(%i4) assume(equal(x,y));
+(%o4)                            [equal(x, y)]
+(%i5) kron_delta(x,y);
+(%o5)                                  1
 @end example
 @end deffn
 

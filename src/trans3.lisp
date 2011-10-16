@@ -14,8 +14,6 @@
 
 (macsyma-module trans3)
 
-(transl-module trans3)
-
 ;;; The translation of macsyma LAMBDA into lexicaly scoped closures.
 ;;; Two cases [1] the downward transmission of variable binding environment,
 ;;; e.g. MAP(LAMBDA([U],F(U,X)),EXP)

@@ -251,14 +251,28 @@ sub seek_lines {
 
     # MAKEINFO BUG: LINE OFFSET IS LINE NUMBER OF LAST LINE IN FUNCTION DEFINITION
     # (BUT WE NEED THE FIRST LINE OF THE FUNCTION DEFINITION)
+    #
+    # EXAMPLE. THE PROBLEM IS THAT THE FUNCTION DEFINITION IS BROKEN ACROSS TWO
+    # OR MORE LINES (NOT THAT THERE ARE MULTIPLE FUNCTION DEFINITIONS):
+    #  -- Function: setup_autoload (<filename>, <function_1>, ...,
+    #            <function_n>)
+    #
     # BUG IS PRESENT IN MAKEINFO 4.8; FOLLOWING CAN GO AWAY WHEN BUG IS FIXED
     
+    my $x = -1;
+    my $x_maybe;
+
     for (1 .. $lines_offset + 1) {
-        my $x_maybe = tell FH;
+        $x_maybe = tell FH;
         my $line = <FH>;
         if ($line =~ /^ -- \S/) {
             $x = $x_maybe;
         }
+    }
+
+    if ($x == -1) {
+        # We didn't encounter any match for "^ -- \S".
+        $x = $x_maybe;
     }
 
     # END OF MAKEINFO BUG WORKAROUND

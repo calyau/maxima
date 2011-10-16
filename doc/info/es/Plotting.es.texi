@@ -1,10 +1,125 @@
-@c english version 1.45
+@c English version 2011-10-03
 @menu
-* Funciones y variables para gr@'aficos::    
+* Introducci@'on a los gr@'aficos::
+* Formatos gr@'aficos::
+* Funciones y variables para gr@'aficos::
+* Opciones gr@'aficas::
+* Opciones para Gnuplot::
+* Funciones para el formato Gnuplot_pipes::
 @end menu
 
-@node Funciones y variables para gr@'aficos,  , Gr@'aficos, Gr@'aficos
+
+
+
+
+
+
+@node Introducci@'on a los gr@'aficos, Formatos gr@'aficos, Gr@'aficos, Gr@'aficos
+@section Introducci@'on a los gr@'aficos
+
+
+Maxima utiliza un programa gr@'afico externo para hacer figuras (v@'ease la secci@'on
+Formatos gr@'aficos). Las funciones gr@'aficas calculan un conjunto de puntos y
+se los pasa al programa gr@'afico, junto con una serie de instrucciones. Estas
+instrucciones pueden pasarse al programa gr@'afico, bien a trav@'es de una
+tuber@'{@dotless{i}}a (@i{pipe}, en ingl@'es), bien llamando al programa, junto con
+el nombre del fichero en el que se almacenan los datos. Al fichero de datos se le
+da el nombre @code{maxout.interface}, donde @code{interface} es el nombre del
+intefaz a ser utilizado (gnuplot, xmaxima, mgnuplot o gnuplot_pipes).
+
+El fichero @code{maxout.interface}, si se utiliza, se almacena en la carpeta
+especificada por la variable @var{maxima_tempdir}, cuyo valor se puede cambiar
+por una cadena de texto que represente la ruta a una carpeta v@'alida, en la
+que Maxima pueda guardar nuevos ficheros.
+
+Una vez creado el gr@'afico, el fichero @code{maxout.interface} puede ejecutarse
+nuevamente con el programa externo adecuado. Si una instrucci@'on gr@'afica de Maxima
+falla, este fichero puede ser inspeccionado a fin de encontrar el origen del problema.
+
+Junto con las funciones gr@'aficas descritas en esta secci@'on, el paquete @code{draw}
+a@~nade otras funcionalidades. N@'otese que algunas opciones gr@'aficas se llaman igual
+en ambos contextos gr@'aficos, pero con diferente sintaxis; para acceder a la informaci@'on
+de estas opciones en el @'ambito de @code{draw}, es necesario teclear @code{?? opc}, donde
+@code{opc} es el nombre de la opci@'on.
+
+
+
+
+
+
+
+@node Formatos gr@'aficos, Funciones y variables para gr@'aficos, Introducci@'on a los gr@'aficos, Gr@'aficos
+@section Formatos gr@'aficos
+
+Actualmente, Maxima utiliza dos programas gr@'aficos externos: Gnuplot y Xmaxima.
+Existen varios formatos diferentes para estos programas, que pueden seleccionarse
+con la opci@'on @code{plot_format} (v@'ease la secci@'on Opciones gr@'aficas).
+
+Los formatos gr@'aficos se listan a continuaci@'on:
+
+@itemize @bullet
+@item
+@strong{gnuplot} (formato por defecto para Windows)
+
+Se utiliza para ejecutar el programa externo Gnuplot, el cual debe
+estar instalado en el sistema. Las instrucciones gr@'aficas y los
+datos se almacenan en el fichero @code{maxout.gnuplot}.
+
+@item
+@strong{gnuplot_pipes} (formato por defecto para plataformas distintas de Windows)
+
+Este formato no est@'a disponible en plataformas Windows. Es similar al
+formato @code{gnuplot}, excepto por el hecho de que las instrucciones son
+enviadas a Gnuplot por una tuber@'{@dotless{i}}a, mientras que los datos
+se almacenan en el fichero @code{maxout.gnuplot_pipes}. Mediante esta 
+t@'ecnica, un @'unico proceso de Gnuplot se mantiene activo y sucesivos
+gr@'aficos son enviados al mismo proceso, a menos que la tuber@'{@dotless{i}}a
+a Gnuplot se cierre con la funci@'on @code{gnuplot_close()}. Cuando se
+utiliza este formato, se puede utilizar la funci@'on @code{gnuplot_replot}
+para modificar un gr@'afico que ya hab@'{@dotless{i}}a sido representado
+previamente en la pantalla (v@'ease @code{gnuplot_replot}).
+
+Este formato deber@'{@dotless{i}}a ser utilizado @'unicamente cuando
+se representen los gr@'aficos por pantalla; para gr@'aficos almacenados
+en ficheros, mejor utilizar el formato @code{gnuplot}.
+
+@item
+@strong{mgnuplot}
+
+Mgnuplot es una interfaz para Gnuplot basada en Tk. Se incluye en la 
+distribuci@'on de Maxima. Mgnuplot ofrece una interface gr@'afica de 
+usuario rudimentaria para gnuplot, pero tiene algunas mejoras 
+respecto de la interface propia de gnuplot. Mgnuplot requiere de una 
+instalaci@'on externa de Gnuplot y de Tcl/Tk.
+
+@item
+@strong{xmaxima}
+
+Xmaxima es un interfaz gr@'afico Tcl/Tk de Maxima, que tambi@'en se
+puede utilizar para representar gr@'aficos cuando Maxima se ejecuta
+desde la consola o desde otros interfaces. Para utilizar este formato,
+debe estar instalado junto con Maxima. Si Maxima se ejecuta desde el
+propio Xmaxima, las instrucciones gr@'aficas y los datos se env@'{@dotless{i}}an
+por el mismo canal de comunicaci@'on que se establece entre Maxima y
+Xmaxima (un  @i{socket}). Cuando Maxima se ejecuta desde una consola 
+o desde otro interfaz, las instrucciones gr@'aficas y los datos
+se almacenan en un fichero de nombre @code{maxout.xmaxima}, que le es
+pasado a Xmaxima como argumento
+
+En versiones anteriores, este formato se llamaba @code{openmath}, cuyo
+nombre se sigue aceptando como sin@'onimo de @code{xmaxima}.
+@end itemize
+
+
+
+
+
+
+
+@node Funciones y variables para gr@'aficos, Opciones gr@'aficas, Formatos gr@'aficos, Gr@'aficos
 @section Funciones y variables para gr@'aficos
+
+
 
 @deffn {Funci@'on} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
 
@@ -19,54 +134,108 @@ V@'ease tambi@'en @code{implicit_plot}.
 Ejemplos:
 
 @c ===beg===
-@c contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
-@c contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
-@c F(x, y) := x^3 + y^2;
-@c contour_plot (F, [u, -4, 4], [v, -4, 4]);
-@c contour_plot (F, [u, -4, 4], [v, -4, 4],
-@c              [gnuplot_preamble, "set size ratio -1"]);
-@c set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
-@c contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@c contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4])$
 @c ===end===
 @example
-(%i1) contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
-(%o1) 
-(%i2) contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
-(%o2) 
-(%i3) F(x, y) := x^3 + y^2;
-                                   3    2
-(%o3)                  F(x, y) := x  + y
-(%i4) contour_plot (F, [u, -4, 4], [v, -4, 4]);
-(%o4) 
-(%i5) contour_plot (F, [u, -4, 4], [v, -4, 4],
-         [gnuplot_preamble, "set size ratio -1"]);
-(%o5) 
-(%i6) set_plot_option ([gnuplot_preamble,
-                        "set cntrparam levels 12"])$
-(%i7) contour_plot (F, [u, -4, 4], [v, -4, 4]);
+(%i1) contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4])$
 @end example
+
+@ifnotinfo
+@image{../figures/contour1,8cm}
+@end ifnotinfo
+
+@c ===beg===
+@c F(x, y) := x^3 + y^2;
+@c contour_plot (F, [u, -4, 4], [v, -4, 4])$
+@c ===end===
+@example
+@group
+(%i1) F(x, y) := x^3 + y^2;
+                                   3    2
+(%o1)                  F(x, y) := x  + y
+@end group
+(%i2) contour_plot (F, [u, -4, 4], [v, -4, 4])$
+@end example
+
+@ifnotinfo
+@image{../figures/contour2,8cm}
+@end ifnotinfo
+
+Se pueden a@~nadir cualesquiera opciones que acepte @code{plot3d};
+por ejemplo, la opci@'on @code{legend} con un valor @code{false},
+para eliminar la leyenda. Gnuplot muestra por defecto tres 
+l@'{@dotless{i}}neas de contorno, pero para aumentar el
+n@'umero de niveles es necesario a@~nadir alg@'un c@'odigo nativo
+de Gnuplot:
+
+@c ===beg===
+@c contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
+@c               [legend,false],
+@c               [gnuplot_preamble, "set cntrparam levels 12"])$
+@c ===end===
+@example
+@group
+(%i1) contour_plot (u^3 + v^2, [u, -4, 4], [v, -4, 4], 
+                    [legend,false],
+                    [gnuplot_preamble, "set cntrparam levels 12"])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/contour3,8cm}
+@end ifnotinfo
 
 @end deffn
 
 
-@defvr {Variable opcional} in_netmath
-Valor por defecto: @code{false}
 
-Si @code{in_netmath} vale @code{true},
-@code{plot3d} imprime salida de OpenMath en la consola si @code{plot_format} vale @code{openmath},
-en caso contrario, @code{in_netmath} (incluso si vale @code{true}) deja de tener efecto alguno.
+@deffn {Funci@'on} get_plot_option (@var{keyword}, @var{index})
 
-La variable @code{in_netmath} no afecta a @code{plot2d}.
+Devuelve el valor actual de la opci@'on @var{keyword} almacenada
+en la variable global @code{plot_options}. Si @var{index} toma
+el valor 1, devuelve el propio valor de @var{keyword}; si vale 2
+le a@~nade el primer par@'ametro, y as@'{@dotless{i}} sucesivamente.
 
-@end defvr
+V@'eanse tambi@'en @code{plot_options}, @code{set_plot_option} y la
+secci@'on Opciones gr@'aficas.
+
+@end deffn
 
 
-@deffn {Funci@'on} plot2d (@var{expr}, @var{x_range}, ..., @var{options}, ...)
-@deffnx {Funci@'on} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{options}, ...)
-@deffnx {Funci@'on} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range},..., @var{options}, ...)
 
-Donde @var{expr}, @var{expr_1}, ..., @var{expr_n} pueden ser
-expresiones, funciones u operadores de Maxima o Lisp, o una
+@deffn {Funci@'on} make_transform ([@var{var1}, @var{var2}, @var{var3}], @var{fx}, @var{fy}, @var{fz})
+
+Devuelve una funci@'on que se puede utilizar con la opci@'on @code{transform_xy}
+de @code{plot3d}. Las tres variables ficticias @var{var1}, @var{var2} y @var{var3} 
+representan las tres variables de la funci@'on @code{plot3d}, las dos primeras
+independientes y la tercera dependiente. Las tres funciones @var{fx}, @var{fy} y
+@var{fz} deben depender solo de las tres variables anteriores y retornar las
+correspondientes x, y, z que se deben dibujar. Hay dos transformaciones
+predefinidas: @code{polar_to_xy} y @code{spherical_to_xyz}.
+
+V@'eanse @code{polar_to_xy} y @code{spherical_to_xyz}.
+
+@end deffn
+
+
+
+@deffn {S@'{@dotless{i}}mbolo del sistema} polar_to_xy
+
+Cuando a la opci@'on @code{transform_xy} de @code{plot3d} se le pasa el valor 
+@code{polar_to_xy}, se interpretar@'an las dos primeras variables independientes como 
+polares, transform@'andolas luego a coordenadas cartesianas.
+
+@end deffn
+
+
+
+
+@deffn  {Funci@'on} plot2d (@var{plot}, @var{x_range}, @dots{}, @var{options}, @dots{})
+@deffnx {Funci@'on} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @dots{}, @var{options}, @dots{})
+@deffnx {Funci@'on} plot2d ([@var{plot_1}, @dots{}, @var{plot_n}], @var{x_range}, @dots{}, @var{options}, @dots{})
+
+Donde @var{plot}, @var{plot_1}, @dots{}, @var{plot_n} pueden ser
+expresiones, nombres de funciones o una
 lista de cualquiera de las siguientes formas: 
 @code{[discrete, [@var{x1}, ..., @var{xn}],
 [@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
@@ -75,510 +244,886 @@ lista de cualquiera de las siguientes formas:
 
 Muestra un gr@'afico de una o m@'as expresiones como funci@'on de una variable.
 
-La funci@'on @code{plot2d} representa gr@'aficamente la expresi@'on @var{expr}
-o expresiones @code{[@var{name_1}, ..., @var{name_n}]}. Las expresiones que
-no sean de tipo param@'etrico o discreto deben depender todas ellas
-de una @'unica variable @var{var}, siendo obligatorio utilizar @var{x_range}
-para nombrar la variable y darle sus valores m@'{@dotless{i}}nimo y m@'aximo
-usando la siguiente sintaxis: @code{[@var{variable}, @var{min}, @var{max}]}.
-El gr@'afico mostrar@'a el eje horizontal acotado por los valores @var{min}
-y @var{max}.
+La funci@'on @code{plot2d} representa uno o m@'as gr@'aficos en dos
+dimensiones. Las expresiones o nombres de funciones que se utilicen para
+definir curvas deben depender todas ellas de una @'unica variable @var{var},
+siendo obligatorio utilizar @var{x_range} para nombrar la variable y darle sus
+valores m@'{@dotless{i}}nimo y m@'aximo usando la siguiente sintaxis: 
+@code{[@var{variable}, @var{min}, @var{max}]}.
 
-La expresi@'on a ser representada puede ser dada en la forma discreta
-o param@'etrica, esto es, como una lista que comienza con las palabras
-@code{discrete} o @code{parametric}. La clave 
-@var{discrete} debe seguirse de dos listas de valores, ambas de igual
-longitud, conteniendo las coordenadas horizontales y verticales del
-conjunto de puntos; alternativamente, las coordenadas de cada punto
-pueden darse como listas de dos valores, todas ellas formando a su
-vez una lista. La clave @var{parametric} debe seguirse de dos expresiones,
-@var{x_expr} y @var{y_expr}, junto con un rango de la forma 
-@code{[@var{var}, @var{min}, @var{max}]}; ambas expresiones deben
-depender @'unicamente de la variable cuyo nombre aparece en el rango.
-El gr@'afico mostrar@'a los pares @code{[@var{x_expr}, @var{y_expr}]}
-seg@'un @var{var} var@'{@dotless{i}}a de @var{min} a @var{max}.
+Un gr@'afico tambi@'en se puede definir de forma discreta o param@'etrica.
+La forma discreta se utiliza para dibujar un conjunto de puntos de
+coordenadas dadas. Un gr@'afico discreto se define como una lista
+que empiezan con la palabra clave @var{discrete} seguida de una o dos
+listas de valores num@'ericos. Cuando haya dos listas, ambas deben ser
+de igual longitud, la primera se interpreta como la de abscisas y la
+segunda de ordenadas. Cuando haya una lista siguiendo la clave @var{discrete},
+cada uno de sus elementos debe ser a su vez una lista de solo dos valores,
+correspondientes a las coordenadas x e y.
 
-El rango del eje vertical no es necesario especificarlo. Es una m@'as
-de las opciones de la funci@'on, siendo su sintaxis 
-@code{[y, @var{min}, @var{max}]}, mostrando
-entonces la gr@'afica el rango completo, incluso si la funci@'on no 
-alcanza estos valores. En caso de no especificarse el rango vertical
-en @code{set_plot_option}, se establecer@'a de forma autom@'atica
-como aquel rango en el que la funci@'on toma sus valores.
+Un gr@'afico param@'etrico se define como una lista que empieza con la
+palabra clave @var{parametric}, seguida de dos expresiones o nombres de
+funciones y un rango param@'etrico. El rango param@'etrico debe ser una
+lista formada con el nombre del par@'ametro seguido de sus valores
+m@'{@dotless{i}}nimo y m@'aximo:
+@code{[@var{param}, @var{min}, @var{max}]}. El gr@'afico se formar@'a con
+los puntos cuyas coordenadas devuelvan las dos expresiones o funciones, 
+seg@'un @var{param} aumente desde @var{min} hasta @var{max}.
+
+La especificaci@'on del rango para el eje vertical es opcional y
+toma la forma @code{[y, @var{min}, @var{max}]} (@var{y} se utiliza
+siempre para el eje vertical). En caso de utilizar esta opci@'on,
+el gr@'afico mostrar@'a exactamente ese rango vertical, 
+independientemente de los valores alcanzados por los elementos
+gr@'aficos. Si no se especifica el rango vertical, se ajustar@'a
+a los valores extremos alcanzados por las ordenadas de los puntos
+que aparezcan en el gr@'afico.
 
 Cualesquiera otras opciones deben ser listas, comenzando con el
-nombre de la opci@'on.
-
-La opci@'on @var{xlabel} puede utilizarse
-para darle una etiqueta al eje horizontal; si no se usa esta opci@'on,
-el eje horizontal ser@'a etiquetado con el nombre de la variable 
-especificada en @var{x_range}.
-
-Del mismo modo se puede asignar una
-etiqueta al eje vertical con la opci@'on @var{ylabel}. Si s@'olo
-hay una expresi@'on a ser representada y no se ha hecho uso de la
-opci@'on @var{ylabel}, el eje vertical ser@'a etiquetado con la
-expresi@'on a ser representada, a menos que sea muy larga, o con
-el texto ``discrete data'', en caso de gr@'aficos de puntos. Si la
-expresi@'on es de tipo param@'etrico, las dos expresiones que dan
-las coordenadas horizontal y vertical ser@'an utilizadas para
-etiquetar ambos ejes.
-
-Las opciones @code{[logx]} y @code{[logy]} no necesitan par@'ametros,
-permitiendo que los ejes horizontal y vertical se dibujen en la
-escala logar@'{@dotless{i}}tmica.
+nombre de la opci@'on seguido de uno o m@'as valores. V@'ease
+@code{plot_options}.
 
 Si hay varias expresiones para ser dibujadas, se mostrar@'a una leyenda
 que identifique a cada una de ellas. Las etiquetas a utilizar pueden
 especificarse con la opci@'on @var{legend}. Si no se utiliza esta opci@'on,
-Maxima crear@'a etiquetas a partir de las expresiones.
+Maxima crear@'a etiquetas a partir de las expresiones o nombres de funciones.
 
-Por defecto, las funciones se dibujar@'an como un conjunto de segmentos
-lineales uniendo los puntos que bien se dan en formato @var{discrete},
-o que se calculan autom@'aticamente a partir de la expresi@'on dada,
-de acuerdo con el tama@~no muestral indicado por la opci@'on @var{nticks}.
-Asimismo, la opci@'on @var{style} puede utilizarse para mostrar los
-puntos aislados, o @'estos junto con los segmentos que los unen.
+Ejemplos:
 
-Hay varias opciones globales almacenadas en la lista @var{plot_options},
-las cuales se pueden modificar con la funci@'on @code{set_plot_option};
-cualquiera de estas opciones puede ignorarse con las opciones que se
-utilicen desde el comando @var{plot2d}.
-
-Las funciones a ser representadas pueden especificarse con el nombre de
-una funci@'on u operador de Maxima o de Lisp, con una expresi@'on lambda
-de MAxima, o con una expresi@'on v@'alida de maxima. En caso de especificarse
-con un nombre o expresi@'on lambda, la funci@'on debe ser tal que dependa de
-un solo argumento.
-
-
-@b{Ejemplos:}
-
-Gr@'aficos de funciones ordinarias.
+Dibujando la funci@'on sinusoidal:
 
 @c ===beg===
-@c plot2d (sin(x), [x, -5, 5])$
-@c plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
+@c plot2d (sin(x), [x, -%pi, %pi])$
 @c ===end===
 @example
-(%i1) plot2d (sin(x), [x, -5, 5])$
-
-(%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
+(%i1) plot2d (sin(x), [x, -%pi, %pi])$
 @end example
 
 @ifnotinfo
-@image{../figures/plotting2,8cm}@image{../figures/plotting3,8cm}
+@image{../figures/plotting2,8cm}
 @end ifnotinfo
 
-Especificaci@'on de funciones por su nombre.
+Si la funci@'on crece r@'apidamente puede ser necesario limitar los
+valores del eje vertical:
+
+@c ===beg===
+@c plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
+@c ===end===
+@example
+@group
+(%i1) plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
+plot2d: some values were clipped.
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting3,8cm}
+@end ifnotinfo
+
+El aspecto del gr@'afico puede ser diferente dependiendo del programa
+gr@'afico utilizado. Por ejemplo, cuando se desactiva el marco,
+Xmaxima dibuja los ejes como flechas:
+
+@c ===beg===
+@c plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], 
+@c                 [box, false], [plot_format, xmaxima])$
+@c ===end===
+@example
+@group
+(%i1) plot2d ( x^2-1, [x, -3, 3], [y, -2, 10],
+                      [box, false], [plot_format, xmaxima])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting1,8cm}
+@end ifnotinfo
+
+Gr@'afico con escala logar@'{@dotless{i}}tmica:
+
+@c ===beg===
+@c plot2d (exp(3*s), [s, -2, 2], [logy])$
+@c ===end===
+@example
+(%i1) plot2d (exp(3*s), [s, -2, 2], [logy])$
+@end example
+
+@ifnotinfo
+@image{../figures/plotting4,8cm}
+@end ifnotinfo
+
+Dibujando funciones especificadas por su nombre:
 
 @c ===beg===
 @c F(x) := x^2 $
 @c :lisp (defun |$g| (x) (m* x x x))
 @c H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
-@c plot2d (F, [u, -1, 1])$
 @c plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 @c ===end===
 @example
-(%i3) F(x) := x^2 $
-
-(%i4) :lisp (defun |$g| (x) (m* x x x))
-
+(%i1) F(x) := x^2 $
+@group
+(%i2) :lisp (defun |$g| (x) (m* x x x))
 $g
-(%i5) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
-
-(%i6) plot2d (F, [u, -1, 1])$
-
-(%i7) plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
+@end group
+(%i2) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+(%i3) plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 @end example
 
 @ifnotinfo
-@image{../figures/plotting4,8cm}@image{../figures/plotting5,8cm}
+@image{../figures/plotting5,8cm}
 @end ifnotinfo
 
-Se puede representar una circunferencia como una funci@'on
-param@'etrica de par@'ametro @var{t}. No es necesario especificar
-el rango del eje horizontal, pues el propio rango de @var{t}
-determina el dominio. No obstante, ya que las longitudes de los
-ejes horizontal y vertical est@'an en una proporci@'on de 4 a 3,
-se utilizar@'a la opci@'on @var{xrange} para conseguir la misma escala
-en ambos ejes:
+Ejemplo de funci@'on param@'etrica. Curva de la mariposa:
 
 @c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi],
-@c                     [nticks, 80]], [x, -4/3, 4/3])$
+@c r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
+@c plot2d([parametric, r*sin(t), r*cos(t), 
+@c        [t, -8*%pi, 8*%pi], [nticks, 2000]])$
 @c ===end===
 @example
-(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi],
-             [nticks,80]], [x, -4/3, 4/3])$
+(%i1) r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
+(%i2) plot2d([parametric, r*sin(t), r*cos(t), 
+             [t, -8*%pi, 8*%pi], [nticks, 2000]])$
 @end example
 
 @ifnotinfo
 @image{../figures/plotting6,8cm}
 @end ifnotinfo
 
-Si se repite el mismo gr@'afico con solo 8 puntos y se 
-extiende el rango del par@'ametro para que d@'e dos vueltas,
-se tiene el dibujo de una estrella:
+Una circunferencia de dos vueltas y solo siete puntos:
 
 @c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
+@c plot2d ([parametric, cos(t), sin(t),
+@c         [t, -2*%pi, 2*%pi], [nticks, 8]])$
 @c ===end===
 @example
-(%i9) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
-        [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
+@group
+(%i1) plot2d ([parametric, cos(t), sin(t),
+              [t, -2*%pi, 2*%pi], [nticks, 8]])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting7,8cm}
 @end ifnotinfo
 
-Combinaci@'on del gr@'afico de un polinomio c@'ubico y de una
-circunferencia param@'etrica:
+Dibujo de una funci@'on junto con la representaci@'on param@'etrica de una
+circunferencia. El tama@~no del gr@'afico se ha ajustado con las opciones x
+e y para que la circunferencia no se vea como una elipse. Estos valores
+son aceptables para el terminal Postscript utilizado para producir este
+gr@'afico, y puede seer necesario adaptar los valores para otros terminales:
 
 @c ===beg===
-@c plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5], [nticks, 80]]], [x, -3, 3])$
+@c plot2d([[parametric, cos(t), sin(t),
+@c         [t,0,2*%pi], [nticks, 80]],
+@c         abs(x)], [x,-2,2], [y, -1.5, 1.5])$
 @c ===end===
 @example
-(%i10) plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5],
-        [nticks, 80]]], [x, -3, 3])$
+@group
+(%i1) plot2d([[parametric, cos(t), sin(t),
+              [t,0,2*%pi], [nticks, 80]],
+        abs(x)], [x,-2,2], [y, -1.5, 1.5])$
+plot2d: some values were clipped.
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting8,8cm}
 @end ifnotinfo
 
-Ejemplo de gr@'afico logar@'{@dotless{i}}tmico:
+Puntos discretos definiendo separadamente las coordenadas x e y:
 
 @c ===beg===
-@c plot2d (exp(3*s), [s, -2, 2], [logy])$
+@c plot2d ([discrete, [10, 20, 30, 40, 50],
+@c                    [.6, .9, 1.1, 1.3, 1.4]])$
 @c ===end===
 @example
-(%i11) plot2d (exp(3*s), [s, -2, 2], [logy])$
+@group
+(%i1) plot2d ([discrete, [10, 20, 30, 40, 50],
+                         [.6, .9, 1.1, 1.3, 1.4]])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting9,8cm}
 @end ifnotinfo
 
-Ejemplos de gr@'aficos de puntos, empezando por la definici@'on de
-las coordenadas de cinco puntos en los dos formatos admisibles:
+Los mismos puntos del ejemplo anterior, pero definiendo una a una las
+coordenadas y sin segmentos que unan los puntos:
 
 @c ===beg===
-@c xx:[10, 20, 30, 40, 50]$
-@c yy:[.6, .9, 1.1, 1.3, 1.4]$
-@c xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
+@c plot2d([discrete, [[10, .6], [20, .9], [30, 1.1], 
+@c                    [40, 1.3], [50, 1.4]]],
+@c                   [style, points])$
 @c ===end===
 @example
-(%i12) xx:[10, 20, 30, 40, 50]$
-(%i13) yy:[.6, .9, 1.1, 1.3, 1.4]$
-(%i14) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
-@end example
-
-Representaci@'on de los puntos unidos por segmentos:
-
-@c ===beg===
-@c plot2d([discrete,xx,yy])$
-@c ===end===
-@example
-(%i15) plot2d([discrete,xx,yy])$
+@group
+(%i1) plot2d([discrete, [[10, .6], [20, .9], [30, 1.1],
+                         [40, 1.3], [50, 1.4]]],
+                        [style, points])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting10,8cm}
 @end ifnotinfo
 
-Representaci@'on de los puntos aislados, ilustrando tambi@'en
-la segunda forma de especificar las coordenadas:
+En este ejemplo, se guarda una tabla de tres columnas en el
+archivo @code{data.txt}, que luego ser@'a le@'{@dotless{i}}do
+para representar las dos @'ultimas columnas:
 
 @c ===beg===
-@c plot2d([discrete, xy], [style, points])$
+@c with_stdout ("data.txt", for x:0 thru 10 do
+@c                              print (x, x^2, x^3))$
+@c data: read_matrix ("data.txt")$
+@c plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
+@c   [style,points], [point_type,diamond], [color,red])$
 @c ===end===
 @example
-(%i16) plot2d([discrete, xy], [style, points])$
+(%i1) with_stdout ("data.txt", for x:0 thru 10 do 
+                                   print (x, x^2, x^3))$
+(%i2) data: read_matrix ("data.txt")$
+@group
+(%i3) plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
+  [style,points], [point_type,diamond], [color,red])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting11,8cm}
 @end ifnotinfo
 
-El gr@'afico de los puntos se puede mostrar conjuntamente con el
-de la funci@'on te@'rica que los predice:
+Un gr@'afico de datos emp@'{@dotless{i}}ricos junto con su modelo
+te@'orico:
 
 @c ===beg===
-@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], 
-@c         [style, [points,5,2,6], [lines,1,1]],
-@c         [legend,"experiment","theory"],
-@c         [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+@c xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
+@c plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
+@c         [style, points, lines], [color, red, blue],
+@c         [point_type, asterisk],
+@c         [legend, "experiment", "theory"],
+@c         [xlabel, "pendulum's length (cm)"],
+@c         [ylabel, "period (s)"])$
 @c ===end===
 @example
-(%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, [points,5,2,6], [lines,1,1]],
-        [legend,"experiment","theory"],
-        [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+(%i1) xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
+@group
+(%i2) plot2d([[discrete, xy], 2*%pi*sqrt(l/980)], [l,0,50],
+        [style, points, lines], [color, red, blue],
+        [point_type, asterisk],
+        [legend, "experiment", "theory"],
+        [xlabel, "pendulum's length (cm)"],
+        [ylabel, "period (s)"])$
+@end group
 @end example
 
 @ifnotinfo
 @image{../figures/plotting12,8cm}
 @end ifnotinfo
 
-El significado de los tres n@'umeros despu@'es de la opci@'on
-``points'' es el siguiente: 5, radio de los puntos; 2, @'{@dotless{i}}ndice
-del color (rojo); 6, tipo de objeto utilizado (cuadrados s@'olidos). Los
-dos n@'umeros despu@'es de la opci@'on ``lines'' hacen referencia al ancho
-de la l@'{@dotless{i}}nea (1 punto) y al color (1 para el azul).
-
-V@'ease tambi@'en @code{plot_options}, que describe las opciones
-gr@'aficas, junto con m@'as ejemplos.
-
 @end deffn
 
-@deffn {Funci@'on} xgraph_curves (@var{list})
-Dibuja el conjunto de puntos de la lista del argumento @var{list} con el
-programa xgraph. Si el programa xgraph no est@'a instalado, este comando
-producir@'a un error.
 
-El conjunto de puntos puede ser de la forma
 
+
+@deffn  {Funci@'on} plot3d (@var{expr}, @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+@deffnx {Funci@'on} plot3d ([@var{expr_1}, @dots{}, @var{expr_n}], @var{x_range}, @var{y_range}, @dots{}, @var{options}, @dots{})
+
+Dibuja una o m@'as superficies definidas como funciones de dos variables o en forma
+param@'etrica
+
+Las funciones a dibujar se pueden especificar como expresiones o nombres de funciones.
+Puede utilizarse el rat@'on para hacer girar el gr@'afico y observarlo desde
+distintos @'angulos.
+
+Ejemplos:
+
+Representaci@'on de una funci@'on:
+
+@c ===beg===
+@c plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2])$
+@c ===end===
 @example
-[x0, y0, x1, y1, x2, y2, ...]
-@end example
-o
-@example
-[[x0, y0], [x1, y1], ...]
-@end example
-
-Un conjunto de puntos tambi@'en puede contener s@'{@dotless{i}}mbolos con etiquetas u otra informaci@'on.
-
-@example
-xgraph_curves ([pt_set1, pt_set2, pt_set3]);
-@end example
-
-dibuja los tres conjuntos de puntos como tres curvas.
-
-@example
-pt_set: append (["NoLines: True", "LargePixels: true"],
-                          [x0, y0, x1, y1, ...]);
-@end example
-
-@noindent
-construye el conjunto de puntos, declara que no haya segmentos rectil@'{@dotless{i}}neos entre ellos y que se utilicen p@'{@dotless{i}}xeles grandes. V@'ease el manual de xgraph para m@'as opciones.
-
-@example
-pt_set: append ([concat ("\"", "x^2+y")], [x0, y0, x1, y1, ...]);
-@end example
-
-@noindent
-construye una etiqueta con el contenido "x^2+y" para este conjunto particular de puntos. Las comillas dobles @code{"} al comienzo son las que le indican a xgraph que se trata de una etiqueta.
-
-@example
-pt_set: append ([concat ("TitleText: Datos muestrales")], [x0, ...])$
-@end example
-
-@noindent
-establece el t@'{@dotless{i}}tulo principal del gr@'afico como "Datos muestrales" en lugar de "Maxima Plot".
-
-Para hacer un gr@'afico de barras con columnas de 0.2 unidades de ancho y para dibujar dos diagramas diferentes de este tipo:
-@example
-(%i1) xgraph_curves ([append (["BarGraph: true", "NoLines: true",
-      "BarWidth: .2"], create_list ([i - .2, i^2], i, 1, 3)),
-      append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
-      create_list ([i + .2, .7*i^2], i, 1, 3))]);
+(%i1) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2])$
 @end example
 
 @ifnotinfo
 @image{../figures/plotting13,8cm}
 @end ifnotinfo
 
-@noindent
+Uso de la opci@'on z para acotar una funci@'on que tiende a infinito
+(en este caso, la funci@'on tiende a menos infinito en los ejes
+x e y):
 
-Se utiliza un fichero temporal @file{xgraph-out}.
+@c ===beg===
+@c plot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
+@c          [palette, false], [color, magenta, blue])$
+@c ===end===
+@example
+(%i1) plot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
+               [palette, false], [color, magenta, blue])$
+@end example
+
+@ifnotinfo
+@image{../figures/plotting14,8cm}
+@end ifnotinfo
+
+Los valores infinitos de z se pueden obviar eligiendo una ret@'{@dotless{i}}cula
+que no coincida con las as@'{@dotless{i}}ntotas; este ejemplo tambi@'en muestra
+c@'omo seleccionar las paletas predefinidas, en este caso la n@'umero 4:
+
+@c ===beg===
+@c plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2],
+@c    [grid, 29, 29],
+@c    [palette, get_plot_option(palette,5)])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2], 
+         [grid, 29, 29],
+         [palette, get_plot_option(palette,5)])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting15,8cm}
+@end ifnotinfo
+
+Dos superficies en el mismo gr@'afico, compartiendo el mismo dominio; en 
+Gnuplot, ambas superfifies comparten la misma paleta:
+
+@c ===beg===
+@c plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2),
+@c         [x, -3, 3], [y, -2, 2]])$
+@c ===end===
+@example
+(%i1) plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2),
+              [x, -3, 3], [y, -2, 2]])$
+@end example
+
+@ifnotinfo
+@image{../figures/plotting16,8cm}
+@end ifnotinfo
+
+Las mismas superficies, pero con diferentes dominios; en Xmaxima
+cada superficies usa una paleta diferente, elegida de la lista
+definida por la opci@'on @code{palette}:
+
+@c ===beg===
+@c plot3d ([[2^(-x^2 + y^2),[x,-2,2],[y,-2,2]],
+@c    4*sin(3*(x^2+y^2))/(x^2+y^2),
+@c    [x, -3, 3], [y, -2, 2]], [plot_format,xmaxima])$
+@c ===end===
+@example
+@group
+(%i1) plot3d ([[2^(-x^2 + y^2),[x,-2,2],[y,-2,2]],
+         4*sin(3*(x^2+y^2))/(x^2+y^2),
+         [x, -3, 3], [y, -2, 2]], [plot_format,xmaxima])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting17,8cm}
+@end ifnotinfo
+
+La botella de Klein, definida param@'etricamente:
+
+@c ===beg===
+@c expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0$
+@c expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
+@c expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
+@c plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+@c         [y, -%pi, %pi], [grid, 40, 40])$
+@c ===end===
+@example
+(%i1) expr_1:5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0)-10.0$
+(%i2) expr_2:-5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0)$
+(%i3) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
+@group
+(%i4) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+        [y, -%pi, %pi], [grid, 40, 40])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting18,8cm}
+@end ifnotinfo
+
+Gr@'afico de un arm@'onico esf@'erico, utilizando las transformaciones
+predefinidas @code{spherical_to_xyz}:
+
+@c ===beg===
+@c plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi],
+@c         [phi, 0, 2*%pi],
+@c         [transform_xy, spherical_to_xyz], [grid,30,60])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (sin(2*theta)*cos(phi), [theta, 0, %pi],
+              [phi, 0, 2*%pi],
+              [transform_xy, spherical_to_xyz], [grid,30,60])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting19,8cm}
+@end ifnotinfo
+
+Uso de la transformaci@'on predefinida @code{polar_to_xy}. Este
+ejemplo tambi@'en muestra c@'omo eliminar el marco y la leyenda:
+
+@c ===beg===
+@c plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
+@c    [grid, 12, 80],
+@c    [transform_xy, polar_to_xy], [box, false],
+@c    [legend,false])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
+         [grid, 12, 80],
+         [transform_xy, polar_to_xy], [box, false],
+         [legend,false])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting20,8cm}
+@end ifnotinfo
+
+Dibujo de una esfera utilizando la transformaci@'on esf@'erica. En 
+Xmaxima, los tres ejes utilizan escalas proporcionales, manteniendo
+la forma sim@'etrica de la esfera. Se utiliza una paleta con color
+degradado:
+
+@c ===beg===
+@c plot3d ( 5, [theta, 0, %pi], [phi, 0, 2*%pi],
+@c    [plot_format,xmaxima],
+@c    [transform_xy, spherical_to_xyz], 
+@c    [palette,[value,0.65,0.7,0.1,0.9]])$
+@c ===end===
+@example
+@group
+(%i1) plot3d ( 5, [theta, 0, %pi], [phi, 0, 2*%pi],
+         [plot_format,xmaxima],
+         [transform_xy, spherical_to_xyz],
+         [palette,[value,0.65,0.7,0.1,0.9]])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting21,8cm}
+@end ifnotinfo
+
+Definici@'on de una funci@'on con dos variables utilizando una matriz. 
+N@'otese la comilla simple en la definici@'on de la funci@'on para
+prevenir que @code{plot3d} falle al detectar que la matriz necesita
+@'{@dotless{i}}ndices enteros:
+
+@c ===beg===
+@c M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
+@c           [1, 2, 3, 3])$
+@c f(x, y) := float('M [round(x), round(y)])$
+@c plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 4, 4])$
+@c ===end===
+@example
+(%i1) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
+                [1, 2, 3, 3])$
+(%i2) f(x, y) := float('M [round(x), round(y)])$
+@group
+(%i3) plot3d (f(x,y), [x, 1, 4], [y, 1, 4], [grid, 4, 4])$
+apply: subscript must be an integer; found: round(x)
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting22,8cm}
+@end ifnotinfo
+
+Asignando a la opci@'on @code{elevation} el valor cero, una superficie
+puede verse como una aplicaci@'on en la que cada color representa un nivel
+diferente. La opci@'on @code{colorbox} se utiliza para mostrar la correspondencia
+entre colores y niveles; las l@'{@dotless{i}}neas de la ret@'{@dotless{i}}cula
+se desactivan para facilitar la visualizaci@'on de los colores:
+
+@c ===beg===
+@c plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+@c         [mesh_lines_color, false], [elevation, 0], [azimuth, 0],
+@c         [colorbox, true], [grid, 150, 150])$
+@c ===end===
+@example
+@group
+(%i1) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+        [mesh_lines_color, false], [elevation, 0], [azimuth, 0],
+        [colorbox, true], [grid, 150, 150])$
+@end group
+@end example
+
+@ifnotinfo
+@image{../figures/plotting23,8cm}
+@end ifnotinfo
+
+V@'ease tambi@'en la secci@'on Opciones gr@'aficas.
 
 @end deffn
 
-@defvr {Variable del sistema} plot_options
+
+
+@defvr {Variable global} plot_options
+
 Los elementos de esta lista establecen las opciones por defecto para los gr@'aficos.
 Si una opci@'on est@'a presente en una llamada a @code{plot2d} o a @code{plot3d},
 este valor adquiere prevalencia sobre las opciones por defecto.
 En otro caso se utilizar@'a el valor que tenga en @code{plot_options}.
 Las opciones por defecto se asignan mediante la funci@'on @code{set_plot_option}.
 
-Cada elemento de @code{plot_options} es una lista de dos o m@'as elementos, el primero de los cuales es el nombre de la opci@'on, siendo los siguientes los valores de aqu@'ella. En algunos casos el valor asignado es a su vez una lista, que puede contener varios elementos.
+Cada elemento de @code{plot_options} es una lista de dos o m@'as elementos,
+el primero de los cuales es el nombre de la opci@'on, siendo los siguientes 
+los valores que toma. En algunos casos el valor asignado es a su vez una lista,
+que puede contener varios elementos.
 
-Las opciones gr@'aficas que reconocen @code{plot2d} y @code{plot3d} son:
+V@'eanse tambi@'en @code{set_plot_option}, @code{get_option} y la secci@'on
+Opciones gr@'aficas.
 
-@itemize @bullet
-@item
-Opci@'on: @code{plot_format} 
+@end defvr
 
-Determina qu@'e programa gr@'afico se va a utilizar con @code{plot2d} y @code{plot3d}.
 
-@itemize @bullet
-@item
-Valor: @code{gnuplot} (es el valor por defecto en Windows)
-Gnuplot es el programa por defecto y el m@'as avanzado. Requiere de una instalaci@'on externa de gnuplot.
 
-@item
-Value: @code{gnuplot_pipes} (es el valor por defecto en sistemas distintos de Windows)
-Es similar al formato @code{gnuplot}, excepto que la comunicaci@'on con
-Gnuplot se hace por medio de una tuber@'{@dotless{i}}a. Se deber@'{@dotless{i}}a
-utilizar para ver gr@'aficos en pantalla; para guardar gr@'aficos en
-srchivos, mejor utilizar el formato @code{gnuplot}.
+@deffn {Funci@'on} set_plot_option (@var{option})
 
-@item
-Valor: @code{mgnuplot}
-Mgnuplot es una interfaz para Gnuplot basada en Tk. Se incluye en la distribuci@'on de Maxima. Mgnuplot ofrece una interface gr@'afica de usuario rudimentaria para gnuplot, pero tiene algunas mejoras respecto de la interface propia de gnuplot. Mgnuplot requiere de una instalaci@'on externa de gnuplot y de Tcl/Tk.
+Acepta la mayor parte de opciones listadas en la secci@'on Opciones gr@'aficas
+y las almacena en la variable global @code{plot_options}.
 
-@item
-Valor: @code{openmath}
-Openmath es un programa gr@'afico escrito en Tcl/Tk. Este formato lo
-suministra el paquete Xmaxima, que se distribuye junto con Maxima; se
-deber@'a instalar Xmaxima si se quiere usar este formato. No s@'olo 
-se puede utilizar Openmath desde Xmaxima, sino tambi@'en desde
-cualquier otro interfaz gr@'afico para Maxima.
+La funci@'on @code{set_plot_option} eval@'ua su argumento y devuelve
+la lista completa @code{plot_options} tal como queda despu@'es de la actualizaci@'on.
 
-@end itemize
+V@'eanse tambi@'en @code{plot_options}, @code{get_option} y la secci@'on
+Opciones gr@'aficas.
 
-@item
-Opci@'on: @code{run_viewer}
+Ejemplos:
+
+Modificaci@'on de los valores para @code{grid}.
+
+@c ===beg===
+@c set_plot_option ([grid, 30, 40]);
+@c ===end===
+@example
+(%i1) set_plot_option ([grid, 30, 40]);
+@group
+(%o1) [[t, - 3, 3], [grid, 30, 40], [transform_xy, false], 
+[run_viewer, true], [axes, true], [plot_format, gnuplot_pipes], 
+[color, blue, red, green, magenta, black, cyan], 
+[point_type, bullet, circle, plus, times, asterisk, box, square, 
+triangle, delta, wedge, nabla, diamond, lozenge], 
+[palette, [hue, 0.25, 0.7, 0.8, 0.5], 
+[hue, 0.65, 0.8, 0.9, 0.55], [hue, 0.55, 0.8, 0.9, 0.4], 
+[hue, 0.95, 0.7, 0.8, 0.5]], [gnuplot_term, default], 
+[gnuplot_out_file, false], [nticks, 29], [adapt_depth, 5], 
+[gnuplot_preamble, ], [gnuplot_default_term_command, 
+set term pop], [gnuplot_dumb_term_command, set term dumb 79 22], 
+[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript \
+eps enhanced color solid 24], [plot_realpart, false]]
+@end group
+@end example
+
+@end deffn
+
+
+
+@deffn {S@'{@dotless{i}}mbolo del sistema} spherical_to_xyz
+
+Cuando a la opci@'on @code{transform_xy} de @code{plot3d} se le pasa el valor 
+@code{spherical_to_xyz}, se interpretar@'an las variables independientes como 
+esf@'ericas, transform@'andolas luego a coordenadas cartesianas.
+
+@end deffn
+
+
+
+
+
+
+
+
+@node Opciones gr@'aficas, Opciones para Gnuplot, Funciones y variables para gr@'aficos, Gr@'aficos
+@section Opciones gr@'aficas
+
+Todas las opciones consisten en una lista que comienza con una palabra clave
+seguida de uno o m@'as valores. La mayor parte de las opciones pueden utilizarse
+con cualquiera de las funciones gr@'aficas @var{plot2d}, @var{plot3d}, @var{contour_plot} y
+@var{implicit_plot}, o en la funci@'on @var{set_plot_option}. Las excepciones
+se indican en la lista siguiente.
+
+
+@defvr {Opci@'on para plot} adapt_depth [adapt_depth, @var{integer}]
+Valor por defecto: 5
+
+N@'umero m@'aximo de particiones utilizado por el algoritmo adaptativo
+de representaci@'on gr@'afica.
+
+@end defvr
+
+
+@defvr {Opci@'on para plot} axes [axes, @var{symbol}] 
+Valor por defecto: @code{true}
+
+El argumento @var{symbol} puede valer @code{true}, @code{false}, @code{x} 
+o @code{y}. Si vale @code{false}, no se mostrar@'an los ejes; si es igual a
+@code{x} o @code{y}, solo ese eje ser@'a el que se representa; si vale
+@code{true}, se mostrar@'an ambos ejes.
+
+Esta opci@'on solo es relevante para @code{plot2d} y @code{implicit_plot}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} azimuth [azimuth, @var{number}]
+Valor por defecto: 30
+
+Un gr@'afico @code{plot3d} se puede interpretar como comenzando
+horizontalmente en el plano xy; a partir de ah@'{@dotless{i}},
+la coordenada z se eleva perpendicularmente al papel. El eje z
+gira entonces alrededor del eje x un @'angulo igual a @code{elevation},
+luego gira el plano xy alrededor del nuevo eje z un @'angulo @code{azimuth}.
+Esta opci@'on establece el valor para @code{azimuth} en grados
+sexagesimales.
+
+V@'ease tambi@'en @code{elevation}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} box [box, @var{symbol}]
+Valor por defecto: @code{true}
+
+Si vale @code{true}, se representar@'a el marco para el gr@'afico;
+si vale @code{false}, no.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} color [color, @var{color_1}, @dots{}, @var{color_n}]
+Valor por defecto: blue, red, green, magenta, black, cyan
+
+
+Define el color para las curvas en @code{plot2d} y @code{implicit_plot}. En
+@code{plot3d} define los colores para el enrejado de las superficies si no
+se utiliza la paleta; una cara de la superficie tendr@'a @var{color_1}
+y la otra @var{color_2}, o el mismo color si se especifica solo uno.
+
+Si hay m@'as curvas o superficies que caras, los colores se repetir@'an 
+secuencialmente. Con Gnuplot, los colores pueden ser: azul, rojo, verde,
+magenta, negro y ci@'an; con Xmaxima, los colores pueden ser esos mismos,
+o una cadena de texto que comienza con el car@'acter @code{#} seguido de
+seis d@'{@dotless{i}}gitos hexadecimales: dos para la componente roja, otros
+dos para la verde y otros dos para la azul. Si se introduce un nombre de
+color no reconocido, en su lugar se utilizar@'a el negro.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} colorbox [colorbox, @var{symbol}]
+Valor por defecto: @code{false}
+
+El argumento @var{symbol} puede valer @code{true} o @code{false}.
+Si vale @code{true} y @code{plot3d} utiliza la paleta de colores
+para representar diferentes valores de z, se dibujar@'a un rect@'angulo
+en la parte derecha, indicando los colores utilizados para
+los diferentes valores de z. Esta opci@'on no funciona en Xmaxima.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} elevation [elevation, @var{number}]
+Valor por defecto: 60
+
+Un gr@'afico @code{plot3d} se puede interpretar como comenzando
+horizontalmente en el plano xy; a partir de ah@'{@dotless{i}},
+la coordenada z se eleva perpendicularmente al papel. El eje z
+gira entonces alrededor del eje x un @'angulo igual a @code{elevation},
+luego gira el plano xy alrededor del nuevo eje z un @'angulo @code{azimuth}.
+Esta opci@'on establece el valor para @code{elevation} en grados
+sexagesimales.
+
+V@'ease tambi@'en  @code{azimuth}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} grid [grid, @var{integer}, @var{integer}]
+Valor por defecto: 30, 30
+
+Establece el n@'umero de puntos para los puntos de la rejilla en las
+direcciones x e y en escenas 3D.
+
+@end defvr
+
+
+
+@defvr  {Opci@'on para plot} legend [legend, @var{string_1}, @dots{}, @var{string_n}]
+@defvrx {Opci@'on para plot} legend [legend, @var{false}]
+
+Especifica las etiquetas para los gr@'aficos en los que aparecen
+varios objetos.  Si hay m@'as expresiones que etiquetas, @'estas se repetir@'an.
+Con el valor @code{false} no se mostrar@'an etiquetas.
+Por defecto se pasar@'an los nombres de las expresiones o funciones, o las palabras
+@code{discrete1}, @code{discrete2}, @dots{}, para gr@'aficos de puntos.
+Esta opci@'on no se puede utilizar con @var{set_plot_option}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} logx [logx]
+
+Hace que el eje de abscisas se dibuje en la escala 
+logar@'{@dotless{i}}tmica. Esta opci@'on no se puede utilizar 
+con @var{set_plot_option}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} logy [logy]
+
+Hace que el eje de ordenadas se dibuje en la escala 
+logar@'{@dotless{i}}tmica. Esta opci@'on no se puede utilizar 
+con @var{set_plot_option}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} mesh_lines_color [mesh_lines_color, @var{color}]
+Valor por defecto: @code{black}
+
+Establece el color del enrejado en los gr@'aficos creados por @code{plot3d}
+cuando se utiliza una paleta. Acepta los mismos colores que la opci@'on 
+@code{color}. Tambi@'en se le puede dar el valor @code{false} para eliminar
+el enrejado.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} nticks [nticks, @var{integer}]
+Valor por defecto: 29
+
+Cuando se dibujan funciones con @code{plot2d}, establece el n@'umero
+inicial de puntos utilizado por la rutina gr@'afica adaptativa. Cuando
+se dibujan funciones con @code{plot3d} o param@'etricas con @code{plot2d},
+su valor es igual al n@'umero de puntos que se representar@'an en el
+gr@'afico.
+
+@end defvr
+
+
+
+@defvr  {Opci@'on para plot} palette [palette, [@var{palette_1}], @dots{}, [@var{palette_n}]]
+@defvrx {Opci@'on para plot} palette [palette, @var{false}]
+Valor por defecto: [hue, 0.25, 0.7, 0.8, 0.5], [hue, 0.65, 0.8, 0.9, 0.55], 
+[hue, 0.55, 0.8, 0.9, 0.4], [hue, 0.95, 0.7, 0.8, 0.5]
+
+Puede consistir en una paleta o en una lista de varias paletas. Cada
+paleta es una lista con una palabra clave seguida de cuatro n@'umeros.
+Los tres primeros n@'umeros, que deben tomar valores entre 0 y 1, definen
+el matiz, la saturaci@'on y el valor de un color b@'asico a asignar al 
+m@'{@dotless{i}}nimo valor de z. La palabra clave especifica cu@'al de los
+tres atributos (@code{hue}, @code{saturation} o @code{value}) incrementar@'a
+de acuerdo con los valores de z. El @'ultimo n@'umero se corresponde con el 
+incremento del m@'aximo valor de z. Este @'ultimo n@'umero puede ser mayor que
+1 o negativo.
+
+Gnuplot solo utiliza la primera paleta de la lista; Xmaxima utilizar@'a 
+las paletas de la lista secuencialmente cuando haya que representar varias
+superficies conjuntamente; si el n@'umero de paletas no es suficiente,
+se repetir@'an tambi@'en de forma secuencial.
+
+El color del enrrejado de la superficie se establece con @code{mesh_lines_color}.
+Si @code{palette} tiene el valor @code{false}, las superficies se representan
+solo con el enrrejado; en tal caso, el color de las l@'{@dotless{i}}neas
+ser@'a el determinado por @code{color}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} plot_format [plot_format, @var{format}]
+Valor por defecto: en sistemas Windows, @code{gnuplot}; en otros, @code{gnuplot_pipes}
+
+Establece el formato a utlizar por las rutinas gr@'aficas.
+
+Debe tomar uno de los siguientes valores: @code{gnuplot}, @code{xmaxima}, @code{mgnuplot}
+o @code{gnuplot_pipes}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} plot_realpart [plot_realpart, @var{symbol}]
+Valor por defecto: @code{false}
+
+Cuando vale @code{true}, se representa gr@'aficamente la parte real
+de las funciones; equivale a ejecutar @code{realpart(@var{funci@'on})}.
+Si vale @code{false}, no se representa nada cuando la funci@'on
+no devuelva un valor real. Por ejemplo, si @code{x} es negativo, 
+@code{log(x)} devuelve un valor negativo cuya parte real es @code{log(abs(x))};
+en tal caso, si @code{plot_realpart} vale @code{true}, @code{log(-5)}
+se representa como @code{log(5)}, mientras que no se representa nada 
+si @code{plot_realpart} vale @code{false}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} point_type [point_type, @var{type_1}, @dots{}, @var{type_n}]
+Valor por defecto: @code{bullet}, @code{circle}, @code{plus}, @code{times}, @code{asterisk},
+@code{box}, @code{square}, @code{triangle}, @code{delta}, @code{wedge}, @code{nabla},
+@code{diamond}, @code{lozenge}
+
+En Gnuplot, cada conjunto de puntos que vaya a ser representado con los
+estilos @code{points} o @code{linespoints} se har@'a con objetos tomados
+de esta lista en orden secuencial. Si hay m@'as conjuntos de puntos que 
+objetos en la lista, se ir@'an repitiendo de forma secuencial. Los objetos
+que pueden ser utilizados son: @code{bullet}, @code{circle}, @code{plus}, 
+@code{times}, @code{asterisk}, @code{box}, @code{square}, @code{triangle}, 
+@code{delta}, @code{wedge}, @code{nabla}, @code{diamond} o @code{lozenge}
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} psfile [psfile, @var{string}]
+
+Guarda el gr@'afico en formato Postscript con nombre @var{string}
+en lugar de mostrarlo en pantalla. Por defecto, el fichero se crear@'a
+en la carpeta definida en la variable @var{maxima_tempdir}, cuyo
+valor se podr@'a cambiar para almacenar el fichero en otra carpeta.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} run_viewer [run_viewer, @var{symbol}]
+Valor por defecto: @code{true}
 
 Controla si el visor apropiado para la salida gr@'afica debe ejecutarse o no.
 
-@itemize @bullet
-@item
-@c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? OR IS NOTHING GENERATED ??
-Valor por defecto: @code{true}
-
-Ejecuta el visor.
-
-@item
-Valor: @code{false}
-
-No ejecuta el visor.
-@end itemize
-
-@item
-Opci@'on: @code{y}
-
-Rango vertical del gr@'afico.
-
-Ejemplo:
-
-@example
-[y, - 3, 3]
-@end example
-Establece el rango vertical como [-3, 3].
+@end defvr
 
 
-@item
-Opci@'on: @code{plot_realpart}
-Si @code{plot_realpart} vale @code{true},
-se representar@'a la parte real de un valor complejo @var{x},
-lo cual equivale a representar @code{realpart(@var{x})} en lugar de @var{x}.
-Si vale @code{false}, s@'olo se representar@'an aquellos valores con
-parte imaginaria nula, ignorando as@'{@dotless{i}} cualesquiera valores 
-complejos.
 
-Ejemplo:
-
-@example
-plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
-plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
-@end example
-El valor por defecto es @code{false}.
-
-@item
-Opci@'on: @code{nticks}
-
-En @code{plot2d}, es el n@'umero inicial de puntos utilizados
-por el procedimiento adaptativo para la representaci@'on de
-funciones. Tambi@'en es el n@'umero de puntos a ser calculados
-en los gr@'aficos param@'etricos.
-
-Ejemplo:
-
-@example
-[nticks, 20]
-@end example
-El valor por defecto para @code{nticks} es 29.
-
-@item
-Opci@'on: @code{adapt_depth}
-
-N@'umero m@'aximo de particiones utilizado por el algoritmo adaptativo de representaci@'on gr@'afica.
-
-Ejemplo:
-
-@example
-[adapt_depth, 5]
-@end example
-El valor por defecto para @code{adapt_depth} es 10.
-
-@item
-Opci@'on: @code{xlabel}
-
-Etiqueta del eje horizontal en gr@'aficos 2d.
-
-Ejemplo:
-
-@example
-[xlabel, "Time in seconds"]
-@end example
-
-@item
-Opci@'on: @code{ylabel}
-
-Etiqueta del eje vertical en gr@'aficos 2d.
-
-Ejemplo:
-
-@example
-[ylabel, "Temperature"]
-@end example
-
-@item
-Opci@'on: @code{logx}
-
-Hace que el eje horizontal en los gr@'aficos 2d se dibuje
-en la escala logar@'{@dotless{i}}tmica. No necesita de
-par@'ametros adicionales.
-
-@item
-Opci@'on: @code{logy}
-
-Hace que el eje vertical en los gr@'aficos 2d se dibuje
-en la escala logar@'{@dotless{i}}tmica. No necesita de
-par@'ametros adicionales.
-
-@item
-Opci@'on: @code{legend}
-
-Etiquetas para las expresiones de los gr@'aficos 2d. Si hay m@'as
-expresiones que etiquetas, @'estas se repetir@'an. Por defecto se
-pasar@'an los nombres de las expresiones o funciones, o las palabras
-@code{discrete1}, @code{discrete2}, ..., para gr@'aficos de puntos.
-
-Ejemplo:
-
-@example
-[legend, "Set 1", "Set 2", "Set 3"]
-@end example
-
-@item
-Opci@'on: @code{box}       
-
-Actualmente esta opci@'on s@'olo puede ir seguida del s@'{@dotless{i}}mbolo
-@emph{false}, pero ser@'a utilizada en el futuro para eliminar el
-marco alrededor del gr@'afico.
-
-Ejemplo:
-
-@example
-[box, false]
-@end example
-
-@item
-Opci@'on: @code{style}
+@defvr  {Opci@'on para plot} style [style, @var{type_1}, @dots{}, @var{type1_n}]
+@defvrx {Opci@'on para plot} style [style, [@var{style_1}], @dots{}, [@var{style_n}]]
+Valor por defecto: @var{lines} (dibuja todos los puntos unidos por 
+l@'{@dotless{i}}neas de ancho 1 y con el primer color de la lista de la opci@'on @code{color}).
 
 Estilos a utilizar para las funciones o conjuntos de datos en
 gr@'aficos 2d. A la palabra @code{style} debe seguirle uno o m@'as
@@ -612,85 +1157,130 @@ rellenos; 2, circunferencias; 3, +; 4, x; 5, *; 6, cuadrados rellenos;
 @var{linesdots} acepta hasta cuatro par@'ametros: ancho de l@'{@dotless{i}}nea,
 radio de los puntos, color y tipo de objetos para representar puntos.
 
-Ejemplo:
-@example
-[style,[lines,2,3],[points,1,4,3]]
-@end example
+V@'eanse tambi@'en @code{color} y @code{point_type}.
 
-En este ejemplo se representar@'a la primera (tercera, quinta, etc. ) expresi@'on
-con segmentos rectil@'{@dotless{i}}neos magenta de ancho 2, la segunda (cuarta,
-sexta, etc.) expresi@'on con s@'{@dotless{i}}mbolos de suma naranja de taman@~o 1
-(c@'{@dotless{i}}rculos naranja en el caso de Openmath).
-
-El estilo por defecto es @var{lines} de ancho 1 y diferentes colores.
+@end defvr
 
 
-@item
-Opci@'on: @code{grid}
-Establece el n@'umero de puntos de la ret@'{@dotless{i}}cula a utilizar 
-en las direcciones x e y en los gr@'aficos de tres dimensiones.
 
-Ejemplo:
+@defvr {Opci@'on para plot} transform_xy [transform_xy, @var{symbol}]
+Valor por defecto: @code{false}
 
-@example
-[grid, 50, 50]
-@end example
+La variable @var{symbol} puede ser @code{false} o el resultado
+devuelto por la funci@'on @code{transform_xy}. Si es distinto de
+@code{false}, se utiliza para transformar las tres coordenadas en
+@code{plot3d}.
 
-establece la ret@'{@dotless{i}}cula en 50 por 50 puntos. El valor por defecto es 30 por 30.
+V@'eanse @code{make_transform}, @code{polar_to_xy} y @code{spherical_to_xyz}.
 
-@item
-Opci@'on: @code{transform_xy}
-
-Permite que se realicen transformaciones en los gr@'aficos de tres dimensiones.
-
-Ejemplo:
-
-@example
-[transform_xy, false]
-
-@end example
-El valor por defecto de @code{transform_xy} es @code{false}. Cuando vale @code{false}, da el resultado de
-
-@example
-make_transform([x,y,z], f1(x,y,z), f2(x,y,z), f3(x,y,z))$
-@end example
-La transformaci@'on @code{polar_xy} est@'a definida en Maxima. Devuelve la misma transformaci@'on que
-
-@example
-make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
-@end example
-@end itemize
+@end defvr
 
 
-@b{Opciones de Gnuplot:}
+
+@defvr {Opci@'on para plot} x [x, @var{min}, @var{max}]
+
+Cuando se utiliza como primera opci@'on en una instrucci@'on para
+un gr@'afico 2D (o cualquiera de las dos primeras en un gr@'afico 3D),
+indica que su primera variable independiente es x y ajusta su rango.
+Tambi@'en se puede utilizar despu@'es de la primera opci@'on
+(o despu@'es de la segunda opci@'on en un gr@'afico 3D) para definir
+el dominio horizontal que se representar@'a en el gr@'afico.
+
+@end defvr
 
 
-Hay varias opciones gr@'aficas que son espec@'{@dotless{i}}ficas de gnuplot.
-Algunas de ellas son comandos propios de gnuplot que se especifican como cadenas alfanum@'ericas.
+
+@defvr {Opci@'on para plot} xlabel [xlabel, @var{string}]
+
+Especifica la etiqueta para el primer eje. Si no se utiliza esta
+opci@'on, la etquieta ser@'a el nombre de la variable independiente,
+cuando se utilicen @code{plot2d} o @code{implicit_plot}, o el nombre
+de la primera variable cuando se utilicen @code{plot3d} o @code{contour_plot},
+o la primera expresi@'on en el caso de una curva param@'etrica.
+No puede utilizarse con @var{set_plot_option}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} y [y, @var{min}, @var{max}]
+
+Cuando se utiliza como una de las dos primeras opciones en @code{plot3d},
+indica que una de las variables independientes es ``y'' y ajusta su
+rango. En otro caso, define el dominio de la segunda variable que se mostrar@'a
+en el gr@'afico.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} ylabel [ylabel, @var{string}]
+
+Especifica la etiqueta para el segundo eje. Si no se utiliza esta
+opci@'on, la etiqueta ser@'a ``y'',
+cuando se utilicen @code{plot2d} o @code{implicit_plot}, o el nombre
+de la segunda variable cuando se utilicen @code{plot3d} o @code{contour_plot},
+o la segunda expresi@'on en el caso de una curva param@'etrica.
+No puede utilizarse con @var{set_plot_option}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} z [z, @var{min}, @var{max}]
+
+Se utiliza en @code{plot3d} para ajustar el rango de valores de z que se
+mostrar@'a en el g@'afico.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} zlabel [zlabel, @var{string}]
+
+Especifica la etiqueta para el tercer eje cuando se utiliza @code{plot3d}.
+Si no se utiliza esta opci@'on, la etiqueta ser@'a ``z''
+en el caso de superficies, o la tercera expresi@'on en el caso de una curva param@'etrica.
+No puede utilizarse con @var{set_plot_option} y se ignora 
+en @code{plot2d} y @code{implicit_plot}.
+
+@end defvr
+
+
+
+
+
+
+
+
+
+@node Opciones para Gnuplot, Funciones para el formato Gnuplot_pipes, Opciones gr@'aficas, Gr@'aficos
+@section Opciones para Gnuplot
+
+Hay varias opciones gr@'aficas que son espec@'{@dotless{i}}ficas de Gnuplot.
+Algunas de ellas son comandos propios de Gnuplot que se especifican como cadenas de texto.
 Cons@'ultese la documentaci@'on de Gnuplot para m@'as detalles.
 
 
-@itemize @bullet
 
-@item
-Opci@'on: @code{gnuplot_term}
+@defvr {Opci@'on para plot} gnuplot_term
 
 Establece el terminal de salida para Gnuplot.
 
 @itemize @bullet
 @item
-Valor por defecto: @code{default}
+@strong{default} (valor por defecto)
 
 Gnuplot muestra el gr@'afico en una ventana gr@'afica.
 
 @item
-Valor: @code{dumb}
+@strong{dumb}
 
 Gnuplot muestra el gr@'afico en la consola de Maxima
 en estilo ASCII art@'{@dotless{i}}stico.
 
 @item
-Valor: @code{ps}
+@strong{ps}
 
 Gnuplot genera c@'odigo en lenguaje PostScript.
 Si a la opci@'on @code{gnuplot_out_file} se le da el
@@ -698,7 +1288,7 @@ valor @var{filename}, Gnuplot escribe el c@'odigo PostScript
 en @var{filename}. En caso contrario, se guarda en el archivo @code{maxplot.ps}.
 
 @item
-Valor: Cualquier otro terminal admitido por Gnuplot.
+Cualquier otro terminal admitido por Gnuplot.
 
 Gnuplot puede generar gr@'aficos en otros muchos formatos, tales como
 png, jpeg, svg etc. Para crear gr@'aficos en cualquera de estos formatos,
@@ -715,405 +1305,103 @@ en @var{filename}. En caso contrario, se guarda en el archivo
 
 @end itemize
 
-@item
-Opci@'on: @code{gnuplot_out_file}
-
-Guarda el gr@'afico generado por Gnuplot en un archivo.
-
-@itemize @bullet
-@item
-Valor por defecto: @code{false}
-
-No se especifica nombre de fichero.
-
-@item
-Valor: @var{filename}
-
-Con @code{[gnuplot_out_file, "myplot.ps"]}
-se env@'{@dotless{i}}a c@'odigo PostScript al archivo @code{myplot.ps}
-cuando se utiliza conjuntamente con el terminal PostScript de Gnuplot.
-@end itemize
+@end defvr
 
 
-@item
-Opci@'on: @code{gnuplot_pm3d} 
+
+@defvr {Opci@'on para plot} gnuplot_out_file
+
+Cuando se utiliza conjuntamente con la opci@'on @code{gnuplot_term},
+puede utilizarse para almacenar el gr@'afico en un fichero en uno
+de los formatos aceptados por Gnuplot. Si se quiere crear un fichero
+Postscript se puede utilizar la opci@'on @code{psfile}, que tambi@'en 
+funciona con Openmath.
+
+@example
+[gnuplot_term, png], [gnuplot_out_file, "graph3.png"]
+@end example
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} gnuplot_pm3d
 
 Controla la utilizaci@'on del modo PM3D, que tiene capacidades avanzadas
 para gr@'aficos tridimensionales. PM3D s@'olo est@'a disponible en versiones 
 de Gnuplot posteriores a la 3.7. El valor por defecto de @code{gnuplot_pm3d} es @code{false}.
 
-Ejemplo:
+@end defvr
 
-@example
-[gnuplot_pm3d, true]
-@end example
 
-@item
-Opci@'on: @code{gnuplot_preamble} 
 
-Introduce instrucciones de gnuplot antes de que se haga el dibujo. Puede utilizarse cualquier comando v@'alido de gnuplot. Si interesa introducir varios comandos se separar@'an con punto y coma. El ejemplo que se muestra produce un gr@'afico en escala logar@'{@dotless{i}}tmica. El valor por defecto de @code{gnuplot_preamble} es la cadena vac@'{@dotless{i}}a @code{""}.
+@defvr {Opci@'on para plot} gnuplot_preamble
 
-Ejemplo:
+Introduce instrucciones de Gnuplot antes de que se haga el gr@'afico.
+Puede utilizarse cualquier comando v@'alido de Gnuplot. Si interesa 
+introducir varios comandos se separar@'an con punto y coma. El valor 
+por defecto de @code{gnuplot_preamble} es la cadena vac@'{@dotless{i}}a @code{""}.
 
-@example
-[gnuplot_preamble, "set log y"]
-@end example
+@end defvr
 
-@item
-Opci@'on: @code{gnuplot_curve_titles}
 
-Controla los t@'{@dotless{i}}tulos dados a la clave del gr@'afico. El valor por defecto es  @code{[default]}, el cual establece autom@'aticamente los t@'{@dotless{i}}tulos para cada curva representada. Si no es @code{[default]}, @code{gnuplot_curve_titles} debe contener una lista de cadenas, cada una de las cuales es @code{"title '@var{title_string}'"}. (Para desactivar la clave del gr@'afico, a@~n@'adase @code{"set nokey"} a @code{gnuplot_preamble}.)
 
-Ejemplo:
+@defvr {Opci@'on para plot} gnuplot_curve_titles
 
-@example
-[gnuplot_curve_titles, ["title 'My first function'", "title 'My second function'"]]
-@end example
+Opci@'on obsoleta que ha sido sustituida por @code{legend}.
 
-@item
-Opci@'on: @code{gnuplot_curve_styles}
+@end defvr
 
-Es una lista de cadenas que controlan el aspecto de las curvas, como el color, el ancho, la discontinuidad, etc., y que deben enviarse al comando @code{plot} de gnuplot. El valor por defecto es
-@code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, que realiza un ciclo sobre un conjunto de colores diferentes. Cons@'ultese la documentaci@'on de gnuplot sobre @code{plot} para m@'as informaci@'on.
 
-Ejemplo:
 
-@example
-[gnuplot_curve_styles, ["with lines 7", "with lines 2"]]
-@end example
+@defvr {Opci@'on para plot} gnuplot_curve_styles
 
-@item
-Opci@'on: @code{gnuplot_default_term_command}
+Opci@'on obsoleta que ha sido sustituida por @code{style}.
 
-Comando de gnuplot para establecer el tipo de terminal por defecto.
-El valor por defecto es @code{set term windows "Verdana" 15} 
-en sistemas Windows, y @code{set term x11 font "Helvetica,16"}
-en sistemas X11.
+@end defvr
 
-Ejemplo:
 
-@example
-[gnuplot_default_term_command, "set term x11"]
-@end example
 
-@item
-Opci@'on: @code{gnuplot_dumb_term_command}
+@defvr {Opci@'on para plot} gnuplot_default_term_command
 
-Comando de gnuplot para establecer el tipo de terminal para
+Comando de Gnuplot para establecer el tipo de terminal por defecto.
+El valor por defecto es @code{set term pop}.
+
+@end defvr
+
+
+
+@defvr {Opci@'on para plot} gnuplot_dumb_term_command
+
+Comando de Gnuplot para establecer el tipo de terminal para
 el terminal oculto. El valor por defecto es @code{"set term dumb 79 22"},
 que da una salida de texto de 79 por 22 caracteres.
 
-Ejemplo:
+@end defvr
 
-@example
-[gnuplot_dumb_term_command, "set term dumb 132 50"]
-@end example
 
-@item
-Opci@'on: @code{gnuplot_ps_term_command}
 
-Comando de gnuplot para establecer el tipo de terminal para
+@defvr {Opci@'on para plot} gnuplot_ps_term_command
+
+Comando de Gnuplot para establecer el tipo de terminal para
 el terminal PostScript. El valor por defecto es
 @code{"set size 1.5, 1.5;set term postscript eps enhanced color solid 24"},
 que establece un tama@~no de 1.5 veces el valor por defecto de gnuplot,
 junto con un tama@~no de fuente de 24, entre otras cosas. Cons@'ultese
 la documentaci@'on de gnuplot para m@'as informaci@'on sobre @code{set term postscript}.
 
-Ejemplo:
-
-Todas las figuras de los ejemplos de la funci@'on @var{plot2d} de este
-manual se obtuvieron a partir de archivos Postscript generados
-asign@'andole a @code{gnuplot_ps_term_command} el valor
-
-@example
-[gnuplot_ps_term_command,"set size 1.3, 1.3;\
- set term postscript eps color solid lw 2.5 30"]
-@end example
-
-@end itemize
-
-
-@b{Ejemplos:}
-
-@itemize @bullet
-@item
-Almacena un gr@'afico de @code{sin(x)} en el fichero @code{sin.eps}.
-@end itemize
-@example
-(%i1) plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps],
-                        [gnuplot_out_file, "sin.eps"])$
-@end example
-
-@itemize @bullet
-@item
-Utiliza la opci@'on y para saltarse las singularidades, as@'{@dotless{i}} como la opci@'on @code{gnuplot_preamble} para colocar la clave en la parte inferior del dibujo.
-@end itemize
-@example
-(%i2) plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10],
-                     [gnuplot_preamble, "set key bottom"])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting14,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Utiliza un @code{gnuplot_preamble} bastante complicado a fin de producir etiquetas en el eje x.
-(N@'otese que la cadena de @code{gnuplot_preamble} debe introducirse sin saltos de l@'{@dotless{i}}nea.)
-@end itemize
-@example
-(%i3) my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, \
-'-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0, \
-'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
-
-(%i4) plot2d([cos(x), sin(x), tan(x), cot(x)],
-       [x, -2*%pi, 2.1*%pi], [y, -2, 2],
-       [gnuplot_preamble, my_preamble]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting15,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Utiliza un @code{gnuplot_preamble} bastante complicado a fin de producir etiquetas en el eje x, produciendo una salida PostScript que aprovecha el formateo avanzado de texto disponible en gnuplot.
-(N@'otese que la cadena de @code{gnuplot_preamble} debe introducirse sin saltos de l@'{@dotless{i}}nea.)
-@end itemize
-@example
-(%i5) my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' \
--6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, \
-'-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, \
-'@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' \
-6.283)"$
-
-(%i6) plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
-    [y, -2, 2], [gnuplot_preamble, my_preamble],
-    [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
-@end example
-
-@itemize @bullet
-@item
-Un gr@'afico tridimensional utilizando el terminal pm3d de gnuplot.
-@end itemize
-@example
-(%i7) plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-        [grid, 50, 50], [gnuplot_pm3d, true])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting16,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Un gr@'afico tridimensional sin malla y con contornos proyectados sobre el plano inferior.
-@end itemize
-@example
-(%i8) my_preamble: "set pm3d at s;unset surface;set contour;\
-set cntrparam levels 20;unset key"$
-(%i9) plot3d(atan(-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [grid, 50, 50], [gnuplot_pm3d, true],
-    [gnuplot_preamble, my_preamble])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting17,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Un gr@'afico en el que el eje z s@'olo se representa por el color.
-(N@'otese que la cadena de @code{gnuplot_preamble} debe introducirse sin saltos de l@'{@dotless{i}}nea.)
-@end itemize
-@example
-(%i10) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [gnuplot_preamble, "set view map; unset surface"],
-    [gnuplot_pm3d, true], [grid, 150, 150])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting18,8cm}
-@end ifnotinfo
-
 @end defvr
 
-@deffn {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Funci@'on} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Funci@'on} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Funci@'on} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
-@deffnx {Funci@'on} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-
-Representa gr@'aficamente una o tres expresiones como funciones de dos variables.
-
-@example
-(%i1) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting19,8cm}
-@end ifnotinfo
-
-dibuja @code{z = 2^(-u^2+v^2)} con @code{u} y @code{v} variando en [-3,3] y
-[-2,2] respectivamente, y con @var{u} sobre el eje x, y con @code{v} sobre el
-eje y.
-
-El mismo gr@'afico se puede dibujar usando openmath (si Xmaxima fu@'e
-instalado):
-
-@example
-(%i2)  plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
-               [plot_format, openmath]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting25,8cm}
-@end ifnotinfo
-
-@noindent
-en este caso el rat@'on se puede usar para rotar el gr@'afico y ver la
-superficie desde diferentes lados.
-
-Un ejemplo del tercer patr@'on de argumentos es
-
-@example
-(%i3) plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)),
-   y*sin(x/2)], [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting20,8cm}
-@end ifnotinfo
-
-que dibuja una banda de Moebius, parametrizada por las tres expresiones dadas como primer argumento a @code{plot3d}. Un argumento opcional @code{['grid, 50, 15]} da el n@'umero de intervalos en las direcciones x e y, respectivamente.
-
-Cuando la funci@'on a representar ha sido definida en Maxima mediante  @code{:=} o @code{define}, o en Lisp por DEFUN o DEFMFUN, entonces se podr@'a especificar por su nombre. Las funciones definidas a nivel de LISP por DEFMSPEC, las funciones de simplificaci@'on, junto con muchas otras funciones, no pueden especificarse directamente por su nombre.
-@c REPORTED AS SF BUG # 1385271
-
-Este ejemplo muestra un gr@'afico de la parte real de @code{z^1/3}.
-
-@example
-(%i4) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-      ['grid, 12, 80], ['transform_xy, polar_to_xy]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting21,8cm}
-@end ifnotinfo
-
-Otros ejemplos son la botella de Klein:
-
-@example
-(%i5) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
-      + 3.0) - 10.0$
-(%i6) expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
-      + 3.0)$
-(%i7) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
-
-(%i8) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
-      [y, -%pi, %pi], ['grid, 40, 40]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting22,8cm}
-@end ifnotinfo
-
-y un toro:
-
-@example
-(%i9) expr_1: cos(y)*(10.0+6*cos(x))$
-(%i10) expr_2: sin(y)*(10.0+6*cos(x))$
-(%i11) expr_3: -6*sin(x)$
-(%i12) plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi],
-       [y, 0, 2*%pi], ['grid, 40, 40]);
-@end example
-
-@ifnotinfo
-@image{../figures/plotting23,8cm}
-@end ifnotinfo
-
-En ocasiones puede ser necesario definir una funci@'on para representarla. Todos los argumentos de @code{plot3d} se eval@'uan, de manera que puede ser dif@'{@dotless{i}}cil escribir una expresi@'on que haga lo que el usuario realmente quiere; en tales casos facilita las cosas definir previamente la funci@'on.   
-
-@example
-(%i13) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
-       [1, 2, 3, 3])$
-(%i14) f(x, y) := float (M [?round(x), ?round(y)])$
-(%i15) plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
-@end example
-
-@ifnotinfo
-@image{../figures/plotting24,8cm}
-@end ifnotinfo
-
-V@'ease  @code{plot_options} para m@'as ejemplos.
-
-@end deffn
 
 
-@deffn {Funci@'on} make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
-Devuelve una funci@'on apropiada para la funci@'on de transformaci@'on de @code{plot3d}. Debe usarse con la opci@'on gr@'afica @code{transform_xy}.
-@example
-make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
-@end example
-es una transformaci@'on para pasar a coordenadas polares.
-@end deffn
 
-@deffn {Funci@'on} set_plot_option (@var{option})
-Asigna un valor a una de las variables globales que controlan los gr@'aficos. El argumento
-@var{option} se especifica como una lista de dos o m@'as elementos, en la que el primero es el nombre de una de las opciones de la lista @code{plot_options}.
 
-La funci@'on @code{set_plot_option} eval@'ua sus argumentos y devuelve @code{plot_options} tal como queda despu@'es de la actualizaci@'on.
 
-V@'eanse tambi@'en @code{plot_options}, @code{plot2d} y @code{plot3d}.
 
-Ejemplos:
 
-Se modifican los valores de @code{grid} y @code{x}.
-Si a un nombre de opci@'on de @code{plot_options} tiene ya un valor asignado, hacerlo preceder de un ap@'ostrofo para evitar su evaluaci@'on.
+@node Funciones para el formato Gnuplot_pipes,  , Opciones para Gnuplot, Gr@'aficos
+@section Funciones para el formato Gnuplot_pipes
 
-@c ===beg===
-@c set_plot_option ([grid, 30, 40]);
-@c x: 42;
-@c set_plot_option (['x, -100, 100]);
-@c ===end===
-
-@example
-(%i1) set_plot_option ([grid, 30, 40]);
-(%o1) [[x, - 1.755559702014E+305, 1.755559702014E+305], 
-[y, - 1.755559702014E+305, 1.755559702014E+305], [t, - 3, 3], 
-[grid, 30, 40], [transform_xy, false], [run_viewer, true], 
-[plot_format, gnuplot], [gnuplot_term, default], 
-[gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
-[gnuplot_pm3d, false], [gnuplot_preamble, ], 
-[gnuplot_curve_titles, [default]], 
-[gnuplot_curve_styles, [with lines 3, with lines 1, 
-with lines 2, with lines 5, with lines 4, with lines 6, 
-with lines 7]], [gnuplot_default_term_command, ], 
-[gnuplot_dumb_term_command, set term dumb 79 22], 
-[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
-eps enhanced color solid 24]]
-(%i2) x: 42;
-(%o2)                          42
-(%i3) set_plot_option (['x, -100, 100]);
-(%o3) [[x, - 100.0, 100.0], [y, - 1.755559702014E+305, 
-1.755559702014E+305], [t, - 3, 3], [grid, 30, 40], 
-[transform_xy, false], [run_viewer, true], 
-[plot_format, gnuplot], [gnuplot_term, default], 
-[gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
-[gnuplot_pm3d, false], [gnuplot_preamble, ], 
-[gnuplot_curve_titles, [default]], 
-[gnuplot_curve_styles, [with lines 3, with lines 1, 
-with lines 2, with lines 5, with lines 4, with lines 6, 
-with lines 7]], [gnuplot_default_term_command, ], 
-[gnuplot_dumb_term_command, set term dumb 79 22], 
-[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
-eps enhanced color solid 24]]
-@end example
-
-@end deffn
-
-@b{Funciones para trabajar con el formato gnuplot_pipes:}
 
 @deffn {Funci@'on} gnuplot_start ()
 
@@ -1123,12 +1411,16 @@ No es necesario inicializarla manualmente antes de hacer gr@'aficos.
 
 @end deffn
 
+
+
 @deffn {Funci@'on} gnuplot_close ()
 
 Cierra la tuber@'{@dotless{i}}a hacia Gnuplot que haya sido 
 utilizada para hacer gr@'aficos.
 
 @end deffn
+
+
 
 @deffn {Funci@'on} gnuplot_restart ()
 
@@ -1137,7 +1429,9 @@ utilizada para hacer gr@'aficos e inicializa una nueva.
 
 @end deffn
 
-@deffn {Funci@'on} gnuplot_replot ()
+
+
+@deffn  {Funci@'on} gnuplot_replot ()
 @deffnx {Funci@'on} gnuplot_replot (@var{s})
 
 Actualiza la ventana de Gnuplot. Si @code{gnuplot_replot} es invocada
@@ -1145,6 +1439,8 @@ con un comando de Gnuplot en la cadena @var{s}, entonces @var{s} es
 enviada a Gnuplot antes de redibujar la ventana.
 
 @end deffn
+
+
 
 @deffn {Funci@'on} gnuplot_reset ()
 

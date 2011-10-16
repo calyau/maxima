@@ -14,7 +14,8 @@ Ctensor.de.texi Atensor.de.texi Special.de.texi Numerical.de.texi \
 Runtime.de.texi Rules.de.texi Function.de.texi Program.de.texi \
 Translator.de.texi Debugging.de.texi Miscellaneous.de.texi \
 abs_integrate.de.texi \
-affine.de.texi asympa.de.texi augmented_lagrangian.de.texi bode.de.texi \
+affine.de.texi asympa.de.texi augmented_lagrangian.de.texi \
+bernstein.de.texi bode.de.texi \
 cobyla.de.texi contrib_ode.de.texi descriptive.de.texi \
 diag.de.texi distrib.de.texi draw.de.texi drawdf.de.texi dynamics.de.texi \
 ezunits.de.texi f90.de.texi finance.de.texi fractals.de.texi ggf.de.texi \
@@ -24,8 +25,9 @@ lindstedt.de.texi linearalgebra.de.texi lsquares.de.texi makeOrders.de.texi \
 minpack.de.texi mnewton.de.texi numericalio.de.texi opsubst.de.texi \
 orthopoly.de.texi plotdf.de.texi romberg.de.texi simplex.de.texi \
 simplifications.de.texi solve_rec.de.texi stats.de.texi stirling.de.texi \
-stringproc.de.texi symmetries.de.texi unit.de.texi zeilberger.de.texi \
-Glossary.de.texi
+stringproc.de.texi symmetries.de.texi to_poly_solve.de.texi unit.de.texi \
+zeilberger.de.texi \
+Glossary.de.texi Number.de.texi Indices.de.texi
 
 
 all-local: maxima-index.lisp maxima.html contents.hhc

@@ -13,8 +13,6 @@
 
 (macsyma-module transl)
 
-(transl-module transl)
-
 ;;; File directory.
 
 ;;; TRANSL   Driver. Basic translation properties.

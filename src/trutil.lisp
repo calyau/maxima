@@ -12,8 +12,6 @@
 
 (macsyma-module trutil)
 
-(transl-module trutil)
-
 ;;; takes a list, and returns a cons of an a-list of (gensym . exp)
 ;;; and the origonal list with gensyms substututed for non-atom elements
 ;;; of the list. This could be used to define subr-like makros.
@@ -79,7 +77,7 @@
 	     (min (or (car args-p) (cdr args-p)))
 	     (max (cdr args-p)))
 	 (cond ((and min (< nargs min))
-		(mformat *translation-msgs-files* "~%Error: Too few arguments supplied to ~:@M~%"
+		(mformat *translation-msgs-files* (intl:gettext "error: too few arguments supplied to ~:@M~%")
 			 (caar form))
 		(mgrind form *translation-msgs-files*))
 	       ((and max (> nargs max))

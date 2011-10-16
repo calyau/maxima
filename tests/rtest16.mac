@@ -1,9 +1,18 @@
 (kill (all), values);
 [];
 
-/* make sure things work after a reset().  ID: 1986726 and ID: 2787047 */
+/* make sure things work after a reset().  ID: 1986726 and ID: 2787047
+ *
+ * display2d is a resetable option variable. We save the value of display2d
+ * and restore it after the reset. This allows to run the testsuite in both
+ * display modes.
+ */
+(save:display2d, done);
+done$
 (reset(),0);
 0;
+(display2d:save, done);
+done$
 
 /* Tests from Bug 1036900 */
 /* These bugs were fixed in limit.lisp rev 1.7, 2004/10/04 */
@@ -225,7 +234,7 @@ limit(a/n, n, inf);
  */
 (assume(a>0, b>0, sqrt(sqrt(b^2+a^2)-a)*(sqrt(b^2+a^2)+a)^(3/2)-b^2>0),0);
 0;
-radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b)));
+radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/(sqrt(%pi)/sqrt(a+%i*b)));
 1;
 
 /*
@@ -511,6 +520,15 @@ gruntz( (x*x^(1/x)-x)/log(x), x, inf);
 gruntz(exp(-1/x)/x^6,x,0,plus);
 0;
 
+/* limit gives the wrong answer - ID: 3410704 */
+limit(sqrt(t^2+4)*(((t+2/t^2)^2+4)^(3/2)-(t+2/t^2)^3-4*(t+2/t^2))
+	 /(sqrt((t+2/t^2)^2+4)*((t^2+4)^(3/2)-t^3-4*t)), t, inf);
+1;
+
+/* Inaccurate Limit Evaluation - ID: 3276461 */
+radcan(limit((-4*x^2-10*x+24)/((4*x+8)^(1/3)+2), x, -4));
+66;
+
 /*
  * Bug [ 1854888 ] hgfred([5],[5], 1) doesn't simplify
  */
@@ -725,13 +743,16 @@ ratsimp(hgfred([-3/2,1],[-1/2], t));
 /*
  * Bug 2793827: internal error in integrate
  */
-(assume(n>0),0);
+(assume(n>0),declare(n,integer),0);
 0;
 
 integrate((g32475^n*(g32475*n-n-1)/(g32475-1)^2+1/(g32475-1)^2)/(1-g32475)
  -(g32475^(2*n+1)*(g32475*n-n-1)/(g32475-1)^2+g32475^(n+1)/(g32475-1)^2)
   /(1-g32475),g32475,0,1);
 (n+1)^2/2-1/2;
+
+kill(all);
+done;
 
 /*
  * Bug 609464 : 1+%e,numer and %e^%e,numer
@@ -2084,9 +2105,9 @@ x^5-5*x^4/2+5*x^3/3-x/6$
 reset(zerobern);
 [zerobern];
 
-/* Bug ID: 2905929 - gcdex
- */
-
+/* -----------------------------------------------------------------------------
+ * Bug ID: 2905929 - gcdex
+ * -------------------------------------------------------------------------- */
 q0[2] : 6;
 6$
 ratdisrep(gcdex(x-7, x-8));
@@ -2098,7 +2119,7 @@ true;
 is(equal(gcdex(0, z^2-1, z), [0, 1, z^2-1]));
 true;
 
-/* Examples from Maxima Manual */
+/* Examples from the Maxima Manual */
 is(equal(gcdex(x^2+1, x^3+4), [-(x^2+4*x-1)/17,(x+4)/17,1]));
 true$
 is(equal(gcdex(x*(y+1), y^2-1, x), [0,1/(y^2-1),1]));
@@ -2106,3 +2127,36 @@ true$
 
 kill(q0);
 done;
+
+/* -----------------------------------------------------------------------------
+ * Bug ID: 3389830 - Error break in rtest15 with linear display
+ *
+ * Show that we do not get an error with grind for a prefix and a postfix
+ * Operator when displaying the definition of a function or a macro.
+ * This is a test of the function msz-mdef in grind.lisp.
+ * -------------------------------------------------------------------------- */
+(postfix("f"), prefix("g"), done);
+done$
+grind("f"(x):=x);
+done$
+grind("f"(x)::=x);
+done$
+grind("g"(x):=x);
+done$
+grind("g"(x)::=x);
+done$
+
+/* -----------------------------------------------------------------------------
+ * Bug ID: 3396631 - equal terms produce different results
+ * Correcting a bug in plusin revision 23.08.2011
+ * -------------------------------------------------------------------------- */
+5*sqrt(5)+2*sqrt(3)+6*sqrt(5);
+11*sqrt(5)+2*sqrt(3)$
+5*sqrt(5)+4*sqrt(3)+6*sqrt(5);
+11*sqrt(5)+4*sqrt(3)$
+5*sqrt(5)+3*sqrt(5)+5*sqrt(3)+3*sqrt(3)+2*sqrt(75)+2*sqrt(45);
+14*sqrt(5)+2*3^(5/2)$
+5*sqrt(5)+5*sqrt(3)+3*sqrt(3)+2*sqrt(75)+2*sqrt(45)+3*sqrt(5);
+14*sqrt(5)+2*3^(5/2)$
+5*sqrt(5)+5*sqrt(3)+2*sqrt(75)+2*sqrt(45)+3*sqrt(5)+3*sqrt(3);
+14*sqrt(5)+2*3^(5/2)$

@@ -1,10 +1,17 @@
+@c English version 2011-06-12
+@page
+@node Estructuras, , Arrays, Tipos de datos y estructuras
+@section Estructuras
+
+
+
 @menu
 * Introducci@'on a las estructuras::       
 * Funciones y variables para las estructuras::       
 @end menu
 
 @node Introducci@'on a las estructuras, Funciones y variables para las estructuras, Estructuras, Estructuras
-@section Introducci@'on a las estructuras
+@subsection Introducci@'on a las estructuras
 
 Maxima dispone de estructuras para la agregaci@'on de datos.
 Una estructura es una expresi@'on en la que los argumentos se definen con
@@ -37,7 +44,7 @@ son siempre visibles.
 
 
 @node Funciones y variables para las estructuras,  , Introducci@'on a las estructuras, Estructuras
-@section Funciones y variables para las estructuras
+@subsection Funciones y variables para las estructuras
 
 @defvr {Variable global} structures
 

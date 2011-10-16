@@ -14,13 +14,9 @@
 
 (macsyma-module trmode)
 
-(transl-module trmode)
-
 (defmvar $mode_checkp t "if true, modedeclare checks the modes of bound variables.")
 (defmvar $mode_check_warnp t "if true, mode errors are described.")
 (defmvar $mode_check_errorp nil "if true, modedeclare calls error.")
-
-(defmvar $macsyma_extend_warnp t "if true, warning given about not-built-in modes being taken for Maxima EXTEND types.")
 
 (defun mseemingly-unbound (x)
   (or (not (boundp x)) (eq (symbol-value x) x)))
@@ -80,9 +76,9 @@
 (defmspec $define_variable  (l)
   (setq l (cdr l))
   (unless (> (length l) 2)
-    (merror "Wrong number of arguments to `define_variable'"))
+    (merror (intl:gettext "define_variable: expected three arguments; found: ~M") `((mprogn) ,@l)))
   (unless (symbolp (car l))
-    (merror "First arg to `define_variable' not a symbol."))
+    (merror (intl:gettext "define_variable: first argument must be a symbol; found: ~M") (car l)))
   (meval `(($modedeclare) ,(car l) ,(caddr l)))
   (unless (eq (caddr l) '$any)
     (putprop (car l) 'assign-mode-check 'assign))
@@ -94,7 +90,7 @@
 (defmspec $mode_identity (l)
   (setq l (cdr l))
   (unless (= (length l) 2)
-    (merror "`mode_identity' takes 2 arguments."))
+    (merror (intl:gettext "mode_identity: expected two arguments; found: ~M") `((mprogn) ,@l)))
   (let* ((obj (cadr l))
 	 (v (meval obj)))
     (chekvalue obj (ir-or-extend (car l)) v)
@@ -116,8 +112,7 @@
     (if built-in-type built-in-type
 	(prog1
 	    x
-	  (when $macsyma_extend_warnp
-	    (mtell "modedeclare: warning: ~M is not a built-in type; assuming it is a Maxima extension type." x))))))
+	  (mtell (intl:gettext "modedeclare: ~M is not a built-in type; assuming it is a Maxima extension type.") x)))))
 
 (def%tr $modedeclare (form)
   (do ((l (cdr form) (cddr l)))
@@ -148,7 +143,7 @@
 (defmspec $modedeclare (x)
   (setq x (cdr x))
   (when (oddp (length x))
-    (merror "`mode_declare' takes an even number of arguments."))
+    (merror (intl:gettext "mode_declare: expected an even number of arguments; found: ~M") `((mprogn) ,@x)))
   (do ((l x (cddr l)) (nl))
       ((null l) (cons '(mlist) (nreverse nl)))
     (declmode (car l) (ir-or-extend (cadr l)) nil)
@@ -225,9 +220,9 @@
 
 (defun signal-mode-error (object mode value)
   (cond ((and $mode_check_warnp (not $mode_check_errorp))
-	 (mtell "warning: ~:M was declared with mode ~:M, but it has value: ~M" object mode value))
+	 (mtell (intl:gettext "translator: ~:M was declared with mode ~:M, but it has value: ~M") object mode value))
 	($mode_check_errorp
-	 (merror "Error: ~:M was declared mode ~:M, has value: ~M" object mode value))))
+	 (merror (intl:gettext "translator: ~:M was declared with mode ~:M, but it has value: ~M") object mode value))))
 			  
 (defun put-mode (name mode type)
   (if (get name 'tbind)
@@ -243,9 +238,4 @@
 ;;; 1/2 is not $RATIONAL. bad name. it means CRE form.
 
 (defun udm-err (mode)
-  (mtell "warning: ~:M is not a known mode declaration; maybe you want ~:M mode.~%"
-	 mode
-	 (case mode
-	   (($integer $integerp) '$fixnum)
-	   (($complex) "to ask about this")
-	   (t "to see the documentation on"))))
+  (mtell (intl:gettext "translator: no such mode declaration: ~:M~%") mode))

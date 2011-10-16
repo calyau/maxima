@@ -1,0 +1,169 @@
+@menu
+* Introduction to cobyla::
+* Functions and Variables for cobyla::
+* Examples for cobyla::  
+@end menu
+
+@node Introduction to cobyla, Functions and Variables for cobyla, cobyla, cobyla
+@section Introduction to cobyla
+
+@code{fmin_cobyla}は
+Powell[1][2][3]による
+Fortran制約最適化ルーチンCOBYLAの(@code{f2cl}による)Common Lisp翻訳です。
+
+COBYLAは
+X上の形式g(X) >= 0のM個の不等式制約を条件として目的函数F(X)を最小化します。
+ここで、XはN個の成分を持つ変数のベクトルです。
+
+等式制約g(X)=0は、
+よく、不等式制約の組g(X)>=0と-g(X)>= 0で実装することができます。
+MaximaのCOBYLAインターフェースは等式制約を受け入れ、
+内部的に等式制約を不等式制約の組に変換します。
+
+アルゴリズムは目的函数や制約函数の線形近似を用います。
+変数空間内のN+1点での線形補間で形成された近似です。
+補間点は単体の頂点としてみなされます。
+パラメータRHOは単体のサイズを制御し、
+RHOBEGからEHOENDに自動的に減らされます。
+それぞれのRHOで、
+サブルーチンは
+現在のサイズにとって変数の良いベクトルを達成しようとし、
+そして、RHOは値RHOENDに達するまで減らされます。
+それゆえに、RHOBEGとRHOENDはそれぞれ、変数への合理的な初期変化と
+変数に要求される精度に設定されるべきですが、
+この精度は、保証はないので、実験の対象として見るべきです。
+ルーチンは、
+変数の変化を計算する時、
+制約を単一のペナルティ函数にひとまとめにせずに、
+制約それぞれを個別に扱います。
+サブルーチン名は
+the phrase Constrained Optimization BY Linear Approximations(線形近似による位相制約下最適化)に由来します。
+
+
+
+参考文献:
+
+[1] Fortran Codeは@url{http://plato.asu.edu/sub/nlores.html#general}から
+
+[2] M. J. D. Powell, "A direct search optimization method that models the objective and constraint functions by linear interpolation," in Advances in Optimization and Numerical Analysis, eds. S. Gomez and J.-P. Hennart (Kluwer Academic: Dordrecht, 1994), p. 51-67. 
+
+[3] M. J. D. Powell, "Direct search algorithms for optimization calculations," Acta Numerica 7, 287-336 (1998).  Also available as University of Cambridge, Department of Applied Mathematics and Theoretical Physics,  Numerical Analysis Group, Report NA1998/04 from @url{http://www.damtp.cam.ac.uk/user/na/reports.html}
+
+@opencatbox
+@category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package cobyla}
+@closecatbox
+
+@node Functions and Variables for cobyla, Examples for cobyla, Introduction to cobyla, cobyla
+@section Functions and Variables for cobyla
+
+@deffn {関数} fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {関数} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+
+オプションの制約の組を条件として多変数@var{X}に関する式@var{F}の近似的最小を返します。
+@var{Y}は@var{X}に対する初期推測のリストです。
+
+@var{F}は関数名やラムダ式ではなく、通常の式でなければいけません。
+
+@code{optional_args}は、
+@code{@var{symbol} = @var{value}}のように指定される付加的な引数を表します。
+認識されるオプションの引数は以下の通りです:
+
+@table @code
+@item constraints
+@var{X}が満たさなければいけない不等式と等式の制約のリスト。
+不等式制約は、
+形式@code{g(@var{X}) >= h(@var{X})}もしくは@code{g(@var{X}) <= h(@var{X})}の
+実際の不等式でなければいけません。
+等式制約は
+形式@code{g(@var{X}) = h(@var{X})}のものでなければいけません。
+@item rhobeg
+単体のサイズを制御する内部RHO変数の初期値(デフォルトは1.0)。
+@item rhoend 
+要望される最終値rhoパラメータ。
+近似的に変数の精度です。(デフォルトは1d-6)
+@item iprint
+冗長な出力レベル(デフォルトは0)。
+@itemize
+@item
+0 - 出力なし
+@item
+1 - 計算終了時にまとめ
+@item
+2 - 変数のベクトルやRHOが減らされる時のある函数情報と一緒に、
+RHOとSIGMAのそれぞれの新しい値が印字されます。
+@item
+3 - 2と同様ですが、F(X)が計算される時情報が印字されます。
+@end itemize
+@item maxfun
+函数評価の最大回数(デフォルトは1000)。
+@end table
+
+返す時、ベクトルが与えられます:
+@enumerate
+@item
+最小を与える変数の値。
+これは
+@var{X}の中にリストされた変数のそれぞれに関する
+形式@code{@var{var} = @var{value}}の
+要素のリストです。
+@item
+最小化された函数値
+@item
+函数評価の回数
+@item
+以下の意味を持つリターンコード
+ @enumerate
+ @item
+ 0 - エラーなし。
+ @item
+ 1 - 函数評価の最大回数の上限に到達した。
+ @item
+ 2 - 進行を妨げる丸め誤差。
+ @end enumerate
+@end enumerate
+
+@code{load(fmin_cobyla)}はこの関数をロードします。
+
+@end deffn
+
+@deffn {関数} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {関数} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+
+この関数は、
+多倍長浮動小数点演算が使われること、
+@var{rhoend}のデフォルト値が@code{10^(fpprec/2)}であることを除いて、
+@code{fmin_cobyla}と同一です。
+
+更に知るには@code{fmin_cobyla}を参照してください。
+
+@code{load(fmin_cobyla)}はこの関数をロードします。
+
+@end deffn
+
+@node Examples for cobyla, , Functions and Variables for cobyla, cobyla
+@section Examples for cobyla
+
+x1*x2を1-x1^2-x2^2 >= 0の条件で最小化します。
+理論的解はx1 = 1/sqrt(2), x2 = -1/sqrt(2)です。
+
+@c ===beg===
+@c load(fmin_cobyla)$
+@c fmin_cobyla(x1*x2, [x1, x2], [1,1], 
+@c             constraints = [x1^2+x2^2<=1], iprint=1);
+@c ===end===
+@example
+(%i1) load(fmin_cobyla)$
+@group
+(%i2) fmin_cobyla(x1*x2, [x1, x2], [1,1], 
+                  constraints = [x1^2+x2^2<=1], iprint=1);
+@end group
+   Normal return from subroutine COBYLA
+
+   NFVALS =   66   F =-5.000000E-01    MAXCV = 1.999845E-12
+   X = 7.071058E-01  -7.071077E-01
+(%o2) [[x1 = 0.70710584934848, x2 = - 0.7071077130248], 
+       - 0.49999999999926, [[-1.999955756559757e-12],[]], 66]
+@end example
+
+追加の例はshare/cobyla/exディレクトリにあります。
+

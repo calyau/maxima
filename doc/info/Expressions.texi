@@ -944,7 +944,7 @@ to the one produced by @code{dpart} but it has a name in the top line.
 
 @c -----------------------------------------------------------------------------
 @anchor{mainvar}
-@defvr {Declaration} mainvar
+@defvr {Property} mainvar
 
 You may declare variables to be @code{mainvar}.  The ordering scale for atoms is
 essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars < other
@@ -965,11 +965,32 @@ necessary if cancellation is to occur.  Also, if you save an expression in which
 
 @c -----------------------------------------------------------------------------
 @anchor{noun}
-@defvr {Declaration} noun
+@defvr {Property} noun
 
 @code{noun} is one of the options of the @mref{declare} command.  It makes a
 function so declared a "noun", meaning that it won't be evaluated
 automatically.
+
+Example:
+
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
 
 @opencatbox
 @category{Nouns and verbs}

@@ -53,7 +53,9 @@ block
         rtest_interpol,
         rtest_levin,
         rtest_fractals,
+        rtest_bernstein,
         /* rtest_lsquares, Most of the tests fail, the code has to be revised */
+        /* itensor.lisp redfines sdiff...causes problems with diff(binomial(k,n),k), for example.*/
         rtest_atensor,
         rtest_ctensor,
         rtest_itensor,
@@ -77,10 +79,10 @@ block
         /* hard_test, --takes a long time or never finishes */
         rtest_pdiff,
         rtest_topoly, 
-        [rtestprintf, 29, 38, 39, 40, 41, 47, 48], 
+        [rtestprintf, 29, 38, 39, 40, 41, 47, 48],
         rtest_simplex,
         rtest_graphs,
-        rtest_abs_integrate,
+        [rtest_abs_integrate, 148, 149],
         rtest_pochhammer,
         [rtest_to_poly_solver, 64, 74, 80],
         rtest_hg,
@@ -88,6 +90,5 @@ block
         rtest_mnewton,
         rtest_solve_rat_ineq,
         [rtest_vect, 4, 9, 10, 13, 16, 19, 20, 21, 24, 25],
-        rtest_antid
-        ]],
+        rtest_antid]],
     run_testsuite ());

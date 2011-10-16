@@ -570,6 +570,13 @@ integers, otherwise @code{false}.
 @subsection Introduction to Strings
 @c -----------------------------------------------------------------------------
 
+@cindex backslash
+@ifnotinfo
+@cindex \
+@end ifnotinfo
+@ifinfo
+@cindex \\
+@end ifinfo
 Strings (quoted character sequences) are enclosed in double quote marks @code{"}
 for input, and displayed with or without the quote marks, depending on the
 global variable @mrefdot{stringdisp}

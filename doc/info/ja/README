@@ -1,0 +1,12 @@
+You need a few works around when you make Japanese htmls.
+And I don't succeed to treat Japanese characters on  texi2dvi, so I haven't had pdf file yet.
+
+a. works around
+1. install gsed.
+On Mac OS (Snow leopard), /usr/bin/sed doesn't treat Japanese characters correctly, so I used gsed 4.2.1 in extract_categories.sh.
+2. install texi2html 5.0.
+texi2html 1.76, which is a version appended in Maxima, doesn't treat Japanese characters correctly, too, so I used texi2html 5.0 (/opt/local/bin/texi2html) in extract_categories.sh.
+
+Thanks,
+--
+ICHIKAWA, Yuji

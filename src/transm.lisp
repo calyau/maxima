@@ -14,67 +14,7 @@
 
 (macsyma-module transm macro)
 
-(defvar transl-modules nil)
-
-;;; Simple but effective single-level module definitions
-;;; and utilities which work through property lists.
-;;; Information has to be in various places:
-;;; [1] Compile-time of the TRANSLATOR itself.
-;;; [2] Runtime of the translator.
-;;; [3] Translate-time of user-code
-;;; [4] Compile-time of user-code.
-;;; [5] Runtime of user-code.
-;;; [6] "Utilities" or documentation-time of user-code.
-
-;;; -GJC
-
-;;; Note: Much of the functionality here was in use before macsyma as
-;;; a whole got such mechanisms, however we must admit that the macsyma
-;;; user-level (and non-modular global only) INFOLISTS of FUNCTIONS and VALUES,
-;;; inspired this, motivated by my characteristic lazyness.
-
-(defmacro def-transl-module (name &rest properties)
-  `(progn
-    (pushnew ',name transl-modules :test #'eq)
-    ,@(mapcar #'(lambda (p)
-		  `(defprop ,name
-		    ,(if (atom p) t (cdr p))
-		    ,(if (atom p) p (car p))))
-	      properties)))
-
-(def-transl-module transs ttime-auto)
-(def-transl-module transl ttime-auto (first-load trdata dcl))
-(def-transl-module trutil ttime-auto)
-(def-transl-module trans1 ttime-auto)
-(def-transl-module trans2 ttime-auto)
-(def-transl-module trans3 ttime-auto)
-(def-transl-module trans4 ttime-auto)
-(def-transl-module trans5 ttime-auto)
-(def-transl-module transf ttime-auto)
-(def-transl-module troper ttime-auto)
-(def-transl-module trpred ttime-auto)
-
-(def-transl-module mtags ttime-auto)
-(def-transl-module mdefun)
-(def-transl-module transq)
-(def-transl-module fcall no-load-auto)
-(def-transl-module acall no-load-auto)
-(def-transl-module trdata no-load-auto)
-(def-transl-module mcompi ttime-auto)
-
-(def-transl-module dcl pseudo)		; more data
-
 (defprop dcl maxdoc fasl-dir)
-
-(def-transl-module trmode ttime-auto no-load-auto)  ; Temporary hack, TRANSL AUTOLOADs should be
-					            ; in a different file from functional autoloads.
-
-(def-transl-module trhook hyper)
-(def-transl-module transl-autoload pseudo)
-
-(defmacro transl-module (name)
-  (unless (member name transl-modules :test #'eq)
-    (maxima-error "Not a `transl-module', see TRANSM")))
 
 (defmacro def%tr (name lambda-list &body body &aux definition)
   (setq definition
@@ -88,7 +28,7 @@
   ;; right now MUST be used in the SAME file.
   `(putprop ',name
     (or (get ',same-as 'translate)
-     (maxima-error "No TRANSLATE property to alias. ~a" ',same-as))
+     (maxima-error "DEF-SAME%TR: ~a has no TRANSLATE property, so I can't make an alias." ',same-as))
     'translate))
 
 ;;; declarations for the TRANSL PACKAGE.

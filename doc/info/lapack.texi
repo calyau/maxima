@@ -99,6 +99,53 @@ Example:
 
 @end deffn
 
+@deffn {Function} dgeqrf (@var{A})
+
+Computes the QR decomposition of the matrix @var{A}.
+All elements of @var{A} must be integer or floating point numbers.
+@var{A} may or may not have the same number of rows and columns.
+
+A list of two items is returned.
+The first item is the matrix @var{Q}, which is a square, orthonormal matrix
+which has the same number of rows as @var{A}.
+The second item is the matrix @var{R}, which is the same size as @var{A},
+and which has all elements equal to zero below the diagonal.
+The product @code{@var{Q} . @var{R}}, where "." is the noncommutative multiplication operator,
+is equal to @var{A} (ignoring floating point round-off errors).
+
+@c ===beg===
+@c load (lapack)$
+@c fpprintprec : 6;
+@c M : matrix ([1, -3.2, 8], [-11, 2.7, 5.9]);
+@c [q, r] : dgeqrf (M);
+@c q . r - M;
+@c mat_norm (%);
+@c ===end===
+@example
+(%i1) load (lapack) $
+(%i2) fpprintprec : 6 $
+(%i3) M : matrix ([1, -3.2, 8], [-11, 2.7, 5.9]) $
+(%i4) [q, r] : dgeqrf (M);
+       [ - .0905357  .995893  ]
+(%o4) [[                      ], 
+       [  .995893    .0905357 ]
+                               [ - 11.0454   2.97863   5.15148 ]
+                               [                               ]]
+                               [     0      - 2.94241  8.50131 ]
+(%i5) q . r - M;
+         [ - 7.77156E-16   1.77636E-15   - 8.88178E-16 ]
+(%o5)    [                                             ]
+         [      0.0       - 1.33227E-15   8.88178E-16  ]
+(%i6) mat_norm (%, 1);
+(%o6)                      3.10862E-15
+@end example
+
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn
+
 @deffn {Function} dgesv (@var{A}, @var{b})
 
 Computes the solution @var{x} of the linear equation @math{@var{A} @var{x} = @var{b}},

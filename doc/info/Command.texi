@@ -177,35 +177,7 @@ See also @mrefcomma{_} @mrefcomma{%%} and @mrefdot{%th}
 
 In compound statements, namely @mrefcomma{block} @mrefcomma{lambda} or
 @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous
-statement.  For example,
-
-@example
-block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
-block ([prev], prev: integrate (x^5, x),
-               ev (prev, x=2) - ev (prev, x=1));
-@end example
-
-yield the same result, namely @code{21/2}.
-
-A compound statement may comprise other compound statements.  Whether a
-statement be simple or compound, @code{%%} is the value of the previous
-statement.  For example,
-
-@example
-block (block (a^n, %%*42), %%/6)
-@end example
-
-yields @code{7*a^n}.
-
-Within a compound statement, the value of @code{%%} may be inspected at a break
-prompt, which is opened by executing the @mref{break} function.  For example,
-at the break prompt opened by
-
-@example
-block (a: 42, break ())$
-@end example
-
-entering @code{%%;} yields @code{42}.
+statement.
 
 At the first statement in a compound statement, or outside of a compound
 statement, @code{%%} is undefined.
@@ -214,6 +186,46 @@ statement, @code{%%} is undefined.
 same meaning as at the interactive prompt.
 
 See also @mrefdot{%}
+
+Examples:
+
+The following two examples yield the same result.
+
+@example
+(%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+                               21
+(%o1)                          --
+                               2
+(%i2) block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
+                               21
+(%o2)                          --
+                               2
+
+@end example
+
+A compound statement may comprise other compound statements.  Whether a
+statement be simple or compound, @code{%%} is the value of the previous
+statement.
+
+@example
+(%i3) block (block (a^n, %%*42), %%/6);
+                                 n
+(%o3)                         7 a
+@end example
+
+Within a compound statement, the value of @code{%%} may be inspected at a break
+prompt, which is opened by executing the @mref{break} function.  For example,
+entering @code{%%;} in the following example yields @code{42}.
+
+@example
+(%i4) block (a: 42, break ())$
+
+Entering a Maxima break point. Type 'exit;' to resume.
+_%%;
+42
+_
+@end example
 
 @opencatbox
 @category{Global variables}
@@ -231,22 +243,30 @@ The value of the @var{i}'th previous output expression.  That is, if the next
 expression to be computed is the @var{n}'th output, @code{%th (@var{m})} is the
 (@var{n} - @var{m})'th output.
 
-@code{%th} is useful in @code{batch} files or for referring to a group of
-output expressions.  For example,
-
-@example
-block (s: 0, for i:1 thru 10 do s: s + %th (i))$
-@end example
-
-sets @code{s} to the sum of the last ten output expressions.
-
 @code{%th} is recognized by @mref{batch} and @mrefdot{load}  In a file processed
 by @code{batch}, @code{%th} has the same meaning as at the interactive prompt.
 In a file processed by @code{load}, @code{%th} refers to output expressions most
 recently computed at the interactive prompt or in a batch file; @code{%th} does
 not refer to output expressions in the file being processed.
 
-See also @mrefdot{%}
+See also @mref{%} and @mrefdot{%%}
+
+Example:
+
+@code{%th} is useful in @code{batch} files or for referring to a group of
+output expressions.  This example sets @code{s} to the sum of the last five
+output expressions.
+
+@example
+(%i1) 1;2;3;4;5;
+(%o1)                           1
+(%o2)                           2
+(%o3)                           3
+(%o4)                           4
+(%o5)                           5
+(%i6) block (s: 0, for i:1 thru 5 do s: s + %th(i), s);
+(%o6)                          15
+@end example
 
 @opencatbox
 @category{Console interaction}
@@ -306,6 +326,8 @@ the prefix, the prefixes @code{inchar}, @mrefcomma{outchar} and
 @mref{linechar} should have a different first char.  Otherwise some commands
 like @code{kill(inlables)} do not work as expected.
 
+See also @code{labels}.
+
 Example:
 
 @c ===beg===
@@ -314,14 +336,12 @@ Example:
 @c ===end===
 @example
 (%i1) inchar: "input";
-(%o1)                                input
-(input1) expand ((a+b)^3);
-                            3        2      2      3
-(%o1)                      b  + 3 a b  + 3 a  b + a
-(input2)
+(%o1)                         input
+(input2) expand((a+b)^3);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(input3)
 @end example
-
-See also @code{labels}.
 
 @opencatbox
 @category{Display flags and variables}
@@ -334,7 +354,7 @@ See also @code{labels}.
 Default value: @code{[]}
 
 @code{infolists} is a list of the names of all of the information
-lists in Maxima. These are:
+lists in Maxima.  These are:
 
 @table @code
 @item labels
@@ -401,9 +421,9 @@ one is not explicitly set by the user.)
 @deffnx {Function} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
 
 Removes all bindings (value, function, array, or rule) from the arguments
-@var{a_1}, @dots{}, @var{a_n}.  An argument @var{a_k} may be a symbol or a single
-array element.  When @var{a_k} is a single array element, @code{kill} unbinds
-that element without affecting any other elements of the array.
+@var{a_1}, @dots{}, @var{a_n}.  An argument @var{a_k} may be a symbol or a
+single array element.  When @var{a_k} is a single array element, @code{kill}
+unbinds that element without affecting any other elements of the array.
 
 Several special arguments are recognized.  Different kinds of arguments
 may be combined, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
@@ -504,14 +524,14 @@ See also @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar} and
 Default value: @code{%t}
 
 @code{linechar} is the prefix of the labels of intermediate expressions 
-generated by Maxima. Maxima constructs a label for each intermediate expression 
+generated by Maxima.  Maxima constructs a label for each intermediate expression 
 (if displayed) by concatenating @code{linechar} and @mrefdot{linenum}
 
 @code{linechar} may be assigned any string or symbol, not necessarily a single 
-character. Because Maxima internally takes into account only the first char of
+character.  Because Maxima internally takes into account only the first char of
 the prefix, the prefixes @mrefcomma{inchar} @mrefcomma{outchar} and
-@code{linechar} should have a different first char. Otherwise some commands like
-@code{kill(inlables)} do not work as expected.
+@code{linechar} should have a different first char.  Otherwise some commands
+like @code{kill(inlables)} do not work as expected.
 
 Intermediate expressions might or might not be displayed.
 See @mref{programmode} and @mrefdot{labels}
@@ -586,6 +606,17 @@ Maxima option is reset.  This is useful if the user is doubtful of the spelling
 of some option and wants to make sure that the variable he assigned a value to
 was truly an option variable.
 
+Example:
+
+@example
+(%i1) optionset:true;
+assignment: assigning to option optionset
+(%o1)                         true
+(%i2) gamma_expand:true;
+assignment: assigning to option gamma_expand
+(%o2)                         true
+@end example
+
 @opencatbox
 @category{Global flags} @category{Session management} @category{Console interaction}
 @closecatbox
@@ -602,10 +633,12 @@ Maxima automatically constructs a label for each computed expression by
 concatenating @code{outchar} and @mrefdot{linenum}
 
 @code{outchar} may be assigned any string or symbol, not necessarily a single 
-character. Because Maxima internally takes into account only the first char of
+character.  Because Maxima internally takes into account only the first char of
 the prefix, the prefixes @mrefcomma{inchar} @code{outchar} and
 @mref{linechar} should have a different first char.  Otherwise some commands
 like @code{kill(inlables)} do not work as expected.
+
+See also @code{labels}.
 
 Example:
 
@@ -615,14 +648,12 @@ Example:
 @c ===end===
 @example
 (%i1) outchar: "output";
-(output1)                           output
-(%i2) expand ((a+b)^3);
-                            3        2      2      3
-(output2)                  b  + 3 a b  + 3 a  b + a
+(output1)                    output
+(%i2) expand((a+b)^3);
+                     3        2      2      3
+(output2)           b  + 3 a b  + 3 a  b + a
 (%i3)
 @end example
-
-See also @code{labels}.
 
 @opencatbox
 @category{Display flags and variables}
@@ -876,14 +907,14 @@ The values are removed from the variables.  @code{values} is the empty list.
 @c ===end===
 @example
 (%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
-                                                  2
-(%o1)                     [99, 9, 90, d, f(x) := x ]
+                                           2
+(%o1)              [99, 9, 90, d, f(x) := x ]
 (%i2) values;
-(%o2)                              [a, b, c]
+(%o2)                       [a, b, c]
 (%i3) [kill(a), remove(b,value), remvalue(c)];
-(%o3)                          [done, done, [c]]
+(%o3)                   [done, done, [c]]
 (%i4) values;
-(%o4)                                 []
+(%o4)                          []
 @end example
 
 @opencatbox
@@ -897,13 +928,13 @@ The values are removed from the variables.  @code{values} is the empty list.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@anchor{%dispflag}
+@anchor{%edispflag}
 @defvr {Option variable} %edispflag
 Default value: @code{false}
 
 When @code{%edispflag} is @code{true}, Maxima displays @code{%e} to a negative
 exponent as a quotient.  For example, @code{%e^-x} is displayed as
-@code{1/%e^x}.
+@code{1/%e^x}.  See also @mrefdot{exptdispflag}
 
 Example:
 
@@ -937,6 +968,14 @@ Default value: @code{!}
 @code{absboxchar} is the character used to draw absolute value
 signs around expressions which are more than one line tall.
 
+Example:
+
+@example
+(%i1) abs((x^3+1));
+                            ! 3    !
+(%o1)                       !x  + 1!
+@end example
+
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
@@ -964,6 +1003,8 @@ signs around expressions which are more than one line tall.
 is like @mref{display} but only the value of the arguments are displayed rather
 than equations.  This is useful for complicated arguments which don't have names 
 or where only the value of the argument is of interest and not the name.
+
+See also @mref{ldisp} and @mrefdot{print}
 
 Example:
 
@@ -999,7 +1040,9 @@ Displays equations whose left side is @var{expr_i} unevaluated, and whose right
 side is the value of the expression centered on the line.  This function is 
 useful in blocks and @mref{for} statements in order to have intermediate results
 displayed.  The arguments to @code{display} are usually atoms, subscripted 
-variables, or function calls.  See also @mrefdot{disp}
+variables, or function calls.
+
+See also @mrefcomma{ldisplay} @mrefcomma{disp} and @mrefdot{ldisp}
 
 Example:
 
@@ -1035,6 +1078,9 @@ Default value: @code{true}
 
 When @code{display2d} is @code{false}, the console display is a string 
 (1-dimensional) form rather than a display (2-dimensional) form.
+
+See also @mref{leftjust} to switch between a left justified and a centered
+display of equations.
 
 Example:
 
@@ -1109,6 +1155,21 @@ However, @code{dispterms (P1 + P2 + ...)} displays @code{P1}, then below it
 is too wide to be displayed as @code{A^B} it appears as @code{expt (A, B)} (or
 as @code{ncexpt (A, B)} in the case of @code{A^^B}).
 
+Example:
+
+@example
+(%i1) dispterms(2*a*sin(x)+%e^x);
+
++
+
+2 a sin(x)
+
+  x
+%e
+
+(%o1)                         done
+@end example
+
 @opencatbox
 @category{Display functions}
 @closecatbox
@@ -1136,7 +1197,24 @@ If an exponential expression is too wide to be displayed as
 Default value: @code{true}
 
 When @code{exptdispflag} is @code{true}, Maxima displays expressions
-with negative exponents using quotients, e.g., @code{X^(-1)} as @code{1/X}.
+with negative exponents using quotients.  See also @mrefdot{%edispflag}
+
+Example:
+
+@example
+(%i1) exptdispflag:true;
+(%o1)                         true
+(%i2) 10^-x;
+                                1
+(%o2)                          ---
+                                 x
+                               10
+(%i3) exptdispflag:false;
+(%o3)                         false
+(%i4) 10^-x;
+                                - x
+(%o4)                         10
+@end example
 
 @opencatbox
 @category{Expressions} @category{Display flags and variables}
@@ -1236,9 +1314,11 @@ matrix([aa,17],[29,bb])$
         9        10
  + 10 aa  bb + aa
 (%i12) grind (expr);
+@group
 bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
      +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
      +10*aa^9*bb+aa^10$
+@end group
 (%o12)                        done
 (%i13) string (expr);
 (%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
@@ -1279,7 +1359,7 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @c -----------------------------------------------------------------------------
 @anchor{ibase}
 @defvr {Option variable} ibase
-Default value: 10
+Default value: @code{10}
 
 @code{ibase} is the base for integers read by Maxima.
 
@@ -1376,7 +1456,7 @@ Displays expressions @var{expr_1}, @dots{}, @var{expr_n} to the console as
 printed output.  @code{ldisp} assigns an intermediate expression label to each
 argument and returns the list of labels.
 
-See also @mrefdot{disp}
+See also @mrefcomma{disp} @mrefcomma{display} and @mrefdot{ldisplay}
 
 Examples:
 
@@ -1419,7 +1499,7 @@ and @code{rhs} is its value.  Typically each argument is a variable.
 @mref{ldisp} assigns an intermediate expression label to each equation and
 returns the list of labels.
 
-See also @mrefdot{display}
+See also @mrefcomma{display} @mrefcomma{disp} and @mrefdot{ldisp}
 
 Examples:
 
@@ -1452,9 +1532,36 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{leftjust}
+@defvr {Option variable} leftjust
+Default value: @code{false}
+
+When @code{leftjust} is @code{true}, equations in 2D-display are drawn left
+justified rather than centered.
+
+See also @mref{display2d} to switch between 1D- and 2D-display.
+
+Example:
+
+@example
+(%i1) expand((x+1)^3);
+                        3      2
+(%o1)                  x  + 3 x  + 3 x + 1
+(%i2) leftjust:true$
+(%i3) expand((x+1)^3);
+       3      2
+(%o3) x  + 3 x  + 3 x + 1
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{linel}
 @defvr {Option variable} linel
-Default value: 79
+Default value: @code{79}
 
 @code{linel} is the assumed width (in characters) of the console display for the
 purpose of displaying expressions.  @code{linel} may be assigned any value by
@@ -1468,6 +1575,7 @@ printed by built-in Maxima functions, such as error messages and the output of
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@need 800
 @anchor{lispdisp}
 @defvr {Option variable} lispdisp
 Default value: @code{false}
@@ -1519,7 +1627,7 @@ displayed the same way.
 @c -----------------------------------------------------------------------------
 @anchor{obase}
 @defvr {Option variable} obase
-Default value: 10
+Default value: @code{10}
 
 @code{obase} is the base for integers displayed by Maxima.
 
@@ -1614,7 +1722,21 @@ with the constant term first and the highest power last.
 
 By default, terms of a sum are displayed in order of decreasing power.
 
-@c NEED AN EXAMPLE HERE
+Example:
+
+@example
+(%i1) powerdisp:true;
+(%o1)                         true
+(%i2) x^2+x^3+x^4;
+                           2    3    4
+(%o2)                     x  + x  + x
+(%i3) powerdisp:false;
+(%o3)                         false
+(%i4) x^2+x^3+x^4;
+                           4    3    2
+(%o4)                     x  + x  + x
+@end example
+
 @opencatbox
 @category{Display flags and variables}
 @closecatbox

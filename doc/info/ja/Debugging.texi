@@ -1,0 +1,588 @@
+@menu
+* Source Level Debugging::
+* Keyword Commands::
+* Functions and Variables for Debugging::   
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Source Level Debugging, Keyword Commands, , Debugging
+@section Source Level Debugging
+@c -----------------------------------------------------------------------------
+
+Maximaは、組み込みのソースレベルデバッガを持っています。
+ユーザーは、関数にブレイクポイントを設定でき、
+そこから行毎に実行することができます。
+そのレベルでバインドされた変数と一緒にコールスタックを検査することができます。
+
+コマンド@code{:help}または@code{:h}は、
+デバッガーコマンドのリストを示します。
+(一般的に、
+もし略字がただ１つなら、コマンドは略せます。
+もしただ１つでないなら、選択肢がリストされます。)
+デバッガー内では、
+変数と式を検査し、定義し、操作するために、ユーザーは任意の通常のMaxima関数も使うことができます。
+
+Maximaプロンプトで、
+@code{:br}コマンドで
+ブレイクポイントが設定できます。
+デバッガー内では、
+ユーザーは、
+@code{:n} (``next'')コマンドを使って１度に１行進むことができます。
+@code{:bt} (``backtrace'')コマンドは、スタックフレームのリストを示します。
+@code{:r} (``resume'')コマンドは、デバッガーから抜けて、実行を続けます。
+以下の例で、これらのコマンドを例示します。
+
+@example
+(%i1) load ("/tmp/foobar.mac");
+
+(%o1)                           /tmp/foobar.mac
+
+(%i2) :br foo
+Turning on debugging debugmode(true)
+Bkpt 0 for foo (in /tmp/foobar.mac line 1) 
+
+(%i2) bar (2,3);
+Bkpt 0:(foobar.mac 1)
+/tmp/foobar.mac:1::
+
+(dbm:1) :bt                        <-- :bt typed here gives a backtrace
+#0: foo(y=5)(foobar.mac line 1)
+#1: bar(x=2,y=3)(foobar.mac line 9)
+
+(dbm:1) :n                         <-- Here type :n to advance line
+(foobar.mac 2)
+/tmp/foobar.mac:2::
+
+(dbm:1) :n                         <-- Here type :n to advance line
+(foobar.mac 3)
+/tmp/foobar.mac:3::
+
+(dbm:1) u;                         <-- Investigate value of u
+28
+
+(dbm:1) u: 33;                     <-- Change u to be 33
+33
+
+(dbm:1) :r                         <-- Type :r to resume the computation
+
+(%o2)                                1094
+@end example
+
+ファイル@code{/tmp/foobar.mac}は以下の通りです:
+
+@example
+foo(y) := block ([u:y^2],
+  u: u+3,
+  u: u^2,
+  u);
+ 
+bar(x,y) := (
+  x: x+2,
+  y: y+2,
+  x: foo(y),
+  x+y);
+@end example
+
+EMACSを通してのデバッガーの使用
+
+もしユーザーがシェルウィンドウ(dblシェル)で、GNU emacsの下でコードを走らせているか、
+グラフィカルならインターフェイスバージョンXmaximaを走らせているなら、
+もしブレイクポイントで停止させたら、
+ウィンドウの他の半面に表示されるソースファイルの中に、
+赤でハイライトされたか、右行を示す小さな矢印で
+現在位置を見るでしょう。
+M-n (Alt-n)をタイプすることで、一度に一行進めることができます。
+
+Emacsの下では、
+@code{dbl}シェルの中で走らせなければいけません。
+@code{dbl}シェルは、elispディレクトリの中に
+@code{dbl.el}ファイルを要求します。
+elispファイルをインストールしたか、Maxima elispディレクトリをパスに足したかを確認してください:
+例えば、以下を
+@file{.emacs}ファイルか@file{site-init.el}に足してください。
+
+@example
+(setq load-path (cons "/usr/share/maxima/5.9.1/emacs" load-path))
+(autoload 'dbl "dbl")
+@end example
+
+すると、emacsの中で、
+
+@example
+M-x dbl
+@end example
+
+は、例えば、Maxima, gcl, gbbなどのプログラムを走らせることができるシェルウィンドウを開始するでしょう。
+このシェルウィンドウはソースレベルデバッグや
+他のウィンドウのソースコードの表示についても知っています。
+
+ユーザーは、
+@code{C-x space}をタイプすることで
+ファイルのある行に
+ブレイクポイントを設定できます。
+これは、カーソルがどの関数の中かがわかり、
+カーソルが示すその関数のどの行かわかります。
+もしカーソルが、例えば、@code{foo}の行2なら、
+@code{foo}を二番目の行でブレイクするために、
+他のウィンドウの中で、コマンド``@code{:br foo 2}''を挿入します。
+これをイネーブルにするには、
+ユーザーは
+ファイル@code{foobar.mac}が訪れるウィンドウの中で
+maxima-mode.elを機能させなければいけません。
+@code{Alt-Control-x}をタイプすることで
+関数をMaximaに評価ような、
+そのファイルウィンドウで利用可能な追加のコマンドがあります。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Keyword Commands, Functions and Variables for Debugging, Source Level Debugging, Debugging
+@section Keyword Commands
+@c -----------------------------------------------------------------------------
+
+キーワードコマンドは、Maxima式として解釈(interpret)されない特殊キーワードです。
+キーワードコマンドは、ブレイクプロンプトではできませんが、Maximaプロンプトやデバッガープロンプトで入力できます。
+キーワードコマンドはコロン'@code{:}'で始まります。
+例えば、Lisp形を評価するには、
+may type 
+@code{:lisp}の後に評価される形式をタイプします。
+
+@example
+(%i1) :lisp (+ 2 3) 
+5
+@end example
+
+取られる引数の数は、特定のコマンドに依存します。
+コマンド全体をタイプする必要はありません、ただブレイクキーワードの中で唯一であれば十分です。
+例えば、@code{:br}は @code{:break}のために十分です。
+
+キーワードコマンドは以下にリストされます。
+
+@table @code
+@item :break F n
+関数@code{F}の中に関数の頭から行オフセット@code{n}で
+ブレイクポイントを設定します。 
+もし@code{F}が文字列として与えられたら、
+ファイルと仮定され、@code{n}はファイルの頭からのオフセットです。
+オフセットはオプションです。
+もし与えられないなら、ゼロと仮定されます。
+(関数かファイルの最初の行。)
+@item :bt
+スタックフレームのバックトレイスを印字します。
+@item :continue
+計算を継続します。
+@c CAN'T SEEM TO GET :delete TO WORK !!!
+@item :delete
+指定されたブレイクポイントを、もし指定されないならすべてのブレイクポイントを削除します。
+@c CAN'T SEEM TO GET :disable TO WORK !!!
+@item :disable
+指定されたブレイクポイントを、もし指定されないならすべてのブレイクポイントをディセーブルにします。
+@c CAN'T SEEM TO GET :enable TO WORK !!!
+@item :enable
+指定されたブレイクポイントを、もし指定されないならすべてのブレイクポイントをイネーブルにします。
+@item :frame n
+スタックフレーム@code{n}を、もし指定されないなら現在のフレームを印字します。
+@c CAN'T SEEM TO GET :help TO WORK !!!
+@item :help
+デバッガーコマンドに関するヘルプを印字します。
+もし指定されないなら、コマンドすべてのヘルプを印字します。
+@c CAN'T SEEM TO GET :info TO WORK !!!
+@item :info
+項目についての情報を印字します。
+@item :lisp some-form
+@code{some-form}をLisp形式として評価します。
+@item :lisp-quiet some-form
+Lisp形式@code{some-form}を出力せずに評価します。
+@item :next
+@code{:next}は関数コールをステップオーバーする点を除いて、
+@code{:step}のようなものです。
+@item :quit
+計算を完了せずに、
+現在のデバッガーレベルから抜けます。
+@item :resume
+計算を継続します。
+@item :step
+新しいソー行に至るまで計算を継続します。
+@item :top
+計算を完了せずに(任意のデバッガーレベルから)Maximaプロンプトに戻ります。
+@end table 
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Debugging, , Keyword Commands, Debugging
+@section Functions and Variables for Debugging
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{debugmode}
+@defvr {オプション変数} debugmode
+デフォルト値: @code{false}
+
+もし@code{debugmode}が @code{true}なら、
+Maximaのエラーが起こった時Maximaはデバッガーを開始します。
+ユーザーはコールバックを検査したり、ブレイクポイントを設定したり、Maximaコードをステップ実行したりなど
+コマンドを入力することができます。
+デバッガーコマンドのリストに関しては、 @code{debugging}を参照してください。
+
+@code{debugmode}をイネーブルにしても、Lispのエラーは捕らえられません。
+@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
+@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
+
+@opencatbox
+@category{Debugging} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{refcheck}
+@defvr {オプション変数} refcheck
+デフォルト値: @code{false}
+
+@code{refcheck}が@code{true}の時、
+Maximaは
+計算の中で、バイドされた変数が最初に使われる度にメッセージを印字します。
+
+@opencatbox
+@category{Evaluation} @category{Console interaction} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{setcheck}
+@defvr {オプション変数} setcheck
+デフォルト値: @code{false}
+
+もし@code{setcheck}が(添字付きでもよい)変数のリストに設定されているなら、
+Maximaは
+変数またはそれらの添字付き出現が通常の割り当て演算子@code{:}、@code{::}割り当て演算子、
+または関数引数バインドでバインドされた時
+(しかし関数割り当て@code{:=}やマクロ割り当て@code{::=}演算子でバインドされた時以外)
+はいつでも、
+メッセージを印字します。
+メッセージは変数名とバインドされた値から構成されます。
+
+@code{setcheck}は、
+@code{all}または@code{true}に設定することができ、
+それによって、すべての変数を含みます。
+
+@code{setcheck}の新しい要素のそれぞれは、
+チェックする変数の新しいリストを確立し、
+以前@code{setcheck}に割り当てられたいかなる変数も忘れられます。
+
+もし自身以外の何かに評価されるなら、
+@code{setcheck}に割り当てられた名前はクォートしなければいけません。
+例えば、もし@code{x}, @code{y}, @code{z}が既にバインドされているなら、
+チェックする変数のリストに置くには、
+
+@example
+setcheck: ['x, 'y, 'z]$
+@end example
+
+をタイプしてください。
+
+@code{setcheck}リスト上の変数が、例えば、@code{X: 'X}のように、
+それ自身に割り当てられた時は、なにも印字されません。
+
+@opencatbox
+@category{Console interaction} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{setcheckbreak}
+@defvr {オプション変数} setcheckbreak
+デフォルト値: @code{false}
+
+@code{setcheckbreak}が@code{true}の時、
+@code{setcheck}リスト上の変数が新しい値を割り当てられた時はいつでも
+Maximaはブレイクプロンプトを出します。
+ブレイクは、割り当てが実行される前に起こります。
+この時点で、@code{setval}が変数が割り当てられようとしている値を保持します。
+ゆえに、
+@code{setval}に割り当てることで、違う値を割り当てることができます。
+
+@code{setcheck}と@code{setval}も参照してください。
+
+@opencatbox
+@category{Console interaction} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{setval}
+@defvr {システム変数} setval
+
+@code{setcheckbreak}が起こった時、変数が設定されようとしている値を保持します。
+ゆえに、
+@code{setval}に割り当てることで、違う値を割り当てることができます。
+
+@code{setcheck}と@code{setcheckbreak}も参照してください。
+
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{timer}
+@deffn  {関数} timer (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} timer (all)
+@deffnx {関数} timer ()
+
+@code{timer}は、
+タイミング統計が収集される関数のリストに与えられた関数@var{f_1}, @dots{}, @var{f_n}
+それぞれを入れます。
+@code{timer(f)$ timer(g)$}は、リストに@code{f}を入れ、その後@code{g}を入れます;
+リストはあるコールから次へ累積されます。
+
+@code{timer(all)}は、計測される関数のリストに
+(グローバル変数@code{functions}で指名されたように)
+ユーザー定義関数すべてを入れます。
+
+引数なしでは、
+@code{timer}は計測される関数のリストを返します。
+
+Maximaは、計測される関数のリストに関して、
+関数それぞれを実行するのに費やされる時間を記録します。
+@code{timer_info}は、タイミング統計を返します。
+関数コール毎に経過した平均時間、コール回数、総経過時間を含みます。
+@code{untimer}は、計測される関数のリストから関数を削除します。
+
+@code{timer}は引数をクォートします。
+@code{f(x) := x^2$ g:f$ timer(g)$}は、@code{f}をタイマーリストに入れません。
+
+もし@code{trace(f)}が有効なら、@code{timer(f)}は有効ではないです;
+@code{trace}と@code{timer}が同時に有効にはできません。
+
+@code{timer_devalue}も参照してください。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{untimer}
+@deffn {関数} untimer (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} untimer ()
+
+@code{untimer}はタイマーリストから
+与えられた関数@var{f_1}, @dots{}, @var{f_n}それぞれを削除します。
+
+引数なしの時、
+@code{untimer}は、現在、タイマーリスト上の関数すべてを削除します。
+
+@code{untimer (f)}が実行された後、
+@code{timer_info()} (引数なし)は、
+現在タイマーリスト上にない関数についての情報を返しませんけれども、
+@code{timer_info (f)}は、まだ以前に集計されたタイミング統計を返します。
+@code{timer (f)}は、
+タイミング統計すべてをゼロに再設定し、
+@code{f}をタイマーリストに再び入れます。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{timer_devalue}
+@defvr {オプション変数} timer_devalue
+デフォルト値: @code{false}
+
+@code{timer_devalue}が@code{true}の時、
+Maximaは、計られる関数から
+他の計測される関数で費やされた時間を引きます。
+そうでなければ、関数それぞれについて報告された時間は、
+他の関数で計測される時間を含みます。
+計測されない関数で費やされた時間は、総時間から引かれないことに注意してください。
+
+@code{timer}と@code{timer_info}も参照してください。
+
+@opencatbox
+@category{Debugging} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{timer_info}
+@deffn {関数} timer_info (@var{f_1}, ..., @var{f_n})
+@deffnx {関数} timer_info ()
+
+与えられた関数@var{f_1}, ..., @var{f_n},
+@code{timer_info}は、
+関数それぞれのタイミング情報を含む
+行列を返します。
+引数なしでは、
+@code{timer_info}は、
+現在タイマーリスト上の関数すべてについての
+タイミング情報を返します。
+The matrix returned by 
+@code{timer_info}が返す行列は、関数名、
+関数コール毎の時間、関数コールの回数、総時間、
+@code{gctime}
+を含みます。
+@code{gctime}は、元のMacymaの「ガーベッジコレクション時間」を意味しましたが、
+今はいつもゼロです。
+
+@code{timer_info}が戻り値を構成するデータは、
+@code{get}関数によっても得られることができます:
+
+@example
+get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
+@end example
+
+@code{timer}も参照してください。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{trace}
+@deffn  {関数} trace (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} trace (all)
+@deffnx {関数} trace ()
+
+関数 @var{f_1}, @dots{}, @var{f_n}が与えられたとして、
+@code{trace}は、Maximaに、
+それらの関数がコールされたときはいつでも
+デバッグ情報を印字するよう指示します。
+@code{trace(f)$ trace(g)$}は、トレースする関数のリストに
+@code{f}を、それから@code{g}を入れます;
+リストは１回のコールから次へ累積します。
+
+@code{trace(all)}は、(グローバル変数@code{functions}で指名されたように)
+ユーザー定義関数すべてをトレースする関数のリストに入れます。
+
+引数なしでは、
+@code{trace}は、現在とレースする関数すべてのリストを返します。
+
+@code{untrace}関数はトレースをディセーブルします。
+@code{trace_options}も参照してください。
+
+@code{trace}は引数をクォートします。
+例えば、
+@code{f(x) := x^2$ g:f$ trace(g)$}は、
+@code{f}をトレースリストに入れません。
+
+関数が再定義された時、
+タイマーリストから削除されます。
+例えば、
+@code{timer(f)$ f(x) := x^2$}の後、
+関数@code{f}はもはやタイマーリストにありません。
+
+もし@code{timer (f)}が有効なら、
+@code{trace (f)}は有効ではありません;
+@code{trace}と@code{timer}は、同じ関数で同時には有効にできません。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{trace_options}
+@deffn  {関数} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n})
+@deffnx {関数} trace_options (@var{f})
+
+関数@var{f}についてトレースオプションを設定します。
+いかなる以前のオプションも破棄されます。
+@code{trace_options (@var{f}, ...)}は、
+もし(@code{trace_options}の前でも後でも). 
+@code{trace (@var{f})}もコールされないなら、
+有効になりません。
+
+@code{trace_options (@var{f})}は、
+オプションすべてをデフォルト値に再設定します。
+
+オプションキーワードは以下の通りです:
+
+@itemize @bullet
+@item
+@code{noprint}
+関数の入り口と出口でメッセージを印字しません。
+@item
+@code{break}
+関数に入る前と関数を抜けた後、ブレイクポイントを置きます。
+@code{break}を参照してください。
+@item
+@code{lisp_print}
+引数を表示し、Lispオブジェクトとして値を返します。
+@item
+@code{info}
+関数の入れ口と出口で@code{-> true}を印字します
+@item
+@code{errorcatch}
+エラーをチャッチし、
+エラーを知らせるためのオプションに応じて、
+関数コールを再試行するか、戻り値を指定します。
+@end itemize
+
+トレースオプションは、２つの形式で指定されます。
+オプションキーワード単体の存在は、
+オプションを無条件に実行します。
+(@code{@var{foo}: true}か似た形式を指定することでは、
+オプション@var{foo}は実行されないことに注意してください;
+キーワードはクォートする必要はないことにも注意してください。)
+オプションキーワードを述語論理関数で指定することは、
+オプションを述語論理上の条件付きにします。
+
+述語論理関数の引数リストは、いつも
+@code{[level, direction, function, item]}です。
+ここで、@code{level}は関数の再帰レベルで、
+@code{direction}は@code{enter}か@code{exit}、@code{function}は、
+関数名、
+name of the function, and 
+@code{item}は(入るときの)引数リストか(出るときの)戻り値です。
+
+以下は無条件とレースオプションの例です:
+
+@example
+(%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1)$
+
+(%i2) trace (ff)$
+
+(%i3) trace_options (ff, lisp_print, break)$
+
+(%i4) ff(3);
+@end example
+
+以下は述語論理上の条件の@code{break}オプションを持つ同じ関数です:
+
+@example
+(%i5) trace_options (ff, break(pp))$
+
+(%i6) pp (level, direction, function, item) := block (print (item),
+    return (function = 'ff and level = 3 and direction = exit))$
+
+(%i7) ff(6);
+@end example
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{untrace}
+@deffn  {関数} untrace (@var{f_1}, @dots{}, @var{f_n})
+@deffnx {関数} untrace ()
+
+@code{untrace}は、
+与えられた関数@var{f_1}, @dots{}, @var{f_n}について、
+@code{trace}関数でイネーブルされたトレースをディセーブルします。
+引数なしでは、@code{untrace}は関数すべてのトレースをディセーブルします。
+
+@code{untrace}はトレースをディセーブルした関数のリストを返します。
+
+@opencatbox
+@category{Debugging}
+@closecatbox
+@end deffn

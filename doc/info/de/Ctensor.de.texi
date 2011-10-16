@@ -2,21 +2,29 @@
 @c File        : Ctensor.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Origignal   : Ctensor.texi revision 1.37
+@c Origignal   : Ctensor.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
+@c Revision    : 04.09.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@c @menu
-@c * Introduction to ctensor::
-@c * Functions and Variables for ctensor::
-@c @end menu
+@c -----------------------------------------------------------------------------
+@page
+@node Paket ctensor, Paket atensor, Paket itensor, Tensoren
+@section Paket ctensor
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einf@"uhrung in ctensor::
+* Funktionen und Variablen f@"ur ctensor::
+@end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to ctensor, Functions and Variables for ctensor, Functions and Variables for itensor, Tensoren
-@section Introduction to ctensor
+@node Einf@"uhrung in ctensor, Funktionen und Variablen f@"ur ctensor, Paket ctensor, Paket ctensor
+@subsection Einf@"uhrung in ctensor
+@c -----------------------------------------------------------------------------
 
 @code{ctensor} is a component tensor manipulation package.  To use the 
 @code{ctensor} package, type @code{load(ctensor)}.
@@ -127,13 +135,16 @@ y;
 (%t11)                         mcs        = ---
                                   4, 4, 1   2 a
 (%o11)                               done
-
 @end example
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for ctensor, Introduction to atensor, Introduction to ctensor, Tensoren
-@section Functions and Variables for ctensor
-@subsection Initialization and setup
+@node Funktionen und Variablen f@"ur ctensor, , Einf@"uhrung in ctensor, Paket ctensor
+@subsection Funktionen und Variablen f@"ur ctensor
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@subsubsection Initialization and setup
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{csetup}
@@ -142,7 +153,6 @@ y;
 A function in the @code{ctensor} (component tensor) package
 which initializes the package and allows the user to enter a metric
 interactively. See @code{ctensor} for more details.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -166,7 +176,6 @@ If @code{cframe_flag} is @code{true}, the function expects that the values of
 @code{fri} (the inverse frame matrix) and @code{lfg} (the frame metric) are
 defined. From these, the frame matrix @code{fr} and the inverse frame
 metric @code{ufg} are computed.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -225,14 +234,6 @@ Sets up a predefined coordinate system and metric. The argument
 followed by a list containing the coordinate variables. For instance,
 you can specify a spherical metric as follows:
 
-@c ===beg===
-@c load(ctensor);
-@c ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
-@c              r*sin(theta),[r,theta,phi]]);
-@c lg:trigsimp(lg);
-@c ct_coords;
-@c dim;
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -256,15 +257,6 @@ you can specify a spherical metric as follows:
 Transformation functions can also be used when @code{cframe_flag} is 
 @code{true}:
 
-@c ===beg===
-@c load(ctensor);
-@c cframe_flag:true;
-@c ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
-@c              r*sin(theta),[r,theta,phi]]);
-@c fri;
-@c cmetric();
-@c lg:trigsimp(lg);
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -291,7 +283,6 @@ Transformation functions can also be used when @code{cframe_flag} is
                            [                       ]
                            [         2    2        ]
                            [ 0  0   r  cos (theta) ]
-
 @end example
 
 The optional argument @var{extra_arg} can be any one of the following:
@@ -311,7 +302,6 @@ with negative metric signature.
 If the global variable @code{verbose} is set to @code{true}, @code{ct_coordsys} 
 displays the values of @code{dim}, @code{ct_coords}, and either @code{lg} or 
 @code{lfg} and @code{fri}, depending on the value of @code{cframe_flag}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -323,11 +313,11 @@ Initializes the @code{ctensor} package.
 The @code{init_ctensor} function reinitializes the @code{ctensor} package. It 
 removes all arrays and matrices used by @code{ctensor}, resets all flags, resets
 @code{dim} to 4, and resets the frame metric to the Lorentz-frame.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection The tensors of curved space
+@subsubsection The tensors of curved space
+@c -----------------------------------------------------------------------------
 
 The main purpose of the @code{ctensor} package is to compute the tensors
 of curved space(time), most notably the tensors used in general
@@ -378,7 +368,6 @@ non-zero values of @code{lcs[i,j,k]} and @code{mcs[i,j,k]} will be displayed.
 If the argument is @code{false} then the display of the elements will not occur.
 The array elements @code{mcs[i,j,k]} are defined in such a manner that the final
 index is contravariant.
-
 @end deffn
   
 @c -----------------------------------------------------------------------------
@@ -389,7 +378,6 @@ A function in the @code{ctensor} (component tensor) package. @code{ricci}
 computes the covariant (symmetric) components @code{ric[i,j]} of the Ricci 
 tensor.  If the argument @var{dis} is @code{true}, then the non-zero components 
 are displayed.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -403,7 +391,6 @@ these mixed components, @code{uric[i,j]} (the index @code{i} is covariant and
 the index @code{j} is contravariant), will be displayed directly.  Otherwise, 
 @code{ricci(false)} will simply compute the entries of the array 
 @code{uric[i,j]} without displaying the results.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -412,7 +399,6 @@ the index @code{j} is contravariant), will be displayed directly.  Otherwise,
 
 Returns the scalar curvature (obtained by contracting
 the Ricci tensor) of the Riemannian manifold with the given metric.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -427,7 +413,6 @@ Einstein tensor @code{ein[i,j]} will be displayed where @code{j} is the
 contravariant index.  The variable @code{rateinstein} will cause the rational 
 simplification on these components. If @code{ratfac} is @code{true} then the 
 components will also be factored.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -439,7 +424,6 @@ Einstein tensor in the array @code{lein}.  The covariant Einstein-tensor is
 computed from the mixed Einstein tensor @code{ein} by multiplying it with the 
 metric tensor.  If the argument @var{dis} is @code{true}, then the non-zero 
 values of the covariant Einstein tensor are displayed.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -472,7 +456,6 @@ If the variable @code{cframe_flag} is @code{false}, the Riemann tensor is
 computed directly from the Christoffel-symbols. If @code{cframe_flag} is
 @code{true}, the covariant Riemann-tensor is computed first from the
 frame field coefficients.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -489,7 +472,6 @@ tensor is computed directly from the frame field coefficients. Otherwise,
 the (3,1) Riemann tensor is computed first.
 
 For information on index ordering, see @code{riemann}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -499,7 +481,6 @@ For information on index ordering, see @code{riemann}.
 Computes the contravariant components of the Riemann
 curvature tensor as array elements @code{uriem[i,j,k,l]}.  These are displayed
 if @var{dis} is @code{true}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -514,7 +495,6 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 @end example
 
 This object is not automatically simplified since it can be very large.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -527,11 +507,11 @@ the user.  Otherwise, these components will simply be computed and stored.
 If the switch @code{ratweyl} is set to @code{true}, then the components will be
 rationally simplified; if @code{ratfac} is @code{true} then the results will be
 factored as well.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Taylor series expansion
+@subsubsection Taylor series expansion
+@c -----------------------------------------------------------------------------
 
 The @code{ctensor} package has the ability to truncate results by assuming
 that they are Taylor-series approximations. This behavior is controlled by
@@ -570,20 +550,6 @@ the Minkowski metric. Without further restrictions, even a diagonal
 metric produces expressions for the Einstein tensor that are far too
 complex:
 
-@c ===beg===
-@c load(ctensor);
-@c ratfac:true;
-@c derivabbrev:true;
-@c ct_coords:[t,r,theta,phi];
-@c lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],
-@c           [0,0,0,r^2*sin(theta)^2]);
-@c h:matrix([h11,0,0,0],[0,h22,0,0],[0,0,h33,0],[0,0,0,h44]);
-@c depends(l,r);
-@c lg:lg+l*h;
-@c cmetric(false);
-@c einstein(false);
-@c ntermst(ein);
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -651,17 +617,6 @@ complex:
 However, if we recompute this example as an approximation that is
 linear in the variable @code{l}, we get much simpler expressions:
 
-@c ===beg===
-@c ctayswitch:true;
-@c ctayvar:l;
-@c ctaypov:1;
-@c ctaypt:0;
-@c christof(false);
-@c ricci(false);
-@c einstein(false);
-@c ntermst(ein);
-@c ratsimp(ein[1,1]);
-@c ===end===
 @example
 (%i14) ctayswitch:true;
 (%o14)                               true
@@ -707,11 +662,11 @@ linear in the variable @code{l}, we get much simpler expressions:
 
 This capability can be useful, for instance, when working in the weak
 field limit far from a gravitational source.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Frame fields
+@subsubsection Frame fields
+@c -----------------------------------------------------------------------------
 
 When the variable @code{cframe_flag} is set to true, the @code{ctensor} package
 performs its calculations using a moving frame.
@@ -729,11 +684,11 @@ Computes the frame bracket according to the following definition:
 ifb   = ( ifri    - ifri    ) ifr   ifr
    ab         d,e       e,d      a     b
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Algebraic classification
+@subsubsection Algebraic classification
+@c -----------------------------------------------------------------------------
 
 A new feature (as of November, 2004) of @code{ctensor} is its ability to
 compute the Petrov classification of a 4-dimensional spacetime metric.
@@ -753,7 +708,6 @@ The components of the null tetrad are related to the inverse frame matrix
 as follows:
 
 @example
-
 np  = (fri  + fri ) / sqrt(2)
   1       1      2
 
@@ -765,9 +719,7 @@ np  = (fri  + %i fri ) / sqrt(2)
 
 np  = (fri  - %i fri ) / sqrt(2)
   4       3         4
-
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -792,7 +744,6 @@ Christoffel symbols. Changing to a frame base at a later stage could yield
 inconsistent results, as you may end up with a mixed bag of tensors, some
 computed in a frame base, some in a coordinate base, with no means to
 distinguish between the two.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -805,16 +756,6 @@ Computes the Petrov classification of the metric characterized by
 For example, the following demonstrates how to obtain the Petrov-classification
 of the Kerr metric:
 
-@c ===beg===
-@c load(ctensor);
-@c (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
-@c ct_coordsys(exteriorschwarzschild,all);
-@c ug:invert(lg)$
-@c weyl(false);
-@c nptetrad(true);
-@c psi(true);
-@c petrov();
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -888,11 +829,11 @@ The Petrov classification function is based on the algorithm published in
 by Pollney, Skea, and d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
 Except for some simple test cases, the implementation is untested as of
 December 19, 2004, and is likely to contain errors.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Torsion and nonmetricity
+@subsubsection Torsion and nonmetricity
+@c -----------------------------------------------------------------------------
 
 @code{ctensor} has the ability to compute and include torsion and nonmetricity
 coefficients in the connection coefficients.
@@ -943,7 +884,6 @@ If necessary, @code{christof} calls the functions @code{contortion} and
 @deffn {Function} contortion (@var{tr})
 
 Computes the (2,1) contortion coefficients from the torsion tensor @var{tr}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -952,11 +892,11 @@ Computes the (2,1) contortion coefficients from the torsion tensor @var{tr}.
 
 Computes the (2,1) nonmetricity coefficients from the nonmetricity
 vector @var{nm}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Miscellaneous features
+@subsubsection Miscellaneous features
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{ctransform}
@@ -966,7 +906,6 @@ A function in the @code{ctensor} (component tensor)
 package which will perform a coordinate transformation
 upon an arbitrary square symmetric matrix @var{M}. The user must input the
 functions which define the transformation.  (Formerly called @code{transform}.)
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -981,19 +920,6 @@ differential equations. For the Einstein tensor (@code{ein}), which
 is a two dimensional array, if computed for the metric in the example
 below, @code{findde} gives the following independent differential equations:
 
-@c ===beg===
-@c load(ctensor);
-@c derivabbrev:true;
-@c dim:4;
-@c lg:matrix([a, 0, 0, 0], [ 0, x^2, 0, 0],
-@c                         [0, 0, x^2*sin(y)^2, 0], [0,0,0,-d]);
-@c depends([a,d],x);
-@c ct_coords:[x,y,z,t];
-@c cmetric();
-@c einstein(false);
-@c findde(ein,2);
-@c deindex;
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -1031,7 +957,6 @@ below, @code{findde} gives the following independent differential equations:
 (%i10) deindex;
 (%o10)                     [[1, 1], [2, 2], [4, 4]]
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1041,7 +966,6 @@ below, @code{findde} gives the following independent differential equations:
 Computes the covariant gradient of a scalar function allowing the
 user to choose the corresponding vector name as the example under
 @code{contragrad} illustrates.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1053,16 +977,6 @@ Computes the contravariant gradient of a scalar function allowing
 the user to choose the corresponding vector name as the example
 below for the Schwarzschild metric illustrates:
 
-@c ===beg===
-@c load(ctensor);
-@c derivabbrev:true;
-@c ct_coordsys(exteriorschwarzschild,all);
-@c depends(f,r);
-@c cograd(f,g1);
-@c listarray(g1);
-@c contragrad(f,g2);
-@c listarray(g2);
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -1085,7 +999,6 @@ below for the Schwarzschild metric illustrates:
 (%o8)                      [0, -------------, 0, 0]
                                      r
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1095,13 +1008,6 @@ below for the Schwarzschild metric illustrates:
 computes the tensor d'Alembertian of the scalar function once
 dependencies have been declared upon the function. For example:
 
-@c ===beg===
-@c load(ctensor);
-@c derivabbrev:true;
-@c ct_coordsys(exteriorschwarzschild,all);
-@c depends(p,r);
-@c factor(dscalar(p));
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -1119,7 +1025,6 @@ dependencies have been declared upon the function. For example:
                                        2
                                       r
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1132,18 +1037,16 @@ corresponding n components of the vector field (the divergence) where
 n = @code{dim}. If the argument to the function is @code{g} then the
 divergence of the Einstein tensor will be formed and must be zero.
 In addition, the divergence (vector) is given the array name @code{div}.
-
-@c @opencatbox
-@c @category{Package ctensor}
-@c @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@anchor{cgeodesic}
 @deffn {Function} cgeodesic (@var{dis})
+
 A function in the @code{ctensor} (component tensor)
 package.  @code{cgeodesic} computes the geodesic equations of
 motion for a given metric.  They are stored in the array @code{geod[i]}.  If
 the argument @var{dis} is @code{true} then these equations are displayed.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1157,7 +1060,6 @@ with functional dependencies, e.g., @code{'p(x)}.
 
 The components of the second rank covariant field tensor are
 represented by the array @code{bd}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1167,7 +1069,6 @@ represented by the array @code{bd}.
 generates the mixed Euler- Lagrange tensor (field equations) for the
 invariant density of R^2. The field equations are the components of an
 array named @code{inv1}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1179,7 +1080,6 @@ array named @code{inv1}.
 generates the mixed Euler- Lagrange tensor (field equations) for the
 invariant density of @code{ric[i,j]*uriem[i,j]}. The field equations are the
 components of an array named @code{inv2}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1190,18 +1090,17 @@ components of an array named @code{inv2}.
 
 generates the field equations of Rosen's bimetric theory. The field
 equations are the components of an array named @code{rosen}.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Utility functions
+@subsubsection Utility functions
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{diagmatrixp}
 @deffn {Function} diagmatrixp (@var{M})
 
 Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1209,7 +1108,6 @@ Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
 @deffn {Function} symmetricp (@var{M})
 
 Returns @code{true} if @var{M} is a symmetric matrix or (2D) array.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1221,7 +1119,6 @@ tensor (array) @var{f}.  It prints two element lists where the second
 element corresponds to NTERMS of the components specified by the first
 elements.  In this way, it is possible to quickly find the non-zero
 expressions and attempt simplification.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1235,13 +1132,6 @@ displayed as 2-dimensional matrices, while tensors of higher rank are displayed
 as a list of 2-dimensional matrices. For instance, the Riemann-tensor of
 the Schwarzschild metric can be viewed as:
 
-@c ===beg===
-@c load(ctensor);
-@c ratfac:true;
-@c ct_coordsys(exteriorschwarzschild,all);
-@c riemann(false);
-@c cdisplay(riem);
-@c ===end===
 @example
 (%i1) load(ctensor);
 (%o1)       /share/tensor/ctensor.mac
@@ -1449,7 +1339,6 @@ riem     = [        0         - -------------         0         0 ]
 
 (%o5)                                done
 @end example
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1458,11 +1347,11 @@ riem     = [        0         - -------------         0         0 ]
 
 Returns a new list consisting of @var{L} with the @var{n}'th element
 deleted.
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@subsection Variables used by @code{ctensor}
+@subsubsection Variables used by @code{ctensor}
+@c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
 @anchor{dim}
@@ -1473,7 +1362,6 @@ An option in the @code{ctensor} (component tensor)
 package.  @code{dim} is the dimension of the manifold with the
 default 4. The command @code{dim: n} will reset the dimension to any other
 value @code{n}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1487,7 +1375,6 @@ all geometrical objects (which contain the metric tensor explicitly)
 by taking into consideration the diagonality of the metric. Reduced
 run times will, of course, result. Note: this option is set
 automatically by @code{csetup} if a diagonal metric is specified.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1496,7 +1383,6 @@ automatically by @code{csetup} if a diagonal metric is specified.
 
 Causes trigonometric simplifications to be used when tensors are computed. 
 Presently, @code{ctrgsimp} affects only computations involving a moving frame.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1509,7 +1395,6 @@ and the frame metric @code{lfg}. For computations using a Cartesian frame,
 @code{lfg} should be the unit matrix of the appropriate dimension; for
 computations in a Lorentz frame, @code{lfg} should have the appropriate
 signature.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1519,7 +1404,6 @@ signature.
 Causes the contortion tensor to be included in the computation of the
 connection coefficients. The contortion tensor itself is computed by
 @code{contortion} from the user-supplied tensor @code{tr}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1530,7 +1414,6 @@ Causes the nonmetricity coefficients to be included in the computation of
 the connection coefficients. The nonmetricity coefficients are computed
 from the user-supplied nonmetricity vector @code{nm} by the function
 @code{nonmetricity}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1541,7 +1424,6 @@ If set to @code{true}, causes some @code{ctensor} computations to be carried out
 using Taylor-series expansions. Presently, @code{christof}, @code{ricci},
 @code{uricci}, @code{einstein}, and @code{weyl} take into account this
 setting.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1550,7 +1432,6 @@ setting.
 
 Variable used for Taylor-series expansion if @code{ctayswitch} is set to
 @code{true}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1559,7 +1440,6 @@ Variable used for Taylor-series expansion if @code{ctayswitch} is set to
 
 Maximum power used in Taylor-series expansion when @code{ctayswitch} is
 set to @code{true}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1568,7 +1448,6 @@ set to @code{true}.
 
 Point around which Taylor-series expansion is carried out when
 @code{ctayswitch} is set to @code{true}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1577,7 +1456,6 @@ Point around which Taylor-series expansion is carried out when
 
 The determinant of the metric tensor @code{lg}. Computed by @code{cmetric} when
 @code{cframe_flag} is set to @code{false}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1585,7 +1463,6 @@ The determinant of the metric tensor @code{lg}. Computed by @code{cmetric} when
 @defvr {Option variable} ratchristof
 
 Causes rational simplification to be applied by @code{christof}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1596,7 +1473,6 @@ Default value: @code{true}
 If @code{true} rational simplification will be
 performed on the non-zero components of Einstein tensors; if
 @code{ratfac} is @code{true} then the components will also be factored.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1608,7 +1484,6 @@ One of the switches which controls
 simplification of Riemann tensors; if @code{true}, then rational
 simplification will be done; if @code{ratfac} is @code{true} then each of the
 components will also be factored.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1619,7 +1494,6 @@ Default value: @code{true}
 If @code{true}, this switch causes the @code{weyl} function
 to apply rational simplification to the values of the Weyl tensor. If
 @code{ratfac} is @code{true}, then the components will also be factored.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1629,7 +1503,6 @@ to apply rational simplification to the values of the Weyl tensor. If
 The covariant frame metric. By default, it is initialized to the 4-dimensional 
 Lorentz frame with signature (+,+,+,-). Used when @code{cframe_flag} is 
 @code{true}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1638,7 +1511,6 @@ Lorentz frame with signature (+,+,+,-). Used when @code{cframe_flag} is
 
 The inverse frame metric. Computed from @code{lfg} when @code{cmetric} is 
 called while @code{cframe_flag} is set to @code{true}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1650,7 +1522,6 @@ For information about index ordering, see the description of @code{riemann}.
 
 If @code{cframe_flag} is @code{true}, @code{riem} is computed from the 
 covariant Riemann-tensor @code{lriem}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1658,7 +1529,6 @@ covariant Riemann-tensor @code{lriem}.
 @defvr {Variable} lriem
 
 The covariant Riemann tensor. Computed by @code{lriemann}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1666,7 +1536,6 @@ The covariant Riemann tensor. Computed by @code{lriemann}.
 @defvr {Variable} uriem
 
 The contravariant Riemann tensor. Computed by @code{uriemann}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1674,7 +1543,6 @@ The contravariant Riemann tensor. Computed by @code{uriemann}.
 @defvr {Variable} ric
 
 The mixed Ricci-tensor. Computed by @code{ricci}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1682,7 +1550,6 @@ The mixed Ricci-tensor. Computed by @code{ricci}.
 @defvr {Variable} uric
 
 The contravariant Ricci-tensor. Computed by @code{uricci}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1691,7 +1558,6 @@ The contravariant Ricci-tensor. Computed by @code{uricci}.
 
 The metric tensor. This tensor must be specified (as a @code{dim} by 
 @code{dim} matrix) before other computations can be performed.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1699,7 +1565,6 @@ The metric tensor. This tensor must be specified (as a @code{dim} by
 @defvr {Variable} ug
 
 The inverse of the metric tensor. Computed by @code{cmetric}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1707,7 +1572,6 @@ The inverse of the metric tensor. Computed by @code{cmetric}.
 @defvr {Variable} weyl
 
 The Weyl tensor. Computed by @code{weyl}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1715,7 +1579,6 @@ The Weyl tensor. Computed by @code{weyl}.
 @defvr {Variable} fb
 
 Frame bracket coefficients, as computed by @code{frame_bracket}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1723,7 +1586,6 @@ Frame bracket coefficients, as computed by @code{frame_bracket}.
 @defvr {Variable} kinvariant
 
 The Kretchmann invariant. Computed by @code{rinvariant}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1731,7 +1593,6 @@ The Kretchmann invariant. Computed by @code{rinvariant}.
 @defvr {Variable} np
 
 A Newman-Penrose null tetrad. Computed by @code{nptetrad}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1741,9 +1602,6 @@ A Newman-Penrose null tetrad. Computed by @code{nptetrad}.
 The raised-index Newman-Penrose null tetrad. Computed by @code{nptetrad}.
 Defined as @code{ug.np}. The product @code{np.transpose(npi)} is constant:
 
-@c ===beg===
-@c trigsimp(np.transpose(npi));
-@c ===end===
 @example
 (%i39) trigsimp(np.transpose(npi));
                               [  0   - 1  0  0 ]
@@ -1754,7 +1612,6 @@ Defined as @code{ug.np}. The product @code{np.transpose(npi)} is constant:
                               [                ]
                               [  0    0   1  0 ]
 @end example
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1762,7 +1619,6 @@ Defined as @code{ug.np}. The product @code{np.transpose(npi)} is constant:
 @defvr {Variable} tr
 
 User-supplied rank-3 tensor representing torsion. Used by @code{contortion}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1770,7 +1626,6 @@ User-supplied rank-3 tensor representing torsion. Used by @code{contortion}.
 @defvr {Variable} kt
 
 The contortion tensor, computed from @code{tr} by @code{contortion}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1778,7 +1633,6 @@ The contortion tensor, computed from @code{tr} by @code{contortion}.
 @defvr {Variable} nm
 
 User-supplied nonmetricity vector. Used by @code{nonmetricity}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1786,7 +1640,6 @@ User-supplied nonmetricity vector. Used by @code{nonmetricity}.
 @defvr {Variable} nmc
 
 The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1795,7 +1648,6 @@ The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity}.
 
 Variable indicating if the tensor package has been initialized. Set and used by
 @code{csetup}, reset by @code{init_ctensor}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -1809,11 +1661,11 @@ While normally defined when the function @code{csetup} is called,
 one may redefine the coordinates with the assignment
 @code{ct_coords: [j1, j2, ..., jn]} where the j's are the new coordinate names.
 See also @code{csetup}.
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@subsection Reserved names
+@subsubsection Reserved names
+@c -----------------------------------------------------------------------------
 
 The following names are used internally by the @code{ctensor} package and
 should not be redefined:
@@ -1844,7 +1696,8 @@ should not be redefined:
 @end example
 
 @c -----------------------------------------------------------------------------
-@subsection Changes
+@subsubsection Changes
+@c -----------------------------------------------------------------------------
 
 In November, 2004, the @code{ctensor} package was extensively rewritten.
 Many functions and variables have been renamed in order to make the

@@ -21,7 +21,7 @@
 
 @code{grobner} is a package for working with Groebner bases in Maxima.
 
-A tutorial on @emph{Groebner Bases} can be found at 
+A tutorial on @emph{Groebner Bases} can be found at@*
 @url{http://www.geocities.com/CapeCanaveral/Hall/3131/}
 
 To use the following functions you must load the @file{grobner.lisp} package.
@@ -57,13 +57,9 @@ and is released 2002-05-24 under the terms of the General Public License(GPL)
 by G@"unter Nowak.  Suggestions for improvement of the documentation can be
 discussed at the @emph{maxima}-mailing-list @email{maxima@@math.utexas.edu}.
 The code is a little bit out of date now.  Modern implementation use the fast
-@emph{F4} algorithm described in 
-@smallformat
-A new efficient algorithm for computing Gr@"obner bases (F4) 
-Jean-Charles Faug@`ere
-LIP6/CNRS Universit@'e Paris VI 
-January 20, 1999
-@end smallformat
+@emph{F4} algorithm described in "A new efficient algorithm for computing
+Gr@"obner bases (F4)", Jean-Charles Faug@`ere, LIP6/CNRS Universit@'e Paris VI,
+January 20, 1999.
 
 @c -----------------------------------------------------------------------------
 @subsection Implementations of admissible monomial orders in grobner

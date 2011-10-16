@@ -871,17 +871,73 @@ true;
 (kill (corr_xy), corr_xy : covar_xy / std_x / std_y);
 27/(2*sqrt(186));
 
-/* differentiation via secant approximation:
+/* TODO: differentiation via secant approximation:
  * diff(f(x), x) = (f(x + h) - f(x - h))/(2 h)
  *  => diff has units = units(f) / units(x)
  */
 
-/* integration via trapezoid rule:
+/* TODO: integration via trapezoid rule:
  * integral(f(x), x, a, b) = (h/2) (f(a) + 2 f(a + h) + ... + 2 f(b - h) + f(b)), h = (b - a)/n
  *  => integral has units = units(x) * units(f)
  */
 
-/* root finding via Newton-Raphson algorithm:
+/* TODO: root finding via Newton-Raphson algorithm:
  * x[n + 1] = x[n] - f(x[n])/f'(x[n])
  *  => each x[n] has same units as x[1]
  */
+
+/* solve for units of variable in equation
+ * see: http://groups.google.com/group/sage-support/browse_thread/thread/a60c943c224dfe87#
+ */
+
+(kill (eqn, H_l, h_c, T_a, T_l),
+ eqn : H_l = h_c * (T_a - T_l),
+ declare_units (H_l, calorie/cm^2/minute),
+ declare_units ([T_a, T_l], K),
+ declare (h_c, dimensional),
+ eqn : units (eqn));
+calorie/(cm^2*minute) = 'units(h_c)*K;
+
+solve (eqn, units (h_c));
+['units(h_c) = calorie/(cm^2*minute*K)];
+
+/* tickles bug in tellsimpafter: this example triggers an error
+ * unless built-in simplifications are applied so that MRAT is
+ * simplified away by the time GREAT is called.
+ */
+(kill (a, b, c, x), block ([x : (rat (1) ` a) * (1 ` b + c)], expand (x)));
+1 ` a*b + c ` a;
+
+/* "*" rule now splits arguments into 3 types:
+ * dimensional, nondimensional, and terms not known to be either one.
+ * Thanks to Stefan Karrmann for suggesting it.
+ */
+(kill (a, b, c, d, e, f, g, h, foo, bar),
+  exp (a ` b) * (c ` d) * (e ` f) * g * h);
+exp (a ` b) * (c * e * g * h ` d * f);
+
+(c ` d) * (e ` f) * g * h;
+c * e * g * h ` d * f;
+
+(c ` d) * (e ` f) * (g ` h);
+c * e * g ` d * f * h;
+
+foo (a ` b) * bar (c ` d) * (e ` f) * (g ` h) * 2 * %pi;
+foo (a ` b) * bar (c ` d) * (2 * %pi * e * g ` f * h);
+
+sin (a ` b) * bar (c ` d) * (e ` f) * (g ` h) * 2 * %pi;
+bar (c ` d) * (2 * %pi * e * g * sin (a ` b) ` f * h);
+
+exp (a ` b) + c ` d + e ` d + g + h;
+exp (a ` b) + (c + e) ` d  + g + h;
+
+c ` d + e ` d + g + h;
+(c + e) ` d  + g + h;
+
+c ` d + e ` d;
+(c + e) ` d;
+
+foo (a ` b) + c ` d + e ` d + 2 + %pi;
+(c + e) ` d + foo (a ` b) + 2 + %pi;
+
+

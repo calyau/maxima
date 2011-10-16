@@ -171,6 +171,16 @@ La siguiente sesi@'on de ejemplo demuestra c@'omo cargar el paquete @code{itenso
 @section Funciones y variables para itensor
 @subsection Trabajando con objetos indexados
 
+
+@deffn {Funci@'on} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Funci@'on} dispcon (all)
+
+Muestra las propiedades contractivas de sus argumentos tal como 
+fueron asignadas por @code{defcon}. La llamada @code{dispcon (all)}
+muestra todas propiedades contractivas que fueron definidas.
+@end deffn
+
+
 @deffn {Funci@'on} entertensor (@var{nombre})
 
 Permite crear un objeto indexado llamado @var{nombre}, con cualquier n@'umero de @'{@dotless{i}}ndices tensoriales y de derivadas. Se admiten desde un @'unico @'{@dotless{i}}ndice hasta una lista de @'{@dotless{i}}ndices. V@'ease el ejemplo en la descripci@'on de @code{covdiff}.
@@ -280,6 +290,13 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end example
 
 @end deffn
+
+
+@deffn {Funci@'on} show (@var{expr})
+Muestra @code{expr} con sus objetos indexados que tengan @'{@dotless{i}}ndices covariantes como sub@'{@dotless{i}}ndices y los contravariantes como super@'{@dotless{i}}ndices.  Los @'{@dotless{i}}ndices derivados se muestran como sub@'{@dotless{i}}ndices, separados por una coma de los covariantes.
+@end deffn
+
+
 
 @defvr {Variable opcional} flipflag
 Valor por defecto: @code{false}

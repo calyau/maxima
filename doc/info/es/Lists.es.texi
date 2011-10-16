@@ -1,11 +1,15 @@
-@c version 1.37
+@c English version 2011-06-12
+@page
+@node Listas, Arrays, Constantes, Tipos de datos y estructuras
+@section Listas
+
 @menu
 * Introducci@'on a las listas::       
 * Funciones y variables para listas::       
 @end menu
 
 @node Introducci@'on a las listas, Funciones y variables para listas, Listas, Listas
-@section Introducci@'on a las listas
+@subsection Introducci@'on a las listas
 
 Las listas son bloques de construcci@'on b@'asica para Maxima y Lisp. Todos los tipos de datos
 diferentes a los arreglos, tablas mixtas o n@'umeros son representados como listas Lisp,
@@ -40,7 +44,54 @@ El elemento que denota el tipo de expresi@'on en Maxima es tambi@'en una lista, 
 
 
 @node Funciones y variables para listas,  , Introducci@'on a las listas, Listas
-@section Funciones y variables para listas
+@subsection Funciones y variables para listas
+
+
+
+@defvr  {Operador} [
+@defvrx {Operador} ]
+@ifinfo
+@fnindex Acotador de listas
+@fnindex Operador para sub@'{@dotless{i}}ndices
+@end ifinfo
+
+@code{[} y @code{]} marcan, respectivamente, el comienzo y el final de una lista.
+
+@code{[} y @code{]} tambi@'en sse utilizan para indicar los sub@'{@dotless{i}}ndices
+de una lista no de un array.
+
+Ejemplos:
+
+@example
+(%i1) x: [a, b, c];
+(%o1)                       [a, b, c]
+(%i2) x[3];
+(%o2)                           c
+(%i3) array (y, fixnum, 3);
+(%o3)                           y
+(%i4) y[2]: %pi;
+(%o4)                          %pi
+(%i5) y[2];
+(%o5)                          %pi
+(%i6) z['foo]: 'bar;
+(%o6)                          bar
+(%i7) z['foo];
+(%o7)                          bar
+(%i8) g[k] := 1/(k^2+1);
+                                  1
+(%o8)                     g  := ------
+                           k     2
+                                k  + 1
+(%i9) g[10];
+                                1
+(%o9)                          ---
+                               101
+@end example
+
+@end defvr
+
+
+
 
 @deffn {Funci@'on} append (@var{lista_1}, ..., @var{lista_n})
 
@@ -57,11 +108,6 @@ Esta funci@'on busca la @var{clave} en el lado derecho de la  @var{lista}, la cu
 
 @end deffn
 
-@deffn {Funci@'on} atom (@var{expr})
-
-Devuelve @code{true} si @var{expr} es un @'atomo (n@'umero, nombre o cadena alfanum@'erica) y @code{false} en caso contario. As@'{@dotless{i}}, @code{atom(5)} devolver@'a @code{true}, mientras que @code{atom(a[1])} y @code{atom(sin(x))} dar@'an como resultado @code{false} (dando por hecho que tanto @code{a[1]} como @code{x} no tienen valores asignados).
-
-@end deffn
 
 @deffn {Funci@'on} cons (@var{expr}, @var{lista})
 
@@ -246,34 +292,7 @@ Devuelve el cuarto elemento de la lista o expresi@'on @var{expr}. V@'ease @code{
 
 @end deffn
 
-@deffn {Funci@'on} get (@var{a}, @var{i})
 
-Recupera la propiedad de usuario indicada por @var{i} asociada al @'atomo @var{a} o devuelve @code{false} si @var{a} no tiene la propiedad @var{i}.
-
-La funci@'on @code{get} eval@'ua sus argumentos.
-
-@example
-(%i1) put (%e, 'transcendental, 'type);
-(%o1)                    transcendental
-(%i2) put (%pi, 'transcendental, 'type)$
-(%i3) put (%i, 'algebraic, 'type)$
-(%i4) typeof (expr) := block ([q],
-        if numberp (expr)
-        then return ('algebraic),
-        if not atom (expr)
-        then return (maplist ('typeof, expr)),
-        q: get (expr, 'type),
-        if q=false
-        then errcatch (error(expr,"is not numeric.")) else q)$
-(%i5) typeof (2*%e + x*%pi);
-x is not numeric.
-(%o5)  [[transcendental, []], [algebraic, transcendental]]
-(%i6) typeof (2*%e + %pi);
-(%o6)     [transcendental, [algebraic, transcendental]]
-
-@end example
-
-@end deffn
 
 
 @deffn {Funci@'on} join (@var{l}, @var{m})
@@ -538,6 +557,117 @@ Devuelve el sexto elemento de la lista o expresi@'on @var{expr}. V@'ease @code{f
 @end deffn
 
 
+
+
+@deffn {Funci@'on} sort (@var{L}, @var{P})
+@deffnx {Funci@'on} sort (@var{L})
+Ordena la lista @var{L} de acuerdo con el predicado @code{P} de dos argumentos,
+de tal manera que @code{@var{P} (@var{L}[k], @var{L}[k + 1])} es @code{true} (verdadero)
+para cualesquiera dos elementos sucesivos.
+El predicado se puede especificar como nombre de una funci@'on o de un operador
+infijo binario, o como una expresi@'on @code{lambda}.
+Si se especifica con el nombre de un operador, este nombre debe
+encerrarse con "comillas dobles".
+
+La lista ordenada se devuelve como un objeto nuevo, de manera que
+el argumento @var{L} no se ve alterado.
+A fin de construir el valor de retorno, @code{sort} hace una copia previa
+de los elementos de @var{L}.
+
+@c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
+Si el predicado @var{P} no ordena totalmente los elementos de @var{L},
+entonces @code{sort} puede seguir ejecut@'andose hasta el final sin emitir
+errores, pero el resultado no es predecible.
+La funci@'on muestra un mensaje de error en caso de que el predicado
+devuelva algo diferente de @code{true} o @code{false}.
+
+La llamada @code{sort (@var{L})} equivale a @code{sort (@var{L}, orderlessp)};
+esto es, el orden por defecto es el ascendente, tal como queda definido por 
+@code{orderlessp}. Todos los @'atomos y expresiones de Maxima son comparables
+para @code{orderlessp}.
+
+El predicado @code{ordergreatp} ordena una lista en sentido descendente. El
+predicado @code{ordermagnitudep} ordena seg@'un sus respectivas normas, n@'umeros,
+s@'{@dotless{i}}mbolos constantes con valores num@'ericos y expresiones
+con valores constantes. Cualesquiera otros elementos de la lista @var{L} se ordenan
+con @code{orderlessp}. El predicado @code{"<"} permite tambi@'en la ordenaci@'on 
+por norma, pero no ordena completamente los elementos de la lista @var{L} que 
+no sean comparables respecto de @code{"<"}.
+
+Ejemplos:
+
+@c ===beg===
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x],
+@c       ordergreatp);
+@c sort ([%pi, 3, 4, %e, %gamma]);
+@c sort ([%pi, 3, 4, %e, %gamma], "<");
+@c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+@c sort (my_list);
+@c sort (my_list, lambda ([a, b],
+@c                        orderlessp (reverse (a), reverse (b))));
+@c ===end===
+@example
+(%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
+               5
+(%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
+               2
+(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x],
+          ordergreatp);
+                                                   5
+(%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
+                                                   2
+(%i3) sort ([%pi, 3, 4, %e, %gamma]);
+(%o3)                [3, 4, %e, %gamma, %pi]
+(%i4) sort ([%pi, 3, 4, %e, %gamma], "<");
+(%o4)                [%gamma, %e, 3, %pi, 4]
+(%i5) my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+(%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
+(%i6) sort (my_list);
+(%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
+(%i7) sort (my_list, lambda ([a, b], 
+                             orderlessp (reverse (a), reverse (b))));
+(%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+@end example
+
+Ordena seg@'un sus normas n@'umeros, constantes y expresiones, as@'{@dotless{i}}
+como cualesquiera otros elementos en orden ascendente:
+
+@c ===beg===
+@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],ordermagnitudep);
+@c ===end===
+@example
+(%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+      ordermagnitudep);
+(%o8)  [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, %i + 1, 2 x]
+@end example
+
+@end deffn
+
+
+
+
+@deffn {Funci@'on} sublist (@var{list}, @var{p})
+Devuelve la lista de elementos de @var{list} para los cuales el predicado @code{p} retorna @code{true}.
+
+Ejemplo:
+
+@c ===beg===
+@c L: [1, 2, 3, 4, 5, 6];
+@c sublist (L, evenp);
+@c ===end===
+@example
+(%i1) L: [1, 2, 3, 4, 5, 6];
+(%o1)                  [1, 2, 3, 4, 5, 6]
+(%i2) sublist (L, evenp);
+(%o2)                       [2, 4, 6]
+@end example
+
+@end deffn
+
+
+
+
 @deffn {Funci@'on} sublist_indices (@var{L}, @var{P})
 
 Devuelve los @'{@dotless{i}}ndices de los elementos @code{x} de la
@@ -592,3 +722,4 @@ Devuelve el d@'ecimo elemento de la lista o expresi@'on @var{expr}. V@'ease @cod
 Devuelve el tercer elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
+

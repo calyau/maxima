@@ -1,0 +1,776 @@
+@menu
+* Numbers::
+* Strings::
+* Constants::
+* Lists::
+* Arrays::
+* Structures::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Numbers, Strings, Data Types and Structures, Data Types and Structures
+@section Numbers
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Numbers::
+* Functions and Variables for Numbers::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Numbers, Functions and Variables for Numbers, Numbers, Numbers
+@subsection Introduction to Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@subheading Complex numbers
+@c -----------------------------------------------------------------------------
+
+Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算で指定します。
+例えば、等式 @code{x^2 - 4*x + 13 = 0}の根は
+@code{2 + 3*%i}と @code{2 - 3*%i}です。
+複素数式の積の整理は積を展開することで影響を受けるかもしれないことに注意してください。
+複素数式の商や根、他の関数の整理は普通、
+@code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform},
+@code{abs}, @code{carg}関数を使って達成することができます。
+
+@opencatbox
+@category{Complex variables}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Numbers, , Introduction to Numbers, Numbers
+@subsection Functions and Variables for Numbers
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{bfloat}
+@deffn {関数} bfloat (@var{expr})
+@var{expr}の中のすべての数や数の関数を多倍長浮動小数点に変換します。
+戻り値の多倍長浮動小数点の有効桁数は、
+グローバル変数@mref{fpprec}によって規定されます。
+
+@mref{float2bf}が@code{false}の場合、
+浮動小数点が多倍長浮動小数点に変換される時
+（精度が落ちることを意味するので）警告メッセージが出力されます。
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bfloatp}
+@deffn {関数} bfloatp (@var{expr})
+
+もし@var{expr}が多倍長浮動小数点数なら@code{true}を、そうでなければ@code{false}を返します。
+
+@opencatbox
+@category{Numerical evaluation} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{bftorat}
+@defvr {オプション変数} bftorat
+デフォルト値: @code{false}
+
+@code{bftorat}は多倍長浮動小数点の有理数への変換を制御します。
+@code{bftorat}が@code{false}の時、
+@mref{ratepsilon}が変換を制御するのに使われます。
+(これは比較的小さな有理数になります。)
+@code{bftorat}が@code{true}の時、
+生成された有理数は多倍長浮動小数点を正確に表します。
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{bftrunc}
+@defvr {オプション変数} bftrunc
+デフォルト値: @code{true}
+
+@code{bftrunc}は、非ゼロの多倍長浮動小数点数の中のずるずる続くゼロを表示しないようにします。
+例えば、もし@code{bftrunc}が@code{false}なら、
+@code{bfloat (1)}は@code{1.000000000000000B0}と表示されます。
+そうでなければ、これは、@code{1.0B0}と表示されます。
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{evenp}
+@deffn {関数} evenp (@var{expr})
+
+もし@var{expr}が偶数なら@code{true}を返します。
+@c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+他の場合には@code{false}を返します。
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{float}
+@deffn {関数} float (@var{expr})
+
+@var{expr}の中の整数、有理数、多倍長浮動小数点を浮動小数点に変換します。
+@code{float}は@code{evflag}でもあり、
+非整数有理数と多倍長浮動小数点を浮動小数点に変換します。
+
+@opencatbox
+@category{Numerical evaluation} @category{Evaluation flags}
+@closecatbox
+@end deffn
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{float2bf}
+@defvr {オプション変数} float2bf
+デフォルト値: @code{true}
+ 
+@code{float2bf}が@code{false}の場合、
+浮動小数点が多倍長浮動小数点に変換される時、
+（これは精度の無駄使いとなるかもしれないので、）
+警告メッセージが表示されます。
+デフォルト値は@code{true}です。
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{floatnump}
+@deffn {関数} floatnump (@var{expr})
+もし@var{expr}が浮動小数点なら
+@code{true}を返し、そうでないなら
+@code{false}を返します。
+
+@opencatbox
+@category{Numerical evaluation} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{fpprec}
+@defvr {オプション変数} fpprec
+デフォルト値: 16
+
+@code{fpprec}は多倍長浮動小数点上の代数のための有効桁数です。
+@code{fpprec}は通常の浮動小数点上の計算に影響を与えません。
+
+@mref{bfloat}と@mref{fpprintprec}も参照してください。
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{fpprintprec}
+@defvr {オプション変数} fpprintprec
+デフォルト値: 0
+
+@code{fpprintprec}は、通常の浮動小数点もしくは多倍長浮動小数点を表示する時の
+表示する桁数です。
+
+通常の浮動小数点に関しては、
+@code{fpprintprec}が2から16までの値を持つ時、
+表示されるディジット数は@code{fpprintprec}に等しいです。
+そうでなければ、@code{fpprintprec}は0もしくは16より大きく、
+表示されるディジット数は16です。
+
+多倍長浮動小数点に関しては、
+@code{fpprintprec}が2から@code{fpprec}までの値を持つ時、
+表示される桁数は、@code{fpprintprec}に等しいです。
+そうでなければ、@code{fpprintprec}は、0もしくは@code{fpprec}より大きく、
+表示される桁数は@code{fpprec}に等しいです。
+
+@code{fpprintprec}は1にはできません。
+
+@opencatbox
+@category{Numerical evaluation} @category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{integerp}
+@deffn {関数} integerp (@var{expr})
+もし@var{expr}が整数リテラルなら @code{true}を、
+そうでないなら @code{false}を返します。
+
+もし引数がシンボルならたとえ引数が宣言された整数でも、
+@code{integerp}は @code{false}を返します。
+
+例:
+
+@example
+(%i1) integerp (0);
+(%o1)                         true
+(%i2) integerp (1);
+(%o2)                         true
+(%i3) integerp (-17);
+(%o3)                         true
+(%i4) integerp (0.0);
+(%o4)                         false
+(%i5) integerp (1.0);
+(%o5)                         false
+(%i6) integerp (%pi);
+(%o6)                         false
+(%i7) integerp (n);
+(%o7)                         false
+(%i8) declare (n, integer);
+(%o8)                         done
+(%i9) integerp (n);
+(%o9)                         false
+@end example
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{m1pbranch}
+@defvr {オプション変数} m1pbranch
+デフォルト値: @code{false}
+
+@code{m1pbranch}は @code{-1}のべき乗の主枝です。
+@code{(-1)^(1/3)}(すなわち、「奇」の有理指数)や
+@code{(-1)^(1/4)}(すなわち、「偶」の有理指数)
+のような量は以下のように扱われます:
+@c REDRAW THIS AS A TABLE
+@example
+              domain:real
+                            
+(-1)^(1/3):      -1         
+(-1)^(1/4):   (-1)^(1/4)   
+
+             domain:complex              
+m1pbranch:false          m1pbranch:true
+(-1)^(1/3)               1/2+%i*sqrt(3)/2
+(-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
+@end example
+
+@opencatbox
+@category{Expressions} @category{Global flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {関数} nonnegintegerp (@var{n})
+
+@code{@var{n} >= 0}かつ @var{n}が整数の時だけ@code{true}を返します。
+
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{numberp}
+@deffn {関数} numberp (@var{expr})
+
+もし@var{expr}が文字リテラルか、有理数か、浮動小数点数か、多倍長浮動小数点なら
+@code{true}を、
+そうでなければ @code{false}を返します。
+
+もし引数がシンボルなら、
+たとえ引数が@code{%pi}や@code{%i}のようなシンボリックな数でも、また、
+@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational}, 
+@code{real}, @code{imaginary}, @code{complex}のいずれかに宣言されていても、
+@code{numberp}は @code{false}を返します。
+
+例:
+
+@example
+(%i1) numberp (42);
+(%o1)                         true
+(%i2) numberp (-13/19);
+(%o2)                         true
+(%i3) numberp (3.14159);
+(%o3)                         true
+(%i4) numberp (-1729b-4);
+(%o4)                         true
+(%i5) map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+(%o5)      [false, false, false, false, false, false]
+(%i6) declare (a, even, b, odd, c, integer, d, rational,
+     e, irrational, f, real, g, imaginary, h, complex);
+(%o6)                         done
+(%i7) map (numberp, [a, b, c, d, e, f, g, h]);
+(%o7) [false, false, false, false, false, false, false, false]
+@end example
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
+@c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
+@c NEED TO MENTION THIS IS AN evflag
+
+@c -----------------------------------------------------------------------------
+@anchor{numer}
+@defvr {特殊シンボル} numer
+
+@code{numer}は数値の引数を持つ（指数関数を含む）いくつかの数学関数を
+浮動小数点に評価するようにします。
+数値が与えられた@code{expr}の中の変数を値に置き換えるようにします。
+それは @mref{float}スイッチをオンにもします。
+
+@mref{%enumer}も参照してください。
+
+例:
+
+@c ===beg===
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+@c ===end===
+@example
+(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
+                                        1
+(%o1)            [sqrt(2), sin(1), -----------]
+                                   sqrt(3) + 1
+(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
+@end example
+
+@opencatbox
+@category{Numerical evaluation} @category{Evaluation flags}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{numer_pbranch}
+@defvr {オプション変数} numer_pbranch
+デフォルト値: @code{false}
+
+オプション変数@code{numer_pbranch}は
+負の整数、有理数、または浮動小数点数のべきの数値評価を制御します。
+@code{numer_pbranch}が@code{true}でかつ、指数が浮動小数点数であるか
+オプション変数@mref{numer}も@code{true}の時、
+Maximaは主枝を使って数値結果を評価します。
+そうでなければ、式整理されたが未評価の結果が返されます。
+
+例:
+
+@c ===beg===
+@c (-2)^0.75;
+@c (-2)^0.75,numer_pbranch:true;
+@c (-2)^(3/4);
+@c (-2)^(3/4),numer;
+@c (-2)^(3/4),numer,numer_pbranch:true;
+@c ===end===
+@example
+(%i1) (-2)^0.75;
+(%o1) (-2)^0.75
+
+(%i2) (-2)^0.75,numer_pbranch:true;
+(%o2) 1.189207115002721*%i-1.189207115002721
+
+(%i3) (-2)^(3/4);
+(%o3) (-1)^(3/4)*2^(3/4)
+
+(%i4) (-2)^(3/4),numer;
+(%o4) 1.681792830507429*(-1)^0.75
+
+(%i5) (-2)^(3/4),numer,numer_pbranch:true;
+(%o5) 1.189207115002721*%i-1.189207115002721
+@end example
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
+
+@c -----------------------------------------------------------------------------
+@anchor{numerval}
+@deffn {関数} numerval (@var{x_1}, @var{expr_1}, @dots{}, @var{x_n}, @var{expr_n})
+変数@code{x_1}, @dots{}, @code{x_n}を
+@code{expr_1}, @dots{}, @code{expr_n}に等しい数値を持つ変数だと宣言します。
+もし @code{numer}フラグが @code{true}なら、
+変数が現れる任意の式にて、数値は評価され、変数に代入されます。
+@mref{ev}も参照してください。
+
+式@code{expr_1}, @dots{}, @code{expr_n}は、任意の式を取り得ます。数値である必要はありません。
+
+@opencatbox
+@category{Declarations and inferences} @category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{oddp}
+@deffn {関数} oddp (@var{expr})
+もしも@var{exp}が奇数であれば@code{true}を返し、
+@c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+それ以外では@code{false}を返します。
+
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ratepsilon}
+@defvr {オプション変数} ratepsilon
+デフォルト値: 2.0e-8
+
+@code{ratepsilon}は浮動小数点数を有理数に変換する際に使われる許容誤差です。
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Numerical evaluation} @category{Rational expressions}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{rationalize}
+@deffn {関数} rationalize (@var{expr})
+
+Maximaの式@var{expr}の中の倍精度浮動小数点やビッグフローすべてを同値の有理数に変換します。
+もし浮動小数点の２値表現に詳しくなれば、@code{rationalize (0.1)}が1/10に等しくないことに
+驚くかもしれません。
+この振る舞いはMaximaに特別なわけではありません。―1/10は２値の循環小数表現を持ちます。
+
+@c ===beg===
+@c rationalize (0.5);
+@c rationalize (0.1);
+@c fpprec : 5$
+@c rationalize (0.1b0);
+@c fpprec : 20$
+@c rationalize (0.1b0);
+@c rationalize (sin (0.1*x + 5.6));
+@c ===end===
+@example
+(%i1) rationalize (0.5);
+                                1
+(%o1)                           -
+                                2
+(%i2) rationalize (0.1);
+                               1
+(%o2)                          --
+                               10
+(%i3) fpprec : 5$
+(%i4) rationalize (0.1b0);
+                             209715
+(%o4)                        -------
+                             2097152
+(%i5) fpprec : 20$
+(%i6) rationalize (0.1b0);
+                     236118324143482260685
+(%o6)                ----------------------
+                     2361183241434822606848
+(%i7) rationalize (sin (0.1*x + 5.6));
+                              x    28
+(%o7)                     sin(-- + --)
+                              10   5
+@end example
+
+使用例:
+
+@c ===beg===
+@c unitfrac(r) := block([uf : [], q],
+@c     if not(ratnump(r)) then 
+@c        error("The input to 'unitfrac' must be a rational number"),
+@c     while r # 0 do (
+@c         uf : cons(q : 1/ceiling(1/r), uf),
+@c         r : r - q),
+@c     reverse(uf));
+@c unitfrac (9/10);
+@c apply ("+", %);
+@c unitfrac (-9/10);
+@c apply ("+", %);
+@c unitfrac (36/37);
+@c apply ("+", %);
+@c ===end===
+@example
+@group
+(%i1) unitfrac(r) := block([uf : [], q],
+    if not(ratnump(r)) then
+       error("The input to 'unitfrac' must be a rational number"),
+    while r # 0 do (
+        uf : cons(q : 1/ceiling(1/r), uf),
+        r : r - q),
+    reverse(uf))$
+@end group
+(%o1) unitfrac(r) := block([uf : [], q], 
+if not ratnump(r) then
+   error("The input to 'unitfrac' must be a rational number"),
+                                  1
+while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
+                                      1
+                              ceiling(-)
+                                      r
+reverse(uf))
+(%i2) unitfrac (9/10);
+                            1  1  1
+(%o2)                      [-, -, --]
+                            2  3  15
+(%i3) apply ("+", %);
+                               9
+(%o3)                          --
+                               10
+(%i4) unitfrac (-9/10);
+                                  1
+(%o4)                       [- 1, --]
+                                  10
+(%i5) apply ("+", %);
+                                9
+(%o5)                         - --
+                                10
+(%i6) unitfrac (36/37);
+                        1  1  1  1    1
+(%o6)                  [-, -, -, --, ----]
+                        2  3  8  69  6808
+(%i7) apply ("+", %);
+                               36
+(%o7)                          --
+                               37
+@end example
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ratnump}
+@deffn {関数} ratnump (@var{expr})
+もし@var{expr}が整数リテラルもしくは整数リテラルの比なら @code{true}を返し、
+そうでなければ @code{false}を返します。
+
+@opencatbox
+@category{Predicate functions} @category{Rational expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@page
+@node Strings, Constants, Numbers, Data Types and Structures
+@section Strings
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to Strings::
+* Functions and Variables for Strings::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Strings, Functions and Variables for Strings, Strings, Strings
+@subsection Introduction to Strings
+@c -----------------------------------------------------------------------------
+
+文字列(クォートされた文字の列)は入力の際にはダブルクォートマーク @code{"}で括り、
+グローバル変数 @mref{stringdisp}に依存して、クォートマークありだったりなしだったりで
+表示されます。
+
+文字列は、埋め込みタブ、改行、キャリッジリターン文字を含む任意の文字を含み得ます。
+列 @code{\"}は文字通りダブルクォートとして認識され、
+@code{\\}は文字通りバックスラッシュとして認識されます。
+バックスラッシュが行の終わりに現れる時、
+バックスラッシュと(改行かキャリッジリターンと改行かいずれかの)行終端を無視します。
+そして、文字列は次の行に続きます。
+他にバックスラッシュともう一つの文字の組み合わせで特殊なものはありません;
+@code{"}か, @code{\},　行終端以外の任意の文字の前にバックスラッシュが現れる時、
+バックスラッシュは無視されます。
+文字列の中に文字リテラルを埋め込むことを除いて
+(タブ、改行、キャリッジリターンのような)特殊文字を表す方法はありません。
+
+Maximaでは文字タイプはありません;
+文字単体は1文字の文字列として表されます。
+
+@code{stringproc}アドオンパッケージは文字列に機能する多くの関数を含みます。
+
+例:
+
+@c ===beg===
+@c s_1 : "This is a string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c stringdisp : false;
+@c s_1;
+@c stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a string.";
+(%o1)               This is a string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)                   This is a string.
+(%i7) stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)                  "This is a string."
+@end example
+
+@opencatbox
+@category{Syntax}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Strings, , Introduction to Strings, Strings
+@subsection Functions and Variables for Strings
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{concat}
+@deffn {関数} concat (@var{arg_1}, @var{arg_2}, @dots{})
+
+引数を連結します。
+引数はアトムに評価されなければいけません。
+もし最初の引数がシンボルなら戻り値はシンボルで、
+そうでなければ文字列です。
+
+@code{concat}は引数を評価します。
+シングルクォート@code{'}は評価を抑制します。
+
+@example
+(%i1) y: 7$
+(%i2) z: 88$
+(%i3) concat (y, z/2);
+(%o3)                          744
+(%i4) concat ('y, z/2);
+(%o4)                          y44
+@end example
+
+@code{concat}によって組み立てられたシンボルは値に割り当てられたり、式の中に現れたりします。
+@mref{::} (ダブルコロン)割り当て演算子は左辺を評価します。
+
+@example
+(%i5) a: concat ('y, z/2);
+(%o5)                          y44
+(%i6) a:: 123;
+(%o6)                          123
+(%i7) y44;
+(%o7)                          123
+(%i8) b^a;
+@group
+                               y44
+(%o8)                         b
+@end group
+(%i9) %, numer;
+                               123
+(%o9)                         b
+@end example
+
+@code{concat (1, 2)}は数のように見えますが、文字列であることに注意してください。
+
+@example
+(%i10) concat (1, 2) + 3;
+(%o10)                       12 + 3
+@end example
+
+@opencatbox
+@category{Expressions} @category{Strings}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sconcat}
+@deffn {関数} sconcat (@var{arg_1}, @var{arg_2}, ...)
+
+引数を文字列に連結します。
+@mref{concat}と違い、引数はアトムである必要は@i{ありません}。
+
+@example
+(%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+@end example
+
+@opencatbox
+@category{Expressions} @category{Strings}
+@closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{string}
+@deffn {関数} string (@var{expr})
+
+@code{expr}を、ただまるでタイプされたようにMaximaの線形表記に変換します。
+
+@code{string}の戻り値は文字列であり、
+計算の中で使うことはできません。
+
+@opencatbox
+@category{Strings}
+@closecatbox
+@end deffn
+
+@c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
+
+@c -----------------------------------------------------------------------------
+@anchor{stringdisp}
+@defvr {オプション変数} stringdisp
+デフォルト値: @code{false}
+
+@code{stringdisp}が@code{true}の時、
+文字列はダブルクォートマークで囲まれて表示されます。
+そうでなければクォートマークは表示されません。
+
+関数定義を表示する時はいつも、@code{stringdisp}は @code{true}です。
+
+例:
+
+@c ===beg===
+@c stringdisp: false$
+@c "This is an example string.";
+@c foo () := 
+@c       print ("This is a string in a function definition.");
+@c stringdisp: true$
+@c "This is an example string.";
+@c ===end===
+@example
+(%i1) stringdisp: false$
+(%i2) "This is an example string.";
+(%o2)              This is an example string.
+@group
+(%i3) foo () :=
+      print ("This is a string in a function definition.");
+@end group
+(%o3) foo() := 
+              print("This is a string in a function definition.")
+(%i4) stringdisp: true$
+(%i5) "This is an example string.";
+(%o5)             "This is an example string."
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr

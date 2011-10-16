@@ -16,8 +16,6 @@
 
 (defun chrct* () (- linel chrps))
 
-(defvar fortranp nil)
-
 (defmspec $grind (x)
   (setq x (cdr x))
   (let (y)
@@ -133,7 +131,7 @@
 
 (defun msize (x l r lop rop)
   (setq x (nformat x))
-  (cond ((atom x) (if fortranp (msz (makestring x) l r) (msize-atom x l r)))
+  (cond ((atom x) (msize-atom x l r))
         ((and (atom (car x)) (setq x (cons '(mprogn) x)) nil))
 	((or (<= (lbp (caar x)) (rbp lop)) (> (lbp rop) (rbp (caar x))))
 	 (msize-paren x l r))
@@ -275,6 +273,43 @@
 
 (defprop mlist msize-matchfix grind)
 
+;;; ----------------------------------------------------------------------------
+
+;; Formating a mlable-expression
+
+(defprop mlable msize-mlable grind)
+
+(defun msize-mlable (x l r)
+  (declare (special *display-labels-p*))
+  (if *display-labels-p*
+      (setq l (cons (msize (cadr x) (list #\( ) (list #\) #\ ) nil nil) l)))
+  (msize (caddr x) l r lop rop))
+
+;;; ----------------------------------------------------------------------------
+
+;; Formating a mtext-expression
+
+(defprop mtext msize-mtext grind)
+
+(defun msize-mtext (x l r)
+  (setq x (cdr x))
+  (if (null x)
+      (msz nil l r)
+      (do ((nl) (w 0))
+          ((null (cdr x))
+           (setq nl (cons (if (atom (car x))
+                              (msz (makestring (car x)) l r)
+                              (msize (car x) l r lop rop))
+                          nl))
+           (cons (+ w (caar nl)) (nreverse nl)))
+        (setq nl (cons (if (atom (car x))
+                           (msz (makestring (car x)) l r)
+                           (msize (car x) l r lop rop))
+                       nl)
+              w (+ w (caar nl))
+              x (cdr x)
+              l nil))))
+
 (defprop mqapply msz-mqapply grind)
 
 (defun msz-mqapply (x l r)
@@ -307,26 +342,42 @@
 (defprop mset 180. lbp)
 (defprop mset 20. rbp)
 
+;;; ----------------------------------------------------------------------------
+
+;; Formating a mdefine or mdefmacro expression
+
 (defprop mdefine msz-mdef grind)
 (defprop mdefine (#\: #\=) strsym)
-(defprop mdefine 180. lbp)
-(defprop mdefine 20. rbp)
+(defprop mdefine 180 lbp)
+(defprop mdefine  20 rbp)
 
 (defprop mdefmacro msz-mdef grind)
 (defprop mdefmacro (#\: #\: #\=) strsym)
-(defprop mdefmacro 180. lbp)
-(defprop mdefmacro 20. rbp)
+(defprop mdefmacro 180 lbp)
+(defprop mdefmacro  20 rbp)
 
 (defun msz-mdef (x l r)
   (setq l (msize (cadr x) l (copy-list (strsym (caar x))) lop (caar x))
-	r (msize (caddr x) nil r (caar x) rop))
-  (setq x (cons (- (car l) (caadr l)) (cddr l)))
-  (if (and (not (atom (cadr r))) (not (atom (caddr r)))
-	   (< (+ (car l) (caadr r) (caaddr r)) linel))
-      (setq x (nconc x (list (cadr r) (caddr r)))
-	    r (cons (car r) (cdddr r))))
-  (cons (+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))
-
+        r (msize (caddr x) nil r (caar x) rop))
+  (cond ((not (atom (cadr l)))
+         ;; An expression like g(x):=x:
+         ;;   left side  l = (6 (2 #\g #\( ) (4 #\x #\) #\: #\= ))
+         ;;   right side r = (1 #\x )
+         ;; the result is (7 (2 #\g #\( ) (4 #\x #\) #\: #\= ) (1 #\x ))
+         (setq x (cons (- (car l) (caadr l)) (cddr l)))
+         (if (and (not (atom (cadr r)))
+                  (not (atom (caddr r)))
+                  (< (+ (car l) (caadr r) (caaddr r)) linel))
+             (setq x (nconc x (list (cadr r) (caddr r)))
+                   r (cons (car r) (cdddr r))))
+         (cons (+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))
+        (t
+         ;; An expression like x f :=x or f x:=x, where f is a postfix or a
+         ;; prefix operator. Example for a postfix operator:
+         ;;   left side  l = (5 #\x #\space #\f #\: #\= )
+         ;;   right side r = (1 #\x)
+         ;; the result is (6 (5 #\x #\space #\f #\: #\=) (1 #\x))
+         (cons (+ (car l) (car r)) (cons l (ncons r))))))
 
 (defprop mfactorial msize-postfix grind)
 (defprop mfactorial 160. lbp)
@@ -388,10 +439,35 @@
 		   w (+ (caar nl) w)
 		   x (cdr x))))))
 
-(defprop mminus msize-prefix grind)
+(defprop mminus msize-mminus grind)
 (defprop mminus (#\-) strsym)
 (defprop mminus 100. rbp)
 (defprop mminus 100. lbp)
+
+(defun msize-mminus (x l r)
+  (cond ((null (cddr x))
+         (if (null (cdr x))
+             (msize-function x l r t)
+             (msize (cadr x) (append (ncons #\- ) l) r 'mminus rop)))
+        (t
+         (setq l (msize (cadr x) l nil lop 'mminus)
+               x (cddr x))
+         (do ((nl (list l))
+              (w (car l))
+              (dissym))
+             ((null (cdr x))
+              (if (mmminusp (car x))
+                  (setq l (cadar x) dissym (list #\+ ))
+                  (setq l (car x) dissym (list #\- )))
+              (setq r (msize l dissym r 'mminus rop))
+              (cons (+ (car r) w) (nreverse (cons r nl))))
+           (declare (fixnum w))
+           (if (mmminusp (car x))
+               (setq l (cadar x) dissym (list #\+ ))
+               (setq l (car x) dissym (list #\- )))
+           (setq nl (cons (msize l dissym nil 'mminus 'mminus) nl)
+                 w (+ (caar nl) w)
+                 x (cdr x))))))
 
 (defprop mequal msize-infix grind)
 (defprop mequal 80. lbp)

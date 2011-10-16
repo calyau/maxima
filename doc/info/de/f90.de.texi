@@ -2,9 +2,9 @@
 @c File     : f90.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : f90.texi revision 1.6
+@c Original : f90.texi revision 21.08.2011
 @c Date     : 08.11.2010
-@c Revision : 24.02.2011
+@c Revision : 21.08.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ there is no special attention to column positions.
 Long lines are split at a fixed width with the ampersand @code{&} continuation 
 character.
 
-@code{load(f90)} loads this function.
+@code{load(f90)} loads this function.  See also the function @mrefdot{fortran}
 
 Examples:
 
@@ -53,7 +53,7 @@ foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2&
 @end example
 
 Multiple expressions.
-Capture standard output into a file via the @code{with_stdout} function.
+Capture standard output into a file via the @mref{with_stdout} function.
 
 @example
 (%i1) load (f90)$

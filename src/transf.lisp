@@ -17,8 +17,6 @@
 (macsyma-module transf)
 
 
-(transl-module transf)
-
 ;;; some floating point translations. with tricks.
 
 (def%tr %log (form)

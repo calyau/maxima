@@ -1,10 +1,163 @@
-@c version 1.34
+@c English version 2011-07-24
 @menu
+* Lisp y Maxima::
+* Recolector de basura::
 * Introducci@'on a la programaci@'on::  
 * Funciones y variables para la programaci@'on::  
 @end menu
 
-@node Introducci@'on a la programaci@'on, Funciones y variables para la programaci@'on, Programaci@'on, Programaci@'on
+@node Lisp y Maxima, Recolector de basura, Programaci@'on, Programaci@'on
+@section Lisp y Maxima
+
+Maxima fue escrito en Lisp, y es muy f@'acil tener acceso a funciones y variables Lisp desde Maxima y viceversa. 
+Los s@'{@dotless{i}}mbolos Lisp y los s@'{@dotless{i}}mblos Maxima est@'an claramente diferenciados por medio de una convenci@'on de nombres. 
+Un s@'{@dotless{i}}mblo Lisp el cual comienza con un signo pesos @code{$} corresponde a un s@'{@dotless{i}}mbolo Maxima sin el signo pesos. 
+Un s@'{@dotless{i}}mbolo Maxima el cual comienza con un signo de cierre de interrogaci@'on @code{?} corresponde a un s@'{@dotless{i}}mbolo Lisp sin dicho signo.
+Por ejemplo, el s@'{@dotless{i}}mbolo Maxima @code{foo} corresponde a el s@'{@dotless{i}}mbolo Lisp @code{$FOO}, 
+mientras que el s@'{@dotless{i}}mbolo Maxima @code{?foo} corresponde a el s@'{@dotless{i}}mbolo Lisp @code{FOO}, 
+tenga en cuenta que @code{?foo} esta escrito sin espacio entre @code{?} y @code{foo}; 
+de otra manera se estar@'{@dotless{i}}a invocando a @code{describe ("foo")}. 
+
+El gui@'on @code{-}, asterisco @code{*}, u otros car@'acteres especiales en s@'imbolos Lisp deben ser escritos mediante un backslash @code{\} si aparecen en c@'odigo Maxima. 
+Por ejemplo, el identificador Lisp @code{*foo-bar*} se debe escribir @code{?\*foo\-bar\*} en Maxima. 
+
+Se puede ejecutar c@'odigo Lisp desde una sesi@'on de Maxima. 
+Una l@'{@dotless{i}}nea Lisp (que contenga una o m@'as formas) puede ser ejecutada
+por medio de un comando especial @code{:lisp}. Por ejemplo, 
+
+@example
+(%i1) :lisp (foo $x $y)
+@end example
+
+@noindent
+se llama a la funci@'on Lisp @code{foo} con variables Maxima @code{x} y
+@code{y} como argumentos. 
+La instrucci@'on @code{:lisp} puede aparecer en el prompt interactivo
+o en un archivo que sea procesado por @code{batch} o @code{demo}, pero no
+en un archivo que sea procesado por @code{load}, @code{batchload}, @code{translate_file} o @code{compile_file}. 
+
+La funci@'on @code{to_lisp()} abre una sesi@'on interactiva con el interprete Lisp. 
+Escribiendo @code{(to-maxima)} se cierra la sesi@'on con Lisp y se retorna a Maxima. 
+
+@c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
+@c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
+@c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
+@c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
+
+Las funciones y variables Lisp las cuales esten para ser visibles en Maxima como funciones y variables con nombres oridinarios (sin una puntuaci@'on especial), deben tener nombres tipo Lisp que comiencen con el signo pesos 
+@code{$}. 
+
+Maxima distingue entre letras min@'usculas y may@'usculas en identificadores. 
+Existen algunas reglas que gobiernan la traducci@'on de nombres entre Lisp y Maxima. 
+
+@enumerate
+@item
+Un identificador Lisp que no se encuentra encerrado en barras verticales
+corresponde a un identificador Maxima en min@'uscula. 
+Que el idenficador Lisp est@'e en may@'uscula, min@'uscula o una combinaci@'on
+de ambas, no afecta en nada. 
+Por ejemplo, los identificadores Lisp @code{$foo}, @code{$FOO}, y @code{$Foo},
+todos corresponden al identificador Maxima @code{foo}. Esto es as@'{@dotless{i}}
+porque @code{$foo}, @code{$FOO} y  @code{$Foo} se convierten por defecto al
+s@'{@dotless{i}}mbolo @code{$FOO} de Lisp.
+
+@item
+Un identificador Lisp el cual se encuentre todo en may@'uscula o todo en min@'uscula y encerrado entre barras verticales corresponde a un identicador Maxima con el caso contrario. 
+Esto es, de may@'usculas cambia a min@'usculas y de min@'usculas cambia a may@'usculas. 
+E.g., el identificador Lisp @code{|$FOO|} y @code{|$foo|}
+corresponden los identificadores Maxima @code{foo} y @code{FOO}, respectivamente. 
+@item
+Un identificador Lisp el cual esta escrito mezclando letras may@'usculas y min@'usculas y se encuentra entre barras verticales corresponde a un identificador Maxima con la misma escritura. 
+E.g., el identificador Lisp @code{|$Foo|} corresponde a el identificador Maxima @code{Foo}. 
+@end enumerate
+
+La macro Lisp @code{#$} permite el uso de expresiones Maxima dentro de c@'odigo Lisp. @code{#$@var{expr}$} extiende a una expresi@'on Lisp equivalente a la expresi@'on Maxima @var{expr}.   
+
+@example
+(msetq $foo #$[x, y]$)
+@end example
+
+@noindent
+Esto tiene el mismo efecto que: 
+
+@example
+(%i1) foo: [x, y];
+@end example
+
+@noindent
+La funci@'on Lisp @code{displa} imprime una expresi@'on en formato Maxima.
+
+@example
+(%i1) :lisp #$[x, y, z]$ 
+((MLIST SIMP) $X $Y $Z)
+(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
+[x, y, z]
+NIL
+@end example
+
+Las funciones definidas en Maxima no son funciones Lisp ordinarias. 
+La funci@'on Lisp @code{mfuncall} llama a una funci@'on Maxima. 
+Por ejemplo: 
+
+@example
+(%i1) foo(x,y) := x*y$
+(%i2) :lisp (mfuncall '$foo 'a 'b)
+((MTIMES SIMP) A B)
+@end example
+
+Algunas funciones Lisp son compartidas en el paquete Maxima, las cuales se listan a continuaci@'on: 
+
+@code{complement},
+@code{continue},
+@code{//},
+@code{float},
+@code{functionp},
+@code{array},
+@code{exp},
+@code{listen},
+@code{signum},
+@code{atan},
+@code{asin},
+@code{acos},
+@code{asinh},
+@code{acosh},
+@code{atanh},
+@code{tanh},
+@code{cosh},
+@code{sinh},
+@code{tan},
+@code{break},
+y @code{gcd}.
+
+
+
+
+
+
+@node Recolector de basura, Introducci@'on a la programaci@'on, Lisp y Maxima, Programaci@'on
+@section Recolector de basura
+
+La computaci@'on simb@'olica tiende a crear una buena cantidad de basura
+(resultados temporales que ya no ser@'an utilizados),
+y un manejo efectivo de esto puede ser crucial para el t@'ermino exitoso de
+algunos programas. 
+
+Bajo GCL (GNU Common Lisp), en aquellos sistemas UNIX donde la llamada al sistema
+mprotect est@'a disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD)
+se dispone de un recolector de basura estratificado. V@'ease la documentaci@'on
+de GCL para ALLOCATE y GBC. A nivel Lisp, ejecutando (setq si::*notify-gbc* t) 
+pemitir@'a determinar qu@'e @'areas necesitan m@'as espacio.
+
+En cuanto al resto de Lisps bajo los que funciona Maxima, se remite
+al lector a la documentaci@'on correspondiente para controlar la
+recolecci@'on de basura.
+
+
+
+
+
+
+@node Introducci@'on a la programaci@'on, Funciones y variables para la programaci@'on, Recolector de basura, Programaci@'on
 @section Introducci@'on a la programaci@'on
 
 Maxima dispone de los bucles @code{do} para hacer iteraciones, as@'{@dotless{i}} como estructuras m@'as primitivas del estilo de @code{go}.
@@ -217,6 +370,73 @@ A la variable @code{error} se le asigna una lista con la descripci@'on del error
 La llamada a @code{errormsg()} formatea e imprime @code{error}. Se reimprime as@'{@dotless{i}} el mensaje de error m@'as reciente.
 
 @end deffn
+
+
+
+@defvr {Variable opcional} error_size
+Valor por defecto: 10
+
+La variable @code{error_size} modifica los mensajes de error de acuerdo con el tama@~no de las expresiones que aparecen en @'el. Si el tama@~no de una expresi@'on (tal como lo determina la funci@'on Lisp @code{ERROR-SIZE})
+es mayor que @code{error_size}, la expresi@'on se reemplaza en el mensaje por un s@'{@dotless{i}}mbolo, asign@'andole a @'este una expresi@'on. Los s@'{@dotless{i}}mbolos se toman de la lista @code{error_syms}.
+
+En caso contrario, si la expresi@'on es menor que @code{error_size}, la expresi@'on se muestra en el propio mensaje.
+
+V@'eanse tambi@'en @code{error} y @code{error_syms}.
+
+Ejemplo:
+@c OUTPUT GENERATED BY THE FOLLOWING
+@c U: (C^D^E + B + A)/(cos(X-1) + 1)$
+@c error_size: 20$
+@c error ("Example expression is", U);
+@c errexp1;
+@c error_size: 30$
+@c error ("Example expression is", U);
+
+El tama@~no de @code{U}, tal como lo determina @code{ERROR-SIZE}, es 24.
+
+@example
+(%i1) U: (C^D^E + B + A)/(cos(X-1) + 1)$
+
+(%i2) error_size: 20$
+
+(%i3) error ("Example expression is", U);
+
+Example expression is errexp1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) errexp1;
+                            E
+                           D
+                          C   + B + A
+(%o4)                    --------------
+                         cos(X - 1) + 1
+(%i5) error_size: 30$
+
+(%i6) error ("Example expression is", U);
+
+                         E
+                        D
+                       C   + B + A
+Example expression is --------------
+                      cos(X - 1) + 1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+@end defvr
+
+
+
+@defvr {Variable opcional} error_syms
+Valor por defecto: @code{[errexp1, errexp2, errexp3]}
+
+En los mensajes de error, las expresiones mayores que @code{error_size} son reemplazadas por s@'{@dotless{i}}mbolos a los cuales se les asignas estas expresiones.  Los s@'{@dotless{i}}mbolos se toman de la lista @code{error_syms}. La primera expresi@'on que resulte ser demasiado larga se reemplaza por @code{error_syms[1]}, la segunda por @code{error_syms[2]} y as@'{@dotless{i}} sucesivamente.
+
+Si hay m@'as expresiones largas que elementos en @code{error_syms}, los s@'{@dotless{i}}mbolos se construyen autom@'aticamente, siendo el @var{n}-@'esimo s@'{@dotless{i}}mbolo equivalente a @code{concat ('errexp, @var{n})}.
+
+V@'eanse tambi@'en @code{error} y @code{error_size}.
+
+@end defvr
+
+
 
 @deffn {Funci@'on} errormsg ()
 
@@ -664,6 +884,5 @@ mientras que @code{cartesian_product} no lo hace.
 @end example
 
 @end deffn
-
 
 

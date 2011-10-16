@@ -13,14 +13,13 @@
 
 (in-package :maxima)
 
-(declare-top (special linear-display-break-table fortranp))
-
 ;;; (LINEAR-DISPLA <thing-to-display>)
 ;;;
 ;;; Display text linearly. This function should be usable in any case
 ;;;  DISPLA is usable and will attempt to do something reasonable with
 ;;;  its input.
 
+#+nil
 (defun linear-displa (x)
   (declare (special chrps *display-labels-p*))
   (fresh-line *standard-output*)
@@ -44,4 +43,9 @@
 		(mgrind x *standard-output*))))
 	(t
 	 (mgrind x *standard-output*)))
+  (terpri))
+
+(defun linear-displa (form)
+  (fresh-line *standard-output*)
+  (mgrind form *standard-output*)
   (terpri))

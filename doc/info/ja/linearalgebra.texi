@@ -1,0 +1,1238 @@
+@menu
+* Introduction to linearalgebra::
+* Functions and Variables for linearalgebra::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to linearalgebra, Functions and Variables for linearalgebra, linearalgebra, linearalgebra
+@section Introduction to linearalgebra
+@c -----------------------------------------------------------------------------
+
+@code{linearalgebra}は線形代数に関する関数のコレクションです。
+
+例:
+
+@c ===beg===
+@c M : matrix ([1, 2], [1, 2]);
+@c nullspace (M);
+@c columnspace (M);
+@c ptriangularize (M - z*ident(2), z);
+@c M : matrix ([1, 2, 3], [4, 5, 6], [7, 8, 9]) - z*ident(3);
+@c MM : ptriangularize (M, z);
+@c algebraic : true;
+@c tellrat (MM [3, 3]);
+@c MM : ratsimp (MM);
+@c nullspace (MM);
+@c M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], 
+@c                    [13, 14, 15, 16]);
+@c columnspace (M);
+@c apply ('orthogonal_complement, args (nullspace (transpose (M))));
+@c ===end===
+@example
+(%i1) M : matrix ([1, 2], [1, 2]);
+                            [ 1  2 ]
+(%o1)                       [      ]
+                            [ 1  2 ]
+(%i2) nullspace (M);
+                               [  1  ]
+                               [     ]
+(%o2)                     span([   1 ])
+                               [ - - ]
+                               [   2 ]
+(%i3) columnspace (M);
+                                [ 1 ]
+(%o3)                      span([   ])
+                                [ 1 ]
+(%i4) ptriangularize (M - z*ident(2), z);
+                         [ 1   2 - z   ]
+(%o4)                    [             ]
+                         [           2 ]
+                         [ 0  3 z - z  ]
+(%i5) M : matrix ([1, 2, 3], [4, 5, 6], [7, 8, 9]) - z*ident(3);
+                     [ 1 - z    2      3   ]
+                     [                     ]
+(%o5)                [   4    5 - z    6   ]
+                     [                     ]
+                     [   7      8    9 - z ]
+(%i6) MM : ptriangularize (M, z);
+              [ 4  5 - z            6            ]
+              [                                  ]
+              [                2                 ]
+              [     66        z    102 z   132   ]
+              [ 0   --      - -- + ----- + ---   ]
+(%o6)         [     49        7     49     49    ]
+              [                                  ]
+              [               3        2         ]
+              [           49 z    245 z    147 z ]
+              [ 0    0    ----- - ------ - ----- ]
+              [            264      88      44   ]
+(%i7) algebraic : true;
+(%o7)                         true
+(%i8) tellrat (MM [3, 3]);
+                         3       2
+(%o8)                  [z  - 15 z  - 18 z]
+(%i9) MM : ratsimp (MM);
+               [ 4  5 - z           6           ]
+               [                                ]
+               [                2               ]
+(%o9)          [     66      7 z  - 102 z - 132 ]
+               [ 0   --    - ------------------ ]
+               [     49              49         ]
+               [                                ]
+               [ 0    0             0           ]
+(%i10) nullspace (MM);
+                        [        1         ]
+                        [                  ]
+                        [   2              ]
+                        [  z  - 14 z - 16  ]
+                        [  --------------  ]
+(%o10)             span([        8         ])
+                        [                  ]
+                        [    2             ]
+                        [   z  - 18 z - 12 ]
+                        [ - -------------- ]
+                        [         12       ]
+(%i11) M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12],
+                   [13, 14, 15, 16]);
+                       [ 1   2   3   4  ]
+                       [                ]
+                       [ 5   6   7   8  ]
+(%o11)                 [                ]
+                       [ 9   10  11  12 ]
+                       [                ]
+                       [ 13  14  15  16 ]
+(%i12) columnspace (M);
+                           [ 1  ]  [ 2  ]
+                           [    ]  [    ]
+                           [ 5  ]  [ 6  ]
+(%o12)                span([    ], [    ])
+                           [ 9  ]  [ 10 ]
+                           [    ]  [    ]
+                           [ 13 ]  [ 14 ]
+(%i13) apply ('orthogonal_complement, args (nullspace (transpose (M))));
+                           [ 0 ]  [  1  ]
+                           [   ]  [     ]
+                           [ 1 ]  [  0  ]
+(%o13)                span([   ], [     ])
+                           [ 2 ]  [ - 1 ]
+                           [   ]  [     ]
+                           [ 3 ]  [ - 2 ]
+@end example
+
+@opencatbox
+@category{Linear algebra} @category{Share packages} @category{Package linearalgebra}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@need 800
+@node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, linearalgebra
+@section Functions and Variables for linearalgebra
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@anchor{addmatrices}
+@deffn {関数} addmatrices (@var{f}, @var{M_1}, @dots{}, @var{M_n})
+
+@c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
+関数@var{f}を加算関数として使い、
+行列@var{M_1}, @dots{}, @var{M_n}の和を返します。
+関数@var{f}は任意の数の引数を受け付けなければいけません(Maxima n項関数)。
+
+例:
+
+@c ===beg===
+@c m1 : matrix([1,2],[3,4])$
+@c m2 : matrix([7,8],[9,10])$
+@c addmatrices('max,m1,m2);
+@c addmatrices('max,m1,m2,5*m1);
+@c ===end===
+@example
+(%i1) m1 : matrix([1,2],[3,4])$
+(%i2) m2 : matrix([7,8],[9,10])$
+(%i3) addmatrices('max,m1,m2);
+(%o3) matrix([7,8],[9,10])
+(%i4) addmatrices('max,m1,m2,5*m1);
+(%o4) matrix([7,10],[15,20])
+@end example
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{blockmatrixp}
+@deffn {関数} blockmatrixp (@var{M})
+
+@var{M}のエントリがすべて行列なら、その時に限って、
+trueを返します。
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{columnop}
+@deffn {関数} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
+
+もし@var{M}が行列なら、
+列演算@code{C_i <- C_i - @var{theta} * C_j}を施すことで生じる行列を返します。
+もし@var{M}が行@var{i}か行@var{j}を持たないなら
+エラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{columnswap}
+@deffn {関数} columnswap (@var{M}, @var{i}, @var{j})
+
+もし @var{M}が行列なら、列 @var{i}と @var{j}を交換します。
+もし @var{M}に列 @var{i}か @var{j}がないなら、
+エラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{columnspace}
+@deffn {関数} columnspace (@var{M})
+
+もし @var{M}が行列なら、
+@code{span (v_1, ..., v_n)}を返します。
+ここで、集合 @code{@{v_1, ..., v_n@}}は
+@var{M}の列空間の基底です。
+空集合の包は @code{@{0@}}です。
+従って、列空間が1員だけ持つ時、
+@code{span ()}を返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{copy}
+@deffn {関数} copy (@var{e})
+
+Maxima式 @var{e}のコピーを返します。
+@var{e}は任意のMaxima式であり得ますが、
+@var{e}がリストか行列の時、
+コピー関数はもっとも役立ちます;
+以下を考えてください:
+
+@c ===beg===
+@c m : [1,[2,3]]$
+@c mm : m$
+@c mm[2][1] : x$
+@c m;
+@c mm;
+@c ===end===
+@example 
+(%i1) m : [1,[2,3]]$
+(%i2) mm : m$
+(%i3) mm[2][1] : x$
+(%i4) m;
+(%o4)                      [1,[x,3]]
+(%i5) mm;
+(%o5)                      [1,[x,3]]
+@end example
+
+同じ実験を試みましょう。
+しかし、今回 @var{mm}を @var{m}のコピーとします。
+
+@c ===beg===
+@c m : [1,[2,3]]$
+@c mm : copy(m)$
+@c mm[2][1] : x$
+@c m;
+@c mm;
+@c ===end===
+@example
+(%i6) m : [1,[2,3]]$
+(%i7) mm : copy(m)$
+(%i8) mm[2][1] : x$
+(%i9) m;
+(%o9)                     [1,[2,3]]
+(%i10) mm;
+(%o10)                    [1,[x,3]]
+@end example
+
+今回、 @var{mm}への割り当ては@var{m}の値を変えません。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{cholesky}
+@deffn  {関数} cholesky (@var{M})
+@deffnx {関数} cholesky (@var{M}, @var{field})
+
+自己共役(すなわちHermite)行列のCholesky分解を返します。
+
+二番目の引数はデフォルトでは'generalring'です。
+@var{field}の取り得る値の説明については @code{lu_factor}を参照してください。
+
+@opencatbox
+@category{Matrix decompositions} @category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ctranspose}
+@deffn {関数} ctranspose (@var{M})
+
+行列 @var{M}の複素共役転置を返します。
+関数 @code{ctranspose}は
+それぞれの行列要素を転置するのに
+@code{matrix_element_transpose}を使います。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{diag_matrix}
+@deffn {関数} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
+
+対角成分 @var{d_1}, @var{d_2},...,@var{d_n}を持つ対角行列を返します。
+対角成分が行列の時、
+戻り値行列の零成分は
+適切なサイズの零行列です;
+例えば:
+
+@c ===beg===
+@c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
+@c diag_matrix(p,q);
+@c ===end===
+@example
+(%i1) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
+
+                            [ [ 1  0 ]  [ 0  0 ] ]
+                            [ [      ]  [      ] ]
+                            [ [ 0  2 ]  [ 0  0 ] ]
+(%o1)                       [                    ]
+                            [ [ 0  0 ]  [ 3  0 ] ]
+                            [ [      ]  [      ] ]
+                            [ [ 0  0 ]  [ 0  4 ] ]
+(%i2) diag_matrix(p,q);
+
+                                   [ p  0 ]
+(%o2)                              [      ]
+                                   [ 0  q ]
+@end example
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{dotproduct}
+@deffn {関数} dotproduct (@var{u}, @var{v})
+
+ベクトル @var{u}と @var{v}の内積を返します。
+これは@code{conjugate (transpose (@var{u})) . @var{v}}と同じです。
+引数 @var{u}と @var{v}は列ベクトルでなければいけません。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{eigens_by_jacobi}
+@deffn  {関数} eigens_by_jacobi (@var{A})
+@deffnx {関数} eigens_by_jacobi (@var{A}, @var{field_type})
+
+@var{A}の固有値と固有ベクトルを
+Jacobi回転法で計算します。
+@var{A}は対称行列でなければいけません。
+(しかし、正定値である必要も半正定値である必要もありません。)
+@var{field_type}は計算上の体を示し、@code{floatfield}か @code{bigfloatfield}です。
+もし @var{field_type}が指定されないなら、
+デフォルトは @code{floatfield}です。
+
+@var{A}の要素は、数か、
+(@var{field_type}に依存して)@code{float}か @code{bfloat}を介して
+数に評価される式でなければいけません。
+
+例:
+
+@c ===beg===
+@c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
+@c L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+@c M : S . L . transpose (S);
+@c eigens_by_jacobi (M);
+@c float ([[sqrt(3), sqrt(5)], S]);
+@c eigens_by_jacobi (M, bigfloatfield);
+@c ===end===
+
+@example
+(%i1) S: matrix([1/sqrt(2), 1/sqrt(2)],[-1/sqrt(2), 1/sqrt(2)]);
+                     [     1         1    ]
+                     [  -------   ------- ]
+                     [  sqrt(2)   sqrt(2) ]
+(%o1)                [                    ]
+                     [      1        1    ]
+                     [ - -------  ------- ]
+                     [   sqrt(2)  sqrt(2) ]
+(%i2) L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+                      [ sqrt(3)     0    ]
+(%o2)                 [                  ]
+                      [    0     sqrt(5) ]
+(%i3) M : S . L . transpose (S);
+            [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
+            [ ------- + -------  ------- - ------- ]
+            [    2         2        2         2    ]
+(%o3)       [                                      ]
+            [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
+            [ ------- - -------  ------- + ------- ]
+            [    2         2        2         2    ]
+(%i4) eigens_by_jacobi (M);
+The largest percent change was 0.1454972243679
+The largest percent change was 0.0
+number of sweeps: 2
+number of rotations: 1
+(%o4) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i5) float ([[sqrt(3), sqrt(5)], S]);
+(%o5) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i6) eigens_by_jacobi (M, bigfloatfield);
+The largest percent change was 1.454972243679028b-1
+The largest percent change was 0.0b0
+number of sweeps: 2
+number of rotations: 1
+(%o6) [[1.732050807568877b0, 2.23606797749979b0], 
+                [  7.071067811865475b-1   7.071067811865475b-1 ]
+                [                                              ]]
+                [ - 7.071067811865475b-1  7.071067811865475b-1 ]
+@end example
+
+@opencatbox
+@category{Matrix decompositions} @category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{get_lu_factors}
+@deffn {関数} get_lu_factors (@var{x}) 
+
+@code{@var{x} = lu_factor (@var{A})}の時、
+@code{get_lu_factors}は
+形式 @code{[P, L, U]}のリストを返します。
+ここで、 @var{P}は置換行列、 @var{L}は対角成分を含む下三角行列、
+@var{U}は上三角行列であり、
+ @code{@var{A} = @var{P} @var{L} @var{U}}が成り立ちます。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{hankel}
+@deffn  {関数} hankel (@var{col})
+@deffnx {関数} hankel (@var{col}, @var{row})
+
+Hankel行列 @var{H}を返します。
+@var{H}の最初の列は @var{col}です;
+最初の成分を除いて、
+@var{H}の最後の行は @var{row}です。
+@var{row}のデフォルトは @var{col}と同じ長さを持つ零ベクトルです。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{hessian}
+@deffn {関数} hessian (@var{f}, @var{x})
+
+変数 @var{x}のリストに関する @var{f}のHessian行列を返します。
+Hessian行列の @code{(i, j)}成分は
+@code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}です。
+
+例:
+
+@c ===beg===
+@c hessian (x * sin (y), [x, y]);
+@c depends (F, [a, b]);
+@c hessian (F, [a, b]);
+@c ===end===
+@example
+(%i1) hessian (x * sin (y), [x, y]);
+                     [   0       cos(y)   ]
+(%o1)                [                    ]
+                     [ cos(y)  - x sin(y) ]
+(%i2) depends (F, [a, b]);
+(%o2)                       [F(a, b)]
+(%i3) hessian (F, [a, b]);
+                        [   2      2   ]
+                        [  d F    d F  ]
+                        [  ---   ----- ]
+                        [    2   da db ]
+                        [  da          ]
+(%o3)                   [              ]
+                        [   2      2   ]
+                        [  d F    d F  ]
+                        [ -----   ---  ]
+                        [ da db     2  ]
+                        [         db   ]
+@end example
+
+@opencatbox
+@category{Differential calculus} @category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{hilbert_matrix}
+@deffn {関数} hilbert_matrix (@var{n})
+
+@var{n}掛け@var{n}のHilbert行列を返します。
+@var{n}が正の整数でない時、エラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{identfor}
+@deffn {関数} identfor (@var{M})
+@deffnx {関数} identfor (@var{M}, @var{fld})
+
+行列 @var{M}と同じ形を持つ単位行列を返します。
+単位行列の対角成分は体 @var{fld}の乗算単位元です;
+@var{fld}のデフォルトは @var{generalring}です。
+
+一番目の引数 @var{M}は平方行列か非行列でなければいけません。
+@var{M}が行列の時、 @var{M}のそれぞれの成分は平方行列であり得ます。
+-- 従って、 @var{M}は区分されたMaxima行列であり得ます。
+行列は、任意の(有限の)深さに区分できます。
+
+@code{zerofor}も参照してください。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{invert_by_lu}
+@deffn {関数} invert_by_lu (@var{M}, @var{(rng generalring)})
+
+LU分解を使って、
+行列 @var{M}の逆行列を返します。
+LU分解は環 @var{rng}を使って実行されます。
+
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{jacobian}
+@deffn {関数} jacobian (@var{f}, @var{x})
+
+変数のリスト @var{x}に関する
+関数のリスト @var{f}のJacobi行列を返します。
+Jacobi行列の @code{(i, j)}成分は
+@code{diff(@var{f}[i], @var{x}[j])}です。
+
+例:
+
+@c ===beg===
+@c jacobian ([sin (u - v), sin (u * v)], [u, v]);
+@c depends ([F, G], [y, z]);
+@c jacobian ([F, G], [y, z]);
+@c ===end===
+@example
+(%i1) jacobian ([sin (u - v), sin (u * v)], [u, v]);
+                  [ cos(v - u)  - cos(v - u) ]
+(%o1)             [                          ]
+                  [ v cos(u v)   u cos(u v)  ]
+(%i2) depends ([F, G], [y, z]);
+(%o2)                  [F(y, z), G(y, z)]
+(%i3) jacobian ([F, G], [y, z]);
+                           [ dF  dF ]
+                           [ --  -- ]
+                           [ dy  dz ]
+(%o3)                      [        ]
+                           [ dG  dG ]
+                           [ --  -- ]
+                           [ dy  dz ]
+@end example
+
+@opencatbox
+@category{Differential calculus} @category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{kronecker_product}
+@deffn {関数} kronecker_product (@var{A}, @var{B})
+
+行列 @var{A}と @var{B}のKronecker積を返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{listp}
+@deffn  {関数} listp (@var{e}, @var{p})
+@deffnx {関数} listp (@var{e})
+
+オプションの引数 @var{p}が与えられたとして、
+もし @var{e}がMaximaリストで、 @var{p}がすべてのリストの要素で
+@code{true}に評価されるなら、 @code{true}を返します。
+@code{listp}がオプションの引数を与えられない時、
+もし @var{e}がMaximaリストなら、 @code{true}を返します。
+他のすべての場合、 @code{false}を返します。
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{locate_matrix_entry}
+@deffn {関数} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
+
+一番目の引数は行列でなければいけません;
+引数 @var{r_1}から @var{c_2}は
+行 @var{r_1}から @var{r_2}と列 @var{c_1}から @var{c_2}から成る
+@var{M}の部分行列を決定します。
+
+ある性質を満たす部分行列 @var{M}の中の成分を見つけます。
+3つのケース:
+
+(1) @code{@var{rel} = 'bool}で @var{f}が述語論理: 
+
+左から右へ、そして上から下へ部分行列をスキャンし、
+述語論理 @var{f}を満たす最初の成分のインデックスを返します。
+もし @var{f}を満たす行列成分がないなら、 @code{false}を返します。
+
+(2) @code{@var{rel} = 'max}で @var{f}が実関数:
+
+@var{f}を最大にする成分を探して部分行列をスキャンします。
+最大化の成分のインデックスを返します。
+
+(3) @code{@var{rel} = 'min}で @var{f}が実関数:
+
+@var{f}を最小にする成分を探して部分行列をスキャンします。
+最小化の成分のインデックスを返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} lu_backsub (@var{M}, @var{b})
+
+@code{@var{M} = lu_factor (@var{A}, @var{field})}の時、
+@code{lu_backsub (@var{M}, @var{b})}は
+線形系 @code{@var{A} @var{x} = @var{b}}を解きます。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{lu_factor}
+@deffn {関数} lu_factor (@var{M}, @var{field})
+
+形式 @code{[@var{LU}, @var{perm}, @var{fld}]}か
+@code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}
+のリストを返します。
+ここで、
+
+  (1) 行列 @var{LU}は@var{M}の分解をパックされた形式で含みます。
+パックされた形式は3つのことを意味します;
+第一に @var{LU}の行はリスト @var{perm}に従って置換されます。
+もし、例えば、 @var{perm}がリスト @code{[3,2,1]}なら、
+@var{LU}分解の実際の一番目の行は行列 @var{LU}の三番目の行です。
+第二に、mの下三角因子はすべて1で置き換えられた対角成分を持つ @var{LU}の下三角部です。
+第三に、 @var{M}の上三角因子は @var{LU}の上三角部です。
+
+  (2) 体が @code{floatfield}か @code{complexfield}の時、
+数 @var{lower-cnd}と @var{upper-cnd}は
+@var{M}の無限ノルム条件数の下限と上限です。
+すべての体に対して条件数を見積ることができるわけではありません;
+そんな体に対しては @code{lu_factor}は2項目リストを返します。
+下限と上限どちらも真の値から任意に大きな因子だけ異なる可能性があります。
+(@code{mat_cond}も参照してください。)
+   
+引数 @var{M}は平方行列でなければいけません。
+
+オプション引数 @var{fld}は環か体かを決めるシンボルでなければいけません。
+予め定義された体と環は以下のものがあります:
+
+    (a) @code{generalring} -- Maxima式の環,
+    (b) @code{floatfield} --  倍精度浮動小数点数体,
+    (c) @code{complexfield} --  倍精度浮動小数点複素数体,
+    (d) @code{crering}  -- Maxima CRE式の環,
+    (e) @code{rationalfield} -- 有理数体,
+    (f) @code{runningerror} -- 浮動小数点の丸め誤差をトラック,
+    (g) @code{noncommutingring} -- 乗算が非可換ドット演算子のMaxima式の環
+
+体が @code{floatfield}か @code{complexfield}、@code{runningerror}のいずれかの時、
+アルゴリズムは部分ピボットを使います;
+他のすべての体に対しては、
+零ピボットを避ける必要があるときだけ、行がスイッチされます。
+
+浮動小数点加算算術は結合的でなく、
+'体'の意味は数学的定義と異なります。
+
+体 @code{runningerror}の要素は
+形式 @code{[x,n]}の2つの要素のMaximaリストです。
+ここで、 @var{x}は浮動小数点数で、
+@code{n}は整数です。
+ @code{x}の'真'の値と @code{x}の相対差は
+計算機イプシロンに @code{n}をかけたもので近似的に抑えられます。
+The running error bound drops some terms that of the order the square of the machine epsilon.
+
+新しい体を定義するユーザーインターフェースはありません。
+Common Lispに精通しているユーザーは新しい体を定義することができるはずです。
+これをするには、ユーザーは算術演算のための関数と
+体表現とMaximaの相互変換のための関数を定義しなければいけません。
+さらに、(部分ピボットが使われる)順序体に関しては、
+ユーザーは大きさの関数と体の元の比較関数を定義しなければいけません。
+あとは、Common Lisp 構造体 @code{mring}を定義することだけです。
+ファイル @code{mring}に多くの例があります。
+ 
+分解を計算するために、
+最初の仕事は
+行列成分それぞれを指定された体の元に変換することです。
+変換が不可能な時は、分解はエラーメッセージとともに停止します。
+体の元はMaxima式である必要はありません。
+例えば、@code{complexfield}の元はCommon Lisp複素数です。
+そして、分解を計算した後には、行列成分はMaxima式に変換されなければいけません。
+
+@code{get_lu_factors}も参照してください。
+
+例:
+
+@c ===beg===
+@c w[i,j] := random (1.0) + %i * random (1.0);
+@c showtime : true$
+@c M : genmatrix (w, 100, 100)$
+@c lu_factor (M, complexfield)$
+@c lu_factor (M, generalring)$
+@c showtime : false$
+@c M : matrix ([1 - z, 3], [3, 8 - z]);
+@c lu_factor (M, generalring);
+@c get_lu_factors (%);
+@c %[1] . %[2] . %[3];
+@c ===end===
+@example
+(%i1) w[i,j] := random (1.0) + %i * random (1.0);
+(%o1)          w     := random(1.) + %i random(1.)
+                i, j
+(%i2) showtime : true$
+Evaluation took 0.00 seconds (0.00 elapsed)
+(%i3) M : genmatrix (w, 100, 100)$
+Evaluation took 7.40 seconds (8.23 elapsed)
+(%i4) lu_factor (M, complexfield)$
+Evaluation took 28.71 seconds (35.00 elapsed)
+(%i5) lu_factor (M, generalring)$
+Evaluation took 109.24 seconds (152.10 elapsed)
+(%i6) showtime : false$
+
+(%i7) M : matrix ([1 - z, 3], [3, 8 - z]); 
+                        [ 1 - z    3   ]
+(%o7)                   [              ]
+                        [   3    8 - z ]
+(%i8) lu_factor (M, generalring);
+          [ 1 - z         3        ]
+          [                        ]
+(%o8)    [[   3            9       ], [1, 2], generalring]
+          [ -----  - z - ----- + 8 ]
+          [ 1 - z        1 - z     ]
+(%i9) get_lu_factors (%);
+                  [   1    0 ]  [ 1 - z         3        ]
+        [ 1  0 ]  [          ]  [                        ]
+(%o9)  [[      ], [   3      ], [                9       ]]
+        [ 0  1 ]  [ -----  1 ]  [   0    - z - ----- + 8 ]
+                  [ 1 - z    ]  [              1 - z     ]
+(%i10) %[1] . %[2] . %[3];
+                        [ 1 - z    3   ]
+(%o10)                  [              ]
+                        [   3    8 - z ]
+@end example
+
+@opencatbox
+@category{Matrix decompositions} @category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mat_cond}
+@deffn  {関数} mat_cond (@var{M}, 1)
+@deffnx {関数} mat_cond (@var{M}, inf)
+
+行列 @var{m}の@var{p}-ノルムの行列条件数を返します。
+@var{p}に許される値は1と @var{inf}です。
+この関数は、行列 @var{m}の逆元を計算するのにLU分解を使います。
+このため、@code{mat_cond}の実行時間は行列サイズの三乗に比例します;
+@code{lu_factor}は、
+行列サイズの二乗に比例する時間内に
+無限大ノルム条件数の下限と上限を決定します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mat_norm}
+@deffn  {関数} mat_norm (@var{M}, 1)
+@deffnx {関数} mat_norm (@var{M}, inf)
+@deffnx {関数} mat_norm (@var{M}, frobenius)
+
+行列 @var{M}の行列 @var{p}-ノルムを返します。
+.  The allowed values for 
+@var{p}に許される値は1か @code{inf}か @code{frobenius} (Frobenius行列ノルム)です。
+行列 @var{M}は区分されない行列でなければいけません。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{linearalgebra_matrixp}
+@deffn {関数} matrixp (@var{e}, @var{p})
+@deffnx {関数} matrixp (@var{e})
+
+オプション引数 @var{p}が与えられたとして、
+もし @var{e}が行列で、 @var{p}が行列成分すべてに対して
+@code{true}に評価されるなら、
+@code{true}を返します。
+@code{matrixp}がオプション引数を与えられない時は、
+もし @code{e}が行列なら、
+@code{true}を返します。
+他のすべての場合には、 @code{false}を返します。
+
+@code{blockmatrixp}も参照してください。
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{matrix_size}
+@deffn {関数} matrix_size (@var{M})
+
+行列 @var{M}の行数と列数をそれぞれ与える2要素リストを返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mat_fullunblocker}
+@deffn {関数} mat_fullunblocker (@var{M})
+
+もし @var{M}が区分行列なら、
+行列をすべてのレベルで区分解除します。
+もし @var{M}が行列なら、
+@var{M}を返します; それ以外ではエラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mat_trace}
+@deffn {関数} mat_trace (@var{M})
+
+行列 @var{M}の跡を返します。
+もし @var{M}が行列でないなら、名詞形を返します。
+@var{M}が区分行列の時、
+@code{mat_trace(M)}は
+@code{mat_trace(mat_unblocker(m))}するのと同じ値を返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{mat_unblocker}
+@deffn {関数} mat_unblocker (@var{M})
+
+もし @var{M}が区分行列なら、
+@var{M}を1レベル区分解除します。
+もし @var{M}が行列なら、
+@code{mat_unblocker (M)}は @var{M}を返します;
+それ以外ではエラーをシグナルします。
+
+このように、
+もし @var{M}の成分それぞれが行列なら、
+@code{mat_unblocker (M)}は区分されていない行列を返しますが、
+もし @var{M}の成分それぞれが区分行列なら、
+@code{mat_unblocker (M)}は
+区分が1レベル少ない区分行列を返します。
+
+もし区分行列を使うなら、
+おそらく、
+@code{matrix_element_mult}を @code{"."}に、
+@code{matrix_element_transpose}を @code{'transpose}に設定したくなるでしょう。
+@code{mat_fullunblocker}も参照してください。
+
+例:
+
+@c ===beg===
+@c A : matrix ([1, 2], [3, 4]);
+@c B : matrix ([7, 8], [9, 10]);
+@c matrix ([A, B]);
+@c mat_unblocker (%);
+@c ===end===
+@example
+(%i1) A : matrix ([1, 2], [3, 4]);
+                            [ 1  2 ]
+(%o1)                       [      ]
+                            [ 3  4 ]
+(%i2) B : matrix ([7, 8], [9, 10]);
+                            [ 7  8  ]
+(%o2)                       [       ]
+                            [ 9  10 ]
+(%i3) matrix ([A, B]);
+@group
+                     [ [ 1  2 ]  [ 7  8  ] ]
+(%o3)                [ [      ]  [       ] ]
+                     [ [ 3  4 ]  [ 9  10 ] ]
+@end group
+(%i4) mat_unblocker (%);
+                         [ 1  2  7  8  ]
+(%o4)                    [             ]
+                         [ 3  4  9  10 ]
+@end example
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{nullspace}
+@deffn {関数} nullspace (@var{M})
+
+もし @var{M}が行列なら、
+@code{span (v_1, ..., v_n)}を返します。
+ここで、, where the set
+集合 @code{@{v_1, ..., v_n@}}は
+@var{M}の零空間の基底です。
+空集合のスパンは @code{@{0@}}です。
+なので、零空間が要素を1つだけ持つときは、@code{span ()}を返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{nullity}
+@deffn {関数} nullity (@var{M})
+
+もし @var{M}が行列なら、
+@var{M}の零空間の次元を返します。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{orthogonal_complement}
+@deffn {関数} orthogonal_complement (@var{v_1}, ..., @var{v_n})
+
+@code{span (u_1, ..., u_m)}を返します。
+ここで、, where the se
+集合 @code{@{u_1, ..., u_m@}}は
+集合 @code{(v_1, ..., v_n)}の直交補空間の基底です。
+
+ベクトル @var{v_1}から @var{v_n}それぞれは列ベクトルでなければいけません。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{polynomialp}
+@deffn  {関数} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffnx {関数} polynomialp (@var{p}, @var{L}, @var{coeffp})
+@deffnx {関数} polynomialp (@var{p}, @var{L})
+
+もし @var{p}がリスト @var{L}の中の変数に関して多項式なら、
+@code{true}を返します。
+述語論理 @var{coeffp}は係数それぞれに対して @code{true}に評価されなければいけなく、
+述語論理 @var{exponp}は
+@var{L}の中の変数の指数すべてに対して @code{true}に評価されなければいけません。
+もし
+@var{exponp}に対してデフォルトでない値を使いたいなら、
+たとえ@var{coeffp}に関してデフォルトを使いたくても
+@var{coeffp}を値とともに供給しなければいけません。
+
+@c WORK THE FOLLOWING INTO THE PRECEDING
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp})}は
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}に同値です。
+
+@code{polynomialp (@var{p}, @var{L})}は
+@code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}に同値です。
+
+多項式は展開される必要はありません:
+
+@c ===beg===
+@c polynomialp ((x + 1)*(x + 2), [x]);
+@c polynomialp ((x + 1)*(x + 2)^a, [x]);
+@c ===end===
+@example
+(%i1) polynomialp ((x + 1)*(x + 2), [x]);
+(%o1)                         true
+(%i2) polynomialp ((x + 1)*(x + 2)^a, [x]);
+(%o2)                         false
+@end example
+
+coeffpとexponpにデフォルトでない値を使う例:
+
+@c ===beg===
+@c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, 
+@c                                                        numberp);
+@c ===end===
+@example
+(%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+(%o1)                         true
+(%i2) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp,
+                                                        numberp);
+(%o2)                         true
+@end example
+
+2変数多項式:
+
+@c ===beg===
+@c polynomialp (x^2 + 5*x*y + y^2, [x]);
+@c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
+@c ===end===
+@example
+(%i1) polynomialp (x^2 + 5*x*y + y^2, [x]);
+(%o1)                         false
+(%i2) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
+(%o2)                         true
+@end example
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{polytocompanion}
+@deffn {関数} polytocompanion (@var{p}, @var{x})
+
+もし @var{p}が
+@var{x}の多項式なら、
+@var{p}のコンパニオン行列を返します。
+次数 @var{n}のモニック多項式(最高次数の係数が1の多項式)に対しては、
+@code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
+があります。
+
+@var{p}が @var{x}の多項式でないなら、エラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{ptringularize}
+@deffn {関数} ptriangularize (@var{M}, @var{v})
+
+もし @var{M}がそれぞれの成分が@var{v}の多項式の行列なら、
+以下のような行列 @var{M2}を返します。
+
+(1) @var{M2}は上三角で、
+
+(2) @code{@var{M2} = @var{E_n} ... @var{E_1} @var{M}},
+ここで、 @var{E_1}から @var{E_n}は成分が@var{v}の多項式の基本行列です。
+
+(3) @code{|det (@var{M})| = |det (@var{M2})|},
+
+注意: この関数はすべての成分が@var{v}の多項式かチェックしません。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{rowp}
+@deffn {関数} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
+
+もし @var{M}が行列なら、
+行演算 @code{R_i <- R_i - theta * R_j}をすることで生じる
+行列を返します。
+もし @var{M}に行@var{i}か @var{j}がないなら、
+エラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@deffn {関数} rank (@var{M})
+
+行列 @var{M}の階数を返します。
+階数は列空間の次元です。
+
+例:
+@c ===beg===
+@c rank(matrix([1,2],[2,4]));
+@c rank(matrix([1,b],[c,d]));
+@c ===end===
+@example
+(%i1) rank(matrix([1,2],[2,4]));
+(%o1)                                  1
+(%i2) rank(matrix([1,b],[c,d]));
+Proviso:  @{d - b c # 0@}
+(%o2)                                  2
+@end example
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{rowswap}
+@deffn {関数} rowswap (@var{M}, @var{i}, @var{j})
+
+もし @var{M}が行列なら、行 @var{i}と @var{j}を入れ替えます。
+もし @var{M}に行@var{i}か @var{j}がないなら、エラーをシグナルします。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{toeplitz}
+@deffn {関数} toeplitz (@var{col})
+@deffnx {関数} toeplitz (@var{col}, @var{row})
+
+Toeplitz行列 @var{T}を返します。
+@var{T}の一番目の列は @var{col}です;
+一番目の成分を除いて、
+@var{T}の最初の行は @var{row}です。
+@var{row}のデフォルトは @var{col}の複素共役です。
+
+例:
+@c ===beg===
+@c toeplitz([1,2,3],[x,y,z]);
+@c toeplitz([1,1+%i]);
+@c ==end===
+@example
+(%i1)  toeplitz([1,2,3],[x,y,z]);
+@group
+
+                                  [ 1  y  z ]
+                                  [         ]
+(%o1)                             [ 2  1  y ]
+                                  [         ]
+                                  [ 3  2  1 ]
+@end group
+(%i2)  toeplitz([1,1+%i]);
+
+                              [   1     1 - %I ]
+(%o2)                         [                ]
+                              [ %I + 1    1    ]
+@end example
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{vandermonde_matrix}
+@deffn {関数} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
+
+@var{i}番目の行が@code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}の
+@var{n}掛け@var{n}行列を返します。
+
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zerofor}
+@deffn  {関数} zerofor (@var{M})
+@deffnx {関数} zerofor (@var{M}, @var{fld})
+
+行列 @var{M}と同じ形の零行列を返します。
+零行列の成分すべては体 @var{fld}の加算の単位元です;
+@var{fld}のデフォルトは @var{generalring}です。
+
+一番目の引数 @var{M}は
+平方行列か行列以外でなければいけません。
+@var{M}が行列の時、
+@var{M}の成分それぞれは平方行列であり得ます。
+-- 従って @var{M}は区分Maxima行列であり得ます。
+行列は任意の(有限の)深さに区分できます。
+
+@code{identfor}も参照してください。
+
+@opencatbox
+@category{Package linearalgebra}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{zeromatrixp}
+@deffn {関数} zeromatrixp (@var{M})
+
+@var{M}が区分行列でない時、
+もし行列 @var{M}のそれぞれの要素 @var{e}に対して
+@code{is (equal (@var{e}, 0))}が真なら、
+@code{true}を返します。
+@var{M}が区分行列の時、
+もし@var{e}の要素それぞれに対して @code{zeromatrixp}が
+@code{true}に評価されるなら、
+@code{true}を返します。
+
+@opencatbox
+@category{Package linearalgebra} @category{Predicate functions}
+@closecatbox
+@end deffn

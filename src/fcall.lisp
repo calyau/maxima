@@ -13,8 +13,6 @@
 
 (macsyma-module fcall)
 
-(transl-module fcall)
-
 ;;; Bug-Fixes:
 ;;;
 ;;; 11/15/80	KMP	Remove *TRIED-TO-AUTOLOAD* as a global and replaced

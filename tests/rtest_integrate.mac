@@ -10,6 +10,8 @@
   declare(z,complex,n,integer),
   assume(n>0),
   assume(notequal(v,0)),
+  domain:complex,
+  radexpand:true,
   
   /* This function checks if we get back the integrand.
    *
@@ -59,7 +61,7 @@ z*gamma_incomplete(1/r,-b*z^r*log(a))*(-b*z^r*log(a))^(-1/r)/-r;
 assume(a>1,b>0);
 [a>1,b>0];
 integrate(a^(b*z^2),z),erf_representation:erfi,trigsign:true;
-sqrt(%pi)*erfi(sqrt(log(a))*sqrt(b)*z)/(2*sqrt(log(a))*sqrt(b));
+-sqrt(%pi)*%i*erfi(%i*sqrt(-log(a)*b)*z)/(2*sqrt(-log(a)*b))$
 forget(a>1,b>0);
 [a>1,b>0];
 
@@ -77,16 +79,16 @@ z*gamma_incomplete(1/(p*r),-log(a)*b*(z^r)^p)
  * rischint does not respect the complex character of z.
  * The result of rischint is only correct for z>0.
  */
-integrate(a^(b*(z^r)^(1/r)),z);
-a^(b*(z^r)^(1/r))*z*(z^r)^(-1/r)/(b*log(a));
+integrate(a^(b*(z^r)^(1/r)),z), domain:real, radcan;
+a^(b*z)/(log(a)*b)$
 
 /* Problem 14: Expected failure 
  * sqrt(z^2) simplifies to z, which is not correct in general.
  * rischint does not respect the complex character of z.
  * The result of rischint is only correct for z>0.
  */
-integrate(a^(b*sqrt(z^2)),z);
-a^(b*sqrt(z^2))*sqrt(z^2)/(b*z*log(a));
+integrate(a^(b*sqrt(z^2)),z), radcan;
+a^(b*z)/(log(a)*b)$
 
 /* ----- Power arguments and base %e ---------------------------------------- */
 
@@ -98,7 +100,7 @@ integrate(%e^(a*z^r),z);
 assume(a>0);
 [a>0];
 integrate(%e^(a*z^2),z),erf_representation:erfi;
-sqrt(%pi)*erfi(sqrt(a)*z)/(2*sqrt(a));
+-sqrt(%pi)*%i*erfi(%i*sqrt(-a)*z)/(2*sqrt(-a))$
 forget(a>0);
 [a>0];
 
@@ -113,14 +115,14 @@ integrate(%e^(a*(z^r)^p),z);
 /* Problem 21: Expected failure 
  * See problem 13
  */
-integrate(%e^(a*(z^r)^(1/r)),z);
-exp(a*(z^r)^(1/r))*z/(a*(z^r)^(1/r));
+integrate(%e^(a*(z^r)^(1/r)),z), domain:real;
+%e^(a*z)/a$
 
 /* Problem 22: Expected failure 
  * See problem 14
  */
 integrate(%e^(a*sqrt(z^2)),z);
-exp(sqrt(z^2))*sqrt(z^2)/(a*z);
+%e^(a*z)/a$
 
 /* ----- Involving z^(v-1), arguments b*z and base a ------------------------ */
 
@@ -168,7 +170,7 @@ integrate(z*%e^(a*z),z);
  * The problem is in rischint.
  */
 integrate(sqrt(z^2)*%e^(a*z),z);
-exp(a*z)*sqrt(z^2)*(a*z-1)/(a^2*z);
+(a*z-1)*%e^(a*z)/a^2$
 
 /* Problem 33: OK */
 integrate(z^2*%e^(a*z),z);
@@ -237,7 +239,7 @@ a^(-n-1)*(-1)^n*gamma_incomplete((2*n+3)/2,-a*z)*sqrt(z)/sqrt(-a*z);
 assume(a>0);
 [a>0];
 integrate(sqrt(z)*%e^(a*z),z),erf_representation:erfi,expand;
-sqrt(z)*%e^(a*z)/a-sqrt(%pi)*erfi(sqrt(a)*sqrt(z))/(2*a^(3/2));
+sqrt(z)*%e^(a*z)/a+sqrt(%pi)*%i*erfi(%i*sqrt(-a)*sqrt(z))/(2*sqrt(-a)*a)$
 forget(a>0);
 [a>0];
 
@@ -246,7 +248,7 @@ assume(a>0);
 [a>0];
 multthru(integrate(z^(3/2)*%e^(a*z),z)),erf_representation:erfi;
 (2*a*z^(3/2)-3*sqrt(z))*%e^(a*z)/(2*a^2)
- +3*sqrt(%pi)*erfi(sqrt(a)*sqrt(z))/(4*a^(5/2));
+ -3*sqrt(%pi)*%i*erfi(%i*sqrt(-a)*sqrt(z))/(4*sqrt(-a)*a^2)$
 forget(a>0);
 [a>0];
 
@@ -275,7 +277,7 @@ multthru(integrate(z^(9/2)*%e^(a*z),z)),erf_representation:erfi;
 (16*a^4*z^(9/2)-72*a^3*z^(7/2)+252*a^2*z^(5/2)-630*a*z^(3/2)+945*sqrt(z))
  *%e^(a*z)
  /(16*a^5)
- -945*sqrt(%pi)*erfi(sqrt(a)*sqrt(z))/(32*a^(11/2));
+ +945*sqrt(%pi)*%i*erfi(%i*sqrt(-a)*sqrt(z))/(32*sqrt(-a)*a^5)$
 forget(a>0);
 [a>0];
 
@@ -283,7 +285,7 @@ forget(a>0);
 assume(a>0);
 [a>0];
 integrate(%e^(a*z)/sqrt(z),z),erf_representation:erfi;
-sqrt(%pi)*erfi(sqrt(a)*sqrt(z))/sqrt(a);
+-sqrt(%pi)*%i*erfi(%i*sqrt(-a)*sqrt(z))/sqrt(-a)$
 forget(a>0);
 [a>0];
 
@@ -302,9 +304,9 @@ multthru(integrate(%e^(a*z)/z^(3/2),z)),gamma_expand:true;
  * Because of revision 1.125 of simp.lisp Maxima no longer simplifies
  * z/sqrt(z^3) -> 1/sqrt(z). We get a noun form.
  */
-multthru(integrate(%e^(a*z)/sqrt(z^3),z)),gamma_expand:true;
-/*2*sqrt(%pi)*sqrt(-a*z)*erfc(sqrt(-a*z))/sqrt(z)-2*%e^(a*z)/sqrt(z);*/
-'integrate(%e^(a*z)/sqrt(z^3),z);
+multthru(integrate(%e^(a*z)/sqrt(z^3),z)),gamma_expand:true, domain:real;
+2*sqrt(%pi)*sqrt(-a*z)*erfc(sqrt(-a*z))/sqrt(z)-2*%e^(a*z)/sqrt(z)$
+/*'integrate(%e^(a*z)/sqrt(z^3),z);*/
 
 /* Problem 66: NEW Type 2 (OK) */
 multthru(integrate(%e^(a*z)/z^(5/2),z)),gamma_expand:true;
@@ -353,7 +355,7 @@ integrate(%e^(a*z+b)/z,z),gamma_expand:true,logcontract;
 assume(a>0);
 [a>0];
 integrate(%e^(a*z+b)/sqrt(z),z),erf_representation:erfi;
-sqrt(%pi)*%e^b*erfi(sqrt(a)*sqrt(z))/sqrt(a);
+-sqrt(%pi)*%i*%e^b*erfi(%i*sqrt(-a)*sqrt(z))/sqrt(-a)$
 forget(a>0);
 [a>0];
 
@@ -393,7 +395,7 @@ integrate(z*%e^(a*z^2),z);
 assume(a>0);
 [a>0];
 integrate(z^2*%e^(a*z^2),z),erf_representation:erfi;
-z*%e^(a*z^2)/(2*a)-sqrt(%pi)*erfi(sqrt(a)*z)/(4*a^(3/2))$
+sqrt(%pi)*%i*erfi(%i*sqrt(-a)*z)/(4*sqrt(-a)*a)+z*%e^(a*z^2)/(2*a)$
 forget(a>0);
 [a>0];
 
@@ -405,7 +407,8 @@ integrate(z^3*%e^(a*z^2),z);
 assume(a>0);
 [a>0];
 integrate(z^4*%e^(a*z^2),z),erf_representation:erfi;
-3*sqrt(%pi)*erfi(sqrt(a)*z)/(8*a^(5/2))+(2*a*z^3-3*z)*%e^(a*z^2)/(4*a^2);
+(2*a*z^3-3*z)*%e^(a*z^2)/(4*a^2)-3*sqrt(%pi)*%i*erfi(%i*sqrt(-a)*z)
+                                 /(8*sqrt(-a)*a^2)$
 forget(a>0);
 [a>0];
 
@@ -721,7 +724,7 @@ d^(c+a*z+sqrt(z)*b);
 /* Problem 150: NEW 5 
  * This integral is first transformed to an integral of type 5.
 */
-diffcheck(integrate(%e^(c+a*z+sqrt(z)*b),z),z,factor);
+diffcheck(integrate(%e^(c+a*z+sqrt(z)*b),z),z,factor), domain:real;
 %e^(c+a*z+sqrt(z)*b);
 
 /* ----- Involving a*z+b*sqrt(z) -------------------------------------------- */
@@ -731,7 +734,7 @@ diffcheck(integrate(d^(a*z+sqrt(z)*b),z),z,radcan);
 d^(a*z+sqrt(z)*b);
 
 /* Problem 152: NEW 5 */
-diffcheck(integrate(%e^(a*z+sqrt(z)*b),z),z,factor);
+diffcheck(integrate(%e^(a*z+sqrt(z)*b),z),z,factor), domain:real;
 %e^(a*z+sqrt(z)*b);
 
 /* ----- Involving a*z^r+c -------------------------------------------------- */
@@ -759,12 +762,12 @@ integrate(a^b^z,z),gamma_expand:true,logcontract;
 expintegral_ei(log(a)*b^z)/log(b);
 
 /* Problem 158: NEW 2 */
-integrate(%e^a^z,z),gamma_expand:true,logcontract;
-expintegral_ei(a^z)/log(a);
+integrate(%e^a^z,z),gamma_expand:true,logcontract,domain:complex;
+(expintegral_ei(a^z)+log(-1))/log(a);
 
 /* Problem 159: NEW 2 */
-integrate(%e^%e^z,z),gamma_expand:true,logcontract;
-expintegral_ei(%e^z);
+integrate(%e^%e^z,z),gamma_expand:true,logexpand:all;
+expintegral_ei(%e^z)+log(-1);
 
 /* ----- Involving trigonometric functions ---------------------------------- */
 
@@ -942,14 +945,14 @@ niceindices(integrate(z^n*%e^(b*z+a*z^2),z));
 
 /* ----- Prove algorithm type 5 for some special case ----- */
 
-diffcheck(integrate(z*%e^(b*z+a*z^2),z),z,factor);
-z*%e^(b*z+a*z^2);
+diffcheck(integrate(z*%e^(b*z+a*z^2),z),z,factor), domain:real;
+z*%e^(a*z^2+b*z)$
 
-diffcheck(integrate(z^2*%e^(b*z+a*z^2),z),z,factor);
-z^2*%e^(b*z+a*z^2);
+diffcheck(integrate(z^2*%e^(b*z+a*z^2),z),z,factor), domain:real;
+z^2*%e^(a*z^2+b*z)$
 
-diffcheck(integrate(z^3*%e^(b*z+a*z^2),z),z,factor);
-z^3*%e^(b*z+a*z^2);
+diffcheck(integrate(z^3*%e^(b*z+a*z^2),z),z,factor), domain:real;
+z^3*%e^(a*z^2+b*z)$
 
 /* Problem 204: NEW 6 */
 niceindices(niceindices(integrate(z^n*d^(b*z+a*sqrt(z)),z)));
@@ -1010,13 +1013,13 @@ niceindices(niceindices(integrate(z^n*%e^(b*z+a*sqrt(z)),z)));
 
 /* --- Again the problem is integrated with type 5 --- */
 
-diffcheck(integrate(z*%e^(b*z+a*sqrt(z)),z),z,factor);
+diffcheck(integrate(z*%e^(b*z+a*sqrt(z)),z),z,factor), domain:real;
 z*%e^(b*z+a*sqrt(z));
 
-diffcheck(integrate(z^2*%e^(b*z+a*sqrt(z)),z),z,factor);
+diffcheck(integrate(z^2*%e^(b*z+a*sqrt(z)),z),z,factor), domain:real;
 z^2*%e^(b*z+a*sqrt(z));
 
-diffcheck(integrate(z^3*%e^(b*z+a*sqrt(z)),z),z,factor);
+diffcheck(integrate(z^3*%e^(b*z+a*sqrt(z)),z),z,factor), domain:real;
 z^3*%e^(b*z+a*sqrt(z));
 
 /* ----- Involving z^n*d^(a*z^r+b*z+c) -------------------------------------- */
@@ -1195,12 +1198,12 @@ integrate((a^(c*z^r))^v,z);
  * The examples 229 and 230 are not really correct. 
  * e.g. (a^(c*z^2))^v is wrongly simplified to a^(v*c*z^2) and integrated.
  */
-integrate((a^(c*z^2))^v,z);
-sqrt(%pi)*erf(sqrt(-log(a)*c*v)*z)/(2*sqrt(-log(a)*c*v));
+integrate((a^(c*z^2))^v,z), domain:real;
+sqrt(%pi)*erf(sqrt(-log(a)*c*v)*z)/(2*sqrt(-log(a)*c*v))$
 
 /* Problem 240: (OK) wrong simplification */
-integrate((a^(c*sqrt(z)))^v,z);
-2*(log(a)*c*v*sqrt(z)-1)*%e^(log(a)*c*v*sqrt(z))/(log(a)^2*c^2*v^2);
+integrate((a^(c*sqrt(z)))^v,z), domain:real;
+2*(log(a)*c*v*sqrt(z)-1)*%e^(log(a)*c*v*sqrt(z))/(log(a)^2*c^2*v^2)$
 
 /* ----- with arguments c*z^r ----------------------------------------------- */
 
@@ -1210,12 +1213,12 @@ integrate((%e^(c*z^r))^v,z);
  /(r*(-c*v*z^r)^(1/r));
 
 /* Problem 242: (OK) wrong simplification*/
-integrate((%e^(c*z^2))^v,z);
-sqrt(%pi)*erf(sqrt(-c*v)*z)/(2*sqrt(-c*v));
+integrate((%e^(c*z^2))^v,z), domain:real;
+sqrt(%pi)*erf(sqrt(-c*v)*z)/(2*sqrt(-c*v))$
 
 /* Problem 243: (OK) wrong simplification*/
-integrate((%e^(c*sqrt(z)))^v,z);
-2*(c*v*sqrt(z)-1)*%e^(c*v*sqrt(z))/(c^2*v^2);
+integrate((%e^(c*sqrt(z)))^v,z), domain:real;
+2*(c*v*sqrt(z)-1)*%e^(c*v*sqrt(z))/(c^2*v^2)$
 
 /* ----- with arguments c*z^r+d and base a ---------------------------------- */
 
@@ -1225,13 +1228,13 @@ integrate((a^(d+c*z^r))^v,z);
  /(a^(c*v*z^r)*r*(-log(a)*c*v*z^r)^(1/r));
 
 /* Problem 245: (OK) wrong simplification */
-integrate((a^(d+c*z^2))^v,z);
-sqrt(%pi)*a^(d*v)*erf(sqrt(-log(a)*c*v)*z)/(2*sqrt(-log(a)*c*v));
+integrate((a^(d+c*z^2))^v,z), domain:real;
+sqrt(%pi)*a^(d*v)*erf(sqrt(-log(a)*c*v)*z)/(2*sqrt(-log(a)*c*v))$
 
 /* Problem 246: (OK) wrong simplification */
-integrate((a^(d+c*sqrt(z)))^v,z);
+integrate((a^(d+c*sqrt(z)))^v,z), domain:real;
 2*(a^(d*v)*log(a)*c*v*sqrt(z)-a^(d*v))*%e^(log(a)*c*v*sqrt(z))
-         /(log(a)^2*c^2*v^2);
+ /(log(a)^2*c^2*v^2)$
 
 /* ----- with arguments c*z^r+d --------------------------------------------- */
 
@@ -1241,12 +1244,12 @@ integrate((%e^(d+c*z^r))^v,z);
  /(r*(-c*v*z^r)^(1/r));
 
 /* Problem 248: (OK) wrong simplification */
-integrate((%e^(d+c*z^2))^v,z);
-sqrt(%pi)*%e^(d*v)*erf(sqrt(-c*v)*z)/(2*sqrt(-c*v));
+integrate((%e^(d+c*z^2))^v,z), domain:real;
+sqrt(%pi)*%e^(d*v)*erf(sqrt(-c*v)*z)/(2*sqrt(-c*v))$
 
 /* Problem 249: (OK) wrong simplification */
-integrate((%e^(d+c*sqrt(z)))^v,z);
-2*(c*v*%e^(d*v)*sqrt(z)-%e^(d*v))*%e^(c*v*sqrt(z))/(c^2*v^2);
+integrate((%e^(d+c*sqrt(z)))^v,z), domain:real;
+2*(c*v*%e^(d*v)*sqrt(z)-%e^(d*v))*%e^(c*v*sqrt(z))/(c^2*v^2)$
 
 /* ----- with arguments c*(z^r)^p and base a -------------------------------- */
 
@@ -1258,12 +1261,12 @@ gamma_incomplete(1/(p*r),-log(a)*c*v*(z^r)^p)*(a^(c*(z^r)^p))^v*z
  /(a^(c*v*(z^r)^p)*p*r*(-log(a)*c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 251: (OK) wrong simplification */
-integrate((a^(c*(z^r)^(1/r)))^v,z),logexpand;
-%e^(log(a)*c*v*z)/(log(a)*c*v);
+integrate((a^(c*(z^r)^(1/r)))^v,z), domain:real;
+%e^(log(a)*c*v*z)/(log(a)*c*v)$
 
 /* Problem 252: (OK) wrong simplification */
-integrate((a^(c*sqrt(z^2)))^v,z);
-%e^(log(a)*c*v*z)/(log(a)*c*v);
+integrate((a^(c*sqrt(z^2)))^v,z), domain:real;
+%e^(log(a)*c*v*z)/(log(a)*c*v)$
 
 /* Problem 253: NEW 1a */
 integrate((%e^(c*(z^r)^p))^v,z);
@@ -1271,12 +1274,12 @@ integrate((%e^(c*(z^r)^p))^v,z);
  /(p*r*(-c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 254: (OK) wrong simplification */
-integrate((%e^(c*(z^r)^(1/r)))^v,z);
-%e^(c*v*z)/(c*v);
+integrate((%e^(c*(z^r)^(1/r)))^v,z), domain:real;
+%e^(c*v*z)/(c*v)$
 
 /* Problem 255: (OK) wrong simplification */
-integrate((%e^(c*sqrt(z^2)))^v,z);
-%e^(c*v*z)/(c*v);
+integrate((%e^(c*sqrt(z^2)))^v,z), domain:real;
+%e^(c*v*z)/(c*v)$
 
 /* ----- with arguments c*(z^r)^p+d and base a ------------------------------ */
 
@@ -1286,11 +1289,11 @@ gamma_incomplete(1/(p*r),-log(a)*c*v*(z^r)^p)*(a^(c*(z^r)^p+d))^v*z
  /(a^(c*v*(z^r)^p)*p*r*(-log(a)*c*v*(z^r)^p)^(1/(p*r)))$
 
 /* Problem 257: (OK) wrong simplification */
-integrate((a^(d+c*(z^r)^(1/r)))^v,z);
+integrate((a^(d+c*(z^r)^(1/r)))^v,z), domain:real;
 a^(d*v)*%e^(log(a)*c*v*z)/(log(a)*c*v);
 
 /* Problem 258: (OK) wrong simplification */
-integrate((a^(d+c*sqrt(z^2)))^v,z);
+integrate((a^(d+c*sqrt(z^2)))^v,z), domain:real;
 a^(d*v)*%e^(log(a)*c*v*z)/(log(a)*c*v);
 
 /* Problem 259: NEW 1a */
@@ -1300,11 +1303,11 @@ integrate((%e^(d+c*(z^r)^p))^v,z);
  /(p*r*(-c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 260: (OK) wrong simplification */
-integrate((%e^(d+c*(z^r)^(1/r)))^v,z);
+integrate((%e^(d+c*(z^r)^(1/r)))^v,z), domain:real;
 %e^(c*v*z+d*v)/(c*v);
 
 /* Problem 261: (OK) wrong simplification */
-integrate((%e^(d+c*sqrt(z^2)))^v,z);
+integrate((%e^(d+c*sqrt(z^2)))^v,z), domain:real;
 %e^(c*v*z+d*v)/(c*v);
 
 /* ----- with arguments a*z^2+b/z^2 ----------------------------------------- */
@@ -1710,27 +1713,29 @@ integrate(%e^(c*x+d)*(%e^(a*x+b))^v,x);
 /* ----- %e^(b*z^r)*(%e^(c*z))^v -------------------------------------------- */
 
 /* Problem 315: (OK) wrong simplification */
-integrate(%e^(b*z^2)*(%e^(c*z))^v,z);
+integrate(%e^(b*z^2)*(%e^(c*z))^v,z), domain:real;
 sqrt(%pi)*%e^-(c^2*v^2/(4*b))*erf(sqrt(-b)*z-c*v/(2*sqrt(-b)))/(2*sqrt(-b));
 
 /* Problem 316: NEW 9-1 */
-diffcheck(integrate(%e^(b*sqrt(z))*(%e^(c*z))^v,z),z,factor_radcan);
+diffcheck(integrate(%e^(b*sqrt(z))*(%e^(c*z))^v,z),z,factor_radcan),
+   domain:complex;
 %e^(b*sqrt(z))*(%e^(c*z))^v;
 
 /* ----- %e^(b*z^r+e)*(%e^(c*z))^v ------------------------------------------ */
 
 /* Problem 317: (OK) wrong simplification */
-integrate(%e^(e+b*z^2)*(%e^(c*z))^v,z);
+integrate(%e^(e+b*z^2)*(%e^(c*z))^v,z), domain:real;
 sqrt(%pi)*%e^(e-c^2*v^2/(4*b))*erf(sqrt(-b)*z-c*v/(2*sqrt(-b)))/(2*sqrt(-b));
 
 /* Problem 318: NEW 9-1 */
-diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(c*z))^v,z),z,factor_radcan);
+diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(c*z))^v,z),z,factor_radcan),
+   domain:complex;
 %e^(e+b*sqrt(z))*(%e^(c*z))^v;
 
 /* ----- %e^(b*z^r+d*z)*(%e^(c*z))^v ---------------------------------------- */
 
 /* Problem 319: (OK) wrong simplification */
-integrate(%e^(d*z+b*z^2)*(%e^(c*z))^v,z);
+integrate(%e^(d*z+b*z^2)*(%e^(c*z))^v,z), domain:real;
 sqrt(%pi)*%e^-((-c*v-d)^2/(4*b))*erf(sqrt(-b)*z+(-c*v-d)/(2*sqrt(-b)))
  /(2*sqrt(-b));
 
@@ -1741,7 +1746,7 @@ diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(c*z))^v,z),z,factor);
 /* ----- %e^(b*z^r+d*z+e)*(%e^(c*z))^v -------------------------------------- */
 
 /* Problem 321: OK */
-integrate(%e^(e+d*z+b*z^2)*(%e^(c*z))^v,z);
+integrate(%e^(e+d*z+b*z^2)*(%e^(c*z))^v,z), domain:real;
 sqrt(%pi)*%e^(e-(-c*v-d)^2/(4*b))*erf(sqrt(-b)*z+(-c*v-d)/(2*sqrt(-b)))
  /(2*sqrt(-b));
 
@@ -1752,70 +1757,72 @@ diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(c*z))^v,z),z,factor);
 /* ----- %e^(b*z^r)*(%e^(f*z+g))^v ------------------------------------------ */
 
 /* Problem 323: OK */
-integrate(%e^(b*z^2)*(%e^(g+f*z))^v,z);
+integrate(%e^(b*z^2)*(%e^(g+f*z))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-f^2*v^2/(4*b))*erf(sqrt(-b)*z-f*v/(2*sqrt(-b)))/(2*sqrt(-b));
 
 /* Problem 324: NEW 9-1 */
-diffcheck(integrate(%e^(b*sqrt(z))*(%e^(g+f*z))^v,z),z,factor);
-%e^(b*sqrt(z))*(%e^(g+f*z))^v;
+diffcheck(integrate(%e^(b*sqrt(z))*(%e^(g+f*z))^v,z),z,factor), domain:real;
+%e^(f*v*z+b*sqrt(z)+g*v)$
 
 /* ----- %e^(b*z^r+e)*(%e^(f*z+g))^v ---------------------------------------- */
 
 /* Problem 325: OK */
-integrate(%e^(e+b*z^2)*(%e^(g+f*z))^v,z);
+integrate(%e^(e+b*z^2)*(%e^(g+f*z))^v,z), domain:real;
 sqrt(%pi)*%e^(-f^2*v^2/(4*b)+g*v+e)*erf(sqrt(-b)*z-f*v/(2*sqrt(-b)))
  /(2*sqrt(-b));
 
 /* Problem 326: NEW 9-1 */
-diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(g+f*z))^v,z),z,factor);
-%e^(e+b*sqrt(z))*(%e^(g+f*z))^v;
+diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(g+f*z))^v,z),z,factor), domain:real;
+%e^(f*v*z+b*sqrt(z)+g*v+e)$
 
 /* ----- %e^(b*z^r+d*z)*(%e^(f*z+g))^v -------------------------------------- */
 
 /* Problem 327: OK */
-integrate(%e^(d*z+b*z^2)*(%e^(g+f*z))^v,z);
+integrate(%e^(d*z+b*z^2)*(%e^(g+f*z))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-(-f*v-d)^2/(4*b))*erf(sqrt(-b)*z+(-f*v-d)/(2*sqrt(-b)))
  /(2*sqrt(-b));
 
 /* Problem 328: NEW 9-1 
  * This example is not correct simplified.
  */
-diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+f*z))^v,z),z,radcan);
+diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+f*z))^v,z),z,radcan),
+   domain:complex;
 (%e^(f*z))^v*%e^(d*z+b*sqrt(z)+g*v);
 
 /* ----- %e^(b*z^r+d*z+e)*(%e^(f*z+g))^v ------------------------------------ */
 
 /* Problem 329: OK */
-integrate(%e^(e+d*z+b*z^2)*(%e^(g+f*z))^v,z);
+integrate(%e^(e+d*z+b*z^2)*(%e^(g+f*z))^v,z), domain:real;
 sqrt(%pi)*%e^(-(-f*v-d)^2/(4*b)+g*v+e)*erf(sqrt(-b)*z+(-f*v-d)/(2*sqrt(-b)))
  /(2*sqrt(-b));
 
 /* Problem 330: NEW 9-1 
  * This example is not correct simplified.
  */
-diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z))^v,z),z,radcan);
+diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z))^v,z),z,radcan),
+   domain:complex;
 (%e^(f*z))^v*%e^(d*z+b*sqrt(z)+g*v+e);
 
 /* ----- %e^(b*z)*(%e^(c*z^r))^v -------------------------------------------- */
 
 /* Problem 331: OK */
-integrate(%e^(b*z)*(%e^(c*z^2))^v,z);
+integrate(%e^(b*z)*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^-(b^2/(4*c*v))*erf(sqrt(-c*v)*z-b/(2*sqrt(-c*v)))/(2*sqrt(-c*v));
 
 /* Problem 332: NEW 9-1 */
-diffcheck(integrate(%e^(b*z)*(%e^(c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(b*z)*(%e^(c*sqrt(z)))^v,z),z,radcan),domain:complex;
 %e^(b*z)*(%e^(c*sqrt(z)))^v;
 
 /* ----- %e^(d*z+e)*(%e^(c*z^r))^v ------------------------------------------ */
 
 /* Problem 333: OK */
-integrate(%e^(d*z+e)*(%e^(c*z^2))^v,z);
+integrate(%e^(d*z+e)*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(e-d^2/(4*c*v))*erf(sqrt(-c*v)*z-d/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 334: NEW 9-1 */
-diffcheck(integrate(%e^(d*z+e)*(%e^(c*sqrt(z)))^v,z),z,factor);
-%e^(d*z+e)*(%e^(c*sqrt(z)))^v;
+diffcheck(integrate(%e^(d*z+e)*(%e^(c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(d*z+c*v*sqrt(z)+e)$
 
 /* ----- %e^(b*z^r)*(%e^(c*z^r))^v ------------------------------------------ */
 
@@ -1824,11 +1831,11 @@ diffcheck(integrate(%e^(b*z^r)*(%e^(c*z^r))^v,z),z,factor);
 %e^(b*z^r)*(%e^(c*z^r))^v;
 
 /* Problem 336: OK */
-integrate(%e^(b*z^2)*(%e^(c*z^2))^v,z);
+integrate(%e^(b*z^2)*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*erf(sqrt(-c*v-b)*z)/(2*sqrt(-c*v-b));
 
 /* Problem 337: OK */
-integrate(%e^(b*sqrt(z))*(%e^(c*sqrt(z)))^v,z);
+integrate(%e^(b*sqrt(z))*(%e^(c*sqrt(z)))^v,z), domain:real;
 2*((c*v+b)*sqrt(z)-1)*%e^(c*v*sqrt(z)+b*sqrt(z))/(c^2*v^2+2*b*c*v+b^2);
 
 /* ----- %e^(b*z^r+e)*(%e^(c*z^r))^v ---------------------------------------- */
@@ -1838,41 +1845,43 @@ diffcheck(integrate(%e^(e+b*z^r)*(%e^(c*z^r))^v,z),z,factor);
 %e^(e+b*z^r)*(%e^(c*z^r))^v;
 
 /* Problem 339: OK */
-integrate(%e^(e+b*z^2)*(%e^(c*z^2))^v,z);
+integrate(%e^(e+b*z^2)*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^e*erf(sqrt(-c*v-b)*z)/(2*sqrt(-c*v-b));
 
 /* Problem 340: OK */
-integrate(%e^(e+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z);
+integrate(%e^(e+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z), domain:real;
 2*((c*%e^e*v+b*%e^e)*sqrt(z)-%e^e)*%e^(c*v*sqrt(z)+b*sqrt(z))
          /(c^2*v^2+2*b*c*v+b^2);
 
 /* ----- %e^(b*z^r+d*z)*(%e^(c*z^r))^v -------------------------------------- */
 
 /* Problem 341: OK */
-integrate(%e^(d*z+b*z^2)*(%e^(c*z^2))^v,z);
+integrate(%e^(d*z+b*z^2)*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(d^2/(4*(-c*v-b)))*erf(sqrt(-c*v-b)*z-d/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 342: NEW 9-1 */
-diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 %e^(d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v;
 
 /* ----- %e^(b*z^r+d*z+e)*(%e^(c*z^r))^v ------------------------------------ */
 
 /* Problem 343: OK */
-integrate(%e^(e+d*z+b*z^2)*(%e^(c*z^2))^v,z);
+integrate(%e^(e+d*z+b*z^2)*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+e)
                  *erf(sqrt(-c*v-b)*z-d/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 344: NEW 9-1 */
-diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 %e^(e+d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v;
 
 /* ----- %e^(d*z)*(%e^(c*z^r+g))^v ------------------------------------------ */
 
 /* Problem 345: OK */
-integrate(%e^(d*z)*(%e^(g+c*z^2))^v,z);
+integrate(%e^(d*z)*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-d^2/(4*c*v))*erf(sqrt(-c*v)*z-d/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
@@ -1888,7 +1897,7 @@ expand(integrate(%e^(d*z)*(%e^(g+c*sqrt(z)))^v,z)-
 /* ----- %e^(d*z+e)*(%e^(c*z^r+g))^v ---------------------------------------- */
 
 /* Problem 347: OK */
-integrate(%e^(d*z+e)*(%e^(g+c*z^2))^v,z);
+integrate(%e^(d*z+e)*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-d^2/(4*c*v)+e)*erf(sqrt(-c*v)*z-d/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
@@ -1906,15 +1915,15 @@ expand(integrate(%e^(d*z+e)*(%e^(g+c*sqrt(z)))^v,z)-
 /* Problem 349: NEW 7-1 
  * The result is not correct simplified.
  */
-diffcheck(integrate(%e^(b*z^r)*(%e^(g+c*z^r))^v,z),z,radcan);
+diffcheck(integrate(%e^(b*z^r)*(%e^(g+c*z^r))^v,z),z,radcan), domain:complex;
 (%e^(c*z^r))^v*%e^(b*z^r+g*v);
 
 /* Problem 350: OK */
-integrate(%e^(b*z^2)*(%e^(g+c*z^2))^v,z);
+integrate(%e^(b*z^2)*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v)*erf(sqrt(-c*v-b)*z)/(2*sqrt(-c*v-b));
 
 /* Problem 351: OK */
-multthru(integrate(%e^(b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z));
+multthru(integrate(%e^(b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z)), domain:real;
 2*(c*v*%e^(g*v)+b*%e^(g*v))*sqrt(z)*%e^(c*v*sqrt(z)+b*sqrt(z))
  /(c^2*v^2+2*b*c*v+b^2)
  -2*%e^(c*v*sqrt(z)+b*sqrt(z)+g*v)/(c^2*v^2+2*b*c*v+b^2);
@@ -1926,11 +1935,11 @@ diffcheck(integrate(%e^(e+b*z^r)*(%e^(g+c*z^r))^v,z),z,factor);
 %e^(e+b*z^r)*(%e^(g+c*z^r))^v;
 
 /* Problem 353: OK */
-integrate(%e^(e+b*z^2)*(%e^(g+c*z^2))^v,z);
+integrate(%e^(e+b*z^2)*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v+e)*erf(sqrt(-c*v-b)*z)/(2*sqrt(-c*v-b));
 
 /* Problem 354: OK */
-multthru(integrate(%e^(e+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z));
+multthru(integrate(%e^(e+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z)), domain:real;
 2*(c*v*%e^(g*v+e)+b*%e^(g*v+e))*sqrt(z)*%e^(c*v*sqrt(z)+b*sqrt(z))
  /(c^2*v^2+2*b*c*v+b^2)
  -2*%e^(c*v*sqrt(z)+b*sqrt(z)+g*v+e)/(c^2*v^2+2*b*c*v+b^2);
@@ -1938,7 +1947,7 @@ multthru(integrate(%e^(e+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z));
 /* ----- %e^(b*z^r+d*z)*(%e^(c*z^r+g))^v ------------------------------------ */
 
 /* Problem 355: OK */
-integrate(%e^(d*z+b*z^2)*(%e^(g+c*z^2))^v,z);
+integrate(%e^(d*z+b*z^2)*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+g*v)
                  *erf(sqrt(-c*v-b)*z-d/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
@@ -1946,25 +1955,27 @@ sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+g*v)
 /* Problem 356: NEW 9-1 
  * Wrong simplified.
  */
-diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*%e^(d*z+b*sqrt(z)+g*v);
 
 /* ----- %e^(b*z^r+d*z+e)*(%e^(c*z^r+g))^v ---------------------------------- */
 
 /* Problem 357: OK */
-integrate(%e^(e+d*z+b*z^2)*(%e^(g+c*z^2))^v,z);
+integrate(%e^(e+d*z+b*z^2)*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+g*v+e)
                  *erf(sqrt(-c*v-b)*z-d/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 358: NEW 9-1 */
-diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*%e^(d*z+b*sqrt(z)+g*v+e);
 
 /* ----- %e^(d*z)*(%e^(c*z^r+f*z))^v ---------------------------------------- */
 
 /* Problem 359: OK */
-integrate(%e^(d*z)*(%e^(f*z+c*z^2))^v,z);
+integrate(%e^(d*z)*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^-((-f*v-d)^2/(4*c*v))
                  *erf(sqrt(-c*v)*z+(-f*v-d)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -1976,7 +1987,7 @@ diffcheck(integrate(%e^(d*z)*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
 /* ----- %e^(d*z+e)*(%e^(c*z^r+f*z))^v -------------------------------------- */
 
 /* Problem 361: OK */
-integrate(%e^(d*z+e)*(%e^(f*z+c*z^2))^v,z);
+integrate(%e^(d*z+e)*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(e-(-f*v-d)^2/(4*c*v))
                  *erf(sqrt(-c*v)*z+(-f*v-d)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -1992,55 +2003,56 @@ integrate(%e^(d*z+e)*(%e^(f*z+c*sqrt(z)))^v,z);
 /* ----- %e^(b*z^r)*(%e^(c*z^r+f*z))^v -------------------------------------- */
 
 /* Problem 363: OK */
-integrate(%e^(b*z^2)*(%e^(f*z+c*z^2))^v,z);
+integrate(%e^(b*z^2)*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b)))
                  *erf(sqrt(-c*v-b)*z-f*v/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 364: NEW 9-1 */
-diffcheck(integrate(%e^(b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
-%e^(b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v;
+diffcheck(integrate(%e^(b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,factor),domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*sqrt(z))$
 
 /* ----- %e^(b*z^r+e)*(%e^(c*z^r+f*z))^v ------------------------------------ */
 
 /* Problem 365: OK */
-integrate(%e^(e+b*z^2)*(%e^(f*z+c*z^2))^v,z);
+integrate(%e^(e+b*z^2)*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b))+e)
                  *erf(sqrt(-c*v-b)*z-f*v/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 366: NEW 9-1 */
-diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
-%e^(e+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v;
+diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*sqrt(z)+e)$
 
 /* ----- %e^(b*z^r+d*z)*(%e^(c*z^r+f*z))^v ---------------------------------- */
 
 /* Problem 367: OK */
-integrate(%e^(d*z+b*z^2)*(%e^(f*z+c*z^2))^v,z);
+integrate(%e^(d*z+b*z^2)*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b)))
                  *erf(sqrt(-c*v-b)*z+(-f*v-d)/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 368: NEW 9-1 */
-diffcheck(integrate(%e^(d*x+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
-%e^(d*x+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v;
+diffcheck(integrate(%e^(d*x+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*sqrt(z)+d*x)$
 
 /* ----- %e^(b*z^r+d*z+e)*(%e^(c*z^r+f*z))^v -------------------------------- */
 
 /* Problem 369: OK */
-integrate(%e^(e+d*z+b*z^2)*(%e^(f*z+c*z^2))^v,z);
+integrate(%e^(e+d*z+b*z^2)*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b))+e)
                  *erf(sqrt(-c*v-b)*z+(-f*v-d)/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 370: NEW 9-1 */
-diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*(%e^(f*z))^v*%e^(d*z+b*sqrt(z)+e);
 
 /* ----- %e^(d*z)*(%e^(c*z^r+f*z+g))^v -------------------------------------- */
 
 /* Problem 371: OK */
-integrate(%e^(d*z)*(%e^(g+f*z+c*z^2))^v,z);
+integrate(%e^(d*z)*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-(-f*v-d)^2/(4*c*v))
                  *erf(sqrt(-c*v)*z+(-f*v-d)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -2056,7 +2068,7 @@ integrate(%e^(d*z)*(%e^(g+f*z+c*sqrt(z)))^v,z);
 /* ----- %e^(d*z+e)*(%e^(c*z^r+f*z+g))^v ------------------------------------ */
 
 /* Problem 373: OK */
-integrate(%e^(d*z+e)*(%e^(g+f*z+c*z^2))^v,z);
+integrate(%e^(d*z+e)*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(-(-f*v-d)^2/(4*c*v)+g*v+e)
                  *erf(sqrt(-c*v)*z+(-f*v-d)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -2072,49 +2084,53 @@ integrate(%e^(d*z+e)*(%e^(g+f*z+c*sqrt(z)))^v,z);
 /* ----- %e^(b*z^r)*(%e^(c*z^r+f*z+g))^v ------------------------------------ */
 
 /* Problem 375: OK */
-integrate(%e^(b*z^2)*(%e^(g+f*z+c*z^2))^v,z);
+integrate(%e^(b*z^2)*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b))+g*v)
                  *erf(sqrt(-c*v-b)*z-f*v/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 376: NEW 9-1 */
-diffcheck(integrate(%e^(b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*%e^(b*sqrt(z)+g*v)*(%e^(f*z))^v;
 
 /* ----- %e^(b*z^r+e)*(%e^(c*z^r+f*z+g))^v ---------------------------------- */
 
 /* Problem 377: OK */
-integrate(%e^(e+b*z^2)*(%e^(g+f*z+c*z^2))^v,z);
+integrate(%e^(e+b*z^2)*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b))+g*v+e)
                  *erf(sqrt(-c*v-b)*z-f*v/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 378: NEW 9-1 */
-diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(e+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*%e^(b*sqrt(z)+g*v+e)*(%e^(f*z))^v;
 
 /* ----- %e^(b*z^r+d*z)*(%e^(c*z^r+f*z+g))^v -------------------------------- */
 
 /* Problem 379: OK */
-integrate(%e^(d*z+b*z^2)*(%e^(g+f*z+c*z^2))^v,z);
+integrate(%e^(d*z+b*z^2)*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b))+g*v)
                  *erf(sqrt(-c*v-b)*z+(-f*v-d)/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 380: NEW 9-1 */
-diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*(%e^(f*z))^v*%e^(d*z+b*sqrt(z)+g*v);
 
 /* ----- %e^(b*z^r+d*z+e)*(%e^(c*z^r+f*z+g))^v ------------------------------ */
 
 /* Problem 381: OK */
-integrate(%e^(e+d*z+b*z^2)*(%e^(g+f*z+c*z^2))^v,z);
+integrate(%e^(e+d*z+b*z^2)*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b))+g*v+e)
                  *erf(sqrt(-c*v-b)*z+(-f*v-d)/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 382: NEW 9-1 */
-diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(c*sqrt(z)))^v*(%e^(f*z))^v*%e^(d*z+b*sqrt(z)+g*v+e);
 
 /* ----- (%e^(c*z))^u*(%e^(a*z)^v ------------------------------------------- */
@@ -2138,25 +2154,25 @@ integrate((%e^(c*x+d))^u*(%e^(a*x+b))^v,x);
 /* ----- (%e^(b*z))^u*(%e^(c*z^r)^v ----------------------------------------- */
 
 /* Problem 386: OK */
-integrate((%e^(b*z))^u*(%e^(c*z^2))^v,z);
+integrate((%e^(b*z))^u*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^-(b^2*u^2/(4*c*v))*erf(sqrt(-c*v)*z-b*u/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 387: NEW 9-1 */
-diffcheck(integrate((%e^(b*z))^u*(%e^(c*sqrt(z)))^v,z),z,factor);
-(%e^(b*z))^u*(%e^(c*sqrt(z)))^v;
+diffcheck(integrate((%e^(b*z))^u*(%e^(c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(b*u*z+c*v*sqrt(z))$
 
 /* ----- (%e^(d*z+e))^u*(%e^(c*z^r)^v --------------------------------------- */
 
 /* Problem 388: OK */
-integrate((%e^(d*z+e))^u*(%e^(c*z^2))^v,z);
+integrate((%e^(d*z+e))^u*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(e*u-d^2*u^2/(4*c*v))
                  *erf(sqrt(-c*v)*z-d*u/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 389: NEW 9-1 */
-diffcheck(integrate((%e^(d*z+e))^u*(%e^(c*sqrt(z)))^v,z),z,factor);
-(%e^(d*z+e))^u*(%e^(c*sqrt(z)))^v;
+diffcheck(integrate((%e^(d*z+e))^u*(%e^(c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(d*u*z+c*v*sqrt(z)+e*u)$
 
 /* ----- (%e^(b*z^r))^u*(%e^(c*z^r+g)^v ------------------------------------- */
 
@@ -2165,37 +2181,37 @@ diffcheck(integrate((%e^(b*z^r))^u*(%e^(c*z^r))^v,z),z,factor);
 (%e^(b*z^r))^u*(%e^(c*z^r))^v;
 
 /* Problem 391: OK */
-integrate((%e^(b*z^2))^u*(%e^(c*z^2))^v,z);
+integrate((%e^(b*z^2))^u*(%e^(c*z^2))^v,z), domain:real;
 sqrt(%pi)*erf(sqrt(-c*v-b*u)*z)/(2*sqrt(-c*v-b*u));
 
 /* Problem 392: OK */
-integrate((%e^(b*sqrt(z)))^u*(%e^(c*sqrt(z)))^v,z);
+integrate((%e^(b*sqrt(z)))^u*(%e^(c*sqrt(z)))^v,z), domain:real;
 2*((c*v+b*u)*sqrt(z)-1)*%e^(c*v*sqrt(z)+b*u*sqrt(z))
  /(c^2*v^2+2*b*c*u*v+b^2*u^2);
 
 /* ----- (%e^(d*z))^u*(%e^(c*z^r+g)^v --------------------------------------- */
 
 /* Problem 393: OK */
-integrate((%e^(d*z))^u*(%e^(g+c*z^2))^v,z);
+integrate((%e^(d*z))^u*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-d^2*u^2/(4*c*v))
                  *erf(sqrt(-c*v)*z-d*u/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 394: NEW 9-1 */
-diffcheck(integrate((%e^(d*z))^u*(%e^(g+c*sqrt(z)))^v,z),z,factor);
-(%e^(d*z))^u*(%e^(g+c*sqrt(z)))^v;
+diffcheck(integrate((%e^(d*z))^u*(%e^(g+c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(d*u*z+c*v*sqrt(z)+g*v)$
 
 /* ----- (%e^(d*z+e))^u*(%e^(c*z^r+g)^v ------------------------------------- */
 
 /* Problem 395: OK */
-integrate((%e^(d*z+e))^u*(%e^(g+c*z^2))^v,z);
+integrate((%e^(d*z+e))^u*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-d^2*u^2/(4*c*v)+e*u)
                  *erf(sqrt(-c*v)*z-d*u/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 396: NEW 9-1 */
-diffcheck(integrate((%e^(d*z+e))^u*(%e^(g+c*sqrt(z)))^v,z),z,factor);
-(%e^(d*z+e))^u*(%e^(g+c*sqrt(z)))^v;
+diffcheck(integrate((%e^(d*z+e))^u*(%e^(g+c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(d*u*z+c*v*sqrt(z)+g*v+e*u)$
 
 /* ----- (%e^(b*z^r))^u*(%e^(c*z^r+g)^v ------------------------------------- */
 
@@ -2204,11 +2220,11 @@ diffcheck(integrate((%e^(b*z^r))^u*(%e^(g+c*z^r))^v,z),z,factor);
 (%e^(b*z^r))^u*(%e^(g+c*z^r))^v;
 
 /* Problem 398: OK */
-integrate((%e^(b*z^2))^u*(%e^(g+c*z^2))^v,z);
+integrate((%e^(b*z^2))^u*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v)*erf(sqrt(-c*v-b*u)*z)/(2*sqrt(-c*v-b*u));
 
 /* Problem 399: OK */
-integrate((%e^(b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z);
+integrate((%e^(b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z), domain:real;
 2*((c*v*%e^(g*v)+b*u*%e^(g*v))*sqrt(z)-%e^(g*v))*%e^(c*v*sqrt(z)+b*u*sqrt(z))
  /(c^2*v^2+2*b*c*u*v+b^2*u^2);
 
@@ -2219,11 +2235,11 @@ diffcheck(integrate((%e^(e+b*z^r))^u*(%e^(g+c*z^r))^v,z),z,factor);
 (%e^(e+b*z^r))^u*(%e^(g+c*z^r))^v;
 
 /* Problem 401: OK */
-integrate((%e^(e+b*z^2))^u*(%e^(g+c*z^2))^v,z);
+integrate((%e^(e+b*z^2))^u*(%e^(g+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v+e*u)*erf(sqrt(-c*v-b*u)*z)/(2*sqrt(-c*v-b*u));
 
 /* Problem 402: OK */
-integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z);
+integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z), domain:real;
 2*((c*v*%e^(g*v+e*u)+b*u*%e^(g*v+e*u))*sqrt(z)-%e^(g*v+e*u))
  *%e^(c*v*sqrt(z)+b*u*sqrt(z))
  /(c^2*v^2+2*b*c*u*v+b^2*u^2);
@@ -2231,7 +2247,7 @@ integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z);
 /* ----- (%e^(d*z))^u*(%e^(c*z^r+f*z)^v ------------------------------------- */
 
 /* Problem 403: OK */
-integrate((%e^(d*z))^u*(%e^(f*z+c*z^2))^v,z);
+integrate((%e^(d*z))^u*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^-((-f*v-d*u)^2/(4*c*v))
                  *erf(sqrt(-c*v)*z+(-f*v-d*u)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -2247,7 +2263,7 @@ integrate((%e^(d*z))^u*(%e^(f*z+c*sqrt(z)))^v,z);
 /* ----- (%e^(d*z+e))^u*(%e^(c*z^r+f*z)^v ----------------------------------- */
 
 /* Problem 405: OK */
-integrate((%e^(e+d*z))^u*(%e^(f*z+c*z^2))^v,z);
+integrate((%e^(e+d*z))^u*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(e*u-(-f*v-d*u)^2/(4*c*v))
                  *erf(sqrt(-c*v)*z+(-f*v-d*u)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -2259,43 +2275,44 @@ diffcheck(integrate((%e^(e+d*z))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
 /* ----- (%e^(b*z^r))^u*(%e^(c*z^r+f*z)^v ----------------------------------- */
 
 /* Problem 407: OK */
-integrate((%e^(b*z^2))^u*(%e^(f*z+c*z^2))^v,z);
+integrate((%e^(b*z^2))^u*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u)))
                  *erf(sqrt(-c*v-b*u)*z-f*v/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 408: NEW 9-1 */
-diffcheck(integrate((%e^(b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
-(%e^(b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v;
+diffcheck(integrate((%e^(b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*u*sqrt(z))$
 
 /* ----- (%e^(b*z^r+e))^u*(%e^(c*z^r+f*z)^v --------------------------------- */
 
 /* Problem 409: OK */
-integrate((%e^(e+b*z^2))^u*(%e^(f*z+c*z^2))^v,z);
+integrate((%e^(e+b*z^2))^u*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u))+e*u)
                  *erf(sqrt(-c*v-b*u)*z-f*v/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 410: NEW 9-1 */
-diffcheck(integrate((%e^(e+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,factor);
-(%e^(e+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v;
+diffcheck(integrate((%e^(e+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,factor), domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*u*sqrt(z)+e*u)$
 
 /* ----- (%e^(b*z^r+d*z))^u*(%e^(c*z^r+f*z)^v ------------------------------- */
 
 /* Problem 411: OK */
-integrate((%e^(d*z+b*z^2))^u*(%e^(f*z+c*z^2))^v,z);
+integrate((%e^(d*z+b*z^2))^u*(%e^(f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d*u)^2/(4*(-c*v-b*u)))
                  *erf(sqrt(-c*v-b*u)*z+(-f*v-d*u)/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 412: NEW 9-1 */
-diffcheck(integrate((%e^(d*z+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate((%e^(d*z+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 (%e^(b*sqrt(z)))^u*(%e^(c*sqrt(z)))^v*(%e^(d*z))^u*(%e^(f*z))^v$
 
 /* ----- (%e^(d*z))^u*(%e^(c*z^r+f*z+g)^v ----------------------------------- */
 
 /* Problem 413: OK */
-integrate((%e^(d*z))^u*(%e^(g+f*z+c*z^2))^v,z);
+integrate((%e^(d*z))^u*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(g*v-(-f*v-d*u)^2/(4*c*v))
                  *erf(sqrt(-c*v)*z+(-f*v-d*u)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -2311,7 +2328,7 @@ integrate((%e^(d*z))^u*(%e^(g+f*z+c*sqrt(z)))^v,z);
 /* ----- (%e^(d*z+e))^u*(%e^(c*z^r+f*z+g)^v --------------------------------- */
 
 /* Problem 415: OK */
-integrate((%e^(e+d*z))^u*(%e^(g+f*z+c*z^2))^v,z);
+integrate((%e^(e+d*z))^u*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(-(-f*v-d*u)^2/(4*c*v)+g*v+e*u)
                  *erf(sqrt(-c*v)*z+(-f*v-d*u)/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
@@ -2327,49 +2344,51 @@ integrate((%e^(e+d*z))^u*(%e^(g+f*z+c*sqrt(z)))^v,z);
 /* ----- (%e^(b*z^r))^u*(%e^(c*z^r+f*z+g)^v --------------------------------- */
 
 /* Problem 417: OK */
-integrate((%e^(b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z);
+integrate((%e^(b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u))+g*v)
                  *erf(sqrt(-c*v-b*u)*z-f*v/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 418: NEW 9-1 */
-diffcheck(integrate((%e^(b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,factor);
-(%e^(b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v;
+diffcheck(integrate((%e^(b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,factor),domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*u*sqrt(z)+g*v)$
 
 /* ----- (%e^(b*z^r+e))^u*(%e^(c*z^r+f*z+g)^v ------------------------------- */
 
 /* Problem 419: OK */
-integrate((%e^(e+b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z);
+integrate((%e^(e+b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u))+g*v+e*u)
                  *erf(sqrt(-c*v-b*u)*z-f*v/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 420: NEW 9-1 */
-diffcheck(integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,factor);
-(%e^(e+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v;
+diffcheck(integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,factor),domain:real;
+%e^(f*v*z+c*v*sqrt(z)+b*u*sqrt(z)+g*v+e*u)$
 
 /* ----- (%e^(b*z^r+d*z))^u*(%e^(c*z^r+f*z+g)^v ----------------------------- */
 
 /* Problem 421: OK */
-integrate((%e^(d*z+b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z);
+integrate((%e^(d*z+b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d*u)^2/(4*(-c*v-b*u))+g*v)
                  *erf(sqrt(-c*v-b*u)*z+(-f*v-d*u)/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 422: NEW 9-1 */
-diffcheck(integrate((%e^(d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate((%e^(d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 %e^(g*v)*(%e^(b*sqrt(z)))^u*(%e^(c*sqrt(z)))^v*(%e^(d*z))^u*(%e^(f*z))^v;
 
 /* ----- (%e^(b*z^r+d*z+e))^u*(%e^(c*z^r+f*z+g)^v --------------------------- */
 
 /* Problem 423: OK */
-integrate((%e^(e+d*z+b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z);
+integrate((%e^(e+d*z+b*z^2))^u*(%e^(g+f*z+c*z^2))^v,z), domain:real;
 sqrt(%pi)*%e^((-f*v-d*u)^2/(4*(-c*v-b*u))+g*v+e*u)
                  *erf(sqrt(-c*v-b*u)*z+(-f*v-d*u)/(2*sqrt(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 424: NEW 9-1 */
-diffcheck(integrate((%e^(e+d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan);
+diffcheck(integrate((%e^(e+d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radcan),
+   domain:complex;
 %e^(g*v+e*u)*(%e^(b*sqrt(z)))^u*(%e^(c*sqrt(z)))^v*(%e^(d*z))^u*(%e^(f*z))^v;
 
 /* ----- Involving rational functions of the direct function ---------------- */
@@ -2377,39 +2396,39 @@ diffcheck(integrate((%e^(e+d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z),z,radca
 /* ----- Involving 1/(a+b*%e^(c*z)) ----------------------------------------- */
 
 /* Problem 425: OK */
-integrate(1/(b*%e^(c*z)+a),z),logexpand;
+integrate(1/(b*%e^(c*z)+a),z), domain:real;
 z/a-log(b*%e^(c*z)+a)/(a*c);
 
 /* Problem 426: OK */
-integrate(1/(%e^(c*z)+1),z),logexpand;
+integrate(1/(%e^(c*z)+1),z), domain:real;
 z-log(%e^(c*z)+1)/c;
 
 /* Problem 427: OK */
-integrate(1/(1-%e^(c*z)),z),logexpand;
+integrate(1/(1-%e^(c*z)),z), domain:real;
 z-log(%e^(c*z)-1)/c;
 
 /* ----- Involving (a+b*%e^(c*z))^(-n)---------------------------------------- */
 
 /* Problem 428: OK */
-integrate(1/(b*%e^(c*z)+a)^2,z),logexpand;
+integrate(1/(b*%e^(c*z)+a)^2,z), domain:real;
 -log(b*%e^(c*z)+a)/(a^2*c)+1/(c*(a*b*%e^(c*z)+a^2))+z/a^2;
 
 /* Problem 429: OK */
-integrate(1/(%e^(c*z)+1)^2,z),logexpand;
+integrate(1/(%e^(c*z)+1)^2,z), domain:real;
 -log(%e^(c*z)+1)/c+1/(c*(%e^(c*z)+1))+z;
 
 /* Problem 430: OK */
-integrate(1/(1-%e^(c*z))^2,z),logexpand;
+integrate(1/(1-%e^(c*z))^2,z), domain:real;
 -log(%e^(c*z)-1)/c-1/(c*(%e^(c*z)-1))+z;
 
 /* Problem 431: OK */
-integrate(1/(b*%e^(c*z)+a)^3,z),logexpand;
+integrate(1/(b*%e^(c*z)+a)^3,z), domain:real;
 -log(b*%e^(c*z)+a)/(a^3*c)+(2*b*%e^(c*z)+3*a)
                            /(c*(2*a^2*b^2*%e^(2*c*z)+4*a^3*b*%e^(c*z)+2*a^4))
                           +z/a^3;
 
 /* Problem 432: OK */
-integrate(1/(b*%e^(c*z)+a)^4,z),logexpand;
+integrate(1/(b*%e^(c*z)+a)^4,z), domain:real;
 -log(b*%e^(c*z)+a)/(a^4*c)+(6*b^2*%e^(2*c*z)+15*a*b*%e^(c*z)+11*a^2)
                            /(c*(6*a^3*b^3*%e^(3*c*z)+18*a^4*b^2*%e^(2*c*z)
                                                     +18*a^5*b*%e^(c*z)+6*a^6))
@@ -2428,7 +2447,7 @@ a*c
 assume(a>0,b>0);
 [a>0,b>0];
 
-integrate(%e^z/(a+b*%e^(2*z)),z);
+integrate(%e^z/(a+b*%e^(2*z)),z), domain:real;
 atan(sqrt(b)*%e^z/sqrt(a))/(sqrt(a)*sqrt(b));
 
 forget(a>0,b>0);
@@ -2439,11 +2458,11 @@ integrate(%e^(c*z)/(b*%e^(c*z)+a),z);
 log(b*%e^(c*z)+a)/(b*c);
 
 /* Problem 438: OK */
-integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a),z),logexpand;
+integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a),z), domain:real;
 log(b*%e^(c*z)+a)*(a*B-b*A)/(a*b*c)+z*A/a;
 
 /* Problem 439: OK */
-integrate(%e^(2*c*z)/(b*%e^(c*z)+a),z),logexpand;
+integrate(%e^(2*c*z)/(b*%e^(c*z)+a),z);
 %e^(c*z)/(b*c)-a*log(b*%e^(c*z)+a)/(b^2*c);
 
 /* Problem 441: OK */
@@ -2460,7 +2479,7 @@ forget(a>0,b>0);
 assume(a>0,b>0);
 [a>0,b>0];
 
-integrate(%e^(c*z)/(b*%e^(3*c*z)+a),z);
+integrate(%e^(c*z)/(b*%e^(3*c*z)+a),z), domain:real;
 -log(b^(2/3)*%e^(2*c*z)-a^(1/3)*b^(1/3)*%e^(c*z)+a^(2/3))
  /(6*a^(2/3)*b^(1/3)*c)
  +atan((2*b^(2/3)*%e^(c*z)-a^(1/3)*b^(1/3))/(sqrt(3)*a^(1/3)*b^(1/3)))
@@ -2489,20 +2508,20 @@ integrate(%e^(d*z)/(b*%e^(c*z)+a)^2,z);
  -%e^(d*z)/(b^2*(2*c-d)*%e^(2*c*z)+a*b*(4*c-2*d)*%e^(c*z)+a^2*(2*c-d));
 
 /* Problem 448: OK */
-integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^2,z),logexpand;
-(a*B-b*A)/-(c*(a*b^2*%e^(c*z)+a^2*b))-log(b*%e^(c*z)+a)*A/(a^2*c)+z*A/a^2;
+integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^2,z), domain:real;
+(a*B-b*A)/(-c*(a*b^2*%e^(c*z)+a^2*b))-log(b*%e^(c*z)+a)*A/(a^2*c)+z*A/a^2$
 
 /* Problem 449: OK */
-integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z),logexpand;
+integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z), domain:real;
 (-a^2*B+2*b^2*%e^(c*z)*A+3*a*b*A)/(c*(2*a^2*b^3*%e^(2*c*z)
                                      +4*a^3*b^2*%e^(c*z)+2*a^4*b))
- -log(b*%e^(c*z)+a)*A/(a^3*c)+z*A/a^3;
+ -log(b*%e^(c*z)+a)*A/(a^3*c)+z*A/a^3$
 
 /* Problem 450: OK */
-integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z),logexpand;
+integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z), domain:real;
 (%e^(c*z)*(2*a^2*b*C-2*b^3*A)+a^3*C+a^2*b*B-3*a*b^2*A)
- /-(c*(2*a^2*b^4*%e^(2*c*z)+4*a^3*b^3*%e^(c*z)+2*a^4*b^2))
- -log(b*%e^(c*z)+a)*A/(a^3*c)+z*A/a^3;
+ /(-c*(2*a^2*b^4*%e^(2*c*z)+4*a^3*b^3*%e^(c*z)+2*a^4*b^2))
+ -log(b*%e^(c*z)+a)*A/(a^3*c)+z*A/a^3$
 
 /* ----- Involving 1/(a*%e^(2*d*z)+b*%e^(d*z)+c)----------------------------- */
 
@@ -2510,11 +2529,12 @@ integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z),logexpand;
 assume(4*a*c-b^2>0);
 [4*a*c > b^2];
 
-integrate(1/(c+b*%e^(d*z)+a*%e^(2*d*z)),z),logexpand;
+integrate(1/(c+b*%e^(d*z)+a*%e^(2*d*z)),z), domain:real;
 -log(a*%e^(2*d*z)+b*%e^(d*z)+c)/(2*c*d)-b
                                         *atan(
                                          (2*a*%e^(d*z)+b)/sqrt(4*a*c-b^2))
                                         /(c*sqrt(4*a*c-b^2)*d)+z/c$
+
 forget(4*a*c-b^2>0);
 [4*a*c > b^2];
 
@@ -2550,8 +2570,8 @@ integrate((%e^(5*z)+%e^z)/(%e^(3*z)-%e^(2*z)+%e^z-1),z);
 -log(%e^(2*z)+1)/2-atan(%e^z)+log(%e^z-1)+(%e^(2*z)+2*%e^z)/2;
 
 /* Problem 460: OK */
-integrate(1/(%e^(z/2)+%e^(z/3)+%e^(z/6)+1),z),logexpand;
--3*log(%e^(z/3)+1)/2-3*log(%e^(z/6)+1)-3*atan(%e^(z/6))+z;
+integrate(1/(%e^(z/2)+%e^(z/3)+%e^(z/6)+1),z), domain:real;
+-3*log(%e^(z/3)+1)/2-3*log(%e^(z/6)+1)-3*atan(%e^(z/6))+z$
 
 /* ----- Involving algebraic functions of the direct function --------------- */
 
@@ -2778,12 +2798,12 @@ integrate(((b*%e^(c*z)+a)^v)^p*%e^(d*z),z);
 'integrate(((b*%e^(c*z)+a)^v)^p*%e^(d*z),z);
 
 /* Problem 505: OK */
-integrate(((b*%e^(c*z)+a)^5)^(1/2)*%e^(c*z),z),logexpand;
-2*%e^(c*z)*(b*%e^(c*z)+a)^(5/2)/(7*c)+2*a*(b*%e^(c*z)+a)^(5/2)/(7*b*c);
+integrate(((b*%e^(c*z)+a)^5)^(1/2)*%e^(c*z),z),domain:real;
+2*(b*%e^(c*z)+a)^(7/2)/(7*b*c)$
 
 /* Problem 506: OK */
-integrate(((b*%e^(c*z)+a)^3)^(1/2)*%e^(c*z),z),logexpand;
-2*%e^(c*z)*(b*%e^(c*z)+a)^(3/2)/(5*c)+2*a*(b*%e^(c*z)+a)^(3/2)/(5*b*c);
+integrate(((b*%e^(c*z)+a)^3)^(1/2)*%e^(c*z),z),domain:real;
+2*(b*%e^(c*z)+a)^(5/2)/(5*b*c)$
 
 /* Problem 507: OK */
 integrate((b*%e^(c*z)+a)^(-3/2)*%e^(c*z),z);
@@ -2838,23 +2858,23 @@ assume(a>0,e>0,(a*e-b*d)>0);
 integrate((b*%e^(c*z)+a)^(1/2)/(e*%e^(c*z)+d),z);
 sqrt(a)*log((2*sqrt(b*%e^(c*z)+a)-2*sqrt(a))/(2*sqrt(b*%e^(c*z)+a)+2*sqrt(a)))
  /(c*d)
- -sqrt(a*e-b*d)*log((2*e*sqrt(b*%e^(c*z)+a)-2*sqrt(e)*sqrt(a*e-b*d))
-                     /(2*e*sqrt(b*%e^(c*z)+a)+2*sqrt(e)*sqrt(a*e-b*d)))
-  /(c*d*sqrt(e));
+ -(a*e-b*d)*log((2*e*sqrt(b*%e^(c*z)+a)-2*sqrt(e*(a*e-b*d)))
+                 /(2*e*sqrt(b*%e^(c*z)+a)+2*sqrt(e*(a*e-b*d))))
+  /(c*d*sqrt(e*(a*e-b*d)))$
 
 /* Problem 520: NEW 08-2010 */
 integrate((b*%e^(c*z)+a)^((-1)/2)/(e*%e^(c*z)+d),z);
 log((2*sqrt(b*%e^(c*z)+a)-2*sqrt(a))/(2*sqrt(b*%e^(c*z)+a)+2*sqrt(a)))
  /(sqrt(a)*c*d)
- -sqrt(e)*log((2*e*sqrt(b*%e^(c*z)+a)-2*sqrt(e)*sqrt(a*e-b*d))
-               /(2*e*sqrt(b*%e^(c*z)+a)+2*sqrt(e)*sqrt(a*e-b*d)))
-  /(c*d*sqrt(a*e-b*d));
+ -e*log((2*e*sqrt(b*%e^(c*z)+a)-2*sqrt(e*(a*e-b*d)))
+         /(2*e*sqrt(b*%e^(c*z)+a)+2*sqrt(e*(a*e-b*d))))
+  /(c*d*sqrt(e*(a*e-b*d)))$
 
 /* Problem 521: NEW 08-2010 */
 integrate(%e^(c*z)*(b*%e^(c*z)+a)^((-1)/2)/(e*%e^(c*z)+d),z);
-log((2*e*sqrt(b*%e^(c*z)+a)-2*sqrt(e)*sqrt(a*e-b*d))
-     /(2*e*sqrt(b*%e^(c*z)+a)+2*sqrt(e)*sqrt(a*e-b*d)))
- /(c*sqrt(e)*sqrt(a*e-b*d));
+log((2*e*sqrt(b*%e^(c*z)+a)-2*sqrt(e*(a*e-b*d)))
+     /(2*e*sqrt(b*%e^(c*z)+a)+2*sqrt(e*(a*e-b*d))))
+ /(c*sqrt(e*(a*e-b*d)))$
 
 forget(a>0,e>0,(a*e-b*d)>0);
 [a > 0,e>0,a*e>b*d];
@@ -2870,25 +2890,25 @@ assume(a>0,b>0);
 
 /* Problem 525: NEW 08-2010 */
 integrate((b*%e^(2*c*z)+a)^(5/2)*%e^(c*z),z);
-5*a^3*asinh(sqrt(b)*%e^(c*z)/sqrt(a))/(16*sqrt(b)*c)
+5*a^3*asinh(2*b*%e^(c*z)/sqrt(4*a*b))/(16*sqrt(b)*c)
  +%e^(c*z)*(b*%e^(2*c*z)+a)^(5/2)/(6*c)
  +5*a*%e^(c*z)*(b*%e^(2*c*z)+a)^(3/2)/(24*c)
- +5*a^2*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(16*c);
+ +5*a^2*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(16*c)$
 
 /* Problem 526: NEW 08-2010 */
 integrate((b*%e^(2*c*z)+a)^(3/2)*%e^(c*z),z);
-3*a^2*asinh(sqrt(b)*%e^(c*z)/sqrt(a))/(8*sqrt(b)*c)
+3*a^2*asinh(2*b*%e^(c*z)/sqrt(4*a*b))/(8*sqrt(b)*c)
  +%e^(c*z)*(b*%e^(2*c*z)+a)^(3/2)/(4*c)
- +3*a*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(8*c);
+ +3*a*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(8*c)$
 
 /* Problem 527: NEW 08-2010 */
 integrate((b*%e^(2*c*z)+a)^(1/2)*%e^(c*z),z);
-a*asinh(sqrt(b)*%e^(c*z)/sqrt(a))/(2*sqrt(b)*c)
- +%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(2*c);
+a*asinh(2*b*%e^(c*z)/sqrt(4*a*b))/(2*sqrt(b)*c)
+ +%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(2*c)$
 
 /* Problem 528: NEW 08-2010 */
 integrate((b*%e^(2*c*z)+a)^((-1)/2)*%e^(c*z),z);
-asinh(sqrt(b)*%e^(c*z)/sqrt(a))/(sqrt(b)*c);
+asinh(2*b*%e^(c*z)/sqrt(4*a*b))/(sqrt(b)*c)$
 
 /* Problem 529: NEW 08-2010 */
 integrate((b*%e^(2*c*z)+a)^((-3)/2)*%e^(c*z),z);
@@ -2912,17 +2932,17 @@ assume(a>0,b>0);
 [a>0,b>0];
 
 /* Problem 534: NEW 08-2010 */
-integrate(((b*%e^(2*c*z)+a)^5)^(1/2)*%e^(c*z),z),radexpand:all;
+integrate(((b*%e^(2*c*z)+a)^5)^(1/2)*%e^(c*z),z),domain:real;
 5*a^3*asinh(sqrt(b)*%e^(c*z)/sqrt(a))/(16*sqrt(b)*c)
  +%e^(c*z)*(b*%e^(2*c*z)+a)^(5/2)/(6*c)
  +5*a*%e^(c*z)*(b*%e^(2*c*z)+a)^(3/2)/(24*c)
- +5*a^2*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(16*c);
+ +5*a^2*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(16*c)$
 
 /* Problem 535: NEW 08-2010 */
-integrate(((b*%e^(2*c*z)+a)^3)^(1/2)*%e^(c*z),z),radexpand:all;
+integrate(((b*%e^(2*c*z)+a)^3)^(1/2)*%e^(c*z),z),domain:real;
 3*a^2*asinh(sqrt(b)*%e^(c*z)/sqrt(a))/(8*sqrt(b)*c)
  +%e^(c*z)*(b*%e^(2*c*z)+a)^(3/2)/(4*c)
- +3*a*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(8*c);
+ +3*a*%e^(c*z)*sqrt(b*%e^(2*c*z)+a)/(8*c)$
 
 forget(a>0,b>0);
 [a>0,b>0];
@@ -3010,12 +3030,12 @@ assume(a>0,b>0,c>0,d>0);
 /* Problem 554: NEW 08-2010 */
 
 integrate(sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c)),z);
-sqrt(a)*log((2*c*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))-2*sqrt(a)*sqrt(c))
-             /(2*c*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))+2*sqrt(a)*sqrt(c)))
- /(sqrt(c)*e)
- -sqrt(b)*log((2*d*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))-2*sqrt(b)*sqrt(d))
-               /(2*d*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))+2*sqrt(b)*sqrt(d)))
-  /(sqrt(d)*e);
+a*log((2*c*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))-2*sqrt(a*c))
+       /(2*c*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))+2*sqrt(a*c)))
+ /(sqrt(a*c)*e)
+ -b*log((2*d*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))-2*sqrt(b*d))
+         /(2*d*sqrt((b*%e^(e*z)+a)/(d*%e^(e*z)+c))+2*sqrt(b*d)))
+  /(sqrt(b*d)*e)$
 
 assume(a*d>b*c);
 [a*d>b*c];
@@ -3058,7 +3078,7 @@ diffcheck(integrate(z^n*(%e^(a*z))^u,z),z,factor);
 z^n*(%e^(a*z))^u;
 
 /* Problem 563: OK */
-integrate(z*(%e^(a*z))^u,z);
+integrate(z*(%e^(a*z))^u,z), domain:real;
 (a*u*z-1)*%e^(a*u*z)/(a^2*u^2);
 
 /* Problem 564: NEW 2-1*/
@@ -3084,7 +3104,7 @@ integrate(z^n*(%e^(a*z+b))^u,z);
          *(%e^(a*z+b))^u;
 
 /* Problem 568: OK */
-integrate(z*(%e^(a*z+b))^u,z);
+integrate(z*(%e^(a*z+b))^u,z), domain:real;
 (a*u*%e^(b*u)*z-%e^(b*u))*%e^(a*u*z)/(a^2*u^2);
 
 /* Problem 569: NEW 2-1 */
@@ -6010,30 +6030,33 @@ expand(
 
 /* Problem 782: OK */
 integrate(z/(b*%e^(c*z)+a),z);
-z^2/(2*a)-(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(a*c^2);
+log(%e^(c*z))^2/(2*a*c^2)-(log(%e^(c*z))*log(b*%e^(c*z)/a+1)
+                          +li[2](-b*%e^(c*z)/a))
+                          /(a*c^2)$
 
 /* Problem 783: OK */
 integrate(z^2/(b*%e^(c*z)+a),z);
-2*(-c^2*z^2*log(b*%e^(c*z)/a+1)/2+li[3](-b*%e^(c*z)/a)
-                                         -c*z*li[2](-b*%e^(c*z)/a))
-         /(a*c^3)
-         +z^3/(3*a);
+2*(-log(%e^(c*z))^2*log(b*%e^(c*z)/a+1)/2
+  +li[3](-b*%e^(c*z)/a)-log(%e^(c*z))*li[2](-b*%e^(c*z)/a))
+ /(a*c^3)
+ +log(%e^(c*z))^3/(3*a*c^3)$
 
 /* Problem 784: OK */
 integrate(z^3/(b*%e^(c*z)+a),z);
-z^4/(4*a)-6*(c^3*z^3*log(b*%e^(c*z)/a+1)/6
-                    +li[4](-b*%e^(c*z)/a)-c*z*li[3](-b*%e^(c*z)/a)
-                    +c^2*z^2*li[2](-b*%e^(c*z)/a)/2)
-                  /(a*c^4);
+log(%e^(c*z))^4/(4*a*c^4)-6*(log(%e^(c*z))^3*log(b*%e^(c*z)/a+1)/6
+                            +li[4](-b*%e^(c*z)/a)
+                            -log(%e^(c*z))*li[3](-b*%e^(c*z)/a)
+                            +log(%e^(c*z))^2*li[2](-b*%e^(c*z)/a)/2)
+                          /(a*c^4)$
 
 /* Problem 785: OK */
 integrate(z^4/(b*%e^(c*z)+a),z);
-24*(-c^4*z^4*log(b*%e^(c*z)/a+1)/24+li[5](-b*%e^(c*z)/a)
-                                           -c*z*li[4](-b*%e^(c*z)/a)
-                                           +c^2*z^2*li[3](-b*%e^(c*z)/a)/2
-                                           -c^3*z^3*li[2](-b*%e^(c*z)/a)/6)
-         /(a*c^5)
-         +z^5/(5*a);
+24*(-log(%e^(c*z))^4*log(b*%e^(c*z)/a+1)/24
+   +li[5](-b*%e^(c*z)/a)-log(%e^(c*z))*li[4](-b*%e^(c*z)/a)
+   +log(%e^(c*z))^2*li[3](-b*%e^(c*z)/a)/2
+   -log(%e^(c*z))^3*li[2](-b*%e^(c*z)/a)/6)
+ /(a*c^5)
+ +log(%e^(c*z))^5/(5*a*c^5)$
 
 /* Problem 786: NOUN */
 integrate(z^n/(1-%e^(c*z)),z);
@@ -6043,46 +6066,54 @@ integrate(z^n/(1-%e^(c*z)),z);
 
 /* Problem 787: OK */
 expand(integrate(z/(b*c^(d*z)+a)^2,z));
--z*log(b*%e^(log(c)*d*z)/a+1)/(a^2*log(c)*d)
+-log(%e^(log(c)*d*z))*log(b*%e^(log(c)*d*z)/a+1)/(a^2*log(c)^2*d^2)
  +log(b*%e^(log(c)*d*z)+a)/(a^2*log(c)^2*d^2)
  -li[2](-b*%e^(log(c)*d*z)/a)/(a^2*log(c)^2*d^2)
- +z/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)+z^2/(2*a^2)-z/(a^2*log(c)*d);
+ +log(%e^(log(c)*d*z))^2/(2*a^2*log(c)^2*d^2)
+ -log(%e^(log(c)*d*z))/(a^2*log(c)^2*d^2)
+ +z/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)$
 
 /* Problem 788: OK */
 integrate(z^2/(b*c^(d*z)+a)^2,z);
-2*(-log(c)^2*d^2*z^2*log(b*%e^(log(c)*d*z)/a+1)/2
-          +li[3](-b*%e^(log(c)*d*z)/a)-log(c)*d*z*li[2](-b*%e^(log(c)*d*z)/a))
-         /(a^2*log(c)^3*d^3)
-         +2*(log(c)*d*z*log(b*%e^(log(c)*d*z)/a+1)
-            +li[2](-b*%e^(log(c)*d*z)/a))
-          /(a^2*log(c)^3*d^3)+z^2/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)
-         +(log(c)^3*d^3*z^3-3*log(c)^2*d^2*z^2)/(3*a^2*log(c)^3*d^3);
+2*(-log(%e^(log(c)*d*z))^2*log(b*%e^(log(c)*d*z)/a+1)/2
+  +li[3](-b*%e^(log(c)*d*z)/a)
+  -log(%e^(log(c)*d*z))*li[2](-b*%e^(log(c)*d*z)/a))
+ /(a^2*log(c)^3*d^3)
+ +2*(log(%e^(log(c)*d*z))*log(b*%e^(log(c)*d*z)/a+1)
+    +li[2](-b*%e^(log(c)*d*z)/a))
+  /(a^2*log(c)^3*d^3)
+ +(log(%e^(log(c)*d*z))^3-3*log(%e^(log(c)*d*z))^2)/(3*a^2*log(c)^3*d^3)
+ +z^2/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)$
 
 /* Problem 789: OK */
 integrate(z^3/(b*c^(d*z)+a)^2,z);
--6*(log(c)^3*d^3*z^3*log(b*%e^(log(c)*d*z)/a+1)/6
-           +li[4](-b*%e^(log(c)*d*z)/a)-log(c)*d*z*li[3](-b*%e^(log(c)*d*z)/a)
-           +log(c)^2*d^2*z^2*li[2](-b*%e^(log(c)*d*z)/a)/2)
-         /(a^2*log(c)^4*d^4)
-         -6*(-log(c)^2*d^2*z^2*log(b*%e^(log(c)*d*z)/a+1)/2
-            +li[3](-b*%e^(log(c)*d*z)/a)
-            -log(c)*d*z*li[2](-b*%e^(log(c)*d*z)/a))
-          /(a^2*log(c)^4*d^4)+z^3/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)
-         +(log(c)^4*d^4*z^4-4*log(c)^3*d^3*z^3)/(4*a^2*log(c)^4*d^4);
+-6*(log(%e^(log(c)*d*z))^3*log(b*%e^(log(c)*d*z)/a+1)/6
+   +li[4](-b*%e^(log(c)*d*z)/a)
+   -log(%e^(log(c)*d*z))*li[3](-b*%e^(log(c)*d*z)/a)
+   +log(%e^(log(c)*d*z))^2*li[2](-b*%e^(log(c)*d*z)/a)/2)
+ /(a^2*log(c)^4*d^4)
+ -6*(-log(%e^(log(c)*d*z))^2*log(b*%e^(log(c)*d*z)/a+1)/2
+    +li[3](-b*%e^(log(c)*d*z)/a)
+    -log(%e^(log(c)*d*z))*li[2](-b*%e^(log(c)*d*z)/a))
+  /(a^2*log(c)^4*d^4)
+ +(log(%e^(log(c)*d*z))^4-4*log(%e^(log(c)*d*z))^3)/(4*a^2*log(c)^4*d^4)
+ +z^3/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)$
 
 /* Problem 790: OK */
 integrate(z^4/(b*c^(d*z)+a)^2,z);
-24*(-log(c)^4*d^4*z^4*log(b*%e^(log(c)*d*z)/a+1)/24
-           +li[5](-b*%e^(log(c)*d*z)/a)-log(c)*d*z*li[4](-b*%e^(log(c)*d*z)/a)
-           +log(c)^2*d^2*z^2*li[3](-b*%e^(log(c)*d*z)/a)/2
-           -log(c)^3*d^3*z^3*li[2](-b*%e^(log(c)*d*z)/a)/6)
-         /(a^2*log(c)^5*d^5)
-         +24*(log(c)^3*d^3*z^3*log(b*%e^(log(c)*d*z)/a+1)/6
-             +li[4](-b*%e^(log(c)*d*z)/a)
-             -log(c)*d*z*li[3](-b*%e^(log(c)*d*z)/a)
-             +log(c)^2*d^2*z^2*li[2](-b*%e^(log(c)*d*z)/a)/2)
-          /(a^2*log(c)^5*d^5)+z^4/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)
-         +(log(c)^5*d^5*z^5-5*log(c)^4*d^4*z^4)/(5*a^2*log(c)^5*d^5);
+24*(-log(%e^(log(c)*d*z))^4*log(b*%e^(log(c)*d*z)/a+1)/24
+   +li[5](-b*%e^(log(c)*d*z)/a)
+   -log(%e^(log(c)*d*z))*li[4](-b*%e^(log(c)*d*z)/a)
+   +log(%e^(log(c)*d*z))^2*li[3](-b*%e^(log(c)*d*z)/a)/2
+   -log(%e^(log(c)*d*z))^3*li[2](-b*%e^(log(c)*d*z)/a)/6)
+ /(a^2*log(c)^5*d^5)
+ +24*(log(%e^(log(c)*d*z))^3*log(b*%e^(log(c)*d*z)/a+1)/6
+     +li[4](-b*%e^(log(c)*d*z)/a)
+     -log(%e^(log(c)*d*z))*li[3](-b*%e^(log(c)*d*z)/a)
+     +log(%e^(log(c)*d*z))^2*li[2](-b*%e^(log(c)*d*z)/a)/2)
+  /(a^2*log(c)^5*d^5)
+ +(log(%e^(log(c)*d*z))^5-5*log(%e^(log(c)*d*z))^4)/(5*a^2*log(c)^5*d^5)
+ +z^4/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)$
 
 /* ----- Involving z^n*%e^(c*z)/(a+b*%e^(c*z)) ------------------------------ */
 
@@ -6105,18 +6136,19 @@ integrate(z*%e^(d*z)/(b*%e^(c*z)+a),z);
 
 /* Problem 793: OK */
 integrate(z*%e^(2*c*z)/(b*%e^(c*z)+a),z);
--a*(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(b^2*c^2)
-         +((2*b*c*z-2*b)*%e^(c*z)-a*c^2*z^2)/(2*b^2*c^2)+a*z^2/(2*b^2);
+-a*(log(%e^(c*z))*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(b^2*c^2)
+ +a*log(%e^(c*z))^2/(2*b^2*c^2)+((2*b*c*z-2*b)*%e^(c*z)-a*c^2*z^2)/(2*b^2*c^2)$
 
 /* Problem 794: OK */
 integrate(z*%e^-(2*c*z)/(b*%e^(c*z)+a),z);
--b^2*(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(a^3*c^2)
-         +((4*b*c*z+4*b)*%e^-(c*z)+(-2*a*c*z-a)*%e^-(2*c*z))/(4*a^2*c^2)
-         +b^2*z^2/(2*a^3);
+-b^2*(log(%e^(c*z))*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(a^3*c^2)
+ +b^2*log(%e^(c*z))^2/(2*a^3*c^2)
+ +((4*b*c*z+4*b)*%e^-(c*z)+(-2*a*c*z-a)*%e^-(2*c*z))/(4*a^2*c^2)$
 
 /* Problem 795: OK */
 integrate(z*%e^(c*z)/(b*%e^(c*z)+a),z);
-(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(b*c^2);
+(log(%e^(c*z))*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(b*c^2)
+ -log(%e^(c*z))^2/(2*b*c^2)+z^2/(2*b)$
 
 /* Problem 796: NOUN */
 integrate(z^2*%e^(f*z)/(b*c^(d*z)+a),z);
@@ -6134,9 +6166,11 @@ integrate(z^2*%e^(f*z)/(b*c^(d*z)+a),z);
 
 /* Problem 797: OK */
 integrate(z^2*%e^(c*z)/(b*%e^(c*z)+a),z);
--2*(-c^2*z^2*log(b*%e^(c*z)/a+1)/2+li[3](-b*%e^(c*z)/a)
-                                          -c*z*li[2](-b*%e^(c*z)/a))
-         /(b*c^3);
+-2*(-log(%e^(c*z))^2*log(b*%e^(c*z)/a+1)/2
+   +li[3](-b*%e^(c*z)/a)-log(%e^(c*z))*li[2](-b*%e^(c*z)/a))
+ /(b*c^3)
+ -log(%e^(c*z))^3/(3*b*c^3)+z^3/(3*b)$
+
 
 /* Problem 798: NOUN */
 integrate(z^3*%e^(f*z)/(b*c^(d*z)+a),z);
@@ -6161,19 +6195,21 @@ integrate(z^3*%e^(f*z)/(b*c^(d*z)+a),z);
 
 /* Problem 799: OK */
 integrate(z^3*%e^(c*z)/(b*%e^(c*z)+a),z);
-6*(c^3*z^3*log(b*%e^(c*z)/a+1)/6+li[4](-b*%e^(c*z)/a)
-                                        -c*z*li[3](-b*%e^(c*z)/a)
-                                        +c^2*z^2*li[2](-b*%e^(c*z)/a)/2)
-         /(b*c^4);
+6*(log(%e^(c*z))^3*log(b*%e^(c*z)/a+1)/6
+  +li[4](-b*%e^(c*z)/a)-log(%e^(c*z))*li[3](-b*%e^(c*z)/a)
+  +log(%e^(c*z))^2*li[2](-b*%e^(c*z)/a)/2)
+ /(b*c^4)
+ -log(%e^(c*z))^4/(4*b*c^4)+z^4/(4*b)$
 
 /* Problem 800: OK */
 integrate(z^4*%e^(c*z)/(b*%e^(c*z)+a),z);
--24*(-c^4*z^4*log(b*%e^(c*z)/a+1)/24+li[5](-b*%e^(c*z)/a)
-                                            -c*z*li[4](-b*%e^(c*z)/a)
-                                            +c^2*z^2*li[3](-b*%e^(c*z)/a)/2
-                                            -c^3*z^3*li[2](-b*%e^(c*z)/a)/6)
-         /(b*c^5);
-         
+-24*(-log(%e^(c*z))^4*log(b*%e^(c*z)/a+1)/24
+    +li[5](-b*%e^(c*z)/a)-log(%e^(c*z))*li[4](-b*%e^(c*z)/a)
+    +log(%e^(c*z))^2*li[3](-b*%e^(c*z)/a)/2
+    -log(%e^(c*z))^3*li[2](-b*%e^(c*z)/a)/6)
+ /(b*c^5)
+ -log(%e^(c*z))^5/(5*b*c^5)+z^5/(5*b)$
+
 /* ---- Involving z^n/(a*%e^(2*d*z)+b*%e^(d*z)+c) --------------------------- */
 
 assume(4*a*c>b^2);

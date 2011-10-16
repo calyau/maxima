@@ -1,0 +1,179 @@
+@menu
+* Introduction to simplex::
+* Functions and Variables for simplex::
+@end menu
+
+@node Introduction to simplex, Functions and Variables for simplex, simplex, simplex
+@section Introduction to simplex
+
+@code{simplex}はシンプレックスアルゴリズムを使った線形最適化のパッケージです。
+
+例:
+
+@c ===beg===
+@c load("simplex")$
+@c minimize_lp(x+y, [3*x+2*y>2, x+4*y>3]);
+@c ===end===
+@example
+(%i1) load("simplex")$
+(%i2) minimize_lp(x+y, [3*x+2*y>2, x+4*y>3]);
+                  9        7       1
+(%o2)            [--, [y = --, x = -]]
+                  10       10      5
+@end example
+
+@opencatbox
+@category{Numerical methods} @category{Optimization} @category{Share packages} @category{Package simplex} 
+@closecatbox
+
+@node Functions and Variables for simplex,  , Introduction to simplex, simplex
+@section Functions and Variables for simplex
+
+@defvr {オプション変数} epsilon_lp
+デフォルト値: @code{10^-8}
+
+@code{linear_program}の数値計算で使われるイプシロン。
+
+以下も参照してください: @code{linear_program}
+
+@opencatbox
+@category{Package simplex}
+@closecatbox
+
+@end defvr
+
+@deffn {関数} linear_program (@var{A}, @var{b}, @var{c})
+
+@code{linear_program}は
+シンプレックスアルゴリズムの実装です。
+@code{linear_program(A, b, c)}は、
+@code{A.x = b}かつ@code{x >= 0}を満たすベクトルの中で@code{c.x}が可能な最小となる
+ベクトル@var{x}を計算します。
+引数@var{A}は行列で、引数@var{b}と@var{c}はリストです。
+
+@code{linear_program}は、
+最小化ベクトル@var{x}と最小値@code{c.x}を含む
+リストを返します。
+もし問題が有界でないなら、
+"Problem not bounded!"を返し、
+もし問題が実現可能でないなら、
+"Problem not feasible!"を返します。
+
+この関数を使うためには、最初に@code{load(simplex);}で@code{simplex}パッケージをロードしてください。
+
+例:
+
+@c ===beg===
+@c A: matrix([1,1,-1,0], [2,-3,0,-1], [4,-5,0,0])$
+@c b: [1,1,6]$
+@c c: [1,-2,0,0]$
+@c linear_program(A, b, c);
+@c ===end===
+@example
+(%i2) A: matrix([1,1,-1,0], [2,-3,0,-1], [4,-5,0,0])$
+(%i3) b: [1,1,6]$
+(%i4) c: [1,-2,0,0]$
+(%i5) linear_program(A, b, c);
+                   13     19        3
+(%o5)            [[--, 4, --, 0], - -]
+                   2      2         2
+@end example
+
+以下も参照してください: @code{minimize_lp}, @code{scale_lp}, @code{epsilon_lp}
+
+@opencatbox
+@category{Package simplex} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} maximize_lp (@var{obj}, @var{cond}, [@var{pos}])
+
+いくつかの線形制約@var{cond}に従う線形目標関数@var{obj}を最大化します。
+引数と戻り値の詳細な記述に関しては、
+@code{minimize_lp}を参照してください。
+
+
+以下も参照してください: @code{minimize_lp}.
+
+@opencatbox
+@category{Package simplex} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} minimize_lp (@var{obj}, @var{cond}, [@var{pos}])
+
+いくつかの線形制約@var{cond}に従う線形目標関数@var{obj}を最小化します。
+@var{cond}は線形等式や不等式のリストです。
+厳密な不等式では、@code{>}は@code{>=}に、
+@code{<}は@code{<=}に置き換えられます。
+オプションの引数@var{pos}は
+正と仮定される決定変数のリストです。
+
+もし最小が存在するなら、
+@code{minimize_lp}は
+目標関数の最小値と最小が得られる決定変数値のリスト
+を含むリストです。
+もし問題が有界でないなら、
+@code{minimize_lp}は"Problem not bounded!"を返し、
+もし問題が実現可能でないなら、
+"Ploblem not feasible!"を返します。
+
+決定変数はデフォルトでは非負とは仮定されません。
+もし決定変数すべてが正なら、
+@code{nonegative_lp}を@code{true}に設定してください。
+もし決定変数のいくつかだけが正なら、
+オプション引数@var{pos}の中でそれらをリストしてください。
+ (これは制約を足すより効率的だということに注意してください。)
+
+@code{minimize_lp}は
+Maximaの@code{linear_program}関数で実装された
+シンプレックスアルゴリズムを使います。
+
+この関数を使うためには、最初に@code{load(simplex);}で
+@code{simplex}パッケージをロードしてください。
+
+例:
+
+@c ===beg===
+@c minimize_lp(x+y, [3*x+y=0, x+2*y>2]);
+@c minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonegative_lp=true;
+@c minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonegative_lp=true;
+@c minimize_lp(x+y, [3*x+y>0]);
+@c ===end===
+@example
+(%i1) minimize_lp(x+y, [3*x+y=0, x+2*y>2]);
+                      4       6        2
+(%o1)                [-, [y = -, x = - -]]
+                      5       5        5
+(%i2) minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonegative_lp=true;
+(%o2)                [1, [y = 1, x = 0]]
+(%i3) minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonegative_lp=true;
+(%o3)                Problem not feasible!
+(%i4) minimize_lp(x+y, [3*x+y>0]);
+(%o4)                Problem not bounded!
+@end example
+
+
+いかも参照してください: @code{maximize_lp}, @code{nonegative_lp}, @code{epsilon_lp}。
+
+@opencatbox
+@category{Package simplex} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@defvr {オプション変数} nonegative_lp
+デフォルト値: @code{false}
+
+もし@code{nonegative_lp}がtrueなら、
+@code{minimize_lp}と@code{maximize_lp}の決定変数すべては正と仮定されます。
+
+以下も参照してください: @code{minimize_lp}。
+
+@opencatbox
+@category{Package simplex}
+@closecatbox
+
+@end defvr

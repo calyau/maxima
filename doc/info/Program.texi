@@ -1,10 +1,161 @@
 @menu
-* Introduction to Program Flow::  
-* Functions and Variables for Program Flow::  
+* Lisp and Maxima::
+* Garbage Collection::
+* Introduction to Program Flow::
+* Functions and Variables for Program Flow::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Program Flow, Functions and Variables for Program Flow, Program Flow, Program Flow
+@node Lisp and Maxima, Garbage Collection, Program Flow, Program Flow
+@section Lisp and Maxima
+@c -----------------------------------------------------------------------------
+
+Maxima is written in Lisp, and it is easy to access Lisp functions and variables
+from Maxima and vice versa.  Lisp and Maxima symbols are distinguished by a
+naming convention.  A Lisp symbol which begins with a dollar sign @code{$}
+corresponds to a Maxima symbol without the dollar sign.
+
+@c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
+@c This includes special Maxima variables such as @code{%} and input and output
+@c labels, which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
+
+A Maxima symbol which begins with a question mark @code{?} corresponds to a Lisp
+symbol without the question mark.  For example, the Maxima symbol @code{foo}
+corresponds to the Lisp symbol @code{$FOO}, while the Maxima symbol @code{?foo}
+corresponds to the Lisp symbol @code{FOO}.  Note that @code{?foo} is written
+without a space between @code{?} and @code{foo}; otherwise it might be mistaken
+for @code{describe ("foo")}.
+
+Hyphen @code{-}, asterisk @code{*}, or other special characters in Lisp symbols
+must be escaped by backslash @code{\} where they appear in Maxima code.  For
+example, the Lisp identifier @code{*foo-bar*} is written @code{?\*foo\-bar\*}
+in Maxima.
+
+Lisp code may be executed from within a Maxima session.  A single line of Lisp
+(containing one or more forms) may be executed by the special command
+@code{:lisp}.  For example,
+
+@example
+(%i1) :lisp (foo $x $y)
+@end example
+
+@noindent
+calls the Lisp function @code{foo} with Maxima variables @code{x} and @code{y}
+as arguments.  The @code{:lisp} construct can appear at the interactive prompt
+or in a file processed by @mref{batch} or @mrefcomma{demo} but not in a file
+processed by @mrefcomma{load} @mrefcomma{batchload}@w{}
+@mrefcomma{translate_file} or @mrefdot{compile_file}
+
+The function @mref{to_lisp} opens an interactive Lisp session.
+Entering @code{(to-maxima)} closes the Lisp session and returns to Maxima.
+@c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
+@c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
+@c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
+@c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
+
+Lisp functions and variables which are to be visible in Maxima as functions and
+variables with ordinary names (no special punctuation) must have Lisp names
+beginning with the dollar sign @code{$}.
+
+Maxima is case-sensitive, distinguishing between lowercase and uppercase letters
+in identifiers.  There are some rules governing the translation of names between
+Lisp and Maxima.
+
+@enumerate
+@item
+A Lisp identifier not enclosed in vertical bars corresponds to a Maxima
+identifier in lowercase.  Whether the Lisp identifier is uppercase, lowercase,
+or mixed case, is ignored.  E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo}
+all correspond to Maxima @code{foo}.  But this is because @code{$foo},
+@code{$FOO} and @code{$Foo} are converted by the Lisp reader by default to the
+Lisp symbol @code{$FOO}.
+@item
+A Lisp identifier which is all uppercase or all lowercase and enclosed in
+vertical bars corresponds to a Maxima identifier with case reversed.  That is,
+uppercase is changed to lowercase and lowercase to uppercase.  E.g., Lisp
+@code{|$FOO|} and @code{|$foo|} correspond to Maxima @code{foo} and @code{FOO},
+respectively.
+@item
+A Lisp identifier which is mixed uppercase and lowercase and enclosed in
+vertical bars corresponds to a Maxima identifier with the same case.  E.g.,
+Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
+@end enumerate
+
+The @code{#$} Lisp macro allows the use of Maxima expressions in Lisp code.
+@code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima
+expression @var{expr}.
+
+@example
+(msetq $foo #$[x, y]$)
+@end example
+
+@noindent
+This has the same effect as entering
+
+@example
+(%i1) foo: [x, y];
+@end example
+
+@noindent
+The Lisp function @code{displa} prints an expression in Maxima format.
+
+@example
+(%i1) :lisp #$[x, y, z]$ 
+((MLIST SIMP) $X $Y $Z)
+(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
+[x, y, z]
+NIL
+@end example
+
+Functions defined in Maxima are not ordinary Lisp functions.  The Lisp function
+@code{mfuncall} calls a Maxima function.  For example:
+
+@example
+(%i1) foo(x,y) := x*y$
+(%i2) :lisp (mfuncall '$foo 'a 'b)
+((MTIMES SIMP) A B)
+@end example
+
+Some Lisp functions are shadowed in the Maxima package, namely the following.
+
+@verbatim
+   complement     continue      //
+   float          functionp     array
+   exp            listen        signum
+   atan           asin          acos
+   asinh          acosh         atanh
+   tanh           cosh          sinh
+   tan            break         gcd
+@end verbatim
+
+@opencatbox
+@category{Programming}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Garbage Collection, Introduction to Program Flow, Lisp and Maxima, Program Flow
+@section Garbage Collection
+@c -----------------------------------------------------------------------------
+
+Symbolic computation tends to create a good deal of garbage (temporary or
+intermediate results that are eventually not used), and effective handling of
+this can be crucial to successful completion of some programs.
+
+@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
+@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
+@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
+Under GCL, on UNIX systems where the mprotect system call is available
+(including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
+is available.  This limits the collection to pages which have been recently
+written to.  See the GCL documentation under ALLOCATE and GBC.  At the Lisp
+level doing (setq si::*notify-gbc* t) will help you determine which areas might
+need more space.
+
+For other Lisps that run Maxima, we refer the reader to the documentation for
+that Lisp on how to control GC.
+
+@c -----------------------------------------------------------------------------
+@node Introduction to Program Flow, Functions and Variables for Program Flow, Garbage Collection, Program Flow
 @section Introduction to Program Flow
 @c -----------------------------------------------------------------------------
 
@@ -619,7 +770,7 @@ results of applying @var{f} to the corresponding subparts of the expressions.
 @code{maperror} - if @code{false} will cause all of the mapping
 functions to (1) stop when they finish going down the shortest
 @var{expr_i} if not all of the @var{expr_i} are of the same length and
-(2) apply @var{f} to [@var{expr_1}, @var{expr_2}, ...]  if the
+(2) apply @var{f} to [@var{expr_1}, @var{expr_2}, @dots{}]  if the
 @var{expr_i} are not all the same type of object.  If @code{maperror}
 is @code{true} then an error message will be given in the above two
 instances.
@@ -684,7 +835,7 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 
 to (1) stop when they finish going down the shortest @var{expr_i} if
 not all of the @var{expr_i} are of the same length and (2) apply
-@var{f} to [@var{expr_1}, @var{expr_2}, ...] if the @var{expr_i} are
+@var{f} to [@var{expr_1}, @var{expr_2}, @dots{}] if the @var{expr_i} are
 not all the same type of object.
 
 If @code{maperror} is @code{true} then an error message
@@ -781,7 +932,7 @@ desired, for example:
 Note the way in which @code{scanmap} applies the given function
 @code{factor} to the constituent subexpressions of @var{expr}; if
 another form of @var{expr} is presented to @code{scanmap} then the
-result may be different. Thus, @code{%o2} is not recovered when
+result may be different.  Thus, @code{%o2} is not recovered when
 @code{scanmap} is applied to the expanded form of @code{exp}:
 
 @example
@@ -852,7 +1003,7 @@ See @code{do}.
 @deffn {Function} outermap (@var{f}, @var{a_1}, @dots{}, @var{a_n})
 
 Applies the function @var{f} to each one of the elements of the outer product
-@var{a_1} cross @var{a_2} ... cross @var{a_n}.
+@var{a_1} cross @var{a_2} @dots{} cross @var{a_n}.
 
 @var{f} is the name of a function of @math{n} arguments or a lambda expression
 of @math{n} arguments.  Each argument @var{a_k} may be a list or nested list,
@@ -955,6 +1106,7 @@ and each element of each list is a matrix.
                [  [      c        c  ]  [      c        c  ]  ]
                [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                [  [      11       11 ]  [      22       22 ]  ]
+@group
                  [  [      b        b  ]  [      b        b  ]  ]
                  [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                  [  [      11       11 ]  [      22       22 ]  ]
@@ -962,6 +1114,7 @@ and each element of each list is a matrix.
                  [  [      d        d  ]  [      d        d  ]  ]
                  [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                  [  [      11       11 ]  [      22       22 ]  ]
+@end group
 (%i5) xx_1 : xx_0 [1][1];
            [      a        a  ]  [      a        a  ]
 (%o5)     [[ xx + --  yy + -- ], [ xx + --  yy + -- ]]

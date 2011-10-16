@@ -1,10 +1,14 @@
-@c version 1.24
+@c English version 2011-06-12
+@page
+@node Constantes, Listas, Cadenas de texto, Tipos de datos y estructuras
+@section Constantes
+
 @menu
 * Funciones y variables para Constantes::   
 @end menu
 
 @node Funciones y variables para Constantes,  , Constantes, Constantes
-@section Funciones y variables para Constantes
+@subsection Funciones y variables para Constantes
 
 @defvr {Constante} %e
 @ifinfo
@@ -34,6 +38,18 @@ El s@'{@dotless{i}}mbolo @code{false} representa al valor l@'ogico
 "falso". Maxima implementa @code{false} con el valor @code{NIL} de
 Lisp.
 @end defvr
+
+
+
+@defvr {Constante} %gamma
+@ifinfo
+@vrindex Constante de Euler-Mascheroni
+@end ifinfo
+Es la constante de Euler-Mascheroni, 0.5772156649015329 ....
+
+@end defvr
+
+
 
 @defvr {Constante} ind
 @ifinfo

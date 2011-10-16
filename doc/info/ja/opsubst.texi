@@ -1,0 +1,86 @@
+@menu
+* Functions and Variables for opsubst::
+@end menu
+
+@node Functions and Variables for opsubst,  , opsubst, opsubst
+@section Functions and Variables for opsubst
+
+@deffn {関数} opsubst (@var{f},@var{g},@var{e})
+@deffnx {関数} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {関数} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+関数@code{opsubst}は
+@code{opsubst}は式の中の演算子への代入だけをすることを除いて、
+関数@code{subst}に似ています。
+一般に、
+@var{f}が式@var{e}の中の演算子の時、
+式@var{e}の中で@var{g}を@var{f}に代入します。
+
+演算子を決定するために、
+@code{opsubst}は@code{inflag}をtrueに設定します。
+これは、
+@code{opsubst}が式の中の表示演算子ではなく内部演算子への代入をすることを意味します。
+
+例:
+@example
+(%i1) load (opsubst)$
+
+(%i2) opsubst(f,g,g(g(x)));
+(%o2)                     f(f(x))
+(%i3) opsubst(f,g,g(g));
+(%o3)                       f(g)
+(%i4) opsubst(f,g[x],g[x](z));
+(%o4)                       f(z)
+(%i5) opsubst(g[x],f, f(z));
+(%o5)                      g (z)
+                            x
+(%i6) opsubst(tan, sin, sin(sin));
+(%o6)                     tan(sin)
+(%i7) opsubst([f=g,g=h],f(x));
+(%o7)                       h(x)
+@end example
+
+内部的にMaximaは単項否定や割り算、引き算演算子を使いません;
+例えば:
+@example
+(%i8) opsubst("+","-",a-b);
+(%o8)                     a - b
+(%i9) opsubst("f","-",-a);
+(%o9)                      - a
+(%i10) opsubst("^^","/",a/b);
+                             a
+(%o10)                       -
+                             b
+@end example
+
+-a*bの内部表現は*(-1,a,b)です;
+例えば、
+@example
+(%i11) opsubst("[","*", -a*b);
+(%o11)                  [- 1, a, b]
+@end example
+
+どちらかの演算子がMaximaシンボルでない時、
+他のある関数は一般にエラーを知らせます:
+@example
+(%i12) opsubst(a+b,f, f(x));
+
+Improper name or value in functional position:
+b + a
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+しかしながら、添字付き演算子は許されます:
+@example
+(%i13) opsubst(g[5],f, f(x));
+(%o13)                     g (x)
+                            5
+@end example
+
+この関数を使うためには、最初に@code{load("opsubst")}を書いてください。
+
+@opencatbox
+@category{Expressions} @category{Share packages} @category{Package opsubst}
+@closecatbox
+
+@end deffn
+

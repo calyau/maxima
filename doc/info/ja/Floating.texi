@@ -1,0 +1,13 @@
+@menu
+* Functions and Variables for Floating Point::  
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Floating Point,  , Floating Point, Floating Point
+@section Functions and Variables for Floating Point
+@c -----------------------------------------------------------------------------
+
+このファイルの中身は以下のファイルに移されました:
+DataTypes.texi
+Equations.texi
+Special.texi

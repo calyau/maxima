@@ -1,0 +1,821 @@
+@menu
+* Introduction to grobner ::
+* Functions and Variables for grobner ::
+@end menu
+
+@node Introduction to grobner, Functions and Variables for grobner, Top, Top
+@section Introduction to grobner
+
+@code{grobner}は
+MaximaでGroebner基底を使うためのパッケージです。
+
+@noindent
+@emph{Groebner基底}に関するチュートリアルは以下で見つかります。
+
+@noindent
+@url{http://www.geocities.com/CapeCanaveral/Hall/3131/}
+
+@noindent
+以下の関数を使うには、@file{grobner.lisp}パッケージをロードしなければいけません。
+
+@example
+load(grobner);
+@end example
+
+@noindent
+@example
+demo("grobner.demo");
+@end example
+
+@noindent
+もしくは
+@example
+batch("grobner.demo")
+@end example
+でデモを開始することができます。
+
+@noindent
+デモの中の計算のいくつかは長い時間かかります。
+だから、デモの出力 @file{grobner-demo.output}が
+デモファイルと同じディレクトリに見つかります。
+
+@subsection Notes on the grobner package
+パッケージは
+
+@noindent
+Marek Rychlik 
+
+@noindent
+@url{http://alamos.math.arizona.edu}
+
+@noindent
+によって書かれ、
+General Public License(GPL)の条件の下、2002-05-24にリリースされました。
+(ファイル @file{grobner.lisp}を参照してください。)
+このドキュメントは、
+ファイル
+@flushleft
+@file{README}, @file{grobner.lisp}, @file{grobner.demo}, @file{grobner-demo.output}
+@end flushleft
+から
+
+@noindent
+G@"unter Nowakによって抽出されました。
+
+ドキュメントの改善に関する提案は
+@emph{maxima}メーリングリスト @email{maxima@@math.utexas.edu}で議論することができます。
+現在、コードは若干古くなっています。
+モダンな実装は
+以下に記載されている高速の @emph{F4}アルゴリズムを使います。
+@smallformat
+A new efficient algorithm for computing Gr@"obner bases (F4) 
+Jean-Charles Faug@`ere
+LIP6/CNRS Universit@'e Paris VI 
+January 20, 1999
+@end smallformat
+
+@opencatbox
+@category{Groebner bases} @category{Share packages} @category{Package grobner}
+@closecatbox
+
+@subsection Implementations of admissible monomial orders in grobner
+
+@itemize @bullet
+@item @code{lex}
+
+純粋に辞書式の、
+単項式比較のデフォルト順序
+@item @code{grlex}
+
+全次数順序。同点は辞書式で決めます。
+
+@item @code{grevlex}
+
+全次数。同点は逆辞書式で決めます。
+
+@item @code{invlex}
+
+逆時書式順序。
+
+@end itemize
+
+@node Functions and Variables for grobner, , Introduction to grobner, Top
+@section Functions and Variables for grobner 
+
+@subsection Global switches for grobner
+
+@defvr {オブション変数} poly_monomial_order
+デフォルト値: @code{lex}
+
+このグローバルスイッチは
+どの単項式順序が多項式とGroebner基底計算で使われるか制御します。
+もし設定されないなら、 @code{lex}が使われます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+
+@defvr {オブション変数} poly_coefficient_ring
+デフォルト値: @code{expression_ring}
+
+このスイッチは
+grober計算で使われる多項式の係数環を示します。
+もし設定されないなら、
+@emph{maximaの} 一般式環が使われます。
+もし望むなら、この変数を @code{ring_of_integers}に設定できます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_primary_elimination_order
+デフォルト値: @code{false}
+
+消去ベース関数で消去される変数のデフォルト順序名。
+設定されていないなら、 @code{lex}が使われます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_secondary_elimination_order
+デフォルト値: @code{false}
+
+消去ベース関数で保持される変数のデフォルト順序名。
+設定されていないなら、 @code{lex}が使われます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_elimination_order
+デフォルト値: @code{false}
+
+消去計算で使われるデフォルト消去順序名。
+設定されているなら、
+変数 @code{poly_primary_elimination_order}と
+@code{poly_secondary_elimination_order}の設定を上書きします。
+ユーザーは
+これが消去変数の数に有効な真の消去順序であることを保証しなければいけません。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_return_term_list
+デフォルト値: @code{false}
+
+もし @code{true}に設定されているなら、
+このパッケージの関数すべては
+@emph{maxima}一般式ではなく、
+それぞれの多項式を
+現在の単項式順序で並べた項のリストとして返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_grobner_debug
+デフォルト値: @code{false}
+
+もし @code{true}に設定されているなら、
+デバッグ用、トレース用出力を生成します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_grobner_algorithm
+デフォルト値: @code{buchberger}
+
+可能な値: 
+@itemize
+@item @code{buchberger}
+@item @code{parallel_buchberger}
+@item @code{gebauer_moeller}
+@end itemize
+
+Groebner基底を見つけるのに使われるアルゴリズム名。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {オブション変数} poly_top_reduction_only
+デフォルト値: @code{false}
+
+もし @code{false}でないなら、
+可能な時はいつでも、頭項簡約を使います。
+頭項簡約は、割り算アルゴリズムが最初の簡約後に停止することを意味します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end defvr
+
+@subsection Simple operators in grobner
+@code{poly_add}, @code{poly_subtract}, @code{poly_multiply}, @code{poly_expt}は
+多項式の算出演算子です。
+これらは
+内部表現を使って実行されますが、
+結果は
+@emph{maxima}一般形式に変換されます。
+
+@deffn {関数} poly_add (@var{poly1}, @var{poly2}, @var{varlist})
+2つの多項式 @var{poly1}と @var{poly2}を足します。
+@example
+
+(%i1) poly_add(z+x^2*y,x-z,[x,y,z]);
+                                    2
+(%o1)                              x  y + x
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_subtract (@var{poly1}, @var{poly2}, @var{varlist})
+多項式 @var{poly1}から @var{poly2}を引きます。
+@example
+
+(%i1) poly_subtract(z+x^2*y,x-z,[x,y,z]);
+                                      2
+(%o1)                          2 z + x  y - x
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_multiply (@var{poly1}, @var{poly2}, @var{varlist})
+多項式 @var{poly1}と @var{poly2}の積を返します。
+@example
+
+(%i2) poly_multiply(z+x^2*y,x-z,[x,y,z])-(z+x^2*y)*(x-z),expand;
+(%o1)                                  0
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_s_polynomial (@var{poly1}, @var{poly2}, @var{varlist})
+2つの多項式 @var{poly1}と @var{poly2}の
+@emph{シジジー多項式} (@emph{S多項式})を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_primitive_part (@var{poly1}, @var{varlist})
+多項式 @var{poly1}を係数のGCDで割ったものを返します。
+
+@example
+(%i1) poly_primitive_part(35*y+21*x,[x,y]);
+(%o1)                              5 y + 3 x
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_normalize (@var{poly}, @var{varlist})
+多項式 @var{poly1}を主係数で割ったものを返します。
+割り算が可能であることを仮定しています。
+これは、体の場合には大丈夫ですが、環の場合にはいつも可能なわけではありません。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@subsection Other functions in grobner
+
+@deffn {関数} poly_expand (@var{poly}, @var{varlist})
+この関数は
+多項式を内部形式にパースします。
+もし @var{poly}が多項式を正確にパースしたら、
+それは @code{expand(@var{poly})}と同値です。
+もし表現が変数 @var{varlist}の多項式と互換性がないなら、
+結果はエラーです。
+式が正確に内部表現にパースするかテストするのに使うことができます。
+以下の例は添字付き変数と超越関数変数が許されることを例示します。
+@example
+
+(%i1) poly_expand((x-y)*(y+x),[x,y]);
+                                     2    2
+(%o1)                               x  - y
+(%i2) poly_expand((y+x)^2,[x,y]);
+                                2            2
+(%o2)                          y  + 2 x y + x
+(%i3) poly_expand((y+x)^5,[x,y]);
+                  5      4         2  3       3  2      4      5
+(%o3)            y  + 5 x y  + 10 x  y  + 10 x  y  + 5 x  y + x
+(%i4) poly_expand(-1-x*exp(y)+x^2/sqrt(y),[x]);
+                                          2
+                                  y      x
+(%o4)                       - x %e  + ------- - 1
+                                       sqrt(y)
+
+(%i5) poly_expand(-1-sin(x)^2+sin(x),[sin(x)]);
+                                2
+(%o5)                      - sin (x) + sin(x) - 1
+
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_expt (@var{poly}, @var{number}, @var{varlist})
+@var{poly}の、正の整数 @var{number}のべき乗を返します。
+もし @var{number}が正の整数でないなら、
+エラーが生じます。
+@example
+
+(%i1) poly_expt(x-y,3,[x,y])-(x-y)^3,expand;
+(%o1)                                  0
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_content (@var{poly}. @var{varlist})
+@code{poly_content}は係数のGCDを抽出します。
+@example
+
+(%i1) poly_content(35*y+21*x,[x,y]);
+(%o1)                                  7
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_pseudo_divide (@var{poly}, @var{polylist}, @var{varlist})
+多項式 @var{poly}を
+@math{n}個の多項式のリスト @var{polylist}で擬似的に割ります。
+複数の値を返します。
+一番目の値は
+商のリスト @math{a}です。
+二番目の値は余り @math{r}です。
+三番目の値は、
+係数環(体である必要はありません)内で@var{polylist}が@math{c*poly}を割れるような
+スカラ係数 @math{c}です。
+最後に
+四番目の値は実行された簡約の回数です。
+結果のオブジェクトは以下の等式を満たします:
+
+@iftex
+@tex
+$$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
+@end tex
+@end iftex
+@ifnottex
+@math{c*poly=sum(a[i]*polylist[i],i=1...n)+r}.
+@end ifnottex
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_exact_divide (@var{poly1}, @var{poly2}, @var{varlist})
+多項式 @var{poly1}を多項式 @var{poly2}で割ります。
+余りのない厳密な割り算が可能と仮定します。
+商を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_normal_form (@var{poly}, @var{polylist}, @var{varlist})
+@code{poly_normal_form}は
+多項式の集合 @var{polylist}に関して
+多項式 @var{poly}の正規形を見つけます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_buchberger_criterion (@var{polylist}, @var{varlist})
+Buchberger判定(criterion)を使って
+もし @var{polylist}が現在の項順序に関して Groebner基底なら
+@code{true}を返します:
+Buchberger判定(criterion)は、
+@var{polylist}の2つの多項式 @math{h1}と @math{h2}すべてに関して、
+S多項式 @math{S(h1,h2)}が @var{polylist}を@math{法}として0に簡約されるというものです。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_buchberger (@var{polylist_fl} @var{varlist})
+@code{poly_buchberger}は
+多項式のリスト上でBuchbergerアルゴリズムを実行し、
+結果の Groebner基底を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+
+@subsection Standard postprocessing of Groebner Bases
+
+@iftex
+@tex
+The \emph{k-th elimination ideal} $I_k$ of an ideal $I$ over 
+$K [ x_1, ...,x_1 ]$ is $I \cap K [ x_{k + 1}, ..., x_n ]$.
+
+\noindent
+The \emph{colon ideal} $I : J$ is the ideal $\{ h|\forall w \in J : wh \in
+I \}$.@*
+
+\noindent
+The ideal $I : p^{\infty}$ is the ideal $\{ h|\exists n \in N : p^n h \in I \}$.@*
+
+\noindent
+The ideal $I : J^{\infty}$ is the ideal $\{ h|\exists n \in N, \exists p \in J: p^n h \in I \}$.@*
+
+\noindent
+The \emph{radical ideal} $\sqrt{I}$ is the ideal $\{ h| \exists n \in N :
+h^n \in I \}$.@*
+
+@end tex
+@end iftex
+
+@ifnottex
+@math{K[ x[1],...,x[n] ]}上のイデアル @math{I}の
+@emph{k番目の消去イデアル} @math{I_k}は
+イデアル @math{intersect(I, K[ x[k+1],...,x[n] ])}です。@*
+@noindent
+@emph{コロンイデアル} @math{I:J}は
+イデアル @math{@{h|for all w in J: w*h in I@}}です。.@*
+@noindent
+イデアル @math{I:p^inf}はイデアル @math{@{h| there is a n in N: p^n*h in I@}}です。@*
+@noindent
+イデアル @math{I:J^inf}はイデアル @math{@{h| there is a n in N and a p in J: p^n*h in I@}}です。@*
+@noindent
+The @emph{根基イデアル} @math{sqrt(I)}はイデアル
+@math{@{h| there is a n in N : h^n in I @}}です。
+@end ifnottex
+
+@noindent
+@deffn {関数} poly_reduction (@var{polylist}, @var{varlist})
+@code{poly_reduction}は多項式のリスト @var{polylist}を簡約します。
+それぞれの多項式は他の多項式で完全に簡約されます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_minimization (@var{polylist}, @var{varlist})
+@var{polylist}と同じ単項式イデアルの最小全域である、
+多項式リスト @var{polylist}の部分リストを返します。
+すなわち、部分リストの中の多項式の主単項式はすべて、他の多項式の主単項式を割りません。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} poly_normalize_list (@var{polylist}, @var{varlist})
+@code{poly_normalize_list}は
+@code{poly_normalize}をリストの中の多項式それぞれに適用します。
+これは
+リスト @var{polylist}の中のすべての多項式を主係数で割ることを意味します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_grobner (@var{polylist}, @var{varlist})
+多項式リスト @var{polylist}で張られたイデアルのGroebner基底を返します。
+グローバルフラグで影響を受けます。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_reduced_grobner (@var{polylist}, @var{varlist})
+多項式リスト @var{polylist}で張られたイデアルの簡約Groebner基底を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} poly_depends_p (@var{poly}, @var{var}, @var{varlist})
+@code{poly_depends}は多項式が変数 @var{var}に依存するかテストします。
+
+@opencatbox
+@category{Package grobner} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} poly_elimination_ideal (@var{polylist}, @var{number}, @var{varlist})
+
+
+@code{poly_elimination_ideal}は、
+(必ずしもGroebner基底である必要はない)生成多項式のリストとして指定されたイデアルの
+@math{number}番目の消去イデアルの
+Groebner基底を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_colon_ideal (@var{polylist1}, @var{polylist2}, @var{varlist})
+
+コロンイデアル
+
+@math{I(polylist1):I(polylist2)}
+
+の簡約Groebner基底を返します。
+
+@noindent
+ここで、 @math{polylist1}と @math{polylist2}は2つの多項式リストです。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_ideal_intersection (@var{polylist1}, @var{polylist2}, @var{varlist})
+
+@code{poly_ideal_intersection}は2つのイデアルの交わりです。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+
+@deffn {関数} poly_lcm (@var{poly1}, @var{poly2}, @var{varlist})
+@var{poly1}と @var{poly2}の最小公倍数(式)を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{poly_gcd}
+@deffn {関数} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
+
+@var{poly1}と @var{poly2}の最大公約数(式)を返します。
+
+@mrefcomma{ezgcd} @mrefcomma{gcd} @mrefcomma{gcdex} @mref{gcdivide}
+も参照してください。
+
+例:
+
+@example
+(%i1) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o1)                6 x  + 19 x  + 19 x + 6
+(%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o2)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i3) poly_gcd(p1, p2, [x]);
+                            2
+(%o3)                    6 x  + 13 x + 6
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+@end deffn
+
+@deffn {関数} poly_grobner_equal (@var{polylist1}, @var{polylist2}, @var{varlist})
+@code{poly_grobner_equal}は
+2つの Groebner基底が同じイデアルを生成するか
+テストします。
+もし、Groebner基底と仮定された2つの多項式リスト @var{polylist1}と @var{polylist2}が
+同じイデアルを生成するなら、@code{true}を返します。
+そうでないなら、 @code{false}を返します。
+これは、
+一番目の基底のすべての多項式が二番目の基底を法として0に簡約されるかとその逆をチェックする
+ことと同値です。
+以下の例では、一番目のリストがGroebner基底でないので
+結果が @code{false}であることに注意してください。
+
+@example
+(%i1) poly_grobner_equal([y+x,x-y],[x,y],[x,y]);
+(%o1)                         false
+@end example
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_grobner_subsetp (@var{polylist1}, @var{polylist2}, @var{varlist})
+
+@code{poly_grobner_subsetp}は
+@var{polylist1}が生成するイデアルが
+@var{polylist2}が生成するイデアルに含まれるかテストします。
+このテストが常に成功するには、@var{polylist2}が Groebner基底でなければいけません。
+
+@opencatbox
+@category{Package grobner} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_grobner_member (@var{poly}, @var{polylist}, @var{varlist})
+
+もし多項式 @var{poly}が
+Groebner基底であると仮定された多項式リスト @var{polylist}が生成するイデアルに属するなら、
+@code{true}を返します。
+そうでないなら、 @code{false}を返します。
+
+@code{poly_grobner_member}は
+多項式が
+Groebner基底であると仮定された多項式のリストが生成するイデアルに属するかテストします。
+@code{normal_form}が0と同値です。
+
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_ideal_saturation1 (@var{polylist}, @var{poly}, @var{varlist})
+イデアル
+@iftex
+@tex
+$$I(polylist):poly^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist):poly^inf
+@end ifnottex
+のsaturationの簡約 Groebner基底を返します。
+
+
+@noindent
+幾何学的に、代数的閉体上で、
+これは
+@var{poly}の多様体上で恒等的に0とならない
+@var{polylist}が生成するイデアルの中の
+多項式の集合です。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_ideal_saturation (@var{polylist1}, @var{polylist2}, @var{varlist})
+イデアル
+@iftex
+@tex
+$$I(polylist1):I(polylist2)^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist1):I(polylist2)^inf
+@end ifnottex
+のsaturationの簡約 Groebner基底を返します。
+
+@noindent
+幾何学的に、代数的閉体上で、
+これは
+@var{polylist2}の多様体上で恒等的に0とならない
+@var{polylist1}が生成するイデアルの中の
+多項式の集合です。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_ideal_polysaturation1 (@var{polylist1}, @var{polylist2}, @var{varlist})
+@var{polylist2}は2個の多項式のリスト @code{[poly1,...,polyn]}です。
+多項式リスト @var{polylist1}が生成するイデアルの
+多項式リスト @var{polylist2}の多項式に関する連続saturationの列によって得られるイデアル
+@iftex
+@tex
+$$I(polylist):poly1^\infty:...:polyn^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist):poly1^inf:...:polyn^inf
+@end ifnottex
+
+@noindent
+の簡約 Groebner基底を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_ideal_polysaturation (@var{polylist}, @var{polylistlist}, @var{varlist})
+@var{polylistlist}は多項式リストn個のリスト @code{[polylist1,...,polylistn]}です。
+イデアル
+@iftex
+@tex
+$$I(polylist):I(polylist_1)^\infty:...:I(polylist_n)^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
+@end ifnottex
+のsaturationの簡約 Groebner基底を返します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_saturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
+
+@code{poly_saturation_extension}は有名な Rabinowitzのトリックを実装します。
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {関数} poly_polysaturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
+
+@opencatbox
+@category{Package grobner}
+@closecatbox
+
+@end deffn
+

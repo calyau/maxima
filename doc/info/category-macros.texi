@@ -52,12 +52,39 @@
 @end ifnothtml
 @end macro
 
+@macro mxrefdot {nodename, text}
+@ifhtml
+@code{@ref{\nodename\, \text\}}.
+@end ifhtml
+@ifnothtml
+@code{\text\}.
+@end ifnothtml
+@end macro
+
 @macro mrefcomma {nodename}
 @ifhtml
 @code{@ref{\nodename\}},
 @end ifhtml
 @ifnothtml
 @code{\nodename\},
+@end ifnothtml
+@end macro
+
+@macro mxrefcomma {nodename, text}
+@ifhtml
+@code{@ref{\nodename\, \text\}},
+@end ifhtml
+@ifnothtml
+@code{\text\},
+@end ifnothtml
+@end macro
+
+@macro mrefparen {nodename}
+@ifhtml
+@code{@ref{\nodename\}})
+@end ifhtml
+@ifnothtml
+@code{\nodename\})
 @end ifnothtml
 @end macro
 

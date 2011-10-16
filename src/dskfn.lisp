@@ -42,7 +42,7 @@
 	(append (or iteml '(nil)) (cdr x)))))
 
 (defmspec $save (form)
-  (let ((*print-circle* nil)) ; $save stores Lisp expressions.
+  (let ((*print-circle* nil) (*print-level* nil) (*print-length* nil)) ; $save stores Lisp expressions.
     (dsksetup (cdr form) nil nil '$save)))
 
 (defvar *macsyma-extend-types-saved* nil)

@@ -341,4 +341,5 @@
   (
    (:file "eigensys")
    (:file "dgesv")
+   (:file "dgeqrf")
    (:file "dgemm")))

@@ -69,12 +69,14 @@
       (princ (subseq line 0 break-point))
       (princ "&")
       (terpri)
+      (princ "&")
       (setf line (subseq line break-point))
       
       (loop while (> (length line) break-point) do
         (princ (subseq line 0 break-point))
         (princ "&")
         (terpri)
+        (princ "&")
         (setf line (subseq line break-point)))
 
       (if (> (length line) 0)

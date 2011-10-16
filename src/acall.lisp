@@ -22,8 +22,6 @@
 
 (macsyma-module acall)
 
-(transl-module acall)
-
 (defmfun interval-error (fun low high)
   (merror (intl:gettext "~@:M: lower bound ~M is greater than upper bound ~M") fun low high))
 

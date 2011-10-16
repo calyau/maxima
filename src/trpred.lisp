@@ -11,7 +11,6 @@
 (in-package :maxima)
 
 (macsyma-module trpred)
-(transl-module trpred)
 
 (defvar wrap-an-is 'is-boole-check "How to verify booleans")
 
@@ -182,13 +181,11 @@
 	    ((eq 'mnot (caaar x))
 	     (setq nl (cons `(assume ,(dtranslate (pred-reverse (cadar x)))) nl)))
 	    ((eq 'mor (caaar x))
-	     (merror "`assume': Maxima is unable to handle assertions involving 'or'."))
+	     (merror (intl:gettext "assume: argument cannot be an 'or' expression; found ~M") (car x)))
 	    ((eq (caaar x) 'mequal)
-	     (merror "`assume': `=' means syntactic equality in Maxima. ~
-		     Maybe you want to use `equal'."))
+	     (merror (intl:gettext "assume: argument cannot be an '=' expression; found ~M~%assume: maybe you want 'equal'.") (car x)))
 	    ((eq (caaar x) 'mnotequal)
-	     (merror "`assume': `#' means syntactic nonequality in Maxima. ~
-		     Maybe you want to use `not equal'."))
+	     (merror (intl:gettext "assume: argument cannot be a '#' expression; found ~M~%assume: maybe you want 'not equal'.") (car x)))
 	    ('else
 	     (setq nl (cons `(assume ,(dtranslate (car x))) nl))))
       (setq x (cdr x)))))

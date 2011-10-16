@@ -1,15 +1,10 @@
-\documentclass[11pt,titlepage,a4paper]{article}
+\documentclass[11pt,titlepage,a4paper]{book}
 	\pagestyle{headings}
 	\title{\textbf{\Huge{Primeros pasos en Maxima}}}
 	\author{\Large{Mario Rodr\'{\i}guez Riotorto}\\
 	  \\
-	  www.telefonica.net/web2/biomates\\
+	  http://riotorto.users.sourceforge.net\\
 	  }
-
-\setlength{\oddsidemargin}{0.5cm}
-\setlength{\textwidth}{15cm}
-\setlength{\topmargin}{1.2cm}
-\setlength{\textheight}{21cm}
 
 \usepackage{graphicx}
 \usepackage{lscape}
@@ -44,7 +39,7 @@
 
 \makeindex
 
-\hyphenation{Ruf-fi-ni e-xer-ci-cios}
+\hyphenation{co-rres-pon-dien-te}
 
 %versión: 06-03-08
 % Para generar el documento pdf con el índice alfabético:
@@ -60,16 +55,14 @@
 
 \maketitle
 
-\newpage
 \thispagestyle{empty}
-\mbox{}
 \newpage
 
-
+\newpage
 
 \thispagestyle{empty}
 \begin{quote}
-Copyright \copyright 2004-2008 Mario Rodríguez Riotorto
+Copyright \copyright 2004-2011 Mario Rodríguez Riotorto
 
 Este documento es libre; se puede redistribuir y/o
 modificar bajo los términos de la GNU General Public License
@@ -84,21 +77,22 @@ the Free Software Foundation. See the
 GNU General Public License for more details at \\
 http://www.gnu.org/copyleft/gpl.html}
 \end{quote}
+
 \newpage
 \thispagestyle{empty}
-\mbox{}
-\newpage
+
+
 
 
 
 
 \addtocounter{page}{-3}
 \tableofcontents
-\newpage
 
 
-\newpage
-\section{Introducción}
+
+
+\chapter{Introducción}
 
 Este es un manual introductorio al entorno de cálculo simbólico Maxima, directo sucesor del legendario Macsyma.
 
@@ -112,14 +106,14 @@ El concepto y la organización interna del programa están basados en la tesis doc
 
 El año 1982 es clave. El MIT transfiere una copia de Macsyma a la empresa Symbolics Inc. para su explotación económica, haciendo el código propietario, y otra al Departamento de Energía, copia ésta que será conocida con el nombre de DOE-Macsyma. En 1992 la versión comercial de Macsyma sería adquirida por una empresa que se llamaría precisamente Macsyma Inc, y el programa iría perdiendo fuelle progresivamente ante la presencia en el mercado de otros programas similares como Maple o Mathematica, ambos los dos inspirados en sus orígenes en el propio Macsyma.
 
-Pero ocurrieron dos historias paralelas. Desde el año 1982, y hasta su fallecimiento en el 2001, William Schelter de la Universidad de Texas mantuvo una versión de este programa adaptada al estándar Common Lisp, la cual ya se conocía con el nombre de Maxima para diferenciarla de la versión comercial. En el año 1998 Schelter había conseguido del DOE permiso para distribuir Maxima bajo la licencia GNU-GPL (www.gnu.org); con este paso, muchas más personas empezaron a dirigir su mirada hacia Maxima, justo en el momento en el que la versión comercial estaba declinando. Actualmente, el proyecto está siendo mantenido por un grupo de desarrolladores originarios de varios países, asistidos y ayudados por otras muchas personas interesadas en Maxima y que mantienen un cauce de comunicación a través de la lista de correo
+Pero ocurrieron dos historias paralelas. Desde el año 1982, y hasta su fallecimiento en el 2001, William Schelter de la Universidad de Texas mantuvo una versión de este programa adaptada al estándar Common Lisp en base a DOE-Macsyma, la cual ya se conoce con el nombre de Maxima para diferenciarla de la versión comercial. En el año 1998 Schelter había conseguido del DOE permiso para distribuir Maxima bajo la licencia GNU-GPL (www.gnu.org); con este paso, muchas más personas empezaron a dirigir su mirada hacia Maxima, justo en el momento en el que la versión comercial estaba declinando. Actualmente, el proyecto está siendo mantenido por un grupo de desarrolladores originarios de varios países, asistidos y ayudados por otras muchas personas interesadas en Maxima y que mantienen un cauce de comunicación a través de la lista de correo
 \begin{center}
 http://maxima.sourceforge.net/maximalist.html
 \end{center}
 
 Además, desde el año 2006, se ha activado una lista de correos para usuarios de habla hispana en
 \begin{center}
-http://sourceforge.net/mailarchive/forum.php?forum\_id=50322
+http://lists.sourceforge.net/lists/listinfo/maxima-lang-es
 \end{center}
 
 Puesto que Maxima se distribuye bajo la licencia GNU-GPL, tanto el código fuente como los manuales son de libre acceso a través de la página web del proyecto,
@@ -153,21 +147,26 @@ Finalmente, un recuerdo a William Schelter. Gracias a él disponemos hoy de un Ma
 
 
 \newpage
-\section{Despegando con Maxima}
+\chapter{Despegando con Maxima}
 
-\subsection{Instalación}
+\section{Instalación}
 
-Maxima funciona en Windows, Linux y Mac-OS.
+Maxima funciona en Windows, Mac y Linux.
 
 En Windows, la instalación consiste en descargar el binario \verb|exe| desde el enlace correspondiente en la página del proyecto y ejecutarlo. 
 
+En Mac, es necesario descargar el fichero con extensión \verb|dmg|, hacer doble clic sobre él y arrastrar los iconos de Maxima, wxMaxima y Gnuplot a la carpeta Aplicaciones. El proceso detallado se explica aquí:
+\begin{center}
+http://www.faq-mac.com/41547/instalacion-maximawxmaxima-mac-javier-arantegui
+\end{center}
+
 En Linux, la mayoría de las distribuciones tienen ficheros precompilados en sus respectivos repositorios con las extensiones \verb|rpm| o \verb|deb|, según el caso. Sin embargo, en algunas distribuciones las versiones oficiales no suelen estar muy actualizadas, por lo que podría ser recomendable proceder con la compilación de las fuentes, tal como se expone a continuación.
 
-Las siguientes indicaciones hacen referencia al sistema operativo Linux.
+Las siguientes indicaciones sobre la compilación hacen referencia al sistema operativo Linux.
 
-Si se quiere instalar Maxima en su estado actual de desarrollo, será necesario descargar los ficheros fuente completos del CVS de Sourceforge y proceder posteriormente a su compilación. Se deberá tener operativo un entorno Common Lisp en la máquina (\verb|clisp|, \verb|cmucl|, \verb|sbcl| o \verb|gcl| son todas ellas alternativas válidas), así como todos los programas que permitan ejecutar las instrucciones que se indican a continuación, incluidas las dependencias \verb|tcl-tk| y \verb|gnuplot|. \emph{Grosso modo}, estos son los pasos a seguir para tener Maxima operativo en el sistema\footnote{Se supone que se trabaja con clisp, con codificación unicode y que queremos el sistema de ayuda en inglés y español.}:
+Si se quiere instalar Maxima en su estado actual de desarrollo, será necesario descargar los ficheros fuente completos desde el repositorio de Sourceforge y proceder posteriormente a su compilación. Se deberá tener operativo un entorno Common Lisp en la máquina (\verb|clisp|, \verb|cmucl|, \verb|sbcl| o \verb|gcl| son todas ellas alternativas válidas), así como todos los programas que permitan ejecutar las instrucciones que se indican a continuación, incluidas las dependencias \verb|tcl-tk| y \verb|gnuplot|. \emph{Grosso modo}, estos son los pasos a seguir para tener Maxima operativo en el sistema\footnote{Se supone que se trabaja con clisp, con codificación unicode y que queremos el sistema de ayuda en inglés y español.}:
 \begin{enumerate}
-\item Descargar las fuentes a un directorio local siguiendo las instrucciones que se indican en el enlace al CVS de la página del proyecto.
+\item Descargar las fuentes a un directorio local siguiendo las instrucciones que se indican en el enlace al repositorio de la página del proyecto.
 \item Acceder a la carpeta local de nombre \verb|maxima| y ejecutar las instrucciones
 \begin{verbatim}
 ./bootstrap
@@ -187,11 +186,11 @@ xmaxima
 \end{verbatim}
 \end{enumerate}
 
-Otro entorno gráfico es Wxmaxima\footnote{http://wxmaxima.sourceforge.net} (Figura~\ref{fig:wxmaxima}), que se distribuye conjuntamente con el ejecutable para Windows. En Linux, una vez instalado Maxima, se podrá instalar este entorno separadamente.
+Otro entorno gráfico es Wxmaxima\footnote{http://wxmaxima.sourceforge.net} (Figura~\ref{fig:wxmaxima}), que se distribuye conjuntamente con los ejecutables para Windows y Mac. En Linux, una vez instalado Maxima, se podrá instalar este entorno separadamente.
 
 Una cuarta alternativa, que resulta muy vistosa por hacer uso de \TeX, es la de ejecutar Maxima desde el editor Texmacs\footnote{http://www.texmacs.org} (Figura~\ref{fig:texmacs}).
 
-Emacs es un editor clásico en sistemas Unix. Aunque hay varios formas de ejecutar Maxima desde Emacs, con el modo Imaxima\footnote{http://members3.jcom.home.ne.jp/imaxima} se consigue que los resultados estén formateados en \TeX. 
+Emacs es un editor clásico en sistemas Unix. Aunque hay varias formas de ejecutar Maxima desde Emacs, con el modo Imaxima\footnote{http://members3.jcom.home.ne.jp/imaxima} (Figura~\ref{fig:imaxima}) se consigue que los resultados estén formateados en \TeX. 
 
 También se han desarrollado en los últimos años entornos web para Maxima\footnote{http://maxima.sourceforge.net/relatedprojects.shtml}.
 
@@ -227,25 +226,32 @@ También se han desarrollado en los últimos años entornos web para Maxima\footnot
 \end{center}
 \end{figure}
 
+\begin{figure}[t]
+\begin{center}
+\includegraphics[scale=0.6]{imaxima.pdf} 
+\caption{Maxima en Emacs.}
+\label{fig:imaxima}
+\end{center}
+\end{figure}
 
 
 
 
 
-\subsection{Una primera sesión}
+
+\section{Una primera sesión}
 
 En esta sesión se intenta realizar un primer acercamiento al programa a fin de familiarizarse con el estilo operativo de Maxima, dejando sus habilidades matemáticas para más adelante.
 
 Una vez accedemos a Maxima, lo primero que vamos a ver será la siguiente información:
 
 \begin{Verbatim}
-Maxima 5.14.0 http://maxima.sourceforge.net
-Using Lisp CLISP 2.38 (2006-01-24)
+Maxima 5.25.0 http://maxima.sourceforge.net
+using Lisp CLISP 2.48 (2009-07-28)
 Distributed under the GNU Public License. See the file COPYING.
 Dedicated to the memory of William Schelter.
-This is a development version of Maxima. The function bug_report()
-provides bug reporting information.
-(%i1)
+The function bug_report() provides bug reporting information.
+(%i1) 
 \end{Verbatim}
 
 En primer lugar nos informa sobre la versión de Maxima que se está ejecutando y la URL del proyecto, a continuación indica qué entorno Lisp está dándole soporte al programa y la nota legal sobre la licencia, por supuesto GNU-GPL. Finaliza con un recordatorio a Schelter y cómo debemos proceder si encontramos un fallo en el programa, ayudando así a su mejora. Tras esta cabecera, muy importante, aparece el indicador \verb|(%i1)| esperando nuestra primera pregunta (\verb|i| de \emph{input}). Si queremos calcular una simple suma tecleamos la operación deseada seguida de un punto y coma (\verb|;|)\index{1@; (punto y coma)} y una pulsación de la tecla retorno
@@ -277,7 +283,7 @@ El punto y coma actúa también como un separador cuando escribimos varias instruc
 \]
 conviene prestar atención al hecho de que la asignación de un valor a una variable se hace con los dos puntos (\verb|:|)\index{35@: (operador de asignación)}, no con el signo de igualdad, que se reserva para las ecuaciones.
 
-Es posible que no deseemos los resultados intermedios que Maxima va calculando o, como en este caso, las asignaciones a las variables que va haciendo; en tales situaciones conviene hacer uso del delimitador \verb|$|\index{3@\$}, que no devuelve los resultados que va calculando. Repitiendo el cálculo de la forma 
+Es posible que no deseemos los resultados intermedios que Maxima va calculando o, como en este caso, las asignaciones a las variables que va haciendo; en tales situaciones debe hacerse uso del delimitador \verb|$|\index{3@\$}, que no devuelve los resultados que va calculando. Repitiendo el cálculo de la forma 
 \begin{Verbatim}
 (%i5) x:34578$ y:984003$ x*y;
 \end{Verbatim}
@@ -464,7 +470,7 @@ A fin de no perder los resultados de una sesión con Maxima, quizás con el objeto
 (%i28) save("mi.sesion",y,resultado=%o9,ecuacion=%i9)$
 \end{Verbatim}
 
-véase que el primer argumento de \verb|save|\index{save} es el nombre del archivo, junto con su ruta si se considera necesario, que la variable \verb|y| se escribe tal cual, pero que las referencias de las entradas y salidas deben ir acompañadas de un nombre que las haga posteriormente reconocibles.
+Véase que el primer argumento de \verb|save|\index{save} es el nombre del archivo, junto con su ruta si se considera necesario, que la variable \verb|y| se escribe tal cual, pero que las referencias de las entradas y salidas deben ir acompañadas de un nombre que las haga posteriormente reconocibles.
 
 Por último, la forma correcta de abandonar la sesión de Maxima es mediante
 \index{quit}\begin{Verbatim}
@@ -512,7 +518,7 @@ La función \verb|save| guarda las expresiones matemáticas en formato Lisp, pero 
 
 Continuemos experimentando con esta segunda sesión de Maxima que acabamos de iniciar. 
 
-Maxima está escrito en Lisp, por lo que ya se puede intuir su potencia a la hora de trabajar con listas; en el siguiente diálogo, el texto escrito entre las marcas \verb|/*| e \verb|*/| son comentarios que no afectan a los cálculos,
+Maxima está escrito en Lisp, por lo que ya se puede intuir su potencia a la hora de trabajar con listas; en el siguiente diálogo, el texto escrito entre las marcas \verb|/*| y \verb|*/| son comentarios que no afectan a los cálculos,
 
 \begin{Verbatim}
 (%i7) /* Se le asigna a la variable x una lista */
@@ -591,7 +597,7 @@ Un aspecto a tener en cuenta es que el comportamiento de Maxima está controlado 
 (%i17) numer:false$  /*se reinstaura valor por defecto */
 \end{Verbatim}
 
-Sin embargo, en ciertos contextos será preferible el uso de la función \verb|float|\index{float},
+Sin embargo, en general será preferible el uso de la función \verb|float|\index{float},
 \begin{Verbatim}
 (%i18) float(sqrt(8)/12);
 \end{Verbatim}
@@ -650,10 +656,17 @@ Ya se ha comentado más arriba cómo solicitar ayuda de Maxima. Algunos usuarios e
 
 \begin{Verbatim}
 (%i24)
-system("(mozilla /usr/local/share/maxima/5.14.0/doc/html/es.utf8/maxima.html)&")$
+system("(mozilla /usr/local/share/maxima/5.25.0/doc/html/es.utf8/maxima.html)&")$
 \end{Verbatim}
 
-Este proceso se puede automatizar si la instrucción anterior se guarda en un fichero de nombre \verb|maxima-init.mac| y se guarda en una carpeta oculta de nombre \verb|.maxima| en el directorio principal del usuario\footnote{En Linux}. Así, cada vez que arranque Maxima, se abrirá el navegador con el manual de referencia del programa.
+Este proceso se puede automatizar si la instrucción anterior se guarda en un fichero de nombre \verb|maxima-init.mac| y se guarda en la carpeta hacia la que apunta la variable \verb|maxima_userdir|; por ejemplo, en Linux,
+
+\begin{Verbatim}
+(%i25) maxima_userdir;
+\end{Verbatim}
+$$\mbox{{}/home/xefe/.maxima{}}\leqno{\tt (\%o25)}$$
+
+El fichero \verb|maxima-init.mac| se lee cada vez que arranca Maxima y se ejecutan las instrucciones contenidas en él; se puede utilizar para cargar automáticamente módulos adicionales que vayamos a utilizar con frecuencia, funciones especiales definidas por nosotros o, como en este caso, para que se abra el navegador con las páginas del manual.
 
 
 
@@ -661,13 +674,14 @@ Este proceso se puede automatizar si la instrucción anterior se guarda en un fic
 
 
 \newpage
-\section{Números, estructuras de datos y sus operaciones}
+\chapter{Números y sus operaciones}
 
 
 
 
 
-\subsection{Operaciones aritméticas}
+
+\section{Enteros y decimales}
 
 Maxima puede trabajar con números enteros tan grandes como sea necesario,
 
@@ -762,7 +776,8 @@ Evaluation took 0.86 seconds (0.85 elapsed) using 48.571 MB.
  \,268501\,10567201\,13334701\,1182468601\,1133836730401\end{array}    \leqno{\tt (\%o8)}
 \]
 \begin{Verbatim}
-(%i9) showtime:false$  /* desactivamos la información de los tiempos */
+(%i9) /* desactivamos la información de los tiempos */
+      showtime: false$
 \end{Verbatim}
 El texto que se escribe entre \verb|/*| y \verb|*/| son comentarios que Maxima ignora.
 
@@ -820,7 +835,9 @@ En lo que concierne a la división, puede ser necesario conocer el cociente enter
 
 
 
-\subsection{Números complejos}
+
+
+\section{Números complejos}
 
 Como ya se comentó más arriba, la unidad imaginaria $\sqrt{-1}$ se representa en Maxima mediante el símbolo \verb|%i|\index{i},
 \begin{Verbatim}
@@ -854,7 +871,7 @@ i+{{7}\over{2}}\leqno{\tt (\%o4)}
 (%i7) z1 / z2;     /* división */
 \end{Verbatim}
 \[
-{{5\,i+3}\over{{{1}\over{2}}-4\,i}}\leqno{\tt (\%o25)}
+{{5\,i+3}\over{{{1}\over{2}}-4\,i}}\leqno{\tt (\%o7)}
 \]
 
 Es posible que estos dos últimos resultados nos parezcan frustrantes y los deseemos en otro formato; a tal efecto podemos pedir a Maxima que nos devuelva \verb|(%o6)| y \verb|(%o7)| en forma cartesiana,
@@ -907,7 +924,7 @@ Antes hemos optado por los resultados en formato cartesiano; pero también es pos
 0.8923076923076924\,i-1.138461538461538\leqno{\tt (\%o14)}
 \]
 
-La norma de un número complejo se calcula con la función \verb|abs|\index{abs} y admite el argumento tanto en forma cartesiana como polar,
+El módulo de un número complejo se calcula con la función \verb|abs|\index{abs} y se le puede pasar el número tanto en su forma cartesiana como polar,
 \begin{Verbatim}
 (%i15) abs(%o9);
 \end{Verbatim}
@@ -921,35 +938,173 @@ La norma de un número complejo se calcula con la función \verb|abs|\index{abs} y
 {{2\,\sqrt{34}}\over{\sqrt{65}}}\leqno{\tt (\%o16)}
 \]
 
+El argumento de un número complejo se calcula con la función \verb|carg|\index{carg}, que devuelve un ángulo en el intervalo $(-\pi, \pi]$,
+\begin{Verbatim}
+(%i17) carg(%o9);
+\end{Verbatim}
+$$\pi-\arctan \left({{29}\over{37}}\right)\leqno{\tt (\%o17)}$$
+
 Por último, el conjugado de un número complejo se calcula con la función \verb|conjugate|\index{conjugate}. Como se ve en este ejemplo, el resultado dependerá del formato del argumento, cartesiano o polar,
 \begin{Verbatim}
-(%i17) conjugate(%o9);       /*forma cartesiana*/
+(%i18) conjugate(%o9);       /*forma cartesiana*/
 \end{Verbatim}
 \[
--{{58\,i}\over{65}}-{{74}\over{65}}\leqno{\tt (\%o17)}
+-{{58\,i}\over{65}}-{{74}\over{65}}\leqno{\tt (\%o18)}
 \]
 \begin{Verbatim}
-(%i18) conjugate(%o12);      /*forma polar*/
+(%i19) conjugate(%o12);      /*forma polar*/
 \end{Verbatim}
 \[
 -{{2\,\sqrt{34}\,e^{i\,\arctan \left({{29}\over{37}}\right)}}\over{
- \sqrt{65}}}\leqno{\tt (\%o18)}
+ \sqrt{65}}}\leqno{\tt (\%o19)}
 \]
 
 
 
 
+\section{Combinatoria}
+
+Ya hemos visto el cálculo del factorial de un número natural, bien con el operador \verb|!|, bien con la función \verb|factorial|\index{factorial}; así podemos calcular el número de permutacions de $n$ elementos, $P_n = n!$,
+
+\begin{Verbatim}
+(%i1) /* permutaciones de 23 elementos */
+      factorial(23);
+\end{Verbatim}
+$$25852016738884976640000\leqno{\tt (\%o1)}$$
+
+Esto nos da el número de ordenaciones diferentes que se pueden hacer con $n$ objetos; si queremos generarlas podemos hacer uso de la función \verb|permutations|\index{permutations},
+
+\begin{Verbatim}
+(%i2) permutations([1,2,3]);
+\end{Verbatim}
+$$\left \{\left[ 1 , 2 , 3 \right]  , \left[ 1 , 3 , 2 \right]  , 
+ \left[ 2 , 1 , 3 \right]  , \left[ 2 , 3 , 1 \right]  , \left[ 3 , 1
+  , 2 \right]  , \left[ 3 , 2 , 1 \right]  \right \}\leqno{\tt (\%o2)}$$
+
+Cuando se trabaja con factoriales, la función \verb|minfactorial|\index{minfactorial} puede ayudarnos a simplificar algunas expresiones,
+
+\begin{Verbatim}
+(%i3) n!/(n+2)!;
+\end{Verbatim}
+$${{n!}\over{\left(n+2\right)!}}\leqno{\tt (\%o3)}$$
+\begin{Verbatim}
+(%i4) minfactorial (%);
+\end{Verbatim}
+$${{1}\over{\left(n+1\right)\,\left(n+2\right)}}\leqno{\tt (\%o4)}$$
+
+El cálculo del número de variaciones con repetición de $m$ elementos tomados de $n$ en $n$, $VR_m^n = m^n$, no necesita de ninguna función especial,
+
+\begin{Verbatim}
+(%i5) /* VR de 17 tomados de 4 en 4 */
+      17^4;
+\end{Verbatim}
+$$83521\leqno{\tt (\%o5)}$$
+
+Sin embargo, para calcular el número de variaciones sin repetición de $m$ elementos tomados de $n$ en $n$, 
+$V_m^n = m!/(m-n)!$, debemos hacer uso de la función \verb|permutation|\index{permutation} definida en el módulo \verb|functs|, que tendremos que cargar en memoria previamente,
+
+\begin{Verbatim}
+(%i6) load("functs")$
+(%i7) /* V de 17 tomados de 4 en 4 */
+      permutation(17,4);
+\end{Verbatim}
+$$57120\leqno{\tt (\%o7)}$$
+
+Nótese que podemos calcular $P_{23}$ con esta misma función, sin llamar al factorial,
+
+\begin{Verbatim}
+(%i8) /* permutaciones de 23 elementos, otra vez */
+      permutation(23,23);
+\end{Verbatim}
+$$25852016738884976640000\leqno{\tt (\%o8)}$$
+
+El número de combinaciones de $m$ elementos tomados de $n$ en $n$, $C_m^n = V_m^n / P_n$, se puede calcular con la función \verb|binomial|\index{binomial},
+
+\begin{Verbatim}
+(%i9) /* combinaciones de 30 elementos, tomados de 5 en 5 */
+      binomial(30,5);
+\end{Verbatim}
+$$142506\leqno{\tt (\%o9)}$$
+
+El número de permutaciones de $n$ elementos, con repeticiones $a_1, \ldots, a_k$,
+$$
+P_n^{a_1, \ldots, a_r} = \frac{(a_1+ \ldots + a_r)!}{a_1! \cdot \ldots \cdot a_r!},
+$$
+siendo $a_1+ \ldots + a_r = n$, se calcula con la función \verb|multinomial_coeff|\index{multinomial\_coeff},
+
+\begin{Verbatim}
+(%i10) /* permutaciones con repetición de 5 elementos,
+         con repeticiones 2, 2 y 1 */
+      multinomial_coeff(2,2,1);
+\end{Verbatim}
+$$30\leqno{\tt (\%o10)}$$
+
+La función \verb|stirling1|\index{stirling1} calcula el número de Stirling de primera especie, $s(n,k)$, que se define de la forma
+\[
+(-1)^{n-k} \cdot s(n,k) = \mbox{Card} \{\sigma | \sigma \mbox{ es permutación de } \{1, \ldots, n\} \land \sigma \mbox{ tiene } k \mbox{ ciclos}\}
+\]
+
+\begin{Verbatim}
+(%i11) stirling1(5,2);
+\end{Verbatim}
+$$-50\leqno{\tt (\%o11)}$$
+
+Por otro lado, la función \verb|stirling2|\index{stirling2} calcula el número de Stirling de segunda especie, $S(n,k)$, que se define de la forma
+ \[
+S(n,k) = \mbox{Card} \{\pi | \pi \mbox{ es partición de } \{1, \ldots, n\} \land \mbox{Card}(\pi) = k \}
+\]
+
+\begin{Verbatim}
+(%i12) stirling2(3,2);
+\end{Verbatim}
+$$3\leqno{\tt (\%o12)}$$
+
+Esto es, hay 3 particiones de $\{1,2,3\}$ formadas por dos subconjuntos, las cuales podemos obtener invocando la función 
+\verb|set_partitions|\index{set\_partitions},
+
+\begin{Verbatim}
+(%i13) set_partitions ({1,2,3}, 2);
+\end{Verbatim}
+$$\left \{\left \{\left \{1 \right \} , \left \{2 , 3 \right \}
+  \right \} , \left \{\left \{1 , 2 \right \} , \left \{3 \right \}
+  \right \} , \left \{\left \{1 , 3 \right \} , \left \{2 \right \}
+  \right \} \right \}\leqno{\tt (\%o13)}$$
+
+El número de Bell, que calculamos con la función \verb|belln|\index{belln} es el número total de particiones que admite un conjunto finito,
+\[
+B(n) = \sum_{k=1}^{n} S(n,k).
+\]
+
+\begin{Verbatim}
+(%i14) /* número de particiones en un conjunto de cardinalidad 3 */
+       belln(3);
+\end{Verbatim}
+$$5\leqno{\tt (\%o14)}$$
+
+En relación con la combinatoria, véanse también las secciones \ref{conjuntos} y \ref{grafos}, sobre conjuntos y grafos, respectivamente.
 
 
-\subsection{Listas}
+
+
+
+
+
+
+
+\newpage
+\chapter{Estructuras de datos}
+
+
+
+
+\section{Listas}
 \label{listas}
 
 Las listas son objetos muy potentes a la hora de representar estructuras de datos; de hecho, toda expresión de Maxima se representa internamente como una lista, lo que no es de extrañar habida cuenta de que Maxima está programado en Lisp (\emph{List Processing}). Veamos cómo podemos ver la representación interna, esto es en Lisp, de una sencilla expresión tal como $1+3a$,
 \index{31@:lisp}\begin{Verbatim}
-(%i1) :lisp #$1+3*a$
-((MPLUS SIMP) 1 ((MTIMES SIMP) 3 $a))
+(%i1) ?print(1+3*a)$
+((MPLUS SIMP) 1 ((MTIMES SIMP) 3 $A))
 \end{Verbatim}
-Nótese que el formato general es de la forma \verb|:lisp #$expr$|, siendo \verb|expr| una expresión cualquiera en Maxima.
 
 Pero al nivel del usuario que no está interesado en las interioridades de Maxima, también se puede trabajar con listas como las definidas a continuación, siempre encerradas entre corchetes,
 \index{34@[...]}\index{32@``...''}\begin{Verbatim}
@@ -1005,7 +1160,7 @@ Vemos que los elementos de una lista pueden a su vez ser también listas, expresi
 {{\sqrt{3}}\over{2}}\leqno{\tt (\%o9)}
 \]
 \begin{Verbatim}
-(%i10) length(r); /* cuantos hay? */
+(%i10) length(r); /* ¿cuántos hay? */
 \end{Verbatim}
 \[
 4\leqno{\tt (\%o10)}
@@ -1018,19 +1173,20 @@ Vemos que los elementos de una lista pueden a su vez ser también listas, expresi
   \right]  , 1 \right] \leqno{\tt (\%o11)}
 \]
 \begin{Verbatim}
-(%i12) member(a,r); /* es a un elemento?*/
+(%i12) member(a,r); /* ¿es a un elemento?*/
 \end{Verbatim}
 \[
 \mathrm{false}\leqno{\tt (\%o12)}
 \]
 \begin{Verbatim}
-(%i13) member([a,3],r); /* lo es [a,3]? */
+(%i13) member([a,3],r); /* ¿lo es [a,3]? */
 \end{Verbatim}
 \[
 \mathrm{true}\leqno{\tt (\%o13)}
 \]
 \begin{Verbatim}
-(%i14) sort(q: [7,a,1,d,5,3,b]); /* asigno valor a q y ordeno */
+(%i14) /* asigno valor a q y ordeno */
+       sort(q: [7,a,1,d,5,3,b]);
 \end{Verbatim}
 \[
 \left[ 1 , 3 , 5 , 7 , a , b , d \right] \leqno{\tt (\%o14)}
@@ -1112,7 +1268,7 @@ La función \verb|apply|\index{apply} permite suministrar a otra función todos lo
 \]
 aunque estas dos operaciones hubiese sido quizás más apropiado haberlas realizado con las funciones \verb|sum|\index{sum} y \verb|product|\index{product}.
 
-A veces interesará aplicar una misma función a varios elementos de una lista de forma independiente, para lo que haremos uso de \verb|map|\index{map}; a continuación un ejemplo de cálculo de factoriales y otro trigonométrico,
+A veces interesará aplicar una misma función a varios elementos de una lista de forma independiente, para lo que haremos uso de \verb|map|\index{map}. A continuación un ejemplo de cálculo de factoriales y otro trigonométrico; en este último, no es necesario aplicar \verb|map|, ya que algunas funciones se distribuyen automáticamente sobre los elementos de una lista,
 \begin{Verbatim}
 (%i26) map("!",s);
 \end{Verbatim}
@@ -1123,7 +1279,7 @@ A veces interesará aplicar una misma función a varios elementos de una lista de 
   \right]\end{array}  \leqno{\tt (\%o26)}
 \]
 \begin{Verbatim}
-(%i27) map(sin,s);
+(%i27) sin(s);
 \end{Verbatim}
 \[
 \left[ \sin 2 , \sin 4 , \sin 6 , \sin 8 , \sin 10 , \sin 12 , 
@@ -1144,7 +1300,7 @@ Como se ve, la función \emph{lambda} admite dos argumentos; el primero es una li
 de argumentos, siendo el segundo la expresión que indica qué se hace con los elementos de la lista anterior.
 
 
-Por último, las listas también pueden ser utilizadas en operaciones aritméticas,
+Por último, las listas también pueden ser utilizadas en operaciones aritméticas. Algunas de las operaciones que se aplican a continuación no están definidas matemáticamente, por lo que Maxima se toma la libertad de definirlas por su cuenta, lo que redunda en un ahorro de código por parte del usuario y en un estilo de programación más compacto,
 \index{14@+}\index{15@-}\index{16@*}\index{17@/}\index{18@\^\ }\index{21@.}\begin{Verbatim}
 (%i29) [1,2,3]+[a,b,c];
 \end{Verbatim}
@@ -1188,7 +1344,7 @@ Por último, las listas también pueden ser utilizadas en operaciones aritméticas,
 \left[ 3^{a} , 3^{b} , 3^{c} \right] \leqno{\tt (\%o35)}
 \]
 
-En Maxima, las listas se pueden interpretar como vectores; para más información, acúdase a la Sección~\ref{vectores}
+En Maxima, las listas se pueden interpretar como vectores; para más información, acúdase a la Sección~\ref{vectores}.
 
 Para que estas operaciones puedan realizarse sin problemas, la variable global \verb|listarith|\index{listarith} debe tomar el valor \verb|true|, en caso contrario el resultado será bien distinto,
 \begin{Verbatim}
@@ -1233,10 +1389,10 @@ El cálculo del módulo de un vector se puede hacer mediante la definición previa 
 
 
 
-\subsection{Arrays}
+\section{Arrays}
 \label{arrays}
 
-Los arrays son estructuras que almacenan datos secuencial o matricialmente. Se diferencian de las listas en que éstas pueden alterar su estructura interna y los arrays no; pero la ventaja frente a las listas estriba en que el acceso a un dato cualquiera es directo, mientras que en las listas, al ser estructuras dinámicas, para acceder al $n$-ésimo dato, un puntero debe recorrer todos los elementos de la lista desde el que ocupa el primer lugar. Así pues, se recomienda el uso de arrays cuando se vaya a utilizar una secuencia larga de cantidades cuya estructura se va a mantener inalterable; en general, se mejorarán los tiempos de procesamiento.
+Los arrays son estructuras que almacenan datos secuencial o matricialmente. Se diferencian de las listas en que éstas pueden alterar su estructura interna y los arrays no; pero la ventaja frente a las listas estriba en que el acceso a un dato cualquiera es directo, mientras que en las listas, al ser estructuras dinámicas, para acceder al $n$-ésimo dato, un puntero debe recorrer todos los elementos de la lista desde el que ocupa el primer lugar. Así pues, se recomienda el uso de arrays cuando se vaya a utilizar una secuencia larga de expresiones cuya estructura se va a mantener inalterable; en general, se mejorarán los tiempos de procesamiento.
 
 Si queremos construir un array, lo debemos declarar previamente mediante la función \verb|array|\index{array}, indicando su nombre y dimensiones; a continuación le asignaríamos valores a sus elementos,
 \begin{Verbatim}
@@ -1336,7 +1492,7 @@ a-b\leqno{\tt (\%o17)}
 \]
 Esta generalidad en la estructura de los arrays no declarados tiene la contrapartida de restarle eficiencia en el procesamiento de los datos almacenados, siendo preferible, siempre que sea posible, la utilización de los declarados.
 
-Ya por último, junto con los arrays declarados y no declarados mencionados, es posible trabajar a nivel de Maxima con arrays de lisp. En este caso su construcción se materializa con la función \verb|make_array|\index{make\_array},
+Ya por último, junto con los arrays declarados y no declarados mencionados, es posible trabajar a nivel de Maxima con arrays de Lisp. En este caso su construcción se materializa con la función \verb|make_array|\index{make\_array},
 \begin{Verbatim}
 (%i18) a: make_array(flonum,5);
 \end{Verbatim}
@@ -1372,7 +1528,7 @@ Nótense aquí un par de diferencias respecto de la función \verb|array|: el númer
 
 
 
-\subsection{Cadenas}
+\section{Cadenas}
 
 Una cadena se construye escribiendo un texto o cualquier otra expresión entre comillas dobles. Vamos a hacer algunos ejemplos básicos,
 \begin{Verbatim}
@@ -1616,13 +1772,16 @@ En algunos contextos el usuario tiene almacenada una expresión sintácticamente c
 
 Véase que el resultado de \verb|parse_string| ya no es una cadena, sino una expresión correcta de Maxima sin evaluar, cuya evaluación se solicita a continuación con la doble comilla simple.
 
+Para más información sobre el procesamiento de cadenas de texto, se sugiere la lectura del capítulo \verb|stringproc| del manual de referencia.
 
 
 
 
 
 
-\subsection{Conjuntos}
+
+\section{Conjuntos}
+\label{conjuntos}
 
 Se define a continuación un conjunto mediante la función \verb|set|\index{set},
 \begin{Verbatim}
@@ -1634,7 +1793,9 @@ Se define a continuación un conjunto mediante la función \verb|set|\index{set},
   , \mbox{{}Sancho{}} , a , \left \{a , b \right \} , b \right \}\leqno{\tt (\%o1)}
 \]
 
-Como se ve, se admiten objetos de muy diversa naturaleza como elementos de un conjunto: números, expresiones, el conjunto vacío (\verb|{}|), listas, otros conjuntos o cadenas de caracteres. Cuando se trabaja con listas, puede ser de utilidad considerar sus componentes como elementos de un conjunto, luego se necesita una función que nos transforme una lista en conjunto,
+Como se ve, se admiten objetos de muy diversa naturaleza como elementos de un conjunto: números, expresiones, el conjunto vacío (\verb|{}|), listas, otros conjuntos o cadenas de caracteres. Se habrá observado que al construir un conjunto se eliminan las repeticiones de elementos, cual es el caso del símbolo $a$ en la lista anterior.
+
+Cuando se trabaja con listas, puede ser de utilidad considerar sus componentes como elementos de un conjunto, luego se necesita una función que nos transforme una lista en conjunto,
 \index{setify}\begin{Verbatim}
 (%i2) [[2,k],sqrt(2),set(b,a),[k,2],"Panza"];
 \end{Verbatim}
@@ -1763,13 +1924,24 @@ Por último ya, el producto cartesiano de tres conjuntos,
   , y \right]  \right \}\end{array}       \leqno{\tt (\%o16)}
 \]
 
+Ya por último, el conjunto de las partes de un conjunto, o conjunto potencia, lo podemos obtener con la función \verb|powerset|\index{powerset}
+
+\begin{Verbatim}
+(%i17) powerset({1,a,sqrt(2)});
+\end{Verbatim}
+$$\left \{\left \{ \right \} , \left \{1 \right \} , \left \{1 , 
+ \sqrt{2} \right \} , \left \{1 , \sqrt{2} , a \right \} , \left \{1
+  , a \right \} , \left \{\sqrt{2} \right \} , \left \{\sqrt{2} , a
+  \right \} , \left \{a \right \} \right \}\leqno{\tt (\%o17)}$$
 
 
 
 
-\subsection{Grafos}
 
-El soporte para el desarrollo de algoritmos en el ámbito de la teoría de grafos se encuentra en el módulo \verb|graphs|\index{graphs}. Se trata de un paquete de reciente creación que aporta la infraestructura básica para el trabajo con grafos, orientados o no. No se admiten bucles ni aristas múltiples.
+\section{Grafos}
+\label{grafos}
+
+El soporte para el desarrollo de algoritmos en el ámbito de la teoría de grafos se encuentra en el módulo \verb|graphs|\index{graphs}. Se trata de un paquete de funciones que aporta la infraestructura básica para el trabajo con grafos, orientados o no. No se admiten bucles ni aristas múltiples.
 
 \index{create\_graph}\begin{Verbatim}
 (%i1) load(graphs)$
@@ -1881,8 +2053,7 @@ Adjacencies:
   7 :  1  2  3  4  5
 \end{Verbatim}
 
-Pedimos ahora a Maxima que nos represente gráficamente el complementario de \verb|g|, cuyo aspecto es del apartado \emph{c)} de la 
-Figura~\ref{fig:graph}.
+Pedimos ahora a Maxima que nos represente gráficamente el complementario de \verb|g|, cuyo aspecto es el del apartado \emph{c)} de la Figura~\ref{fig:graph}.
 
 \begin{Verbatim}
 (%i12) draw_graph(gc, show_id=true, terminal=eps)$
@@ -2007,7 +2178,7 @@ Por último ya, un ejemplo de cálculo de la ruta más corta. Se genera un grafo or
           terminal    = eps)$
 \end{Verbatim}
 
-El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y ponderaciones en las aristas y arcos. El lector interesado podrá consultar la documentación correspondiente\footnote{A partir de la versión 5.14 de Maxima}. 
+El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y ponderaciones en las aristas y arcos. El lector interesado podrá consultar la documentación correspondiente en el manual de referencia. 
 
 
 
@@ -2015,10 +2186,13 @@ El paquete \verb|graphs| también permite el uso de etiquetas en los nodos y pond
 
 
 \newpage
-\section{Álgebra}
+\chapter{Álgebra}
 
 
-\subsection{Transformaciones simbólicas}
+\section{Transformaciones simbólicas}
+
+
+\subsubsection{Expresiones algebraicas}
 
 Sin duda, una de las capacidades más destacables de Maxima es su habilidad para manipular expresiones algebraicas. Desarrollemos un ejemplo que empieza por asignar a la variable \verb|q| una expresión literal:
 \begin{Verbatim}
@@ -2029,7 +2203,7 @@ Sin duda, una de las capacidades más destacables de Maxima es su habilidad para 
  \left(x-{{1}\over{4}}\right)^5}}\leqno{\tt (\%o1)}
 \]
 
-Se observa que en principio Maxima no realiza ningún cálculo. La función \verb|expand|\index{expand} se encarga de desarrollar las potencias,
+Se observa que en principio Maxima no realiza ningún cálculo. La función \verb|expand|\index{expand} se encarga de desarrollar las potencias y los productos algebraicos,
 \begin{Verbatim}
 (%i2) expand(q);
 \end{Verbatim}
@@ -2043,14 +2217,14 @@ Se observa que en principio Maxima no realiza ningún cálculo. La función \verb|e
 
 No obstante es posible que no nos interese desplegar toda la expresión, entre otras cosas para evitar una respuesta farragosa y difícil de interpretar; en tal caso podemos utilizar \verb|expand|\index{expand} añadiéndole dos argumentos y operar de la manera siguiente
 \begin{Verbatim}
-(%i3) q,expand(3,2);
+(%i3) expand(q,3,2);
 \end{Verbatim}
 \[
 {{1}\over{x+b}}+\left(x+3\right)^5-x^3+3\,a\,x^2-3\,a^2\,x+{{1
  }\over{\left(x-{{1}\over{4}}\right)^5}}+a^3\leqno{\tt (\%o3)}
 \]
 
-Con el primer argumento indicamos que queremos la expansión de todas aquellas potencias con exponente positivo menor o igual a 3 y de las que teniendo el exponente negativo no excedan en valor absoluto de 2.
+Con los argumentos adicionales indicamos que queremos la expansión de todas aquellas potencias con exponente positivo menor o igual a 3 y de las que teniendo el exponente negativo no excedan en valor absoluto de 2.
 
 Dada una expresión con valores literales, podemos desear sustituir alguna letra por otra expresión; por ejemplo, si queremos hacer los cambios $a=2$, $b=2c$ en el último resultado obtenido,
 \begin{Verbatim}
@@ -2061,14 +2235,14 @@ Dada una expresión con valores literales, podemos desear sustituir alguna letra 
  \left(x-{{1}\over{4}}\right)^5}}+8\leqno{\tt (\%o4)}
 \]
 
-En estos dos últimos ejemplos (\verb|%i3| y \verb|%i4|) se presentaron sentencias en las que había elementos separados por comas (\verb|,|)\index{2@, (coma)}. Esta es una forma simplificada de utilizar la función \verb|ev|, que evalúa la primera expresión asignando los valores que se le van indicando a continuación; por ejemplo, \verb|(%i3)| se podía haber escrito de la forma \verb|ev(q,expand(3,2))| o \verb|expand(q,3,2)| y \verb|(%i4)| como \verb|ev(%,a=2,b=2*c)|. El uso de la variante con \verb|ev|\index{ev} está más indicado para ser utilizado dentro de expresiones más amplias. Obsérvese el resultado siguiente
+En el ejemplo \verb|%i4| se presenta una sentencia en la que hay elementos separados por comas (\verb|,|)\index{2@, (coma)}. Esta es una forma simplificada de utilizar la función \verb|ev|, que evalúa la primera expresión asignando los valores que se le van indicando a continuación; por ejemplo, \verb|(%i4)| se podría haber escrito como \verb|ev(%,a=2,b=2*c)|. El uso de la variante con \verb|ev|\index{ev} está más indicado para ser utilizado dentro de expresiones más amplias. Obsérvese el resultado siguiente
 \begin{Verbatim}
 (%i5) 3*x^2 + ev(x^4,x=5);
 \end{Verbatim}
 \[
 3\,x^2+625\leqno{\tt (\%o5)}
 \]
-donde la sustitución $x=5$ se ha realizado exclusivamente dentro del entorno delimitado por la función \verb|ev|.
+donde la sustitución $x=5$ se ha realizado exclusivamente dentro del contexto delimitado por la función \verb|ev|.
 
 De forma más general, la función \verb|subst|\index{subst} sustituye subexpresiones enteras. En el siguiente ejemplo, introducimos una expresión algebraica y a continuación sustituimos todos los binomios \verb|x+y| por la letra \verb|k|,
 \begin{Verbatim}
@@ -2081,7 +2255,7 @@ De forma más general, la función \verb|subst|\index{subst} sustituye subexpresio
 (%i7) subst(k,x+y,%);
 \end{Verbatim}
 \[
--{{k}\over{z}}+k^2+{{1}\over{k}}\leqno{\tt (\%o44)}
+-{{k}\over{z}}+k^2+{{1}\over{k}}\leqno{\tt (\%o7)}
 \]
 
 No obstante, el siguiente resultado nos sugiere que debemos ser precavidos con el uso de esta función, ya que Maxima no siempre interpretará como subexpresión aquella que para nosotros sí lo es:
@@ -2092,350 +2266,400 @@ No obstante, el siguiente resultado nos sugiere que debemos ser precavidos con e
 y+x+k\leqno{\tt (\%o8)}
 \]
 
+La función \verb|subst| realiza una simple sustitución sintáctica que, si bien es suficiente en la mayor parte de los casos, a veces se queda corta como en la situación anterior; la función \verb|ratsubst|\index{ratsubst} es capaz de utilizar información semántica y obtene mejores resultados,
+
+\index{subst}\begin{Verbatim}
+(%i9) ratsubst(sqrt(k),x+y,(x+y)^2+(x+y));
+\end{Verbatim}
+$$k+\sqrt{k}\leqno{\tt (\%o9)}$$
+
 Como una aplicación práctica de \verb|subst|, veamos cómo podemos utilizarla para obtener el conjugado de un número complejo,
 \begin{Verbatim}
-(%i9) subst(-%i,%i,a+b*%i);
+(%i10) subst(-%i,%i,a+b*%i);
 \end{Verbatim}
 \[
-a-i\,b\leqno{\tt (\%o9)}
+a-i\,b\leqno{\tt (\%o10)}
 \]
 
 La operación inversa de la expansión es la factorización. Expandamos y factoricemos sucesivamente un polinomio para comprobar los resultados,
 \index{expand}\index{factor}\begin{Verbatim}
-(%i10) expand((a-2)*(b+1)^2*(a+b)^5);
+(%i11) expand((a-2)*(b+1)^2*(a+b)^5);
 \end{Verbatim}
 \[
 \begin{array}{c}
 a\,b^7-2\,b^7+5\,a^2\,b^6-8\,a\,b^6-4\,b^6+10\,a^3\,b^5-10\,a^2\,b^5
  -19\,a\,b^5-2\,b^5+10\,a^4\,b^4-  \\ 35\,a^2\,b^4-10\,a\,b^4+5\,a^5\,b^3+10
   \,a^4\,b^3-30\,a^3\,b^3-20\,a^2\,b^3+a^6\,b^2+8\,a^5\,b^2-10\,a^4\,b
- ^2- \\ 20\,a^3\,b^2+2\,a^6\,b+a^5\,b-10\,a^4\,b+a^6-2\,a^5 \end{array} \leqno{\tt (\%o10)}
+ ^2- \\ 20\,a^3\,b^2+2\,a^6\,b+a^5\,b-10\,a^4\,b+a^6-2\,a^5 \end{array} \leqno{\tt (\%o11)}
 \]
 \begin{Verbatim}
-(%i11) factor(%);
+(%i12) factor(%);
 \end{Verbatim}
 \[
-\left(a-2\right)\,\left(b+1\right)^2\,\left(b+a\right)^5\leqno{\tt (\%o11)}
+\left(a-2\right)\,\left(b+1\right)^2\,\left(b+a\right)^5\leqno{\tt (\%o12)}
 \]
 
 El máximo común divisor de un conjunto de polinomios se calcula con la función \verb|gcd|\index{gcd} y el mínimo común múltiplo con \verb|lcm|\index{lcm}
 \begin{Verbatim}
-(%i12) p1: x^7-4*x^6-7*x^5+8*x^4+11*x^3-4*x^2-5*x;
+(%i13) p1: x^7-4*x^6-7*x^5+8*x^4+11*x^3-4*x^2-5*x;
 \end{Verbatim}
 \[
-x^7-4\,x^6-7\,x^5+8\,x^4+11\,x^3-4\,x^2-5\,x\leqno{\tt (\%o12)}
+x^7-4\,x^6-7\,x^5+8\,x^4+11\,x^3-4\,x^2-5\,x\leqno{\tt (\%o13)}
 \]
 \begin{Verbatim}
-(%i13) p2: x^4-2*x^3-4*x^2+2*x+3;
+(%i14) p2: x^4-2*x^3-4*x^2+2*x+3;
 \end{Verbatim}
 \[
-x^4-2\,x^3-4\,x^2+2\,x+3\leqno{\tt (\%o13)}
+x^4-2\,x^3-4\,x^2+2\,x+3\leqno{\tt (\%o14)}
 \]
 \begin{Verbatim}
-(%i14) gcd(p1,p2);
+(%i15) gcd(p1,p2);
 \end{Verbatim}
 \[
-x^3+x^2-x-1\leqno{\tt (\%o14)}
+x^3+x^2-x-1\leqno{\tt (\%o15)}
 \]
 \begin{Verbatim}
-(%i15) load(functs)$
-(%i16) lcm(p1,p2);
+(%i16) load(functs)$
+(%i17) lcm(p1,p2);
 \end{Verbatim}
 \[
 \left(x-5\right)\,\left(x-3\right)\,\left(x-1\right)^2\,x\,\left(x+1
- \right)^3\leqno{\tt (\%o16)}
+ \right)^3\leqno{\tt (\%o17)}
 \]
 
-En \verb|(%i12)| y \verb|(%i13)| definimos los polinomios \verb|p1| y \verb|p2|, a continuación calculamos su máximo común divisor (mcd) en \verb|(%i14)| y antes de pedir el mínimo común múltiplo en \verb|(%i16)| cargamos el paquete \verb|functs| en el que se encuentra definida la función \verb|lcm|. Es posible que deseemos disponer del mcd factorizado, por lo que hacemos
+En \verb|(%i13)| y \verb|(%i14)| definimos los polinomios \verb|p1| y \verb|p2|, a continuación calculamos su máximo común divisor (mcd) en \verb|(%i15)| y antes de pedir el mínimo común múltiplo en \verb|(%i17)| cargamos el paquete \verb|functs| en el que se encuentra definida la función \verb|lcm|. Es posible que deseemos disponer del mcd factorizado, por lo que hacemos
 \index{factor}\begin{Verbatim}
-(%i17) factor(%o14);
+(%i18) factor(%o15);
 \end{Verbatim}
 \[
-\left(x-1\right)\,\left(x+1\right)^2\leqno{\tt (\%o17)}
+\left(x-1\right)\,\left(x+1\right)^2\leqno{\tt (\%o18)}
 \]
+
+Hay varias funciones en Maxima que se pueden utilizar para extraer coeficientes de expresiones algebraicas; una de ellas es \verb|ratcoef|\index{ratcoef}. Dado el polinomio $(x-y)^4$, podemos querer extraer el coeficiente de $x^2 y^2$,
+
+\begin{Verbatim}
+(%i19) ratcoef((x-y)^4, x^2*y^2);
+\end{Verbatim}
+$$6\leqno{\tt (\%o19)}$$
+
+Cuando tenemos expandido un polinomio de varias variables, podemos querer transformarlo en otro univariante con coeficientes literales; aquí puede ser de ayuda la función \verb|rat|\index{rat},
+
+\begin{Verbatim}
+(%i20) q: m^2*x^2+x^2+2*b*m*x-6*m*x-4*x+b^2-6*b+13;
+\end{Verbatim}
+$$m^2\,x^2+x^2+2\,b\,m\,x-6\,m\,x-4\,x+b^2-6\,b+13\leqno{\tt (\%o20)}$$
+\begin{Verbatim}
+(%i21) rat(q, x);
+\end{Verbatim}
+$$\left(m^2+1\right)\,x^2+\left(\left(2\,b-6\right)\,m-4\right)\,x+b^
+ 2-6\,b+13\leqno{\tt (\%o21)}$$
+
+Llamando nuevamente a \verb|ratcoef| podemos extraer el coeficiente del término de primer grado respecto de $x$,
+
+\begin{Verbatim}
+(%i22) ratcoef(%,x);
+\end{Verbatim}
+$$\left(2\,b-6\right)\,m-4\leqno{\tt (\%o22)}$$
+
+Otro ejemplo ilstrativo de \verb|rat| en acción,
+
+\begin{Verbatim}
+(%i23) rat((x^b+a*x^b+x)^2, x^b);
+\end{Verbatim}
+$$\left(a^2+2\,a+1\right)\,\left(x^{b}\right)^2+\left(2\,a+2\right)\,
+ x\,x^{b}+x^2\leqno{\tt (\%o23)}$$
 
 Si en algún momento queremos inhibir las simplificaciones, podemos hacer uso de la variable global \verb|simp|\index{simp}, cuyo valor por defecto es \verb|true|,
 
 \begin{Verbatim}
-(%i18) simp: false$
-(%i19) 2 + 2 + a + a;
+(%i24) simp: false$
+(%i25) 2 + 2 + a + a;
 \end{Verbatim}
 \[
-2+2+a+a\leqno{\tt (\%o19)}
+2+2+a+a\leqno{\tt (\%o25)}
 \]
 \begin{Verbatim}
-(%i20) simp: true$
-(%i21) %o19;
+(%i26) simp: true$
+(%i27) %o25;
 \end{Verbatim}
 \[
-2\,a+4\leqno{\tt (\%o21)}
+2\,a+4\leqno{\tt (\%o27)}
 \]
 
 Veamos ahora algunas transformaciones que se pueden hacer con fracciones algebraicas.
 
 \begin{Verbatim}
-(%i22) expr:(x^2-x)/(x^2+x-6)-5/(x^2-4);
+(%i28) expr:(x^2-x)/(x^2+x-6)-5/(x^2-4);
 \end{Verbatim}
 \[
-{{x^2-x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o22)}
+{{x^2-x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o28)}
 \]
 
 Podemos factorizar esta expresión,
 
 \index{factor}\begin{Verbatim}
-(%i23) factor(expr);
+(%i29) factor(expr);
 \end{Verbatim}
 \[
 {{\left(x-3\right)\,\left(x^2+4\,x+5\right)}\over{\left(x-2\right)
- \,\left(x+2\right)\,\left(x+3\right)}}\leqno{\tt (\%o23)}
+ \,\left(x+2\right)\,\left(x+3\right)}}\leqno{\tt (\%o29)}
 \]
 
 La expansión devuelve el siguiente resultado,
 
 \index{expand}\begin{Verbatim}
-(%i24) expand(expr);
+(%i30) expand(expr);
 \end{Verbatim}
 \[
-{{x^2}\over{x^2+x-6}}-{{x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o24)}
+{{x^2}\over{x^2+x-6}}-{{x}\over{x^2+x-6}}-{{5}\over{x^2-4}}\leqno{\tt (\%o30)}
 \]
 
 Ahora descomponemos la fracción algebraica \verb|expr| en fracciones simples,
 
 \index{partfrac}\begin{Verbatim}
-(%i25) partfrac(expr,x);
+(%i31) partfrac(expr,x);
 \end{Verbatim}
 \[
 -{{12}\over{5\,\left(x+3\right)}}+{{5}\over{4\,\left(x+2\right)}}-
- {{17}\over{20\,\left(x-2\right)}}+1\leqno{\tt (\%o25)}
+ {{17}\over{20\,\left(x-2\right)}}+1\leqno{\tt (\%o31)}
 \]
 
 Por último, transformamos la misma expresión a su forma canónica CRE (\emph{Cannonical Rational Expression}), que es un formato que Maxima utiliza para reducir expresiones algebraicas equivalentes a una forma única,
 
 \index{radcan}\begin{Verbatim}
-(%i26) radcan(expr);
+(%i32) radcan(expr);
 \end{Verbatim}
 \[
-{{x^3+x^2-7\,x-15}\over{x^3+3\,x^2-4\,x-12}}\leqno{\tt (\%o26)}
+{{x^3+x^2-7\,x-15}\over{x^3+3\,x^2-4\,x-12}}\leqno{\tt (\%o32)}
 \]
 
 La función \verb|ratsimp|\index{ratsimp} también simplifica cualquier expresión racional, así como las subexpresiones racionales que son argumentos de funciones cualesquiera. El resultado se devuelve como el cociente de dos polinomios. En ocasiones no es suficiente con una sola ejecución de \verb|ratsimp|, por lo que será necesario aplicarla más veces, esto es lo que hace precisamente la función \verb|fullratsimp|\index{fullratsimp}; concretemos esto con un ejemplo:
 \begin{Verbatim}
-(%i27) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
+(%i33) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
 \end{Verbatim}
 \[
 {{\left(x^{{{a}\over{2}}}-1\right)^2\,\left(x^{{{a}\over{2}}}+1
- \right)^2}\over{x^{a}-1}}\leqno{\tt (\%o27)}
+ \right)^2}\over{x^{a}-1}}\leqno{\tt (\%o33)}
 \]
 \begin{Verbatim}
-(%i28) ratsimp(%);  /* simplificamos una vez */
+(%i34) ratsimp(%);  /* simplificamos una vez */
 \end{Verbatim}
 \[
-{{x^{2\,a}-2\,x^{a}+1}\over{x^{a}-1}}\leqno{\tt (\%o28)}
+{{x^{2\,a}-2\,x^{a}+1}\over{x^{a}-1}}\leqno{\tt (\%o34)}
 \]
 \begin{Verbatim}
-(%i29) ratsimp(%);  /* simplificamos otra vez */
+(%i35) ratsimp(%);  /* simplificamos otra vez */
 \end{Verbatim}
 \[
-x^{a}-1\leqno{\tt (\%o29)}
+x^{a}-1\leqno{\tt (\%o35)}
 \]
 \begin{Verbatim}
-(%i30) fullratsimp(%o27);   /* simplificamos todo de una vez! */
+(%i36) fullratsimp(%o32);   /* ¡simplificamos todo de una vez! */
 \end{Verbatim}
 \[
-x^{a}-1\leqno{\tt (\%o30)}
+x^{a}-1\leqno{\tt (\%o36)}
 \]
 
 Dada una fracción algebraica, podemos obtener separadamente el numerador y el denominador,
 \index{num}\index{denom}\begin{Verbatim}
-(%i31) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
+(%i37) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
 \end{Verbatim}
 \[
-{{x^3-4\,x^2+4\,x-2}\over{x^2+x+1}}\leqno{\tt (\%o31)}
+{{x^3-4\,x^2+4\,x-2}\over{x^2+x+1}}\leqno{\tt (\%o37)}
 \]
 \begin{Verbatim}
-(%i32) num(fr);
+(%i38) num(fr);
 \end{Verbatim}
 \[
-x^3-4\,x^2+4\,x-2\leqno{\tt (\%o32)}
+x^3-4\,x^2+4\,x-2\leqno{\tt (\%o38)}
 \]
 \begin{Verbatim}
-(%i33) denom(fr);
+(%i39) denom(fr);
 \end{Verbatim}
 \[
-x^2+x+1\leqno{\tt (\%o33)}
+x^2+x+1\leqno{\tt (\%o39)}
 \]
 
 Maxima nunca puede adivinar a priori las intenciones del usuario para con las expresiones con las que está trabajando, por ello sigue la política de no tomar ciertas decisiones, por lo que a veces puede parecer que no hace lo suficiente o que no sabe hacerlo. Esta forma \emph{vaga} de proceder la suple con una serie de funciones y variables globales que permitirán al usuario darle al motor simbólico ciertas directrices sobre qué debe hacer con las expresiones, cómo reducirlas o transformarlas. Sin ánimo de ser exhaustivos, siguen algunos ejemplos en los que se controlan transformaciones de tipo logarítmico y trigonométrico.
 
+
+
+\subsubsection{Expresiones logarítmicas}
+
 Las expresiones que contienen logaritmos suelen ser ambiguas a la hora de reducirlas. Transformamos a continuación la misma expresión según diferentes criterios,
 
 \begin{Verbatim}
-(%i34) log(x^r)-log(x*y) + a*log(x/y);
+(%i1) log(x^r)-log(x*y) + a*log(x/y);
 \end{Verbatim}
 \[
 -\log \left(x\,y\right)+a\,\log \left({{x}\over{y}}\right)+r\,\log 
- x\leqno{\tt (\%o34)}
+ x\leqno{\tt (\%o1)}
 \]
 
 En principio, ha hecho la transformación $\log x^r \rightarrow r \log x$. Esto se controla con la variable global \verb|logexpand|\index{logexpand}, cuyo valor por defecto es \verb|true|, lo cual sólo permite la reducción recién indicada. Si también queremos que nos expanda los logaritmos de productos y divisiones, le cambiaremos el valor a esta variable global, tal como se indica a continuación,
 
 \begin{Verbatim}
-(%i35) logexpand: super$
-(%i36) log(x^r)-log(x*y) + a*log(x/y);
+(%i2) logexpand: super$
+(%i3) log(x^r)-log(x*y) + a*log(x/y);
 \end{Verbatim}
 \[
--\log y+a\,\left(\log x-\log y\right)+r\,\log x-\log x\leqno{\tt (\%o36)}
+-\log y+a\,\left(\log x-\log y\right)+r\,\log x-\log x\leqno{\tt (\%o3)}
 \]
 
 \begin{Verbatim}
-(%i37) /* pedimos que nos simplifique la expresión anterior */
+(%i4) /* pedimos que nos simplifique la expresión anterior */
        ratsimp(%);
 \end{Verbatim}
 \[
-\left(-a-1\right)\,\log y+\left(r+a-1\right)\,\log x\leqno{\tt (\%o37)}
+\left(-a-1\right)\,\log y+\left(r+a-1\right)\,\log x\leqno{\tt (\%o4)}
 \]
 
 En caso de no querer que nos haga transformación alguna sobre la expresión de entrada, simplemente haremos
 
 \begin{Verbatim}
-(%i38) logexpand: false$
-(%i39) log(x^r)-log(x*y) + a*log(x/y);
+(%i5) logexpand: false$
+(%i6) log(x^r)-log(x*y) + a*log(x/y);
 \end{Verbatim}
 \[
 -\log \left(x\,y\right)+a\,\log \left({{x}\over{y}}\right)+\log x^{
- r}\leqno{\tt (\%o39)}
+ r}\leqno{\tt (\%o6)}
 \]
 
 Devolvemos ahora la variable \verb|logexpand| a su estado por defecto,
 
 \begin{Verbatim}
-(%i40) logexpand: true$
+(%i7) logexpand: true$
 \end{Verbatim}
 
 La función \verb|logcontract|\index{logcontract} es la que nos va a permitir compactar expresiones logarítmicas,
 
 \begin{Verbatim}
-(%i41) logcontract(2*(a*log(x) + 2*a*log(y)));
+(%i8) logcontract(2*(a*log(x) + 2*a*log(y)));
 \end{Verbatim}
 \[
-a\,\log \left(x^2\,y^4\right)\leqno{\tt (\%o41)}
+a\,\log \left(x^2\,y^4\right)\leqno{\tt (\%o8)}
 \]
 
 Por defecto, Maxima contrae los coeficientes enteros; para incluir en este caso la variable $a$ dentro del logaritmo le asignaremos la propiedad de ser un número entero,
 
 \begin{Verbatim}
-(%i42) declare(a, integer)$
-(%i43) ''%i41;  /* fuerza reevaluación de expresión nominal */
+(%i9) declare(a, integer)$
+(%i10) ''%i8;  /* fuerza reevaluación de expresión nominal */
 \end{Verbatim}
 \[
-\log \left(x^{2\,a}\,y^{4\,a}\right)\leqno{\tt (\%o43)}
+\log \left(x^{2\,a}\,y^{4\,a}\right)\leqno{\tt (\%o10)}
 \]
 
 Esta es una forma de hacerlo, pero Maxima permite un mayor refinamiento sobre este particular haciendo uso de la variable global \verb|logconcoeffp|\index{logconcoeffp}.
 
+
+
+
+\subsubsection{Expresiones trigonométricas}
+
 Toda esta casuística de diferentes formas de representar una misma expresión aumenta considerablemente con aquéllas en las que intervienen las funciones trigonométricas e hiperbólicas. Empecemos con la función \verb|trigexpand|\index{trigexpand}, cuyo comportamiento se controla con las variables globales \verb|trigexpand| (que le es homónima), \verb|trigexpandplus|\index{trigexpandplus} y \verb|trigexpandtimes|\index{trigexpandtimes}, cuyos valores por defectos son, respectivamente, \verb|false|, \verb|true| y \verb|true|. Puestos a experimentar, definamos primero una expresión trigonométrica e interpretamos algunos resultados,
 
 \begin{Verbatim}
-(%i44) expr: x+sin(3*x+y)/sin(x);
+(%i1) expr: x+sin(3*x+y)/sin(x);
 \end{Verbatim}
 \[
-{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o44)}
+{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o1)}
 \]
 
 \begin{Verbatim}
-(%i45) trigexpand(expr); /* aquí trigexpand vale false */
+(%i2) trigexpand(expr); /* aquí trigexpand vale false */
 \end{Verbatim}
 \[
 {{\cos \left(3\,x\right)\,\sin y+\sin \left(3\,x\right)\,\cos y
- }\over{\sin x}}+x\leqno{\tt (\%o45)}
+ }\over{\sin x}}+x\leqno{\tt (\%o2)}
 \]
 
 Vemos que sólo se desarrolló la suma del numerador; ahora cambiamos el valor lógico de \verb|trigexpand|,
 
 \begin{Verbatim}
-(%i46) trigexpand(expr), trigexpand=true;
+(%i3) trigexpand(expr), trigexpand=true;
 \end{Verbatim}
 \[
 {{\left(\cos ^3x-3\,\cos x\,\sin ^2x\right)\,\sin y+\left(3\,\cos ^2
- x\,\sin x-\sin ^3x\right)\,\cos y}\over{\sin x}}+x\leqno{\tt (\%o46)}
+ x\,\sin x-\sin ^3x\right)\,\cos y}\over{\sin x}}+x\leqno{\tt (\%o3)}
 \]
  
 Cuando la asignación de la variable global se hace como se acaba de indicar, sólo tiene efecto temporal durante esa ejecución, sin haberse alterado a nivel global. Podemos ordenar a Maxima que simplifique la expresión anterior,
 
 \begin{Verbatim}
-(%i47) ratsimp(%);
+(%i4) ratsimp(%);
 \end{Verbatim}
 \[
 -{{\left(3\,\cos x\,\sin ^2x-\cos ^3x\right)\,\sin y+\left(\sin ^3x
- -3\,\cos ^2x\,\sin x\right)\,\cos y-x\,\sin x}\over{\sin x}}\leqno{\tt (\%o47)}
+ -3\,\cos ^2x\,\sin x\right)\,\cos y-x\,\sin x}\over{\sin x}}\leqno{\tt (\%o4)}
 \]
 
 Podemos inhibir el desarrollo de la suma,
 
 \begin{Verbatim}
-(%i48) trigexpand(expr), trigexpandplus=false;
+(%i5) trigexpand(expr), trigexpandplus=false;
 \end{Verbatim}
 \[
-{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o48)}
+{{\sin \left(y+3\,x\right)}\over{\sin x}}+x\leqno{\tt (\%o5)}
 \]
 
 Otra variable global de interés, que no tiene nada que ver con la función \verb|trigexpand|, es \verb|halfangles|\index{halfangles}, con valor \verb|false| por defecto, que controla si se reducen los argumentos trigonométricos con denominador dos,
 
 \begin{Verbatim}
-(%i49) sin(x/2);
+(%i6) sin(x/2);
 \end{Verbatim}
 \[
-\sin \left({{x}\over{2}}\right)\leqno{\tt (\%o49)}
+\sin \left({{x}\over{2}}\right)\leqno{\tt (\%o6)}
 \]
 
 \begin{Verbatim}
-(%i50) sin(x/2), halfangles=true;
+(%i7) sin(x/2), halfangles=true;
 \end{Verbatim}
 \[
-{{\sqrt{1-\cos x}}\over{\sqrt{2}}}\leqno{\tt (\%o50)}
+{{\sqrt{1-\cos x}}\over{\sqrt{2}}}\leqno{\tt (\%o7)}
 \]
 
 La función \verb|trigsimp|\index{trigsimp} fuerza el uso de las identidades fundamentales $\sin^2 x + \cos^2 x = 1$ y $\cosh^2 x - \sinh^2 x = 1$ para simplificar expresiones,
 
 \begin{Verbatim}
-(%i51) 5*sin(x)^2 + 4*cos(x)^2;
+(%i8) 5*sin(x)^2 + 4*cos(x)^2;
 \end{Verbatim}
 \[
-5\,\sin ^2x+4\,\cos ^2x\leqno{\tt (\%o51)}
+5\,\sin ^2x+4\,\cos ^2x\leqno{\tt (\%o8)}
 \]
 
 \begin{Verbatim}
-(%i52) trigsimp(%);
+(%i9) trigsimp(%);
 \end{Verbatim}
 \[
-\sin ^2x+4\leqno{\tt (\%o52)}
+\sin ^2x+4\leqno{\tt (\%o9)}
 \]
 
 Como un último ejemplo, veamos cómo reducir productos y potencias de funciones trigonométricas a combinaciones lineales,
 
 \begin{Verbatim}
-(%i53) -sin(x)^2+3*cos(x)^2*tan(x);
+(%i10) -sin(x)^2+3*cos(x)^2*tan(x);
 \end{Verbatim}
 \[
-3\,\cos ^2x\,\tan x-\sin ^2x\leqno{\tt (\%o53)}
+3\,\cos ^2x\,\tan x-\sin ^2x\leqno{\tt (\%o10)}
 \]
 
 \begin{Verbatim}
-(%i54) trigreduce(%);
+(%i11) trigreduce(%);
 \end{Verbatim}
 \[
 {{3\,\sin \left(2\,x\right)}\over{2}}+{{\cos \left(2\,x\right)
- }\over{2}}-{{1}\over{2}}\leqno{\tt (\%o54)}
+ }\over{2}}-{{1}\over{2}}\leqno{\tt (\%o11)}
 \]
 
 Y si queremos transformar expresiones trigonométricas en complejas,
 
 \begin{Verbatim}
-(%i55) exponentialize(%);
+(%i12) exponentialize(%);
 \end{Verbatim}
 \[
 {{e^{2\,i\,x}+e^ {- 2\,i\,x }}\over{4}}-{{3\,i\,\left(e^{2\,i\,x}-e
- ^ {- 2\,i\,x }\right)}\over{4}}-{{1}\over{2}}\leqno{\tt (\%o55)}
+ ^ {- 2\,i\,x }\right)}\over{4}}-{{1}\over{2}}\leqno{\tt (\%o12)}
 \]
 
 Otras funciones útiles en este contexto y que el usuario podrá consultar en la documentación son: \verb|triginverses|\index{triginverses}, \verb|trigsign|\index{trigsign} y \verb|trigrat|\index{trigrat}.
@@ -2447,7 +2671,7 @@ Otras funciones útiles en este contexto y que el usuario podrá consultar en la d
 
 
 
-\subsection{Ecuaciones}
+\section{Ecuaciones}
 
 Almacenar una ecuación en una variable es tan simple como hacer
 \begin{Verbatim}
@@ -2731,8 +2955,109 @@ En los anteriores ejemplos, el primer argumento es una lista con la ecuación o e
 
 
 
+\section{Inecuaciones}
 
-\subsection{Matrices}
+Las rutinas para resolver inecuaciones las guarda Maxima en el paquete de funciones \verb|fourier_elim|, por lo que primero las debemos cargar en memoria,
+
+\begin{Verbatim}
+(%i1) load("fourier_elim")$
+\end{Verbatim}
+
+Ciertos mensajes de avisos que nos devuelve Maxima los podemos olvidar, ya que solo nos indican que algunas macros del sistema han tenido que ser redefinidas.
+
+Vamos a resolver una inecuación de primer grado,
+
+\begin{Verbatim}
+(%i2) ine : (5*x-16)/6 + (x+8)/12 < (x+1)/3;
+\end{Verbatim}
+$${{5\,x-16}\over{6}}+{{x+8}\over{12}}<{{x+1}\over{3}}\leqno{\tt (\%o2)}$$
+
+La función clave a llamar se llama precisamente \verb|fourier_elim|\index{realroots} y la sintaxis es similar a la de \verb|solve|; el primer argumento a pasarle es la lista de inecuaciones, de momento una sola, y el segundo la lista de incógnitas, también una sola,
+
+\begin{Verbatim}
+(%i3) fourier_elim([ine], [x]);
+\end{Verbatim}
+$$\left[ x<4 \right] \leqno{\tt (\%o3)}$$
+
+Vamos a ver ahora en qué intervalos de la recta el polinomio $x^4+5 x^3+5 x^2-5 x-6$ toma valores positivos,
+
+\begin{Verbatim}
+(%i4) p : x^4+5*x^3+5*x^2-5*x-6 $
+\end{Verbatim}
+\begin{Verbatim}
+(%i5) fourier_elim([p > 0],[x]);
+\end{Verbatim}
+$$\left[ 1<x \right] \lor \left[ -2<x , x<-1 \right] \lor \left[ x<-3
+  \right] \leqno{\tt (\%o5)}$$
+
+Tal como se ha visto hasta ahora, la función \verb|fourier_elim| nos devuelve los resultados como disyunciones de listas, interpretándose cada una de ellas como una conjunción lógica de proposiciones; así, el último resultado habría que interpretarlo como
+
+$$(1<x) \lor ( -2<x \land x<-1 ) \lor (x<-3).$$
+
+El resultado anterior cambia sensiblemente cuando admitimos la igualdad en la inecuación,
+
+\begin{Verbatim}
+(%i6) fourier_elim([p >= 0],[x]);
+\end{Verbatim}
+$$\left[ x=-3 \right] \lor \left[ x=-2 \right] \lor \left[ x=-1
+  \right] \lor \left[ x=1 \right] \lor \left[ 1<x \right] \lor 
+ \left[ -2<x , x<-1 \right] \lor \left[ x<-3 \right] \leqno{\tt (\%o6)}$$
+
+Abordamos ahora la resolución de un sistema de inecuaciones lineales con una incógnita,
+
+\begin{Verbatim}
+(%i7) fourier_elim(
+        [(x+2)/4 <= x/2-3, (8-x)/3 < (1+x)/2-1],
+        [x]);
+\end{Verbatim}
+$$\left[ x=14 \right] \lor \left[ 14<x \right] \leqno{\tt (\%o7)}$$
+
+Ahora con tres,
+
+\begin{Verbatim}
+(%i8) fourier_elim(
+        [0 < x, 
+         x < 1, 
+         0 < y+x*y, 
+         y-2*z+x < 1, 
+         0 < z,
+         x+y+z < 4],
+        [z,x,y] );
+\end{Verbatim}
+$$\left[ {\it max}\left(0 , {{y}\over{2}}+{{x}\over{2}}-{{1}\over{2}}
+ \right)<z , z<-y-x+4 , 0<x , x<{\it min}\left(1 , 3-y\right) , 0<y
+  , y<3 \right] \leqno{\tt (\%o8)}$$
+
+Otros ejemplos de inecuaciones no lineales,
+
+\begin{Verbatim}
+(%i9) fourier_elim([max(x,y) < 1, min(x,y) > -1],[x,y]);
+\end{Verbatim}
+$$\left[ -1<x , x<1 , -1<y , y<1 \right] \leqno{\tt (\%o19)}$$
+
+\begin{Verbatim}
+(%i10) fourier_elim([abs(x) + abs(x/2) + abs(x/3) #  1],[x]);
+\end{Verbatim}
+$$\left[ x=0 \right] \lor \left[ 0<x , x<{{6}\over{11}} \right] \lor 
+ \left[ -{{6}\over{11}}<x , x<0 \right] \lor \left[ x<-{{6}\over{11}}
+  \right] \lor \left[ {{6}\over{11}}<x \right] \leqno{\tt (\%o10)}$$
+
+
+\begin{Verbatim}
+(%i11) fourier_elim([log(x) < log(a)],[x,a]);
+\end{Verbatim}
+$$\left[ 0<x , x<a , 0<a \right] \leqno{\tt (\%o11)}$$
+
+
+
+
+
+
+
+
+
+
+\section{Matrices}
 
 La definición de una matriz es extremadamente simple en Maxima,
 \index{matrix}\begin{Verbatim}
@@ -3194,6 +3519,65 @@ Veamos ahora cómo obtener algunas matrices especiales: la hessiana de una funció
 
 El lector interesado puede obtener información sobre otras funciones matriciales accediendo a la documentación sobre el paquete \verb|linearalgebra|\index{linearalgebra}. 
 
+Veamos ahora cómo trabajar con matrices por bloques. Puesto que los elementos de una matriz pueden ser objetos de cualquier tipo, definamos los elementos como matrices,
+
+\begin{Verbatim}
+(%i57) m: matrix([matrix([1,0],[0,-1]),matrix([0,1],[1,0])],
+                 [matrix([0,1],[1,0]),matrix([1,0],[0,-1])]) ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}1&0\cr 0&-1\cr \end{pmatrix} & \begin{pmatrix}0&1\cr 1&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&1\cr 1&0\cr \end{pmatrix}&\begin{pmatrix}1&0\cr 0&-1\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o57)}$$
+
+Podemos ahora hacer algunas operaciones básicas con esta matriz,
+
+\begin{Verbatim}
+(%i58) m + m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}2&0\cr 0&-2\cr \end{pmatrix} & \begin{pmatrix}0&2\cr 2&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&2\cr 2&0\cr \end{pmatrix}&\begin{pmatrix}2&0\cr 0&-2\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o58)}$$
+
+\begin{Verbatim}
+(%i59) m - m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix} & \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o59)}$$
+
+\begin{Verbatim}
+(%i60) 3 * m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}3&0\cr 0&-3\cr \end{pmatrix} & \begin{pmatrix}0&3\cr 3&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&3\cr 3&0\cr \end{pmatrix}&\begin{pmatrix}3&0\cr 0&-3\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o60)}$$
+
+Veamos lo que pasa con la multiplicación matricial,
+
+\begin{Verbatim}
+(%i61) m . m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}1&1\cr 1&1\cr \end{pmatrix} & \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}1&1\cr 1&1\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o61)}$$
+
+Este resultado es incorrecto porque en la multiplicación matricial, los productos entre elementos se hacen con el operador \verb|*|, que es el correcto cuando los elementos son números; pero cuando los elementos son también matrices, la multiplicación de elementos debe realizarse con el operador del producto matricial. En el ejemplo anterior, los bloques se multiplicaron elemento a elemento. Para indicarle a Maxima la operación correcta, debemos hacer uso de la variable global \verb|matrix_element_mult|\index{matrix\_element\_mult},
+
+\begin{Verbatim}
+(%i62) matrix_element_mult : "." $
+\end{Verbatim}
+\begin{Verbatim}
+(%i63) m . m ;
+\end{Verbatim}
+$$\begin{pmatrix}
+    \begin{pmatrix}2&0\cr 0&2\cr \end{pmatrix} & \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}\cr 
+    \begin{pmatrix}0&0\cr 0&0\cr \end{pmatrix}&\begin{pmatrix}2&0\cr 0&2\cr \end{pmatrix}\cr 
+  \end{pmatrix} \leqno{\tt (\%o63)}$$
 
 
 
@@ -3202,7 +3586,11 @@ El lector interesado puede obtener información sobre otras funciones matriciales
 
 
 
-\subsection{Patrones y reglas}
+
+
+
+
+\section{Patrones y reglas}
 
 En un programa de cálculo simbólico, éste no sólo debe tener información sobre una función u operación a partir de su definición, sino que también habrá propiedades y reglas de transformación de expresiones de las que un programa como Maxima debe tener noticia.
 
@@ -3398,10 +3786,10 @@ Otra función útil en estos contextos es \verb|declare|\index{declare}, con la qu
 
 
 \newpage
-\section{Cálculo}
+\chapter{Cálculo}
 
 
-\subsection{Funciones matemáticas}
+\section{Funciones matemáticas}
 
 En Maxima están definidas un gran número de funciones, algunas de las cuales se presentan en la 
 Figura~\ref{fig:funciones}. A continuación se desarrollan algunos ejemplos sobre su uso.
@@ -3442,7 +3830,11 @@ Figura~\ref{fig:funciones}. A continuación se desarrollan algunos ejemplos sobre
 \verb|acosh(x)|   &    $\mbox{arccosh}(x)$      \\ \hline
 \verb|atanh(x)|   &    $\mbox{arctanh}(x)$      \\ \hline
 \verb|gamma(x)|  &    $\Gamma(x)=\int_0^\infty e^{-u}u^{x-1}du, \forall x>0$      \\ \hline
-\verb|beta(x,y)| &  $\beta(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}$     \\ \hline
+\verb|gamma_incomplete(a,x)|  &  
+      $\Gamma(a,x)=\int_x^\infty e^{-t}t^{a-1}dt$      \\ \hline
+\verb|beta(a,b)| &  $\mbox{B}(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}$     \\ \hline
+\verb|beta_incomplete(a,b,x)| &  
+      $\mbox{B}(a,b,x)=\int_0^x (1-t)^{b-1} t^{a-1}dt$   \\ \hline
 \verb|erf(x)|    &    $\mbox{erf}(x)=\int_0^x \frac{2}{\sqrt{\pi}}e^{-u^2}du$      \\ \hline
 \end{tabular}
 \end{center}
@@ -3587,7 +3979,7 @@ i\,\sinh 1\leqno{\tt (\%o14)}
 
 
 
-\subsection{Límites}
+\section{Límites}
 
 Sin más preámbulos, veamos algunos ejemplos de cómo calcular límites con la asistencia de Maxima. En primer lugar vemos que es posible hacer que la variable se aproxime al infinito ($x \rightarrow \infty$) haciendo uso del símbolo \verb|inf|\index{inf}, o que se aproxime al menos infinito ($x \rightarrow -\infty$) haciendo uso de \verb|minf|\index{minf},
 \index{limit}\begin{Verbatim}
@@ -3634,7 +4026,7 @@ $\lim_{x \rightarrow 1} \frac{1}{x-1}$, para el que podemos hacer
 (%i5) limit(1/(x-1),x,1);
 \end{Verbatim}
 \[
-\mbox{und}\leqno{\tt (\%o5)}
+\mbox{infinity}\leqno{\tt (\%o5)}
 \]
 donde Maxima nos responde con el símbolo \verb|und|\index{und} de \emph{undefined} o indefinido. En tales situaciones podemos indicarle al asistente que la variable $x$ se aproxima a 1 por la derecha ($x \rightarrow 1^+$) o por la izquierda ($x \rightarrow 1^-$),
 \index{plus}\index{minus}\begin{Verbatim}
@@ -3653,7 +4045,7 @@ donde Maxima nos responde con el símbolo \verb|und|\index{und} de \emph{undefine
 
 
 
-\subsection{Derivadas}
+\section{Derivadas}
 
 Maxima controla el cálculo de derivadas mediante la instrucción \verb|diff|\index{diff}. A continuación se presentan algunos ejemplos sobre su uso,
 \begin{Verbatim}
@@ -3788,10 +4180,9 @@ lo que se interpretará como $2x dx$. Si en la expresión a derivar hay más de una
 (%i16) diff(x^2+y^3=2*x*y);
 \end{Verbatim}
 \[
-3\,y^2\,{\it del}\left(y\right)+\left(3\,y^2\,\left({{d}\over{d\,x
- }}\,y\right)+2\,x\right)\,{\it del}\left(x\right)=2\,x\,{\it del}
- \left(y\right)+\left(2\,x\,\left({{d}\over{d\,x}}\,y\right)+2\,y
- \right)\,{\it del}\left(x\right)\leqno{\tt (\%o16)}
+\left(3\,y^2\,\left({{d}\over{d\,x}}\,y\right)+2\,x\right)\,
+ {\it del}\left(x\right)=\left(2\,x\,\left({{d}\over{d\,x}}\,y\right)
+ +2\,y\right)\,{\it del}\left(x\right)\leqno{\tt (\%o16)}
 \]
 
 Recuérdese que durante este cálculo estaba todavía activa la dependencia declarada en la entrada \verb|(%i13)|.
@@ -3856,7 +4247,7 @@ El paquete \verb|pdiff|\index{pdiff}, que se encuentra en la carpeta \verb|share
 
 
 
-\subsection{Integrales}
+\section{Integrales}
 
 La función de Maxima que controla el cálculo de integrales es \verb|integrate|\index{integrate}, tanto para las definidas como indefinidas; empecemos por estas últimas,
 \begin{Verbatim}
@@ -3892,7 +4283,7 @@ Ahora un par de ejemplos sobre la integral definida,
  }\over{3}}-{{\log 2}\over{3}}\right)\leqno{\tt (\%o3)}
 \]
 \begin{Verbatim}
-(%i4) %,numer;   /*aproximación decimal*/
+(%i4) float(%);   /*aproximación decimal*/
 \end{Verbatim}
 \[
 0.9107277692015807\leqno{\tt (\%o4)}
@@ -4003,10 +4394,47 @@ De esta manera, la transformada de Fourier de $f(x)=k e^{-k x}$ es
 
 Nótese que si $x>0$, la $f(x)$ anterior es precisamente la función de densidad de una variable aleatoria exponencial de parámetro $k$, por lo que este último resultado coincide precisamente con la función característica de esta misma distribución.
 
+Puesto que hablamos de la transformada de Fourier, quizás sea este un buen lugar para mencionar la transformada discreta de Fourier. Su cálculo se hace con el algoritmo de la transformada rápida, implementado en la función \verb|fft|\index{fft}, que admite como argumento una lista o array de datos cuya longitud debe ser una potencia de dos. La función inversa está programada en la función \verb|inverse_fft|\index{inverse\_fft}. Para más información, consúltese la documentación correspondiente a estas funciones.
+
+Como comentario final, queda hacer notar que la función \verb|integrate| admite integrandos matriciales, tal como indica el siguiente ejemplo.
+
+\begin{Verbatim}
+(%i16) M: matrix([sin(x), x^2+1],[cos(x), exp(x)]);
+\end{Verbatim}
+$$\begin{pmatrix}\sin x&x^2+1\cr \cos x&e^{x}\cr \end{pmatrix}\leqno{\tt (\%o16)}$$
+\begin{Verbatim}
+(%i17) 'integrate(M, x) = integrate(M, x);
+\end{Verbatim}
+$$\int {\begin{pmatrix}\sin x&x^2+1\cr \cos x&e^{x}\cr \end{pmatrix}}{\;dx}=\begin{pmatrix}-
+ \cos x&{{x^3}\over{3}}+x\cr \sin x&e^{x}\cr \end{pmatrix}\leqno{\tt (\%o17)}$$
 
 
 
-\subsection{Ecuaciones diferenciales}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Ecuaciones diferenciales}
 
 Con Maxima se pueden resolver analíticamente algunas ecuaciones diferenciales ordinarias de primer y segundo orden mediante la instrucción \verb|ode2|\index{ode2}.
 
@@ -4026,7 +4454,7 @@ siendo obligatorio el uso de la comilla simple (\verb|'|) antes de \verb|diff| a
 \[
 {{2\,y-1}\over{2\,y^2}}={\it \%c}-{{2\,x-1}\over{2\,x^2}}\leqno{\tt (\%o2)}
 \]
-donde \verb|%C| representa una constante, que se ajustará de acuerdo a la condición inicial que se le imponga a la ecuación. Supóngase que se sabe que cuando $x=2$, debe verificarse que $y=-3$, lo cual haremos saber a Maxima a través de la función \verb|ic1|\index{ic1},
+donde \verb|%c| representa una constante, que se ajustará de acuerdo a la condición inicial que se le imponga a la ecuación. Supóngase que se sabe que cuando $x=2$, debe verificarse que $y=-3$, lo cual haremos saber a Maxima a través de la función \verb|ic1|\index{ic1},
 \begin{Verbatim}
 (%i3) ic1(%o2,x=2,y=-3);
 \end{Verbatim}
@@ -4109,6 +4537,7 @@ y=-{{35\,e^{x+1}}\over{6\,e^3-6}}+{{x^2+2\,x+2}\over{2}}+{{15\,e^3+20
  }\over{6\,e^3-6}}\leqno{\tt (\%o12)}
 \]
 Nótese que este cálculo se le solicita a Maxima con \verb|bc2|.
+
 
 La resolución de sistemas de ecuaciones diferenciales se hace con llamadas a la función \verb|desolve|\index{desolve}. En este contexto es preciso tener en cuenta que se debe utilizar notación funcional dentro de la expresión \verb|diff|; un ejemplo aclarará este punto, resolviendo el sistema
 \[
@@ -4357,7 +4786,7 @@ Para más información sobre la sintaxis de esta función, ejecútese \verb|? rk|. E
 
 
 
-\subsection{Vectores y campos vectoriales}
+\section{Vectores y campos vectoriales}
 \label{vectores}
 
 En Maxima, los vectores se introducen como simples listas (Sección~\ref{listas}), siendo el caso que con ellas se pueden realizar las operaciones de adición, producto por un número y producto escalar de vectores,
@@ -4540,11 +4969,291 @@ Por último, el paquete \verb|vect| incluye también la definición del producto ve
 
 
 
+
+
 \newpage
-\section{Análisis de datos}
+\chapter{Gráficos}
+\label{graficos}
+
+
+Maxima no está habilitado para realizar él mismo gráficos, por lo que necesitará de un programa externo que realice esta tarea. Nosotros nos limitaremos a ordenar qué tipo de gráfico queremos y Maxima se encargará de comunicárselo a la aplicación gráfica que esté activa en ese momento, que por defecto será Gnuplot. La otra herramienta gráfica es Openmath, un programa Tcl-tk que se distribuye conjuntamente con Maxima.
+
+
+
+\section{El módulo ''plot''}
+
+Las funciones \verb|plot2d|\index{plot2d} y \verb|plot3d|\index{plot3d} son las que se utilizan por defecto. Veamos un ejemplo de cada una de ellas.
+
+\begin{Verbatim}
+(%i1) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
+(%i2) plot2d([[discrete,xy], 2*%pi*sqrt(u/980)], [u,0,50],
+               [style, [points,5,2,6], [lines,1,1]],
+               [legend,"Datos experimentais","Predicion da teoria"],
+               [xlabel,"Lonxitude do pendulo (cm)"], [ylabel,"periodo (s)"],
+               [gnuplot_preamble,
+                 "set terminal postscript eps;set out 'plot2d.eps'"])$
+\end{Verbatim}
+
+Se ha definido en el ejemplo una lista de puntos empíricos a representar, junto con su función teórica, pidiendo su representación gráfica en el dominio $[0,50]$. El resto de código hace referencia a diversas opciones: \verb|style|, \verb|legend|, \verb|xlabel|, \verb|ylabel| y \verb|gnuplot_preamble|, esta última permite escribir código de Gnuplot para que éste lo ejecute; aquí se le pide que devuelva el gráfico en formato Postscript. El ejemplo siguiente genera una superficie explícita. Las dos salidas gráficas se representan en la Figura~\ref{fig:plot} 
+
+\begin{Verbatim}
+(%i3) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
+        [gnuplot_preamble,
+           "set terminal postscript eps;set out 'plot3d.eps'"])$
+\end{Verbatim}
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.55]{plot2d.pdf} 
+\includegraphics[scale=0.55]{plot3d.pdf} \\
+\caption{Gráficos generados por las funciones plot2d y plot3d.}
+\label{fig:plot}
+\end{center}
+\end{figure}
+
+El control de las opciones gráficas se consigue manipulando la variable global \verb|plot_options|\index{plot\_options}, cuyo estado por defecto es
+\begin{verbatim}
+(%i4) plot_options;
+(%o4) [[x, - 1.755559702014e+305, 1.755559702014e+305], 
+[y, - 1.755559702014e+305, 1.755559702014e+305], 
+[t, - 3, 3], [GRID, 30, 30], [VIEW_DIRECTION, 1, 1, 1], 
+[COLOUR_Z, FALSE], [TRANSFORM_XY, FALSE], 
+[RUN_VIEWER, TRUE], [PLOT_FORMAT, GNUPLOT], 
+[GNUPLOT_TERM, DEFAULT], [GNUPLOT_OUT_FILE, FALSE], 
+[NTICKS, 10], [ADAPT_DEPTH, 10], [GNUPLOT_PM3D, FALSE], 
+[GNUPLOT_PREAMBLE, ], [GNUPLOT_CURVE_TITLES, [DEFAULT]], 
+[GNUPLOT_CURVE_STYLES, [with lines 3, with lines 1, 
+with lines 2, with lines 5, with lines 4, with lines 6, 
+with lines 7]], [GNUPLOT_DEFAULT_TERM_COMMAND, ], 
+[GNUPLOT_DUMB_TERM_COMMAND, set term dumb 79 22], 
+[GNUPLOT_PS_TERM_COMMAND, set size 1.5, 1.5;set term postsc#
+ript eps enhanced color solid 24]]
+\end{verbatim}
+
+Para mayor información sobre el significado de cada uno de los elementos de esta lista, así como de las funciones \verb|plot2d| y \verb|plot3d|, consúltese la documentación. 
+
+Por defecto, Maxima invocará al programa Gnuplot para la generación de gráficos, pero quizás prefiramos el programa Openmath, que forma parte de la distribución de Maxima; en tal caso tendríamos que modificar previamente las opciones guardadas en \verb|plot_options| y a continuación solicitar el gráfico deseado, como en este caso en el que se representa la función gamma y su inversa.
+
+\index{set\_plot\_option}\begin{verbatim}
+(%i5) set_plot_option([plot_format, openmath])$
+(%i6) plot2d([gamma(x),1/gamma(x)],[x,-4.5,5],[y,-10,10])$
+\end{verbatim}
+
+El resto de esta sección lo dedicaremos a hacer una somera descripción del paquete \verb|draw|, un proyecto consistente en el desarrollo de un interfaz que permita aprovechar al máximo las habilidades gráficas de Gnuplot.
+
+
+
+
+
+\section{El módulo ''draw''}
+
+Aquí, las funciones a utilizar son \verb|draw2d|\index{draw2d}, \verb|draw3d|\index{draw3d} y \verb|draw|\index{draw}, para escenas en 2d, 3d y para gráficos múltiples y animaciones, respectivamente. Puesto que se trata de un módulo adicional, será necesario cargarlo en memoria antes de hacer uso de él. Empecemos por un ejemplo comentado.
+
+\begin{Verbatim}
+(%i1) load(draw)$
+(%i2) draw2d(
+         key           = "Cubic poly",
+         explicit(%pi*x^3+sqrt(2)*x^2+10,x,0,2),
+         color         = blue,
+         key           = "Parametric curve",
+         line_width    = 3,
+         nticks        = 50,
+         parametric(2*cos(rrr)+3, rrr, rrr, 0, 6*%pi),
+         line_type     = dots,
+         points_joined = true,
+         point_type    = diamant,
+         point_size    = 3,
+         color         = red,
+         line_width    = 1,
+         key           = "Empiric data",
+         points(makelist(random(40.0),k,1,5)),
+         title         = "DRAWING CURVES",
+         terminal      = eps )$
+\end{Verbatim}
+
+Los argumentos de \verb|draw2d| se dividen en tres grupos: \emph{objetos gráficos} (en el ejemplo, \verb|explicit|\index{explicit}, \verb|parametric|\index{parametric} y \verb|points|\index{points}), \emph{opciones locales} (que afectan directamente a la representación de los objetos gráficos, como \verb|key|\index{key}, \verb|color|\index{color}, \verb|line_width|\index{line\_width}, \verb|nticks|\index{nticks}, \verb|line_type|\index{line\_type}, \verb|points_joined|\index{points\_joined} y \verb|line_width|\index{line\_width}) y \emph{opciones globales} (que hacen referencia a aspectos generales del gráfico, como \verb|title|\index{title} y \verb|terminal|\index{terminal}). Las opciones se indican como igualdades, escribiendo a la izquierda el nombre de la opción y a la derecha el valor que se le quiera asignar, a la vez que los objetos gráficos tienen el formato igual que las llamadas a funciones, esto es, el nombre del objeto a dibujar seguido, entre paréntesis, de los parámetros que definen al objeto.
+
+Todos estos argumentos se interpretan secuencialmente, de forma que al asignar un cierto valor a una opción local, ésta afectará a todos los objetos gráficos que le sigan. En este ejemplo, \verb|line_width| comienza teniendo valor 1, que es el asignado por defecto, luego se le da el valor 3 para la representación de la curva paramétrica y finalmente se le devuelve el valor original antes de representar los segmentos que unen los puntos aleatoriamente generados. En cambio, las dos opciones globales, \verb|title| y \verb|terminal|, aunque se colocaron al final, podrían haberse ubicado en cualquier otro lugar. 
+
+Siguiendo con los gráficos en dos dimensiones, el siguiente ejemplo muestra una escena en la que intervienen los objetos \verb|ellipse|\index{ellipse}, \verb|image|\index{image}, \verb|label|\index{label}, \verb|vector|\index{vector} y, ya lo conocemos, \verb|explicit|. Antes de ejecutar esta instrucción es necesario leer el fichero gráfico \verb|gatos.xpm|\footnote{El formato gráfico XPM es el único que puede leer Maxima.}
+
+\begin{Verbatim}
+(%i3) cats: read_xpm("gatos.xpm")$
+(%i4) draw2d(
+         terminal    = eps,
+         yrange      = [-4,10],
+         ellipse(5,3,8,6,0,360),
+         image(cats,0,0,10,7),
+         line_width  = 2,
+         head_length = 0.3,
+         color       = blue,
+         label(["This is Francisco",-1,-0.5]),
+         vector([-1,0],[2,4]),
+         color       = green,
+         vector([11,7],[-2,-1]),
+         label(["This is Manolita",11,8]),
+         explicit(sin(x)-2,x,-4,15) )$
+\end{Verbatim}
+
+Junto con los objetos gráficos introducidos en los ejemplos, cuyos resultados se pueden ver en los apartados \emph{a)} y \emph{b)} de la Figura~\ref{fig:draw}, también existen \verb|polygon|\index{polygon}, \verb|rectangle|\index{rectangle}, \verb|polar|\index{polar}, \verb|implicit|\index{implicit} y \verb|geomap|\index{geomap}, este último para mapas cartográficos.
+
+Mostramos a continuación algunas escenas tridimensionales. En primer lugar, el valor absoluto de la función $\Gamma$ de Euler, junto con sus líneas de contorno.
+
+\begin{Verbatim}
+(%i5) gamma2(x,y):=
+        block([re,im,g:gamma(x+%i*y)],
+          re:realpart(g),
+          im:imagpart(g),
+          sqrt(re^2+im^2))$
+(%i6) draw3d(
+        zrange         = [0,6],
+        xu_grid        = 50,
+        yv_grid        = 50,
+        surface_hide   = true,
+        contour        = surface,
+        contour_levels = [0,0.5,6], /* de 0 a 6 en saltos de 0.5 */
+        color          = cyan,
+        terminal       = eps,
+        explicit(gamma2(x,y),x,-4,4,y,-2,2))$
+\end{Verbatim}
+
+Una superficie paramétrica, que junto con la anterior escena, se pueden ver ambas en la Figura~\ref{fig:draw}, apartados \emph{c)} y \emph{d)}.
+
+\begin{Verbatim}
+(%i7) draw3d(
+        terminal       = eps,
+        title          = "Figure 8 - Klein bottle",
+        rot_horizontal = 360,
+        xrange         = [-3.4,3.4],
+        yrange         = [-3.4,3.4],
+        zrange         = [-1.4,1.4],
+        xtics          = none,
+        ytics          = none,
+        ztics          = none,
+        axis_3d        = false,
+        surface_hide   = true,
+        parametric_surface((2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*cos(u),
+                           (2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*sin(u),
+                           sin(u/2)*sin(v) + cos(u/2)*sin(2*v),
+                           u, -%pi, 360*%pi/180-%pi, v, 0, 2*%pi) )$
+\end{Verbatim}
+
+En el gráfico siguiente se combinan varios objetos: una superficie explícita, dos curvas paramétricas y dos etiquetas, cuyo aspecto es el mostrado en el apartado \emph{e)} de la Figura~\ref{fig:draw}.
+
+\begin{Verbatim}
+(%i8) draw3d(
+        color          = green,
+        explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+        color          = blue,
+        parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+        color          = brown,
+        line_width     = 2,
+        parametric(t^2,sin(t),2+t,t,0,2),
+        surface_hide   = true,
+        title          = "Surface & curves",
+        color          = red,
+        label(["UP",-2,0,3]),
+        label(["DOWN",2,0,-3]),
+        rot_horizontal = 10,
+        rot_vertical   = 84,
+        terminal       = eps )$
+\end{Verbatim}
+
+En el siguiente ejemplo hacemos una proyección esférica del hemisferio sur, que se ve en el apartado \emph{f)} de la Figura~\ref{fig:draw}. El paquete  \verb|worldmap|\index{worldmap} carga en memoria las coordenadas latitud--longitud de las líneas fronterizas y costeras de todos los países del mundo, así como algunas funciones necesarias para su manipulación y procesamiento,
+
+\begin{Verbatim}
+(%i9) load(worldmap)$
+(%i10) draw3d(
+        surface_hide   = true,
+        rot_horizontal = 60,
+        rot_vertical   = 131,
+        color          = cyan,
+        parametric_surface(
+               cos(phi)*cos(theta),
+               cos(phi)*sin(theta),
+               sin(phi),
+               theta,-%pi,%pi,
+               phi,-%pi/2,%pi/2),
+        color          = red,
+        geomap([South_America,Africa,Australia],
+               [spherical_projection,0,0,0,1]),
+        color          = blue,
+        geomap([South_America,Africa,Australia],
+               [cylindrical_projection,0,0,0,1,2]),
+        terminal       = eps)$
+\end{Verbatim}
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.5]{draw1.pdf} 
+\includegraphics[scale=0.5]{draw2.pdf} \\
+\emph{a)} \hspace{6.5cm}  \emph{b)} \\
+\includegraphics[scale=0.5]{draw3.pdf} 
+\includegraphics[scale=0.5]{draw4.pdf} \\
+\emph{c)} \hspace{6.5cm}  \emph{d)} \\
+\includegraphics[scale=0.5]{draw5.pdf} 
+\includegraphics[scale=0.5]{draw6.pdf} \\
+\emph{e)} \hspace{6.5cm}  \emph{f)} \\
+\includegraphics[scale=0.5]{draw7.pdf} \\
+\emph{g)} \\
+\caption{Gráficos generados con el paquete draw: \emph{a)} y \emph{b)} con draw2d; \emph{c)}, \emph{d)}, \emph{e)} y \emph{f)} con draw3d; \emph{g)}, un gráfico múltiple.}
+\label{fig:draw}
+\end{center}
+\end{figure}
+
+Además de los objetos gráficos tridimensionales ya vistos, también se hayan definidos \verb|points|, \verb|vector| e \verb|implicit|.
+
+También es posible generar múltiples gráficos en un mismo fichero o hacer animaciones en formato GIF o en la ventana gráfica. Para ver más ejemplos de gráficos generados con el paquete \verb|draw|, se recomienda acceder a la dirección
+\begin{center}
+http://riotorto.users.sourceforge.net/gnuplot
+\end{center}
+o consultar el sistema de ayuda de Maxima.
+
+Ya como colofón, un ejemplo de gráfico múltiple en el que se muestra también cómo dar sombreado a las superficies tridimensionales. El resultado en el apartado \emph{g)} de la Figura~\ref{fig:draw}.
+
+\begin{Verbatim}
+(%i11) escena1:
+         gr3d(surface_hide = true,
+              enhanced3d   = true,
+              palette      = gray,
+              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
+\end{Verbatim}
+
+\begin{Verbatim}
+(%i12) escena2:
+         gr3d(surface_hide  = true,
+              enhanced3d    = true,
+              palette       = gray,
+              user_preamble = "set pm3d map",
+              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
+\end{Verbatim}
+
+\begin{Verbatim}
+(%i13) draw(
+        columns    = 2,
+        terminal   = eps_color,
+        eps_width  = 20,
+        eps_height = 8,
+        escena1, escena2)$
+\end{Verbatim}
+
+Se comienza definiendo las dos escenas a representar, la función explícita y el gráfico de densidades, en sendos objetos \verb|gr3d|, ya que ambos son de naturaleza tridimensional. Estos objetos se pasan luego a la función \verb|draw| como argumentos, junto con algunas opciones globales. La función \verb|draw| es realmente la que ha generado también los gráficos anteriores, siendo \verb|draw2d| y \verb|draw3d| sinónimos de \verb|draw(gr2d(...))| y \verb|draw(gr3d(...))|, respectivamente.
+
+
+
+
+
+
+
+
+
+\newpage
+\chapter{Probabilidades y estadística}
 \label{sec:estad}
 
-\subsection{Probabilidad}
+\section{Probabilidad}
 \label{probinf}
 
 El paquete \emph{distrib}\index{distrib} contiene la definición de las funciones de distribución de probabilidad más comunes, tanto discretas (binomial, de Poisson, de Bernoulli, geométrica, uniforme discreta, hipergeométrica y binomial negativa), como continuas (normal, $t$ de Student, $\chi^2$ de Pearson, $F$ de Snedecor, exponencial, lognormal, gamma, beta, uniforme continua, logística, de Pareto, de Weibull, de Rayleigh, de Laplace, de Cauchy y de Gumbel). Para cada una de ellas se puede calcular la probabilidad acumulada, la función de densidad, los cuantiles, medias, varianzas y los coeficientes de asimetría y curtosis:
@@ -4735,7 +5444,7 @@ Para más información sobre estas y otras funciones de simulación estocástica, te
 
 
 
-\subsection{Estadística descriptiva}
+\section{Estadística descriptiva}
 
 Maxima es capaz de realizar ciertos tipos de procesamiento de datos. El paquete \verb|descriptive|\index{descriptive}, junto con otros, es el que nos puede ayudar en este tipo de tareas.
 
@@ -4969,7 +5678,7 @@ Hay varios tipos de diagramas estadísticos programados en el paquete \verb|descr
 \end{figure}
 
 
-\subsection{Estadística inferencial}
+\section{Estadística inferencial}
 
 El paquete \verb|stats|\index{stats} contiene algunos procedimientos clásicos de estadística inferencial. Cada uno de estos procedimientos devuelve un objeto de tipo \verb|inference_result|\index{inference\_result}, el cual guarda todos los resultados obtenidos, aunque sólo muestre una selección de ellos por defecto, los que se consideran de más relevancia; el resto permanecen ocultos y sólo serán visibles a petición del usuario. Los siguientes ejemplos aclararán su uso.
 
@@ -5062,118 +5771,23 @@ Si la población de referencia no es normal y la muestra es pequeña, siempre se p
 \right. \leqno{\tt (\%o8)}
 \]
 
-Existe en Maxima la posibilidad de ajustar por mínimos cuadrados a datos empíricos los parámetros de curvas arbitrarias mediante las funciones del paquete \verb|lsquares|\index{lsquares}. Vamos a simular una muestra de tamaño 100 de valores $x$ en el intervalo $[0,10]$. Con estas abscisas calculamos después las ordenadas a partir de la suma de una señal determinista ($f$) más un ruido gaussiano. Para hacer la simulación necesitamos cargar en primer lugar al paquete \verb|distrib|.
-
-\index{random\_continuous\_uniform}\begin{Verbatim}
-(%i9) load(distrib)$
-(%i10) abs: makelist(random_continuous_uniform(0,10),k,1,100)$
-(%i11) f(x):=3*(x-5)^2$
-(%i12) data: apply(matrix,makelist([x, f(x)+random_normal(0,1)],x,abs))$
-\end{Verbatim}
-
-Aunque la señal determinista obedece a una función polinómica de segundo grado, si no lo sabemos a priori intentamos ajustar un polinomio cúbico:
-
-\index{lsquares\_estimates}\begin{Verbatim}
-(%i13) load(lsquares)$
-(%i14) param: lsquares_estimates(data,[x,y],
-                                 y=a*x^3+b*x^2+c*x+d,[a,b,c,d]), numer;
-\end{Verbatim}
-\[
-\begin{array}{c}
-\left[ \left[ a=-0.002705800223881305 , b=3.018798873646606 \right. \right.
-  , \\  \left. \left. c=-29.94151342602112 , d=74.78603431944423 \right]  \right] \end{array} \leqno{\tt (\%o14)}
-\]
-
-Vemos claramente que el término de tercer grado es supérfluo, por lo que reajustamos al de segundo grado,
-
-\begin{Verbatim}
-(%i15) param: lsquares_estimates (data,[x,y],y=b*x^2+c*x+d,[b,c,d]),numer;
-\end{Verbatim}
-\[
-\left[ \left[ b=2.979110687882263 , c=-29.78353057922009 , d=74.64523259993118
-  \right]  \right] \leqno{\tt (\%o15)}
-\]
-
-Ahora estamos en disposición de estudiar los residuos para valorar el ajuste. En primer lugar calculamos el error cuadrático medio del residuo, definido como
-
-\[
-\mbox{MSE} =  \frac{1}{n} \sum_{i=1}^{n} \left( \mbox{rhs}(e_i) -  \mbox{lhs}(e_i) \right)^2,
-\]
-siendo $n$ el tamaño de la muestra y $\mbox{rhs}(e_i)$ y $\mbox{lhs}(e_i)$ los miembros derecho e izquierdo, respectivamente, de la expresión a ajustar. Para el caso que nos ocupa, el valor calculado es
-
-\index{lsquares\_residual\_mse}\begin{Verbatim}
-(%i16) lsquares_residual_mse(data, [x,y], y=b*x^2+c*x+d, first(param));
-\end{Verbatim}
-\[
-1.144872557335554\leqno{\tt (\%o16)}
-\]
-
-\index{lsquares\_residuals}También podemos calcular el vector de los residuos, definidos como $\mbox{lhs}(e_i) - \mbox{rhs}(e_i)$, $\forall i$, para a continuación representarlos gráficamente junto con los datos y la curva ajustada, tal como se aprecia en la Figura~\ref{fig:lsquares}.
-
-\index{draw}\begin{Verbatim}
-(%i17) res: lsquares_residuals(data, [x,y], y=b*x^2+c*x+d, first(param))$
-(%i18) load(draw)$ /* necesitaremos las rutinas gráficas */
-(%i19) scene1: gr2d(points(data),
-                    explicit(ev(b*x^2+c*x+d,first(param)),x,0,10))$
-(%i20) scene2: gr2d(points_joined = true,
-                    points(res))$
-(%i21) draw(terminal = eps, scene1, scene2)$
-\end{Verbatim}
-
-\begin{figure}
-\begin{center}
-\includegraphics[scale=1.0]{lsquares.pdf}
-\caption{Resultados gráficos del ajuste por mínimos cuadrados.}
-\label{fig:lsquares}
-\end{center}
-\end{figure}
-
-Nosotros ya sabemos que el ruido del proceso simulado es gaussiano de esperanza nula. En una situación real, este dato lo desconoceremos y nos interesará contrastar la hipótesis de normalidad y la de la nulidad de la media de los residuos. El paquete \verb|stats| tiene algunos procedimientos inferenciales, entre los cuales están las funciones \verb|test_normality| y \verb|test_mean|; primero cargamos el paquete y contrastamos la hipótesis de normalidad,
-
-\index{test\_normality}\begin{Verbatim}
-(%i22) load(stats)$
-(%i23) test_normality(res);
-\end{Verbatim}
-\[
-\left|
-  \begin{array}{c}
-    \mbox{{}SHAPIRO - WILK TEST{}}   \\
-       {\it statistic} = 0.986785359052448  \\
-       {\it p\_value} = 0.423354600782769
-  \end{array}
-\right. \leqno{\tt (\%o31)}
-\]
-
-El $p$-valor es lo suficientemente alto como para no rechazar la hipótesis nula de normalidad; ahora contrastamos la nulidad de la esperanza del ruido,
-
-\index{test\_mean}\begin{Verbatim}
-(%i24) test_mean(res);
-\end{Verbatim}
-\[
-\left|
-  \begin{array}{c}
-       \mbox{{}MEAN TEST{}}  \\
-       {\it mean\_estimate} = -1.002451472320587 \times 10^{-7}  \\
-       {\it conf\_level} = 0.95 \\
-       {\it conf\_interval} = \left[ -.2133782738324136 , .2133780733421191 \right] \\
-       {\it method} = \mbox{{}Exact t-test. Unknown variance.{}} \\
-       {\it hypotheses} = \mbox{{}H0: mean = 0 , H1: mean} \neq \mbox{{}0{}} \\
-       {\it statistic} = 9.321855844715968 \times 10^{-7} \\
-       {\it distribution} = \left[ {\it student\_t} , 99 \right] \\
-       {\it p\_value} = .9999992583830712
-  \end{array}
-\right. \leqno{\tt (\%o32)}
-\]
-
-Sin duda admitiríamos la hipótesis nula como válida.
-
 Consúltese el manual de referencia de Maxima para ver qué otros tests están programados en el paquete \verb|stats|, así como las opciones que se pueden utilizar en cada caso.
 
 
 
 
 
-\subsection{Interpolación}
+
+
+
+
+\newpage
+\chapter{Otros métodos numéricos}
+\label{sec:numericos}
+
+
+
+\section{Interpolación}
 
 El paquete \verb|interpol|\index{interpol} permite abordar el problema de la interpolación desde tres enfoques: lineal, polinomio de Lagrange y \emph{splines} cúbicos.
 
@@ -5369,273 +5983,226 @@ Con esto hemos obtenido dos interpoladores distintos por el método de los \emph{
 
 
 
-\newpage
-\section{Gráficos}
-\label{graficos}
+\section{Ajuste por mínimos cuadrados}
 
 
-Maxima no está habilitado para realizar él mismo gráficos, por lo que necesitará de un programa externo que realice esta tarea. Nosotros nos limitaremos a ordenar qué tipo de gráfico queremos y Maxima se encargará de comunicárselo a la aplicación gráfica que esté activa en ese momento, que por defecto será Gnuplot. La otra herramienta gráfica es Openmath, un programa Tcl-tk que se distribuye conjuntamente con Maxima.
+Existe en Maxima la posibilidad de ajustar por mínimos cuadrados a datos empíricos los parámetros de curvas arbitrarias mediante las funciones del paquete \verb|lsquares|\index{lsquares}. Vamos a simular una muestra de tamaño 100 de valores $x$ en el intervalo $[0,10]$. Con estas abscisas calculamos después las ordenadas a partir de la suma de una señal determinista ($f$) más un ruido gaussiano. Para hacer la simulación necesitamos cargar en primer lugar al paquete \verb|distrib|.
 
-
-
-\subsection{El módulo ''plot''}
-
-Las funciones \verb|plot2d|\index{plot2d} y \verb|plot3d|\index{plot3d} son las que se utilizan por defecto. Veamos un ejemplo de cada una de ellas.
-
-\begin{Verbatim}
-(%i1) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
-(%i2) plot2d([[discrete,xy], 2*%pi*sqrt(u/980)], [u,0,50],
-               [style, [points,5,2,6], [lines,1,1]],
-               [legend,"Datos experimentais","Predicion da teoria"],
-               [xlabel,"Lonxitude do pendulo (cm)"], [ylabel,"periodo (s)"],
-               [gnuplot_preamble,
-                 "set terminal postscript eps;set out 'plot2d.eps'"])$
+\index{random\_continuous\_uniform}\begin{Verbatim}
+(%i1) load(distrib)$
+(%i2) abs: makelist(random_continuous_uniform(0,10),k,1,100)$
+(%i3) f(x):=3*(x-5)^2$
+(%i4) data: apply(matrix,makelist([x, f(x)+random_normal(0,1)],x,abs))$
 \end{Verbatim}
 
-Se ha definido en el ejemplo una lista de puntos empíricos a representar, junto con su función teórica, pidiendo su representación gráfica en el dominio $[0,50]$. El resto de código hace referencia a diversas opciones: \verb|style|, \verb|legend|, \verb|xlabel|, \verb|ylabel| y \verb|gnuplot_preamble|, esta última permite escribir código de Gnuplot para que éste lo ejecute; aquí se le pide que devuelva el gráfico en formato Postscript. El ejemplo siguiente genera una superficie explícita. Las dos salidas gráficas se representan en la Figura~\ref{fig:plot} 
+Aunque la señal determinista obedece a una función polinómica de segundo grado, si no lo sabemos a priori intentamos ajustar un polinomio cúbico:
+
+\index{lsquares\_estimates}\begin{Verbatim}
+(%i5) load(lsquares)$
+(%i6) param: lsquares_estimates(data,[x,y],
+                                y=a*x^3+b*x^2+c*x+d,[a,b,c,d]), numer;
+\end{Verbatim}
+\[
+\begin{array}{c}
+\left[ \left[ a=-0.002705800223881305 , b=3.018798873646606 \right. \right.
+  , \\  \left. \left. c=-29.94151342602112 , d=74.78603431944423 \right]  \right] \end{array} \leqno{\tt (\%o6)}
+\]
+
+Vemos claramente que el término de tercer grado es supérfluo, por lo que reajustamos al de segundo grado,
 
 \begin{Verbatim}
-(%i3) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
-        [gnuplot_preamble,
-           "set terminal postscript eps;set out 'plot3d.eps'"])$
+(%i7) param: lsquares_estimates(data,[x,y],
+                                y=b*x^2+c*x+d,[b,c,d]), numer;
+\end{Verbatim}
+\[
+\left[ \left[ b=2.979110687882263 , c=-29.78353057922009 , d=74.64523259993118
+  \right]  \right] \leqno{\tt (\%o7)}
+\]
+
+Ahora estamos en disposición de estudiar los residuos para valorar el ajuste. En primer lugar calculamos el error cuadrático medio del residuo, definido como
+
+\[
+\mbox{MSE} =  \frac{1}{n} \sum_{i=1}^{n} \left( \mbox{rhs}(e_i) -  \mbox{lhs}(e_i) \right)^2,
+\]
+siendo $n$ el tamaño de la muestra y $\mbox{rhs}(e_i)$ y $\mbox{lhs}(e_i)$ los miembros derecho e izquierdo, respectivamente, de la expresión a ajustar. Para el caso que nos ocupa, el valor calculado es
+
+\index{lsquares\_residual\_mse}\begin{Verbatim}
+(%i8) lsquares_residual_mse(data, [x,y], y=b*x^2+c*x+d, first(param));
+\end{Verbatim}
+\[
+1.144872557335554\leqno{\tt (\%o8)}
+\]
+
+\index{lsquares\_residuals}También podemos calcular el vector de los residuos, definidos como $\mbox{lhs}(e_i) - \mbox{rhs}(e_i)$, $\forall i$, para a continuación representarlos gráficamente junto con los datos y la curva ajustada, tal como se aprecia en la Figura~\ref{fig:lsquares}.
+
+\index{draw}\begin{Verbatim}
+(%i9) res: lsquares_residuals(data, [x,y],
+                              y=b*x^2+c*x+d, first(param))$
+(%i10) load(draw)$ /* necesitaremos las rutinas gráficas */
+(%i10) scene1: gr2d(points(data),
+                    explicit(ev(b*x^2+c*x+d,first(param)),x,0,10))$
+(%i12) scene2: gr2d(points_joined = true,
+                    points(res))$
+(%i13) draw(terminal = eps, scene1, scene2)$
 \end{Verbatim}
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.55]{plot2d.pdf} 
-\includegraphics[scale=0.55]{plot3d.pdf} \\
-\caption{Gráficos generados por las funciones plot2d y plot3d.}
-\label{fig:plot}
+\includegraphics[scale=1.0]{lsquares.pdf}
+\caption{Resultados gráficos del ajuste por mínimos cuadrados.}
+\label{fig:lsquares}
 \end{center}
 \end{figure}
 
-El control de las opciones gráficas se consigue manipulando la variable global \verb|plot_options|\index{plot\_options}, cuyo estado por defecto es
-\begin{verbatim}
-(%i4) plot_options;
-(%o4) [[x, - 1.755559702014e+305, 1.755559702014e+305], 
-[y, - 1.755559702014e+305, 1.755559702014e+305], 
-[t, - 3, 3], [GRID, 30, 30], [VIEW_DIRECTION, 1, 1, 1], 
-[COLOUR_Z, FALSE], [TRANSFORM_XY, FALSE], 
-[RUN_VIEWER, TRUE], [PLOT_FORMAT, GNUPLOT], 
-[GNUPLOT_TERM, DEFAULT], [GNUPLOT_OUT_FILE, FALSE], 
-[NTICKS, 10], [ADAPT_DEPTH, 10], [GNUPLOT_PM3D, FALSE], 
-[GNUPLOT_PREAMBLE, ], [GNUPLOT_CURVE_TITLES, [DEFAULT]], 
-[GNUPLOT_CURVE_STYLES, [with lines 3, with lines 1, 
-with lines 2, with lines 5, with lines 4, with lines 6, 
-with lines 7]], [GNUPLOT_DEFAULT_TERM_COMMAND, ], 
-[GNUPLOT_DUMB_TERM_COMMAND, set term dumb 79 22], 
-[GNUPLOT_PS_TERM_COMMAND, set size 1.5, 1.5;set term postsc#
-ript eps enhanced color solid 24]]
-\end{verbatim}
+Nosotros ya sabemos que el ruido del proceso simulado es gaussiano de esperanza nula. En una situación real, este dato lo desconoceremos y nos interesará contrastar la hipótesis de normalidad y la de la nulidad de la media de los residuos. El paquete \verb|stats| tiene algunos procedimientos inferenciales, entre los cuales están las funciones \verb|test_normality| y \verb|test_mean|; primero cargamos el paquete y contrastamos la hipótesis de normalidad,
 
-Para mayor información sobre el significado de cada uno de los elementos de esta lista, así como de las funciones \verb|plot2d| y \verb|plot3d|, consúltese la documentación. 
+\index{test\_normality}\begin{Verbatim}
+(%i14) load(stats)$
+(%i15) test_normality(res);
+\end{Verbatim}
+\[
+\left|
+  \begin{array}{c}
+    \mbox{{}SHAPIRO - WILK TEST{}}   \\
+       {\it statistic} = 0.986785359052448  \\
+       {\it p\_value} = 0.423354600782769
+  \end{array}
+\right. \leqno{\tt (\%o15)}
+\]
 
-Por defecto, Maxima invocará al programa Gnuplot para la generación de gráficos, pero quizás prefiramos el programa Openmath, que forma parte de la distribución de Maxima; en tal caso tendríamos que modificar previamente las opciones guardadas en \verb|plot_options| y a continuación solicitar el gráfico deseado, como en este caso en el que se representa la función gamma y su inversa.
+El $p$-valor es lo suficientemente alto como para no rechazar la hipótesis nula de normalidad; ahora contrastamos la nulidad de la esperanza del ruido,
 
-\index{set\_plot\_option}\begin{verbatim}
-(%i5) set_plot_option([plot_format, openmath])$
-(%i6) plot2d([gamma(x),1/gamma(x)],[x,-4.5,5],[y,-10,10])$
-\end{verbatim}
+\index{test\_mean}\begin{Verbatim}
+(%i16) test_mean(res);
+\end{Verbatim}
+\[
+\left|
+  \begin{array}{c}
+       \mbox{{}MEAN TEST{}}  \\
+       {\it mean\_estimate} = -1.002451472320587 \times 10^{-7}  \\
+       {\it conf\_level} = 0.95 \\
+       {\it conf\_interval} = \left[ -.2133782738324136 , .2133780733421191 \right] \\
+       {\it method} = \mbox{{}Exact t-test. Unknown variance.{}} \\
+       {\it hypotheses} = \mbox{{}H0: mean = 0 , H1: mean} \neq \mbox{{}0{}} \\
+       {\it statistic} = 9.321855844715968 \times 10^{-7} \\
+       {\it distribution} = \left[ {\it student\_t} , 99 \right] \\
+       {\it p\_value} = .9999992583830712
+  \end{array}
+\right. \leqno{\tt (\%o16)}
+\]
 
-El resto de esta sección lo dedicaremos a hacer una somera descripción del paquete \verb|draw|, un proyecto consistente en el desarrollo de un interfaz que permita aprovechar al máximo las habilidades gráficas de Gnuplot.
+Sin duda admitiríamos la hipótesis nula como válida.
 
 
 
 
 
-\subsection{El módulo ''draw''}
 
-Aquí, las funciones a utilizar son \verb|draw2d|\index{draw2d}, \verb|draw3d|\index{draw3d} y \verb|draw|\index{draw}, para escenas en 2d, 3d y para gráficos múltiples y animaciones, respectivamente. Puesto que se trata de un módulo adicional, será necesario cargarlo en memoria antes de hacer uso de él. Empecemos por un ejemplo comentado.
+
+
+\section{Optimización con restricciones}
+
+El paquete \verb|augmented_lagrangian|\index{augmented\_lagrangian} permite minimizar funciones bajo restricciones expresables en forma de igualdades. Concretamente, si queremos obtener el valor mínimo de la función $f(x,y) = x^2 + 2 y^2$, entre aquellos puntos que cumplen la condición $x+y=1$, podemos hacer uso de la función 
+\verb|augmented_lagrangian_method|\index{augmented\_lagrangian\_method}.
+
+En primer lugar debemos cargar en memoria el programa correspondiente,
 
 \begin{Verbatim}
-(%i1) load(draw)$
-(%i2) draw2d(
-         key           = "Cubic poly",
-         explicit(%pi*x^3+sqrt(2)*x^2+10,x,0,2),
-         color         = blue,
-         key           = "Parametric curve",
-         line_width    = 3,
-         nticks        = 50,
-         parametric(2*cos(rrr)+3, rrr, rrr, 0, 6*%pi),
-         line_type     = dots,
-         points_joined = true,
-         point_type    = diamant,
-         point_size    = 3,
-         color         = red,
-         line_width    = 1,
-         key           = "Empiric data",
-         points(makelist(random(40.0),k,1,5)),
-         title         = "DRAWING CURVES",
-         terminal      = eps )$
+(%i1) load ("augmented_lagrangian")$
 \end{Verbatim}
 
-Los argumentos de \verb|draw2d| se dividen en tres grupos: \emph{objetos gráficos} (en el ejemplo, \verb|explicit|\index{explicit}, \verb|parametric|\index{parametric} y \verb|points|\index{points}), \emph{opciones locales} (que afectan directamente a la representación de los objetos gráficos, como \verb|key|\index{key}, \verb|color|\index{color}, \verb|line_width|\index{line\_width}, \verb|nticks|\index{nticks}, \verb|line_type|\index{line\_type}, \verb|points_joined|\index{points\_joined} y \verb|line_width|\index{line\_width}) y \emph{opciones globales} (que hacen referencia a aspectos generales del gráfico, como \verb|title|\index{title} y \verb|terminal|\index{terminal}). Todos estos argumentos se interpretan secuencialmente, de forma que al asignar un cierto valor a una opción local, ésta afectará a todos los objetos gráficos que le sigan. En este ejemplo, \verb|line_width| comienza teniendo valor 1, que es el asignado por defecto, luego se le da el valor 3 para la representación de la curva paramétrica y finalmente se le devuelve el valor original antes de representar los segmentos que unen los puntos aleatoriamente generados. En cambio, las dos opciones globales, \verb|title| y \verb|terminal|, aunque se colocaron al final, podrían haberse ubicado en cualquier otro lugar. 
-
-Siguiendo con los gráficos en dos dimensiones, el siguiente ejemplo muestra una escena en la que intervienen los objetos \verb|ellipse|\index{ellipse}, \verb|image|\index{image}, \verb|label|\index{label}, \verb|vector|\index{vector} y, ya lo conocemos, \verb|explicit|. Antes de ejecutar esta instrucción es necesario leer el fichero gráfico \verb|gatos.xpm|\footnote{El formato gráfico XPM es el único que puede leer Maxima.}
+Introducimos la función objetivo y la restricción, la cual guardamos en una lista, dando por sentado que la expresión que la define está igualada a cero,
 
 \begin{Verbatim}
-(%i3) cats: read_xpm("gatos.xpm")$
-(%i4) draw2d(
-         terminal    = eps,
-         yrange      = [-4,10],
-         ellipse(5,3,8,6,0,360),
-         image(cats,0,0,10,7),
-         line_width  = 2,
-         head_length = 0.3,
-         color       = blue,
-         label(["This is Francisco",-1,-0.5]),
-         vector([-1,0],[2,4]),
-         color       = green,
-         vector([11,7],[-2,-1]),
-         label(["This is Manolita",11,8]),
-         explicit(sin(x)-2,x,-4,15) )$
+(%i2) f(x,y) := x^2 + 2*y^2 $
+(%i3) c: [x + y - 1] $
 \end{Verbatim}
 
-Junto con los objetos gráficos introducidos en los ejemplos, cuyos resultados se pueden ver en los apartados \emph{a)} y \emph{b)} de la Figura~\ref{fig:draw}, también existen \verb|polygon|\index{polygon}, \verb|rectangle|\index{rectangle}, \verb|polar|\index{polar}, \verb|implicit|\index{implicit} y \verb|geomap|\index{geomap}, este último para mapas cartográficos.
-
-Mostramos a continuación algunas escenas tridimensionales. En primer lugar, el valor absoluto de la función $\Gamma$ de Euler, junto con sus líneas de contorno.
+A continuación hacemos la llamada a la función correspondiente, en la que introducimos la función, la lista de variables independientes, las restricciones, un vector con una solución inicial aproximada y una opción que controla la salida de resultados intermedios. El valor que nos devuelve la función es una lista con dos elementos, siendo el primero la solución y el segundo el valor de un parámetro del algoritmo.
 
 \begin{Verbatim}
-(%i5) gamma2(x,y):=
-        block([re,im,g:gamma(x+%i*y)],
-          re:realpart(g),
-          im:imagpart(g),
-          sqrt(re^2+im^2))$
-(%i6) draw3d(
-        zrange         = [0,6],
-        xu_grid        = 50,
-        yv_grid        = 50,
-        surface_hide   = true,
-        contour        = surface,
-        contour_levels = [0,0.5,6], /* de 0 a 6 en saltos de 0.5 */
-        color          = cyan,
-        terminal       = eps,
-        explicit(gamma2(x,y),x,-4,4,y,-2,2))$
+(%i4) sol: augmented_lagrangian_method(
+                f(x,y), [x, y], c, [1, 1], iprint=[-1,0]);
 \end{Verbatim}
+$$\left[ \left[ x=.6666598410800233 , y=.3333402724554476 \right]  , 
+ {\it \%lambda}=\left[ -1.333337940892538 \right]  \right] \leqno{\tt (\%o4)}$$
 
-Una superficie paramétrica, que junto con la anterior escena, se pueden ver ambas en la Figura~\ref{fig:draw}, apartados \emph{c)} y \emph{d)}.
+Podemos asignar la solución a las variables \verb|x0| y \verb|y0| y a continuación \verb|z0|, el valor mínimo alcanzado,
 
 \begin{Verbatim}
-(%i7) draw3d(
-        terminal       = eps,
-        title          = "Figure 8 - Klein bottle",
-        rot_horizontal = 360,
-        xrange         = [-3.4,3.4],
-        yrange         = [-3.4,3.4],
-        zrange         = [-1.4,1.4],
-        xtics          = none,
-        ytics          = none,
-        ztics          = none,
-        axis_3d        = false,
-        surface_hide   = true,
-        parametric_surface((2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*cos(u),
-                           (2+cos(u/2)*sin(v)-sin(u/2)*sin(2*v))*sin(u),
-                           sin(u/2)*sin(v) + cos(u/2)*sin(2*v),
-                           u, -%pi, 360*%pi/180-%pi, v, 0, 2*%pi) )$
+(%i5) [x0,y0]: map(rhs, first(sol)) $
+(%i6) z0: f(x0,y0);
 \end{Verbatim}
+$$0.666666818190186\leqno{\tt (\%o6)}$$
 
-En el gráfico siguiente se combinan varios objetos: una superficie explícita, dos curvas paramétricas y dos etiquetas, cuyo aspecto es el mostrado en el apartado \emph{e)} de la Figura~\ref{fig:draw}.
+Para facilitar la visualización del problema, podemos plantearnos la realización de un gráfico, Figura~\ref{fig:lagran},
 
 \begin{Verbatim}
+(%i7) load("draw") $
 (%i8) draw3d(
-        color          = green,
-        explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-        color          = blue,
-        parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
-        color          = brown,
-        line_width     = 2,
-        parametric(t^2,sin(t),2+t,t,0,2),
-        surface_hide   = true,
-        title          = "Surface & curves",
-        color          = red,
-        label(["UP",-2,0,3]),
-        label(["DOWN",2,0,-3]),
-        rot_horizontal = 10,
-        rot_vertical   = 84,
-        terminal       = eps )$
+        terminal = eps,
+        view = [93, 143],
+        enhanced3d = [z,x,z],
+        explicit(x^2 + 2*y^2, x, -2, 2, y, -2, 2),
+
+        color = red,
+        enhanced3d = [-z,x,z],
+        parametric_surface(x, -x+1, z, x, -2, 2, z, -1, 5),
+
+        enhanced3d = false,
+        color = black,
+        point_size = 2,
+        points([[x0,y0,z0]]))$
 \end{Verbatim}
-
-En el siguiente ejemplo hacemos una proyección esférica del hemisferio sur, que se ve en el apartado \emph{f)} de la Figura~\ref{fig:draw}. El paquete  \verb|worldmap|\index{worldmap} carga en memoria las coordenadas latitud--longitud de las líneas fronterizas y costeras de todos los países del mundo, así como algunas funciones necesarias para su manipulación y procesamiento,
-
-\begin{Verbatim}
-(%i9) load(worldmap)$
-(%i10) draw3d(
-        surface_hide   = true,
-        rot_horizontal = 60,
-        rot_vertical   = 131,
-        color          = cyan,
-        parametric_surface(
-               cos(phi)*cos(theta),
-               cos(phi)*sin(theta),
-               sin(phi),
-               theta,-%pi,%pi,
-               phi,-%pi/2,%pi/2),
-        color          = red,
-        geomap([South_America,Africa,Australia],
-               [spherical_projection,0,0,0,1]),
-        color          = blue,
-        geomap([South_America,Africa,Australia],
-               [cylindrical_projection,0,0,0,1,2]),
-        terminal       = eps)$
-\end{Verbatim}
-
-
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.55]{draw1.pdf} 
-\includegraphics[scale=0.55]{draw2.pdf} \\
-\emph{a)} \hspace{6.5cm}  \emph{b)} \\
-\includegraphics[scale=0.55]{draw3.pdf} 
-\includegraphics[scale=0.55]{draw4.pdf} \\
-\emph{c)} \hspace{6.5cm}  \emph{d)} \\
-\includegraphics[scale=0.55]{draw5.pdf} 
-\includegraphics[scale=0.55]{draw6.pdf} \\
-\emph{e)} \hspace{6.5cm}  \emph{f)} \\
-\includegraphics[scale=0.55]{draw7.pdf} \\
-\emph{g)} \\
-\caption{Gráficos generados con el paquete draw: \emph{a)} y \emph{b)} con draw2d; \emph{c)}, \emph{d)}, \emph{e)} y \emph{f)} con draw3d; \emph{g)}, un gráfico múltiple.}
-\label{fig:draw}
+\includegraphics[scale=1.6]{lagran.pdf}
+\caption{Minimización con restricciones.}
+\label{fig:lagran}
 \end{center}
 \end{figure}
 
-Además de los objetos gráficos tridimensionales ya vistos, también se hayan definidos \verb|points|, \verb|vector| y, a partir de la versión 5.14 de Maxima, \verb|implicit|.
 
-También es posible generar múltiples gráficos en un mismo fichero o hacer animaciones en formato GIF o en la ventana gráfica. Para ver más ejemplos de gráficos generados con el paquete \verb|draw|, se recomienda acceder a la dirección
-\begin{center}
-http://www.telefonica.net/web2/biomates/maxima/gpdraw
-\end{center}
-o consultar el sistema de ayuda de Maxima.
 
-Ya como colofón, un ejemplo de gráfico múltiple en el que se muestra también cómo dar sombreado a las superficies tridimensionales. El resultado en el apartado \emph{g)} de la Figura~\ref{fig:draw}.
 
-\begin{Verbatim}
-(%i11) escena1:
-         gr3d(surface_hide = true,
-              enhanced3d   = true,
-              palette      = gray,
-              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
-\end{Verbatim}
 
-\begin{Verbatim}
-(%i12) escena2:
-         gr3d(surface_hide  = true,
-              enhanced3d    = true,
-              palette       = gray,
-              user_preamble = "set pm3d map",
-              explicit(sin(sqrt(x^2+y^2)),x,-5,5,y,-5,5))$
-\end{Verbatim}
+
+
+\section{Programación lineal}
+
+El paquete \verb|simplex|\index{simplex} dispone de las funciones \verb|minimize_lp|\index{minimize\_lp} y \verb|maximize_lp|\index{maximize\_lp} para la resolución de problemas de programación lineal. Nos planteamos el siguiente problema:
+
+\begin{eqnarray*}
+\mbox{Max.}      & F(x_1, x_2, x_3, x_4)  & =    2 x_1 + 4 x_2 + x_3 + x_4 \\
+\mbox{sujeto a } & x_1 + 3 x_2 + x_4      & \leq 4 \\
+                  & 2 x_1 + x_2           & \leq 3 \\
+                  & x_2 + 4 x_3 + x_4     & \leq 3 \\
+                  & x_1, x_2, x_3, x_4    & \in  \R^+
+\end{eqnarray*}
+que seguidamente pasamos a resolver cargando previamente en memoria el programa y definiendo la función objetivo y las restricciones asociadas al problema,
 
 \begin{Verbatim}
-(%i13) draw(
-        columns    = 2,
-        terminal   = eps_color,
-        eps_width  = 20,
-        eps_height = 8,
-        escena1, escena2)$
+(%i1) load("simplex") $
+(%i2) F : 2*x1 + 4*x2 + x3 + x4 $
+(%i3) r1 : x1 + 3*x2 + x4 <= 4 $
+(%i4) r2 : 2*x1 + x2 <= 3 $
+(%i5) r3 : x2 + 4*x3 + x4 <= 3 $
+(%i6) r4 : x1 >= 0 $
+(%i7) r5 : x2 >= 0 $
+(%i8) r6 : x3 >= 0 $
+(%i9) r7 : x4 >= 0 $
 \end{Verbatim}
 
-Se comienza definiendo las dos escenas a representar, la función explícita y el gráfico de densidades, en sendos objetos \verb|gr3d|, ya que ambos son de naturaleza tridimensional. Estos objetos se pasan luego a la función \verb|draw| como argumentos, junto con algunas opciones globales. La función \verb|draw| es realmente la que ha generado también los gráficos anteriores, siendo \verb|draw2d| y \verb|draw3d| sinónimos de \verb|draw(gr2d(...))| y \verb|draw(gr3d(...))|, respectivamente.
+A continuación resolvemos el problema invocando la función \verb|maximize_lp|,
+
+\begin{Verbatim}
+(%i10) maximize_lp(F, [r1, r2, r3, r4, r5, r6, r7]);
+\end{Verbatim}
+$$\left[ {{13}\over{2}} , \left[ {\it x_3}={{1}\over{2}} , {\it x_4}=
+ 0 , {\it x_2}=1 , {\it x_1}=1 \right]  \right] \leqno{\tt (\%o10)}$$
+
+El primer elemento de la lista es el valor máximo que alcanza la función objetivo y el segundo es la lista que contiene la solución.
 
 
 
@@ -5645,10 +6212,10 @@ Se comienza definiendo las dos escenas a representar, la función explícita y el 
 
 
 \newpage
-\section{Programando en Maxima}
+\chapter{Programando en Maxima}
 
 
-\subsection{Programación a nivel de Maxima}
+\section{Programación a nivel de Maxima}
 
 
 Esencialmente, programar consiste en escribir secuencialmente un grupo de sentencias sintácticamente correctas que el intérprete pueda leer y luego ejecutar; la manera más sencilla de empaquetar varias sentencias es mediante paréntesis, siendo el resultado del programa la salida de la última sentencia:
@@ -5703,7 +6270,7 @@ d\leqno{\tt (\%o6)}
 A la hora de hacer un programa, lo habitual es empaquetarlo como cuerpo de una función, de forma que sea sencillo utilizar el código escrito tantas veces como sea necesario sin más que escribir el nombre de la función con los argumentos necesarios; la estructura de la definición de una función necesita el uso del operador \verb|:=|
 
 \begin{Verbatim}
-                           f(<arg1>,<arg2>,...):=<expr>
+                  f(<arg1>,<arg2>,...):=<expr>
 \end{Verbatim}
 
 donde \verb|<expr>| es una única sentencia o un bloque con variables locales; véanse los siguientes ejemplos:
@@ -5839,17 +6406,17 @@ Pero ante la presencia de un operador lógico o una sentencia condicional, \verb|
 En cuanto a los bucles, \verb|for|\index{for} es muy versátil; tiene las siguientes variantes:
 
 \begin{Verbatim}
-                for <var>:<val1> step <val2> thru <val3> do <expr>
-                for <var>:<val1> step <val2> while <cond> do <expr>
-                for <var>:<val1> step <val2> unless <cond> do <expr>
+         for <var>:<val1> step <val2> thru <val3> do <expr>
+         for <var>:<val1> step <val2> while <cond> do <expr>
+         for <var>:<val1> step <val2> unless <cond> do <expr>
 \end{Verbatim}
 
 Cuando el incremento de la variable es la unidad, se puede obviar la parte de la sentencia relativa a \verb|step|\index{step}, dando lugar a los esquemas
 
 \index{thru}\index{while}\index{unless}\begin{Verbatim}
-                    for <var>:<val1> thru <val3> do <expr>
-                    for <var>:<val1> while <cond> do <expr>
-                    for <var>:<val1> unless <cond> do <expr>
+              for <var>:<val1> thru <val3> do <expr>
+              for <var>:<val1> while <cond> do <expr>
+              for <var>:<val1> unless <cond> do <expr>
 \end{Verbatim}
 
 Cuando no sea necesaria la presencia de una variable de recuento de iteraciones, también se podrá prescindir de los \verb|for|, como en
@@ -6006,7 +6573,7 @@ lo cual se debe al hecho de que la función \verb|map| no reconoce el argumento c
 Cuando se hace un programa, lo habitual es escribir el código con un editor de texto y almacenarlo en un archivo con extensión \verb|mac|. Una vez dentro de Maxima, la instrucción
 
 \begin{Verbatim}
-                              load("ruta/fichero.mac")$
+                    load("ruta/fichero.mac")$
 \end{Verbatim}
 leerá las funciones escritas en él y las cargará en la memoria, listas para ser utilizadas.
 
@@ -6054,7 +6621,7 @@ prueba.mac:4::             /* se detiene al comienzo de la línea 4 */
 
 
 
-\subsection{Programación a nivel de Lisp}
+\section{Programación a nivel de Lisp}
 
 
 A veces se presentan circunstancias en las que es mejor hacer programas para Maxima directamente en Lisp\index{lisp}; tal es el caso de las funciones que no requieran de mucho procesamiento simbólico, como funciones de cálculo numérico o la creación de nuevas estructuras de datos.

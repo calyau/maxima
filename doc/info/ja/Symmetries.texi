@@ -1,0 +1,1709 @@
+@c end concepts Symmetries
+
+@menu
+* Introduction to Symmetries::
+* Functions and Variables for Symmetries::
+@end menu
+
+@node Introduction to Symmetries, Functions and Variables for Symmetries, Symmetries, Symmetries
+@section Introduction to Symmetries
+
+@code{sym}は、多項式の対称群を扱うパッケージです。
+
+これは、
+Annick Valibouze
+@ifnottex
+(@url{http://www-calfor.lip6.fr/~avb/})
+@end ifnottex
+@iftex
+@footnote{@url{www-calfor.lip6.fr/~avb}}
+@end iftex
+によって
+Macsyma-Symbolicsのために書かれました。
+アルゴリズムは、以下の論文に記載されています:
+
+@ifnottex
+@enumerate
+@item
+Fonctions sym@'etriques et changements de bases. Annick Valibouze.
+EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
+Springer, Berlin, 1989.@*
+@url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
+
+@item R@'esolvantes et fonctions sym@'etriques. Annick Valibouze.
+Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
+and Algebraic Computation, ISSAC'89 (Portland, Oregon).
+ACM Press, 390-399, 1989.@*
+@url{http://www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}
+
+@item Symbolic computation with symmetric polynomials, an extension to Macsyma.
+Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
+Springer-Verlag, New York Berlin, 308-320, 1989.@*
+@url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
+
+@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
+@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994.
+@end enumerate
+@end ifnottex
+
+@iftex
+@enumerate
+@item
+Fonctions sym@'etriques et changements de bases
+@footnote{@url{www.stix.polytechnique.fr/publications/1984-1994.html}}.
+Annick Valibouze. EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
+Springer, Berlin, 1989.
+
+@item R@'esolvantes et fonctions sym@'etriques
+@footnote{@url{www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}}.
+Annick Valibouze. Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
+and Algebraic Computation, ISSAC'89 (Portland, Oregon). ACM Press, 390-399, 1989.
+
+@item Symbolic computation with symmetric polynomials, an extension to Macsyma
+@footnote{@url{www.stix.polytechnique.fr/publications/1984-1994.html}}.
+Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
+Springer-Verlag, New York Berlin, 308-320, 1989.
+
+@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
+@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994.
+@end enumerate
+@end iftex
+
+@opencatbox
+@category{Group theory} @category{Polynomials} @category{Share packages} @category{Package sym}
+@closecatbox
+
+
+@node Functions and Variables for Symmetries,  , Introduction to Symmetries, Symmetries
+@section Functions and Variables for Symmetries
+
+
+@subsection Changing bases
+
+
+@deffn {関数} comp2pui (@var{n}, @var{L})
+リスト@var{L}で与えられた与えられた完全対称関数から
+0から@var{n}までの基本対称関数にパスすることを実装します。
+もしリスト@var{L}が
+@var{n+1}個より少ない要素を含むなら、
+タイプ@var{h1}, @var{h2}などの
+形式的な値で完成されます。
+もし
+リスト@var{L}の最初の要素が存在するなら、
+それはアルファベットのサイズを指定します。
+そうでないなら、サイズは@var{n}に設定されます。
+@c GENERATED FROM THE FOLLOWING
+@c comp2pui (3, [4, g]);
+@example
+@group
+(%i1) comp2pui (3, [4, g]);
+                        2                    2
+(%o1)    [4, g, 2 h2 - g , 3 h3 - g h2 + g (g  - 2 h2)]
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} ele2pui (@var{m}, @var{L})
+基本対称関数から完全関数に行きます。
+@code{comp2ele}や@code{comp2comp}に似ています。
+
+基数を変える他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} ele2comp (@var{m}, @var{L})
+基本対称関数から完全関数に行きます。
+@code{comp2ele}や@code{comp2pui}に似ています。
+
+基数を変える他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} elem (@var{ele}, @var{sym}, @var{lvar})
+リスト@var{lvar}に含まれる変数に関して、
+リスト@var{ele}で与えられた基本対称関数を使って、
+対称多項式@var{sym}を分解します。
+もし@var{ele}の最初の要素が与えられたら、
+アルファベットのサイズで、
+そうでないなら、サイズは多項式@var{sym}の次数です。
+もし値がリスト@var{ele}になければ、
+タイプ@var{e1}, @var{e2}などの形式的値が加えられます。
+多項式@var{sym}は３つの異なる形式で与えられます:
+contracted (@code{elem}はその時、デフォルト値1であるべきです),
+partitioned (@code{elem}は3であるべきです),または
+extended(すなわち、多項式全体, かつ、@code{elem}は2であるべきです)。
+関数@code{pui}は同じ方法で使われます。
+
+サイズ3のアルファベットと値7を持つ最初の基本対称関数@var{e1}上で、
+(ここで変数の２つにだけ依存する)短縮された形式が@var{x^4-2*x*y}である
+3変数の対称多項式が以下のように基本対称関数で分解されます:
+
+@c GENERATED FROM THE FOLLOWING
+@c elem ([3, 7], x^4 - 2*x*y, [x, y]);
+@c ratsimp (%);
+@example
+@group
+(%i1) elem ([3, 7], x^4 - 2*x*y, [x, y]);
+(%o1) 7 (e3 - 7 e2 + 7 (49 - e2)) + 21 e3
+
+                                         + (- 2 (49 - e2) - 2) e2
+@end group
+@group
+(%i2) ratsimp (%);
+                              2
+(%o2)             28 e3 + 2 e2  - 198 e2 + 2401
+@end group
+@end example
+
+@noindent
+基数を変える他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} mon2schur (@var{L})
+リスト@var{L}は
+Schur関数@math{S_L}を表します:
+ we have
+@iftex
+@math{i_1 \le i_2 \le \ldots \le i_q}成る@math{L = [i_1,i_2, \ldots, i_q]}
+を持ちます。
+Schur関数@math{S_{i_1,i_2, \ldots, i_q}}は、
+最初の@math{q}個の行と列@math{i_1+1, i_2+2, \ldots, i_q+q}
+から成る無限行列@math{h_{i-j}}, @math{i \ge 1, j \ge 1}
+の小行列式です。
+@end iftex
+@ifnottex
+@math{i_1 <= i_2 <= ... <= i_q}成る@math{L = [i_1, i_2, ..., i_q]}
+を持ちます。
+Schur関数@math{S_[i_1, i_2, ..., i_q]}は、
+最初の@math{q}個の行と列@math{1 + i_1, 2 + i_2, ..., q + i_q}
+から成る無限行列@math{h_[i-j]}, @math{i <= 1, j <= 1}
+の小行列式です。
+
+@end ifnottex
+
+このSchur関数は
+@code{treinat}と@code{kostka}を使うことで
+単項式の項で書かれることができます。
+返される形式は、
+変数
+@tex
+$x_1,x_2,\ldots$
+@end tex
+@ifnottex
+@math{x_1,x_2,...}
+@end ifnottex
+の短縮表現の対称多項式です。
+
+@c GENERATED FROM THE FOLLOWING
+@c mon2schur ([1, 1, 1]);
+@c mon2schur ([3]);
+@c mon2schur ([1, 2]);
+@example
+@group
+(%i1) mon2schur ([1, 1, 1]);
+(%o1)                       x1 x2 x3
+@end group
+@group
+(%i2) mon2schur ([3]);
+                                  2        3
+(%o2)                x1 x2 x3 + x1  x2 + x1
+@end group
+@group
+(%i3) mon2schur ([1, 2]);
+                                      2
+(%o3)                  2 x1 x2 x3 + x1  x2
+@end group
+@end example
+
+@noindent
+以上は、3つの変数に関してこれが与えることを意味します:
+
+@c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ?? (original comment)
+@example
+@group
+   2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
+    + x2^2 x3 + x3^2 x2
+@end group
+@end example
+@noindent
+基数を変えるための他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
+@var{l_elem}に含まれる基本対称関数を使って、リスト@var{l_var}のリストに含まれる
+変数のグループに関して、
+多重対称多項式を
+多重短縮形@var{multi_pc}に分解します。
+
+@c GENERATED FROM THE FOLLOWING
+@c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@c ratsimp (%);
+@example
+@group
+(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3,
+      [[x, y], [a, b]]);
+                                                  3
+(%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
+@end group
+@group
+(%i2) ratsimp (%);
+                         2                       3
+(%o2)         - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
+@end group
+@end example
+
+基数を変えるための他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ?? (original comment)
+@deffn {関数} multi_pui
+関数@code{multi_elem}が関数@code{elem}に対するものであるように、
+関数@code{pui}に対するものです。
+
+@c GENERATED FROM THE FOLLOWING
+@c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@example
+@group
+(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3,
+      [[x, y], [a, b]]);
+                                            3
+                                3 p1 p2   p1
+(%o1)              t2 + p1 t1 + ------- - ---
+                                   2       2
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@c HMM, pui IS A VARIABLE AS WELL.  It's a function, for sure.
+@deffn {関数} pui (@var{L}, @var{sym}, @var{lvar})
+リスト@var{L}の中のべき関数を使って、
+リスト@var{lvar}の中の変数に関して、
+対称多項式@var{sym}を分解します。
+もし@var{L}の最初の要素が与えられるなら、
+アルファベットのサイズです。
+そうでないなら、サイズは多項式@var{sym}の次数になります。
+もしリスト@var{L}の中に値がないなら、
+タイプ@var{p1}, @var{p2} , などの形式的な値が加えられます。
+多項式@var{sym}は、
+３つの異なる形式で与えられることができます:
+contracted (@code{elem}は1でなければならず、デフォルト値です),
+partitioned (@code{elem}は3でなければいけません),
+extended (すなわち、多項式全体、そして@code{elem}は2でなければいけません)。
+関数@code{pui}は同じ方法で使われます。
+
+@c GENERATED FROM THE FOLLOWING
+@c pui;
+@c pui ([3, a, b], u*x*y*z, [x, y, z]);
+@c ratsimp (%);
+@example
+@group
+(%i1) pui;
+(%o1)                           1
+@end group
+@group
+(%i2) pui ([3, a, b], u*x*y*z, [x, y, z]);
+                       2
+                   a (a  - b) u   (a b - p3) u
+(%o2)              ------------ - ------------
+                        6              3
+@end group
+@group
+(%i3) ratsimp (%);
+                                       3
+                      (2 p3 - 3 a b + a ) u
+(%o3)                 ---------------------
+                                6
+@end group
+@end example
+@noindent
+Other functions for changing bases: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} pui2comp (@var{n}, @var{lpui})
+リスト@var{lpui}で与えられたべき関数を使って、
+(最初に長さを持ち)最初の@var{n}個の完全関数のリストを返します。
+もしリスト@var{lpui}が空なら、
+基数は@var{n}で、
+そうでないなら、基数は(@code{comp2ele}や@code{comp2pui}同様)
+最初の要素です。
+
+@c GENERATED FROM THE FOLLOWING
+@c pui2comp (2, []);
+@c pui2comp (3, [2, a1]);
+@c ratsimp (%);
+@example
+@group
+(%i1) pui2comp (2, []);
+                                       2
+                                p2 + p1
+(%o1)                   [2, p1, --------]
+                                   2
+@end group
+@group
+(%i2) pui2comp (3, [2, a1]);
+                                            2
+                                 a1 (p2 + a1 )
+                         2  p3 + ------------- + a1 p2
+                  p2 + a1              2
+(%o2)     [2, a1, --------, --------------------------]
+                     2                  3
+@end group
+@group
+(%i3) ratsimp (%);
+                            2                     3
+                     p2 + a1   2 p3 + 3 a1 p2 + a1
+(%o3)        [2, a1, --------, --------------------]
+                        2               6
+@end group
+@end example
+@noindent
+基数を変えるための他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} pui2ele (@var{n}, @var{lpui})
+べき関数から基本対称関数への変転に影響します。
+もしフラグ@code{pui2ele}が@code{girard}なら、
+1から@var{n}までの基本対称関数のリストを返し、
+もしフラグが@code{close}なら、
+@var{n}番目の基本対称関数を返します。
+
+基数を変えるための他の関数: @code{comp2ele}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} puireduc (@var{n}, @var{lpui})
+@var{lpui}は
+最初の要素が整数@var{m}のリストです。
+@code{puireduc}は
+最初の@var{m}個を使って最初の@var{n}個のべき関数を与えます。
+
+@c GENERATED FROM THE FOLLOWING
+@c puireduc (3, [2]);
+@example
+@group
+(%i1) puireduc (3, [2]);
+                                         2
+                                   p1 (p1  - p2)
+(%o1)          [2, p1, p2, p1 p2 - -------------]
+                                         2
+@end group
+@group
+(%i2) ratsimp (%);
+                                           3
+                               3 p1 p2 - p1
+(%o2)              [2, p1, p2, -------------]
+                                     2
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} schur2comp (@var{P}, @var{l_var})
+@var{P}はリスト@var{l_var}の変数の多項式です。
+これらの変数のそれぞれは完全対称関数を表します。
+@var{l_var}の中で、
+@var{i}番目の完全対称関数は
+文字@code{h}と整数@var{i}の連結@code{h@var{i}}によって表されます。
+この関数は
+@var{P}をSchur関数を使って表現します。
+
+
+@c GENERATED FROM THE FOLLOWING
+@c schur2comp (h1*h2 - h3, [h1, h2, h3]);
+@c schur2comp (a*h3, [h3]);
+@example
+@group
+(%i1) schur2comp (h1*h2 - h3, [h1, h2, h3]);
+(%o1)                         s
+                               1, 2
+@end group
+@group
+(%i2) schur2comp (a*h3, [h3]);
+(%o2)                         s  a
+                               3
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+
+@subsection Changing representations
+
+@deffn {関数} cont2part (@var{pc}, @var{lvar})
+変数が@var{lvar}の中に含まれている短縮形@var{pc}に
+関連付けられた分割多項式を返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c pc: 2*a^3*b*x^4*y + x^5;
+@c cont2part (pc, [x, y]);
+@example
+@group
+(%i1) pc: 2*a^3*b*x^4*y + x^5;
+                           3    4      5
+(%o1)                   2 a  b x  y + x
+@end group
+@group
+(%i2) cont2part (pc, [x, y]);
+                                   3
+(%o2)              [[1, 5, 0], [2 a  b, 4, 1]]
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} contract (@var{psym}, @var{lvar})
+リスト@var{lvar}に含まれる変数に関する
+多項式@var{psym}の
+短縮形(すなわち、対称群の作用の下での単項軌道)を返します。
+@c CHECK ME!!
+関数@code{explose}は逆演算を実行します。
+関数@code{tcontract}は多項式の対称性をテストします。
+
+@c GENERATED FROM THE FOLLOWING
+@c psym: explose (2*a^3*b*x^4*y, [x, y, z]);
+@c contract (psym, [x, y, z]);
+@example
+@group
+(%i1) psym: explose (2*a^3*b*x^4*y, [x, y, z]);
+         3      4      3      4      3    4        3    4
+(%o1) 2 a  b y z  + 2 a  b x z  + 2 a  b y  z + 2 a  b x  z
+
+                                           3      4      3    4
+                                      + 2 a  b x y  + 2 a  b x  y
+@end group
+@group
+(%i2) contract (psym, [x, y, z]);
+                              3    4
+(%o2)                      2 a  b x  y
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} explose (@var{pc}, @var{lvar})
+短縮形@var{pc}に関連付けられた対称多項式を返します。
+リスト@var{lvar}は変数を含みます。
+
+@c GENERATED FROM THE FOLLOWING
+@c explose (a*x + 1, [x, y, z]);
+@example
+@group
+(%i1) explose (a*x + 1, [x, y, z]);
+(%o1)                  a z + a y + a x + 1
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} part2cont (@var{ppart}, @var{lvar})
+対称式を分割形から短縮形に変換します。
+短縮形は@var{lvar}の中の変数で表されます。
+
+@c GENERATED FROM THE FOLLOWING
+@c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
+@example
+@group
+(%i1) part2cont ([[2*a^3*b, 4, 1]], [x, y]);
+                              3    4
+(%o1)                      2 a  b x  y
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} partpol (@var{psym}, @var{lvar})
+@var{psym}は
+リスト@var{lvar}の変数に関する対称多項式です。
+この関数は分割表現を返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c partpol (-a*(x + y) + 3*x*y, [x, y]);
+@example
+@group
+(%i1) partpol (-a*(x + y) + 3*x*y, [x, y]);
+(%o1)               [[3, 1, 1], [- a, 1, 0]]
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} tcontract (@var{pol}, @var{lvar})
+多項式@var{pol}が
+リスト@var{lvar}の変数に関して対称かテストします。
+もしそうなら、関数@code{contract}のように短縮表現を返します。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} tpartpol (@var{pol}, @var{lvar})
+多項式@var{pol}が
+リスト@var{lvar}の中の変数に関して
+対称かテストします。
+もしそうなら
+関数@code{partpol}のように
+分割表現を返します。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+@subsection Groups and orbits
+
+
+@deffn {関数} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
+変数@var{lvar_1}, ..., @var{lvar_n}のリストと
+変数@var{y}についての多項式@var{p_1}, ..., @var{p_n}に関して、
+関数@var{f}に関連付けられた順像
+(M. Giusti, D. Lazard et A. Valibouze,
+ISSAC 1988, Romeを参照してください)
+を計算します。
+関数@var{f}のアリティが計算にとって重要です。
+例えば、
+@var{f}についての式がある変数に依存しないなら、
+この変数を含むことは役に立たず、含めなければ、
+計算量を相当に減らすことにもなるでしょう。
+
+@c GENERATED FROM THE FOLLOWING
+@c direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+@c               z, b*v + a*u, [[u, v], [a, b]]);
+@c ratsimp (%);
+@c ratsimp (direct ([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2],
+@c               z, b*v + a*u, [[u, v], [a, b]]));
+@example
+@group
+(%i1) direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+              z, b*v + a*u, [[u, v], [a, b]]);
+       2
+(%o1) y  - e1 f1 y
+
+                                 2            2             2   2
+                  - 4 e2 f2 - (e1  - 2 e2) (f1  - 2 f2) + e1  f1
+                + -----------------------------------------------
+                                         2
+@end group
+@group
+(%i2) ratsimp (%);
+              2                2                   2
+(%o2)        y  - e1 f1 y + (e1  - 4 e2) f2 + e2 f1
+@end group
+@group
+(%i3) ratsimp (direct ([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2],
+              z, b*v + a*u, [[u, v], [a, b]]));
+       6            5         2                        2    2   4
+(%o3) y  - 2 e1 f1 y  + ((2 e1  - 6 e2) f2 + (2 e2 + e1 ) f1 ) y
+
+                          3                               3   3
+ + ((9 e3 + 5 e1 e2 - 2 e1 ) f1 f2 + (- 2 e3 - 2 e1 e2) f1 ) y
+
+         2       2        4    2
+ + ((9 e2  - 6 e1  e2 + e1 ) f2
+
+                    2       2       2                   2    4
+ + (- 9 e1 e3 - 6 e2  + 3 e1  e2) f1  f2 + (2 e1 e3 + e2 ) f1 )
+
+  2          2                      2     3          2
+ y  + (((9 e1  - 27 e2) e3 + 3 e1 e2  - e1  e2) f1 f2
+
+                 2            2    3                5
+ + ((15 e2 - 2 e1 ) e3 - e1 e2 ) f1  f2 - 2 e2 e3 f1 ) y
+
+           2                   3           3     2   2    3
+ + (- 27 e3  + (18 e1 e2 - 4 e1 ) e3 - 4 e2  + e1  e2 ) f2
+
+         2      3                   3    2   2
+ + (27 e3  + (e1  - 9 e1 e2) e3 + e2 ) f1  f2
+
+                   2    4        2   6
+ + (e1 e2 e3 - 9 e3 ) f1  f2 + e3  f1
+@end group
+@end example
+
+根が和@math{a+u}である多項式を見つけること。
+ただし、@math{a}は@math{z^2 - e_1 z + e_2}の根で、
+@math{u}は@math{z^2 - f_1 z + f_2}の根です。
+
+@c GENERATED FROM THE FOLLOWING
+@c ratsimp (direct ([z^2 - e1* z + e2, z^2 - f1* z + f2],
+@c                           z, a + u, [[u], [a]]));
+@example
+@group
+(%i1) ratsimp (direct ([z^2 - e1* z + e2, z^2 - f1* z + f2],
+                          z, a + u, [[u], [a]]));
+       4                    3             2
+(%o1) y  + (- 2 f1 - 2 e1) y  + (2 f2 + f1  + 3 e1 f1 + 2 e2
+
+     2   2                              2               2
+ + e1 ) y  + ((- 2 f1 - 2 e1) f2 - e1 f1  + (- 2 e2 - e1 ) f1
+
+                  2                     2            2
+ - 2 e1 e2) y + f2  + (e1 f1 - 2 e2 + e1 ) f2 + e2 f1  + e1 e2 f1
+
+     2
+ + e2
+@end group
+@end example
+
+@code{direct}は２つのフラグを受け付けます:
+@code{elementaires}と@code{puissances} (デフォルト)
+これらは、計算の中に現れる対称多項式を
+それぞれ基本対称関数またはべき関数に分解することを許します。
+
+この関数で使われる@code{sym}の関数は以下の通りです:
+
+@code{multi_orbit} (だから@code{orbit}), @code{pui_direct}, @code{multi_elem}
+(だから@code{elem}), @code{multi_pui} (だから@code{pui}), @code{pui2ele}, @code{ele2pui}
+(もしフラグ@code{direct}が@code{puissances}の中にあれば)。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+@deffn {関数} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2},..., @var{lvar_p}])
+
+@var{P}は
+リスト@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}に含まれる
+変数の集合に関する
+多項式です。
+この関数は
+これら@var{p}リストで表された変数の集合の対称群の積の作用の下で
+多項式@var{P}の
+軌道を返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c multi_orbit (a*x + b*y, [[x, y], [a, b]]);
+@c multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
+@example
+@group
+(%i1) multi_orbit (a*x + b*y, [[x, y], [a, b]]);
+(%o1)                [b y + a x, a y + b x]
+@end group
+@group
+(%i2) multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
+(%o2)        [y + x + 2 c, y + x + 2 b, y + x + 2 a]
+@end group
+@end example
+@noindent
+以下も参照してください: 単対称群の作用に関する@code{orbit}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+@deffn {関数} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
+次数@var{n}の対称群の作用を法としてのみ働くことで、
+@var{n}個の変数に関する２つの対称多項式の積を返します。
+多項式は分割形式です。
+
+@var{x}, @var{y}に関する鵜２つの対称多項式:
+分割形式が@code{[[3, 1], [2, 1, 1]]}と@code{[[5, 2]]}である
+@code{3*(x + y) + 2*x*y}と@code{5*(x^2 + y^2)}
+が与えられたとして、それらの積は、
+
+@c GENERATED FROM THE FOLLOWING
+@c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
+@example
+@group
+(%i1) multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
+(%o1)         [[10, 3, 1], [15, 3, 0], [15, 2, 1]]
+@end group
+@end example
+@noindent
+、すなわち、@code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}です。
+
+対称多項式の表現を変える関数は以下の通りです:
+
+@code{contract}, @code{cont2part}, @code{explose}, @code{part2cont},
+@code{partpol}, @code{tcontract}, @code{tpartpol}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} orbit (@var{P}, @var{lvar})
+リスト@var{lvar}の変数の集合の対称群の作用の下で
+リスト@var{lvar}の変数に関する多項式@var{P}の軌道を計算します。
+
+@c GENERATED FROM THE FOLLOWING
+@c orbit (a*x + b*y, [x, y]);
+@c orbit (2*x + x^2, [x, y]);
+@example
+@group
+(%i1) orbit (a*x + b*y, [x, y]);
+(%o1)                [a y + b x, b y + a x]
+@end group
+@group
+(%i2) orbit (2*x + x^2, [x, y]);
+                        2         2
+(%o2)                 [y  + 2 y, x  + 2 x]
+@end group
+@end example
+@noindent
+多項式に関する対称群の積の作用に関しては@code{multi_orbit}も参照してください。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
+
+@var{f}を
+変数の@var{n}個のブロック@var{lvar_1}, ..., @var{lvar_n}に関する多項式とします。
+@var{c_i}を
+@var{lvar_i}の中の変数の数とし、
+@var{SC}を
+次数@var{c_1}, ..., @var{c_n}の
+@var{n}個の対称群の積とします。
+この群は自然に@var{f}に作用します。
+リスト@var{orbite}は
+@var{SC}の作用の下での関数@var{f}の軌道で、@code{@var{SC}(@var{f})}を意味します。
+(このリストは
+関数@code{multi_orbit}によって得られます。)
+@var{di}は
+@iftex
+$c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n$.
+@end iftex
+@ifnottex
+@math{c_1 <= d_1, c_2 <= d_2, ..., c_n <= d_n}.
+@end ifnottex
+を満たすような整数です。
+
+@var{SD}を
+対称群
+@iftex
+@math{S_{d_1} \times S_{d_2} \times \cdots \times S_{d_n}}
+@end iftex
+@ifnottex
+@math{S_[d_1] x S_[d_2] x ... x S_[d_n]}
+@end ifnottex
+の積とします。
+関数@code{pui_direct}は
+@code{@var{SC}(@var{f})}のべき関数から演繹された
+@code{@var{SD}(@var{f})}の
+最初の@var{n}個のべき関数を返します。
+ここで、@var{n}は@code{@var{SD}(@var{f})}のサイズです。
+
+結果は@var{SD}に関する多重短縮された形式です。
+すなわち、@var{SD}の作用の下で、軌道毎にただ１つの要素が保持されます。
+
+
+@c GENERATED FROM THE FOLLOWING
+@c l: [[x, y], [a, b]];
+@c pui_direct (multi_orbit (a*x + b*y, l), l, [2, 2]);
+@c pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
+@c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
+@example
+@group
+(%i1) l: [[x, y], [a, b]];
+(%o1)                   [[x, y], [a, b]]
+@end group
+@group
+(%i2) pui_direct (multi_orbit (a*x + b*y, l), l, [2, 2]);
+                                       2  2
+(%o2)               [a x, 4 a b x y + a  x ]
+@end group
+@group
+(%i3) pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
+                             2  2     2    2        3  3
+(%o3) [2 a x, 4 a b x y + 2 a  x , 3 a  b x  y + 2 a  x , 
+
+    2  2  2  2      3    3        4  4
+12 a  b  x  y  + 4 a  b x  y + 2 a  x , 
+
+    3  2  3  2      4    4        5  5
+10 a  b  x  y  + 5 a  b x  y + 2 a  x , 
+
+    3  3  3  3       4  2  4  2      5    5        6  6
+40 a  b  x  y  + 15 a  b  x  y  + 6 a  b x  y + 2 a  x ]
+@end group
+@group
+(%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a],
+      [[x, y], [a, b, c]], [2, 3]);
+                             2              2
+(%o4) [3 x + 2 a, 6 x y + 3 x  + 4 a x + 4 a , 
+
+                 2                   3        2       2        3
+              9 x  y + 12 a x y + 3 x  + 6 a x  + 12 a  x + 8 a ]
+@end group
+@end example
+@c THIS NEXT FUNCTION CALL TAKES A VERY LONG TIME (SEVERAL MINUTES)
+@c SO LEAVE IT OUT TIL PROCESSORS GET A LITTLE FASTER ...
+@c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [3, 4]);
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+
+
+@subsection Partitions
+
+@deffn {関数} kostka (@var{part_1}, @var{part_2})
+P. Esperetによって書かれ、
+分割@var{part_1}と@var{part_2}のKostka数を計算します。
+
+@c GENERATED FROM THE FOLLOWING
+@c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
+@example
+@group
+(%i1) kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
+(%o1)                           6
+@end group
+@end example
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} lgtreillis (@var{n}, @var{m})
+重み@var{n}と長さ@var{m}の分割のリストを返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c lgtreillis (4, 2);
+@example
+@group
+(%i1) lgtreillis (4, 2);
+(%o1)                   [[3, 1], [2, 2]]
+@end group
+@end example
+@noindent
+以下も参照してください: @code{ltreillis}, @code{treillis}, @code{treinat}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} ltreillis (@var{n}, @var{m})
+重み@var{n}と@var{m}以下の長さの分割のリストを返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c ltreillis (4, 2);
+@example
+@group
+(%i1) ltreillis (4, 2);
+(%o1)               [[4, 0], [3, 1], [2, 2]]
+@end group
+@end example
+@noindent
+以下も参照してください: @code{lgtreillis}, @code{treillis}, @code{treinat}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} treillis (@var{n})
+重み@var{n}の分割すべてを返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c treillis (4);
+@example
+@group
+(%i1) treillis (4);
+(%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
+@end group
+@end example
+
+以下も参照してください: @code{lgtreillis}, @code{ltreillis}, @code{treinat}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} treinat (@var{part})
+自然な順序に関する分割@var{part}より低い分割のリストを返します。
+
+@c GENERATED FROM THE FOLLOWING
+@c treinat ([5]);
+@c treinat ([1, 1, 1, 1, 1]);
+@c treinat ([3, 2]);
+@example
+@group
+(%i1) treinat ([5]);
+(%o1)                         [[5]]
+@end group
+@group
+(%i2) treinat ([1, 1, 1, 1, 1]);
+(%o2) [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1], 
+
+                                                 [1, 1, 1, 1, 1]]
+@end group
+@group
+(%i3) treinat ([3, 2]);
+(%o3)                 [[5], [4, 1], [3, 2]]
+@end group
+@end example
+
+以下も参照してください: @code{lgtreillis}, @code{ltreillis}, @code{treillis}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+
+@subsection Polynomials and their roots
+
+@deffn {関数} ele2polynome (@var{L}, @var{z})
+根の基本対称関数が
+リスト@code{@var{L} = [@var{n}, @var{e_1}, ..., @var{e_n}]}の中にあるような
+@var{z}に関する多項式を返します。
+ここで@var{n}は多項式の次数であり、
+@var{e_i}は@var{i}番目の基本対称関数です。
+
+@c GENERATED FROM THE FOLLOWING
+@c ele2polynome ([2, e1, e2], z);
+@c polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
+@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+@example
+@group
+(%i1) ele2polynome ([2, e1, e2], z);
+                          2
+(%o1)                    z  - e1 z + e2
+@end group
+@group
+(%i2) polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
+(%o2)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+@end group
+@group
+(%i3) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+                  7       5       3
+(%o3)            x  - 14 x  + 56 x  - 56 x + 22
+@end group
+@end example
+@noindent
+The inverse: @code{polynome2ele (@var{P}, @var{z})}.
+
+Also see:
+@code{polynome2ele}, @code{pui2polynome}.
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} polynome2ele (@var{P}, @var{x})
+リスト@code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]}を与えます。
+ここで@var{n}は
+変数@var{x}に関する多項式@var{P}の次数であり、
+@var{e_i}は
+@var{P}の根の@var{i}番目の基本対称関数です。
+
+@c GENERATED FROM THE FOLLOWING
+@c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
+@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+@example
+@group
+(%i1) polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
+(%o1)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+@end group
+@group
+(%i2) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+                  7       5       3
+(%o2)            x  - 14 x  + 56 x  - 56 x + 22
+@end group
+@end example
+@noindent
+逆: @code{ele2polynome (@var{l}, @var{x})}
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} prodrac (@var{L}, @var{k})
+@var{L}は
+集合@var{A}上の基本対称関数を含む
+リストです。
+@code{prodrac}は、
+根が
+@var{A}の要素の
+@var{k}掛ける@var{k}の積の
+多項式を返します。
+
+@code{somrac}も参照してください。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} pui2polynome (@var{x}, @var{lpui})
+根のべき関数がリスト@var{lpui}で与えられる
+@var{x}に関する多項式を計算します。
+
+@c GENERATED FROM THE FOLLOWING
+@c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
+@c ele2pui (3, %);
+@c pui2polynome (x, %);
+@example
+@group
+(%i1) pui;
+(%o1)                           1
+@end group
+@group
+(%i2) kill(labels);
+(%o0)                         done
+@end group
+@group
+(%i1) polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
+(%o1)                     [3, 4, 5, 1]
+@end group
+@group
+(%i2) ele2pui (3, %);
+(%o2)                     [3, 4, 6, 7]
+@end group
+@group
+(%i3) pui2polynome (x, %);
+                        3      2
+(%o3)                  x  - 4 x  + 5 x - 1
+@end group
+@end example
+@noindent
+以下も参照してください:
+@code{polynome2ele}, @code{ele2polynome}。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} somrac (@var{L}, @var{k})
+リスト@var{L}は
+多項式@var{P}の基本対称関数を含みます。
+関数は
+根が@var{P}の根の@var{k}掛ける@var{k}の別個の和である
+多項式を計算します。
+
+@code{prodrac}も参照してください。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+
+@subsection Resolvents
+
+@deffn {関数} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1},..., @var{x_d}]) 
+変数@var{x_1}, ..., @var{x_d}で表現された関数@var{f}によって
+次数@var{n} >= @var{d}の
+@var{x}に関する多項式@var{P}
+の解核を計算します。
+計算の効率のため、
+変換関数@var{f}に現れない変数の
+リスト@code{[@var{x_1}, ..., @var{x_d}]}に含まれないことが重要です。
+
+計算の効率を増すためには、
+適切なアルゴリズムを使うように
+@code{resolvante}に関するフラグを設定することができます:
+
+もし関数@var{f}がユニタリなら:
+@itemize @bullet
+@item
+単変数の多項式,
+@item
+  線形,
+@item
+  交互の,
+@item
+  和,
+@item
+  対照的,
+@item
+  積,
+@item
+(次数5まで使用に向く)Cayley解核の関数 
+
+@c WHAT IS THIS ILLUSTRATING EXACTLY ??
+@example
+@group
+(x1*x2 + x2*x3 + x3*x4 + x4*x5 + x5*x1 -
+     (x1*x3 + x3*x5 + x5*x2 + x2*x4 + x4*x1))^2
+@end group
+@end example
+
+一般的,
+@end itemize
+@code{resolvante}のフラグはそれぞれ:
+@itemize @bullet
+@item
+  unitaire,
+@item
+  lineaire,
+@item
+  alternee,
+@item
+  somme,
+@item
+  produit,
+@item
+  cayley,
+@item
+  generale.
+@end itemize
+
+@c GENERATED FROM THE FOLLOWING
+@c resolvante: unitaire$
+@c resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1, [x]);
+@c resolvante: lineaire$
+@c resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
+@c resolvante: general$
+@c resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
+@c resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3, x4]);
+@c direct ([x^4 - 1], x, x1 + 2*x2 + 3*x3, [[x1, x2, x3]]);
+@c resolvante :lineaire$
+@c resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
+@c resolvante: symetrique$
+@c resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
+@c resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
+@c resolvante: alternee$
+@c resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
+@c resolvante: produit$
+@c resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
+@c resolvante: symetrique$
+@c resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
+@c resolvante: cayley$
+@c resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
+@example
+(%i1) resolvante: unitaire$
+@group
+(%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1,
+      [x]);
+
+" resolvante unitaire " [7, 0, 28, 0, 168, 0, 1120, - 154, 7840,
+                         - 2772, 56448, - 33880, 
+
+413952, - 352352, 3076668, - 3363360, 23114112, - 30494464, 
+
+175230832, - 267412992, 1338886528, - 2292126760] 
+  3       6      3       9      6      3
+[x  - 1, x  - 2 x  + 1, x  - 3 x  + 3 x  - 1, 
+
+ 12      9      6      3       15      12       9       6      3
+x   - 4 x  + 6 x  - 4 x  + 1, x   - 5 x   + 10 x  - 10 x  + 5 x
+
+       18      15       12       9       6      3
+ - 1, x   - 6 x   + 15 x   - 20 x  + 15 x  - 6 x  + 1, 
+
+ 21      18       15       12       9       6      3
+x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1] 
+[- 7, 1127, - 6139, 431767, - 5472047, 201692519, - 3603982011] 
+       7      6        5         4          3           2
+(%o2) y  + 7 y  - 539 y  - 1841 y  + 51443 y  + 315133 y
+
+                                              + 376999 y + 125253
+@end group
+(%i3) resolvante: lineaire$
+@group
+(%i4) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
+
+" resolvante lineaire " 
+       24       20         16            12             8
+(%o4) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
+
+                                                    4
+                                       + 344489984 y  + 655360000
+@end group
+(%i5) resolvante: general$
+@group
+(%i6) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
+
+" resolvante generale " 
+       24       20         16            12             8
+(%o6) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
+
+                                                    4
+                                       + 344489984 y  + 655360000
+@end group
+@group
+(%i7) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3, x4]);
+
+" resolvante generale " 
+       24       20         16            12             8
+(%o7) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
+
+                                                    4
+                                       + 344489984 y  + 655360000
+@end group
+@group
+(%i8) direct ([x^4 - 1], x, x1 + 2*x2 + 3*x3, [[x1, x2, x3]]);
+       24       20         16            12             8
+(%o8) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
+
+                                                    4
+                                       + 344489984 y  + 655360000
+@end group
+(%i9) resolvante :lineaire$
+@group
+(%i10) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
+
+" resolvante lineaire " 
+                              4
+(%o10)                       y  - 1
+@end group
+(%i11) resolvante: symetrique$
+@group
+(%i12) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
+
+" resolvante symetrique " 
+                              4
+(%o12)                       y  - 1
+@end group
+@group
+(%i13) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
+
+" resolvante symetrique " 
+                           6      2
+(%o13)                    y  - 4 y  - 1
+@end group
+(%i14) resolvante: alternee$
+@group
+(%i15) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
+
+" resolvante alternee " 
+            12      8       6        4        2
+(%o15)     y   + 8 y  + 26 y  - 112 y  + 216 y  + 229
+@end group
+(%i16) resolvante: produit$
+@group
+(%i17) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
+
+" resolvante produit "
+        35      33         29        28         27        26
+(%o17) y   - 7 y   - 1029 y   + 135 y   + 7203 y   - 756 y
+
+         24           23          22            21           20
+ + 1323 y   + 352947 y   - 46305 y   - 2463339 y   + 324135 y
+
+          19           18             17              15
+ - 30618 y   - 453789 y   - 40246444 y   + 282225202 y
+
+             14              12             11            10
+ - 44274492 y   + 155098503 y   + 12252303 y   + 2893401 y
+
+              9            8            7             6
+ - 171532242 y  + 6751269 y  + 2657205 y  - 94517766 y
+
+            5             3
+ - 3720087 y  + 26040609 y  + 14348907
+@end group
+(%i18) resolvante: symetrique$
+@group
+(%i19) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
+
+" resolvante symetrique " 
+        35      33         29        28         27        26
+(%o19) y   - 7 y   - 1029 y   + 135 y   + 7203 y   - 756 y
+
+         24           23          22            21           20
+ + 1323 y   + 352947 y   - 46305 y   - 2463339 y   + 324135 y
+
+          19           18             17              15
+ - 30618 y   - 453789 y   - 40246444 y   + 282225202 y
+
+             14              12             11            10
+ - 44274492 y   + 155098503 y   + 12252303 y   + 2893401 y
+
+              9            8            7             6
+ - 171532242 y  + 6751269 y  + 2657205 y  - 94517766 y
+
+            5             3
+ - 3720087 y  + 26040609 y  + 14348907
+@end group
+(%i20) resolvante: cayley$
+@group
+(%i21) resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
+
+" resolvante de Cayley "
+        6       5         4          3            2
+(%o21) x  - 40 x  + 4080 x  - 92928 x  + 3772160 x  + 37880832 x
+
+                                                       + 93392896
+@end group
+@end example
+
+Cayley解核に関して、最後の2つの引数は中立で、
+入力多項式は必然的に次数5でなければいけません。
+
+以下も参照してください:
+@flushleft
+@code{resolvante_bipartite}, @code{resolvante_produit_sym},
+@code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
+@code{resolvante_klein3}, @code{resolvante_vierer}, @code{resolvante_diedrale}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} resolvante_alternee1 (@var{P}, @var{x})
+関数
+@iftex
+@math{\prod_{1\leq i<j\leq n-1} (x_i-x_j)}.
+@end iftex
+@ifnottex
+@math{product(x_i - x_j, 1 <= i < j <= n - 1)}.
+@end ifnottex
+によって
+次数@var{n}の
+変換@code{@var{P}(@var{x})}を計算します。
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante_unitaire},
+@code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
+@code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_bipartite}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} resolvante_bipartite (@var{P}, @var{x})
+関数
+@iftex
+@math{x_1 x_2 \cdots x_{n/2} + x_{n/2+1}\cdots x_n}.
+@end iftex
+によって
+偶次数@var{n}の@code{@var{P}(@var{x})}の変換を計算します。
+@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
+@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
+@ifnottex
+@math{x_1 x_2 ... x_[n/2] + x_[n/2 + 1] ... x_n}.
+@end ifnottex
+
+@c GENERATED FROM THE FOLLOWING
+@c resolvante_bipartite (x^6 + 108, x);
+@example
+@group
+(%i1) resolvante_bipartite (x^6 + 108, x);
+              10        8           6             4
+(%o1)        y   - 972 y  + 314928 y  - 34012224 y
+@end group
+@end example
+
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante_unitaire},
+@code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
+@code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_alternee1}.
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} resolvante_diedrale (@var{P}, @var{x})
+関数@code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}によって
+@code{@var{P}(@var{x})}の変換を計算します。
+
+@c GENERATED FROM THE FOLLOWING
+@c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
+@example
+@group
+(%i1) resolvante_diedrale (x^5 - 3*x^4 + 1, x);
+       15       12       11       10        9         8         7
+(%o1) x   - 21 x   - 81 x   - 21 x   + 207 x  + 1134 x  + 2331 x
+
+        6         5          4          3          2
+ - 945 x  - 4970 x  - 18333 x  - 29079 x  - 20745 x  - 25326 x
+
+ - 697
+@end group
+@end example
+
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante_unitaire},
+@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
+@code{resolvante_vierer}, @code{resolvante}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} resolvante_klein (@var{P}, @var{x})
+関数@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}によって
+@code{@var{P}(@var{x})}の変換を計算します。
+
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante_unitaire},
+@code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
+@code{resolvante_vierer}, @code{resolvante_diedrale}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} resolvante_klein3 (@var{P}, @var{x})
+関数@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}によって
+@code{@var{P}(@var{x})}の変換を計算します。
+
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante_unitaire},
+@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
+@code{resolvante_vierer}, @code{resolvante_diedrale}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} resolvante_produit_sym (@var{P}, @var{x})
+多項式@code{@var{P}(@var{x})}のすべての積解核のリストを計算します。
+
+@c GENERATED FROM THE FOLLOWING
+@c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
+@c resolvante: produit$
+@c resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
+@example
+@group
+(%i1) resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
+        5      4             10      8       7       6       5
+(%o1) [y  + 3 y  + 2 y - 1, y   - 2 y  - 21 y  - 31 y  - 14 y
+
+    4       3      2       10      8       7    6       5       4
+ - y  + 14 y  + 3 y  + 1, y   + 3 y  + 14 y  - y  - 14 y  - 31 y
+
+       3      2       5      4
+ - 21 y  - 2 y  + 1, y  - 2 y  - 3 y - 1, y - 1]
+@end group
+(%i2) resolvante: produit$
+@group
+(%i3) resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
+
+" resolvante produit "
+       10      8       7    6        5       4       3     2
+(%o3) y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  + 1
+@end group
+@end example
+@c INPUT %i3 TICKLES A MINOR BUG IN resolvante: 
+@c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
+@c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
+
+以下も参照してください:
+@flushleft
+@code{resolvante}, @code{resolvante_unitaire},
+@code{resolvante_alternee1}, @code{resolvante_klein},
+@code{resolvante_klein3}, @code{resolvante_vierer},
+@code{resolvante_diedrale}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+@deffn {関数} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
+多項式@code{@var{Q}(@var{x})}によって
+多項式@code{@var{P}(@var{x})}の解核を計算します。
+
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante},
+@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
+@code{resolvante_vierer}, @code{resolvante_diedrale}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} resolvante_vierer (@var{P}, @var{x})
+関数@code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}によって
+@code{@var{P}(@var{x})}の変換を計算します。
+
+以下も参照してください:
+@flushleft
+@code{resolvante_produit_sym}, @code{resolvante_unitaire},
+@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
+@code{resolvante}, @code{resolvante_diedrale}。
+@end flushleft
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+
+
+@subsection Miscellaneous
+
+
+@deffn {関数} multinomial (@var{r}, @var{part})
+ここで@var{r}は分割@var{part}の重みです。
+この関数は、同類の多項係数を返します:
+もし@var{part}の部分が
+@var{i_1}, @var{i_2}, ..., @var{i_k}なら、
+結果は
+@code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}
+です。
+
+@opencatbox
+@category{Package sym}
+@closecatbox
+@end deffn
+
+
+@deffn {関数} permut (@var{L})
+リスト@var{L}の置換のリストを返します。
+
+@opencatbox
+@category{Package sym} @category{Lists}
+@closecatbox
+@end deffn

@@ -1,4 +1,4 @@
-@c version 1.34
+@c English version 2011-07-03
 @menu
 * Introducci@'on a los polinomios::  
 * Funciones y variables para polinomios::  
@@ -37,6 +37,13 @@ noci@'on de una expresi@'on racional se extiende de manera que los exponentes de
 variables pueden ser n@'umeros racionales positivos o negativos y no s@'olo
 enteros positivos y los coeficientes pueden ser tambi@'en expresiones
 racionales y no s@'olo polinomios. Estas expresiones se representan internamente por una forma polinomial recursiva que es similar a la forma CRE, pero que la generaliza, aportando informaci@'on adicional como el grado de truncamiento. Como con la forma CRE, el s@'{@dotless{i}}mbolo /T/ sigue la etiqueta de l@'{@dotless{i}}nea de comando en la que se encuentra dicha expresi@'on.
+
+
+
+
+
+
+
 
 @node Funciones y variables para polinomios,  , Introducci@'on a los polinomios, Polinomios
 @section Funciones y variables para polinomios
@@ -215,11 +222,7 @@ funci@'on.
 @end example
 @end deffn
 
-@deffn {Funci@'on} combine (@var{expr})
-Simplifica la suma @var{expr} combinando t@'erminos de con igual denominador reduci@'endolos a un @'unico t@'ermino.
 
-@c NEED EXAMPLE HERE
-@end deffn
 
 @deffn {Funci@'on} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
 Devuelve una lista cuyo primer miembro es el m@'aximo com@'un divisor de los coeficientes de los t@'erminos del polinomio @var{p_1} de variable @var{x_n} (este es el contenido) y cuyo segundo miembro es el polinomio @var{p_1} dividido por el contenido.
@@ -295,7 +298,39 @@ Ejemplo:
 @end deffn
 
 @deffn {Funci@'on} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
-Devuelve una lista cuyo primer elemento es el m@'aximo com@'un divisor (mcd) de los polinomios @var{p_1}, @var{p_2}, @var{p_3}, ...  siendo los miembros restantes los mismos polinomios divididos por el mcd. Se utiliza siempre el algoritmo @code{ezgcd}.
+Devuelve una lista cuyo primer elemento es el m@'aximo com@'un divisor (mcd)
+de los polinomios @var{p_1}, @var{p_2}, @var{p_3}, @dots{},  siendo los 
+miembros restantes los mismos polinomios divididos por el mcd. 
+Se utiliza siempre el algoritmo @code{ezgcd}.
+
+V@'eanse tambi@'en @code{gcd}, @code{gcdex}, @code{gcdivide} y @code{poly_gcd}.
+
+Ejemplos:
+
+Los tres polinomios tiene como m@'aximo com@'un divisor @code{2*x-3},
+el cual se calcula primero con la funci@'on @code{gcd} y luego con
+@code{ezgcd}.
+
+@example
+(%i1) p1 : 6*x^3-17*x^2+14*x-3;
+                        3       2
+(%o1)                6 x  - 17 x  + 14 x - 3
+(%i2) p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
+                    4       3       2
+(%o2)            4 x  - 14 x  + 12 x  + 2 x - 3
+(%i3) p3 : -8*x^3+14*x^2-x-3;
+                          3       2
+(%o3)                - 8 x  + 14 x  - x - 3
+
+(%i4) gcd(p1, gcd(p2, p3));
+(%o4)                        2 x - 3
+
+(%i5) ezgcd(p1, p2, p3);
+                   2               3      2           2
+(%o5) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
+@end example
+
+
 
 @end deffn
 
@@ -306,12 +341,7 @@ La variable @code{facexpand} controla si los factores irreducibles devueltos por
 
 @end defvr
 
-@deffn {Funci@'on} factcomb (@var{expr})
-Trata de combinar los coeficientes de los factoriales de @var{expr} con los mismos factoriales, convirtiendo, por ejemplo, @code{(n + 1)*n!} en @code{(n + 1)!}.
 
-Si la variable @code{sumsplitfact} vale @code{false} har@'a que @code{minfactorial} se aplique despu@'es de @code{factcomb}.
-
-@end deffn
 
 @deffn {Funci@'on} factor (@var{expr})
 @deffnx {Funci@'on} factor (@var{expr}, @var{p})
@@ -467,6 +497,9 @@ Ejemplos:
 @end example
 
 @end deffn
+
+
+
 
 @defvr {Variable opcional} factorflag
 Valor por defecto: @code{false}
@@ -825,6 +858,19 @@ Ejemplos:
 
 
 
+@deffn {Funci@'on} lopow (@var{expr}, @var{x})
+
+Devuelve el menor exponente de @var{x} que aparece expl@'{@dotless{i}}citamente
+en @var{expr}.
+
+@example
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
+@end example
+
+@end deffn
+
+
 
 @deffn {Funci@'on} lratsubst (@var{L}, @var{expr})
 Esta funci@'on es similar a @code{subst (@var{L}, @var{expr})}, excepto por el hecho de que utiliza @code{ratsubst} en lugar de @code{subst}.
@@ -967,6 +1013,43 @@ devuelve necesariamente @code{[@var{p_1}, ..., @var{p_n}]}:
 @end example
 
 @end deffn
+
+
+
+@deffn {Funci@'on} polymod (@var{p})
+@deffnx {Funci@'on} polymod (@var{p}, @var{m})
+Convierte el polinomio @var{p} a una representaci@'on modular respecto del m@'odulo actual, que es el valor almacenado en la variable @code{modulus}.  
+
+La llamada @code{polymod (@var{p}, @var{m})} especifica un m@'odulo @var{m} para ser utilizado en lugar de valor almacenado en @code{modulus}.
+
+V@'ease @code{modulus}.
+@end deffn
+
+
+
+@c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
+@c NEEDS WORK (IF KEPT)
+@deffn {Funci@'on} powers (@var{expr}, @var{x})
+Devuelve las potencias de @var{x} dentro de @var{expr}.
+
+La instrucci@'on @code{load (powers)} carga esta funci@'on.
+@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
+@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
+
+@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
+@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
+@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
+@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
+@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
+@c 
+@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
+@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
+@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
+@c AND MANY OTHER SIMILAR USEFUL HACKS.
+
+@end deffn
+
+
 
 @deffn {Funci@'on} quotient (@var{p_1}, @var{p_2})
 @deffnx {Funci@'on} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
@@ -1175,14 +1258,6 @@ V@'ease tambi@'en @code{totaldisrep}.
 @end deffn
 
 
-@defvr {Variable opcional} ratepsilon
-Valor por defecto: 2.0e-8
-
-La variable @code{ratepsilon} guarda la tolerancia utilizada en la conversi@'on de n@'umeros decimales en coma flotante a n@'umeros racionales.
-
-@c NEED EXAMPLES HERE
-@end defvr
-
 @deffn {Funci@'on} ratexpand (@var{expr})
 @deffnx {Variable opcional} ratexpand
 Expande @var{expr} multiplicando productos de sumas y sumas con exponentes, combinando fracciones con com@'un denominador, cancelando el m@'aximo com@'un divisor del numerador y del denominador y luego dividiendo los sumandos del numerador por el denominador.
@@ -1228,6 +1303,7 @@ Ejemplos:
 @end deffn
 
 
+
 @defvr {Variable opcional} ratfac
 Valor por defecto: @code{false}
 
@@ -1253,14 +1329,8 @@ Esta conversi@'on puede cambiar la forma de @var{expr} colocando todos sus t@'er
 
 Es parecida a la funci@'on @code{num}, pero devuelve una expresi@'on general en lugar de una CRE.
 Adem@'as, @code{num} no intenta colocar todos los t@'erminos sobre un denominador com@'un, de manera que algunas expresiones que son consideradas fracciones por @code{ratnumer} no se consideran como tales por @code{num}.
-
-@c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@deffn {Funci@'on} ratnump (@var{expr})
-Devuelve @code{true} si @var{expr} es un entero literal o una fracci@'on de enteros literales, en caso contrario devuelve @code{false}.
-
-@end deffn
 
 @deffn {Funci@'on} ratp (@var{expr})
 Devuelve @code{true} si @var{expr} es una expresi@'on can@'onica racional (canonical rational expression o CRE) o una CRE extendida, en caso contrario devuelve @code{false}.
@@ -1331,6 +1401,14 @@ Ejemplos:
 Valor por defecto: @code{false}
 
 Si @code{ratsimpexpons} vale @code{true}, @code{ratsimp} se aplica a los exponentes de las expresiones durante la simplificaci@'on.
+@end defvr
+
+
+@defvr {Variable opcional} radsubstflag
+Valor por defecto: @code{false}
+
+Si @code{radsubstflag} vale @code{true} se permite a @code{ratsubst} hacer la sustituci@'on @code{u} por @code{sqrt (x)} in @code{x}.
+
 @end defvr
 
 
@@ -1554,6 +1632,16 @@ Si @code{savefactors} vale @code{true}, los factores de una expresi@'on producto
 
 @end defvr
 
+
+@deffn {Funci@'on} showratvars (@var{expr})
+Devuelve una lista de las variables de expresiones can@'onicas racionales (CRE) en la expresi@'on @code{expr}.
+
+V@'ease tambi@'en @code{ratvars}.
+
+@end deffn
+
+
+
 @c FALTA DEFINICION DE sqfr
 
 
@@ -1623,3 +1711,45 @@ Elimina de @var{x_1}, ..., @var{x_n} las propiedades relacionadas con @code{tell
 
 @c NEED EXAMPLES HERE
 @end deffn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
