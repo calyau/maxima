@@ -148,6 +148,7 @@ binary-sbcl/maxima.core : numerical/slatec/dqc25f.lisp
 binary-sbcl/maxima.core : numerical/slatec/dqage.lisp
 binary-sbcl/maxima.core : numerical/slatec/dqagie.lisp
 binary-sbcl/maxima.core : numerical/slatec/dqagpe.lisp
+binary-sbcl/maxima.core : numerical/slatec/dqagp.lisp
 binary-sbcl/maxima.core : numerical/slatec/dqagse.lisp
 binary-sbcl/maxima.core : numerical/slatec/dqawoe.lisp
 binary-sbcl/maxima.core : numerical/slatec/dqawfe.lisp
@@ -292,5 +293,6 @@ binary-sbcl/maxima.core : gnuplot_def.lisp
 binary-sbcl/maxima.core : xmaxima_def.lisp
 binary-sbcl/maxima.core : autol.lisp
 binary-sbcl/maxima.core : max_ext.lisp
+binary-sbcl/maxima.core : share-subdirs.lisp
 binary-sbcl/maxima.core : init-cl.lisp
 

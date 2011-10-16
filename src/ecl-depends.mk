@@ -149,6 +149,7 @@ binary-ecl/maxima : numerical/slatec/dqc25f.lisp
 binary-ecl/maxima : numerical/slatec/dqage.lisp
 binary-ecl/maxima : numerical/slatec/dqagie.lisp
 binary-ecl/maxima : numerical/slatec/dqagpe.lisp
+binary-ecl/maxima : numerical/slatec/dqagp.lisp
 binary-ecl/maxima : numerical/slatec/dqagse.lisp
 binary-ecl/maxima : numerical/slatec/dqawoe.lisp
 binary-ecl/maxima : numerical/slatec/dqawfe.lisp

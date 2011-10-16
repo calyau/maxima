@@ -148,6 +148,7 @@ binary-clisp/maxima.mem : numerical/slatec/dqc25f.lisp
 binary-clisp/maxima.mem : numerical/slatec/dqage.lisp
 binary-clisp/maxima.mem : numerical/slatec/dqagie.lisp
 binary-clisp/maxima.mem : numerical/slatec/dqagpe.lisp
+binary-clisp/maxima.mem : numerical/slatec/dqagp.lisp
 binary-clisp/maxima.mem : numerical/slatec/dqagse.lisp
 binary-clisp/maxima.mem : numerical/slatec/dqawoe.lisp
 binary-clisp/maxima.mem : numerical/slatec/dqawfe.lisp

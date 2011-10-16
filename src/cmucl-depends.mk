@@ -147,6 +147,7 @@ binary-cmucl/maxima.core : numerical/slatec/dqc25f.lisp
 binary-cmucl/maxima.core : numerical/slatec/dqage.lisp
 binary-cmucl/maxima.core : numerical/slatec/dqagie.lisp
 binary-cmucl/maxima.core : numerical/slatec/dqagpe.lisp
+binary-cmucl/maxima.core : numerical/slatec/dqagp.lisp
 binary-cmucl/maxima.core : numerical/slatec/dqagse.lisp
 binary-cmucl/maxima.core : numerical/slatec/dqawoe.lisp
 binary-cmucl/maxima.core : numerical/slatec/dqawfe.lisp

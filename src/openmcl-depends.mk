@@ -148,6 +148,7 @@ binary-openmcl/maxima.image : numerical/slatec/dqc25f.lisp
 binary-openmcl/maxima.image : numerical/slatec/dqage.lisp
 binary-openmcl/maxima.image : numerical/slatec/dqagie.lisp
 binary-openmcl/maxima.image : numerical/slatec/dqagpe.lisp
+binary-openmcl/maxima.image : numerical/slatec/dqagp.lisp
 binary-openmcl/maxima.image : numerical/slatec/dqagse.lisp
 binary-openmcl/maxima.image : numerical/slatec/dqawoe.lisp
 binary-openmcl/maxima.image : numerical/slatec/dqawfe.lisp
