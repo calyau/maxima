@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.11.2010
-@c Revision    : 10.07.2011
+@c Revision    : 16.10.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1001,6 +1001,7 @@ Maxima kann das folgende Integral l@"osen, wenn @code{intanalysis} den Wert
 
 @example
 (%i1) integrate(1/(sqrt(x)+1),x,0,1);
+@group
                                 1
                                /
                                [       1
@@ -1008,6 +1009,7 @@ Maxima kann das folgende Integral l@"osen, wenn @code{intanalysis} den Wert
                                ]  sqrt(x) + 1
                                /
                                 0
+@end group
 
 (%i2) integrate(1/(sqrt(x)+1),x,0,1),intanalysis:false;
 (%o2)                            2 - 2 log(2)
@@ -1686,6 +1688,13 @@ Die Funktion @mref{quad_qawc} berechnet den Cauchyschen Hauptwert von
 @math{c}.  Es wird eine modifizierte Clenshaw-Curtis-Formel angewendet, wenn
 @math{c} im Teilbereich enthalten ist.  Andernfalls wird eine globale adaptive
 Strategie mit einem Gau@ss{}-Kronrod-Formelpaar angewendet.
+
+@c TODO: UEBERSETZUNG FEHLT
+
+@item quad_qagp
+Basically the same as @code{quad_qags} but points of singularity or
+discontinuity of the integrand must be supplied.  This makes it easier
+for the integrator to produce a good solution.
 @end table
 
 @c -----------------------------------------------------------------------------
@@ -2493,12 +2502,132 @@ pos;
 @end example
 @end deffn
 
+@c TODO: UEBERSETZUNG FEHLT
+
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{quad_qagp}
+@deffn  {Function} quad_qagp (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qagp (@var{f}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+
+Integration of a general function over a finite interval.
+@code{quad_qagp} implements globally adaptive interval subdivision with
+extrapolation (de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
+
+@code{quad_qagp} computes the integral
+
+@ifnottex
+@math{integrate (f(x), x, a, b)}
+@end ifnottex
+@tex
+$$\int_a^b {f(x) \, dx}$$
+@end tex
+
+The function to be integrated is @var{f(x)}, with
+dependent variable @var{x}, and the function is to be integrated
+between the limits @var{a} and @var{b}.
+
+The integrand may be specified as the name of a Maxima or Lisp function or
+operator, a Maxima lambda expression, or a general Maxima expression.
+
+To help the integrator, the user must supply a list of points where
+the integrand is singular or discontinous.
+
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
+
+@table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-8.
+@item epsabs
+Desired absolute error of approximation.  Default is 0.
+@item limit
+Size of internal work array.  @var{limit} is the
+maximum number of subintervals to use.  Default is 200.
+@end table
+
+@code{quad_qagp} returns a list of four elements:
+
+@itemize
+@item
+an approximation to the integral,
+@item
+the estimated absolute error of the approximation,
+@item
+the number integrand evaluations,
+@item
+an error code.
+@end itemize
+
+The error code (fourth element of the return value) can have the values:
+
+@table @code
+@item 0
+no problems were encountered;
+@item 1
+too many sub-intervals were done;
+@item 2
+excessive roundoff error is detected;
+@item 3
+extremely bad integrand behavior occurs;
+@item 4
+failed to converge
+@item 5
+integral is probably divergent or slowly convergent
+@item 6
+if the input is invalid.
+@end table
+
+@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW,
+@c OR CROSS REF EACH OF THE quad_* FUNCTIONS
+
+Examples:
+
+@example
+@group
+(%i1) quad_qagp(x^3*log(abs((x^2-1)*(x^2-2))),x,0,3,[1,sqrt(2)]);
+(%o1)   [52.74074838347143, 2.6247632689546663e-7, 1029, 0]
+@end group
+@group
+(%i2) quad_qags(x^3*log(abs((x^2-1)*(x^2-2))), x, 0, 3);
+(%o2)   [52.74074847951494, 4.088443219529836e-7, 1869, 0]
+@end group
+@end example
+
+The integrand has singularities at 1 and sqrt(2) so we supply these
+points to @code{quad_qagp}.  We also note that @code{quad_qagp} is
+more accurate and more efficient that @code{quad_qags}.
+@end deffn
+
+@c TODO: UEBERSETZUNG FEHLT
+
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{quad_control}
+@deffn  {Function} quad_control (@var{parameter}, [@var{value}])
+
+Control error handling for quadpack.  The parameter should be one of
+the following symbols:
+
+@table @code
+@item current_error
+The current error number
+@item control
+Controls if messages are printed or not.  If it is set to zero or
+less, messages are suppressed.
+@item max_message
+The maximum number of times any message is to be printed.
+@end table
+
+If @var{value} is not given, then the current value of the
+@var{parameter} is returned.  If @var{value} is given, the value of
+@var{parameter} is set to the given value.
+@end deffn
+
 @c -----------------------------------------------------------------------------
 @page
 @node Differentialgleichungen, Einf@"uhrung in Differentialgleichungen, Integration, Analysis
 @section Differentialgleichungen
-
 @c -----------------------------------------------------------------------------
+
 @menu
 * Einf@"uhrung in Differentialgleichungen::  
 * Funktionen und Variablen f@"ur Differentialgleichungen::  
