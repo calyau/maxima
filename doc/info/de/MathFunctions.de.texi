@@ -575,7 +575,7 @@ differenziert werden.
 Berechnet den Betrag eines komplexen Ausdrucks @var{expr}.  Im Unterschied
 zu der Funktion @mrefcomma{abs} zerlegt die Funktion @code{cabs} einen komplexen
 Ausdruck immer in einen Realteil und Imagin@"arteil, um den komplexen Betrag zu
-berechnen.  Sind @var{x} und @var{y} zwei reelle Variablen oder Ausdr@"ucke
+berechnen.  Sind @var{x} und @var{y} zwei reelle Variablen oder Ausdr@"ucke,
 berechnet die Funktion @code{cabs} den Betrag des komplexen Ausdrucks
 @code{x + %i*y} als:
 @example
