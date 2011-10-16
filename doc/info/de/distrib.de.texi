@@ -2,9 +2,9 @@
 @c File     : distrib.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : distrib.texi revision 08.07.2011
+@c Original : distrib.texi revision 03.10.2011
 @c Date     : 08.11.2010
-@c Revision : 09.07.2011
+@c Revision : 16.10.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -519,6 +519,7 @@ Sometimes an extra work is necessary to get the final result.
 @example
 (%i1) load (distrib)$
 (%i2) expand(pdf_noncentral_student_t(3,5,0.1));
+@group
        .01370030107589574 sqrt(5)
 (%o2)  --------------------------
        sqrt(2) sqrt(14) sqrt(%pi)
@@ -528,6 +529,7 @@ Sometimes an extra work is necessary to get the final result.
    .02434921505438663 sqrt(5)
  + --------------------------
               %pi
+@end group
 (%i3) float(%);
 (%o3)          .02080593159405669
 @end example
@@ -833,9 +835,11 @@ form based on the gamma kurtosis coefficient is returned.
 (%o2)                 kurtosis_gamma(-, 2)
                                      2
 (%i3) assume(n>0)$ kurtosis_chi2(n);
+@group
                                12
 (%o4)                          --
                                n
+@end group
 @end example
 @end deffn
 
@@ -1918,12 +1922,14 @@ the result, a noun form based on the Weibull variance is returned.
 (%o2)                   var_weibull(2, -)
                                        b
 (%i3) assume(b>0)$ var_rayleigh(b);
+@group
                                  %pi
                              1 - ---
                                   4
 (%o4)                        -------
                                 2
                                b
+@end group
 @end example
 @end deffn
 
@@ -2837,22 +2843,30 @@ See also @code{random}.  To make use of this function, write first
 @code{load(distrib)}.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{pdf_hypergeometric}
 @deffn {Function} pdf_hypergeometric (@var{x}, @var{n1}, @var{n2}, @var{n})
 
 Returns the value at @var{x} of the probability function of a
 @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and
-@var{n} non negative integers and @math{n<=n1+n2}.  To make use of this
-function, write first @code{load(distrib)}.
+@var{n} non negative integers and @math{n<=n1+n2}.  Being @var{n1} the number
+of objects of class A, @var{n2} the number of objects of class B, and @var{n}
+the size of the sample without replacement, this function returns the
+probability of event "exactly @var{x} objects are of class A".
+
+To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{cdf_hypergeometric}
 @deffn {Function} cdf_hypergeometric (@var{x}, @var{n1}, @var{n2}, @var{n})
 
 Returns the value at @var{x} of the distribution function of a
 @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and
-@var{n} non negative integers and @math{n<=n1+n2}.  To make use of this
-function, write first @code{load(distrib)}.
+@var{n} non negative integers and @math{n<=n1+n2}.
+See @mref{pdf_hypergeometric} for a more complete description.
+
+To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 @c -----------------------------------------------------------------------------

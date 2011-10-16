@@ -4,7 +4,7 @@
 @c Language : German
 @c Original : descriptive.texi revision 01.08.2011
 @c Date     : 08.11.2010
-@c Revision : 01.08.2011
+@c Revision : 16.10.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -196,15 +196,15 @@ with categorical value @code{a} is taken,
 @section Functions and Variables for data manipulation
 @c -----------------------------------------------------------------------------
 
-@c -----------------------------------------------------------------------------
-@anchor{continous_freq}
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{continuous_freq}
 @deffn  {Function} continuous_freq (@var{list})
 @deffnx {Function} continuous_freq (@var{list}, @var{m})
 
 The argument of @code{continuous_freq} must be a list of numbers.
 Divides the range in intervals and counts how many values
 are inside them.  The second argument is optional and either
-equals the number of classes we want, 10 by default, or
+equals the number of classes we want, @code{10} by default, or
 equals a list containing the class limits and the number of
 classes we want, or a list containing only the limits.
 Argument @var{list} must be a list of (2 or 3) real numbers.
@@ -225,7 +225,8 @@ the interval @code{[0, 1.8]}, 24 digits in @code{(1.8, 3.6]}, and so on.
 (%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
 @end example
 
-Optional argument indicates we want 7 classes with limits -2 and 12:
+Optional argument indicates we want 7 classes with limits
+@code{-2} and @code{12}:
 
 @example
 (%i1) load (descriptive)$
@@ -235,7 +236,7 @@ Optional argument indicates we want 7 classes with limits -2 and 12:
 @end example
 
 Optional argument indicates we want the default number of classes with limits
--2 and 12:
+@code{-2} and @code{12}:
 
 @example
 (%i1) load (descriptive)$
@@ -1543,22 +1544,24 @@ See also @code{cov} and @code{cov1}.
 @section Functions and Variables for statistical graphs
 @c -----------------------------------------------------------------------------
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{barsplot}
+@anchor{barsplot_description}
 @deffn  {Function} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} barsplot_description (@dots{})
 
-Plots bars diagrams for discrete statistical variables,
-both for one or multiple samples.
+Plots bars diagrams for discrete statistical variables, both for one or
+multiple samples.
 
-@var{data} can be a list of outcomes representing one sample, or a 
-matrix of @var{m} rows and @var{n} columns, representing @var{n} samples of size 
-@var{m} each.
+@var{data} can be a list of outcomes representing one sample, or a matrix of
+@var{m} rows and @var{n} columns, representing @var{n} samples of size @var{m}
+each.
 
 Available options are:
 
 @itemize @bullet
 @item
-@var{box_width} (default, @code{3/4}): relative width of rectangles.  This
+@var{box_width} (default, @code{3/4}): relative width of rectangles.  This 
 value must be in the range @code{[0,1]}.
 
 @item
@@ -1572,7 +1575,8 @@ the gap between two consecutive groups of bars.
 @item
 @var{bars_colors} (default, @code{[]}): a list of colors for multiple samples.
 When there are more samples than specified colors, the extra necesary colors 
-are chosen at random.  See @code{color} to learn more about them.
+are chosen at random.  See @mxref{color_graphic_option,color} to learn more
+about them.
 
 @item
 @var{frequency} (default, @code{absolute}): indicates the scale of the
@@ -1582,16 +1586,16 @@ and @code{percent}.
 @item
 @var{ordering} (default, @code{orderlessp}): possible values are
 @code{orderlessp} or @code{ordergreatp}, indicating how statistical outcomes
-should be ordered on the @var{x}-axis.
+should be ordered on the @code{x}-axis.
 
 @item
 @var{sample_keys} (default, @code{[]}): a list with the strings to be used in
-the legend.  When the list length is other than 0 or the number of samples, an
-error message is returned.
+the legend.  When the list length is other than @code{0} or the number of
+samples, an error message is returned.
 
 @item
 @var{start_at} (default, @code{0}): indicates where the plot begins to be
-plotted on the x axis.
+plotted on the @code{x}-axis.
 
 @item
 All global @code{draw} options, except @code{xtics}, which is 
@@ -1602,7 +1606,7 @@ complex scenes, make use of @code{barsplot_description}.  See example below.
 @item
 The following local @code{draw} options: @code{key}, @code{color}, 
 @code{fill_color}, @code{fill_density} and @code{line_width}.  See also
-@code{bars}.
+@mrefdot{bars}
 @end itemize
 
 Function @code{barsplot_description} creates a graphic object
@@ -1627,8 +1631,8 @@ Univariate sample in matrix form.  Absolute frequencies.
 @end group
 @end example
 
-Two samples of different sizes, with
-relative frequencies and user declared colors.
+Two samples of different sizes, with relative frequencies and user declared
+colors.
 
 @example
 (%i1) load (descriptive)$
@@ -1694,6 +1698,7 @@ Stacked bars.
          fill_density = 0.5,
          bars_colors = [blue],
          frequency = relative)$
+@group
 (%i5) bp2 : 
         barsplot_description(
          l2,
@@ -1701,14 +1706,17 @@ Stacked bars.
          fill_density = 0.5,
          bars_colors = [red],
          frequency = relative)$
+@end group
 (%i6) draw(gr2d(bp1), gr2d(bp2))$
 @end example
 
-For bars diagrams related options, see @code{bars} of package @code{draw}.
-See also functions @code{histogram} and @code{piechart}.
+For bars diagrams related options, see @mref{bars} of package @code{draw}.
+See also functions @mref{histogram} and @mrefdot{piechart}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{boxplot}
+@anchor{boxplot_description}
 @deffn  {Function} boxplot (@var{data})
 @deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} boxplot_description (@dots{})
@@ -1724,9 +1732,10 @@ in package @code{descriptive} that admits this type of data structure.
 Available options are:
 
 @itemize @bullet
+
 @item
 @var{box_width} (default, @code{3/4}): relative width of boxes.
-This  value must be in the range @code{[0,1]}.
+This value must be in the range @code{[0,1]}.
 
 @item
 @var{box_orientation} (default, @code{vertical}): possible values:
@@ -1742,6 +1751,7 @@ complex scenes, make use of @code{boxplot_description}.
 @item
 The following local @code{draw} options: @code{key}, @code{color}, 
 and @code{line_width}.
+
 @end itemize
 
 Function @code{boxplot_description} creates a graphic object
@@ -1780,7 +1790,9 @@ Box-and-whishker diagram from three samples of different sizes.
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{histogram}
+@anchor{histogram_description}
 @deffn  {Function} histogram (@var{list})
 @deffnx {Function} histogram (@var{list}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} histogram (@var{one_column_matrix})
@@ -1795,6 +1807,7 @@ Sample data must be stored in a list of numbers or a one dimensional matrix.
 Available options are:
 
 @itemize @bullet
+
 @item
 @var{nclasses} (default, @code{10}): number of classes of the histogram, or
 a list indicating the limits of the classes and the number of them, or
@@ -1879,8 +1892,8 @@ the @code{xrange} and adding an explicit curve into the scene:
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@need 800
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{piechart}
 @deffn  {Function} piechart (@var{list})
 @deffnx {Function} piechart (@var{list}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} piechart (@var{one_column_matrix})
@@ -1889,15 +1902,17 @@ the @code{xrange} and adding an explicit curve into the scene:
 @deffnx {Function} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} piechart_description (@dots{})
 
-Similar to @code{barsplot}, but plots sectors instead of rectangles.
+Similar to @mrefcomma{barsplot} but plots sectors instead of rectangles.
 
 Available options are:
 
 @itemize @bullet
+
 @item
 @var{sector_colors} (default, @code{[]}): a list of colors for sectors.
 When there are more sectors than specified colors, the extra necesary colors 
-are chosen at random.  See @code{color} to learn more about them.
+are chosen at random.  See @mxref{color_graphic_option,color} to learn more
+about them.
 
 @item
 @var{pie_center} (default, @code{[0,0]}): diagram's center.
@@ -1914,8 +1929,7 @@ complex scenes, make use of @code{piechart_description}.
 @item
 The following local @code{draw} options: @code{key}, @code{color}, 
 @code{fill_density} and @code{line_width}.  See also
-@code{ellipse}.
-
+@mrefdot{ellipse}
 @end itemize
 
 Function @code{piechart_description} creates a graphic object
@@ -1935,10 +1949,11 @@ Example:
         title   = "Digit frequencies in pi")$
 @end example
 
-See also function @code{barsplot}.
+See also function @mrefdot{barsplot}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{scatterplot}
 @deffn  {Function} scatterplot (@var{list})
 @deffnx {Function} scatterplot (@var{list}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} scatterplot (@var{matrix})
@@ -1948,7 +1963,7 @@ See also function @code{barsplot}.
 Plots scatter diagrams both for univariate (@var{list}) and multivariate 
 (@var{matrix}) samples.
 
-Available options are the same admitted by @code{histogram}.
+Available options are the same admitted by @mrefdot{histogram}
 
 Function @code{scatterplot_description} creates a graphic object
 suitable for creating complex scenes, together with other
@@ -2011,19 +2026,21 @@ Five dimensional scatter plot, with five classes histograms.
 @end example
 
 For plotting isolated or line-joined points in two and three dimensions,
-see @code{points}.  See also @code{histogram}.
+see @mrefdot{points}  See also @mrefdot{histogram}
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{starplot}
+@anchor{starplot_description}
 @deffn  {Function} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 @deffnx {Function} starplot_description (@dots{})
 
-Plots star diagrams for discrete statistical variables,
-both for one or multiple samples.
+Plots star diagrams for discrete statistical variables, both for one or
+multiple samples.
 
-@var{data} can be a list of outcomes representing one sample, or a 
-matrix of @var{m} rows and @var{n} columns, representing @var{n} samples of size 
-@var{m} each.
+@var{data} can be a list of outcomes representing one sample, or a matrix of
+@var{m} rows and @var{n} columns, representing @var{n} samples of size @var{m}
+each.
 
 Available options are:
 
@@ -2031,11 +2048,12 @@ Available options are:
 @item
 @var{stars_colors} (default, @code{[]}): a list of colors for multiple samples.
 When there are more samples than specified colors, the extra necesary colors 
-are chosen at random.  See @code{color} to learn more about them.
+are chosen at random.  See @mxref{color_graphic_option,color} to learn more
+about them.
 
 @item
 @var{frequency} (default, @code{absolute}): indicates the scale of the
-radii.  Possible values are:  @code{absolute} and @code{relative}.
+radii.  Possible values are: @code{absolute} and @code{relative}.
 
 @item
 @var{ordering} (default, @code{orderlessp}): possible values are
@@ -2070,8 +2088,7 @@ creating embedded histograms in interfaces wxMaxima and iMaxima.
 
 Example:
 
-Plot based on absolute frequencies.
-Location and radius defined by the user.
+Plot based on absolute frequencies.  Location and radius defined by the user.
 
 @example
 (%i1) load (descriptive)$
@@ -2090,18 +2107,18 @@ Location and radius defined by the user.
 @end example
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 16.10.2011 --------------------------------------------------------------
+@anchor{stemplot}
 @deffn  {Function} stemplot (@var{data})
 @deffnx {Function} stemplot (@var{data}, @var{option})
 
-Plots stem and leaf diagrams.
-
-Unique available option is:
+Plots stem and leaf diagrams.  Unique available option is:
 
 @itemize @bullet
+
 @item
-@var{leaf_unit} (default, @code{1}): indicates the unit of the leaves; must be
-a power of 10.
+@var{leaf_unit} (default, @code{1}): indicates the unit of the leaves;
+must be a power of @code{10}.
 @end itemize
 
 Example:
@@ -2109,7 +2126,6 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) load(distrib)$
-@group
 (%i3) stemplot(
         random_normal(15, 6, 100),
         leaf_unit = 0.1);
@@ -2142,7 +2158,6 @@ Example:
 27|79
 key: 6|3 =  6.3
 (%o3)                  done
-@end group
 @end example
 @end deffn
 
