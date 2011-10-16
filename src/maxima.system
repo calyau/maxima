@@ -430,6 +430,8 @@
 					  :depends-on ("dqelg"
 						       "dqk15i"
 						       "dqpsrt"))
+				   (:file "dqagp"
+					  :depends-on ("dqagpe"))
 				   (:file "dqagpe"
 					  :depends-on ("dqelg"
 						       "dqpsrt"

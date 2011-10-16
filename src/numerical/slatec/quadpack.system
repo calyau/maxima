@@ -31,6 +31,7 @@
 	      :compiler-options (:float-format double-float :package "SLATEC")
 	      :compile-only t
 	      :binary-pathname (logical-pathname "slatec:")
+	      :binary-extension "lisp"
 	      :components
 	      (
 	       ;; Support
@@ -78,6 +79,8 @@
 		      :depends-on ("dqelg"
 				   "dqk15i"
 				   "dqpsrt"))
+	       (:file "dqagp"
+		      :depends-on ("dqagpe"))
 	       (:file "dqagpe"
 		      :depends-on ("dqelg"
 				   "dqpsrt"

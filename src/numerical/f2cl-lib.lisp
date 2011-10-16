@@ -175,7 +175,7 @@ is not included")
 ;;
 ;; This is done by making a displaced array to VNAME with the
 ;; appropriate offset.
-(defmacro array-slice (vname type indices bounds)
+(defmacro array-slice (vname type indices bounds &optional offset)
   ;; To figure the size of the sliced array, use ARRAY-TOTAL-SIZE
   ;; instead of the f2cl derived/declared BOUNDS, just in case we
   ;; screwed up or in case we changed the size of the array in some
@@ -197,10 +197,16 @@ is not included")
   ;;
   ;; This seems somewhat reasonable, so let's do that for array
   ;; slices.
-  `(make-array (max 0 (- (array-total-size ,vname) ,(col-major-index indices bounds)))
+  `(make-array (max 0 (- (array-total-size ,vname)
+			 (the fixnum
+			   (+ ,(col-major-index indices bounds)
+			      (or ,offset 0)))))
     :element-type ',type
     :displaced-to ,vname
-    :displaced-index-offset (min (array-total-size ,vname) ,(col-major-index indices bounds))))
+    :displaced-index-offset (min (array-total-size ,vname)
+				 (the fixnum
+				   (+ ,(col-major-index indices bounds)
+				      (or ,offset 0))))))
 
 ;; Compute an initializer for make-array given the data in the list
 ;; DATA.  The array has en element type of TYPE and has dimensions of
@@ -993,7 +999,7 @@ causing all pending operations to be flushed"
 	   (open file :direction :io :if-exists :supersede
 		 :if-does-not-exist :create))
 	  ((string-equal s "old")
-	   (open file :direction :io :if-does-not-exist nil))
+	   (open file :direction :io :if-does-not-exist nil :if-exists :overwrite))
 	  ((string-equal s "new")
 	   (open file :direction :io :if-exists nil))
 	  (t
@@ -1461,9 +1467,64 @@ causing all pending operations to be flushed"
 (defun stop (&optional arg)
   (when arg
     (format cl::*error-output* "~A~%" arg))
-  (unless *stop-signals-error-p*
+  (when *stop-signals-error-p*
     (cerror "Continue anyway" "STOP reached")))
 
+(defmacro f2cl-copy-seq (dst src dst-type src-type)
+  (flet ((copy-error ()
+	   (error "F2CL cannot copy arrays of element type ~A to ~A~%"
+		  src-type dst-type)))
+    (cond ((subtypep dst-type 'float)
+	   ;; Copy to float array
+	   (cond ((subtypep src-type 'float)
+		  `(replace ,dst ,src))
+		 ((subtypep src-type 'complex)
+		  ;; Copy complex to float by putting each real and
+		  ;; imaginary part into the float array, in order.
+		  (let ((idx (gensym "IDX-"))
+			(el (gensym "EL-")))
+		    `(loop for ,idx of-type fixnum from 0 by 2 below (length ,dst)
+			for ,el of-type ,src-type across ,src
+			do
+			(progn
+			  (setf (aref ,dst ,idx) (realpart ,el))
+			  (setf (aref ,dst (1+ ,idx)) (imagpart ,el))))))
+		 (t
+		  (copy-error))))
+	  ((subtypep dst-type 'complex)
+	   ;; Copy to complex array
+	   (cond ((subtypep src-type 'float)
+		  (let ((idx (gensym "IDX-"))
+			(dst-idx (gensym "DST-IDX-")))
+		    `(loop for ,idx of-type fixnum from 0 by 2 below (length ,src)
+			for ,dst-idx of-type fixnum from 0 below (length ,dst)
+			do
+			(setf (aref ,dst ,dst-idx) (complex (aref ,src ,idx)
+							    (aref ,src (1+ ,idx)))))))
+		 ((subtypep src-type 'complex)
+		  `(replace ,dst ,src))
+		 (t
+		  (copy-error))))
+	  (t
+	   (copy-error)))))
+
+(defmacro make-compatible-seq (type array array-type)
+  (let ((element-type (second type))
+	(array-type (second array-type)))
+    (cond ((subtypep element-type 'float)
+	   (cond ((subtypep array-type 'complex)
+		  `(make-array (* 2 (length ,array)) :element-type ',element-type))
+		 (t
+		  `(make-array (length ,array) :element-type ',element-type))))
+	  ((subtypep element-type 'complex)
+	   (cond ((subtypep array-type 'complex)
+		  `(make-array (length ,array) :element-type ',element-type))
+		 (t
+		  `(make-array (ceiling (length ,array) 2) :element-type ',element-type))))
+	  (t
+	   (error "Don't know how to make an array with element-type ~A~%" element-type)))))
+
+
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
