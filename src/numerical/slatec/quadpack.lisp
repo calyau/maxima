@@ -323,6 +323,20 @@
 	     (among var ll))
 	 (merror "Limit contains variable of integration: ~M" var))))
 
+(defun quad-control (parameter &optional new-value)
+  (values
+   (slatec:j4save (case parameter
+		    ($current_error 1)
+		    ($control 2)
+		    ($max_message 4)
+		    (otherwise
+		     (merror "Parameter should be current_error, control, or max_mmessage")))
+		  (or new-value 0)
+		  (if new-value t nil))))
+
+(defun $quad_control (parameter &rest new-value)
+  (quad-control parameter (if new-value (car new-value))))
+
 (macrolet
     ((frob (mname iname args valid-keys)
        (let* ((keylist (gensym "KEY-LIST-"))

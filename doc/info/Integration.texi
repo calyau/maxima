@@ -1854,3 +1854,26 @@ more accurate and more efficient that @code{quad_qags}.
 @closecatbox
 @end deffn
 
+@anchor{quad_control}
+@deffn  {Function} quad_control (@var{parameter}, [@var{value}])
+Control error handling for quadpack.  The parameter should be one of
+the following symbols:
+
+@table @code
+@item current_error
+The current error number
+@item control
+Controls if messages are printed or not.  If it is set to zero or
+less, messages are suppressed.
+@item max_message
+The maximum number of times any message is to be printed.
+@end table
+
+If @var{value} is not given, then the current value of the
+@var{parameter} is returned.  If @var{value} is given, the value of
+@var{parameter} is set to the given value.
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
+@end deffn
