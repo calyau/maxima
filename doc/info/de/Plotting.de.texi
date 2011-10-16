@@ -2,10 +2,10 @@
 @c File        : Plotting.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Plotting.texi revision 31.07.2011
+@c Original    : Plotting.texi revision 03.10.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 23.10.2010
-@c Revision    : 31.07.2011
+@c Revision    : 16.10.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1456,9 +1456,9 @@ Werte @code{gnuplot}, @code{xmaxima}, @code{mgnuplot} oder @code{gnuplot_pipes}
 annehmen.  Siehe das Kapitel @nrefdot{Grafikformate}
 @end defvr
 
-@c --- 02.11.2010 DK -----------------------------------------------------------
-@anchor{plot_real_part}
-@defvr {Grafikoption} plot_real_part [plot_realpart, @var{symbol}]
+@c --- 16.10.2011 DK -----------------------------------------------------------
+@anchor{plot_realpart}
+@defvr {Grafikoption} plot_realpart [plot_realpart, @var{symbol}]
 Standardwert: @code{false}
 
 @c When set to @code{true}, the functions to be plotted will be considered
@@ -1471,13 +1471,13 @@ Standardwert: @code{false}
 @c as @code{log(5)}, while nothing would be plotted if
 @c @code{plot_real_part} were @code{false}.
 
-Hat @code{plot_real_part} den Wert @code{true}, werden Funktionen als komplex
+Hat @code{plot_realpart} den Wert @code{true}, werden Funktionen als komplex
 angenommen und der Realteil wird gezeichnet.  Das entspricht dem Aufruf der
 Grafikfunktion mit dem Ausdruck @code{realpart(@var{function})}.  Hat
-@code{plot_real_part} den Wert @code{false}, wird keine Grafik gezeichnet, wenn
-die Funktion keinen Realteil hat.  Zum Beispiel ist @code{log(x)} komplex, wenn 
-@var{x} negativ ist.  Hat @code{plot_real_part} den Wert @code{true}, wird der 
-Wert @code{log(-5)} als @code{log(5)} gezeichnet.  Hat @code{plot_real_part} 
+@code{plot_realpart} den Wert @code{false}, wird keine Grafik gezeichnet, wenn
+die Funktion keinen Realteil hat.  Zum Beispiel ist @code{log(x)} komplex, wenn
+@var{x} negativ ist.  Hat @code{plot_realpart} den Wert @code{true}, wird der
+Wert @code{log(-5)} als @code{log(5)} gezeichnet.  Hat @code{plot_realpart}
 den Wert @code{false} wird kein Wert gezeichnet.
 @end defvr
 
