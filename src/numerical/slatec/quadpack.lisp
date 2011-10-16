@@ -107,7 +107,7 @@
 	     (work (make-array lenw :element-type 'flonum))
 	     (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	     (f (get-integrand fun var))
-	     (infinity (case inf-type
+	     (infinity (ecase inf-type
 			 ((1 $inf)
 			  ;; Interval is [bound, infinity]
 			  1)
@@ -299,8 +299,8 @@
 			  (float-or-lose epsrel)
 			  0.0 0.0 0 0
 			  leniw lenw 0 iwork work)
-	  (declare (ignore junk z-a z-b z-int z-epsabs z-epsrel
-			   z-limit z-lenw last))
+	  (declare (ignore junk z-a z-b z-npts z-points z-epsabs z-epsrel
+			   z-leniw z-lenw last))
 	  (list '(mlist) result abserr neval ier))
       (error ()
 	`(($quad_qagp) ,fun ,var ,a ,b ,points
