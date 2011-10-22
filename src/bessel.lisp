@@ -417,7 +417,7 @@
     (cond
      (($oddp n)
       ;; integrate(bessel_y(2*N+1,z)) , N > 0 
-      ;; = -bessel_y(0,z) - 2 * sum(bessel_y(2*k,z),k,1,(n-1)/2)
+      ;; = -bessel_y(0,z) - 2 * sum(bessel_y(2*k,z),k,1,N)
       (let* ((k (gensym))
 	     (answer `((mplus) ((mtimes) -1 ((%bessel_y) 0 z))
                        ((mtimes) -2
@@ -431,19 +431,23 @@
       ;; integrate(bessel_y(2*N,z)) , N > 0
       ;; = (1/2)*%pi*z*(bessel_y(0,z)*struve_h(-1,z)
       ;;               +bessel_y(1,z)*struve_h(0,z))
-      ;;    - 2 * sum(bessel_y(2*k,z),k,1,n/2)
+      ;;    - 2 * sum(bessel_y(2*k+1,z),k,0,N-1)
       (let* 
 	  ((k (gensym))
 	   (answer `((mplus)
 		     ((mtimes) -2
-		      ((%sum) ((%bessel_y) ((mtimes) 2 ,k) z) ,k 1
-		       ((mtimes) ((rat) 1 2) ,n)))
+		      ((%sum)
+		       ((%bessel_y) ((mplus) 1 ((mtimes) 2 ,k)) z)
+		       ,k 0
+		       ((mplus)
+		        -1
+		        ((mtimes) ((rat) 1 2) ,n))))
 		     ((mtimes) ((rat) 1 2) $%pi z
 		      ((mplus)
-		       ((mtimes) 
+		       ((mtimes)
 			((%bessel_y) 0 z)
 			((%struve_h) -1 z))
-		       ((mtimes) 
+		       ((mtimes)
 			((%bessel_y) 1 z)
 			((%struve_h) 0 z)))))))
 	;; Expand out the sum if n < 10.  Otherwise fix up the indices
@@ -765,22 +769,22 @@
 (defun bessel-i-integral-2 (n unused)
   (declare (ignore unused))
   (case n
-	(0 
+	(0
 	 ;; integrate(bessel_i(0,z)
 	 ;; = (1/2)*z*(bessel_i(0,z)*(%pi*struve_l(1,z)+2)
 	 ;;            -%pi*bessel_i(1,z)*struve_l(0,z))
 	 '((mtimes) ((rat) 1 2) z
 	   ((mplus)
-	    ((mtimes) -1 $%pi 
+	    ((mtimes) -1 $%pi
 	     ((%bessel_i) 1 z)
 	     ((%struve_l) 0 z))
-	    ((mtimes) 
+	    ((mtimes)
 	     ((%bessel_i) 0 z)
 	     ((mplus) 2
 	      ((mtimes) $%pi ((%struve_l) 1 z)))))))
 	(1
-	 ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
-	 '((mtimes) -1 ((%bessel_i) 0 z)))
+	 ;; integrate(bessel_i(1,z) = bessel_i(0,z)
+	 '((%bessel_i) 0 z))
 	(otherwise nil)))
 
 (putprop '%bessel_i `((n z) nil ,#'bessel-i-integral-2) 'integral)
