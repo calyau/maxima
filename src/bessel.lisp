@@ -1508,7 +1508,7 @@
          ((or ($oddp  order)
               ($featurep order '$odd)) 
           ;; order is an odd integer, pure imaginary noun-form
-          (cons 0 expr))
+          (cons 0 (mul -1 '$%i expr)))
          ((or ($evenp order)
               ($featurep order '$even))
            ;; order is an even integer, real noun-form
@@ -1529,7 +1529,7 @@
        (cond
           ((eq sign-arg '$neg)
            ;; order is half integral and arg negative, imaginary noun-form
-           (cons 0 expr))
+           (cons 0 (mul -1 '$%i expr)))
           (t
             ;; the sign of arg or order is not known
             (risplit-noun expr))))
@@ -1575,7 +1575,7 @@
        ;; order is half integral
        (cond
           ((eq sign-arg '$neg)
-           (cons 0 expr))
+           (cons 0 (mul -1 '$%i expr)))
           (t
             ;; the sign of arg is not known
             (risplit-noun expr))))
