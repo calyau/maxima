@@ -1831,7 +1831,7 @@ f(n,-x);
 f(n+1/2,x);
 [bessel_j(n+1/2,x),0];
 f(n+1/2,-x);
-[0,bessel_j(n+1/2,-x)];
+[0,-%i*bessel_j(n+1/2,-x)];
 
 (declare(n_even,even),declare(n_odd,odd),done);
 done;
@@ -1839,17 +1839,17 @@ done;
 f(n_even,%i);
 [bessel_j(n_even,%i),0];
 f(n_odd,%i);
-[0,bessel_j(n_odd,%i)];
+[0,-%i*bessel_j(n_odd,%i)];
 
 f(n_even,x*%i);
 [bessel_j(n_even,x*%i),0];
 f(n_odd,x*%i);
-[0,bessel_j(n_odd,x*%i)];
+[0,-%i*bessel_j(n_odd,x*%i)];
 
 f(n_even,(x+1)^2*%i);
 [bessel_j(n_even,(x+1)^2*%i),0];
 f(n_odd,(x+1)^2*%i);
-[0,bessel_j(n_odd,(x+1)^2*%i)];
+[0,-%i*bessel_j(n_odd,(x+1)^2*%i)];
 
 (declare(j,imaginary),done);
 done;
@@ -1857,7 +1857,7 @@ done;
 f(n_even,(x+1)^2*j);
 [bessel_j(n_even,(x+1)^2*j),0];
 f(n_odd,(x+1)^2*j);
-[0,bessel_j(n_odd,(x+1)^2*j)];
+[0,-%i*bessel_j(n_odd,(x+1)^2*j)];
 
 /* Check the handling of realpart and imagpart for the Bessel I function */
 
@@ -1872,27 +1872,27 @@ f(n,-x);
 f(n+1/2,x);
 [bessel_i(n+1/2,x),0];
 f(n+1/2,-x);
-[0,bessel_i(n+1/2,-x)];
+[0,-%i*bessel_i(n+1/2,-x)];
 
 f(n_even,%i);
 [bessel_i(n_even,%i),0];
 f(n_odd,%i);
-[0,bessel_i(n_odd,%i)];
+[0,-%i*bessel_i(n_odd,%i)];
 
 f(n_even,x*%i);
 [bessel_i(n_even,x*%i),0];
 f(n_odd,x*%i);
-[0,bessel_i(n_odd,x*%i)];
+[0,-%i*bessel_i(n_odd,x*%i)];
 
 f(n_even,(x+1)^2*%i);
 [bessel_i(n_even,(x+1)^2*%i),0];
 f(n_odd,(x+1)^2*%i);
-[0,bessel_i(n_odd,(x+1)^2*%i)];
+[0,-%i*bessel_i(n_odd,(x+1)^2*%i)];
 
 f(n_even,(x+1)^2*j);
 [bessel_i(n_even,(x+1)^2*j),0];
 f(n_odd,(x+1)^2*j);
-[0,bessel_i(n_odd,(x+1)^2*j)];
+[0,-%i*bessel_i(n_odd,(x+1)^2*j)];
 
 /* Check the handling of realpart and imagpart for the Bessel K function */
 
@@ -1907,7 +1907,7 @@ f(n,-x);
 f(n+1/2,x);
 [bessel_k(n+1/2,x),0];
 f(n+1/2,-x);
-[0,bessel_k(n+1/2,-x)];
+[0,-%i*bessel_k(n+1/2,-x)];
 
 f(n_even,%i);
 [realpart(bessel_k(n_even,%i)),imagpart(bessel_k(n_even,%i))];
@@ -1928,7 +1928,7 @@ f(n,-x);
 f(n+1/2,x);
 [bessel_y(n+1/2,x),0];
 f(n+1/2,-x);
-[0,bessel_y(n+1/2,-x)];
+[0,-%i*bessel_y(n+1/2,-x)];
 
 f(n_even,%i);
 [realpart(bessel_y(n_even,%i)),imagpart(bessel_y(n_even,%i))];
