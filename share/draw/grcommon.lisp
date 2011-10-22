@@ -684,7 +684,7 @@
          ($dots     (setf (gethash opt *gr-options*) 0))
          ($solid    (setf (gethash opt *gr-options*) 1))
          ($dashes   (setf (gethash opt *gr-options*) 2))
-         ($dot_dash (setf (gethash opt *gr-options*) 3))
+         ($dot_dash (setf (gethash opt *gr-options*) 6))
          ($tube     (setf (gethash opt *gr-options*) -8))
          (otherwise  (merror "draw: illegal line type: ~M" val) )))
     ((and ($listp val)
