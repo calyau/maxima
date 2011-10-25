@@ -77,16 +77,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar $factorial_expand nil)
-(defvar $beta_expand nil)
+(defmvar $factorial_expand nil)
+(defmvar $beta_expand nil)
 
-(defvar $erf_representation nil
+(defmvar $erf_representation nil
   "When T erfc, erfi and erf_generalized are transformed to erf.")
 
-(defvar $erf_%iargs nil
+(defmvar $erf_%iargs nil
   "When T erf and erfi simplifies for an imaginary argument.")
 
-(defvar $hypergeometric_representation nil
+(defmvar $hypergeometric_representation nil
   "When T a transformation to a hypergeometric representation is done.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
