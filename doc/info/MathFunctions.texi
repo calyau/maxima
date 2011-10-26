@@ -14,13 +14,98 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{abs}
-@deffn {Function} abs (@var{expr})
+@deffn {Function} abs (@var{z})
 
-Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the 
-complex modulus of @var{expr}.
+The @code{abs} function represents the mathematical absolute value function and
+works for both numerical and symbolic values. If the argument, @var{z}, is a
+real or complex number, @code{abs} returns the absolute value of @var{z}. If
+possible, symbolic expressions using the absolute value function are
+also simplified.
 
-@code{abs} distributes over a list, a matrix, or an equation.
-See @mrefdot{distribute_over}
+Maxima can differentiate, integrate and calculate limits for expressions
+containing @code{abs}. The @code{abs_integrate} package further extends
+Maxima's ability to calculate integrals involving the abs function. See
+(%i12) in the examples below.
+
+When applied to a list or matrix, @code{abs} automatically distributes over
+the terms. Similarly, it distributes over both sides of an
+equation. To alter this behaviour, see the variable @mrefdot{distribute_over}
+
+Examples:
+
+Calculation of @code{abs} for real and complex numbers, including numerical
+constants and various infinities. The first example shows how @code{abs}
+distributes over the elements of a list.
+
+@example
+(%i1) abs([-4, 0, 1, 1+%i]);
+(%o1)                  [4, 0, 1, sqrt(2)]
+
+(%i2) abs((1+%i)*(1-%i));
+(%o2)                           2
+(%i3) abs(%e+%i);
+                                2
+(%o3)                    sqrt(%e  + 1)
+(%i4) abs([inf, infinity, minf]);
+(%o4)                   [inf, inf, inf]
+@end example
+
+Simplification of expressions containing @code{abs}:
+
+@example
+(%i5) abs(x^2);
+                                2
+(%o5)                          x
+(%i6) abs(x^3);
+                             2
+(%o6)                       x  abs(x)
+
+(%i7) abs(abs(x));
+(%o7)                       abs(x)
+(%i8) abs(conjugate(x));
+(%o8)                       abs(x)
+@end example
+
+Integrating and differentiating with the @code{abs} function. Note that, if
+the @code{abs_integrate} package is loaded, more integrals involving the
+@code{abs} function can be performed. The last example shows the Laplace
+transform of @code{abs}: see @mrefdot{laplace}
+
+@example
+(%i9) diff(x*abs(x),x),expand;
+(%o9)                       2 abs(x)
+
+(%i10) integrate(abs(x),x);
+                             x abs(x)
+(%o10)                       --------
+                                2
+
+(%i11) integrate(x*abs(x),x);
+                           /
+                           [
+(%o11)                     I x abs(x) dx
+                           ]
+                           /
+
+(%i12) load(abs_integrate)$
+(%i13) integrate(x*abs(x),x);
+                      2           3
+                     x  abs(x)   x  signum(x)
+(%o13)               --------- - ------------
+                         2            6
+
+(%i14) integrate(abs(x),x,-2,%pi);
+                               2
+                            %pi
+(%o14)                      ---- + 2
+                             2
+
+(%i15) laplace(abs(x),x,s);
+                               1
+(%o15)                         --
+                                2
+                               s
+@end example
 
 @opencatbox
 @category{Mathematical functions}
@@ -296,7 +381,73 @@ equation.  See @mrefdot{distribute_over}
 @anchor{cabs}
 @deffn {Function} cabs (@var{expr})
 
-Returns the complex absolute value (the complex modulus) of @var{expr}.
+Calculates the absolute value of an expression representing a complex
+number.  Unlike the function @mrefcomma{abs} the @code{cabs} function always
+decomposes its argument into a real and an imaginary part.  If @code{x} and
+@code{y} represent real variables or expressions, the @code{cabs} function
+calculates the absolute value of @code{x + %i*y} as
+@example
+                           2    2
+                     sqrt(y  + x )
+@end example
+
+The @code{cabs} function can use known properties like symmetry properties of
+complex functions to help it calculate the absolute value of an expression.  If
+such identities exist, they can be advertised to @code{cabs} using function
+properties.  The symmetries that @code{cabs} understands are: mirror symmetry,
+conjugate function and complex characteristic.
+
+@code{cabs} is a verb function and is not suitable for symbolic
+calculations.  For such calculations (including integration,
+differentiation and taking limits of expressions containing absolute
+values), use @mrefdot{abs}
+
+The result of @code{cabs} can include the absolute value function,
+@mrefcomma{abs} and the arc tangent, @mrefdot{atan2}
+
+When applied to a list or matrix, @code{cabs} automatically distributes over
+the terms.  Similarly, it distributes over both sides of an equation.
+
+For further ways to compute with complex numbers, see the functions
+@mrefcomma{rectform} @mrefcomma{realpart} @mrefcomma{imagpart}@w{}
+@mrefcomma{carg} @mref{conjugate} and @mrefdot{polarform}
+
+Examples:
+
+Examples with @mref{sqrt} and @mrefdot{sin}
+
+@example
+(%i1) cabs(sqrt(1+%i*x));
+                             2     1/4
+(%o1)                      (x  + 1)
+(%i2) cabs(sin(x+%i*y));
+                    2        2         2        2
+(%o2)       sqrt(cos (x) sinh (y) + sin (x) cosh (y))
+@end example
+
+The error function, @mrefcomma{erf} has mirror symmetry, which is used here in
+the calculation of the absolute value with a complex argument:
+
+@example
+(%i3) cabs(erf(x+%i*y));
+                                          2
+           (erf(%i y + x) - erf(%i y - x))
+(%o3) sqrt(--------------------------------
+                          4
+                                                               2
+                                (erf(%i y + x) + erf(%i y - x))
+                              - --------------------------------)
+                                               4
+@end example
+
+Maxima knows complex identities for the Bessel functions, which allow
+it to compute the absolute value for complex arguments.  Here is an
+example for @mrefdot{bessel_j}
+
+@example
+(%i4) cabs(bessel_j(1,%i));
+(%o4)                 abs(bessel_j(1, %i))
+@end example
 
 @opencatbox
 @category{Complex variables}
@@ -1492,6 +1643,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{atan2}
 @deffn {Function} atan2 (@var{y}, @var{x})
 
 -- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi}
@@ -1702,6 +1854,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{sin}
 @deffn {Function} sin (@var{x})
 
 -- Sine.
