@@ -1541,7 +1541,10 @@ The Error function and related funtions are defined in
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 7
 
+@c -----------------------------------------------------------------------------
+@anchor{erf}
 @deffn {Function} erf (@var{z})
+
 The Error Function erf(z) (A&S 7.1.1)
 
 See also flag @code{erfflag}.
