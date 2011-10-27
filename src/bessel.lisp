@@ -1086,16 +1086,21 @@
 		     ((mtimes) 2
 		      ((%sum)
 		       ((mtimes)
-			((%bessel_y) ((mplus) 1 ((mtimes) 2 ,k)) z)
+			((%bessel_k) ((mplus) 1 ((mtimes) 2 ,k)) z)
 			((mexpt) -1
 			 ((mplus) ,k ((mtimes) ((rat) 1 2) ,n))))
 		       ,k 0 ((mplus) -1 ((mtimes) ((rat) 1 2) ,n))))
-		     ((mtimes) ((rat) 1 2) $%pi
-		      ((mexpt) -1 ((mtimes) ((rat) 1 2) ,n)) z
+	             ((mtimes)
+	              ((rat) 1 2)
+	              $%pi
+	              ((mexpt) -1 ((mtimes) ((rat) 1 2) ,n))
+	              z
 		      ((mplus)
-		       ((mtimes) ((%bessel_k) 0 z)
+		       ((mtimes)
+		        ((%bessel_k) 0 z)
 			((%struve_l) -1 z))
-		       ((mtimes) ((%bessel_k) 1 z)
+		       ((mtimes)
+		        ((%bessel_k) 1 z)
 			((%struve_l) 0 z)))))))
 	;; expand out the sum if n < 10.  Otherwise fix up the indices
 	(if (< n 10) 
