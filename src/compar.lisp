@@ -1194,10 +1194,11 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defun numer (x)
   (let (($numer t) ; currently, no effect on $float, but proposed to
+        ($ratprint nil)
         result)
-      ;; Catch a Lisp error, if a floating point overflow occurs.
-      (setq result (let ((errset nil)) (errset ($float x))))
-      (if result (car result) nil)))
+    ;; Catch a Lisp error, if a floating point overflow occurs.
+    (setq result (let ((errset nil)) (errset ($float x))))
+    (if result (car result) nil)))
 
 (defun constp (x)
   (cond ((floatp x) 'float)
