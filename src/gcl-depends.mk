@@ -154,6 +154,7 @@ binary-gcl/maxima : numerical/slatec/dqc25f.lisp
 binary-gcl/maxima : numerical/slatec/dqage.lisp
 binary-gcl/maxima : numerical/slatec/dqagie.lisp
 binary-gcl/maxima : numerical/slatec/dqagpe.lisp
+binary-gcl/maxima : numerical/slatec/dqagp.lisp
 binary-gcl/maxima : numerical/slatec/dqagse.lisp
 binary-gcl/maxima : numerical/slatec/dqawoe.lisp
 binary-gcl/maxima : numerical/slatec/dqawfe.lisp
