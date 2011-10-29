@@ -73,9 +73,7 @@
         (format t (intl:gettext "  No exact match found for topic `~a'.~%  Try `?? ~a' (inexact match) instead.~%~%") x x)
         nil)
       (progn
-        (format t "~%")
-        (loop for item in exact-matches
-              do (format t "~A~%~%" (read-info-text item)))
+        (display-items exact-matches)
         (if (some-inexact x (inexact-topic-match x))
           (format t "  There are also some inexact matches for `~a'.~%  Try `?? ~a' to see them.~%~%" x x))
         t))))
@@ -84,47 +82,52 @@
   (some #'(lambda (y) (not (equal y x))) (mapcar #'car inexact-matches)))
 
 (defun exact-topic-match (topic)
-  (setq topic (regex-sanitize topic))
-  (setq topic (concatenate 'string "^" topic "$"))
-  (append
-    (find-regex-matches topic *info-section-hashtable*)
-    (find-regex-matches topic *info-deffn-defvr-hashtable*)))
+  (let*
+    ((topic (regex-sanitize topic))
+     (regex1 (concatenate 'string "^" topic "$"))
+     (regex2 (concatenate 'string "^" topic " *<[0-9]+>$")))
+    (append
+      (find-regex-matches regex1 *info-section-hashtable*)
+      (find-regex-matches regex2 *info-section-hashtable*)
+      (find-regex-matches regex1 *info-deffn-defvr-hashtable*)
+      (find-regex-matches regex2 *info-deffn-defvr-hashtable*))))
 
-(defun info (x)
+(defun info-inexact (x)
   (autoload-maxima-index)
   (let (wanted tem)
     (setf tem (inexact-topic-match x))
-    (when tem
-      (let ((nitems (length tem)))
-
-        (loop for i from 0 for item in tem do
-          (when (> nitems 1)
-            (let ((heading-title (nth 3 (cdr item))))
-              (format t "~% ~d: ~a~@[  (~a)~]"
-                      i
-                      (car item)
-                      heading-title))))
-
-        (setq wanted
-              (if (> nitems 1)
-              (loop
-               for prompt-count from 0
-               thereis (progn
-                     (finish-output *debug-io*)
-                     (print-prompt prompt-count)
-                     (force-output)
-                     (clear-input)
-                     (select-info-items
-                      (parse-user-choice nitems) tem)))
-              tem))
-        (clear-input)
-        (finish-output *debug-io*)
-        (when (consp wanted)
-          (format t "~%")
-          (loop for item in wanted
-            do (format t "~A~%~%" (read-info-text item))))))
-
+    (when tem (display-items tem))
     (not (null tem))))
+
+(defun display-items (items)
+  (let ((nitems (length items)))
+
+    (loop for i from 0 for item in items do
+      (when (> nitems 1)
+        (let ((heading-title (nth 3 (cdr item))))
+          (format t "~% ~d: ~a~@[  (~a)~]"
+                  i
+                  (car item)
+                  heading-title))))
+
+    (setq wanted
+          (if (> nitems 1)
+          (loop
+           for prompt-count from 0
+           thereis (progn
+                 (finish-output *debug-io*)
+                 (print-prompt prompt-count)
+                 (force-output)
+                 (clear-input)
+                 (select-info-items
+                  (parse-user-choice nitems) items)))
+          items))
+    (clear-input)
+    (finish-output *debug-io*)
+    (when (consp wanted)
+      (format t "~%")
+      (loop for item in wanted
+        do (format t "~A~%~%" (read-info-text item))))))
 
 (defun inexact-topic-match (topic)
   (setq topic (regex-sanitize topic))
