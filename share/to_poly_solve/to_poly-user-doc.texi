@@ -5,13 +5,13 @@
 @c     @top Sample Title
 @c @end ifnottex
 
-The packages @code{topoly} and @code{to_poly_solve} are experimental;
+The packages @code{to_poly} and @code{to_poly_solve} are experimental;
 the specifications of the functions in these packages might change or
 the some of the functions in these packages might be merged into other
 Maxima functions.
 
 Barton Willis (Professor of Mathematics, University of Nebraska at
-Kearney) wrote the @code{topoly} and @code{to_poly_solve} packages and the
+Kearney) wrote the @code{to_poly} and @code{to_poly_solve} packages and the
 English language user documentation for these packages.
 
 @deffn {Operator} %and
@@ -90,7 +90,7 @@ neither is there support for distributing a logical negation over
 @math{%and}.
 
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Related functions} @math{%or, %if, and, or, not}
 
@@ -146,7 +146,7 @@ the Fourier elimination package.
 inequations that are readily convertible to an equivalent linear
 inequation. 
 
-@b{To use:} @file{load(to_poly_solver)}
+@b{To use:} @file{load(to_poly_solve)}
 
 @b{Status:} The operator @code{%if} is experimental; its
 specifications might change and its functionality might be merged into
@@ -228,7 +228,7 @@ also there is no support for distributing @math{%or} over @math{%and};
 neither is there support for distributing a logical negation over
 @math{%or}.
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Related functions} @math{%or, %if, and, or, not}
 
@@ -258,7 +258,7 @@ numbers (including big floating point); for all other inputs,
 
 @b{Related functions} @code{isreal_p}
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The operator @code{complex_number_p} is experimental; its
 specifications might change and its functionality might be merged into
@@ -314,7 +314,7 @@ deduce that these lambda forms are semantically equal:
 @end example
 @end itemize
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status}  The function @code{compose_functions} is experimental; its
 specifications might change and its functionality might be merged into
@@ -351,7 +351,7 @@ value false) and a function name.
 
 @b{Related functions} @code{float, bfloat}
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{dfloat} is experimental; its
 specifications might change and its functionality might be merged into
@@ -477,7 +477,7 @@ returns a set.
 
 @b{Related functions} @i{elim, eliminate, elim_allbut}
 
-@b{To use} @file{load(topoly)}
+@b{To use} @file{load(to_poly)}
 
 @b{Status} The function @code{eliminate_using} is experimental; its
 specifications might change and its functionality might be merged into
@@ -596,7 +596,7 @@ return false; however
  (%o5) isreal_p(log(x))
  @end example
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Related functions} @i{complex_number_p}
 
@@ -649,7 +649,7 @@ will protect against errors similar to
 
 @b{Related functions} @i{nicedummies}
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{new_variable} is experimental; its
 specifications might change and its functionality might be merged into
@@ -675,7 +675,7 @@ in an expression that were introduced by @code{new_variable};
 
 @b{Related functions} @i{new_variable}
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{nicedummies} is experimental; its
 specifications might change and its functionality might be merged into
@@ -720,7 +720,7 @@ to be complex, the @code{parg} can return incorrect values; for example
 
 @b{Related function} @i{carg, isreal_p}
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{parg} is experimental; its
 specifications might change and its functionality might be merged into
@@ -740,7 +740,7 @@ involving the @code{conjugate}.
 (%o3) (conjugate(x)+x)/2-(%i*(x-conjugate(x)))/2=3
 @end example
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{real_imagpart_to_conjugate} is experimental; its
 specifications might change and its functionality might be merged into
@@ -764,7 +764,7 @@ either a declared constant expression or explicitly declared constant
  (%o4) log(b^2+a^2)/2+%i*atan2(b,a)
 @end example
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{rectform_log_if_constant} is
 experimental; the specifications of this function might change might change and its functionality
@@ -806,7 +806,7 @@ acsc(x) = asin(1/x),} and similarly for @code{asec, acoth, acsch}
 and @code{asech} to an expression. See Abramowitz and Stegun, 
 Eqs. 4.4.6 through 4.4.8 and 4.6.4 through 4.6.6.
 
-@b{To use} @file{load(to_poly_solver)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status} The function @code{standardize_inverse_trig} is experimental; its
 specifications might change and its functionality might be merged into
@@ -1074,10 +1074,10 @@ these dummy variables, use the function @math{nicedummies}:
 @end example
 @end itemize
 
-The @code{to_poly_solver} uses data stored in the hashed array
+The @code{to_poly_solve} uses data stored in the hashed array
 @code{one_to_one_reduce} to solve equations of the form @math{f(a) =
 f(b)}. The assignment @code{one_to_one_reduce['f,'f] : lambda([a,b],
-a=b)} tells @code{to_poly_solver} that the solution set of @math{f(a)
+a=b)} tells @code{to_poly_solve} that the solution set of @math{f(a)
 = f(b)} equals the solution set of @math{a=b}; for example
 @example
  (%i2) one_to_one_reduce['f,'f] : lambda([a,b], a=b)$
@@ -1085,17 +1085,17 @@ a=b)} tells @code{to_poly_solver} that the solution set of @math{f(a)
  (%o3) %union([x = - 1], [x = 1])
 @end example
 More generally, the assignment @code{one_to_one_reduce['f,'g] : lambda([a,b],
-w(a,b)=0} tells @code{to_poly_solver} that the solution set of @math{f(a)
+w(a,b)=0} tells @code{to_poly_solve} that the solution set of @math{f(a)
 = f(b)} equals the solution set of @math{w(a,b) = 0}; for example
 @example
  (%i4) one_to_one_reduce['f,'g] : lambda([a,b], a = 1 + b/2)$
  (%i5) to_poly_solve(f(x) - g(x),x);
  (%o5) %union([x = 2])
 @end example
-Additionally, @code{to_poly_solver} uses data stored in the hashed array 
+Additionally, @code{to_poly_solve} uses data stored in the hashed array 
 @code{function_inverse} to solve equations of the form @math{f(a) = b}. 
 The assignment @code{function_inverse['f] : lambda([s], g(s))} 
-informs  @code{to_poly_solver} that solution set to @code{f(x) = b} equals
+informs  @code{to_poly_solve} that solution set to @code{f(x) = b} equals
 the solution set to @code{x = g(b)}; two examples:
 @example
  (%i6) function_inverse['Q] : lambda([s], P(s))$
@@ -1135,7 +1135,7 @@ appends the conjugate equations; for example
 @end example
 
 @item For an equation that involves the absolute value function, the
-@math{to_poly_solver} consults the fact database to decide if the
+@math{to_poly_solve} consults the fact database to decide if the
 argument to the absolute value is complex valued. When
 @example
 (%i1) to_poly_solve(abs(x) = 6,x);

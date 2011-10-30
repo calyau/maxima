@@ -6,12 +6,12 @@
 @node Funciones y variables para to_poly_solve,  , to_poly_solve, to_poly_solve
 @section Funciones y variables para to_poly_solve
 
-Los paquetes @code{topoly} y @code{to_poly_solve} son experimentales,
+Los paquetes @code{to_poly} y @code{to_poly_solve} son experimentales,
 siendo posible que las especificaciones de sus funciones puedan
 cambiar en el futuro, o que algunas de estas funciones puedan ser
 incorporadas a otras partes de Maxima.
 
-Los paquetes @code{topoly} y @code{to_poly_solve}, junto con su documentaci@'on,
+Los paquetes @code{to_poly} y @code{to_poly_solve}, junto con su documentaci@'on,
 fue escrito por Barton Willis de la Universidad de Nebraska en Kearney. 
 
 
@@ -103,7 +103,7 @@ manera sencilla a formas lineales, no se simplifican.
 No est@'a soportada la distributividad de @code{%and} respecto de @code{%or},
 ni la negaci@'on respecto de @code{%and}.
 
-Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'eanse tambi@'en @code{%or}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
@@ -155,7 +155,7 @@ una forma nominal:
 Por @'ultimo, las inecuaciones no lineales que no se puedan reducir de
 manera sencilla a formas lineales, no se simplifican.
 
-Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
 @end deffn
 
 
@@ -244,7 +244,7 @@ manera sencilla a formas lineales, no se simplifican.
 No est@'a soportada la distributividad de @code{%or} respecto de @code{%and},
 ni la negaci@'on respecto de @code{%or}.
 
-Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de este operador, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'eanse tambi@'en @code{%and}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
@@ -275,7 +275,7 @@ Ejemplo:
 
 V@'ease tambi@'en @code{isreal_p}.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 @end deffn
 
 
@@ -320,7 +320,7 @@ error:
 
 funmake: first argument must be a symbol, subscripted symbol,
 string, or lambda expression; found: a < b
-#0: compose_functions(l=[a < b])(to_poly_solver.mac line 40)
+#0: compose_functions(l=[a < b])(to_poly_solve.mac line 40)
  -- an error. To debug this try: debugmode(true);
 @end example
 
@@ -340,7 +340,7 @@ determinar que las expresiones lambda son sem@'anticamente equivalentes:
 @end example
 @end itemize
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 @end deffn
 
 
@@ -374,7 +374,7 @@ cuyo valor por defecto es @code{false} y el nombre de una funci@'on.
 
 V@'eanse tambi@'en @code{float} y @code{bfloat}.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -653,7 +653,7 @@ devolver @code{false}, sin embargo:
 (%o5)                   isreal_p(log(x))
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'ease tambi@'en @code{complex_number_p}.
 
@@ -706,7 +706,7 @@ de esta manera se evitan errores como el siguiente:
 (%o9)                         %z150
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'ease tambi@'en @code{nicedummies}.
 
@@ -732,7 +732,7 @@ sido introducidas por @code{new_variable}:
 (%o3)                       %z0 - %z1
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'ease tambi@'en @code{new_variable}.
 
@@ -784,7 +784,7 @@ puede retornar valores incorrectos:
 (%o2) 0
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'eanse tambi@'en @code{carg}, @code{isreal_p}.
 
@@ -810,7 +810,7 @@ por llamadas a @code{conjugate}, obteniendo otra expresi@'on equivalente:
                  2                     2
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -838,7 +838,7 @@ una expresi@'on constante o declarada como tal.
                        2
 @end example
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -884,7 +884,7 @@ Esta funci@'on aplica las identidades @code{cot(x) = atan(1/x)} y
 y @code{acsch}. Cons@'ultese Abramowitz y Stegun, ecuaciones
 4.4.6 a 4.4.8 y 4.6.4 a 4.6.6.
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 @end deffn
 
@@ -899,7 +899,7 @@ Dada la ecuaci@'on o lista de ecuaciones @var{l} y la expresi@'on
 de las ecuaciones por los derechos:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) subst_parallel([x=y,y=x], [x,y]);
 (%o2)                        [y, x]
@@ -972,7 +972,7 @@ polinomio la ecuaci@'on @var{e}; un ejemplo ayudar@'a a aclarar su
 comportamiento:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) to_poly(sqrt(x) = 3, [x]);
                             2
@@ -1056,7 +1056,7 @@ Cuando @code{to_poly_solve} consigue determinar el conjunto de soluciones, cada
 miembro del conjunto de soluciones es una lista en un objeto  @code{%union}:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) to_poly_solve(x*(x-1) = 0, x);
 (%o2)               %union([x = 0], [x = 1])
@@ -1068,7 +1068,7 @@ devuelve una forma nominal de @code{%solve} y muestra un mensaje de aviso:
 @example
 (%i3) to_poly_solve(x^k + 2* x + 1 = 0, x);
 
-Nonalgebraic argument given to 'topoly'
+Nonalgebraic argument given to 'to_poly'
 unable to solve
                           k
 (%o3)            %solve([x  + 2 x + 1 = 0], [x])
@@ -1124,7 +1124,7 @@ Tambi@'en puede resolver algunas ecuaciones resolubles en t@'erminos de la
 funci@'on W de Lambert:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) to_poly_solve(set(max(x,y) = 5, x+y = 2), set(x,y));
 (%o2)      %union([x = - 3, y = 5], [x = 5, y = - 3])
@@ -1268,9 +1268,9 @@ En @code{(%o2)}, el programa introduce una variable ficticia; para reinicializar
 @end example
 @end itemize
 
-@code{to_poly_solver} utiliza informaci@'on almacenada en el array @code{one_to_one_reduce}
+@code{to_poly_solve} utiliza informaci@'on almacenada en el array @code{one_to_one_reduce}
 para resolver ecuaciones de la forma  @math{f(a) = f(b)}. La asignaci@'on 
-@code{one_to_one_reduce['f,'f] : lambda([a,b], a=b)} le dice a @code{to_poly_solver}
+@code{one_to_one_reduce['f,'f] : lambda([a,b], a=b)} le dice a @code{to_poly_solve}
 que el conjunto de soluciones de @math{f(a) = f(b)} es igual al conjunto de soluciones
 de @math{a=b}:
 @example
@@ -1282,7 +1282,7 @@ de @math{a=b}:
 
 De forma m@'as general, la asignaci@'on 
 @code{one_to_one_reduce['f,'g] : lambda([a,b], w(a,b)=0} le indica a
-@code{to_poly_solver} que el cojunto de soluciones de @math{f(a) = f(b)} 
+@code{to_poly_solve} que el cojunto de soluciones de @math{f(a) = f(b)} 
 es igual al conjunto de soluciones de @math{w(a,b) = 0}:
 @example
 (%i15) one_to_one_reduce['f,'g] : lambda([a,b], a = 1 + b/2)$
@@ -1291,10 +1291,10 @@ es igual al conjunto de soluciones de @math{w(a,b) = 0}:
 (%o16)                   %union([x = 2])
 @end example
 
-Adem@'as, @code{to_poly_solver} utiliza informaci@'on almacenada en el array
+Adem@'as, @code{to_poly_solve} utiliza informaci@'on almacenada en el array
 @code{function_inverse} para resolver ecuaciones de la forma @math{f(a) = b}.
 La asignaci@'on @code{function_inverse['f] : lambda([s], g(s))} le dice a
-@code{to_poly_solver} que el conjunto de soluciones de @math{f(x) = b} es
+@code{to_poly_solve} que el conjunto de soluciones de @math{f(x) = b} es
 igual al conjunto de soluciones de @math{x = g(b)}:
 @example
 (%i17) function_inverse['Q] : lambda([s], P(s))$
@@ -1338,7 +1338,7 @@ a@~nade autom@'aticamente las ecuaciones conjugadas:
                               2              2
 @end example
 
-@item Cuando las funciones involucran valores absolutos, @code{to_poly_solver}
+@item Cuando las funciones involucran valores absolutos, @code{to_poly_solve}
 consulta los hechos de la base de datos para decidir si los argumentos de los valores
 absolutos son n@'umeros complejos:
 @example
@@ -1351,11 +1351,11 @@ absolutos son n@'umeros complejos:
                                        0), [z = %c11], %union()))
 @end example
 
-Esta es la @'unica situaci@'on en la que @code{to_poly_solver} consulta la base de
+Esta es la @'unica situaci@'on en la que @code{to_poly_solve} consulta la base de
 datos; si una inc@'ognita se declara, por ejemplo, como entero, @code{to_poly_solve} lo ignora.
 @end itemize
 
-Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solver)}.
+Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 V@'ease tambi@'en @code{algexact}, @code{resultant}, @code{algebraic} y @code{to_poly}.
 

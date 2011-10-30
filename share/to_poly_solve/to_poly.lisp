@@ -51,7 +51,7 @@
     (if (eq vars 'convert-all-vars) (setq vars ($cons 1 ($listofvars p))))
     
     (if (not ($listp vars))
-	(merror "The second argument to 'topoly' must be a list"))
+	(merror "The second argument to 'to_poly' must be a list"))
     
     (cond (($member 1 vars) 
 	   (setq convert-cnst t)
@@ -152,7 +152,7 @@
 			 (push (take '(mnotequal) nv 0) inequal)
 			 (list nv subs inequal np-subs))))
 			 
-		 (t (merror "Nonalgebraic argument given to 'topoly'"))))
+		 (t (merror "Nonalgebraic argument given to 'to_poly'"))))
 
 	  ((op-equalp p 'mabs)
 	   (setq b (to-polynomial (first (margs p)) vars convert-cnst))
@@ -200,7 +200,7 @@
 	   (list acc subs inequal np-subs))
 
 
-	  (t (merror "Nonalgebraic argument given to 'topoly'")))))
+	  (t (merror "Nonalgebraic argument given to 'to_poly'")))))
 
 
 #|

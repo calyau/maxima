@@ -1,4 +1,4 @@
-(load(topoly),0);
+(load(to_poly),0);
 0$
 
 /* constants and symbols */

@@ -5,12 +5,12 @@
 @node Functions and Variables for to_poly_solve,  , to_poly_solve, to_poly_solve
 @section Functions and Variables for to_poly_solve
 
-パッケージ @code{topoly}と @code{to_poly_solve}は実験的なものです;
+パッケージ @code{to_poly}と @code{to_poly_solve}は実験的なものです;
 これらのパッケージの関数の仕様は変更の可能性があり、
 これらのパッケージの関数のいくつかは他のMaxima関数にマージされるかもしれません。
 
 Barton Willis (University of Nebraska at Kearneyの数学科の教授)が
-@code{topoly}と @code{to_poly_solve}パッケージと
+@code{to_poly}と @code{to_poly_solve}パッケージと
 これらのパッケージのための英語のユーザードキュメンテーションを書きました。
 
 @deffn {Operator} %and
@@ -101,7 +101,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 @code{%or}上に @code{%and}を分配するためのサポートはありません;
 @code{%and}上に論理否定を分配するサポートもありません。
 
-@b{利用のためには} @file{load(to_poly_solver)}
+@b{利用のためには} @file{load(to_poly_solve)}
 
 @b{関連関数} @code{%or, %if, and, or, not}
 
@@ -162,7 +162,7 @@ Maxima演算子 @code{if}はn項演算子ですが、演算子 @code{%if}は n�
 同値の線形inequationに容易に変換可能な非線形inequationだけを
 整理します。
 
-@b{利用には:} @file{load(to_poly_solver)}
+@b{利用には:} @file{load(to_poly_solve)}
 
 @b{状況:} 演算子 @code{%if}は実験的です;
 仕様は変更の可能性があり、
@@ -258,7 +258,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 また、@code{%and}上に @code{%or}を分配するためのサポートはありません;
 @code{%or}上に論理否定を分配するサポートもありません。
 
-@b{利用のためには} @file{load(to_poly_solver)}
+@b{利用のためには} @file{load(to_poly_solve)}
 
 @b{関連関数} @code{%or, %if, and, or, not}
 
@@ -288,7 +288,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 
 @b{関連関数} @code{isreal_p}
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{complex_number_p}は実験的です;
 仕様は変更の可能性があり、
@@ -332,7 +332,7 @@ Maximaがリストメンバーがシンボルやラムダ形でないか決め�
 
 funmake: first argument must be a symbol, subscripted symbol,
 string, or lambda expression; found: a < b
-#0: compose_functions(l=[a < b])(to_poly_solver.mac line 40)
+#0: compose_functions(l=[a < b])(to_poly_solve.mac line 40)
  -- an error. To debug this try: debugmode(true);
 @end example
 
@@ -360,7 +360,7 @@ Maximaはこれらのラムダ形が意味的に等しいことを演繹でき�
 (%o8)                         true
 @end example
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{compose_functions}は実験的です;
 仕様は変更の可能性があり、
@@ -399,7 +399,7 @@ Maximaはこれらのラムダ形が意味的に等しいことを演繹でき�
 
 @b{関連関数} @code{float, bfloat}
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{dfloat}は実験的です;
 仕様は変更の可能性があり、
@@ -543,7 +543,7 @@ returns a set.
 
 @b{関連関数} @i{elim, eliminate, elim_allbut}
 
-@b{利用するには} @file{load(topoly)}
+@b{利用するには} @file{load(to_poly)}
 
 @b{状況} 関数 @code{elimimate_using}は実験的です;
 仕様は変更の可能性があり、
@@ -690,7 +690,7 @@ falseを返すことができる時に名詞形を返します;
 (%o5)                   isreal_p(log(x))
 @end example
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{関連関数} @i{complex_number_p}
 
@@ -744,7 +744,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @b{関連関数} @i{nicedummies}
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{new_variable}は実験的です;
 仕様は変更の可能性があり、
@@ -768,7 +768,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @b{関連関数} @i{new_variable}
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{nicedummies}は実験的です;
 仕様は変更の可能性があり、
@@ -827,7 +827,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @b{Related function} @i{carg, isreal_p}
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{parg}は実験的です;
 仕様は変更の可能性があり、
@@ -850,7 +850,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
                  2                     2
 @end example
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{real_imagpart_to_conjugate}は実験的です;
 仕様は変更の可能性があり、
@@ -879,7 +879,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
                        2
 @end example
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{rectform_log_if_constant}は実験的です;
 仕様は変更の可能性があり、
@@ -928,7 +928,7 @@ inequationの論理積と論理和にいくつかの整理を適用します。
 Abramowitz and Stegun, 
 Eqs. 4.4.6 から 4.4.8までと 4.6.4から 4.6.6までを参照してください。
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{standardize_inverse_trig}は実験的です;
 仕様は変更の可能性があり、
@@ -942,7 +942,7 @@ Eqs. 4.4.6 から 4.4.8までと 4.6.4から 4.6.6までを参照してくださ
 代入は並列に行われます; 例えば
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) subst_parallel([x=y,y=x], [x,y]);
 (%o2)                        [y, x]
@@ -1016,7 +1016,7 @@ inequation制約を伴う多項式系に変換しようとします;
 例がわかりやすいかもしれません:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) to_poly(sqrt(x) = 3, [x]);
                             2
@@ -1106,7 +1106,7 @@ trueに設定すると近似解を見つけることが不可能になるため�
 @code{%union}オブジェクト内のリストです:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) to_poly_solve(x*(x-1) = 0, x);
 (%o2)               %union([x = 0], [x = 1])
@@ -1118,7 +1118,7 @@ trueに設定すると近似解を見つけることが不可能になるため�
 @example
 (%i3) to_poly_solve(x^k + 2* x + 1 = 0, x);
 
-Nonalgebraic argument given to 'topoly'
+Nonalgebraic argument given to 'to_poly'
 unable to solve
                           k
 (%o3)            %solve([x  + 2 x + 1 = 0], [x])
@@ -1180,7 +1180,7 @@ Lambert W 函数を使って解くことができるいくつかの等式も解�
 例:
 
 @example
-(%i1) load(to_poly_solver)$
+(%i1) load(to_poly_solve)$
 
 (%i2) to_poly_solve(set(max(x,y) = 5, x+y = 2), set(x,y));
 (%o2)      %union([x = - 3, y = 5], [x = 5, y = - 3])
@@ -1364,10 +1364,10 @@ Unable to solve
 @end example
 
 @math{f(a) = f(b)}という形の等式を解くために
-@code{to_poly_solver}は
+@code{to_poly_solve}は
 ハッシュ配列 @code{one_to_one_reduce}に記憶されたデータを使います。
 割り当て @code{one_to_one_reduce['f,'f] : lambda([a,b], a=b)}は
-@code{to_poly_solver}に
+@code{to_poly_solve}に
 @math{f(a) = f(b)}の解集合が@math{a=b}の解集合に等しいことを告げます;
 例えば
 
@@ -1380,7 +1380,7 @@ Unable to solve
 
 さらに一般的に、
 割り当て @code{one_to_one_reduce['f,'g] : lambda([a,b], w(a, b) = 0}は
-@code{to_poly_solver}に
+@code{to_poly_solve}に
 @math{f(a) = f(b)}の解集合が @math{w(a,b) = 0}の解集合に等しいことを告げます;
 例えば
 
@@ -1392,10 +1392,10 @@ Unable to solve
 @end example
 
 加えて、@math{f(a) = b}という形の等式を解くために
-関数 @code{to_poly_solver}は
+関数 @code{to_poly_solve}は
 ハッシュ配列 @code{function_inverse}に記憶されたデータを使います。
 割り当て @code{function_inverse['f] : lambda([s], g(s))}は
-@code{to_poly_solver}に
+@code{to_poly_solve}に
 @code{f(x) = b}に設定された解が
 @code{x = g(b)}に設定された解に等しいことを知らせます;
 2つの例:
@@ -1454,7 +1454,7 @@ Unable to solve
 @itemize
 @item
 絶対値関数を含む等式に対して、
-@code{to_poly_solver}は
+@code{to_poly_solve}は
 絶対値の引数が複素数値か決めるため
 事実データベースに問い合わせます。
 @end itemize
@@ -1477,7 +1477,7 @@ Unable to solve
 
 @b{関連関数} @i{to_poly}
 
-@b{利用するには} @file{load(to_poly_solver)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況:} 関数 @code{to_poly_solve}は実験的です;
 仕様は変更の可能性があり、

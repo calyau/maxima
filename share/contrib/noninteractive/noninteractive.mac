@@ -73,7 +73,7 @@
  *  sum (r/k*binom(n, r) * binom(m, k - r)/binom(n + m, k), r, 0, k),
  *  simplify_sum (intosum (%%))); (TRIGGERS "CONTEXT ALREADY EXISTS"; THROW LEAVES CONTEXT HANGING AROUND)
  *
- * (load (topoly_solver), to_poly_solve ([sqrt(x) + sqrt(y) = a , x^2=y] , [x, y]));
+ * (load (to_poly_solve), to_poly_solve ([sqrt(x) + sqrt(y) = a , x^2=y] , [x, y]));
  *
  * (load (Solver), Solver ([x=2, y=3], [x], [y])); (TRIGGERS "ZERO OR NONZERO" QUERY; SOLVER HAS ITS OWN ASKSIGN-LIKE FUNCTION)
  * (load (Solver), Solver ([x=a, y=b], [x], [y, b])); (TRIGGERS "ZERO OR NONZERO" QUERY; SOLVER HAS ITS OWN ASKSIGN-LIKE FUNCTION)
