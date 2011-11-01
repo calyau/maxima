@@ -1153,6 +1153,7 @@
 
 (defun simp-bessel-k (expr ignored z)
   (declare (ignore ignored))
+  (twoargcheck expr)
   (let ((order (simpcheck (cadr expr) z))
         (arg (simpcheck (caddr expr) z))
         (rat-order nil))
@@ -1661,6 +1662,7 @@
 
 (defun simp-hankel-1 (expr ignored z)
   (declare (ignore ignored))
+  (twoargcheck expr)
   (let ((order (simpcheck (cadr expr) z))
 	(arg   (simpcheck (caddr expr) z))
         rat-order)
@@ -1747,6 +1749,7 @@
 
 (defun simp-hankel-2 (expr ignored z)
   (declare (ignore ignored))
+  (twoargcheck expr)
   (let ((order (simpcheck (cadr expr) z))
 	(arg   (simpcheck (caddr expr) z))
         rat-order)
@@ -1840,6 +1843,7 @@
 
 (defun simp-struve-h (expr ignored z)
   (declare (ignore ignored))
+  (twoargcheck expr)
   (let ((order (simpcheck (cadr expr) z))
         (arg   (simpcheck (caddr expr) z)))
     (cond
@@ -2084,6 +2088,7 @@
 
 (defun simp-struve-l (expr ignored z)
   (declare (ignore ignored))
+  (twoargcheck expr)
   (let ((order (simpcheck (cadr expr) z))
         (arg   (simpcheck (caddr expr) z)))
     (cond
