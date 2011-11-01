@@ -5,7 +5,7 @@
 @c Original    : Evaluation.texi revision 01.08.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 17.10.2010
-@c Revision    : 01.08.2011
+@c Revision    : 01.11.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -662,7 +662,7 @@ Folgende Optionsvariablen haben bereits die @code{evflag}-Eigenschaft:
    float               halfangles      infeval
    isolate_wrt_times   keepfloat       letrat
    listarith           logabs          logarc
-   logexpand           lognegint       lognumer
+   logexpand           lognegint       
    m1pbranch           numer_pbranch   programmode
    radexpand           ratalgdenom     ratfac
    ratmx               ratsimpexpons   simp
