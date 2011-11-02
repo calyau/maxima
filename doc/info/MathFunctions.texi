@@ -1127,12 +1127,6 @@ If it is set to @code{super}, then @code{log(a/b)} will also simplify to
 if @code{false} then no simplification of @code{%e} to a power containing 
 @code{log}'s is done.
 
-@item @code{lognumer}
-if @code{true} then negative floating point arguments to @code{log} will always 
-be converted to their absolute value before the @code{log} is taken. If 
-@code{numer} is also @code{true}, then negative integer arguments to @code{log}
-will also be converted to their absolute value.
-
 @item @code{lognegint}
 if @code{true} implements the rule @code{log(-n)} -> @code{log(n)+%i*%pi} for 
 @code{n} a positive integer.
@@ -1242,15 +1236,14 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @c -----------------------------------------------------------------------------
 @anchor{logexpand}
 @defvr {Option variable} logexpand
-Default value: @code{false}
+Default value: @code{true}
 
-If @code{true} causes @code{log(a^b)} to become @code{b*log(a)}.  If it is set 
-to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If 
-it is set to @code{super}, then @code{log(a/b)} will also simplify to 
-@code{log(a)-log(b)} for rational numbers @code{a/b}, @code{a#1}.
-(@code{log(1/b)}, for integer @code{b}, always simplifies.) If it is set to 
-@code{false}, that is the default value, all of these simplifications will be 
-turned off.
+If @code{true}, that is the default value, causes @code{log(a^b)} to become
+@code{b*log(a)}.  If it is set to @code{all}, @code{log(a*b)} will also simplify
+to @code{log(a)+log(b)}.  If it is set to @code{super}, then @code{log(a/b)}
+will also simplify to @code{log(a)-log(b)} for rational numbers @code{a/b},
+@code{a#1}.  (@code{log(1/b)}, for integer @code{b}, always simplifies.) If it
+is set to @code{false}, all of these simplifications will be turned off.
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
@@ -1267,21 +1260,6 @@ If @code{true} implements the rule
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
-@closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@anchor{lognumer}
-@defvr {Option variable} lognumer
-Default value: @code{false}
-
-If @code{true} then negative floating point arguments to @code{log} will always
-be converted to their absolute value before the @code{log} is taken.  If
-@code{numer} is also @code{true}, then negative integer arguments to @code{log}
-will also be converted to their absolute value.
-
-@opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Numerical evaluation}
 @closecatbox
 @end defvr
 

@@ -125,7 +125,6 @@
 (defmvar $logabs nil)
 (defmvar $limitdomain '$complex)
 (defmvar $listarith t)
-(defmvar $lognumer nil)
 (defmvar $domain '$real)
 (defmvar $m1pbranch nil)
 (defmvar $%e_to_numlog nil)

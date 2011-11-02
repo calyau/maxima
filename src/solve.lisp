@@ -906,7 +906,9 @@
 (defmfun $linsolve (eql varl)
   (let (($ratfac))
     (setq eql (if ($listp eql) (cdr eql) (ncons eql)))
-    (setq varl (if ($listp varl) (remred (cdr varl)) (ncons varl)))
+    (setq varl (if ($listp varl)
+		   (delete-duplicates (cdr varl) :test #'equal :from-end t)
+		   (ncons varl)))
     (do ((varl varl (cdr varl)))
 	((null varl))
       (when (mnump (car varl))
@@ -914,11 +916,6 @@
     (if (null varl)
 	(make-mlist-simp)
 	(solvex (mapcar 'meqhk eql) varl (not $programmode) nil))))
-
-;; REMRED removes any repetition that may be in the variables list
-;; The NREVERSE is significant here for some reason?
-
-(defun remred (l) (if l (nreverse (union1 l nil))))
 
 (defun solvex (eql varl ind flag &aux ($algebraic $algebraic))
   (declare (special xa*))

@@ -2379,7 +2379,7 @@ wrapper for this."
 
 ;; evflag properties
 (mapc #'(lambda (x) (putprop x t 'evflag))
-      '($exponentialize $%emode $demoivre $logexpand $logarc $lognumer
+      '($exponentialize $%emode $demoivre $logexpand $logarc
 	$radexpand $keepfloat $listarith $float $ratsimpexpons $ratmx
 	$simp $simpsum $simpproduct $algebraic $ratalgdenom $factorflag $ratfac
 	$infeval $%enumer $programmode $lognegint $logabs $letrat

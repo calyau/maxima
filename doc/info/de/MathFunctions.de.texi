@@ -5,7 +5,7 @@
 @c Original    : New file
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 19.10.2010
-@c Revision    : 16.05.2011
+@c Revision    : 01.11.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -1560,7 +1560,7 @@ Maxima kennt viele spezielle unbestimmte und bestimmte Integrale mit der
 Exponentialfunktion.
 @end deffn
 
-@c --- 12.03.2011 DK -----------------------------------------------------------
+@c --- 01.11.2011 DK -----------------------------------------------------------
 @anchor{log}
 @deffn {Funktion} log (@var{z})
 
@@ -1583,13 +1583,14 @@ der Logarithmusfunktion:
 
 @table @code
 @item logexpand
-@code{log(a^b)} wird zu @code{b*log(a)} vereinfacht.  Hat @code{logexpand} den 
-Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} 
-vereinfacht.  Mit den Wert @code{super} vereinfacht Maxima weiterhin 
-@code{log(a/b)} zu @code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl 
-ist.  @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht.  Hat
-die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
-Vereinfachungen ausgeschaltet.  Das ist der Standardwert.
+Hat die Optionsvariable @code{logexpand} den Wert @code{true}, dann wird
+@code{log(a^b)} zu @code{b*log(a)} vereinfacht.  Hat @code{logexpand} den
+Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)}
+vereinfacht.  Mit den Wert @code{super} vereinfacht Maxima weiterhin
+@code{log(a/b)} zu @code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl
+ist.  @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht.
+Hat die Optionsvariable @code{logexpand} den Wert @code{false} werden alle
+obigen Vereinfachungen ausgeschaltet.
 
 @item logsimp
 Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
@@ -1754,7 +1755,7 @@ featurep(m,integer) or ratnump(m)$}.  Dann hat das Kommando
 @code{logcontract(1/2*log(x))} das Ergebnis @code{log(sqrt(x))}.
 @end deffn
 
-@c --- 12.03.2011 DK -----------------------------------------------------------
+@c --- 01.11.2011 DK -----------------------------------------------------------
 @anchor{logexpand}
 @defvr {Optionsvariable} logexpand
 Standardwert: @code{true}
@@ -1762,13 +1763,14 @@ Standardwert: @code{true}
 Die Optionsvariable @code{logexpand} kontrolliert die Vereinfachung der
 Logarithmusfunktion @mrefdot{log}
 
-@code{log(a^b)} wird zu @code{b*log(a)} vereinfacht.  Hat @code{logexpand} den 
-Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} 
-vereinfacht.  Mit den Wert @code{super} vereinfacht Maxima weiterhin 
-@code{log(a/b)} zu @code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl 
-ist.  @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht.  Hat
-die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
-Vereinfachungen ausgeschaltet.
+Hat @code{logexpand} den Wert @code{true}, wird @code{log(a^b)} zu
+@code{b*log(a)} vereinfacht.  Hat @code{logexpand} den Wert @code{all}, wird
+zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} vereinfacht.  Mit dem Wert
+@code{super} vereinfacht Maxima weiterhin @code{log(a/b)} zu
+@code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl ist.  @code{log(1/b}
+wird f@"ur eine ganze Zahl @code{b} immer vereinfacht.  Hat die Optionsvariable
+@code{logexpand} den Wert @code{false} werden alle obigen Vereinfachungen
+ausgeschaltet.
 @end defvr
 
 @c --- 12.03.2011 DK -----------------------------------------------------------
