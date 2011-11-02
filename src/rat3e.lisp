@@ -863,7 +863,7 @@
 
 (defmvar $ratprint t)
 
-(defmvar $ratepsilon 2e-8)
+(defmvar $ratepsilon 2d-15)
 
 ;; This control of conversion from float to rational appears to be explained
 ;; nowhere. - RJF
