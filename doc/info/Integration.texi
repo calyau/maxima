@@ -1836,7 +1836,7 @@ Examples:
 
 @example
 @group
-(%i1) quad_qagp(x^3*log(abs((x^2-1)*(x^2-2))), x, 0, 3, [1,sqrt(2)]);
+(%i1) quad_qagp(x^3*log(abs((x^2-1)*(x^2-2))),x,0,3,[1,sqrt(2)]);
 (%o1)   [52.74074838347143, 2.6247632689546663e-7, 1029, 0]
 @end group
 @group
@@ -1845,17 +1845,19 @@ Examples:
 @end group
 @end example
 
-The integrand has singularities at 1 and sqrt(2) so we supply these
-points to @code{quad_qagp}.  We also note that @code{quad_qagp} is
-more accurate and more efficient that @code{quad_qags}.
+The integrand has singularities at @code{1} and @code{sqrt(2)} so we supply
+these points to @code{quad_qagp}.  We also note that @code{quad_qagp} is
+more accurate and more efficient that @mrefdot{quad_qags}
 
 @opencatbox
 @category{Numerical methods} @category{Package quadpack}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @anchor{quad_control}
 @deffn  {Function} quad_control (@var{parameter}, [@var{value}])
+
 Control error handling for quadpack.  The parameter should be one of
 the following symbols:
 
@@ -1877,3 +1879,4 @@ If @var{value} is not given, then the current value of the
 @category{Numerical methods} @category{Package quadpack}
 @closecatbox
 @end deffn
+
