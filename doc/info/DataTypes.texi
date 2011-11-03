@@ -72,7 +72,7 @@ Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 03.11.2011 --------------------------------------------------------------
 @anchor{bftorat}
 @defvr {Option variable} bftorat
 Default value: @code{false}
@@ -82,6 +82,26 @@ Default value: @code{false}
 conversion (this results in relatively small rational numbers).  When
 @code{bftorat} is @code{true}, the rational number generated will accurately
 represent the bfloat.
+
+Note: @code{bftorat} has no effect on the transformation to rational numbers
+with the function @mrefdot{rationalize}
+
+Example:
+
+@example
+(%i1) ratepsilon:1e-4;
+(%o1)                         1.e-4
+(%i2) rat(bfloat(11111/111111)), bftorat:false;
+`rat' replaced 9.99990999991B-2 by 1/10 = 1.0B-1
+                               1
+(%o2)/R/                       --
+                               10
+(%i3) rat(bfloat(11111/111111)), bftorat:true;
+`rat' replaced 9.99990999991B-2 by 11111/111111 = 9.99990999991B-2
+                             11111
+(%o3)/R/                     ------
+                             111111
+@end example
 
 @opencatbox
 @category{Numerical evaluation}
@@ -424,15 +444,15 @@ is @code{true} if @var{expr} is an odd integer.
 @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 03.11.2011 --------------------------------------------------------------
 @anchor{ratepsilon}
 @defvr {Option variable} ratepsilon
-Default value: 2.0e-8
+Default value: @code{2.0e-15}
 
 @code{ratepsilon} is the tolerance used in the conversion
-of floating point numbers to rational numbers.
+of floating point numbers to rational numbers, when the option variable
+@mref{bftorat} has the value @code{false}.  See @code{bftorat} for an example.
 
-@c NEED EXAMPLES HERE
 @opencatbox
 @category{Numerical evaluation} @category{Rational expressions}
 @closecatbox
