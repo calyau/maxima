@@ -66,9 +66,9 @@ Simplification of expressions containing @code{abs}:
 (%o8)                       abs(x)
 @end example
 
-Integrating and differentiating with the @code{abs} function. Note that, if
-the @code{abs_integrate} package is loaded, more integrals involving the
-@code{abs} function can be performed. The last example shows the Laplace
+Integrating and differentiating with the @code{abs} function. Note that more
+integrals involving the @code{abs} function can be performed, if the
+@code{abs_integrate} package is loaded. The last example shows the Laplace
 transform of @code{abs}: see @mrefdot{laplace}
 
 @example
