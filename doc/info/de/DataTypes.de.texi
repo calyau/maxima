@@ -196,20 +196,37 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c --- 03.11.2011 DK -----------------------------------------------------------
 @anchor{bftorat}
 @defvr {Optionsvariable} bftorat
 Standardwert: @code{false}
 
-@c TODO: DIE GENAUE FUNKTIONSWEISE IST UNKLAR.  ES FEHLT EIN BEISPIEL.
-
 Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von gro@ss{}en
-Gleitkommazahlen in rationale Zahlen.  Hat @code{bftorat} den Wert @code{true},
+Gleitkommazahlen in rationale Zahlen.  Hat @code{bftorat} den Wert @code{false},
 wird die Genauigkeit der Umwandlung von der Optionsvariablen
-@mref{ratepsilon} kontrolliert.  In diesem Fall ist das Ergebnis der Umwandlung
-eine relativ kleine rationale Zahl.  Hat dagegen @code{bftorat} den Wert
-@code{false}, wird die gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl 
-repr@"asentiert..
+@mref{ratepsilon} kontrolliert.  Hat dagegen @code{bftorat} den Wert
+@code{true}, wird die gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl 
+repr@"asentiert.
+
+Hinweis: @code{bftorat} hat keinen Einfluss auf die Umwandlung in rationale
+Zahlen mit der Funktion @mrefdot{rationalize}
+
+Beispiel:
+
+@example
+(%i1) ratepsilon:1e-4;
+(%o1)                         1.e-4
+(%i2) rat(bfloat(11111/111111)), bftorat:false;
+`rat' replaced 9.99990999991B-2 by 1/10 = 1.0B-1
+                               1
+(%o2)/R/                       --
+                               10
+(%i3) rat(bfloat(11111/111111)), bftorat:true;
+`rat' replaced 9.99990999991B-2 by 11111/111111 = 9.99990999991B-2
+                             11111
+(%o3)/R/                     ------
+                             111111
+@end example
 @end defvr
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
@@ -679,15 +696,15 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c --- 03.11.2011 DK -----------------------------------------------------------
 @anchor{ratepsilon}
 @defvr {Optionsvariable} ratepsilon
-Standardwert: 2.0e-8
+Standardwert: @code{2.0e-15}
 
-@code{ratepsilon} kontrolliert die Genauigkeit, mit der Gleitkommazahlen in
-rationale Zahlen umgewandelt werden.  Siehe auch @mrefdot{bftorat}
-
-@c TODO: HIER FEHLT EIN BEISPIEL.  DIE FUNKTIONSWEISE IST NICHT KLAR.
+Die Optionsvariable @code{ratepsilon} kontrolliert die Genauigkeit, mit der
+Gleitkommazahlen in rationale Zahlen umgewandelt werden, wenn die
+Optionsvariable @code{bftorat} den Wert @code{false} hat.  F@"ur ein Beispiel
+siehe die Optionsvariable @mrefdot{bftorat}
 @end defvr
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
