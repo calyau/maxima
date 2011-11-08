@@ -8,8 +8,8 @@
 
 (defun $dgeqrf (a)
 
-  (multiple-value-bind (a-nrow a-ncol) (maxima-matrix-dims a)
-
+  (multiple-value-bind (a-nrow a-ncol)
+      (maxima-matrix-dims a)
     (let
       ((a-mat (lapack-lispify-matrix a a-nrow a-ncol))
        (work (make-array 1 :element-type 'flonum))
@@ -46,7 +46,8 @@
   (let*
     ((r-nrow a-nrow)
      (r-ncol a-ncol)
-     (r-mat (make-array (* r-ncol r-nrow) :element-type 'flonum :initial-element 0)))
+     (r-mat (make-array (* r-ncol r-nrow) :element-type 'flonum
+					  :initial-element (coerce 0 'flonum))))
     (dotimes (j a-ncol)
       (dotimes (i (1+ j))
         (if (< i r-nrow)
@@ -57,9 +58,10 @@
     (lapack-maxify-matrix r-nrow r-ncol r-mat)))
 
 (defun dgeqrf-unpack-q (a-nrow a-ncol a-mat tau)
-  (let ((q-mat (make-array (* a-nrow a-nrow) :element-type 'flonum :initial-element 0)))
+  (let ((q-mat (make-array (* a-nrow a-nrow) :element-type 'flonum
+					     :initial-element (coerce 0 'flonum))))
     (dotimes (i a-nrow)
-      (setf (aref q-mat (+ (* i a-nrow) i)) 1))
+      (setf (aref q-mat (+ (* i a-nrow) i)) (coerce 1 'flonum)))
     (dotimes (i (min a-nrow a-ncol))
       (let ((h-mat-i (dgeqrf-h i tau a-nrow a-mat)))
         (dgeqrf-multiply-into a-nrow q-mat h-mat-i)))
@@ -84,7 +86,7 @@
     (t 0)))
 
 (defun dgeqrf-multiply-into (n mat-1 mat-2)
-  (let ((row (make-array n :element-type 'flonum :initial-element 0)))
+  (let ((row (make-array n :element-type 'flonum :initial-element (coerce 0 'flonum))))
     (dotimes (i n)
       (dotimes (j n)
         (setf (aref row j) (dgeqrf-inner-product n mat-1 mat-2 i j)))
