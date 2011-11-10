@@ -311,10 +311,10 @@ When one changes, the other does too."
 	      #+ecl "fas"
 	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl)
 	      "")
-	 (lisp-patterns (concatenate 'string "###.{" ext ",lisp,lsp}"))
-	 (maxima-patterns "###.{mac,mc}")
-	 (demo-patterns "###.{dem,dm1,dm2,dm3,dmt}")
-	 (usage-patterns "##.{usg,texi}")
+	 (lisp-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp}"))
+	 (maxima-patterns "$$$.{mac,mc}")
+	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
+	 (usage-patterns "$$.{usg,texi}")
 	 (share-subdirs-list (share-subdirs-list))
 	 ;; Smash the list of share subdirs into a string of the form
 	 ;; "{affine,algebra,...,vector}" .
