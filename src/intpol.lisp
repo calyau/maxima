@@ -33,7 +33,7 @@ Perhaps you meant to enter `~a'.~%"
 	  (print-invert-case (implode (mstring `(($find_root) ,@(cdr form))))))
   '$done)
 
-(in-package "BIGFLOAT")
+(in-package :bigfloat)
 
 ;; Define FIND-ROOT-SUBR and INTERPOLATE-CHECK in the BIGFLOAT package
 ;; so we don't have to write BIGFLOAT::foo for all of the arithmetic
@@ -123,7 +123,7 @@ Perhaps you meant to enter `~a'.~%"
 	    (> (abs (- b c)) (* (to relerr) fc))
 	    (> (abs (- c a)) (* (to relerr) fc)))))
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (defun %find-root (name fun-or-expr args)
   ;; Extract the keyword arguments from args, if any.
   (let (non-keyword keywords)
