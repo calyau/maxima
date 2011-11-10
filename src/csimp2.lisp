@@ -561,7 +561,7 @@
 	   (let ((result
 		  (let ((c (* (sqrt (* 2 (float pi)))
 			      (exp (slatec::d9lgmc a)))))
-		    (let ((v (expt a (- (* .5d0 a) 0.25d0))))
+		    (let ((v (expt a (- (* .5e0 a) 0.25e0))))
 		      (* v
 			 (/ v (exp a))
 			 c)))))

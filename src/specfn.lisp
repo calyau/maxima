@@ -539,15 +539,15 @@
 ;;   From http://homepages.physik.uni-muenchen.de/~Winitzki/papers/
 
 (defun init-lambert-w (z)
-  (let ((A 2.344d0) (B 0.8842d0) (C 0.9294d0) (D 0.5106d0) (E -1.213d0)
+  (let ((a 2.344e0) (b 0.8842e0) (c 0.9294e0) (d 0.5106e0) (e -1.213e0)
      (y (sqrt (+ (* 2 %e-val z ) 2)) ) )   ; y=sqrt(2*%e*z+2) 
     ; w = (2*log(1+B*y)-log(1+C*log(1+D*y))+E)/(1+1/(2*log(1+B*y)+2*A)
      (/ 
       (+ (* 2 (log (+ 1 (* b y))))
-	 (* -1 (log (+ 1 (* C (log (+ 1 (* D y)))))))
-	 E)
+	 (* -1 (log (+ 1 (* c (log (+ 1 (* d y)))))))
+	 e)
       (+ 1
-	 (/ 1 (+ (* 2 (log (+ 1 (* B y)))) (* 2 A)))))))
+	 (/ 1 (+ (* 2 (log (+ 1 (* b y)))) (* 2 a)))))))
 
 ;; Algorithm based in part on
 ;;
@@ -573,7 +573,7 @@
 ;; number of digits correct at step k is roughly 3 times the number 
 ;; which were correct at step k-1.
 
-(defun lambert-w (z &key (maxiter 100) (prec 1d-14))
+(defun lambert-w (z &key (maxiter 100) (prec 1e-14))
   (let ((w (init-lambert-w z)))
     (dotimes (k maxiter)
       (let* ((we (* w (exp w)))

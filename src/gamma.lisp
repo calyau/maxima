@@ -295,7 +295,7 @@
      (expt
       (/ 2 pival)
       (/ (- 1 (cos (* pival z))) 4))
-     (expt 2d0 (/ z 2))
+     (expt 2e0 (/ z 2))
      (gamma-lanczos (+ 1 (/ z 2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -728,7 +728,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *gamma-incomplete-maxit* 10000)
-(defvar *gamma-incomplete-eps* (* 2 double-float-epsilon))
+(defvar *gamma-incomplete-eps* (* 2 flonum-epsilon))
 (defvar *gamma-incomplete-min* 1.0e-32)
 
 (defvar *gamma-radius* 1.0
@@ -2806,7 +2806,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *fresnel-maxit* 1000)
-(defvar *fresnel-eps*   (* 2 double-float-epsilon))
+(defvar *fresnel-eps*   (* 2 flonum-epsilon))
 (defvar *fresnel-min*   1e-32)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

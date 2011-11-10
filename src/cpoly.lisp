@@ -1029,7 +1029,7 @@
     (do ((dx x)
 	 (df)
 	 (f))
-	((fpgreaterp (intofp 5d-3)
+	((fpgreaterp (intofp 5e-3)
 		     (fpabs (fpquotient dx x)))
 	 x)
       (setq f (aref *shr-sl* 0)

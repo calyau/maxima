@@ -208,7 +208,7 @@
 	       c (/ (- a b) 2))))
 
 ;; WARNING: This seems to have accuracy problems when u is complex.  I
-;; (rtoy) do not know why.  For example (jacobi-agm #c(1d0 1d0) .7d0)
+;; (rtoy) do not know why.  For example (jacobi-agm #c(1e0 1e0) .7e0)
 ;; returns
 ;;
 ;; #C(1.134045970915582 0.3522523454566013)
@@ -237,7 +237,7 @@
 		  (first agm-data)
 		(declare (ignore b c))
 		(* a u (ash 1 n))))
-	 (phi1 0d0))
+	 (phi1 0e0))
     (dolist (agm agm-data)
       (destructuring-bind (n a b c)
 	  agm
@@ -2731,7 +2731,7 @@ first kind:
   (cond ((= m 0)
 	 (if (maxima::$bfloatp m)
 	     (maxima::$bfloat (maxima::div 'maxima::$%pi 2))
-	     (float (/ pi 2) 1d0)))
+	     (float (/ pi 2) 1e0)))
 	(t
 	 (bf-rf 0 (- 1 m) 1))))
 
@@ -2760,11 +2760,11 @@ first kind:
   (cond ((= m 0)
 	 (if (typep m 'bigfloat)
 	     (bigfloat (maxima::$bfloat (maxima::div 'maxima::$%pi 2)))
-	     (float (/ pi 2) 1d0)))
+	     (float (/ pi 2) 1e0)))
 	((= m 1)
 	 (if (typep m 'bigfloat)
 	     (bigfloat 1)
-	     1d0))
+	     1e0))
 	(t
 	 (let ((m1 (- 1 m)))
 	   (- (bf-rf 0 m1 1)

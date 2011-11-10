@@ -380,7 +380,13 @@ is not included")
     (double-float
      (truncate (the (double-float #.(float most-negative-fixnum 1d0)
 				  #.(float most-positive-fixnum 1d0))
-		 x)))))
+		 x)))
+    #+clisp
+    (long-float
+     (truncate (the (long-float #.(float most-negative-fixnum 1l0)
+				#.(float most-positive-fixnum 1l0))
+		 x)))
+    ))
 
 #+(or cmu scl)
 (defun int (x)
@@ -400,7 +406,20 @@ is not included")
      (the integer4
        (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
 				    #.(float (1- (ash 1 31)) 1d0))
-		   x))))))
+		   x))))
+    #+scl
+    (long-float
+     (the integer4
+       (truncate (the (long-float #.(float (- (ash 1 31)) 1l0)
+				  #.(float (1- (ash 1 31)) 1l0))
+		   x))))
+    #+(and cmu double-double)
+    (kernel:double-double-float
+     (the integer4
+       (truncate (the (kernel:double-double-float #.(float (- (ash 1 31)) 1w0)
+						  #.(float (1- (ash 1 31)) 1w0))
+		   x))))
+    ))
 
 
 (defun ifix (x)
@@ -512,7 +531,13 @@ is not included")
 	   (if (> r 0)
 	       (- r 1)
 	       (+ r 1))
-	   r)))))
+	   r)))
+    #+double-double
+    (kernel:double-double-float
+     (locally 
+       (declare (optimize (space 0) (speed 3)))
+       (values (ftruncate (the kernel:double-double-float x)))))
+    ))
     
 
 #-cmu
@@ -526,7 +551,11 @@ is not included")
     (double-float
      (locally 
        (declare (optimize (space 0) (speed 3)))
-       (values (ftruncate (the double-float x)))))))
+       (values (ftruncate (the double-float x)))))
+    (long-float
+     (locally 
+       (declare (optimize (space 0) (speed 3)))
+       (values (ftruncate (the long-float x)))))))
 
 (defun dint (x)
   (aint x))
@@ -784,6 +813,12 @@ is not included")
      (sqrt (the (or (single-float (0f0)) (member 0f0)) x)))
     (double-float
      (sqrt (the (or (double-float (0d0)) (member 0d0)) x)))
+    #+(or scl clisp)
+    (long-float
+     (sqrt (the (or (long-float (0l0)) (member 0l0)) x)))
+    #+(and cmu double-double)
+    (kernel:double-double-float
+     (sqrt (the (or (kernel:double-double-float (0w0)) (member 0w0)) x)))
     (t
      (sqrt x))))
 
@@ -793,6 +828,12 @@ is not included")
      (log (the (or (single-float (0f0)) (member 0f0)) x)))
     (double-float
      (log (the (or (double-float (0d0)) (member 0d0)) x)))
+    #+(or scl clisp)
+    (long-float
+     (log (the (or (long-float (0l0)) (member 0l0)) x)))
+    #+(and cmu double-double)
+    (kernel:double-double-float
+     (log (the (or (kernel:double-double-float (0w0)) (member 0w0)) x)))
     (t
      (log x))))
   
@@ -830,9 +871,21 @@ is not included")
      (log (the (or (single-float (0.0f0)) (member 0f0)) x) 10f0))
     (double-float
      (log (the (or (double-float (0.0d0)) (member 0d0)) x) 10d0))
+    #+(or scl clisp)
+    (long-float
+     (log (the (or (long-float (0.0l0)) (member 0l0)) x) 10l0))
+    #+(and cmu double-double)
+    (kernel:double-double-float
+     (log (the (or (kernel:double-double-float (0.0w0)) (member 0w0)) x) 10w0))
     (t
      (/ (log x)
 	(typecase x
+	  #+(and cmu double-double)
+	  ((complex kernel:double-double-float)
+	   10w0)
+	  #+(or scl clisp)
+	  ((complex long-float)
+	   10l0)
 	  ((complex double-float)
 	   10d0)
 	  ((complex single-float)

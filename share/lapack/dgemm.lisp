@@ -2,7 +2,7 @@
 ;;; multiplication.
 (in-package :maxima)
 
-(defun %%dgemm (a b &key (c nil cp) transpose_a transpose_b (alpha 1d0) (beta 0d0 betap))
+(defun %%dgemm (a b &key (c nil cp) transpose_a transpose_b (alpha 1e0) (beta 0e0 betap))
   (flet ((maybe-transpose-dims (transp row col)
 	   (if transp
 	       (values col row)
@@ -26,7 +26,7 @@
 	      ;; take this to mean that we just want to add C,
 	      ;; implying that beta = 1.
 	      (when (and cp (not betap))
-		(setf beta 0d0))
+		(setf beta 0e0))
 	      ;; Now for some error checking.  This is a bit redundant
 	      ;; since dgemm does some error checking, but I think we
 	      ;; prefer not to see messages from dgemm.  It's better
@@ -57,8 +57,8 @@
 				     ;; Force beta to be zero to tell LAPACK
 				     ;; not to add C.  But we still need to
 				     ;; create a matrix.
-				     (setf beta 0d0)
-				     (make-array (* c-nrows c-ncols) :element-type 'double-float))))
+				     (setf beta 0e0)
+				     (make-array (* c-nrows c-ncols) :element-type 'flonum))))
 		    (trans-a (if transpose_a "t" "n"))
 		    (trans-b (if transpose_b "t" "n")))
 		(blas::dgemm trans-a trans-b

@@ -332,7 +332,7 @@
 	    ;; For example, 1.234b1000 is converted by computing
 	    ;; bfloat(1234)*10b0^(1000-3).  Extra precision is used
 	    ;; during the bfloat computations.
-	    (let* ((extra-prec (+ *fast-bfloat-extra-bits* (ceiling (log exp 2d0))))
+	    (let* ((extra-prec (+ *fast-bfloat-extra-bits* (ceiling (log exp 2e0))))
 		   (fpprec (+ fpprec extra-prec))
 		   (mant (+ (* int-part (expt 10 frac-len)) frac-part))
 		   (bf-mant (bcons (intofp mant)))

@@ -213,7 +213,7 @@
 	  ;; (list (bigfloat::to e) 0))
 	  
 	  ((maxima::complex-number-p e #'(lambda (s) (or (maxima::$ratnump s) (maxima::$numberp s))))
-	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0d0)) (maxima::$bfloat e) (maxima::$float e))))
+	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0e0)) (maxima::$bfloat e) (maxima::$float e))))
 	   (list e (abs e)))
 	  
 	  ((and (atom e) (maxima::mget e '$numer))

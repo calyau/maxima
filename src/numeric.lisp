@@ -5,7 +5,7 @@
 ;;; support double-float, (complex double-float) and Maxima bfloat and
 ;;; complex bfloat arithmetic, without having to write separate
 ;;; versions for each.  Of course, specially written versions for
-;;; double-float and (cmoplex double-float) will probably be much
+;;; double-float and (complex double-float) will probably be much
 ;;; faster, but this allows users to write just one routine that can
 ;;; handle all of the data types in a more "natural" Lisp style.
 
@@ -1736,7 +1736,7 @@
 
 
 (defmethod float ((x bigfloat) (y cl:float))
-  (if (typep y 'double-float)
+  (if (typep y 'maxima::flonum)
       (maxima::fp2flo (real-value x))
       (fp2single (real-value x))))
 
@@ -1941,6 +1941,9 @@
 	   ;; (coerce bigfloat foo)
 	   (cond ((subtypep type 'cl:float)
 		  (float obj (cl:coerce 0 type)))
+		 ((subtypep type '(cl:complex long-float))
+		  (cl:complex (float (realpart obj) 1l0)
+			      (float (imagpart obj) 1l0)))
 		 ((subtypep type '(cl:complex double-float))
 		  (cl:complex (float (realpart obj) 1d0)
 			      (float (imagpart obj) 1d0)))
@@ -1951,15 +1954,18 @@
 		  ;; What should we do here?  Return a
 		  ;; complex-bigfloat?  A complex double-float?
 		  ;; complex single-float?  I arbitrarily select
-		  ;; complex double-float for now.
-		  (cl:complex (float (realpart obj) 1d0)
-			      (float (imagpart obj) 1d0)))
+		  ;; complex maxima:flonum for now.
+		  (cl:complex (float (realpart obj) 1.0)
+			      (float (imagpart obj) 1.0)))
 		 (t
 		  (coerce-error))))
 	  ((typep obj 'complex-bigfloat)
 	   ;; (coerce complex-bigfloat foo)
 	   (cond ((subtypep type 'complex-bigfloat)
 		  obj)
+		 ((subtypep type '(cl:complex long-float))
+		  (cl:complex (float (realpart obj) 1l0)
+			      (float (imagpart obj) 1l0)))
 		 ((subtypep type '(cl:complex double-float))
 		  (cl:complex (float (realpart obj) 1d0)
 			      (float (imagpart obj) 1d0)))

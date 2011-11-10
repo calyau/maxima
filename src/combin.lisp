@@ -653,7 +653,7 @@
       (rational
        (setf s (float s)))
       ((complex rational)
-       (setf s (coerce s '(complex double-float)))))
+       (setf s (coerce s '(complex flonum)))))
     (cond ((bigfloat:< (bigfloat:abs (bigfloat:* s s)) (bigfloat:epsilon s))
            ;; abs(s)^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
            (bigfloat:+ -1/2

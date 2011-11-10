@@ -334,7 +334,7 @@
 (setf ext::*intexp-maximum-exponent* 100000)
 ;;;; Setup the mapping from the Maxima 'flonum float type to a CL float type.
 ;;;;
-;;;; Add :flonum-log to *features* if you want flonum to be a
+;;;; Add :flonum-long to *features* if you want flonum to be a
 ;;;; long-float.  Or add :flonum-double-double if you want flonum to
 ;;;; be a double-double (currently only for CMUCL).  Otherwise, you
 ;;;; get double-float as the flonum type.
@@ -377,7 +377,7 @@
 #+flonum-long
 (progn
 ;;;; The Maxima 'flonum can be a CL 'long-float on the Scieneer CL or CLISP,
-;;;; but should be the same a 'double-float on other CL implementations.
+;;;; but should be the same as 'double-float on other CL implementations.
 
   (eval-when (:compile-toplevel :load-toplevel :execute)
     (setq *read-default-float-format* 'long-float))

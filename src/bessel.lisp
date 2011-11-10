@@ -311,7 +311,7 @@
           ;; We have a real arg and order > 0 and order not 0 or 1
           ;; for this case we can call the function dbesj
           (multiple-value-bind (n alpha) (floor (float order))
-            (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+            (let ((jvals (make-array (1+ n) :element-type 'flonum)))
               (slatec:dbesj (abs (float arg)) alpha (1+ n) jvals 0)
               (cond ((>= arg 0) 
                      (aref jvals n))
@@ -347,8 +347,8 @@
             (* 0.5 (+ (hankel-1 order arg) (hankel-2 order arg))))
            (t
             (multiple-value-bind (n alpha) (floor (float order))
-              (let ((cyr (make-array (1+ n) :element-type 'double-float))
-                    (cyi (make-array (1+ n) :element-type 'double-float)))
+              (let ((cyr (make-array (1+ n) :element-type 'flonum))
+                    (cyi (make-array (1+ n) :element-type 'flonum)))
                 (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
                                            v-cyr v-cyi v-nz v-ierr)
                    (slatec:zbesj (float (realpart arg))
@@ -526,7 +526,7 @@
                     ($float t)
                     (order ($float order))
                     (arg ($float arg))
-                    (dpi (coerce pi 'double-float)))
+                    (dpi (coerce pi 'flonum)))
                 ($float
                   ($rectform
                     (add
@@ -665,7 +665,7 @@
                          (t result))))))
          (t
           (multiple-value-bind (n alpha) (floor (float order))
-            (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+            (let ((jvals (make-array (1+ n) :element-type 'flonum)))
               ;; First we do the calculation for an positive argument.
               (slatec:dbesy (abs (float arg)) alpha (1+ n) jvals)
               
@@ -673,7 +673,7 @@
               (cond ((>= arg 0)                
                      (aref jvals n))
                     (t
-                     (let* ((dpi (coerce pi 'double-float))
+                     (let* ((dpi (coerce pi 'flonum))
                             (s1 (cis (- (* order dpi))))
                             (s2 (* #c(0 2) (cos (* order dpi)))))
                        (let ((result (+ (* s1 (aref jvals n)) 
@@ -700,10 +700,10 @@
                (complex 0 2)))
            (t
             (multiple-value-bind (n alpha) (floor (float order))
-              (let ((cyr (make-array (1+ n) :element-type 'double-float))
-                    (cyi (make-array (1+ n) :element-type 'double-float))
-                    (cwrkr (make-array (1+ n) :element-type 'double-float))
-                    (cwrki (make-array (1+ n) :element-type 'double-float)))
+              (let ((cyr (make-array (1+ n) :element-type 'flonum))
+                    (cyi (make-array (1+ n) :element-type 'flonum))
+                    (cwrkr (make-array (1+ n) :element-type 'flonum))
+                    (cwrki (make-array (1+ n) :element-type 'flonum)))
                 (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n v-cyr v-cyi 
                                            v-nz v-cwrkr v-cwrki v-ierr)
                    (slatec::zbesy (float (realpart arg))
@@ -971,7 +971,7 @@
          (t
           ;; Now the case order > 0 and arg >= 0
           (multiple-value-bind (n alpha) (floor (float order))
-            (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+            (let ((jvals (make-array (1+ n) :element-type 'flonum)))
               (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) jvals 0)
               (aref jvals n)))))))
     (t
@@ -995,7 +995,7 @@
            (cond ((minusp order)
                   ;;  I(-a,z) = I(a,z) + (2/pi)*sin(pi*a)*K(a,z)
                   (+ (complex (aref cyr n) (aref cyi n))
-                     (let ((dpi (coerce pi 'double-float)))
+                     (let ((dpi (coerce pi 'flonum)))
                        (* (/ 2.0 dpi)
                           (sin (* dpi (- order))) 
                           (bessel-k (- order) arg)))))
@@ -1254,7 +1254,7 @@
           ;; This is the extension for negative arg.
           ;; We use the following formula for evaluation:
           ;; K[v](-z) = exp(-i*pi*v) * K[n][z]-i * pi *I[n](z)
-          (let* ((dpi (coerce pi 'double-float))
+          (let* ((dpi (coerce pi 'flonum))
                  (s1 (cis (* dpi (- (abs order)))))
                  (s2 (* (complex 0 -1) dpi))
                  (result (+ (* s1 (bessel-k (abs order) (- arg)))
@@ -1278,7 +1278,7 @@
           ;; From A&S 9.6.6, K(-v,z) = K(v,z), so take the
           ;; absolute value of the order.
           (multiple-value-bind (n alpha) (floor (abs (float order)))
-            (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+            (let ((jvals (make-array (1+ n) :element-type 'flonum)))
               (slatec:dbesk (float arg) alpha 1 (1+ n) jvals 0)
               (aref jvals n)))))))
     (t

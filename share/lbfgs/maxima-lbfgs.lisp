@@ -84,19 +84,19 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
      (m $lbfgs_ncorrections)
      (nwork (+ (* n (+ (* 2 m) 1)) (* 2 m)))
 
-     (xtol double-float-epsilon)
+     (xtol flonum-epsilon)
      (iflag 0)
       
-     (scache (make-array n :element-type 'double-float))
-     (w (make-array nwork :element-type 'double-float))
-     (diag (make-array n :element-type 'double-float))
-     (g (make-array n :element-type 'double-float))
-     (x (make-array n :element-type 'double-float))
+     (scache (make-array n :element-type 'flonum))
+     (w (make-array nwork :element-type 'flonum))
+     (diag (make-array n :element-type 'flonum))
+     (g (make-array n :element-type 'flonum))
+     (x (make-array n :element-type 'flonum))
      (iprint (make-array 2 :element-type 'f2cl-lib:integer4))
      (diagco nil)
      
      (return-value '((mlist)))
-     (f 0.0d0)
+     (f 0.0)
 
      FOM-function FOM-grad-lambda FOM-grad-expr FOM-grad-function)
     

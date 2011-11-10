@@ -1194,7 +1194,7 @@
 			    ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
 			    ;; n/2^m is approximately 1, so converting that to a
 			    ;; float is no problem.  log(2^m) = m * log(2).
-			    (+ (* m (log 2d0))
+			    (+ (* m (log 2e0))
 			       (log (float (/ n (ash 1 m)))))))))
 		 (($ratnump n)
 		  ;; float(log(n/m)) where n and m are integers.  Try computing
@@ -1215,7 +1215,7 @@
 			    (let* ((size (max (integer-length re)
 					      (integer-length im)))
 				   (scale (ash 1 size)))
-			      (+ (* size (log 2d0))
+			      (+ (* size (log 2e0))
 				 (log (complex (float (/ re scale))
 					       (float (/ im scale))))))))))
 		 (t
