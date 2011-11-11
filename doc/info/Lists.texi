@@ -69,30 +69,59 @@ a list, array, hash array, or array function.
 
 Examples:
 
+@c ===beg===
+@c x: [a, b, c];
+@c x[3];
+@c array (y, fixnum, 3);
+@c y[2]: %pi;
+@c y[2];
+@c z['foo]: 'bar;
+@c z['foo];
+@c g[k] := 1/(k^2+1);
+@c g[10];
+@c ===end===
 @example
+@group
 (%i1) x: [a, b, c];
 (%o1)                       [a, b, c]
+@end group
+@group
 (%i2) x[3];
 (%o2)                           c
+@end group
+@group
 (%i3) array (y, fixnum, 3);
 (%o3)                           y
+@end group
+@group
 (%i4) y[2]: %pi;
 (%o4)                          %pi
+@end group
+@group
 (%i5) y[2];
 (%o5)                          %pi
+@end group
+@group
 (%i6) z['foo]: 'bar;
 (%o6)                          bar
+@end group
+@group
 (%i7) z['foo];
 (%o7)                          bar
+@end group
+@group
 (%i8) g[k] := 1/(k^2+1);
                                   1
 (%o8)                     g  := ------
                            k     2
                                 k  + 1
+@end group
+@group
 (%i9) g[10];
                                 1
 (%o9)                          ---
                                101
+@end group
 @end example
 
 @opencatbox
@@ -179,27 +208,42 @@ Each variable @var{x_i} must actually be a symbol -- it will not be evaluated.
 The list arguments will be evaluated once at the beginning of the
 iteration.
 
+@c ===beg===
+@c create_list (x^i, i, [1, 3, 7]);
+@c ===end===
 @example
-(%i1) create_list(x^i,i,[1,3,7]);
-                 3   7
-(%o1)       [x, x , x ]
+@group
+(%i1) create_list (x^i, i, [1, 3, 7]);
+                                3   7
+(%o1)                      [x, x , x ]
+@end group
 @end example
 
 @noindent
 With a double iteration:
 
+@c ===beg===
+@c create_list ([i, j], i, [a, b], j, [e, f, h]);
+@c ===end===
 @example
-(%i1) create_list([i,j],i,[a,b],j,[e,f,h]);
-(%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
+@group
+(%i1) create_list ([i, j], i, [a, b], j, [e, f, h]);
+(%o1)   [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
+@end group
 @end example
 
 Instead of @var{list_i} two args may be supplied each of which should
 evaluate to a number.  These will be the inclusive lower and
 upper bounds for the iteration.
 
+@c ===beg===
+@c create_list ([i, j], i, [1, 2, 3], j, 1, i);
+@c ===end===
 @example
-(%i1) create_list([i,j],i,[1,2,3],j,1,i);
-(%o1) [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
+@group
+(%i1) create_list ([i, j], i, [1, 2, 3], j, 1, i);
+(%o1)   [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
+@end group
 @end example
 
 Note that the limits or list for the @code{j} variable can
@@ -240,8 +284,10 @@ Removing elements from a list.
 @c delete (y, [w, x, y, z, z, y, x, w]);
 @c ===end===
 @example
+@group
 (%i1) delete (y, [w, x, y, z, z, y, x, w]);
 (%o1)                  [w, x, z, z, x, w]
+@end group
 @end example
 
 Removing terms from a sum.
@@ -250,8 +296,10 @@ Removing terms from a sum.
 @c delete (sin(x), x + sin(x) + y);
 @c ===end===
 @example
+@group
 (%i1) delete (sin(x), x + sin(x) + y);
 (%o1)                         y + x
+@end group
 @end example
 
 Removing factors from a product.
@@ -260,8 +308,10 @@ Removing factors from a product.
 @c delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
 @c ===end===
 @example
+@group
 (%i1) delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
 (%o1)                (u - w) (u - y) (u - z)
+@end group
 @end example
 
 Removing arguments from an arbitrary expression.
@@ -270,8 +320,10 @@ Removing arguments from an arbitrary expression.
 @c delete (a, foo (a, b, c, d, a));
 @c ===end===
 @example
+@group
 (%i1) delete (a, foo (a, b, c, d, a));
 (%o1)                     foo(b, c, d)
+@end group
 @end example
 
 Limit the number of removed arguments.
@@ -280,15 +332,17 @@ Limit the number of removed arguments.
 @c delete (a, foo (a, b, a, c, d, a), 2);
 @c ===end===
 @example
+@group
 (%i1) delete (a, foo (a, b, a, c, d, a), 2);
 (%o1)                    foo(b, c, d, a)
+@end group
 @end example
 
 Whether arguments are the same as @var{expr_1} is determined by "=".
 Arguments which are @code{equal} but not "=" are not removed.
 
 @c ===beg===
-@c [is(equal(0, 0)), is(equal(0, 0.0)), is(equal(0, 0b0))];
+@c [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
 @c [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
 @c delete (0, [0, 0.0, 0b0]);
 @c is (equal ((x + y)*(x - y), x^2 - y^2));
@@ -296,22 +350,33 @@ Arguments which are @code{equal} but not "=" are not removed.
 @c delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
 @c ===end===
 @example
-(%i1) [is(equal(0, 0)), is(equal(0, 0.0)), is(equal(0, 0b0))];
-
-`rat' replaced 0.0 by 0/1 = 0.0
+@group
+(%i1) [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+rat: replaced 0.0 by 0/1 = 0.0
 `rat' replaced 0.0B0 by 0/1 = 0.0B0
 (%o1)                  [true, true, true]
+@end group
+@group
 (%i2) [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
 (%o2)                 [true, false, false]
+@end group
+@group
 (%i3) delete (0, [0, 0.0, 0b0]);
 (%o3)                     [0.0, 0.0b0]
+@end group
+@group
 (%i4) is (equal ((x + y)*(x - y), x^2 - y^2));
 (%o4)                         true
+@end group
+@group
 (%i5) is ((x + y)*(x - y) = x^2 - y^2);
 (%o5)                         false
+@end group
+@group
 (%i6) delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
                               2    2
 (%o6)                       [x  - y ]
+@end group
 @end example
 
 @opencatbox
@@ -415,12 +480,18 @@ Examples:
 @c join (L1, [aa, bb, cc, dd, ee, ff]);
 @c ===end===
 @example
+@group
 (%i1) L1: [a, sin(b), c!, d - 1];
 (%o1)                [a, sin(b), c!, d - 1]
+@end group
+@group
 (%i2) join (L1, [1, 2, 3, 4]);
 (%o2)          [a, 1, sin(b), 2, c!, 3, d - 1, 4]
+@end group
+@group
 (%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
 (%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
+@end group
 @end example
 
 @opencatbox
@@ -490,15 +561,28 @@ Returns @code{true} if @var{expr} is a list else @code{false}.
 
 @c -----------------------------------------------------------------------------
 @anchor{makelist}
-@deffn  {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn  {Function} makelist ()
+@deffnx {Function} makelist (@var{expr}, @var{n})
+@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_max})
+@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max})
+@deffnx {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_max}, @var{step})
 @deffnx {Function} makelist (@var{expr}, @var{x}, @var{list})
 
-Constructs and returns a list, each element of which is generated from
-@var{expr}.
+The first form, @code{makelist ()}, creates an empty list. The second form,
+@code{makelist (@var{expr})}, creates a list with @var{expr} as its single
+element. @code{makelist (@var{expr}, @var{n})} creates a list of @var{n}
+elements generated from @var{expr}.
 
-@code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} returns a list,
-the @code{j}'th element of which is equal to @code{ev (@var{expr}, @var{i}=j)}
-for @code{j} equal to @var{i_0} through @var{i_1}.
+The most general form, @code{makelist (@var{expr}, @var{i}, @var{i_0},
+@var{i_max}, @var{step})}, returns the list of elements obtained when
+@code{ev (@var{expr}, @var{i}=@var{j})} is applied to the elements
+@var{j} of the sequence: @var{i_0}, @var{i_0} + @var{step}, @var{i_0} +
+2*@var{step}, ..., with @var{|j|} less than or equal to @var{|i_max|}.
+
+The increment @var{step} can be a number (positive or negative) or an
+expression. If it is omitted, the default value 1 will be used. If both
+@var{i_0} and @var{step} are omitted, they will both have a default
+value of 1.
 
 @code{makelist (@var{expr}, @var{x}, @var{list})} returns a list, the
 @code{j}'th element of which is equal to
@@ -508,15 +592,38 @@ for @code{j} equal to @var{i_0} through @var{i_1}.
 Examples:
 
 @c ===beg===
-@c makelist(concat(x,i),i,1,6);
-@c makelist(x=y,y,[a,b,c]);
+@c makelist (concat (x,i), i, 6);
+@c makelist (x=y, y, [a, b, c]);
+@c makelist (x^2, x, 3, 2*%pi, 2);
+@c makelist (random(6), 4);
+@c flatten (makelist (makelist (i^2, 3), i, 4));
+@c flatten (makelist (makelist (i^2, i, 3), 4));
 @c ===end===
 @example
-(%i1) makelist(concat(x,i),i,1,6);
+@group
+(%i1) makelist (concat (x,i), i, 6);
 (%o1)               [x1, x2, x3, x4, x5, x6]
-(%i2) makelist(x=y,y,[a,b,c]);
+@end group
+@group
+(%i2) makelist (x=y, y, [a, b, c]);
 (%o2)                 [x = a, x = b, x = c]
-
+@end group
+@group
+(%i3) makelist (x^2, x, 3, 2*%pi, 2);
+(%o3)                        [9, 25]
+@end group
+@group
+(%i4) makelist (random(6), 4);
+(%o4)                     [2, 0, 2, 5]
+@end group
+@group
+(%i5) flatten (makelist (makelist (i^2, 3), i, 4));
+(%o5)        [1, 1, 1, 4, 4, 4, 9, 9, 9, 16, 16, 16]
+@end group
+@group
+(%i6) flatten (makelist (makelist (i^2, i, 3), 4));
+(%o6)         [1, 4, 9, 1, 4, 9, 1, 4, 9, 1, 4, 9]
+@end group
 @end example
 
 @opencatbox
@@ -555,24 +662,40 @@ Examples:
 @c member ("ab", ["aa", "ab", sin(1), a + b]);
 @c ===end===
 @example
+@group
 (%i1) member (8, [8, 8.0, 8b0]);
 (%o1)                         true
+@end group
+@group
 (%i2) member (8, [8.0, 8b0]);
 (%o2)                         false
+@end group
+@group
 (%i3) member (b, [a, b, c]);
 (%o3)                         true
+@end group
+@group
 (%i4) member (b, [[a, b], [b, c]]);
 (%o4)                         false
+@end group
+@group
 (%i5) member ([b, c], [[a, b], [b, c]]);
 (%o5)                         true
+@end group
+@group
 (%i6) F (1, 1/2, 1/4, 1/8);
                                1  1  1
 (%o6)                     F(1, -, -, -)
                                2  4  8
+@end group
+@group
 (%i7) member (1/8, %);
 (%o7)                         true
+@end group
+@group
 (%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
 (%o8)                         true
+@end group
 @end example
 
 @opencatbox
@@ -605,7 +728,8 @@ generates an error message.
 
 See also @mref{push} for examples.
 
-@code{load(basic)} loads this function.
+To use this function, the additional package "basic" must be loaded
+first: @code{load("basic")}.
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -625,44 +749,64 @@ message.
 
 See also @mref{pop} to remove the first item from a list.
 
-@code{load(basic)} loads this function.
+@code{load("basic")} loads this function.
 
 Examples:
 
 @c ===beg===
-@c ll:[];
-@c push(x,ll);
-@c push(x^2+y,ll);
-@c a:push("string",ll);
-@c pop(ll);
-@c pop(ll);
-@c pop(ll);
+@c load ("basic")$
+@c ll: [];
+@c push (x, ll);
+@c push (x^2+y, ll);
+@c a: push ("string", ll);
+@c pop (ll);
+@c pop (ll);
+@c pop (ll);
 @c ll;
 @c a;
 @c ===end===
 @example
-(%i1) ll:[];
-(%o1)                          []
-(%i2) push(x,ll);
-(%o2)                          [x]
-(%i3) push(x^2+y,ll);
+(%i1) load ("basic")$
+@group
+(%i2) ll: [];
+(%o2)                          []
+@end group
+@group
+(%i3) push (x, ll);
+(%o3)                          [x]
+@end group
+@group
+(%i4) push (x^2+y, ll);
                                  2
-(%o3)                      [y + x , x]
-(%i4) a:push("string",ll);
+(%o4)                      [y + x , x]
+@end group
+@group
+(%i5) a: push ("string", ll);
                                      2
-(%o4)                  [string, y + x , x]
-(%i5) pop(ll);
-(%o5)                        string
-(%i6) pop(ll);
+(%o5)                  [string, y + x , x]
+@end group
+@group
+(%i6) pop (ll);
+(%o6)                        string
+@end group
+@group
+(%i7) pop (ll);
                                   2
-(%o6)                        y + x
-(%i7) pop(ll);
-(%o7)                           x
-(%i8) ll;
-(%o8)                          []
-(%i9) a;
+(%o7)                        y + x
+@end group
+@group
+(%i8) pop (ll);
+(%o8)                           x
+@end group
+@group
+(%i9) ll;
+(%o9)                          []
+@end group
+@group
+(%i10) a;
                                      2
-(%o9)                  [string, y + x , x]
+(%o10)                 [string, y + x , x]
+@end group
 @end example
 
 @opencatbox
@@ -783,49 +927,63 @@ Examples:
 @c       ordergreatp);
 @c sort ([%pi, 3, 4, %e, %gamma]);
 @c sort ([%pi, 3, 4, %e, %gamma], "<");
-@c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+@c my_list: [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
 @c sort (my_list);
 @c sort (my_list, lambda ([a, b], orderlessp (reverse (a), 
 @c       reverse (b))));
 @c ===end===
 @example
+@group
 (%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c,
       19 - 3 * x]);
                5
 (%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
                2
-(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9*c, 19 - 3*x],
+@end group
+@group
+(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x],
       ordergreatp);
                                                    5
 (%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
                                                    2
+@end group
+@group
 (%i3) sort ([%pi, 3, 4, %e, %gamma]);
 (%o3)                [3, 4, %e, %gamma, %pi]
+@end group
+@group
 (%i4) sort ([%pi, 3, 4, %e, %gamma], "<");
 (%o4)                [%gamma, %e, 3, %pi, 4]
-(%i5) my_list: [[aa,hh,uu], [ee,cc], [zz,xx,mm,cc], [%pi,%e]];
+@end group
+@group
+(%i5) my_list: [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
 (%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
+@end group
+@group
 (%i6) sort (my_list);
 (%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
+@end group
 @group
 (%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a),
       reverse (b))));
-@end group
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+@end group
 @end example
 
 Order Maxima numbers, constants, and constants expressions by magnitude, and
 all other elements in ascending sorting order:
 
 @c ===beg===
-@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+@c sort ([%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0],
 @c      ordermagnitudep);
 @c ===end===
 @example
-(%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
-           ordermagnitudep);
-(%o8) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
+@group
+(%i1) sort ([%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0],
+     ordermagnitudep);
+(%o1) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
                                                      %i + 1, 2 x]
+@end group
 @end example
 
 @opencatbox
@@ -847,10 +1005,14 @@ Example:
 @c sublist (L, evenp);
 @c ===end===
 @example
+@group
 (%i1) L: [1, 2, 3, 4, 5, 6];
 (%o1)                  [1, 2, 3, 4, 5, 6]
+@end group
+@group
 (%i2) sublist (L, evenp);
 (%o2)                       [2, 4, 6]
+@end group
 @end example
 
 @opencatbox
@@ -881,20 +1043,32 @@ Examples:
 @c sublist_indices ([x > 0, x < 0, x < -2], identity);
 @c ===end===
 @example
+@group
 (%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
                        lambda ([x], x='b));
 (%o1)                     [2, 3, 7, 9]
+@end group
+@group
 (%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
 (%o2)                  [1, 2, 3, 4, 7, 9]
+@end group
+@group
 (%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0],
                        identity);
 (%o3)                       [1, 4, 5]
+@end group
+@group
 (%i4) assume (x < -1);
 (%o4)                       [x < - 1]
+@end group
+@group
 (%i5) map (maybe, [x > 0, x < 0, x < -2]);
 (%o5)                [false, true, unknown]
+@end group
+@group
 (%i6) sublist_indices ([x > 0, x < 0, x < -2], identity);
 (%o6)                          [2]
+@end group
 @end example
 
 @opencatbox
@@ -920,8 +1094,10 @@ Example:
 @c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
 @c ===end===
 @example
+@group
 (%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
 (%o1)              [1, 2, %e, %pi, [1], b + a]
+@end group
 @end example
 @end deffn
 
