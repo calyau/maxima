@@ -84,6 +84,10 @@ diff(%,x);
  +f(x,h(x))*'diff(h(x),x,1)-f(x,g(x))*'diff(g(x),x,1)$
 kill(a,x,f,y,t);
 done$
+
+/* -----------------------------------------------------------------------------
+ * Examples for dependencies
+ * -------------------------------------------------------------------------- */
 depends(a,x);
 [a(x)]$
 diff(a . a,x);
@@ -96,6 +100,60 @@ depends(y,x);
 [y(x)]$
 kill(f,g,j);
 done$
+
+/* More examples with subscribted variables */
+
+depends(g,f,f,[x[1],x[2],x[3]],x,t);
+[g(f),f(x[1],x[2],x[3]),x(t)]$
+diff(g,f);
+'diff(g,f,1)$
+diff(f,x[1]);
+'diff(f,x[1],1)$
+diff(f,x[1],2);
+'diff(f,x[1],2)$
+diff(x[1],t);
+'diff(x[1],t,1)$
+diff(f,x[1],1,x[2],1,x[3],1);
+'diff(f,x[1],1,x[2],1,x[3],1)$
+diff(f,t);
+'diff(x[3],t,1)*'diff(f,x[3],1)+'diff(x[2],t,1)*'diff(f,x[2],1)
+                               +'diff(x[1],t,1)*'diff(f,x[1],1)$
+diff(g,t);
+('diff(x[3],t,1)*'diff(f,x[3],1)+'diff(x[2],t,1)*'diff(f,x[2],1)
+                                +'diff(x[1],t,1)*'diff(f,x[1],1))
+ *'diff(g,f,1)$
+kill(g,f,x);
+done;
+
+/* The subscript is not differentiated, it is a constant */
+
+depends(f,x[a],x,t,t,a);
+[f(x[a]),x(t),t(a)]$
+diff(f,x[a]);
+'diff(f,x[a],1)$
+diff(f,t);
+'diff(x[a],t,1)*'diff(f,x[a],1)$
+diff(f,a);
+'diff(x[a],t,1)*'diff(f,x[a],1)*'diff(t,a,1)$
+kill(f,x,t);
+done;
+
+/* Maxima has not a problem with circular defined dependencies */
+
+depends(f,x,x,t,t,f);
+[f(x),x(t),t(f)]$
+diff(f,x);
+'diff(f,x,1)$
+diff(f,t);
+'diff(f,x,1)*'diff(x,t,1)$
+diff(t,f);
+'diff(t,f,1)$
+diff(t,x);
+'diff(f,x,1)*'diff(t,f,1)$
+kill(f,x,t);
+done;
+/* -------------------------------------------------------------------------- */
+
 gradef(f(x,y),x^2,g(x,y));
 f(x,y)$
 diff(f(x,y),x);
