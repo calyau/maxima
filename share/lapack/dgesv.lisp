@@ -1,6 +1,7 @@
 ;; dgesv.lisp -- Maxima interface to lapack::dgesv
 ;; copyright 2010 by Robert Dodier
 ;; I release this work under terms of the GNU General Public License.
+(in-package :maxima)
 
 ;; dgesv(a, b) returns solution x of linear equations a . x = b
 ;; as computed by the LU decomposition.
