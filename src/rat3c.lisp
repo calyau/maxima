@@ -205,7 +205,7 @@
   (setq s (case $gcd
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
-	    (t (merror "OLDGCD: found gcd = ~M; how did that happen?" gcd))))
+	    (t (merror "OLDGCD: found gcd = ~M; how did that happen?" $gcd))))
   (let ((errrjfflag t))			;; check for gcd that simplifies to 0
     (if (not (catch 'raterr (rainv s))) ;; sourceforge bugs 831445 and 1313987
 	(setq s 1)))
