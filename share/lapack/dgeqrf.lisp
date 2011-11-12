@@ -1,6 +1,7 @@
 ;; dgeqrf.lisp -- Maxima interface to lapack::dgeqrf
 ;; copyright 2011 by Robert Dodier
 ;; I release this work under terms of the GNU General Public License.
+(in-package :maxima)
 
 ;; dgeqrf(a) computes QR factorization of m-by-n Maxima matrix,
 ;; where m and n might be equal or unequal.
