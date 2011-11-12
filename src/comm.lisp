@@ -321,11 +321,6 @@
        (merror
          (intl:gettext
            "depends: argument must be a non-atomic expression; found ~M") z))
-      ((or (eq (caar z) 'mqapply)
-           (member 'array (cdar z) :test #'eq))
-       (merror
-         (intl:gettext
-           "depends: argument cannot be a subscripted expression; found ~M") z))
       (t
        (do ((zz z (cdr zz))
             (y nil))
@@ -335,7 +330,10 @@
             (unless (cdr $dependencies)
               (setq $dependencies (copy-list '((mlist simp)))))
             (add2lnc (cons (cons (caar z) nil) y) $dependencies))
-         (cond ((not (symbolp (cadr zz)))
+         (cond ((and ($subvarp (cadr zz))
+                     (not (member (caar (cadr zz)) y)))
+                (setq y (push (cadr zz) y)))
+               ((not (symbolp (cadr zz)))
                 (merror
                   (intl:gettext "depends: argument must be a symbol; found ~M")
                   (cadr zz)))
