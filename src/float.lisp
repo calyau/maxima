@@ -1230,8 +1230,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 (defun *fpexp (a)
   (fpend (let ((fpprec (+ 8. fpprec)))
-	   (if ($bfloatp (setq a ($bfloat a)))
-	       (fpexp (cdr a))
+           (if ($bfloatp a)
+               (fpexp (cdr (bigfloatp a)))
 	       (list '(mexpt) '$%e a)))))
 
 (defun *fpsin (a fl)
