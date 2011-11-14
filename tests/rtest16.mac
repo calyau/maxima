@@ -2093,9 +2093,10 @@ divide(p, (z-2-sqrt(2)*%i),z);
 2^(3/5+x)+2^(-2/5+x);
 3*2^(x-2/5);
 
-/* Bug ID: 1439566 - zerobern & bernpoly
+/* -----------------------------------------------------------------------------
+ * Bug ID: 1439566 - zerobern & bernpoly
  * Show that the option variable zerobern does not change the results.
- */
+ * -------------------------------------------------------------------------- */
 zerobern:false;
 false;
 bernpoly(x,3);
@@ -2160,3 +2161,15 @@ done$
 14*sqrt(5)+2*3^(5/2)$
 5*sqrt(5)+5*sqrt(3)+2*sqrt(75)+2*sqrt(45)+3*sqrt(5)+3*sqrt(3);
 14*sqrt(5)+2*3^(5/2)$
+
+/* -----------------------------------------------------------------------------
+ * Bug ID 3437268: expand doesn't fully expand
+ * Check the expected results after revision 14.11.2011 of simp.lisp.
+ * -------------------------------------------------------------------------- */
+-3*a/sqrt(2)+sqrt(2)*a+a/sqrt(2);
+0$
+expand(-(atan((sqrt(2)*sin(8))/cos(8))+3*%pi)/sqrt(2)
+        +atan((sqrt(2)*sin(8))/cos(8))/sqrt(2)
+        +sqrt(2)*%pi
+        +%pi/sqrt(2));
+0$
