@@ -618,7 +618,11 @@ ratsimp(ev(logcontract((integrate(1/(x^8-1),x,0,1/2))),algebraic) +
  *
  */
 integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1);
--((sqrt(2)-2)*%pi^2/32);
+/* The following result has changed to an equivalent result,
+ * because of a change in simp.lisp revision 14.11.2011.
+ * -((sqrt(2)-2)*%pi^2/32);
+ */
+(sqrt(2)-1)*%pi^2/2^(9/2)$
 
 /*
  * Bug [ 1073338 ] integrate yields incorrect result on rational function
