@@ -1319,6 +1319,8 @@
   equt
      ;; Call muln to get a simplified product.
      (setq x1 (muln (cons (addk w (if flag (cadadr fm) 1)) x) t))
+     ;; Make a mplus expression to guarantee that x1 is added again into the sum
+     (setq x1 (list '(mplus) x1))
   equt2
      (rplaca (cdr fm)
              (if (zerop1 x1)
