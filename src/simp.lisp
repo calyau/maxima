@@ -2457,43 +2457,21 @@
            (t (go up)))
      (go cont)))
 
+;; Basically computes log of m base b.  Except if m is not a power
+;; of b, we return nil.  m is a positive integer and base an integer
+;; not equal to +/-1.
 (defun exponent-of (m base)
-  ;; Basically computes log of m base b.  Except if m is not a power
-  ;; of b, we return nil.
-
-  ;; Give up on the cases we can't handle.
-  (unless (and (mnump m)
-	       (ratgreaterp m 0)
-	       (integerp base)
-	       (not (eql (abs base) 1)))
-    (return-from exponent-of nil))
-  (cond ((ratgreaterp 1 m)
-	 ;; m < 1, so change the problem to finding the exponent for
-	 ;; 1/m.
-	 (let ((expo (exponent-of (inv m) base)))
-	   (when expo
-	     (- expo))))
-	((ratnump m)
-	 ;; exponent-of doesn't know how to handle maxima rationals,
-	 ;; so make it a Lisp rational.
-	 (exponent-of (/ (second m) (third m)) base))
-	(t
-	 ;; Main case.  Just compute base^k until base^k >= m.  Then
-	 ;; check if they're equal.  If so, we have the exponent.
-	 ;; Otherwise, give up.
-	 (let ((expo 0))
-	   (when (integerp m)
-	     (loop
-		(multiple-value-bind (q r)
-		    (floor m base)
-		  (cond ((zerop r)
-			 (setf m q)
-			 (incf expo))
-			(t
-			 (return nil))))))
-	   (if (zerop expo)
-	       nil
-	       expo)))))
+  ;; Just compute base^k until base^k >= m.  Then check if they're equal.
+  ;; If so, we have the exponent.  Otherwise, give up.
+  (let ((expo 0))
+    (loop
+      (multiple-value-bind (q r)
+          (floor m base)
+        (cond ((zerop r)
+               (setf m q)
+               (incf expo))
+              (t (return nil)))))
+    (if (zerop expo) nil expo)))
 
 (defun timesin (x y w)                  ; Multiply X^W into Y
   (prog (fm temp z check u expo)
@@ -2550,10 +2528,10 @@
                           (go const))
                          ((onep1 w)
                           (cond ((mtimesp (car x))
-                                 ;; A base which is a mtimes expression.
-                                 ;; Remove the factor from the lists of products.
+                                 ;; A base which is a mtimes expression. Remove
+                                 ;; the factor from the lists of products.
                                  (rplacd fm (cddr fm))
-                                 ;; Multiply the factors of the base with 
+                                 ;; Multiply the factors of the base with
                                  ;; the list of all remaining products.
                                  (setq rulesw t)
                                  (return (muln (nconc y (cdar x)) t)))
@@ -2566,59 +2544,46 @@
                         (or (ratnump (car x))
                             (and (integerp (car x))
                                  (not (onep (car x))))))
-                   ;; Multiplying a^k * rational.
-                   (let* ((numerator (if (integerp (car x)) 
-                                         (car x)
-                                         (second (car x))))
-                          (denom (if (integerp (car x)) 
-                                     1
-                                     (third (car x))))
-                          (sgn (signum numerator)))
-                     (setf expo (exponent-of (abs numerator) (second (cadr fm))))
-                     (when expo
-                       ;; We have a^m*a^k.
-                       (setq temp (power (second (cadr fm)) 
-                                         (add (third (cadr fm)) expo)))
-                       ;; Set fm to have 1/denom term.
-                       (setq x (mul sgn
-                                    (car y)
-                                    (div (div (mul sgn numerator)
-                                              (power (second (cadr fm))
-                                                     expo))
-                                         denom)))
-                       (setf y (rplaca y 1))
-                       ;; Add in the a^(m+k) term.
-                       (rplacd fm (cddr fm))
-                       (rplacd fm (cons temp (cdr fm)))
-                       (setq temp x
-                             x (list x 1)
-                             w 1
-                             fm y)
-                       (go start))
-                     (setf expo (exponent-of (inv denom) (second (cadr fm))))
-                     (when expo
-                       ;; We have a^(-m)*a^k.
-                       (setq temp (power (second (cadr fm)) 
-                                         (add (third (cadr fm)) expo)))
-                       ;; Set fm to have the numerator term.
-                       (setq x (mul (car y)
-                                    (div numerator
-                                         (div denom
-                                              (power (second (cadr fm)) 
-                                                     (- expo))))))
-                       (setf y (rplaca y 1))
-                       ;; Add in the a^(k-m) term.
-                       (rplacd fm (cddr fm))
-                       (rplacd fm (cons temp (cdr fm)))
-                       (setq temp x
-                             x (list x 1)
-                             w 1
-                             fm y)
-                       (go start))
-                     ;; Next term in list of products.
-                     (setq fm (cdr fm))
+                   ;; Multiplying bas^k * num/den
+                   (let ((num (num1 (car x)))
+                         (den (denom1 (car x)))
+                         (bas (second (cadr fm))))
+                     (cond ((and (integerp bas)
+                                 (not (eql 1 (abs bas)))
+                                 (setq expo (exponent-of (abs num) bas)))
+                            ;; We have bas^m*bas^k = bas^(k+m).
+                            (setq temp (power bas
+                                              (add (third (cadr fm)) expo)))
+                            ;; Set fm to have 1/denom term.
+                            (setq x (mul (car y)
+                                         (div (div num
+                                                   (exptrl bas expo))
+                                              den))))
+                           ((and (integerp bas)
+                                 (not (eql 1 (abs bas)))
+                                 (setq expo (exponent-of den bas)))
+                            (setq expo (- expo))
+                            ;; We have bas^(-m)*bas^k = bas^(k-m).
+                            (setq temp (power bas
+                                              (add (third (cadr fm)) expo)))
+                            ;; Set fm to have the numerator term.
+                            (setq x (mul (car y)
+                                         (div num
+                                              (div den
+                                                   (exptrl bas (- expo)))))))
+                           (t
+                            ;; Next term in list of products.
+                            (setq fm (cdr fm))
+                            (go start)))
+                     ;; Add in the bas^(k+m) term or bas^(k-m)
+                     (setf y (rplaca y 1))
+                     (rplacd fm (cddr fm))
+                     (rplacd fm (cons temp (cdr fm)))
+                     (setq temp x
+                           x (list x 1)
+                           w 1
+                           fm y)
                      (go start)))
-                  
                   ((and (not (atom (car x)))
                         (eq (caar (car x)) 'mabs)
                         (equal (cadr x) 1)
@@ -2667,7 +2632,7 @@
                         (equal (caddr (cadr fm)) -1)
                         (integerp (cadr x))
                         (> (cadr x) 1)
-                        (alike1 (cadadr (cadr fm)) (car x))                        
+                        (alike1 (cadadr (cadr fm)) (car x))
                         (not (member ($csign (cadadr (cadr fm)))
                                      '($complex imaginary))))
                    ;; 1/abs(x)*x^n -> x^(n-2)*abs(x), where n an integer.
@@ -2739,51 +2704,37 @@
                  (not (onep1 (car y)))
                  (or (integerp (car y))
                      (ratnump (car y))))
-            ;; Multiplying x^w * rational or integer.
-            (let* ((numerator (if (integerp (car y)) 
-                                 (car y)
-                                 (second (car y))))
-                   (denom (if (integerp (car y)) 
-                              1
-                              (third (car y)))))
-              (setf expo (exponent-of (abs numerator) (car x)))
-              (when expo
-                ;; We have a^m*a^k.
-                (setq temp (power (car x)
-                                  (add (cadr x) expo)))
-                ;; Set fm to have 1/denom term.
-                (setq x (div (div numerator
-                                  (power (car x) expo))
-                             denom))
-                (setf y (rplaca y 1))
-                ;; Add in the a^(m+k) term.
-                (rplacd fm (cons temp (cdr fm)))
-                (setq temp x
-                      x (list x 1)
-                      w 1
-                      fm y)
-                (go start))
-              (setf expo (exponent-of (inv denom) (car x)))
-              (when expo
-                ;; We have a^(-m)*a^k.
-                (setq temp (power (car x) 
-                                  (add (cadr x) expo)))
-                ;; Set fm to have the numerator term.
-                (setq x (div numerator
-                             (div denom
-                                  (power (car x) 
-                                         (- expo)))))
-                (setf y (rplaca y 1))
-                ;; Add in the a^(k-m) term.
-                (rplacd fm (cons temp (cdr fm)))
-                (setq temp x
-                      x (list x 1)
-                      w 1
-                      fm y)
-                (go start))
-              ;; The rational doesn't contain any (simple) powers of
-              ;; the exponential term.  We're done.
-              (return (cdr (rplacd fm (cons temp (cdr fm)))))))
+            ;; Multiplying bas^k * num/den.
+            (let ((num (num1 (car y)))
+                  (den (denom1 (car y)))
+                  (bas (car x)))
+              (cond ((and (integerp bas)
+                          (not (eql 1 (abs bas)))
+                          (setq expo (exponent-of (abs num) bas)))
+                     ;; We have bas^m*bas^k.
+                     (setq temp (power bas (add (cadr x) expo)))
+                     ;; Set fm to have 1/denom term.
+                     (setq x (div (div num (exptrl bas expo)) den)))
+                    ((and (integerp bas)
+                          (not (eql 1 (abs bas)))
+                          (setq expo (exponent-of den bas)))
+                     (setq expo (- expo))
+                     ;; We have bas^(-m)*bas^k.
+                     (setq temp (power bas (add (cadr x) expo)))
+                     ;; Set fm to have the numerator term.
+                     (setq x (div num (div den (exptrl bas (- expo))))))
+                    (t
+                     ;; The rational doesn't contain any (simple) powers of
+                     ;; the exponential term.  We're done.
+                     (return (cdr (rplacd fm (cons temp (cdr fm)))))))
+              ;; Add in the a^(m+k) or a^(k-m) term.
+              (setf y (rplaca y 1))
+              (rplacd fm (cons temp (cdr fm)))
+              (setq temp x
+                    x (list x 1)
+                    w 1
+                    fm y)
+              (go start)))
            ((and (maxima-constantp (car x))
                  (do ((l (cdr fm) (cdr l)))
                      ((null (cdr l)))
