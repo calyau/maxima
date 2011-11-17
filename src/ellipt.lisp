@@ -1386,67 +1386,74 @@ first kind:
 ;;     0
 
 (defun elliptic-f (phi-arg m-arg)
-  (cond ((and (realp m-arg) (realp phi-arg))
-	 (let ((phi (float phi-arg))
-	       (m (float m-arg)))
-	   (cond ((> m 1)
-		  ;; A&S 17.4.15
-		  ;;
-		  ;; F(phi|m) = 1/sqrt(m)*F(theta|1/m)
-		  ;;
-		  ;; with sin(theta) = sqrt(m)*sin(phi)
-		  (complexify (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
-				 (sqrt m))))
-		 ((< m 0)
-		  ;; A&S 17.4.17
-		  (let* ((m (- m))
-			 (m+1 (+ 1 m))
-			 (root (sqrt m+1))
-			 (m/m+1 (/ m m+1)))
-		    (- (/ (elliptic-f (float (/ pi 2)) m/m+1)
-			  root)
-		       (/ (elliptic-f (- (float (/ pi 2)) phi) m/m+1)
-			  root))))
-		 ((= m 0)
-		  ;; A&S 17.4.19
-		  phi)
-		 ((= m 1)
-		  ;; A&S 17.4.21
-		  ;;
-		  ;; F(phi,1) = log(sec(phi)+tan(phi))
-		  ;;          = log(tan(pi/4+pi/2))
-		  (log (cl:tan (+ (/ phi 2) (float (/ pi 4))))))
-		 ((minusp phi)
-		  (- (elliptic-f (- phi) m)))
-		 ((> phi pi)
-		  ;; A&S 17.4.3
-		  (multiple-value-bind (s phi-rem)
-		      (truncate phi (float pi))
-		    (+ (* 2 s (elliptic-k m))
-		       (elliptic-f phi-rem m))))
-		 ((<= phi (/ pi 2))
-		  (let ((sin-phi (sin phi))
-			(cos-phi (cos phi))
-			(k (sqrt m)))
-		    (to (* sin-phi
-			   (bigfloat::bf-rf (* cos-phi cos-phi)
-					    (* (- 1 (* k sin-phi))
-					       (+ 1 (* k sin-phi)))
-					    1.0)))))
-		 ((< phi pi)
-		  (+ (* 2 (elliptic-k m))
-		     (elliptic-f (- phi (float pi)) m))))))
-	(t
-	 (let ((phi (coerce phi-arg '(complex flonum)))
-	       (m (coerce m-arg '(complex flonum))))
-	   (let ((sin-phi (sin phi))
-		 (cos-phi (cos phi))
-		 (k (sqrt m)))
-	     (* sin-phi
-		(crf (* cos-phi cos-phi)
-		     (* (- 1 (* k sin-phi))
-			(+ 1 (* k sin-phi)))
-		     1.0)))))))
+  (flet ((base (phi-arg m-arg)
+	   (cond ((and (realp m-arg) (realp phi-arg))
+		  (let ((phi (float phi-arg))
+			(m (float m-arg)))
+		    (cond ((> m 1)
+			   ;; A&S 17.4.15
+			   ;;
+			   ;; F(phi|m) = 1/sqrt(m)*F(theta|1/m)
+			   ;;
+			   ;; with sin(theta) = sqrt(m)*sin(phi)
+			   (complexify (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
+					  (sqrt m))))
+			  ((< m 0)
+			   ;; A&S 17.4.17
+			   (let* ((m (- m))
+				  (m+1 (+ 1 m))
+				  (root (sqrt m+1))
+				  (m/m+1 (/ m m+1)))
+			     (- (/ (elliptic-f (float (/ pi 2)) m/m+1)
+				   root)
+				(/ (elliptic-f (- (float (/ pi 2)) phi) m/m+1)
+				   root))))
+			  ((= m 0)
+			   ;; A&S 17.4.19
+			   phi)
+			  ((= m 1)
+			   ;; A&S 17.4.21
+			   ;;
+			   ;; F(phi,1) = log(sec(phi)+tan(phi))
+			   ;;          = log(tan(pi/4+pi/2))
+			   (log (cl:tan (+ (/ phi 2) (float (/ pi 4))))))
+			  ((minusp phi)
+			   (- (elliptic-f (- phi) m)))
+			  ((> phi pi)
+			   ;; A&S 17.4.3
+			   (multiple-value-bind (s phi-rem)
+			       (truncate phi (float pi))
+			     (+ (* 2 s (elliptic-k m))
+				(elliptic-f phi-rem m))))
+			  ((<= phi (/ pi 2))
+			   (let ((sin-phi (sin phi))
+				 (cos-phi (cos phi))
+				 (k (sqrt m)))
+			     (to (* sin-phi
+				    (bigfloat::bf-rf (* cos-phi cos-phi)
+						     (* (- 1 (* k sin-phi))
+							(+ 1 (* k sin-phi)))
+						     1.0)))))
+			  ((< phi pi)
+			   (+ (* 2 (elliptic-k m))
+			      (elliptic-f (- phi (float pi)) m))))))
+		 (t
+		  (let ((phi (coerce phi-arg '(complex flonum)))
+			(m (coerce m-arg '(complex flonum))))
+		    (let ((sin-phi (sin phi))
+			  (cos-phi (cos phi))
+			  (k (sqrt m)))
+		      (* sin-phi
+			 (crf (* cos-phi cos-phi)
+			      (* (- 1 (* k sin-phi))
+				 (+ 1 (* k sin-phi)))
+			      1.0))))))))
+    ;; Elliptic F is quasi-periodic wrt to z:
+    ;;
+    ;; F(z|m) = F(z - pi*round(Re(z)/pi)|m) + 2*round(Re(z)/pi)*K(m)
+    (let ((period (round (realpart phi-arg) pi)))
+      (+ (base (- phi-arg (* pi period)) m-arg)
+	 (* 2 period (elliptic-k m-arg))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
@@ -1660,23 +1667,30 @@ first kind:
 
 (defun elliptic-e (phi m)
   (declare (type flonum phi m))
-  (cond ((= m 0)
-	 ;; A&S 17.4.23
-	 phi)
-	((= m 1)
-	 ;; A&S 17.4.25
-	 (sin phi))
-	(t
-	 (let* ((sin-phi (sin phi))
-		(cos-phi (cos phi))
-		(k (sqrt m))
-		(y (* (- 1 (* k sin-phi))
-		      (+ 1 (* k sin-phi)))))
-	   (to (- (* sin-phi
-		     (bigfloat::bf-rf (* cos-phi cos-phi) y 1.0))
-		  (* (/ m 3)
-		     (expt sin-phi 3)
-		     (bigfloat::bf-rd (* cos-phi cos-phi) y 1.0))))))))
+  (flet ((base (phi m)
+	   (cond ((= m 0)
+		  ;; A&S 17.4.23
+		  phi)
+		 ((= m 1)
+		  ;; A&S 17.4.25
+		  (sin phi))
+		 (t
+		  (let* ((sin-phi (sin phi))
+			 (cos-phi (cos phi))
+			 (k (sqrt m))
+			 (y (* (- 1 (* k sin-phi))
+			       (+ 1 (* k sin-phi)))))
+		    (to (- (* sin-phi
+			      (bigfloat::bf-rf (* cos-phi cos-phi) y 1.0))
+			   (* (/ m 3)
+			      (expt sin-phi 3)
+			      (bigfloat::bf-rd (* cos-phi cos-phi) y 1.0)))))))))
+    ;; Elliptic E is quasi-periodic wrt to phi:
+    ;;
+    ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
+    (let ((period (round (realpart phi) pi)))
+      (+ (base (- phi (* pi period)) m)
+	 (* 2 period (elliptic-ec m))))))
 
 ;; Complete version
 (defun elliptic-ec (m)
@@ -2718,9 +2732,15 @@ first kind:
 
 ;; elliptic_f(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1)
 (defun bf-elliptic-f (phi m)
-  (let ((s (sin phi))
-	(c (cos phi)))
-    (* s (bf-rf (* c c) (- 1 (* m s s)) 1))))
+  (flet ((base (phi m)
+	   (let ((s (sin phi))
+		 (c (cos phi)))
+	     (* s (bf-rf (* c c) (- 1 (* m s s)) 1)))))
+    ;; Handle periodicity (see elliptic-f)
+    (let* ((bfpi (%pi phi))
+	   (period (round (realpart phi) bfpi)))
+      (+ (base (- phi (* bfpi period)) m)
+	 (* 2 period (bf-elliptic-k m))))))
 
 ;; elliptic_kc(k) = rf(0, 1-k^2,1)
 ;;
@@ -2744,12 +2764,21 @@ first kind:
 ;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
 ;;
 (defun bf-elliptic-e (phi m)
-  (let* ((s (sin phi))
-	 (c (cos phi))
-	 (c2 (* c c))
-	 (s2 (- 1 (* m s s))))
-    (- (* s (bf-rf c2 s2 1))
-       (* (/ m 3) (* s s s) (bf-rd c2 s2 1)))))
+  (flet ((base (phi m)
+	   (let* ((s (sin phi))
+		  (c (cos phi))
+		  (c2 (* c c))
+		  (s2 (- 1 (* m s s))))
+	     (- (* s (bf-rf c2 s2 1))
+		(* (/ m 3) (* s s s) (bf-rd c2 s2 1))))))
+    ;; Elliptic E is quasi-periodic wrt to phi:
+    ;;
+    ;; E(z|m) = E(z - %pi*round(Re(z)/%pi)|m) + 2*round(Re(z)/%pi)*E(m)
+    (let* ((bfpi (%pi phi))
+	   (period (round (realpart phi) bfpi)))
+      (+ (base (- phi (* bfpi period)) m)
+	 (* 2 period (bf-elliptic-ec m))))))
+    
 
 ;; elliptic_ec(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
 ;;
