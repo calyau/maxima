@@ -1934,11 +1934,33 @@ first kind:
 	   ;; A&S 17.4.23
 	   phi)
 	  ((onep1 m)
-	   ;; A&S 17.4.25
-	   `((%sin) ,phi))
+	   ;; A&S 17.4.25, but handle periodicity:
+	   ;; elliptic_e(x,m) = elliptic_e(x-%pi*round(x/%pi), m)
+	   ;;                    + 2*round(x/%pi)*elliptic_ec(m)
+	   ;;
+	   ;; Or
+	   ;;
+	   ;; elliptic_e(x,1) = sin(phi) + 2*round(x/%pi)*elliptic_ec(m)
+	   ;;
+	   (add (take '(%sin) phi)
+		(mul 2
+		     (mul (take '(%round) (div phi '$%pi))
+			  (take '(%elliptic_ec) m)))))
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
 	   `((%elliptic_ec) ,m))
+	  (($numberp phi)
+	   ;; Handle the case where phi is a number where we can apply
+	   ;; the periodicity property without blowing up the
+	   ;; expression.
+	   (add (take '($elliptic_e)
+		      (add phi
+			   (mul (mul -1 '$%pi)
+				(take '(%round) (div phi '$%pi))))
+		      m)
+		(mul 2
+		     (mul (take '(%round) (div phi '$%pi))
+			  (take '(%elliptic_ec) m)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_e) phi m) form)))))
@@ -2040,9 +2062,11 @@ first kind:
 	   (complexify (bigfloat::bf-elliptic-ec (complex ($float ($realpart m)) ($float ($imagpart m))))))
 	  ((complex-bigfloat-numerical-eval-p m)
 	   (to (bigfloat::bf-elliptic-ec (bigfloat:to ($bfloat m)))))
+	  ;; Some special cases we know about.
 	  ((zerop1 m)
 	   '((mtimes) ((rat) 1 2) $%pi))
-	  ;; Some special cases we know about.
+	  ((onep1 m)
+	   1)
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_ec) m) form)))))

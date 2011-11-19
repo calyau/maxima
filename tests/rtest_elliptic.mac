@@ -424,3 +424,12 @@ diff(elliptic_pi(1,phi,0),phi);
 sec(phi)^2;
 
 
+elliptic_ec(1);
+1;
+
+/* Test periodicity of elliptic_e */
+elliptic_e(x, 1);
+2*round(x/%pi)+sin(x);
+
+elliptic_e(3,1/2);
+elliptic_e(3-%pi,1/2)+2*elliptic_ec(1/2);
