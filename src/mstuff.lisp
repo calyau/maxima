@@ -21,7 +21,7 @@
 	  (mfunction1 (setq bfun (getopr f))))
     (when (member bfun '(lessthan great) :test #'eq)
       (setq llist (mapcar #'ratdisrep llist)))
-    (cons '(mlist) (sort llist comparfun))))
+    (cons '(mlist) (stable-sort llist comparfun))))
 
 ;; cmulisp does not like the closure version.  Clisp insists on the
 ;; closure version.  Gcl likes either...  For the moment we will

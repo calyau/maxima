@@ -889,7 +889,7 @@ See @mref{first} for more details.
 @deffnx {Function} sort (@var{L})
 
 Sorts a list @var{L} according to a predicate @code{P} of two arguments, such
-that @code{@var{P} (@var{L}[k], @var{L}[k + 1])} is @code{true} for any two 
+that @code{@var{P}(@var{L}[k + 1], @var{L}[k])} is @code{false} for any two 
 successive elements.  The predicate may be specified as the name of a function 
 or binary infix operator, or as a @code{lambda} expression.  If specified as
 the name of an operator, the name is enclosed in "double quotes".
@@ -900,10 +900,15 @@ the elements of @var{L}.
 @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 
 @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-If the predicate @var{P} is not a total order on the elements of @var{L}, then 
-@code{sort} might run to completion without error, but the result is undefined.
+It is assumed the predicate @var{P} is a strict total order on the elements of @var{L}.
+If not, @code{sort} might run to completion without error, but the result is undefined.
 @code{sort} complains if the predicate evaluates to something other than 
 @code{true} or @code{false}.
+
+@code{sort} is a stable sort:
+if two elements @var{x} and @var{y} are equivalent in the sense that
+@code{@var{P}(@var{x}, @var{y})} and @code{@var{P}(@var{y}, @var{x})} are both @code{false},
+then the relative order of @var{x} and @var{y} in @var{L} is preserved by @code{sort}.
 
 @code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
 That is, the default sorting order is ascending, as determined by 
