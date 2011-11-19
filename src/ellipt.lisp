@@ -1452,8 +1452,9 @@ first kind:
     ;;
     ;; F(z|m) = F(z - pi*round(Re(z)/pi)|m) + 2*round(Re(z)/pi)*K(m)
     (let ((period (round (realpart phi-arg) pi)))
-      (+ (base (- phi-arg (* pi period)) m-arg)
-	 (* 2 period (elliptic-k m-arg))))))
+      (add (base (- phi-arg (* pi period)) m-arg)
+	   (mul (mul 2 period)
+		(elliptic-k m-arg))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
@@ -1949,7 +1950,10 @@ first kind:
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
 	   `((%elliptic_ec) ,m))
-	  (($numberp phi)
+	  ((and ($numberp phi)
+		(let ((r ($round (div phi '$%pi))))
+		  (and ($numberp r)
+		       (not (zerop1 r)))))
 	   ;; Handle the case where phi is a number where we can apply
 	   ;; the periodicity property without blowing up the
 	   ;; expression.
