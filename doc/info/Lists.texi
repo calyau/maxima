@@ -888,106 +888,185 @@ See @mref{first} for more details.
 @deffn  {Function} sort (@var{L}, @var{P})
 @deffnx {Function} sort (@var{L})
 
-Sorts a list @var{L} according to a predicate @code{P} of two arguments, such
-that @code{@var{P}(@var{L}[k + 1], @var{L}[k])} is @code{false} for any two 
-successive elements.  The predicate may be specified as the name of a function 
+Sorts a list @var{L} according to a predicate @code{P} of two arguments
+which defines a strict weak order on the elements of @var{L}.
+If @code{@var{P}(a, b)} is @code{true}, then @code{a} appears before @code{b} in the result.
+If neither @code{@var{P}(a, b)} nor @code{@var{P}(b, a)} are @code{true},
+then @code{a} and @code{b} are equivalent, and appear in the result in the same order as in the input.
+That is, @code{sort} is a stable sort.
+
+If @code{@var{P}(a, b)} and @code{@var{P}(b, a)} are both @code{true} for some elements of @var{L},
+then @var{P} is not a valid sort predicate, and the result is undefined.
+If @code{@var{P}(a, b)} is something other than @code{true} or @code{false}, @code{sort} signals an error.
+
+The predicate may be specified as the name of a function 
 or binary infix operator, or as a @code{lambda} expression.  If specified as
-the name of an operator, the name is enclosed in "double quotes".
+the name of an operator, the name must be enclosed in double quotes.
 
-The sorted list is returned as a new object; the argument @var{L} is not
-modified.  To construct the return value, @code{sort} makes a shallow copy of
-the elements of @var{L}.
-@c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
+The sorted list is returned as a new object; the argument @var{L} is not modified.
 
-@c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-It is assumed the predicate @var{P} is a strict total order on the elements of @var{L}.
-If not, @code{sort} might run to completion without error, but the result is undefined.
-@code{sort} complains if the predicate evaluates to something other than 
-@code{true} or @code{false}.
+@code{sort(@var{L})} is equivalent to @code{sort(@var{L}, orderlessp)}.
 
-@code{sort} is a stable sort:
-if two elements @var{x} and @var{y} are equivalent in the sense that
-@code{@var{P}(@var{x}, @var{y})} and @code{@var{P}(@var{y}, @var{x})} are both @code{false},
-then the relative order of @var{x} and @var{y} in @var{L} is preserved by @code{sort}.
+The default sorting order is ascending, as determined by @mrefdot{orderlessp} The predicate @code{ordergreatp} sorts a list in descending order.
 
-@code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
-That is, the default sorting order is ascending, as determined by 
-@mrefdot{orderlessp}  All Maxima atoms and expressions are comparable under
-@code{orderlessp}.
+All Maxima atoms and expressions are comparable under @code{orderlessp} and @code{ordergreatp}.
 
-The predicate @code{ordergreatp} sorts a list in descending order.  The
-predicate @code{ordermagnitudep} sorts Maxima numbers, constant symbols with a
-numerical value, or expressions which can be evaluated to a constant by
-magnitude.  All other elements of the list @var{L} are sorted by
-@code{orderlessp}.  The predicate @code{"<"} allows the ordering by magnitude
-too, but does not order completely if elements in the list @var{L} are not
-comparable under @code{"<"}.
+Operators @code{<} and @code{>} order numbers, constants, and constant expressions by magnitude.
+Note that @code{orderlessp} and @code{ordergreatp} do not order numbers, constants, and constant expressions by magnitude.
+
+@code{ordermagnitudep} orders numbers, constants, and constant expressions the same as @code{<},
+and all other elements the same as @code{orderlessp}.
 
 Examples:
 
+@code{sort} sorts a list according to a predicate of two arguments
+which defines a strict weak order on the elements of the list.
+
 @c ===beg===
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 
-@c       19 - 3 * x]);
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], 
-@c       ordergreatp);
-@c sort ([%pi, 3, 4, %e, %gamma]);
-@c sort ([%pi, 3, 4, %e, %gamma], "<");
-@c my_list: [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
-@c sort (my_list);
-@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), 
-@c       reverse (b))));
+@c sort ([1, a, b, 2, 3, c], 'orderlessp);
+@c sort ([1, a, b, 2, 3, c], 'ordergreatp);
 @c ===end===
 @example
 @group
-(%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c,
-      19 - 3 * x]);
-               5
-(%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
-               2
-@end group
-@group
-(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x],
-      ordergreatp);
-                                                   5
-(%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
-                                                   2
-@end group
-@group
-(%i3) sort ([%pi, 3, 4, %e, %gamma]);
-(%o3)                [3, 4, %e, %gamma, %pi]
-@end group
-@group
-(%i4) sort ([%pi, 3, 4, %e, %gamma], "<");
-(%o4)                [%gamma, %e, 3, %pi, 4]
-@end group
-@group
-(%i5) my_list: [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
-(%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
-@end group
-@group
-(%i6) sort (my_list);
-(%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
-@end group
-@group
-(%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a),
-      reverse (b))));
-(%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+(%i1) sort ([1, a, b, 2, 3, c], 'orderlessp);
+(%o1)                  [1, 2, 3, a, b, c]
+(%i2) sort ([1, a, b, 2, 3, c], 'ordergreatp);
+(%o2)                  [c, b, a, 3, 2, 1]
 @end group
 @end example
 
-Order Maxima numbers, constants, and constants expressions by magnitude, and
-all other elements in ascending sorting order:
+The predicate may be specified as the name of a function 
+or binary infix operator, or as a @code{lambda} expression.  If specified as
+the name of an operator, the name must be enclosed in double quotes.
 
 @c ===beg===
-@c sort ([%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0],
-@c      ordermagnitudep);
+@c L : [[1, x], [3, y], [4, w], [2, z]];
+@c foo (a, b) := a[1] > b[1];
+@c sort (L, 'foo);
+@c infix (">>");
+@c a >> b := a[1] > b[1];
+@c sort (L, ">>");
+@c sort (L, lambda ([a, b], a[1] > b[1]));
 @c ===end===
 @example
 @group
-(%i1) sort ([%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0],
-     ordermagnitudep);
-(%o1) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
+(%i1) L : [[1, x], [3, y], [4, w], [2, z]];
+(%o1)           [[1, x], [3, y], [4, w], [2, z]]
+(%i2) foo (a, b) := a[1] > b[1];
+(%o2)                 foo(a, b) := a  > b
+                                    1    1
+(%i3) sort (L, 'foo);
+(%o3)           [[4, w], [3, y], [2, z], [1, x]]
+(%i4) infix (">>");
+(%o4)                          >>
+(%i5) a >> b := a[1] > b[1];
+(%o5)                   a >> b := a  > b
+                                   1    1
+(%i6) sort (L, ">>");
+(%o6)           [[4, w], [3, y], [2, z], [1, x]]
+(%i7) sort (L, lambda ([a, b], a[1] > b[1]));
+(%o7)           [[4, w], [3, y], [2, z], [1, x]]
+@end group
+@end example
+
+@code{sort(@var{L})} is equivalent to @code{sort(@var{L}, orderlessp)}.
+
+@c ===beg===
+@c L : [a, 2*b, -5, 7, 1 + %e, %pi];
+@c sort (L);
+@c sort (L, 'orderlessp);
+@c ===end===
+@example
+@group
+(%i1) L : [a, 2*b, -5, 7, 1 + %e, %pi];
+(%o1)             [a, 2 b, - 5, 7, %e + 1, %pi]
+(%i2) sort (L);
+(%o2)             [- 5, 7, %e + 1, %pi, a, 2 b]
+(%i3) sort (L, 'orderlessp);
+(%o3)             [- 5, 7, %e + 1, %pi, a, 2 b]
+@end group
+@end example
+
+The default sorting order is ascending, as determined by @mrefdot{orderlessp} The predicate @code{ordergreatp} sorts a list in descending order.
+
+@c ===beg===
+@c L : [a, 2*b, -5, 7, 1 + %e, %pi];
+@c sort (L);
+@c sort (L, 'ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) L : [a, 2*b, -5, 7, 1 + %e, %pi];
+(%o1)                    [a, 2 b, - 5, 7, %e + 1, %pi]
+(%i2) sort (L);
+(%o2)                    [- 5, 7, %e + 1, %pi, a, 2 b]
+(%i3) sort (L, 'ordergreatp);
+(%o3)                    [2 b, a, %pi, %e + 1, 7, - 5]
+@end group
+@end example
+
+All Maxima atoms and expressions are comparable under @code{orderlessp} and @code{ordergreatp}.
+
+@c ===beg===
+@c L : [11, -17, 29b0, 9*c, 7.55, foo(x, y), -5/2, b + a];
+@c sort (L, orderlessp);
+@c sort (L, ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) L : [11, -17, 29b0, 9*c, 7.55, foo(x, y), -5/2, b + a];
+                                                 5
+(%o1)  [11, - 17, 2.9b1, 9 c, 7.55, foo(x, y), - -, b + a]
+                                                 2
+(%i2) sort (L, orderlessp);
+                5
+(%o2)  [- 17, - -, 7.55, 11, 2.9b1, b + a, 9 c, foo(x, y)]
+                2
+(%i3) sort (L, ordergreatp);
+                                                  5
+(%o3)  [foo(x, y), 9 c, b + a, 2.9b1, 11, 7.55, - -, - 17]
+                                                  2
+@end group
+@end example
+
+Operators @code{<} and @code{>} order numbers, constants, and constant expressions by magnitude.
+Note that @code{orderlessp} and @code{ordergreatp} do not order numbers, constants, and constant expressions by magnitude.
+
+@c ===beg===
+@c L : [%pi, 3, 4, %e, %gamma];
+@c sort (L, ">");
+@c sort (L, ordergreatp);
+@c ===end===
+@example
+@group
+(%i1) L : [%pi, 3, 4, %e, %gamma];
+(%o1)                [%pi, 3, 4, %e, %gamma]
+(%i2) sort (L, ">");
+(%o2)                [4, %pi, 3, %e, %gamma]
+(%i3) sort (L, ordergreatp);
+(%o3)                [%pi, %gamma, %e, 4, 3]
+@end group
+@end example
+
+@code{ordermagnitudep} orders numbers, constants, and constant expressions the same as @code{<},
+and all other elements the same as @code{orderlessp}.
+
+@c ===beg===
+@c L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
+@c sort (L, ordermagnitudep);
+@c sort (L, orderlessp);
+@c ===end===
+@example
+@group
+(%i1) L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
+(%o1) [%i, %i + 1, 2 x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 
+                                                           1.0b0]
+(%i2) sort (L, ordermagnitudep);
+(%o2) [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, 
                                                      %i + 1, 2 x]
+(%i3) sort (L, orderlessp);
+(%o3) [0, 1, 1.0, 2, 3, %e, %i, %i + 1, inf, minf, sin(1), 
+                                                      1.0b0, 2 x]
 @end group
 @end example
 
