@@ -308,7 +308,7 @@
 (defun gamma (x)
   (bigfloat (maxima::$bfloat (maxima::take '(maxima::%gamma) (maxima::to x)))))
 
-;; This is DLMF: http://dlmf.nist.gov/15.15#E1 with zo = 1/2. Alsom here is Maxima code that
+;; This is DLMF: http://dlmf.nist.gov/15.15#E1 with zo = 1/2. Also here is Maxima code that
 ;; sums the first n+1 terms of the sum. The CL function 2f1-numeric-alt uses a running
 ;; error and it sums until three consectutive partial sums have a modified relative difference
 ;; that is bounded by the machine epsilon.
@@ -358,6 +358,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
      
     (setq d (delete-if #'(lambda(s) (null (second s))) d))
     ;; Sort d from least to greatest magnitude.
+    ;;(print `(d = ,d))
     (setq d (sort d #'(lambda (a b) (< (second a) (second b)))))
     (setq region (first (first d)))
     ;;(print `(region = ,region))
@@ -417,6 +418,9 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 		    (maxima::mfuncall 'maxima::$abramowitz_id ff region)))
 	  (if (maxima::$second f)
 	      (setq d nil f (maxima::$first f)) (setq region (first (pop d)))))
+	
+	;;(maxima::displa f)
+	;;(maxima::displa `((maxima::mequal) maxima::z ,mx))
 	(setq f (multiple-value-list
 		 (maxima::nfloat f `((maxima::mlist) ((maxima::mequal) maxima::z ,mx)) 
 				 digits maxima::$max_fpprec)))
@@ -441,18 +445,22 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
       (setq s0 (+ s z))
       (setq es (+ es ez (abs s0))))
    
+    ;;(print `(k = ,k))
     (if (>= k stop) (values nil nil) 
       (progn
 	;; estimate number of correct digits:
+
 	(setq dig (floor 
 		   (*
-		    (- (log (max (abs s) (epsilon (bigfloat x)))) (log (* es (epsilon (bigfloat x)))))
+		    (- (log (max (abs s) (epsilon x))) (log (* es (epsilon x))))
 		    #.(/ (log 2) (log 10)))))
-	;(print "-----------")
-	;(print `(terms = ,k))
-	;(print `(s = ,(maxima::$float (maxima::to es))))
-	;(print `(es = ,(maxima::$float (maxima::to es))))
-	;(print `(dig = ,(maxima::$float (maxima::to dig))))
+
+	;;(print "-----------")
+	;;(maxima::displa `((maxima::mequal) k ,k))
+	;;(maxima::displa `((maxima::mequal) xxx ,(maxima::to (epsilon x))))
+	;;(maxima::displa `((maxima::mequal) es ,(maxima::$float (maxima::to es))))
+	;;(maxima::displa `((maxima::mequal) s ,(maxima::$float (maxima::to s))))
+	;;(maxima::displa `((maxima::mequal) dig ,(maxima::$float (maxima::to dig))))
 	(values s dig)))))
  
 (defun hypergeometric-poly-case (a b x)
@@ -721,7 +729,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	(t (merror "Maxima does not know the derivatives of the hypergeometric functions with respect to the parameters"))))
 
 
-														;; TeX hypergeometric([a],[b,c],x) as $$F\left( \begin{bmatrix}a\\b\;\,c\end{bmatrix} ,x\right)$$
+;; TeX hypergeometric([a],[b,c],x) as $$F\left( \begin{bmatrix}a\\b\;\,c\end{bmatrix} ,x\right)$$
 ;; For no good reason, I'm not so fond of pFq notation. Some newer references don't use
 ;; the pFq notation.
 
@@ -763,4 +771,3 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
       (mul prod_b-1 (inv prod_a-1) (take '($hypergeometric) a-1 b-1 z)))))
 
 (putprop '$hypergeometric `((a b z) nil nil ,#'hyp-integral-3) 'integral)
-

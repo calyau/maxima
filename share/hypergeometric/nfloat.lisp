@@ -208,12 +208,13 @@
 
 (defun running-error-eval (e subs bits)
   (let ((f))
-    ;(print `(e = ,e))
-    (cond ;;((maxima::complex-number-p e #'maxima::$ratnump)
-	  ;; (list (bigfloat::to e) 0))
-	  
+   
+    (cond ((eq e 'maxima::$%i) 
+	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0d0)) (maxima::$bfloat 1) (maxima::$float 1))))
+	   (list (bigfloat::to 0 e) (abs e)))
+	 
 	  ((maxima::complex-number-p e #'(lambda (s) (or (maxima::$ratnump s) (maxima::$numberp s))))
-	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0e0)) (maxima::$bfloat e) (maxima::$float e))))
+	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0d0)) (maxima::$bfloat e) (maxima::$float e))))
 	   (list e (abs e)))
 	  
 	  ((and (atom e) (maxima::mget e '$numer))
@@ -321,6 +322,8 @@
 (defun not-done (err f eps machine-eps)
   (> (* machine-eps err) (* eps (max (abs f) 1))))
 
+;;(defmethod epsilon ((x integer)) 0)
+
 (in-package :maxima)
 		
 (defun nfloat (e subs digits max-digits)
@@ -338,7 +341,11 @@
 			 (< digits max-digits))
 	       (bind-fpprec digits 
 			    (setq z (bigfloat::running-error-eval e subs fpprec))
-			    (setq machine-epsilon (if (second z) (bigfloat::epsilon (second z)) nil))
+			    (setq machine-epsilon 
+				  (cond ((not (second z)) nil)
+					((integerp (second z)) 0)
+					(t (bigfloat::epsilon (second z)))))
+					
 			    (setq digits (* 2 digits))))
 	     
 	     (if (or (null (first z)) (>= digits max-digits))
@@ -368,15 +375,4 @@
 		  (setq f (nfloat e subs digits max-digits))
 		  (if (complex-number-p f 'bigfloat-or-number-p) f 
 		    `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec)))))
-	  (t  `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec)))))
-		
-
-    
-    
-	
-  
-	  
-
-
-
-   
+	  (t  `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec))))) 
