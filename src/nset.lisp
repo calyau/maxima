@@ -1113,6 +1113,7 @@
 (def-nary '$max (s) (if (null s) '$minf (maximin s '$max)) '$minf)
 (def-nary '$min (s) (if (null s) '$inf (maximin s '$min)) '$inf)
 (def-nary '$append (s) (xappend s) '((mlist)))
+(def-nary '$union (s) ($apply '$union (cons '(mlist) s)) '(($set)))
 
 ;; Extend a function f : S x S -> S to n arguments. When we 
 ;; recognize f as a nary function (associative), if possible we call a Maxima
@@ -1294,14 +1295,19 @@
    ;; NOT CLEAR FROM PRECEDING CODE WHAT IS "INVALID" HERE
    (merror (intl:gettext "some: invalid arguments.")))))
 
-(defun $makeset (f v s)
-  (if (or (not ($listp v)) 
-	  (not (every #'(lambda (x) (or ($atom x) ($subvarp x))) (cdr v))))
-      (merror (intl:gettext "makeset: second argument must be a list of atoms or subscripted variables; found: ~:M") v))
-  (setq s (require-list-or-set s "$makeset"))
-
-  (setq f `((lambda) ,v ,f))
-  `(($set) ,@(mapcar #'(lambda (x) (mfuncall '$apply f x)) s)))
+(defmspec $makeset (l)
+  (let* ((fn (car (pop l)))
+	 (f (if l (pop l) (wna-err fn)))
+	 (v (if l (pop l) (wna-err fn)))
+	 (s (if l (pop l) (wna-err fn))))
+    (if l (wna-err fn))
+    (if (or (not ($listp v)) (not (every #'(lambda (x) (or ($symbolp x) ($subvarp x))) (cdr v))))
+   	(merror (intl:gettext "makeset: second argument must be a list of symbols; found: ~:M") v))
+    (setq s (require-list-or-set (meval s) "$makeset"))
+    (setq f (list (list 'lambda) v f))
+    (setq v (margs v))
+    (dolist (sk v) (setq f (subst (gensym) sk f :test #'alike1)))
+    (simplifya (cons '($set) (mapcar #'(lambda (x) (mfuncall '$apply f x)) s)) t)))
 
 ;; Thread fn over l and apply op to the resulting list.
 
