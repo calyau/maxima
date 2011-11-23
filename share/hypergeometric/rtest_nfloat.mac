@@ -155,6 +155,16 @@ true$
 (time : (absolute_real_time ()- start), print(time), is(time < 2));
 true$
 
+nfloat(%i,[], 57);
+1.0b0*%i$
+
+nfloat(%i,[], 5);
+1.0*%i$
+
+/* nfloat bug - ID: 3358420 */
+nfloat(1.0*%i,[],20);
+1.0b0 * %i$
+
 (remvalue(start,time), remove(x,complex), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(close_p),0);
 0$
