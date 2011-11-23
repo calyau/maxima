@@ -255,7 +255,7 @@ log(16)/2+log(5)/2-log(2)/2+1/2$
 integrate(exp(-abs(x)),x,-1,inf);
 2-%e^-1$
 
-(convolution(f,g,x) := block([t : make_dummy([e,x],t)],
+(convolution(f,g,x) := block([t : gensym()],
  integrate(subst(x = t,f) * subst(x = x - t, g),t,minf,inf)),
 unit_box(x) := (unit_step(x) - unit_step(x-1)),0);
 0$ 
