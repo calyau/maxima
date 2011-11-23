@@ -1736,3 +1736,7 @@ set(a,b)$
 /* full_listify - ID: 3005820 */
 full_listify(rat(3/4));
 3/4$
+
+/* is union nary? */
+xreduce('union,[]);
+set()$
