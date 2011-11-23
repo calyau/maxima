@@ -58,21 +58,20 @@
 	(t `(($jacobian) ,e ,vars))))
 
 (defun $vandermonde_matrix (l)
-  (let ((x) (row) (acc))
+  (let ((x) (q) (row) (acc nil) (n))
     (setq l (require-list l "$vandermonde_matrix"))
-    (dolist (li l)
-      (setq x 1 row nil)
-      (dolist (lk l)
-	(declare (ignore lk))
-	(push x row)
-	(setq x (mul x li)))
-      (setq row (nreverse row))
-      (push '(mlist) row)
+    (setq n (- (length l) 1))
+    (while l
+      (setq q 1)
+      (setq x (pop l)) 
+      (setq row (list 1))
+      (dotimes (j n)
+	(setq q (mul q x))
+	(push q row))
+      (setq row (cons '(mlist) (nreverse row)))
       (push row acc))
-    (setq acc (nreverse acc))
-    (push '($matrix) acc)
-    acc))
-
+    (simplify (cons '($matrix) (nreverse acc)))))
+		    
 ;; Use Sylvester's criterion to decide if the self-adjoint part of a matrix is 
 ;; negative definite (neg) or positive definite (pos). For all other cases, return 
 ;; pnz. This algorithm is unable to determine if a matrix is negative semidefinite 
@@ -187,15 +186,3 @@
       (setq v (ncmul mat v))
       (setq acc ($addcol acc v)))
     acc))
-
-
-    
-
-
-      
-    
-    
-    
-
-    
-    
