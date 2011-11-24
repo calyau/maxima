@@ -210,11 +210,11 @@
   (let ((f))
    
     (cond ((eq e 'maxima::$%i) 
-	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0d0)) (maxima::$bfloat 1) (maxima::$float 1))))
+	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0e0)) (maxima::$bfloat 1) (maxima::$float 1))))
 	   (list (bigfloat::to 0 e) (abs e)))
 	 
 	  ((maxima::complex-number-p e #'(lambda (s) (or (maxima::$ratnump s) (maxima::$numberp s))))
-	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0d0)) (maxima::$bfloat e) (maxima::$float e))))
+	   (setq e (bigfloat::to (if (> bits #.(float-digits 1.0e0)) (maxima::$bfloat e) (maxima::$float e))))
 	   (list e (abs e)))
 	  
 	  ((and (atom e) (maxima::mget e '$numer))
