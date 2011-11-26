@@ -3,10 +3,15 @@
 ;;;;;;;;Copyright (c) University of Waikato;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;Hamilton, New Zeland 1992-95 - all rights reserved;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;; NOTE: If you change this file, please file a ticket to the f2cl
+;;; project (trac.common-lisp.net/f2cl/wiki) so that the changes can
+;;; be incorporated into the official version.
 (in-package :f2cl-lib)
 
 (defparameter *f2cl-macros-version*
-  "Id: macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+  "$Id: macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
 (eval-when
     #+gcl (compile load eval)
@@ -64,6 +69,7 @@ is not included")
 
 (defconstant %false% nil)
 (defconstant %true% t)
+
 ;;------------------------------------------------------------------------------
 
 ;;-----------------------------------------------------------------------------
@@ -260,12 +266,15 @@ is not included")
 	(cond				; all iterations done
 	  ((zerop ,iteration_count) nil)
 	  ;; execute loop, in/de-crement loop vble and decrement cntr
-	  ,(cons 't 
-		 (append 
-		  (append body
-			  `((setq ,loop-var (the integer4 ,(third do_vble_clause))
-			     ,iteration_count (the integer4 (1- ,iteration_count)))))
-		  '((go loop)))))))))
+	  ,(list 't
+		  (append '(tagbody)
+			  (append 
+			   (append body
+				   `(continue
+				     (setq ,loop-var (the integer4 ,(third do_vble_clause))
+					   ,iteration_count (the integer4 (1- ,iteration_count)))))
+			   '((go loop)))))))
+      exit)))
 
 ;;----------------------------------------------------------------------------
 ;; macro for division 
@@ -380,13 +389,22 @@ is not included")
     (double-float
      (truncate (the (double-float #.(float most-negative-fixnum 1d0)
 				  #.(float most-positive-fixnum 1d0))
-		 x)))
+		    x)))
     #+clisp
     (long-float
      (truncate (the (long-float #.(float most-negative-fixnum 1l0)
 				#.(float most-positive-fixnum 1l0))
 		 x)))
-    ))
+    ((complex single-float)
+     (the integer4
+       (truncate (the (single-float #.(float (- (ash 1 31)))
+				    #.(float (1- (ash 1 31))))
+		      (realpart x)))))
+    ((complex double-float)
+     (the integer4
+       (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
+				    #.(float (1- (ash 1 31)) 1d0))
+		      (realpart x)))))))
 
 #+(or cmu scl)
 (defun int (x)
@@ -419,7 +437,16 @@ is not included")
        (truncate (the (kernel:double-double-float #.(float (- (ash 1 31)) 1w0)
 						  #.(float (1- (ash 1 31)) 1w0))
 		   x))))
-    ))
+    ((complex single-float)
+     (the integer4
+	  (truncate (the (single-float #.(float (- (ash 1 31)))
+				       #.(float (1- (ash 1 31))))
+			 (realpart x)))))
+    ((complex double-float)
+     (the integer4
+	  (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
+				       #.(float (1- (ash 1 31)) 1d0))
+			 (realpart x)))))))
 
 
 (defun ifix (x)
@@ -1581,9 +1608,17 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.22 2010-12-28 00:05:02 rtoy Exp $
-;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.22  2010-12-28 00:05:02  rtoy
+;;; $Id: macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $
+;;; $Log$
+;;; Revision 1.117  2011/02/28 22:21:07  rtoy
+;;; When opening an old file, we should set :if-exists to :overwrite to
+;;; overwrite the file if written too.
+;;;
+;;; Revision 1.116  2011/02/20 20:51:04  rtoy
+;;; Oops.  STOP should signal an error if *STOP-SIGNALS-ERROR-P* is
+;;; non-NIL.
+;;;
+;;; Revision 1.115  2010/12/28 00:06:52  rtoy
 ;;; Assert the type of the arg to fsqrt to be non-negative, excluding
 ;;; negative zero.
 ;;;
