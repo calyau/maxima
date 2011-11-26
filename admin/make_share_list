@@ -19,9 +19,9 @@ egrep -v '/fortran/' |
 egrep -v 'colnew/ex./' |
 egrep -v 'lbfgs/.*\.f' |
 egrep -v '/\.#' |
-egrep -v '~' |
+egrep -v '~|#' |
 sed -e 's;../share/;;' -e 's%\./%%' -e 's%$% \\%' |
-sort |
+sort -f -d |
 sed '$s/\\$//'
 )  > sharefiles.mk.$$
 
