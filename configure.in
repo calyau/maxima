@@ -75,6 +75,18 @@ if test x"${clisp}" = xtrue ; then
 	fi	   
 fi
 
+dnl See if git exists.  If it does, update VERSION to include a git tag
+AC_CHECK_PROG(git_found, git, true, false)
+if test x"${git_found}" = xtrue; then
+    # Test to see if git describe works (discarding any output).  If
+    # it works, use it.  Otherwise, use --tags to use any tag.
+    if git describe > /dev/null 2>&1; then
+        VERSION="${VERSION}/`git describe --dirty`"
+    else
+        VERSION="${VERSION}/`git describe --tags --dirty`"
+    fi
+fi
+
 dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
 CMUCL_RUNTIME=lisp
