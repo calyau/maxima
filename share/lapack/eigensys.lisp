@@ -41,14 +41,15 @@
 (defun lapack-maxify-matrix (nrow ncol a)
   "Convert an LAPACK matrix of dimensions NROW and NCOL into a Maxima
 matrix (list of lists)"
-  (let ((2d (make-array (list ncol nrow) :element-type 'flonum
+  (let ((2d (make-array (list ncol nrow) :element-type (array-element-type a)
 			:displaced-to a)))
     (let (res)
       (dotimes (r nrow)
 	(let (row)
 	  (dotimes (c ncol)
 	    ;; Fortran arrays are column-major order!
-	    (push (aref 2d c r) row))
+	    (let ((v (aref 2d c r)))
+	      (push (add (realpart v) (mul '$%i (imagpart v))) row)))
 	  (push `((mlist) ,@(nreverse row)) res)))
       `(($matrix) ,@(nreverse res)))))
 
@@ -303,3 +304,68 @@ squares).  Note that  max(abs(A(i,j)))  is not a  matrix norm."
 			     :element-type 'flonum)))
       (lapack::zlange norm-type nrows ncols a-mat nrows work))))
       
+(defun $zgeev (a &optional right-vec-p left-vec-p)
+  "
+ZGEEV computes for an N-by-N complex nonsymmetric matrix A, the
+eigenvalues and, optionally, the left and/or right eigenvectors.
+
+The right eigenvector v(j) of A satisfies
+                 A * v(j) = lambda(j) * v(j)
+where lambda(j) is its eigenvalue.
+The left eigenvector u(j) of A satisfies
+              u(j)**H * A = lambda(j) * u(j)**H
+where u(j)**H denotes the conjugate transpose of u(j).
+
+The computed eigenvectors are normalized to have Euclidean norm
+equal to 1 and largest component real.
+
+A list of three items is returned.  The first item is a list of the
+eigenvectors.  The second item is false or the matrix of right
+eigenvectors.  The last itme is false or the matrix of left
+eigenvectors."
+  (flet ((make-eigval (w)
+	   `((mlist) ,@(map 'list #'(lambda (z)
+				      (add (realpart z) (mul '$%i (imagpart z))))
+			    w))))
+    
+    (let* ((n (maxima-matrix-dims a))
+	   (a-mat (lapack-lispify-matrix a n n))
+	   (w (make-array n :element-type '(complex flonum)))
+	   (vl (make-array (if left-vec-p (* n n) 0)
+			   :element-type '(complex flonum)))
+	   (vr (make-array (if right-vec-p (* n n) 0)
+			   :element-type '(complex flonum)))
+	   (rwork (make-array 1 :element-type 'flonum)))
+      ;; XXX: FIXME: We need to do more error checking in the calls to
+      ;; zgeev!
+      (multiple-value-bind (z-jobvl z-jobvr z-n z-a z-lda z-wr z-wi z-vl
+				    z-ldvl z-vr z-ldvr z-work z-lwork info)
+	  ;; Figure out how much space we need in the work array.
+	  (lapack:zgeev (if left-vec-p "V" "N")
+			(if right-vec-p "V" "N")
+			n a-mat n w vl n vr n w -1 rwork 0)
+	(declare (ignore z-jobvl z-jobvr z-n z-a z-lda z-wr z-wi z-vl
+			 z-ldvl z-vr z-ldvr z-work z-lwork info))
+	(let* ((opt-lwork (truncate (realpart (aref w 0))))
+	       (work (make-array opt-lwork :element-type '(complex flonum)))
+	       (rwork (make-array opt-lwork :element-type 'flonum)))
+	  ;; Now do the work with the optimum size of the work space.
+	  (multiple-value-bind (z-jobvl z-jobvr z-n z-a z-lda z-wr z-wi z-vl
+					z-ldvl z-vr z-ldvr z-work z-lwork info)
+	      (lapack:zgeev (if left-vec-p "V" "N")
+			    (if right-vec-p "V" "N")
+			    n a-mat n w vl n vr n work opt-lwork rwork 0)
+	    (declare (ignore z-jobvl z-jobvr z-n z-a z-lda z-wr z-wi z-vl
+			     z-ldvl z-vr z-ldvr z-work z-lwork))
+	    (cond ((< info 0)
+		   (merror "ZGEEV: invalid arguments: ~D" info))
+		  ((> info 0)
+		   (merror "ZGEEV: failed to converge: ~D" info)))
+	    (let ((e-val (make-eigval w))
+		  (e-vec-right (if right-vec-p
+				   (lapack-maxify-matrix n n vr)
+				   nil))
+		  (e-vec-left (if left-vec-p
+				  (lapack-maxify-matrix n n vl)
+				  nil)))
+	      `((mlist) ,e-val ,e-vec-right ,e-vec-left))))))))
