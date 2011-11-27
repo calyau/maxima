@@ -5,7 +5,7 @@
 @c Original    : Polynomials.texi revision 03.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 11.12.2010
-@c Revision    : 03.08.2011
+@c Revision    : 27.11.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -52,7 +52,8 @@ Diesem Paar geht eine Liste mit der Ordnung der Variablen im Ausdruck voraus.
 Ein Ausdruck in einer CRE-Form oder der CRE-Formen enth@"alt, wird in der 
 Ausgabe mit dem Symbol @code{/R/} gekennzeichnet.  Mit der Funktion
 @mref{rat} k@"onnen allgemeine Ausdr@"ucke in eine CRE-Form transformiert
-werden.
+werden.  Umgekehrt wird ein Ausdruck in einer CRE-Form mit der Funktion
+@mref{ratdisrep} in eine allgemeine Form transformiert.
 
 F@"ur die Darstellung von Taylor-Polynomen der Funktion @mref{taylor} wird eine
 erweiterte CRE-Form verwendet.  In dieser Darstellung k@"onnen die Exponenten
@@ -66,25 +67,49 @@ dem Symbol @code{/T/} bezeichnet.
 @section Funktionen und Variablen f@"ur Polynome
 @c -----------------------------------------------------------------------------
 
-@c --- 11.12.2010 DK -----------------------------------------------------------
+@c --- 27.11.2011 DK -----------------------------------------------------------
 @anchor{algebraic}
 @defvr {Optionsvariable} algebraic
 Standardwert: @code{false}
 
-@c TODO: BESCHREIBUNG IST ZU KURZ. BEISPIELE FEHLEN.
+Hat die Optionsvariable @code{algebraic} den Wert @code{true}, wird beim
+Umwandeln von Ausdr@"ucken in die CRE-Form und beim Rechnen mit Ausdr@"ucken
+in einer CRE-Form der Ausdruck so vereinfacht, dass der Nenner frei von
+algebraischen Zahlen (das sind Wurzeln von ganzen Zahlen) ist.
 
-Die Optionsvariable @code{algebraic} muss den Wert @code{true} haben, damit
-algebraische Zahlen vereinfacht werden.
+@need 800
+Beispiele:
+
+Im zweiten Beispiel wird der Ausdruck automatisch mit @code{sqrt(2)} erweitert,
+um den Nenner frei von der algebraischen Zahl @code{sqrt(2)} zu machen.
+
+@example
+(%i1) algebraic:false;
+(%o1)                         false
+(%i2) rat(x^2+x)/sqrt(2);
+                              2
+                             x  + x
+(%o2)/R/                     -------
+                             sqrt(2)
+(%i3) algebraic:true;
+(%o3)                         true
+(%i4) rat(x^2+x)/sqrt(2);
+                              2
+                     sqrt(2) x  + sqrt(2) x
+(%o4)/R/             ----------------------
+                               2
+@end example
 @end defvr
 
-@c --- 11.12.2010 DK -----------------------------------------------------------
+@c --- 27.11.2011 DK -----------------------------------------------------------
 @anchor{berlefact}
 @defvr {Optionsvariable} berlefact
 Standardwert: @code{true}
 
 Hat die Optionsvariable @code{berlefact} den Wert @code{false}, dann wird der
-Kronecker-Al@-go@-rith@-mus f@"ur die Faktorisierung genutzt.  Ansonsten wird
-der Berlekamp-Algorithmus genutzt.  Der Standardwert ist @code{true}.
+Kronecker-Al@-go@-rith@-mus von der Funktion @mref{factor} f@"ur die
+Faktorisierung genutzt.  Ansonsten wird der Berlekamp-Algorithmus genutzt.  Der
+Standardwert ist @code{true}.
 @end defvr
 
 @c --- 19.02.2011 DK -----------------------------------------------------------
@@ -154,16 +179,16 @@ nutzt, um den linearen Anteil eines Ausdrucks zu ermitteln.
 @deffnx {Funktion} coeff (@var{expr}, @var{x})
 
 Gibt den Koeffizienten von @code{@var{x}^@var{n}} des Ausdrucks @var{expr}
-zur@"uck, wobei @var{expr} ein Polynom ist.
+zur@"uck.  Das Argument @var{expr} ist ein Polynom in der Variablen @var{x}.
 
 Das Kommando @code{coeff(@var{expr}, @var{x}^@var{n})} ist @"aquivalent zu
 @code{coeff(@var{expr}, @var{x}, @var{n})}.  Das Kommando
-@code{coeff(@var{expr}, @var{x}, 0)} gibt den Rest des Ausdrucks @var{expr}
+@code{coeff(@var{expr}, @var{x}, 0)} gibt den Teil des Ausdrucks @var{expr}
 zur@"uck, der frei von der Variablen @var{x} ist.  Wenn nicht angegeben, wird
-@var{n} als 1 angenommen.
+das Argument @var{n} als @code{1} angenommen.
 
-@var{x} kann auch eine indizierte Variable oder ein Teilausdruck von @var{expr}
-sein.
+Das Argument @var{x} kann auch eine indizierte Variable oder ein Teilausdruck
+von @var{expr} sein.
 
 @code{coeff} wendet weder die Funktion @code{expand} noch die Funktion 
 @code{factor} an, um einen Ausdruck zu expandieren oder zu faktorisieren.  Daher
@@ -198,7 +223,7 @@ Beispiele:
                                  3
 @end example
 
-@code{coeff(@var{expr}, @var{x}, 0)} gibt den Rest des Ausdrucks @var{expr}
+@code{coeff(@var{expr}, @var{x}, 0)} gibt den Teil des Ausdrucks @var{expr}
 zur@"uck, der frei von der Variablen @var{x} ist.
 
 @example
@@ -265,8 +290,7 @@ Liste zu invertieren.
 
 @example
 coeff_list(a,x) := 
-   block([liste],
-      liste:[],
+   block([liste:[]],
       for i:0 thru hipow(a,x) do 
       (
         liste : cons(coeff(a,x,i),liste)
@@ -345,6 +369,7 @@ Im zweiten Beispiel ist @code{y} die Hauptvariable des Ausdrucks.
 (%o2)                      [- 1, 2 x]
 @end example
 
+@need 800
 Ein Beispiel f@"ur zwei Polynome in zwei Variablen.
 
 @example
@@ -655,7 +680,7 @@ Beispiele:
 Das Polynom @code{x^4+1} l@"asst sich nicht @"uber den K@"orper der ganzen
 Zahlen faktorisieren.  Wird der K@"orper um das minimale Polynom @code{a^2+1}
 erweitert, ist die Faktorisierung m@"oglich.  Die Nullstellen des minimalen
-Polynoms sind die imagin@"are Einheit @code{%i} und @code{- %i}.  Das Ergebnis
+Polynoms sind die imagin@"are Einheit @code{%i} und @code{-%i}.  Das Ergebnis
 entspricht der Faktorisierung mit der Funktion @mrefdot{gfactor}
 
 @example
@@ -686,10 +711,12 @@ Beispiel:
 (%i1) factorflag:false;
 (%o1)                         false
 (%i2) factor(1/6*(x^2+2*x+1));
+@group
                                    2
                             (x + 1)
 (%o2)                       --------
                                6
+@end group
 (%i3) factorflag:true;
 (%o3)                         true
 (%i4) factor(1/6*(x^2+2*x+1));
@@ -1166,19 +1193,10 @@ Ausdruck @var{expr} zu faktorisieren.
 @anchor{hipow}
 @deffn {Funktion} hipow (@var{expr}, @var{x})
 
-@c Returns the highest explicit exponent of @var{x} in @var{expr}.  @var{x} may
-@c be a variable or a general expression.  If @var{x} does not appear in
-@c @var{expr}, @code{hipow} returns @code{0}.
-
-@c @code{hipow} does not consider expressions equivalent to @code{expr}.  In
-@c particular, @code{hipow} does not expand @code{expr}, so 
-@c @code{hipow (@var{expr}, @var{x})} and @code{hipow (expand (@var{expr},
-@c @var{x}))} may yield different results.
-
 Gibt den gr@"o@ss{}ten Exponenten des Arguments @var{x} zur@"uck, der im
 Ausdruck @var{expr} auftritt.  Treten symbolische Exponenten auf, wird ein
 Ausdruck mit @code{max} zur@"uckgegeben.  Ist das Argument @var{x} nicht im
-Ausdruck vorhanden, ist die R@"uckgabe 0.
+Ausdruck vorhanden, ist die R@"uckgabe @code{0}.
 
 Die Funktion @code{hipow} betrachtet keine @"aquivalenten Ausdr@"ucke.  Daher
 k@"onnen die Ausdr@"ucke @code{expand(@var{expr})} und @var{expr} ein
@@ -1186,6 +1204,7 @@ verschiedenes Ergebnis haben.
 
 Siehe auch die Funktionen @mref{lopow} und @mrefdot{coeff}
 
+@need 800
 Beispiele:
 
 @example
@@ -1696,7 +1715,7 @@ Beispiel:
 
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2011 DK -----------------------------------------------------------
 @anchor{rat}
 @deffn  {Funktion} rat (@var{expr})
 @deffnx {Funktion} rat (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
@@ -1710,11 +1729,11 @@ Beispiel:
 @c to the @var{x_1}, ..., @var{x_n}, if specified, as in @code{ratvars}.
 
 Konvertiert einen Ausdruck @var{expr} in die CRE-Form.  Der Ausdruck wird so 
-expandiert und so gruppiert, dass alle Terme einen gemeinsamen Nenner haben und
+expandiert und gruppiert, dass alle Terme einen gemeinsamen Nenner haben und
 der gr@"o@ss{}te gemeinsame Teiler gek@"urzt ist.  Weiterhin werden
 Gleitkommazahlen in rationale Zahlungen umgewandelt.  Die Toleranz der
 Umwandlung wird von der Optionsvariablen @mref{ratepsilon} kontrolliert.  Die
-Variablen im Ausdruck werden entsprechend der Funktion @mref{ratvars}
+Variablen im Ausdruck werden entsprechend der Funktion @mref{ratvars}@w{}
 gem@"a@ss{} der angegebenen Argumente @var{x_1}, @dots{}, @var{x_n} angeordnet.
 
 @c @code{rat} does not generally simplify functions other than addition
@@ -1764,9 +1783,11 @@ umgewandelt wird.
 Hat die Optionsvariable @mref{keepfloat} den Wert @code{true}, werden
 Gleitkommazahlen nicht in rationale Zahlen umgewandelt.
 
-@c See also @code{ratexpand} and  @code{ratsimp}.
+@c See also @code{ratexpand} and @code{ratsimp}.
 
-Siehe auch die Funktionen @mref{ratexpand} und @mrefdot{ratsimp}
+Siehe auch die Funktionen @mref{ratexpand} und @mrefcomma{ratsimp} um
+Ausdr@"ucke zu vereinfachen, sowie die Funktion @mrefcomma{ratdisrep} um einen
+Ausdruck von einer CRE-Form in eine allgemeine Form zu transformieren.
 
 Beispiele:
 
@@ -1895,29 +1916,14 @@ Beispiele:
 @anchor{ratdenom}
 @deffn {Funktion} ratdenom (@var{expr})
 
-@c Returns the denominator of @var{expr},
-@c after coercing @var{expr} to a canonical rational expression (CRE).
-@c The return value is a CRE.
-
 Gibt den Nenner des Argumentes @var{expr} zur@"uck.  @code{ratdenom} wandelt
 den Ausdruck zuerst in eine CRE-Form um und gibt das Ergebnis in einer 
 CRE-Form zur@"uck.
-
-   @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@c @var{expr} is coerced to a CRE by @code{rat}
-@c if it is not already a CRE.
-@c This conversion may change the form of @var{expr} by putting all terms
-@c over a common denominator.
 
 Das Argument @var{expr} wird von der Funktion @mref{rat} in eine CRE-Form
 gebracht, falls @var{expr} nicht bereits in einer CRE-Form vorliegt.  Diese
 Transformation kann den Ausdruck @var{expr} ver@"andern, da alle Terme @"uber
 einen gemeinsamen Nenner zusammengefasst werden.
-
-@c @code{denom} is similar, but returns an ordinary expression instead of a CRE.
-@c Also, @code{denom} does not attempt to place all terms over a common
-@c denominator, and thus some expressions which are considered ratios by
-@c @code{ratdenom} are not considered ratios by @code{denom}.
 
 Die Funktion @mref{denom} ist vergleichbar.  @code{denom} wandelt den Ausdruck
 jedoch nicht eine CRE-Form um und hat als Ergebnis einen Ausdruck in der
@@ -1928,10 +1934,12 @@ Beispiel:
 
 @example
 (%i1) expr: expand((x^2+2*x+3)/(x-1));
+@group
                         2
                        x       2 x      3
 (%o1)                 ----- + ----- + -----
                       x - 1   x - 1   x - 1
+@end group
 (%i2) ratdenom(expr);
 (%o2)/R/                      x - 1
 (%i3) denom(expr);
@@ -2702,6 +2710,7 @@ Die Funktion @mref{bezout} berechnet die Sylvestermatrix der Polynome
 @var{p_1} und @var{p_2}.  Die Determinante der Sylvestermatrix ist die
 Resultante.
 
+@need 800
 Beispiele:
 
 @example
@@ -2806,6 +2815,7 @@ Siehe auch die Funktion @mrefdot{ratvars}
 Entspricht der Funktion @mref{factor} mit dem Unterschied, dass faktorisierte
 Polynome quadratfrei sind.
 
+@need 800
 Beispiel:
 
 @example
