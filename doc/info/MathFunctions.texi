@@ -2086,7 +2086,7 @@ able to further simplify the result.
 @anchor{trigrat}
 @deffn {Function} trigrat (@var{expr})
 
-Gives a canonical simplifyed quasilinear form of a trigonometrical expression;
+Gives a canonical simplified quasilinear form of a trigonometrical expression;
 @var{expr} is a rational fraction of several @code{sin}, @code{cos} or
 @code{tan}, the arguments of them are linear forms in some variables (or
 kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients.
