@@ -888,7 +888,7 @@ See @mref{first} for more details.
 @deffn  {Function} sort (@var{L}, @var{P})
 @deffnx {Function} sort (@var{L})
 
-Sorts a list @var{L} according to a predicate @code{P} of two arguments
+@code{sort(@var{L}, @var{P})} sorts a list @var{L} according to a predicate @code{P} of two arguments
 which defines a strict weak order on the elements of @var{L}.
 If @code{@var{P}(a, b)} is @code{true}, then @code{a} appears before @code{b} in the result.
 If neither @code{@var{P}(a, b)} nor @code{@var{P}(b, a)} are @code{true},
