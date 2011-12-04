@@ -5,7 +5,7 @@
 @c Origignal   : Ctensor.texi revision 14.03.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 04.09.2011
+@c Revision    : 04.12.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 @c -----------------------------------------------------------------------------
 @page
 @node Paket ctensor, Paket atensor, Paket itensor, Tensoren
-@section Paket ctensor
+@section Paket @sc{ctensor}
 @c -----------------------------------------------------------------------------
 
 @menu
@@ -23,34 +23,54 @@
 
 @c -----------------------------------------------------------------------------
 @node Einf@"uhrung in ctensor, Funktionen und Variablen f@"ur ctensor, Paket ctensor, Paket ctensor
-@subsection Einf@"uhrung in ctensor
+@subsection Einf@"uhrung in @sc{ctensor}
 @c -----------------------------------------------------------------------------
 
-@code{ctensor} is a component tensor manipulation package.  To use the 
-@code{ctensor} package, type @code{load(ctensor)}.
-To begin an interactive session with @code{ctensor}, type @code{csetup()}.  
-You are first asked to specify the dimension of the manifold. If the dimension
-is 2, 3 or 4 then the list of coordinates defaults to @code{[x,y]}, 
-@code{[x,y,z]} or @code{[x,y,z,t]} respectively.
-These names may be changed by assigning a new list of coordinates to
-the variable @code{ct_coords} (described below) and the user is queried about
-this. Care must be taken to avoid the coordinate names conflicting
-with other object definitions.
+@c @code{ctensor} is a component tensor manipulation package.  To use the
+@c @code{ctensor} package, type @code{load(ctensor)}.  To begin an interactive
+@c session with @code{ctensor}, type @code{csetup()}.  You are first asked to
+@c specify the dimension of the manifold. If the dimension is 2, 3 or 4 then
+@c the list of coordinates defaults to @code{[x,y]}, @code{[x,y,z]} or
+@c @code{[x,y,z,t]} respectively.  These names may be changed by assigning a
+@c new list of coordinates to the variable @code{ct_coords} (described below)
+@c and the user is queried about this.  Care must be taken to avoid the
+@c coordinate names conflicting with other object definitions.
 
-Next, the user enters the metric either directly or from a file by
-specifying its ordinal position.
-@c NO SUCH FILE !
-@c As an example of a file of common metrics, see @code{share/tensor/metrics.mac}.
-The metric is stored in the matrix
-@code{lg}. Finally, the metric inverse is computed and stored in the matrix
-@code{ug}. One has the option of carrying out all calculations in a power
-series.
+@code{ctensor} ist ein Paket, um mit den Komponenten eines Tensors zu rechnen.
+Das Paket wird mit dem Kommando @code{load(ctensor)} geladen.  Zu Beginn muss
+das Paket mit dem Kommando @mref{csetup} initialisiert werden.  Als erstes wird
+die Anzahl der Dimensionen angegeben.  Werden @code{2}, @code{3} oder @code{4}
+Dimensionen angegeben, dann erhalten die Koordinaten standardm@"a@ss{}ig die
+Bezeichnungen @code{[x,y]}, @code{[x,y,z]} oder @code{[x,y,z,t]}.  Diese
+Bezeichnungen k@"onnen ge@"andert werden, indem der Optionsvariablen
+@mref{ct_coords} eine neue Liste mit den gew@"unschten Bezeichnungen zugewiesen
+wird.
 
-A sample protocol is begun below for the static, spherically symmetric
-metric (standard coordinates) which will be applied to the problem of
-deriving Einstein's vacuum equations (which lead to the Schwarzschild
-solution) as an example. Many of the functions in @code{ctensor} will be
-displayed for the standard metric as examples.
+@c Next, the user enters the metric either directly or from a file by
+@c specifying its ordinal position.
+   @c NO SUCH FILE ! As an example of a file of common metrics, see
+   @c @code{share/tensor/metrics.mac}.
+@c The metric is stored in the matrix
+@c @code{lg}. Finally, the metric inverse is computed and stored in the matrix
+@c @code{ug}. One has the option of carrying out all calculations in a power
+@c series.
+
+Danach wird eine Metrik eingegeben oder aus einer Datei geladen.  Die Metrik
+wird in der Matrix @mref{lg} gespeichert.  Maxima berechnet die inverse der
+Metrik und speichert diese in der Matrix @mref{ug} ab.  Maxima bietet die
+Option an, alle Rechnungen in einer Reihenentwicklung auszuf@"uhren.
+
+@c A sample protocol is begun below for the static, spherically symmetric
+@c metric (standard coordinates) which will be applied to the problem of
+@c deriving Einstein's vacuum equations (which lead to the Schwarzschild
+@c solution) as an example. Many of the functions in @code{ctensor} will be
+@c displayed for the standard metric as examples.
+
+Die folgende Sitzung zeigt ein Beispiel f@"ur die Initialisierung einer
+sph@"arischen, symmetrischen Metrik, wie sie zum Beispiel im Falle der
+Einsteinschen Vakuumgleichen verwendet wird.
+
+Beispiel:
 
 @example
 (%i1) load(ctensor);
@@ -139,43 +159,63 @@ y;
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur ctensor, , Einf@"uhrung in ctensor, Paket ctensor
-@subsection Funktionen und Variablen f@"ur ctensor
+@subsection Funktionen und Variablen f@"ur @sc{ctensor}
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@subsubsection Initialization and setup
+@subsubsection Initialisierung
 @c -----------------------------------------------------------------------------
 
-@c -----------------------------------------------------------------------------
+@c --- 04.12.2012 DK -----------------------------------------------------------
 @anchor{csetup}
-@deffn {Function} csetup ()
+@deffn {Funktion} csetup ()
 
-A function in the @code{ctensor} (component tensor) package
-which initializes the package and allows the user to enter a metric
-interactively. See @code{ctensor} for more details.
+@c A function in the @code{ctensor} (component tensor) package
+@c which initializes the package and allows the user to enter a metric
+@c interactively. See @code{ctensor} for more details.
+
+Mit der Funktion @code{csetup} wird das Paket @code{ctensor} initialisiert.  Vom
+Nutzer werden die Angaben zu einer Metrik abgefragt.  F@"ur ein Beispiel siehe 
+@ref{Einf@"uhrung in ctensor}.
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 04.12.2011 DK -----------------------------------------------------------
 @anchor{cmetric}
-@deffn  {Function} cmetric (@var{dis})
-@deffnx {Function} cmetric ()
+@deffn  {Funktion} cmetric (@var{dis})
+@deffnx {Funktion} cmetric ()
 
-A function in the @code{ctensor} (component tensor) package
-that computes the metric inverse and sets up the package for
-further calculations.
+@c A function in the @code{ctensor} (component tensor) package that computes
+@c the metric inverse and sets up the package for further calculations.
 
-If @code{cframe_flag} is @code{false}, the function computes the inverse metric
-@code{ug} from the (user-defined) matrix @code{lg}. The metric determinant is
-also computed and stored in the variable @code{gdet}. Furthermore, the
-package determines if the metric is diagonal and sets the value
-of @code{diagmetric} accordingly. If the optional argument @var{dis}
-is present and not equal to @code{false}, the user is prompted to see
-the metric inverse.
+Die Funktion @code{cmetric} berechnet die inverse der Metrik und f@"uhrt weitere
+Initialisierungen f@"ur die Rechnung mit Tensoren aus.
 
-If @code{cframe_flag} is @code{true}, the function expects that the values of
-@code{fri} (the inverse frame matrix) and @code{lfg} (the frame metric) are
-defined. From these, the frame matrix @code{fr} and the inverse frame
-metric @code{ufg} are computed.
+@c If @code{cframe_flag} is @code{false}, the function computes the inverse
+@c metric @code{ug} from the (user-defined) matrix @code{lg}. The metric
+@c determinant is also computed and stored in the variable @code{gdet}.
+@c Furthermore, the package determines if the metric is diagonal and sets the
+@c value of @code{diagmetric} accordingly. If the optional argument @var{dis}
+@c is present and not equal to @code{false}, the user is prompted to see
+@c the metric inverse.
+
+Hat die Optionsvariable @mref{cframe_flag} den Wert @code{false}, wird die
+inverse Metrik mit der vom Nutzer angegebenen Metrik berechnet, die in der
+Matrix @mref{lg} enthalten ist, und in der Matrix @mref{ug} abgespeichert.
+Die Determinante der Metrik wird in der Variablen @mref{gdet} abgelegt.
+Ist die Metrik diagonal wird die Variable @mref{diagmetric} entsprechend
+gesetzt.  Hat das optionale Argument @var{dis} einen von @code{false}
+verschiedenen Wert wird die inverse Metrik ausgegeben.
+
+@c If @code{cframe_flag} is @code{true}, the function expects that the values of
+@c @code{fri} (the inverse frame matrix) and @code{lfg} (the frame metric) are
+@c defined. From these, the frame matrix @code{fr} and the inverse frame
+@c metric @code{ufg} are computed.
+
+Hat die Optionsvariable @mref{cframe_flag} den Wert @code{true}, erwartet
+@code{cmetric}, dass die Matrizen @mref{lfg} f@"ur die Metrik des bewegten
+Bezugssystems und @mref{fri} f@"ur die inverse dieser Metrik definiert sind.
+Mit diesen Matrizen berechnet @code{cmetric} dann die Werte der Matrizen
+@mref{fr} und die inverse @mrefdot{ufg}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -668,8 +708,14 @@ field limit far from a gravitational source.
 @subsubsection Frame fields
 @c -----------------------------------------------------------------------------
 
+@c -----------------------------------------------------------------------------
+@anchor{cframe_flag}
+@defvr {Optionsvariable} cframe_flag
+Standardwert: @code{false}
+
 When the variable @code{cframe_flag} is set to true, the @code{ctensor} package
 performs its calculations using a moving frame.
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{frame_bracket}
