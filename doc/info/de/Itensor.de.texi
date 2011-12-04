@@ -5,7 +5,7 @@
 @c Original    : Itensor.texi revision 15.06.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 20.11.2010
-@c Revision    : 24.09.2011
+@c Revision    : 04.12.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -22,84 +22,40 @@
 @section Tensorpakete in Maxima
 @c -----------------------------------------------------------------------------
 
-@c Maxima implements symbolic tensor manipulation of two distinct types:
-@c component tensor manipulation (@code{ctensor} package) and indicial tensor
-@c manipulation (@code{itensor} package).
-
-In Maxima sind zwei verschiedene Methoden implementiert, um mit Tensoren zu
-rechnen.  Das Paket @code{ctensor} implementiert das Rechnen in der
+Maxima hat drei verschiedene Pakete, um mit Tensoren zu rechnen.  Das Paket
+@code{ctensor} implementiert das Rechnen mit Tensoren in der
 Koordinatendarstellung und das Paket @code{itensor} das Rechnen in einer
-Indexnotation.
+Indexnotation.  Das Paket @code{atensor} erlaubt die algebraische Manipulation
+von Tensoren in verschiedenen Algebren.
 
-@c Nota bene: Please see the note on 'new tensor notation' below.
+Beim Rechnen in einer Koordinatendarstellung mit dem Paket @code{ctensor} werden
+Tensoren als Arrays oder Matrizen dargestellt.  Operationen mit Tensoren wie die
+Tensorverj@"ungung oder die kovariante Ableitung werden ausgef@"uhrt als
+Operationen mit den Komponenten des Tensors, die in einem Array oder einer
+Matrix gespeichert sind.
 
-@c Component tensor manipulation means that geometrical tensor
-@c objects are represented as arrays or matrices.  Tensor operations such
-@c as contraction or covariant differentiation are carried out by
-@c actually summing over repeated (dummy) indices with @code{do} statements.
-@c That is, one explicitly performs operations on the appropriate tensor
-@c components stored in an array or matrix.
+Beim Rechnen in der Indexnotation mit dem Paket @code{itensor} werden Tensoren
+als Funktionen ihrer kovarianten und kontravarianten Indizes sowie den
+Ableitungen nach den Komponenten dargestellt.  Operationen wie die
+Tensorverj@"ungung oder die kovariante Ableitung werden ausgef@"uhrt, in dem die
+Indizes manipuliert werden.
 
-Beim Rechnen in einer Koordinatendarstellung werden Tensoren als Arrays oder
-Matrizen dargestellt.  Operationen mit Tensoren wie die Tensorverj@"ungung oder
-die kovariante Ableitung werden ausgef@"uhrt als Operationen mit den
-Komponenten des Tensors, die in einem Array oder einer Matrix gespeichert sind.
-
-@c Indicial tensor manipulation is implemented by representing
-@c tensors as functions of their covariant, contravariant and derivative
-@c indices.  Tensor operations such as contraction or covariant
-@c differentiation are performed by manipulating the indices themselves
-@c rather than the components to which they correspond.
-
-Beim Rechnen in der Indexnotation werden Tensoren als Funktionen ihrer
-kovarianten und kontravarianten Indizes sowie den Ableitungen nach den
-Komponenten dargestellt.  Operationen wie die Tensorverj@"ungung oder die
-kovariante Ableitung werden ausgef@"uhrt, in dem die Indizes manipuliert werden.
-
-@c These two approaches to the treatment of differential, algebraic and
-@c analytic processes in the context of Riemannian geometry have various
-@c advantages and disadvantages which reveal themselves only through the
-@c particular nature and difficulty of the user's problem.  However, one
-@c should keep in mind the following characteristics of the two
-@c implementations:
-
-Diese beiden Ans@"atze der Behandlung von mathematischen Problemen im
-Zusammenhang mit der Riemannschen Geometrie haben verschiedene Vor- und
-Nachteile, die sich erst anhand des zu behandelnden Problems und dessen
-Schwierigkeitsgrad zeigen.  Folgenden Eigenschaften der beiden
-Implementierungen sollten beachtet werden:
-
-@c The representation of tensors and tensor operations explicitly in
-@c terms of their components makes @code{ctensor} easy to use.  Specification of
-@c the metric and the computation of the induced tensors and invariants
-@c is straightforward.  Although all of Maxima's powerful simplification
-@c capacity is at hand, a complex metric with intricate functional and
-@c coordinate dependencies can easily lead to expressions whose size is
-@c excessive and whose structure is hidden.  In addition, many calculations
-@c involve intermediate expressions which swell causing programs to
-@c terminate before completion.  Through experience, a user can avoid
-@c many of these difficulties.
+Die beiden genannten Pakete @code{itensor} und @code{ctensor} f@"ur die
+Behandlung von mathematischen Problemen im Zusammenhang mit der Riemannschen
+Geometrie haben verschiedene Vor- und Nachteile, die sich erst anhand des zu
+behandelnden Problems und dessen Schwierigkeitsgrad zeigen.  Folgenden
+Eigenschaften der beiden Implementierungen sollten beachtet werden:
 
 Die Darstellung von Tensoren und Tensoroperationen in einer expliziten
-Koordinatendarstellung macht die Nutzung des Paketes @code{ctensor} einfach.
-Die Spezifikation der Metrik und die Ableitung von Tensoren sowie von
-Invarianten ist unkompliziert.  Trotz Maximas Methoden f@"ur die Vereinfachung
-von Ausdr@"ucken kann jedoch eine komplexe Metrik mit komplizierten funktionalen
+Koordinatendarstellung vereinfacht die Nutzung des Paketes @code{ctensor}.  Die
+Spezifikation der Metrik und die Ableitung von Tensoren sowie von Invarianten
+ist unkompliziert.  Trotz Maximas Methoden f@"ur die Vereinfachung von
+Ausdr@"ucken kann jedoch eine komplexe Metrik mit komplizierten funktionalen
 Abh@"angigkeiten der Koordinaten leicht zu sehr gro@ss{}en Ausdr@"ucken
 f@"uhren, die die Struktur eines Ergebnisses verbergen.  Weiterhin k@"onnen
 Rechnungen zu sehr gro@ss{}en Zwischenergebnisse f@"uhren, die zu einem
 Programmabbruch f@"uhren, bevor die Rechnung beendet werden kann.  Jedoch kann
 der Nutzer mit einiger Erfahrung viele dieser Probleme vermeiden.
-
-@c Because of the special way in which tensors and tensor operations
-@c are represented in terms of symbolic operations on their indices,
-@c expressions which in the component representation would be unmanageable can
-@c sometimes be greatly simplified by using the special routines for symmetrical
-@c objects in @code{itensor}.  In this way the structure of a large expression
-@c may be more transparent.  On the other hand, because of the the special
-@c indicial representation in @code{itensor}, in some cases the
-@c user may find difficulty with the specification of the metric, function
-@c definition, and the evaluation of differentiated "indexed" objects.
 
 Aufgrund der besonderen Weise, wie Tensoren und Tensoroperationen als
 symbolische Operationen ihrer Indizes dargestellt werden, k@"onnen Ausdr@"ucke,
@@ -110,22 +66,34 @@ transparenter sein.  Auf der anderen Seite kann die Spezifikation einer Metrik,
 die Definition von Funktionen und die Auswertung von abgeleiteten indizierten
 Objekten f@"ur den Nutzer schwierig sein.
 
-The @code{itensor} package can carry out differentiation with respect to an
-indexed variable, which allows one to use the package when dealing with
-Lagrangian and Hamiltonian formalisms.  As it is possible to differentiate a
-field Lagrangian with respect to an (indexed) field variable, one can use
-Maxima to derive the corresponding Euler-Lagrange equations in indicial form.
-These equations can be translated into component tensor (@code{ctensor})
-programs using the @code{ic_convert} function, allowing us to solve the field
-equations in a particular coordinate representation, or to recast the equations
-of motion in Hamiltonian form.  See @code{einhil.dem} and @code{bradic.dem} for
-two comprehensive examples.  The first, @code{einhil.dem}, uses the
-Einstein-Hilbert action to derive the Einstein field tensor in the homogeneous
-and isotropic case (Friedmann equations) and the spherically symmetric, static
-case (Schwarzschild solution.) The second, @code{bradic.dem}, demonstrates how
-to compute the Friedmann equations from the action of Brans-Dicke gravity
-theory, and also derives the Hamiltonian associated with the theory's scalar
-field.
+@c The @code{itensor} package can carry out differentiation with respect to an
+@c indexed variable, which allows one to use the package when dealing with
+@c Lagrangian and Hamiltonian formalisms.  As it is possible to differentiate a
+@c field Lagrangian with respect to an (indexed) field variable, one can use
+@c Maxima to derive the corresponding Euler-Lagrange equations in indicial form.
+@c These equations can be translated into component tensor (@code{ctensor})
+@c programs using the @code{ic_convert} function, allowing us to solve the field
+@c equations in a particular coordinate representation, or to recast the
+@c equations of motion in Hamiltonian form.  See @code{einhil.dem} and
+@c @code{bradic.dem} for two comprehensive examples.  The first,
+@c @code{einhil.dem}, uses the Einstein-Hilbert action to derive the Einstein
+@c field tensor in the homogeneous and isotropic case (Friedmann equations) and
+@c the spherically symmetric, static case (Schwarzschild solution.) The second,
+@c @code{bradic.dem}, demonstrates how to compute the Friedmann equations from
+@c the action of Brans-Dicke gravity theory, and also derives the Hamiltonian
+@c associated with the theory's scalar field.
+
+Mit dem Paket @code{itensor} k@"onnen Ableitungen nach einer indizierten
+Variablen ausgef@"uhrt werden, wodurch es m@"oglich ist, @code{itensor} auch
+f@"ur Probleme im Zusammenhang mit dem Lagrange- oder Hamiltonian-Formalismus
+einzusetzen.  Da es m@"oglich ist, die Lagrangeschen Feldgleichungen nach einer
+indizierten Variablen abzuleiten, k@"onnen zum Beispiel die
+Euler-Lagrange-Gleichungen in einer Indexnotation aufgestellt werden.  Werden
+die Gleichungen mit der Funktion @mref{ic_convert} in eine
+Komponentendarstellung f@"ur das Paket @code{ctensor} transformiert, k@"onnen
+die Feldgleichungen in einer bestimmten Koordinatendarstellung gel@"ost werden.
+Siehe dazu die ausf@"uhrlichen Beispiele in @code{einhil.dem} und
+@code{bradic.dem}.
 
 @c -----------------------------------------------------------------------------
 @page
@@ -144,116 +112,218 @@ field.
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@subsubsection New tensor notation
+@c @subsubsection New tensor notation
 @c -----------------------------------------------------------------------------
 
-Earlier versions of the @code{itensor} package in Maxima used a notation that sometimes
-led to incorrect index ordering. Consider the following, for instance:
+@c Earlier versions of the @code{itensor} package in Maxima used a notation that
+@c sometimes led to incorrect index ordering.  Consider the following, for
+@c instance:
+
+@c @example
+@c (%i2) imetric(g);
+@c (%o2)                                done
+@c (%i3) ishow(g([],[j,k])*g([],[i,l])*a([i,j],[]))$
+@c                                  i l  j k
+@c (%t3)                           g    g    a
+@c                                            i j
+@c (%i4) ishow(contract(%))$
+@c                                       k l
+@c (%t4)                                a
+@c @end example
+
+@c This result is incorrect unless @code{a} happens to be a symmetric tensor.
+@c The reason why this happens is that although @code{itensor} correctly
+@c maintains the order within the set of covariant and contravariant indices,
+@c once an index is raised or lowered, its position relative to the other set of
+@c indices is lost.
+
+@c To avoid this problem, a new notation has been developed that remains fully
+@c compatible with the existing notation and can be used interchangeably.  In
+@c this notation, contravariant indices are inserted in the appropriate
+@c positions in the covariant index list, but with a minus sign prepended.
+@c Functions like @code{contract} and @code{ishow} are now aware of this
+@c new index notation and can process tensors appropriately.
+
+@c In this new notation, the previous example yields a correct result:
+
+@c @example
+@c (%i5) ishow(g([-j,-k],[])*g([-i,-l],[])*a([i,j],[]))$
+@c                                  i l       j k
+@c (%t5)                           g    a    g
+@c                                       i j
+@c (%i6) ishow(contract(%))$
+@c                                       l k
+@c (%t6)                                a
+@c @end example
+
+@c Presently, the only code that makes use of this notation is the @code{lc2kdt}
+@c function.  Through this notation, it achieves consistent results as it
+@c applies the metric tensor to resolve Levi-Civita symbols without resorting
+@c to numeric indices.
+
+@c Since this code is brand new, it probably contains bugs.  While it has been
+@c tested to make sure that it doesn't break anything using the "old" tensor
+@c notation, there is a considerable chance that "new" tensors will fail to
+@c interoperate with certain functions or features.  These bugs will be fixed
+@c as they are encountered @dots{} until then, caveat emptor!
+
+@c -----------------------------------------------------------------------------
+@c @subsubsection Indicial tensor manipulation
+@c -----------------------------------------------------------------------------
+
+@c The indicial tensor manipulation package may be loaded by
+@c @code{load(itensor)}.  Demos are also available: try @code{demo(tensor)}.
+
+Das Paket @code{itensor} f@"ur das Rechnen mit Tensoren in der Indexnotation
+wird mit dem Kommando @code{load(itensor)} geladen.  Mit dem Kommando
+@code{demo(tensor)} wird eine Liste mit verschiedenen Beispielen angezeigt.
+
+@c In @code{itensor} a tensor is represented as an "indexed object" .  This is a
+@c function of 3 groups of indices which represent the covariant,
+@c contravariant and derivative indices.  The covariant indices are
+@c specified by a list as the first argument to the indexed object, and
+@c the contravariant indices by a list as the second argument.  If the
+@c indexed object lacks either of these groups of indices then the empty list
+@c @code{[]} is given as the corresponding argument.  Thus, @code{g([a,b],[c])}
+@c represents an indexed object called @code{g} which has two covariant indices
+@c @code{(a,b)}, one contravariant index (@code{c}) and no derivative indices.
+
+Im Paket @code{itensor} werden Tensoren als indiziertes Objekte dargestellt.
+Ein indiziertes Objekt ist eine Funktion mit drei Gruppen an Indizes, die die
+kovarianten, kontravarianten und Ableitungsindizes eines Tensors darstellen.
+Das erste Argument der Funktion ist eine Liste der kovarianten Indizes und das
+zweite Argument die Liste der kontravarianten Indizes.  Hat der Tensor keine
+entsprechenden Komponenten, dann wird eine leere Liste als Argument angegeben.
+Zum Beispiel repr@"asentiert @code{g([a,b], [c]} einen Tensor @code{g}, der zwei
+kovariante Indizes @code{[a,b]}, einen kontravarianten Index @code{[c]} und
+keinen Ableitungsindex hat.  Mit der Funktion @mref{ishow} werden Tensoren
+in einer besonderen Schreibweise ausgegeben.
+
+Beispiele:
 
 @example
-(%i2) imetric(g);
-(%o2)                                done
-(%i3) ishow(g([],[j,k])*g([],[i,l])*a([i,j],[]))$
-                                 i l  j k
-(%t3)                           g    g    a
-                                           i j
-(%i4) ishow(contract(%))$
-                                      k l
-(%t4)                                a
+(%i1) load(itensor)$
+
+(%i2) g([a,b], [c]);
+(%o2)                    g([a, b], [c])
+
+(%i3) ishow(g([a,b], [c]))$
+                               c
+(%t3)                         g
+                               a b
 @end example
 
-This result is incorrect unless @code{a} happens to be a symmetric tensor.
-The reason why this happens is that although @code{itensor} correctly maintains
-the order within the set of covariant and contravariant indices, once an
-index is raised or lowered, its position relative to the other set of
-indices is lost.
+@c The derivative indices, if they are present, are appended as
+@c additional arguments to the symbolic function representing the tensor.
+@c They can be explicitly specified by the user or be created in the
+@c process of differentiation with respect to some coordinate variable.
+@c Since ordinary differentiation is commutative, the derivative indices
+@c are sorted alphanumerically, unless @code{iframe_flag} is set to @code{true},
+@c indicating that a frame metric is being used.  This canonical ordering makes
+@c it possible for Maxima to recognize that, for example, @code{t([a],[b],i,j)}
+@c is the same as @code{t([a],[b],j,i)}.  Differentiation of an indexed object
+@c with respect to some coordinate whose index does not appear as an argument
+@c to the indexed object would normally yield zero.  This is because
+@c Maxima would not know that the tensor represented by the indexed object
+@c might depend implicitly on the corresponding coordinate.  By modifying the
+@c existing Maxima function @code{diff} in @code{itensor}, Maxima now assumes
+@c that all indexed objects depend on any variable of differentiation unless
+@c otherwise stated.  This makes it possible for the summation convention to be
+@c extended to derivative indices.  It should be noted that @code{itensor} does
+@c not possess the capabilities of raising derivative indices, and so they are
+@c always treated as covariant.
 
-To avoid this problem, a new notation has been developed that remains fully
-compatible with the existing notation and can be used interchangeably.  In
-this notation, contravariant indices are inserted in the appropriate
-positions in the covariant index list, but with a minus sign prepended.
-Functions like @code{contract} and @code{ishow} are now aware of this
-new index notation and can process tensors appropriately.
+Ableitungsindizes werden als weitere Argumente der Funktion hinzugef@"ugt, die
+den Tensor repr@"asentiert.  Ableitungsindizes k@"onnen vom Nutzer angegeben
+oder bei der Ableitung von Tensoren von Maxima hinzugef@"ugt werden.  Im
+Allgemeinen ist die Differentiation kommutativ, so dass die Reihenfolge der
+Ableitungsindizes keine Rolle spielt.  Daher werden die Indizes von Maxima
+bei der Vereinfachung mit Funktionen wie @mref{rename} alphabetisch sortiert.
+Dies ist jedoch nicht der Fall, wenn bewegte Bezugssysteme genutzt werden, was
+mit der Optionsvariablen @mref{iframe_flag} angezeigt wird, die in diesem Fall
+den Wert @code{true} erh@"alt.  Es ist zu beachten, dass mit dem Paket
+@code{itensor} Ableitungsindizes nicht angehoben werden k@"onnen und
+nur als kovariante Indizes auftreten.
 
-In this new notation, the previous example yields a correct result:
+Beispiele:
 
 @example
-(%i5) ishow(g([-j,-k],[])*g([-i,-l],[])*a([i,j],[]))$
-                                 i l       j k
-(%t5)                           g    a    g
-                                      i j
-(%i6) ishow(contract(%))$
-                                      l k
-(%t6)                                a
+(%i1) load(itensor)$
+
+(%i2) ishow(t([a,b],[c],j,i))$
+                             c
+(%t2)                       t
+                             a b,j i
+(%i3) ishow(rename(%))$
+                             c
+(%t3)                       t
+                             a b,i j
+(%i4) ishow(t([a,b],[c],j,i) - t([a,b],[c],i,j))$
+                        c          c
+(%t4)                  t        - t
+                        a b,j i    a b,i j
+(%i5) ishow(rename(%))$
+(%t5)                           0
+(%i6) iframe_flag:true;
+(%o6)                         true
+(%i7) ishow(t([a,b],[c],j,i) - t([a,b],[c],i,j))$
+                        c          c
+(%t7)                  t        - t
+                        a b,j i    a b,i j
+(%i8) ishow(rename(%))$
+                        c          c
+(%t8)                  t        - t
+                        a b,j i    a b,i j
 @end example
 
-Presently, the only code that makes use of this notation is the @code{lc2kdt}
-function.  Through this notation, it achieves consistent results as it
-applies the metric tensor to resolve Levi-Civita symbols without resorting
-to numeric indices.
+Das folgende Beispiel zeigt einen Ausdruck mit verschiedenen Ableitungen eines
+Tensors @code{g}.  Ist @code{g} der metrische Tensor, dann entspricht das
+Ergebnis der Definition des Christoffel-Symbols der ersten Art.
 
-Since this code is brand new, it probably contains bugs.  While it has been
-tested to make sure that it doesn't break anything using the "old" tensor
-notation, there is a considerable chance that "new" tensors will fail to
-interoperate with certain functions or features.  These bugs will be fixed
-as they are encountered @dots{} until then, caveat emptor!
+@example
+(%i1) load(itensor)$
 
-@c -----------------------------------------------------------------------------
-@subsubsection Indicial tensor manipulation
-@c -----------------------------------------------------------------------------
+(%i2) ishow(1/2*(idiff(g([i,k],[]),j) + idiff(g([j,k],[]),i) 
+                                      - idiff(g([i,j],[]),k)))$
+                    g      + g      - g
+                     j k,i    i k,j    i j,k
+(%t2)               ------------------------
+                               2
+@end example
 
-The indicial tensor manipulation package may be loaded by
-@code{load(itensor)}.  Demos are also available: try @code{demo(tensor)}.
+@c The following functions are available in the tensor package for
+@c manipulating indexed objects.  At present, with respect to the
+@c simplification routines, it is assumed that indexed objects do not
+@c by default possess symmetry properties.  This can be overridden by
+@c setting the variable @code{allsym[false]} to @code{true}, which will
+@c result in treating all indexed objects completely symmetric in their
+@c lists of covariant indices and symmetric in their lists of
+@c contravariant indices.
 
-In @code{itensor} a tensor is represented as an "indexed object" .  This is a
-function of 3 groups of indices which represent the covariant,
-contravariant and derivative indices.  The covariant indices are
-specified by a list as the first argument to the indexed object, and
-the contravariant indices by a list as the second argument.  If the
-indexed object lacks either of these groups of indices then the empty
-list @code{[]} is given as the corresponding argument.  Thus, @code{g([a,b],[c])}
-represents an indexed object called @code{g} which has two covariant indices
-@code{(a,b)}, one contravariant index (@code{c}) and no derivative indices.
+Tensoren werden standardm@"a@ss{}ig nicht als symmetrisch angenommen.  Erh@"alt
+die Optionsvariable @mref{allsym} den Wert @code{true}, dann werden alle
+Tensoren als symmetrisch in den kovarianten und kontravarianten Indizes
+angenommen.
 
-The derivative indices, if they are present, are appended as
-additional arguments to the symbolic function representing the tensor.
-They can be explicitly specified by the user or be created in the
-process of differentiation with respect to some coordinate variable.
-Since ordinary differentiation is commutative, the derivative indices
-are sorted alphanumerically, unless @code{iframe_flag} is set to @code{true},
-indicating that a frame metric is being used.  This canonical ordering makes it
-possible for Maxima to recognize that, for example, @code{t([a],[b],i,j)} is
-the same as @code{t([a],[b],j,i)}.  Differentiation of an indexed object with
-respect to some coordinate whose index does not appear as an argument
-to the indexed object would normally yield zero. This is because
-Maxima would not know that the tensor represented by the indexed
-object might depend implicitly on the corresponding coordinate.  By
-modifying the existing Maxima function @code{diff} in @code{itensor}, Maxima now
-assumes that all indexed objects depend on any variable of
-differentiation unless otherwise stated.  This makes it possible for
-the summation convention to be extended to derivative indices.  It
-should be noted that @code{itensor} does not possess the capabilities of
-raising derivative indices, and so they are always treated as
-covariant.
+@c The @code{itensor} package generally treats tensors as opaque objects.
+@c Tensorial equations are manipulated based on algebraic rules, specifically
+@c symmetry and contraction rules.  In addition, the @code{itensor} package
+@c understands covariant differentiation, curvature, and torsion.  Calculations
+@c can be performed relative to a metric of moving frame, depending on the
+@c setting of the @code{iframe_flag} variable.
 
-The following functions are available in the tensor package for
-manipulating indexed objects.  At present, with respect to the
-simplification routines, it is assumed that indexed objects do not
-by default possess symmetry properties.  This can be overridden by
-setting the variable @code{allsym[false]} to @code{true}, which will
-result in treating all indexed objects completely symmetric in their
-lists of covariant indices and symmetric in their lists of
-contravariant indices.
+Das Paket @code{itensor} behandelt Tensoren im Allgemeinen als opake Objekte.
+Auf Tensorgleichungen werden algebraischen Regeln insbesondere Symmetrieregeln
+und Regeln f@"ur die Tensorverj@"ungung angewendet.  Weiterhin kennt
+@code{itensor} die kovariante Ableitung, Kr@"ummung und die Torsion.  Rechnungen
+k@"onnen in bewegten Bezugssystemen ausgef@"uhrt werden.
 
-The @code{itensor} package generally treats tensors as opaque objects.
-Tensorial equations are manipulated based on algebraic rules, specifically
-symmetry and contraction rules.  In addition, the @code{itensor} package
-understands covariant differentiation, curvature, and torsion.  Calculations
-can be performed relative to a metric of moving frame, depending on the setting
-of the @code{iframe_flag} variable.
+@c A sample session below demonstrates how to load the @code{itensor} package,
+@c specify the name of the metric, and perform some simple calculations.
 
-A sample session below demonstrates how to load the @code{itensor} package,
-specify the name of the metric, and perform some simple calculations.
+Beispiele:
+
+Die folgenden Beispiele zeigen einige Anwendungen des Paketes @code{itensor}.
 
 @example
 (%i1) load(itensor);
@@ -306,6 +376,7 @@ specify the name of the metric, and perform some simple calculations.
 (%t15)                        v    - v   ifc2
                                i,j    %6     i j
 (%i16) ishow(radcan(ev(%,ifc2,ifc1)))$
+@group
              %6 %7                    %6 %7
 (%t16) - (ifg      v   ifb       + ifg      v   ifb       - 2 v
                     %6    j %7 i             %6    i j %7      i,j
@@ -313,6 +384,7 @@ specify the name of the metric, and perform some simple calculations.
                                              %6 %7
                                         - ifg      v   ifb      )/2
                                                     %6    %7 i j
+@end group
 (%i17) ishow(canform(s([i,j],[])-s([j,i])))$
 (%t17)                            s    - s
                                    i j    j i
@@ -352,7 +424,7 @@ specify the name of the metric, and perform some simple calculations.
 @subsubsection Behandlung indizierter Gr@"o@ss{}en
 @c -----------------------------------------------------------------------------
 
-@c --- 04.09.2011 DK -----------------------------------------------------------
+@c --- 04.12.2011 DK -----------------------------------------------------------
 @anchor{canten}
 @deffn {Funktion} canten (@var{expr})
 
@@ -363,11 +435,12 @@ specify the name of the metric, and perform some simple calculations.
 @c required simplification.
 
 Ist vergleichbar mit der Funktion @mref{rename} und vereinfacht den Ausdruck
-@var{expr} indem Dummy-Indizes umbenannt und permutiert werden.  Die Funktion
-@code{rename} kann nur Ausdr@"ucke mit Summen von Tensorprodukten vereinfachen,
-in denen keine Ableitungen nach Tensorkomponenten auftreten.  Die Funktion
-@code{canten} hat dieselben Beschr@"ankungen und sollte nur verwendet werden,
-wenn die Funktion @mref{canform} nicht die gew@"unschte Vereinfachung erzielt.
+@var{expr} indem gebundene Indizes umbenannt und permutiert werden.  Wie die
+Funktion @code{rename} kann @code{canten} nur Ausdr@"ucke mit Summen von
+Tensorprodukten vereinfachen, in denen keine Ableitungen nach Tensorkomponenten
+auftreten.  Daher sollte @code{canten} nur verwendet werden, wenn sich mit
+der Funktion @mref{canform} nicht die gew@"unschte Vereinfachung eines
+Ausdrucks erzielen l@"asst.
 
 @c The @code{canten} function returns a mathematically correct result only
 @c if its argument is an expression that is fully symmetric in its indices.
@@ -378,6 +451,10 @@ Das Ergebnis der Funktion @code{canten} ist mathematisch nur korrekt, wenn
 die Tensoren symmetrisch in ihren Indizes sind.  Hat die Optionsvariable 
 @mref{allsym} @emph{nicht} den Wert @code{true}, bricht @code{canten} mit einer
 Fehlermeldung ab.
+
+Siehe auch die Funktion @mrefcomma{concan} mit der Ausdr@"ucke mit Tensoren
+ebenfalls vereinfacht werden k@"onnen, wobei @code{concan} zus@"atzlich
+Tensorverj@"ungungen ausf@"uhrt.
 @end deffn
 
 @c --- 22.08.2011 DK -----------------------------------------------------------
@@ -390,10 +467,10 @@ Fehlermeldung ab.
 @c objects called @var{name} with @var{m} covariant and @var{n} contravariant
 @c indices will be renamed to @var{new}.
 
-@"Andert den Namen aller indizierten Objekte im Ausdruck @var{expr} von
+@"Andert den Namen aller Tensoren im Ausdruck @var{expr} von
 @var{old} nach @var{new}.  Das Argument @var{old} kann ein Symbol oder eine
 Liste der Form @code{[@var{name}, @var{m}, @var{n}]} sein.  Im letzteren Fall
-werden nur die Tensoren zu @var{new} umbenannt, die den Namen @var{name} haben
+werden nur die Tensoren zu @var{new} umbenannt, die den Namen @var{name}
 sowie @var{m} kovariante und @var{n} kontravariante Indizes haben.
 
 Beispiel:
@@ -549,7 +626,7 @@ Funktion gegeben.
 @c Similar to @code{canten} but also performs index contraction.
 
 Ist vergleichbar mit der Funktion @mrefdot{canten}  Im Unterschied zu
-@code{canten} wird zus@"atzlich die Tensorverj@"ungung ausgef@"uhrt.
+@code{canten} werden zus@"atzlich Tensorverj@"ungungen ausgef@"uhrt.
 @end deffn
 
 @c --- 03.09.2011 DK -----------------------------------------------------------
@@ -1025,19 +1102,67 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 @end deffn
 
-@c --- 04.09.2011 DK -----------------------------------------------------------
+@c --- 02.12.2011 DK -----------------------------------------------------------
 @anchor{levi_civita}
 @deffn {Funktion} levi_civita (@var{L})
 
-@c is the permutation (or Levi-Civita) tensor which yields 1 if
-@c the list @var{L} consists of an even permutation of integers, -1 if it
-@c consists of an odd permutation, and 0 if some indices in @var{L} are
-@c repeated.
-
 Ist der Levi-Civita-Tensor, der auch Permutationstensor genannt wird.  Der
 Tensor hat den Wert @code{1}, wenn die Liste @var{L} eine gerade Permutation
-ganzer Zahlen ist, @code{-1} f@"ur eine ungerade Permutation und ansonsten
-@code{0}.
+ganzer Zahlen ist, den Wert @code{-1} f@"ur eine ungerade Permutation und
+ansonsten den Wert @code{0}.
+
+Beispiel:
+
+F@"ur eine Kreisbewegung ist die Bahngeschwindigkeit @code{v} das Kreuzprodukt
+aus Winkelgeschwindigkeit @code{w} und Ortsvektor @code{r}.  Wir haben also
+@code{v = w x r}.  Hier wird eine tensorielle Schreibweise des Kreuzproduktes
+mit dem Levi-Civita-Tensor eingef@"uhrt.  Der Ausdruck wird sodann f@"ur die
+erste Komponente zu der bekannten Definition des Kreuzproduktes vereinfacht.
+
+@example
+(%i1) load(itensor)$
+
+(%i2) ishow(v([],[a])=
+           'levi_civita([],[a,b,c])*w([b],[])*r([c],[]))$
+@group
+                    a              a b c
+(%t2)              v  = levi_civita      w  r
+                                          b  c
+@end group
+(%i3) ishow(subst([a=1],%))$
+                    1              1 b c
+(%t3)              v  = levi_civita      w  r
+                                          b  c
+(%i4) ishow(ev(%, levi_civita))$
+                      1         1 b c
+(%t4)                v  = kdelta      w  r
+                                1 2 3  b  c
+(%i5) ishow(expand(ev(%, kdelta)))$
+        1         b       c               c       b
+(%t5)  v  = kdelta  kdelta  w  r  - kdelta  kdelta  w  r
+                  2       3  b  c         2       3  b  c
+(%i6) ishow(contract(%))$
+                        1
+(%t6)                  v  = w  r  - r  w
+                             2  3    2  3
+@end example
+
+In diesem Beispiel wird das Spatprodukt von drei Vektoren @code{a}, @code{b} und
+@code{b} mit dem Levi-Civita-Tensor definiert und dann vereinfacht.
+
+@example
+(%i1) load(itensor)$
+
+(%i2) ishow(levi_civita([],[i,j,k])*a([i],[])*b([j],[])*c([k],[]))$
+                            i j k
+(%t2)                 kdelta      a  b  c
+                            1 2 3  i  j  k
+(%i3) ishow(contract(expand(ev(%,kdelta))))$
+(%t3) a  b  c  - b  a  c  - a  c  b  + c  a  b  + b  c  a
+       1  2  3    1  2  3    1  2  3    1  2  3    1  2  3
+                                                       - c  b  a
+                                                          1  2  3
+@end example
 @end deffn
 
 @c --- 22.08.2011 DK -----------------------------------------------------------
@@ -1143,12 +1268,14 @@ Beispiele:
                *ichr2([%7,r],[%2])$
 
 (%i4) expr: ishow(%)$
+@group
        %4 %5  %6 %7      %3         u          %1         %2
 (%t4) g      g      ichr2      ichr2      ichr2      ichr2
                          %1 %4      %2 %3      %5 %6      %7 r
           %4 %5  %6 %7      u          %1         %3         %2
        - g      g      ichr2      ichr2      ichr2      ichr2
                             %1 %2      %3 %5      %4 %6      %7 r
+@end group
 (%i5) flipflag: true;
 (%o5)                         true
 (%i6) ishow(rename(expr))$
@@ -1193,12 +1320,11 @@ eines Tensors mit einer h@"oheren Stufe als 2 zeigen.
 Beispiel:
 
 @example
-(%i1) load(ctensor);
-(%o1)       /share/tensor/ctensor.mac
-(%i2) load(itensor);
-(%o2)      /share/tensor/itensor.lisp
+(%i1) load(ctensor)$
+(%i2) load(itensor)$
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
+@group
                [         r                                     ]
                [ sqrt(-------)  0       0              0       ]
                [      r - 2 m                                  ]
@@ -1210,6 +1336,7 @@ Beispiel:
                [                                      r - 2 m  ]
                [       0        0       0        sqrt(-------) ]
                [                                         r     ]
+@end group
 (%i4) components(g([i,j],[]),lg);
 (%o4)                                done
 (%i5) showcomps(g([i,j],[]));
@@ -1460,7 +1587,7 @@ Beispiele:
 @c is set to @code{true}.
 
 @code{idiff} f@"uhrt Ableitungen nach den Koordinaten einer tensoriellen
-Gr@"o@ss{}e aus.  Im Unterschied dazu f@"uhrt die Funktion @mref{diff}
+Gr@"o@ss{}e aus.  Im Unterschied dazu f@"uhrt die Funktion @mref{diff}@w{}
 Ableitungen nach den unabh@"angigen Variablen aus.  Eine tensorielle Gr@"o@ss{}e
 erh@"alt zus@"atzlich den Index @var{v_1}, der die Ableitung bezeichnet.
 Mehrfache Indizes f@"ur Ableitungen werden sortiert, au@ss{}er wenn die
@@ -1690,6 +1817,7 @@ Kronecker-Delta hat.
 enth@"alt, die mit der Funktion @code{coord} die Eigenschaft der kovarianten
 Ableitung erhalten haben.
 
+@need 800
 Beispiel:
 
 @example
@@ -1779,17 +1907,21 @@ enthalten.  Im besonderen erkennt @code{simpmetderiv} die folgenden
 Identit@"aten:
 
 @example
+@group
    ab        ab           ab                 a
   g   g   + g   g     = (g   g  )   = (kdelta )   = 0
    ,d  bc        bc,d         bc ,d          c ,d
+@end group
 @end example
 
-daher
+daher ist
 
 @example
+@group
    ab          ab
   g   g   = - g   g
    ,d  bc          bc,d
+@end group
 @end example
 
 und
@@ -1880,6 +2012,16 @@ errexp1 has improper indices
 Setzt alle tensoriellen Gr@"o@ss{}en, die genau einen Ableitungsindex haben,
 auf den Wert Null.
 @end deffn
+
+@c --- 04.12.2011 DK -----------------------------------------------------------
+@anchor{vect_coords}
+@defvr {Optionsvariable} vect_coords
+Standardwert: @code{false}
+
+Tensoren k@"onnen durch Angabe von ganzen Zahlen nach den einzelnen Komponenten
+abgeleitet werden.  In diesem Fall bezeichnen die ganzen Zahlen der Reihe nach
+die Indizes, die in der Optionsvariablen @code{vect_coords} abgelegt sind.
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @need 1200
@@ -2174,6 +2316,35 @@ the @code{iframe_bracket_form} flag is set to @code{false}:
                        a %5     b     c,%6      b,%6    c
 
 @end example
+
+@c -----------------------------------------------------------------------------
+@anchor{iframe_flag}
+@defvr {Optionsvariable} iframe_flag
+Standardwert: @code{false}
+
+To use frames, you must first set @code{iframe_flag} to @code{true}.  This
+causes the Christoffel-symbols, @code{ichr1} and @code{ichr2}, to be replaced
+by the more general frame connection coefficients @code{icc1} and @code{icc2}
+in calculations.  Speficially, the behavior of @code{covdiff} and
+@code{icurvature} is changed.
+
+The frame is defined by two tensors: the inverse frame field (@code{ifri},
+the dual basis tetrad),
+and the frame metric @code{ifg}.  The frame metric is the identity matrix for
+orthonormal frames, or the Lorentz metric for orthonormal frames in Minkowski
+spacetime.  The inverse frame field defines the frame base (unit vectors).
+Contraction properties are defined for the frame field and the frame metric.
+
+When @code{iframe_flag} is true, many @code{itensor} expressions use the frame
+metric @code{ifg} instead of the metric defined by @code{imetric} for
+raising and lowerind indices.
+
+IMPORTANT: Setting the variable @code{iframe_flag} to @code{true} does NOT
+undefine the contraction properties of a metric defined by a call to
+@code{defcon} or @code{imetric}.  If a frame field is used, it is best to
+define the metric by assigning its name to the variable @code{imetric}
+and NOT invoke the @code{imetric} function.
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{iframes}
@@ -2677,11 +2848,13 @@ Compute the Hodge-dual of @var{expr}. For instance:
 (%t6)                           A
                                  i j k
 (%i7) ishow(canform(hodge(%)))$
+@group
                           %1 %2 %3 %4
                levi_civita            g        A
                                        %1 %102  %2 %3 %4
 (%t7)          -----------------------------------------
                                    6
+@end group
 (%i8) ishow(canform(hodge(%)))$
                  %1 %2 %3 %8            %4 %5 %6 %7
 (%t8) levi_civita            levi_civita            g       
@@ -2729,13 +2902,12 @@ To use the @code{tentex} function, you must first load @code{tentex},
 as in the following example:
 
 @example
-(%i1) load(itensor);
-(%o1)      /share/tensor/itensor.lisp
-(%i2) load(tentex);
-(%o2)       /share/tensor/tentex.lisp
+(%i1) load(itensor)$
+(%i2) load(tentex)$
 (%i3) idummyx:m;
 (%o3)                                  m
 (%i4) ishow(icurvature([j,k,l],[i]))$
+@group
             m1       i           m1       i           i
 (%t4)  ichr2    ichr2     - ichr2    ichr2     - ichr2
             j k      m1 l        j l      m1 k        j l,k
@@ -2743,6 +2915,7 @@ as in the following example:
                                                       i
                                                + ichr2
                                                       j k,l
+@end group
 (%i5) tentex(%)$
 $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
  \Gamma_@{k\,m_1@}^@{i@}-\Gamma_@{j\,l,k@}^@{i@}+\Gamma_@{j\,k,l@}^@{i@}$$
@@ -2826,6 +2999,7 @@ Beispiele:
 (%i5) metricconvert:true;
 (%o5)                                true
 (%i6) ic_convert(eqn);
+@group
 (%o6) for i thru dim do (for j thru dim do (
        for k thru dim do
         t        : f sum(sum(diff(a , ct_coords ) b
@@ -2833,6 +3007,7 @@ Beispiele:
 
  lg    , l, 1, dim), m, 1, dim)))
    l, m
+@end group
 @end example
 @end deffn
 
