@@ -5,7 +5,7 @@
 @c Original    : category-macros.texi revision 30.05.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 13.09.2011
+@c Revision    : 04.12.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -196,6 +196,7 @@
              Ska-lar-pro-dukt    
              Sei-ten-ef-fek-te
              Spei-cher
+             sym-me-tri-schen
              Un-gleich-ung
              Trans-for-ma-tio-nen
              Trans-po-nier-ung
