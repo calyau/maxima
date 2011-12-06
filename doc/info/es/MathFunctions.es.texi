@@ -1,4 +1,4 @@
-@c English version 2011-06-15
+@c English version 2011-12-01
 @menu
 * Funciones para los n@'umeros::
 * Funciones para los n@'umeros complejos::
@@ -15,18 +15,103 @@
 @section Funciones para los n@'umeros
 
 
-@deffn {Funci@'on} abs (@var{expr})
-Devuelve el valor absoluto de @var{expr}. Si la expresi@'on es compleja, retorna
-el m@'odulo de @var{expr}.
+@deffn {Funci@'on} abs (@var{z})
+La funci@'on @code{abs} representa el valor absoluto y se puede aplicar tanto 
+a argumentos num@'ericos como simb@'olicos. Si el argumento @var{z} es un
+n@'umero real o complejo, @code{abs} devuelve el valor absoluto de @var{z}.
+Si es posible, las expresiones simb@'olicas que utilizan la funci@'on del
+valor absoluto tambi@'en se simplifican.
 
-@code{abs} se distribuye sobre listas, matrices y ecuaciones.
-V@'ease tambi@'en @code{distribute_over}.
+Maxima puede derivar, integrar y calcular l@'{@dotless{i}}mites de expresiones
+que contengan a @code{abs}. El paquete @code{abs_integrate} extiende las
+capacidades de Maxima para calcular integrales que contengan llamadas a
+@code{abs}. V@'ease @code{(%i12)} en el ejemplo de m@'as abajo.
+
+Cuando se aplica a una lista o matriz, @code{abs} se distribuye autom@'aticamente
+sobre sus elementos. De forma similar, tambi@'en se distribuye sobre los dos
+miembros de una igualdad. Para cambiar este comportamiento por defecto, 
+v@'ease la variable @code{distribute_over}.
+
+Ejemplos:
+
+C@'alculo del valor absoluto de n@'umeros reales y complejos, incluyendo
+constantes num@'ericas e infinitos. El primer ejemplo muestra c@'omo 
+@code{abs} se distribuye sobre los elementos de una lista.
+
+@example
+(%i1) abs([-4, 0, 1, 1+%i]);
+(%o1)                  [4, 0, 1, sqrt(2)]
+
+(%i2) abs((1+%i)*(1-%i));
+(%o2)                           2
+(%i3) abs(%e+%i);
+                                2
+(%o3)                    sqrt(%e  + 1)
+(%i4) abs([inf, infinity, minf]);
+(%o4)                   [inf, inf, inf]
+@end example
+
+Simplificaci@'on de expresiones que contienen @code{abs}:
+
+@example
+(%i5) abs(x^2);
+                                2
+(%o5)                          x
+(%i6) abs(x^3);
+                             2
+(%o6)                       x  abs(x)
+
+(%i7) abs(abs(x));
+(%o7)                       abs(x)
+(%i8) abs(conjugate(x));
+(%o8)                       abs(x)
+@end example
+
+Integrando y derivando con la funci@'on @code{abs}. N@'otese que se pueden
+calcular m@'as integrales que involucren la funci@'on @code{abs} si se
+carga el paquete @code{abs_integrate}. El @'ultimo ejemplo muestra la
+transformada de Laplace de @code{abs}. V@'ease @code{laplace}.
+
+@example
+(%i9) diff(x*abs(x),x),expand;
+(%o9)                       2 abs(x)
+
+(%i10) integrate(abs(x),x);
+                             x abs(x)
+(%o10)                       --------
+                                2
+
+(%i11) integrate(x*abs(x),x);
+                           /
+                           [
+(%o11)                     I x abs(x) dx
+                           ]
+                           /
+
+(%i12) load(abs_integrate)$
+(%i13) integrate(x*abs(x),x);
+                      2           3
+                     x  abs(x)   x  signum(x)
+(%o13)               --------- - ------------
+                         2            6
+
+(%i14) integrate(abs(x),x,-2,%pi);
+                               2
+                            %pi
+(%o14)                      ---- + 2
+                             2
+
+(%i15) laplace(abs(x),x,s);
+                               1
+(%o15)                         --
+                                2
+                               s
+@end example
 @end deffn
 
 
 
 @deffn {Funci@'on} ceiling (@var{x})
-
 Si @var{x} es un n@'umero real, devuelve el menor entero mayor o igual que @var{x}.  
 
 Si @var{x} es una expresi@'on constante (por ejemplo, @code{10 * %pi}), 
@@ -227,8 +312,70 @@ matrices o ecuaciones. V@'ease @code{distribute_over}.
 
 
 @deffn {Funci@'on} cabs (@var{expr})
-Devuelve el valor absoluto complejo (m@'odulo complejo) de @var{expr}.
+Calcula el valor absoluto de una expresi@'on que representa a un n@'umero
+complejo. Al contrario que @code{abs}, la funci@'on @code{cabs} siempre
+descompone su argumento en sus partes real e imaginaria. Si @code{x} e
+@code{y} representan variables o expresiones reales, la funci@'on @code{cabs}
+calcula el valor absoluto de @code{x + %i*y} como
+@example
+                           2    2
+                     sqrt(y  + x )
+@end example
 
+La funci@'on @code{cabs} puede utilizar propiedades como la simetr@'{@dotless{i}}a
+de funciones complejas para calcular el valor absoluto de una expresi@'on.
+
+@code{cabs} no es una funci@'on apropiada para c@'alculos simb@'olicos; en tales
+casos, que incluyen la integraci@'on, diferenciaci@'on y l@'{@dotless{i}}mites que
+contienen valores absolutos, es mejor utilizar @code{abs}.
+
+El resultado devuelto por @code{cabs} puede incluir la funci@'on de valor absoluto,
+@code{abs}, y el arco tangente, @code{atan2}.
+
+Cuando se aplica a una lista o matriz, @code{cabs} autom@'aticamente se distribuye
+sobre sus elementos. Tambi@'en se distribuye sobre los dos miembros de una 
+igualdad.
+
+Para otras formas de operar con n@'umeros complejos, v@'eanse las funciones
+@code{rectform}, @code{realpart}, @code{imagpart}, @code{carg}, @code{conjugate}
+y @code{polarform}.
+
+Ejemplos:
+
+Ejemplos con @code{sqrt} and @code{sin}:
+
+@example
+(%i1) cabs(sqrt(1+%i*x));
+                             2     1/4
+(%o1)                      (x  + 1)
+(%i2) cabs(sin(x+%i*y));
+                    2        2         2        2
+(%o2)       sqrt(cos (x) sinh (y) + sin (x) cosh (y))
+@end example
+
+La simetr@'{@dotless{i}}a especular de la funci@'on de error @code{erf} se utiliza
+para calcular el valor absoluto del argumento complejo:
+
+@example
+(%i3) cabs(erf(x+%i*y));
+                                          2
+           (erf(%i y + x) - erf(%i y - x))
+(%o3) sqrt(--------------------------------
+                          4
+                                                               2
+                                (erf(%i y + x) + erf(%i y - x))
+                              - --------------------------------)
+                                               4
+@end example
+
+Dado que Maxima reconoce algunas identidades complejas de las funciones de
+Bessel, le permite calcular su valor absoluto cuando tiene argumentos 
+complejos. Un ejemplo para @code{bessel_j}:
+
+@example
+(%i4) cabs(bessel_j(1,%i));
+(%o4)                 abs(bessel_j(1, %i))
+@end example
 @end deffn
 
 
@@ -793,13 +940,6 @@ Si toma el valor  @code{false}, se desactivar@'an todas estas simplificaciones.
 @item @code{logsimp}
 si vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
 
-@item @code{lognumer}
-si vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros
-decimales negativos en coma flotante se convertir@'an siempre a su valor 
-absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, 
-entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an 
-en su valor absoluto.
-
 @item @code{lognegint}
 si vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi},
 siendo @code{n} un entero positivo.
@@ -872,7 +1012,7 @@ Si se hace @code{declare(n,integer);} entonces @code{logcontract(2*a*n*log(x));}
 
 
 @defvr {Variable opcional} logexpand
-Valor por defecto: @code{false}
+Valor por defecto: @code{true}
 
 Si @code{logexpand} vale @code{true} hace que @code{log(a^b)} se convierta
 en @code{b*log(a)}. Si toma el valor @code{all}, @code{log(a*b)} tambi@'en se
@@ -880,7 +1020,7 @@ reducir@'a a  @code{log(a)+log(b)}. Si toma el valor @code{super}, entonces
 @code{log(a/b)} tambi@'en se reducir@'a a @code{log(a)-log(b)}, siendo 
 @code{a/b} racional con @code{a#1},  (la expresi@'on @code{log(1/b)}, para
 @code{b} entero, se simplifica siempre). Si toma el valor  @code{false},
-que es el valor por defecto, se desactivar@'an todas estas simplificaciones.
+se desactivar@'an todas estas simplificaciones.
 @end defvr
 
 
@@ -889,13 +1029,6 @@ que es el valor por defecto, se desactivar@'an todas estas simplificaciones.
 Valor por defecto: @code{false}
 
 Si @code{lognegint} vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi} siendo @code{n} un entero positivo.
-
-@end defvr
-
-@defvr {Variable opcional} lognumer
-Valor por defecto: @code{false}
-
-Si @code{lognumer} vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros decimales negativos en coma flotante se convertir@'an siempre a su valor absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an en su valor absoluto.
 
 @end defvr
 
@@ -1480,7 +1613,12 @@ La instrucci@'on @code{demo ("trgsmp.dem")} muestra algunos ejemplos de @code{tr
 @end deffn
 
 @deffn {Funci@'on} trigrat (@var{expr})
-Devuelve una forma can@'onica simplificada cuasi-lineal de una expresi@'on trigonom@'etrica; @var{expr} es una fracci@'on racional que contiene @code{sin}, @code{cos} o @code{tan}, cuyos argumentos son formas lineales respecto de ciertas variables (o kernels) y @code{%pi/@var{n}} (@var{n} entero) con coeficientes enteros. El resultado es una fracci@'on simplificada con el numerador y denominador lineales respecto de @code{sin} y @code{cos}.
+Devuelve una forma can@'onica simplificada cuasi-lineal de una expresi@'on trigonom@'etrica;
+@var{expr} es una fracci@'on racional que contiene @code{sin}, @code{cos} o @code{tan}, 
+cuyos argumentos son formas lineales respecto de ciertas variables (o kernels) y @code{%pi/@var{n}}
+(@var{n} entero) con coeficientes enteros. El resultado es una fracci@'on simplificada con 
+el numerador y denominador lineales respecto de @code{sin} y @code{cos}. As@'{@dotless{i}},
+ @code{trigrat} devuelve una expresi@'on lineal siempre que sea posible.
 
 @c ===beg===
 @c trigrat(sin(3*a)/sin(a+%pi/3));
