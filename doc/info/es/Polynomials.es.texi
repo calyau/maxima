@@ -1,4 +1,4 @@
-@c English version 2011-07-03
+@c English version 2011-08-04
 @menu
 * Introducci@'on a los polinomios::  
 * Funciones y variables para polinomios::  
@@ -65,6 +65,18 @@ Si @code{berlefact} vale @code{false} entonces se utiliza el algoritmo de factor
 @deffn {Funci@'on} bezout (@var{p1}, @var{p2}, @var{x})
 Es una alternativa a la funci@'on @code{resultant}.  Devuelve una matriz.
 
+@example
+(%i1) bezout(a*x+b, c*x^2+d, x);
+                         [ b c  - a d ]
+(%o1)                    [            ]
+                         [  a     b   ]
+(%i2) determinant(%);
+                            2      2
+(%o2)                      a  d + b  c
+(%i3) resultant(a*x+b, c*x^2+d, x);
+                            2      2
+(%o3)                      a  d + b  c
+@end example
 @end deffn
 
 @deffn {Funci@'on} bothcoef (@var{expr}, @var{x})
@@ -214,9 +226,11 @@ funci@'on.
 (%i1) coeff ([4*a, -3*a, 2*a], a);
 (%o1)                      [4, - 3, 2]
 (%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+@group
                           [  a    b  ]
 (%o2)                     [          ]
                           [ - c  - d ]
+@end group
 (%i3) coeff (a*u - b*v = 7*u + 3*v, u);
 (%o3)                         a = 7
 @end example
@@ -917,16 +931,45 @@ equation may be given as first argument.
 @defvr {Variable opcional} modulus
 Valor por defecto: @code{false}
 
-Si @code{modulus} es un n@'umero positivo @var{p}, las operaciones con n@'umeros racionales (como los devueltos por @code{rat} y funciones asociadas) se realizan m@'odulo @var{p}, utilizando el llamado sistema de m@'odulo balanceado, en el que @code{@var{n} m@'odulo @var{p}} se define como un entero @var{k} de @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}
-si @var{p} es impar, o de @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} si @var{p} es par, de tal manera que @code{@var{a} @var{p} + @var{k}} es igual a @var{n} para alg@'un entero @var{a}.
-@c NEED EXAMPLES OF "BALANCED MODULUS" HERE
+Si @code{modulus} es un n@'umero positivo @var{p}, las operaciones con n@'umeros racionales
+(como los devueltos por @code{rat} y funciones relacionadas) se realizan m@'odulo @var{p},
+utilizando el llamado sistema de m@'odulo balanceado, en el que @code{@var{n} m@'odulo @var{p}}
+se define como un entero @var{k} de @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}
+si @var{p} es impar, o de @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} si @var{p} es par,
+de tal manera que @code{@var{a} @var{p} + @var{k}} es igual a @var{n} para alg@'un entero @var{a}.
 
-@c FALTA PARRAFO POCO LEGIBLE
+Normalmente a @code{modulus} se le asigna un n@'umero primo. Se acepta que a @code{modulus}
+se le asigne un entero positivo no primo, pero se obtendr@'a un mensaje de aviso. Maxima 
+responder@'a con un mensaje de error cuando se le asigne a @code{modulus} cero o un n@'umero
+negativo.
 
-Normalmente a @code{modulus} se le asigna un n@'umero primo. Se acepta que a @code{modulus} se le asigne un entero positivo no primo, pero se obtendr@'a un mensaje de aviso. Maxima permitir@'a que a @code{modulus} se le asigne cero o un entero negativo, aunque no est@'e clara su utilidad.
+Ejemplos:
 
-@c NEED EXAMPLES HERE
+@example
+(%i1) modulus:7;
+(%o1)                           7
+(%i2) polymod([0,1,2,3,4,5,6,7]);
+(%o2)            [0, 1, 2, 3, - 3, - 2, - 1, 0]
+(%i3) modulus:false;
+(%o3)                         false
+(%i4) poly:x^6+x^2+1;
+                            6    2
+(%o4)                      x  + x  + 1
+(%i5) factor(poly);
+                            6    2
+(%o5)                      x  + x  + 1
+(%i6) modulus:13;
+(%o6)                          13
+(%i7) factor(poly);
+                      2        4      2
+(%o7)               (x  + 6) (x  - 6 x  - 2)
+(%i8) polymod(%);
+                            6    2
+(%o8)                      x  + x  + 1
+@end example
 @end defvr
+
+
 
 @deffn {Funci@'on} num (@var{expr})
 Devuelve el numerador de @var{expr} si se trata de una fracci@'on. Si @var{expr} no es una fracci@'on, se devuelve @var{expr}.
@@ -1155,7 +1198,8 @@ Valor por defecto: @code{true}
 
 Si @code{ratdenomdivide} vale @code{true}, la funci@'on @code{ratexpand} expande una fracci@'on en la que el numerador es una suma en una suma de divisiones. En otro caso, @code{ratexpand} reduce una suma de divisiones a una @'unica fracci@'on, cuyo numerador es la suma de los denominadores de cada fracci@'on.
 
-Examples:
+Ejemplos:
+
 @example
 (%i1) expr: (x^2 + x + 1)/(y^2 + 7);
                             2
@@ -1172,11 +1216,13 @@ Examples:
                     y  + 7   y  + 7   y  + 7
 (%i4) ratdenomdivide: false$
 (%i5) ratexpand (expr);
+@group
                             2
                            x  + x + 1
 (%o5)                      ----------
                               2
                              y  + 7
+@end group
 (%i6) expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
                                      2
                            b        a
@@ -1610,19 +1656,67 @@ La funci@'on @code{remainder} devuelve el segundo elemento de la lista retornada
 @end deffn
 
 @deffn {Funci@'on} resultant (@var{p_1}, @var{p_2}, @var{x})
-@deffnx {Variable} resultant
-Calcula la resultante de los dos polinomios @var{p_1} y @var{p_2}, eliminando la variable @var{x}.
-La resultante es un determinante de los coeficientes de @var{x} en @var{p_1} y @var{p_2}, que es igual a cero si s@'olo si @var{p_1} y @var{p_2} tienen un factor com@'un no constante.
+Calcula la resultante de los dos polinomios @var{p_1} y @var{p_2}, eliminando
+la variable @var{x}. La resultante es un determinante de los coeficientes de @var{x}
+en @var{p_1} y @var{p_2}, que es igual a cero si s@'olo si @var{p_1} y @var{p_2}
+tienen un factor com@'un no constante.
 
-Si @var{p_1} o @var{p_2} pueden ser factorizados, puede ser necesario llamar a @code{factor} antes que invocar a @code{resultant}.
+Si @var{p_1} o @var{p_2} pueden ser factorizados, puede ser necesario llamar a 
+@code{factor} antes que invocar a @code{resultant}.
 
-La variable @code{resultant} controla qu@'e algoritmo ser@'a utilizado para calcular la resultante.
-@c  FALTA COMPLETAR PARRAFO
+La variable opcional @code{resultant} controla qu@'e algoritmo ser@'a utilizado para calcular la resultante.
+V@'eanse @code{option_resultant} y @code{resultant}.
 
-La funci@'on @code{bezout} toma los mismos argumentos que @code{resultant} y devuelve una matriz. El determinante del valor retornado es la resultante buscada.
+La funci@'on @code{bezout} toma los mismos argumentos que @code{resultant} y devuelve una matriz.
+El determinante del valor retornado es la resultante buscada.
 
-@c NEED AN EXAMPLE HERE
+Ejemplos:
+
+@example
+(%i1) resultant(2*x^2+3*x+1, 2*x^2+x+1, x);
+(%o1)                           8
+(%i2) resultant(x+1, x+1, x);
+(%o2)                           0
+(%i3) resultant((x+1)*x, (x+1), x);
+(%o3)                           0
+(%i4) resultant(a*x^2+b*x+1, c*x + 2, x);
+                         2
+(%o4)                   c  - 2 b c + 4 a
+
+(%i5) bezout(a*x^2+b*x+1, c*x+2, x);
+@group
+                        [ 2 a  2 b - c ]
+(%o5)                   [              ]
+                        [  c      2    ]
+@end group
+(%i6) determinant(%);
+(%o6)                   4 a - (2 b - c) c
+@end example
 @end deffn
+
+
+
+@defvr {Variable opcional} resultant
+Valor por defecto: @code{subres}
+
+La variable opcional @code{resultant} controla qu@'e algoritmo ser@'a utilizado para
+calcular la resultante con la funci@'on @code{resultant}. Los  valores posibles son:
+
+@table @code
+@item subres
+para el algoritmo PRS (@i{polynomial remainder sequence}) subresultante,
+@item mod
+para el algoritmo resultante modular y
+@item red
+para el algoritmo PRS (@i{polynomial remainder sequence}) reducido.
+@end table
+
+En la mayor parte de problemas, el valor por defecto, @code{subres}, es el
+m@'as apropiado. Pero en el caso de problemas bivariantes o univariantes
+de grado alto, puede ser mejor utilizar @code{mod}.
+@end defvr
+
+
 
 @defvr {Variable opcional} savefactors
 Valor por defecto: @code{false}
