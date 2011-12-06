@@ -2,60 +2,151 @@
 @c File        : Runtime.de.texi
 @c License     : GNU General Public License (GPL)
 @c Language    : German
-@c Original    : Runtime.texi revision 1.25
+@c Original    : Runtime.texi revision 03.09.2011
 @c Translation : Dr. Dieter Kaiser
-@c Date        : 14.11.2010
+@c Date        : 06.12.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
 @menu
-* Einf@"uhrung in die Laufzeitumgebung::
+* Initialisierung von Maxima::
 * Interrupts::
 * Funktionen und Variablen der Laufzeitumgebung::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in die Laufzeitumgebung, Interrupts, Laufzeitumgebung, Laufzeitumgebung
-@section Einf@"uhrung in die Laufzeitumgebung
+@node Initialisierung von Maxima, Interrupts, Laufzeitumgebung, Laufzeitumgebung
+@section Initialisierung von Maxima
 @c -----------------------------------------------------------------------------
 
-   @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !
-   @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT 
-   @c HEADING. !!!
+@cindex maxima-init.mac
+@cindex maxima-init.lisp
 
-@c @code{maxima-init.mac} is a file which is loaded automatically when Maxima 
-@c starts. You can use @code{maxima-init.mac} to customize your Maxima 
-@c environment. @code{maxima-init.mac}, if it exists, is typically placed in the
-@c directory named by @code{maxima_userdir}, although it can be in any directory
-@c searched by the function @code{file_search}.
+Wenn Maxima startet, werden die beiden Dateien @code{maxima-init.mac} und
+@code{maxima-init.lisp} automatisch geladen, sofern diese vorhanden sind.  Die
+Datei @code{maxima-init.mac} wird mit der Funktion @mref{batchload} von Maxima
+geladen und kann beliebige Maxima-Ausdr@"ucke enthalten, die beim Starten von
+Maxima ausgef@"uhrt werden.  Die Datei @code{maxima-init.lisp} wird mit der
+Funktion @mref{load} geladen und kann entsprechende Lisp-Anweisungen enthalten.
+Beide Dateien erlauben es dem Nutzer, globale Variablen zu setzen, Funktionen zu
+definieren oder sonstige Aktionen auszuf@"uhren, um zum Beispiel die
+Maxima-Umgebung anzupassen.
 
-Die Datei @code{maxima-init.mac} wird automatisch geladen, wenn Maxima startet.
-Die Datei @code{maxima-init.mac} kann genutzt werden, um bevorzugte 
-Einstellungen vorzunehmen.  Die Datei wird @"ublicherweise in dem Verzeichnis
-@code{maxima_userdir} abgelegt.  Sie kann aber auch in jedes andere Verzeichnis
-abgelegt werden, das von der Funktion @code{file_search} gefunden wird.
+Die Dateien @code{maxima-init.mac} und @code{maxima-init.lisp} k@"onnen in jedem
+Verzeichnis abgelegt werden, das von der Funktion @mref{file_search} gefunden
+wird.  @"Ublicherweise wird das Verzeichnis gew@"ahlt, das in der
+Optionsvariablen @mref{maxima_userdir} enthalten ist und die von Maxima beim
+Starten entsprechend dem Betriebssystem mit einem Standardwert initialisiert
+wird.
 
-@c Here is an example @code{maxima-init.mac} file:
+Beispiel:
 
-Dies ist eine Beispiel f@"ur eine @code{maxima-init.mac}-Datei:
+Im Folgenden wird ein Beispiel f@"ur den Inhalt einer Datei
+@code{maxima-init.mac} gezeigt.  In diesem Beispiel werden einige globale
+Werte auf neue Anfangswerte gesetzt.
 
 @example
-setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
-showtime:all;
+/* maxima-init.mac */
+print(" Lade ", file_search("maxima-init.mac"), " ...")$
+linel:65$      /* 65 Zeichen pro Zeile */
+leftjust:true$ /* Linksb@"undige Ausgabe */
+algebraic:true$ /* Vereinfache algebraische Zahlen */
+fpprec:25$      /* gro@ss{}e Gleitkommazahlen mit 25 Stellen */
+print (" maxima-init.mac ist geladen.")$
 @end example
 
-@c In this example, @code{setup_autoload} tells Maxima to load the specified 
-@c file (@code{specfun.mac}) if any of the functions (@code{ultraspherical},
-@c @code{assoc_legendre_p}) are called but not yet defined. Thus you needn't 
-@c remember to load the file before calling the functions.
+Die Optionsvariable @code{maxima_userdir} enth@"alt ein geeignetes Verzeichnis,
+um die Datei @code{maxima-init.mac} abzulegen.  Mit der Funktion
+@code{file_search} kann gepr@"uft werden, ob die Datei von Maxima gefunden wird.
 
-@c The statement @code{showtime: all} tells Maxima to set the @code{showtime} 
-@c variable. The @code{maxima-init.mac} file can contain any other assignments 
-@c or other Maxima statements.
+@example
+(%i1) maxima_userdir;
+(%o1)                 /home/dieter/.maxima
+(%i2) file_search("maxima-init.mac");
+(%o2)         /home/dieter/.maxima/maxima-init.mac
+@end example
+
+Im Folgenden wird Maxima mit einer Datei @code{maxima-init.mac} gestartet, die
+die oben angegebenen Maxima Kommandos enth@"alt.
+
+@example
+dieter@@dieter:~/Maxima/maxima$ rmaxima
+Maxima 5.25.1 http://maxima.sourceforge.net
+Mit Lisp SBCL 1.0.53
+Lizensiert unter der GNU Public License. Siehe die Datei COPYING.
+Gewidmet dem Andenken an William Schelter.
+Die Funktion bug_report() gibt Informationen zum Berichten von Fehlern.
+ Lade  /home/dieter/.maxima/maxima-init.mac  ... 
+ maxima-init.mac ist geladen. 
+(%i1) 
+@end example
+
+Die Sitzung wird fortgesetzt, die Variablen enthalten die gew@"unschten neuen
+Standardwerte und die Anzeige ist linksb@"undig formatiert.
+
+@example
+(%i1) linel;
+(%o1) 65
+(%i2) algebraic;
+(%o2) true
+(%i3) fpprec;
+(%o3) 25
+@end example
+
+@emph{Hinweis:}
+
+Mit dem Kommando @mref{reset} werden die Optionsvariablen nicht auf die Werte
+der Datei @code{maxima-init.mac} zur@"uckgesetzt, sondern auf die
+urspr@"unglichen in Maxima festgelegten Standardwerte.  Wird das Kommando
+@mref{kill} ausgef@"uhrt, gehen weiterhin alle in der Initialisierungsdatei
+definierten Variablen und Funktionen verloren.  In beiden F@"allen muss die
+Datei @code{maxima-init.mac} erneut zum Beispiel mit der Funktion
+@mref{load} geladen werden.
+
+Die obige Sitzung wird fortgesetzt.  Die Variablen werden mit @code{reset}
+zur@"uckgesetzt.  Dann wird die Datei @code{maxima-init.mac} mit der Funktion
+@code{load} geladen.
+
+@example
+(%i4) reset();
+(%o1) [features, fpprec, _, __, labels, %, linenum, algebraic, 
+                                   tr-unique, leftjust, lispdisp]
+(%i2) fpprec;
+(%o2)                          16
+(%i3) load("maxima-init.mac");
+ Lade  /home/dieter/.maxima/maxima-init.mac  ... 
+ maxima-init.mac ist geladen. 
+(%o3) /home/dieter/.maxima/maxima-init.mac
+(%i4) fpprec;
+(%o4) 25
+@end example
+
+Die obigen Ausf@"uhrungen treffen auf gleiche Weise auf die Datei
+@code{maxima-init.lisp} zu, wobei in diesem Fall die Datei Lisp-Anweisungen
+enth@"alt.
+
+Beispiel:
+
+Das folgende Beispiel zeigt die @"Ubersetzung des obigen Beispiels f@"ur die
+Datei @code{maxima-init.mac} in Lisp-Anweisungen.
+
+@example
+;;; maxima-init.lisp
+(format t " Lade ~A ...~%" ($file_search "maxima-init.lisp"))
+(setq $linel 65)
+(setq $leftjust t)
+(setq $algebraic t)
+(setq $fpprec 25)
+(fpprec1 nil $fpprec)
+(format t " maxima-init.lisp ist geladen.~%")
+@end example
+
+Die Datei @code{maxima-init.lisp} ist im besonderen dazu geeignet, einen
+Patch in Maxima einzuspielen, um einen Programmierfehler zu beheben.
 
 @c -----------------------------------------------------------------------------
-@node Interrupts, Funktionen und Variablen der Laufzeitumgebung, Einf@"uhrung in die Laufzeitumgebung, Laufzeitumgebung
+@node Interrupts, Funktionen und Variablen der Laufzeitumgebung, Initialisierung von Maxima, Laufzeitumgebung
 @section Interrupts
 @c -----------------------------------------------------------------------------
 
@@ -168,6 +259,7 @@ den Argumenten @code{true} und @code{false} wird der Umfang der auszugebenen
 Information kontrolliert.  Mit dem Argument @code{true} wird die umfangreichste
 Darstellung ausgegeben und mit dem Argument @code{false} die k@"urzeste.
 
+@need 800
 Beispiel:
 
 Das folgende Beispiel zeigt die Ausgabe auf einem Linux-System mit der 
@@ -365,6 +457,7 @@ sind.  Die R@"uckgabe ist eine ganze Zahl.
 
 Siehe auch @mref{elapsed_real_time} und @mrefdot{elapsed_run_time}
 
+@need 800
 Beispiel:
 
 @example
