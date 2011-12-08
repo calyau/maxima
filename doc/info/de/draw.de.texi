@@ -2,9 +2,9 @@
 @c File     : draw.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Original : draw.texi revision 03.10.2011
+@c Original : draw.texi revision 08.12.2011
 @c Date     : 08.11.2010
-@c Revision : 16.10.2011
+@c Revision : 08.12.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -2215,13 +2215,36 @@ Example:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{wired_surface}
+@defvr {Graphic option} wired_surface
+Default value: @code{false}
+
+Indicates whether 3D surfaces in @mref{enhanced3d} mode show the grid joinning
+the points or not.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d    = [sin(x),x,y],
+        wired_surface = true,
+        explicit(x^2+y^2,x,-1,1,y,-1,1)) $
+@end example
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{x_voxel}
 @defvr {Graphic option} x_voxel
 Default value: 10
 
 @code{x_voxel} is the number of voxels in the x direction to
 be used by the @i{marching cubes algorithm} implemented
-by the 3d @code{implicit} object.  It is also used by graphic
-object @code{region}.
+by the 3d @mref{implicit} object.  It is also used by graphic
+object @mrefdot{region}
 @end defvr
 
 @c -----------------------------------------------------------------------------
@@ -3118,8 +3141,9 @@ Draws 3D functions defined in cylindrical coordinates.
 values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values 
 from @var{minazi} to @var{maxazi}.
 
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+This object is affected by the following @i{graphic options}: @code{xu_grid},
+@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface},
+@code{enhanced3d} and @code{color}.
 
 Example:
 
@@ -3141,7 +3165,8 @@ and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.  Element
 on @math{(x0+width,y0)}.
 
 This object is affected by the following @i{graphic options}: @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
+@code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
+and @code{color}.
 
 In older versions of Maxima, @code{elevation_grid} was called @code{mesh}.
 See also @code{mesh}.
@@ -3285,7 +3310,8 @@ the variable @var{var2} taking values from @var{minval2} to @var{maxval2}.
 
 This object is affected by the following @i{graphic options}:
 @code{draw_realpart}, @code{xu_grid}, @code{yv_grid}, @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
+@code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}, and
+@code{color}.
 
 Example:
 
@@ -3451,8 +3477,8 @@ variable @var{z} taking values from @var{zmin} to @var{zmax}.  This object
 implements the @i{marching cubes algorithm}.
 
 This object is affected by the following @i{graphic options}: @code{x_voxel}, 
-@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key}
-and @code{color}.
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key},
+@code{wired_surface}, @code{enhanced3d}, and @code{color}.
 
 Example:
 
@@ -3529,8 +3555,8 @@ of equal length.  All these points define an arbitrary surface in 3D and
 in some sense it's a generalization of the @code{elevation_grid} object.
 
 This object is affected by the following @i{graphic options}: @code{line_type},
-@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and
-@code{transform}.
+@code{line_width}, @code{color}, @code{key}, @code{wired_surface},
+@code{enhanced3d}, and @code{transform}.
 
 Examples:
 
@@ -3635,7 +3661,8 @@ the parameter @var{par2} taking values from @var{par2min} to @var{par2max}.
 
 This object is affected by the following @i{graphic options}:
 @code{draw_realpart}, @code{xu_grid}, @code{yv_grid}, @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
+@code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}, and
+@code{color}.
 
 Example:
 
@@ -4025,7 +4052,8 @@ values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values
 from @var{minzen} to @var{maxzen}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface},
+@code{enhanced3d}, and @code{color}.
 
 Example:
 
@@ -4088,8 +4116,8 @@ Draws a tube in 3D with varying diameter.
 perpendicular to it.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, 
-@code{enhanced3d}, @code{color}, and @code{tube_extremes}.
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key},
+@code{wired_surface}, @code{enhanced3d}, @code{color}, and @code{tube_extremes}.
 
 Example:
 
