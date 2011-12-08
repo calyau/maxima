@@ -1,4 +1,4 @@
-@c English version 2011-10-03
+@c English version 2011-12-08
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2290,6 +2290,31 @@ Ejemplo:
 
 
 
+
+@defvr {Opci@'on gr@'afica} wired_surface
+Valor por defecto: @code{false}
+
+Indica si las superficies en 3D en modo @code{enhanced3d} deben mostrar o no la malla que
+unen los puntos.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d    = [sin(x),x,y],
+        wired_surface = true,
+        explicit(x^2+y^2,x,-1,1,y,-1,1)) $
+@end example
+
+@end defvr
+
+
+
+
 @defvr {Opci@'on gr@'afica} x_voxel
 Valor por defecto: 10
 
@@ -3281,7 +3306,7 @@ dibuja la funci@'on @code{@var{radius}(@var{z},@var{azi})} definida en coordenad
 @var{minazi} hasta @var{maxazi}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} y @code{color}.
 
 Ejemplo:
 
@@ -3302,7 +3327,7 @@ se proyecta sobre el punto @math{(x0,y0+height)}, @math{a(1,n)} sobre @math{(x0+
 @math{a(m,1)} sobre @math{(x0,y0)} y @math{a(m,n)} sobre @math{(x0+width,y0)}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d} y @code{color}.
+@code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d} y @code{color}.
 
 En versiones antiguas de Maxima, @code{elevation_grid} se llamaba @code{mesh}.
 V@'ease tambi@'en @code{mesh}.
@@ -3444,8 +3469,8 @@ dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn}, con la variable
 la variable @var{var2} tomando valores desde @var{minval2} hasta @var{maxval2}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{draw_realpart}, @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}
- y @code{color}.
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}
+y @code{color}.
 
 Ejemplo:
 
@@ -3612,7 +3637,8 @@ valores desde @var{zmin} hasta @var{zmax}. Este objeto est@'a programado con el
 algoritmo @i{marching cubes}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{x_voxel}, 
-@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{wired_surface}, @code{enhanced3d} y @code{color}.
 
 Ejemplo:
 
@@ -3689,7 +3715,7 @@ igual longitud. Todos estos puntos definen una superficie arbitraria en 3D.
 En cierto sentido, se trata de una generalizaci@'on del objeto @code{elevation_grid}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type}, 
-@code{line_width}, @code{color}, @code{key}, @code{enhanced3d} y @code{transform}.
+@code{line_width}, @code{color}, @code{key}, @code{wired_surface}, @code{enhanced3d} y @code{transform}.
 
 Ejemplos:
 
@@ -3790,7 +3816,7 @@ con el par@'ametro @var{par1} tomando valores desde @var{par1min} hasta @var{par
 y el par@'ametro @var{par2} tomando valores desde @var{par2min} hasta @var{par2max}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{draw_realpart}, @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}
 y @code{color}.
 
 Ejemplo:
@@ -4166,7 +4192,7 @@ dibuja la funci@'on @code{@var{radius}(@var{azi},@var{zen})} definida en coorden
 @var{minzen} hasta @var{maxzen}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} y @code{color}.
 
 Ejemplo:
 
@@ -4221,7 +4247,7 @@ es la curva param@'etrica de par@'ametro @var{p}, el cual toma valores entre
 con sus centros sobre la curva param@'etrica y perpendiculares a ella.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
 @code{color} y @code{tube_extremes}.
 
 Ejemplo:
