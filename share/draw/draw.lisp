@@ -1602,6 +1602,7 @@
 ;;     line_type
 ;;     color
 ;;     enhanced3d
+;;     wired_surface
 ;; Some functions and macros are defined in grcommon.lisp
 (defun implicit3d (expr par1 xmin xmax par2 ymin ymax par3 zmin zmax)
   (let ((xmin ($float xmin))
@@ -1677,6 +1678,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
+;;     wired_surface
 ;;     surface_hide
 ;;     transform
 (defun explicit3d (fcn par1 minval1 maxval1 par2 minval2 maxval2)
@@ -1765,6 +1767,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
+;;     wired_surface
 ;;     transform
 (defun elevation_grid (mat x0 y0 width height)
   (let ( (fx0 ($float x0))
@@ -1851,6 +1854,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
+;;     wired_surface
 ;;     transform
 (defun mesh (&rest row)
   (let (result xx yy zz
@@ -2105,6 +2109,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
+;;     wired_surface
 ;; This object is constructed as a parametric surface in 3d.
 ;; Functions are defined in format r=r(azimuth,zenith),
 ;; where, normally, azimuth is an angle in [0,2*%pi] and zenith in [0,%pi]
@@ -2134,6 +2139,8 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     enhanced3d
+;;     wired_surface
 ;; This object is constructed as a parametric surface in 3d.
 ;; Functions are defined in format z=z(radius,azimuth), where,
 ;; normally, azimuth is an angle in [0,2*%pi] and r any real
@@ -2241,6 +2248,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
+;;     wired_surface
 ;;     surface_hide
 ;;     transform
 (defun parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
@@ -2329,6 +2337,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
+;;     wired_surface
 ;;     surface_hide
 ;;     transform
 (defmacro check-tube-extreme (ex cx cy cz circ)
@@ -2921,7 +2930,10 @@
                                (otherwise ""))))
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
-            (format nil "set pm3d at s depthorder explicit~%")
+            (when (not (null (get-option '$enhanced3d)))
+              (if (null (get-option '$wired_surface))
+                (format nil "set pm3d at s depthorder explicit~%")
+                (format nil "set style line 1 lt 1 lw 1 lc rgb '#000000'~%set pm3d at s depthorder explicit hidden3d 1~%") ))
             (if (get-option '$surface_hide)
                (format nil "set hidden3d nooffset~%"))
             (if (get-option '$xyplane)

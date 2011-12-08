@@ -174,6 +174,7 @@
       (gethash '$yv_grid *gr-options*)        30
       (gethash '$surface_hide *gr-options*)   nil
       (gethash '$enhanced3d *gr-options*)     '$none
+      (gethash '$wired_surface *gr-options*)  nil
       (gethash '$contour *gr-options*)        '$none  ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*) 5       ; 1-50, [lowest_level,step,highest_level] or {z1,z2,...}
       (gethash '$colorbox *gr-options*)       t       ; in pm3d mode, always show colorbox
@@ -801,7 +802,7 @@
         $axis_right $axis_3d $surface_hide $xaxis $yaxis $zaxis $unit_vectors
         $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
         $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis
-        $ytics_secondary_axis $ztics_axis $draw_realpart) ; true or false
+        $ytics_secondary_axis $ztics_axis $draw_realpart $wired_surface) ; true or false
           (update-boolean-option opt val))
       ($filled_func  ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
