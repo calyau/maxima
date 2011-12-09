@@ -128,9 +128,12 @@
       (format nil "  [~a GetProperty] SetOpacity ~a~%"
               an
               (gethash '$opacity *gr-options*) )
-      (format nil "  [~a GetProperty] SetLineWidth ~a~%~%"
+      (format nil "  [~a GetProperty] SetLineWidth ~a~%"
               an
-              (gethash '$line_width *gr-options*)) )))
+              (gethash '$line_width *gr-options*))
+      (if (not (null (gethash '$wired_surface *gr-options*)))
+        (format nil "  [~a GetProperty] EdgeVisibilityOn~%  [~a GetProperty] SetEdgeColor 0 0 0~%~%" an an)
+        (format nil "~%")) )))
 
 (defun vtktubefilter-code (tn fn lt)
   (concatenate 'string
@@ -1778,6 +1781,7 @@
                 ($point_type       (update-pointtype                            ($rhs x)))
                 ($point_size       (update-nonnegative-float '$point_size       ($rhs x)))
                 ($enhanced3d       (update-enhanced3d                           ($rhs x)))
+                ($wired_surface    (update-boolean-option    '$wired_surface    ($rhs x)))
                 ($terminal         (update-terminal                             ($rhs x)))
                 ($x_voxel          (update-positive-integer  '$x_voxel          ($rhs x)))
                 ($y_voxel          (update-positive-integer  '$y_voxel          ($rhs x)))

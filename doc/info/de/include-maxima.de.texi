@@ -5,7 +5,7 @@
 @c Original    : include-maxima.texi.in 25.09.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 15.10.2010
-@c Revision    : 04.12.2011
+@c Revision    : 06.12.2011
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -382,7 +382,7 @@ Funktionsdefinitionen
 * Funktionen und Variablen f@"ur Funktionsdefinitionen::
 
 Laufzeitumgebung
-* Einf@"uhrung in die Laufzeitumgebung::
+* Initialisierung von Maxima::
 * Interrupts::
 * Funktionen und Variablen der Laufzeitumgebung::
 

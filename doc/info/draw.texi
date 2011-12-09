@@ -2526,6 +2526,34 @@ Example:
 
 
 
+@defvr {Graphic option} wired_surface
+Default value: @code{false}
+
+Indicates whether 3D surfaces in @code{enhanced3d} mode show the grid joinning
+the points or not.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d    = [sin(x),x,y],
+        wired_surface = true,
+        explicit(x^2+y^2,x,-1,1,y,-1,1)) $
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
 @defvr {Graphic option} x_voxel
 Default value: 10
 
@@ -2539,6 +2567,7 @@ object @code{region}.
 @closecatbox
 
 @end defvr
+
 
 
 
@@ -3695,7 +3724,7 @@ values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values
 from @var{minazi} to @var{maxazi}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} and @code{color}.
 
 Example:
 
@@ -3722,7 +3751,7 @@ is projected on point @math{(x0,y0+height)}, @math{a(1,n)} on @math{(x0+width,y0
 @math{a(m,1)} on @math{(x0,y0)}, and @math{a(m,n)} on @math{(x0+width,y0)}.
 
 This object is affected by the following @i{graphic options}: @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
+@code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d}, and @code{color}.
 
 In older versions of Maxima, @code{elevation_grid} was called @code{mesh}.
 See also @code{mesh}.
@@ -3878,7 +3907,7 @@ variable @var{var1} taking values from @var{minval1} to @var{maxval1} and
 variable @var{var2} taking values from @var{minval2} to @var{maxval2}.
 
 This object is affected by the following @i{graphic options}: @code{draw_realpart}, @code{xu_grid},
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key},
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface},
 @code{enhanced3d}, and @code{color}.
 
 Example:
@@ -4050,7 +4079,8 @@ from @var{ymin} to @var{ymax} and variable @var{z} taking values
 from @var{zmin} to @var{zmax}. This object implements the @i{marching cubes algorithm}.
 
 This object is affected by the following @i{graphic options}: @code{x_voxel}, 
-@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key},
+@code{wired_surface}, @code{enhanced3d},and @code{color}.
 
 Example:
 
@@ -4134,7 +4164,7 @@ of equal length. All these points define an arbitrary surface in 3D and
 in some sense it's a generalization of the @code{elevation_grid} object.
 
 This object is affected by the following @i{graphic options}: @code{line_type}, 
-@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
+@code{line_width}, @code{color}, @code{key}, @code{wired_surface}, @code{enhanced3d}, and @code{transform}.
 
 Examples:
 
@@ -4247,7 +4277,7 @@ The command @code{parametric_surface(@var{xfun}, @var{yfun}, @var{zfun},
 @var{par2max}.
 
 This object is affected by the following @i{graphic options}: @code{draw_realpart}, @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
  and @code{color}.
 
 Example:
@@ -4654,7 +4684,7 @@ values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values
 from @var{minzen} to @var{maxzen}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key}, @code{wired_surface}, @code{enhanced3d} and @code{color}.
 
 Example:
 
@@ -4719,7 +4749,7 @@ to @var{pmax}. Circles of radius @var{rfun} are placed with their centers on
 the parametric curve and perpendicular to it.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{wired_surface}, @code{enhanced3d},
 @code{color}, and @code{tube_extremes}.
 
 Example:
