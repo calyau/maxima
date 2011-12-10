@@ -55,7 +55,7 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Maxima Manual}
-@center Version 5.23
+@center Version 5.26
 @sp 2
 @center Deutsche @"Ubersetzung
 @page
