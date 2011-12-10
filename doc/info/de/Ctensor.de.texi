@@ -213,9 +213,9 @@ verschiedenen Wert wird die inverse Metrik ausgegeben.
 
 Hat die Optionsvariable @mref{cframe_flag} den Wert @code{true}, erwartet
 @code{cmetric}, dass die Matrizen @mref{lfg} f@"ur die Metrik des bewegten
-Bezugssystems und @mref{fri} f@"ur die inverse dieser Metrik definiert sind.
+Bezugssystems und @code{fri} f@"ur die inverse dieser Metrik definiert sind.
 Mit diesen Matrizen berechnet @code{cmetric} dann die Werte der Matrizen
-@mref{fr} und die inverse @mrefdot{ufg}
+@code{fr} und die inverse @mrefdot{ufg}
 @end deffn
 
 @c -----------------------------------------------------------------------------
