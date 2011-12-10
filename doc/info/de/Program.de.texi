@@ -5,7 +5,7 @@
 @c Original    : Program.texi revision 25.07.2011
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 14.11.2010
-@c Revision    : 02.10.2011
+@c Revision    : 10.12.2011
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -21,12 +21,14 @@
 @section Lisp und Maxima
 @c -----------------------------------------------------------------------------
 
-Maxima ist in Lisp programmiert.  Es ist einfach Lisp-Funktionen und 
+@subheading Lisp- und Maxima-Bezeichner
+
+Maxima ist in Lisp programmiert.  Es ist einfach, Lisp-Funktionen und
 Lisp-Variable in Maxima zu verwenden.  Umgekehrt k@"onnen Maxima-Funktionen und
 Maxima-Variablen in Lisp verwendet werden.  Ein Lisp-Symbol, das mit einem 
 Dollarzeichen @code{$} beginnt, entspricht einem Maxima-Symbol ohne einem 
 Dollarzeichen.  Umgekehrt entspricht einem Maxima-Symbol, das mit einem 
-Fragezeichen @code{?} beginnt, einem Lisp-Symbol ohne das Fragezeichen.
+Fragezeichen @code{?} beginnt, ein Lisp-Symbol ohne das Fragezeichen.
 Zum Beispiel entspricht dem Maxima-Symbol @code{foo} das Lisp-Symbol 
 @code{$foo} und dem Maxima-Symbol @code{?foo} entspricht das Lisp-Symbol
 @code{foo}.
@@ -36,10 +38,41 @@ Lisp-Symbolen muss ein Backslash @code{\} vorangestellt werden, um diese
 in Maxima zu verwenden.  Zum Beispiel entspricht dem Lisp-Symbol 
 @code{*foo-bar*} das Maxima-Symbol @code{?\*foo\-bar\*}.
 
-Lisp-Code kann von einer Maxima-Kommandozeile ausgef@"uhrt werden.  Eine 
-einzelne Zeile Lisp-Code kann mit dem Unterbrechungskommando @code{:lisp} 
-ausgef@"uhrt werden.  Siehe das Kapitel @nref{Debugger-Kommandos} f@"ur weitere
-Informationen zu Unterbrechungskommandos.
+Im Gegensatz zu Lisp unterscheidet Maxima Gro@ss{}- und Kleinschreibung.  Es 
+gibt einige Regeln, die eine @"Ubersetzung von Namen zwischen Lisp und Maxima 
+betreffen:
+
+@enumerate
+@item
+Ein Lisp-Bezeichner, der nicht von senkrechten Strichen eingeschlossen ist,
+entspricht einem klein geschriebenen Maxima-Bezeichner.  Die Schreibweise des
+Lisp-Bezeichners wird dabei ignoriert.  Zum Beispiel entspricht den folgenden
+Lisp-Bezeichnern @code{$foo}, @code{$FOO} und @code{$Foo} jeweils der
+Maxima-Bezeichner @code{foo}.
+
+@item
+Ein Lisp-Bezeichner, der vollst@"andig gro@ss{} oder klein geschrieben ist und 
+von senkrechten Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner
+in der umgekehrten Schreibweise.  Ein klein geschriebener Lisp-Bezeichner wird 
+also zu einem gro@ss{}geschriebenen Maxima-Bezeichner und umgekehrt.  Zum 
+Beispiel entsprechen den Lisp-Bezeichnern @code{|$FOO|} und @code{|$foo|} die
+Maxima-Bezeichner @code{foo} und @code{FOO}.
+
+@item
+Ein Lisp-Bezeichner in gemischter Schreibweise, der von senkrechten Strichen
+eingeschlossen ist, entspricht einem Maxima-Bezeichner in der gleichen
+Schreibweise.  Zum Beispiel entspricht dem Lisp-Bezeichner @code{|$Foo|} der
+Maxima-Bezeichner @code{Foo}.
+@end enumerate
+
+F@"ur die Syntax von Maxima-Bezeichnern siehe auch @ref{Bezeichner}.
+
+@subheading Ausf@"uhrung von Lisp-Code in Maxima
+
+Lisp-Code kann mit dem Unterbrechungskommando @code{:lisp} von einer
+Maxima-Kom@-man@-do@-zei@-le ausgef@"uhrt werden.  Siehe
+@ref{Debugger-Kommandos} f@"ur weitere Unterbrechungskommandos und deren
+Beschreibung.
 
 Beispiele:
 
@@ -95,43 +128,10 @@ NIL
 Das Kommando @code{:lisp} kann in einer Kommandozeile und in Dateien verwendet
 werden, die mit den Funktionen @mref{batch} oder @mref{demo} geladen werden.
 Dagegen kann das Kommando @code{:lisp} nicht in Dateien verwendet werden, die 
-mit den Funktionen 
-@mrefcomma{load} @mrefcomma{batchload} @mref{translate_file} oder
-@mref{compile_file} geladen werden.
+mit den Funktionen @mrefcomma{load} @mrefcomma{batchload}@w{}
+@mref{translate_file} oder @mref{compile_file} geladen werden.
 
-Mit dem Kommando @mxref{to_lisp, to_lisp()} kann von einer Maxima-Kommandozeile
-eine Lisp-Sitzung ge@"offnet werden.  Mit dem Kommando @code{(TO-MAXIMA)} wird
-die Lisp-Sitzung beendet und nach Maxima zur@"uckgekehrt.
-
-Lisp-Funktionen und Lisp-Variablen, welche in Maxima verwendet werden,
-sollten mit einem Dollarzeichen @code{$} beginnen.
-
-Im Gegensatz zu Lisp unterscheidet Maxima Gro@ss{}- und Kleinschreibung.  Es 
-gibt einige Regeln, die eine @"Ubersetzung von Namen zwischen Lisp und Maxima 
-betreffen:
-
-@enumerate
-@item
-Ein Lisp-Bezeichner, der nicht von senkrechten Strichen eingeschlossen ist,
-entspricht einem klein geschriebenen Maxima-Bezeichner.  Die Schreibweise des
-Lisp-Bezeichners wird dabei ignoriert.  Zum Beispiel entspricht den folgenden
-Lisp-Bezeichnern @code{$foo}, @code{$FOO} und @code{$Foo} jeweils der
-Maxima-Bezeichner @code{foo}.
-
-@item
-Ein Lisp-Bezeichner, der vollst@"andig gro@ss{} oder klein geschrieben ist und 
-von senkrechten Strichen eingeschlossen wird, entspricht einem Maxima-Bezeichner
-in der umgekehrten Schreibweise.  Ein klein geschriebener Lisp-Bezeichner wird 
-also zu einem gro@ss{}geschriebenen Maxima-Bezeichner und umgekehrt.  Zum 
-Beispiel entsprechen den Lisp-Bezeichnern @code{|$FOO|} und @code{|$foo|} die
-Maxima-Bezeichner @code{foo} und @code{FOO}.
-
-@item
-Ein Lisp-Bezeichner in gemischter Schreibweise, der von senkrechten Strichen
-eingeschlossen ist, entspricht einem Maxima-Bezeichner in der gleichen
-Schreibweise.  Zum Beispiel entspricht dem Lisp-Bezeichner @code{|$Foo|} der
-Maxima-Bezeichner @code{Foo}.
-@end enumerate
+@subheading Ausf@"uhrung von Maxima-Code in Lisp
 
 Das Lisp-Makro @code{#$} erlaubt die Nutzung von Maxima-Ausdr@"ucken in 
 Lisp-Code.  @code{#$@var{expr}$} wird zu einem Lisp-Ausdruck expandiert, der
@@ -151,11 +151,13 @@ dem im zweiten Beispiel gezeigten Maxima-Kommando.
 ((MPLUS SIMP) ((MEXPT SIMP) $A 2) ((%SIN SIMP) $X))
 
 (%i1) var: sin(x)+a^2;
+@group
                                      2
 (%o1)                      sin(x) + a
+@end group
 @end example
 
-In diesem Beispiel wird zun@"achst ein Maxima-Ausdruck der Variablen @var{$VAR}
+In diesem Beispiel wird zun@"achst ein Maxima-Ausdruck der Variablen @code{$VAR}
 zugewiesen und dann mit der Lisp-Funktion @code{DISPLA} ausgegeben.
 
 @example
@@ -179,11 +181,18 @@ Lisp-Code aufzurufen, kann die Lisp-Funktion @code{MFUNCALL} aufgerufen werden.
 ((MPLUS SIMP) ((%SIN SIMP) 10) ((MEXPT SIMP) $A 2))
 @end example
 
+@subheading @"Offnen einer Lisp-Sitzung
+
+Mit dem Kommando @code{to_lisp()} kann von einer Maxima-Kommandozeile eine
+Lisp-Sitzung ge@"offnet werden.  Mit dem Kommando @code{(TO-MAXIMA)} wird
+die Lisp-Sitzung beendet und nach Maxima zur@"uckgekehrt.  Siehe auch
+@mref{to_lisp} f@"ur ein Beispiel.
+
 Die folgenden Lisp-Funktionen k@"onnen in Maxima nicht verwendet werden:
 
 @code{complement},
 @code{continue},
-@code{//},
+@code{/},
 @code{float},
 @code{functionp},
 @code{array},
