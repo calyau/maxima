@@ -550,6 +550,7 @@ numerical/slatec/dqage.lisp \
 numerical/slatec/dqagie.lisp \
 numerical/slatec/dqagi.lisp \
 numerical/slatec/dqag.lisp \
+numerical/slatec/dqagp.lisp \
 numerical/slatec/dqagpe.lisp \
 numerical/slatec/dqagse.lisp \
 numerical/slatec/dqags.lisp \
