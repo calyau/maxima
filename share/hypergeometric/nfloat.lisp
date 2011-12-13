@@ -42,19 +42,18 @@
       (setq err (+ (* err (abs (first lk))) (* (abs z) (abs (second lk))))))
     (list acc err)))
 
-;; Let @/ be floating point division.
-;; (a + ea) @/ (b + eb) = ((a + ea) / (b + eb))*(1 + e) 
-;;                      = -(a*eb)/b^2+ea/b+(a*e)/b+a/b
-;;                      = (a/b) + (a/b) * (e - eb/b + ea/a)
-
-(defun running-error-quotient (l)
-   (let ((s) (a (first l)) (b (second l)))
-    (cond ((zerop (first a)) (list 0 0))
-	  (t
-	   (setq s (/ (first a) (first b)))
-	   (list s
-		 (* (abs s) (+ 1 (abs (/ (second a) (first a))) (abs (/ (second b) (first b))))))))))
+;; (%i1) (a+ae*eps)*(1+eps)/(b+be*eps)-a/b$
+;; (%i2) expand(limit(%/eps,eps,0))$
+;; (%i3) expand(ratsubst(Q,a/b,%))$
+;; (%i4) map('abs,%)$
+;; (%i5) facsum(%,abs(Q));
+;; (%o5) ((abs(be)+abs(b))*abs(Q)+abs(ae))/abs(b)
 	
+(defun running-error-quotient (l)
+  (let* ((a (first l)) (b (second l)) (s))
+    (setq s (/ (first a) (first b)))
+    (list s (+ (* (abs s) (+ 1 (abs (/ (second b) (first b))))) (abs (/ (second a) (first b)))))))
+
 ;; unary negation.	 
 (defun running-error-negate (x)
   (setq x (first x))
@@ -168,7 +167,6 @@
       (list (maxima::take (list 'maxima::mfactorial) l) 0)
     (running-error-gamma (list (list (+ 1 (first l)) (second l))))))
 	 
-
 (defun running-error-atan2 (l)
   (let* ((y (first l))
 	 (x (second l))
@@ -229,7 +227,7 @@
 	       (running-error-eval e nil bits)
 	     (throw 'maxima::nfloat-nounform-return 'return-nounform)))
 
-	  ;; Return a nounform for exppressions (arrays, CRE expressions) that don't
+	  ;; Return a nounform for expressions (arrays, CRE expressions) that don't
 	  ;; appear to be Maxima expressions of the form ((op) a1 a2 ...).
 	  ((not (and (consp e) (consp (car e))))
 	   (throw 'maxima::nfloat-nounform-return 'return-nounform))
@@ -248,11 +246,12 @@
 	 
 	  ;; main function dispatch.
 	  ((setq f (gethash (maxima::mop e) *running-error-op*))
+	   ;(print `(e = ,e mop = ,(maxima::mop e)))
 	   (setq e (mapcar #'(lambda (s) (running-error-eval s subs bits)) (maxima::margs e)))
 	   (funcall f e))
 
 	  ;; f(x + ex) = f(x) + ex * f'(x) + ... Functions without bigfloat 
-	  ;; evaluation, for example the Bessel funtions, need to be excluded.
+	  ;; evaluation, for example the Bessel functions, need to be excluded.
 	  ;; For now, this code rejects functions of two or more variables.
 	  ((and (get (caar e) 'maxima::grad) (null (cdr (maxima::margs e)))
 		(or (gethash (caar e) maxima::*big-float-op*) (maxima::trigp (caar e))

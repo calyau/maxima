@@ -165,6 +165,10 @@ nfloat(%i,[], 5);
 nfloat(1.0*%i,[],20);
 1.0b0 * %i$
 
+/* nfloat - ID: 3455326 */
+close_p(nfloat((sqrt(1+x)-1)/x,[x=1/10^15],15),1/2, 15);
+true$
+
 (remvalue(start,time), remove(x,complex), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(close_p),0);
 0$
