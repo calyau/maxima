@@ -425,6 +425,13 @@
   (let ((a (limit (cadr expr) var val 'think))
         (z (limit (caddr expr) var val 'think)))
   (cond
+
+   ((eq z '$infinity)			;; http://dlmf.nist.gov/8.11#i
+    (cond ((and (zerop1 ($realpart (caddr expr)))
+		(eq ($csign (m+ -1 (cadr expr))) '$neg))
+	   0)
+	  (t (throw 'limit t))))
+
     ;; Handle an argument 0 at this place.
     ((or (zerop1 z)
          (eq z '$zeroa)

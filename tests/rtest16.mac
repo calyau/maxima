@@ -441,6 +441,17 @@ limit((%pi*4^N*N!^2)/(2*2^(2*N)*gamma(N+1/2)*gamma(N+3/2)), N, inf);
 limit(log(gamma(x+1))/x, x, 0);
 -%gamma;
 
+/* limit of incomplete gamma */
+/* function simplim%gamma_incomplete in gamma.lisp */
+
+/* sin(x^2)/(x^2) improper integral incorrect? - ID: 3397562 */
+limit( gamma_incomplete(-1/2, -%i*x^2), x, inf);
+0;
+
+/* should be complex infinity */
+limit( gamma_incomplete(2, -%i*x), x, inf);
+'limit(gamma_incomplete(2,-%i*x),x,inf);
+
 /* [ 635606 ] limit(abs(log(x))) internal error, UND */
 limit(abs(log(x)), x, 0);
 inf;
