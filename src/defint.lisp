@@ -1026,7 +1026,10 @@ in the interval of integration.")
     (setq ll-ans (limcp exp var ll '$plus))
     (setq exp (sratsimp ($substitute poles exp)))
     (setq ul-ans (limcp exp var ul '$minus))
-    (if (and ll-ans ul-ans)
+    (if (and ll-ans 
+	     ul-ans
+	     (not (member ll-ans infinities))
+	     (not (member ul-ans infinities)))
 	(m- ul-ans ll-ans)
       nil)))
 
