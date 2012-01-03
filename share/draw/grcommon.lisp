@@ -1075,21 +1075,20 @@
                  (k-1 (- k 1))
                  (i+1 (+ i 1))
                  (j+1 (+ j 1))
-                 (val (make-array 8 :element-type
-                                       'flonum
+                 (val (make-array 8 :element-type 'flonum
                                     :initial-contents
                                        `(,(aref oldval i j+1) ,(aref oldval i+1 j+1)
                                          ,(aref oldval i+1 j) ,(aref oldval i j)
                                          ,(aref newval i j+1) ,(aref newval i+1 j+1)
                                          ,(aref newval i+1 j) ,(aref newval i j)))))
-            (when (< (aref val 0) 0.0) (setf cubidx (logior cubidx 1)))
-            (when (< (aref val 1) 0.0) (setf cubidx (logior cubidx 2)))
-            (when (< (aref val 2) 0.0) (setf cubidx (logior cubidx 4)))
-            (when (< (aref val 3) 0.0) (setf cubidx (logior cubidx 8)))
-            (when (< (aref val 4) 0.0) (setf cubidx (logior cubidx 16)))
-            (when (< (aref val 5) 0.0) (setf cubidx (logior cubidx 32)))
-            (when (< (aref val 6) 0.0) (setf cubidx (logior cubidx 64)))
-            (when (< (aref val 7) 0.0) (setf cubidx (logior cubidx 128)))
+            (when (<= (aref val 0) 0.0) (setf cubidx (logior cubidx 1)))
+            (when (<= (aref val 1) 0.0) (setf cubidx (logior cubidx 2)))
+            (when (<= (aref val 2) 0.0) (setf cubidx (logior cubidx 4)))
+            (when (<= (aref val 3) 0.0) (setf cubidx (logior cubidx 8)))
+            (when (<= (aref val 4) 0.0) (setf cubidx (logior cubidx 16)))
+            (when (<= (aref val 5) 0.0) (setf cubidx (logior cubidx 32)))
+            (when (<= (aref val 6) 0.0) (setf cubidx (logior cubidx 64)))
+            (when (<= (aref val 7) 0.0) (setf cubidx (logior cubidx 128)))
             (setf triangles (aref *i3d_triangles* cubidx))   ; edges intersecting the surface
             (do ((e 0 (1+ e)))
                 ((= (aref triangles e) -1) 'done)
