@@ -830,6 +830,16 @@ false;
 integrate(x^(1/3)/sqrt(-log(x)),x,0,1);
 sqrt(3)*sqrt(%pi)/2;
 
+/* [ 1731624 ] asked about sign of yx in integral containing only z */
+integrate(exp(sqrt(x^3)),x,0,1);
+'integrate(exp(sqrt(x^3)),x,0,1);
+/* answer should be: (sqrt(3)*%i+1)*(gamma(2/3)-gamma_incomplete(2/3,-1))/-3; */
+/* with radexpand:true we get
+   integrate(exp(sqrt(x^3)),x)  ->  -2*gamma_incomplete(2/3,-x^(3/2))/3
+   (which is not correct) due to invalid simplification in 
+   integrate-exp-special
+*/
+
 radexpand:true;
 true;
 
@@ -1091,9 +1101,9 @@ integrate(1/(x^4+3*x^2+1)^2,x,0,inf);
   +sqrt(sqrt(5)+3)*(15*sqrt(2)-3*sqrt(2)*sqrt(5))*%pi)
 /400;
 
-/* [ 1731624 ] asked about sign of yx in integral containing only z */
-integrate(exp(sqrt(x^3)),x,0,1);
-(sqrt(3)*%i+1)*(gamma(2/3)-gamma_incomplete(2/3,-1))/-3;
+/* integrate(exp(-x^n),x,0,1) bug for n >2 - ID: 3469184 */
+integrate(exp(-t^4),t,0,1);
+(gamma(1/4)-gamma_incomplete(1/4,1))/4;
 
 integrate(exp(sqrt(x)),x,1,5);
 2*(sqrt(5)*%e^sqrt(5)-%e^sqrt(5));

@@ -373,8 +373,10 @@ in the interval of integration.")
 			       (do* ((roots *roots (cddr roots))
 				     (root (caddar roots) (caddar roots)))
 				    ((null root) nil)
-				    (if (or (real-infinityp ll)
-					    (test-inverse nv var root 'yx ll))
+				    (if (and (or (real-infinityp ll)
+						 (test-inverse nv var root 'yx ll))
+					     (or (real-infinityp ul)
+						 (test-inverse nv var root 'yx ul)))
 					(return root))))
 			 (cond (flag (intcv2 d ind nv))
 			       (t (intcv1 d ind nv))))
@@ -2129,7 +2131,14 @@ in the interval of integration.")
 	 (denom (pdis (cddr rat-exp))))
     (cond ((equal ($csign denom) '$zero)
 	   '$undefined)
-	  (t (intsubs exp ll ul)))))
+	  (t (try-intsubs exp ll ul)))))
+
+(defun try-intsubs (exp ll ul)
+  (let* ((*nodiverg t)
+	 (ans (catch 'divergent (intsubs exp ll ul))))
+    (if (eq ans 'divergent)
+	nil
+      ans)))
 
 ;; Determine whether E is of the form sin(x)^m*cos(x)^n and return the
 ;; list (m n).
