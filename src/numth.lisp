@@ -195,8 +195,9 @@
 
 (defun gcexpt (a n)
   (cond ((zerop n) '(1 0))
-	((equal n 1) a)
-	(t (gctime1 a (gcexpt a (1- n))))))
+        ((equal n 1) a)
+        ((evenp n) (gcexpt (gctime1 a a) (truncate n 2)))
+        (t (gctime1 a (gcexpt (gctime1 a a) (truncate n 2))))))
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
