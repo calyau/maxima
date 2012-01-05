@@ -53,9 +53,6 @@
 
 (defmvar $nalgfac t "If t use bmt's algebraic factoring algorithm")
 
-(defun csqfrp ($factorflag)
-  (null (delete 1 (oddelm (cdr (cfactor $factorflag))))))
-
 (defun primcyclo (n)
   (let ((*g* (gensym "PRIMCYCLO-"))
 	(nl (loop for (c e) on (cfactorw n) by #'cddr
@@ -816,15 +813,10 @@
      (setq d (+ (car p) (multideg (cadr p))) p (cddr p) m (max d m))
      (go loop)))
 
-(defun oddelm (l)
-  (prog (ans)
-   loop (cond ((null l) (return (nreverse ans)))
-	      ((null (cdr l)) (return (nreverse (cons (car l) ans)))))
-   (setq ans (cons (car l) ans) l (cddr l))
-   (go loop)))
-
-
-
+(defun oddelm (list)
+  "return a list of the first. third etc. elements of list"
+  (loop for el in list by #'cddr
+        collect el))
 
 (defun cpber3 (v u)
   (prog (factz alcinv lc plim monic* sharpcont limk var vfact)
