@@ -1183,9 +1183,7 @@ Please customize the option `imaxima-lisp-file'."))
   (setq imaxima-file-counter 0)
   (make-directory
    (setq imaxima-tmp-subdir
-	 ;; For some reason TeX doesn't grok underscores in file names
-	 (imaxima-subst-char-in-string ?_ ?=
-	    (make-temp-name (expand-file-name "imaxima" imaxima-tmp-dir)))))
+	 (make-temp-name (expand-file-name "imaxima" imaxima-tmp-dir))) t)
   (set-file-modes imaxima-tmp-subdir 448) ; 700 in octal
   (let ((process-connection-type process-connection-type-flag))
     (if imaxima-use-maxima-mode-flag

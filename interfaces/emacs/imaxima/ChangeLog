@@ -1,3 +1,12 @@
+2011-10-02 Yasuaki Honda <yasuaki.honda@gmail.com>
+	* version 1.01
+	* An old workaround code for tex prevented imaxima on Mac OS X
+	Lion from working. This is related to the placing of the temporary
+	file directory and the name of the file path containing the
+	character "_". This is fixed in this version.
+	* Special treatment of greek character gamma is removed from
+	imaxima.el and commited to maxima mactex.lisp.
+
 2009-02-07 Yasuaki Honda <yasuaki.honda@gmail.com>
 	* As for inline graph, if the emacs buffer window is too small for
 	the generated graph image, the graph is not displayed, but a file
