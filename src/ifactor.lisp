@@ -272,6 +272,11 @@
     (when $intfaclim
       (return-from get-one-factor n))
 
+    ;; first try known large primes
+    (dolist (p *large-primes*)
+      (when (zerop (mod n p))
+        (return-from get-one-factor p)))
+
     ;; try factoring smaller factors with pollard-rho
     (dotimes (i $pollard_rho_tests)
       (when $ifactor_verbose
