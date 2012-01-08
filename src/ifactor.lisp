@@ -138,7 +138,7 @@
 ;;; List of numbers which have already been tested and are
 ;;; primes > *largest-small-prime* (only used if $save_primes is true!).
 
-(defvar *large-primes* '())
+(defvar *large-primes* ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
@@ -150,13 +150,10 @@
   (when $ifactor_verbose
     (format t "~%Starting factorization of n = ~d~%" n))
   (init-prime-diffs 640000)
-  (let* ((factor-list (get-small-factors n))
-	 (large-part (car factor-list))
-	 (factor-list (cadr factor-list))
-	 (factor-list (if (> large-part 1)
-			  (append (convert-list (get-large-factors large-part)) factor-list)
-			  factor-list)))
-    factor-list))
+  (multiple-value-bind (large-part factor-list) (get-small-factors n)
+    (if (> large-part 1)
+        (append (convert-list (get-large-factors large-part)) factor-list)
+        factor-list)))
 
 (defun $ifactors (n)
   (unless (and (integerp n) (plusp n))
@@ -204,9 +201,9 @@
 
 (defun get-small-factors (n)
   (when (= n 1)
-    (return-from get-small-factors '(1 ())))
+    (return-from get-small-factors (values 1 nil)))
   (when (< n 4)			;n = 2 or 3
-    (return-from get-small-factors `(1 ((,n 1)))))
+    (return-from get-small-factors (values 1 `(,n 1))))
   (let (factors)
     ;; first divide off the even part
     (loop with deg = 0
@@ -218,7 +215,7 @@
 	   (push `(2 ,deg) factors)
 	   (when $ifactor_verbose (format t "Factoring out 2: 2 (degree:~A)~%" deg))))
     (when (= n 1)
-      (return-from get-small-factors `(1 ,factors))) ; n was a power of 2
+      (return-from get-small-factors (values 1 factors))) ; n was a power of 2
     ;; now use the *prime-diffs* array for trial-factoring
     (loop for i from 0 to *prime-diffs-maxindex*
        and d = 3 then (+ d (aref *prime-diffs* i))
@@ -226,7 +223,7 @@
 	 (when (> (* d d) n)
 	   (push `(,n 1) factors)
 	   (when $ifactor_verbose  (format t "small prime cofactor: ~A~%" n))
-	   (return-from get-small-factors `(1 ,factors)))
+	   (return-from get-small-factors (values 1 factors)))
 	 (loop with deg = 0
 	    while (and (> n 1) (zerop (mod n d))) do
 	      (setq n (truncate n d))
@@ -236,8 +233,8 @@
 		(push `(,d ,deg) factors)
 		(when $ifactor_verbose (format t "Factoring out small prime: ~A (degree:~A)~%" d deg))))
 	 (when (= n 1)
-	   (return-from get-small-factors `(1 ,factors))))
-    (return-from get-small-factors `(,n ,factors))))
+	   (return-from get-small-factors (values 1 factors))))
+    (return-from get-small-factors (values n factors))))
 
 ;;; get-large-factors returns the list of factors of integer n (n has
 ;;; no small factor at this tage)
@@ -271,6 +268,11 @@
     ;; functions which use integer factorization set it to false.
     (when $intfaclim
       (return-from get-one-factor n))
+
+    ;; first try known large primes
+    (dolist (p *large-primes*)
+      (when (zerop (mod n p))
+        (return-from get-one-factor p)))
 
     ;; try factoring smaller factors with pollard-rho
     (dotimes (i $pollard_rho_tests)
