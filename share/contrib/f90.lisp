@@ -42,8 +42,8 @@
 		  &aux
 		  ;; This is a poor way of saying that array references
 		  ;; are to be printed with parens instead of brackets.
-		  (lb #\()
-		  (rb #\)))
+		  (*lb* #\()
+		  (*rb* #\)))
   ;; Restructure the expression for displaying.
   (setq x (fortscan x))
   ;; Linearize the expression using MSTRING.  Some global state must be
