@@ -9,7 +9,7 @@
 (macsyma-module cfortr)
 
 
-(declare (special lb rb         ;used for communication with mstring.
+(declare (special *lb* *rb*         ;used for communication with mstring.
                   $loadprint    ;if nil, no load message gets printed.
                   1//2 -1//2
                   prefix-psize suffix-psize))
@@ -129,7 +129,7 @@
 (defun fortran-print (x &optional bypass (stream standard-output)
                         ;; this is a poor way of saying that array references
                         ;; are to be printed with parens instead of brackets.
-                        (lb #/( ) (rb #/) ))
+                        (*lb* #/( ) (*rb* #/) ))
   ;; restructure the expression for displaying.
   (or bypass (setq x ($fortranbreak (fortscan x))))
   ;; linearize the expression using mstring.  some global state must be
