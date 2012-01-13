@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2011 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2012 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -1192,7 +1192,6 @@
            (y-mid (cdr y-samples) (cddr y-mid))
            (y-end (cddr y-samples) (cddr y-end)))
           ((null x-end))
-
         ;; The region is x-start to x-end, with mid-point x-mid.
         (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                            (car y-start) (car y-mid) (car y-end)
@@ -1208,8 +1207,7 @@
                     ; With geometric transformation.
                     ; When option filled_func in not nil,
                     ; geometric transformation is ignored
-                    (setf result-array (make-array (length result)
-                                                   :element-type 'flonum))
+                    (setf result-array (make-array (length result)))
                     (setf xmin most-positive-double-float
                           xmax most-negative-double-float)
                     (let (xold yold x y (count -1))
@@ -1232,7 +1230,6 @@
                       (setf yy (car y))
                       (check-extremes-y))
                     (setf result-array (make-array (length result)
-                                                   :element-type 'flonum 
                                                    :initial-contents result))))
                (update-ranges-2d xmin xmax ymin ymax)
                (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
@@ -1711,7 +1708,7 @@
        (update-enhanced3d-expression (list '(mlist) par1 par2)))
     (setq fcn (coerce-float-fun fcn `((mlist) ,par1 ,par2)))
     (setf ncols (if (= *draw-enhanced3d-type* 0) 3 4))
-    (setf result (make-array (* ncols nx ny) :element-type 'flonum))
+    (setf result (make-array (* ncols nx ny)))
     (loop for j below ny
            initially (setf vv fminval2)
            do (setf uu fminval1)
@@ -2065,8 +2062,7 @@
                             (hex-to-rgb (get-option '$color))
                             (axes-to-plot))
        :groups '((2 0))
-       :points `(,(make-array (length result) :element-type 'flonum
-                                              :initial-contents result)))   ) )
+       :points `(,(make-array (length result) :initial-contents result)))   ) )
 
 
 
@@ -2199,7 +2195,7 @@
     (setq f2 (coerce-float-fun yfun `((mlist) ,par1)))
     (setq f3 (coerce-float-fun zfun `((mlist) ,par1)))
     (setf ncols (if (= *draw-enhanced3d-type* 0) 3 4))
-    (setf result (make-array (* ncols nticks) :element-type 'flonum))
+    (setf result (make-array (* ncols nticks)))
     (dotimes (k nticks)
       (setf xx (funcall f1 tt))
       (setf yy (funcall f2 tt))
@@ -2283,7 +2279,7 @@
     (setq f2 (coerce-float-fun yfun `((mlist) ,par1 ,par2)))
     (setq f3 (coerce-float-fun zfun `((mlist) ,par1 ,par2)))
     (setf ncols (if (= *draw-enhanced3d-type* 0) 3 4))
-    (setf result (make-array (* ncols nu nv) :element-type 'flonum))
+    (setf result (make-array (* ncols nu nv)))
     (loop for j below nv
            initially (setq vv vmin)
            do (setq uu umin)
