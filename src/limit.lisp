@@ -1528,7 +1528,7 @@ It appears in LIMIT and DEFINT.......")
 	(t
 	 (let ((term-value (limit term var val 'think)))
 	   (cond ((not (member term-value
-			     '($inf $minf $und $ind $infinity $zeroa $zerob 0) :test #'eq))
+			       '($inf $minf $und $ind $infinity $zeroa $zerob 0)))
 		  term-value)
 		 (t term))))))
 
