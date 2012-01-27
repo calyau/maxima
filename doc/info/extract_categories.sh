@@ -17,9 +17,10 @@ for f in *.texi; do
   if [ $f = "maxima.texi" ]
     then echo SKIP OVER $f
     else
-      sed 's/^@def\(fn\|vr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\
-\0/; s/^@node  *\([^,]*\).*/@anchor{Item: \1}\
-\0/' "$f" > tmp.texi
+      sed 's/^@deffn  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \1}\
+&/; s/^@defvr  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \1}\
+&/; s/^@node  *\([^,]*\).*/@anchor{Item: \1}\
+&/' "$f" > tmp.texi
       mv tmp.texi "$f"
     fi
 done
