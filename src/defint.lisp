@@ -193,7 +193,7 @@ in the interval of integration.")
 		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
                  ($%edispflag nil) ; to get internal representation
-		 ($domain '$real) ($m1pbranch ())) ;Try this out.
+		 ($m1pbranch ())) ;Try this out.
 
 	     (make-global-assumptions) ;sets *global-defint-assumptions*
 	     (setq exp (ratdisrep exp))

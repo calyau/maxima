@@ -1525,11 +1525,10 @@ It appears in LIMIT and DEFINT.......")
 
 (defun lhsimp (term var val)
   (cond ((atom term)  term)
-	((not (eq (caar term) 'mfactorial))  term)
 	(t
 	 (let ((term-value (limit term var val 'think)))
 	   (cond ((not (member term-value
-			     '($inf $minf $und $ind $infinity $zeroa $zerob) :test #'eq))
+			       '($inf $minf $und $ind $infinity $zeroa $zerob 0)))
 		  term-value)
 		 (t term))))))
 
