@@ -590,9 +590,8 @@ in the interval of integration.")
 		(setq result (cv exp))))
 	  (t ()))))
 
-;;; LIMIT loss can't set logabs to true for these cases.
 (defun principal-value-integral (exp var ll ul poles)
-  (let (($logabs ())  (anti-deriv ()))
+  (let ((anti-deriv ()))
     (cond ((not (null (setq anti-deriv (antideriv exp))))
 	   (cond ((not (null poles))
 		  (order-limits 'ask)

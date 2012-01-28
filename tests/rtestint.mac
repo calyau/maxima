@@ -1035,6 +1035,10 @@ integrate(1/(1-x^5), x, 0, inf);
 integrate(1/x, x, minf, inf);
 0;
 
+/* integrate(sin(x)^2/x,x,minf,inf) gives not zero - ID: 3480954 */
+integrate(sin(x)^2/x,x,minf,inf);
+0;
+
 /* [ 1051437 ] Trig integral error */
 integrate(2*cot(x)^2*cos(2*x)/(csc(2*x)+cot(2*x)), x);
 log(sin(x)^2+cos(x)^2+2*cos(x)+1) + log(sin(x)^2+cos(x)^2-2*cos(x)+1) + cos(2*x);
