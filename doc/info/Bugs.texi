@@ -100,10 +100,69 @@ and Lisp version information into the bug report.
 @anchor{build_info}
 @deffn {Function} build_info ()
 
-Prints out a summary of the parameters of the Maxima build.
+Returns a summary of the parameters of the Maxima build,
+as a Maxima structure (defined by @code{defstruct}).
+The fields of the structure are:
+@code{version}, @code{timestamp}, @code{host}, @code{lisp_name}, and @code{lisp_version}.
+When the pretty-printer is enabled (via @code{display2d}),
+the structure is displayed as a short table.
 
-@code{build_info} returns an empty string @code{""}.
 See also @mrefdot{bug_report}
+
+Examples:
+
+@c ===beg===
+@c build_info ();
+@c x : build_info ()$
+@c x@version;
+@c x@timestamp;
+@c x@host;
+@c x@lisp_name;
+@c x@lisp_version;
+@c x;
+@c ===end===
+@example
+@group
+(%i1) build_info ();
+(%o1) 
+Maxima version: "5.26.0_16_gb72c64c_dirty"
+Maxima build date: "2012-01-29 12:29:04"
+Host type: "i686-pc-linux-gnu"
+Lisp implementation type: "CMU Common Lisp"
+Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+@end group
+(%i2) x : build_info ()$
+@group
+(%i3) x@@version;
+(%o3)               5.26.0_16_gb72c64c_dirty
+@end group
+@group
+(%i4) x@@timestamp;
+(%o4)                  2012-01-29 12:29:04
+@end group
+@group
+(%i5) x@@host;
+(%o5)                   i686-pc-linux-gnu
+@end group
+@group
+(%i6) x@@lisp_name;
+(%o6)                    CMU Common Lisp
+@end group
+@group
+(%i7) x@@lisp_version;
+(%o7) 
+    CVS release-19a 19a-release-20040728 + minimal debian patches
+@end group
+@group
+(%i8) x;
+(%o8) 
+Maxima version: "5.26.0_16_gb72c64c_dirty"
+Maxima build date: "2012-01-29 12:29:04"
+Host type: "i686-pc-linux-gnu"
+Lisp implementation type: "CMU Common Lisp"
+Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+@end group
+@end example
 
 @opencatbox
 @category{Debugging}
