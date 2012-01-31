@@ -127,11 +127,16 @@ returning.  @code{burn} invokes the approximation for even integers @var{n} >
 @anchor{cf}
 @deffn {Function} cf (@var{expr})
 
-Converts @var{expr} into a continued fraction.  @var{expr} is an expression
-comprising continued fractions and square roots of integers.  Operands in the
-expression may be combined with arithmetic operators.  Aside from continued
-fractions and square roots, factors in the expression must be integer or
-rational numbers.  Maxima does not know about operations on continued fractions
+Computes a continued fraction approximation.
+@var{expr} is an expression comprising continued fractions,
+square roots of integers, and literal real numbers
+(integers, rational numbers, ordinary floats, and bigfloats).
+@code{cf} computes exact expansions for rational numbers,
+but expansions are truncated at @code{ratepsilon} for ordinary floats
+and @code{10^(-fpprec)} for bigfloats.
+
+Operands in the expression may be combined with arithmetic operators.
+Maxima does not know about operations on continued fractions
 outside of @code{cf}.
 
 @code{cf} evaluates its arguments after binding @code{listarith} to
