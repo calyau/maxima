@@ -1,4 +1,4 @@
-@c English version 2011-12-08
+@c English version 2012-02-05
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -277,6 +277,51 @@ la rutina gr@'afica adaptativa.
 Esta opci@'on s@'olo es relevante para funciones de tipo @code{explicit} en 2d.
 @end defvr
 
+
+@defvr {Opci@'on gr@'afica} allocation
+Valor por defecto: @code{false}
+
+Con la opci@'on @code{allocation} es posible colocar a voluntad una escena en la
+ventana de salida, lo cual resulta de utilidad en el caso de gr@'aficos 
+m@'ultiples. Cuando la opci@'on toma el valor @code{false}, la escena se coloca
+de forma autom@'atica, dependiendo del valor asignado a la opci@'on @code{columns}.
+En cualquier otro caso, a @code{allocation} se le debe asignar una lista con dos
+pares de n@'umeros; el primero se corresponde con la posici@'on de la esquina
+inferior izquierda del gr@'afico y el segundo par hace referencia al ancho y alto
+de la escena. Todas las cantidades deben darse en coordenadas relativas, entre
+0 y 1.
+
+Ejemplos:
+
+Gr@'aficos internos.
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        gr2d(
+          explicit(x^2,x,-1,1)),
+        gr2d(
+          allocation = [[1/4, 1/4],[1/2, 1/2]],
+          explicit(x^3,x,-1,1),
+          grid = true) ) $
+@end example
+
+Multiplot con dimensiones establecidas por el usuario.
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        terminal = wxt,
+        gr2d(
+          allocation = [[0, 0],[1, 1/4]],
+          explicit(x^2,x,-1,1)),
+        gr3d(
+          allocation = [[0, 1/4],[1, 3/4]],
+          explicit(x^2+y^2,x,-1,1,y,-1,1) ))$
+@end example
+
+V@'ease tambi@'en la opci@'on @code{columns}.
+@end defvr
 
 
 
