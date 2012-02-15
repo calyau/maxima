@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2011 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2012 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -32,18 +32,18 @@
 
 (defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
 
-;; This variable stores actual graphics options
+;; Stores actual graphics options
 (defvar *gr-options* (make-hash-table))
 
+;; Stores user defaults
+(defvar *user-gr-default-options* nil)
 
-;; This variable stores user defaults
-(defvar *user-gr-default-options* '())
-
+;; Stores user defined allocations of scenes
+(defvar *allocations* nil)
 
 (defun $set_draw_defaults (&rest opts)
    (setf *user-gr-default-options* opts)
    (cons '(mlist) opts))
-
 
 ;; Sets user default values of graphics options
 (defun user-defaults ()
@@ -57,6 +57,7 @@
 (defun ini-gr-options ()
   (setf
       ; global options to control general aspects of graphics
+      (gethash '$allocation *gr-options*)       nil      ; or user-defined allocation
       (gethash '$proportional_axes *gr-options*) '$none  ; three possible options: none, xy, xyz
       (gethash '$xrange *gr-options*)           nil      ; nil => automatic computation
       (gethash '$xrange_secondary *gr-options*) nil      ; nil => automatic computation
@@ -564,8 +565,28 @@
 
 
 
+;; update option allocation
+;; ------------------------
+(defun update-allocation (val)
+  (let (fval cls)
+    (cond
+      ((and ($listp val)
+            (= ($length val) 2)
+            (every #'(lambda (z) (and ($listp z)
+                                      (= ($length z) 2)))
+                   (rest val))
+         (setf fval (rest ($float val)))
+         (setf cls (list (cadar fval) (caddar fval) (cadadr fval) (caddr (cadr fval))))
+         (if (every #'(lambda (z) (and (float z) (>= z 0.0) (<= z 1.0))) cls)
+           (setf (gethash '$allocation *gr-options*) cls)
+           (merror "draw: allocations must me given in relative values")) ))
+      (t
+         (merror "draw: illegal allocation format ~M" val)))))
+
+
+
 ;; update option dimensions
-;; --------------------------
+;; ------------------------
 (defun update-dimensions (val)
   (let (cls)
     (cond
@@ -581,7 +602,7 @@
 
 
 ;; update option point_type
-;; --------------------------
+;; ------------------------
 (defun update-pointtype (val)
   (cond
     ((and (integerp val) (>= val -1 ))
@@ -699,6 +720,16 @@
 
 
 
+;; update points_joined option
+;; ---------------------------
+(defun update-pointsjoined (val)
+  (if (member val '(t nil $impulses))
+    (setf (gethash '$points_joined *gr-options*) val)
+    (merror "draw: illegal points_joined option: ~M " val)) )
+
+
+
+
 
 
 (defun ini-local-option-variables ()
@@ -734,6 +765,8 @@
 ;; Sets new values to graphic options
 (defun update-gr-option (opt val)
    (case opt
+      ($allocation
+        (update-allocation val))
       ($dimensions
         (update-dimensions val))
       ($fill_density ; in range [0, 1]
@@ -754,9 +787,7 @@
       ($point_size ; defined as non negative numbers
         (update-nonnegative-float opt val))
       ($points_joined ; defined as true, false or $impulses
-            (if (member val '(t nil $impulses))
-              (setf (gethash opt *gr-options*) val)
-              (merror "draw: illegal points_joined option: ~M " val)) )
+        (update-pointsjoined val))
       ($colorbox ; defined as true, false or string
             (if (or (member val '(t nil))
                     (stringp val) )
