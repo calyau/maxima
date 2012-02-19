@@ -103,7 +103,7 @@
    (update-range '$zrange zmin zmax))
 
 (defmacro check-extremes-x ()
-  '(let ()
+  '(when (numberp xx)
     (when (< xx xmin) (setf xmin xx))
     (when (> xx xmax) (setf xmax xx))))
 
@@ -1192,6 +1192,7 @@
            (y-mid (cdr y-samples) (cddr y-mid))
            (y-end (cddr y-samples) (cddr y-end)))
           ((null x-end))
+
         ;; The region is x-start to x-end, with mid-point x-mid.
         (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                            (car y-start) (car y-mid) (car y-end)
@@ -2640,7 +2641,7 @@
 
 (defun make-scene-2d (args)
    (let ((objects nil)
-         plotcmd largs)
+         plotcmd largs aux)
       (ini-gr-options)
       (ini-local-option-variables)
       (user-defaults)
@@ -2649,10 +2650,12 @@
       (dolist (x largs)
          (cond ((equal ($op x) "=")
                    (update-gr-option ($lhs x) ($rhs x)))
-               (t  (setf objects
+               ((not (null (gethash (setf aux (caar x)) *2d-graphic-objects*)))
+                  (setf objects
                          (append
                             objects 
-                            (list (apply (gethash (caar x) *2d-graphic-objects*) (rest x))))))))
+                            (list (apply (gethash aux *2d-graphic-objects*) (rest x))))))
+               (t (merror "draw: 2D graphic object not recognized, ~M" aux))))
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
@@ -2769,6 +2772,8 @@
             (write-palette-code)
             (if (not (string= (get-option '$user_preamble) ""))
                (format nil "~a~%" (get-option '$user_preamble))) ) )
+      ; scene allocation
+      (setf *allocations* (cons (get-option '$allocation) *allocations*))
       ; scene description: (dimensions, gnuplot preamble in string format, list of objects)
       (list
          2       ; it's a 2d scene
@@ -2803,7 +2808,7 @@
 ;; graphic objects constructors.
 (defun make-scene-3d (args)
    (let ((objects nil)
-         plotcmd largs)
+         plotcmd largs aux)
       (ini-gr-options)
       (ini-local-option-variables)
       (user-defaults)
@@ -2812,10 +2817,12 @@
       (dolist (x largs)
          (cond ((equal ($op x) "=")
                   (update-gr-option ($lhs x) ($rhs x)))
-               (t  (setf objects
+               ((not (null (gethash (setf aux (caar x)) *3d-graphic-objects*)))
+                  (setf objects
                          (append
                             objects 
-                            (list (apply (gethash (caar x) *3d-graphic-objects*) (rest x))))))))
+                            (list (apply (gethash aux *3d-graphic-objects*) (rest x))))))
+               (t (merror "draw: 3D graphic object not recognized, ~M" aux) )))
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
@@ -2944,7 +2951,8 @@
             (write-palette-code)
             (if (not (string= (get-option '$user_preamble) ""))
                (format nil "~a~%" (get-option '$user_preamble)))  ))
-
+      ; scene allocation
+      (setf *allocations* (cons (get-option '$allocation) *allocations*))
       ; scene description: (dimensions, gnuplot preamble in string format, list of objects)
       (list
          3       ; it's a 3d scene
@@ -2970,18 +2978,10 @@
 
 
 
-;; This is the function to be called at Maxima level.
-;; Some examples:
-;;   draw(gr2d(opt & obj))$ => a 2d plot, equivalent to draw2d(opt & obj)
-;;   draw(gr3d(opt & obj))$ => a 2d plot, equivalent to draw3d(opt & obj)
-;;   draw(gr2d(opt & obj),gr2d(opt & obj),gr3d(opt & obj),gr2d(opt & obj))$
-;;                            => four plots in one column, one of them is a 3d plot
-;;   draw(terminal=png,columns=2,gr2d(opt & obj),gr3d(opt & obj))
-;;                            => png file with two plots (2d and 3d) side by side
-;; See bellow for $draw2d and $draw3d
-(defun $draw (&rest args)
+(defun draw_gnuplot (&rest args)
   (ini-global-options)
   (user-defaults)
+  (setf *allocations* nil)
   (let ((counter 0)
         (scenes-list '((mlist simp)))  ; these two variables will be used
         gfn ; gnuplot_file_name
@@ -3023,7 +3023,6 @@
               (setf scenes (append scenes (list (funcall #'make-scene-2d (rest x))))))
             (t
               (merror "draw: item ~M is not recognized" x)))   )
-
     (setf isanimatedgif
           (equal (get-option '$terminal) '$animated_gif))
     (setf
@@ -3038,7 +3037,6 @@
           (open dfn
                 :direction :output :if-exists :supersede))
     (setf datapath (format nil "'~a'" dfn))
-
     ; when one multiplot window is active, change of terminal is not allowed
     (if (not *multiplot-is-active*)
     (case (get-option '$terminal)
@@ -3132,24 +3130,40 @@
     (when (not isanimatedgif)
       (setf ncols (get-option '$columns))
       (setf nrows (ceiling (/ (length scenes) ncols)))
-      (setf width (/ 1.0 ncols))
-      (setf height (/ 1.0 nrows))
       (if (> (length scenes) 1)
         (format cmdstorage "~%set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%")) )
 
     ; write descriptions of 2d and 3d scenes
-    (let ((i -1))
+    (let ((i -1)
+          (alloc (reverse *allocations*))
+          (nilcounter 0)
+          thisalloc origin1 origin2 size1 size2)
+      ; recalculate nrows for automatic scene allocations
+      (setf nrows (ceiling (/ (count nil alloc) ncols)))
+      (when (> nrows 0)
+        (setf width (/ 1.0 ncols)
+              height (/ 1.0 nrows)))
       (dolist (scn scenes)
         ; write size and origin if necessary
         (cond (isanimatedgif
                 (format cmdstorage "~%set size 1.0, 1.0~%") )
               (t ; it's not an animated gif
-                (format cmdstorage "~%set size ~a, ~a~%"
-                                   width
-                                   height)
-                (format cmdstorage "set origin ~a, ~a~%" 
-                                   (* width (mod counter ncols))
-                                   (* height (- nrows 1.0 (floor (/ counter ncols)))))))
+                (setf thisalloc (car alloc))
+                (setf alloc (cdr alloc))
+                (cond
+                  (thisalloc ; user defined scene allocation
+                     (setf origin1 (first thisalloc)
+                           origin2 (second thisalloc)
+                           size1   (third thisalloc)
+                           size2   (fourth thisalloc)))
+                  (t ; automatic scene allocation
+                     (setf origin1 (* width (mod nilcounter ncols))
+                           origin2 (* height (- nrows 1.0 (floor (/ nilcounter ncols))))
+                           size1   width
+                           size2   height)
+                     (incf nilcounter)))
+                (format cmdstorage "~%set size ~a, ~a~%" size1 size2)
+                (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)  ))
         (setf is1stobj t
               biglist '()
               grouplist '())
@@ -3279,6 +3293,25 @@
 
 
 
+
+;; This is the function to be called at Maxima level.
+;; Some examples:
+;;   draw(gr2d(opt & obj))$ => a 2d plot, equivalent to draw2d(opt & obj)
+;;   draw(gr3d(opt & obj))$ => a 2d plot, equivalent to draw3d(opt & obj)
+;;   draw(gr2d(opt & obj),gr2d(opt & obj),gr3d(opt & obj),gr2d(opt & obj))$
+;;                            => four plots in one column, one of them is a 3d plot
+;;   draw(terminal=png,columns=2,gr2d(opt & obj),gr3d(opt & obj))
+;;                            => png file with two plots (2d and 3d) side by side
+;; See bellow for $draw2d and $draw3d
+(defun $draw (&rest args)
+  (cond ((or (equal $draw_renderer '$gnuplot)
+             (equal $draw_renderer '$gnuplot_pipes))
+           (apply 'draw_gnuplot args))
+        ((equal $draw_renderer '$vtk)
+           (apply 'draw_vtk args))
+        (t
+           (merror "draw: unknown renderer ~M" $draw_renderer))))
+
 ;; Equivalent to draw2d(opt & obj)
 (defun $draw2d (&rest args)
    ($draw (cons '($gr2d) args)) )
@@ -3287,11 +3320,13 @@
 (defun $draw3d (&rest args)
   (cond ((or (equal $draw_renderer '$gnuplot)
              (equal $draw_renderer '$gnuplot_pipes))
-           ($draw (cons '($gr3d) args)))
+           (draw_gnuplot (cons '($gr3d) args)))
         ((equal $draw_renderer '$vtk)
-           (apply 'vtk3d args))
+           (draw_vtk (cons '($gr3d) args)))
         (t
            (merror "draw: unknown renderer ~M" $draw_renderer))))
+
+
 
 ;; This function transforms an integer number into
 ;; a string, adding zeros at the left side until the

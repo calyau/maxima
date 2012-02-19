@@ -1901,7 +1901,7 @@ Several functions depending on the two variables v1 and v2:
                                     (coerce-float-fun (fourth exprn) lvars)
                                     (second lvars) (third lvars))))
                 (setq lvars ($listofvars `((mlist) ,vars1 ,vars2 ,vars3)))
-                (if (= 2 ($length lvars))
+                (if (<= ($length lvars) 2)
                     ;; we do have a valid parametric set. Push it into
                     ;; the functions stack, along with their domain
                     (progn
@@ -1915,7 +1915,7 @@ Several functions depending on the two variables v1 and v2:
                         (setf (getf features :const-expr)
                               ($float (meval (fourth exprn))))))
                     (merror
-                     (intl:gettext "plot3d: there must be two variables; found: ~M")
+                     (intl:gettext "plot3d: there must be at most two variables; found: ~M")
                      lvars))))
              
              (3

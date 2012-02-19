@@ -364,5 +364,9 @@ block (local (foo),
  foo(x, y) := if numberp(x) and numberp(y) then [x^2 - y^2] else funmake (foo, [x, y]),
  plot3d (foo (a, b)[1], [a, -1, 1], [b, -1, 1]));
 
+/* helix -- see mailing list 2012-01-22 "3D curve parametric plot" */
+
+plot3d([sin(t), cos(t), t], [t,-5,5], [y,-5,5], [grid,100,2], [gnuplot_pm3d,false])$
+
 "FINIS" $
 

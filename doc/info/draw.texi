@@ -309,6 +309,54 @@ This option is relevant only for 2d @code{explicit} functions.
 @end defvr
 
 
+@defvr {Graphic option} allocation
+Default value: @code{false}
+
+With option @code{allocation} it is possible to place a scene in the
+output window at will; this is of interest in multiplots. When @code{false},
+the scene is placed automatically, depending on the value assigned to option
+@code{columns}. In any other case, @code{allocation} must be set to a list of
+two pairs of numbers; the first corresponds to the position of the lower left
+corner of the scene, and the second pair gives the width and height of the plot.
+All quantities must be given in relative coordinates, between 0 and 1.
+
+Examples:
+
+In site graphics.
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        gr2d(
+          explicit(x^2,x,-1,1)),
+        gr2d(
+          allocation = [[1/4, 1/4],[1/2, 1/2]],
+          explicit(x^3,x,-1,1),
+          grid = true) ) $
+@end example
+
+Multiplot with selected dimensions.
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        terminal = wxt,
+        gr2d(
+          allocation = [[0, 0],[1, 1/4]],
+          explicit(x^2,x,-1,1)),
+        gr3d(
+          allocation = [[0, 1/4],[1, 3/4]],
+          explicit(x^2+y^2,x,-1,1,y,-1,1) ))$
+@end example
+
+See also option @code{columns}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
 
 @defvr {Graphic option} axis_3d
 Default value: @code{true}
