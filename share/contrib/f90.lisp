@@ -90,26 +90,34 @@
 ;; Takes a name and a matrix and prints a sequence of F90 assignment
 ;; statements of the form
 ;;  NAME(I,J) = <corresponding matrix element>
+;; or, when the second argument is a list,
+;;  NAME(I) = <list element>
 
 (defmfun $f90mx (name mat)
   (cond ((not (symbolp name))
-	 (merror "~%First argument to `f90mx' must be a symbol."))
-	((not ($matrixp mat))
-	 (merror "Second argument to `f90mx' not a matrix: ~M" mat)))
-  (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
-      ((null mat))
-    (do ((m (cdar mat) (cdr m)) (j 1 (1+ j)))
-	((null m))
-      (f90-print `((mequal) ((,name) ,i ,j) ,(car m)))))
+	 (merror "f90mx: first argument must be a symbol; found: ~M" name))
+	((not (or ($matrixp mat) ($listp mat)))
+	 (merror "f90mx: second argument must be a list or matrix; found: ~M" mat)))
+  (cond
+    (($matrixp mat)
+     (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
+       ((null mat))
+       (do ((m (cdar mat) (cdr m)) (j 1 (1+ j)))
+         ((null m))
+         (f90-print `((mequal) ((,name) ,i ,j) ,(car m))))))
+    (($listp mat)
+     (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
+       ((null mat))
+       (f90-print `((mequal) ((,name) ,i) ,(car mat))))))
   '$done)
 
 (defmspec $f90 (expr)
   (dolist (l (cdr expr))
   (let ((value (strmeval l)))
     (cond ((msetqp l) (setq value `((mequal) ,(cadr l) ,(meval l)))))
-    (cond ((and (symbolp l) ($matrixp value))
+    (cond ((and (symbolp l) (or ($matrixp value) ($listp value)))
 	   ($f90mx l value))
 	  ((and (not (atom value)) (eq (caar value) 'mequal)
-		(symbolp (cadr value)) ($matrixp (caddr value)))
+		(symbolp (cadr value)) (or ($matrixp (caddr value)) ($listp (caddr value))))
 	   ($f90mx (cadr value) (caddr value)))
 	  (t (f90-print value))))))

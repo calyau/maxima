@@ -30,17 +30,17 @@
 (defmvar $fortfloat nil "Something JPG is working on.")
 
 ;; This function is called from Macsyma toplevel.  If the argument is a
-;; symbol, and the symbol is bound to a matrix, then the matrix is printed
+;; symbol, and the symbol is bound to a matrix or list, then the value is printed
 ;; using an array assignment notation.
 
 (defmspec $fortran (l)
   (setq l (fexprcheck l))
   (let ((value (strmeval l)))
     (cond ((msetqp l) (setq value `((mequal) ,(cadr l) ,(meval l)))))
-    (cond ((and (symbolp l) ($matrixp value))
+    (cond ((and (symbolp l) (or ($matrixp value) ($listp value)))
 	   ($fortmx l value))
 	  ((and (not (atom value)) (eq (caar value) 'mequal)
-		(symbolp (cadr value)) ($matrixp (caddr value)))
+		(symbolp (cadr value)) (or ($matrixp (caddr value)) ($listp (caddr value))))
 	   ($fortmx (cadr value) (caddr value)))
 	  (t (fortran-print value)))))
 
@@ -144,17 +144,25 @@
 ;; Takes a name and a matrix and prints a sequence of Fortran assignment
 ;; statements of the form
 ;;  NAME(I,J) = <corresponding matrix element>
+;; or, when the second argument is a list,
+;;  NAME(I) = <list element>
 
 (defmfun $fortmx (name mat &optional (stream *standard-output*) &aux ($loadprint nil))
   (cond ((not (symbolp name))
 	 (merror (intl:gettext "fortmx: first argument must be a symbol; found: ~M") name))
-	((not ($matrixp mat))
-	 (merror (intl:gettext "fortmx: second argument must be a matrix; found: ~M") mat)))
-  (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
-      ((null mat))
-    (do ((m (cdar mat) (cdr m)) (j 1 (1+ j)))
-	((null m))
-      (fortran-print `((mequal) ((,name) ,i ,j) ,(car m)) stream)))
+	((not (or ($matrixp mat) ($listp mat)))
+	 (merror (intl:gettext "fortmx: second argument must be a list or matrix; found: ~M") mat)))
+  (cond
+    (($matrixp mat)
+     (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
+       ((null mat))
+       (do ((m (cdar mat) (cdr m)) (j 1 (1+ j)))
+         ((null m))
+         (fortran-print `((mequal) ((,name) ,i ,j) ,(car m)) stream))))
+    (($listp mat)
+     (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
+       ((null mat))
+       (fortran-print `((mequal) ((,name) ,i) ,(car mat)) stream))))
   '$done)
 
 ;; Local Modes:
