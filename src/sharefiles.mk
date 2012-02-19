@@ -996,10 +996,6 @@ misc/smacro.mac \
 numeric/bffac.mac \
 numeric/brmbrg.lisp \
 numeric/brmbrg.usg \
-numeric/cfortr.dem \
-numeric/cfortr.lisp \
-numeric/cfortr.tst \
-numeric/cfortr.usg \
 numeric/dblint_1.dem \
 numeric/dblint.dem \
 numeric/dblint.mac \
