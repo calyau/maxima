@@ -1548,7 +1548,7 @@
 		  (setf im (float im re))))
 	   (complex re im)))
 	(t
-	 (cond ((cl:realp maxima-num)
+	 (cond ((cl:numberp maxima-num)
 		maxima-num)
 	       ((eq maxima-num 'maxima::$%i)
 		;; Convert %i to an exact complex cl:rational.
