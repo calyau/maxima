@@ -13,7 +13,7 @@
       print ("\\documentclass{article}"),
       print ("\\begin{document}"),
       for x in propvars (physical_constant)
-        do printf (true, "~a ~a ~a~%~%", get (x, description), tex (x, false), tex (ev (x, numer), false)),
+        do printf (true, "~a~%~a~%~%", get (x, description), tex (x = constvalue (x), false)),
       print ("\\end{document}"));
 */
 
@@ -81,10 +81,19 @@ declare_constvalue (%m_P, constvalue (sqrt(%h_bar * %c / %G)));
 qput (%m_P, 5*10^-5, RSU);
 texput (%m_P, "m_P");
 
+/* Boltzmann constant out of order; need it for Planck temperature */
+
+declare (%%k, physical_constant);
+declare (%%k, constant);
+qput (%%k, "Boltzmann constant $R/N_A$", description);
+declare_constvalue (%%k, 1.3806504e-23 ` J/K);
+qput (%%k, 1.7e-6, RSU);
+texput (%%k, "k");
+
 declare (%T_P, physical_constant);
 declare (%T_P, constant);
 qput (%T_P, "Planck temperature $\\sqrt{\\hbar c^5/G}/k$", description);
-declare_constvalue (%T_P, constvalue (sqrt (%h_bar * %c^5 / %G) / %k));
+declare_constvalue (%T_P, constvalue (sqrt (%h_bar * %c^5 / %G) / %%k));
 qput (%T_P, 5*10^-5, RSU);
 texput (%T_P, "T_P");
 
@@ -141,7 +150,7 @@ texput (%R_K, "R_K");
 
 declare (%mu_B, physical_constant);
 declare (%mu_B, constant);
-qput (%mu_B, "Bohr magneton $e \\hbar/(2 m_\\mathrm{e})$", description);
+qput (%mu_B, "Bohr magneton $e \\hbar/(2 m_{\\mathrm{e}})$", description);
 declare_constvalue (%mu_B, 927.400915e-26 ` J/T);
 qput (%mu_B, 2.5e-8, RSU);
 texput (%mu_B, "\\mu_B");
@@ -165,31 +174,31 @@ texput (%alpha, "\\alpha");
 
 declare (%R_inf, physical_constant);
 declare (%R_inf, constant);
-qput (%R_inf, "Rydberg constant $\\alpha^2 m_\\mathrm{e} c /(2 h)$", description);
+qput (%R_inf, "Rydberg constant $\\alpha^2 m_{\\mathrm{e}} c /(2 h)$", description);
 declare_constvalue (%R_inf, 10973731.568527 ` 1/m);
 qput (%R_inf, 6.6e-12, RSU);
 texput (%R_inf, "R_{\\infty}");
 
 declare (%a_0, physical_constant);
 declare (%a_0, constant);
-qput (%a_0, "Bohr radius $\\alpha/(4\\pi R_{\\infty}) = 4\\pi \\epsilon_0 \\hbar^2 / (m_\\mathrm{e} e^2)$", description);
+qput (%a_0, "Bohr radius $\\alpha/(4\\pi R_{\\infty}) = 4\\pi \\epsilon_0 \\hbar^2 / (m_{\\mathrm{e}} e^2)$", description);
 declare_constvalue (%a_0, 0.52917720859e-10 ` m);
 qput (%a_0, 6.8e-10, RSU);
 texput (%a_0, "a_0");
 
 declare (%E_h, physical_constant);
 declare (%E_h, constant);
-qput (%E_h, "Hartree energy $e^2/(4\\pi \\epsilon_0 \\alpha_0) = 2 R_{\\infty} hc = \\alpha^2 m_\\mathrm{e} c^2$", description);
+qput (%E_h, "Hartree energy $e^2/(4\\pi \\epsilon_0 \\alpha_0) = 2 R_{\\infty} hc = \\alpha^2 m_{\\mathrm{e}} c^2$", description);
 declare_constvalue (%E_h, 4.35974394e-18 ` J);
 qput (%E_h, 5e-8, RSU);
-texput (%E_h, "E_\\mathrm{h}");
+texput (%E_h, "E_{\\mathrm{h}}");
 
 declare (%ratio_h_me, physical_constant);
 declare (%ratio_h_me, constant);
-qput (%ratio_h_me, "quantum of circulation $h/m_\\mathrm{e}$", description);
+qput (%ratio_h_me, "quantum of circulation $h/m_{\\mathrm{e}}$", description);
 declare_constvalue (%ratio_h_me, 3.6369475199e-4 ` m^2/s);
 qput (%ratio_h_me, 1.4e-9, RSU);
-texput (%ratio_h_me, "(h/m_\\mathrm{e})");
+texput (%ratio_h_me, "(h/m_{\\mathrm{e}})");
 
 /* OMITTED: Electro-weak */
 
@@ -200,7 +209,7 @@ declare (%m_e, constant);
 qput (%m_e, "electron mass", description);
 declare_constvalue (%m_e, 9.10938215e-31 ` kg);
 qput (%m_e, 5e-8, RSU);
-texput (%m_e, "m_\\mathrm{e}");
+texput (%m_e, "m_{\\mathrm{e}}");
 
 /* REMAINDER OF SECTION OMITTED */
 
@@ -227,7 +236,7 @@ declare (%m_u, constant);
 qput (%m_u, "atomic mass constant", description);
 declare_constvalue (%m_u, 1.660538782e-27 ` kg);
 qput (%m_u, 5e-8, RSU);
-texput (%m_u, "\\mu_\\mathrm{u}");
+texput (%m_u, "\\mu_{\\mathrm{u}}");
 
 declare (%F, physical_constant);
 declare (%F, constant);
@@ -243,12 +252,7 @@ declare_constvalue (%R, 8314472*10^-6 ` J/mol/K);
 qput (%R, 1.7e-6, RSU);
 texput (%R, "R");
 
-declare (%%k, physical_constant);
-declare (%%k, constant);
-qput (%%k, "Boltzmann constant $R/N_A$", description);
-declare_constvalue (%%k, 1.3806504e-23 ` J/K);
-qput (%%k, 1.7e-6, RSU);
-texput (%%k, "k");
+/* Boltzmann constant moved -- put it before Planck temperature */
 
 declare (%V_m, physical_constant);
 declare (%V_m, constant);
@@ -266,7 +270,7 @@ texput (%n_0, "n_0");
 
 declare (%ratio_S0_R, physical_constant);
 declare (%ratio_S0_R, constant);
-qput (%ratio_S0_R, "Sackur-Tetrode constant (absolute entropy constant) $5/2 + \\log\\left((2\\pi m_\\mathrm{u} k T_1/h^2)^{3/2} k T_1/p_0\\right)$, $T_1 = 1 \\; \\mathrm{K}, p_0 = 101.325 \\; \\mathrm{kPa}$", description);
+qput (%ratio_S0_R, "Sackur-Tetrode constant (absolute entropy constant) $5/2 + \\log\\left((2\\pi m_{\\mathrm{u}} k T_1/h^2)^{3/2} k T_1/p_0\\right)$, $T_1 = 1 \\; \\mathrm{K}, p_0 = 101.325 \\; \\mathrm{kPa}$", description);
 declare_constvalue (%ratio_S0_R, -1.1648677);
 qput (%ratio_S0_R, 3.8e-6, RSU);
 texput (%ratio_S0_R, "(S_0/R)");
@@ -290,7 +294,7 @@ declare (%c_1L, constant);
 qput (%c_1L, "first radiation constant for spectral radiance $2 h c^2$", description);
 declare_constvalue (%c_1L, 1.191042759e-16 ` W*m^2/sr);
 qput (%c_1L, 5e-8, RSU);
-texput (%c_1L, "c_\\mathrm{1L}");
+texput (%c_1L, "c_{\\mathrm{1L}}");
 
 declare (%c_2, physical_constant);
 declare (%c_2, constant);
@@ -301,14 +305,14 @@ texput (%c_2, "c_2");
 
 declare (%b, physical_constant);
 declare (%b, constant);
-qput (%b, "Wien displacement law constant $b = \\lambda_\\mathrm{max} T = c_2/4.965 114 231\\ldots$", description);
+qput (%b, "Wien displacement law constant $b = \\lambda_{\\mathrm{max}} T = c_2/4.965 114 231\\ldots$", description);
 declare_constvalue (%b, 2.8977685e-3 ` m*K);
 qput (%b, 1.7e-6, RSU);
 texput (%b, "b");
 
 declare (%b_prime, physical_constant);
 declare (%b_prime, constant);
-qput (%b_prime, "Wien displacement law constant $b' = \\nu_\\mathrm{max}/T = 2.821 439 372\\ldots c/c_2$", description);
+qput (%b_prime, "Wien displacement law constant $b' = \\nu_{\\mathrm{max}}/T = 2.821 439 372\\ldots c/c_2$", description);
 declare_constvalue (%b_prime, 5.878933e10 ` Hz/K);
 qput (%b_prime, 1.7e-6, RSU);
 texput (%b_prime, "b'");
