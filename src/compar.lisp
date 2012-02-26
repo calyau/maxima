@@ -1573,7 +1573,7 @@ relational knowledge is contained in the default context GLOBAL.")
 				 (complexsign
 				  ;; The only place the variable complexsign
 				  ;; is used. Unfortunately, one routine in
-				  ;; topoly.lisp in /share/contrib depends on
+				  ;; to_poly.lisp in /share/to_poly_solve depends on
 				  ;; this piece of code. Perhaps we can remove
 				  ;; the dependency. (12/2008)
 				  (setq sign-base (setq sign-expt '$pnz)))

@@ -10,7 +10,7 @@
 
 
 ($load '$polynomialp)
-(if (not ($get '$to_poly '$version)) ($load '$topoly))
+(if (not ($get '$to_poly '$version)) ($load '$to_poly))
 
 (mfuncall '$declare '$one_to_one '$feature)
 (mfuncall '$declare '$sinh '$one_to_one)

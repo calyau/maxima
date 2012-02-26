@@ -1,4 +1,4 @@
-(kill(all), %start : absolute_real_time(),algexact : true, load("to_poly_solver"),0);
+(kill(all), %start : absolute_real_time(),algexact : true, load("to_poly_solve"),0);
 0$
 
 /* equation and variable coercion */
@@ -1084,7 +1084,7 @@ nicedummies(to_poly_solve(sin(x)/x,x));
 %union(%if(2*%z0+1 # 0,[x = 2*%pi*%z0+%pi],%union()), %if(%z1 # 0,[x = 2*%pi*%z1],%union()))$
 
 /* From sci.math.symbolic, 29 September 2009; OK, but could be better. In the same
-thread is -3 + cosh(x) - cos(x) = 0. The to_poly_solver either takes a long time or
+thread is -3 + cosh(x) - cos(x) = 0. The to_poly_solve either takes a long time or
 gets stuck on -3 + cosh(x) - cos(x) = 0.*/
 
 nicedummies(to_poly_solve(-3+cosh(x)-sinh(x)/tanh(x) = 0,x));
@@ -1128,7 +1128,7 @@ nicedummies(to_poly_solve((x^a-1)/(x^2 + 1),x));
 %union([x = %e^(2*%i*%pi*%z0/a)])$
 
 /* Two equations from Axiom Developer mailing list Fri, 02 Oct 2009 13:29:29 -0600. There
-are other equations in this thread that the to_poly_solver cannot do:
+are other equations in this thread that the to_poly_solve cannot do:
 
   solve([ tan(bt)=(a*r)/(s*(r-d)), x=100*cos(bt), y=d*sin(bt)],[x,y,bt]),
   solve([bt=atan((a*r)/(s*(r-d))),x=100*cos(bt),y=d*sin(bt)],[x,y,bt]).
