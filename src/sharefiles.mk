@@ -222,17 +222,6 @@ contrib/diffequations/tests/rtestode_utils.mac \
 contrib/diffequations/tests/rtest_sym2.mac \
 contrib/diffequations/tests/rtest_sym.mac \
 contrib/diffequations/tests/testsuite.lisp \
-contrib/distrib/distrib.mac \
-contrib/distrib/numdistrib.lisp \
-contrib/distrib/rtest_distrib.mac \
-contrib/ezunits/ezunits_db.mac \
-contrib/ezunits/ezunits.dem \
-contrib/ezunits/ezunits_functions.mac \
-contrib/ezunits/ezunits.lisp \
-contrib/ezunits/ezunits.mac \
-contrib/ezunits/physical_constants.mac \
-contrib/ezunits/rtest_ezunits_frink.mac \
-contrib/ezunits/rtestezunits.mac \
 contrib/f90.lisp \
 contrib/floatproperties.lisp \
 contrib/format/autoload-m.macsyma \
@@ -546,6 +535,7 @@ dynamics/dynamics.mac \
 dynamics/plotdf.lisp \
 dynamics/rtest_dynamics.mac \
 dynamics/visualization.lisp \
+ezunits/CODATA-2006.pdf \
 ezunits/ezunits_db.mac \
 ezunits/ezunits.dem \
 ezunits/ezunits_functions.mac \
@@ -1167,8 +1157,6 @@ to_poly_solve/rtest_to_poly_solve.mac \
 to_poly_solve/to_poly.lisp \
 to_poly_solve/to_poly_solve_extra.lisp \
 to_poly_solve/to_poly_solve.mac \
-to_poly_solve/to_poly-user-doc.html \
-to_poly_solve/to_poly-user-doc.texi \
 trigonometry/atrig1.mac \
 trigonometry/atrig1.usg \
 trigonometry/ntrig.mac \
