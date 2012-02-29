@@ -1155,8 +1155,10 @@ tensor/weyl.dem \
 to_poly_solve/rtest_to_poly.mac \
 to_poly_solve/rtest_to_poly_solve.mac \
 to_poly_solve/to_poly.lisp \
+to_poly_solve/topoly.lisp \
 to_poly_solve/to_poly_solve_extra.lisp \
 to_poly_solve/to_poly_solve.mac \
+to_poly_solve/to_poly_solver.mac \
 trigonometry/atrig1.mac \
 trigonometry/atrig1.usg \
 trigonometry/ntrig.mac \
