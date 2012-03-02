@@ -1935,6 +1935,14 @@ f(n_even,%i);
 f(n_odd,%i);
 [realpart(bessel_y(n_odd,%i)),imagpart(bessel_y(n_odd,%i))];
 
+/* %iargs is false, so transformation disabled */
+bessel_j(v, %i*x);
+bessel_j(v, %i*x);
+
+bessel_i(v, %i*x);
+bessel_i(v, %i*x);
+
+/* Set %iargs to true to enable transformation */
 (%iargs:true, bessel_j(v, %i*x));
 (%i*x)^v/x^v*bessel_i(v,x);
 
