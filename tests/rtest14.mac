@@ -1948,3 +1948,13 @@ bessel_i(v, %i*x);
 
 bessel_i(v, %i*x);
 (%i*x)^v/(x^v)*bessel_j(v, x);
+
+imagpart(bessel_j(2,%i*3.0));
+0;
+realpart(bessel_j(3,%i*3.0));
+0;
+
+imagpart(bessel_i(2,%i*3.0));
+0;
+realpart(bessel_i(3,%i*3.0));
+0;
