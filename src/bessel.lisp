@@ -259,7 +259,15 @@
                  (inv arg) 
                  (take '(%bessel_j) (- order 1) arg))
             (take '(%bessel_j) (- order 2) arg)))
-      
+
+      ((and $%iargs (multiplep arg '$%i))
+       ;; bessel_j(v, %i*x) = (%i*x)^v/(x^v) * bessel_i(v, x)
+       ;; (From http://functions.wolfram.com/03.01.27.0002.01)
+       (let ((x (coeff arg '$%i 1)))
+	 (mul (power (mul '$%i x) order)
+	      (inv (power x order))
+	      (take '(%bessel_i) order x))))
+
       ($hypergeometric_representation
         ;; Return Hypergeometric representation of bessel_j
         (mul (inv (take '(%gamma) (add order 1)))
@@ -909,7 +917,14 @@
                  (inv arg) 
                  (take '(%bessel_i) (- order 1) arg))
             (take '(%bessel_i) (- order 2) arg)))
-      
+
+      ((and $%iargs (multiplep arg '$%i))
+       ;; bessel_i(v, %i*x) = (%i*x)^v/(x^v) * bessel_j(v, x)
+       ;; (From http://functions.wolfram.com/03.02.27.0002.01)
+       (let ((x (coeff arg '$%i 1)))
+	 (mul (power (mul '$%i x) order)
+	      (inv (power x order))
+	      (take '(%bessel_j) order x))))
       ($hypergeometric_representation
         ;; Return Hypergeometric representation of bessel_i
         (mul (inv (take '(%gamma) (add order 1)))
