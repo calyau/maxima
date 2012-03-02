@@ -308,7 +308,7 @@
          x1 y1 x2 y2
          (alloc (reverse *allocations*))
          (nilcounter 0)
-         nrow dx dy thisalloc origin1 origin2 size1 size2)
+         nrow dx dy thisalloc)
     (setf nrow (ceiling (/ (count nil alloc) ncol)))
     (when (> nrow 0)
       (setf dx (/ 1.0 ncol)
@@ -345,8 +345,7 @@
 
 ; code for file output
 (defun vtk-terminal ()
-  (let ((dimensions (gethash '$dimensions *gr-options*))
-        (terminal   (gethash '$terminal *gr-options*))
+  (let ((terminal   (gethash '$terminal *gr-options*))
         (filename   (gethash '$file_name *gr-options*))
         (binaryterms '($png $pngcairo $jpg $eps $eps_color $tiff $pnm))
         (extension "")
@@ -1083,7 +1082,7 @@
                    (loop for k from 0 below n do
                      (setf (aref xx ind) (aref x k)
                            (aref yy ind) (aref y k)
-                           (aref zz ind) 0)
+                           (aref zz ind) 0.0)
                      (setf ind (1+ ind))
                      (setf (aref xx ind) (aref x k)
                            (aref yy ind) (aref y k)
@@ -1142,37 +1141,37 @@
                                   (make-array 1 :element-type 'flonum :initial-element 0.0)))
                (1 (vtkpoints-code points-name nil 
                                   (make-array 4 :element-type 'flonum 
-                                                :initial-contents (list (- point-size) point-size 0 0))
+                                                :initial-contents (list (- point-size) point-size 0.0 0.0))
                                   (make-array 4 :element-type 'flonum 
-                                                :initial-contents (list 0 0 0 0))
+                                                :initial-contents (list 0.0 0.0 0.0 0.0))
                                   (make-array 4 :element-type 'flonum
-                                                :initial-contents (list 0 0 (- point-size) point-size))))
+                                                :initial-contents (list 0.0 0.0 (- point-size) point-size))))
                (2 (vtkpoints-code points-name nil
                                   (make-array 4 :element-type 'flonum
                                                 :initial-contents (list point-size (- point-size) (- point-size) point-size))
                                   (make-array 4 :element-type 'flonum 
-                                                :initial-contents (list 0 0 0 0))
+                                                :initial-contents (list 0.0 0.0 0.0 0.0))
                                   (make-array 4 :element-type 'flonum 
                                                 :initial-contents (list point-size (- point-size) point-size (- point-size)))))
                (3 (vtkpoints-code points-name nil
                                   (make-array 8 :element-type 'flonum 
-                                                :initial-contents (list point-size (- point-size) (- point-size) point-size (- point-size) point-size 0 0))
+                                                :initial-contents (list point-size (- point-size) (- point-size) point-size (- point-size) point-size 0.0 0.0))
                                   (make-array 8 :element-type 'flonum 
-                                                :initial-contents (list 0 0 0 0 0 0 0 0))
+                                                :initial-contents (list 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0))
                                   (make-array 8 :element-type 'flonum 
-                                                :initial-contents (list point-size (- point-size) point-size (- point-size) 0 0 (- point-size) point-size))))
+                                                :initial-contents (list point-size (- point-size) point-size (- point-size) 0.0 0.0 (- point-size) point-size))))
                (4 (vtkpoints-code points-name nil
                                   (make-array 4 :element-type 'flonum 
                                                 :initial-contents (list point-size (- point-size) (- point-size) point-size))
                                   (make-array 4 :element-type 'flonum 
-                                                :initial-contents (list 0 0 0 0))
+                                                :initial-contents (list 0.0 0.0 0.0 0.0))
                                   (make-array 4 :element-type 'flonum 
                                                 :initial-contents (list point-size point-size (- point-size) (- point-size)))))
                (5 (vtkpoints-code points-name nil
                                   (make-array 4 :element-type 'flonum 
                                                 :initial-contents (list (- point-size) point-size point-size (- point-size)))
                                   (make-array 4 :element-type 'flonum 
-                                                :initial-contents (list 0 0 0 0))
+                                                :initial-contents (list 0.0 0.0 0.0 0.0))
                                   (make-array 4 :element-type 'flonum 
                                                 :initial-contents (list point-size point-size (- point-size) (- point-size))))))
              (format nil "~a ~a~%  ~a ~a ~a~%"
