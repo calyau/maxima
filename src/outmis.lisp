@@ -260,8 +260,6 @@
 			      (atdecode (car l) (caar ll) (cadar ll)) (caddar ll))))))
   '$done)
 
-;;(declare-top (FIXNUM N))
-
 (defun atdecode (fun dl vl)
   (setq vl (copy-list vl))
   (atvarschk vl)
