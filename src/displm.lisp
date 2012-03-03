@@ -38,7 +38,7 @@
   width height depth maxht maxdp level size lop rop break right
   bkpt bkptwd bkptht bkptdp bkptlevel bkptout lines 
   oldrow oldcol display-file in-p
-  moremsg moreflush more-^w mratp $aliases aliaslist))
+  mratp $aliases aliaslist))
 
 ;;; macros for the DISPLA package.
 

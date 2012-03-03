@@ -65,7 +65,6 @@
 (defvar dskfnp nil)
 (defvar saveno 0)
 (defvar quitmsg  " ")
-(defvar more-^w nil)
 (defvar lisperrprint t)
 
 (defvar state-pdl (ncons 'lisp-toplevel))
@@ -107,11 +106,6 @@
   "Flag to tell file-writing functions whether to append or clobber the output file.")
 
 (defmvar user-timesofar nil)
-
-(defvar moremsg "--Pause--")
-(defvar morecontinue "--Continued--")
-(defvar moreflush nil)
-(defmvar $morewait nil "needs to be documented" no-reset)
 
 (defmvar aliaslist nil
   "is used by the `makeatomic' scheme which has never been completed"

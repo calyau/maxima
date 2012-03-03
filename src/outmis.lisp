@@ -530,11 +530,3 @@
        (push (simptimes (list '(mtimes) (caar i)
 			      ($factorsum (simplus (cons '(mplus) (cdar i)) 1 nil))) 1 nil) el))
      (return (addn el nil))))
-
-(declare-top (special moremsg morecontinue))
-
-(defmfun $pause (&optional (more-msg moremsg) (more-continue morecontinue))
-  (let ((moremsg (stripdollar more-msg))
-	(morecontinue (stripdollar more-continue)))
-    ;;     (MORE-FUN NIL)
-    '$done))
