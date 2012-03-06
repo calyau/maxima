@@ -1833,7 +1833,7 @@ f(n+1/2,x);
 f(n+1/2,-x);
 [0,-%i*bessel_j(n+1/2,-x)];
 
-(declare(n_even,even),declare(n_odd,odd),done);
+(declare(n_even,even),declare(n_odd,odd),%iargs:false,done);
 done;
 
 f(n_even,%i);
@@ -1934,3 +1934,27 @@ f(n_even,%i);
 [realpart(bessel_y(n_even,%i)),imagpart(bessel_y(n_even,%i))];
 f(n_odd,%i);
 [realpart(bessel_y(n_odd,%i)),imagpart(bessel_y(n_odd,%i))];
+
+/* %iargs is false, so transformation disabled */
+bessel_j(v, %i*x);
+bessel_j(v, %i*x);
+
+bessel_i(v, %i*x);
+bessel_i(v, %i*x);
+
+/* Set %iargs to true to enable transformation */
+(%iargs:true, bessel_j(v, %i*x));
+(%i*x)^v/x^v*bessel_i(v,x);
+
+bessel_i(v, %i*x);
+(%i*x)^v/(x^v)*bessel_j(v, x);
+
+imagpart(bessel_j(2,%i*3.0));
+0;
+realpart(bessel_j(3,%i*3.0));
+0;
+
+imagpart(bessel_i(2,%i*3.0));
+0;
+realpart(bessel_i(3,%i*3.0));
+0;

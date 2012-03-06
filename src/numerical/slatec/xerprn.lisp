@@ -18,7 +18,7 @@
 
 
 (let* ((newlin "$$"))
-  (declare (type (simple-array character (2)) newlin) (ignorable newlin))
+  (declare (ignorable newlin))
   (defun xerprn (prefix npref messg nwrap)
     (declare (type (f2cl-lib:integer4) nwrap npref)
              (type (simple-array character (*)) messg prefix))

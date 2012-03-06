@@ -259,7 +259,15 @@
                  (inv arg) 
                  (take '(%bessel_j) (- order 1) arg))
             (take '(%bessel_j) (- order 2) arg)))
-      
+
+      ((and $%iargs (multiplep arg '$%i))
+       ;; bessel_j(v, %i*x) = (%i*x)^v/(x^v) * bessel_i(v, x)
+       ;; (From http://functions.wolfram.com/03.01.27.0002.01)
+       (let ((x (coeff arg '$%i 1)))
+	 (mul (power (mul '$%i x) order)
+	      (inv (power x order))
+	      (take '(%bessel_i) order x))))
+
       ($hypergeometric_representation
         ;; Return Hypergeometric representation of bessel_j
         (mul (inv (take '(%gamma) (add order 1)))
@@ -909,7 +917,14 @@
                  (inv arg) 
                  (take '(%bessel_i) (- order 1) arg))
             (take '(%bessel_i) (- order 2) arg)))
-      
+
+      ((and $%iargs (multiplep arg '$%i))
+       ;; bessel_i(v, %i*x) = (%i*x)^v/(x^v) * bessel_j(v, x)
+       ;; (From http://functions.wolfram.com/03.02.27.0002.01)
+       (let ((x (coeff arg '$%i 1)))
+	 (mul (power (mul '$%i x) order)
+	      (inv (power x order))
+	      (take '(%bessel_j) order x))))
       ($hypergeometric_representation
         ;; Return Hypergeometric representation of bessel_i
         (mul (inv (take '(%gamma) (add order 1)))
@@ -974,6 +989,28 @@
             (let ((jvals (make-array (1+ n) :element-type 'flonum)))
               (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) jvals 0)
               (aref jvals n)))))))
+
+    ((and (zerop (realpart arg))
+	  (zerop (rem order 1)))
+     ;; Handle the case for a pure imaginary arg and integer order.
+     ;; In this case, the result is purely real or purely imaginary,
+     ;; so we want to make sure that happens.
+     ;;
+     ;; bessel_i(n, %i*x) = (%i*x)^n/x^n * bessel_j(n,x)
+     ;;    = %i*n * bessel_j(n,x)
+     (let* ((n (floor order))
+	    (result (bessel-j (float n) (imagpart arg))))
+       (cond ((evenp n)
+	      ;; %i^(2*m) = (-1)^m, where n=2*m
+	      (if (evenp (/ n 2))
+		  result
+		  (- result)))
+	     ((oddp n)
+	      ;; %i^(2*m+1) = %i*(-1)^m, where n = 2*m+1
+	      (if (evenp (floor n 2))
+		  (complex 0 result)
+		  (complex 0 (- result)))))))
+
     (t
      ;; The arg is complex.  Use the complex-valued Bessel function.
      (multiple-value-bind (n alpha) (floor (abs (float order)))
