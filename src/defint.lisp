@@ -1263,6 +1263,10 @@ in the interval of integration.")
 		(setq ratans
 		      (if ratterms
 			  (let (($intanalysis nil))
+			    ;; The original integrand was already
+			    ;; determined to have no poles by initial-analysis.
+			    ;; If individual terms of the expansion have poles, the poles 
+			    ;; must cancel each other out, so we can ignore them.
 			    (try-defint (m// (m+l ratterms) d) var '$minf '$inf))
 			0))
 		;; if integral of ratterms is divergent, ratans is nil, 
