@@ -19,6 +19,6 @@
 ;; Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 ;; MA 02111-1307 USA
 (defconst *imaxima-autoconf-package* "imaxima-imath")
-(defconst *imaxima-autoconf-version* "1.01")
+(defconst *imaxima-autoconf-version* "1.02")
 
 (provide 'imaxima-autoconf-variables)
