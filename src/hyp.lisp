@@ -1588,11 +1588,13 @@
 	     (format t "Legendre c-a-b = 1/2~%"))
 	   (legf20 (list a b) (list c) var))
           
-          ((alike1 c-a-b '((rat simp) 3 2))
-           ;; c-a-b = 3/2 e.g. F(a,b;a+b+3/2;z)
-           ;; Reduce to F(a,b;a+b+1/2) and use A&S 15.2.6.
-           ;; Problem: The derivative of assoc_legendre_p introduces a
-           ;; unit_step function and the result looks very complicate.
+          ((and (alike1 c-a-b '((rat simp) 3 2))
+		(not (alike1 c 1)))
+           ;; c-a-b = 3/2 e.g. F(a,b;a+b+3/2;z) Reduce to
+           ;; F(a,b;a+b+1/2) and use A&S 15.2.6.  But if c = 1, we
+           ;; don't want to reduce c to 0! Problem: The derivative of
+           ;; assoc_legendre_p introduces a unit_step function and the
+           ;; result looks very complicate.
            (when $trace2f1
              (format t "Legendre c-a-b = 3/2~%")
              (format t "   : a = ~A~%" a)
