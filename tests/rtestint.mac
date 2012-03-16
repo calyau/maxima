@@ -283,6 +283,16 @@ integrate(x^3*sqrt(R),x);
 	-7*b^2*(5*b^2-4*a*c)*sqrt(c*x^2+b*x+a)/(640*c^4)
 	+a*b^2*sqrt(c*x^2+b*x+a)/(20*c^3);
 
+/* Integration is not correct: invalid 'false' term in results - ID: 3470668 */
+(assume(4*a*c > 1), 0);
+0;
+
+integrate(x^4 / (a*x^2 + x + c)^(5/2), x);
+'integrate(x^4 / (a*x^2 + x + c)^(5/2), x);
+
+(forget(4*a*c > 1), 0);
+0;
+
 /*------------------------------------------------------------------------------*/
 /*
  * I (rtoy) have not verified any of these, except for the cases so marked.

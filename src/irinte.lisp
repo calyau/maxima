@@ -1787,10 +1787,13 @@
 	      (augmult (mul a (den1numn (+ p -1) c b a x)))
 	      (augmult (mul b 1//2 (numn (+ p -2) c b a x)))))))
 
-;; EXPR is a list of expressions that INTIRA should be applied to.
+;; L is a list of expressions that INTIRA should be applied to.
 ;; Sum up the results of applying INTIRA to each.
-(defun distrint (expr x)
-  (if (null expr)
-      0
-      (add (intira (car expr) x)
-	   (distrint (cdr expr) x))))
+(defun distrint (l x)
+  (addn (mapcar #'(lambda (e)
+		    (let ((ie (intira e x)))
+		      (if ie 
+			  ie 
+			`((%integrate simp) ,e ,x)))) 
+		l)
+	t))
