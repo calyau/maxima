@@ -2670,7 +2670,7 @@ It appears in LIMIT and DEFINT.......")
 				 (t '$und)))
 			  (t '$und))))))
 	  ((eq arglim '$und) '$und)
-	  ((member arglim '($zeroa $zerob $ind) :test #'eq) arg)
+	  ((member arglim '($zeroa $zerob $ind) :test #'eq) arglim)
 ;;;Ignore tanh(%pi/2*%I) and multiples of the argument.
 	  (t
 	   ;; erf (or tanh) of a known value is just erf(arglim).
