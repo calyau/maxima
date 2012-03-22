@@ -714,7 +714,7 @@
 
 (defun power-mod (b n m)
   (if (zerop n)
-      1
+      (mod 1 m)
       (do ((res 1))
 	  (())
 	(when (logbitp 0 n)
