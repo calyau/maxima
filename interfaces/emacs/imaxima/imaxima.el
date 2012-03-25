@@ -420,6 +420,17 @@ dots per inch.  Buffer-local to rendering buffer.")
   (message "%s %s" *imaxima-autoconf-package* *imaxima-autoconf-version*))
 
 ;;
+;; Reset
+;;
+
+(defun reinit-imaxima ()
+  "Re-initialize imaxima"
+  (interactive)
+  (setq imaxima-filter-running nil
+    imaxima-output nil
+    continuation nil))
+
+;;
 ;; Geometry
 ;;
 
@@ -1174,6 +1185,7 @@ turns them on.  Set `imaxima-use-maxima-mode-flag' to t to use
 	  (switch-to-buffer imaxima-buffer)
 	(set-buffer imaxima-buffer))
       (return-from imaxima t)))
+  (reinit-imaxima)
   (unless (imaxima-image-type-available-p imaxima-image-type)
     (error "Your version of Emacs does not support the image type %s"
 	   imaxima-image-type))
