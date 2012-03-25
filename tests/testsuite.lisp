@@ -33,6 +33,7 @@
         "rtest_scalarp"
         "rtest_everysome"
         "rtestint"
+        "rtest_numth"
         "rtestifactor"
         ((mlist simp) "rtest_equal" 157 160)
         "rtest_abs"
