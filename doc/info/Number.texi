@@ -339,6 +339,23 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{factors_only}
+@defvr {Option variable} factors_only
+Standardwert: @code{false}
+
+Controls the value returned by @mrefdot{ifactors}. The default @code{false} 
+causes @code{ifactors} to provide information about multiplicities of the 
+computed prime factors. If @code{factors_only} is set to @code{true}, 
+@code{ifactors} returns nothing more than a list of prime factors.
+
+Example: See @mrefdot{ifactors}.
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{fib}
 @deffn {Function} fib (@var{n})
 
@@ -411,13 +428,21 @@ For a positive integer @var{n} returns the factorization of @var{n}.  If
 factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
 
 Factorization methods used are trial divisions by primes up to 9973,
-Pollard's rho method and elliptic curve method.
+Pollard's rho and p-1 method and elliptic curves.
+
+The return value is controlled by the option variable @mrefdot{factors_only}.
+The default @code{false} causes @code{ifactors} to provide information about 
+the multiplicities of the computed prime factors. If @code{factors_only} 
+is set to @code{true}, @code{ifactors} returns nothing more than a list of 
+prime factors.
 
 @example
 (%i1) ifactors(51575319651600);
 (%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
 (%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
 (%o2)                        51575319651600
+(%i3) ifactors(51575319651600), factors_only : true;
+(%o3)                   [2, 3, 5, 1583, 9050207]
 @end example
 
 @opencatbox
@@ -666,9 +691,9 @@ Miller-Rabin's test is used.  If @code{primep (@var{n})} returns
 @code{true}, then @var{n} is a prime number.
 
 For @var{n} bigger than 341550071728321 @code{primep} uses
-@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and
-one Lucas pseudo-primality test.  The probability that @var{n} will pass
-one Miller-Rabin test is less than 1/4.  Using the default value 25 for
+@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
+Lucas pseudo-primality test.  The probability that a non-prime @var{n} will 
+pass one Miller-Rabin test is less than 1/4.  Using the default value 25 for
 @code{primep_number_of_tests}, the probability of @var{n} beeing
 composite is much smaller that 10^-15.
 
@@ -685,7 +710,7 @@ Default value: 25
 Number of Miller-Rabin's tests used in @code{primep}.
 
 @opencatbox
-@category{Predicate functions} @category{Number theory}
+@category{Number theory}
 @closecatbox
 @end defvr
 
