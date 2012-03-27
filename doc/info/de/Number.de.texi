@@ -6,6 +6,7 @@
 @c Translation : Dr. Dieter Kaiser
 @c Date        : 06.01.2011
 @c Revision    : 26.02.2011
+@c Revision    : 27.03.2012
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -165,6 +166,32 @@ Zahlen die kleiner oder gleich 255 die Funktion @code{bern} auf.
 Das Kommando @code{load(bffac)} l@"adt die Funktion.  Siehe auch @mrefdot{bern}
 @end deffn
 
+@c --- 27.03.2012 VN -----------------------------------------------------------
+@anchor{chinese}
+@deffn {Funktion} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+
+L@"ost die simultanen Kongruenzen @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
+Die Reste @var{r_n} und die Moduli @var{m_n} m@"ussen ganze Zahlen sein, 
+die Moduli zus@"atzlich positiv und paarweise teilerfremd.
+
+@example
+(%i1) mods : [1000, 1001, 1003, 1007];
+(%o1)                   [1000, 1001, 1003, 1007]
+(%i2) lreduce('gcd, mods);
+(%o2)                               1
+(%i3) x : random(apply("*", mods));
+(%o3)                         685124877004
+(%i4) rems : map(lambda([z], mod(x, z)), mods);
+(%o4)                       [4, 568, 54, 624]
+(%i5) chinese(rems, mods);
+(%o5)                         685124877004
+(%i6) chinese([1, 2], [3, n]);
+(%o6)                    chinese([1, 2], [3, n])
+(%i7) %, n = 4;
+(%o7)                              10
+@end example
+@end deffn
+
 @c --- 23.11.2010 DK -----------------------------------------------------------
 @anchor{divsum}
 @deffn  {Funktion} divsum (@var{n}, @var{k})
@@ -285,30 +312,29 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{ifactors}
-@deffn {Function} ifactors (@var{n})
+@deffn {Funktion} ifactors (@var{n})
 
-@c For a positive integer @var{n} returns the factorization of @var{n}. If
-@c @code{n=p1^e1..pk^nk} is the decomposition of @var{n} into prime
-@c factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
-
-Faktorisiert eine positive ganze Zahl @var{n}.  Sind @code{n = p1^e1..pk^nk} die
+Faktorisiert eine positive ganze Zahl @var{n}.  Sind @code{n = p1^e1 * ... * pk^nk} die
 Faktoren der ganzen Zahl @var{n}, dann gibt @code{ifactor} das Ergebnis
-@code{[[p1, e1], ... , [pk, ek]]} zur@"uck.
+@code{[[p1, e1], ..., [pk, ek]]} zur@"uck.
 
-@c Factorization methods used are trial divisions by primes up to 9973,
-@c Pollard's rho method and elliptic curve method.
+F@"ur die Faktorisierung kommen Probedivision mit Primzahlen bis 9973, 
+Pollards Rho- und p-1-Methode oder Elliptischen Kurven zum Einsatz.
 
-F@"ur die Faktorisierung kommen eine einfache Primfaktorzerlegung mit Primzahlen
-bis zu 9973, das Z@"ahlk@"orpersieb nach Pollard oder die Methode der 
-Elliptischen Kurven zum Einsatz.
+Die R@"uckgabe von ifactors wird von der Optionsvariablen @mrefdot{factors_only}  
+beeinflusst. 
+Werden lediglich die Primfaktoren ohne ihre Multiplizit@"at ben@"otigt, 
+gen@"ugt es hierf@"ur, @code{factors_only : true} zu setzen.
 
 @example
 (%i1) ifactors(51575319651600);
 (%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
 (%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
 (%o2)                        51575319651600
+(%i3) ifactors(51575319651600), factors_only : true;
+(%o3)                   [2, 3, 5, 1583, 9050207]
 @end example
 @end deffn
 
@@ -354,18 +380,15 @@ Gibt die ganzzahlige @var{n}-te Wurzel des Betrags von @var{x} zur@"uck.
 @end example
 @end deffn
 
-@c --- 22.12.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{inv_mod}
-@deffn {Funktion} inv_mod (@var{n}, @var{p})
+@deffn {Funktion} inv_mod (@var{n}, @var{m})
 
-@c Computes the inverse of @var{n} modulo @var{m}. @code{inv_mod (n,m)} returns 
-@c @code{false}, if @var{n} is a zero divisor modulo @var{m}.
-
-Berechnet das modulare Inverse von @var{n} zum Modul @var{p}.  Das Argument
-@var{n} muss eine ganze Zahl und das Modul @var{p} eine positive ganze Zahl 
-sein.  @code{inv_mod(n,p)} gibt @code{false} zur@"uck, wenn das modulare Inverse
-nicht existiert.  Das modulare Inverse existiert immer, wenn das Modul @var{p}
-eine Primzahl ist.
+Berechnet das modulare Inverse von @var{n} zum Modul @var{m}.  Das Argument
+@var{n} muss eine ganze Zahl und der Modul @var{p} eine positive ganze Zahl 
+sein.  @code{inv_mod(n, m)} gibt @code{false} zur@"uck, wenn das modulare Inverse
+nicht existiert.  Das modulare Inverse existiert, wenn @var{n} teilerfremd zum 
+Modul @var{m} ist.
 
 Siehe auch die Funktionen @mref{power_mod} und @mrefdot{mod}
 
@@ -374,7 +397,7 @@ Beispiele:
 @example
 (%i1) inv_mod(3, 41);
 (%o1)                           14
-(%i2) ratsimp(3^-1), modulus=41;
+(%i2) ratsimp(3^-1), modulus = 41;
 (%o2)                           14
 (%i3) inv_mod(3, 42);
 (%o3)                          false
@@ -407,14 +430,14 @@ Berechnet das Jacobi-Symbol f@"ur die Argumente @var{p} und @var{q}.
 @end example
 @end deffn
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{lcm}
 @deffn {Funktion} lcm (@var{expr_1}, @dots{}, @var{expr_n})
 
 @c Returns the least common multiple of its arguments. The arguments may be 
 @c general expressions as well as integers.
 
-Gibt den kleinsten gemeinsamen Teiler der Argumente zur@"uck.  Die Argumente 
+Gibt das kleinste gemeinsame Vielfache der Argumente zur@"uck.  Die Argumente 
 k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
 
 @c @code{load ("functs")} loads this function.
@@ -422,7 +445,7 @@ k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
 Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
 @end deffn
 
-@c --- 22.12.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{mod}
 @deffn {Funktion} mod (@var{x}, @var{p})
 
@@ -434,13 +457,13 @@ Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
 @c @code{mod (@var{x}, 1)} is a sawtooth function with period 1 with 
 @c @code{mod (1, 1) = 0} and @code{mod (0, 1) = 0}.
 
-Berechnet den Modulus @code{x mod p} des Arguments @var{x} zum Modul @var{p}. 
-@var{x} und @var{p} k@"onnen ganze Zahlen, rationale Zahlen, Gleitkommazahlen 
+Berechnet den Divisionsrest @code{x mod y} des Arguments @var{x} zum Modul @var{y}. 
+@var{x} und @var{y} k@"onnen ganze Zahlen, rationale Zahlen, Gleitkommazahlen 
 oder allgemeine Ausdr@"ucke sein.
 
-Sind @var{x} und @var{p} reelle Zahlen und ist @var{p} ungleich Null, gibt 
-@code{mod(@var{x}, @var{p})} das Ergebnis von @code{@var{x} - @var{p} * 
-floor(@var{x} / @var{p})} zur@"uck.  Weiterhin gilt f@"ur alle reellen Zahlen
+Sind @var{x} und @var{y} reelle Zahlen und ist @var{y} ungleich Null, gibt 
+@code{mod(@var{x}, @var{y})} das Ergebnis von @code{@var{x} - @var{y} * 
+floor(@var{x} / @var{y})} zur@"uck.  Weiterhin gilt f@"ur alle reellen Zahlen
 @code{mod(@var{x}, 0) = @var{x}}.  F@"ur eine Diskussion dieser Definition siehe
 Kapitel 3.4, "Concrete Mathematics" von Graham, Knuth, and Patashnik.  Die 
 Funktion @code{mod(@var{x}, 1)} ist eine S@"agezahnfunktion mit der Periode 1 
@@ -459,15 +482,15 @@ die komplexe Zahl ist.
 @c @code{floor} and @code{ceiling} uses. Again, it's possible, although 
 @c unlikely, that @code{mod} could return an erroneous value in such cases.
 
-Wie f@"ur die Funktionen @code{floor} oder @code{ceiling} werden konstante 
-Ausdr@"ucke, wie zum Beispiel @code{10 * %pi}, in gro@ss{}e Gleitkommazahlen 
-umgewandelt, um @code{mod} zu berechnen.  Diese Umwandlung kann zu Fehlern
-f@"uhren.
+Sind @var{x} und @var{y} konstante Ausdr@"ucke, wie zum Beispiel @code{10 * %pi},
+verwendet @code{mod} dasselbe @mrefdot{bfloat}-Auswertungsschema wie @code{floor} 
+und @code{ceiling}. Diese Umwandlung kann, wenn auch unwahrscheinlich, 
+zu Fehlern f@"uhren.
 
 @c For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several 
 @c simplification rules:
 
-F@"ur nicht nummerische Argumente @var{x} oder @var{y} kennt @code{mod}
+F@"ur nicht numerische Argumente @var{x} oder @var{y} kennt @code{mod}
 verschiedene Vereinfachungen.
 
 Siehe auch die Funktionen @mref{power_mod} und @mrefdot{inv_mod}
@@ -475,22 +498,22 @@ Siehe auch die Funktionen @mref{power_mod} und @mrefdot{inv_mod}
 Beispiele:
 
 Zeige f@"ur zwei gro@ss{}e ganze Zahlen, dass f@"ur das modulare Rechnen die 
-Regel @code{mod(a+b,p) = mod(a,p)+mod(b,p)} gilt.
+Regel @code{mod(a+b, m) = mod(mod(a, m) + mod(b, m), m)} gilt.
 
 @example
-(%i1) a:random(10^20)+10^19;
+(%i1) a : random(10^20) + 10^19;
 (%o1)                 72588919020045581148
-(%i2) b:random(10^20)+10^19;
+(%i2) b : random(10^20) + 10^19;
 (%o2)                 35463666253140008825
-(%i3) p:random(10^20)+10^19;
+(%i3) m : random(10^20) + 10^19;
 (%o3)                 39127433614020247557
-(%i4) mod(a+b,p);
+(%i4) mod(a+b, m);
 (%o4)                 29797718045145094859
-(%i5) mod(mod(a,p)+mod(b,p),p);
+(%i5) mod(mod(a, m) + mod(b, m), m);
 (%o5)                 29797718045145094859
 @end example
 
-Vereinfachung f@"ur nicht nummerische Argumente.
+Vereinfachung f@"ur nicht numerische Argumente.
 
 @example
 (%i1) mod (x, 0);
@@ -516,52 +539,77 @@ Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
 @end example
 @end deffn
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
+@anchor{power_mod}
+@deffn {Funktion} power_mod (@var{a}, @var{n}, @var{m})
+
+Verwendet einen modularen Algorithmus, um @code{a^n mod m} zu berechnen. 
+Die Argumente @var{a} und @var{n} m@"ussen ganze Zahlen und der Modul @var{m} 
+eine positive ganze Zahl sein.  Ist @var{n} negativ, wird @mref{inv_mod} 
+zur Berechnung des modularen Inversen aufgerufen.
+
+@code{power_mod (@var{a}, @var{n}, @var{m})} ist @"aquivalent zu 
+@code{mod(a^n, m)}.  Der Algorithmus von @code{power_mod} ist jedoch 
+insbesondere f@"ur gro@ss{}e ganze Zahlen wesentlich effizienter.
+
+Siehe auch die Funktionen @mref{inv_mod} und @mrefdot{mod}
+
+Beispiele:
+
+@code{power_mod(a, n, m)} ist @"aquivalent zu @code{mod(a^n, m}.  Das modulare
+Inverse wird mit der Funktion @code{inv_mod} berechnet.
+
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                          2
+(%i2) mod(3^15, 5);
+(%o2)                          2
+(%i3) power_mod(2, -1, 5);
+(%o3)                          3
+(%i4) inv_mod(2, 5);
+(%o4)                          3
+@end example
+
+F@"ur gro@ss{}e ganze Zahlen ist @code{power_mod} effizienter.  Der folgende 
+Wert kann in keiner vern@"unftigen Zeit mit @code{mod(a^n, m)} berechnet
+werden.
+
+@example
+(%i1) power_mod(123456789, 123456789, 987654321);
+(%o1)                       598987215
+@end example
+@end deffn
+
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{primep}
 @deffn {Funktion} primep (@var{n})
 
-@c Primality test. If @code{primep (@var{n})} returns @code{false}, @var{n} is a
-@c composite number and if it returns @code{true}, @var{n} is a prime number
-@c with very high probability.
-
-F@"uhrt einen Test auf eine Primzahl f@"ur das Argument @var{n} durch.  Hat
+F@"uhrt einen Primzahltest f@"ur das Argument @var{n} durch.  Liefert
 @code{primep} das Ergebnis @code{false}, ist @var{n} keine Primzahl.  Ist das
-Ergebnis @code{true}, ist @var{n} mit gro@ss{}er Wahrscheinlichkeit eine 
+Ergebnis @code{true}, ist @var{n} mit sehr gro@ss{}er Wahrscheinlichkeit eine 
 Primzahl.
 
-@c For @var{n} less than 10^16 a deterministic version of Miller-Rabin's
-@c test is used. If @code{primep (@var{n})} returns @code{true}, then @var{n} 
-@c is a prime number.
+F@"ur ganze Zahlen @var{n} kleiner als 341550071728321 wird eine deterministische
+Variante des Miller-Rabin-Tests angewandt.  Hat in diesem Fall @code{primep} den Wert
+@code{true}, dann ist @var{n} mit Sicherheit eine Primzahl.
 
-F@"ur ganze Zahlen @var{n} die kleiner als 10^16 sind wird eine probalistisches
-Miller-Rabin-Verfahren.  Hat in diesem Fall @code{primep} das Ergebnis
-@code{true}, dann ist @var{n} eine Primzahl.
-
-@c For @var{n} bigger than 10^16 @code{primep} uses 
-@c @code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
-@c Lucas pseudo-primality test. The probability that @var{n} will pass one 
-@c Miller-Rabin test is less than 1/4. Using the default value 25 for 
-@c @code{primep_number_of_tests}, the probability of @var{n} beeing composite is 
-@c much smaller that 10^-15.
-
-F@"ur ganze Zahlen @var{n} gr@"o@ss{}er als 10^16 nutzt @code{primep} den
-Pseudo-Primzahlentest nach Miller-Rabin mit @mref{primep_number_of_tests} Tests
-und den Pseudo_Primzahlentest nach Lucas.  Die Wahrscheinlichkeit, dass eine
-Zahl @var{n} den Pseudo-Primzahlentest nach Miller-Rabin passiert, ist kleiner
-als 1/4.  Mit dem Standardwert 25 f@"ur die Optionsvariable 
-@code{primpe_number_of_tests} ist die Wahrscheinlichkeit viel kleiner als 
-10^-15.
+F@"ur ganze Zahlen @var{n} gr@"o@ss{}er 341550071728321 f@"uhrt @code{primep}
+@mref{primep_number_of_tests} Pseudo-Primzahl-Tests nach Miller-Rabin und 
+einen Pseudo-Primzahl-Test nach Lucas durch.  Die Wahrscheinlichkeit, dass 
+eine zusammen gesetzte Zahl @var{n} einen Miller-Rabin-Test besteht, ist kleiner
+als 1/4.  Mit dem Standardwert 25 @code{primpe_number_of_tests} sinkt diese 
+Wahrscheinlichkeit damit unter einen Wert von 10^-15.
 @end deffn
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{primep_number_of_tests}
 @defvr {Optionsvariable} primep_number_of_tests
 Standardwert: 25
 
 @c Number of Miller-Rabin's tests used in @code{primep}.
 
-Die Anzal der Pseudo-Primzahlentests nach Miller-Rabin der Funktion 
-@mrefdot{primep}
+Die Anzahl der Pseudo-Primzahl-Tests nach Miller-Rabin in der Funktion 
+@mrefdot{primep}.
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -575,51 +623,6 @@ Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @var{n} ist.
 @example
 (%i1) prev_prime(27);
 (%o1)                       23
-@end example
-@end deffn
-
-@c --- 22.12.2010 DK -----------------------------------------------------------
-@anchor{power_mod}
-@deffn {Funktion} power_mod (@var{a}, @var{n}, @var{p})
-
-@c Uses a modular algorithm to compute @code{a^n mod m} where @var{a} and 
-@c @var{n} are integers and @var{m} is a positive integer. If @var{n} is 
-@c negative, @code{inv_mod} is used to find the modular inverse.
-
-Berechnet den Modulus @code{a^n mod p} der Exponentiation @code{a^n} zum Modul 
-@var{p}.  Die Argumente @var{a} und @var{n} m@"ussen ganze Zahlen sein.  Das 
-Modul @var{p} muss eine positive ganze Zahl sein.  Ist @var{n} negativ, wird die 
-Funktion @mref{inv_mod} aufgerufen, um das modulare Inverse zu berechnen.
-
-Die Funktion @code{power_mod} ist f@"ur ganze Zahlen @"aquivalent zu 
-@code{mod(a^n, p)}.  Der Algorithmus von @code{power_mod} ist besondere f@"ur 
-gro@ss{}e ganze Zahlen effizienter.
-
-Siehe auch die Funktionen @mref{inv_mod} und @mrefdot{mod}
-
-Beispiele:
-
-@code{power_mod(a,n,p)} ist @"aquivalent zu @code{mod(a^n,p}.  Das modulare
-Inverse wird mit der Funktion @code{inv_mod} berechnet.
-
-@example
-(%i1) power_mod(3, 15, 5);
-(%o1)                          2
-(%i2) mod(3^15,5);
-(%o2)                          2
-(%i3) power_mod(2, -1, 5);
-(%o3)                          3
-(%i4) inv_mod(2,5);
-(%o4)                          3
-@end example
-
-F@"ur gro@ss{}e ganze Zahlen ist @code{power_mod} effizienter.  Das folgende 
-Ergebnis kann nicht in einer vern@"unftigen Zeit mit @code{mod(a^n,p)} berechnet
-werden.
-
-@example
-(%i1) power_mod(123456789,123456789,987654321);
-(%o1)                       598987215
 @end example
 @end deffn
 
@@ -643,18 +646,15 @@ Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung
 @end example
 @end deffn
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{totient}
 @deffn {Funktion} totient (@var{n})
 
-@c Returns the number of integers less than or equal to @var{n} which are 
-@c relatively prime to @var{n}.
-
 Gibt die Anzahl der ganzen Zahlen zur@"uck, die kleiner oder gleich @var{n}
-sind und die kein Teiler von @var{n} sind.
+und teilerfremd zu @var{n} sind.
 @end deffn
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{zerobern}
 @defvr {Optionsvariable} zerobern
 Standardwert: @code{true}
@@ -664,11 +664,11 @@ Standardwert: @code{true}
 @c See @code{bern} and @code{euler}.
 
 Hat @code{zerobern} den Wert @code{false}, werden von den Funktionen @code{bern}
-die Bernoulli Zahlen und von @code{euler} die Euler Zahlen ausgeschlossen,
-die als Ergenis Null haben.  Siehe @mref{bern} und @mrefdot{euler}
+diejenigen Bernoulli-Zahlen und von @code{euler} diejenigen Euler-Zahlen 
+ausgeschlossen, die gleich Null sind.  Siehe @mref{bern} und @mrefdot{euler}
 @end defvr
 
-@c --- 27.11.2010 DK -----------------------------------------------------------
+@c --- 27.03.2012 VN -----------------------------------------------------------
 @anchor{zeta}
 @deffn {Funktion} zeta (@var{n})
 
@@ -698,13 +698,14 @@ $$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
 @end example
 @end ifnottex
 
-F@"ur negative ganze Zahlen @var{n}, Null und postive gerade ganze Zahlen 
-vereinfacht @code{zeta} zu einem exakten Ergebnis.  Damit diese Vereinfachung
-f@"ur positive ganze Zahlen ausgef@"uhrt wird, muss die Optionsvariable
-@code{zeta%pi} den Wert @code{true} haben.  Siehe @mrefdot{zeta%pi} F@"ur 
-einfache und gro@ss{}e Gleitkommazahlen hat @code{zeta} ein numerisches 
-Ergebnis.  F@"ur alle anderen Argumente einschlie@ss{}lich komplexe Zahlen und 
-rationale Zahlen gibt @code{zeta} eine Substantivform zur@"uck.  Hat die 
+F@"ur negative ganze Zahlen @var{n}, Null und positive gerade ganze Zahlen 
+wird @code{zeta} zu einem exakten Ergebnis vereinfacht.  
+Damit diese Vereinfachung f@"ur positive ganze Zahlen ausgef@"uhrt wird, 
+muss die Optionsvariable @code{zeta%pi} den Wert @code{true} haben.  
+Siehe @mrefdot{zeta%pi}. F@"ur einfache und beliebig genaue Gleitkommazahlen 
+(Typ @code{bfloat}) hat @code{zeta} ein numerisches Ergebnis.  
+F@"ur alle anderen Argumente einschlie@ss{}lich der komplexen und 
+rationalen Zahlen gibt @code{zeta} eine Substantivform zur@"uck.  Hat die 
 Optionsvariable @code{zeta%pi} den Wert @code{false}, gibt @code{zeta} auch 
 f@"ur gerade ganze Zahlen eine Substantivform zur@"uck.
 
@@ -718,7 +719,7 @@ Grenzwerte @code{limit(zeta(x), x, 1, plus} und
 @c The Riemann zeta function distributes over lists, matrices, and equations.
 
 Die Riemannsche Zeta-Funktion wird auf die Argumente von Listen, Matrizen und 
-Gleichungen angewendendet, wenn die Optionsvariable @code{distribute_over}
+Gleichungen angewendet, wenn die Optionsvariable @code{distribute_over}
 den Wert @code{true} hat.
 
 @c See also @code{bfzeta} and @code{zeta%pi}.
