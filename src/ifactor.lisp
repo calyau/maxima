@@ -221,7 +221,8 @@
        and d = 3 then (+ d (aref *prime-diffs* i))
        do
 	 (when (> (* d d) n)
-	   (push `(,n 1) factors)
+	   ;;(push `(,n 1) factors) replaced by workaround next line, 
+      (push (list n 1) factors) ;; see bug report 3510983 (van_nek, 2012-03-27)
 	   (when $ifactor_verbose  (format t "small prime cofactor: ~A~%" n))
 	   (return-from get-small-factors (values 1 factors)))
 	 (loop with deg = 0
