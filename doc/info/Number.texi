@@ -124,6 +124,36 @@ returning.  @code{burn} invokes the approximation for even integers @var{n} >
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{chinese}
+@deffn {Function} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+
+Solves the system of congruences @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
+The remainders @var{r_n} may be arbitrary integers while the moduli @var{m_n} have to be 
+positive and pairwise coprime integers.
+
+@example
+(%i1) mods : [1000, 1001, 1003, 1007];
+(%o1)                   [1000, 1001, 1003, 1007]
+(%i2) lreduce('gcd, mods);
+(%o2)                               1
+(%i3) x : random(apply("*", mods));
+(%o3)                         685124877004
+(%i4) rems : map(lambda([z], mod(x, z)), mods);
+(%o4)                       [4, 568, 54, 624]
+(%i5) chinese(rems, mods);
+(%o5)                         685124877004
+(%i6) chinese([1, 2], [3, n]);
+(%o6)                    chinese([1, 2], [3, n])
+(%i7) %, n = 4;
+(%o7)                              10
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{cf}
 @deffn {Function} cf (@var{expr})
 
