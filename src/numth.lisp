@@ -368,6 +368,9 @@
   (cond 
     ((not (and ($listp rems) ($listp mods)))
       (list '($chinese) rems mods) )
+    ((or (= 0 ($length rems)) (= 0 ($length mods)))
+      (merror (intl:gettext
+        "At least one argument to `chinese' was an empty list." )))
     ((notevery #'integerp (setq rems (cdr rems)))
       (list '($chinese) (cons '(mlist simp) rems) mods) )
     ((notevery #'integerp (setq mods (cdr mods)))
