@@ -367,14 +367,25 @@
 ;; (Z/nZ)* is cyclic if n = 2, 4, p^k or 2*p^k where p prime > 2
 (defun cyclic-p (n) 
   (cond
-    ((or (= 2 n) (= 4 n)) t)
-    ((< n 4) nil)
+    ((< n 2) nil)
+    ((< n 8) t)
     (t 
-      (let* (($factors_only) ($intfaclim) 
-             (fs-n (get-factor-list n)) ;; factor-list in reverse order
-             (len (length fs-n)) )
-        (or (and (= 1 len) (> (caar fs-n) 2))
-            (and (= 2 len) (equal (cadr fs-n) '(2 1))) )))))
+      (when (evenp n) 
+        (setq n (ash n -1))
+        (when (evenp n) (return-from cyclic-p nil)) )
+      (let (($intfaclim) (fs (get-small-factors n)) (len 0) p q)
+        (setq n (car fs))
+        (when (cadr fs) (setq len (length (cadr fs))))
+        (if (= 1 n) 
+          (return-from cyclic-p (= 1 len))
+          (when (> len 0) (return-from cyclic-p nil)) )
+        (when (primep n) (return-from cyclic-p t))
+        (setq q (setq p (get-one-factor n)))
+        (do () (())
+          (setq n (/ n q))
+          (when (primep n) (return (= n p)))
+          (setq q (get-one-factor n))
+          (when (/= p q) (return nil)) )))))
 ;;
 (defun zn-primroot (n phi fs-phi) 
   (do ((i 2 (1+ i)))
