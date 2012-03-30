@@ -124,6 +124,36 @@ returning.  @code{burn} invokes the approximation for even integers @var{n} >
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{chinese}
+@deffn {Function} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+
+Solves the system of congruences @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
+The remainders @var{r_n} may be arbitrary integers while the moduli @var{m_n} have to be 
+positive and pairwise coprime integers.
+
+@example
+(%i1) mods : [1000, 1001, 1003, 1007];
+(%o1)                   [1000, 1001, 1003, 1007]
+(%i2) lreduce('gcd, mods);
+(%o2)                               1
+(%i3) x : random(apply("*", mods));
+(%o3)                         685124877004
+(%i4) rems : map(lambda([z], mod(x, z)), mods);
+(%o4)                       [4, 568, 54, 624]
+(%i5) chinese(rems, mods);
+(%o5)                         685124877004
+(%i6) chinese([1, 2], [3, n]);
+(%o6)                    chinese([1, 2], [3, n])
+(%i7) %, n = 4;
+(%o7)                              10
+@end example
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{cf}
 @deffn {Function} cf (@var{expr})
 
@@ -339,6 +369,23 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{factors_only}
+@defvr {Option variable} factors_only
+Standardwert: @code{false}
+
+Controls the value returned by @mrefdot{ifactors}. The default @code{false} 
+causes @code{ifactors} to provide information about multiplicities of the 
+computed prime factors. If @code{factors_only} is set to @code{true}, 
+@code{ifactors} returns nothing more than a list of prime factors.
+
+Example: See @mrefdot{ifactors}.
+
+@opencatbox
+@category{Number theory}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{fib}
 @deffn {Function} fib (@var{n})
 
@@ -411,13 +458,21 @@ For a positive integer @var{n} returns the factorization of @var{n}.  If
 factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
 
 Factorization methods used are trial divisions by primes up to 9973,
-Pollard's rho method and elliptic curve method.
+Pollard's rho and p-1 method and elliptic curves.
+
+The return value is controlled by the option variable @mrefdot{factors_only}.
+The default @code{false} causes @code{ifactors} to provide information about 
+the multiplicities of the computed prime factors. If @code{factors_only} 
+is set to @code{true}, @code{ifactors} returns nothing more than a list of 
+prime factors.
 
 @example
 (%i1) ifactors(51575319651600);
 (%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
 (%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
 (%o2)                        51575319651600
+(%i3) ifactors(51575319651600), factors_only : true;
+(%o3)                   [2, 3, 5, 1583, 9050207]
 @end example
 
 @opencatbox
@@ -666,9 +721,9 @@ Miller-Rabin's test is used.  If @code{primep (@var{n})} returns
 @code{true}, then @var{n} is a prime number.
 
 For @var{n} bigger than 341550071728321 @code{primep} uses
-@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and
-one Lucas pseudo-primality test.  The probability that @var{n} will pass
-one Miller-Rabin test is less than 1/4.  Using the default value 25 for
+@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
+Lucas pseudo-primality test.  The probability that a non-prime @var{n} will 
+pass one Miller-Rabin test is less than 1/4.  Using the default value 25 for
 @code{primep_number_of_tests}, the probability of @var{n} beeing
 composite is much smaller that 10^-15.
 
@@ -685,7 +740,7 @@ Default value: 25
 Number of Miller-Rabin's tests used in @code{primep}.
 
 @opencatbox
-@category{Predicate functions} @category{Number theory}
+@category{Number theory}
 @closecatbox
 @end defvr
 

@@ -201,3 +201,322 @@
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Maxima functions: 
+;; zn_order, zn_primroot_p, zn_primroot, zn_log, chinese
+;;
+;; 2012, Volker van Nek  
+;;
+
+;; Maxima option variables:
+(defmvar $zn_primroot_limit 1000 "Upper bound for `zn_primroot'." fixnum)
+(defmvar $zn_primroot_verbose nil "Print message when `zn_primroot_limit' is reached." boolean)
+(defmvar $zn_primroot_pretest nil "`zn_primroot' performs pretest if (Z/nZ)* is cyclic." boolean)
+
+
+;; compute the order of x in (Z/nZ)*
+;;
+;; optional argument: ifactors of totient(n) as returned in Maxima by 
+;;    block([factors_only:false], ifactors(totient(n)))
+;;    e.g. [[2, 3], [3, 1], ... ]
+;;
+(defmfun $zn_order (x n &optional fs-phi) 
+  (unless (and (integerp x) (integerp n))
+    (return-from $zn_order 
+      (if fs-phi 
+        (list '($zn_order) x n fs-phi)
+        (list '($zn_order) x n) )))
+  (when (minusp x) (setq x (mod x n)))
+  (cond 
+    ((= 0 x) nil)
+    ((= 1 x) (if (= n 1) nil 1))
+    ((/= 1 (gcd x n)) nil)
+    (t 
+      (if fs-phi
+         (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
+           (progn 
+             (setq fs-phi (mapcar #'cdr (cdr fs-phi))) ; Lispify fs-phi
+             (setq fs-phi (cons (totient-from-factors fs-phi) fs-phi)) )
+           (merror (intl:gettext 
+             "Third argument to `zn_order' must be of the form [[p1, e1], ..., [pk, ek]].")) )
+         (setq fs-phi (totient-with-factors n)) )
+      (zn_order x 
+                n
+                (car fs-phi) ;; phi
+                (cdr fs-phi)) ))) ;; factors of phi with multiplicity
+;;
+(defun zn_order (x n phi fs-phi)
+  (let ((s phi) p e)
+    (dolist (f fs-phi s)
+      (setq p (car f) e (cadr f))
+      (setq s (/ s (expt p e)))
+      (do ((z (power-mod x s n)))
+          ((= z 1))
+        (setq z (power-mod z p n))
+        (setq s (* s p)) )) ))
+
+
+;; compute totient (euler-phi) of n and its factors in one function
+;;
+;; returns a list of the form (phi ((p1 e1) ... (pk ek)))
+;;
+(defun totient-with-factors (n)
+  (let (($factors_only) ($intfaclim) (phi 1) fs-n (fs) p e (fs-phi) g)
+    (setq fs-n (get-factor-list n))
+    (dolist (f fs-n fs)
+      (setq p (car f) e (cadr f))
+      (setq phi (* phi (1- p) (expt p (1- e))))
+      (when (> e 1) (setq fs (cons `(,p ,(1- e)) fs)))
+      (setq fs (append (get-factor-list (1- p)) fs)) )
+    (setq fs (copy-tree fs)) ;; this deep copy is a workaround to avoid references 
+                             ;; to the list returned by ifactor.lisp/get-factor-list.
+                             ;; see bug 3510983
+    (setq fs (sort fs #'(lambda (a b) (< (car a) (car b)))))
+    (setq g (car fs))
+    (dolist (f (cdr fs) (cons phi (reverse (cons g fs-phi))))
+      (if (= (car f) (car g)) 
+        (incf (cadr g) (cadr f)) ;; assignment
+        (progn 
+          (setq fs-phi (cons g fs-phi))
+          (setq g f) ))) ))
+
+;; recompute totient from given factors
+;;
+;; fs-phi: factors of totient with multiplicity: ((p1 e1) ... (pk ek))
+;;
+(defun totient-from-factors (fs-phi) 
+  (let ((phi 1) p e)
+    (dolist (f fs-phi phi)
+      (setq p (car f) e (cadr f))
+      (setq phi (* phi (expt p e))) )))
+
+
+;; for n > 2 is x a primitive root modulo n 
+;;   when n does not divide x
+;;   and for all prime factors p of phi = totient(n)
+;;   x^(phi/p) mod n # 1
+;;
+;; optional argument: ifactors of totient(n)
+;;
+(defmfun $zn_primroot_p (x n &optional fs-phi)
+  (unless (and (integerp x) (integerp n))
+    (return-from $zn_primroot_p 
+      (if fs-phi 
+        (list '($zn_primroot_p) x n fs-phi)
+        (list '($zn_primroot_p) x n) )))
+  (when (minusp x) (setq x (mod x n)))
+  (cond 
+    ((= 0 x) nil)
+    ((= 1 x) (if (= n 2) 1 nil))
+    ((<= n 2) nil)
+    ((= 0 (mod x n)) nil)
+    (t 
+      (if fs-phi
+         (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
+           (progn 
+             (setq fs-phi (mapcar #'cdr (cdr fs-phi))) ; Lispify fs-phi
+             (setq fs-phi (cons (totient-from-factors fs-phi) fs-phi)) )
+           (merror (intl:gettext 
+             "Third argument to `zn_primroot_p' must be of the form [[p1, e1], ..., [pk, ek]].")) )
+         (setq fs-phi (totient-with-factors n)) )
+      (zn-primroot-p x 
+                     n
+                     (car fs-phi) ;; phi
+                     (mapcar #'car (cdr fs-phi))) ))) ;; factors only (omitting multiplicity)
+;;
+(defun zn-primroot-p (x n phi fs-phi)
+  (unless (= 1 (gcd x n))
+    (return-from zn-primroot-p nil) )  
+  (dolist (p fs-phi t)
+    (when (= 1 (power-mod x (/ phi p) n))
+      (return-from zn-primroot-p nil) )))
+
+;;
+;; find the smallest primitive root modulo n
+;;
+;; optional argument: ifactors of totient(n)
+;;
+(defmfun $zn_primroot (n &optional fs-phi)
+  (unless (integerp n)
+    (return-from $zn_primroot 
+      (if fs-phi 
+        (list '($zn_primroot) n fs-phi)
+        (list '($zn_primroot) n) )))
+  (cond 
+    ((<= n 1) nil)
+    ((= n 2) 1)
+    (t 
+      (when $zn_primroot_pretest
+        (unless (cyclic-p n)
+          (return-from $zn_primroot nil) ))
+      (if fs-phi
+         (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
+           (progn 
+             (setq fs-phi (mapcar #'cdr (cdr fs-phi))) ; Lispify fs-phi
+             (setq fs-phi (cons (totient-from-factors fs-phi) fs-phi)) )
+           (merror (intl:gettext
+             "Second argument to `zn_primroot' must be of the form [[p1, e1], ..., [pk, ek]].")) )
+         (setq fs-phi (totient-with-factors n)) )
+      (zn-primroot n 
+                   (car fs-phi) ;; phi
+                   (mapcar #'car (cdr fs-phi))) ))) ;; factors only (omitting multiplicity)
+;;
+;; (Z/nZ)* is cyclic if n = 2, 4, p^k or 2*p^k where p prime > 2
+(defun cyclic-p (n) 
+  (cond
+    ((or (= 2 n) (= 4 n)) t)
+    ((< n 4) nil)
+    (t 
+      (let* (($factors_only) ($intfaclim) 
+             (fs-n (get-factor-list n)) ;; factor-list in reverse order
+             (len (length fs-n)) )
+        (or (and (= 1 len) (> (caar fs-n) 2))
+            (and (= 2 len) (equal (cadr fs-n) '(2 1))) )))))
+;;
+(defun zn-primroot (n phi fs-phi) 
+  (do ((i 2 (1+ i)))
+       ((= i n) nil)
+    (when (zn-primroot-p i n phi fs-phi)
+      (return i) )
+    (when (= i $zn_primroot_limit)
+      (when $zn_primroot_verbose
+        (format t "`zn_primroot' stopped at zn_primroot_limit = ~A~%" $zn_primroot_limit) )
+      (return nil) )))
+
+;;
+;; Chinese Remainder Theorem
+;;
+(defmfun $chinese (rems mods) 
+  (cond 
+    ((not (and ($listp rems) ($listp mods)))
+      (list '($chinese) rems mods) )
+    ((or (= 0 ($length rems)) (= 0 ($length mods)))
+      (merror (intl:gettext
+        "At least one argument to `chinese' was an empty list." )))
+    ((notevery #'integerp (setq rems (cdr rems)))
+      (list '($chinese) (cons '(mlist simp) rems) mods) )
+    ((notevery #'integerp (setq mods (cdr mods)))
+      (list '($chinese) (cons '(mlist simp) rems) (cons '(mlist simp) mods)) )
+    (t
+      (car (chinese rems mods)) )))
+;;
+(defun chinese (rems mods)
+  (if (onep (length mods)) 
+    (list (car rems) (car mods))
+    (let* ((rp (car rems))
+           (p  (car mods))
+           (rq-q (chinese (cdr rems) (cdr mods)))
+           (rq (car rq-q))
+           (q (cadr rq-q))
+           (q-inv (inv-mod q p))
+           (h (mod (* (- rp rq) q-inv) p))
+           (x (+ (* h q) rq)) )
+      (list x (* p q)) )))
+
+;;
+;; discrete logarithm:
+;; solve g^x = a mod n, where g is a generator of (Z/nZ)* 
+;;
+;; see: lecture notes 'Grundbegriffe der Kryptographie' - Eike Best
+;; http://theoretica.informatik.uni-oldenburg.de/~best/publications/kry-Mai2005.pdf
+;;
+;; optional argument: ifactors of totient(n)
+;;
+(defmfun $zn_log (a g n &optional fs-phi)
+  (unless (and (integerp a) (integerp g) (integerp n))
+    (return-from $zn_log 
+      (if fs-phi 
+        (list '($zn_log) a g n fs-phi)
+        (list '($zn_log) a g n) )))
+  (when (minusp a) (setq a (mod a n)))
+  (cond 
+    ((or (= 0 a) (>= a n)) nil)
+    ((= 1 a) 0)
+    ((= g a) 1)
+    (t 
+      (if fs-phi
+        (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
+          (progn 
+            (setq fs-phi (mapcar #'cdr (cdr fs-phi))) ; Lispify fs-phi
+            (setq fs-phi (cons (totient-from-factors fs-phi) fs-phi)) )
+          (merror (intl:gettext
+             "Fourth argument to `zn_log' must be of the form [[p1, e1], ..., [pk, ek]].")) )
+        (setq fs-phi (totient-with-factors n)) )
+      (unless (zn-primroot-p g n (car fs-phi) (mapcar #'car (cdr fs-phi)))
+        (merror (intl:gettext "Second argument to `zn_log' must be a generator of (Z/~MZ)*.") n) )
+      (when (= 0 (mod (- a (* g g)) n)) 
+        (return-from $zn_log 2) )
+      (when (= 1 (mod (* a g) n))
+        (return-from $zn_log (mod -1 (car fs-phi))) )
+      (zn-dlog a 
+               g 
+               n 
+               (car fs-phi) ;; phi
+               (cdr fs-phi)) ))) ;; factors with multiplicity
+;;
+;; Pohlig and Hellman reduction:
+(defun zn-dlog (a g n phi fs-phi)
+  (let (p e phip gp x dlog (dlogs nil))
+    (dolist (f fs-phi)
+      (setq p (car f) e (cadr f))
+      (setq phip (/ phi p))
+      (setq gp (power-mod g phip n))
+      (if (= 1 e) 
+        (setq x (dlog-rho (power-mod a phip n) gp p n))
+        (progn 
+          (setq x 0)
+          (do ((agx a) (k 1) (pk 1)) (())
+            (setq dlog (dlog-rho (power-mod agx (/ phip pk) n) gp p n))
+            (setq x (+ x (* dlog pk)))
+            (if (= k e) 
+              (return)
+              (setq k (1+ k) pk (* pk p)) )
+            (setq agx (mod (* a ($power_mod g (- x) n)) n)) )))
+      (setq dlogs (cons x dlogs)) )
+    (car (chinese (reverse dlogs) (mapcar #'(lambda (z) (apply #'expt z)) fs-phi))) ))
+;;
+;; brute-force:
+(defun dlog-naive (a g q n)
+  (decf q)
+  (do ((i 0 (1+ i)) (gi 1 (mod (* gi g) n)))
+      ((= gi a) i) ))
+;;
+;; Pollard rho for dlog computation:
+(defun dlog-rho (a g q n)  
+  (cond
+    ((= 1 a) 0)
+    ((= g a) 1)
+    ((= 0 (mod (- a (* g g)) n)) 2)
+    ((= 1 (mod (* a g) n)) (1- q))
+    ((< q 512) (dlog-naive a g q n))
+    (t
+      (let (rnd (b 1) (y 0) (z 0) (bb 1) (yy 0) (zz 0) dy dz)
+        (dotimes (i 32 (progn (print "pollard-rho failed.") nil))
+          (do () (())
+            (multiple-value-setq (b y z) (dlog-f b y z a g q n))
+            (multiple-value-setq (bb yy zz) (dlog-f bb yy zz a g q n))
+            (multiple-value-setq (bb yy zz) (dlog-f bb yy zz a g q n))
+            (when (= b bb) (return)) )
+          (setq dy (mod (- y yy) q) dz (mod (- zz z) q))
+          (when (= 1 (gcd dz q))
+            (return (mod (* dy (inv-mod dz q)) q)) )
+          (setq rnd (1+ (random (1- q))))
+          (multiple-value-setq (b y z) 
+            (values (mod (* a (power-mod g rnd n)) n) rnd 1) )
+          (multiple-value-setq (bb yy zz) (values b y z)) )))))
+;;
+;; iteration for Pollard rho:
+(defun dlog-f (b y z a g q n)
+  (let ((s (mod b 3)))
+    (cond 
+      ((= 0 s)
+        (values (mod (* b b) n) (mod (ash y 1) q) (mod (ash z 1) q)) )
+      ((= 1 s)
+        (values (mod (* a b) n) y                 (mod (+ z 1) q)) )
+      (t
+        (values (mod (* g b) n) (mod (+ y 1) q)   z) ))))
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
