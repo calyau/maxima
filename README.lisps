@@ -103,8 +103,24 @@ There are SBCL implementations only for Unix-like systems
 (not MS Windows).
 
 --------------------------------------------------------------------
-Allegro Common Lisp and OpenMCL:
+Allegro Common Lisp:
 
-	Maxima should work with Allegro Common Lisp and OpenMCL, but
+	Maxima should work with Allegro Common Lisp, but
 only limited testing has been done with these Lisp
 implementations. User feedback would be welcome.
+
+--------------------------------------------------------------------
+CCL <http://clozure.com>
+
+    CCL, formerly known as OpenMCL, is known to work with maxima on
+all platforms where ccl runs including Linux, Mac OSX, and Windows.
+There are appear to be some bugs in the 32-bit version of ccl,  but
+the 64-bit version passes all tests.
+
+--------------------------------------------------------------------
+ECL <http://ecls.sourceforge.net>
+    
+    ECL is known to work with maxima and passes the testsuite.  ECL
+runs on many platforms and OSes.
+
+
