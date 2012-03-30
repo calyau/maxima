@@ -31,6 +31,6 @@ Second pair of options
 build language pack for Unicode locales
 (es_XX.UTF-8, pt_XX.UTF-8).
 They are compatible only with Unicode-aware 
-Lisp implementations such as clisp
+Lisp implementations such as ccl, clisp, cmucl, ecl,
 and sbcl.
 
