@@ -1169,9 +1169,9 @@
 ;; number.  Otherwise, return NIL to indicate that we the computation
 ;; failed.  This is a pretty brute-force approach.
 (defun try-float-computation (thunk)
-  (let ((errcatch t)
+  (let ((errcatch (cons bindlist loclist))
 	(*mdebug* nil))
-    (let ((result (ignore-errors (funcall thunk))))
+    (let ((result (errset (ignore-errors (funcall thunk)) lisperrprint)))
       (labels ((bad-number-p (num)
 		 (if (complexp num)
 		     (or (bad-number-p (realpart num))
