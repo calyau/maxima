@@ -778,9 +778,9 @@ Beispiele:
 @deffn {Funktion} zn_log (@var{a}, @var{g}, @var{n}) 
 @deffnx {Funktion} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Berechnung des diskreten Logarithmus. Sei @var{a} ein Element der endlichen 
-zyklischen Gruppe (Z/@var{n}Z)* und @var{g} eine Primitivwurzel modulo @var{n}. 
-Dann berechnet @code{zn_log(a, g, n)} eine L@"osung der Kongruenz 
+Berechnet den diskreten Logarithmus.  Sei (Z/@var{n}Z)* eine zyklische Gruppe, 
+@var{g} eine Primitivwurzel modulo @var{n} und @var{a} ein Element dieser Gruppe.
+Dann berechnet @code{zn_log (a, g, n)} eine L@"osung der Kongruenz 
 @code{g^x = a mod n}.
 
 Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @var{n}. 
@@ -794,6 +794,8 @@ Als Algorithmus wird die Pohlig-Hellman-Reduktion und das Rho-Verfahren von
 Pollard f@"ur den diskreten Logarithmus verwendet. Die Laufzeit von @code{zn_log} 
 h@"angt im Wesentlichen von der Bitl@"ange des gr@"o@ss{}ten Primfaktors des 
 Totienten von @var{n} ab. 
+
+Siehe auch @mref{zn_primroot}, @mref{zn_order}, @mref{ifactors}, @mref{totient}.
 
 Beispiele:
 
