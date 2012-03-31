@@ -749,11 +749,62 @@
 ;;; Maxima returns the numercial result for gamma_incomplete_regularized
 
 (defun gamma-incomplete (a x &optional (regularized nil))
+  (let ((factor
+	 ;; Compute the factor needed to scale the series or continued
+	 ;; fraction.  This is x^a*exp(-x) or x^a*exp(-x)/gamma(a)
+	 ;; depending on whether we want a non-regularized or
+	 ;; regularized form.  We want to compute the factor carefully
+	 ;; to avoid unnecessary overflow if possible.
+	 (cond (regularized
+		(or (try-float-computation
+		     #'(lambda ()
+			 ;; gammafloat is more accurate for real
+			 ;; values of a.
+			 (cond ((complexp a)
+				(/ (* (expt x a) (exp (- x)))
+				   (gamma-lanczos a)))
+			       (t
+				(/ (* (expt x a) (exp (- x)))
+				   (gammafloat a))))))
+		    ;; Easy way failed.  Use logs to compute the
+		    ;; result.  This loses some precision, especially
+		    ;; for large values of a and/or x because we use
+		    ;; many bits to hold the exponent part.
+		    (exp (- (* a (log x))
+			    x
+			    (log-gamma-lanczos (if (complexp a)
+						   a
+						   (complex a)))))))
+	       (t
+		(or (try-float-computation
+		     #'(lambda ()
+			 (* (expt x a) (exp (- x)))))
+		    ;; Easy way failed, so use the log form.
+		    (exp (- (* a (log x))
+			    x)))))))
+    (multiple-value-bind (result method)
+	(%gamma-incomplete a x)
+      (cond (method
+	     ;; Series used (which returns the integral from 0 to x).
+	     (cond (regularized
+		    (- 1 (* result factor)))
+		   ((complexp a)
+		    (- (gamma-lanczos a) (* result factor)))
+		   (t
+		    (- (gammafloat a) (* result factor)))))
+	    (t
+	     ;; Continued fraction used.  Just multiply by the factor
+	     ;; to get the final result.
+	     (* factor result))))))
+
+;; Compute the key part of the gamma incomplete function using either
+;; a series expression or a continued fraction expression.
+(defun %gamma-incomplete (a x)
   (let ((gm-maxit *gamma-incomplete-maxit*)
         (gm-eps   *gamma-incomplete-eps*)
         (gm-min   *gamma-incomplete-min*))
     (when *debug-gamma*
-        (format t "~&GAMMA-INCOMPLETE with ~A and ~A~%" a x))
+      (format t "~&GAMMA-INCOMPLETE with ~A and ~A~%" a x))
     (cond
       ;; The series expansion is done for x within a circle with a radius
       ;; *gamma-radius*+abs(realpart(a)), for all x which are on the negative 
@@ -783,50 +834,23 @@
          (setq del (* d c))
          (setq h (* h del))
          (when (< (abs (- del 1.0)) gm-eps)
-           (return
-             (let ((result (* h (expt x a) (exp (- x)))))
-               (cond 
-                 (regularized
-                   ;; Return gamma_incomplete_regularized
-                   (cond
-                     ((complexp a)
-                      (/ result (gamma-lanczos a)))
-                     (t
-                      ;; Call the more precise function  gammafloat 
-                      (/ result (gammafloat a)))))
-                 (t 
-                  result)))))))
-
-       (t
-        ;; Expansion in a series
-        (when *debug-gamma* 
-          (format t "~&GAMMA-INCOMPLETE in series~%"))
-        (do* ((i 1 (+ i 1))
-              (ap a (+ ap 1.0))
-              (del (/ 1.0 a) (* del (/ x ap)))
-              (sum del (+ sum del)))
-             ((> i gm-maxit)
-              (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
-          (when (< (abs del) (* (abs sum) gm-eps))
-            (when *debug-gamma* (format t "~&Series converged.~%"))
-            (return
-              (let ((result (* sum (expt x a) (exp (- x)))))
-              (cond
-                ((complexp a)
-                  (cond
-                    (regularized
-                     ;; Return gamma_incomplete_regularized
-                     (- 1.0 (/ result (gamma-lanczos a))))
-                    (t 
-                     (- (gamma-lanczos a) result ))))
-                
-                (t
-                 (cond
-                   (regularized
-                    ;; Return gamma_incomplete_regularized
-                    (- 1.0 (/ result (gammafloat a))))
-                   (t
-                    (- (gammafloat a) result)))))))))))))
+	   ;; Return nil to indicate we used the continued fraction.
+           (return (values h nil)))))
+      (t
+       ;; Expansion in a series
+       (when *debug-gamma* 
+	 (format t "~&GAMMA-INCOMPLETE in series~%"))
+       (do* ((i 1 (+ i 1))
+	     (ap a (+ ap 1.0))
+	     (del (/ 1.0 a) (* del (/ x ap)))
+	     (sum del (+ sum del)))
+	    ((> i gm-maxit)
+	     (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
+	 (when (< (abs del) (* (abs sum) gm-eps))
+	   (when *debug-gamma* (format t "~&Series converged.~%"))
+	   ;; Return T to indicate we used the series and the series
+	   ;; is for the integral from 0 to x, not x to inf.
+	   (return (values sum t))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
