@@ -23,19 +23,19 @@
 ;;;
 
 (defvar *imaxima-miktex-bin-dir*
-  (file-name-directory (car (file-expand-wildcards "c:/Program Files/MiKTeX*/miktex/bin/latex.exe")))
+  (file-name-directory (car (file-expand-wildcards "c:/Program Files*/MiKTeX*/miktex/bin/latex.exe")))
   "MiKTeX bin directory, added to exec-path")
 
 (defvar *imaxima-maxima-el-dir*
-  (file-name-directory (car (file-expand-wildcards "c:/Program Files/Maxima*/share/maxima/*/emacs/maxima.el")))
+  (file-name-directory (car (file-expand-wildcards "c:/Program Files*/Maxima*/share/maxima/*/emacs/maxima.el")))
   "Maxima emacs mode maxima.el directory, added to load-path")
 
 (defvar *imaxima-maxima-bin-dir*
-  (file-name-directory (car (file-expand-wildcards "c:/Program Files/Maxima*/bin/maxima.bat")))
+  (file-name-directory (car (file-expand-wildcards "c:/Program Files*/Maxima*/bin/maxima.bat")))
   "Maxima bin directory, added to exec-path")
 
 (defvar *imaxima-maxima-info-dir*
-  (file-name-directory (car (file-expand-wildcards "c:/Program Files/Maxima*/info/maxima.info")))
+  (file-name-directory (car (file-expand-wildcards "c:/Program Files*/Maxima*/info/maxima.info")))
   "Maxima info directory, added to Info-additional-directory-list")
 
 (if (not (boundp 'Info-additional-directory-list))
@@ -59,10 +59,13 @@
 ;;; Ghostscript bin directory is added to the exec-path.
 
 (defvar *imaxima-gs-bin-dir*
-  (file-name-directory (car (file-expand-wildcards "c:/Program Files/gs/gs*/bin/gswin32c.exe")))
+  (file-name-directory (car (file-expand-wildcards "c:/Program Files*/gs/gs*/bin/gswin*.exe")))
   "Ghostscript bin directory")
 
-(setq imaxima-gs-program "gswin32c.exe")
+(if (file-expand-wildcards "c:/Program Files*/gs/gs*/bin/gswin32c.exe")
+    (setq imaxima-gs-program "gswin32c.exe")
+  (if (file-expand-wildcards "c:/Program Files*/gs/gs*/bin/gswin64c.exe")
+      (setq imaxima-gs-program "gswin64c.exe")))
 
 ;;; set up exec-path
 (setq exec-path (append (list *imaxima-gs-bin-dir* *imaxima-maxima-bin-dir* *imaxima-miktex-bin-dir*) exec-path))

@@ -1260,9 +1260,18 @@ in the interval of integration.")
 		      (t t))
 ;;;If there is BPTU then CSEMIUP must succeed.
 ;;;Likewise for BPTD.
-		(cond (ratterms (setq ratans 
-				      (defint (m// (m+l ratterms) d) var '$minf '$inf)))
-		      (t (setq ratans 0)))
+		(setq ratans
+		      (if ratterms
+			  (let (($intanalysis nil))
+			    ;; The original integrand was already
+			    ;; determined to have no poles by initial-analysis.
+			    ;; If individual terms of the expansion have poles, the poles 
+			    ;; must cancel each other out, so we can ignore them.
+			    (try-defint (m// (m+l ratterms) d) var '$minf '$inf))
+			0))
+		;; if integral of ratterms is divergent, ratans is nil, 
+		;; and mtosc returns nil
+
 		(cond (bptu (setq upans (csemiup (m+l bptu) d var)))
 		      (t (setq upans 0)))
 		(cond (bptd (setq downans (csemidown (m+l bptd) d var)))
@@ -2135,6 +2144,13 @@ in the interval of integration.")
 (defun try-intsubs (exp ll ul)
   (let* ((*nodiverg t)
 	 (ans (catch 'divergent (intsubs exp ll ul))))
+    (if (eq ans 'divergent)
+	nil
+      ans)))
+
+(defun try-defint (exp var ll ul)
+  (let* ((*nodiverg t)
+	 (ans (catch 'divergent (defint exp var ll ul))))
     (if (eq ans 'divergent)
 	nil
       ans)))

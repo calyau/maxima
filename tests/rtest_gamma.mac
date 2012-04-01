@@ -3462,5 +3462,20 @@ closeto(
   1b-60);
 true;
 
+/* See Bug 3220128, but this isn't really that bug */
+closeto(
+  gamma_incomplete(0, 200b0*%i),
+  0.00437844609302782567916569771749325524128345091344187598851110680706344144459295b0
+  - %i*.00241398745542678587253611621620491057595401709907514761094360488114169654741b0,
+  3.4b-67);
+true;
+
+/* Make sure we don't overflow unnecessarily in gamma_incomplete_regularized */
+closeto(
+  gamma_incomplete_regularized(45001d0, 45000d0),
+  0.5012537510700691773177801688515861486945632498553288,
+  6.4e-12);
+true;
+  
 (fpprec:oldfpprec,done);
 done;

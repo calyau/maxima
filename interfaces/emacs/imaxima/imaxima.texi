@@ -223,6 +223,15 @@ package in the mini buffer. You should make sure the version
 information when you want to make bug reports.
 @end defun
 
+@defun reinit-imaxima
+Initialize the imaxima program. Sometimes you may encounter situations
+where imaxima does not repond to your input. This is caused by the
+inconsistency between Emacs Lisp and Maxima. Such situations can be
+resolved by using this command. After calling this command from the
+Emacs mini buffer, you should type simple Maxima expression such as
+1+2; to ensure that the imaxima does respond to you now.
+@end defun
+
 @node Inline Graph
 @chapter Inline Graph
 

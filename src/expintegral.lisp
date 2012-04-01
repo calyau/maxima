@@ -531,7 +531,7 @@
       (format t "~&   : z = ~A~%" z))
 
     (cond
-      ((and (> (realpart z) 0) (> (abs z) 1.0))
+      ((and (>= (realpart z) 0) (> (abs z) 1.0))
        ;; We expand in continued fractions.
        (when *debug-expintegral*
          (format t "~&We expand in continued fractions.~%"))
@@ -697,7 +697,8 @@
       (format t "~&   : z = ~A~%" z))
 
     (cond
-      ((and (eq ($sign ($realpart z)) '$pos)
+      ((and (or (eq ($sign ($realpart z)) '$pos)
+		(eq ($sign ($realpart z)) '$zero))
             (eq ($sign (sub (cabs z) bigfloatone)) '$pos))
        ;; We expand in continued fractions.
        (when *debug-expintegral*
@@ -775,7 +776,8 @@
       (format t "~&   : z = ~A~%" z))
 
     (cond
-      ((and (eq ($sign ($realpart z)) '$pos)
+      ((and (or (eq ($sign ($realpart z)) '$pos)
+		(eq ($sign ($realpart z)) '$zero))
             (eq ($sign (sub (cabs z) bigfloatone)) '$pos))
        ;; We expand in continued fractions.
        (when *debug-expintegral*

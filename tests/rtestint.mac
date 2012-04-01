@@ -283,6 +283,16 @@ integrate(x^3*sqrt(R),x);
 	-7*b^2*(5*b^2-4*a*c)*sqrt(c*x^2+b*x+a)/(640*c^4)
 	+a*b^2*sqrt(c*x^2+b*x+a)/(20*c^3);
 
+/* Integration is not correct: invalid 'false' term in results - ID: 3470668 */
+(assume(4*a*c > 1), 0);
+0;
+
+integrate(x^4 / (a*x^2 + x + c)^(5/2), x);
+'integrate(x^4 / (a*x^2 + x + c)^(5/2), x);
+
+(forget(4*a*c > 1), 0);
+0;
+
 /*------------------------------------------------------------------------------*/
 /*
  * I (rtoy) have not verified any of these, except for the cases so marked.
@@ -474,6 +484,10 @@ integrate(sin(x)/(%e^(%i*x)*(x^2+1)),x,minf,inf);
 /* Tests mtoinf, mtosc */
 integrate(sin(x)/(%e^(2*%i*x)*(x^2+1)),x,minf,inf);
 -%e^(-3)*(%e^2-1)*%i*%pi/2;
+
+/* Integration of products of sin(nz)/(nz) sometimes fails - ID: 3497046 */
+integrate(sin(z)/z*sin(3*z)/(3*z)*sin(5*z)/(5*z)*sin(7*z)/(7*z),z,minf,inf);
+44*%pi/315;
 
 /* p. 83 */
 /*
