@@ -32,14 +32,12 @@
 (defmacro make-mplus (&rest args) `(list '(mplus) . ,args))
 (defmacro make-mplus-l (llist) `(cons '(mplus) ,llist))
 (defmacro make-mplus-simp (&rest args) `(list '(mplus simp) . ,args))
-(defmacro make-mplus-simp-l (llist) `(cons '(mplus simp) ,llist))
 
 
 
 (defmacro make-mtimes (&rest args) `(list '(mtimes) . ,args))
 (defmacro make-mtimes-l (llist) `(cons '(mtimes) ,llist))
 (defmacro make-mtimes-simp (&rest args) `(list '(mtimes simp) . ,args))
-(defmacro make-mtimes-simp-l (llist) `(cons '(mtimes simp) ,llist))
 
 ;; losing MACLISP doesn't like BASE as a variable name !!
 (defmacro make-mexpt (thing-being-raised-to-power expt)
@@ -47,7 +45,6 @@
 (defmacro make-mexpt-l (llist) `(cons '(mexpt) ,llist))
 (defmacro make-mexpt-simp (thing-being-raised-to-power expt)
   `(list '(mexpt simp) ,thing-being-raised-to-power ,expt))
-(defmacro make-mexpt-simp-l (llist) `(cons '(mexpt simp) ,llist))
 
 (defmacro mexpt-base (mexpt) `(cadr ,mexpt))
 (defmacro mexpt-expt (mexpt) `(caddr ,mexpt))
@@ -55,7 +52,6 @@
 (defmacro make-mequal (lhs rhs) `(list '(mequal) ,lhs ,rhs))
 (defmacro make-mequal-l (llist) `(cons '(mequal) ,llist))
 (defmacro make-mequal-simp (lhs rhs) `(list '(mequal simp) ,lhs ,rhs))
-(defmacro make-mequal-simp-l (llist) `(cons '(mequal simp) ,llist))
 
 (defmacro mequal-lhs (mequal) `(cadr ,mequal))
 (defmacro mequal-rhs (mequal) `(caddr ,mequal))
@@ -63,7 +59,6 @@
 (defmacro make-mlist (&rest args) `(list '(mlist) . ,args))
 (defmacro make-mlist-l (llist) `(cons '(mlist) ,llist))
 (defmacro make-mlist-simp (&rest args) `(list '(mlist simp) . ,args))
-(defmacro make-mlist-simp-l (llist) `(cons '(mlist simp) ,llist))
 
 (defmacro make-mtext (&rest args) `(list '(mtext) . ,args))
 

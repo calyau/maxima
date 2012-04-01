@@ -70,9 +70,6 @@
 (defun parp (a)
   (eq a *par*))
 
-(defun hasvarnovarp (a) 
-  (and (hasvar a) (not (varp a))))
-
 (defun freevar0 (m)
   (cond ((equal m 0) nil)
         (t (freevar m))))

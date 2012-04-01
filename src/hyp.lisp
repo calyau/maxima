@@ -2552,10 +2552,6 @@
 	(t (and (freepar (car exp))
 		(freepar (cdr exp))))))
 
-(defun haspar (exp)
-  (cond ((freepar exp) nil)
-	(t t)))
-
 ;; Confluent hypergeometric function.
 ;;
 ;; F(a;c;z)
@@ -3217,12 +3213,6 @@
 (defun vfvp (exp)
   (m2 exp '(v freevarpar) nil))
 
-
-(defun d*u
-    (exp)
-  (m2 exp
-      '((mtimes)((coefftt)(d freepar))((coefftt)(u haspar)))
-      nil))
 
 (defun fpqform (arg-l1 arg-l2 arg)
   (list '(mqapply)

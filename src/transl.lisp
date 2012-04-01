@@ -1009,20 +1009,6 @@ APPLY means like APPLY.")
 				  arglist))))))))
 
 
-(defun update-global-declares ()
-  (do ((l arrays (cdr l)) (mode))
-      ((null l))
-    (setq mode (array-mode (car l)))
-    (cond ((eq '$fixnum mode)
-	   (pushnew `(array* (fixnum (,(car l) 1))) declares :test #'eq))
-	  ((eq '$float mode)
-	   (pushnew `(array* (flonum (,(car l) 1))) declares :test #'eq))))
-  (if specials (pushnew `(special ,@specials) declares :test #'eq))
-  (if specials
-      (setq declares (nconc (cdr (make-declares specials nil)) declares)))
-  (if lexprs (pushnew `(*lexpr . ,(reverse lexprs)) declares :test #'eq))
-  (if fexprs (pushnew `(*fexpr . ,(reverse fexprs)) declares :test #'eq)))
-
 (defun make-declares (varlist localp &aux (dl) (fx) (fl) specs)
   (when $transcompile
     (do ((l varlist (cdr l))

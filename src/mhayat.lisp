@@ -201,9 +201,6 @@
 (defmacro get-inverse (gensym)
   `(cdr (assoc ,gensym ivars :test #'eq)))
 
-(defmacro gvar->kvar (gvar)
-  `(cdr (assoc ,gvar ivars :test #'eq)))
-
 (defmacro get-key-var (gensym)
   `(cdr (assoc ,gensym key-vars :test #'eq)))
 
@@ -251,12 +248,6 @@
     (prog2 (push-pw d ,pw)
 	,comp
       (pop-pw d))))
-
-(defmacro if-pw (pred datum pw comp)
-  `(let ((p ,pred) (d ,datum))
-    (prog2 (and p (push-pw d ,pw))
-	,comp
-      (and p (pop-pw d ,pw)))))
 
 (defmacro tlist-mapc (datum-var &rest comp)
   `(mapc #'(lambda (,datum-var) . ,comp) tlist))
