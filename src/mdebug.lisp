@@ -375,24 +375,6 @@
 	      (unread-char next-char stream)))
 	   result))))
 
-(defun grab-line-number (li stream)
-  (declare (type (vector #.(array-element-type "ab")) li))
-  (cond ((and (> (length li) 3)
-	      (digit-char-p (aref li 1)))
-	 (let ((in (get-instream stream)))
-	   (and in
-		(progn
-		  (multiple-value-bind
-			(line pos)
-		      (read-from-string li nil nil)
-		    (let ((file (read-from-string li nil nil
-						  :start pos)))
-		      (cond ((and (stringp file) (fixnump line))
-			     (setf (instream-stream-name in)
-				   file)
-			     (setf (instream-line in)
-				   line)))))))))))
-
 (defvar *break-level* nil)
 (defvar *break-env* nil)
 (defvar *top-eof* (cons nil nil))

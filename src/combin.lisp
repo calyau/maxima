@@ -598,28 +598,6 @@
     (t
      (eqtest (list '(%zeta) z) expr))))
 
-;;; The original algorithm
-(defmfun $zeta-old (s)
-  (cond (($bfloatp s) (mfuncall '$bfzeta s $fpprec))
-	((or (floatp s) (and (or $numer $float) (integerp s)))
-	 (let (($float2bf t))
-	   ($float (mfuncall '$bfzeta s 18))))
-	((null (fixnump s)) (list '($zeta) s))
-	((oddp s)
-	 (cond ((> s 1)
-		(list '($zeta) s))
-	       ((= 1 s) '$inf)
-	       ((setq s (sub 1 s))
-		(mult -1 (div ($bern s) s)))))
-	((equal s 0) '((rat simp) -1 2))
-	((minusp s) 0)
-	((not $zeta%pi) (list '($zeta) s))
-	(t (let ($numer $float)
-	     (setq s (mul2 (power '$%pi s)
-			   (timesk (*red (expt 2 (1- s)) (factorial s))
-				   (simpabs (list 'mabs ($bern s)) 1 nil)))))
-	   (resimplify s))))
-
 ;; See http://numbers.computation.free.fr/Constants/constants.html
 ;; and, in particular,
 ;; http://numbers.computation.free.fr/Constants/Miscellaneous/zetaevaluations.pdf.

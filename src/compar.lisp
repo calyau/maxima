@@ -1933,9 +1933,6 @@ relational knowledge is contained in the default context GLOBAL.")
 (defun intp (l)
   (every #'maxima-integerp (cdr l)))
 
-(defun intp-mexpt (e)
-  (and (integerp (caddr e)) (not (minusp (caddr e))) (maxima-integerp (cadr e))))
-
 (defmfun mevenp (e)
   (cond ((integerp e) (not (oddp e)))
 	((mnump e) nil)

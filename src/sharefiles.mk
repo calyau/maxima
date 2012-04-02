@@ -427,6 +427,10 @@ contrib/rand/vandpol.mac \
 contrib/rand/vandpol.usg \
 contrib/rand/Wkb \
 contrib/README \
+contrib/rkf45/rkf45.dem \
+contrib/rkf45/rkf45.mac \
+contrib/rkf45/rkf45.pdf \
+contrib/rkf45/rtest_rkf45.mac \
 contrib/sarag/aliases.mac \
 contrib/sarag/arag_test.mac \
 contrib/sarag/certificateOfPositivity.mac \

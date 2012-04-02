@@ -2799,8 +2799,6 @@ in the interval of integration.")
     (setq ans (cons (m* c (m^t var i)) ans))
     (setq cl (cons c cl))))
 
-;;(declare-top(special *failflag *lhflag lhv *indicator cnt *disconflag))
-
 #+nil
 (defun %e-integer-coeff (exp)
   (cond ((mapatom exp) t)

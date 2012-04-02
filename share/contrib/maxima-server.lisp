@@ -55,7 +55,7 @@
   (loop do
     (format t "JUST BEFORE SOCKET-ACCEPT ...~%")
     (multiple-value-bind (working-socket peer-address) (sb-bsd-sockets:socket-accept listening-socket)
-      (format t "WORKING-SOCKET = ~S, PEER-ADDRESS = ~S~%" working-socket peer-address)
+      (format t "ACCEPTED CLIENT; PEER-ADDRESS = ~S~%WORKING-SOCKET = ~S~%" peer-address working-socket)
   
       ; Conventional Unix hackery here:
       ; fork twice and immediate exit first child process,

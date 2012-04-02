@@ -42,13 +42,6 @@
 	(appears1 tree var)
 	(appears tree var))))
 
-(defmacro one-of-types (typ &rest objs &aux all)
-  "typ is a primitive data type of the machine, and"
-  (dolist (v objs (if (cdr all)
-		      `(member ,typ ',all)
-		      `(eql ,typ ',(car all))))
-    (pushnew (type-of (eval v)) all)))
-
 ;; A more portable implementation of ml-typep.  I (rtoy) think it
 ;; would probably be better to replace uses of
 ;; ml-typep with the corresponding Common Lisp typep or type-of or
