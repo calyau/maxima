@@ -531,7 +531,11 @@
       (format t "~&   : z = ~A~%" z))
 
     (cond
-      ((and (>= (realpart z) 0) (> (abs z) 1.0))
+      ((or (and (> (abs z) 2.0) (< (abs (phase z)) (* pi 0.9)))
+	   ;; (abs z)>2.0 is necessary since there is a point
+	   ;; -1.700598-0.612828*%i which 1<(abs z)<2, phase z < 0.9pi and
+	   ;; still c-f expansion does not converge.
+	   (and (>= (realpart z) 0) (> (abs z) 1.0)))
        ;; We expand in continued fractions.
        (when *debug-expintegral*
          (format t "~&We expand in continued fractions.~%"))
@@ -689,17 +693,18 @@
         (*expint-maxit* 5000) ; arbitrarily chosen, we need a better choice
         (bigfloattwo (add bigfloatone bigfloatone))
         (bigfloat%e ($bfloat '$%e))
-        (bigfloat%gamma ($bfloat '$%gamma)))
+        (bigfloat%gamma ($bfloat '$%gamma))
+	(flz (complex ($float ($realpart z)) ($float ($imagpart z)))))
 
     (when *debug-expintegral*
       (format t "~&BFLOAT-EXPINTEGRAL-E called with:~%")
       (format t "~&   : n = ~A~%" n)
-      (format t "~&   : z = ~A~%" z))
+      (format t "~&   : z = ~A~%" flz))
 
     (cond
-      ((and (or (eq ($sign ($realpart z)) '$pos)
-		(eq ($sign ($realpart z)) '$zero))
-            (eq ($sign (sub (cabs z) bigfloatone)) '$pos))
+      ((or (and (> (abs flz) 2) (< (abs (phase flz)) (* pi 0.9)))
+	   ;; The same condition as you see in expintegral-e()
+	   (and (>= (realpart flz) 0) (> (abs flz) 1.0)))
        ;; We expand in continued fractions.
        (when *debug-expintegral*
          (format t "~&We expand in continued fractions.~%"))
