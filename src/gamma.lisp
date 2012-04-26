@@ -459,6 +459,9 @@
       ;; Check for specific values
 
       ((zerop1 z)
+       ;; gamma_incomplete(v,0) is gamma(v) only if the realpart(v) >
+       ;; 0.  If realpart(v) <= 0, gamma_incomplete is undefined.  For
+       ;; all other cases, return the noun form.
        (let ((sgn ($sign ($realpart a))))
          (cond ((member sgn '($neg $zero))
                 (simp-domain-error 
