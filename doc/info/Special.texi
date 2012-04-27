@@ -634,6 +634,13 @@ The incomplete upper gamma function A&S 6.5.2:
 $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
+See also @code{gamma_expand} for controlling how
+@code{gamma_incomplete} is expressed in terms of elementary functions
+and @code{erfc}.
+
+Also see the related functions @code{gamma_incomplete_regularized} and
+@code{gamma_incomplete_generalized}.
+
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
 @closecatbox
@@ -655,6 +662,12 @@ gamma_incomplete_regularized(a, z) =
 @tex
 $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
 @end tex
+
+See also @code{gamma_expand} for controlling how
+@code{gamma_incomplete} is expressed in terms of elementary functions
+and @code{erfc}.
+
+Also see @code{gamma_incomplete}.
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
@@ -687,6 +700,36 @@ $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;d
 @closecatbox
 @end deffn
 
+Also see @code{gamma_incomplete} and @code{gamma_incomplete_regularized}.
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} gamma_expand
+Default value: false
+
+@code{gamma_expand} controls expansion of @code{gamma_incomplete}.
+When @code{gamma_expand} is @code{true}, @code{gamma_incomplete(v,z)}
+is expanded in terms of
+@code{z}, @code{exp(z)}, and @code{erfc(z)} when possible.
+
+@example
+(%i1) gamma_incomplete(2,z);
+(%o1)                       gamma_incomplete(2, z)
+(%i2) gamma_expand:true;
+(%o2)                                true
+(%i3) gamma_incomplete(2,z);
+                                           - z
+(%o3)                            (z + 1) %e
+(%i4) gamma_incomplete(3/2,z);
+                              - z   sqrt(%pi) erfc(sqrt(z))
+(%o4)               sqrt(z) %e    + -----------------------
+                                               2
+@end example
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Simplification flags and variables}
+@closecatbox
+
+@end defvr
 @c -----------------------------------------------------------------------------
 @anchor{gammalim}
 @defvr {Option variable} gammalim
