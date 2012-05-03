@@ -1397,6 +1397,10 @@ integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);
 integrate(log(1+7/(x^2)),x,1,inf);
 (14*atan(sqrt(7))-sqrt(7)*log(8))/sqrt(7);
 
+/* Wrong sign in exponential integral - ID: 3517785 */
+integrate(1/(%e^(2*t)*sqrt(1-1/%e^(2*t))), t, 0, inf);
+1;
+
 /* integral from minf to inf of an absolute value combo fails - ID: 3313531 */
 integrate(abs(x - 1) + abs(x + 1) - 2*abs(x),x,minf,inf);
 2;
