@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp snapshot-2012-04 (20C Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -18,7 +18,7 @@
 
 
 (let* ((lentab 10))
-  (declare (type (integer 10 10) lentab) (ignorable lentab))
+  (declare (type (f2cl-lib:integer4 10 10) lentab) (ignorable lentab))
   (let ((nmsg 0)
         (kountx 0)
         (kount (make-array lentab :element-type 'f2cl-lib:integer4))
@@ -27,14 +27,13 @@
         (mestab (f2cl-lib:f2cl-init-string ((+ 1 (- lentab 1))) (20) nil))
         (subtab (f2cl-lib:f2cl-init-string ((+ 1 (- lentab 1))) (8) nil))
         (libtab (f2cl-lib:f2cl-init-string ((+ 1 (- lentab 1))) (8) nil)))
-    (declare (type (integer) nmsg kountx)
+    (declare (type (f2cl-lib:integer4) nmsg kountx)
              (type (simple-array f2cl-lib:integer4 (*)) kount levtab nertab)
-             (type (simple-array (simple-array character (20)) (*)) mestab)
-             (type (simple-array (simple-array character (8)) (*)) subtab
-                                                                   libtab))
+             (type (simple-array (string 20) (*)) mestab)
+             (type (simple-array (string 8) (*)) subtab libtab))
     (defun xersve (librar subrou messg kflag nerr level icount)
-      (declare (type (integer) icount level nerr kflag)
-               (type (simple-array character (*)) messg subrou librar))
+      (declare (type (f2cl-lib:integer4) icount level nerr kflag)
+               (type (simple-string *) messg subrou librar))
       (prog ((mes
               (make-array '(20) :element-type 'character :initial-element #\ ))
              (lib
@@ -43,9 +42,9 @@
               (make-array '(8) :element-type 'character :initial-element #\ ))
              (lun (make-array 5 :element-type 'f2cl-lib:integer4)) (i 0)
              (iunit 0) (kunit 0) (nunit 0))
-        (declare (type (integer) nunit kunit iunit i)
-                 (type (simple-array character (20)) mes)
-                 (type (simple-array character (8)) lib sub)
+        (declare (type (f2cl-lib:integer4) nunit kunit iunit i)
+                 (type (simple-string 20) mes)
+                 (type (simple-string 8) lib sub)
                  (type (simple-array f2cl-lib:integer4 (5)) lun))
         (cond
           ((<= kflag 0)
@@ -140,10 +139,10 @@
   (setf (gethash 'fortran-to-lisp::xersve
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (*))
-                        (simple-array character (*))
-                        (simple-array character (*)) (integer) (integer)
-                        (integer) (integer))
+           :arg-types '((fortran-to-lisp::a nil) (fortran-to-lisp::a nil)
+                        (fortran-to-lisp::a nil) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil nil nil fortran-to-lisp::icount)
            :calls '(fortran-to-lisp::i1mach fortran-to-lisp::xgetua))))
 

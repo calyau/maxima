@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp snapshot-2012-04 (20C Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -51,13 +51,43 @@
              var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18 var-19
              var-20 var-21 var-22)
           (dqawoe f a b omega integr epsabs epsrel limit 1 maxp1 result abserr
-           neval ier last$ (f2cl-lib:array-slice work double-float (1) ((1 *)))
-           (f2cl-lib:array-slice work double-float (l1) ((1 *)))
-           (f2cl-lib:array-slice work double-float (l2) ((1 *)))
-           (f2cl-lib:array-slice work double-float (l3) ((1 *)))
-           (f2cl-lib:array-slice iwork f2cl-lib:integer4 (1) ((1 *)))
-           (f2cl-lib:array-slice iwork f2cl-lib:integer4 (l1) ((1 *))) momcom
-           (f2cl-lib:array-slice work double-float (l4) ((1 *))))
+           neval ier last$
+           (f2cl-lib:array-slice work-%data%
+                                 double-float
+                                 (1)
+                                 ((1 *))
+                                 work-%offset%)
+           (f2cl-lib:array-slice work-%data%
+                                 double-float
+                                 (l1)
+                                 ((1 *))
+                                 work-%offset%)
+           (f2cl-lib:array-slice work-%data%
+                                 double-float
+                                 (l2)
+                                 ((1 *))
+                                 work-%offset%)
+           (f2cl-lib:array-slice work-%data%
+                                 double-float
+                                 (l3)
+                                 ((1 *))
+                                 work-%offset%)
+           (f2cl-lib:array-slice iwork-%data%
+                                 f2cl-lib:integer4
+                                 (1)
+                                 ((1 *))
+                                 iwork-%offset%)
+           (f2cl-lib:array-slice iwork-%data%
+                                 f2cl-lib:integer4
+                                 (l1)
+                                 ((1 *))
+                                 iwork-%offset%)
+           momcom
+           (f2cl-lib:array-slice work-%data%
+                                 double-float
+                                 (l4)
+                                 ((1 *))
+                                 work-%offset%))
         (declare (ignore var-0 var-1 var-2 var-3 var-5 var-6 var-7 var-8 var-9
                          var-15 var-16 var-17 var-18 var-19 var-20 var-22))
         (setf integr var-4)

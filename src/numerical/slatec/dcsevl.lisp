@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp snapshot-2012-04 (20C Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -21,11 +21,11 @@
   (declare (type (double-float) onepl) (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dcsevl (x cs n)
-    (declare (type (integer) n)
+    (declare (type (f2cl-lib:integer4) n)
              (type (simple-array double-float (*)) cs)
              (type (double-float) x))
     (prog ((b0 0.0) (b1 0.0) (b2 0.0) (twox 0.0) (dcsevl 0.0) (ni 0) (i 0))
-      (declare (type (integer) i ni)
+      (declare (type (f2cl-lib:integer4) i ni)
                (type (double-float) dcsevl twox b2 b1 b0))
       (if first$ (setf onepl (+ 1.0 (f2cl-lib:d1mach 4))))
       (setf first$ f2cl-lib:%false%)
@@ -56,7 +56,7 @@
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
            :arg-types '((double-float) (simple-array double-float (*))
-                        (integer))
+                        (fortran-to-lisp::integer4))
            :return-values '(nil nil nil)
            :calls '(fortran-to-lisp::xermsg fortran-to-lisp::d1mach))))
 
