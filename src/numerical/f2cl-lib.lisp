@@ -6,7 +6,7 @@
 (in-package :f2cl-lib)
 
 (defparameter *f2cl-macros-version*
-  "$Id: macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
+  "$Id: macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
 (eval-when
     #+gcl (compile load eval)
@@ -158,13 +158,16 @@ is not included")
     (dolist (a (reverse array-info))
       (destructuring-bind (array a-type var-name offset-var)
 	  a
-	(setf results
-	      `((multiple-value-bind (,var-name ,offset-var)
-		    (find-array-data ,array)
-		  (declare (ignorable ,offset-var ,var-name)
-			   (type f2cl-lib:integer4 ,offset-var)
-			   (type (simple-array ,a-type (*)) ,var-name))
-		  ,@results)))))
+	(let ((atype (if (subtypep a-type 'character)
+			 `(simple-string)
+			 `(simple-array ,a-type (*)))))
+	  (setf results
+		`((multiple-value-bind (,var-name ,offset-var)
+		      (find-array-data ,array)
+		    (declare (ignorable ,offset-var ,var-name)
+			     (type f2cl-lib:integer4 ,offset-var)
+			     (type ,atype ,var-name))
+		    ,@results))))))
     (first results)))
 
 (defmacro with-multi-array-data (array-info &rest body)
@@ -1550,7 +1553,7 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $
+;;; $Id: macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $
 ;;; $Log$
 ;;; Revision 1.117  2011/02/28 22:21:07  rtoy
 ;;; When opening an old file, we should set :if-exists to :overwrite to
