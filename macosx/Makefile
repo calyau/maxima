@@ -1,5 +1,5 @@
 APPDIR = $(HOME)/Desktop
-VERSION = 5.24.0
+VERSION = 5.27.0
 LISP_PROGRAM = /usr/local/bin/sbcl
 LISP_NAME = sbcl
 
@@ -12,14 +12,14 @@ all:
 	./configure --with-$(LISP_NAME) --prefix=$(PREFIX)
 	make
 	platypus -F -y -a Maxima                      \
-                 -c macosx/script                     \
                  -p /bin/sh                           \
                  -o None                              \
-                 -i interfaces/xmaxima/maxima-new.png \
+                 -i macosx/appIcon.icns               \
                  -V $(VERSION)                        \
                  -u "Maxima Development Team"         \
                  -I net.sourceforge.maxima            \
-                 $(MAXIMA_APP)
+                 macosx/script $(MAXIMA_APP)
 	make install
 	install -c macosx/maxima.sh $(APPRESOURCES)
+	install -c macosx/xmaxima.sh $(APPRESOURCES)
 	install -c $(LISP_PROGRAM) $(BINDIR)

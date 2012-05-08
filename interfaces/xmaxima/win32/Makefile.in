@@ -12,7 +12,8 @@ SDXDIR = $(TCLKITDIR)
 GNUPLOTDIR = ../../../../programs/gnuplot
 WXMAXIMADIR = ../../../../programs/wxMaxima
 
-GCCPREFIX=/mingw
+MINGW=/mingw
+GCCPREFIX=/usr/local
 GCCVER=3.3.1
 
 CHMLANGS = es pt pt_BR
@@ -50,24 +51,24 @@ gcccopy:
 	test -d "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include" \
 		|| mkdir -p "$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include"
 	cp $(GCCPREFIX)/bin/gcc.exe $(prefix)/bin
-	cp $(GCCPREFIX)/bin/mingwm10.dll $(prefix)/bin
-	cp $(GCCPREFIX)/bin/tclpip84.dll $(prefix)/bin
-	cp $(GCCPREFIX)/include/stdio.h $(prefix)/include
-	cp $(GCCPREFIX)/include/stdlib.h $(prefix)/include
-	cp $(GCCPREFIX)/include/varargs.h $(prefix)/include
-	cp $(GCCPREFIX)/include/setjmp.h $(prefix)/include
-	cp $(GCCPREFIX)/include/stddef.h $(prefix)/include
-	cp $(GCCPREFIX)/include/_mingw.h $(prefix)/include
-	cp $(GCCPREFIX)/include/math.h $(prefix)/include
-	cp $(GCCPREFIX)/include/unistd.h $(prefix)/include
-	cp $(GCCPREFIX)/include/io.h $(prefix)/include
-	cp $(GCCPREFIX)/include/process.h $(prefix)/include
-	cp $(GCCPREFIX)/include/getopt.h $(prefix)/include
-	cp $(GCCPREFIX)/include/stdint.h $(prefix)/include
-	cp $(GCCPREFIX)/include/sys/*.h $(prefix)/include/sys
+	cp $(MINGW)/bin/mingwm10.dll $(prefix)/bin
+	cp $(MINGW)/bin/tclpip84.dll $(prefix)/bin
+	cp $(MINGW)/include/stdio.h $(prefix)/include
+	cp $(MINGW)/include/stdlib.h $(prefix)/include
+	cp $(MINGW)/include/varargs.h $(prefix)/include
+	cp $(MINGW)/include/setjmp.h $(prefix)/include
+	cp $(MINGW)/include/stddef.h $(prefix)/include
+	cp $(MINGW)/include/_mingw.h $(prefix)/include
+	cp $(MINGW)/include/math.h $(prefix)/include
+	cp $(MINGW)/include/unistd.h $(prefix)/include
+	cp $(MINGW)/include/io.h $(prefix)/include
+	cp $(MINGW)/include/process.h $(prefix)/include
+	cp $(MINGW)/include/getopt.h $(prefix)/include
+	cp $(MINGW)/include/stdint.h $(prefix)/include
+	cp $(MINGW)/include/sys/*.h $(prefix)/include/sys
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
-	cp $(GCCPREFIX)/bin/as.exe \
+	cp $(MINGW)/bin/as.exe \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/specs  \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)

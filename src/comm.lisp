@@ -1164,6 +1164,24 @@
 
 (defmfun $fix (e) (take '($floor) e))
 
+;; Evaluate THUNK ignoring any error that might occur.  If the THUNK
+;; returns a good number (not infinity or NaN), then return the
+;; number.  Otherwise, return NIL to indicate that we the computation
+;; failed.  This is a pretty brute-force approach.
+(defun try-float-computation (thunk)
+  (let ((errcatch (cons bindlist loclist))
+	(*mdebug* nil))
+    (let ((result (errset (funcall thunk))))
+      (labels ((bad-number-p (num)
+		 (if (complexp num)
+		     (or (bad-number-p (realpart num))
+			 (bad-number-p (imagpart num)))
+		     (or (float-inf-p num)
+			 (float-nan-p num)))))
+	(if (and result (bad-number-p (car result)))
+	    nil
+	    (car result))))))
+	    
 (defmfun $float (e)
   (cond ((numberp e) (float e))
 	((and (symbolp e) (mget e '$numer)))
@@ -1188,7 +1206,8 @@
 		  ;; float(log(int)).  First try to compute (log
 		  ;; (float n)).  If that works, we're done.
 		  ;; Otherwise we need to do more.  
-		  (to (or #-(or gcl ecl) (ignore-errors (log (float n)))
+		  (to (or (try-float-computation #'(lambda ()
+						     (log (float n))))
 			  (let ((m (integer-length n)))
 			    ;; Write n as (n/2^m)*2^m where m is the number of
 			    ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
@@ -1199,8 +1218,8 @@
 		 (($ratnump n)
 		  ;; float(log(n/m)) where n and m are integers.  Try computing
 		  ;; it first.  If it fails, compute as log(n) - log(m).
-		  (let ((try #-(or gcl ecl)
-			     (ignore-errors (log (fpcofrat n)))))
+		  (let ((try (try-float-computation #'(lambda() 
+							(log (fpcofrat n))))))
 		    (if try
 			(to try)
 			(sub  ($float `((%log) ,(second n)))
@@ -1209,9 +1228,9 @@
 		  ;; float(log(n+m*%i)).
 		  (let ((re ($realpart n))
 			(im ($imagpart n)))
-		    (to (or #-(or gcl ecl)
-			    (ignore-errors (log (complex (float re)
-							 (float im))))
+		    (to (or (try-float-computation #'(lambda ()
+						       (log (complex (float re)
+								     (float im)))))
 			    (let* ((size (max (integer-length re)
 					      (integer-length im)))
 				   (scale (ash 1 size)))

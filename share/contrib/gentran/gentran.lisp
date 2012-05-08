@@ -19,8 +19,9 @@
 
 (defvar local-obj-dir)
 
-
-(load "convmac.lisp")
+(load (merge-pathnames "convmac.lisp"
+		       #-gcl *load-pathname*
+		       #+gcl sys:*load-pathname*))
 
 (putprop 'procforttem "templt" 'autoload)
 (putprop 'procrattem "templt" 'autoload)
@@ -35,4 +36,6 @@
 
 (dolist (fname  '( "init" "lspfor" "templt" "global" "intrfc"
 		     "pre" "output" "vaxlsp" "segmnt"))
-               (load fname))
+               (load (merge-pathnames fname
+				      #-gcl *load-pathname*
+				      #+gcl sys:*load-pathname*)))

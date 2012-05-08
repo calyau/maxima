@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp snapshot-2012-04 (20C Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -18,19 +18,19 @@
 
 
 (let* ((newlin "$$"))
-  (declare (ignorable newlin))
+  (declare (type (simple-string 2) newlin) (ignorable newlin))
   (defun xerprn (prefix npref messg nwrap)
     (declare (type (f2cl-lib:integer4) nwrap npref)
-             (type (simple-array character (*)) messg prefix))
+             (type (simple-string *) messg prefix))
     (prog ((iu (make-array 5 :element-type 'f2cl-lib:integer4)) (nunit 0)
            (cbuff
             (make-array '(148) :element-type 'character :initial-element #\ ))
            (idelta 0) (lpiece 0) (nextc 0) (lenmsg 0) (lwrap 0) (lpref 0) (i 0)
            (n 0))
-      (declare (type (integer) n i lpref lwrap lenmsg nextc lpiece idelta)
-               (type (simple-array f2cl-lib:integer4 (5)) iu)
-               (type (f2cl-lib:integer4) nunit)
-               (type (simple-array character (148)) cbuff))
+      (declare (type (simple-array f2cl-lib:integer4 (5)) iu)
+               (type (f2cl-lib:integer4) n i lpref lwrap lenmsg nextc lpiece
+                                         idelta nunit)
+               (type (simple-string 148) cbuff))
       (multiple-value-bind (var-0 var-1)
           (xgetua iu nunit)
         (declare (ignore var-0))
@@ -195,10 +195,8 @@
   (setf (gethash 'fortran-to-lisp::xerprn
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (*))
-                        (fortran-to-lisp::integer4)
-                        (simple-array character (*))
-                        (fortran-to-lisp::integer4))
+           :arg-types '((fortran-to-lisp::a nil) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::a nil) (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil)
            :calls '(fortran-to-lisp::i1mach fortran-to-lisp::xgetua))))
 

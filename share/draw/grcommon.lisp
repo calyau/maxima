@@ -188,7 +188,7 @@
 
 
 
-;; Returns optio value
+;; Returns option value
 (defun get-option (opt) (gethash opt *gr-options*))
 
 
@@ -1002,6 +1002,10 @@
 
 ;;; COMMON GNUPLOT - VTK AUXILIARY FUNCTIONS
 
+(defun near-equal (a b)
+  (let ((eps 10.0d-14))
+    (< (abs (- a b)) eps)))
+
 ;; Transforms arguments to make-scene-2d, make-scene-3d,
 ;; draw, and vtk3d to a unique list. With this piece of code,
 ;; gr2d, gr3d, draw, and model3d admit as arguments nested lists
@@ -1014,10 +1018,6 @@
                      (map 
                        'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
                        args))))))
-
-
-
-
 
 ;; The following functions implement the marching cubes algorithm
 ;; for implicit functions in 3d.

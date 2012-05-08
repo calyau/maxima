@@ -59,13 +59,6 @@
 
 (defmvar displayp nil "Is T when inside of `displa'")
 
-;; More messages which appear during the middle of display.  Different
-;; from those which appear during typein.  MOREMSG and MOREFLUSH get
-;; bound to these.
-
-(defvar d-moremsg "--More Display?--")
-(defvar d-moreflush "--Display Flushed--")
-
 ;; Parameters which control how boxes, absolute value signs,
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
@@ -104,10 +97,7 @@
 	       (height    0) (depth   0) (level   0) (size   2)
 	       (break     0) (right   0) (lines   1) bkpt
 	       (bkptwd    0) (bkptht  1) (bkptdp  0) (bkptout 0)
-	       (bkptlevel 0) in-p
-	       (moreflush d-moreflush)
-	       more-^w
-	       (moremsg d-moremsg))
+	       (bkptlevel 0) in-p)
 	   (setq dim-list (dimension form nil 'mparen 'mparen 0 0))
 	   (cond ($cursordisp  (draw-2d (nreverse dim-list) at-x at-y))
 		 (t
@@ -133,10 +123,7 @@
 			  (height    0) (depth   0) (level   0) (size   2)
 			  (break     0) (right   0) (lines   1) bkpt
 			  (bkptwd    0) (bkptht  1) (bkptdp  0) (bkptout 0)
-			  (bkptlevel 0) in-p
-			  (moreflush d-moreflush)
-			  more-^w
-			  (moremsg d-moremsg))
+			  (bkptlevel 0) in-p)
 		      (unwind-protect
 			   (progn
 			     (setq form (dimension form nil 'mparen 'mparen 0 0))
@@ -1241,7 +1228,6 @@
          ;; MEANING OF FOLLOWING MESSAGE IS OBSCURE.
          (merror (intl:gettext "display: 'checkbreak' not found."))))
 	 (output bkpt 0)
-	 (let ((#.ttyoff (or #.ttyoff more-^w))))
 	 (setq lines (1+ lines)
 	       bkpt result bkptout bkptwd bkptwd w
 	       bkptht maxht bkptdp maxdp bkptlevel level maxht 1 maxdp 0))
@@ -1310,7 +1296,7 @@
   (cond
     ;; If output is turned off to the console and no WRITEFILE is taking
     ;; place, then don't output anything.
-    ((and (or #.ttyoff more-^w) (not #.writefilep)))
+    ((and #.ttyoff (not #.writefilep)))
     ;; If the terminal can't do cursor movement, or we are writing
     ;; to a WRITEFILE (#.writefilep is on) or the terminal is scrolling or
     ;; something else random, then draw equations line by line.
@@ -1336,7 +1322,6 @@
   (do ((i (1- (+ bkptht bkptdp)) (1- i)))
       ((< i 0))
     (cond ((null (aref linearray i)))
-	  (more-^w (output-linear-one-line i))
 	  (t (output-linear-one-line i)))))
 
 (defun output-linear-one-line (i)

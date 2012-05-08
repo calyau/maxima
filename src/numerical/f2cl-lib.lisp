@@ -3,15 +3,10 @@
 ;;;;;;;;Copyright (c) University of Waikato;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;Hamilton, New Zeland 1992-95 - all rights reserved;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;; NOTE: If you change this file, please file a ticket to the f2cl
-;;; project (trac.common-lisp.net/f2cl/wiki) so that the changes can
-;;; be incorporated into the official version.
 (in-package :f2cl-lib)
 
 (defparameter *f2cl-macros-version*
-  "$Id: macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
+  "$Id: macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
 (eval-when
     #+gcl (compile load eval)
@@ -163,13 +158,16 @@ is not included")
     (dolist (a (reverse array-info))
       (destructuring-bind (array a-type var-name offset-var)
 	  a
-	(setf results
-	      `((multiple-value-bind (,var-name ,offset-var)
-		    (find-array-data ,array)
-		  (declare (ignorable ,offset-var ,var-name)
-			   (type f2cl-lib:integer4 ,offset-var)
-			   (type (simple-array ,a-type (*)) ,var-name))
-		  ,@results)))))
+	(let ((atype (if (subtypep a-type 'character)
+			 `(simple-string)
+			 `(simple-array ,a-type (*)))))
+	  (setf results
+		`((multiple-value-bind (,var-name ,offset-var)
+		      (find-array-data ,array)
+		    (declare (ignorable ,offset-var ,var-name)
+			     (type f2cl-lib:integer4 ,offset-var)
+			     (type ,atype ,var-name))
+		    ,@results))))))
     (first results)))
 
 (defmacro with-multi-array-data (array-info &rest body)
@@ -390,11 +388,6 @@ is not included")
      (truncate (the (double-float #.(float most-negative-fixnum 1d0)
 				  #.(float most-positive-fixnum 1d0))
 		    x)))
-    #+clisp
-    (long-float
-     (truncate (the (long-float #.(float most-negative-fixnum 1l0)
-				#.(float most-positive-fixnum 1l0))
-		 x)))
     ((complex single-float)
      (the integer4
        (truncate (the (single-float #.(float (- (ash 1 31)))
@@ -424,29 +417,17 @@ is not included")
      (the integer4
        (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
 				    #.(float (1- (ash 1 31)) 1d0))
-		   x))))
-    #+scl
-    (long-float
-     (the integer4
-       (truncate (the (long-float #.(float (- (ash 1 31)) 1l0)
-				  #.(float (1- (ash 1 31)) 1l0))
-		   x))))
-    #+(and cmu double-double)
-    (kernel:double-double-float
-     (the integer4
-       (truncate (the (kernel:double-double-float #.(float (- (ash 1 31)) 1w0)
-						  #.(float (1- (ash 1 31)) 1w0))
-		   x))))
+		      x))))
     ((complex single-float)
      (the integer4
-	  (truncate (the (single-float #.(float (- (ash 1 31)))
-				       #.(float (1- (ash 1 31))))
-			 (realpart x)))))
+       (truncate (the (single-float #.(float (- (ash 1 31)))
+				    #.(float (1- (ash 1 31))))
+		      (realpart x)))))
     ((complex double-float)
      (the integer4
-	  (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
-				       #.(float (1- (ash 1 31)) 1d0))
-			 (realpart x)))))))
+       (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
+				    #.(float (1- (ash 1 31)) 1d0))
+		      (realpart x)))))))
 
 
 (defun ifix (x)
@@ -558,13 +539,7 @@ is not included")
 	   (if (> r 0)
 	       (- r 1)
 	       (+ r 1))
-	   r)))
-    #+double-double
-    (kernel:double-double-float
-     (locally 
-       (declare (optimize (space 0) (speed 3)))
-       (values (ftruncate (the kernel:double-double-float x)))))
-    ))
+	   r)))))
     
 
 #-cmu
@@ -578,11 +553,7 @@ is not included")
     (double-float
      (locally 
        (declare (optimize (space 0) (speed 3)))
-       (values (ftruncate (the double-float x)))))
-    (long-float
-     (locally 
-       (declare (optimize (space 0) (speed 3)))
-       (values (ftruncate (the long-float x)))))))
+       (values (ftruncate (the double-float x)))))))
 
 (defun dint (x)
   (aint x))
@@ -840,12 +811,6 @@ is not included")
      (sqrt (the (or (single-float (0f0)) (member 0f0)) x)))
     (double-float
      (sqrt (the (or (double-float (0d0)) (member 0d0)) x)))
-    #+(or scl clisp)
-    (long-float
-     (sqrt (the (or (long-float (0l0)) (member 0l0)) x)))
-    #+(and cmu double-double)
-    (kernel:double-double-float
-     (sqrt (the (or (kernel:double-double-float (0w0)) (member 0w0)) x)))
     (t
      (sqrt x))))
 
@@ -855,12 +820,6 @@ is not included")
      (log (the (or (single-float (0f0)) (member 0f0)) x)))
     (double-float
      (log (the (or (double-float (0d0)) (member 0d0)) x)))
-    #+(or scl clisp)
-    (long-float
-     (log (the (or (long-float (0l0)) (member 0l0)) x)))
-    #+(and cmu double-double)
-    (kernel:double-double-float
-     (log (the (or (kernel:double-double-float (0w0)) (member 0w0)) x)))
     (t
      (log x))))
   
@@ -898,21 +857,9 @@ is not included")
      (log (the (or (single-float (0.0f0)) (member 0f0)) x) 10f0))
     (double-float
      (log (the (or (double-float (0.0d0)) (member 0d0)) x) 10d0))
-    #+(or scl clisp)
-    (long-float
-     (log (the (or (long-float (0.0l0)) (member 0l0)) x) 10l0))
-    #+(and cmu double-double)
-    (kernel:double-double-float
-     (log (the (or (kernel:double-double-float (0.0w0)) (member 0w0)) x) 10w0))
     (t
      (/ (log x)
 	(typecase x
-	  #+(and cmu double-double)
-	  ((complex kernel:double-double-float)
-	   10w0)
-	  #+(or scl clisp)
-	  ((complex long-float)
-	   10l0)
 	  ((complex double-float)
 	   10d0)
 	  ((complex single-float)
@@ -1312,9 +1259,7 @@ causing all pending operations to be flushed"
 	   (arg-list
 	    (apply #'append
 		   (map 'list #'(lambda (x)
-				  (cond ((or (numberp x)
-					     (typep x 'bigfloat:bigfloat)
-					     (typep x 'bigfloat:complex-bigfloat))
+				  (cond ((numberp x)
 					 (list x))
 					((stringp x)
 					 (list x))
@@ -1608,7 +1553,7 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $
+;;; $Id: macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $
 ;;; $Log$
 ;;; Revision 1.117  2011/02/28 22:21:07  rtoy
 ;;; When opening an old file, we should set :if-exists to :overwrite to
@@ -1622,108 +1567,637 @@ causing all pending operations to be flushed"
 ;;; Assert the type of the arg to fsqrt to be non-negative, excluding
 ;;; negative zero.
 ;;;
-;;; Revision 1.21  2010/10/16 15:24:09  rtoy
-;;; Allow f2cl-lib to recognize BIGFLOAT and COMPLEX-BIGFLOAT numbers so
-;;; that they can at least be printed, if not quite in the format
-;;; specified by the format string.
+;;; Revision 1.114  2010/05/17 01:42:14  rtoy
+;;; src/f2cl1.l:
+;;; o Need to know the actual type when making a compatible sequence.
+;;; o Convert plain integer type to integer4 types, which is what Fortran
+;;;   would do.  We don't want general Lisp integer type.
 ;;;
-;;; Revision 1.20  2009/01/08 18:25:34  rtoy
-;;; Update f2cl to latest version of f2cl, and regenerate all of the lisp
-;;; code.
+;;; src/macros.l:
+;;; o Change MAKE-COMPATIBLE-SEQ to be a macro.
+;;; o Need to know the actual array type to create the correct type of
+;;;   sequence.
 ;;;
-;;; The testsuite works fine, so I assume the quadpack and other slatec
-;;; routines are ok.
+;;; Revision 1.113  2010/02/23 00:59:12  rtoy
+;;; Support the Fortran capability of passing an array of one type
+;;; to a routine expecting a different type.  Currently only supports REAL
+;;; and COMPLEX arrays (and their double precison versions).
 ;;;
-;;; The lsquares tests runs fine, so the lbfgs routines appear to be ok.
+;;; NOTES:
+;;; o Update
 ;;;
-;;; src/numerical/f2cl-lib.lisp:
-;;; o Update from f2cl macros.l, 2009/01/08
+;;; f2cl0.l:
+;;; o Export new symbols f2cl-copy-seq and make-compatible-seq.
 ;;;
-;;; src/numerical/f2cl-package.lisp:
-;;; o Update from f2cl f2cl0.l, 2009/01/08
+;;; f2cl1.l:
+;;; o New variable *copy-array-parameter* for keeping track of the option
+;;;   for f2cl and f2cl-compile.
+;;; o Update f2cl and f2cl-compile to recognize :copy-array-parameter.
+;;; o Modify massage-arglist and generate-call-to-routine to handle the
+;;;   new :copy-array-parameter capability.
 ;;;
-;;; src/numerical/slatec:
-;;; o Regenerate lisp files
+;;; f2cl5.l:
+;;; o Fix issue where quoted elements were modified.  They shouldn't be.
+;;; o Fix issue where (array simple-float (*)) would get erroneously
+;;;   converted to (array simple-float (f2cl-lib:int-mul)).  We want to
+;;;   leave bare * alone.
 ;;;
-;;; share/lbfgs:
-;;; o Split lbfgs.f into one function per file and add these new files.
-;;; o Generate new lisp files
-;;; o Update lbfgs.mac to load the new list files.
-;;; o Added lbfgs-lisp.system so we know how to regenerate the lisp files
-;;;   in the future.
+;;; macros.l:
+;;; o New macro f2cl-copy-seq to generate code to copy a sequence
+;;;   appropriately.
+;;; o New function to create a compatible array to support
+;;;   :copy-array-parameter.
 ;;;
-;;; share/lapack:
-;;; o Add lapack-lisp.system so we know how to regenerate the lisp files
-;;;   in the future.
-;;; o Regenerate all of the lisp files.
+;;; Revision 1.112  2009/01/08 12:57:19  rtoy
+;;; f2cl0.l:
+;;; o Export *STOP-SIGNALS-ERROR-P*
 ;;;
-;;; Revision 1.19  2008/07/27 07:04:15  robert_dodier
-;;; Merge patches-for-ecl-branch into main trunk.
-;;; With these changes, Maxima builds without errors with Clisp, CMUCL, SBCL, and GCL,
-;;; and run_testsuite does not appear to report any errors that are not reported
-;;; otherwise. Not yet tested with ECL.
+;;; macros.l:
+;;; o Add *STOP-SIGNALS-ERROR-P* to allow user to control whether STOP
+;;;   signals a continuable error or not.  Default is to signal the
+;;;   error.
 ;;;
-;;; Revision 1.18  2008/03/26 14:48:26  robert_dodier
-;;; For (D1MACH 3) and (D1MACH 4), make the values for GCL match the
-;;; values as shown in d1mach.f.
+;;; Revision 1.111  2009/01/07 21:50:16  rtoy
+;;; Use the fast rint-* functions for CMUCL with sse2 support.
 ;;;
-;;; Revision 1.17  2008/03/26 13:17:55  rtoy
-;;; Oops.  Fix bug in previous commit where the test for lun = t was
-;;; inside the test for integerp lun.  Just use separate tests for units
-;;; 5, 6, and t.
+;;; Revision 1.110  2009/01/07 21:42:45  rtoy
+;;; Gcl doesn't recognize :compile-toplevel and friends.  Use old style.
 ;;;
-;;; Revision 1.16  2008/03/26 12:54:54  rtoy
-;;; Change how *lun-hash* is handled, based on Robert's changes.  Rather
-;;; than initializing *lun-hash* to NIL, we continue to initialize it to
-;;; a(n) (empty) hash-table.  Now we don't have to check *lun-hash* for
-;;; NIL everywhere.  Then we change lun->stream to initialize the table
-;;; for units 5, 6, and t to the correct streams.  The effect should be
-;;; the same and nicely localized to the one function.
+;;; Revision 1.109  2009/01/07 21:34:41  rtoy
+;;; Clean up junk:
 ;;;
-;;; This change (or a very similar one) will go into f2cl.
+;;; o Remove unused macro REXPT.
+;;; o Remove duplicated function PROCESS-IMPLIED-DO.
+;;; o Remove code that was commented out.
 ;;;
-;;; The following test works with both clisp, gcl, and cmucl:
+;;; Revision 1.108  2009/01/07 17:28:19  rtoy
+;;; f2cl0.l:
+;;; o Export new dfloat function, an alias for dble.
+;;; o Merge some cleanups from Maxima.
 ;;;
-;;; (%i1) :lisp (slatec::xerprn "FOOBAR" -1 "BAZQUUX" 72)
+;;; f2cl1.l:
+;;; o Add dfloat to list of intrinsic functions.
 ;;;
-;;; Revision 1.15  2008/03/15 20:00:48  robert_dodier
-;;; Lazy initialization of *LUN-HASH*. Putting the initialization into
-;;; DEFPARAMETER caused some Clisp installations to barf up an error message
-;;; (something about attempted write on a closed stream) when SLATEC::XERPRN was called.
+;;; macros.l:
+;;; o Merge some cleanups and fixes from Maxima.  Mostly for gcl and ecl.
+;;; o Add implementation of dfloat.
 ;;;
-;;; Revision 1.14  2007/04/28 15:17:27  are_muc
-;;; reverted back the changes to %close and %open-file, as rtay whishes to
-;;; keep f2cl versions idetical.
+;;; Revision 1.107  2009/01/07 02:22:00  rtoy
+;;; Need to quit a repeated group if we're out of arguments to print.
+;;; This prevents us from repeatedly print newlines and other strings when
+;;; the repetition is more than the number of arguments we have left.
 ;;;
-;;; Revision 1.13  2007/04/27 17:44:45  are_muc
-;;; changed key argument lists to %open-file and %close by removing unused
-;;; ones and allowing them nevertheless to remove compiler warnings.
+;;; Revision 1.106  2008/09/15 15:27:36  rtoy
+;;; Fix serious bug in aint.  aint(x) for x an integer was returning x-1
+;;; (for positive x).  It should have returned x.
 ;;;
-;;; Revision 1.12  2007/01/11 17:08:41  rtoy
-;;; GCL apparently supports
-;;; least-positive-normalized-{double,single}-float now.
+;;; Revision 1.105  2008/09/10 18:53:49  rtoy
+;;; The case where the arg was negative or zero was mishandled and ended
+;;; up being printed using ~E.  Should have been ~F.
 ;;;
-;;; Revision 1.11  2006/12/26 14:53:47  rtoy
-;;; SBCL can handle integer4 types well, too.
+;;; Revision 1.104  2008/08/22 21:27:43  rtoy
+;;; Oops.  Forgot one place to conditionalize on gcl.
 ;;;
-;;; Revision 1.10  2006/12/20 18:13:05  rtoy
-;;; Update to latest f2cl versions.
+;;; Revision 1.103  2008/08/21 20:16:49  rtoy
+;;; Gcl doesn' like ~/ format specifier, so rearrange things so we don't
+;;; use it.  (Should we just do the same for every one?)
 ;;;
-;;; Revision 1.9  2006/07/27 05:37:46  robert_dodier
-;;; Commit patches submitted by Douglas Crosher to support Scieneer and Allegro.
-;;; With these changes, make and run_testsuite succeed for SBCL, Clisp, and GCL on Linux.
+;;; Revision 1.102  2008/03/26 13:19:52  rtoy
+;;; Lazily initialize the lun-hash table.  *lun-hash* starts as an empty
+;;; hash-table, and lun->stream will initialize units 5, 6, and t as
+;;; needed.
 ;;;
-;;; Revision 1.8  2006/01/31 15:22:26  rtoy
-;;; o Regenerate all f2cl'ed code because dasyjy.f was not getting the
-;;;   alfa and beta arrays intialized from the data statements.  (This was
-;;;   caused by a bug in f2cl.)
-;;; o Update f2cl-lib.lisp to match the version of f2cl used to regenerate
-;;;   these files.
+;;; Based on similar change in maxima to work around an issue with clisp
+;;; where the predefined entries had closed streams.
 ;;;
-;;; Revision 1.7  2005/05/19 12:40:27  rtoy
-;;; Update and merge to current version of macros.l from the f2cl
-;;; distribution.  Most of the changes done for maxima have been merged to
-;;; the f2cl version, and we're just picking up the changes in the f2cl
-;;; version.
+;;; Revision 1.101  2008/03/08 12:49:08  rtoy
+;;; Make :list-directed output be more like Fortran.  There is quite a bit
+;;; of variation between, say, g77 and Sun Fortran, so we pick something
+;;; reasonably close.  We have a mix of g77 and Sun Fortran output.  Still
+;;; needs some work.
+;;;
+;;; Revision 1.100  2008/03/07 23:15:01  rtoy
+;;; Use ~? so we can control the format string to print out various
+;;; objects for list-directed output.
+;;;
+;;; Revision 1.99  2008/03/06 21:20:41  rtoy
+;;; Change the open mode from append to supersede.  I think this makes
+;;; more sense and seems to match g77 better.
+;;;
+;;; Revision 1.98  2008/03/06 20:04:10  rtoy
+;;; Use ~G for list-directed I/O so that numbers come out reasonably.
+;;; (F77 standard says E or F is used, depending on the magnitude of the
+;;; number.  The parameters for E and F are processer dependent as is the
+;;; magnitude used to select between E or F.  This is pretty close to how
+;;; ~G works in Lisp.)
+;;;
+;;; Revision 1.97  2008/02/26 04:14:31  rtoy
+;;; Explicitly check for T and NIL.
+;;;
+;;; Revision 1.96  2008/02/22 22:19:34  rtoy
+;;; Use RCS Id as version.
+;;;
+;;; Revision 1.95  2008/02/22 22:13:18  rtoy
+;;; o Add function F2CL-VERSION to get version info.
+;;; o Add version string to each of the files so F2CL-VERSION can get the
+;;;   version info.  The version string is basically the date of when the
+;;;   file was last checked in.
+;;;
+;;; Revision 1.94  2007/09/30 03:47:47  rtoy
+;;; When we're out of formats, we restart with the last repeat spec.
+;;;
+;;; Revision 1.93  2007/09/28 22:01:08  rtoy
+;;; First attempt at getting implied-do loops in data statements working
+;;; with nested loops.
+;;;
+;;; f2cl1.l:
+;;; o PARSE-DATA-IMPLIED-DO handles implied do loops even when the loops
+;;;   are nested.
+;;;
+;;; macros.l:
+;;; o Update PROCESS-IMPLIED-DO to handle the new forms returned by
+;;;   PARSE-DATA-IMPLIED-DO.
+;;; o Don't create constants out of the initializer since we use POP to
+;;;   access them one by one.
+;;; o Minor tweak for list-directed output to allow a slightly longer line
+;;;   length. This matches what g77 produces for one simple test case.
+;;;
+;;; Revision 1.92  2007/09/28 20:26:13  rtoy
+;;; o For REWIND and CLOSE$, declare the result as ignorable.
+;;; o For list-directed output, don't print out strings as an array with
+;;;   spaces between each element.  Strings should go out as strings.
+;;;
+;;; Revision 1.91  2007/09/28 15:41:14  rtoy
+;;; Some cleanup for list-directed output:
+;;;
+;;; o Complex numbers should be printed in the form (r, i), not #c(r, i)
+;;; o Arrays should print out only the elements instead of #(...).
+;;;
+;;; Revision 1.90  2007/09/28 05:00:58  rtoy
+;;; To support multidimensional arrays in implied do loops better, we need
+;;; to pass the entire array bounds, including upper and lower limits so
+;;; that array indexing can work.
+;;;
+;;; f2cl5.l:
+;;; o Find the entire array bounds.
+;;; o Don't use make-declaration to get the array type.  Explicitly look
+;;;   through *explicit_vble_decls* to find the type.  (Are there other
+;;;   places we need to look?)
+;;;
+;;; macros.l:
+;;; o Pass the entire list of array bounds to fref so we can handle
+;;;   multidimensional arrays.
+;;;
+;;; Revision 1.89  2007/09/27 14:56:39  rtoy
+;;; When we run out of format specs, but there are still items to print,
+;;; we go back and find the first repeat spec and start there.
+;;;
+;;; If there is no such thing, we just reuse the entire format spec.  Not
+;;; sure if this is right or if it's a bug.  Maybe we should signal an
+;;; error?
+;;;
+;;; Revision 1.88  2007/09/27 02:12:12  rtoy
+;;; Support the L edit descriptor better.
+;;;
+;;; f2cl5.l:
+;;; o Recognize the L descriptor and convert it to ~wA.
+;;;
+;;; macros.l:
+;;; o Convert T and NIL to :T and :F, respectively.  When coupled with ~A,
+;;;   this prints as T and F, as desired.
+;;;
+;;; Revision 1.87  2007/09/26 13:11:06  rtoy
+;;; Remove the unused FOREVER parameter from EXECUTE-FORMAT.
+;;;
+;;; Revision 1.86  2007/09/26 13:10:15  rtoy
+;;; Better list-directed output.
+;;;
+;;; f2cl5.l:
+;;; o For list-directed output (format is *), return :list-directed to
+;;;   tell format that we're using list-directed output.  (The previous
+;;;   scheme didn't really work well.)
+;;;
+;;; macros.l:
+;;; o Add FLATTEN-LIST function
+;;; o Don't output a newline for repeated items.  We shouldn't do that.
+;;; o Add support for :list-directed output.  We recognize that and then
+;;;   just output all the args in a special way.
+;;;
+;;; Revision 1.85  2007/09/25 21:31:32  rtoy
+;;; f2cl5.l:
+;;; o Slight change in the format used for "*" format.
+;;; o Change the repeatable descriptors to remove the repeat count if the
+;;;   count is 1.  This was confusing the execute-format when determining
+;;;   when to print out newlines.  This change applied to I, F, E, D, and
+;;;   G descriptors.
+;;;
+;;; macros.l:
+;;; o Handle printing of "repeat forever" loops better.  An extra arg to
+;;;   EXECUTE-FORMAT tells us to repeat "forever".
+;;; o Output a newline at the end of a repeated specification.
+;;;
+;;; Revision 1.84  2007/09/25 18:46:42  rtoy
+;;; For repeated descriptors, we were printing a new line after each item
+;;; instead of after all items had been printed.  Output new line only
+;;; once, when we're done.
+;;;
+;;; Revision 1.83  2007/09/25 18:17:50  rtoy
+;;; Oops.  We should always process #\: and exit only if there is more
+;;; args to process.
+;;;
+;;; Revision 1.82  2007/09/25 17:31:05  rtoy
+;;; f2cl5.l:
+;;; o Return #\: when encountering a colon edit descriptor.
+;;;
+;;; macros.l:
+;;; o Recognize #\: and terminate processing if there are no arguments
+;;;   left.
+;;;
+;;; Revision 1.81  2007/09/23 20:51:43  rtoy
+;;; Previous checkin changed how character strings are initialized.
+;;; Modify code accordingly.  (This needs to be rethought and made less
+;;; fragile.)
+;;;
+;;; Revision 1.80  2007/09/21 17:45:13  rtoy
+;;; INDEX was calling SEARCH with the arguments in the wrong order.
+;;;
+;;; Revision 1.79  2007/09/20 21:27:12  rtoy
+;;; Was not handling atoms correctly.  This needs more work.
+;;;
+;;; Revision 1.78  2007/09/20 17:38:25  rtoy
+;;; In ARRAY-INITIALIZE, we can't make a literal list of the data because
+;;; the data might not be literal.  (That is, the data might be constants
+;;; from a parameter statement.)
+;;;
+;;; Revision 1.77  2007/06/18 15:50:16  rtoy
+;;; Bug [ 1709300 ] unused key parameters
+;;;
+;;; o In %open-file, ignore UNIT, and produce an error if FORM is UNFORMATTED
+;;; o In %close, produce an error if STATUS is specified.
+;;;
+;;; Revision 1.76  2006/12/01 04:23:43  rtoy
+;;; Minor cleanups
+;;;
+;;; src/f2cl0.l:
+;;; o Cosmetic changes
+;;;
+;;; src/macros.l:
+;;; o Make code work with "modern"-mode lisps.  (Ported from maxima.)
+;;;
+;;; Revision 1.75  2006/11/28 19:06:18  rtoy
+;;; o Make sure the second arg to FSET-STRING is a string.
+;;; o FCHAR was using the wrong function.
+;;; o Cleanup FFORMAT so there are no compiler warnings about REPLACE
+;;;   being called on constant data.  (This is probably a compiler bug in
+;;;   CMUCL, but we should get rid of the stuff ourselves, anyway, instead
+;;;   of depending on the compiler to do it for us.)
+;;;
+;;; Revision 1.74  2006/11/27 19:09:51  rtoy
+;;; In some places in LAPACK, an array slice is taken where the slice
+;;; exceeds the bounds of the array.  However, the array is never
+;;; accessed.  What are we to do?  We could modify the LAPACK routines
+;;; (everywhere!) to check for this, or we can silently make array-slice
+;;; make a 0-element array.  If the array is then accessed, we should get
+;;; an error at the point of access, not the point of creation.
+;;;
+;;; Revision 1.73  2006/11/21 22:05:03  rtoy
+;;; Fix ichar to accept either a real character or (more likely) a
+;;; string.
+;;;
+;;; Revision 1.72  2006/11/21 18:21:37  rtoy
+;;; o Add CDABS and DCONJG functions.
+;;; o Add some type declarations for DIMAG
+;;;
+;;; Revision 1.71  2006/05/02 22:12:02  rtoy
+;;; src/f2cl5.l:
+;;; o Try to make better declarations for variables defined in parameter
+;;;   statements.  We'll declare them as (double-float 42d0 42d0) if the
+;;;   parameter was initialized to 42d0.
+;;; o MAKE-DECLARATION updated to take an extra keyword argument to
+;;;   indicate if this is a parameter variable and to give the initial
+;;;   value of the parameter so we can make the appropriate declaration.
+;;; o When initializing simple variables in data statements, try to bind
+;;;   the variable with the initial value instead binding a default 0 zero
+;;;   and setq'ing it later.
+;;;
+;;; src/macros.l:
+;;; o Change DEFTYPE for INTEGER4 to allow parameters so we can specify
+;;;   tight bounds if desired.
+;;;
+;;; Revision 1.70  2006/05/01 17:40:05  rtoy
+;;; Change STOP to produce a continuable error instead of an error so that
+;;; we can continue from the STOP statement, if we choose to.  It's not
+;;; necessarily an error in a converted program to reach a STOP statement.
+;;;
+;;; Revision 1.69  2006/04/27 17:44:01  rtoy
+;;; src/f2cl0.l:
+;;; o Export dimag, dcmplx, zsqrt
+;;;
+;;; src/f2cl1.l:
+;;; o Add dcmplx, dimag, and zsqrt to the list of intrinsic function
+;;;   names.
+;;; o When parsing "implicit none" statements, we don't modify
+;;;   *IMPLICIT_VBLE_DECLS*. I don't think it's needed and it can cause
+;;;   errors later on because :none is not a Lisp type.
+;;;
+;;; src/f2cl5.l:
+;;; o Tell GET-FUN-ARG-TYPE about the result type of dcmplx, dsqrt, the
+;;;   complex*8 and complex*16 special functions.
+;;; o ABS is an allowed lisp name.  This gets rid of the spurious ABS$
+;;;   local variable whenever we use the ABS function.
+;;;
+;;; src/macros.l:
+;;; o Add implementations of dcmplx, dimag, and zsqrt.  (We need to add
+;;;   more, I think.)
+;;;
+;;; Revision 1.68  2006/01/12 01:33:32  rtoy
+;;; If status is not given or unknown, create the file if it doesn't
+;;; exist.
+;;;
+;;; Revision 1.67  2006/01/11 22:57:58  rtoy
+;;; Add rudimentary support for opening files and reading from files.
+;;;
+;;; src/f2cl1.l:
+;;; o Recognize and handle open, rewind, and close statements.
+;;;
+;;; src/f2cl5.l:
+;;; o Update parser for read to handle unit numbers.  Rudimentary support
+;;;   for implied-do lists too.
+;;; o Add parser for open, rewind, and close statements.
+;;;
+;;; src/macros.l:
+;;; o Add functions and macros to handle opening, rewinding,
+;;;   and closing files.  Needs more work still.
+;;;
+;;; Revision 1.66  2006/01/09 03:08:13  rtoy
+;;; src/f2cl1.l:
+;;; o Translate a Fortran STOP to be the stop function.  Was just
+;;;   returning NIL, and this doesn't work so well.
+;;;
+;;; src/macros.l:
+;;; o Add STOP function.  It prints out the any arg, and then signals an
+;;;   error.
+;;;
+;;; Revision 1.65  2006/01/09 00:37:43  rtoy
+;;; src/f2cl5.l:
+;;; o When looking for initializers, don't just remove initializers when
+;;;   the array is not a 1-D array.  Keep them, and return a second value
+;;;   indicating if the array is 1-D or not.
+;;; o MAKE-CHAR-DECL was not properly declaring and initializing 2-D
+;;;   arrays as 1-D arrays like we're supposed to.  Compute the total size
+;;;   of the array if we can.
+;;;
+;;; src/macros.l:
+;;; o F2CL-INIT-STRING needs to make a 1-D array, even if the string array
+;;;   is multi-dimensional.
+;;;
+;;; Revision 1.64  2006/01/04 17:53:40  rtoy
+;;; We were not correctly processing intialization of string arrays in
+;;; data statements.
+;;;
+;;; src/f2cl1.l:
+;;; o In PARSE-DATA1, return the entire list of initializers instead of
+;;;   just the first, in case we have an array of initializers.
+;;;
+;;; src/f2cl5.l:
+;;; o In MERGE-DATA-AND-SAVE-INITS, we need to recognize the
+;;;   initialization of strings and such.  We don't do anything special
+;;;   right now, like we do for arrays of numbers.
+;;; o In INSERT-DECLARATIONS, we need to handle the case of REPLACE in the
+;;;   *data-init*'s.  We assume it's been handled somewhere else, so
+;;;   there's nothing to do here.
+;;;
+;;; Revision 1.63  2005/05/19 15:06:24  rtoy
+;;; Oops.  make-label is in the f2cl-lib package.
+;;;
+;;; Revision 1.62  2005/05/16 15:50:25  rtoy
+;;; o Replace single semicolons with multiple semicolons as appropriate.
+;;; o GCL apparently doesn't like some declarations, so comment them out
+;;;   for GCL.
+;;; o GCL doesn't like the defparameter for *lun-hash*.
+;;; o GCL doesn't seem to have least-positive-normalized-double-float, so
+;;;   make it the same as least-positive-double-float.  Likewise for
+;;;   single-float.
+;;;
+;;; These changes come from maxima.
+;;;
+;;; Revision 1.61  2005/03/28 20:38:18  rtoy
+;;; Make strings with an element-type of character instead of base-char,
+;;; in case the Lisp implementation has unicode support.
+;;;
+;;; Revision 1.60  2004/09/01 14:17:57  rtoy
+;;; atan2 takes single-float args, not double-float.
+;;;
+;;; Revision 1.59  2004/08/14 22:29:16  marcoxa
+;;; Added an EVAL-WHEN to silence the LW compiler.
+;;;
+;;; Revision 1.58  2004/08/14 04:17:45  rtoy
+;;; Need a definition for MAKE-LABEL.
+;;;
+;;; Revision 1.57  2003/11/23 14:10:11  rtoy
+;;; FDO should not call function that are not in the F2CL-LIB package.
+;;; Macros.l should be self-contained.
+;;;
+;;; Revision 1.56  2003/11/13 05:37:11  rtoy
+;;; Add macro WITH-MULTI-ARRAY-DATA.  Basically like WITH-ARRAY-DATA, but
+;;; takes a list of array info so we don't get deeply nested code when
+;;; there are lots of arrays.
+;;;
+;;; Keep WITH-ARRAY-DATA around for backward compatibility.
+;;;
+;;; Revision 1.55  2003/11/12 05:33:22  rtoy
+;;; Macro to handle assigned gotos was wrong.  Fix it.
+;;;
+;;; Revision 1.54  2003/09/25 03:43:43  rtoy
+;;; Need to check for reserved names in the fdo macro.  (I think.)
+;;;
+;;; Revision 1.53  2003/01/07 18:44:52  rtoy
+;;; Add new implementations of aint.  Speeds up mpnorm by a factor of 5 on
+;;; CMUCL/sparc!
+;;;
+;;; Revision 1.52  2002/09/13 17:50:19  rtoy
+;;; From Douglas Crosher:
+;;;
+;;; o Make this work with lower-case Lisps
+;;; o Fix a few typos
+;;; o Make a safer fortran reader.
+;;;
+;;; Revision 1.51  2002/06/30 13:08:51  rtoy
+;;; Add some declarations to AINT so that CMUCL can completely inline the
+;;; call to ftruncate.
+;;;
+;;; Revision 1.50  2002/05/05 23:41:17  rtoy
+;;; Typo: extra paren.
+;;;
+;;; Revision 1.49  2002/05/05 23:38:47  rtoy
+;;; The int-sub macro didn't handle things like (- 3 m m) correctly.  It
+;;; was returning (- 3 (- m m)) instead of (- (- 3 m) m)!
+;;;
+;;; Revision 1.48  2002/05/03 17:48:06  rtoy
+;;; GCL doesn't have least-positive-normalized-{single/double}-float, so
+;;; use just least-positive-{single/double}-float.
+;;;
+;;; Revision 1.47  2002/05/03 17:44:36  rtoy
+;;; Replace row-major-aref with just aref because we don't need it and
+;;; because gcl doesn't have it.
+;;;
+;;; Revision 1.46  2002/03/19 02:23:09  rtoy
+;;; According to the rules of Fortran, the initializers in a DATA
+;;; statement are supposed to be converted to match the type of the
+;;; variable that is being initialized.  Make it so by passing the
+;;; variable type to the macro DATA-IMPLIED-DO so that the conversion can
+;;; be done.
+;;;
+;;; Revision 1.45  2002/03/18 23:34:16  rtoy
+;;; Was not correctly handling some implied do loops containing multiple
+;;; variables in the loop in data statements.  Fix that and clean up some
+;;; of the processing.  (Should probably do this kind of work in the f2cl
+;;; compiler instead of at runtime, but it's only done once at runtime, so
+;;; it's not a big deal.)
+;;;
+;;; Revision 1.44  2002/03/11 16:44:00  rtoy
+;;; o Remove an extra paren.
+;;; o Indent FIND-ARRAY-DATA better.
+;;; o Declare the iteration count to be of type INTEGER4.
+;;; o Added macros INT-ADD, INT-SUB, INT-MUL to tell the compiler that the
+;;;   integer operation can't overflow.  (First try.)
+;;; o Tell the compiler that the result of truncate is an INTEGER4 in INT.
+;;;
+;;; Revision 1.43  2002/03/06 23:07:19  rtoy
+;;; o Make INT return an integer4 type, not integer.
+;;; o log10 was thinking it could generate complex result, but that's not
+;;;   true.  Declare the arg correctly so the compiler knows it can't.
+;;;
+;;; Revision 1.42  2002/03/06 03:21:16  rtoy
+;;; o Speed up FIND-ARRAY-DATA a little by declaring the offset to be a
+;;;   fixnum, which it has to be since it's an index to an array.
+;;; o Remove the truncate/ftruncate-towards-zero functions.
+;;; o For INT, AINT, and friends, TRUNCATE and FTRUNCATE are the right
+;;;   functions we want to use.  (Stupid me!)
+;;; o Update/correct some random comments.
+;;;
+;;; Revision 1.41  2002/02/17 15:55:29  rtoy
+;;; o For all array accessors, wrap the offset calculations with (the
+;;;   fixnum ...) since they have to be anyway.  Speeds up calculations
+;;;   quite a bit.
+;;; o FREF takes an additional optional OFFSET arg to specify an offset
+;;;   for the new array slicing method.
+;;; o Added WITH-ARRAY-DATA and FIND-ARRAY-DATA to support the new
+;;;   array-slicing method.
+;;; o For FDO, add (the integer4 ...) for loop index calculations.
+;;; o Add some more assertions for ISIGN and LOG10 to help the compiler
+;;;   generate better code.
+;;;
+;;; Revision 1.40  2002/02/10 03:43:51  rtoy
+;;; Partial support for WRITE statements writing to a string instead of
+;;; logical unit.
+;;;
+;;; Revision 1.39  2002/02/09 15:59:26  rtoy
+;;; o Add more and better comments
+;;; o AINT was broken because it should accept any range of floats.
+;;; o DIM and friends computed the wrong thing!
+;;; o Change DPROD to convert to doubles first.
+;;; o Some cleanup of MAX and MIN
+;;;
+;;; Revision 1.38  2002/02/08 23:38:36  rtoy
+;;; Use ARRAY-TOTAL-SIZE to compute how many elements are in the slice
+;;; instead of the f2cl declared/derived bounds so that we can dynamically
+;;; change the size of the array.  Useful for an array in a common block.
+;;;
+;;; Revision 1.37  2002/02/07 03:23:15  rtoy
+;;; Add functions to initialize F2CL's Fortran I/O and to close all of
+;;; F2CL's open units.
+;;;
+;;; Revision 1.36  2002/02/04 03:23:46  rtoy
+;;; o Make *lun-hash* a defparameter instead of a defvar.
+;;; o Fix up i1mach so that the unit numbers match *lun-hash*.
+;;;
+;;; Revision 1.35  2002/01/13 16:29:00  rtoy
+;;; o This file is in the f2cl-lib package now
+;;; o Deleted some unused code.
+;;; o Moved *INTRINSIC-FUNCTION-NAMES* to f2cl1.l
+;;;
+;;; Revision 1.34  2002/01/06 23:11:04  rtoy
+;;; o Rename *intrinsic_function_names* to use dashes.
+;;; o Comment out some unused functions and macros.
+;;;
+;;; Revision 1.33  2001/04/30 15:38:12  rtoy
+;;; Add a version of I1MACH.
+;;;
+;;; Revision 1.32  2001/04/26 17:49:19  rtoy
+;;; o SIGN and DIM are Fortran generic instrinsics.  Make it so.
+;;; o Added D1MACH and R1MACH because they're very common in Fortran
+;;;   libraries.
+;;;
+;;; Revision 1.31  2001/02/26 15:38:23  rtoy
+;;; Move *check-array-bounds* from f2cl1.l to macros.l since the generated
+;;; code refers to it.  Export this variable too.
+;;;
+;;; Revision 1.30  2000/08/30 17:00:42  rtoy
+;;; o In EXECUTE-FORMAT, handle the case where the group is supposed to be
+;;;   repeated "forever" (as indicated by a repetition factor of T).
+;;; o Remove some more unused code.
+;;;
+;;; Revision 1.29  2000/08/27 16:36:07  rtoy
+;;; Clean up handling of format statements.  Should handle many more
+;;; formats correctly now.
+;;;
+;;; Revision 1.28  2000/08/07 19:00:47  rtoy
+;;; Add type ARRAY-STRINGS to denote an array of strings.
+;;;
+;;; Revision 1.27  2000/08/03 13:45:53  rtoy
+;;; Make FFORMAT1 handle lists that we get from implied do loops.
+;;;
+;;; The whole FFORMAT stuff needs to be rethought if we really want to
+;;; support Fortran output.
+;;;
+;;; Revision 1.26  2000/08/01 22:10:41  rtoy
+;;; o Try to make the Fortran functions to convert to integers work the
+;;;   way Fortran says they should.
+;;; o Declaim most of the intrinsics as inline so we don't have an
+;;;   additional function call for simple things.
+;;; o Add some compiler macros for Fortran max/min functions to call the
+;;;   Lisp max/min functions withouth using #'apply.
+;;; o Try to declare the args to functions with branchs appropriately,
+;;;   even in the face of signed zeroes.
+;;;
+;;; Revision 1.25  2000/07/28 22:10:05  rtoy
+;;; Remove unused var from ARRAY-SLICE.
+;;;
+;;; Revision 1.24  2000/07/28 17:09:13  rtoy
+;;; o We are in the f2cl package now.
+;;; o Remove the export expression.
+;;; o // is now called F2CL-//, to prevent problems with the lisp variable
+;;;   //.
+;;; o REAL is now called FREAL, to prevent problems with the lisp type
+;;;   REAL.
+;;;
+;;; Revision 1.23  2000/07/27 16:39:17  rtoy
+;;; We want to be in the CL-USER package, not the USER package.
+;;;
+;;; Revision 1.22  2000/07/20 13:44:38  rtoy
+;;; o Remove old fref macro
+;;; o Add some comments
+;;; o Add macro ARRAY-INITIALIZE to handle creating the appropriate for to
+;;;   give to make-array :initial-contents.
+;;;
+;;; Revision 1.21  2000/07/19 13:54:27  rtoy
+;;; o Add the types ARRAY-DOUBLE-FLOAT, ARRAY-SINGLE-FLOAT, and
+;;;   ARRAY-INTEGER4.
+;;; o All arrays are 1-D now to support slicing of Fortran arrays
+;;;   correctly.
+;;; o All arrays are in column-major order just like Fortran (and the
+;;;   opposite of Lisp).  This is to support slicing of arrays.  Modified
+;;;   FREF to support this by taking an extra arg for the dimensions of
+;;;   the array.
+;;; o Added macro ARRAY-SLICE to slice the array properly.
+;;; o Optimized routine DMIN1 a bit.   (Need to do that for more routines.)
+;;;
+;;; Revision 1.20  2000/07/14 15:50:59  rtoy
+;;; Get rid of *dummy_var*.  It's not used anymore.
+;;;
+;;; Revision 1.19  2000/07/13 16:55:34  rtoy
+;;; To satisfy the Copyright statement, we have placed the RCS logs in
+;;; each source file in f2cl.  (Hope this satisfies the copyright.)
 ;;;
 ;;;-----------------------------------------------------------------------------

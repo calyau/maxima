@@ -84,6 +84,7 @@ rtestode_zp.mac \
 rtestnset.mac \
 rtesthyp.mac \
 rtestmt19937.mac \
+rtest_numth.mac \
 mcond_display_elseif.mac \
 mcond_display_elseif.out \
 rtestmcond_display.mac \

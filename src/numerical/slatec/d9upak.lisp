@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp snapshot-2012-04 (20C Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -18,7 +18,7 @@
 
 
 (defun d9upak (x y n)
-  (declare (type (integer) n) (type (double-float) y x))
+  (declare (type (f2cl-lib:integer4) n) (type (double-float) y x))
   (prog ((absx 0.0))
     (declare (type (double-float) absx))
     (setf absx (f2cl-lib:dabs x))
@@ -47,7 +47,8 @@
   (setf (gethash 'fortran-to-lisp::d9upak
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((double-float) (double-float) (integer))
+           :arg-types '((double-float) (double-float)
+                        (fortran-to-lisp::integer4))
            :return-values '(nil fortran-to-lisp::y fortran-to-lisp::n)
            :calls 'nil)))
 

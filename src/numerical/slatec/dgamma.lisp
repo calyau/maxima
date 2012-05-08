@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 46c1f6a93b0d 2012/05/03 04:40:28 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v fceac530ef0c 2011/11/26 04:02:26 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp snapshot-2012-04 (20C Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -67,7 +67,7 @@
       (pi$ 3.141592653589793)
       (sq2pil 0.9189385332046728)
       (first$ nil))
-  (declare (type (integer) ngam)
+  (declare (type (f2cl-lib:integer4) ngam)
            (type (double-float) xmin xmax dxrel pi$ sq2pil)
            (type (simple-array double-float (42)) gamcs)
            (type f2cl-lib:logical first$))
@@ -75,7 +75,8 @@
   (defun dgamma (x)
     (declare (type (double-float) x))
     (prog ((sinpiy 0.0) (y 0.0) (dgamma 0.0) (i 0) (n 0))
-      (declare (type (integer) n i) (type (double-float) dgamma y sinpiy))
+      (declare (type (f2cl-lib:integer4) n i)
+               (type (double-float) dgamma y sinpiy))
       (cond
         (first$
          (setf ngam

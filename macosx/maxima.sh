@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-ROOT=`(cd \`dirname $0\` > /dev/null 2>&1 ; pwd)`
+SCRIPT="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT" ] ; do SCRIPT=`(readlink "$SCRIPT")` ; done
+
+ROOT=`(cd \`dirname "$SCRIPT"\` > /dev/null 2>&1 ; pwd)`
 MAXIMA_PREFIX=$ROOT/maxima/
 export MAXIMA_PREFIX
 

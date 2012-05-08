@@ -2215,3 +2215,9 @@ closeto(elliptic_f(bfloat(%pi), .1b0) - 2*elliptic_kc(.1b0), 1e-16);
 true;
 closeto(elliptic_f(bfloat(%pi), .9b0) - 2*elliptic_kc(.9b0), 1e-16);
 true;
+
+/*
+ * Bug 3509430: limit of tanh(x) at 0 makes no sense
+ */
+limit(tanh(x), x, 0);
+0;

@@ -1588,16 +1588,18 @@
 	     (format t "Legendre c-a-b = 1/2~%"))
 	   (legf20 (list a b) (list c) var))
           
-          ((alike1 c-a-b '((rat simp) 3 2))
-           ;; c-a-b = 3/2 e.g. F(a,b;a+b+3/2;z)
-           ;; Reduce to F(a,b;a+b+1/2) and use A&S 15.2.6.
-           ;; Problem: The derivative of assoc_legendre_p introduces a
-           ;; unit_step function and the result looks very complicate.
+          ((and (alike1 c-a-b '((rat simp) 3 2))
+		(not (alike1 c 1)))
+           ;; c-a-b = 3/2 e.g. F(a,b;a+b+3/2;z) Reduce to
+           ;; F(a,b;a+b+1/2) and use A&S 15.2.6.  But if c = 1, we
+           ;; don't want to reduce c to 0! Problem: The derivative of
+           ;; assoc_legendre_p introduces a unit_step function and the
+           ;; result looks very complicate.
            (when $trace2f1
              (format t "Legendre c-a-b = 3/2~%")
-             (format t "   : a = ~A~%" a)
-             (format t "   : b = ~A~%" b)
-             (format t "   : c = ~A~%" c))
+             (mformat t "   : a = ~A~%" a)
+             (mformat t "   : b = ~A~%" b)
+             (mformat t "   : c = ~A~%" c))
            (let ((psey (gensym)))
              (maxima-substitute
                *par* psey
@@ -1696,24 +1698,8 @@
 ;; F(a,b;c;w) = 2^(c-1)*gamma(c)*(-w)^((1-c)/2)*P(c-2*b-1,1-c,sqrt(1-w))
 ;;
 ;;
-#+nil
 (defun legf20 (arg-l1 arg-l2 var)
-  (let* ((b (cadr arg-l1))
-	 (c (car arg-l2))
-	 (m (sub 1 c))
-	 (n (mul -1 (add b b m))))
-    ;; m = 1 - c
-    ;; n = -(2*b+1-c) = c - 1 - 2*b
-    (mul (gm (sub 1 m))
-	 (power 2 (mul -1 m))
-	 (power (mul -1 var) (div m 2))
-	 (legen n
-		m
-		(power (sub 1 var) (inv 2))
-		'$p))))
-
-;; F(a,b;a+b+1/2;x)
-(defun legf20 (arg-l1 arg-l2 var)
+  ;; F(a,b;a+b+1/2;x)
   (let* (($radexpand nil)
 	 (b (cadr arg-l1))
 	 (c (car arg-l2))
@@ -1722,32 +1708,20 @@
 	 (n (mul -1 (add b b m))))
     ;; m = 1 - c
     ;; n = -(2*b+1-c) = c - 1 - 2*b
-;    (cond ((and (eq (asksign var) '$positive)
-;		(eq (asksign (sub 1 var)) '$positive))
-	   ;; A&S 15.4.13
-	   ;;
-	   ;; F(a,b;a+b+1/2;x) = 2^(a+b-1/2)*gamma(a+b+1/2)*x^((1/2-a-b)/2)
-	   ;;                     *assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))
-	   ;; This formula is correct for all arguments x.
-	   (mul (power 2 (add a b '((rat simp) -1 2)))
-		(take '(%gamma) (add a b '((rat simp) 1 2)))
-		(power var
-		       (div (sub '((rat simp) 1 2) (add a b))
-			    2))
-		(legen n
-		       m
-		       (power (sub 1 var) '((rat simp) 1 2))
-		       '$p))))
-;	  (t
-;	   (mul (power 2 (add a b (inv -2)))
-;		(gm (add a b (inv 2)))
-;		(power (mul -1 var)
-;		       (div (sub (inv 2) (add a b))
-;			    2))
-;		(legen n
-;		       m
-;		       (power (sub 1 var) (inv 2))
-;		       '$p))))))
+    ;; A&S 15.4.13
+    ;;
+    ;; F(a,b;a+b+1/2;x) = 2^(a+b-1/2)*gamma(a+b+1/2)*x^((1/2-a-b)/2)
+    ;;                     *assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))
+    ;; This formula is correct for all arguments x.
+    (mul (power 2 (add a b '((rat simp) -1 2)))
+	 (take '(%gamma) (add a b '((rat simp) 1 2)))
+	 (power var
+		(div (sub '((rat simp) 1 2) (add a b))
+		     2))
+	 (legen n
+		m
+		(power (sub 1 var) '((rat simp) 1 2))
+		'$p))))
 
 ;; Handle the case a-b = -1/2.
 ;;
@@ -2552,10 +2526,6 @@
 	(t (and (freepar (car exp))
 		(freepar (cdr exp))))))
 
-(defun haspar (exp)
-  (cond ((freepar exp) nil)
-	(t t)))
-
 ;; Confluent hypergeometric function.
 ;;
 ;; F(a;c;z)
@@ -3217,12 +3187,6 @@
 (defun vfvp (exp)
   (m2 exp '(v freevarpar) nil))
 
-
-(defun d*u
-    (exp)
-  (m2 exp
-      '((mtimes)((coefftt)(d freepar))((coefftt)(u haspar)))
-      nil))
 
 (defun fpqform (arg-l1 arg-l2 arg)
   (list '(mqapply)

@@ -382,17 +382,6 @@ sin(y)*(10.0+6*cos(x)),
            )
     tem))
 
-(defun add-axes (pts vert)
-  (let ((origin (/ (length pts) 3)))
-    (loop for i from -3 below 9
-           do
-           (vector-push-extend  (if (eql 0 (mod i 4)) $axes_length 0.0) pts))
-    (loop for i below 15
-           do (vector-push-extend
-               (if (eql 1 (mod i 5)) (+ origin (ceiling i 5))  origin)
-               vert)
-           )))
-
 (defun $rotation1 (phi th)
   (let ((sinph (sin phi))
         (cosph (cos phi))
