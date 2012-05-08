@@ -978,3 +978,20 @@ csign(g(x));
 complex$
 kill(f,g);
 done$
+
+/* Check adding new equaltiy does not make old inequality disappear */
+kill(all);
+done;
+
+assume(notequal(a,b));
+[notequal(a, b)];
+
+is(equal(a,b));
+false;
+
+(assume(equal(a, x+y)), 0);
+0;
+
+is(equal(a,b));
+false;
+

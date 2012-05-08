@@ -1008,7 +1008,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	 (and (maxima-undeclared-arrayp b) (maxima-undeclared-array-meqp a b)))
 	((maxima-undeclared-arrayp b) nil)
 	(t
-	 (let ((z))
+	 (let ((z) (sign))
 	   (setq a (specrepcheck a))
 	   (setq b (specrepcheck b))
 	   (cond ((or (like a b)) (not (member a indefinites)))
@@ -1028,6 +1028,12 @@ relational knowledge is contained in the default context GLOBAL.")
 		 ((or (and (mexptp a) (not (eq '$minf (third a))) (zerop1 b) (eq t (mnqp (second a) 0)))
 		      (and (mexptp b) (not (eq '$minf (third b))) (zerop1 a) (eq t (mnqp (second b) 0))))
 		  nil)
+
+		 ;; lookup in assumption database
+		 ((and (dcompare a b) (eq '$zero sign)))	; dcompare sets sign
+		 ((memq sign '($pos $neg $pn)) nil)
+
+		 ;; if database lookup failed, apply all equality facts
 		 (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
 
 ;; Two arrays are equal (according to MEQP)
