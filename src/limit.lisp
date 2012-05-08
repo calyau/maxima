@@ -31,7 +31,7 @@
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
 		      *zexptsimp? $tlimswitch $logarc taylored logcombed
 		      $exponentialize lhp? lhcount $ratfac genvar complex-limit lnorecurse
-		      loginprod? $limsubst $logabs a context global-assumptions limit-assumptions
+		      loginprod? $limsubst $logabs a context limit-assumptions
 		      limit-top limitp integer-info old-integer-info $keepfloat $logexpand))
 
 (defconstant +behavior-count+ 4)
@@ -98,12 +98,11 @@ It appears in LIMIT and DEFINT.......")
 	  ans))))
 
 (defmfun $limit (&rest args)
-  (let ((global-assumptions ())
-	(limit-assumptions ())
+  (let ((limit-assumptions ())
 	(old-integer-info ())
 	($keepfloat t)
 	(limit-top t))
-    (declare (special global-assumptions limit-assumptions old-integer-info
+    (declare (special limit-assumptions old-integer-info
 		      $keepfloat limit-top))
     (unless limitp
       (setq old-integer-info integer-info)
@@ -246,19 +245,19 @@ It appears in LIMIT and DEFINT.......")
 
 (defun limit-context (var val direction) ;Only works on entry!
   (cond (limit-top
-	 (if (atom var)	; declare and facts don't work on subscripted vars
-	     (mapc #'forget (setq global-assumptions (cdr ($facts var)))))
+;	 (if (atom var)	; declare and facts don't work on subscripted vars
+;	     (mapc #'forget (setq global-assumptions (cdr ($facts var)))))
 	 (assume '((mgreaterp) lim-epsilon 0))
 	 (assume '((mlessp) lim-epsilon 1e-8))
 	 (assume '((mgreaterp) prin-inf 1e+8))
-	 (setq limit-assumptions (make-limit-assumptions global-assumptions var val direction))
+	 (setq limit-assumptions (make-limit-assumptions var val direction))
 	 (setq limit-top ()))
 	(t ()))
   limit-assumptions)
 
-(defun make-limit-assumptions (old-assumptions var val direction)
-  (let ((new-assumptions (use-old-context old-assumptions var val)))
-    (mapc #'assume new-assumptions)
+(defun make-limit-assumptions (var val direction)
+  (let ((new-assumptions)); (use-old-context old-assumptions var val)))
+;    (mapc #'assume new-assumptions)
     (cond ((or (null var) (null val))
 	   ())
 	  ((and (not (infinityp val)) (null direction))
@@ -276,34 +275,6 @@ It appears in LIMIT and DEFINT.......")
 	  (t
 	   ()))))
 
-(defun use-old-context (old-assumptions var val)
-  (setq var (ridofab var))
-  (cond ((null old-assumptions) ())
-	((not (infinityp val))
-	 (do ((list old-assumptions (cdr list))
-	      (pred) (part1) (part2) (assumptions))
-	     ((null list) assumptions)
-	   (setq pred (caar (car list))
-		 part1 (cadr (car list))
-		 part2 (caddr (car list)))
-	   (if (member pred '(mgreaterp mlessp) :test #'eq)
-	       (push (make-assump pred part1 part2 var val)
-		     assumptions))))))
-
-(defun make-assump (pred part1 part2 var val)
-  (cond ((eq part1 var)
-	 (cond ((and (free part2 '$inf)
-		     (free part2 '$minf)
-		     (free part2 '$infinity))
-		`((,pred) ,part1 ,(m+t part2 (m*t -1 val))))
-	       (t `((,pred) ,part1 ,part2))))
-	((eq part2 var)
-	 (cond ((and (free part1 '$inf)
-		     (free part1 '$minf)
-		     (free part1 '$infinity))
-		`((,pred) ,(m+t part1 (m*t -1 val)) ,part2))
-	       (t `((,pred) ,part1 ,part2))))))
-
 (defun restore-assumptions ()
 ;;;Hackery until assume and forget take reliable args. Nov. 9 1979.
 ;;;JIM.
@@ -318,10 +289,7 @@ It appears in LIMIT and DEFINT.......")
 	 (do ((list integer-info (cdr list)))
 	     ((null list) t)
 	   (i-$remove `(,(cadar list) ,(caddar list))))
-	 (setq integer-info old-integer-info)))
-  (do ((assumption-list global-assumptions (cdr assumption-list)))
-      ((null assumption-list) t)
-    (assume (car assumption-list))))
+	 (setq integer-info old-integer-info))))
 
 ;; The optional arg allows the caller to decide on the value of
 ;; preserve-direction.  Default is T, like it used to be.
