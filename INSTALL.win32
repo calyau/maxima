@@ -37,7 +37,7 @@ External Requirements
 8) wxMaxima
 9) Microsoft HTML Help Workshop
 10) Perl 5.8 (ActivePerl)
-11) Python
+11) Python 
 
 Detailed Instructions
 =====================
@@ -46,8 +46,11 @@ The instructions below apply to the maxima release tarball. In order
 to build from the cvs repository, cvs, autoconf and automake are also
 required. Follow the directions in INSTALL.cvs before proceeding.
 
-1) Get a working msys+mingw installation from www.mingw.org. At this
-time (November 2006) it is essential to install the versions of gcc and
+1) Get a working msys+mingw installation from www.mingw.org. 
+
+Option A - gcc-3.3.1 based system
+
+From 2006 until 2012, it was essential to install the versions of gcc and
 binutils listed here to obtain a working gcl.  The files are available
 from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
    a) Get and install MinGW-3.1.0-1.exe
@@ -92,22 +95,36 @@ GNU ld version 2.14.90 20040120
    617472 Tue Jan 20 21:57:52 2004 /mingw/bin/ld.exe
 -----------------------------------------------------------------
 
+Option B - gcc-4.6.2 based system
+
+From early 2012 it has been possible to build maxima using current 
+msys, mingw and gcc-4.6.
+
+a) Download mingw installer mingw-get-inst from http://www.mingw.org/
+b) Run the installer to install mingw and msys
+c) Use the installed mingw-get to add the build dependencies, including
+   - mingw-gcc
+   - mingw-binutils
+   - mingw-make
+   - mingw32-autotools
+
+maxima-5.27.0 was successfully built using
+  MSYS 1.0.17(0.48/3/2) 
+  GNU bash, version 3.1.17
+  GNU Make 3.81
+  gcc.exe (GCC) 4.6.2
+  GNU ld (GNU Binutils) 2.22
+
 2) Get a working GCL 
 
-Get the GCL 2.6.7 release tarball from any GNU mirror or 
-GCL 2.6.8pre from CVS.  CVS date must be November 2006 or later.  
+Get the GCL 2.6.8pre from CVS.  
 See  <http://savannah.gnu.org/projects/gcl/>. 
-Install GCL sources in your MSYS user home directory ~/gcl-2.6.8
 
-Then compile and install it with
+Then compile and install under mingw/msys with
 
-cd ~/gcl-2.6.8
-./configure --enable-ansi --prefix="c:/gcl"
+./configure --enable-ansi
 make
 make install
-
-Exact value of --prefix does not matter but make sure that
-c:\gcl\bin is in the MSYS path.
 
 Check that gcl works by typing gcl at MSYS command line
 -----------------------------------------------------------------------
@@ -141,10 +158,10 @@ Download img.kit from <http://www.tcl.tk/starkits/> and put it in
 <http://www.jrsoftware.org/isinfo.php>. 
 
 7) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
-Version 4.0 patchlevel 0 works. 
+Version 4.6 patchlevel 0 works. 
 Install in your MSYS user home directory in ~/programs/gnuplot 
 
-8) Download the wxMaxima windows binary from <http://wxmaxima.sourceforge.net>.
+8) Compile wxMaxima for windows from <http://wxmaxima.sourceforge.net>.
 Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier, 
 wxMaxima 0.7.0 with Maxima 5.10.0,
 and wxMaxima 0.7.1 with Maxima 5.11.0.
