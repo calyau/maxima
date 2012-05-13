@@ -1248,6 +1248,11 @@
 			 (p ($expand (mul s n))))
 		    (add ($float `((%log) ,s))
 			 ($float `((%log) ,p))))))))
+	((and (eq (caar e) '%erf)
+	      (eq (second e) '$%i))
+	 ;; Handle like erf(%i).  float(%i) (via recur-apply below)
+	 ;; just returns %i, so we never numerically evaluate it.
+	 (complexify (complex-erf (complex 0 1d0))))
 	(t (recur-apply #'$float e))))
 
 (defmfun $coeff (e x &optional (n 1))

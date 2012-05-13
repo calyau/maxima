@@ -2221,3 +2221,10 @@ true;
  */
 limit(tanh(x), x, 0);
 0;
+
+/*
+ * Bug 3526111 - float erf (%i) not working
+ */
+
+closeto(float(erf(%i)) - 1.650425758797543*%i, 1e-15);
+true;
