@@ -219,7 +219,7 @@ maxima-index.lisp: maxima.info build_index.pl
 maxima.html: maxima.texi $(maxima_TEXINFOS)
 	sh extract_categories.sh maxima
 
-contents.hhc: maxima.html
+contents.hhc index.hhk: maxima.html
 	perl ./create_index
 
 include $(top_srcdir)/common.mk
