@@ -462,8 +462,34 @@
 (declare-top (unspecial var subl *last* sign last-exp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Lambert W
+;;; Lambert W function
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; References
+;;
+;; Corless, R. M., Gonnet, D. E. G., Jeffrey, D. J., Knuth, D. E. (1996). 
+;; "On the Lambert W function". Advances in Computational Mathematics 5: 
+;; pp 329-359
+;; 
+;;    http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf.
+;; or http://www.apmaths.uwo.ca/~rcorless/frames/PAPERS/LambertW/
+;;
+;; D. J. Jeffrey, D. E. G. Hare, R. M. Corless
+;; Unwinding the branches of the Lambert W function
+;; The Mathematical Scientist, 21, pp 1-7, (1996)
+;; http://www.apmaths.uwo.ca/~djeffrey/Offprints/wbranch.pdf
+;;
+;; Winitzki, S. Uniform Approximations for Transcendental Functions. 
+;; In Part 1 of Computational Science and its Applications - ICCSA 2003, 
+;; Lecture Notes in Computer Science, Vol. 2667, Springer-Verlag, 
+;; Berlin, 2003, 780-789. DOI 10.1007/3-540-44839-X_82
+;; http://homepages.physik.uni-muenchen.de/~Winitzki/papers/
+;;
+;; Darko Verebic, 
+;; Having Fun with Lambert W(x) Function
+;; arXiv:1003.1628v1, March 2010, http://arxiv.org/abs/1003.1628
+;;
+;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
 
 (defun $lambert_w (z)
   (simplify (list '(%lambert_w) (resimplify z))))
@@ -518,27 +544,53 @@
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
 	;; W(x) is real for x real and x > -1/%e
 	((and (float-numerical-eval-p x) (< (- (/ %e-val)) x))
-	 (lambert-w x))
+	 (lambert-w-k 0 x))
 	;; Complex float x or real float x < -1/%e
 	((complex-float-numerical-eval-p x)
-	 (complexify (lambert-w 
+	 (complexify (lambert-w-k 0
 		      (complex ($float ($realpart x)) ($float ($imagpart x))))))
 	((complex-bigfloat-numerical-eval-p x)
-	 (bfloat-lambert-w x))
+	 (bfloat-lambert-w-k 0 x))
 	(t (list '(%lambert_w simp) x))))
+
+;; An approximation of the k-branch of generalized Lambert W function
+;;   k integer
+;;   z real or complex lisp float
+;; Used as initial guess for Halley's iteration. 
+;; When W(z) is real, ensure that guess is real.
+(defun init-lambert-w-k (k z)
+  (let ( ; parameters for k = +/- 1 near branch pont z=-1/%e
+        (branch-eps 0.2e0)
+	(branch-point (/ -1 (exp 1)))) ; branch pont z=-1/%e
+    (cond 
+      ; For principal branch k=0, use expression by Winitzki
+      ((= k 0) (init-lambert-w-0 z))
+      ; For k=1 branch, near branch point z=-1/%e with im(z) <  0
+      ((and (= k 1)
+	    (< (imagpart z) 0)
+	    (< (abs (- branch-point z)) branch-eps))
+        (lambert-branch-approx z))
+      ; For k=-1 branch, z real with -1/%e < z < 0
+      ; W(z) is real in this range
+      ((and (= k -1) (realp z) (> z branch-point) (< z 0))
+        (init-lambert-w-minus1 z))
+      ; For k=-1 branch, near branch point z=-1/%e with im(z) >= 0
+      ((and (= k -1)
+	    (>= (imagpart z) 0)
+	    (< (abs (- branch-point z)) branch-eps))
+        (lambert-branch-approx z))
+      ; Default to asymptotic expansion Corless et al (4.20)
+      ; W_k(z) = log(z) + 2.pi.i.k - log(log(z)+2.pi.i.k)
+      (t (let ((two-pi-i-k (complex 0.0e0 (* 2 pi k))))
+		 (+ (log z) 
+		    two-pi-i-k 
+		    (* -1 (log (+ (log z) two-pi-i-k )))))))))
 
 ;; Complex value of the principal branch of Lambert's W function in 
 ;; the entire complex plane with relative error less than 1%, given 
 ;; standard branch cuts for sqrt(z) and log(z).
-;;
-;;   Winitzki, S. Uniform Approximations for Transcendental Functions. 
-;;   In Part 1 of Computational Science and its Applications - ICCSA 2003, 
-;;   Lecture Notes in Computer Science, Vol. 2667, Springer-Verlag, 
-;;   Berlin, 2003, 780-789. DOI 10.1007/3-540-44839-X_82
-;;
-;;   From http://homepages.physik.uni-muenchen.de/~Winitzki/papers/
-
-(defun init-lambert-w (z)
+;; Winitzki (2003)
+(defun init-lambert-w-0 (z)
   (let ((a 2.344e0) (b 0.8842e0) (c 0.9294e0) (d 0.5106e0) (e -1.213e0)
      (y (sqrt (+ (* 2 %e-val z ) 2)) ) )   ; y=sqrt(2*%e*z+2) 
     ; w = (2*log(1+B*y)-log(1+C*log(1+D*y))+E)/(1+1/(2*log(1+B*y)+2*A)
@@ -549,16 +601,42 @@
       (+ 1
 	 (/ 1 (+ (* 2 (log (+ 1 (* b y)))) (* 2 a)))))))
 
-;; Algorithm based in part on
+;; Approximate k=-1 branch of Lambert's W function over -1/e < z < 0. 
+;; W(z) is real, so we ensure the starting guess for Halley iteration 
+;; is also real.
+;; Verebic (2010)
+(defun init-lambert-w-minus1 (z)
+  (cond 
+    ((not (realp z)) 
+      (merror "z not real in init-lambert-w-minus1"))
+    ((or (< z (/ -1 (exp 1))) (plusp z))
+      (merror "z outside range of approximation in init-lambert-w-minus1"))
+    ;; In the region where W(z) is real
+    ;; -1/e < z < C, use power series about branch point -1/e ~ -0.36787
+    ;; C = -0.3 seems a reasonable crossover point
+    ((< z -0.3)
+      (lambert-branch-approx z))
+    ;; otherwise C <= z < 0, use iteration W(z) ~ ln(-z)-ln(-W(z))
+    ;; nine iterations are sufficient over -0.3 <= z < 0 
+    (t (let* ( (ln-z (log (- z))) (maxiter 9) (w ln-z) k)
+	 (dotimes (k maxiter w)
+            (setq w (- ln-z (log (- w)))))))))
+
+;; Approximate Lambert W(k,z) for k=1 and k=-1 near branch point z=-1/%e
+;; using power series in y=-sqrt(2*%e*z+2)
+;;   for im(z) < 0,  approximates k=1 branch
+;;   for im(z) >= 0, approximates k=-1  branch
 ;;
-;; Corless, R. M., Gonnet, D. E. G., Jeffrey, D. J., Knuth, D. E. (1996). 
-;; "On the Lambert W function". Advances in Computational Mathematics 5: 
-;; pp 329-359
-;; 
-;;    http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf.
-;; or http://www.apmaths.uwo.ca/~rcorless/frames/PAPERS/LambertW/
+;; Corless et al (1996) (4.22)
+;; Verebic (2010)
 ;;
-;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
+;; z is a lisp real or complex float
+(defun lambert-branch-approx (z)
+  (let ((y (- (sqrt (+ (* 2 (exp 1) z ) 2)))) ; y=-sqrt(2*%e*z+2)
+    (b0 -1) (b1 1) (b2 -1/3) (b3 11/72))
+    (+ b0 (* y (+ b1 (* y (+ b2 (* b3 y))))))))
+
+;; Algorithm based in part on Corless et al (1996).
 ;;
 ;; It is Halley's iteration applied to w*exp(w).
 ;;
@@ -572,39 +650,68 @@
 ;; The algorithm has cubic convergence.  Once convergence begins, the 
 ;; number of digits correct at step k is roughly 3 times the number 
 ;; which were correct at step k-1.
-
-(defun lambert-w (z &key (maxiter 100) (prec 1e-14))
-  (let ((w (init-lambert-w z)))
-    (dotimes (k maxiter)
-      (let* ((we (* w (exp w)))
-	     (w1e (* (1+ w)
-		     (exp w)))
-	     (delta (/ (- we z)
-		       (- w1e (/ (* (+ w 2)
-				    (- we z))
-				 (+ 2 (* 2 w)))))))
-	(when (<= (abs (/ delta w)) prec)
-	  (return w))
-	(decf w delta)))
+(defun lambert-w-k (k z &key (maxiter 10) (prec 5e-15))
+  (let ((w (init-lambert-w-k k z)) we w1e delta)
+    (dotimes (i maxiter (merror "lambert-w-k did not converge"))
+      (setq we (* w (exp w)))
+      (setq w1e (* (1+ w) (exp w)))
+      (setq delta (/ (- we z)
+		     (- w1e (/ (* (+ w 2) (- we z)) (+ 2 (* 2 w))))))
+      (decf w delta)
+      (when (<= (abs (/ delta w)) prec) (return)))
+    ;; Check iteration converged to correct branch
+    (check-lambert-w-k k w z)
     w))
+
+;; Check iteration converged to the correct branch
+;; W_k(z) + ln W_k(z) = ln z, for k = -1 and z in [-1/e,0)
+;;                    = ln z + 2 pi i k, otherwise
+;; See Jeffrey, Hare, Corless (1996), eq (12)
+;; k integer
+;; z, w lisp real or complex float
+(defun check-lambert-w-k (k w z)
+  (let ((tolerance 1.0e-10))
+  (if
+     (cond 
+       ;; k=-1 branch with z and w real.
+      ((and (= k -1) (realp z) (> z (/ -1 (exp 1))) (minusp z))
+       (if (and (realp w) 
+		(<= w -1)
+		(< (abs (+ w (log w) (- (log z)))) tolerance))
+	   t
+	   nil))
+       (t
+         ; i k =  (W_k(z) + ln W_k(z) - ln(z)) / 2 pi
+        (let (ik)
+	  (setq ik (/ (+ w (log w) (- (log z))) (* 2 pi)))
+	  (if (and (< (realpart ik) tolerance)
+		   (< (abs (- k (imagpart ik))) tolerance))
+	    t
+	    nil))))
+      t
+      (merror "Lambert W iteration converged to wrong branch"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; This routine is a translation of the float version for complex
 ;;; Bigfloat numbers.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun bfloat-lambert-w (z)
+(defun bfloat-lambert-w-k (k z)
   (let ((prec (power ($bfloat 10.0) (- $fpprec)))
         (maxiter 500) ; arbitrarily chosen, we need a better choice
 	(fpprec (add fpprec 8)) ; Increase precision slightly
         w)
 
   ;; Get an initial estimate.  
-  ;; if abs(z) < 2^332 ~ 1.0e100 use W(z) ~ lambert_w(float(z))
-  ;; For large z,                    W(z) ~ log(z)-log(log(z))
+  ;; if abs(z) < 2^332 ~ 1.0e100 use W_k(z) = generalized_lambert_w(k,float(z))
+  ;; For large z, use Corless et al (4.20)
+  ;;              W_k(z) = log(z) + 2.pi.i.k - log(log(z)+2.pi.i.k)
   (setq w 
 	(if (eq ($sign (sub ($cabs z) ($bfloat (power 2 332)))) '$neg)
-	    ($bfloat ($lambert_w ($float z)))
-	    (let ((log-z ($log z))) (sub log-z ($log log-z)))))
+	    ($bfloat ($generalized_lambert_w k ($float z)))
+	    (let ((log-z ($log z))
+		  (two-pi-i-k (mul 2 '$%pi '$%i k)))
+	      (sub (add log-z two-pi-i-k) 
+		   ($log (add log-z two-pi-i-k))))))
 
   (dotimes (k maxiter)
     (let* ((one ($bfloat 1))
@@ -620,3 +727,64 @@
 	(return w))
       (setq w (sub w delta))))
   w))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Generalized Lambert W function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $generalized_lambert_w (k z)
+  (simplify (list '(%generalized_lambert_w) (resimplify k) (resimplify z))))
+
+;;; Set properties to give full support to the parser and display
+(defprop $generalized_lambert_w %generalized_lambert_w alias)
+(defprop $generalized_lambert_w %generalized_lambert_w verb)
+(defprop %generalized_lambert_w $generalized_lambert_w reversealias)
+(defprop %generalized_lambert_w $generalized_lambert_w noun)
+
+;;; lambert_w is a simplifying function
+(defprop %generalized_lambert_w simp-generalized-lambertw operators)
+
+;;; Derivative of lambert_w
+(defprop %generalized_lambert_w
+  ((k x)
+   nil
+   ((mtimes)
+    ((mexpt) $%e ((mtimes ) -1 ((%generalized_lambert_w) k x)))
+    ((mexpt) ((mplus) 1 ((%generalized_lambert_w) k x)) -1)))
+  grad)
+
+;;; Integral of lambert_w
+;;; integrate(W(k,x),x) := x*(W(k,x)^2-W(k,x)+1)/W(k,x)
+(defprop %generalized_lambert_w
+  ((k x)
+   nil
+   ((mtimes)
+    x
+    ((mplus) 
+     ((mexpt) ((%generalized_lambert_w) k x) 2) 
+     ((mtimes) -1 ((%generalized_lambert_w) k x))
+     1)
+    ((mexpt) ((%generalized_lambert_w) k x) -1)))
+  integral)
+
+(defun simp-generalized-lambertw (expr ignored z)
+  (declare (ignore ignored))
+  (twoargcheck expr)
+  (let ((k (simpcheck (cadr expr) z))
+        (x (simpcheck (caddr expr) z)))
+    (if (integerp k)
+       (cond
+        ;; W(0,x) real for x > -1/%e 
+	((and (= k 0) (float-numerical-eval-p x) (< (- (/ %e-val)) x))
+	 (lambert-w-k 0 x))
+        ;; W(-1,x) real for -1/%e < x < 0
+        ((and (= k -1) (float-numerical-eval-p x) (< (- (/ %e-val)) x) (< x 0))
+	 (lambert-w-k -1 x))
+	;; W(k,x) is complex
+	((complex-float-numerical-eval-p x)
+	 (complexify (lambert-w-k k
+		      (complex ($float ($realpart x)) ($float ($imagpart x))))))
+	((complex-bigfloat-numerical-eval-p x)
+	 (bfloat-lambert-w-k k x))
+	(t (list '(%generalized_lambert_w simp) k x)))
+      (list '(%generalized_lambert_w simp) k x))))
