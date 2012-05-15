@@ -3476,6 +3476,27 @@ closeto(
   0.5012537510700691773177801688515861486945632498553288,
   6.4e-12);
 true;
-  
+
+/* Check accuracy on the negative real axis.
+ * See Bug  3526359 - gamma_incomplete(1/5,-32.0) not accurate
+ */
+relerror(
+  gamma_incomplete(1/5,-32.0),
+  -4.0986398326716649399d12 - %i*2.9778361454160762231d12,
+  1e-15);
+true;
+
+relerror(
+  gamma_incomplete(10,-100d0),
+  subst(x=-100d0, block([gamma_expand : true], gamma_incomplete(10,x))),
+  8.78e-15);
+true;
+      
+relerror(
+  gamma_incomplete(10,-100b0),
+  subst(x=-100b0, block([gamma_expand : true], gamma_incomplete(10,x))),
+  3.57b-64);
+true;
+      
 (fpprec:oldfpprec,done);
 done;

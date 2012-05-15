@@ -700,6 +700,77 @@
 
       (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
 
+(in-package :bigfloat)
+
+(defvar *debug-cf-eval*
+  nil
+  "When true, enable some debugging prints when evaluating a
+  continued fraction.")
+
+;; Max number of iterations allowed when evaluating the continued
+;; fraction.  When this is reached, we assume that the continued
+;; fraction did not converge.
+(defvar *max-cf-iterations*
+  10000
+  "Max number of iterations allowed when evaluating the continued
+  fraction.  When this is reached, we assume that the continued
+  fraction did not converge.")
+
+;; Lentz's algorithm for evaluating continued fractions.
+;;
+;; Let the continued fraction be:
+;;
+;;      a1    a2    a3
+;; b0 + ----  ----  ----
+;;      b1 +  b2 +  b3 +
+;;
+;;
+;; Then LENTZ expects two functions.  The first returns the b term and
+;; the second returns the a terms as above for a give n.
+(defun lentz (bf af)
+  (let ((tiny-value-count 0))
+    (flet ((value-or-tiny (v)
+	     (if (zerop v)
+		 (progn
+		   (incf tiny-value-count)
+		   (etypecase v
+		     ((or double-float cl:complex)
+		      (sqrt least-positive-normalized-double-float))
+		     ((or bigfloat complex-bigfloat)
+		      (sqrt (expt 10 (- maxima::$fpprec))))))
+		 v)))
+      (let* ((f (value-or-tiny (funcall bf 0)))
+	     (c f)
+	     (d 0)
+	     (eps (epsilon f)))
+	(loop
+	   for j from 1 upto *max-cf-iterations*
+	   for an = (funcall af j)
+	   for bn = (funcall bf j)
+	   do (progn
+		(setf d (value-or-tiny (+ bn (* an d))))
+		(setf c (value-or-tiny (+ bn (/ an c))))
+		(when *debug-cf-eval*
+		  (format t "~&j = ~d~%" j)
+		  (format t "  an = ~s~%" an)
+		  (format t "  bn = ~s~%" bn)
+		  (format t "  c  = ~s~%" c)
+		  (format t "  d  = ~s~%" d))
+		(let ((delta (/ c d)))
+		  (setf d (/ d))
+		  (setf f (* f delta))
+		  (when *debug-cf-eval*
+		    (format t "  dl= ~S (|dl - 1| = ~S)~%" delta (abs (1- delta)))
+		    (format t "  f = ~S~%" f))
+		  (when (<= (abs (- delta 1)) eps)
+		    (return-from lentz (values f j tiny-value-count)))))
+	   finally
+	     (error 'simple-error
+		    :format-control "~<Continued fraction failed to converge after ~D iterations.~%    Delta = ~S~>"
+		    :format-arguments (list *max-cf-iterations* (/ c d))))))))
+
+(in-package :maxima)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Numerical evaluation of the Incomplete Gamma function
 ;;;
@@ -785,10 +856,12 @@
 		    ;; Easy way failed, so use the log form.
 		    (exp (- (* a (log x))
 			    x)))))))
-    (multiple-value-bind (result method)
+    (multiple-value-bind (result lower-incomplete-tail-p)
 	(%gamma-incomplete a x)
-      (cond (method
-	     ;; Series used (which returns the integral from 0 to x).
+      (cond (lower-incomplete-tail-p
+	     ;; %gamma-incomplete compute the lower incomplete gamma
+	     ;; function, so we need to substract that from gamma(a),
+	     ;; more or less.
 	     (cond (regularized
 		    (- 1 (* result factor)))
 		   ((complexp a)
@@ -809,36 +882,65 @@
     (when *debug-gamma*
       (format t "~&GAMMA-INCOMPLETE with ~A and ~A~%" a x))
     (cond
-      ;; The series expansion is done for x within a circle with a radius
-      ;; *gamma-radius*+abs(realpart(a)), for all x which are on the negative 
-      ;; real axis and for all x which have an angle between [3*%pi/4,5*%pi/4] 
+      ;; The series expansion is done for x within a circle with a
+      ;; radius *gamma-radius*+abs(realpart(a)).  Otherwise a
+      ;; continued fraction is used.
       ((and (> (abs x) (+ *gamma-radius*
-                          (if (> (realpart a) 0.0) (realpart a) 0.0)))
-            (not (and (< (realpart x) 0)
-                      (< (abs (imagpart x))
-                         (* *gamma-imag* (abs (realpart x)))))))
-       ;; Expansion in continued fractions
-       (when *debug-gamma* 
-         (format t "~&GAMMA-INCOMPLETE in continued fractions~%"))
-       (do* ((i 1 (+ i 1))
-             (an (- a 1.0) (* i (- a i)))
-             (b (+ 3.0 x (- a)) (+ b 2.0))
-             (c (/ 1.0 gm-min))
-             (d (/ 1.0 (- b 2.0)))
-             (h d)
-             (del 0.0))
-            ((> i gm-maxit)
-             (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
-         (setq d (+ (* an d) b))
-         (when (< (abs d) gm-min) (setq d gm-min))
-         (setq c (+ b (/ an c)))
-         (when (< (abs c) gm-min) (setq c gm-min))
-         (setq d (/ 1.0 d))
-         (setq del (* d c))
-         (setq h (* h del))
-         (when (< (abs (- del 1.0)) gm-eps)
-	   ;; Return nil to indicate we used the continued fraction.
-           (return (values h nil)))))
+                          (if (> (realpart a) 0.0) (realpart a) 0.0))))
+       (cond ((and (< (realpart x) 0)
+		   (< (abs (imagpart x))
+		      (* *gamma-imag* (abs (realpart x)))))
+	      ;; For x near the negative real axis, use the
+	      ;; relationship gamma_incomplete(a,z) = gamma(a) -
+	      ;; gamma_incomplete_lower(a,z), where
+	      ;; gamma_incomplete_lower(a,z) is the lower poart of the
+	      ;; incomplete gamma function.  We can evaluate that
+	      ;; using a continued fraction from
+	      ;; http://functions.wolfram.com/06.06.10.0009.01.  (Note
+	      ;; that the alternative fraction,
+	      ;; http://functions.wolfram.com/06.06.10.0007.01,
+	      ;; appears to be less accurate.)
+	      ;;
+	      ;; Also note that this appears to be valid for all
+	      ;; values of x (real or complex), but we don't want to
+	      ;; use this everywhere for gamma_incomplete.  Consider
+	      ;; what happens for large real x.  gamma_incomplete(a,x)
+	      ;; is small, but gamma_incomplete(a,x) = gamma(x) - cf
+	      ;; will have large roundoff errors.
+	      (when *debug-gamma*
+		(format t "~&GAMMA-INCOMPLETE in continued fractions for lower integral~%"))
+	      (let ((a (bigfloat:to a))
+		     (x (bigfloat:to x)))
+		(values (/ (bigfloat::lentz #'(lambda (n)
+						     (+ n a))
+						 #'(lambda (n)
+						     (if (evenp n)
+							 (* (ash n -1) x)
+							 (- (* (+ a (ash n -1)) x))))))
+			t)))
+	     (t
+	      ;; Expansion in continued fractions for gamma_incomplete.
+	      (when *debug-gamma* 
+		(format t "~&GAMMA-INCOMPLETE in continued fractions~%"))
+	      (do* ((i 1 (+ i 1))
+		    (an (- a 1.0) (* i (- a i)))
+		    (b (+ 3.0 x (- a)) (+ b 2.0))
+		    (c (/ 1.0 gm-min))
+		    (d (/ 1.0 (- b 2.0)))
+		    (h d)
+		    (del 0.0))
+		   ((> i gm-maxit)
+		    (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
+		(setq d (+ (* an d) b))
+		(when (< (abs d) gm-min) (setq d gm-min))
+		(setq c (+ b (/ an c)))
+		(when (< (abs c) gm-min) (setq c gm-min))
+		(setq d (/ 1.0 d))
+		(setq del (* d c))
+		(setq h (* h del))
+		(when (< (abs (- del 1.0)) gm-eps)
+		  ;; Return nil to indicate we used the continued fraction.
+		  (return (values h nil)))))))
       (t
        ;; Expansion in a series
        (when *debug-gamma* 
@@ -865,40 +967,57 @@
          (gm-min (mul gm-eps gm-eps))
          ($ratprint nil))
     (cond
-      ((and (eq ($sign x) '$pos)
-            (eq ($sign (sub (simplify (list '(mabs) x))
-                            (add *gamma-radius*
-                                 (if (eq ($sign a) '$pos) a 0.0))))
-                '$pos))
-       ;; Expansion in continued fractions of the Incomplete Gamma function
-       (do* ((i 1 (+ i 1))
-             (an (sub a 1.0) (mul i (sub a i)))
-             (b (add 3.0 x (mul -1 a)) (add b 2.0))
-             (c (div 1.0 gm-min))
-             (d (div 1.0 (sub b 2.0)))
-             (h d)
-             (del 0.0))
-            ((> i gm-maxit)
-             (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
-         (when *debug-gamma* 
-           (format t "~&in coninued fractions:~%")
-           (format t "~&   : i = ~A~%" i)
-           (format t "~&   : h = ~A~%" h))
-         (setq d (add (mul an d) b))
-         (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
-           (setq d gm-min))
-         (setq c (add b (div an c)))
-         (when (eq ($sign (sub (simplify (list '(mabs) c)) gm-min)) '$neg)
-           (setq c gm-min))
-         (setq d (div 1.0 d))
-         (setq del (mul d c))
-         (setq h (mul h del))
-         (when (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) gm-eps))
-                   '$neg)
-           (return 
-             (mul h
-                  (power x a) 
-                  (power ($bfloat '$%e) (mul -1 x)))))))
+      ((eq ($sign (sub (simplify (list '(mabs) x))
+		       (add *gamma-radius*
+			    (if (eq ($sign a) '$pos) a 0.0))))
+	   '$pos)
+       (cond
+	 ((and (eq ($sign x) '$pos))
+	  ;; Expansion in continued fractions of the Incomplete Gamma function
+	  (do* ((i 1 (+ i 1))
+		(an (sub a 1.0) (mul i (sub a i)))
+		(b (add 3.0 x (mul -1 a)) (add b 2.0))
+		(c (div 1.0 gm-min))
+		(d (div 1.0 (sub b 2.0)))
+		(h d)
+		(del 0.0))
+	       ((> i gm-maxit)
+		(merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
+	    (when *debug-gamma* 
+	      (format t "~&in coninued fractions:~%")
+	      (format t "~&   : i = ~A~%" i)
+	      (format t "~&   : h = ~A~%" h))
+	    (setq d (add (mul an d) b))
+	    (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
+	      (setq d gm-min))
+	    (setq c (add b (div an c)))
+	    (when (eq ($sign (sub (simplify (list '(mabs) c)) gm-min)) '$neg)
+	      (setq c gm-min))
+	    (setq d (div 1.0 d))
+	    (setq del (mul d c))
+	    (setq h (mul h del))
+	    (when (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) gm-eps))
+		      '$neg)
+	      (return 
+		(mul h
+		     (power x a) 
+		     (power ($bfloat '$%e) (mul -1 x)))))))
+	 (t
+	  (format t "new stuff~%")
+	  (sub (simplify (list '(%gamma) a))
+	       (mul (power x a)
+		    (power ($bfloat '$%e) (mul -1 x))
+		    (let ((a (bigfloat:to a))
+			  (x (bigfloat:to x)))
+		      (to (bigfloat:/
+			   (bigfloat::lentz
+			    #'(lambda (n)
+				(bigfloat:+ n a))
+			    #'(lambda (n)
+				(if (evenp n)
+				    (bigfloat:* (ash n -1) x)
+				    (bigfloat:- (bigfloat:* (bigfloat:+ a (ash n -1))
+							    x)))))))))))))
 
       (t
        ;; Series expansion of the Incomplete Gamma function
