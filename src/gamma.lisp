@@ -700,77 +700,6 @@
 
       (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
 
-(in-package :bigfloat)
-
-(defvar *debug-cf-eval*
-  nil
-  "When true, enable some debugging prints when evaluating a
-  continued fraction.")
-
-;; Max number of iterations allowed when evaluating the continued
-;; fraction.  When this is reached, we assume that the continued
-;; fraction did not converge.
-(defvar *max-cf-iterations*
-  10000
-  "Max number of iterations allowed when evaluating the continued
-  fraction.  When this is reached, we assume that the continued
-  fraction did not converge.")
-
-;; Lentz's algorithm for evaluating continued fractions.
-;;
-;; Let the continued fraction be:
-;;
-;;      a1    a2    a3
-;; b0 + ----  ----  ----
-;;      b1 +  b2 +  b3 +
-;;
-;;
-;; Then LENTZ expects two functions.  The first returns the b term and
-;; the second returns the a terms as above for a give n.
-(defun lentz (bf af)
-  (let ((tiny-value-count 0))
-    (flet ((value-or-tiny (v)
-	     (if (zerop v)
-		 (progn
-		   (incf tiny-value-count)
-		   (etypecase v
-		     ((or double-float cl:complex)
-		      (sqrt least-positive-normalized-double-float))
-		     ((or bigfloat complex-bigfloat)
-		      (sqrt (expt 10 (- maxima::$fpprec))))))
-		 v)))
-      (let* ((f (value-or-tiny (funcall bf 0)))
-	     (c f)
-	     (d 0)
-	     (eps (epsilon f)))
-	(loop
-	   for j from 1 upto *max-cf-iterations*
-	   for an = (funcall af j)
-	   for bn = (funcall bf j)
-	   do (progn
-		(setf d (value-or-tiny (+ bn (* an d))))
-		(setf c (value-or-tiny (+ bn (/ an c))))
-		(when *debug-cf-eval*
-		  (format t "~&j = ~d~%" j)
-		  (format t "  an = ~s~%" an)
-		  (format t "  bn = ~s~%" bn)
-		  (format t "  c  = ~s~%" c)
-		  (format t "  d  = ~s~%" d))
-		(let ((delta (/ c d)))
-		  (setf d (/ d))
-		  (setf f (* f delta))
-		  (when *debug-cf-eval*
-		    (format t "  dl= ~S (|dl - 1| = ~S)~%" delta (abs (1- delta)))
-		    (format t "  f = ~S~%" f))
-		  (when (<= (abs (- delta 1)) eps)
-		    (return-from lentz (values f j tiny-value-count)))))
-	   finally
-	     (error 'simple-error
-		    :format-control "~<Continued fraction failed to converge after ~D iterations.~%    Delta = ~S~>"
-		    :format-arguments (list *max-cf-iterations* (/ c d))))))))
-
-(in-package :maxima)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Numerical evaluation of the Incomplete Gamma function
 ;;;
@@ -778,7 +707,10 @@
 ;;;  bfloat-gamma-incomplete (a z)         - bigfloat
 ;;;  complex-bfloat-gamma-incomplete (a z) - complex bigfloat
 ;;;
-;;;  Expansion in a power series for realpart(z) < 0 and realpart(z) > 1.0
+;;;  Expansion in a power series for abs(x) < R, where R is
+;;;  *gamma-radius* + real(a) if real(a) > 0 or *gamma-radius*
+;;;  otherwise.
+;;;
 ;;;  (A&S 6.5.29):
 ;;;
 ;;;                            inf
@@ -796,16 +728,36 @@
 ;;;
 ;;; gamma(a,z) = z^a * expintegral_e(1-a,z)
 ;;;
-;;; Expansion in continued fractions for realpart(z) > 1.0 (A&S 6.5.31):
+;;; When the series is not used, two forms of the continued fraction
+;;; are used.  When z is not near the negative real axis use the
+;;; continued fractions (A&S 6.5.31):
 ;;;
 ;;;                              1   1-a   1   2-a   2
-;;;  gamma(a,z) = exp(-x) z^a *( --  ---  ---  ---  --- ... )  
+;;;  gamma(a,z) = exp(-z) z^a *( --  ---  ---  ---  --- ... )  
 ;;;                              z+  1+   z+   1+   z+ 
 ;;;
 ;;; The accuracy is controlled by *gamma-incomplete-eps* for double float
 ;;; precision. For bigfloat precision epsilon is 10^(-$fpprec). The expansions
 ;;; in a power series or continued fractions stops if *gamma-incomplete-maxit*
 ;;; is exceeded and an Maxima error is thrown.
+;;;
+;;; The above fraction does not converge on the negative real axis and
+;;; converges very slowly near the axis.  In this case, use the
+;;; relationship
+;;;
+;;;  gamma(a,z) = gamma(a) - gamma_lower(a,z)
+;;;
+;;; The continued fraction for gamma_incomplete_lower(a,z) is
+;;; (http://functions.wolfram.com/06.06.10.0009.01):
+;;;
+;;;  gamma_lower(a,z) = exp(-z) * z^a / cf(a,z)
+;;;
+;;; where
+;;;
+;;;                -a*z   z    (a+1)*z   2*z  (a+2)*z
+;;;  cf(a,z) = a + ----  ----  -------  ----  -------
+;;;                a+1+  a+2-  a+3+     a+4-   a+5+
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *gamma-incomplete-maxit* 10000)
@@ -910,13 +862,15 @@
 	      (when *debug-gamma*
 		(format t "~&GAMMA-INCOMPLETE in continued fractions for lower integral~%"))
 	      (let ((a (bigfloat:to a))
-		     (x (bigfloat:to x)))
+		    (x (bigfloat:to x))
+		    (bigfloat::*debug-cf-eval* *debug-gamma*)
+		    (bigfloat::*max-cf-iterations* *gamma-incomplete-maxit*))
 		(values (/ (bigfloat::lentz #'(lambda (n)
-						     (+ n a))
-						 #'(lambda (n)
-						     (if (evenp n)
-							 (* (ash n -1) x)
-							 (- (* (+ a (ash n -1)) x))))))
+						(+ n a))
+					    #'(lambda (n)
+						(if (evenp n)
+						    (* (ash n -1) x)
+						    (- (* (+ a (ash n -1)) x))))))
 			t)))
 	     (t
 	      ;; Expansion in continued fractions for gamma_incomplete.
