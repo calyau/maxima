@@ -13,8 +13,7 @@
 
 
 load("basic");
-load("abs_integrate");
-
+if get('abs_integrate,'version) = false then load("abs_integrate.mac")$
 
 /* The function radcan isn't idempotent for some expressions that you might think
    that it should be; for example

@@ -254,32 +254,6 @@ subexpressions of the form @math{signum(p) * signum(q)} by
 
 @end deffn
 
-
-@deffn {Macro} simp_assuming (@var{e}, @var{f_1}, @var{f_2}, ..., @var{f_n})
-
-Appended the facts @math{f_1, f_2, ..., f_n} to the current context and simplify
-@math{e}. The facts are removed before returning the simplified expression @math{e}.
-
-@example
-(%i2) simp_assuming(x + abs(x), x < 0);
-(%o2) 0
-@end example
-The facts in the current context aren't ignored:
-@example
-(%i3) assume(x > 0)$
-(%i4) simp_assuming(x + abs(x),x < 0);
-(%o4) 2*x
-@end example
-Since @code{simp_assuming} is a macro, effectively @code{simp_assuming} quotes is arguments;
-this allows
-@example
-(%i5) simp_assuming(asksign(p), p < 0);
-(%o5) neg
-@end example
-@b{To use} @file{load(abs_integrate)}
-
-@end deffn
-
 @deffn {Function} conditional_integrate (@var{e}, @var{x})
 
 For an integrand with one or more parameters, this function tries to determine an
