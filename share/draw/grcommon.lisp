@@ -318,9 +318,6 @@
 (defun hex-to-rgb (str)
   (format nil "rgb '~a'" str))
 
-(defun hex-to-xhex (str)
-  (concatenate 'string "x" (subseq str 1)))
-
 (defun update-color (opt val)
   (let ((str (atom-to-downcased-string val)))
     (unless (correct-color str)
