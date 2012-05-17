@@ -29,15 +29,6 @@ extradocinstall:
 $(distdir).tar.gz: Makefile.am
 	$(MAKE) dist
 
-if WIN32
-# Windows installer.  Need local copy of gcc if using gcl
-iss: extradocinstall
-if GCL
-	$(MAKE) -C interfaces/xmaxima/win32 gcccopy
-endif
-	$(MAKE) -C interfaces/xmaxima/win32 install
-endif 
-
 # Build the Maxima rpms. Optionally, use
 #     make rpm SUDO=sudo
 # to use sudo to wrap the commands. The user must have sudo permissions
@@ -45,3 +36,26 @@ endif
 rpm: $(distdir).tar.gz
 	$(SUDO) cp $(distdir).tar.gz /usr/src/redhat/SOURCES && \
 	$(SUDO) rpmbuild -ba maxima.spec
+
+if WIN32
+### Windows installer ###
+GNUPLOTDIR = /c/programs/gnuplot
+WXMAXIMADIR = /c/programs/wxMaxima
+
+# Windows installer.  Need local copy of gcc if using gcl
+iss: extradocinstall gnuplot wxmaxima
+if GCL
+	$(MAKE) -C interfaces/xmaxima/win32 gcccopy
+endif
+	$(MAKE) -C interfaces/xmaxima/win32 install
+
+# Install the gnuplot binary files
+gnuplot: 
+	mkdir -p $(prefix)/gnuplot
+	cp -rf $(GNUPLOTDIR)/bin/* $(prefix)/gnuplot
+
+# Install wxMaxima
+wxmaxima:
+	cp -rf $(WXMAXIMADIR) $(prefix)/wxMaxima
+
+endif 
