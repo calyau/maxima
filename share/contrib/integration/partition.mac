@@ -83,16 +83,16 @@ result:false],
    factors:second(lists),
    for k in factors do
     if not atom(k) and
-      (thefuns:intable[inpart(k,0)])#false and
+      (thefuns:intable[inpart(k,0)]) # false and
       (thelist:apply(thefuns,inargs(k)))#false
      then( [int,df]:thelist,
-           if df # 0 and freeof(%voi,therest:ratsimp(exp/k/df))
+           if notequal(df,0) and freeof(%voi,therest:ratsimp(exp/k/df))
                then (result:(therest*int),
                             return())),
    /*if nothing of form f(u)du worked, then try matching u^1*u'-> u^2/2 */
   if result=false then
       for k in factors do (
-          if diff(k,%voi) # 0 and freeof(%voi,therest:ratsimp(exp/k/diff(k,%voi)))
+          if notequal(diff(k,%voi),0) and freeof(%voi,therest:ratsimp(exp/k/diff(k,%voi)))
                then (result:(therest*k^2/2),
                             return())),
   return(result))$

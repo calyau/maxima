@@ -130,5 +130,79 @@ integrate(lambert_w(1/x),x);
 taylor(lambert_w(x),x,0,6);
 x-x^2+3*x^3/2-(8*x^4/3)+125*x^5/24-(54*x^6/5);
 
+/******************************************************************************
+  Tests for Generalized Lambert W function
+******************************************************************************/
+
+closeto(generalized_lambert_w(0,-0.25),-0.35740295618138890306,1.0e-16);
+true;
+
+closeto(generalized_lambert_w(0,3.0+2*%i),
+  1.12605402258467335157 + 0.31512993765865848403*%i,1.0e-16);
+true;
+
+closeto(generalized_lambert_w(0,-0.25),-0.35740295618138890306,1.0e-16);
+true;
+
+/* This point -753/2048 is slightly greater than the branch cut at x=-1/%e.  
+   Known difficult region. */
+closeto(generalized_lambert_w(-1,-753.0/2048),-1.033649565301979,5.0e-15);
+true;
+
+closeto(generalized_lambert_w(-1,-754.0/2048),
+   -0.99948440323971 - 0.039327227034759*%i,5.0e-15);
+true;
+
+closeto(generalized_lambert_w(1,-753.0/2048),
+  -3.089416043057986+7.461420464927938*%i,5.0e-15);
+true;
+
+closeto(generalized_lambert_w(1,-754.0/2048),
+  -3.088042730569348+7.461585404728464*%i,5.0e-15);
+true;
+
+closeto(generalized_lambert_w(1,-754.0b0/2048),
+ -3.088042730569348561456014556706168490039090862315553536854637271843252771228714625b0
+ +7.461585404728464111653134458076750679263104524925586270112477441975032123188737473b0*%i,
+ 1.0b-77);
+true;
+
+/* Check an argument > most-positive-double-float ~ 1.0e308 */
+closeto(generalized_lambert_w(0,1.0b1000),
+2294.846671683506869652792785993616789973426699478802684415757740164730983851156757b0,
+1.0b-77);
+true;
+
+closeto(generalized_lambert_w(0,1.0b1000*%i),
+  2.294846671449550599071991520727747213463470638397366444770394873636319358115746758b3
+ +1.570112136469240112764525899485121673623387222840770033671975542758566442609326195b0*%i 
+ ,1.0b-77);
+true;
+
+
+/* Arguments that are not evaluated numerically */
+generalized_lambert_w(3,1/2);
+generalized_lambert_w(3,1/2);
+
+generalized_lambert_w(1/2,3.0);
+generalized_lambert_w(1/2,3.0);
+
+generalized_lambert_w(0.5,3.0);
+generalized_lambert_w(0.5,3.0);
+
+generalized_lambert_w(1.0,3.0);
+generalized_lambert_w(1.0,3.0);
+
+generalized_lambert_w(%pi,3.0);
+generalized_lambert_w(%pi,3.0);
+
+diff(generalized_lambert_w(n,x),x);
+%e^-generalized_lambert_w(n,x)/(generalized_lambert_w(n,x)+1);
+
+integrate(generalized_lambert_w(n,x),x);
+(generalized_lambert_w(n,x)^2-generalized_lambert_w(n,x)+1)*x
+ /generalized_lambert_w(n,x);
+
 (fpprec:oldfpprec, kill(oldfpprec), done);
 done;
+

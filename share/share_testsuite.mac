@@ -82,7 +82,7 @@ block
         [rtestprintf, 29, 38, 39, 40, 41, 47, 48],
         rtest_simplex,
         rtest_graphs,
-        [rtest_abs_integrate, 148, 149],
+        rtest_abs_integrate,
         rtest_pochhammer,
         [rtest_to_poly_solve, 64, 74, 80],
         rtest_hg,
