@@ -1431,9 +1431,13 @@
 	      (typep b 'complex-bigfloat))
 	  (complex (bigfloat 1))
 	  (bigfloat 1))
-      (if (and (zerop a) (plusp (realpart b)))
-	  (* a b)
-	  (exp (* b (log a))))))
+      (cond ((and (zerop a) (plusp (realpart b)))
+	     (* a b))
+	    ((= b (truncate b))
+	     ;; The exponent is an integer
+	     (expt a (truncate b)))
+	    (t
+	     (exp (* b (log a)))))))
 
 (defmethod expt ((a cl:number) (b numeric))
   (if (zerop b)
@@ -1442,9 +1446,12 @@
 	      (typep b 'complex-bigfloat))
 	  (complex (bigfloat 1))
 	  (bigfloat 1))
-      (if (and (zerop a) (plusp (realpart b)))
-	  (* a b)
-	  (exp (* b (log (bigfloat a)))))))
+      (cond ((and (zerop a) (plusp (realpart b)))
+	     (* a b))
+	    ((= b (truncate b))
+	     (expt a (truncate b)))
+	    (t
+	     (exp (* b (log (bigfloat a))))))))
 
 (defmethod expt ((a numeric) (b cl:number))
   (if (zerop b)
@@ -1472,6 +1479,8 @@
 		((= b -4)
 		 (let ((a2 (* a a)))
 		   (/ (* a2 a2))))
+		((= b (truncate b))
+		 (expt a (truncate b)))
 		(t
 		 (exp (* (bigfloat b) (log a))))))))
 
