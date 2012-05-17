@@ -957,21 +957,23 @@
 		     (power x a) 
 		     (power ($bfloat '$%e) (mul -1 x)))))))
 	 (t
-	  (format t "new stuff~%")
-	  (sub (simplify (list '(%gamma) a))
-	       (mul (power x a)
-		    (power ($bfloat '$%e) (mul -1 x))
-		    (let ((a (bigfloat:to a))
-			  (x (bigfloat:to x)))
-		      (to (bigfloat:/
-			   (bigfloat::lentz
-			    #'(lambda (n)
-				(bigfloat:+ n a))
-			    #'(lambda (n)
-				(if (evenp n)
-				    (bigfloat:* (ash n -1) x)
-				    (bigfloat:- (bigfloat:* (bigfloat:+ a (ash n -1))
-							    x)))))))))))))
+	  ;; Expand to multiply everything out.
+	  ($expand
+	   ;; Expansion in continued fraction for the lower incomplete gamma.
+	   (sub (simplify (list '(%gamma) a))
+		(mul (power x a)
+		     (power ($bfloat '$%e) (mul -1 x))
+		     (let ((a (bigfloat:to a))
+			   (x (bigfloat:to x)))
+		       (to (bigfloat:/
+			    (bigfloat::lentz
+			     #'(lambda (n)
+				 (bigfloat:+ n a))
+			     #'(lambda (n)
+				 (if (evenp n)
+				     (bigfloat:* (ash n -1) x)
+				     (bigfloat:- (bigfloat:* (bigfloat:+ a (ash n -1))
+							     x))))))))))))))
 
       (t
        ;; Series expansion of the Incomplete Gamma function

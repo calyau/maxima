@@ -78,34 +78,6 @@
 					    (flonum 0.0)
 					    (otherwise nil))))))
 
-#+nil
-(defmfun maknum (x)
-  (if $use_fast_arrays
-      (exploden (format nil "~A" x))
-      (format nil "~A" x)))
-
-#+nil
-(defmfun dimension-array-object (form result &aux (mtype (marray-type form)))
-  (if $use_fast_arrays
-      (dimension-string (maknum form) result)
-      (dimension-string
-       (nconc (exploden "{Array: ")
-	      (cdr (exploden mtype))
-	      (exploden " ")
-	      (exploden (maknum form))
-	      (if (member mtype '($float $fixnum $any))
-		  (nconc (exploden "[")
-			 (do ((l (cdr (arraydims (if (member mtype '($float $fixnum))
-						     form
-						     (mgenarray-content form))))
-				 (cdr l))
-			      (v nil (nconc (nreverse (exploden (car l))) v)))
-			     ((null l) (nreverse v))
-			   (if v (push #\, v)))
-			 (exploden "]")))
-	      (exploden "}"))
-       result)))
-
 (defun dimension-array-object (form result)
   (let ((mtype (marray-type form)))
     (if (eq mtype '$functional)

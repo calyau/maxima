@@ -49,20 +49,6 @@ When one changes, the other does too."
 (def-lisp-shadow maxima-tempdir)
 (def-lisp-shadow maxima-userdir)
 (def-lisp-shadow maxima-objdir)
-#+nil
-(progn
-  (defmvar $maxima_tempdir)
-  (putprop '$maxima_tempdir 'shadow-string-assignment 'assign)
-  (putprop '$maxima_tempdir '*maxima-tempdir* 'lisp-shadow)
-
-  (defmvar $maxima_userdir)
-  (putprop '$maxima_userdir 'shadow-string-assignment 'assign)
-  (putprop '$maxima_userdir '*maxima-userdir* 'lisp-shadow)
-
-  (defmvar $maxima_objdir)
-  (putprop '$maxima_objdir 'shadow-string-assignment 'assign)
-  (putprop '$maxima_objdir '*maxima-objdir* 'lips-shadow)
-  )
 
 (defun shadow-string-assignment (var value)
   (cond
