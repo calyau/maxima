@@ -29,8 +29,14 @@ extradocinstall:
 $(distdir).tar.gz: Makefile.am
 	$(MAKE) dist
 
+if WIN32
+# Windows installer.  Need local copy of gcc if using gcl
 iss: extradocinstall
-	$(MAKE) -C interfaces/xmaxima/win32 gcccopy install
+if GCL
+	$(MAKE) -C interfaces/xmaxima/win32 gcccopy
+endif
+	$(MAKE) -C interfaces/xmaxima/win32 install
+endif 
 
 # Build the Maxima rpms. Optionally, use
 #     make rpm SUDO=sudo
