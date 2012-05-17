@@ -221,26 +221,6 @@
 	 (great x y))
 	((equal ($asksign (m- x y)) '$pos))))
 
-#+nil
-(defun %especial (e)
-  (prog (varlist y k j ans $%emode $ratprint genvar)
-     (let (($float nil) ($keepfloat nil))
-       (unless (setq y (pip ($ratcoef e '$%i))) (return nil))
-       (setq j (trigred y))
-       (setq k ($expand (m+ e (m* -1 '$%pi '$%i y)) 1))
-       (setq ans (spang1 j t)))
-     (cond ((among '%sin ans)
-	    (cond ((equal y j) (return nil))
-		  ((equal k 0)
-		   (return (list '(mexpt simp)
-				 '$%e
-				 (m* %p%i j))))
-		  (t (return (list '(mexpt simp)
-				   '$%e
-				   (m+ k (m* %p%i j))))))))
-     (setq y (spang1 j nil))
-     (return (mul2 (m^ '$%e k) (m+ y (m* '$%i ans))))))
-
 ;; Simplify the exponential function of the type exp(p/q*%i*%pi+x) using the
 ;; periodicity of the exponential function and special values for rational
 ;; numbers with a denominator q = 2, 3, 4, or 6. e is the argument of the 

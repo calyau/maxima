@@ -652,36 +652,6 @@
 ;; If a is half of an odd integer and small enough, the Bessel
 ;; functions are expanded in terms of trig or hyperbolic functions.
 
-#+nil
-(defun bestrig (a x)
-  (prog (n res)
-     ;; gamma(a)*x^((1-a)/2)
-     (setq res (mul (gm a) (power x (div (sub 1 a) 2))))
-     #+(or)
-     (cond ((and (hyp-integerp (add a a))
-		 (numberp (setq n (sub a (inv 2))))
-		 (< n $bestriglim))
-	    ;; This is totally broken.  It's got an extra (-1)^foo
-	    ;; factor, so let's not use it at all for now.  Use the
-	    ;; general forms below and let expand get the right
-	    ;; answer.
-	    (return (mul res
-			 (meval (besredtrig (- n 1)
-					    (mul 2
-						 '$%i
-						 (power
-						  x
-						  (inv
-						   2)))))))))
-     (cond ((equal (checksigntm x) '$negative)
-	    ;; Not sure this is right, but the call to bes has an
-	    ;; extra factor (-1)^(-(a-1)/2), so we cancel that out by
-	    ;; multiplying by (-1)^((a-1)/2).
-	    (return (mul res
-			 (power -1 (div (sub a 1) 2))
-			 (bes (sub a 1) (setq x (mul -1 x)) 'j)))))
-     (return (mul res (bes (sub a 1) x 'i)))))
-
 (defun bestrig (b x)
   ;; I think it's ok to have $radexpand $all here so that sqrt(z^2) is
   ;; converted to z.
@@ -699,96 +669,6 @@
                   (take '(%bessel_i)
                         (sub b 1)
                         (mul 2 (power x '((rat simp) 1 2)))))))))
-
-#+nil ; Used only by bestrig and inserted directely. (DK 01/2010)
-(defun bes (a x flg)
-  (let ((fun (if (eq flg 'j) '%bessel_j '%bessel_i)))
-    `((,fun) ,a ,(mul 2 (power x (inv 2))))))
-
-;; Compute bessel_j(n+1/2,z) in terms of trig functions.
-;;
-;; See A&S 10.1.8 and 10.1.9.
-;;
-;; Note that bessel.lisp has a different implementation of this.
-;; Should we use that instead?
-#+nil ; Not in use (DK 01/2010)
-(defun besredtrig (n z)
-  (cond ((minusp n)
-	 (trigredminus (mul -1 (1+ n)) z))
-	(t (trigredplus n z))))
-
-#+nil ; Not in use (DK 01/2010)
-(defun trigredplus (n z)
-  (let ((npinv2 (mul n '$%pi (inv 2))))
-    (mul (ctr z)
-	 (add (mul (sin% (sub z npinv2)) (firstsum n z))
-	      (mul (cos% (sub z npinv2)) (secondsum n z))))))
-
-#+nil ; Not in use (DK 01/2010)
-(defun trigredminus (n z)
-  (let ((npinv2 (mul n '$%pi (inv 2))))
-    (mul (ctr z)
-	 (sub (mul (cos% (add z npinv2)) (firstsum n z))
-	      (mul (sin% (add z npinv2)) (secondsum n z))))))
-
-#+nil ; Not in use (DK 01/2010)
-(defun firstsum (n z)
-  (prog (count result 2r n1)
-     (setq n1 ($entier (div n 2)) count 0 result 1)
-     loop
-     (cond ((eq count n1)(return result)))
-     (setq count
-	   (1+ count)
-	   2r
-	   (add count count)
-	   result
-	   (add result
-		(div (mul (power -1 count)
-			  (factorial (add n 2r)))
-		     (mul (factorial 2r)
-			  (factorial (sub n 2r))
-			  (power (add z z) 2r)))))
-     (go loop)))
-
-;; Compute Q(n+1/2,z) in A&S 10.1.9.
-#+nil ; Not in use (DK 01/2010)
-(defun secondsum (n z)
-  (prog (count result 2r+1 n1)
-     (setq n1
-	   ($entier (div (1- n) 2))
-	   count
-	   0
-	   result
-	   (mul n (add 1 n) (inv (add z z))))
-     (cond ((equal n1 -1)(return 0)))
-     loop
-     (cond ((eq count n1)(return result)))
-     (setq count
-	   (1+ count)
-	   2r+1
-	   (add count count 1)
-	   result
-	   (add result
-		(div (mul (power -1 count)
-			  (factorial (add n 2r+1)))
-		     (mul (factorial 2r+1)
-			  (factorial (sub n 2r+1))
-			  (power (add z z) 2r+1)))))
-     (go loop)))
-
-;; sqrt(2/(pi*z))
-#+nil ; Not in use (DK 01/2010)
-(defun ctr (z)
-  (power (div 2 (mul '$%pi z)) (inv 2)))
-
-#+nil ; Not in use (DK 01/2010)
-(defun negcoef (x)
-  (prog(d)
-     (cond ((null (setq d (cdr (zl-remprop 'd (d*u x)))))
-	    (return t)))
-     (cond ((eq (asksign (inv d)) '$positive)
-	    (return nil)))
-     (return t)))
 
 ;; Kummer's transformation.  A&S 13.1.27
 ;;
@@ -1311,38 +1191,6 @@
             ($limit result psey var)
             (maxima-substitute var psey result)))))
 
-#+nil
-(defun hyp-cos (a b c)
-  (prog (a2 a1 z1)
-     ;; a1 = (a+b-1/2)/2
-     ;; z1 = 1-var
-     ;; a2 = c/2
-     (setq a1 (div (sub (add a b) (div 1 2)) 2))
-     (setq z1 (sub 1 var))
-     (setq a2 (mul c (inv 2)))
-     (cond ((equal (sub (add a b) (div 1 2)) c)
-	    ;; a+b-1/2 = c
-	    ;;
-	    ;; 2^(2*a1 - 1)/sqrt(z1)*(1+sqrt(z1))^(1-2*a1)
-	    (return (mul (power 2 (sub (mul a1 2) 1))
-			 (inv (power  z1 (div 1 2)))
-			 (power (add 1
-				     (power z1
-					    (div 1
-						 2)))
-				(sub 1 (mul 2 a1)))))))
-     (cond ((equal (add 1 (mul 2 a1)) c)
-	    ;; c = 1+2*a1 = a+b+1/2
-	    ;;
-	    ;; 2^(c-1)*(1+sqrt(z1))^(-(c-1))
-	    (return (mul (power 2 (sub c 1))
-			 (power (add 1
-				     (power z1
-					    (div 1
-						 2)))
-				(mul -1 (sub c 1)))))))
-     ))
-
 ;; Handle F(a, b; c; z) for certain values of a, b, and c.  See the
 ;; comments below for these special values.  The optional arg z
 ;; defaults to var, which is usually the argument of hgfred.
@@ -1744,23 +1592,6 @@
 ;;
 ;; Is there a mistake in 15.4.10 and 15.4.11?
 ;;
-#+nil
-(defun legf24 (arg-l1 arg-l2 var)
-  (let* ((a (car arg-l1))
-	 (c (car arg-l2))
-	 (m (sub 1 c))
-	 (n (mul -1 (add a a m)))
-	 (z (inv (power (sub 1 var) (inv 2)))))
-    (mul (inv (power 2 m))
-	 (power (sub (power z 2) 1)
-		(div m 2))
-	 (power z (mul -1 (add n m)))
-	 (gm (sub 1 m))
-	 (legen n
-		m
-		z
-		'$p))))
-
 (defun legf24 (arg-l1 arg-l2 var)
   (let* (($radexpand nil)
 	 (a (car arg-l1))
@@ -1811,23 +1642,6 @@
 ;; F(a,b;c;w) = gamma(c)*w^(1/2-c/2)*(1-w)^(-a)*P(-a,1-c,(1+w)/(1-w));
 ;;
 ;; FIXME:  We don't correctly handle the branch cut here!
-#+nil
-(defun legf16 (arg-l1 arg-l2 var)
-  (let* ((a (car arg-l1))
-	 (c (car arg-l2))
-	 (m (sub 1 c))
-	 (n (mul -1 a))
-	 (z (div (add 1 var)
-		 (sub 1 var))))
-    (mul (power 2 n)
-	 (power (sub z 1) (div m 2))
-	 (gm (sub 1 m))
-	 (inv (power (add z 1) (add (div m 2) n)))
-	 (legen n
-		m
-		z
-		'$p))))
-
 (defun legf16 (arg-l1 arg-l2 var)
   (let* (($radexpand nil)
 	 (a (car arg-l1))
@@ -1880,18 +1694,6 @@
 ;; The code belows chooses the first solution.
 ;;
 ;; F(a,b;c;w) = gamma(c)*(-w)^(1/2-c/2)*(1-w)^(c/2-1/2)*P(-a,1-c,1-2*w)
-#+nil
-(defun legf14 (arg-l1 arg-l2 var)
-  (let* ((a (car arg-l1))
-	 (c (car arg-l2))
-	 (m (sub 1 c))
-	 (n (mul -1 a))
-	 (z (sub 1 (mul 2 var))))
-    (mul (power (add z 1) (div m -2))
-	 (power (sub z 1) (div m 2))
-	 (gm (sub 1 m))
-	 (legen n m (sub 1 (mul 2 var)) '$p))))
-
 (defun legf14 (arg-l1 arg-l2 var)
   ;; Set $radexpand to NIL, because we don't want (-z)^x getting
   ;; expanded to (-1)^x*z^x because that's wrong for this.
@@ -2774,40 +2576,6 @@
 	 (erfgamnumred a c z))
 	(t (gammareds a c z))))
 
-;; M(a,c,z) where a-c is a negative integer, and at least one of a or
-;; c is not a number.
-#+nil
-(defun gammareds (a c z)
-  (prog (m numprod result count atemp)
-     (setq m (sub c a))
-     ;; m = c - a
-     (cond ((eq m 1)
-	    ;; We have M(a,a+1,z)
-	    (return (hypredincgm a z))))
-     (setq numprod (prod a m)
-	   count 2
-	   atemp a
-	   result (sub (mul 2
-			    numprod
-			    (inv atemp)
-			    (hypredincgm atemp z))
-		       (mul 2
-			    numprod
-			    (inv (setq atemp (add atemp 1)))
-			    (hypredincgm atemp z))))
-     loop
-     (cond ((eq count m)(return result)))
-     (setq count (1+ count)
-	   atemp (add atemp 1)
-	   result (add result
-		       (mul (power -1 count)
-			    (inv (factorial (sub m
-						 (1- count))))
-			    numprod
-			    (inv atemp)
-			    (hypredincgm atemp z))))
-     (go loop)))
-
 ;; I (rtoy) think this is what the function above is doing, but I'm
 ;; not sure.  Plus, I think it's wrong.
 ;;
@@ -2922,15 +2690,6 @@
 ;; where gamma_greek(a,x) is the lower incomplete gamma function.
 ;;
 ;; M(a,1+a,x) = a*(-x)^(-a)*gamma_greek(a,-x)
-#+nil
-(defun hypredincgm
-    (a z)
-  (prog()
-     (setq z (mul -1 z))
-     (return (mul a
-		  (power z (mul -1 a))
-		  (list '($gamma_greek simp) a z)))))
-
 (defun hypredincgm (a z)
   (let ((-z (mul -1 z)))
     (if (not $prefer_gamma_incomplete)
@@ -3014,33 +2773,6 @@
 ;;     diff(M(1,3/2,z),z,m-n) = poch(1,m-n)/poch(3/2,m-n)*M(m-n+1,m-n+3/2,z)
 ;;
 ;; I think this routine uses Method 2.
-#+nil
-(defun thno33 (n m x)
-  (let ((m-n (sub m n)))
-    (subst x
-	   'yannis
-	   (mul (div (mul (power -1 m-n)
-			  (fctrl (div 3 2) m-n)
-			  (fctrl (add m-n (div 3 2)) n))
-		     (mul (fctrl 1 m-n)
-			  (fctrl (inv 2) n)))
-		;; diff(M(1/2,m-n+3/2,z),z,n)
-		(meval (list '($diff)
-			     ;; Kummer's transformation
-			     (mul (power '$%e 'yannis)
-				  ;; diff(M(1,3/2,z),z,m-n)
-				  (meval (list '($diff)
-					       ;; M(1,3/2,-z) = e^(-z)*M(1/2,3/2,z)
-					       (mul
-						(power
-						 '$%e
-						 (mul -1 'yannis))
-						(hyprederf 'yannis))
-					       'yannis
-					       m-n)))
-			     'yannis
-			     n))))))
-
 (defun thno33 (n m x)
   ;; M(n+1/2,m+3/2,z) = diff(M(1/2,m-n+3/2,z),z,n)*poch(m-n+3/2,n)/poch(1/2,n)
   ;; M(1/2,m-n+3/2,z) = exp(z)*M(m-n+1,m-n+3/2,-z)
@@ -3294,86 +3026,6 @@
        (mul (factorial count)
 	    (factorial (sub k count)))))
 
-
-;; Algor. II from thesis:minimizes differentiations
-;;
-;; We're looking at F(a+m,-a+n;1/2+L;z)
-#+nil
-(defun algii (a b c)
-  (declare (ignore c))
-  (prog (m n ap con sym m+n)
-     ;; We know a+b is an integer.  In the most general form, we can
-     ;; have a = r*s+f+m and b = -(r*s+f)+n.
-     (cond ((not (setq sym (cdras 'f (s+c a))))
-	    (setq sym 0)))
-     (setq con (sub a sym))
-     (setq ap sym)
-     (setq m+n (add a b))
-     (setq m ($entier con))
-     (when (minusp m)
-       (1+ m))
-     ;; At this point sym = r*s, con is f+m, and m is m.
-     (setq ap (add (sub con m) ap))
-     ;; ap = r*a+f
-     (setq n (add b ap))
-     ;; Return r*a+f, r*a+f+p, and m+n, where p is chosen to minimize
-     ;; the number of derivatives we need to take.  Basically
-     ;; p=min(abs(m),abs(n)).
-     ;;
-     ;; So we have changed F(a+m,-a+n;c;z) to F(a',-a'+m+n;c;z).
-     (cond ((and (minusp (mul n m))
-		 (> (abs m) (abs n)))
-	    (return (list ap (sub ap n) m+n))))
-     (return  (list ap (add ap m) m+n))))
-
-;; F(a,b;c;z), where a + b is a (numerical) integer.
-;;
-;; If we're here, a and b are not integers.  In general, a = s+f+m,
-;; where s is symbolic stuff and |f|<1 and m is an integer.  We can
-;; also write b = -(s+f)+n.
-;;
-;; Let a' = s+f+m.  Then a=a' and b = -a'+m+n, and we have converted
-;; F(a,b;c;z) to F(a',-a'+m+n;c;z), or, equivalently,
-;; F(-a'+m+n,a';c;z).
-#+nil
-(defun algii (a b c)
-  (declare (ignore c))
-  (prog (m n ap con sym m+n)
-     ;; We know a+b is an integer.  In the most general form, we can
-     ;; have a = x+f+m and b = -(x-f)+n.
-     ;;
-     ;; Express a in the form sym + con.
-     (cond ((not (setq sym (cdras 'f (s+c a))))
-	    (setq sym 0))
-	   (t
-	    ;; a is of the form s+c.  Look at the coefficient of s.
-	    ;; If it's negative, swap a and b.
-	    (let ((res (m2 sym '((mtimes) ((coefft) (m $numberp)) ((coefft) (s nonnump)))
-			   nil)))
-	      (when (and res (minusp (cdras 'm res)))
-		(rotatef a b)
-		(setf sym (cdras 'f (s+c a)))))))
-     (setq con (sub a sym))
-     (setq ap sym)
-     (setq m+n (add a b))
-     ;; Truncate con to an integer m.
-     (setq m ($entier con))
-     (when (minusp m)
-       (1+ m))
-     ;; Make ap = s+con-m
-     (setq ap (add (sub con m) ap))
-     (setq n (add b ap))
-     ;; Return r*a+f, r*a+f+p, and m+n, where p is chosen to minimize
-     ;; the number of derivatives we need to take.  Basically
-     ;; p=min(abs(m),abs(n)).
-     ;;
-     ;; Hmm, not sure why we do this.  In any case, we need to do m+n
-     ;; differentiations.  So the only simplification we could do is
-     ;; make a' simpler.
-     (cond ((and (minusp (mul n m))
-		 (> (abs m) (abs n)))
-	    (return (list ap (sub ap n) m+n m n))))
-     (return  (list ap (add ap m) m+n m n))))
 
 ;; We have something like F(s+m,-s+n;c;z)
 ;; Rewrite it like F(a'+d,-a';c;z) where a'=s-n=-b and d=m+n.

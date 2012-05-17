@@ -19,32 +19,6 @@
 ;;;  DISPLA is usable and will attempt to do something reasonable with
 ;;;  its input.
 
-#+nil
-(defun linear-displa (x)
-  (declare (special chrps *display-labels-p*))
-  (fresh-line *standard-output*)
-  (cond ((not (atom x))
-	 (cond ((eq (caar x) 'mlable)
-		(setq chrps 0)
-		(cond ((and (cadr x) *display-labels-p*)
-		       (princ "(")
-		       (setq chrps
-			     (+  3 (length (mgrind (cadr x) nil))))
-		       (princ ") ")))
-		(mprint (msize (caddr x) nil nil 'mparen 'mparen)
-			*standard-output*))
-	       ((eq (caar x) 'mtext)
-		(do ((x (cdr x) (cdr x))
-		     (fortranp))	; Atoms in MTEXT
-		    ((null x))		;  should omit ?'s
-		  (setq fortranp (atom (car x)))
-		  (mgrind (car x) *standard-output*)))
-	       (t
-		(mgrind x *standard-output*))))
-	(t
-	 (mgrind x *standard-output*)))
-  (terpri))
-
 (defun linear-displa (form)
   (fresh-line *standard-output*)
   (mgrind form *standard-output*)
