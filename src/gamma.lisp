@@ -961,12 +961,17 @@
 	  ($expand
 	   ;; Expansion in continued fraction for the lower incomplete gamma.
 	   (sub (simplify (list '(%gamma) a))
+		;; NOTE: We want (power x a) instead of bigfloat:expt
+		;; because this preserves how maxima computes x^a when
+		;; x is negative and a is rational.  For, example
+		;; (-8)^(1/2) is -2.  bigfloat:expt returns the
+		;; principal value.
 		(mul (power x a)
 		     (power ($bfloat '$%e) (mul -1 x))
 		     (let ((a (bigfloat:to a))
 			   (x (bigfloat:to x)))
 		       (to (bigfloat:/
-			    (bigfloat::lentz
+			    (bigfloat:lentz
 			     #'(lambda (n)
 				 (bigfloat:+ n a))
 			     #'(lambda (n)
