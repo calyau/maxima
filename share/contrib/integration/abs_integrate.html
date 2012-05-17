@@ -1,230 +1,198 @@
-<HTML>
-<HEAD>
-<!-- Created by texi2html 1.56k from abs_integrate.texi on 8 January 2011 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!-- Created on May 16, 2012 by texi2html 1.82
+texi2html was written by: 
+            Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people.
+Send bugs and suggestions to <texi2html-bug@nongnu.org>
+-->
+<head>
+<title>Untitled Document</title>
 
-<TITLE>Untitled Document</TITLE>
-</HEAD>
-<BODY>
-<H1>Untitled Document</H1>
-<P>
-<P><HR><P>
+<meta name="description" content="Untitled Document">
+<meta name="keywords" content="Untitled Document">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.roman {font-family:serif; font-weight:normal;}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
 
-<P>
-The package <CODE>abs_integrate</CODE> extends Maxima's integration code to
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+
+<p>The package <code>abs_integrate</code> extends Maxima&rsquo;s integration code to
 some integrands that involve the absolute value, max, min, signum, or
-unit step functions. For integrands of the form <EM>p(x) |q(x)|</EM>,
-where <EM>p</EM> is a polynomial and <EM>q</EM> is a polynomial that
-<CODE>factor</CODE> is able to factor into a product of linear or constant
-terms, the <CODE>abs_integrate</CODE> package determines an antiderivative
+unit step functions. For integrands of the form <em>p(x) |q(x)|</em>,
+where <em>p</em> is a polynomial and <em>q</em> is a polynomial that
+<code>factor</code> is able to factor into a product of linear or constant
+terms, the <code>abs_integrate</code> package determines an antiderivative
 that is continuous on the entire real line. Additionally, for an
 integrand that involves one or more parameters, the function
-<CODE>conditional_integrate</CODE> tries to determine an antiderivative that
+<code>conditional_integrate</code> tries to determine an antiderivative that
 is valid for all parameter values.
+</p>
 
-
-<P>
-<B>Examples</B> To use the <CODE>abs_integrate</CODE> package, you'll first need to load it:
-
-<PRE>
- (%i1) load("abs_integrate.mac")$
+<p><b>Examples</b> To use the <code>abs_integrate</code> package, you&rsquo;ll first need to load it:
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i1) load(&quot;abs_integrate.mac&quot;)$
 
  (%i2)  integrate(abs(x),x);
  (%o2) (x^2*signum(x))/2
-</PRE>
-
-<P>
-To convert (%o2) into an expression involving the absolute value function,
-apply <CODE>signum_to_abs</CODE>; thus
-
-<PRE>
- (%i3) signum_to_abs(%);
+</pre></td></tr></table>
+<p>To convert (%o2) into an expression involving the absolute value function,
+apply <code>signum_to_abs</code>; thus
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i3) signum_to_abs(%);
  (%o3) (x*abs(x))/2
-</PRE>
-
-<P>
-When the integrand has the form <EM>p(x) |x - c1| |x - c2| ... |x - cn|</EM>,
-where <EM>p(x)</EM> is a polynomial and <EM>c1, c2, ..., cn</EM> are constants,
-the <CODE>abs_integrate</CODE> package returns an antiderivative that is valid on the
-entire real line; thus <I>without</I> making assumptions on <EM>a</EM> and <EM>b</EM>;
+</pre></td></tr></table>
+<p>When the integrand has the form <em>p(x) |x - c1| |x - c2| ... |x - cn|</em>,
+where <em>p(x)</em> is a polynomial and <em>c1, c2, ..., cn</em> are constants,
+the <code>abs_integrate</code> package returns an antiderivative that is valid on the
+entire real line; thus <i>without</i> making assumptions on <em>a</em> and <em>b</em>;
 for example
-
-<PRE>
- (%i4) factor(convert_to_signum(integrate(abs((x-a)*(x-b)),x,a,b)));
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i4) factor(convert_to_signum(integrate(abs((x-a)*(x-b)),x,a,b)));
  (%o4) ((b-a)^3*signum(b-a)^2)/6
-</PRE>
+</pre></td></tr></table>
 
-<P>
-Additionally, <CODE>abs_integrate</CODE> is able to find antiderivatives of some
-integrands involving <CODE>max, min, signum</CODE>, and <CODE>unit_step</CODE>;
+<p>Additionally, <code>abs_integrate</code> is able to find antiderivatives of some
+integrands involving <code>max, min, signum</code>, and <code>unit_step</code>;
 examples:
-
-<PRE>
- (%i5) integrate(max(x,x^2),x);
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i5) integrate(max(x,x^2),x);
  (%o5) signum(x-1)*((x^3*signum(x))/6-1/6)+signum(x-1)*(1/4-(x^2*signum(x))/4)+x^3/6+x^2/4
 
  (%i6) integrate(signum(x) - signum(1-x),x);
  (%o6) x*signum(x)+(x-1)*signum(x-1)
-</PRE>
-
-<P>
-A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
-
-
-<P>
-For definite integrals with numerical integration limits (including
-both minus and plus infinity), the <CODE>abs_integrate</CODE> package
+</pre></td></tr></table>
+<p>A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
+</p>
+<p>For definite integrals with numerical integration limits (including
+both minus and plus infinity), the <code>abs_integrate</code> package
 converts the integrand to signum form and then it tries to subdivide
 the integration region so that the integrand simplifies to a
 non-signum expression on each subinterval; for example
-
-<PRE>
- (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
  (%o1) log(11)+log(2)
-</PRE>
+</pre></td></tr></table>
 
-<P>
-Finally, <CODE>abs_integrate</CODE> is able to determine antiderivatives of <EM>some</EM>
-functions of the form <EM>F(x, |x - a|)</EM>; examples
-
-<PRE>
- (%i2) integrate(1/(1 + abs(x)),x);
+<p>Finally, <code>abs_integrate</code> is able to determine antiderivatives of <em>some</em>
+functions of the form <em>F(x, |x - a|)</em>; examples
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i2) integrate(1/(1 + abs(x)),x);
  (%o2) ((signum(x)+1)*log(x+1))/2-(log(1-x)*(1-signum(x)))/2
 
  (%i3) integrate(cos(x + abs(x)),x);
  (%o3) ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4
-</PRE>
+</pre></td></tr></table>
 
-<P>
-Barton Willis (Professor of Mathematics, University of Nebraska at
-Kearney) wrote the <CODE>abs_integrate</CODE> package and its English
+<p>Barton Willis (Professor of Mathematics, University of Nebraska at
+Kearney) wrote the <code>abs_integrate</code> package and its English
 language user documentation. This documentation also describes the
-<CODE>partition</CODE> package for integration. Richard Fateman wrote
-<CODE>partition</CODE>. Additional documentation for <CODE>partition</CODE> is
+<code>partition</code> package for integration. Richard Fateman wrote
+<code>partition</code>. Additional documentation for <code>partition</code> is
 located at http://www.cs.berkeley.edu/~fateman/papers/partition.pdf.
+</p>
 
-
-<P>
-<B>To use</B> <TT>`load(abs_integrate)'</TT>
-
-
-<P>
-<DL>
-<DT><U>Option:</U> <B>extra_integration_methods</B>
-<DD><A NAME="IDX1"></A>
-Default value: <CODE>['signum_int, 'abs_integrate_use_if]</CODE>
-
-
-<P>
-The list <CODE>extra_integration_methods</CODE> is a list of functions for
-integration. When <CODE>integrate</CODE> is unable to find an
+<p><b>To use</b> &lsquo;<tt>load(abs_integrate)</tt>&rsquo;
+</p>
+<dl>
+<dt><a name="index-extra_005fintegration_005fmethods"></a><u>Option:</u> <b>extra_integration_methods</b></dt>
+<dd><p>Default value: <code>['signum_int, 'abs_integrate_use_if]</code>
+</p>
+<p>The list <code>extra_integration_methods</code> is a list of functions for
+integration. When <code>integrate</code> is unable to find an
 antiderivative, Maxima uses the methods in
-<CODE>extra_integration_methods</CODE> to attempt to determine an
+<code>extra_integration_methods</code> to attempt to determine an
 antiderivative.
-
-
-<P>
-Each function <CODE>f</CODE> in <CODE>extra_integration_methods</CODE> should have
-the form <CODE>f(integrand, variable)</CODE>. The function <CODE>f</CODE> may
-either return <CODE>false</CODE> to indicate failure, or it may return an
+</p>
+<p>Each function <code>f</code> in <code>extra_integration_methods</code> should have
+the form <code>f(integrand, variable)</code>. The function <code>f</code> may
+either return <code>false</code> to indicate failure, or it may return an
 expression involving an integration noun form. The integration methods
 are tried from the first to the last member of
-<CODE>extra_integration_methods</CODE>; when no method returns an expression
+<code>extra_integration_methods</code>; when no method returns an expression
 that does not involve an integration noun form, the value of the
 integral is the last value that does not fail (or a pure noun form if
 all methods fail).
-
-
-<P>
-When the function <CODE>abs_integrate_use_if</CODE> is successful, it returns
+</p>
+<p>When the function <code>abs_integrate_use_if</code> is successful, it returns
 a conditional expression; for example
-
-<PRE>
- (%i2) integrate(1/(1 + abs(x+1) + abs(x-1)),x);
- (%o2) %if(-(x+1)&#62;0,-log(1-2*x)/2+log(3)-2/3,%if(-(x-1)&#62;0,x/3+log(3)/2-1/3,log(2*x+1)/2))
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i2) integrate(1/(1 + abs(x+1) + abs(x-1)),x);
+ (%o2) %if(-(x+1)&gt;0,-log(1-2*x)/2+log(3)-2/3,%if(-(x-1)&gt;0,x/3+log(3)/2-1/3,log(2*x+1)/2))
 
  (%i3) integrate(exp(-abs(x-1) - abs(x)),x);
- (%o3) %if(-x&#62;0,%e^(2*x-1)/2-2*%e^(-1),%if(-(x-1)&#62;0,%e^(-1)*x-(3*%e^(-1))/2,-%e^(1-2*x)/2))
-</PRE>
-
-<P>
-For definite integration, these conditional expressions can cause trouble:
-
-<PRE>
- (%i4) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf);
- (%o4) limit(%if(-x&#62;0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)&#62;0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,inf,minus)-limit(%if(-x&#62;0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)&#62;0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,-inf,plus)
-</PRE>
-
-<P>
-For such definite integrals, try disallowing the method <CODE>abs_integrate_use_if</CODE>:
-
-<PRE>
-(%i9) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf), extra_integration_methods : ['signum_int];
+ (%o3) %if(-x&gt;0,%e^(2*x-1)/2-2*%e^(-1),%if(-(x-1)&gt;0,%e^(-1)*x-(3*%e^(-1))/2,-%e^(1-2*x)/2))
+</pre></td></tr></table>
+<p>For definite integration, these conditional expressions can cause trouble:
+</p><table><tr><td>&nbsp;</td><td><pre class="example"> (%i4) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf);
+ (%o4) limit(%if(-x&gt;0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)&gt;0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,inf,minus)-limit(%if(-x&gt;0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)&gt;0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,-inf,plus)
+</pre></td></tr></table>
+<p>For such definite integrals, try disallowing the method <code>abs_integrate_use_if</code>:
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(%i9) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf), extra_integration_methods : ['signum_int];
 (%o9) 2*%e^(-1)
-</PRE>
+</pre></td></tr></table>
 
-<P>
-<B>Related options</B> <I>extra_definite_integration_methods</I>
+<p><b>Related options</b> <i>extra_definite_integration_methods</i>
+</p>
+<p><b>To use</b> &lsquo;<tt>load(abs_integrate)</tt>&rsquo;
+</p>
 
+</dd></dl>
 
-<P>
-<B>To use</B> <TT>`load(abs_integrate)'</TT>
-
-
-</DL>
-
-<P>
-<DL>
-<DT><U>Option:</U> <B>extra_definite_integration_methods</B>
-<DD><A NAME="IDX2"></A>
-Default value: <CODE>['abs_defint]</CODE>
-
-
-<P>
-The list <CODE>extra_definite_integration_methods</CODE> is a list of extra
-functions for <I>definite</I> integration.  When <CODE>integrate</CODE> is
+<dl>
+<dt><a name="index-extra_005fdefinite_005fintegration_005fmethods"></a><u>Option:</u> <b>extra_definite_integration_methods</b></dt>
+<dd><p>Default value: <code>['abs_defint]</code>
+</p>
+<p>The list <code>extra_definite_integration_methods</code> is a list of extra
+functions for <i>definite</i> integration.  When <code>integrate</code> is
 unable to find a definite integral, Maxima uses the methods in
-<CODE>extra_definite_integration_methods</CODE> to attempt to determine an
+<code>extra_definite_integration_methods</code> to attempt to determine an
 antiderivative.
-
-
-<P>
-Each function <CODE>f</CODE> in <CODE>extra_definite_integration_methods</CODE>
-should have the form <CODE>f(integrand, variable, lo, hi)</CODE>, where
-<CODE>lo</CODE> and <CODE>hi</CODE> are the lower and upper limits of integration,
-respectively.  The function <CODE>f</CODE> may either return <CODE>false</CODE> to
+</p>
+<p>Each function <code>f</code> in <code>extra_definite_integration_methods</code>
+should have the form <code>f(integrand, variable, lo, hi)</code>, where
+<code>lo</code> and <code>hi</code> are the lower and upper limits of integration,
+respectively.  The function <code>f</code> may either return <code>false</code> to
 indicate failure, or it may return an expression involving an
 integration noun form. The integration methods are tried from the
-first to the last member of <CODE>extra_definite_integration_methods</CODE>;
+first to the last member of <code>extra_definite_integration_methods</code>;
 when no method returns an expression that does not involve an
 integration noun form, the value of the integral is the last value
 that does not fail (or a pure noun form if all methods fail).
+</p>
 
+<p><b>Related options</b> <i>extra_integration_methods</i>
+</p>
+<p><b>To use</b> &lsquo;<tt>load(abs_integrate)</tt>&rsquo;
+</p>
+</dd></dl>
 
-<P>
-<B>Related options</B> <I>extra_integration_methods</I>
-
-
-<P>
-<B>To use</B> <TT>`load(abs_integrate)'</TT>
-
-
-</DL>
-
-<P>
-<DL>
-<DT><U>Function:</U> <B>intfudu(<VAR>e</VAR>,</B> <I><VAR>x</VAR>)</I>
-<DD><A NAME="IDX3"></A>
-
-
-<P>
-This function uses the derivative divides rule for integrands of the
-form <EM>f(w(x)) * diff(w(x),x)</EM> When <CODE>infudu</CODE> is unable to find
+<dl>
+<dt><a name="index-intfudu"></a><u>Function:</u> <b>intfudu</b><i>(<var>e</var>, <var>x</var>)</i></dt>
+<dd>
+<p>This function uses the derivative divides rule for integrands of the
+form <em>f(w(x)) * diff(w(x),x)</em> When <code>infudu</code> is unable to find
 an antiderivative, it returns false.
-
-
-
-<PRE>
-(%i1) intfudu(cos(x^2) * x,x);
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">(%i1) intfudu(cos(x^2) * x,x);
 (%o1) sin(x^2)/2
 
 (%i3) intfudu(x * sqrt(1+x^2),x);
@@ -232,21 +200,15 @@ an antiderivative, it returns false.
 
 (%i4) intfudu(x * sqrt(1 + x^4),x);
 (%o4) false
-</PRE>
+</pre></td></tr></table>
 
-<P>
-For the last example, the derivative divides rule fails, so
-<CODE>intfudu</CODE> returns false. 
-
-
-<P>
-A hashed array <CODE>intable</CODE> contains the antiderivative data. To append a fact
-to the hash table, say <EM>integrate(f) = g</EM>, do this:
-
-
-
-<PRE>
-(%i1) intable[f] : lambda([u],  [g(u),diff(u,%voi)]);
+<p>For the last example, the derivative divides rule fails, so
+<code>intfudu</code> returns false. 
+</p>
+<p>A hashed array <code>intable</code> contains the antiderivative data. To append a fact
+to the hash table, say <em>integrate(f) = g</em>, do this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">(%i1) intable[f] : lambda([u],  [g(u),diff(u,%voi)]);
 (%o1) lambda([u],[g(u),diff(u,%voi)])
 
 (%i2) intfudu(f(z),z);
@@ -254,16 +216,13 @@ to the hash table, say <EM>integrate(f) = g</EM>, do this:
 
 (%i3) intfudu(f(w(x)) * diff(w(x),x),x);
 (%o3) g(w(x))
-</PRE>
+</pre></td></tr></table>
 
-<P>
-An alternative to calling <CODE>intfudu</CODE> directly is to use the <CODE>extra_integration_methods</CODE>
+<p>An alternative to calling <code>intfudu</code> directly is to use the <code>extra_integration_methods</code>
 mechanism; an example:
-
-<PRE>
-(%i1) load("abs_integrate.mac")$
+</p><table><tr><td>&nbsp;</td><td><pre class="example">(%i1) load(&quot;abs_integrate.mac&quot;)$
 (%i2) load(basic)$
-(%i3) load("partition.mac")$
+(%i3) load(&quot;partition.mac&quot;)$
 
 (%i4) integrate(bessel_j(1,x^2) * x,x);
 (%o4) integrate(bessel_j(1,x^2)*x,x)
@@ -272,37 +231,24 @@ mechanism; an example:
 
 (%i6) integrate(bessel_j(1,x^2) * x,x);
 (%o6) -bessel_j(0,x^2)/2
-</PRE>
+</pre></td></tr></table>
 
-<P>
-<B>To use</B> <TT>`load(partition)'</TT>
+<p><b>To use</b> &lsquo;<tt>load(partition)</tt>&rsquo;
+</p>
+<p><b>Additional documentation</b> http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
+</p>
+<p><b>Related functions</b> <i>intfugudu</i>
+</p>
+</dd></dl>
 
-
-<P>
-<B>Additional documentation</B> http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
-
-
-<P>
-<B>Related functions</B> <I>intfugudu</I>
-
-
-</DL>
-
-<P>
-<DL>
-<DT><U>Function:</U> <B>intfugudu</B> <I>(<VAR>e</VAR>, <VAR>x</VAR>)</I>
-<DD><A NAME="IDX4"></A>
-
-
-<P>
-This function uses the derivative divides rule for integrands of the
-form <EM>f(w(x)) * g(w(x)) * diff(w(x),x)</EM>. When <CODE>infudu</CODE> is
+<dl>
+<dt><a name="index-intfugudu"></a><u>Function:</u> <b>intfugudu</b><i> (<var>e</var>, <var>x</var>)</i></dt>
+<dd>
+<p>This function uses the derivative divides rule for integrands of the
+form <em>f(w(x)) * g(w(x)) * diff(w(x),x)</em>. When <code>infudu</code> is
 unable to find an antiderivative, it returns false. 
-
-
-
-<PRE>
-(%i1) diff(jacobi_sn(x,2/3),x);
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">(%i1) diff(jacobi_sn(x,2/3),x);
 (%o1) jacobi_cn(x,2/3)*jacobi_dn(x,2/3)
 
 (%i2) intfugudu(%,x);
@@ -313,106 +259,42 @@ unable to find an antiderivative, it returns false.
 
 (%i4) intfugudu(%,x);
 (%o4) jacobi_dn(x^2,a)
-</PRE>
+</pre></td></tr></table>
 
-<P>
-For a method for automatically calling <CODE>infugudu</CODE> from <CODE>integrate</CODE>, see
-the documentation for <CODE>intfudu</CODE>.
+<p>For a method for automatically calling <code>infugudu</code> from <code>integrate</code>, see
+the documentation for <code>intfudu</code>.
+</p>
+<p><b>To use</b> &lsquo;<tt>load(partition)</tt>&rsquo;
+</p>
+<p><b>Additional documentation</b> http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
+</p>
+<p><b>Related functions</b> <i>intfudu</i>
+</p>
+</dd></dl>
 
-
-<P>
-<B>To use</B> <TT>`load(partition)'</TT>
-
-
-<P>
-<B>Additional documentation</B> http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
-
-
-<P>
-<B>Related functions</B> <I>intfudu</I>
-
-
-</DL>
-
-<P>
-<DL>
-<DT><U>Function:</U> <B>signum_to_abs</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX5"></A>
- 
-This function replaces subexpressions of the form <EM>q signum(q)</EM> by
-<EM>abs(q)</EM>.  Before it does these substitutions, it replaces
-subexpressions of the form <EM>signum(p) * signum(q)</EM> by
-<EM>signum(p * q)</EM>; examples:
-
-
-
-<PRE>
- (%i1) map('signum_to_abs, [x * signum(x), x * y * signum(x)* signum(y)/2]);
+<dl>
+<dt><a name="index-signum_005fto_005fabs"></a><u>Function:</u> <b>signum_to_abs</b><i> (<var>e</var>)</i></dt>
+<dd> 
+<p>This function replaces subexpressions of the form <em>q signum(q)</em> by
+<em>abs(q)</em>.  Before it does these substitutions, it replaces
+subexpressions of the form <em>signum(p) * signum(q)</em> by
+<em>signum(p * q)</em>; examples:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example"> (%i1) map('signum_to_abs, [x * signum(x), x * y * signum(x)* signum(y)/2]);
  (%o1) [abs(x),(abs(x)*abs(y))/2]
-</PRE>
+</pre></td></tr></table>
+<p><b>To use</b> &lsquo;<tt>load(abs_integrate)</tt>&rsquo;
+</p>
+</dd></dl>
 
-<P>
-<B>To use</B> <TT>`load(abs_integrate)'</TT>
-
-
-</DL>
-
-<P>
-<DL>
-<DT><U>Macro:</U> <B>simp_assuming</B> <I>(<VAR>e</VAR>, <VAR>f_1</VAR>, <VAR>f_2</VAR>, ..., <VAR>f_n</VAR>)</I>
-<DD><A NAME="IDX6"></A>
-
-
-<P>
-Appended the facts <EM>f_1, f_2, ..., f_n</EM> to the current context and simplify
-<EM>e</EM>. The facts are removed before returning the simplified expression <EM>e</EM>.
-
-
-
-<PRE>
-(%i2) simp_assuming(x + abs(x), x &#60; 0);
-(%o2) 0
-</PRE>
-
-<P>
-The facts in the current context aren't ignored:
-
-<PRE>
-(%i3) assume(x &#62; 0)$
-(%i4) simp_assuming(x + abs(x),x &#60; 0);
-(%o4) 2*x
-</PRE>
-
-<P>
-Since <CODE>simp_assuming</CODE> is a macro, effectively <CODE>simp_assuming</CODE> quotes is arguments;
-this allows
-
-<PRE>
-(%i5) simp_assuming(asksign(p), p &#60; 0);
-(%o5) neg
-</PRE>
-
-<P>
-<B>To use</B> <TT>`load(abs_integrate)'</TT>
-
-
-</DL>
-
-<P>
-<DL>
-<DT><U>Function:</U> <B>conditional_integrate</B> <I>(<VAR>e</VAR>, <VAR>x</VAR>)</I>
-<DD><A NAME="IDX7"></A>
-
-
-<P>
-For an integrand with one or more parameters, this function tries to determine an
+<dl>
+<dt><a name="index-conditional_005fintegrate"></a><u>Function:</u> <b>conditional_integrate</b><i> (<var>e</var>, <var>x</var>)</i></dt>
+<dd>
+<p>For an integrand with one or more parameters, this function tries to determine an
 antiderivative that is valid for all parameter values. When successful, this
 function returns a conditional expression for the antiderivative.
-
-
-
-<PRE>
-(%i1) conditional_integrate(cos(m*x),x);
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example">(%i1) conditional_integrate(cos(m*x),x);
 (%o1) %if(m#0,sin(m*x)/m,x)
 
 (%i2) conditional_integrate(cos(m*x)*cos(x),x);
@@ -423,45 +305,37 @@ function returns a conditional expression for the antiderivative.
 
 (%i4) conditional_integrate(exp(a*x^2+b*x),x);
 (%o4) %if(a#0,-(sqrt(%pi)*%e^(-b^2/(4*a))*erf((2*a*x+b)/(2*sqrt(-a))))/(2*sqrt(-a)),%if(b#0,%e^(b*x)/b,x))
-</PRE>
+</pre></td></tr></table>
 
-</DL>
+</dd></dl>
 
-<P>
-<DL>
-<DT><U>Function:</U> <B>convert_to_signum</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX8"></A>
-
-
-<P>
-This function replaces subexpressions of the form <EM>abs(q), unit_step(q),
- min(q1,q2, ..., qn)</EM> and <EM>max(q1,q2, ..., qn)</EM> by equivalent <EM>signum</EM>
+<dl>
+<dt><a name="index-convert_005fto_005fsignum"></a><u>Function:</u> <b>convert_to_signum</b><i> (<var>e</var>)</i></dt>
+<dd>
+<p>This function replaces subexpressions of the form <em>abs(q), unit_step(q),
+ min(q1,q2, ..., qn)</em> and <em>max(q1,q2, ..., qn)</em> by equivalent <em>signum</em>
 terms.
-
-
-
-<PRE>
- (%i1) map('convert_to_signum, [abs(x), unit_step(x), max(a,2), min(a,2)]);
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="example"> (%i1) map('convert_to_signum, [abs(x), unit_step(x), max(a,2), min(a,2)]);
  (%o1) [x*signum(x),(signum(x)+1)/2,((a-2)*signum(a-2)+a+2)/2,(-(a-2)*signum(a-2)+a+2)/2]
-</PRE>
+</pre></td></tr></table>
 
-<P>
-To convert <CODE>unit_step</CODE> to signum form, the function <CODE>convert_to_signum</CODE> 
-uses <EM>unit_step(x) = (1 + signum(x))/2</EM>. 
+<p>To convert <code>unit_step</code> to signum form, the function <code>convert_to_signum</code> 
+uses <em>unit_step(x) = (1 + signum(x))/2</em>. 
+</p>
+<p><b>To use</b> &lsquo;<tt>load(abs_integrate)</tt>&rsquo;
+</p>
+<p><b>Related functions</b> <i>signum_to_abs</i>
+</p>
+</dd></dl>
 
+<hr size="1">
+<p>
+ <font size="-1">
+  This document was generated by <em>U-UNKNET\willisb</em> on <em>May 16, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
 
-<P>
-<B>To use</B> <TT>`load(abs_integrate)'</TT>
-
-
-<P>
-<B>Related functions</B> <I>signum_to_abs</I>
-
-
-</DL>
-
-<P><HR><P>
-This document was generated on 8 January 2011 using
-<A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
-</BODY>
-</HTML>
+</p>
+</body>
+</html>

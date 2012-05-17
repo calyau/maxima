@@ -1,5 +1,5 @@
 /*
-  Copyright 2008, 2009, 2010, 2011 by Barton Willis
+  Copyright 2008, 2009, 2010, 2011, 2012 by Barton Willis
   Maxima code for integration of signum, abs, max, min, and unit_step.
 
   This is free software; you can redistribute it and/or
@@ -21,10 +21,11 @@ load("unwind_protect");
 load("to_poly_solve_extra");
 load("partition");
 load("basic");
+load("lrats");
 
-matchdeclare(x, symbolp, [q,a,b], lambda([s], true));
+matchdeclare(x, symbolp, [q,%a,%b], lambda([s], true));
 block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
-	     	      tellsimpafter('integrate(q,x,a,b), extra_definite_integrate(q,x,a,b)));
+	     	      tellsimpafter('integrate(q,x,%a,%b), extra_definite_integrate(q,x,%a,%b)));
 
 extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_use_if, 'floor_int, 'if_int];
 
@@ -99,11 +100,9 @@ unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
  else map('unit_step_mult_simp, e));
          
 /* Do e * signum(e) --> abs(e) */
-signum_to_abs(e) := block([l],
-  l : flatten(gatherargs(e,'signum)),
-  for lk in l do (
-     e : ratsubst(abs(lk), lk * signum(lk),e)),
-  e);
+
+signum_to_abs(e) := block([l : flatten(gatherargs(e,'signum))],
+  fullratsubst(map(lambda([s], s*signum(s)=abs(s)), l), e));
 
 /* If e has the form w * signum(p1(x)) * signum(p2(x)) * ... * signum(pn(x)), where w
 is either freeof signum terms or free of x, return [w, append(q1,q2,...,qn)],
@@ -127,7 +126,7 @@ linear_in_p(e,x) :=
 
 signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
   q : convert_to_signum(q),
-  q : almost_everywhere_simp(q),
+  q : almost_everywhere_simp(q), 
   v : listofvars(q),
   q : block([expandwrt_denom : true], expandwrt(q,'signum)),
   if (f : abs_int_extra(q,x)) # false then f
@@ -137,7 +136,7 @@ signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
     if every(lambda([s], linear_in_p(s,x)), acc) then (
       sgn : xreduce("*", map(lambda([s], diff(s,x)),acc)),
       acc : map(lambda([s], rhs(first(linsolve(s, x)))),acc),
-     signum_int_helper(signum(sgn) * w, sort(acc), x)))
+      signum_int_helper(signum(sgn) * w, sort(acc), x)))
   else if (safe_op(q) = "+") then (
     f : map(lambda([s], signum_int(s,x)), args(q)),
     if member(false, f) then false else xreduce("+", f))
@@ -150,21 +149,25 @@ signum_int_helper(q,l,x) := block([v, xo, f, x%],
   if emptyp(rest(l)) then (
     f : integrate(q,x),
     if not(freeof('integrate, f)) then (
-        v : new_variable('general),
-        f : funmake(nounify('integrate), [subst(x = v, q), v, first(l), x])),
+      v : new_variable('general),
+      f : funmake(nounify('integrate), [subst(x = v, q), v, first(l), x])),
     signum(x - first(l)) * (f - subst(x = first(l), f)))
   else (
     xo : first(l),
     f : signum_int_helper(q, rest(l), x),
     signum(x - xo) * (f - subst(x = xo, f))));
 
-/* The function abs_defint is based on code I wrote and placed in the public domain.*/
+/* The function dint is based on code I wrote and placed in the public domain.*/
 
-dint(e,x,l) := block([xo, acc : 0, i],
+dint(e,x,l) := block([xo, acc : 0, i, cntx : gensym("cntx")],
   xo : first(l),
   l : rest(l),
   for xi in l do (
-    i : errcatch(integrate(simp_assuming(e,xo < x, x < xi, xo < xi),x,xo,xi)),
+    cntx : apply('supcontext,[cntx]),
+    i : unwind_protect((
+         apply('assume,[xo < x, x < xi, xo < xi]),
+         errcatch(integrate(expand(e,0,0),x,xo,xi))),
+       killcontext(cntx)), 
     if i = [ ] then return(acc : false) else acc : acc + first(i),
     xo : xi),
   acc);
@@ -180,28 +183,27 @@ partitions_interval_p(l,[endpts]) := block([ok,lo,hi],
     if every(lambda([a,b], is(a <= b)=true), l, endcons('inf, rest(l))) then l else false)
   else false);
 
-abs_defint(e,x,lo,hi) := block([f,l, prederror : false],
+abs_defint(e,x,lo,hi) := block([f,l, prederror : false, cntx : gensym("cntx")],
   if is(hi < lo)=true then -abs_defint(e,x,hi,lo)
   else if is(lo = hi) then 0
   else (
-    e : simp_assuming(e,lo <= x, x <= hi), 
-    e : convert_to_signum(e),
-    e : almost_everywhere_simp(e),
-    l : xreduce('append, (gatherargs(e, 'signum))),
-    l : flatten(map(lambda([s], real_linear_factors(s,x)), l)), /* flatten([[1], false]) --> [1,false] */
-    l : sublist(l, lambda([s], lo <= s and s <= hi)),
-    l : delete(false,l),
-    l : partitions_interval_p(l,lo,hi),
-    if l # false then (
-      f : dint(e,x,l),
-      if f = false then false else f)
-    else false));
+     unwind_protect((
+        cntx : apply('supcontext,[cntx]),
+        assume(lo <= x, x <= hi),
+        e : expand(e,0,0),
+        e : convert_to_signum(e),
+        e : almost_everywhere_simp(e),
+        l : xreduce('append, (gatherargs(e, 'signum))),
+        l : flatten(map(lambda([s], real_linear_factors(s,x)), l)), /* flatten([[1], false]) --> [1,false] */
+        l : sublist(l, lambda([s], lo <= s and s <= hi)),
+        l : delete(false,l),
+        l : partitions_interval_p(l,lo,hi),
+        if l # false then (
+          f : dint(e,x,l),
+          if f = false then false else f)
+       else false),
+    killcontext(cntx))));
  
-/* The idea that of using a macro is due to Stavros Macrakis; the use of buildq is due to Robert Dodier.*/
-
-simp_assuming(e, [fcts]) ::= 
-  buildq([e,fcts], unwind_protect((apply(assume, fcts), expand(e,0,0)), apply(forget,fcts)));
-
 /* Replace signum(z)^2 --> 1, where z is nonzero and a polynomial. For a nonzero polynomial z,
 signum(z)^2 -1 is zero everywhere except at each zero of z. The almost_everywhere_simp simplification
 is OK for an integrand--thus integrate(e,x) = integrate(almost_everywhere_simp(e),x).
@@ -211,11 +213,8 @@ for example. Another extension is %if(x=0,xxx,zzz) --> zzz. I'll save these for 
 
 almost_everywhere_simp(e) := block([l],
   l : sublist(flatten(gatherargs(e,'signum)), lambda([s], s # 0 and polynomialp(s,listofvars(s)))),
-  e : ratexpand(e),
-  for lk in l do (
-    e : ratsubst(1, signum(lk)^2,e)),
-  e);
-
+  fullratsubst(map(lambda([s], signum(s)^2=1),l), ratexpand(e)));
+ 
 /* For integrands of the form F(x, |x-c|), integrate F(x,-x+c) and F(x,x-c). Return a signum expression
 that is continuous at c; when the integrand doesn't have this form, return false. The error catch
 on integrate is needed: try integrate(1/(x + abs(x)),x), for example.
@@ -224,15 +223,18 @@ The function sublis does all substitutions before simplification. This allows th
 sublis([x = 0], %if(x < 1, 5, log(x))) --> 5. The subst function simplifies along the way
 so subst([x = 0], %if(x < 1, 5, log(x))) --> error. */
 
-abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
+abs_int_extra(q,x) := block([q1,q2,k,xo,kk, cntx : gensym("cntx")],
   q : convert_to_signum(q),
   k : sublist(gatherargs(q,'signum),lambda([s], not freeof(x,s))),
   if k # [] and emptyp(rest(k)) then (
     k : first(first(k)),
     if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (
       kk : rhs(first(linsolve(k,x))),
-      q1 : errcatch(integrate(simp_assuming(q, x < kk),x)),
-      q2 : errcatch(integrate(simp_assuming(q, x > kk),x)),
+      cntx : apply('supcontext,[cntx]),
+      q1 : unwind_protect((assume(x < kk), errcatch(integrate(expand(q,0,0),x))),killcontext(cntx)),
+      cntx : gensym("cntx"),
+      cntx : apply('supcontext,[cntx]),
+      q2 : unwind_protect((assume(x > kk), errcatch(integrate(expand(q,0,0),x))),killcontext(cntx)),
       if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) and
       q1 # [] and q2 # [] then (
         q1 : first(q1),
@@ -263,12 +265,17 @@ abs_integrate_use_if(q,x) := block([k,%x,xo],
     if q = [] then false else subst(%x = x, first(q)))
   else false);
 
-interval_integrate(q,x,l) :=  block([xo,q1,q2,i1],
+interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx : gensym("cntx")],
   if l = [ ] then integrate(q,x)
   else (
     xo : first(l),
-    q1 : simp_assuming(integrate(q,x), x < xo),
-    q2 : simp_assuming(interval_integrate(q,x,rest(l)), x > xo),
+    cntx : apply('supcontext,[cntx]),
+    q1 : unwind_protect((assume(x < xo),integrate(expand(q,0,0),x)), killcontext(cntx)),
+    cntx : gensym("cntx"),
+    cntx : apply('supcontext,[cntx]),
+    q : unwind_protect((assume(x > xo),expand(q,0,0)),killcontext(cntx)),
+    q2 : interval_integrate(q,x,rest(l)),
+   
     if freeof(nounify('integrate), q2 - q1) then (
       i1 : errcatch(sublis([x = xo], q2 - q1)))
     else i1 : [ ],
@@ -343,7 +350,7 @@ forgetful_csign(e) := unwind_protect(csign(e), ?clearsign());
    
 eq_reduce(e) := block([ ],
   e : factor(e),
-  if constantp(e) then 1
+  if constantp(e) then if csign(e) = 'zero then 0 else 1
   else if mapatom(e) then e
   else if op(e) = 'abs then eq_reduce(first(e))
   else if op(e) = 'log then eq_reduce(first(e)-1)
@@ -372,12 +379,13 @@ possible_singular_pts(e) := block([inflag : true],
    integrate(1/(a+x^2),x). Maybe we could avoid additional calls to asksign by
    setting assume_pos to true. But then integrate(abs(x),x) --> x^2/2. */
  
-forgetful_integrate(e,x) := block([ee, fcts : facts(), extra_integration_methods : []],
-  ee : intfudu(e,x),
-  if ee # false then ee else (
-    unwind_protect(integrate(e,x),
-      map('forget, setdifference(setify(facts()), setify(fcts))))));
-
+forgetful_integrate(e,x) := block([ee, extra_integration_methods : [], cntx : gensym("cntx")],
+   unwind_protect((
+     cntx : apply('supcontext, [cntx]),
+     ee : intfudu(e,x),	
+     if ee # false then ee else integrate(e,x)),
+    killcontext(cntx)));
+  
 /* Let l be a list of first degree polynomials. Solve l and substitute into e.
    When the substitutions are inconsistent, signal an error, but don't print
    a message. Linear_subst isn't intended to be a user-level function--this
