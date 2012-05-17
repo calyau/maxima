@@ -3498,5 +3498,17 @@ relerror(
   3.57b-64);
 true;
       
+relerror(
+  gamma_incomplete(10,-100d0+%i),
+  subst(x=-100d0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
+  8.43e-16);
+true;
+      
+relerror(
+  gamma_incomplete(10,-100b0+%i),
+  subst(x=-100b0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
+  2.04b-64);
+true;
+      
 (fpprec:oldfpprec,done);
 done;
