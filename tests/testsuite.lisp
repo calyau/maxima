@@ -45,7 +45,7 @@
         ((mlist simp) "rtest_map" 2 3 4)
         ((mlist simp) "rtest_sign" 21 25 30 40 65 72 77 79)
         "rtest_algebraic"
-        ((mlist simp) "rtest_gamma" 473 474)
+        "rtest_gamma"
         "rtest_expintegral"
         "rtest_signum"
         "rtest_lambert_w"

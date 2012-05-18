@@ -2146,18 +2146,18 @@
 
 ;;; ----------------------------------------------------------------------------
 
-;(defprop %erfc simplim%erfc simplim%function)
-;
-;(defun simplim%erfc (expr var val)
-;  ;; Look for the limit of the arguments.
-;  (let ((z (limit (cadr expr) var val 'think)))
-;    (cond
-;      ;; Handle infinities at this place.
-;      ((eq z '$inf) 0)
-;      ((eq z '$minf) 2)
-;      (t
-;       ;; All other cases are handled by the simplifier of the function.
-;       (simplify (list '(%erfc) z))))))
+(defprop %erfc simplim%erfc simplim%function)
+
+(defun simplim%erfc (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond
+      ;; Handle infinities at this place.
+      ((eq z '$inf) 0)
+      ((eq z '$minf) 2)
+      (t
+       ;; All other cases are handled by the simplifier of the function.
+       (simplify (list '(%erfc) z))))))
 
 ;;; ----------------------------------------------------------------------------
 
