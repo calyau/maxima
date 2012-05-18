@@ -87,18 +87,10 @@
 ;; these are in the system package in gcl...
 #-gcl
 (progn 'compile
-       ;; return path as a string  or nil if none.
-       ;;#+nil
-       ;;(defun stream-name (path)
-       ;;  (let ((tem (errset (namestring (pathname path)))))
-       ;;    (car tem)))
-
        (defun break-call (key args prop &aux fun)
 	 (setq fun (complete-prop key 'keyword prop))
 	 (setq key fun)
 	 (or fun (return-from break-call nil))
-                       ; jfa commented out the following line. Did it ever work?
-                       ; #+clisp (eval '(setq *break-env* (the-environment)))
 	 (setq fun (get fun prop))
 	 (unless (symbolp fun)
 	   (let ((gen (gensym)))
