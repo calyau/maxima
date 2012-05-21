@@ -650,7 +650,11 @@
 ;; The algorithm has cubic convergence.  Once convergence begins, the 
 ;; number of digits correct at step k is roughly 3 times the number 
 ;; which were correct at step k-1.
-(defun lambert-w-k (k z &key (maxiter 10) (prec 5e-15))
+;;
+;; Convergence can stall using the simple convergence test abs(w[j+1]-w[j])<prec.
+;; This happens for generalized_lambert_w(-1,z) near branch point z = -1/%e
+;; Also need to stop iterating when abs(w[j]*exp(w[j]) - z) << abs(z)
+(defun lambert-w-k (k z &key (maxiter 20) (prec 5e-15))
   (let ((w (init-lambert-w-k k z)) we w1e delta)
     (dotimes (i maxiter (merror "lambert-w-k did not converge"))
       (setq we (* w (exp w)))
@@ -658,7 +662,8 @@
       (setq delta (/ (- we z)
 		     (- w1e (/ (* (+ w 2) (- we z)) (+ 2 (* 2 w))))))
       (decf w delta)
-      (when (<= (abs (/ delta w)) prec) (return)))
+      (when (or (<= (abs (/ delta w)) prec) 
+                (<= (abs (- z we)) (* 8 double-float-epsilon (abs z)))) (return)))
     ;; Check iteration converged to correct branch
     (check-lambert-w-k k w z)
     w))
