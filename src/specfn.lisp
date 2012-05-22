@@ -636,6 +636,27 @@
     (b0 -1) (b1 1) (b2 -1/3) (b3 11/72))
     (+ b0 (* y (+ b1 (* y (+ b2 (* b3 y))))))))
 
+(defun  bfloat-lambert-branch-approx (z)
+  (let ((b0 -1) (b1 1) (b2 -1/3) (b3 11/72)
+       ; y=-sqrt(2*%e*z+2)
+	(y (bigfloat:- 
+	    (bigfloat:sqrt 
+             (bigfloat:+
+	      (bigfloat:* 2 
+			  (bigfloat:exp 1)
+			  (bigfloat:to z)) 
+	      2)))))
+    (to (bigfloat:+ 
+	 b0 
+	 (bigfloat:* y 
+		     (bigfloat:+ 
+		      b1 
+		      (bigfloat:* 
+		       y 
+		       (bigfloat:+ 
+			b2 
+			(bigfloat:* b3 y)))))))))
+
 ;; Algorithm based in part on Corless et al (1996).
 ;;
 ;; It is Halley's iteration applied to w*exp(w).
@@ -709,19 +730,34 @@
   (let ((prec (power ($bfloat 10.0) (- $fpprec)))
         (maxiter 500) ; arbitrarily chosen, we need a better choice
 	(fpprec (add fpprec 8)) ; Increase precision slightly
+	(branch-point -0.36787944117144) ; branch point -1/%e
+	(bf-z (bigfloat:to z))
         w)
 
-  ;; Get an initial estimate.  
+  ;; Get an initial estimate.
+  ;; if k=-1, z very close to -1/%e and imag(z)>=0, use power series
+  ;; if k=1, z very close to -1/%e and imag(z)<0, use power series
   ;; if abs(z) < 2^332 ~ 1.0e100 use W_k(z) = generalized_lambert_w(k,float(z))
   ;; For large z, use Corless et al (4.20)
   ;;              W_k(z) = log(z) + 2.pi.i.k - log(log(z)+2.pi.i.k)
   (setq w 
-	(if (eq ($sign (sub ($cabs z) ($bfloat (power 2 332)))) '$neg)
-	    ($bfloat ($generalized_lambert_w k ($float z)))
+    (cond
+       ((and (= k -1)
+	     (or (bigfloat:zerop (bigfloat:imagpart bf-z))
+		 (bigfloat:plusp (bigfloat:imagpart bf-z)))
+	     (bigfloat:< (bigfloat:abs (bigfloat:- bf-z branch-point)) 1e-10))
+	 (bfloat-lambert-branch-approx z))
+       ((and (= k 1)
+	     (bigfloat:minusp (bigfloat:imagpart bf-z))
+	     (bigfloat:< (bigfloat:abs (bigfloat:- bf-z branch-point)) 1e-10))
+	 (bfloat-lambert-branch-approx z))
+       ((eq ($sign (sub ($cabs z) ($bfloat (power 2 332)))) '$neg)
+	    ($bfloat ($generalized_lambert_w k ($float z))))
+       (t
 	    (let ((log-z ($log z))
 		  (two-pi-i-k (mul 2 '$%pi '$%i k)))
 	      (sub (add log-z two-pi-i-k) 
-		   ($log (add log-z two-pi-i-k))))))
+		   ($log (add log-z two-pi-i-k)))))))
 
   (dotimes (k maxiter)
     (let* ((one ($bfloat 1))
