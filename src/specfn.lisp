@@ -658,12 +658,17 @@
   (let ((w (init-lambert-w-k k z)) we w1e delta)
     (dotimes (i maxiter (merror "lambert-w-k did not converge"))
       (setq we (* w (exp w)))
+      (when (<= (abs (- z we)) (* 8 double-float-epsilon (abs z))) (return))
       (setq w1e (* (1+ w) (exp w)))
       (setq delta (/ (- we z)
 		     (- w1e (/ (* (+ w 2) (- we z)) (+ 2 (* 2 w))))))
       (decf w delta)
-      (when (or (<= (abs (/ delta w)) prec) 
-                (<= (abs (- z we)) (* 8 double-float-epsilon (abs z)))) (return)))
+      (when (<= (abs (/ delta w)) prec) (return)))
+    ;; Can get complex numbers with imagpart=0 due to roundoff 
+    (when (and (complexp z) (= (imagpart z) 0.0)) 
+      (setq z (realpart z)))
+    (when (and (complexp w) (= (imagpart w) 0.0)) 
+      (setq w (realpart w)))
     ;; Check iteration converged to correct branch
     (check-lambert-w-k k w z)
     w))
@@ -679,7 +684,7 @@
   (if
      (cond 
        ;; k=-1 branch with z and w real.
-      ((and (= k -1) (realp z) (> z (/ -1 (exp 1))) (minusp z))
+      ((and (= k -1) (realp z) (minusp z) (>= z (/ -1 (exp 1))))
        (if (and (realp w) 
 		(<= w -1)
 		(< (abs (+ w (log w) (- (log z)))) tolerance))
