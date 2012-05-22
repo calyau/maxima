@@ -386,7 +386,6 @@ intl.lisp \
 intpol.lisp \
 invert.lisp \
 irinte.lisp \
-kclmac.lisp \
 laplac.lisp \
 ldisp.lisp \
 lesfac.lisp \
