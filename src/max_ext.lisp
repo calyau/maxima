@@ -269,17 +269,6 @@
   ($auto_mexpr mexpr "linearalgebra"))
 
 
-'$parametric
-'(defvar $plot_options '((mlist)
-					;((mlist) $x -3 3)
-					;((mlist) $y -3 3)
-			 ((mlist) $grid 30 30)
-			 ((mlist) $transform_xy nil)
-			 ((mlist) $run_viewer t)
-			 ((mlist) $plot_format $xmaxima)
-			 ((mlist) $nticks 100)
-			 ))
-
 (dolist (f
      '($assoc_legendre_p
        $assoc_legendre_q
