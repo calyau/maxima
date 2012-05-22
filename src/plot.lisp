@@ -39,8 +39,7 @@ sin(y)*(10.0+6*cos(x)),
 (defun coerce-float (x) ($float (meval* x)))
 
 (defvar *maxima-plotdir* "")
-(defvar *maxima-tempdir*)
-(defvar *maxima-prefix*)
+(declare-top (special *maxima-tempdir* *maxima-prefix*))
 
 (defvar *z-range* nil)
 (defvar *original-points* nil)
