@@ -1606,7 +1606,7 @@ See also function @code{cov}.
 
 
 @deffn {Function} global_variances (@var{matrix})
-@deffnx {Function} global_variances (@var{matrix}, @var{logical_value})
+@deffnx {Function} global_variances (@var{matrix}, @var{options} ...)
 Function @code{global_variances} returns a list of global variance measures:
 
 @itemize @bullet
@@ -1625,6 +1625,15 @@ Function @code{global_variances} returns a list of global variance measures:
 @end itemize
 where @var{p} is the dimension of the multivariate random variable and @math{S_1} the covariance matrix returned by @code{cov1}.
 
+Option:
+
+@itemize @bullet
+@item
+@code{'data}, default @code{'true}, indicates whether the input matrix contains the sample data,
+in which case the covariance matrix @code{cov1} must be calculated, or not, and then the covariance
+matrix (symmetric) must be given, instead of the data.
+@end itemize
+
 Example:
 
 @c ===beg===
@@ -1642,24 +1651,20 @@ Example:
 @end group
 @end example
 
-The function @code{global_variances} has an optional logical argument:
-@code{global_variances(x, true)} tells Maxima that @code{x} is the data matrix,
-making the same as @code{global_variances(x)}. On the other hand,
-@code{global_variances(x, false)} means that @code{x} is not the data matrix,
-but the covariance matrix, avoiding its recalculation,
+Calculate the @code{global_variances} from the covariance matrix.
 
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
-@c global_variances (s, false);
+@c global_variances (s, data=false);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) s : cov1 (s2)$
 @group
-(%i4) global_variances (s, false);
+(%i4) global_variances (s, data=false);
 (%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
          113.4651792608501, 6.636590811800795, 2.576158149609762]
 @end group
@@ -1677,6 +1682,15 @@ See also @code{cov} and @code{cov1}.
 @deffn {Function} cor (@var{matrix})
 @deffnx {Function} cor (@var{matrix}, @var{logical_value})
 The correlation matrix of the multivariate sample.
+
+Option:
+
+@itemize @bullet
+@item
+@code{'data}, default @code{'true}, indicates whether the input matrix contains the sample data,
+in which case the covariance matrix @code{cov1} must be calculated, or not, and then the covariance
+matrix (symmetric) must be given, instead of the data.
+@end itemize
 
 Example:
 
@@ -1704,14 +1718,14 @@ Example:
 @end group
 @end example
 
-Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+Calculate de correlation matrix from the covariance matrix.
 
 @c ===beg===
 @c load (descriptive)$
 @c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
-@c cor (s, false); /* this is faster */
+@c cor (s, data=false); /* this is faster */
 @c ===end===
 @example
 (%i1) load (descriptive)$
@@ -1719,7 +1733,7 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
 @group
-(%i5) cor (s, false); /* this is faster */
+(%i5) cor (s, data=false); /* this is faster */
       [   1.0     .8476339  .8803515  .8239624  .7519506 ]
       [                                                  ]
       [ .8476339    1.0     .8735834  .6902622  0.782502 ]
@@ -1742,7 +1756,7 @@ See also @code{cov} and @code{cov1}.
 
 
 @deffn {Function} list_correlations (@var{matrix})
-@deffnx {Function} list_correlations (@var{matrix}, @var{logical_value})
+@deffnx {Function} list_correlations (@var{matrix}, @var{options} ...)
 Function @code{list_correlations} returns a list of correlation measures:
 
 @itemize @bullet
@@ -1800,6 +1814,15 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 
 @end itemize
 
+Option:
+
+@itemize @bullet
+@item
+@code{'data}, default @code{'true}, indicates whether the input matrix contains the sample data,
+in which case the covariance matrix @code{cov1} must be calculated, or not, and then the covariance
+matrix (symmetric) must be given, instead of the data.
+@end itemize
+
 Example:
 
 @c ===beg===
@@ -1846,9 +1869,114 @@ Example:
 @end group
 @end example
 
-Function @code{list_correlations} also has an optional logical argument: @code{list_correlations(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{list_correlations(x)}. On the other hand, @code{list_correlations(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
-
 See also @code{cov} and @code{cov1}.
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+
+@deffn {Function} principal_components (@var{matrix})
+@deffnx {Function} principal_components (@var{matrix}, @var{options} ...)
+Calculates the principal componentes of a multivariate sample. Principal components are
+used in multivariate statistical analysis to reduce the dimensionality of the sample.
+
+Option:
+
+@itemize @bullet
+@item
+@code{'data}, default @code{'true}, indicates whether the input matrix contains the sample data,
+in which case the covariance matrix @code{cov1} must be calculated, or not, and then the covariance
+matrix (symmetric) must be given, instead of the data.
+@end itemize
+
+The output of function @code{principal_components} is a list with the following results:
+
+@itemize @bullet
+@item
+variances of the principal components,
+@item
+percentage of total variance explained by each principal component,
+@item
+rotation matrix.
+@end itemize
+
+Examples:
+
+In this sample, the first component explains 83.13 per cent of total 
+variance.
+
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) fpprintprec:4 $
+(%i4) res: principal_components(s2);
+0 errors, 0 warnings
+(%o4) [[87.57, 8.753, 5.515, 1.889, 1.613], 
+[83.13, 8.31, 5.235, 1.793, 1.531], 
+@group
+[ .4149  .03379   - .4757  - 0.581   - .5126 ]
+[                                            ]
+[ 0.369  - .3657  - .4298   .7237    - .1469 ]
+[                                            ]
+[ .3959  - .2178  - .2181  - .2749    .8201  ]]
+[                                            ]
+[ .5548   .7744    .1857    .2319    .06498  ]
+[                                            ]
+[ .4765  - .4669   0.712   - .09605  - .1969 ]
+@end group
+(%i5) /* accumulated percentages  */
+    block([ap: copy(res[2])],
+      for k:2 thru length(ap) do ap[k]: ap[k]+ap[k-1],
+      ap);
+(%o5)                 [83.13, 91.44, 96.68, 98.47, 100.0]
+(%i6) /* sample dimension */
+      p: length(first(res));
+(%o6)                                  5
+(%i7) /* plot percentages to select number of
+         principal components for further work */
+     draw2d(
+        fill_density = 0.2,
+        apply(bars, makelist([k, res[2][k], 1/2], k, p)),
+        points_joined = true,
+        point_type    = filled_circle,
+        point_size    = 3,
+        points(makelist([k, res[2][k]], k, p)),
+        xlabel = "Variances",
+        ylabel = "Percentages",
+        xtics  = setify(makelist([concat("PC",k),k], k, p))) $
+@end example
+
+In case de covariance matrix is known, it can be passed to the function,
+but option @code{data=false} must be used.
+
+@example
+(%i1) load (descriptive)$
+(%i2) S: matrix([1,-2,0],[-2,5,0],[0,0,2]);
+                                [  1   - 2  0 ]
+                                [             ]
+(%o2)                           [ - 2   5   0 ]
+                                [             ]
+                                [  0    0   2 ]
+(%i3) fpprintprec:4 $
+(%i4) /* the argumment is a covariance matrix */
+      res: principal_components(S, data=false);
+0 errors, 0 warnings
+                                                  [ - .3827  0.0  .9239 ]
+                                                  [                     ]
+(%o4) [[5.828, 2.0, .1716], [72.86, 25.0, 2.145], [  .9239   0.0  .3827 ]]
+                                                  [                     ]
+                                                  [   0.0    1.0   0.0  ]
+(%i5) /* transformation to get the principal components
+         from original records */
+      matrix([a1,b2,c3],[a2,b2,c2]).last(res);
+             [ .9239 b2 - .3827 a1  1.0 c3  .3827 b2 + .9239 a1 ]
+(%o5)        [                                                  ]
+             [ .9239 b2 - .3827 a2  1.0 c2  .3827 b2 + .9239 a2 ]
+@end example
 
 @opencatbox
 @category{Package descriptive}

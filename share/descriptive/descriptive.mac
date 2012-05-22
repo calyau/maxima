@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2011 Mario Rodriguez Riotorto
+Copyright (C) 2005-2012 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -100,6 +100,7 @@ Multivariate descriptive statistics:
       precision matrix
       multiple correlation coefficients
       partial correlation coefficients
+   principal_components
 
 Statistical diagrams:
    - scatterplot
@@ -121,7 +122,7 @@ For questions, suggestions, bugs and the like, feel free
 to contact me at
 
 mario AT edu DOT xunta DOT es
-www.biomates.net
+http://riotorto.users.sourceforge.net/
 */
 
 
@@ -153,6 +154,7 @@ listofexpr(y):=listp(y) and not some('identity,map('listp,y))$
 /* True if the argument is a list of lists containing only numbers, */
 /* false otherwise.                                                 */
 listoflistsp(y):=listp(y) and every('identity,map('listofnumbersp,y))$
+
 
 
 
@@ -426,7 +428,7 @@ quartile_skewness(x):=block([q1,q2,q3,t],
 /* Covariance matrix */
 cov(x):=block([n:length(x),dim,m,xi,sum],
 	if not matrixp(x)
-		then error("The argument is not a matrix")
+		then error("cov: the argument is not a matrix")
 		else (m:matrix(mean(x)),
 		      dim:length(x[1]),
 		      sum:zeromatrix(dim,dim),
@@ -440,80 +442,152 @@ cov(x):=block([n:length(x),dim,m,xi,sum],
 cov1(x):=block([n:length(x)], cov(x)*n/(n-1))$
 
 
-/* A list of global variation measures:                                   */
+/* A list of global variation measures. The argument x must be a matrix   */
 /*  1) total variance                                                     */
 /*  2) mean variance                                                      */
 /*  3) generalized variance                                               */
 /*  4) generalized standard deviation                                     */
 /*  5) efective variance                                                  */
 /*  6) efective standard deviation                                        */
-/* The argument x must be a matrix:                                       */
-/* global_variances(x,false)==> x is the covariance matrix and            */
-/*                 'cov1' is not recalculated                             */
-/* global_variances(x,true) or global_variances(x)==> means that x stores */
-/*                 sampled data and the covariance                        */
-/*                 matrix 'cov1' must be computed                         */
-global_variances(x,[aredata]):=block([s,p,len,aux,out:[]],
-	if matrixp(x)
-		then(len:length(aredata),
-		     if len<1 or aredata[1]=true
-			then s:cov1(x)
-			else s:x,
-		     p:length(s),            /* dimension */
-		     aux:matrixtrace(s),
-		     out:cons(aux,out),          /* total variance */
-		     out:endcons(aux/p,out),     /* mean variance */
-		     aux:determinant(s),
-		     out:endcons(aux,out),       /* generalized variance */
-		     out:endcons(sqrt(aux),out), /* generalized standard deviation */
-		     aux:aux^(1/p),
-		     out:endcons(aux,out),       /* efective variance */
-		     out:endcons(sqrt(aux),out)  /* efective standard deviation */
-		     ),
-	out)$
+/* Admits the following options:                                            */
+/*   'data='true: x stores sampled data and the covariance matrix 'cov1'    */
+/*        must be computed; if false, x is the covariance matrix and 'cov1' */
+/*        is not recalculated.                                              */
+global_variances(x,[select]):=
+ block([s,p,aux,out:[]],
+
+  /* this is for backcompatibility */
+  if length(select)=1 and member(select[1], [true,false])
+    then select: ['data=select[1]],
+
+  /* check user options */
+  options:  ['data],
+  defaults: [true],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+
+  if matrixp(x)
+    then(if defaults[1] /* does the matrix contain sample records? */
+           then s:cov1(x)
+           else s:x,
+         p:length(s),            /* dimension */
+         aux:matrixtrace(s),
+         out:cons(aux,out),          /* total variance */
+         out:endcons(aux/p,out),     /* mean variance */
+         aux:determinant(s),
+         out:endcons(aux,out),       /* generalized variance */
+         out:endcons(sqrt(aux),out), /* generalized standard deviation */
+         aux:aux^(1/p),
+         out:endcons(aux,out),       /* efective variance */
+         out:endcons(sqrt(aux),out),  /* efective standard deviation */
+         out )
+    else error("global_variances: the argument is not a matrix") )$
 
 
-/* Correlation matrix. The argument x must be a matrix: */
-/* cor(x,false)==> x is the covariance matrix and 'cov1'*/
-/*                 is not recalculated                  */
-/* cor(x,true) or cor(x)==> means that x stores sampled */
-/*                 data and the covariance matrix 'cov1'*/
-/*                 must be computed                     */
-/* Ref. Pe~na, p.86                                      */
-cor(x,[aredata]):=block([m,s,d,len],
-	if matrixp(x)
-		then(len:length(aredata),
-		     if len<1 or aredata[1]=true
-			then s:cov1(x)
-			else s:x,
-		     m:length(s),
-		     d:sqrt(sum(ematrix(m,m,1/s[i,i],i,i),i,1,m)),
-		     d.s.d)  )$
+/* Correlation matrix. The argument x must be a matrix.                     */
+/* cor(x,false)==> x is the covariance matrix and 'cov1'                    */
+/*                 is not recalculated                                      */
+/* Admits the following options:                                            */
+/*   'data='true: x stores sampled data and the covariance matrix 'cov1'    */
+/*        must be computed; if false, x is the covariance matrix and 'cov1' */
+/*        is not recalculated.                                              */
+cor(x,[select]):=
+ block([m,s,d],
+    
+  /* this is for backcompatibility */
+  if length(select)=1 and member(select[1], [true,false])
+    then select: ['data=select[1]],
+
+  /* check user options */
+  options:  ['data],
+  defaults: [true],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+
+  if matrixp(x)
+    then(if defaults[1] /* does the matrix contain sample records? */
+           then s:cov1(x)
+           else s:x,
+           m:length(s),
+           d:sqrt(sum(ematrix(m,m,1/s[i,i],i,i),i,1,m)),
+           d.s.d)
+    else error("cor: the argument is not a matrix")  )$
 
 
-/* A list of dependence measures:                                           */
+/* Returns a list of dependence measures. The argument x must be a matrix.  */
 /*  1) precision matrix                                                     */
 /*  2) multiple correlation                                                 */
 /*  3) partial correlation                                                  */
-/* The argument x must be a matrix:                                         */
-/* list_correlations(x,false)==> x is the covariance matrix and             */
-/*                 'cov1' is not recalculated                               */
-/* list_correlations(x,true) or list_correlations(x)==> means that x stores */
-/*                 sampled data and the covariance                          */
-/*                 matrix 'cov1' must be computed                           */
-list_correlations(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
-	if matrixp(x)
-		then(len:length(aredata),
-		     if len<1 or aredata[1]=true
-			then s:cov1(x)
-			else s:x,
-		     p:length(s),                          /* dimension */
-		     s1:invert(s),
-		     d:zeromatrix(p,p),
-		     for i:1 thru p do d[i,i]:1/sqrt(s1[i,i]),
-		     [s1,                                  /* precision matrix */
-		      1-1/makelist(s[i,i]*s1[i,i],i,1,p),  /* mult. corr. */
-		      -d.s1.d]                             /* part. corr. */   ))$
+/* Admits the following options:                                            */
+/*   'data='true: x stores sampled data and the covariance matrix 'cov1'    */
+/*        must be computed; if false, x is the covariance matrix and 'cov1' */
+/*        is not recalculated.                                              */
+list_correlations(x,[select]):=
+ block([s,p,s1,d,out:[],listarith:true],
+
+  /* this is for backcompatibility */
+  if length(select)=1 and member(select[1], [true,false])
+    then select: ['data=select[1]],
+
+  /* check user options */
+  options:  ['data],
+  defaults: [true],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+
+  if matrixp(x)
+    then(if defaults[1] /* does the matrix contain sample records? */
+           then s:cov1(x)
+           else s:x,
+         p:length(s),                          /* dimension */
+         s1:invert(s),
+         d:zeromatrix(p,p),
+         for i:1 thru p do d[i,i]:1/sqrt(s1[i,i]),
+         [s1,                                  /* precision matrix */
+          1-1/makelist(s[i,i]*s1[i,i],i,1,p),  /* mult. corr. */
+          -d.s1.d]                             /* part. corr. */   )
+    else error("list_correlations: the argument is not a matrix"))$
+
+
+/* Principal components analysis for multivariate data.                           */
+/* The argument x must be a matrix. This function returns a list containing:      */
+/*  1) Variances of the principal components in descending order                  */
+/*  2) Proportions (%) of total variance explained by principal components        */
+/*  3) Matrix of coefficients for principal components                            */
+/* Admits the following options:                                                  */
+/*   'data='true: x stores sampled data and the covariance matrix 'cov1' must be  */
+/*          computed; if false, x is the covariance matrix and 'cov1' is not      */
+/*          recalculated.                                                         */
+principal_components(x,[select]):=
+ block([options,defaults,aux,s,p,val,vec,ord,percents,listarith:true],
+
+  /* check user options */
+  options:  ['data],
+  defaults: [true],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+
+  /* go ahead with calculations */
+  if matrixp(x)
+    then(if defaults[1] /* does the matrix contain sample records? */
+           then s:cov1(x)
+           else s:x,
+         p:length(s),   /* sample dimension */
+         [val,vec]: eigens_by_jacobi(s),
+         ord: sort(makelist([val[k], col(vec,k)], k, p), lambda([u,v], first(u)>=first(v))),
+         val: map(first, ord),
+         vec: apply(addcol, map(second, ord)),
+         percents: 100 * val / apply("+", val),
+         [val, percents, vec])
+    else error("principal_components: the argument is not a matrix"))$
 
 
 
@@ -531,6 +605,7 @@ random_color():=
                           substring(sz, slength(sz)))),
     col)$
 
+
 extract_options(s,[mo]):=
   block([ss:[],mmo:[]],
     for k in s do
@@ -538,7 +613,6 @@ extract_options(s,[mo]):=
         then mmo: endcons(k,mmo)
         else ss : endcons(k,ss),
     [ss,mmo] )$
-
 
 
 /* Plots scatter diagrams. */
