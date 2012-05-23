@@ -826,7 +826,10 @@
 	     (* factor result))))))
 
 ;; Compute the key part of the gamma incomplete function using either
-;; a series expression or a continued fraction expression.
+;; a series expression or a continued fraction expression.  Two values
+;; are returned: the value itself and a boolean, indicating what the
+;; computed value is.  If the boolean non-NIL, then the computed value
+;; is the lower incomplete gamma function.
 (defun %gamma-incomplete (a x)
   (let ((gm-maxit *gamma-incomplete-maxit*)
         (gm-eps   *gamma-incomplete-eps*)
@@ -834,8 +837,9 @@
     (when *debug-gamma*
       (format t "~&GAMMA-INCOMPLETE with ~A and ~A~%" a x))
     (cond
-      ;; The series expansion is done for x within a circle with a
-      ;; radius *gamma-radius*+abs(realpart(a)).  Otherwise a
+      ;; The series expansion is done for x within a circle of radius
+      ;; R, where R = *gamma-radius*+(realpart(a)) for realpart(a) > 0
+      ;; and R = *gamma-radisu* for realpart(a) < 0.  Otherwise a
       ;; continued fraction is used.
       ((and (> (abs x) (+ *gamma-radius*
                           (if (> (realpart a) 0.0) (realpart a) 0.0))))
@@ -921,6 +925,10 @@
          (gm-min (mul gm-eps gm-eps))
          ($ratprint nil))
     (cond
+      ;; The series expansion is done for x within a circle of radius
+      ;; R, where R = *gamma-radius*+(realpart(a)) for realpart(a) > 0
+      ;; and R = *gamma-radisu* for realpart(a) < 0.  Otherwise a
+      ;; continued fraction is used.
       ((eq ($sign (sub (simplify (list '(mabs) x))
 		       (add *gamma-radius*
 			    (if (eq ($sign a) '$pos) a 0.0))))
@@ -961,12 +969,17 @@
 	  ($expand
 	   ;; Expansion in continued fraction for the lower incomplete gamma.
 	   (sub (simplify (list '(%gamma) a))
+		;; NOTE: We want (power x a) instead of bigfloat:expt
+		;; because this preserves how maxima computes x^a when
+		;; x is negative and a is rational.  For, example
+		;; (-8)^(1/2) is -2.  bigfloat:expt returns the
+		;; principal value.
 		(mul (power x a)
 		     (power ($bfloat '$%e) (mul -1 x))
 		     (let ((a (bigfloat:to a))
 			   (x (bigfloat:to x)))
 		       (to (bigfloat:/
-			    (bigfloat::lentz
+			    (bigfloat:lentz
 			     #'(lambda (n)
 				 (bigfloat:+ n a))
 			     #'(lambda (n)
@@ -1013,50 +1026,74 @@
       (format t "   : a = ~A~%" a)
       (format t "   : x = ~A~%" x))
     (cond
-      ;; The series expansion is done for x within a circle with a radius
-      ;; *gamma-radius*+abs(realpart(a)), for all x which are on the negative 
-      ;; real axis and for all x which have an angle between [3*%pi/4,5*%pi/4]
+      ;; The series expansion is done for x within a circle of radius
+      ;; R, where R = *gamma-radius*+(realpart(a)) for realpart(a) > 0
+      ;; and R = *gamma-radisu* for realpart(a) < 0.  Otherwise a
+      ;; continued fraction is used.
       ((and (eq ($sign (sub (simplify (list '(mabs) x))
                             (add *gamma-radius*
                                  (if (eq ($sign ($realpart a)) '$pos)
                                      ($realpart a)
                                      0.0))))
-                '$pos)
-            (not (and (eq ($sign ($realpart x)) '$neg)
-                      (eq ($sign (sub (simplify (list '(mabs) ($imagpart x)))
-                                      (simplify (list '(mabs) ($realpart x)))))
-                          '$neg))))
-       ;; Expansion in continued fractions of the Incomplete Gamma function
-       (when *debug-gamma* 
-         (format t "~&in continued fractions:~%"))
-       (do* ((i 1 (+ i 1))
-             (an (sub a 1.0) (mul i (sub a i)))
-             (b (add 3.0 x (mul -1 a)) (add b 2.0))
-             (c (cdiv 1.0 gm-min))
-             (d (cdiv 1.0 (sub b 2.0)))
-             (h d)
-             (del 0.0))
-            ((> i gm-maxit)
-             (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
-         (setq d (add (cmul an d) b))
-         (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
-           (setq d gm-min))
-         (setq c (add b (cdiv an c)))
-         (when (eq ($sign (sub (simplify (list '(mabs) c)) gm-min)) '$neg)
-           (setq c gm-min))
-         (setq d (cdiv 1.0 d))
-         (setq del (cmul d c))
-         (setq h (cmul h del))
-         (when (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) 
-                               gm-eps))
-                   '$neg)
-           (return
-             ($bfloat ; force evaluation of expressions with sin or cos
-               (cmul h
-                 (cmul
-                   (cpower x a)
-                   (cpower ($bfloat '$%e) ($bfloat (mul -1 x))))))))))
-
+                '$pos))
+       (cond
+	 ((not (and (eq ($sign ($realpart x)) '$neg)
+		    (eq ($sign (sub (simplify (list '(mabs) ($imagpart x)))
+				    (simplify (list '(mabs) ($realpart x)))))
+			'$neg)))
+	  ;; Expansion in continued fractions of the Incomplete Gamma function
+	  (when *debug-gamma* 
+	    (format t "~&in continued fractions:~%"))
+	  (do* ((i 1 (+ i 1))
+		(an (sub a 1.0) (mul i (sub a i)))
+		(b (add 3.0 x (mul -1 a)) (add b 2.0))
+		(c (cdiv 1.0 gm-min))
+		(d (cdiv 1.0 (sub b 2.0)))
+		(h d)
+		(del 0.0))
+	       ((> i gm-maxit)
+		(merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
+	    (setq d (add (cmul an d) b))
+	    (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
+	      (setq d gm-min))
+	    (setq c (add b (cdiv an c)))
+	    (when (eq ($sign (sub (simplify (list '(mabs) c)) gm-min)) '$neg)
+	      (setq c gm-min))
+	    (setq d (cdiv 1.0 d))
+	    (setq del (cmul d c))
+	    (setq h (cmul h del))
+	    (when (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) 
+				  gm-eps))
+		      '$neg)
+	      (return
+		($bfloat ; force evaluation of expressions with sin or cos
+		 (cmul h
+		       (cmul
+			(cpower x a)
+			(cpower ($bfloat '$%e) ($bfloat (mul -1 x))))))))))
+	 (t
+	  ;; Expand to multiply everything out.
+	  ($expand
+	   ;; Expansion in continued fraction for the lower incomplete gamma.
+	   (sub ($rectform (simplify (list '(%gamma) a)))
+		;; NOTE: We want (power x a) instead of bigfloat:expt
+		;; because this preserves how maxima computes x^a when
+		;; x is negative and a is rational.  For, example
+		;; (-8)^(1/2) is -2.  bigfloat:expt returns the
+		;; principal value.
+		(mul ($rectform (power x a))
+		     ($rectform (power ($bfloat '$%e) (mul -1 x)))
+		     (let ((a (bigfloat:to a))
+			   (x (bigfloat:to x)))
+		       (to (bigfloat:/
+			    (bigfloat:lentz
+			     #'(lambda (n)
+				 (bigfloat:+ n a))
+			     #'(lambda (n)
+				 (if (evenp n)
+				     (bigfloat:* (ash n -1) x)
+				     (bigfloat:- (bigfloat:* (bigfloat:+ a (ash n -1))
+							     x))))))))))))))
       (t
        ;; Series expansion of the Incomplete Gamma function
        (when *debug-gamma*
@@ -2148,18 +2185,18 @@
 
 ;;; ----------------------------------------------------------------------------
 
-;(defprop %erfc simplim%erfc simplim%function)
-;
-;(defun simplim%erfc (expr var val)
-;  ;; Look for the limit of the arguments.
-;  (let ((z (limit (cadr expr) var val 'think)))
-;    (cond
-;      ;; Handle infinities at this place.
-;      ((eq z '$inf) 0)
-;      ((eq z '$minf) 2)
-;      (t
-;       ;; All other cases are handled by the simplifier of the function.
-;       (simplify (list '(%erfc) z))))))
+(defprop %erfc simplim%erfc simplim%function)
+
+(defun simplim%erfc (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((z (limit (cadr expr) var val 'think)))
+    (cond
+      ;; Handle infinities at this place.
+      ((eq z '$inf) 0)
+      ((eq z '$minf) 2)
+      (t
+       ;; All other cases are handled by the simplifier of the function.
+       (simplify (list '(%erfc) z))))))
 
 ;;; ----------------------------------------------------------------------------
 

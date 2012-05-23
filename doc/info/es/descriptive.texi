@@ -1,4 +1,4 @@
-@c English version: 2011-07-31
+@c English version: 2012-05-22
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -1476,7 +1476,7 @@ V@'ease tambi@'en @code{cov}.
 
 
 @deffn {Funci@'on} global_variances (@var{matrix})
-@deffnx {Funci@'on} global_variances (@var{matrix}, @var{logical_value})
+@deffnx {Funci@'on} global_variances (@var{matrix}, @var{options} ...)
 La funci@'on @code{global_variances} devuelve una lista de medidas globales de variabilidad:
 
 @itemize @bullet
@@ -1495,6 +1495,15 @@ La funci@'on @code{global_variances} devuelve una lista de medidas globales de v
 @end itemize
 donde @var{p} es la dimensi@'on de la variable aleatoria multivariante y @math{S_1} la matriz de covarianzas devuelta por la funci@'on @code{cov1}.
 
+Opci@'on:
+
+@itemize @bullet
+@item
+@code{'data}, por defecto @code{'true}, indica si la matriz de entrada contiene los datos muestrales,
+en cuyo caso la matriz de covarianzas @code{cov1} debe ser calculada; en caso contrario, se le debe
+pasar @'esta a la funci@'on como matriz sim@'etrica en lugar de los datos.
+@end itemize
+
 Ejemplo:
 
 @c ===beg===
@@ -1512,20 +1521,20 @@ Ejemplo:
 @end group
 @end example
 
-La funci@'on @code{global_variances} tiene un argumento l@'ogico opcional: @code{global_variances(x,true)} indica a Maxima que @code{x} es la matriz de datos, calculando entonces lo mismo que @code{global_variances(x)}. Por otro lado, @code{global_variances(x,false)} significa que  @code{x} no es la matriz de datos, sino la de covarianzas, evitando as@'{@dotless{i}} recalcularla,
+C@'alculo de @code{global_variances} a partir de la matriz de covarianzas.
 
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
-@c global_variances (s, false);
+@c global_variances (s, data=false);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) s : cov1 (s2)$
 @group
-(%i4) global_variances (s, false);
+(%i4) global_variances (s, data=false);
 (%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
          113.4651792608502, 6.636590811800794, 2.576158149609762]
 @end group
@@ -1537,8 +1546,17 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 
 
 @deffn {Funci@'on} cor (@var{matrix})
-@deffnx {Funci@'on} cor (@var{matrix}, @var{logical_value})
+@deffnx {Funci@'on} cor (@var{matrix}, @var{options} ...)
 Es la matriz de correlaciones de la muestra multivariante.
+
+Opci@'on:
+
+@itemize @bullet
+@item
+@code{'data}, por defecto @code{'true}, indica si la matriz de entrada contiene los datos muestrales,
+en cuyo caso la matriz de covarianzas @code{cov1} debe ser calculada; en caso contrario, se le debe
+pasar @'esta a la funci@'on como matriz sim@'etrica en lugar de los datos.
+@end itemize
 
 Ejemplo:
 
@@ -1564,21 +1582,22 @@ Ejemplo:
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
-La funci@'on @code{cor} tiene un argumento l@'ogico opcional: @code{cor(x,true)} indica a Maxima que @code{x} es la matriz de datos, calculando entonces lo mismo que @code{cor(x)}. Por otro lado, @code{cor(x,false)} significa que  @code{x} no es la matriz de datos, sino la de covarianzas, evitando as@'{@dotless{i}} recalcularla,
+C@'alculo de la matriz de correlaciones a partir de la matriz de covarianzas.
 
 @c ===beg===
 @c load (descriptive)$
-@c fpprintprec:7$
+@c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
-@c cor (s, false); /* this is faster */
+@c cor (s, data=false); /* this is faster */
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) fpprintprec:7$
+(%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
-(%i5) cor (s, false); /* this is faster */
+@group
+(%i5) cor (s, data=false); /* this is faster */
       [   1.0     .8476339  .8803515  .8239624  .7519506 ]
       [                                                  ]
       [ .8476339    1.0     .8735834  .6902622  0.782502 ]
@@ -1588,6 +1607,7 @@ La funci@'on @code{cor} tiene un argumento l@'ogico opcional: @code{cor(x,true)}
       [ .8239624  .6902622  .7764065    1.0     .7293848 ]
       [                                                  ]
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+@end group
 @end example
 
 V@'eanse tambi@'en @code{cov} y @code{cov1}.
@@ -1596,7 +1616,7 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 
 
 @deffn {Funci@'on} list_correlations (@var{matrix})
-@deffnx {Funci@'on} list_correlations (@var{matrix}, @var{logical_value})
+@deffnx {Funci@'on} list_correlations (@var{matrix}, @var{options} ...)
 La funci@'on @code{list_correlations} devuelve una lista con medidas de correlaci@'on:
 
 @itemize @bullet
@@ -1645,8 +1665,15 @@ es un indicador de la bondad de ajuste del modelo de regresi@'on lineal multivar
 @tex
 $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end tex
+@end itemize
 
+Opci@'on:
 
+@itemize @bullet
+@item
+@code{'data}, por defecto @code{'true}, indica si la matriz de entrada contiene los datos muestrales,
+en cuyo caso la matriz de covarianzas @code{cov1} debe ser calculada; en caso contrario, se le debe
+pasar @'esta a la funci@'on como matriz sim@'etrica en lugar de los datos.
 @end itemize
 
 Ejemplo:
@@ -1688,10 +1715,114 @@ Ejemplo:
 @end group
 @end example
 
-La funci@'on @code{list_correlations} tiene un argumento l@'ogico opcional: @code{list_correlations(x,true)} indica a Maxima que @code{x} es la matriz de datos, calculando entonces lo mismo que @code{list_correlations(x)}. Por otro lado, @code{list_correlations(x,false)} significa que  @code{x} no es la matriz de datos, sino la de covarianzas, evitando as@'{@dotless{i}} recalcularla.
-
 V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @end deffn
+
+
+
+@deffn {Funci@'on} principal_components (@var{matrix})
+@deffnx {Funci@'on} principal_components (@var{matrix}, @var{options} ...)
+Calcula las componentes principales de una muestra multivariante. Las componentes
+principales se utilizan en el an@'alisis estad@'{@dotless{i}}stico multivariante
+para reducir la dimensionalidad de la muestra.
+
+Opci@'on:
+
+@itemize @bullet
+@item
+@code{'data}, por defecto @code{'true}, indica si la matriz de entrada contiene los datos muestrales,
+en cuyo caso la matriz de covarianzas @code{cov1} debe ser calculada; en caso contrario, se le debe
+pasar @'esta a la funci@'on como matriz sim@'etrica en lugar de los datos.
+@end itemize
+
+La salida de la funci@'on @code{principal_components} es una lista con los siguientes resultados:
+
+@itemize @bullet
+@item
+varianzas de las componentes principales,
+@item
+porcentajes de variaci@'on total explicada por cada componente principal,
+@item
+matriz de rotaci@'on.
+@end itemize
+
+Ejemplos:
+
+En este ejemplo, la primera componente explica el 83.13 por ciento de la varianza total.
+
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) fpprintprec:4 $
+(%i4) res: principal_components(s2);
+0 errors, 0 warnings
+(%o4) [[87.57, 8.753, 5.515, 1.889, 1.613], 
+[83.13, 8.31, 5.235, 1.793, 1.531], 
+@group
+[ .4149  .03379   - .4757  - 0.581   - .5126 ]
+[                                            ]
+[ 0.369  - .3657  - .4298   .7237    - .1469 ]
+[                                            ]
+[ .3959  - .2178  - .2181  - .2749    .8201  ]]
+[                                            ]
+[ .5548   .7744    .1857    .2319    .06498  ]
+[                                            ]
+[ .4765  - .4669   0.712   - .09605  - .1969 ]
+@end group
+(%i5) /* porcentajes acumulados  */
+    block([ap: copy(res[2])],
+      for k:2 thru length(ap) do ap[k]: ap[k]+ap[k-1],
+      ap);
+(%o5)                 [83.13, 91.44, 96.68, 98.47, 100.0]
+(%i6) /* dimension de la muestra */
+      p: length(first(res));
+(%o6)                                  5
+(%i7) /* dibuja porcentajes para seleccionar el numero de 
+         componentes principales para el analisis ulterior */
+     draw2d(
+        fill_density = 0.2,
+        apply(bars, makelist([k, res[2][k], 1/2], k, p)),
+        points_joined = true,
+        point_type    = filled_circle,
+        point_size    = 3,
+        points(makelist([k, res[2][k]], k, p)),
+        xlabel = "Variances",
+        ylabel = "Percentages",
+        xtics  = setify(makelist([concat("PC",k),k], k, p))) $
+@end example
+
+En caso de que la matriz de covarianzas sea conocida, se le puede pasar
+a la funci@'on, pero debe utilizarse la opci@'on @code{data=false}.
+
+@example
+(%i1) load (descriptive)$
+(%i2) S: matrix([1,-2,0],[-2,5,0],[0,0,2]);
+                                [  1   - 2  0 ]
+                                [             ]
+(%o2)                           [ - 2   5   0 ]
+                                [             ]
+                                [  0    0   2 ]
+(%i3) fpprintprec:4 $
+(%i4) /* el argumento es una matriz de covarianzas */
+      res: principal_components(S, data=false);
+0 errors, 0 warnings
+                                                  [ - .3827  0.0  .9239 ]
+                                                  [                     ]
+(%o4) [[5.828, 2.0, .1716], [72.86, 25.0, 2.145], [  .9239   0.0  .3827 ]]
+                                                  [                     ]
+                                                  [   0.0    1.0   0.0  ]
+(%i5) /* transformacion para obtener las componentes principales a
+         partir de los registros originales */
+      matrix([a1,b2,c3],[a2,b2,c2]).last(res);
+             [ .9239 b2 - .3827 a1  1.0 c3  .3827 b2 + .9239 a1 ]
+(%o5)        [                                                  ]
+             [ .9239 b2 - .3827 a2  1.0 c2  .3827 b2 + .9239 a2 ]
+@end example
+
+@end deffn
+
+
+
 
 
 @node Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos,  , Funciones y variables de par@'ametros descriptivos, descriptive

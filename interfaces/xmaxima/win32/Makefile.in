@@ -9,8 +9,6 @@ prefix=@prefix@
 TCLKITSH = tclkitsh-win32.upx.exe
 TCLKITDIR = ../../../../programs/star
 SDXDIR = $(TCLKITDIR)
-GNUPLOTDIR = ../../../../programs/gnuplot
-WXMAXIMADIR = ../../../../programs/wxMaxima
 
 MINGW=/mingw
 GCCVER=3.3.1
@@ -107,15 +105,6 @@ else
 		$(prefix)/lib/gcc/mingw32/$(GCCVER)/include
 endif
 
-# Install the gnuplot binary files in bin
-gnuplot: 
-	mkdir -p $(prefix)/gnuplot
-	cp -rf $(GNUPLOTDIR)/bin/* $(prefix)/gnuplot
-
-# Install wxMaxima
-wxmaxima:
-	cp -rf $(WXMAXIMADIR) $(prefix)/wxMaxima
-
 # Create CHM files
 chm:
 	mkdir -p $(prefix)/share/maxima/@VERSION@/doc/chm/figures
@@ -150,6 +139,6 @@ fix_maxima_bat:
 		sed -e 's|GCCVER|$(GCCVER)|g' < "@prefix@/bin/maxima.bat" > "@prefix@/bin/foo.bat"
 		mv -f "@prefix@/bin/foo.bat" "@prefix@/bin/maxima.bat"
 
-install: xmaxima.exe winkill.exe tclwinkill.dll gnuplot wxmaxima chm fixes
+install: xmaxima.exe winkill.exe tclwinkill.dll chm fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
 	cp readme*.txt "@prefix@"

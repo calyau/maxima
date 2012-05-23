@@ -150,7 +150,7 @@ closeto(generalized_lambert_w(-1,-753.0/2048),-1.033649565301979,5.0e-15);
 true;
 
 closeto(generalized_lambert_w(-1,-754.0/2048),
-   -0.99948440323971 - 0.039327227034759*%i,5.0e-15);
+   -0.99948440323971 - 0.039327227034759*%i,5.32e-15);
 true;
 
 closeto(generalized_lambert_w(1,-753.0/2048),
@@ -159,6 +159,23 @@ true;
 
 closeto(generalized_lambert_w(1,-754.0/2048),
   -3.088042730569348+7.461585404728464*%i,5.0e-15);
+true;
+
+/* Reduced precision when very near branch point z = -1/%e */
+closeto(generalized_lambert_w(-1,z:float(-1/%e)-1.0e-12),
+ -0.999999999998187812 - 2.3316439815951875e-6*%i,1e-9);
+true;
+
+/* The branch test was wrong for this point due to roundoff */
+closeto(generalized_lambert_w(-1,-1/float(%e)),-1.0,1e-15);
+true;
+
+/* bigfloat evaluation near the branch point failed to obtain a starting guess 
+   There is significant (~ 14 decimal digits) loss of precision due to ill-conditioning 
+   The expected answer below checked with 200 and 300 digit bfloats */
+closeto(generalized_lambert_w(-1,bfloat(-1/%e)+1b-30),
+- 1.000000000000002331643981597126015551421701533827747686376229738168073845444881159b0,
+ 1.0b-64);
 true;
 
 closeto(generalized_lambert_w(1,-754.0b0/2048),

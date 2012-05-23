@@ -1431,9 +1431,13 @@
 	      (typep b 'complex-bigfloat))
 	  (complex (bigfloat 1))
 	  (bigfloat 1))
-      (if (and (zerop a) (plusp (realpart b)))
-	  (* a b)
-	  (exp (* b (log a))))))
+      (cond ((and (zerop a) (plusp (realpart b)))
+	     (* a b))
+	    ((= b (truncate b))
+	     ;; The exponent is an integer
+	     (expt a (truncate b)))
+	    (t
+	     (exp (* b (log a)))))))
 
 (defmethod expt ((a cl:number) (b numeric))
   (if (zerop b)
@@ -1442,9 +1446,12 @@
 	      (typep b 'complex-bigfloat))
 	  (complex (bigfloat 1))
 	  (bigfloat 1))
-      (if (and (zerop a) (plusp (realpart b)))
-	  (* a b)
-	  (exp (* b (log (bigfloat a)))))))
+      (cond ((and (zerop a) (plusp (realpart b)))
+	     (* a b))
+	    ((= b (truncate b))
+	     (expt a (truncate b)))
+	    (t
+	     (exp (* b (log (bigfloat a))))))))
 
 (defmethod expt ((a numeric) (b cl:number))
   (if (zerop b)
@@ -1472,6 +1479,8 @@
 		((= b -4)
 		 (let ((a2 (* a a)))
 		   (/ (* a2 a2))))
+		((= b (truncate b))
+		 (expt a (truncate b)))
 		(t
 		 (exp (* (bigfloat b) (log a))))))))
 
@@ -1998,6 +2007,28 @@
 (defmethod %pi ((x complex-bigfloat))
   (declare (ignore x))
   (to (maxima::bcons (maxima::fppi))))
+
+;;; %e - External
+;;;
+;;;   Return a value of e with the same precision as the argument.
+;;;   For rationals, we return a single-float approximation.
+(defmethod %e ((x cl:rational))
+  (declare (ignore x))
+  (cl:coerce maxima::%e-val 'single-float))
+
+(defmethod %e ((x cl:float))
+  (cl:float maxima::%e-val x))
+
+(defmethod %e ((x bigfloat))
+  (declare (ignore x))
+  (to (maxima::bcons (maxima::fpe))))
+
+(defmethod %e ((x cl:complex))
+  (cl:float maxima::%e-val (realpart x)))
+
+(defmethod %e ((x complex-bigfloat))
+  (declare (ignore x))
+  (to (maxima::bcons (maxima::fpe))))
 
 ;;;; Useful routines
 

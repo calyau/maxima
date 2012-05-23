@@ -176,6 +176,7 @@
 	   #:maybe-to
 	   #:epsilon
 	   #:%pi
+	   #:%e
 	   ;; CL equivalents
 	   #:+
 	   #:-
@@ -316,7 +317,8 @@
 			  #:rational
 			  #:rationalize
 			  #:coerce
-			  ))
+			  )
+  (:export #:lentz))
 
 ;; Export all the external symbols in BIGFLOAT-IMPL from BIGFLOAT too.
 (do-external-symbols (s '#:bigfloat-impl)
