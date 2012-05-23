@@ -277,7 +277,6 @@ binary-acl/maxima.dxl : conjugate.lisp
 binary-acl/maxima.dxl : expintegral.lisp
 binary-acl/maxima.dxl : gamma.lisp
 binary-acl/maxima.dxl : mstuff.lisp
-binary-acl/maxima.dxl : ratpoi.lisp
 binary-acl/maxima.dxl : pois2.lisp
 binary-acl/maxima.dxl : pois3.lisp
 binary-acl/maxima.dxl : desoln.lisp

@@ -279,7 +279,6 @@ binary-ecl/maxima : conjugate.lisp
 binary-ecl/maxima : expintegral.lisp
 binary-ecl/maxima : gamma.lisp
 binary-ecl/maxima : mstuff.lisp
-binary-ecl/maxima : ratpoi.lisp
 binary-ecl/maxima : pois2.lisp
 binary-ecl/maxima : pois3.lisp
 binary-ecl/maxima : desoln.lisp

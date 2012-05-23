@@ -454,7 +454,6 @@ rat3d.lisp \
 rat3e.lisp \
 ratmac.lisp \
 ratout.lisp \
-ratpoi.lisp \
 residu.lisp \
 result.lisp \
 risch.lisp \

@@ -278,7 +278,6 @@ binary-openmcl/maxima.image : conjugate.lisp
 binary-openmcl/maxima.image : expintegral.lisp
 binary-openmcl/maxima.image : gamma.lisp
 binary-openmcl/maxima.image : mstuff.lisp
-binary-openmcl/maxima.image : ratpoi.lisp
 binary-openmcl/maxima.image : pois2.lisp
 binary-openmcl/maxima.image : pois3.lisp
 binary-openmcl/maxima.image : desoln.lisp

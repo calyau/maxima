@@ -284,7 +284,6 @@ binary-gcl/maxima : conjugate.lisp
 binary-gcl/maxima : expintegral.lisp
 binary-gcl/maxima : gamma.lisp
 binary-gcl/maxima : mstuff.lisp
-binary-gcl/maxima : ratpoi.lisp
 binary-gcl/maxima : pois2.lisp
 binary-gcl/maxima : pois3.lisp
 binary-gcl/maxima : desoln.lisp
