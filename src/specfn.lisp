@@ -565,7 +565,7 @@
       ((and (= k 1)
 	    (< (imagpart z) 0)
 	    (< (abs (- branch-point z)) branch-eps))
-        (lambert-branch-approx z))
+        (bigfloat::lambert-branch-approx z))
       ; For k=-1 branch, z real with -1/%e < z < 0
       ; W(z) is real in this range
       ((and (= k -1) (realp z) (> z branch-point) (< z 0))
@@ -665,8 +665,10 @@
       (decf w delta)
       (when (<= (abs (/ delta w)) prec) (return)))
     ;; Check iteration converged to correct branch
-    (check-lambert-w-k k w z)
+    (bigfloat::check-lambert-w-k k w z)
     w))
+
+(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
 ;; Check iteration converged to the correct branch
 ;; W_k(z) + ln W_k(z) = ln z, for k = -1 and z in [-1/e,0)
@@ -679,7 +681,7 @@
   (if
      (cond 
        ;; k=-1 branch with z and w real.
-      ((and (= k -1) (realp z) (minusp z) (>= z (/ -1 %e-val)))
+      ((and (= k -1) (realp z) (minusp z) (>= z (/ -1 (%e z))))
        (if (and (realp w) 
 		(<= w -1)
 		(< (abs (+ w (log w) (- (log z)))) tolerance))
@@ -688,13 +690,15 @@
        (t
          ; i k =  (W_k(z) + ln W_k(z) - ln(z)) / 2 pi
         (let (ik)
-	  (setq ik (/ (+ w (log w) (- (log z))) (* 2 pi)))
+	  (setq ik (/ (+ w (log w) (- (log z))) (* 2 (%pi z))))
 	  (if (and (< (realpart ik) tolerance)
 		   (< (abs (- k (imagpart ik))) tolerance))
 	    t
 	    nil))))
       t
       (merror "Lambert W iteration converged to wrong branch"))))
+
+(in-package :maxima)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; This routine is a translation of the float version for complex
@@ -746,6 +750,7 @@
       (when (eq ($sign (sub ($cabs (cdiv delta w)) prec)) '$neg)
 	(return w))
       (setq w (sub w delta))))
+  (bigfloat::check-lambert-w-k k (bigfloat:to w) (bigfloat:to z))
   w))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -792,11 +797,9 @@
   (twoargcheck expr)
   (let ((k (simpcheck (cadr expr) z))
         (x (simpcheck (caddr expr) z)))
-    (if (integerp k)
-       (cond
-	((complex-float-numerical-eval-p x)
-	 (to (lambert-w-k k (bigfloat:to x))))
-	((complex-bigfloat-numerical-eval-p x)
-	 (bfloat-lambert-w-k k x))
-	(t (list '(%generalized_lambert_w simp) k x)))
-      (list '(%generalized_lambert_w simp) k x))))
+    (cond
+     ((and (integerp k) (complex-float-numerical-eval-p x))
+      (to (lambert-w-k k (bigfloat:to x))))
+     ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
+      (bfloat-lambert-w-k k x))
+     (t (list '(%generalized_lambert_w simp) k x)))))
