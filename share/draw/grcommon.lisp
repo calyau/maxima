@@ -78,9 +78,11 @@
       (gethash '$font_size *gr-options*)        10;
 
       ; colors are specified by name
-      (gethash '$color *gr-options*)           "#0000ff" ; for lines, points, borders and labels
-      (gethash '$fill_color *gr-options*)      "#ff0000" ; for filled regions
-      (gethash '$fill_density *gr-options*)    0         ; in [0,1], only for object 'bars
+      (gethash '$background_color *gr-options*) "#ffffff"
+      (gethash '$color *gr-options*)            "#0000ff" ; for lines, points, borders and labels
+      (gethash '$fill_color *gr-options*)       "#ff0000" ; for filled regions
+      (gethash '$fill_density *gr-options*)     0         ; in [0,1], only for object 'bars
+
 
       ; implicit plot options
       (gethash '$ip_grid *gr-options*)    '((mlist simp) 50 50)
@@ -754,7 +756,6 @@
       (gethash '$file_name *gr-options*)         "maxima_out"
       (gethash '$gnuplot_file_name *gr-options*) "maxout.gnuplot"
       (gethash '$data_file_name *gr-options*)    "data.gnuplot"
-      (gethash '$background_color *gr-options*)  "#ffffff"
       (gethash '$delay *gr-options*)        5      ; delay for animated gif's, default 5*(1/100) sec
    ))
 
