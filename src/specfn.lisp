@@ -542,13 +542,9 @@
 	((alike1 x '((mtimes) ((rat) -1 2) $%pi))
 	 ;; W(-%pi/2) = %i*%pi/2
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
-	;; W(x) is real for x real and x > -1/%e
-	((and (float-numerical-eval-p x) (< (- (/ %e-val)) x))
-	 (lambert-w-k 0 x))
-	;; Complex float x or real float x < -1/%e
+        ;; numerical evaluation
 	((complex-float-numerical-eval-p x)
-	 (complexify (lambert-w-k 0
-		      (complex ($float ($realpart x)) ($float ($imagpart x))))))
+	 (to (lambert-w-k 0 (bigfloat:to x))))
 	((complex-bigfloat-numerical-eval-p x)
 	 (bfloat-lambert-w-k 0 x))
 	(t (list '(%lambert_w simp) x))))
@@ -561,7 +557,7 @@
 (defun init-lambert-w-k (k z)
   (let ( ; parameters for k = +/- 1 near branch pont z=-1/%e
         (branch-eps 0.2e0)
-	(branch-point (/ -1 (exp 1)))) ; branch pont z=-1/%e
+	(branch-point (/ -1 %e-val))) ; branch pont z=-1/%e
     (cond 
       ; For principal branch k=0, use expression by Winitzki
       ((= k 0) (init-lambert-w-0 z))
@@ -578,7 +574,7 @@
       ((and (= k -1)
 	    (>= (imagpart z) 0)
 	    (< (abs (- branch-point z)) branch-eps))
-        (lambert-branch-approx z))
+        (bigfloat::lambert-branch-approx z))
       ; Default to asymptotic expansion Corless et al (4.20)
       ; W_k(z) = log(z) + 2.pi.i.k - log(log(z)+2.pi.i.k)
       (t (let ((two-pi-i-k (complex 0.0e0 (* 2 pi k))))
@@ -609,18 +605,20 @@
   (cond 
     ((not (realp z)) 
       (merror "z not real in init-lambert-w-minus1"))
-    ((or (< z (/ -1 (exp 1))) (plusp z))
+    ((or (< z (/ -1 %e-val)) (plusp z))
       (merror "z outside range of approximation in init-lambert-w-minus1"))
     ;; In the region where W(z) is real
     ;; -1/e < z < C, use power series about branch point -1/e ~ -0.36787
     ;; C = -0.3 seems a reasonable crossover point
     ((< z -0.3)
-      (lambert-branch-approx z))
+      (bigfloat::lambert-branch-approx z))
     ;; otherwise C <= z < 0, use iteration W(z) ~ ln(-z)-ln(-W(z))
     ;; nine iterations are sufficient over -0.3 <= z < 0 
     (t (let* ( (ln-z (log (- z))) (maxiter 9) (w ln-z) k)
 	 (dotimes (k maxiter w)
             (setq w (- ln-z (log (- w)))))))))
+
+(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
 ;; Approximate Lambert W(k,z) for k=1 and k=-1 near branch point z=-1/%e
 ;; using power series in y=-sqrt(2*%e*z+2)
@@ -632,30 +630,11 @@
 ;;
 ;; z is a lisp real or complex float
 (defun lambert-branch-approx (z)
-  (let ((y (- (sqrt (+ (* 2 (exp 1) z ) 2)))) ; y=-sqrt(2*%e*z+2)
+  (let ((y (- (sqrt (+ (* 2 (%e z) z ) 2)))) ; y=-sqrt(2*%e*z+2)
     (b0 -1) (b1 1) (b2 -1/3) (b3 11/72))
     (+ b0 (* y (+ b1 (* y (+ b2 (* b3 y))))))))
 
-(defun  bfloat-lambert-branch-approx (z)
-  (let ((b0 -1) (b1 1) (b2 -1/3) (b3 11/72)
-       ; y=-sqrt(2*%e*z+2)
-	(y (bigfloat:- 
-	    (bigfloat:sqrt 
-             (bigfloat:+
-	      (bigfloat:* 2 
-			  (bigfloat:exp 1)
-			  (bigfloat:to z)) 
-	      2)))))
-    (to (bigfloat:+ 
-	 b0 
-	 (bigfloat:* y 
-		     (bigfloat:+ 
-		      b1 
-		      (bigfloat:* 
-		       y 
-		       (bigfloat:+ 
-			b2 
-			(bigfloat:* b3 y)))))))))
+(in-package :maxima)
 
 ;; Algorithm based in part on Corless et al (1996).
 ;;
@@ -685,11 +664,6 @@
 		     (- w1e (/ (* (+ w 2) (- we z)) (+ 2 (* 2 w))))))
       (decf w delta)
       (when (<= (abs (/ delta w)) prec) (return)))
-    ;; Can get complex numbers with imagpart=0 due to roundoff 
-    (when (and (complexp z) (= (imagpart z) 0.0)) 
-      (setq z (realpart z)))
-    (when (and (complexp w) (= (imagpart w) 0.0)) 
-      (setq w (realpart w)))
     ;; Check iteration converged to correct branch
     (check-lambert-w-k k w z)
     w))
@@ -705,7 +679,7 @@
   (if
      (cond 
        ;; k=-1 branch with z and w real.
-      ((and (= k -1) (realp z) (minusp z) (>= z (/ -1 (exp 1))))
+      ((and (= k -1) (realp z) (minusp z) (>= z (/ -1 %e-val)))
        (if (and (realp w) 
 		(<= w -1)
 		(< (abs (+ w (log w) (- (log z)))) tolerance))
@@ -746,11 +720,11 @@
 	     (or (bigfloat:zerop (bigfloat:imagpart bf-z))
 		 (bigfloat:plusp (bigfloat:imagpart bf-z)))
 	     (bigfloat:< (bigfloat:abs (bigfloat:- bf-z branch-point)) 1e-10))
-	 (bfloat-lambert-branch-approx z))
+	 (to (bigfloat::lambert-branch-approx bf-z)))
        ((and (= k 1)
 	     (bigfloat:minusp (bigfloat:imagpart bf-z))
 	     (bigfloat:< (bigfloat:abs (bigfloat:- bf-z branch-point)) 1e-10))
-	 (bfloat-lambert-branch-approx z))
+	 (to (bigfloat::lambert-branch-approx bf-z)))
        ((eq ($sign (sub ($cabs z) ($bfloat (power 2 332)))) '$neg)
 	    ($bfloat ($generalized_lambert_w k ($float z))))
        (t
@@ -820,16 +794,8 @@
         (x (simpcheck (caddr expr) z)))
     (if (integerp k)
        (cond
-        ;; W(0,x) real for x > -1/%e 
-	((and (= k 0) (float-numerical-eval-p x) (< (- (/ %e-val)) x))
-	 (lambert-w-k 0 x))
-        ;; W(-1,x) real for -1/%e < x < 0
-        ((and (= k -1) (float-numerical-eval-p x) (< (- (/ %e-val)) x) (< x 0))
-	 (lambert-w-k -1 x))
-	;; W(k,x) is complex
 	((complex-float-numerical-eval-p x)
-	 (complexify (lambert-w-k k
-		      (complex ($float ($realpart x)) ($float ($imagpart x))))))
+	 (to (lambert-w-k k (bigfloat:to x))))
 	((complex-bigfloat-numerical-eval-p x)
 	 (bfloat-lambert-w-k k x))
 	(t (list '(%generalized_lambert_w simp) k x)))
