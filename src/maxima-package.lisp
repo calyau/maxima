@@ -176,6 +176,7 @@
 	   #:maybe-to
 	   #:epsilon
 	   #:%pi
+	   #:%e
 	   ;; CL equivalents
 	   #:+
 	   #:-
