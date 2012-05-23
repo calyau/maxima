@@ -170,10 +170,12 @@ true;
 closeto(generalized_lambert_w(-1,-1/float(%e)),-1.0,1e-15);
 true;
 
-/* bigfloat evaluation near the branch point failed to obtain a starting guess */
+/* bigfloat evaluation near the branch point failed to obtain a starting guess 
+   There is significant (~ 14 decimal digits) loss of precision due to ill-conditioning 
+   The expected answer below checked with 200 and 300 digit bfloats */
 closeto(generalized_lambert_w(-1,bfloat(-1/%e)+1b-30),
- -1.000000000000002331643981597126015551421701533827747686376229738169303104073024802b0,
- 1.0b-77);
+- 1.000000000000002331643981597126015551421701533827747686376229738168073845444881159b0,
+ 1.0b-64);
 true;
 
 closeto(generalized_lambert_w(1,-754.0b0/2048),
