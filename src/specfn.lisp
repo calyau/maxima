@@ -544,9 +544,9 @@
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
         ;; numerical evaluation
 	((complex-float-numerical-eval-p x)
-	 (to (lambert-w-k 0 (bigfloat:to x))))
+	 (to (bigfloat::lambert-w-k 0 (bigfloat:to x))))
 	((complex-bigfloat-numerical-eval-p x)
-	 (bfloat-lambert-w-k 0 x))
+	 (to (bigfloat::lambert-w-k 0 (bigfloat:to x))))
 	(t (list '(%lambert_w simp) x))))
 
 ;; An approximation of the k-branch of generalized Lambert W function
@@ -628,13 +628,11 @@
 ;; Corless et al (1996) (4.22)
 ;; Verebic (2010)
 ;;
-;; z is a lisp real or complex float
+;; z is a real or complex bigfloat: 
 (defun lambert-branch-approx (z)
   (let ((y (- (sqrt (+ (* 2 (%e z) z ) 2)))) ; y=-sqrt(2*%e*z+2)
     (b0 -1) (b1 1) (b2 -1/3) (b3 11/72))
     (+ b0 (* y (+ b1 (* y (+ b2 (* b3 y))))))))
-
-(in-package :maxima)
 
 ;; Algorithm based in part on Corless et al (1996).
 ;;
@@ -651,33 +649,72 @@
 ;; number of digits correct at step k is roughly 3 times the number 
 ;; which were correct at step k-1.
 ;;
-;; Convergence can stall using the simple convergence test abs(w[j+1]-w[j])<prec.
-;; This happens for generalized_lambert_w(-1,z) near branch point z = -1/%e
-;; Also need to stop iterating when abs(w[j]*exp(w[j]) - z) << abs(z)
-(defun lambert-w-k (k z &key (maxiter 20) (prec 5e-15))
-  (let ((w (init-lambert-w-k k z)) we w1e delta)
-    (dotimes (i maxiter (merror "lambert-w-k did not converge"))
+;; Convergence can stall using convergence test abs(w[j+1]-w[j]) < prec,
+;; as happens for generalized_lambert_w(-1,z) near branch point z = -1/%e
+;; Therefore also stop iterating if abs(w[j]*exp(w[j]) - z) << abs(z)
+(defun lambert-w-k (k z &key (maxiter 50))
+  (let ((w (init-lambert-w-k k z)) we w1e delta (prec (* 4 (epsilon z))))
+    (dotimes (i maxiter (maxima::merror "lambert-w-k did not converge"))
       (setq we (* w (exp w)))
-      (when (<= (abs (- z we)) (* 8 double-float-epsilon (abs z))) (return))
+      (when (<= (abs (- z we)) (* 4 (epsilon z) (abs z))) (return))
       (setq w1e (* (1+ w) (exp w)))
       (setq delta (/ (- we z)
 		     (- w1e (/ (* (+ w 2) (- we z)) (+ 2 (* 2 w))))))
       (decf w delta)
       (when (<= (abs (/ delta w)) prec) (return)))
     ;; Check iteration converged to correct branch
-    (bigfloat::check-lambert-w-k k w z)
+    (check-lambert-w-k k w z)
     w))
 
-(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+(defmethod init-lambert-w-k ((k integer) (z number))
+  (maxima::init-lambert-w-k k z))
 
-;; Check iteration converged to the correct branch
+(defmethod init-lambert-w-k ((k integer) (z bigfloat))
+  (bfloat-init-lambert-w-k k z))
+
+(defmethod init-lambert-w-k ((k integer) (z complex-bigfloat))
+  (bfloat-init-lambert-w-k k z))
+
+(defun bfloat-init-lambert-w-k (k z)
+  "Approximate generalized_lambert_w(k,z) for bigfloat: z as initial guess"
+  (let ((branch-point -0.36787944117144)) ; branch point -1/%e
+    (cond
+       ;; if k=-1, z very close to -1/%e and imag(z)>=0, use power series
+       ((and (= k -1)
+	     (or (zerop (imagpart z))
+		 (plusp (imagpart z)))
+	     (< (abs (- z branch-point)) 1e-10))
+	 (lambert-branch-approx z))
+       ;; if k=1, z very close to -1/%e and imag(z)<0, use power series
+       ((and (= k 1)
+	     (minusp (imagpart z))
+	     (< (abs (- z branch-point)) 1e-10))
+	 (lambert-branch-approx z))
+       ;; Initialize using float value if z is representable as a float
+       ((< (abs z) 1.0e100)
+	 (if (complexp z)
+	     (bigfloat (lambert-w-k k (cl:complex (float (realpart z) 1.0)
+						  (float (imagpart z) 1.0))))
+	     (bigfloat (lambert-w-k k (float z 1.0)))))
+       ;; For large z, use Corless et al (4.20)
+       ;;              W_k(z) ~ log(z) + 2.pi.i.k - log(log(z)+2.pi.i.k)
+       (t
+	(let ((log-z (log z)))
+	  (if (= k 0)
+	    (- log-z (log log-z))
+	    (let* ((i (make-instance 'complex-bigfloat :imag (intofp 1)))
+		  (two-pi-i-k (* 2 (%pi z) i k)))
+	      (- (+ log-z two-pi-i-k) 
+		 (log (+ log-z two-pi-i-k))))))))))
+
+;; Check Lambert W iteration converged to the correct branch
 ;; W_k(z) + ln W_k(z) = ln z, for k = -1 and z in [-1/e,0)
 ;;                    = ln z + 2 pi i k, otherwise
 ;; See Jeffrey, Hare, Corless (1996), eq (12)
 ;; k integer
-;; z, w lisp real or complex float
+;; z, w bigfloat: numbers
 (defun check-lambert-w-k (k w z)
-  (let ((tolerance 1.0e-10))
+  (let ((tolerance 1.0e-6))
   (if
      (cond 
        ;; k=-1 branch with z and w real.
@@ -696,62 +733,9 @@
 	    t
 	    nil))))
       t
-      (merror "Lambert W iteration converged to wrong branch"))))
+      (maxima::merror "Lambert W iteration converged to wrong branch"))))
 
 (in-package :maxima)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; This routine is a translation of the float version for complex
-;;; Bigfloat numbers.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun bfloat-lambert-w-k (k z)
-  (let ((prec (power ($bfloat 10.0) (- $fpprec)))
-        (maxiter 500) ; arbitrarily chosen, we need a better choice
-	(fpprec (add fpprec 8)) ; Increase precision slightly
-	(branch-point -0.36787944117144) ; branch point -1/%e
-	(bf-z (bigfloat:to z))
-        w)
-
-  ;; Get an initial estimate.
-  ;; if k=-1, z very close to -1/%e and imag(z)>=0, use power series
-  ;; if k=1, z very close to -1/%e and imag(z)<0, use power series
-  ;; if abs(z) < 2^332 ~ 1.0e100 use W_k(z) = generalized_lambert_w(k,float(z))
-  ;; For large z, use Corless et al (4.20)
-  ;;              W_k(z) = log(z) + 2.pi.i.k - log(log(z)+2.pi.i.k)
-  (setq w 
-    (cond
-       ((and (= k -1)
-	     (or (bigfloat:zerop (bigfloat:imagpart bf-z))
-		 (bigfloat:plusp (bigfloat:imagpart bf-z)))
-	     (bigfloat:< (bigfloat:abs (bigfloat:- bf-z branch-point)) 1e-10))
-	 (to (bigfloat::lambert-branch-approx bf-z)))
-       ((and (= k 1)
-	     (bigfloat:minusp (bigfloat:imagpart bf-z))
-	     (bigfloat:< (bigfloat:abs (bigfloat:- bf-z branch-point)) 1e-10))
-	 (to (bigfloat::lambert-branch-approx bf-z)))
-       ((eq ($sign (sub ($cabs z) ($bfloat (power 2 332)))) '$neg)
-	    ($bfloat ($generalized_lambert_w k ($float z))))
-       (t
-	    (let ((log-z ($log z))
-		  (two-pi-i-k (mul 2 '$%pi '$%i k)))
-	      (sub (add log-z two-pi-i-k) 
-		   ($log (add log-z two-pi-i-k)))))))
-
-  (dotimes (k maxiter)
-    (let* ((one ($bfloat 1))
-	   (two ($bfloat 2))
-	   (exp-w ($bfloat ($exp w)))
-	   (we (cmul w exp-w))
-	   (w1e (cmul (add w one ) exp-w))
-	   (delta (cdiv (sub we z)
-		     (sub w1e (cdiv (cmul (add w two)
-				  (sub we z))
-			       (add two (cmul two w)))))))
-      (when (eq ($sign (sub ($cabs (cdiv delta w)) prec)) '$neg)
-	(return w))
-      (setq w (sub w delta))))
-  (bigfloat::check-lambert-w-k k (bigfloat:to w) (bigfloat:to z))
-  w))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Generalized Lambert W function
@@ -798,8 +782,10 @@
   (let ((k (simpcheck (cadr expr) z))
         (x (simpcheck (caddr expr) z)))
     (cond
+     ;; Numerical evaluation for real or complex x
      ((and (integerp k) (complex-float-numerical-eval-p x))
-      (to (lambert-w-k k (bigfloat:to x))))
+      (to (bigfloat::lambert-w-k k (bigfloat:to x))))
+     ;; Numerical evaluation for real or complex bigfloat x
      ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
-      (bfloat-lambert-w-k k x))
+      (to (bigfloat::lambert-w-k k (bigfloat:to x))))
      (t (list '(%generalized_lambert_w simp) k x)))))
