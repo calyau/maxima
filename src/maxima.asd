@@ -540,8 +540,7 @@
                                      (:file "gamma")
 				     (:file "mstuff")))
 	       (:module poisson-series :pathname ""
-			:components ((:file "ratpoi")
-				     (:file "pois2") 
+			:components ((:file "pois2") 
 				     (:file "pois3")))
 	       (:module translated-packages :pathname ""
 			:depends-on ("maxima-language-compiler-macros")

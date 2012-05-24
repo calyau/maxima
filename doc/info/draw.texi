@@ -491,8 +491,10 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axi
 @defvr {Graphic option} background_color
 Default value: @code{white}
 
-Sets the background color for terminals @code{gif}, @code{png}, @code{jpg},
-and @code{gif}. Default background color is white.
+Sets the background color for terminals. Default background color is white.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
 
 See also @code{color}.
 

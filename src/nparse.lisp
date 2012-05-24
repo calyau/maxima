@@ -29,8 +29,6 @@
 (defvar *parse-stream-eof* -1 "EOF value for Maxima parser")
 (defvar *parse-tyi* nil)
 
-(defvar macsyma-operators ()  "Maxima operators structure")
-
 (defvar *mread-prompt* nil    "prompt used by `mread'")
 (defvar *mread-eof-obj* ()    "Bound by `mread' for use by `mread-raw'")
 
@@ -484,6 +482,7 @@
   (scan-one-token-g nil nil))
 
 (defun scan-one-token-g (eof-ok? eof-obj)
+  (declare (special macsyma-operators))
   (cond ((car scan-buffered-token)
 	 (rplaca scan-buffered-token ())
 	 (cdr scan-buffered-token))

@@ -16,19 +16,13 @@
 		      prods negprods sums negsums
 		      $scalarmatrixp *nounl*
 		      $keepfloat $ratprint
-		      $demoivre
+		      $demoivre $float
 		      bigfloatzero bigfloatone $assumescalar
 		      opers-list *opers-list $dontfactor *n
 		      *out *in varlist genvar $factorflag radcanp
                       *builtin-numeric-constants*))
 
 ;; General purpose simplification and conversion switches.
-
-(defmvar $float nil
-  "Causes non-integral rational numbers to be converted to
-	 floating point."
-  evflag
-  see-also $numer)
 
 (defmvar $negdistrib t
   "Causes negations to be distributed over sums, e.g. -(A+B) is
@@ -3497,8 +3491,6 @@
 ;; The following was formerly in MATRUN.  This code was placed here because
 ;; MATRUN is now an out-of-core file on MC, and this code is needed in-core
 ;; so that MACSYMA SAVE files will work. - JPG
-
-(defvar *afterflag nil)
 
 (defmfun matcherr ()
   (throw 'match nil))

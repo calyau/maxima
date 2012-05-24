@@ -14,7 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special varlist errorsw $demoivre))
+(declare-top (special varlist errorsw $demoivre 1//2 -1//2))
 
 (defmvar $%piargs t)
 (defmvar $%iargs t)
@@ -28,8 +28,6 @@
 (defmvar $halfangles nil)
 
 ;; Simplified shortcuts for constant expressions.
-(defvar 1//2 '((rat simp) 1 2))
-(defvar -1//2 '((rat simp) -1 2))
 (defvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))
 (defvar %pi//2 '((mtimes simp) ((rat simp) 1 2) $%pi))
 (defvar sqrt3//2 '((mtimes simp)

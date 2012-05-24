@@ -18,14 +18,18 @@
 ;;; This is a maxima-gnuplot interface.
 
 ;;; Visit
-;;; http://www.telefonica.net/web2/biomates/maxima/gpdraw
+;;; http://riotorto.users.sourceforge.net/gnuplot
 ;;; for examples
 
 ;;; Some portions of this package were written by 
-;;; Andrej Vodopivec and Joan Pau Beltran. Thanks!
+;;; Andrej Vodopivec and Joan Pau Beltran.
+;;; Some other people has also helped with bug reports,
+;;; comments, complains and feature requests.
+;;; Thanks to everybody!!
 
 ;;; For questions, suggestions, bugs and the like, feel free
 ;;; to contact me at
+
 ;;; mario @@@ edu DOT xunta DOT es
 
 
@@ -2659,6 +2663,7 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
+            (format nil "set style rectangle fillcolor rgb '~a'~%" (get-option '$background_color)) ; background rectangle
             (if (equal (get-option '$proportional_axes) '$none)
                (format nil "set size noratio~%")
                (format nil "set size ratio -1~%") )
@@ -2826,6 +2831,7 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
+            (format nil "set style rectangle fillcolor rgb '~a'~%" (get-option '$background_color)) ; background rectangle
             ; this let statement is to prevent error messages in gnuplot when
             ; the amplitude of the ranges equals zero
             (let ((xi (first  (get-option '$xrange)))
@@ -3004,7 +3010,6 @@
                 ($file_name         (update-gr-option '$file_name ($rhs x)))
                 ($gnuplot_file_name (update-gr-option '$gnuplot_file_name ($rhs x)))
                 ($data_file_name    (update-gr-option '$data_file_name ($rhs x)))
-                ($background_color  (update-gr-option '$background_color ($rhs x)))
                 ($delay             (update-gr-option '$delay ($rhs x)))
 
                 ; deprecated global options
@@ -3047,19 +3052,15 @@
                            (round (/ (first (get-option '$dimensions)) 10))
                            (round (/ (second (get-option '$dimensions)) 10))
                            (get-option '$file_name)))
-        ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a~%~a~%set out '~a.png'"
+        ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name) ) )
-        ($pngcairo (format cmdstorage "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%~a~%set out '~a.png'"
+        ($pngcairo (format cmdstorage "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name) ) )
         ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
@@ -3081,32 +3082,26 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($jpg (format cmdstorage "set terminal jpeg enhanced ~a size ~a, ~a~%~a~%set out '~a.jpg'"
+        ($jpg (format cmdstorage "set terminal jpeg enhanced ~a size ~a, ~a~%set out '~a.jpg'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name)))
-        ($gif (format cmdstorage "set terminal gif enhanced ~a size ~a, ~a~%~a~%set out '~a.gif'"
+        ($gif (format cmdstorage "set terminal gif enhanced ~a size ~a, ~a~%set out '~a.gif'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name)))
         ($svg (format cmdstorage "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name)))
-        ($animated_gif (format cmdstorage "set terminal gif enhanced animate ~a size ~a, ~a delay ~a~%~a~%set out '~a.gif'"
+        ($animated_gif (format cmdstorage "set terminal gif enhanced animate ~a size ~a, ~a delay ~a~%set out '~a.gif'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$delay)
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name)))
         ($aquaterm (format cmdstorage "set terminal aqua enhanced ~a ~a size ~a ~a~%"
                            *draw-terminal-number*
@@ -3169,7 +3164,9 @@
                            size2   height)
                      (incf nilcounter)))
                 (format cmdstorage "~%set size ~a, ~a~%" size1 size2)
-                (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)  ))
+                (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)
+                (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a~%" 
+                                   origin1 origin2 (+ origin1 size1 ) (+ origin2 size2))  ))
         (setf is1stobj t
               biglist '()
               grouplist '())
@@ -3350,19 +3347,15 @@
          (update-gr-option ($lhs x) ($rhs x))
          (merror "draw: item ~M is not recognized as an option assignment" x)))
    (case (get-option '$terminal)
-      ($png (setf str (format nil "set terminal png enhanced truecolor ~a size ~a, ~a~%~a~%set out '~a.png'"
+      ($png (setf str (format nil "set terminal png enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name) ) ))
-      ($pngcairo (setf str (format nil "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%~a~%set out '~a.png'"
+      ($pngcairo (setf str (format nil "set terminal pngcairo enhanced truecolor ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name) ) ))
       ($eps (setf str (format nil "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
@@ -3384,19 +3377,15 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
-      ($jpg (setf str (format nil "set terminal jpeg ~a size ~a, ~a~%~a~%set out '~a.jpg'"
+      ($jpg (setf str (format nil "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name))))
-      ($gif (setf str (format nil "set terminal gif ~a size ~a, ~a~%~a~%set out '~a.gif'"
+      ($gif (setf str (format nil "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
-                           (format nil "set obj 999 rectangle behind from screen 0,0 to screen 1,1 fillcolor rgb '~a'"
-                                       (get-option '$background_color))
                            (get-option '$file_name))))
       ($svg (setf str (format nil "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
 			   (write-font-type)

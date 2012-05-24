@@ -570,31 +570,7 @@
 		 (merror (intl:gettext "gamma: overflow in GAMMAFLOAT."))
 		 result))))))
 
-
 (declare-top (special $numer $trigsign))
-
-;;; The Error functions Erf, Erfc, Erfi and the function Generalized Erf have 
-;;; been implemented as simplifying functions. The code is moved to the file
-;;; gamma.lisp and commented out at this place. 10/2008 DK.
-
-;(defmfun simperf (x vestigial z &aux y)
-;  (declare (ignore vestigial))
-;  (oneargcheck x)
-;  (setq y (simpcheck (cadr x) z))
-;  (cond ((zerop1 y) y)
-;	((or (floatp y) (and $numer (integerp y))) (erf (float y)))
-;	((eq y '$inf) 1)
-;	((eq y '$minf) -1)
-;	;;((and $trigsign (mminusp* y)) (neg (list '(%erf simp) (neg y))))
-;	((and $trigsign (great (neg y) y)) (neg (take '(%erf) (neg y))))
-;	(t (eqtest (list '(%erf) y) x))))
-
-
-;(defmfun erf (y)
-;  (slatec:derf (float y)))
-
-;(defmfun erfc (y)
-;  (slatec:derfc (float y)))
 
 (defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 

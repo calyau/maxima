@@ -277,7 +277,6 @@ binary-cmucl/maxima.core : conjugate.lisp
 binary-cmucl/maxima.core : expintegral.lisp
 binary-cmucl/maxima.core : gamma.lisp
 binary-cmucl/maxima.core : mstuff.lisp
-binary-cmucl/maxima.core : ratpoi.lisp
 binary-cmucl/maxima.core : pois2.lisp
 binary-cmucl/maxima.core : pois3.lisp
 binary-cmucl/maxima.core : desoln.lisp

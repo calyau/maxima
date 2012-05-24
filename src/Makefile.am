@@ -386,7 +386,6 @@ intl.lisp \
 intpol.lisp \
 invert.lisp \
 irinte.lisp \
-kclmac.lisp \
 laplac.lisp \
 ldisp.lisp \
 lesfac.lisp \
@@ -455,7 +454,6 @@ rat3d.lisp \
 rat3e.lisp \
 ratmac.lisp \
 ratout.lisp \
-ratpoi.lisp \
 residu.lisp \
 result.lisp \
 risch.lisp \

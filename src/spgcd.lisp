@@ -21,8 +21,6 @@
 
 (load-macsyma-macros ratmac)
 
-(defvar *alpha nil) 
-
 (defmvar $pointbound *alpha)
 
 (defmacro len (lobj) `(cadr ,lobj))

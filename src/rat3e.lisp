@@ -261,8 +261,6 @@
 	  ($multthru ans))
 	ans)))
 
-(defvar alpha nil)
-
 (defmfun factor (e &optional (mp nil mp?))
   (let ((tellratlist nil)
 	(varlist varlist)
@@ -271,7 +269,7 @@
 	($negdistrib $negdistrib))
     (prog (fn var mm* mplc* intbs* alflag minpoly* alpha p algfac*
 	   $keepfloat $algebraic cargs)
-       (declare (special cargs fn))
+       (declare (special cargs fn alpha))
        (unless (member $gcd *gcdl* :test #'eq)
 	 (setq $gcd (car *gcdl*)))
        (let ($ratfac)

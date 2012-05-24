@@ -278,7 +278,6 @@ binary-clisp/maxima.mem : conjugate.lisp
 binary-clisp/maxima.mem : expintegral.lisp
 binary-clisp/maxima.mem : gamma.lisp
 binary-clisp/maxima.mem : mstuff.lisp
-binary-clisp/maxima.mem : ratpoi.lisp
 binary-clisp/maxima.mem : pois2.lisp
 binary-clisp/maxima.mem : pois3.lisp
 binary-clisp/maxima.mem : desoln.lisp
