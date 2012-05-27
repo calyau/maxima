@@ -2228,3 +2228,9 @@ limit(tanh(x), x, 0);
 
 closeto(float(erf(%i)) - 1.650425758797543*%i, 1e-15);
 true;
+
+/*
+ * Bug 3529992: Shi (sinh integral) wrong branch, integrate inconsistent
+ */
+closeto(float(expintegral_shi(1/2) - 0.50699674981966719583, 1e-16);
+true;
