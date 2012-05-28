@@ -2663,7 +2663,8 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (format nil "set style rectangle fillcolor rgb '~a'~%" (get-option '$background_color)) ; background rectangle
+            (format nil "set style rectangle fillcolor rgb '~a' fs solid 1.0 noborder~%"
+                        (get-option '$background_color)) ; background rectangle
             (if (equal (get-option '$proportional_axes) '$none)
                (format nil "set size noratio~%")
                (format nil "set size ratio -1~%") )
@@ -2831,7 +2832,8 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (format nil "set style rectangle fillcolor rgb '~a'~%" (get-option '$background_color)) ; background rectangle
+            (format nil "set style rectangle fillcolor rgb '~a' fs solid 1.0 noborder~%"
+                        (get-option '$background_color)) ; background rectangle
             ; this let statement is to prevent error messages in gnuplot when
             ; the amplitude of the ranges equals zero
             (let ((xi (first  (get-option '$xrange)))
