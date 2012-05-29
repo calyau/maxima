@@ -257,9 +257,11 @@
 	   (cond ((signp le (setq bk (- x (truncate a (setq xn (expt x n1))))))
 		  (return (list x (- a (* x xn))))))))))
 
-(defmfun $nthroot(p n)
-  (cond ((setq n (pnthrootp (cadr ($rat p)) n)) (pdis n))
-	(t (merror (intl:gettext "nthroot: ~M is not a ~M-th power") p n))))
+(defmfun $nthroot (p n)
+  (if (and (integerp n) (> n 0))
+      (let ((k (pnthrootp (cadr ($rat p)) n)))
+	(if k (pdis k) (merror (intl:gettext "nthroot: ~M is not a ~M power") p (format nil "~:r" n))))
+    (merror (intl::gettext "nthroot: ~M is not a positive integer") n)))
 
 (defun pnthrootp (p n)
   (let ((errrjfflag t))
