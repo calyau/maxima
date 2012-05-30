@@ -13,8 +13,6 @@ SDXDIR = $(TCLKITDIR)
 MINGW=/mingw
 GCCVER=3.3.1
 
-CHMLANGS = es pt pt_BR
-
 # Old windows build system
 ifeq ($(GCCVER),3.3.1)
 GCCPREFIX=/usr/local
@@ -105,30 +103,6 @@ else
 		$(prefix)/lib/gcc/mingw32/$(GCCVER)/include
 endif
 
-# Create CHM files
-chm:
-	mkdir -p $(prefix)/share/maxima/@VERSION@/doc/chm/figures
-	cp ../../../doc/info/*.html $(prefix)/share/maxima/@VERSION@/doc/chm
-	cp ../../../doc/info/maxima.hhp $(prefix)/share/maxima/@VERSION@/doc/chm
-	cp ../../../doc/info/contents.hhc $(prefix)/share/maxima/@VERSION@/doc/chm
-	cp ../../../doc/info/index.hhk $(prefix)/share/maxima/@VERSION@/doc/chm
-	cp ../../../doc/info/figures/* $(prefix)/share/maxima/@VERSION@/doc/chm/figures
-	( cd $(prefix)/share/maxima/@VERSION@/doc/chm ; hhc maxima.hhp ; echo en )
-	list='$(CHMLANGS)' ; \
-	for chml in $$list; do \
-	    mkdir -p $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml/figures ; \
-	    cp ../../../doc/info/$$chml/*.html $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml ; \
-	    for hfile in $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml/*.html ; do \
-		sed -e 's|../figures|figures|g' < $$hfile > foo ; mv -f foo $$hfile ; \
-	    done ; \
-	    cp ../../../doc/info/$$chml/maxima.hhp $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml ; \
-	    cp ../../../doc/info/$$chml/contents.hhc $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml ; \
-	    cp ../../../doc/info/$$chml/index.hhk $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml ; \
-	    cp ../../../doc/info/figures/* $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml/figures ; \
-	    ( cd $(prefix)/share/maxima/@VERSION@/doc/chm/$$chml ; hhc maxima.hhp ; echo $$chml ) ; \
-	done
-
-
 # Some little hacks for Windows
 fixes: fix_maxima_bat
 
@@ -139,6 +113,6 @@ fix_maxima_bat:
 		sed -e 's|GCCVER|$(GCCVER)|g' < "@prefix@/bin/maxima.bat" > "@prefix@/bin/foo.bat"
 		mv -f "@prefix@/bin/foo.bat" "@prefix@/bin/maxima.bat"
 
-install: xmaxima.exe winkill.exe tclwinkill.dll chm fixes
+install: xmaxima.exe winkill.exe tclwinkill.dll fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
 	cp readme*.txt "@prefix@"
