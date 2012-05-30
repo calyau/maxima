@@ -93,11 +93,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; possibly a bug: For var = x and *d* =3, we have expand(?subst10(x^9 * (x+x^6))) --> x^5+x^4, but
+;; ?subst10(expand(x^9 * (x+x^6))) --> x^5+x^3. (Barton Willis)
+
 (defun subst10 (ex)
   (cond ((atom ex) ex)
 	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var))
 	 (list '(mexpt) var (integerp2 (quotient (caddr ex) *d*))))
-	(t (cons (ncons (caar ex))
+	(t (cons (remove 'simp (car ex))
 		 (mapcar #'(lambda (c) (subst10 c)) (cdr ex))))))
 
 (defun rationalizer (x)
