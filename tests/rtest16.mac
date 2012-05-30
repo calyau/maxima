@@ -2234,3 +2234,7 @@ true;
  */
 closeto(float(expintegral_shi(1/2) - 0.50699674981966719583), 1e-16);
 true;
+
+/* integrate changes k[0] --> k(0) - ID: 3530767 */
+integrate(x * (x^2 + k[0])/(1 + x^2),x);
+((k[0]-1)*log(x^2+1))/2+x^2/2$
