@@ -7,6 +7,10 @@ endif
 
 all-local: maxima-index.lisp maxima.html contents.hhc $(MAXIMA_CHM)
 
+install-data-local: $(INSTALL_CHM)
+
+uninstall-local: $(UNINSTALL_CHM)
+
 maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
@@ -63,7 +67,7 @@ clean-chm:
 	rm -rf chm
 
 
-install-info-am: $(INFO_DEPS) maxima-index.lisp $(MAXIMA_CHM)
+install-info-am: $(INFO_DEPS) maxima-index.lisp
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	list='$(INFO_DEPS)'; \
