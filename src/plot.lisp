@@ -1779,14 +1779,12 @@ output-file))
 
       (if preamble-in-arguments
         (let
-          ((args-sans-preamble
-             ($sublist `((mlist) ,@optional-args)
-                       '((lambda) ((mlist) e) (not (and ($listp e) (eq ($first e) '$gnuplot_preamble)))))))
+          ((args-sans-preamble (remove-if #'(lambda (e) (and ($listp e) (eq ($first e) '$gnuplot_preamble))) optional-args)))
           (setq preamble-in-arguments
                 ($sconcat contour-preamble (format nil "~%") preamble-in-arguments))
           (apply #'$plot3d
                  (append (list expr)
-                         (cdr args-sans-preamble)
+                         args-sans-preamble
 			 (list '((mlist simp) $palette nil))
                          (list `((mlist) $gnuplot_preamble ,preamble-in-arguments)))))
 
