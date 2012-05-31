@@ -1,4 +1,4 @@
-@c English version: 2012-05-22
+@c English version: 2012-05-31
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -2163,7 +2163,8 @@ o solamente los l@'{@dotless{i}}mites.
 
 @item
 @var{frequency} (valor por defecto, @code{absolute}): indica la escala de las ordenadas.
-Valores admitidos son:  @code{absolute}, @code{relative} y and @code{percent}.
+Valores admitidos son:  @code{absolute}, @code{relative}, @code{percent} y @code{density}.
+Con @code{density}, el histograma adquiere un @'area total igual a uno.
 
 @item
 @var{htics} (valor por defecto, @code{auto}): formato para las marcas sobre el
@@ -2248,7 +2249,7 @@ expl@'{@dotless{i}}cita a la escena:
         histogram_description(
           s2,
           nclasses     = 9,
-          frequency    = relative,
+          frequency    = density,
           fill_density = 0.5),
         explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s))$
 @end example

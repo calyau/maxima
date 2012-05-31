@@ -2326,8 +2326,8 @@ only the limits.
 
 @item
 @var{frequency} (default, @code{absolute}): indicates the scale of the
-ordinates. Possible values are:  @code{absolute}, @code{relative}, 
-and @code{percent}.
+ordinates. Possible values are:  @code{absolute}, @code{relative},  @code{percent},
+and @code{density}. With @code{density}, the histogram area has a total area of one.
 
 @item
 @var{htics} (default, @code{auto}): format of the histogram tics. Possible
@@ -2410,7 +2410,7 @@ the @code{xrange} and adding an explicit curve into the scene:
         histogram_description(
           s2,
           nclasses     = 9,
-          frequency    = relative,
+          frequency    = density,
           fill_density = 0.5),
         explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s))$
 @end example
