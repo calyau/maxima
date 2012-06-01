@@ -1434,7 +1434,8 @@
       (cond ((and (zerop a) (plusp (realpart b)))
 	     (* a b))
 	    ((= b (truncate b))
-	     ;; The exponent is an integer
+	     ;; Use the numeric^number method because it can be much
+	     ;; more accurate when b is an integer.
 	     (expt a (truncate b)))
 	    (t
 	     (exp (* b (log a)))))))
@@ -1479,8 +1480,6 @@
 		((= b -4)
 		 (let ((a2 (* a a)))
 		   (/ (* a2 a2))))
-		((= b (truncate b))
-		 (expt a (truncate b)))
 		(t
 		 (exp (* (bigfloat b) (log a))))))))
 

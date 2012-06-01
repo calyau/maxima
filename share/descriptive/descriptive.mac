@@ -655,7 +655,8 @@ wxscatterplot([desc]) := wxdraw(apply('scatterplot_description, desc)) $
 /*                                                                   */
 /* Specific options (defaults in parentheses):                       */
 /*     - nclasses (10): number of classes, a positive integer.       */
-/*     - frequency (absolute): 'absolute', 'relative' or 'percent'   */
+/*     - frequency (absolute): 'absolute', 'relative', 'density' or  */
+/*                               'percent'                           */
 /*     - htics (auto): 'auto, 'endpoints, 'intervals, list of labels */
 /*                                                                   */
 /* Draw options affecting this object:                               */
@@ -692,8 +693,8 @@ histogram_description(m,[select]):=
         elseif not integerp(my_nclasses) or my_nclasses < 3
           then error("histogram: number of classes must be an integer greater than two")
           else num_classes: my_nclasses,
-      if not member(my_frequency, ['absolute, 'relative, 'percent])
-        then error("histogram: frenquency must be either absolute, relative or percent"),
+      if not member(my_frequency, ['absolute, 'relative, 'percent, 'density])
+        then error("histogram: frenquency must be either absolute, relative, density or percent"),
       if not member(my_htics, ['auto, 'endpoints, 'intervals]) and
          not listp(my_htics)
         then error("histogram: incorrect format in option htics"),
@@ -714,6 +715,8 @@ histogram_description(m,[select]):=
                if my_frequency = 'percent
                  then fr[2]: fr[2] * 100.0,
                amp: fr[1][2]-fr[1][1],
+               if my_frequency = 'density
+                 then fr: [first(fr), second(fr) / (apply("+", second(fr)) * amp)],
 
                /* histogram tics */
                if my_htics = 'auto

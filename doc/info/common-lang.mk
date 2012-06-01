@@ -1,3 +1,71 @@
+if WIN32
+MAXIMA_CHM = maxima.chm
+INSTALL_CHM = install-chm
+UNINSTALL_CHM = uninstall-chm
+CLEAN_CHM = clean-chm
+endif
+
+all-local: maxima-index.lisp maxima.html contents.hhc $(MAXIMA_CHM)
+
+install-data-local: $(INSTALL_CHM)
+
+uninstall-local: $(UNINSTALL_CHM)
+
+maxima-index.lisp: maxima.info ../build_index.pl
+	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
+
+maxima.html: maxima.texi $(maxima_TEXINFOS)
+	perl ../texi2html -split_chapter --lang=$(lang) --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
+
+contents.hhc: maxima.html
+	perl ../create_index
+
+include $(top_srcdir)/common.mk
+genericdir = $(dochtmldir)/$(langsdir)
+genericdirDATA = \
+contents.hhc index.hhk header.hhp maxima.hhp
+
+htmlname = maxima
+htmlinstdir = $(dochtmldir)/$(langsdir)
+include $(top_srcdir)/common-html.mk
+
+clean-local: clean-info clean-html $(CLEAN_CHM)
+
+clean-info:
+	rm -f maxima.info*
+	rm -f maxima-index.lisp
+
+clean-html:
+	rm -f maxima.html maxima_*.html
+	rm -f contents.hhc
+	rm -f index.hhk
+
+EXTRA_DIST = maxima-index.lisp $(genericdirDATA)
+
+# This builds the Windows help file maxima.chm
+maxima.chm: maxima.html maxima.hhp contents.hhc index.hhk
+	$(MKDIR_P) chm
+	$(MKDIR_P) chm/figures
+	cp *.html chm
+	for hfile in chm/*.html ; do \
+	  sed -i -e 's|../figures|figures|g' $$hfile; \
+	done
+	cp maxima.hhp contents.hhc index.hhk chm
+	cp ../figures/*.gif chm/figures
+	-(cd chm; hhc maxima.hhp)
+	mv chm/maxima.chm .
+
+install-chm: maxima.chm
+	test -z "$(DESTDIR)$(docchmdir)/$(langsdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)/$(langsdir)"
+	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)/$(langsdir)/maxima.chm"
+
+uninstall-chm:
+	rm -f "$(DESTDIR)$(docchmdir)"
+
+clean-chm:
+	rm -f maxima.chm
+	rm -rf chm
+
 
 install-info-am: $(INFO_DEPS) maxima-index.lisp
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"
@@ -31,4 +99,3 @@ uninstall-info-am:
 	   else :; fi); \
 	done
 	rm -f "$(DESTDIR)$(infodir)$(langsdir)/maxima-index.lisp"
-

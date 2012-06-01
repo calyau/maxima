@@ -206,7 +206,14 @@ figures/bodephase7.pdf\
 figures/bodephase8.pdf\
 figures/bodephase9.pdf
 
-all-local: maxima.info maxima-index.lisp
+if WIN32
+MAXIMA_CHM = maxima.chm
+INSTALL_CHM = install-chm
+UNINSTALL_CHM = uninstall-chm
+CLEAN_CHM = clean-chm
+endif
+
+all-local: maxima.info maxima-index.lisp $(MAXIMA_CHM)
 
 maxima.info : maxima.texi
 	makeinfo --split-size=1000000 maxima.texi
@@ -222,6 +229,10 @@ maxima.html: maxima.texi $(maxima_TEXINFOS)
 contents.hhc index.hhk: maxima.html
 	perl ./create_index
 
+# Squash error on exit from hhc
+maxima.chm: maxima.hhp contents.hhc index.hhk
+	-hhc maxima.hhp
+
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
 genericdirDATA = $(figurefiles) \
@@ -234,8 +245,8 @@ include $(top_srcdir)/common-html.mk
 all-local: warn_texinfo
 dist-hook: check_texinfo html
 
-install-data-local: install-maxima-index
-uninstall-local: uninstall-maxima-index
+install-data-local: install-maxima-index $(INSTALL_CHM)
+uninstall-local: uninstall-maxima-index $(UNINSTALL_CHM)
 
 install-maxima-index: maxima-index.lisp
 	test -z "$(infodir)" || mkdir -p -- "$(DESTDIR)$(infodir)"
@@ -244,8 +255,7 @@ install-maxima-index: maxima-index.lisp
 uninstall-maxima-index: maxima-index.lisp
 	rm -f "$(DESTDIR)$(infodir)/maxima-index.lisp"
 
-clean-local: clean-info
-clean-local: clean-html
+clean-local: clean-info clean-html $(CLEAN_CHM)
 
 clean-info:
 	rm -f maxima.info*
@@ -255,6 +265,20 @@ clean-html:
 	rm -f maxima*.html
 	rm -f contents.hhc
 	rm -f index.hhk
+	rm -f maxima.chm
+
+if WIN32
+install-chm: maxima.chm
+	test -z "$(DESTDIR)$(docchmdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)"
+	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)/maxima.chm"
+
+uninstall-chm:
+	rm -f "$(DESTDIR)$(docchmdir)"
+
+clean-chm:
+	rm -f maxima.chm
+	rm -rf chm
+endif
 
 EXTRA_DIST = texi2html manual.css texi2html.init \
     $(genericdirDATA) $(pdffigures) \

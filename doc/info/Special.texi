@@ -1962,12 +1962,26 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 @end deffn
 
 @deffn {Function} lambert_w (@var{z})
-The principal branch of Lambert's W funtion W(z), the solution of 
-@code{z = W(z) * exp(W(z))}.
+The principal branch of Lambert's W function W(z), the solution of 
+@code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
+
+@deffn {Function} generalized_lambert_w (@var{k}, @var{z})
+The k-th branch of Lambert's W function W(z), the solution of 
+@code{z = W(z) * exp(W(z))}. (DLMF 4.13)
+
+The principal branch, denoted Wp(z) in DLMF, is lambert_w(z) = generalized_lambert_w(0,z).
+
+The other branch with real values, denoted Wm(z) in DLMF, is generalized_lambert_w(-1,z).
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
 
 @deffn {Function} nzeta (@var{z})
 The Plasma Dispersion Function 

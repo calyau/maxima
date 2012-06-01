@@ -1532,6 +1532,9 @@
       ((alike1 arg '((mtimes) -1 '$%i $inf)) (div (mul -1 '$%i '$%pi) 2))
 
       ;; Check for numrical evaluation
+      ((float-numerical-eval-p arg)
+       (realpart (expintegral-shi arg)))
+      
       ((complex-float-numerical-eval-p arg)
        (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-shi carg))))

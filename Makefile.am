@@ -44,10 +44,10 @@ WXMAXIMADIR = /c/programs/wxMaxima
 
 # Windows installer.  Need local copy of gcc if using gcl
 iss: extradocinstall gnuplot wxmaxima
+	$(MAKE) -C interfaces/xmaxima/win32 install
 if GCL
 	$(MAKE) -C interfaces/xmaxima/win32 gcccopy
-endif
-	$(MAKE) -C interfaces/xmaxima/win32 install
+endif # GCL
 
 # Install the gnuplot binary files
 gnuplot: 
@@ -58,4 +58,4 @@ gnuplot:
 wxmaxima:
 	cp -rf $(WXMAXIMADIR) $(prefix)/wxMaxima
 
-endif 
+endif # WIN32

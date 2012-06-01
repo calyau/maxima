@@ -4,6 +4,7 @@ verpkglibdir = $(pkglibdir)/@VERSION@
 verpkglibexecdir = $(libexecdir)/@PACKAGE@/@VERSION@
 verpkgdatadir = $(pkgdatadir)/@VERSION@
 docdir = $(verpkgdatadir)/doc
+docchmdir = $(docdir)/chm
 dochtmldir = $(docdir)/html
 docsharedir = $(docdir)/share
 demodir = $(verpkgdatadir)/demo

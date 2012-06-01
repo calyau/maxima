@@ -1,4 +1,4 @@
-@c English version 2012-02-05
+@c English version 2012-05-23
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -441,6 +441,9 @@ Valor por defecto: @code{white}
 
 Establece el color de fondo en los terminales @code{gif}, @code{png}, @code{jpg}
 y @code{gif}. El color de fondo por defecto es blanco.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
 
 V@'ease tambi@'en @code{color}.
 @end defvr
