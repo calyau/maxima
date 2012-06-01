@@ -2232,7 +2232,7 @@ true;
 /*
  * Bug 3529992: Shi (sinh integral) wrong branch, integrate inconsistent
  */
-closeto(float(expintegral_shi(1/2) - 0.50699674981966719583), 1e-16);
+closeto(float(expintegral_shi(1/2) - 0.50699674981966719583), 2.23e-16);
 true;
 
 /* integrate changes k[0] --> k(0) - ID: 3530767 */
