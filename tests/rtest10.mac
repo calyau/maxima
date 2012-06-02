@@ -74,6 +74,15 @@ true;
  foop (%%, cf(rat(bfloat(expr)))));
 true;
 
+cflength:1;
+1$
+cf(sqrt(8));
+[2, 1, 4]$
+cflength:3;
+3$
+cf(sqrt(8));
+[2, 1, 4, 1, 4, 1, 4]$
+
 (reset (ratepsilon), 0);
 0;
 

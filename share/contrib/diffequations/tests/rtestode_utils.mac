@@ -3,6 +3,36 @@
 (load('contrib_ode), done);
 done;
 
+bessimp(4*bessel_j(n,x^2)*(x^2-n^2/x^2)
+  +x*((bessel_j(n-2,x^2)-bessel_j(n,x^2))*x
+  -(bessel_j(n,x^2)-bessel_j(n+2,x^2))*x)
+  -2*bessel_j(n+1,x^2)+2*bessel_j(n-1,x^2));
+0;
+
+bessimp(((bessel_y(n-2,sqrt(x))-bessel_y(n,sqrt(x)))/(4*sqrt(x))
+ -(bessel_y(n,sqrt(x))-bessel_y(n+2,sqrt(x)))/(4*sqrt(x)))
+ /(4*sqrt(x))
+ +bessel_y(n,sqrt(x))*(1-n^2/x)/(4*x)
+ +(bessel_y(n-1,sqrt(x))-bessel_y(n+1,sqrt(x)))/(8*x^(3/2)));
+0;
+
+bessimp(-(bessel_k(1,x)*%c-bessel_i(1,x))^2*x^2/(bessel_k(0,x)*%c+bessel_i(0,x))^2
+ +x^2
+ +x*((-(bessel_k(2,x)+bessel_k(0,x))*%c/2-(bessel_i(2,x)+bessel_i(0,x))/2)*x
+    /(bessel_k(0,x)*%c+bessel_i(0,x))
+    -(bessel_i(1,x)-bessel_k(1,x)*%c)*(bessel_k(1,x)*%c-bessel_i(1,x))*x
+     /(bessel_k(0,x)*%c+bessel_i(0,x))^2
+    +(bessel_k(1,x)*%c-bessel_i(1,x))/(bessel_k(0,x)*%c+bessel_i(0,x))));
+0;
+
+/* Check Struve H recurrence - integral of bessel_j(2,z)*z^2 dz */
+bessimp(diff(3*%pi*(struve_h(1,z)*bessel_j(2,z)-bessel_j(1,z)*struve_h(2,z))*z/2,z)-bessel_j(2,z)*z^2);
+0;
+
+/* Check Struve L recurrence - integral of z^v*struve_l(v-1,z) dz DLMF 11.7.3 */
+bessimp(diff(z^v*struve_l(v,z),z)-z^v*struve_l(v-1,z));
+0;
+
 expintegral_e_simp(
  (%e^(2*x+2)+(%e*expintegral_e(1,-x-1)*x-%e*expintegral_e(2,-x-1)
  +%e*expintegral_e(1,-x-1))*%e^x)

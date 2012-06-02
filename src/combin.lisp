@@ -795,10 +795,8 @@
 	  ((eq (caar a) 'mexpt)
 	   (cond ((alike1 (caddr a) '((rat) 1 2))
 		  (cfsqrt (cfeval (cadr a))))
-		 ((integerp (m- (caddr a) '((rat) 1 2)))
-		  (cftimes (cfsqrt (cfeval (cadr a)))
-			   (cfexpt (cfeval (cadr a))
-				   (m- (caddr a) '((rat) 1 2)))))
+		 ((integerp (m* 2 (caddr a))) ; a^(n/2) was sqrt(a^n)
+                  (cfsqrt (cfeval (cfexpt (cadr a) (m* 2 (caddr a))))))
 		 ((integerp (cadr a)) (cfnroot a)) ; <=== new case x
 		 ((cfexpt (cfeval (cadr a)) (caddr a)))))
 	  ((setq temp (assoc (caar a) '((mplus . cfplus) (mtimes . cftimes) (mquotient . cfquot)

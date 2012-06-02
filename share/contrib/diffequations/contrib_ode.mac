@@ -179,11 +179,12 @@ ode_check_tidy(e) := block(
 /*  This Bessel function simplification code can be improved,
     but is does work well on the contrib_ode testsuite.
 */
-bessimp(e) := 
-if freeof_bessel(e) then
-  e
-else
-  besksimp(besisimp(besysimp(besjsimp(e))))$
+bessimp(e) := block(
+ for f in ['besksimp, 'besisimp, 'besysimp, 'besjsimp, 
+           'hankel1simp, 'hankel2simp, 'struvehsimp, 'struvelsimp]
+ do
+  e:f(e),
+ return(e))$
 
 freeof_bessel(e):=freeof(bessel_j,bessel_y,bessel_i,bessel_k,e);
 
@@ -224,6 +225,8 @@ besFsimp(ex,F,Fsub) := block([arglist,ords,ord2,max,min,s,t,u,m,n,x,e:ex],
   ratsimp(e)
 )$
 
+/* Recurrence for Bessel and Hankel functions A&S 9.1.27, DLMF 10.6.1 */
+
 besjsimp(ex):=besFsimp(ex,bessel_j,
   lambda([n,x], 2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x)));
 
@@ -233,11 +236,18 @@ besysimp(ex):=besFsimp(ex,bessel_y,
 besisimp(ex):=besFsimp(ex,bessel_i,
   lambda([n,x],-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x)));
 
+hankel1simp(ex):=besFsimp(ex,hankel_1,
+  lambda([n,x], 2*(n-1)*hankel_1(n-1,x)/x-hankel_1(n-2,x)));
+
+hankel2simp(ex):=besFsimp(ex,hankel_2,
+  lambda([n,x], 2*(n-1)*hankel_2(n-1,x)/x-hankel_2(n-2,x)));
+
+
 /* bessel_k requires special treatment due to the simplification
    bessel_k(-n,x) => bessel_k(n,x), which upsets the recurrence 
    relationship.  */
 besksimp(ex):=block(
-  [bk:?gensym(),e],
+  [bk:gensym(),e],
   e:opsubst(bk,bessel_k,ex),
   e:besksimp_1(e,bk),
   /* Recurrence relation for bessel_k */
@@ -278,6 +288,16 @@ besksimp_1(e,bk):=block(
   ),
   e
 );
+
+/* Recurrence for struve_h DLMF 11.4.23 */
+struvehsimp(ex):=besFsimp(ex,struve_h,
+  lambda([n,x],2^(1-n)*x^(n-1)/(sqrt(%pi)*gamma(n+1/2))
+              +2*(n-1)*struve_h(n-1,x)/x-struve_h(n-2,x)))$
+
+/* Recurrence for struve_l DLMF 11.4.25 */
+struvelsimp(ex):=besFsimp(ex,struve_l,
+  lambda([n,x],-2^(1-n)*x^(n-1)/(sqrt(%pi)*gamma(n+1/2))
+               -2*(n-1)*struve_l(n-1,x)/x+struve_l(n-2,x)))$
 
 /* Simplify expressions containing exponential integral expintegral_e
    using the recurrence (A&S 5.1.14).
