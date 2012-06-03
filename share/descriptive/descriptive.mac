@@ -158,7 +158,7 @@ listoflistsp(y):=listp(y) and every('identity,map('listofnumbersp,y))$
 
 
 
-/*               DATA MANIPULATION                 */
+/*               DATA TRANSFORMATION                 */
 
 
 /* Sub-sample matrix selection.                                */
@@ -179,6 +179,36 @@ subsample(mat,cond,[cols]):=
            tempmat: endcons(tempvect, tempmat)),
     apply('matrix, tempmat))$
 
+
+/* Subtract the mean and divide by the standard deviation */
+standardize(m) := 
+  if listofexpr(m)
+    then (m-mean(m)) / std(m)
+  elseif listoflistsp(m)
+    then makelist(standardize(k), k, m)
+  elseif matrixp(m)
+    then block([av, dev, m2: copymatrix(m)],
+                av: mean(m2),
+                dev: std1(m2),
+                for k:1 thru length(m2) do m2[k] : (m2[k]-av) / dev,
+                m2)
+    else error("standardize: unknown data format") $
+
+
+/* Returns a new matrix with transformed, repeated, reordered, or removed columns */
+tranform_sample(m, varnames, expressions) :=
+    block([tm],
+        if matrixp(m)
+            then (tm: args(transpose(m)),
+                     transpose(apply('matrix, psubst(map("=",varnames,tm), expressions))))
+            else error("tranform_sample: argument must be a matrix")) $
+
+
+
+
+
+
+/*               FREQUENCY COUNTERS                 */
 
 
 /* Divides the range in intervals and counts how many values   */
