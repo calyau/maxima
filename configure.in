@@ -11,7 +11,6 @@ AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
 
-GCCVER=undefined
 case "$host" in
         *mingw*)
                 win32=true
@@ -30,7 +29,9 @@ case "$host" in
 esac
 AC_SUBST(win32)
 AC_SUBST(GCCVER)
+AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
+
 
 explicit_lisp=false
 
