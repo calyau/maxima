@@ -10,21 +10,28 @@ AM_INIT_AUTOMAKE(maxima,5.27post)
 AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
+
 case "$host" in
         *mingw*)
                 win32=true
-                mingw=true 
+                mingw=true
+                GCCVER=`gcc -dumpversion`
                 ;;
         *cygwin*)
                 win32=true
                 mingw=false
+                GCCVER=undefined
                 ;;
         *)
                 win32=false
                 mingw=false
+                GCCVER=undefined
 esac
 AC_SUBST(win32)
+AC_SUBST(GCCVER)
+AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
+
 
 explicit_lisp=false
 
@@ -893,10 +900,12 @@ AC_SUBST(EGREP)
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
-AC_CONFIG_FILES([src/share-subdirs.lisp])
+dnl Convert to DOS line ending (using sed because we know it is present)
+AC_CONFIG_FILES([src/maxima.bat], sed -i -e 's/$/\r/' src/maxima.bat)
 
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
-admin/Makefile src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
+admin/Makefile src/Makefile src/maxima src/rmaxima src/autoconf-variables.lisp \
+src/share-subdirs.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 doc/info/de/Makefile doc/info/de.utf8/Makefile \

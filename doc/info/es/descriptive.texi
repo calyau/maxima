@@ -1,4 +1,4 @@
-@c English version: 2012-05-31
+@c English version: 2012-06-03
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -289,6 +289,19 @@ La primera lista son los valores de la muestra y la segunda sus frecuencias abso
 
 
 
+@deffn {Funci@'on} standardize (@var{list})
+@deffnx {Funci@'on} standardize (@var{matrix})
+
+Resta a cada elemento de la lista la media muestral y luego divide el resultado por
+la desviaci@'on t@'{@dotless{i}}pica. Si la entrada es una matriz, @code{standardize} 
+resta a cada fila la media multivariante y luego divide cada componente por la
+desviaci@'on t@'{@dotless{i}}pica correspondiente.
+
+@end deffn
+
+
+
+
 @deffn {Funci@'on} subsample (@var{data_matrix}, @var{predicate_function})
 @deffnx {Funci@'on} subsample (@var{data_matrix}, @var{predicate_function}, @var{col_num}, @var{col_num}, ...)
 Esta es una variante de la funci@'on @code{submatrix} de Maxima.
@@ -448,6 +461,56 @@ Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @co
 @end group
 @end example
 @end deffn
+
+
+
+
+
+@deffn {Funci@'on} tranform_sample (@var{matriz}, @var{varlist}, @var{exprlist})
+
+Transforma la @var{matriz} de datos, en la que a cada columna se le asigna
+un nombre de acuerdo con la lista @var{varlist}, seg@'un las expresiones de @var{exprlist}.
+
+Ejemplos:
+
+El segundo argumento asigna nombres a las tres columnas, con ellos la lista de expresiones
+define la transformaci@'on de la muestra.
+
+@example
+(%i1) load (descriptive)$
+(%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
+@group
+(%i3) tranform_sample(data, [a,b,c], [c, a*b, log(a)]);
+                               [ 7  6   log(3) ]
+                               [               ]
+                               [ 2  21  log(3) ]
+(%o3)                          [               ]
+                               [ 4  16  log(8) ]
+                               [               ]
+                               [ 4  10  log(5) ]
+@end group
+@end example
+
+Add a constant column and remove the third variable.
+
+@example
+(%i1) load (descriptive)$
+(%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
+(%i3) tranform_sample(data, [a,b,c], [makelist(1,k,length(data)),a,b]);
+@group
+                                  [ 1  3  2 ]
+                                  [         ]
+                                  [ 1  3  7 ]
+(%o3)                             [         ]
+                                  [ 1  8  2 ]
+                                  [         ]
+                                  [ 1  5  2 ]
+@end group
+@end example
+@end deffn
+
+
+
 
 
 @node Funciones y variables de par@'ametros descriptivos, Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos, Funciones y variables para el tratamiento de datos, descriptive
