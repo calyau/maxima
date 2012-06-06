@@ -51,6 +51,6 @@ install: xmaxima.exe winkill.exe tclwinkill.dll
 	cp readme*.txt "@prefix@"
 
 clean:
-	-rm winkill.exe tclwinkill.dll
+	-rm winkill.exe tclwinkill.dll *~
 	-rm xmaxima.exe xmaxima.tcl 
-	-rm -rf xmaxima.vfs img.vfs
+	-rm -rf xmaxima.vfs img.vfs xmaxima.kit
