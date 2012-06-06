@@ -3501,7 +3501,7 @@ true;
 relerror(
   gamma_incomplete(10,-100d0+%i),
   subst(x=-100d0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
-  8.43e-16);
+  7.0e-15);
 true;
       
 relerror(
