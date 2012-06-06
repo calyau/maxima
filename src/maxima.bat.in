@@ -122,7 +122,14 @@ ecl -load %maxima_image_base%.fas -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg
 goto end
 
 :doopenmcl
+rem OPENMCL can use either an executable image or a regular lisp core file.
+rem Check for the executable image and run that if possible.
+rem Otherwise, fallback and use the lisp core file.
+if exist "%maxima_imagesdir%\binary-openmcl\maxima.exe" goto doopenmcl_exec
 "%maxima_imagesdir%\binary-openmcl\wx86cl.exe" -l "%maxima_imagesdir%\binary-openmcl\maxima.image"  --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+:doopenmcl_exec
+"%maxima_imagesdir%\binary-openmcl\maxima.exe" --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :dosbcl

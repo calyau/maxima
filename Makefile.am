@@ -65,7 +65,9 @@ if SBCL
 SBCLCOPY = sbclcopy
 endif
 if OPENMCL
+if !OPENMCL_EXEC
 OPENMCLCOPY = openmclcopy
+endif
 endif
 
 

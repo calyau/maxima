@@ -252,32 +252,46 @@ gcl-depends.mk: maxima.system
 include gcl-depends.mk
 endif
 
+if OPENMCL_EXEC
+OPENMCL_MAXIMA = binary-openmcl/maxima.exe
+OPENMCL_BUILD = $(EXECUTEOPENMCL) '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTEOPENMCL) '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$(OPENMCL_MAXIMA)" :prepend-kernel t) (ccl::quit))'
+OPENMCL_INST_BIN = true
+OPENMCL_INST_MAXIMA = $(INSTALL_PROGRAM) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
+else
+OPENMCL_MAXIMA = binary-cmucl/maxima.image
+OPENMCL_BUILD = $(EXECUTEOPENMCL) '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTEOPENMCL) '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$(OPENMCL_MAXIMA)") (ccl::quit))'
+OPENMCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/lisp"
+OPENMCL_INST_MAXIMA = $(INSTALL_DATA) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
+endif
+
 if OPENMCL
 EXECUTEOPENMCL = $(OPENMCL_NAME) -e
-all-local: sharefiles.mk  binary-openmcl/maxima.image
+all-local: sharefiles.mk  $(OPENMCL_MAXIMA)
 install-exec-local: install-openmcl
 uninstall-hook: uninstall-openmcl
 clean: clean-openmcl
 distclean: clean-openmcl
 
-openmcl:binary-openmcl/maxima.image
+openmcl:$(OPENMCL_MAXIMA)
 
-binary-openmcl/maxima.image:
-	$(EXECUTEOPENMCL) '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
-	$(EXECUTEOPENMCL) '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "binary-openmcl/maxima.image") (ccl::quit))'
+$(OPENMCL_MAXIMA):
+	$(OPENMCL_BUILD)
 
-install-openmcl:
+install-openmcl: $(OPENMCL_MAXIMA)
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
-	$(INSTALL_DATA) binary-openmcl/maxima.image "$(DESTDIR)$(verpkglibdir)/binary-openmcl/maxima.image"
+	$(OPENMCL_INST_MAXIMA)
 
 uninstall-openmcl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-openmcl/maxima.image"
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-openmcl/$(OPENMCL_MAXIMA)"
 
 clean-openmcl:
 	rm -rf binary-openmcl
+
 openmcl-depends.mk: maxima.system
 	test -d binary-openmcl || mkdir binary-openmcl
-	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk") (ccl:quit))'
+	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(OPENMCL_MAXIMA)" "openmcl-depends.mk") (ccl:quit))'
 include openmcl-depends.mk
 endif
 
