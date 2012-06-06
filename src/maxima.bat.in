@@ -122,7 +122,7 @@ ecl -load %maxima_image_base%.fas -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg
 goto end
 
 :doopenmcl
-"%maxima_imagesdir%\binary-openmcl\wx86cl.exe" --core "%maxima_imagesdir%\binary-openmcl\maxima.image"  --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+"%maxima_imagesdir%\binary-openmcl\wx86cl.exe" -l "%maxima_imagesdir%\binary-openmcl\maxima.image"  --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :dosbcl
