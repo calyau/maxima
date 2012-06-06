@@ -150,13 +150,13 @@ endif # GCC331
 # Depends on SBCL_NAME containing full path to executable
 # configure with  --with-sbcl=<path to sbcl>/sbcl.exe
 sbclcopy:
-	mkdir -p $(prefix)/lib/$(version)/binary-sbcl
-	cp $(SBCL_NAME) $(prefix)/lib/$(version)/binary-sbcl
+	mkdir -p "$(DESTDIR)$(verpkglibdir)/binary-sbcl"
+	cp "$(SBCL_NAME)" "$(DESTDIR)$(verpkglibdir)/binary-sbcl"
 
 # Depends on OPENMCL_NAME containing full path to executable
 # configure with  --with-openmcl=<path to openmcl>/wx86cl.exe
 openmclcopy:
-	mkdir -p $(prefix)/lib/$(version)/binary-openmcl
-	cp $(OPENMCL_NAME) $(prefix)/lib/$(version)/binary-openmcl
+	mkdir -p "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
+	cp "$(OPENMCL_NAME)" "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
 
 endif # WIN32
