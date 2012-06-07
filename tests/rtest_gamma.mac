@@ -3483,7 +3483,7 @@ true;
 relerror(
   gamma_incomplete(1/5,-32.0),
   -4.0986398326716649399d12 - %i*2.9778361454160762231d12,
-  1e-15);
+  2e-15);
 true;
 
 relerror(
