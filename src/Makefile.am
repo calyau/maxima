@@ -253,15 +253,14 @@ include gcl-depends.mk
 endif
 
 if OPENMCL_EXEC
-OPENMCL_MAXIMA = binary-openmcl/maxima.exe
-OPENMCL_BUILD = $(EXECUTEOPENMCL) '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
-	$(EXECUTEOPENMCL) '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$(OPENMCL_MAXIMA)" :prepend-kernel t) (ccl::quit))'
+OPENMCL_MAXIMA = binary-openmcl/maxima$(EXEEXT)
 OPENMCL_INST_BIN = true
 OPENMCL_INST_MAXIMA = $(INSTALL_PROGRAM) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
 else
-OPENMCL_MAXIMA = binary-cmucl/maxima.image
-OPENMCL_BUILD = $(EXECUTEOPENMCL) '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
-	$(EXECUTEOPENMCL) '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$(OPENMCL_MAXIMA)") (ccl::quit))'
+OPENMCL_MAXIMA = binary-openmcl/maxima.image
+## FIXME:  This rule can't work.  Need to replace "lisp" with the 
+## openmcl_runtime, after defining that in configure.in
+## See install-clisp or install-scl.  DB 2012-06-07
 OPENMCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/lisp"
 OPENMCL_INST_MAXIMA = $(INSTALL_DATA) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
 endif
@@ -276,8 +275,17 @@ distclean: clean-openmcl
 
 openmcl:$(OPENMCL_MAXIMA)
 
-$(OPENMCL_MAXIMA):
-	$(OPENMCL_BUILD)
+binary-openmcl/maxima.image:
+	$(EXECUTEOPENMCL) \
+	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTEOPENMCL) \
+	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit))'
+
+binary-openmcl/maxima$(EXEEXT):
+	$(EXECUTEOPENMCL) \
+	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTEOPENMCL) \
+	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" :prepend-kernel t) (ccl::quit))'
 
 install-openmcl: $(OPENMCL_MAXIMA)
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"

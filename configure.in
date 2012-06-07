@@ -11,27 +11,31 @@ AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
 
+dnl Don't use AC_EXEEXT as that requires a C compiler
 case "$host" in
         *mingw*)
                 win32=true
                 mingw=true
                 GCCVER=`gcc -dumpversion`
+                EXEEXT=.exe
                 ;;
         *cygwin*)
                 win32=true
                 mingw=false
                 GCCVER=undefined
+                EXEEXT=.exe
                 ;;
         *)
                 win32=false
                 mingw=false
                 GCCVER=undefined
+                EXEEXT=
 esac
 AC_SUBST(win32)
 AC_SUBST(GCCVER)
+AC_SUBST(EXEEXT)
 AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
-
 
 explicit_lisp=false
 

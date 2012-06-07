@@ -61,18 +61,9 @@ wxmaxima:
 if GCL
 GCCCOPY = gcccopy
 endif
-if SBCL
-SBCLCOPY = sbclcopy
-endif
-if OPENMCL
-if !OPENMCL_EXEC
-OPENMCLCOPY = openmclcopy
-endif
-endif
-
 
 # Install files for lisp runtime support
-win32-lisp-runtime: $(GCCCOPY) $(SBCLCOPY) $(OPENMCLCOPY)
+win32-lisp-runtime: $(GCCCOPY)
 
 MINGW=/mingw
 if GCC331
@@ -148,17 +139,5 @@ gcccopy:
 		$(prefix)/lib/gcc/mingw32/$(GCCVER)/include
 
 endif # GCC331
-
-# Depends on SBCL_NAME containing full path to executable
-# configure with  --with-sbcl=<path to sbcl>/sbcl.exe
-sbclcopy:
-	mkdir -p "$(DESTDIR)$(verpkglibdir)/binary-sbcl"
-	cp "$(SBCL_NAME)" "$(DESTDIR)$(verpkglibdir)/binary-sbcl"
-
-# Depends on OPENMCL_NAME containing full path to executable
-# configure with  --with-openmcl=<path to openmcl>/wx86cl.exe
-openmclcopy:
-	mkdir -p "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
-	cp "$(OPENMCL_NAME)" "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
 
 endif # WIN32
