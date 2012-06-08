@@ -132,9 +132,14 @@ goto end
 "%maxima_imagesdir%\binary-openmcl\maxima.exe" --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
+rem SBCL Steel Bank Common Lisp
 :dosbcl
-"%maxima_imagesdir%\binary-sbcl\sbcl.exe" --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
-
+rem run executable image if it exists
+if exist "%maxima_imagesdir%\binary-sbcl\maxima.exe" goto dosbcl_exec
+"%maxima_imagesdir%\binary-sbcl\sbcl.exe" --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+:dosbcl_exec
+"%maxima_imagesdir%\binary-sbcl\maxima.exe" --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :end
