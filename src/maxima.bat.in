@@ -109,12 +109,18 @@ goto end
 goto end
 
 :doclisp
+if exist "%maxima_imagesdir%\binary-clisp\maxima.exe" goto doclisp_exec
+
 if "%layout_autotools%" == "true" goto clisp_autotools
-clisp -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+clisp -q -M "%maxima_image_base%.mem" "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :clisp_autotools
-%maxima_imagesdir%\binary-clisp\lisp.exe -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+"%maxima_imagesdir%\binary-clisp\lisp.exe" -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+goto end
+
+:clisp_exec
+"%maxima_imagesdir%\binary-clisp\maxima.exe" -q "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :doecl

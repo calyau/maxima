@@ -12,36 +12,53 @@ DEFSYSTEMCOMPILE = (funcall (intern (symbol-name :operate-on-system) :mk) "maxim
 DEFSYSTEMLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t)
 DEFSYSTEMTESTLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t :test t)
 
+
+if CLISP_EXEC
+CLISP_MAXIMA = binary-clisp/maxima$(EXEEXT)
+CLISP_INST_BIN = true
+CLISP_INST_MAXIMA = $(INSTALL_PROGRAM) $(CLISP_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CLISP_MAXIMA)"
+else
+CLISP_MAXIMA = binary-clisp/maxima.mem
+CLISP_INST_BIN = $(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
+CLISP_INST_MAXIMA = $(INSTALL_DATA) $(CLISP_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CLISP_MAXIMA)"
+endif
+
 if CLISP
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
-all-local: sharefiles.mk  binary-clisp/maxima.mem
+all-local: sharefiles.mk  $(CLISP_MAXIMA)
 install-exec-local: install-clisp
 uninstall-hook: uninstall-clisp
 clean: clean-clisp
 distclean: clean-clisp
 
-clisp: binary-clisp/maxima.mem
+clisp: $(CLISP_MAXIMA)
 
 binary-clisp/maxima.mem:
 	test -d binary-clisp || mkdir binary-clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "binary-clisp/maxima.mem" :init-function (function cl-user::run)))'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run)))'
+
+binary-clisp/maxima$(EXEEXT):
+	test -d binary-clisp || mkdir binary-clisp
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) :EXECUTABLE t))'
 
 install-clisp:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-clisp"
-	$(INSTALL_DATA) binary-clisp/maxima.mem "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
-	$(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
+	$(CLISP_INST_MAXIMA)
+	$(CLISP_INST_BIN)
 
 uninstall-clisp:
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima$(EXEEXT)"
 
 clean-clisp:
 	rm -rf binary-clisp
 
 clisp-depends.mk: maxima.system
 	test -d binary-clisp || mkdir binary-clisp
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk"))'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(CLISP_MAXIMA)" "clisp-depends.mk"))'
 include clisp-depends.mk
 endif
 
