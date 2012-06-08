@@ -11,27 +11,31 @@ AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
 
+dnl Don't use AC_EXEEXT as that requires a C compiler
 case "$host" in
         *mingw*)
                 win32=true
                 mingw=true
                 GCCVER=`gcc -dumpversion`
+                EXEEXT=.exe
                 ;;
         *cygwin*)
                 win32=true
                 mingw=false
                 GCCVER=undefined
+                EXEEXT=.exe
                 ;;
         *)
                 win32=false
                 mingw=false
                 GCCVER=undefined
+                EXEEXT=
 esac
 AC_SUBST(win32)
 AC_SUBST(GCCVER)
+AC_SUBST(EXEEXT)
 AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
-
 
 explicit_lisp=false
 
@@ -146,7 +150,7 @@ if test x"${cmucl}" = xtrue ; then
 	fi
 fi
 AC_ARG_ENABLE(cmucl-exec,
-	[  --enable-cmucl-exec          Create a maxima executable image.
+	[  --enable-cmucl-exec          Create a maxima executable image using CMUCL.
                                 No check is made if the version of 
                                 CMUCL supports executable images],
 	[case "${enableval}" in
@@ -337,6 +341,19 @@ AC_ARG_WITH(openmcl,
 		OPENMCL_NAME="$withval"
 	fi],
 	[OPENMCL_NAME=${openmcl_default_name}])
+AC_ARG_ENABLE(openmcl-exec,
+	[  --enable-openmcl-exec          Create a maxima executable image using OPENMCL.
+                                No check is made if the version of 
+                                OPENMCL supports executable images],
+	[case "${enableval}" in
+	    yes) openmcl_exec=true ;;
+	    no) openmcl_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-openmcl-exec) ;;
+         esac
+	 OPENMCL_EXEC=${openmcl_exec}],
+	[openmcl_exec=false
+	 OPENMCL_EXEC=false])
+
 dnl Define ccl as an alias (essentially) for openmcl
 AC_ARG_ENABLE(ccl,
 	[  --enable-ccl                 Use CCL (Clozure Common Lisp)],
@@ -357,6 +374,18 @@ AC_ARG_WITH(ccl,
 		OPENMCL_NAME="$withval"
 	fi],
 	[OPENMCL_NAME=${openmcl_default_name}])
+AC_ARG_ENABLE(ccl-exec,
+	[  --enable-ccl-exec          Create a maxima executable image using CCL.
+                                No check is made if the version of 
+                                CCL supports executable images],
+	[case "${enableval}" in
+	    yes) openmcl_exec=true ;;
+	    no) openmcl_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl-exec) ;;
+         esac
+	 OPENMCL_EXEC=${openmcl_exec}],
+	[openmcl_exec=false
+	 OPENMCL_EXEC=false])
 
 if test x"${openmcl}" = xtrue ; then
 	if test `echo "$OPENMCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
@@ -609,6 +638,7 @@ AM_CONDITIONAL(SCL, test x$scl = xtrue)
 AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
 AM_CONDITIONAL(ACL, test x$acl = xtrue)
 AM_CONDITIONAL(OPENMCL, test x$openmcl = xtrue)
+AM_CONDITIONAL(OPENMCL_EXEC, test x${openmcl_exec} = xtrue)
 AM_CONDITIONAL(ECL, test x$ecl = xtrue)
 
 if test x"${clisp}" = xtrue; then

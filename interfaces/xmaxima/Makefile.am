@@ -6,6 +6,9 @@
 include $(top_srcdir)/common.mk
 
 SUBDIRS = msgs doc
+if WIN32
+SUBDIRS += win32
+endif
 
 genericdir = $(xmaximadir)
 

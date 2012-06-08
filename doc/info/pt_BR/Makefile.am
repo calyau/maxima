@@ -1,7 +1,7 @@
 MAKEINFOFLAGS = --enable-encoding
 
 lang = pt
-langsdir = pt_BR
+langsdir = /pt_BR
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = \
