@@ -197,7 +197,7 @@ SBCL_INST_MAXIMA = $(INSTALL_DATA) $(SBCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(S
 endif
 
 if SBCL
-EXECUTESBCL = $(SBCL_NAME) --noinform --noprint --eval
+EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint --eval
 all-local: sharefiles.mk $(SBCL_MAXIMA)
 install-exec-local: install-sbcl
 uninstall-hook: uninstall-sbcl
