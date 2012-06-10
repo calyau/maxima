@@ -539,6 +539,13 @@ sqrt((cosh(xpos+%i*x1)+1)/2);
 cosh((xneg+%i*x1)/2);
 sqrt((cosh(xneg+%i*x1)+1)/2);
 
+/* two tests for atan2(sqrt(1-u)*(u-1),1) - ID: 3521596 */
+atan2(sqrt(1-u)*(u-1),1);
+atan2(sqrt(1-u)*(u-1),1)$
+
+atan2((1-u)^(1/2^10)*(u-1),1);
+atan2((1-u)^(1/2^10)*(u-1),1)$
+
 /* Restore global flags */
 (halfangles:old_halfangles,%iargs:old_%iargs,done);
 done;

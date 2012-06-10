@@ -504,7 +504,7 @@
                              ((member signx '($pos $pz)) (div '$%pi -4)))))))
           ($logarc
            (logarc '%atan2 (list ($logarc y) ($logarc x))))
-          ((and $trigsign (mminusp* y))
+          ((and $trigsign (eq t (mminusp* y)))
            (neg (take '($atan2) (neg y) x)))
           ;; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
           ((eq signx '$pos)
