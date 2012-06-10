@@ -2238,3 +2238,15 @@ true;
 /* integrate changes k[0] --> k(0) - ID: 3530767 */
 integrate(x * (x^2 + k[0])/(1 + x^2),x);
 ((k[0]-1)*log(x^2+1))/2+x^2/2$
+
+/* polarform error on simple case - ID: 3517034 */
+polarform((a+1)/2 - a/2 - 1/2);
+0$
+
+polarform((a+1)/2 - a/2 - 0.5);
+0.0$
+
+polarform((a+1)/2 - a/2 - 0.5b0);
+0.0b0$
+
+
