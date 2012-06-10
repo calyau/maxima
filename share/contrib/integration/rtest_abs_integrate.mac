@@ -508,6 +508,16 @@ integrate(sqrt(1+abs(x)),x);
 integrate(sqrt(max(5,x)),x);
 (((2*x^(3/2))/3-(sqrt(10)*x)/sqrt(2)+(5*sqrt(10))/sqrt(2)-(2*5^(3/2))/3)*signum(x-5))/2+((2*x^(3/2))/3+(sqrt(10)*x)/sqrt(2)-(5*sqrt(10))/sqrt(2)-(2*5^(3/2))/3)/2$
 
+/* abs_integrate causes stack overflow - ID: 3533723 */
+block([extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_use_if, 'floor_int, 'if_int]],
+   integrate(log(sin(x)),x));
+x*log(sin(x))-(x*log(sin(x)^2+cos(x)^2+2*cos(x)+1)
+              +x*log(sin(x)^2+cos(x)^2-2*cos(x)+1)
+              +2*%i*x*atan2(sin(x),cos(x)+1)
+              -2*%i*x*atan2(sin(x),1-cos(x))-2*%i*li[2](%e^(%i*x))
+              -2*%i*li[2](-%e^(%i*x))-%i*x^2)
+              /2$
+
 (print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 70));
 true$
 

@@ -126,22 +126,26 @@ linear_in_p(e,x) :=
 
 signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
   q : convert_to_signum(q),
-  q : almost_everywhere_simp(q), 
-  v : listofvars(q),
-  q : block([expandwrt_denom : true], expandwrt(q,'signum)),
-  if (f : abs_int_extra(q,x)) # false then f
-  else if (f : partition_as_signum(q,x)) # false then (
-    w : first(f),
-    acc : second(f),
-    if every(lambda([s], linear_in_p(s,x)), acc) then (
-      sgn : xreduce("*", map(lambda([s], diff(s,x)),acc)),
-      acc : map(lambda([s], rhs(first(linsolve(s, x)))),acc),
-      signum_int_helper(signum(sgn) * w, sort(acc), x)))
-  else if (safe_op(q) = "+") then (
-    f : map(lambda([s], signum_int(s,x)), args(q)),
-    if member(false, f) then false else xreduce("+", f))
-  else block([extra_integration_methods : [], extra_definite_integration_methods : []],
-    integrate(q,x)));
+  if freeof('signum, q) then (
+    q : if polynomialp(q,[x]) then integrate(q,x) else false,
+    if freeof('integrate, nounify('integrate),q) then q else false)
+  else (
+    q : almost_everywhere_simp(q), 
+    v : listofvars(q),
+    q : block([expandwrt_denom : true], expandwrt(q,'signum)),
+    if (f : abs_int_extra(q,x)) # false then f
+    else if (f : partition_as_signum(q,x)) # false then (
+      w : first(f),
+      acc : second(f),
+      if every(lambda([s], linear_in_p(s,x)), acc) then (
+        sgn : xreduce("*", map(lambda([s], diff(s,x)),acc)),
+        acc : map(lambda([s], rhs(first(linsolve(s, x)))),acc),
+        signum_int_helper(signum(sgn) * w, sort(acc), x)))
+    else if (safe_op(q) = "+") then (
+      f : map(lambda([s], signum_int(s,x)), args(q)),
+      if member(false, f) then false else xreduce("+", f))
+    else block([extra_integration_methods : [], extra_definite_integration_methods : []],
+      integrate(q,x))));
 
 /* integrate(q(x) * signum(x - l[1]) * signum(x - l[2]) * ...,x). The list l is nonempty. */
 
