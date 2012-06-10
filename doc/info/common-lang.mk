@@ -52,7 +52,7 @@ maxima.chm: maxima.html maxima.hhp contents.hhc index.hhk
 	done
 	cp maxima.hhp contents.hhc index.hhk chm
 	cp ../figures/*.gif chm/figures
-	-(cd chm; hhc maxima.hhp)
+	-(cd chm; "$(HHC)" maxima.hhp)
 	mv chm/maxima.chm .
 
 install-chm: maxima.chm

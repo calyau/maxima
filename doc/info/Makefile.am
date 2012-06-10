@@ -231,7 +231,7 @@ contents.hhc index.hhk: maxima.html
 
 # Squash error on exit from hhc
 maxima.chm: maxima.hhp contents.hhc index.hhk
-	-hhc maxima.hhp
+	-"$(HHC)" maxima.hhp
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
