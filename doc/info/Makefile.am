@@ -206,7 +206,7 @@ figures/bodephase7.pdf\
 figures/bodephase8.pdf\
 figures/bodephase9.pdf
 
-if WIN32
+if CHM
 MAXIMA_CHM = maxima.chm
 INSTALL_CHM = install-chm
 UNINSTALL_CHM = uninstall-chm
@@ -267,7 +267,7 @@ clean-html:
 	rm -f index.hhk
 	rm -f maxima.chm
 
-if WIN32
+if CHM
 install-chm: maxima.chm
 	test -z "$(DESTDIR)$(docchmdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)"
 	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)/maxima.chm"

@@ -15,6 +15,8 @@ In order to create the Maxima Windows installer from the maxima tarball
 distribution, I do the following in a MSYS window:
 ----------------------------------------------------
 ./configure --prefix=c:/maxima \
+    --enable-chm \
+    --enable-xmaxima-exe \
     --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make install

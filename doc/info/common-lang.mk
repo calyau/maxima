@@ -1,4 +1,4 @@
-if WIN32
+if CHM
 MAXIMA_CHM = maxima.chm
 INSTALL_CHM = install-chm
 UNINSTALL_CHM = uninstall-chm

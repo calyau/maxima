@@ -6,7 +6,7 @@
 include $(top_srcdir)/common.mk
 
 SUBDIRS = msgs doc
-if WIN32
+if XMAXIMA_EXE
 SUBDIRS += win32
 endif
 
