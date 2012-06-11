@@ -16,25 +16,20 @@ case "$host" in
         *mingw*)
                 win32=true
                 mingw=true
-                GCCVER=`gcc -dumpversion`
                 EXEEXT=.exe
                 ;;
         *cygwin*)
                 win32=true
                 mingw=false
-                GCCVER=undefined
                 EXEEXT=.exe
                 ;;
         *)
                 win32=false
                 mingw=false
-                GCCVER=undefined
                 EXEEXT=
 esac
-AC_SUBST(win32)
-AC_SUBST(GCCVER)
+dnl AC_SUBST(win32)
 AC_SUBST(EXEEXT)
-AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
 
 explicit_lisp=false
@@ -623,6 +618,30 @@ AC_ARG_ENABLE(xmaxima_exe,
    [xmaxima_exe=false])
 AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
 
+dnl Tools for building xmaxima.exe on windows
+dnl Hard code the filenames for now.  Can over-ride on make command line
+GCCVER=undefined
+if test x${xmaxima_exe} = xtrue ; then
+  GCCVER=`gcc -dumpversion`
+  if  test x${GCCVER} = x3.3.1; then
+    TCLSTUBLIB=-ltclstub84
+  else
+    TCLSTUBLIB=/c/tcl/lib/tclstub85.lib
+  fi
+  dnl http://code.google.com/p/tclkit/ and http://www.tcl.tk/starkits/
+  TCLKITSH=/c/programs/star/tclkitsh-win32.upx.exe
+  TCLKIT_RUNTIME=/c/programs/star/tclkit-win32.upx.exe 
+  SDXKIT=/c/programs/star/sdx.kit
+  IMGKIT=/c/programs/star/img.kit
+fi
+AC_SUBST(GCCVER)
+AC_SUBST(TCLSTUBLIB)
+AC_SUBST(TCLKITSH)
+AC_SUBST(TCLKIT_RUNTIME)
+AC_SUBST(SDXKIT)
+AC_SUBST(IMGKIT)
+AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
+
 if test x"${explicit_lisp}" = xfalse ; then
 dnl  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
 dnl  	if test x"${clisp_found}" = xtrue ; then
@@ -1053,3 +1072,16 @@ fi
 echo "default lisp: $DEFAULTLISP"
 echo "wish executable name: \"${WISH}\""
 
+if test x"${chm}" = xtrue ; then
+  echo "CHM help files enabled"
+  echo "    HHC: \"${HHC}\""
+fi
+if test x"${xmaxima_exe}" = xtrue ; then
+   echo "Windows xmaxima.exe enabled"
+   echo "  GCC version GCCVER: ${GCCVER}"
+   echo "  TCLSTUBLIB: ${TCLSTUBLIB}"
+   echo "  TCLKITSH: ${TCLKITSH}"
+   echo "  TCLKIT_RUNTIME: ${TCLKIT_RUNTIME}"
+   echo "  SDXKIT: ${SDXKIT}"
+   echo "  IMGKIT: ${IMGKIT}"
+fi
