@@ -54,3 +54,5 @@ clean:
 	-rm winkill.exe tclwinkill.dll *~
 	-rm xmaxima.exe xmaxima.tcl 
 	-rm -rf xmaxima.vfs img.vfs xmaxima.kit
+
+distclean: clean
