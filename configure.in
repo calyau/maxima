@@ -621,7 +621,7 @@ AC_ARG_ENABLE(xmaxima_exe,
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-xmaxima-exe) ;;
    esac],
    [xmaxima_exe=false])
-AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe, = xtrue)
+AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
 
 if test x"${explicit_lisp}" = xfalse ; then
 dnl  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
