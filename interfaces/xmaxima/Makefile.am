@@ -6,8 +6,11 @@
 include $(top_srcdir)/common.mk
 
 SUBDIRS = msgs doc
+# FIXME: The double conditional shouldn't be required.  DB 2012-06-11
+if WIN32
 if XMAXIMA_EXE
 SUBDIRS += win32
+endif
 endif
 
 genericdir = $(xmaximadir)
