@@ -69,6 +69,20 @@ AC_ARG_WITH(clisp-runtime,
 	CLISP_RUNTIME_PATH="$withval"
 	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
 	[])
+AC_ARG_ENABLE(clisp-exec,
+	[  --enable-clisp-exec          Create a maxima executable image using CLISP.
+                                No check is made if the version of 
+                                CLISP supports executable images],
+	[case "${enableval}" in
+	    yes) clisp_exec=true 
+                 clisp=true 
+                 explicit_lisp=true ;;
+	    no) clisp_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-clisp-exec) ;;
+         esac
+	 CLISP_EXEC=${clisp_exec}],
+	[clisp_exec=false
+	 CLISP_EXEC=false])
 if test x"${clisp}" = xtrue ; then
 	if test `echo "$CLISP_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CLISP_NAME" ; then
@@ -83,18 +97,7 @@ if test x"${clisp}" = xtrue ; then
 		AC_MSG_WARN(clisp executable ${CLISP_NAME} not found in PATH)
 	fi	   
 fi
-AC_ARG_ENABLE(clisp-exec,
-	[  --enable-clisp-exec          Create a maxima executable image using CLISP.
-                                No check is made if the version of 
-                                CLISP supports executable images],
-	[case "${enableval}" in
-	    yes) clisp_exec=true ;;
-	    no) clisp_exec=false ;;
-	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-clisp-exec) ;;
-         esac
-	 CLISP_EXEC=${clisp_exec}],
-	[clisp_exec=false
-	 CLISP_EXEC=false])
+
 
 dnl See if git exists.  If it does, update VERSION to include a git tag
 AC_CHECK_PROG(git_found, git, true, false)
@@ -141,6 +144,20 @@ AC_ARG_WITH(cmucl-runtime,
 	CMUCL_RUNTIME_PATH="$withval"
 	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
 	[])
+AC_ARG_ENABLE(cmucl-exec,
+	[  --enable-cmucl-exec          Create a maxima executable image using CMUCL.
+                                No check is made if the version of 
+                                CMUCL supports executable images],
+	[case "${enableval}" in
+	    yes) cmucl_exec=true
+                 cmucl=true 
+                 explicit_lisp=true ;;
+	    no) cmucl_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl-exec) ;;
+         esac
+	 CMUCL_EXEC=${cmucl_exec}],
+	[cmucl_exec=false
+	 CMUCL_EXEC=false])
 if test x"${cmucl}" = xtrue ; then
 	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CMUCL_NAME" ; then
@@ -156,18 +173,6 @@ if test x"${cmucl}" = xtrue ; then
 		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
 	fi
 fi
-AC_ARG_ENABLE(cmucl-exec,
-	[  --enable-cmucl-exec          Create a maxima executable image using CMUCL.
-                                No check is made if the version of 
-                                CMUCL supports executable images],
-	[case "${enableval}" in
-	    yes) cmucl_exec=true ;;
-	    no) cmucl_exec=false ;;
-	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl-exec) ;;
-         esac
-	 CMUCL_EXEC=${cmucl_exec}],
-	[cmucl_exec=false
-	 CMUCL_EXEC=false])
 
 dnl n.b. scl_default_name is hardcoded in "with" message
 scl_default_name=scl
@@ -242,7 +247,9 @@ AC_ARG_ENABLE(sbcl-exec,
                                 No check is made if the version of 
                                 SBCL supports executable images],
 	[case "${enableval}" in
-	    yes) sbcl_exec=true ;;
+	    yes) sbcl_exec=true 
+                 sbcl=true 
+                 explicit_lisp=true ;;
 	    no) sbcl_exec=false ;;
 	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-sbcl-exec) ;;
          esac
@@ -365,7 +372,9 @@ AC_ARG_ENABLE(openmcl-exec,
                                 No check is made if the version of 
                                 OPENMCL supports executable images],
 	[case "${enableval}" in
-	    yes) openmcl_exec=true ;;
+	    yes) openmcl_exec=true
+                 openmcl=true 
+		 explicit_lisp=true;;
 	    no) openmcl_exec=false ;;
 	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-openmcl-exec) ;;
          esac
@@ -398,7 +407,9 @@ AC_ARG_ENABLE(ccl-exec,
                                 No check is made if the version of 
                                 CCL supports executable images],
 	[case "${enableval}" in
-	    yes) openmcl_exec=true ;;
+	    yes) openmcl_exec=true
+                 openmcl=true 
+                 explicit_lisp=true;;
 	    no) openmcl_exec=false ;;
 	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl-exec) ;;
          esac
@@ -1040,6 +1051,9 @@ if test x"${clisp}" = xtrue ; then
 	echo "clisp enabled. Executable name: \"${CLISP_NAME}\""
 	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
 fi
+if test x"${clisp_exec}" = xtrue ; then
+   echo "clisp executable image enabled for maxima."
+fi
 if test x"${cmucl}" = xtrue ; then
 	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
 	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
@@ -1054,6 +1068,9 @@ fi
 if test x"${sbcl}" = xtrue ; then
 	echo "SBCL enabled. Executable name: \"${SBCL_NAME}\""
 fi
+if test x"${sbcl_exec}" = xtrue ; then
+   echo "sbcl executable image enabled for maxima."
+fi
 if test x"${gcl}" = xtrue ; then
 	echo "GCL enabled. Executable name: \"${GCL_NAME}\""
 	if test x"${gcl_alt_link}" = xtrue ; then
@@ -1065,6 +1082,9 @@ if test x"${acl}" = xtrue ; then
 fi
 if test x"${openmcl}" = xtrue ; then
 	echo "OpenMCL enabled. Executable name: \"${OPENMCL_NAME}\""
+fi
+if test x"${openmcl_exec}" = xtrue ; then
+   echo "OpenMCL executable image enabled for maxima."
 fi
 if test x"${ecl}" = xtrue ; then
 	echo "ECL enabled. Executable name: \"${ECL_NAME}\""
