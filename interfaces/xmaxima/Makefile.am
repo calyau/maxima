@@ -6,6 +6,9 @@
 include $(top_srcdir)/common.mk
 
 SUBDIRS = msgs doc
+if XMAXIMA_EXE
+SUBDIRS += win32
+endif
 
 genericdir = $(xmaximadir)
 
@@ -80,17 +83,7 @@ xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
 		cat $(XMAXIMASOURCES) > xmaxima && \
 		chmod +x xmaxima
 
-WIN32_FILES = win32/ChangeLog win32/Makefile.in win32/tclwinkill.c win32/winkill.c \
-              win32/InfoBefore.txt    win32/readme_en.txt \
-              win32/InfoBefore_ru.txt win32/readme_ru.txt \
-              win32/InfoBefore_fr.txt win32/readme_fr.txt \
-              win32/InfoBefore_de.txt win32/readme_de.txt \
-              win32/InfoBefore_pt.txt win32/readme_pt.txt \
-              win32/InfoBefore_pt_BR.txt win32/readme_pt_BR.txt \
-              win32/InfoBefore_it.txt win32/readme_it.txt \
-              win32/InfoBefore_es.txt win32/readme_es.txt
-      
-EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_FILES) $(WIN32_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
+EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
 
 
 # Developer convenience target

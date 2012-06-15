@@ -21,8 +21,8 @@ set prefix=@prefix@
 set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
-set mingw_gccver=GCCVER
-set path=%maxima_prefix%\gnuplot;%maxima_prefix%\bin;%maxima_prefix%\lib\gcc-lib\mingw32\GCCVER;%path%
+set mingw_gccver=@GCCVER@
+set path=%maxima_prefix%\gnuplot;%maxima_prefix%\bin;%maxima_prefix%\lib\gcc-lib\mingw32\@GCCVER@;%path%
 
 if "%USERPROFILE%" == "" goto win9x
 if "%MAXIMA_USERDIR%" == "" set MAXIMA_USERDIR=%USERPROFILE%\maxima
@@ -96,6 +96,10 @@ if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl
 if "%lisp%" == "clisp" goto doclisp
 if "%lisp%" == "ecl" goto doecl
+if "%lisp%" == "openmcl" goto doopenmcl
+rem Allow ccl as an alias of openmcl
+if "%lisp%" == "ccl" goto doopenmcl
+if "%lisp%" == "sbcl" goto dosbcl
 
 @echo Maxima error: lisp %lisp% not known.
 goto end
@@ -105,16 +109,43 @@ goto end
 goto end
 
 :doclisp
+if exist "%maxima_imagesdir%\binary-clisp\maxima.exe" goto doclisp_exec
+
 if "%layout_autotools%" == "true" goto clisp_autotools
-clisp -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+clisp -q -M "%maxima_image_base%.mem" "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :clisp_autotools
-%maxima_imagesdir%\binary-clisp\lisp.exe -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+"%maxima_imagesdir%\binary-clisp\lisp.exe" -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+goto end
+
+:clisp_exec
+"%maxima_imagesdir%\binary-clisp\maxima.exe" -q "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :doecl
 ecl -load %maxima_image_base%.fas -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+
+:doopenmcl
+rem OPENMCL can use either an executable image or a regular lisp core file.
+rem Check for the executable image and run that if possible.
+rem Otherwise, fallback and use the lisp core file.
+if exist "%maxima_imagesdir%\binary-openmcl\maxima.exe" goto doopenmcl_exec
+"%maxima_imagesdir%\binary-openmcl\wx86cl.exe" -l "%maxima_imagesdir%\binary-openmcl\maxima.image"  --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+:doopenmcl_exec
+"%maxima_imagesdir%\binary-openmcl\maxima.exe" --eval "(cl-user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+
+rem SBCL Steel Bank Common Lisp
+:dosbcl
+rem run executable image if it exists
+if exist "%maxima_imagesdir%\binary-sbcl\maxima.exe" goto dosbcl_exec
+"%maxima_imagesdir%\binary-sbcl\sbcl.exe" --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+goto end
+:dosbcl_exec
+"%maxima_imagesdir%\binary-sbcl\maxima.exe" --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :end

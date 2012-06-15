@@ -375,7 +375,7 @@ A slight change in syntax gives definite integrals:
 defint: integral is divergent.
  -- an error. To debug this try: debugmode(true);
 \end{verbatim}
-Next we define the simbol {\tt g} in terms of {\tt f} (previously
+Next we define the symbol {\tt g} in terms of {\tt f} (previously
 defined in {\tt \%i1}) and the hyperbolic sine function, and find its
 Taylor series expansion (up to, say, order 3 terms) about the point
 {\tt x = 0}:
@@ -719,7 +719,7 @@ use {\tt describe(\textit{function name})}.
 \item[{\tt integrate(a,b,c,d)}] Attempts to find the indefinite
   integral of {\tt a} with respect to {\tt b}. taken from
   $\mathtt{b=c}$ to $\mathtt{b=d}$.  The limits of integration {\tt c}
-  and {\tt d} may be taken is {\tt inf} (positive infinity) of {\tt
+  and {\tt d} may be taken as {\tt inf} (positive infinity) or {\tt
     minf} (negative infinity).
 \item[{\tt invert(a)}] Computes the inverse of the square matrix {\tt
     a}.
@@ -727,7 +727,7 @@ use {\tt describe(\textit{function name})}.
   assignments and properties from the current Maxima environment.
 \item[{\tt limit(a,b,c)}] Gives the limit of expression {\tt a} as
   variable {\tt b} approaches the value {\tt c}.  The latter may be
-  taken as {\tt inf} of {\tt minf} as in {\tt integrate}.
+  taken as {\tt inf} or {\tt minf} as in {\tt integrate}.
 \item[{\tt lhs(a)}] Gives the left-hand side of the equation {\tt a}.
 \item[{\tt loadfile(a)}] Loads a disk file with filename {\tt a} from
   the current default directory.  The disk file must be in the proper
