@@ -46,7 +46,6 @@ WXMAXIMADIR = /c/programs/wxMaxima
 
 # Windows installer.
 iss: extradocinstall gnuplot wxmaxima win32-lisp-runtime
-	$(MAKE) -C interfaces/xmaxima/win32 install
 
 # Install the gnuplot binary files
 gnuplot: 

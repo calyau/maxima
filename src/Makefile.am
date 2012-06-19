@@ -12,36 +12,53 @@ DEFSYSTEMCOMPILE = (funcall (intern (symbol-name :operate-on-system) :mk) "maxim
 DEFSYSTEMLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t)
 DEFSYSTEMTESTLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t :test t)
 
+
+if CLISP_EXEC
+CLISP_MAXIMA = binary-clisp/maxima$(EXEEXT)
+CLISP_INST_BIN = true
+CLISP_INST_MAXIMA = $(INSTALL_PROGRAM) $(CLISP_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CLISP_MAXIMA)"
+else
+CLISP_MAXIMA = binary-clisp/maxima.mem
+CLISP_INST_BIN = $(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
+CLISP_INST_MAXIMA = $(INSTALL_DATA) $(CLISP_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CLISP_MAXIMA)"
+endif
+
 if CLISP
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
-all-local: sharefiles.mk  binary-clisp/maxima.mem
+all-local: sharefiles.mk  $(CLISP_MAXIMA)
 install-exec-local: install-clisp
 uninstall-hook: uninstall-clisp
 clean: clean-clisp
 distclean: clean-clisp
 
-clisp: binary-clisp/maxima.mem
+clisp: $(CLISP_MAXIMA)
 
 binary-clisp/maxima.mem:
 	test -d binary-clisp || mkdir binary-clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "binary-clisp/maxima.mem" :init-function (function cl-user::run)))'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run)))'
+
+binary-clisp/maxima$(EXEEXT):
+	test -d binary-clisp || mkdir binary-clisp
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) :EXECUTABLE t))'
 
 install-clisp:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-clisp"
-	$(INSTALL_DATA) binary-clisp/maxima.mem "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
-	$(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
+	$(CLISP_INST_MAXIMA)
+	$(CLISP_INST_BIN)
 
 uninstall-clisp:
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima$(EXEEXT)"
 
 clean-clisp:
 	rm -rf binary-clisp
 
 clisp-depends.mk: maxima.system
 	test -d binary-clisp || mkdir binary-clisp
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk"))'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(CLISP_MAXIMA)" "clisp-depends.mk"))'
 include clisp-depends.mk
 endif
 
@@ -166,10 +183,22 @@ acl-depends.mk: maxima.system
 include acl-depends.mk
 endif
 
+if SBCL_EXEC
+SBCL_MAXIMA = binary-sbcl/maxima$(EXEEXT)
+SBCL_INST_BIN = true
+SBCL_INST_MAXIMA = $(INSTALL_PROGRAM) $(SBCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(SBCL_MAXIMA)"
+else
+SBCL_MAXIMA = binary-sbcl/maxima.core
+## FIXME:  This rule can't work.  Need to replace "lisp" with the 
+## sbcl_runtime, after defining that in configure.in
+## See install-clisp or install-scl.  DB 2012-06-07
+SBCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/sbcl/lisp"
+SBCL_INST_MAXIMA = $(INSTALL_DATA) $(SBCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(SBCL_MAXIMA)"
+endif
 
 if SBCL
-EXECUTESBCL = $(SBCL_NAME) --noinform --noprint --eval
-all-local: sharefiles.mk  binary-sbcl/maxima.core
+EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint --eval
+all-local: sharefiles.mk $(SBCL_MAXIMA)
 install-exec-local: install-sbcl
 uninstall-hook: uninstall-sbcl
 clean: clean-sbcl
@@ -182,21 +211,28 @@ binary-sbcl/maxima.core:
 	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
 	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core") (sb-ext:quit))'
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "$@") (sb-ext:quit))'
+
+binary-sbcl/maxima$(EXEEXT):
+	test -d binary-sbcl || mkdir binary-sbcl
+	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
+	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "$@" :executable t) (sb-ext:quit))'
 
 install-sbcl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-sbcl
-	$(INSTALL_DATA) binary-sbcl/maxima.core $(DESTDIR)$(verpkglibdir)/binary-sbcl/maxima.core
+	$(SBCL_INST_MAXIMA)
 
 uninstall-sbcl:
-	rm -f $(DESTDIR)$(verpkglibdir)/binary-sbcl/maxima.core
+	rm -f $(DESTDIR)$(verpkglibdir)/$(SBCL_MAXIMA)
 
 clean-sbcl:
 	rm -rf binary-sbcl
 	rm -f numerical/binary-sbcl numerical/slatec/binary-sbcl
 sbcl-depends.mk: maxima.system
 	test -d binary-sbcl || mkdir binary-sbcl
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-sbcl/maxima.core" "sbcl-depends.mk") (sb-ext:quit))'
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(SBCL_MAXIMA)" "sbcl-depends.mk") (sb-ext:quit))'
 include sbcl-depends.mk
 endif
 
@@ -261,7 +297,7 @@ OPENMCL_MAXIMA = binary-openmcl/maxima.image
 ## FIXME:  This rule can't work.  Need to replace "lisp" with the 
 ## openmcl_runtime, after defining that in configure.in
 ## See install-clisp or install-scl.  DB 2012-06-07
-OPENMCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/lisp"
+OPENMCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-opencl/lisp"
 OPENMCL_INST_MAXIMA = $(INSTALL_DATA) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
 endif
 

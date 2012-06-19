@@ -2999,7 +2999,8 @@
         cmdstorage  ; file maxout.gnuplot
         datastorage ; file data.gnuplot
         datapath    ; path to data.gnuplot
-        ncols nrows width height ; multiplot parameters
+        (ncols 1)
+        nrows width height ; multiplot parameters
         isanimatedgif is1stobj biglist grouplist largs)
 
     (setf largs (listify-arguments))
@@ -3141,8 +3142,10 @@
           (alloc (reverse *allocations*))
           (nilcounter 0)
           thisalloc origin1 origin2 size1 size2)
+
       ; recalculate nrows for automatic scene allocations
       (setf nrows (ceiling (/ (count nil alloc) ncols)))
+
       (when (> nrows 0)
         (setf width (/ 1.0 ncols)
               height (/ 1.0 nrows)))

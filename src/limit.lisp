@@ -1491,12 +1491,13 @@ It appears in LIMIT and DEFINT.......")
 		 (t (setq varl (m* (car l) varl))))))
 	(t (cons 1 expr))))
 
+;; if term goes to non-zero constant, replace with constant
 (defun lhsimp (term var val)
   (cond ((atom term)  term)
 	(t
-	 (let ((term-value (limit term var val 'think)))
+	 (let ((term-value (ridofab (limit term var val 'think))))
 	   (cond ((not (member term-value
-			       '($inf $minf $und $ind $infinity $zeroa $zerob 0)))
+			       '($inf $minf $und $ind $infinity 0)))
 		  term-value)
 		 (t term))))))
 

@@ -16,25 +16,19 @@ case "$host" in
         *mingw*)
                 win32=true
                 mingw=true
-                GCCVER=`gcc -dumpversion`
                 EXEEXT=.exe
                 ;;
         *cygwin*)
                 win32=true
                 mingw=false
-                GCCVER=undefined
                 EXEEXT=.exe
                 ;;
         *)
                 win32=false
                 mingw=false
-                GCCVER=undefined
                 EXEEXT=
 esac
-AC_SUBST(win32)
-AC_SUBST(GCCVER)
 AC_SUBST(EXEEXT)
-AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
 
 explicit_lisp=false
@@ -52,7 +46,7 @@ AC_ARG_ENABLE(clisp,
 	explicit_lisp=true],
 	[clisp=false])
 AC_ARG_WITH(clisp,
-	[  --with-clisp=<prog>         Use clisp executable <prog> (default clisp)],
+	[  --with-clisp=<prog>          Use clisp executable <prog> (default clisp)],
 	[clisp=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -74,6 +68,20 @@ AC_ARG_WITH(clisp-runtime,
 	CLISP_RUNTIME_PATH="$withval"
 	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
 	[])
+AC_ARG_ENABLE(clisp-exec,
+	[  --enable-clisp-exec          Create a maxima executable image using CLISP.
+                                No check is made if the version of 
+                                CLISP supports executable images],
+	[case "${enableval}" in
+	    yes) clisp_exec=true 
+                 clisp=true 
+                 explicit_lisp=true ;;
+	    no) clisp_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-clisp-exec) ;;
+         esac
+	 CLISP_EXEC=${clisp_exec}],
+	[clisp_exec=false
+	 CLISP_EXEC=false])
 if test x"${clisp}" = xtrue ; then
 	if test `echo "$CLISP_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CLISP_NAME" ; then
@@ -88,6 +96,7 @@ if test x"${clisp}" = xtrue ; then
 		AC_MSG_WARN(clisp executable ${CLISP_NAME} not found in PATH)
 	fi	   
 fi
+
 
 dnl See if git exists.  If it does, update VERSION to include a git tag
 AC_CHECK_PROG(git_found, git, true, false)
@@ -134,6 +143,20 @@ AC_ARG_WITH(cmucl-runtime,
 	CMUCL_RUNTIME_PATH="$withval"
 	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
 	[])
+AC_ARG_ENABLE(cmucl-exec,
+	[  --enable-cmucl-exec          Create a maxima executable image using CMUCL.
+                                No check is made if the version of 
+                                CMUCL supports executable images],
+	[case "${enableval}" in
+	    yes) cmucl_exec=true
+                 cmucl=true 
+                 explicit_lisp=true ;;
+	    no) cmucl_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl-exec) ;;
+         esac
+	 CMUCL_EXEC=${cmucl_exec}],
+	[cmucl_exec=false
+	 CMUCL_EXEC=false])
 if test x"${cmucl}" = xtrue ; then
 	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$CMUCL_NAME" ; then
@@ -149,18 +172,6 @@ if test x"${cmucl}" = xtrue ; then
 		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
 	fi
 fi
-AC_ARG_ENABLE(cmucl-exec,
-	[  --enable-cmucl-exec          Create a maxima executable image using CMUCL.
-                                No check is made if the version of 
-                                CMUCL supports executable images],
-	[case "${enableval}" in
-	    yes) cmucl_exec=true ;;
-	    no) cmucl_exec=false ;;
-	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl-exec) ;;
-         esac
-	 CMUCL_EXEC=${cmucl_exec}],
-	[cmucl_exec=false
-	 CMUCL_EXEC=false])
 
 dnl n.b. scl_default_name is hardcoded in "with" message
 scl_default_name=scl
@@ -229,7 +240,21 @@ AC_ARG_WITH(sbcl,
 	else
 		SBCL_NAME="$withval"
 	fi],
-	[SBCL_NAME=${sbcl_default_name}])
+	[SBCL_NAME="${sbcl_default_name}"])
+AC_ARG_ENABLE(sbcl-exec,
+	[  --enable-sbcl-exec           Create a maxima executable image using SBCL.
+                                No check is made if the version of 
+                                SBCL supports executable images],
+	[case "${enableval}" in
+	    yes) sbcl_exec=true 
+                 sbcl=true 
+                 explicit_lisp=true ;;
+	    no) sbcl_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-sbcl-exec) ;;
+         esac
+	 SBCL_EXEC=${sbcl_exec}],
+	[sbcl_exec=false
+	 SBCL_EXEC=false])
 if test x"${sbcl}" = xtrue ; then
 	if test `echo "$SBCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$SBCL_NAME" ; then
@@ -238,11 +263,11 @@ if test x"${sbcl}" = xtrue ; then
 			sbcl_found=false
 		fi
 	else
-		AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+		AC_CHECK_PROG(sbcl_found,"$SBCL_NAME",true,false)
 	fi
-	AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
+	AC_CHECK_PROG(sbcl_found,"$SBCL_NAME",true,false)
 	if test x"${sbcl_found}" = xfalse ; then
-		AC_MSG_WARN(sbcl executable ${SBCL_NAME} not found in PATH)
+		AC_MSG_WARN(sbcl executable "${SBCL_NAME}" not found in PATH)
 	fi
 fi
 	
@@ -342,11 +367,13 @@ AC_ARG_WITH(openmcl,
 	fi],
 	[OPENMCL_NAME=${openmcl_default_name}])
 AC_ARG_ENABLE(openmcl-exec,
-	[  --enable-openmcl-exec          Create a maxima executable image using OPENMCL.
+	[  --enable-openmcl-exec        Create a maxima executable image using OPENMCL.
                                 No check is made if the version of 
                                 OPENMCL supports executable images],
 	[case "${enableval}" in
-	    yes) openmcl_exec=true ;;
+	    yes) openmcl_exec=true
+                 openmcl=true 
+		 explicit_lisp=true;;
 	    no) openmcl_exec=false ;;
 	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-openmcl-exec) ;;
          esac
@@ -375,11 +402,13 @@ AC_ARG_WITH(ccl,
 	fi],
 	[OPENMCL_NAME=${openmcl_default_name}])
 AC_ARG_ENABLE(ccl-exec,
-	[  --enable-ccl-exec          Create a maxima executable image using CCL.
+	[  --enable-ccl-exec            Create a maxima executable image using CCL.
                                 No check is made if the version of 
                                 CCL supports executable images],
 	[case "${enableval}" in
-	    yes) openmcl_exec=true ;;
+	    yes) openmcl_exec=true
+                 openmcl=true 
+                 explicit_lisp=true;;
 	    no) openmcl_exec=false ;;
 	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl-exec) ;;
          esac
@@ -564,6 +593,73 @@ fi
 
 AM_CONDITIONAL(USE_RECODE, test x$use_recode = xtrue)
 
+dnl Optionally build the windows CHM help files
+dnl default to false as requires win32 and Microsoft HTML Help Workshop
+AC_ARG_ENABLE(chm,
+  [  --enable-chm                 Build Windows CHM help files],
+  [case "${enableval}" in
+       		yes) chm=true ;;
+       		no)  chm=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-chm) ;;
+   esac],
+   [chm=false])
+AM_CONDITIONAL(CHM, test x$chm = xtrue)
+dnl hhc is the HTML Help Compiler for CHM documentation
+hhc_default_name=hhc
+AC_ARG_WITH(hhc,
+	[  --with-hhc=<prog>            Use HTML Help Compiler executable <prog> (default hhc)],
+	[hhc=true
+	if test "$withval" = "yes"; then
+		HHC="${hhc_default_name}"
+	else
+		HHC="$withval"
+	fi],
+	[HHC="${hhc_default_name}"])
+
+# check that hhc exists
+if test x$chm = xtrue; then
+  if ! test -x "${HHC}"; then
+    AC_MSG_ERROR(HTML Help Compiler executable "${HHC}" not found)
+  fi
+fi
+
+dnl Optionally build xmaxima.exe under windows
+dnl default to false as additional software
+AC_ARG_ENABLE(xmaxima_exe,
+  [  --enable-xmaxima-exe         Build Windows xmaxima.exe for installer],
+  [case "${enableval}" in
+       		yes) xmaxima_exe=true ;;
+       		no)  xmaxima_exe=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-xmaxima-exe) ;;
+   esac],
+   [xmaxima_exe=false])
+AM_CONDITIONAL(XMAXIMA_EXE, test x$xmaxima_exe = xtrue)
+
+dnl Tools for building xmaxima.exe on windows
+dnl Hard code the filenames for now.  Can over-ride on make command line
+GCCVER=undefined
+if test x${xmaxima_exe} = xtrue ; then
+  GCCVER=`gcc -dumpversion`
+  if  test x${GCCVER} = x3.3.1; then
+    TCLSTUBLIB=-ltclstub84
+  else
+    TCLSTUBLIB=/c/tcl/lib/tclstub85.lib
+  fi
+  dnl http://code.google.com/p/tclkit/ and http://www.tcl.tk/starkits/
+  TCLKITSH=/c/programs/star/tclkitsh-win32.upx.exe
+  TCLKIT_RUNTIME=/c/programs/star/tclkit-win32.upx.exe 
+  SDXKIT=/c/programs/star/sdx.kit
+  IMGKIT=/c/programs/star/img.kit
+fi
+
+AC_SUBST(GCCVER)
+AC_SUBST(TCLSTUBLIB)
+AC_SUBST(TCLKITSH)
+AC_SUBST(TCLKIT_RUNTIME)
+AC_SUBST(SDXKIT)
+AC_SUBST(IMGKIT)
+AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
+
 if test x"${explicit_lisp}" = xfalse ; then
 dnl  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
 dnl  	if test x"${clisp_found}" = xtrue ; then
@@ -631,11 +727,13 @@ dnl  	fi
 fi
 
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
+AM_CONDITIONAL(CLISP_EXEC, test x$clisp_exec = xtrue)
 AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 AM_CONDITIONAL(CMUCL_EXEC, test x${cmucl_exec} = xtrue)
 AM_CONDITIONAL(SCL, test x$scl = xtrue)
 AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
+AM_CONDITIONAL(SBCL_EXEC, test x$sbcl_exec = xtrue)
 AM_CONDITIONAL(ACL, test x$acl = xtrue)
 AM_CONDITIONAL(OPENMCL, test x$openmcl = xtrue)
 AM_CONDITIONAL(OPENMCL_EXEC, test x${openmcl_exec} = xtrue)
@@ -844,6 +942,7 @@ AC_SUBST(ACL_NAME)
 AC_SUBST(OPENMCL_NAME)
 AC_SUBST(ECL_NAME)
 AC_SUBST(DEFAULTLISP)
+AC_SUBST(HHC)
 
 AC_ARG_WITH(posix-shell,
 	[  --with-posix-shell=<path>    Use <shell> for maxima script (default /bin/sh)],
@@ -959,6 +1058,9 @@ if test x"${clisp}" = xtrue ; then
 	echo "clisp enabled. Executable name: \"${CLISP_NAME}\""
 	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
 fi
+if test x"${clisp_exec}" = xtrue ; then
+   echo "clisp executable image enabled for maxima."
+fi
 if test x"${cmucl}" = xtrue ; then
 	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
 	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
@@ -973,6 +1075,9 @@ fi
 if test x"${sbcl}" = xtrue ; then
 	echo "SBCL enabled. Executable name: \"${SBCL_NAME}\""
 fi
+if test x"${sbcl_exec}" = xtrue ; then
+   echo "sbcl executable image enabled for maxima."
+fi
 if test x"${gcl}" = xtrue ; then
 	echo "GCL enabled. Executable name: \"${GCL_NAME}\""
 	if test x"${gcl_alt_link}" = xtrue ; then
@@ -985,9 +1090,48 @@ fi
 if test x"${openmcl}" = xtrue ; then
 	echo "OpenMCL enabled. Executable name: \"${OPENMCL_NAME}\""
 fi
+if test x"${openmcl_exec}" = xtrue ; then
+   echo "OpenMCL executable image enabled for maxima."
+fi
 if test x"${ecl}" = xtrue ; then
 	echo "ECL enabled. Executable name: \"${ECL_NAME}\""
 fi
 echo "default lisp: $DEFAULTLISP"
 echo "wish executable name: \"${WISH}\""
 
+if test x"${chm}" = xtrue ; then
+  echo "CHM help files enabled"
+  echo "    HHC: \"${HHC}\""
+fi
+if test x"${xmaxima_exe}" = xtrue ; then
+   echo "Windows xmaxima.exe enabled"
+   echo "  GCC version GCCVER: ${GCCVER}"
+   echo "  TCLSTUBLIB: ${TCLSTUBLIB}"
+   if ! test -f "${TCLSTUBLIB}" ; then
+     AC_MSG_WARN(*** TCLSTUBLIB ${TCLSTUBLIB} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
+   echo "  TCLKITSH: ${TCLKITSH}"
+   if ! test -f "${TCLKITSH}" ; then
+     AC_MSG_WARN(*** TCLKITSH ${TCLKITSH} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
+   echo "  TCLKIT_RUNTIME: ${TCLKIT_RUNTIME}"
+   if ! test -f "${TCLKIT_RUNTIME}" ; then
+     AC_MSG_WARN(*** TCLKIT_RUNTIME ${TCLKIT_RUNTIME} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
+   echo "  SDXKIT: ${SDXKIT}"
+   if ! test -f "${SDXKIT}" ; then
+     AC_MSG_WARN(*** SDXKIT ${SDXKIT} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
+   echo "  IMGKIT: ${IMGKIT}"
+   if ! test -f "${IMGKIT}" ; then
+     AC_MSG_WARN(*** IMGKIT ${IMGKIT} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
+   if test x${xmaxima_exe_prerequisite} = xnotfound ; then
+     AC_MSG_WARN([A prerequisite for xmaxima.exe not found.  The missing components can be defined on the make command line.])
+   fi
+fi
