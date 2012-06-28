@@ -22,11 +22,26 @@
 
 (in-package :maxima)
 
-(defun smash-float-64-into-integer (x)
+(defun smash-float-into-integer (x)
   (multiple-value-bind
     (significand exponent sign)
     (integer-decode-float x)
-    (smash-decoded-float-64-into-integer significand exponent sign)))
+    (if (typep x 'single-float)
+      (smash-decoded-float-32-into-integer significand exponent sign)
+      (smash-decoded-float-64-into-integer significand exponent sign))))
+
+(defun smash-decoded-float-32-into-integer (significand exponent sign)
+  (if (= significand 0)
+    0
+    (dpb
+      (if (> sign 0) 0 1)
+      (byte 1 (+ 23 8))
+      (dpb
+        (+ exponent 127 23)
+        (byte 8 23)
+        (ldb
+          (byte 23 0)
+          significand)))))
 
 (defun smash-decoded-float-64-into-integer (significand exponent sign)
   (if (= significand 0)
@@ -58,8 +73,11 @@
 
 ;; Stream input and output
 
-(defun write-float-64 (x s)
-  (write-unsigned-integer (smash-float-64-into-integer x) 8 s))
+(defun write-float (x s)
+  (write-unsigned-integer (smash-float-into-integer x) (size-in-bytes x) s))
+
+(defun size-in-bytes (x)
+  (if (typep x 'single-float) 4 8)) ;; AUGHHHH!! THIS IS TERRIBLE!
 
 (defun read-float-64 (s)
   (let ((x (read-unsigned-integer 8 s)))

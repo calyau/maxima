@@ -397,7 +397,7 @@
                    (t (write-char sep-ch out))))
                 ((eq mode 'binary)
                  (if ($numberp e)
-                   (write-float-64 ($float e) out)
+                   (write-float ($float e) out)
                    (merror "write_data: encountered non-numeric data in binary output")))
                 (t
                   (merror "write_data: unrecognized mode"))))))))))
