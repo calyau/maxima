@@ -490,6 +490,10 @@ limit(x*expintegral_ei(x), x, 0);
 limit(factorial(x),x,-2,plus);
 minf;
 
+/* Calculus mistake: wrong answer: limit - ID: 3534858 */
+limit((sin(x)-tan(x))/(x*(cos(x)-1)),x,0);
+1;
+
 limit(1/psi[1](x), x, inf);
 inf;
 

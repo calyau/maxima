@@ -1491,12 +1491,13 @@ It appears in LIMIT and DEFINT.......")
 		 (t (setq varl (m* (car l) varl))))))
 	(t (cons 1 expr))))
 
+;; if term goes to non-zero constant, replace with constant
 (defun lhsimp (term var val)
   (cond ((atom term)  term)
 	(t
-	 (let ((term-value (limit term var val 'think)))
+	 (let ((term-value (ridofab (limit term var val 'think))))
 	   (cond ((not (member term-value
-			       '($inf $minf $und $ind $infinity $zeroa $zerob 0)))
+			       '($inf $minf $und $ind $infinity 0)))
 		  term-value)
 		 (t term))))))
 
@@ -3050,10 +3051,13 @@ It appears in LIMIT and DEFINT.......")
 				 exp)
 	      exp)))
 
+;; Generate $lhospitallim terms of taylor expansion.
+;; Ideally we would use a lazy series representation that generates
+;; more terms as higher order terms cancel.
 (defun calculate-series (exp var)
   (assume `((mgreaterp) ,var 0))
   (putprop var t 'internal);; keep var from appearing in questions to user
-  (let ((series ($taylor exp var 0 2)))
+  (let ((series ($taylor exp var 0 $lhospitallim)))
     (forget `((mgreaterp) ,var 0))
     series))
 

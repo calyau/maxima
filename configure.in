@@ -1107,8 +1107,31 @@ if test x"${xmaxima_exe}" = xtrue ; then
    echo "Windows xmaxima.exe enabled"
    echo "  GCC version GCCVER: ${GCCVER}"
    echo "  TCLSTUBLIB: ${TCLSTUBLIB}"
+   if ! test -f "${TCLSTUBLIB}" ; then
+     AC_MSG_WARN(*** TCLSTUBLIB ${TCLSTUBLIB} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
    echo "  TCLKITSH: ${TCLKITSH}"
+   if ! test -f "${TCLKITSH}" ; then
+     AC_MSG_WARN(*** TCLKITSH ${TCLKITSH} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
    echo "  TCLKIT_RUNTIME: ${TCLKIT_RUNTIME}"
+   if ! test -f "${TCLKIT_RUNTIME}" ; then
+     AC_MSG_WARN(*** TCLKIT_RUNTIME ${TCLKIT_RUNTIME} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
    echo "  SDXKIT: ${SDXKIT}"
+   if ! test -f "${SDXKIT}" ; then
+     AC_MSG_WARN(*** SDXKIT ${SDXKIT} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
    echo "  IMGKIT: ${IMGKIT}"
+   if ! test -f "${IMGKIT}" ; then
+     AC_MSG_WARN(*** IMGKIT ${IMGKIT} not found)
+     xmaxima_exe_prerequisite=notfound
+   fi
+   if test x${xmaxima_exe_prerequisite} = xnotfound ; then
+     AC_MSG_WARN([A prerequisite for xmaxima.exe not found.  The missing components can be defined on the make command line.])
+   fi
 fi
