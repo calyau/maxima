@@ -395,11 +395,15 @@
             "vtkCommand DeleteAllObjects"
             "exit"))
        ((eq terminal '$screen)
-          (format nil "~a~%~a~%~a~%~a~%"
+          (format nil "~a~%~a~%~a~%~a~%~a~%~a~%~a~%~a~%"
             "vtkRenderWindowInteractor iren"
             "   iren SetRenderWindow renWin"
             "   iren Initialize"
-            "wm withdraw ."))
+            "   iren AddObserver UserEvent {wm deiconify .vtkInteract}"
+            "   iren AddObserver ExitEvent {exit}"
+            "   renWin Render "
+            "wm withdraw ."
+            "tkwait window ."))
        (t
           (merror "draw: unknown terminal for vtk")))))
 

@@ -1436,3 +1436,7 @@ sqrt(107669)*%i*log(2*sqrt(107669)*%i)
 /* integrate erf fails - ID: 3454370 */
 integrate( erf(x+a)-erf(x-a), x, minf, inf);
 4*a;
+
+/* Wrong result for definite integral - ID: 3538167 */
+integrate(cos(3*x)/(5-4*cos(x)),x,0,2*%pi);
+%pi/12;
