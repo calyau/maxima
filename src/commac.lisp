@@ -69,7 +69,9 @@
 (defprop atom  atom ml-typep)
 
 #+(or cmu scl)
-(shadow '(cl:compiled-function-p) (find-package :maxima))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (shadow '(cl:compiled-function-p) (find-package :maxima))
+)
 #+(or cmu scl)
 (defun compiled-function-p (x)
   (and (functionp x) (not (symbolp x))
