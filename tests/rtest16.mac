@@ -174,7 +174,7 @@ string ('"+"(a, b, '"."(c, d), '"^"(e, f)));
 
 /* Bug 626697 */
 limit(atan2(y,x),y,minf);
-'limit(atan2(y,x),y,minf);
+-%pi/2;
 
 /* Bug 1548643 */
 limit(abs(sqrt(1-1/x)-1),x,0);
@@ -421,6 +421,25 @@ limit(atan2(x,-1), x, 0, plus);
 limit(atan2(x,-1), x, 0);
 und;
 /* ideally should be ind */
+
+/* limit of atan2 - ID: 3539699 */
+limit(atan2(x^2-2,x^3-3*x), x, sqrt(2), minus);
+-%pi;
+
+limit(atan2(x^2-2,x^3-3*x), x, sqrt(2), plus);
+%pi;
+
+limit(atan2((x^2-2), x^3-2*x), x, sqrt(2), minus);
+atan(1/sqrt(2))-%pi;
+
+limit(atan2((x^2-2), x^3-2*x), x, sqrt(2), plus);
+atan(1/sqrt(2));
+
+limit(atan2(-(x^2-2), x^3-2*x), x, sqrt(2), minus);
+%pi-atan(1/sqrt(2));
+
+limit(atan2(-(x^2-2), x^3-2*x), x, sqrt(2), plus);
+-atan(1/sqrt(2));
 
 /* [ 1587235 ] limit(floor(x),x,1) wrong */
 limit(floor(x),x,0);
