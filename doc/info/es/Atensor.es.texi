@@ -1,4 +1,4 @@
-@c version 1.9
+@c English version 2011-03-14
 @menu
 * Introducci@'on a atensor::
 * Funciones y variables para atensor::
@@ -49,6 +49,7 @@ Aunque el paquete @code{atensor} incluye su propia definici@'on para el @'algebr
       q[i,j]:atensimp(q[i,1].q[1,j]);
 (%o9)                                done
 (%i10) q;
+@group
                    [    1        v         v      v  . v  ]
                    [              1         2      1    2 ]
                    [                                      ]
@@ -60,6 +61,7 @@ Aunque el paquete @code{atensor} incluye su propia definici@'on para el @'algebr
                    [                                      ]
                    [ v  . v      v        - v       - 1   ]
                    [  1    2      2          1            ]
+@end group
 @end example
 
 El paquete @code{atensor} reconoce como vectores de la base s@'{@dotless{i}}mbolos indexados, donde el s@'{@dotless{i}}mbolo es el almacenado en  @code{asymbol} y el @'{@dotless{i}}ndice va desde 1 hasta @code{adim}. Para s@'{@dotless{i}}mbolos indexados, y s@'olo para ellos, se eval@'uan las formas bilineales @code{sf}, @code{af} y @code{av}. La evaluaci@'on sustituye el valor de @code{aform[i,j]} en lugar de @code{fun(v[i],v[j])}, donde @code{v} representa el valor de @code{asymbol} y @code{fun} es  @code{af} o @code{sf}; o sustituye @code{v[aform[i,j]]} en lugar de @code{av(v[i],v[j])}.
