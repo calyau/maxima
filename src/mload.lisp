@@ -581,7 +581,7 @@
 			    (setf test-file (second testentry))
 			    (setf expected-failures (cddr testentry))))
 		      (format t
-			      (intl:gettext "running tests in ~a: ")
+			      (intl:gettext "Running tests in ~a: ")
 			      (if (symbolp test-file)
 				  (subseq (print-invert-case test-file) 1)
 				  test-file))
@@ -603,22 +603,22 @@
 				(append errs
 					(list (list error-break-file "error break"))))
 			  (format t
-				  (intl:gettext "~%caused an error break: ~a~%")
+				  (intl:gettext "~%Caused an error break: ~a~%")
 				  test-file)))
 		   finally (cond
 			     ((null errs)
 			      (format t
 				      (intl:gettext
-				       "~%~%no unexpected errors found out of ~:d tests.~%")
+				       "~%~%No unexpected errors found out of ~:d tests.~%")
 				      total-count))
 			     (t
-			      (format t (intl:gettext "~%error summary:~%"))
+			      (format t (intl:gettext "~%Error summary:~%"))
 			      (mapcar
 			       #'(lambda (x)
 				   (let ((s (if (> (length (rest x)) 1) "s" "")))
 				     (format t
 					     (intl:gettext
-					      "error~a found in ~a, problem~a:~%~a~%")
+					      "Error~a found in ~a, problem~a:~%~a~%")
 					     s
 					     (first x)
 					     s
