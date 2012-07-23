@@ -1,4 +1,4 @@
-@c English version 2011-07-24.
+@c English version 2011-08-10.
 @menu
 * Introducci@'on a la l@'{@dotless{i}}nea de comandos::
 * Funciones y variables para la l@'{@dotless{i}}nea de comandos::
@@ -352,13 +352,12 @@ V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
 
 En una sentencia compuesta, como @code{block}, @code{lambda} o 
 @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} es el valor de la sentencia previa.
-Por ejemplo,
 
-Cuando se escribe al comienzo de una sentencia compuesta, o fuera de ella,
-@code{%%} no est@'a definido.
+La variable @code{%%} no está definida cuando se utiliza en la primera sentencia,
+o fuera de una sentencia compuesta.
 
-@code{%%} es reconocido por @code{batch} y @code{load}, interpret@'andose
-de la misma manera que se acaba de indicar.
+@code{%%} se puede utilizar con @code{batch} y @code{load}, manteniendo en ambos
+casos el mismo significado que en el modo interactivo.
 
 V@'ease tambi@'en @code{%}
 
@@ -389,7 +388,9 @@ el valor de la sentencia previa.
 (%o3)                         7 a
 @end example
 
-Dentro de una sentencia compuesta, el valor de @code{%%} puede inspeccionarse en un punto de interrupci@'on que se abra ejecutando la funci@'on @code{break}. Por ejemplo, escribiendo @code{%%;} en el siguiente ejemplo se obtiene @code{42}.
+Dentro de una sentencia compuesta, el valor de @code{%%} puede inspeccionarse
+en un punto de interrupci@'on que se abra ejecutando la funci@'on @code{break}.
+Por ejemplo, escribiendo @code{%%;} en el siguiente ejemplo se obtiene @code{42}.
 
 @example
 (%i4) block (a: 42, break ())$
@@ -399,7 +400,6 @@ _%%;
 42
 _
 @end example
-
 @end defvr
 
 
@@ -1123,6 +1123,9 @@ Valor por defecto: @code{true}
 
 Si @code{display2d} vale @code{false}, la salida por consola es
 una cadena unidimensional, en lugar de una expresi@'on bidimensional.
+
+V@'ease tambi@'en @code{leftjust} para cambiar la justificaci@'on a
+la izquierda o el centrado de la ecuaci@'on.
 
 Ejemplo:
 
