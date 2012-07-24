@@ -1,4 +1,4 @@
-@c English version 2011-06-15
+@c English version 2011-09-03
 @menu
 * Introducci@'on a la base de datos de Maxima::
 * Funciones y variables para las propiedades::
@@ -100,6 +100,129 @@ los hechos almacenados, pudiendo ser posteriormente reactivado con la funci@'on
 
 @node Funciones y variables para las propiedades, Funciones y variables para los hechos, Introducci@'on a la base de datos de Maxima, Base de datos de Maxima
 @section Funciones y variables para las propiedades
+
+@defvr {Propiedad} alphabetic
+
+@code{alphabetic} es un tipo de propiedad reconocida por @code{declare}.
+La expresi@'on @code{declare(@var{s}, alphabetic)} le indica a Maxima que reconozca
+como alfab@'eticos todos los caracteres que haya en @var{s}, que debe ser una cadena de texto.
+
+V@'ease tambi@'en @code{Identifiers}.
+
+Ejemplo:
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
+@example
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
+@end example
+@end defvr
+
+@defvr {Propiedad} bindtest
+La sentencia @code{declare(@var{x}, bindtest} le indica a Maxima que devuelva un mensaje
+de error cuando el s@'{@dotless{i}}mbolo @var{x} no tenga asociado valor alguno.
+
+Ejemplo:
+
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+@end defvr
+
+
+@deffn {Propiedad} constant
+@code{declare(@var{a}, constant)} declara @var{a} como constante.  La declaraci@'on
+de un s@'{@dotless{i}}mbolo como constante no impide que se le asigne un valor no
+constante al s@'{@dotless{i}}mbolo.
+
+V@'eanse @code{constantp} y @code{declare}
+
+Ejemplo:
+
+@example
+(%i1) declare(c, constant);
+(%o1)                         done
+(%i2) constantp(c);
+(%o2)                         true
+(%i3) c : x;
+(%o3)                           x
+(%i4) constantp(c);
+(%o4)                         false
+@end example
+@end deffn
+
+
+
+@deffn {Funci@'on} constantp (@var{expr})
+Devuelve @code{true} si @var{expr} es una expresi@'on constante y
+@code{false} en caso contrario.
+
+Una expresi@'on se considera constante si sus argumentos son n@'umeros 
+(incluidos los n@'umeros racionales que se muestran con @code{/R/}), 
+constantes simb@'olicas como @code{%pi}, @code{%e} o @code{%i}, variables 
+con valor constante o declarada como constante por @code{declare},
+o funciones cuyos argumentos son constantes.
+
+La funci@'on @code{constantp} eval@'ua sus argumentos.
+
+Ejemplos:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+@end deffn
 
 
 
@@ -1184,57 +1307,6 @@ La funci@'on @code{compare} no intenta determinar si los dominios reales de sus 
 Aqu@'{@dotless{i}}, el dominio real de @code{acos (x^2 + 1)} es el conjunto vac@'{@dotless{i}}o.
 
 @end deffn
-
-
-
-
-@deffn {Operator especial} constant
-La llamada @code{declare (@var{a}, constant)} declara @var{a} como constante.
-V@'ease @code{declare}.
-@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
-
-@end deffn
-
-@deffn {Funci@'on} constantp (@var{expr})
-Devuelve @code{true} si @var{expr} es una expresi@'on constante y @code{false} en caso contrario.
-@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
-
-Una expresi@'on se considera constante si sus argumentos son n@'umeros (incluidos los n@'umeros racionales que se muestran con @code{/R/}), constantes simb@'olicas como @code{%pi}, @code{%e} o @code{%i}, variables con valor constante o declarada como constante por @code{declare},
-o funciones cuyos argumentos son constantes.
-
-La funci@'on @code{constantp} eval@'ua sus argumentos.
-
-Ejemplos:
-
-@c ===beg===
-@c constantp (7 * sin(2));
-@c constantp (rat (17/29));
-@c constantp (%pi * sin(%e));
-@c constantp (exp (x));
-@c declare (x, constant);
-@c constantp (exp (x));
-@c constantp (foo (x) + bar (%e) + baz (2));
-@c ===end===
-
-@example
-(%i1) constantp (7 * sin(2));
-(%o1)                                true
-(%i2) constantp (rat (17/29));
-(%o2)                                true
-(%i3) constantp (%pi * sin(%e));
-(%o3)                                true
-(%i4) constantp (exp (x));
-(%o4)                                false
-(%i5) declare (x, constant);
-(%o5)                                done
-(%i6) constantp (exp (x));
-(%o6)                                true
-(%i7) constantp (foo (x) + bar (%e) + baz (2));
-(%o7)                                false
-(%i8) 
-@end example
-@end deffn
-
 
 
 
