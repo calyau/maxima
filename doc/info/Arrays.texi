@@ -400,6 +400,20 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{arraysetapply}
+@deffn {Function} arraysetapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}], @var{x})
+
+Assigns @var{x} to @code{@var{A}[@var{i_1}, ..., @var{i_n}]},
+where @var{A} is an array and @var{i_1}, @dots{}, @var{i_n} are integers.
+
+@code{arraysetapply} evaluates its arguments.
+
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{fillarray}
 @deffn {Function} fillarray (@var{A}, @var{B})
 
