@@ -1,4 +1,4 @@
-@c English version 1.12
+@c English version 2008-04-24
 @menu
 * Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas::
 * Funciones y variables para funciones el@'{@dotless{i}}pticas::

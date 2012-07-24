@@ -1,4 +1,4 @@
-@c English version 2011-09-03
+@c English version 2011-11-03
 @menu
 * Introducci@'on a la base de datos de Maxima::
 * Funciones y variables para las propiedades::

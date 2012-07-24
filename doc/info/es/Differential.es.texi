@@ -1,4 +1,4 @@
-@c version 1.12
+@c English version 2011-03-14
 @menu
 * Introducci@'on a las ecuaciones diferenciales::
 * Funciones y variables para ecuaciones diferenciales::  
