@@ -905,7 +905,7 @@ wrapper for this."
   (setq tlist
         `((mlist)
           ,@(mapcar
-              #'(lambda (x) (if (symbolp x) x `(,(car x) ((mquote) ,@(mapcar #'meval (cdr x))))))
+              #'(lambda (x) (if (or (symbolp x) ($listp x)) x `(,(car x) ((mquote) ,@(mapcar #'meval (cdr x))))))
               (cdr tlist))))
   (unless (and (listp vlist)
 	   (eq (caar vlist) 'mlist))
