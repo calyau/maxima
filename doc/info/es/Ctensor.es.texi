@@ -1,4 +1,4 @@
-@c version 1.37
+@c English version 2011-03-14
 @menu
 * Introducci@'on a ctensor::     
 * Funciones y variables para ctensor::     
@@ -731,7 +731,9 @@ Devuelve la lista de las ecuaciones diferenciales que corresponden a los element
 @end deffn
 
 @deffn {Funci@'on} cograd ()
-Calcula el gradiente covariante de una funci@'on escalar permitiendo al usuario elegir el nombre del vector correspondiente, como ilustra el ejemplo que acompa@~na a la definici@'on de la funci@'on @code{contragrad}.
+Calcula el gradiente covariante de una funci@'on escalar permitiendo al usuario
+elegir el nombre del vector correspondiente, tal como ilustra el ejemplo que acompa@~na
+a la definici@'on de la funci@'on @code{contragrad}.
 @end deffn
 
 

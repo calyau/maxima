@@ -50,22 +50,14 @@ true$
 
 /*  Test %piargs  */
 
-(maxerror : 0.0,0);
-0$
-
-(save_flags_names : '[%piargs, %iargs, trigsign, listarith, exponentialize, halfangles, trigexpand, trigexpandplus, trigexpandtimes, triginverses], save_flags_values : ev (save_flags_names), 0);
+(maxerror : 0.0, %piargs : true, save_flags_names : '[%piargs, %iargs, trigsign, listarith, exponentialize, halfangles, trigexpand, trigexpandplus, trigexpandtimes, triginverses], save_flags_values : ev (save_flags_names), 0);
 0;
-
-(%piargs : true,0);
-0$
 
 (for f in trig do (
    for i : -24 thru 24 do (
       z : errcatch(subst(x = %pi * i / 24, f)),
-      if z # [ ] then maxerror : max(maxerror, abs(float(first(z) - subst(x = %pi * i / 24.0, f)))))),0);
-0$
-
-is(maxerror < 1.0e-13);
+      if z # [ ] then maxerror : max(maxerror, abs(float(first(z) - subst(x = %pi * i / 24.0, f)))))),
+ if is(maxerror < 1.0e-13) then true else maxerror);
 true$
 
 /* Test %iargs   */
@@ -271,44 +263,26 @@ block ([buggy : []],
 
 /*  Numerically check some identities  */
 
-(id : cos(x)^2 + sin(x)^2 - 1,0);
-0$
+(float_trig_test(id, threshold) :=
+  block([maxerror : 0],
+    for p in pts do block([numer : true],
+      maxerror : max(maxerror, cabs(expand(rectform(subst(x = p, id)))))),
+    if is(maxerror < threshold) then true else maxerror),
+ bfloat_trig_test(id, threshold) :=
+  block([maxerror : 0],
+    for p in pts do block([numer : true],
+      maxerror : max(maxerror, cabs(expand(subst(x = bfloat(p), id))))),
+    if is(maxerror < threshold) then true else maxerror),
+ 0);
+0;
 
-(maxerror : 0,0)$
-0$
-
-(for p in pts do block([numer : true],
-  maxerror : max(maxerror, cabs(expand(subst(x = p, id))))),0);
-0$
-
-is(maxerror < 1.0e-15);
+float_trig_test(cos(x)^2 + sin(x)^2 - 1, 1.0e-15);
 true$
 
-
-(id : cot(2*x) - (cot(x)^2-1)/(2*cot(x)),0);
-0$
-
-(maxerror : 0,0)$
-0$
-
-(for p in pts do block([numer : true],
-  maxerror : max(maxerror, cabs(expand(subst(x = p, id))))),0);
-0$
-
-is(maxerror < 1.0e-15);
+float_trig_test(cot(2*x) - (cot(x)^2-1)/(2*cot(x)), 1.0e-15);
 true$
 
-(id : asin(x) + acos(x) - %pi/2, 0);
-0$
-
-(maxerror : 0, 0)$
-0$
-
-(for p in pts do block([numer : true],
-  maxerror : max(maxerror, cabs(expand(subst(x = bfloat(p), id))))),0);
-0$
-
-is(maxerror < 1.0e-15);
+bfloat_trig_test(asin(x) + acos(x) - %pi/2, 1.0e-15);
 true$
 
 (declare(n,integer),0);

@@ -1,4 +1,4 @@
-@c version 1.15
+@c English version 2012-01-29
 @menu
 * Funciones y variables para la detecci@'on e informe de fallos::
 @end menu
@@ -77,8 +77,66 @@ dentro del propio informe.
 @end deffn
 
 @deffn {Funci@'on} build_info ()
-Imprime un resumen de los par@'ametros que se usaron para construir la
-versi@'on de Maxima que se est@'a usando. 
+Devuelve un resumen de los parámetros con los que se ha compilado Maxima
+en formato de estructura @code{defstruct}. Los campos de la estructura son:
+@code{version}, @code{timestamp}, @code{host}, @code{lisp_name} y @code{lisp_version}.
+Cuando @code{display2d} toma el valor @code{true}, la estructura se muestra como una
+peque@~na tabla.
 
-@code{build_info} retorna una cadena vac@'{@dotless{i}}a  @code{""}.
+V@'ease tambi@'en @code{bug_report}.
+
+Ejemplos:
+
+@c ===beg===
+@c build_info ();
+@c x : build_info ()$
+@c x@version;
+@c x@timestamp;
+@c x@host;
+@c x@lisp_name;
+@c x@lisp_version;
+@c x;
+@c ===end===
+@example
+@group
+(%i1) build_info ();
+(%o1) 
+Maxima version: "5.26.0_16_gb72c64c_dirty"
+Maxima build date: "2012-01-29 12:29:04"
+Host type: "i686-pc-linux-gnu"
+Lisp implementation type: "CMU Common Lisp"
+Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+@end group
+(%i2) x : build_info ()$
+@group
+(%i3) x@@version;
+(%o3)               5.26.0_16_gb72c64c_dirty
+@end group
+@group
+(%i4) x@@timestamp;
+(%o4)                  2012-01-29 12:29:04
+@end group
+@group
+(%i5) x@@host;
+(%o5)                   i686-pc-linux-gnu
+@end group
+@group
+(%i6) x@@lisp_name;
+(%o6)                    CMU Common Lisp
+@end group
+@group
+(%i7) x@@lisp_version;
+(%o7) 
+    CVS release-19a 19a-release-20040728 + minimal debian patches
+@end group
+@group
+(%i8) x;
+(%o8) 
+Maxima version: "5.26.0_16_gb72c64c_dirty"
+Maxima build date: "2012-01-29 12:29:04"
+Host type: "i686-pc-linux-gnu"
+Lisp implementation type: "CMU Common Lisp"
+Lisp implementation version: "CVS release-19a 19a-release-20040728 + minimal debian patches"
+@end group
+@end example
 @end deffn

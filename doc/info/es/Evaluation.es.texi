@@ -1,4 +1,4 @@
-@c English version 2011-06-13
+@c English version 2011-11-01
 @menu
 * Introducci@'on a la evaluaci@'on::
 * Funciones y variables para la evaluaci@'on::
@@ -695,7 +695,7 @@ Los interruptores que tienen la propiedad @code{evflag} son:
    float               halfangles      infeval
    isolate_wrt_times   keepfloat       letrat
    listarith           logabs          logarc
-   logexpand           lognegint       lognumer
+   logexpand           lognegint
    m1pbranch           numer_pbranch   programmode
    radexpand           ratalgdenom     ratfac
    ratmx               ratsimpexpons   simp
