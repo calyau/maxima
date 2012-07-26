@@ -1,4 +1,4 @@
-@c English version 2011-07-24
+@c English version 2011-07-25
 @menu
 * Documentaci@'on::
 * Funciones y variables para la ayuda::

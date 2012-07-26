@@ -1,4 +1,4 @@
-@c English version 2011-06-15
+@c English version 2011-09-03
 @menu
 * Introducci@'on a las expresiones::
 * Nombres y verbos::
@@ -793,7 +793,7 @@ Similar a @code{dpart} pero utiliza una caja etiquetada. Una caja etiquetada es 
 
 
 
-@defvr {Declaraci@'on} mainvar
+@defvr {Propiedad} mainvar
 Se pueden declarar variables de tipo @code{mainvar}.  El orden de los @'atomos 
 es: n@'umeros < constantes (como @code{%e} o @code{%pi}) <
 escalares < otras variables < "mainvars".  Por ejemplo, comp@'arese @code{expand ((X+Y)^4)}
@@ -803,7 +803,7 @@ con @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Nota: Se debe tener cuida
 
 
 
-@defvr {Declaraci@'on} noun
+@defvr {Propiedad} noun
 El s@'{@dotless{i}}mbolo @code{noun} es una de las opciones de la instrucci@'on @code{declare}. Hace que una funci@'on se declare como "nombre", lo que significa que no se evaluar@'a autom@'aticamente.
 
 @end defvr
