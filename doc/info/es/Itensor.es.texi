@@ -1,4 +1,4 @@
-@c version 1.47
+@c English version 2011-06-15
 @menu
 * Introducci@'on a itensor::
 * Funciones y variables para itensor::

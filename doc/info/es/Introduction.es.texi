@@ -1,4 +1,4 @@
-@c version 1.11
+@c English version 2011-05-31
 Se puede iniciar Maxima con el comando "maxima". Maxima desplegar@'a alguna informaci@'on importante acerca de la versi@'on que se est@'a usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesi@'on en Maxima se emplea el comando "quit();". A continuaci@'on se presenta un breve ejemplo de sesi@'on:
 
 @example
@@ -22,11 +22,11 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima puede buscar en las p@'aginas info. La instrucci@'on @kbd{describe} mostrar@'a 
-el comando o comandos que contengan una cierta cadena. La interrogaci@'on @code{?} 
+Maxima puede hacer consultas en la documentaci@'on. La instrucci@'on @code{describe} mostrar@'a 
+informaci@'on sobre una funci@'on o la lista de todas las funciones y variables que
+contengan el texto pasado a @code{describe}. La interrogaci@'on @code{?} 
 (b@'usqueda exacta) y la doble interrogaci@'on @code{??} (b@'usqueda aproximada)
 son abreviaturas de la instrucci@'on @code{describe}: 
-
 
 @example
 (%i1) ?? integ
@@ -89,7 +89,9 @@ Enter space-separated numbers, `all' or `none': 5 4
 (%o1)                                true
 @end example
 
-Para usar un resultado de forma posterior, usted puede asignar dicho resultado a una variable o referirse a @'el por medio de la etiqueta asociada (%i* o %o*). Adicionalmente  puede usar @kbd{%} para referirse al @'ultimo resultado obtenido.  
+Para usar posteriormente un resultado, se puede asignar dicho resultado a 
+una variable o referirse a @'el por medio de la etiqueta asociada (@code{%i*} o @code{%o*}).
+Adem@'as, se puede utilizar @code{%} para referirse al @'ultimo resultado obtenido.  
 
 @example
 (%i1) u: expand ((x + y)^6);
