@@ -1,4 +1,4 @@
-@c English version 2011-07-03
+@c English version 2011-09-03
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::
@@ -1288,19 +1288,11 @@ Para disponer de esta funci@'on es necesario cargar el paquete haciendo @code{lo
 @end deffn
 
 @deffn {Funci@'on} newdet (@var{M})
-Calcula el determinante de la matriz @var{M} por el algoritmo del @'arbol menor de Johnson-Gentleman. El resultado devuelto por @code{newdet} tiene formato CRE.
+Calcula el determinante de la matriz @var{M} por el algoritmo del @'arbol menor
+de Johnson-Gentleman. El resultado devuelto por @code{newdet} tiene formato CRE.
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@defvr {Declaraci@'on} nonscalar
-Hace que los @'atomos se comporten como hace una lista o matriz con respecto del operador @code{.} del la multiplicaci@'on no conmutativa.
 
-@end defvr
-
-@deffn {Funci@'on} nonscalarp (@var{expr})
-Devuelve @code{true} si @var{expr} no es escalar, es decir, si contiene @'atomos declarados como no escalares, listas o matrices. 
-
-@end deffn
 
 @deffn {Funci@'on} permanent (@var{M})
 Calcula la permanente de la matriz @var{M} por el algoritmo del @'arbol menor de
