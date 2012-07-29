@@ -654,7 +654,7 @@ Ejemplos:
 (%o10)                 [string, y + x , x]
 @end group
 @end example
-
+@end deffn
 
 
 @deffn {Funci@'on} rest (@var{expr}, @var{n})
