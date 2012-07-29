@@ -324,7 +324,9 @@ Lectura y escritura
 
 * Comentarios::
 * Archivos::
-* Funciones y variables para lectura y escritura:: 
+* Funciones y variables para lectura y escritura::
+* Funciones y variables para salida TeX::
+* Funciones y variables para salida Fortran::
 
 Polinomios
 

@@ -1,4 +1,4 @@
-@c version 1.14
+@c English version 2008-03-28
 @menu
 * Funciones y variables para grupos::
 @end menu

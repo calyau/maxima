@@ -1,4 +1,4 @@
-@c version 1.45
+@c English version 2001-11-03
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -645,6 +645,11 @@ Calcula el valor principal de Cauchy de @math{f(x)/(x - c)} en un
 intervalo finito @math{(a, b)} para una @math{c} dada.
 La estrategia es global adaptativa, utilizando la integraci@'on de 
 Clenshaw-Curtis modificada en los subintervalos que contienen a @math{x = c}.
+
+@item quad_qagp
+B@'asicamente hace lo mismo que @code{quad_qags}, pero los puntos de singularidad
+o discontinuidad deben ser aportados por el usuario. Esto hace que el c@'alculo
+de una buena soluci@'on sea m@'as f@'acil para el integrador.
 @end table
 
 @node Funciones y variables para QUADPACK, , Introducci@'on a QUADPACK, Integraci@'on
@@ -1330,5 +1335,120 @@ pos;
 (%o3)                     8.750097361672829
 @end example
 
+@end deffn
+
+
+@deffn  {Fuci@'on} quad_qagp (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Fuci@'on} quad_qagp (@var{f}, @var{x}, @var{a}, @var{b}, @var{points}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+
+Integra una funci@'on general sobre un intervalo acotado. La funci@'on
+@code{quad_qagp} implementa un m@'etodo adaptativo global de subdivisi@'on
+del intervalo con extrapolaci@'on (de Doncker, 1978) basado en el algoritmo
+Epsilon (Wynn, 1956).
+
+@code{quad_qagp} calcula la integral
+
+@ifnottex
+@math{integrate (f(x), x, a, b)}
+@end ifnottex
+@tex
+$$\int_a^b {f(x) \, dx}$$
+@end tex
+
+La funci@'on a integrar es @var{f(x)}, con variable independiente
+@var{x}, en el intervalo limitado por @var{a} y @var{b}.
+
+El integrando puede especificarse mediante el nombre de una funci@'on de
+Maxima o de Lisp o un operador, como una expresi@'on lambda de Maxima, o
+como una expresi@'on general de Maxima.
+
+Para ayudar al integrador, el usuario debe aportar una lista de puntos 
+donde el integrando es singular o discontinuo.
+
+Las opciones se suministran como argumentos y se pueden escribir en
+cualquier orden. Deben tomar la forma @code{opci@'on=valor}. Las 
+opciones son:
+
+@table @var
+@item epsrel
+Error relativo de aproximaci@'on deseado. Valor por defecto es 1d-8.
+@item epsabs
+Error absoluto de aproximaci@'on deseado. Valor por defecto es 0.
+@item limit
+Tama@~no del array interno de trabajo. @var{limit} es el m@'aximo
+n@'umero de subintervalos a utilizar. Valor por defecto es 200.
+@end table
+
+@code{quad_qagp} devuelve una lista con cuatro elementos:
+
+@itemize
+@item
+una aproximaci@'on a la integral,
+@item
+el error absoluto estimado de la aproximaci@'on,
+@item
+el n@'umero de evaluaciones del integrando,
+@item
+un c@'odigo de error.
+@end itemize
+
+El c@'odigo de error (cuarto elemento de la lista devuelta) puede tener los
+siguientes valores:
+
+@table @code
+@item 0
+no se encontraron errores;
+@item 1
+se han hecho demasiados subintervalos;
+@item 2
+se detect@'o un error de redondeo muy grande;
+@item 3
+se ha observado un comportamiento del integrando extremadamente malo;
+@item 4
+fallo de convergencia;
+@item 5
+la integral es probablemente divergengente o converge muy lentamente;
+@item 6
+entrada inv@'alida.
+@end table
+
+Ejemplos:
+
+@example
+@group
+(%i1) quad_qagp(x^3*log(abs((x^2-1)*(x^2-2))),x,0,3,[1,sqrt(2)]);
+(%o1)   [52.74074838347143, 2.6247632689546663e-7, 1029, 0]
+@end group
+@group
+(%i2) quad_qags(x^3*log(abs((x^2-1)*(x^2-2))), x, 0, 3);
+(%o2)   [52.74074847951494, 4.088443219529836e-7, 1869, 0]
+@end group
+@end example
+
+El integrando tiene singularidades en @code{1} y @code{sqrt(2)}, de manera que
+suministramos estos puntos a @code{quad_qagp}. Tambi@'en se observa que @code{quad_qagp}
+es m@'as exacto y eficiente que @code{quad_qags}.
+@end deffn
+
+
+
+@deffn  {Fuci@'on} quad_control (@var{parameter}, [@var{value}])
+
+Controla la gesti@'on de los errores de @code{QUADPACK}. El par@'ametro debe
+ser uno de los siguientes s@'{@dotless{i}}mbolos:
+
+@table @code
+@item current_error
+El n@'umero de error actual.
+@item control
+Controla si los mensajes se imprimen o no. Si el valor es cero o menor,
+los mensajes se suprimen.
+@item max_message
+El m@'aximo n@'umero de veces que se imprime cualquier mensaje.
+@end table
+
+Si no se da @var{value}, entonces se devuelve el valor actual asociado a
+@var{parameter}. En cambio, si se da @var{value}, se hace la asignaci@'on
+correspondiente a @var{parameter}, adquiriendo este nuevo valor.
 @end deffn
 

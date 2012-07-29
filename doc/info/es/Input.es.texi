@@ -1,8 +1,10 @@
-@c English version 2011-06-30
+@c English version 2011-08-21
 @menu
 * Comentarios::
 * Archivos::
 * Funciones y variables para lectura y escritura::
+* Funciones y variables para salida TeX::
+* Funciones y variables para salida Fortran::
 @end menu
 
 @node Comentarios, Archivos, Lectura y escritura, Lectura y escritura
@@ -53,15 +55,15 @@ Los archivos se agrupan en los discos en "directorios", que son listas de archiv
 Instrucciones que operan con archivos son:
 
 @example
-appendfile           batch                 batchload     
-closefile            file_output_append    filename_merge        
-file_search          file_search_maxima    file_search_lisp      
-file_search_demo     file_search_usage     file_search_tests     
-file_type            load                  load_pathname         
-loadfile             loadprint             printfile             
-pathname_directory   pathname_name         pathname_type
-save                 stringout             with_stdout
-writefile
+   appendfile           batch                 batchload
+   closefile            file_output_append    filename_merge
+   file_search          file_search_maxima    file_search_lisp
+   file_search_demo     file_search_usage     file_search_tests
+   file_type            file_type_lisp        file_type_maxima
+   load                 load_pathname         loadfile
+   loadprint            pathname_directory    pathname_name
+   pathname_type        printfile             save
+   stringout            with_stdout           writefile
 @end example
 
 Cuando el nombre de un fichero se pasa a funciones como @code{plot2d}, @code{save} o 
@@ -70,7 +72,7 @@ el fichero en la carpeta de trabajo actual. La ubicaci@'on de la carpeta de
 trabajo depende del sistema operativo y de la instalaci@'on.
 
 
-@node Funciones y variables para lectura y escritura,  , Archivos, Lectura y escritura
+@node Funciones y variables para lectura y escritura, Funciones y variables para salida TeX, Archivos, Lectura y escritura
 @section Funciones y variables para lectura y escritura
 
 
@@ -298,13 +300,19 @@ V@'ease tambi@'en @code{file_type}
 
 
 @deffn {Funci@'on} load (@var{filename})
-Eval@'ua las expresiones del archivo @var{filename}, trayendo variables, funciones y otros objetos a Maxima.
-Una asignaci@'on hecha previamente a una variable en Maxima ser@'a destruida por otra asignaci@'on que se le haga en @var{filename}. Para encontrar el fichero, @code{load} llama a @code{file_search} con @code{file_search_maxima} y @code{file_search_lisp} como directorios de b@'usqueda. Si la llamada a @code{load} funciona correctamente, devuelve el nombre del fichero; en caso contrario, @code{load} muestra un mensaje de error.
+Eval@'ua las expresiones del archivo @var{filename}, trayendo variables,
+funciones y otros objetos a Maxima. Una asignaci@'on hecha previamente a 
+una variable en Maxima ser@'a destruida por otra asignaci@'on que se le 
+haga en @var{filename}. Para encontrar el fichero, @code{load} llama a 
+@code{file_search} con @code{file_search_maxima} y @code{file_search_lisp} 
+como directorios de b@'usqueda. Si la llamada a @code{load} funciona correctamente, 
+devuelve el nombre del fichero; en caso contrario, @code{load} muestra un mensaje de error.
 
 La funci@'on @code{load} trabaja indistintamente con c@'odigo Lisp y Maxima.
-Los ficheros creados con @code{save}, @code{translate_file} y @code{compile_file}, que crea c@'odigo Lisp,
-y @code{stringout}, que crea c@'odigo Maxima, todos ellos pueden ser procesados por @code{load}. La funci@'on
-@code{load} llama a @code{loadfile} para cargar archivos en Lisp y a  @code{batchload} para cargar archivos en Maxima.
+Los ficheros creados con @code{save}, @code{translate_file} y @code{compile_file}, 
+que crea c@'odigo Lisp, y @code{stringout}, que crea c@'odigo Maxima, todos ellos 
+pueden ser procesados por @code{load}. La funci@'on @code{load} llama a @code{loadfile} 
+para cargar archivos en Lisp y a  @code{batchload} para cargar archivos en Maxima.
 
 La funci@'on @code{load} no reconoce las construcciones de tipo @code{:lisp} en
 ficheros de Maxima. Adem@'as, mientras se est@'a procesando @var{filename},
@@ -312,7 +320,8 @@ las variables globales @code{_}, @code{__}, @code{%} y @code{%th} mantienen los
 valores que ten@'{@dotless{i}}an cuando se realiz@'o la llamada a @code{load}.
 
 V@'eanse tambi@'en @code{loadfile}, @code{batch}, @code{batchload} y @code{demo};
-@code{loadfile} procesa archivos en Lisp; @code{batch}, @code{batchload} y @code{demo} procesan archivos en Maxima.
+@code{loadfile} procesa archivos en Lisp; @code{batch}, @code{batchload} y @code{demo}
+procesan archivos en Maxima.
 
 V@'ease @code{file_search} para m@'as detalles sobre el mecanismo de b@'usqueda de archivos.
 
@@ -447,27 +456,32 @@ a cada uno de los elementos de @code{file_search_usage} a trav@'es de
 @deffnx {Funci@'on} save (@var{filename}, all)
 @deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
 
-Alamacena los valores actuales de @var{name_1}, @var{name_2}, @var{name_3}, ..., en el archivo @var{filename}.
-Los argumentos son nombres de variables, funciones u otros objetos.
-Si un nombre no tiene un valor o una funci@'on asociado a @'el, entonces se ignora.
+Alamacena los valores actuales de @var{name_1}, @var{name_2}, @var{name_3}, ..., 
+en el archivo @var{filename}. Los argumentos son nombres de variables, funciones 
+u otros objetos. Si un nombre no tiene un valor o una funci@'on asociado a @'el, 
+entonces se ignora.
 
 La funci@'on @code{save} devuelve @var{filename}.
 
 La funci@'on @code{save} almacena datos en forma de expresiones Lisp.
 Los datos almacenados por @code{save} pueden recuperarse con @code{load (@var{filename})}.
-El resultado de ejecutar  @code{save} cuando @var{filename} ya existe depende del soporte Lisp implementado;
-el archivo puede ser sobreescrito o que @code{save} env@'{@dotless{i}}e un mesaje de error.
+El resultado de ejecutar  @code{save} cuando @var{filename} ya existe depende 
+del soporte Lisp implementado; el archivo puede ser sobreescrito o que @code{save} 
+env@'{@dotless{i}}e un mesaje de error.
 
 La llamada @code{save (@var{filename}, values, functions, labels, ...)}
-almacena los elementos cuyos nombres son @code{values}, @code{functions}, @code{labels}, etc.
-Los nombres pueden ser cualesquiera de los especificados por la variable @code{infolists};
-@code{values} incluye todas las variables definidas por el usuario.
+almacena los elementos cuyos nombres son @code{values}, @code{functions}, 
+@code{labels}, etc. Los nombres pueden ser cualesquiera de los especificados 
+por la variable @code{infolists}; @code{values} incluye todas las variables 
+definidas por el usuario.
 
-La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacena los valores de las etiquetas de entrada y salida desde @var{m} hasta @var{n}.
-N@'otese que @var{m} y @var{n} deben ser n@'umeros.
-Las etiquetas de entrada y salida tambi@'en se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
-La llamada @code{save (@var{filename}, labels)} almacena todas las etiquetas de entrada y salida.
-Cuando las etiquetas almacenadas en el archivo sean posteriormente recuperadas, se sobreescribir@'an las activas en ese momento.
+La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacena los valores 
+de las etiquetas de entrada y salida desde @var{m} hasta @var{n}. N@'otese que 
+@var{m} y @var{n} deben ser n@'umeros. Las etiquetas de entrada y salida 
+tambi@'en se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
+La llamada @code{save (@var{filename}, labels)} almacena todas las etiquetas de 
+entrada y salida. Cuando las etiquetas almacenadas en el archivo sean posteriormente 
+recuperadas, se sobreescribir@'an las activas en ese momento.
 
 La llamada @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
 almacena los valores de @var{expr_1}, @var{expr_2}, ...,
@@ -480,8 +494,11 @@ simplemente los almacena en el archivo @var{filename}.
 Todas estas formas de llamar a la funci@'on @code{save} se pueden combinar a voluntad.
 Por ejemplo, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
 
-La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima, lo que incluye todas las variables definidas por el usuario, funciones, arreglos, etc., as@'{@dotless{i}} como algunos objetos definidos autom@'aticamente.
-Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o @code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
+La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima, 
+lo que incluye todas las variables definidas por el usuario, funciones, arreglos, etc., 
+as@'{@dotless{i}} como algunos objetos definidos autom@'aticamente.
+Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o 
+@code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
 
 @code{save} eval@'ua @var{filename} pero no el resto de argumentos.
 @end deffn
@@ -494,22 +511,105 @@ Los elementos almacenados incluyen variables del sistema, como @code{file_search
 @deffnx {Funci@'on} stringout (@var{filename}, functions)
 @deffnx {Funci@'on} stringout (@var{filename}, values)
 
-La funci@'on @code{stringout} escribe expresiones en un archivo de la misma forma en que se escribir@'{@dotless{i}}an como expresiones de entrada. El archivo puede ser utilizado entonces como entrada a las funciones @code{batch} o @code{demo}, y puede ser editado para cualquier otro prop@'osito.
+La funci@'on @code{stringout} escribe expresiones en un archivo de la misma forma en 
+que se escribir@'{@dotless{i}}an como expresiones de entrada. El archivo puede ser 
+utilizado entonces como entrada a las funciones @code{batch} o @code{demo}, y puede 
+ser editado para cualquier otro prop@'osito.
 
-La forma general de @code{stringout} escribe los valores de una o m@'as expresiones en el archivo de salida. N@'otese que si una expresi@'on es una variable, solamente se escribir@'a el valor de la variable y no el nombre de @'esta. Como caso especial, y muy @'util en algunas ocasiones, las expresiones pueden ser etiquetas de entrada (@code{%i1}, @code{%i2}, @code{%i3}, ...) o de salida (@code{%o1}, @code{%o2}, @code{%o3}, ...).
+La forma general de @code{stringout} escribe los valores de una o m@'as expresiones 
+en el archivo de salida. N@'otese que si una expresi@'on es una variable, solamente se 
+escribir@'a el valor de la variable y no el nombre de @'esta. Como caso especial, y muy 
+@'util en algunas ocasiones, las expresiones pueden ser etiquetas de entrada (@code{%i1}, 
+@code{%i2}, @code{%i3}, ...) o de salida (@code{%o1}, @code{%o2}, @code{%o3}, ...).
 
-Si @code{grind} vale @code{true}, @code{stringout} formatea la salida utilizando @code{grind}. En caso contrario, se utilizar@'a el formato @code{string}. V@'eanse @code{grind} y @code{string}.
+Si @code{grind} vale @code{true}, @code{stringout} formatea la salida utilizando @code{grind}. 
+En caso contrario, se utilizar@'a el formato @code{string}. V@'eanse @code{grind} y @code{string}.
 
-La forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escribe los valores de las etiquetas de entrada desde la m hasta la n, ambas inclusive. 
+La forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escribe los valores 
+de las etiquetas de entrada desde la m hasta la n, ambas inclusive. 
 
-La forma especial @code{stringout (@var{filename}, input)} escribe todas las etiquetas de entrada en el archivo.
+La forma especial @code{stringout (@var{filename}, input)} escribe todas las etiquetas de
+entrada en el archivo.
 
-La forma especial @code{stringout (@var{filename}, functions)} escribe todas las funciones definidas por el usuario, contenidas en la lista global @code{functions}, en el archivo.
+La forma especial @code{stringout (@var{filename}, functions)} escribe todas las funciones 
+definidas por el usuario, contenidas en la lista global @code{functions}, en el archivo.
 
-La forma especial @code{stringout (@var{filename}, values)} escribe todas las variables asignadas por el usuario, contenidas en la lista global @code{values}, en el archivo. Cada variable se escribe como una sentencia de asignaci@'on, con el nombre de la variable seguida de dos puntos y a continuaci@'on su valor. N@'otese que la forma general de @code{stringout} no escribe las variables como sentencias de asignaci@'on.
+La forma especial @code{stringout (@var{filename}, values)} escribe todas las variables 
+asignadas por el usuario, contenidas en la lista global @code{values}, en el archivo. 
+Cada variable se escribe como una sentencia de asignaci@'on, con el nombre de la variable 
+seguida de dos puntos y a continuaci@'on su valor. N@'otese que la forma general de 
+@code{stringout} no escribe las variables como sentencias de asignaci@'on.
 @end deffn
 
 
+@deffn {Funci@'on} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Funci@'on} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+Eval@'ua  @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
+y escribe los resultados en el fichero @var{f} o flujo de salida @var{s}.
+Las expresiones que se eval@'uan no se escriben. La salida puede generarse por medio
+de @code{print}, @code{display}, @code{grind} entre otras funciones.
+
+La variable global @code{file_output_append} controla si @code{with_stdout}
+a@~nade o reinicia el contenido del fichero de salida @var{f}.
+Si @code{file_output_append} vale @code{true}, @code{with_stdout} a@~nade
+contenido al fichero de salida. En cualquier caso, @code{with_stdout}
+crea el fichero si @'este no existe.
+
+La funci@'on @code{with_stdout} devuelve el valor de su @'ultimo argumento.
+
+V@'ease tambi@'en @code{writefile}.
+
+@c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
+@c Note the binding of display2d to be
+@c false, otherwise the printing will have things like "- 3" instead
+@c of "-3".
+@c
+@example
+@c THIS EXAMPLE USES SOME UNIX-ISH CONSTRUCTS -- WILL IT WORK IN WINDOWS ???
+@c ALSO IT'S SORT OF COMPLICATED AND THE SIMPLER SECOND EXAMPLE ILLUSTRATES with_stdout BETTER !!!
+@c mygnuplot (f, var, range, number_ticks) :=
+@c  block ([numer:true, display2d:false],
+@c  with_stdout("tmp.out",
+@c    dx: (range[2]-range[1])/number_ticks,
+@c    for x: range[1] thru range[2] step dx
+@c       do print (x, at (f, var=x))),
+@c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
+@c ;pause 10 \" | gnuplot"))$
+(%i1) with_stdout ("tmp.out", 
+                   for i:5 thru 10 do print (i, "! yields", i!))$
+(%i2) printfile ("tmp.out")$
+5 ! yields 120 
+6 ! yields 720 
+7 ! yields 5040 
+8 ! yields 40320 
+9 ! yields 362880 
+10 ! yields 3628800
+@end example
+@end deffn
+
+
+
+
+@deffn {Funci@'on} writefile (@var{filename})
+Comienza escribiendo una transcripci@'on de la sesi@'on de Maxima en el archivo @var{filename}.
+Cualquier interacci@'on entre Maxima y el usuario se almacena tambi@'en en este archivo, tal como aparece en la consola.
+
+Puesto que la transcripci@'on se escribe en el formato de salida a la consola, su contenido no es interpretable por Maxima.
+Para hacer un archivo que contenga expresiones que puedan ser nuevamente cargadas en Maxima, v@'eanse @code{save} y @code{stringout}; la funci@'on @code{save} almacena expresiones en formato Lisp, mientras que @code{stringout} lo hace en formato Maxima.
+
+El resultado de ejecutar @code{writefile} cuando el archivo @var{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesi@'on actual. La funci@'on @code{appendfile} siempre a@~nade la sesi@'on al contenido actual.
+
+Puede ser @'util ejecutar @code{playback} despu@'es de @code{writefile} para guardar las interacciones previas de la sesi@'on. Puesto que  @code{playback} muestra solamente las variables de entrada y salida (@code{%i1}, @code{%o1}, etc.),
+cualquier salida generada por una sentencia de impresi@'on desde dentro de una funci@'on no es mostrada por @code{playback}.
+
+La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} o @code{appendfile}.
+@end deffn
+
+
+
+
+@node Funciones y variables para salida TeX, Funciones y variables para salida Fortran, Funciones y variables para lectura y escritura, Lectura y escritura
+@section Funciones y variables para salida TeX
 
 
 @deffn {Funci@'on} tex (@var{expr})
@@ -519,13 +619,19 @@ La forma especial @code{stringout (@var{filename}, values)} escribe todas las va
 @deffnx {Funci@'on} tex (@var{label}, @var{destination})
 @deffnx {Funci@'on} tex (@var{label}, false)
 
-Devuelve la expresi@'on en un formato apropiado para para ser incorporado a un documento basado en TeX.
-El resultado que se obtiene es un fragmento de c@'odigo que puede incluirse en un documento mayor, pero que
+Devuelve la expresi@'on en un formato apropiado para para ser 
+incorporado a un documento basado en TeX. El resultado que se 
+obtiene es un fragmento de c@'odigo que puede incluirse en un documento mayor, pero que
 no puede ser procesado aisladamente.
 
-La instrucci@'on @code{tex (@var{expr})} imprime en la consola la representaci@'on en TeX de @var{expr}.
+La instrucci@'on @code{tex (@var{expr})} imprime en la consola 
+la representaci@'on en TeX de @var{expr}.
 
-La instrucci@'on @code{tex (@var{label})} imprime en la consola la representaci@'on en TeX de la expresi@'on a la que hace referencia la etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la expresi@'on en TeX es la misma que la de Maxima.
+La instrucci@'on @code{tex (@var{label})} imprime en la consola la 
+representaci@'on en TeX de la expresi@'on a la que hace referencia la 
+etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on 
+que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la 
+expresi@'on en TeX es la misma que la de Maxima.
 
 @var{destination} puede ser tanto un flujo de salida como el nombre de un fichero.
 
@@ -889,70 +995,66 @@ g\left(x\right)+f\left(x\right)
 @end deffn
 
 
+@node Funciones y variables para salida Fortran, , Funciones y variables para salida TeX, Lectura y escritura
+@section Funciones y variables para salida Fortran
+
+@defvr {Variable opcional} fortindent
+Valor por defecto: 0
+
+La variable @code{fortindent} controla el margen izquierdo de las expresiones que 
+escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal 
+de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
+@end defvr
 
 
 
+@deffn {Funci@'on} fortran (@var{expr})
+Escribe @var{expr} en c@'odigo Fortran. La salida se escribe con m@'argenes, y si @'esta es demasiado larga @code{fortran} sigue escribiendo en l@'{@dotless{i}}neas sucesivas. La funci@'on @code{fortran} escribe el operador de exponenciaci@'on @code{^} como @code{**}, e imprime un n@'umero complejo @code{a + b %i} como @code{(a,b)}.
 
-@deffn {Funci@'on} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Funci@'on} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-Eval@'ua  @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
-y escribe los resultados en el fichero @var{f} o flujo de salida @var{s}.
-Las expresiones que se eval@'uan no se escriben. La salida puede generarse por medio
-de @code{print}, @code{display}, @code{grind} entre otras funciones.
+El argumento @var{expr} puede ser una ecuaci@'on. En tal caso, @code{fortran} escribe una sentencia de asignaci@'on, d@'andole el valor del miembro derecho de la expresi@'on al miembro izquierdo. En particular, si el miembro derecho de @var{expr} es el nombre de una matriz, entonces @code{fortran} escribe una sentencia de asignaci@'on para cada elemento de la matriz.
 
-La variable global @code{file_output_append} controla si @code{with_stdout}
-a@~nade o reinicia el contenido del fichero de salida @var{f}.
-Si @code{file_output_append} vale @code{true}, @code{with_stdout} a@~nade
-contenido al fichero de salida. En cualquier caso, @code{with_stdout}
-crea el fichero si @'este no existe.
+Si @var{expr} no es reconozida por @code{fortran}, la expresi@'on se escribe en formato @code{grind} sin avisos. La funci@'on @code{fortran} no reconoce listas, arreglos ni funciones.
 
-La funci@'on @code{with_stdout} devuelve el valor de su @'ultimo argumento.
+La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
 
-V@'ease tambi@'en @code{writefile}.
+Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas con espacios de 80 columnas.
 
-@c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
-@c Note the binding of display2d to be
-@c false, otherwise the printing will have things like "- 3" instead
-@c of "-3".
-@c
-@example
-@c THIS EXAMPLE USES SOME UNIX-ISH CONSTRUCTS -- WILL IT WORK IN WINDOWS ???
-@c ALSO IT'S SORT OF COMPLICATED AND THE SIMPLER SECOND EXAMPLE ILLUSTRATES with_stdout BETTER !!!
-@c mygnuplot (f, var, range, number_ticks) :=
-@c  block ([numer:true, display2d:false],
-@c  with_stdout("tmp.out",
-@c    dx: (range[2]-range[1])/number_ticks,
-@c    for x: range[1] thru range[2] step dx
-@c       do print (x, at (f, var=x))),
-@c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
-@c ;pause 10 \" | gnuplot"))$
-(%i1) with_stdout ("tmp.out", 
-                   for i:5 thru 10 do print (i, "! yields", i!))$
-(%i2) printfile ("tmp.out")$
-5 ! yields 120 
-6 ! yields 720 
-7 ! yields 5040 
-8 ! yields 40320 
-9 ! yields 362880 
-10 ! yields 3628800
-@end example
+La funci@'on @code{fortran} eval@'ua sus argumentos; un argumento precedido de ap@'ostrofo previene de la evaluaci@'on.
+La funci@'on @code{fortran} siempre devuelve @code{done}.
+
+Ejemplos:
+
+@verbatim
+(%i1) expr: (a + b)^12$
+(%i2) fortran (expr);
+      (b+a)**12                                                                 
+(%o2)                         done
+(%i3) fortran ('x=expr);
+      x = (b+a)**12                                                             
+(%o3)                         done
+(%i4) fortran ('x=expand (expr));
+      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792        
+     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b        
+     2   **3+66*a**10*b**2+12*a**11*b+a**12                                     
+(%o4)                         done
+(%i5) fortran ('x=7+5*%i);
+      x = (7,5)                                                                 
+(%o5)                         done
+(%i6) fortran ('x=[1,2,3,4]);
+      x = [1,2,3,4]                                                             
+(%o6)                         done
+(%i7) f(x) := x^2$
+(%i8) fortran (f);
+      f                                                                         
+(%o8)                         done
+@end verbatim
 @end deffn
 
 
+@defvr {Variable opcional} fortspaces
+Valor por defecto: @code{false}
 
-
-@deffn {Funci@'on} writefile (@var{filename})
-Comienza escribiendo una transcripci@'on de la sesi@'on de Maxima en el archivo @var{filename}.
-Cualquier interacci@'on entre Maxima y el usuario se almacena tambi@'en en este archivo, tal como aparece en la consola.
-
-Puesto que la transcripci@'on se escribe en el formato de salida a la consola, su contenido no es interpretable por Maxima.
-Para hacer un archivo que contenga expresiones que puedan ser nuevamente cargadas en Maxima, v@'eanse @code{save} y @code{stringout}; la funci@'on @code{save} almacena expresiones en formato Lisp, mientras que @code{stringout} lo hace en formato Maxima.
-
-El resultado de ejecutar @code{writefile} cuando el archivo @var{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesi@'on actual. La funci@'on @code{appendfile} siempre a@~nade la sesi@'on al contenido actual.
-
-Puede ser @'util ejecutar @code{playback} despu@'es de @code{writefile} para guardar las interacciones previas de la sesi@'on. Puesto que  @code{playback} muestra solamente las variables de entrada y salida (@code{%i1}, @code{%o1}, etc.),
-cualquier salida generada por una sentencia de impresi@'on desde dentro de una funci@'on no es mostrada por @code{playback}.
-
-La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} o @code{appendfile}.
-@end deffn
+Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas 
+con espacios de 80 columnas.
+@end defvr
 

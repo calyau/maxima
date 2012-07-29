@@ -1,4 +1,4 @@
-@c version 1.32
+@c English version 2011-08-21
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::
 * Series de Fourier::
@@ -186,7 +186,7 @@ Si los datos @var{x} son reales, los coeficientes reales @code{a} y @code{b}
 se pueden calcular de manera que 
 
 @example
-x[j] = sum (a[k] * cos (2*%pi*j*k / n) + b[k] * sin (2*%pi*j*k / n), k, 0, n/2)
+x[j] = sum(a[k]*cos(2*%pi*j*k/n)+b[k]*sin(2*%pi*j*k/n), k, 0, n/2)
 @end example
 
 con
@@ -320,62 +320,7 @@ C@'alculo de los coeficientes del seno y coseno.
 
 @end deffn
 
-@defvr {Variable opcional} fortindent
-Valor por defecto: 0
 
-La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
-
-@end defvr
-
-@deffn {Funci@'on} fortran (@var{expr})
-Escribe @var{expr} en c@'odigo Fortran. La salida se escribe con m@'argenes, y si @'esta es demasiado larga @code{fortran} sigue escribiendo en l@'{@dotless{i}}neas sucesivas. La funci@'on @code{fortran} escribe el operador de exponenciaci@'on @code{^} como @code{**}, e imprime un n@'umero complejo @code{a + b %i} como @code{(a,b)}.
-
-El argumento @var{expr} puede ser una ecuaci@'on. En tal caso, @code{fortran} escribe una sentencia de asignaci@'on, d@'andole el valor del miembro derecho de la expresi@'on al miembro izquierdo. En particular, si el miembro derecho de @var{expr} es el nombre de una matriz, entonces @code{fortran} escribe una sentencia de asignaci@'on para cada elemento de la matriz.
-
-Si @var{expr} no es reconozida por @code{fortran}, la expresi@'on se escribe en formato @code{grind} sin avisos. La funci@'on @code{fortran} no reconoce listas, arreglos ni funciones.
-
-La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
-
-Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas con espacios de 80 columnas.
-
-La funci@'on @code{fortran} eval@'ua sus argumentos; un argumento precedido de ap@'ostrofo previene de la evaluaci@'on.
-La funci@'on @code{fortran} siempre devuelve @code{done}.
-
-Ejemplos:
-
-@verbatim
-(%i1) expr: (a + b)^12$
-(%i2) fortran (expr);
-      (b+a)**12                                                                 
-(%o2)                         done
-(%i3) fortran ('x=expr);
-      x = (b+a)**12                                                             
-(%o3)                         done
-(%i4) fortran ('x=expand (expr));
-      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792        
-     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b        
-     2   **3+66*a**10*b**2+12*a**11*b+a**12                                     
-(%o4)                         done
-(%i5) fortran ('x=7+5*%i);
-      x = (7,5)                                                                 
-(%o5)                         done
-(%i6) fortran ('x=[1,2,3,4]);
-      x = [1,2,3,4]                                                             
-(%o6)                         done
-(%i7) f(x) := x^2$
-(%i8) fortran (f);
-      f                                                                         
-(%o8)                         done
-@end verbatim
-
-@end deffn
-
-@defvr {Variable opcional} fortspaces
-Valor por defecto: @code{false}
-
-Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas con espacios de 80 columnas.
-
-@end defvr
 
 @deffn {Funci@'on} horner (@var{expr}, @var{x})
 @deffnx {Funci@'on} horner (@var{expr})
