@@ -1,4 +1,4 @@
-@c English version 2011-06-15
+@c English version 2011-09-03
 @menu
 * Introducci@'on al entorno de ejecuci@'on::   
 * Interrupciones::  
@@ -43,31 +43,6 @@ En sistemas Unix el car@'acter ^Z (control-Z) hace que Maxima deje de ejecutarse
 @node Funciones y variables para el entorno de ejecuci@'on,  , Interrupciones, Entorno de Ejecuci@'on
 @section Funciones y variables para el entorno de ejecuci@'on
 
-@defvr {Declaraci@'on} feature
-
-Maxima trata con dos tipos diferentes de caracter@'{@dotless{i}}sticas, las del sistema y las correspondientes a expresiones matem@'aticas. V@'ease tambi@'en @code{status} para informaci@'on sobre caracter@'{@dotless{i}}sticas del sistema. V@'eanse asimismo @code{features} y @code{featurep} para informaci@'on sobre caracter@'{@dotless{i}}sticas matem@'aticas.
-
-@code{feature} no es el nombre de una funci@'on ni de una variable.
-
-@end defvr
-
-@deffn {Funci@'on} featurep (@var{a}, @var{f})
-
-Intenta determinar si el objeto @var{a} tiene la caracter@'{@dotless{i}}stica @var{f} en base a la informaci@'on en la base de datos actual. De ser as@'{@dotless{i}}, devuelve @code{true}, en caso contrario @code{false}. 
-
-N@'otese que @code{featurep} devuelve @code{false} cuando ni @var{f} ni la negaci@'on @var{f} puedan determinarse.
-
-La funci@'on @code{featurep} eval@'ua sus argumentos.
- 
-V@'eanse tambi@'en @code{declare} y @code{features}.
-
-@example
-(%i1) declare (j, even)$
-(%i2) featurep (j, integer);
-(%o2)                           true
-@end example
-
-@end deffn
 
 @defvr {Variable del sistema} maxima_tempdir
 

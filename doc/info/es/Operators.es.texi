@@ -1,4 +1,4 @@
-@c English version 2011-06-15
+@c English version 2011-09-03
 @menu
 * Introducci@'on a los operadores::
 * Operadores aritm@'eticos::

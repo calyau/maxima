@@ -1,4 +1,4 @@
-@c English version 2011-06-12
+@c English version 2012-07-24
 @page
 @node Arrays, Estructuras, Listas, Tipos de datos y estructuras
 @section Arrays
@@ -362,6 +362,16 @@ Ejemplos:
 @end example
 
 @end defvr
+
+
+@deffn {Funci@'on} arraysetapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}], @var{x})
+
+Asigna @var{x} a @code{@var{A}[@var{i_1}, ..., @var{i_n}]},
+siendo @var{A} un array y @var{i_1}, @dots{}, @var{i_n} enteros.
+
+@code{arraysetapply} eval@'ua sus argumentos..
+@end deffn
+
 
 
 @deffn {Funci@'on} fillarray (@var{A}, @var{B})
