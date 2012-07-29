@@ -1,4 +1,4 @@
-@c English version 2011-06-07
+@c English version 2011-09-03
 @menu
 * Introducci@'on a la miscel@'anea de opciones::  
 * Share::  
@@ -9,7 +9,8 @@
 
 @section Introducci@'on a la miscel@'anea de opciones
 
-En esta secci@'on se comentan varias opciones que tienen un efecto global sobre le comportamiento de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definidas por el usuario.
+En esta secci@'on se comentan varias opciones que tienen un efecto global sobre le comportamiento
+de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definidas por el usuario.
 
 
 
@@ -23,11 +24,16 @@ En esta secci@'on se comentan varias opciones que tienen un efecto global sobre 
 
 @section Share
 
-El directorio "share" de Maxima contiene programas y ficheros de inter@'es para los usuarios de Maxima, pero no forman parte del n@'ucleo de Maxima. Estos programas se cargan en memoria con llamadas a las funciones @code{load} o @code{setup_autoload}.
+El directorio "share" de Maxima contiene programas y ficheros de inter@'es para
+los usuarios de Maxima, pero no forman parte del n@'ucleo de Maxima. Estos programas 
+se cargan en memoria con llamadas a las funciones @code{load} o @code{setup_autoload}.
 
-El c@'odigo @code{:lisp *maxima-sharedir*} muestra la localizaci@'on del directorio "share" dentro del sistema de ficheros del usuario.
+El c@'odigo @code{:lisp *maxima-sharedir*} muestra la localizaci@'on del directorio 
+"share" dentro del sistema de ficheros del usuario.
 
-El c@'odigo @code{printfile ("share.usg")} muestra una lista actualizada de paquetes en "share". Los usuarios pueden encontrar m@'as informaci@'on accediendo directamente a los contenidos del directorio "share".
+El c@'odigo @code{printfile ("share.usg")} muestra una lista actualizada de paquetes 
+en "share". Los usuarios pueden encontrar m@'as informaci@'on accediendo directamente
+a los contenidos del directorio "share".
 
 
 
@@ -41,31 +47,9 @@ El c@'odigo @code{printfile ("share.usg")} muestra una lista actualizada de paqu
 @section Funciones y variables para la miscel@'anea de opciones
 
 
-@defvr {Declaraci@'on} alphabetic
-
-@code{alphabetic} es una declaraci@'on de tipo reconocida por @code{declare}.
-La expresi@'on @code{declare(@var{s}, alphabetic)} indica a Maxima que
-reconozca como alfab@'eticos todos los caracteres de @var{s}, que debe ser
-una cadena alfanum@'erica.
-
-Ejemplo:
-
-@c ===beg===
-@c xx\~yy\`\@ : 1729;
-@c declare ("~`@", alphabetic);
-@c xx~yy`@ + @yy`xx + `xx@@yy~;
-@c listofvars (%);
-@c ===end===
-@example
-(%i1) xx\~yy\`\@@ : 1729;
-(%o1)                         1729
-(%i2) declare ("~`@@", alphabetic);
-(%o2)                         done
-(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
-(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
-(%i4) listofvars (%);
-(%o4)                  [@@yy`xx, `xx@@@@yy~]
-@end example
+@defvr {Variable del sistema} askexp
+Cuando se invoca a @code{asksign}, la expresi@'on que se va 
+a analizar es precisamente @code{askexp}.
 
 @end defvr
 
@@ -131,134 +115,14 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} properties (@var{a})
+@defvr {Variable opcional} packagefile
+Valor por defecto: @code{false}
 
-Devuelve una lista con los nombres de propiedades asociadas con el @'atomo @var{a}.
-
-@end deffn
-
-
-
-@defvr {S@'{@dotless{i}}mbolo especial} props
-
-@code{props} son @'atomos que tienen cualquier propiedad diferente de las mencionadas
-expl@'{@dotless{i}}citamente en @code{infolists}, tales como las especificadas por
-@code{atvalues}, @code{matchdeclares}, etc., as@'{@dotless{i}} como las propiedades
-especificadas mediante la funci@'on @code{declare}.
-
+Los autores de paquetes que utilizan @code{save} o @code{translate}
+para crear librer@'{@dotless{i}}as para otros usuarios pueden hacer la asignaci@'on
+@code{packagefile: true} para prevenir que se a@~nada informaci@'on a las listas
+con informaci@'on del sistema de Maxima, como @code{values} o @code{functions}.
 @end defvr
-
-
-
-@deffn {Funci@'on} propvars (@var{prop})
-
-Devuelve una lista con aquellos @'atomos de la lista @code{props} que tienen la propiedad indicada por @var{prop}. 
-
-@end deffn
-
-
-
-
-@deffn {Funci@'on} put (@var{@'atomo}, @var{valor}, @var{indicador})
-
-Asigna el @var{valor} a la propiedad  (especificada por @var{indicador}) de @var{@'atomo}; @var{indicador} puede ser el nombre de cualquier propiedad y no solamente de aquellas definidas por el sistema.
-
-@code{rem} deshace la asignaci@'on realizada por @code{put}.
-
-La funci@'on @code{put} eval@'ua sus argumentos y devuelve @var{valor}.
-
-Ejemplos:
-
-@example
-(%i1) put (foo, (a+b)^5, expr);
-                                   5
-(%o1)                       (b + a)
-(%i2) put (foo, "Hello", str);
-(%o2)                         Hello
-(%i3) properties (foo);
-(%o3)            [[user properties, str, expr]]
-(%i4) get (foo, expr);
-                                   5
-(%o4)                       (b + a)
-(%i5) get (foo, str);
-(%o5)                         Hello
-@end example
-
-@end deffn
-
-
-
-
-@deffn {Funci@'on} qput (@var{@'atomo}, @var{valor}, @var{indicador})
-
-Asigna @var{valor} a la propiedad de @var{@'atomo} que especifique @var{indicador}. Act@'ua del mismo modeo que @code{put}, excepto que sus argumentos no son evaluados.
-
-Ejemplo:
-
-@example
-(%i1) foo: aa$ 
-(%i2) bar: bb$
-(%i3) baz: cc$
-(%i4) put (foo, bar, baz);
-(%o4)                          bb
-(%i5) properties (aa);
-(%o5)                [[user properties, cc]]
-(%i6) get (aa, cc);
-(%o6)                          bb
-(%i7) qput (foo, bar, baz);
-(%o7)                          bar
-(%i8) properties (foo);
-(%o8)            [value, [user properties, baz]]
-(%i9) get ('foo, 'baz);
-(%o9)                          bar
-@end example
-
-@end deffn
-
-
-
-
-@deffn {Funci@'on} rem (@var{@'atomo}, @var{indicador})
-
-Elimina del @var{@'atomo} la propiedad indicada por @var{indicador}.
-@code{rem} deshace la asignaci@'on realizada por @code{put}.
-
-@code{rem} devuelve @code{done} si @var{@'atomo} ten@'{@dotless{i}}a la 
-propiedad @var{indicador} cuando @code{rem} fue invocado, devolviendo
-@code{false} si carec@'{@dotless{i}}a tal propiedad.
-
-@end deffn
-
-
-
-
-@deffn {Funci@'on} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Funci@'on} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
-@deffnx {Funci@'on} remove ("@var{a}", operator)
-@deffnx {Funci@'on} remove (@var{a}, transfun)
-@deffnx {Funci@'on} remove (all, @var{p})
-
-Elimina propiedades asociadas con @'atomos.
-
-La llamada @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
-elimina la propiedad @code{p_k} del @'atomo @code{a_k}.
-
-La llamada @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-elimina las propiedades @code{@var{p_1}, ..., @var{p_n}} de los @'atomos @var{a_1}, ..., @var{a_m}. Puede tener m@'as de un par de listas.
-
-La llamada @code{remove (all, @var{p})} elimina la propiedad @var{p} de todos los @'atomos que la tengan.
-
-Las propiedades eliminadas pueden ser de las que define el sistema, como 
-@code{function}, @code{macro} o @code{mode_declare}; @code{remove} no elimina
-las propiedades definidas por @code{put}.
-
-La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
-
-La funci@'on @code{remove} devuelve siempre @code{done} independientemente que haya alg@'un @'atomo con la propiedad especificada.
-
-La funci@'on @code{remove} no eval@'ua sus argumentos.
-
-@end deffn
 
 
 
@@ -285,12 +149,6 @@ Antes de utilizar esta funci@'on ejec@'utese @code{load(rncomb)}.
 @end deffn
 
 
-
-@deffn {Funci@'on} scalarp (@var{expr})
-
-Devuelve @code{true} si @var{expr} es un n@'umero, constante  o variable declarada como @code{scalar} con @code{declare}, o compuesta completamente de tales n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
-
-@end deffn
 
 
 
@@ -327,3 +185,60 @@ Warning - you are redefining the Macsyma function legendre_p
 @end example
 
 @end deffn
+
+
+
+@deffn  {Funci@'on} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Funci@'on} tcl_output (@var{list}, @var{i0})
+@deffnx {Funci@'on} tcl_output ([@var{list_1}, @dots{}, @var{list_n}], @var{i})
+
+Imprime los elementos de una lista encerr@'andolos con llaves @code{@{ @}},
+de forma apropiada para ser utilizado en un programa en el lenguaje Tcl/Tk.
+
+@code{tcl_output (@var{list}, @var{i0}, @var{skip})}
+imprime @var{list}, empezando por el elemento @var{i0} siguiendo luego con los
+elementos @code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
+
+@code{tcl_output (@var{list}, @var{i0})}
+equivale a @code{tcl_output (@var{list}, @var{i0}, 2)}.
+
+@code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
+imprime los @var{i}-@'esimos elementos de @var{list_1}, @dots{}, @var{list_n}.
+
+Ejemplos:
+
+@c EXAMPLE INPUT
+@c tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
+@c tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
+@c tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
+@c tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
+@c tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
+
+@c EXAMPLE OUTPUT: CLISP
+@c OUTPUT IS OK FOR FIRST TWO, BROKEN FOR OTHERS
+@c GCL OUTPUT: SAME FOR FIRST TWO
+@c GCL FAILS ON OTHERS (IN EACH CASE COMPLAINING ELEMENTS ARE "not of type (OR RATIONAL LISP:FLOAT)"
+@example
+(%i1) tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
+
+ @{1.000000000     4.000000000     
+ @}
+(%i2) tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
+
+ @{2.000000000     5.000000000     
+ @}
+(%i3) tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
+
+ @{((RAT SIMP) 3 7) ((RAT SIMP) 11 13) 
+ @}
+(%i4) tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
+
+ @{$Y1 $Y2 $Y3 
+ @}
+(%i5) tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
+
+ @{SIMP 1.000000000     11.00000000     
+ @}
+@end example
+@end deffn
+

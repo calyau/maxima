@@ -236,239 +236,255 @@ expresi@'on @code{done}.
 
 La llamada @code{featurep (@var{object}, @var{feature})} devuelve @code{true}
 si @var{object} ha sido previamente declarado como poseedor de la propiedad
-@var{feature}. No obstante, @code{featurep} no reconoce algunas propiedades, 
-lo cual es un fallo conocido de Maxima.
+@var{feature}.
 
 V@'ease tambi@'en @code{features}.
 
 La funci@'on @code{declare} reconoce las siguientes propiedades:
 
-@table @asis
-@item @code{evfun}
-Hace que @var{a_i} sea reconocida por @code{ev}, de manera que la funci@'on
-nombrada por @var{a_i} se aplique cuando @var{a_i} aparezca como argumento
-de control de @code{ev}.
-V@'ease @code{evfun}.
+@table @code
+@item additive
+      Hace que Maxima simplifique las expresiones @var{a_i}
+      haciendo uso de la sustituci@'on 
+      @code{@var{a_i}(x + y + z + ...)} @code{-->}
+      @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+      Tal sustituci@'on se aplica @'unicamente al primer argumento.
 
-@item @code{evflag}
-Hace que @var{a_i} sea reconocida por @code{ev}, de manera que a @var{a_i} se le
-asigne el valor @code{true} durante la ejecuci@'on de @code{ev} cuando @var{a_i} 
-aparezca como argumento de control de @code{ev}.
+@item alphabetic
+      Indica a Maxima que reconozca todos los caracteres de la cadena alfanum@'erica
+      @var{a_i} como caracteres alfab@'eticos.
 
-@item @code{bindtest}
-Hace que Maxima env@'{@dotless{i}}e un error si @var{a_i} es evaluado sin hab@'ersele
-asignado un valor.
+@item antisymmetric, commutative, symmetric
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on sim@'etrica o
+      antisim@'etrica. La propiedad @code{commutative} equivale a @code{symmetric}.
 
-@item @code{noun}
-Hace que Maxima considere a @var{a_i} como un nombre. El efecto
-que se obtiene es que se reemplazan todas las expresiones @var{a_i}
-por @code{'@var{a_i}} o @code{nounify (@var{a_i})},
-dependiendo del contexto.
+@item bindtest
+      Hace que Maxima env@'{@dotless{i}}e un error si @var{a_i} es evaluado sin hab@'ersele
+      asignado un valor.
 
-@item @code{constant}
-Hace que Maxima considere a @var{a_i} como una constante
-simb@'olica.
+@item constant
+      Hace que Maxima considere a @var{a_i} como una constante
+      simb@'olica.
 
-@item @code{scalar}
-Hace que Maxima considere a @var{a_i} como una variable escalar.
+@item even, odd
+      Hace que Maxima reconozca a @var{a_i} como una variable entera par o impar.
 
-@item @code{nonscalar}
-Hace que Maxima considere a @var{a_i} como una variable no escalar.
-Se aplica com@'unmente para declarar una variable como un vector simb@'olico
-o una matriz simb@'olica.
+@item evenfun, oddfun
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on par o impar.
 
-@item @code{nonarray}
-Indica que Maxima no debe considerar @var{a_i} como un array. Esta declaraci@'on
-evita la evaluaci@'on m@'ultiple de variables subindicadas.
+@item evflag
+      Hace que @var{a_i} sea reconocida por @code{ev}, de manera que a @var{a_i} se le
+      asigne el valor @code{true} durante la ejecuci@'on de @code{ev} cuando @var{a_i} 
+      aparezca como argumento de control de @code{ev}. V@'ease tambi@'en @code{evflag}.
 
-@item @code{mainvar}
-Hace que Maxima considere a @var{a_i} como una "variable principal",
-d@'andole prioridad frente a cualesquiera otras constantes o
-variables en la ordenaci@'on can@'onica de expresiones de Maxima,
-tal como determina @code{ordergreatp}.
+@item evfun
+      Hace que @var{a_i} sea reconocida por @code{ev}, de manera que la funci@'on
+      nombrada por @var{a_i} se aplique cuando @var{a_i} aparezca como argumento
+      de control de @code{ev}. V@'ease tambi@'en @code{evfun}.
 
-@item @code{alphabetic}
-Indica a Maxima que reconozca todos los caracteres de la cadena alfanum@'erica
-@var{a_i} como caracteres alfab@'eticos.
+@item feature
+      Hace que Maxima considere a @var{a_i} como el nombre de una propiedad.
+      Otros @'atomos podr@'an ser declarados entonces como poseedores de
+      la propiedad @var{a_i}.
 
-@item @code{feature}
-Hace que Maxima considere a @var{a_i} como el nombre de una propiedad.
-Otros @'atomos podr@'an ser declarados entonces como poseedores de
-la propiedad @var{a_i}.
+@item increasing, decreasing
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on creciente o decreciente.
 
-@item @code{rassociative}, @code{lassociative}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on asociativa por la derecha o
-por la izquierda.
+@item integer, noninteger
+      Hace que Maxima reconozca a @var{a_i} como una variable entera o no entera.
 
-@item @code{nary}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on n-aria.
+@item integervalued
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on de valor entero.
 
-La declaraci@'on @code{nary} no es equivalente a la funci@'on @code{nary}.
-El @'unico efecto de @code{declare(foo, nary)} consiste en hacer que
-el simplificador de Maxima reduzca expresiones anidadas; por ejemplo, 
-para transformar @code{foo(x, foo(y, z))} a @code{foo(x, y, z)}.
+@item lassociative, rassociative
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on asociativa por la derecha o
+      por la izquierda.
 
-@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on sim@'etrica o
-antisim@'etrica. La propiedad @code{commutative} equivale a @code{symmetric}.
+@item linear
+      Equivale a declarar @var{a_i} conjuntamente como @code{outative} y @code{additive}.
 
-@item @code{evenfun}, @code{oddfun}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on par o impar.
+@item mainvar
+      Hace que Maxima considere a @var{a_i} como una "variable principal",
+      d@'andole prioridad frente a cualesquiera otras constantes o
+      variables en la ordenaci@'on can@'onica de expresiones de Maxima,
+      tal como determina @code{ordergreatp}.
 
-@item @code{outative}
-Hace que Maxima simplifique las expresiones @var{a_i}
-extrayendo los factores constantes del primer argumento.
+@item multiplicative
+      Hace que Maxima simplifique las expresiones @var{a_i}
+      haciendo uso de la sustituci@'on 
+      @code{@var{a_i}(x * y * z * ...)} @code{-->} @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+      Tal sustituci@'on se aplica @'unicamente al primer argumento.
 
-Cuando @var{a_i} tenga un @'unico argumento, un factor se considerar@'a constante
-si es una constante literal o declarada.
+@item nary
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on n-aria.
 
-Cuando @var{a_i} tenga dos o m@'as argumentos, un factor se considerar@'a constante
-si el segundo argumento es un s@'{@dotless{i}}mbolo y el factor no contiene al
-segundo argumento.
+      La declaraci@'on @code{nary} no es equivalente a la funci@'on @code{nary}.
+      El @'unico efecto de @code{declare(foo, nary)} consiste en hacer que
+      el simplificador de Maxima reduzca expresiones anidadas; por ejemplo, 
+      para transformar @code{foo(x, foo(y, z))} a @code{foo(x, y, z)}.
 
-@item @code{multiplicative}
-Hace que Maxima simplifique las expresiones @var{a_i}
-haciendo uso de la sustituci@'on 
-@code{@var{a_i}(x * y * z * ...)} @code{-->} @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
-Tal sustituci@'on se aplica @'unicamente al primer argumento.
+@item nonarray
+      Indica que Maxima no debe considerar @var{a_i} como un array. Esta declaraci@'on
+      evita la evaluaci@'on m@'ultiple de variables subindicadas.
 
-@item @code{additive}
-Hace que Maxima simplifique las expresiones @var{a_i}
-haciendo uso de la sustituci@'on 
-@code{@var{a_i}(x + y + z + ...)} @code{-->} @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
-Tal sustituci@'on se aplica @'unicamente al primer argumento.
+@item nonscalar
+      Hace que Maxima considere a @var{a_i} como una variable no escalar.
+      Se aplica com@'unmente para declarar una variable como un vector simb@'olico
+      o una matriz simb@'olica.
 
-@item @code{linear}
-Equivale a declarar @var{a_i} conjuntamente como @code{outative} y @code{additive}.
+@item noun
+      Hace que Maxima considere a @var{a_i} como un nombre. El efecto
+      que se obtiene es que se reemplazan todas las expresiones @var{a_i}
+      por @code{'@var{a_i}} o @code{nounify (@var{a_i})},
+      dependiendo del contexto.
 
-@item @code{integer}, @code{noninteger}
-Hace que Maxima reconozca a @var{a_i} como una variable entera o no entera.
+@item outative
+      Hace que Maxima simplifique las expresiones @var{a_i}
+      extrayendo los factores constantes del primer argumento.
 
-@item @code{even}, @code{odd}
-Hace que Maxima reconozca a @var{a_i} como una variable entera par o impar.
+      Cuando @var{a_i} tenga un @'unico argumento, un factor se considerar@'a constante
+      si es una constante literal o declarada.
 
-@item @code{rational}, @code{irrational}
-Hace que Maxima reconozca a @var{a_i} como una variable real racional o irracional.
+      Cuando @var{a_i} tenga dos o m@'as argumentos, un factor se considerar@'a constante
+      si el segundo argumento es un s@'{@dotless{i}}mbolo y el factor no contiene al
+      segundo argumento.
 
-@item @code{real}, @code{imaginary}, @code{complex}
-Hace que Maxima reconozca a @var{a_i} como una variable real, imaginaria o compleja.
+@item posfun
+      Hace que Maxima reconozca a @var{a_i} como una funci@'on positiva.
 
-@item
-@code{increasing}, @code{decreasing}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on creciente o decreciente.
-@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
-@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
-@c REPORTED AS SF BUG # 1483194
+@item rational, irrational
+      Hace que Maxima reconozca a @var{a_i} como una variable real racional o irracional.
 
-@item @code{posfun}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on positiva.
+@item real, imaginary, complex
+      Hace que Maxima reconozca a @var{a_i} como una variable real, imaginaria o compleja.
 
-@item @code{integervalued}
-Hace que Maxima reconozca a @var{a_i} como una funci@'on de valor entero.
+@item scalar
+      Hace que Maxima considere a @var{a_i} como una variable escalar.
 
 @end table
 
+Ejemplos sobre el uso de estas propiedades est@'an disponibles en la 
+documentaci@'on correspondiente a cada propiedad por separado.
+@end deffn
+
+
+
+@defvr  {Propiedad} decreasing
+@defvrx {Propiedad} increasing
+
+Las instrucciones @code{declare(@var{f}, decreasing)} y
+@code{declare(@var{f}, increasing} le indican a Maxima que reconozca la funci@'on
+@var{f} como una funci@'on decreciente o creciente.
+
+V@'ease tambi@'en @code{declare} para m@'as propiedades.
+
+Ejemplo:
+
+@example
+(%i1) assume(a > b);
+(%o1)                        [a > b]
+(%i2) is(f(a) > f(b));
+(%o2)                        unknown
+(%i3) declare(f, increasing);
+(%o3)                         done
+(%i4) is(f(a) > f(b));
+(%o4)                         true
+@end example
+@end defvr
+
+
+@defvr  {Propiedad} even
+@defvrx {Propiedad} odd
+
+@code{declare(@var{a}, even)} y @code{declare(@var{a}, odd)} le indican a Maxima
+que reconozca el s@'{@dotless{i}}mbolo @var{a} como entero par o impar.  Las
+propiedades @code{even} y @code{odd} no son reconocidas por las funciones 
+@code{evenp}, @code{oddp} y @code{integerp}.
+
+V@'eanse tambi@'en @code{declare} y @code{askinteger}.
+
+Ejemplo:
+
+@example
+(%i1) declare(n, even);
+(%o1)                         done
+(%i2) askinteger(n, even);
+(%o2)                          yes
+(%i3) askinteger(n);
+(%o3)                          yes
+(%i4) evenp(n);
+(%o4)                         false
+@end example
+@end defvr
+
+
+
+@defvr {Propiedad} feature
+
+Maxima interpreta dos tipos diferentes de propiedades, del sistema y las que
+se aplican a expresiones matem@'aticas. V@'ease @code{status} para obtener
+informaci@'on sobre propiedades del sistema, as@'{@dotless{i}} como
+@code{features} y @code{featurep} para propiedades de las expresiones matem@'aticas.
+
+@code{feature} no es el nombre de ninguna funci@'on o variable.
+@end defvr
+
+
+@deffn {Funci@'on} featurep (@var{a}, @var{f})
+
+Intenta determinar si el objeto @var{a} tiene la propiedad @var{f} en base a los
+hechos almacenados en la base de datos. En caso afirmativo, devuelve @code{true},
+o @code{false} en caso contrario.
+
+N@'otese que @code{featurep} devuelve @code{false} cuando no se puedan verificar ni
+@var{f} ni su negaci@'on.
+
+@code{featurep} eval@'ua su argumento.
+
+V@'eanse tambi@'en @code{declare} y @code{features}.
+
 Ejemplos:
 
-Declaraciones en base a @code{evfun} y @code{evflag}.
-@c ===beg===
-@c declare (expand, evfun);
-@c (a + b)^3;
-@c (a + b)^3, expand;
-@c declare (demoivre, evflag);
-@c exp (a + b*%i);
-@c exp (a + b*%i), demoivre;
-@c ===end===
 @example
-(%i1) declare (expand, evfun);
-(%o1)                         done
-(%i2) (a + b)^3;
-                                   3
-(%o2)                       (b + a)
-(%i3) (a + b)^3, expand;
-                     3        2      2      3
-(%o3)               b  + 3 a b  + 3 a  b + a
-(%i4) declare (demoivre, evflag);
-(%o4)                         done
-(%i5) exp (a + b*%i);
-                             %i b + a
-(%o5)                      %e
-(%i6) exp (a + b*%i), demoivre;
-                      a
-(%o6)               %e  (%i sin(b) + cos(b))
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
 @end example
+@end deffn
 
-Declaraci@'on en base a  @code{bindtest}.
-@c ===beg===
-@c aa + bb;
-@c declare (aa, bindtest);
-@c aa + bb;
-@c aa : 1234;
-@c aa + bb;
-@c ===end===
-@example
-(%i1) aa + bb;
-(%o1)                        bb + aa
-(%i2) declare (aa, bindtest);
-(%o2)                         done
-(%i3) aa + bb;
-aa unbound variable
- -- an error.  Quitting.  To debug this try debugmode(true);
-(%i4) aa : 1234;
-(%o4)                         1234
-(%i5) aa + bb;
-(%o5)                       bb + 1234
-@end example
 
-Declaraci@'on en base a  @code{noun}.
-@c ===beg===
-@c factor (12345678);
-@c declare (factor, noun);
-@c factor (12345678);
-@c ''%, nouns;
-@c ===end===
-@example
-(%i1) factor (12345678);
-                             2
-(%o1)                     2 3  47 14593
-(%i2) declare (factor, noun);
-(%o2)                         done
-(%i3) factor (12345678);
-(%o3)                   factor(12345678)
-(%i4) ''%, nouns;
-                             2
-(%o4)                     2 3  47 14593
-@end example
 
-Declaraciones en base a @code{constant}, @code{scalar}, @code{nonscalar} y @code{mainvar}.
-@c ===beg===
-@c declare (bb, constant);
-@c declare (cc, scalar);
-@c declare (dd, nonscalar);
-@c declare (ee, mainvar);
-@c ===end===
-@example
-@end example
+@defvr {Declaraci@'on} features
+Maxima reconoce ciertas propiedades matem@'aticas sobre funciones y variables.
 
-Declaraci@'on en base a @code{alphabetic}.
-@c ===beg===
-@c xx\~yy\`\@ : 1729;
-@c declare ("~`@", alphabetic);
-@c xx~yy`@ + @yy`xx + `xx@@yy~;
-@c listofvars (%);
-@c ===end===
-@example
-(%i1) xx\~yy\`\@@ : 1729;
-(%o1)                         1729
-(%i2) declare ("~`@@", alphabetic);
-(%o2)                         done
-(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
-(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
-(%i4) listofvars (%);
-(%o4)                  [@@yy`xx, `xx@@@@yy~]
-@end example
+La llamada @code{declare (@var{x}, @var{foo})} asocia la propiedad @var{foo} a la funci@'on o variable @var{x}.
 
-Declaraci@'on en base a @code{feature}.
+La llamada @code{declare (@var{foo}, feature)} declara una nueva propiedad @var{foo}. 
+Por ejemplo, @code{declare ([rojo, verde, azul], feature)} declara tres nuevas propiedades, 
+@code{rojo}, @code{verde} y @code{azul}.
+
+El predicado @code{featurep (@var{x}, @var{foo})}
+devuelve @code{true} si @var{x} goza de la propiedad @var{foo}, y @code{false} en caso contrario.
+
+La lista @code{features} contiene las propiedades que reconoce Maxima; a saber,
+
+@verbatim
+   integer        noninteger      even
+   odd            rational        irrational
+   real           imaginary       complex
+   analytic       increasing      decreasing
+   oddfun         evenfun         posfun
+   commutative    lassociative    rassociative
+   symmetric      antisymmetric
+@end verbatim
+
+junto con las definidas por el usuario.
+
+La lista @code{features} s@'olo contiene propiedades matem@'aticas. 
+Hay otra lista con propiedades no matem@'aticas; V@'ease @code{status}.
+
+Ejemplo:
+
 @c ===beg===
 @c declare (FOO, feature);
 @c declare (x, FOO);
@@ -482,194 +498,34 @@ Declaraci@'on en base a @code{feature}.
 (%i3) featurep (x, FOO);
 (%o3)                         true
 @end example
-
-Declaraciones en base a @code{rassociative} y @code{lassociative}.
-@c ===beg===
-@c declare (F, rassociative);
-@c declare (G, lassociative);
-@c ===end===
-@example
-@end example
-
-Declaraci@'on en base a @code{nary}.
-@c ===beg===
-@c H (H (a, b), H (c, H (d, e)));
-@c declare (H, nary);
-@c H (H (a, b), H (c, H (d, e)));
-@c ===end===
-@example
-(%i1) H (H (a, b), H (c, H (d, e)));
-(%o1)               H(H(a, b), H(c, H(d, e)))
-(%i2) declare (H, nary);
-(%o2)                         done
-(%i3) H (H (a, b), H (c, H (d, e)));
-(%o3)                   H(a, b, c, d, e)
-@end example
-
-Declaraciones en base a @code{symmetric} y @code{antisymmetric}.
-@c ===beg===
-@c S (b, a);
-@c declare (S, symmetric);
-@c S (b, a);
-@c S (a, c, e, d, b);
-@c T (b, a);
-@c declare (T, antisymmetric);
-@c T (b, a);
-@c T (a, c, e, d, b);
-@c ===end===
-@example
-(%i1) S (b, a);
-(%o1)                        S(b, a)
-(%i2) declare (S, symmetric);
-(%o2)                         done
-(%i3) S (b, a);
-(%o3)                        S(a, b)
-(%i4) S (a, c, e, d, b);
-(%o4)                   S(a, b, c, d, e)
-(%i5) T (b, a);
-(%o5)                        T(b, a)
-(%i6) declare (T, antisymmetric);
-(%o6)                         done
-(%i7) T (b, a);
-(%o7)                       - T(a, b)
-(%i8) T (a, c, e, d, b);
-(%o8)                   T(a, b, c, d, e)
-@end example
-
-Declaraciones en base a @code{oddfun} y @code{evenfun}.
-@c ===beg===
-@c o (- u) + o (u);
-@c declare (o, oddfun);
-@c o (- u) + o (u);
-@c e (- u) - e (u);
-@c declare (e, evenfun);
-@c e (- u) - e (u);
-@c ===end===
-@example
-(%i1) o (- u) + o (u);
-(%o1)                     o(u) + o(- u)
-(%i2) declare (o, oddfun);
-(%o2)                         done
-(%i3) o (- u) + o (u);
-(%o3)                           0
-(%i4) e (- u) - e (u);
-(%o4)                     e(- u) - e(u)
-(%i5) declare (e, evenfun);
-(%o5)                         done
-(%i6) e (- u) - e (u);
-(%o6)                           0
-@end example
-
-Declaraci@'on en base a @code{outative}.
-@c ===beg===
-@c F1 (100 * x);
-@c declare (F1, outative);
-@c F1 (100 * x);
-@c declare (zz, constant);
-@c F1 (zz * y);
-@c ===end===
-@example
-(%i1) F1 (100 * x);
-(%o1)                       F1(100 x)
-(%i2) declare (F1, outative);
-(%o2)                         done
-(%i3) F1 (100 * x);
-(%o3)                       100 F1(x)
-(%i4) declare (zz, constant);
-(%o4)                         done
-(%i5) F1 (zz * y);
-(%o5)                       zz F1(y)
-@end example
-
-Declaraci@'on en base a @code{multiplicative}.
-@c ===beg===
-@c F2 (a * b * c);
-@c declare (F2, multiplicative);
-@c F2 (a * b * c);
-@c ===end===
-@example
-(%i1) F2 (a * b * c);
-(%o1)                       F2(a b c)
-(%i2) declare (F2, multiplicative);
-(%o2)                         done
-(%i3) F2 (a * b * c);
-(%o3)                   F2(a) F2(b) F2(c)
-@end example
-
-Declaraci@'on en base a @code{additive}.
-@c ===beg===
-@c F3 (a + b + c);
-@c declare (F3, additive);
-@c F3 (a + b + c);
-@c ===end===
-@example
-(%i1) F3 (a + b + c);
-(%o1)                     F3(c + b + a)
-(%i2) declare (F3, additive);
-(%o2)                         done
-(%i3) F3 (a + b + c);
-(%o3)                 F3(c) + F3(b) + F3(a)
-@end example
-
-Declaraci@'on en base a @code{linear}.
-@c ===beg===
-@c 'sum (F(k) + G(k), k, 1, inf);
-@c declare (nounify (sum), linear);
-@c 'sum (F(k) + G(k), k, 1, inf);
-@c ===end===
-@example
-(%i1) 'sum (F(k) + G(k), k, 1, inf);
-                       inf
-                       ====
-                       \
-(%o1)                   >    (G(k) + F(k))
-                       /
-                       ====
-                       k = 1
-(%i2) declare (nounify (sum), linear);
-(%o2)                         done
-(%i3) 'sum (F(k) + G(k), k, 1, inf);
-                     inf          inf
-                     ====         ====
-                     \            \
-(%o3)                 >    G(k) +  >    F(k)
-                     /            /
-                     ====         ====
-                     k = 1        k = 1
-@end example
-
-@end deffn
-
-
-@defvr {Declaraci@'on} features
-Maxima reconoce ciertas propiedades matem@'aticas sobre funciones y variables.
-
-La llamada @code{declare (@var{x}, @var{foo})} asocia la propiedad @var{foo} a la funci@'on o variable @var{x}.
-
-La llamada @code{declare (@var{foo}, feature)} declara una nueva propiedad @var{foo}. Por ejemplo, @code{declare ([rojo, verde, azul], feature)} declara tres nuevas propiedades, @code{rojo}, @code{verde} y @code{azul}.
-
-El predicado @code{featurep (@var{x}, @var{foo})}
-devuelve @code{true} si @var{x} goza de la propiedad @var{foo}, y @code{false} en caso contrario.
-
-La lista @code{features} contiene las propiedades que reconoce Maxima; a saber,
-@code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
-@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
-@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
-@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
-@code{rassociative}, @code{symmetric}, and @code{antisymmetric}, junto con las definidas por el usuario.
-
-La lista @code{features} s@'olo contiene propiedades matem@'aticas. Hay otra lista con propiedades no matem@'aticas; V@'ease @code{status}.
-
 @end defvr
 
 
 
 @deffn {Funci@'on} get (@var{a}, @var{i})
 
-Recupera la propiedad de usuario indicada por @var{i} asociada al @'atomo @var{a} o devuelve @code{false} si @var{a} no tiene la propiedad @var{i}.
+Recupera la propiedad de usuario indicada por @var{i} asociada al @'atomo @var{a} 
+o devuelve @code{false} si @var{a} no tiene la propiedad @var{i}.
 
 La funci@'on @code{get} eval@'ua sus argumentos.
 
+V@'eanse tambi@'en @code{put} y @code{qput}.
+
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
 @example
 (%i1) put (%e, 'transcendental, 'type);
 (%o1)                    transcendental
@@ -688,10 +544,52 @@ x is not numeric.
 (%o5)  [[transcendental, []], [algebraic, transcendental]]
 (%i6) typeof (2*%e + %pi);
 (%o6)     [transcendental, [algebraic, transcendental]]
-
 @end example
-
 @end deffn
+
+
+@defvr  {Propiedad} integer
+@defvrx {Propiedad} noninteger
+
+@code{declare(@var{a}, integer)} o @code{declare(@var{a}, noninteger)} indica a
+Maxima que reconozca @var{a} como una variable entera o no entera.
+
+V@'ease tambi@'en @code{declare}.
+
+Ejemplo:
+
+@example
+(%i1) declare(n, integer, x, noninteger);
+(%o1)                         done
+(%i2) askinteger(n);
+(%o2)                          yes
+(%i3) askinteger(x);
+(%o3)                          no
+@end example
+@end defvr
+
+
+
+@defvr {Propiedad} integervalued
+
+@code{declare(@var{f}, integervalued)} indica a MAxima que reconozca @var{f} como
+una funci@'on que toma valores enteros.
+
+V@'ease tambi@'en @code{declare}.
+
+Ejemplo:
+
+@example
+(%i1) exp(%i)^f(x);
+                              %i f(x)
+(%o1)                      (%e  )
+(%i2) declare(f, integervalued);
+(%o2)                         done
+(%i3) exp(%i)^f(x);
+                              %i f(x)
+(%o3)                       %e
+@end example
+@end defvr
 
 
 
@@ -700,6 +598,8 @@ x is not numeric.
 La instrucci@'on @code{declare(a, nonarray)} le indica a Maxima que
 no considere @var{a} como un array. Esta declaraci@'on evita la 
 evaluaci@'on m@'ultiple de @var{a}, si @'esta es una variable subindicada.
+
+V@'ease tambi@'en @code{declare}.
 
 Ejemplo:
 
@@ -724,15 +624,27 @@ Ejemplo:
 @end deffn
 
 
+@defvr {Propiedad} nonscalar
+Hace que los @'atomos se comporten como hace una lista o matriz 
+con respecto del operador @code{.} del la multiplicaci@'on no conmutativa.
+
+V@'ease tambi@'en @code{declare}.
+@end defvr
+
+
+@deffn {Funci@'on} nonscalarp (@var{expr})
+Devuelve @code{true} si @var{expr} no es escalar, es decir, 
+si contiene @'atomos declarados como no escalares, listas o matrices. 
+@end deffn
+
 
 @defvr {Declaraci@'on} posfun
 La instrucci@'on @code{declare (f, posfun)} declara a @code{f} como 
 funci@'on positiva, de forma que 
 @code{is (f(x) > 0)} devolver@'a @code{true}.
 
+V@'ease tambi@'en @code{declare}.
 @end defvr
-
-
 
 
 @deffn {Funci@'on} printprops (@var{a}, @var{i})
@@ -748,7 +660,174 @@ para propiedades que no pueden ser mostradas de otra manera, i.e. para
 @end deffn
 
 
+@deffn {Funci@'on} properties (@var{a})
+Devuelve una lista con los nombres de todas las propiedades asociadas
+al @'tomo @var{a}.
+@end deffn
 
+
+@defvr {Variable del sistema} props
+Valor por defecto: @code{[]}
+
+@code{props} son @'tomos que tienen asociadas otras propiedades adem@'as de las
+expl@'{@dotless{i}}citamente mencionadas en @code{infolists}, tales como las
+especificadas por @code{atvalue}, @code{matchdeclare} y la funci@'on 
+@code{declare}.
+@end defvr
+
+
+
+@deffn {Funci@'on} propvars (@var{prop})
+
+Devuelve la lista con los @'atomos de la lista @code{props} que tienen
+la propiedad indicada por @var{prop}. As@'{@dotless{i}}, @code{propvars (atvalue)} 
+devuelve la lista con los @'atomos a los que se les ha asociado valores con
+@code{atvalue}.
+@end deffn
+
+
+@deffn {Funci@'on} put (@var{@'atomo}, @var{valor}, @var{indicador})
+
+Asigna el @var{valor} a la propiedad  (especificada por @var{indicador}) de @var{@'atomo};
+@var{indicador} puede ser el nombre de cualquier propiedad y no solamente de aquellas definidas por el sistema.
+
+@code{rem} deshace la asignaci@'on realizada por @code{put}.
+
+La funci@'on @code{put} eval@'ua sus argumentos y devuelve @var{valor}.
+
+Ejemplos:
+
+@example
+(%i1) put (foo, (a+b)^5, expr);
+                                   5
+(%o1)                       (b + a)
+(%i2) put (foo, "Hello", str);
+(%o2)                         Hello
+(%i3) properties (foo);
+(%o3)            [[user properties, str, expr]]
+(%i4) get (foo, expr);
+                                   5
+(%o4)                       (b + a)
+(%i5) get (foo, str);
+(%o5)                         Hello
+@end example
+
+@end deffn
+
+
+
+@deffn {Funci@'on} qput (@var{@'atomo}, @var{valor}, @var{indicador})
+
+Asigna @var{valor} a la propiedad de @var{@'atomo} que especifique @var{indicador}.
+Act@'ua del mismo modeo que @code{put}, excepto que sus argumentos no son evaluados.
+
+V@'ease tambi@'en @code{get}.
+
+Ejemplo:
+
+@example
+(%i1) foo: aa$ 
+(%i2) bar: bb$
+(%i3) baz: cc$
+(%i4) put (foo, bar, baz);
+(%o4)                          bb
+(%i5) properties (aa);
+(%o5)                [[user properties, cc]]
+(%i6) get (aa, cc);
+(%o6)                          bb
+(%i7) qput (foo, bar, baz);
+(%o7)                          bar
+(%i8) properties (foo);
+(%o8)            [value, [user properties, baz]]
+(%i9) get ('foo, 'baz);
+(%o9)                          bar
+@end example
+@end deffn
+
+
+
+
+@defvr  {Propiedad} rational
+@defvrx {Propiedad} irrational
+
+@code{declare(@var{a}, rational)} o @code{declare(@var{a}, irrational)} indica a
+Maxima que reconozca @var{a} como una variable real racional o irracional.
+
+V@'ease tambi@'en @code{declare}.
+@end defvr
+
+
+
+@defvr  {Propiedad} real
+@defvrx {Propiedad} imaginary
+@defvrx {Propiedad} complex
+
+@code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)} o
+@code{declare(@var{a}, complex)} indican a Maxima que reconozca @var{a} como variable real,
+imaginaria puro o compleja, respectivamente.
+
+V@'ease tambi@'en @code{declare}.
+@end defvr
+
+
+
+@deffn {Funci@'on} rem (@var{@'atomo}, @var{indicador})
+
+Elimina del @var{@'atomo} la propiedad indicada por @var{indicador}.
+@code{rem} deshace la asignaci@'on realizada por @code{put}.
+
+@code{rem} devuelve @code{done} si @var{@'atomo} ten@'{@dotless{i}}a la 
+propiedad @var{indicador} cuando @code{rem} fue invocado, devolviendo
+@code{false} si carec@'{@dotless{i}}a tal propiedad.
+
+@end deffn
+
+
+
+@deffn {Funci@'on} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Funci@'on} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Funci@'on} remove ("@var{a}", operator)
+@deffnx {Funci@'on} remove (@var{a}, transfun)
+@deffnx {Funci@'on} remove (all, @var{p})
+
+Elimina propiedades asociadas con @'atomos.
+
+La llamada @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+elimina la propiedad @code{p_k} del @'atomo @code{a_k}.
+
+La llamada @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
+elimina las propiedades @code{@var{p_1}, ..., @var{p_n}} de los @'atomos @var{a_1}, ..., @var{a_m}. Puede tener m@'as de un par de listas.
+
+La llamada @code{remove (all, @var{p})} elimina la propiedad @var{p} de todos los @'atomos que la tengan.
+
+Las propiedades eliminadas pueden ser de las que define el sistema, como 
+@code{function}, @code{macro} o @code{mode_declare}; @code{remove} no elimina
+las propiedades definidas por @code{put}.
+
+La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
+
+La funci@'on @code{remove} devuelve siempre @code{done} independientemente que haya alg@'un @'atomo con la propiedad especificada.
+
+La funci@'on @code{remove} no eval@'ua sus argumentos.
+@end deffn
+
+
+@defvr {Propiedad} scalar
+
+@code{declare(@var{a}, scalar)} indica a Maxima que considere a @var{a} como
+una variable escalar.
+
+V@'ease tambi@'en @code{declare}.
+@end defvr
+
+
+
+@deffn {Funci@'on} scalarp (@var{expr})
+
+Devuelve @code{true} si @var{expr} es un n@'umero, constante  o variable 
+declarada como @code{scalar} con @code{declare}, o compuesta completamente de tales 
+n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
+@end deffn
 
 
 
@@ -758,7 +837,6 @@ para propiedades que no pueden ser mostradas de otra manera, i.e. para
 
 @node Funciones y variables para los hechos, Funciones y variables para los predicados, Funciones y variables para las propiedades, Base de datos de Maxima
 @section Funciones y variables para los hechos
-
 
 
 @deffn {Funci@'on} activate (@var{context_1}, ..., @var{context_n})
@@ -782,10 +860,6 @@ La variable @code{activecontexts} es la lista de contextos que se han activado p
 
 
 
-@defvr {Variable del sistema} askexp
-Cuando se invoca a @code{asksign}, la expresi@'on que se va a analizar es precisamente @code{askexp}.
-
-@end defvr
 
 
 
