@@ -1394,7 +1394,7 @@ integrate(%e^(-1/x^2),x,0,1);
 
 /* definite integration introduces xy variable - ID: 3292707 */
 integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);
-'integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);
+li[2](2)-(6*log(2)^2-6*log(-2)*log(2)+%pi^2)/6;
 
 /* Incorrect integral of log(1+a/(x*t)^2) - ID: 3291160 */
 integrate(log(1+7/(x^2)),x,1,inf);

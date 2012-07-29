@@ -2977,6 +2977,10 @@ It appears in LIMIT and DEFINT.......")
 	 (mrv (cadr exp) var))
 	((equal (length (cdr exp)) 1)
 	 (mrv (cadr exp) var))
+	((equal (length (cdr exp)) 2)
+	 (mrv-max (mrv (cadr exp) var)
+		  (mrv (caddr exp) var)
+		  var))
 	(t (tay-error "mrv not implemented" exp))))
 
 ;; takes two lists of expresions, f and g, and limit variable var.

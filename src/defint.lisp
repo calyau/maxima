@@ -333,6 +333,8 @@ in the interval of integration.")
     (cond ((and (eq ul '$inf)
 		(equal ll 0)
 		(equal (cadr d) 1)) ())
+	  ((eq var 'yx)		; new var cannot be same as old var
+	   ())
 	  (t
 	   ;; This is a hack!  If nv is of the form b*x^n+a, we can
 	   ;; solve the equation manually instead of using solve.

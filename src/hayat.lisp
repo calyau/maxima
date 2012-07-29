@@ -1824,6 +1824,7 @@
   %asin  (expasin-funs ((1 . 1) 1 . 1) 1)
   %asinh (expasin-funs ((1 . 1) 1 . 1) -1)
   %gamma (expgam-fun ((-1 . 1) 1 . 1))
+  $li    (exp$li-fun li-ord)
   $psi   (expplygam-funs plygam-ord))
   by #'cddr
   do  (putprop fun exp 'exp-form))
@@ -2940,6 +2941,19 @@
     (let ((ans (catch 'errorsw (eval x))))
       (if (eq ans t) (unfam-sing-err) ans))))
 
+;; evaluate deriv at location var=pt
+;; if this results in division by zero, use unevaluated form of deriv 
+;; in order to get series expansions such as
+;; taylor(gamma_incomplete(1/2, x), x, 0, 5) ->
+;; sqrt(%pi)+97*sqrt(x)/512+113*x^(3/2)/512-2207*x^(5/2)/5120
+;;               +997*x^(7/2)/3072-5845*x^(9/2)/36864
+(defun eval-deriv (deriv var pt)
+  (let ((errorsw t))
+    (declare (special errorsw))
+    (let ((ans (catch 'errorsw (eval `(meval '(($at) ,deriv ((mequal) ,var ,pt)))))))
+      (if (eq ans t) 
+	  deriv
+	ans))))
 
 (defun check-inf-sing (pt-list) ; don't know behavior of random fun's @ inf
        (and (or (member '$inf pt-list :test #'eq) (member '$minf pt-list :test #'eq))
@@ -2958,7 +2972,7 @@
 	      (lim (rcdisrep (current-trunc (car l))))
 	      (ans (list (no-sing-err `(meval '(($at) ,exp ((mequal) ,(caar l) ,(exp-pt (car l)))))))
 		   (cons `((mtimes) ((rat simp) 1 ,coef)
-			   ,(no-sing-err `(meval '(($at) ,deriv ((mequal) ,var ,pt))))
+			   ,(eval-deriv deriv var pt)
 			   ((mexpt) ,(sub* var pt) ,cnt))
 			 ans)))
 	     ((or (great cnt lim) (equal deriv 0)) (cons '(mplus) ans))))))

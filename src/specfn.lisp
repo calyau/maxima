@@ -84,6 +84,27 @@
               (mul (div (take '(%zeta) 2) -2) (take '(%log) 2))
               (mul '((rat simp) 1 6) (power (take '(%log) 2) 3))))))
 
+;; exponent in first term of taylor expansion of $li is one
+(defun li-ord (subl)
+  (ncons (rcone)))
+
+;; taylor expansion of $li is its definition:
+;; x + x^2/2^s + x^3/3^s + ...
+(defun exp$li-fun (pw subl l)	; l is a irrelevant here
+  (setq subl (car subl))	; subl is subscript of li
+  (prog ((e 0) 			; e is exponent of current term
+	 npw)			; npw is exponent of last term needed
+	(declare (fixnum e))
+	(setq npw (/ (float (car pw)) (float (cdr pw))))
+	(setq
+	 l (cons '((0 . 1) 0 . 1)
+		 nil))
+	a (setq e (1+ e))
+	(if (> e npw) (return l)
+	  (rplacd (last l)
+		  `(((,e . 1)
+		     . ,(prep1 (m^ e (m- subl)))))))
+	(go a)))
 
 ;; Numerical evaluation for Chebyschev expansions of the first kind
 
