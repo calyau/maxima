@@ -475,11 +475,11 @@ limit( gamma_incomplete(2, -%i*x), x, inf);
 /* need taylor expansion of gamma_incomplete(1/2, x) at x=0 */
 limit(gamma_incomplete(1/2,(1-2*sqrt(x))^2/4)*(1-2*sqrt(x))
                  /(sqrt((1-2*sqrt(x))^2)), x, 1/4, minus),domain:complex;
--sqrt(%pi);
+sqrt(%pi);
 
 limit(gamma_incomplete(1/2,(1-2*sqrt(x))^2/4)*(1-2*sqrt(x))
                  /(sqrt((1-2*sqrt(x))^2)), x, 1/4, plus),domain:complex;
-sqrt(%pi);
+-sqrt(%pi);
 
 /* [ 635606 ] limit(abs(log(x))) internal error, UND */
 limit(abs(log(x)), x, 0);
