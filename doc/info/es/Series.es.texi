@@ -1,4 +1,4 @@
-@c english version 1.21
+@c English version 2011-06-13
 @menu
 * Sumas y productos::
 * Introducci@'on a las series::
@@ -15,7 +15,11 @@
 
 
 @deffn {Funci@'on} bashindices (@var{expr})
-Transforma la expresi@'on @var{expr} d@'andole a cada suma y producto un @'unico @'{@dotless{i}}ndice. Esto le da a @code{changevar} mayor precisi@'on cuando opera con sumas y productos. La forma del @'unico @'{@dotless{i}}ndice es @code{j@var{number}}. La cantidad @var{number} se determina en funci@'on de @code{gensumnum}, valor que puede cambiar el usuario.  Por ejemplo, haciendo @code{gensumnum:0$}.
+Transforma la expresi@'on @var{expr} d@'andole a cada sumatorio y producto un
+@'unico @'{@dotless{i}}ndice. Esto le da a @code{changevar} mayor precisi@'on 
+cuando opera con sumas y productos. La forma del @'unico @'{@dotless{i}}ndice es 
+@code{j@var{number}}. La cantidad @var{number} se determina en funci@'on de 
+@code{gensumnum}, valor que puede cambiar el usuario. Por ejemplo, haciendo @code{gensumnum:0$}.
 
 @end deffn
 
@@ -51,11 +55,38 @@ Ejemplos:
 
 
 @deffn {Funci@'on} intosum (@var{expr})
-Mueve los factores multiplicativos que est@'an fuera de un sumatorio hacia dentro de @'este. Si el @'{@dotless{i}}ndice aparece en la expresi@'on exterior, entonce @code{intosum} busca un @'{@dotless{i}}ndice razonable, lo mismo que hace con @code{sumcontract}. Se trata de la operaci@'on contraria a extraer factores comunes de los sumatorios.
+Mueve los factores multiplicativos que est@'an fuera de un sumatorio hacia dentro
+de @'este. Si el @'{@dotless{i}}ndice del sumatorio aparece en la expresi@'on exterior,
+entonces @code{intosum} busca un @'{@dotless{i}}ndice razonable, lo mismo que hace con 
+@code{sumcontract}. Se trata de la operaci@'on contraria a extraer factores comunes de los sumatorios.
 
-@c WHAT ARE THESE CASES ??
 En algunos caos puede ser necesario hacer @code{scanmap (multthru, @var{expr})} antes que @code{intosum}.
 
+@c Ejemplo tomado de la version alemana
+Ejemplo:
+
+@example
+@group
+(%i1) sum(2*x^2*n^k, k , 0, inf);
+                               inf
+                               ====
+                             2 \      k
+(%o1)                     2 x   >    n
+                               /
+                               ====
+                               k = 0
+@end group
+@group
+(%i2) intosum(%);
+                          inf
+                          ====
+                          \        k  2
+(%o2)                      >    2 n  x
+                          /
+                          ====
+                          k = 0
+@end group
+@end example
 @end deffn
 
 
@@ -135,7 +166,10 @@ Ejemplos:
 @defvr {Variable opcional} simpsum
 Valor por defecto: @code{false}
 
-Si @code{simpsum} vale @code{true}, se simplifica el resultado de un sumatorio @code{sum}. Esta simplificaci@'on podr@'a producir en ocasiones una expresi@'on compacta.  Si @code{simpsum} vale @code{false} o si se utiliza la forma apostrofada @code{'sum}, el valor es una forma nominal que representa la notaci@'on sigma habitual en matem@'aticas.
+Si @code{simpsum} vale @code{true}, se simplifica el resultado de un sumatorio @code{sum}.
+Esta simplificaci@'on podr@'a producir en ocasiones una expresi@'on compacta. Si 
+@code{simpsum} vale @code{false} o si se utiliza la forma apostrofada @code{'sum},
+el valor es una forma nominal que representa la notaci@'on sigma habitual en matem@'aticas.
 
 @end defvr
 
@@ -251,11 +285,41 @@ Ejemplos:
 
 
 @deffn {Funci@'on} sumcontract (@var{expr})
-Combina todos los sumatorios de una suma cuyos l@'{@dotless{i}}mites inferiores y superiores difieren por constantes. El resultado es una expresi@'on que contiene un sumatorio para conjunto de tales sumatorios. La funci@'on @code{sumcontract} combina todos los sumatorios compatibles y utiliza uno de los @'{@dotless{i}}ndices de uno de los sumatorios si puede, si no formar@'a un @'{@dotless{i}}ndice que sea razonable.
+Combina todos los sumatorios de una suma cuyos l@'{@dotless{i}}mites inferiores y 
+superiores difieren por constantes. El resultado es una expresi@'on que contiene 
+un sumatorio por cada conjunto de tales sumatorios, m@'as todos los dem@'as
+t@'erminos adicionales que tuvieron que extraerse para formar la suma. La funci@'on 
+@code{sumcontract} combina todos los sumatorios compatibles y utiliza uno de los
+@'{@dotless{i}}ndices de uno de los sumatorios si puede, si no formar@'a un 
+@'{@dotless{i}}ndice que sea razonable.
 
-@c WHEN IS intosum NECESSARY BEFORE sumcontract ??
 Puede ser necesario hacer @code{intosum (@var{expr})} antes que @code{sumcontract}.
 
+@c @c Ejemplo tomado de la version alemana
+Ejemplo:
+
+@example
+(%i1) 'sum(1/l,l,1,n)+'sum(k,k,1,n+2);
+@group
+                         n        n + 2
+                        ====      ====
+                        \     1   \
+(%o1)                    >    - +  >    k
+                        /     l   /
+                        ====      ====
+                        l = 1     k = 1
+@end group
+(%i2) sumcontract(%);
+@group
+                            n
+                           ====
+                           \          1
+(%o2)                2 n +  >    (l + -) + 3
+                           /          l
+                           ====
+                           l = 1
+@end group
+@end example
 @end deffn
 
 
@@ -263,7 +327,8 @@ Puede ser necesario hacer @code{intosum (@var{expr})} antes que @code{sumcontrac
 @defvr {Variable opcional} sumexpand
 Valor por defecto: @code{false}
 
-Si @code{sumexpand} vale @code{true}, productos de sumatorios y de sumatorios con exponentes se reducen a sumatorios anidados.
+Si @code{sumexpand} vale @code{true}, productos de sumatorios y de sumatorios con exponentes se 
+reducen a sumatorios anidados.
 
 V@'ease tambi@'en @code{cauchysum}.
 
@@ -272,6 +337,7 @@ Ejemplos:
 @example
 (%i1) sumexpand: true$
 (%i2) sum (f (i), i, 0, m) * sum (g (j), j, 0, n);
+@group
                      m      n
                     ====   ====
                     \      \
@@ -279,6 +345,7 @@ Ejemplos:
                     /      /
                     ====   ====
                     i1 = 0 i2 = 0
+@end group
 (%i3) sum (f (i), i, 0, m)^2;
                      m      m
                     ====   ====

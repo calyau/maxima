@@ -1,4 +1,4 @@
-@c English version 2011-06-15
+@c English version 2012-07-30
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -544,6 +544,11 @@ Funci@'on gamma incompleta superior, A&S 6.5.2:
 $$\Gamma\left(a , z\right)=\int_{z}^{\infty }{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
+V@'eanse tambi@'en @code{gamma_expand} para controlar c@'omo se expresa
+@code{gamma_incomplete} en t@'erminos de funciones elementales y de @code{erfc}.
+
+V@'eanse tambi@'en las funciones relacionadas @code{gamma_incomplete_regularized} y
+@code{gamma_incomplete_generalized}.
 @end deffn
 
 @deffn {Funci@'on} gamma_incomplete_regularized (@var{a},@var{z})
@@ -561,6 +566,10 @@ gamma_incomplete_regularized(a, z) =
 $${\it Q}\left(a , z\right)={{\Gamma\left(a , z\right)}\over{\Gamma\left(a\right)}}$$
 @end tex
 
+V@'eanse tambi@'en @code{gamma_expand} para controlar c@'omo se expresa
+@code{gamma_incomplete} en t@'erminos de funciones elementales y de @code{erfc}.
+
+V@'ease tambi@'en @code{gamma_incomplete}.
 @end deffn
 
 @deffn {Funci@'on} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1})
@@ -582,7 +591,35 @@ gamma_incomplete_generalized(a, z1, z2) =
 $$\Gamma\left(a , z_{1}, z_{2}\right)=\int_{z_{1}}^{z_{2}}{t^{a-1}\,e^ {- t }\;dt}$$
 @end tex
 
+V@'eanse tambi@'en @code{gamma_incomplete} y @code{gamma_incomplete_regularized}.
 @end deffn
+
+
+@defvr {Variable opcional} gamma_expand
+Valor por defecto: @code{false}
+
+@code{gamma_expand} controla la expansi@'on de @code{gamma_incomplete}.
+Si @code{gamma_expand} vale @code{true}, @code{gamma_incomplete(v,z)}
+se expande en t@'erminos de
+@code{z}, @code{exp(z)} y @code{erfc(z)}, siempre que sea posible.
+
+@example
+(%i1) gamma_incomplete(2,z);
+(%o1)                       gamma_incomplete(2, z)
+(%i2) gamma_expand:true;
+(%o2)                                true
+(%i3) gamma_incomplete(2,z);
+                                           - z
+(%o3)                            (z + 1) %e
+@group
+(%i4) gamma_incomplete(3/2,z);
+                              - z   sqrt(%pi) erfc(sqrt(z))
+(%o4)               sqrt(z) %e    + -----------------------
+                                               2
+@end group
+@end example
+@end defvr
+
 
 
 @defvr {Variable optativa} gammalim
@@ -1709,8 +1746,17 @@ polinomio generalizado de Laguerre.
 
 
 @deffn {Funci@'on} lambert_w (@var{z})
-Rama principal de la funci@'on W de Lambert, la soluci@'on de
-la ecuaci@'on @code{z = W(z) * exp(W(z))}.
+Rama principal de la funci@'on W de Lambert, soluci@'on de
+la ecuaci@'on @code{z = W(z) * exp(W(z))}.  (DLMF 4.13)
+@end deffn
+
+@deffn {Funci@'on} generalized_lambert_w (@var{k}, @var{z})
+@var{k}-@'esima rama de la funci@'on W de Lambert's, W(z), soluci@'on de
+@code{z = W(z) * exp(W(z))}. (DLMF 4.13)
+
+La rama principal, representada por Wp(z) en DLMF, es @code{lambert_w(z) = generalized_lambert_w(0,z)}.
+
+La otra rama con valores reales, representada por Wm(z) en DLMF, es @code{generalized_lambert_w(-1,z)}.
 @end deffn
 
 @deffn {Funci@'on} nzeta (@var{z})

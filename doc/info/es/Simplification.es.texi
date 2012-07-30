@@ -1,4 +1,4 @@
-@c English version 2011-06-13
+@c English version 2011-09-03
 @menu
 * Introducci@'on a la simplificaci@'on::
 * Funciones y variables para simplificaci@'on::  
@@ -130,7 +130,7 @@ reglas y patrones.
 @section Funciones y variables para simplificaci@'on
 
 
-@defvr {Declaraci@'on} additive
+@defvr {Propiedad} additive
 Si @code{declare(f,additive)} ha sido ejecutado, entonces: 
 
 (1) Si @code{f} es univariado, cada vez que el simplificador encuentre
@@ -138,13 +138,61 @@ Si @code{declare(f,additive)} ha sido ejecutado, entonces:
 
 (2) Si @code{f} es una funci@'on de 2 o m@'as argumentos, aditivamente es definida como aditiva en el primer argumento de @code{f}, como en el caso de @code{sum} o @code{integrate}. Por ejemplo, @code{f(h(x)+g(x),x)} se simplificar@'a a @code{f(h(x),x)+f(g(x),x)}. Esta simplificaci@'on no ocurre cuando @code{f} se aplica a expresiones de la forma @code{sum(x[i],i,lower-limit,upper-limit)}.
 
+Ejemplo:
+
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
 @end defvr
 
 
-@defvr {Declaraci@'on} antisymmetric
+@defvr {Propiedad} antisymmetric
 Si @code{declare(h,antisymmetric)} es ejecutado, esto dice al 
-simplificador que @code{h} es antisim@'etrico. E.g. @code{h(x,z,y)} ser@'a simplificado a @code{-h(x,y,z)}. Que es, el producto de (-1)^n por el resultado dado por @code{symmetric} o @code{commutative}, donde n es el n@'umero de intercambios necesarios de dos argumentos para convertirle a esta forma.  
+simplificador que @code{h} es antisim@'etrico. E.g. @code{h(x,z,y)} ser@'a 
+simplificado a @code{-h(x,y,z)}. Que es, el producto de (-1)^n por el resultado 
+dado por @code{symmetric} o @code{commutative}, donde n es el n@'umero de intercambios 
+necesarios de dos argumentos para convertirle a esta forma.  
 
+Ejemplos:
+
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
 @end defvr
 
 
@@ -155,7 +203,7 @@ Simplifica la suma @var{expr} combinando t@'erminos de con igual denominador red
 
 
 
-@defvr {Declaraci@'on} commutative
+@defvr {Propiedad} commutative
 Si @code{declare(h,commutative)} es ejecutado, le dice al simplificador
 que @code{h} es una funci@'on conmutaiva. Por ejemplo, @code{h(x,z,y)} se simplificar@'a a @code{h(x,y,z)}. Esto es lo mismo que @code{symmetric}. 
 
@@ -293,8 +341,8 @@ Si @code{domain} vale @code{complex}, @code{sqrt (x^2)} permanecer@'a como
 @end defvr
 
 
-@defvr  {Declaraci@'on} evenfun
-@defvrx {Declaraci@'on} oddfun
+@defvr  {Propiedad} evenfun
+@defvrx {Propiedad} oddfun
 
 @code{declare(f, evenfun} o @code{declare(f, oddfun} indican a Maxima que reconozca
 la funci@'on @code{f} como par o impar, respectivamente.
@@ -477,18 +525,53 @@ La variable @code{expop} guarda el mayor exponente positivo que ser@'a expandido
 @end defvr
 
 
-@defvr {Declaraci@'on} lassociative
+@defvr {Propiedad} lassociative
 La instrucci@'on @code{declare (g, lassociative)} le indica al simplificador de Maxima que @code{g} es asociativo por la izquierda.  Por ejemplo, @code{g (g (a, b), g (c, d))}se reduce a @code{g (g (g (a, b), c), d)}.
 
 @end defvr
 
 
-@defvr {Declaraci@'on} linear
-Es una de las propiedades de operadores de Maxima. Si la funci@'on univariante @code{f} se declara lineal, la expansi@'on de  @code{f(x + y)} produce @code{f(x) + f(y)}, @code{f(a*x)} produce @code{a*f(x)} si @code{a} es una constante.  Si la funci@'on tiene dos o m@'as argumentos, la linealidad se interpreta como la de @code{sum} o @code{integrate}, esto es, @code{f (a*x + b, x)} produce @code{a*f(x,x) + b*f(1,x)} si @code{a} y @code{b} no contienen a @code{x}.
+@defvr {Propiedad} linear
+Es una de las propiedades de operadores de Maxima. Si la funci@'on 
+univariante @code{f} se declara lineal, la expansi@'on de  @code{f(x + y)} 
+produce @code{f(x) + f(y)}, @code{f(a*x)} produce @code{a*f(x)} si @code{a} 
+es una constante.  Si la funci@'on tiene dos o m@'as argumentos, la linealidad 
+se interpreta como la de @code{sum} o @code{integrate}, esto es, 
+@code{f (a*x + b, x)} produce @code{a*f(x,x) + b*f(1,x)} si @code{a} y @code{b} 
+no contienen a @code{x}.
 
 @code{linear} equivale a @code{additive} y @code{outative}.
 V@'ease tambi@'en @code{opproperties}.
 
+Ejemplo:
+
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+@group
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end group
+@end example
 @end defvr
 
 
@@ -510,7 +593,7 @@ La variable @code{maxposex} es el mayor exponenteque expandir@'a la funci@'on @c
 
 
 
-@defvr {Declaraci@'on} multiplicative
+@defvr {Propiedad} multiplicative
 La instrucci@'on @code{declare (f, multiplicative)} indica al simplificador de Maxima que @code{f} is multiplicativa.
 
 @enumerate
@@ -522,6 +605,21 @@ Si @code{f} es una funci@'on de 2 o m@'as argumentos, la multiplicabilidad se de
 
 Esta transformaci@'on no se realiza cuando @code{f} se aplica a expresiones de la forma @code{product (x[i], i, m, n)}.
 
+Ejemplo:
+
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
 @end defvr
 
 
@@ -566,13 +664,13 @@ La llamada @code{multthru (@var{expr_1}, @var{expr_2})} multiplica cada t@'ermin
 @end deffn
 
 
-@defvr {Declaraci@'on} nary
+@defvr {Propiedad} nary
 
 @code{declare(f, nary)} le indica a Maxima que reconozca la funci@'on @code{f}
 como n-aria.
 
 La declaraci@'on @code{nary} no equivale a invocar la funci@'on 
-@code{operator_nary, nary}. El @'unico efecto de @code{declare(f, nary)} 
+@code{function_nary, nary}. El @'unico efecto de @code{declare(f, nary)} 
 es indicar al simplificador de Maxima que aplane expresiones anidadas,
 como simplificar @code{foo(x, foo(y, z))} a @code{foo(x, y, z)}.
 V@'ease tambi@'en @code{declare}.
@@ -610,18 +708,48 @@ La variable @code{opproperties} es la lista con las propiedades especiales de lo
 
 
 
-@defvr {Declaraci@'on} outative
-La instrucci@'on @code{declare (f, outative)} le indica al simplificador de Maxima que los factores constantes del argumento de la funci@'on @code{f} pueden ser extra@'{@dotless{i}}dos.
+@defvr {Propiedad} outative
+La instrucci@'on @code{declare (f, outative)} le indica al simplificador de Maxima 
+que los factores constantes del argumento de la funci@'on @code{f} pueden ser 
+extra@'{@dotless{i}}dos.
 
 @enumerate
 @item
-Si @code{f} es univariante, cada vez que el simplificador se encuentra con @code{f} aplicada a un producto, @'este ser@'a particionado en factores que son constantes y factores que no lo son, siendo entonces los constantes extra@'{@dotless{i}}dos de la funci@'on.  Por ejemplo, @code{f(a*x)} se reducir@'a a @code{a*f(x)} siendo @code{a} una constante. Las constantes no at@'omicas no ser@'an extra@'{@dotless{i}}das.
+Si @code{f} es univariante, cada vez que el simplificador se encuentra con @code{f} 
+aplicada a un producto, @'este ser@'a particionado en factores que son constantes y 
+factores que no lo son, siendo entonces los constantes extra@'{@dotless{i}}dos de la 
+funci@'on.  Por ejemplo, @code{f(a*x)} se reducir@'a a @code{a*f(x)} siendo @code{a} 
+una constante. Las constantes no at@'omicas no ser@'an extra@'{@dotless{i}}das.
 @item
-Si @code{f} es una funci@'on de 2 o m@'as argumentos, esta propiedad se define como en  @code{sum} o @code{integrate}, esto es, @code{f (a*g(x), x)} se reducir@'a a @code{a * f(g(x), x)} si @code{a} no contiene a @code{x}.
+Si @code{f} es una funci@'on de 2 o m@'as argumentos, esta propiedad se define como 
+en  @code{sum} o @code{integrate}, esto es, @code{f (a*g(x), x)} se reducir@'a a 
+@code{a * f(g(x), x)} si @code{a} no contiene a @code{x}.
 @end enumerate
 
-Las funciones @code{sum}, @code{integrate} y @code{limit} han sido todas declaradas con la propiedad @code{outative}.
+Las funciones @code{sum}, @code{integrate} y @code{limit} han sido todas declaradas 
+con la propiedad @code{outative}.
 
+Ejemplo:
+
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
 @end defvr
 
 
@@ -685,7 +813,7 @@ N@'otese que  @code{domain} s@'olo se tiene en cuenta si @code{radexpand} vale @
 
 
 
-@defvr {Declaraci@'on} rassociative
+@defvr {Propiedad} rassociative
 La instrucci@'on @code{declare (g, rassociative)} le indica al simplificador de Maxima que @code{g} es asociativa por la derecha.  Por ejemplo, @code{g(g(a, b), g(c, d))} se reduce a @code{g(a, g(b, g(c, d)))}.
 
 @end defvr
@@ -758,7 +886,7 @@ la fase de evaluaci@'on de la expresi@'on.
 
 
 
-@defvr {Declaraci@'on} symmetric
+@defvr {Propiedad} symmetric
 La instrucci@'on @code{declare (h, symmetric)} le indica al simplificador de  Maxima que @code{h} es una funci@'on sim@'etrica.  Por ejemplo, @code{h (x, z, y)}  se reduce a @code{h (x, y, z)}.
 
 El nombre @code{commutative} es sin@'onimo de @code{symmetric}.
