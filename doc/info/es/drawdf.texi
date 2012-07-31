@@ -1,4 +1,4 @@
-@c english version 1.1
+@c English version: 2011-06-11
 @menu
 * Introducci@'on a drawdf::
 * Funciones y variables para drawdf::

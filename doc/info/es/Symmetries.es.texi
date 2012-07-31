@@ -1,4 +1,4 @@
-@c version 1.17
+@c English version: 2011-03-14
 @c Esta es traduccion del original en frances;
 @c Queda pendiente cotejar con la version inglesa.
 @menu
@@ -1130,13 +1130,15 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 @end group
 @end example
 
-Para la resolvente de Cayley, los dos @'ultimos argumentos son neutro
+Para la resolvente de Cayley, los dos @'ultimos argumentos son neutros
 y el polinomio dado en el argumento debe ser necesariamente de grado 5.
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_bipartite}, @code{resolvante_produit_sym},
 @code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
-@code{resolvante_klein3}, @code{resolvante_vierer} y @code{resolvante_diedrale}. 
+@code{resolvante_klein3}, @code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft 
 
 @end deffn
 
@@ -1146,9 +1148,11 @@ grado @var{n} por la funci@'on $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
-@code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale} y @code{resolvante_bipartite}.
+@code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
+@code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_bipartite}.
+@end flushleft
 
 @end deffn
 
@@ -1169,10 +1173,11 @@ $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale} y
-@code{resolvante_alternee1}.
+@code{resolvante_vierer}, @code{resolvante_diedrale}, @code{resolvante_alternee1}.
+@end flushleft
 
 @end deffn
 
@@ -1197,9 +1202,11 @@ Calcula la transformaci@'on de
 
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer} y @code{resolvante}.
+@code{resolvante_vierer}, @code{resolvante}.
+@end flushleft
 
 @end deffn
 
@@ -1208,9 +1215,11 @@ Calcula la transformaci@'on de
 @code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
-@code{resolvante_vierer} y @code{resolvante_diedrale}.
+@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft
 
 @end deffn
 
@@ -1219,9 +1228,11 @@ Calcula la transformaci@'on de
 @code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
-@code{resolvante_vierer} y @code{resolvante_diedrale}.
+@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft
 
 @end deffn
 
@@ -1260,9 +1271,12 @@ del polinomio @code{@var{P}(@var{x})}.
 @c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer} y @code{resolvante_diedrale}.
+@code{resolvante_alternee1}, @code{resolvante_klein},
+@code{resolvante_klein3}, @code{resolvante_vierer},
+@code{resolvante_diedrale}.
+@end flushleft
 
 @end deffn
 
@@ -1271,9 +1285,11 @@ Calcula la resolvente del polinomio @code{@var{P}(@var{x})}
 por el polinomio @code{@var{Q}(@var{x})}.
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer} y @code{resolvante_diedrale}.
+@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@end flushleft
 
 @end deffn
 
@@ -1282,9 +1298,11 @@ Calcula la transformaci@'on de
 @code{@var{P}(@var{x})} por la funci@'on @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
 
 V@'eanse tambi@'en:
+@flushleft
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante} y @code{resolvante_diedrale}.
+@code{resolvante}, @code{resolvante_diedrale}.
+@end flushleft
 
 @end deffn
 

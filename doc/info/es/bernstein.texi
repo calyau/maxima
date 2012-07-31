@@ -1,4 +1,4 @@
-@c English version 2011-07-19
+@c English version: 2011-07-24
 @menu
 * Funciones y variables para Bernstein::
 @end menu
@@ -6,7 +6,7 @@
 @node Funciones y variables para Bernstein,  , Bernstein, Bernstein
 @section Funciones y variables para Bernstein
 
-@deffn {Funci@'on} bernstein_poly (@var{k},@var{n},@var{x})
+@deffn {Funci@'on} bernstein_poly (@var{k}, @var{n}, @var{x})
 
 Si @code{k} no es un entero negativo, los polinomios de Bernstein se 
 definen como @code{bernstein_poly(k,n,x) = binomial(n,k) x^k (1-x)^(n-k)}; 
@@ -18,36 +18,39 @@ la expansi@'on de los polinomios de Bernstein a su forma expl@'{@dotless{i}}cita
 Ejemplo:
 
 @example
-(%i1) bernstein_poly(k,n,x);
-(%o1)                       bernstein_poly(k, n, x)
-(%i2) bernstein_poly(k,n,x), bernstein_explicit : true;
-                                              n - k  k
-(%o2)                   binomial(n, k) (1 - x)      x
+(%i1) load(bernstein)$
+
+(%i2) bernstein_poly(k,n,x);
+(%o2)                bernstein_poly(k, n, x)
+(%i3) bernstein_poly(k,n,x), bernstein_explicit : true;
+                                       n - k  k
+(%o3)            binomial(n, k) (1 - x)      x
 @end example
 
 Los polinomios de Bernstein tienen definidas su derivada e integral:
 
 @example
-(%i3) diff(bernstein_poly(k,n,x),x);
-(%o3)  (bernstein_poly(k - 1, n - 1, x) - bernstein_poly(k, n - 1, x)) n
-
-(%i4) integrate(bernstein_poly(k,n,x),x);
-                                                                  k + 1
-       hypergeometric([k + 1, k - n], [k + 2], x) binomial(n, k) x
-(%o4)  ----------------------------------------------------------------
-                                    k + 1
+(%i4) diff(bernstein_poly(k,n,x),x);
+(%o4) (bernstein_poly(k - 1, n - 1, x)
+                                 - bernstein_poly(k, n - 1, x)) n
+(%i5) integrate(bernstein_poly(k,n,x),x);
+(%o5) 
+                                                            k + 1
+ hypergeometric([k + 1, k - n], [k + 2], x) binomial(n, k) x
+ ----------------------------------------------------------------
+                              k + 1
 @end example
 
 Cuando los argumentos contienen n@'umeros decimales en coma flotante, los
 polinomios de Bernstein tambi@'en devuelven resultados decimales.
 
 @example
-(%i5) bernstein_poly(5,9, 1/2 + %i);
-                               39375 %i   39375
-(%o5)                          -------- + -----
-                                 128       256
-(%i6) bernstein_poly(5,9, 0.5b0 + %i);
-(%o6)                  3.076171875b2 %i + 1.5380859375b2
+(%i6) bernstein_poly(5,9, 1/2 + %i);
+                        39375 %i   39375
+(%o6)                   -------- + -----
+                          128       256
+(%i7) bernstein_poly(5,9, 0.5b0 + %i);
+(%o7)           3.076171875b2 %i + 1.5380859375b2
 @end example
 
 Para hacer uso de @code{bernstein_poly}, ejec@'utese primero @code{load("bernstein")}.

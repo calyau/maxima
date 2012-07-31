@@ -1,4 +1,4 @@
-@c English version 1.3
+@c English version: 2011-03-28
 @menu
 * Funciones y variables para bode::
 @end menu
