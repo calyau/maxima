@@ -453,14 +453,12 @@
 ;;; inv-mod returns a positive modulo or `nil' in case of a zero divisor
 
 (defun inv-mod (a m)
-  (let ((u1 1) (u2 (mod a m))
-	(v1 0) (v2 m)
-	q)
-    (do ()
-	((zerop v2) (if (= 1 u2) (mod u1 m) nil))
-      (setq q (truncate u2 v2))
+  (let ((u1 0)(u2 m)(v1 1)(v2 (mod a m)) q r)
+    (do ()((zerop v2) 
+            (if (= 1 u2) (mod u1 m) nil) )
+      (multiple-value-setq (q r) (truncate u2 v2))
       (psetq u1 v1 v1 (- u1 (* q v1)))
-      (psetq u2 v2 v2 (- u2 (* q v2))))))
+      (setq u2 v2 v2 r) )))
 
 (defun $inv_mod (a m)
   (unless (and (integerp a) (integerp m))
