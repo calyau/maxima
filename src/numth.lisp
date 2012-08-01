@@ -205,8 +205,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Maxima functions: 
-;; zn_order, zn_primroot_p, zn_primroot, zn_log, chinese
+;; Maxima functions in (Z/nZ)*
+;; 
+;; zn_order, zn_primroot_p, zn_primroot, zn_log, zn_mult_table, zn_power_table, 
+;; chinese
 ;;
 ;; 2012, Volker van Nek  
 ;;
@@ -252,7 +254,7 @@
   (let ((s phi) p e)
     (dolist (f fs-phi s)
       (setq p (car f) e (cadr f))
-      (setq s (/ s (expt p e)))
+      (setq s (truncate s (expt p e)))
       (do ((z (power-mod x s n)))
           ((= z 1))
         (setq z (power-mod z p n))
@@ -264,7 +266,7 @@
 ;; returns a list of the form (phi ((p1 e1) ... (pk ek)))
 ;;
 (defun totient-with-factors (n)
-  (let (($factors_only) ($intfaclim) (phi 1) fs-n (fs) p e (fs-phi) g)
+  (let (($intfaclim) (phi 1) fs-n (fs) p e (fs-phi) g)
     (setq fs-n (get-factor-list n))
     (dolist (f fs-n fs)
       (setq p (car f) e (cadr f))
@@ -331,7 +333,7 @@
   (unless (= 1 (gcd x n))
     (return-from zn-primroot-p nil) )  
   (dolist (p fs-phi t)
-    (when (= 1 (power-mod x (/ phi p) n))
+    (when (= 1 (power-mod x (truncate phi p) n))
       (return-from zn-primroot-p nil) )))
 
 ;;
@@ -382,7 +384,7 @@
         (when (primep n) (return-from cyclic-p t))
         (setq q (setq p (get-one-factor n)))
         (do () (())
-          (setq n (/ n q))
+          (setq n (truncate n q))
           (when (primep n) (return (= n p)))
           (setq q (get-one-factor n))
           (when (/= p q) (return nil)) )))))
@@ -447,6 +449,7 @@
     ((or (= 0 a) (>= a n)) nil)
     ((= 1 a) 0)
     ((= g a) 1)
+    ((> (gcd a n) 1) nil)
     (t 
       (if fs-phi
         (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
@@ -473,21 +476,21 @@
   (let (p e phip gp x dlog (dlogs nil))
     (dolist (f fs-phi)
       (setq p (car f) e (cadr f))
-      (setq phip (/ phi p))
+      (setq phip (truncate phi p))
       (setq gp (power-mod g phip n))
       (if (= 1 e) 
         (setq x (dlog-rho (power-mod a phip n) gp p n))
         (progn 
           (setq x 0)
           (do ((agx a) (k 1) (pk 1)) (())
-            (setq dlog (dlog-rho (power-mod agx (/ phip pk) n) gp p n))
+            (setq dlog (dlog-rho (power-mod agx (truncate phip pk) n) gp p n))
             (setq x (+ x (* dlog pk)))
             (if (= k e) 
               (return)
               (setq k (1+ k) pk (* pk p)) )
             (setq agx (mod (* a ($power_mod g (- x) n)) n)) )))
       (setq dlogs (cons x dlogs)) )
-    (car (chinese (reverse dlogs) (mapcar #'(lambda (z) (apply #'expt z)) fs-phi))) ))
+    (car (chinese (nreverse dlogs) (mapcar #'(lambda (z) (apply #'expt z)) fs-phi))) ))
 ;;
 ;; brute-force:
 (defun dlog-naive (a g q n)
@@ -495,7 +498,7 @@
   (do ((i 0 (1+ i)) (gi 1 (mod (* gi g) n)))
       ((= gi a) i) ))
 ;;
-;; Pollard rho for dlog computation:
+;; Pollard rho for dlog computation (Brents variant of collision detection)
 (defun dlog-rho (a g q n)  
   (cond
     ((= 1 a) 0)
@@ -504,20 +507,23 @@
     ((= 1 (mod (* a g) n)) (1- q))
     ((< q 512) (dlog-naive a g q n))
     (t
-      (let (rnd (b 1) (y 0) (z 0) (bb 1) (yy 0) (zz 0) dy dz)
-        (dotimes (i 32 (progn (print "pollard-rho failed.") nil))
-          (do () (())
-            (multiple-value-setq (b y z) (dlog-f b y z a g q n))
-            (multiple-value-setq (bb yy zz) (dlog-f bb yy zz a g q n))
-            (multiple-value-setq (bb yy zz) (dlog-f bb yy zz a g q n))
-            (when (= b bb) (return)) )
-          (setq dy (mod (- y yy) q) dz (mod (- zz z) q))
-          (when (= 1 (gcd dz q))
-            (return (mod (* dy (inv-mod dz q)) q)) )
-          (setq rnd (1+ (random (1- q))))
-          (multiple-value-setq (b y z) 
-            (values (mod (* a (power-mod g rnd n)) n) rnd 1) )
-          (multiple-value-setq (bb yy zz) (values b y z)) )))))
+      (prog ((b 1) (y 0) (z 0) (bb 1) (yy 0) (zz 0) rnd dy dz)
+        rho
+        (do ((i 0)(j 1)) (()) (declare (fixnum i j))
+          (multiple-value-setq (b y z) (dlog-f b y z a g q n))
+          (when (equal b bb) (return)) 
+          (incf i)
+          (when (= i j)
+            (setq j (1+ (ash j 1)))
+            (setq bb b yy y zz z) ))
+        (setq dy (mod (- y yy) q) dz (mod (- zz z) q))
+        (when (= 1 (gcd dz q))
+          (return (mod (* dy (inv-mod dz q)) q)) )
+        (setq rnd (1+ (random (1- q))))
+        (multiple-value-setq (b y z) 
+          (values (mod (* a (power-mod g rnd n)) n) rnd 1) )
+        (multiple-value-setq (bb yy zz) (values 1 0 0))
+        (go rho) ))))
 ;;
 ;; iteration for Pollard rho:
 (defun dlog-f (b y z a g q n)
@@ -529,5 +535,30 @@
         (values (mod (* a b) n) y                 (mod (+ z 1) q)) )
       (t
         (values (mod (* g b) n) (mod (+ y 1) q)   z) ))))
+
+
+;; for educational puposes: tables of small rings
+
+(defmfun $zn_mult_table (n &optional (all? t))
+  (declare (fixnum n))
+  (unless (and (fixnump n) (< 1 n))
+    (merror (intl:gettext 
+      "Argument to `zn_mult_table' must be a small fixnum greater 1." )) )
+  (do ((i 1 (1+ i)) res)
+      ((= i n) (cons '($matrix) (nreverse res)))
+      (declare (fixnum i))
+    (when (or all? (= 1 (gcd i n))) 
+      (push (mfuncall '$makelist `(mod (* ,i $j) ,n) '$j 1 (1- n)) res) )))
+
+(defmfun $zn_power_table (n &optional (all? t))
+  (declare (fixnum n))
+  (unless (and (fixnump n) (< 1 n))
+    (merror (intl:gettext 
+      "Argument to `zn_power_table' must be a small fixnum greater 1." )) )
+  (do ((i 1 (1+ i)) (tn1 (1+ (mfuncall '$totient n))) res)
+      ((= i n) (cons '($matrix) (nreverse res)))
+      (declare (fixnum i))
+    (when (or all? (= 1 (gcd i n))) 
+      (push (mfuncall '$makelist `(power-mod ,i $j ,n) '$j 1 tn1) res) )))
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
