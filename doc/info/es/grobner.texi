@@ -1,4 +1,4 @@
-@c English version: 1.5
+@c English version: 2012-08-01
 @menu
 * Introducci@'on a grobner::
 * Funciones y variables para grobner::
@@ -8,12 +8,6 @@
 @section Introducci@'on a grobner
 
 @code{grobner} es un paquete para operar con bases de Groebner en Maxima.
-
-@noindent
-Se puede encontrar un tutorial sobre @emph{Bases de Groebner} en 
-
-@noindent
-@url{http://www.geocities.com/CapeCanaveral/Hall/3131/}
 
 @noindent
 Para hacer uso de las funciones de este paquete es necesario cargar 
@@ -430,6 +424,23 @@ Devuelve el MCM de @var{poly1} y @var{poly2}.
 
 @deffn {Funci@'on} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
 Devuelve el MCD de @var{poly1} y @var{poly2}.
+
+V@'eanse tambi@'en @code{ezgcd}, @code{gcd}, @code{gcdex} y
+@code{gcdivide}.
+
+Ejemplo:
+
+@example
+(%i1) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o1)                6 x  + 19 x  + 19 x + 6
+(%i2) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o2)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i3) poly_gcd(p1, p2, [x]);
+                            2
+(%o3)                    6 x  + 13 x + 6
+@end example
 @end deffn
 
 @deffn {Funci@'on} poly_grobner_equal (@var{polylist1}, @var{polylist2}, @var{varlist})

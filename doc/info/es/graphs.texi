@@ -1,4 +1,4 @@
-@c english version 1.17
+@c English version: 2011-06-11
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -2414,13 +2414,15 @@ Ejemplo 6:
 @c ===beg===
 @c load(graphs)$
 @c t: tutte_graph();
-@c draw_graph(t, redraw=true, fixed_vertices=[1,2,3,4,5,6,7,8,9]);
+@c draw_graph(t, redraw=true, 
+@c               fixed_vertices=[1,2,3,4,5,6,7,8,9]);
 @c ===end===
 @example
 (%i1) load(graphs)$
 (%i2) t: tutte_graph();
 (%o2)                         GRAPH
-(%i3) draw_graph(t, redraw=true, fixed_vertices=[1,2,3,4,5,6,7,8,9]);
+(%i3) draw_graph(t, redraw=true, 
+                    fixed_vertices=[1,2,3,4,5,6,7,8,9]);
 (%o3)                         done
 @end example
 

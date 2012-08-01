@@ -1,4 +1,4 @@
-@c english version 1.10
+@c English version: 2008-11-19
 @menu
 * Introducci@'on a interpol::
 * Funciones y variables para interpol::

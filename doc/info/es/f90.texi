@@ -1,4 +1,4 @@
-@c english version 1.6
+@c English version: 2011-08-21
 @menu
 * Funciones y variables para f90::
 @end menu
@@ -7,9 +7,9 @@
 @section Funciones y variables para f90
 
 
-@deffn {Funci@'on} f90 (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funci@'on} f90 (@var{expr_1}, @dots{}, @var{expr_n})
 
-Imprime una o m@'as expresiones @var{expr_1}, ..., @var{expr_n}
+Imprime una o m@'as expresiones @var{expr_1}, @dots{}, @var{expr_n}
 como un programa Fortran 90. El programa se obtiene a trav@'es de
 la salida est@'andar.
 
@@ -19,6 +19,8 @@ respecto de las columnas y los renglones largos se dividen a un ancho fijo con e
 car@'acter @code{&} indicando continuaci@'on de c@'odigo.
 
 Ejec@'utese @code{load(f90)} antes de utilizar esta funci@'on.
+
+V@'ease tambi@'en @code{fortran}.
 
 Ejemplos:
 
@@ -56,7 +58,8 @@ por medio de la funci@'on @code{with_stdout}.
 (%i1) load (f90)$
 (%i2) foo : sin (3*x + 1) - cos (7*x - 2);
 (%o2)              sin(3 x + 1) - cos(7 x - 2)
-(%i3) with_stdout ("foo.f90", f90 (x = 0.25, y = 0.625, 'foo = foo, 'stop, 'end));
+(%i3) with_stdout ("foo.f90",
+                   f90 (x=0.25, y=0.625, 'foo=foo, 'stop, 'end));
 (%o3)                         false
 (%i4) printfile ("foo.f90");
 x = 0.25

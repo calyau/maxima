@@ -1,3 +1,4 @@
+@c English version: 2011-03-27
 @menu
 * Introducci@'on a fractals::
 * Definiciones para IFS fractals::

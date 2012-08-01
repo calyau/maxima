@@ -9,12 +9,6 @@
 @code{grobner} is a package for working with Groebner bases in Maxima.
 
 @noindent
-A tutorial on @emph{Groebner Bases} can be found at 
-
-@noindent
-@url{http://www.geocities.com/CapeCanaveral/Hall/3131/}
-
-@noindent
 To use the following functions you must load the @file{grobner.lisp} package.
 
 @example
