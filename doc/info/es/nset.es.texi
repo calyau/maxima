@@ -1,4 +1,4 @@
-@c english version 2011-07-6
+@c english version 2011-07-8
 @menu
 * Introducci@'on a los conjuntos::       
 * Funciones y variables para los conjuntos::       
