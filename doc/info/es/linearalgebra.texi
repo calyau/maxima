@@ -1,4 +1,4 @@
-@c english version 1.16
+@c English version: 2011-06-30
 @menu
 * Introducci@'on a linearalgebra::
 * Funciones y variables para linearalgebra::
@@ -122,11 +122,11 @@ Ejemplo:
 @node Funciones y variables para linearalgebra,  , Introducci@'on a linearalgebra, linearalgebra
 @section Funciones y variables para linearalgebra
 
-@deffn {Funci@'on} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
+@deffn {Funci@'on} addmatrices (@var{f}, @var{M_1}, @dots{}, @var{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
 Utiliza la funci@'on @var{f} como una funci@'on aditiva, devolviendo la
-suma de las matrices @var{M_1}, ..., @var{M_n}. La funci@'on @var{f} debe
+suma de las matrices @var{M_1}, @dots{}, @var{M_n}. La funci@'on @var{f} debe
 ser tal que acepte un n@'umero arbitrario de argumentos; en otras palabras,
 ser@'a una funci@'on n-aria de Maxima.
 
@@ -187,6 +187,7 @@ Devuelve una copia de la expresi@'on @var{e} de Maxima. Aunque @var{e}
 puede ser cualquier expresi@'on de Maxima, la funci@'on @code{copy} es
 especialmente @'util cuando @var{e} es una lista o una matriz. 
 Consid@'erese el siguiente ejemplo:
+
 @c ===beg===
 @c m : [1,[2,3]]$
 @c mm : m$
@@ -229,7 +230,7 @@ En esta ocasi@'on, la asignaci@'on a @var{mm} no cambia el valor de @var{m}.
 
 Devuelve la factorizaci@'on de Cholesky de la matriz autoadjunta 
 (o herm@'{@dotless{i}}tica) @var{M}. El valor por defecto del segundo argumento
-es @var{generalring}. Para una descripci@'on de los posibles valores para
+es @code{generalring}. Para una descripci@'on de los posibles valores para
 @var{field}, v@'ease @code{lu_factor}.
 
 @end deffn
@@ -242,12 +243,13 @@ cada elemento de la matriz.
 
 @end deffn
 
-@deffn {Funci@'on} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
+@deffn {Funci@'on} diag_matrix (@var{d_1}, @var{d_2}, @dots{}, @var{d_n})
 
 Devuelve una matriz diagonal con los elementos de la diagonal iguales a
-@var{d_1}, @var{d_2},...,@var{d_n}; cuando @'estos son matrices, los
+@var{d_1}, @var{d_2}, @dots{}, @var{d_n}; cuando @'estos son matrices, los
 elementos nulos de la matriz devuelta son matrices nulas de tama@~no 
 apropiado. Por ejemplo:
+
 @c ===beg===
 @c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 @c diag_matrix(p,q);
@@ -756,9 +758,11 @@ Ejemplo:
 (%o2)                       [       ]
                             [ 9  10 ]
 (%i3) matrix ([A, B]);
+@group
                      [ [ 1  2 ]  [ 7  8  ] ]
 (%o3)                [ [      ]  [       ] ]
                      [ [ 3  4 ]  [ 9  10 ] ]
+@end group
 (%i4) mat_unblocker (%);
                          [ 1  2  7  8  ]
 (%o4)                    [             ]
@@ -783,7 +787,7 @@ Si @var{M} es una matriz, devuelve la dimensi@'on del espacio nulo de @var{M}.
 
 @end deffn
 
-@deffn {Funci@'on} orthogonal_complement (@var{v_1}, ..., @var{v_n})
+@deffn {Funci@'on} orthogonal_complement (@var{v_1}, @dots{}, @var{v_n})
 
 Devuelve @code{span (u_1, ..., u_m)}, siendo @code{@{u_1, ..., u_m@}} la base
 del complemento ortogonal del conjunto @code{(v_1, ..., v_n)}, cuyos elementos
@@ -804,9 +808,8 @@ se deber@'a especificar tambi@'en el predicado @var{coeffp}, aunque aqu@'{@dotle
 se desee su comportamiento por defecto.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp})} equivale a
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}.
-
+La instrucci@'on @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} equivale a
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}, al tiempo que
 @code{polynomialp (@var{p}, @var{L})} equivale a
 @code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 
@@ -933,17 +936,20 @@ defecto para @var{row} es el complejo conjugado de @var{col}. Ejemplo:
 @c ==end===
 @example
 (%i1)  toeplitz([1,2,3],[x,y,z]);
-
+@group
                                   [ 1  y  z ]
                                   [         ]
 (%o1)                             [ 2  1  y ]
                                   [         ]
                                   [ 3  2  1 ]
+@end group
 (%i2)  toeplitz([1,1+%i]);
+@group
 
                               [   1     1 - %I ]
 (%o2)                         [                ]
                               [ %I + 1    1    ]
+@end group
 @end example
 
 @end deffn
