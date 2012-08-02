@@ -381,7 +381,7 @@ Los m@'etodos de factorizaci@'on se basan en divisiones tentativas con n@'umeros
 hasta 9973, en los m@'etodos rho y p-1 de Pollard y en curvas el@'{@dotless{i}}pticas.
 
 La respuesta que se obtiene de @code{ifactors} est@'a controlada por la variable opcional
-@mrefdot{factors_only}. El valor por defecto @code{false} hace que @code{ifactors} no 
+@code{factors_only}. El valor por defecto @code{false} hace que @code{ifactors} no 
 d@'e informaci@'on sobre las multiplicidades de los factores primos calculados. 
 Cuando @code{factors_only} vale @code{true}, @code{ifactors} solo devuelve la lista 
 de factores primos.

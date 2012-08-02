@@ -1,4 +1,4 @@
-@c version 1.15
+@c English version: 2008-03-28
 @menu
 * Introducci@'on a polinomios ortogonales::
 * Funciones y variables para polinomios ortogonales::

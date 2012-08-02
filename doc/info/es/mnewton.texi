@@ -1,4 +1,4 @@
-@c English version 1.5
+@c English version: 2011-05-31
 @menu
 * Funciones y variables para mnewton::
 @end menu
@@ -11,8 +11,10 @@
 @defvr {Variable opcional} newtonepsilon
 Valor por defecto:  @code{10.0^(-fpprec/2)}
 
-Precisi@'on que determina cuando la funci@'on @code{mnewton} ha conseguido una convergencia aceptable. Si @code{newtonepsilon} es un n@'umero decimal grande (bigfloat), entonces
-@code{mnewton} realiza los c@'alculos en ese formato.
+Precisi@'on que determina cuando la funci@'on @code{mnewton} ha conseguido una
+convergencia aceptable. Si @code{newtonepsilon} es un n@'umero decimal de 
+precisi@'on arbitraria (bigfloat), entonces @code{mnewton} realiza los 
+c@'alculos en ese formato.
 
 V@'ease tambi@'en @code{mnewton}.
 @end defvr
@@ -21,7 +23,8 @@ V@'ease tambi@'en @code{mnewton}.
 @defvr {Variable opcional} newtonmaxiter
 Valor por defecto:  @code{50}
 
-N@'umero m@'aximo de iteraciones para la funci@'on @code{mnewton} en caso de que no se produzca convergencia, o de que @'esta se haga muy lenta.
+N@'umero m@'aximo de iteraciones para la funci@'on @code{mnewton} en caso
+de que no se produzca convergencia, o de que @'esta se haga muy lenta.
 
 V@'ease tambi@'en @code{mnewton}.
 @end defvr
@@ -50,7 +53,22 @@ Esta funci@'on se controla con las variables globales @code{newtonepsilon} y @co
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("mnewton")}. V@'eanse tambi@'en @code{newtonepsilon} y @code{newtonmaxiter}.
+La variable @code{newtonepsilon} controla la precisi@'on de las
+aproximaciones. Tambi@'en controla si los c@'alculos se realizan con
+precisi@'on doble o arbitraria (bigfloats).
+
+@example
+(%i1) load(mnewton)$
+
+(%i2) (fpprec : 25, newtonepsilon : bfloat(10^(-fpprec+5)))$
+
+(%i3) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
+(%o3) [[u = 1.066618389595406772591173b0, 
+                               v = 1.552564766841786450100418b0]]
+@end example
+
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("mnewton")}.
+V@'eanse tambi@'en @code{newtonepsilon} y @code{newtonmaxiter}.
 @end deffn
 
 

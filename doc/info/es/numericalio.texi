@@ -1,4 +1,4 @@
-@c English version 1.6
+@c English version: 2008-04-23
 @menu
 * Introducci@'on a numericalio::
 * Funciones y variables para entrada y salida en formato texto::

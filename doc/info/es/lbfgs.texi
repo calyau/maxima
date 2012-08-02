@@ -1,4 +1,4 @@
-@c english version 1.8
+@c English version: 2011-06-11
 @menu
 * Introducci@'on a lbfgs::
 * Funciones y variables para lbfgs::
@@ -360,7 +360,8 @@ simb@'olicamente.
 @c load (lbfgs)$
 @c F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
 @c F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
-@c estimates : lbfgs ([F(a, b, c), F_grad], [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
+@c estimates : lbfgs ([F(a, b, c), F_grad],
+@c                    [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
 @c ===end===
 @example
 (%i1) load (lbfgs)$
@@ -370,7 +371,8 @@ simb@'olicamente.
 (%i3) F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
                                     3           5
 (%o3)          [2 (a - 5), 4 (b - 3) , 6 (c - 2) ]
-(%i4) estimates : lbfgs ([F(a, b, c), F_grad], [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
+(%i4) estimates : lbfgs ([F(a, b, c), F_grad],
+                         [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
 *************************************************
   N=    3   NUMBER OF CORRECTIONS=25
        INITIAL VALUES
