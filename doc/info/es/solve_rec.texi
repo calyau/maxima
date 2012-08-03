@@ -1,4 +1,4 @@
-@c english version 1.13
+@c English version: 2010-11-01
 @menu
 * Introducci@'on a solve_rec::
 * Funciones y variables para solve_rec::

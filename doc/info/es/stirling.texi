@@ -1,4 +1,4 @@
-@c English version 1.4
+@c English version: 2008-11-20
 @menu
 * Funciones y variables para stirling::
 @end menu

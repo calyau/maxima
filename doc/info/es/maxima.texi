@@ -639,7 +639,13 @@ simplex
 simplification
 
 * Introducci@'on a simplification::
-* Funciones y variables para simplification::
+* Paquete absimp::
+* Paquete facexp::
+* Paquete functs::
+* Paquete ineq::
+* Paquete rducon::
+* Paquete scifac::
+* Paquete sqdnst::
 
 solve_rec
 

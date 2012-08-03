@@ -1,10 +1,16 @@
 @c english version 1.11
 @menu
 * Introducci@'on a simplification::
-* Funciones y variables para simplification::
+* Paquete absimp::
+* Paquete facexp::
+* Paquete functs::
+* Paquete ineq::
+* Paquete rducon::
+* Paquete scifac::
+* Paquete sqdnst::
 @end menu
 
-@node Introducci@'on a simplification, Funciones y variables para simplification, simplification, simplification
+@node Introducci@'on a simplification, Paquete absimp, simplification, simplification
 @section Introducci@'on a simplification
 
 El directorio @code{maxima/share/simplification} contiene programas que
@@ -12,14 +18,12 @@ implementan algunas reglas y funciones para simplificar expresiones,
 as@'{@dotless{i}} como ciertas funciones no relacionadas con la simplificaci@'on.
 
 
-@node Funciones y variables para simplification,  , Introducci@'on a simplification, simplification
-@section Funciones y variables para simplification
 
-@c Adapted from absimp.usg ----------------------
 
-@c @defvr {Add-on package} (WITH HYPHEN) CONFUSES DESCRIBE (CAN'T FIND END OF ITEM)
-@c SAME WITH OTHER "ADD-ON PACKAGES" HERE (FACEXP, INEQ)
-@subsection Paquete absimp
+
+
+@node Paquete absimp, Paquete facexp, Introducci@'on a simplification, simplification
+@section Paquete absimp
 
 El paquete @code{absimp} contiene reglas para aplicar patrones que extienden
 el sistema de reglas nativo de Maxima para las funciones @code{abs} y
@@ -54,16 +58,14 @@ Ejemplos:
 (%o4)                               cosh(x)
 @end example
 
-@c disol.usg: "disolate" already in doc/info/Expressions.texi
 
-@c elim.usg: "eliminate" already in doc/info/Polynomials.texi
 
-@c Adapted from facexp.usg ----------------------
-@c ALL OF THE TEXT IN FACEXP.USG IS VERY VAGUE.
-@c I HAVE NO IDEA WHAT THESE FUNCTIONS DO.
-@c ALL OF THESE ITEMS NEED TO BE HEAVILY REVISED
-@c (ASSUMING THIS PACKAGE IS SOMETHING WE WANT TO INVEST TIME IN)
-@subsection Paquete facexp
+
+
+
+
+@node Paquete facexp, Paquete functs, Paquete absimp, simplification
+@section Paquete facexp
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 El paquete @code{facexp} contiene varias funciones que le aportan al
@@ -179,7 +181,7 @@ eleva a una potencia, tanto el factor como el exponente se procesar@'an de
 esta manera.
 @end deffn
 
-@deffn {Funci@'on} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Funci@'on} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 Si algunas expresiones fueron ya simplificadas con @code{facsum}, @code{factorfacsum},
 @code{factenexpand},  @code{facexpten} o @code{factorfacexpten}, debiendo ser 
 luego sumadas, puede ser conveniente combinarlas utilizando la funci@'on
@@ -193,11 +195,16 @@ resulta ser especialmente @'util cuando las expresiones a sumar son muy
 grandes.
 @end deffn
 
-@c Adapted from functs.usg ----------------------
 
-@c conjugate already described in doc/info/Matrices.texi
 
-@subsection Paquete functs
+
+
+
+
+
+
+@node Paquete functs, Paquete ineq, Paquete facexp, simplification
+@section Paquete functs
 
 @deffn {Funci@'on} rempart (@var{expr}, @var{n})
 Elimina la parte @var{n} de la expresi@'on @var{expr}.
@@ -287,17 +294,53 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
 @deffn {Funci@'on} gcdivide (@var{p}, @var{q})
-Si @code{takegcd} vale @code{true}, @code{gcdivide} divide los 
-polinomios @var{p} y @var{q} por su m@'aximo com@'un divisor y
-devuelve el cociente de los resultados.
+Si @code{takegcd} vale @code{true}, que es su valor por defecto, 
+@code{gcdivide} divide los polinomios @var{p} y @var{q} por su
+m@'aximo com@'un divisor y devuelve el cociente de los resultados.
+@code{gcdivide} hace una llamada a la funci@'on @code{ezgcd} para
+dividir los polinomios por su m@'aximo com@'un divisor.
+
 
 Si @code{takegcd} vale @code{false}, @code{gcdivide} devuelve
 el cociente @code{@var{p}/@var{q}}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+
+V@'eanse tambi@'en  @code{ezgcd}, @code{gcd}, @code{gcdex} y
+@code{poly_gcd}.
+
+Ejemplos:
+
+@example
+(%i1) load(functs)$
+
+(%i2) p1:6*x^3+19*x^2+19*x+6; 
+                        3       2
+(%o2)                6 x  + 19 x  + 19 x + 6
+(%i3) p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+                  5       4       3       2
+(%o3)          6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i4) gcdivide(p1, p2);
+                             x + 1
+(%o4)                        ------
+                              3
+                             x  + x
+(%i5) takegcd:false;
+(%o5)                         false
+(%i6) gcdivide(p1, p2);
+                       3       2
+                    6 x  + 19 x  + 19 x + 6
+(%o6)          ----------------------------------
+                  5       4       3       2
+               6 x  + 13 x  + 12 x  + 13 x  + 6 x
+(%i7) ratsimp(%);
+                             x + 1
+(%o7)                        ------
+                              3
+                             x  + x
+@end example
 @end deffn
 
-@c lcm already described in doc/info/Number.texi
 
 @deffn {Funci@'on} arithmetic (@var{a}, @var{d}, @var{n})
 Devuelve el @var{n}-@'esimo t@'ermino de la progresi@'on aritm@'etica
@@ -395,9 +438,17 @@ de un conjunto de @var{n}.
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
-@c Adapted from ineq.usg ----------------------
-@c THIS PACKAGE IS INTERESTING BUT THIS TEXT NEEDS WORK AND EXAMPLES
-@subsection Paquete ineq
+
+
+
+
+
+
+
+
+@node Paquete ineq, Paquete rducon, Paquete functs, simplification
+@section Paquete ineq
+
 El paquete @code{ineq} contiene reglas de simplificaci@'on para desigualdades
 
 Una sesi@'on de ejemplo:
@@ -511,11 +562,18 @@ como en @code{remrule ("+", "+rule1")} para eliminar la primera regla sobre @cod
 o @code{disprule ("*rule2")} para mostrar la definici@'on de la segunda regla
 multiplicativa.
 
-@c lrats.usg: "lratsubst" and "fullratsubst" already in doc/info/Polynomials.texi
 
-@c Adapted from rducon.usg ----------------------
-@c THIS IS AN INTERESTING FUNCTION BUT THIS TEXT NEEDS WORK AND EXAMPLES
-@subsection Paquete rducon
+
+
+
+
+
+
+
+@node Paquete rducon, Paquete scifac, Paquete ineq, simplification
+@section Paquete rducon
+
+
 
 @deffn {Funci@'on} reduce_consts (@var{expr})
 Sustituye subexpresiones constantes de @var{expr} por @'atomos,
@@ -554,10 +612,15 @@ La instrucci@'on @code{load (rducon)} carga esta funci@'on y @code{demo (rducon)
 hace una demostraci@'on sobre su uso.
 @end deffn
 
-@c rncomb.usg: "rncombine" already in doc/info/Miscellaneous.texi
 
-@c Adapted from scifac.usg ----------------------
-@subsection Paquete scifac
+
+
+
+
+
+@node Paquete scifac, Paquete sqdnst, Paquete rducon, simplification
+@section Paquete scifac
+
 
 @deffn {Funci@'on} gcfac (@var{expr})
 Es una funci@'on de factorizaci@'on que intenta aplicar la misma heur@'{@dotless{i}}stica
@@ -585,9 +648,13 @@ La instrucci@'on @code{load (scifac)} carga esta funci@'on y @code{demo (scifac)
 hace una demostraci@'on sobre su uso.
 @end deffn
 
-@c Adapted from sqdnst.usg ----------------------
-@c THIS FUNCTION IS INTERESTING BUT THIS TEXT NEEDS WORK. HOW DEEPLY CAN SQRT BE NESTED ??
-@subsection Paquete sqdnst
+
+
+
+
+
+@node Paquete sqdnst,  , Paquete scifac, simplification
+@section Paquete sqdnst
 
 @deffn {Funci@'on} sqrtdenest (@var{expr})
 Reduce expresiones en las que se encuentren ra@'{@dotless{i}}ces cuadradas anidadas,
@@ -623,4 +690,3 @@ A veces conviene aplicar @code{sqrtdenest} m@'as de una vez, como en el caso
 La sentencia @code{load (sqdnst)} carga esta funci@'on.
 @end deffn
 
-@c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already in doc/info/Simplification.texi

@@ -1,4 +1,4 @@
-@c English version 2011-07-24
+@c English version 2011-10-30
 @menu
 * Funciones y variables para to_poly_solve::
 @end menu

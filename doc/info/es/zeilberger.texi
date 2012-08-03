@@ -1,4 +1,4 @@
-@c english version 1.11
+@c English version: 2011-05-30
 @menu
 * Introducci@'on a zeilberger::
 * Funciones y variables para zeilberger::
