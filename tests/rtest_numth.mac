@@ -188,8 +188,8 @@ gf_ind(a);
 ev(a = gf_exp(x, 13)), pred;
 true;
 
-gf_make_tables();
-[gf_power_table, gf_log_table];
+(gf_make_tables(), 0);
+0;
 
 gf_log_table[10];
 9;
