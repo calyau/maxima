@@ -898,10 +898,10 @@
 ;; power table of the field, where the i-th element is the numerical
 ;; equivalent of the field element e^i, where e is a primitive element 
 ;;
-    (setq $gf_power_table (make-array ord :element-type 'integer))
+    (setq $gf_power_table (make-array (1+ ord) :element-type 'integer))
     (setf (svref $gf_power_table 0) 1)
     (do ((i 1 (1+ i)))
-        ((= i ord))
+        ((> i ord))
         (declare (fixnum i))
       (setq x (gf-xtimes x primx))
       (setf (svref $gf_power_table i) (gf-x2n x)) )
@@ -914,7 +914,7 @@
         (declare (fixnum i))
       (setf (svref $gf_log_table (svref $gf_power_table i)) i) )
     (setq *gf-tables?* t)
-    '((mlist simp) $gf_power_table $gf_log_table) ))
+    `((mlist simp) ,$gf_power_table ,$gf_log_table) ))
 
 (defun gf-clear-tables () 
   (setq $gf_power_table '$gf_power_table
@@ -1251,10 +1251,10 @@
     (t (maybe-fixnum-let ((cy 0)(cc 0))
         (prog (r (ex 0)(ey 0)) (declare (fixnum ex ey))
           a1
-          (setq ey (the fixnum (+ (the fixnum (car y)) e)) 
-                cy (gf-ctimes c (cadr y)) ) 
           (when (null x) (go d))
-          (setq ex (the fixnum (car x)))
+          (setq ey (the fixnum (+ (the fixnum (car y)) e)) 
+                cy (gf-ctimes c (cadr y)) 
+                ex (the fixnum (car x)) )
           (cond 
             ((> ey ex)
               (setq x (cons ey (cons cy x)) y (cddr y)) ) 
