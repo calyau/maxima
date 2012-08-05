@@ -1198,9 +1198,8 @@
     (t (maybe-fixnum-let ((cy 0)(c 0))
         (prog (r (ex 0)(ey 0)) (declare (fixnum ex ey))
           a1
-          (setq ey (the fixnum (car y)) cy (cadr y))
           (when (null x) (return y))
-          (setq ex (the fixnum (car x)))
+          (setq ex (the fixnum (car x)) ey (the fixnum (car y)) cy (cadr y))
           (cond 
             ((> ey ex)
               (setq x (cons ey (cons cy x)) y (cddr y)) ) 
