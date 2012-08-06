@@ -1211,9 +1211,10 @@
                   (go a1) )
                 (t (rplaca (cdr x) c)) ))
             (t (setq r (cdr x)) (go b)) )
+          (setq r (cdr x))
           a
           (when (null y) (return x))
-          (setq ey (the fixnum (car y)) cy (cadr y) r (cdr x))
+          (setq ey (the fixnum (car y)) cy (cadr y))
           b
           (while (and (cdr r) (> (the fixnum (cadr r)) ey))
             (setq r (cddr r)) )
@@ -1263,11 +1264,11 @@
                   (go a1) )
                 (t (rplaca (cdr x) cc)) ))
             (t (setq r (cdr x)) (go b)) )
+          (setq r (cdr x))
           a
           (when (null y) (return x))
           (setq ey (the fixnum (+ (the fixnum (car y)) e)) 
-                cy (gf-ctimes c (cadr y)) 
-                r (cdr x))
+                cy (gf-ctimes c (cadr y)) )
           b
           (when (null (cdr r)) (go d))
           (setq ex (the fixnum (cadr r)))
