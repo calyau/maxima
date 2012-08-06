@@ -1,4 +1,4 @@
-@c version 1.11
+@c English version: 2012-08-06
 @menu
 * Introducci@'on a stats::
 * Funciones y variables para inference_result::
@@ -1413,151 +1413,146 @@ de tama@~no 9.
 
 
 
-@deffn {Funci@'on} simple_linear_regression (@var{x})
-@deffnx {Funci@'on} simple_linear_regression (@var{x} @var{option})
+@deffn {Funci@'on} linear_regression (@var{x})
+@deffnx {Funci@'on} linear_regression (@var{x} @var{option})
 
-Regresi@'on lineal simple, @math{y_i=a+b x_i+e_i}, donde las @math{e_i}
-son variables aleatorias independientes de distribuci@'on @math{N(0,sigma)}.
-El argumento @var{x} debe ser una matriz de dos columnas o una lista de pares
-de n@'umeros.
+Regresi@'on lineal m@'ultiple, 
+@math{y_i = b0 + b1*x_1i + b2*x_2i + ... + bk*x_ki + u_i},
+donde @math{u_i} son variables aleatorias independientes 
+@math{N(0,sigma)}. El argumento @var{x} debe ser una matriz 
+con m@'as de una columna. La @'ultima columna se considera
+que son las respuestas (@math{y_i}).
 
-Opciones:
+Opci@'on:
 
 @itemize @bullet
 
 @item
-@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo de confianza;
-debe ser una expresi@'on que tome un valor en el intervalo (0,1).
-
-@item
-@code{'regressor}, valor por defecto @code{'x}, nombre de la variable independiente.
-
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de
+confianza para los intervalos de confianza; debe ser una expresi@'on 
+que tome un valor en el intervalo (0,1).
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{simple_linear_regression} es un
-objeto @code{inference_result} con los siguientes apartados:
+El resultado devuelto por la funci@'on @code{linear_regression} es
+un objeto @code{inference_result} de Maxima con los siguientes campos:
 
 @enumerate
 
 @item
-@code{'model}: la ecuaci@'on ajustada. @'Util para hacer predicciones.
-V@'eanse los ejemplos m@'as abajo.
+@code{'b_estimation}: estimadores de los coeficientes de regresi@'on.
 
 @item
-@code{'means}: media bivariante.
+@code{'b_covariances}: matriz de covarianzas de los estimadores
+de los coeficientes de regresi@'on.
 
 @item
-@code{'variances}: varianzas de ambas variables.
+@code{b_conf_int}: intervalos de confianza para los coeficientes de regresi@'on.
 
 @item
-@code{'correlation}: coeficiente de correlaci@'on.
+@code{b_statistics}: estad@'{@dotless{i}}sticos para los contrastes
+de los coeficientes.
 
 @item
-@code{'adc}: coeficiente de determinaci@'on ajustado.
+@code{b_p_values}: p-valores para los contrastes de los coeficientes.
 
 @item
-@code{'a_estimation}: estimador del par@'ametro @var{a}.
+@code{b_distribution}: distribuci@'on de probabilidad para
+los contrastes de los coeficientes.
 
 @item
-@code{'a_conf_int}: intervalo de confianza del par@'ametro @var{a}.
+@code{v_estimation}: estimador insesgado de la varianza.
 
 @item
-@code{'b_estimation}: estimador del par@'ametro @var{b}.
+@code{v_conf_int}: intervalo de confianza de la varianza.
 
 @item
-@code{'b_conf_int}: intervalo de confianza del par@'ametro @var{b}.
+@code{v_distribution}: distribuci@'on de probabilidad para
+el contraste de la varianza.
 
 @item
-@code{'hypotheses}: hip@'otesis nula y altenativa sobre el par@'ametro @var{b}.
+@code{residuals}: residuos.
 
 @item
-@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
+@code{adc}: coeficiente de determinaci@'on ajustado.
 
 @item
-@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su par@'ametro.
+@code{aic}: Criterio de informaci@'on de Akaike.
 
 @item
-@code{'p_value}: @math{p}-valor del test sobre @var{b}.
-
-@item
-@code{'v_estimation}: estimador insesgado de la varianza, o varianza residual.
-
-@item
-@code{'v_conf_int}: intervalo de confianza de la varianza.
-
-@item
-@code{'cond_mean_conf_int}: intervalo de confianza para la media condicionada.
-V@'eanse los ejemplos m@'as abajo.
-
-@item
-@code{'new_pred_conf_int}: intervalo de confianza para una nueva predicci@'on.
-V@'eanse los ejemplos m@'as abajo.
-
-@item
-@code{'residuals}: lista de pares (predicci@'on, residuo), ordenado respecto de las predicciones.
-@'Util para el an@'alisis de la bondad de ajuste. V@'eanse los ejemplos m@'as abajo.
+@code{bic}: Criterio de informaci@'on de Bayes.
 
 @end enumerate
 
-S@'olo los elementos 1, 4, 14, 9, 10, 11, 12 y 13 de arriba, y en este orden,
-son mostrados por defecto. El resto permanecen ocultos hasta que el usuario haga uso de
-las funciones @code{items_inference} y @code{take_inference}.
+Solamente los apartados 1, 4, 5, 6, 7, 8, 9 y 11, en este orden, 
+se muestran por defecto. El resto permanecen ocultos hasta que
+el usuario haga uso de las funciones @code{items_inference}
+y @code{take_inference}.
 
 Ejemplo:
 
-Ajuste de un modelo lineal a una muestra bivariante. La entrada @code{%i4}
-representa gr@'aficamente la muestra junto con la recta de regresi@'on; la
-entrada @code{%i5} calcula @code{y} dado @code{x=113}; tambi@'en
-se calculan las medias y el intervalo de confianza para una nueva predicci@'on
-cuando @code{x=113}.
-
+Ajustando un modelo lineal a una muestra tridimensional. La 
+@'ultima columna se considera que son las respuestas (@math{y_i}).
 
 @c ===beg===
-@c load (stats)$
-@c s:[[125,140.7],[130,155.1],[135,160.3],
-@c       [140,167.2],[145,169.8]]$
-@c z:simple_linear_regression(s,conflevel=0.99);
-@c plot2d([[discrete, s], take_inference(model,z)],
-@c           [x,120,150],
-@c           [gnuplot_curve_styles,
-@c              ["with points","with lines"]] )$
-@c take_inference(model,z), x=133;
-@c take_inference(means,z);
-@c take_inference(new_pred_conf_int,z), x=133;
+@c load ("stats")$
+@c X:matrix(
+@c    [58,111,64],[84,131,78],[78,158,83],
+@c    [81,147,88],[82,121,89],[102,165,99],
+@c    [85,174,101],[102,169,102])$
+@c fpprintprec: 4$
+@c res: linear_regression(X);
+@c items_inference(res);
+@c take_inference('b_covariances, res);
+@c take_inference('bic, res);
+@c load("draw")$
+@c draw2d(
+@c    points_joined = true,
+@c    grid = true,
+@c    points(take_inference('residuals, res)) )$
 @c ===end===
 @example
-(%i1) load("stats")$
-(%i2) s:[[125,140.7],[130,155.1],[135,160.3],
-           [140,167.2],[145,169.8]]$
-(%i3) z:simple_linear_regression(s,conflevel=0.99);
-           |               SIMPLE LINEAR REGRESSION
-           |
-           |   model = 1.405999999999985 x - 31.18999999999804
-           |
-           |           correlation = .9611685255255155
-           |
-           |           v_estimation = 13.57966666666665
-           |
-(%o3)      | b_conf_int = [.04469633662525263, 2.767303663374718]
-           |
-           |          hypotheses = H0: b = 0 ,H1: b # 0
-           |
-           |            statistic = 6.032686683658114
-           |
-           |            distribution = [student_t, 3]
-           |
-           |             p_value = 0.0038059549413203
-(%i4) plot2d([[discrete, s], take_inference(model,z)],
-              [x,120,150],
-              [gnuplot_curve_styles, ["with points","with lines"]] )$
-(%i5) take_inference(model,z), x=133;
-(%o5)                         155.808
-(%i6) take_inference(means,z);
-(%o6)                     [135.0, 158.62]
-(%i7) take_inference(new_pred_conf_int,z), x=133;
-(%o7)              [132.0728595995113, 179.5431404004887]
+(%i2) load("stats")$
+(%i3) X:matrix(
+    [58,111,64],[84,131,78],[78,158,83],
+    [81,147,88],[82,121,89],[102,165,99],
+    [85,174,101],[102,169,102])$
+(%i4) fpprintprec: 4$
+(%i5) res: linear_regression(X);
+             |       LINEAR REGRESSION MODEL         
+             |                                       
+             | b_estimation = [9.054, .5203, .2397]  
+             |                                       
+             | b_statistics = [.6051, 2.246, 1.74]   
+             |                                       
+             | b_p_values = [.5715, .07466, .1423]   
+             |                                       
+(%o5)        |   b_distribution = [student_t, 5]     
+             |                                       
+             |         v_estimation = 35.27          
+             |                                       
+             |     v_conf_int = [13.74, 212.2]       
+             |                                       
+             |      v_distribution = [chi2, 5]       
+             |                                       
+             |             adc = .7922               
+(%i6) items_inference(res);
+(%o6) [b_estimation, b_covariances, b_conf_int, b_statistics, 
+b_p_values, b_distribution, v_estimation, v_conf_int, 
+v_distribution, residuals, adc, aic, bic]
+(%i7) take_inference('b_covariances, res);
+                  [  223.9    - 1.12   - .8532  ]
+                  [                             ]
+(%o7)             [ - 1.12    .05367   - .02305 ]
+                  [                             ]
+                  [ - .8532  - .02305   .01898  ]
+(%i8) take_inference('bic, res);
+(%o8)                          30.98
+(%i9) load("draw")$
+(%i10) draw2d(
+    points_joined = true,
+    grid = true,
+    points(take_inference('residuals, res)) )$
 @end example
-
 @end deffn
 
 

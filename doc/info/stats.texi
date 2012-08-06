@@ -1440,142 +1440,140 @@ Checks for the normality of a population, based on a sample of size 9.
 
 
 
+@deffn {Function} linear_regression (@var{x})
+@deffnx {Function} linear_regression (@var{x} @var{option})
 
-@deffn {Function} simple_linear_regression (@var{x})
-@deffnx {Function} simple_linear_regression (@var{x} @var{option})
+Multivariate linear regression, 
+@math{y_i = b0 + b1*x_1i + b2*x_2i + ... + bk*x_ki + u_i},
+where @math{u_i} are @math{N(0,sigma)} independent random variables.
+Argument @var{x} must be a matrix with more than one column. The
+last column is considered as the responses (@math{y_i}).
 
-Simple linear regression, @math{y_i=a+b x_i+e_i}, where @math{e_i} are @math{N(0,sigma)}
-independent random variables. Argument @var{x} must be a two column matrix or a list of
-pairs.
-
-Options:
+Option:
 
 @itemize @bullet
 
 @item
-@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval; it must
-be an expression which takes a value in (0,1).
-
-@item
-@code{'regressor}, default @code{'x}, name of the independent variable.
-
+@code{'conflevel}, default @code{95/100}, confidence level for the
+confidence intervals; it must be an expression which takes a value
+in (0,1).
 @end itemize
 
-The output of function @code{simple_linear_regression} is an @code{inference_result} Maxima object
-with the following results:
+The output of function @code{linear_regression} is an 
+@code{inference_result} Maxima object with the following results:
 
 @enumerate
 
 @item
-@code{'model}: the fitted equation. Useful to make new predictions. See examples bellow.
+@code{'b_estimation}: regression coefficients estimates.
 
 @item
-@code{'means}: bivariate mean.
+@code{'b_covariances}: covariance matrix of the regression 
+coefficients estimates.
 
 @item
-@code{'variances}: variances of both variables.
+@code{b_conf_int}: confidence intervals of the regression coefficients.
 
 @item
-@code{'correlation}: correlation coefficient.
+@code{b_statistics}: statistics for testing coefficient.
 
 @item
-@code{'adc}: adjusted determination coefficient.
+@code{b_p_values}: p-values for coefficient tests.
 
 @item
-@code{'a_estimation}: estimation of parameter @var{a}.
+@code{b_distribution}: probability distribution for coefficient tests.
 
 @item
-@code{'a_conf_int}: confidence interval of parameter @var{a}.
+@code{v_estimation}: unbiased variance estimator.
 
 @item
-@code{'b_estimation}: estimation of parameter @var{b}.
+@code{v_conf_int}: variance confidence interval.
 
 @item
-@code{'b_conf_int}: confidence interval of parameter @var{b}.
+@code{v_distribution}: probability distribution for variance test.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses about parameter @var{b}.
+@code{residuals}: residuals.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{adc}: adjusted determination coefficient.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter.
+@code{aic}: Akaike's information criterion.
 
 @item
-@code{'p_value}: @math{p}-value of the test about @var{b}.
-
-@item
-@code{'v_estimation}: unbiased variance estimation, or residual variance.
-
-@item
-@code{'v_conf_int}: variance confidence interval.
-
-@item
-@code{'cond_mean_conf_int}: confidence interval for the conditioned mean. See examples bellow.
-
-@item
-@code{'new_pred_conf_int}: confidence interval for a new prediction. See examples bellow.
-
-@item
-@code{'residuals}: list of pairs (prediction, residual), ordered with respect to predictions.
-This is useful for goodness of fit analysis. See examples bellow.
+@code{bic}: Bayes's information criterion.
 
 @end enumerate
 
-Only items 1, 4, 14, 9, 10, 11, 12, and 13 above, in this order, are shown by default. The rest remain
-hidden until the user makes use of functions @code{items_inference} and @code{take_inference}.
+Only items 1, 4, 5, 6, 7, 8, 9 and 11 above, in this order, 
+are shown by default. The rest remain hidden until the user
+makes use of functions @code{items_inference} and @code{take_inference}.
 
 Example:
 
-Fitting a linear model to a bivariate sample. Input @code{%i4} plots
-the sample together with the regression line; input @code{%i5}
-computes @code{y} given @code{x=113}; the means and the 
-confidence interval for a new prediction when @code{x=113} are also calculated.
+Fitting a linear model to a trivariate sample. The
+last column is considered as the responses (@math{y_i}).
 
 @c ===beg===
-@c load (stats)$
-@c s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
-@c                                                 [145,169.8]]$
-@c z:simple_linear_regression(s,conflevel=0.99);
-@c plot2d([[discrete, s], take_inference(model,z)],
-@c           [x,120,150],
-@c           [gnuplot_curve_styles, ["with points","with lines"]] )$
-@c take_inference(model,z), x=133;
-@c take_inference(means,z);
-@c take_inference(new_pred_conf_int,z), x=133;
+@c load ("stats")$
+@c X:matrix(
+@c    [58,111,64],[84,131,78],[78,158,83],
+@c    [81,147,88],[82,121,89],[102,165,99],
+@c    [85,174,101],[102,169,102])$
+@c fpprintprec: 4$
+@c res: linear_regression(X);
+@c items_inference(res);
+@c take_inference('b_covariances, res);
+@c take_inference('bic, res);
+@c load("draw")$
+@c draw2d(
+@c    points_joined = true,
+@c    grid = true,
+@c    points(take_inference('residuals, res)) )$
 @c ===end===
 @example
-(%i1) load("stats")$
-(%i2) s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
-                                                [145,169.8]]$
-(%i3) z:simple_linear_regression(s,conflevel=0.99);
-           |               SIMPLE LINEAR REGRESSION
-           |
-           |   model = 1.405999999999985 x - 31.18999999999804
-           |
-           |           correlation = .9611685255255155
-           |
-           |           v_estimation = 13.57966666666665
-           |
-(%o3)      | b_conf_int = [.04469633662525263, 2.767303663374718]
-           |
-           |          hypotheses = H0: b = 0 ,H1: b # 0
-           |
-           |            statistic = 6.032686683658114
-           |
-           |            distribution = [student_t, 3]
-           |
-           |             p_value = 0.0038059549413203
-(%i4) plot2d([[discrete, s], take_inference(model,z)],
-        [x,120,150],
-        [gnuplot_curve_styles, ["with points","with lines"]] )$
-(%i5) take_inference(model,z), x=133;
-(%o5)                         155.808
-(%i6) take_inference(means,z);
-(%o6)                     [135.0, 158.62]
-(%i7) take_inference(new_pred_conf_int,z), x=133;
-(%o7)              [132.0728595995113, 179.5431404004887]
+(%i2) load("stats")$
+(%i3) X:matrix(
+    [58,111,64],[84,131,78],[78,158,83],
+    [81,147,88],[82,121,89],[102,165,99],
+    [85,174,101],[102,169,102])$
+(%i4) fpprintprec: 4$
+(%i5) res: linear_regression(X);
+             |       LINEAR REGRESSION MODEL         
+             |                                       
+             | b_estimation = [9.054, .5203, .2397]  
+             |                                       
+             | b_statistics = [.6051, 2.246, 1.74]   
+             |                                       
+             | b_p_values = [.5715, .07466, .1423]   
+             |                                       
+(%o5)        |   b_distribution = [student_t, 5]     
+             |                                       
+             |         v_estimation = 35.27          
+             |                                       
+             |     v_conf_int = [13.74, 212.2]       
+             |                                       
+             |      v_distribution = [chi2, 5]       
+             |                                       
+             |             adc = .7922               
+(%i6) items_inference(res);
+(%o6) [b_estimation, b_covariances, b_conf_int, b_statistics, 
+b_p_values, b_distribution, v_estimation, v_conf_int, 
+v_distribution, residuals, adc, aic, bic]
+(%i7) take_inference('b_covariances, res);
+                  [  223.9    - 1.12   - .8532  ]
+                  [                             ]
+(%o7)             [ - 1.12    .05367   - .02305 ]
+                  [                             ]
+                  [ - .8532  - .02305   .01898  ]
+(%i8) take_inference('bic, res);
+(%o8)                          30.98
+(%i9) load("draw")$
+(%i10) draw2d(
+    points_joined = true,
+    grid = true,
+    points(take_inference('residuals, res)) )$
 @end example
 
 @opencatbox
