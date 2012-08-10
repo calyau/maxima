@@ -492,7 +492,6 @@ contrib/Zeilberger/zb_prover.mac \
 contrib/Zeilberger/zeilberger_algorithm.mac \
 contrib/Zeilberger/zeilberger_linear_algebra.mac \
 contrib/Zeilberger/zeilberger.mac \
-descriptive/biomed.dat \
 descriptive/biomed.data \
 descriptive/descriptive.mac \
 descriptive/pidigits.data \
