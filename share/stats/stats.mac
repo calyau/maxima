@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2006,2009 Mario Rodriguez Riotorto
+Copyright (C) 2006,2012 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -845,150 +845,6 @@ block([numer:stats_numer, options, defaults, n1, n2, n, aux, ordered, pos, nequa
 
 
 
-/* Simple linear regression, y_i=a+b*x_i+e_i, where e_i are N(0,sigma)         */
-/* iid random variables. Argument dat must be a two column matrix or a list of */
-/* pairs.                                                                       */
-/* Admits the following options:                                                */
-/*   'conflevel=95/100: confidence level of the confidence interval; valid      */
-/*           values are: a symbol or an expression which takes a value in (0,1) */
-/*   'regressor='x: name of the independent variable                            */
-/* The output of this function is an 'inference_result' object                  */
-/* with the following results:                                                  */
-/*   1. 'model= the fitted equation. Useful to make new predictions:            */
-/*           take_inference(model,simple_linear_regression(data)), x=15;        */
-/* - 2. 'means= bivariate mean                                                  */
-/* - 3. 'variances= variances                                                   */
-/*   4. 'correlation= correlation coefficient                                   */
-/* - 5. 'adc=  adjusted determination coefficient                               */
-/* - 6. 'a_estimation= a estimation                                             */
-/* - 7. 'a_conf_int= a confidence interval                                      */
-/*   8. 'b_estimation= null hypothesis and alternative                          */
-/*   9. 'b_conf_int= b confidence interval                                      */
-/*  10. 'hypothesis= null hypothesis and alternative about b                    */
-/*  11. 'statistic= statistic used in the procedure.                            */
-/*  12. 'distribution= sample statistic distribution.                           */
-/*  13. 'p_value= p-value of the sample statistic                               */
-/*  14. 'v_estimation= unbiased variance estimation, (residual variance)        */
-/* -15. 'v_conf_int= variance confidence interval                               */
-/* -16. 'cond_mean_conf_int= confidence interval for the conditioned mean.      */
-/* -17. 'new_pred_conf_int= confidence interval for a new prediction            */
-/* -18. 'residuals= list of pairs (prediction, residual), ordered wrt           */
-/*            predictions. This is useful for goodness of fit analysis. For     */
-/*            plotting residuals:                                               */
-/*      plot2d([discrete,take_inference(residuals,simple_linear_regression(data))]); */
-/* Items marked with the minus sign are kept hidden.                            */
-simple_linear_regression(dat,[select]):=block([numer:stats_numer, options, defaults, n, aux, 
-         means, covar, corr, resvar, adc, a, b, pred, res, sig2, aconfint,
-         coef, bconfint, vconfint,
-         statistic, distribution, hypo, pvalue, listarith:true],
-  
-  /* controlling sample format */
-  if not matrixp(dat) then dat: apply('matrix,dat),
-  if length(dat[1]) # 2  or not every('identity,map('listofexpr,args(dat)))
-     then error("Sample must contain pairs of expressions")
-     else (n: length(dat)),
-
-  if n < 3 then error("Sample size must be greater than 2"),
-
-  /* updating and controlling options */
-  options:  ['alternative, 'conflevel, 'regressor],
-  defaults: ['twosided,    95/100,     'x],
-  for i in select do(
-     aux: ?position(lhs(i),options),
-     if numberp(aux) and aux <= length(options) and aux >= 1
-        then defaults[aux]: rhs(i)),
-  if not member(defaults[1],['twosided, 'greater, 'less])
-     then error("Option 'alternative' is not correct"),
-  if numberp(defaults[2]) and (defaults[2] <= 0 or defaults[2] >= 1)
-     then error("Option 'conflevel' can't be outside interval (0,1)"),
-  if not symbolp(defaults[3])
-     then error("Name of independent variable must be a symbol"),
-
-  /* estimations */
-  means: mean(dat),
-  covar: cov(dat),
-  corr: covar[1,2] / sqrt(covar[1,1] * covar[2,2]),
-  b: covar[1,2] / covar[1,1],
-  a: means[2] - b * means[1],
-
-  /* computing predictions, residuals, residual variance and adc */
-  pred: transpose(a + b * col(dat,1))[1],
-  res: transpose(col(dat,2))[1] - pred,
-  sig2: mean(res^2),        /* ml estimator for sigma^2 */
-  resvar: n * sig2 / (n-2), /* residual variance */
-  adc: 1 - (1-1/n) * resvar / covar[2,2],
-
-  /* two sided confidence interval for a */
-  aconfint: a + [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2) *
-                sqrt(apply("+",transpose(col(dat,1))[1]^2) * resvar / (n^2 * covar[1,1])),
-
-  /* confidence interval for b and hypothesis test.            */
-  /* Note that at this moment, there is not any option for the */
-  /* alternative hypothesis, it is always considered two-sided.*/
-  /* I maintain these conditionals here in case there are      */
-  /* changes in future releases.                               */
-  if float(resvar) = 0.0
-    then /* data on the straight line */
-         bconfint: statistic: hypo: statistic: distribution: pvalue: 'undefined
-    else (
-      coef: sqrt(resvar / (n * covar[1,1])),
-      statistic: b / coef,
-      if /*alternative*/ defaults[1] = 'twosided
-         then statistic: abs(statistic),
-      if /*alternative*/ defaults[1] = 'greater
-         then (bconfint: [b - quantile_student_t(defaults[2], n-2) * coef,'inf],
-               hypo: "H0: b = 0 ,H1: b > 0",
-               pvalue: 1 - cdf_student_t(statistic,n-1) )
-         else if /*alternative*/ defaults[1] = 'less
-                 then (bconfint: ['minf, b + quantile_student_t(defaults[2], n-2) * coef],
-                       hypo: "H0: b = 0 ,H1: b < 0",
-                       pvalue: cdf_student_t(statistic,n-1) )
-                 else /* twosided alternative */
-                       (bconfint: b + [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2) * coef,
-                       hypo: "H0: b = 0 ,H1: b # 0",
-                       pvalue: 2 * (1 - cdf_student_t(statistic,n-1))  ),
-      distribution: ['student_t, n-2] ),
-
-  /* two sided confidence interval for sigma^2 */
-  vconfint: (n-2) * resvar / [quantile_chi2((1+defaults[2])/2,n-2),
-                                     quantile_chi2((1-defaults[2])/2,n-2)],
-
-  /* result as an 'inference_result' object*/
-  inference_result("SIMPLE LINEAR REGRESSION",
-                 [  ['model, a + b * defaults[3] /* = regressor name */],
-                    ['means, means],
-                    ['variances, [covar[1,1], covar[2,2]]],
-                    ['correlation, corr],
-                    ['adc, adc],
-                    ['a_estimation, a],
-                    ['a_conf_int, aconfint],
-                    ['b_estimation, b],
-                    ['b_conf_int, bconfint],
-                    ['hypotheses, hypo],
-                    ['statistic, statistic],
-                    ['distribution, distribution],
-                    ['p_value, pvalue],
-                    ['v_estimation, resvar],
-                    ['v_conf_int, vconfint],
-                    ['cond_mean_conf_int, 
-                          a + b*defaults[3] + 
-                               [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2)* 
-                                        sqrt(resvar * (1/n+(means[1]-defaults[3])^2/(covar[1,1]*n)))],
-                    ['new_pred_conf_int,
-                          a + b*defaults[3] + 
-                               [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2)* 
-                                        sqrt(resvar * ((n+1)/n+(means[1]-defaults[3])^2/(covar[1,1]*n)))],
-                    ['residuals, sort(args(transpose(matrix(pred,res))),
-                                      lambda([x,y], orderlessp(x,y)) )] ],
-                 [1,4,14,9,10,11,12,13])     )$
-
-
-
-
-
-
-
-
 /* This is the proportions test. The first argument 'x' is the number of        */
 /* successes, the second number 'n>=x' is the number of trials.                 */
 /* It admits the following options:                                             */
@@ -1255,6 +1111,226 @@ block([numer:stats_numer, options, defaults, aux, phat, difphat, method,
 
 
 
+simple_linear_regression(dat,[select]):=block([numer:stats_numer, options, defaults, n, aux, 
+         means, covar, corr, resvar, adc, a, b, pred, res, sig2, aconfint,
+         coef, bconfint, vconfint,
+         statistic, distribution, hypo, pvalue, listarith:true],
+  
+  /* controlling sample format */
+  if not matrixp(dat) then dat: apply('matrix,dat),
+  if length(dat[1]) # 2  or not every('identity,map('listofexpr,args(dat)))
+     then error("Sample must contain pairs of expressions")
+     else (n: length(dat)),
+
+  if n < 3 then error("Sample size must be greater than 2"),
+
+  /* updating and controlling options */
+  options:  ['alternative, 'conflevel, 'regressor],
+  defaults: ['twosided,    95/100,     'x],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+  if not member(defaults[1],['twosided, 'greater, 'less])
+     then error("Option 'alternative' is not correct"),
+  if numberp(defaults[2]) and (defaults[2] <= 0 or defaults[2] >= 1)
+     then error("Option 'conflevel' can't be outside interval (0,1)"),
+  if not symbolp(defaults[3])
+     then error("Name of independent variable must be a symbol"),
+
+  /* estimations */
+  means: mean(dat),
+  covar: cov(dat),
+  corr: covar[1,2] / sqrt(covar[1,1] * covar[2,2]),
+  b: covar[1,2] / covar[1,1],
+  a: means[2] - b * means[1],
+
+  /* computing predictions, residuals, residual variance and adc */
+  pred: transpose(a + b * col(dat,1))[1],
+  res: transpose(col(dat,2))[1] - pred,
+  sig2: mean(res^2),        /* ml estimator for sigma^2 */
+  resvar: n * sig2 / (n-2), /* residual variance */
+  adc: 1 - (1-1/n) * resvar / covar[2,2],
+
+  /* two sided confidence interval for a */
+  aconfint: a + [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2) *
+                sqrt(apply("+",transpose(col(dat,1))[1]^2) * resvar / (n^2 * covar[1,1])),
+
+  /* confidence interval for b and hypothesis test.            */
+  /* Note that at this moment, there is not any option for the */
+  /* alternative hypothesis, it is always considered two-sided.*/
+  /* I maintain these conditionals here in case there are      */
+  /* changes in future releases.                               */
+  if float(resvar) = 0.0
+    then /* data on the straight line */
+         bconfint: statistic: hypo: statistic: distribution: pvalue: 'undefined
+    else (
+      coef: sqrt(resvar / (n * covar[1,1])),
+      statistic: b / coef,
+      if /*alternative*/ defaults[1] = 'twosided
+         then statistic: abs(statistic),
+      if /*alternative*/ defaults[1] = 'greater
+         then (bconfint: [b - quantile_student_t(defaults[2], n-2) * coef,'inf],
+               hypo: "H0: b = 0 ,H1: b > 0",
+               pvalue: 1 - cdf_student_t(statistic,n-2) )
+         else if /*alternative*/ defaults[1] = 'less
+                 then (bconfint: ['minf, b + quantile_student_t(defaults[2], n-2) * coef],
+                       hypo: "H0: b = 0 ,H1: b < 0",
+                       pvalue: cdf_student_t(statistic,n-2) )
+                 else /* twosided alternative */
+                       (bconfint: b + [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2) * coef,
+                       hypo: "H0: b = 0 ,H1: b # 0",
+                       pvalue: 2 * (1 - cdf_student_t(statistic,n-2))  ),
+      distribution: ['student_t, n-2] ),
+
+  /* two sided confidence interval for sigma^2 */
+  vconfint: (n-2) * resvar / [quantile_chi2((1+defaults[2])/2,n-2),
+                                     quantile_chi2((1-defaults[2])/2,n-2)],
+
+  /* result as an 'inference_result' object*/
+  inference_result("SIMPLE LINEAR REGRESSION",
+                 [  ['model, a + b * defaults[3] /* = regressor name */],
+                    ['means, means],
+                    ['variances, [covar[1,1], covar[2,2]]],
+                    ['correlation, corr],
+                    ['adc, adc],
+                    ['a_estimation, a],
+                    ['a_conf_int, aconfint],
+                    ['b_estimation, b],
+                    ['b_conf_int, bconfint],
+                    ['hypotheses, hypo],
+                    ['statistic, statistic],
+                    ['distribution, distribution],
+                    ['p_value, pvalue],
+                    ['v_estimation, resvar],
+                    ['v_conf_int, vconfint],
+                    ['cond_mean_conf_int, 
+                        a + b*defaults[3] + 
+                        [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2)* 
+                                 sqrt(resvar * (1/n+(means[1]-defaults[3])^2/(covar[1,1]*n)))],
+                    ['new_pred_conf_int,
+                        a + b*defaults[3] + 
+                        [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2)* 
+                                 sqrt(resvar * ((n+1)/n+(means[1]-defaults[3])^2/(covar[1,1]*n)))],
+                    ['residuals, sort(args(transpose(matrix(pred,res))),
+                                      lambda([x,y], orderlessp(x,y)) )] ],
+                 [1,4,14,9,10,11,12,13])     )$
+
+
+
+
+
+
+/* Multivariate linear regression, y_i=b_0+b_1*x_1i+...+b_k*x_ki+u_i, where     */
+/* u_i are N(0,sigma) iid random variables. Argument dat must be a matrix       */
+/* with more than one column.                                                   */
+/* Admits the following options:                                                */
+/*   'conflevel=95/100: confidence level of the confidence intervals; valid     */
+/*           values are: a symbol or an expression which takes a value in (0,1) */
+/* The output of this function is an 'inference_result' object                  */
+/* with the following results:                                                  */
+/*   1. 'b_estimation= coefficient estimates                                    */
+/* - 2. 'b_covariances= covariance matrix of coefficient estimates              */
+/* - 3. 'b_conf_int= confidence intervals of coefficient estimates              */
+/*   4. 'b_statistics= statistics for testing coefficient                       */
+/*   5. 'b_p_values= p-values for coefficient tests                             */
+/*   6. 'b_distribution= probability distribution for coefficient tests         */
+/*   7. 'v_estimation= unbiased variance estimator                              */
+/*   8. 'v_conf_int= variance confidence interval                               */
+/*   9. 'v_distribution= probability distribution for variance test             */
+/* -10. 'covariances= data covariance matrix                                    */
+/* -11. 'residuals= residuals                                                   */
+/*  12. 'adc= adjusted determination coefficient                                */
+/* -13. 'aic= akaike's information criterion                                    */
+/* -14. 'bic= bayes's information criterion                                     */
+/* Items marked with the minus sign are kept hidden.                            */
+linear_regression(dat,[select]) := 
+ block(
+    [numer:stats_numer, options, defaults, n, p, aux, x, y, covb, q, b, r,
+     df, sR2, sumsquares, Rbar, ci, t, pv, s2, aic, bic],
+
+  /* controlling sample format */
+  if not matrixp(dat) then dat: apply('matrix,dat),
+  if length(dat[1]) < 2  or not every('identity,map('listofexpr,args(dat)))
+     then error("Sample must be a matrix or a list of lists of equal length"),
+
+  /* updating and controlling options */
+  options:  ['conflevel],
+  defaults: [95/100],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+  if numberp(defaults[1]) and (defaults[1] <= 0 or defaults[1] >= 1)
+     then error("Option 'conflevel' can't be outside interval (0,1)"),
+
+  /* sample size */
+  n: length(dat),
+  /* number or regressors */
+  p: length(dat[1]) - 1,
+  /* responses */
+  y: col(dat, p+1),
+  /* regressor */
+  x: addcol(apply(matrix, makelist([1],k,n)), submatrix(dat, p+1)),
+  /* coefficients */
+  b: block([xt: transpose(x)],
+       covb: invert(xt . x),
+       covb . (xt . y)),
+  b: transpose(b)[1],
+  /* residuals */
+  r: y - x . b,
+  r: transpose(r)[1],
+  /* degrees of freedom */
+  df: n-p-1,
+  /* unbiased variance estimator */
+  sumsquares: r . r,
+  sR2: sumsquares / df,
+  /* covariance matrix of estimators */
+  covb: sR2 * covb,
+  q: makelist(covb[j,j],j,length(covb)),
+  /* adjusted coefficient of determination */
+  Rbar: 1 - sR2/first(var1(y)),
+  /* confidence intervals for coefficients */
+  aux: quantile_student_t((1+defaults[1])/2, df) * sqrt(q),
+  ci: makelist(b[k]+[-1,1]*aux[k],k,1,length(b)),
+  /* statistic contrasts */
+  t: b / sqrt(q),
+  /* p-values */
+  pv: 2*(1-map(lambda([z], cdf_student_t(abs(z),df)), t)),
+  /* confidence interval for the variance */
+  s2: df*sR2*[1,1] / [quantile_chi2((1+defaults[1])/2,df),
+                      quantile_chi2((1-defaults[1])/2,df)],
+  /* AIC and BIC */
+  aic: n*log(sumsquares/n) + 2*(p+1),
+  bic: n*log(sumsquares/n) + log(n)*(p+1),
+
+  /* result as an 'inference_result' object */
+  inference_result("LINEAR REGRESSION MODEL",
+                 [  ['b_estimation, b],
+                    ['b_covariances, covb],
+                    ['b_conf_int, ci],
+                    ['b_statistics, t],
+                    ['b_p_values, pv],
+                    ['b_distribution, ['student_t, df]],
+                    ['v_estimation, sR2],
+                    ['v_conf_int, s2],
+                    ['v_distribution, ['chi2, df]],
+                    ['residuals, r],
+                    ['adc, Rbar], /* adjusted determination coefficient */
+                    ['aic, aic],
+                    ['bic, bic] ],
+                 [1,4,5,6,7,8,9,11]) )$
+
+
+
+
+
+
+
+
+
+
+
 /***************************************/
 /*  SPECIAL PROBABILITY DISTRIBUTIONS  */
 /***************************************/
@@ -1350,12 +1426,3 @@ cdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t,xbis,sum:0],
             if x > t/2 then sum: 1 - sum,
             return(sum)),
    funmake('cdf_rank_sum,[x,m,n])  )$
-
-
-
-
-
-
-
-
-

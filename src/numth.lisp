@@ -1198,9 +1198,7 @@
     (t (maybe-fixnum-let ((cy 0)(c 0))
         (prog (r (ex 0)(ey 0)) (declare (fixnum ex ey))
           a1
-          (setq ey (the fixnum (car y)) cy (cadr y))
-          (when (null x) (return y))
-          (setq ex (the fixnum (car x)))
+          (setq ex (the fixnum (car x)) ey (the fixnum (car y)) cy (cadr y))
           (cond 
             ((> ey ex)
               (setq x (cons ey (cons cy x)) y (cddr y)) ) 
@@ -1208,15 +1206,15 @@
               (setq c (gf-cplus-b (cadr x) cy) y (cddr y))
               (cond  
                 ((= 0 c)
-                  (when (null (setq x (cddr x))) 
-                    (return y) ) 
+                  (when (null (setq x (cddr x))) (return y)) 
                   (when (null y) (return x))
                   (go a1) )
                 (t (rplaca (cdr x) c)) ))
             (t (setq r (cdr x)) (go b)) )
+          (setq r (cdr x))
           a
           (when (null y) (return x))
-          (setq ey (the fixnum (car y)) cy (cadr y) r (cdr x))
+          (setq ey (the fixnum (car y)) cy (cadr y))
           b
           (while (and (cdr r) (> (the fixnum (cadr r)) ey))
             (setq r (cddr r)) )
@@ -1251,7 +1249,6 @@
     (t (maybe-fixnum-let ((cy 0)(cc 0))
         (prog (r (ex 0)(ey 0)) (declare (fixnum ex ey))
           a1
-          (when (null x) (go d))
           (setq ey (the fixnum (+ (the fixnum (car y)) e)) 
                 cy (gf-ctimes c (cadr y)) 
                 ex (the fixnum (car x)) )
@@ -1262,17 +1259,16 @@
               (setq cc (gf-cplus-b (cadr x) cy) y (cddr y)) 
               (cond  
                 ((= 0 cc)
-                  (when (null (setq x (cddr x))) 
-                    (return (gf-xcetimes y e c)) ) 
+                  (when (null (setq x (cddr x))) (return (gf-xcetimes y e c))) 
                   (when (null y) (return x))
                   (go a1) )
                 (t (rplaca (cdr x) cc)) ))
             (t (setq r (cdr x)) (go b)) )
+          (setq r (cdr x))
           a
           (when (null y) (return x))
           (setq ey (the fixnum (+ (the fixnum (car y)) e)) 
-                cy (gf-ctimes c (cadr y)) 
-                r (cdr x))
+                cy (gf-ctimes c (cadr y)) )
           b
           (when (null (cdr r)) (go d))
           (setq ex (the fixnum (cadr r)))

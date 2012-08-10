@@ -136,7 +136,7 @@
     (show-open-plot
      (with-output-to-string (st)
                   (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
-                              (t (format st "{plotdf ~a ~a}" cmd opts)))))))
+                              (t (format st "{plotdf ~a ~a} " cmd opts)))))))
 
 ;; plot equipotential curves for a scalar field f(x,y)
 (defun $ploteq (fun &rest options)

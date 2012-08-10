@@ -160,6 +160,7 @@ segundos como unidades por defecto, podemos hacer:
 @end example
 
 Las unidades derivadas tambi@'en se controlan con esta misma instrucci@'on:
+@example
 @group
 (%i17) setunits(N);
 (%o17)                               done

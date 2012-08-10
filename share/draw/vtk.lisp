@@ -987,7 +987,7 @@
 (defun vtk3d-points (arg)
   (let ((points-joined (gethash '$points_joined *gr-options*))
         (point-type    (gethash '$point_type    *gr-options*))
-        (point-size    (gethash '$point_size    *gr-options*))
+        (point-size    ($float (gethash '$point_size    *gr-options*)))
         (line-type     (gethash '$line_type     *gr-options*))
         (color         (gethash '$color         *gr-options*))
         (opacity       (gethash '$opacity *gr-options*))
@@ -1144,9 +1144,9 @@
                                   (make-array 1 :element-type 'flonum :initial-element 0.0)
                                   (make-array 1 :element-type 'flonum :initial-element 0.0)))
                (1 (vtkpoints-code points-name nil 
-                                  (make-array 4 :element-type 'flonum 
+                                  (make-array 4 :element-type 'flonum
                                                 :initial-contents (list (- point-size) point-size 0.0 0.0))
-                                  (make-array 4 :element-type 'flonum 
+                                  (make-array 4 :element-type 'flonum
                                                 :initial-contents (list 0.0 0.0 0.0 0.0))
                                   (make-array 4 :element-type 'flonum
                                                 :initial-contents (list 0.0 0.0 (- point-size) point-size))))
