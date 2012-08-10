@@ -214,7 +214,7 @@ npv(rate,flowValues):=
 block([sum,k],
    sum:0,
    for k:1 thru length(flowValues) step 1 do
-   (sum:sum+pv(rate,flowValues[k],k)),
+   (sum:sum+pv(rate,flowValues[k],k-1)),
    sum
 )$
 
