@@ -169,7 +169,7 @@
   ;; we want the thing to start with a newline..
   (newline in-stream)
   (let ((*readtable* (copy-readtable nil))
-        (*print-circle* nil) (*print-level* nil) (*print-length* nil)
+        (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
 	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
     #-gcl
     (progn
