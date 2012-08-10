@@ -58,6 +58,22 @@
 
 (defvar declares nil)
 
+(defmacro with-maxima-io-syntax (&rest forms)
+  `(let ((*readtable* (copy-readtable nil))
+        (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
+	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
+    #-gcl
+    (progn
+      #-(or scl allegro)
+      (setf (readtable-case *readtable*) :invert)
+      #+(or scl allegro)
+      (unless #+scl (eq ext:*case-mode* :lower)
+	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
+	(setf (readtable-case *readtable*) :invert))
+      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
+			   #'pprint-defmtrfun))
+    ,@forms))
+
 (defmspec $compfile (forms)
     (setq forms (cdr forms))
     (if (eq 1 (length forms))
@@ -71,7 +87,7 @@
         (*translation-msgs-files* nil))
        (pop forms)
        (unwind-protect
-	    (progn
+	    (with-maxima-io-syntax
 	      (setq transl-file (open out-file-name :direction :output :if-exists :overwrite :if-does-not-exist :create :element-type 'character))
 	      (cond ((or (member '$all forms :test #'eq)
 			 (member '$functions forms :test #'eq))
@@ -168,19 +184,7 @@
   (cleanup)
   ;; we want the thing to start with a newline..
   (newline in-stream)
-  (let ((*readtable* (copy-readtable nil))
-        (*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)
-	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
-    #-gcl
-    (progn
-      #-(or scl allegro)
-      (setf (readtable-case *readtable*) :invert)
-      #+(or scl allegro)
-      (unless #+scl (eq ext:*case-mode* :lower)
-	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
-	(setf (readtable-case *readtable*) :invert))
-      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
-			   #'pprint-defmtrfun))
+  (with-maxima-io-syntax
     (loop while (and (setq expr (mread in-stream)) (consp expr))
 	  do (setq transl (translate-macexpr-toplevel (third expr)))
 	     (cond
