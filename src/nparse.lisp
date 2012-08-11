@@ -318,7 +318,9 @@
         (setf (nth 3 data) (list flonum-exponent-marker)))))
   (if (not (equal (nth 3 data) '(#\B)))
       (readlist (apply #'append data))
-      (let ((int-part (readlist (or (first data) '(#\0))))
+      (let*
+	   ((*read-base* 10.)
+	    (int-part (readlist (or (first data) '(#\0))))
 	    (frac-part (readlist (or (third data) '(#\0))))
 	    (frac-len (length (third data)))
 	    (exp-sign (first (fifth data)))
