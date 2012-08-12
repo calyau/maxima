@@ -38,7 +38,7 @@
 Summary: Symbolic Computation Program
 Name: maxima
 Version: @VERSION@
-Release: 1.centos4
+Release: 1
 License: GPL
 Group: Sciences/Mathematics
 URL: http://maxima.sourceforge.net
