@@ -1261,8 +1261,10 @@ first kind:
     ;; F(z|m) = F(z - pi*round(Re(z)/pi)|m) + 2*round(Re(z)/pi)*K(m)
     (let ((period (round (realpart phi-arg) pi)))
       (add (base (- phi-arg (* pi period)) m-arg)
-	   (mul (mul 2 period)
-		(elliptic-k m-arg))))))
+	   (if (zerop period)
+	       0
+	       (mul (mul 2 period)
+		    (elliptic-k m-arg)))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
@@ -1284,6 +1286,9 @@ first kind:
 	((= m 0)
 	 ;; A&S 17.4.19
 	 (float (/ pi 2)))
+	((= m 1)
+	 (maxima::merror
+	  (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
 	(t
 	 (let ((k (sqrt m)))
 	   (to (bigfloat::bf-rf 0.0 (* (- 1 k)
@@ -2075,14 +2080,20 @@ first kind:
 ;; elliptic_f(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1)
 (defun bf-elliptic-f (phi m)
   (flet ((base (phi m)
-	   (let ((s (sin phi))
-		 (c (cos phi)))
-	     (* s (bf-rf (* c c) (- 1 (* m s s)) 1)))))
+	   (cond ((= m 1)
+		  ;; F(z|1) = log(tan(z/2+%pi/4))
+		  (log (tan (+ (/ phi 2) (/ (%pi phi) 4)))))
+		 (t
+		  (let ((s (sin phi))
+			(c (cos phi)))
+		    (* s (bf-rf (* c c) (- 1 (* m s s)) 1)))))))
     ;; Handle periodicity (see elliptic-f)
     (let* ((bfpi (%pi phi))
 	   (period (round (realpart phi) bfpi)))
       (+ (base (- phi (* bfpi period)) m)
-	 (* 2 period (bf-elliptic-k m))))))
+	 (if (zerop period)
+	     0
+	     (* 2 period (bf-elliptic-k m)))))))
 
 ;; elliptic_kc(k) = rf(0, 1-k^2,1)
 ;;
@@ -2094,6 +2105,9 @@ first kind:
 	 (if (maxima::$bfloatp m)
 	     (maxima::$bfloat (maxima::div 'maxima::$%pi 2))
 	     (float (/ pi 2) 1e0)))
+	((= m 1)
+	 (maxima::merror
+	  (intl:gettext "elliptic_kc: elliptic_kc(1) is undefined.")))
 	(t
 	 (bf-rf 0 (- 1 m) 1))))
 

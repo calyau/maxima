@@ -2282,4 +2282,20 @@ polarform((a+1)/2 - a/2 - 0.5);
 polarform((a+1)/2 - a/2 - 0.5b0);
 0.0b0$
 
+/*
+ * ID: 3440046: elliptic_f(0.5,1) signals error
+ *
+ * Add a few more tests for invalid values.
+ */
+closeto(elliptic_f(0.5,1)-elliptic_f(1/2,1), 1e-15);
+true;
+
+closeto(elliptic_f(0.5b0,1) - bfloat(elliptic_f(1/2,1)), 1b-16);
+true;
+
+errcatch(elliptic_f(2.0,1));
+[];
+
+errcatch(elliptic_f(2b0,1));
+[];
 
