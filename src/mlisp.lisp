@@ -799,6 +799,9 @@ wrapper for this."
 (defmspec $defstruct (L)
   `((mlist) ,@(mapcar 'defstruct1 (cdr L))))
 
+;; trivial translation to quiet complaint about lack of translation for this defmspec
+(def%tr $defstruct (x) `($any . (meval ',x)))
+
 (defvar $structures '((mlist)))
 
 (defun defstruct-translate (form)
@@ -852,6 +855,9 @@ wrapper for this."
                     (length (cdr (get recordop 'defstruct-default))) (length recordargs)))
 
           `(,(car recordname) ,@(mapcar #'meval (cdr recordname))))))))
+
+;; trivial translation to quiet complaint about lack of translation for this defmspec
+(def%tr $new (x) `($any . (meval ',x)))
 
 ;; Following property assignments comprise the Lisp code equivalent to infix("@", 200, 201)
 
