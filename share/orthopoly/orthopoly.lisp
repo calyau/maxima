@@ -581,7 +581,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	 '((n x) 
 	   ((unk) "$first" "$legendre_p")
 	   ((mplus)
-	    ((mtimes) -1 (($kron_delta) 0 n)
+	    ((mtimes) -1 ((%kron_delta) 0 n)
 	     ((mexpt) ((mplus) -1 ((mexpt) x 2)) -1)) 
 	    ((mtimes)
 	     ((mplus)
@@ -997,7 +997,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 (defun $spherical_bessel_j (n x)
   (cond ((and (eq '$zero (csign ($ratdisrep x)))
 	      (or (integerp n) ($featurep n '$integer)))
-	 `(($kron_delta) 0 ,n))
+	 `((%kron_delta) 0 ,n))
 
 	((and (use-float x) (integerp n))
 	 (let ((d 1) (xr) (xi) (z))
@@ -1350,7 +1350,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	 (let* ((n (nth 1 arg))
 	       (x (nth 2 arg))
 	       (z (if (eq fn '$legendre_q) 
-		      `((mtimes) -1 (($kron_delta) ,n 1)) 0))) 
+		      `((mtimes) -1 ((%kron_delta) ,n 1)) 0))) 
 	   (simplify
 	     `((mequal) ((,fn) ,n ,x)
 	       ((mplus)
