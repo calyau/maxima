@@ -863,7 +863,7 @@
 (setf (get '%kron_delta 'verb) '$kron_delta)
 (setf (get '$kron_delta 'alias) '%kron_delta)
 (setf (get '%kron_delta 'reversealias) '$kron_delta)
-(defun $kron_delta (x) (take '($kron_delta) x))
+(defun $kron_delta (&rest x) (simplifya `((%kron_delta) ,@x) t))
 (setf (get '%kron_delta 'real-valued) t) ;; conjugate(kron_delta(xxx)) --> kron_delta(xxx)
 (setf (get '%kron_delta 'integer-valued) t) ;; featurep(kron_delta(xxx), integer) --> true
 
@@ -873,7 +873,7 @@
   (declare (ignore y))
 
   (setq l (cdr l)) ;; remove (($kron_delta simp)
-  (if (and l (null (cdr l))) (wna-err '$knon_delta)) ;; wrong number of arguments error for exactly one argument
+  (if (and l (null (cdr l))) (wna-err '$kron_delta)) ;; wrong number of arguments error for exactly one argument
 
   ;; Checking both mnqp and meqp is convenient, but unnecessary. This code misses simplifications that
   ;; involve three or more arguments. Example: kron_delta(a,b,a+b+1,a-b+5) could (but doesn't) simplify 
