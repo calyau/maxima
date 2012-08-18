@@ -155,6 +155,8 @@
                (:module prerequisites :source-pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
+	       (:module maxima-language-compiler-macros :source-pathname ""
+			:components ((:file "transm")))
 	       (:module command-line :source-pathname ""
 			:depends-on (getopt)
 			:components ((:file "command-line")))
@@ -513,8 +515,6 @@
 				     (:file "rat3e") 
 				     (:file "nrat4") 
 				     (:file "ratout")))
-	       (:module maxima-language-compiler-macros :source-pathname ""
-			:components ((:file "transm")))
 	       (:module maxima-language-compiler :source-pathname ""
 			:components ((:file "transl") 
 				     (:file "transs") 

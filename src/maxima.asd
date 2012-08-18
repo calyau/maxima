@@ -68,6 +68,8 @@
                (:module prerequisites :pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
+	       (:module maxima-language-compiler-macros :pathname ""
+			:components ((:file "transm")))
 	       (:module getopt :pathname ""
 			:components ((:file "getopt")))
 	       (:module command-line :pathname ""
@@ -422,8 +424,6 @@
 				     (:file "nrat4") 
 				     (:file "ratout")))
 
-	       (:module maxima-language-compiler-macros :pathname ""
-			:components ((:file "transm")))
 	       (:module maxima-language-compiler :pathname ""
 			:components ((:file "transl") 
 				     (:file "transs") 

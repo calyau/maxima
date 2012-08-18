@@ -11,6 +11,7 @@ $(CLISP_MAXIMA) : clmacs.lisp
 $(CLISP_MAXIMA) : commac.lisp
 $(CLISP_MAXIMA) : mormac.lisp
 $(CLISP_MAXIMA) : compat.lisp
+$(CLISP_MAXIMA) : transm.lisp
 $(CLISP_MAXIMA) : getopt.lisp
 $(CLISP_MAXIMA) : command-line.lisp
 $(CLISP_MAXIMA) : defopt.lisp
@@ -190,7 +191,6 @@ $(CLISP_MAXIMA) : rat3c.lisp
 $(CLISP_MAXIMA) : rat3e.lisp
 $(CLISP_MAXIMA) : nrat4.lisp
 $(CLISP_MAXIMA) : ratout.lisp
-$(CLISP_MAXIMA) : transm.lisp
 $(CLISP_MAXIMA) : transl.lisp
 $(CLISP_MAXIMA) : transs.lisp
 $(CLISP_MAXIMA) : trans1.lisp

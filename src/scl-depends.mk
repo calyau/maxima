@@ -10,6 +10,7 @@ binary-scl/maxima.core : clmacs.lisp
 binary-scl/maxima.core : commac.lisp
 binary-scl/maxima.core : mormac.lisp
 binary-scl/maxima.core : compat.lisp
+binary-scl/maxima.core : transm.lisp
 binary-scl/maxima.core : getopt.lisp
 binary-scl/maxima.core : command-line.lisp
 binary-scl/maxima.core : defopt.lisp
@@ -188,7 +189,6 @@ binary-scl/maxima.core : rat3c.lisp
 binary-scl/maxima.core : rat3e.lisp
 binary-scl/maxima.core : nrat4.lisp
 binary-scl/maxima.core : ratout.lisp
-binary-scl/maxima.core : transm.lisp
 binary-scl/maxima.core : transl.lisp
 binary-scl/maxima.core : transs.lisp
 binary-scl/maxima.core : trans1.lisp
