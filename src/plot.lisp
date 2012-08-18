@@ -127,7 +127,10 @@ sin(y)*(10.0+6*cos(x)),
                (ccl:run-program path nil
                                 :wait nil :output nil
                                 :input :stream)))
-  #-(or clisp cmu sbcl gcl scl lispworks ecl ccl)
+  #+allegro (setf *gnuplot-stream* (excl:run-shell-command
+                    path :input :stream :output nil :wait nil))
+  #+abcl (setq *gnuplot-stream* (system::process-input (system::run-program path nil :wait nil)))
+  #-(or clisp cmu sbcl gcl scl lispworks ecl ccl allegro abcl)
   (merror (intl:gettext "plotting: I don't know how to tell this Lisp to run Gnuplot."))
   
   ;; set mouse must be the first command send to gnuplot
