@@ -2323,3 +2323,9 @@ bessel_i(0,z);
  */
 realpart(log(-1b0));
 0;
+
+/*
+ * Bug 3559064: elliptic_f(2,1) is wrong.
+ */
+errcatch(elliptic_f(2,1));
+[];
