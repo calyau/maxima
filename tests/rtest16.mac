@@ -2317,3 +2317,9 @@ integrate(bessel_k(1,z),z);
 
 integrate(bessel_i(1,z),z);
 bessel_i(0,z);
+
+/*
+ * Bug 3381301: log(-1.0b0) has small realpart
+ */
+realpart(log(-1b0));
+0;

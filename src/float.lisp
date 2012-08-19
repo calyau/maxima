@@ -1906,12 +1906,17 @@ One extra decimal digit in actual representation for rounding purposes.")
 		  (let ((fpprec (- fpprec extra)))
 		    (bigfloatp result))))))
 	(let ((fp-x (cdr (bigfloatp x))))
-	  (if (fplessp fp-x (intofp 0))
-	      ;; ??? Do we want to return an exact %i*%pi or a float
-	      ;; approximation?
-	      (add (bcons (%log (fpminus fp-x)))
-		   (mul '$%i (bcons (fppi))))
-	      (bcons (%log fp-x)))))))
+	  (cond ((onep1 x)
+		 ;; Special case for log(1).  See Bug 3381301:
+		 ;; https://sourceforge.net/tracker/?func=detail&aid=3381301&group_id=4933&atid=104933
+		 (bcons (intofp 0)))
+		((fplessp fp-x (intofp 0))
+		 ;; ??? Do we want to return an exact %i*%pi or a float
+		 ;; approximation?
+		 (add (big-float-log (bcons (fpminus fp-x)))
+		      (mul '$%i (bcons (fppi)))))
+		(t
+		 (bcons (%log fp-x))))))))
 
 (defun big-float-sqrt (x &optional y)
   (if y
