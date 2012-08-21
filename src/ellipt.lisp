@@ -1543,9 +1543,10 @@ first kind:
 	   ;; A&S 17.4.19
 	   phi)
 	  ((onep1 m)
-	   ;; A&S 17.4.21.  Let's pick the log tan form.  But only use
-	   ;; it if abs(phi) < %pi/2.
-	   (cond ((eq '$neg (csign (sub ($abs phi) (div '$%pi 2))))
+	   ;; A&S 17.4.21.  Let's pick the log tan form.  But this
+	   ;; isn't right if we know that abs(phi) > %pi/2, where
+	   ;; elliptic_f is undefined (or infinity).
+	   (cond ((not (eq '$pos (csign (sub ($abs phi) (div '$%pi 2)))))
 		  `((%log) ((%tan)
 			    ((mplus) ((mtimes) $%pi ((rat) 1 4))
 			     ((mtimes) ((rat) 1 2) ,phi)))))
