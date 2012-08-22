@@ -1543,10 +1543,16 @@ first kind:
 	   ;; A&S 17.4.19
 	   phi)
 	  ((onep1 m)
-	   ;; A&S 17.4.21.  Let's pick the log tan form.
-	   `((%log) ((%tan)
-		     ((mplus) ((mtimes) $%pi ((rat) 1 4))
-		      ((mtimes) ((rat) 1 2) ,phi)))))
+	   ;; A&S 17.4.21.  Let's pick the log tan form.  But this
+	   ;; isn't right if we know that abs(phi) > %pi/2, where
+	   ;; elliptic_f is undefined (or infinity).
+	   (cond ((not (eq '$pos (csign (sub ($abs phi) (div '$%pi 2)))))
+		  `((%log) ((%tan)
+			    ((mplus) ((mtimes) $%pi ((rat) 1 4))
+			     ((mtimes) ((rat) 1 2) ,phi)))))
+		 (t
+		  (merror (intl:gettext "elliptic_f(~:M, ~:M) is undefined.")
+					phi m))))
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
 	   `((%elliptic_kc) ,m))

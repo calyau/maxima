@@ -144,6 +144,18 @@ controlip(n,p):=
               then -1
               else 0  $
 
+/* If 0<p<1 and n is a positive number the function returns 1. If p is
+   outside this interval or n is not a positive number, it returns -1.
+   If there is not enough information, the output is 0 */
+controlposp(n,p):=
+   if sign(p)='pos and sign(1-p)='pos and sign(n)='pos
+      then 1
+      else if member(sign(n), ['nz,'neg,'zero]) or
+              member(sign(p), ['nz,'neg,'zero]) or
+              member(sign(1-p), ['nz,'neg,'zero])
+              then -1
+              else 0  $
+
 /* If n is a positive integer the function returns 1. If n is non 
    positive or non integer, it returns -1. If there is not enough
    information, the output is 0*/
@@ -1869,17 +1881,17 @@ random_hypergeometric(n1,n2,n,[num]):=block([cp:controliii(n1,n2,n),cn,no],
 
 
 
-pdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
+pdf_negative_binomial(x,n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('pdf_negative_binomial,[x,n,p])),
    if sign(x)='neg or numberp(x) and not integerp(x)
       then return(0)
       else if numberp(x) and integerp(x)
-              then binomial(x+n-1,x)*p^n*(1-p)^x
+              then gamma(n+x)*p^n*(1-p)^x/(x!*gamma(n))
               else funmake('pdf_negative_binomial,[x,n,p]) )$
 
 /* R: pnbinom(x,n,p) */
-cdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
+cdf_negative_binomial(x,n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_negative_binomial,[x,n,p])),
    if sign(x)='neg
@@ -1890,7 +1902,7 @@ cdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
 
 /* R: qnbinom(q,n,p) */
 quantile_negative_binomial(q,n,p):=
-  block([cp:controlip(n,p), cq:controlq(q), fq:float(q), a, b, m, numer],
+  block([cp:controlposp(n,p), cq:controlq(q), fq:float(q), a, b, m, numer],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
       then return(funmake('quantile_negative_binomial,[q,n,p])),
@@ -1905,44 +1917,45 @@ quantile_negative_binomial(q,n,p):=
    a: b/2,
    while (b-a > 1) do(
       m: floor(0.5*(a+b)),
-      if beta_incomplete_regularized(n,m,p) < q
+      if beta_incomplete_regularized(n,m+1,p) < q
          then a: m
          else b: m ),
-   b-1 )$
+   b )$
 
-mean_negative_binomial(n,p):=block([cp:controlip(n,p)],
+mean_negative_binomial(n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('mean_negative_binomial,[n,p])),
    n*(1-p)/p )$
 
-var_negative_binomial(n,p):=block([cp:controlip(n,p)],
+var_negative_binomial(n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('var_negative_binomial,[n,p])),
    n*(1-p)/p^2 )$
 
-std_negative_binomial(n,p):=block([cp:controlip(n,p)],
+std_negative_binomial(n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('std_negative_binomial,[n,p])),
    sqrt(n*(1-p))/p )$
 
-skewness_negative_binomial(n,p):=block([cp:controlip(n,p)],
+skewness_negative_binomial(n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('skewness_negative_binomial,[n,p])),
    (2-p)/sqrt(n*(1-p)) )$
 
-kurtosis_negative_binomial(n,p):=block([cp:controlip(n,p)],
+kurtosis_negative_binomial(n,p):=block([cp:controlposp(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('kurtosis_negative_binomial,[n,p])),
    (p*p+6-6*p)/(n*(1-p)) )$
 
-random_negative_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
+random_negative_binomial(n,p,[num]):=block([cp:controlposp(n,p),cn,no,fp,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
    if cp=0 or cn=0 then return(funmake('random_negative_binomial,append([n,p],num))),
    fp: float(p),
-   if integerp(n) and numberp(fp)
-      then return(?rndnegbinom(float(n),fp,no)),
+   fn: float(n),
+   if numberp(fn) and numberp(fp)
+      then return(?rndnegbinom(fn,fp,no)),
    funmake('random_negative_binomial,append([n,p],num)) )$
 
 

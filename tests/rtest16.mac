@@ -2299,3 +2299,33 @@ errcatch(elliptic_f(2.0,1));
 errcatch(elliptic_f(2b0,1));
 [];
 
+/*
+ * Bug 3428734:  integrate(bessel_y(1,z),z)  with ?z : 1
+ */
+
+(?z:1, 0);
+0;
+
+integrate(bessel_y(1,z),z);
+-bessel_y(0,z);
+
+integrate(bessel_j(1,z),z);
+-bessel_j(0,z);
+
+integrate(bessel_k(1,z),z);
+-bessel_k(0,z);
+
+integrate(bessel_i(1,z),z);
+bessel_i(0,z);
+
+/*
+ * Bug 3381301: log(-1.0b0) has small realpart
+ */
+realpart(log(-1b0));
+0;
+
+/*
+ * Bug 3559064: elliptic_f(2,1) is wrong.
+ */
+errcatch(elliptic_f(2,1));
+[];
