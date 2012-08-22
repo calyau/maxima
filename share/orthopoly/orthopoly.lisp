@@ -1484,6 +1484,13 @@ variable ~:M" arg (car (last arg))))
 	 (check-arg-length fn 2 (- (length arg) 1))
 	 `((mlist) 1 -1 1))
 
+	; This is for a fixed order.  There is also an orthogonality
+	; condition for fixed degree with weight function 1/(1-x^2).
+	; See A & S 8.14.11 and 8.14.12.
+	((eq fn '$assoc_legendre_p)
+	 (check-arg-length fn 3 (- (length arg) 1))
+	 `((mlist) 1 -1 1))
+
 	((eq fn '$laguerre)
 	 (check-arg-length fn 2 (- (length arg) 1))
 	 (let ((x (nth 2 arg)))
