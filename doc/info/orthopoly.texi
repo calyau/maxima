@@ -824,10 +824,10 @@ respect to the polynomial degree.
 @c ===end===
 @example
 (%i1) orthopoly_recur (legendre_p, [n, x]);
-                (2 n - 1) P     (x) x + (1 - n) P     (x)
-                           n - 1                 n - 2
-(%o1)   P (x) = -----------------------------------------
-         n                          n
+                    (2 n + 1) P (x) x - n P     (x)
+                               n           n - 1
+(%o1)   P     (x) = -------------------------------
+         n + 1                   n + 1
 @end example
 
 The second argument to @code{orthopoly_recur} must be a list with the 

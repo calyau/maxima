@@ -1260,6 +1260,8 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
     
 ;; For recursion relations, see A & S 22.7 page 782. 
 
+;; legendre_p(n+1,x) = ((2*n+1)*legendre_p(n,x)*x-n*legendre_p(n-1,x))/(n+1)
+
 ;;  jacobi_p(n+1,a,b,x) = (((2*n+a+b+1)*(a^2-b^2) + 
 ;;    x*pochhammer(2*n+a+b,3)) * jacobi_p(n,a,b,x) - 
 ;;    2*(n+a)*(n+b)*(2*n+a+b+2)*jacobi_p(n-1,a,b,x))/(2*(n+1)*(n+a+b+1)*(2*n+a+b))
@@ -1350,16 +1352,16 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	 (let* ((n (nth 1 arg))
 	       (x (nth 2 arg))
 	       (z (if (eq fn '$legendre_q) 
-		      `((mtimes) -1 ((%kron_delta) ,n 1)) 0))) 
+		      `((mtimes) -1 ((%kron_delta) ,n 0)) 0))) 
 	   (simplify
-	     `((mequal) ((,fn) ,n ,x)
+	     `((mequal) ((,fn) ((mplus) 1 ,n) ,x)
 	       ((mplus)
-		((mtimes) ((mexpt) ,n -1)
+		((mtimes) ((mexpt) ((mplus) 1 ,n) -1)
 		 ((mplus)
-		  ((mtimes) ((mplus) 1 ((mtimes) -1 ,n))
-		   ((,fn) ((mplus) -2 ,n) ,x))
-		  ((mtimes) ((mplus) -1 ((mtimes) 2 ,n))
-		   ((,fn) ((mplus) -1 ,n) ,x) ,x)))
+		  ((mtimes) ((mtimes) -1 ,n)
+		   ((,fn) ((mplus) -1 ,n) ,x))
+		  ((mtimes) ((mplus) 1 ((mtimes) 2 ,n))
+		   ((,fn) ,n ,x) ,x)))
 		,z)))))
 
 	((member fn '($assoc_legendre_p $assoc_legendre_q) :test 'eq)
