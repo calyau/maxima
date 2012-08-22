@@ -348,7 +348,7 @@ quantile_negative_binomial(1/8,9,6/17);
 9;
 
 quantile_negative_binomial(7/1000,2,1/17);
-0;
+1;
 
 random_negative_binomial(6,3/5,3);
 [5,8,9];
