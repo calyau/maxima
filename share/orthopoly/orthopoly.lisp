@@ -1265,7 +1265,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 ;;    2*(n+a)*(n+b)*(2*n+a+b+2)*jacobi_p(n-1,a,b,x))/(2*(n+1)*(n+a+b+1)*(2*n+a+b))
 
 ;; ultraspherical(n+1,a,x) = (2*(n+a)*x * ultraspherical(n,a,x) - 
-;;    (n+2*a+1)*ultraspherical(n-1,a,x))/(n+1)
+;;    (n+2*a-1)*ultraspherical(n-1,a,x))/(n+1)
 
 ;; chebyshev_t(n+1,x) = 2*x*chebyshev_t(n,x) -chebyshev_t(n-1,x)
 
@@ -1276,7 +1276,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 ;; gen_laguerre(n+1,a,x) = (((2*n+a+1) - x)*gen_laguerre(n,a,x)  
 ;;  -(n+a)*gen_laguerre(n-1,a,x))/(n+1)
 
-;; hermite(n+1,x) = 2*x*hermite(n,x) +2*n*hermite(n-1,x)
+;; hermite(n+1,x) = 2*x*hermite(n,x) -2*n*hermite(n-1,x)
 
 ;; See G & R 8.733.2; A & S 22.7.11 might be wrong -- or maybe I need
 ;; reading glasses.
