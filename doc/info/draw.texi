@@ -2553,7 +2553,7 @@ Default value: @code{[60,30]}
 
 A pair of angles, measured in degrees, indicating the view direction in a 
 3D scene. The first angle is the vertical rotation around the @var{x} axis, in 
-the range @math{[0, 180]}. The second one is the horizontal rotation around
+the range @math{[0, 360]}. The second one is the horizontal rotation around
 the @var{z} axis, in the range @math{[0, 360]}.
 
 Since this is a global graphics option, its position in the scene description

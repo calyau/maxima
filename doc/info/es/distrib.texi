@@ -1,4 +1,4 @@
-@c English version 2011-10-03
+@c English version 2012-08-23
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -2403,12 +2403,12 @@ Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 
 
 @deffn {Funci@'on} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} y @math{n} positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} y @math{n} positivo.
 
 @c ===beg===
 @c load (distrib)$
@@ -2428,38 +2428,38 @@ Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de
 
 
 @deffn {Funci@'on} quantile_negative_binomial (@var{q},@var{n},@var{p})
-Devuelve el @var{q}-cuantil de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo; en otras palabras, se trata de la inversa de  @code{cdf_negative_binomial}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el @var{q}-cuantil de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} y @math{n} positivo; en otras palabras, se trata de la inversa de  @code{cdf_negative_binomial}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} mean_negative_binomial (@var{n},@var{p})
-Devuelve la media de  una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve la media de  una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} var_negative_binomial (@var{n},@var{p})
-Devuelve la varianza de  una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve la varianza de  una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} std_negative_binomial (@var{n},@var{p})
-Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} skewness_negative_binomial (@var{n},@var{p})
-Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria @i{Binomial Negativa}@math{(n,p)}, con @math{0<p<1} and @math{n} positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} kurtosis_negative_binomial (@var{n},@var{p})
-Devuelve el coeficiente de curtosis una variable aleatoria binomial negativa  @math{NB(n,p)}, con @math{0<p<1} and @math{n} entero positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Devuelve el coeficiente de curtosis una variable aleatoria binomial negativa  @math{NB(n,p)}, con @math{0<p<1} and @math{n} positivo. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} random_negative_binomial (@var{n},@var{p})
 @deffnx {Funci@'on} random_negative_binomial (@var{n},@var{p},@var{m})
-Devuelve un valor aleatorio @i{Binomial Negativo}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Llamando a  @code{random_negative_binomial} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
+Devuelve un valor aleatorio @i{Binomial Negativo}@math{(n,p)}, con @math{0<p<1} y @math{n} positivo. Llamando a  @code{random_negative_binomial} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
 
 Algoritmo descrito en Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 

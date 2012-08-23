@@ -1,4 +1,4 @@
-@c English version 2012-05-23
+@c English version 2012-08-23
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2320,7 +2320,7 @@ Valor por defecto: @code{[60,30]}
 
 Un par de @'angulos, medidos en grados, indicando la dirección del 
 observador en una escena 3D. El primer @'angulo es la rotaci@'on 
-vertical alrededor del eje @var{x}, dentro del intervalo @math{[0, 180]}.
+vertical alrededor del eje @var{x}, dentro del intervalo @math{[0, 360]}.
 El segundo es la rotaci@'on horizontal alrededor del eje @var{z}, dentro
 del intervalo @math{[0, 360]}.
 

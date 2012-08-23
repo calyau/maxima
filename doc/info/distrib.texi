@@ -3512,7 +3512,7 @@ To make use of this function, write first @code{load(distrib)}.
 
 
 @deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
+Returns the value at @var{x} of the probability function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3522,7 +3522,7 @@ Returns the value at @var{x} of the probability function of a @math{Negative Bin
 
 
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
+Returns the value at @var{x} of the distribution function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number.
 
 @c ===beg===
 @c load (distrib)$
@@ -3547,7 +3547,7 @@ Returns the value at @var{x} of the distribution function of a @math{Negative Bi
 
 
 @deffn {Function} quantile_negative_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3557,7 +3557,7 @@ Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable,
 
 
 @deffn {Function} mean_negative_binomial (@var{n},@var{p})
-Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
+Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3567,7 +3567,7 @@ Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{
 
 
 @deffn {Function} var_negative_binomial (@var{n},@var{p})
-Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
+Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3577,7 +3577,7 @@ Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @m
 
 
 @deffn {Function} std_negative_binomial (@var{n},@var{p})
-Returns the standard deviation of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
+Returns the standard deviation of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3587,7 +3587,7 @@ Returns the standard deviation of a @math{Negative Binomial(n,p)} random variabl
 
 
 @deffn {Function} skewness_negative_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
+Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3597,7 +3597,7 @@ Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random varia
 
 
 @deffn {Function} kurtosis_negative_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
+Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive number. To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib}
@@ -3608,7 +3608,7 @@ Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random varia
 
 @deffn {Function} random_negative_binomial (@var{n},@var{p})
 @deffnx {Function} random_negative_binomial (@var{n},@var{p},@var{m})
-Returns a @math{Negative Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Returns a @math{Negative Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive number. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 Algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
