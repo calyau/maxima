@@ -552,8 +552,8 @@
        (let ((rv ($float (cadr val)))
              (rh ($float (caddr val))) )
          (unless
-           (and (numberp rv) (>= rv 0) (<= rv 180) )
-           (merror "draw: vertical rotation angle must be in [0, 180]"))
+           (and (numberp rv) (>= rv 0) (<= rv 360) )
+           (merror "draw: vertical rotation angle must be in [0, 360]"))
          (unless
            (and (numberp rh) (>= rh 0) (<= rh 360) )
            (merror "draw: horizontal rotation angle must be in [0, 360]"))
