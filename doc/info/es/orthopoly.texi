@@ -1,4 +1,4 @@
-@c English version: 2008-03-28
+@c English version: 2012-08-22
 @menu
 * Introducci@'on a polinomios ortogonales::
 * Funciones y variables para polinomios ortogonales::
@@ -770,10 +770,10 @@ al grado del polinomio.
 @c ===end===
 @example
 (%i1) orthopoly_recur (legendre_p, [n, x]);
-                (2 n - 1) P     (x) x + (1 - n) P     (x)
-                           n - 1                 n - 2
-(%o1)   P (x) = -----------------------------------------
-         n                          n
+                    (2 n + 1) P (x) x - n P     (x)
+                               n           n - 1
+(%o1)   P     (x) = -------------------------------
+         n + 1                   n + 1
 @end example
 
 El segundo argumento de @code{orthopoly_recur} debe ser una lista con
