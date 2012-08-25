@@ -374,8 +374,7 @@
 
 (putprop '%gamma_incomplete
   `((a z)
-    ,(lambda (a unused)
-       (declare (ignore unused))
+    ,(lambda (a z)
        (cond ((member ($sign a) '($pos $pz))
               ;; The derivative wrt a in terms of hypergeometric_regularized 2F2
               ;; function and the Generalized Incomplete Gamma function 

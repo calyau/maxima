@@ -235,8 +235,7 @@
 (putprop '$psi
   `((n x)
    nil
-   ,(lambda (n unused)
-     (declare (ignore unused))
+   ,(lambda (n x)
      (cond 
       ((and ($integerp n) (>= n 0))
        (cond 
