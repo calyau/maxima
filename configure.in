@@ -1031,8 +1031,12 @@ AC_SUBST(EGREP)
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
-dnl Convert to DOS line ending (using sed because we know it is present)
-AC_CONFIG_FILES([src/maxima.bat], sed -i -e 's/$/\r/' src/maxima.bat)
+
+# Convert maxima.bat to DOS line ending
+# sed-3.02 in old mingw distribution doesn't support -i or \r
+# dos2unix may not be present, but perl is required elsewhere
+# perl -i interferes with binmode so need to use a temporary file
+AC_CONFIG_FILES([src/maxima.bat], (perl -ne 'BEGIN{binmode(STDOUT,":crlf")};' -e 'print' < src/maxima.bat > src/maxima.bat.tmp; mv src/maxima.bat.tmp src/maxima.bat))
 
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
 admin/Makefile src/Makefile src/maxima src/rmaxima src/autoconf-variables.lisp \
