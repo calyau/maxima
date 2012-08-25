@@ -46,9 +46,8 @@ EXTRA_DIST = maxima-index.lisp $(genericdirDATA)
 maxima.chm: maxima.html maxima.hhp contents.hhc index.hhk
 	$(MKDIR_P) chm
 	$(MKDIR_P) chm/figures
-	cp *.html chm
-	for hfile in chm/*.html ; do \
-	  sed -i -e 's|../figures|figures|g' $$hfile; \
+	for hfile in *.html ; do \
+	  sed -e 's|../figures|figures|g' < $$hfile > chm/$$hfile; \
 	done
 	cp maxima.hhp contents.hhc index.hhk chm
 	cp ../figures/*.gif chm/figures
