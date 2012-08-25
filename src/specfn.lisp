@@ -564,7 +564,10 @@
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
         ;; numerical evaluation
 	((complex-float-numerical-eval-p x)
-	 (to (bigfloat::lambert-w-k 0 (bigfloat:to x))))
+          ;; x may be an integer.  eg "lambert_w(1),numer;"
+	  (if (integerp x)
+	    (to (bigfloat::lambert-w-k 0 (bigfloat:to ($float x))))
+	    (to (bigfloat::lambert-w-k 0 (bigfloat:to x)))))
 	((complex-bigfloat-numerical-eval-p x)
 	 (to (bigfloat::lambert-w-k 0 (bigfloat:to x))))
 	(t (list '(%lambert_w simp) x))))
@@ -804,7 +807,10 @@
     (cond
      ;; Numerical evaluation for real or complex x
      ((and (integerp k) (complex-float-numerical-eval-p x))
-      (to (bigfloat::lambert-w-k k (bigfloat:to x))))
+       ;; x may be an integer.  eg "generalized_lambert_w(0,1),numer;"
+       (if (integerp x) 
+	   (to (bigfloat::lambert-w-k k (bigfloat:to ($float x))))
+	   (to (bigfloat::lambert-w-k k (bigfloat:to x)))))
      ;; Numerical evaluation for real or complex bigfloat x
      ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
       (to (bigfloat::lambert-w-k k (bigfloat:to x))))

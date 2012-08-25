@@ -116,6 +116,10 @@ lambert_w(2);
 lambert_w(3+2*%i);
 lambert_w(3+2*%i);
 
+/* ... unless we set numer evflag*/
+closeto(lambert_w(2),0.85260550201372549134,2.0e-16), numer;
+true;
+
 diff(lambert_w(x),x);
 %e^-lambert_w(x)/(lambert_w(x)+1);
 
@@ -212,6 +216,11 @@ generalized_lambert_w(1.0,3.0);
 
 generalized_lambert_w(%pi,3.0);
 generalized_lambert_w(%pi,3.0);
+
+/* ... unless we set numer evflag */
+closeto(generalized_lambert_w(0,2),0.85260550201372549134,2.0e-16), numer;
+true;
+
 
 diff(generalized_lambert_w(n,x),x);
 %e^-generalized_lambert_w(n,x)/(generalized_lambert_w(n,x)+1);
