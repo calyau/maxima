@@ -5,7 +5,7 @@
 (macsyma-module format)
 
 (declare (special $floatformat $floatint $floatfrac $floatprec $floatwidth
-		  $floatoptions $aliases $stringdisp $lispdisp aliaslist))
+		  $floatoptions $aliases $stringdisp $lispdisp))
 
 (defmvar $floatformat nil)
 (defmvar $floatint 1)
@@ -58,7 +58,6 @@
 
 (defun string* (x)
   (or (and (numberp x) (number-exploden x))
-      ((lambda (u) (cond (u (string*1 (car u))))) (assqr x aliaslist))
       (string*1 x)))
 
 (declare (eval (read)))

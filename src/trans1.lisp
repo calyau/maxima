@@ -387,7 +387,6 @@
 (def%tr $loadfile $batcon)
 (def%tr $loadarrays         $batcon)
 (def%tr $loadplots $batcon)
-(def%tr $makeatomic $batcon)
 (def%tr $namefile $batcon)
 (def%tr $numerval           $batcon)
 (def%tr $options $batcon)

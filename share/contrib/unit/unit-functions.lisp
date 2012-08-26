@@ -220,7 +220,6 @@
 	 (cond ((and (numberp form) (minusp form)) (list '(mminus) (- form)))
 	       ((eq t form) (if in-p t '$true))
 	       ((eq nil form) (if in-p nil '$false))
-	       ((and displayp (car (rassoc form aliaslist :test #'eq))))
 	       (t form)))
 	((atom (car form))
 	 form)

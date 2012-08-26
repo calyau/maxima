@@ -12,7 +12,7 @@
 
 (macsyma-module nforma)
 
-(declare-top (special 1//2 -1//2 displayp aliaslist in-p))
+(declare-top (special 1//2 -1//2 displayp in-p))
 
 (defmvar $powerdisp nil)
 (defmvar $pfeformat nil)
@@ -28,7 +28,6 @@
 	 (cond ((and (realp form) (minusp form)) (list '(mminus) (- form)))
 	       ((eq t form) (if in-p t '$true))
 	       ((eq nil form) (if in-p nil '$false))
-	       ((and displayp (car (rassoc form aliaslist :test #'eq))))
 	       ;;	       (($EXTENDP FORM)
 	       ;;		(NFORMAT (transform-extends form)))
 	       (t form)))

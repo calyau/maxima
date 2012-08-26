@@ -107,10 +107,6 @@
 
 (defmvar user-timesofar nil)
 
-(defmvar aliaslist nil
-  "is used by the `makeatomic' scheme which has never been completed"
-  no-reset)
-
 ;; This version of meval* makes sure, that the facts from the global variable
 ;; locals are cleared with a call to clearsign. The facts are added by asksign
 ;; and friends. The function meval* is only used for top level evaluations.
@@ -601,14 +597,10 @@
 (defmfun fullstrip1 (x)
   (or (and (numberp x) x)
       (let ((y (get x 'reversealias))) (if y (stripdollar y)))
-      (let ((u (rassoc x aliaslist :test #'eq)))
-	(if u (implode (string*1 (car u)))))
       (stripdollar x)))
 
 (defun string* (x)
   (or (and (numberp x) (exploden x))
-      (let ((u (rassoc x aliaslist :test #'eq)))
-	(if u (string*1 (car u))))
       (string*1 x)))
 
 (defun string*1 (x)

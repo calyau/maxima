@@ -801,28 +801,7 @@
 
 ;;;; ALIAS
 
-(declare-top (special aliaslist aliascntr greatorder lessorder))
-
-(defmspec $makeatomic (l)
-  (setq l (cdr l))
-  (do ((l l (cdr l)) (bas) (x))
-      ((null l) '$done)
-    (if (or (atom (car l))
-	    (not (or (setq x (member (caaar l) '(mexpt mncexpt) :test #'eq))
-		     (member 'array (cdaar l) :test #'eq))))
-	(improper-arg-err (car l) '$makeatomic))
-    (if x
-	(setq bas (cadar l) x (and (atom (caddar l)) (caddar l)))
-	(setq bas (caaar l) x (and (atom (cadar l)) (cadar l))))
-    (unless (atom bas)
-      (improper-arg-err (car l) '$makeatomic))
-    (setq aliaslist
-	  (cons (cons (car l)
-		      (implode
-		       (nconc (exploden bas)
-			      (or (and x (exploden x)) (ncons '| |))
-			      (cons '$ (mexploden (incf aliascntr))))))
-		aliaslist))))
+(declare-top (special greatorder lessorder))
 
 (defmspec $ordergreat (l)
   (if greatorder (merror (intl:gettext "ordergreat: reordering is not allowed.")))
