@@ -244,6 +244,14 @@ directory (c:/maxima above) before testing the installation.
     - f(x):=x+2;
     - compile(f);
     - f(2);
- o Plot something
+ o Test the graphics systems in both xmaxima and wxmaxima
+    - plot2d(sin(x),[x,0,10]);
+    - plot3d(x*y,[x,-1,1],[y,-1,1]);
+    - load(draw)$
+      draw3d(xu_grid = 30, yv_grid = 60, surface_hide = true,
+          parametric_surface(cos(phi) * sin(theta),
+                       sin(phi) * sin(theta),
+                       cos(theta),
+                       theta, 0, %pi, phi, 0, 2 * %pi))$
  o Try out the on-line help: describe(sin)
 
