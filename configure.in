@@ -29,6 +29,7 @@ case "$host" in
                 EXEEXT=
 esac
 AC_SUBST(EXEEXT)
+AC_SUBST(win32)
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
 
 explicit_lisp=false
