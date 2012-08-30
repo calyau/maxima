@@ -3,7 +3,6 @@ block
     testsuite_files :
        [rtestflatten, 
         rtest_z_transform,
-        rtestdefstruct,
         rtest_zeilberger_extreme,
         rtest_zeilberger,
         rtest_boolsimp,
