@@ -201,7 +201,7 @@
     (concatenate 'string
       (format nil "vtkCamera ~a~%" cn)
       (format nil "  ~a SetPosition ~a ~a ~a~%" cn x y z)
-      (format nil "  ~a SetViewUp 0 0 1~%" cn)
+      (format nil "#  ~a SetViewUp 0 0 1~%" cn)
       (format nil "  ~a SetActiveCamera ~a~%" rn cn)
       (format nil "  ~a ResetCamera~%" rn)
       str)))
