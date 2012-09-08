@@ -1,5 +1,8 @@
 @echo off
 
+rem begin localisation of Environment Variables
+setlocal
+
 set arg0=%0
 set arg1=%1
 set arg2=%2
@@ -150,4 +153,5 @@ goto end
 
 :end
 
-
+rem Restore environment variables
+endlocal
