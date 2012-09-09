@@ -1,5 +1,8 @@
 @echo off
 
+rem begin localisation of Environment Variables
+setlocal
+
 set arg0=%0
 set arg1=%1
 set arg2=%2
@@ -105,7 +108,7 @@ if "%lisp%" == "sbcl" goto dosbcl
 goto end
 
 :dogcl
-%maxima_imagesdir%\binary-gcl\maxima.exe -eval "(cl-user::run)" -f -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+"%maxima_imagesdir%\binary-gcl\maxima.exe" -eval "(cl-user::run)" -f -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :doclisp
@@ -150,4 +153,5 @@ goto end
 
 :end
 
-
+rem Restore environment variables
+endlocal

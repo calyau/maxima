@@ -108,7 +108,7 @@ control2(a,b):=
 control3(a,b):=
    if member(sign(a), ['nz,'neg,'zero]) or sign(b) = 'neg
       then -1
-      else if sign(a)='pos and member(sign(b), ['pos, 'zero])
+      else if sign(a)='pos and member(sign(b), ['pos, 'zero, 'pz])
               then 1
               else 0 $
 

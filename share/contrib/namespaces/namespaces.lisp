@@ -170,8 +170,9 @@
 
 (defmspec $load_namespace (form)
   (push *package* *namespace-stack*)
-  (meval `(($load) ,(cadr form)))
-  (setq *package* (pop *namespace-stack*))
+  (unwind-protect
+       (meval `(($load) ,(cadr form)))
+    (setq *package* (pop *namespace-stack*)))
   t)
 
 (defun require-1 (s)

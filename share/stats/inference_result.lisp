@@ -1,6 +1,6 @@
 ;;                 COPYRIGHT NOTICE
 ;;  
-;;  Copyright (C) 2006 Mario Rodriguez Riotorto
+;;  Copyright (C) 2006-2012 Mario Rodriguez Riotorto
 ;;  
 ;;  This program is free software; you can redistribute
 ;;  it and/or modify it under the terms of the
@@ -21,7 +21,6 @@
 ;; For questions, suggestions, bugs and the like, feel free
 ;; to contact me at
 ;; mario @@@ edu DOT xunta DOT es
-;; www.biomates.net
 
 (in-package :maxima)
 
@@ -211,3 +210,11 @@
                      (merror "Wrong label in 'take_inference' call")
                      (caddr (nth m (cdaddr obj)))))))
       (merror "Wrong object in 'take_inference' call")  ))
+
+
+;;  Returns the title of the 'inference_result' object
+(defun $title_inference (obj)
+  (if ($inferencep obj)
+    (second obj)
+    (merror "Wrong object in 'title_inference' call")) )
+

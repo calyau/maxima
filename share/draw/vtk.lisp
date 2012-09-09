@@ -201,7 +201,7 @@
     (concatenate 'string
       (format nil "vtkCamera ~a~%" cn)
       (format nil "  ~a SetPosition ~a ~a ~a~%" cn x y z)
-      (format nil "  ~a SetViewUp 0 0 1~%" cn)
+      (format nil "#  ~a SetViewUp 0 0 1~%" cn)
       (format nil "  ~a SetActiveCamera ~a~%" rn cn)
       (format nil "  ~a ResetCamera~%" rn)
       str)))
@@ -811,7 +811,7 @@
 
 ;; parallelogram(origin, point1, point2)
 ;; ------------------------------------
-;; The parallelogram is defined by the origin and two points
+;; The parallelogram is defined by one vertex and the two other adjacent vertices
 
 (defun vtk3d-parallelogram (ori p1 p2)
   (let ((color (gethash '$color *gr-options*))
@@ -1480,6 +1480,30 @@
 
 
 
+;; spherical(radius,az,minazi,maxazi,zen,minzen,maxzen)
+;; ----------------------------------------------------
+(defun vtk3d-spherical (radius azi minazi maxazi zen minzen maxzen)
+  (vtk3d-parametric_surface
+    `((mtimes simp) ,radius ((%sin simp) ,zen) ((%cos simp) ,azi))
+    `((mtimes simp) ,radius ((%sin simp) ,zen) ((%sin simp) ,azi))
+    `((mtimes simp) ,radius ((%cos simp) ,zen))
+    azi minazi maxazi
+    zen minzen maxzen))
+
+
+
+;; cylindrical(r,z,minz,maxz,azi,minazi,maxazi)
+;; --------------------------------------------
+(defun vtk3d-cylindrical (r z minz maxz azi minazi maxazi)
+  (vtk3d-parametric_surface
+    `((mtimes simp) ,r ((%cos simp) ,azi))
+    `((mtimes simp) ,r ((%sin simp) ,azi))
+    z 
+    z minz maxz
+    azi minazi maxazi))
+
+
+
 ;; explicit(fcn,par1,minval1,maxval1,par2,minval2,maxval2)
 ;; -------------------------------------------------------
 (defun vtk3d-explicit (fcn par1 minval1 maxval1 par2 minval2 maxval2)
@@ -1852,6 +1876,8 @@
       (gethash '$points             *vtk3d-graphic-objects*) 'vtk3d-points
       (gethash '$parametric         *vtk3d-graphic-objects*) 'vtk3d-parametric
       (gethash '$parametric_surface *vtk3d-graphic-objects*) 'vtk3d-parametric_surface
+      (gethash '$spherical          *vtk3d-graphic-objects*) 'vtk3d-spherical
+      (gethash '$cylindrical        *vtk3d-graphic-objects*) 'vtk3d-cylindrical
       (gethash '$explicit           *vtk3d-graphic-objects*) 'vtk3d-explicit
       (gethash '$label              *vtk3d-graphic-objects*) 'vtk3d-label )
 

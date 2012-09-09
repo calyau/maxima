@@ -325,9 +325,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs01,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @deffn {Function} graph_union (@var{g1}, @var{g1})
 Returns the union (sum) of graphs @var{g1} and @var{g2}.
@@ -816,9 +816,9 @@ Example:
 (%o3)        [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs13,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c @opencatbox
 @c @category{Package graphs} @category{Package graphs - properties}
@@ -851,9 +851,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs02,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} chromatic_index (@var{gr})
@@ -1320,9 +1320,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs03,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} hamilton_path (@var{gr})
@@ -1349,9 +1349,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs04,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} isomorphism (@var{gr1}, @var{gr2})
@@ -1857,9 +1857,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs05,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} max_matching (@var{gr})
@@ -1970,9 +1970,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs07,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} neighbors (@var{v}, @var{gr})
@@ -2217,9 +2217,9 @@ Example:
 @c @closecatbox
 @end deffn
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs08,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
@@ -2860,9 +2860,9 @@ Example 1:
    vertex_size=0)$
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs09,6cm}
-@end ifnotinfo
+@end ifhtml
 
 Example 2:
 
@@ -2905,9 +2905,9 @@ Example 2:
     )$
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs10,6cm}
-@end ifnotinfo
+@end ifhtml
 
 Example 3:
 
@@ -2954,9 +2954,9 @@ Example 3:
     )$
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs11,6cm}
-@end ifnotinfo
+@end ifhtml
 
 Example 4:
 
@@ -3009,9 +3009,9 @@ Example 4:
     )$
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs12,6cm}
-@end ifnotinfo
+@end ifhtml
 
 Example 5:
 
@@ -3028,9 +3028,9 @@ Example 5:
 (%o3)                         done
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs14,6cm}
-@end ifnotinfo
+@end ifhtml
 
 Example 6:
 
@@ -3049,9 +3049,9 @@ Example 6:
 (%o3)                         done
 @end example
 
-@ifnotinfo
+@ifhtml
 @image{../figures/graphs15,6cm}
-@end ifnotinfo
+@end ifhtml
 
 @c @opencatbox
 @c @category{Package graphs}
