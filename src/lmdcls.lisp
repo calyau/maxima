@@ -119,7 +119,7 @@
 	  generate-atan2 genpairs genvar half%pi half%pi3 hmodulus
 	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
 	  integerl *islinp* lexprs limit-answers limitp linel
-	  linelable lnorecurse local loclist low* maplp master-mesfile mdop
+	  linelable local loclist low* maplp master-mesfile mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
 	  need-prog? negprods negsums nn* noevalargs noitems nonintegerl

@@ -505,16 +505,14 @@
 
 ;;;; ARITHF
 
-(declare-top (special lnorecurse))
-
-(defmfun $fibtophi (e)
+(defmfun $fibtophi (e &optional (lnorecurse nil))
   (cond ((atom e) e)
 	((eq (caar e) '$fib)
-	 (setq e (cond (lnorecurse (cadr e)) (t ($fibtophi (cadr e)))))
+	 (setq e (cond (lnorecurse (cadr e)) (t ($fibtophi (cadr e) lnorecurse))))
 	 (let ((phi (meval '$%phi)))
 	   (div (add2 (power phi e) (neg (power (add2 1 (neg phi)) e)))
 		(add2 -1 (mul2 2 phi)))))
-	(t (recur-apply #'$fibtophi e))))
+	(t (recur-apply #'(lambda (x) ($fibtophi x lnorecurse)) e))))
 
 (defmspec $numerval (l) (setq l (cdr l))
 	  (do ((l l (cddr l)) (x (ncons '(mlist simp)))) ((null l) x)

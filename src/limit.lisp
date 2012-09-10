@@ -30,7 +30,7 @@
 (declare-top (special errorsw errrjfflag raterr origval $lhospitallim low*
 		      *indicator half%pi nn* dn* numer denom exp var val varlist
 		      *zexptsimp? $tlimswitch $logarc taylored logcombed
-		      $exponentialize lhp? lhcount $ratfac genvar complex-limit lnorecurse
+		      $exponentialize lhp? lhcount $ratfac genvar complex-limit
 		      loginprod? $limsubst $logabs a context limit-assumptions
 		      limit-top limitp integer-info old-integer-info $keepfloat $logexpand))
 
@@ -2860,7 +2860,7 @@ It appears in LIMIT and DEFINT.......")
   (cond ((not (involve e '($fib))) e)
 	((eq (caar e) '$fib)
 	 (let ((lnorecurse t))
-	   ($fibtophi (list '($fib) (lfibtophi (cadr e))))))
+	   ($fibtophi (list '($fib) (lfibtophi (cadr e))) lnorecurse)))
 	(t (cons (car e)
 		 (mapcar #'lfibtophi (cdr e))))))
 

@@ -63,7 +63,6 @@
       $gradefs '((mlist simp))
       $dependencies '((mlist simp))
       atvars '($@1 $@2 $@3 $@4)
-      lnorecurse nil
       $derivsubst nil
       timesp nil
       $opsubst t
