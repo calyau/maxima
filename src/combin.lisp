@@ -13,7 +13,7 @@
 (macsyma-module combin)
 
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
-		      ans var $zerobern *n $cflength *a* $prevfib
+		      $zerobern *n $cflength *a* $prevfib
 		      *infsumsimp *times *plus sum usum makef
 		      varlist genvar $sumsplitfact $ratfac $simpsum
 		      $prederror $listarith
@@ -1574,6 +1574,6 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *mfactl *factlist donel nn* dn* ans var
+(declare-top (unspecial *mfactl *factlist donel nn* dn*
 			*var* *ans* *n *a*
 			*infsumsimp *times *plus sum usum makef))
