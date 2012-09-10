@@ -323,34 +323,18 @@
 
 ;;;; RTCON
 
-(declare-top (special $radexpand $domain radpe))
+(declare-top (special $radexpand $domain))
 
 (defmvar $rootsconmode t)
 
 (defun $rootscontract (e)	       ; E is assumed to be simplified
   (let ((radpe (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)))
 	($radexpand nil))
-    (rtcon e)))
+    (rtcon e radpe)))
 
-(defun rtcon (e)
+(defun rtcon (e radpe)
   (cond ((atom e) e)
 	((eq (caar e) 'mtimes)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; This code does the substitution %i -> (-1)*(-1)^(-1/2) for expressions
-; like %i/expr. In most cases this causes a wrong result, e.g. 
-; bug ID: 2820202 - rootscontract(%i/2) --> -%i/2. The only case this codes 
-; works is for expressions like %i/sqrt(x) --> -1/sqrt(x). It is doubtful that 
-; this simplification is useful.
-; To get correct results in general, this code is commented out. DK 08/2009.
-; 
-;	 (if (and (not (free e '$%i))
-;		  (let ((num ($num e)))
-;		    (and (not (alike1 e num))
-;			 (or (eq num '$%i)
-;			     (and (not (atom num)) (member '$%i num :test #'eq)
-;				  (member '$%i (rtcon num) :test #'eq))))))
-;	     (setq e (list* (car e) -1 '((mexpt) -1 ((rat simp) -1 2))
-;			    (delete '$%i (copy-list (cdr e)) :count 1 :test #'eq))))
 	 (do ((x (cdr e) (cdr x)) (roots) (notroots) (y))
 	     ((null x)
 	      (cond ((null roots) (subst0 (cons '(mtimes) (nreverse notroots)) e))
@@ -365,7 +349,7 @@
 						 (rtcon
 						  (rtc-fixitup
 						   (rtc-divide-by-gcd roots gcd)
-						   nil))
+						   nil) radpe)
 						 1)
 					   nil)))
 				   ((eq $rootsconmode '$all)
@@ -379,16 +363,16 @@
 		 ((and (eq (caaar x) 'mexpt) (ratnump (setq y (caddar x))))
 		  (setq roots (rt-separ (list (caddr y)
 					      (list '(mexpt)
-						    (rtcon (cadar x)) (cadr y)))
+						    (rtcon (cadar x) radpe) (cadr y)))
 					roots)))
 
 		 ((and radpe (eq (caaar x) 'mabs))
-		  (setq roots (rt-separ (list 2 `((mexpt) ,(rtcon (cadar x)) 2) 1)
+		  (setq roots (rt-separ (list 2 `((mexpt) ,(rtcon (cadar x) radpe) 2) 1)
 					roots)))
-		 (t (setq notroots (cons (rtcon (car x)) notroots))))))
+		 (t (setq notroots (cons (rtcon (car x) radpe) notroots))))))
 	((and radpe (eq (caar e) 'mabs))
-	 (power (power (rtcon (cadr e)) 2) '((rat simp) 1 2)))
-	(t (recur-apply #'rtcon e))))
+	 (power (power (rtcon (cadr e) radpe) 2) '((rat simp) 1 2)))
+	(t (recur-apply #'(lambda (x) (rtcon x radpe)) e))))
 
 ;; RT-SEPAR separates like roots into their appropriate "buckets",
 ;; where a bucket looks like:
