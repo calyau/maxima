@@ -13,7 +13,7 @@
 (macsyma-module combin)
 
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
-		      ans var $zerobern *n $cflength *a* $prevfib hi lo
+		      ans var $zerobern *n $cflength *a* $prevfib
 		      *infsumsimp *times *plus sum usum makef
 		      varlist genvar $sumsplitfact $ratfac $simpsum
 		      $prederror $listarith
@@ -1075,9 +1075,9 @@
 (defun sumsum (e *var* lo hi)
   (let (sum usum)
     (cond ((eq hi '$inf)
-	   (cond (*infsumsimp (isum e))
+	   (cond (*infsumsimp (isum e lo))
 		 ((setq usum (list e)))))
-	  ((sum e 1)))
+	  ((sum e 1 lo hi)))
     (cond ((eq sum nil)
 	   (return-from sumsum (list '(%sum) e *var* lo hi))))
     (setq *plus
@@ -1087,17 +1087,17 @@
 		 *plus))
     (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *var* lo hi)))))
 
-(defun sum (e y)
+(defun sum (e y lo hi)
   (cond ((null e))
 	((free e *var*)
 	 (adsum (m* y e (m+ hi 1 (m- lo)))))
 	((poly? e *var*)
-	 (adsum (m* y (fpolysum e))))
-	((eq (caar e) '%binomial) (fbino e y))
+	 (adsum (m* y (fpolysum e lo hi))))
+	((eq (caar e) '%binomial) (fbino e y lo hi))
 	((eq (caar e) 'mplus)
-	 (mapc #'(lambda (q) (sum q y)) (cdr e)))
+	 (mapc #'(lambda (q) (sum q y lo hi)) (cdr e)))
 	((and (or (mtimesp e) (mexptp e) (mplusp e))
-	      (fsgeo e y)))
+	      (fsgeo e y lo hi)))
 	(t
 	 (adusum e)
 	 nil)))
@@ -1111,35 +1111,35 @@
 	 (some #'identity (mapcar #'isum-giveup (cdr e))))
 	(t)))
 
-(defun isum (e)
+(defun isum (e lo)
   (cond ((isum-giveup e)
 	 (setq sum nil usum (list e)))
-	((eq (catch 'isumout (isum1 e)) 'divergent)
+	((eq (catch 'isumout (isum1 e lo)) 'divergent)
 	 (merror (intl:gettext "sum: sum is divergent.")))))
 
-(defun isum1 (e)
+(defun isum1 (e lo)
   (cond ((or (free e *var*) (atom e))
 	 (unless (eq (asksign e) '$zero)
 	   (throw 'isumout 'divergent)))
 	((ratp e *var*)
-	 (adsum (ipolysum e)))
+	 (adsum (ipolysum e lo)))
 	((eq (caar e) 'mplus)
-	 (mapc #'isum1 (cdr e)))
-	( (isgeo e))
+	 (mapc #'(lambda (x) (isum1 x lo)) (cdr e)))
+	( (isgeo e lo))
 	((adusum e))))
 
-(defun ipolysum (e)
-  (ipoly1 ($expand e)))
+(defun ipolysum (e lo)
+  (ipoly1 ($expand e) lo))
 
-(defun ipoly1 (e)
+(defun ipoly1 (e lo)
   (cond ((smono e *var*)
-	 (ipoly2 *a *n (asksign (simplify (list '(mplus) *n 1)))))
+	 (ipoly2 *a *n lo (asksign (simplify (list '(mplus) *n 1)))))
 	((mplusp e)
-	 (cons '(mplus) (mapcar #'ipoly1 (cdr e))))
+	 (cons '(mplus) (mapcar #'(lambda (x) (ipoly1 x lo)) (cdr e))))
 	(t (adusum e)
 	   0)))
 
-(defun ipoly2 (a n sign)
+(defun ipoly2 (a n lo sign)
   (cond ((member (asksign lo) '($zero $negative) :test #'eq)
 	 (throw 'isumout 'divergent)))
   (and (null (equal lo 1))
@@ -1151,7 +1151,7 @@
 	 (list '(mtimes) a ($zeta (meval (list '(mtimes) -1 n)))))
 	((throw 'isumout 'divergent))))
 
-(defun fsgeo (e y)
+(defun fsgeo (e y lo hi)
   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *var* 1) *var* e) e))))
     (cond ((free r *var*)
 	   (adsum
@@ -1162,7 +1162,7 @@
 			(list '(mtimes) -1 (list '(mexpt) r lo)))
 		  (list '(mexpt) (list '(mplus) r -1) -1)))))))
 
-(defun isgeo (e)
+(defun isgeo (e lo)
   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *var* 1) *var* e) e))))
     (and (free r *var*)
 	 (isgeo1 (maxima-substitute lo *var* e)
@@ -1186,8 +1186,8 @@
 ;; fpoly1 returns 1/(n+1)*(bernpoly(foo+1, n+1) - bernpoly(0, n+1)) for each power
 ;; in the polynomial e
 
-(defun fpolysum (e)			;returns *ans*
-  (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *var*))))))
+(defun fpolysum (e lo hi)			;returns *ans*
+  (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *var*)))) lo))
 	($prederror))
     (cond ((null a) 0)
 	  ((member lo '(0 1))
@@ -1196,14 +1196,14 @@
 	   (list '(mplus) (maxima-substitute hi 'foo a)
 		 (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a)))))))
 
-(defun fpoly1 (e)
+(defun fpoly1 (e lo)
   (cond ((smono e *var*)
-	 (fpoly2 *a *n e))
+	 (fpoly2 *a *n e lo))
 	((eq (caar e) 'mplus)
-	 (cons '(mplus) (mapcar #'fpoly1 (cdr e))))
+	 (cons '(mplus) (mapcar #'(lambda (x) (fpoly1 x lo)) (cdr e))))
 	(t (adusum e) 0)))
 
-(defun fpoly2 (a n e)
+(defun fpoly2 (a n e lo)
   (cond ((null (and (integerp n) (> n -1))) (adusum e) 0)
 	((equal n 0)
 	 (m* (cond ((signp e lo)
@@ -1220,7 +1220,7 @@
 ;;  b) sum(binomial(n-k,k,k,0,n) -> fib(n+1)
 ;;  c) sum(binomial(n,2k),k,0,n) -> 2^(n-1)
 ;;  d) sum(binomial(a+k,b),k,l,h) -> binomial(h+a+1,b+1) - binomial(l+a,b+1)
-(defun fbino (e y)
+(defun fbino (e y lo hi)
   ;; e=binomial(n,d)
   (prog (n d l h)
      ;; check that n and d are linear in *var*
@@ -1575,5 +1575,5 @@
 	       (cons lin 1)))))
 
 (declare-top (unspecial *mfactl *factlist donel nn* dn* ans var
-			*var* *ans* *n *a* hi lo
+			*var* *ans* *n *a*
 			*infsumsimp *times *plus sum usum makef))
