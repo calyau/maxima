@@ -1077,7 +1077,7 @@
     (cond ((eq hi '$inf)
 	   (cond (*infsumsimp (isum e lo))
 		 ((setq usum (list e)))))
-	  ((sum e 1 lo hi)))
+	  ((finite-sum e 1 lo hi)))
     (cond ((eq sum nil)
 	   (return-from sumsum (list '(%sum) e *var* lo hi))))
     (setq *plus
@@ -1087,7 +1087,7 @@
 		 *plus))
     (and usum (setq usum (list '(%sum) (simplus (cons '(plus) usum) 1 t) *var* lo hi)))))
 
-(defun sum (e y lo hi)
+(defun finite-sum (e y lo hi)
   (cond ((null e))
 	((free e *var*)
 	 (adsum (m* y e (m+ hi 1 (m- lo)))))
@@ -1095,7 +1095,7 @@
 	 (adsum (m* y (fpolysum e lo hi))))
 	((eq (caar e) '%binomial) (fbino e y lo hi))
 	((eq (caar e) 'mplus)
-	 (mapc #'(lambda (q) (sum q y lo hi)) (cdr e)))
+	 (mapc #'(lambda (q) (finite-sum q y lo hi)) (cdr e)))
 	((and (or (mtimesp e) (mexptp e) (mplusp e))
 	      (fsgeo e y lo hi)))
 	(t
