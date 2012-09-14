@@ -161,7 +161,7 @@ gf_set(2, 4, x^4+x+1);
 gf_add(a, b);
 x^2+x;
 
-gf_mul(a, b);
+gf_mult(a, b);
 x^2+x;
 
 gf_inv(b);
@@ -170,7 +170,7 @@ x^2+1;
 gf_div(a, b);
 x^3+x^2;
 
-gf_mul(a, gf_inv(b));
+gf_mult(a, gf_inv(b));
 x^3+x^2;
 
 gf_exp(a, 10);
