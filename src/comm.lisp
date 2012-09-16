@@ -1288,40 +1288,40 @@
                                (coeff-contains-powers e var)) (cdr e))))
         (t nil)))
 
-(declare-top (special powers var hiflg num flag))
+(let (my-powers my-num my-flag)
+  (declare (special my-powers my-num my-flag))
 
-(defmfun $hipow (e var)
-  (findpowers e t))
-
-;; These work best on expanded "simple" expressions.
-
-(defmfun $lopow (e var)
-  (findpowers e nil))
-
-(defun findpowers (e hiflg)
-  (let (powers num flag)
-    (findpowers1 e)
-    (cond ((null powers) (if (null num) 0 num))
-	  (t (when num (setq powers (cons num powers)))
-	     (maximin powers (if hiflg '$max '$min))))))
-
-(defun findpowers1 (e)
-  (cond ((alike1 e var) (checkpow 1))
-	((atom e))
-	((eq (caar e) 'mplus)
-	 (cond ((not (freel (cdr e) var))
-		(do ((e (cdr e) (cdr e))) ((null e))
-		  (setq flag nil) (findpowers1 (car e))
-		  (if (null flag) (checkpow 0))))))
-	((and (eq (caar e) 'mexpt) (alike1 (cadr e) var)) (checkpow (caddr e)))
-	((specrepp e) (findpowers1 (specdisrep e)))
-	(t (mapc #'findpowers1 (cdr e)))))
-
-(defun checkpow (pow)
-  (setq flag t)
-  (cond ((not (numberp pow)) (setq powers (cons pow powers)))
-	((null num) (setq num pow))
-	(hiflg (if (> pow num) (setq num pow)))
-	((< pow num) (setq num pow))))
-
-(declare-top (unspecial powers var hiflg num flag))
+  (defmfun $hipow (e var)
+    (findpowers e t var))
+  
+  ;; These work best on expanded "simple" expressions.
+  
+  (defmfun $lopow (e var)
+    (findpowers e nil var))
+  
+  (defun findpowers (e hiflg var)
+    (let (my-powers my-num my-flag)
+      (declare (special my-powers my-num my-flag))
+      (findpowers1 e hiflg var)
+      (cond ((null my-powers) (if (null my-num) 0 my-num))
+  	  (t (when my-num (setq my-powers (cons my-num my-powers)))
+  	     (maximin my-powers (if hiflg '$max '$min))))))
+  
+  (defun findpowers1 (e hiflg var)
+    (cond ((alike1 e var) (checkpow 1 hiflg))
+  	((atom e))
+  	((eq (caar e) 'mplus)
+  	 (cond ((not (freel (cdr e) var))
+  		(do ((e (cdr e) (cdr e))) ((null e))
+  		  (setq my-flag nil) (findpowers1 (car e) hiflg var)
+  		  (if (null my-flag) (checkpow 0 hiflg))))))
+  	((and (eq (caar e) 'mexpt) (alike1 (cadr e) var)) (checkpow (caddr e) hiflg))
+  	((specrepp e) (findpowers1 (specdisrep e) hiflg var))
+  	(t (mapc #'(lambda (x) (findpowers1 x hiflg var)) (cdr e)))))
+  
+  (defun checkpow (pow hiflg)
+    (setq my-flag t)
+    (cond ((not (numberp pow)) (setq my-powers (cons pow my-powers)))
+  	((null my-num) (setq my-num pow))
+  	(hiflg (if (> pow my-num) (setq my-num pow)))
+  	((< pow my-num) (setq my-num pow)))))
