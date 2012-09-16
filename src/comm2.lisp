@@ -568,22 +568,18 @@
       x
       (coerce (mstring x) 'string)))
 
-(declare-top (special label))
-
 (defmfun $rembox (e &optional (l nil l?))
   (let ((label (if l? (box-label l) '(nil))))
-    (rembox1 e)))
+    (rembox1 e label)))
 
-(defun rembox1 (e)
+(defun rembox1 (e label)
   (cond ((atom e) e)
 	((or (and (eq (caar e) 'mbox)
 		  (or (equal label '(nil)) (member label '($unlabelled $unlabeled) :test #'eq)))
 	     (and (eq (caar e) 'mlabox)
 		  (or (equal label '(nil)) (equal label (caddr e)))))
-	 (rembox1 (cadr e)))
-	(t (recur-apply #'rembox1 e))))
-
-(declare-top (unspecial label))
+	 (rembox1 (cadr e) label))
+	(t (recur-apply #'(lambda (x) (rembox1 x label)) e))))
 
 ;;;; MAPF
 
