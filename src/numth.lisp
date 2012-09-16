@@ -544,18 +544,21 @@
   (unless (and (fixnump n) (< 1 n))
     (merror (intl:gettext 
       "Argument to `zn_mult_table' must be a small fixnum greater 1." )) )
-  (do ((i 1 (1+ i)) res)
+  (do ((i 0 (1+ i)) res)
       ((= i n) (cons '($matrix) (nreverse res)))
       (declare (fixnum i))
     (when (or all? (= 1 (gcd i n))) 
-      (push (mfuncall '$makelist `(mod (* ,i $j) ,n) '$j 1 (1- n)) res) )))
+      (push 
+        (mfuncall '$cons 0
+          (mfuncall '$makelist `(mod (* ,i $j) ,n) '$j 1 (1- n)) )
+        res ) )))
 
 (defmfun $zn_power_table (n &optional (all? t))
   (declare (fixnum n))
   (unless (and (fixnump n) (< 1 n))
     (merror (intl:gettext 
       "Argument to `zn_power_table' must be a small fixnum greater 1." )) )
-  (do ((i 1 (1+ i)) (tn1 (1+ (mfuncall '$totient n))) res)
+  (do ((i 0 (1+ i)) (tn1 (1+ (mfuncall '$totient n))) res)
       ((= i n) (cons '($matrix) (nreverse res)))
       (declare (fixnum i))
     (when (or all? (= 1 (gcd i n))) 
@@ -583,12 +586,12 @@
 
 ;; gf_set, gf_unset, gf_char, gf_prim, gf_red, gf_info, 
 ;; gf_make_tables, gf_mult_table, gf_power_table, 
-;; gf_add, gf_sub, gf_mul, gf_inv, gf_div, gf_exp, gf_ind, gf_log, 
+;; gf_add, gf_sub, gf_mult, gf_inv, gf_div, gf_exp, gf_ind, gf_log, 
 ;; gf_p2n, gf_n2p, gf_p2l, gf_l2p, gf_l2n, gf_n2l, 
 ;; gf_irr_p, gf_prim_p, gf_next_prim,  
 ;; gf_eval, gf_rand, gf_factor, gf_gcd, gf_gcdex, gf_ord, gf_deg, gf_minpoly, 
 ;; gf_normal_p, gf_normal, gf_random_normal, gf_normal_basis, gf_nbrep, 
-;; gf_matadd, gf_matmul, gf_matinv
+;; gf_matadd, gf_matmult, gf_matinv
 
 (declaim (special $gf_power_table $gf_log_table $gf_rat)) 
 
@@ -1001,16 +1004,16 @@
 (defmfun $gf_mult_table ()
   (gf-set?)
   (mfuncall '$genmatrix  
-              #'(lambda (i j) (gf-x2n (gf-xtimes (gf-n2x i) (gf-n2x j)))) 
-              (1- *gf-card*) 
-              (1- *gf-card*) ))
+              #'(lambda (i j) (gf-x2n (gf-xtimes (gf-n2x (1- i)) (gf-n2x (1- j))))) 
+              *gf-card* 
+              *gf-card* ))
 
 (defmfun $gf_power_table ()
   (gf-set?)
   (mfuncall '$genmatrix  
-              #'(lambda (i j) (gf-x2n (gf-pow (gf-n2x i) j)))
-              (1- *gf-card*) 
-              (1- *gf-card*) ))
+              #'(lambda (i j) (gf-x2n (gf-pow (gf-n2x (1- i)) j)))
+              *gf-card* 
+              (1+ *gf-ord*) ))
 ;;
 ;; -----------------------------------------------------------------------------
 
@@ -1073,7 +1076,11 @@
   (setq args (mapcar #'gf-p2x args))
   (gf-x2p (gf-xplus (car args) (gf-xminus (reduce #'gf-xplus (cdr args))))) )
 
-(defmfun $gf_mul (&rest args) 
+(defmfun $gf_mul (&rest args) ;; deprecated 
+   (apply #'$gf_mult args) )
+;; rename gf_mul to gf_mult to be consistent with matrix_element_mult
+
+(defmfun $gf_mult (&rest args) 
   (gf-set?)
   (setq args (mapcar #'gf-p2x args))
   (gf-x2p (reduce #'gf-xtimes args)) ) 
@@ -2205,29 +2212,34 @@
 
 ;; matrix multiplication (convenience: mat, list or poly possible as argument)
 
-(defmfun $gf_matmul (&rest args) 
-  (mfuncall '$rreduce #'gf-matmul (cons '(mlist simp) args)) )
+(defmfun $gf_matmul (&rest args) ;; deprecated 
+   (apply #'$gf_matmult args) )
+   
+;; rename gf_matmul to gf_matmult to be consistent with matrix_element_mult
 
-(defun gf-matmul (m1 m2) 
+(defmfun $gf_matmult (&rest args) 
+  (mfuncall '$rreduce #'gf-matmult (cons '(mlist simp) args)) )
+
+(defun gf-matmult (m1 m2) 
   (when ($listp m1) (setq m1 (list '($matrix simp) m1)))
   (when ($listp m2) (setq m2 (mfuncall '$transpose m2)))
   (cond 
     ((and ($matrixp m1) ($matrixp m2))
-      (gf-matmul2 m1 m2) )
+      (gf-matmult2 m1 m2) )
     (($matrixp m1)
-      (gf-matmul1 m1 m2) ) ;; assumed without checking: m2 is poly 
+      (gf-matmult1 m1 m2) ) ;; assumed without checking: m2 is poly 
     (($matrixp m2)
-      (gf-matmul1 m2 m1) )
+      (gf-matmult1 m2 m1) )
     (t 
-      ($gf_mul m1 m2) ) ))
+      ($gf_mult m1 m2) ) ))
 
-(defmfun gf-matmul1 (m poly) 
+(defmfun gf-matmult1 (m poly) 
   (do ((r (cdr m) (cdr r)) new)
       ((null r) (cons '($matrix simp) (nreverse new)))
     (push (cons '(mlist simp) 
-                (mapcar #'(lambda (p) ($gf_mul p poly)) (cdar r)) ) new) ))
+                (mapcar #'(lambda (p) ($gf_mult p poly)) (cdar r)) ) new) ))
 
-(defmfun gf-matmul2 (m1 m2) 
+(defmfun gf-matmult2 (m1 m2) 
   (setq m1 (cdr m1) m2 (cdr ($transpose m2)))
   (unless (= (length (car m1)) (length (car m2)))
     (merror (intl:gettext "`gf_matmul': attempt to multiply nonconformable matrices.")) )
@@ -2251,7 +2263,7 @@
 (defmfun $gf_matinv (m) 
   (gf-set?)
   (field?)
-  (let* (($matrix_element_mult '$gf_mul) ($matrix_element_add '$gf_add)
+  (let* (($matrix_element_mult '$gf_mult) ($matrix_element_add '$gf_add)
          (dm (mfuncall '$determinant m))
          (am (mfuncall '$adjoint m)) )
     (mfuncall '$matrixmap #'(lambda (p) ($gf_div p dm)) am) ))
