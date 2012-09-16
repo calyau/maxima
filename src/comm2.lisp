@@ -525,21 +525,20 @@
 	    (add2lnc (car l) $props)
 	    (nconc x (ncons (car l)))))
 
-(declare-top (special powers var depvar))
+(let (my-powers)
+  (declare (special my-powers))
 
-(defmfun $derivdegree (e depvar var)
-  (let (powers) (derivdeg1 e) (if (null powers) 0 (maximin powers '$max))))
+  (defmfun $derivdegree (e depvar var)
+    (let (my-powers) (declare (special my-powers)) (derivdeg1 e depvar var) (if (null my-powers) 0 (maximin my-powers '$max))))
 
-(defun derivdeg1 (e)
-  (cond ((or (atom e) (specrepp e)))
-	((eq (caar e) '%derivative)
-	 (cond ((alike1 (cadr e) depvar)
-		(do ((l (cddr e) (cddr l))) ((null l))
-		  (cond ((alike1 (car l) var)
-			 (return (setq powers (cons (cadr l) powers)))))))))
-	(t (mapc 'derivdeg1 (cdr e)))))
-
-(declare-top (unspecial powers var depvar))
+  (defun derivdeg1 (e depvar var)
+    (cond ((or (atom e) (specrepp e)))
+	  ((eq (caar e) '%derivative)
+	   (cond ((alike1 (cadr e) depvar)
+		  (do ((l (cddr e) (cddr l))) ((null l))
+		    (cond ((alike1 (car l) var)
+			   (return (setq my-powers (cons (cadr l) my-powers)))))))))
+	  (t (mapc #'(lambda (x) (derivdeg1 x depvar var)) (cdr e))))))
 
 ;;;; BOX
 
