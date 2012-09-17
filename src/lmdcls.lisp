@@ -128,7 +128,7 @@
 	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
 	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
-	  sums tellratlist timesinp timesp tr-abort tr-progret tr-unique
+	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack typel user-mesfile user-timesofar varlist wflag
 	  $wtlevel $cflength $weightlevels *trunclist $taylordepth
