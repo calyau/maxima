@@ -132,7 +132,7 @@
                            (let (($simp t)) (resimplify z)))
                         (setq z (maxima-substitute (cdar l) (caar l) z))))))))))
 
-(declare-top (special x y oprx opry negxpty timesp))
+(declare-top (special x y oprx opry timesp))
 
 (defmfun maxima-substitute (x y z) ; The args to SUBSTITUTE are assumed to be simplified.
   (declare (special x y ))
@@ -142,7 +142,7 @@
     (simplifya
      (if (atom y)
 	 (cond ((equal y -1)
-		(setq y '((mminus) 1)) (subst2 (nformat-all z)))
+		(setq y '((mminus) 1)) (subst2 (nformat-all z) nil)) ;; negxpty doesn't matter in this call since (caar y) != 'mexpt
 	       (t
 		(cond ((and (not (symbolp x))
 			    (functionp x))
@@ -157,8 +157,8 @@
 				 (= (signum1 (caddr y)) 1))
 			    (mul2 -1 (caddr y))))
 	       (timesp (if (eq (caar y) 'mtimes) (setq y (nformat y)))))
-	   (declare (special negxpty timesp))
-	   (subst2 z)))
+	   (declare (special timesp))
+	   (subst2 z negxpty)))
      nil)))
 
 ;;Remainder of page is update from F302 --gsb
@@ -195,10 +195,10 @@
 		     (subst0 (cons (cons oprx nil) margs) z))
 		 (subst0 (cons (cons (caar z) nil) margs) z))))))
 
-(defun subst2 (z)
+(defun subst2 (z negxpty)
   (let (newexpt)
     (cond ((atom z) z)
-	  ((specrepp z) (subst2 (specdisrep z)))
+	  ((specrepp z) (subst2 (specdisrep z) negxpty))
 	  ((and *atp* (member (caar z) '(%derivative %laplace) :test #'eq)) z)
 	  ((at-substp z) z)
 	  ((alike1 y z) x)
@@ -212,7 +212,7 @@
 	   (let ((tail (subst-diff-match (cddr y) (cdr z))))
 	     (cond ((null tail) z)
 		   (t (cons (cons (caar z) nil) (cons x (cdr tail)))))))
-	  (t (recur-apply #'subst2 z)))))
+	  (t (recur-apply #'(lambda (z1) (subst2 z1 negxpty)) z)))))
 
 ;; replace y with x in z, but leave z's second arg unchanged.
 ;; This is for cases like at(integrate(x, x, a, b), [x=3])
@@ -231,7 +231,7 @@
                (cdddr z))))
     (t z)))
 
-(declare-top (unspecial x y oprx opry negxpty timesp))
+(declare-top (unspecial x y oprx opry timesp))
 
 (defmfun subst0 (new old)
   (cond ((atom new) new)
