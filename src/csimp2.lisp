@@ -734,7 +734,7 @@
 
 (declare-top (special $globalsolve $backsubst $dispflag
 		      $linsolve_params $%rnum_list ax *linelabel* $linechar 
-		      $linenum sol *mosesflag))
+		      $linenum *mosesflag))
 
 (defun xrutout (ax n m varl ind)
   (let (($linsolve_params (and $backsubst $linsolve_params)))

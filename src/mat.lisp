@@ -16,7 +16,7 @@
 
 (declare-top (special *ech* *tri* $algebraic $multiplicities equations
 		      mul* $dispflag $nolabels errrjfflag *det*
-		      xm* xn* varlist ax *linelabel* sol))
+		      xm* xn* varlist ax *linelabel*))
 
 ;;these are arrays.
 (defvar *row*)
