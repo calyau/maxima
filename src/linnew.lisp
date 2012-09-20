@@ -348,7 +348,7 @@
 
 (defun tmstore (name x)
   (cond ((< n *threshold*)
-	 (eval (list 'store name (list 'quote x))))
+	 (eval `(setf ,name ',x)))
 	(t
 	 (mset name (list '(mquote simp) x))
 	 x)))
