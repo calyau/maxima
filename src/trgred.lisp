@@ -403,7 +403,7 @@
          (mtell (intl:gettext "trigreduce: failed to expand.~%~%"))
 	 (show-exp (list '(%log) e))
 	 (mtell (intl:gettext "trigreduce: try again after applying rule:~2%~M~%~%")
-		(list '(mlable) nil
+		(list '(mlabel) nil
 		      (out-of
 		       (list '(mequal)
 			     (list '(%log) e)

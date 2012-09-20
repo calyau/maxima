@@ -1454,7 +1454,7 @@
 (defmfun $ishow (f)
        (progn (makelabel $linechar)
               (cond ($dispflag
-                     (displa (list '(mlable) *linelabel* (ishow (specrepcheck (derat f)))))
+                     (displa (list '(mlabel) *linelabel* (ishow (specrepcheck (derat f)))))
 ;                     (setq $dispflag nil)
 ))
               (set *linelabel* f)))

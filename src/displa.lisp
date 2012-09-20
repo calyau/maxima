@@ -1171,7 +1171,7 @@
   (if (null (cddr form)) (dimension (cadr form) result lop rop 0 0)
       (dimension-nary form result)))
 
-(displa-def mlable dim-mlabel 0 0)
+(displa-def mlabel dim-mlabel 0 0)
 
 (defvar *display-labels-p* t)
 
@@ -1186,7 +1186,7 @@
 		    w (1+ width) h height d depth)))
      (let ((level linel)) (checkbreak result w))
      (setq dummy (list 0 0))
-     (setq result (dimension (caddr form) (cons dummy result) 'mlable rop w right))
+     (setq result (dimension (caddr form) (cons dummy result) 'mlabel rop w right))
      (cond ((and (not $leftjust) (= 0 bkptout))
 	    (rplaca dummy (max 0 (- (truncate (- linel width) 2) w)))
 	    (setq width (+ (car dummy) width))))

@@ -58,12 +58,12 @@
        (setq c-tag (makelabel $inchar))
        (unless $nolabels (setf (symbol-value c-tag) (nth 2 tem)))
        (let ($display2d)
-	 (displa `((mlable) ,c-tag ,(nth 2 tem))))
+	 (displa `((mlabel) ,c-tag ,(nth 2 tem))))
        (setq $% (meval* (nth 2 tem)))
        (setq d-tag (makelabel $outchar))
        (unless $nolabels (setf (symbol-value d-tag) $%))
        (when (eq (caar tem) 'displayinput)
-	 (displa `((mlable) ,d-tag ,$%)))
+	 (displa `((mlabel) ,d-tag ,$%)))
        (go doit)
 
        notfound

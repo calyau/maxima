@@ -259,7 +259,7 @@
 
 (defmacro zero-warn (exp)
   `(mtell (intl:gettext "taylor: assumed to be zero: ~M~%")
-    `((mlable) () ,,exp)))
+    `((mlabel) () ,,exp)))
 
 
 (defmacro merrcatch (form) `(catch 'errorsw ,form))

@@ -62,7 +62,7 @@
                             (caddr y)))))
 	   ) ;; end of when
            (when (and (consp mexpress) (consp (car mexpress))
-                      (eq 'mlable (caar mexpress)))
+                      (eq 'mlabel (caar mexpress)))
                 (setq mexpress (cadr mexpress))
 	   )
            (tprinc "<math  xmlns='http://www.w3.org/1998/Math/MathML'>")

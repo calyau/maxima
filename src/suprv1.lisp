@@ -531,7 +531,7 @@
 			      (if x (mtell (intl:gettext "  GC time = ~A seconds") (cdr l)))
 			      (mterpri))
 			 (not (or inputp (get (car l1) 'nodisp)))))
-		 (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
+		 (mterpri) (displa (list '(mlabel) (car l1) (meval1 (car l1)))))
 		(t (go a)))))
        (when (and slowp (cdr l1) (not (continuep)))
 	 (return '$terminated))

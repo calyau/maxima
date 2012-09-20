@@ -68,7 +68,7 @@
                                   (cdadr y))
                             (caddr y))))))
            (when (and (consp mexpress) (consp (car mexpress))
-                      (eq 'mlable (caar mexpress)))
+                      (eq 'mlabel (caar mexpress)))
              (setq mexpress (cadr mexpress)))
            (cond
              ((and $lamPrworksheet

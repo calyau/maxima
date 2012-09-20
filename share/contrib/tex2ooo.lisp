@@ -505,7 +505,7 @@
 (defprop | --> | " rightarrow " texsym)
 (defprop | WHERE | "` bold where`" texsym)
  
-(defun tex-mlable (x l r)
+(defun tex-mlabel (x l r)
   (tex (caddr x)
        (append l
 	       (if (cadr x)

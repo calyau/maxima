@@ -70,7 +70,7 @@
 
 (defun show-exp (e)
   (mtell "~%~%~M~%~%"
-	 (list '(mlable) nil (out-of e))))
+	 (list '(mlabel) nil (out-of e))))
 
 (defun seriespass1 (e)
   (let ((w (sratsimp (sp1 e))))
@@ -119,7 +119,7 @@
   (let (nn* dn* *gcd*)
     (if $verbose
 	(mtell (intl:gettext "powerseries: attempt rational function expansion of~%~M")
-	       (list '(mlable) nil exp)))
+	       (list '(mlabel) nil exp)))
     (numden exp)
     (sratexpnd nn* dn*)))
 

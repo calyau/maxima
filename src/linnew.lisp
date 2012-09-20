@@ -243,7 +243,7 @@
 	 (push name labels)
 	 (setq result (cdr result))
 	 (when $dispflag
-	   (mtell-open "~M" (nconc (ncons '(mlable))
+	   (mtell-open "~M" (nconc (ncons '(mlabel))
 				   (ncons name)
 				   (ncons (eval name)))))))))
 

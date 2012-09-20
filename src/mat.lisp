@@ -450,7 +450,7 @@
     (cond ($dispflag (remprop *linelabel* 'nodisp)
 		     (setq tim (get-internal-run-time))
 		     (mterpri)
-		     (displa (list '(mlable) *linelabel* exp))
+		     (displa (list '(mlabel) *linelabel* exp))
 		     (timeorg tim))
 	  (t (putprop *linelabel* t 'nodisp)))
     *linelabel*))

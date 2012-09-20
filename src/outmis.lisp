@@ -255,7 +255,7 @@
     (do ((ll (mget (car l) 'atvalues) (cdr ll)))
 	((null ll))
       (mtell-open "~M~%"
-		  (list '(mlable) nil
+		  (list '(mlabel) nil
 			(list '(mequal)
 			      (atdecode (car l) (caar ll) (cadar ll)) (caddar ll))))))
   '$done)
@@ -291,7 +291,7 @@
     (do ((j (mget (car i) '$atomgrad) (cdr j)))
 	((null j))
       (mtell-open "~M~%"
-		  (list '(mlable) nil
+		  (list '(mlabel) nil
 			(list '(mequal)
 			      (list '(%derivative) (car i) (caar j) 1) (cdar j))))))
   '$done)
@@ -305,7 +305,7 @@
 	 (thing (cons (ncons (car i)) (car l))))
 	((or (null k) (null j)))
       (mtell-open "~M~%"
-		  (list '(mlable)
+		  (list '(mlabel)
 			nil (list '(mequal) (list '(%derivative) thing (car j) 1.) (car k))))))
   '$done)
 

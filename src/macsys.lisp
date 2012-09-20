@@ -181,12 +181,12 @@
 	(format t "~a" *general-display-prefix*)
 	(cond (#.writefilep  ;write out the c line to the dribble file
 	       (let ( (#.ttyoff t) smart-tty  $linedisp)
-		 (displa `((mlable) , c-tag , $__)))))
+		 (displa `((mlabel) , c-tag , $__)))))
 	(if (eq r eof) (return '$done))
 	(setq $__ (caddr r))
 	(unless $nolabels (set  c-tag $__))
 	(cond (batch-or-demo-flag
-	       (displa `((mlable) ,c-tag , $__))))
+	       (displa `((mlabel) ,c-tag , $__))))
 	(setq time-before (get-internal-run-time)
 	      etime-before (get-internal-real-time))
 	(setq area-before (used-area))
@@ -229,7 +229,7 @@
           (putprop '$% (cons time-used 0) 'time)
 	  (putprop d-tag (cons time-used  0) 'time))
 	(if (eq (caar r) 'displayinput)
-	    (displa `((mlable) ,d-tag ,$%))) ;; consistently misspelling label.
+	    (displa `((mlabel) ,d-tag ,$%))) ;; consistently misspelling label.
 	(when (eq batch-or-demo-flag ':demo)
           (princ (break-prompt))
           (force-output)

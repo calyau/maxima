@@ -197,7 +197,7 @@
 	(unless $nolabels
 	  (setf (symbol-value *linelabel*) ans)))
       (setq tim (get-internal-run-time))
-      (displa `((mlable) ,(cond (labelsp *linelabel*)) ,ans))
+      (displa `((mlabel) ,(cond (labelsp *linelabel*)) ,ans))
       (mterpri)
       (timeorg tim))))
 

@@ -280,7 +280,7 @@
 			 (let ((*standard-output* s))
 			   (if (eq (caar object) 'maxima::displayinput)
 			       (let ((maxima::$display2d nil))
-				 (maxima::displa `((maxima::mlable) nil ,@(cddr object))))
+				 (maxima::displa `((maxima::mlabel) nil ,@(cddr object))))
 			       (maxima::displa object)))))
 	     stream))))
 
@@ -353,7 +353,7 @@
     ;; *standard-output* to the interactor pane that we want.
     (let ((*standard-output* (get-frame-pane *application-frame* 'interactor)))
       (with-drawing-options (t :ink +olivedrab+)
-	(present `((maxima::mlable) nil ,(if *boxify*
+	(present `((maxima::mlabel) nil ,(if *boxify*
 					     (maxima::boxify maxima::$%)
 					     maxima::$%))
 		 'maxima-expression)))))

@@ -746,7 +746,7 @@
     (setq tim (get-internal-run-time))
     (let ((*display-labels-p* nil))
       (declare (special *display-labels-p*))
-      (displa (list '(mlable) (if lablist *linelabel*) ans)))
+      (displa (list '(mlabel) (if lablist *linelabel*) ans)))
     (mterpri)
     (timeorg tim)))
 

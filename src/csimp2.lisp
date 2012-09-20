@@ -773,7 +773,7 @@
        (do ((ll zz (cdr ll)))
 	   ((null ll))
 	 (setq zzz (car ll))
-	 (setq zzz (list '(mlable)
+	 (setq zzz (list '(mlabel)
 			 (progn
 			   (if chk
 			       (setq chk nil)

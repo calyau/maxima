@@ -81,7 +81,7 @@
 
 (defun macsyma-display (form)
   "Takes a macsyma form and displays it"
-  (displa `((mlable) 1 ,form)))
+  (displa `((mlabel) 1 ,form)))
 
 (defun gt (form)
   (grind-top-level form))

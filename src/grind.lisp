@@ -273,11 +273,11 @@
 
 ;;; ----------------------------------------------------------------------------
 
-;; Formating a mlable-expression
+;; Formating a mlabel-expression
 
-(defprop mlable msize-mlable grind)
+(defprop mlabel msize-mlabel grind)
 
-(defun msize-mlable (x l r)
+(defun msize-mlabel (x l r)
   (declare (special *display-labels-p*))
   (if *display-labels-p*
       (setq l (cons (msize (cadr x) (list #\( ) (list #\) #\ ) nil nil) l)))

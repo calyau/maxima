@@ -96,7 +96,7 @@
 (setf (get 'mdefmacro 'tex-environment)
       `(,(format nil "~%\\begin{verbatim}~%") . ,(format nil ";~%\\end{verbatim}~%")))
 
-(setf (get 'mlable 'tex-environment)
+(setf (get 'mlabel 'tex-environment)
       `(,(format nil "~%\\begin{verbatim}~%") . ,(format nil ";~%\\end{verbatim}~%")))
 
 ;; top level command the result of tex'ing the expression x.
@@ -181,10 +181,10 @@
 	       (string= (subseq (maybe-invert-string-case (string $outchar)) 1 (length (string $outchar)))
 			(subseq (string mexplabel) 1 (length (string $outchar)))))))
 	    ;; aha, this is a C-line: do the grinding:
-	    (format texport (car (get-tex-environment 'mlable)))
+	    (format texport (car (get-tex-environment 'mlabel)))
         (format texport "~a" mexplabel)
 	    (mgrind mexp texport)	;write expression as string
-	    (format texport (cdr (get-tex-environment 'mlable))))
+	    (format texport (cdr (get-tex-environment 'mlabel))))
 	   (t 
 	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
 					; display the expression for TeX now:
@@ -1032,7 +1032,7 @@
 
 (defprop mtext tex-mtext tex)
 (defprop text-string tex-mtext tex)
-(defprop mlable tex-mlable tex)
+(defprop mlabel tex-mlabel tex)
 (defprop spaceout tex-spaceout tex)
 
 ;; Additions by Marek Rychlik (rychlik@u.arizona.edu)
@@ -1051,7 +1051,7 @@
 (defun tex-mtext (x l r)
   (tex-list (map 'list #'tex-try-sym (cdr x)) l r ""))
 
-(defun tex-mlable (x l r)
+(defun tex-mlabel (x l r)
   (tex (caddr x)
        (append l
 	       (if (cadr x)

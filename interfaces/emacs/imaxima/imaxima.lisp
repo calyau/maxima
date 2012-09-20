@@ -498,7 +498,7 @@ nor Gnuplot is not recognized by maxima"))))
 
 (defun tex-mtext (x l r) (tex-list (cdr x) l r ""))
 
-(defun tex-mlable (x l r)
+(defun tex-mlabel (x l r)
   (tex (caddr x)
     (append l
       (if (cadr x)
@@ -517,7 +517,7 @@ nor Gnuplot is not recognized by maxima"))))
 (defun latex (x)
 ;  (princ x)  ;; uncomment to debug.
   (if (and (listp x) (car x) (listp (car x)) (caar x)
-	   (equal (caar x) 'mlable)
+	   (equal (caar x) 'mlabel)
 	   (cdr x)
 	   (cadr x)
 	   (input-label-p (cadr x)))
