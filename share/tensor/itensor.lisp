@@ -1444,7 +1444,7 @@
                                   ) result)
               )))))
 
-(declare-top (special $outchar $dispflag linelable foobar derivlist))
+(declare-top (special $outchar $dispflag *linelabel* foobar derivlist))
 
 
 ;Displays P([L1],[L2],I1,I2,...) by making the elements of L2 into a single
@@ -1454,10 +1454,10 @@
 (defmfun $ishow (f)
        (progn (makelabel $linechar)
               (cond ($dispflag
-                     (displa (list '(mlable) linelable (ishow (specrepcheck (derat f)))))
+                     (displa (list '(mlable) *linelabel* (ishow (specrepcheck (derat f)))))
 ;                     (setq $dispflag nil)
 ))
-              (set linelable f)))
+              (set *linelabel* f)))
 
 (defun ishow (f) 
        ((lambda (foobar)                              ;FOOBAR intialized to NIL

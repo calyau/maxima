@@ -55,7 +55,7 @@
 (defvar lessorder nil)
 (defvar greatorder nil)
 (defvar *in-translate-file* nil)
-(defvar linelable nil)
+(defvar *linelabel* nil)
 (defvar rephrase nil)
 (defvar st nil)
 (defvar oldst nil)
@@ -124,17 +124,17 @@
     (clearsign)))
 
 (defmfun makelabel (x)
-  (setq linelable ($concat '|| x $linenum))
+  (setq *linelabel* ($concat '|| x $linenum))
   (unless $nolabels
     (when (or (null (cdr $labels))
-	      (when (member linelable (cddr $labels) :test #'equal)
-		(setf $labels (delete linelable $labels :count 1 :test #'eq)) t)
-	      (not (eq linelable (cadr $labels))))
-      (setq $labels (cons (car $labels) (cons linelable (cdr $labels))))))
-  linelable)
+	      (when (member *linelabel* (cddr $labels) :test #'equal)
+		(setf $labels (delete *linelabel* $labels :count 1 :test #'eq)) t)
+	      (not (eq *linelabel* (cadr $labels))))
+      (setq $labels (cons (car $labels) (cons *linelabel* (cdr $labels))))))
+  *linelabel*)
 
 (defmfun printlabel ()
-  (mtell-open "(~A) " (subseq (print-invert-case linelable) 1)))
+  (mtell-open "(~A) " (subseq (print-invert-case *linelabel*) 1)))
 
 (defmfun mexploden (x)
   (let (*print-radix*
@@ -517,7 +517,7 @@
 	     (incharp (char= (getlabcharn (car l1)) inchar)))
 	 (errset
 	  (cond ((and (not nostringp) incharp)
-		 (let ((linelable (car l1))) (mterpri) (printlabel))
+		 (let ((*linelabel* (car l1))) (mterpri) (printlabel))
 		 (if grindp
 		     (mgrind (meval1 (car l1)) nil)
 		     (mapc #'(lambda (x) (write-char x)) (mstring (meval1 (car l1))))) ;gcl doesn't like a

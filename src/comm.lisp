@@ -14,7 +14,7 @@
 
 (declare-top (special $exptsubst $linechar $nolabels $inflag $piece $dispflag
 		      $gradefs $props $dependencies derivflag derivlist
-		      $linenum $partswitch linelable nn* dn*
+		      $linenum $partswitch *linelabel* nn* dn*
 		      $powerdisp atvars $errexp $derivsubst $dotdistrib
 		      $opsubst $subnumsimp $transrun in-p substp $sqrtdispflag
 		      $pfeformat dummy-variable-operators))
@@ -746,7 +746,7 @@
     (setq tim (get-internal-run-time))
     (let ((*display-labels-p* nil))
       (declare (special *display-labels-p*))
-      (displa (list '(mlable) (if lablist linelable) ans)))
+      (displa (list '(mlable) (if lablist *linelabel*) ans)))
     (mterpri)
     (timeorg tim)))
 
@@ -771,8 +771,8 @@
   (if (not (checklabel $linechar)) (setq $linenum (1+ $linenum)))
   (let (($nolabels nil)) ; <-- This is pretty ugly. MAKELABEL should take another argument.
     (makelabel $linechar))
-  (setf (symbol-value linelable) e)
-  linelable)
+  (setf (symbol-value *linelabel*) e)
+  *linelabel*)
 
 (defmfun $dispterms (e)
   (cond ((or (atom e) (eq (caar e) 'bigfloat)) (displa e))

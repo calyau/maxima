@@ -173,7 +173,7 @@
 (declare-top (special $dispflag))
 
 (defmfun display-for-tr (labelsp equationsp &rest argl)
-  (declare (special linelable))
+  (declare (special *linelabel*))
   (do ((argl argl (cdr argl))
        (lablist nil)
        (tim 0))
@@ -191,13 +191,13 @@
 	(unless (checklabel $linechar)
 	  (incf $linenum))
 	(makelabel $linechar)
-	;; setqs the free variable LINELABLE, what a win,
+	;; setqs the free variable *LINELABEL*, what a win,
 	;; how convenient, now I don't need to use LET !
-	(push linelable lablist) ;; note the spelling
+	(push *linelabel* lablist)
 	(unless $nolabels
-	  (setf (symbol-value linelable) ans)))
+	  (setf (symbol-value *linelabel*) ans)))
       (setq tim (get-internal-run-time))
-      (displa `((mlable) ,(cond (labelsp linelable)) ,ans))
+      (displa `((mlable) ,(cond (labelsp *linelabel*)) ,ans))
       (mterpri)
       (timeorg tim))))
 

@@ -16,7 +16,7 @@
 
 (declare-top (special *ech* *tri* $algebraic $multiplicities equations
 		      mul* $dispflag $nolabels errrjfflag *det*
-		      xm* xn* varlist ax linelable sol))
+		      xm* xn* varlist ax *linelabel* sol))
 
 ;;these are arrays.
 (defvar *row*)
@@ -447,13 +447,13 @@
 (defmfun displine (exp)
   (let ($nolabels (tim 0))
     (elabel exp)
-    (cond ($dispflag (remprop linelable 'nodisp)
+    (cond ($dispflag (remprop *linelabel* 'nodisp)
 		     (setq tim (get-internal-run-time))
 		     (mterpri)
-		     (displa (list '(mlable) linelable exp))
+		     (displa (list '(mlable) *linelabel* exp))
 		     (timeorg tim))
-	  (t (putprop linelable t 'nodisp)))
-    linelable))
+	  (t (putprop *linelabel* t 'nodisp)))
+    *linelabel*))
 
 (declare-top (unspecial permsign a rank delta nrow nvar n m variableorder
 			dependentrows inconsistentrows l k))

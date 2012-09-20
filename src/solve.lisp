@@ -24,7 +24,7 @@
 		      *failures	;alternating list of equations and multiplicities
 		      *myvar $listconstvars
 		      *has*var *var $dontfactor $linenum $linechar
-		      linelable $keepfloat $ratfac
+		      *linelabel* $keepfloat $ratfac
 		      errrjfflag  ;A substitute for condition binding.
 		      xm* xn* mul*))
 
