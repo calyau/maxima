@@ -85,8 +85,7 @@
 	(cond ((eq '$fixnum (car exp))
 	       (setq exp (cdr exp))
 	       (cond ((eq '$float (car bas))
-		      (cond ((not (integerp exp)) `($float expt ,(cdr bas) ,exp))
-			    (t `($float expt$ ,(cdr bas) ,exp))))
+		      `($float expt ,(cdr bas) ,exp))
 		     ((and (eq (car bas) '$fixnum)
 			   $tr_numer)
 		      ;; when NUMER:TRUE we have 1/2 evaluating to 0.5
@@ -106,7 +105,7 @@
 			   (setq exp (cadr (caddr exp)))
 			   (cond ((= 1 exp) `($float sqrt ,(cdr bas)))
 				 ((= -1 exp) `($float / (sqrt ,(cdr bas))))
-				 (t `($float expt$ (sqrt ,(cdr bas)) ,exp))))
+				 (t `($float expt (sqrt ,(cdr bas)) ,exp))))
 			  ((eq 'rat (caar (caddr exp)))
 			   `($float expt ,(cdr bas) ,($float (caddr exp)))))))
 	      (t `($any power ,(cdr bas) ,(cdr exp)))))))

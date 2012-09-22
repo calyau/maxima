@@ -108,9 +108,6 @@
 	(eval a-var?) ;;; ouch!
 	(setf (symbol-value a-var?) (if (cdr l) (eval (cadr l))  a-var?))))) ;; double ouch!
 
-(defun expt$ (a b)
-  (expt a b))
-
 ;;; These are the LAMBDA forms. They have macro properties that set
 ;;; up very different things in compiled code.
 
