@@ -20,11 +20,11 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst
-		      $abconvtest complex-limit plogabs))
+		      $abconvtest plogabs))
 
 (setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4
       $tlimswitch t $limsubst nil $abconvtest nil
-      complex-limit nil plogabs nil)
+      plogabs nil)
 
 ;; Simplified shortcuts of constant expressions involving %pi.
 (defvar %p%i '((mtimes) $%i $%pi))
