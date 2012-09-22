@@ -31,7 +31,7 @@
 		       varlist genvar
 		       $gensumnum checkfactors $features featurel
 		       $weightlevels tellratlist $dontfactor
-		       dispflag savefile $%% $error smart-tty
+		       dispflag savefile $%% $error
 		       opers *ratweights $ratweights
 		       $stringdisp $lispdisp defaultf command
 		       transp $contexts $setcheck $macros autoload))
@@ -830,16 +830,8 @@
 
 ;; File-processing stuff.
 
-;; This prevents single blank lines from appearing at the top of video
-;; terminals.  If at the upper left corner and we want to print a blank
-;; line, leave the cursor there and send the blank line to transcript
-;; files only.
-
 (defmfun mterpri ()
-  (if smart-tty
-      (let ((#.ttyoff t))
-	(terpri))
-      (terpri)))
+   (terpri))
 
 (defmspec $status (form)
   (setq form (cdr form))

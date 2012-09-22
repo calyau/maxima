@@ -1481,7 +1481,7 @@
 
 (defmacro for-editor (&body body)
   `(let ((linel 75)
-	$linedisp $display2d smart-tty)
+	$linedisp $display2d)
     ,@ body))
 
 

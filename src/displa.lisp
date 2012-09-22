@@ -71,7 +71,7 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-(setq smart-tty nil rubout-tty nil scrollp t)
+(setq rubout-tty nil scrollp t)
 
 (setq linel 79. $linel 79. ttyheight 24.)
 
@@ -1303,8 +1303,7 @@
     ((> (+ bkptht bkptdp) 80.)
      ;; IS IT STILL POSSIBLE TO EVER TRIGGER THE FOLLOWING MESSAGE ??
      (merror (intl:gettext "display: expression is too tall to be displayed.")))
-    ((or (not (and smart-tty $cursordisp))
-	 #.writefilep scrollp (> (+ bkptht bkptdp) (- ttyheight 2)))
+    ((or #.writefilep scrollp (> (+ bkptht bkptdp) (- ttyheight 2)))
      (output-linear (nreverse result) w))
     ;; Otherwise, draw equations in the same order as they are dimensioned.
     (t (output-2d (nreverse result) w))))
