@@ -177,7 +177,7 @@ f(2);
 4;
 /* some tests for lambda expressions.
   we test for both translate and compile because there are some compiler
-  macros for translated code (defined via defopt) */
+  macros for translated code */
 define_variable(qwerty,1,fixnum);
 1;
 /* m-tlambda */

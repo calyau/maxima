@@ -13,7 +13,6 @@ binary-acl/maxima.dxl : compat.lisp
 binary-acl/maxima.dxl : transm.lisp
 binary-acl/maxima.dxl : getopt.lisp
 binary-acl/maxima.dxl : command-line.lisp
-binary-acl/maxima.dxl : defopt.lisp
 binary-acl/maxima.dxl : defcal.lisp
 binary-acl/maxima.dxl : maxmac.lisp
 binary-acl/maxima.dxl : mopers.lisp

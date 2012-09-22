@@ -16,7 +16,7 @@
 
 (macsyma-module transq macro)
 
-(load-macsyma-macros transm defopt)
+(load-macsyma-macros transm)
 
 (defmacro def-mtrvar (v a &optional (priority 1))
   (declare (ignore priority))
@@ -33,7 +33,7 @@
 
 (defvar *max-expt$-expand* 7)
 
-(defopt expt$ (bas exp)
+(define-compiler-macro expt$ (bas exp)
   (if (not (integerp exp))
       `(maxima-error "EXPT$: exponent must be an integer; found: ~a" ,exp))
   (let* ((abs-exp (abs exp))
@@ -45,7 +45,7 @@
 	   `(/ ,full-exp))
 	  (t full-exp))))
 
-(defopt internal-expt$ (exp-base pos-exp)
+(define-compiler-macro internal-expt$ (exp-base pos-exp)
   (cond ((zerop pos-exp)
 	 ;; BROM  wrote X^0 for symmetry in his code, and this
 	 ;; macro did some infinite looping! oops.
@@ -77,7 +77,7 @@
 ;;; repeated squaring in a recrusive fashion.  It is trivial to do
 ;;; and should be done at some point.
 
-(defopt mfunction-call (f &rest l &aux l1)
+(define-compiler-macro mfunction-call (f &rest l &aux l1)
   (setq l1 l)
   (cond ((or (fboundp f)
 	     (get f 'once-translated)

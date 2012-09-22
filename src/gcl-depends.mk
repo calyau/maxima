@@ -19,7 +19,6 @@ binary-gcl/maxima : compat.lisp
 binary-gcl/maxima : transm.lisp
 binary-gcl/maxima : getopt.lisp
 binary-gcl/maxima : command-line.lisp
-binary-gcl/maxima : defopt.lisp
 binary-gcl/maxima : defcal.lisp
 binary-gcl/maxima : maxmac.lisp
 binary-gcl/maxima : mopers.lisp

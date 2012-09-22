@@ -14,7 +14,6 @@ $(SBCL_MAXIMA) : compat.lisp
 $(SBCL_MAXIMA) : transm.lisp
 $(SBCL_MAXIMA) : getopt.lisp
 $(SBCL_MAXIMA) : command-line.lisp
-$(SBCL_MAXIMA) : defopt.lisp
 $(SBCL_MAXIMA) : defcal.lisp
 $(SBCL_MAXIMA) : maxmac.lisp
 $(SBCL_MAXIMA) : mopers.lisp

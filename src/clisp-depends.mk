@@ -14,7 +14,6 @@ $(CLISP_MAXIMA) : compat.lisp
 $(CLISP_MAXIMA) : transm.lisp
 $(CLISP_MAXIMA) : getopt.lisp
 $(CLISP_MAXIMA) : command-line.lisp
-$(CLISP_MAXIMA) : defopt.lisp
 $(CLISP_MAXIMA) : defcal.lisp
 $(CLISP_MAXIMA) : maxmac.lisp
 $(CLISP_MAXIMA) : mopers.lisp

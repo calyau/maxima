@@ -76,8 +76,7 @@
 			:depends-on (getopt)
 			:components ((:file "command-line")))
                (:module fundamental-macros :pathname ""
-                        :components ((:file "defopt") 
-                                     (:file "defcal") 
+                        :components ((:file "defcal") 
                                      (:file "maxmac")))
                (:module utility-macros :pathname ""
                         :components ((:file "mopers") 

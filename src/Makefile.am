@@ -412,7 +412,6 @@ csimp2.lisp \
 db.lisp \
 defcal.lisp \
 defint.lisp \
-defopt.lisp \
 desoln.lisp \
 displa.lisp \
 displm.lisp \

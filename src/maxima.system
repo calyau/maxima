@@ -163,8 +163,7 @@
 	       (:module getopt :source-pathname ""
 			:components ((:file "getopt")))
                (:module fundamental-macros :source-pathname ""
-                        :components ((:file "defopt") 
-                                     (:file "defcal") 
+                        :components ((:file "defcal") 
                                      (:file "maxmac")))
                (:module utility-macros :source-pathname ""
                         :components ((:file "mopers") 

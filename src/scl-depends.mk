@@ -13,7 +13,6 @@ binary-scl/maxima.core : compat.lisp
 binary-scl/maxima.core : transm.lisp
 binary-scl/maxima.core : getopt.lisp
 binary-scl/maxima.core : command-line.lisp
-binary-scl/maxima.core : defopt.lisp
 binary-scl/maxima.core : defcal.lisp
 binary-scl/maxima.core : maxmac.lisp
 binary-scl/maxima.core : mopers.lisp
