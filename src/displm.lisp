@@ -20,9 +20,6 @@
 			;file opened by UWRITE.  People learning
 			;Lisp: there are better ways of doing IO
 			;than this -- don't copy this scheme.
-  rubout-tty	        ;If T, then console either is selectively erasable
-			;or is a glass tty.  Characters can be rubbed
-			;out in either case.
   scrollp		;If T, then the console is scrolling.
   linel			;Width of screen.
   ttyheight		;Height of screen.

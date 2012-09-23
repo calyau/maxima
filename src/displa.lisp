@@ -71,7 +71,7 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-(setq rubout-tty nil scrollp t)
+(setq scrollp t)
 
 (setq linel 79. $linel 79. ttyheight 24.)
 
