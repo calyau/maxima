@@ -20,7 +20,6 @@
 			;file opened by UWRITE.  People learning
 			;Lisp: there are better ways of doing IO
 			;than this -- don't copy this scheme.
-  scrollp		;If T, then the console is scrolling.
   linel			;Width of screen.
   ttyheight		;Height of screen.
 

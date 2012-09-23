@@ -71,8 +71,6 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-(setq scrollp t)
-
 (setq linel 79. $linel 79. ttyheight 24.)
 
 (defvar linearray (make-array 80. :initial-element nil))
@@ -1303,10 +1301,8 @@
     ((> (+ bkptht bkptdp) 80.)
      ;; IS IT STILL POSSIBLE TO EVER TRIGGER THE FOLLOWING MESSAGE ??
      (merror (intl:gettext "display: expression is too tall to be displayed.")))
-    ((or #.writefilep scrollp (> (+ bkptht bkptdp) (- ttyheight 2)))
-     (output-linear (nreverse result) w))
-    ;; Otherwise, draw equations in the same order as they are dimensioned.
-    (t (output-2d (nreverse result) w))))
+    (t
+     (output-linear (nreverse result) w))))
 
 ;; Output function for terminals without cursor positioning capability.
 ;; Characters are drawn into LINEARRAY instead.  Each element of LINEARRAY is a
