@@ -909,8 +909,6 @@ misc/declin.dem \
 misc/declin.mac \
 misc/declin.usg \
 misc/diffop.lisp \
-misc/disran.lisp \
-misc/disran.usg \
 misc/dump.lisp \
 misc/dump.usg \
 misc/foptim.lisp \
