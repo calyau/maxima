@@ -1481,7 +1481,7 @@
 
 (defmacro for-editor (&body body)
   `(let ((linel 75)
-	$linedisp $display2d)
+	$display2d)
     ,@ body))
 
 
@@ -1503,7 +1503,7 @@
 (defun des-file (expr file-name)
   (with-open-file  (st file-name :direction :output)
       (let ((linel 75)(*standard-output* st)
-	    $linedisp $display2d)
+	    $display2d)
 	(des expr ))))
 
 

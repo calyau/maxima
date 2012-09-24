@@ -18,13 +18,6 @@
 
 (declare-top (special $linel))
 
-(defmvar $cursordisp t
-  "If T, causes expressions to be drawn by the displayer in logical
-	  sequence.  This only works with a console which can do cursor movement.
-	  If NIL, expressions are simply printed line by line.
-	  CURSORDISP is NIL when a WRITEFILE is in effect."
-  no-reset)
-
 (defmvar $stardisp nil
   "Causes factors of products to be separated by * when displayed.")
 
@@ -39,14 +32,6 @@
 (defmvar $lispdisp nil
   "Causes symbols not having $ as the first character in their pnames
 	 to be preceded with a ? when displayed.")
-
-;; This may be flushed in the future if nobody dislikes the graphics crocks.
-
-(defmvar $linedisp t
-  "Causes quotients, matrices, and boxes to be drawn with straight
-	 lines, if possible.  This will work on graphic terminals or
-	 video terminals with line drawing character sets.  If enabled,
-	 the values of LMXCHAR, RMXCHAR, ABSBOXCHAR, and BOXCHAR are ignored.")
 
 (defmvar $derivabbrev nil)
 
@@ -78,32 +63,6 @@
 (defmfun maxima-display (form &key (stream *standard-output*) )
   (let ((*standard-output* stream))
     (displa form)))
-
-(defun maxima-draw-form (form &key (stream *standard-output*) (at-x 0) (at-y 0)
-			 $linedisp $cursordisp &aux dim-list)
-  "First try at getting an interface to allow one to draw a form at any
-  position. The at-x and at-y amount to the initial position which will be in
-  the middle left of a matrix, or the main line for a polynomial.  On a stream
-  which does no cursorpositioning it would be top left corner at the call and
-  spaced over by at-y. It can't tell where it is in the line, already so you have to tell it
-  where to begin, or if it occurs in a format command go back to last % to get offset."
-  (let ((*standard-output* stream) )
-    (unwind-protect
-	 (let ((mratp (checkrat form))
-	       (#.writefilep #.writefilep)
-	       (maxht     1) (maxdp   0) (width   0)
-	       (height    0) (depth   0) (level   0) (size   2)
-	       (break     0) (right   0) (lines   1) bkpt
-	       (bkptwd    0) (bkptht  1) (bkptdp  0) (bkptout 0)
-	       (bkptlevel 0) in-p)
-	   (setq dim-list (dimension form nil 'mparen 'mparen 0 0))
-	   (cond ($cursordisp  (draw-2d (nreverse dim-list) at-x at-y))
-		 (t
-		  (draw-linear (nreverse dim-list) (+ at-x height) at-y)
-		  (loop for i downfrom (1- (length linearray)) to 0
-		     when (aref linearray i)
-		     do (output-linear-one-line i)))))
-      (fill linearray nil))))
 
 (defvar *alt-display2d* nil)
 (defvar *alt-display1d* nil)
@@ -1279,8 +1238,6 @@
 ;; position.  Why this is done is beyond me.  It only appears to complicate
 ;; things.
 
-;; There are two basic output functions.  OUTPUT-2D draws equations in the same
-;; order they are dimensioned, and OUTPUT-LINEAR draws equations line by line.
 ;; When a <drawing function> is invoked, the first argument passed to it is a
 ;; flag which is T for linear output and NIL for 2D output.  A
 ;; <drawing function> is also expected to return the new column position.
@@ -1295,11 +1252,9 @@
     ;; If output is turned off to the console and no WRITEFILE is taking
     ;; place, then don't output anything.
     ((and #.ttyoff (not #.writefilep)))
-    ;; If the terminal can't do cursor movement, or we are writing
-    ;; to a WRITEFILE (#.writefilep is on) or the terminal is scrolling or
-    ;; something else random, then draw equations line by line.
+    ;; Constant 80. in this test appears to be the size of LINEARRAY.
     ((> (+ bkptht bkptdp) 80.)
-     ;; IS IT STILL POSSIBLE TO EVER TRIGGER THE FOLLOWING MESSAGE ??
+     ;; I suppose we could reallocate LINEARRAY to some larger size and keep going here ...
      (merror (intl:gettext "display: expression is too tall to be displayed.")))
     (t
      (output-linear (nreverse result) w))))
@@ -1347,7 +1302,7 @@
    oldrow and oldcol are the starting points for the the (dx,dy) offsets
    given in the dimension string DMSTR.  It does not check that oldrow
    is big enough for possible negative y offsets in DMSTR, but BKPTDP is the
-   right global to use for  oldrow (see Draw-2d)."
+   right global to use for  oldrow."
   (do ((line))
       ((null dmstr))
     (cond ((atom (car dmstr))
@@ -1378,54 +1333,6 @@
   ;; Be sure to return this.
   oldcol)
 
-;; Output function for terminals with cursor positioning capability.  Draws
-;; equations in the order they are dimensioned.  To be efficient, it does block
-;; mode i/o into a stream called DISPLAY-FILE, set up in ALJABR;LOADER.
-;; This function is not used if a WRITEFILE is taking place.
-
-(defun output-2d (result w &aux (h 0))
-  (setq oldrow 0
-	oldcol 0
-	h (+ oldrow bkptht bkptdp))
-  (cursorpos* oldrow 0)
-  ;; Move the cursor vertically until we are at the bottom line of the
-  ;; new expression.
-  (do ()
-      ((= h oldrow))
-    (tyo* #\newline)
-    (incf oldrow))
-  (draw-2d result (- oldrow bkptdp 1) w)
-  (cursorpos* (setq h (min (- ttyheight 2) h)) 0))
-
-;; For now, cursor movement is only available on ITS and the Lisp
-;; Machine.  But define this to catch possible errors.
-
-(defun draw-2d (dmstr row col)
-  (cursorpos* row col)
-  (do ((l dmstr))
-      ((null l))
-    (cond ((integerp (car l)) (tyo* (car l)) (pop l))
-	  ((integerp (caar l))
-	   (setq col oldcol)
-	   (do ()
-	       ((or (integerp (car l)) (not (integerp (caar l)))))
-	     (cond
-	       ((null (cddar l)) (setq col (+ col (caar l))))
-	       (t (draw-2d (reverse (cddar l))
-			   (-  row (cadar l)) (+ col (caar l)))
-		  (setq col oldcol)))
-	     (pop l))
-	   (cursorpos* row col))
-	  (t (apply (caar l) nil (cdar l))
-	     (pop l)))))
-
-;; Crude line graphics.  The interface to a graphics device is via the
-;; functions LG-SET-POINT, LG-DRAW-VECTOR and via the
-;; LG-CHARACTER specials.
-;; LG-CHARACTER-X and LG-CHARACTER-Y give the width and height of a character
-;; in pixels, and the -2 variables are simply those numbers divided by 2.  LG
-;; stands for "Line Graphics".  See MAXSRC;ARDS for a sample ctl.
-
 ;; Special symbol drawing functions -- lines, boxes, summation signs, etc.
 ;; Every drawing function must take at least one argument.  The first
 ;; argument is T if equations must be printed line-by-line.  Otherwise,
@@ -1439,13 +1346,10 @@
 ;; program.)
 
 (defun d-hbar (linear? w &optional (char #\-) &aux nl)
-  (cond (linear?
-	 (dotimes (i w)
-	   (push char nl))
-	 (draw-linear nl oldrow oldcol))
-	(t
-	 (dotimes (i w)
-	   (tyo* char)))))
+  (declare (ignore linear?))
+  (dotimes (i w)
+    (push char nl))
+  (draw-linear nl oldrow oldcol))
 
 ;; Notice that in all of the height computations, an offset of 2 is added or
 ;; subtracted to the y-dimension.  This is to get the lines to fit within the
@@ -1453,37 +1357,27 @@
 ;; the equation editor.
 
 (defun d-vbar (linear? h d &optional (char #\|))
-  (cond (linear?
-	 (setq d (- d))
-	 (do ((i (- h 2) (1- i))
-	      (nl `((0 ,(1- h) ,char))))
-	     ((< i d) (draw-linear (nreverse nl) oldrow oldcol))
-	   (push `(-1 ,i ,char) nl)))
-	(t
-	 (cursorpos* (+ oldrow 1 (- h)) oldcol)
-	 (tyo* char)
-	 (dotimes (i (+ h d -1))
-	   (cursorpos* (1+ oldrow) (1- oldcol))
-	   (tyo* char))
-	 (cursorpos* (- oldrow d) oldcol))))
+  (declare (ignore linear?))
+  (setq d (- d))
+  (do ((i (- h 2) (1- i))
+       (nl `((0 ,(1- h) ,char))))
+      ((< i d) (draw-linear (nreverse nl) oldrow oldcol))
+    (push `(-1 ,i ,char) nl)))
 
 (defun d-integralsign (linear? &aux dmstr)
+  (declare (ignore linear?))
   (setq dmstr `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
-  (if linear?
-      (draw-linear dmstr oldrow oldcol)
-      (draw-2d dmstr oldrow oldcol)))
+  (draw-linear dmstr oldrow oldcol))
 
 (defun d-prodsign (linear? &aux dmstr)
+  (declare (ignore linear?))
   (setq dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
-  (if linear?
-      (draw-linear dmstr oldrow oldcol)
-      (draw-2d dmstr oldrow oldcol)))
+  (draw-linear dmstr oldrow oldcol))
 
 (defun d-sumsign (linear? &aux dmstr)
+  (declare (ignore linear?))
   (setq dmstr '((0 2 (d-hbar 4 #\=)) (-4 1 #\\) #\> (-2 -1 #\/)	(-1 -2 (d-hbar 4 #\=))))
-  (if linear?
-      (draw-linear dmstr oldrow oldcol)
-      (draw-2d dmstr oldrow oldcol)))
+  (draw-linear dmstr oldrow oldcol))
 
 ;; Notice how this calls D-VBAR in the non-graphic case.  The entire output
 ;; side should be structured this way, with no consing of intermediate
@@ -1497,6 +1391,7 @@
 ;; There is wired knowledge of character offsets here.
 
 (defun d-box (linear? h d w body &aux (char 0) dmstr) ;char a char?
+  (declare (ignore linear?))
   (setq char (car (coerce $boxchar 'list)))
   (setq dmstr `((0 ,h (d-hbar ,(+ 2 w) ,char))
 		(,(- (+ w 2)) 0)
@@ -1505,46 +1400,4 @@
 		(,(- (1+ w)) ,(- (1+ d)) (d-hbar ,(+ w 2) ,char))
 		(-1 0)
 		(d-vbar ,h ,d ,char)))
-  (if linear?
-      (draw-linear dmstr oldrow oldcol)
-      (draw-2d dmstr oldrow oldcol)))
-
-;; Primitive functions for doing equation drawing.
-
-;; Position the cursor at a given place on the screen.  %TDMV0 does
-;; absolute cursor movement.
-
-(defun cursorpos* (row col)
-  (setq oldrow row oldcol col))
-
-;; This function is transmitting ITS output buffer codes in addition to
-;; standard ascii characters.  See INFO;ITSTTY > for documentation.  This
-;; should convert tabs to direct cursor positioning commands since otherwise
-;; they get stuffed down the raw stream and appear as gammas on sail consoles
-;; and lose completely on terminals which can't tab.  Backspace also loses,
-;; but its nearly impossible to get a string with backspace in it in Macsyma.
-;; Also, DISPLA can't dimension it correctly.
-
-(defun tyo* (char)
-  (cond ((char= #\backspace char)
-	 (decf oldcol))			;Backspace
-	((char< char #.(code-char 128))
-	 (incf oldcol)))		;Printing graphic
-  (write-char char))
-
-
-;; Things to do:
-;; * Rewrite TYO* and CURSORPOS* to be "stream" oriented, i.e. they
-;;   either draw directly to the screen or into the linearray depending
-;;   upon the mode of output.  This way, the HBAR and VBAR drawing functions
-;;   can be written only in terms of TYO*, etc. and never cons.
-;;   DRAW-LINEAR and DRAW-2D can be merged into a single function.
-;; * Instead of calling NREVERSE from OUTPUT, call a function which
-;;   reverses at all levels and remove calls to REVERSE from DRAW-LINEAR
-;;   and DRAW-2D.
-;; * Dimension functions should know whether the output must be linear.
-;;   This way they can do variable sized summation and integral signs,
-;;   graphical square root or SQRT(X), %PI  , >=  , etc.
-;;   These are situations where the size of the dimensioned
-;;   result depends upon the form of the output.
-;; * Fix display of MLABOX for graphic consoles.
+  (draw-linear dmstr oldrow oldcol))

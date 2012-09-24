@@ -49,7 +49,7 @@
 	  $aliases $arrays $askexp $assumescalar $backsubst $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
 	  $breakup $cauchysum $change_filedefaults $compgrind $context
-	  $contexts $current_let_rule_package $cursordisp $debugmode
+	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package $demoivre $dependencies $derivabbrev
 	  $derivsubst $detout $dispflag $display2d $displayset
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
@@ -65,7 +65,7 @@
 	  $genindex $gensumnum $globalsolve $gradefs $halfangles $homog_hack
 	  $inchar $infeval $inflag $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
-	  $let_rule_packages $liflag $linechar $linedisp $linenum $linel
+	  $let_rule_packages $liflag $linechar $linenum $linel
 	  $linsolvewarn $linsolve_params $lispdisp $listarith $listconstvars
 	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint $lognumer
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint

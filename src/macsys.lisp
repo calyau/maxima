@@ -180,7 +180,7 @@
 		    (go top)))))
 	(format t "~a" *general-display-prefix*)
 	(cond (#.writefilep  ;write out the c line to the dribble file
-	       (let ( (#.ttyoff t) $linedisp)
+	       (let ((#.ttyoff t))
 		 (displa `((mlabel) , c-tag , $__)))))
 	(if (eq r eof) (return '$done))
 	(setq $__ (caddr r))

@@ -1286,7 +1286,7 @@ and modulo-p not prime gives false answer"
 (defun string-grind (x &key ($display2d) stream &aux answ)
   (setq answ(with-output-to-string (st)
 	      (cond ((null $display2d)  (mgrind x st))
-		    (t  (let ($cursordisp $linedisp (*standard-output* st))
+		    (t  (let ((*standard-output* st))
 			  (displa x))))))
   (setq answ (string-trim '(#\newline #\space  #\$) answ))
   (cond (stream  (format stream "~A" answ)) ;
