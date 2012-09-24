@@ -566,28 +566,16 @@
 ;;    ----------------------------------
 ;; (Likewise for X2, H2, D2, W2 in the denominator)
 
-;; Hack to recycle slots on the stack.  Compiler should be doing this.
-;; Use different names to preserve sanity.
-
-(defvar x1)
-(defvar x2)
-
-(eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
-  (setq x1 'h1 x2 'd2))
-
-
 (defun dratio (result num w1 h1 d1 den w2 h2 d2)
   (setq width (max w1 w2)
 	height (+ 1 h1 d1)
 	depth (+ h2 d2))
-  (setq #.x1 (truncate (- width w1) 2)
-	#.x2 (truncate (- width w2) 2))
+  (setq h1 (truncate (- width w1) 2)
+	d2 (truncate (- width w2) 2))
   (update-heights height depth)
-  (push `(,#.x1 ,(1+ d1) . ,num) result)
-  (push `(,(- #.x2 (+ #.x1 w1)) ,(- h2) . ,den) result)
-  (push `(,(- 0 #.x2 w2) 0) result)
+  (push `(,h1 ,(1+ d1) . ,num) result)
+  (push `(,(- d2 (+ h1 w1)) ,(- h2) . ,den) result)
+  (push `(,(- 0 d2 w2) 0) result)
   (push `(d-hbar ,width) result)
   result)
 
