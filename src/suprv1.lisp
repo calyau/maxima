@@ -33,7 +33,7 @@
 		       $weightlevels tellratlist $dontfactor
 		       dispflag savefile $%% $error
 		       opers *ratweights $ratweights
-		       $stringdisp $lispdisp defaultf command
+		       $stringdisp $lispdisp command
 		       transp $contexts $setcheck $macros autoload))
 
 (mapc #'(lambda (x) (setf (symbol-value (car x))

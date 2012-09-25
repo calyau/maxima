@@ -15,7 +15,7 @@
 (declare-top (special opers $packagefile
 		      fasdumpfl fasdeqlist fasdnoneqlist
 		      aaaaa errset lessorder greatorder indlist
-		      $labels $aliases varlist *mopl* $props defaultf
+		      $labels $aliases varlist *mopl* $props
 		      $infolists $features featurel savefile $gradefs
 		      $values $functions $arrays
 		      $contexts context $activecontexts))

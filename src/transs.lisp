@@ -122,9 +122,6 @@
     (cond (tr-abort  nil)
 	  (t fun))))
 
-(defvar tr-defaultf nil
-  "A default only for the case of no arguments to $translate_file")
-
 (defun $compile_file (input-file &optional bin-file translation-output-file &aux result)
   (setq input-file (maxima-string input-file))
   (and bin-file(setq  bin-file (maxima-string bin-file)))
