@@ -13,7 +13,7 @@
 (macsyma-module dskfn)
 
 (declare-top (special opers $packagefile
-		      fasdumpfl fasdeqlist fasdnoneqlist savenohack
+		      fasdumpfl fasdeqlist fasdnoneqlist
 		      aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist *mopl* $props defaultf
 		      $infolists $features featurel savefile $gradefs
