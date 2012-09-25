@@ -17,7 +17,7 @@
 		      aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist *mopl* $props defaultf
 		      $infolists $features featurel savefile $gradefs
-		      $values $functions $arrays prinlength prinlevel
+		      $values $functions $arrays
 		      $contexts context $activecontexts))
 
 (setq $packagefile nil
@@ -48,7 +48,7 @@
 (defvar *macsyma-extend-types-saved* nil)
 
 (defun dsksetup (x storefl fasdumpfl fn)
-  (let (prinlength prinlevel file (fname (meval (car x)))
+  (let (file (fname (meval (car x)))
 		   *print-gensym* list fasdeqlist fasdnoneqlist maxima-error)
     (unless (stringp fname)
       (merror (intl:gettext "~a: first argument must be a string; found: ~M") fn fname))
