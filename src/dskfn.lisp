@@ -13,7 +13,6 @@
 (macsyma-module dskfn)
 
 (declare-top (special opers $packagefile
-		      fasdumpfl fasdeqlist fasdnoneqlist
 		      aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist *mopl* $props
 		      $infolists $features featurel savefile $gradefs
@@ -43,13 +42,13 @@
 
 (defmspec $save (form)
   (let ((*print-circle* nil) (*print-level* nil) (*print-length* nil) (*print-base* 10.) (*print-radix* t)) ; $save stores Lisp expressions.
-    (dsksetup (cdr form) nil nil '$save)))
+    (dsksetup (cdr form) nil '$save)))
 
 (defvar *macsyma-extend-types-saved* nil)
 
-(defun dsksetup (x storefl fasdumpfl fn)
+(defun dsksetup (x storefl fn)
   (let (file (fname (meval (car x)))
-		   *print-gensym* list fasdeqlist fasdnoneqlist maxima-error)
+		   *print-gensym* list maxima-error)
     (unless (stringp fname)
       (merror (intl:gettext "~a: first argument must be a string; found: ~M") fn fname))
     (setq savefile
@@ -57,10 +56,9 @@
 	      (open fname :direction :output :if-exists :append :if-does-not-exist :create)
 	      (open fname :direction :output :if-exists :supersede :if-does-not-exist :create)))
     (setq file (list (car x)))
-    (when (null fasdumpfl)
-      (princ ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- " savefile)
-      (terpri savefile)
-      (princ "(in-package :maxima)" savefile))
+    (princ ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- " savefile)
+    (terpri savefile)
+    (princ "(in-package :maxima)" savefile)
     ;; Check arguments. First argument was checked above.
     ;; May want to relax requirement that all atoms be symbols.
     (dolist (u (cdr x))
@@ -299,9 +297,8 @@
   (fasprint nil form))
 
 (defun fasprint (eqfl form)
-  (cond ((null fasdumpfl) (print form savefile))
-	(eqfl (setq fasdeqlist (cons form fasdeqlist)))
-	(t (setq fasdnoneqlist (cons form fasdnoneqlist)))))
+  (declare (ignore eqfl))
+  (print form savefile))
 
 (defun infostore (item file flag storefl rename)
   (let ((prop (cond ((eq flag 'value)
