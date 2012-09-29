@@ -26,9 +26,11 @@
   (multiple-value-bind
     (significand exponent sign)
     (integer-decode-float x)
-    (if (typep x 'single-float)
-      (smash-decoded-float-32-into-integer significand exponent sign)
-      (smash-decoded-float-64-into-integer significand exponent sign))))
+    ;; This logic cannot be guaranteed to work -- there is no necessary
+    ;; correlation between IEEE 754 and CL floats. Oh well.
+    (if (or (typep x 'double-float) (typep x 'long-float))
+      (smash-decoded-float-64-into-integer significand exponent sign)
+      (smash-decoded-float-32-into-integer significand exponent sign))))
 
 (defun smash-decoded-float-32-into-integer (significand exponent sign)
   (if (= significand 0)
@@ -77,7 +79,7 @@
   (write-unsigned-integer (smash-float-into-integer x) (size-in-bytes x) s))
 
 (defun size-in-bytes (x)
-  (if (typep x 'single-float) 4 8)) ;; AUGHHHH!! THIS IS TERRIBLE!
+  (if (or (typep x 'double-float) (typep x 'long-float)) 8 4)) ;; AUGHHHH!! THIS IS TERRIBLE!
 
 (defun read-float-64 (s)
   (let ((x (read-unsigned-integer 8 s)))
