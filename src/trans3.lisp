@@ -185,10 +185,6 @@
 (defun-prop (fungen&env-for-meval free-lisp-vars) (form)
   (free-lisp-vars (car (cdddr form))))
 
-;;; (FUNGEN&ENV-FOR-MEVALSUMARG () () EXP MACSYMA-EXP)
-(defun-prop (fungen&env-for-mevalsumarg free-lisp-vars) (form)
-  (free-lisp-vars (car (cddr form))))
-
 ;;; the various augmented lambda forms.
 
 (defun free-lisp-vars-m-tlambda (form)

@@ -111,17 +111,6 @@
 ;;; These are the LAMBDA forms. They have macro properties that set
 ;;; up very different things in compiled code.
 
-(defvar *fcall-memory* nil
-  "This ALIST will never be very long. Considerably less hairy then
-	a hashing scheme, perhaps faster in normal use. In either case
-	there is the problem of garbage from red-defined functions.")
-
-(defun evalquote (exp)
-  (setq exp (eval exp))
-  (if (numberp exp)
-      exp
-      `(quote ,exp)))
-
 ;;; (FUNGEN&ENV-for-meval <eval vars list> <late eval vars list>  <EXP>)
 ;;won't work in cl.  fix later.
 (defquote fungen&env-for-meval (&rest args)
@@ -132,33 +121,3 @@
 		     `(($apply) ((mquote) ((lambda) ((mlist) ,@evl) ,@body))
 		       ((mquote simp) ((mlist) ,@(mapcar-eval evl))))))
 
-;;; The following code depends on the fact that the argument to an
-;;; FEXPR is always EQ, for a given instance of FEXPR call. Lets say
-;;; that the efficiency of the code depends on that fact. We cannot use
-;;; displacing macros because of the $SAVE problem which I really don't
-;;; feel like fooling around with since it is an IN-CORE function, and
-;;; totaly cryptic code.
-
-(defquote fungen&env-for-mevalsumarg (&rest args)
-  (let ((res (assoc args *fcall-memory* :test #'eq)))
-    (cond ((null res)
-	   (destructuring-let (((evl levl t-body m-body) args))
-			      (setq res (gensym))
-			      (putprop res
-				       (coerce
-					`(lambda (*ignored*)
-					   (prog2
-					       (mbind ',evl (get ',res 'sumarg-env) nil)
-					       (mevalatoms ',m-body)
-					     (munbind ',evl)))
-					'function)
-				       'mevalsumarg-macro)
-			      (setf (symbol-function res)
-				    (coerce
-				     `(lambda ()
-					(apply #'(lambda ,evl ,t-body) (get ',res 'sumarg-env)))
-				     'function))
-			      (setq res `(,args ,res ((,res))))
-			      (push res *fcall-memory*))))
-    (putprop (cadr res) (mapcar #'eval (car args)) 'sumarg-env)
-    (caddr res)))

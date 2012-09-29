@@ -49,8 +49,6 @@
 ;;; then be passed to a function which will bind variables from
 ;;; the <late eval vars list> and possibly other variables free in
 ;;; <exp> and then call MEVAL on the expression.
-;;; FUNGEN&ENV-FOR-MEVALSUMARG will also make sure that the <name>
-;;; has an mevalsumarg property of T.
 ;;; the expression was translated using TR-LAMBDA.
 
 (defvar *infile-name-key* '||
