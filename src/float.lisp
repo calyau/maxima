@@ -110,7 +110,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defvar max-bfloat-log2 bigfloat_log2)
 
 
-(declare-top (special *cancelled $float $bfloat $ratprint $ratepsilon $domain $m1pbranch adjust))
+(declare-top (special *cancelled $float $bfloat $ratprint $ratepsilon $domain $m1pbranch))
 
 ;; Representation of a Bigfloat:  ((BIGFLOAT SIMP precision) mantissa exponent)
 ;; precision -- number of bits of precision in the mantissa.
@@ -615,7 +615,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; in a PROG list as this will confuse stepping programs.
 
 (defun fpround (l &aux (*print-base* 10.) *print-radix*)
-  (prog ()
+  (prog (adjust)
      (cond
        ((null *decfp)
 	;;*M will be positive if the precision of the argument is greater than
