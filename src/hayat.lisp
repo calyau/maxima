@@ -177,7 +177,8 @@
 				; $TAYLOR_SIMPLIFIER in taylor2. It is used to
 				; suppress the message that TAYLOR is assumming
 				; an expression to be zero.
-	  $zerobern $simp 0p-funord lexp-non0)
+	; 0p-funord lexp-non0	; referenced only in commented-out code, so comment out here too
+	$zerobern $simp)
  )				;Don't want to see closed compilation notes.
 
 (defmvar $psexpand ()
