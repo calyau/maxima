@@ -3075,6 +3075,16 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
+        ($epslatex (format cmdstorage "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
+        ($epslatex_standalone (format cmdstorage "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
         ($pdf (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
@@ -3367,6 +3377,16 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
+      ($epslatex (format cmdstorage "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
+      ($epslatex_standalone (format cmdstorage "set terminal epslatex standalone ~a color ~a size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
       ($eps_color (setf str (format nil "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)

@@ -338,7 +338,8 @@
 (defvar *draw-terminal-number* "")
 
 (defun update-terminal (val)
-  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $svg
+  (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color 
+                 $epslatex $epslatex_standalone $svg
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
                  $aquaterm $tiff $vrml $obj $pnm)))
      (cond
