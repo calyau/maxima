@@ -1,3 +1,9 @@
+Version 2012
+
+- complete revision
+
+- a lot of functions moved to src/numth.lisp
+
 Version 2b
 
 (only two small bug-fixes)
