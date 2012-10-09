@@ -13,7 +13,7 @@
 (macsyma-module combin)
 
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
-		      $zerobern *n $cflength *a* $prevfib
+		      $zerobern *n $cflength *a* $prevfib $next_lucas
 		      *infsumsimp *times *plus sum usum makef
 		      varlist genvar $sumsplitfact $ratfac $simpsum
 		      $prederror $listarith
@@ -714,6 +714,31 @@
 	     (psetq $prevfib f2
 		    f2 (+ f2 $prevfib)))
 	   f2))))
+
+(defmfun $lucas (n)
+  (cond 
+    ((fixnump n) (lucas n))
+	 (t (setq $next_lucas `(($lucas) ,(add2* n 1)))
+	   `(($lucas) ,n) )))
+
+(defun lucas (n)
+  (declare (fixnum n))
+  (let ((w 2) (x 2) (y 1) u v (sign (signum n))) (declare (fixnum sign))
+    (setq n (abs n))
+    (do ((i (1- (integer-length n)) (1- i)))
+        ((< i 0)) 
+        (declare (fixnum i))
+      (setq u (* x x) v (* y y))
+      (if (logbitp i n)
+        (setq y (+ v w) x (+ y (- u) w) w -2)
+        (setq x (- u w) y (+ v w (- x)) w 2) ))
+    (cond 
+      ((or (= 1 sign) (not (logbitp 0 n))) 
+        (setq $next_lucas y) 
+        x )
+      (t 
+        (setq $next_lucas (neg y)) 
+        (neg x) ))))
 
 ;; continued fraction stuff
 
