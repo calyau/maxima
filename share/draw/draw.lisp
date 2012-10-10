@@ -3377,12 +3377,12 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
-      ($epslatex (format cmdstorage "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
+      ($epslatex (format str "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-      ($epslatex_standalone (format cmdstorage "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
+      ($epslatex_standalone (format str "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
