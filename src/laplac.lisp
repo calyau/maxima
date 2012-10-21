@@ -12,7 +12,7 @@
 
 (macsyma-module laplac)
 
-(declare-top (special dvar var-list var-parm-list var $savefactors
+(declare-top (special dvar var $savefactors
 		      checkfactors $ratfac $keepfloat *nounl* *nounsflag*
                       errcatch $errormsg))
 
@@ -70,7 +70,7 @@
 	    (mapcar #'remlaplace (cdr e)))))
 
 (defun laplace (fun parm)
-  (let (dvar var-list var-parm-list)
+  (let (dvar)
 ;;; Handles easy cases and calls appropriate function on others.
     (cond ((equal fun 0) 0)
 	  ((equal fun 1)
@@ -602,7 +602,7 @@
 
  ;;;FUN IS OF THE FORM INTEGRATE(F(X)*G(T)*H(T-X),X,0,T)
 (defun lapint (fun parm)
-  (prog (newfun parm-list f)
+  (prog (newfun parm-list f var-list var-parm-list)
      (and dvar (go convolution))
      (setq dvar (cadr (setq newfun (cdr fun))))
      (and (cddr newfun)
@@ -911,4 +911,4 @@
 	nil))))
 
 (declare-top (unspecial dvar ils ilt *nounl* q ratform var
-			varlist var-list var-parm-list z))
+			varlist z))

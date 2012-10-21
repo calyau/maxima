@@ -14,7 +14,7 @@
 
 (load-macsyma-macros ratmac strmac)
 
-(declare-top (special var-list expsumsplit $dispflag checkfactors *g
+(declare-top (special expsumsplit $dispflag checkfactors *g
 		      $algebraic equations ;List of E-labels
 		      *power *varb *flg $derivsubst $numer $float
 		      $%emode genvar genpairs varlist broken-not-freeof
