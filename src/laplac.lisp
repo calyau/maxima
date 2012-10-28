@@ -12,7 +12,7 @@
 
 (macsyma-module laplac)
 
-(declare-top (special dvar var $savefactors
+(declare-top (special var $savefactors
 		      checkfactors $ratfac $keepfloat *nounl* *nounsflag*
                       errcatch $errormsg))
 
@@ -69,8 +69,8 @@
       (cons (delete 'laplace (append (car e) nil) :count 1 :test #'eq)
 	    (mapcar #'remlaplace (cdr e)))))
 
-(defun laplace (fun parm)
-  (let (dvar)
+(defun laplace (fun parm &optional (dvar nil))
+  (let ()
 ;;; Handles easy cases and calls appropriate function on others.
     (cond ((equal fun 0) 0)
 	  ((equal fun 1)
@@ -102,7 +102,7 @@
 		     ((eq op '%derivative)
 		      (lapdiff fun parm))
 		     ((eq op '%integrate)
-		      (lapint fun parm))
+		      (lapint fun parm dvar))
 		     ((eq op '%sum)
 		      (list '(%sum simp)
 			    (laplace (cadr fun) parm)
@@ -601,7 +601,7 @@
 		      1 nil))))
 
  ;;;FUN IS OF THE FORM INTEGRATE(F(X)*G(T)*H(T-X),X,0,T)
-(defun lapint (fun parm)
+(defun lapint (fun parm dvar)
   (prog (newfun parm-list f var-list var-parm-list)
      (and dvar (go convolution))
      (setq dvar (cadr (setq newfun (cdr fun))))
@@ -615,13 +615,13 @@
 	    (cond ((and (freeof var (caddr newfun))
 			(freeof var (cadddr newfun)))
 		   (return (list '(%integrate simp)
-				 (laplace (car newfun) parm)
+				 (laplace (car newfun) parm dvar)
 				 dvar
 				 (caddr newfun)
 				 (cadddr newfun))))
 		  (t (go giveup))))
 	   (t (return (list '(%integrate simp)
-			    (laplace (car newfun) parm)
+			    (laplace (car newfun) parm dvar)
 			    dvar))))
      giveup
      (return (list '(%laplace simp) fun var parm))
@@ -657,7 +657,7 @@
 					    var-parm-list))
 			      dvar
 			      0
-			      var)))) parm)))
+			      var)))) parm dvar)))
      convolution
      (return
        (simptimes
@@ -665,9 +665,9 @@
 	 '(mtimes)
 	 (laplace ($expand (maxima-substitute var
 					      dvar
-					      (fixuprest var-list))) parm)
+					      (fixuprest var-list))) parm dvar)
 	 (laplace
-	  ($expand (maxima-substitute 0 dvar (fixuprest var-parm-list))) parm))
+	  ($expand (maxima-substitute 0 dvar (fixuprest var-parm-list))) parm dvar))
 	1
 	t))))
 
@@ -910,5 +910,5 @@
 	1
 	nil))))
 
-(declare-top (unspecial dvar ils ilt *nounl* q ratform var
+(declare-top (unspecial ils ilt *nounl* q ratform var
 			varlist z))
