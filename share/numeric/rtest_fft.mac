@@ -224,5 +224,9 @@ true;
 is (apply (max, abs (L - inverse_fft (fft (L)))) < float_approx_equal_tolerance);
 true;
 
+/* Bug 3581619 - Incorrect FFT for input of size 2 */
+is (apply (max, abs([0.5, 0.5] - fft([1, 0]))) < float_approx_equal_tolerance);
+true;
+
 reset (float_approx_equal_tolerance);
 [float_approx_equal_tolerance];
