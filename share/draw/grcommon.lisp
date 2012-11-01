@@ -341,7 +341,8 @@
   (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color 
                  $epslatex $epslatex_standalone $svg
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
-                 $aquaterm $tiff $vrml $obj $pnm)))
+                 $multipage_pdfcairo $multipage_pdf $multipage_eps 
+                 $multipage_eps_color $aquaterm $tiff $vrml $obj $pnm)))
      (cond
        ((member val terms)
           (when (and (eq val '$png) $draw_use_pngcairo)

@@ -3001,7 +3001,7 @@
         datapath    ; path to data.gnuplot
         (ncols 1)
         nrows width height ; multiplot parameters
-        isanimatedgif is1stobj biglist grouplist largs)
+        isanimatedgif ismultipage is1stobj biglist grouplist largs)
 
     (setf largs (listify-arguments))
     (dolist (x largs)
@@ -3033,6 +3033,10 @@
               (merror "draw: item ~M is not recognized" x)))   )
     (setf isanimatedgif
           (equal (get-option '$terminal) '$animated_gif))
+    (setf ismultipage
+          (member (get-option '$terminal)
+                  '($multipage_pdf $multipage_pdfcairo $multipage_eps $multipage_eps_color)))
+
     (setf
        gfn (plot-temp-file (get-option '$gnuplot_file_name))
        dfn (plot-temp-file (get-option '$data_file_name)))
@@ -3065,12 +3069,12 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) )
-        ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
+        (($eps $multipage_eps) (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($eps_color (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
+        (($eps_color $multipage_eps_color) (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
@@ -3085,12 +3089,12 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($pdf (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        (($pdf $multipage_pdf) (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($pdfcairo (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        (($pdfcairo $multipage_pdfcairo) (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
@@ -3141,7 +3145,7 @@
                            (round (second (get-option '$dimensions))))))) ))
 
     ; compute some parameters for multiplot
-    (when (not isanimatedgif)
+    (when (and (not isanimatedgif) (not ismultipage))
       (setf ncols (get-option '$columns))
       (setf nrows (ceiling (/ (length scenes) ncols)))
       (if (> (length scenes) 1)
@@ -3161,7 +3165,7 @@
               height (/ 1.0 nrows)))
       (dolist (scn scenes)
         ; write size and origin if necessary
-        (cond (isanimatedgif
+        (cond ((or isanimatedgif ismultipage)
                 (format cmdstorage "~%set size 1.0, 1.0~%") )
               (t ; it's not an animated gif
                 (setf thisalloc (car alloc))
@@ -3260,8 +3264,10 @@
         (setf scenes-list (cons (reverse scene-short-description) scenes-list)) ))  ; end let-dolist scenes
     (close datastorage)
 
-    (cond (isanimatedgif  ; this is an animated gif
-             (format cmdstorage "~%quit~%~%")
+    (cond ((or isanimatedgif ismultipage)  ; this is an animated gif or multipage plot file
+             (if isanimatedgif
+               (format cmdstorage "~%quit~%~%")
+               (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
              ($system (format nil "~a \"~a\"" 
                                   $gnuplot_command
