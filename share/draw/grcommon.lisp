@@ -339,7 +339,7 @@
 
 (defun update-terminal (val)
   (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color 
-                 $epslatex $epslatex_standalone $svg
+                 $epslatex $epslatex_standalone $svg $x11
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
                  $multipage_pdfcairo $multipage_pdf $multipage_eps 
                  $multipage_eps_color $aquaterm $tiff $vrml $obj $pnm)))

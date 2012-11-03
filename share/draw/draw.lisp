@@ -3130,6 +3130,11 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
+        ($x11 (format cmdstorage "set terminal x11 enhanced ~a ~a size ~a, ~a~%"
+                           *draw-terminal-number*
+                           (write-font-type)
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))))
         (otherwise ; default screen output
           (cond
             (*windows-OS*  ; running on windows operating system
@@ -3294,7 +3299,7 @@
              (cond
                 ; connect to gnuplot via pipes
                 ((and (not *windows-OS*)
-                      (member (get-option '$terminal) '($screen $aquaterm $wxt))
+                      (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
                       (equal $draw_renderer '$gnuplot_pipes))
                    (check-gnuplot-process)
                    (when (not *multiplot-is-active*) ; not in a one window multiplot
@@ -3304,7 +3309,7 @@
                         (format nil "load '~a'" gfn)))
                 ; call gnuplot via system command
                 (t
-                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt))
+                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
                                    (format nil "~a ~a"
                                                $gnuplot_command
                                                (format nil $gnuplot_view_args gfn))
