@@ -3001,7 +3001,7 @@
         datapath    ; path to data.gnuplot
         (ncols 1)
         nrows width height ; multiplot parameters
-        isanimatedgif is1stobj biglist grouplist largs)
+        isanimatedgif ismultipage is1stobj biglist grouplist largs)
 
     (setf largs (listify-arguments))
     (dolist (x largs)
@@ -3033,6 +3033,10 @@
               (merror "draw: item ~M is not recognized" x)))   )
     (setf isanimatedgif
           (equal (get-option '$terminal) '$animated_gif))
+    (setf ismultipage
+          (member (get-option '$terminal)
+                  '($multipage_pdf $multipage_pdfcairo $multipage_eps $multipage_eps_color)))
+
     (setf
        gfn (plot-temp-file (get-option '$gnuplot_file_name))
        dfn (plot-temp-file (get-option '$data_file_name)))
@@ -3065,22 +3069,32 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
                            (get-option '$file_name) ) )
-        ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
+        (($eps $multipage_eps) (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($eps_color (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
+        (($eps_color $multipage_eps_color) (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($pdf (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        ($epslatex (format cmdstorage "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name)))
-        ($pdfcairo (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        ($epslatex_standalone (format cmdstorage "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
+        (($pdf $multipage_pdf) (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
+        (($pdfcairo $multipage_pdfcairo) (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
@@ -3116,6 +3130,11 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
+        ($x11 (format cmdstorage "set terminal x11 enhanced ~a ~a size ~a, ~a~%"
+                           *draw-terminal-number*
+                           (write-font-type)
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))))
         (otherwise ; default screen output
           (cond
             (*windows-OS*  ; running on windows operating system
@@ -3131,7 +3150,7 @@
                            (round (second (get-option '$dimensions))))))) ))
 
     ; compute some parameters for multiplot
-    (when (not isanimatedgif)
+    (when (and (not isanimatedgif) (not ismultipage))
       (setf ncols (get-option '$columns))
       (setf nrows (ceiling (/ (length scenes) ncols)))
       (if (> (length scenes) 1)
@@ -3151,7 +3170,7 @@
               height (/ 1.0 nrows)))
       (dolist (scn scenes)
         ; write size and origin if necessary
-        (cond (isanimatedgif
+        (cond ((or isanimatedgif ismultipage)
                 (format cmdstorage "~%set size 1.0, 1.0~%") )
               (t ; it's not an animated gif
                 (setf thisalloc (car alloc))
@@ -3250,8 +3269,10 @@
         (setf scenes-list (cons (reverse scene-short-description) scenes-list)) ))  ; end let-dolist scenes
     (close datastorage)
 
-    (cond (isanimatedgif  ; this is an animated gif
-             (format cmdstorage "~%quit~%~%")
+    (cond ((or isanimatedgif ismultipage)  ; this is an animated gif or multipage plot file
+             (if isanimatedgif
+               (format cmdstorage "~%quit~%~%")
+               (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
              ($system (format nil "~a \"~a\"" 
                                   $gnuplot_command
@@ -3278,7 +3299,7 @@
              (cond
                 ; connect to gnuplot via pipes
                 ((and (not *windows-OS*)
-                      (member (get-option '$terminal) '($screen $aquaterm $wxt))
+                      (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
                       (equal $draw_renderer '$gnuplot_pipes))
                    (check-gnuplot-process)
                    (when (not *multiplot-is-active*) ; not in a one window multiplot
@@ -3288,7 +3309,7 @@
                         (format nil "load '~a'" gfn)))
                 ; call gnuplot via system command
                 (t
-                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt))
+                  ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11))
                                    (format nil "~a ~a"
                                                $gnuplot_command
                                                (format nil $gnuplot_view_args gfn))
@@ -3367,6 +3388,16 @@
                            (/ (first (get-option '$dimensions)) 100.0)
                            (/ (second (get-option '$dimensions)) 100.0)
                            (get-option '$file_name))))
+      ($epslatex (format str "set terminal epslatex ~a color size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
+      ($epslatex_standalone (format str "set terminal epslatex standalone ~a color size ~acm, ~acm~%set out '~a.tex'"
+                           (write-font-type)
+                           (/ (first (get-option '$dimensions)) 100.0)
+                           (/ (second (get-option '$dimensions)) 100.0)
+                           (get-option '$file_name)))
       ($eps_color (setf str (format nil "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (/ (first (get-option '$dimensions)) 100.0)

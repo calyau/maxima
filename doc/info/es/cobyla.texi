@@ -37,7 +37,7 @@ en las variables. El nombre de la rutina se deriva de la frase
 
 Referecias:
 
-[1] C@'digo Fortran procede de @url{http://plato.asu.edu/sub/nlores.html#general}
+[1] C@'odigo Fortran procede de @url{http://plato.asu.edu/sub/nlores.html#general}
 
 [2] M. J. D. Powell, "A direct search optimization method that models the objective and constraint functions by linear interpolation," en Advances in Optimization and Numerical Analysis, eds. S. Gomez and J.-P. Hennart (Kluwer Academic: Dordrecht, 1994), p. 51-67. 
 
@@ -133,7 +133,7 @@ El c@'odigo @code{load(fmin_cobyla)} carga en memoria esta funci@'on..
 @node Ejemplos para cobyla, , Funciones y variables para cobyla, cobyla
 @section Ejemplos para cobyla
 
-Minim@'{@dotless{i}} x1*x2 bajo la condici@'on 1-x1^2-x2^2 >= 0.  
+Minimizar x1*x2 bajo la condici@'on 1-x1^2-x2^2 >= 0.  
 La soluci@'on te@'orica es x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @c ===beg===

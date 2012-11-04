@@ -206,9 +206,10 @@ into the original datatype of `input'"
 	   (dotimes (k n)
 	     (setf (aref table k) (cis (* k p))))
 	   ;; Make the half point exactly correct
-	   (setf (aref table (ash n -1))
-		 (coerce #c(0 1) #+(and cmu flonum-double-double) '(complex double-double-float)
-			 #-flonum-double-double '(complex double-float)))
+	   (when (> n 1)
+	     (setf (aref table (ash n -1))
+		   (coerce #c(0 1) #+(and cmu flonum-double-double) '(complex double-double-float)
+			   #-flonum-double-double '(complex double-float))))
 	   (setf (gethash m *sincos-tables*) table)
 	   table))))
 

@@ -584,7 +584,7 @@
 
 ;; Maxima functions: 
 
-;; gf_set, gf_unset, gf_char, gf_prim, gf_red, gf_info, 
+;; gf_set, gf_unset, gf_minset, gf_char, gf_prim, gf_red, gf_info, 
 ;; gf_make_tables, gf_mult_table, gf_power_table, 
 ;; gf_add, gf_sub, gf_mult, gf_inv, gf_div, gf_exp, gf_ind, gf_log, 
 ;; gf_p2n, gf_n2p, gf_p2l, gf_l2p, gf_l2n, gf_n2l, 
@@ -593,18 +593,19 @@
 ;; gf_normal_p, gf_normal, gf_random_normal, gf_normal_basis, gf_nbrep, 
 ;; gf_matadd, gf_matmult, gf_matinv
 
-(declaim (special $gf_power_table $gf_log_table $gf_rat)) 
+(declare-top (special $gf_power_table $gf_log_table $gf_rat)) 
 
-(declaim (special 
+(declare-top (special 
   *gf-var* *gf-rat-sym* *gf-rat-header*
   *gf-char* *fixnump-2gf-char* *gf-exp* *gf-ord* *gf-card* *gf-prim* *gf-red* 
   *gf-fs-ord* *gf-fs* *gf-fs-base-p* *gf-x^p-powers* 
-  *gf-set?* *gf-tables?* ))
+  *gf-set?* *gf-minset?* *gf-tables?* ))
 
 (declaim (fixnum *gf-exp*)) ;; this doesn't seem to be a real practical limitation 
 
 (defmvar $gf_rat nil "functions in gf return rational expressions?" boolean)
-(defmvar *gf-set?* nil "field is set?" boolean)
+(defmvar *gf-set?* nil "gf characteristics are set?" boolean)
+(defmvar *gf-minset?* nil "characteristic and reduction polynomial are set?" boolean)
 (defmvar *gf-tables?* nil "log and power tables are computed?" boolean)
 
 
@@ -806,7 +807,8 @@
 
     (when (equal *gf-prim* '$false) (setq *gf-prim* nil))
     
-    (setq *gf-set?* t)
+    (setq *gf-minset?* t
+          *gf-set?* t )
 
     `((mlist simp) 
       ,(when *gf-prim* (gf-x2p *gf-prim*)) 
@@ -842,27 +844,30 @@
   t )
 
 
+(defun gf-minset? ()
+  (unless *gf-minset?*
+    (merror (intl:gettext "gf characteristics not set." )) ))
+
 (defun gf-set? ()
   (unless *gf-set?*
-    (merror (intl:gettext "Field not yet set." )) ))  
+    (merror (intl:gettext "gf characteristics not or not fully set." )) ))  
 
 (defun field? ()
   (unless *gf-prim*
     (merror (intl:gettext "Not a field." )) ))
 
 (defmfun $gf_char () 
-  (gf-set?) *gf-char* )
+  (gf-minset?) *gf-char* )
 
 (defmfun $gf_prim () 
   (gf-set?) (gf-x2p *gf-prim*) )
 
 (defmfun $gf_red () 
-  (gf-set?) (gf-x2p *gf-red*) )
+  (gf-minset?) (gf-x2p *gf-red*) )
 
 
 (defmfun $gf_info (&optional (print? t))
-  (unless *gf-set?*
-    (merror (intl:gettext "Field not set." )) )
+  (gf-set?)
   (cond
     (print?
       (mfuncall '$print "char:" *gf-char*)
@@ -881,6 +886,20 @@
         ,*gf-char* ,*gf-exp* ,*gf-ord* ,@(unless *gf-prim* `(,*gf-card*))
         ,(when *gf-prim* (gf-x2p *gf-prim*)) 
         ,(gf-x2p *gf-red*) )) ))
+
+;; Minimal set
+;; Just set characteristic and reduction poly to allow basic arithmetics on the fly.
+(defmfun $gf_minset (p red)
+  (unless (and (integerp p) (primep p))
+    (merror (intl:gettext "First argument to `gf_minset' must be a prime number." )) )
+  ($gf_unset)
+  (setq *gf-char* p)
+  #-gcl (setq *fixnump-2gf-char* (< (* 2 p) most-positive-fixnum))
+  (setq red (gf-set-red red))
+  (unless (fixnump (setq *gf-exp* (car red)))
+    (merror (intl:gettext "The exponent must be a fixnum." )) )
+  (when (= 0 *gf-exp*) (setq *gf-exp* 1))
+  (setq *gf-minset?* t) )
 ;;
 ;; -----------------------------------------------------------------------------
 
@@ -1024,7 +1043,7 @@
 ;; an arbitrary polynomial is evaluated in a given field
 
 (defmfun $gf_eval (a) 
-  (gf-set?) 
+  (gf-minset?) 
   (let ((modulus *gf-char*))
     (setq a (mfuncall '$remainder ($rat a) ($gf_red)))
     (if (integerp (cadr a))
@@ -1067,12 +1086,12 @@
 ;; arithmetic in Galois Fields - Maxima level functions ------------------------
 ;;
 (defmfun $gf_add (&rest args) 
-  (gf-set?)
+  (gf-minset?)
   (setq args (mapcar #'gf-p2x args))
   (gf-x2p (reduce #'gf-xplus args)) )
 
 (defmfun $gf_sub (&rest args) 
-  (gf-set?)
+  (gf-minset?)
   (setq args (mapcar #'gf-p2x args))
   (gf-x2p (gf-xplus (car args) (gf-xminus (reduce #'gf-xplus (cdr args))))) )
 
@@ -1081,17 +1100,17 @@
 ;; rename gf_mul to gf_mult to be consistent with matrix_element_mult
 
 (defmfun $gf_mult (&rest args) 
-  (gf-set?)
+  (gf-minset?)
   (setq args (mapcar #'gf-p2x args))
   (gf-x2p (reduce #'gf-xtimes args)) ) 
 
 (defmfun $gf_inv (a) 
-  (gf-set?) 
+  (gf-minset?) 
   (setq a (gf-inv (gf-p2x a)))
   (when a (gf-x2p a)) ) ;; a is nil in case the inverse does not exist
 
 (defmfun $gf_div (&rest args) 
-  (gf-set?)
+  (gf-minset?)
   (setq args (mapcar #'gf-p2x args)
         args (cons (car args) (mapcar #'gf-inv (cdr args))) )
   (cond
@@ -1100,7 +1119,7 @@
     (t (gf-x2p (reduce #'gf-xtimes args))) )) 
 
 (defmfun $gf_exp (&optional a n)
-  (gf-set?) 
+  (gf-minset?) 
   (if a
     (gf-x2p (gf-pow (gf-p2x a) n))
     *gf-exp* ))
@@ -1534,7 +1553,7 @@
 ;; polynomial/number/list - conversions ----------------------------------------
 ;;
 (defmfun $gf_p2n (p) 
-  (gf-set?) (gf-x2n (gf-p2x p)) )
+  (gf-minset?) (gf-x2n (gf-p2x p)) )
 
 (defun gf-x2n (x)
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
@@ -1548,7 +1567,7 @@
         (setq x (cddr x)) ))))
 
 (defmfun $gf_n2p (n) 
-  (gf-set?)
+  (gf-minset?)
   (unless (integerp n)
     (merror (intl:gettext "`gf_n2p': Argument must be an integer.")) )
   (gf-x2p (gf-n2x n)) )
@@ -1565,7 +1584,7 @@
 
 (defmfun $gf_p2l (p &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
   (declare (fixnum len))
-  (gf-set?) 
+  (gf-minset?) 
   (let ((x (gf-p2x p)))
     (cons '(mlist simp) (gf-x2l x len)) ))
 
@@ -1584,7 +1603,7 @@
         (unless (null x) (setq e (the fixnum (car x)))) ))))
 
 (defmfun $gf_l2p (l)
-  (gf-set?)
+  (gf-minset?)
   (unless ($listp l)
     (merror (intl:gettext "`gf_l2p': Argument must be a list of integers.")) )
   (gf-x2p (gf-l2x (cdr l))) )
@@ -1603,7 +1622,7 @@
 
 
 (defmfun $gf_l2n (l) 
-  (gf-set?)
+  (gf-minset?)
   (unless ($listp l)
     (merror (intl:gettext "Argument to `gf_l2n' must be a list of integers.")) )
   (gf-l2n (cdr l)) )
@@ -1619,7 +1638,7 @@
 
 (defmfun $gf_n2l (n &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
   (declare (fixnum len))
-  (gf-set?)
+  (gf-minset?)
   (unless (integerp n)
     (merror (intl:gettext "First argument to `gf_n2l' must be an integer.")) )
   (cons '(mlist simp) (if (= 0 len) (gf-n2l n) (gf-n2l-twoargs n len))) )
@@ -1658,7 +1677,7 @@
   (cond
     (p (unless (and (integerp p) (primep p))
         (merror (intl:gettext "`gf_irr_p': Second argument must be a prime number." )) ))
-    (t (gf-set?) (setq p *gf-char*)) )
+    (t (gf-minset?) (setq p *gf-char*)) )
   (let* ((*gf-char* p)                ;; gf_irr_p is independent of the given environment
          (x (gf-p2x a)) n) 
     (cond
@@ -1892,7 +1911,7 @@
   (cond
     (p (unless (and (integerp p) (primep p))
         (merror (intl:gettext "`gf_factor': Second argument must be a prime number." )) ))
-    (t (gf-set?) 
+    (t (gf-minset?) 
        (setq p *gf-char*) ))
   (let* ((*gf-char* p) (modulus p) 
          (a (mfuncall '$rat a))
@@ -1932,12 +1951,12 @@
 ;; gcd and gcdex
 
 (defmfun $gf_gcd (a b) 
-  (gf-set?)
+  (gf-minset?)
   (setq a (gf-p2x a) b (gf-p2x b))
   (gf-x2p (gf-gcd a b)) )
 
 (defmfun $gf_gcdex (a b) 
-  (gf-set?)
+  (gf-minset?)
   (setq a (gf-p2x a) b (gf-p2x b))
   (cons '(mlist simp) (mapcar #'gf-x2p (gf-gcdex a b))) )
 ;;
@@ -2242,7 +2261,7 @@
 (defmfun gf-matmult2 (m1 m2) 
   (setq m1 (cdr m1) m2 (cdr ($transpose m2)))
   (unless (= (length (car m1)) (length (car m2)))
-    (merror (intl:gettext "`gf_matmul': attempt to multiply nonconformable matrices.")) )
+    (merror (intl:gettext "`gf_matmult': attempt to multiply nonconformable matrices.")) )
   (do ((r1 m1 (cdr r1)) new-mat)
       ((null r1) 
         (if (and (not (eq nil $scalarmatrixp))
