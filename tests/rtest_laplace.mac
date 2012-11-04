@@ -18,9 +18,6 @@ laplace (7, u, v);
 laplace (a, u, v);
 a/v;
 
-laplace (foo(x), u, v);
-foo(x)/v;
-
 laplace (exp (- u), u, v);
 1/(1 + v);
 
@@ -30,26 +27,17 @@ laplace (exp (- 7*u), u, v);
 laplace (exp (- a*u), u, v);
 1/(a + v);
 
-laplace (exp (- foo(x)*u), u, v);
-1/(foo(x) + v);
-
 laplace (sin (u), u, v);
 1/(1 + v^2);
 
 laplace (sin (a*u), u, v);
 a/(a^2 + v^2);
 
-laplace (sin (foo(x)*u), u, v);
-foo(x)/(foo(x)^2 + v^2);
-
 laplace (cos (u), u, v);
 v/(1 + v^2);
 
 laplace (cos (a*u), u, v);
 v/(a^2 + v^2);
-
-laplace (cos (foo(x)*u), u, v);
-v/(foo(x)^2 + v^2);
 
 laplace (sinh (u), u, v);
 1/(v^2 - 1);
@@ -60,9 +48,6 @@ laplace (sinh (7*u), u, v);
 laplace (sinh (a*u), u, v);
 a/(v^2 - a^2);
 
-(laplace (sinh (foo(x)*u), u, v), if equal (%%, foo(x)/(v^2 - foo(x)^2)) then true else %%);
-true;
-
 laplace (cosh (u), u, v);
 v/(v^2 - 1);
 
@@ -71,9 +56,6 @@ v/(v^2 - 49);
 
 laplace (cosh (a*u), u, v);
 v/(v^2 - a^2);
-
-(laplace (cosh (foo(x)*u), u, v), if equal (%%, v/(v^2 - foo(x)^2)) then true else %%);
-true;
 
 (laplace (log (u), u, v), if equal (%%, (-1/v)*(log (v) + %gamma)) then true else %%);
 true;
@@ -108,17 +90,11 @@ exp (- 7*v);
 laplace (delta (u - a), u, v);
 exp (- a*v);
 
-laplace (delta (u - foo(x)), u, v);
-exp (- foo(x)*v);
-
 laplace (delta (7*u), u, v);
 1/7;
 
 laplace (delta (a*u), u, v);
 1/abs(a);
-
-laplace (delta (foo(x)*u), u, v);
-1/abs(foo(x));
 
 laplace (delta (a*u - b), u, v);
 exp (- b*v/a) / abs (a);
