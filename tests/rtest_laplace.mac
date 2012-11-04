@@ -3,7 +3,7 @@
  * I release this work under terms of the GNU General Public License.
  */
 
-(kill (all), 0);
+(kill (all), mycontext : newcontext (gensym ()), assume (a > 0, b > 0, c > 0), 0);
 0;
 
 laplace (0, u, v);
@@ -78,6 +78,12 @@ true;
 (laplace (log (u), u, v), if equal (%%, (-1/v)*(log (v) + %gamma)) then true else %%);
 true;
 
+(laplace (log (7*u), u, v), ev (if equal (%%, (1/abs(7))*(-1/(v/7)*(log (v/7) + %gamma))) then true else %%, logexpand = super));
+true;
+
+(laplace (log (a*u), u, v), ev (if equal (%%, (1/abs(a))*(-1/(v/a)*(log (v/a) + %gamma))) then true else %%, logexpand = super));
+true;
+
 laplace ('diff (foo (u), u), u, v);
 v * 'laplace (foo (u), u, v) - foo (0);
 
@@ -95,6 +101,27 @@ foo (v);
 
 laplace (delta (u), u, v);
 1;
+
+laplace (delta (u - 7), u, v);
+exp (- 7*v);
+
+laplace (delta (u - a), u, v);
+exp (- a*v);
+
+laplace (delta (u - foo(x)), u, v);
+exp (- foo(x)*v);
+
+laplace (delta (7*u), u, v);
+1/7;
+
+laplace (delta (a*u), u, v);
+1/abs(a);
+
+laplace (delta (foo(x)*u), u, v);
+1/abs(foo(x));
+
+laplace (delta (a*u - b), u, v);
+exp (- b*v/a) / abs (a);
 
 /* try cases which specint handles */
 
@@ -318,3 +345,5 @@ laplace (delta (u), u, v);
  *          -sec((u-v)*%pi)*W[u,v](a/p)]
  */
 
+killcontext (mycontext);
+done;
