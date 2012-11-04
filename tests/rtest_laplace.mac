@@ -6,8 +6,12 @@
 (kill (all), mycontext : newcontext (gensym ()), assume (a > 0, b > 0, c > 0), 0);
 0;
 
+/* 0 */
+
 laplace (0, u, v);
 0;
+
+/* constant */
 
 laplace (1, u, v);
 1/v;
@@ -18,6 +22,8 @@ laplace (7, u, v);
 laplace (a, u, v);
 a/v;
 
+/* exp */
+
 laplace (exp (- u), u, v);
 1/(1 + v);
 
@@ -27,17 +33,23 @@ laplace (exp (- 7*u), u, v);
 laplace (exp (- a*u), u, v);
 1/(a + v);
 
+/* sin */
+
 laplace (sin (u), u, v);
 1/(1 + v^2);
 
 laplace (sin (a*u), u, v);
 a/(a^2 + v^2);
 
+/* cos */
+
 laplace (cos (u), u, v);
 v/(1 + v^2);
 
 laplace (cos (a*u), u, v);
 v/(a^2 + v^2);
+
+/* sinh */
 
 laplace (sinh (u), u, v);
 1/(v^2 - 1);
@@ -48,6 +60,8 @@ laplace (sinh (7*u), u, v);
 laplace (sinh (a*u), u, v);
 a/(v^2 - a^2);
 
+/* cosh */
+
 laplace (cosh (u), u, v);
 v/(v^2 - 1);
 
@@ -56,6 +70,8 @@ v/(v^2 - 49);
 
 laplace (cosh (a*u), u, v);
 v/(v^2 - a^2);
+
+/* log */
 
 (laplace (log (u), u, v), if equal (%%, (-1/v)*(log (v) + %gamma)) then true else %%);
 true;
@@ -66,20 +82,32 @@ true;
 (laplace (log (a*u), u, v), ev (if equal (%%, (1/abs(a))*(-1/(v/a)*(log (v/a) + %gamma))) then true else %%, logexpand = super));
 true;
 
+/* diff */
+
 laplace ('diff (foo (u), u), u, v);
 v * 'laplace (foo (u), u, v) - foo (0);
+
+/* integrate */
 
 laplace ('integrate (foo (w), w, 0, u), u, v);
 (1/v)*'laplace (foo (u), u, v);
 
+/* sum */
+
 laplace ('sum (foo (u, i), i, 0, n), u, v);
 'sum ('laplace (foo (u, i), u, v), i, 0, n);
+
+/* erf */
 
 laplace (erf (u), u, v);
 exp (v^2/4) * (1 - erf (v/2)) / v;
 
+/* inverse transform */
+
 laplace ('ilt (foo (v), v, u), u, v);
 foo (v);
+
+/* delta */
 
 laplace (delta (u), u, v);
 1;
@@ -99,7 +127,7 @@ laplace (delta (a*u), u, v);
 laplace (delta (a*u - b), u, v);
 exp (- b*v/a) / abs (a);
 
-/* try cases which specint handles */
+/* cases which specint handles */
 
 /* Algorithm 1: Laplace transform of c*t^v*exp(-s*t+e*f) */
 
