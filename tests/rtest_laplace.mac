@@ -33,10 +33,19 @@ laplace (exp (- 7*u), u, v);
 laplace (exp (- a*u), u, v);
 1/(a + v);
 
+laplace (exp (- u - b), u, v);
+exp (- b) / (1 + v);
+
+laplace (exp (- a*u - b), u, v);
+exp (- b) / (a + v);
+
 /* sin */
 
 laplace (sin (u), u, v);
 1/(1 + v^2);
+
+laplace (sin (7*u), u, v);
+7/(49 + v^2);
 
 laplace (sin (a*u), u, v);
 a/(a^2 + v^2);
@@ -45,6 +54,9 @@ a/(a^2 + v^2);
 
 laplace (cos (u), u, v);
 v/(1 + v^2);
+
+laplace (cos (7*u), u, v);
+v/(49 + v^2);
 
 laplace (cos (a*u), u, v);
 v/(a^2 + v^2);
@@ -101,6 +113,12 @@ laplace ('sum (foo (u, i), i, 0, n), u, v);
 
 laplace (erf (u), u, v);
 exp (v^2/4) * (1 - erf (v/2)) / v;
+
+laplace (erf (7*u), u, v);
+exp (v^2/196) * (1 - erf (v/14)) / v;
+
+laplace (erf (a*u), u, v);
+exp (v^2/(4*a^2)) * (1 - erf (v/(2*a))) / v;
 
 /* inverse transform */
 
@@ -349,5 +367,63 @@ exp (- b*v/a) / abs (a);
  *          -sec((u-v)*%pi)*W[u,v](a/p)]
  */
 
-killcontext (mycontext);
+/* other examples which might or might not be special cases of stuff above
+ * collected from various tables:
+ * http://en.wikipedia.org/wiki/Laplace_transform
+ * http://tutorial.math.lamar.edu/Classes/DE/Laplace_Table.aspx
+ * http://www.vibrationdata.com/math/Laplace_Transforms.pdf
+ * http://www.stanford.edu/~boyd/ee102/laplace-table.pdf
+ */
+
+(declare (n, integer), assume (n > 0, q > 0), 0);
+0;
+
+/* unit step */
+
+laplace (unit_step (u), u, v);
+1/v;
+
+/* ramp */
+
+laplace (u * unit_step (u), u, v);
+1/v^2;
+
+/* integer power */
+
+makefact (laplace (u^n, u, v));
+n!/v^(n + 1);
+
+/* general power */
+
+laplace (u^q, u, v);
+gamma (q + 1) / v^(q + 1);
+
+/* root */
+
+laplace (u^(1/n), u, v);
+gamma (1/n + 1) / v^(1/n + 1);
+
+/* exponential approach */
+
+(laplace (1 - exp (- a*u), u, v), if equal (%%, a/(v * (v + a))) then true else %%);
+true;
+
+/* decaying waves */
+
+(laplace (exp (- a*u) * sin (b*u), u, v), if equal (%%, b / ((v + a)^2 + b^2)) then true else %%);
+true;
+
+(laplace (exp (- a*u) * cos (b*u), u, v), if equal (%%, (v + a) / ((v + a)^2 + b^2)) then true else %%);
+true;
+
+/* Bessel function */
+
+(foo : laplace (bessel_j (n, a*u), u, v),
+ bar : (sqrt (v^2 + a^2) - v)^n / (a^n * sqrt (v^2 + a^2)),
+ makelist (makelist (ev (ratsimp (foo - bar), a = aa, n = nn), nn, 0, 4), aa, [1/5, 1/3, 1/2, 1, 2, 3, 5]),
+ map (lambda ([e], zeroequiv (e, v)), flatten (%%)),
+ every (%%));
+true;
+
+(remove (n, integer), killcontext (mycontext));
 done;
