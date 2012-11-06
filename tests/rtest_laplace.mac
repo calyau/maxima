@@ -99,6 +99,12 @@ true;
 laplace ('diff (foo (u), u), u, v);
 v * 'laplace (foo (u), u, v) - foo (0);
 
+laplace ('diff (foo (u), u, 2), u, v);
+'laplace (foo (u), u, v) * v^2 - foo (0) * v - at ('diff (foo (u), u, 1), u = 0);
+
+laplace ('diff (foo (u), u, 3), u, v);
+'laplace (foo (u), u, v) * v^3 - foo (0) * v^2 - at ('diff (foo (u), u), u = 0) * v - at ('diff (foo (u), u, 2), u = 0);
+
 /* integrate */
 
 laplace ('integrate (foo (w), w, 0, u), u, v);
@@ -369,14 +375,46 @@ exp (- b*v/a) / abs (a);
 
 /* other examples which might or might not be special cases of stuff above
  * collected from various tables:
- * http://en.wikipedia.org/wiki/Laplace_transform
- * http://tutorial.math.lamar.edu/Classes/DE/Laplace_Table.aspx
- * http://www.vibrationdata.com/math/Laplace_Transforms.pdf
- * http://www.stanford.edu/~boyd/ee102/laplace-table.pdf
  */
 
 (declare (n, integer), assume (n > 0, q > 0), 0);
 0;
+
+/* http://en.wikipedia.org/wiki/Laplace_transform */
+
+/* linearity */
+
+laplace (a * foo (u) + b * bar (u) + c * baz (u), u, v);
+a * 'laplace (foo (u), u, v) + b * 'laplace (bar (u), u, v) + c * 'laplace (baz (u), u, v);
+
+/* frequency differentiation */
+
+laplace (u * foo (u), u, v);
+- 'diff ('laplace (foo (u), u, v), v);
+
+laplace (u^2 * foo (u), u, v);
+'diff ('laplace (foo (u), u, v), v, 2);
+
+laplace (u^3 * foo (u), u, v);
+- 'diff ('laplace (foo (u), u, v), v, 3);
+
+laplace (u^n * foo (u), u, v);
+(- 1)^n * 'diff ('laplace (foo (u), u, v), v, n);
+
+/* frequency integration */
+
+laplace (foo (u) / u, u, v);
+'integrate ('laplace (foo (u), u, v), u, v, inf);
+
+/* time scaling */
+
+/* frequency shifting */
+
+/* time shifting */
+
+/* convolution */
+
+/* conjugate */
 
 /* unit step */
 
@@ -424,6 +462,12 @@ true;
  map (lambda ([e], zeroequiv (e, v)), flatten (%%)),
  every (%%));
 true;
+
+/* http://tutorial.math.lamar.edu/Classes/DE/Laplace_Table.aspx */
+
+/* http://www.vibrationdata.com/math/Laplace_Transforms.pdf */
+
+/* http://www.stanford.edu/~boyd/ee102/laplace-table.pdf */
 
 (remove (n, integer), killcontext (mycontext));
 done;
