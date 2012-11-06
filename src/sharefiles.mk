@@ -314,7 +314,6 @@ contrib/gentran/test/type.mac \
 contrib/gentran/test/type.output \
 contrib/gentran/vaxinit.lisp \
 contrib/gentran/vaxlsp.lisp \
-contrib/gf/gf_hard_test.mac \
 contrib/gf/gf.mac \
 contrib/gf/gf_manual.pdf \
 contrib/gf/gf_manual.tex \
