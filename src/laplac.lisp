@@ -304,9 +304,9 @@
 					   power))
 			      (even power))))
 	   ((negint power)
-	    (return (mydefint (hackit power rest)
+	    (return (mydefint (hackit power rest parm)
 			      (createname parm (- power))
-			      parm)))
+			      parm parm)))
 	   (t (go noluck)))
      var-easy-case
      (setq power
@@ -354,11 +354,11 @@
   (intern (format nil "~S~S" head tail)))
 
 ;;;REDUCES LAPLACE(F(T)/T**N,T,S) CASE TO LAPLACE(F(T)/T**(N-1),T,S) CASE
-(defun hackit (exponent rest)
+(defun hackit (exponent rest parm)
   (cond ((equal exponent -1)
 	 (let ((parm (createname parm 1)))
 	   (laptimes rest parm)))
-	(t (mydefint (hackit (1+ exponent) rest)
+	(t (mydefint (hackit (1+ exponent) rest parm)
 		     (createname parm (- -1 exponent))
 		     (createname parm (- exponent)) parm))))
 
