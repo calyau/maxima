@@ -3,7 +3,15 @@
  * I release this work under terms of the GNU General Public License.
  */
 
-(kill (all), mycontext : newcontext (gensym ()), assume (a > 0, b > 0, c > 0), 0);
+(kill (all),
+ mycontext : newcontext (gensym ()),
+ declare (n, integer),
+ /* attempt to forestall asksign queries */
+ assume (a > 0, b > 0, c > 0),
+ assume (n > 0, q > 0),
+ assume_pos_pred : lambda ([e], true),
+ assume_pos : true,
+ 0);
 0;
 
 /* 0 */
@@ -104,6 +112,9 @@ laplace ('diff (foo (u), u, 2), u, v);
 
 laplace ('diff (foo (u), u, 3), u, v);
 'laplace (foo (u), u, v) * v^3 - foo (0) * v^2 - at ('diff (foo (u), u), u = 0) * v - at ('diff (foo (u), u, 2), u = 0);
+
+laplace ('diff (foo (u), u, n), u, v);
+'laplace (foo (u), u, v) * v^n - 'sum (at ('diff (foo (u), u, k), u = 0) * v^((n - 1) - k), k, 0, n - 1);
 
 /* integrate */
 
@@ -377,9 +388,6 @@ exp (- b*v/a) / abs (a);
  * collected from various tables:
  */
 
-(declare (n, integer), assume (n > 0, q > 0), 0);
-0;
-
 /* http://en.wikipedia.org/wiki/Laplace_transform */
 
 /* linearity */
@@ -408,18 +416,67 @@ laplace (foo (u) / u, u, v);
 
 /* time scaling */
 
+laplace (foo (a * u), u, v);
+(1 / a) * at ('laplace (foo (u), u, v), v = v / a);
+
 /* frequency shifting */
+
+(assume (v - a > 0),
+ blurf : laplace (exp (a * u) * foo (u), u, v),
+ forget (v - a > 0),
+ blurf);
+at ('laplace (foo (u), u, v), v = v - a);
+
+(laplace (exp (a * u) * cosh (u), u, v), if equal (%%,  (v - a) / ((v - a)^2 - 1)) then true else %%);
+true;
 
 /* time shifting */
 
+laplace (foo (u - a) * unit_step (u - a), u, v);
+exp (- a * v) * 'laplace (foo (u), u, v);
+
+laplace (sinh (u - a) * unit_step (u - a), u, v);
+exp (-a * v) / (v^2 - 1);
+
 /* convolution */
 
+laplace ('integrate (foo (w) * bar (u - w), w, 0, u), u, v);
+'laplace (bar (u), u, v) * 'laplace (foo (u), u, v);
+
+(laplace ('integrate (erf (w) * sinh (u - w), w, 0, u), u, v), if equal (%%, laplace (erf (u), u, v) * laplace (sinh (u), u, v)) then true else %%);
+true;
+
 /* conjugate */
+
+declare ([u, v], complex);
+done;
+
+laplace (conjugate (foo (u)), u, v);
+conjugate (at ('laplace (foo (u), u, v), v = conjugate (v)));
+
+/* erf is entire => conjugate commutes with erf */
+
+laplace (conjugate (erf (u)), u, v);
+exp (v^2/4) * (1 - erf (v/2)) / v;
+
+/* sqrt and log are not entire => conjugate does not commute */
+
+laplace (conjugate (sqrt (u)), u, v);
+sqrt (%pi) * conjugate (1 / conjugate (v) ^ (3/2)) / 2;
+
+laplace (conjugate (log (u)), u, v);
+(- conjugate (log (conjugate (v))) - %gamma) / v;
+
+remove ([u, v], complex);
+done;
 
 /* unit step */
 
 laplace (unit_step (u), u, v);
 1/v;
+
+laplace (unit_step (u - a), u, v);
+exp (- a*v) / v;
 
 /* ramp */
 
@@ -430,6 +487,12 @@ laplace (u * unit_step (u), u, v);
 
 makefact (laplace (u^n, u, v));
 n!/v^(n + 1);
+
+makefact (laplace ((u - a)^n * unit_step (u - a), u, v));
+n! * exp (- a*v) / v^(n + 1);
+
+makefact (ratsimp (laplace ((u - a)^n * exp (- b*(u - a)) * unit_step (u - a), u, v)));
+n!/(v + b)^(n + 1) * exp (- a*v);
 
 /* general power */
 
