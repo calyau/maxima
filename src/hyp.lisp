@@ -1437,12 +1437,15 @@
 	   (legf20 (list a b) (list c) var))
           
           ((and (alike1 c-a-b '((rat simp) 3 2))
-		(not (alike1 c 1)))
+		(not (alike1 c 1))
+		(not (alike1 a -1//2))
+		(not (alike1 b -1//2)))
            ;; c-a-b = 3/2 e.g. F(a,b;a+b+3/2;z) Reduce to
            ;; F(a,b;a+b+1/2) and use A&S 15.2.6.  But if c = 1, we
            ;; don't want to reduce c to 0! Problem: The derivative of
            ;; assoc_legendre_p introduces a unit_step function and the
-           ;; result looks very complicate.
+           ;; result looks very complicated. And this doesn't work if
+           ;; a+1/2 or b+1/2 is zero, so skip that too.
            (when $trace2f1
              (format t "Legendre c-a-b = 3/2~%")
              (mformat t "   : a = ~A~%" a)
