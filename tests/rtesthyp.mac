@@ -2483,3 +2483,11 @@ ratsimp(hgfred([-2,1],[1/2],z));
 
 hgfred([-n/2, (n-1)/2],[1],x);
 %f[2,1]([-n/2, n/2-1/2],[1],x);
+
+/*
+ * Bug 3578373: hgfred([-1/2,a+1],[a+2],x);
+ *
+ * Just check that we don't get an error about  0 to a negative exponent.
+ */
+hgfred([-1/2,a+1],[a+2],x);
+%f[2,1]([-1/2, a+1], [a+2], x);
