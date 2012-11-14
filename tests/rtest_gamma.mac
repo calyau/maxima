@@ -2514,6 +2514,13 @@ closeto(
   6.0e-15);
 true;
 
+/* Bug 3587184: erf inaccurate for small float values */
+relerror(
+  erf(1d-10),
+  float(2d-10/sqrt(%pi)),
+  1d-15);
+true;
+
 /* Erf with bigfloat precision */
 
 fpprec:64;
@@ -3501,7 +3508,7 @@ true;
 relerror(
   gamma_incomplete(10,-100d0+%i),
   subst(x=-100d0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
-  7.0e-15);
+  8.1e-15);
 true;
       
 relerror(
@@ -3509,6 +3516,79 @@ relerror(
   subst(x=-100b0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
   2.04b-64);
 true;
+
+relerror(
+ erf(inverse_erf(.5)),
+ 0.5,
+ 1.4d-14);
+true;
       
+relerror(
+ erf(inverse_erf(-.5)),
+ -0.5,
+ 1.4e-14);
+true;
+
+relerror(
+ erf(inverse_erf(.5b0)),
+ 0.5b0,
+ 2b-64);
+true;
+
+relerror(
+ erf(inverse_erf(-.5b0)),
+ -0.5b0,
+ 2b-64);
+true;
+
+relerror(
+ erf(inverse_erf(2.0)),
+ 2.0,
+ 7.9d-15);
+true;
+
+relerror(
+ erf(inverse_erf(-2.0)),
+ -2.0,
+ 7.9d-15);
+true;
+
+/* These are a bit slow if fpprec is large.  Make fpprec a bit smaller */
+fpprec:24;
+24;
+
+relerror(
+ erf(inverse_erf(2b0)),
+ 2b0,
+ 2.9b-24);
+true;
+
+relerror(
+ erf(inverse_erf(-2b0)),
+ -2b0,
+ 2.9b-24);
+true;
+
+relerror(
+ erf(inverse_erf(2b0+2b0*%i)),
+ 2b0+2b0*%i,
+ 6.6b-25);
+true;
+
+relerror(
+ erf(inverse_erf(-2b0-2b0*%i)),
+ -2b0-2b0*%i,
+ 6.6b-25);
+true;
+
+relerror(
+ erf(inverse_erf(10b0+1000b0*%i)),
+ 10b0+1000b0*%i,
+ 2b-23);
+true;
+
+
+
+
 (fpprec:oldfpprec,done);
 done;
