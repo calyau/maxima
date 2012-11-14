@@ -67,7 +67,7 @@
       (setf first$ f2cl-lib:%false%)
       (setf y (abs x))
       (if (> y 1.0) (go label20))
-      (if (<= y sqeps) (setf derf (/ (* 2.0 x x) sqrtpi)))
+      (if (<= y sqeps) (setf derf (/ (* 2.0 x) sqrtpi)))
       (if (> y sqeps)
           (setf derf (* x (+ 1.0 (dcsevl (- (* 2.0 x x) 1.0) erfcs nterf)))))
       (go end_label)

@@ -2514,6 +2514,13 @@ closeto(
   6.0e-15);
 true;
 
+/* Bug 3587184: erf inaccurate for small float values */
+relerror(
+  erf(1d-10),
+  float(2d-10/sqrt(%pi)),
+  1d-15);
+true;
+
 /* Erf with bigfloat precision */
 
 fpprec:64;
