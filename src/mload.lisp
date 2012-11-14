@@ -566,7 +566,7 @@
       (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp")))
     (let ((error-break-file)
 	  (testresult)
-	  (tests-to-run (intersect-tests tests))
+	  (tests-to-run (intersect-tests (if (consp tests) tests (list '(mlist) tests))))
 	  (test-count 0)
 	  (total-count 0)
 	  (error-count 0))

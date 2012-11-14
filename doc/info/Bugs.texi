@@ -24,7 +24,7 @@ fails.  (Defaults to @code{false}).
 @item display_known_bugs
 Displays tests that are marked as known bugs.  (Default is @code{false}).
 @item tests
-This is a list of tests that should be run.  Each test can be specified by
+This is a single test or a list of tests that should be run.  Each test can be specified by
 either a string or a symbol.  By default, all tests are run.  The complete set
 of tests is specified by @mrefdot{testsuite_files}
 @item time
