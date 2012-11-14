@@ -2572,6 +2572,13 @@ closeto(
   1b-61);
 true;
 
+/* Bug 3587191: erf inaccurate for small bigfloat values */
+relerror(
+  erf(1b-40),
+  bfloat(2b-40/sqrt(%pi)),
+  1b-65);
+true;
+
 /* We have done a check for the numerical algorithm of the Erf function which
    calls the Incomplete Gamma function. 
    We do not do further numerical tests for the other Error functions, 

@@ -1005,7 +1005,7 @@
          (when (eq ($sign (sub (simplify (list '(mabs) del)) 
                                (mul (simplify (list '(mabs) sum)) gm-eps)))
                    '$neg)
-           (when *debug-gamma* (format t "~&Series converged.~%"))
+           (when *debug-gamma* (format t "~&Series converged to ~A.~%" sum))
            (return 
              (sub (simplify (list '(%gamma) a))
                   ($rectform
@@ -1885,15 +1885,15 @@
     ;; Check for numerical evaluation
 
     ((float-numerical-eval-p z)
-     (erf ($float z)))
+     (bigfloat::bf-erf ($float z)))
     ((complex-float-numerical-eval-p z)
      (complexify 
-       (complex-erf (complex ($float ($realpart z)) ($float ($imagpart z))))))
+       (bigfloat::bf-erf (complex ($float ($realpart z)) ($float ($imagpart z))))))
     ((bigfloat-numerical-eval-p z)
-     (bfloat-erf ($bfloat z)))
+     (to (bigfloat::bf-erf (bigfloat:to ($bfloat z)))))
     ((complex-bigfloat-numerical-eval-p z)
-     (complex-bfloat-erf
-       (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
+     (to (bigfloat::bf-erf
+	  (bigfloat:to (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))))
 
     ;; Argument simplification
     
@@ -1944,6 +1944,7 @@
 
 (defun complex-erf (z)
   (let ((result
+	  ;; Warning!  This has round-off problems when abs(z) is very small.
           (*
             (/ (sqrt (expt z 2)) z)
             (- 1.0 
@@ -1959,6 +1960,7 @@
         result))))
 
 (defun bfloat-erf (z)
+  ;; Warning!  This has round-off problems when abs(z) is very small.
   (let ((1//2 ($bfloat '((rat simp) 1 2))))
   ;; The argument is real, the result is real too
     ($realpart
@@ -1970,6 +1972,7 @@
             (bfloat-gamma-incomplete 1//2 ($bfloat (power z 2)))))))))
 
 (defun complex-bfloat-erf (z)
+  ;; Warning!  This has round-off problems when abs(z) is very small.
   (let* (($ratprint nil)
          (1//2 ($bfloat '((rat simp) 1 2)))
          (result
@@ -1991,6 +1994,45 @@
       (t
        ;; A general complex result
        result))))
+
+(in-package :bigfloat)
+
+;; Erf(z) for all z.  Z must be a CL real or complex number or a
+;; BIGFLOAT or COMPLEX-BIGFLOAT object.  The result will be of the
+;; same type as Z.
+(defun bf-erf (z)
+  (cond ((typep z 'cl:real)
+	 ;; Use Slatec derf, which should be faster than the series.
+	 (maxima::erf z))
+	((<= (abs z) 0.47329)
+	 ;; Use the series A&S 7.1.5 for small x:
+	 ;; 
+	 ;; erf(z) = 2*z/sqrt(%pi) * sum((-1)^n*z^(2*n)/n!/(2*n+1), n, 0, inf)
+	 ;;
+	 ;; The threshold is approximately erf(x) = 0.5.  (Doesn't
+	 ;; have to be super accurate.)  This gives max accuracy when
+	 ;; using the identity  erf(x) = 1 - erfc(x).
+	 (let ((z^2 (* z z))
+	       (eps (epsilon z)))
+	   (do* ((n 0 (+ n 1))
+		 (sum 1 (+ sum term))
+		 (factor 1/3
+			 (/ (+ n n 1) (+ n 1) (+ n n 3)))
+		 (term (* (- z^2) factor)
+		       (* term (* (- z^2) factor))))
+		((< (abs term) (* eps (abs sum)))
+		 (* 2 z sum (/ (sqrt (%pi z)))))
+	     #+nil
+	     (format t "n = ~S:  sum = ~S term = ~S factor = ~S~%" n sum term factor))))
+	(t
+	 ;; The general case.
+	 (etypecase z
+	   (cl:real (maxima::erf z))
+	   (cl:complex (maxima::complex-erf z))
+	   (bigfloat (bigfloat (maxima::bfloat-erf (maxima::to z))))
+	   (complex-bigfloat (bigfloat (maxima::complex-bfloat-erf (maxima::to z))))))))
+
+(in-package :maxima)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -2101,24 +2143,25 @@
       ;; Check for numerical evaluation. Use erf(z1,z2) = erf(z2)-erf(z1)
 
       ((float-numerical-eval-p z1 z2)
-       (- (erf ($float z2)) (erf ($float z1))))
+       (- (bigfloat::bf-erf ($float z2))
+	  (bigfloat::bf-erf ($float z1))))
       ((complex-float-numerical-eval-p z1 z2)
        (complexify 
          (- 
-           (complex-erf 
+           (bigfloat::bf-erf 
              (complex ($float ($realpart z2)) ($float ($imagpart z2))))
-           (complex-erf 
+           (bigfloat::bf-erf 
              (complex ($float ($realpart z1)) ($float ($imagpart z1)))))))
       ((bigfloat-numerical-eval-p z1 z2)
-       (sub
-         (bfloat-erf ($bfloat z2))
-         (bfloat-erf ($bfloat z1))))
+       (to (bigfloat:-
+	    (bigfloat::bf-erf (bigfloat:to ($bfloat z2)))
+	    (bigfloat::bf-erf (bigfloat:to ($bfloat z1))))))
       ((complex-bigfloat-numerical-eval-p z1 z2)
-       (sub
-         (complex-bfloat-erf 
-           (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2)))))
-         (complex-bfloat-erf 
-           (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))))
+       (to (bigfloat:-
+	    (bigfloat::bf-erf 
+	     (bigfloat:to (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2))))))
+	    (bigfloat::bf-erf 
+	     (bigfloat:to (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))))))
 
       ;; Argument simplification
       
@@ -2648,13 +2691,6 @@
 
 
 (in-package :bigfloat)
-
-(defun bf-erf (z)
-  (etypecase z
-    (cl:real (maxima::erf z))
-    (cl:complex (maxima::complex-erf z))
-    (bigfloat (bigfloat (maxima::bfloat-erf (maxima::to z))))
-    (complex-bigfloat (bigfloat (maxima::complex-bfloat-erf (maxima::to z))))))
 
 ;; Compute inverse_erf(z) for z a real or complex number, including
 ;; bigfloat objects.  The value is computing using a Newton iteration
