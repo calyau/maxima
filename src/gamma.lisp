@@ -2648,6 +2648,14 @@
 
 
 (in-package :bigfloat)
+
+(defun bf-erf (z)
+  (etypecase z
+    (cl:real (maxima::erf z))
+    (cl:complex (maxima::complex-erf z))
+    (bigfloat (bigfloat (maxima::bfloat-erf (maxima::to z))))
+    (complex-bigfloat (bigfloat (maxima::complex-bfloat-erf (maxima::to z))))))
+
 ;; Compute inverse_erf(z) for z a real or complex number, including
 ;; bigfloat objects.  The value is computing using a Newton iteration
 ;; to solve erf(x) = z.
@@ -2662,70 +2670,77 @@
 	 ;; inverse_erf is odd because erf is.
 	 (- (bf-inverse-erf (- z))))
 	(t
-	 ;; Use Newton's algorithm to solve erf(x) = z
 	 (labels
-	     ((erf (z)
-		(etypecase z
-		  (cl:real (maxima::erf z))
-		  (cl:complex (maxima::complex-erf z))
-		  (bigfloat (bigfloat (maxima::bfloat-erf (maxima::to z))))
-		  (complex-bigfloat (bigfloat (maxima::complex-bfloat-erf (maxima::to z))))))
-	      (approx (z)
+	     ((approx (z)
 		;; Find an approximate solution for x = inverse_erf(z).
-		(cond ((<= (abs z) 1)
-		       ;; For small z, inverse_erf(z) = z*sqrt(%pi)/2
-		       ;; + O(z^3).  Thus, x = z*sqrt(%pi)/2 is our
-		       ;; initial starting point.
-		       (* z (sqrt (%pi z)) 1/2))
-		      (t
-		       ;; For |z| > 1 and realpart(z) >= 0, we have
-		       ;; the asymptotic series z = erf(x) = 1 -
-		       ;; exp(-x^2)/x/sqrt(%pi).
-		       ;;
-		       ;; Then
-		       ;;   x = sqrt(-log(x*sqrt(%pi)*(1-z))
-		       ;;
-		       ;; We can use this as a fixed-point iteration
-		       ;; to find x, and we can start the iteration at
-		       ;; x = 1.  Just do one more iteration.  I (RLT)
-		       ;; think that's close enough to get the Newton
-		       ;; algorithm to converge.
-		       (let* ((sp (sqrt (%pi z)))
-			      (a (sqrt (- (log (* sp (- 1 z)))))))
-			 (setf a (sqrt (- (log (* a sp (- 1 z))))))
-			 (setf a (sqrt (- (log (* a sp (- 1 z))))))))))
-	      (newton (start eps)
-		;; Newton algorithm to solve erf(x) = z.
-		(let ((two/sqrt-pi (/ 2 (sqrt (%pi start)))))
-		  (flet ((diff (x)
-			   ;; Derivative of erf(x)
-			   (* two/sqrt-pi (exp (- (* x x))))))
-		    (do ((x start)
-			 (delta (/ (- (erf start) z) (diff start))
-				(/ (- (erf x) z) (diff x)))
-			 (count 0 (1+ count)))
-			((or (< (abs delta) (* (abs x) eps))
-			     (> count maxima::*newton-maxcount*))
-			 (if (> count maxima::*newton-maxcount*)
-			     (maxima::merror 
-			      (intl:gettext "bf-inverse-erf: failed to converge at ~:M, err = ~S")
-			      z delta)
-			     x))
-		      (when maxima::*debug-newton*
-			(format t "x = ~S, abs(delta) = ~S relerr = ~S~%"
-				x (abs delta) (/ (abs delta) (abs x))))
-		      (setf x (- x delta)))))))
-	   (let ((eps
+		(let ((result
+			(cond ((<= (abs z) 1)
+			       ;; For small z, inverse_erf(z) = z*sqrt(%pi)/2
+			       ;; + O(z^3).  Thus, x = z*sqrt(%pi)/2 is our
+			       ;; initial starting point.
+			       (* z (sqrt (%pi z)) 1/2))
+			      (t
+			       ;; For |z| > 1 and realpart(z) >= 0, we have
+			       ;; the asymptotic series z = erf(x) = 1 -
+			       ;; exp(-x^2)/x/sqrt(%pi).
+			       ;;
+			       ;; Then
+			       ;;   x = sqrt(-log(x*sqrt(%pi)*(1-z))
+			       ;;
+			       ;; We can use this as a fixed-point iteration
+			       ;; to find x, and we can start the iteration at
+			       ;; x = 1.  Just do one more iteration.  I (RLT)
+			       ;; think that's close enough to get the Newton
+			       ;; algorithm to converge.
+			       (let* ((sp (sqrt (%pi z)))
+				      (a (sqrt (- (log (* sp (- 1 z)))))))
+				 (setf a (sqrt (- (log (* a sp (- 1 z))))))
+				 (setf a (sqrt (- (log (* a sp (- 1 z)))))))))))
+		  (when maxima::*debug-newton*
+		    (format t "approx = ~S~%" result))
+		  result)))
+	   (let ((two/sqrt-pi (/ 2 (sqrt (%pi z))))
+		 (eps
+		   ;; Try to pick a reasonable epsilon value for the
+		   ;; Newton iteration.
 		   (cond ((<= (abs z) 1)
 			  (typecase z
 			    (cl:real 1.2e-16)
-			    (bigfloat (epsilon z))
 			    (t (* maxima::*newton-epsilon-factor* (epsilon z)))))
 			 (t
 			  (* maxima::*newton-epsilon-factor* (epsilon z))))))
 	     (when maxima::*debug-newton*
 	       (format t "eps = ~S~%" eps))
-	     (newton (approx z) eps))))))
+	     (flet ((diff (x)
+		      ;; Derivative of erf(x)
+		      (* two/sqrt-pi (exp (- (* x x))))))
+	       (bf-newton #'bf-erf
+			  #'diff
+			  z
+			  (approx z)
+			  eps)))))))
+
+
+;; Newton iteration for solving f(x) = z, given f and the derivative
+;; of f.
+(defun bf-newton (f df z start eps)
+  (do ((x start)
+       (delta (/ (- (funcall f start) z)
+		 (funcall df start))
+	      (/ (- (funcall f x) z)
+		 (funcall df x)))
+       (count 0 (1+ count)))
+      ((or (< (abs delta) (* (abs x) eps))
+	   (> count maxima::*newton-maxcount*))
+       (if (> count maxima::*newton-maxcount*)
+	   (maxima::merror 
+	    (intl:gettext "bf-newton: failed to converge after ~M iterations: delta = ~S,  x = ~S")
+	    count delta x)
+	   x))
+    (when maxima::*debug-newton*
+      (format t "x = ~S, abs(delta) = ~S relerr = ~S~%"
+	      x (abs delta) (/ (abs delta) (abs x))))
+    (setf x (- x delta))))
 
 (in-package :maxima)
 
