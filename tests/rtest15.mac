@@ -166,6 +166,54 @@ sin(1);
 trigrat((cos(x)+(sqrt(3)+2)*sin(x)-4*sin(5*%pi/12)*cos(x-(7*%pi)/12))/cos(x));
 2;
 
+/* bug reported to mailing list 2012-11-07 '"trigrat" caught in infinite loop - depending on how you call it'
+ * I didn't check the trigrat outputs -- these tests only verify that the return value is the same across trigrat calls
+ */
+
+(e : 2*x/(sqrt(y)+x) - (x^2/((sqrt(y)+x)^2)), 0);
+0;
+
+trigrat (e);
+(2*%i*sin(3*atan2(0,y)/2)*x*abs(y)^(3/2)
+ +2*cos(3*atan2(0,y)/2)*x*abs(y)^(3/2)-3*x^2*y+x^4)
+ /(y^2-2*x^2*y+x^4);
+
+trigrat (xthru (e));
+(2*%i*sin(3*atan2(0,y)/2)*x*abs(y)^(3/2)
+ +2*cos(3*atan2(0,y)/2)*x*abs(y)^(3/2)-3*x^2*y+x^4)
+ /(y^2-2*x^2*y+x^4);
+
+/*
+(trigrat (e), trigrat (xthru (e)));
+(2*%i*sin(3*atan2(0,y)/2)*x*abs(y)^(3/2)
+ +2*cos(3*atan2(0,y)/2)*x*abs(y)^(3/2)-3*x^2*y+x^4)
+ /(y^2-2*x^2*y+x^4);
+ */
+
+/*
+[trigrat (e), trigrat (xthru (e))];
+[(2*%i*sin(3*atan2(0,y)/2)*x*abs(y)^(3/2)
+ +2*cos(3*atan2(0,y)/2)*x*abs(y)^(3/2)-3*x^2*y+x^4)
+ /(y^2-2*x^2*y+x^4),
+(2*%i*sin(3*atan2(0,y)/2)*x*abs(y)^(3/2)
+ +2*cos(3*atan2(0,y)/2)*x*abs(y)^(3/2)-3*x^2*y+x^4)
+ /(y^2-2*x^2*y+x^4)];
+ */
+
+(trigrat (xthru (e)), trigrat (e));
+(2*%i*sin(3*atan2(0,y)/2)*x*abs(y)^(3/2)
+ +2*cos(3*atan2(0,y)/2)*x*abs(y)^(3/2)-3*x^2*y+x^4)
+ /(y^2-2*x^2*y+x^4);
+
+(e : 1 / (y + sqrt (y)), 0);
+0;
+
+[trigrat (e), trigrat (e)];
+["*"(-1, "^"("+"("*"(-1, y), "^"(y, 2)), -1), "+"("*"(-1, y), "*"(cos("*"("/"(1, 2), atan2(0, y))), "^"(abs(y), "/"(1, 2))), 
+  "*"(%i, sin("*"("/"(1, 2), atan2(0, y))), "^"(abs(y), "/"(1, 2))))),
+"*"(-1, "^"("+"("*"(-1, y), "^"(y, 2)), -1), "+"("*"(-1, y), "*"(cos("*"("/"(1, 2), atan2(0, y))), "^"(abs(y), "/"(1, 2))), 
+  "*"(%i, sin("*"("/"(1, 2), atan2(0, y))), "^"(abs(y), "/"(1, 2)))))];
+
 /* compile() will fail with gcl if gcc not installed */
 f(x):=x+2;
 f(x):=x+2;
