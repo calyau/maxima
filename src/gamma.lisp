@@ -2004,7 +2004,7 @@
   (cond ((typep z 'cl:real)
 	 ;; Use Slatec derf, which should be faster than the series.
 	 (maxima::erf z))
-	((<= (abs z) 0.47329)
+	((<= (abs z) 0.476936)
 	 ;; Use the series A&S 7.1.5 for small x:
 	 ;; 
 	 ;; erf(z) = 2*z/sqrt(%pi) * sum((-1)^n*z^(2*n)/n!/(2*n+1), n, 0, inf)
