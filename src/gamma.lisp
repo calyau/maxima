@@ -2020,16 +2020,13 @@
 	 ;; using the identity  erf(x) = 1 - erfc(x).
 	 (let ((z^2 (* z z))
 	       (eps (epsilon z)))
-	   (do* ((n 0 (+ n 1))
-		 (sum 1 (+ sum term))
-		 (factor 1/3
-			 (/ (+ n n 1) (+ n 1) (+ n n 3)))
-		 (term (* (- z^2) factor)
-		       (* term (* (- z^2) factor))))
-		((< (abs term) (* eps (abs sum)))
-		 (* 2 z sum (/ (sqrt (%pi z)))))
-	     #+nil
-	     (format t "n = ~S:  sum = ~S term = ~S factor = ~S~%" n sum term factor))))
+	   (/ (* 2 z (sum-power-series z^2
+				       #'(lambda (k)
+					   (let ((2k (+ k k)))
+					     (- (/ (- 2k 1)
+						   k
+						   (+ 2k 1)))))))
+	      (sqrt (%pi z)))))
 	(t
 	 ;; The general case.
 	 (etypecase z
