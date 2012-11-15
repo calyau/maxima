@@ -1935,16 +1935,22 @@
   ;; We use the slatec routine for float values.
   (slatec:derf (float z)))
 
-;;; This would be the code when using gamma-incomplete.
-;  (realpart
-;    (*
-;      (signum z)
-;      (- 1.0 
-;        (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
-
+;; Compute erf(z) using the relationship
+;;
+;;   erf(z) = sqrt(z^2)/z*(1 - gamma_incomplete(1/2,z^2)/sqrt(%pi))
+;;
+;; When z is real sqrt(z^2)/z is signum(z).  For complex z,
+;; sqrt(z^2)/z = 1 if abs(arg(z)) <= %pi/2 and -1 otherwise.
+;;
+;; This relationship has serious round-off issues when z is small
+;; because gamma_incomplete(1/2,z^2)/sqrt(%pi) is near 1.
+;;
+;; complex-erf is for (lisp) complex numbers; bfloat-erf is for real
+;; bfloats, and complex-bfloat-erf is for complex bfloats.  Care is
+;; taken to return real results for real arguments and imaginary
+;; results for imaginary arguments
 (defun complex-erf (z)
   (let ((result
-	  ;; Warning!  This has round-off problems when abs(z) is very small.
           (*
             (/ (sqrt (expt z 2)) z)
             (- 1.0 
