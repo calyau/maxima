@@ -2604,6 +2604,19 @@ relerror(
   1b-64);
 true;
 
+/* Bug 3587362 inverse_erfc(1d-40) wrong */
+relerror(
+  inverse_erfc(1d-40),
+  9.448789766720855,
+  1d-15);
+true;
+
+relerror(
+  inverse_erfc(1b-50),
+  10.59209016952736518902166392532979911559420645541709912588406440119671044289134079569127583320351428635b0,
+  1d-64);
+true;
+
 /* We have done a check for the numerical algorithm of the Erf function which
    calls the Incomplete Gamma function. 
    We do not do further numerical tests for the other Error functions, 

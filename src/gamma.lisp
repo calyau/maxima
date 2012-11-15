@@ -2050,7 +2050,7 @@
   (flet ((gamma-inc (z)
 	   (etypecase z
 	     (cl:number
-	      (maxima::gamma-incomplete 1/2 z))
+	      (maxima::gamma-incomplete 0.5 z))
 	     (bigfloat
 	      (bigfloat:to (maxima::$bfloat
 			    (maxima::bfloat-gamma-incomplete (maxima::$bfloat maxima::1//2)
@@ -2648,32 +2648,11 @@
      (simp-domain-error 
        (intl:gettext "inverse_erfc: inverse_erfc(~:M) is undefined.") z))
     ((onep1 z) 0)
-    ((float-numerical-eval-p z)
-     (let ((x (gensym))
-           (z ($float z)))
-       (cond ((and (> z 0) (< z 2))
-              (float-newton (sub ($erfc x) z)
-                            x
-                            ($float (div (mul (sub 1 z) 
-                                              (power '$%pi '((rat simp) 1 2))) 
-                            2))
-                            ;; Adjusted so that newton will converge within
-                            ;; the valid intervall.
-                            1.2e-16))
-             (t
-              (eqtest (list '(%inverse_erfc) z) expr)))))
-    ((bigfloat-numerical-eval-p z)
-     (let ((x (gensym))
-           (z ($bfloat z)))
-       (cond ((eq ($sign (sub 2 z)) '$pos)
-              (bfloat-newton (sub ($erfc x) z)
-                             x
-                             ($bfloat (div (mul (sub 1 z) 
-                                                (power '$%pi '((rat simp) 1 2))) 
-                                           2))
-                             (power ($bfloat 10) (- $fpprec))))
-             (t
-              (eqtest (list '(%inverse_erfc) z) expr)))))
+    ((or (float-numerical-eval-p z)
+	 (bigfloat-numerical-eval-p z)
+	 (complex-float-numerical-eval-p z)
+	 (complex-bigfloat-numerical-eval-p z))
+     (to (bigfloat::bf-inverse-erfc (bigfloat:to z))))
     ((taylorize (mop expr) (cadr expr)))
     (t
      (eqtest (list '(%inverse_erfc) z) expr))))
@@ -2767,7 +2746,7 @@
 		   ;; Newton iteration.
 		   (cond ((<= (abs z) 1)
 			  (typecase z
-			    (cl:real 1.2e-16)
+			    (cl:real (* 2 maxima::flonum-epsilon))
 			    (t (* maxima::*newton-epsilon-factor* (epsilon z)))))
 			 (t
 			  (* maxima::*newton-epsilon-factor* (epsilon z))))))
@@ -2782,6 +2761,45 @@
 			  (approx z)
 			  eps)))))))
 
+(defun bf-inverse-erfc (z)
+  (cond ((zerop z)
+	 (maxima::merror
+	  (intl:gettext "bf-inverse-erf: inverse_erf(~M) is undefined")
+	  z))
+	((= z 1)
+	 (float 0 z))
+	(t
+	 (flet
+	     ((approx (z)
+		;; Find an approximate solution for x =
+		;; inverse_erfc(z).  We have inverse_erfc(z) =
+		;; inverse_erf(1-z), so that's a good starting point.
+		;; We don't need full precision, so a float value is
+		;; good enough.  But if 1-z is 1, inverse_erf is
+		;; undefined, so we need to do something else.
+		(let ((result
+			(let ((1-z (float (- 1 z) 0.0)))
+			  (cond ((= 1 1-z)
+				 (if (minusp (realpart z))
+				     (bf-inverse-erf (+ 1 (* 5 maxima::flonum-epsilon)))
+				     (bf-inverse-erf (- 1 (* 5 maxima::flonum-epsilon)))))
+				(t
+				 (bf-inverse-erf 1-z))))))
+		  (when maxima::*debug-newton*
+		    (format t "approx = ~S~%" result))
+		  result)))
+	   (let ((-two/sqrt-pi (/ -2 (sqrt (%pi z))))
+		 (eps (* maxima::*newton-epsilon-factor* (epsilon z))))
+	     (when maxima::*debug-newton*
+	       (format t "eps = ~S~%" eps))
+	     (flet ((diff (x)
+		      ;; Derivative of erfc(x)
+		      (* -two/sqrt-pi (exp (- (* x x))))))
+	       (bf-newton #'bf-erfc
+			  #'diff
+			  z
+			  (approx z)
+			  eps)))))))
 
 ;; Newton iteration for solving f(x) = z, given f and the derivative
 ;; of f.
