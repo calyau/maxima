@@ -2579,6 +2579,31 @@ relerror(
   1b-65);
 true;
 
+/* Bug 3587304 erfc(x) for x > 6 is wrong */
+relerror(
+  erfc(6.0),
+  2.15197367124989131659335039918738463047751406e-17,
+  1e-15);
+true;
+
+relerror(
+  erfc(-4.0),
+  2-erfc(4.0),
+  1e-15);
+true;
+
+relerror(
+  erfc(6b0),
+  2.1519736712498913116593350399187384630477514061688542100527892051056337238484927860b-17,
+  1b-64);
+true;
+
+relerror(
+  erfc(-6b0),
+  1.9999999999999999784802632875010868834066496008126153695224859383114578994b0,
+  1b-64);
+true;
+
 /* We have done a check for the numerical algorithm of the Erf function which
    calls the Incomplete Gamma function. 
    We do not do further numerical tests for the other Error functions, 

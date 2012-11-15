@@ -2032,6 +2032,40 @@
 	   (bigfloat (bigfloat (maxima::bfloat-erf (maxima::to z))))
 	   (complex-bigfloat (bigfloat (maxima::complex-bfloat-erf (maxima::to z))))))))
 
+(defun bf-erfc (z)
+  ;; Compute erfc(z) via 1 - erf(z) is not very accurate if erf(z) is
+  ;; near 1.  Wolfram says
+  ;;
+  ;; erfc(z) = 1 - sqrt(z^2)/z * (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2, z^2))
+  ;;
+  ;; For real(z) > 0, sqrt(z^2)/z is 1 so
+  ;;
+  ;; erfc(z) = 1 - (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2,z^2))
+  ;;         = 1/sqrt(pi)*gamma_incomplete_tail(1/2,z^2)
+  ;;
+  ;; For real(z) < 0, sqrt(z^2)/z is -1 so
+  ;;
+  ;; erfc(z) = 1 + (1 - 1/sqrt(pi)*gamma_incomplete_tail(1/2,z^2))
+  ;;         = 2 - 1/sqrt(pi)*gamma_incomplete(1/2,z^2)
+  (flet ((gamma-inc (z)
+	   (etypecase z
+	     (cl:number
+	      (maxima::gamma-incomplete 1/2 z))
+	     (bigfloat
+	      (bigfloat:to (maxima::$bfloat
+			    (maxima::bfloat-gamma-incomplete (maxima::$bfloat maxima::1//2)
+							     (maxima::to z)))))
+	     (complex-bigfloat
+	      (bigfloat:to (maxima::$bfloat
+			    (maxima::complex-bfloat-gamma-incomplete (maxima::$bfloat maxima::1//2)
+								     (maxima::to z))))))))
+  (if (>= (realpart z) 0)
+      (/ (gamma-inc (* z z))
+	 (sqrt (%pi z)))
+      (- 2
+	 (/ (gamma-inc (* z z))
+	    (sqrt (%pi z)))))))
+
 (in-package :maxima)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2253,21 +2287,13 @@
     ((eq z '$inf) 0)
     ((eq z '$minf) 2)
 
-    ;; Check for numerical evaluation. Use erfc(z) = 1-erf(z).
+    ;; Check for numerical evaluation.
 
-    ((float-numerical-eval-p z)
-     (- 1.0 (erf ($float z))))
-    ((complex-float-numerical-eval-p z)
-     (complexify 
-       (- 1.0 
-         (complex-erf 
-           (complex ($float ($realpart z)) ($float ($imagpart z)))))))
-    ((bigfloat-numerical-eval-p z)
-     (sub 1.0 (bfloat-erf ($bfloat z))))
-    ((complex-bigfloat-numerical-eval-p z)
-     (sub 1.0
-       (complex-bfloat-erf 
-         (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z)))))))
+    ((or (float-numerical-eval-p z)
+	 (complex-float-numerical-eval-p z)
+	 (bigfloat-numerical-eval-p z)
+	 (complex-bigfloat-numerical-eval-p z))
+     (to (bigfloat::bf-erfc (bigfloat:to z))))
 
     ;; Argument simplification
 
