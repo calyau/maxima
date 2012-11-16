@@ -154,6 +154,42 @@
 (defmethod maxima::to ((z t))
   z)
 
+
+(defun expt-extra-bits (x a)
+  ;; When x^a using exp(a*log(x)), we need extra bits because the
+  ;; integer part of a*log(x) doesn't contribute to the accuracy of
+  ;; the result.  If x = 2^n*f, where |f| < 1, log2(x) = n + log(f).
+  ;; If a = 2^m*g, where |g| < 1, then a*log2(x) = a*n + a*log2(f) =
+  ;; a*n + 2^m*g*log2(f).
+  (declare (ignore x))
+  (let ((rp (realpart a)))
+    (if (typep rp '(or bigfloat complex-bigfloat))
+	(max 1 (third (slot-value rp 'real)))
+	(integer-length (truncate rp)))))
+
+;; Executes the body BODY with extra precision.  The precision is
+;; increased by EXTRA, and the list of variables given in VARLIST have
+;; the precision increased.  The precision of the first value of the
+;; body is then reduced back to the normal precision.
+(defmacro with-extra-precision ((extra (&rest varlist)) &body body)
+  (let ((result (gensym)))
+    `(let ((,result
+	     (let ((maxima::fpprec (cl:+ maxima::fpprec ,extra)))
+	       (let ,(mapcar #'(lambda (v)
+				 ;; Could probably do this in a faster
+				 ;; way, but conversion to a maxima
+				 ;; form autoamatically increases the
+				 ;; precision of the bigfloat to the
+				 ;; new precision.  Conversion of that
+				 ;; to a bigfloat object preserves the
+				 ;; precision.
+				 `(,v (bigfloat:to (maxima::to ,v))))
+		      varlist)
+		 ,@body))))
+       ;; Conversion of the result to a maxima number adjusts the
+       ;; precision appropriately.
+       (bigfloat:to (maxima::to ,result)))))
+     
 ;;; REALP
 
 ;; GCL doesn't have the REAL class!  But since a real is a rational or
@@ -1438,7 +1474,9 @@
 	     ;; more accurate when b is an integer.
 	     (expt a (truncate b)))
 	    (t
-	     (exp (* b (log a)))))))
+	     (with-extra-precision ((expt-extra-bits a b)
+				    (a b))
+	       (exp (* b (log a))))))))
 
 (defmethod expt ((a cl:number) (b numeric))
   (if (zerop b)
@@ -1450,9 +1488,13 @@
       (cond ((and (zerop a) (plusp (realpart b)))
 	     (* a b))
 	    ((= b (truncate b))
-	     (expt a (truncate b)))
+	     (with-extra-precision ((expt-extra-bits a b)
+				    (a b))
+	       (expt a (truncate b))))
 	    (t
-	     (exp (* b (log (bigfloat a))))))))
+	     (with-extra-precision ((expt-extra-bits a b)
+				    (a b))
+	       (exp (* b (log (bigfloat a)))))))))
 
 (defmethod expt ((a numeric) (b cl:number))
   (if (zerop b)
@@ -1481,7 +1523,9 @@
 		 (let ((a2 (* a a)))
 		   (/ (* a2 a2))))
 		(t
-		 (exp (* (bigfloat b) (log a))))))))
+		 (with-extra-precision ((expt-extra-bits a b)
+					(a b))
+		   (exp (* (bigfloat b) (log a)))))))))
 
 ;; Handle a^b a little more carefully because the result is known to
 ;; be real when a is real and b is an integer.
@@ -1508,10 +1552,14 @@
 	 ;; a^b = exp(b*log(|a|) + %i*%pi*b)
 	 ;;     = exp(b*log(|a|))*exp(%i*%pi*b)
 	 ;;     = (-1)^b*exp(b*log(|a|))
-	 (* (exp (* b (log (abs a))))
-	    (if (oddp b) -1 1)))
+	 (with-extra-precision ((expt-extra-bits a b)
+				(a b))
+	   (* (exp (* b (log (abs a))))
+	      (if (oddp b) -1 1))))
 	(t
-	 (exp (* b (log a))))))
+	 (with-extra-precision ((expt-extra-bits a b)
+				(a b))
+	   (exp (* b (log a)))))))
 
 ;;; TO - External
 ;;;
