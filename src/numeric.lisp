@@ -91,7 +91,7 @@
 ;;;
 ;;;    BIGFLOAT converts a number to a BIGFLOAT or COMPLEX-BIGFLOAT.
 ;;; This is intended to convert CL numbers or Maxima (internal)
-;;; numbers to an bigfloat object.
+;;; numbers to a bigfloat object.
 (defun bigfloat (re &optional im)
   "Convert RE to a BIGFLOAT.  If IM is given, return a COMPLEX-BIGFLOAT"
   (cond (im
@@ -154,6 +154,69 @@
 (defmethod maxima::to ((z t))
   z)
 
+;; MAX-EXPONENT roughly computes the log2(|x|).  If x is real and x =
+;; 2^n*f, with |f| < 1, MAX-EXPONENT returns |n|.  For complex
+;; numbers, we return one more than the max of the exponent of the
+;; real and imaginary parts.
+(defmethod max-exponent ((x bigfloat))
+  (cl:abs (third (slot-value x 'real))))
+
+(defmethod max-exponent ((x complex-bigfloat))
+  (cl:1+ (cl:max (cl:abs (third (slot-value x 'real)))
+		 (cl:abs (third (slot-value x 'imag))))))
+
+(defmethod max-exponent ((x cl:float))
+  (cl:abs (nth-value 1 (cl:decode-float x))))
+
+(defmethod max-exponent ((x cl:rational))
+  (cl:ceiling (cl:log (cl:abs x) 2)))
+
+(defmethod max-exponent ((x cl:complex))
+  (cl:1+ (cl:max (max-exponent (cl:realpart x))
+		 (max-exponent (cl:imagpart x)))))
+
+;; When computing x^a using exp(a*log(x)), we need extra bits because
+;; the integer part of a*log(x) doesn't contribute to the accuracy of
+;; the result.  The number of extra bits needed is basically the
+;; "size" of a plus the number of bits for ceiling(log(x)).  We need
+;; ceiling(log(x)) extra bits because that's how many bits are taken
+;; up by the log(x).  The "size" of a is, basically, the exponent of
+;; a. If a = 2^n*f where |f| < 1, then the size is abs(n) because
+;; that's how many extra bits are added to the integer part of
+;; a*log(x).
+(defmethod expt-extra-bits ((x t) (a t))
+  (max 1 (+ (integer-length (max-exponent x))
+	    (max-exponent a))))
+
+;;; WITH-EXTRA-PRECISION - Internal
+;;;
+;;;   Executes the body BODY with extra precision.  The precision is
+;;; increased by EXTRA, and the list of variables given in VARLIST have
+;;; the precision increased.  The precision of the first value of the
+;;; body is then reduced back to the normal precision.
+(defmacro with-extra-precision ((extra (&rest varlist)) &body body)
+  (let ((result (gensym))
+	(old-fpprec (gensym)))
+    `(let ((,result
+	     (let ((,old-fpprec maxima::fpprec))
+	       (unwind-protect
+		    (let ((maxima::fpprec (cl:+ maxima::fpprec ,extra)))
+		      (let ,(mapcar #'(lambda (v)
+					;; Could probably do this in a faster
+					;; way, but conversion to a maxima
+					;; form automatically increases the
+					;; precision of the bigfloat to the
+					;; new precision.  Conversion of that
+					;; to a bigfloat object preserves the
+					;; precision.
+					`(,v (bigfloat:to (maxima::to ,v))))
+			     varlist)
+			,@body))
+		 (setf maxima::fpprec ,old-fpprec)))))
+       ;; Conversion of the result to a maxima number adjusts the
+       ;; precision appropriately.
+       (bigfloat:to (maxima::to ,result)))))
+     
 ;;; REALP
 
 ;; GCL doesn't have the REAL class!  But since a real is a rational or
@@ -1433,12 +1496,14 @@
 	  (bigfloat 1))
       (cond ((and (zerop a) (plusp (realpart b)))
 	     (* a b))
-	    ((= b (truncate b))
+	    ((and (typep b 'bigfloat) (= b (truncate b)))
 	     ;; Use the numeric^number method because it can be much
 	     ;; more accurate when b is an integer.
 	     (expt a (truncate b)))
 	    (t
-	     (exp (* b (log a)))))))
+	     (with-extra-precision ((expt-extra-bits a b)
+				    (a b))
+	       (exp (* b (log a))))))))
 
 (defmethod expt ((a cl:number) (b numeric))
   (if (zerop b)
@@ -1450,9 +1515,13 @@
       (cond ((and (zerop a) (plusp (realpart b)))
 	     (* a b))
 	    ((= b (truncate b))
-	     (expt a (truncate b)))
+	     (with-extra-precision ((expt-extra-bits a b)
+				    (a b))
+	       (expt a (truncate b))))
 	    (t
-	     (exp (* b (log (bigfloat a))))))))
+	     (with-extra-precision ((expt-extra-bits a b)
+				    (a b))
+	       (exp (* b (log (bigfloat a)))))))))
 
 (defmethod expt ((a numeric) (b cl:number))
   (if (zerop b)
@@ -1481,7 +1550,9 @@
 		 (let ((a2 (* a a)))
 		   (/ (* a2 a2))))
 		(t
-		 (exp (* (bigfloat b) (log a))))))))
+		 (with-extra-precision ((expt-extra-bits a b)
+					(a b))
+		   (exp (* (bigfloat b) (log a)))))))))
 
 ;; Handle a^b a little more carefully because the result is known to
 ;; be real when a is real and b is an integer.
@@ -1508,10 +1579,14 @@
 	 ;; a^b = exp(b*log(|a|) + %i*%pi*b)
 	 ;;     = exp(b*log(|a|))*exp(%i*%pi*b)
 	 ;;     = (-1)^b*exp(b*log(|a|))
-	 (* (exp (* b (log (abs a))))
-	    (if (oddp b) -1 1)))
+	 (with-extra-precision ((expt-extra-bits a b)
+				(a b))
+	   (* (exp (* b (log (abs a))))
+	      (if (oddp b) -1 1))))
 	(t
-	 (exp (* b (log a))))))
+	 (with-extra-precision ((expt-extra-bits a b)
+				(a b))
+	   (exp (* b (log a)))))))
 
 ;;; TO - External
 ;;;
@@ -1988,7 +2063,7 @@
 ;;; %PI - External
 ;;;
 ;;;   Return a value of pi with the same precision as the argument.
-;;;   For rationals, we return a single-float approximation.
+;;; For rationals, we return a single-float approximation.
 (defmethod %pi ((x cl:rational))
   (declare (ignore x))
   (cl:coerce cl:pi 'single-float))
@@ -2047,18 +2122,20 @@
   fraction.  When this is reached, we assume that the continued
   fraction did not converge.")
 
-;; Lentz's algorithm for evaluating continued fractions.
-;;
-;; Let the continued fraction be:
-;;
-;;      a1    a2    a3
-;; b0 + ----  ----  ----
-;;      b1 +  b2 +  b3 +
-;;
-;;
-;; Then LENTZ expects two functions, each taking a single fixnum
-;; index.  The first returns the b term and the second returns the a
-;; terms as above for a give n.
+;;; LENTZ - External
+;;;
+;;; Lentz's algorithm for evaluating continued fractions.
+;;;
+;;; Let the continued fraction be:
+;;;
+;;;      a1    a2    a3
+;;; b0 + ----  ----  ----
+;;;      b1 +  b2 +  b3 +
+;;;
+;;;
+;;; Then LENTZ expects two functions, each taking a single fixnum
+;;; index.  The first returns the b term and the second returns the a
+;;; terms as above for a give n.
 (defun lentz (bf af)
   (let ((tiny-value-count 0))
     (flet ((value-or-tiny (v)
@@ -2070,10 +2147,10 @@
 		     ((or double-float cl:complex)
 		      (sqrt least-positive-normalized-double-float))
 		     ((or bigfloat complex-bigfloat)
-		      ;; What is a "tiny" bigfloat?  Bigfloats of
-		      ;; unbounded exponents, so we need small, but
-		      ;; not zero.  Arbitrarily choose an exponent of
-		      ;; 50 times the precision.
+		      ;; What is a "tiny" bigfloat?  Bigfloats have
+		      ;; unbounded exponents, so we need something
+		      ;; small, but not zero.  Arbitrarily choose an
+		      ;; exponent of 50 times the precision.
 		      (expt 10 (- (* 50 maxima::$fpprec))))))
 		 v)))
       (let* ((f (value-or-tiny (funcall bf 0)))
@@ -2106,3 +2183,25 @@
 		    :format-control "~<Continued fraction failed to converge after ~D iterations.~%    Delta = ~S~>"
 		    :format-arguments (list *max-cf-iterations* (/ c d))))))))
 
+;;; SUM-POWER-SERIES - External
+;;;
+;;;   SUM-POWER-SERIES sums the given power series, adding terms until
+;;; the next term would not change the sum.
+;;;
+;;; The series to be summed is
+;;;
+;;;   S = 1 + sum(c[k]*x^k, k, 1, inf)
+;;;     = 1 + sum(prod(f[n]*x, n, 1, k), k, 1, inf)
+;;;
+;;; where f[n] = c[n]/c[n-1].
+;;;
+(defun sum-power-series (x f)
+  (let ((eps (epsilon x)))
+    (do* ((k 1 (+ 1 k))
+	  (sum 1 (+ sum term))
+	  (term (* x (funcall f 1))
+		(* term x (funcall f k))))
+	 ((< (abs term) (* eps (abs sum)))
+	  sum)
+      #+nil
+      (format t "~4d: ~S ~S ~S~%" k sum term (funcall f k)))))
