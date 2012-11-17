@@ -154,38 +154,65 @@
 (defmethod maxima::to ((z t))
   z)
 
+;; MAX-EXPONENT roughly computes the log2(|x|).  If x is real and x =
+;; 2^n*f, with |f| < 1, MAX-EXPONENT returns |n|.  For complex
+;; numbers, we return one more than the max of the exponent of the
+;; real and imaginary parts.
+(defmethod max-exponent ((x bigfloat))
+  (cl:abs (third (slot-value x 'real))))
 
-(defun expt-extra-bits (x a)
-  ;; When x^a using exp(a*log(x)), we need extra bits because the
-  ;; integer part of a*log(x) doesn't contribute to the accuracy of
-  ;; the result.  If x = 2^n*f, where |f| < 1, log2(x) = n + log(f).
-  ;; If a = 2^m*g, where |g| < 1, then a*log2(x) = a*n + a*log2(f) =
-  ;; a*n + 2^m*g*log2(f).
-  (declare (ignore x))
-  (let ((rp (realpart a)))
-    (if (typep rp '(or bigfloat complex-bigfloat))
-	(max 1 (third (slot-value rp 'real)))
-	(integer-length (truncate rp)))))
+(defmethod max-exponent ((x complex-bigfloat))
+  (cl:1+ (cl:max (cl:abs (third (slot-value x 'real)))
+		 (cl:abs (third (slot-value x 'imag))))))
 
-;; Executes the body BODY with extra precision.  The precision is
-;; increased by EXTRA, and the list of variables given in VARLIST have
-;; the precision increased.  The precision of the first value of the
-;; body is then reduced back to the normal precision.
+(defmethod max-exponent ((x cl:float))
+  (cl:abs (nth-value 1 (cl:decode-float x))))
+
+(defmethod max-exponent ((x cl:rational))
+  (cl:ceiling (cl:log (cl:abs x) 2)))
+
+(defmethod max-exponent ((x cl:complex))
+  (cl:1+ (cl:max (max-exponent (cl:realpart x))
+		 (max-exponent (cl:imagpart x)))))
+
+;; When computing x^a using exp(a*log(x)), we need extra bits because
+;; the integer part of a*log(x) doesn't contribute to the accuracy of
+;; the result.  The number of extra bits needed is basically the
+;; "size" of a plus the number of bits for ceiling(log(x)).  We need
+;; ceiling(log(x)) extra bits because that's how many bits are taken
+;; up by the log(x).  The "size" of a is, basically, the exponent of
+;; a. If a = 2^n*f where |f| < 1, then the size is abs(n) because
+;; that's how many extra bits are added to the integer part of
+;; a*log(x).
+(defmethod expt-extra-bits ((x t) (a t))
+  (max 1 (+ (integer-length (max-exponent x))
+	    (max-exponent a))))
+
+;;; WITH-EXTRA-PRECISION - Internal
+;;;
+;;;   Executes the body BODY with extra precision.  The precision is
+;;; increased by EXTRA, and the list of variables given in VARLIST have
+;;; the precision increased.  The precision of the first value of the
+;;; body is then reduced back to the normal precision.
 (defmacro with-extra-precision ((extra (&rest varlist)) &body body)
-  (let ((result (gensym)))
+  (let ((result (gensym))
+	(old-fpprec (gensym)))
     `(let ((,result
-	     (let ((maxima::fpprec (cl:+ maxima::fpprec ,extra)))
-	       (let ,(mapcar #'(lambda (v)
-				 ;; Could probably do this in a faster
-				 ;; way, but conversion to a maxima
-				 ;; form autoamatically increases the
-				 ;; precision of the bigfloat to the
-				 ;; new precision.  Conversion of that
-				 ;; to a bigfloat object preserves the
-				 ;; precision.
-				 `(,v (bigfloat:to (maxima::to ,v))))
-		      varlist)
-		 ,@body))))
+	     (let ((,old-fpprec maxima::fpprec))
+	       (unwind-protect
+		    (let ((maxima::fpprec (cl:+ maxima::fpprec ,extra)))
+		      (let ,(mapcar #'(lambda (v)
+					;; Could probably do this in a faster
+					;; way, but conversion to a maxima
+					;; form automatically increases the
+					;; precision of the bigfloat to the
+					;; new precision.  Conversion of that
+					;; to a bigfloat object preserves the
+					;; precision.
+					`(,v (bigfloat:to (maxima::to ,v))))
+			     varlist)
+			,@body))
+		 (setf maxima::fpprec ,old-fpprec)))))
        ;; Conversion of the result to a maxima number adjusts the
        ;; precision appropriately.
        (bigfloat:to (maxima::to ,result)))))
