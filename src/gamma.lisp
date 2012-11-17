@@ -946,8 +946,8 @@
 		(merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
 	    (when *debug-gamma* 
 	      (format t "~&in coninued fractions:~%")
-	      (format t "~&   : i = ~A~%" i)
-	      (format t "~&   : h = ~A~%" h))
+	      (mformat t "~&   : i = ~M~%" i)
+	      (mformat t "~&   : h = ~M~%" h))
 	    (setq d (add (mul an d) b))
 	    (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
 	      (setq d gm-min))
@@ -997,15 +997,15 @@
              (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
          (when *debug-gamma* 
            (format t "~&GAMMA-INCOMPLETE in series:~%")
-           (format t "~&   : i    = ~A~%" i)
-           (format t "~&   : ap   = ~A~%" ap)
-           (format t "~&   : x/ap = ~A~%" (div x ap))
-           (format t "~&   : del  = ~A~%" del)
-           (format t "~&   : sum  = ~A~%" sum))
+           (mformat t "~&   : i    = ~M~%" i)
+           (mformat t "~&   : ap   = ~M~%" ap)
+           (mformat t "~&   : x/ap = ~M~%" (div x ap))
+           (mformat t "~&   : del  = ~M~%" del)
+           (mformat t "~&   : sum  = ~M~%" sum))
          (when (eq ($sign (sub (simplify (list '(mabs) del)) 
                                (mul (simplify (list '(mabs) sum)) gm-eps)))
                    '$neg)
-           (when *debug-gamma* (format t "~&Series converged to ~A.~%" sum))
+           (when *debug-gamma* (mformat t "~&Series converged to ~M.~%" sum))
            (return 
              (sub (simplify (list '(%gamma) a))
                   ($rectform
@@ -2018,8 +2018,7 @@
 	 ;; The threshold is approximately erf(x) = 0.5.  (Doesn't
 	 ;; have to be super accurate.)  This gives max accuracy when
 	 ;; using the identity  erf(x) = 1 - erfc(x).
-	 (let ((z^2 (* z z))
-	       (eps (epsilon z)))
+	 (let ((z^2 (* z z)))
 	   (/ (* 2 z (sum-power-series z^2
 				       #'(lambda (k)
 					   (let ((2k (+ k k)))
