@@ -170,14 +170,14 @@
 	(reverse (mapfr1 cdrl nil))))
 
 (defmfun $rat (e &rest vars)
-  (let (varlist)
-    (cond ((not (null vars))
+  (cond ((not (null vars))
+	 (let (varlist)
 	   (joinvarlist vars)
 	   (lnewvar e)
-	   (rat0 e))
+	   (rat0 e)))
 	(t
 	 (lnewvar e)
-	 (rat0 e)))))
+	 (rat0 e))))
 
 (defun rat0 (exp)			;SIMP FLAGS?
   (if (mbagp exp)
@@ -952,7 +952,7 @@
 (defmfun $ratexpand (x)
   (if (mbagp x)
       (cons (car x) (mapcar '$ratexpand (cdr x)))
-      (let (($ratexpand t) ($ratfac nil) varlist)
+      (let (($ratexpand t) ($ratfac nil))
 	(ratdisrep (ratf x)))))
 
 (defun pdisrep*expand (a b)

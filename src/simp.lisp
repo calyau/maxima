@@ -960,8 +960,7 @@
   st1
      (cond ((atom w) nil)
            ((eq (caar w) 'mrat)
-            (let (varlist)
-              (cond ((or eqnflag
+            (cond ((or eqnflag
                        matrixflag
                        (and sumflag
                             (not (member 'trunc (cdar w) :test #'eq)))
@@ -972,7 +971,7 @@
                    (return
                      (ratf (cons '(mplus)
                                  (nconc (mapcar #'simplify (cons w (cdr x)))
-                                        (cdr res)))))))))
+                                        (cdr res))))))))
            ((eq (caar w) 'mequal)
             (setq eqnflag
                   (if (not eqnflag)
@@ -1634,8 +1633,7 @@
   st1
      (cond ((atom w) nil)
 	   ((eq (caar w) 'mrat)
-	    (let (varlist) 
-	      (cond ((or eqnflag matrixflag
+	    (cond ((or eqnflag matrixflag
 	               (and sumflag
 	                    (not (member 'trunc (cdar w) :test #'eq)))
 		       (spsimpcases (cdr x) w))
@@ -1645,7 +1643,7 @@
 	           (return 
 	             (ratf (cons '(mtimes)
 			         (nconc (mapcar #'simplify (cons w (cdr x)))
-					(cdr res)))))))))
+					(cdr res))))))))
 	   ((eq (caar w) 'mequal)
 	    (setq eqnflag
 		  (if (not eqnflag)
