@@ -198,6 +198,10 @@ limit(sin(x)/x,x,0,minus);
 numer:false;
 false;
 
+/* #2504 wrong answer for simple limit, limit(sin(x)+1/x, x, inf)=0 */
+limit(1/x + sin(x), x, inf);
+ind;
+
 /* Bug 593344 */
 limit(abs(infinity));
 inf;
@@ -1151,6 +1155,10 @@ declare(n,integer);
 done;
 limit ((sin(n*x) - n*x*cos(n*x))/n^2, x, %pi);
 -%pi*(-1)^n/n;
+
+/* #2503 Declaring x as an integer changes result of limit from 3 to inf */
+limit((2^n+3^n)^(1/n), n,inf);
+3;
 
 /* Bug ID: 2835634 - logcontract broken
  * Bug ID: 1467368 - logcontract returns unsimplified expr
