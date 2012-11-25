@@ -1840,7 +1840,7 @@ It appears in LIMIT and DEFINT.......")
 		     (cond (infl (cond ((null minfl) (return '$inf))
 				       (t (go oon))))
 			   (minfl (return '$minf))
-                           (indl
+                           ((> (length indl) 1)
                             ;; At this point we have a sum of '$ind. We factor 
                             ;; the sum and try again. This way we get the limit 
                             ;; of expressions like (a-b)*ind, where (a-b)--> 0.
@@ -2216,18 +2216,14 @@ It appears in LIMIT and DEFINT.......")
 			   hi-terms))        ; otherwise return list of high terms
 	     (setq compare (limit (m// (car l) hi-term) var val 'think))
 	     (cond
-	       ((infinityp compare)
-		(setq total 1)
+	       ((or (infinityp compare)
+		    (and (eq compare '$und)
+			 (zerop2 (limit (m// hi-term (car l)) var val 'think))))
+		(setq total 1)	; have found new high term
 		(setq hi-terms (ncons (setq hi-term (car l)))))
-	       ((eq compare '$und)
-		(let ((compare2 (limit (m// hi-term (car l)) var val 'think)))
-		  (cond ((zerop2 compare2)
-			 (setq total 1)
-			 (setq hi-terms (ncons (setq hi-term (car l)))))
-			(t nil))))
 	       ((zerop2 compare)  nil)
-	       ;; COMPARE IS IND OR FINITE-VALUED
-	       (t
+	       ;; COMPARE IS IND, FINITE-VALUED, or und in both directions
+	       (t		; add to list of high terms
 		(setq total (m+ total compare))
 		(setq hi-terms (append hi-terms (ncons (car l))))))))))
 
@@ -2319,8 +2315,9 @@ It appears in LIMIT and DEFINT.......")
 	 (let ((stren (istrength (cadr term))))
 	   (cond ((member (car stren) '(log var) :test #'eq)
 		  `(log ,term))
-		 ((eq (car stren) 'exp)
-		  (istrength (car (cddadr stren))))
+		 ((and (eq (car stren) 'exp)
+		       (eq (caar (second stren)) 'mexpt))
+		  (istrength (logred (second stren))))
 		 (t `(gen ,term)))))
 	((eq (caar term) 'mfactorial)
 	 (list 'fact term))
