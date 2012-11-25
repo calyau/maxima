@@ -14,6 +14,8 @@
  0);
 0;
 
+/* cases handled by LAPLACE in src/laplac.lisp */
+
 /* 0 */
 
 laplace (0, u, v);
@@ -162,7 +164,10 @@ laplace (delta (a*u), u, v);
 laplace (delta (a*u - b), u, v);
 exp (- b*v/a) / abs (a);
 
-/* cases which specint handles */
+/* cases which specint handles
+ * I haven't verified the following rules -- these tests only verify that
+ * laplace returns the result advertised in specint's comments.
+ */
 
 /* Algorithm 1: Laplace transform of c*t^v*exp(-s*t+e*f) */
 
@@ -185,6 +190,9 @@ exp (- b*v/a) / abs (a);
  * exp(-a*exp(-t))
  *   -> a^(-p)*gamma(p,a)
  */
+
+laplace (-exp (-a * exp (-u)), u, v);
+-gamma_greek(v,a)/a^v$
 
 /* Algorithm 1.5: Laplace transform of exp(exp(t))
  * exp(-a*exp(t))
@@ -491,6 +499,9 @@ n!/v^(n + 1);
 makefact (laplace ((u - a)^n * unit_step (u - a), u, v));
 n! * exp (- a*v) / v^(n + 1);
 
+makefact (laplace (u^n * exp (- b*u), u, v));
+n! / (v + b)^(n + 1);
+
 makefact (ratsimp (laplace ((u - a)^n * exp (- b*(u - a)) * unit_step (u - a), u, v)));
 n!/(v + b)^(n + 1) * exp (- a*v);
 
@@ -503,6 +514,10 @@ gamma (q + 1) / v^(q + 1);
 
 laplace (u^(1/n), u, v);
 gamma (1/n + 1) / v^(1/n + 1);
+
+(laplace (u^(1/n) * exp(-b*u), u, v),
+ if ratsimp (%% - gamma (1/n + 1) / (v + b)^(1/n + 1)) = 0 then true else %%);
+true;
 
 /* exponential approach */
 
