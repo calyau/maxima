@@ -33,7 +33,7 @@
 (defun fixuprest (rest)
        ;;;REST IS A PRODUCT WITHOUT THE MTIMES.FIXUPREST PUTS BACK THE MTIMES
   (cond ((null rest) 1)
-	((cdr rest) (cons '(mtimes simp) rest))
+	((cdr rest) (cons '(mtimes) rest))
 	(t (car rest))))
 
 (defmacro posint (x)
@@ -56,7 +56,7 @@
   (cond ((or *nounsflag* (member '%laplace *nounl* :test #'eq))
          (setq fun (remlaplace fun))))
   (cond ((and (null (atom fun)) (eq (caar fun) 'mequal))
-	 (list '(mequal simp)
+	 (list '(mequal)
 	       (laplace (cadr fun) parm)
 	       (laplace (caddr fun) parm)))
 	(t (laplace fun parm))))
@@ -104,7 +104,7 @@
 		     ((eq op '%integrate)
 		      (lapint fun parm dvar))
 		     ((eq op '%sum)
-		      (list '(%sum simp)
+		      (list '(%sum)
 			    (laplace (cadr fun) parm)
 			    (caddr fun)
 			    (cadddr fun)
@@ -159,7 +159,7 @@
 (defun laptimes (fun parm)
        ;;;EXPECTS A LIST (PERHAPS EMPTY) OF FUNCTIONS MULTIPLIED TOGETHER WITHOUT THE MTIMES
        ;;;SEES IF IT CAN APPLY THE FIRST AS A TRANSFORMATION ON THE REST OF THE FUNCTIONS
-  (cond ((null fun) (list '(mexpt simp) parm -1.))
+  (cond ((null fun) (list '(mexpt) parm -1.))
 	((null (cdr fun)) (laplace (car fun) parm))
 	((freeof var (car fun))
 	 (simptimes (list '(mtimes)
@@ -242,9 +242,9 @@
      (setq result
       (cond
 	(rest (sratsimp ($at (laptimes rest parm)
-			     (list '(mequal simp)
+			     (list '(mequal)
 				   parm
-				   (list '(mplus simp)
+				   (list '(mplus)
 					 parm
 					 (afixsign (cadr ab)
 						   nil))))))
@@ -326,7 +326,7 @@
 		     '(mplus %sin %cos %sinh %cosh) :test #'eq))
 	  (laptimes (cons base-of-fun
 			  (cons (cond ((= power 2) base-of-fun)
-				      (t (list '(mexpt simp)
+				      (t (list '(mexpt)
 					       base-of-fun
 					       (1- power))))
 				rest)) parm))
@@ -347,7 +347,7 @@
                            (errset ($defint f x a '$inf))))))))
     (if tryint
 	(car tryint)
-	(list '(%integrate simp) f x a '$inf))))
+	(list '(%integrate) f x a '$inf))))
 
  ;;;CREATES UNIQUE NAMES FOR VARIABLE OF INTEGRATION
 (defun createname (head tail)
@@ -381,9 +381,9 @@
 ;;;COMPUTES %E**(W*B*%I)*F(S-W*A*%I) WHERE W=-1 IF SIGN IS T ELSE W=1
 (defun mostpart (f parm sign a b)
   (let ((substinfun ($at f
-			 (list '(mequal simp)
+			 (list '(mequal)
 			       parm
-			       (list '(mplus simp) parm (afixsign (list '(mtimes) a '$%i) sign))))))
+			       (list '(mplus) parm (afixsign (list '(mtimes) a '$%i) sign))))))
     (if (zerop1 b)
 	substinfun
 	(list '(mtimes)
@@ -535,7 +535,7 @@
   (prog (tryint mult)
      (and ($unknown fun)(go skip))
      (setq mult (simptimes (list '(mtimes) (exponentiate
-					    (list '(mtimes simp) -1 var parm)) fun) 1 nil))
+					    (list '(mtimes) -1 var parm)) fun) 1 nil))
      (with-new-context (context)
        (progn
          (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
@@ -549,17 +549,17 @@
 			       (caaar tryint))
 			  '%integrate))
 	  (return (car tryint)))
-     skip (return (list '(%laplace simp) fun var parm))))
+     skip (return (list '(%laplace) fun var parm))))
 
 
 (defun lapdiff (fun parm)
 ;;;FUN IS OF THE FORM DIFF(F(T),T,N) WHERE N IS A POSITIVE INTEGER
   (prog (difflist degree frontend resultlist newdlist order arg2)
      (setq newdlist (setq difflist (copy-tree (cddr fun))))
-     (setq arg2 (list '(mequal simp) var 0))
+     (setq arg2 (list '(mequal) var 0))
      a    (cond ((null difflist)
-		 (return (cons '(%derivative simp)
-			       (cons (list '(%laplace simp)
+		 (return (cons '(%derivative)
+			       (cons (list '(%laplace)
 					   (cadr fun)
 					   var
 					   parm)
@@ -571,10 +571,10 @@
      (setq difflist (cdr (setq frontend (cdr difflist))))
      (go a)
      out  (cond ((null (posint degree))
-		 (return (list '(%laplace simp) fun var parm))))
+		 (return (list '(%laplace) fun var parm))))
      (cond (frontend (rplacd frontend difflist))
 	   (t (setq newdlist difflist)))
-     (cond (newdlist (setq fun (cons '(%derivative simp)
+     (cond (newdlist (setq fun (cons '(%derivative)
 				     (cons (cadr fun)
 					   newdlist))))
 	   (t (setq fun (cadr fun))))
@@ -614,17 +614,17 @@
      (cond ((cddr newfun)
 	    (cond ((and (freeof var (caddr newfun))
 			(freeof var (cadddr newfun)))
-		   (return (list '(%integrate simp)
+		   (return (list '(%integrate)
 				 (laplace (car newfun) parm dvar)
 				 dvar
 				 (caddr newfun)
 				 (cadddr newfun))))
 		  (t (go giveup))))
-	   (t (return (list '(%integrate simp)
+	   (t (return (list '(%integrate)
 			    (laplace (car newfun) parm dvar)
 			    dvar))))
      giveup
-     (return (list '(%laplace simp) fun var parm))
+     (return (list '(%laplace) fun var parm))
      convolutiontest
      (setq newfun ($factor (car newfun)))
      (cond ((eq (caar newfun) 'mtimes)
@@ -688,7 +688,7 @@
 		 ($ilt (caddr exp) ils ilt)))
 	  ((zerop1 exp) 0)
 	  ((freeof ils exp)
-	   (list '(%ilt simp) exp ils ilt))
+	   (list '(%ilt) exp ils ilt))
 	  (t (ilt0 exp)))))
 
 (defun maxima-rationalp (le v)
@@ -713,14 +713,14 @@
 				  (cadr exp))))))
      (setq ratarg (ratrep* exp))
      (or (maxima-rationalp varlist ils)
-	 (return (list '(%ilt simp) exp ils ilt)))
+	 (return (list '(%ilt) exp ils ilt)))
      (setq ratform (car ratarg))
      (setq denom (ratdenominator (cdr ratarg)))
      (setq frpart (pdivide (ratnumerator (cdr ratarg)) denom))
      (setq wholepart (car frpart))
      (setq frpart (ratqu (cadr frpart) denom))
      (cond ((not (zerop1 (car wholepart)))
-	    (return (list '(%ilt simp) exp ils ilt)))
+	    (return (list '(%ilt) exp ils ilt)))
 	   ((zerop1 (car frpart)) (return 0)))
      (setq num (car frpart) denom (cdr frpart))
      (setq y (oldcontent denom))
@@ -856,7 +856,7 @@
      (and (equal degr 2) (go quadratic))
      (and (equal degr 3) (zerop1 c) (zerop1 d)
 	  (go cubic))
-     (return (list '(%ilt simp) (div* (disrep p)(disrep q)) ils ilt))
+     (return (list '(%ilt) (div* (disrep p)(disrep q)) ils ilt))
      cubic (setq  a (disrep (polcoef q 3))
 		  r (simpnrt (div* e a) 3))
      (setq d (div* (disrep p)(lapprod a (lapsum
@@ -873,7 +873,7 @@
      (setq sign (cond ((free discrim '$%i) (asksign discrim)) (t '$positive))
 	   term1 '(%cos)
 	   term2 '(%sin))
-     (setq degr (expo '$%e (lapprod ilt d (power c -1) '((rat simp) -1 2))))
+     (setq degr (expo '$%e (lapprod ilt d (power c -1) '((rat) -1 2))))
      (cond ((eq sign '$zero)
 	    (return (simptimes (lapprod degr (lapsum (div* b1 c)
 						     (lapprod
@@ -897,7 +897,7 @@
      (setq discrim (simptimes (lapprod
 			       discrim
 			       ilt
-			       '((rat simp) 1 2)
+			       '((rat) 1 2)
 			       c)
 			      1
 			      t))

@@ -547,5 +547,12 @@ true;
 
 /* http://www.stanford.edu/~boyd/ee102/laplace-table.pdf */
 
+/* miscellany */
+
+/* bug reported to mailing list 2012-11-25: laplace prevents user-defined simplification */
+
+(kill (foo), tellsimpafter ('laplace (foo (w), w, x), FOO (x)), laplace (foo (w), w, x));
+FOO (x);
+
 (remove (n, integer), killcontext (mycontext));
 done;
