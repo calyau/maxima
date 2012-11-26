@@ -615,9 +615,36 @@ The natural logarithm of the gamma function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@deffn {Function} gamma_greek (@var{a}, @var{z})
+
+The lower incomplete gamma function (A&S 6.5.2):
+
+@ifnottex
+@example
+                         z
+                        /
+                        [  a - 1   - t
+    gamma_greek(a, z) = I t      %e    dt
+                        ]
+                        /
+                         0
+@end example
+@end ifnottex
+@tex
+$$\gamma\left(a , z\right)=\int_{0}^{z}{t^{a-1}\,e^ {- t }\;dt}$$
+@end tex
+
+See also @code{gamma_incomplete} (upper incomplete gamma function).
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} gamma_incomplete (@var{a}, @var{z})
 
-The incomplete upper gamma function A&S 6.5.2:
+The incomplete upper gamma function A&S 6.5.3:
 
 @ifnottex
 @example
