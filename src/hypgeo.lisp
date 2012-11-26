@@ -1750,6 +1750,8 @@
 ;;;
 ;;; exp(-a*exp(t))
 ;;;   -> a^(-p)*gamma_incomplete(-p,a)
+;;; NOTE: CODE BELOW DOES NOT MATCH FORMULA AS STATED
+;;; CODE APPEARS TO BE CORRECT, TO JUDGE BY NUMERICAL EXAMPLES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun f37p147 (c a)
