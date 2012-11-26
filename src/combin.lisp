@@ -1143,7 +1143,7 @@
 	 (merror (intl:gettext "sum: sum is divergent.")))))
 
 (defun isum1 (e lo)
-  (cond ((or (free e *var*) (atom e))
+  (cond ((free e *var*)
 	 (unless (eq (asksign e) '$zero)
 	   (throw 'isumout 'divergent)))
 	((ratp e *var*)
