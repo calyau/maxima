@@ -2493,11 +2493,13 @@ forget(a>0,b>0);
 
 /* Problem 446: NOUN */
 integrate(%e^(f*z)/(b*c^(d*z)+a),z);
-a*log(c)*d
- *'integrate(%e^(f*z)/(b^2*(log(c)*d-f)*%e^(2*log(c)*d*z)
+'integrate(%e^(f*z)/(b*c^(d*z)+a),z);
+/* a*log(c)*d
+   *'integrate(%e^(f*z)/(b^2*(log(c)*d-f)*%e^(2*log(c)*d*z)
                       +a*b*(2*log(c)*d-2*f)*%e^(log(c)*d*z)+a^2*(log(c)*d-f)),
              z)
  -%e^(f*z)/(b*(log(c)*d-f)*%e^(log(c)*d*z)+a*(log(c)*d-f));
+*/
 
 /* Problem 447: NOUN */
 integrate(%e^(d*z)/(b*%e^(c*z)+a)^2,z);
@@ -6119,13 +6121,15 @@ integrate(z^4/(b*c^(d*z)+a)^2,z);
 
 /* Problem 791: NOUN */
 integrate(z*%e^(f*z)/(b*c^(d*z)+a),z);
-'integrate((a*(log(c)^2*d^2-log(c)*d*f)*z+a*log(c)*d)*%e^(f*z)
+'integrate(z*%e^(f*z)/(b*c^(d*z)+a),z);
+/*  'integrate((a*(log(c)^2*d^2-log(c)*d*f)*z+a*log(c)*d)*%e^(f*z)
             /(b^2*(f^2-2*log(c)*d*f+log(c)^2*d^2)*%e^(2*log(c)*d*z)
              +a*b*(2*f^2-4*log(c)*d*f+2*log(c)^2*d^2)*%e^(log(c)*d*z)
              +a^2*(f^2-2*log(c)*d*f+log(c)^2*d^2)),z)
  -((log(c)*d-f)*z+1)*%e^(f*z)/(b*(f^2-2*log(c)*d*f+log(c)^2*d^2)
                                 *%e^(log(c)*d*z)
                               +a*(f^2-2*log(c)*d*f+log(c)^2*d^2));
+*/
 
 /* Problem 792: NOUN */
 integrate(z*%e^(d*z)/(b*%e^(c*z)+a),z);
@@ -6152,7 +6156,8 @@ integrate(z*%e^(c*z)/(b*%e^(c*z)+a),z);
 
 /* Problem 796: NOUN */
 integrate(z^2*%e^(f*z)/(b*c^(d*z)+a),z);
-'integrate((a*(log(c)*d*f^2-2*log(c)^2*d^2*f+log(c)^3*d^3)*z^2
+'integrate(z^2*%e^(f*z)/(b*c^(d*z)+a),z);
+/* 'integrate((a*(log(c)*d*f^2-2*log(c)^2*d^2*f+log(c)^3*d^3)*z^2
             +a*(2*log(c)^2*d^2-2*log(c)*d*f)*z+2*a*log(c)*d)
             *%e^(f*z)
             /(b^2*(-f^3+3*log(c)*d*f^2-3*log(c)^2*d^2*f+log(c)^3*d^3)
@@ -6163,6 +6168,7 @@ integrate(z^2*%e^(f*z)/(b*c^(d*z)+a),z);
  -((f^2-2*log(c)*d*f+log(c)^2*d^2)*z^2+(2*log(c)*d-2*f)*z+2)*%e^(f*z)
   /(b*(-f^3+3*log(c)*d*f^2-3*log(c)^2*d^2*f+log(c)^3*d^3)*%e^(log(c)*d*z)
    +a*(-f^3+3*log(c)*d*f^2-3*log(c)^2*d^2*f+log(c)^3*d^3));
+*/
 
 /* Problem 797: OK */
 integrate(z^2*%e^(c*z)/(b*%e^(c*z)+a),z);
@@ -6174,7 +6180,8 @@ integrate(z^2*%e^(c*z)/(b*%e^(c*z)+a),z);
 
 /* Problem 798: NOUN */
 integrate(z^3*%e^(f*z)/(b*c^(d*z)+a),z);
-'integrate((a*(-log(c)*d*f^3+3*log(c)^2*d^2*f^2-3*log(c)^3*d^3*f+log(c)^4*d^4)
+'integrate(z^3*%e^(f*z)/(b*c^(d*z)+a),z);
+/* 'integrate((a*(-log(c)*d*f^3+3*log(c)^2*d^2*f^2-3*log(c)^3*d^3*f+log(c)^4*d^4)
              *z^3
             +a*(3*log(c)*d*f^2-6*log(c)^2*d^2*f+3*log(c)^3*d^3)*z^2
             +a*(6*log(c)^2*d^2-6*log(c)*d*f)*z+6*a*log(c)*d)
@@ -6192,6 +6199,7 @@ integrate(z^3*%e^(f*z)/(b*c^(d*z)+a),z);
   /(b*(f^4-4*log(c)*d*f^3+6*log(c)^2*d^2*f^2-4*log(c)^3*d^3*f+log(c)^4*d^4)
      *%e^(log(c)*d*z)
    +a*(f^4-4*log(c)*d*f^3+6*log(c)^2*d^2*f^2-4*log(c)^3*d^3*f+log(c)^4*d^4));
+*/
 
 /* Problem 799: OK */
 integrate(z^3*%e^(c*z)/(b*%e^(c*z)+a),z);

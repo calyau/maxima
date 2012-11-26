@@ -1063,14 +1063,19 @@
     (putprop e (cdr d) 'rischdiff)
     (putprop e (cdr c) 'rischarg)))
 
+;; order of expressions for risch.
+;; expressions containing erf and li last.
+;; then order by size of expression to guarantee that
+;; any subexpressions are considered smaller.
+;; this relation should be transitive, since it is called by sort. 
 (defun intgreat (a b)
   (cond ((and (not (atom a)) (not (atom b)))
 	 (cond ((and (not (freeof '%erf a)) (freeof '%erf b)) t)
 	       ((and (not (freeof '$li a)) (freeof '$li b)) t)
 	       ((and (freeof '$li a) (not (freeof '$li b))) nil)
 	       ((and (freeof '%erf a) (not (freeof '%erf b))) nil)
-	       ((not (free b a)) nil)
-	       ((not (free a b)) t)
+	       ((> (conssize a) (conssize b)) t)
+	       ((< (conssize a) (conssize b)) nil)
 	       (t (great (resimplify (fixintgreat a))
 			 (resimplify (fixintgreat b))))))
 	(t (great (resimplify (fixintgreat a))

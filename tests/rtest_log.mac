@@ -386,7 +386,8 @@ log(1-z)*log(z)^3/3-2*(log(1-z)*log(z)^3/6+li[2](z)*log(z)^2/2-li[3](z)*log(z)
                                           +li[4](z))$
 
 integrate(log(z)^2*log(1-z)/(1-z),z);
-'integrate(log(1-z)^2*log(z)/z,z)-log(1-z)^2*log(z)^2/2;
+'integrate(log(z)^2*log(1-z)/(1-z),z);
+/*  'integrate(log(1-z)^2*log(z)/z,z)-log(1-z)^2*log(z)^2/2;  */
 
 /* Hier fehlen noch Integrale */
 
