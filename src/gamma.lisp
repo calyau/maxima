@@ -1952,7 +1952,9 @@
 (defun complex-erf (z)
   (let ((result
           (*
-            (/ (sqrt (expt z 2)) z)
+	    (if (< (realpart z) 0.0)
+		-1
+	      1)
             (- 1.0 
               (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
     (cond
