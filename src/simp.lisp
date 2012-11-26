@@ -552,6 +552,19 @@
 		    (funcall w x 1 y))
 		   (t (simpargs x y)))))))
 
+;; EQTEST returns an expression which is the same as X
+;; except that it is marked with SIMP and maybe other flags from CHECK.
+;;
+;; Following description is inferred from the code. Dunno why the function is named "EQTEST".
+;;
+;; (1) if X is already marked with SIMP flag or doesn't need it: return X.
+;; (2) if X is pretty much the same as CHECK (same operator and same arguments),
+;; then return CHECK after marking it with SIMP flag.
+;; (3) if operator of X has the MSIMPIND property, replace it
+;; with value of MSIMPIND (something like '(MPLUS SIMP)) and return X.
+;; (4) if X or CHECK is an array expression, return X after marking it with SIMP and ARRAY flags.
+;; (5) otherwise, return X after marking it with SIMP flag.
+
 (defmfun eqtest (x check)
   (let ((y nil))
     (cond ((or (atom x)
