@@ -58,5 +58,5 @@
         ((mlist simp) "rtest_log")
         ((mlist simp) "rtest_power" 19 20 26 58 62 65)
         "rtestdefstruct"
-        ((mlist) "rtest_laplace" 29 47 48 49 52 57 58 59 60)
+        ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
 	))
