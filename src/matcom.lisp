@@ -664,36 +664,6 @@
 	   ((atom p) (compileatom e p))
 	   ((eq (caar p) 'mplus) (compileplus e p))
 	   ((eq (caar p) 'mtimes) (compiletimes e p))
-	   ((and (eq (caar p) 'mexpt)
-		 (fixedmatchp (cadr p)))
-	    (emit (list 'setq
-			(genref)
-			(list 'findexpon
-			      e
-			      (memqargs (cadr p))
-			      ''mexpt)))
-	    (compilematch (car reflist) (caddr p)))
-	   ((and (eq (caar p) 'mexpt)
-		 (fixedmatchp (cadr p)))
-	    (emit (list 'setq
-			(genref)
-			(list 'findbase
-			      e
-			      (memqargs (caddr p))
-			      ''mexpt)))
-	    (compilematch (car reflist) (cadr p)))
-	   ((eq (caar p) 'mexpt)
-	    (emit (list 'setq
-			(genref)
-			(list 'findbe e)))
-	    (emit (list 'setq
-			(genref)
-			(list 'kar (cadr reflist))))
-	    (compilematch (car reflist) (cadr p))
-	    (emit (list 'setq
-			(cadr reflist)
-			(list 'kdr (cadr reflist))))
-	    (compilematch (cadr reflist) (caddr p)))
 	   (t (compileatom (list 'kaar e)
 			   (caar p))
 	      (emit (list 'setq
