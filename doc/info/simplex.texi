@@ -111,7 +111,7 @@ If the minimum exists, @code{minimize_lp} returns a list which
 contains the minimum value of the objective function and a list of
 decision variable values for which the minimum is attained. If the
 problem is not bounded, @code{minimize_lp} returns "Problem not
-bounded!" and if the problem is not feasible, it returns "Ploblem not
+bounded!" and if the problem is not feasible, it returns "Problem not
 feasible!".
 
 The decision variables are not assumed to be nonegative by default. If
