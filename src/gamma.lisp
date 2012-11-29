@@ -2401,6 +2401,22 @@
 
 ;;; ----------------------------------------------------------------------------
 
+(in-package :bigfloat)
+(defun bf-erfi (z)
+  (flet ((erfi (z)
+	   ;; Use the relationship erfi(z) = -%i*erf(%i*z)
+	   (let* ((iz (complex (- (imagpart z)) (realpart z))) ; %i*z
+		  (result (bf-erf iz)))
+	     (complex (imagpart result) (- (realpart result))))))
+    ;; Take care to return real results when the argument is real.
+    (if (realp z)
+	(if (minusp z)
+	    (- (bf-erfi (- z)))
+	    (realpart (erfi z)))
+	(erfi z))))
+
+(in-package :maxima)
+
 (defun simp-erfi (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -2414,28 +2430,11 @@
 
     ;; Check for numerical evaluation. Use erfi(z) = -%i*erf(%i*z).
 
-    ((float-numerical-eval-p z)
-     ;; For a real argument z the value of erfi is real.
-     (realpart (* (complex 0 -1) (complex-erf (complex 0 ($float z))))))
-    ((complex-float-numerical-eval-p z)
-     (complexify 
-       (* 
-         (complex 0 -1)
-         (complex-erf 
-           (complex (- ($float ($imagpart z))) ($float ($realpart z)))))))
-    ((bigfloat-numerical-eval-p z)
-     ;; For a real argument z the value of erfi is real.
-     ($realpart
-       (mul -1
-         '$%i
-         (complex-bfloat-erf ($bfloat (mul '$%i z))))))
-    ((complex-bigfloat-numerical-eval-p z)
-     ($rectform
-       (mul -1
-         '$%i
-         (complex-bfloat-erf 
-           (add ($bfloat (mul -1 ($imagpart z)))
-                (mul '$%i ($bfloat ($realpart z))))))))
+    ((or (float-numerical-eval-p z)
+	 (complex-float-numerical-eval-p z)
+	 (bigfloat-numerical-eval-p z)
+	 (complex-bigfloat-numerical-eval-p z))
+     (to (bigfloat::bf-erfi (bigfloat:to z))))
 
     ;; Argument simplification
 
