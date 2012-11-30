@@ -456,19 +456,20 @@ BLURF1 (1729 - 100, 100 - 17, 0, 29 - 100);
 (nzc (e) := constantp (e) and e # 0,
  matchdeclare ([aa, bb], constantp, [xx, yy, zz], nzc),
  declare (C1, constant),
- r1: first (tellsimpafter (quux (aa, bb), foo (bb, aa))),
- r2: first (tellsimpafter (foo (aa, bb), bar (aa*bb))),
- r3: first (tellsimpafter (baz (aa, bb), foo (bb, aa))),
+ r1: first (tellsimp (quux (aa, bb), foo (bb, aa))),
+ r2: first (tellsimp (foo (aa, bb), bar (aa*bb))),
+ r3: first (tellsimp (baz (aa, bb), foo (bb, aa))),
  0);
 0;
 
-baz (%pi, %i);
-foo (%i, %pi);
-
-/* quux (73, C1) => foo (C1, 73), but q1: quux (73, C1) => bar (C1*73);
- * strangeness related to how Maxima applies multiple rules,
- * or is it due to resimplification at some step??
+/* tellsimp-defined rules are applied one after another.
+ * Not so with tellsimpafter -- *AFTERFLAG prevents successive simplifications.
+ * I suppose the difference is just an accident of history.
  */
+
+baz (%pi, %i);
+bar (%i*%pi);
+
 q1: quux (73, C1);
 bar (C1*73);
 
