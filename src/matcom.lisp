@@ -189,7 +189,8 @@
 	       (cond ((cdr p)
 		      (setq leftover (cons (car p) leftover))
 		      (setq p (cdr p))
-		      (go a1)))
+		      (go a1))
+                      (leftover (setq leftover (cons (car p) leftover)) (setq p nil) (go a1)))
 	       (setq boundlist (cons (caaar p) boundlist))
 	       (emit (list 'msetq
 			   (caaar p)
@@ -285,7 +286,8 @@
 	       (cond ((cdr p)
 		      (setq leftover (cons (car p) leftover))
 		      (setq p (cdr p))
-		      (go a1)))
+		      (go a1))
+                     (leftover (setq leftover (cons (car p) leftover)) (setq p nil) (go a1)))
 	       (setq boundlist (cons (caaar p) boundlist))
 	       (emit (list 'msetq
 			   (caaar p)
