@@ -14,6 +14,7 @@ echo "sharefiles = \\"
 # last line.
 
 find ../share -type f |
+egrep -v '\.ERR$' |
 egrep -v 'CVS|Makefile(\.in|\.am)?|^\./Makefile|\.gitignore' |
 egrep -v '/fortran/' |
 egrep -v 'colnew/ex./' |
