@@ -1431,7 +1431,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	 
 	(t (merror "A recursion relation for ~:M isn't known to Maxima" fn))))
     
-;; See A & S Table 2.2, page 774.
+;; See A & S Table 22.2, page 774.
 
 (defun $orthopoly_weight (fn arg)
   (if (not ($listp arg)) 
@@ -1515,7 +1515,7 @@ variable ~:M" arg (car (last arg))))
 	    `((mlist) ((mexpt) $%e ((mtimes) -1 ((mexpt) ,x 2)))
 	      ((mtimes ) -1 $inf) $inf))))
 
-	(t (merror "a weight for ~:m isn't known to maxima" fn))))
+	(t (merror "A weight for ~:M isn't known to Maxima" fn))))
     
 
     
