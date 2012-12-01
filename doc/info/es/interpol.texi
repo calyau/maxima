@@ -1,4 +1,4 @@
-@c English version: 2008-11-19
+@c English version: 2012-12-01
 @menu
 * Introducci@'on a interpol::
 * Funciones y variables para interpol::
@@ -37,6 +37,8 @@ Mediante el argumento @var{option} es posible seleccionar el nombre de la variab
 
 T@'engase en cuenta que cuando se trabaja con polinomios de grado alto, los
 c@'alculos con n@'umeros decimales en coma flotante pueden ser muy inestables.
+
+V@'eanse tambi@'en @code{linearinterpol}, @code{cspline} y @code{ratinterpol}.
 
 Ejemplos:
 
@@ -140,6 +142,8 @@ En los dos primeros casos los pares se ordenan con respecto a la primera coorden
 
 Mediante el argumento @var{option} es posible seleccionar el nombre de la variable independiente, que por defecto es @code{'x}; para definir otra, escr@'{@dotless{i}}base algo como @code{varname='z}.
 
+V@'eanse tambi@'en @code{lagrange}, @code{cspline} y @code{ratinterpol}.
+
 Ejemplos:
 
 @example
@@ -221,6 +225,8 @@ Esta funci@'on dispone de tres opciones para acomodarse a necesidades concretas:
 @item
 @code{'varname}, por defecto @code{'x}, es el nombre de la variable independiente.
 @end itemize
+
+V@'eanse tambi@'en @code{lagrange}, @code{linearinterpol} y @code{ratinterpol}.
 
 Ejemplos:
 
@@ -322,6 +328,8 @@ Esta funci@'on dispone de dos opciones para acomodarse a necesidades concretas:
 @item
 @code{'varname}, por defecto @code{'x}, es el nombre de la variable independiente.
 @end itemize
+
+V@'eanse tambi@'en @code{lagrange}, @code{linearinterpol}, @code{cspline}, @code{minpack_lsquares} y @code{lbfgs}.
 
 Ejemplos:
 
