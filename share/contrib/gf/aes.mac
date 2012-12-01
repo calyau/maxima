@@ -21,7 +21,7 @@
    Copyright Volker van Nek, 2012
    
    
-   Functions in this file work in Maxima version 5.28 or higher.
+   Functions in this file work in Maxima version 5.29 or higher.
    (Or download src/numth.lisp from git and compile and load numth.lisp.)
    
    The example at the bottom of this file is taken from the excellent
@@ -75,7 +75,7 @@ mix_columns(state) := block([mixed],
    state : mat_n2p(state),
    mixed : matrix(),
    for i:1 thru 4 do 
-      mixed : addcol(mixed, gf_matmul(MC, col(state, i))),
+      mixed : addcol(mixed, gf_matmult(MC, col(state, i))),
    mat_p2n(mixed) )$
 
 
@@ -162,7 +162,7 @@ inv_mix_columns(state) := block([mixed],
    state : mat_n2p(state),
    mixed : matrix(),
    for n:1 thru 4 do 
-      mixed : addcol(mixed, gf_matmul(inv_MC, col(state, n))),
+      mixed : addcol(mixed, gf_matmult(inv_MC, col(state, n))),
    mat_p2n(mixed) )$
 
 
