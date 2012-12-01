@@ -532,7 +532,7 @@ scbrt(a, p) := block( [x, b:1, h1,h2,h3, c,c_1,c_2, om,omega_1, p3],
       error("ERROR: First argument must be a cubic residue."),
    unless redei(a, b, p, om[1], p3) do b : b+1,
 
-   gf_minset(p, x^3 + b*x + a), 
+   gf_minimal_set(p, x^3 + b*x + a), 
    h1 : gf_exp(x, p), /* get the benefit from gf_exp in numth.lisp (VvN) */
    h2 : gf_exp(h1, p3),
    h3 : gf_exp(x, (?ash(p, 1) + 1)/3),
