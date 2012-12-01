@@ -85,22 +85,22 @@ gf_set(123127, 5, x^5+2*x+1);
 gf_set(7, 10, x^10+5*x^2+x+5);
 [x, x^10+5*x^2+x+5];
 
-gf_exp(gf_prim(), gf_ind(x^9+3*x^6+x^5+2*x^2+6));
+gf_exp(gf_primitive(), gf_index(x^9+3*x^6+x^5+2*x^2+6));
 x^9+3*x^6+x^5+2*x^2+6;
 
-gf_minpoly(x^9+3*x^6+x^5+2*x^2+6);
+gf_minimal_poly(x^9+3*x^6+x^5+2*x^2+6);
 z^10+5*z^9+6*z^8+5*z^6+3*z^5+4*z^4+z^3+2*z^2+4*z+3;
 
 gf_set(19);
 [2, x];
 
-gf_exp(gf_prim(), gf_ind(17));
+gf_exp(gf_primitive(), gf_index(17));
 17;
 
 gf_set(10000000019);
 [2, x];
 
-gf_exp(gf_prim() ,gf_ind(3));
+gf_exp(gf_primitive() ,gf_index(3));
 3;
 
 gf_set(32717, 11, x^11+x^5+x^2+x+1);
@@ -112,10 +112,10 @@ gf_set(211, 17, x^17+2*x^2+1);
 gf_set(2, 20, x^20+x^3+x^2+x+1);
 [x^2+x, x^20+x^3+x^2+x+1];
 
-gf_exp(gf_prim(), gf_ind(x^10+1));
+gf_exp(gf_primitive(), gf_index(x^10+1));
 x^10+1;
 
-gf_minpoly(x^10+1);
+gf_minimal_poly(x^10+1);
 z^20+z^13+z^12+z^5+z^4+z^3+1;
 
 gf_set(3, 91, x^91+x^35+x+1);
@@ -179,25 +179,25 @@ x^2+x+1;
 gf_exp(a, 15);
 1;
 
-gf_prim();
+gf_primitive();
 x;
 
-gf_ind(a);
+gf_index(a);
 13;
 
 ev(a = gf_exp(x, 13)), pred;
 true;
 
-(gf_make_tables(), 0);
+(gf_make_arrays(), 0);
 0;
 
-gf_log_table[10];
+gf_logs[10];
 9;
 
 gf_n2p(10);
 x^3+x;
 
-gf_ind(x^3+x);
+gf_index(x^3+x);
 9;
 
 (a : x^2+x+1, b : x^3+x^2+1, 0);
@@ -206,22 +206,22 @@ gf_ind(x^3+x);
 gf_log(a, b);
 10;
 
-gf_prim_p(x^3+x+1);
+gf_primitive_p(x^3+x+1);
 true;
 
-gf_prim_p(x^2+x);
+gf_primitive_p(x^2+x);
 false;
 
-gf_ord(x^2+x);
+gf_order(x^2+x);
 3;
 
-gf_ord(x^3+x+1);
+gf_order(x^3+x+1);
 15;
 
 (a : x^3+x+1, 0);
 0;
 
-p : gf_minpoly(a);
+p : gf_minimal_poly(a);
 z^4+z^3+1;
 
 p : subst(a, z, p);
@@ -236,7 +236,7 @@ gf_set(7, 4, x^4+3*x^3+5*x^2+6*x+2);
 (char : 7, exp : 4, g : 3*x^3+3*x^2+6, 0);
 0;
 
-gf_prim_p(g);
+gf_primitive_p(g);
 true;
 
 a : makelist(gf_log(x+i, g),i, 0, 6);
@@ -263,7 +263,7 @@ r : mod(c - exp*d, ord);
 u : gf_exp(g, r);
 x^3+3*x^2+2*x+5;
 
-s : u + gf_red();
+s : u + gf_reduction();
 x^4+4*x^3+8*x^2+8*x+7;
 
 gf_factor(s);
@@ -278,7 +278,7 @@ gf_set(2,4,x^4+x+1);
 MI : gf_matinv(M);
 matrix([x^2, x^3+x^2+x+1, x^3], [x^3+x+1, x^2+x, x^3+1], [x, 0, x^3+x+1]);
 
-gf_matmul(M, MI);
+gf_matmult(M, MI);
 matrix([1,0,0], [0,1,0], [0,0,1]);
 
 gf_set(2, 10, x^10+x^3+1);
@@ -294,16 +294,16 @@ matrix([0,0,1,0,0,0,0,0,0,0], [0,0,1,0,0,1,0,0,0,0],
        [1,1,1,0,0,1,1,1,0,0], [1,0,1,0,0,1,0,0,1,0],
        [0,0,1,0,0,0,0,1,1,0], [0,0,1,0,0,0,0,1,0,0]);
 
-gf_nbrep(pe, M);
+gf_normal_basis_rep(pe, M);
 [0,0,0,0,0,0,0,0,0,1];
 
 (a : x^9+x^7+x^6+x^5+x^3+x^2+x, 0);
 0;
 
-gf_nbrep(a, M);
+gf_normal_basis_rep(a, M);
 [0,1,1,1,0,1,0,1,1,1];
 
-gf_nbrep(gf_exp(a, 2), M);
+gf_normal_basis_rep(gf_exp(a, 2), M);
 [1,1,1,0,1,0,1,1,1,0];
 
 gf_set(2, 20, x^20+x^3+1);
@@ -312,7 +312,7 @@ gf_set(2, 20, x^20+x^3+1);
 (a : x^15+x^5+1, 0);
 0;
 
-gf_ind(a);
+gf_index(a);
 720548;
 
 gf_exp(a, 3^12);
@@ -358,7 +358,7 @@ matrix([9,12,5,1,8,2,0],[7,1,12,5,4,2,6],[10,8,8,6,11,12,10],
        [4,5,9,8,6,11,2],[4,9,10,11,12,1,2],[2,2,3,8,6,5,8],
        [3,2,5,0,5,6,5]);
 
-gf_nbrep(p, M);
+gf_normal_basis_rep(p, M);
 [0,0,0,0,0,0,1];
 
 gf_set(2, x^8+x^4+x^3+x+1);
@@ -403,7 +403,7 @@ gf_set(7, 4, x^4+x^2+3, fs_ord);
 gf_set(2, x^8+1);
 [false, x^8+1];
 
-gf_ord();
+gf_order();
 128;
 
 gf_inv(x);
@@ -412,19 +412,19 @@ x^7;
 gf_inv(x+1);
 false;
 
-gf_gcdex(x+1, gf_red());
+gf_gcdex(x+1, gf_reduction());
 [1, 0, x+1];
 
 gf_set(3, x^8+1);
 [false, x^8+1];
 
-gf_ord();
+gf_order();
 6400;
 
 gf_set(3, x^8+x+1);
 [false, x^8+x+1];
 
-gf_ord();
+gf_order();
 4368;
 
 gf_set(13, x^8+2);
