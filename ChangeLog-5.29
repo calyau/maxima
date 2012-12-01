@@ -1,0 +1,57 @@
+   Maxima 5.29 change log
+
+   New items in core:
+
+ * revised and extended functions for Galois fields
+
+
+   New items in share:
+
+ * package draw: surfaces in spherical and cylindrical coordinates
+ * package draw: new terminals epslatex and epslatex_standalone
+ * package draw: multipage terminals
+ * package stats: new function title_inference
+
+
+   Other changes:
+
+ * improve derivative of gamma_incomplete and integral of psi.
+ * define orthopoly_weight for assoc_legendre_p
+ * define legendre_p and assoc_legendre_p for negative degree
+ * minor revision of recurrences in orthopoly
+ * simplify treatment of "^" in translator
+ * test script for Laplace transform
+ * plot2d (launch Gnuplot) for ABCL and Allegro CL
+ * update documentation for packages draw and distrib
+ * improvements in Windows build machinery
+ * special variable clean-up
+ * remove some unused code
+
+
+   Bug fixes: (numbering system changed with SourceForge project upgrade)
+
+ 2504 wrong answer for simple limit, limit(sin(x)+1/x, x, inf)=0
+ 2503 Declaring x as an integer changes result of limit from 3 to inf
+ 3587362 inverse_erfc(1d-40) wrong
+ 3587304 erfc(x) for x > 6 is wrong
+ 3587191 erf inaccurate for small bigfloat values
+ 3587184 erf inaccurate for small float values
+ 3581619 Incorrect FFT for input of size 2
+ 3559064 elliptic_f(2,1) is wrong.
+ 3536976 "inverse_erf" doesn't allow complex arguments
+ 3440046 elliptic_f(0.5,1) signals error
+ 3428734 integrate(bessel_y(1,z),z)  with ?z : 1
+ 3381301 log(-1.0b0) has small realpart
+
+ unnumbered bugs:
+
+ mailing list 2012-11-16: "Difference in interactivity with two sums"
+ mailing list 2012-11-25: "laplace() and tellsimpafter()"
+ fix bugs in kron_delta
+ return kron_delta nouns in orthopoly, clears up test_orthopoly errors
+ fix bug in numericalio: GCL doesn't distinguish single and double floats
+ fix bug in negative_binomial_quantile (package descriptive)
+ fix Lisp error for "lambert_w(1), numer;" and also generalized_lambert_w
+ fix bugs in pattern matcher: handle aa + foo(bb) and aa * foo(bb)
+ fix bug in pattern matcher: handle "^" expressions correctly
+ fix erfi(-0.15) for GCL
