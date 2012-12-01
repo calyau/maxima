@@ -542,12 +542,14 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
    (dimension-sub-and-super-scripted-function "U" `(1) nil nil 2 form)
    result))
 
-;; See A & S 22.5.35, page 779.  We evaluate the legendre polynomials
-;; as jacobi_p(n,0,0,x).  Eat less exercise more.
+;; See A&S 8.2.1 page 333 and 22.5.35 page 779.  We evaluate the legendre
+;; polynomials as jacobi_p(n,0,0,x).  Eat less exercise more.
 
 (defun $legendre_p (n x)
   (cond ((use-hypergeo n x) 
-	 ($jacobi_p n 0 0 x))
+	 (if (and (integerp n) (< n 0))
+	   ($legendre_p (- (abs n) 1) x)
+	   ($jacobi_p n 0 0 x)))
 	(t `(($legendre_p simp) ,n ,x))))
 
 (putprop '$legendre_p 
@@ -726,7 +728,11 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 (defun $assoc_legendre_p (n m x)
   (let ((f) (d) (dx 0))
     (cond ((and (integerp n) (integerp m))
-	   (cond ((> (abs m) n)
+	   (cond ((< n 0)
+		  (setq f ($assoc_legendre_p (- (abs n) 1) m x))
+		  (setq d 1)
+		  (setq dx 1))
+		 ((> (abs m) n)
 		  (setq f 0)
 		  (setq d 1))
 		 ((< m 0)
