@@ -71,7 +71,7 @@ and \texttt{share/contrib/gf/gf.mac} (square and cubic roots).
 If speed matters compile these two files and load the binaries.
 
 
-In versions 5.29 and later only for root computations it is necessary to 
+In version 5.29 and later only for root computations it is necessary to 
 load \texttt{gf.mac}. 
 
 
@@ -133,6 +133,10 @@ In case there is no polynomial $m(x)$ irreducible over $\mathbb{F}_p$ available
 a field can be created by ``\verb!gf_set(p, n)!''. 
 A suitable $m(x)$ will be computed and returned along with a primitive element. 
 E.g. ``\verb!gf_set(2, 4)!'' returns the same as ``\verb!gf_set(2, x^4+x+1)!''.
+
+In addition to \verb!gf_set! there is a command ``\verb!gf_minimal_set(p, m(x))!'' 
+to allow basic arithmetics without checking irreducibility and 
+without computing a primitive element.
 
 
 \bigskip

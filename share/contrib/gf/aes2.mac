@@ -23,7 +23,7 @@
    
    This is an alternative to share/contrib/gf/aes.mac. It works at byte level 
    and shows how to use precomputed lookup tables. It also shows a quite concise 
-   formulation of the mix_columns operation by using matrix-dot-multiplication 
+   description of the mix_columns operation by using matrix-dot-multiplication 
    controled by Maxima's global variables matrix_element_add and _mult.
 */
 
