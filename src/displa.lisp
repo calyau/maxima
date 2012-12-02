@@ -95,6 +95,17 @@
 		 (apply *alt-display1d* form ())
 		 (linear-displa form))))))
 
+;;; (LINEAR-DISPLA <thing-to-display>)
+;;;
+;;; Display text linearly. This function should be usable in any case
+;;;  DISPLA is usable and will attempt to do something reasonable with
+;;;  its input.
+
+(defun linear-displa (form)
+  (fresh-line *standard-output*)
+  (mgrind form *standard-output*)
+  (terpri))
+
 (defmvar $display_format_internal nil
   "Setting this TRUE can help give the user a greater understanding
 	 of the behavior of maxima on certain of his problems,

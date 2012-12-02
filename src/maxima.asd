@@ -466,7 +466,6 @@
 	       (:module display :pathname ""
 			:components ((:file "displa") 
 				     (:file "nforma") 
-				     (:file "ldisp") 
 				     (:file "grind")))
 
 	       (:module gcd :pathname ""

@@ -218,7 +218,6 @@ binary-scl/maxima.core : intpol.lisp
 binary-scl/maxima.core : nparse.lisp
 binary-scl/maxima.core : displa.lisp
 binary-scl/maxima.core : nforma.lisp
-binary-scl/maxima.core : ldisp.lisp
 binary-scl/maxima.core : grind.lisp
 binary-scl/maxima.core : spgcd.lisp
 binary-scl/maxima.core : ezgcd.lisp
