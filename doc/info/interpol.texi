@@ -38,6 +38,8 @@ With the @var{option} argument it is possible to select the name for the indepen
 
 Note that when working with high degree polynomials, floating point evaluations are unstable.
 
+See also @code{linearinterpol}, @code{cspline}, and @code{ratinterpol}.
+
 Examples:
 
 @example
@@ -149,7 +151,10 @@ In the first two cases the pairs are ordered with respect to the first coordinat
 
 With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
 
+See also @code{lagrange}, @code{cspline}, and @code{ratinterpol}.
+
 Examples:
+
 @example
 (%i1) load(interpol)$
 (%i2) p: matrix([7,2],[8,3],[1,5],[3,2],[6,7])$
@@ -232,6 +237,8 @@ There are three options to fit specific needs:
 @item
 @code{'varname}, default @code{'x}, is the name of the independent variable.
 @end itemize
+
+See also @code{lagrange}, @code{linearinterpol}, and @code{ratinterpol}.
 
 Examples:
 @example
@@ -336,6 +343,8 @@ There are two options to fit specific needs:
 @item
 @code{'varname}, default @code{'x}, is the name of the independent variable.
 @end itemize
+
+See also @code{lagrange}, @code{linearinterpol}, @code{cspline}, @code{minpack_lsquares}, and @code{lbfgs}.
 
 Examples:
 

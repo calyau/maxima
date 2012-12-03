@@ -605,7 +605,7 @@
 (declaim (fixnum *gf-exp*)) ;; this doesn't seem to be a real practical limitation 
 
 (defmvar $gf_rat nil "functions in gf return rational expressions?" boolean)
-(defmvar *gf-set?* nil "gf characteristics are set?" boolean)
+(defmvar *gf-set?* nil "gf data are set?" boolean)
 (defmvar *gf-minset?* nil "characteristic and reduction polynomial are set?" boolean)
 (defmvar *gf-tables?* nil "log and power tables are computed?" boolean)
 
@@ -847,11 +847,11 @@
 
 (defun gf-minset? ()
   (unless *gf-minset?*
-    (merror (intl:gettext "gf characteristics not set." )) ))
+    (merror (intl:gettext "gf data not set." )) ))
 
 (defun gf-set? ()
   (unless *gf-set?*
-    (merror (intl:gettext "gf characteristics not or not fully set." )) ))  
+    (merror (intl:gettext "gf data not or not fully set." )) ))  
 
 (defun field? ()
   (unless *gf-prim*
