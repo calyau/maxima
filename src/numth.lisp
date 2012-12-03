@@ -754,7 +754,7 @@
       (cond 
         ((integerp a2) 
           (merror (intl:gettext 
-            "Third argument to `gf_set' must be the reduction polynomial or a list of factors.")) )
+            "Third argument to `gf_set' must be a reduction polynomial or a list of factors.")) )
         (($listp a2)
           (unless ($listp (cadr a2))
             (merror (intl:gettext 
@@ -811,19 +811,17 @@
     (setq *gf-minset?* t
           *gf-set?* t )
 
-    `((mlist simp) 
-      ,(when *gf-prim* (gf-x2p *gf-prim*)) 
-      ,(gf-x2p *gf-red*) ) ))
+    ($gf_data) )) 
 
 ;; part of $gf_set:
 
 (defun gf-set-red (p-orig)
   (let ((p ($rat p-orig)))
     (unless (listp (cadr p))
-      (merror (intl:gettext "Argument not suitable for the reduction polynomial: ~m" ) p-orig) )
+      (merror (intl:gettext "Argument not suitable as reduction polynomial: ~m" ) p-orig) )
     (let ((vars (caddar p)))
       (when (> (length vars) 1)
-        (merror (intl:gettext "Argument not suitable for the reduction polynomial: ~m" ) p-orig) )
+        (merror (intl:gettext "Argument not suitable as reduction polynomial: ~m" ) p-orig) )
       (setq *gf-var* (car vars) 
             *gf-rat-header* (car p)
             *gf-rat-sym* (caadr p)
@@ -832,6 +830,38 @@
         (merror (intl:gettext "A monic reduction polynomial is assumed." )) )
       *gf-red* )))
 
+
+(defstruct1 '(($gf_data) 
+  $characteristic $exponent $reduction $primitive $cardinality $order $factors_of_order ))
+
+;; returns a struct containing all data necessary to use gf_set_again (see below)
+(defmfun $gf_data () 
+  (gf-set?)
+  (mfuncall '$new 
+    `(($gf_data simp) 
+      ,*gf-char*                           ; $characteristic 
+      ,*gf-exp*                            ; $exponent 
+      ,(gf-x2p *gf-red*)                   ; $reduction 
+      ,(when *gf-prim* (gf-x2p *gf-prim*)) ; $primitive 
+      ,*gf-card*                           ; $cardinality 
+      ,*gf-ord*                            ; $order 
+      ,(cons '(mlist simp)                 ; $factors_of_order
+        (mapcar #'(lambda (e) (cons '(mlist simp) e)) *gf-fs-ord*) ))))
+
+;; useful in case display2d = false
+(defmfun $gf_info ()
+  (gf-set?)
+  (format nil 
+    "characteristic = ~a, exponent = ~a, reduction = ~a, primitive = ~a, cardinality = ~a, order = ~a, factors_of_order = ~a"
+    *gf-char*
+    *gf-exp* 
+    (mfuncall '$string (gf-x2p *gf-red*))
+    (mfuncall '$string (when *gf-prim* (gf-x2p *gf-prim*)))
+    *gf-card* 
+    *gf-ord* 
+    (mfuncall '$string 
+      (cons '(mlist simp)                   
+        (mapcar #'(lambda (e) (cons '(mlist simp) e)) *gf-fs-ord*) )) ))
 
 (defmfun $gf_unset ()
   (setq $gf_powers '$gf_powers
@@ -867,27 +897,6 @@
   (gf-minset?) (gf-x2p *gf-red*) )
 
 
-(defmfun $gf_info (&optional (print? t))
-  (gf-set?)
-  (cond
-    (print?
-      (mfuncall '$print "char:" *gf-char*)
-      (mfuncall '$print "exp:" *gf-exp*)
-      (mfuncall '$print "ord:" *gf-ord*)
-      (cond 
-        (*gf-prim*
-          (mfuncall '$print "prim:" (gf-x2p *gf-prim*)) )
-        (t
-          (mfuncall '$print "card:" *gf-card*)
-          (mfuncall '$print "prim:" nil) ))
-      (mfuncall '$print "red:" (gf-x2p *gf-red*))
-      nil )
-    (t
-      `((mlist simp) 
-        ,*gf-char* ,*gf-exp* ,*gf-ord* ,@(unless *gf-prim* `(,*gf-card*))
-        ,(when *gf-prim* (gf-x2p *gf-prim*)) 
-        ,(gf-x2p *gf-red*) )) ))
-
 ;; Minimal set
 ;; Just set characteristic and reduction poly to allow basic arithmetics on the fly.
 (defmfun $gf_minimal_set (p red)
@@ -901,6 +910,32 @@
     (merror (intl:gettext "The exponent must be a fixnum." )) )
   (when (= 0 *gf-exp*) (setq *gf-exp* 1))
   (setq *gf-minset?* t) )
+
+
+;; Reuse data and results from a previous gf_set
+(defmfun $gf_set_again (data) 
+  (unless (and (listp data) (listp (car data)) (equal '$gf_data (caar data)))
+    (merror (intl:gettext 
+      "Argument to `gf_set_again' must be a return value of `gf_set'." )) )
+  ($gf_unset) 
+  (setq data (cdr data))
+  #-gcl (setq *fixnump-2gf-char* (< (* 2 (car data)) most-positive-fixnum))
+  (setq *gf-char* (car data)
+        *gf-exp* (cadr data)
+        data (cddr data) )
+  (let* ((p ($rat (car data)))
+         (vars (caddar p)) )
+    (setq *gf-var* (car vars) 
+          *gf-rat-header* (car p)
+          *gf-rat-sym* (caadr p)
+          *gf-red* (cdadr p) ))
+  (setq *gf-prim* (cdadr ($rat (cadr data)))
+        data (cddr data) 
+        *gf-card* (car data)
+        *gf-ord* (cadr data)
+        *gf-fs-ord* (mapcar #'cdr (cdaddr data))
+        *gf-minset?* t
+        *gf-set?* t ) )
 ;;
 ;; -----------------------------------------------------------------------------
 
