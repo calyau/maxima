@@ -338,12 +338,7 @@ When one changes, the other does too."
     ;; language pack wasn't installed and we reset *maxima-lang-subdir* to nil.
     (when (and *maxima-lang-subdir*
 	       (not (probe-file (combine-path *maxima-infodir* *maxima-lang-subdir* "maxima-index.lisp"))))
-       (setq *maxima-lang-subdir* nil))
-    ;; Autoload for Maxima documantation index file
-    (let ((subdir-bit (if (null *maxima-lang-subdir*) "." *maxima-lang-subdir*)))
-      ;; Assign AUTOLOAD property instead of binding a function (the result of AUTOF).
-      (setf (get 'cl-info::cause-maxima-index-to-load 'autoload)
-	    (combine-path *maxima-infodir* subdir-bit "maxima-index.lisp")))))
+       (setq *maxima-lang-subdir* nil))))
 
 (defun get-dirs (path)
   #+(or :clisp :sbcl :ecl :openmcl)
@@ -576,6 +571,7 @@ When one changes, the other does too."
   (set-locale-subdir)
   (adjust-character-encoding)
   (set-pathnames)
+  (cl-info::load-primary-index)   
   (when (boundp '*maxima-prefix*)
     (push (pathname (concatenate 'string *maxima-prefix*
                                  (if *maxima-layout-autotools*
