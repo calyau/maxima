@@ -1128,6 +1128,7 @@
       (dimension-nary form result)))
 
 (displa-def mlabel dim-mlabel 0 0)
+(setf (get 'mlabel 'wxxml) 'wxxml-mlable) ;; backwards-compatibility for wxMaxima
 
 (defvar *display-labels-p* t)
 
