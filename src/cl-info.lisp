@@ -106,9 +106,9 @@
 
 (defun info-inexact (x)
   (let ((inexact-matches (inexact-topic-match x)))
-    (when (some-inexact x inexact-matches)
+    (when inexact-matches
       (display-items inexact-matches))
-    (some-inexact x inexact-matches)))
+    (not (null inexact-matches))))
 
 ;; MATCHES looks like ((D1 (I11 I12 I12 ...)) (D2 (I21 I22 I23 ...)))
 ;; Rearrange it to ((D1 I11) (D1 I12) (D1 I13) ... (D2 I21) (D2 I22) (D2 I23) ...)
@@ -148,8 +148,9 @@
 
 (defun inexact-topic-match (topic)
   (setq topic (regex-sanitize topic))
-  (loop for dir-name being the hash-keys of *info-tables*
-    collect (list dir-name (inexact-topic-match-1 topic dir-name))))
+  (let ((foo (loop for dir-name being the hash-keys of *info-tables*
+    collect (list dir-name (inexact-topic-match-1 topic dir-name)))))
+    (remove-if #'(lambda (x) (null (second x))) foo)))
 
 (defun inexact-topic-match-1 (topic d)
   (let*
