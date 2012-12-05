@@ -114,8 +114,8 @@ you can create a field by using the command ``\verb!gf_set(p, m(x))!''.
 \verb!gf_set! checks that $p$ is prime, and it also checks 
 whether $m(x)$ is irreducible. If these conditions are met, 
 a primitive element in this field will be computed. 
-Maxima then returns a list containing this primitive element and the 
-polynomial for reduction.
+Maxima then returns a structure containing the fields data which is 
+suitable for later use by ``\verb!gf_set_again(gf_data)!'' if needed again.
 
 %\begin{maximasession}
 %  \maximaoutput*
@@ -126,7 +126,9 @@ polynomial for reduction.
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
   #\tr{(\%i1)}# gf_set(2, x^4+x+1);
-  #\tr{(\%o1)}\bc\rb{$\tb{[\,x,\ x^4+x+1\,]}$}\ec#
+  #\tr{(\%o1)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 4, reduction = x^4+x+1,}$}\ec#
+  #\bc\rb{$\tb{primitive = x, cardinality = 16, order = 15, 
+  factors\_of\_order = [\,[\,3, 1\,], [\,5, 1\,]\,])}$}\ec#
 \end{lstlisting}
 
 In case there is no polynomial $m(x)$ irreducible over $\mathbb{F}_p$ available 
@@ -336,7 +338,7 @@ We conclude that, in our field, $a=b^{3}$.
 
 \paragraph{Primitive elements.}
 
-A given field will have many primitive elements, and the command
+A given field will have many primitive elements, and the command \\
 ``\verb!gf_primitive_p!'' tests whether an element is primitive:
 
 \vspace*{2mm}
@@ -436,10 +438,11 @@ $d$ is 1702.
 
 First, Alice must compute her public key:
 
+%  #\tr{(\%o35)}\bc\rb{$\tb{    }$}\ec#
+
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i35)}# gf_set(7, x^4+3*x^3+5*x^2+6*x+2);
-  #\tr{(\%o35)}\bc\rb{$\tb{[\,x+4,\ x^4+3\,x^3+5\,x^2+6\,x+2\,]}$}\ec#
+  #\tr{(\%i35)}# gf_set(7, x^4+3*x^3+5*x^2+6*x+2)#\$#
   #\tr{(\%i36)}# g : 3*x^3+3*x^2+6#\$#
   #\tr{(\%i37)}# gf_primitive_p(g);
   #\tr{(\%o37)}\bc\rb{$\tb{true}$}\ec#
@@ -510,10 +513,11 @@ and bases.  The command ``\verb!gf_random_normal()!'' finds a normal element by
 simply picking field elements at random and testing each one for normality.
 Although this is a probabilistic algorithm, in practice it works very quickly:
 
+%  #\tr{(\%o49)}\bc\rb{$\tb{   }$}\ec#
+
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i49)}# gf_set(2, x^10+x^3+1);
-  #\tr{(\%o49)}\bc\rb{$\tb{[\,x,\ x^{10}+x^3+1\,]}$}\ec#
+  #\tr{(\%i49)}# gf_set(2, x^10+x^3+1)#\$#
   #\tr{(\%i50)}# p : gf_random_normal();
   #\tr{(\%o50)}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^2+x+1}$}\ec#
 \end{lstlisting}
@@ -562,13 +566,17 @@ Pohlig-Hellman reduction and Brent's version of Pollard Rho.
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
   #\tr{(\%i55)}# gf_set(2, x^20+x^3+1);
-  #\tr{(\%o55)}\bc\rb{$\tb{[\,x,\ x^{20}+x^3+1\,]}$}\ec#
+  #\tr{(\%o55)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 20, reduction = x^{20}+x^3+1, }$}\ec#
+  #\bc\rb{$\tb{primitive = x, cardinality = 1048576, order = 1048575, }$}\ec#
+  #\bc\rb{$\tb{factors\_of\_order = [\,[3, 1], [5, 2], [11, 1], [31, 1], [41, 1]\,]) }$}\ec#
   #\tr{(\%i56)}# a : x^15+x^5+1;
   #\tr{(\%o56)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
-  #\tr{(\%i57)}# gf_index(a);
+  #\tr{(\%i57)}# index : gf_index(a);
   #\tr{(\%o57)}\bc\rb{$\tb{720548}$}\ec#
-  #\tr{(\%i58)}# gf_exp(a, 3^12);
-  #\tr{(\%o58)}\bc\rb{$\tb{x^{17}+x^{16}+x^{13}+x^{12}+x^{11}+x^3+x^2+x}$}\ec#
+  #\tr{(\%i58)}# gf_exp(gf_primitive(), index);
+  #\tr{(\%o58)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
+  #\tr{(\%i59)}# gf_exp(a, 3^12);
+  #\tr{(\%o59)}\bc\rb{$\tb{x^{17}+x^{16}+x^{13}+x^{12}+x^{11}+x^3+x^2+x}$}\ec#
 \end{lstlisting}
 
 
