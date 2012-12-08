@@ -428,13 +428,16 @@ e : 1/sqrt (%mu_0 * %e_0);
 
 /* Helium sound velocity at 27 C, He(Cp/Cv)=5/3, 4gr/mol */
 e : sqrt (5/3 * %R/(4 ` g/mol) * (27 ` degC `` K));
-sqrt(2001)*sqrt(%R)/4 ` sqrt(mol)*sqrt(K)/sqrt(g);
+sqrt(%R*(2001/16 ` mol*K/g));
+
+expand_dimensional (e);
+sqrt(2001)*sqrt('qty(%R))/4 ` sqrt(J)/sqrt(g);
 
 dimensions (e);
 length / time;
 
 e : constvalue (e);
-sqrt(2001)*sqrt(1039309)/(1000*sqrt(2)) ` sqrt(J)/sqrt(g);
+sqrt(2079657309)/(125*2^(7/2)) ` sqrt(J)/sqrt(g);
 
 dimensions (e);
 length / time;
@@ -443,8 +446,7 @@ u : fundamental_units (e);
 m/s;
 
 e : e `` u;
-/*sqrt(10)*sqrt(2001)*sqrt(1039309)/(100*sqrt(2)) ` m/s;*/
-10^(3/2)*sqrt(2001)*sqrt(1039309)/(125*2^(7/2)) ` m/s;
+10^(3/2)*sqrt(2079657309)/(125*2^(7/2))  ` m/s;
 
 e, numer;
 1019.719890214955 ` m/s;
