@@ -320,7 +320,7 @@
 	 (a (+ (random (- n 2)) 1))
 	 (b (+ (random (- n 5)) 1))
 	 (y x) (d 1) (r 2) (j 1) (k)
-	 (terms (ceiling (log (float n)))))
+	      (terms (integer-length n)) )
     (setq b (/ b (gcd a b)))
     (loop while (= d 1) do
 	 (setq y x)
