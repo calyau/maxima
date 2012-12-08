@@ -169,12 +169,6 @@ It appears in LIMIT and DEFINT.......")
 		(setq val '$inf
 		      origval '$inf
 		      exp (subin (m* -1 var) exp)))
-	      ;; Limit is going to want to make its own assumptions
-	      ;; about the variable based on what the calling program
-	      ;; knows. Old assumptions are saved for restoration upon
-	      ;; exit.
-	      (unless (= lenargs 1)
-		(limit-context (second args) origval dr))
               
               ;; Hide noun form of %derivative, %integrate.
 	      (setq exp (hide exp))
@@ -186,15 +180,17 @@ It appears in LIMIT and DEFINT.......")
 		    ;; *atp* prevents substitution from applying to vars 
 		    ;; bound by %sum, %product, %integrate, %limit
 		    (setq var (gensym))
-		    (setq limit-assumptions (cons (assume `(($equal) ,realvar ,(m+ val var)))
-						  limit-assumptions))
-		    (setq exp (maxima-substitute (m+ val var) realvar exp))
-		    (putprop var realvar 'limitsub)))
+		    (setq exp (maxima-substitute (m+ val var) realvar exp))))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
 				(t 0)))
 		(setq origval 0))
               
+	      ;; Make assumptions about limit var being very small or very large.
+	      ;; Assumptions are forgotten upon exit.
+	      (unless (= lenargs 1)
+		(limit-context var val dr))
+
               ;; Resimplify in light of new assumptions.
               (setq exp (resimplify
                           (factosimp
@@ -1918,6 +1914,7 @@ It appears in LIMIT and DEFINT.......")
 	((equal e -1) (lower l))
 	(t l)))
 
+;; get rid of zeroa and zerob
 (defmfun ridofab (e)
   (if (among '$zeroa e) (setq e (maxima-substitute 0 '$zeroa e)))
   (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
@@ -2683,7 +2680,7 @@ It appears in LIMIT and DEFINT.......")
 	  ((eq lim1 '$inf) half%pi)
 	  ((eq lim1 '$minf)
 	   (m*t -1. half%pi))
-	  (t `(($atan2) ,lim1 ,lim2)))))
+	  (t (take '($atan2) lim1 lim2)))))
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)

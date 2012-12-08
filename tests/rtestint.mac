@@ -1052,6 +1052,10 @@ integrate(1/(1-x^5), x, 0, inf);
 integrate(1/x, x, minf, inf);
 0;
 
+/* #2513 wrong principle value integral */
+integrate(1/((x-1)*(x-2)),x,0,3);
+-2*log(2);
+
 /* integrate(sin(x)^2/x,x,minf,inf) gives not zero - ID: 3480954 */
 integrate(sin(x)^2/x,x,minf,inf);
 0;
@@ -1416,7 +1420,12 @@ integrate(1/2^x, x, 0, 1);
 /* error in integrating exp(-x)*sinh(sqrt(x)) - ID: 3292033 */
 integrate(exp(sqrt(x)-x), x, 0, inf);
 %e^(1/4)*gamma_incomplete(1,1/4)-%e^(1/4)*gamma_incomplete(1/2,1/4)/2
-                                       +%e^(1/4)*sqrt(%pi);
+                                       +%e^(1/4)*(sqrt(%pi)+2)/2
+                                       +%e^(1/4)*sqrt(%pi)/2-%e^(1/4);
+/* equivalent to:
+   %e^(1/4)*gamma_incomplete(1,1/4)-%e^(1/4)*gamma_incomplete(1/2,1/4)/2
+                                       +%e^(1/4)*sqrt(%pi);			
+*/
 
 /* integrate(log(t)*log(t+1),t,0,1) gives Lisp error - ID: 3381012 */
 integrate(log(t)*log(t+1),t,0,1);
