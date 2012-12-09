@@ -445,6 +445,12 @@ limit(atan2(-(x^2-2), x^3-2*x), x, sqrt(2), minus);
 limit(atan2(-(x^2-2), x^3-2*x), x, sqrt(2), plus);
 -atan(1/sqrt(2));
 
+limit(floor(x), x, 5, minus);
+4;
+
+limit(floor(x), x, 5, plus);
+5;
+
 /* [ 1587235 ] limit(floor(x),x,1) wrong */
 limit(floor(x),x,0);
 und;

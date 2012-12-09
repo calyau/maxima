@@ -131,11 +131,11 @@ foreach $key (sort keys %topic_locator) {
 # (1.3)  Generate Lisp code. The functions in info.lisp expect this stuff.
 
 print "(in-package :cl-info)\n";
-print "(defun cause-maxima-index-to-load () nil)\n";
 
 #        Pairs of the form (<index topic> . (<filename> <byte offset> <length> <node name>))
 
-print "(defparameter *info-deffn-defvr-pairs* '(\n";
+print "(let (\n";
+print "(deffn-defvr-pairs '(\n";
 print "; CONTENT: (<INDEX TOPIC> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS> <NODE NAME>))\n";
 
 foreach $key (sort keys %topic_locator) {
@@ -216,7 +216,7 @@ foreach $node_title (sort keys %node_locator) {
 #
 #        Pairs of the form (<node name> . (<filename> <byte offset> <length>))
 
-print "(defparameter *info-section-pairs* '(\n";
+print "(section-pairs '(\n";
 print "; CONTENT: (<NODE NAME> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS>))\n";
 
 foreach $node_title (sort keys %node_locator) {
@@ -227,11 +227,11 @@ foreach $node_title (sort keys %node_locator) {
     print "(\"$sanitized_title\" . (\"$filename\" $begin_node_offset ", $length, "))\n";
 }
 
-print "))\n";
+print ")))\n";
 
 #        Construct hashtables from the lists given above.
 
-print "(load-info-hashtables)\n";
+print "(load-info-hashtables (pathname-directory #-gcl *load-pathname* #+gcl sys:*load-pathname*) deffn-defvr-pairs section-pairs))\n";
 
 # (2.3)  Do we have any items or sections?
 #

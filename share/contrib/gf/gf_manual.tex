@@ -1,26 +1,26 @@
 \documentclass[a4paper,11pt,leqno,fleqn]{artikel3}
 
 \usepackage[dvips]{color}
-\definecolor{backgray}{gray}{0.925}
+%\definecolor{backgray}{gray}{0.925}
+%\definecolor{verylightgray}{gray}{0.95}
 
-\definecolor{verylightgray}{gray}{0.95}
-
-\usepackage{fullpage,fancyvrb,amssymb,listings,url}
-\usepackage[breqn,inline]{emaxima}
+\usepackage{fullpage, fancyvrb, amssymb, listings, url}
+%\usepackage[breqn, inline]{emaxima}
 %\usepackage[cmbase]{flexisym}
 %% \usepackage{breqn}
 %% \setkeys{breqn}{compact}
 
-\lstset{language={},
+\lstset{
+  language={},
   keepspaces=true,
-  xleftmargin=5mm,
-  xrightmargin=5mm,
+  xleftmargin=3mm,
+  xrightmargin=3mm,
   basicstyle=\ttfamily,
   frame=tb,
-  framesep=2mm,
-  framerule=2pt,
-  %frameround=tttt,
-  columns=flexible
+  framesep=1mm,
+  framerule=0.5pt,
+  frameround=tttt,
+  columns=flexible %,
   %backgroundcolor=\color[gray]{0.9}
 }
 
@@ -34,7 +34,6 @@
 \newcommand{\ev}{\end{verbatim}}
 \newcommand{\tr}[1]{\textcolor{red}{#1}}
 \newcommand{\tb}[1]{\textcolor{blue}{#1}}
-\newcommand{\mxi}[2]{\texttt{\tr{(\%i{#1})}}\bv{#2}\ev}
 \newcommand{\rb}[1]{\raisebox{2mm}[0mm][1mm]{#1}}
 \newcommand{\rbb}[1]{\raisebox{-4mm}[0mm][9mm]{#1}}
 
@@ -43,59 +42,48 @@
 \author{
 \begin{tabular}{lr}  Fabrizio Caruso &  \url{caruso@dm.unipi.it} \\
  Jacopo D'Aurizio &  \url{elianto84@gmail.com} \\
- Alasdair McAndrew & \url{amca01@gmail.com} 
+ Alasdair McAndrew & \url{amca01@gmail.com}  \\
+ Volker van Nek & \url{volkervannek@gmail.com} 
 \end{tabular}
 }
 
-\date{April, 2008}
+\date{April, 2008 - December, 2012}
 
 \begin{document}
 \maketitle
 
-This file documents the Maxima file ``\texttt{gf.mac}'', which 
-is a Maxima package for finite fields.
-This package is part of standard Maxima since version~5.14.
-If you use version~5.15 the package is split in two files
-\texttt{gf.mac} and \texttt{gf\_roots.mac}.
-In subsequent versions the whole package is contained
-in \texttt{gf.mac}. 
-This package is also suitable for teaching and exploration
-and it offers an easier interface than other comparable
-libraries such as the finite library in Axiom
-(provided by the domain constructor \texttt{FFP}).
+
+This file documents a Maxima package for computations in finite fields.  
+It is suitable for teaching and exploration.
 The first version of the package was based on the paper
 ``Finite Fields Manipulations in Macsyma'' by Kevin Rowley and Robert
 Silverman, SIGSAM 1989, but for which the source code is long gone.
-The version included in Maxima contains lots of new features
+Meanwhile it contains lots of new features
 and optimizations implemented by Fabrizio Caruso and Jacopo D'Aurizio.
 
 
-%To start, place the file ``\texttt{gf.mac}'' in a directory in Maxima's search
-%path.  You can find which directories are in the path by entering
+A full review was done in 2012 by Volker van Nek. Most of the functions described below 
+became core functions and some function names have been modified. 
+If you use a version of Maxima prior to 5.29 please refer to an appropriate 
+version of this file or alternatively load the necessary files from current sources. 
+These are \texttt{src/numth.lisp} (all basic Galois Fields functions) 
+and \texttt{share/contrib/gf/gf.mac} (square and cubic roots). 
+If speed matters compile these two files and load the binaries.
 
-%\begin{maximasession}
-%  \maximaoutput*
-%\i1. file_search_maxima;\\
-%\end{maximasession}
 
-%Then the command
+In version 5.29 and later only for root computations it is necessary to 
+load \texttt{gf.mac}. 
 
-In order to use the package it is enough to start and version
-of Maxima from~5.15 and use the command:
-\begin{maximasession}
-  \maximaoutput*
-\i2. load(gf);\\
-\end{maximasession}
-will load all the functions.
-\noindent If you use version~5.14 then you must also do
-\begin{maximasession}
-  \maximaoutput*
-\i2. load(gf_roots);\\
-\end{maximasession}
+
+Tests for basic computations in Galois Fields are located in 
+\texttt{src/rtest\_numth.mac}, tests for root computations in 
+\texttt{share/contrib/gf/gf\_test.mac}. Tests can be performed by \\
+\texttt{batch(<path\_to\_test\_file>, test)}.
+
 
 \section*{Getting started}
-All user commands are prefixed with ``\verb!gf_!''; you need to start by
-entering the parameters for your field.  All fields in this package are of the
+All user commands are prefixed with ``\verb!gf_!''. All you need to start is
+to enter the parameters for your field.  All fields in this package are of the
 form
 \[
 \mathbb{F}_p[x]/{m(x)}
@@ -121,49 +109,42 @@ are isomorphic.
 In these fields, addition and subtraction are performed on the coefficients
 modulo $p$, and multiplication and division modulo $m(x)$.
 
-To create a field, you need the parameters $p$, $m(x)$
-and optionally $n$ which is the degree of $m(x)$.  The form of
-the command is
+Given a prime number $p$ and a polynomial $m(x)$ 
+you can create a field by using the command ``\verb!gf_set(p, m(x))!''.
+\verb!gf_set! checks that $p$ is prime, and it also checks 
+whether $m(x)$ is irreducible. If these conditions are met, 
+a primitive element in this field will be computed. 
+Maxima then returns a structure containing the fields data which is 
+suitable for later use by ``\verb!gf_set_again(gf_data)!'' if needed again.
 
-\begin{Verbatim}
-   gf_set(p,n,m(x));
-\end{Verbatim}
-\noindent or
-\begin{Verbatim}
-   gf_set(p,m(x));
-\end{Verbatim}
-\noindent or
-\begin{Verbatim}
-   gf_set(p);
-\end{Verbatim}
+%\begin{maximasession}
+%  \maximaoutput*
+%  \i1. gf_set(2, x^4+x+1);\\
+%  \o1. [x, x^4+x+1]\\
+%\end{maximasession}
+%
+\vspace*{2mm}
+\begin{lstlisting}[escapechar=\#]
+  #\tr{(\%i1)}# gf_set(2, x^4+x+1);
+  #\tr{(\%o1)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 4, reduction = x^4+x+1,}$}\ec#
+  #\bc\rb{$\tb{primitive = x, cardinality = 16, order = 15, 
+  factors\_of\_order = [\,[\,3, 1\,], [\,5, 1\,]\,])}$}\ec#
+\end{lstlisting}
 
-\verb!gf_set! checks that $p$ is prime, and 
-if \texttt{GF\_IRREDUCIBILITY\_CHECK} is set to \texttt{true}
-it also checks whether $m(x)$ is irreducible. If
-these conditions are satisfied, the command performs some background
-calculations (discussed below), and returns true.
+In case there is no polynomial $m(x)$ irreducible over $\mathbb{F}_p$ available 
+a field can be created by ``\verb!gf_set(p, n)!''. 
+A suitable $m(x)$ will be computed and returned along with a primitive element. 
+E.g. ``\verb!gf_set(2, 4)!'' returns the same as ``\verb!gf_set(2, x^4+x+1)!''.
 
-\begin{maximasession}
-  \maximaoutput*
-  \i3. gf_set(2,4,x^4+x+1);\\
-  \o3. true\\
-\end{maximasession}
+In addition to \verb!gf_set! there is a command ``\verb!gf_minimal_set(p, m(x))!'' 
+to allow basic arithmetics without checking irreducibility and 
+without computing a primitive element.
 
-\begin{maximasession}
-\maximatexsession
-\C1. gf_set(2,4,x^4+x+1);\\
-\D1. scrobblet\\
-\end{maximasession}
-
-
-The package comes also with two test files \texttt{gf\_test.mac}
-and \texttt{gf\_hard\_test.mac} which can be run with the
-command
-\texttt{batch(<path\_to\_test\_file>,test)}.
 
 \bigskip
 
 Having set up the field, we can now perform arithmetic on field elements:
+
 
 \paragraph{Addition/subtraction.}
 
@@ -171,23 +152,27 @@ These are performed with the commands ``\verb!gf_add!'' and ``\verb!gf_sub!''.
 In the particular field entered above, since all arithmetic of coefficients is
 performed modulo 2, addition and subtraction are equivalent:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i4)}# a:x^3+x^2+1;
-  #\tr{(\%o4)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
-  #\tr{(\%i5)}# b:x^3+x+1;
-  #\tr{(\%o5)}\bc\rb{$\tb{x^3+x+1}$}\ec#
-  #\tr{(\%i6)}# gf_add(a,b);
-  #\tr{(\%o6)}\bc\rb{$\tb{x^2+x}$}\ec#
+  #\tr{(\%i2)}# a : x^3+x;
+  #\tr{(\%o2)}\bc\rb{$\tb{x^4+x^2}$}\ec#
+  #\tr{(\%i3)}# b : x^3+x^2+1;
+  #\tr{(\%o3)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
+  #\tr{(\%i4)}# gf_add(a, b);
+  #\tr{(\%o4)}\bc\rb{$\tb{x^2+x+1}$}\ec#
 \end{lstlisting}
+
 
 \paragraph{Multiplication.}
 
-This is performed with the command ``\verb!gf_mul!'':
+This is performed with the command ``\verb!gf_mult!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i7)}# gf_mul(a,b);
-  #\tr{(\%o7)}\bc\rb{$\tb{x^2+x}$}\ec#
+  #\tr{(\%i5)}# gf_mult(a, b);
+  #\tr{(\%o5)}\bc\rb{$\tb{x^3+x+1}$}\ec#
 \end{lstlisting}
+
 
 \paragraph{Inversion and division.}
 
@@ -201,59 +186,69 @@ a(x)/b(x)=a(x)(b(x))^{-1}.
 These operations are performed with the commands ``\verb!gf_inv!'' and
 ``\verb!gf_div!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i8)}# gf_inv(b);
-  #\tr{(\%o8)}\bc\rb{$\tb{x^2+1}$}\ec#
-  #\tr{(\%i9)}# gf_div(a,b);
-  #\tr{(\%o9)}\bc\rb{$\tb{x^3+x^2}$}\ec#
-  #\tr{(\%i10)}# gf_mul(a,gf_inv(b));
-  #\tr{(\%o10)}\bc\rb{$\tb{x^3+x^2}$}\ec#
+  #\tr{(\%i6)}# gf_inv(b);
+  #\tr{(\%o6)}\bc\rb{$\tb{x^2}$}\ec#
+  #\tr{(\%i7)}# gf_div(a, b);
+  #\tr{(\%o7)}\bc\rb{$\tb{x^3+x^2+x}$}\ec#
+  #\tr{(\%i8)}# gf_mult(a, gf_inv(b));
+  #\tr{(\%o8)}\bc\rb{$\tb{x^3+x^2+x}$}\ec#
 \end{lstlisting}
+
 
 \paragraph{Exponentiation.}
 
 To raise a field element to an integer power, use ``\verb!gf_exp!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i11)}# gf_exp(a,10);
-  #\tr{(\%o11)}\bc\rb{$\tb{x^2+x+1}$}\ec#
-  #\tr{(\%i12)}# gf_exp(a,15);
-  #\tr{(\%o12)}\bc\rb{$\tb{1}$}\ec#
+  #\tr{(\%i9)}# gf_exp(a, 14);
+  #\tr{(\%o9)}\bc\rb{$\tb{x^3+x^2}$}\ec#
+  #\tr{(\%i10)}# gf_exp(a, 15);
+  #\tr{(\%o10)}\bc\rb{$\tb{1}$}\ec#
 \end{lstlisting}
+
 
 \paragraph{Random elements.}
 
-Finally, a random element can be obtained with ``\verb!gf_rand()!'':
+Finally, a random element can be obtained with ``\verb!gf_random()!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i13)}# makelist(gf_rand(),i,1,4);
-  #\tr{(\%o13)}\bc\rb{$\tb{[x^3+x^2+x,x^3+x^2+x+1,x^3+x^2+x+1,x^2+x]}$}\ec#
-  #\tr{(\%i14)}# M:genmatrix(lambda([i,j],gf_rand()),3,3);
-  #\tr{(\%o14)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}x^3+x^2+x&x^3&x^3+x^2\\x^2&x^3+x^2+1&x^3+x+1\\x^2+x&x^3+x^2+x+1&x^2\end{array}\right)}}$}\ec#
+  #\tr{(\%i11)}# makelist(gf_random(), i,1,4);
+  #\tr{(\%o11)}\bc\rb{$\tb{[\,x^3+x^2,\ x^2+x,\ x^3+x^2+x,\ x^3+1\,]}$}\ec#
+  #\tr{(\%i12)}# mat : genmatrix(lambda([i,j], gf_random()), 3,3);
+  #\tr{(\%o12)}\bc\rbb{$\tb{\D{\left(
+  \begin{array}[h]{ccc}
+  x^3+x^2&x^3+x^2+x+1&x^2+1 \\ 1&x^3+x&x^3+x+1 \\ x+1&x^2+1&x^2
+  \end{array}\right)}}$}\vspace{1mm}\ec#
 \end{lstlisting}
+
 
 \section*{Primitive elements, powers and logarithms}
 
 The non-zero elements of a finite field form a multiplicative group; a
 generator of this group is a \emph{primitive element} of the field.  The
-command ``\verb!gf_findprim()!'' finds a primitive element:
+command ``\verb!gf_primitive()!'' returns the already computed primitive element:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i15)}# gf_findprim();
-  #\tr{(\%o15)}\bc$\tb{x}$\ec#
+  #\tr{(\%i13)}# gf_primitive();
+  #\tr{(\%o13)}\bc\rb{$\tb{x}$}\ec#
 \end{lstlisting}
 
 Given that any non-zero element in the field can be expressed as a power of
 this primitive element, this power is the \emph{index} of the element; its
-value is obtained with ``\verb!gf_ind!'':
+value is obtained with ``\verb!gf_index!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i16)}# a:x^3+x^2+1;
-  #\tr{(\%o16)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
-  #\tr{(\%i17)}# gf_ind(a);
-  #\tr{(\%o17)}\bc\rb{$\tb{13}$}\ec#
-  #\tr{(\%i18)}# ev(a=gf_exp(x,13)),pred;
-  #\tr{(\%o18)}\bc\rb{$\tb{true}$}\ec#
+  #\tr{(\%i14)}# a : x^3+x#\$#
+  #\tr{(\%i15)}# gf_index(a);
+  #\tr{(\%o15)}\bc\rb{$\tb{9}$}\ec#
+  #\tr{(\%i16)}# is(a = gf_exp(x, 9));
+  #\tr{(\%o16)}\bc\rb{$\tb{true}$}\ec#
 \end{lstlisting}
 
 Since every element of the field can be represented as a polynomial
@@ -271,81 +266,104 @@ which the field element is equivalent to the number
 a_{n-1}p^{n-1}+a_{n-2}p^{n-2}+\cdots+a_2p^2+a_1p+a_0.
 \]
 Thus every polynomial is equivalent to a number between 0 and $p^n-1$; this
-number can be obtained by the ``\texttt{poly2num}'' command.  This command is
-actually not needed by the user; it is used for some internal commands.  The
-other direction is given by ``\texttt{num2poly}''.
+number is obtained by ``\texttt{gf\_p2n}''. 
+The reverse direction is given by ``\texttt{gf\_n2p}''.
 
 Since every non-zero field element $a=a(x)$ is both equivalent to a number $A$
-and a power $i$ of a primitive element $e$, we can create a list of powers
-corresponding to particular numbers.  This list, \texttt{gp}, which is created
-by \verb!gf_set!, is defined as follows: its $i$-th element is the numerical
-form of the $i$-th power of the primitive element.  Thus, if
+and a power $i$ of a primitive element $e$, we can create an array of powers
+corresponding to particular numbers.  This array, \texttt{gf\_powers},
+which is created by \verb!gf_make_arrays!, 
+is defined as follows: 
+its $i$-th element (starting with zero) is the numerical form of the $i$-th power of the 
+primitive element.  Thus, if
 \[
 a(x)\equiv A\equiv e^i
 \]
-where $e$ is the primitive element, then the $i$-th element of \texttt{gp} is
+where $e$ is the primitive element, then the $i$-th element of \texttt{gf\_powers} is
 $A$.  By definition we have $e^{p^n-1}=1$.
 
 The numbers $A$ run over all integers from 1 to $p^n-1$, and the powers $i$
-run over all the integers from 0 to $p^n-2$, there is a corresponding
-``logarithm'' list, \texttt{lg}.  The logarithm table may be considered to be
-indexed from 0 to $p^n-2$, and its $i$-th element is the power corresponding
-to that element:
+run over all the integers from 0 to $p^n-1$, there is a corresponding
+``logarithm'' array, \texttt{gf\_logs}.  
+The logarithm table may be considered to be
+indexed from 0 to $p^n-1$, and its $i$-th element (ignoring the 0-th) is the power 
+corresponding to that element:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i19)}# lg[10];
-  #\tr{(\%o19)}\bc\rb{$\tb{9}$}\ec#
-  #\tr{(\%i20)}# num2poly(9);
-  #\tr{(\%o20)}\bc\rb{$\tb{x^3+x}$}\ec#
-  #\tr{(\%i21)}# gf_ind(%);
-  #\tr{(\%o21)}\bc\rb{$\tb{9}$}\ec#
+  #\tr{(\%i17)}# gf_make_arrays();
+  #\vspace{-4mm}#
+  #\tr{(\%o17)}\bc\rb{$\tb{
+    [\,\{Lisp Array: \#(1\ 2\ 4\ 8\ 3\ 6\ 12\ 11\ 5\ 10\ 7\ 14\ 15\ 13\ 9\ 1)\}, 
+  }$}\vspace{1mm}\ec#
+  #\bc\hspace*{32mm}\rb{$\tb{
+    \{Lisp Array: \#(N\hspace{-0.5mm}I\hspace{-0.5mm}L\ 0\ 1\ 4\ 2\ 8\ 5\ 10\ 3\ 14\ 9\ 7\ 6\ 13\ 11\ 12)\}\,]
+  }$}\ec#
+  #\tr{(\%i18)}# c : gf_exp(x, 4);
+  #\tr{(\%o18)}\bc\rb{$\tb{x + 1}$}\ec#
+  #\tr{(\%i19)}# gf_p2n(c);
+  #\tr{(\%o19)}\bc\rb{$\tb{3}$}\ec#
+  #\tr{(\%i20)}# gf_index(c);
+  #\tr{(\%o20)}\bc\rb{$\tb{4}$}\ec#
+  #\tr{(\%i21)}# gf_logs[3];
+  #\tr{(\%o21)}\bc\rb{$\tb{4}$}\ec#
+  #\tr{(\%i22)}# gf_powers[4];
+  #\tr{(\%o22)}\bc\rb{$\tb{3}$}\ec#
 \end{lstlisting}
 
-The creation of the lists \texttt{gp} and \texttt{lg} may take a few seconds,
-but they only have to be done once.
+The creation of the arrays \texttt{gf\_logs} and \texttt{gf\_powers} 
+only has to be done once.
+
 
 \paragraph{Logarithms.}
 
-The list \texttt{lg} produces the logarithm (with respect to the primitive
-element \texttt{e}) of any non-zero element of the field.  But the logarithm
-of any element relative to the base of another can be obtained with the
+The array \texttt{gf\_logs} contains the logarithm of any non-zero element 
+with respect to the primitive element \texttt{e} of the field. 
+The same holds for \texttt{gf\_ind}. The logarithm
+of any element relative to the base of another can be obtained by the
 command ``\verb!gf_log!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i22)}# a:x^2+1+1;
-  #\tr{(\%o22)}\bc\rb{$\tb{x^2+x+1}$}\ec#
-  #\tr{(\%i23)}# b:x^3+x^2+1;
-  #\tr{(\%o23)}\bc\rb{$\tb{x^3+x^2+1}$}\ec#
-  #\tr{(\%i24)}# gf_log(a,b);
-  #\tr{(\%o24)}\bc\rb{$\tb{10}$}\ec#
+  #\tr{(\%i23)}# a : x^3+x#\$#
+  #\tr{(\%i24)}# b : x^3+x^2+1#\$#
+  #\tr{(\%i25)}# gf_log(a, b);
+  #\tr{(\%o25)}\bc\rb{$\tb{3}$}\ec#
+  #\tr{(\%i26)}# is(a = gf_exp(b, 3));
+  #\tr{(\%o26)}\bc\rb{$\tb{true}$}\ec#
 \end{lstlisting}
 
-We conclude that, in our field, $a=b^{10}$.
+We conclude that, in our field, $a=b^{3}$.
+
 
 \paragraph{Primitive elements.}
 
-A given field will have many primitive elements, and the command
-``\verb!gf_primep!'' tests an element to see if it is primitive:
+A given field will have many primitive elements, and the command \\
+``\verb!gf_primitive_p!'' tests whether an element is primitive:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i25)}# gf_primep(x^3+x+1);
-  #\tr{(\%o25)}\bc\rb{$\tb{true}$}\ec#
-  #\tr{(\%i26)}# gf_primep(x^2+x);
-  #\tr{(\%o26)}\bc\rb{$\tb{false}$}\ec#
+  #\tr{(\%i27)}# gf_primitive_p(a);
+  #\tr{(\%o27)}\vspace{0mm}\bc\rb{$\tb{false}$}\ec#
+  #\tr{(\%i28)}# gf_primitive_p(b);
+  #\tr{(\%o28)}\bc\rb{$\tb{true}$}\ec#
 \end{lstlisting}
+
 
 \paragraph{Order.}
 
 By definition, any element $a$ of the field will satisfy $a^{p^n-1}=1$.  The
 \emph{order} of $a$ is the \emph{lowest} power $m$ for which $a^m=1$.  It will
-be a factor of $p^n-1$, and is obtained with ``\verb!gf_ord!'':
+be a factor of $p^n-1$, and is obtained with ``\verb!gf_order!'':
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i27)}# gf_ord(x^2+x);
-  #\tr{(\%o27)}\bc\rb{$\tb{3}$}\ec#
-  #\tr{(\%i28)}# gf_ord(x^3+x+1);
-  #\tr{(\%o28)}\bc\rb{$\tb{15}$}\ec#
+  #\tr{(\%i29)}# gf_order(a);
+  #\tr{(\%o29)}\bc\rb{$\tb{5}$}\ec#
+  #\tr{(\%i30)}# gf_order(b);
+  #\tr{(\%o30)}\bc\rb{$\tb{15}$}\ec#
 \end{lstlisting}
+
 
 \section*{Minimal polynomials}
 
@@ -358,22 +376,25 @@ satisfies:
 \end{enumerate}
 The polynomial $p(x)$ is thus, in a very strict sense, the \emph{smallest}
 polynomial which has $a$ as a root.  It is the \emph{minimal polynomial} of
-$a$.  The command ``\verb!gf_minpoly!'' calculates it:
+$a$.  The command ``\verb!gf_minimal_poly!'' calculates it:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i29)}# a:x^3+x+1#\$#
-  #\tr{(\%i30)}# p:gf_minpoly(a);
-  #\tr{(\%o30)}\bc\rb{$\tb{z^5+z^3+1}$}\ec#
+  #\tr{(\%i31)}# a : x^3+x#\$#
+  #\tr{(\%i32)}# p : gf_minimal_poly(a);
+  #\tr{(\%o32)}\bc\rb{$\tb{z^4+z^3+z^2+z+1}$}\ec#
 \end{lstlisting}
 
 To check this, substitute $a$ for $z$ in $p$:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i31)}# subst(a,z,p);
-  #\tr{(\%o31)}\bc\rb{$\tb{(x^3+x+1)^5+(x^3+x+1)^3+1}$}\ec#
-  #\tr{(\%i32)}# gf_eval();
-  #\tr{(\%o32)}\bc\rb{$\tb{0}$}\ec#
+  #\tr{(\%i33)}# subst(a, z, p);
+  #\tr{(\%o33)}\bc\rb{$\tb{(x^3+x)^4+(x^3+x)^3+(x^3+x)^2+x^3+x+1}$}\ec#
+  #\tr{(\%i34)}# gf_eval(%);
+  #\tr{(\%o34)}\bc\rb{$\tb{0}$}\ec#
 \end{lstlisting}
+
 
 \section*{An application: the Chor-Rivest knapsack cryptosystem}
 
@@ -396,7 +417,7 @@ $M=(M_0,M_1,\ldots,M_{p-1})$, Bob creates the cipher text
 \[
 c=\sum_{i=0}^{p-1}M_ic_i\pmod{p^n-1}
 \]
-which he send to Alice.
+which he sends to Alice.
 
 To decrypt $c$, Alice first computes $r=(c-nd)\pmod{p^n-1}$, and then computes
 $u(x)=g(x)^r\pmod{m(x)}$.  She then computes $s(x)=u(x)+m(x)$ and factors $s$
@@ -417,60 +438,63 @@ $d$ is 1702.
 
 First, Alice must compute her public key:
 
+%  #\tr{(\%o35)}\bc\rb{$\tb{    }$}\ec#
+
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i33)}# gf_set(7,4,x^4+3*x^3+5*x^2+6*x+2);
-  #\tr{(\%o33)}\bc\rb{$\tb{true}$}\ec#
-  #\tr{(\%i34)}# g:3*x^3+3*x^2+6;
-  #\tr{(\%o34)}\bc\rb{$\tb{3x^3+3x^2+6}$}\ec#
-  #\tr{(\%i35)}# gf_primep(g);
-  #\tr{(\%o35)}\bc\rb{$\tb{true}$}\ec#
-  #\tr{(\%i36)}# a:makelist(gf_log(x+i,g),i,0,6);
-  #\tr{(\%o36)}\bc\rb{$\tb{[1028,1935,2054,1008,379,1780,223]}$}\ec#
-  #\tr{(\%i37)}# d:1702#\$#
-  #\tr{(\%i38)}# c:makelist(mod(a[i]+d,base^exp-1),i,1,7);
-  #\tr{(\%o38)}\bc\rb{$\tb{[330,1237,1356,310,2081,1082,1925]}$}\ec#
+  #\tr{(\%i35)}# gf_set(7, x^4+3*x^3+5*x^2+6*x+2)#\$#
+  #\tr{(\%i36)}# g : 3*x^3+3*x^2+6#\$#
+  #\tr{(\%i37)}# gf_primitive_p(g);
+  #\tr{(\%o37)}\bc\rb{$\tb{true}$}\ec#
+  #\tr{(\%i38)}# a : makelist(gf_log(x+i, g), i,0,6);
+  #\tr{(\%o38)}\bc\rb{$\tb{[\,1028,\,1935,\,2054,\,1008,\,379,\,1780,\,223\,]}$}\ec#
+  #\tr{(\%i39)}# d : 1702#\$#
+  #\tr{(\%i40)}# c : makelist(mod(a[i] + d, gf_order()), i,1,7);
+  #\tr{(\%o40)}\bc\rb{$\tb{[\,330,\,1237,\,1356,\,310,\,2081,\,1082,\,1925\,]}$}\ec#
 \end{lstlisting}
 
 Now Bob can encrypt a message to Alice; suppose one such block is
 $[1,0,1,1,0,0,1]$, which is a block of length 7 which contains exactly 4 ones.
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i39)}# M:[1,0,1,1,0,0,1];
-  #\tr{(\%o39)}\bc\rb{$\tb{[1,0,1,1,0,0,1]}$}\ec#
-  #\tr{(\%i40)}# ord:base^exp-1;
-  #\tr{(\%o40)}\bc\rb{$\tb{2400}$}\ec#
-  #\tr{(\%i41)}# c:mod(sum(M[i]*c[i],i,1,7),ord);
-  #\tr{(\%o41)}\bc\rb{$\tb{1521}$}\ec#
+  #\tr{(\%i41)}# M : [1,0,1,1,0,0,1];
+  #\tr{(\%o41)}\bc\rb{$\tb{[\,1,\,0,\,1,\,1,\,0,\,0,\,1\,]}$}\ec#
+  #\tr{(\%i42)}# c : mod(sum(M[i] * c[i], i,1,7), gf_order());
+  #\tr{(\%o42)}\bc\rb{$\tb{1521}$}\ec#
 \end{lstlisting}
 
 This last value is the ciphertext.  Alice now needs to decrypt it:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i42)}# r:mod(c-exp*d,ord);
-  #\tr{(\%o42)}\bc\rb{$\tb{1913}$}\ec#
-  #\tr{(\%i43)}# u:gf_exp(g,r);
-  #\tr{(\%o43)}\bc\rb{$\tb{x^3+3x^2+2x+5}$}\ec#
-  #\tr{(\%i44)}# s:u+px;
-  #\tr{(\%o44)}\bc\rb{$\tb{x^4+4x^3+8x^2+8x+7}$}\ec#
-  #\tr{(\%i45)}# factor(s);
-  #\tr{(\%o45)}\bc\rb{$\tb{(x-1)x(x+2)(x+3)}$}\ec#
+  #\tr{(\%i43)}# r : mod(c - gf_exp() * d, gf_order());
+  #\tr{(\%o43)}\bc\rb{$\tb{1913}$}\ec#
+  #\tr{(\%i44)}# u : gf_exp(g, r);
+  #\tr{(\%o44)}\bc\rb{$\tb{x^3+3\,x^2+2\,x+5}$}\ec#
+  #\tr{(\%i45)}# s : u + gf_reduction();
+  #\tr{(\%o45)}\bc\rb{$\tb{x^4+4\,x^3+8\,x^2+8\,x+7}$}\ec#
+  #\tr{(\%i46)}# gf_factor(s);
+  #\tr{(\%o46)}\vspace{0mm}\bc\rb{$\tb{x\ (x + 2)\ (x + 3)\ (x + 6)}$}\ec#
 \end{lstlisting}
 
-The $t_i$ values are thus $-1,0,2,3$, which modulo 7 are $6,0,2,3$---and these
-are the positions of the ones in $M$.
+The $t_i$ values are $0,2,3,6$ and these are the positions of the ones in $M$.
+
 
 \section*{Matrices}
 
 There are two commands for dealing with matrices over finite fields:
-``\verb!gf_matinv!'' for inverting a matrix, and ``\verb!gf_matmul!'' for
-multiplying matrices.  Using the matrix \texttt{M} generated previously:
+``\verb!gf_matinv!'' for inverting a matrix, and ``\verb!gf_matmult!'' for
+multiplying matrices.  Using the matrix \texttt{mat} generated previously:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i46)}# MI:gf_matinv(M);
-  #\tr{(\%o46)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}x^2&x^3+x^2+x+1&x^3\\x^3+x+1&x^2+x&x^3+x+1\\x&0&x^3+x+1\end{array}\right)}}$}\ec#
-  #\tr{(\%i47)}# gf_matmul(M,MI);
-  #\tr{(\%o47)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right)}}$}\ec#
+  #\tr{(\%i47)}# mat_inv : gf_matinv(mat);
+  #\tr{(\%o47)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}x^3&x^3+x^2+1&x\\1&1&x^3+x\\x^3+x&x^3+x^2+1&x^2\end{array}\right)}}$}\vspace{3mm}\ec#
+  #\tr{(\%i48)}# gf_matmult(mat, mat_inv);
+  #\tr{(\%o48)}\bc\rbb{$\tb{\D{\left(\begin{array}[h]{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right)}}$}\vspace{1mm}\ec#
 \end{lstlisting}
+
 
 \section*{Normal Bases}
 
@@ -485,89 +509,77 @@ field element $e$ for which the set
 \{e,e^p,e^{p^2},\ldots,e^{p^{n-1}}\}
 \]
 forms a basis.  There are several commands for dealing with normal elements
-and bases.  The command ``\verb!gf_findnorm()!'' finds a normal element by
+and bases.  The command ``\verb!gf_random_normal()!'' finds a normal element by
 simply picking field elements at random and testing each one for normality.
 Although this is a probabilistic algorithm, in practice it works very quickly:
 
+%  #\tr{(\%o49)}\bc\rb{$\tb{   }$}\ec#
+
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i48)}# gf_set(2,10,x^10+x^3+1);
-  #\tr{(\%o48)}\bc\rb{\tb{\emph{true}}}\ec#
-  #\tr{(\%i49)}# pe:gf_findnorm();
-  #\tr{(\%o49)}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^4+x^2+x}$}\ec#
+  #\tr{(\%i49)}# gf_set(2, x^10+x^3+1)#\$#
+  #\tr{(\%i50)}# p : gf_random_normal();
+  #\tr{(\%o50)}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^2+x+1}$}\ec#
 \end{lstlisting}
 
-The command ``\verb!gf_sfindnorm()!'' is a brute force search through all
-field elements; in general it is slower than \verb!gf_findnorm()!.
+The command ``\verb!gf_normal()!'' is a brute force search through all
+field elements; in general it is slower than \verb!gf_random_normal()!.
 
-Having found a normal element the command ``\verb!gf_normbasis()!'' produces a
-matrix  the rows of which are the coefficients of the basis elements
+Having found a normal element the command ``\verb!gf_normal_basis()!'' produces a
+matrix the rows of which are the coefficients of the basis elements
 $e^{p^k}$.  This command takes an optional parameter; a polynomial $p$.  If
-present, \verb!gf_normbasis()! checks if the field element is normal, and if
+present, \verb!gf_normal_basis()! checks if the field element is normal, and if
 so, produces the matrix, otherwise prints an error message.  If the parameter
-is not given, \verb!gf_normbasis()! first finds a normal element, and then
+is not given, \verb!gf_normal_basis()! first finds a normal element, and then
 uses that element to produce the matrix.
 
-With the normal basis, the command ``\verb!gf_nbrep(p,M)!'' produces the
+With the normal basis, the command ``\verb!gf_normal_basis_rep(p, mat)!'' produces the
 normal basis representation of \texttt{p}, with respect to the basis
-\texttt{M}, as a list of coefficients.  One attraction of using normal bases
+\texttt{mat}, as a list of coefficients.  One attraction of using normal bases
 is that much arithmetic can be simplified; for example, in a normal basis
 representation, a power of the prime $p$ is equivalent to a shift of
 coefficients:
 
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i50)}# M:gf_normbasis(pe)#\$#
-  #\tr{(\%i51)}# a:gf_rand();
-  #\tr{(\%o51)}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^3+x^2+x}$}\ec#
-  #\tr{(\%i52)}# gf_nbrep(a,M);
-  #\tr{(\%o52)}\bc\rb{$\tb{[0,0,0,1,0,1,0,0,1,0]}$}\ec#
-  #\tr{(\%i53)}# gf_nbrep(gf_exp(a,2),M);
-  #\tr{(\%o53)}\bc\rb{$\tb{[0,0,1,0,1,0,0,1,0,0]}$}\ec#
+  #\tr{(\%i51)}# mat : gf_normal_basis(p)#\$#
+  #\tr{(\%i52)}# a : gf_random();
+  #\tr{(\%o52)}\vspace{0mm}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^2}$}\ec#
+  #\tr{(\%i53)}# gf_normal_basis_rep(a, mat);
+  #\tr{(\%o53)}\bc\rb{$\tb{[\,1,\,1,\,1,\,1,\,0,\,0,\,1,\,1,\,1,\,0\,]}$}\ec#
+  #\tr{(\%i54)}# gf_normal_basis_rep(gf_exp(a, 2), mat);
+  #\tr{(\%o54)}\bc\rb{$\tb{[\,1,\,1,\,1,\,0,\,0,\,1,\,1,\,1,\,0,\,1\,]}$}\ec#
 \end{lstlisting}
+
 
 \section*{Large fields}
 
-If the flag \texttt{largefield} is set to \texttt{false} then
-the \texttt{gf\_set} command will not find a primitive element,
-instead it will compute a full table of powers and logarithms.
-If the flag is set to \texttt{true}, the opposite happens:
-no tables are precomputed and a primitive element is found.
-The default value for \texttt{largefield} is \texttt{true}
-because this is the best choice for large and medium size finite fields.
- 
-%When the command \verb!gf_set! is called, it finds a primitive element, and
-%then produces power and logarithm tables.  This can take some time, if the
-%field is large.  For this reason there is a \texttt{largefield} flag, which is
-%set to ``false'' when the package is loaded.  
+\texttt{gf\_set} always computes a primitive element but it  
+does not create look up tables of powers and logarithms. 
+It is the user to decide to call \verb!gf_make_arrays! to compute these tables. 
 
-The default value of \texttt{largefield} has the following effects
+In case these two arrays were created the commands \verb!gf_exp!, 
+\verb!gf_index! and \verb!gf_log! will use them. Otherwise \verb!gf_exp! uses 
+``repeated squaring'' and \verb!gf_index! resp. \verb!gf_log! uses a 
+Pohlig-Hellman reduction and Brent's version of Pollard Rho. 
 
-\begin{enumerate}
-\item A primitive element is found, but the power and logarithm tables are not
-  calculated.
-\item The command \verb!gf_exp!, instead of using table lookups, uses the
-  simple ``repeat squaring'' algorithm.
-\item The command \verb!gf_log!, instead of using table lookups, uses the
-  Pohlig-Hellman algorithm.  This is most efficient if $p^n-1$ has only small
-  prime factors.
-\end{enumerate}
-
-A disadvantage is that every operation now may take more time
-when the finite field is extremely small.
-
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i54)}# largefield:true#\$#
-  #\tr{(\%i55)}# gf_set(2,20,x^20+x^3+1);
-  #\tr{(\%o55)}\bc\rb{$\tb{true}$}\ec#
-  #\tr{(\%i56)}# a:x^15+x^5+1;
+  #\tr{(\%i55)}# gf_set(2, x^20+x^3+1);
+  #\tr{(\%o55)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 20, reduction = x^{20}+x^3+1, }$}\ec#
+  #\bc\rb{$\tb{primitive = x, cardinality = 1048576, order = 1048575, }$}\ec#
+  #\bc\rb{$\tb{factors\_of\_order = [\,[3, 1], [5, 2], [11, 1], [31, 1], [41, 1]\,]) }$}\ec#
+  #\tr{(\%i56)}# a : x^15+x^5+1;
   #\tr{(\%o56)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
-  #\tr{(\%i57)}# gf_ind(a);
+  #\tr{(\%i57)}# index : gf_index(a);
   #\tr{(\%o57)}\bc\rb{$\tb{720548}$}\ec#
-  #\tr{(\%i58)}# gf_exp(a,3^12);
-  #\tr{(\%o58)}\bc\rb{$\tb{x^{17}+x^{16}+x^{13}+x^{12}+x^{11}+x^3+x^2+x}$}\ec#
+  #\tr{(\%i58)}# gf_exp(gf_primitive(), index);
+  #\tr{(\%o58)}\bc\rb{$\tb{x^{15}+x^5+1}$}\ec#
+  #\tr{(\%i59)}# gf_exp(a, 3^12);
+  #\tr{(\%o59)}\bc\rb{$\tb{x^{17}+x^{16}+x^{13}+x^{12}+x^{11}+x^3+x^2+x}$}\ec#
 \end{lstlisting}
 
-It is up to the user to decide when a field is large enough for the
-\texttt{largefield} flag to be set to \texttt{false}.
+
 
 \section*{Square and cube roots}
 Multiple algorithms have been implemented in order to solve the square and cube root extraction problem over $\mathbb{F}_p$; all of them basically perform an exponentiation in a extension field (ie $\mathbb{F}_{p^2}=\mathbb{F}_{p}[x]/(x^2+bx+a)$ or $\mathbb{F}_{p^3}=\mathbb{F}_{p}[x]/(x^3-bx-a)$) through a repeated-squaring scheme, reaching so a complexity of $O(n \log(p))$ multiplications in $\mathbb{F}_p$; however, due to some differences in the representation and multiplication of elements in the extension field, they do not have exactly the same running time:
@@ -581,29 +593,40 @@ Multiple algorithms have been implemented in order to solve the square and cube 
 \end{enumerate}
 Other implemented routines, using about the same ideas, are:
 \begin{enumerate}
-\item \verb!fastfib(n)! and \verb!fastlucas(n)!, returning the $n$-th Fibonacci and Lucas numbers through a Muller-like scheme; they require exactly $2$ squarings and $3$ sums for each bit in the binary representation of $n$, having so a bit-complexity bounded by $2\log_2(n)^{3+\varepsilon}$, with $\varepsilon$ depending on the adopted integer squaring algorithm.
+\item \verb!lucas(n)!, returning the $n$-th Lucas number through a Muller-like scheme; it requires exactly $2$ squarings and $3$ sums for each bit in the binary representation of $n$, having so a bit-complexity bounded by $2\log_2(n)^{3+\varepsilon}$, with $\varepsilon$ depending on the adopted integer squaring algorithm.
 \item \verb!qsplit(p)! and \verb!csplit(p)!, splitting a prime $p$ over $\mathbb{Z}[i]$ and $\mathbb{Z}[\omega]$, ie finding $(a,b)$ such that $p=a^2+b^2$ (this is possible only when $p$ is in the form $4k+1$) or $p=a^2+ab+b^2$ (this is possible only when $p$ is in the form $3k+1$), by the reduction of a binary quadratic form of the proper discriminant. They have the same complexity of the computation of a single Jacobi symbol, $O(\log(p)^2)$ bit-operations.
 \end{enumerate}
 \vspace{1cm}
+
+In Maxima 5.29 and later \verb!lucas! is a core function.
+
+\vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i8)}# msqrt(64,1789); ssqrt(64,1789); gf_sqrt(64,1789);
-  #\tr{(\%o8)}\bc\rb{$\tb{[1781,8]}$}\ec#
-  #\tr{(\%o9)}\bc\rb{$\tb{[8,1781]}$}\ec#
-  #\tr{(\%o10)}\bc\rb{$\tb{[1781,8]}$}\ec#
-  #\tr{(\%i11)}# mcbrt(64,1789); scbrt(64,1789); gf_cbrt(64,1789);
-  #\tr{(\%o11)}\bc\rb{$\tb{[4,608,1177]}$}\ec#
-  #\tr{(\%o12)}\bc\rb{$\tb{[4,608,1177]}$}\ec#
-  #\tr{(\%o13)}\bc\rb{$\tb{[4,1177,608]}$}\ec#
-  #\tr{(\%i14)}# modulus:1789; factor(x^3-64); modulus:false;
-  #\tr{(\%o14)}\bc\rb{$\tb{true}$}\ec#
-  #\tr{(\%o15)}\bc\rb{$\tb{(x - 608) (x - 4) (x + 612)}$}\ec#
-  #\tr{(\%o16)}\bc\rb{$\tb{false}$}\ec#
-  #\tr{(\%i17)}# qsplit(1789); csplit(1789);
-  #\tr{(\%o17)}\bc\rb{$\tb{[5,42]}$}\ec#
-  #\tr{(\%o18)}\bc\rb{$\tb{[12,35]}$}\ec#
-  #\tr{(\%i19)}# fastfib(137); fastlucas(141);
-  #\tr{(\%o19)}\bc\rb{$\tb{19134702400093278081449423917}$}\ec#
-  #\tr{(\%o20)}\bc\rb{$\tb{293263001536128903730947142076}$}\ec#
+  #\tr{(\%i1)}# lucas(141);
+  #\tr{(\%o1)}\bc\rb{$\tb{293263001536128903730947142076}$}\ec#
+\end{lstlisting}
+
+All the other functions listed above need to be loaded by ``\verb!load(gf)!'':
+
+\vspace*{2mm}
+\begin{lstlisting}[escapechar=\#]
+  #\tr{(\%i2)}# load(gf)#\$#
+  #\tr{(\%i3)}# msqrt(64, 1789); ssqrt(64, 1789); gf_sqrt(64, 1789);
+  #\tr{(\%o3)}\bc\rb{$\tb{[\,1781,\,8\,]}$}\ec#
+  #\tr{(\%o4)}\bc\rb{$\tb{[\,8,\,1781\,]}$}\ec#
+  #\tr{(\%o5)}\bc\rb{$\tb{[\,1781,\,8\,]}$}\ec#
+  #\tr{(\%i6)}# mcbrt(64, 1789); scbrt(64, 1789); gf_cbrt(64, 1789);
+  #\tr{(\%o6)}\bc\rb{$\tb{[\,4,\,608,\,1177\,]}$}\ec#
+  #\tr{(\%o7)}\bc\rb{$\tb{[\,4,\,608,\,1177\,]}$}\ec#
+  #\tr{(\%o8)}\bc\rb{$\tb{[\,4,\,1177,\,608\,]}$}\ec#
+  #\tr{(\%i9)}# gf_factor(x^3-64, 1789);
+  #\tr{(\%o9)}\bc\rb{$\tb{(x + 612)\ (x + 1181)\ (x + 1785)}$}\ec#
+  #\tr{(\%i10)}# map(lambda([n], n - 1789), %);
+  #\tr{(\%o10)}\bc\rb{$\tb{(x - 1177)\ (x - 608)\ (x - 4)}$}\ec#
+  #\tr{(\%i11)}# qsplit(1789);
+  #\tr{(\%o11)}\bc\rb{$\tb{[\,5,\,42\,]}$}\ec#
+  #\tr{(\%i12)}# csplit(1789);
+  #\tr{(\%o12)}\bc\rb{$\tb{[\,12,\,35\,]}$}\ec#
 \end{lstlisting}
 
 \end{document}

@@ -220,7 +220,6 @@ $(SBCL_MAXIMA) : intpol.lisp
 $(SBCL_MAXIMA) : nparse.lisp
 $(SBCL_MAXIMA) : displa.lisp
 $(SBCL_MAXIMA) : nforma.lisp
-$(SBCL_MAXIMA) : ldisp.lisp
 $(SBCL_MAXIMA) : grind.lisp
 $(SBCL_MAXIMA) : spgcd.lisp
 $(SBCL_MAXIMA) : ezgcd.lisp

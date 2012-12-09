@@ -1524,20 +1524,50 @@ foo : integrate(hermite(5,x) * hermite(4,x)
 check_zero_list([foo])$
 
 
+/*---------------------------------------*/
 
+orthopoly_returns_intervals : false$
 
+test_name : "legendre_p negative degree--symbolic argument"$
+foo1 : makelist (legendre_p (-k, u), k, 1, 8);
+foo2 : makelist (legendre_p (k - 1, u), k, 1, 8);
+check_zero_list(foo1 - foo2)$
 
+test_name : "legendre_p negative degree--rational argument"$
+foo1 : makelist (legendre_p (-k, 11/7), k, 1, 8);
+foo2 : makelist (legendre_p (k - 1, 11/7), k, 1, 8);
+check_zero_list(foo1 - foo2)$
 
+test_name : "legendre_p negative degree--float argument"$
+foo1 : makelist (legendre_p (-k, float (17/16)), k, 1, 8);
+foo2 : makelist (legendre_p (k - 1, float (17/16)), k, 1, 8);
+foo : map (lambda ([a, b], is (a = b)), foo1, foo2);
+check_true_list (foo);
 
+/*---------------------------------------*/
+
+test_name : "assoc_legendre_p negative degree--symbolic argument"$
+foo1 : makelist (assoc_legendre_p (-k, 1, u), k, 1, 8);
+foo2 : makelist (assoc_legendre_p (k - 1, 1, u), k, 1, 8);
+check_zero_list(foo1 - foo2)$
+
+test_name : "assoc_legendre_p negative degree--rational argument"$
+foo1 : makelist (assoc_legendre_p (-k, 1, 11/7), k, 1, 8);
+foo2 : makelist (assoc_legendre_p (k - 1, 1, 11/7), k, 1, 8);
+check_zero_list(foo1 - foo2)$
+
+test_name : "assoc_legendre_p negative degree--float argument"$
+foo1 : makelist (assoc_legendre_p (-k, 1, float (17/16)), k, 1, 8);
+foo2 : makelist (assoc_legendre_p (k - 1, 1, float (17/16)), k, 1, 8);
+foo : map (lambda ([a, b], is (a = b)), foo1, foo2);
+check_true_list (foo);
+
+reset (orthopoly_returns_intervals);
 
 
 print("orthopoly version = ", get('orthopoly,'version))$
 print("errors found = ", errors_found)$
 print("number of tests passed =", length(tests_pass))$
-
-
-
-
 
 
 /* Generate A&S Figure 22.4 page 776 

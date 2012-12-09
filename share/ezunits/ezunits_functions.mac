@@ -69,15 +69,16 @@ qty(e%) :=
 units(e%) :=
   block (local (e%),
   if atom(e%) then 
-    if featurep (e%, 'dimensional) then
-      if get (e%, units) = false then 'units(e%) else get (e%, units)
-    elseif symbolp (e%) and get (e%, 'constvalue) # false
+    if symbolp (e%) and get (e%, 'constvalue) # false
       then units (get (e%, 'constvalue))
-      else 1
+    elseif featurep (e%, 'dimensional) then
+      if get (e%, units) = false then 'units(e%) else get (e%, units)
+    else 1
   else if mapatom (e%) then units (op (e%))  /* mapatom but not atom => subscripted */
   else if unitop_p(e%) then second(e%)
   else if featurep (op(e%), 'dimensional) then units(op(e%))
   else if op(e%) = "^" then units (first (e%)) ^ second (e%)
+  else if op(e%) = "+" or op(e%) = "-" then apply ("+", unique (map (units, args (e%))))
   else if nondimensionalp (e%) then 1
   else apply (op(e%), map (units, args(e%))));
 
@@ -93,7 +94,8 @@ matchdeclare
     mm%, mult_expr_nontrivialconstfactorsp,
     nd%, nondimensionalp,
     pp%, lambda ([e], not atom(e) and op(e) = "+"),
-    uu%, unitp,
+    qq%, lambda ([e], not atom(e) and (op(e) = "=" or listp(e) or matrixp(e) or setp(e))),
+    uu%, unitop_p,
     xx%, nonconstantp);
 
 simp: false$
@@ -101,6 +103,7 @@ simp: false$
 tellsimp (nd% `` dl%, apply_units_conversion (nd%, dl%));
 tellsimp (uu% `` aa%, apply_units_conversion (uu%, aa%));
 tellsimp (pp% `` aa%, apply ("+", map (buildq ([aa%], lambda ([e], e `` aa%)), args (pp%))));
+tellsimp (qq% `` aa%, map (lambda ([e], e `` aa%), qq%));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (aa% * nd% * uu%, aa% * multiply_with_units (nd%, uu%));
 tellsimpafter (aa% + uu%, add_with_units (aa%, uu%));
@@ -112,6 +115,10 @@ tellsimpafter (uu% ` nd%, qty (uu%) ` (units (uu%) * nd%));
 tellsimpafter (abs (aa% ` bb%), abs (aa%) ` bb%);
 tellsimpafter (aa% ` abs (bb%), aa% ` bb%);
 simp: true$
+
+matchdeclare (uu%, lambda ([e], unitp (e) and not unitop_p (e)));
+defrule (rexpand_dimensional, uu%, qty (uu%) ` units (uu%));
+expand_dimensional (e) := applyb1 (e, rexpand_dimensional);
 
 unitop_p (e%) := not atom(e%) and atom (op(e%)) and is (nounify (op(e%)) = nounify ("`"));
 unitp (e%) :=
@@ -133,7 +140,7 @@ nondimensionalp (e%) :=
 nondimensional_not1 (e%) := e% # 1 and nondimensionalp (e%);
 nondimensional_not0 (e%) := e% # 0 and nondimensionalp (e%);
 
-(map (nounify, [sin, cos, tan, asin, acos, atan, atan2, log, exp, sinh, cosh, tanh, asinh, acosh, atanh]),
+(map (nounify, [qty, sin, cos, tan, asin, acos, atan, atan2, log, exp, sinh, cosh, tanh, asinh, acosh, atanh]),
   apply (declare, [%%, 'nondimensional]));
 /* HMM. MAYBE THESE RULES FOR "^" AND "/" ARE TOO STRICT. LET IT STAND FOR NOW. */
 put (nounify ("^"), lambda ([a%, b%], nondimensionalp (a%) and nondimensionalp (b%)), 'nondimensionalp);
@@ -141,6 +148,7 @@ put (nounify ("/"), lambda ([a%, b%], nondimensionalp (a%) and nondimensionalp (
 put (nounify (sqrt), lambda ([a%], nondimensionalp (a%)), 'nondimensionalp);
 put (nounify ("+"), lambda ([[a%]], every (nondimensionalp, a%)), 'nondimensionalp);
 put (nounify ("*"), lambda ([[a%]], every (nondimensionalp, a%)), 'nondimensionalp);
+put (nounify ("-"), lambda ([[a%]], every (nondimensionalp, a%)), 'nondimensionalp);
 
 add_with_units (x%, u%) :=
   if unitp (u%) then
@@ -399,7 +407,9 @@ defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
 simp : true;
 
 dimensions (expr) :=
-    apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii]);
+    if not atom (expr) and (setp (expr) or listp (expr) or matrixp (expr) or op (expr) = "=")
+        then map (dimensions, expr)
+        else apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii]);
 
 /* Adapted from dimensions_as_list in share/physics/dimension.mac.
  * Thanks to Barton Willis.
@@ -486,7 +496,7 @@ display_known_unit_conversions () :=
 
 simp : false;
 
-matchdeclare ([uu%, vv%, aa%, bb%], unitp);
+matchdeclare ([uu%, vv%, aa%, bb%], unitop_p);
 
 tellsimp ('diff (uu%, vv%, 1), 'diff (qty (uu%), qty (vv%), 1) ` (units (uu%) / units (vv%)));
 
@@ -499,6 +509,49 @@ tellsimp
         else 'integrate (qty (uu%), qty (vv%), qty (aa% `` units (vv%)), qty (bb% `` units (vv%))) ` (units (uu%) * units (vv%)));
 
 simp : true;
+
+/* Rules to unit-ify solve.
+ */
+
+matchdeclare (uu%, unitop_p);
+defrule (rununitify, uu%, subst_qty (uu%) * subst_units (uu%));
+
+subst_qty (u) := block ([v : listofvars (qty (u)), substs],
+  for v1 in v do if qty_gensyms [v1] = false then qty_gensyms [v1] : gensym (),
+  substs : makelist (v1 = qty_gensyms [v1], v1, v),
+  subst (substs, qty (u)));
+
+subst_units (u) := block ([v : listofvars (units (u)), substs],
+  for v1 in v do if units_gensyms [v1] = false then units_gensyms [v1] : gensym (),
+  substs : makelist (v1 = units_gensyms [v1], v1, v),
+  subst (substs, units (u)));
+
+matchdeclare (gg%, unit_gensym_p);
+unit_gensym_p (e) := block ([G : listarray (units_gensyms)],
+  member (e, G) or member (1/e, G) or unit_gensym_power_p (e, G));
+unit_gensym_power_p (e, G) := not atom (e) and op (e) = "^" and member (first (e), G);
+matchdeclare (bb%, nondimensionalp);
+matchdeclare (aa%, all);
+defrule (rreunitify, aa% * bb% * gg%, reform_units (aa%, bb%, gg%));
+/* punt to reform_units since aa% * (bb% ` gg%) --> (aa% * bb%) ` gg% when defrule is called */
+reform_units (a, b, g) := a * (b ` g);
+
+solve_dimensional (e%, v%) := solve_dimensional1 (if not listp (e%) then [e%] else e%, if not listp (v%) then [v%] else v%);
+
+solve_dimensional1 (e%, v%) := block
+([qty_gensyms : make_array ('hashed),
+  units_gensyms : make_array ('hashed)],
+  applyb1 (e%, rununitify),
+  /* ENSURE QTY_GENSYMS AND UNITS_GENSYMS KEY SETS ARE DISJOINT ?? */
+  subst (gensym_map (qty_gensyms), [%%, v%]),
+  subst (gensym_map (units_gensyms), %%),
+  apply (solve, %%),
+  applyb1 (%%, rreunitify),
+  subst (inverse_gensym_map (units_gensyms), %%),
+  subst (inverse_gensym_map (qty_gensyms), %%));
+
+gensym_map (h) := map ("=", rest (arrayinfo (h), 2), listarray (h));
+inverse_gensym_map (h) := map ("=", listarray (h), rest (arrayinfo (h), 2));
 
 /* Degrees to pure number conversion for trigonometric functions.
  * Not sure if this should be enabled by default; maybe it should be optional.

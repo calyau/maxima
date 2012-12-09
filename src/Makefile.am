@@ -444,7 +444,6 @@ intpol.lisp \
 invert.lisp \
 irinte.lisp \
 laplac.lisp \
-ldisp.lisp \
 lesfac.lisp \
 letmac.lisp \
 limit.lisp \

@@ -227,6 +227,9 @@ declare ([a1, b1, c1], dimensional);
 done;
 
 a1 + b1 + c1;
+a1 + b1 + c1;
+
+expand_dimensional (a1 + b1 + c1);
 'qty(a1)`'units(a1) + 'qty(b1)`'units(b1) + 'qty(c1)`'units(c1);
 
 declare_units ('[a1, b1, c1], mph);
@@ -241,22 +244,28 @@ oops ('b1, 50`gpf);
 b1: c1;
 c1;
 
-a1 + b1 + c1, infeval;
+a1 + b1 + c1;
 2*c1 + 50`mph;
 
 (declare_qty ('a1, 100), declare_qty ('b1, 200), declare_qty ('c1, 300));
 300;
 
-a1 + b1 + c1, infeval;
-650`mph;
+a1 + b1 + c1;
+2*c1 + 50 ` mph;
+
+expand_dimensional (a1 + b1 + c1);
+650 ` mph;
 
 c1 + 1000`mph;
+c1 + 1000`mph;
+
+expand_dimensional (c1 + 1000`mph);
 1300`mph;
 
-c1 + 1000`kg;
+expand_dimensional (c1 + 1000`kg);
 300`mph + 1000`kg;
 
-(a1 + 500`mph)/(b1 - 100`mph), infeval;
+expand_dimensional ((a1 + 500`mph)/(b1 - 100`mph));
 11/4;
 
 map (declare_units, [aa, bb, cc, dd, ee, ff, gg], [m, kg, s, K, feet, in, acre]);
@@ -295,19 +304,25 @@ m/s^2;
 qty (foo (p, q));
 'qty (foo (p, q));
 
-aa: foo (p, q) * cc * (100`s);
+aa: expand_dimensional (foo (p, q) * cc * (100`s));
 100 * qty (foo (p, q)) * %cc ` m;
 
 declare_units (bar, kg/acre);
 kg/acre;
 
 bb: bar[n] * gg;
-''(qty(bar[n]) * qty(gg) ` kg);
+(%ee^2/43560 ` acre) * bar[n];
+
+expand_dimensional (bb);
+%ee^2 * 'qty (bar [n]) / 43560 ` kg;
 
 catch (cc: bar[k]);
 oops ('cc, bar[k]);
 
 cc: bar[11] * (57 ` s/kg) * (10 ` acre);
+bar[11] * (570 ` acre*s/kg);
+
+expand_dimensional (cc);
 570 * qty(bar[11]) ` s;
 
 kill (aa, bb, cc, dd, ee, ff, gg);
@@ -413,13 +428,16 @@ e : 1/sqrt (%mu_0 * %e_0);
 
 /* Helium sound velocity at 27 C, He(Cp/Cv)=5/3, 4gr/mol */
 e : sqrt (5/3 * %R/(4 ` g/mol) * (27 ` degC `` K));
-sqrt(2001)*sqrt(%R)/4 ` sqrt(mol)*sqrt(K)/sqrt(g);
+sqrt(%R*(2001/16 ` mol*K/g));
+
+expand_dimensional (e);
+sqrt(2001)*sqrt('qty(%R))/4 ` sqrt(J)/sqrt(g);
 
 dimensions (e);
 length / time;
 
 e : constvalue (e);
-sqrt(2001)*sqrt(1039309)/(1000*sqrt(2)) ` sqrt(J)/sqrt(g);
+sqrt(2079657309)/(125*2^(7/2)) ` sqrt(J)/sqrt(g);
 
 dimensions (e);
 length / time;
@@ -428,8 +446,7 @@ u : fundamental_units (e);
 m/s;
 
 e : e `` u;
-/*sqrt(10)*sqrt(2001)*sqrt(1039309)/(100*sqrt(2)) ` m/s;*/
-10^(3/2)*sqrt(2001)*sqrt(1039309)/(125*2^(7/2)) ` m/s;
+10^(3/2)*sqrt(2079657309)/(125*2^(7/2))  ` m/s;
 
 e, numer;
 1019.719890214955 ` m/s;
@@ -505,7 +522,13 @@ xx : map (lambda ([x], x `` m), xx);
 apply ("+", xx);
 100 ` m;
 
-(declare_units (xyz, kg), xx : xyz `` [metric_ton, kg, mg]);
+declare_units (xyz, kg);
+kg;
+
+xx : xyz `` [metric_ton, kg, mg];
+xyz `` [metric_ton, kg, mg];
+
+expand_dimensional (xx);
 [floor('qty(xyz)/1000) ` metric_ton,
  floor(1000*('qty(xyz)/1000-floor('qty(xyz)/1000))) ` kg,
  1000000*(1000*('qty(xyz)/1000-floor('qty(xyz)/1000))

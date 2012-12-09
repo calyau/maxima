@@ -981,10 +981,10 @@ clarify:
                        2                                 2
 @end example
 
-The conditions @code{-%pi/2<parg(%g6),parg(%g6)<=%pi/2} tell us that
-@code{%g6} is in the range of the square root function.  When this is
+The conditions @code{-%pi/2<parg(%g130),parg(%g130)<=%pi/2} tell us that
+@code{%g130} is in the range of the square root function.  When this is
 true, the solution set to @code{sqrt(x) = 3} is the same as the
-solution set to @code{%g6-3,x=%g6^2}.
+solution set to @code{%g130-3,x=%g130^2}.
 
 To polynomialize trigonometric expressions, it is necessary to
 introduce a non algebraic substitution; these non algebraic substitutions

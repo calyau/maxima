@@ -21,7 +21,7 @@
    Copyright Volker van Nek, 2012
    
    
-   Functions in this file work in Maxima version 5.28 or higher.
+   Functions in this file work in Maxima version 5.29 or higher.
    (Or download src/numth.lisp from git and compile and load numth.lisp.)
    
    The example at the bottom of this file is taken from the excellent
@@ -36,11 +36,11 @@
 /* sub_bytes **************************************************************** */
 
 byte_sub[byte] := block([poly, inv, p1, p2],
-   gf_set(2, x^8+x^4+x^3+x+1),
+   gf_minimal_set(2, x^8+x^4+x^3+x+1),
    poly : gf_n2p(byte),
    inv : if poly = 0 then 0 else gf_inv(poly),
 
-   gf_set(2, x^8+1),
+   gf_minimal_set(2, x^8+1),
    p1 : x^4+x^3+x^2+x+1,
    p2 : x^6+x^5+x+1, 
    poly : gf_add(gf_mult(p1, inv), p2),
@@ -75,7 +75,7 @@ mix_columns(state) := block([mixed],
    state : mat_n2p(state),
    mixed : matrix(),
    for i:1 thru 4 do 
-      mixed : addcol(mixed, gf_matmul(MC, col(state, i))),
+      mixed : addcol(mixed, gf_matmult(MC, col(state, i))),
    mat_p2n(mixed) )$
 
 
@@ -139,17 +139,19 @@ inv_shift_rows(M) := apply('matrix, makelist(inv_rotate(M[i], i-1), i,1,4))$
 /* inv_sub_bytes ************************************************************ */
 
 inv_byte_sub[byte] := block([poly, inv, p1, p2],
-   gf_set(2, x^8+1),
+   gf_minimal_set(2, x^8+1),
    poly : gf_n2p(byte),
    p1 : x^4+x^3+x^2+x+1,
    p2 : x^6+x^5+x+1, 
    poly : gf_div(gf_sub(poly, p2), p1),
    
-   gf_set(2, x^8+x^4+x^3+x+1),
+   gf_minimal_set(2, x^8+x^4+x^3+x+1),
    inv : if poly = 0 then 0 else gf_inv(poly),
    gf_p2n(inv) )$
 
 for byte:0 thru 0ff do inv_byte_sub[byte]$
+
+gf_set(2, x^8+x^4+x^3+x+1)$
 
 inv_sub_bytes(state) := matrixmap(lambda([byte], inv_byte_sub[byte]), state)$
 
@@ -162,7 +164,7 @@ inv_mix_columns(state) := block([mixed],
    state : mat_n2p(state),
    mixed : matrix(),
    for n:1 thru 4 do 
-      mixed : addcol(mixed, gf_matmul(inv_MC, col(state, n))),
+      mixed : addcol(mixed, gf_matmult(inv_MC, col(state, n))),
    mat_p2n(mixed) )$
 
 

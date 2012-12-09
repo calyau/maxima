@@ -220,7 +220,6 @@ $(CLISP_MAXIMA) : intpol.lisp
 $(CLISP_MAXIMA) : nparse.lisp
 $(CLISP_MAXIMA) : displa.lisp
 $(CLISP_MAXIMA) : nforma.lisp
-$(CLISP_MAXIMA) : ldisp.lisp
 $(CLISP_MAXIMA) : grind.lisp
 $(CLISP_MAXIMA) : spgcd.lisp
 $(CLISP_MAXIMA) : ezgcd.lisp

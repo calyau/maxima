@@ -1,5 +1,26 @@
 \input texinfo   @c -*-texinfo-*-
 
+@setfilename abs_integrate.info
+@settitle abs_integrate
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to abs_integrate, (dir), (dir)
+@top
+@menu
+* Introduction to abs_integrate::
+* Definitions for abs_integrate::
+* Function and variable index::
+@end menu
+@chapter abs_integrate
+
+@node Introduction to abs_integrate, Definitions for abs_integrate, Top, Top
+@section Introduction to abs_integrate
+
 The package @code{abs_integrate} extends Maxima's integration code to
 some integrands that involve the absolute value, max, min, signum, or
 unit step functions. For integrands of the form @math{p(x) |q(x)|},
@@ -76,6 +97,9 @@ located at http://www.cs.berkeley.edu/~fateman/papers/partition.pdf.
 
 
 @b{To use} @file{load(abs_integrate)}
+
+@node Definitions for abs_integrate, Function and variable index, Introduction to abs_integrate, Top
+@section Definitions for abs_integrate
 
 @defvr {Option} extra_integration_methods
 Default value: @code{['signum_int, 'abs_integrate_use_if]}
@@ -296,3 +320,9 @@ uses @math{unit_step(x) = (1 + signum(x))/2}.
 
 @end deffn
 
+@node Function and variable index,  , Definitions for abs_integrate, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye

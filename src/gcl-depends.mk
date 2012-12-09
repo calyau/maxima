@@ -226,7 +226,6 @@ binary-gcl/maxima : intpol.lisp
 binary-gcl/maxima : nparse.lisp
 binary-gcl/maxima : displa.lisp
 binary-gcl/maxima : nforma.lisp
-binary-gcl/maxima : ldisp.lisp
 binary-gcl/maxima : grind.lisp
 binary-gcl/maxima : spgcd.lisp
 binary-gcl/maxima : ezgcd.lisp

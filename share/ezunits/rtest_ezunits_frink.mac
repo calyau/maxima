@@ -153,6 +153,7 @@ foo :
   declare_unit_conversion (percent = 1/100),
   declare_units (volume_alcohol_beer, fluid_ounce),
   volume_alcohol_beer * rho_alcohol = (rat (3.2) ` percent) * ((12 ` fluid_ounce - volume_alcohol_beer) * rho_water + volume_alcohol_beer * rho_alcohol),
+  expand_dimensional (%%),
   map (expand, %%), /* HMM, EQUATION SIMPLIFIES DIFFERENTLY IN THE PRESENCE OF MRAT ... */
   map (lambda ([x], x `` g), %%),
   solve (map (first, expand (%%)), qty (volume_alcohol_beer)));

@@ -1,7 +1,6 @@
 (in-package :cl-info)
 
-(defvar *info-section-hashtable* (make-hash-table :test 'equal))
-(defvar *info-deffn-defvr-hashtable* (make-hash-table :test 'equal))
+(defvar *info-tables* (make-hash-table :test 'equal))
 
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
@@ -53,62 +52,80 @@
 
 ; ------------------ search help topics ------------------
 
-(defun autoload-maxima-index ()
-  ;; Autoload the index, but make sure we use a sensible *read-base*.
+(defun load-primary-index ()
+  ;; Load the index, but make sure we use a sensible *read-base*.
   ;; See bug 1951964.  GCL doesn't seem to have
   ;; with-standard-io-syntax.  Is just binding *read-base* enough?  Is
   ;; with-standard-io-syntax too much for what we want?
-  #-gcl
-  (with-standard-io-syntax
-    (maxima::mfuncall 'cause-maxima-index-to-load))
-  #+gcl
-  (let ((*read-base* 10.))
-    (maxima::mfuncall 'cause-maxima-index-to-load)))
+  (let*
+    ((subdir-bit (or maxima::*maxima-lang-subdir* "."))
+     (path-to-index (maxima::combine-path maxima::*maxima-infodir* subdir-bit "maxima-index.lisp")))
+    #-gcl
+    (with-standard-io-syntax (load path-to-index))
+    #+gcl
+    (let ((*read-base* 10.)) (load path-to-index))))
 
 (defun info-exact (x)
-  (autoload-maxima-index)
   (let ((exact-matches (exact-topic-match x)))
-    (if (null exact-matches)
+    (if (not (some-exact x exact-matches))
       (progn
         (format t (intl:gettext "  No exact match found for topic `~a'.~%  Try `?? ~a' (inexact match) instead.~%~%") x x)
         nil)
       (progn
         (display-items exact-matches)
         (if (some-inexact x (inexact-topic-match x))
-          (format t "  There are also some inexact matches for `~a'.~%  Try `?? ~a' to see them.~%~%" x x))
+          (format t (intl:gettext "  There are also some inexact matches for `~a'.~%  Try `?? ~a' to see them.~%~%") x x))
         t))))
 
-(defun some-inexact (x inexact-matches)
-  (some #'(lambda (y) (not (equal y x))) (mapcar #'car inexact-matches)))
+(defun some-exact (x matches)
+  (some #'identity (flatten-matches x matches)))
+
+(defun some-inexact (x matches)
+  (some #'null (flatten-matches x matches)))
+
+(defun flatten-matches (x matches)
+  ;; OH GODS, SPARE YOUR SERVANT FROM YOUR FIERY WRATH ...
+  (mapcar #'(lambda (y) (equal y x)) (mapcar #'first (apply #'append (mapcar #'second matches)))))
 
 (defun exact-topic-match (topic)
+  (setq topic (regex-sanitize topic))
+  (loop for dir-name being the hash-keys of *info-tables*
+    collect (list dir-name (exact-topic-match-1 topic dir-name))))
+
+(defun exact-topic-match-1 (topic d)
   (let*
-    ((topic (regex-sanitize topic))
+    ((section-table (first (gethash d *info-tables*)))
+     (defn-table (second (gethash d *info-tables*)))
      (regex1 (concatenate 'string "^" topic "$"))
      (regex2 (concatenate 'string "^" topic " *<[0-9]+>$")))
     (append
-      (find-regex-matches regex1 *info-section-hashtable*)
-      (find-regex-matches regex2 *info-section-hashtable*)
-      (find-regex-matches regex1 *info-deffn-defvr-hashtable*)
-      (find-regex-matches regex2 *info-deffn-defvr-hashtable*))))
+      (find-regex-matches regex1 section-table)
+      (find-regex-matches regex1 defn-table)
+      (find-regex-matches regex2 section-table)
+      (find-regex-matches regex2 defn-table))))
 
 (defun info-inexact (x)
-  (autoload-maxima-index)
-  (let (wanted tem)
-    (setf tem (inexact-topic-match x))
-    (when tem (display-items tem))
-    (not (null tem))))
+  (let ((inexact-matches (inexact-topic-match x)))
+    (when inexact-matches
+      (display-items inexact-matches))
+    (not (null inexact-matches))))
+
+;; MATCHES looks like ((D1 (I11 I12 I12 ...)) (D2 (I21 I22 I23 ...)))
+;; Rearrange it to ((D1 I11) (D1 I12) (D1 I13) ... (D2 I21) (D2 I22) (D2 I23) ...)
+(defun rearrange-matches (matches)
+  (apply #'append (mapcar #'(lambda (di) (let ((d (first di)) (i (second di))) (mapcar #'(lambda (i1) (list d i1)) i))) matches)))
 
 (defun display-items (items)
-  (let ((nitems (length items)))
+  (let*
+    ((items-list (rearrange-matches items))
+     (nitems (length items-list)))
 
-    (loop for i from 0 for item in items do
+    (loop for i from 0 for item in items-list do
       (when (> nitems 1)
-        (let ((heading-title (nth 3 (cdr item))))
-          (format t "~% ~d: ~a~@[  (~a)~]"
-                  i
-                  (car item)
-                  heading-title))))
+        (let
+          ((heading-title (nth 4 (second item)))
+           (item-name (first (second item))))
+          (format t "~% ~d: ~a~@[  (~a)~]" i item-name heading-title))))
 
     (setq wanted
           (if (> nitems 1)
@@ -120,20 +137,28 @@
                  (force-output)
                  (clear-input)
                  (select-info-items
-                  (parse-user-choice nitems) items)))
-          items))
+                  (parse-user-choice nitems) items-list)))
+          items-list))
     (clear-input)
     (finish-output *debug-io*)
     (when (consp wanted)
       (format t "~%")
       (loop for item in wanted
-        do (format t "~A~%~%" (read-info-text item))))))
+        do (format t "~A~%~%" (read-info-text (first item) (second item)))))))
 
 (defun inexact-topic-match (topic)
   (setq topic (regex-sanitize topic))
-  (append
-    (find-regex-matches topic *info-section-hashtable*)
-    (find-regex-matches topic *info-deffn-defvr-hashtable*)))
+  (let ((foo (loop for dir-name being the hash-keys of *info-tables*
+    collect (list dir-name (inexact-topic-match-1 topic dir-name)))))
+    (remove-if #'(lambda (x) (null (second x))) foo)))
+
+(defun inexact-topic-match-1 (topic d)
+  (let*
+    ((section-table (first (gethash d *info-tables*)))
+     (defn-table (second (gethash d *info-tables*))))
+    (append
+      (find-regex-matches topic section-table)
+      (find-regex-matches topic defn-table))))
 
 (defun regex-sanitize (s)
   "Precede any regex special characters with a backslash."
@@ -163,18 +188,14 @@
       hashtable)
     (stable-sort regex-matches #'string-lessp :key #'car)))
 
-(defun read-info-text (x)
-  (declare (special maxima::*maxima-infodir* maxima::*maxima-lang-subdir*))
-  (let* ((value (cdr x))
-	 (filename (car value))
-	 (byte-offset (cadr value))
-	 (byte-count (caddr value))
-	 (text (make-string byte-count))
-	 (subdir-bit
-	  (if (null maxima::*maxima-lang-subdir*)
-	      ""
-	      (concatenate 'string "/" maxima::*maxima-lang-subdir*)))
-	 (path+filename (concatenate 'string maxima::*maxima-infodir* subdir-bit "/" filename)))
+(defun read-info-text (dir-name parameters)
+  (let*
+    ((value (cdr parameters))
+     (filename (car value))
+     (byte-offset (cadr value))
+     (byte-count (caddr value))
+     (text (make-string byte-count))
+     (path+filename (make-pathname :directory dir-name :name filename)))
     (with-open-file (in path+filename :direction :input)
       (file-position in byte-offset)
       #+gcl (gcl-read-sequence text in :start 0 :end byte-count)
@@ -188,15 +209,20 @@
 
 ; --------------- build help topic indices ---------------
 
-(defun load-info-hashtables ()
-  (declare (special *info-section-pairs* *info-deffn-defvr-pairs*))
-  (if (and (zerop (length *info-section-pairs*)) 
-           (zerop (length *info-deffn-defvr-pairs*)))
-    (format t (intl:gettext "warning: empty documentation index; ? and ?? won't work!~%")))
-  ; (format t "HEY, I'M LOADING THE INFO HASHTABLES NOW~%")
-  (mapc
-    #'(lambda (x) (setf (gethash (car x) *info-section-hashtable*) (cdr x)))
-    *info-section-pairs*)
-  (mapc
-    #'(lambda (x) (setf (gethash (car x) *info-deffn-defvr-hashtable*) (cdr x)))
-    *info-deffn-defvr-pairs*))
+(defun load-info-hashtables (dir-name deffn-defvr-pairs section-pairs)
+  (if (and (zerop (length section-pairs)) 
+           (zerop (length deffn-defvr-pairs)))
+    (format t (intl:gettext "warning: ignoring an empty documentation index in ~M~%") dir-name)
+    (destructuring-bind
+      (section-hashtable deffn-defvr-hashtable)
+      (ensure-info-tables dir-name)
+      (mapc #'(lambda (x) (setf (gethash (car x) section-hashtable) (cdr x))) section-pairs)
+      (mapc #'(lambda (x) (setf (gethash (car x) deffn-defvr-hashtable) (cdr x))) deffn-defvr-pairs))))
+
+(defun ensure-info-tables (dir-name)
+  (or (gethash dir-name *info-tables*)
+    (let
+      ((t1 (make-hash-table :test 'equal))
+       (t2 (make-hash-table :test 'equal)))
+      (setf (gethash dir-name *info-tables*) (list t1 t2)))))
+
