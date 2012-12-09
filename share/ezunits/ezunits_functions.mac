@@ -527,14 +527,8 @@ subst_units (u) := block ([v : listofvars (units (u)), substs],
   subst (substs, units (u)));
 
 matchdeclare (gg%, unit_gensym_p);
-unit_gensym_p (e) := block ([G : listarray (units_gensyms)],
-  member (e, G) or member (1/e, G) or unit_gensym_power_p (e, G));
-unit_gensym_power_p (e, G) := not atom (e) and op (e) = "^" and member (first (e), G);
-matchdeclare (bb%, nondimensionalp);
-matchdeclare (aa%, all);
-defrule (rreunitify, aa% * bb% * gg%, reform_units (aa%, bb%, gg%));
-/* punt to reform_units since aa% * (bb% ` gg%) --> (aa% * bb%) ` gg% when defrule is called */
-reform_units (a, b, g) := a * (b ` g);
+unit_gensym_p (e) := member (e, listarray (units_gensyms));
+defrule (rreunitify, gg%, 1 ` gg%); /* apply via applyb1 only to avoid infinite recursion !! */
 
 solve_dimensional (e%, v%) := solve_dimensional1 (if not listp (e%) then [e%] else e%, if not listp (v%) then [v%] else v%);
 
