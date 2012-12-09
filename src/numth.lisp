@@ -1152,9 +1152,17 @@
 
 (defmfun $gf_exp (&optional a n)
   (gf-minset?) 
-  (if a
-    (gf-x2p (gf-pow (gf-p2x a) n))
-    *gf-exp* ))
+  (cond 
+    ((not a) *gf-exp*)
+    ((not n) 
+      (merror (intl:gettext "`gf_exp' needs zero or two arguments." )) )
+    ((not (integerp n))
+      (merror (intl:gettext "Second argument to `gf_exp' must be an integer." )) )
+    ((< n 0)
+      (setq a (gf-inv (gf-p2x a)))
+      (when a ($gf_exp (gf-x2p a) (neg n))) ) ;; a is nil in case the inverse does not exist
+    (t 
+      (gf-x2p (gf-pow (gf-p2x a) (mod n *gf-ord*))) )))
 ;;
 ;; -----------------------------------------------------------------------------
 
@@ -1454,7 +1462,7 @@
 
 ;; x^n mod y
 
-(defun gf-pow (x n) 
+(defun gf-pow (x n) ;; assume 0 <= n <= order
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (cond 
     ((= 0 n) (list 0 1))
