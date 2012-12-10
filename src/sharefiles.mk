@@ -513,6 +513,7 @@ diffequations/desoln.mac \
 diffequations/desoln.usg \
 diffequations/drawdf.mac \
 diffequations/exampl.mac \
+diffequations/hstep.lisp \
 diffequations/linde1.mc \
 diffequations/ode2.mac \
 diffequations/ode2.usg \
@@ -521,6 +522,7 @@ diffequations/pdvtr.mac \
 diffequations/phypgm.mac \
 diffequations/pivtr.mac \
 diffequations/pmain.mac \
+diffequations/pwilt.lisp \
 diff_form/cartan_new.lisp \
 diff_form/curvture2.mac \
 diff_form/diff_form.mac \
