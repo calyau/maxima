@@ -3633,7 +3633,13 @@ relerror(
 true;
 
 
-
+/* From the mailing list.  This should not signal an error and should give a simplifed answer */
+relerror(
+ expand(bfloat(erf((sqrt(2)*%i-sqrt(2))/2))),
+ 4.74147636640994245161681b-1 * %i - 9.69264211944215930381491b-1,
+ 1b-23);
+true;
 
 (fpprec:oldfpprec,done);
 done;
+
