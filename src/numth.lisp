@@ -312,7 +312,7 @@
   (when (minusp x) (setq x (mod x n)))
   (cond 
     ((= 0 x) nil)
-    ((= 1 x) (if (= n 2) 1 nil))
+    ((= 1 x) (if (= n 2) t nil))
     ((<= n 2) nil)
     ((= 0 (mod x n)) nil)
     (t 
@@ -1764,7 +1764,11 @@
 (defmfun $gf_primitive_p (a) 
   (gf-set?)
   (let ((n (gf-x2n (gf-p2x a))))
-    (when (< n *gf-card*) (gf-prim-p (gf-n2x n))) ))
+    (cond 
+      ((>= n *gf-card*) nil)
+      ((= 1 *gf-exp*) 
+        (zn-primroot-p n *gf-char* *gf-ord* (mapcar #'car *gf-fs-ord*)) )
+      (t (gf-prim-p (gf-n2x n))) )))
 
 (defun gf-prim-p (x) 
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
