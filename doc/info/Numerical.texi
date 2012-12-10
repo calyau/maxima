@@ -102,7 +102,7 @@ Let @code{x} be the output of the inverse transform.
 Then for @code{j} from 0 through @code{n - 1},
 
 @example
-x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
+x[j] = sum(y[k] exp(-2 %i %pi j k / n), k, 0, n - 1)
 @end example
 
 @code{load(fft)} loads this function.
@@ -190,7 +190,7 @@ Let @code{y} be the output of the transform.
 Then for @code{k} from 0 through @code{n - 1},
 
 @example
-y[k] = (1/n) sum(x[j] exp(-2 %i %pi j k / n), j, 0, n - 1)
+y[k] = (1/n) sum(x[j] exp(+2 %i %pi j k / n), j, 0, n - 1)
 @end example
 
 When the data @var{x} are real,

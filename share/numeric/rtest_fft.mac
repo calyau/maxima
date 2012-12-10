@@ -8,13 +8,13 @@
     n : length (x),
     y : makelist (0, i, 1, n),
     for k : 0 thru n - 1
-        do y[1 + k] : (1/n) * sum (x[1 + j] * exp (-2 * %i * %pi * j * k / n), j, 0, n - 1),
+        do y[1 + k] : (1/n) * sum (x[1 + j] * exp (+2 * %i * %pi * j * k / n), j, 0, n - 1),
     expand (y)),
  naive_ft_inverse (y) := block ([x, n],
     n : length (y),
     x : makelist (0, i, 1, n),
     for j : 0 thru n - 1
-        do x[1 + j]: sum (y[1 + k] * exp (+2 * %i * %pi * j * k / n), k, 0, n - 1),
+        do x[1 + j]: sum (y[1 + k] * exp (-2 * %i * %pi * j * k / n), k, 0, n - 1),
     expand (x)),
  0);
 0;
