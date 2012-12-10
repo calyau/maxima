@@ -2045,8 +2045,10 @@
 	 (etypecase z
 	   (cl:real (maxima::erf z))
 	   (cl:complex (maxima::complex-erf z))
-	   (bigfloat (bigfloat (maxima::bfloat-erf (maxima::to z))))
-	   (complex-bigfloat (bigfloat (maxima::complex-bfloat-erf (maxima::to z))))))))
+	   (bigfloat
+	    (bigfloat (maxima::$bfloat (maxima::$expand (maxima::bfloat-erf (maxima::to z))))))
+	   (complex-bigfloat
+	    (bigfloat (maxima::$bfloat (maxima::$expand (maxima::complex-bfloat-erf (maxima::to z))))))))))
 
 (defun bf-erfc (z)
   ;; Compute erfc(z) via 1 - erf(z) is not very accurate if erf(z) is
