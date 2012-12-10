@@ -1,5 +1,7 @@
 /* -*- Mode: MACSYMA; Package: CL-MAXIMA -*- */
 
+load(pwilt);
+
 desolve(eqns,vars):=block([teqns,tvars,ovar,lvar,flag,dispflag],
 	modedeclare(flag,boolean),
 	flag:false,
@@ -15,5 +17,5 @@ desolve(eqns,vars):=block([teqns,tvars,ovar,lvar,flag,dispflag],
 	  then error("desolve can't handle this case.")
 	  else teqns:first(teqns),
 	if flag#true then teqns:first(teqns),
-	teqns:map(lambda([z],ilt(z,lvar,ovar)),teqns),
+	teqns:map(lambda([z],pwilt(z,lvar,ovar)),teqns),
 	if flag and length(tvars)=1 then teqns[1] else teqns)$
