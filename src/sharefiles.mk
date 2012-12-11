@@ -549,6 +549,7 @@ ezunits/ezunits.mac \
 ezunits/physical_constants.mac \
 ezunits/rtest_ezunits_frink.mac \
 ezunits/rtestezunits.mac \
+ezunits/rtest_ezunits_solve.mac \
 finance/finance.mac \
 fourier_elim/fourier_elim.lisp \
 fourier_elim/rtest_fourier_elim.mac \
