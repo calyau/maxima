@@ -5,11 +5,16 @@
 ;; author:      Liam Healy <Liam.Healy@nrl.navy.mil>
 ;;********************************************************
 
-(in-package :maxima)
-
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
-#+ecl (defvar cl-user::*maxima-build-time* '#.(multiple-value-list (get-decoded-time)))
+;; CL-USER:*MAXIMA-BUILD-TIME* is defined in maxima.asd and maxima.system,
+;; but I guess ECL doesn't see that, so define it here.
+#+ecl (progn
+  (in-package :cl-user)
+  (defvar *maxima-build-time* '#.(multiple-value-list (get-decoded-time)))
+  (export '*maxima-build-time*))
+
+(in-package :maxima)
 
 ;;; Locations of various types of files. These variables are discussed
 ;;; in more detail in the file doc/implementation/dir_vars.txt. Since
