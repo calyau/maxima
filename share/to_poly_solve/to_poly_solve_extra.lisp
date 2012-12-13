@@ -169,34 +169,6 @@
 	  ((and (symbolp e) ($featurep e '$noninteger)) nil)
 	  (t `(($%integerp simp) ,e)))))
     		  
-(setf (get '$isreal_p 'operators) 'simp-isreal-p)
-
-(defun simp-isreal-p (e yy z)
-  (declare (ignore yy))
-  (oneargcheck e)
-  (let ((ec) ($domain '$complex))
-    
-    (setq e (simplifya (specrepcheck (cadr e)) z))
-
-    ;; Simplifications:
-
-    ;;  (1) if r is real then isreal_p(r + x) --> isreal_p(x),
-    ;;  (2) if r is real then isreal_p(r * x) --> isreal_p(x),
-    ;;  (3) if e = conjugate(e) then true,
-    ;;  (4) if is(notequal(e,conjugate(e))) then false.
-    
-    (cond ((mtimesp e)
-	   (setq e (muln (mapcar #'(lambda (s) (if (eq t (take '($isreal_p) s)) 1 s)) (margs e)) t)))
-	  ((mplusp e)
-	   (setq e (addn (mapcar #'(lambda (s) (if (eq t (take '($isreal_p) s)) 0 s)) (margs e)) t))))
-   
-    ;; If e is constant, apply rectform.
-    (if ($constantp e) (setq e ($rectform e)))
-    (setq ec (take '($conjugate) e))
-    (cond ((eq t (meqp e ec)) t)
-	  ((eq t (mnqp e ec)) nil)
-	  (t `(($isreal_p simp) ,e)))))
-    	
 (setf (get '$isnonnegative_p 'operators) 'simp-isnonnegative-p)
 
 (defun simp-isnonnegative-p (e yy z)
