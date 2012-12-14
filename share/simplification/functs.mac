@@ -36,14 +36,6 @@ logical&&  logand(x,y):=?boole(?boole\-and,x,y)$
 
 nonzeroandfreeof&&  nonzeroandfreeof(x,e):=is(e#0 and freeof(x,e))$
 
-/* linear&& matchdeclare(a,nonzeroandfreeof(x),[b,c],freeof(x))$
-    defmatch(linearize,a*x+b,x)$
-    defmatch(quadraticize,a*x^2+b*x+c,x)$
-    linear(exp,x):=block([a,b],if linearize(exp,x)=false then exp else
-	a*x+b)$
-    quadratic(exp,x):=block([a,b,c],if quadraticize(exp,x)=false then
-	exp else a*x^2+b*x+c)$ */
-
 lcm&& lcm([list]):=block([listconstvars:false],if listofvars(list)=[] then
 lcm1(list) else factor(lcm1(list)))$
 

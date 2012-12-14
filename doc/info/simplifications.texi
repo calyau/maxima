@@ -351,15 +351,31 @@ To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} linear (@var{expr}, @var{x})
-When @var{expr} is an expression linear in variable @var{x},
-@code{linear} returns @code{@var{a}*@var{x} + @var{b}} where @var{a} is nonzero,
-and @var{a} and @var{b} are free of @var{x}.
-Otherwise, @code{linear} returns @var{expr}.
+When @var{expr} is an expression of the form @code{@var{a}*@var{x} + @var{b}}
+where @var{a} is nonzero, and @var{a} and @var{b} are free of @var{x},
+@code{linear} returns a list of three equations, one for each of the three formal
+variables @var{b}, @var{a}, and @var{x}. Otherwise, @code{linear} returns @code{false}.
 
-To use this function write first @code{load(functs)}.
+@code{load(antid)} loads this function.
+
+Example:
+
+@c ===beg===
+@c load (antid);
+@c linear ((1 - w)*(1 - x)*z, z);
+@c linear (cos(u - v) + cos(u + v), u);
+@c ===end===
+@example
+(%i1) load (antid);
+(%o1)        /usr/share/maxima/5.29.1/share/integration/antid.mac
+(%i2) linear ((1 - w)*(1 - x)*z, z);
+(%o2)  [bargumentb = 0, aargumenta = (w - 1) x - w + 1, xargumentx = z]
+(%i3) linear (cos(u - v) + cos(u + v), u);
+(%o3)                                false
+@end example
 
 @opencatbox
-@category{Package functs} @category{Expressions}
+@category{Package antid} @category{Expressions}
 @closecatbox
 
 @end deffn
