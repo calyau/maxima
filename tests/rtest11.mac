@@ -101,6 +101,10 @@ f(2*a+3*b);
 3*f(b)+2*f(a)$
 f(2*x+y,x);
 f(1,x)*y+2*f(x,x)$
+declare (c1, constant);
+done;
+f (x*c1/2 + 2*y/c1);
+c1*f(x)/2 + 2*f(y)/c1;
 declare(f,additive);
 done$
 f(2*a+3*b);

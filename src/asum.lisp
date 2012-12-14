@@ -834,7 +834,7 @@ summation when necessary."
       ((null l)
        (cons (simplifya (cons (list (caar e)) a) nil)
 	     (simplifya (cons (list (caar e)) b) nil)))
-    (if (or (mnump (car l)) (constant (car l)))
+    (if ($constantp (car l))
 	(setq a (cons (car l) a))
 	(setq b (cons (car l) b)))))
 
