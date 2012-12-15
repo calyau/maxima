@@ -753,7 +753,7 @@
 			        (cons '(mlist) (mapcar #'1- dims))))))
 	       ((eq (marray-type arra) '$functional)
 	        (return (arrayinfo-aux sym (mgenarray-content arra)))))
-	 (let ((gen (mgetl sym '(hashar array))) ary1)
+	 (let ((gen (safe-mgetl sym '(hashar array))) ary1)
            (when (null gen)
              (merror (intl:gettext "arrayinfo: ~M is not an array.") ary))
 	   (setq ary1 (cadr gen))
