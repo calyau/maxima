@@ -169,7 +169,7 @@
 ;-	      l (tex f (append l (list "\\left(")) (list "\\right)") 'mparen 'mparen))
   	      l (tex f (append l (list " left( ")) (list " right) ") 'mparen 'mparen))
 	(setq f (caar x)
-	      l (tex (texword f) l nil lop 'mfunction)))
+	      l (tex f l nil lop 'mfunction)))
     (setq
      r (nconc (tex-list (cdr x) nil (list "}") ",") r))
     (nconc l (list "_{") r  )))
@@ -243,7 +243,7 @@
 		 (doit (and
 			f		; there is such a function
 			(member (getcharn f 1) '(#\% #\$)) ;; insist it is a % or $ function
-			(not (eq (car (last (car fx))) 'array))	; fix for x[i]^2
+			(not (member 'array (cdar fx) :test #'eq))	; fix for x[i]^2
 					; Jesper Harder <harder@ifa.au.dk>
 			(not (member f '(%sum %product %derivative %integrate %at
 				       %lsum %limit) :test #'eq)) ;; what else? what a hack...
