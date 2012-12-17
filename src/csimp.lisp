@@ -93,7 +93,7 @@
      (cond ((or (alike1 exp var1) (not (eq (caar exp) 'mtimes)))
 	    (return (cons k exp))))
      (setq exp (cdr exp))
-     loop (cond ((free (car exp) var1) (setq const (cons (car exp) const)))
+     loop (cond ((freeof var1 (car exp)) (setq const (cons (car exp) const)))
 		(t (setq varbl (cons (car exp) varbl))))
      (cond ((null (setq exp (cdr exp)))
 	    (return (cons (cond ((null const) k)

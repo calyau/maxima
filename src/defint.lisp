@@ -498,7 +498,7 @@ in the interval of integration.")
 	  (t ()))))
 
 (defun rmconst1 (e)
-  (cond ((among var e)
+  (cond ((not (freeof var e))
 	 (partition e var 1))
 	(t (cons e 1))))
 
