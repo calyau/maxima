@@ -740,14 +740,18 @@
   (let ((modulus))
     (when a1 ;; exponent or reduction poly
       (cond 
-        ((integerp a1) (setq *gf-exp* a1))
+        ((integerp a1) 
+          (unless (> a1 0)
+            (merror (intl:gettext "The exponent must be a positive fixnum." )) )
+          (setq *gf-exp* a1) )
         (($listp a1)
           (merror (intl:gettext 
             "Unsuitable second argument to `gf_set': ~m") a1 ))
         (t
-          (setq a1 (gf-set-red a1))
-          (unless (fixnump (setq *gf-exp* (car a1)))
-            (merror (intl:gettext "The exponent must be a fixnum." )) )
+          (setq a1 (gf-set-red a1) 
+                *gf-exp* (car a1) )
+          (unless (and (fixnump *gf-exp*) (> *gf-exp* 0))
+            (merror (intl:gettext "The exponent must be a positive fixnum." )) )
           (unless (gf-irr-p a1 *gf-char* *gf-exp*)
             (setq *gf-prim* '$false) ) )))
     (when a2 ;; reduction poly or factors of ord
@@ -772,9 +776,6 @@
         (merror (intl:gettext 
           "Unsuitable fourth argument to `gf_set': ~m") a3 ))
       (setq *gf-fs-ord* (mapcar #'cdr (cdr a3))) ) 
-
-    (when (= 0 *gf-exp*)
-      (setq *gf-exp* 1) )
     
     (unless *gf-red*
       (let ((cre (mfuncall '$rat '$x)))
@@ -868,7 +869,7 @@
         $gf_logs '$gf_logs
         $gf_rat nil
         *gf-var* nil *gf-rat-sym* nil *gf-rat-header* nil
-        *gf-char* 0 *gf-exp* 0 *gf-ord* 0 
+        *gf-char* 0 *gf-exp* 1 *gf-ord* 0 ;; *gf-exp* = 1 if not explicitely set
         *gf-prim* nil *gf-red* nil 
         *gf-fs-ord* nil *gf-fs-base-p* nil *gf-x^p-powers* nil 
         *gf-tables?* nil *gf-set?* nil )
@@ -1162,7 +1163,7 @@
       (setq a (gf-inv (gf-p2x a)))
       (when a ($gf_exp (gf-x2p a) (neg n))) ) ;; a is nil in case the inverse does not exist
     (t 
-      (gf-x2p (gf-pow (gf-p2x a) (mod n *gf-ord*))) )))
+      (gf-x2p (gf-pow (gf-p2x a) n)) )))
 ;;
 ;; -----------------------------------------------------------------------------
 
