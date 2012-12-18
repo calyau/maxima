@@ -2982,6 +2982,8 @@
 	     (member (caar y) '(mtimes mplus mexpt %del) :test #'eq))
 	 (ordfn x y))
 	((and (eq (caar x) 'bigfloat) (eq (caar y) 'bigfloat)) (mgrp x y))
+	((or (eq (caar x) 'mrat) (eq (caar y) 'mrat))
+	 (merror "GREAT: internal error: unexpected MRAT argument; X=~M, Y=~M" x y))
 	(t (do ((x1 (margs x) (cdr x1)) (y1 (margs y) (cdr y1))) (())
 	     (cond ((null x1)
 		    (return (cond (y1 nil)
