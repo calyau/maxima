@@ -419,6 +419,8 @@
 							 (cdr res) 
 				                         'break-command)))
 				  (cond ((eq value :resume) (return)))))
+			       ((eq res *top-eof*)
+			        (funcall (get :top 'break-command)))
 			       (t
 				(setq $__ (nth 2 res))
 				(setq $% (meval* $__))
