@@ -3120,37 +3120,12 @@
     ((eq z '$minf) '((rat simp) -1 2))
     
     ;; Check for numerical evaluation
-    
-     ((float-numerical-eval-p z)
-      (nth-value 1 (fresnel ($float z))))
+    ((or (float-numerical-eval-p z)
+	 (complex-float-numerical-eval-p z)
+	 (bigfloat-numerical-eval-p z)
+	 (complex-bigfloat-numerical-eval-p z))
+     (to (bigfloat::bf-fresnel-c (bigfloat::to z))))
 
-     ((complex-float-numerical-eval-p z)
-      (cond
-        ((zerop1 ($realpart z))
-         ;; A pure imaginary argument. Use fresnel_c(%i*x)=%i*fresnel_c(x).
-         (mul '$%i
-           (nth-value 1 (fresnel ($float ($imagpart z))))))
-        (t
-         (complexify 
-           (nth-value 1
-             (complex-fresnel (complex ($float ($realpart z)) 
-                                       ($float ($imagpart z)))))))))
-
-    ((bigfloat-numerical-eval-p z)
-     (nth-value 1 (bfloat-fresnel ($bfloat z))))
-
-    ((complex-bigfloat-numerical-eval-p z)
-     (cond
-       ((zerop1 ($realpart z))
-        ;; A pure imaginary argument. Use fresnel_c(%i*x)=%i*fresnel_c(x).
-        (nth-value 1
-          (mul -1 '$%i 
-            (bfloat-fresnel ($bfloat ($imagpart z))))))
-       (t
-        (nth-value 1 
-          (complex-bfloat-fresnel 
-            (add ($bfloat ($realpart z)) 
-                 (mul '$%i ($bfloat ($imagpart z)))))))))
 
     ;; Check for argument simplification
 
