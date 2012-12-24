@@ -182,3 +182,16 @@ foo(x)^3;
 letsimp (foo(x)^4);
 bar(x)^4 - 2*bar(x)^2 + 1;
 
+/* letsimp confused by debug stuff in expression car
+ * mailing list 2012-12-23: "let(simp) behaves different when loaded from batch file"
+ */
+(kill (test),
+ test() := block([expr],
+   local (F),
+   expr : diff(f(x), x),
+   F(xx) := at(expr, [x = xx]),
+   let(at(diff(f(x),x),[x=0]),5),
+   letsimp(F(0))),
+ test ());
+5;
+

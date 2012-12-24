@@ -1735,3 +1735,17 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
       (cond ((null (cdr lis))
 	     (list (car lis) *current-line-info*))
 	    (t (append lis (list *current-line-info*)))))))
+
+;; Remove debugging stuff.
+;; STRIP-LINEINFO does not modify EXPR.
+
+(defun strip-lineinfo (expr)
+  (if (atom expr) expr
+    (cons (strip-lineinfo-op (car expr)) (mapcar #'strip-lineinfo (cdr expr)))))
+
+;; If something in the operator looks like debugging stuff, remove it.
+;; It is assumed here that debugging stuff is a list comprising an integer and a string
+;; (and maybe other stuff, which is ignored).
+
+(defun strip-lineinfo-op (maxima-op)
+  (remove-if #'(lambda (x) (and (consp x) (integerp (first x)) (stringp (second x)))) maxima-op))
