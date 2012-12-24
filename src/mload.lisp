@@ -91,7 +91,7 @@
 (defun $batchload (filename &aux expr (*mread-prompt* ""))
   (declare (special *mread-prompt* *prompt-on-read-hang*))
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
-  (let (($load_pathname filename))
+  (let (($load_pathname filename) (noevalargs nil))
     (with-open-file (in-stream filename)
       (when $loadprint
 	(format t (intl:gettext "~&read and interpret file: ~A~&") (cl:namestring (truename in-stream))))
