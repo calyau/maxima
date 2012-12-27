@@ -3019,11 +3019,17 @@
 
        (t (equal x y))))
 	((atom y) nil)
-	(t (and (not (atom (car x)))
-		(not (atom (car y)))
-		(eq (caar x) (caar y))
-		(eq (memqarr (cdar x)) (memqarr (cdar y)))
-		(alike (cdr x) (cdr y))))))
+	((and
+	  (not (atom (car x)))
+	  (not (atom (car y)))
+	  (eq (caar x) (caar y)))
+         (cond
+	  ((eq (caar x) 'mrat)
+	   ;; Punt back to LIKE, which handles CREs.
+	   (like x y))
+	  (t (and
+	      (eq (memqarr (cdar x)) (memqarr (cdar y)))
+	      (alike (cdr x) (cdr y))))))))
 
 (defun lisp-array-alike1 (x y)
   (and

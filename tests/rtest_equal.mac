@@ -731,3 +731,10 @@ false$
 
 (forget(-1 < x, x < 1),0);
 0$
+
+/* verify literal equality of CREs, especially as subexpressions */
+
+(kill (a, x, y, foo),
+ block ([x : rat(a), y : rat(a)],
+  [is (x = y), is ([x] = [y]), is (matrix ([x]) = matrix ([y])), is (foo (x) = foo (y))]));
+[true, true, true, true];
