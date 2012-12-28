@@ -286,7 +286,6 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /* In cases a) and b) the pairs are ordered wrt the 1st. coordinate before any */
 /* computation is made. Option:                                                */
 /*   'varname='x: the name of the independent variable                         */
-/*   'denterm=1 : value for q_0 in the denominator                             */
 /* Sample session:                                                             */
 /* load(interpol)$                                                             */
 /* load(draw)$                                                                 */
@@ -298,36 +297,37 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /*          title = concat("Degree of numerator = ",k),                        */
 /*          yrange=[0,10])$                                                    */
 ratinterpol(tab,r,[select]) :=
-  block([n,m,coef,indep,pq,p,q,options,defaults,ratprint:false],
+  block([n,m,coef,unk,sol,lov,nlov,options,defaults,ratprint:false],
     tab: interpol_check_input(tab,"ratinterpol"),
-    options:  ['varname, 'denterm],
-    defaults: ['x, 1],
+    options:  ['varname],
+    defaults: ['x],
     for i in select do(
        aux: ?position(lhs(i),options),
        if numberp(aux) and aux <= length(options) and aux >= 1
          then defaults[aux]: rhs(i)),
     if not symbolp(defaults[1])
        then error("Option 'varname' is not correct"),
-    if listp(defaults[2]) or matrixp(defaults[2])
-       then error("Option 'denterm' must be a number or mathematical expression"),
 
     /* constructing the interpolating rational function */
     n: length(tab),
     if not integerp(r) or r > n-1 or r < 0
       then error("Degree of numerator must be a positive integer less than sample size"),
     m: n - r - 1, /* degree of denominator */
-   
-    /* coef matrix */
+
+    /* coef is the matrix of an homogeneous linear system */
     coef: apply(matrix,
                 makelist(block([x,y],
                            [x,y]: p,
                            append([1],
                                   makelist(x^k,k,1,r),
+                                  [-y],
                                   makelist(-y*x^k,k,1,m))),
                          p, tab)),
-    indep: map(second, tab) * defaults[2],
-    pq: first(transpose(first(linsolve_by_lu(coef, indep)))),
-    p: makelist(pq[k],k,1,r+1),
-    q: cons(defaults[2], makelist(pq[k],k,r+2,n)),
-    p.makelist(defaults[1]^k,k,0,r) / q.makelist(defaults[1]^k,k,0,m)  )$
+    unk: makelist(gensym(), k, r+m+2),
+    sol: map(last, linsolve(flatten(args(coef.unk)),unk)),
+    lov: listofvars(sol),
+    if (nlov: length(lov)) > 0
+        then sol: subst(map(lambda([z1,z2], z1=z2), lov, makelist(1, k, nlov)), sol),
+    makelist(sol[k],k,1,r+1) . makelist(defaults[1]^k,k,0,r) / 
+        makelist(sol[k],k,r+2,r+2+m) . makelist(defaults[1]^k,k,0,m) )$
 
