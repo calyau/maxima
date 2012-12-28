@@ -3062,6 +3062,7 @@
         ((and (constant a)
               (not (member (caar e) '(mplus mtimes mexpt) :test #'eq)))
 	 (not (member (caar e) '(rat bigfloat) :test #'eq)))
+	((eq (caar e) 'mrat)) ;; all MRATs succeed all atoms
 	((null (margs e)) nil)
 	((eq (caar e) 'mexpt)
 	 (cond ((and (maxima-constantp (cadr e))

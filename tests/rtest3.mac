@@ -355,3 +355,13 @@ reset (radexpand, domain);
  reset (foo, bar, baz));
 [];
 
+/* verify that ORDFNA can handle CRE.
+ */
+(kill (a, b), [doallmxops, doscmxops] : [false, false], 0);
+0;
+
+b*matrix([rat(a)]);
+b*matrix([''(rat(a))]);
+
+(reset (doallmxops, doscmxops), 0);
+0;
