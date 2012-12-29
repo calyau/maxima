@@ -266,10 +266,6 @@ Tabla de frecuencias multivariante.
        [     6           12                 4             ]
 (%i4) barsplot(sam2, grouping=stacked) $
 @end example
-
-@opencatbox
-@category{Package descriptive}
-@closecatbox
 @end deffn
 
 
