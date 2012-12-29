@@ -156,6 +156,13 @@ listofexpr(y):=listp(y) and not some('identity,map('listp,y))$
 listoflistsp(y):=listp(y) and every('identity,map('listofnumbersp,y))$
 
 
+/* True if the argument is a list of lists, all of */
+/* them of equal size.                             */
+listsofequalsize(y) :=
+    listp(y) and
+    every('listp, y) and
+    every(lambda([z], length(z) = length(y[1])), y) $
+
 
 
 /*               DATA TRANSFORMATION                 */
@@ -202,6 +209,25 @@ tranform_sample(m, varnames, expressions) :=
             then (tm: args(transpose(m)),
                      transpose(apply('matrix, psubst(map("=",varnames,tm), expressions))))
             else error("tranform_sample: argument must be a matrix")) $
+
+
+/* Builds a sample from a table of absolute frequencies.      */
+/* The input table can be a matrix or a list of lists, all of */
+/* them of equal size. The number of columns or the length of */
+/* the lists must be greater than 1. The last element of each */
+/* row or list is interpreted as the absolute frequency.      */
+/* The output is always a sample in matrix form               */
+build_sample(tbl) :=
+  block([i:gensym()],
+   if matrixp(tbl)
+     then tbl: args(tbl)
+     elseif not listsofequalsize(tbl)
+           then error("Table frequency has not the correct format"),
+   apply('matrix,
+         apply(append,
+               map(lambda([a],
+                          block([butlast: reverse(rest(reverse(a)))],
+                          makelist(butlast,i,1,last(a)))),tbl)))) $
 
 
 
