@@ -17,7 +17,7 @@
 @documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
-Ver. 5.28
+Ver. 5.30
 @c %**end of header
 @setchapternewpage odd
 @ifinfo

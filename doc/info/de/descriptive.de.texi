@@ -196,6 +196,81 @@ with categorical value @code{a} is taken,
 @section Functions and Variables for data manipulation
 @c -----------------------------------------------------------------------------
 
+
+@c --- 29.12.2012 --------------------------------------------------------------
+@deffn {Function} build_sample (@var{list})
+@deffnx {Function} build_sample (@var{matrix})
+Builds a sample from a table of absolute frequencies.
+The input table can be a matrix or a list of lists, all of
+them of equal size. The number of columns or the length of
+the lists must be greater than 1. The last element of each
+row or list is interpreted as the absolute frequency.
+The output is always a sample in matrix form.
+
+Examples:
+
+Univariate frequency table.
+
+@c ===beg===
+@c load (descriptive)$
+@c sam1: build_sample([[6,1], [j,2], [2,1]]);
+@c mean(sam1);
+@c barsplot(sam1) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) sam1: build_sample([[6,1], [j,2], [2,1]]);
+                       [ 6 ]
+                       [   ]
+                       [ j ]
+(%o2)                  [   ]
+                       [ j ]
+                       [   ]
+                       [ 2 ]
+(%i3) mean(sam1);
+                      2 j + 8
+(%o3)                [-------]
+                         4
+(%i4) barsplot(sam1) $
+@end example
+
+Multivariate frequency table.
+
+@c ===beg===
+@c load (descriptive)$
+@c sam2: build_sample([[6,3,1], [5,6,2], [u,2,1],[6,8,2]]) ;
+@c cov(sam2);
+@c barsplot(sam2, grouping=stacked) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) sam2: build_sample([[6,3,1], [5,6,2], [u,2,1],[6,8,2]]) ;
+                           [ 6  3 ]
+                           [      ]
+                           [ 5  6 ]
+                           [      ]
+                           [ 5  6 ]
+(%o2)                      [      ]
+                           [ u  2 ]
+                           [      ]
+                           [ 6  8 ]
+                           [      ]
+                           [ 6  8 ]
+(%i3) cov(sam2);
+       [   2                 2                            ]
+       [  u  + 158   (u + 28)     2 u + 174   11 (u + 28) ]
+       [  -------- - ---------    --------- - ----------- ]
+(%o3)  [     6          36            6           12      ]
+       [                                                  ]
+       [ 2 u + 174   11 (u + 28)            21            ]
+       [ --------- - -----------            --            ]
+       [     6           12                 4             ]
+(%i4) barsplot(sam2, grouping=stacked) $
+@end example
+@end deffn
+
+
+
 @c --- 16.10.2011 --------------------------------------------------------------
 @anchor{continuous_freq}
 @deffn  {Function} continuous_freq (@var{list})
