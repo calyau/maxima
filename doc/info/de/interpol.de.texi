@@ -327,7 +327,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @deffn  {Function} ratinterpol (@var{points}, @var{numdeg})
-@deffnx {Function} ratinterpol (@var{points}, @var{numdeg}, @var{option1}, @var{option2}, ...)
+@deffnx {Function} ratinterpol (@var{points}, @var{numdeg}, @var{option1})
 
 Generates a rational interpolator for data given by @var{points} and the degree of the numerator
 being equal to @var{numdeg}; the degree of the denominator is calculated
@@ -344,11 +344,8 @@ a list of numbers, @code{p: [4,6,3]}, in which case the abscissas will be assign
 
 In the first two cases the pairs are ordered with respect to the first coordinate before making computations.
 
-There are two options to fit specific needs:
+There is one option to fit specific needs:
 @itemize @bullet
-@item
-@code{'denterm}, default @code{1}, is the independent term of the polynomial in the denominator.
-
 @item
 @code{'varname}, default @code{'x}, is the name of the independent variable.
 @end itemize

@@ -1,4 +1,4 @@
-@c English version: 2012-12-01
+@c English version: 2012-12-29
 @menu
 * Introducci@'on a interpol::
 * Funciones y variables para interpol::
@@ -304,7 +304,7 @@ Ejemplos:
 
 
 @deffn {Funci@'on} ratinterpol (@var{points}, @var{numdeg})
-@deffnx {Funci@'on} ratinterpol (@var{points}, @var{numdeg}, @var{option1}, @var{option2}, ...)
+@deffnx {Funci@'on} ratinterpol (@var{points}, @var{numdeg}, @var{option1})
 Genera el interpolador racional para los datos dados por @var{points} y con
 grado @var{numdeg} en el numerador; el grado del denominador se calcula
 autom@'aticamente. El argumento @var{points} debe ser:
@@ -320,11 +320,8 @@ una lista de n@'umeros, @code{p: [4,6,3]}, en cuyo caso las abscisas se asignar@
 
 En los dos primeros casos los pares se ordenan con respecto a la primera coordenada antes de proceder a los c@'alculos.
 
-Esta funci@'on dispone de dos opciones para acomodarse a necesidades concretas:
+Esta funci@'on dispone de una opci@'on para acomodarse a necesidades concretas:
 @itemize @bullet
-@item
-@code{'denterm}, por defecto @code{1}, es el t@'ermino independente del polinomio en el denominador.
-
 @item
 @code{'varname}, por defecto @code{'x}, es el nombre de la variable independiente.
 @end itemize
