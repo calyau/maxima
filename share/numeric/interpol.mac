@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2010 Mario Rodriguez Riotorto
+Copyright (C) 2005-2012 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -297,7 +297,7 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /*          title = concat("Degree of numerator = ",k),                        */
 /*          yrange=[0,10])$                                                    */
 ratinterpol(tab,r,[select]) :=
-  block([n,m,coef,unk,sol,lov,nlov,options,defaults,ratprint:false],
+  block([n,m,coef,unk,sol,lov,options,defaults,ratprint:false],
     tab: interpol_check_input(tab,"ratinterpol"),
     options:  ['varname],
     defaults: ['x],
@@ -326,8 +326,7 @@ ratinterpol(tab,r,[select]) :=
     unk: makelist(gensym(), k, r+m+2),
     sol: map(last, linsolve(flatten(args(coef.unk)),unk)),
     lov: listofvars(sol),
-    if (nlov: length(lov)) > 0
-        then sol: subst(map(lambda([z1,z2], z1=z2), lov, makelist(1, k, nlov)), sol),
+    sol: subst(map(lambda([z1,z2], z1=z2), lov, makelist(1, k, length(lov))), sol),
     makelist(sol[k],k,1,r+1) . makelist(defaults[1]^k,k,0,r) / 
         makelist(sol[k],k,r+2,r+2+m) . makelist(defaults[1]^k,k,0,m) )$
 

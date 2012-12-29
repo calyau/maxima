@@ -395,6 +395,8 @@ Default value: @code{white}
 Sets the background color for terminals @code{gif}, @code{png}, @code{jpg},
 and @code{gif}.  Default background color is white.
 
+This option das not work with terminals @code{epslatex} and @code{epslatex_standalone}.
+
 See also @code{color}.
 @end defvr
 

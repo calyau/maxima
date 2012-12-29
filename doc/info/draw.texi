@@ -496,6 +496,8 @@ Sets the background color for terminals. Default background color is white.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
+This option das not work with terminals @code{epslatex} and @code{epslatex_standalone}.
+
 See also @code{color}.
 
 @opencatbox
