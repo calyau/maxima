@@ -244,17 +244,32 @@
   ($require_square_matrix m "$first" "$invert_by_lu")
   ($lu_backsub ($lu_factor m fld) ($identfor m)))
   					
+;; Return a Lisp list of two elements, the determinant, and the inverse of M.
+(defun invert-by-lu-with-determinant (m fld-name)
+  (let*
+   ((i ($identfor m))
+    (m1 ($lu_factor m fld-name))
+    (fld (get fld-name 'ring))
+    (d (determinant-by-lu-factors m1 fld)))
+   (list d ($lu_backsub m1 i))))
+  					
 (defun $determinant_by_lu (m &optional (fld-name '$generalring))
   ($require_square_matrix m "$first" "$determinant_by_lu")
  
-  (let* ((fld ($require_ring fld-name "$second" "$determinant_by_lu"))
-	 (acc (funcall (mring-mult-id fld)))
+  (let ((fld ($require_ring fld-name "$second" "$determinant_by_lu")))
+    (setq m ($lu_factor m fld-name))
+    (determinant-by-lu-factors m fld)))
+
+;; Assume that M has already been factored by $LU_FACTOR
+;; and FLD is some field (not a field name).
+(defun determinant-by-lu-factors (m fld)
+ 
+  (let* ((acc (funcall (mring-mult-id fld)))
 	 (fmult (mring-mult fld))
 	 (fconvert (mring-maxima-to-mring fld))
-	 (n ($first ($matrix_size m)))
+	 (n ($first ($matrix_size ($first m))))
 	 (perm) (d))
 
-    (setq m ($lu_factor m fld-name))
     (setq perm ($second m))
    
     (setq m ($first m))
