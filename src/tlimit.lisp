@@ -52,6 +52,6 @@
      (return
        (let ((taylored t))
 	 (declare (special taylored))
-	 (limit (simplify ($logcontract ($ratdisrep ex))) var val 'think)))))
+	 (limit (simplify ($ratdisrep ex)) var val 'think)))))
 
 (declare-top (unspecial exp var val ll ul))
