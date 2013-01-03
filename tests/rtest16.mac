@@ -1144,6 +1144,10 @@ limit((2+cos(x))/(x^3*sin(x))-3/x^4,x,0,plus);
 limit ((cosh(sqrt(x+1))-cosh(sqrt(x)))^(1/sqrt(x)),x,inf );
 %e;
 
+/* #2412 Problems with integral (x/(exp(x)+1),x,0,inf) */
+limit(-x*log(%e^x+1)-li[2](-%e^x)+x^2/2, x, inf);
+%pi^2/6;
+
 /* Bug ID: 2872738 - sign(-(1/n)*(-1)^n)
  * We got the error because of the simplification
  *  (-1)^n*(-1) -> (-1)^(n+1) and not -(-1)^n

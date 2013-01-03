@@ -241,8 +241,6 @@ It appears in LIMIT and DEFINT.......")
 
 (defun limit-context (var val direction) ;Only works on entry!
   (cond (limit-top
-;	 (if (atom var)	; declare and facts don't work on subscripted vars
-;	     (mapc #'forget (setq global-assumptions (cdr ($facts var)))))
 	 (assume '((mgreaterp) lim-epsilon 0))
 	 (assume '((mlessp) lim-epsilon 1e-8))
 	 (assume '((mgreaterp) prin-inf 1e+8))
@@ -252,8 +250,7 @@ It appears in LIMIT and DEFINT.......")
   limit-assumptions)
 
 (defun make-limit-assumptions (var val direction)
-  (let ((new-assumptions)); (use-old-context old-assumptions var val)))
-;    (mapc #'assume new-assumptions)
+  (let ((new-assumptions))
     (cond ((or (null var) (null val))
 	   ())
 	  ((and (not (infinityp val)) (null direction))
@@ -912,6 +909,8 @@ It appears in LIMIT and DEFINT.......")
 	  ((eq (caar ans) '%limit)  ())
 	  (t ans))))
 
+;; substitute asymptotic approximations for gamma, factorial, and
+;; polylogarithm
 (defun stirling0 (e)
   (cond ((atom e) e)
 	((and (setq e (cons (car e) (mapcar 'stirling0 (cdr e))))
@@ -922,6 +921,12 @@ It appears in LIMIT and DEFINT.......")
 	((and (eq (caar e) 'mfactorial)
 	      (eq (limit (cadr e) var val 'think) '$inf))
 	 (m* (cadr e) (stirling (cadr e))))
+	((and (eq (caar e) 'mqapply)		;; polylogarithm
+	      (eq (subfunname e) '$li)
+	      (integerp (car (subfunsubs e))))
+	 (li-asymptotic-expansion (m- (car (subfunsubs e)) 1) 
+				   (car (subfunsubs e))
+				   (car (subfunargs e))))
 	(t e)))
 
 (defun stirling (x)
