@@ -698,6 +698,12 @@ map(csign,[(xneg)^(1/2),(xneg)^(3/2),(xneg)^(5/2),(xneg)^(7/2)]);
 map(csign,[(-xpos)^(1/2),(-xpos)^(3/2),(-xpos)^(5/2),(-xpos)^(7/2)]);
 [imaginary,imaginary,imaginary,imaginary];
 
+map(csign,[(-1)^xpos, (-1)^xneg]);
+[complex,complex];
+
+map(sign,[(-1)^xpos, (-1)^xneg]);
+[pn,pn];
+
 /* Expressions with an addition */
 
 csign(x+%i*y);
