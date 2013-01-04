@@ -47,7 +47,6 @@
                            'list)))
 	      ((hash-table-p ary)
 	       (let (vals (tab ary))
-		 (declare (special vals tab))
                  (maphash #'(lambda (x &rest l) l 
                               (unless (eq x 'dim1) (push (gethash x tab) vals)))
                             ary)

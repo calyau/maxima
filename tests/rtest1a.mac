@@ -47,3 +47,7 @@ bilx[3];
 
 use_fast_arrays: false;
 false;
+
+block ([use_fast_arrays : true], kill (foo), foo [2] : 'x, foo [3] : 'y, foo [5] : 'z, foo [7] : 'a, sort (listarray (foo)));
+[a, x, y, z];
+
