@@ -14,9 +14,7 @@
 
 ;; This is the Match Compiler.
 
-(declare-top (special *expr *rules *rulelist $rules alist $props 
-		      args boundlist *a* pt
-		      reflist topreflist program $noundisp))
+(declare-top (special $rules $props boundlist reflist topreflist program))
 
 (defvar *afterflag nil)
 
@@ -316,7 +314,7 @@
     (proc-$defmatch (cdr form))))
 
 (defun proc-$defmatch (l) 
-  (prog (pt pt* args *a* boundlist reflist topreflist program name tem) 
+  (prog (pt pt* args a boundlist reflist topreflist program name tem) 
      (setq name (car l))
      (setq pt (copy-tree (setq pt* (simplify (cadr l)))))
      (cond ((atom pt)
@@ -326,13 +324,13 @@
      (cond ((null (allatoms args)) (mtell (intl:gettext "defmatch: some pattern variables are not atoms."))
 	    (return nil)))
      (setq boundlist args)
-     (setq *a* (genref))
-     (cond ((atom (errset (compilematch *a* pt)))
+     (setq a (genref))
+     (cond ((atom (errset (compilematch a pt)))
 	    (merror (intl:gettext "defmatch: failed to compile match for pattern ~M") pt))
 	   (t (meta-fset name
 			 (list 'lambda
-			       (cons *a* args)
-			       `(declare (special ,*a* ,@ args))
+			       (cons a args)
+			       `(declare (special ,a ,@ args))
 			       (list 'catch ''match
 				     (nconc (list 'prog)
 					    (list (setq tem  (cdr (reverse topreflist))))
@@ -363,7 +361,7 @@
 	 do (setf (mget v 'rulenum) nil)))
 
 (defun proc-$tellsimp (l) 
-  (prog (pt rhs boundlist reflist topreflist *a* program name tem
+  (prog (pt rhs boundlist reflist topreflist a program name tem
 	 oldstuff pgname oname rulenum) 
      (setq pt (copy-tree (simplifya (car l) nil)))
      (setq name pt) 
@@ -374,8 +372,8 @@
 	    (merror (intl:gettext "tellsimp: main operator of pattern must not be match variable; found: ~A") (fullstrip1 (getop name))))
 	   ((member name '(mplus mtimes) :test #'eq)
 	    (mtell (intl:gettext "tellsimp: warning: putting rules on '+' or '*' is inefficient, and may not work.~%"))))
-     (setq *a* (genref))
-     (cond ((atom (errset (compileeach *a* (cdr pt))))
+     (setq a (genref))
+     (cond ((atom (errset (compileeach a (cdr pt))))
 	    (merror (intl:gettext "tellsimp: failed to compile match for pattern ~M") (cdr pt))))
      (setq oldstuff (get name 'operators))
      (setq rulenum (mget name 'rulenum))
@@ -391,14 +389,14 @@
 		(list 'lambda '(x a2 a3)
 		      `(declare (special x a2 a3))
 		      (list 'prog
-			    (list 'ans *a* 'rule-hit)
-			    `(declare (special ans ,*a*))
+			    (list 'ans a 'rule-hit)
+			    `(declare (special ans ,a))
 			    (list 'setq
 				  'x
 				  (list 'cons
 					'(car x)
 					(list 'setq
-					      *a*
+					      a
 					      '(cond (a3 (cdr x)) 
 						(t (mapcar #'(lambda (h) (simplifya h a3))
 						    (cdr x)))))))
@@ -458,7 +456,7 @@
     (proc-$tellsimpafter (cdr form))))
 
 (defun proc-$tellsimpafter (l) 
-  (prog (pt rhs boundlist reflist topreflist *a* program name oldstuff plustimes pgname oname tem
+  (prog (pt rhs boundlist reflist topreflist a program name oldstuff plustimes pgname oname tem
 	 rulenum) 
      (setq pt (copy-tree (simplifya (car l) nil)))
      (setq name pt)
@@ -467,10 +465,10 @@
 	   ((atom pt) (merror (intl:gettext "tellsimpafter: pattern must not be an atom; found: ~A") (fullstrip1 (getop name))))
 	   ((mget (setq name (caar pt)) 'matchdeclare)
 	    (merror (intl:gettext "tellsimpafter: main operator of pattern must not be match variable; found: ~A") (fullstrip1 (getop name)))))
-     (setq *a* (genref))
+     (setq a (genref))
      (setq plustimes (member name '(mplus mtimes) :test #'eq))
-     (if (atom (if plustimes (errset (compilematch *a* pt))
-		   (errset (compileeach *a* (cdr pt)))))
+     (if (atom (if plustimes (errset (compilematch a pt))
+		   (errset (compileeach a (cdr pt)))))
 	 (merror (intl:gettext "tellsimpafter: failed to compile match for pattern ~M") (cdr pt)))
      (setq oldstuff (get name 'operators))
      (setq rulenum (mget name 'rulenum))
@@ -494,15 +492,15 @@
 	'(*afterflag x)
 	(list 't
 	      (nconc (list 'prog)
-		     (list (cons *a* '(*afterflag rule-hit)))
-		     `((declare (special ,*a* *afterflag)))
+		     (list (cons a '(*afterflag rule-hit)))
+		     `((declare (special ,a *afterflag)))
 		     (list '(setq *afterflag t))
 		     (cond (oldstuff (subst (list 'quote name)
 					    'name
 					    '((cond ((or (atom x) (not (eq (caar x) name)))
 						     (return x)))))))
 		     (list (list 'setq
-				 *a*
+				 a
 				 (cond (plustimes 'x) (t '(cdr x)))))
 		     (list (list 'multiple-value-setq
 				 '(ans rule-hit)
@@ -538,20 +536,20 @@
 
 ;;(defvar *match-specials* nil);;Hell lets declare them all special, its safer--wfs
 (defun proc-$defrule (l) 
-  (prog (pt rhs boundlist reflist topreflist name *a* program lhs* rhs*   tem) 
+  (prog (pt rhs boundlist reflist topreflist name a program lhs* rhs*   tem) 
      (if (not (= (length l) 3)) (wna-err '$defrule))
      (setq name (car l))
      (if (or (not (symbolp name)) (mopp name) (member name '($all $%) :test #'eq))
 	 (merror (intl:gettext "defrule: rule name must be a symbol, and not an operator or 'all' or '%'; found: ~M") name))
      (setq pt (copy-tree (setq lhs* (simplify (cadr l)))))
      (setq rhs (copy-tree (setq rhs* (simplify (caddr l)))))
-     (setq *a* (genref))
-     (cond ((atom (errset (compilematch *a* pt)))
+     (setq a (genref))
+     (cond ((atom (errset (compilematch a pt)))
 	    (merror (intl:gettext "defrule: failed to compile match for pattern ~M") pt))
 	   (t (meta-fset name
 			 (list 'lambda
-			       (list *a*)
-			       `(declare (special ,*a*))
+			       (list a)
+			       `(declare (special ,a))
 			       (list 'catch ''match
 				     (nconc (list 'prog)
 					    (list (setq tem (nconc boundlist
