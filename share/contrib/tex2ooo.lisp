@@ -79,8 +79,8 @@
 	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
 					; display the expression for TeX now:
 ;-	    (myprinc "$$")
-  	    (myprinc "")
-	    (mapc #'myprinc
+  	    (myprinc "" texport)
+	    (mapc #'(lambda (x) (myprinc x texport))
 		  ;;initially the left and right contexts are
 		  ;; empty lists, and there are implicit parens
 		  ;; around the whole expression

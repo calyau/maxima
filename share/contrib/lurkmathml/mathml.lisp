@@ -103,8 +103,8 @@
 	       (format texport ";~%</pre>"))
 
 	      (t ; display the expression for MathML now:
-		 (myprinc "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"> ")
-		 (mapc #'myprinc
+		 (myprinc "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"> " texport)
+		 (mapc #'(lambda (x) (myprinc x texport))
 		       ;;initially the left and right contexts are
 		       ;; empty lists, and there are implicit parens
 		       ;; around the whole expression
