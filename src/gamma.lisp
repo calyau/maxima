@@ -143,6 +143,13 @@
         (setq flag t)))
     (if (or $numer flag) t nil)))
 
+;;; Test for numerical evaluation in any precision, real or complex.
+(defun numerical-eval-p (&rest args)
+  (or (apply 'float-numerical-eval-p args)
+      (apply 'complex-float-numerical-eval-p args)
+      (apply 'bigfloat-numerical-eval-p args)
+      (apply 'complex-bigfloat-numerical-eval-p args)))
+
 ;;; Check for an integer or a float or bigfloat representation. When we
 ;;; have a float or bigfloat representation return the integer value.
 
@@ -2307,10 +2314,7 @@
 
     ;; Check for numerical evaluation.
 
-    ((or (float-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z)
-	 (bigfloat-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z))
+    ((numerical-eval-p z)
      (to (bigfloat::bf-erfc (bigfloat:to z))))
 
     ;; Argument simplification
@@ -2444,10 +2448,7 @@
 
     ;; Check for numerical evaluation. Use erfi(z) = -%i*erf(%i*z).
 
-    ((or (float-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z)
-	 (bigfloat-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z))
+    ((numerical-eval-p z)
      (to (bigfloat::bf-erfi (bigfloat:to z))))
 
     ;; Argument simplification
@@ -2567,10 +2568,7 @@
      (simp-domain-error 
        (intl:gettext "inverse_erf: inverse_erf(~:M) is undefined.") z))
     ((zerop1 z) z)
-    ((or (float-numerical-eval-p z)
-	 (bigfloat-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z))
+    ((numerical-eval-p z)
      (to (bigfloat::bf-inverse-erf (bigfloat:to z))))
     ((taylorize (mop expr) (cadr expr)))
     (t
@@ -2665,10 +2663,7 @@
      (simp-domain-error 
        (intl:gettext "inverse_erfc: inverse_erfc(~:M) is undefined.") z))
     ((onep1 z) 0)
-    ((or (float-numerical-eval-p z)
-	 (bigfloat-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z))
+    ((numerical-eval-p z)
      (to (bigfloat::bf-inverse-erfc (bigfloat:to z))))
     ((taylorize (mop expr) (cadr expr)))
     (t
@@ -3008,10 +3003,7 @@
     ((eq z '$minf) '((rat simp) -1 2))
     
     ;; Check for numerical evaluation
-    ((or (float-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z)
-	 (bigfloat-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z))
+    ((numerical-eval-p z)
      (to (bigfloat::bf-fresnel-s (bigfloat::to z))))
 
     ;; Check for argument simplification
@@ -3120,10 +3112,7 @@
     ((eq z '$minf) '((rat simp) -1 2))
     
     ;; Check for numerical evaluation
-    ((or (float-numerical-eval-p z)
-	 (complex-float-numerical-eval-p z)
-	 (bigfloat-numerical-eval-p z)
-	 (complex-bigfloat-numerical-eval-p z))
+    ((numerical-eval-p z)
      (to (bigfloat::bf-fresnel-c (bigfloat::to z))))
 
 
