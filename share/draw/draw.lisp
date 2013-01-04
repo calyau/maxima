@@ -917,6 +917,20 @@
 ;;     color
 ;;     xaxis_secondary
 ;;     yaxis_secondary
+
+(defun replace-substring (string part replacement)
+    (with-output-to-string (out)
+      (loop with part-length = (length part)
+            for old-pos = 0 then (+ pos part-length)
+            for pos = (search part string
+                              :start2 old-pos
+                              :test #'char=)
+            do (write-string string out
+                             :start old-pos
+                             :end (or pos (length string)))
+            when pos do (write-string replacement out)
+            while pos)))
+
 (defun label (&rest lab)
   (let ((n (length lab))
         (result nil)
@@ -935,7 +949,8 @@
                       (dolist (k lab)
                         (setf fx   ($float ($second k))
                               fy   ($float ($third k))
-                              text (format nil "\"~a\"" ($first k))  )
+                              ; backslashes are replaced by double backslashes to allow LaTeX code in labels.
+                              text (format nil "\"~a\"" (replace-substring ($first k) "\\" "\\\\")))
                         (if (or (not (floatp fx)) 
                                 (not (floatp fy)))
                             (merror "draw (label): non real 2d coordinates"))
