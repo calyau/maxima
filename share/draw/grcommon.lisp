@@ -880,7 +880,7 @@
                              (str "" (concatenate
                                         'string
                                          str
-                                        (format nil "\"~a\" ~a," (cadar k) (caddar k)))))
+                                        (format nil "'~a' ~a," (cadar k) (caddar k)))))
                             ((null k) (concatenate
                                          'string
                                          "("
