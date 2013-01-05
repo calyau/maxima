@@ -77,7 +77,7 @@
   (and $errormsg ($errormsg))
   (cond (*mdebug*
 	 (let ((dispflag t) ret)
-	   (declare (special $help dispflag))
+	   (declare (special dispflag))
 	   (format t (intl:gettext " -- an error.  Entering the Maxima debugger.~%~
                        Enter ':h' for help.~%"))
 	   (progn
