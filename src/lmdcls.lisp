@@ -123,7 +123,7 @@
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
 	  need-prog? negprods negsums nn* noevalargs noitems nonintegerl
-	  *nounl* *nounsflag* opers opers-list outargs1 outargs2 outfiles
+	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
 	  preserve-direction prods putl radcanp rd*
 	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems

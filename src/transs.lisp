@@ -301,10 +301,8 @@ translated."
 
 (defun print* (p)
   (let ((^w t)
-	(outfiles (list transl-file))
 	(^r t)
 	($loadprint nil)) ;;; lusing old I/O !!!!!
-    (declare (special outfiles))
     (sub-print* p)))
 
 ;;; i might as well be real pretty and flatten out PROGN's.
