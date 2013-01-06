@@ -214,13 +214,13 @@ non_symbol_subst (e, v) := block([vars, listconstvars : false],
   one_to_one_reduce['cos,'cos] : lambda([a,b], 
       (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer))),
   
-  one_to_one_reduce['cos,'sin] : lambda([a,b], 
-      (a - b - 2 * %pi * new_variable('integer) - %pi/2) *	
-      (a + b - 2 * %pi * new_variable('integer) - %pi/2)),
-  
-  one_to_one_reduce['sin,'cos] : lambda([b,a], 
-      (a - b - 2 * %pi * new_variable('integer) - %pi/2) *	
-      (a + b - 2 * %pi * new_variable('integer) - %pi/2)),
+  one_to_one_reduce['sin,'cos] : lambda([a,b], 
+    (a/2 - b/2 - %pi/4 - %pi * new_variable('integer))*(a/2 + b/2 - %pi/4 - %pi * new_variable('integer))), 
+
+  one_to_one_reduce['cos,'sin] :  lambda([a,b], 
+    (b/2 - a/2 - %pi * new_variable('integer) - %pi/4)*(b/2 + a/2 - %pi * new_variable('integer) - %pi/4)), 
+
+  one_to_one_reduce['tan,'tan] : lambda([a,b], (a-b - %pi*new_variable('integer))/(cos(a)*cos(b))),
 
   one_to_one_reduce['%exp,'%exp] : lambda([a,b],
       a - b - 2 * %pi * %i * new_variable('integer)));
@@ -253,56 +253,70 @@ one_to_one_crunch(e) := block([inflag : true, f, nv : set(), %exp, q, opl, opr],
   function_inverse['atanh] : lambda([s], tanh(s)),
   function_inverse['log] : lambda([s], exp(s)));
 
-(function_zeros[otherwise] := false,
-  function_zeros['abs] : 0,
-  function_zeros['log] : 1,
-  function_zeros['acos] : 1,
-  function_zeros['acosh] : 1,
-  function_zeros['asin] : 0,
-  function_zeros['asinh] : 0,
-  function_zeros['atan] : 0,
-  function_zeros['atanh] : 0,
-  function_zeros['acsc] : [],
-  function_zeros['acsch] : [],
-  function_zeros['acoth] : [],
-  function_zeros['acot] : []);
-  
+(function_zeros[otherwise] := lambda([], false),
+  function_zeros['abs] : lambda([],0),
+  function_zeros['conjugate] : lambda([],0),
+  function_zeros['sin] : lambda([], %pi*new_variable('integer)),
+  function_zeros['cos] : lambda([], %pi*(2*new_variable('integer)+1)/2),
+  function_zeros['log] : lambda([],1),
+  function_zeros['acos] : lambda([],1),
+  function_zeros['acosh] : lambda([],1),
+  function_zeros['asin] : lambda([],0),
+  function_zeros['asinh] : lambda([],0),
+  function_zeros['atan] : lambda([], 0),
+  function_zeros['atanh] : lambda([],0),
+  function_zeros['acsc] : lambda([], []),
+  function_zeros['acsch] : lambda([], []),
+  function_zeros['acoth] : lambda([],[]),
+  function_zeros['acot] : lambda([],[]));
+
+(function_domain[otherwise] := lambda([s],set()),
+  function_domain['log] : lambda([s], set(s # 0)));
+
 top_level_ops(e) := block([inflag : false], 
   if mapatom(e) then [ ]
   else if opequal_p(e,"+","*") then (
     xreduce('append, map('top_level_ops, args(e))))
   else [op(e)]);
 
-catch_easy_cases (e, vars) := block([inflag : true, ops, finv, fzero, p, q, a, b,
+catch_easy_cases (e, vars) := block([inflag : true, ops, finv, fzero, p, q, a, b,pk,pk_save,
   ok : true, cnds : set(), nv : set(), listconstvars : false],
-  ops : top_level_ops(e),
-  for f in ops do (
-    finv : function_inverse[f],
-    fzero : function_zeros[f],
-    if (finv # false) or (fzero # false) then (
-      p : gatherargs(e,f),
-      p : sublist(p, lambda([s], not lfreeof(vars,s))),
-      for pk in p while ok do (
-        pk : funmake(f, pk),
-        a : ratcoef(e, pk),
-        b : e - a * pk,
-        if is(equal(b,0)) = true and lfreeof(vars,a) and fzero # false then (
-          ops : [],
-          ok : false,
-          if fzero = [] then [1, set(a # 0)]
-          else (
-            q : catch_easy_cases(first(pk)-fzero, vars),
+  if opequal_p(e,"*") then (
+    e : map(lambda([s], catch_easy_cases(s,vars)), args(e)),
+    [xreduce("*", map('first, e)), xreduce('union,map('second,e)), xreduce('union,map('third,e))])
+  else (
+    ops : top_level_ops(e),
+    for f in ops do (
+      finv : function_inverse[f],
+      fzero : function_zeros[f],
+      fzero : apply(fzero,[]),
+      nv : union(nv, setify(listofvars(fzero))),
+      if (finv # false) or (fzero # false) then (
+        p : gatherargs(e,f),
+        p : sublist(p, lambda([s], not lfreeof(vars,s))),
+        for pk in p while ok do (
+          pk_save : pk,
+          pk : funmake(f, pk),
+          a : ratcoef(e, pk),
+          b : e - a * pk,
+          if is(equal(b,0)) = true and lfreeof(vars,a) and fzero # false then (
+            ops : [],
+            ok : false,
+            if fzero = [] then [1, set(a # 0)]
+            else (
+              q : catch_easy_cases(first(pk)-fzero, vars),
+              e : first(q),
+              nv : union(nv, third(q)),
+              cnds : union(cnds, second(q), apply(function_domain[f],pk_save)),
+              cnds : adjoin(a # 0, cnds)))
+          else if lfreeof(vars, a) and lfreeof(vars, b) and is(finv # false) then (
+            ops : [],
+            ok : false,
+            q : catch_easy_cases(first(args(pk))-apply(finv, [-b/a]),vars),
+            nv : union(nv, setdifference(setify(listofvars(q)), setify(listofvars(pk)))),
             e : first(q),
-            nv : union(nv, third(q)),
-            cnds : adjoin(a # 0, second(q))))
-        else if lfreeof(vars, a) and lfreeof(vars, b) and is(finv # false) then (
-          ops : [],
-          ok : false,
-          q : catch_easy_cases(first(args(pk))-apply(finv, [-b/a]),vars),
-          nv : union(nv, setdifference(setify(listofvars(q)), setify(listofvars(pk)))),
-          e : first(q),
-          cnds : adjoin(a # 0, second(q)))))),
-  [e, cnds, nv]);
+            cnds : adjoin(a # 0, second(q)))))),
+    [e, cnds, nv]));
 
 standardize_inverse_trig(e) :=
  e : subst(['acot = lambda([s], atan(1/s)),
@@ -517,6 +531,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
   
    nonfree : union(setify(v), setdifference(set_of_variables(eqs), evars)),
    nonfree : setdifference(nonfree, var_exception),
+   nonfree : subset(nonfree, lambda([s], not featurep(s,'integer))),
    esave : union(set_of_variables(eqs), nonfree),
    sol : to_poly_solve(eqs, nonfree, 'simpfuncs = simpfuncs, 'maxdepth = maxdepth-1, 'use_grobner = grob),
    if opequal_p(sol, '%solve) then error("Unable to solve"),
