@@ -304,6 +304,7 @@ When one changes, the other does too."
 	      "")
 	 (lisp-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp}"))
 	 (maxima-patterns "$$$.{mac,mc}")
+	 (lisp+maxima-patterns (concatenate 'string "$$$.{" ext ",lisp,lsp,mac,mc}"))
 	 (demo-patterns "$$$.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "$$.{usg,texi}")
 	 (share-subdirs-list (share-subdirs-list))
@@ -336,7 +337,7 @@ When one changes, the other does too."
 		(combine-path *maxima-sharedir* share-subdirs usage-patterns)
 		(combine-path *maxima-docdir* usage-patterns)))
     (setq $file_search_tests
-	  `((mlist) ,(combine-path *maxima-testsdir* maxima-patterns)))
+	  `((mlist) ,(combine-path *maxima-testsdir* lisp+maxima-patterns)))
 
     ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
     ;; with some data really exists.  If not this probably means that required
