@@ -310,6 +310,50 @@ true;
 string (10);
 "10";
 
+ibase : 2.;
+2.;
+
+[1, 11, 111, 1111];
+[1., 3., 7., 15.];
+
+(load (file_search (test_readbase_lisp, file_search_tests)),
+ test_readbase_lisp ());
+[1., 2., 3., 4., 10., 20., 30., 40.];
+
+[1, 11, 111, 1111];
+[1., 3., 7., 15.];
+
+(?autof (test_readbase_lisp_autoload, file_search (test_readbase_lisp_autoload, file_search_tests)),
+ test_readbase_lisp_autoload ());
+[2., 3., 5., 7., 11., 13., 17., 19.];
+
+[1, 11, 111, 1111];
+[1., 3., 7., 15.];
+
+(load (file_search (test_readbase_maxima, file_search_tests)),
+ test_readbase_maxima ());
+[4., 3., 2., 1., 40., 30., 20., 10.];
+
+[1, 11, 111, 1111];
+[1., 3., 7., 15.];
+
+(batch (file_search (test_readbase_maxima, file_search_tests)),
+ test_readbase_maxima ());
+[4., 3., 2., 1., 40., 30., 20., 10.];
+
+[1, 11, 111, 1111];
+[1., 3., 7., 15.];
+
+(auto_mexpr (test_readbase_maxima_autoload, file_search (test_readbase_maxima_autoload, file_search_tests)),
+ test_readbase_maxima_autoload ());
+[19., 17., 13., 11., 7., 5., 3., 2.];
+
+[1, 11, 111, 1111];
+[1., 3., 7., 15.];
+
+ibase : 10.;
+10.;
+
 /* SF bug report # 2992398 "sort doesn't give error for invalid comparison"
  */
 

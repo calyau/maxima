@@ -91,7 +91,7 @@
 (defun $batchload (filename &aux expr (*mread-prompt* ""))
   (declare (special *mread-prompt* *prompt-on-read-hang*))
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
-  (let (($load_pathname filename) (noevalargs nil))
+  (let (($load_pathname filename) (noevalargs nil) (*read-base* 10.))
     (with-open-file (in-stream filename)
       (when $loadprint
 	(format t (intl:gettext "~&read and interpret file: ~A~&") (cl:namestring (truename in-stream))))
@@ -195,11 +195,12 @@
   (cond ((eq demo :test)
 	 (test-batch filename nil :show-all t))
 	(t
-	 (with-open-file (in-stream filename)
-	   (format t (intl:gettext "~%read and interpret file: ~A~%")
-		   (truename in-stream))
-	   (catch 'macsyma-quit (continue in-stream demo))
-	   (namestring in-stream)))))
+	 (let ((*read-base* 10.))
+	   (with-open-file (in-stream filename)
+	     (format t (intl:gettext "~%read and interpret file: ~A~%")
+		     (truename in-stream))
+	     (catch 'macsyma-quit (continue in-stream demo))
+	     (namestring in-stream))))))
 
 ;; Return true if $float converts both a and b to floats and 
 
@@ -307,7 +308,8 @@
 			    (show-all nil) (showtime nil))
 
   (let ((result) (next-result) (next) (error-log) (all-differences nil) ($ratprint nil) (strm)
-	(*mread-prompt* "") (expr) (num-problems 0) (tmp-output) (save-output) (i 0)
+	(*mread-prompt* "") (*read-base* 10.)
+	(expr) (num-problems 0) (tmp-output) (save-output) (i 0)
 	(start-run-time 0) (end-run-time 0)
 	(start-real-time 0) (end-real-time 0)
 	(test-start-run-time 0) (test-end-run-time 0)
@@ -563,7 +565,7 @@
     
     (setq *collect-errors* nil)
     (unless $testsuite_files
-      (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp")))
+      (let ((*read-base* 10.)) (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))))
     (let ((error-break-file)
 	  (testresult)
 	  (tests-to-run (intersect-tests (cond ((consp tests) tests)
