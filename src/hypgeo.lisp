@@ -1484,7 +1484,7 @@
 	        (m2-e^-t f *var*))
 	   (f36p147 c e))               ; with the constant c.
 	  ((and (equal v 0) (m2-e^t f *var*))
-	   (f37p147 c e))
+	   (f37p147 c (mul -1 e)))
 	  (t 
            (setq *hyp-return-noun-flag* 'other-lt-exponential-to-follow)))))
 
@@ -1750,15 +1750,12 @@
 ;;;
 ;;; exp(-a*exp(t))
 ;;;   -> a^(-p)*gamma_incomplete(-p,a)
-;;; NOTE: CODE BELOW DOES NOT MATCH FORMULA AS STATED
-;;; CODE APPEARS TO BE CORRECT, TO JUDGE BY NUMERICAL EXAMPLES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun f37p147 (c a)
-  (let ((-a (mul -1 a)))
-    (mul c
-         (power -a *par*)
-         (take '(%gamma_incomplete) (mul -1 *par*) -a))))
+  (mul c
+       (power a *par*)
+       (take '(%gamma_incomplete) (mul -1 *par*) a)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
