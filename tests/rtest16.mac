@@ -2304,9 +2304,15 @@ polarform((a+1)/2 - a/2 - 0.5);
 polarform((a+1)/2 - a/2 - 0.5b0);
 0.0b0$
 
-/* #2449 cabs(expr) fails when expr is 0 */
-cabs(expand(subst(x = %i/2+1/2, cot(2*x) - (cot(x)^2-1)/(2*cot(x))))),numer;
-0.0;
+
+/* #2531 Integration with inf */
+errcatch(integrate((1+1/x)^(1/2),x,1,inf));
+[];
+
+error;
+["defint: integral is divergent."];
+
+
 
 /*
  * ID: 3440046: elliptic_f(0.5,1) signals error
