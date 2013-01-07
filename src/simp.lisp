@@ -205,6 +205,18 @@
       (and (not (atom x)) (not (atom (car x)))
 	   (member (caar x) '(rat bigfloat)))))
 
+;; is there a bfloat anywhere in x?
+(defun some-bfloatp (x)
+  (or ($bfloatp x)
+      (and (consp x)
+	   (some #'some-bfloatp (cdr x)))))
+
+;; is there a float anywhere in x?
+(defun some-floatp (x)
+  (or (floatp x)
+      (and (consp x)
+	   (some #'some-floatp (cdr x)))))
+
 ;; EVEN works for any arbitrary lisp object since it does an integer
 ;; check first.  In other cases, you may want the Lisp EVENP function
 ;; which only works for integers.
