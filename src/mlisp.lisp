@@ -29,7 +29,7 @@ or if apply is being used are printed.")
 		      $numer state-pdl *mdebug* *refchkl* *baktrcl*
 		      $norepeat $detout $doallmxops $doscmxops opers
 		      *mopl* $powerdisp $dispflag *alphabet* $%% %e-val
-		      outfiles $macros linel $ratfac $ratwtlvl
+		      $macros linel $ratfac $ratwtlvl
 		      $operators $partswitch *gcdl*
 		      *builtin-$props* $infolists))
 

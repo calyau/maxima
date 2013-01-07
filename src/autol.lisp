@@ -5,7 +5,8 @@
 ;;(aload "plot.o")
 
 (defun aload (file &aux *load-verbose* tem)
-  (let (($system  (list  '(mlist)
+  (let ((*read-base* 10.)
+	($system  (list  '(mlist)
 			 #+kcl (concatenate 'string si::*system-directory*
 					    "../src/foo.{o,lsp,lisp}"))))
     (declare (special $system))

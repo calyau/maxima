@@ -12,8 +12,6 @@
 
 (macsyma-module lesfac)
 
-(declare-top (special *fnewvarsw faclist res poly*))
-
 (load-macsyma-macros rzmac ratmac)
 
 (defun newsym2 (p e &aux (g (gensym)))
@@ -245,12 +243,11 @@
 	(t (setq poly (fpcontent poly))
 	   (ptimes (makprod (car poly) contswitch) (makprod1 (cadr poly))))))
 
-(defun makprod1 (poly*)
+(defun makprod1 (poly)
   (do ((v varlist (cdr v))
        (g genvar (cdr g))
-       (p (pdis poly*))
-       (res 1))
-      ((null v) (maksymp poly*))
+       (p (pdis poly)))
+      ((null v) (maksymp poly))
     (and (alike1 p (car v)) (return (pget (car g))))))
 
 (defun maksym (p)

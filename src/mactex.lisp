@@ -56,7 +56,7 @@
 ;; in case a file-name is supplied, the output will be sent
 ;; (perhaps appended) to that file.
 
-(declare-top (special lop rop ccol $gcprint texport $labels $inchar vaxima-main-dir))
+(declare-top (special lop rop $labels $inchar))
 
 (defvar *tex-environment-default* '("$$" . "$$"))
 
@@ -123,9 +123,8 @@
       strsym)))
 
 (defun tex1 (mexplabel &optional filename-or-stream) ;; mexplabel, and optional filename or stream
-  (prog (mexp  texport $gcprint ccol x y itsalabel need-to-close-texport)
-     ;; $gcprint = nil turns gc messages off
-     (setq ccol 1)
+  (prog (mexp  texport x y itsalabel need-to-close-texport)
+     (reset-ccol)
      (cond ((null mexplabel)
 	    (displa " No eqn given to TeX")
 	    (return nil)))
@@ -188,8 +187,8 @@
 	   (t 
 	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
 					; display the expression for TeX now:
-        (myprinc (car (get-tex-environment mexp)))
-	    (mapc #'myprinc
+        (myprinc (car (get-tex-environment mexp)) texport)
+	    (mapc #'(lambda (x) (myprinc x texport))
 		  ;;initially the left and right contexts are
 		  ;; empty lists, and there are implicit parens
 		  ;; around the whole expression
@@ -214,22 +213,20 @@
 ;;-              that a value is all printed on one line (and not divided
 ;;-              by the crazy top level os routines)
 
-(defun myprinc (chstr)
-  (prog (chlst)
-     (cond ((and (> (+ (length (setq chlst (exploden chstr))) ccol) 70.)
-                 (or (stringp chstr) (equal chstr '| |)))
-	    (terpri texport)      ;would have exceeded the line length
-	    (setq ccol 1.)
-	    (myprinc " "))) ; lead off with a space for safetyso we split it up.			
-     (do ((ch chlst (cdr ch))
-	  (colc ccol (1+ colc)))
-	 ((null ch) (setq ccol colc))
-       (write-char (car ch) texport))))
+(let ((ccol 1))
+  (defun reset-ccol () (setq ccol 1))
 
-(defun myterpri nil
-  (cond (texport (terpri texport))
-	(t (mterpri)))
-  (setq ccol 1))
+  (defun myprinc (chstr texport)
+    (prog (chlst)
+       (cond ((and (> (+ (length (setq chlst (exploden chstr))) ccol) 70.)
+                   (or (stringp chstr) (equal chstr '| |)))
+	      (terpri texport)      ;would have exceeded the line length
+	      (setq ccol 1.)
+	      (myprinc " " texport))) ; lead off with a space for safetyso we split it up.			
+       (do ((ch chlst (cdr ch))
+	    (colc ccol (1+ colc)))
+	   ((null ch) (setq ccol colc))
+         (write-char (car ch) texport)))))
 
 (defun tex (x l r lop rop)
   ;; x is the expression of interest; l is the list of strings to its

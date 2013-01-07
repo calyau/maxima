@@ -16,8 +16,7 @@
 ;;; can be found in MAXSRC;TRANS5 >.  Be sure to check on those
 ;;; if any semantic changes are made.
 
-(declare-top (special *expr *rulelist $rules $factorflag
-		      $maxapplyheight $maxapplydepth))
+(declare-top (special $rules $maxapplyheight $maxapplydepth))
 
 ;;  $MAXAPPLYDEPTH is the maximum depth within an expression to which
 ;;  APPLYi will delve.  If $MAXAPPLYDEPTH is 0, it is applied only to 
@@ -184,7 +183,7 @@
      (go a)))
 
 (defmfun part* (e p preds) 
-  (prog (flag saved val $factorflag) 
+  (prog (flag saved val) 
      (if (not (mtimesp e)) (matcherr))
      (cond ((> (length p) (length preds))
 	    (setq p (reverse p))
@@ -224,9 +223,9 @@
 ;;; TRANSLATE property in MAXSRC;TRANS5 >
 
 (defmspec $apply1 (l) (setq l (cdr l))
-	  (let ((*expr (meval (car l))))
-	    (mapc #'(lambda (z) (setq *expr (apply1 *expr z 0))) (cdr l))
-	    *expr))
+	  (let ((expr (meval (car l))))
+	    (mapc #'(lambda (z) (setq expr (apply1 expr z 0))) (cdr l))
+	    expr))
 
 (defmfun apply1 (expr *rule depth) 
   (cond
@@ -249,9 +248,9 @@
 		   t))))))))
 
 (defmspec $applyb1 (l)  (setq l (cdr l))
-	  (let ((*expr (meval (car l))))
-	    (mapc #'(lambda (z) (setq *expr (car (apply1hack *expr z)))) (cdr l))
-	    *expr))
+	  (let ((expr (meval (car l))))
+	    (mapc #'(lambda (z) (setq expr (car (apply1hack expr z)))) (cdr l))
+	    expr))
 
 (defmfun apply1hack (expr *rule) 
   (prog (pairs max) 
@@ -283,14 +282,14 @@
    (return expr)))
 
 (defmspec $apply2 (l) (setq l (cdr l))
-	  (let ((*rulelist (cdr l))) (apply2 (meval (car l)) 0)))
+	  (let ((rulelist (cdr l))) (apply2 rulelist (meval (car l)) 0)))
 
-(defmfun apply2 (expr depth) 
+(defmfun apply2 (rulelist expr depth) 
   (cond
     ((> depth $maxapplydepth) expr)
     (t
      (prog (ans ruleptr rule-hit) 
-      a    (setq ruleptr *rulelist)
+      a    (setq ruleptr rulelist)
       b    (cond
 	     ((null ruleptr)
 	      (cond
@@ -302,7 +301,7 @@
 		   (simplifya
 		    (cons
 		     (delsimp (car expr))
-		     (mapcar #'(lambda (z) (apply2 z (1+ depth)))
+		     (mapcar #'(lambda (z) (apply2 rulelist z (1+ depth)))
 			     (cdr expr)))
 		    t))))))
       (cond ((progn (multiple-value-setq (ans rule-hit) (mcall (car ruleptr) expr)) rule-hit)
@@ -311,16 +310,16 @@
 	    (t (setq ruleptr (cdr ruleptr)) (go b)))))))
 
 (defmspec $applyb2 (l) (setq l (cdr l))
-	  (let ((*rulelist (cdr l))) (car (apply2hack (meval (car l))))))
+	  (let ((rulelist (cdr l))) (car (apply2hack rulelist (meval (car l))))))
 
-(defmfun apply2hack (e) 
+(defmfun apply2hack (rulelist e) 
   (prog (pairs max) 
      (setq max 0)
-     (cond ((atom e) (return (cons (apply2 e -1) 0)))
-	   ((specrepp e) (return (apply2hack (specdisrep e)))))
-     (setq pairs (mapcar #'apply2hack (cdr e)))
+     (cond ((atom e) (return (cons (apply2 rulelist e -1) 0)))
+	   ((specrepp e) (return (apply2hack rulelist (specdisrep e)))))
+     (setq pairs (mapcar #'(lambda (x) (apply2hack rulelist x)) (cdr e)))
      (setq max 0)
      (mapc #'(lambda (l) (setq max (max max (cdr l)))) pairs)
      (setq e (simplifya (cons (delsimp (car e)) (mapcar #'car pairs)) t))
      (cond ((= max $maxapplyheight) (return (cons e max)))
-	   (t (return (cons (apply2 e -1) (1+ max)))))))
+	   (t (return (cons (apply2 rulelist e -1) (1+ max)))))))

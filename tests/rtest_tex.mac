@@ -261,3 +261,120 @@ with_stdout (s,
 
 close (s);
 unorder (); /* undo ordergreat above */
+
+s : openw ("tmp-rtest-4.tex");
+
+kill (a, b, c, d, foo, bar, baz, quux, u, v, w, x, y, z);
+
+with_stdout (s,
+    print ("\\documentclass{article}"),
+    print ("\\title{More \\TeX\\ examples}"),
+    print ("\\author{Maxim B.}"),
+    print ("\\begin{document}"),
+    print ("\\maketitle"),
+    tex_text ("Here are some more examples. Trying to cover all the bases here.\
+ These were discovered by tracing all the functions named in 'TEX properties\
+ and seeing which ones were not yet called."),
+
+    print (""),
+    print ("'at noun expressions."),
+    
+    tex ('at (f (u), u = 0)),
+    tex (1 / (1 - 'at (diff (f (u), u), u = 0))),
+    
+    print ("Bigfloats."),
+    
+    tex ([0b0, 1b0, -1b0, 1b100]),
+    tex ((foo (0b0) + bar (1b0))/(baz (-1b0) - quux (1b100))),
+    
+    print ("Binomials."),
+    
+    tex ('binomial (N, M)),
+    tex ((a + 'binomial (f (u), sqrt (v)))^(1/2)),
+    
+    print ("Cube roots."),
+    
+    tex (cubrt (%pi)),
+    tex (sin (cubrt (1 - %pi))),
+    
+    print ("Kronecker delta."),
+    
+    tex (kron_delta (0, u)),
+    tex ((x - kron_delta (cos (y), sin (z)))^n),
+    
+    /*
+     * OMIT -- BOX SEEMS TO BE AMSTEX-SPECIFIC.
+     *
+    print ("Stuff in boxes."),
+    tex (box (u)),
+    tex (sqrt (box (1 - box (tan (u))))),
+     */
+    
+    print ("Conditional expressions (verbs)."),
+    
+    tex (if 'a > 'b then a else b),
+    tex (if 'a > 'b then (if 'a > 'c then 'a else 'c) else b),
+    tex (if 'a > 'b then a elseif 'c > 'b then c else b),
+    tex (1 + if 'a > 'b then sqrt(a) else b^3),
+    
+    print ("Conditional expressions (nouns)."),
+    
+    tex ('if 'a > 'b then a else b),
+    tex ('if 'a > 'b then ('if 'a > 'c then 'a else 'c) else b),
+    tex ('if 'a > 'b then a elseif 'c > 'b then c else b),
+    tex (1 + 'if 'a > 'b then sqrt(a) else b^3),
+    
+    print ("For-loop expressions (nouns)."),
+    
+    tex ('for i thru n do print (i)),
+    tex (m * 'for i thru floor ((n + 1)/7) do print (i)),
+    
+    print ("For-loop expressions (verbs)."),
+    
+    tex ('(for i thru n do print (i))),
+    tex (m * '(for i thru floor ((n + 1)/7) do print (i))),
+    
+    print ("For-loops over lists (verbs)."),
+    
+    tex ('(for i in L do print (i))),
+    tex ((1 - a) / '(for i in foo (L[1], L[2]) do print (i))),
+    
+    print ("For-loops over lists (nouns)."),
+    
+    tex ('for i in L do print (i)),
+    tex ((1 - a) / 'for i in foo (L[1], L[2]) do print (i)),
+    
+    /* (GET 'MLABEL 'TEX) => TEX-MLABEL */
+    /* NOT SURE ?? !! */
+    
+    /* (GET 'MLABOX 'TEX) => TEX-MLABOX */
+    /* NOT SURE ?? !! */
+    
+    print ("Subscripted functions."),
+    
+    tex (F[x](y)),
+    tex (log (F[mod (x, m)](y!))),
+    
+    /* (GET 'TEXT-STRING 'TEX) => TEX-MTEXT */
+    /* NOT SURE ?? !! */
+    
+    /* (GET 'MTEXT 'TEX) => TEX-MTEXT */
+    /* NOT SURE ?? !! */
+    
+    print ("Rational numbers (RAT expressions)."),
+    
+    tex (ratsimp (17/19)),
+    tex (1/(a + ratsimp (17/19))),
+    
+    /* (GET 'SPACEOUT 'TEX) => TEX-SPACEOUT */
+    /* NOT SURE ?? !! */
+    
+    print ("Square roots."),
+    
+    tex (sqrt (u)),
+    tex (z - bessel_j (0, sqrt (1/(1 - u)))),
+
+    print ("The end!"),
+    print ("\\end{document}"));
+
+close (s);

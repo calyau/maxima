@@ -12,9 +12,9 @@
 
 (macsyma-module matrix)
 
-(declare-top (special errrjfflag oneoff* ei* ej* *ech* *tri* *inv*
-		      mdl dosimp $detout vlist mul* top* *det* genvar $ratfac
-		      *mosesflag varlist header linind* $scalarmatrixp $sparse
+(declare-top (special errrjfflag *ech* *tri* *inv*
+		      mdl $detout vlist mul* top* *det* genvar $ratfac
+		      varlist header $scalarmatrixp $sparse
 		      $algebraic *rank* *mat*))
 
 (defmvar $detout nil)

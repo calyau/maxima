@@ -86,7 +86,7 @@ is no need to rely on the setting of this switch.")
 ;; Specials defined elsewhere.
 
 (declare-top (special $expop $expon	; Controls behavior of EXPAND
-		      sign		; Something to do with BBSORT1
+		      antisym-sign	; track reversals when reordering noncommutative products
 		      errorsw))
 
 ;; The operators "." and "^^" distribute over equations.
@@ -381,11 +381,11 @@ is no need to rely on the setting of this switch.")
       (rplacd (last inner-product) (ncons (car rest))))))
 
 (defun simpnct-antisym-check (l check)
-  (let (sign)
+  (let (antisym-sign)
     (cond ((and (get 'mnctimes '$antisymmetric) (cddr l))
 	   (setq l (bbsort1 l))
 	   (cond ((equal l 0) 0)
-		 ((prog1 (null sign)
+		 ((prog1 (null antisym-sign)
 		    (setq l (eqtest (cons '(mnctimes) l) check)))
 		  l)
 		 (t (neg l))))
