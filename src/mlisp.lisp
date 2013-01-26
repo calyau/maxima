@@ -28,7 +28,7 @@ or if apply is being used are printed.")
 		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
 		      $numer state-pdl *mdebug* *refchkl* *baktrcl*
 		      $norepeat $detout $doallmxops $doscmxops opers
-		      *mopl* $powerdisp $dispflag *alphabet* $%% %e-val
+		      *mopl* *alphabet* $%% %e-val
 		      $macros linel $ratfac $ratwtlvl
 		      $operators $partswitch *gcdl*
 		      *builtin-$props* $infolists))
