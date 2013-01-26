@@ -53,7 +53,6 @@ or if apply is being used are printed.")
 (defvar msump nil)
 (defvar evarrp nil)
 (defvar factlist nil)
-(defvar fundefsimp nil)
 (defvar mfexprp t)
 (defvar *nounsflag* nil)
 (defvar transp nil)
@@ -2086,10 +2085,6 @@ wrapper for this."
        (not (get fun 'evok))))
 
 (defun mdefine1 (args body)
-  (if fundefsimp
-      (let ((sbody (simplify body)))
-	(when (and (not (atom body)) (not (atom sbody)))
-	  (rplaca body (car sbody)) (rplacd body (cdr sbody)))))
   (list '(lambda) (cons '(mlist) args) body))
 
 (defun mdefchk (fun args ary mqdef)
