@@ -12,45 +12,6 @@
 (in-package :maxima)
 (macsyma-module mload)
 
-;; I decided to move most of the file hacking utilities I used in TRANSL to
-;; this file. -GJC
-
-;; Concepts:
-;; Lisp_level_filename. Anything taken by the built-in lisp I/O primitives.
-;;
-;; User_level_filename. Comes through the macsyma reader, so it has an extra "&"
-;;   in the pname in the case of "filename" or has extra "$" and has undergone
-;;   ALIAS transformation in the case of 'FOOBAR or '[FOO,BAR,BAZ].
-;;
-;; Canonical_filename. Can be passed to built-in lisp I/O primitives, and
-;;   can also be passed back to the user, is specially handled by the DISPLAY.
-;;
-;; Functions:
-;; $FILENAME_MERGE. Takes User_level_filename(s) and Canonical_filename(s) and
-;;   merges them together, returning a Canonical_filename.
-;;
-;; TO-MACSYMA-NAMESTRING. Converts a Lisp_level_filename to a Canonical_filename
-;;
-;; $FILE_SEARCH ............ Takes a user or canonical filename and a list of types of
-;;                           applicable files to look for.
-;; $FILE_TYPE   ............. Takes a user or canonical filename and returns
-;;                            NIL, $MACSYMA, $LISP, or $FASL.
-;; CALL-BATCH1 ............. takes a canonical filename and a no-echop flag.
-
-;;------
-;;There is also this problem of what file searching and defaulting means,
-;; especially when this is done across systems.  My feeling right now
-;; is that searching might actually be three-layered:
-;; host, device/directory, type [assuming a name is given].  This will become
-;; important in the near future because NIL is going to be supporting
-;; multiple hosts over DECNET, using the common-lisp/lispm model of pathnames
-;; and hosts.  One of the problems with incremental merging algorithms like
-;; are used here is that making a pathname the first time tends to force an
-;; interpretation with respect to some specific host, which is probably
-;; defaulted from some place used for ultimate defaulting and not normally
-;; used by higher-level facilities like LOAD.  --gsb
-;;------
-
 (declare-top (special $file_search_lisp $file_search_maxima $file_search_demo $loadprint))
 
 (defmfun load-and-tell (filename)
