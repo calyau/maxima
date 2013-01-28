@@ -200,25 +200,38 @@ bfpsi0(z,fpprec):=if z < 0 then bfloat(%pi*cot(%pi*(-z)))+bfpsi0(1-z,fpprec)
 			      x:rectform((x+bern(k-2*i+2)/(k-2*i+2))/y)),
 			 bfloat(rectform(log(z+k)-1/(2*(z+k))-x-m))));
 
-bfzeta(s,fpp):=if s > 0
-        then block([fpprec:7,m:0,t:0.0b0,p,
-		    k:2*max(1,
-			    entier(ev(-(s-1/2)*log(s/(2*%pi))
-				       +log(10)*fpp-log(%pi)+3/2,numer)
-				    /2))],
-		   p:entier(bfloat(2^(1/(s+k-1))*10^(fpp/(s+k-1))
-						*product(s+k-i-2,i,0,k-2)
-						 ^(1/(s+k-1))
-				    /6.2831853b0^(k/(s+k-1))))
-		     +1,fpprec:fpp,
-		   for k from k/2 step -1 thru 0 do
-		       m:m*(s+2*k-1)*(s+2*k)/((2*k+1)*(2*k+2)*p^2)
-			 +bern(2*k)*p/(s-1),
-		   if s < 25 then t:sum(1/k^s,k,1,p-1)
-		       else for k from p-1 step -1 thru 1 do
-			        (fpprec:fpp
-					-entier(ev(log(k)*s/log(10),numer)),
-				 t:t+1/k^s),bfloat(t+(m+1/2)/p^s))
-        else (if s = 0 then -1/2
-		  else (bfzeta(1-s,fpprec)*%pi^(s-1)*2^s*bffac(-s,fpprec)
-					  *sin(%pi*s/2),bfloat(%\%)));
+bfzeta (s, fpp) :=
+  block([realp: member(carg (s), [0, %pi]),
+         nump: is (listofvars (s) = []),
+         sgn],
+        sgn: if is (realp=true) then sign(s) else und,
+        if not (integerp (fpp)) then 'bfzeta (s, fpp)
+        elseif is (sgn = zero) then -1/2
+        elseif is (s = 1) then inf
+        elseif is (sgn = pos) then bfzeta_positive (s, fpp)
+        elseif is (sgn = neg) then bfzeta_negative (s, fpp)
+        else 'bfzeta (s, fpp))$
+
+bfzeta_positive (s, fpp) :=
+  block ([fpprec:7,m:0,t:0.0b0,p,
+          k:2*max(1,
+                  entier(ev(-(s-1/2)*log(s/(2*%pi))
+                            +log(10)*fpp-log(%pi)+3/2,numer)/2))],
+          p:entier(bfloat(2^(1/(s+k-1))*10^(fpp/(s+k-1))
+                   *product(s+k-i-2,i,0,k-2)
+                   ^(1/(s+k-1))
+                   /6.2831853b0^(k/(s+k-1))))+1,
+          fpprec:fpp,
+          for k from k/2 step -1 thru 0 do
+            m:m*(s+2*k-1)*(s+2*k)/((2*k+1)*(2*k+2)*p^2)
+              +bern(2*k)*p/(s-1),
+          if s < 25 then t:sum(1/k^s,k,1,p-1)
+          else for k from p-1 step -1 thru 1 do
+                 (fpprec:fpp-entier(ev(log(k)*s/log(10),numer)),
+                  t:t+1/k^s),
+          bfloat(t+(m+1/2)/p^s))$
+
+bfzeta_negative (s,fpp):=
+  block([fpprec: fpp],
+    bfzeta(1-s,fpprec)*%pi^(s-1)*2^s*bffac(-s,fpprec)*sin(%pi*s/2),
+    bfloat(%\%))$
