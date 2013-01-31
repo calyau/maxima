@@ -83,9 +83,7 @@
   (setq comment-start-skip "/\*+ *")
   (make-local-variable 'comment-column)
   (setq comment-column 40)
-  (make-local-variable 'maxima-process)
-  (make-local-variable 'comment-indent-hook)
-  (setq comment-indent-hook 'maxima-comment-indent))
+  (make-local-variable 'maxima-process))
 
 
 (defun maxima-mode-commands (map)
