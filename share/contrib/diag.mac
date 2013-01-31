@@ -71,31 +71,20 @@
      ),
   
   return(mmatrix))$
- 
- /*Jordan cell JF(labmda,n),labmda is eigenvalue,n is size of matrix */
- JF(labmda,n):=block([mmatrix,ztemp,i],
-    mode_declare([ztemp],list,[i,n],fixnum,[mmatrix],any),
-    if (n <= 0) then (
-       print("can not calc JF"),
-       return(0)
-    )else (
-       if (n=1) then (
-	 return(matrix([labmda]))
-       ) else (
-      	   front:-1,back:n-1,ztemp:[],
-       	   for i:1 thru n do (
-      	       front:front+1,back:back-1,
-      	       if (front=0) then (
-		  mmatrix:matrix(append([labmda,1],duplicate(0,back)))
-      	       ) else ( 
-	       	   if (front <= n-2) then (
-      	      	       ztemp:append(duplicate(0,front),[labmda,1],duplicate(0,back)),
-	      	       mmatrix:addrow(mmatrix,ztemp)
-       	      	   ) else (
-	      	       ztemp:append(duplicate(0,front),[labmda]),
-	      	       mmatrix:addrow(mmatrix,ztemp)))
-	    ),
- return(mmatrix))))$
+
+/*
+  Construct a Jordan block of size N x N and eigenvalue EIVAL.
+*/
+JF (eival, n) :=
+  if is (n <= 0) then
+    error ("Cannot construct matrix with size < 0")
+  else
+    genmatrix (
+      lambda ([i,j],
+              if is (i = j) then eival
+              elseif is (j = i + 1) then 1
+              else 0),
+      n, n)$
 	  
 /*
   Calculate the correct partition of multiplicity for the matrix A at
