@@ -338,7 +338,7 @@ In usual case returns an integer: the column to indent to.
 		    (setq level (- level 1))))))
 	    (t (setq ok nil))))
       (aref maxima-paren-nest level)
-      )))
+      )))))
 
 ;(setq stack-trace-on-error t)
       
