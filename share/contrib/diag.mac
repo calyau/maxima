@@ -120,7 +120,7 @@ dispJordan (jordan_info) := block ([blocks: []],
   not on [1,1,0,0,1,1].
 */
 diag_sorted_list_histogram (list) :=
-  if is (emptyp (lst)) then [] else
+  if is (emptyp (list)) then [] else
   block([pairs: [], current: first (list), count: 1],
     for lst: rest (list) next rest (lst) while not (emptyp (lst))
     do
