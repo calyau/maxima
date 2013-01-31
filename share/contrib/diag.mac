@@ -1,39 +1,27 @@
-/*									* 
- * diag([a1,a2,..])							*
- * ai is square matrix or one element					*
- * Jordan cell JF(labmda,n),labmda is eigenvalue,n is size of matrix 	*
- * jordan(mat) is jordan form but represented by list			*
- * we obtain matrix form ,dispJordan(this list)				*
- * minimalPoly(this list) display minimalpolynomial of that matrix	*
- * ModeMatrix(mat,this list) return ModeMatrix M,                       *
- * (M^^-1)AM=JF              		                        	*
- * mat_function(analytic function,matrix) return f(matrix)              *
- * this calculation is based on Cauchy integral formular.               *
- * if f(x) is analytic and mat=diag([JF(m1,n1),,JF(mk,nk)]),            *
- * then                                                                 * 
- * f(mat)=ModeMatrix*diag([f(JF(m1,n1)),,f(JF(mk,nk))])*ModeMatrix^^(-1)*
- * this method is only one of them,6~8or more other methods exist.      *
- * so I cannot insist on this being best.but I think it very useful.    *
- * please try jordan.dem                                                *
- * I intended to write this program,after saw Barton's mat_exp.mc 	*
- * Partially because of Mathematica BUG ,				*
- * a:matix( [2,0,0,0,0,0,0,0],						*
- *        [1,2,0,0,0,0,0,0],						*
- *        [-4,1,2,0,0,0,0,0],						*
- *        [2,0,0,2,0,0,0,0],						*
- *        [-7,2,0,0,2,0,0,0],						*
- *        [9,0,-2,0,1,2,0,0],						*
- *        [-34,7,1,-2,-1,1,2,0],					*
- *        [145,-17,-16,3,9,-2,0,3])$	Mathematica returns wrong answer*
- * Jordan form,my program returns correct answer for this matrix        *
- * this program is GPL.							*
- */
- /* Make an n element Maxima list [a,a,...a].
-  thank for Barton */
-  load("eigen")$
+/*
+   diag.mac
 
-  duplicate(a,n) := block([k],
-  makelist(a,k,1,n))$
+   Contains the functions:
+     (1) diag
+     (2) JF
+     (3) jordan
+     (4) minimalPoly
+     (5) dispJordan
+     (6) ModeMatrix
+     (7) mat_function
+
+   plus some internal utility funcions. If you make use of one of
+   them, consider asking on the mailing list: we can try to make a
+   more useful API and give it a sensible name (not prefixed by
+   "diag_"), that we won't change.
+
+   See the manual or the comments above the relevant function for more
+   information on how each works.
+
+   As with the rest of Maxima, this code is distributed under the GPL,
+   version 2+
+*/
+load("eigen")$
 
 /*
   Return the direct sum of the elements of LST, made into 1x1 matrices
@@ -91,6 +79,10 @@ diag_calculate_mult_partition (A, multiplicity, eival) :=
         if is (blocks_left * (k + 1) > multiplicity) then
           error ("Unexpected blocks left over!"))))$
 
+/*
+  Calculate the JCF of A. Returns a list of eigenvalues and their
+  multiplicities.
+*/
 jordan (A) :=
   block([eigenlist: eigenvectors (A)],
     map (lambda ([eival, mult],
