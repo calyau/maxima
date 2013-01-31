@@ -97,49 +97,37 @@
 	    ),
  return(mmatrix))))$
 	  
+/*
+  Calculate the correct partition of multiplicity for the matrix A at
+  the eigenvalue eival.
+*/
+diag_calculate_mult_partition (A, multiplicity, eival) :=
+  if is (multiplicity = 1) then [1] else
+  block ([Abar: A - eival * ident (length (A)),
+          n: length (A),
+          nullity],
+    nullity: n - rank (Abar),
+    if is (nullity = 1) then [multiplicity]
+    elseif is (nullity = multiplicity) then makelist (1, nullity)
+    else block ([blocks_left: nullity, mults: [], Abarpow: Abar, dnull],
+      for k: 1 do (
+        Abarpow: Abarpow . Abar,
+        dnull: n - rank (Abarpow) - nullity,
+        nullity: nullity + dnull,
+        if (dnull < blocks_left) then (
+          mults: append (makelist (k, blocks_left - dnull), mults),
+          multiplicity: multiplicity - k * (blocks_left - dnull),
+          blocks_left: dnull),
+        if is (blocks_left * (k + 1) = multiplicity) then
+          return (append (makelist (k+1, blocks_left), mults)),
+        if is (blocks_left * (k + 1) > multiplicity) then
+          error ("Unexpected blocks left over!"))))$
 
-/*jordan(matrix),return diag(JF(labmda1,n1),..,JF(labmdak,nk))
-or list [[labmda1,n1,..nl],[labmda2,m1,..mj],..] and M matrix  */
-
-jordan(mat) := block( [JFLIST,eigenlist,multilist,zztemp,i,j,k,n,t,ii,neigen,tmpmulti,
-     blocknum,pmulti,NJ,mattmp],
-   mode_declare([i,j,k,n,t,ii,neigen,pmulti,tmpmulti,blocknum],fixnum,[JFLIST,eigenlist,
-    multilist,NJ,zztemp],list,[mat,mattmp],any),
-   n:length(mat),
-   eigenlist:eigenvectors(mat),
-   neigen:length(eigenlist[1][1]),
-   multilist:eigenlist[1][2],
-   JFLIST:[],
-   for i:1 thru neigen do (
-      pmulti:multilist[i],
-      zztemp:[],NJ:duplicate(0,pmulti),tmpmulti:0,
-     
-      if (pmulti=1) then (
-	 zztemp:cons(1,zztemp)
-      ) else (
-      	 mattmp:mat-(eigenlist[1][1][i])*ident(n),
-	 blocknum:n-rank(mattmp),
-	 if (blocknum=1) then (
-	    zztemp:cons(pmulti,zztemp)
-	 ) else (
-	    if (blocknum=pmulti) then (
-	       for ii:1 thru pmulti do zztemp:cons(1,zztemp)
-	    ) else (
-	       	for k:2  while (pmulti #tmpmulti) do (
-       		   s:0,
-		   t:n-rank(mattmp^^k),
-		   if (k=2) then (
-		      s:0
-		   ) else (
-		       for ii:1 thru k-2 do s:s+(k-ii)*NJ[ii]),
-		   NJ[k-1]:k*blocknum-s-t,
-		   for ii:1 thru NJ[k-1] do zztemp:cons(k-1,zztemp),
-		   tmpmulti:tmpmulti+NJ[k-1]*(k-1)
-		 )))),
-		      
-       JFLIST:endcons(cons(eigenlist[1][1][i],zztemp),JFLIST) 
-     ),
-  return(JFLIST))$
+jordan (A) :=
+  block([eigenlist: eigenvectors (A)],
+    map (lambda ([eival, mult],
+                 cons (eival, diag_calculate_mult_partition (A, mult, eival))),
+         eigenlist[1][1], eigenlist[1][2]))$
 
 /*
   Calculate the minimal polynomial, expressed in the symbol "x", of
