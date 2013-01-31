@@ -140,25 +140,26 @@ jordan(mat) := block( [JFLIST,eigenlist,multilist,zztemp,i,j,k,n,t,ii,neigen,tmp
        JFLIST:endcons(cons(eigenlist[1][1][i],zztemp),JFLIST) 
      ),
   return(JFLIST))$
-          
-minimalPoly(a):=block([i,n,x],
-  mode_declare([i,n],fixnum,[a],list,[x,T],any),
-  n:length(a),T:1,
-  for i:1 thru n do (
-     T:T*(x - a[i][1])^(a[i][2])
-  ),
-  return(T))$
 
-dispJordan(a):=block([i,n,p],
-   mode_declare([i,n,j],fixnum,[a],list,[vtemp],any),
-   n:length(a),vtemp:[],
-   for i:1 thru n do (
-      for j:1 thru length(a[i])-1 do (
-       	 vtemp:endcons(JF(a[i][1],a[i][j+1]),vtemp)
-      )
-   ),
-  
-  return(diag(vtemp)))$
+/*
+  Calculate the minimal polynomial, expressed in the symbol "x", of
+  any matrix with the given list of eigenvalues and their
+  multiplicities.
+*/
+minimalPoly (jordan_info) :=
+  lreduce ("*",
+    map (lambda ([eival_lst], ('x - first (eival_lst))^(second (eival_lst))),
+         jordan_info))$
+
+/*
+  Take a list of eigenvalues and their multiplicities and build the
+  corresponding Jordan matrix.
+*/
+dispJordan (jordan_info) := block ([blocks: []],
+  for eival_lst in jordan_info do
+    for size in rest (eival_lst) do
+      blocks: cons (JF (first (eival_lst), size), blocks),
+  diag (reverse (blocks)))$
 
 /*
   Takes a "sorted list" and produces a histogram of elements and their
