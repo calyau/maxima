@@ -34,43 +34,22 @@
 
   duplicate(a,n) := block([k],
   makelist(a,k,1,n))$
- 
 
-  diag(x):= block([ mmatrix,z1,ztemp,zero,n,ntemp,sumn,i,j,k,s,sold,front,back],
-    mode_declare([z1,ztemp,zero],list,[mmatrix],any,[n,ntemp,sumn,i,j,k,s,sold,front,back],fixnum),
-    n:length(x),sumn:0,front:0,sold:0,
-    /*gard*/
-    for i:1 thru n do (
-      if (matrixp(x[i])) then 
-      	x[i]:x[i] 
-      else ( 
-       	x[i]:matrix([x[i]]))
-    ),
-   /*sumn is matrix size */
-    for i:1 thru n do sumn:length(x[i])+sumn,
-    ztemp:[],z1:[],back:sumn,
-    for i:1 thru n do (
-      s:length(x[i]),
-      back:back-s,front:front+sold,
-      if (front=0) then
-      	  zero:[]
-      else (
-       	  zero:duplicate(0,front)),
-      for k:1 thru s do (
-      	  ztemp:zero,
-      	for j:1 thru s do (
-      	    ztemp:endcons(x[i][k,j],ztemp)
-      	),
-      	ztemp:append(ztemp,duplicate(0,back)),
-      	if (i=1 and k=1) then 
-	    mmatrix:matrix(ztemp)
-      	else (
-	    mmatrix:addrow(mmatrix,ztemp))
-       ),   
-       sold:s 
-     ),
-  
-  return(mmatrix))$
+/*
+  Return the direct sum of the elements of LST, made into 1x1 matrices
+  if they weren't already matrices.
+*/
+diag (lst) :=
+  block ([lst: map (lambda ([A], if matrixp (A) then A else matrix([A])), lst),
+          size: 0, left: 0, rows: []],
+    for A in lst do size: size + length (A),
+    for A in lst do (
+      for r in args(A) do
+        rows: cons (append (makelist (0, left), r,
+                            makelist (0, size - (left + length (r)))),
+                    rows),
+      left: left + length (first (A))),
+    apply (matrix, reverse (rows)))$
 
 /*
   Construct a Jordan block of size N x N and eigenvalue EIVAL.
