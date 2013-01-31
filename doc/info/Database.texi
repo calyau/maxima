@@ -181,7 +181,8 @@ As noted in the description for each declaration flag, for some flags
 @code{featurep(@var{object}, @var{feature})} returns @code{true} if @var{object}
 has been declared to have @var{feature}.
 
-See also @mrefdot{features}
+For more information about the features system, see @mrefdot{features} To
+remove a property from an atom, use @mrefdot{remove}
 
 @code{declare} recognizes the following properties:
 
