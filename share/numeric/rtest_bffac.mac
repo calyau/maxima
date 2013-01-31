@@ -10,7 +10,7 @@
 
 /* Easy standard values of zeta */
 bfzeta (0, 10);
--1/2$
+''(bfloat(-1/2))$
 
 bfzeta (1, 10);
 inf$
@@ -35,3 +35,7 @@ bfzeta (0, fpp);
 
 bfzeta (%i, fpp);
 'bfzeta (%i, fpp)$
+
+/* Check the first zero is in the right place */
+float_near_zero (bfzeta (1/2+%i*14.13472514173469379045b0, 16));
+true$
