@@ -12,7 +12,7 @@
 
 (macsyma-module newinv)
 
-(declare-top (special *ptr* *ptc* *iar* *nonz* detl* *r0 mul* $sparse *det* *rr* ax))
+(declare-top (special *ptr* *ptc* *iar* *nonz* detl* mul* $sparse *det* *rr* ax))
 
 (defun multbk (l ax m)
   (prog (e)
@@ -59,7 +59,7 @@
 			       (mapcar #'(lambda (x y) (nconc x (list y)))
 				       ri (nreverse *rr*))))))
      (setq e (car ei) ei (cdr ei))
-     (setq co (cons (bmhk e d co r detl*) co))
+     (setq co (cons (bmhk e d co r detl* *r0) co))
      (go loop)))
 
 (defun obmtrx (ax r s i j)
@@ -81,7 +81,7 @@
      (setq dr (cons d dr))
      (go loop1)))
 
-(defun bmhk (da b nc c0 detl)
+(defun bmhk (da b nc c0 detl *r0)
   (prog (c a sum det dy *nonz* x y)
      (setq det (car b) b (cdr b) a (car da) da (cdr da))
      (setq nc (reverse nc))
@@ -101,15 +101,12 @@
      on  (setq det (cons (ptimes (pminus (caar a)) (car det)) 1))
      (return (cons det (multmat(cdr a) sum)))))
 
-(declare-top (special bl))
-
 ;; tmlattice returns the block structure in the form of a list of blocks
 ;; each in the form of ((i1 j1) (i2 j2) etc))
 
 (defun newinv (ax m n)
   (declare (fixnum m n ))
   (prog (j mmat bl d bm detl* dm ipdm dm2 r i ei)
-     (declare (special bl))	       ;Why?  I don't know why.  --gsb
      (do ((i m (1- i)))
 	 ((= i 0))
        (declare (fixnum i))
@@ -151,4 +148,4 @@
      (setq bl (cdr bl))
      (go loop1)))
 
-(declare-top (unspecial bl *nonz* detl* *r0 mul* *det* *rr* ax))
+(declare-top (unspecial *nonz* detl* mul* *det* *rr* ax))
