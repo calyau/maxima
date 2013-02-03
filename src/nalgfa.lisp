@@ -12,7 +12,7 @@
 
 (macsyma-module nalgfa)
 
-(declare-top (special vlist *var *nosplitf *algvar *denom *num *ans
+(declare-top (special vlist *nosplitf *algvar *denom *num *ans
 		      algfac* $nalgfac alpha))
 
 (load-macsyma-macros rzmac ratmac)
