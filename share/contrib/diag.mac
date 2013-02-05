@@ -176,50 +176,101 @@ chlist(lis):= block([tes,arg1,i,m,counter],
       arg1:endcons([tes,counter],arg1)
    )),
   return(arg1))$
- 
-/* calc modematrix T ,T^^(-1)*A*T=JordanForm(A) */ 
-ModeMatrix(a,F):= block([i,j,k,msize,lsize,firstflg,multiplist,mindeg,ev,xv,tmpv,
- IM,DRNK,modemat,rank1,rankdim,LIS,zerolist,localrank,solvec],
-   mode_declare([i,j,k,msize,firstflg,mindeg,rank1,rankdim],fixnum,[multiplist,ev,
-    xv,tmpv,LIS,zerolist,F],list,[a,IM,DRANK,modemat,solvec],any,[localrank],fixnum),
-   lsize:length(F),
-   msize:length(a),
-   firstflg:0,
-   zerolist:duplicate(0,msize),
-   for i:1 thru lsize do (
-      ev:F[i][1],localrank:F[i][2],
-      multiplist:chlist(F[i]),
-      for j:1 thru length(multiplist) do (
-         mindeg:multiplist[j][1],
-	 localrank:multiplist[j][2],
-	 solvec[1]:matsolve2((a-ev*ident(msize))^^mindeg,zerolist),
-	 for k:2 thru mindeg do (
-	    solvec[k]:transpose((a-ev*ident(msize)).solvec[k-1])[1]
-	 ),
-	 IM:ident(length(%rnum_list)),rank1:0,
-	 for k:1 while (rank1 < localrank) do ( 
-	    LIS:map("=",%rnum_list,row(IM,k)[1]),
-	    tmpv:subst(LIS,solvec[mindeg]),
-	    if (tmpv #zerolist) then (
-	       if (firstflg = 0 ) then (
-		  DRANK:matrix(tmpv),
-		  rank1:1,firstflg:1,
-		  rankdim:1,
-		  modemat:matrix(tmpv),
-		  for l:mindeg-1 step -1 thru 1 do (
-		     modemat:addrow(modemat,subst(LIS,solvec[l]))
-		  )
-		) else (
-		     if (rankdim < rank(addrow(DRANK,tmpv))) then (
-		        DRANK:addrow(DRANK,tmpv),
-			rankdim:rankdim+1,rank1:rank1+1,
-			for l:mindeg step -1 thru 1 do (
-		     modemat:addrow(modemat,subst(LIS,solvec[l]))
-	       	        ))))
-	   )
-	)
-    ),
-   return(transpose(modemat)))$   
+
+/*
+
+  Calculate the general form for a chain of generalized eigenvectors
+  for A, of the form [v1, v2, ..., vn] such that (A-eival*I).v1 = 0 and
+  (A-eival*I).vk = v(k-1) where n = degree.
+
+  If degree is not correct, throws an error.
+
+  Otherwise returns [chain, freevars] where chain is a list of the
+  eigenvectors, each of which is represented as a list, and freevars
+  is the list of free variables.
+
+*/
+diag_generalized_eigenvectors (A, eival, degree) :=
+  block ([n: length (A), Abar, ret],
+    if (is (n < 1) or not (length (A[1]) = n)) then
+    error ("Invalid input matrix: ", A),
+    Abar: A - eival * ident (n),
+    ret: [matsolve2 (Abar^^degree, makelist (0, n))],
+    for i : 2 thru degree do
+      ret: cons (args (map (first, Abar . first(ret))), ret),
+    [ret, %rnum_list])$
+
+/*
+
+  LI_ROWS should be a list of lists representing row vectors that are
+  linearly independent. Then CHAIN_EXPR is a list of row vectors in
+  VARIABLES representing a Jordan chain. The function tries to find a
+  choice of variables such that CHAIN_EXPR is linearly independent of
+  LI_ROWS.
+
+  (Note: It suffices to check for the first and last elements of
+  CHAIN_EXPR)
+
+*/
+diag_find_li_chain (li_rows, chain_expr, variables) :=
+  block ([dict: false, extra_rows],
+    for vals in ident (length (variables)) do (
+      dict: map ("=", variables, vals),
+      extra_rows: subst (dict,
+                         if is (length (chain_expr) > 1) then
+                         [first (chain_expr), last (chain_expr)]
+                         else [first (chain_expr)]),
+      if is (rank (apply (matrix, append (li_rows, extra_rows))) =
+             length (li_rows) + length (extra_rows))
+      then return (true)
+      else dict: false),
+    if is (dict = false) then
+      error ("Could not find a linearly independent vector"),
+    /* Rectform since complex eivals mean horrible expressions here otherwise */
+    rectform (subst (dict, chain_expr)))$
+
+/*
+   Calculates the mode matrix of A, which is a matrix T such that
+      T^^(-1) . A . T = JordanForm (A)
+
+   F should be a list of the eigenvalues of A together with their
+   multiplicities, as returned by jordan(A).
+
+Notes on algorithm:
+
+   rest(ev_pair) is a list of chain lengths. chlist converts these to
+   multiplicities. Since jordan(A) returns the block lengths in
+   decreasing order (and chlist doesn't change that), we will hunt for
+   chains starting with the longest.
+
+   For each chain length, we find a general form for a chain of
+   generalised eigenvectors then we evaluate the formula, varying the
+   parameters to make sure we end up with a linearly independent
+   chain. Note that it suffices to check that the first term of the
+   chain list (the actual eigenvector) is linearly independent from
+   the rows we've got so far.
+
+   Since generalised eigenvectors for different eigenvalues are
+   linearly independent, we don't bother checking there.
+
+*/
+ModeMatrix (a,F):= block([msize: length(a), all_rows: []],
+  for ev_pair in F do
+  block ([eival: first (ev_pair),
+          multiplist: chlist (ev_pair),
+          mat_rows: [], mat_rank: 0],
+    for degree_pair in multiplist do
+    block ([mindeg: first (degree_pair),
+            genev_pair, genevs, free_vars],
+      genev_pair: diag_generalized_eigenvectors (a, eival, first (degree_pair)),
+      for k : 1 thru second (degree_pair) do
+        mat_rows:
+          append (mat_rows,
+                  diag_find_li_chain (mat_rows,
+                                      first (genev_pair),
+                                      second (genev_pair)))),
+    all_rows: append (all_rows, mat_rows)),
+  transpose (apply (matrix, all_rows)))$
 
   /* matsolve2(mat,v0)
   v0 is start value of sequence of generarized eigenvectors */
