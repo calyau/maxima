@@ -134,7 +134,7 @@
 	    (if l (set-vertex-label v l g))))
 	(dolist (e (digraph-edges gr))
 	  (add-edge e g)
-	  (let ((w (get-edge-weight e g)))
+	  (let ((w (get-edge-weight e gr)))
 	    (if w (set-edge-weight e w g))))
         ($set_positions ($get_positions gr) g)
 	g) ))

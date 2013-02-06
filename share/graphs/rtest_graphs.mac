@@ -278,3 +278,10 @@ topological_sort(path_digraph(3));
 
 topological_sort(cycle_digraph(3));
 [];
+
+/* Check for edge weight copying on digraphs (Bug 2541) */
+block([dg: cycle_digraph(3), dg2],
+      set_edge_weight([0,1], 100, dg),
+      dg2: copy_graph(dg),
+      is (get_edge_weight([0,1], dg2) = get_edge_weight([0,1], dg)));
+true;
