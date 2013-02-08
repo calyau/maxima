@@ -20,3 +20,5 @@ maxima*.iss
 
 maxout.*
 maxima*.tar.gz
+
+/binary

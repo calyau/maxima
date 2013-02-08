@@ -89,5 +89,6 @@ block
         rtest_mnewton,
         rtest_solve_rat_ineq,
         [rtest_vect, 4, 9, 10, 13, 16, 19, 20, 21, 24, 25],
-        rtest_antid]],
+        rtest_antid],
+        rtest_bffac],
     run_testsuite ());
