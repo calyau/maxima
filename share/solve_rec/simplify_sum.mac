@@ -784,13 +784,20 @@ to_hypergeometric1(expr, var, lo, hi) := block(
  *
  * harmonic_number and gen_harmonic_number
  *
+ * harmonic_number(n) = sum(1/i, i, 1, n)
+ * gen_harmonic_number(n,k) = sum(1/i^k, i, 1, n)
+ *
  *******************/
 
 define_variable(harmonic_number_expand, false, boolean)$
 
 simp_harmonic_number(x__):=
   if x__=0 then 0
+  else if integerp(x__) and x__<1 then error("Zero to negative power computed.") 
   else if integerp(x__) then num_harmonic_number(1, x__)
+  else if numberp(x__) and x__<-1 then block(
+    [a:-floor(x__), k%],
+    simp_harmonic_number(x__+a)-apply('sum, [1/k%, k%, x__, x__+a-1]))
   else if numberp(x__) or imagpart(x__)#0 then psi[0](x__+1) + %gamma
   else block(
     [a, b, var, k%],
@@ -815,6 +822,7 @@ simplifying('harmonic_number,'simp_harmonic_number)$
 
 simp_gen_harmonic_number(exp__, x__):=
   if x__=0 then 0
+  else if integerp(x__) and x__<1 then error("Zero to negative power computed.")
   else if exp__=1 then harmonic_number(x__)
   else if x__>=inf then zeta(exp__)
   else if integerp(x__) and integerp(exp__) then num_gen_harmonic_number(exp__, 1, x__)
