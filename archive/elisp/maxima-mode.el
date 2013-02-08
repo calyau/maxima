@@ -83,9 +83,7 @@
   (setq comment-start-skip "/\*+ *")
   (make-local-variable 'comment-column)
   (setq comment-column 40)
-  (make-local-variable 'maxima-process)
-  (make-local-variable 'comment-indent-hook)
-  (setq comment-indent-hook 'maxima-comment-indent))
+  (make-local-variable 'maxima-process))
 
 
 (defun maxima-mode-commands (map)
@@ -340,7 +338,7 @@ In usual case returns an integer: the column to indent to.
 		    (setq level (- level 1))))))
 	    (t (setq ok nil))))
       (aref maxima-paren-nest level)
-      )))
+      )))))
 
 ;(setq stack-trace-on-error t)
       
