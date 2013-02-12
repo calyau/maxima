@@ -502,9 +502,15 @@
 (defmacro float (x &optional (y 1e0))
   `(cl:float ,x ,y))
 
+(defmacro with-collector (collector-sym &body forms)
+  (let ((acc (gensym)))
+    `(let ((,acc))
+       (flet ((,collector-sym (x) (push x ,acc)))
+         ,@forms
+         (nreverse ,acc)))))
+
 ;; DO-MERGE-ASYM moved here from nset.lisp so that it is defined before
 ;; it is referenced in compar.lisp.
-
 (defmacro do-merge-symm (list1 list2 eqfun lessfun bothfun onefun)
   ;; Like do-merge-asym, but calls onefun if an element appears in one but
   ;; not the other list, regardless of which list it appears in.
@@ -518,14 +524,10 @@
   ;; calls only1fun on each element that appears only in the first list;
   ;; calls only2fun on each element that appears only in the second list.
   ;; If both/only1/only2 fun are nil, treat as no-op.
-  ;; Initializes the variable "res" to nil; returns its value as the result.
   (let ((l1var (gensym))
 	(l2var (gensym)))
     `(do ((,l1var ,list1)
-	  (,l2var ,list2)
-	  res)
-	 ;; The variable RES is for the use of both/only1/only2-fun
-	 ;; do-merge-asym returns (nreverse res)
+	  (,l2var ,list2))
 	 ((cond ((null ,l1var)
 		 (if ,only2fun
 		     (while ,l2var
@@ -549,8 +551,7 @@
 		(t
 		 (if ,only2fun (funcall ,only2fun (car ,l2var)))
 		 (setq ,l2var (cdr ,l2var))
-		 nil))
-	  (nreverse res)))))
+		 nil))))))
 
 ;;; Test
 ; (do-merge-asym '(a a a b c g h k l)

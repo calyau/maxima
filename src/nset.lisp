@@ -526,31 +526,34 @@
 
 (defun set-intersect (l1 l2)
   ;;  Only works for lists of sorted by $orderlessp.
-  (do-merge-symm
-   l1 l2
-   #'like
-   #'$orderlessp
-   #'(lambda (x) (push x res))
-   nil))
+  (with-collector collect
+    (do-merge-symm
+        l1 l2
+        #'like
+        #'$orderlessp
+        #'collect
+        nil)))
 
 (defun set-union (l1 l2)
   ;; Only works for lists of sorted by $orderlessp.
-  (do-merge-symm
-   l1 l2
-   #'like
-   #'$orderlessp
-   #'(lambda (x) (push x res))
-   #'(lambda (x) (push x res))))
+  (with-collector collect
+    (do-merge-symm
+        l1 l2
+        #'like
+        #'$orderlessp
+        #'collect
+        #'collect)))
 
 (defun sset-difference (l1 l2)
   ;; Only works for lists of sorted by $orderlessp.
-  (do-merge-asym
-   l1 l2
-   #'like
-   #'$orderlessp
-   nil
-   #'(lambda (x) (push x res))
-   nil))
+  (with-collector collect
+    (do-merge-asym
+        l1 l2
+        #'like
+        #'$orderlessp
+        nil
+        #'collect
+        nil)))
 
 (defun set-subsetp (l1 l2)
   ;; Is l1 a subset of l2
@@ -565,12 +568,13 @@
     t))
 
 (defun set-symmetric-difference (l1 l2)	; i.e. xor
-  (do-merge-symm
-   l1 l2
-   #'like
-   #'$orderlessp
-   nil
-   #'(lambda (x) (push x res))))
+  (with-collector collect
+    (do-merge-symm
+        l1 l2
+        #'like
+        #'$orderlessp
+        nil
+        #'collect)))
 	
 (defun set-disjointp (l1 l2)
   (catch 'disjoint
