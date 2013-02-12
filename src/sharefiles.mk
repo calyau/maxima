@@ -170,6 +170,7 @@ contrib/clebsh-gordan.tex \
 contrib/colorterm.lisp \
 contrib/devine.mac \
 contrib/diag.mac \
+contrib/diag_test.mac \
 contrib/diffequations/contrib_ode.mac \
 contrib/diffequations/contrib_ode.usg \
 contrib/diffequations/de-test.txt \
@@ -959,6 +960,7 @@ numeric/newton1.mac \
 numeric/newton.mac \
 numeric/riemsum.mac \
 numeric/romberg.lisp \
+numeric/rtest_bffac.mac \
 numeric/rtest_fft.mac \
 numeric/rtest_interpol.mac \
 numeric/rtest_romberg.mac \
