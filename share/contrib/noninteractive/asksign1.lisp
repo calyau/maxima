@@ -45,24 +45,9 @@
           (meval `(($throw) '(($asksign) ,expr ,(or domain '$pnz)))))
       (funcall *interactive-ensure-sign*)))
 
-;;; Asks the user a question about the property of an object.
-;;; Returns only $yes, $no or $unknown.
+;; Replaces ASK-PROP in askp.lisp
+(defvar *real-ask-prop* (symbol-function 'ask-prop))
 (defun ask-prop (object property fun-or-number)
-  (if $no_questions (meval `(($throw) '(($askprop) ,object ,property))))
-
-  (if fun-or-number (setq fun-or-number (list '| | fun-or-number)))
-  (do ((end-flag) (answer))
-      (end-flag (cond ((member answer '($yes |$Y| |$y|) :test #'eq) '$yes)
-		      ((member answer '($no |$N| |$n|) :test #'eq) '$no)
-		      ((member answer '($unknown $uk) :test #'eq) '$unknown)))
-    (setq answer (retrieve
-		  `((mtext) "Is " ,object 
-		    ,(if (member (char (symbol-name property) 0)
-				 '(#\a #\e #\i #\o #\u) :test #'char-equal)
-			 " an "
-			 " a ")
-		    ,property ,@fun-or-number "?")
-		  nil))
-    (cond ((member answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk) :test #'eq)
-	   (setq end-flag t))
-	  (t (mtell "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
+  (if $no_questions
+      (meval `(($throw) '(($askprop) ,object ,property)))
+      (funcall *real-ask-prop*)))
