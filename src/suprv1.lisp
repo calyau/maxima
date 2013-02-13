@@ -108,9 +108,9 @@
 (defmvar user-timesofar nil)
 
 ;; This version of meval* makes sure, that the facts from the global variable
-;; locals are cleared with a call to clearsign. The facts are added by asksign
-;; and friends. The function meval* is only used for top level evaluations.
-;; For other cases the function meval can be used.
+;; *local-signs* are cleared with a call to clearsign. The facts are added by
+;; asksign and friends. The function meval* is only used for top level
+;; evaluations.  For other cases the function meval can be used.
 
 (defmvar $ratvarswitch t) ; If T, start an evaluation with a fresh list VARLIST.
 

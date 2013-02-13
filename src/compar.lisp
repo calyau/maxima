@@ -57,7 +57,14 @@ relational knowledge is contained in the default context GLOBAL.")
 (defmvar $assume_pos_pred nil)
 
 (defmvar factored nil)
-(defmvar locals nil)
+
+;; The *LOCAL-SIGNS* variable contains a list of facts that are local to the
+;; current evaluation. These are stored in the assume database (in the global
+;; context) by asksign1 when the user answers questions. A "top-level"
+;; evaluation is run by MEVAL* and that function calls CLEARSIGN when it
+;; finishes to discard them.
+(defmvar *local-signs* nil)
+
 (defmvar sign nil)
 (defmvar minus nil)
 (defmvar odds nil)
@@ -73,9 +80,6 @@ relational knowledge is contained in the default context GLOBAL.")
 ;; reset at the end of the file via a call to ($newcontext '$initial).
 (setq $context '$global
       $contexts '((mlist) $global))
-
-(defmacro ask (&rest x)
-  `(retrieve (list '(mtext) ,@x) nil))
 
 (defmacro pow (&rest x)
   `(power ,@x))
@@ -880,61 +884,81 @@ relational knowledge is contained in the default context GLOBAL.")
   (let ($radexpand)
     (declare (special $radexpand))
     (sign1 $askexp))
-  (cond ((has-int-symbols $askexp)
-	 '$pnz)
+  (cond ((has-int-symbols $askexp) '$pnz)
 	((member sign '($pos $neg $zero $imaginary) :test #'eq) sign)
 	((null odds)
 	 (setq $askexp (lmul evens)
-	       sign (cdr (assol $askexp locals)))
-	 (do ()
-	     (nil)
-	   (cond ((member sign '($zero |$Z| |$z| 0 0.0) :test #'equal)
-		  (tdzero $askexp) (setq sign '$zero) (return t))
-		 ((member sign '($pn $nonzero |$N| |$n| $nz $nonz $non0) :test #'eq)
-		  (tdpn $askexp) (setq sign '$pos) (return t))
-		 ((member sign '($pos |$P| |$p| $positive) :test #'eq)
-		  (tdpos $askexp) (setq sign '$pos) (return t))
-		 ((member sign '($neg |$N| |$n| $negative) :test #'eq)
-		  (tdneg $askexp) (setq sign '$pos) (return t)))
-	   (setq sign (ask "Is  " $askexp "  zero or nonzero?")))
-	 (if minus (flip sign) sign))
-	(t (if minus (setq sign (flip sign)))
-	   (setq $askexp (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2)) evens))))
-	   (do ((dom (cond ((eq '$pz sign) "  positive or zero?")
-			   ((eq '$nz sign) "  negative or zero?")
-			   ((eq '$pn sign) "  positive or negative?")
-			   (t "  positive, negative, or zero?")))
-		(ans (cdr (assol $askexp locals))))
-	       (nil)
-	     (cond ((and (member ans '($pos |$P| |$p| $positive) :test #'eq)
-			 (member sign '($pz $pn $pnz) :test #'eq))
-		    (tdpos $askexp) (setq sign '$pos) (return t))
-		   ((and (member ans '($neg |$N| |$n| $negative) :test #'eq)
-			 (member sign '($nz $pn $pnz) :test #'eq))
-		    (tdneg $askexp) (setq sign '$neg) (return t))
-		   ((and (member ans '($zero |$Z| |$z| 0 0.0) :test #'equal)
-			 (member sign '($pz $nz $pnz) :test #'eq))
-		    (tdzero $askexp) (setq sign '$zero) (return t)))
-	     (setq ans (ask "Is  " $askexp dom)))
-	   (if minus (flip sign) sign))))
+	       sign (cdr (assol $askexp *local-signs*)))
+         (ensure-sign $askexp '$znz))
+	(t
+         (if minus (setq sign (flip sign)))
+         (setq $askexp
+               (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2)) evens))))
+         (let ((domain sign))
+           (setf sign (assol $askexp *local-signs*))
+           (ensure-sign $askexp domain)))))
+
+(defun match-sign (sgn domain expression)
+  "If SGN makes sense for DOMAIN store the result (see ENSURE-SIGN) and return
+it. Otherwise, return NIL."
+  ;; We have a hit if the answer (sign) is one of the first list and the
+  ;; question (domain) was one of the second.
+  (let* ((behaviour
+          '((($pos |$P| |$p| $positive) (nil $znz $pz $pn $pnz) tdpos $pos)
+            (($neg |$N| |$n| $negative) (nil $znz $nz $pn $pnz) tdneg $neg)
+            (($zero |$Z| |$z| 0 0.0) (nil $znz $pz $nz $pnz) tdzero $zero)
+            (($pn $nonzero $nz $nonz $non0) ($znz) tdpn $pn)))
+         (hit (find-if (lambda (bh)
+                         (and (member sgn (first bh) :test #'equal)
+                              (member domain (second bh) :test #'eq)))
+                       behaviour)))
+    (when hit
+      (funcall (third hit) expression)
+      (setq sign
+            (if minus (flip (fourth hit)) (fourth hit))))))
+
+(defun ensure-sign (expr &optional domain)
+  "Try to determine the sign of EXPR. If DOMAIN is not one of the special values
+described below, we try to tell whether EXPR is positive, negative or zero. It
+can be more specialised ($pz => positive or zero; $nz => negative or zero; $pn
+=> positive or negative; $znz => zero or nonzero).
+
+When calling ENSURE-SIGN, set the special variable SIGN to the best current
+guess for the sign of EXPR. The function returns the sign, calls one of (TDPOS
+TDNEG TDZERO TDPN) to store it, and also sets SIGN."
+  (loop
+     (let ((new-sign (match-sign sign domain expr)))
+       (when new-sign (return new-sign)))
+     (setf sign (retrieve
+                 (list '(mtext)
+                       "Is " expr
+                       (or (second
+                            (assoc domain
+                                   '(($znz " zero or nonzero?")
+                                     ($pz  " positive or zero?")
+                                     ($nz  " negative or zero?")
+                                     ($pn  " positive or negative?"))))
+                           " positive, negative or zero?"))
+                 nil))))
 
 ;; During one evaluation phase asksign writes answers from the user into the
 ;; global context '$initial. These facts are removed by clearsign after
 ;; finishing the evaluation phase. clearsign is called from the top-level
 ;; evaluation function meval*. The facts which have to be removed are stored
-;; in the global variable locals.
+;; in the global variable *local-signs*.
 
 (defun clearsign ()
   (let ((context '$initial))
-    (do ()
-        ((null locals))
-      (cond ((eq '$pos (cdar locals)) (daddgr nil (caar locals)))
-            ((eq '$neg (cdar locals)) (daddgr nil (neg (caar locals))))
-            ((eq '$zero (cdar locals)) (daddeq nil (caar locals)))
-            ((eq '$pn (cdar locals)) (daddnq nil (caar locals)))
-            ((eq '$pz (cdar locals)) (daddgq nil (caar locals)))
-            ((eq '$nz (cdar locals)) (daddgq nil (neg (caar locals)))))
-      (setq locals (cdr locals)))))
+    (dolist (cons-pair *local-signs*)
+      (destructuring-bind (x . sgn) cons-pair
+        (cond
+          ((eq '$pos sgn) (daddgr nil x))
+          ((eq '$neg sgn) (daddgr nil (neg x)))
+          ((eq '$zero sgn) (daddeq nil x))
+          ((eq '$pn sgn) (daddnq nil x))
+          ((eq '$pz sgn) (daddgq nil x))
+          ((eq '$nz sgn) (daddgq nil (neg x))))))
+    (setf *local-signs* nil)))
 
 (defmfun like (x y)
   (alike1 (specrepcheck x) (specrepcheck y)))
@@ -2168,27 +2192,27 @@ relational knowledge is contained in the default context GLOBAL.")
 (defun tdpos (x)
   (let ((context '$initial))
     (daddgr t x)
-    (push (cons x '$pos) locals)))
+    (push (cons x '$pos) *local-signs*)))
 
 (defun tdneg (x)
   (let ((context '$initial))
     (daddgr t (neg x))
-    (push (cons x '$neg) locals)))
+    (push (cons x '$neg) *local-signs*)))
 
 (defun tdzero (x)
   (let ((context '$initial))
     (daddeq t x)
-    (push (cons x '$zero) locals)))
+    (push (cons x '$zero) *local-signs*)))
 
 (defun tdpn (x)
   (let ((context '$initial))
     (daddnq t x)
-    (push (cons x '$pn) locals)))
+    (push (cons x '$pn) *local-signs*)))
 
 (defun tdpz (x)
   (let ((context '$initial))
     (daddgq t x)
-    (push (cons x '$pz) locals)))
+    (push (cons x '$pz) *local-signs*)))
 
 (defun compsplt-eq (x)
   (with-compsplt (lhs rhs x)
