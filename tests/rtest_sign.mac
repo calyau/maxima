@@ -1001,3 +1001,9 @@ false;
 is(equal(a,b));
 false;
 
+/* Check fix for bug 2547 (declare constant messes up sign calculations) */
+(declare (x, constant), declare (y, constant), assume (x > y), is (x>y));
+true$
+
+kill(all);
+done$
