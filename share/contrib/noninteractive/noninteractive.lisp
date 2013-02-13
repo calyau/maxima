@@ -5,9 +5,6 @@
 ;; Redefine MERROR to throw something.
 (defun merror (s &rest l) ($throw `((merror) ,s ,@l)))
 
-;; Expose GENSYM as a Maxima function.
-(defun $gensym () (cadr (dollarify `(,(gensym)))))
-
 (defmspec $assuming (e)
   (let*
     ((args (margs e))
