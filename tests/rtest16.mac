@@ -2374,3 +2374,15 @@ limit(log(-1/3125*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) +
 1/2)^(8*n))*((-1/2*sqrt(5) + 1/2)^n - (1/2*sqrt(5) + 1/2)^n) -
 1/5*((-1/2*sqrt(5) + 1/2)^(9*n) - (1/2*sqrt(5) +
 1/2)^(9*n))*sqrt(5)),n,inf);
+
+/*
+ * Bug 2528: A variable should be real if it is both real and complex
+ */
+(declare(foo, real), declare(foo, complex), 0);
+0$
+
+[realpart(foo), imagpart(foo)];
+[foo, 0]$
+
+(kill(foo), 0);
+0$

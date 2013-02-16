@@ -200,25 +200,103 @@ bfpsi0(z,fpprec):=if z < 0 then bfloat(%pi*cot(%pi*(-z)))+bfpsi0(1-z,fpprec)
 			      x:rectform((x+bern(k-2*i+2)/(k-2*i+2))/y)),
 			 bfloat(rectform(log(z+k)-1/(2*(z+k))-x-m))));
 
-bfzeta(s,fpp):=if s > 0
-        then block([fpprec:7,m:0,t:0.0b0,p,
-		    k:2*max(1,
-			    entier(ev(-(s-1/2)*log(s/(2*%pi))
-				       +log(10)*fpp-log(%pi)+3/2,numer)
-				    /2))],
-		   p:entier(bfloat(2^(1/(s+k-1))*10^(fpp/(s+k-1))
-						*product(s+k-i-2,i,0,k-2)
-						 ^(1/(s+k-1))
-				    /6.2831853b0^(k/(s+k-1))))
-		     +1,fpprec:fpp,
-		   for k from k/2 step -1 thru 0 do
-		       m:m*(s+2*k-1)*(s+2*k)/((2*k+1)*(2*k+2)*p^2)
-			 +bern(2*k)*p/(s-1),
-		   if s < 25 then t:sum(1/k^s,k,1,p-1)
-		       else for k from p-1 step -1 thru 1 do
-			        (fpprec:fpp
-					-entier(ev(log(k)*s/log(10),numer)),
-				 t:t+1/k^s),bfloat(t+(m+1/2)/p^s))
-        else (if s = 0 then -1/2
-		  else (bfzeta(1-s,fpprec)*%pi^(s-1)*2^s*bffac(-s,fpprec)
-					  *sin(%pi*s/2),bfloat(%\%)));
+bfzeta (s, fpp) :=
+  block ([sigma: realpart (s), t: imagpart (s)],
+    if is (not (numberp (sigma)) or
+           not (numberp (t)) or
+           not (integerp (fpp) and fpp > 0)) then 'bfzeta(s,fpp)
+    else (
+      if is (s = 0) then bfloat (-1/2)
+      elseif is (s = 1) then inf
+      elseif is (t = 0 and sigma > 0) then bfzeta_positive (s, fpp)
+      elseif is (t # 0 and sigma >= 1/2) then bfzeta_borwein (s, fpp)
+      else
+        /*
+          bfzeta_negative calls bfzeta with 1-s. However, we know that
+          sigma < 1/2, so 1-sigma > 1/2 and we won't recurse infinitely.
+        */
+        bfzeta_negative (s, fpp)))$
+
+/*
+  A&S 23.2.6
+*/
+bfzeta_negative (s,fpp):=
+  block([fpprec: fpp],
+    rectform (bfloat (bfzeta(1-s,fpprec) * %pi^(s-1) * 2^s *
+                      bffac(-s,fpprec) * sin(%pi*s/2))))$
+
+/*
+  Calculates zeta(s) for positive real s using an Euler-Maclaurin
+  expansion (The fastest of the algorithms, but only works for real s)
+*/
+bfzeta_positive (s, fpp) :=
+  block ([fpprec:7,m:0,t:0.0b0,p,
+          k:2*max(1,
+                  entier(ev(-(s-1/2)*log(s/(2*%pi))
+                            +log(10)*fpp-log(%pi)+3/2,numer)/2))],
+          p:entier(bfloat(2^(1/(s+k-1))*10^(fpp/(s+k-1))
+                   *product(s+k-i-2,i,0,k-2)
+                   ^(1/(s+k-1))
+                   /6.2831853b0^(k/(s+k-1))))+1,
+          fpprec:fpp,
+          for k from k/2 step -1 thru 0 do
+            m:m*(s+2*k-1)*(s+2*k)/((2*k+1)*(2*k+2)*p^2)
+              +bern(2*k)*p/(s-1),
+          if s < 25 then t:sum(1/k^s,k,1,p-1)
+          else for k from p-1 step -1 thru 1 do
+                 (fpprec:fpp-entier(ev(log(k)*s/log(10),numer)),
+                  t:t+1/k^s),
+          bfloat(t+(m+1/2)/p^s))$
+
+/*
+  The bfzeta_borwein function calculates zeta(S) to within 10^(-FPP)
+  using the methods described in Borwein, "An Efficient Algorithm for
+  the Riemann Zeta Function" (MR1777614), described slightly
+  differently in Gourdon and Sebah, "Numerical evaluation of the
+  Riemann Zeta-function" (we use their notation).
+
+  Write s = sigma + %i*t. The expansion is valid for sigma >= 1/2.
+
+  The bound given in Algorithm 2 of the papers shows that, in order to
+  get an error below 10^(-N) when evaluating zeta(s) = zeta(sigma+it)
+  with sigma >= 1/2, we need n terms, where
+
+    log(3+sqrt(8))*n
+     >=
+    log(3) + log(1+2*abs(t)) + %pi/2*abs(t) + N*log(10) - log(abs(1-2^(1-s)))
+
+  To calculate the sum, we need binomial coefficients of the form
+
+    b[i] = n*(n+i-1)!4^i/((n-i)!(2i)!)
+
+  with recurrence given by
+
+    b[i] = b[i+1] * (2*i+1)*(i+1)/(2*(n+i)*(n-i))
+
+  where b[n] = 4^n / 2. Then let d[k] = sum (b[i], i, k, n) (with the
+  very easy recurrence that d[k] = n*b[k] + d[k+1]) and
+
+    zeta(s) = (d[0]*(1-2^(1-s)))^(-1) *
+              sum ((-1)^(k-1) * d[k] / k^s) + err
+
+*/
+bfzeta_borwein_terms_needed (s, t, N) :=
+  ceiling (bfloat (
+      (log (3) + log (1+2*abs (t)) + %pi/2*abs(t)
+               + N*log(10) - log(abs(1-2^(1-s))))
+      / 1.76b0))$
+
+bfzeta_borwein (s, fpp) := block (
+  [t: bfloat (imagpart (s)), sigma: bfloat (realpart (s)), n],
+  n: bfzeta_borwein_terms_needed (s, t, fpp+1),
+  /* b is the binomial coefficient; d is dk */
+  block ([fpprec: ceiling (log (n) + fpp), acc: [0,0],
+          b: 4^n/2, d: 0, lbk],
+    for k:n step -1 thru 1 do (
+      tlbk: -t * log (bfloat (k)),
+      d: d + b,
+      b: b * (2*k-1)*k / (2*(n+k-1)*(n-k+1)),
+      acc: acc + (-1)^(k-1)*d*k^(-sigma)*[cos(tlbk), sin(tlbk)]),
+    d: d + b,
+    rectform (bfloat ((d * (1-(2^(1-s))))^-1) *
+              (first (acc) + %i*second (acc)))))$
