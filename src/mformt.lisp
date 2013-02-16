@@ -135,13 +135,10 @@
 
 (defmfun displaf (object stream)
   ;; for DISPLA to a file.
-  ;; a bit of a kludge here. ^r and ^w still communicate something
-  ;; to the displa package, but OUTFILES has not been implemented/hacked.
   (if (or (eq stream nil) (eq stream *standard-output*))
       (displa object)
       (let ((*standard-output* stream)
-	    (^r t)
-	    (^w t))
+	    (#.ttyoff t))
 	(displa object))))
 
 (defmfun mtell (&rest l)

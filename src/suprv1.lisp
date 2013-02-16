@@ -670,7 +670,7 @@
         ($ibase *read-base* *read-base*) ($obase *print-base* obase)
         ($nopoint *nopoint nopoint)
 	($modulus modulus modulus) ($zunderflow zunderflow zunderflow)
-	($ttyoff #.ttyoff ttyoff) ($writefile_on #.writefilep writefile_on)
+	($ttyoff #.ttyoff ttyoff)
 	($mode_declare $modedeclare mode_declare)))
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))

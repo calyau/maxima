@@ -16,10 +16,6 @@
  ;; evaluate for declarations
  (special
   ^w			;If T, then no output goes to the console.
-  ^r			;If T, then output also goes to any
-			;file opened by UWRITE.  People learning
-			;Lisp: there are better ways of doing IO
-			;than this -- don't copy this scheme.
   linel			;Width of screen.
   ttyheight		;Height of screen.
 

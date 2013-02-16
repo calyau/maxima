@@ -597,7 +597,6 @@ values")
     ch))
 
 (defvar ^w nil)
-(defvar ^r nil)
 
 (defun $timedate (&optional (time (get-universal-time)))
   (multiple-value-bind

@@ -68,14 +68,13 @@
 (defvar *alt-display1d* nil)
 
 (defmfun displa (form &aux #+kcl(form form))
-  (if (or (not #.ttyoff) #.writefilep)
+  (if (not #.ttyoff)
       (cond ($display2d
 	     (cond (*alt-display2d* (apply *alt-display2d* form ()))
 		   (t
 		    (let ((displayp t)
 			  (linearray (if displayp (make-array 80.) linearray))
 			  (mratp (checkrat form))
-			  (#.writefilep #.writefilep)
 			  (maxht     1) (maxdp   0) (width   0)
 			  (height    0) (depth   0) (level   0) (size   2)
 			  (break     0) (right   0) (lines   1) bkpt
@@ -1249,9 +1248,8 @@
 #+(or gcl clisp) (cond ((not (equal *query-io* *standard-input*)) (fresh-line)))
 #-(or gcl clisp) (cond ((not (interactive-stream-p *standard-input*)) (fresh-line)))
   (cond
-    ;; If output is turned off to the console and no WRITEFILE is taking
-    ;; place, then don't output anything.
-    ((and #.ttyoff (not #.writefilep)))
+    ;; If console output is disabled, don't output anything.
+    (#.ttyoff)
     ;; Constant 80. in this test appears to be the size of LINEARRAY.
     ((> (+ bkptht bkptdp) 80.)
      ;; I suppose we could reallocate LINEARRAY to some larger size and keep going here ...

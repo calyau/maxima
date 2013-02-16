@@ -300,10 +300,7 @@ translated."
 ;; Yes Carl SPRINTER is old i/o, but KMP is writing a new one for NIL. -GJC
 
 (defun print* (p)
-  (let ((^w t)
-	(^r t)
-	($loadprint nil)) ;;; lusing old I/O !!!!!
-    (sub-print* p)))
+    (sub-print* p))
 
 ;;; i might as well be real pretty and flatten out PROGN's.
 

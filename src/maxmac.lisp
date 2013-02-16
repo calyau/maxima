@@ -17,10 +17,8 @@
 ;; General purpose macros which are used in Lisp code, but not widely enough
 ;; accepted to be a part of Lisp systems.
 
-;; 'writefilep' and 'ttyoff' are system independent ways of expressing
-;; the Maclisp ^R and ^W.
+;; 'ttyoff' is a system independent way of expressing the Maclisp ^W.
 
-(defvar writefilep '^r)
 (defvar ttyoff    '^w)
 
 ;; Like PUSH, but works at the other end.
