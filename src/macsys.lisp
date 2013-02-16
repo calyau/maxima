@@ -183,7 +183,8 @@
 	(setq $__ (caddr r))
 	(unless $nolabels (set  c-tag $__))
 	(cond (batch-or-demo-flag
-	       (displa `((mlabel) ,c-tag , $__))))
+	  (let (($display2d nil))
+	    (displa `((mlabel) ,c-tag , $__)))))
 	(setq time-before (get-internal-run-time)
 	      etime-before (get-internal-real-time))
 	(setq area-before (used-area))
