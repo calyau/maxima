@@ -77,7 +77,7 @@
   (cond ((freevar a) t)
 	((atom a) nil)
 	((m2 a expres nil) t)
-	(t (eval (cons 'and (mapcar #'elem (cdr a)))))))
+	(t (every #'elem (cdr a)))))
 
 (defun freevar (a)
   (cond ((atom a) (not (eq a var)))
