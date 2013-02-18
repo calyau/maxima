@@ -721,16 +721,6 @@
 		   ((or (null result) (null element)) result))))))
 ;	     (rat10 (first examine)))))))
 
-(defun listgcd (powerlist)
-  (prog (p)
-     (setq p (car powerlist))
-   loop
-     (setq powerlist (cdr powerlist))
-     (if (equal p 1) (return nil))
-     (if (null powerlist) (return p))
-     (setq p (gcd p (car powerlist)))
-     (go loop)))
-
 (defun integrate5 (ex var)
   (if (rat8 ex)
       (ratint ex var)
@@ -1832,8 +1822,8 @@
      (setq *b* (cdr (sassq 'b y 'nill)))
      (setq *c* (cdr (sassq 'c y 'nill)))
      (unless  (rat10 *b*) (return nil))
-     (setq *d* (listgcd (cons (1+ *c*) powerlist)))
-     (cond ((or (null *d*) (zerop *d*)) (return nil)))
+     (setq *d* (apply #'gcd (cons (1+ *c*) powerlist)))
+     (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
 	(list '(mexpt) var *d*)
