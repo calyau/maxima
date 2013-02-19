@@ -1918,28 +1918,21 @@
 		      ((eq w t) x)
 		      (t (mul2* x (power* (cdr (sassq 'c w 'nill)) -1)))))))
      (setq z (cdr z))
-     (cond ((null z) (return nil)))
+     (when (null z) (return nil))
      (go a)))
 
-(defun subliss (a b)
-  "A is alist consisting of a variable (symbol) and its value.  B is
-  an expression.  For each entry in A, substitute the corresponding
-  value into B."
-  (prog (x y z)
-     (setq x b)
-     (setq z a)
-   loop
-     (when (null z) (return x))
-     (setq y (car z))
-     (setq x (maxima-substitute (cdr y) (car y) x))
-     (setq z (cdr z))
-     (go loop)))
+(defun subliss (alist expr)
+  "Alist is an alist consisting of a variable (symbol) and its value.  expr is
+  an expression.  For each entry in alist, substitute the corresponding
+  value into expr."
+  (let ((x expr))
+    (dolist (a alist x)
+      (setq x (maxima-substitute (cdr a) (car a) x)))))
 
 (defun substint (x y expres)
-  (cond ((and (not (atom expres))
-	      (eq (caar expres) '%integrate))
-	 (list (car expres) exp var))
-	(t (substint1 (maxima-substitute x y expres)))))
+  (if (and (not (atom expres)) (eq (caar expres) '%integrate))
+      (list (car expres) exp var)
+      (substint1 (maxima-substitute x y expres))))
 
 (defun substint1 (exp)
   (cond ((atom exp) exp)
