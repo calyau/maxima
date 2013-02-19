@@ -1177,6 +1177,9 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       e
       (infsimp e)))
 
+;; GCL needs to know that compsplt and compsplt-eq return multiple values
+#+gcl (declaim (ftype (function (t) t t) compsplt compsplt-eq))
+
 ;; Like WITH-COMPSPLT, but runs COMPSPLT-EQ instead
 (defmacro with-compsplt-eq ((lhs rhs x) &body forms)
   `(multiple-value-bind (,lhs ,rhs) (compsplt-eq ,x)
