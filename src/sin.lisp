@@ -34,6 +34,12 @@
 (defmacro op (frob)
   `(get ,frob 'operators))
 
+(defun nill () '(nil))
+
+(defun sassq (item alist fun)
+  (or (assoc item alist :test #'eq)
+      (funcall fun)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Predicate functions
