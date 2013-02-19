@@ -19,8 +19,6 @@
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
 
-(defun nill () '(nil))
-
 (defmvar $zeta%pi t)
 
 ;; polynomial predicates and other such things

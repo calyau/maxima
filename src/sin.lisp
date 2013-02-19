@@ -20,12 +20,9 @@
 ;;;; A version with the missing pages is available (2008-12-14) from
 ;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
-(declare-top (special ratform exptsum $radexpand $%e_to_numlog
-		      exptind quotind splist l ans splist arcpart coef
-		      aa dict powerlist *a* *b* k stack
-		      square e w y expres arg var
-		      *powerl* *c* *d* exp varlist genvar repswitch $liflag
-		      noparts top maxparts numparts blank $opsubst))
+(declare-top (special $radexpand $%e_to_numlog quotind l ans arcpart coef
+		      aa powerlist *a* *b* k stack e w y expres arg var
+		      *powerl* *c* *d* exp varlist genvar $liflag $opsubst))
 
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
@@ -36,6 +33,12 @@
 
 (defmacro op (frob)
   `(get ,frob 'operators))
+
+(defun nill () '(nil))
+
+(defun sassq (item alist fun)
+  (or (assoc item alist :test #'eq)
+      (funcall fun)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -723,16 +726,6 @@
 			     (and result (rat10 (first element)))))
 		   ((or (null result) (null element)) result))))))
 ;	     (rat10 (first examine)))))))
-
-(defun listgcd (powerlist)
-  (prog (p)
-     (setq p (car powerlist))
-   loop
-     (setq powerlist (cdr powerlist))
-     (if (equal p 1) (return nil))
-     (if (null powerlist) (return p))
-     (setq p (gcd p (car powerlist)))
-     (go loop)))
 
 (defun integrate5 (ex var)
   (if (rat8 ex)
@@ -1835,8 +1828,8 @@
      (setq *b* (cdr (sassq 'b y 'nill)))
      (setq *c* (cdr (sassq 'c y 'nill)))
      (unless  (rat10 *b*) (return nil))
-     (setq *d* (listgcd (cons (1+ *c*) powerlist)))
-     (cond ((or (null *d*) (zerop *d*)) (return nil)))
+     (setq *d* (apply #'gcd (cons (1+ *c*) powerlist)))
+     (when (or (eql 1 *d*) (zerop *d*)) (return nil))
      (return
        (substint
 	(list '(mexpt) var *d*)
@@ -1931,28 +1924,21 @@
 		      ((eq w t) x)
 		      (t (mul2* x (power* (cdr (sassq 'c w 'nill)) -1)))))))
      (setq z (cdr z))
-     (cond ((null z) (return nil)))
+     (when (null z) (return nil))
      (go a)))
 
-(defun subliss (a b)
-  "A is alist consisting of a variable (symbol) and its value.  B is
-  an expression.  For each entry in A, substitute the corresponding
-  value into B."
-  (prog (x y z)
-     (setq x b)
-     (setq z a)
-   loop
-     (when (null z) (return x))
-     (setq y (car z))
-     (setq x (maxima-substitute (cdr y) (car y) x))
-     (setq z (cdr z))
-     (go loop)))
+(defun subliss (alist expr)
+  "Alist is an alist consisting of a variable (symbol) and its value.  expr is
+  an expression.  For each entry in alist, substitute the corresponding
+  value into expr."
+  (let ((x expr))
+    (dolist (a alist x)
+      (setq x (maxima-substitute (cdr a) (car a) x)))))
 
 (defun substint (x y expres)
-  (cond ((and (not (atom expres))
-	      (eq (caar expres) '%integrate))
-	 (list (car expres) exp var))
-	(t (substint1 (maxima-substitute x y expres)))))
+  (if (and (not (atom expres)) (eq (caar expres) '%integrate))
+      (list (car expres) exp var)
+      (substint1 (maxima-substitute x y expres))))
 
 (defun substint1 (exp)
   (cond ((atom exp) exp)
