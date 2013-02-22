@@ -1441,7 +1441,7 @@
                     "gamma_incomplete_regularized: gamma_incomplete_regularized(~:M,~:M) is undefined.")
                     a z))
                ((member sgn '($pos $pz)) 1)
-               (t (eqtest (list '(%gamma_incomplete) a z) expr)))))  
+               (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))  
 
       ((zerop1 a) 0)
       ((eq z '$inf) 0)
@@ -1490,7 +1490,7 @@
                       (simplify (list '(%gamma) (add index 1)))))
                   index 0 (sub a 1) t))))
            ((member sgn '($neg $nz)) 0)
-           (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
+           (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
 
       ((and $gamma_expand (setq ratorder (max-numeric-ratio-p a 2)))
        ;; We have a half integral order and $gamma_expand is not NIL.
