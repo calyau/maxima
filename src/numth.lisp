@@ -734,7 +734,7 @@
 ;;
 (defmfun $gf_set (p &optional a1 a2 a3) ;; opt: *gf-exp*, *gf-red*, *gf-fs-ord*
   (unless (and (integerp p) (primep p))
-    (merror (intl:gettext "Field characteristic must be a prime number." )) )
+    (merror (intl:gettext "`gf_set': Field characteristic must be a prime number." )) )
   ($gf_unset)
   (setq *gf-char* p)
   #-gcl (setq *fixnump-2gf-char* (< (* 2 p) most-positive-fixnum))
@@ -744,7 +744,7 @@
       (cond 
         ((integerp a1) 
           (unless (> a1 0)
-            (merror (intl:gettext "The exponent must be a positive fixnum." )) )
+            (merror (intl:gettext "`gf_set': The exponent must be a positive fixnum." )) )
           (setq *gf-exp* a1) )
         (($listp a1)
           (merror (intl:gettext 
@@ -753,7 +753,7 @@
           (setq a1 (gf-set-red a1) 
                 *gf-exp* (car a1) )
           (unless (and (fixnump *gf-exp*) (> *gf-exp* 0))
-            (merror (intl:gettext "The exponent must be a positive fixnum." )) )
+            (merror (intl:gettext "`gf_set': The exponent must be a positive fixnum." )) )
           (setq *gf-irreducible?* (gf-irr-p a1 *gf-char* *gf-exp*)) ) ))
     (when a2 ;; reduction poly or factors of ord
       (cond 
@@ -763,14 +763,14 @@
         (($listp a2)
           (unless ($listp (cadr a2))
             (merror (intl:gettext 
-              "The list of factors must be of the form [[p1, e1], ..., [pk, ek]].")) )
+              "`gf_set': The list of factors must be of the form [[p1, e1], ..., [pk, ek]].")) )
           (setq *gf-fs-ord* (mapcar #'cdr (cdr a2))) )
         (t
           (setq a2 (gf-set-red a2) 
                 *gf-irreducible?* (gf-irr-p a2 *gf-char* *gf-exp*) )
           (unless (= *gf-exp* (car *gf-red*))
             (merror (intl:gettext 
-              "The reduction polynomial must be of degree ~m." ) *gf-exp* )) )))
+              "`gf_set': The reduction polynomial must be of degree ~m." ) *gf-exp* )) )))
     (when a3 ;; factors of ord
       (unless (and ($listp a3) ($listp (cadr a3)))
         (merror (intl:gettext 
@@ -817,16 +817,16 @@
 (defun gf-set-red (p-orig)
   (let ((p ($rat p-orig)))
     (unless (listp (cadr p))
-      (merror (intl:gettext "Argument not suitable as reduction polynomial: ~m" ) p-orig) )
+      (merror (intl:gettext "`gf_set': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
     (let ((vars (caddar p)))
       (when (> (length vars) 1)
-        (merror (intl:gettext "Argument not suitable as reduction polynomial: ~m" ) p-orig) )
+        (merror (intl:gettext "`gf_set': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
       (setq *gf-var* (car vars) 
             *gf-rat-header* (car p)
             *gf-rat-sym* (caadr p)
             *gf-red* (gf-mod (cdadr p)) )
       (when (/= 1 (cadr *gf-red*))
-        (merror (intl:gettext "A monic reduction polynomial is assumed." )) )
+        (merror (intl:gettext "`gf_set': A monic reduction polynomial is assumed." )) )
       *gf-red* )))
 
 
@@ -880,7 +880,7 @@
 
 (defun gf-set? ()
   (unless *gf-set?*
-    (merror (intl:gettext "gf data not or not fully set." )) ))  
+    (merror (intl:gettext "gf data not or not completely set." )) ))  
 
 (defun field? ()
   (unless *gf-irreducible?*
@@ -906,7 +906,7 @@
   #-gcl (setq *fixnump-2gf-char* (< (* 2 p) most-positive-fixnum))
   (setq red (gf-set-red red))
   (unless (fixnump (setq *gf-exp* (car red)))
-    (merror (intl:gettext "The exponent must be a fixnum." )) )
+    (merror (intl:gettext "`gf_minimal_set': The exponent must be a fixnum." )) )
   (when (= 0 *gf-exp*) (setq *gf-exp* 1))
   (setq *gf-minset?* t) )
 
@@ -1879,7 +1879,7 @@
 ;;
 (defun gf-precomp () 
   (let ((p-1 (1- *gf-char*))
-        (fs-ord *gf-fs-ord*)
+        (fs-ord (copy-tree *gf-fs-ord*))
         fs-p-1 fs-list
         ($intfaclim) )
  
