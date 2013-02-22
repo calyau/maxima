@@ -2169,8 +2169,13 @@ true;
 
 /* Specialized values */
 
-gamma_incomplete_regularized(a,0);
-gamma_incomplete_regularized(a,0);
+/* Check that gamma_incomplete_regularized (a, 0) just returns a noun
+   form (the correct one!) */
+block ([result_a0: gamma_incomplete_regularized(a,0)],
+  is (not (atom (result_a0)) and
+      op (result_a0) = 'gamma_incomplete_regularized and
+      args (result_a0) = [a, 0]));
+true$
 
 (assume(ap>0,am<0),done);
 done;
