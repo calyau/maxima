@@ -2034,6 +2034,6 @@
 
     ; close script file
     (close cmdstorage)
-    ($system (format nil "~a \"~a\"" "vtk " gfn))
+    ($system (format nil "(~a \"~a\")&" "vtk " gfn))
     '$done))
 
