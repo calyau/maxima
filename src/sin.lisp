@@ -34,12 +34,6 @@
 (defmacro op (frob)
   `(get ,frob 'operators))
 
-(defun nill () '(nil))
-
-(defun sassq (item alist fun)
-  (or (assoc item alist :test #'eq)
-      (funcall fun)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Predicate functions
@@ -154,10 +148,10 @@
 				     ((coefftt) (d elem)))
 				   nil)))
 		  (return
-		    (let ((a (cdr (sassq 'a z 'nill)))
-			  (b (cdr (sassq 'b z 'nill)))
-			  (c (cdr (sassq 'c y 'nill)))
-			  (d (cdr (sassq 'd y 'nill)))
+		    (let ((a (cdr (assoc 'a z :test #'eq)))
+			  (b (cdr (assoc 'b z :test #'eq)))
+			  (c (cdr (assoc 'c y :test #'eq)))
+			  (d (cdr (assoc 'd y :test #'eq)))
 		          (newvar (gensym "intform")))
 		      ;; keep var from appearing in questions to user
 		      (putprop newvar t 'internal)
@@ -956,7 +950,7 @@
        (return nil))
      #+nil
      (format t "w = ~A~%" w)
-     (when (zerop1 (cdr (sassq 'c1 w #'nill)))
+     (when (zerop1 (cdr (assoc 'c1 w :test #'eq)))
        ;; rtoy: Is it really possible to be in this routine with c1 =
        ;; 0?
        (return
@@ -967,18 +961,18 @@
 		       ((mexpt) ((mtimes) c2 ((mexpt) var q)) r2)))
 	  (integrator
 	   (subliss w '((mexpt) var ((mplus) r1 ((mtimes) q r2)))) var))))
-     (setq q (cdr (sassq 'q w 'nill)))
+     (setq q (cdr (assoc 'q w :test #'eq)))
      ;; Reset parameters.  a = a/q, r1 = (1 - q + r1)/q
      (setq w
-	   (list* (cons 'a (div* (cdr (sassq 'a w 'nill)) q))
+	   (list* (cons 'a (div* (cdr (assoc 'a w :test #'eq)) q))
 		  (cons
 		   'r1
-		   (div* (addn (list 1 (neg (simplify q)) (cdr (sassq 'r1 w 'nill))) nil) q))
+		   (div* (addn (list 1 (neg (simplify q)) (cdr (assoc 'r1 w :test #'eq))) nil) q))
 		  w))
      #+nil
      (format t "new w = ~A~%" w)
-     (setq r1 (cdr (sassq 'r1 w 'nill))
-	   r2 (cdr (sassq 'r2 w 'nill)))
+     (setq r1 (cdr (assoc 'r1 w :test #'eq))
+	   r2 (cdr (assoc 'r2 w :test #'eq)))
      #+nil
      (progn
        (format t "new r1 = ~A~%" r1)
@@ -1266,10 +1260,8 @@
                          nil)))
         (go b))
 ; This check has been done with the pattern match.
-;       ((not (and (member (car (setq b (cdr (sassq 'b y 'nill))))
-;                          '(%sin %cos) :test #'eq)
-;                  (member (car (setq d (cdr (sassq 'd y 'nill))))
-;                          '(%sin %cos) :test #'eq)))
+;       ((not (and (member (car (setq b (cdr (assoc 'b y :test #'eq)))) '(%sin %cos) :test #'eq)
+;                  (member (car (setq d (cdr (assoc 'd y :test #'eq)))) '(%sin %cos) :test #'eq)))
 ;        (return nil))
        ((progn
 	  ;; The tests after this depend on values of b and d being
@@ -1424,7 +1416,7 @@
 (defun f3 (y)
   (maxima-substitute *c*
 		     'c
-		     (maxima-substitute (quotient (cdr (sassq 'n y nil)) 2)
+		     (maxima-substitute (quotient (cdr (assoc 'n y :test #'eq)) 2)
 					'n
 					'((mexpt)
 					  ((mplus)
@@ -1724,14 +1716,14 @@
 (defun ratlog (exp var form)
   (prog (b c d y z w)
      (setq y form)
-     (setq b (cdr (sassq 'b y 'nill)))
-     (setq c (cdr (sassq 'c y 'nill)))
+     (setq b (cdr (assoc 'b y :test #'eq)))
+     (setq c (cdr (assoc 'c y :test #'eq)))
      (setq y (integrator c var))
-     (cond ((finds y) (return nil)))
-     (setq d (sdiff (cdr (sassq 'a form 'nill)) var))
+     (when (finds y) (return nil))
+     (setq d (sdiff (cdr (assoc 'a form :test #'eq)) var))
      
      (setq z (integrator (mul2* y d) var))
-     (setq d (cdr (sassq 'a form 'nill)))
+     (setq d (cdr (assoc 'a form :test #'eq)))
      (return (simplify (list '(mplus)
 			     (list '(mtimes) y d)
 			     (list '(mtimes) -1 z))))))
@@ -1788,7 +1780,7 @@
 		   ((coefftt) (a freevar))
 		   ((coefftt) (c true)))
 		 nil))
-     (setq *c* (cdr (sassq 'c s 'nill)))
+     (setq *c* (cdr (assoc 'c s :test #'eq)))
      (cond ((not (setq r
 		       (m2 (cons '(mplus) blist)
 			   (list '(mplus)
@@ -1825,8 +1817,8 @@
 		   ((coefftt) (a freevar))
 		   ((coefftt) (b true)))
 		 nil))
-     (setq *b* (cdr (sassq 'b y 'nill)))
-     (setq *c* (cdr (sassq 'c y 'nill)))
+     (setq *b* (cdr (assoc 'b y :test #'eq)))
+     (setq *c* (cdr (assoc 'c y :test #'eq)))
      (unless  (rat10 *b*) (return nil))
      (setq *d* (apply #'gcd (cons (1+ *c*) powerlist)))
      (when (or (eql 1 *d*) (zerop *d*)) (return nil))
@@ -1836,7 +1828,7 @@
 	var
 	(integrate5 (simplify (list '(mtimes)
 				    (power* *d* -1)
-				    (cdr (sassq 'a y 'nill))
+				    (cdr (assoc 'a y :test #'eq))
 				    (list '(mexpt) var (1- (quotient (1+ *c*) *d*)))
 				    (subst10 *b*)))
 		    var)))))
@@ -1893,7 +1885,7 @@
       ;; Match if diff(y,var) == c*(exp/y).
       ;; This even works when y is a function with multiple args.
        ((setq w (m2 (sdiff y var) r nil))
-	(return (muln (list y y (power* (mul2* 2 (cdr (sassq 'c w 'nill))) -1)) nil))))
+	(return (muln (list y y (power* (mul2* 2 (cdr (assoc 'c w :test #'eq))) -1)) nil))))
 
      ;; w is the arg in y.
      (let ((arg-freevar))
@@ -1922,7 +1914,7 @@
 		      (t (m2 x r nil))))
 	(return (cond ((null (setq x (integrallookups y))) nil)
 		      ((eq w t) x)
-		      (t (mul2* x (power* (cdr (sassq 'c w 'nill)) -1)))))))
+		      (t (mul2* x (power* (cdr (assoc 'c w :test #'eq)) -1)))))))
      (setq z (cdr z))
      (when (null z) (return nil))
      (go a)))
