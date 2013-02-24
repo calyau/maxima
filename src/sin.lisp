@@ -38,6 +38,10 @@
 
 ;;; Predicate functions
 
+(declaim (inline varp))
+(defun varp (x)
+  (alike1 x var))
+
 (defun integerp1 (x)
   "Returns 2*x if 2*x is an integer, else nil"
   (integerp2 (mul2* 2 x)))
@@ -53,7 +57,7 @@
 ;; This predicate is used with m2 pattern matcher.
 ;; A rational expression in var.
 (defun rat8 (ex)
-  (cond ((or (alike1 ex var) (freevar ex))
+  (cond ((or (varp ex) (freevar ex))
 	 t)
 	((member (caar ex) '(mplus mtimes) :test #'eq)
 	 (do ((u (cdr ex) (cdr u)))
@@ -78,15 +82,12 @@
 
 (defun freevar (a)
   (cond ((atom a) (not (eq a var)))
-	((alike1 a var) nil)
+	((varp a) nil)
 	((and (not (atom (car a)))
 	      (member 'array (cdar a) :test #'eq))
 	 (cond ((freevar (cdr a)) t)
 	       (t (merror "~&FREEVAR: variable of integration appeared in subscript."))))
 	(t (and (freevar (car a)) (freevar (cdr a))))))
-
-(defun varp (x)
-  (alike1 x var))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -611,7 +612,7 @@
 ;; or (), saying this derivative isn't wrt the variable of integration.
 
 (defun checkderiv1 (expr wrt old-wrt)
-  (cond ((alike1 (car wrt) var)
+  (cond ((varp (car wrt))
 	 (if (equal (cadr wrt) 1)	;Power = 1?
 	     (if (null (cddr wrt))	;single or partial
 		 (if (null old-wrt)
@@ -702,9 +703,9 @@
 
 (defun rat10 (ex)
   (cond ((freevar ex) t)
-	((alike1 ex var) nil)
+	((varp ex) nil)
 	((eq (caar ex) 'mexpt)
-	 (if (alike1 (cadr ex) var)
+	 (if (varp (cadr ex))
 	     (if (integerp2 (caddr ex))
 		 (setq powerlist (cons (caddr ex) powerlist)))
 	     (and (rat10 (cadr ex)) (rat10 (caddr ex)))))
