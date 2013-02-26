@@ -164,6 +164,7 @@ wester_problems/test_zero_equivalence.mac \
 test_readbase_lisp_autoload.lisp \
 test_readbase_lisp.lisp \
 test_readbase_maxima_autoload.mac \
-test_readbase_maxima.mac
+test_readbase_maxima.mac \
+rtest_laplace.mac
 
 EXTRA_DIST = $(genericdirDATA)
