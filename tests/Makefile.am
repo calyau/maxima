@@ -160,6 +160,10 @@ wester_problems/test_tensor_analysis.mac \
 wester_problems/test_transforms.mac \
 wester_problems/test_trigonometry.mac \
 wester_problems/test_vector_analysis.mac \
-wester_problems/test_zero_equivalence.mac
+wester_problems/test_zero_equivalence.mac \
+test_readbase_lisp_autoload.lisp \
+test_readbase_lisp.lisp \
+test_readbase_maxima_autoload.mac \
+test_readbase_maxima.mac
 
 EXTRA_DIST = $(genericdirDATA)
