@@ -589,7 +589,7 @@
 		    (cond ((atom q)
 			   (or (cdr (assoc q ans :test #'eq))
 			       ;; Evaluate a symbol which has a value.
-			       (and (symbolp q) (boundp q) (eval q))
+			       (and (symbolp q) (boundp q) (symbol-value q))
 			       ;; Otherwise return the symbol.
 			       q))
 			  (q)))
