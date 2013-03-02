@@ -368,5 +368,11 @@ block (local (foo),
 
 plot3d([sin(t), cos(t), t], [t,-5,5], [y,-5,5], [grid,100,2], [gnuplot_pm3d,false])$
 
+/* plot2d/plot3d with subscripted variable */
+
+(kill (x, a), plot2d (a[x]^3, [a[x], -1, 1]));
+
+plot3d (a[x]^2 - x[a]^3, [a[x], -1, 1], [x[a], -1, 1]);
+
 "FINIS" $
 

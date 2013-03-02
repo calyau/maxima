@@ -1675,7 +1675,7 @@ output-file))
 (defun check-range (range &aux tem a b)
   (or (and ($listp range)
            (setq tem (cdr range))
-           (symbolp (car tem))
+           (or (symbolp (car tem)) ($subvarp (car tem)))
            (numberp (setq a ($float (meval* (second tem)))))
            (numberp (setq b ($float (meval* (third tem)))))
            (< a b))
@@ -2046,12 +2046,12 @@ Several functions depending on the two variables v1 and v2:
               (progn
                 (setq lvars `((mlist) ,(second xrange) ,(second yrange)))
                 (setq fun (coerce-float-fun fun lvars))
-                (when (delete
-                       (second lvars)
-                       (delete
-                        (third lvars)
-                        (rest ($listofvars (mfuncall fun (second lvars)
-                                                     (third lvars))))))
+                (when (cdr
+                       ($delete
+                        (second lvars)
+                        ($delete
+                         (third lvars)
+                         ($listofvars (mfuncall fun (second lvars) (third lvars))))))
                   (mtell (intl:gettext "plot3d: expected <expr. of v1 and v2>, [v1, min, max], [v2, min, max]~%"))
                   (mtell (intl:gettext "plot3d: keep going and hope for the best.~%")))))
           (let* ((pl
