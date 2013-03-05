@@ -2543,26 +2543,17 @@ It appears in LIMIT and DEFINT.......")
 
 (defun simplimln (expr var val)
   ;; We need to be careful with log because of the branch cut on the
-  ;; negative real axis.  So we look at the imagpart of the log.  If
+  ;; negative real axis.  So we look at the imagpart of the argument.  If
   ;; it's not identically zero, we compute the limit of the real and
   ;; imaginary parts and combine them.  Otherwise, we can use the
   ;; original method for real limits.
-  (destructuring-let* ((arglim (limit (cadr expr) var val 'think))
-                       (log-form `((%log) ,(cadr expr)))
-                       ((rp . ip) (cond ((member arglim infinities)
-                                         ;; Treat infinities as real.
-                                         (cons arglim 0))
-                                        ((or (and (mnump arglim)
-                                                  (ratgreaterp arglim 0))
-					  (eq arglim '$zeroa))
-                                         ;; if limit is real pos
-                                         ;; avoid asking user q's
-                                         (cons arglim 0))
-                                        (t
-                                         ;; otherwise find real part
-                                         (trisplit log-form)))))
-    (cond ((and (numberp ip) (zerop ip))
-           ;; Limit of the argument is real.
+  (let ((arglim (limit (cadr expr) var val 'think)))
+    (cond ((eq arglim '$inf) '$inf)
+	  ((member arglim '($minf $infinity) :test #'eq)
+	   '$infinity)
+	  ((member arglim '($ind $und) :test #'eq) '$und)
+	  ((equal ($imagpart (cadr expr)) 0)
+           ;; argument is real.
 	   (let* ((real-lim (ridofab arglim)))
 	     (if (=0 real-lim)
 		 (cond ((eq arglim '$zeroa)  '$minf)
@@ -2571,11 +2562,7 @@ It appears in LIMIT and DEFINT.......")
 			    (cond ((equal dir 1) '$minf)
 				  ((equal dir -1) '$infinity)
 				  (t (throw 'limit t))))))
-		 (cond ((eq arglim '$inf) '$inf)
-                       ((member arglim '($minf $infinity) :test #'eq)
-		        '$infinity)
-		       ((member arglim '($ind $und) :test #'eq) '$und)
-		       ((equal arglim 1)
+		 (cond ((equal arglim 1)
 			(let ((dir (behavior (cadr expr) var val)))
 			  (if (equal dir 1) '$zeroa 0)))
 		       (t
@@ -2583,12 +2570,13 @@ It appears in LIMIT and DEFINT.......")
 		         ;; of the argument. 
 		         (simplify `((%log) ,real-lim)))))))
 	  (t
-	   ;; Limit of the argument is complex.
-           (if (eq (setq rp (limit rp var val 'think)) '$minf)
-               ;; Realpart is minf, do not return minf+%i*ip but infinity.
-               '$infinity
-               ;; Return a complex limit value.
-               (add rp (mul '$%i (limit ip var val 'think))))))))
+	   ;; argument is complex.
+	   (destructuring-let* (((rp . ip) (trisplit expr)))
+			       (if (eq (setq rp (limit rp var val 'think)) '$minf)
+				   ;; Realpart is minf, do not return minf+%i*ip but infinity.
+				   '$infinity
+				 ;; Return a complex limit value.
+				 (add rp (mul '$%i (limit ip var val 'think)))))))))
 
 ;;; Limit of the Factorial function
 
