@@ -1,33 +1,33 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((zero 0.0d0) (one 1.0d0) (sclfac 2.0d0) (factor 0.95d0))
-  (declare (type (double-float 0.0d0 0.0d0) zero)
-           (type (double-float 1.0d0 1.0d0) one)
-           (type (double-float 2.0d0 2.0d0) sclfac)
-           (type (double-float 0.95d0 0.95d0) factor)
+(let* ((zero 0.0) (one 1.0) (sclfac 2.0) (factor 0.95))
+  (declare (type (double-float 0.0 0.0) zero)
+           (type (double-float 1.0 1.0) one)
+           (type (double-float 2.0 2.0) sclfac)
+           (type (double-float 0.95 0.95) factor)
            (ignorable zero one sclfac factor))
   (defun zgebal (job n a lda ilo ihi scale info)
     (declare (type (array double-float (*)) scale)
              (type (array f2cl-lib:complex16 (*)) a)
              (type (f2cl-lib:integer4) info ihi ilo lda n)
-             (type (simple-array character (*)) job))
+             (type (simple-string *) job))
     (f2cl-lib:with-multi-array-data
         ((job character job-%data% job-%offset%)
          (a f2cl-lib:complex16 a-%data% a-%offset%)
@@ -37,10 +37,10 @@
         (declare (ftype (function (f2cl-lib:complex16)
                          (values double-float &rest t))
                         cabs1))
-        (prog ((cdum #C(0.0d0 0.0d0)) (c 0.0d0) (ca 0.0d0) (f 0.0d0) (g 0.0d0)
-               (r 0.0d0) (ra 0.0d0) (s 0.0d0) (sfmax1 0.0d0) (sfmax2 0.0d0)
-               (sfmin1 0.0d0) (sfmin2 0.0d0) (i 0) (ica 0) (iexc 0) (ira 0)
-               (j 0) (k 0) (l 0) (m 0) (noconv nil))
+        (prog ((cdum #C(0.0 0.0)) (c 0.0) (ca 0.0) (f 0.0) (g 0.0) (r 0.0)
+               (ra 0.0) (s 0.0) (sfmax1 0.0) (sfmax2 0.0) (sfmin1 0.0)
+               (sfmin2 0.0) (i 0) (ica 0) (iexc 0) (ira 0) (j 0) (k 0) (l 0)
+               (m 0) (noconv nil))
           (declare (type (f2cl-lib:complex16) cdum)
                    (type (double-float) c ca f g r ra s sfmax1 sfmax2 sfmin1
                                         sfmin2)
@@ -326,8 +326,7 @@
   (setf (gethash 'fortran-to-lisp::zgebal
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (fortran-to-lisp::integer4)
+           :arg-types '((simple-string) (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (array double-float (*))

@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -43,24 +43,53 @@
                (dgemv "No transpose"
                 (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1)
                 (f2cl-lib:int-sub i 1) (- one)
-                (f2cl-lib:array-slice a double-float (i 1) ((1 lda) (1 *))) lda
-                (f2cl-lib:array-slice y double-float (i 1) ((1 ldy) (1 *))) ldy
-                one (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i 1)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                lda
+                (f2cl-lib:array-slice y-%data%
+                                      double-float
+                                      (i 1)
+                                      ((1 ldy) (1 *))
+                                      y-%offset%)
+                ldy one
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 1)
                (dgemv "No transpose"
                 (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1)
                 (f2cl-lib:int-sub i 1) (- one)
-                (f2cl-lib:array-slice x double-float (i 1) ((1 ldx) (1 *))) ldx
-                (f2cl-lib:array-slice a double-float (1 i) ((1 lda) (1 *))) 1
-                one (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                (f2cl-lib:array-slice x-%data%
+                                      double-float
+                                      (i 1)
+                                      ((1 ldx) (1 *))
+                                      x-%offset%)
+                ldx
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (1 i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                1 one
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 1)
                (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
                    (dlarfg (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1)
                     (f2cl-lib:fref a-%data% (i i) ((1 lda) (1 *)) a-%offset%)
-                    (f2cl-lib:array-slice a
+                    (f2cl-lib:array-slice a-%data%
                                           double-float
                                           ((min (f2cl-lib:int-add i 1) m) i)
-                                          ((1 lda) (1 *)))
+                                          ((1 lda) (1 *))
+                                          a-%offset%)
                     1 (f2cl-lib:fref tauq-%data% (i) ((1 *)) tauq-%offset%))
                  (declare (ignore var-0 var-2 var-3))
                  (setf (f2cl-lib:fref a-%data%
@@ -85,97 +114,152 @@
                   (dgemv "Transpose"
                    (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1)
                    (f2cl-lib:int-sub n i) one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (i (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 zero
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "Transpose"
                    (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1)
                    (f2cl-lib:int-sub i 1) one
-                   (f2cl-lib:array-slice a double-float (i 1) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i 1)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 zero
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub n i)
                    (f2cl-lib:int-sub i 1) (- one)
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    ldy
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1 one
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "Transpose"
                    (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1)
                    (f2cl-lib:int-sub i 1) one
-                   (f2cl-lib:array-slice x double-float (i 1) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (i 1)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    ldx
-                   (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 zero
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "Transpose" (f2cl-lib:int-sub i 1)
                    (f2cl-lib:int-sub n i) (- one)
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (1 (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1 one
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dscal (f2cl-lib:int-sub n i)
                    (f2cl-lib:fref tauq-%data% (i) ((1 *)) tauq-%offset%)
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub n i) i (- one)
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    ldy
-                   (f2cl-lib:array-slice a double-float (i 1) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i 1)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (i (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda)
                   (dgemv "Transpose" (f2cl-lib:int-sub i 1)
                    (f2cl-lib:int-sub n i) (- one)
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (1 (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice x double-float (i 1) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (i 1)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    ldx one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (i (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda)
                   (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
                       (dlarfg (f2cl-lib:int-sub n i)
@@ -183,14 +267,15 @@
                                       (i (f2cl-lib:int-add i 1))
                                       ((1 lda) (1 *))
                                       a-%offset%)
-                       (f2cl-lib:array-slice a
+                       (f2cl-lib:array-slice a-%data%
                                              double-float
                                              (i
                                               (min
                                                (the f2cl-lib:integer4
                                                     (f2cl-lib:int-add i 2))
                                                (the f2cl-lib:integer4 n)))
-                                             ((1 lda) (1 *)))
+                                             ((1 lda) (1 *))
+                                             a-%offset%)
                        lda
                        (f2cl-lib:fref taup-%data% (i) ((1 *)) taup-%offset%))
                     (declare (ignore var-0 var-2 var-3))
@@ -213,81 +298,109 @@
                           one)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub n i) one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (i (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda zero
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "Transpose" (f2cl-lib:int-sub n i) i one
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    ldy
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (i (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda zero
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i) i (- one)
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1 one
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub i 1)
                    (f2cl-lib:int-sub n i) one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (1 (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (i (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda zero
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub i 1) (- one)
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    ldx
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1 one
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dscal (f2cl-lib:int-sub m i)
                    (f2cl-lib:fref taup-%data% (i) ((1 *)) taup-%offset%)
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)))
               label10)))
           (t
@@ -297,27 +410,56 @@
                (dgemv "No transpose"
                 (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1)
                 (f2cl-lib:int-sub i 1) (- one)
-                (f2cl-lib:array-slice y double-float (i 1) ((1 ldy) (1 *))) ldy
-                (f2cl-lib:array-slice a double-float (i 1) ((1 lda) (1 *))) lda
-                one (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                (f2cl-lib:array-slice y-%data%
+                                      double-float
+                                      (i 1)
+                                      ((1 ldy) (1 *))
+                                      y-%offset%)
+                ldy
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i 1)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                lda one
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda)
                (dgemv "Transpose" (f2cl-lib:int-sub i 1)
                 (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1) (- one)
-                (f2cl-lib:array-slice a double-float (1 i) ((1 lda) (1 *))) lda
-                (f2cl-lib:array-slice x double-float (i 1) ((1 ldx) (1 *))) ldx
-                one (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (1 i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                lda
+                (f2cl-lib:array-slice x-%data%
+                                      double-float
+                                      (i 1)
+                                      ((1 ldx) (1 *))
+                                      x-%offset%)
+                ldx one
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda)
                (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
                    (dlarfg (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1)
                     (f2cl-lib:fref a-%data% (i i) ((1 lda) (1 *)) a-%offset%)
-                    (f2cl-lib:array-slice a
+                    (f2cl-lib:array-slice a-%data%
                                           double-float
                                           (i
                                            (min
                                             (the f2cl-lib:integer4
                                                  (f2cl-lib:int-add i 1))
                                             (the f2cl-lib:integer4 n)))
-                                          ((1 lda) (1 *)))
+                                          ((1 lda) (1 *))
+                                          a-%offset%)
                     lda (f2cl-lib:fref taup-%data% (i) ((1 *)) taup-%offset%))
                  (declare (ignore var-0 var-2 var-3))
                  (setf (f2cl-lib:fref a-%data%
@@ -341,96 +483,151 @@
                           one)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1) one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda zero
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "Transpose"
                    (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1)
                    (f2cl-lib:int-sub i 1) one
-                   (f2cl-lib:array-slice y double-float (i 1) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (i 1)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    ldy
-                   (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda zero
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub i 1) (- one)
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1 one
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub i 1)
                    (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1) one
-                   (f2cl-lib:array-slice a double-float (1 i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (i i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda zero
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub i 1) (- one)
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    ldx
-                   (f2cl-lib:array-slice x double-float (1 i) ((1 ldx) (1 *)))
+                   (f2cl-lib:array-slice x-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1 one
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dscal (f2cl-lib:int-sub m i)
                    (f2cl-lib:fref taup-%data% (i) ((1 *)) taup-%offset%)
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub i 1) (- one)
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice y double-float (i 1) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (i 1)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    ldy one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub m i) i (- one)
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    ldx
-                   (f2cl-lib:array-slice a double-float (1 i) ((1 lda) (1 *)))
+                   (f2cl-lib:array-slice a-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1)
                   (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
                       (dlarfg (f2cl-lib:int-sub m i)
@@ -438,10 +635,11 @@
                                       ((f2cl-lib:int-add i 1) i)
                                       ((1 lda) (1 *))
                                       a-%offset%)
-                       (f2cl-lib:array-slice a
+                       (f2cl-lib:array-slice a-%data%
                                              double-float
                                              ((min (f2cl-lib:int-add i 2) m) i)
-                                             ((1 lda) (1 *)))
+                                             ((1 lda) (1 *))
+                                             a-%offset%)
                        1 (f2cl-lib:fref tauq-%data% (i) ((1 *)) tauq-%offset%))
                     (declare (ignore var-0 var-2 var-3))
                     (setf (f2cl-lib:fref a-%data%
@@ -463,81 +661,109 @@
                           one)
                   (dgemv "Transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub n i) one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 zero
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "Transpose" (f2cl-lib:int-sub m i)
                    (f2cl-lib:int-sub i 1) one
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 zero
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "No transpose" (f2cl-lib:int-sub n i)
                    (f2cl-lib:int-sub i 1) (- one)
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    ldy
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1 one
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "Transpose" (f2cl-lib:int-sub m i) i one
-                   (f2cl-lib:array-slice x
+                   (f2cl-lib:array-slice x-%data%
                                          double-float
                                          ((+ i 1) 1)
-                                         ((1 ldx) (1 *)))
+                                         ((1 ldx) (1 *))
+                                         x-%offset%)
                    ldx
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    1 zero
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dgemv "Transpose" i (f2cl-lib:int-sub n i) (- one)
-                   (f2cl-lib:array-slice a
+                   (f2cl-lib:array-slice a-%data%
                                          double-float
                                          (1 (f2cl-lib:int-add i 1))
-                                         ((1 lda) (1 *)))
+                                         ((1 lda) (1 *))
+                                         a-%offset%)
                    lda
-                   (f2cl-lib:array-slice y double-float (1 i) ((1 ldy) (1 *)))
+                   (f2cl-lib:array-slice y-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1 one
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)
                   (dscal (f2cl-lib:int-sub n i)
                    (f2cl-lib:fref tauq-%data% (i) ((1 *)) tauq-%offset%)
-                   (f2cl-lib:array-slice y
+                   (f2cl-lib:array-slice y-%data%
                                          double-float
                                          ((+ i 1) i)
-                                         ((1 ldy) (1 *)))
+                                         ((1 ldy) (1 *))
+                                         y-%offset%)
                    1)))
               label20))))
         (go end_label)

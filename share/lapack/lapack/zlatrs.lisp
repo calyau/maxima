@@ -1,34 +1,34 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((zero 0.0d0) (half 0.5d0) (one 1.0d0) (two 2.0d0))
-  (declare (type (double-float 0.0d0 0.0d0) zero)
-           (type (double-float 0.5d0 0.5d0) half)
-           (type (double-float 1.0d0 1.0d0) one)
-           (type (double-float 2.0d0 2.0d0) two)
+(let* ((zero 0.0) (half 0.5) (one 1.0) (two 2.0))
+  (declare (type (double-float 0.0 0.0) zero)
+           (type (double-float 0.5 0.5) half)
+           (type (double-float 1.0 1.0) one)
+           (type (double-float 2.0 2.0) two)
            (ignorable zero half one two))
   (defun zlatrs (uplo trans diag normin n a lda x scale cnorm info)
     (declare (type (array double-float (*)) cnorm)
              (type (double-float) scale)
              (type (array f2cl-lib:complex16 (*)) x a)
              (type (f2cl-lib:integer4) info lda n)
-             (type (simple-array character (*)) normin diag trans uplo))
+             (type (simple-string *) normin diag trans uplo))
     (f2cl-lib:with-multi-array-data
         ((uplo character uplo-%data% uplo-%offset%)
          (trans character trans-%data% trans-%offset%)
@@ -40,20 +40,19 @@
       (labels ((cabs1 (zdum)
                  (+ (abs (f2cl-lib:dble zdum)) (abs (f2cl-lib:dimag zdum))))
                (cabs2 (zdum)
-                 (+ (abs (/ (f2cl-lib:dble zdum) 2.0d0))
-                    (abs (/ (f2cl-lib:dimag zdum) 2.0d0)))))
+                 (+ (abs (/ (f2cl-lib:dble zdum) 2.0))
+                    (abs (/ (f2cl-lib:dimag zdum) 2.0)))))
         (declare (ftype (function (f2cl-lib:complex16)
                          (values double-float &rest t))
                         cabs1))
         (declare (ftype (function (f2cl-lib:complex16)
                          (values double-float &rest t))
                         cabs2))
-        (prog ((csumj #C(0.0d0 0.0d0)) (tjjs #C(0.0d0 0.0d0))
-               (uscal #C(0.0d0 0.0d0)) (zdum #C(0.0d0 0.0d0)) (bignum 0.0d0)
-               (grow 0.0d0) (rec 0.0d0) (smlnum 0.0d0) (tjj 0.0d0) (tmax 0.0d0)
-               (tscal 0.0d0) (xbnd 0.0d0) (xj 0.0d0) (xmax 0.0d0) (i 0)
-               (imax 0) (j 0) (jfirst 0) (jinc 0) (jlast 0) (notran nil)
-               (nounit nil) (upper nil))
+        (prog ((csumj #C(0.0 0.0)) (tjjs #C(0.0 0.0)) (uscal #C(0.0 0.0))
+               (zdum #C(0.0 0.0)) (bignum 0.0) (grow 0.0) (rec 0.0)
+               (smlnum 0.0) (tjj 0.0) (tmax 0.0) (tscal 0.0) (xbnd 0.0)
+               (xj 0.0) (xmax 0.0) (i 0) (imax 0) (j 0) (jfirst 0) (jinc 0)
+               (jlast 0) (notran nil) (nounit nil) (upper nil))
           (declare (type (f2cl-lib:complex16) csumj tjjs uscal zdum)
                    (type (double-float) bignum grow rec smlnum tjj tmax tscal
                                         xbnd xj xmax)
@@ -867,11 +866,8 @@
   (setf (gethash 'fortran-to-lisp::zlatrs
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
-                        (simple-array character (1))
-                        (simple-array character (1))
-                        (fortran-to-lisp::integer4)
+           :arg-types '((simple-string) (simple-string) (simple-string)
+                        (simple-string) (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))
                         (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*)) (double-float)

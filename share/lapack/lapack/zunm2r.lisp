@@ -1,28 +1,28 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((one (f2cl-lib:cmplx 1.0d0 0.0d0)))
+(let* ((one (f2cl-lib:cmplx 1.0 0.0)))
   (declare (type (f2cl-lib:complex16) one) (ignorable one))
   (defun zunm2r (side trans m n k a lda tau c ldc work info)
     (declare (type (array f2cl-lib:complex16 (*)) work c tau a)
              (type (f2cl-lib:integer4) info ldc lda k n m)
-             (type (simple-array character (*)) trans side))
+             (type (simple-string *) trans side))
     (f2cl-lib:with-multi-array-data
         ((side character side-%data% side-%offset%)
          (trans character trans-%data% trans-%offset%)
@@ -30,8 +30,8 @@
          (tau f2cl-lib:complex16 tau-%data% tau-%offset%)
          (c f2cl-lib:complex16 c-%data% c-%offset%)
          (work f2cl-lib:complex16 work-%data% work-%offset%))
-      (prog ((aii #C(0.0d0 0.0d0)) (taui #C(0.0d0 0.0d0)) (i 0) (i1 0) (i2 0)
-             (i3 0) (ic 0) (jc 0) (mi 0) (ni 0) (nq 0) (left nil) (notran nil))
+      (prog ((aii #C(0.0 0.0)) (taui #C(0.0 0.0)) (i 0) (i1 0) (i2 0) (i3 0)
+             (ic 0) (jc 0) (mi 0) (ni 0) (nq 0) (left nil) (notran nil))
         (declare (type (f2cl-lib:complex16) aii taui)
                  (type (f2cl-lib:integer4) i i1 i2 i3 ic jc mi ni nq)
                  (type f2cl-lib:logical left notran))
@@ -128,8 +128,7 @@
   (setf (gethash 'fortran-to-lisp::zunm2r
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))

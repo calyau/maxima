@@ -1,35 +1,35 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
 (let* ((itmax 30)
-       (zero (f2cl-lib:cmplx 0.0d0 0.0d0))
-       (one (f2cl-lib:cmplx 1.0d0 0.0d0))
-       (rzero 0.0d0)
-       (rone 1.0d0)
-       (half 0.5d0)
-       (dat1 (f2cl-lib:f2cl/ 3.0d0 4.0d0)))
+       (zero (f2cl-lib:cmplx 0.0 0.0))
+       (one (f2cl-lib:cmplx 1.0 0.0))
+       (rzero 0.0)
+       (rone 1.0)
+       (half 0.5)
+       (dat1 (f2cl-lib:f2cl/ 3.0 4.0)))
   (declare (type (f2cl-lib:integer4 30 30) itmax)
            (type (f2cl-lib:complex16) zero)
            (type (f2cl-lib:complex16) one)
-           (type (double-float 0.0d0 0.0d0) rzero)
-           (type (double-float 1.0d0 1.0d0) rone)
-           (type (double-float 0.5d0 0.5d0) half)
+           (type (double-float 0.0 0.0) rzero)
+           (type (double-float 1.0 1.0) rone)
+           (type (double-float 0.5 0.5) half)
            (type (double-float) dat1)
            (ignorable itmax zero one rzero rone half dat1))
   (defun zlahqr (wantt wantz n ilo ihi h ldh w iloz ihiz z ldz info)
@@ -47,15 +47,14 @@
                         cabs1))
         (prog ((v (make-array 2 :element-type 'f2cl-lib:complex16)) (i 0)
                (i1 0) (i2 0) (its 0) (j 0) (jhi 0) (jlo 0) (k 0) (l 0) (m 0)
-               (nh 0) (nz 0) (aa 0.0d0) (ab 0.0d0) (ba 0.0d0) (bb 0.0d0)
-               (h10 0.0d0) (h21 0.0d0) (rtemp 0.0d0) (s 0.0d0) (safmax 0.0d0)
-               (safmin 0.0d0) (smlnum 0.0d0) (sx 0.0d0) (t2 0.0d0) (tst 0.0d0)
-               (ulp 0.0d0) (cdum #C(0.0d0 0.0d0)) (h11 #C(0.0d0 0.0d0))
-               (h11s #C(0.0d0 0.0d0)) (h22 #C(0.0d0 0.0d0))
-               (sc #C(0.0d0 0.0d0)) (sum #C(0.0d0 0.0d0)) (t$ #C(0.0d0 0.0d0))
-               (t1 #C(0.0d0 0.0d0)) (temp #C(0.0d0 0.0d0)) (u #C(0.0d0 0.0d0))
-               (v2 #C(0.0d0 0.0d0)) (x #C(0.0d0 0.0d0)) (y #C(0.0d0 0.0d0))
-               (dconjg$ 0.0))
+               (nh 0) (nz 0) (aa 0.0) (ab 0.0) (ba 0.0) (bb 0.0) (h10 0.0)
+               (h21 0.0) (rtemp 0.0) (s 0.0) (safmax 0.0) (safmin 0.0)
+               (smlnum 0.0) (sx 0.0) (t2 0.0) (tst 0.0) (ulp 0.0)
+               (cdum #C(0.0 0.0)) (h11 #C(0.0 0.0)) (h11s #C(0.0 0.0))
+               (h22 #C(0.0 0.0)) (sc #C(0.0 0.0)) (sum #C(0.0 0.0))
+               (t$ #C(0.0 0.0)) (t1 #C(0.0 0.0)) (temp #C(0.0 0.0))
+               (u #C(0.0 0.0)) (v2 #C(0.0 0.0)) (x #C(0.0 0.0)) (y #C(0.0 0.0))
+               (dconjg$ 0.0f0))
           (declare (type (single-float) dconjg$)
                    (type (array f2cl-lib:complex16 (2)) v)
                    (type (f2cl-lib:integer4) i i1 i2 its j jhi jlo k l m nh nz)

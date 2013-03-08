@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -24,7 +24,7 @@
   (defun dormqr (side trans m n k a lda tau c ldc work lwork info)
     (declare (type (array double-float (*)) work c tau a)
              (type (f2cl-lib:integer4) info lwork ldc lda k n m)
-             (type (simple-array character (*)) trans side))
+             (type (simple-string *) trans side))
     (f2cl-lib:with-multi-array-data
         ((side character side-%data% side-%offset%)
          (trans character trans-%data% trans-%offset%)
@@ -149,8 +149,18 @@
                                  (f2cl-lib:int-add (f2cl-lib:int-sub k i) 1))))
                (dlarft "Forward" "Columnwise"
                 (f2cl-lib:int-add (f2cl-lib:int-sub nq i) 1) ib
-                (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *))) lda
-                (f2cl-lib:array-slice tau double-float (i) ((1 *))) t$ ldt)
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                lda
+                (f2cl-lib:array-slice tau-%data%
+                                      double-float
+                                      (i)
+                                      ((1 *))
+                                      tau-%offset%)
+                t$ ldt)
                (cond
                  (left
                   (setf mi (f2cl-lib:int-add (f2cl-lib:int-sub m i) 1))
@@ -159,9 +169,17 @@
                   (setf ni (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1))
                   (setf jc i)))
                (dlarfb side trans "Forward" "Columnwise" mi ni ib
-                (f2cl-lib:array-slice a double-float (i i) ((1 lda) (1 *))) lda
-                t$ ldt
-                (f2cl-lib:array-slice c double-float (ic jc) ((1 ldc) (1 *)))
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (i i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                lda t$ ldt
+                (f2cl-lib:array-slice c-%data%
+                                      double-float
+                                      (ic jc)
+                                      ((1 ldc) (1 *))
+                                      c-%offset%)
                 ldc work ldwork)
               label10))))
         (setf (f2cl-lib:fref work-%data% (1) ((1 *)) work-%offset%)
@@ -177,8 +195,7 @@
   (setf (gethash 'fortran-to-lisp::dormqr
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (array double-float (*))
                         (fortran-to-lisp::integer4) (array double-float (*))

@@ -1,25 +1,25 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((one 1.0d0) (zero 0.0d0))
-  (declare (type (double-float 1.0d0 1.0d0) one)
-           (type (double-float 0.0d0 0.0d0) zero)
+(let* ((one 1.0) (zero 0.0))
+  (declare (type (double-float 1.0 1.0) one)
+           (type (double-float 0.0 0.0) zero)
            (ignorable one zero))
   (defun zlarfg (n alpha x incx tau)
     (declare (type (array f2cl-lib:complex16 (*)) x)
@@ -27,8 +27,8 @@
              (type (f2cl-lib:integer4) incx n))
     (f2cl-lib:with-multi-array-data
         ((x f2cl-lib:complex16 x-%data% x-%offset%))
-      (prog ((alphi 0.0d0) (alphr 0.0d0) (beta 0.0d0) (rsafmn 0.0d0)
-             (safmin 0.0d0) (xnorm 0.0d0) (j 0) (knt 0))
+      (prog ((alphi 0.0) (alphr 0.0) (beta 0.0) (rsafmn 0.0) (safmin 0.0)
+             (xnorm 0.0) (j 0) (knt 0))
         (declare (type (double-float) alphi alphr beta rsafmn safmin xnorm)
                  (type (f2cl-lib:integer4) j knt))
         (cond

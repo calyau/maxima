@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -25,7 +25,7 @@
     (declare (type (array double-float (*)) work vr vl t$)
              (type (f2cl-lib:integer4) info m mm ldvr ldvl ldt n)
              (type (array f2cl-lib:logical (*)) select)
-             (type (simple-array character (*)) howmny side))
+             (type (simple-string *) howmny side))
     (f2cl-lib:with-multi-array-data
         ((side character side-%data% side-%offset%)
          (howmny character howmny-%data% howmny-%offset%)
@@ -271,15 +271,17 @@
                                 var-8 var-9 var-10 var-11 var-12 var-13 var-14
                                 var-15 var-16 var-17)
                              (dlaln2 f2cl-lib:%false% 1 1 smin one
-                              (f2cl-lib:array-slice t$
+                              (f2cl-lib:array-slice t$-%data%
                                                     double-float
                                                     (j j)
-                                                    ((1 ldt) (1 *)))
+                                                    ((1 ldt) (1 *))
+                                                    t$-%offset%)
                               ldt one one
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ j n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               n wr zero x 2 scale xnorm ierr)
                            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5
                                             var-6 var-7 var-8 var-9 var-10
@@ -298,10 +300,11 @@
                                (setf scale (/ scale xnorm))))))
                          (if (/= scale one)
                              (dscal ki scale
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ 1 n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               1))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add j n))
@@ -310,15 +313,17 @@
                                  (f2cl-lib:fref x (1 1) ((1 2) (1 2))))
                          (daxpy (f2cl-lib:int-sub j 1)
                           (- (f2cl-lib:fref x (1 1) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 j)
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1))
                         (t
                          (multiple-value-bind
@@ -326,18 +331,20 @@
                                 var-8 var-9 var-10 var-11 var-12 var-13 var-14
                                 var-15 var-16 var-17)
                              (dlaln2 f2cl-lib:%false% 2 1 smin one
-                              (f2cl-lib:array-slice t$
+                              (f2cl-lib:array-slice t$-%data%
                                                     double-float
                                                     ((+ j (f2cl-lib:int-sub 1))
                                                      (f2cl-lib:int-sub j 1))
-                                                    ((1 ldt) (1 *)))
+                                                    ((1 ldt) (1 *))
+                                                    t$-%offset%)
                               ldt one one
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ j
                                                         (f2cl-lib:int-sub 1)
                                                         n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               n wr zero x 2 scale xnorm ierr)
                            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5
                                             var-6 var-7 var-8 var-9 var-10
@@ -368,10 +375,11 @@
                                (setf scale (/ scale xnorm))))))
                          (if (/= scale one)
                              (dscal ki scale
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ 1 n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               1))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add
@@ -387,48 +395,55 @@
                                  (f2cl-lib:fref x (2 1) ((1 2) (1 2))))
                          (daxpy (f2cl-lib:int-sub j 2)
                           (- (f2cl-lib:fref x (1 1) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 (f2cl-lib:int-sub j 1))
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)
                          (daxpy (f2cl-lib:int-sub j 2)
                           (- (f2cl-lib:fref x (2 1) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 j)
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)))
                      label60))
                   (cond
                     ((not over)
                      (dcopy ki
-                      (f2cl-lib:array-slice work
+                      (f2cl-lib:array-slice work-%data%
                                             double-float
                                             ((+ 1 n))
-                                            ((1 *)))
+                                            ((1 *))
+                                            work-%offset%)
                       1
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 is)
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (setf ii
                              (idamax ki
-                              (f2cl-lib:array-slice vr
+                              (f2cl-lib:array-slice vr-%data%
                                                     double-float
                                                     (1 is)
-                                                    ((1 ldvr) (1 *)))
+                                                    ((1 ldvr) (1 *))
+                                                    vr-%offset%)
                               1))
                      (setf remax
                              (/ one
@@ -438,10 +453,11 @@
                                                 ((1 ldvr) (1 *))
                                                 vr-%offset%))))
                      (dscal ki remax
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 is)
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (f2cl-lib:fdo (k (f2cl-lib:int-add ki 1)
                                     (f2cl-lib:int-add k 1))
@@ -456,26 +472,29 @@
                     (t
                      (if (> ki 1)
                          (dgemv "N" n (f2cl-lib:int-sub ki 1) one vr ldvr
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1
                           (f2cl-lib:fref work-%data%
                                          ((f2cl-lib:int-add ki n))
                                          ((1 *))
                                          work-%offset%)
-                          (f2cl-lib:array-slice vr
+                          (f2cl-lib:array-slice vr-%data%
                                                 double-float
                                                 (1 ki)
-                                                ((1 ldvr) (1 *)))
+                                                ((1 ldvr) (1 *))
+                                                vr-%offset%)
                           1))
                      (setf ii
                              (idamax n
-                              (f2cl-lib:array-slice vr
+                              (f2cl-lib:array-slice vr-%data%
                                                     double-float
                                                     (1 ki)
-                                                    ((1 ldvr) (1 *)))
+                                                    ((1 ldvr) (1 *))
+                                                    vr-%offset%)
                               1))
                      (setf remax
                              (/ one
@@ -485,10 +504,11 @@
                                                 ((1 ldvr) (1 *))
                                                 vr-%offset%))))
                      (dscal n remax
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 ki)
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1))))
                  (t
                   (cond
@@ -615,15 +635,17 @@
                                 var-8 var-9 var-10 var-11 var-12 var-13 var-14
                                 var-15 var-16 var-17)
                              (dlaln2 f2cl-lib:%false% 1 2 smin one
-                              (f2cl-lib:array-slice t$
+                              (f2cl-lib:array-slice t$-%data%
                                                     double-float
                                                     (j j)
-                                                    ((1 ldt) (1 *)))
+                                                    ((1 ldt) (1 *))
+                                                    t$-%offset%)
                               ldt one one
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ j n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               n wr wi x 2 scale xnorm ierr)
                            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5
                                             var-6 var-7 var-8 var-9 var-10
@@ -646,16 +668,18 @@
                          (cond
                            ((/= scale one)
                             (dscal ki scale
-                             (f2cl-lib:array-slice work
+                             (f2cl-lib:array-slice work-%data%
                                                    double-float
                                                    ((+ 1 n))
-                                                   ((1 *)))
+                                                   ((1 *))
+                                                   work-%offset%)
                              1)
                             (dscal ki scale
-                             (f2cl-lib:array-slice work
+                             (f2cl-lib:array-slice work-%data%
                                                    double-float
                                                    ((+ 1 n2))
-                                                   ((1 *)))
+                                                   ((1 *))
+                                                   work-%offset%)
                              1)))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add j n))
@@ -669,27 +693,31 @@
                                  (f2cl-lib:fref x (1 2) ((1 2) (1 2))))
                          (daxpy (f2cl-lib:int-sub j 1)
                           (- (f2cl-lib:fref x (1 1) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 j)
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)
                          (daxpy (f2cl-lib:int-sub j 1)
                           (- (f2cl-lib:fref x (1 2) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 j)
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n2))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1))
                         (t
                          (multiple-value-bind
@@ -697,18 +725,20 @@
                                 var-8 var-9 var-10 var-11 var-12 var-13 var-14
                                 var-15 var-16 var-17)
                              (dlaln2 f2cl-lib:%false% 2 2 smin one
-                              (f2cl-lib:array-slice t$
+                              (f2cl-lib:array-slice t$-%data%
                                                     double-float
                                                     ((+ j (f2cl-lib:int-sub 1))
                                                      (f2cl-lib:int-sub j 1))
-                                                    ((1 ldt) (1 *)))
+                                                    ((1 ldt) (1 *))
+                                                    t$-%offset%)
                               ldt one one
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ j
                                                         (f2cl-lib:int-sub 1)
                                                         n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               n wr wi x 2 scale xnorm ierr)
                            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5
                                             var-6 var-7 var-8 var-9 var-10
@@ -747,16 +777,18 @@
                          (cond
                            ((/= scale one)
                             (dscal ki scale
-                             (f2cl-lib:array-slice work
+                             (f2cl-lib:array-slice work-%data%
                                                    double-float
                                                    ((+ 1 n))
-                                                   ((1 *)))
+                                                   ((1 *))
+                                                   work-%offset%)
                              1)
                             (dscal ki scale
-                             (f2cl-lib:array-slice work
+                             (f2cl-lib:array-slice work-%data%
                                                    double-float
                                                    ((+ 1 n2))
-                                                   ((1 *)))
+                                                   ((1 *))
+                                                   work-%offset%)
                              1)))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add
@@ -784,76 +816,88 @@
                                  (f2cl-lib:fref x (2 2) ((1 2) (1 2))))
                          (daxpy (f2cl-lib:int-sub j 2)
                           (- (f2cl-lib:fref x (1 1) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 (f2cl-lib:int-sub j 1))
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)
                          (daxpy (f2cl-lib:int-sub j 2)
                           (- (f2cl-lib:fref x (2 1) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 j)
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)
                          (daxpy (f2cl-lib:int-sub j 2)
                           (- (f2cl-lib:fref x (1 2) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 (f2cl-lib:int-sub j 1))
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n2))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)
                          (daxpy (f2cl-lib:int-sub j 2)
                           (- (f2cl-lib:fref x (2 2) ((1 2) (1 2))))
-                          (f2cl-lib:array-slice t$
+                          (f2cl-lib:array-slice t$-%data%
                                                 double-float
                                                 (1 j)
-                                                ((1 ldt) (1 *)))
+                                                ((1 ldt) (1 *))
+                                                t$-%offset%)
                           1
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ 1 n2))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1)))
                      label90))
                   (cond
                     ((not over)
                      (dcopy ki
-                      (f2cl-lib:array-slice work
+                      (f2cl-lib:array-slice work-%data%
                                             double-float
                                             ((+ 1 n))
-                                            ((1 *)))
+                                            ((1 *))
+                                            work-%offset%)
                       1
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 (f2cl-lib:int-sub is 1))
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (dcopy ki
-                      (f2cl-lib:array-slice work
+                      (f2cl-lib:array-slice work-%data%
                                             double-float
                                             ((+ 1 n2))
-                                            ((1 *)))
+                                            ((1 *))
+                                            work-%offset%)
                       1
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 is)
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (setf emax zero)
                      (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
@@ -877,16 +921,18 @@
                         label100))
                      (setf remax (/ one emax))
                      (dscal ki remax
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 (f2cl-lib:int-sub is 1))
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (dscal ki remax
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 is)
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (f2cl-lib:fdo (k (f2cl-lib:int-add ki 1)
                                     (f2cl-lib:int-add k 1))
@@ -907,10 +953,11 @@
                      (cond
                        ((> ki 2)
                         (dgemv "N" n (f2cl-lib:int-sub ki 2) one vr ldvr
-                         (f2cl-lib:array-slice work
+                         (f2cl-lib:array-slice work-%data%
                                                double-float
                                                ((+ 1 n))
-                                               ((1 *)))
+                                               ((1 *))
+                                               work-%offset%)
                          1
                          (f2cl-lib:fref work-%data%
                                         ((f2cl-lib:int-add
@@ -918,25 +965,28 @@
                                           n))
                                         ((1 *))
                                         work-%offset%)
-                         (f2cl-lib:array-slice vr
+                         (f2cl-lib:array-slice vr-%data%
                                                double-float
                                                (1 (f2cl-lib:int-sub ki 1))
-                                               ((1 ldvr) (1 *)))
+                                               ((1 ldvr) (1 *))
+                                               vr-%offset%)
                          1)
                         (dgemv "N" n (f2cl-lib:int-sub ki 2) one vr ldvr
-                         (f2cl-lib:array-slice work
+                         (f2cl-lib:array-slice work-%data%
                                                double-float
                                                ((+ 1 n2))
-                                               ((1 *)))
+                                               ((1 *))
+                                               work-%offset%)
                          1
                          (f2cl-lib:fref work-%data%
                                         ((f2cl-lib:int-add ki n2))
                                         ((1 *))
                                         work-%offset%)
-                         (f2cl-lib:array-slice vr
+                         (f2cl-lib:array-slice vr-%data%
                                                double-float
                                                (1 ki)
-                                               ((1 ldvr) (1 *)))
+                                               ((1 ldvr) (1 *))
+                                               vr-%offset%)
                          1))
                        (t
                         (dscal n
@@ -946,20 +996,22 @@
                                           n))
                                         ((1 *))
                                         work-%offset%)
-                         (f2cl-lib:array-slice vr
+                         (f2cl-lib:array-slice vr-%data%
                                                double-float
                                                (1 (f2cl-lib:int-sub ki 1))
-                                               ((1 ldvr) (1 *)))
+                                               ((1 ldvr) (1 *))
+                                               vr-%offset%)
                          1)
                         (dscal n
                          (f2cl-lib:fref work-%data%
                                         ((f2cl-lib:int-add ki n2))
                                         ((1 *))
                                         work-%offset%)
-                         (f2cl-lib:array-slice vr
+                         (f2cl-lib:array-slice vr-%data%
                                                double-float
                                                (1 ki)
-                                               ((1 ldvr) (1 *)))
+                                               ((1 ldvr) (1 *))
+                                               vr-%offset%)
                          1)))
                      (setf emax zero)
                      (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
@@ -983,16 +1035,18 @@
                         label120))
                      (setf remax (/ one emax))
                      (dscal n remax
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 (f2cl-lib:int-sub ki 1))
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)
                      (dscal n remax
-                      (f2cl-lib:array-slice vr
+                      (f2cl-lib:array-slice vr-%data%
                                             double-float
                                             (1 ki)
-                                            ((1 ldvr) (1 *)))
+                                            ((1 ldvr) (1 *))
+                                            vr-%offset%)
                       1)))))
                (setf is (f2cl-lib:int-sub is 1))
                (if (/= ip 0) (setf is (f2cl-lib:int-sub is 1)))
@@ -1096,10 +1150,11 @@
                             (setf rec (/ one vmax))
                             (dscal (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                              rec
-                             (f2cl-lib:array-slice work
+                             (f2cl-lib:array-slice work-%data%
                                                    double-float
                                                    ((+ ki n))
-                                                   ((1 *)))
+                                                   ((1 *))
+                                                   work-%offset%)
                              1)
                             (setf vmax one)
                             (setf vcrit bignum)))
@@ -1113,30 +1168,34 @@
                                                  ((1 *))
                                                  work-%offset%)
                                   (ddot (f2cl-lib:int-sub j ki 1)
-                                   (f2cl-lib:array-slice t$
+                                   (f2cl-lib:array-slice t$-%data%
                                                          double-float
                                                          ((+ ki 1) j)
-                                                         ((1 ldt) (1 *)))
+                                                         ((1 ldt) (1 *))
+                                                         t$-%offset%)
                                    1
-                                   (f2cl-lib:array-slice work
+                                   (f2cl-lib:array-slice work-%data%
                                                          double-float
                                                          ((+ ki 1 n))
-                                                         ((1 *)))
+                                                         ((1 *))
+                                                         work-%offset%)
                                    1)))
                          (multiple-value-bind
                                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                                 var-8 var-9 var-10 var-11 var-12 var-13 var-14
                                 var-15 var-16 var-17)
                              (dlaln2 f2cl-lib:%false% 1 1 smin one
-                              (f2cl-lib:array-slice t$
+                              (f2cl-lib:array-slice t$-%data%
                                                     double-float
                                                     (j j)
-                                                    ((1 ldt) (1 *)))
+                                                    ((1 ldt) (1 *))
+                                                    t$-%offset%)
                               ldt one one
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ j n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               n wr zero x 2 scale xnorm ierr)
                            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5
                                             var-6 var-7 var-8 var-9 var-10
@@ -1148,10 +1207,11 @@
                              (dscal
                               (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                               scale
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ ki n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               1))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add j n))
@@ -1183,10 +1243,11 @@
                             (setf rec (/ one vmax))
                             (dscal (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                              rec
-                             (f2cl-lib:array-slice work
+                             (f2cl-lib:array-slice work-%data%
                                                    double-float
                                                    ((+ ki n))
-                                                   ((1 *)))
+                                                   ((1 *))
+                                                   work-%offset%)
                              1)
                             (setf vmax one)
                             (setf vcrit bignum)))
@@ -1200,15 +1261,17 @@
                                                  ((1 *))
                                                  work-%offset%)
                                   (ddot (f2cl-lib:int-sub j ki 1)
-                                   (f2cl-lib:array-slice t$
+                                   (f2cl-lib:array-slice t$-%data%
                                                          double-float
                                                          ((+ ki 1) j)
-                                                         ((1 ldt) (1 *)))
+                                                         ((1 ldt) (1 *))
+                                                         t$-%offset%)
                                    1
-                                   (f2cl-lib:array-slice work
+                                   (f2cl-lib:array-slice work-%data%
                                                          double-float
                                                          ((+ ki 1 n))
-                                                         ((1 *)))
+                                                         ((1 *))
+                                                         work-%offset%)
                                    1)))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add j 1 n))
@@ -1220,32 +1283,36 @@
                                                  ((1 *))
                                                  work-%offset%)
                                   (ddot (f2cl-lib:int-sub j ki 1)
-                                   (f2cl-lib:array-slice t$
+                                   (f2cl-lib:array-slice t$-%data%
                                                          double-float
                                                          ((+ ki 1)
                                                           (f2cl-lib:int-add j
                                                                             1))
-                                                         ((1 ldt) (1 *)))
+                                                         ((1 ldt) (1 *))
+                                                         t$-%offset%)
                                    1
-                                   (f2cl-lib:array-slice work
+                                   (f2cl-lib:array-slice work-%data%
                                                          double-float
                                                          ((+ ki 1 n))
-                                                         ((1 *)))
+                                                         ((1 *))
+                                                         work-%offset%)
                                    1)))
                          (multiple-value-bind
                                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                                 var-8 var-9 var-10 var-11 var-12 var-13 var-14
                                 var-15 var-16 var-17)
                              (dlaln2 f2cl-lib:%true% 2 1 smin one
-                              (f2cl-lib:array-slice t$
+                              (f2cl-lib:array-slice t$-%data%
                                                     double-float
                                                     (j j)
-                                                    ((1 ldt) (1 *)))
+                                                    ((1 ldt) (1 *))
+                                                    t$-%offset%)
                               ldt one one
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ j n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               n wr zero x 2 scale xnorm ierr)
                            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5
                                             var-6 var-7 var-8 var-9 var-10
@@ -1257,10 +1324,11 @@
                              (dscal
                               (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                               scale
-                              (f2cl-lib:array-slice work
+                              (f2cl-lib:array-slice work-%data%
                                                     double-float
                                                     ((+ ki n))
-                                                    ((1 *)))
+                                                    ((1 *))
+                                                    work-%offset%)
                               1))
                          (setf (f2cl-lib:fref work-%data%
                                               ((f2cl-lib:int-add j n))
@@ -1290,25 +1358,28 @@
                   (cond
                     ((not over)
                      (dcopy (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
-                      (f2cl-lib:array-slice work
+                      (f2cl-lib:array-slice work-%data%
                                             double-float
                                             ((+ ki n))
-                                            ((1 *)))
+                                            ((1 *))
+                                            work-%offset%)
                       1
-                      (f2cl-lib:array-slice vl
+                      (f2cl-lib:array-slice vl-%data%
                                             double-float
                                             (ki is)
-                                            ((1 ldvl) (1 *)))
+                                            ((1 ldvl) (1 *))
+                                            vl-%offset%)
                       1)
                      (setf ii
                              (f2cl-lib:int-sub
                               (f2cl-lib:int-add
                                (idamax
                                 (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
-                                (f2cl-lib:array-slice vl
+                                (f2cl-lib:array-slice vl-%data%
                                                       double-float
                                                       (ki is)
-                                                      ((1 ldvl) (1 *)))
+                                                      ((1 ldvl) (1 *))
+                                                      vl-%offset%)
                                 1)
                                ki)
                               1))
@@ -1320,10 +1391,11 @@
                                                 ((1 ldvl) (1 *))
                                                 vl-%offset%))))
                      (dscal (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1) remax
-                      (f2cl-lib:array-slice vl
+                      (f2cl-lib:array-slice vl-%data%
                                             double-float
                                             (ki is)
-                                            ((1 ldvl) (1 *)))
+                                            ((1 ldvl) (1 *))
+                                            vl-%offset%)
                       1)
                      (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
                                    ((> k
@@ -1340,31 +1412,35 @@
                     (t
                      (if (< ki n)
                          (dgemv "N" n (f2cl-lib:int-sub n ki) one
-                          (f2cl-lib:array-slice vl
+                          (f2cl-lib:array-slice vl-%data%
                                                 double-float
                                                 (1 (f2cl-lib:int-add ki 1))
-                                                ((1 ldvl) (1 *)))
+                                                ((1 ldvl) (1 *))
+                                                vl-%offset%)
                           ldvl
-                          (f2cl-lib:array-slice work
+                          (f2cl-lib:array-slice work-%data%
                                                 double-float
                                                 ((+ ki 1 n))
-                                                ((1 *)))
+                                                ((1 *))
+                                                work-%offset%)
                           1
                           (f2cl-lib:fref work-%data%
                                          ((f2cl-lib:int-add ki n))
                                          ((1 *))
                                          work-%offset%)
-                          (f2cl-lib:array-slice vl
+                          (f2cl-lib:array-slice vl-%data%
                                                 double-float
                                                 (1 ki)
-                                                ((1 ldvl) (1 *)))
+                                                ((1 ldvl) (1 *))
+                                                vl-%offset%)
                           1))
                      (setf ii
                              (idamax n
-                              (f2cl-lib:array-slice vl
+                              (f2cl-lib:array-slice vl-%data%
                                                     double-float
                                                     (1 ki)
-                                                    ((1 ldvl) (1 *)))
+                                                    ((1 ldvl) (1 *))
+                                                    vl-%offset%)
                               1))
                      (setf remax
                              (/ one
@@ -1374,10 +1450,11 @@
                                                 ((1 ldvl) (1 *))
                                                 vl-%offset%))))
                      (dscal n remax
-                      (f2cl-lib:array-slice vl
+                      (f2cl-lib:array-slice vl-%data%
                                             double-float
                                             (1 ki)
-                                            ((1 ldvl) (1 *)))
+                                            ((1 ldvl) (1 *))
+                                            vl-%offset%)
                       1))))
                  (t
                   (tagbody
@@ -1491,17 +1568,19 @@
                               (setf rec (/ one vmax))
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1) rec
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1) rec
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n2))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)
                               (setf vmax one)
                               (setf vcrit bignum)))
@@ -1515,15 +1594,17 @@
                                                    ((1 *))
                                                    work-%offset%)
                                     (ddot (f2cl-lib:int-sub j ki 2)
-                                     (f2cl-lib:array-slice t$
+                                     (f2cl-lib:array-slice t$-%data%
                                                            double-float
                                                            ((+ ki 2) j)
-                                                           ((1 ldt) (1 *)))
+                                                           ((1 ldt) (1 *))
+                                                           t$-%offset%)
                                      1
-                                     (f2cl-lib:array-slice work
+                                     (f2cl-lib:array-slice work-%data%
                                                            double-float
                                                            ((+ ki 2 n))
-                                                           ((1 *)))
+                                                           ((1 *))
+                                                           work-%offset%)
                                      1)))
                            (setf (f2cl-lib:fref work-%data%
                                                 ((f2cl-lib:int-add j n2))
@@ -1535,30 +1616,34 @@
                                                    ((1 *))
                                                    work-%offset%)
                                     (ddot (f2cl-lib:int-sub j ki 2)
-                                     (f2cl-lib:array-slice t$
+                                     (f2cl-lib:array-slice t$-%data%
                                                            double-float
                                                            ((+ ki 2) j)
-                                                           ((1 ldt) (1 *)))
+                                                           ((1 ldt) (1 *))
+                                                           t$-%offset%)
                                      1
-                                     (f2cl-lib:array-slice work
+                                     (f2cl-lib:array-slice work-%data%
                                                            double-float
                                                            ((+ ki 2 n2))
-                                                           ((1 *)))
+                                                           ((1 *))
+                                                           work-%offset%)
                                      1)))
                            (multiple-value-bind
                                  (var-0 var-1 var-2 var-3 var-4 var-5 var-6
                                   var-7 var-8 var-9 var-10 var-11 var-12 var-13
                                   var-14 var-15 var-16 var-17)
                                (dlaln2 f2cl-lib:%false% 1 2 smin one
-                                (f2cl-lib:array-slice t$
+                                (f2cl-lib:array-slice t$-%data%
                                                       double-float
                                                       (j j)
-                                                      ((1 ldt) (1 *)))
+                                                      ((1 ldt) (1 *))
+                                                      t$-%offset%)
                                 ldt one one
-                                (f2cl-lib:array-slice work
+                                (f2cl-lib:array-slice work-%data%
                                                       double-float
                                                       ((+ j n))
-                                                      ((1 *)))
+                                                      ((1 *))
+                                                      work-%offset%)
                                 n wr (- wi) x 2 scale xnorm ierr)
                              (declare (ignore var-0 var-1 var-2 var-3 var-4
                                               var-5 var-6 var-7 var-8 var-9
@@ -1572,18 +1657,20 @@
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                                scale
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                                scale
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n2))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)))
                            (setf (f2cl-lib:fref work-%data%
                                                 ((f2cl-lib:int-add j n))
@@ -1625,17 +1712,19 @@
                               (setf rec (/ one vmax))
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1) rec
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1) rec
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n2))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)
                               (setf vmax one)
                               (setf vcrit bignum)))
@@ -1649,15 +1738,17 @@
                                                    ((1 *))
                                                    work-%offset%)
                                     (ddot (f2cl-lib:int-sub j ki 2)
-                                     (f2cl-lib:array-slice t$
+                                     (f2cl-lib:array-slice t$-%data%
                                                            double-float
                                                            ((+ ki 2) j)
-                                                           ((1 ldt) (1 *)))
+                                                           ((1 ldt) (1 *))
+                                                           t$-%offset%)
                                      1
-                                     (f2cl-lib:array-slice work
+                                     (f2cl-lib:array-slice work-%data%
                                                            double-float
                                                            ((+ ki 2 n))
-                                                           ((1 *)))
+                                                           ((1 *))
+                                                           work-%offset%)
                                      1)))
                            (setf (f2cl-lib:fref work-%data%
                                                 ((f2cl-lib:int-add j n2))
@@ -1669,15 +1760,17 @@
                                                    ((1 *))
                                                    work-%offset%)
                                     (ddot (f2cl-lib:int-sub j ki 2)
-                                     (f2cl-lib:array-slice t$
+                                     (f2cl-lib:array-slice t$-%data%
                                                            double-float
                                                            ((+ ki 2) j)
-                                                           ((1 ldt) (1 *)))
+                                                           ((1 ldt) (1 *))
+                                                           t$-%offset%)
                                      1
-                                     (f2cl-lib:array-slice work
+                                     (f2cl-lib:array-slice work-%data%
                                                            double-float
                                                            ((+ ki 2 n2))
-                                                           ((1 *)))
+                                                           ((1 *))
+                                                           work-%offset%)
                                      1)))
                            (setf (f2cl-lib:fref work-%data%
                                                 ((f2cl-lib:int-add j 1 n))
@@ -1689,17 +1782,19 @@
                                                    ((1 *))
                                                    work-%offset%)
                                     (ddot (f2cl-lib:int-sub j ki 2)
-                                     (f2cl-lib:array-slice t$
+                                     (f2cl-lib:array-slice t$-%data%
                                                            double-float
                                                            ((+ ki 2)
                                                             (f2cl-lib:int-add j
                                                                               1))
-                                                           ((1 ldt) (1 *)))
+                                                           ((1 ldt) (1 *))
+                                                           t$-%offset%)
                                      1
-                                     (f2cl-lib:array-slice work
+                                     (f2cl-lib:array-slice work-%data%
                                                            double-float
                                                            ((+ ki 2 n))
-                                                           ((1 *)))
+                                                           ((1 *))
+                                                           work-%offset%)
                                      1)))
                            (setf (f2cl-lib:fref work-%data%
                                                 ((f2cl-lib:int-add j 1 n2))
@@ -1711,32 +1806,36 @@
                                                    ((1 *))
                                                    work-%offset%)
                                     (ddot (f2cl-lib:int-sub j ki 2)
-                                     (f2cl-lib:array-slice t$
+                                     (f2cl-lib:array-slice t$-%data%
                                                            double-float
                                                            ((+ ki 2)
                                                             (f2cl-lib:int-add j
                                                                               1))
-                                                           ((1 ldt) (1 *)))
+                                                           ((1 ldt) (1 *))
+                                                           t$-%offset%)
                                      1
-                                     (f2cl-lib:array-slice work
+                                     (f2cl-lib:array-slice work-%data%
                                                            double-float
                                                            ((+ ki 2 n2))
-                                                           ((1 *)))
+                                                           ((1 *))
+                                                           work-%offset%)
                                      1)))
                            (multiple-value-bind
                                  (var-0 var-1 var-2 var-3 var-4 var-5 var-6
                                   var-7 var-8 var-9 var-10 var-11 var-12 var-13
                                   var-14 var-15 var-16 var-17)
                                (dlaln2 f2cl-lib:%true% 2 2 smin one
-                                (f2cl-lib:array-slice t$
+                                (f2cl-lib:array-slice t$-%data%
                                                       double-float
                                                       (j j)
-                                                      ((1 ldt) (1 *)))
+                                                      ((1 ldt) (1 *))
+                                                      t$-%offset%)
                                 ldt one one
-                                (f2cl-lib:array-slice work
+                                (f2cl-lib:array-slice work-%data%
                                                       double-float
                                                       ((+ j n))
-                                                      ((1 *)))
+                                                      ((1 *))
+                                                      work-%offset%)
                                 n wr (- wi) x 2 scale xnorm ierr)
                              (declare (ignore var-0 var-1 var-2 var-3 var-4
                                               var-5 var-6 var-7 var-8 var-9
@@ -1750,18 +1849,20 @@
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                                scale
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)
                               (dscal
                                (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                                scale
-                               (f2cl-lib:array-slice work
+                               (f2cl-lib:array-slice work-%data%
                                                      double-float
                                                      ((+ ki n2))
-                                                     ((1 *)))
+                                                     ((1 *))
+                                                     work-%offset%)
                                1)))
                            (setf (f2cl-lib:fref work-%data%
                                                 ((f2cl-lib:int-add j n))
@@ -1796,26 +1897,30 @@
                     (cond
                       ((not over)
                        (dcopy (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
-                        (f2cl-lib:array-slice work
+                        (f2cl-lib:array-slice work-%data%
                                               double-float
                                               ((+ ki n))
-                                              ((1 *)))
+                                              ((1 *))
+                                              work-%offset%)
                         1
-                        (f2cl-lib:array-slice vl
+                        (f2cl-lib:array-slice vl-%data%
                                               double-float
                                               (ki is)
-                                              ((1 ldvl) (1 *)))
+                                              ((1 ldvl) (1 *))
+                                              vl-%offset%)
                         1)
                        (dcopy (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
-                        (f2cl-lib:array-slice work
+                        (f2cl-lib:array-slice work-%data%
                                               double-float
                                               ((+ ki n2))
-                                              ((1 *)))
+                                              ((1 *))
+                                              work-%offset%)
                         1
-                        (f2cl-lib:array-slice vl
+                        (f2cl-lib:array-slice vl-%data%
                                               double-float
                                               (ki (f2cl-lib:int-add is 1))
-                                              ((1 ldvl) (1 *)))
+                                              ((1 ldvl) (1 *))
+                                              vl-%offset%)
                         1)
                        (setf emax zero)
                        (f2cl-lib:fdo (k ki (f2cl-lib:int-add k 1))
@@ -1840,17 +1945,19 @@
                        (setf remax (/ one emax))
                        (dscal (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                         remax
-                        (f2cl-lib:array-slice vl
+                        (f2cl-lib:array-slice vl-%data%
                                               double-float
                                               (ki is)
-                                              ((1 ldvl) (1 *)))
+                                              ((1 ldvl) (1 *))
+                                              vl-%offset%)
                         1)
                        (dscal (f2cl-lib:int-add (f2cl-lib:int-sub n ki) 1)
                         remax
-                        (f2cl-lib:array-slice vl
+                        (f2cl-lib:array-slice vl-%data%
                                               double-float
                                               (ki (f2cl-lib:int-add is 1))
-                                              ((1 ldvl) (1 *)))
+                                              ((1 ldvl) (1 *))
+                                              vl-%offset%)
                         1)
                        (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
                                      ((> k
@@ -1874,44 +1981,50 @@
                        (cond
                          ((< ki (f2cl-lib:int-add n (f2cl-lib:int-sub 1)))
                           (dgemv "N" n (f2cl-lib:int-sub n ki 1) one
-                           (f2cl-lib:array-slice vl
+                           (f2cl-lib:array-slice vl-%data%
                                                  double-float
                                                  (1 (f2cl-lib:int-add ki 2))
-                                                 ((1 ldvl) (1 *)))
+                                                 ((1 ldvl) (1 *))
+                                                 vl-%offset%)
                            ldvl
-                           (f2cl-lib:array-slice work
+                           (f2cl-lib:array-slice work-%data%
                                                  double-float
                                                  ((+ ki 2 n))
-                                                 ((1 *)))
+                                                 ((1 *))
+                                                 work-%offset%)
                            1
                            (f2cl-lib:fref work-%data%
                                           ((f2cl-lib:int-add ki n))
                                           ((1 *))
                                           work-%offset%)
-                           (f2cl-lib:array-slice vl
+                           (f2cl-lib:array-slice vl-%data%
                                                  double-float
                                                  (1 ki)
-                                                 ((1 ldvl) (1 *)))
+                                                 ((1 ldvl) (1 *))
+                                                 vl-%offset%)
                            1)
                           (dgemv "N" n (f2cl-lib:int-sub n ki 1) one
-                           (f2cl-lib:array-slice vl
+                           (f2cl-lib:array-slice vl-%data%
                                                  double-float
                                                  (1 (f2cl-lib:int-add ki 2))
-                                                 ((1 ldvl) (1 *)))
+                                                 ((1 ldvl) (1 *))
+                                                 vl-%offset%)
                            ldvl
-                           (f2cl-lib:array-slice work
+                           (f2cl-lib:array-slice work-%data%
                                                  double-float
                                                  ((+ ki 2 n2))
-                                                 ((1 *)))
+                                                 ((1 *))
+                                                 work-%offset%)
                            1
                            (f2cl-lib:fref work-%data%
                                           ((f2cl-lib:int-add ki 1 n2))
                                           ((1 *))
                                           work-%offset%)
-                           (f2cl-lib:array-slice vl
+                           (f2cl-lib:array-slice vl-%data%
                                                  double-float
                                                  (1 (f2cl-lib:int-add ki 1))
-                                                 ((1 ldvl) (1 *)))
+                                                 ((1 ldvl) (1 *))
+                                                 vl-%offset%)
                            1))
                          (t
                           (dscal n
@@ -1919,20 +2032,22 @@
                                           ((f2cl-lib:int-add ki n))
                                           ((1 *))
                                           work-%offset%)
-                           (f2cl-lib:array-slice vl
+                           (f2cl-lib:array-slice vl-%data%
                                                  double-float
                                                  (1 ki)
-                                                 ((1 ldvl) (1 *)))
+                                                 ((1 ldvl) (1 *))
+                                                 vl-%offset%)
                            1)
                           (dscal n
                            (f2cl-lib:fref work-%data%
                                           ((f2cl-lib:int-add ki 1 n2))
                                           ((1 *))
                                           work-%offset%)
-                           (f2cl-lib:array-slice vl
+                           (f2cl-lib:array-slice vl-%data%
                                                  double-float
                                                  (1 (f2cl-lib:int-add ki 1))
-                                                 ((1 ldvl) (1 *)))
+                                                 ((1 ldvl) (1 *))
+                                                 vl-%offset%)
                            1)))
                        (setf emax zero)
                        (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
@@ -1956,16 +2071,18 @@
                           label240))
                        (setf remax (/ one emax))
                        (dscal n remax
-                        (f2cl-lib:array-slice vl
+                        (f2cl-lib:array-slice vl-%data%
                                               double-float
                                               (1 ki)
-                                              ((1 ldvl) (1 *)))
+                                              ((1 ldvl) (1 *))
+                                              vl-%offset%)
                         1)
                        (dscal n remax
-                        (f2cl-lib:array-slice vl
+                        (f2cl-lib:array-slice vl-%data%
                                               double-float
                                               (1 (f2cl-lib:int-add ki 1))
-                                              ((1 ldvl) (1 *)))
+                                              ((1 ldvl) (1 *))
+                                              vl-%offset%)
                         1))))))
                (setf is (f2cl-lib:int-add is 1))
                (if (/= ip 0) (setf is (f2cl-lib:int-add is 1)))
@@ -1984,8 +2101,7 @@
   (setf (gethash 'fortran-to-lisp::dtrevc
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (array fortran-to-lisp::logical (*))
                         (fortran-to-lisp::integer4) (array double-float (*))
                         (fortran-to-lisp::integer4) (array double-float (*))

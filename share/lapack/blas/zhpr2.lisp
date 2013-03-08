@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -23,7 +23,7 @@
     (declare (type (array f2cl-lib:complex16 (*)) ap y x)
              (type (f2cl-lib:complex16) alpha)
              (type (f2cl-lib:integer4) incy incx n)
-             (type (simple-array character (*)) uplo))
+             (type (simple-string *) uplo))
     (f2cl-lib:with-multi-array-data
         ((uplo character uplo-%data% uplo-%offset%)
          (x f2cl-lib:complex16 x-%data% x-%offset%)
@@ -476,8 +476,7 @@
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::zhpr2 fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (fortran-to-lisp::integer4)
+           :arg-types '((simple-string) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::complex16)
                         (array fortran-to-lisp::complex16 (*))
                         (fortran-to-lisp::integer4)

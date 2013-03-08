@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -133,9 +133,18 @@
                        (min (the f2cl-lib:integer4 nb)
                             (the f2cl-lib:integer4 (f2cl-lib:int-sub ihi i))))
                (dlahrd ihi i ib
-                (f2cl-lib:array-slice a double-float (1 i) ((1 lda) (1 *))) lda
-                (f2cl-lib:array-slice tau double-float (i) ((1 *))) t$ ldt work
-                ldwork)
+                (f2cl-lib:array-slice a-%data%
+                                      double-float
+                                      (1 i)
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
+                lda
+                (f2cl-lib:array-slice tau-%data%
+                                      double-float
+                                      (i)
+                                      ((1 *))
+                                      tau-%offset%)
+                t$ ldt work ldwork)
                (setf ei
                        (f2cl-lib:fref a-%data%
                                       ((f2cl-lib:int-add i ib)
@@ -154,15 +163,17 @@
                (dgemm "No transpose" "Transpose" ihi
                 (f2cl-lib:int-add (f2cl-lib:int-sub ihi i ib) 1) ib (- one)
                 work ldwork
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       ((+ i ib) i)
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda one
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       (1 (f2cl-lib:int-add i ib))
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda)
                (setf (f2cl-lib:fref a-%data%
                                     ((f2cl-lib:int-add i ib)
@@ -174,15 +185,17 @@
                (dlarfb "Left" "Transpose" "Forward" "Columnwise"
                 (f2cl-lib:int-sub ihi i)
                 (f2cl-lib:int-add (f2cl-lib:int-sub n i ib) 1) ib
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       ((+ i 1) i)
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda t$ ldt
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       ((+ i 1) (f2cl-lib:int-add i ib))
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda work ldwork)
               label30))))
         (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)

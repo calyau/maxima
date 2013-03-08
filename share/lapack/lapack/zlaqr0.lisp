@@ -1,36 +1,36 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
 (let* ((ntiny 11)
        (kexnw 5)
        (kexsh 6)
-       (wilk1 0.75d0)
-       (zero (f2cl-lib:cmplx 0.0d0 0.0d0))
-       (one (f2cl-lib:cmplx 1.0d0 0.0d0))
-       (two 2.0d0))
+       (wilk1 0.75)
+       (zero (f2cl-lib:cmplx 0.0 0.0))
+       (one (f2cl-lib:cmplx 1.0 0.0))
+       (two 2.0))
   (declare (type (f2cl-lib:integer4 11 11) ntiny)
            (type (f2cl-lib:integer4 5 5) kexnw)
            (type (f2cl-lib:integer4 6 6) kexsh)
-           (type (double-float 0.75d0 0.75d0) wilk1)
+           (type (double-float 0.75 0.75) wilk1)
            (type (f2cl-lib:complex16) zero)
            (type (f2cl-lib:complex16) one)
-           (type (double-float 2.0d0 2.0d0) two)
+           (type (double-float 2.0 2.0) two)
            (ignorable ntiny kexnw kexsh wilk1 zero one two))
   (defun zlaqr0 (wantt wantz n ilo ihi h ldh w iloz ihiz z ldz work lwork info)
     (declare (type (array f2cl-lib:complex16 (*)) work z w h)
@@ -55,13 +55,12 @@
                (kbot 0) (kdu 0) (ks 0) (kt 0) (ktop 0) (ku 0) (kv 0) (kwh 0)
                (kwtop 0) (kwv 0) (ld 0) (ls 0) (lwkopt 0) (ndec 0) (ndfl 0)
                (nh 0) (nho 0) (nibble 0) (nmin 0) (ns 0) (nsmax 0) (nsr 0)
-               (nve 0) (nw 0) (nwmax 0) (nwr 0) (nwupbd 0) (s 0.0d0)
-               (aa #C(0.0d0 0.0d0)) (bb #C(0.0d0 0.0d0)) (cc #C(0.0d0 0.0d0))
-               (cdum #C(0.0d0 0.0d0)) (dd #C(0.0d0 0.0d0))
-               (det #C(0.0d0 0.0d0)) (rtdisc #C(0.0d0 0.0d0))
-               (swap #C(0.0d0 0.0d0)) (tr2 #C(0.0d0 0.0d0)))
+               (nve 0) (nw 0) (nwmax 0) (nwr 0) (nwupbd 0) (s 0.0)
+               (aa #C(0.0 0.0)) (bb #C(0.0 0.0)) (cc #C(0.0 0.0))
+               (cdum #C(0.0 0.0)) (dd #C(0.0 0.0)) (det #C(0.0 0.0))
+               (rtdisc #C(0.0 0.0)) (swap #C(0.0 0.0)) (tr2 #C(0.0 0.0)))
           (declare (type (array f2cl-lib:complex16 (1)) zdum)
-                   (type (simple-array character (2)) jbcmpz)
+                   (type (simple-string 2) jbcmpz)
                    (type f2cl-lib:logical sorted)
                    (type (f2cl-lib:integer4) i inf it itmax k kacc22 kbot kdu
                                              ks kt ktop ku kv kwh kwtop kwv ld

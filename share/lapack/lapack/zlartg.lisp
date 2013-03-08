@@ -1,29 +1,26 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((two 2.0d0)
-       (one 1.0d0)
-       (zero 0.0d0)
-       (czero (f2cl-lib:cmplx 0.0d0 0.0d0)))
-  (declare (type (double-float 2.0d0 2.0d0) two)
-           (type (double-float 1.0d0 1.0d0) one)
-           (type (double-float 0.0d0 0.0d0) zero)
+(let* ((two 2.0) (one 1.0) (zero 0.0) (czero (f2cl-lib:cmplx 0.0 0.0)))
+  (declare (type (double-float 2.0 2.0) two)
+           (type (double-float 1.0 1.0) one)
+           (type (double-float 0.0 0.0) zero)
            (type (f2cl-lib:complex16) czero)
            (ignorable two one zero czero))
   (defun zlartg (f g cs sn r)
@@ -38,10 +35,10 @@
       (declare (ftype (function (f2cl-lib:complex16)
                        (values double-float &rest t))
                       abssq))
-      (prog ((ff #C(0.0d0 0.0d0)) (fs #C(0.0d0 0.0d0)) (gs #C(0.0d0 0.0d0))
-             (d 0.0d0) (di 0.0d0) (dr 0.0d0) (eps 0.0d0) (f2 0.0d0) (f2s 0.0d0)
-             (g2 0.0d0) (g2s 0.0d0) (safmin 0.0d0) (safmn2 0.0d0)
-             (safmx2 0.0d0) (scale 0.0d0) (i 0) (count$ 0))
+      (prog ((ff #C(0.0 0.0)) (fs #C(0.0 0.0)) (gs #C(0.0 0.0)) (d 0.0)
+             (di 0.0) (dr 0.0) (eps 0.0) (f2 0.0) (f2s 0.0) (g2 0.0) (g2s 0.0)
+             (safmin 0.0) (safmn2 0.0) (safmx2 0.0) (scale 0.0) (i 0)
+             (count$ 0))
         (declare (type (f2cl-lib:complex16) ff fs gs)
                  (type (double-float) d di dr eps f2 f2s g2 g2s safmin safmn2
                                       safmx2 scale)

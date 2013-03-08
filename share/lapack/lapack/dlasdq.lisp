@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -22,7 +22,7 @@
   (defun dlasdq (uplo sqre n ncvt nru ncc d e vt ldvt u ldu c ldc work info)
     (declare (type (array double-float (*)) work c u vt e d)
              (type (f2cl-lib:integer4) info ldc ldu ldvt ncc nru ncvt n sqre)
-             (type (simple-array character (*)) uplo))
+             (type (simple-string *) uplo))
     (f2cl-lib:with-multi-array-data
         ((uplo character uplo-%data% uplo-%offset%)
          (d double-float d-%data% d-%offset%)
@@ -134,9 +134,17 @@
            (setf sqre1 0)
            (if (> ncvt 0)
                (dlasr "L" "V" "F" np1 ncvt
-                (f2cl-lib:array-slice work double-float (1) ((1 *)))
-                (f2cl-lib:array-slice work double-float (np1) ((1 *))) vt
-                ldvt))))
+                (f2cl-lib:array-slice work-%data%
+                                      double-float
+                                      (1)
+                                      ((1 *))
+                                      work-%offset%)
+                (f2cl-lib:array-slice work-%data%
+                                      double-float
+                                      (np1)
+                                      ((1 *))
+                                      work-%offset%)
+                vt ldvt))))
         (cond
           ((= iuplo 2)
            (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -198,25 +206,59 @@
               (cond
                 ((= sqre1 0)
                  (dlasr "R" "V" "F" nru n
-                  (f2cl-lib:array-slice work double-float (1) ((1 *)))
-                  (f2cl-lib:array-slice work double-float (np1) ((1 *))) u ldu))
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (1)
+                                        ((1 *))
+                                        work-%offset%)
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (np1)
+                                        ((1 *))
+                                        work-%offset%)
+                  u ldu))
                 (t
                  (dlasr "R" "V" "F" nru np1
-                  (f2cl-lib:array-slice work double-float (1) ((1 *)))
-                  (f2cl-lib:array-slice work double-float (np1) ((1 *))) u
-                  ldu)))))
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (1)
+                                        ((1 *))
+                                        work-%offset%)
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (np1)
+                                        ((1 *))
+                                        work-%offset%)
+                  u ldu)))))
            (cond
              ((> ncc 0)
               (cond
                 ((= sqre1 0)
                  (dlasr "L" "V" "F" n ncc
-                  (f2cl-lib:array-slice work double-float (1) ((1 *)))
-                  (f2cl-lib:array-slice work double-float (np1) ((1 *))) c ldc))
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (1)
+                                        ((1 *))
+                                        work-%offset%)
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (np1)
+                                        ((1 *))
+                                        work-%offset%)
+                  c ldc))
                 (t
                  (dlasr "L" "V" "F" np1 ncc
-                  (f2cl-lib:array-slice work double-float (1) ((1 *)))
-                  (f2cl-lib:array-slice work double-float (np1) ((1 *))) c
-                  ldc)))))))
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (1)
+                                        ((1 *))
+                                        work-%offset%)
+                  (f2cl-lib:array-slice work-%data%
+                                        double-float
+                                        (np1)
+                                        ((1 *))
+                                        work-%offset%)
+                  c ldc)))))))
         (multiple-value-bind
               (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                var-10 var-11 var-12 var-13 var-14)
@@ -245,33 +287,45 @@
                (setf (f2cl-lib:fref d-%data% (i) ((1 *)) d-%offset%) smin)
                (if (> ncvt 0)
                    (dswap ncvt
-                    (f2cl-lib:array-slice vt
+                    (f2cl-lib:array-slice vt-%data%
                                           double-float
                                           (isub 1)
-                                          ((1 ldvt) (1 *)))
+                                          ((1 ldvt) (1 *))
+                                          vt-%offset%)
                     ldvt
-                    (f2cl-lib:array-slice vt
+                    (f2cl-lib:array-slice vt-%data%
                                           double-float
                                           (i 1)
-                                          ((1 ldvt) (1 *)))
+                                          ((1 ldvt) (1 *))
+                                          vt-%offset%)
                     ldvt))
                (if (> nru 0)
                    (dswap nru
-                    (f2cl-lib:array-slice u
+                    (f2cl-lib:array-slice u-%data%
                                           double-float
                                           (1 isub)
-                                          ((1 ldu) (1 *)))
+                                          ((1 ldu) (1 *))
+                                          u-%offset%)
                     1
-                    (f2cl-lib:array-slice u double-float (1 i) ((1 ldu) (1 *)))
+                    (f2cl-lib:array-slice u-%data%
+                                          double-float
+                                          (1 i)
+                                          ((1 ldu) (1 *))
+                                          u-%offset%)
                     1))
                (if (> ncc 0)
                    (dswap ncc
-                    (f2cl-lib:array-slice c
+                    (f2cl-lib:array-slice c-%data%
                                           double-float
                                           (isub 1)
-                                          ((1 ldc) (1 *)))
+                                          ((1 ldc) (1 *))
+                                          c-%offset%)
                     ldc
-                    (f2cl-lib:array-slice c double-float (i 1) ((1 ldc) (1 *)))
+                    (f2cl-lib:array-slice c-%data%
+                                          double-float
+                                          (i 1)
+                                          ((1 ldc) (1 *))
+                                          c-%offset%)
                     ldc))))
            label40))
         (go end_label)
@@ -300,15 +354,14 @@
   (setf (gethash 'fortran-to-lisp::dlasdq
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
+           :arg-types '((simple-string) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
-                        (fortran-to-lisp::integer4) (array double-float (*))
                         (array double-float (*)) (array double-float (*))
-                        (fortran-to-lisp::integer4) (array double-float (*))
-                        (fortran-to-lisp::integer4) (array double-float (*))
-                        (fortran-to-lisp::integer4) (array double-float (*))
-                        (fortran-to-lisp::integer4))
+                        (array double-float (*)) (fortran-to-lisp::integer4)
+                        (array double-float (*)) (fortran-to-lisp::integer4)
+                        (array double-float (*)) (fortran-to-lisp::integer4)
+                        (array double-float (*)) (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil nil nil nil nil nil nil nil nil nil
                             nil nil fortran-to-lisp::info)
            :calls '(fortran-to-lisp::dswap fortran-to-lisp::dbdsqr

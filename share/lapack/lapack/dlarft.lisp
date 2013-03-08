@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -24,7 +24,7 @@
   (defun dlarft (direct storev n k v ldv tau t$ ldt)
     (declare (type (array double-float (*)) t$ tau v)
              (type (f2cl-lib:integer4) ldt ldv k n)
-             (type (simple-array character (*)) storev direct))
+             (type (simple-string *) storev direct))
     (f2cl-lib:with-multi-array-data
         ((direct character direct-%data% direct-%offset%)
          (storev character storev-%data% storev-%offset%)
@@ -67,39 +67,45 @@
                       (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1)
                       (f2cl-lib:int-sub i 1)
                       (- (f2cl-lib:fref tau-%data% (i) ((1 *)) tau-%offset%))
-                      (f2cl-lib:array-slice v
+                      (f2cl-lib:array-slice v-%data%
                                             double-float
                                             (i 1)
-                                            ((1 ldv) (1 *)))
+                                            ((1 ldv) (1 *))
+                                            v-%offset%)
                       ldv
-                      (f2cl-lib:array-slice v
+                      (f2cl-lib:array-slice v-%data%
                                             double-float
                                             (i i)
-                                            ((1 ldv) (1 *)))
+                                            ((1 ldv) (1 *))
+                                            v-%offset%)
                       1 zero
-                      (f2cl-lib:array-slice t$
+                      (f2cl-lib:array-slice t$-%data%
                                             double-float
                                             (1 i)
-                                            ((1 ldt) (1 *)))
+                                            ((1 ldt) (1 *))
+                                            t$-%offset%)
                       1))
                     (t
                      (dgemv "No transpose" (f2cl-lib:int-sub i 1)
                       (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1)
                       (- (f2cl-lib:fref tau-%data% (i) ((1 *)) tau-%offset%))
-                      (f2cl-lib:array-slice v
+                      (f2cl-lib:array-slice v-%data%
                                             double-float
                                             (1 i)
-                                            ((1 ldv) (1 *)))
+                                            ((1 ldv) (1 *))
+                                            v-%offset%)
                       ldv
-                      (f2cl-lib:array-slice v
+                      (f2cl-lib:array-slice v-%data%
                                             double-float
                                             (i i)
-                                            ((1 ldv) (1 *)))
+                                            ((1 ldv) (1 *))
+                                            v-%offset%)
                       ldv zero
-                      (f2cl-lib:array-slice t$
+                      (f2cl-lib:array-slice t$-%data%
                                             double-float
                                             (1 i)
-                                            ((1 ldt) (1 *)))
+                                            ((1 ldt) (1 *))
+                                            t$-%offset%)
                       1)))
                   (setf (f2cl-lib:fref v-%data%
                                        (i i)
@@ -108,7 +114,11 @@
                           vii)
                   (dtrmv "Upper" "No transpose" "Non-unit"
                    (f2cl-lib:int-sub i 1) t$ ldt
-                   (f2cl-lib:array-slice t$ double-float (1 i) ((1 ldt) (1 *)))
+                   (f2cl-lib:array-slice t$-%data%
+                                         double-float
+                                         (1 i)
+                                         ((1 ldt) (1 *))
+                                         t$-%offset%)
                    1)
                   (setf (f2cl-lib:fref t$-%data%
                                        (i i)
@@ -160,20 +170,23 @@
                          (f2cl-lib:int-sub k i)
                          (-
                           (f2cl-lib:fref tau-%data% (i) ((1 *)) tau-%offset%))
-                         (f2cl-lib:array-slice v
+                         (f2cl-lib:array-slice v-%data%
                                                double-float
                                                (1 (f2cl-lib:int-add i 1))
-                                               ((1 ldv) (1 *)))
+                                               ((1 ldv) (1 *))
+                                               v-%offset%)
                          ldv
-                         (f2cl-lib:array-slice v
+                         (f2cl-lib:array-slice v-%data%
                                                double-float
                                                (1 i)
-                                               ((1 ldv) (1 *)))
+                                               ((1 ldv) (1 *))
+                                               v-%offset%)
                          1 zero
-                         (f2cl-lib:array-slice t$
+                         (f2cl-lib:array-slice t$-%data%
                                                double-float
                                                ((+ i 1) i)
-                                               ((1 ldt) (1 *)))
+                                               ((1 ldt) (1 *))
+                                               t$-%offset%)
                          1)
                         (setf (f2cl-lib:fref v-%data%
                                              ((f2cl-lib:int-add
@@ -204,20 +217,23 @@
                          (f2cl-lib:int-add (f2cl-lib:int-sub n k) i)
                          (-
                           (f2cl-lib:fref tau-%data% (i) ((1 *)) tau-%offset%))
-                         (f2cl-lib:array-slice v
+                         (f2cl-lib:array-slice v-%data%
                                                double-float
                                                ((+ i 1) 1)
-                                               ((1 ldv) (1 *)))
+                                               ((1 ldv) (1 *))
+                                               v-%offset%)
                          ldv
-                         (f2cl-lib:array-slice v
+                         (f2cl-lib:array-slice v-%data%
                                                double-float
                                                (i 1)
-                                               ((1 ldv) (1 *)))
+                                               ((1 ldv) (1 *))
+                                               v-%offset%)
                          ldv zero
-                         (f2cl-lib:array-slice t$
+                         (f2cl-lib:array-slice t$-%data%
                                                double-float
                                                ((+ i 1) i)
-                                               ((1 ldt) (1 *)))
+                                               ((1 ldt) (1 *))
+                                               t$-%offset%)
                          1)
                         (setf (f2cl-lib:fref v-%data%
                                              (i
@@ -229,15 +245,17 @@
                                 vii)))
                      (dtrmv "Lower" "No transpose" "Non-unit"
                       (f2cl-lib:int-sub k i)
-                      (f2cl-lib:array-slice t$
+                      (f2cl-lib:array-slice t$-%data%
                                             double-float
                                             ((+ i 1) (f2cl-lib:int-add i 1))
-                                            ((1 ldt) (1 *)))
+                                            ((1 ldt) (1 *))
+                                            t$-%offset%)
                       ldt
-                      (f2cl-lib:array-slice t$
+                      (f2cl-lib:array-slice t$-%data%
                                             double-float
                                             ((+ i 1) i)
-                                            ((1 ldt) (1 *)))
+                                            ((1 ldt) (1 *))
+                                            t$-%offset%)
                       1)))
                   (setf (f2cl-lib:fref t$-%data%
                                        (i i)
@@ -258,8 +276,7 @@
   (setf (gethash 'fortran-to-lisp::dlarft
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (array double-float (*)) (fortran-to-lisp::integer4)
                         (array double-float (*)) (array double-float (*))

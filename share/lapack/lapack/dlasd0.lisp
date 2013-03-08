@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -72,9 +72,21 @@
       (setf iwk (f2cl-lib:int-add idxq n))
       (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
           (dlasdt n nlvl nd
-           (f2cl-lib:array-slice iwork f2cl-lib:integer4 (inode) ((1 *)))
-           (f2cl-lib:array-slice iwork f2cl-lib:integer4 (ndiml) ((1 *)))
-           (f2cl-lib:array-slice iwork f2cl-lib:integer4 (ndimr) ((1 *)))
+           (f2cl-lib:array-slice iwork-%data%
+                                 f2cl-lib:integer4
+                                 (inode)
+                                 ((1 *))
+                                 iwork-%offset%)
+           (f2cl-lib:array-slice iwork-%data%
+                                 f2cl-lib:integer4
+                                 (ndiml)
+                                 ((1 *))
+                                 iwork-%offset%)
+           (f2cl-lib:array-slice iwork-%data%
+                                 f2cl-lib:integer4
+                                 (ndimr)
+                                 ((1 *))
+                                 iwork-%offset%)
            smlsiz)
         (declare (ignore var-0 var-3 var-4 var-5 var-6))
         (setf nlvl var-1)
@@ -109,16 +121,33 @@
                 (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                  var-10 var-11 var-12 var-13 var-14 var-15)
               (dlasdq "U" sqrei nl nlp1 nl ncc
-               (f2cl-lib:array-slice d double-float (nlf) ((1 *)))
-               (f2cl-lib:array-slice e double-float (nlf) ((1 *)))
-               (f2cl-lib:array-slice vt
+               (f2cl-lib:array-slice d-%data%
+                                     double-float
+                                     (nlf)
+                                     ((1 *))
+                                     d-%offset%)
+               (f2cl-lib:array-slice e-%data%
+                                     double-float
+                                     (nlf)
+                                     ((1 *))
+                                     e-%offset%)
+               (f2cl-lib:array-slice vt-%data%
                                      double-float
                                      (nlf nlf)
-                                     ((1 ldvt) (1 *)))
+                                     ((1 ldvt) (1 *))
+                                     vt-%offset%)
                ldvt
-               (f2cl-lib:array-slice u double-float (nlf nlf) ((1 ldu) (1 *)))
+               (f2cl-lib:array-slice u-%data%
+                                     double-float
+                                     (nlf nlf)
+                                     ((1 ldu) (1 *))
+                                     u-%offset%)
                ldu
-               (f2cl-lib:array-slice u double-float (nlf nlf) ((1 ldu) (1 *)))
+               (f2cl-lib:array-slice u-%data%
+                                     double-float
+                                     (nlf nlf)
+                                     ((1 ldu) (1 *))
+                                     u-%offset%)
                ldu work info)
             (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                              var-8 var-9 var-10 var-11 var-12 var-13 var-14))
@@ -146,16 +175,33 @@
                 (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                  var-10 var-11 var-12 var-13 var-14 var-15)
               (dlasdq "U" sqrei nr nrp1 nr ncc
-               (f2cl-lib:array-slice d double-float (nrf) ((1 *)))
-               (f2cl-lib:array-slice e double-float (nrf) ((1 *)))
-               (f2cl-lib:array-slice vt
+               (f2cl-lib:array-slice d-%data%
+                                     double-float
+                                     (nrf)
+                                     ((1 *))
+                                     d-%offset%)
+               (f2cl-lib:array-slice e-%data%
+                                     double-float
+                                     (nrf)
+                                     ((1 *))
+                                     e-%offset%)
+               (f2cl-lib:array-slice vt-%data%
                                      double-float
                                      (nrf nrf)
-                                     ((1 ldvt) (1 *)))
+                                     ((1 ldvt) (1 *))
+                                     vt-%offset%)
                ldvt
-               (f2cl-lib:array-slice u double-float (nrf nrf) ((1 ldu) (1 *)))
+               (f2cl-lib:array-slice u-%data%
+                                     double-float
+                                     (nrf nrf)
+                                     ((1 ldu) (1 *))
+                                     u-%offset%)
                ldu
-               (f2cl-lib:array-slice u double-float (nrf nrf) ((1 ldu) (1 *)))
+               (f2cl-lib:array-slice u-%data%
+                                     double-float
+                                     (nrf nrf)
+                                     ((1 ldu) (1 *))
+                                     u-%offset%)
                ldu work info)
             (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                              var-8 var-9 var-10 var-11 var-12 var-13 var-14))
@@ -218,23 +264,34 @@
                     (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
                      var-9 var-10 var-11 var-12 var-13)
                   (dlasd1 nl nr sqrei
-                   (f2cl-lib:array-slice d double-float (nlf) ((1 *))) alpha
-                   beta
-                   (f2cl-lib:array-slice u
+                   (f2cl-lib:array-slice d-%data%
+                                         double-float
+                                         (nlf)
+                                         ((1 *))
+                                         d-%offset%)
+                   alpha beta
+                   (f2cl-lib:array-slice u-%data%
                                          double-float
                                          (nlf nlf)
-                                         ((1 ldu) (1 *)))
+                                         ((1 ldu) (1 *))
+                                         u-%offset%)
                    ldu
-                   (f2cl-lib:array-slice vt
+                   (f2cl-lib:array-slice vt-%data%
                                          double-float
                                          (nlf nlf)
-                                         ((1 ldvt) (1 *)))
+                                         ((1 ldvt) (1 *))
+                                         vt-%offset%)
                    ldvt
-                   (f2cl-lib:array-slice iwork
+                   (f2cl-lib:array-slice iwork-%data%
                                          f2cl-lib:integer4
                                          (idxqc)
-                                         ((1 *)))
-                   (f2cl-lib:array-slice iwork f2cl-lib:integer4 (iwk) ((1 *)))
+                                         ((1 *))
+                                         iwork-%offset%)
+                   (f2cl-lib:array-slice iwork-%data%
+                                         f2cl-lib:integer4
+                                         (iwk)
+                                         ((1 *))
+                                         iwork-%offset%)
                    work info)
                 (declare (ignore var-0 var-1 var-2 var-3 var-6 var-7 var-8
                                  var-9 var-10 var-11 var-12))

@@ -1,31 +1,31 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((zero 0.0d0) (one 1.0d0))
-  (declare (type (double-float 0.0d0 0.0d0) zero)
-           (type (double-float 1.0d0 1.0d0) one)
+(let* ((zero 0.0) (one 1.0))
+  (declare (type (double-float 0.0 0.0) zero)
+           (type (double-float 1.0 1.0) one)
            (ignorable zero one))
   (defun zgeev (jobvl jobvr n a lda w vl ldvl vr ldvr work lwork rwork info)
     (declare (type (array double-float (*)) rwork)
              (type (array f2cl-lib:complex16 (*)) work vr vl w a)
              (type (f2cl-lib:integer4) info lwork ldvr ldvl lda n)
-             (type (simple-array character (*)) jobvr jobvl))
+             (type (simple-string *) jobvr jobvl))
     (f2cl-lib:with-multi-array-data
         ((jobvl character jobvl-%data% jobvl-%offset%)
          (jobvr character jobvr-%data% jobvr-%offset%)
@@ -36,9 +36,9 @@
          (work f2cl-lib:complex16 work-%data% work-%offset%)
          (rwork double-float rwork-%data% rwork-%offset%))
       (prog ((dum (make-array 1 :element-type 'double-float))
-             (select (make-array 1 :element-type 't)) (tmp #C(0.0d0 0.0d0))
-             (anrm 0.0d0) (bignum 0.0d0) (cscale 0.0d0) (eps 0.0d0) (scl 0.0d0)
-             (smlnum 0.0d0) (hswork 0) (i 0) (ibal 0) (ierr 0) (ihi 0) (ilo 0)
+             (select (make-array 1 :element-type 't)) (tmp #C(0.0 0.0))
+             (anrm 0.0) (bignum 0.0) (cscale 0.0) (eps 0.0) (scl 0.0)
+             (smlnum 0.0) (hswork 0) (i 0) (ibal 0) (ierr 0) (ihi 0) (ilo 0)
              (irwork 0) (itau 0) (iwrk 0) (k 0) (maxwrk 0) (minwrk 0) (nout 0)
              (side
               (make-array '(1) :element-type 'character :initial-element #\ ))
@@ -49,7 +49,7 @@
                  (type (double-float) anrm bignum cscale eps scl smlnum)
                  (type (f2cl-lib:integer4) hswork i ibal ierr ihi ilo irwork
                                            itau iwrk k maxwrk minwrk nout)
-                 (type (simple-array character (1)) side)
+                 (type (simple-string 1) side)
                  (type f2cl-lib:logical lquery scalea wantvl wantvr))
         (setf info 0)
         (setf lquery (coerce (= lwork -1) 'f2cl-lib:logical))
@@ -548,8 +548,7 @@
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::zgeev fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))
                         (fortran-to-lisp::integer4)

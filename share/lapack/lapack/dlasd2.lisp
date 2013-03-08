@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -156,8 +156,18 @@
                                    ((1 *))
                                    coltyp-%offset%))
            label60))
-        (dlamrg nl nr (f2cl-lib:array-slice dsigma double-float (2) ((1 *))) 1
-         1 (f2cl-lib:array-slice idx f2cl-lib:integer4 (2) ((1 *))))
+        (dlamrg nl nr
+         (f2cl-lib:array-slice dsigma-%data%
+                               double-float
+                               (2)
+                               ((1 *))
+                               dsigma-%offset%)
+         1 1
+         (f2cl-lib:array-slice idx-%data%
+                               f2cl-lib:integer4
+                               (2)
+                               ((1 *))
+                               idx-%offset%))
         (f2cl-lib:fdo (i 2 (f2cl-lib:int-add i 1))
                       ((> i n) nil)
           (tagbody
@@ -248,16 +258,30 @@
                 ((<= idxj nlp1)
                  (setf idxj (f2cl-lib:int-sub idxj 1))))
               (drot n
-               (f2cl-lib:array-slice u double-float (1 idxjp) ((1 ldu) (1 *)))
-               1 (f2cl-lib:array-slice u double-float (1 idxj) ((1 ldu) (1 *)))
+               (f2cl-lib:array-slice u-%data%
+                                     double-float
+                                     (1 idxjp)
+                                     ((1 ldu) (1 *))
+                                     u-%offset%)
+               1
+               (f2cl-lib:array-slice u-%data%
+                                     double-float
+                                     (1 idxj)
+                                     ((1 ldu) (1 *))
+                                     u-%offset%)
                1 c s)
               (drot m
-               (f2cl-lib:array-slice vt
+               (f2cl-lib:array-slice vt-%data%
                                      double-float
                                      (idxjp 1)
-                                     ((1 ldvt) (1 *)))
+                                     ((1 ldvt) (1 *))
+                                     vt-%offset%)
                ldvt
-               (f2cl-lib:array-slice vt double-float (idxj 1) ((1 ldvt) (1 *)))
+               (f2cl-lib:array-slice vt-%data%
+                                     double-float
+                                     (idxj 1)
+                                     ((1 ldvt) (1 *))
+                                     vt-%offset%)
                ldvt c s)
               (cond
                 ((/= (f2cl-lib:fref coltyp (j) ((1 *)))
@@ -353,12 +377,30 @@
               ((<= idxj nlp1)
                (setf idxj (f2cl-lib:int-sub idxj 1))))
             (dcopy n
-             (f2cl-lib:array-slice u double-float (1 idxj) ((1 ldu) (1 *))) 1
-             (f2cl-lib:array-slice u2 double-float (1 j) ((1 ldu2) (1 *))) 1)
+             (f2cl-lib:array-slice u-%data%
+                                   double-float
+                                   (1 idxj)
+                                   ((1 ldu) (1 *))
+                                   u-%offset%)
+             1
+             (f2cl-lib:array-slice u2-%data%
+                                   double-float
+                                   (1 j)
+                                   ((1 ldu2) (1 *))
+                                   u2-%offset%)
+             1)
             (dcopy m
-             (f2cl-lib:array-slice vt double-float (idxj 1) ((1 ldvt) (1 *)))
+             (f2cl-lib:array-slice vt-%data%
+                                   double-float
+                                   (idxj 1)
+                                   ((1 ldvt) (1 *))
+                                   vt-%offset%)
              ldvt
-             (f2cl-lib:array-slice vt2 double-float (j 1) ((1 ldvt2) (1 *)))
+             (f2cl-lib:array-slice vt2-%data%
+                                   double-float
+                                   (j 1)
+                                   ((1 ldvt2) (1 *))
+                                   vt2-%offset%)
              ldvt2)
            label160))
         (setf (f2cl-lib:fref dsigma-%data% (1) ((1 *)) dsigma-%offset%) zero)
@@ -389,8 +431,13 @@
              (t
               (setf (f2cl-lib:fref z-%data% (1) ((1 *)) z-%offset%) z1)))))
         (dcopy (f2cl-lib:int-sub k 1)
-         (f2cl-lib:array-slice u2 double-float (2 1) ((1 ldu2) (1 *))) 1
-         (f2cl-lib:array-slice z double-float (2) ((1 *))) 1)
+         (f2cl-lib:array-slice u2-%data%
+                               double-float
+                               (2 1)
+                               ((1 ldu2) (1 *))
+                               u2-%offset%)
+         1 (f2cl-lib:array-slice z-%data% double-float (2) ((1 *)) z-%offset%)
+         1)
         (dlaset "A" n 1 zero zero u2 ldu2)
         (setf (f2cl-lib:fref u2-%data% (nlp1 1) ((1 ldu2) (1 *)) u2-%offset%)
                 one)
@@ -442,39 +489,73 @@
               label180)))
           (t
            (dcopy m
-            (f2cl-lib:array-slice vt double-float (nlp1 1) ((1 ldvt) (1 *)))
+            (f2cl-lib:array-slice vt-%data%
+                                  double-float
+                                  (nlp1 1)
+                                  ((1 ldvt) (1 *))
+                                  vt-%offset%)
             ldvt
-            (f2cl-lib:array-slice vt2 double-float (1 1) ((1 ldvt2) (1 *)))
+            (f2cl-lib:array-slice vt2-%data%
+                                  double-float
+                                  (1 1)
+                                  ((1 ldvt2) (1 *))
+                                  vt2-%offset%)
             ldvt2)))
         (cond
           ((> m n)
            (dcopy m
-            (f2cl-lib:array-slice vt double-float (m 1) ((1 ldvt) (1 *))) ldvt
-            (f2cl-lib:array-slice vt2 double-float (m 1) ((1 ldvt2) (1 *)))
+            (f2cl-lib:array-slice vt-%data%
+                                  double-float
+                                  (m 1)
+                                  ((1 ldvt) (1 *))
+                                  vt-%offset%)
+            ldvt
+            (f2cl-lib:array-slice vt2-%data%
+                                  double-float
+                                  (m 1)
+                                  ((1 ldvt2) (1 *))
+                                  vt2-%offset%)
             ldvt2)))
         (cond
           ((> n k)
            (dcopy (f2cl-lib:int-sub n k)
-            (f2cl-lib:array-slice dsigma double-float ((+ k 1)) ((1 *))) 1
-            (f2cl-lib:array-slice d double-float ((+ k 1)) ((1 *))) 1)
+            (f2cl-lib:array-slice dsigma-%data%
+                                  double-float
+                                  ((+ k 1))
+                                  ((1 *))
+                                  dsigma-%offset%)
+            1
+            (f2cl-lib:array-slice d-%data%
+                                  double-float
+                                  ((+ k 1))
+                                  ((1 *))
+                                  d-%offset%)
+            1)
            (dlacpy "A" n (f2cl-lib:int-sub n k)
-            (f2cl-lib:array-slice u2
+            (f2cl-lib:array-slice u2-%data%
                                   double-float
                                   (1 (f2cl-lib:int-add k 1))
-                                  ((1 ldu2) (1 *)))
+                                  ((1 ldu2) (1 *))
+                                  u2-%offset%)
             ldu2
-            (f2cl-lib:array-slice u
+            (f2cl-lib:array-slice u-%data%
                                   double-float
                                   (1 (f2cl-lib:int-add k 1))
-                                  ((1 ldu) (1 *)))
+                                  ((1 ldu) (1 *))
+                                  u-%offset%)
             ldu)
            (dlacpy "A" (f2cl-lib:int-sub n k) m
-            (f2cl-lib:array-slice vt2
+            (f2cl-lib:array-slice vt2-%data%
                                   double-float
                                   ((+ k 1) 1)
-                                  ((1 ldvt2) (1 *)))
+                                  ((1 ldvt2) (1 *))
+                                  vt2-%offset%)
             ldvt2
-            (f2cl-lib:array-slice vt double-float ((+ k 1) 1) ((1 ldvt) (1 *)))
+            (f2cl-lib:array-slice vt-%data%
+                                  double-float
+                                  ((+ k 1) 1)
+                                  ((1 ldvt) (1 *))
+                                  vt-%offset%)
             ldvt)))
         (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                       ((> j 4) nil)

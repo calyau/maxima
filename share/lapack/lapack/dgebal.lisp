@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -26,7 +26,7 @@
   (defun dgebal (job n a lda ilo ihi scale info)
     (declare (type (array double-float (*)) scale a)
              (type (f2cl-lib:integer4) info ihi ilo lda n)
-             (type (simple-array character (*)) job))
+             (type (simple-string *) job))
     (f2cl-lib:with-multi-array-data
         ((job character job-%data% job-%offset%)
          (a double-float a-%data% a-%offset%)
@@ -71,11 +71,32 @@
         (setf (f2cl-lib:fref scale-%data% (m) ((1 *)) scale-%offset%)
                 (coerce (the f2cl-lib:integer4 j) 'double-float))
         (if (= j m) (go label30))
-        (dswap l (f2cl-lib:array-slice a double-float (1 j) ((1 lda) (1 *))) 1
-         (f2cl-lib:array-slice a double-float (1 m) ((1 lda) (1 *))) 1)
+        (dswap l
+         (f2cl-lib:array-slice a-%data%
+                               double-float
+                               (1 j)
+                               ((1 lda) (1 *))
+                               a-%offset%)
+         1
+         (f2cl-lib:array-slice a-%data%
+                               double-float
+                               (1 m)
+                               ((1 lda) (1 *))
+                               a-%offset%)
+         1)
         (dswap (f2cl-lib:int-add (f2cl-lib:int-sub n k) 1)
-         (f2cl-lib:array-slice a double-float (j k) ((1 lda) (1 *))) lda
-         (f2cl-lib:array-slice a double-float (m k) ((1 lda) (1 *))) lda)
+         (f2cl-lib:array-slice a-%data%
+                               double-float
+                               (j k)
+                               ((1 lda) (1 *))
+                               a-%offset%)
+         lda
+         (f2cl-lib:array-slice a-%data%
+                               double-float
+                               (m k)
+                               ((1 lda) (1 *))
+                               a-%offset%)
+         lda)
        label30
         (f2cl-lib:computed-goto (label40 label80) iexc)
        label40
@@ -157,10 +178,11 @@
                label150))
             (setf ica
                     (idamax l
-                     (f2cl-lib:array-slice a
+                     (f2cl-lib:array-slice a-%data%
                                            double-float
                                            (1 i)
-                                           ((1 lda) (1 *)))
+                                           ((1 lda) (1 *))
+                                           a-%offset%)
                      1))
             (setf ca
                     (abs
@@ -170,10 +192,11 @@
                                     a-%offset%)))
             (setf ira
                     (idamax (f2cl-lib:int-add (f2cl-lib:int-sub n k) 1)
-                     (f2cl-lib:array-slice a
+                     (f2cl-lib:array-slice a-%data%
                                            double-float
                                            (i k)
-                                           ((1 lda) (1 *)))
+                                           ((1 lda) (1 *))
+                                           a-%offset%)
                      lda))
             (setf ra
                     (abs
@@ -230,9 +253,19 @@
                        f))
             (setf noconv f2cl-lib:%true%)
             (dscal (f2cl-lib:int-add (f2cl-lib:int-sub n k) 1) g
-             (f2cl-lib:array-slice a double-float (i k) ((1 lda) (1 *))) lda)
+             (f2cl-lib:array-slice a-%data%
+                                   double-float
+                                   (i k)
+                                   ((1 lda) (1 *))
+                                   a-%offset%)
+             lda)
             (dscal l f
-             (f2cl-lib:array-slice a double-float (1 i) ((1 lda) (1 *))) 1)
+             (f2cl-lib:array-slice a-%data%
+                                   double-float
+                                   (1 i)
+                                   ((1 lda) (1 *))
+                                   a-%offset%)
+             1)
            label200))
         (if noconv (go label140))
        label210
@@ -248,11 +281,10 @@
   (setf (gethash 'fortran-to-lisp::dgebal
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (fortran-to-lisp::integer4) (array double-float (*))
+           :arg-types '((simple-string) (fortran-to-lisp::integer4)
+                        (array double-float (*)) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
-                        (fortran-to-lisp::integer4) (array double-float (*))
-                        (fortran-to-lisp::integer4))
+                        (array double-float (*)) (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil fortran-to-lisp::ilo
                             fortran-to-lisp::ihi nil fortran-to-lisp::info)
            :calls '(fortran-to-lisp::dscal fortran-to-lisp::idamax
