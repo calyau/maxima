@@ -2,9 +2,14 @@
 
 ;;; System to convert the Fortran code to Lisp
 ;;;
-;;; Run
+;;; How to convert the Fortran code to Lisp for maxima.
 ;;;
-;;; (mk:oos "lapack-lisp" :compile :force t)
+;;; 1. Get f2cl, which is available via quicklisp:
+;;;      (ql:quickload "f2cl")
+;;; 2. Run
+;;;     (mk:oos "lapack-lisp" :compile :force t)
+;;;
+;;; This should generate all of the Lisp code.
 
 (mk:define-language :f2cl-lisp
     :compiler #'f2cl:f2cl
@@ -161,7 +166,7 @@
 	     (:file "dlasd0"
 		    :depends-on ("dlasdt" "dlasd1" "dlasdq"))
 	     (:file "dlasda"
-		    :depends-on ("dlasd6" "dlaset" "dlasdq"))
+		    :depends-on ("dlasd6" "dlaset" "dlasdq" "dlasdt"))
 	     (:file "dlasr")
 	     (:file "dlabrd"
 		    :depends-on ("dlarfg"))
@@ -228,10 +233,81 @@
 	     ;; For condition numbers of the singular vectors
 	     (:file "ddisna")
 	     
-	     ;;(:file "zgeev")
 	     (:file "zlange"
 		    :depends-on ("zlassq"))
 	     (:file "zlassq")
+	     ;; Complex eigen problems
+	     (:file "zgeev"
+		    :depends-on ("zhseqr" "zlange" "zlascl" "zgebal" "zlacpy" "zunghr"
+					  "ztrevc" "zgebak" "zgehrd"))
+	     (:file "zhseqr"
+		    :depends-on ("zlaqr0" "zlaset" "zlahqr" "zlacpy"))
+	     (:file "zlange"
+		    :depends-on ("zlassq"))
+	     (:file "zlascl"
+		    :depends-on ("disnan"))
+	     (:file "zgebal")
+	     (:file "zlacpy"
+		    :depends-on ("disnan"))
+	     (:file "zunghr"
+		    :depends-on ("zungqr"))
+	     (:file "ztrevc"
+		    :depends-on ("zlatrs"))
+	     (:file "zgebak"
+		    :depends-on ("zlatrs"))
+	     (:file "zlatrs"
+		    :depends-on ("zladiv"))
+	     (:file "zungqr"
+		    :depends-on ("zung2r" "zlarft" "zlarfb"))
+	     (:file "disnan"
+		    :depends-on ("dlaisnan"))
+	     (:file "dlaisnan")
+	     (:file "zlassq")
+	     (:file "zladiv")
+	     (:file "zung2r"
+		    :depends-on ("zlarf"))
+	     (:file "zlarft"
+		    :depends-on ("zlacgv"))
+	     (:file "zlarfb"
+		    :depends-on ("ilazlr" "ilazlc" "zlacgv"))
+	     (:file "ilazlr")
+	     (:file "ilazlc")
+	     (:file "zlacgv")
+	     (:file "zlarf"
+		    :depends-on ("ilazlc" "ilazlr"))
+	     (:file "zlaqr0"
+		    :depends-on ("zlahqr" "zlaqr3" "zlaqr4" "zlaqr5" "zlacpy"))
+	     (:file "zlaset")
+	     (:file "zlaqr3"
+		    :depends-on ("zgehrd" "zunmhr" "zlahqr" "ztrexc" "zlarfg"
+					  "zlaqr4" "zlacpy" "zlaset"))
+	     (:file "zlaqr4"
+		    :depends-on ("zlaqr2" "zlahqr" "zlacpy" "zlaqr5"))
+	     (:file "zlaqr5"
+		    :depends-on ("zlaqr1" "zlarfg" "zlaset" "zlacpy"))
+	     (:file "zlaqr1")
+	     (:file "zlaqr2"
+		    :depends-on ("zunmhr" "ztrexc" "zlacpy" "zlaset"))
+	     (:file "zlarfg"
+		    :depends-on ("dlapy3" "zladiv"))
+	     (:file "zlahqr"
+		    :depends-on ("zlarfg" "zladiv"))
+	     (:file "zgehrd"
+		    :depends-on ("zlahr2" "zgehd2" "zlarfb"))
+	     (:file "zunmhr"
+		    :depends-on ("zunmqr"))
+	     (:file "ztrexc"
+		    :depends-on ("zlartg" "zrot" "zunm2r"))
+	     (:file "dlapy3")
+	     (:file "zlartg")
+	     (:file "zrot")
+	     (:file "zunmqr"
+		    :depends-on ("zunm2r" "zlarft" "zlarfb"))
+	     (:file "zlahr2"
+		    :depends-on ("zlacgv" "zlacpy"))
+	     (:file "zgehd2"
+		    :depends-on ("zlarfg" "zlarf"))
+	     (:file "zunm2r")
 	     ))))
 
 (mk:defsystem blas-package
@@ -253,8 +329,7 @@
 			       :float-format double-float)
 	    :compile-only t
 	    :components
-	    (
-	     (:file "daxpy")
+	    ((:file "daxpy")
 	     (:file "dcopy")
 	     (:file "ddot")
 	     (:file "dnrm2")

@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -18,7 +18,7 @@
 
 
 (defun ilaenv (ispec name opts n1 n2 n3 n4)
-  (declare (type (simple-array character (*)) opts name)
+  (declare (type (simple-string *) opts name)
            (type (f2cl-lib:integer4) n4 n3 n2 n1 ispec))
   (f2cl-lib:with-multi-array-data
       ((name character name-%data% name-%offset%)
@@ -32,10 +32,10 @@
            (c1 (make-array '(1) :element-type 'character :initial-element #\ ))
            (cname nil) (sname nil) (ilaenv 0))
       (declare (type f2cl-lib:logical sname cname)
-               (type (simple-array character (1)) c1)
-               (type (simple-array character (2)) c4 c2)
-               (type (simple-array character (3)) c3)
-               (type (simple-array character (6)) subnam)
+               (type (simple-string 1) c1)
+               (type (simple-string 2) c4 c2)
+               (type (simple-string 3) c3)
+               (type (simple-string 6) subnam)
                (type (f2cl-lib:integer4) ilaenv nx nbmin nb iz ic i))
       (f2cl-lib:computed-goto
        (label100 label100 label100 label400 label500 label600 label700 label800
@@ -470,11 +470,9 @@
   (setf (gethash 'fortran-to-lisp::ilaenv
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((fortran-to-lisp::integer4)
-                        (simple-array character (*))
-                        (simple-array character (*))
+           :arg-types '((fortran-to-lisp::integer4) (simple-string)
+                        (simple-string) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
-                        (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil nil nil nil)
            :calls '(fortran-to-lisp::ieeeck))))

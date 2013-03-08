@@ -834,8 +834,8 @@
 ;;;    (3) dx = k*(a*d-b*c)*t^(k-1)/(a-c*t^k)^2 * dt
 ;;;
 ;;; First, the algorithm calls the routine RAT3 to collect the roots of the
-;;; form ((a*x+b)/(c*x+d))^(n/m) in the list *ROOTLIST*. The routine FINDGK
-;;; searches for the least common multiplier of m1, m2, ... Then the
+;;; form ((a*x+b)/(c*x+d))^(n/m) in the list *ROOTLIST*.
+;;; search for the least common multiplier of m1, m2, ... then the
 ;;; substitutions (2) and (3) are done and the new problem is integrated.
 ;;; As always, W is an alist which associates to the coefficients
 ;;; a, b... (and to VAR) their values.
@@ -849,9 +849,9 @@
      (when (setq y (chebyf exp var)) (return y))
      ;; Check if the integrand has a suitably form and collect the roots
      ;; in the global special variable *ROOTLIST*.
-     (when (not (rat3 exp t)) (return nil))
+     (unless (rat3 exp t) (return nil))
      ;; Get the least common multiplier of m1, m2, ...
-     (setq k (findingk *rootlist*))
+     (setq k (apply #'lcm *rootlist*))
      (setq w1 (cons (cons 'k k) w))
      ;; Substitute for the roots.
      (setq y
@@ -902,12 +902,6 @@
 	      (denomfind (caddr ex)))
          (setq *rootlist* (cons (denomfind (caddr ex)) *rootlist*)))
         (t (rat3 (cadr ex) nil))))
-
-;; Helper function for the function ratroot to get the smallest power of ll.
-(defun findingk (ll)
-  (do ((kk 1) (l ll (cdr l)))
-      ((null l) kk)
-    (setq kk (lcm kk (car l)))))
 
 (let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
       (rootvar nil)) ; The variable we substitute for the root.

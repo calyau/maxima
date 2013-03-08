@@ -1,28 +1,28 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((zero 0.0d0)
-       (one 1.0d0)
-       (cmzero (f2cl-lib:cmplx 0.0d0 0.0d0))
-       (cmone (f2cl-lib:cmplx 1.0d0 0.0d0)))
-  (declare (type (double-float 0.0d0 0.0d0) zero)
-           (type (double-float 1.0d0 1.0d0) one)
+(let* ((zero 0.0)
+       (one 1.0)
+       (cmzero (f2cl-lib:cmplx 0.0 0.0))
+       (cmone (f2cl-lib:cmplx 1.0 0.0)))
+  (declare (type (double-float 0.0 0.0) zero)
+           (type (double-float 1.0 1.0) one)
            (type (f2cl-lib:complex16) cmzero)
            (type (f2cl-lib:complex16) cmone)
            (ignorable zero one cmzero cmone))
@@ -32,7 +32,7 @@
              (type (array f2cl-lib:complex16 (*)) work vr vl t$)
              (type (f2cl-lib:integer4) info m mm ldvr ldvl ldt n)
              (type (array f2cl-lib:logical (*)) select)
-             (type (simple-array character (*)) howmny side))
+             (type (simple-string *) howmny side))
     (f2cl-lib:with-multi-array-data
         ((side character side-%data% side-%offset%)
          (howmny character howmny-%data% howmny-%offset%)
@@ -47,10 +47,10 @@
         (declare (ftype (function (f2cl-lib:complex16)
                          (values double-float &rest t))
                         cabs1))
-        (prog ((cdum #C(0.0d0 0.0d0)) (ovfl 0.0d0) (remax 0.0d0) (scale 0.0d0)
-               (smin 0.0d0) (smlnum 0.0d0) (ulp 0.0d0) (unfl 0.0d0) (i 0)
-               (ii 0) (is 0) (j 0) (k 0) (ki 0) (allv nil) (bothv nil)
-               (leftv nil) (over nil) (rightv nil) (somev nil) (dcmplx$ 0.0))
+        (prog ((cdum #C(0.0 0.0)) (ovfl 0.0) (remax 0.0) (scale 0.0) (smin 0.0)
+               (smlnum 0.0) (ulp 0.0) (unfl 0.0) (i 0) (ii 0) (is 0) (j 0)
+               (k 0) (ki 0) (allv nil) (bothv nil) (leftv nil) (over nil)
+               (rightv nil) (somev nil) (dcmplx$ 0.0f0))
           (declare (type (single-float) dcmplx$)
                    (type (f2cl-lib:complex16) cdum)
                    (type (double-float) ovfl remax scale smin smlnum ulp unfl)
@@ -563,8 +563,7 @@
   (setf (gethash 'fortran-to-lisp::ztrevc
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (array fortran-to-lisp::logical (*))
                         (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))

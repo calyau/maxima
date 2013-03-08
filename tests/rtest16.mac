@@ -470,6 +470,16 @@ limit((%pi*4^N*N!^2)/(2*2^(2*N)*gamma(N+1/2)*gamma(N+3/2)), N, inf);
 limit(log(gamma(x+1))/x, x, 0);
 -%gamma;
 
+/* log has a branch cut on negative real axis */
+limit(log(-1+x*%i), x, 0, plus);
+%i*%pi;
+
+limit(log(-1+x*%i), x, 0, minus);
+-%i*%pi;
+
+limit((log(y+h)-log(y))/h,h,0,plus);
+1/y;
+
 /* limit of incomplete gamma */
 /* function simplim%gamma_incomplete in gamma.lisp */
 

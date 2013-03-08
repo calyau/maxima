@@ -330,70 +330,75 @@
 	     (:file "zlassq")
 	     ;; Complex eigen problems
 	     (:file "zgeev"
-	      :depends-on ("zhseqr" "zlange" "zlascl" "zgebal" "zlacpy" "zunghr"
-				    "ztrevc" "zgebak" "zgehrd"))
+		    :depends-on ("zhseqr" "zlange" "zlascl" "zgebal" "zlacpy" "zunghr"
+					  "ztrevc" "zgebak" "zgehrd"))
 	     (:file "zhseqr"
-	      :depends-on ("zlaqr0" "zlaset" "zlahqr"))
+		    :depends-on ("zlaqr0" "zlaset" "zlahqr" "zlacpy"))
 	     (:file "zlange"
-	      :depends-on ("zlassq"))
+		    :depends-on ("zlassq"))
 	     (:file "zlascl"
-	      :depends-on ("disnan"))
+		    :depends-on ("disnan"))
 	     (:file "zgebal")
 	     (:file "zlacpy"
-	      :depends-on ("disnan"))
+		    :depends-on ("disnan"))
 	     (:file "zunghr"
-	      :depends-on ("zungqr"))
-	     (:file "ztrevc")
+		    :depends-on ("zungqr"))
+	     (:file "ztrevc"
+		    :depends-on ("zlatrs"))
 	     (:file "zgebak"
-	      :depends-on ("zlatrs"))
+		    :depends-on ("zlatrs"))
 	     (:file "zlatrs"
-	      :depends-on ("zladiv"))
+		    :depends-on ("zladiv"))
 	     (:file "zungqr"
-	      :depends-on ("zung2r" "zlarft" "zlarfb"))
+		    :depends-on ("zung2r" "zlarft" "zlarfb"))
 	     (:file "disnan"
-	      :depends-on ("dlaisnan"))
+		    :depends-on ("dlaisnan"))
 	     (:file "dlaisnan")
 	     (:file "zlassq")
 	     (:file "zladiv")
 	     (:file "zung2r"
-	      :depends-on ("zlarf"))
+		    :depends-on ("zlarf"))
 	     (:file "zlarft"
-	      :depends-on ("zlacgv"))
+		    :depends-on ("zlacgv"))
 	     (:file "zlarfb"
-	      :depends-on ("ilazlr" "ilazlc" "zlacgv"))
+		    :depends-on ("ilazlr" "ilazlc" "zlacgv"))
 	     (:file "ilazlr")
 	     (:file "ilazlc")
 	     (:file "zlacgv")
-	     (:file "zlarf")
+	     (:file "zlarf"
+		    :depends-on ("ilazlc" "ilazlr"))
 	     (:file "zlaqr0"
-	      :depends-on ("zlahqr" "zlaqr3" "zlaqr4" "zlaqr5"))
+		    :depends-on ("zlahqr" "zlaqr3" "zlaqr4" "zlaqr5" "zlacpy"))
 	     (:file "zlaset")
 	     (:file "zlaqr3"
-	      :depends-on ("zgehrd" "zunmhr" "zlahqr" "ztrexc" "zlarfg"))
+		    :depends-on ("zgehrd" "zunmhr" "zlahqr" "ztrexc" "zlarfg"
+					  "zlaqr4" "zlacpy" "zlaset"))
 	     (:file "zlaqr4"
-	      :depends-on ("zlaqr2" "zlahqr"))
+		    :depends-on ("zlaqr2" "zlahqr" "zlacpy" "zlaqr5"))
 	     (:file "zlaqr5"
-	      :depends-on ("zlaqr1" "zlarfg"))
+		    :depends-on ("zlaqr1" "zlarfg" "zlaset" "zlacpy"))
 	     (:file "zlaqr1")
 	     (:file "zlaqr2"
-	      :depends-on ("zunmhr" "ztrexc"))
+		    :depends-on ("zunmhr" "ztrexc" "zlacpy" "zlaset"))
 	     (:file "zlarfg"
-	      :depends-on ("dlapy3"))
+		    :depends-on ("dlapy3" "zladiv"))
 	     (:file "zlahqr"
-	      :depends-on ("zlarfg"))
+		    :depends-on ("zlarfg" "zladiv"))
 	     (:file "zgehrd"
-	      :depends-on ("zlahr2" "zgehd2"))
+		    :depends-on ("zlahr2" "zgehd2" "zlarfb"))
 	     (:file "zunmhr"
-	      :depends-on ("zunmqr"))
+		    :depends-on ("zunmqr"))
 	     (:file "ztrexc"
-	      :depends-on ("zlartg" "zrot" "zunm2r"))
+		    :depends-on ("zlartg" "zrot" "zunm2r"))
 	     (:file "dlapy3")
 	     (:file "zlartg")
 	     (:file "zrot")
-	     (:file "zunmqr")
-	     (:file "zlahr2")
+	     (:file "zunmqr"
+		    :depends-on ("zunm2r" "zlarft" "zlarfb"))
+	     (:file "zlahr2"
+		    :depends-on ("zlacgv" "zlacpy"))
 	     (:file "zgehd2"
-	      :depends-on ("zlarfg" "zlarf"))
+		    :depends-on ("zlarfg" "zlarf"))
 	     (:file "zunm2r")
 	     ))))
 

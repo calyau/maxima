@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -20,7 +20,7 @@
 (defun dormbr (vect side trans m n k a lda tau c ldc work lwork info)
   (declare (type (array double-float (*)) work c tau a)
            (type (f2cl-lib:integer4) info lwork ldc lda k n m)
-           (type (simple-array character (*)) trans side vect))
+           (type (simple-string *) trans side vect))
   (f2cl-lib:with-multi-array-data
       ((vect character vect-%data% vect-%offset%)
        (side character side-%data% side-%offset%)
@@ -35,7 +35,7 @@
             (make-array '(1) :element-type 'character :initial-element #\ ))
            (applyq nil) (left nil) (lquery nil) (notran nil))
       (declare (type f2cl-lib:logical notran lquery left applyq)
-               (type (simple-array character (1)) transt)
+               (type (simple-string 1) transt)
                (type (f2cl-lib:integer4) nw nq ni nb mi lwkopt iinfo i2 i1))
       (setf info 0)
       (setf applyq (lsame vect "Q"))
@@ -144,9 +144,17 @@
                   (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                    var-10 var-11 var-12)
                 (dormqr side trans mi ni (f2cl-lib:int-sub nq 1)
-                 (f2cl-lib:array-slice a double-float (2 1) ((1 lda) (1 *)))
+                 (f2cl-lib:array-slice a-%data%
+                                       double-float
+                                       (2 1)
+                                       ((1 lda) (1 *))
+                                       a-%offset%)
                  lda tau
-                 (f2cl-lib:array-slice c double-float (i1 i2) ((1 ldc) (1 *)))
+                 (f2cl-lib:array-slice c-%data%
+                                       double-float
+                                       (i1 i2)
+                                       ((1 ldc) (1 *))
+                                       c-%offset%)
                  ldc work lwork iinfo)
               (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                                var-8 var-9 var-10 var-11))
@@ -182,9 +190,17 @@
                   (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                    var-10 var-11 var-12)
                 (dormlq side transt mi ni (f2cl-lib:int-sub nq 1)
-                 (f2cl-lib:array-slice a double-float (1 2) ((1 lda) (1 *)))
+                 (f2cl-lib:array-slice a-%data%
+                                       double-float
+                                       (1 2)
+                                       ((1 lda) (1 *))
+                                       a-%offset%)
                  lda tau
-                 (f2cl-lib:array-slice c double-float (i1 i2) ((1 ldc) (1 *)))
+                 (f2cl-lib:array-slice c-%data%
+                                       double-float
+                                       (i1 i2)
+                                       ((1 ldc) (1 *))
+                                       c-%offset%)
                  ldc work lwork iinfo)
               (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7
                                var-8 var-9 var-10 var-11))
@@ -202,9 +218,7 @@
   (setf (gethash 'fortran-to-lisp::dormbr
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string) (simple-string)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4) (array double-float (*))
                         (fortran-to-lisp::integer4) (array double-float (*))

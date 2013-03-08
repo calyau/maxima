@@ -1,37 +1,37 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((one (f2cl-lib:cmplx 1.0d0 0.0d0)) (zero (f2cl-lib:cmplx 0.0d0 0.0d0)))
+(let* ((one (f2cl-lib:cmplx 1.0 0.0)) (zero (f2cl-lib:cmplx 0.0 0.0)))
   (declare (type (f2cl-lib:complex16) one)
            (type (f2cl-lib:complex16) zero)
            (ignorable one zero))
   (defun zlarft (direct storev n k v ldv tau t$ ldt)
     (declare (type (array f2cl-lib:complex16 (*)) t$ tau v)
              (type (f2cl-lib:integer4) ldt ldv k n)
-             (type (simple-array character (*)) storev direct))
+             (type (simple-string *) storev direct))
     (f2cl-lib:with-multi-array-data
         ((direct character direct-%data% direct-%offset%)
          (storev character storev-%data% storev-%offset%)
          (v f2cl-lib:complex16 v-%data% v-%offset%)
          (tau f2cl-lib:complex16 tau-%data% tau-%offset%)
          (t$ f2cl-lib:complex16 t$-%data% t$-%offset%))
-      (prog ((vii #C(0.0d0 0.0d0)) (i 0) (j 0) (prevlastv 0) (lastv 0))
+      (prog ((vii #C(0.0 0.0)) (i 0) (j 0) (prevlastv 0) (lastv 0))
         (declare (type (f2cl-lib:complex16) vii)
                  (type (f2cl-lib:integer4) i j prevlastv lastv))
         (if (= n 0) (go end_label))
@@ -415,8 +415,7 @@
   (setf (gethash 'fortran-to-lisp::zlarft
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))
                         (fortran-to-lisp::integer4)

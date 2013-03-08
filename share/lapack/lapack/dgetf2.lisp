@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -54,22 +54,28 @@
                                       (idamax
                                        (f2cl-lib:int-add (f2cl-lib:int-sub m j)
                                                          1)
-                                       (f2cl-lib:array-slice a
+                                       (f2cl-lib:array-slice a-%data%
                                                              double-float
                                                              (j j)
-                                                             ((1 lda) (1 *)))
+                                                             ((1 lda) (1 *))
+                                                             a-%offset%)
                                        1)))
             (setf (f2cl-lib:fref ipiv-%data% (j) ((1 *)) ipiv-%offset%) jp)
             (cond
               ((/= (f2cl-lib:fref a (jp j) ((1 lda) (1 *))) zero)
                (if (/= jp j)
                    (dswap n
-                    (f2cl-lib:array-slice a double-float (j 1) ((1 lda) (1 *)))
+                    (f2cl-lib:array-slice a-%data%
+                                          double-float
+                                          (j 1)
+                                          ((1 lda) (1 *))
+                                          a-%offset%)
                     lda
-                    (f2cl-lib:array-slice a
+                    (f2cl-lib:array-slice a-%data%
                                           double-float
                                           (jp 1)
-                                          ((1 lda) (1 *)))
+                                          ((1 lda) (1 *))
+                                          a-%offset%)
                     lda))
                (if (< j m)
                    (dscal (f2cl-lib:int-sub m j)
@@ -78,30 +84,34 @@
                                       (j j)
                                       ((1 lda) (1 *))
                                       a-%offset%))
-                    (f2cl-lib:array-slice a
+                    (f2cl-lib:array-slice a-%data%
                                           double-float
                                           ((+ j 1) j)
-                                          ((1 lda) (1 *)))
+                                          ((1 lda) (1 *))
+                                          a-%offset%)
                     1)))
               ((= info 0)
                (setf info j)))
             (cond
               ((< j (min (the f2cl-lib:integer4 m) (the f2cl-lib:integer4 n)))
                (dger (f2cl-lib:int-sub m j) (f2cl-lib:int-sub n j) (- one)
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       ((+ j 1) j)
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 1
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       (j (f2cl-lib:int-add j 1))
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda
-                (f2cl-lib:array-slice a
+                (f2cl-lib:array-slice a-%data%
                                       double-float
                                       ((+ j 1) (f2cl-lib:int-add j 1))
-                                      ((1 lda) (1 *)))
+                                      ((1 lda) (1 *))
+                                      a-%offset%)
                 lda)))
            label10))
         (go end_label)

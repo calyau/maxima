@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -79,14 +79,31 @@
              (setf temp var-4))
            (if (<= j3 n)
                (drot (f2cl-lib:int-sub n j1 1)
-                (f2cl-lib:array-slice t$ double-float (j1 j3) ((1 ldt) (1 *)))
+                (f2cl-lib:array-slice t$-%data%
+                                      double-float
+                                      (j1 j3)
+                                      ((1 ldt) (1 *))
+                                      t$-%offset%)
                 ldt
-                (f2cl-lib:array-slice t$ double-float (j2 j3) ((1 ldt) (1 *)))
+                (f2cl-lib:array-slice t$-%data%
+                                      double-float
+                                      (j2 j3)
+                                      ((1 ldt) (1 *))
+                                      t$-%offset%)
                 ldt cs sn))
            (drot (f2cl-lib:int-sub j1 1)
-            (f2cl-lib:array-slice t$ double-float (1 j1) ((1 ldt) (1 *))) 1
-            (f2cl-lib:array-slice t$ double-float (1 j2) ((1 ldt) (1 *))) 1 cs
-            sn)
+            (f2cl-lib:array-slice t$-%data%
+                                  double-float
+                                  (1 j1)
+                                  ((1 ldt) (1 *))
+                                  t$-%offset%)
+            1
+            (f2cl-lib:array-slice t$-%data%
+                                  double-float
+                                  (1 j2)
+                                  ((1 ldt) (1 *))
+                                  t$-%offset%)
+            1 cs sn)
            (setf (f2cl-lib:fref t$-%data% (j1 j1) ((1 ldt) (1 *)) t$-%offset%)
                    t22)
            (setf (f2cl-lib:fref t$-%data% (j2 j2) ((1 ldt) (1 *)) t$-%offset%)
@@ -94,14 +111,27 @@
            (cond
              (wantq
               (drot n
-               (f2cl-lib:array-slice q double-float (1 j1) ((1 ldq) (1 *))) 1
-               (f2cl-lib:array-slice q double-float (1 j2) ((1 ldq) (1 *))) 1
-               cs sn))))
+               (f2cl-lib:array-slice q-%data%
+                                     double-float
+                                     (1 j1)
+                                     ((1 ldq) (1 *))
+                                     q-%offset%)
+               1
+               (f2cl-lib:array-slice q-%data%
+                                     double-float
+                                     (1 j2)
+                                     ((1 ldq) (1 *))
+                                     q-%offset%)
+               1 cs sn))))
           (t
            (tagbody
              (setf nd (f2cl-lib:int-add n1 n2))
              (dlacpy "Full" nd nd
-              (f2cl-lib:array-slice t$ double-float (j1 j1) ((1 ldt) (1 *)))
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (j1 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
               ldt d ldd)
              (setf dnorm (dlange "Max" nd nd d ldd work))
              (setf eps (dlamch "P"))
@@ -155,11 +185,19 @@
                thresh)
               (go label50))
              (dlarfx "L" 3 (f2cl-lib:int-add (f2cl-lib:int-sub n j1) 1) u tau
-              (f2cl-lib:array-slice t$ double-float (j1 j1) ((1 ldt) (1 *)))
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (j1 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
               ldt work)
              (dlarfx "R" j2 3 u tau
-              (f2cl-lib:array-slice t$ double-float (1 j1) ((1 ldt) (1 *))) ldt
-              work)
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (1 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
+              ldt work)
              (setf (f2cl-lib:fref t$-%data%
                                   (j3 j1)
                                   ((1 ldt) (1 *))
@@ -178,7 +216,11 @@
              (cond
                (wantq
                 (dlarfx "R" n 3 u tau
-                 (f2cl-lib:array-slice q double-float (1 j1) ((1 ldq) (1 *)))
+                 (f2cl-lib:array-slice q-%data%
+                                       double-float
+                                       (1 j1)
+                                       ((1 ldq) (1 *))
+                                       q-%offset%)
                  ldq work)))
              (go label40)
             label20
@@ -209,10 +251,18 @@
                thresh)
               (go label50))
              (dlarfx "R" j3 3 u tau
-              (f2cl-lib:array-slice t$ double-float (1 j1) ((1 ldt) (1 *))) ldt
-              work)
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (1 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
+              ldt work)
              (dlarfx "L" 3 (f2cl-lib:int-sub n j1) u tau
-              (f2cl-lib:array-slice t$ double-float (j1 j2) ((1 ldt) (1 *)))
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (j1 j2)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
               ldt work)
              (setf (f2cl-lib:fref t$-%data%
                                   (j1 j1)
@@ -232,7 +282,11 @@
              (cond
                (wantq
                 (dlarfx "R" n 3 u tau
-                 (f2cl-lib:array-slice q double-float (1 j1) ((1 ldq) (1 *)))
+                 (f2cl-lib:array-slice q-%data%
+                                       double-float
+                                       (1 j1)
+                                       ((1 ldq) (1 *))
+                                       q-%offset%)
                  ldq work)))
              (go label40)
             label30
@@ -283,17 +337,33 @@
                thresh)
               (go label50))
              (dlarfx "L" 3 (f2cl-lib:int-add (f2cl-lib:int-sub n j1) 1) u1 tau1
-              (f2cl-lib:array-slice t$ double-float (j1 j1) ((1 ldt) (1 *)))
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (j1 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
               ldt work)
              (dlarfx "R" j4 3 u1 tau1
-              (f2cl-lib:array-slice t$ double-float (1 j1) ((1 ldt) (1 *))) ldt
-              work)
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (1 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
+              ldt work)
              (dlarfx "L" 3 (f2cl-lib:int-add (f2cl-lib:int-sub n j1) 1) u2 tau2
-              (f2cl-lib:array-slice t$ double-float (j2 j1) ((1 ldt) (1 *)))
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (j2 j1)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
               ldt work)
              (dlarfx "R" j4 3 u2 tau2
-              (f2cl-lib:array-slice t$ double-float (1 j2) ((1 ldt) (1 *))) ldt
-              work)
+              (f2cl-lib:array-slice t$-%data%
+                                    double-float
+                                    (1 j2)
+                                    ((1 ldt) (1 *))
+                                    t$-%offset%)
+              ldt work)
              (setf (f2cl-lib:fref t$-%data%
                                   (j3 j1)
                                   ((1 ldt) (1 *))
@@ -317,10 +387,18 @@
              (cond
                (wantq
                 (dlarfx "R" n 3 u1 tau1
-                 (f2cl-lib:array-slice q double-float (1 j1) ((1 ldq) (1 *)))
+                 (f2cl-lib:array-slice q-%data%
+                                       double-float
+                                       (1 j1)
+                                       ((1 ldq) (1 *))
+                                       q-%offset%)
                  ldq work)
                 (dlarfx "R" n 3 u2 tau2
-                 (f2cl-lib:array-slice q double-float (1 j2) ((1 ldq) (1 *)))
+                 (f2cl-lib:array-slice q-%data%
+                                       double-float
+                                       (1 j2)
+                                       ((1 ldq) (1 *))
+                                       q-%offset%)
                  ldq work)))
             label40
              (cond
@@ -374,32 +452,44 @@
                   (setf cs var-8)
                   (setf sn var-9))
                 (drot (f2cl-lib:int-sub n j1 1)
-                 (f2cl-lib:array-slice t$
+                 (f2cl-lib:array-slice t$-%data%
                                        double-float
                                        (j1 (f2cl-lib:int-add j1 2))
-                                       ((1 ldt) (1 *)))
+                                       ((1 ldt) (1 *))
+                                       t$-%offset%)
                  ldt
-                 (f2cl-lib:array-slice t$
+                 (f2cl-lib:array-slice t$-%data%
                                        double-float
                                        (j2 (f2cl-lib:int-add j1 2))
-                                       ((1 ldt) (1 *)))
+                                       ((1 ldt) (1 *))
+                                       t$-%offset%)
                  ldt cs sn)
                 (drot (f2cl-lib:int-sub j1 1)
-                 (f2cl-lib:array-slice t$ double-float (1 j1) ((1 ldt) (1 *)))
+                 (f2cl-lib:array-slice t$-%data%
+                                       double-float
+                                       (1 j1)
+                                       ((1 ldt) (1 *))
+                                       t$-%offset%)
                  1
-                 (f2cl-lib:array-slice t$ double-float (1 j2) ((1 ldt) (1 *)))
+                 (f2cl-lib:array-slice t$-%data%
+                                       double-float
+                                       (1 j2)
+                                       ((1 ldt) (1 *))
+                                       t$-%offset%)
                  1 cs sn)
                 (if wantq
                     (drot n
-                     (f2cl-lib:array-slice q
+                     (f2cl-lib:array-slice q-%data%
                                            double-float
                                            (1 j1)
-                                           ((1 ldq) (1 *)))
+                                           ((1 ldq) (1 *))
+                                           q-%offset%)
                      1
-                     (f2cl-lib:array-slice q
+                     (f2cl-lib:array-slice q-%data%
                                            double-float
                                            (1 j2)
-                                           ((1 ldq) (1 *)))
+                                           ((1 ldq) (1 *))
+                                           q-%offset%)
                      1 cs sn))))
              (cond
                ((= n1 2)
@@ -455,32 +545,44 @@
                   (setf sn var-9))
                 (if (<= (f2cl-lib:int-add j3 2) n)
                     (drot (f2cl-lib:int-sub n j3 1)
-                     (f2cl-lib:array-slice t$
+                     (f2cl-lib:array-slice t$-%data%
                                            double-float
                                            (j3 (f2cl-lib:int-add j3 2))
-                                           ((1 ldt) (1 *)))
+                                           ((1 ldt) (1 *))
+                                           t$-%offset%)
                      ldt
-                     (f2cl-lib:array-slice t$
+                     (f2cl-lib:array-slice t$-%data%
                                            double-float
                                            (j4 (f2cl-lib:int-add j3 2))
-                                           ((1 ldt) (1 *)))
+                                           ((1 ldt) (1 *))
+                                           t$-%offset%)
                      ldt cs sn))
                 (drot (f2cl-lib:int-sub j3 1)
-                 (f2cl-lib:array-slice t$ double-float (1 j3) ((1 ldt) (1 *)))
+                 (f2cl-lib:array-slice t$-%data%
+                                       double-float
+                                       (1 j3)
+                                       ((1 ldt) (1 *))
+                                       t$-%offset%)
                  1
-                 (f2cl-lib:array-slice t$ double-float (1 j4) ((1 ldt) (1 *)))
+                 (f2cl-lib:array-slice t$-%data%
+                                       double-float
+                                       (1 j4)
+                                       ((1 ldt) (1 *))
+                                       t$-%offset%)
                  1 cs sn)
                 (if wantq
                     (drot n
-                     (f2cl-lib:array-slice q
+                     (f2cl-lib:array-slice q-%data%
                                            double-float
                                            (1 j3)
-                                           ((1 ldq) (1 *)))
+                                           ((1 ldq) (1 *))
+                                           q-%offset%)
                      1
-                     (f2cl-lib:array-slice q
+                     (f2cl-lib:array-slice q-%data%
                                            double-float
                                            (1 j4)
-                                           ((1 ldq) (1 *)))
+                                           ((1 ldq) (1 *))
+                                           q-%offset%)
                      1 cs sn)))))))
         (go end_label)
        label50

@@ -1,30 +1,30 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
-(let* ((zero (f2cl-lib:cmplx 0.0d0 0.0d0))
-       (one (f2cl-lib:cmplx 1.0d0 0.0d0))
-       (rzero 0.0d0)
-       (rone 1.0d0))
+(let* ((zero (f2cl-lib:cmplx 0.0 0.0))
+       (one (f2cl-lib:cmplx 1.0 0.0))
+       (rzero 0.0)
+       (rone 1.0))
   (declare (type (f2cl-lib:complex16) zero)
            (type (f2cl-lib:complex16) one)
-           (type (double-float 0.0d0 0.0d0) rzero)
-           (type (double-float 1.0d0 1.0d0) rone)
+           (type (double-float 0.0 0.0) rzero)
+           (type (double-float 1.0 1.0) rone)
            (ignorable zero one rzero rone))
   (defun zlaqr3
          (wantt wantz n ktop kbot nw h ldh iloz ihiz z ldz ns nd sh v ldv nh t$
@@ -48,10 +48,9 @@
                         cabs1))
         (prog ((i 0) (ifst 0) (ilst 0) (info 0) (infqr 0) (j 0) (jw 0) (kcol 0)
                (kln 0) (knt 0) (krow 0) (kwtop 0) (ltop 0) (lwk1 0) (lwk2 0)
-               (lwk3 0) (lwkopt 0) (nmin 0) (foo 0.0d0) (safmax 0.0d0)
-               (safmin 0.0d0) (smlnum 0.0d0) (ulp 0.0d0) (beta #C(0.0d0 0.0d0))
-               (cdum #C(0.0d0 0.0d0)) (s #C(0.0d0 0.0d0)) (tau #C(0.0d0 0.0d0))
-               (dconjg$ 0.0))
+               (lwk3 0) (lwkopt 0) (nmin 0) (foo 0.0) (safmax 0.0) (safmin 0.0)
+               (smlnum 0.0) (ulp 0.0) (beta #C(0.0 0.0)) (cdum #C(0.0 0.0))
+               (s #C(0.0 0.0)) (tau #C(0.0 0.0)) (dconjg$ 0.0f0))
           (declare (type (single-float) dconjg$)
                    (type (f2cl-lib:integer4) i ifst ilst info infqr j jw kcol
                                              kln knt krow kwtop ltop lwk1 lwk2

@@ -1,37 +1,37 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $"
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
 ;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
 ;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
-;;;  "f2cl5.l,v 11bea7dae5a0 2011/06/11 17:53:39 toy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
-;;;  "macros.l,v c4abe8cf9af0 2011/11/24 07:12:32 toy $")
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 20c release-20c (20C Unicode)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
 (let* ((ntiny 11)
        (nl 49)
-       (zero (f2cl-lib:cmplx 0.0d0 0.0d0))
-       (one (f2cl-lib:cmplx 1.0d0 0.0d0))
-       (rzero 0.0d0))
+       (zero (f2cl-lib:cmplx 0.0 0.0))
+       (one (f2cl-lib:cmplx 1.0 0.0))
+       (rzero 0.0))
   (declare (type (f2cl-lib:integer4 11 11) ntiny)
            (type (f2cl-lib:integer4 49 49) nl)
            (type (f2cl-lib:complex16) zero)
            (type (f2cl-lib:complex16) one)
-           (type (double-float 0.0d0 0.0d0) rzero)
+           (type (double-float 0.0 0.0) rzero)
            (ignorable ntiny nl zero one rzero))
   (defun zhseqr (job compz n ilo ihi h ldh w z ldz work lwork info)
     (declare (type (array f2cl-lib:complex16 (*)) work z w h)
              (type (f2cl-lib:integer4) info lwork ldz ldh ihi ilo n)
-             (type (simple-array character (*)) compz job))
+             (type (simple-string *) compz job))
     (f2cl-lib:with-multi-array-data
         ((job character job-%data% job-%offset%)
          (compz character compz-%data% compz-%offset%)
@@ -225,8 +225,7 @@
   (setf (gethash 'fortran-to-lisp::zhseqr
                  fortran-to-lisp::*f2cl-function-info*)
           (fortran-to-lisp::make-f2cl-finfo
-           :arg-types '((simple-array character (1))
-                        (simple-array character (1))
+           :arg-types '((simple-string) (simple-string)
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (fortran-to-lisp::integer4)
                         (array fortran-to-lisp::complex16 (*))

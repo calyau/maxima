@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
-;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
-;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
-;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;; ("f2cl1.l,v 2edcbd958861 2012/05/30 03:34:52 toy $"
+;;;  "f2cl2.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl3.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl4.l,v 96616d88fb7e 2008/02/22 22:19:34 rtoy $"
+;;;  "f2cl5.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $"
+;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
+;;;  "macros.l,v 3fe93de3be82 2012/05/06 02:17:14 toy $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp 20d (20D Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -93,16 +93,30 @@
           (setf info var-9))
         (setf rho (* rho rho))
         (dlaset "A" k 1 one one
-         (f2cl-lib:array-slice work double-float (iwk3) ((1 *))) k)
+         (f2cl-lib:array-slice work-%data%
+                               double-float
+                               (iwk3)
+                               ((1 *))
+                               work-%offset%)
+         k)
         (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                       ((> j k) nil)
           (tagbody
             (multiple-value-bind
                   (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8)
                 (dlasd4 k j dsigma z
-                 (f2cl-lib:array-slice work double-float (iwk1) ((1 *))) rho
-                 (f2cl-lib:fref d-%data% (j) ((1 *)) d-%offset%)
-                 (f2cl-lib:array-slice work double-float (iwk2) ((1 *))) info)
+                 (f2cl-lib:array-slice work-%data%
+                                       double-float
+                                       (iwk1)
+                                       ((1 *))
+                                       work-%offset%)
+                 rho (f2cl-lib:fref d-%data% (j) ((1 *)) d-%offset%)
+                 (f2cl-lib:array-slice work-%data%
+                                       double-float
+                                       (iwk2)
+                                       ((1 *))
+                                       work-%offset%)
+                 info)
               (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-7))
               (setf (f2cl-lib:fref d-%data% (j) ((1 *)) d-%offset%) var-6)
               (setf info var-8))
@@ -323,10 +337,20 @@
                                     difr-%offset%)
                        temp)))
            label80))
-        (dcopy k (f2cl-lib:array-slice work double-float (iwk2) ((1 *))) 1 vf
-         1)
-        (dcopy k (f2cl-lib:array-slice work double-float (iwk3) ((1 *))) 1 vl
-         1)
+        (dcopy k
+         (f2cl-lib:array-slice work-%data%
+                               double-float
+                               (iwk2)
+                               ((1 *))
+                               work-%offset%)
+         1 vf 1)
+        (dcopy k
+         (f2cl-lib:array-slice work-%data%
+                               double-float
+                               (iwk3)
+                               ((1 *))
+                               work-%offset%)
+         1 vl 1)
         (go end_label)
        end_label
         (return (values nil nil nil nil nil nil nil nil nil nil nil info))))))
