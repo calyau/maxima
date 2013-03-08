@@ -661,7 +661,7 @@ return false; however
 
 @b{Related functions} @i{complex_number_p}
 
-@b{Status} The function @code{real_p} is experimental; its
+@b{Status} The function @code{isreal_p} is experimental; its
 specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
