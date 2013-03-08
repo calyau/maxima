@@ -2,9 +2,14 @@
 
 ;;; System to convert the Fortran code to Lisp
 ;;;
-;;; Run
+;;; How to convert the Fortran code to Lisp for maxima.
 ;;;
-;;; (mk:oos "lapack-lisp" :compile :force t)
+;;; 1. Get f2cl, which is available via quicklisp:
+;;;      (ql:quickload "f2cl")
+;;; 2. Run
+;;;     (mk:oos "lapack-lisp" :compile :force t)
+;;;
+;;; This should generate all of the Lisp code.
 
 (mk:define-language :f2cl-lisp
     :compiler #'f2cl:f2cl
