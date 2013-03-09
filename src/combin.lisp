@@ -393,11 +393,11 @@
 			(setq *bd* (adjust-array *bd* %n))
 			(bern  (* 2 %n)))))
 		((null (> %n (get 'bern 'lim)))
-		 (list '(rat) (aref *bn* %n) (aref *bd* %n)))
+		 (list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
 		(t
 		 (setq *bn* (adjust-array *bn* (1+ %n)))
 		 (setq *bd* (adjust-array *bd* (1+ %n)))
-		 (bern %n)))))
+		 (bern (* 2 (1- %n)))))))
   (simplify s))
 
 (defun bern (%a*)
