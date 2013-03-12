@@ -1154,6 +1154,10 @@ limit((2+cos(x))/(x^3*sin(x))-3/x^4,x,0,plus);
 limit ((cosh(sqrt(x+1))-cosh(sqrt(x)))^(1/sqrt(x)),x,inf );
 %e;
 
+/* #2561 limit(log(x^2),x,-20) gives 2*log(-20) */
+limit(log(x^2),x,-20),logexpand:false;
+log(400);
+
 /* #2412 Problems with integral (x/(exp(x)+1),x,0,inf) */
 limit(-x*log(%e^x+1)-li[2](-%e^x)+x^2/2, x, inf);
 %pi^2/6;
