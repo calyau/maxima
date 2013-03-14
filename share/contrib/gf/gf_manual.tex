@@ -47,7 +47,7 @@
 \end{tabular}
 }
 
-\date{April, 2008 - December, 2012}
+\date{April, 2008 - March, 2013}
 
 \begin{document}
 \maketitle
@@ -64,7 +64,7 @@ and optimizations implemented by Fabrizio Caruso and Jacopo D'Aurizio.
 
 A full review was done in 2012 by Volker van Nek. Most of the functions described below 
 became core functions and some function names have been modified. 
-If you use a version of Maxima prior to 5.29 please refer to an appropriate 
+If you use a version of Maxima prior to 5.30 please refer to an appropriate 
 version of this file or alternatively load the necessary files from current sources. 
 These are \texttt{src/numth.lisp} (all basic Galois Fields functions) 
 and \texttt{share/contrib/gf/gf.mac} (square and cubic roots). 
@@ -110,8 +110,8 @@ In these fields, addition and subtraction are performed on the coefficients
 modulo $p$, and multiplication and division modulo $m(x)$.
 
 Given a prime number $p$ and a polynomial $m(x)$ 
-you can create a field by using the command ``\verb!gf_set(p, m(x))!''.
-\verb!gf_set! checks that $p$ is prime, and it also checks 
+you can create a field by using the command ``\verb!gf_set_data(p, m(x))!''.
+\verb!gf_set_data! checks that $p$ is prime, and it also checks 
 whether $m(x)$ is irreducible. If these conditions are met, 
 a primitive element in this field will be computed. 
 Maxima then returns a structure containing the fields data which is 
@@ -119,24 +119,24 @@ suitable for later use by ``\verb!gf_set_again(gf_data)!'' if needed again.
 
 %\begin{maximasession}
 %  \maximaoutput*
-%  \i1. gf_set(2, x^4+x+1);\\
+%  \i1. gf_set_data(2, x^4+x+1);\\
 %  \o1. [x, x^4+x+1]\\
 %\end{maximasession}
 %
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i1)}# gf_set(2, x^4+x+1);
+  #\tr{(\%i1)}# gf_set_data(2, x^4+x+1);
   #\tr{(\%o1)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 4, reduction = x^4+x+1,}$}\ec#
   #\bc\rb{$\tb{primitive = x, cardinality = 16, order = 15, 
   factors\_of\_order = [\,[\,3, 1\,], [\,5, 1\,]\,])}$}\ec#
 \end{lstlisting}
 
 In case there is no polynomial $m(x)$ irreducible over $\mathbb{F}_p$ available 
-a field can be created by ``\verb!gf_set(p, n)!''. 
+a field can be created by ``\verb!gf_set_data(p, n)!''. 
 A suitable $m(x)$ will be computed and returned along with a primitive element. 
-E.g. ``\verb!gf_set(2, 4)!'' returns the same as ``\verb!gf_set(2, x^4+x+1)!''.
+E.g. ``\verb!gf_set_data(2, 4)!'' returns the same as ``\verb!gf_set_data(2, x^4+x+1)!''.
 
-In addition to \verb!gf_set! there is a command ``\verb!gf_minimal_set(p, m(x))!'' 
+In addition to \verb!gf_set_data! there is a command ``\verb!gf_minimal_set(p, m(x))!'' 
 to allow basic arithmetics without checking irreducibility and 
 without computing a primitive element.
 
@@ -442,7 +442,7 @@ First, Alice must compute her public key:
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i35)}# gf_set(7, x^4+3*x^3+5*x^2+6*x+2)#\$#
+  #\tr{(\%i35)}# gf_set_data(7, x^4+3*x^3+5*x^2+6*x+2)#\$#
   #\tr{(\%i36)}# g : 3*x^3+3*x^2+6#\$#
   #\tr{(\%i37)}# gf_primitive_p(g);
   #\tr{(\%o37)}\bc\rb{$\tb{true}$}\ec#
@@ -517,7 +517,7 @@ Although this is a probabilistic algorithm, in practice it works very quickly:
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i49)}# gf_set(2, x^10+x^3+1)#\$#
+  #\tr{(\%i49)}# gf_set_data(2, x^10+x^3+1)#\$#
   #\tr{(\%i50)}# p : gf_random_normal();
   #\tr{(\%o50)}\bc\rb{$\tb{x^9+x^7+x^6+x^5+x^2+x+1}$}\ec#
 \end{lstlisting}
@@ -565,7 +565,7 @@ Pohlig-Hellman reduction and Brent's version of Pollard Rho.
 
 \vspace*{2mm}
 \begin{lstlisting}[escapechar=\#]
-  #\tr{(\%i55)}# gf_set(2, x^20+x^3+1);
+  #\tr{(\%i55)}# gf_set_data(2, x^20+x^3+1);
   #\tr{(\%o55)}\bc\rb{$\tb{gf\_data(characteristic = 2, exponent = 20, reduction = x^{20}+x^3+1, }$}\ec#
   #\bc\rb{$\tb{primitive = x, cardinality = 1048576, order = 1048575, }$}\ec#
   #\bc\rb{$\tb{factors\_of\_order = [\,[3, 1], [5, 2], [11, 1], [31, 1], [41, 1]\,]) }$}\ec#
