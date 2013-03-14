@@ -390,4 +390,22 @@ real_lisp_sources = $(shell echo *.lisp numerical/*.lisp numerical/slatec/*.lisp
 
 genericdirDATA = $(real_lisp_sources)
 
-EXTRA_DIST = $(real_lisp_sources) maxima.asd maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk ecl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico set_lang.vbs lisp sharefiles.mk
+EXTRA_DIST =\
+ $(real_lisp_sources)\
+ maxima.asd\
+ maxima.system\
+ clisp-depends.mk\
+ cmucl-depends.mk\
+ scl-depends.mk\
+ gcl-depends.mk\
+ acl-depends.mk\
+ openmcl-depends.mk\
+ ecl-depends.mk\
+ sbcl-depends.mk\
+ numerical/slatec/fortran\
+ maxima-build.lisp\
+ maxima-command.ico\
+ set_lang.vbs\
+ lisp\
+ sharefiles.mk\
+ share-subdirs.lisp
