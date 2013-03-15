@@ -743,7 +743,7 @@
 ;; setting the finite field and retrieving basic informations ------------------
 ;;
 (defmfun $gf_set (p &optional a1 a2 a3) ;; deprecated
-  (format t "`gf_set' is deprecated. ~%The user is asked to use `gf_set_data' instead.")
+  (format t "`gf_set' is marked as deprecated. ~%The user is asked to use `gf_set_data' instead. ~%")
   ($gf_set_data p a1 a2 a3) )
 
 (defmfun $gf_set_data (p &optional a1 a2 a3) ;; opt: *gf-exp*, *gf-red*, *gf-fs-ord*
