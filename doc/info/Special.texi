@@ -33,10 +33,10 @@ assoc_legendre_p[v,u] (z)      Legendre function of degree v and order u
 assoc_legendre_q[v,u] (z)      Legendre function, 2nd kind
 
 %f[p,q] ([], [], expr)         Generalized Hypergeometric function
-gamma()                        Gamma function
-gammagreek(a,z)                Incomplete gamma function
-gammaincomplete(a,z)           Tail of incomplete gamma function
-hypergeometric(l1, l2, z)      Hypergeometric function
+gamma (z)                      Gamma function
+gamma_greek (a,z)              Incomplete gamma function
+gamma_incomplete (a,z)         Tail of incomplete gamma function
+hypergeometric (l1, l2, z)     Hypergeometric function
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
 %m[u,k] (z)                    Whittaker function, 1st kind
@@ -1838,7 +1838,7 @@ Furthermore, @code{specint} can handle the hypergeometric function
 @code{%m[u,k](z)} and of the second kind @code{%w[u,k](z)}.
 
 The result may be in terms of special functions and can include unsimplified 
-hypergeomtric functions.
+hypergeometric functions.
 
 When @code{laplace} fails to find a Laplace transform, @code{specint} is called. 
 Because @code{laplace} knows more general rules for Laplace transforms, it is 
