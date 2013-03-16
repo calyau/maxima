@@ -725,9 +725,7 @@ summation when necessary."
 ;; multiplication of sums
 
 (defun gensumindex ()
-  (implode (nconc (exploden $genindex)
-		  (and $gensumnum
-		       (mexploden (setq $gensumnum (1+ $gensumnum)))))))
+  (intern (format nil "~S~D" $genindex (incf $gensumnum))))
 
 (defun sumtimes (x y)
   (cond ((null x) y)
