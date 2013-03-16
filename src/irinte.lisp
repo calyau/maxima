@@ -161,7 +161,7 @@
 (defun root+anything (exp var)
   (m2 exp '((mplus)
 	    ((coeffpt) (c nonzerp) ((mexpt) (u hasvar) (v integerpfr)))
-	    ((coeffpp) (c true))) nil))
+	    ((coeffpp) (c true)))))
 
 ;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
 ;; no repeated roots.  Let D be the discriminant of this quadratic,
@@ -436,8 +436,7 @@
 		      ((coeffpt) (a freevar) ((mexpt) (x varp) 2))
 		      ((coeffpt) (b freevar) (x varp))
 		      ((coeffpp) (c freevar)))
-	     (n integerp1)))
-      nil))
+	     (n integerp1)))))
 
 ;; Match d*p(x)*r1(x)^e1*r2(x)^e2*r0(x)^e0, where p(x) is a
 ;; polynomial, e1 and e2 are both half an odd integer, and e3 is an
@@ -450,8 +449,7 @@
 	    ((mexpt) (r2 hasvar)
 	     (e2 integerpfr))
 	    ((mexpt) (r0 hasvar)
-	     (e0 maxima-integerp)))
-      nil))
+	     (e0 maxima-integerp)))))
 
 ;; Match EXP to the form
 ;; d*p/(e*x^2+f*x+g)*r0(x)^e0.  p is a polynomial in x.
@@ -464,8 +462,7 @@
 		      ((coeffpp) (g freevar)))
 	     -1)
 	    ((mexpt) (r0 hasvar)
-	     (e0 integerpfr)))
-      nil))
+	     (e0 integerpfr)))))
 
 ;; From the set of coefficients, generate the polynomial c*x^2+b*x+a.
 (defun polfoo (c b a x)

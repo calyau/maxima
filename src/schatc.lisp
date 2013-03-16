@@ -158,7 +158,7 @@
 ;;; appended.
 
 (defmfun schatchen (e p)
-  (m2 e p nil))
+  (m2 e p))
 
 ;;THE RESTORE FUNCTIONS RESTORE THE SPEC-VAR ANS
 ;;AND RETURN TRUE OR FALSE AS FOLLOWS
@@ -172,8 +172,10 @@
 ;;ESPECIALLY WITH THE VAR* (SET) MODE ALL SCHATCHEN VARIABLES
 ;;ARE TO BE PRECEEDED BY A "%"
 
-(defmfun m2 (e p splist)
-  (let ((ans (list nil)))
+(defmfun m2 (e p)
+  (let ((ans (list nil))
+        (splist nil))
+    (declare (special splist))
     (cond ((null (m1 (copy-tree e) p)) nil)
 	  ((null (cdr ans)))
 	  ((cdr ans)))))
