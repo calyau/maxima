@@ -70,9 +70,11 @@ EXTRA_SCRIPTS = $(CLISP_MAXIMA)
 if CLISP_EXEC
 CLISP_MAXIMA = binary-clisp/maxima$(EXEEXT)
 clisplib_SCRIPTS = $(CLISP_MAXIMA)
+clispexeflag = :EXECUTABLE t
 else
 CLISP_MAXIMA = binary-clisp/maxima.mem
 clisplib_DATA = $(CLISP_MAXIMA)
+clispexeflag =
 ## Rather crazily, we install an extra copy of clisp. Maybe there's a
 ## more sensible approach than this?!
 install-exec-local: install-clisp-copy
@@ -92,15 +94,10 @@ CLEAN_TARGETS += clean-clisp
 
 clisp: $(CLISP_MAXIMA)
 
-binary-clisp/maxima.mem:
+$(CLISP_MAXIMA):
 	make bd_clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run)))'
-
-binary-clisp/maxima$(EXEEXT):
-	make bd_clisp
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
-	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) :EXECUTABLE t))'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) $(clispexeflag)))'
 
 clean-clisp:
 	rm -rf binary-clisp
