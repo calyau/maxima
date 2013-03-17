@@ -16,7 +16,7 @@ EXTRA_DIST = \
   numerical/slatec/fortran \
   maxima-build.lisp maxima-command.ico set_lang.vbs \
   lisp \
-  sharefiles.mk
+  sharefiles.mk sys-proclaim.lisp
 
 ## A debugging tool. If you're trying to understand the value of the
 ## variable $(foo) when make runs, call "make echo_foo" and it will be
