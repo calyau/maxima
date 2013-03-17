@@ -370,25 +370,24 @@ openmcl-depends.mk: maxima.system
 
 endif
 
+## ECL #########################################################################
 if ECL
+
+ecllibdir = $(verpkglibdir)/binary-ecl
+EXTRA_SCRIPTS += binary-ecl/maxima
+ecllib_SCRIPTS = binary-ecl/maxima
+
 EXECUTEECL = $(ECL_NAME) -norc
 BUILT_FILES += binary-ecl/maxima
-WEIRD_INSTALL_TARGETS += install-ecl
-WEIRD_UNINSTALL_TARGETS += uninstall-ecl
 CLEAN_TARGETS += clean-ecl
 
 ecl:binary-ecl/maxima
 
 binary-ecl/maxima:
 	make bd_ecl
-	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib))' -eval '(ext:quit)'
-
-install-ecl:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-ecl"
-	$(INSTALL_PROGRAM) binary-ecl/maxima "$(DESTDIR)$(verpkglibdir)/binary-ecl/maxima"
-
-uninstall-ecl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-ecl/maxima"
+	$(EXECUTEECL) \
+           -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib))' \
+           -eval '(ext:quit)'
 
 clean-ecl:
 	rm -rf binary-ecl libmaxima.a
@@ -397,4 +396,5 @@ ecl-depends.mk: maxima.system
 	$(EXECUTEECL) -eval $(call MAKE_DEPENDS,binary-ecl/maxima,ecl-depends.mk,(quit))
 
 -include ecl-depends.mk
+
 endif
