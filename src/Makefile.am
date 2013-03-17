@@ -6,12 +6,36 @@ else
 bin_SCRIPTS = maxima rmaxima
 endif
 
+genericdir = $(instsrcdir)
+real_lisp_sources := $(shell echo *.lisp numerical/*.lisp numerical/slatec/*.lisp)
+
+genericdirDATA = $(real_lisp_sources)
+
+EXTRA_DIST = $(real_lisp_sources) maxima.asd maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk ecl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico set_lang.vbs lisp sharefiles.mk
+
+echo_%:
+	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
+	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
+
+# Create the list of files that will be installed.  If there is no
+# difference between what make_share_list computes and the original
+# file, do nothing.  Otherwise, update the original with the new
+# output of make_share_list.  The update will cause share/Makefile to
+# be rebuilt, and thus have the correct list of files to be installed.
+sharefiles.mk : FORCE
+	../admin/make_share_list
+
+# Should we use GNU make .PHONY instead?
+FORCE :
+
+## Some hunks of lisp that get used by more than one implementation
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
 DEFSYSTEMCOMPILE = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :compile :verbose t)
 DEFSYSTEMLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t)
 DEFSYSTEMTESTLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t :test t)
 
+## Implementation-specific code starts here.
 
 if CLISP_EXEC
 CLISP_MAXIMA = binary-clisp/maxima$(EXEEXT)
@@ -368,26 +392,3 @@ ecl-depends.mk: maxima.system
 	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-ecl/maxima" "ecl-depends.mk") (quit))'
 -include ecl-depends.mk
 endif
-
-echo_%:
-	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
-	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
-
-# Create the list of files that will be installed.  If there is no
-# difference between what make_share_list computes and the original
-# file, do nothing.  Otherwise, update the original with the new
-# output of make_share_list.  The update will cause share/Makefile to
-# be rebuilt, and thus have the correct list of files to be installed.
-
-sharefiles.mk : FORCE
-	../admin/make_share_list
-
-# Should we use GNU make .PHONY instead?
-FORCE :
-
-genericdir = $(instsrcdir)
-real_lisp_sources = $(shell echo *.lisp numerical/*.lisp numerical/slatec/*.lisp)
-
-genericdirDATA = $(real_lisp_sources)
-
-EXTRA_DIST = $(real_lisp_sources) maxima.asd maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk ecl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico set_lang.vbs lisp sharefiles.mk
