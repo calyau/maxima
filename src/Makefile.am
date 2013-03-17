@@ -53,6 +53,15 @@ all-local: sharefiles.mk $(BUILT_FILES)
 CLEAN_TARGETS =
 clean-local: $(CLEAN_TARGETS)
 
+## Similarly, we do something hacky with the install rule. Most of the
+## time, we can actually use Automake's tools for this, but for the
+## crazy "install another copy of the implementation" approach that we
+## use with SCL and CLISP, we need to do it by hand.
+WEIRD_INSTALL_TARGETS =
+WEIRD_UNINSTALL_TARGETS =
+install-exec-local: $(WEIRD_INSTALL_TARGETS)
+uninstall-hook: $(WEIRD_UNINSTALL_TARGETS)
+
 ## A rule to build binary directories of the form binary-<lispname>
 ## and subdirectories ./numerical and ./numerical/slatec
 binary_subdirs = / /numerical /numerical/slatec
@@ -88,11 +97,11 @@ clisplib_DATA = $(CLISP_MAXIMA)
 clispexeflag =
 ## Rather crazily, we install an extra copy of clisp. Maybe there's a
 ## more sensible approach than this?!
-install-exec-local: install-clisp-copy
+WEIRD_INSTALL_TARGETS += install-clisp-copy
+WEIRD_UNINSTALL_TARGETS += uninstall-clisp-copy
 install-clisp-copy:
 	$(mkinstalldirs) $(clisplibdir)
 	$(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(clisplibdir)/@CLISP_RUNTIME@"
-uninstall-hook: uninstall-clisp-copy
 uninstall-clisp-copy:
 	rm -f "$(clisplibdir)/@CLISP_RUNTIME@"
 endif
@@ -126,12 +135,12 @@ EXTRA_SCRIPTS += $(CMU_MAXIMA) lisp
 
 if CMUCL_EXEC
 CMU_MAXIMA = binary-cmucl/maxima
-cmucllib_SCRIPTS += $(CMU_MAXIMA)
+cmucllib_SCRIPTS = $(CMU_MAXIMA)
 cmuflag = :executable t :init-function '\''cl-user::run
 else
 CMU_MAXIMA = binary-cmucl/maxima.core
-cmucllib_SCRIPTS += lisp
-cmucllib_DATA += $(CMU_MAXIMA)
+cmucllib_SCRIPTS = lisp
+cmucllib_DATA = $(CMU_MAXIMA)
 cmuflag =
 endif
 
@@ -164,13 +173,15 @@ cmucl-depends.mk: maxima.system
 -include cmucl-depends.mk
 endif
 
-
+## SCL #########################################################################
 if SCL
+
+scllibdir = $(verpkglibdir)/binary-scl
+
 EXECUTESCL = $(SCL_NAME) -noinit -batch
 BUILT_FILES += binary-scl/maxima.core
-install-exec-local: install-scl
-uninstall-hook: uninstall-scl
 CLEAN_TARGETS += clean-scl
+scllib_DATA = binary-scl/maxima.core
 
 scl: binary-scl/maxima.core
 
@@ -179,14 +190,16 @@ binary-scl/maxima.core:
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTESCL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-scl/maxima.core"))' | $(EXECUTESCL))
 
-install-scl:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-scl"
-	$(INSTALL_DATA) binary-scl/maxima.core "$(DESTDIR)$(verpkglibdir)/binary-scl/maxima.core"
-	$(INSTALL_PROGRAM) @SCL_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-scl/@SCL_RUNTIME@"
-
-uninstall-scl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-scl/maxima.core"
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-scl/@SCL_RUNTIME@"
+## Just like with clisp, we install an extra copy of SCL. No, I don't
+## understand either. Also, I just read the SCL license agreement. Is
+## the user even allowed to do this?!
+WEIRD_INSTALL_TARGETS += install-scl-copy
+WEIRD_UNINSTALL_TARGETS += uninstall-scl-copy
+install-scl-copy:
+	$(mkinstalldirs) $(scllibdir)
+	$(INSTALL_PROGRAM) @SCL_RUNTIME_PATH@ "$(scllibdir)/@SCL_RUNTIME@"
+uninstall-scl-copy:
+	rm -f "$(scllibdir)/@SCL_RUNTIME@"
 
 clean-scl:
 	rm -rf binary-scl
@@ -195,14 +208,15 @@ scl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,binary-scl/maxima.core,scl-depends.mk) | $(EXECUTESCL)
 
 -include scl-depends.mk
+
 endif
 
 
 if ACL
 EXECUTEACL = $(ACL_NAME) -batch
 BUILT_FILES += binary-acl/maxima.dxl
-install-exec-local: install-acl
-uninstall-hook: uninstall-acl
+WEIRD_INSTALL_TARGETS += install-acl
+WEIRD_UNINSTALL_TARGETS += uninstall-acl
 CLEAN_TARGETS += clean-acl
 
 acl:binary-acl/maxima.dxl
@@ -244,8 +258,8 @@ endif
 if SBCL
 EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint --eval
 BUILT_FILES += $(SBCL_MAXIMA)
-install-exec-local: install-sbcl
-uninstall-hook: uninstall-sbcl
+WEIRD_INSTALL_TARGETS += install-sbcl
+WEIRD_UNINSTALL_TARGETS += uninstall-sbcl
 CLEAN_TARGETS += clean-sbcl
 
 sbcl:binary-sbcl/maxima.core
@@ -280,8 +294,8 @@ endif
 if GCL
 EXECUTEGCL = $(GCL_NAME) -batch -eval
 BUILT_FILES += binary-gcl/maxima
-install-exec-local: install-gcl
-uninstall-hook: uninstall-gcl
+WEIRD_INSTALL_TARGETS += install-gcl
+WEIRD_UNINSTALL_TARGETS += uninstall-gcl
 CLEAN_TARGETS += clean-gcl
 
 sys-proclaim.lisp:
@@ -339,8 +353,8 @@ endif
 if OPENMCL
 EXECUTEOPENMCL = $(OPENMCL_NAME) -e
 BUILT_FILES += $(OPENMCL_MAXIMA)
-install-exec-local: install-openmcl
-uninstall-hook: uninstall-openmcl
+WEIRD_INSTALL_TARGETS += install-openmcl
+WEIRD_UNINSTALL_TARGETS += uninstall-openmcl
 CLEAN_TARGETS += clean-openmcl
 
 openmcl:$(OPENMCL_MAXIMA)
@@ -376,8 +390,8 @@ endif
 if ECL
 EXECUTEECL = $(ECL_NAME) -norc
 BUILT_FILES += binary-ecl/maxima
-install-exec-local: install-ecl
-uninstall-hook: uninstall-ecl
+WEIRD_INSTALL_TARGETS += install-ecl
+WEIRD_UNINSTALL_TARGETS += uninstall-ecl
 CLEAN_TARGETS += clean-ecl
 
 ecl:binary-ecl/maxima
