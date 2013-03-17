@@ -50,23 +50,32 @@ DEFSYSTEMCOMPILE = ($(DS_OOS) :compile :verbose t)
 DEFSYSTEMLOAD = ($(DS_OOS) :load :verbose t)
 DEFSYSTEMTESTLOAD = ($(DS_OOS) :load :verbose t :test t)
 
-## Implementation-specific code starts here.
+## CLISP #######################################################################
+if CLISP
+
+EXTRA_SCRIPTS = $(CLISP_MAXIMA)
 
 if CLISP_EXEC
 CLISP_MAXIMA = binary-clisp/maxima$(EXEEXT)
-CLISP_INST_BIN = true
-CLISP_INST_MAXIMA = $(INSTALL_PROGRAM) $(CLISP_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CLISP_MAXIMA)"
+clisplib_SCRIPTS = $(CLISP_MAXIMA)
 else
 CLISP_MAXIMA = binary-clisp/maxima.mem
-CLISP_INST_BIN = $(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
-CLISP_INST_MAXIMA = $(INSTALL_DATA) $(CLISP_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CLISP_MAXIMA)"
+clisplib_DATA = $(CLISP_MAXIMA)
+## Rather crazily, we install an extra copy of clisp. Maybe there's a
+## more sensible approach than this?!
+install-exec-local: install-clisp-copy
+install-clisp-copy:
+	$(mkinstalldirs) $(clisplibdir)
+	$(INSTALL_PROGRAM) @CLISP_RUNTIME_PATH@ "$(clisplibdir)/@CLISP_RUNTIME@"
+uninstall-hook: uninstall-clisp-copy
+uninstall-clisp-copy:
+	rm -f "$(clisplibdir)/@CLISP_RUNTIME@"
 endif
 
-if CLISP
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
+clisplibdir = $(verpkglibdir)/binary-clisp
+
 all-local: sharefiles.mk  $(CLISP_MAXIMA)
-install-exec-local: install-clisp
-uninstall-hook: uninstall-clisp
 clean: clean-clisp
 distclean: clean-clisp
 
@@ -82,16 +91,6 @@ binary-clisp/maxima$(EXEEXT):
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) :EXECUTABLE t))'
 
-install-clisp:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-clisp"
-	$(CLISP_INST_MAXIMA)
-	$(CLISP_INST_BIN)
-
-uninstall-clisp:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima.mem"
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/@CLISP_RUNTIME@"
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-clisp/maxima$(EXEEXT)"
-
 clean-clisp:
 	rm -rf binary-clisp
 
@@ -99,7 +98,7 @@ clisp-depends.mk: maxima.system
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(CLISP_MAXIMA)" "clisp-depends.mk"))'
 
 -include clisp-depends.mk
-endif
+endif CLISP
 
 if CMUCL_EXEC
 CMU_MAXIMA = binary-cmucl/maxima
