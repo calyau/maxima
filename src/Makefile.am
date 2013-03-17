@@ -279,11 +279,16 @@ sbcl-depends.mk: maxima.system
 
 endif
 
+## GCL #########################################################################
 if GCL
+
+gcllibdir = $(verpkglibdir)/binary-gcl
+
+EXTRA_SCRIPTS += binary-gcl/maxima
+gcllib_SCRIPTS = binary-gcl/maxima
+
 EXECUTEGCL = $(GCL_NAME) -batch -eval
 BUILT_FILES += binary-gcl/maxima
-WEIRD_INSTALL_TARGETS += install-gcl
-WEIRD_UNINSTALL_TARGETS += uninstall-gcl
 CLEAN_TARGETS += clean-gcl
 
 sys-proclaim.lisp:
@@ -310,12 +315,6 @@ else
 endif	
 endif
 
-install-gcl:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-gcl"
-	$(INSTALL_PROGRAM) binary-gcl/maxima "$(DESTDIR)$(verpkglibdir)/binary-gcl/maxima"
-
-uninstall-gcl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-gcl/maxima"
 clean-gcl:
 	rm -rf binary-gcl
 
@@ -323,6 +322,7 @@ gcl-depends.mk: maxima.system
 	$(EXECUTEGCL) $(call MAKE_DEPENDS,binary-gcl/maxima,gcl-depends.mk)
 
 -include gcl-depends.mk
+
 endif
 
 if OPENMCL_EXEC
