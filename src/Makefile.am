@@ -211,27 +211,23 @@ scl-depends.mk: maxima.system
 
 endif
 
-
+## ACL #########################################################################
 if ACL
+
+acllibdir = $(verpkglibdir)/binary-acl
+
 EXECUTEACL = $(ACL_NAME) -batch
 BUILT_FILES += binary-acl/maxima.dxl
-WEIRD_INSTALL_TARGETS += install-acl
-WEIRD_UNINSTALL_TARGETS += uninstall-acl
 CLEAN_TARGETS += clean-acl
 
-acl:binary-acl/maxima.dxl
+acllib_DATA = binary-acl/maxima.dxl
+
+acl: binary-acl/maxima.dxl
 
 binary-acl/maxima.dxl:
 	make bd_acl
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl"))' | $(EXECUTEACL))
-
-install-acl:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-acl"
-	$(INSTALL_DATA) binary-acl/maxima.dxl "$(DESTDIR)$(verpkglibdir)/binary-acl/maxima.dxl"
-
-uninstall-acl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-acl/maxima.dxl"
 
 clean-acl:
 	rm -rf binary-acl
