@@ -36,6 +36,12 @@ echo_%:
 sharefiles.mk:
 	../admin/make_share_list
 
+## A rule to build binary directories of the form binary-<lispname>
+## and subdirectories ./numerical and ./numerical/slatec
+binary_subdirs = / /numerical /numerical/slatec
+bd_%:
+	$(MKDIR_P) $(addprefix $(subst bd_,binary-,$@),$(binary_subdirs))
+
 ## Some hunks of lisp that get used by more than one implementation
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
@@ -66,12 +72,12 @@ distclean: clean-clisp
 clisp: $(CLISP_MAXIMA)
 
 binary-clisp/maxima.mem:
-	test -d binary-clisp || mkdir binary-clisp
+	make bd_clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run)))'
 
 binary-clisp/maxima$(EXEEXT):
-	test -d binary-clisp || mkdir binary-clisp
+	make bd_clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) :EXECUTABLE t))'
 
@@ -89,8 +95,8 @@ clean-clisp:
 	rm -rf binary-clisp
 
 clisp-depends.mk: maxima.system
-	test -d binary-clisp || mkdir binary-clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(CLISP_MAXIMA)" "clisp-depends.mk"))'
+
 -include clisp-depends.mk
 endif
 
@@ -122,9 +128,7 @@ distclean: clean-cmucl
 cmucl: $(CMU_MAXIMA)
 
 $(CMU_MAXIMA):
-	test -d binary-cmucl || mkdir binary-cmucl
-	test -d binary-cmucl/numerical || mkdir binary-cmucl/numerical
-	test -d binary-cmucl/numerical/slatec || mkdir binary-cmucl/numerical/slatec
+	make bd_cmucl
 	(echo '(progn $(INITINTL) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)) && \
 	$(CMU_BUILD)
 
@@ -139,8 +143,8 @@ uninstall-cmucl:
 
 clean-cmucl:
 	rm -rf binary-cmucl
+
 cmucl-depends.mk: maxima.system
-	test -d binary-cmucl || mkdir binary-cmucl
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$(CMU_MAXIMA)" "cmucl-depends.mk"))' | $(EXECUTECMUCL)
 
 -include cmucl-depends.mk
@@ -158,9 +162,7 @@ distclean: clean-scl
 scl: binary-scl/maxima.core
 
 binary-scl/maxima.core:
-	test -d binary-scl || mkdir binary-scl
-	test -d binary-scl/numerical || mkdir binary-scl/numerical
-	test -d binary-scl/numerical/slatec || mkdir binary-scl/numerical/slatec
+	make bd_scl
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTESCL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-scl/maxima.core"))' | $(EXECUTESCL))
 
@@ -175,8 +177,8 @@ uninstall-scl:
 
 clean-scl:
 	rm -rf binary-scl
+
 scl-depends.mk: maxima.system
-	test -d binary-scl || mkdir binary-scl
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern (symbol-name :create-dependency-file) :mk) "binary-scl/maxima.core" "scl-depends.mk"))' | $(EXECUTESCL)
 
 -include scl-depends.mk
@@ -194,9 +196,7 @@ distclean: clean-acl
 acl:binary-acl/maxima.dxl
 
 binary-acl/maxima.dxl:
-	test -d binary-acl || mkdir binary-acl
-	test -d binary-acl/numerical || mkdir binary-acl/numerical
-	test -d binary-acl/numerical/slatec || mkdir binary-acl/numerical/slatec
+	make bd_acl
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl"))' | $(EXECUTEACL))
 
@@ -209,9 +209,10 @@ uninstall-acl:
 
 clean-acl:
 	rm -rf binary-acl
+
 acl-depends.mk: maxima.system
-	test -d binary-acl || mkdir binary-acl
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl/maxima.dxl" "acl-depends.mk"))' | $(EXECUTEACL)
+
 -include acl-depends.mk
 endif
 
@@ -239,16 +240,12 @@ distclean: clean-sbcl
 sbcl:binary-sbcl/maxima.core
 
 binary-sbcl/maxima.core:
-	test -d binary-sbcl || mkdir binary-sbcl
-	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
-	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
+	make bd_sbcl
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "$@") (sb-ext:quit))'
 
 binary-sbcl/maxima$(EXEEXT):
-	test -d binary-sbcl || mkdir binary-sbcl
-	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
-	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
+	make bd_sbcl
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "$@" :executable t) (sb-ext:quit))'
 
@@ -262,9 +259,10 @@ uninstall-sbcl:
 clean-sbcl:
 	rm -rf binary-sbcl
 	rm -f numerical/binary-sbcl numerical/slatec/binary-sbcl
+
 sbcl-depends.mk: maxima.system
-	test -d binary-sbcl || mkdir binary-sbcl
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(SBCL_MAXIMA)" "sbcl-depends.mk") (sb-ext:quit))'
+
 -include sbcl-depends.mk
 endif
 
@@ -276,26 +274,21 @@ uninstall-hook: uninstall-gcl
 clean: clean-gcl
 distclean: clean-gcl
 
-sys-proclaim:
+sys-proclaim.lisp:
 	rm -rf binary-gcl
-	test -d binary-gcl || mkdir binary-gcl
-	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
-	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
+	touch sys-proclaim.lisp
+	make bd_gcl
 	$(EXECUTEGCL) '(progn (load "generate-sys-proclaim.lisp"))'
+	rm -rf binary-gcl
 
-gcl:binary-gcl/maxima
+gcl: binary-gcl/maxima
 
-binary-gcl/maxima:
+binary-gcl/maxima: sys-proclaim.lisp
+	make bd_gcl
 if GCL_ALT_LINK
-	test -d binary-gcl || mkdir binary-gcl
-	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
-	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTEGCL) '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l))))'
 else
-	test -d binary-gcl || mkdir binary-gcl
-	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
-	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 if WIN32
 	$(EXECUTEGCL) '(progn (compiler::emit-fn t))' -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(LOADMAKEPROCLAIM) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima"))'
@@ -315,8 +308,8 @@ clean-gcl:
 	rm -rf binary-gcl
 
 gcl-depends.mk: maxima.system
-	test -d binary-gcl || mkdir binary-gcl
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk"))'
+
 -include gcl-depends.mk
 endif
 
@@ -366,8 +359,8 @@ clean-openmcl:
 	rm -rf binary-openmcl
 
 openmcl-depends.mk: maxima.system
-	test -d binary-openmcl || mkdir binary-openmcl
 	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(OPENMCL_MAXIMA)" "openmcl-depends.mk") (ccl:quit))'
+
 -include openmcl-depends.mk
 endif
 
@@ -382,7 +375,7 @@ distclean: clean-ecl
 ecl:binary-ecl/maxima
 
 binary-ecl/maxima:
-	test -d binary-ecl || mkdir binary-ecl
+	make bd_ecl
 	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib))' -eval '(ext:quit)'
 
 install-ecl:
@@ -396,7 +389,7 @@ clean-ecl:
 	rm -rf binary-ecl libmaxima.a
 
 ecl-depends.mk: maxima.system
-	test -d binary-ecl || mkdir binary-ecl
 	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-ecl/maxima" "ecl-depends.mk") (quit))'
+
 -include ecl-depends.mk
 endif
