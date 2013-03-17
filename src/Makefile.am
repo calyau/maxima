@@ -18,6 +18,11 @@ EXTRA_DIST = \
   lisp \
   sharefiles.mk sys-proclaim.lisp
 
+## If we can, we use Automake's blah_SCRIPTS targets to install
+## stuff. When doing this, we have to populate EXTRA_SCRIPTS, so we
+## use += and initialise here.
+EXTRA_SCRIPTS =
+
 ## A debugging tool. If you're trying to understand the value of the
 ## variable $(foo) when make runs, call "make echo_foo" and it will be
 ## printed.
@@ -71,7 +76,7 @@ MAKE_DEPENDS = '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CRE
 ## CLISP #######################################################################
 if CLISP
 
-EXTRA_SCRIPTS = $(CLISP_MAXIMA)
+EXTRA_SCRIPTS += $(CLISP_MAXIMA)
 
 if CLISP_EXEC
 CLISP_MAXIMA = binary-clisp/maxima$(EXEEXT)
@@ -114,45 +119,41 @@ clisp-depends.mk: maxima.system
 -include clisp-depends.mk
 endif CLISP
 
+## CMUCL #######################################################################
+if CMUCL
+
+EXTRA_SCRIPTS += $(CMU_MAXIMA) lisp
+
 if CMUCL_EXEC
 CMU_MAXIMA = binary-cmucl/maxima
-CMU_BUILD = (echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima" :executable t :init-function '\''cl-user::run))' | $(EXECUTECMUCL))
-CMU_INST_BIN = true
-CMU_INST_MAXIMA = $(INSTALL_PROGRAM) $(CMU_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CMU_MAXIMA)"
+cmucllib_SCRIPTS += $(CMU_MAXIMA)
+cmuflag = :executable t :init-function '\''cl-user::run
 else
 CMU_MAXIMA = binary-cmucl/maxima.core
-CMU_BUILD = (echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL))
-CMU_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/lisp"
-CMU_INST_MAXIMA = $(INSTALL_DATA) $(CMU_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CMU_MAXIMA)"
+cmucllib_SCRIPTS += lisp
+cmucllib_DATA += $(CMU_MAXIMA)
+cmuflag =
 endif
 
-if CMUCL
-EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 # Newer versions of CMUCL have an INTL package that is compatible with
 # maxima's.  We just bind intl::*default-domain* here so that when we
 # compile the files, we will get appropriate translations.  (Otherwise
 # we have to put (intl:textdomain "maxima") in each Lisp file.
 INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INTL") "maxima"))
+CMU_COMPILE = echo '(progn $(INITINTL) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)
+CMU_WRITE = echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "$$(CMU_MAXIMA)") $(cmuflag))' | $(EXECUTECMUCL)
+CMU_BUILD = ($(CMU_COMPILE)) && ($(CMU_WRITE))
+EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
+
+cmucllibdir = $(verpkglibdir)/binary-cmucl
 BUILT_FILES += $(CMU_MAXIMA)
-install-exec-local: install-cmucl
-uninstall-hook: uninstall-cmucl
 CLEAN_TARGETS += clean-cmucl
 
 cmucl: $(CMU_MAXIMA)
 
 $(CMU_MAXIMA):
 	make bd_cmucl
-	(echo '(progn $(INITINTL) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)) && \
 	$(CMU_BUILD)
-
-install-cmucl:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-cmucl"
-	$(CMU_INST_MAXIMA)
-	$(CMU_INST_BIN)
-
-uninstall-cmucl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/$(CMU_MAXIMA)"
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
 
 clean-cmucl:
 	rm -rf binary-cmucl
