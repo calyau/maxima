@@ -25,16 +25,16 @@ echo_%:
 	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
 
-# Create the list of files that will be installed.  If there is no
-# difference between what make_share_list computes and the original
-# file, do nothing.  Otherwise, update the original with the new
-# output of make_share_list.  The update will cause share/Makefile to
-# be rebuilt, and thus have the correct list of files to be installed.
-sharefiles.mk : FORCE
+## Create the list of files that will be installed from share. The
+## make_share_list script outputs to a temporary file and only
+## overwrites sharefiles.mk if there is a change. As such,
+## share/Makefile is only updated (and share rebuilt) when something
+## changes.
+##
+## TODO: Why is this in src/ not in share/ ?
+.PHONY: sharefiles.mk
+sharefiles.mk:
 	../admin/make_share_list
-
-# Should we use GNU make .PHONY instead?
-FORCE :
 
 ## Some hunks of lisp that get used by more than one implementation
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
