@@ -18,6 +18,9 @@ EXTRA_DIST = \
   lisp \
   sharefiles.mk
 
+## A debugging tool. If you're trying to understand the value of the
+## variable $(foo) when make runs, call "make echo_foo" and it will be
+## printed.
 echo_%:
 	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
