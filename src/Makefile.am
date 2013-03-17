@@ -36,6 +36,12 @@ echo_%:
 sharefiles.mk:
 	../admin/make_share_list
 
+## "all" depends on sharefiles.mk and whatever files we choose to
+## build. These are listed in BUILT_FILES, which is populated in the
+## implementation-dependent sections below.
+BUILT_FILES =
+all-local: sharefiles.mk $(BUILT_FILES)
+
 ## A rule to build binary directories of the form binary-<lispname>
 ## and subdirectories ./numerical and ./numerical/slatec
 binary_subdirs = / /numerical /numerical/slatec
@@ -75,7 +81,7 @@ endif
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
 clisplibdir = $(verpkglibdir)/binary-clisp
 
-all-local: sharefiles.mk  $(CLISP_MAXIMA)
+BUILT_FILES += $(CLISP_MAXIMA)
 clean: clean-clisp
 distclean: clean-clisp
 
@@ -119,7 +125,7 @@ EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 # compile the files, we will get appropriate translations.  (Otherwise
 # we have to put (intl:textdomain "maxima") in each Lisp file.
 INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INTL") "maxima"))
-all-local: sharefiles.mk  $(CMU_MAXIMA)
+BUILT_FILES += $(CMU_MAXIMA)
 install-exec-local: install-cmucl
 uninstall-hook: uninstall-cmucl
 clean: clean-cmucl
@@ -153,7 +159,7 @@ endif
 
 if SCL
 EXECUTESCL = $(SCL_NAME) -noinit -batch
-all-local: sharefiles.mk  binary-scl/maxima.core
+BUILT_FILES += binary-scl/maxima.core
 install-exec-local: install-scl
 uninstall-hook: uninstall-scl
 clean: clean-scl
@@ -187,7 +193,7 @@ endif
 
 if ACL
 EXECUTEACL = $(ACL_NAME) -batch
-all-local: sharefiles.mk  binary-acl/maxima.dxl
+BUILT_FILES += binary-acl/maxima.dxl
 install-exec-local: install-acl
 uninstall-hook: uninstall-acl
 clean: clean-acl
@@ -231,7 +237,7 @@ endif
 
 if SBCL
 EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint --eval
-all-local: sharefiles.mk $(SBCL_MAXIMA)
+BUILT_FILES += $(SBCL_MAXIMA)
 install-exec-local: install-sbcl
 uninstall-hook: uninstall-sbcl
 clean: clean-sbcl
@@ -268,7 +274,7 @@ endif
 
 if GCL
 EXECUTEGCL = $(GCL_NAME) -batch -eval
-all-local: sharefiles.mk  binary-gcl/maxima
+BUILT_FILES += binary-gcl/maxima
 install-exec-local: install-gcl
 uninstall-hook: uninstall-gcl
 clean: clean-gcl
@@ -328,7 +334,7 @@ endif
 
 if OPENMCL
 EXECUTEOPENMCL = $(OPENMCL_NAME) -e
-all-local: sharefiles.mk  $(OPENMCL_MAXIMA)
+BUILT_FILES += $(OPENMCL_MAXIMA)
 install-exec-local: install-openmcl
 uninstall-hook: uninstall-openmcl
 clean: clean-openmcl
@@ -366,7 +372,7 @@ endif
 
 if ECL
 EXECUTEECL = $(ECL_NAME) -norc
-all-local: sharefiles.mk  binary-ecl/maxima
+BUILT_FILES += binary-ecl/maxima
 install-exec-local: install-ecl
 uninstall-hook: uninstall-ecl
 clean: clean-ecl
