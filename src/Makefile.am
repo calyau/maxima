@@ -6,12 +6,17 @@ else
 bin_SCRIPTS = maxima rmaxima
 endif
 
-genericdir = $(instsrcdir)
+## In instsrcdir, we install the lisp source files in src/ (including
+## the numerical subdirectories).
+## TODO: Should we also be installing the .system and .asd files here?
 real_lisp_sources := $(shell echo *.lisp numerical/*.lisp numerical/slatec/*.lisp)
-
-genericdirDATA = $(real_lisp_sources)
-
-EXTRA_DIST = $(real_lisp_sources) maxima.asd maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk ecl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico set_lang.vbs lisp sharefiles.mk
+nobase_dist_instsrc_DATA = $(real_lisp_sources)
+EXTRA_DIST = \
+  maxima.asd maxima.system \
+  numerical/slatec/fortran \
+  maxima-build.lisp maxima-command.ico set_lang.vbs \
+  lisp \
+  sharefiles.mk
 
 echo_%:
 	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
