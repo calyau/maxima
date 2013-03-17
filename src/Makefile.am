@@ -45,9 +45,10 @@ bd_%:
 ## Some hunks of lisp that get used by more than one implementation
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
-DEFSYSTEMCOMPILE = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :compile :verbose t)
-DEFSYSTEMLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t)
-DEFSYSTEMTESTLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t :test t)
+DS_OOS = funcall (intern (symbol-name :operate-on-system) :mk) "maxima"
+DEFSYSTEMCOMPILE = ($(DS_OOS) :compile :verbose t)
+DEFSYSTEMLOAD = ($(DS_OOS) :load :verbose t)
+DEFSYSTEMTESTLOAD = ($(DS_OOS) :load :verbose t :test t)
 
 ## Implementation-specific code starts here.
 
