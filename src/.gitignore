@@ -11,3 +11,5 @@ maxout.openmath
 rmaxima
 semantic.cache
 *.fasl
+
+*-depends.mk

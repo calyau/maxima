@@ -59,7 +59,7 @@ clean-clisp:
 clisp-depends.mk: maxima.system
 	test -d binary-clisp || mkdir binary-clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(CLISP_MAXIMA)" "clisp-depends.mk"))'
-include clisp-depends.mk
+-include clisp-depends.mk
 endif
 
 if CMUCL_EXEC
@@ -111,7 +111,7 @@ cmucl-depends.mk: maxima.system
 	test -d binary-cmucl || mkdir binary-cmucl
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$(CMU_MAXIMA)" "cmucl-depends.mk"))' | $(EXECUTECMUCL)
 
-include cmucl-depends.mk
+-include cmucl-depends.mk
 endif
 
 
@@ -147,7 +147,7 @@ scl-depends.mk: maxima.system
 	test -d binary-scl || mkdir binary-scl
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern (symbol-name :create-dependency-file) :mk) "binary-scl/maxima.core" "scl-depends.mk"))' | $(EXECUTESCL)
 
-include scl-depends.mk
+-include scl-depends.mk
 endif
 
 
@@ -180,7 +180,7 @@ clean-acl:
 acl-depends.mk: maxima.system
 	test -d binary-acl || mkdir binary-acl
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl/maxima.dxl" "acl-depends.mk"))' | $(EXECUTEACL)
-include acl-depends.mk
+-include acl-depends.mk
 endif
 
 if SBCL_EXEC
@@ -233,7 +233,7 @@ clean-sbcl:
 sbcl-depends.mk: maxima.system
 	test -d binary-sbcl || mkdir binary-sbcl
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(SBCL_MAXIMA)" "sbcl-depends.mk") (sb-ext:quit))'
-include sbcl-depends.mk
+-include sbcl-depends.mk
 endif
 
 if GCL
@@ -285,7 +285,7 @@ clean-gcl:
 gcl-depends.mk: maxima.system
 	test -d binary-gcl || mkdir binary-gcl
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk"))'
-include gcl-depends.mk
+-include gcl-depends.mk
 endif
 
 if OPENMCL_EXEC
@@ -336,7 +336,7 @@ clean-openmcl:
 openmcl-depends.mk: maxima.system
 	test -d binary-openmcl || mkdir binary-openmcl
 	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$$(OPENMCL_MAXIMA)" "openmcl-depends.mk") (ccl:quit))'
-include openmcl-depends.mk
+-include openmcl-depends.mk
 endif
 
 if ECL
@@ -366,7 +366,7 @@ clean-ecl:
 ecl-depends.mk: maxima.system
 	test -d binary-ecl || mkdir binary-ecl
 	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-ecl/maxima" "ecl-depends.mk") (quit))'
-include ecl-depends.mk
+-include ecl-depends.mk
 endif
 
 echo_%:
