@@ -325,46 +325,40 @@ gcl-depends.mk: maxima.system
 
 endif
 
+## OPENMCL / CCL ###############################################################
+if OPENMCL
+
+openmcllibdir = $(verpkglibdir)/binary-openmcl
+EXTRA_SCRIPTS += $(OPENMCL_MAXIMA)
+
 if OPENMCL_EXEC
 OPENMCL_MAXIMA = binary-openmcl/maxima$(EXEEXT)
-OPENMCL_INST_BIN = true
-OPENMCL_INST_MAXIMA = $(INSTALL_PROGRAM) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
+openmcllib_SCRIPTS = $(OPENMCL_MAXIMA)
+omcl_flag = :prepend-kernel t
 else
 OPENMCL_MAXIMA = binary-openmcl/maxima.image
-## FIXME:  This rule can't work.  Need to replace "lisp" with the 
-## openmcl_runtime, after defining that in configure.in
-## See install-clisp or install-scl.  DB 2012-06-07
-OPENMCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-opencl/lisp"
-OPENMCL_INST_MAXIMA = $(INSTALL_DATA) $(OPENMCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(OPENMCL_MAXIMA)"
+openmcllib_DATA = $(OPENMCL_MAXIMA)
+omcl_flag =
 endif
 
-if OPENMCL
 EXECUTEOPENMCL = $(OPENMCL_NAME) -e
 BUILT_FILES += $(OPENMCL_MAXIMA)
-WEIRD_INSTALL_TARGETS += install-openmcl
-WEIRD_UNINSTALL_TARGETS += uninstall-openmcl
 CLEAN_TARGETS += clean-openmcl
 
-openmcl:$(OPENMCL_MAXIMA)
+COMPILE_OMCL = $(EXECUTEOPENMCL) \
+ '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))'
+WRITE_OMCL = $(EXECUTEOPENMCL) \
+ '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit))'
+BUILD_OMCL = $(COMPILE_OMCL) && $(WRITE_OMCL)
 
-binary-openmcl/maxima.image:
+openmcl: $(OPENMCL_MAXIMA)
+
+$(OPENMCL_MAXIMA):
+	$(BUILD_OMCL)
 	$(EXECUTEOPENMCL) \
 	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
 	$(EXECUTEOPENMCL) \
-	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit))'
-
-binary-openmcl/maxima$(EXEEXT):
-	$(EXECUTEOPENMCL) \
-	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
-	$(EXECUTEOPENMCL) \
-	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" :prepend-kernel t) (ccl::quit))'
-
-install-openmcl: $(OPENMCL_MAXIMA)
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
-	$(OPENMCL_INST_MAXIMA)
-
-uninstall-openmcl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-openmcl/$(OPENMCL_MAXIMA)"
+	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(opcl_flag)) (ccl::quit))'
 
 clean-openmcl:
 	rm -rf binary-openmcl
@@ -373,6 +367,7 @@ openmcl-depends.mk: maxima.system
 	$(EXECUTEOPENMCL) $(call MAKE_DEPENDS,$(OPENMCL_MAXIMA),openmcl-depends.mk,(ccl:quit))
 
 -include openmcl-depends.mk
+
 endif
 
 if ECL
