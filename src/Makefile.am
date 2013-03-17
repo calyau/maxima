@@ -238,53 +238,45 @@ acl-depends.mk: maxima.system
 -include acl-depends.mk
 endif
 
+## SBCL ########################################################################
+if SBCL
+
+sbcllibdir = $(verpkglibdir)/binary-sbcl
+
+EXTRA_SCRIPTS += $(SBCL_MAXIMA)
+
 if SBCL_EXEC
 SBCL_MAXIMA = binary-sbcl/maxima$(EXEEXT)
-SBCL_INST_BIN = true
-SBCL_INST_MAXIMA = $(INSTALL_PROGRAM) $(SBCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(SBCL_MAXIMA)"
+sbcllib_SCRIPTS = $(SBCL_MAXIMA)
+sb_slad = (sb-ext:save-lisp-and-die "$@" :executable t)
 else
 SBCL_MAXIMA = binary-sbcl/maxima.core
-## FIXME:  This rule can't work.  Need to replace "lisp" with the 
-## sbcl_runtime, after defining that in configure.in
-## See install-clisp or install-scl.  DB 2012-06-07
-SBCL_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/sbcl/lisp"
-SBCL_INST_MAXIMA = $(INSTALL_DATA) $(SBCL_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(SBCL_MAXIMA)"
+sbcllib_DATA = $(SBCL_MAXIMA)
+sb_slad = (sb-ext:save-lisp-and-die "$@")
 endif
 
-if SBCL
 EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint --eval
 BUILT_FILES += $(SBCL_MAXIMA)
-WEIRD_INSTALL_TARGETS += install-sbcl
-WEIRD_UNINSTALL_TARGETS += uninstall-sbcl
 CLEAN_TARGETS += clean-sbcl
 
-sbcl:binary-sbcl/maxima.core
+COMPILE_SBCL = $(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))'
+WRITE_SBCL = $(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) $(sb_slad) (sb-ext:quit))'
+BUILD_SBCL = $(COMPILE_SBCL) && $(WRITE_SBCL)
 
-binary-sbcl/maxima.core:
+sbcl: $(SBCL_MAXIMA)
+
+$(SBCL_MAXIMA):
 	make bd_sbcl
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "$@") (sb-ext:quit))'
-
-binary-sbcl/maxima$(EXEEXT):
-	make bd_sbcl
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "$@" :executable t) (sb-ext:quit))'
-
-install-sbcl:
-	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-sbcl
-	$(SBCL_INST_MAXIMA)
-
-uninstall-sbcl:
-	rm -f $(DESTDIR)$(verpkglibdir)/$(SBCL_MAXIMA)
+	$(BUILD_SBCL)
 
 clean-sbcl:
-	rm -rf binary-sbcl
-	rm -f numerical/binary-sbcl numerical/slatec/binary-sbcl
+	rm -rf binary-sbcl numerical/binary-sbcl numerical/slatec/binary-sbcl
 
 sbcl-depends.mk: maxima.system
 	$(EXECUTESBCL) $(call MAKE_DEPENDS,$(SBCL_MAXIMA),sbcl-depends.mk,(sb-ext:quit))
 
 -include sbcl-depends.mk
+
 endif
 
 if GCL
