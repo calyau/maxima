@@ -42,6 +42,12 @@ sharefiles.mk:
 BUILT_FILES =
 all-local: sharefiles.mk $(BUILT_FILES)
 
+## The "clean" rule always just deletes some files and they are
+## specified in the conditional sections by adding
+## implementation-specific targets to the list CLEAN_TARGETS.
+CLEAN_TARGETS =
+clean-local: $(CLEAN_TARGETS)
+
 ## A rule to build binary directories of the form binary-<lispname>
 ## and subdirectories ./numerical and ./numerical/slatec
 binary_subdirs = / /numerical /numerical/slatec
@@ -82,8 +88,7 @@ EXECUTECLISP = $(CLISP_NAME) -norc -q -x
 clisplibdir = $(verpkglibdir)/binary-clisp
 
 BUILT_FILES += $(CLISP_MAXIMA)
-clean: clean-clisp
-distclean: clean-clisp
+CLEAN_TARGETS += clean-clisp
 
 clisp: $(CLISP_MAXIMA)
 
@@ -128,8 +133,7 @@ INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INT
 BUILT_FILES += $(CMU_MAXIMA)
 install-exec-local: install-cmucl
 uninstall-hook: uninstall-cmucl
-clean: clean-cmucl
-distclean: clean-cmucl
+CLEAN_TARGETS += clean-cmucl
 
 cmucl: $(CMU_MAXIMA)
 
@@ -162,8 +166,7 @@ EXECUTESCL = $(SCL_NAME) -noinit -batch
 BUILT_FILES += binary-scl/maxima.core
 install-exec-local: install-scl
 uninstall-hook: uninstall-scl
-clean: clean-scl
-distclean: clean-scl
+CLEAN_TARGETS += clean-scl
 
 scl: binary-scl/maxima.core
 
@@ -196,8 +199,7 @@ EXECUTEACL = $(ACL_NAME) -batch
 BUILT_FILES += binary-acl/maxima.dxl
 install-exec-local: install-acl
 uninstall-hook: uninstall-acl
-clean: clean-acl
-distclean: clean-acl
+CLEAN_TARGETS += clean-acl
 
 acl:binary-acl/maxima.dxl
 
@@ -240,8 +242,7 @@ EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint --eval
 BUILT_FILES += $(SBCL_MAXIMA)
 install-exec-local: install-sbcl
 uninstall-hook: uninstall-sbcl
-clean: clean-sbcl
-distclean: clean-sbcl
+CLEAN_TARGETS += clean-sbcl
 
 sbcl:binary-sbcl/maxima.core
 
@@ -277,8 +278,7 @@ EXECUTEGCL = $(GCL_NAME) -batch -eval
 BUILT_FILES += binary-gcl/maxima
 install-exec-local: install-gcl
 uninstall-hook: uninstall-gcl
-clean: clean-gcl
-distclean: clean-gcl
+CLEAN_TARGETS += clean-gcl
 
 sys-proclaim.lisp:
 	rm -rf binary-gcl
@@ -337,8 +337,7 @@ EXECUTEOPENMCL = $(OPENMCL_NAME) -e
 BUILT_FILES += $(OPENMCL_MAXIMA)
 install-exec-local: install-openmcl
 uninstall-hook: uninstall-openmcl
-clean: clean-openmcl
-distclean: clean-openmcl
+CLEAN_TARGETS += clean-openmcl
 
 openmcl:$(OPENMCL_MAXIMA)
 
@@ -375,8 +374,7 @@ EXECUTEECL = $(ECL_NAME) -norc
 BUILT_FILES += binary-ecl/maxima
 install-exec-local: install-ecl
 uninstall-hook: uninstall-ecl
-clean: clean-ecl
-distclean: clean-ecl
+CLEAN_TARGETS += clean-ecl
 
 ecl:binary-ecl/maxima
 
