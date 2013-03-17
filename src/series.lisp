@@ -14,7 +14,7 @@
 
 (declare-top (special var *n *a *m *c *index $cauchysum *gcd*
 		      nn* dn* $ratsimpexpons *infsumsimp *roots *failures
-		      *ratexp splist *var usexp $verbose ans *trigred
+		      *ratexp *var usexp $verbose ans *trigred
 		      *form indl *noexpand $ratexpand))
 
 (load-macsyma-macros rzmac)
@@ -125,7 +125,7 @@
 
 (defun sratexpnd (n d)
   (let ((ans (list nil))
-        (splist)
+        (*splist*)
         (linpat
          '((mtimes) ((coefftt) (cc not-zero-free var))
                   ((mexpt) ((mplus) ((coeffpt)
@@ -134,6 +134,7 @@
                                (c freevar))
                               ((coeffpp) (a freevar)))
                          (n not-zero-free var)))))
+    (declare (special *splist*))
       (cond ((and (not (equal n 1)) (smono n var))
              (m* n (sratexpnd 1 d)))
             ((free d var)
@@ -450,8 +451,7 @@
 (defun sp2diff2 (exp ind lol)
   (let (e fr)
     (setq e (m2 exp '((mtimes) ((coefftt) (fr freevar))
-		      ((coefftt) (e true)))
-		nil)
+		      ((coefftt) (e true))))
 	  fr (cdr (assoc 'fr e :test #'eq))
 	  e  (cdr (assoc 'e e :test #'eq)))
     (sp3reconst
@@ -505,8 +505,7 @@
 (defun sp2integ13 (exp ind lol)
   (let (e fr)
     (setq e (m2 exp '((mtimes) ((coefftt) (fr freevar))
-		      ((coefftt) (e true)))
-		nil)
+		      ((coefftt) (e true))))
 	  fr (cdr (assoc 'fr e :test #'eq))
 	  e  (cdr (assoc 'e e :test #'eq)))
     (cond ((and (mexptp e) (eq (cadr e) var))

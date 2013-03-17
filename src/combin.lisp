@@ -1249,11 +1249,11 @@
   ;; e=binomial(n,d)
   (prog (n d l h)
      ;; check that n and d are linear in *var*
-     (cond ((null (setq n (m2 (cadr e) (list 'n 'linear* *var*) nil)))
-	    (return (adusum e))))
+     (when (null (setq n (m2 (cadr e) (list 'n 'linear* *var*))))
+       (return (adusum e)))
      (setq n (cdr (assoc 'n n :test #'eq)))
-     (cond ((null (setq d (m2 (caddr e) (list 'd 'linear* *var*) nil)))
-	    (return (adusum e))))
+     (when (null (setq d (m2 (caddr e) (list 'd 'linear* *var*))))
+       (return (adusum e)))
      (setq d (cdr (assoc 'd d :test #'eq)))
 
      ;; binomial(a+b*k,c+b*k) -> binomial(a+b*k, a-c)

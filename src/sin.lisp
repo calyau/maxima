@@ -77,7 +77,7 @@
 (defun elem (a)
   (cond ((freevar a) t)
 	((atom a) nil)
-	((m2 a expres nil) t)
+	((m2 a expres) t)
 	(t (every #'elem (cdr a)))))
 
 (defun freevar (a)
@@ -130,8 +130,7 @@
            ;; Method 9: Rational function times a log or arctric function
 	   ((setq arg (m2 exp
 			  `((mtimes) ((,(caar expres)) (b rat8))
-			    ((coefftt) (c rat8prime)))
-	                  nil))
+			    ((coefftt) (c rat8prime)))))
 	    ;; Integrand is of the form R(x)*F(S(x)) where F is a log, or 
 	    ;; arctric function and R(x) and S(x) are rational functions.
 	    (ratlog exp var (cons (cons 'a expres) arg)))
@@ -146,8 +145,7 @@
 		       (setq y (m2 exp
 				   '((mtimes)
 				     ((coefftt) (c rat8))
-				     ((coefftt) (d elem)))
-				   nil)))
+				     ((coefftt) (d elem))))))
 		  (return
 		    (let ((a (cdr (assoc 'a z :test #'eq)))
 			  (b (cdr (assoc 'b z :test #'eq)))
@@ -185,9 +183,7 @@
 	 (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
        (cond
 	 ((setq arg
-	    (m2 exp
-	     `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))
-	      nil))
+	    (m2 exp `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))))
 	  ;; A rational function times the special function.
 	  ;; Integrate with the method integration-by-parts.
 	  (partial-integration (cons (cons 'a expres) arg) var))
@@ -269,7 +265,7 @@
         ;; Expand expres.
         ;; Substitute the expanded factor into the integrand and try again.
 	((not (m2 (setq w ($expand (cadr expres)))
-		  (cadr expres) nil))
+                (cadr expres)))
 	 (prog2
 	   (setq exp (maxima-substitute w (cadr expres) exp))
 	   (intform (simplify (list '(mexpt) w (caddr expres))))))
@@ -331,8 +327,7 @@
          ((mplus)
           ((coeffpt) (c freevar) (var varp))
           ((coeffpt) (d freevar)))
-         -1))
-      nil))
+         -1))))
 
 ;; This is for matching the pattern a*x^r1*(c1+c2*x^q)^r2.
 (defun m2-chebyform (expr)
@@ -346,16 +341,14 @@
            ((mexpt) (var varp) (q free1)))
           ((coeffpp) (c1 freevar)))
          (r2 numberp))
-        ((coefftt) (a freevar)))
-      nil))
+        ((coefftt) (a freevar)))))
 
 ;; Pattern to match b*x + a
 (defun m2-b*x+a (expr)
   (m2 expr
       `((mplus)
         ((coeffpt) (b freevar) (x varp))
-        ((coeffpt) (a freevar)))
-      nil))
+        ((coeffpt) (a freevar)))))
 
 ;; This is the pattern c*x^2 + b * x + a.
 (defun m2-c*x^2+b*x+a (expr)
@@ -363,8 +356,7 @@
       `((mplus)
         ((coeffpt) (c freevar) ((mexpt) (x varp) 2))
         ((coeffpt) (b freevar) (x varp))
-        ((coeffpt) (a freevar)))
-      nil))
+        ((coeffpt) (a freevar)))))
 
 ;; This is the pattern (a*x+b)*(c*x+d)
 (defun m2-a*x+b/c*x+d (expr)
@@ -375,8 +367,7 @@
          ((coeffpt) (b freevar)))
         ((mplus)
          ((coeffpt) (c freevar) (var varp))
-         ((coeffpt) (d freevar))))
-      nil))
+         ((coeffpt) (d freevar))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -898,7 +889,7 @@
 	 (rat3 (caddr ex) t))
 	((integerp (caddr ex))
 	 (rat3 (cadr ex) ind))
-        ((and (m2 (cadr ex) *ratroot* nil)
+        ((and (m2 (cadr ex) *ratroot*)
 	      (denomfind (caddr ex)))
          (setq *rootlist* (cons (denomfind (caddr ex)) *rootlist*)))
         (t (rat3 (cadr ex) nil))))
@@ -911,7 +902,7 @@
           ((atom ex) rootform)
           ((not (eq (caar ex) 'mexpt))
            (mapcar #'(lambda (u) (subst4 u)) ex))
-          ((m2 (cadr ex) *ratroot* nil)
+          ((m2 (cadr ex) *ratroot*)
            (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
           (t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
   
@@ -1181,7 +1172,7 @@
 	 (supertrig (cadr exp)))
 	((member (caar exp)
 	       '(%sin %cos %tan %sec %cot %csc) :test #'eq)
-	 (cond ((m2 (cadr exp) *trigarg* nil) t)
+	 (cond ((m2 (cadr exp) *trigarg*) t)
                ((m2-b*x+a (cadr exp))
                 (and (setq *notsame* t) nil))
 	       (t (supertrig (cadr exp)))))
@@ -1189,7 +1180,7 @@
 
 (defun subst2s (ex pat)
   (cond ((null ex) nil)
-	((m2 ex pat nil) var)
+	((m2 ex pat) var)
 	((atom ex) ex)
 	(t (cons (subst2s (car ex) pat)
 		 (subst2s (cdr ex) pat)))))
@@ -1199,8 +1190,7 @@
   (m2 exp '((mplus) ((mtimes)
 		     ((coefftt) (c freevar))
 		     ((coefftt) (v varp)))
-	    ((coeffpp) (b freevar)))
-      nil))
+	    ((coeffpp) (b freevar)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1251,8 +1241,7 @@
                            (((d trig1))
                             ((mtimes)
                              (x varp)
-                             ((coefftt) (n freevar)))))
-                         nil)))
+                             ((coefftt) (n freevar))))))))
         (go b))
 ; This check has been done with the pattern match.
 ;       ((not (and (member (car (setq b (cdr (assoc 'b y :test #'eq)))) '(%sin %cos) :test #'eq)
@@ -1322,8 +1311,7 @@
                                   ((mtimes) 
                                    (x varp)
                                    ((coefftt) (n integerp2))))
-                                 ((coefftt) (c supertrig)))
-                               nil))))
+                                 ((coefftt) (c supertrig)))))))
             (return nil)))
      ;; We have a product of trig functions: trig1(n*x)*trig2(y).
      ;; trig1 is sin or cos, where n is a numerical integer. trig2 is not a sin
@@ -1404,7 +1392,7 @@
 	      (cond ((member exp '(sin* cos* sec* tan*) :test #'eq)
 		     (setq *notsame* t))
 		    (t exp)))
-	     ((setq y (m2 exp *b1* nil))
+	     ((setq y (m2 exp *b1*))
 	      (f3 y))
 	     (t (cons (car exp) (mapcar #'(lambda (g) (rats g)) (cdr exp))))))))
 
@@ -1474,8 +1462,7 @@
                            '((mtimes)
                              ((coefftt) (b trigfree))
                              ((mexpt) sin* (m poseven))
-                             ((mexpt) cos* (n poseven)))
-                           nil)))
+                             ((mexpt) cos* (n poseven))))))
        ;; Go if y is not of the form sin^m*cos^n for positive even m and n.
        (go l1))
      
@@ -1546,13 +1533,13 @@
      (setq *c* -1)
      (setq *a* 'sin*)
      (setq *b* 'cos*)
-     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) cos* (n odd1))) nil)
+     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) cos* (n odd1))))
                 (setq repl (list '(%sin) var)))
        ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the substitution z = sin.
        (go getout))
      (setq *a* *b*)
      (setq *b* 'sin*)
-     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) sin* (n odd1))) nil)
+     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) sin* (n odd1))))
                 (setq repl (list '(%cos) var)))
        ;; The case sin^(2*n+1)*Elem(sin^2,cos).  Use the substitution z = cos.
        (go get3))
@@ -1573,7 +1560,7 @@
        (go get1))
      (setq *a* *b*)
      (setq *b* 'tan*)
-     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) tan* (n odd1))) nil)
+     (when (and (m2 y '((coeffpt) (c rat1) ((mexpt) tan* (n odd1))))
            (setq repl (list '(%sec) var)))
        (go getout))
      (when (not (alike1 (setq repl ($expand exp)) exp))
@@ -1773,8 +1760,7 @@
      (setq s (m2 (car alist)
 		 '((mtimes)
 		   ((coefftt) (a freevar))
-		   ((coefftt) (c true)))
-		 nil))
+		   ((coefftt) (c true)))))
      (setq *c* (cdr (assoc 'c s :test #'eq)))
      (cond ((not (setq r
 		       (m2 (cons '(mplus) blist)
@@ -1784,8 +1770,7 @@
 					     (cond ((mtimesp *c*)
 						    (cdr *c*))
 						   (t (list *c*)))))
-				 '(d true))
-			   nil)))
+				 '(d true)))))
 	    (return nil)))
      (setq *d* (simplify (list '(mtimes)
 			     (subliss s 'a)
@@ -1793,8 +1778,7 @@
 				   (subliss r 'b)
 				   -1))))
      (cond ((m2 (cons '(mplus) alist)
-		(timesloop *d* blist)
-		nil)
+		(timesloop *d* blist))
 	    (return *d*))
 	   (t (return nil)))))
 
@@ -1810,8 +1794,7 @@
 		 '((mtimes)
 		   ((mexpt) (var varp) (c integerp2))
 		   ((coefftt) (a freevar))
-		   ((coefftt) (b true)))
-		 nil))
+		   ((coefftt) (b true)))))
      (setq *b* (cdr (assoc 'b y :test #'eq)))
      (setq *c* (cdr (assoc 'c y :test #'eq)))
      (unless  (rat10 *b*) (return nil))
@@ -1879,7 +1862,7 @@
       ;; Case u(var) is the identity function. y is a term in exp.
       ;; Match if diff(y,var) == c*(exp/y).
       ;; This even works when y is a function with multiple args.
-       ((setq w (m2 (sdiff y var) r nil))
+       ((setq w (m2 (sdiff y var) r))
 	(return (muln (list y y (power* (mul2* 2 (cdr (assoc 'c w :test #'eq))) -1)) nil))))
 
      ;; w is the arg in y.
@@ -1906,7 +1889,7 @@
 		       (cond ((setq *d* (matchsum (cdr x) (cdr v)))
 			      (list (cons 'c *d*)))
 			     (t nil)))
-		      (t (m2 x r nil))))
+		      (t (m2 x r))))
 	(return (cond ((null (setq x (integrallookups y))) nil)
 		      ((eq w t) x)
 		      (t (mul2* x (power* (cdr (assoc 'c w :test #'eq)) -1)))))))
@@ -1959,8 +1942,7 @@
            ((mexpt)
             ((mexpt) (z varp) (r freevar0))
             (p freevar)))))
-        (v freevar))
-      nil))
+        (v freevar))))
 
 ;;; Recognize z^v*a^(b*z^r+d)
 
@@ -1972,8 +1954,7 @@
          (a freevar0)
          ((mplus)
           ((coeffpp) (d freevar))
-          ((coefft) (b freevar0) ((mexpt) (z varp) (r freevar0))))))
-      nil))
+          ((coefft) (b freevar0) ((mexpt) (z varp) (r freevar0))))))))
 
 ;;; Recognize z^v*%e^(a*z^r+b)^u
 
@@ -1987,8 +1968,7 @@
           ((mplus)
            ((coeffpp) (b freevar))
            ((coefft) (a freevar0) ((mexpt) (z varp) (r freevar0)))))
-         (u freevar)))
-      nil))
+         (u freevar)))))
 
 ;;; Recognize (a*z+b)^p*%e^(c*z+d)
 
@@ -2004,8 +1984,7 @@
 	 $%e
 	 ((mplus)
 	    ((coefft) (c freevar0) (z varp))
-	    ((coeffpp) (d freevar)))))
-      nil))
+	    ((coeffpp) (d freevar)))))))
 
 ;;; Recognize d^(a*z^2+b/z^2+c)
 
@@ -2016,8 +1995,7 @@
 	((mplus)
 	   ((coefft) (a freevar0) ((mexpt) (z varp) 2))
 	   ((coefft) (b freevar0) ((mexpt) (z varp) -2))
-	   ((coeffpp) (c freevar))))
-      nil))
+	   ((coeffpp) (c freevar))))))
 
 ;;; Recognize z^(2*n)*d^(a*z^2+b/z^2+c)
 
@@ -2030,8 +2008,7 @@
 	   ((mplus)
 	      ((coefft)  (a freevar0) ((mexpt) (z varp) 2))
 	      ((coefft)  (b freevar0) ((mexpt) (z varp) -2))
-	      ((coeffpp) (c freevar)))))
-    nil))
+	      ((coeffpp) (c freevar)))))))
 
 ;;; Recognize z^n*d^(a*z^2+b*z+c)
 
@@ -2044,8 +2021,7 @@
          ((mplus)
           ((coeffpt) (a freevar) ((mexpt) (z varp) 2))
           ((coeffpt) (b freevar) (z varp))
-          ((coeffpp) (c freevar)))))
-      nil))
+          ((coeffpp) (c freevar)))))))
 
 ;;; Recognize z^n*(%e^(a*z^2+b*z+c))^u
 
@@ -2060,8 +2036,7 @@
            ((coeffpp) (c freevar))
            ((coefft) (a freevar0) ((mexpt) (z varp) 2))
            ((coefft) (b freevar0) (z varp))))
-         (u freevar)))
-      nil))
+         (u freevar)))))
 
 ;;; Recognize z^n*d^(a*sqrt(z)+b*z+c)
 
@@ -2074,8 +2049,7 @@
 	   ((mplus)
 	      ((coefft) (a freevar0) ((mexpt) (z varp) ((rat) 1 2)))
 	      ((coefft) (b freevar0) (z varp))
-	      ((coeffpp) (c freevar)))))
-     nil))
+	      ((coeffpp) (c freevar)))))))
 
 ;;; Recognize z^n*(%e^(a*sqrt(z)+b*z+c))^u
 
@@ -2090,8 +2064,7 @@
            ((coeffpp) (c freevar))
            ((coefft) (a freevar0) ((mexpt) (z varp) ((rat) 1 2)))
            ((coefft) (b freevar0) (z varp))))
-         (u freevar)))
-      nil))
+         (u freevar)))))
 
 ;;; Recognize z^n*a^(b*z^r+e)*h^(c*z^r+g)
 
@@ -2112,8 +2085,7 @@
 	      ((coefft)
 		 (c freevar0)
 		 ((mexpt) (z varp) (r1 freevar0)))
-	      ((coeffpp) (g freevar)))))
-    nil))
+	      ((coeffpp) (g freevar)))))))
 
 ;;; Recognize z^v*(%e^(b*z^r+e))^q*(%e^(c*z^r+g))^u
 
@@ -2134,8 +2106,7 @@
           ((mplus)
            ((coeffpp) (g freevar))
            ((coefft) (c freevar0) ((mexpt) (z varp) (r1 freevar0)))))
-         (u freevar)))
-      nil))
+         (u freevar)))))
 
 ;;; Recognize a^(b*sqrt(z)+d*z+e)*h^(c*sqrt(z)+f*z+g)
 
@@ -2153,8 +2124,7 @@
 	   ((mplus)
 	      ((coeffpt) (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
 	      ((coeffpt) (f freevar) (z varp))
-	      ((coeffpp) (g freevar)))))
-    nil))
+	      ((coeffpp) (g freevar)))))))
 
 ;;; Recognize (%e^(b*sqrt(z)+d*z+e))^u*(%e^(c*sqrt(z)+f*z+g))^v
 
@@ -2176,8 +2146,7 @@
            ((coeffpp) (g freevar))
            ((coeffpt) (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
            ((coeffpt) (f freevar) (z varp))))
-         (v freevar)))
-      nil))
+         (v freevar)))))
 
 ;;; Recognize (%e^(b*z^r+e))^u*(%e^(c*z^r+g))^v
 
@@ -2197,8 +2166,7 @@
           ((mplus)
            ((coeffpp) (g freevar))
            ((coefft) (c freevar) ((mexpt) (z varp) (r1 freevar0)))))
-         (v freevar)))
-      nil))
+         (v freevar)))))
 
 ;;; Recognize z^n*a^(b*z^2+d*z+e)*h^(c*z^2+f*z+g)
 
@@ -2217,8 +2185,7 @@
 	 ((mplus)
 	    ((coeffpt)  (c freevar) ((mexpt) (z varp) 2))
 	    ((coeffpt)  (f freevar) (z varp))
-	    ((coeffpp) (g freevar)))))
-      nil))
+	    ((coeffpp) (g freevar)))))))
 
 ;;; Recognize z^n*(%e^(b*z^2+d*z+e))^q*(%e^(c*z^2+f*z+g))^u
 
@@ -2241,8 +2208,7 @@
            ((coeffpp) (g freevar))
            ((coeffpt) (c freevar) ((mexpt) (z varp) 2))
            ((coeffpt) (f freevar) (z varp))))
-         (u freevar)))
-      nil))
+         (u freevar)))))
 
 ;;; Recognize z^n*a^(b*sqrt(z)+d*z+e)*h^(c*sqrt(z+)f*z+g)
 
@@ -2261,8 +2227,7 @@
 	   ((mplus)
 	      ((coeffpt)  (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
 	      ((coeffpt)  (f freevar) (z varp))
-	      ((coeffpp) (g freevar)))))
-    nil))
+	      ((coeffpp) (g freevar)))))))
 
 ;;; Recognize z^n*(%e^(b*sqrt(z)+d*z+e))^q*(%e^(c*sqrt(z)+f*z+g))^u
 
@@ -2285,8 +2250,7 @@
            ((coeffpp) (g freevar))
            ((coeffpt) (c freevar) ((mexpt) (z varp) ((rat) 1 2)))
            ((coeffpt) (f freevar) (z varp))))
-         (u freevar)))
-      nil))
+         (u freevar)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

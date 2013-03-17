@@ -25,7 +25,7 @@
 ;;;; Schatchen is Yiddish for "matchmaker" and Schatchen here is a
 ;;;; pattern matching routine.
 
-(declare-top (special splist dict ans))
+(declare-top (special ans))
 
 (defvar *schatfactor* nil)	 ;DETERMINES WHETHER FACTORING SHOULD BE USED.
 
@@ -158,7 +158,7 @@
 ;;; appended.
 
 (defmfun schatchen (e p)
-  (m2 e p nil))
+  (m2 e p))
 
 ;;THE RESTORE FUNCTIONS RESTORE THE SPEC-VAR ANS
 ;;AND RETURN TRUE OR FALSE AS FOLLOWS
@@ -172,8 +172,12 @@
 ;;ESPECIALLY WITH THE VAR* (SET) MODE ALL SCHATCHEN VARIABLES
 ;;ARE TO BE PRECEEDED BY A "%"
 
-(defmfun m2 (e p splist)
-  (let ((ans (list nil)))
+(defvar *splist*)
+
+(defmfun m2 (e p)
+  (let ((ans (list nil))
+        (*splist* nil))
+    (declare (special *splist*))
     (cond ((null (m1 (copy-tree e) p)) nil)
 	  ((null (cdr ans)))
 	  ((cdr ans)))))
@@ -310,8 +314,7 @@
 	 (cond ((and *schatfactor* (mtimesp (setq e ($factor e))))
 		(coeffport e p 1 ind))
 	       ((restore))))
-	(t (coeffport (cond ((mtimesp e) e) ((list '(mtimes) e)))
-		      p 1 ind))))
+	(t (coeffport (if (mtimesp e) e (list '(mtimes) e)) p 1 ind))))
 
 (defun coeffport (e p ident ind)
   (do ((z (cddr p) (cdr z))
@@ -356,7 +359,7 @@
   (do ((z (cond ((mplusp e) e) ((list '(mplus) e))))
        (zz (cons '(coefft) (cdr p)))) ;THIS ROUTINE IS THE ONE WHICH PUTS
 					;MOST OF THE THE GARBAGE ON ANS IT
-      ((null (cdr z))			;IT CANNOT USE THE SPLIST HACK
+      ((null (cdr z))			;IT CANNOT USE THE *SPLIST* HACK
        (setq z (findit (cond ((eq (caadr p) 'var*) ;BECAUSE IT COULD BE USING
 			      (car (cddadr p)))	;MANY DIFFERENT VARIABLES ALTHOUGH
 			     ((caadr p))))) ;THOUGHT THE FIRST IS THE ONLY ONE
@@ -424,7 +427,7 @@
 	 (push-context)
 	 (do ((e (cdr e) (cdr e)))
 	     ((null e) (restore1))
-	   (and (null (m1 (car e) (cadr p))) (return (restore)))
+	   (unless (m1 (car e) (cadr p)) (return (restore)))
 	   (setq p (cdr p))))))
 
 (defun sch-loop (e lp)
@@ -451,12 +454,12 @@
 
 (defun coefftt (exp pat ind opind)	;OPIND IS MPLUS OR MTIMES
   (push-context)
-  (cond ((or (atom exp) (and ind (not (eq (caar exp) opind))))
-	 (setq exp (list (list opind) exp))))
-  (push (car pat) splist)		;SAVE VAR NAME HERE
+  (when (or (atom exp) (and ind (not (eq (caar exp) opind))))
+    (setq exp (list (list opind) exp)))
+  (push (car pat) *splist*)		;SAVE VAR NAME HERE
   (do ((z exp) (res))
       ((null (cdr z))
-       (setq splist (cdr splist))	;KILL NAME SAVED
+       (setq *splist* (cdr *splist*))	;KILL NAME SAVED
        (cond (res (setq res (cond ((cdr res) (cons (list opind) res))
 				  ((car res))))
 		  (cond ((and (eq (car pat) 'var*)
@@ -570,11 +573,11 @@
 			     ;;;THE LAMBDA IS HERE ONLY BECAUSE OF SIN!!!
 		       (apply (cadr ala) (findthem exp (cddr ala))))
 		      ((eval-pred (cadr ala) (car ala) exp)))))
-	 (cond ((member (car ala) splist :test #'eq))
+	 (cond ((member (car ala) *splist* :test #'eq))
 	       ((add-to (car ala) exp))))
 	((cond ((and loc (atom (cadr ala))
 		     (fboundp (cadr ala)))
-		(mapc #'(lambda (q v) (and (null (member q splist :test #'eq))
+		(mapc #'(lambda (q v) (and (null (member q *splist* :test #'eq))
 					   (add-to q v)))
 		      (car ala)
 		      (apply (cadr ala) (findthem exp (cddr ala)))))))))
@@ -604,16 +607,18 @@
 	  ((setq y (cdr y))))))
 
 (defun sch-replace (dict exp1)
+  (declare (special dict))
   (replac exp1))
 
 (defun replac (exp1)
+  (declare (special dict))
   (let ((w1 nil))
     (cond ((null exp1) nil)
 	  ((not (atom exp1))
 	   (cond ((eq (car exp1) 'eval)
 		  (simplifya (eval (replac (cadr exp1))) nil))
 		 ((eq (car exp1) 'quote) (cadr exp1))
-		 (t (setq w1 (mapcar 'replac (cdr exp1)))
+		 (t (setq w1 (mapcar #'replac (cdr exp1)))
 		    (cond ((equal w1 (cdr exp1))
 			   exp1)
 			  ((simplifya (cons (list (caar exp1)) w1) t))))))
@@ -622,4 +627,4 @@
 	   (cdr w1))
 	  (exp1))))
 
-(declare-top (unspecial var splist dict ans))
+(declare-top (unspecial var ans))
