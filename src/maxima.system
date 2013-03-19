@@ -12,8 +12,9 @@
 (let ((version-num (+ (* 10000 system::*gcl-major-version*)
 		      (* 100 system::*gcl-minor-version*)
 		      system::*gcl-extra-version*)))
-  (if (> version-num 20603)
-      (pushnew :gcl-working-proclaims *features*)))
+  (when (and (> version-num 20603)
+             (string= (sys:getenv "WITH_SYS_PROCLAIM") "true"))
+    (pushnew :gcl-working-proclaims *features*)))
 		      
 #+cmu
 (setf ext:*gc-verbose* nil)

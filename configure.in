@@ -809,6 +809,19 @@ AC_ARG_ENABLE(gcl-alt-link,
 	[gcl_alt_link=false])
 
 AM_CONDITIONAL(GCL_ALT_LINK, test x$gcl_alt_link = xtrue)
+
+## Enable building sys-proclaim.lisp. Only has any effect on GCL,
+## where it increases the compiled binary's performance by maybe 5% at
+## the expense of doubling compile time.
+AC_ARG_ENABLE([sys-proclaim],
+        [  --enable-sys-proclaim        Use sys-proclaim.lisp (only affects GCL)],
+        [case "${enableval}" in
+              yes) sys_proclaim=true ;;
+              no) sys_proclaim=false ;;
+              *) AC_MSG_ERROR(bad value ${enableval} for --enable-sys-proclaim) ;;
+         esac],
+        [sys_proclaim=false])
+AM_CONDITIONAL([SYS_PROCLAIM], [test x${sys_proclaim} = xtrue])
 	
 AC_ARG_WITH(default-lisp,
 	[  --with-default-lisp=<lisp>   Set default lisp implementation to <lisp>],
@@ -1022,6 +1035,12 @@ interfaces/xmaxima/doc/Makefile interfaces/xmaxima/doc/figures/Makefile \
 interfaces/xmaxima/msgs/Makefile interfaces/xmaxima/win32/Makefile \
 plotting/mgnuplot share/Makefile demo/Makefile plotting/Makefile locale/Makefile \
 src/lisp)
+
+## Warn the user if they've asked for a pointless sys-proclaim.lisp
+## (nipping "go faster" cargo-culting in the bud...)
+if test x"${gcl}" = xfalse -a x${sys_proclaim} = xtrue; then
+   AC_MSG_WARN([--enable-sys-proclaim only has any effect on GCL])
+fi
 
 echo
 echo "Summary:"

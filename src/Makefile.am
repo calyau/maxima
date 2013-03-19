@@ -53,6 +53,12 @@ all-local: sharefiles.mk $(BUILT_FILES)
 CLEAN_TARGETS =
 clean-local: $(CLEAN_TARGETS)
 
+## Tell make clean to delete all the <foo>-depends.mk files.
+DEPENDS_FILES = \
+  clisp-depends.mk cmucl-depends.mk scl-depends.mk acl-depends.mk \
+  sbcl-depends.mk gcl-depends.mk openmcl-depends.mk ecl-depends.mk
+CLEANFILES = $(DEPENDS_FILES) sys-proclaim.lisp
+
 ## Similarly, we do something hacky with the install rule. Most of the
 ## time, we can actually use Automake's tools for this, but for the
 ## crazy "install another copy of the implementation" approach that we
@@ -291,28 +297,33 @@ EXECUTEGCL = $(GCL_NAME) -batch -eval
 BUILT_FILES += binary-gcl/maxima
 CLEAN_TARGETS += clean-gcl
 
+if SYS_PROCLAIM
+sys_proc_dependency = sys-proclaim.lisp
+
+## This ensures that, when gcl-depends.mk is rebuilt, it gets done in
+## an environment with WITH_SYS_PROCLAIM defined and true.
+export WITH_SYS_PROCLAIM = true
+
 sys-proclaim.lisp:
 	rm -rf binary-gcl
 	touch sys-proclaim.lisp
 	make bd_gcl
 	$(EXECUTEGCL) '(progn (load "generate-sys-proclaim.lisp"))'
 	rm -rf binary-gcl
+else !SYS_PROCLAIM
+sys_proc_dependency =
+endif
 
 gcl: binary-gcl/maxima
 
-binary-gcl/maxima: sys-proclaim.lisp
+binary-gcl/maxima: $(sys_proc_dependency)
 	make bd_gcl
 if GCL_ALT_LINK
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTEGCL) '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l))))'
 else
-if WIN32
-	$(EXECUTEGCL) '(progn (compiler::emit-fn t))' -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(LOADMAKEPROCLAIM) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima"))'
-else
-	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) (compiler::emit-fn t) $(DEFSYSTEMCOMPILE) $(LOADMAKEPROCLAIM) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
-	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima"))'
-endif	
 endif
 
 clean-gcl:
