@@ -82,11 +82,11 @@ DEFSYSTEMCOMPILE = ($(DS_OOS) :compile :verbose t)
 DEFSYSTEMLOAD = ($(DS_OOS) :load :verbose t)
 DEFSYSTEMTESTLOAD = ($(DS_OOS) :load :verbose t :test t)
 
-## A function that takes: $(1) = the target name; $(2) =
-## <foo>-depends.mk; $(3) = any postscript that should be added in the
-## progn. It outputs lisp code that, when run, should create the
-## dependency Makefile fragments.
-MAKE_DEPENDS = '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$(1)" "$(2)") $(3))'
+## A function that takes: $(1) = the target name or names (either a
+## string or a list of strings); $(2) = <foo>-depends.mk; $(3) = any
+## postscript that should be added in the progn. It outputs lisp code
+## that, when run, should create the dependency Makefile fragments.
+MAKE_DEPENDS = '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) $(1) "$(2)") $(3))'
 
 ## CLISP #######################################################################
 if CLISP
@@ -129,7 +129,7 @@ clean-clisp:
 	rm -rf binary-clisp
 
 clisp-depends.mk: maxima.system
-	$(EXECUTECLISP) $(call MAKE_DEPENDS,$(CLISP_MAXIMA),clisp-depends.mk)
+	$(EXECUTECLISP) $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk)
 
 -include clisp-depends.mk
 endif CLISP
@@ -174,7 +174,7 @@ clean-cmucl:
 	rm -rf binary-cmucl
 
 cmucl-depends.mk: maxima.system
-	echo $(call MAKE_DEPENDS,$(CMU_MAXIMA),cmucl-depends.mk) | $(EXECUTECMUCL)
+	echo $(call MAKE_DEPENDS,"$(CMU_MAXIMA)",cmucl-depends.mk) | $(EXECUTECMUCL)
 
 -include cmucl-depends.mk
 endif
@@ -211,7 +211,7 @@ clean-scl:
 	rm -rf binary-scl
 
 scl-depends.mk: maxima.system
-	echo $(call MAKE_DEPENDS,binary-scl/maxima.core,scl-depends.mk) | $(EXECUTESCL)
+	echo $(call MAKE_DEPENDS,"binary-scl/maxima.core",scl-depends.mk) | $(EXECUTESCL)
 
 -include scl-depends.mk
 
@@ -239,7 +239,7 @@ clean-acl:
 	rm -rf binary-acl
 
 acl-depends.mk: maxima.system
-	echo $(call MAKE_DEPENDS,binary-acl/maxima.dxl,acl-depends.mk) | $(EXECUTEACL)
+	echo $(call MAKE_DEPENDS,"binary-acl/maxima.dxl",acl-depends.mk) | $(EXECUTEACL)
 
 -include acl-depends.mk
 endif
@@ -279,7 +279,7 @@ clean-sbcl:
 	rm -rf binary-sbcl numerical/binary-sbcl numerical/slatec/binary-sbcl
 
 sbcl-depends.mk: maxima.system
-	$(EXECUTESBCL) $(call MAKE_DEPENDS,$(SBCL_MAXIMA),sbcl-depends.mk,(sb-ext:quit))
+	$(EXECUTESBCL) $(call MAKE_DEPENDS,"$(SBCL_MAXIMA)",sbcl-depends.mk,(sb-ext:quit))
 
 -include sbcl-depends.mk
 
@@ -299,6 +299,7 @@ CLEAN_TARGETS += clean-gcl
 
 if SYS_PROCLAIM
 sys_proc_dependency = sys-proclaim.lisp
+gcl_depends_targets = (list "binary-gcl/maxima" "sys-proclaim.lisp")
 
 ## This ensures that, when gcl-depends.mk is rebuilt, it gets done in
 ## an environment with WITH_SYS_PROCLAIM defined and true.
@@ -312,6 +313,7 @@ sys-proclaim.lisp:
 	rm -rf binary-gcl
 else !SYS_PROCLAIM
 sys_proc_dependency =
+gcl_depends_targets = "binary-gcl/maxima"
 endif
 
 gcl: binary-gcl/maxima
@@ -330,7 +332,7 @@ clean-gcl:
 	rm -rf binary-gcl
 
 gcl-depends.mk: maxima.system
-	$(EXECUTEGCL) $(call MAKE_DEPENDS,binary-gcl/maxima,gcl-depends.mk)
+	$(EXECUTEGCL) $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk)
 
 -include gcl-depends.mk
 
@@ -375,7 +377,7 @@ clean-openmcl:
 	rm -rf binary-openmcl
 
 openmcl-depends.mk: maxima.system
-	$(EXECUTEOPENMCL) $(call MAKE_DEPENDS,$(OPENMCL_MAXIMA),openmcl-depends.mk,(ccl:quit))
+	$(EXECUTEOPENMCL) $(call MAKE_DEPENDS,"$(OPENMCL_MAXIMA)",openmcl-depends.mk,(ccl:quit))
 
 -include openmcl-depends.mk
 
@@ -404,7 +406,7 @@ clean-ecl:
 	rm -rf binary-ecl libmaxima.a
 
 ecl-depends.mk: maxima.system
-	$(EXECUTEECL) -eval $(call MAKE_DEPENDS,binary-ecl/maxima,ecl-depends.mk,(quit))
+	$(EXECUTEECL) -eval $(call MAKE_DEPENDS,"binary-ecl/maxima",ecl-depends.mk,(quit))
 
 -include ecl-depends.mk
 
