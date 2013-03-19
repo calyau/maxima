@@ -664,42 +664,6 @@ AC_SUBST(IMGKIT)
 AM_CONDITIONAL(GCC331, test x${GCCVER} = x3.3.1)
 
 if test x"${explicit_lisp}" = xfalse ; then
-dnl  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
-dnl  	if test x"${clisp_found}" = xtrue ; then
-dnl  		clisp=true
-dnl  	else
-dnl  		AC_CHECK_PROG(gcl_found,${gcl_default_name},true,false)
-dnl  		if test x"${gcl_found}" = xtrue ; then
-dnl  			gcl=true
-dnl  		else
-dnl  			AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
-dnl  			if test x"${cmucl_found}" = xtrue ; then
-dnl  				cmucl=true
-dnl  			else
-dnl  				AC_CHECK_PROG(scl_found,$SCL_NAME,true,false)
-dnl  				if test x"${scl_found}" = xtrue ; then
-dnl  					scl=true
-dnl  				else
-dnl  					AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
-dnl  					if test x"${sbcl_found}" = xtrue ; then
-dnl  					   	sbcl=true
-dnl  					else
-dnl  						AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
-dnl  						if test x"${acl6_found}" = xtrue ; then
-dnl  							acl6=true
-dnl  						else
-dnl  							AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
-dnl  							if test x"${openmcl_found}" = xtrue ; then
-dnl  								openmcl=true
-dnl  							else
-dnl  								AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${scl_default_name}(SCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6),${openmcl_default_name}(OpenMCL)] were found in PATH)
-dnl  							fi
-dnl  						fi
-dnl  					fi
-dnl  				fi
-dnl  			fi
-dnl  		fi
-dnl  	fi
 	dnl See if any of the lisps can be found
   	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
 	AC_CHECK_PROG(gcl_found,${gcl_default_name},true,false)
