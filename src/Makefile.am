@@ -156,7 +156,7 @@ endif
 # we have to put (intl:textdomain "maxima") in each Lisp file.
 INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INTL") "maxima"))
 CMU_COMPILE = echo '(progn $(INITINTL) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)
-CMU_WRITE = echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "$$(CMU_MAXIMA)") $(cmuflag))' | $(EXECUTECMUCL)
+CMU_WRITE = echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "$(CMU_MAXIMA)") $(cmuflag))' | $(EXECUTECMUCL)
 CMU_BUILD = ($(CMU_COMPILE)) && ($(CMU_WRITE))
 EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 
