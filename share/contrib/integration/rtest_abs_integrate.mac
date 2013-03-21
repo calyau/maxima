@@ -252,7 +252,7 @@ log(16)/2+log(5)/2-log(2)/2+1/2$
 (i : integrate(1/(1 + abs(x) + abs(x-1)),x,-7,5));
 log(16)/2+log(5)/2-log(2)/2+1/2$
 
-integrate(exp(-abs(x)),x,-1,inf);
+expand (integrate(exp(-abs(x)),x,-1,inf));
 2-%e^-1$
 
 (convolution(f,g,x) := block([t : gensym()],
@@ -517,6 +517,20 @@ x*log(sin(x))-(x*log(sin(x)^2+cos(x)^2+2*cos(x)+1)
               -2*%i*x*atan2(sin(x),1-cos(x))-2*%i*li[2](%e^(%i*x))
               -2*%i*li[2](-%e^(%i*x))-%i*x^2)
               /2$
+
+/* SF bug #2557: "abs_integrate leaks assumptions into enclosing context" */
+
+(kill (foo), foo : copy (facts ()), 0);
+0;
+
+defint(exp(-abs(x))/cosh(x),x,minf,inf);
+2*log(2);
+
+is (foo = facts ());
+true;
+
+defint(exp(-abs(x))/cosh(x),x,minf,inf);
+2*log(2);
 
 (print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 70));
 true$

@@ -615,26 +615,6 @@
 	   (cunmrk e)
 	   (setq contexts (delete e contexts :test #'eq))))))
 
-(defmfun context (&rest l)
-  (newcon l))
-
-(defun newcon (c)
-  (when (> *conindex* *connumber*)
-    (gccon))
-  (setq c (if (null c)
-	      (list '*gc nil)
-	      (list '*gc nil 'subc c)))
-  (setf (aref conunmrk *conindex*) c)
-  (setf (aref conmark *conindex*) (cdr c))
-  (incf *conindex*)
-  c)
-
-;; To be used with the WITH-NEW-CONTEXT macro.
-(defun context-unwinder ()
-  (killc (aref conmark *conindex*))
-  (decf *conindex*)
-  (setf (aref conunmrk *conindex*) nil))
-
 (defun gccon ()
   (gccon1)
   (when (> *conindex* *connumber*)
