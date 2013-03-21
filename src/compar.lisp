@@ -760,20 +760,22 @@ relational knowledge is contained in the default context GLOBAL.")
     ($sign z)))
 
 (defmfun $sign (x)
-  (let ((x (specrepcheck x))
-	sign minus odds evens factored)
-    (sign01 (cond (limitp (restorelim x))
-		  (*complexsign*
-		   ;; No rectform in Complex mode. Rectform ask unnecessary
-		   ;; questions about complex expressions and can not handle
-		   ;; imaginary expressions completely. Thus $csign can not
-		   ;; handle something like (1+%i)*(1-%i) which is real.
-		   ;; After improving rectform, we can change this. (12/2008)
-		   (when *debug-compar*
-		     (format t "~&$SIGN with ~A~%" x))
-		   x)
-		  ((not (free x '$%i)) ($rectform x))
-		  (t x)))))
+  (unwind-protect
+    (let ((x (specrepcheck x))
+	  sign minus odds evens factored)
+      (sign01 (cond (limitp (restorelim x))
+		    (*complexsign*
+		     ;; No rectform in Complex mode. Rectform ask unnecessary
+		     ;; questions about complex expressions and can not handle
+		     ;; imaginary expressions completely. Thus $csign can not
+		     ;; handle something like (1+%i)*(1-%i) which is real.
+		     ;; After improving rectform, we can change this. (12/2008)
+		     (when *debug-compar*
+		       (format t "~&$SIGN with ~A~%" x))
+		     x)
+		    ((not (free x '$%i)) ($rectform x))
+		    (t x))))
+    (clearsign)))
 
 (defun sign01 (a)
   (let ((e (sign-prep a)))

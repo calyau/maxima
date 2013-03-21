@@ -1007,3 +1007,22 @@ true$
 
 kill(all);
 done$
+
+/* facts in assume database not cleaned up by 'sign' */
+
+(kill (foo), foo : %e^(abs(uu)+uu)*(uu/abs(uu)+1)+%e^(abs(uu)-uu)*(uu/abs(uu)-1), 0);
+0;
+
+block ([bar, baz], bar : copy (facts (initial)), is (equal (foo, 0)), baz : facts (initial), is (bar = baz));
+true;
+
+/* tnx to Barton Willis for the next couple of tests */
+
+map('sign,[sqrt(x),x]);
+[pz, pnz];
+
+(kill(buddy),
+ buddy(p,q) := expand(if p >= 0 then q else q,0,0),
+ buddy(sqrt(x),abs(x)));
+abs(x);
+
