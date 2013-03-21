@@ -23,33 +23,41 @@
 
 (setq in-p nil)
 
-(defmfun nformat (form)
+(defmfun nformat (form &aux (p nil))
   (cond ((atom form)
 	 (cond ((and (realp form) (minusp form)) (list '(mminus) (- form)))
 	       ((eq t form) (if in-p t '$true))
 	       ((eq nil form) (if in-p nil '$false))
-	       ;;	       (($EXTENDP FORM)
-	       ;;		(NFORMAT (transform-extends form)))
+	       ;; revision, extension by Richard Fateman 3/2013.
+	       ;;  Perhaps some object is an atom, maybe a CLOS object or structure. 
+	       ;; Either its type is a symbolp.. 
+	       ;; e.g. a structure like (defstruct (ri ...)) is type ri.
+	       ;; so we look for a formatter on the type or car of the type.
+	       ;; OR
+	       ;; if car of the type is also not a symbol, we look for formatter on nil
+	       ;; where it isn't.
+	       ;; depending on the lisp, type-of may be more or less sophisticated.
+	       ;; a "good" lisp
+	       ;;  may return a list, e.g. (type-of "abc") is (simple-array character (3))
+	       ;; in some lisps, e.g. GCL the type is just  string.
+	       
+	       ((and (setf p(type-of form))
+		     (if (not (symbolp p)) (setf p (car p)) p)
+		     (setf p (get (and (symbolp p) p) 'formatter)) 
+		     ;; form is an atom of a type with a formatter property
+		     (funcall p form)))
+	       ;; just display as a lisp symbol, number, or other atom.
 	       (t form)))
-	((atom (car form))
-	 form)
-	((eq 'rat (caar form))
-	 (cond ((minusp (cadr form))
-		(list '(mminus) (list '(rat) (- (cadr form)) (caddr form))))
-	       (t (cons '(rat) (cdr form)))))
-	((eq 'mmacroexpanded (caar form)) (nformat (caddr form)))
-	((null (cdar form)) form)
-	((eq 'mplus (caar form)) (form-mplus form))
-	((eq 'mtimes (caar form)) (form-mtimes form))
-	((eq 'mexpt (caar form)) (form-mexpt form))
-	((eq 'mrat (caar form)) (form-mrat form))
-	((eq 'mpois (caar form)) (nformat ($outofpois form)))
-	((eq 'bigfloat (caar form))
-	 (if (minusp (cadr form))
-	     (list '(mminus) (list (car form) (- (cadr form)) (caddr form)))
-	     (cons (car form) (cdr form))))
-	(t form)))
+	((atom (car form))  form) ;; probably an illegal form; just return it.
+	((null (cdar form)) form) ;; probably an illegal or unsimplified form; just return it.
+	
+	;; this next section is for the ordinary maxima objects that are tagged by
+	;; their main operator or CAAR,  e.g. ((mplus) a b) has CAAR mplus ...
+	((setf p (get (caar form) 'formatter)) ;; find the formatter.  If there is one, call it.
+	 (funcall p form))
+	(t form)))			; if there is no formatter. Just return form unchanged.
 
+ 
 (defun form-mplus (form &aux args trunc)
   (setq args (mapcar #'nformat (cdr form)))
   (setq trunc (member 'trunc (cdar form) :test #'eq))
@@ -125,6 +133,7 @@
 ;;      FORM
 ;;      (CONS (DELSIMP (CAR FORM)) (MAPCAR #'NFORMAT-ALL (CDR FORM)))))
 ;;Update from F302
+;; used only in comm.lisp substitute, mpart.
 (defmfun nformat-all (form)
   (setq form (nformat form))
   (if (or (atom form) (eq (caar form) 'bigfloat))
@@ -133,3 +142,55 @@
 	    (if (member (caar form) '(mdo mdoin) :test #'eq)
 		(mapcar #'(lambda (u) (if u (nformat-all u))) (cdr form))
 		(mapcar #'nformat-all (cdr form))))))
+
+
+;;; we should define all the formatters in the file after the helper functions like  form-mplus
+	   
+(setf (get 'rat 'formatter) 
+  #'(lambda(form)(cond ((minusp (cadr form))
+			(list '(mminus) (list '(rat) (- (cadr form)) (caddr form))))
+		       (t (cons '(rat) (cdr form))))))
+
+(setf (get 'mmacroexpanded 'formatter) 
+  #'(lambda(form)(nformat (caddr form))))
+
+(setf (get 'mplus 'formatter)  #'form-mplus)
+(setf (get 'mtimes 'formatter)  #'form-mtimes)
+(setf (get 'mexpt 'formatter)  #'form-mexpt)
+(setf (get 'mrat 'formatter)  #'form-mrat)
+(setf (get 'mpois 'formatter)  #'(lambda(form)(nformat ($outofpois form))))
+
+(setf (get 'bigfloat 'formatter)  
+  #'(lambda(form)
+	 (if (minusp (cadr form))
+	     (list '(mminus) (list (car form) (- (cadr form)) (caddr form)))
+	   (cons (car form) (cdr form)))))
+
+(setf (get 'ratio 'formatter)  ;; in case a common lisp ratio is returned somehow.
+  #'(lambda (form)
+      (cond ((minusp form)
+		(list '(mminus) (list '(rat) (- (numerator form)) (denominator form))))
+	    (t (list '(rat) (numerator form)(denominator form))))))
+
+(setf (get 'complex 'formatter)  ;; in case a common lisp complex number is returned somehow.
+  #'(lambda(form)
+          (if (complexp form)
+            (nformat `((mplus) ,(realpart form)
+                     ((mtimes) ,(imagpart form) $%i)))
+            ;; some random form with caar COMPLEX
+            ;;not really a CL complex
+            form)))
+
+;; something I added for fun
+(defstruct (ri (:constructor $interval (lo hi) ))lo hi)
+(setf (get 'ri 'formatter) ;; in case a structure of type ri  [real interval] is computed
+  #'(lambda(r) (list '($interval simp) (ri-lo r)(ri-hi r)))) ;; this prints it.
+
+;;  so in maxima, we can construct ri structures by typing interval(1,2)
+;; and if we display it,  it  appear as  interval(1,2).
+;; but ?print(interval(1,2))  shows the lisp value which is the structure,
+;; #s(ri :lo 1 :hi 2).   
+
+;; we could set up formatters for , say,  (simple-array single-float <dimensions>)
+;; or share the burden with display program .
+
