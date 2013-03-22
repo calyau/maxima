@@ -1209,7 +1209,7 @@
 ;; c * x
 
 (defun gf-xctimes (x c)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-ctimes))
   (maybe-fixnum-let ((c c))
     (if (or (= 0 c) (null x)) nil
@@ -1220,7 +1220,7 @@
         (rplacd r (list (the fixnum (car rx)) (gf-ctimes c (cadr rx)))) ))))
 
 (defun gf-nxctimes (x c) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-ctimes))
   (maybe-fixnum-let ((c c))
     (if (or (= 0 c) (null x)) nil
@@ -1231,7 +1231,7 @@
 ;; c*v^e * x
 
 (defun gf-xectimes (x e c)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum e) (inline gf-ctimes))
   (maybe-fixnum-let ((c c))
     (if (or (= 0 c) (null x)) nil
@@ -1244,7 +1244,7 @@
 ;; - x
 
 (defun gf-minus (x) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-cminus-b))
   (if (or (null x) (= 2 *gf-char*)) x
     (do* ((res (list (the fixnum (car x)) (gf-cminus-b (cadr x))))
@@ -1254,7 +1254,7 @@
       (rplacd r (list (the fixnum (car rx)) (gf-cminus-b (cadr rx)))) )))
 
 (defun gf-nminus (x) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-cminus-b))
   (if (or (null x) (= 2 *gf-char*)) x
     (do ((r (cdr x) (cddr r))) (())
@@ -1264,7 +1264,7 @@
 ;; x + c, 0 < c < *gf-char*
 
 (defun gf-nxcplus (x c) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-cplus-b))
   (maybe-fixnum-let ((c c))
     (cond 
@@ -1290,7 +1290,7 @@
 ;; merge y into x
 
 (defun gf-nplus (x y) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-cplus-b))
   (cond 
     ((null x) y)
@@ -1341,7 +1341,7 @@
 ;; merge c*v^e*y into x
 
 (defun gf-nxyecplus (x y e c) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum e)(inline gf-ctimes gf-cplus-b))
   (cond 
     ((null y) x)
@@ -1402,7 +1402,7 @@
 ;;         where e.g. xi = ci*v^ei
 ;;
 (defun gf-times (x y)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-ctimes gf-cplus-b))
   (if (or (null x) (null y)) nil
     (maybe-fixnum-let ((c 0)(cx 0))
@@ -1448,7 +1448,7 @@
 ;; The reverse needs some additional consing but is slightly faster.
 ;;
 (defun gf-sq (x) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-ctimes gf-cplus-b))
   (cond 
     ((null x) x) 
@@ -1497,7 +1497,7 @@
 ;; x^n mod y
 
 (defun gf-pow (x n) ;; assume 0 <= n
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (cond 
     ((= 0 n) (list 0 1))
     (*gf-tables?* (gf-pow-by-table x n) )
@@ -1522,7 +1522,7 @@
     (gf-nrem (copy-list x) y) ))
 
 (defun gf-nrem (x y) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-ctimes gf-cminus-b))
   (when (null y) (errrjf "Quotient by zero"))
   (if (null x) x 
@@ -1541,7 +1541,7 @@
 ;; assume lc(y) = 1, reduction poly is monic
 
 (defun gf-nred (x) ;; modifies x
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-cminus-b))
   (if (null x) x
     (let* ((y *gf-red*) (e 0) (ley (car y)))
@@ -1555,7 +1555,7 @@
 ;; (monic) gcd
 
 (defun gf-gcd (x y) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (cond 
     ((null x) y)
     ((null y) x)
@@ -1569,7 +1569,7 @@
 ;; (monic) extended gcd
 
 (defun gf-gcdex (x y) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((x1 (list 0 1)) x2 y1 (y2 (list 0 1)) q r) 
     (do ()((null y) 
             (let ((inv (gf-cinv (cadr x)))) 
@@ -1590,7 +1590,7 @@
 ;; (might happen when reduction poly isn't irreducible)
 
 (defun gf-inv (y) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (when (null y) (errrjf "Quotient by zero"))
   (let ((x *gf-red*) 
         (y1 (list 0 1)) x1 q r) 
@@ -1605,7 +1605,7 @@
         y1 (gf-nplus (gf-nminus (gf-times q y1)) x1) )) )) 
 
 (defun gf-divide (x y)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-cminus-b))
   (cond 
     ((null y) (errrjf "Quotient by zero"))
@@ -1631,7 +1631,7 @@
   (gf-minset?) (gf-x2n (gf-p2x p)) )
 
 (defun gf-x2n (x)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (if (null x) 0
     (maybe-fixnum-let ((m *gf-char*))
       (do ((n 0))(())
@@ -1664,7 +1664,7 @@
     (cons '(mlist simp) (gf-x2l x len)) ))
 
 (defun gf-x2l (x len)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum len))
   (do* ((e (the fixnum (car x))) (k (if (= 0 len) e (1- len)) (1- k)) l) 
        ((< k 0) (nreverse l))
@@ -1684,7 +1684,7 @@
   (gf-x2p (gf-l2x (cdr l))) )
 
 (defun gf-l2x (l)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (setq l (reverse l))
   (maybe-fixnum-let ((c 0))
     (do ((e 0) x)
@@ -1703,7 +1703,7 @@
   (gf-l2n (cdr l)) )
 
 (defun gf-l2n (l) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (maybe-fixnum-let ((m *gf-char*)(c1 (car l))(c 0))
     (setq l (reverse (cdr l)))
     (do ((n 0)(b 1)) 
@@ -1719,14 +1719,14 @@
   (cons '(mlist simp) (if (= 0 len) (gf-n2l n) (gf-n2l-twoargs n len))) )
 
 (defun gf-n2l (n) ;; this version is frequently called by gf-precomp, keep it simple
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (maybe-fixnum-let ((d *gf-char*)(r 0))
     (do (l) ((= 0 n) l)
       (multiple-value-setq (n r) (truncate n d))
       (setq l (cons r l)) )))
 
 (defun gf-n2l-twoargs (n len)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum len) )
   (maybe-fixnum-let ((d *gf-char*)(r 0))
     (do (l) ((= 0 len) l) 
@@ -1738,7 +1738,7 @@
 ;; leading coefficient retrieved from number representation 
 
 (defun gf-n2lc (n)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (maybe-fixnum-let ((d *gf-char*)(r 0))
     (do () ((= 0 n) r)
       (multiple-value-setq (n r) (truncate n d)) )))
@@ -1765,7 +1765,7 @@
 
 ;;                 p,n > 1 ! 
 (defun gf-irr-p (y p n) ;; gf-irr-p is independent from any settings
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((*gf-char* p)
         #-gcl (*fixnump-2gf-char* (< (* 2 p) most-positive-fixnum)) ;; see above
         (*gf-red* y)
@@ -1780,7 +1780,7 @@
 ;; find an irreducible element
 
 (defun gf-irr (gf-char gf-exp) 
-  #+ (or ccl gcl)  (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl)  (declare (optimize (speed 3) (safety 0)))
   (when (= 1 gf-exp)
     (return-from gf-irr (list 1 1)) )
   (let ((*gf-char* gf-char))
@@ -1839,7 +1839,7 @@
       (t (gf-prim-p (gf-n2x n))) )))
 
 (defun gf-prim-p (x) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((fbp *gf-fs-base-p*) (mp *gf-x^p-powers*) tmp prod)
     (do ((i 0 (1+ i)) (j 0 0) (lf (array-dimension *gf-fs-base-p* 0)))
         ((= i lf) t)
@@ -1908,7 +1908,7 @@
 ;; find a primitive element
 
 (defun gf-prim () 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let* ((p *gf-char*) 
          (two-p (* 2 p))
          (even-exp (evenp *gf-exp*)) 
@@ -1949,7 +1949,7 @@
 ;; returns an array of polynomials x^p^j, j = 0, 1, .. , (n-1), where n = *gf-exp*
 
 (defun gf-x^p-powers (n) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((p *gf-char*)(a (make-array n :element-type 'list :initial-element nil)) )
     (setf (svref a 0) (list 1 1)) ;; x
     (do ((j 1 (1+ j)))
@@ -1961,7 +1961,7 @@
 ;; y(x) mod *gf-red*
 
 (defun gf-compose (x y) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (if (integerp x) (gf-at y x)
     (do (res) (())
       (setq res (gf-nxcplus res (cadr y))) 
@@ -1973,7 +1973,7 @@
 ;; x(a)
 
 (defun gf-at (x a) ;; Horner and square and multiply
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (if (integerp x) x
     (maybe-fixnum-let ((a a))
       (do ((n 0)) (())
@@ -2084,7 +2084,7 @@
 ;; find the lowest value k for which a^k = 1
 
 (defun gf-ord (x) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (if *gf-tables?*
     (gf-ord-by-table x)
     (let ((k *gf-ord*) p (e 0)) (declare (fixnum e))
@@ -2112,7 +2112,7 @@
 ;; and ord((Fp^n)*) with help of the Chinese Remainder Theorem.
 ;;
 (defun gf-group-order () 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (maybe-fixnum-let ((modulus *gf-char*) (p *gf-char*))
     (prog (e-list p^n (e 0) (ord 1)) (declare (fixnum e))
       (do ((x (pfactor (cons *gf-rat-sym* *gf-red*)))) ;; a monic *gf-red* is assumed
@@ -2242,7 +2242,7 @@
       mat )))
 
 (defun gf-maybe-normal-basis (x)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((powers *gf-x^p-powers*) ;; use again that f(x)^p = f(x^p)
         (gf-exp *gf-exp*) (e (1- *gf-exp*)) )
        (declare (fixnum gf-exp e))
@@ -2257,7 +2257,7 @@
 ;; The elements of the list are values in the range 0, 1, 2, ..., characteristic - 1. 
 
 (defun gf-coeffs-array (x n) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum n))
   (let ((cs (make-array (1+ n) :initial-element 0)))
     (do ((k n)) ((null x) cs) (declare (fixnum k))
@@ -2272,7 +2272,7 @@
           (setq x (cddr x)) ) ))))
 
 (defun gf-coeffs-list (x k) 
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum k))
   (do () ((or (null x) (>= k (the fixnum (car x)))))
     (setq x (cddr x)) )
@@ -2437,7 +2437,7 @@
 ;; Pohlig and Hellman reduction
 
 (defun gf-dlog (a)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (if *gf-tables?*
     (svref $gf_logs (gf-x2n a))
     (let (p (e 0) odivp (g *gf-prim*) gg x dlog dlogs tmp) 
@@ -2468,7 +2468,7 @@
 
 (declaim (inline gf-dlog-f))
 (defun gf-dlog-f (b y z a g q)
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((c (mod (cadr b) 3))) (declare (fixnum c))
     (cond 
       ((= 0 c) 
@@ -2481,7 +2481,7 @@
 ;; Pollard rho for dlog computation (Brents variant of collision detection)
 
 (defun gf-dlog-rho-brent (a g q)  
-  #+ (or ccl gcl) (declare (optimize (speed 3) (safety 0)))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (inline gf-dlog-f))
   (cond
     ((equal '(0 1) a) 0)
