@@ -393,11 +393,11 @@
 			(setq *bd* (adjust-array *bd* %n))
 			(bern  (* 2 %n)))))
 		((null (> %n (get 'bern 'lim)))
-		 (list '(rat) (aref *bn* %n) (aref *bd* %n)))
+		 (list '(rat) (aref *bn* (- %n 2)) (aref *bd* (- %n 2))))
 		(t
 		 (setq *bn* (adjust-array *bn* (1+ %n)))
 		 (setq *bd* (adjust-array *bd* (1+ %n)))
-		 (bern %n)))))
+		 (bern (* 2 (1- %n)))))))
   (simplify s))
 
 (defun bern (%a*)
@@ -1249,11 +1249,11 @@
   ;; e=binomial(n,d)
   (prog (n d l h)
      ;; check that n and d are linear in *var*
-     (cond ((null (setq n (m2 (cadr e) (list 'n 'linear* *var*) nil)))
-	    (return (adusum e))))
+     (when (null (setq n (m2 (cadr e) (list 'n 'linear* *var*))))
+       (return (adusum e)))
      (setq n (cdr (assoc 'n n :test #'eq)))
-     (cond ((null (setq d (m2 (caddr e) (list 'd 'linear* *var*) nil)))
-	    (return (adusum e))))
+     (when (null (setq d (m2 (caddr e) (list 'd 'linear* *var*))))
+       (return (adusum e)))
      (setq d (cdr (assoc 'd d :test #'eq)))
 
      ;; binomial(a+b*k,c+b*k) -> binomial(a+b*k, a-c)

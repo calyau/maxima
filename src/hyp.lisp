@@ -2210,8 +2210,7 @@
 (defun m*s+c (exp)
   (m2 exp
       '((mplus) ((coeffpt) (m $numberp) (s nonnump))
-	        ((coeffpp) (c $numberp)))
-      nil))
+	        ((coeffpp) (c $numberp)))))
 
 ;; List L contains two elements first the numerator parameter that
 ;;exceeds the denumerator one and is called "C", second
@@ -2920,7 +2919,7 @@
 (setq *par* '$p)                           
 
 (defun vfvp (exp)
-  (m2 exp '(v freevarpar) nil))
+  (m2 exp '(v freevarpar)))
 
 
 (defun fpqform (arg-l1 arg-l2 arg)
@@ -3035,8 +3034,7 @@
 ;;
 (defun algii (a b)
   (let* ((sym (cdras 'f (s+c a)))
-	 (sign (cdras 'm (m2 sym '((mtimes) ((coefft) (m $numberp)) ((coefft) (s nonnump)))
-			     nil))))
+	 (sign (cdras 'm (m2 sym '((mtimes) ((coefft) (m $numberp)) ((coefft) (s nonnump)))))))
     (when (and sign (minusp sign))
       (rotatef a b))
     (list nil (mul -1 b) (add a b))))
@@ -3274,9 +3272,7 @@
 
 ;;Pattern match for s(ymbolic) + c(onstant) in parameter
 (defun s+c (exp)
-  (m2 exp
-      '((mplus) ((coeffpt)(f nonnump)) ((coeffpp)(c $numberp)))
-      nil))
+  (m2 exp '((mplus) ((coeffpt)(f nonnump)) ((coeffpp)(c $numberp)))))
 
 (defun nonnump (z)
   (cond ((not ($numberp z)) t)

@@ -3600,8 +3600,7 @@ in the interval of integration.")
         (c freevar)
         ((mexpt) (z varp) (w freevar))
         ((mexpt) $%e ((mtimes) -1 ((mexpt) (z varp) (s freevar0))))
-        ((mexpt) ((%log) (z varp)) (m freevar)))
-    nil))
+        ((mexpt) ((%log) (z varp)) (m freevar)))))
 
 ;;; Recognize c*z^r*log(z)^n*(1-z)^s*log(1-z)^m
 
@@ -3614,8 +3613,7 @@ in the interval of integration.")
         ((mexpt) (z varp) (r freevar))
         ((mexpt) ((%log) (z varp)) (n freevar))
         ((mexpt) ((mplus) 1 ((mtimes) -1 (z varp))) (s freevar))
-        ((mexpt) ((%log) ((mplus) 1 ((mtimes)-1 (z varp)))) (m freevar)))
-    nil))
+        ((mexpt) ((%log) ((mplus) 1 ((mtimes)-1 (z varp)))) (m freevar)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

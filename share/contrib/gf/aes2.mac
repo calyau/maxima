@@ -39,7 +39,7 @@
 
 /* GF arithmetic by lookup tables ******************************************* */
 
-gf_set(2, x^8+x^4+x^3+x+1)$
+gf_set_data(2, x^8+x^4+x^3+x+1)$
 
 gf_make_arrays()$
 

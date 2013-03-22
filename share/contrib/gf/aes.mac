@@ -74,8 +74,6 @@ for byte:0 thru 255 do %_inv_byte_sub[byte]$
 
 inv_sub_bytes(state) := matrixmap(lambda([byte], %_inv_byte_sub[byte]), state)$
 
-gf_set(2, x^8+x^4+x^3+x+1)$
-
 
 /* shift_rows *************************************************************** */
 
@@ -92,6 +90,8 @@ inv_shift_rows(M) := apply('matrix, makelist(inv_rotate(M[i], i-1), i,1,4))$
 
 
 /* mix_columns ************************************************************** */
+
+gf_set_data(2, x^8+x^4+x^3+x+1)$
 
 mat_n2p(num_mat) := matrixmap('gf_n2p, num_mat)$
 mat_p2n(poly_mat) := matrixmap('gf_p2n, poly_mat)$

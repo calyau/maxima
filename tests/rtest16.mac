@@ -1154,6 +1154,10 @@ limit((2+cos(x))/(x^3*sin(x))-3/x^4,x,0,plus);
 limit ((cosh(sqrt(x+1))-cosh(sqrt(x)))^(1/sqrt(x)),x,inf );
 %e;
 
+/* #2561 limit(log(x^2),x,-20) gives 2*log(-20) */
+limit(log(x^2),x,-20),logexpand:false;
+log(400);
+
 /* #2412 Problems with integral (x/(exp(x)+1),x,0,inf) */
 limit(-x*log(%e^x+1)-li[2](-%e^x)+x^2/2, x, inf);
 %pi^2/6;
@@ -2181,6 +2185,29 @@ bernpoly(x,5);
 x^5-5*x^4/2+5*x^3/3-x/6$
 reset(zerobern);
 [zerobern];
+
+/* Show that bern no longer fails with zerobern:false.
+ *
+ * The compared values are from A&S p810, Table 23.2.
+ */
+bern(28);
+-23749461029/870$
+bern(40);
+-261082718496449122051/13530$
+euler(16);
+19391512145$
+
+zerobern:false;
+false$
+bern(17);
+-7709321041217/510$
+bern(24);
+596451111593912163277961/282$
+euler(10);
+370371188237525$
+
+reset(zerobern);
+[zerobern]$
 
 /* -----------------------------------------------------------------------------
  * Bug ID: 2905929 - gcdex

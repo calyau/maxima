@@ -251,7 +251,7 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 \
 	-state $state \
 	-label [mc "About Maxima"] \
-	-command [list sendMaxima $text "build_info()\$\n"]
+	-command [list sendMaxima $text "build_info();\n"]
 
 
     # Add a Help menubutton

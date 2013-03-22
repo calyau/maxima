@@ -25,18 +25,19 @@
 (defmfun $divsum (n &optional (k 1))
   (let (($intfaclim nil))
     (if (and (integerp k) (integerp n))
-	(let ((n (abs n)))
-	  (cond ((= n 1) 1)
-		((zerop n) 1)
-		((zerop k)
-		 (do ((l (cfactorw n) (cddr l))
-		      (a 1 (* a (1+ (cadr l)))))
-		     ((null l) a)))
-		((minusp k)
-		 `((rat) ,(divsum (cfactorw n) (- k)) ,(expt n (- k))))
-		(t
-		 (divsum (cfactorw n) k))))
-	(list '($divsum) n k))))
+      (let ((n (abs n)))
+        (cond 
+          ((= n 1) 1)
+          ((zerop n) 1)
+          ((zerop k)
+            (do ((l (cfactorw n) (cddr l))
+                 (a 1 (* a (1+ (cadr l)))))
+                ((null l) a)))
+          ((minusp k)
+            `((rat) ,(divsum (cfactorw n) (- k)) ,(expt n (- k))))
+          (t
+            (divsum (cfactorw n) k))))
+      (list '($divsum) n k))))
 
 (defun divsum (l k)
   (do ((l l (cddr l))
@@ -44,21 +45,23 @@
       ((null l) ans)
     (unless (eql (car l) 1)
       (let ((temp (expt (car l) k)))
-	(setq ans (* ans
-		     (truncate (1- (expt temp (1+ (cadr l))))
-			       (1- temp))))))))
+    (setq ans (* ans
+      (truncate (1- (expt temp (1+ (cadr l))))
+                (1- temp))))))))
 
 (defmfun $totient (n)
-  (cond ((integerp n)
-	 (setq n (abs n))
-	 (cond ((< n 1) 0)
-	       ((equal n 1) 1)
-	       (t (do ((factors (let ($intfaclim) (cfactorw n))
-				(cddr factors))
-		       (total 1 (* total (1- (car factors))
-				   (expt (car factors) (1- (cadr factors))))))
-		      ((null factors) total)))))
-	(t (list '($totient) n))))
+  (cond 
+    ((integerp n)
+      (setq n (abs n))
+      (cond 
+        ((< n 1) 0)
+        ((equal n 1) 1)
+        (t (do ((factors (let ($intfaclim) (cfactorw n))
+                  (cddr factors))
+                (total 1 (* total (1- (car factors))
+                  (expt (car factors) (1- (cadr factors))))))
+               ((null factors) total)))))
+    (t (list '($totient) n))))
 
 
 ;;; JACOBI symbol and Gaussian factoring
@@ -68,21 +71,23 @@
 (defvar *incl* (let ((l (list 2 4))) (nconc l l)))
 
 (defun imodp (p)
-  (cond ((not (= (rem p 4) 1)) nil)
-	((= (rem p 8) 5) (imodp1 2 p))
-	((= (rem p 24) 17) (imodp1 3 p)) ;p=2(mod 3)
-	(t (do ((i 5 (+ i (car j)))	;p=1(mod 24)
-		(j *incl* (cdr j)))
-	       ((= (jacobi i p) -1) (imodp1 i p))))))
+  (cond 
+    ((not (= (rem p 4) 1)) nil)
+    ((= (rem p 8) 5) (imodp1 2 p))
+    ((= (rem p 24) 17) (imodp1 3 p)) ;p=2(mod 3)
+    (t (do ((i 5 (+ i (car j)))      ;p=1(mod 24)
+            (j *incl* (cdr j)))
+           ((= (jacobi i p) -1) (imodp1 i p))))))
 
 (defun imodp1 (i modulus)
   (abs (cexpt i (ash (1- modulus) -2) )))
 
 (defun psumsq (p)
   (let ((x (imodp p)))
-    (cond ((equal p 2) (list 1 1))
-	  ((null x) nil)
-	  (t (psumsq1 p x)))))
+    (cond 
+      ((equal p 2) (list 1 1))
+      ((null x) nil)
+      (t (psumsq1 p x)))))
 
 (defun psumsq1 (p x)
   (do ((sp ($isqrt p))
@@ -92,106 +97,110 @@
 
 (defun gctimes (a b c d)
   (list (- (* a c) (* b d))
-	(+ (* a d) (* b c))))
+        (+ (* a d) (* b c))))
 
 (defmfun $gcfactor (n)
   (let ((n (cdr ($totaldisrep ($bothcoef ($rat n '$%i) '$%i)))))
     (if (not (and (integerp (car n)) (integerp (cadr n))))
-	(gcdisp (nreverse n))
-	(do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
-	     (res nil))
-	    ((null factors)
-	     (cond ((null res) 1)
-		   ((null (cdr res)) (car res))
-		   (t (cons '(mtimes simp) (nreverse res)))))
-	  (let ((term (car factors))
-		(exp (cadr factors)))
-	    (push (if (= exp 1)
-		      (gcdisp term)
-		      (pow (gcdisp term) exp))
-		  res))))))
+      (gcdisp (nreverse n))
+      (do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
+           (res nil))
+          ((null factors)
+            (cond 
+              ((null res) 1)
+              ((null (cdr res)) (car res))
+              (t (cons '(mtimes simp) (nreverse res)))))
+        (let ((term (car factors))
+              (exp (cadr factors)))
+          (push (if (= exp 1)
+                  (gcdisp term)
+                  (pow (gcdisp term) exp))
+            res))))))
 
 (defun gcdisp (term)
-  (cond ((atom term) term)
-	((let ((rp (car term))
-	       (ip (cadr term)))
-	   (setq ip (if (equal ip 1) '$%i (list '(mtimes) ip '$%i)))
-	   (if (equal rp 0)
-	       ip
-	       (list '(mplus) rp ip))))))
+  (cond 
+    ((atom term) term)
+    ((let ((rp (car term))
+           (ip (cadr term)))
+      (setq ip (if (equal ip 1) '$%i (list '(mtimes) ip '$%i)))
+      (if (equal rp 0)
+         ip
+         (list '(mplus) rp ip))))))
 
 (defun gcfactor (a b &aux tem)
   (prog (gl cd dc econt p e1 e2 ans plis nl $intfaclim )
-     (setq e1 0
-	   e2 0
-	   econt 0
-	   gl (gcd a b)
-	   a (quotient a gl)
-	   b (quotient b gl)
-	   nl (cfactorw (+ (* a a) (* b b)))
-	   gl (cfactorw gl))
-     (and (equal 1 (car gl)) (setq gl nil))
-     (and (equal 1 (car nl)) (setq nl nil))
-     loop
-     (cond ((null gl)
-	    (cond ((null nl) (go ret))
-		  ((setq p (car nl)))))
-	   ((null nl) (setq p (car gl)))
-	   (t (setq p (max (car gl) (car nl)))))
-     (setq cd (psumsq p))
-     (cond ((null cd)
-	    (setq plis (cons p (cons (cadr gl) plis)))
-	    (setq gl (cddr gl)) (go loop))
-	   ((equal p (car nl))
-	    (cond ((zerop (rem (setq tem (+ (* a (car cd)) ;gcremainder
-					    (* b (cadr cd))))
-			       p))		;remainder(real((a+bi)cd~),p)
-					;z~ is complex conjugate
-		   (setq e1 (cadr nl)) (setq dc cd))
-		  (t (setq e2 (cadr nl))
-		     (setq dc (reverse cd))))
-	    (setq dc (gcexpt dc (cadr nl)) ;
-		  dc (gctimes a b (car dc) (- (cadr dc)))
-		  a (quotient (car dc) p)
-		  b (quotient (cadr dc) p)
-		  nl (cddr nl))))
-     (cond ((equal p (car gl))
-	    (setq econt (+ econt (cadr gl)))
-	    (cond ((equal p 2)
-		   (setq e1 (+ e1 (* 2 (cadr gl)))))
-		  (t (setq e1 (+ e1 (cadr gl))
-			   e2 (+ e2 (cadr gl)))))
-	    (setq gl (cddr gl))))
-     (and (not (zerop e1))
-	  (setq ans (cons cd (cons e1 ans)))
-	  (setq e1 0))
-     (and (not (zerop e2))
-	  (setq ans (cons (reverse cd) (cons e2 ans)))
-	  (setq e2 0))
-     (go loop)
-     ret    (setq cd (gcexpt (list 0 -1)
-			     (rem econt 4)))
-     (setq a (gctimes a b (car cd) (cadr cd)))
-     ;;a hasn't been divided by p yet..
-     (setq a (mapcar 'signum a))
-     #+cl (assert (or (zerop (car a))(zerop (second a))))
-     (cond ((or (equal (car a) -1) (equal (cadr a) -1))
-	    (setq plis (cons -1 (cons 1 plis)))))
-     (cond ((equal (car a) 0)
-	    (setq ans (cons '(0 1) (cons 1 ans)))))
-     (setq ans (nconc plis ans))
-     (return ans)))
+    (setq e1 0
+          e2 0
+          econt 0
+          gl (gcd a b)
+          a (quotient a gl)
+          b (quotient b gl)
+          nl (cfactorw (+ (* a a) (* b b)))
+          gl (cfactorw gl))
+    (and (equal 1 (car gl)) (setq gl nil))
+    (and (equal 1 (car nl)) (setq nl nil))
+    loop
+    (cond ((null gl)
+            (cond ((null nl) (go ret))
+                  ((setq p (car nl)))))
+          ((null nl) (setq p (car gl)))
+          (t (setq p (max (car gl) (car nl)))))
+    (setq cd (psumsq p))
+    (cond ((null cd)
+            (setq plis (cons p (cons (cadr gl) plis)))
+            (setq gl (cddr gl)) 
+            (go loop))
+          ((equal p (car nl))
+            (cond ((zerop (rem (setq tem (+ (* a (car cd)) ;gcremainder
+                                            (* b (cadr cd))))
+                               p))     ;remainder(real((a+bi)cd~),p)
+                                       ;z~ is complex conjugate
+                    (setq e1 (cadr nl)) (setq dc cd))
+                  (t (setq e2 (cadr nl))
+                     (setq dc (reverse cd))))
+            (setq dc (gcexpt dc (cadr nl)) ;
+                  dc (gctimes a b (car dc) (- (cadr dc)))
+                  a (quotient (car dc) p)
+                  b (quotient (cadr dc) p)
+                  nl (cddr nl))))
+    (cond ((equal p (car gl))
+            (setq econt (+ econt (cadr gl)))
+            (cond ((equal p 2)
+                    (setq e1 (+ e1 (* 2 (cadr gl)))))
+                  (t (setq e1 (+ e1 (cadr gl))
+                           e2 (+ e2 (cadr gl)))))
+            (setq gl (cddr gl))))
+    (and (not (zerop e1))
+         (setq ans (cons cd (cons e1 ans)))
+         (setq e1 0))
+    (and (not (zerop e2))
+         (setq ans (cons (reverse cd) (cons e2 ans)))
+         (setq e2 0))
+    (go loop)
+    ret    
+    (setq cd (gcexpt (list 0 -1)
+                     (rem econt 4)))
+    (setq a (gctimes a b (car cd) (cadr cd)))
+    ;;a hasn't been divided by p yet..
+    (setq a (mapcar 'signum a))
+    #+cl (assert (or (zerop (car a))(zerop (second a))))
+    (cond ((or (equal (car a) -1) (equal (cadr a) -1))
+            (setq plis (cons -1 (cons 1 plis)))))
+    (cond ((equal (car a) 0)
+            (setq ans (cons '(0 1) (cons 1 ans)))))
+    (setq ans (nconc plis ans))
+    (return ans)))
 
 (defun multiply-gcfactors (lis)
   (loop for (term exp) on (cddr lis) by #'cddr
-	 with answ = (cond ((numberp (car lis))(list (pexpt (car lis) (second lis)) 0))
-			   (t(gcexpt (car lis) (second lis))))
-	 when (numberp term)
-	 do (setq answ (list (* (first answ) term) (* (second answ) term)))
-	 (show answ)
-	 else
-	 do (setq answ (apply 'gctimes (append answ (gcexpt term exp))))
-	 finally (return answ)))
+    with answ = (cond ((numberp (car lis))(list (pexpt (car lis) (second lis)) 0))
+                      (t(gcexpt (car lis) (second lis))))
+    when (numberp term)
+      do (setq answ (list (* (first answ) term) (* (second answ) term)))
+      (show answ)
+    else
+      do (setq answ (apply 'gctimes (append answ (gcexpt term exp))))
+    finally (return answ)))
 
 (defun gcexpt (a n)
   (cond ((zerop n) '(1 0))
@@ -584,17 +593,17 @@
 
 ;; Maxima functions: 
 
-;; gf_set, gf_unset, gf_minimal_set, gf_info, 
+;; gf_set_data, gf_unset, gf_minimal_set, gf_info, gf_get_data, 
 ;; gf_characteristic, gf_primitive, gf_reduction, gf_order, 
-;; gf_make_arrays, gf_mult_table, gf_powers, 
+;; gf_make_arrays, gf_mult_table, gf_power_table,
 ;; gf_add, gf_sub, gf_mult, gf_inv, gf_div, gf_exp, gf_index, gf_log, 
 ;; gf_p2n, gf_n2p, gf_p2l, gf_l2p, gf_l2n, gf_n2l, 
-;; gf_irreducible_p, gf_irreducible, gf_primitive_p,  
+;; gf_irreducible_p, gf_irreducible, gf_primitive_p, gf_primitive_poly_p, gf_primitive_poly,
 ;; gf_eval, gf_random, gf_factor, gf_gcd, gf_gcdex, gf_degree, gf_minimal_poly, 
 ;; gf_normal_p, gf_normal, gf_random_normal, gf_normal_basis, gf_normal_basis_rep, 
 ;; gf_matadd, gf_matmult, gf_matinv
 
-(declare-top (special $gf_powers $gf_logs $gf_rat $gf_irreducible_coeff_limit)) 
+(declare-top (special $gf_powers $gf_logs $gf_rat $gf_coeff_limit))
 
 (declare-top (special 
   *gf-var* *gf-rat-sym* *gf-rat-header*
@@ -609,7 +618,8 @@
 (defmvar *gf-set?* nil "gf data are set?" boolean)
 (defmvar *gf-minset?* nil "characteristic and reduction polynomial are set?" boolean)
 (defmvar *gf-tables?* nil "log and power tables are computed?" boolean)
-(defmvar $gf_irreducible_coeff_limit 200 "limits the coefficients of the irreducible polynomial" fixnum)
+(defmvar $gf_coeff_limit 200 
+  "limits the coeffs when searching for irreducible and primitive polynomials" fixnum)
 
 
 ;; basic coefficient arithmetic ------------------------------------------------
@@ -732,9 +742,13 @@
 
 ;; setting the finite field and retrieving basic informations ------------------
 ;;
-(defmfun $gf_set (p &optional a1 a2 a3) ;; opt: *gf-exp*, *gf-red*, *gf-fs-ord*
+(defmfun $gf_set (p &optional a1 a2 a3) ;; deprecated
+  (format t "`gf_set' is marked as deprecated. ~%The user is asked to use `gf_set_data' instead. ~%")
+  ($gf_set_data p a1 a2 a3) )
+
+(defmfun $gf_set_data (p &optional a1 a2 a3) ;; opt: *gf-exp*, *gf-red*, *gf-fs-ord*
   (unless (and (integerp p) (primep p))
-    (merror (intl:gettext "`gf_set': Field characteristic must be a prime number." )) )
+    (merror (intl:gettext "`gf_set_data': Field characteristic must be a prime number." )) )
   ($gf_unset)
   (setq *gf-char* p)
   #-gcl (setq *fixnump-2gf-char* (< (* 2 p) most-positive-fixnum))
@@ -744,37 +758,37 @@
       (cond 
         ((integerp a1) 
           (unless (> a1 0)
-            (merror (intl:gettext "`gf_set': The exponent must be a positive fixnum." )) )
+            (merror (intl:gettext "`gf_set_data': The exponent must be a positive fixnum." )) )
           (setq *gf-exp* a1) )
         (($listp a1)
           (merror (intl:gettext 
-            "Unsuitable second argument to `gf_set': ~m") a1 ))
+            "Unsuitable second argument to `gf_set_data': ~m") a1 ))
         (t
           (setq a1 (gf-set-red a1) 
                 *gf-exp* (car a1) )
           (unless (and (fixnump *gf-exp*) (> *gf-exp* 0))
-            (merror (intl:gettext "`gf_set': The exponent must be a positive fixnum." )) )
+            (merror (intl:gettext "`gf_set_data': The exponent must be a positive fixnum." )) )
           (setq *gf-irreducible?* (gf-irr-p a1 *gf-char* *gf-exp*)) ) ))
     (when a2 ;; reduction poly or factors of ord
       (cond 
         ((integerp a2) 
           (merror (intl:gettext 
-            "Third argument to `gf_set' must be a reduction polynomial or a list of factors.")) )
+            "Third argument to `gf_set_data' must be a reduction polynomial or a list of factors.")) )
         (($listp a2)
           (unless ($listp (cadr a2))
             (merror (intl:gettext 
-              "`gf_set': The list of factors must be of the form [[p1, e1], ..., [pk, ek]].")) )
+              "`gf_set_data': The list of factors must be of the form [[p1, e1], ..., [pk, ek]].")) )
           (setq *gf-fs-ord* (mapcar #'cdr (cdr a2))) )
         (t
           (setq a2 (gf-set-red a2) 
                 *gf-irreducible?* (gf-irr-p a2 *gf-char* *gf-exp*) )
           (unless (= *gf-exp* (car *gf-red*))
             (merror (intl:gettext 
-              "`gf_set': The reduction polynomial must be of degree ~m." ) *gf-exp* )) )))
+              "`gf_set_data': The reduction polynomial must be of degree ~m." ) *gf-exp* )) )))
     (when a3 ;; factors of ord
       (unless (and ($listp a3) ($listp (cadr a3)))
         (merror (intl:gettext 
-          "Unsuitable fourth argument to `gf_set': ~m") a3 ))
+          "Unsuitable fourth argument to `gf_set_data': ~m") a3 ))
       (setq *gf-fs-ord* (mapcar #'cdr (cdr a3))) ) 
     
     (unless *gf-red* ;; find irreducible reduction poly:
@@ -795,7 +809,7 @@
 
     (unless *gf-fs-ord*
       (let* (($intfaclim)
-             (fs (nreverse (get-factor-list *gf-ord*))) ) 
+             (fs (get-factor-list *gf-ord*)) ) 
         (setq *gf-fs-ord* (sort fs #'(lambda (a b) (< (car a) (car b))))) )) ;; .. [pi, ei] .. 
 
     (setq *gf-prim*
@@ -810,23 +824,23 @@
     (setq *gf-minset?* t
           *gf-set?* t )
 
-    ($gf_data) )) 
+    ($gf_get_data) )) 
 
-;; part of $gf_set:
+;; part of $gf_set_data:
 
 (defun gf-set-red (p-orig)
   (let ((p ($rat p-orig)))
     (unless (listp (cadr p))
-      (merror (intl:gettext "`gf_set': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
+      (merror (intl:gettext "`gf_set_data': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
     (let ((vars (caddar p)))
       (when (> (length vars) 1)
-        (merror (intl:gettext "`gf_set': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
+        (merror (intl:gettext "`gf_set_data': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
       (setq *gf-var* (car vars) 
             *gf-rat-header* (car p)
             *gf-rat-sym* (caadr p)
             *gf-red* (gf-mod (cdadr p)) )
       (when (/= 1 (cadr *gf-red*))
-        (merror (intl:gettext "`gf_set': A monic reduction polynomial is assumed." )) )
+        (merror (intl:gettext "`gf_set_data': A monic reduction polynomial is assumed." )) )
       *gf-red* )))
 
 
@@ -834,7 +848,7 @@
   $characteristic $exponent $reduction $primitive $cardinality $order $factors_of_order ))
 
 ;; returns a struct containing all data necessary to use gf_set_again (see below)
-(defmfun $gf_data () 
+(defmfun $gf_get_data () 
   (gf-set?)
   (mfuncall '$new 
     `(($gf_data simp) 
@@ -870,7 +884,7 @@
         *gf-char* 0 *gf-exp* 1 *gf-ord* 0 ;; *gf-exp* = 1 if not explicitely set
         *gf-prim* nil *gf-red* nil 
         *gf-fs-ord* nil *gf-fs-base-p* nil *gf-x^p-powers* nil 
-        *gf-tables?* nil *gf-set?* nil *gf-irreducible?* nil)
+        *gf-tables?* nil *gf-minset?* nil *gf-set?* nil *gf-irreducible?* nil)
   t )
 
 
@@ -911,11 +925,11 @@
   (setq *gf-minset?* t) )
 
 
-;; Reuse data and results from a previous gf_set
+;; Reuse data and results from a previous gf_set_data
 (defmfun $gf_set_again (data) 
   (unless (and (listp data) (listp (car data)) (equal '$gf_data (caar data)))
     (merror (intl:gettext 
-      "Argument to `gf_set_again' must be a return value of `gf_set'." )) )
+      "Argument to `gf_set_again' must be a return value of `gf_set_data'." )) )
   ($gf_unset) 
   (setq data (cdr data))
   #-gcl (setq *fixnump-2gf-char* (< (* 2 (car data)) most-positive-fixnum))
@@ -992,7 +1006,7 @@
 ;; The coeffcients are exclusively positive: 1, 2, ..., (*gf-char* -1)
 ;; Header informations are stored in *gf-var* *gf-rat-sym* *gf-rat-header*.
 ;;
-;; gf_set(5, 4)$
+;; gf_set_data(5, 4)$
 ;; :lisp `(,*gf-char* ,*gf-exp*)
 ;; (5 4)
 ;; p : x^4 + 3*x^2 - 1$
@@ -1060,10 +1074,10 @@
           (equal all? '$all))
     (let ((mat 
             (mfuncall 
-              '$genmatrix  
-                #'(lambda (i j) (gf-x2n (gf-times (gf-n2x i) (gf-n2x j)))) 
-                (1- *gf-card*) 
-                (1- *gf-card*) )))
+            '$genmatrix  
+               #'(lambda (i j) (gf-x2n (gf-times (gf-n2x i) (gf-n2x j)))) 
+               (1- *gf-card*) 
+               (1- *gf-card*) )))
       (if (equal all? '$all) 
         (mfuncall '$addrow (mfuncall '$zeromatrix 1 (1- *gf-card*)) mat)
         mat ))
@@ -1071,11 +1085,11 @@
     (do ((i 0 (1+ i)) x res)
         ((= i *gf-card*) (cons '($matrix) (nreverse res)))
         (declare (fixnum i))
-      (setq x (gf-n2x i))
+      (setq x (gf-n2x i)) 
       (when (gf-unit-p x)
         (push 
           (cons '(mlist simp) 
-            (mapcar #'(lambda (j) (gf-x2n (gf-times x (gf-n2x j))))
+            (mapcar #'(lambda (j) (gf-x2n (gf-times x (gf-n2x j)))) 
               (cdr (mfuncall '$makelist '$j '$j 1 (1- *gf-card*))) ))
           res ) )) ))
 
@@ -1093,10 +1107,10 @@
         (mfuncall '$addrow (mfuncall '$zeromatrix 1 (1+ *gf-ord*)) mat)
         mat ))
     ;; units only:
-    (do ((i 0 (1+ i)) x res)
+    (do ((i 0 (1+ i)) x res) 
         ((= i *gf-card*) (cons '($matrix) (nreverse res)))
         (declare (fixnum i))
-      (setq x (gf-n2x i))
+      (setq x (gf-n2x i)) 
       (when (gf-unit-p x)
         (push 
           (cons '(mlist simp) 
@@ -1627,8 +1641,15 @@
 
 ;; polynomial/number/list - conversions ----------------------------------------
 ;;
-(defmfun $gf_p2n (p) 
-  (gf-minset?) (gf-x2n (gf-p2x p)) )
+
+(defmfun $gf_p2n (p &optional gf-char) 
+  (cond 
+    (gf-char
+      (let ((*gf-char* gf-char)) (gf-x2n (gf-p2x p))) )
+    (*gf-minset?*
+      (gf-x2n (gf-p2x p)) )
+    (t
+      (merror (intl:gettext "`gf_p2n': missing modulus.")) )))
 
 (defun gf-x2n (x)
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
@@ -1641,14 +1662,27 @@
           (setq n (* n (expt m (- (the fixnum (car x)) (the fixnum (caddr x)))))) )
         (setq x (cddr x)) ))))
 
-(defmfun $gf_n2p (n) 
-  (gf-minset?)
+(defmfun $gf_n2p (n &optional gf-char) 
   (unless (integerp n)
-    (merror (intl:gettext "`gf_n2p': Argument must be an integer.")) )
-  (gf-x2p (gf-n2x n)) )
+    (merror (intl:gettext "`gf_n2p': Not an integer: ~m") n) )
+  (cond 
+    (*gf-minset?*
+      (if gf-char
+        (let ((*gf-char* gf-char)) (gf-x2p (gf-n2x n)))
+        (gf-x2p (gf-n2x n)) ))
+    (gf-char
+      (let* ((cre (mfuncall '$rat '$x))
+             (*gf-var* '$x) 
+             (*gf-rat-header* (car cre))
+             (*gf-rat-sym* (caadr cre))
+             (*gf-char* gf-char) )
+        (gf-x2p (gf-n2x n)) ))
+    (t
+      (merror (intl:gettext "`gf_n2p': missing modulus.")) )))
 
 (defun gf-n2x (n)
-  (maybe-fixnum-let ((r 0)(m *gf-char*))
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
+  (maybe-fixnum-let ((r 0)(m *gf-char*)) 
     (do ((e 0 (1+ e)) x) 
         ((= 0 n) x)
       (declare (fixnum e))
@@ -1660,13 +1694,22 @@
 (defmfun $gf_p2l (p &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
   (declare (fixnum len))
   (gf-minset?) 
-  (let ((x (gf-p2x p)))
+  (let ((x (gf-p2x-without-mod p))) ;; more flexibility by omitting mod 
     (cons '(mlist simp) (gf-x2l x len)) ))
+
+;; version of gf-p2x that doesn't apply mod
+(defun gf-p2x-without-mod (p) 
+  (setq p (cadr (mfuncall '$rat p)))
+  (if (integerp p)
+    (if (= 0 p) nil (list 0 p)) 
+    (cdr p) ))
 
 (defun gf-x2l (x len)
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum len))
-  (do* ((e (the fixnum (car x))) (k (if (= 0 len) e (1- len)) (1- k)) l) 
+  (do* ((e (if x (the fixnum (car x)) 0)) 
+        (k (if (= 0 len) e (1- len)) (1- k)) 
+        l ) 
        ((< k 0) (nreverse l))
        (declare (fixnum e k))
     (cond
@@ -1733,15 +1776,6 @@
       (multiple-value-setq (n r) (truncate n d))
       (setq l (cons r l))
       (decf len) )))
-
-
-;; leading coefficient retrieved from number representation 
-
-(defun gf-n2lc (n)
-  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (maybe-fixnum-let ((d *gf-char*)(r 0))
-    (do () ((= 0 n) r)
-      (multiple-value-setq (n r) (truncate n d)) )))
 ;;
 ;; -----------------------------------------------------------------------------
 
@@ -1785,13 +1819,13 @@
     (return-from gf-irr (list 1 1)) )
   (let ((*gf-char* gf-char))
     (do ((n 0 (+ n gf-char)) 
-         (kk (min $gf_irreducible_coeff_limit gf-char))
+         (kk (min $gf_coeff_limit gf-char)) 
          inc x ) 
         (()) (declare (fixnum n kk))
       (do ((k 1 (1+ k))) 
           ((= k kk)) ;; step from e.g. x^n + min(limit-1, char-1) to x^n + x + 1
           (declare (fixnum k))
-        (setq inc (gf-n2x (+ n k)) 
+        (setq inc (gf-n2x (+ n k))
               x (cons gf-exp (cons 1 inc)) )
         (when (gf-irr-p x gf-char gf-exp) (return-from gf-irr x)) ))))
 
@@ -1828,30 +1862,17 @@
 ;;
 
 ;; Tests if an element is primitive in the field 
-
+;;
 (defmfun $gf_primitive_p (a) 
   (gf-set?)
-  (let ((n (gf-x2n (gf-p2x a))))
+  (let* ((x (gf-p2x a)) 
+         (n (gf-x2n x)) )
     (cond 
       ((>= n *gf-card*) nil)
       ((= 1 *gf-exp*) 
         (zn-primroot-p n *gf-char* *gf-ord* (mapcar #'car *gf-fs-ord*)) )
-      (t (gf-prim-p (gf-n2x n))) )))
-
-(defun gf-prim-p (x) 
-  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (let ((fbp *gf-fs-base-p*) (mp *gf-x^p-powers*) tmp prod)
-    (do ((i 0 (1+ i)) (j 0 0) (lf (array-dimension *gf-fs-base-p* 0)))
-        ((= i lf) t)
-        (declare (fixnum i j lf))
-      (setq prod (list 0 1) )
-      (dolist (kj (svref fbp i))
-        (setq tmp (gf-compose x (svref mp j)) 
-              tmp (gf-pow tmp kj) 
-              prod (gf-times prod tmp) ) 
-        (setq j (1+ j)) )
-      (when (equal prod (list 0 1)) (return nil)) )))
-
+      (t 
+        (gf-prim-p x) ))))
 
 ;; Testing primitivity in (Fp^n)*:
 
@@ -1874,20 +1895,60 @@
 ;; 
 ;;         = ((-1)^n * *gf-red*(-c))^ai
 
+(defun gf-prim-p (x) 
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
+  (unless (or *gf-irreducible?* (gf-unit-p x))
+    (return-from gf-prim-p) )
+  (let ((p *gf-char*)
+        (fs *gf-fs*)
+        (fs-base-p *gf-fs-base-p*) 
+        (x^p-powers *gf-x^p-powers*) 
+        (red *gf-red*)
+        (x+c? (and (<= (car x) 1) (= (cadr x) 1)))
+        y prod k )
+    (do ((i 0 (1+ i)) (j 0 0) (lf (array-dimension fs 0)))
+        ((= i lf) t)
+        (declare (fixnum i j lf))
+      (cond 
+        ((and *gf-irreducible?* x+c? (cadr (svref fs i)))   ;; linear and pi|*gf-ord* and pi|p-1
+          (setq k (mod (- (gf-at red (- p (gf-x2n x)))) p)) ;;           *gf-red*(-c)
+          (when (evenp *gf-exp*) (setq k (- k)))            ;;  (-1)^n * *gf-red*(-c)
+          (setq k (power-mod k (caddr (svref fs i)) p))     ;; ((-1)^n * *gf-red*(-c))^ai
+          (when (= k 1) (return nil)) )
+        (t
+          (setq prod (list 0 1))
+          (dolist (aij (svref fs-base-p i))
+            (setq y (gf-compose (svref x^p-powers j) x))    ;;      f(x^p^j)
+            (setq y (gf-pow y aij))                         ;;      f(x^p^j)^aij
+            (setq prod (gf-times prod y)) 
+            (setq j (1+ j)) )
+          (when (or (not prod) (equal prod '(0 1)))         ;; prod(f(x^p^j)^aij, j,0,m)
+            (return nil) ))) ))) 
 
-;; precomputation for gf-prim (called by gf_set):
+;; find a primitive element (called by gf_set_data):
+;;
+(defun gf-prim () 
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
+  (do ((n *gf-char* (1+ n)) x)
+      ((>= n *gf-card*))    
+    (and (setq x (gf-n2x n)) 
+         (= 1 (cadr x)) ;; drop non monic poly
+         (gf-prim-p x) 
+         (return x) )))
+
+;; precomputation for gf-prim-p (called by gf_set_data):
 ;;
 (defun gf-precomp () 
+  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((p-1 (1- *gf-char*))
-        (fs-ord (copy-tree *gf-fs-ord*))
+        (ord *gf-ord*) (fs-ord *gf-fs-ord*)
         fs-p-1 fs-list
         ($intfaclim) )
- 
-    (setq fs-p-1 (nreverse (get-factor-list p-1))
-          fs-p-1 (sort fs-p-1 #'(lambda (a b) (< (car a) (car b)))) )            ;; .. [pi, ei] ..
+    (setq fs-p-1 
+      (sort (get-factor-list p-1) #'(lambda (a b) (< (car a) (car b)))))         ;; .. [pi, ei] ..
     
     (dolist (fj fs-p-1) 
-      (setq fs-ord (delete-if #'(lambda (sj) (= (car fj) (car sj))) fs-ord :count 1)))
+      (setq fs-ord (remove-if #'(lambda (sj) (= (car fj) (car sj))) fs-ord :count 1)))
 
     (setq fs-p-1 
       (mapcar #'(lambda (pe) (list (car pe) t (truncate p-1 (car pe)))) fs-p-1)) ;; .. [pi, true, (p-1)/pi] ..
@@ -1899,55 +1960,13 @@
 
     (setq *gf-fs-base-p* 
       (apply #'vector 
-        (mapcar #'(lambda (pe) (nreverse (gf-n2l (truncate *gf-ord* (car pe))))) ;; qi = *gf-ord*/pi = sum(aij*p^j, j,0,m)
+        (mapcar #'(lambda (pe) (nreverse (gf-n2l (truncate ord (car pe)))))      ;; qi = *gf-ord*/pi = sum(aij*p^j, j,0,m)
                 fs-list) ))  
 
     (setq *gf-x^p-powers* (gf-x^p-powers *gf-exp*)) ))                           ;; x^p^j
 
-
-;; find a primitive element
-
-(defun gf-prim () 
-  #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (let* ((p *gf-char*) 
-         (two-p (* 2 p))
-         (even-exp (evenp *gf-exp*)) 
-         (fs *gf-fs*)
-         (fs-base-p *gf-fs-base-p*)
-         (x^p-powers *gf-x^p-powers*)
-         (red *gf-red*)
-         k x y prod )
-    (do ((cand p (1+ cand)) 
-         found linear )
-        (found (gf-n2x (1- cand)))    
-      (when (>= cand *gf-card*) (return))
-      (when (or (setq linear (< cand two-p)) (= 1 (gf-n2lc cand)))
-        (setq x (gf-n2x cand))
-        (when (or *gf-irreducible?* (gf-unit-p x))
-          ;; testing primitivity:
-          (do ((i 0 (1+ i)) (j 0) (lf (length fs)))
-              ((= i lf) (setq found t))
-              (declare (fixnum i j lf))
-            (cond 
-              ((and *gf-irreducible?* linear (cadr (svref fs i))) ;; linear and pi|*gf-ord* and pi|p-1
-                (setq k (mod (- (gf-at red (- p cand))) p))       ;;           *gf-red*(-c)
-                (when even-exp (setq k (- k)))                    ;;  (-1)^n * *gf-red*(-c)
-                (setq k (power-mod k (caddr (svref fs i)) p))     ;; ((-1)^n * *gf-red*(-c))^ai
-                (when (= k 1) (return nil)) )
-              (t
-                (setq prod (list 0 1) 
-                      j 0 )
-                (dolist (aij (svref fs-base-p i))
-                  (setq y (gf-compose (svref x^p-powers j) x))    ;;      f(x^p^j)
-                  (setq y (gf-pow y aij))                         ;;      f(x^p^j)^aij
-                  (setq prod (gf-times prod y)) 
-                  (setq j (1+ j)) )
-                (when (or (not prod) (equal prod '(0 1)))         ;; prod(f(x^p^j)^aij, j,0,m)
-                  (return nil) ))) )))) )) 
-                                                                    
-
 ;; returns an array of polynomials x^p^j, j = 0, 1, .. , (n-1), where n = *gf-exp*
-
+;;
 (defun gf-x^p-powers (n) 
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
   (let ((p *gf-char*)(a (make-array n :element-type 'list :initial-element nil)) )
@@ -1982,6 +2001,146 @@
           (return (* n (expt a (the fixnum (car x))))) )
         (setq n (* n (expt a (- (the fixnum (car x)) (the fixnum (caddr x)))))
               x (cddr x) ) ))))
+;;
+;; -----------------------------------------------------------------------------
+
+
+;; Primitive polynomials -------------------------------------------------------
+;;
+
+;; test if a is a primitive polynomial over Fp
+;;
+(defmfun $gf_primitive_poly_p (a p) 
+  (unless (primep p)
+    (merror (intl:gettext "`gf_primitive_poly_p': ~m is not a prime number.") p) )
+  (let* ((*gf-char* p) 
+         (y (gf-p2x a))
+         (n (car y)) )
+    (gf-primitive-poly-p y p n) ))
+
+;; based on
+;; TOM HANSEN AND GARY L. MULLEN
+;; PRIMITIVE POLYNOMIALS OVER FINITE FIELDS
+;;
+(defun gf-primitive-poly-p (y p n) 
+  (let* ((*gf-red* y) (*gf-char* p) (*gf-exp* n)
+         (p-1 (1- p)) 
+         ($intfaclim)
+         (fs-p-1 (sort (mapcar #'car (get-factor-list p-1)) #'<))
+         const r fs-r x^r x^r/fi )
+    (unless (= 1 (cadr y)) ;; monic poly assumed
+      (return-from gf-primitive-poly-p) )
+    ;; the constant part ...
+    (setq const (last y 2))
+    (unless (= 0 (car const)) 
+      (return-from gf-primitive-poly-p) )
+    (setq const (cadr const))
+    (when (oddp n) (setq const (- p const)))
+    ;; ... must be primitive in Zp and y must be irreducible:
+    (unless (and (zn-primroot-p const p p-1 fs-p-1) (gf-irr-p y p n))
+      (return-from gf-primitive-poly-p) )
+    (when (= n 1) (return-from gf-primitive-poly-p t))
+    ;; r = (p^n-1)/(p-1), check if x^r = const:
+    (setq r (truncate (1- (expt p n)) p-1)
+          x^r (gf-pow '(1 1) r) )
+    (unless (and (= 0 (car x^r)) (= const (cadr x^r)))
+      (return-from gf-primitive-poly-p) )
+    ;; check if x^r/fi # integer for all prime factors fi of r wich do not divide p-1:
+    (setq fs-r (sort (mapcar #'car (get-factor-list r)) #'<))
+    (dolist (fi fs-r t)
+      (when (and (not (member fi fs-p-1))
+                 (setq x^r/fi (gf-pow '(1 1) (truncate r fi))) 
+                 (= 0 (car x^r/fi)) )
+        (return-from gf-primitive-poly-p) )) ))
+
+;; find a primitive polynomial
+;;
+(defmfun $gf_primitive_poly (p n) 
+  (unless (and (integerp p) (primep p) (integerp n))
+    (merror (intl:gettext "`gf_primitive_poly' needs a prime number and an integer." )) )
+  (let* ((cre (mfuncall '$rat '$x))
+         (*gf-var* '$x) 
+         (*gf-rat-header* (car cre))
+         (*gf-rat-sym* (caadr cre))
+         (*gf-char* p) )
+    (gf-x2p (gf-primitive-poly p n)) ))
+
+(defun gf-primitive-poly (p n) 
+  #+ (or ccl ecl gcl)  (declare (optimize (speed 3) (safety 0)))
+  (declare (fixnum n))
+  (let* ((*gf-char* p) (*gf-exp* n)
+         (p-1 (1- p)) 
+         ($intfaclim)
+         (fs-p-1 (sort (mapcar #'car (get-factor-list p-1)) #'<)) 
+         r r-base-p fs-r fs-r-base-p )
+    (when (= 1 n)
+      (let ((prt (if (= p 2) 1 (zn-primroot p p-1 fs-p-1))))
+        (return-from gf-primitive-poly 
+          (list 1 1 0 (- p prt)) )))
+    ;; pre-computation:
+    (setq r (truncate (1- (expt p n)) p-1) 
+          r-base-p (nreverse (gf-n2l r)) 
+          fs-r (sort (mapcar #'car (get-factor-list r)) #'<) )
+    (dolist (fj fs-p-1) 
+      (setq fs-r (delete-if #'(lambda (sj) (= fj sj)) fs-r :count 1)) )
+    (setq fs-r-base-p 
+      (apply #'vector 
+        (mapcar #'(lambda (f) (nreverse (gf-n2l (truncate r f)))) fs-r ) ))
+    ;; search:
+    (do ((i p (+ i p)) ;; start searching for trinomials
+         (kk (min $gf_coeff_limit p)) 
+         inc x ) 
+        (()) (declare (fixnum i kk))
+      (do ((k 1 (1+ k))) 
+          ((= k kk)) ;; step from e.g. x^n + x + min(limit-1, p-1) to x^n + x^2 + 1
+          (declare (fixnum k))
+        (setq inc (gf-n2x (+ i k)) 
+              x (cons n (cons 1 inc)) )
+        (when (gf-primitive-poly-p-precomp x p n fs-p-1 r-base-p fs-r-base-p) 
+          (return-from gf-primitive-poly x) ) ))))
+
+;; version of gf-primitive-poly-p
+;; that uses exponentiation by pre-computation (see also gf-prim)
+;;
+(defun gf-primitive-poly-p-precomp (y p n fs-p-1 r-base-p fs-r-base-p) 
+  #+ (or ccl ecl gcl)  (declare (optimize (speed 3) (safety 0)))
+  (declare (fixnum n))
+  (let ((*gf-red* y) (*gf-char* p) (*gf-exp* n)
+        const x^p-powers prod z 
+        (j 0) ) (declare (fixnum j))
+    (unless (= 1 (cadr y)) ;; monic poly assumed
+      (return-from gf-primitive-poly-p-precomp) )
+    ;; the constant part ...
+    (setq const (last y 2))
+    (unless (= 0 (car const)) 
+      (return-from gf-primitive-poly-p-precomp) )
+    (setq const (cadr const))
+    (when (oddp n) (setq const (- p const)))
+    ;; ... must be primitive in Zp and y must be irreducible:
+    (unless (and (zn-primroot-p const p (1- p) fs-p-1) (gf-irr-p y p n))
+      (return-from gf-primitive-poly-p-precomp) )
+    ;; r = (p^n-1)/(p-1), check if x^r = const:
+    (setq x^p-powers (gf-x^p-powers n)         ;; pre-computation, *gf-red* dependend part
+          prod (list 0 1) 
+          j 0 )
+    (dolist (aj r-base-p)                      ;; r = sum(aj*p^j, j,0,n-1)
+      (setq z (gf-pow (svref x^p-powers j) aj) ;; (x^p^j)^aj
+            prod (gf-times prod z)  
+            j (1+ j) ))
+    (unless (= const (cadr prod))              ;; x^r = prod((x^p^j)^aj, j,0,n-1)
+      (return-from gf-primitive-poly-p-precomp) )
+    ;; check if x^r/ri # integer for all prime factors ri of r wich do not divide p-1:
+    (do ((i 0 (1+ i)) (dim (array-dimension fs-r-base-p 0)))
+        ((= i dim) t)
+        (declare (fixnum i dim))
+      (setq prod (list 0 1) 
+            j 0 )
+      (dolist (aij (svref fs-r-base-p i))      ;; ri = sum(aij*p^j, j,0,n-1)
+        (setq z (gf-pow (svref x^p-powers j) aij) 
+              prod (gf-times prod z)  
+              j (1+ j) ))
+      (when (= 0 (car prod)) 
+        (return-from gf-primitive-poly-p-precomp) )) ))
 ;;
 ;; -----------------------------------------------------------------------------
 
@@ -2209,10 +2368,10 @@
 (defun gf-normal (start-with-ord?) 
   (if start-with-ord?
     (do* ((n *gf-ord* (1- n)) 
-          (x (gf-n2x n) (gf-n2x n)) ) 
+          (x (gf-n2x n) (gf-n2x n)) )
          ((gf-normal-p x) x) )
     (do* ((n 1 (1+ n)) 
-          (x (gf-n2x n) (gf-n2x n)) ) 
+          (x (gf-n2x n) (gf-n2x n)) )
          ((gf-normal-p x) x) )))
 
 
@@ -2396,7 +2555,7 @@
   (let* (($matrix_element_mult '$gf_mult) ($matrix_element_add '$gf_add)
          (dm (mfuncall '$determinant m))
          (am (mfuncall '$adjoint m)) )
-    (mfuncall '$matrixmap #'(lambda (p) ($gf_div p dm)) am) ))
+    (mfuncall '$matrixmap `((lambda) ((mlist simp) p) (($gf_div) p ,dm)) am) ))
 ;;
 ;; -----------------------------------------------------------------------------
 
@@ -2438,31 +2597,34 @@
 
 (defun gf-dlog (a)
   #+ (or ccl ecl gcl) (declare (optimize (speed 3) (safety 0)))
-  (if *gf-tables?*
-    (svref $gf_logs (gf-x2n a))
-    (let (p (e 0) odivp (g *gf-prim*) gg x dlog dlogs tmp) 
-         (declare (fixnum e))
-      (dolist (f *gf-fs-ord*)
-        (setq p (car f) e (cadr f)
-              odivp (truncate *gf-ord* p)
-              gg (gf-pow g odivp) )
-        (cond 
-          ((= 1 e) 
-            (setq x (gf-dlog-rho-brent (gf-pow a odivp) gg p)) )
-          (t
-            (setq x 0)
-            (do ((aa a) (k 1) (pk 1)) (()) (declare (fixnum k))
-              (setq tmp (gf-pow aa (truncate odivp pk)) 
-                    dlog (gf-dlog-rho-brent tmp gg p) 
-                    x (+ x (* dlog pk)) )
-              (if (= k e) 
-                (return)
-                (setq k (1+ k) pk (* pk p)) )
-              (setq tmp (gf-inv (gf-pow g x))) 
-              (setq aa (gf-times a tmp)) ))) 
-        (setq dlogs (cons x dlogs)) )
-      (car (chinese (nreverse dlogs) 
-                    (mapcar #'(lambda (z) (apply #'expt z)) *gf-fs-ord*) )) )))
+  (cond
+    ((null a) nil) 
+    (*gf-tables?*
+      (svref $gf_logs (gf-x2n a)) )
+    (t 
+      (let (p (e 0) odivp (g *gf-prim*) gg x dlog dlogs tmp) 
+           (declare (fixnum e))
+        (dolist (f *gf-fs-ord*)
+          (setq p (car f) e (cadr f)
+                odivp (truncate *gf-ord* p)
+                gg (gf-pow g odivp) )
+          (cond 
+            ((= 1 e) 
+              (setq x (gf-dlog-rho-brent (gf-pow a odivp) gg p)) )
+            (t
+              (setq x 0)
+              (do ((aa a) (k 1) (pk 1)) (()) (declare (fixnum k))
+                (setq tmp (gf-pow aa (truncate odivp pk)) 
+                      dlog (gf-dlog-rho-brent tmp gg p) 
+                      x (+ x (* dlog pk)) )
+                (if (= k e) 
+                  (return)
+                  (setq k (1+ k) pk (* pk p)) )
+                (setq tmp (gf-inv (gf-pow g x))) 
+                (setq aa (gf-times a tmp)) ))) 
+          (setq dlogs (cons x dlogs)) )
+        (car (chinese (nreverse dlogs) 
+                    (mapcar #'(lambda (z) (apply #'expt z)) *gf-fs-ord*) )) ))))
 
 ;; iteration for Pollard rho:  b = g^y * a^z in each step
 

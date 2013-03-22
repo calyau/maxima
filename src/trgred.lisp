@@ -68,7 +68,7 @@
 	((eq (caar e) 'mplus)
 	 (do ((l *trans-list-plus* (cdr l)) (a))
 	     ((null l) (m+l (mapcar #'sp1 (cdr e))))
-	   (and (setq a (m2 e (caar l) nil))
+	   (and (setq a (m2 e (caar l)))
               (return (sp1 (sch-replace a (cadar l)))))))
 	((eq (caar e) 'mtimes)
 	 (sp1times e))
@@ -385,7 +385,7 @@
 	((m^ b e))))
 
 (defun sp1expt2 (e)
-  (let* ((ans (m2 e '((mplus) ((coeffpp) (fr freevar)) ((coeffpp) (exp true))) nil))
+  (let* ((ans (m2 e '((mplus) ((coeffpp) (fr freevar)) ((coeffpp) (exp true)))))
          (fr (cdr (assoc 'fr ans :test #'eq)))
          (exp (cdr (assoc 'exp ans :test #'eq))))
     (cond ((equal fr 0)
@@ -441,8 +441,7 @@
 
 (defun sp1trigex (e)
   (let* ((ans (m2 (cadr e) '((mplus) ((coeffpp) (fr freevar))
-			     ((coeffpp) (exp true)))
-		  nil))
+			     ((coeffpp) (exp true)))))
          (fr (cdr (assoc 'fr ans :test #'eq)))
          (exp (cdr (assoc 'exp ans :test #'eq))))
     (cond ((signp e fr)
