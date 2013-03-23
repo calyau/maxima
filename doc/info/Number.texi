@@ -379,12 +379,12 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @defvr {Option variable} factors_only
 Default value: @code{false}
 
-Controls the value returned by @mrefdot{ifactors}. The default @code{false} 
+Controls the value returned by @mref{ifactors}. The default @code{false} 
 causes @code{ifactors} to provide information about multiplicities of the 
 computed prime factors. If @code{factors_only} is set to @code{true}, 
 @code{ifactors} returns nothing more than a list of prime factors.
 
-Example: See @mrefdot{ifactors}.
+Example: See @mref{ifactors}.
 
 @opencatbox
 @category{Number theory}
@@ -466,7 +466,7 @@ factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
 Factorization methods used are trial divisions by primes up to 9973,
 Pollard's rho and p-1 method and elliptic curves.
 
-The value returned by @code{ifactors} is controlled by the option variable @mrefdot{factors_only}.
+The value returned by @code{ifactors} is controlled by the option variable @mref{factors_only}.
 The default @code{false} causes @code{ifactors} to provide information about 
 the multiplicities of the computed prime factors. If @code{factors_only} 
 is set to @code{true}, @code{ifactors} simply returns the list of 
@@ -1085,8 +1085,8 @@ The optional second argument must be of the same form as the list returned by
 @defvr {Option variable} zn_primroot_limit
 Default value: @code{1000} 
 
-If @mrefdot{zn_primroot} cannot find a primitve root, it stops at this upper bound. 
-If the option variable @mrefdot{zn_primroot_verbose} (default: @code{false}) is 
+If @mref{zn_primroot} cannot find a primitve root, it stops at this upper bound. 
+If the option variable @mref{zn_primroot_verbose} (default: @code{false}) is 
 set to @code{true}, a message will be printed when @code{zn_primroot_limit} is reached. 
 
 @opencatbox
@@ -1153,7 +1153,7 @@ The multiplicative group (Z/@var{n}Z)* is cyclic if @var{n} is equal to
 @code{2}, @code{4}, @code{p^k} or @code{2*p^k}, where @code{p} is prime and 
 greater than @code{2} and @code{k} is a natural number.  
 
-@code{zn_primroot_pretest} controls whether @mrefdot{zn_primroot} will check 
+@code{zn_primroot_pretest} controls whether @mref{zn_primroot} will check 
 if one of these cases occur before it computes the smallest primitive root. 
 Only if @code{zn_primroot_pretest} is set to @code{true} this pretest will be 
 performed.
@@ -1168,8 +1168,8 @@ performed.
 @defvr {Option variable} zn_primroot_verbose
 Default value: @code{false} 
 
-Controls whether @mrefdot{zn_primroot} prints a message when reaching 
-@mrefdot{zn_primroot_limit}.
+Controls whether @mref{zn_primroot} prints a message when reaching 
+@mref{zn_primroot_limit}.
 
 @opencatbox
 @category{Number theory}

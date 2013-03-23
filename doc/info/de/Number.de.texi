@@ -313,7 +313,7 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 27.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{ifactors}
 @deffn {Funktion} ifactors (@var{n})
 
@@ -324,7 +324,7 @@ Faktoren der ganzen Zahl @var{n}, dann gibt @code{ifactor} das Ergebnis
 F@"ur die Faktorisierung kommen Probedivisionen mit Primzahlen bis 9973, 
 Pollards Rho- und p-1-Methode oder Elliptischen Kurven zum Einsatz.
 
-Die R@"uckgabe von ifactors wird von der Optionsvariablen @mrefdot{factors_only}  
+Die R@"uckgabe von ifactors wird von der Optionsvariablen @mref{factors_only}  
 beeinflusst. 
 Werden lediglich die Primfaktoren ohne ihre Multiplizit@"at ben@"otigt, 
 gen@"ugt es hierf@"ur, @code{factors_only : true} zu setzen.
@@ -339,7 +339,7 @@ gen@"ugt es hierf@"ur, @code{factors_only : true} zu setzen.
 @end example
 @end deffn
 
-@c --- 29.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{igcdex}
 @deffn {Funktion} igcdex (@var{n}, @var{k})
 
@@ -349,7 +349,7 @@ gr@"o@ss{}te gemeinsame Teiler von @var{n} und @var{k} ist und in der zus@"atzli
 @c gilt, dass @code{@var{u} = @var{a} * @var{n} + @var{b} * @var{k}}. 
 gilt, dass @code{u = a * @var{n} + b * @var{k}}. 
 
-@code{igcdex} verwendet den Euklidischen Algorithmus.  Siehe auch @mrefdot{gcdex}.
+@code{igcdex} verwendet den Euklidischen Algorithmus.  Siehe auch @mref{gcdex}.
 
 Die Eingabe @code{load(gcdex)} l@"adt diese Funktion.
 
@@ -447,7 +447,7 @@ k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
 Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
 @end deffn
 
-@c --- 27.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{mod}
 @deffn {Funktion} mod (@var{x}, @var{p})
 
@@ -485,7 +485,7 @@ die komplexe Zahl ist.
 @c unlikely, that @code{mod} could return an erroneous value in such cases.
 
 Sind @var{x} und @var{y} konstante Ausdr@"ucke, wie zum Beispiel @code{10 * %pi},
-verwendet @code{mod} dasselbe @mrefdot{bfloat}-Auswertungsschema wie @code{floor} 
+verwendet @code{mod} dasselbe @mref{bfloat}-Auswertungsschema wie @code{floor} 
 und @code{ceiling}. Diese Umwandlung kann, wenn auch unwahrscheinlich, 
 zu Fehlern f@"uhren.
 
@@ -547,8 +547,8 @@ Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
 
 Verwendet einen modularen Algorithmus, um @code{a^n mod m} zu berechnen. 
 Die Argumente @var{a} und @var{n} m@"ussen ganze Zahlen und der Modul @var{m} 
-eine positive ganze Zahl sein.  Ist @var{n} negativ, wird @mref{inv_mod} 
-zur Berechnung des modularen Inversen aufgerufen.
+eine positive ganze Zahl sein.  Ist @var{n} negativ, wird @mref{inv_mod} zur 
+Berechnung des modularen Inversen aufgerufen.
 
 @code{power_mod (@var{a}, @var{n}, @var{m})} ist @"aquivalent zu 
 @code{mod(a^n, m)}.  Der Algorithmus von @code{power_mod} ist jedoch 
@@ -603,7 +603,7 @@ als 1/4.  Mit dem Standardwert 25 @code{primpe_number_of_tests} sinkt diese
 Wahrscheinlichkeit damit unter einen Wert von 10^-15.
 @end deffn
 
-@c --- 27.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{primep_number_of_tests}
 @defvr {Optionsvariable} primep_number_of_tests
 Standardwert: 25
@@ -611,7 +611,7 @@ Standardwert: 25
 @c Number of Miller-Rabin's tests used in @code{primep}.
 
 Die Anzahl der Pseudo-Primzahl-Tests nach Miller-Rabin in der Funktion 
-@mrefdot{primep}.
+@mref{primep}.
 @end defvr
 
 @c --- 27.11.2010 DK -----------------------------------------------------------
@@ -670,7 +670,7 @@ diejenigen Bernoulli-Zahlen und von @code{euler} diejenigen Euler-Zahlen
 ausgeschlossen, die gleich Null sind.  Siehe @mref{bern} und @mrefdot{euler}
 @end defvr
 
-@c --- 27.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{zeta}
 @deffn {Funktion} zeta (@var{n})
 
@@ -704,7 +704,7 @@ F@"ur negative ganze Zahlen @var{n}, Null und positive gerade ganze Zahlen
 wird @code{zeta} zu einem exakten Ergebnis vereinfacht.  
 Damit diese Vereinfachung f@"ur positive ganze Zahlen ausgef@"uhrt wird, 
 muss die Optionsvariable @code{zeta%pi} den Wert @code{true} haben.  
-Siehe @mrefdot{zeta%pi}. F@"ur einfache und beliebig genaue Gleitkommazahlen 
+Siehe @mref{zeta%pi}. F@"ur einfache und beliebig genaue Gleitkommazahlen 
 (Typ @code{bfloat}) hat @code{zeta} ein numerisches Ergebnis.  
 F@"ur alle anderen Argumente einschlie@ss{}lich der komplexen und 
 rationalen Zahlen gibt @code{zeta} eine Substantivform zur@"uck.  Hat die 
@@ -959,13 +959,13 @@ entsprechen.
 @end example
 @end deffn
 
-@c --- 29.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{zn_primroot_limit}
 @defvr {Optionsvariable} zn_primroot_limit
 Standardwert: @code{1000} 
 
-Definiert die obere Schranke f@"ur die Suche von @mrefdot{zn_primroot} nach einer 
-Primitivwurzel.  Wurde die Optionsvariable @mrefdot{zn_primroot_verbose}
+Definiert die obere Schranke f@"ur die Suche von @mref{zn_primroot} nach einer 
+Primitivwurzel.  Wurde die Optionsvariable @mref{zn_primroot_verbose}
 (Standardwert: @code{false}) @code{true} gesetzt, wird beim Erreichen von 
 @code{zn_primroot_limit} ein entsprechender Hinweis ausgegeben.
 @end defvr
@@ -1018,27 +1018,27 @@ entsprechen.
 @end example
 @end deffn
 
-@c --- 29.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{zn_primroot_pretest}
 @defvr {Optionsvariable} zn_primroot_pretest
 Standardwert: @code{false} 
 
 Eine multiplikative Gruppe (Z/@code{n}Z)* ist zyklisch, wenn @code{n} gleich 
 @code{2}, @code{4}, @code{p^k} oder @code{2*p^k} ist, wobei @code{p} prim und 
-gr@"osser @code{2} und @code{k} eine nat@"urliche Zahl ist. 
+gr@"o@ss{}er @code{2} und @code{k} eine nat@"urliche Zahl ist. 
 
-@code{zn_primroot_pretest} entscheidet dar@"uber, ob @mrefdot{zn_primroot} vor 
+@code{zn_primroot_pretest} entscheidet dar@"uber, ob @mref{zn_primroot} vor 
 der Berechnung der kleinsten Primitivwurzel in (Z/@code{n}Z)* @"uberpr@"uft, 
 ob auf @code{n} @"uberhaupt einer der oben genannten F@"alle zutrifft.  Nur wenn  
 @code{zn_primroot_pretest} @code{true} ist, wird dieser Pr@"atest ausgef@"uhrt.
 @end defvr
 
-@c --- 29.03.2012 VN -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{zn_primroot_verbose}
 @defvr {Optionsvariable} zn_primroot_verbose
 Standardwert: @code{false} 
 
-Entscheidet, ob @mrefdot{zn_primroot} beim Erreichen von @mrefdot{zn_primroot_limit}
+Entscheidet, ob @mref{zn_primroot} beim Erreichen von @mref{zn_primroot_limit}
 einen Hinweis ausgibt.
 @end defvr
 

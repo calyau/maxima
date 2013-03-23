@@ -2205,17 +2205,15 @@ Funktion @code{determinant} einen speziellen Algorithmus f@"ur d@"unn besetzte
 Matrizen, um die Determinante einer Matrix zu berechnen.
 @end defvr
 
-@c --- 10.12.2010 DK -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{submatrix}
 @deffn  {Funktion} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n})
 @deffnx {Funktion} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M})
 @deffnx {Funktion} submatrix (@var{M}, @var{j_1}, @dots{}, @var{j_n})
 
-@c Returns a new matrix composed of the matrix @var{M} with rows @var{i_1}, ..., 
-@c @var{i_m} deleted, and columns @var{j_1}, ..., @var{j_n} deleted.
-
-Gibt eine Matrix zur@"uck, in der die Spalten @var{i_1}, @dots{}, @var{i_m} und
-die Zeilen @var{j_1}, @dots{}, @var{j_n} der Matrix @var{M} gel@"oscht sind.
+Gibt eine Kopie der Matrix @var{M} zur@"uck, in der die Zeilen 
+@var{i_1}, @dots{}, @var{i_m} und Spalten @var{j_1}, @dots{}, @var{j_n} 
+nicht enthalten sind.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------

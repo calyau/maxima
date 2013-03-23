@@ -173,7 +173,7 @@ nutzt, um den linearen Anteil eines Ausdrucks zu ermitteln.
 @end example
 @end deffn
 
-@c --- 12.10.2010 DK -----------------------------------------------------------
+@c --- 23.03.2013 VN -----------------------------------------------------------
 @anchor{coeff}
 @deffn  {Funktion} coeff (@var{expr}, @var{x}, @var{n})
 @deffnx {Funktion} coeff (@var{expr}, @var{x})
@@ -284,24 +284,17 @@ auf die beiden Seiten angewendet.
 Die folgende Definition der Funktion @code{coeff_list} liefert eine Liste mit
 den Koeffizienten, die in einem Polynom auftreten.  Neben der Funktion
 @code{coeff} kommt die Funktion @mref{hipow} zum Einsatz, um den h@"ochsten
-Koeffizienten zu ermitteln.  Die Funktionen @mref{cons} und @mref{reverse}@w{}
-werden verwendet, um die Koeffizienten einer Liste hinzuf@"ugen und um die
-Liste zu invertieren.
+Exponenten zu ermitteln und @mref{reverse}, um die Liste (falls gew@"unscht) 
+herum zu drehen.
 
 @example
-coeff_list(a,x) := 
-   block([liste:[]],
-      for i:0 thru hipow(a,x) do 
-      (
-        liste : cons(coeff(a,x,i),liste)
-      ),
-      reverse(liste)
-   )$
+coeff_list(a, x) := 
+   reverse( makelist(coeff(a, x, i), i,0, hipow(a, x)) )$
 @end example
 
 @example
 (%i1) coeff_list(2*x^4+3*x^2+1,x);
-(%o1)                    [1, 0, 3, 0, 2]
+(%o1)                    [2, 0, 3, 0, 1]
 @end example
 @end deffn
 
