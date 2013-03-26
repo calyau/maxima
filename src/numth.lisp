@@ -1803,6 +1803,7 @@
   (let ((*gf-char* p)
         #-gcl (*fixnump-2gf-char* (< (* 2 p) most-positive-fixnum)) ;; see above
         (*gf-red* y)
+        (*gf-tables?*)
         (x (list 1 1)) (mx (list 1 (1- p)))) 
     (do ((i 1 (1+ i)) (xp x) (n2 (ash n -1))) 
         ((> i n2) t)
@@ -2025,6 +2026,7 @@
 (defun gf-primitive-poly-p (y p n) 
   (let* ((*gf-red* y) (*gf-char* p) (*gf-exp* n)
          (p-1 (1- p)) 
+         (*gf-tables?*)
          ($intfaclim)
          (fs-p-1 (sort (mapcar #'car (get-factor-list p-1)) #'<))
          const r fs-r x^r x^r/fi )
@@ -2106,6 +2108,7 @@
   #+ (or ccl ecl gcl)  (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum n))
   (let ((*gf-red* y) (*gf-char* p) (*gf-exp* n)
+        (*gf-tables?*)
         const x^p-powers prod z 
         (j 0) ) (declare (fixnum j))
     (unless (= 1 (cadr y)) ;; monic poly assumed
