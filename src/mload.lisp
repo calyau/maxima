@@ -156,7 +156,7 @@
   (cond ((eq demo :test)
 	 (test-batch filename nil :show-all t))
 	(t
-	 (let ((*read-base* 10.))
+	 (let (($load_pathname filename) (*read-base* 10.))
 	   (with-open-file (in-stream filename)
 	     (format t (intl:gettext "~%read and interpret file: ~A~%")
 		     (truename in-stream))
