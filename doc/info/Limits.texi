@@ -10,7 +10,7 @@
 @c -----------------------------------------------------------------------------
 @anchor{lhospitallim}
 @defvr {Option variable} lhospitallim
-Default: 4
+Default value: 4
 
 @code{lhospitallim} is the maximum number of times L'Hospital's
 rule is used in @code{limit}.  This prevents infinite looping in cases like
