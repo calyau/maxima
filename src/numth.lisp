@@ -1191,12 +1191,20 @@
 
 (defmfun $gf_div (&rest args) 
   (gf-minset?)
-  (setq args (mapcar #'gf-p2x args)
-        args (cons (car args) (mapcar #'gf-inv (cdr args))) )
-  (cond
-    ((null (car args)) 0)
-    ((some #'null (cdr args)) nil)
-    (t (gf-x2p (reduce #'gf-times args))) )) 
+  (unless (cadr args)
+    (merror (intl:gettext "`gf_div' needs at least two arguments." )) )
+  (let* ((a2 (mapcar #'gf-p2x args))
+         (a2 (cons (car a2) (mapcar #'gf-inv (cdr a2)))) )
+    (cond
+      ((some #'null (cdr a2))
+        (let ((q (gf-p2x (car args))) r)
+          (setq args (cdr args))
+          (do ((d (car args) (car args))) 
+              ((null d) (gf-x2p q))
+            (multiple-value-setq (q r) (gf-divide q (gf-p2x d)))
+            (when r (return))
+            (setq args (cdr args)) )))
+      (t (gf-x2p (reduce #'gf-times a2))) ))) 
 
 (defmfun $gf_exp (&optional a n)
   (gf-minset?) 
