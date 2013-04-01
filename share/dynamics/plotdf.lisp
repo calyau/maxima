@@ -32,7 +32,7 @@
     (unless (and  ($listp value)
                   (symbolp (setq name (second value))))
       (merror
-       (intl:gettext "~M is not a plotdf option.  Must be [symbol,...data]")
+       (intl:gettext "plotdf-option-to-tcl: ~M is not a plotdf option. Should be [symbol,...data]")
        value))
     (setq value
       (case name
@@ -58,9 +58,9 @@
 	   (setq value '((mlist) $nobox 0))))
         ($direction
          (or
-          (member (third value) '($forward $backward $both))
+          (member (ensure-string (third value)) '("forward" "backward" "both") :test #'equal)
           (merror
-           (intl:gettext "direction: choose one of [forward,backward,both]"))) 
+           (intl:gettext "plotdf-option-to-tcl: direction should be forward, backward or both."))) 
          value)
         (t (cond
             ((eql name s1)
@@ -69,10 +69,10 @@
             ((eql name s2)
 	     (setq value (check-range value))
              (check-list-items '$y (rest (rest value)) 'number 2))
-            (t (merror (intl:gettext "Unknown option ~M") name))))))
-    (setq vv (mapcar #'stripdollar (rest value)))
+            (t (merror (intl:gettext "plotdf-option-to-tcl: unknown option ~M") name))))))
+    (setq vv (mapcar #'(lambda (a) (if (symbolp a) (ensure-string a) a)) (cdr value)))
     (with-output-to-string (st)
-      (cond ((or (eql (first vv) 'x) (eql (first vv) 'y))
+      (cond ((or (equal (first vv) "x") (equal (first vv) "y"))
              (format st "-~(~a~)center " (first vv))
              (format st "{~a} " (/ (+ (third vv) (second vv)) 2))
              (format st "-~(~a~)radius " (first vv))
@@ -92,36 +92,21 @@
 (defun $plotdf (ode &rest options)  
   (let (cmd (opts " ") (s1 '$x) (s2 '$y))
     (unless ($listp ode) (setf ode `((mlist) ,ode)))
+
     ;; parse arguments and prepare string cmd with the equation(s)
     (unless
 	(member (second (first options))
 		'($xradius $yradius $xcenter $ycenter $tinitial $tstep
 			   $width $height $nsteps $versus_t $xfun $parameters
-			   $sliders $vector $trajectory $orthogonal))
+			   $sliders $vector $trajectory_at $orthogonal))
       (if (and (listp (first options)) (= (length (first options)) 3)
 	       (symbolp (second (first options)))
 	       (symbolp (third (first options))))
 	  (progn
 	    (setf s1 (second (first options)))
-	    (setf s2 (third (first options)))
-	    (defun subxy (expr)
-	      (if (listp expr)
-		  (mapcar #'subxy expr)
-		(cond ((eq expr s1) '$x) ((eq expr s2) '$y) (t expr))))
-	    (setf ode (mapcar #'subxy ode))
-	    (setf options (cdr options)))))
-;; the next two lines should take into account parameters given in the options
-;;    (if (delete '$y (delete '$x (rest (mfuncall '$listofvars ode))))
-;;        (merror "The equation(s) can depend only on 2 variable which must be specified!"))
-    (case (length ode)
-          (3 (setq cmd (concatenate 'string " -dxdt \""
-                                    (expr_to_str (second ode)) "\" -dydt \""
-                                    (expr_to_str (third ode)) "\"")))
-          (2 (setq cmd (concatenate 'string " -dydx \""
-                                    (expr_to_str (second ode)) "\"")))
-          (t (merror 
-              (intl:gettext "Argument must be either dydx or [dxdt, dydt]"))))
-    
+	    (setf s2 (third (first options)))))
+      (setf options (cdr options)))
+
     ;; parse options and copy them to string opts
     (cond (options
            (dolist (v options) 
@@ -133,6 +118,30 @@
     (unless (search "-yaxislabel " opts)
       (setq opts (concatenate 'string opts " -yaxislabel " (ensure-string s2))))
 
+    ;; check that the expressions given contain only the axis variables
+    (unless (search "-parameters " opts)
+      (dolist (var (cdr (mfuncall '$listofvars ode)))
+        (unless (or (eq var s1) (eq var s2))
+          (merror 
+           (intl:gettext "plotdf: expression(s) given can only depend on ~M and ~M~%Found extra variable ~M") s1 s2 var))))
+
+    ;; substitute $x by s1 and $y by s2
+    (defun subxy (expr)
+      (if (listp expr)
+          (mapcar #'subxy expr)
+        (cond ((eq expr s1) '$x) ((eq expr s2) '$y) (t expr))))
+    (setf ode (mapcar #'subxy ode))
+
+    ;; parse the differential equation expressions
+    (case (length ode)
+          (3 (setq cmd (concatenate 'string " -dxdt \""
+                                    (expr_to_str (second ode)) "\" -dydt \""
+                                    (expr_to_str (third ode)) "\"")))
+          (2 (setq cmd (concatenate 'string " -dydx \""
+                                    (expr_to_str (second ode)) "\"")))
+          (t (merror 
+              (intl:gettext "plotdf: first argument must be either an expression or a list with two expressions."))))
+    
     (show-open-plot
      (with-output-to-string (st)
                   (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
