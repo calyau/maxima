@@ -157,7 +157,7 @@ Default value: @code{true}
  
 When @code{float2bf} is @code{false}, a warning message is printed when
 a floating point number is converted into a bigfloat number (since
-this may lead to loss of precision).  The default value is @code{true}.
+this may lead to loss of precision).
 
 @opencatbox
 @category{Numerical evaluation}
