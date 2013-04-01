@@ -1551,7 +1551,7 @@ first kind:
 			    ((mplus) ((mtimes) $%pi ((rat) 1 4))
 			     ((mtimes) ((rat) 1 2) ,phi)))))
 		 (t
-		  (merror (intl:gettext "elliptic_f(~:M, ~:M) is undefined.")
+		  (merror (intl:gettext "elliptic_f: elliptic_f(~:M, ~:M) is undefined.")
 					phi m))))
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
