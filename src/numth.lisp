@@ -2019,9 +2019,11 @@
 
 ;; test if a is a primitive polynomial over Fp
 ;;
-(defmfun $gf_primitive_poly_p (a p) 
-  (unless (primep p)
-    (merror (intl:gettext "`gf_primitive_poly_p': ~m is not a prime number.") p) )
+(defmfun $gf_primitive_poly_p (a &optional p) 
+  (cond
+    (p (unless (and (integerp p) (primep p))
+         (merror (intl:gettext "`gf_primitive_poly_p': ~m is not a prime number.") p) ))
+    (t (gf-minset?) (setq p *gf-char*)) )
   (let* ((*gf-char* p) 
          (y (gf-p2x a))
          (n (car y)) )
@@ -2217,10 +2219,19 @@
 
 ;; gcd, gcdex and test of invertibility
 
-(defmfun $gf_gcd (a b) 
-  (gf-minset?)
-  (setq a (gf-p2x a) b (gf-p2x b))
-  (gf-x2p (gf-gcd a b)) )
+(defmfun $gf_gcd (a b &optional p) 
+  (cond
+    (p (unless (and (integerp p) (primep p))
+         (merror (intl:gettext "`gf_gcd': ~m is not a prime number.") p) )
+      (let* ((*gf-char* p)
+             (vars (caddar (mfuncall '$rat a)))
+             (*gf-var* (car vars)) )
+        (when (> (length vars) 1) 
+          (merror (intl:gettext "`gf_gcd': Polynomial must be univariate." )) )
+        (gf-x2p (gf-gcd (gf-p2x a) (gf-p2x b))) ))
+    (t 
+      (gf-minset?)
+      (gf-x2p (gf-gcd (gf-p2x a) (gf-p2x b))) )))
 
 (defmfun $gf_gcdex (a b) 
   (gf-minset?)
