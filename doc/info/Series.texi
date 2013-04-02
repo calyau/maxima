@@ -1,13 +1,15 @@
 @menu
-* Sums and Products::
+* Functions and Variables for Sums and Products::
 * Introduction to Series::
 * Functions and Variables for Series::
-* Poisson series::
+* Introduction to Fourier series::
+* Functions and Variables for Fourier series::
+* Functions and Variables for Poisson series::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Sums and Products, Introduction to Series, Sums Products and Series, Sums Products and Series
-@section Sums and Products
+@node Functions and Variables for Sums and Products, Introduction to Series, Sums Products and Series, Sums Products and Series
+@section Functions and Variables for Sums and Products
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
@@ -369,7 +371,7 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Series, Functions and Variables for Series, Sums and Products, Sums Products and Series
+@node Introduction to Series, Functions and Variables for Series, Functions and Variables for Sums and Products, Sums Products and Series
 @section Introduction to Series
 @c -----------------------------------------------------------------------------
 
@@ -382,7 +384,7 @@ variables which control the expansion.
 @c end concepts Series
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Series, Poisson series, Introduction to Series, Sums Products and Series
+@node Functions and Variables for Series, Introduction to Fourier series, Introduction to Series, Sums Products and Series
 @section Functions and Variables for Series
 @c -----------------------------------------------------------------------------
 
@@ -1260,8 +1262,265 @@ When @code{verbose} is @code{true},
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Poisson series, , Functions and Variables for Series, Sums Products and Series
-@section Poisson series
+@node Introduction to Fourier series, Functions and Variables for Fourier series, Functions and Variables for Series, Sums Products and Series
+@section Introduction to Fourier series
+@c -----------------------------------------------------------------------------
+
+The @code{fourie} package comprises functions for the symbolic computation
+of Fourier series.
+There are functions in the @code{fourie} package to calculate Fourier integral
+coefficients and some functions for manipulation of expressions.
+
+@opencatbox
+@category{Fourier transform} @category{Share packages} @category{Package fourie}
+@closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Fourier series, Functions and Variables for Poisson series, Introduction to Fourier series, Sums Products and Series
+@section Functions and Variables for Fourier series
+@c -----------------------------------------------------------------------------
+
+@c REPHRASE
+
+@c -----------------------------------------------------------------------------
+@anchor{equalp}
+@deffn {Function} equalp (@var{x}, @var{y})
+
+Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
+(doesn't give an error message like @code{equal (x, y)} would do in this case).
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{remfun}
+@deffn  {Function} remfun (@var{f}, @var{expr})
+@deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
+
+@code{remfun (@var{f}, @var{expr})} replaces all occurrences of @code{@var{f}
+(@var{arg})} by @var{arg} in @var{expr}.
+
+@code{remfun (@var{f}, @var{expr}, @var{x})} replaces all occurrences of
+@code{@var{f} (@var{arg})} by @var{arg} in @var{expr} only if @var{arg} contains
+the variable @var{x}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{funp}
+@deffn  {Function} funp (@var{f}, @var{expr})
+@deffnx {Function} funp (@var{f}, @var{expr}, @var{x})
+
+@code{funp (@var{f}, @var{expr})}
+returns @code{true} if @var{expr} contains the function @var{f}.
+
+@code{funp (@var{f}, @var{expr}, @var{x})}
+returns @code{true} if @var{expr} contains the function @var{f} and the variable
+@var{x} is somewhere in the argument of one of the instances of @var{f}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{absint}
+@deffn  {Function} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Function} absint (@var{f}, @var{x})
+@deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
+
+@code{absint (@var{f}, @var{x}, @var{halfplane})}
+returns the indefinite integral of @var{f} with respect to
+@var{x} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
+@var{f} may contain expressions of the form
+@code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
+
+@code{absint (@var{f}, @var{x})} is equivalent to
+@code{absint (@var{f}, @var{x}, pos)}.
+
+@code{absint (@var{f}, @var{x}, @var{a}, @var{b})} returns the definite integral
+of @var{f} with respect to @var{x} from @var{a} to @var{b}.
+@c SAME LIST AS ABOVE ??
+@var{f} may include absolute values.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie} @category{Integral calculus}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourier}
+@deffn {Function} fourier (@var{f}, @var{x}, @var{p})
+
+Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
+on the interval @code{[-p, p]}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
+
+@c -----------------------------------------------------------------------------
+@anchor{foursimp}
+@deffn {Function} foursimp (@var{l})
+
+Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
+@code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie} @category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{sinnpiflag}
+@defvr {Option variable} sinnpiflag
+Default value: @code{true}
+
+See @code{foursimp}.
+
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{cosnpiflag}
+@defvr {Option variable} cosnpiflag
+Default value: @code{true}
+
+See @code{foursimp}.
+
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end defvr
+
+@c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
+
+@c -----------------------------------------------------------------------------
+@anchor{fourexpand}
+@deffn {Function} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+
+Constructs and returns the Fourier series from the list of Fourier coefficients
+@var{l} up through @var{limit} terms (@var{limit} may be @code{inf}).  @var{x}
+and @var{p} have same meaning as in @code{fourier}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourcos}
+@deffn {Function} fourcos (@var{f}, @var{x}, @var{p})
+
+Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on
+@code{[0, @var{p}]}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{foursin}
+@deffn {Function} foursin (@var{f}, @var{x}, @var{p})
+
+Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on
+@code{[0, @var{p}]}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{totalfourier}
+@deffn {Function} totalfourier (@var{f}, @var{x}, @var{p})
+
+Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})),
+@var{x}, @var{p}, 'inf)}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourint}
+@deffn {Function} fourint (@var{f}, @var{x})
+
+Constructs and returns a list of the Fourier integral coefficients of
+@code{@var{f}(@var{x})} defined on @code{[minf, inf]}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{fourintcos}
+@deffn {Function} fourintcos (@var{f}, @var{x})
+
+Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})}
+on @code{[0, inf]}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+@c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
+@anchor{forintsin}
+@deffn {Function} fourintsin (@var{f}, @var{x})
+
+Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on
+@code{[0, inf]}.
+
+@c NEEDS EXAMPLES
+@opencatbox
+@category{Package fourie}
+@closecatbox
+@end deffn
+
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Poisson series, , Functions and Variables for Fourier series, Sums Products and Series
+@section Functions and Variables for Poisson series
 @c -----------------------------------------------------------------------------
 
 @c NEED EXAMPLES HERE
