@@ -526,13 +526,14 @@ diff_form/surface_example.txt \
 distrib/distrib.mac \
 distrib/numdistrib.lisp \
 distrib/rtest_distrib.mac \
+draw/draw_gnuplot.dem \
 draw/draw.lisp \
+draw/draw.system \
 draw/drawutils.mac \
 draw/drawutils.texi \
+draw/gnuplot.lisp \
 draw/grcommon.lisp \
-draw/implicit3d.lisp \
 draw/picture.lisp \
-draw/rtest_draw.mac \
 draw/vtk.lisp \
 draw/wbd.lisp \
 draw/worldmap.mac \
