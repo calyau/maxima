@@ -826,21 +826,20 @@
 
     ($gf_get_data) )) 
 
-;; part of $gf_set_data:
 
 (defun gf-set-red (p-orig)
   (let ((p ($rat p-orig)))
     (unless (listp (cadr p))
-      (merror (intl:gettext "`gf_set_data': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
+      (merror (intl:gettext "Argument not suitable as reduction polynomial: ~m" ) p-orig) )
     (let ((vars (caddar p)))
       (when (> (length vars) 1)
-        (merror (intl:gettext "`gf_set_data': Argument not suitable as reduction polynomial: ~m" ) p-orig) )
+        (merror (intl:gettext "Argument not suitable as reduction polynomial: ~m" ) p-orig) )
       (setq *gf-var* (car vars) 
             *gf-rat-header* (car p)
             *gf-rat-sym* (caadr p)
             *gf-red* (gf-mod (cdadr p)) )
       (when (/= 1 (cadr *gf-red*))
-        (merror (intl:gettext "`gf_set_data': A monic reduction polynomial is assumed." )) )
+        (merror (intl:gettext "A monic reduction polynomial is assumed." )) )
       *gf-red* )))
 
 
