@@ -5,7 +5,7 @@ AC_INIT(src/macsys.lisp)
 dnl If git is available, the version number here is not used.  
 dnl Instead, git is used to derive the version based on the closest
 dnl annotated branch tag.
-AM_INIT_AUTOMAKE(maxima,5.29post)
+AM_INIT_AUTOMAKE(maxima,5.30post)
 
 AM_PATH_LISPDIR
 
