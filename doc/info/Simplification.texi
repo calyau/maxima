@@ -278,7 +278,7 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @defvr  {Property} evenfun
 @defvrx {Property} oddfun
 
-@code{declare(f, evenfun} or @code{declare(f, oddfun} tells Maxima to recognize
+@code{declare(f, evenfun)} or @code{declare(f, oddfun)} tells Maxima to recognize
 the function @code{f} as an even or odd function.
 
 Examples:

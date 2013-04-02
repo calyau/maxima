@@ -76,7 +76,10 @@
 	((not ($listp varxlist))
 	 (merror (intl:gettext "algsys: second argument must be a list; found ~M") varxlist)))
   (let ((tlhslist nil) (*tvarxlist* nil) (solnlist nil) ($ratprint nil)
-	($ratepsilon 1e-7)
+        ;; GCL seems to read 1e-7 as zero, but only when compiling. Incantations
+        ;; based on 1d-7, 1l-7 etc. don't seem to make any difference.
+	($ratepsilon #-gcl 1e-7
+	             #+gcl (float 1/10000000))
 	($keepfloat nil)
 	(varlist (reverse (cdr varxlist)))
 	(genvar nil) ($ratfac nil) ($breakup nil)

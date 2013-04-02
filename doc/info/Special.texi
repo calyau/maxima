@@ -526,7 +526,7 @@ the factorial function, which is used to calculate @code{gamma}, will overflow.
 The simplification for rational numbers is controlled by @code{gammalim} to 
 avoid internal overflow. See @code{factlim} and @code{gammalim}.
 
-For negative integers @code{gamma} is not definied.
+For negative integers @code{gamma} is not defined.
 
 Maxima can evalute @code{gamma} numerically for real and complex values in float 
 and bigfloat precision.
@@ -881,7 +881,7 @@ The possible results, when one of the arguments is a negative integer:
 
 @end example
 
-Beta is not definied, when one of the arguments is zero:
+Beta is not defined, when one of the arguments is zero:
 
 @example
 (%i7) beta(0,b);

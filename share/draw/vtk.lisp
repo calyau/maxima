@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2012 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2012-2013 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -1897,7 +1897,7 @@
     (ini-gr-options)
     (ini-local-option-variables)
     (user-defaults)
-    (setf largs (listify-arguments))
+    (setf largs (listify-arguments args))
     (dolist (x largs)
       (cond ((equal ($op x) "=")
               (case ($lhs x)
@@ -1998,7 +1998,7 @@
           *lookup-tables* nil
           *unitscale-already-defined* nil
           *label-actors* nil)
-    (setf largs (listify-arguments))
+    (setf largs (listify-arguments args))
     (dolist (x largs)
       (cond ((equal ($op x) "=")
               (case ($lhs x)

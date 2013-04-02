@@ -1,4 +1,4 @@
-;; complex_dynamics.lisp - functions to plot Julia and mandelbrot sets
+;; complex_dynamics.lisp - functions julia, mandelbrot and rk
 ;;   
 ;; Copyright (C) 2006 Jaime E. Villate <villate@fe.up.pt>
 ;;
@@ -222,3 +222,50 @@
 	  (format st "\"~a\"~%" line) (format st "\"~a\",~%" line)))
     (format st "};~%"))
   (format t "File ~a was created.~%" file)))
+
+;; Function $rk implements the 4th order Runge-Kutta numerical method.
+;;  exprs:   an expression or maxima list with n expressions
+;;  vars:    name of (or list of names of) the independent variable(s)
+;;  initial: initial value for the variable (or list of initial values)
+;;  domain:  maxima list with four elements (name of the independent
+;;           variable, its initial and final values and its increment)
+(defun $rk (exprs vars initial domain
+             &aux d u fun k1 k2 k3 k4 r1 r2 r3 traj r
+             (it (mapcar #'coerce-float (cddr domain))))
+  (unless ($listp exprs) (setq exprs `((mlist) ,exprs)))
+  (unless ($listp initial) (setq initial `((mlist) ,initial)))
+  (unless ($listp vars) (setq vars `((mlist) ,vars)))
+  (dolist (var (cdr vars))
+    (unless (symbolp var)
+      (merror (intl:gettext "rk: variable name expected; found: ~M") var)))
+  (unless (symbolp (cadr domain))
+      (merror (intl:gettext "rk: variable name expected; found: ~M")
+              (cadr domain)))
+  (setq vars (concatenate 'list '((mlist)) (list (cadr domain)) (cdr vars)))
+  (setq r (concatenate 'list `(,(car it)) (mapcar #'coerce-float (cdr initial))))
+  (setq fun (mapcar #'(lambda (x) (coerce-float-fun x vars)) (cdr exprs)))
+  (setq d (floor (/ (- (cadr it) (car it)) (caddr it))))
+  (setq traj (list (cons '(mlist) r)))
+  (dotimes (m d)
+    (ignore-errors
+      (setq k1 (mapcar #'(lambda (x) (apply x r)) fun))
+      (setq r1 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (/ (caddr it) 2) x)) k1)))
+      (push (+ (car r) (/ (caddr it) 2)) r1)
+      (setq k2 (mapcar #'(lambda (x) (apply x r1)) fun))
+      (setq r2 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (/ (caddr it) 2) x)) k2)))
+      (push (+ (car r) (/ (caddr it) 2)) r2)
+      (setq k3 (mapcar #'(lambda (x) (apply x r2)) fun))
+      (setq r3 (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (caddr it) x)) k3)))
+      (push (+ (car r) (caddr it)) r3)
+      (setq k4 (mapcar #'(lambda (x) (apply x r3)) fun))
+      (setq u (map 'list #'+
+                   (mapcar #'(lambda (x) (* 1/6 x)) k1)
+                   (mapcar #'(lambda (x) (* 1/3 x)) k2)
+                   (mapcar #'(lambda (x) (* 1/3 x)) k3)
+                   (mapcar #'(lambda (x) (* 1/6 x)) k4)))
+      (setq r 
+        (concatenate 'list
+           `(,(* (1+ m) (caddr it)))
+            (map 'list #'+ (cdr r) (mapcar #'(lambda (x) (* (caddr it) x)) u))))
+      (push (cons '(mlist) r) traj)))
+  (cons '(mlist) (nreverse traj)))

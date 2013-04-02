@@ -1191,12 +1191,20 @@
 
 (defmfun $gf_div (&rest args) 
   (gf-minset?)
-  (setq args (mapcar #'gf-p2x args)
-        args (cons (car args) (mapcar #'gf-inv (cdr args))) )
-  (cond
-    ((null (car args)) 0)
-    ((some #'null (cdr args)) nil)
-    (t (gf-x2p (reduce #'gf-times args))) )) 
+  (unless (cadr args)
+    (merror (intl:gettext "`gf_div' needs at least two arguments." )) )
+  (let* ((a2 (mapcar #'gf-p2x args))
+         (a2 (cons (car a2) (mapcar #'gf-inv (cdr a2)))) )
+    (cond
+      ((some #'null (cdr a2))
+        (let ((q (gf-p2x (car args))) r)
+          (setq args (cdr args))
+          (do ((d (car args) (car args))) 
+              ((null d) (gf-x2p q))
+            (multiple-value-setq (q r) (gf-divide q (gf-p2x d)))
+            (when r (return))
+            (setq args (cdr args)) )))
+      (t (gf-x2p (reduce #'gf-times a2))) ))) 
 
 (defmfun $gf_exp (&optional a n)
   (gf-minset?) 
@@ -1803,6 +1811,7 @@
   (let ((*gf-char* p)
         #-gcl (*fixnump-2gf-char* (< (* 2 p) most-positive-fixnum)) ;; see above
         (*gf-red* y)
+        (*gf-tables?*)
         (x (list 1 1)) (mx (list 1 (1- p)))) 
     (do ((i 1 (1+ i)) (xp x) (n2 (ash n -1))) 
         ((> i n2) t)
@@ -2010,9 +2019,11 @@
 
 ;; test if a is a primitive polynomial over Fp
 ;;
-(defmfun $gf_primitive_poly_p (a p) 
-  (unless (primep p)
-    (merror (intl:gettext "`gf_primitive_poly_p': ~m is not a prime number.") p) )
+(defmfun $gf_primitive_poly_p (a &optional p) 
+  (cond
+    (p (unless (and (integerp p) (primep p))
+         (merror (intl:gettext "`gf_primitive_poly_p': ~m is not a prime number.") p) ))
+    (t (gf-minset?) (setq p *gf-char*)) )
   (let* ((*gf-char* p) 
          (y (gf-p2x a))
          (n (car y)) )
@@ -2025,6 +2036,7 @@
 (defun gf-primitive-poly-p (y p n) 
   (let* ((*gf-red* y) (*gf-char* p) (*gf-exp* n)
          (p-1 (1- p)) 
+         (*gf-tables?*)
          ($intfaclim)
          (fs-p-1 (sort (mapcar #'car (get-factor-list p-1)) #'<))
          const r fs-r x^r x^r/fi )
@@ -2106,6 +2118,7 @@
   #+ (or ccl ecl gcl)  (declare (optimize (speed 3) (safety 0)))
   (declare (fixnum n))
   (let ((*gf-red* y) (*gf-char* p) (*gf-exp* n)
+        (*gf-tables?*)
         const x^p-powers prod z 
         (j 0) ) (declare (fixnum j))
     (unless (= 1 (cadr y)) ;; monic poly assumed
@@ -2206,10 +2219,19 @@
 
 ;; gcd, gcdex and test of invertibility
 
-(defmfun $gf_gcd (a b) 
-  (gf-minset?)
-  (setq a (gf-p2x a) b (gf-p2x b))
-  (gf-x2p (gf-gcd a b)) )
+(defmfun $gf_gcd (a b &optional p) 
+  (cond
+    (p (unless (and (integerp p) (primep p))
+         (merror (intl:gettext "`gf_gcd': ~m is not a prime number.") p) )
+      (let* ((*gf-char* p)
+             (vars (caddar (mfuncall '$rat a)))
+             (*gf-var* (car vars)) )
+        (when (> (length vars) 1) 
+          (merror (intl:gettext "`gf_gcd': Polynomial must be univariate." )) )
+        (gf-x2p (gf-gcd (gf-p2x a) (gf-p2x b))) ))
+    (t 
+      (gf-minset?)
+      (gf-x2p (gf-gcd (gf-p2x a) (gf-p2x b))) )))
 
 (defmfun $gf_gcdex (a b) 
   (gf-minset?)

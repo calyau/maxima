@@ -64,7 +64,7 @@
        ((and (equal ($imagpart (setq z (div* x '$%i))) 0)
 	     (setq y ($asksign z)))
 	(cond
-	  ((equal y '$zero) (merror (intl:gettext "plog(0) is undefined.")))
+	  ((equal y '$zero) (merror (intl:gettext "plog: plog(0) is undefined.")))
 	  (t (cond ((eq y '$pos) (setq y 1))
 		   ((eq y '$neg) (setq y -1)))
 	     (return (add2* (simpln (list '(%log)

@@ -822,7 +822,7 @@ other Maxima functions.
 
 @deffn {Function} rectform_log_if_constant (@var{e})
 
-The function @code{rectform_if_constant} converts all terms of the form
+The function @code{rectform_log_if_constant} converts all terms of the form
 @code{ log(c)} to  @code{rectform(log(c))}, where @code{c} is
 either a declared constant expression or explicitly declared constant
 

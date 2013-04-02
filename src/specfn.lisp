@@ -756,7 +756,8 @@
 ;; k integer
 ;; z, w bigfloat: numbers
 (defun check-lambert-w-k (k w z)
-  (let ((tolerance 1.0e-6))
+  (let ((tolerance #-gcl 1.0e-6
+                   #+gcl (cl:float 1/1000000)))
   (if
      (cond 
        ;; k=-1 branch with z and w real.
