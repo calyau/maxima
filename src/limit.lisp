@@ -388,7 +388,7 @@ It appears in LIMIT and DEFINT.......")
 
 (defun infcount (expr)
   (cond ((atom expr)
-         (if (infinityp expr) 1 0))
+         (if (or (infinityp expr) (real-epsilonp expr)) 1 0))
         ((member (caar expr) dummy-variable-operators)
          ;; don't count inf as limit of %integrate, %sum, %product, %limit
          (infcount (cadr expr)))
@@ -402,7 +402,7 @@ It appears in LIMIT and DEFINT.......")
   (let ((infc (infcount exp)) nexp inftype)
     (cond
       ((= infc 0)  exp)
-      ((= infc 1)  (setq infc (inf-typep exp))
+      ((= infc 1)  (setq infc (or (inf-typep exp) (epsilon-typep exp)))
        ($limit (subst var infc exp) var infc))
       (t
        (setq nexp (cons `(,(caar exp)) (mapcar 'simpinf (cdr exp))))

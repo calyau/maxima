@@ -114,6 +114,9 @@
 (defmacro inf-typep (x)
   `(car (amongl infinities ,x)))
 
+(defmacro epsilon-typep (x)
+  `(car (amongl infinitesimals ,x)))
+
 (defmacro hot-coef (p)
   `(pdis (caddr (cadr (rat-no-ratfac ,p)))))
 
