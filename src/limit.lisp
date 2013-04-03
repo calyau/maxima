@@ -287,15 +287,16 @@ It appears in LIMIT and DEFINT.......")
 ;; The optional arg allows the caller to decide on the value of
 ;; preserve-direction.  Default is T, like it used to be.
 (defun both-side (exp var val &optional (preserve t))
-  (let ((preserve-direction preserve))
-    (let ((la ($limit exp var val '$plus))
-	  (lb ($limit exp var val '$minus)))
-      (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
-	    ((or (not (free la '%limit))
-		 (not (free lb '%limit)))  ())
-	    ;; inf + minf => infinity
-	    ((and (infinityp la) (infinityp lb)) '$infinity)
-	    (t '$und)))))
+  (let* ((preserve-direction preserve)
+         (la ($limit exp var val '$plus)) lb)
+    (when (eq la '$und) (return-from both-side '$und))
+    (setf lb ($limit exp var val '$minus))
+    (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
+          ((or (not (free la '%limit))
+               (not (free lb '%limit)))  ())
+          ;; inf + minf => infinity
+          ((and (infinityp la) (infinityp lb)) '$infinity)
+          (t '$und))))
 
 ;; Warning:  (CATCH NIL ...) will catch all throws.
 ;; NIL should not be used as a tag name.
