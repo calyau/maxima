@@ -1717,76 +1717,92 @@ It appears in LIMIT and DEFINT.......")
 		  ($limit e var new-val)) (throw 'limit t))))
 
 (defun simplimtimes (exp)
-  (prog (sign prod y num denom flag zf flag2 exp1)
-     (if (expfactorp (cons '(mtimes) exp) 1)
-	 ;; handles        (-1)^x * 2^x => (-2)^x => $infinity
-	 ;; want to avoid  (-1)^x * 2^x => $ind * $inf => $und
-	 (let ((ans (expfactor (cons '(mtimes) exp) 1 var)))
-	   (if ans
-	       (return ans))))
+  ;; The following test
+  ;; handles         (-1)^x * 2^x => (-2)^x => $infinity
+  ;; wants to avoid  (-1)^x * 2^x => $ind * $inf => $und
+  (let ((try
+         (and (expfactorp (cons '(mtimes) exp) 1)
+              (expfactor (cons '(mtimes) exp) 1 var))))
+    (when try (return-from simplimtimes try)))
 
-     (setq prod (setq num (setq denom 1)) exp1 exp)
-     loop
-     (setq y (let ((loginprod? (involve (car exp1) '(%log))))
-	       (catch 'lip? (limit (car exp1) var val 'think))))
-     (cond ((eq y 'lip!) (return (liminv (cons '(mtimes simp) exp))))
-	   ((zerop2 y)
-	    (setq num (m* num (car exp1)))
-	    (cond ((eq y '$zeroa)
-		   (cond (zf nil)
-			 (t (setq zf 1))))
-		  ((eq y '$zerob)
-		   (cond (zf (setq zf (* -1 zf)))
-			 (t (setq zf -1))))))
-	   ((not (member y '($inf $minf $infinity $ind $und) :test #'eq))
-	    (setq prod (m* prod y)))
-	   ((eq y '$und)
-	    (return '$und))
-	   ((eq y '$ind)
-	    (setq flag2 t))
-	   (t (setq denom (m* denom (car exp1)))
-	      (cond ((eq y '$infinity) (setq flag y))
-		    ((eq flag '$infinity) nil)
-		    ((null flag) (setq flag y))
-		    ((eq y flag) (setq flag '$inf))
-		    (t (setq flag '$minf)))))
-     (setq exp1 (cdr exp1))
-     (cond ((null exp1)
-	    (cond ((and (equal num 1) (equal denom 1))
-		   (return (if flag2 '$ind prod)))
-		  ((equal denom 1)
-		   (cond ((null zf) (return 0))
-			 (t (setq sign (getsignl prod))
-			    (cond ((eq sign 'complex) (return 0))
-				  (sign (setq zf (* zf sign))
-					(return
-					  (cond ((equal zf 1) '$zeroa)
-						((equal zf -1) '$zerob)
-						(t 0))))
-				  (t (return 0))))))
-		  ((equal num 1)
-		   (setq sign ($csign prod))
-		   (return (cond (flag2 '$und)
-				 ((eq sign '$pos)
-				  flag)
-				 ((eq sign '$neg)
-				  (cond ((eq flag '$inf) '$minf)
-					((eq flag '$infinity) flag)
-					(t '$inf)))
-				 ((member sign '($complex $imaginary))
-				  '$infinity)
-				 (t	; sign is '$zero, $pnz, $pz, etc
-				  (throw 'limit t)))))
-		  (t (go down))))
-	   (t (go loop)))
-     down
-     (cond ((or (not (among var denom))
-		(not (among var num)))
-	    (throw 'limit t)))
-     (return (let ((ans (limit2 num (m^ denom -1) var val)))
-	       (if ans
-		   (simplimtimes (list prod ans))
-		   (throw 'limit t))))))
+  (let ((prod 1) (num 1) (denom 1)
+        (zf nil) (ind-flag nil) (inf-type nil))
+    (dolist (term exp)
+      (let* ((loginprod? (involve term '(%log)))
+             (y (catch 'lip? (limit term var val 'think))))
+        (cond
+          ;; limit failed due to log in product
+          ((eq y 'lip!)
+           (return-from simplimtimes (liminv (cons '(mtimes simp) exp))))
+
+          ;; If the limit is infinitesimal or zero
+          ((zerop2 y)
+           (setq num (m* num term))
+           (case y
+             ($zeroa
+              (unless zf (setf zf 1)))
+             ($zerob
+              (setf zf (* -1 (or zf 1))))))
+
+          ;; If the limit is not some form of infinity or
+          ;; undefined/indeterminate.
+          ((not (member y '($inf $minf $infinity $ind $und) :test #'eq))
+           (setq prod (m* prod y)))
+
+          ((eq y '$und) (return-from simplimtimes '$und))
+          ((eq y '$ind) (setq ind-flag t))
+
+          ;; Some form of infinity
+          (t
+           (setq denom (m* denom term))
+           (unless (eq inf-type 'infinity)
+             (cond
+               ((eq y '$infinity) (setq inf-type '$infinity))
+               ((null inf-type) (setf inf-type y))
+               ;; minf * minf or inf * inf
+               ((eq y inf-type) (setf inf-type '$inf))
+               ;; minf * inf
+               (t (setf inf-type '$minf))))))))
+
+    (cond
+      ;; If num=denom=1, we didn't find any explicit infinities or zeros, so we
+      ;; either return the simplified product or ind
+      ((and (eql num 1) (eql denom 1))
+       (if ind-flag '$ind prod))
+      ;; If denom=1 (and so num != 1), we have some form of zero
+      ((equal denom 1)
+       (if (null zf)
+           0
+           (let ((sign (getsignl prod)))
+             (if (or (not sign) (eq sign 'complex))
+                 0
+                 (ecase (* zf sign)
+                   (1  '$zeroa)
+                   (-1 '$zerob))))))
+      ;; If num=1 (and so denom != 1), we have some form of infinity
+      ((equal num 1)
+       (let ((sign ($csign prod)))
+         (cond
+           (ind-flag '$und)
+           ((eq sign '$pos) inf-type)
+           ((eq sign '$neg) (case inf-type
+                              ($inf '$minf)
+                              ($minf '$inf)
+                              (t '$infinity)))
+           ((member sign '($complex $imaginary)) '$infinity)
+           ; sign is '$zero, $pnz, $pz, etc
+           (t (throw 'limit t)))))
+      ;; Both zeros and infinities
+      (t
+       ;; This means that I have e.g. A(x) * inf with A(x) -> 0 or something
+       ;; similar. I'm not sure why we throw here though...
+       (unless (and (among var denom) (among var num))
+         (throw 'limit t))
+
+       (let ((ans (limit2 num (m^ denom -1) var val)))
+         (if ans
+             (simplimtimes (list prod ans))
+             (throw 'limit t)))))))
 
 ;;;PUT CODE HERE TO ELIMINATE FAKE SINGULARITIES??
 
