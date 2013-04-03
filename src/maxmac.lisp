@@ -99,8 +99,8 @@
 (defmacro real-infinityp (x)
   `(member ,x real-infinities :test #'eq))
 
-(defmacro infinityp (x)
-  `(member ,x infinities :test #'eq))
+(defun infinityp (x)
+  (member x infinities :test #'eq))
 
 (defmacro real-epsilonp (x)
   `(member ,x infinitesimals :test #'eq))
