@@ -1,0 +1,8 @@
+/*
+  A collection of tests to stress $limit and friends
+*/
+(kill(all),0);
+0$
+
+limit(zeroa*inf);
+und$

@@ -1726,7 +1726,8 @@ It appears in LIMIT and DEFINT.......")
     (when try (return-from simplimtimes try)))
 
   (let ((prod 1) (num 1) (denom 1)
-        (zf nil) (ind-flag nil) (inf-type nil))
+        (zf nil) (ind-flag nil) (inf-type nil)
+        (constant-zero nil) (constant-infty nil))
     (dolist (term exp)
       (let* ((loginprod? (involve term '(%log)))
              (y (catch 'lip? (limit term var val 'think))))
@@ -1737,7 +1738,8 @@ It appears in LIMIT and DEFINT.......")
 
           ;; If the limit is infinitesimal or zero
           ((zerop2 y)
-           (setq num (m* num term))
+           (setf num (m* num term)
+                 constant-zero (or constant-zero (not (among var term))))
            (case y
              ($zeroa
               (unless zf (setf zf 1)))
@@ -1754,7 +1756,8 @@ It appears in LIMIT and DEFINT.......")
 
           ;; Some form of infinity
           (t
-           (setq denom (m* denom term))
+           (setf denom (m* denom term)
+                 constant-infty (or constant-infty (not (among var term))))
            (unless (eq inf-type 'infinity)
              (cond
                ((eq y '$infinity) (setq inf-type '$infinity))
@@ -1765,6 +1768,14 @@ It appears in LIMIT and DEFINT.......")
                (t (setf inf-type '$minf))))))))
 
     (cond
+      ;; If there are zeros and infinities among the terms that are free of
+      ;; VAR, then we have an expression like "inf * zeroa * f(x)" or
+      ;; similar. That gives an undefined result. Note that we don't
+      ;; necessarily have something undefined if only the zeros have a term
+      ;; free of VAR. For example "zeroa * exp(-1/x) * 1/x" as x -> 0. And
+      ;; similarly for the infinities.
+      ((and constant-zero constant-infty) '$und)
+
       ;; If num=denom=1, we didn't find any explicit infinities or zeros, so we
       ;; either return the simplified product or ind
       ((and (eql num 1) (eql denom 1))
@@ -1794,10 +1805,9 @@ It appears in LIMIT and DEFINT.......")
            (t (throw 'limit t)))))
       ;; Both zeros and infinities
       (t
-       ;; This means that I have e.g. A(x) * inf with A(x) -> 0 or something
-       ;; similar. I'm not sure why we throw here though...
-       (unless (and (among var denom) (among var num))
-         (throw 'limit t))
+       ;; All bets off if there are some infinities or some zeros, but it
+       ;; needn't be undefined (see above)
+       (when (or constant-zero constant-infty) (throw 'limit t))
 
        (let ((ans (limit2 num (m^ denom -1) var val)))
          (if ans
