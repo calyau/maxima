@@ -80,8 +80,8 @@ Perhaps you meant to enter `~a'.~%"
       (when (plusp (* fa fb))
 	(if (eq maxima::$find_root_error t)
 	    (maxima::merror (intl:gettext "find_root: function has same sign at endpoints: ~M, ~M")
-			    `((mequal) ((f) ,a) ,fa)
-			    `((mequal) ((f) ,b) ,fb))
+			    `((maxima::mequal) ((f) ,a) ,fa)
+			    `((maxima::mequal) ((f) ,b) ,fb))
 	    (return-from find-root-subr 'maxima::$find_root_error)))
       (when (plusp fa)
 	(psetq fa fb
