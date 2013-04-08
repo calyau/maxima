@@ -122,7 +122,7 @@ CLEAN_TARGETS += clean-clisp
 clisp: $(CLISP_MAXIMA)
 
 $(CLISP_MAXIMA):
-	make bd_clisp
+	$(MAKE) bd_clisp
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) $(clispexeflag)))'
 
@@ -168,7 +168,7 @@ CLEAN_TARGETS += clean-cmucl
 cmucl: $(CMU_MAXIMA)
 
 $(CMU_MAXIMA):
-	make bd_cmucl
+	$(MAKE) bd_cmucl
 	$(CMU_BUILD)
 
 clean-cmucl:
@@ -193,7 +193,7 @@ scllib_DATA = binary-scl/maxima.core
 scl: binary-scl/maxima.core
 
 binary-scl/maxima.core:
-	make bd_scl
+	$(MAKE) bd_scl
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTESCL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-scl/maxima.core"))' | $(EXECUTESCL))
 
@@ -232,7 +232,7 @@ acllib_DATA = binary-acl/maxima.dxl
 acl: binary-acl/maxima.dxl
 
 binary-acl/maxima.dxl:
-	make bd_acl
+	$(MAKE) bd_acl
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl"))' | $(EXECUTEACL))
 
@@ -273,7 +273,7 @@ BUILD_SBCL = $(COMPILE_SBCL) && $(WRITE_SBCL)
 sbcl: $(SBCL_MAXIMA)
 
 $(SBCL_MAXIMA):
-	make bd_sbcl
+	$(MAKE) bd_sbcl
 	$(BUILD_SBCL)
 
 clean-sbcl:
@@ -309,7 +309,7 @@ export WITH_SYS_PROCLAIM = true
 sys-proclaim.lisp:
 	rm -rf binary-gcl
 	touch sys-proclaim.lisp
-	make bd_gcl
+	$(MAKE) bd_gcl
 	$(EXECUTEGCL) '(progn (load "generate-sys-proclaim.lisp"))'
 	rm -rf binary-gcl
 else !SYS_PROCLAIM
@@ -320,7 +320,7 @@ endif
 gcl: binary-gcl/maxima
 
 binary-gcl/maxima: $(sys_proc_dependency)
-	make bd_gcl
+	$(MAKE) bd_gcl
 if GCL_ALT_LINK
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
 	$(EXECUTEGCL) '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l))))'
@@ -398,7 +398,7 @@ CLEAN_TARGETS += clean-ecl
 ecl:binary-ecl/maxima
 
 binary-ecl/maxima:
-	make bd_ecl
+	$(MAKE) bd_ecl
 	$(EXECUTEECL) \
            -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib))' \
            -eval '(ext:quit)'
