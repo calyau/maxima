@@ -113,11 +113,32 @@ jordan (A) :=
          eigenlist[1][1], eigenlist[1][2]))$
 
 /*
+  A simple sanity check that arguments are of the form returned by
+  jordan().
+*/
+diag_jordan_info_check (lst) :=
+  if not (listp (lst)) then false
+  else block([ret: true],
+    for pair in lst do
+      if not (listp (pair)) then (ret: false, return (false))
+      elseif is (length (pair) < 2) then
+        error ("Found a surprisingly short jordan_info list:",
+               pair),
+    ret)$
+
+/*
   Calculate the minimal polynomial, expressed in the symbol "x", of
   any matrix with the given list of eigenvalues and their
   multiplicities.
+
+  NOTE: This assumes that the first multiplicity for an eigenvalue is
+        the largest and that the given eigenvalues are distinct. This
+        is the case for the output of jordan().
 */
 minimalPoly (jordan_info) :=
+  if not (diag_jordan_info_check (jordan_info)) then
+    'minimalPoly (jordan_info)
+  else
   lreduce ("*",
     map (lambda ([eival_lst], ('x - first (eival_lst))^(second (eival_lst))),
          jordan_info))$
@@ -127,6 +148,9 @@ minimalPoly (jordan_info) :=
   corresponding Jordan matrix.
 */
 dispJordan (jordan_info) := block ([blocks: []],
+  if not (diag_jordan_info_check (jordan_info)) then
+    'dispJordan (jordan_info)
+  else
   for eival_lst in jordan_info do
     for size in rest (eival_lst) do
       blocks: cons (JF (first (eival_lst), size), blocks),
@@ -154,7 +178,6 @@ diag_sorted_list_histogram (list) :=
         current: first (lst),
         count: 1),
     reverse (cons ([current, count], pairs)))$
-
 
 /*
   Find a formula for a general element of the kernel of A.
