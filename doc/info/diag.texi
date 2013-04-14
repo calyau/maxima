@@ -82,9 +82,22 @@ To use this function write first @code{load("diag")}.
 
 
 @deffn {Function} jordan (@var{mat})
-Returns the Jordan form of matrix @var{mat}, but codified in a Maxima list.
-To get the corresponding matrix, call function @code{dispJordan} using as argument
-the output of @code{jordan}.
+Returns the Jordan form of matrix @var{mat}, expressed as a Maxima
+list. To get the corresponding matrix, call the function
+@code{dispJordan} using the output of @code{jordan} as the argument.
+
+The elements of the returned list are themselves lists. The first
+element of each is an eigenvalue of @var{mat}. The remaining elements
+are positive integers which are the lengths of the Jordan blocks for
+this eigenvalue. These integers are listed in decreasing
+order. Eigenvalues are not repeated.
+
+The functions @code{dispJordan}, @code{minimalPoly} and
+@code{ModeMatrix} expect the output of a call to @code{jordan} as an
+argument. If you construct this argument by hand, rather than by
+calling @code{jordan}, you must ensure that each eigenvalue only
+appears once and that the block sizes are listed in decreasing order,
+otherwise the functions might give incorrect answers.
 
 Example:
 @example
