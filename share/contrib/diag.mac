@@ -105,7 +105,9 @@ diag_calculate_mult_partition (A, multiplicity, eival) :=
   multiplicities.
 */
 jordan (A) :=
-  block([eigenlist: eigenvectors (A)],
+  if not (matrixp (A)) then
+    'jordan(A)
+  else block([eigenlist: eigenvectors (A)],
     map (lambda ([eival, mult],
                  cons (eival, diag_calculate_mult_partition (A, mult, eival))),
          eigenlist[1][1], eigenlist[1][2]))$
