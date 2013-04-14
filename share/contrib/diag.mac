@@ -363,7 +363,10 @@ diag_mat_function_jordan (jordan, expr, var) :=
   means of the associated Taylor series.
 */
 mat_function (f, A) :=
+  if not (matrixp (A)) then
+    'mat_function (f, A)
+  else
   block ([jj: jordan (A), var: gensym(), modemat],
     modemat: ModeMatrix (A, jj),
-    modemat . diag_mat_function_jordan (jj, apply(f, [var]), var)
+    modemat . diag_mat_function_jordan (jj, apply (f, [var]), var)
             . (modemat)^^(-1))$
