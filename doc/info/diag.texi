@@ -265,227 +265,141 @@ To use this function write first @code{load("diag")}. See also
 @end deffn
 
 
-@deffn {Function} mat_function (@var{f},@var{mat})
-Returns @math{f(mat)}, where @var{f} is an analytic function and @var{mat}
-a matrix. This computation is based on Cauchy's integral formula, which states that
-if @code{f(x)} is analytic and
+@deffn {Function} mat_function (@var{f},@var{A})
+Returns @math{f(A)}, where @var{f} is an analytic function and @var{A}
+a matrix. This computation is based on the Taylor expansion of
+@var{f}. It is not efficient for numerical evaluation, but can give
+symbolic answers for small matrices.
 
-@example
-mat = diag([JF(m1,n1),...,JF(mk,nk)]),
-@end example
-
-then
-
-@example
-f(mat) = ModeMatrix*diag([f(JF(m1,n1)), ..., f(JF(mk,nk))])
-                                              *ModeMatrix^^(-1)
-@end example
-
-Note that there are about 6 or 8 other methods for this calculation.
-
-Some examples follow.
+@c What other methods do we have in Maxima at the moment? We should
+@c probably give links here...
 
 Example 1:
+
+The exponential of a matrix. We only give the first row of the answer,
+since the output is rather large.
+@c ===beg===
+@c load("diag")$
+@c A: matrix ([0,1,0], [0,0,1], [-1,-3,-3])$
+@c ratsimp (mat_function (exp, t*A)[1]);
+@c ===end===
 @example
 (%i1) load("diag")$
-
-(%i2) b2:matrix([0,1,0], [0,0,1], [-1,-3,-3])$
-
-(%i3) mat_function(exp,t*b2);
-               2   - t
-              t  %e          - t     - t
-(%o3) matrix([-------- + t %e    + %e   ,
-                 2
-        - t     - t                           - t
- 2    %e      %e        - t           - t   %e
-t  (- ----- - ----- + %e   ) + t (2 %e    - -----)
-        t       2                             t
-               t
-                         - t          - t     - t
-       - t       - t   %e        2  %e      %e
- + 2 %e   , t (%e    - -----) + t  (----- - -----)
-                         t            2       t
-               2   - t            - t     - t
-     - t      t  %e        2    %e      %e        - t
- + %e   ], [- --------, - t  (- ----- - ----- + %e   ),
-                 2                t       2
-                                         t
-        - t     - t      2   - t
-   2  %e      %e        t  %e          - t
-- t  (----- - -----)], [-------- - t %e   ,
-        2       t          2
-        - t     - t                           - t
- 2    %e      %e        - t           - t   %e
-t  (- ----- - ----- + %e   ) - t (2 %e    - -----),
-        t       2                             t
-               t
-      - t     - t                 - t
- 2  %e      %e            - t   %e
-t  (----- - -----) - t (%e    - -----)])
-      2       t                   t
-(%i4) ratsimp(%);
-               [   2              - t ]
-               [ (t  + 2 t + 2) %e    ]
-               [ -------------------- ]
-               [          2           ]
-               [                      ]
-               [         2   - t      ]
-(%o4)  Col 1 = [        t  %e         ]
-               [      - --------      ]
-               [           2          ]
-               [                      ]
-               [     2          - t   ]
-               [   (t  - 2 t) %e      ]
-               [   ----------------   ]
-               [          2           ]
-         [      2        - t    ]
-         [    (t  + t) %e       ]
-         [                      ]
- Col 2 = [     2            - t ]
-         [ - (t  - t - 1) %e    ]
-         [                      ]
-         [     2          - t   ]
-         [   (t  - 3 t) %e      ]
-         [        2   - t       ]
-         [       t  %e          ]
-         [       --------       ]
-         [          2           ]
-         [                      ]
-         [      2          - t  ]
- Col 3 = [    (t  - 2 t) %e     ]
-         [  - ----------------  ]
-         [           2          ]
-         [                      ]
-         [   2              - t ]
-         [ (t  - 4 t + 2) %e    ]
-         [ -------------------- ]
-         [          2           ]
-
+(%i2) A: matrix ([0,1,0], [0,0,1], [-1,-3,-3])$
+@group
+(%i3) ratsimp (mat_function (exp, t*A)[1]);
+           2              - t                   2   - t
+         (t  + 2 t + 2) %e       2        - t  t  %e
+(%o3)   [--------------------, (t  + t) %e   , --------]
+                  2                               2
+@end group
 @end example
 
-
 Example 2:
-@example
-(%i5) b1:matrix([0,0,1,1,1],
-                [0,0,0,1,1],
-                [0,0,0,0,1],
-                [0,0,0,0,0],
-                [0,0,0,0,0])$
 
-(%i6) mat_function(exp,t*b1);
-                  [              2     ]
-                  [             t      ]
-                  [ 1  0  t  t  -- + t ]
-                  [             2      ]
-                  [                    ]
-(%o6)             [ 0  1  0  t    t    ]
-                  [                    ]
-                  [ 0  0  1  0    t    ]
-                  [                    ]
-                  [ 0  0  0  1    0    ]
-                  [                    ]
-                  [ 0  0  0  0    1    ]
-(%i7) minimalPoly(jordan(b1));
-                             3
-(%o7)                       x
-(%i8) ident(5)+t*b1+1/2*(t^2)*b1^^2;
-                  [              2     ]
-                  [             t      ]
-                  [ 1  0  t  t  -- + t ]
-                  [             2      ]
-                  [                    ]
-(%o8)             [ 0  1  0  t    t    ]
-                  [                    ]
-                  [ 0  0  1  0    t    ]
-                  [                    ]
-                  [ 0  0  0  1    0    ]
-                  [                    ]
-                  [ 0  0  0  0    1    ]
-(%i9) mat_function(exp,%i*t*b1);
-             [                           2 ]
-             [                          t  ]
-             [ 1  0  %i t  %i t  %i t - -- ]
-             [                          2  ]
-             [                             ]
-(%o9)        [ 0  1   0    %i t    %i t    ]
-             [                             ]
-             [ 0  0   1     0      %i t    ]
-             [                             ]
-             [ 0  0   0     1        0     ]
-             [                             ]
-             [ 0  0   0     0        1     ]
-(%i10) mat_function(cos,t*b1)+%i*mat_function(sin,t*b1);
-              [                           2 ]
-              [                          t  ]
-              [ 1  0  %i t  %i t  %i t - -- ]
-              [                          2  ]
-              [                             ]
-(%o10)        [ 0  1   0    %i t    %i t    ]
-              [                             ]
-              [ 0  0   1     0      %i t    ]
-              [                             ]
-              [ 0  0   0     1        0     ]
-              [                             ]
-              [ 0  0   0     0        1     ]
+Comparison with the Taylor series for the exponential and also
+comparing @code{exp(%i*A)} with sine and cosine.
+@c ===beg===
+@c load("diag")$
+@c A: matrix ([0,1,1,1],
+@c                  [0,0,0,1],
+@c                  [0,0,0,1],
+@c                  [0,0,0,0])$
+@c ratsimp (mat_function (exp, t*A));
+@c minimalPoly (jordan (A));
+@c ratsimp (ident(4) + t*A + 1/2*(t^2)*A^^2);
+@c ratsimp (mat_function (exp, %i*t*A));
+@c ratsimp (mat_function (cos, t*A) + %i*mat_function (sin, t*A));
+@c ===end===
+@example
+(%i1) load("diag")$
+@group
+(%i2) A: matrix ([0,1,1,1],
+                 [0,0,0,1],
+                 [0,0,0,1],
+                 [0,0,0,0])$
+@end group
+@group
+(%i3) ratsimp (mat_function (exp, t*A));
+                       [           2     ]
+                       [ 1  t  t  t  + t ]
+                       [                 ]
+(%o3)                  [ 0  1  0    t    ]
+                       [                 ]
+                       [ 0  0  1    t    ]
+                       [                 ]
+                       [ 0  0  0    1    ]
+@end group
+@group
+(%i4) minimalPoly (jordan (A));
+                                3
+(%o4)                          x
+@end group
+@group
+(%i5) ratsimp (ident(4) + t*A + 1/2*(t^2)*A^^2);
+                       [           2     ]
+                       [ 1  t  t  t  + t ]
+                       [                 ]
+(%o5)                  [ 0  1  0    t    ]
+                       [                 ]
+                       [ 0  0  1    t    ]
+                       [                 ]
+                       [ 0  0  0    1    ]
+@end group
+@group
+(%i6) ratsimp (mat_function (exp, %i*t*A));
+                  [                        2 ]
+                  [ 1  %i t  %i t  %i t - t  ]
+                  [                          ]
+(%o6)             [ 0   1     0      %i t    ]
+                  [                          ]
+                  [ 0   0     1      %i t    ]
+                  [                          ]
+                  [ 0   0     0        1     ]
+@end group
+@group
+(%i7) ratsimp (mat_function (cos, t*A) + %i*mat_function (sin, t*A));
+                  [                        2 ]
+                  [ 1  %i t  %i t  %i t - t  ]
+                  [                          ]
+(%o7)             [ 0   1     0      %i t    ]
+                  [                          ]
+                  [ 0   0     1      %i t    ]
+                  [                          ]
+                  [ 0   0     0        1     ]
+@end group
 @end example
 
 Example 3:
+
+Power operations.
+@c ===beg===
+@c load("diag")$
+@c A: matrix([1,2,0], [0,1,0], [1,0,1])$
+@c integer_pow(x) := block ([k], declare (k, integer), x^k)$
+@c mat_function (integer_pow, A);
+@c A^^20;
+@c ===end===
 @example
-(%i11) a1:matrix([2,1,0,0,0,0],
-                 [-1,4,0,0,0,0],
-                 [-1,1,2,1,0,0],
-                 [-1,1,-1,4,0,0],
-                 [-1,1,-1,1,3,0],
-                 [-1,1,-1,1,1,2])$
-
-(%i12) fpow(x):=block([k],declare(k,integer),x^k)$
-
-(%i13) mat_function(fpow,a1);
-                [  k      k - 1 ]         [      k - 1    ]
-                [ 3  - k 3      ]         [   k 3         ]
-                [               ]         [               ]
-                [       k - 1   ]         [  k      k - 1 ]
-                [  - k 3        ]         [ 3  + k 3      ]
-                [               ]         [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-(%o13)  Col 1 = [               ] Col 2 = [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-                [               ]         [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-                [               ]         [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-         [       0       ]         [       0       ]
-         [               ]         [               ]
-         [       0       ]         [       0       ]
-         [               ]         [               ]
-         [  k      k - 1 ]         [      k - 1    ]
-         [ 3  - k 3      ]         [   k 3         ]
-         [               ]         [               ]
- Col 3 = [       k - 1   ] Col 4 = [  k      k - 1 ]
-         [  - k 3        ]         [ 3  + k 3      ]
-         [               ]         [               ]
-         [       k - 1   ]         [      k - 1    ]
-         [  - k 3        ]         [   k 3         ]
-         [               ]         [               ]
-         [       k - 1   ]         [      k - 1    ]
-         [  - k 3        ]         [   k 3         ]
-         [    0    ]
-         [         ]         [ 0  ]
-         [    0    ]         [    ]
-         [         ]         [ 0  ]
-         [    0    ]         [    ]
-         [         ]         [ 0  ]
- Col 5 = [    0    ] Col 6 = [    ]
-         [         ]         [ 0  ]
-         [    k    ]         [    ]
-         [   3     ]         [ 0  ]
-         [         ]         [    ]
-         [  k    k ]         [  k ]
-         [ 3  - 2  ]         [ 2  ]
+(%i1) load("diag")$
+(%i2) A: matrix([1,2,0], [0,1,0], [1,0,1])$
+(%i3) integer_pow(x) := block ([k], declare (k, integer), x^k)$
+@group
+(%i4) mat_function (integer_pow, A);
+                       [ 1     2 k     0 ]
+                       [                 ]
+(%o4)                  [ 0      1      0 ]
+                       [                 ]
+                       [ k  (k - 1) k  1 ]
+@end group
+@group
+(%i5) A^^20;
+                         [ 1   40   0 ]
+                         [            ]
+(%o5)                    [ 0    1   0 ]
+                         [            ]
+                         [ 20  380  1 ]
+@end group
 @end example
 
 To use this function write first @code{load("diag")}.
