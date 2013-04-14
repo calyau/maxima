@@ -24,18 +24,35 @@
 load("eigen")$
 
 /*
+  If EXPR is a matrix then return it unchanged. Otherwise, return a
+  1x1 matrix whose sole element is EXPR.
+*/
+diag_matrixify (expr) :=
+  if matrixp (expr) then expr else matrix ([expr])$
+
+/*
+  Pad R with zeros before and after to make it WIDTH wide using INDENT
+  zeros on the left hand side.
+*/
+diag_zeropad_row (r, indent, width) :=
+  block([right: width - (left + length(r))],
+    if is(right < 0) then
+      error(r, " does not fit in a row of length ", width,
+            " with indent ", indent),
+    append (makelist (0, indent), r, makelist (0, right)))$
+
+/*
   Return the direct sum of the elements of LST, made into 1x1 matrices
   if they weren't already matrices.
 */
 diag (lst) :=
-  block ([lst: map (lambda ([A], if matrixp (A) then A else matrix([A])), lst),
-          size: 0, left: 0, rows: []],
-    for A in lst do size: size + length (A),
+  block ([lst: map (diag_matrixify, lst),
+          width, height, left: 0, rows: []],
+    width: lsum (length (first (A)), A, lst),
+    height: lsum (length (A), A, lst),
     for A in lst do (
       for r in args(A) do
-        rows: cons (append (makelist (0, left), r,
-                            makelist (0, size - (left + length (r)))),
-                    rows),
+        rows: cons (diag_zeropad_row (r, left, width), rows),
       left: left + length (first (A))),
     apply (matrix, reverse (rows)))$
 
