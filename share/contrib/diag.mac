@@ -37,8 +37,8 @@ diag_matrixify (expr) :=
 diag_zeropad_row (r, indent, width) :=
   block([right: width - (left + length(r))],
     if is(right < 0) then
-      error(r, " does not fit in a row of length ", width,
-            " with indent ", indent),
+      error(r, "does not fit in a row of length", width,
+            "with indent", indent),
     append (makelist (0, indent), r, makelist (0, right)))$
 
 /*
@@ -63,9 +63,9 @@ JF (eival, n) :=
   if not (numberp (n)) then
     'JF (eival, n)
   elseif not (integerp (n)) then
-    error (n, " is not an integer, so not a valid Jordan block size")
+    error (n, "is not an integer, so not a valid Jordan block size")
   elseif is (n <= 0) then
-    error ("Cannot construct matrix with negative size ", n)
+    error ("Cannot construct matrix with negative size", n)
   else
     genmatrix (
       lambda ([i,j],
