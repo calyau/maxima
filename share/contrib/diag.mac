@@ -302,7 +302,8 @@ diag_mat_function_jordan (jordan, expr, var) :=
               cached_block:
                 apply (matrix,
                        makelist (
-                         makelist (bigmat[i,j], j, 1, n), i, 1, n))),
+                         makelist (cached_block[i,j], j, 1, size),
+                         i, 1, size))),
            blocks: cons (cached_block, blocks))),
     diag (reverse (blocks)))$
 
