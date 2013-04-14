@@ -142,7 +142,10 @@ To use this function write first @code{load("diag")}. See also @code{dispJordan}
 
 
 @deffn {Function} dispJordan (@var{l})
-Returns the Jordan matrix associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+Returns a matrix in Jordan canonical form (JCF) corresponding to the
+list of eigenvalues and multiplicities given by @var{l}. This list
+should be in the format given by the @code{jordan} function. See
+@code{jordan} for details of this format.
 
 Example:
 @example
