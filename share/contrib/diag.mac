@@ -251,10 +251,12 @@ diag_find_li_chain (li_rows, chain_expr, variables) :=
 
    Notes on algorithm:
 
-   rest(ev_pair) is a list of chain lengths, which we convert to
-   multiplicities. We need to hunt for chains starting with the
-   longest, but that is guaranteed since jordan(A) returns the block
-   lengths in that order.
+   rest(ev_lst) is a list of chain lengths, which we convert to
+   multiplicities. To ensure we get the correct answer, when we hunt
+   for chains we need to start with those of maximal
+   length. Fortunately, jordan() returns lists where rest(ev_lst) is
+   (weakly) decreasing. As such, we can just work down the lengths in
+   the given order and we'll get the right answer.
 
    For each chain length, we find a general form for a Jordan chain
    that length then we evaluate the formula, varying the parameters to
@@ -265,25 +267,28 @@ diag_find_li_chain (li_rows, chain_expr, variables) :=
 
    Since generalised eigenvectors for different eigenvalues are
    linearly independent, we don't bother checking there.
-
 */
-ModeMatrix (a,F):= block([msize: length(a), all_rows: []],
-  for ev_pair in F do
-  block ([eival: first (ev_pair),
-          multiplist: diag_sorted_list_histogram (rest (ev_pair)),
-          mat_rows: [], mat_rank: 0],
-    for degree_pair in multiplist do
-    block ([mindeg: first (degree_pair),
-            genev_pair, genevs, free_vars],
-      genev_pair: diag_general_jordan_chain (a, eival, first (degree_pair)),
-      for k : 1 thru second (degree_pair) do
-        mat_rows:
-          append (mat_rows,
-                  diag_find_li_chain (mat_rows,
-                                      first (genev_pair),
-                                      second (genev_pair)))),
-    all_rows: append (all_rows, mat_rows)),
-  transpose (apply (matrix, all_rows)))$
+ModeMatrix (a, F) :=
+  if not (diag_jordan_info_check (F)) or not (matrixp (a)) then
+    'ModeMatrix (a, F)
+  else block([msize: length(a), all_rows: []],
+    for ev_pair in F do
+      block ([eival: first (ev_pair),
+              multiplist: diag_sorted_list_histogram (rest (ev_pair)),
+              mat_rows: [], mat_rank: 0],
+        for degree_pair in multiplist do
+          block ([mindeg: first (degree_pair),
+                  genev_pair, genevs, free_vars],
+            genev_pair: diag_general_jordan_chain (a, eival,
+                                                   first (degree_pair)),
+            for k : 1 thru second (degree_pair) do
+              mat_rows:
+                append (mat_rows,
+                        diag_find_li_chain (mat_rows,
+                                            first (genev_pair),
+                                            second (genev_pair)))),
+        all_rows: append (all_rows, mat_rows)),
+    transpose (apply (matrix, all_rows)))$
 
 /*
   Return a list of taylor coefficients for the function f expanded
