@@ -270,25 +270,47 @@ diag_taylor_expand_block (coeffs, var, eigenvalue, size) := (
                    k, 1, size)))$
 
 /*
+  Calculate the value of an analytic function on the matrix
+  represented by the Jordan list JORDAN. The function is given by EXPR
+  in VAR.
+*/
+diag_mat_function_jordan (jordan, expr, var) :=
+  block ([coeffs, blocks: [],
+          max_degree: lmax (map (second, jordan)) - 1],
+    /*
+      Expand f(var) about some arbitrary point as a Taylor series. The
+      Jordan matrix is diagonal plus a nilpotent matrix order one less
+      than the largest block. We need coefficients the same order as
+      that maximum block.
+    */
+    coeffs: diag_taylor_coefficients (expr, var, max_degree),
+    /*
+      We calculate the value of EXPR on each Jordan block using
+      DIAG_TAYLOR_EXPAND_BLOCK. The degrees in JORDAN_LST are known to
+      be decreasing, so we can be slightly clever about not computing
+      things repeatedly.
+    */
+    for jordan_lst in jordan do
+      block ([cached_block:
+                diag_taylor_expand_block (coeffs, var,
+                                          first (jordan_lst),
+                                          second (jordan_lst)),
+              cached_size: second(jordan_lst)],
+        for size in rest (jordan_lst) do
+          (if is (size # cached_size) then
+             (cached_size: size,
+              cached_block:
+                apply (matrix,
+                       makelist (
+                         makelist (bigmat[i,j], j, 1, n), i, 1, n))),
+           blocks: cons (cached_block, blocks))),
+    diag (reverse (blocks)))$
+
+/*
   Take an analytic function, f, and a matrix, A, and calculate f(A) by
   means of the associated Taylor series.
 */
 mat_function (f, A) :=
-  block ([jordan: jordan (A),
-          var: gensym(),
-          coeffs, blocks: [], modemat],
-    coeffs: diag_taylor_coefficients (f(var), var,
-                                      lmax (map (second, jordan)) - 1),
-    for jordan_lst in jordan do
-      block ([bigmat: diag_taylor_expand_block (coeffs, var,
-                                                first (jordan_lst),
-                                                second (jordan_lst))],
-        for size in rest (jordan_lst) do
-          blocks:
-            cons (if is (size = second (jordan_lst)) then bigmat else
-                  apply (matrix,
-                         makelist (makelist (bigmat[i,j], j, 1, n), i, 1, n)),
-                  blocks)),
-    /* Glue the blocks together and conjugate by the mode matrix */
+  block ([jordan: jordan (A), var: gensym(), modemat],
     modemat: ModeMatrix (A, jordan),
-    modemat . diag (reverse (blocks)) . (modemat)^^(-1))$
+    modemat . diag_mat_function_jordan (jordan, f(var), var) . (modemat)^^(-1))$
