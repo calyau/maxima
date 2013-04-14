@@ -60,8 +60,12 @@ diag (lst) :=
   Construct a Jordan block of size N x N and eigenvalue EIVAL.
 */
 JF (eival, n) :=
-  if is (n <= 0) then
-    error ("Cannot construct matrix with size < 0")
+  if not (numberp (n)) then
+    'JF (eival, n)
+  elseif not (integerp (n)) then
+    error (n, " is not an integer, so not a valid Jordan block size")
+  elseif is (n <= 0) then
+    error ("Cannot construct matrix with negative size ", n)
   else
     genmatrix (
       lambda ([i,j],
