@@ -82,8 +82,8 @@ To use this function write first @code{load("diag")}.
 
 
 @deffn {Function} jordan (@var{mat})
-Returns the Jordan form of matrix @var{mat}, expressed as a Maxima
-list. To get the corresponding matrix, call the function
+Returns the Jordan form of matrix @var{mat}, encoded as a list in a
+particular format. To get the corresponding matrix, call the function
 @code{dispJordan} using the output of @code{jordan} as the argument.
 
 The elements of the returned list are themselves lists. The first
@@ -100,36 +100,51 @@ appears once and that the block sizes are listed in decreasing order,
 otherwise the functions might give incorrect answers.
 
 Example:
+@c ===beg===
+@c load("diag")$
+@c A: matrix([2,0,0,0,0,0,0,0],
+@c                 [1,2,0,0,0,0,0,0],
+@c                 [-4,1,2,0,0,0,0,0],
+@c                 [2,0,0,2,0,0,0,0],
+@c                 [-7,2,0,0,2,0,0,0],
+@c                 [9,0,-2,0,1,2,0,0],
+@c                 [-34,7,1,-2,-1,1,2,0],
+@c                 [145,-17,-16,3,9,-2,0,3])$
+@c jordan (A);
+@c dispJordan (%);
+@c ===end===
 @example
 (%i1) load("diag")$
-
-(%i3) a:matrix([2,0,0,0,0,0,0,0],
-               [1,2,0,0,0,0,0,0],
-               [-4,1,2,0,0,0,0,0],
-               [2,0,0,2,0,0,0,0],
-               [-7,2,0,0,2,0,0,0],
-               [9,0,-2,0,1,2,0,0],
-               [-34,7,1,-2,-1,1,2,0],
-               [145,-17,-16,3,9,-2,0,3])$
-
-(%i34) jordan(a);
-(%o4)             [[2, 3, 3, 1], [3, 1]]
-(%i5) dispJordan(%);
-                [ 2  1  0  0  0  0  0  0 ]
-                [                        ]
-                [ 0  2  1  0  0  0  0  0 ]
-                [                        ]
-                [ 0  0  2  0  0  0  0  0 ]
-                [                        ]
-                [ 0  0  0  2  1  0  0  0 ]
-(%o5)           [                        ]
-                [ 0  0  0  0  2  1  0  0 ]
-                [                        ]
-                [ 0  0  0  0  0  2  0  0 ]
-                [                        ]
-                [ 0  0  0  0  0  0  2  0 ]
-                [                        ]
-                [ 0  0  0  0  0  0  0  3 ]
+@group
+(%i2) A: matrix([2,0,0,0,0,0,0,0],
+                [1,2,0,0,0,0,0,0],
+                [-4,1,2,0,0,0,0,0],
+                [2,0,0,2,0,0,0,0],
+                [-7,2,0,0,2,0,0,0],
+                [9,0,-2,0,1,2,0,0],
+                [-34,7,1,-2,-1,1,2,0],
+                [145,-17,-16,3,9,-2,0,3])$
+@end group
+@group
+(%i3) jordan (A);
+(%o3)                [[2, 3, 3, 1], [3, 1]]
+@end group
+(%i4) dispJordan (%);
+                   [ 2  1  0  0  0  0  0  0 ]
+                   [                        ]
+                   [ 0  2  1  0  0  0  0  0 ]
+                   [                        ]
+                   [ 0  0  2  0  0  0  0  0 ]
+                   [                        ]
+                   [ 0  0  0  2  1  0  0  0 ]
+(%o4)              [                        ]
+                   [ 0  0  0  0  2  1  0  0 ]
+                   [                        ]
+                   [ 0  0  0  0  0  2  0  0 ]
+                   [                        ]
+                   [ 0  0  0  0  0  0  2  0 ]
+                   [                        ]
+                   [ 0  0  0  0  0  0  0  3 ]
 @end example
 
 To use this function write first @code{load("diag")}. See also @code{dispJordan} and @code{minimalPoly}.
