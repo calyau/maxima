@@ -7,7 +7,12 @@
 
 
 @deffn {Function} diag (@var{lm})
-Constructs a square matrix with the matrices of @var{lm} in the diagonal. @var{lm} is a list of matrices or scalars.
+Constructs a matrix that is the block sum of the elements of
+@var{lm}. The elements of @var{lm} are assumed to be matrices; if an
+element is scalar, it treated as a 1 by 1 matrix.
+
+The resulting matrix will be square if each of the elements of
+@var{lm} is square.
 
 Example:
 @example
@@ -29,6 +34,10 @@ Example:
                    [ 0  0  0  0  1  1 ]
                    [                  ]
                    [ 0  0  0  0  1  0 ]
+(%i5) diag ([matrix([1,2]), 3]);
+                        [ 1  2  0 ]
+(%o5)                   [         ]
+                        [ 0  0  3 ]
 @end example
 
 To use this function write first @code{load("diag")}.
