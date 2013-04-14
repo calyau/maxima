@@ -181,7 +181,10 @@ To use this function write first @code{load("diag")}. See also @code{jordan} and
 
 
 @deffn {Function} minimalPoly (@var{l})
-Returns the minimal polynomial associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+Returns the minimal polynomial of the matrix whose Jordan form is
+described by the list @var{l}. This list should be in the format given
+by the @code{jordan} function. See @code{jordan} for details of this
+format.
 
 Example:
 @example
