@@ -268,7 +268,7 @@ diag_find_li_chain (li_rows, chain_expr, variables) :=
    Since generalised eigenvectors for different eigenvalues are
    linearly independent, we don't bother checking there.
 */
-ModeMatrix (a, F) :=
+diag_mode_matrix (a, F) :=
   if not (diag_jordan_info_check (F)) or not (matrixp (a)) then
     'ModeMatrix (a, F)
   else block([msize: length(a), all_rows: []],
@@ -289,6 +289,22 @@ ModeMatrix (a, F) :=
                                             second (genev_pair)))),
         all_rows: append (all_rows, mat_rows)),
     transpose (apply (matrix, all_rows)))$
+
+/*
+  Finds a matrix T such that T^^(-1) . A . T is the Jordan form of A.
+*/
+ModeMatrix (A, [jordan_info]) :=
+  if is (length (jordan_info) > 1) then
+    error ("Too many arguments for ModeMatrix. (Expects 1 or 2)")
+  elseif not (matrixp (A)) then
+    if is (length (jordan_info) = 1) then
+      'ModeMatrix (A, first (jordan_info))
+    else
+      'ModeMatrix (A)
+  else
+    diag_mode_matrix (A,
+                      if is (length (jordan_info) = 1)
+                      then first (jordan_info) else jordan (A))$
 
 /*
   Return a list of taylor coefficients for the function f expanded
