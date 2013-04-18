@@ -287,15 +287,16 @@ It appears in LIMIT and DEFINT.......")
 ;; The optional arg allows the caller to decide on the value of
 ;; preserve-direction.  Default is T, like it used to be.
 (defun both-side (exp var val &optional (preserve t))
-  (let ((preserve-direction preserve))
-    (let ((la ($limit exp var val '$plus))
-	  (lb ($limit exp var val '$minus)))
-      (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
-	    ((or (not (free la '%limit))
-		 (not (free lb '%limit)))  ())
-	    ;; inf + minf => infinity
-	    ((and (infinityp la) (infinityp lb)) '$infinity)
-	    (t '$und)))))
+  (let* ((preserve-direction preserve)
+         (la ($limit exp var val '$plus)) lb)
+    (when (eq la '$und) (return-from both-side '$und))
+    (setf lb ($limit exp var val '$minus))
+    (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
+          ((or (not (free la '%limit))
+               (not (free lb '%limit)))  ())
+          ;; inf + minf => infinity
+          ((and (infinityp la) (infinityp lb)) '$infinity)
+          (t '$und))))
 
 ;; Warning:  (CATCH NIL ...) will catch all throws.
 ;; NIL should not be used as a tag name.
@@ -386,49 +387,158 @@ It appears in LIMIT and DEFINT.......")
 			     (t (throw 'mabs 'retn))))
 		      (t (throw 'mabs 'retn))))))))))
 
-(defun infcount (expr)
-  (cond ((atom expr)
-         (if (infinityp expr) 1 0))
-        ((member (caar expr) dummy-variable-operators)
-         ;; don't count inf as limit of %integrate, %sum, %product, %limit
-         (infcount (cadr expr)))
-        ((member 'array (car expr))
-         ;; don't count inf as index
-         0)
-        (t (apply #'+ (mapcar #'infcount (cdr expr))))))
-
+;; Called on an expression that might contain $INF, $MINF, $ZEROA, $ZEROB. Tries
+;; to simplify it to sort out things like inf^inf or inf+1.
 (defun simpinf (exp)
-  (declare (special exp val))
-  (let ((infc (infcount exp)) nexp inftype)
-    (cond
-      ((= infc 0)  exp)
-      ((= infc 1)  (setq infc (inf-typep exp))
-       ($limit (subst var infc exp) var infc))
-      (t
-       (setq nexp (cons `(,(caar exp)) (mapcar 'simpinf (cdr exp))))
-       (setq infc (infcount nexp))
+  (simpinf-ic exp (count-general-inf exp)))
+
+(defun count-general-inf (expr)
+  (count-atoms-matching
+   (lambda (x) (or (infinityp x) (real-epsilonp x))) expr))
+
+(defun count-atoms-matching (predicate expr)
+  "Count the number of atoms in the Maxima expression EXPR matching PREDICATE,
+ignoring dummy variables and array indices."
+  (cond
+    ((atom expr) (if (funcall predicate expr) 1 0))
+    ;; Don't count atoms that occur as a limit of %integrate, %sum, %product,
+    ;; %limit etc.
+    ((member (caar expr) dummy-variable-operators)
+     (count-atoms-matching predicate (cadr expr)))
+    ;; Ignore array indices
+    ((member 'array (car expr)) 0)
+    (t (loop
+          for arg in (cdr expr)
+          summing (count-atoms-matching predicate arg)))))
+
+(defun simpinf-ic (exp &optional infinity-count)
+  (case infinity-count
+    ;; A very slow identity transformation...
+    (0 exp)
+
+    ;; If there's only one infinity, we replace it by a variable and take the
+    ;; limit as that variable goes to infinity. Use $gensym in case we can't
+    ;; compute the answer and the limit leaks out.
+    (1 (let ((limit (or (inf-typep exp) (epsilon-typep exp)))
+             (var ($gensym)))
+         ($limit (subst var limit exp) var limit)))
+
+    ;; If more than one infinity, we have to be a bit more careful.
+    (otherwise
+     (let* ((arguments (mapcar 'simpinf (cdr exp)))
+            (new-expression (cons (list (caar exp)) arguments))
+            infinities-left)
        (cond
-	 ((among '$und nexp)  '$und)
-	 ((amongl '(%limit $ind) nexp)  exp)
-	 ((mtimesp nexp)
-	  (cond ((member 0 nexp)
-		 (cond ((> infc 0) '$und)
-		       (t 0)))
-		((member '$infinity nexp :test #'eq) '$infinity)
-		(t (simplimit nexp var val))))
-	 ((mexptp nexp)
-	  (cond ((and (eq (cadr nexp) '$inf) (eq (caddr nexp) '$inf)) '$inf)
-		((< infc 2) (simpinf (m^ '$%e (m* (caddr exp) `((%log) ,(cadr exp))))))
-		(t nexp)))
-	 ((< infc 2)  (simpinf nexp))
-	 ((mplusp nexp)
-	  (cond ((member '$infinity (cdr nexp) :test #'eq) '$infinity)
-		((equal 1 (length
-			   (setq inftype (intersection '($infinity $minf $inf)
-						       nexp))))
-		 (car inftype))	; only one type of infinity found
-		(t nexp)))
-	 (t nexp))))))
+         ;; If any of the arguments are undefined, we are too.
+         ((among '$und arguments) '$und)
+         ;; If we ended up with something indeterminate, we punt and just return
+         ;; the input.
+         ((amongl '(%limit $ind) arguments) exp)
+
+         ;; Exponentiation & multiplication
+         ((mexptp exp) (simpinf-expt (first arguments) (second arguments)))
+         ((mtimesp exp) (simpinf-times arguments))
+
+         ;; Down to at most one infinity? We do this after exponentiation to
+         ;; avoid zeroa^zeroa => 0^0, which will raise an error rather than just
+         ;; returning und. We do it after multiplication to avoid zeroa * inf =>
+         ;; 0 * inf => 0.
+         ((<= (setf infinities-left (count-general-inf new-expression)) 1)
+          (simpinf-ic new-expression infinities-left))
+
+         ;; Addition
+	 ((mplusp exp) (simpinf-plus arguments))
+
+         ;; Give up!
+	 (t new-expression))))))
+
+(defun simpinf-times (arguments)
+  (declare (special exp var val))
+  ;; When we have a product, we need to spot that zeroa * zerob = zerob, zeroa *
+  ;; inf = und etc. Note that (SIMPINF '$ZEROA) => 0, so a nonzero atom is not
+  ;; an infinitesimal. Moreover, we can assume that each of ARGUMENTS is either
+  ;; a number, computed successfully by the recursive SIMPINF call, or maybe a
+  ;; %LIMIT noun-form (in which case, we aren't going to be able to tell the
+  ;; answer).
+  (cond
+    ((member 0 arguments)
+     (cond
+       ((find-if #'infinityp arguments) '$und)
+       ((every #'atom arguments) 0)
+       (t exp)))
+
+    ((member '$infinity arguments)
+     (if (every #'atom arguments)
+         '$infinity
+         exp))
+
+    (t (simplimit (cons '(mtimes) arguments) var val))))
+
+(defun simpinf-expt (base exponent)
+  ;; In the comments below, zero* represents one of 0, zeroa, zerob.
+  ;;
+  ;; TODO: In some cases we give up too early. E.g. inf^(2 + 1/inf) => inf^2
+  ;;       (which should simplify to inf)
+  (case base
+    ;; inf^inf = inf
+    ;; inf^minf = 0
+    ;; inf^zero* = und
+    ;; inf^foo = inf^foo
+    ($inf
+     (case exponent
+       ($inf '$inf)
+       ($minf 0)
+       ((0 $zeroa $zerob) '$und)
+       (t (list '(mexpt) base exponent))))
+    ;; minf^inf = infinity  <== Or should it be und?
+    ;; minf^minf = 0
+    ;; minf^zero* = und
+    ;; minf^foo = minf^foo
+    ($minf
+     (case exponent
+       ($inf '$infinity)
+       ($minf 0)
+       ((0 $zeroa $zerob) '$und)
+       (t (list '(mexpt) base exponent))))
+    ;; zero*^inf = 0
+    ;; zero*^minf = und
+    ;; zero*^zero* = und
+    ;; zero*^foo = zero*^foo
+    ((0 $zeroa $zerob)
+     (case exponent
+       ($inf 0)
+       ($minf '$und)
+       ((0 $zeroa $zerob) '$und)
+       (t (list '(mexpt) base exponent))))
+    ;; a^b where a is pretty much anything except for a naked
+    ;; inf,minf,zeroa,zerob or 0.
+    (t
+     (cond
+       ;; When a isn't crazy, try a^b = e^(b log(a))
+       ((not (amongl (append infinitesimals infinities) base))
+        (simpinf (m^ '$%e (m* base `((%log) ,exponent)))))
+
+       ;; No idea. Just return what we've found so far.
+       (t (list '(mexpt) base exponent))))))
+
+(defun simpinf-plus (arguments)
+  ;; We know that none of the arguments are infinitesimals, since SIMPINF never
+  ;; returns one of them. As such, we partition our arguments into infinities
+  ;; and everything else. The latter won't have any "hidden" infinities like
+  ;; lim(x,x,inf), since SIMPINF gave up on anything containing a %lim already.
+  (let ((bigs) (others))
+    (dolist (arg arguments)
+      (cond ((infinityp arg) (push arg bigs))
+            (t (push arg others))))
+    (cond
+      ;; inf + minf or the like
+      ((cdr (setf bigs (delete-duplicates bigs))) '$und)
+      ;; inf + smaller + stuff
+      (bigs (car bigs))
+      ;; I don't think this can happen, since SIMPINF goes back to the start if
+      ;; there are fewer than two infinities in the arguments, but let's be
+      ;; careful.
+      (t (cons '(mplus) others)))))
 
 ;; Simplify expression with zeroa or zerob.
 (defun simpab (small)
@@ -1717,76 +1827,102 @@ It appears in LIMIT and DEFINT.......")
 		  ($limit e var new-val)) (throw 'limit t))))
 
 (defun simplimtimes (exp)
-  (prog (sign prod y num denom flag zf flag2 exp1)
-     (if (expfactorp (cons '(mtimes) exp) 1)
-	 ;; handles        (-1)^x * 2^x => (-2)^x => $infinity
-	 ;; want to avoid  (-1)^x * 2^x => $ind * $inf => $und
-	 (let ((ans (expfactor (cons '(mtimes) exp) 1 var)))
-	   (if ans
-	       (return ans))))
+  ;; The following test
+  ;; handles         (-1)^x * 2^x => (-2)^x => $infinity
+  ;; wants to avoid  (-1)^x * 2^x => $ind * $inf => $und
+  (let ((try
+         (and (expfactorp (cons '(mtimes) exp) 1)
+              (expfactor (cons '(mtimes) exp) 1 var))))
+    (when try (return-from simplimtimes try)))
 
-     (setq prod (setq num (setq denom 1)) exp1 exp)
-     loop
-     (setq y (let ((loginprod? (involve (car exp1) '(%log))))
-	       (catch 'lip? (limit (car exp1) var val 'think))))
-     (cond ((eq y 'lip!) (return (liminv (cons '(mtimes simp) exp))))
-	   ((zerop2 y)
-	    (setq num (m* num (car exp1)))
-	    (cond ((eq y '$zeroa)
-		   (cond (zf nil)
-			 (t (setq zf 1))))
-		  ((eq y '$zerob)
-		   (cond (zf (setq zf (* -1 zf)))
-			 (t (setq zf -1))))))
-	   ((not (member y '($inf $minf $infinity $ind $und) :test #'eq))
-	    (setq prod (m* prod y)))
-	   ((eq y '$und)
-	    (return '$und))
-	   ((eq y '$ind)
-	    (setq flag2 t))
-	   (t (setq denom (m* denom (car exp1)))
-	      (cond ((eq y '$infinity) (setq flag y))
-		    ((eq flag '$infinity) nil)
-		    ((null flag) (setq flag y))
-		    ((eq y flag) (setq flag '$inf))
-		    (t (setq flag '$minf)))))
-     (setq exp1 (cdr exp1))
-     (cond ((null exp1)
-	    (cond ((and (equal num 1) (equal denom 1))
-		   (return (if flag2 '$ind prod)))
-		  ((equal denom 1)
-		   (cond ((null zf) (return 0))
-			 (t (setq sign (getsignl prod))
-			    (cond ((eq sign 'complex) (return 0))
-				  (sign (setq zf (* zf sign))
-					(return
-					  (cond ((equal zf 1) '$zeroa)
-						((equal zf -1) '$zerob)
-						(t 0))))
-				  (t (return 0))))))
-		  ((equal num 1)
-		   (setq sign ($csign prod))
-		   (return (cond (flag2 '$und)
-				 ((eq sign '$pos)
-				  flag)
-				 ((eq sign '$neg)
-				  (cond ((eq flag '$inf) '$minf)
-					((eq flag '$infinity) flag)
-					(t '$inf)))
-				 ((member sign '($complex $imaginary))
-				  '$infinity)
-				 (t	; sign is '$zero, $pnz, $pz, etc
-				  (throw 'limit t)))))
-		  (t (go down))))
-	   (t (go loop)))
-     down
-     (cond ((or (not (among var denom))
-		(not (among var num)))
-	    (throw 'limit t)))
-     (return (let ((ans (limit2 num (m^ denom -1) var val)))
-	       (if ans
-		   (simplimtimes (list prod ans))
-		   (throw 'limit t))))))
+  (let ((prod 1) (num 1) (denom 1)
+        (zf nil) (ind-flag nil) (inf-type nil)
+        (constant-zero nil) (constant-infty nil))
+    (dolist (term exp)
+      (let* ((loginprod? (involve term '(%log)))
+             (y (catch 'lip? (limit term var val 'think))))
+        (cond
+          ;; limit failed due to log in product
+          ((eq y 'lip!)
+           (return-from simplimtimes (liminv (cons '(mtimes simp) exp))))
+
+          ;; If the limit is infinitesimal or zero
+          ((zerop2 y)
+           (setf num (m* num term)
+                 constant-zero (or constant-zero (not (among var term))))
+           (case y
+             ($zeroa
+              (unless zf (setf zf 1)))
+             ($zerob
+              (setf zf (* -1 (or zf 1))))))
+
+          ;; If the limit is not some form of infinity or
+          ;; undefined/indeterminate.
+          ((not (member y '($inf $minf $infinity $ind $und) :test #'eq))
+           (setq prod (m* prod y)))
+
+          ((eq y '$und) (return-from simplimtimes '$und))
+          ((eq y '$ind) (setq ind-flag t))
+
+          ;; Some form of infinity
+          (t
+           (setf denom (m* denom term)
+                 constant-infty (or constant-infty (not (among var term))))
+           (unless (eq inf-type 'infinity)
+             (cond
+               ((eq y '$infinity) (setq inf-type '$infinity))
+               ((null inf-type) (setf inf-type y))
+               ;; minf * minf or inf * inf
+               ((eq y inf-type) (setf inf-type '$inf))
+               ;; minf * inf
+               (t (setf inf-type '$minf))))))))
+
+    (cond
+      ;; If there are zeros and infinities among the terms that are free of
+      ;; VAR, then we have an expression like "inf * zeroa * f(x)" or
+      ;; similar. That gives an undefined result. Note that we don't
+      ;; necessarily have something undefined if only the zeros have a term
+      ;; free of VAR. For example "zeroa * exp(-1/x) * 1/x" as x -> 0. And
+      ;; similarly for the infinities.
+      ((and constant-zero constant-infty) '$und)
+
+      ;; If num=denom=1, we didn't find any explicit infinities or zeros, so we
+      ;; either return the simplified product or ind
+      ((and (eql num 1) (eql denom 1))
+       (if ind-flag '$ind prod))
+      ;; If denom=1 (and so num != 1), we have some form of zero
+      ((equal denom 1)
+       (if (null zf)
+           0
+           (let ((sign (getsignl prod)))
+             (if (or (not sign) (eq sign 'complex))
+                 0
+                 (ecase (* zf sign)
+                   (1  '$zeroa)
+                   (-1 '$zerob))))))
+      ;; If num=1 (and so denom != 1), we have some form of infinity
+      ((equal num 1)
+       (let ((sign ($csign prod)))
+         (cond
+           (ind-flag '$und)
+           ((eq sign '$pos) inf-type)
+           ((eq sign '$neg) (case inf-type
+                              ($inf '$minf)
+                              ($minf '$inf)
+                              (t '$infinity)))
+           ((member sign '($complex $imaginary)) '$infinity)
+           ; sign is '$zero, $pnz, $pz, etc
+           (t (throw 'limit t)))))
+      ;; Both zeros and infinities
+      (t
+       ;; All bets off if there are some infinities or some zeros, but it
+       ;; needn't be undefined (see above)
+       (when (or constant-zero constant-infty) (throw 'limit t))
+
+       (let ((ans (limit2 num (m^ denom -1) var val)))
+         (if ans
+             (simplimtimes (list prod ans))
+             (throw 'limit t)))))))
 
 ;;;PUT CODE HERE TO ELIMINATE FAKE SINGULARITIES??
 

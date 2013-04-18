@@ -99,8 +99,8 @@
 (defmacro real-infinityp (x)
   `(member ,x real-infinities :test #'eq))
 
-(defmacro infinityp (x)
-  `(member ,x infinities :test #'eq))
+(defun infinityp (x)
+  (member x infinities :test #'eq))
 
 (defmacro real-epsilonp (x)
   `(member ,x infinitesimals :test #'eq))
@@ -113,6 +113,9 @@
 
 (defmacro inf-typep (x)
   `(car (amongl infinities ,x)))
+
+(defmacro epsilon-typep (x)
+  `(car (amongl infinitesimals ,x)))
 
 (defmacro hot-coef (p)
   `(pdis (caddr (cadr (rat-no-ratfac ,p)))))

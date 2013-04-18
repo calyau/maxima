@@ -7,7 +7,12 @@
 
 
 @deffn {Function} diag (@var{lm})
-Constructs a square matrix with the matrices of @var{lm} in the diagonal. @var{lm} is a list of matrices or scalars.
+Constructs a matrix that is the block sum of the elements of
+@var{lm}. The elements of @var{lm} are assumed to be matrices; if an
+element is scalar, it treated as a 1 by 1 matrix.
+
+The resulting matrix will be square if each of the elements of
+@var{lm} is square.
 
 Example:
 @example
@@ -29,6 +34,10 @@ Example:
                    [ 0  0  0  0  1  1 ]
                    [                  ]
                    [ 0  0  0  0  1  0 ]
+(%i5) diag ([matrix([1,2]), 3]);
+                        [ 1  2  0 ]
+(%o5)                   [         ]
+                        [ 0  0  3 ]
 @end example
 
 To use this function write first @code{load("diag")}.
@@ -73,41 +82,69 @@ To use this function write first @code{load("diag")}.
 
 
 @deffn {Function} jordan (@var{mat})
-Returns the Jordan form of matrix @var{mat}, but codified in a Maxima list.
-To get the corresponding matrix, call function @code{dispJordan} using as argument
-the output of @code{jordan}.
+Returns the Jordan form of matrix @var{mat}, encoded as a list in a
+particular format. To get the corresponding matrix, call the function
+@code{dispJordan} using the output of @code{jordan} as the argument.
+
+The elements of the returned list are themselves lists. The first
+element of each is an eigenvalue of @var{mat}. The remaining elements
+are positive integers which are the lengths of the Jordan blocks for
+this eigenvalue. These integers are listed in decreasing
+order. Eigenvalues are not repeated.
+
+The functions @code{dispJordan}, @code{minimalPoly} and
+@code{ModeMatrix} expect the output of a call to @code{jordan} as an
+argument. If you construct this argument by hand, rather than by
+calling @code{jordan}, you must ensure that each eigenvalue only
+appears once and that the block sizes are listed in decreasing order,
+otherwise the functions might give incorrect answers.
 
 Example:
+@c ===beg===
+@c load("diag")$
+@c A: matrix([2,0,0,0,0,0,0,0],
+@c                 [1,2,0,0,0,0,0,0],
+@c                 [-4,1,2,0,0,0,0,0],
+@c                 [2,0,0,2,0,0,0,0],
+@c                 [-7,2,0,0,2,0,0,0],
+@c                 [9,0,-2,0,1,2,0,0],
+@c                 [-34,7,1,-2,-1,1,2,0],
+@c                 [145,-17,-16,3,9,-2,0,3])$
+@c jordan (A);
+@c dispJordan (%);
+@c ===end===
 @example
 (%i1) load("diag")$
-
-(%i3) a:matrix([2,0,0,0,0,0,0,0],
-               [1,2,0,0,0,0,0,0],
-               [-4,1,2,0,0,0,0,0],
-               [2,0,0,2,0,0,0,0],
-               [-7,2,0,0,2,0,0,0],
-               [9,0,-2,0,1,2,0,0],
-               [-34,7,1,-2,-1,1,2,0],
-               [145,-17,-16,3,9,-2,0,3])$
-
-(%i34) jordan(a);
-(%o4)             [[2, 3, 3, 1], [3, 1]]
-(%i5) dispJordan(%);
-                [ 2  1  0  0  0  0  0  0 ]
-                [                        ]
-                [ 0  2  1  0  0  0  0  0 ]
-                [                        ]
-                [ 0  0  2  0  0  0  0  0 ]
-                [                        ]
-                [ 0  0  0  2  1  0  0  0 ]
-(%o5)           [                        ]
-                [ 0  0  0  0  2  1  0  0 ]
-                [                        ]
-                [ 0  0  0  0  0  2  0  0 ]
-                [                        ]
-                [ 0  0  0  0  0  0  2  0 ]
-                [                        ]
-                [ 0  0  0  0  0  0  0  3 ]
+@group
+(%i2) A: matrix([2,0,0,0,0,0,0,0],
+                [1,2,0,0,0,0,0,0],
+                [-4,1,2,0,0,0,0,0],
+                [2,0,0,2,0,0,0,0],
+                [-7,2,0,0,2,0,0,0],
+                [9,0,-2,0,1,2,0,0],
+                [-34,7,1,-2,-1,1,2,0],
+                [145,-17,-16,3,9,-2,0,3])$
+@end group
+@group
+(%i3) jordan (A);
+(%o3)                [[2, 3, 3, 1], [3, 1]]
+@end group
+(%i4) dispJordan (%);
+                   [ 2  1  0  0  0  0  0  0 ]
+                   [                        ]
+                   [ 0  2  1  0  0  0  0  0 ]
+                   [                        ]
+                   [ 0  0  2  0  0  0  0  0 ]
+                   [                        ]
+                   [ 0  0  0  2  1  0  0  0 ]
+(%o4)              [                        ]
+                   [ 0  0  0  0  2  1  0  0 ]
+                   [                        ]
+                   [ 0  0  0  0  0  2  0  0 ]
+                   [                        ]
+                   [ 0  0  0  0  0  0  2  0 ]
+                   [                        ]
+                   [ 0  0  0  0  0  0  0  3 ]
 @end example
 
 To use this function write first @code{load("diag")}. See also @code{dispJordan} and @code{minimalPoly}.
@@ -120,7 +157,10 @@ To use this function write first @code{load("diag")}. See also @code{dispJordan}
 
 
 @deffn {Function} dispJordan (@var{l})
-Returns the Jordan matrix associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+Returns a matrix in Jordan canonical form (JCF) corresponding to the
+list of eigenvalues and multiplicities given by @var{l}. This list
+should be in the format given by the @code{jordan} function. See
+@code{jordan} for details of this format.
 
 Example:
 @example
@@ -156,7 +196,10 @@ To use this function write first @code{load("diag")}. See also @code{jordan} and
 
 
 @deffn {Function} minimalPoly (@var{l})
-Returns the minimal polynomial associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+Returns the minimal polynomial of the matrix whose Jordan form is
+described by the list @var{l}. This list should be in the format given
+by the @code{jordan} function. See @code{jordan} for details of this
+format.
 
 Example:
 @example
@@ -182,40 +225,53 @@ To use this function write first @code{load("diag")}. See also @code{jordan} and
 
 @end deffn
 
-@deffn {Function} ModeMatrix (@var{A},@var{l})
-Returns the matrix @var{M} such that @math{(M^^-1).A.M=J}, where @var{J} is the Jordan form of @var{A}. The Maxima list @var{l} is the codified form of the Jordan form as returned by function @code{jordan}.
+@deffn {Function} ModeMatrix (@var{A}, [@var{jordan_info}])
+Returns an invertible matrix @var{M} such that @math{(M^^-1).A.M} is
+the Jordan form of @var{A}.
+
+To calculate this, Maxima must find the Jordan form of @var{A}, which
+might be quite computationally expensive. If that has already been
+calculated by a previous call to @code{jordan}, pass it as a second
+argument, @var{jordan_info}. See @code{jordan} for details of the
+required format.
 
 Example:
+@c ===beg===
+@c load("diag")$
+@c A: matrix([2,1,2,0], [-2,2,1,2], [-2,-1,-1,1], [3,1,2,-1])$
+@c M: ModeMatrix (A);
+@c is ((M^^-1) . A . M = dispJordan (jordan (A)));
+@c ===end===
 @example
 (%i1) load("diag")$
-
-(%i2) a:matrix([2,1,2,0],
-          [-2,2,1,2],
-          [-2,-1,-1,1],
-          [3,1,2,-1])$
-
-(%i3) jordan(a);
-(%o3)               [[- 1, 1], [1, 3]]
-(%i4) M: ModeMatrix(a,%);
-                  [  1    - 1   1   1 ]
-                  [                   ]
-                  [   1               ]
-                  [ - -   - 1   0   0 ]
-                  [   9               ]
-                  [                   ]
-(%o4)             [   13              ]
-                  [ - --   1   - 1  0 ]
-                  [   9               ]
-                  [                   ]
-                  [  17               ]
-                  [  --   - 1   1   1 ]
-                  [  9                ]
-(%i5) is(  (M^^-1).a.M = dispJordan(%o3)  );
-(%o5)                      true
+(%i2) A: matrix([2,1,2,0], [-2,2,1,2], [-2,-1,-1,1], [3,1,2,-1])$
+(%i3) M: ModeMatrix (A);
+                      [  1    - 1   1   1 ]
+                      [                   ]
+                      [   1               ]
+                      [ - -   - 1   0   0 ]
+                      [   9               ]
+                      [                   ]
+(%o3)                 [   13              ]
+                      [ - --   1   - 1  0 ]
+                      [   9               ]
+                      [                   ]
+                      [  17               ]
+                      [  --   - 1   1   1 ]
+                      [  9                ]
+@group
+(%i4) is ((M^^-1) . A . M = dispJordan (jordan (A)));
+(%o4)                         true
+@end group
 @end example
-Note that @code{dispJordan(%o3)} is the Jordan form of matrix @code{a}.
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+Note that, in this example, the Jordan form of @code{A} is computed
+twice. To avoid this, we could have stored the output of
+@code{jordan(A)} in a variable and passed that to both
+@code{ModeMatrix} and @code{dispJordan}.
+
+To use this function write first @code{load("diag")}. See also
+@code{jordan} and @code{dispJordan}.
 
 @opencatbox
 @category{Package diag}
@@ -224,227 +280,141 @@ To use this function write first @code{load("diag")}. See also @code{jordan} and
 @end deffn
 
 
-@deffn {Function} mat_function (@var{f},@var{mat})
-Returns @math{f(mat)}, where @var{f} is an analytic function and @var{mat}
-a matrix. This computation is based on Cauchy's integral formula, which states that
-if @code{f(x)} is analytic and
+@deffn {Function} mat_function (@var{f},@var{A})
+Returns @math{f(A)}, where @var{f} is an analytic function and @var{A}
+a matrix. This computation is based on the Taylor expansion of
+@var{f}. It is not efficient for numerical evaluation, but can give
+symbolic answers for small matrices.
 
-@example
-mat = diag([JF(m1,n1),...,JF(mk,nk)]),
-@end example
-
-then
-
-@example
-f(mat) = ModeMatrix*diag([f(JF(m1,n1)), ..., f(JF(mk,nk))])
-                                              *ModeMatrix^^(-1)
-@end example
-
-Note that there are about 6 or 8 other methods for this calculation.
-
-Some examples follow.
+@c What other methods do we have in Maxima at the moment? We should
+@c probably give links here...
 
 Example 1:
+
+The exponential of a matrix. We only give the first row of the answer,
+since the output is rather large.
+@c ===beg===
+@c load("diag")$
+@c A: matrix ([0,1,0], [0,0,1], [-1,-3,-3])$
+@c ratsimp (mat_function (exp, t*A)[1]);
+@c ===end===
 @example
 (%i1) load("diag")$
-
-(%i2) b2:matrix([0,1,0], [0,0,1], [-1,-3,-3])$
-
-(%i3) mat_function(exp,t*b2);
-               2   - t
-              t  %e          - t     - t
-(%o3) matrix([-------- + t %e    + %e   ,
-                 2
-        - t     - t                           - t
- 2    %e      %e        - t           - t   %e
-t  (- ----- - ----- + %e   ) + t (2 %e    - -----)
-        t       2                             t
-               t
-                         - t          - t     - t
-       - t       - t   %e        2  %e      %e
- + 2 %e   , t (%e    - -----) + t  (----- - -----)
-                         t            2       t
-               2   - t            - t     - t
-     - t      t  %e        2    %e      %e        - t
- + %e   ], [- --------, - t  (- ----- - ----- + %e   ),
-                 2                t       2
-                                         t
-        - t     - t      2   - t
-   2  %e      %e        t  %e          - t
-- t  (----- - -----)], [-------- - t %e   ,
-        2       t          2
-        - t     - t                           - t
- 2    %e      %e        - t           - t   %e
-t  (- ----- - ----- + %e   ) - t (2 %e    - -----),
-        t       2                             t
-               t
-      - t     - t                 - t
- 2  %e      %e            - t   %e
-t  (----- - -----) - t (%e    - -----)])
-      2       t                   t
-(%i4) ratsimp(%);
-               [   2              - t ]
-               [ (t  + 2 t + 2) %e    ]
-               [ -------------------- ]
-               [          2           ]
-               [                      ]
-               [         2   - t      ]
-(%o4)  Col 1 = [        t  %e         ]
-               [      - --------      ]
-               [           2          ]
-               [                      ]
-               [     2          - t   ]
-               [   (t  - 2 t) %e      ]
-               [   ----------------   ]
-               [          2           ]
-         [      2        - t    ]
-         [    (t  + t) %e       ]
-         [                      ]
- Col 2 = [     2            - t ]
-         [ - (t  - t - 1) %e    ]
-         [                      ]
-         [     2          - t   ]
-         [   (t  - 3 t) %e      ]
-         [        2   - t       ]
-         [       t  %e          ]
-         [       --------       ]
-         [          2           ]
-         [                      ]
-         [      2          - t  ]
- Col 3 = [    (t  - 2 t) %e     ]
-         [  - ----------------  ]
-         [           2          ]
-         [                      ]
-         [   2              - t ]
-         [ (t  - 4 t + 2) %e    ]
-         [ -------------------- ]
-         [          2           ]
-
+(%i2) A: matrix ([0,1,0], [0,0,1], [-1,-3,-3])$
+@group
+(%i3) ratsimp (mat_function (exp, t*A)[1]);
+           2              - t                   2   - t
+         (t  + 2 t + 2) %e       2        - t  t  %e
+(%o3)   [--------------------, (t  + t) %e   , --------]
+                  2                               2
+@end group
 @end example
 
-
 Example 2:
-@example
-(%i5) b1:matrix([0,0,1,1,1],
-                [0,0,0,1,1],
-                [0,0,0,0,1],
-                [0,0,0,0,0],
-                [0,0,0,0,0])$
 
-(%i6) mat_function(exp,t*b1);
-                  [              2     ]
-                  [             t      ]
-                  [ 1  0  t  t  -- + t ]
-                  [             2      ]
-                  [                    ]
-(%o6)             [ 0  1  0  t    t    ]
-                  [                    ]
-                  [ 0  0  1  0    t    ]
-                  [                    ]
-                  [ 0  0  0  1    0    ]
-                  [                    ]
-                  [ 0  0  0  0    1    ]
-(%i7) minimalPoly(jordan(b1));
-                             3
-(%o7)                       x
-(%i8) ident(5)+t*b1+1/2*(t^2)*b1^^2;
-                  [              2     ]
-                  [             t      ]
-                  [ 1  0  t  t  -- + t ]
-                  [             2      ]
-                  [                    ]
-(%o8)             [ 0  1  0  t    t    ]
-                  [                    ]
-                  [ 0  0  1  0    t    ]
-                  [                    ]
-                  [ 0  0  0  1    0    ]
-                  [                    ]
-                  [ 0  0  0  0    1    ]
-(%i9) mat_function(exp,%i*t*b1);
-             [                           2 ]
-             [                          t  ]
-             [ 1  0  %i t  %i t  %i t - -- ]
-             [                          2  ]
-             [                             ]
-(%o9)        [ 0  1   0    %i t    %i t    ]
-             [                             ]
-             [ 0  0   1     0      %i t    ]
-             [                             ]
-             [ 0  0   0     1        0     ]
-             [                             ]
-             [ 0  0   0     0        1     ]
-(%i10) mat_function(cos,t*b1)+%i*mat_function(sin,t*b1);
-              [                           2 ]
-              [                          t  ]
-              [ 1  0  %i t  %i t  %i t - -- ]
-              [                          2  ]
-              [                             ]
-(%o10)        [ 0  1   0    %i t    %i t    ]
-              [                             ]
-              [ 0  0   1     0      %i t    ]
-              [                             ]
-              [ 0  0   0     1        0     ]
-              [                             ]
-              [ 0  0   0     0        1     ]
+Comparison with the Taylor series for the exponential and also
+comparing @code{exp(%i*A)} with sine and cosine.
+@c ===beg===
+@c load("diag")$
+@c A: matrix ([0,1,1,1],
+@c                  [0,0,0,1],
+@c                  [0,0,0,1],
+@c                  [0,0,0,0])$
+@c ratsimp (mat_function (exp, t*A));
+@c minimalPoly (jordan (A));
+@c ratsimp (ident(4) + t*A + 1/2*(t^2)*A^^2);
+@c ratsimp (mat_function (exp, %i*t*A));
+@c ratsimp (mat_function (cos, t*A) + %i*mat_function (sin, t*A));
+@c ===end===
+@example
+(%i1) load("diag")$
+@group
+(%i2) A: matrix ([0,1,1,1],
+                 [0,0,0,1],
+                 [0,0,0,1],
+                 [0,0,0,0])$
+@end group
+@group
+(%i3) ratsimp (mat_function (exp, t*A));
+                       [           2     ]
+                       [ 1  t  t  t  + t ]
+                       [                 ]
+(%o3)                  [ 0  1  0    t    ]
+                       [                 ]
+                       [ 0  0  1    t    ]
+                       [                 ]
+                       [ 0  0  0    1    ]
+@end group
+@group
+(%i4) minimalPoly (jordan (A));
+                                3
+(%o4)                          x
+@end group
+@group
+(%i5) ratsimp (ident(4) + t*A + 1/2*(t^2)*A^^2);
+                       [           2     ]
+                       [ 1  t  t  t  + t ]
+                       [                 ]
+(%o5)                  [ 0  1  0    t    ]
+                       [                 ]
+                       [ 0  0  1    t    ]
+                       [                 ]
+                       [ 0  0  0    1    ]
+@end group
+@group
+(%i6) ratsimp (mat_function (exp, %i*t*A));
+                  [                        2 ]
+                  [ 1  %i t  %i t  %i t - t  ]
+                  [                          ]
+(%o6)             [ 0   1     0      %i t    ]
+                  [                          ]
+                  [ 0   0     1      %i t    ]
+                  [                          ]
+                  [ 0   0     0        1     ]
+@end group
+@group
+(%i7) ratsimp (mat_function (cos, t*A) + %i*mat_function (sin, t*A));
+                  [                        2 ]
+                  [ 1  %i t  %i t  %i t - t  ]
+                  [                          ]
+(%o7)             [ 0   1     0      %i t    ]
+                  [                          ]
+                  [ 0   0     1      %i t    ]
+                  [                          ]
+                  [ 0   0     0        1     ]
+@end group
 @end example
 
 Example 3:
+
+Power operations.
+@c ===beg===
+@c load("diag")$
+@c A: matrix([1,2,0], [0,1,0], [1,0,1])$
+@c integer_pow(x) := block ([k], declare (k, integer), x^k)$
+@c mat_function (integer_pow, A);
+@c A^^20;
+@c ===end===
 @example
-(%i11) a1:matrix([2,1,0,0,0,0],
-                 [-1,4,0,0,0,0],
-                 [-1,1,2,1,0,0],
-                 [-1,1,-1,4,0,0],
-                 [-1,1,-1,1,3,0],
-                 [-1,1,-1,1,1,2])$
-
-(%i12) fpow(x):=block([k],declare(k,integer),x^k)$
-
-(%i13) mat_function(fpow,a1);
-                [  k      k - 1 ]         [      k - 1    ]
-                [ 3  - k 3      ]         [   k 3         ]
-                [               ]         [               ]
-                [       k - 1   ]         [  k      k - 1 ]
-                [  - k 3        ]         [ 3  + k 3      ]
-                [               ]         [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-(%o13)  Col 1 = [               ] Col 2 = [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-                [               ]         [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-                [               ]         [               ]
-                [       k - 1   ]         [      k - 1    ]
-                [  - k 3        ]         [   k 3         ]
-         [       0       ]         [       0       ]
-         [               ]         [               ]
-         [       0       ]         [       0       ]
-         [               ]         [               ]
-         [  k      k - 1 ]         [      k - 1    ]
-         [ 3  - k 3      ]         [   k 3         ]
-         [               ]         [               ]
- Col 3 = [       k - 1   ] Col 4 = [  k      k - 1 ]
-         [  - k 3        ]         [ 3  + k 3      ]
-         [               ]         [               ]
-         [       k - 1   ]         [      k - 1    ]
-         [  - k 3        ]         [   k 3         ]
-         [               ]         [               ]
-         [       k - 1   ]         [      k - 1    ]
-         [  - k 3        ]         [   k 3         ]
-         [    0    ]
-         [         ]         [ 0  ]
-         [    0    ]         [    ]
-         [         ]         [ 0  ]
-         [    0    ]         [    ]
-         [         ]         [ 0  ]
- Col 5 = [    0    ] Col 6 = [    ]
-         [         ]         [ 0  ]
-         [    k    ]         [    ]
-         [   3     ]         [ 0  ]
-         [         ]         [    ]
-         [  k    k ]         [  k ]
-         [ 3  - 2  ]         [ 2  ]
+(%i1) load("diag")$
+(%i2) A: matrix([1,2,0], [0,1,0], [1,0,1])$
+(%i3) integer_pow(x) := block ([k], declare (k, integer), x^k)$
+@group
+(%i4) mat_function (integer_pow, A);
+                       [ 1     2 k     0 ]
+                       [                 ]
+(%o4)                  [ 0      1      0 ]
+                       [                 ]
+                       [ k  (k - 1) k  1 ]
+@end group
+@group
+(%i5) A^^20;
+                         [ 1   40   0 ]
+                         [            ]
+(%o5)                    [ 0    1   0 ]
+                         [            ]
+                         [ 20  380  1 ]
+@end group
 @end example
 
 To use this function write first @code{load("diag")}.
