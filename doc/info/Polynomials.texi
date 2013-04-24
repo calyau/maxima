@@ -1400,32 +1400,6 @@ See @mrefdot{modulus}
 @c NEEDS WORK (IF KEPT)
 
 @c -----------------------------------------------------------------------------
-@anchor{powers}
-@deffn {Function} powers (@var{expr}, @var{x})
-
-Gives the powers of @var{x} occuring in @var{expr}.
-
-@code{load (powers)} loads this function.
-@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
-@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
-
-@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
-@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
-@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
-@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
-@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
-@c 
-@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
-@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
-@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
-@c AND MANY OTHER SIMILAR USEFUL HACKS.
-
-@opencatbox
-@category{Expressions} @category{Polynomials}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{quotient}
 @deffn  {Function} quotient (@var{p_1}, @var{p_2})
 @deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
