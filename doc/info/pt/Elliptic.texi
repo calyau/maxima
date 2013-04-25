@@ -8,7 +8,7 @@
 
 
 
-@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, , top
+@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, , Top
 @comment  node-name,  next,  previous,  up
 
 @section Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais
@@ -125,7 +125,7 @@ Suporte a fun@value{cedilha}@~oes el@'{@dotless{i}}pticas e integrais el@'{@dotl
 Toy.  Foi colocado sob os termos da Licen@value{cedilha}@~a P@'ublica Geral (GPL)
 que governa a distribui@value{cedilha}@~ao do Maxima.
 
-@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, top
+@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas e Integrais, Top
 @comment  node-name,  next,  previous,  up
 
 @section Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas
@@ -227,7 +227,7 @@ A inversa da fun@value{cedilha}@~ao el@'{@dotless{i}}ptica Jacobiana @math{dc(u,
 @end deffn
 
 
-@node Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, , Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, top
+@node Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas, , Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Top
 @comment  node-name,  next,  previous,  up
 
 @section Defini@value{cedilha}@~oes para Integrais El@'{@dotless{i}}pticas

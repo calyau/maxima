@@ -7,7 +7,7 @@
 
 
 
-@node Introduction to Elliptic Functions and Integrals, Functions and Variables for Elliptic Functions, , top
+@node Introduction to Elliptic Functions and Integrals, Functions and Variables for Elliptic Functions, , Top
 @comment  node-name,  next,  previous,  up
 
 @section Introduction to Elliptic Functions and Integrals
@@ -128,7 +128,7 @@ that governs the distribution of Maxima.
 @category{Elliptic functions}
 @closecatbox
 
-@node Functions and Variables for Elliptic Functions, Functions and Variables for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, top
+@node Functions and Variables for Elliptic Functions, Functions and Variables for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, Top
 @comment  node-name,  next,  previous,  up
 
 @section Functions and Variables for Elliptic Functions
@@ -326,7 +326,7 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @end deffn
 
 
-@node Functions and Variables for Elliptic Integrals, , Functions and Variables for Elliptic Functions, top
+@node Functions and Variables for Elliptic Integrals, , Functions and Variables for Elliptic Functions, Top
 @comment  node-name,  next,  previous,  up
 
 @section Functions and Variables for Elliptic Integrals
