@@ -329,7 +329,6 @@ string, or lambda expression; found: a < b
 @itemize @bullet
 @item To avoid name conflicts, the independent variable is determined by the
 function @code{new_variable}.
-@end itemize
 
 @example
 (%i6) compose_functions([%g0]);
@@ -338,15 +337,14 @@ function @code{new_variable}.
 (%o7)              lambda([%g155], %g0(%g155))
 @end example
 
-@itemize
 Although the independent variables are different, Maxima is able to to
 deduce that these lambda forms are semantically equal:
-@end itemize
 
 @example
 (%i8) is(equal(%o6,%o7));
 (%o8)                         true
 @end example
+@end itemize
 
 @b{To use} @file{load(to_poly_solve)}
 
@@ -1182,7 +1180,6 @@ generally, the order of these options does not matter.
 @itemize @bullet
 @item @code{simpfuncs = l}, where @code{l} is a list of functions.
 Apply the composition of the members of l to each solution.
-@end itemize
 
 @example
 (%i1) to_poly_solve(x^2=%i,x);
@@ -1194,9 +1191,7 @@ Apply the composition of the members of l to each solution.
                     sqrt(2)   sqrt(2)        sqrt(2)   sqrt(2)
 @end example
 
-@itemize
 Sometimes additional simplification can revert a simplification; for example
-@end itemize
 
 @example
 (%i3) to_poly_solve(x^2=1,x);
@@ -1206,19 +1201,15 @@ Sometimes additional simplification can revert a simplification; for example
 (%o4)            %union([x = 1], [x = %e      ]
 @end example
 
-@itemize
 Maxima doesn't try to check that each member of the function list @code{l} is
 purely a simplification; thus
-@end itemize
 
 @example
 (%i5) to_poly_solve(x^2 = %i,x, 'simpfuncs = [lambda([s],s^2)]);
 (%o5)                   %union([x = %i])
 @end example
 
-@itemize
 To convert each solution to a double float, use @code{simpfunc = ['dfloat]}:
-@end itemize
 
 @example
 (%i6) to_poly_solve(x^3 +x + 1 = 0,x, 
@@ -1228,13 +1219,11 @@ To convert each solution to a double float, use @code{simpfunc = ['dfloat]}:
 [x = 1.161541399997251 %i + .3411639019140089])
 @end example
 
-@itemize @bullet
 @item @code{use_grobner = true} With this option, the function
 @code{poly_reduced_grobner} is applied to the equations before
 attempting their solution.  Primarily, this option provides a workaround
 for weakness in the function @code{algsys}.  Here is an example of
 such a workaround:
-@end itemize
 
 @example
 (%i7) to_poly_solve([x^2+y^2=2^2,(x-1)^2+(y-1)^2=2^2],[x,y],
@@ -1251,12 +1240,10 @@ such a workaround:
 (%o8)                       %union()
 @end example
 
-@itemize @bullet
 @item @code{maxdepth = k}, where @code{k} is a positive integer.  This
 function controls the maximum recursion depth for the solver.  The
 default value for @code{maxdepth} is five.  When the recursions depth is
 exceeded, the solver signals an error:
-@end itemize
 
 @example
 (%i9) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
@@ -1266,11 +1253,9 @@ Unable to solve
 (%o9)        %solve([cos(x) = x], [x], maxdepth = 2)
 @end example
 
-@itemize @bullet
 @item @code{parameters = l}, where @code{l} is a list of symbols.  The solver
 attempts to return a solution that is valid for all members of the list
 @code{l}; for example:
-@end itemize
 
 @example
 (%i10) to_poly_solve(a * x = x, x);
@@ -1280,16 +1265,15 @@ attempts to return a solution that is valid for all members of the list
                                %if(a - 1 # 0, [x = 0], %union()))
 @end example
 
-@itemize
 In @code{(%o2)}, the solver introduced a dummy variable; to re-index the
 these dummy variables, use the function @code{nicedummies}:
-@end itemize
 
 @example
 (%i12) nicedummies(%);
 (%o12) %union(%if(a - 1 = 0, [x = %c0], %union()), 
                                %if(a - 1 # 0, [x = 0], %union()))
 @end example
+@end itemize
 
 The @code{to_poly_solve} uses data stored in the hashed array
 @code{one_to_one_reduce} to solve equations of the form @math{f(a) =
@@ -1372,7 +1356,6 @@ appends the conjugate equations; for example
 @item For an equation that involves the absolute value function, the
 @code{to_poly_solve} consults the fact database to decide if the
 argument to the absolute value is complex valued.  When
-@end itemize
 
 @example
 (%i1) to_poly_solve(abs(x) = 6, x);
@@ -1384,7 +1367,6 @@ argument to the absolute value is complex valued.  When
                                        0), [z = %c11], %union()))
 @end example
 
-@itemize
 @i{This is the only situation that the solver consults the fact database.  If
 a solve variable is declared to be an integer, for example, @code{to_poly_solve}
 ignores this declaration}.
