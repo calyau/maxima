@@ -7,8 +7,8 @@
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stirling,  , stirling, stirling
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stirling
 
-@deffn {Fun@value{cedilha}@~{a}o} stirling (@var{z},@var{n})
-Substitui @code{gamma(x)} pela f@'{o}rmula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} for
+@deffn {Fun@value{cedilha}@~{a}o} stirling (@mvar{z},@mvar{n})
+Substitui @code{gamma(x)} pela f@'{o}rmula de Stirling @math{O(1/x^(2n-1))}. Quando @mvar{n} for
 um inteiro estritamente negativo, sinaliza um erro.
 
 Refer@^{e}ncia: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
@@ -36,7 +36,7 @@ Exemplos:
                                   2
 @end example
 
-A fun@value{cedilha}@~{a}o @code{stirling} conhece a diferen@value{cedilha}a entre a vari@'{a}vel @var{gamma} e
+A fun@value{cedilha}@~{a}o @code{stirling} conhece a diferen@value{cedilha}a entre a vari@'{a}vel @mvar{gamma} e
 a fun@value{cedilha}@~{a}o @code{gamma}:
 
 @example

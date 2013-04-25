@@ -223,7 +223,7 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{alias}
-@deffn {関数} alias (@var{new_name_1}, @var{old_name_1}, @dots{}, @var{new_name_n}, @var{old_name_n})
+@deffn {関数} alias (@mvar{new_name_1}, @mvar{old_name_1}, @dots{}, @mvar{new_name_n}, @mvar{old_name_n})
 
 (利用者もしくはシステム)関数や変数、配列等に対して別名を与えます。
 任意の偶数個の引数を取ります。
@@ -300,8 +300,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 (%o1)                   [aa, bb, 33, 44]
 @end example
 
-@code{kill(allbut(@var{a_1}, @var{a_2}, ...))}は、
-シンボル@var{a_1}, @var{a_2}, @dots{}をキルしないよう除外して
+@code{kill(allbut(@mvar{a_1}, @mvar{a_2}, ...))}は、
+シンボル@mvar{a_1}, @mvar{a_2}, @dots{}をキルしないよう除外して
 @code{kill(all)}を実行します。
 
 @end defvr
@@ -310,7 +310,7 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{args}
-@deffn {関数} args (@var{expr})
+@deffn {関数} args (@mvar{expr})
 
 @code{expr}の引数のリストを返します。
 ここで、@code{expr}アトム以外のいかなる種類の式を取り得ます。
@@ -319,7 +319,7 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 リストの中の項目の順序は、グローバルフラグ@mref{inflag}に依存するかもしれません。
 
-@code{args (@var{expr})}は、@code{substpart ("[", @var{expr}, 0)}と同値です。
+@code{args (@mvar{expr})}は、@code{substpart ("[", @mvar{expr}, 0)}と同値です。
 @mref{substpart}と@mref{op}も参照してください。
 
 @c NEEDS EXAMPLES
@@ -333,9 +333,9 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{atom}
-@deffn {関数} atom (@var{expr})
+@deffn {関数} atom (@mvar{expr})
 
-もし @var{expr}がアトム(すなわち、数や名前や文字)なら、
+もし @mvar{expr}がアトム(すなわち、数や名前や文字)なら、
  @code{true}、そうでなければ @code{false}を返します。
 例えば、 @code{atom(5)}は @code{true}ですが、
 (@code{a[1]}と @code{x}はバインドされていないと仮定して) @code{atom(a[1])}や @code{atom(sin(x))}は @code{false}です。
@@ -347,15 +347,15 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{box}
-@deffn  {関数} box (@var{expr})
-@deffnx {関数} box (@var{expr}, @var{a})
+@deffn  {関数} box (@mvar{expr})
+@deffnx {関数} box (@mvar{expr}, @mvar{a})
 
-枠で囲んだ@var{expr}を返します。
-返り値は、演算子として@code{box}を持ち、引数として@var{expr}を持つ式です。
+枠で囲んだ@mvar{expr}を返します。
+返り値は、演算子として@code{box}を持ち、引数として@mvar{expr}を持つ式です。
 @code{display2d}が@code{true}の時、ディスプレイ上に枠が描かれます。
 
-@code{box (@var{expr}, @var{a})}は、
-シンボル@var{a}でラベルされた枠で@var{expr}を囲みます。
+@code{box (@mvar{expr}, @mvar{a})}は、
+シンボル@mvar{a}でラベルされた枠で@mvar{expr}を囲みます。
 もし枠の幅より長ければ、ラベルは切りつめられます。
 
 @code{box}は引数を評価します。
@@ -434,14 +434,14 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{collapse}
-@deffn {関数} collapse (@var{expr})
+@deffn {関数} collapse (@mvar{expr})
 
 共通の（すなわち等しい）部分式の全てを共用と（すなわち、同じセルを使用）させることで、
-@var{expr}を縮約し、スペースを節約します。
+@mvar{expr}を縮約し、スペースを節約します。
 (@code{collapse}は、@code{optimize}コマンドによって使われるサブルーチンです。）
 例えば，@code{collapse}をコールすることは、
 @mref{save}ファイルに積んだ後役に立つかもしれません。
-@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}を使うことで、いくつかの式を
+@code{collapse ([@mvar{expr_1}, ..., @mvar{expr_n}])}を使うことで、いくつかの式を
 一緒に縮約できます。
 同様に、@code{collapse (listarray ('A))}を実行することで、配列@code{A}の要素を縮約できます。
 
@@ -454,10 +454,10 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{disolate}
-@deffn {関数} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {関数} disolate (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
 ユーザーに１つ以上の変数を同時にisolate可能にさせることを除いて、
-@code{isolate (@var{expr}, @var{x})}に似ています。
+@code{isolate (@mvar{expr}, @mvar{x})}に似ています。
 例えば、もし多重積分の中で変数を変えようとしていて、それが２つ以上の積分変数を含んだ変数変換なら、これは役立つかもしれません。
 この関数は、@file{simplification/disol.mac}から自動ロードされます。
 @code{demo("disol")$}でデモが入手可能です。
@@ -469,13 +469,13 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{dispform}
-@deffn  {関数} dispform (@var{expr})
-@deffnx {関数} dispform (@var{expr}, all)
+@deffn  {関数} dispform (@mvar{expr})
+@deffnx {関数} dispform (@mvar{expr}, all)
 
-@var{expr}の外部表現を返します。
+@mvar{expr}の外部表現を返します。
 
-@code{dispform(@var{expr})}は、主（トップレベル）演算子に関して外部表現を返します。
-@code{dispform(@var{expr}, all)}は、@var{expr}の中の演算子すべてに関して
+@code{dispform(@mvar{expr})}は、主（トップレベル）演算子に関して外部表現を返します。
+@code{dispform(@mvar{expr}, all)}は、@mvar{expr}の中の演算子すべてに関して
 外部表現を返します。
 
 @mref{part}, @mref{inpart}, @mref{inflag}も参照してください。
@@ -554,7 +554,7 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{dpart}
-@deffn {関数} dpart (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {関数} dpart (@mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
 
 @mref{part}と同じ部分式を選択しますが、
 その部分式を値として返すだけの代わりに、
@@ -608,26 +608,26 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{freeof}
-@deffn {関数} freeof (@var{x_1}, @dots{}, @var{x_n}, @var{expr})
+@deffn {関数} freeof (@mvar{x_1}, @dots{}, @mvar{x_n}, @mvar{expr})
 
-もし@var{x_1}と等しい@var{expr}の部分式がないか、
-@var{x_1}が@var{expr}の中でダミー変数としてのみ現れるか、
-@var{x_1}が@var{expr}の中で任意の演算子の名詞形でも動詞形でもないなら、
-@code{freeof (@var{x_1}, @var{expr})}は、@code{true}を返します。
+もし@mvar{x_1}と等しい@mvar{expr}の部分式がないか、
+@mvar{x_1}が@mvar{expr}の中でダミー変数としてのみ現れるか、
+@mvar{x_1}が@mvar{expr}の中で任意の演算子の名詞形でも動詞形でもないなら、
+@code{freeof (@mvar{x_1}, @mvar{expr})}は、@code{true}を返します。
 そうでなければ、@code{false}を返します。
 
-@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}は、
-@code{freeof (@var{x_1}, @var{expr})かつ、
-...かつfreeof (@var{x_n}, @var{expr})}と同値です。
+@code{freeof (@mvar{x_1}, ..., @mvar{x_n}, @mvar{expr})}は、
+@code{freeof (@mvar{x_1}, @mvar{expr})かつ、
+...かつfreeof (@mvar{x_n}, @mvar{expr})}と同値です。
 
-引数@var{x_1}, @dots{}, @var{x_n} は、
+引数@mvar{x_1}, @dots{}, @mvar{x_n} は、
 関数や変数の名前、添字付き名前、（ダブルクォートでくくられた）演算子、もしくは一般式
 を取り得ます。
 @code{freeof}は引数を評価します。
 
-@code{freeof}は、そのままは（整理と評価の後）@var{expr}上でのみ演算し、
+@code{freeof}は、そのままは（整理と評価の後）@mvar{expr}上でのみ演算し、
 ある同値の表現が違った結果を与えるかどうかを決定しようとはしません。
-特に、整理は、同値ですが、@var{expr}の原型とは違った要素を含む異なる式を生成するかもしれません。
+特に、整理は、同値ですが、@mvar{expr}の原型とは違った要素を含む異なる式を生成するかもしれません。
 
 もし式の外部にバインドを持たなければ、変数は、式の中のダミー変数です。
 @code{freeof}によって認識されたダミー変数は、
@@ -743,7 +743,7 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{inpart}
-@deffn {関数} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {関数} inpart (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
 
 @code{part}に似ていますが、表示形式ではなく内部表現上で機能し、
 フォーマットが実行されないのでより速いかもしれません。
@@ -782,15 +782,15 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{isolate}
-@deffn {関数} isolate (@var{expr}, @var{x})
+@deffn {関数} isolate (@mvar{expr}, @mvar{x})
 和であり、中間式ラベル(それらは@code{%t1}, @code{%t2}, ...のようなアトムなシンボルです)
-で置き換えられた@var{x}を含まない部分式を含む@var{expr}を返します。
+で置き換えられた@mvar{x}を含まない部分式を含む@mvar{expr}を返します。
 興味のある変数を含まない部分式の不必要な展開を避けるのに、これはしばしば役立ちます。
 中間ラベルは部分式にバインドされているので、
 それらが現れた式を評価することで、それらをすべて元に代入することができます。
 
 もし@mref{exptisolate} (デフォルト値: @code{false})が@code{true}なら、
-@code{isolate}は、@var{x}を含むか、(@code{%e}のような)アトムの指数を検査します。
+@code{isolate}は、@mvar{x}を含むか、(@code{%e}のような)アトムの指数を検査します。
 
 もし@code{isolate_wrt_times}が@code{true}なら、
 @code{isolate}は積に関してもisolateします。
@@ -889,14 +889,14 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{listofvars}
-@deffn {関数} listofvars (@var{expr})
+@deffn {関数} listofvars (@mvar{expr})
 
-@var{expr}の中の変数のリストを返します。
+@mvar{expr}の中の変数のリストを返します。
 
 もし@mref{listconstvars}が@code{true}なら、
 @code{listofvars}は、@code{%e}, @code{%pi}, @code{%i}や
 定数と宣言された任意の変数を、
-もしそれらが、@var{expr}の中で現れたなら、
+もしそれらが、@mvar{expr}の中で現れたなら、
 戻り値のリストの中に含みます。
 デフォルトはこれらを省略します。
 
@@ -917,10 +917,10 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{lfreeof}
-@deffn {関数} lfreeof (@var{list}, @var{expr})
+@deffn {関数} lfreeof (@mvar{list}, @mvar{expr})
 
-@var{list}のそれぞれのメンバー@var{m}に関して、
-@code{freeof (@var{m}, @var{expr})}をコールします。
+@mvar{list}のそれぞれのメンバー@mvar{m}に関して、
+@code{freeof (@mvar{m}, @mvar{expr})}をコールします。
 もし@code{freeof}のコールのいずれかが@code{false}を返すなら、
 @code{false}を返し、そうでなければ、@code{true}を返します。
 
@@ -933,7 +933,7 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{lpart}
-@deffn {関数} lpart (@var{label}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {関数} lpart (@mvar{label}, @mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
 
 @code{dpart}に似ていますが、ラベルされた枠を使います。
 ラベルされた枠は、@code{dpart}によって生成されたものに似ていますが、
@@ -1003,9 +1003,9 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{nounify}
-@deffn {関数} nounify (@var{f})
+@deffn {関数} nounify (@mvar{f})
 
-関数名@var{f}の名詞形を返します。
+関数名@mvar{f}の名詞形を返します。
 もし動詞関数の名前をまるで名詞のように参照したいなら、これが必要とされます。
 もしある引数に関して関数が評価されないなら、
 いくつかの動詞関数は名詞形を返すことに注意してください。
@@ -1022,13 +1022,13 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{nterms}
-@deffn {関数} nterms (@var{expr})
+@deffn {関数} nterms (@mvar{expr})
 
-もし完全に展開されて、項の打ち消しや結合が起こらない場合の、@var{expr}が持つ
+もし完全に展開されて、項の打ち消しや結合が起こらない場合の、@mvar{expr}が持つ
 項の数を返します。
-@code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})},
+@code{sin (@mvar{expr})}, @code{sqrt (@mvar{expr})}, @code{exp (@mvar{expr})},
  などのような式は、
-@var{expr}が（もしそれが和なら）
+@mvar{expr}が（もしそれが和なら）
 どんなにたくさんの項を持とうと、１項と数えます。
 
 @opencatbox
@@ -1040,19 +1040,19 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{op}
-@deffn {関数} op (@var{expr})
+@deffn {関数} op (@mvar{expr})
 
-式@var{expr}のメインの演算子を返します。
-@code{op (@var{expr})}は@code{part (@var{expr}, 0)}と同値です。
+式@mvar{expr}のメインの演算子を返します。
+@code{op (@mvar{expr})}は@code{part (@mvar{expr}, 0)}と同値です。
 
 @code{op}は、
 もしメインの演算子が組み込みもしくはユーザー定義の前置、二項もしくはn項中置、後置、マッチフィックスもしくは無項演算子なら、文字列を返します。
 そうでなければ、
-もし@var{expr}が添字付き関数式なら、
+もし@mvar{expr}が添字付き関数式なら、
 @code{op}は添字付き関数を返します;
 この場合、戻り値はアトムではありません。
 そうでなければ、
-@var{expr}は配列関数もしくは通常の関数式であり、
+@mvar{expr}は配列関数もしくは通常の関数式であり、
 @code{op}はシンボルを返します。
 
 @code{op}はグローバルフラグ@mref{inflag}の値を見ています。
@@ -1116,14 +1116,14 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{operatorp}
-@deffn {関数} operatorp (@var{expr}, @var{op})
-@deffnx {関数} operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])
+@deffn {関数} operatorp (@mvar{expr}, @mvar{op})
+@deffnx {関数} operatorp (@mvar{expr}, [@mvar{op_1}, @dots{}, @mvar{op_n}])
 
-もし@var{op}が@var{expr}の演算子に等しければ、
-@code{operatorp (@var{expr}, @var{op})}は@code{true}を返します。
+もし@mvar{op}が@mvar{expr}の演算子に等しければ、
+@code{operatorp (@mvar{expr}, @mvar{op})}は@code{true}を返します。
 
-もしある要素@var{op_1}, ..., @var{op_n}が@var{expr}に等しければ、
-@code{operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])}は@code{true}を返します。
+もしある要素@mvar{op_1}, ..., @mvar{op_n}が@mvar{expr}に等しければ、
+@code{operatorp (@mvar{expr}, [@mvar{op_1}, @dots{}, @mvar{op_n}])}は@code{true}を返します。
 
 @opencatbox
 @category{Operators} @category{Predicate functions}
@@ -1151,9 +1151,9 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c -----------------------------------------------------------------------------
 @anchor{optimize}
-@deffn {関数} optimize (@var{expr})
+@deffn {関数} optimize (@mvar{expr})
 
-@var{expr}と同じ値と副作用を生成する式を返しますが、
+@mvar{expr}と同じ値と副作用を生成する式を返しますが、
 共通の部分式の再計算を避けることによってより効率的に行います。
 @code{optimize}は、共通の部分式すべてが共用されるように引数を縮約する副作用も持ちます。
 例を見るには、@code{example (optimize)}を実行してください。
@@ -1180,17 +1180,17 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 @c -----------------------------------------------------------------------------
 @anchor{ordergreat}
 @anchor{orderless}
-@deffn {関数} ordergreat (@var{v_1}, @dots{}, @var{v_n})
-@deffnx {関数} orderless (@var{v_1}, @dots{}, @var{v_n})
+@deffn {関数} ordergreat (@mvar{v_1}, @dots{}, @mvar{v_n})
+@deffnx {関数} orderless (@mvar{v_1}, @dots{}, @mvar{v_n})
 
 @code{ordergreat}は、
-@var{v_1}が@var{v_2}に続き、@var{v_2}は、@dots{}, @var{v_n}に続き、
-そして@var{v_n}は 引数として言及されなかった他の任意のシンボルに続くというように、
+@mvar{v_1}が@mvar{v_2}に続き、@mvar{v_2}は、@dots{}, @mvar{v_n}に続き、
+そして@mvar{v_n}は 引数として言及されなかった他の任意のシンボルに続くというように、
 Maximaの式の標準の順序付けを変えます。
 
 @code{orderless}は、
-@var{v_1}が@var{v_2}に先行し、@var{v_2}は、@dots{}, @var{v_n}に先行し、
-そして@var{v_n}は 引数として言及されなかった他の任意のシンボルに先行するというように、
+@mvar{v_1}が@mvar{v_2}に先行し、@mvar{v_2}は、@dots{}, @mvar{v_n}に先行し、
+そして@mvar{v_n}は 引数として言及されなかった他の任意のシンボルに先行するというように、
 Maximaの式の標準の順序付けを変えます。
 
 @code{ordergreat}や@code{orderless}によって確立される順序は、
@@ -1210,14 +1210,14 @@ Maximaの式の標準の順序付けを変えます。
 @c -----------------------------------------------------------------------------
 @anchor{ordergreatp}
 @anchor{orderlessp}
-@deffn {関数} ordergreatp (@var{expr_1}, @var{expr_2})
-@deffnx {関数} orderlessp (@var{expr_1}, @var{expr_2})
+@deffn {関数} ordergreatp (@mvar{expr_1}, @mvar{expr_2})
+@deffnx {関数} orderlessp (@mvar{expr_1}, @mvar{expr_2})
 
-もしMaximaの式の標準の順序付けの中で、@var{expr_1}が@var{expr_2}に続くなら、
+もしMaximaの式の標準の順序付けの中で、@mvar{expr_1}が@mvar{expr_2}に続くなら、
 @code{ordergreatp}は、@code{true}を返し、
 そうでなければ、@code{false}を返します。
 
-もしMaximaの式の標準の順序付けの中で、@var{expr_1}が@var{expr_2}に先行するなら、
+もしMaximaの式の標準の順序付けの中で、@mvar{expr_1}が@mvar{expr_2}に先行するなら、
 @code{orderlessp}は、@code{true}を返し、
 そうでなければ、@code{false}を返します。
 
@@ -1338,11 +1338,11 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{part}
-@deffn {関数} part (@var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {関数} part (@mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
 
 @code{expr}の表示形式のパーツを返します。
-@code{expr}の最初のパーツ@var{n_1}、それから、パーツ@var{n_2}などなど、
-結果は、@code{expr}のパーツ@var{n_1}のパーツ@var{n_2}の, ...パーツ@var{n_k}です。
+@code{expr}の最初のパーツ@mvar{n_1}、それから、パーツ@mvar{n_2}などなど、
+結果は、@code{expr}のパーツ@mvar{n_1}のパーツ@mvar{n_2}の, ...パーツ@mvar{n_k}です。
 もし添字が指定されないなら、@code{expr}を返します。
 
 @code{part}はリストの要素や行列の行を得るのに使うことができます。
@@ -1389,13 +1389,13 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{partition}
-@deffn {関数} partition (@var{expr}, @var{x})
+@deffn {関数} partition (@mvar{expr}, @mvar{x})
 
 ２つの式のリストを返します。
 それらは、
-(1)（積なら）@var{expr}の因子、（和なら）@var{expr}項、
-もしくは、（リストなら）@var{x}を含まないリストと、
-(2)@var{x}を含む因子、項、リスト、
+(1)（積なら）@mvar{expr}の因子、（和なら）@mvar{expr}項、
+もしくは、（リストなら）@mvar{x}を含まないリストと、
+(2)@mvar{x}を含む因子、項、リスト、
 です。
 
 例:
@@ -1432,11 +1432,11 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{pickapart}
-@deffn {関数} pickapart (@var{expr}, @var{n})
+@deffn {関数} pickapart (@mvar{expr}, @mvar{n})
 
-中間式ラベルを、深さが整数@var{n}での@var{expr}の部分式に割り当てます。
+中間式ラベルを、深さが整数@mvar{n}での@mvar{expr}の部分式に割り当てます。
 より大きなもしくは小さな深さでの部分式はラベルに割り当てられません。
-@code{pickapart}は、元の式@var{expr}と同値の中間式の項による式を返します。
+@code{pickapart}は、元の式@mvar{expr}と同値の中間式の項による式を返します。
 
 @mref{part}, @mref{dpart}, @mref{lpart}, @mref{inpart}, 
 @mref{reveal}も参照してください。
@@ -1546,15 +1546,15 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{psubst}
-@deffn  {関数} psubst (@var{list}, @var{expr})
-@deffnx {関数} psubst (@var{a}, @var{b}, @var{expr})
+@deffn  {関数} psubst (@mvar{list}, @mvar{expr})
+@deffnx {関数} psubst (@mvar{a}, @mvar{b}, @mvar{expr})
 
-@code{psubst(@var{a}, @var{b}, @var{expr})}は@code{subst}に似ています。
+@code{psubst(@mvar{a}, @mvar{b}, @mvar{expr})}は@code{subst}に似ています。
 @code{subst}を参照してください。
 
 
 @code{subst}とは違って、
-もし最初の引数@var{list}が等式のリストなら、
+もし最初の引数@mvar{list}が等式のリストなら、
 関数@code{psubst}は平行代入します。
 
 並列代入するには、@mref{sublis}も参照してください。
@@ -1584,18 +1584,18 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{rembox}
-@deffn  {関数} rembox (@var{expr}, unlabelled)
-@deffnx {関数} rembox (@var{expr}, @var{label})
-@deffnx {関数} rembox (@var{expr})
-@var{expr}から枠を取り除きます。
+@deffn  {関数} rembox (@mvar{expr}, unlabelled)
+@deffnx {関数} rembox (@mvar{expr}, @mvar{label})
+@deffnx {関数} rembox (@mvar{expr})
+@mvar{expr}から枠を取り除きます。
 
-@code{rembox (@var{expr}, unlabelled)}は、
-@var{expr}からラベルされていない枠すべてを取り除きます。
+@code{rembox (@mvar{expr}, unlabelled)}は、
+@mvar{expr}からラベルされていない枠すべてを取り除きます。
 
-@code{rembox (@var{expr}, @var{label})}は、
-@var{label}を負う枠のみを取り除きます。
+@code{rembox (@mvar{expr}, @mvar{label})}は、
+@mvar{label}を負う枠のみを取り除きます。
 
-@code{rembox (@var{expr})}は、ラベルされているか否か問わず、
+@code{rembox (@mvar{expr})}は、ラベルされているか否か問わず、
 枠すべてを取り除きます。
 
 枠は、@mref{box}, @mref{dpart}, @mref{lpart}関数によって描画されます。
@@ -1673,19 +1673,19 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{reveal}
-@deffn {関数} reveal (@var{expr}, @var{depth})
+@deffn {関数} reveal (@mvar{expr}, @mvar{depth})
 
-指定された整数@var{depth}の@var{expr}の部分を
+指定された整数@mvar{depth}の@mvar{expr}の部分を
 記述的な要約で
 置き換えます。
 
 @itemize @bullet
 @item
-和と差分は、@code{Sum(@var{n})}で置き換えられます。
-ここで、@var{n}は、和のオペランドの数です。
+和と差分は、@code{Sum(@mvar{n})}で置き換えられます。
+ここで、@mvar{n}は、和のオペランドの数です。
 @item
-積は@code{Product(@var{n})}で置き換えられます。
-ここで、@var{n}は、積のオペランドの数です。
+積は@code{Product(@mvar{n})}で置き換えられます。
+ここで、@mvar{n}は、積のオペランドの数です。
 @item
 指数は、@code{Expt}で置き換えられます。
 @item
@@ -1693,12 +1693,12 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 @item
 単項マイナスは、@code{Negterm}で置き換えられます。
 @item
-リストは@code{List(@var{n})}で置き換えられます
-ここで、@var{n}はリストの要素の数です。
+リストは@code{List(@mvar{n})}で置き換えられます
+ここで、@mvar{n}はリストの要素の数です。
 @end itemize
 
-@var{depth}が@var{expr}の最大深さ以上の時、
-@code{reveal (@var{expr}, @var{depth})}は、@var{expr}をそのまま返します。
+@mvar{depth}が@mvar{expr}の最大深さ以上の時、
+@code{reveal (@mvar{expr}, @mvar{depth})}は、@mvar{expr}をそのまま返します。
 
 @code{reveal}は、引数を評価します。
 @code{reveal}は、要約された式を返します。
@@ -1763,10 +1763,10 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @c -----------------------------------------------------------------------------
 @anchor{sublis}
-@deffn {関数} sublis (@var{list}, @var{expr})
+@deffn {関数} sublis (@mvar{list}, @mvar{expr})
 
 式に対して多重平行代入を行います。
-@var{list}は等式のリストです。
+@mvar{list}は等式のリストです。
 等式の左辺はアトムでなければいけません。
 
 変数@code{sublis_apply_lambda}は@code{sublis}の後の式整理を制御します。
@@ -1832,26 +1832,26 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c -----------------------------------------------------------------------------
 @anchor{subst}
-@deffn {関数} subst (@var{a}, @var{b}, @var{c})
+@deffn {関数} subst (@mvar{a}, @mvar{b}, @mvar{c})
 
-@var{c}の中の@var{b}に@var{a}を代入します。
-@var{b}はアトムもしくは@var{c}の完全な部分式でなければなりません。
+@mvar{c}の中の@mvar{b}に@mvar{a}を代入します。
+@mvar{b}はアトムもしくは@mvar{c}の完全な部分式でなければなりません。
 例えば、@code{x+y+z}は@code{2*(x+y+z)}の完全な部分式である一方、@code{x+y}は完全な部分式ではありません。
-@var{b}がこれらの性質を持たない時は、@mref{substpart}もしくは@mref{ratsubst}が使える時があります（下記参照）。
-代わりに、もし@var{b}が@code{e/f}形式なら、@code{subst (a*f, e, c)}が使えますし、
-もし@var{b}が@code{e^(1/f)}形式なら、@code{subst (a^f, e, c)}が使えます。
+@mvar{b}がこれらの性質を持たない時は、@mref{substpart}もしくは@mref{ratsubst}が使える時があります（下記参照）。
+代わりに、もし@mvar{b}が@code{e/f}形式なら、@code{subst (a*f, e, c)}が使えますし、
+もし@mvar{b}が@code{e^(1/f)}形式なら、@code{subst (a^f, e, c)}が使えます。
 @code{subst}コマンドは@code{x^-y}の中の@code{x^y}も認識するので、
 @code{subst (a, sqrt(x), 1/sqrt(x))}は@code{1/a}を出力します。
-@var{a}と@var{b}はダブルクォート@code{"}で囲まれた式の演算子でも、関数名でも問題ありません。
+@mvar{a}と@mvar{b}はダブルクォート@code{"}で囲まれた式の演算子でも、関数名でも問題ありません。
 導関数形式の独立変数に代入したいなら、@code{at}関数（下記参照）を使うべきです。
 
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst}は@code{substitute}のエーリアスです。
 
-コマンド@code{subst (@var{eq_1}, @var{expr})}もしくは@code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}も許されている形式です。
-@var{eq_i}はされるべき代入を指示する等式です。
-それぞれの等式において、右辺が、式@var{expr}の中の左辺に代入されます。
-等式は、@var{expr}に、左から右へ逐次に代入されます。
+コマンド@code{subst (@mvar{eq_1}, @mvar{expr})}もしくは@code{subst ([@mvar{eq_1}, ..., @mvar{eq_k}], @mvar{expr})}も許されている形式です。
+@mvar{eq_i}はされるべき代入を指示する等式です。
+それぞれの等式において、右辺が、式@mvar{expr}の中の左辺に代入されます。
+等式は、@mvar{expr}に、左から右へ逐次に代入されます。
 平行代入するには、関数@code{sublis}と@code{psubst}を参照してください。
 
 @mref{exptsubst}が@code{true}なら、
@@ -1900,9 +1900,9 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c NEEDS CLARIFICATION
 @anchor{substinpart}
-@deffn {関数} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {関数} substinpart (@mvar{x}, @mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
 
-@mref{substpart}と同様ですが、@code{substinpart}は@var{expr}の内部表現上で
+@mref{substpart}と同様ですが、@code{substinpart}は@mvar{expr}の内部表現上で
 働きます。
 
 例:
@@ -1988,12 +1988,12 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c -----------------------------------------------------------------------------
 @anchor{substpart}
-@deffn {関数} substpart (@var{x}, @var{expr}, @var{n_1}, @dots{}, @var{n_k})
+@deffn {関数} substpart (@mvar{x}, @mvar{expr}, @mvar{n_1}, @dots{}, @mvar{n_k})
 
-@var{x}を、残りの引数を@code{part}に食わせた結果の部分式に代入します。
-@var{expr}の新しい値を返します。
-@var{x}は@var{expr}の演算子に代入される演算子でも問題ありません。
-いくつかの場合、@var{x}はダブルクォート@code{"}で囲まれる必要があります。
+@mvar{x}を、残りの引数を@code{part}に食わせた結果の部分式に代入します。
+@mvar{expr}の新しい値を返します。
+@mvar{x}は@mvar{expr}の演算子に代入される演算子でも問題ありません。
+いくつかの場合、@mvar{x}はダブルクォート@code{"}で囲まれる必要があります。
 （例えば、@code{substpart ("+", a*b, 0)}は@code{b + a}を返します。）
 
 例:
@@ -2032,9 +2032,9 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c -----------------------------------------------------------------------------
 @anchor{symbolp}
-@deffn {関数} symbolp (@var{expr})
+@deffn {関数} symbolp (@mvar{expr})
 
-もし@var{expr}がシンボルなら@code{true}、そうでないなら@code{false}を返します。
+もし@mvar{expr}がシンボルなら@code{true}、そうでないなら@code{false}を返します。
 事実上、@code{symbolp(x)}は、述語論理@code{atom(x) and not numberp(x)}と同値です。
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
@@ -2105,9 +2105,9 @@ subst: cannot substitute 100 for operator g in expression g
 
 @c -----------------------------------------------------------------------------
 @anchor{verbify}
-@deffn {関数} verbify (@var{f})
+@deffn {関数} verbify (@mvar{f})
 
-関数名@var{f}の動詞形を返します。
+関数名@mvar{f}の動詞形を返します。
 @code{verb}, @code{noun}, @code{nounify}も参照してください。
 
 例:

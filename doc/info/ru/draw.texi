@@ -46,9 +46,9 @@
 @defvr {Графическая опция} xrange
 Значение по умолчанию: @code{auto}
 
-Если @code{xrange} равно @code{auto}, то диапазон координаты @var{x} вычисляется автоматически.
+Если @code{xrange} равно @code{auto}, то диапазон координаты @mvar{x} вычисляется автоматически.
 
-Если требуется определенный интервал @var{x}, он должен быть задан в форме списка,
+Если требуется определенный интервал @mvar{x}, он должен быть задан в форме списка,
 например @code{xrange=[-2, 3]}.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -75,9 +75,9 @@
 @defvr {Графическая опция} yrange
 Значение по умолчанию: @code{auto}
 
-Если @code{yrange} равно @code{auto}, то диапазон координаты @var{y} вычисляется автоматически.
+Если @code{yrange} равно @code{auto}, то диапазон координаты @mvar{y} вычисляется автоматически.
 
-Если требуется определенный интервал @var{y}, он должен быть задан в форме списка,
+Если требуется определенный интервал @mvar{y}, он должен быть задан в форме списка,
 например @code{yrange=[-2, 3]}.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -105,9 +105,9 @@
 @defvr {Графическая опция} zrange
 Значение по умолчанию: @code{auto}
 
-Если @code{zrange} равно @code{auto}, то диапазон координаты @var{z} вычисляется автоматически.
+Если @code{zrange} равно @code{auto}, то диапазон координаты @mvar{z} вычисляется автоматически.
 
-Если требуется определенный интервал @var{z}, он должен быть задан в форме списка,
+Если требуется определенный интервал @mvar{z}, он должен быть задан в форме списка,
 например @code{zrange=[-2, 3]}.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -136,7 +136,7 @@
 @defvr {Графическая опция} logx
 Значение по умолчанию: @code{false}
 
-Если @code{logx} равно @code{true}, то ось @var{x} будет изображаться в логарифмической шкале.
+Если @code{logx} равно @code{true}, то ось @mvar{x} будет изображаться в логарифмической шкале.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -162,7 +162,7 @@
 @defvr {Графическая опция} logy
 Значение по умолчанию: @code{false}
 
-Если @code{logy} равно @code{true}, то ось @var{y} будет изображаться в логарифмической шкале.
+Если @code{logy} равно @code{true}, то ось @mvar{y} будет изображаться в логарифмической шкале.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -188,7 +188,7 @@
 @defvr {Графическая опция} logz
 Значение по умолчанию: @code{false}
 
-Если @code{logz} равно @code{true}, то ось @var{z} будет изображаться в логарифмической шкале.
+Если @code{logz} равно @code{true}, то ось @mvar{z} будет изображаться в логарифмической шкале.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -274,7 +274,7 @@ End of animation sequence
 @defvr {Графическая опция} grid
 Значение по умолчанию: @code{false}
 
-Если @code{grid} равно @code{true}, то на плоскости @var{xy} будет изображена сетка.
+Если @code{grid} равно @code{true}, то на плоскости @mvar{xy} будет изображена сетка.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -323,7 +323,7 @@ End of animation sequence
 @defvr {Графическая опция} xlabel
 Значение по умолчанию: @code{""} (пустая строка)
 
-Опция @code{xlabel} -- строка, содержащая метку для оси @var{x}.
+Опция @code{xlabel} -- строка, содержащая метку для оси @mvar{x}.
 По умолчанию метка отсутствует.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -351,7 +351,7 @@ End of animation sequence
 @defvr {Графическая опция} ylabel
 Значение по умолчанию: @code{""} (пустая строка)
 
-Опция @code{ylabel} -- строка, содержащая метку для оси @var{y}.
+Опция @code{ylabel} -- строка, содержащая метку для оси @mvar{y}.
 По умолчанию метка отсутствует.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -379,7 +379,7 @@ End of animation sequence
 @defvr {Графическая опция} zlabel
 Значение по умолчанию: @code{""} (пустая строка)
 
-Опция @code{zlabel} -- строка, содержащая метку для оси @var{z}.
+Опция @code{zlabel} -- строка, содержащая метку для оси @mvar{z}.
 По умолчанию метка отсутствует.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -407,14 +407,14 @@ End of animation sequence
 @defvr {Графическая опция} xtics
 Значение по умолчанию: @code{auto}
 
-Управляет методом изображения делений на оси @var{x}.
+Управляет методом изображения делений на оси @mvar{x}.
 
 @itemize @bullet
 @item
-Если @code{xtics} равно @var{auto}, то деления изображаются автоматически.
+Если @code{xtics} равно @mvar{auto}, то деления изображаются автоматически.
 
 @item
-Если @code{xtics} равно @var{none}, то деления не изображаются.
+Если @code{xtics} равно @mvar{none}, то деления не изображаются.
 
 @item
 Если @code{xtics} равно положительному числу, то это задает расстояние между соседними делениями.
@@ -486,7 +486,7 @@ End of animation sequence
 @defvr {Графическая опция} ytics
 Значение по умолчанию: @code{auto}
 
-Управляет методом изображения делений на оси @var{y}.
+Управляет методом изображения делений на оси @mvar{y}.
 
 См. @code{xtics} для полного описания.
 
@@ -501,7 +501,7 @@ End of animation sequence
 @defvr {Графическая опция} ztics
 Значение по умолчанию: @code{auto}
 
-Управляет методом изображения делений на оси @var{z}.
+Управляет методом изображения делений на оси @mvar{z}.
 
 См. @code{xtics} для полного описания.
 
@@ -515,7 +515,7 @@ End of animation sequence
 @defvr {Графическая опция} xtics_rotate
 Значение по умолчанию: @code{false}
 
-Если @code{xtics_rotate} равно @code{true}, то деления на оси @var{x} поворачиваются на 90 градусов.
+Если @code{xtics_rotate} равно @code{true}, то деления на оси @mvar{x} поворачиваются на 90 градусов.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -529,7 +529,7 @@ End of animation sequence
 @defvr {Графическая опция} ytics_rotate
 Значение по умолчанию: @code{false}
 
-Если @code{ytics_rotate} равно @code{true}, то деления на оси @var{y} поворачиваются на 90 градусов.
+Если @code{ytics_rotate} равно @code{true}, то деления на оси @mvar{y} поворачиваются на 90 градусов.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -543,7 +543,7 @@ End of animation sequence
 @defvr {Графическая опция} ztics_rotate
 Значение по умолчанию: @code{false}
 
-Если @code{ztics_rotate} равно @code{true}, то деления на оси @var{z} поворачиваются на 90 градусов.
+Если @code{ztics_rotate} равно @code{true}, то деления на оси @mvar{z} поворачиваются на 90 градусов.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -557,7 +557,7 @@ End of animation sequence
 @defvr {Графическая опция} xtics_axis
 Значение по умолчанию: @code{false}
 
-Если @code{xtics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @var{x}, 
+Если @code{xtics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @mvar{x}, 
 если @code{false}, то деления изображаются на границе.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -571,7 +571,7 @@ End of animation sequence
 @defvr {Графическая опция} ytics_axis
 Значение по умолчанию: @code{false}
 
-Если @code{ytics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @var{y}, 
+Если @code{ytics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @mvar{y}, 
 если @code{false}, то деления изображаются на границе.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -585,7 +585,7 @@ End of animation sequence
 @defvr {Графическая опция} ztics_axis
 Значение по умолчанию: @code{false}
 
-Если @code{ztics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @var{z}, 
+Если @code{ztics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @mvar{z}, 
 если @code{false}, то деления изображаются на границе.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -600,7 +600,7 @@ End of animation sequence
 @defvr {Графическая опция} xaxis
 Значение по умолчанию: @code{false}
 
-Если @code{xaxis} равно @code{true}, то ось @var{x} изображается.
+Если @code{xaxis} равно @code{true}, то ось @mvar{x} изображается.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -627,7 +627,7 @@ End of animation sequence
 @defvr {Графическая опция} xaxis_width
 Значение по умолчанию: 1
 
-@code{xaxis_width} -- толщина оси @var{x}.
+@code{xaxis_width} -- толщина оси @mvar{x}.
 Значение должно быть положительным числом.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -655,7 +655,7 @@ End of animation sequence
 @defvr {Графическая опция} xaxis_type
 Значение по умолчанию: @code{dots}
 
-@code{xaxis_type} -- задает стиль изображения оси @var{x}. 
+@code{xaxis_type} -- задает стиль изображения оси @mvar{x}. 
 Возможные значения: @code{solid} и @code{dots}.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -683,7 +683,7 @@ End of animation sequence
 @defvr {Графическая опция} xaxis_color
 Значение по умолчанию: @code{"black"}
 
-@code{xaxis_color} -- определяет цвет оси @var{x} axis. 
+@code{xaxis_color} -- определяет цвет оси @mvar{x} axis. 
 См. @code{color} для способа задания цвета.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -711,7 +711,7 @@ End of animation sequence
 @defvr {Графическая опция} yaxis
 Значение по умолчанию: @code{false}
 
-Если @code{yaxis} равно @code{true}, то ось @var{y} изображается.
+Если @code{yaxis} равно @code{true}, то ось @mvar{y} изображается.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
@@ -738,7 +738,7 @@ End of animation sequence
 @defvr {Графическая опция} yaxis_width
 Значение по умолчанию: 1
 
-@code{yaxis_width} -- толщина оси @var{y}.
+@code{yaxis_width} -- толщина оси @mvar{y}.
 Значение должно быть положительным числом.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -766,7 +766,7 @@ End of animation sequence
 @defvr {Графическая опция} yaxis_type
 Значение по умолчанию: @code{dots}
 
-@code{yaxis_type} -- задает стиль изображения @var{y}. 
+@code{yaxis_type} -- задает стиль изображения @mvar{y}. 
 Возможные значения: @code{solid} и @code{dots}.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -794,7 +794,7 @@ End of animation sequence
 @defvr {Графическая опция} yaxis_color
 Значение по умолчанию: @code{"black"}
 
-@code{yaxis_color} -- определяет цвет оси @var{y} axis. 
+@code{yaxis_color} -- определяет цвет оси @mvar{y} axis. 
 См. @code{color} для способа задания цвета.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -822,7 +822,7 @@ End of animation sequence
 @defvr {Графическая опция} zaxis
 Значение по умолчанию: @code{false}
 
-Если @code{zaxis} равно @code{true}, то ось @var{x} изображается на трехмерных графиках.
+Если @code{zaxis} равно @code{true}, то ось @mvar{x} изображается на трехмерных графиках.
 Эта опция не влияет на двумерные графики.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -851,7 +851,7 @@ End of animation sequence
 @defvr {Графическая опция} zaxis_width
 Значение по умолчанию: 1
 
-@code{zaxis_width} -- толщина оси @var{z}.
+@code{zaxis_width} -- толщина оси @mvar{z}.
 Значение должно быть положительным числом.
 Эта опция не влияет на двумерные графики.
 
@@ -881,7 +881,7 @@ End of animation sequence
 @defvr {Графическая опция} zaxis_type
 Значение по умолчанию: @code{dots}
 
-@code{zaxis_type} -- задает стиль изображения оси @var{z}. 
+@code{zaxis_type} -- задает стиль изображения оси @mvar{z}. 
 Возможные значения: @code{solid} и @code{dots}.
 Эта опция не влияет на двумерные графики.
 
@@ -910,7 +910,7 @@ End of animation sequence
 @defvr {Графическая опция} zaxis_color
 Значение по умолчанию: @code{"black"}
 
-@code{zaxis_color} -- определяет цвет оси @var{z} axis. 
+@code{zaxis_color} -- определяет цвет оси @mvar{z} axis. 
 См. @code{color} для способа задания цвета.
 Эта опция не влияет на двумерные графики.
 
@@ -940,7 +940,7 @@ End of animation sequence
 @defvr {Графическая опция} rot_vertical
 Значение по умолчанию: 60
 
-@code{rot_vertical} -- угол поворота (в градусах) вокруг оси @var{x} 
+@code{rot_vertical} -- угол поворота (в градусах) вокруг оси @mvar{x} 
 точки наблюдения в трехмерных сценах.
 
 Угол может быть в интервале @math{[0, 180]}.
@@ -969,7 +969,7 @@ End of animation sequence
 @defvr {Графическая опция} rot_horizontal
 Значение по умолчанию: 30
 
-@code{rot_horizontal} -- угол поворота (в градусах) вокруг оси @var{z} 
+@code{rot_horizontal} -- угол поворота (в градусах) вокруг оси @mvar{z} 
 точки наблюдения в трехмерных сценах.
 
 Угол может быть в интервале @math{[0, 360]}.
@@ -1325,7 +1325,7 @@ End of animation sequence
 @defvr {Графическая опция} axis_3d
 Значение по умолчанию: @code{true}
 
-Если @code{axis_3d} равно @code{true}, то оси @var{x}, @var{y} и @var{z} изображаются на 
+Если @code{axis_3d} равно @code{true}, то оси @mvar{x}, @mvar{y} и @mvar{z} изображаются на 
 трехмерных сценах.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
@@ -1731,7 +1731,7 @@ End of animation sequence
 @defvr {Графическая опция} head_length
 Значение по умолчанию: 2
 
-@code{head_length} задает длину наконечника стрелок в единицах оси @var{x}.
+@code{head_length} задает длину наконечника стрелок в единицах оси @mvar{x}.
 
 Эта опция влияет только на объекты типа @code{vector}.
 
@@ -2330,8 +2330,8 @@ End of animation sequence
 
 @itemize @bullet
 @item
-Если @code{contour_levels} равно положительному целому числу @var{n},
-то будет изображено @var{n} контурных линий через равный интервал. 
+Если @code{contour_levels} равно положительному целому числу @mvar{n},
+то будет изображено @mvar{n} контурных линий через равный интервал. 
 По умолчанию изображается пять равноудаленных контурных линий.
 
 @item
@@ -2484,7 +2484,7 @@ End of animation sequence
 @end defvr
 
 
-@deffn {Конструктор сцены} gr2d (@var{графическая опция}, ..., @var{графический объект}, ...)
+@deffn {Конструктор сцены} gr2d (@mvar{графическая опция}, ..., @mvar{графический объект}, ...)
 
 Функция @code{gr2d} строит объект, который описывает двумерную сцену. 
 Аргументы есть @i{графические опции} и @i{графические объекты}. 
@@ -2517,7 +2517,7 @@ End of animation sequence
 @end deffn
 
 
-@deffn {Конструктор сцены} gr3d (@var{графическая опция}, ..., @var{графический объект}, ...)
+@deffn {Конструктор сцены} gr3d (@mvar{графическая опция}, ..., @mvar{графический объект}, ...)
 
 Функция @code{gr3d} строит объект, который описывает трехмерную сцену. 
 Аргументы есть @i{графические опции} и @i{графические объекты}. 
@@ -2559,12 +2559,12 @@ End of animation sequence
 
 
 
-@deffn  {Графический объект} points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {Графический объект} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
-@deffnx {Графический объект} points ([@var{y1},@var{y2},...])
-@deffnx {Графический объект} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
-@deffnx {Графический объект} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
-@deffnx {Графический объект} points (@var{matrix})
+@deffn  {Графический объект} points ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])
+@deffnx {Графический объект} points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])
+@deffnx {Графический объект} points ([@mvar{y1},@mvar{y2},...])
+@deffnx {Графический объект} points ([[@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}],...])
+@deffnx {Графический объект} points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...], [@mvar{z1},@mvar{z2},...])
+@deffnx {Графический объект} points (@mvar{matrix})
 Строит точки в двух и трех измерениях.
 
 Следующие @i{графические опции} влияют на этот объект: @code{point_size}, 
@@ -2573,14 +2573,14 @@ End of animation sequence
 
 @b{Два измерения}
 
-@code{points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} или
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}
+@code{points ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])} или
+@code{points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])}
 строит точки с координатами @code{[x1,y1]}, @code{[x2,y2]}, и т.д. 
 Если абсциссы не заданы, то они принимаются равными последовательным
 положительным числам, так что 
-@code{points ([@var{y1},@var{y2},...])} строит точки @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, и т.д.
-Если @var{matrix} -- матрица из двух строк или столбцов, то @code{points (@var{matrix})}
-строит соответствующие точки. Если @var{matrix} -- матрица из одной строки или одного столбца,
+@code{points ([@mvar{y1},@mvar{y2},...])} строит точки @code{[1,@mvar{y1}]}, @code{[2,@mvar{y2}]}, и т.д.
+Если @mvar{matrix} -- матрица из двух строк или столбцов, то @code{points (@mvar{matrix})}
+строит соответствующие точки. Если @mvar{matrix} -- матрица из одной строки или одного столбца,
 то абсциссы выбираются автоматически.
 
 Пример:
@@ -2603,10 +2603,10 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} или
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
-строит точки с координатами @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, и т.д.
-Если @var{matrix} -- матрица из трех строк или трех столбцов, то @code{points (@var{matrix})}
+@code{points ([[@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}],...])} или
+@code{points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...], [@mvar{z1},@mvar{z2},...])}
+строит точки с координатами @code{[@mvar{x1},@mvar{y1},@mvar{z1}]}, @code{[@mvar{x2},@mvar{y2},@mvar{z2}]}, и т.д.
+Если @mvar{matrix} -- матрица из трех строк или трех столбцов, то @code{points (@mvar{matrix})}
 строит соответствующие точки.
 
 Примеры:
@@ -2643,15 +2643,15 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {Графический объект} polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffn  {Графический объект} polygon ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])
+@deffnx {Графический объект} polygon ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])
 Строит многоугольник в двух измерениях.
 
 @b{Два измерения}
 
-@code{polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} или 
-@code{polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}:
-строит на плоскости многоугольник с вершинами @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, и т.д.
+@code{polygon ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])} или 
+@code{polygon ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])}:
+строит на плоскости многоугольник с вершинами @code{[@mvar{x1},@mvar{y1}]}, @code{[@mvar{x2},@mvar{y2}]}, и т.д.
 
 Следующие @i{графические опции} влияют на этот объект: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
@@ -2676,13 +2676,13 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
+@deffn  {Графический объект} rectangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}])
 Строит прямоугольники в двух измерениях.
 
 @b{Два измерения}
 
-@code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])} строит прямоугольник с противоположными вершинами
-@code{[@var{x1},@var{y1}]} и @code{[@var{x2},@var{y2}]}.
+@code{rectangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}])} строит прямоугольник с противоположными вершинами
+@code{[@mvar{x1},@mvar{y1}]} и @code{[@mvar{x2},@mvar{y2}]}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
@@ -2714,14 +2714,14 @@ End of animation sequence
 
 
 
-@deffn  {Графический объект} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
+@deffn  {Графический объект} bars ([@mvar{x1},@mvar{h1},@mvar{w1}], [@mvar{x2},@mvar{h2},@mvar{w2}, ...])
 Строит вертикальные полоски в двух измерениях.
 
 @b{Два измерения}
 
-@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
-Строит полоски с центрами на @var{x1}, @var{x2}, ... с высотами @var{h1}, @var{h2}, ...
-и ширинами @var{w1}, @var{w2}, ...
+@code{bars ([@mvar{x1},@mvar{h1},@mvar{w1}], [@mvar{x2},@mvar{h2},@mvar{w2}, ...])} 
+Строит полоски с центрами на @mvar{x1}, @mvar{x2}, ... с высотами @mvar{h1}, @mvar{h2}, ...
+и ширинами @mvar{w1}, @mvar{w2}, ...
 
 Следующие @i{графические опции} влияют на этот объект: @code{key}, 
 @code{fill_color}, @code{fill_density} и @code{line_width}.
@@ -2751,16 +2751,16 @@ End of animation sequence
 
 
 
-@deffn  {Графический объект} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
+@deffn  {Графический объект} ellipse (@mvar{xc}, @mvar{yc}, @mvar{a}, @mvar{b}, @mvar{ang1}, @mvar{ang2})
 Строит эллипсы и круги в двух измерениях.
 
 
 @b{Два измерения}
 
-@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
-строит эллипс с центром в @code{[@var{xc}, @var{yc}]} с горизонтальной и вертикальной 
-полу-осями @var{a} и @var{b} соответственно от угла @var{ang1} до угла
-@var{ang2}.
+@code{ellipse (@mvar{xc}, @mvar{yc}, @mvar{a}, @mvar{b}, @mvar{ang1}, @mvar{ang2})}
+строит эллипс с центром в @code{[@mvar{xc}, @mvar{yc}]} с горизонтальной и вертикальной 
+полу-осями @mvar{a} и @mvar{b} соответственно от угла @mvar{ang1} до угла
+@mvar{ang2}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
@@ -2792,8 +2792,8 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} label ([@var{string},@var{x},@var{y}],...)
-@deffnx {Графический объект} label ([@var{string},@var{x},@var{y},@var{z}],...)
+@deffn  {Графический объект} label ([@mvar{string},@mvar{x},@mvar{y}],...)
+@deffnx {Графический объект} label ([@mvar{string},@mvar{x},@mvar{y},@mvar{z}],...)
 Изображает текстовую метку в двух или трех измерениях.
 
 Следующие @i{графические опции} влияют на этот объект: @code{label_alignment}, 
@@ -2801,8 +2801,8 @@ End of animation sequence
 
 @b{Два измерения}
 
-@code{label([@var{string},@var{x},@var{y}])} изображает текст @var{string} в точке
-@code{[@var{x},@var{y}]}.
+@code{label([@mvar{string},@mvar{x},@mvar{y}])} изображает текст @mvar{string} в точке
+@code{[@mvar{x},@mvar{y}]}.
 
 Пример:
 
@@ -2820,8 +2820,8 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{label([@var{string},@var{x},@var{y},@var{z}])} изображает текст @var{string} в точке
-@code{[@var{x},@var{y},@var{z}]}.
+@code{label([@mvar{string},@mvar{x},@mvar{y},@mvar{z}])} изображает текст @mvar{string} в точке
+@code{[@mvar{x},@mvar{y},@mvar{z}]}.
 
 Пример:
 
@@ -2842,8 +2842,8 @@ End of animation sequence
 
 
 
-@deffn  {Графический объект} vector ([@var{x},@var{y}], [@var{dx},@var{dy}])
-@deffnx {Графический объект} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+@deffn  {Графический объект} vector ([@mvar{x},@mvar{y}], [@mvar{dx},@mvar{dy}])
+@deffnx {Графический объект} vector ([@mvar{x},@mvar{y},@mvar{z}], [@mvar{dx},@mvar{dy},@mvar{dz}])
 Строит вектор в двух или трех измерениях.
 
 Следующие @i{графические опции} влияют на этот объект: @code{head_both}, 
@@ -2852,8 +2852,8 @@ End of animation sequence
 
 @b{Два измерения}
 
-@code{vector([@var{x},@var{y}], [@var{dx},@var{dy}])} строит вектор
-@code{[@var{dx},@var{dy}]} с началом в точке @code{[@var{x},@var{y}]}.
+@code{vector([@mvar{x},@mvar{y}], [@mvar{dx},@mvar{dy}])} строит вектор
+@code{[@mvar{dx},@mvar{dy}]} с началом в точке @code{[@mvar{x},@mvar{y}]}.
 
 Пример:
 
@@ -2873,9 +2873,9 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{vector([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])} 
-строит вектор @code{[@var{dx},@var{dy},@var{dz}]} с
-началом в точке @code{[@var{x},@var{y},@var{z}]}.
+@code{vector([@mvar{x},@mvar{y},@mvar{z}], [@mvar{dx},@mvar{dy},@mvar{dz}])} 
+строит вектор @code{[@mvar{dx},@mvar{dy},@mvar{dz}]} с
+началом в точке @code{[@mvar{x},@mvar{y},@mvar{z}]}.
 
 Пример:
 
@@ -2894,14 +2894,14 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
-@deffnx {Графический объект} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {Графический объект} explicit (@mvar{fcn},@mvar{var},@mvar{minval},@mvar{maxval})
+@deffnx {Графический объект} explicit (@mvar{fcn},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})
 Строит явную функцию в двух или трех измерениях.
 
 @b{Два измерения}
 
-@code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})} строит явную функцию @var{fcn}
-переменной @var{var}, принимающей значения от @var{minval} до @var{maxval}.
+@code{explicit(@mvar{fcn},@mvar{var},@mvar{minval},@mvar{maxval})} строит явную функцию @mvar{fcn}
+переменной @mvar{var}, принимающей значения от @mvar{minval} до @mvar{maxval}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
@@ -2921,10 +2921,10 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{explicit(@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
-строит явную функцию @var{fcn} переменной @var{var1} в пределах
-от @var{minval1} до @var{maxval1}, и переменной @var{var2} в пределах
-от @var{minval2} до @var{maxval2}.
+@code{explicit(@mvar{fcn},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})}
+строит явную функцию @mvar{fcn} переменной @mvar{var1} в пределах
+от @mvar{minval1} до @mvar{maxval1}, и переменной @mvar{var2} в пределах
+от @mvar{minval2} до @mvar{maxval2}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
@@ -2951,16 +2951,16 @@ End of animation sequence
 
 @end deffn
 
-@deffn  {Графический объект} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
-@deffnx {Графический объект} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+@deffn  {Графический объект} implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax})
+@deffnx {Графический объект} implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax},@mvar{z},@mvar{zmin},@mvar{zmax})
 Строит неявную функцию в двух и трех измерениях.
 
 @b{Два измерения}
 
-@code{implicit(@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
-строит неявную функцию, определенную @var{fcn} с переменной @var{x}, принимающей значения
-от @var{xmin} до @var{xmax}, и переменной @var{y}, принимающей значения
-от @var{ymin} до @var{ymax}.
+@code{implicit(@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax})}
+строит неявную функцию, определенную @mvar{fcn} с переменной @mvar{x}, принимающей значения
+от @mvar{xmin} до @mvar{xmax}, и переменной @mvar{y}, принимающей значения
+от @mvar{ymin} до @mvar{ymax}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} и @code{color}.
@@ -2983,11 +2983,11 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
-строит неявную поверхность, определенную @var{fcn}, с переменной @var{x}, принимающей значения
-от @var{xmin} до @var{xmax}, переменной @var{y}, принимающей значения
-от @var{ymin} до @var{ymax} и переменной @var{z}, принимающей значения
-от @var{zmin} до @var{zmax}. Для построения используется @i{алгоритм марширующих кубов}.
+@code{implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax}, @mvar{y},@mvar{ymin},@mvar{ymax}, @mvar{z},@mvar{zmin},@mvar{zmax})}
+строит неявную поверхность, определенную @mvar{fcn}, с переменной @mvar{x}, принимающей значения
+от @mvar{xmin} до @mvar{xmax}, переменной @mvar{y}, принимающей значения
+от @mvar{ymin} до @mvar{ymax} и переменной @mvar{z}, принимающей значения
+от @mvar{zmin} до @mvar{zmax}. Для построения используется @i{алгоритм марширующих кубов}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{x_voxel}, 
 @code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} и @code{color}.
@@ -3010,14 +3010,14 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
+@deffn  {Графический объект} polar (@mvar{radius},@mvar{ang},@mvar{minang},@mvar{maxang})
 Строит двумерную функцию в полярных координатах.
 
 @b{Два измерения}
 
-@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})} изображает функцию 
-@code{@var{radius}(@var{ang})} в полярных координатах переменной  
-@var{ang} в пределах от @var{minang} до @var{maxang}.
+@code{polar (@mvar{radius},@mvar{ang},@mvar{minang},@mvar{maxang})} изображает функцию 
+@code{@mvar{radius}(@mvar{ang})} в полярных координатах переменной  
+@mvar{ang} в пределах от @mvar{minang} до @mvar{maxang}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key} и @code{color}.
@@ -3043,15 +3043,15 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+@deffn  {Графический объект} spherical (@mvar{radius},@mvar{azi},@mvar{minazi},@mvar{maxazi},@mvar{zen},@mvar{minzen},@mvar{maxzen})
 Строит трехмерную функцию в сферических координатах.
 
 @b{Три измерения}
 
-@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
-строит функцию @code{@var{radius}(@var{azi},@var{zen})} в сферических координатах с @i{азимутом}
-@var{azi} в пределах от @var{minazi} до @var{maxazi} и @i{возвышением} @var{zen} в пределах от
-@var{minzen} до @var{maxzen}.
+@code{spherical (@mvar{radius},@mvar{azi},@mvar{minazi},@mvar{maxazi},@mvar{zen},@mvar{minzen},@mvar{maxzen})}
+строит функцию @code{@mvar{radius}(@mvar{azi},@mvar{zen})} в сферических координатах с @i{азимутом}
+@mvar{azi} в пределах от @mvar{minazi} до @mvar{maxazi} и @i{возвышением} @mvar{zen} в пределах от
+@mvar{minzen} до @mvar{maxzen}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
@@ -3070,15 +3070,15 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+@deffn  {Графический объект} cylindrical (@mvar{radius},@mvar{z},@mvar{minz},@mvar{maxz},@mvar{azi},@mvar{minazi},@mvar{maxazi})
 Строит трехмерную функцию в цилиндрических координатах.
 
 @b{Три измерения}
 
-@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
-строит функцию @code{@var{radius}(@var{z},@var{azi})} в цилиндрических координатах с
-@var{z} в пределах от @var{minz} до @var{maxz} и @i{азимутом} @var{azi} в пределах от
-@var{minazi} до @var{maxazi}.
+@code{cylindrical (@mvar{radius},@mvar{z},@mvar{minz},@mvar{maxz},@mvar{azi},@mvar{minazi},@mvar{maxazi})}
+строит функцию @code{@mvar{radius}(@mvar{z},@mvar{azi})} в цилиндрических координатах с
+@mvar{z} в пределах от @mvar{minz} до @mvar{maxz} и @i{азимутом} @mvar{azi} в пределах от
+@mvar{minazi} до @mvar{maxazi}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
@@ -3097,8 +3097,8 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
-@deffnx {Графический объект} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+@deffn  {Графический объект} parametric (@mvar{xfun},@mvar{yfun},@mvar{par},@mvar{parmin},@mvar{parmax})
+@deffnx {Графический объект} parametric (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par},@mvar{parmin},@mvar{parmax})
 Строит параметрическую функцию в двух и трех переменных.
 
 Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
@@ -3106,9 +3106,9 @@ End of animation sequence
 
 @b{Два измерения}
 
-@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} строит параметрическую функцию 
-@code{[@var{xfun},@var{yfun}]} с параметром @var{par}, принимающим значения от  
-@var{parmin} до @var{parmax}.
+@code{parametric (@mvar{xfun},@mvar{yfun},@mvar{par},@mvar{parmin},@mvar{parmax})} строит параметрическую функцию 
+@code{[@mvar{xfun},@mvar{yfun}]} с параметром @mvar{par}, принимающим значения от  
+@mvar{parmin} до @mvar{parmax}.
 
 Пример:
 
@@ -3122,9 +3122,9 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} строит параметрическую кривую
-@code{[@var{xfun},@var{yfun},@var{zfun}]} с параметром @var{par}, принимающем значения от 
-@var{parmin} до @var{parmax}.
+@code{parametric (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par},@mvar{parmin},@mvar{parmax})} строит параметрическую кривую
+@code{[@mvar{xfun},@mvar{yfun},@mvar{zfun}]} с параметром @mvar{par}, принимающем значения от 
+@mvar{parmin} до @mvar{parmax}.
 
 Пример:
 
@@ -3147,17 +3147,17 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Графический объект} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
+@deffn  {Графический объект} image (@mvar{im},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})
 Строит в двух измерениях.
 
 @b{Два измерения}
 
-@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})} строит изображение @var{im} 
-в прямоугольной области от угла @code{(@var{x0},@var{y0})} до @code{(x0+@var{width},y0+@var{height})} 
-на вещественной плоскости. Параметр @var{im} должен быть матрицей вещественных чисел, или матрицей
-векторов длины 3, или объект типа @var{картина}.
+@code{image (@mvar{im},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})} строит изображение @mvar{im} 
+в прямоугольной области от угла @code{(@mvar{x0},@mvar{y0})} до @code{(x0+@mvar{width},y0+@mvar{height})} 
+на вещественной плоскости. Параметр @mvar{im} должен быть матрицей вещественных чисел, или матрицей
+векторов длины 3, или объект типа @mvar{картина}.
 
-Если @var{im} -- матрица вещественных чисел или объект @var{картина уровней},
+Если @mvar{im} -- матрица вещественных чисел или объект @mvar{картина уровней},
 то значения пикселов интерпретируются в соответствии с графической опцией @code{palette},
 которая является вектором длины 3 с компонентами, принимающими значение от -36 до +36.
 Каждое значение является индексом формулы, преобразующей значение уровня в красный,
@@ -3183,12 +3183,12 @@ End of animation sequence
 @code{palette = gray} и @code{palette = color} являются сокращениями 
 для @code{palette = [3,3,3]} и @code{palette = [7,5,15]} соответственно.
 
-Если @var{im} -- матрица векторов длины 3 или объект @var{rgb-картина},
+Если @mvar{im} -- матрица векторов длины 3 или объект @mvar{rgb-картина},
 то они интерпретируются как красный, зеленый и синий цвета.
 
 Примеры:
 
-Если @var{im} -- матрица вещественных чисел или объект @var{картина уровней},
+Если @mvar{im} -- матрица вещественных чисел или объект @mvar{картина уровней},
 то значения пикселов интерпретируются в соответствии с графической опцией @code{palette}.
 @example
 (%i1) load(draw)$
@@ -3205,7 +3205,7 @@ End of animation sequence
 
 См. @code{colorbox}.
 
-Если @var{im} -- матрица векторов длины 3 или объект @var{rgb-картина},
+Если @mvar{im} -- матрица векторов длины 3 или объект @mvar{rgb-картина},
 то они интерпретируются как красный, зеленый и синий цвета.
 @example
 (%i1) load(draw)$
@@ -3219,7 +3219,7 @@ End of animation sequence
 @end example
 
 Пакет @code{draw} автоматически загружает пакет @code{picture}. 
-В данном примере,  объект типа @var{картина уровней} строится вручную
+В данном примере,  объект типа @mvar{картина уровней} строится вручную
 и потом изображается.
 @example
 (%i1) load(draw)$
@@ -3269,22 +3269,22 @@ End of animation sequence
 @end defvr
 
 
-@deffn  {Графический объект} geomap (@var{numlist})
-@deffnx {Графический объект} geomap (@var{numlist},@var{3Dprojection})
+@deffn  {Графический объект} geomap (@mvar{numlist})
+@deffnx {Графический объект} geomap (@mvar{numlist},@mvar{3Dprojection})
 Строит карты в двух и трех измерениях.
 
 @b{Два измерения}
 
 Эта функция работает вместе с глобальной переменной @code{boundaries_array}.
 
-Аргумент @var{numlist} -- список, содержащий числа или списки чисел.
+Аргумент @mvar{numlist} -- список, содержащий числа или списки чисел.
 Все числа должны быть неотрицательными  целыми,
 которые представляют компоненты глобального массива @code{boundaries_array}.
 
 Каждая компонента @code{boundaries_array} есть массив чисел с плавающей точкой --
 координат многоугольного сегмента или границы карты.
 
-Функция @code{geomap (@var{numlist})} проецирует свои аргументы на плоскость и
+Функция @code{geomap (@mvar{numlist})} проецирует свои аргументы на плоскость и
 строит соответствующую границу из @code{boundaries_array}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{line_width}, 
@@ -3367,15 +3367,15 @@ End of animation sequence
 
 @b{Три измерения}
 
-@code{geomap (@var{numlist})} проецирует границы карты на сферу единичного радиуса с центром (0,0,0). 
-Сферу и тип проекции можно изменить при помощи @code{geomap (@var{numlist},@var{3Dprojection})}.
+@code{geomap (@mvar{numlist})} проецирует границы карты на сферу единичного радиуса с центром (0,0,0). 
+Сферу и тип проекции можно изменить при помощи @code{geomap (@mvar{numlist},@mvar{3Dprojection})}.
 
 Доступны следующие трехмерные проекции:
 
 @itemize @bullet
 @item
-@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: проецирует границы карты на сферу
-радиуса @var{r} с центром в (@var{x},@var{y},@var{z}).
+@code{[spherical_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r}]}: проецирует границы карты на сферу
+радиуса @mvar{r} с центром в (@mvar{x},@mvar{y},@mvar{z}).
 @example
 (%i1) load(draw)$
 (%i2) load(worldmap)$
@@ -3385,9 +3385,9 @@ End of animation sequence
 @end example
 
 @item
-@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: ре-проецирует сферические границы карты
-на цилиндр радиуса @var{rc} и осью, проходящей через полюса глобуса радиуса @var{r} с центром в 
-(@var{x},@var{y},@var{z}).
+@code{[cylindrical_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r},@mvar{rc}]}: ре-проецирует сферические границы карты
+на цилиндр радиуса @mvar{rc} и осью, проходящей через полюса глобуса радиуса @mvar{r} с центром в 
+(@mvar{x},@mvar{y},@mvar{z}).
 @example
 (%i1) load(draw)$
 (%i2) load(worldmap)$
@@ -3396,10 +3396,10 @@ End of animation sequence
 @end example
 
 @item
-@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: ре-проецирует сферические границы карты
-на конус с углом @var{alpha} с осью, 
-проходящей через полюса глобуса радиуса @var{r} с центром в 
-(@var{x},@var{y},@var{z}). Оба северный и южный конусы касательны к сфере.
+@code{[conic_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r},@mvar{alpha}]}: ре-проецирует сферические границы карты
+на конус с углом @mvar{alpha} с осью, 
+проходящей через полюса глобуса радиуса @mvar{r} с центром в 
+(@mvar{x},@mvar{y},@mvar{z}). Оба северный и южный конусы касательны к сфере.
 @example
 (%i1) load(draw)$
 (%i2) load(worldmap)$
@@ -3424,15 +3424,15 @@ End of animation sequence
 
 
 
-@deffn  {Графический объект} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+@deffn  {Графический объект} parametric_surface (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par1},@mvar{par1min},@mvar{par1max},@mvar{par2},@mvar{par2min},@mvar{par2max})
 Строит параметрическую поверхность в трех измерениях.
 
 @b{Три измерения}
 
-@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
-строит параметрическую поверхность @code{[@var{xfun},@var{yfun},@var{zfun}]}, с параметром @var{par1},
-принимающем значения от @var{par1min} до @var{par1max} и параметром @var{par2},
-принимающем значения от @var{par2min} до @var{par2max}.
+@code{parametric_surface (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par1},@mvar{par1min},@mvar{par1max},@mvar{par2},@mvar{par2min},@mvar{par2max})}
+строит параметрическую поверхность @code{[@mvar{xfun},@mvar{yfun},@mvar{zfun}]}, с параметром @mvar{par1},
+принимающем значения от @mvar{par1min} до @mvar{par1max} и параметром @mvar{par2},
+принимающем значения от @mvar{par2min} до @mvar{par2max}.
 
 Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
@@ -3468,7 +3468,7 @@ End of animation sequence
 
 
 
-@deffn {Функция} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+@deffn {Функция} draw (@mvar{gr2d}, ..., @mvar{gr3d}, ..., @mvar{options}, ...)
 
 Изображает серию графических сцен.  Ее аргументы есть @code{gr2d} и/или @code{gr3d} 
 графические объекты вместе с некоторыми опциями. По умолчанию сцены собираются вместе в одну колонку.
@@ -3525,10 +3525,10 @@ End of animation sequence
 
 @end deffn
 
-@deffn {Функция} draw2d (@var{option}, @var{graphic_object}, ...)
+@deffn {Функция} draw2d (@mvar{option}, @mvar{graphic_object}, ...)
 
 Эта функция является сокращением для 
-@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr2d(@mvar{options}, ..., @mvar{graphic_object}, ...))}.
 
 Она может использоваться для изображения одиночной двумерной сцены.
 
@@ -3543,10 +3543,10 @@ End of animation sequence
 @end deffn
 
 
-@deffn {Функция} draw3d (@var{option}, @var{graphic_object}, ...)
+@deffn {Функция} draw3d (@mvar{option}, @mvar{graphic_object}, ...)
 
 Эта функция является сокращением для 
-@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr3d(@mvar{options}, ..., @mvar{graphic_object}, ...))}.
 
 Она может использоваться для изображения одиночной трехмерной сцены.
 
@@ -3568,22 +3568,22 @@ End of animation sequence
 
 
 
-@deffn  {Функция} make_level_picture (@var{data})
-@deffnx {Функция} make_level_picture (@var{data},@var{width},@var{height})
-Возвращает объект типа @var{картина} уровней. @code{make_level_picture (@var{data})}
-строит объект @var{картина} из матрицы @var{data}.
-@code{make_level_picture (@var{data},@var{width},@var{height})}
+@deffn  {Функция} make_level_picture (@mvar{data})
+@deffnx {Функция} make_level_picture (@mvar{data},@mvar{width},@mvar{height})
+Возвращает объект типа @mvar{картина} уровней. @code{make_level_picture (@mvar{data})}
+строит объект @mvar{картина} из матрицы @mvar{data}.
+@code{make_level_picture (@mvar{data},@mvar{width},@mvar{height})}
 строит объект из списка чисел; в этом случае должны быть заданы оба параметра 
-@var{width} и @var{height}.
+@mvar{width} и @mvar{height}.
 
-Возвращает объект типа @var{картина}, содержащий следующие четыре части:
+Возвращает объект типа @mvar{картина}, содержащий следующие четыре части:
 
 @enumerate
 @item символ @code{level}
 @item ширина картины
 @item высота картины
 @item массив целых чисел в пределах от 0 до 255, описывающих пикселы.
-Аргумент @var{data} должен содержать только числа в пределах от 0 до 255;
+Аргумент @mvar{data} должен содержать только числа в пределах от 0 до 255;
 отрицательные числа заменяются 0, а те, что превышают 255, заменяются на 255.
 @end enumerate
 
@@ -3610,7 +3610,7 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} picturep (@var{x})
+@deffn  {Функция} picturep (@mvar{x})
 Возвращает @code{true}, если аргумент является правильно сформированной картиной,
 и @code{false} в противном случае.
 
@@ -3621,7 +3621,7 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} picture_equalp (@var{x},@var{y})
+@deffn  {Функция} picture_equalp (@mvar{x},@mvar{y})
 Возвращает @code{true}, если картины совпадают, и @code{false} в противном случае.
 
 @opencatbox
@@ -3631,17 +3631,17 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
-Возвращает rgb-цветную @var{картину}. Все три аргумента должны быть картинами уровней,
+@deffn  {Функция} make_rgb_picture (@mvar{redlevel},@mvar{greenlevel},@mvar{bluelevel})
+Возвращает rgb-цветную @mvar{картину}. Все три аргумента должны быть картинами уровней,
 с уровнями, задающими красный, зеленый и синий цвета соответственно.
 
-Возвращаемый объект @var{картина} содержит следующие четыре части:
+Возвращаемый объект @mvar{картина} содержит следующие четыре части:
 
 @enumerate
 @item символ @code{rgb}
 @item ширина картины
 @item высота картины
-@item целый массив длины @var{3*width*height} с данными о пикселах со значениями 
+@item целый массив длины @mvar{3*width*height} с данными о пикселах со значениями 
 от 0 до 255. Каждый пиксел представляется тремя последовательными числами
 (красный, зелены, синий).
 @end enumerate
@@ -3668,9 +3668,9 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} take_channel (@var{im},@var{color})
-Если параметр @var{color} равен @code{red}, @code{green} или @code{blue},
-то функция @code{take_channel} возвращает соответствующий цветовой канал картины @var{im}.
+@deffn  {Функция} take_channel (@mvar{im},@mvar{color})
+Если параметр @mvar{color} равен @code{red}, @code{green} или @code{blue},
+то функция @code{take_channel} возвращает соответствующий цветовой канал картины @mvar{im}.
 Пример:
 
 @example
@@ -3695,8 +3695,8 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} negative_picture (@var{pic})
-Возвращает негатив картины (@var{уровней} или @var{rgb}).
+@deffn  {Функция} negative_picture (@mvar{pic})
+Возвращает негатив картины (@mvar{уровней} или @mvar{rgb}).
 
 @opencatbox
 @category{Пакет draw}
@@ -3705,8 +3705,8 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} rgb2level (@var{pic})
-Преобразует @var{rgb} картину в картину @var{уровней}
+@deffn  {Функция} rgb2level (@mvar{pic})
+Преобразует @mvar{rgb} картину в картину @mvar{уровней}
 усреднением красного, зеленого и синего каналов.
 
 @opencatbox
@@ -3716,8 +3716,8 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} get_pixel (@var{pic},@var{x},@var{y})
-Возвращает пиксел из картины. Координаты @var{x} и @var{y} должны быть от 0 до
+@deffn  {Функция} get_pixel (@mvar{pic},@mvar{x},@mvar{y})
+Возвращает пиксел из картины. Координаты @mvar{x} и @mvar{y} должны быть от 0 до
 @code{width-1} и @code{height-1} соответственно.
 
 @opencatbox
@@ -3727,7 +3727,7 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} read_xpm (@var{xpm_file})
+@deffn  {Функция} read_xpm (@mvar{xpm_file})
 Читает файл в формате xpm и возвращает объект типа картина.
 
 @opencatbox
@@ -3747,10 +3747,10 @@ End of animation sequence
 @section Функции и переменные для карты мира
 
 
-@deffn  {Функция} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
+@deffn  {Функция} region_boundaries (@mvar{x1},@mvar{y1},@mvar{x2},@mvar{y2})
 Определяет многоугольные сегменты из глобальной переменной @code{boundaries_array},
-содержащиеся внутри прямоугольника с вершинами (@var{x1},@var{y1}) (верхний левый) 
-и (@var{x2},@var{y2}) (нижний правый).
+содержащиеся внутри прямоугольника с вершинами (@mvar{x1},@mvar{y1}) (верхний левый) 
+и (@mvar{x2},@mvar{y2}) (нижний правый).
 
 Пример:
 
@@ -3770,7 +3770,7 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} numbered_boundaries (@var{nlist})
+@deffn  {Функция} numbered_boundaries (@mvar{nlist})
 Строит многоугольные сегменты (границы), обозначаемые числами (координаты в @code{boundaries_array}). 
 Эта функция очень полезна при создании географических объектов.
 
@@ -3793,9 +3793,9 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} make_polygon (@var{nlist})
+@deffn  {Функция} make_polygon (@mvar{nlist})
 Возвращает объект @code{polygon}, построенный из индексов границ. Аргумент
-@var{nlist} -- список компонент в массиве @code{boundaries_array}.
+@mvar{nlist} -- список компонент в массиве @code{boundaries_array}.
 
 Пример:
 
@@ -3856,7 +3856,7 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} make_poly_country (@var{country_name})
+@deffn  {Функция} make_poly_country (@mvar{country_name})
 Строит многоугольники, необходимые для изображения страны в цвете.
 Если есть острова, то страна определяется более чем одним многоугольником.
 
@@ -3876,8 +3876,8 @@ End of animation sequence
 @end deffn
 
 
-@deffn  {Функция} make_poly_continent (@var{continent_name})
-@deffnx  {Функция} make_poly_continent (@var{country_list})
+@deffn  {Функция} make_poly_continent (@mvar{continent_name})
+@deffnx  {Функция} make_poly_continent (@mvar{country_list})
 Строит многоугольники, необходимые для изображение континента или списка
 стран в цвете.
 

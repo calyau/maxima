@@ -83,9 +83,9 @@ directory depends on the system like Windows or Linux and on the installation.
 
 @c -----------------------------------------------------------------------------
 @anchor{appendfile}
-@deffn {Function} appendfile (@var{filename})
+@deffn {Function} appendfile (@mvar{filename})
 
-Appends a console transcript to @var{filename}.  @code{appendfile} is the same
+Appends a console transcript to @mvar{filename}.  @code{appendfile} is the same
 as @mrefcomma{writefile} except that the transcript file, if it exists, is
 always appended.
 
@@ -99,34 +99,34 @@ always appended.
 
 @c -----------------------------------------------------------------------------
 @anchor{batch}
-@deffn  {Function} batch (@var{filename})
-@deffnx {Function} batch (@var{filename}, @code{option})
+@deffn  {Function} batch (@mvar{filename})
+@deffnx {Function} batch (@mvar{filename}, @code{option})
 
-@code{batch(@var{filename})} reads Maxima expressions from @var{filename} and 
-evaluates them.  @code{batch} searches for @var{filename} in the list 
+@code{batch(@mvar{filename})} reads Maxima expressions from @mvar{filename} and 
+evaluates them.  @code{batch} searches for @mvar{filename} in the list 
 @mrefdot{file_search_maxima}  See also @mrefdot{file_search}
 
-@code{batch(@var{filename}, @code{demo})} is like @code{demo(@var{filename})}.
-In this case @code{batch} searches for @var{filename} in the list
+@code{batch(@mvar{filename}, @code{demo})} is like @code{demo(@mvar{filename})}.
+In this case @code{batch} searches for @mvar{filename} in the list
 @mrefdot{file_search_demo}  See @mrefdot{demo}
 
-@code{batch(@var{filename}, @code{test})} is like @mref{run_testsuite} with the
+@code{batch(@mvar{filename}, @code{test})} is like @mref{run_testsuite} with the
 option @code{display_all=true}.  For this case @code{batch} searches 
-@var{filename} in the list @code{file_search_maxima} and not in the list
+@mvar{filename} in the list @code{file_search_maxima} and not in the list
 @mref{file_search_tests} like @code{run_testsuite}.  Furthermore,
 @code{run_testsuite} runs tests which are in the list
 @mrefdot{testsuite_files}  With @code{batch} it is possible to run any file in
 a test mode, which can be found in the list @code{file_search_maxima}.  This is
 useful, when writing a test file.
 
-@var{filename} comprises a sequence of Maxima expressions, each terminated with
+@mvar{filename} comprises a sequence of Maxima expressions, each terminated with
 @code{;} or @code{$}.  The special variable @mref{%} and the function
 @mref{%th} refer to previous results within the file.  The file may include
 @code{:lisp} constructs.  Spaces, tabs, and newlines in the file are ignored.
 A suitable input file may be created by a text editor or by the
 @mref{stringout} function.
 
-@code{batch} reads each input expression from @var{filename}, displays the input
+@code{batch} reads each input expression from @mvar{filename}, displays the input
 to the console, computes the corresponding output expression, and displays the
 output expression.  Input labels are assigned to the input expressions and
 output labels are assigned to the output expressions.  @code{batch} evaluates
@@ -145,9 +145,9 @@ command lines, to give error-free demonstrations, or to help organize one's
 thinking in solving complex problems.
 
 @code{batch} evaluates its argument.  @code{batch} returns the path of
-@var{filename} as a string, when called with no second argument or with the 
+@mvar{filename} as a string, when called with no second argument or with the 
 option @code{demo}.  When called with the option @code{test}, the return value
-is a an empty list @code{[]} or a list with @var{filename} and the numbers of
+is a an empty list @code{[]} or a list with @mvar{filename} and the numbers of
 the tests which have failed.
 
 See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
@@ -161,9 +161,9 @@ See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
 
 @c -----------------------------------------------------------------------------
 @anchor{batchload}
-@deffn {Function} batchload (@var{filename})
+@deffn {Function} batchload (@mvar{filename})
 
-Reads Maxima expressions from @var{filename} and evaluates them, without
+Reads Maxima expressions from @mvar{filename} and evaluates them, without
 displaying the input or output expressions and without assigning labels to
 output expressions.  Printed output (such as produced by @mref{print} or
 @mrefparen{describe} is displayed, however.
@@ -172,7 +172,7 @@ The special variable @mref{%} and the function @mref{%th} refer to previous
 results from the interactive interpreter, not results within the file.
 The file cannot include @code{:lisp} constructs.
 
-@code{batchload} returns the path of @var{filename}, as a string.
+@code{batchload} returns the path of @mvar{filename}, as a string.
 @code{batchload} evaluates its argument.
 
 See also @mrefcomma{batch} and @mrefdot{load}
@@ -220,12 +220,12 @@ functions always truncate their output file, and @mref{tex} and
 
 @c -----------------------------------------------------------------------------
 @anchor{filename_merge}
-@deffn {Function} filename_merge (@var{path}, @var{filename})
+@deffn {Function} filename_merge (@mvar{path}, @mvar{filename})
 
-Constructs a modified path from @var{path} and @var{filename}.  If the final
-component of @var{path} is of the form @code{###.@var{something}}, the component
-is replaced with @code{@var{filename}.@var{something}}.  Otherwise, the final
-component is simply replaced by @var{filename}.
+Constructs a modified path from @mvar{path} and @mvar{filename}.  If the final
+component of @mvar{path} is of the form @code{###.@mvar{something}}, the component
+is replaced with @code{@mvar{filename}.@mvar{something}}.  Otherwise, the final
+component is simply replaced by @mvar{filename}.
 
 The result is a Lisp pathname object.
 
@@ -236,12 +236,12 @@ The result is a Lisp pathname object.
 
 @c -----------------------------------------------------------------------------
 @anchor{file_search}
-@deffn  {Function} file_search (@var{filename})
-@deffnx {Function} file_search (@var{filename}, @var{pathlist})
+@deffn  {Function} file_search (@mvar{filename})
+@deffnx {Function} file_search (@mvar{filename}, @mvar{pathlist})
 
-@code{file_search} searches for the file @var{filename} and returns the path to
+@code{file_search} searches for the file @mvar{filename} and returns the path to
 the file (as a string) if it can be found; otherwise @code{file_search} returns
-@code{false}.  @code{file_search (@var{filename})} searches in the default
+@code{false}.  @code{file_search (@mvar{filename})} searches in the default
 search directories, which are specified by the
 @mrefcomma{file_search_maxima} @mrefcomma{file_search_lisp} and
 @mref{file_search_demo} variables.
@@ -250,7 +250,7 @@ search directories, which are specified by the
 before attempting to match it to ``wildcard'' file search patterns.
 See @mref{file_search_maxima} concerning file search patterns.
 
-The argument @var{filename} can be a path and file name, or just a file name,
+The argument @mvar{filename} can be a path and file name, or just a file name,
 or, if a file search directory includes a file search pattern, just the base of
 the file name (without an extension).  For example,
 
@@ -263,12 +263,12 @@ file_search ("zeta");
 all find the same file, assuming the file exists and 
 @code{/home/wfs/special/###.mac} is in @code{file_search_maxima}.
 
-@code{file_search (@var{filename}, @var{pathlist})} searches only in the
-directories specified by @var{pathlist}, which is a list of strings.  The
-argument @var{pathlist} supersedes the default search directories, so if the
+@code{file_search (@mvar{filename}, @mvar{pathlist})} searches only in the
+directories specified by @mvar{pathlist}, which is a list of strings.  The
+argument @mvar{pathlist} supersedes the default search directories, so if the
 path list is given, @code{file_search} searches only the ones specified, and not
 any of the default search directories.  Even if there is only one directory in
-@var{pathlist}, it must still be given as a one-element list.
+@mvar{pathlist}, it must still be given as a one-element list.
 
 The user may modify the default search directories.
 See @mrefdot{file_search_maxima}
@@ -339,10 +339,10 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 
 @c -----------------------------------------------------------------------------
 @anchor{file_type}
-@deffn {Function} file_type (@var{filename})
+@deffn {Function} file_type (@mvar{filename})
 
-Returns a guess about the content of @var{filename}, based on the filename 
-extension.  @var{filename} need not refer to an actual file; no attempt is made 
+Returns a guess about the content of @mvar{filename}, based on the filename 
+extension.  @mvar{filename} need not refer to an actual file; no attempt is made 
 to open the file and inspect the content.
 
 The return value is a symbol, either @code{object}, @code{lisp}, or
@@ -397,11 +397,11 @@ See also @mrefdot{file_type}
 
 @c -----------------------------------------------------------------------------
 @anchor{load}
-@deffn {Function} load (@var{filename})
+@deffn {Function} load (@mvar{filename})
 
-Evaluates expressions in @var{filename}, thus bringing variables, functions, and
+Evaluates expressions in @mvar{filename}, thus bringing variables, functions, and
 other objects into Maxima.  The binding of any existing object is clobbered by
-the binding recovered from @var{filename}.  To find the file, @code{load} calls
+the binding recovered from @mvar{filename}.  To find the file, @code{load} calls
 @mref{file_search} with @mref{file_search_maxima} and
 @mref{file_search_lisp} as the search directories.  If @code{load} succeeds, it
 returns the name of the file.  Otherwise @code{load} prints an error message.
@@ -413,7 +413,7 @@ be processed by @code{load}.  @code{load} calls @mref{loadfile} to load Lisp
 files and @mref{batchload} to load Maxima files.
 
 @code{load} does not recognize @code{:lisp} constructs in Maxima files, and
-while processing @var{filename}, the global variables @code{_}, @code{__},
+while processing @mvar{filename}, the global variables @code{_}, @code{__},
 @code{%}, and @code{%th} have whatever bindings they had when @code{load} was
 called.
 
@@ -472,9 +472,9 @@ End of batchfile
 
 @c -----------------------------------------------------------------------------
 @anchor{loadfile}
-@deffn {Function} loadfile (@var{filename})
+@deffn {Function} loadfile (@mvar{filename})
 
-Evaluates Lisp expressions in @var{filename}.  @code{loadfile} does not invoke
+Evaluates Lisp expressions in @mvar{filename}.  @code{loadfile} does not invoke
 @mrefcomma{file_search} so @code{filename} must include the file extension and
 as much of the path as needed to find the file.
 
@@ -520,11 +520,11 @@ When @code{loadprint} is @code{false}, never print a message.
 @anchor{pathname_directory}
 @anchor{pathname_name}
 @anchor{pathname_type}
-@deffn  {Function} pathname_directory (@var{pathname})
-@deffnx {Function} pathname_name (@var{pathname})
-@deffnx {Function} pathname_type (@var{pathname})
+@deffn  {Function} pathname_directory (@mvar{pathname})
+@deffnx {Function} pathname_name (@mvar{pathname})
+@deffnx {Function} pathname_type (@mvar{pathname})
 
-These functions return the components of @var{pathname}.
+These functions return the components of @mvar{pathname}.
 
 Examples:
 
@@ -549,17 +549,17 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{printfile}
-@deffn {Function} printfile (@var{path})
+@deffn {Function} printfile (@mvar{path})
 
-Prints the file named by @var{path} to the console.  @var{path} may be a string
+Prints the file named by @mvar{path} to the console.  @mvar{path} may be a string
 or a symbol; if it is a symbol, it is converted to a string.
 
-If @var{path} names a file which is accessible from the current working
+If @mvar{path} names a file which is accessible from the current working
 directory, that file is printed to the console.  Otherwise, @code{printfile}
-attempts to locate the file by appending @var{path} to each of the elements of
+attempts to locate the file by appending @mvar{path} to each of the elements of
 @mref{file_search_usage} via @mrefdot{filename_merge}
 
-@code{printfile} returns @var{path} if it names an existing file,
+@code{printfile} returns @mvar{path} if it names an existing file,
 or otherwise the result of a successful filename merge.
 
 @opencatbox
@@ -571,20 +571,20 @@ or otherwise the result of a successful filename merge.
 
 @c -----------------------------------------------------------------------------
 @anchor{save}
-@deffn  {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, @dots{})
-@deffnx {Function} save (@var{filename}, values, functions, labels, @dots{})
-@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @dots{})
-@deffnx {Function} save (@var{filename}, all)
-@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, @dots{})
+@deffn  {Function} save (@mvar{filename}, @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, @dots{})
+@deffnx {Function} save (@mvar{filename}, values, functions, labels, @dots{})
+@deffnx {Function} save (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Function} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, @dots{})
+@deffnx {Function} save (@mvar{filename}, all)
+@deffnx {Function} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, @mvar{name_2}=@mvar{expr_2}, @dots{})
 
-Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, @dots{},
-in @var{filename}.  The arguments are the names of variables, functions, or
+Stores the current values of @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, @dots{},
+in @mvar{filename}.  The arguments are the names of variables, functions, or
 other objects.  If a name has no value or function associated with it, it is
-ignored.  @code{save} returns @var{filename}.
+ignored.  @code{save} returns @mvar{filename}.
 
 @code{save} stores data in the form of Lisp expressions.
-The data stored by @code{save} may be recovered by @code{load (@var{filename})}.
+The data stored by @code{save} may be recovered by @code{load (@mvar{filename})}.
 See @mrefdot{load}
 
 The global flag @mref{file_output_append} governs whether @code{save} appends or
@@ -593,37 +593,37 @@ truncates the output file.  When @code{file_output_append} is @code{true},
 output file.  In either case, @code{save} creates the file if it does not yet
 exist.
 
-The special form @code{save (@var{filename}, values, functions, labels, ...)}
+The special form @code{save (@mvar{filename}, values, functions, labels, ...)}
 stores the items named by @mrefcomma{values} @mrefcomma{functions}@w{}
 @mrefcomma{labels} etc.  The names may be any specified by the variable
 @mrefdot{infolists}  @code{values} comprises all user-defined variables.
 
-The special form @code{save (@var{filename}, [@var{m}, @var{n}])} stores the
-values of input and output labels @var{m} through @var{n}.  Note that @var{m}
-and @var{n} must be literal integers.  Input and output labels may also be
+The special form @code{save (@mvar{filename}, [@mvar{m}, @mvar{n}])} stores the
+values of input and output labels @mvar{m} through @mvar{n}.  Note that @mvar{m}
+and @mvar{n} must be literal integers.  Input and output labels may also be
 stored one by one, e.g., @code{save ("foo.1", %i42, %o42)}.
-@code{save (@var{filename}, labels)} stores all input and output labels.
+@code{save (@mvar{filename}, labels)} stores all input and output labels.
 When the stored labels are recovered, they clobber existing labels.
 
-The special form @code{save (@var{filename}, @var{name_1}=@var{expr_1},
-@var{name_2}=@var{expr_2}, ...)} stores the values of @var{expr_1},
-@var{expr_2}, @dots{}, with names @var{name_1}, @var{name_2}, @dots{}
+The special form @code{save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1},
+@mvar{name_2}=@mvar{expr_2}, ...)} stores the values of @mvar{expr_1},
+@mvar{expr_2}, @dots{}, with names @mvar{name_1}, @mvar{name_2}, @dots{}
 It is useful to apply this form to input and output labels, e.g.,
 @code{save ("foo.1", aa=%o88)}.  The right-hand side of the equality in this
 form may be any expression, which is evaluated.  This form does not introduce
 the new names into the current Maxima environment, but only stores them in
-@var{filename}.
+@mvar{filename}.
 
 These special forms and the general form of @code{save} may be mixed at will.
-For example, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
+For example, @code{save (@mvar{filename}, aa, bb, cc=42, functions, [11, 17])}.
 
-The special form @code{save (@var{filename}, all)} stores the current state of
+The special form @code{save (@mvar{filename}, all)} stores the current state of
 Maxima.  This includes all user-defined variables, functions, arrays, etc., as
 well as some automatically defined items.  The saved items include system
 variables, such as @mref{file_search_maxima} or @mrefcomma{showtime} if they
 have been assigned new values by the user; see @mrefdot{myoptions}
 
-@code{save} evaluates @var{filename} and quotes all other arguments.
+@code{save} evaluates @mvar{filename} and quotes all other arguments.
 
 @opencatbox
 @category{Session management} @category{File output}
@@ -632,11 +632,11 @@ have been assigned new values by the user; see @mrefdot{myoptions}
 
 @c -----------------------------------------------------------------------------
 @anchor{stringout}
-@deffn  {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
-@deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Function} stringout (@var{filename}, input)
-@deffnx {Function} stringout (@var{filename}, functions)
-@deffnx {Function} stringout (@var{filename}, values)
+@deffn  {Function} stringout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, @dots{})
+@deffnx {Function} stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Function} stringout (@mvar{filename}, input)
+@deffnx {Function} stringout (@mvar{filename}, functions)
+@deffnx {Function} stringout (@mvar{filename}, values)
 
 @code{stringout} writes expressions to a file in the same form the expressions
 would be typed for input.  The file can then be used as input for the
@@ -660,17 +660,17 @@ If @mref{grind} is @code{true}, @code{stringout} formats the output using the
 @code{grind} format.  Otherwise the @code{string} format is used.  See
 @code{grind} and @code{string}.
 
-The special form @code{stringout (@var{filename}, [@var{m}, @var{n}])} writes
+The special form @code{stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])} writes
 the values of input labels m through n, inclusive.
 
-The special form @code{stringout (@var{filename}, input)} writes all
+The special form @code{stringout (@mvar{filename}, input)} writes all
 input labels to the file.
 
-The special form @code{stringout (@var{filename}, functions)} writes all
+The special form @code{stringout (@mvar{filename}, functions)} writes all
 user-defined functions (named by the global list @mrefparen{functions} to the
 file.
 
-The special form @code{stringout (@var{filename}, values)} writes all
+The special form @code{stringout (@mvar{filename}, values)} writes all
 user-assigned variables (named by the global list @mrefparen{values} to the file.
 Each variable is printed as an assignment statement, with the name of the
 variable, a colon, and its value.  Note that the general form of
@@ -683,16 +683,16 @@ variable, a colon, and its value.  Note that the general form of
 
 @c -----------------------------------------------------------------------------
 @anchor{with_stdout}
-@deffn  {Function} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
-@deffnx {Function} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{})
+@deffn  {Function} with_stdout (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, @dots{})
+@deffnx {Function} with_stdout (@mvar{s}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, @dots{})
 
-Evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, @dots{} and writes any
-output thus generated to a file @var{f} or output stream @var{s}.  The evaluated
+Evaluates @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, @dots{} and writes any
+output thus generated to a file @mvar{f} or output stream @mvar{s}.  The evaluated
 expressions are not written to the output.  Output may be generated by
 @mrefcomma{print} @mrefcomma{display} @mrefcomma{grind} among other functions.
 
 The global flag @mref{file_output_append} governs whether @code{with_stdout}
-appends or truncates the output file @var{f}.  When @code{file_output_append}
+appends or truncates the output file @mvar{f}.  When @code{file_output_append}
 is @code{true}, @code{with_stdout} appends to the output file.  Otherwise,
 @code{with_stdout} truncates the output file.  In either case,
 @code{with_stdout} creates the file if it does not yet exist.
@@ -735,9 +735,9 @@ See also @mrefdot{writefile}
 
 @c -----------------------------------------------------------------------------
 @anchor{writefile}
-@deffn {Function} writefile (@var{filename})
+@deffn {Function} writefile (@mvar{filename})
 
-Begins writing a transcript of the Maxima session to @var{filename}.
+Begins writing a transcript of the Maxima session to @mvar{filename}.
 All interaction between the user and Maxima is then recorded in this file,
 @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
 just as it appears on the console.
@@ -747,7 +747,7 @@ into Maxima.  To make a file containing expressions which can be reloaded,
 see @mref{save} and @mrefdot{stringout}  @code{save} stores expressions in Lisp
 form, while @code{stringout} stores expressions in Maxima form.
 
-The effect of executing @code{writefile} when @var{filename} already exists
+The effect of executing @code{writefile} when @mvar{filename} already exists
 depends on the underlying Lisp implementation; the transcript file may be
 clobbered, or the file may be appended.  @mref{appendfile} always appends to
 the transcript file.
@@ -773,29 +773,29 @@ displayed by @code{playback}.
 
 @c -----------------------------------------------------------------------------
 @anchor{tex}
-@deffn  {Function} tex (@var{expr})
-@deffnx {Function} tex (@var{expr}, @var{destination})
-@deffnx {Function} tex (@var{expr}, false)
-@deffnx {Function} tex (@var{label})
-@deffnx {Function} tex (@var{label}, @var{destination})
-@deffnx {Function} tex (@var{label}, false)
+@deffn  {Function} tex (@mvar{expr})
+@deffnx {Function} tex (@mvar{expr}, @mvar{destination})
+@deffnx {Function} tex (@mvar{expr}, false)
+@deffnx {Function} tex (@mvar{label})
+@deffnx {Function} tex (@mvar{label}, @mvar{destination})
+@deffnx {Function} tex (@mvar{label}, false)
 
 Prints a representation of an expression suitable for the TeX document
 preparation system.  The result is a fragment of a document, which can be copied
 into a larger document but not processed by itself.
 
-@code{tex (@var{expr})} prints a TeX representation of @var{expr} on the
+@code{tex (@mvar{expr})} prints a TeX representation of @mvar{expr} on the
 console.
 
-@code{tex (@var{label})} prints a TeX representation of the expression named by
-@var{label} and assigns it an equation label (to be displayed to the left of the
+@code{tex (@mvar{label})} prints a TeX representation of the expression named by
+@mvar{label} and assigns it an equation label (to be displayed to the left of the
 expression).  The TeX equation label is the same as the Maxima label.
 
-@var{destination} may be an output stream or file name.  When @var{destination}
+@mvar{destination} may be an output stream or file name.  When @mvar{destination}
 is a file name, @code{tex} appends its output to the file.  The functions
 @code{openw} and @code{opena} create output streams.
 
-@code{tex (@var{expr}, false)} and @code{tex (@var{label}, false)}
+@code{tex (@mvar{expr}, false)} and @code{tex (@mvar{label}, false)}
 return their TeX output as a string.
 
 @code{tex} evaluates its first argument after testing it to see if it is a
@@ -825,7 +825,7 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
-@code{tex (@var{expr}, false)} returns its TeX output as a string.
+@code{tex (@mvar{expr}, false)} returns its TeX output as a string.
 
 @c ===beg===
 @c S : tex (x * y * z, false);
@@ -845,9 +845,9 @@ $$-\cos x$$
 
 @c -----------------------------------------------------------------------------
 @anchor{tex1}
-@deffn {Function} tex1 (@var{e})
+@deffn {Function} tex1 (@mvar{e})
 
-Returns a string which represents the TeX output for the expressions @var{e}.
+Returns a string which represents the TeX output for the expressions @mvar{e}.
 The TeX output is not enclosed in delimiters for an equation or any other
 environment.
 
@@ -864,38 +864,38 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{texput}
-@deffn  {Function} texput (@var{a}, @var{s})
-@deffnx {Function} texput (@var{a}, @var{f})
-@deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn  {Function} texput (@mvar{a}, @mvar{s})
+@deffnx {Function} texput (@mvar{a}, @mvar{f})
+@deffnx {Function} texput (@mvar{a}, @mvar{s}, @mvar{operator_type})
+@deffnx {Function} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)
+@deffnx {Function} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)
 
-Assign the TeX output for the atom @var{a}, which can be a symbol or the name
+Assign the TeX output for the atom @mvar{a}, which can be a symbol or the name
 of an operator.
 
-@code{texput (@var{a}, @var{s})} causes the @code{tex} function to interpolate
-the string @var{s} into the TeX output in place of @var{a}.
+@code{texput (@mvar{a}, @mvar{s})} causes the @code{tex} function to interpolate
+the string @mvar{s} into the TeX output in place of @mvar{a}.
 
-@code{texput (@var{a}, @var{f})} causes the @code{tex} function to call the
-function @var{f} to generate TeX output.  @var{f} must accept one argument,
-which is an expression which has operator @var{a}, and must return a string
-(the TeX output).  @var{f} may call @code{tex1} to generate TeX output for the
+@code{texput (@mvar{a}, @mvar{f})} causes the @code{tex} function to call the
+function @mvar{f} to generate TeX output.  @mvar{f} must accept one argument,
+which is an expression which has operator @mvar{a}, and must return a string
+(the TeX output).  @mvar{f} may call @code{tex1} to generate TeX output for the
 arguments of the input expression.
 
-@code{texput (@var{a}, @var{s}, @var{operator_type})}, where @var{operator_type}
+@code{texput (@mvar{a}, @mvar{s}, @mvar{operator_type})}, where @mvar{operator_type}
 is @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, or @code{nofix},
-causes the @code{tex} function to interpolate @var{s} into the TeX output in
-place of @var{a}, and to place the interpolated text in the appropriate
+causes the @code{tex} function to interpolate @mvar{s} into the TeX output in
+place of @mvar{a}, and to place the interpolated text in the appropriate
 position.
 
-@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)} causes the @code{tex}
-function to interpolate @var{s_1} and @var{s_2} into the TeX output on either
-side of the arguments of @var{a}.  The arguments (if more than one) are
+@code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)} causes the @code{tex}
+function to interpolate @mvar{s_1} and @mvar{s_2} into the TeX output on either
+side of the arguments of @mvar{a}.  The arguments (if more than one) are
 separated by commas.
 
-@code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)} causes the
-@code{tex} function to interpolate @var{s_1} and @var{s_2} into the TeX output
-on either side of the arguments of @var{a}, with @var{s_3} separating the
+@code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)} causes the
+@code{tex} function to interpolate @mvar{s_1} and @mvar{s_2} into the TeX output
+on either side of the arguments of @mvar{a}, with @mvar{s_3} separating the
 arguments.
 
 Examples:
@@ -1072,8 +1072,8 @@ $$ \langle a \, | \,b \rangle $$
 
 @c -----------------------------------------------------------------------------
 @anchor{get_tex_environment}
-@deffn  {Function} get_tex_environment (@var{op})
-@deffnx {Function} set_tex_environment (@var{op}, @var{before}, @var{after})
+@deffn  {Function} get_tex_environment (@mvar{op})
+@deffnx {Function} set_tex_environment (@mvar{op}, @mvar{before}, @mvar{after})
 
 Customize the TeX environment output by @code{tex}.
 As maintained by these functions, the TeX environment comprises two strings:
@@ -1083,11 +1083,11 @@ Only the TeX environment of the top-level operator in an expression
 is output; TeX environments associated with other operators are ignored.
 
 @code{get_tex_environment} returns the TeX enviroment which is applied
-to the operator @var{op}; returns the default if no other environment
+to the operator @mvar{op}; returns the default if no other environment
 has been assigned.
 
 @code{set_tex_environment} assigns the TeX environment for the operator
-@var{op}.
+@mvar{op}.
 
 Examples:
 
@@ -1126,7 +1126,7 @@ $$f(x):=1-x$$
 @c -----------------------------------------------------------------------------
 @anchor{get_tex_enviroment_default}
 @deffn  {Function} get_tex_environment_default ()
-@deffnx {Function} set_tex_environment_default (@var{before}, @var{after})
+@deffnx {Function} set_tex_environment_default (@mvar{before}, @mvar{after})
 
 Customize the TeX environment output by @code{tex}.
 As maintained by these functions, the TeX environment comprises two strings:
@@ -1194,21 +1194,21 @@ expressions to be printed farther to the right.
 
 @c -----------------------------------------------------------------------------
 @anchor{fortran}
-@deffn {Function} fortran (@var{expr})
+@deffn {Function} fortran (@mvar{expr})
 
-Prints @var{expr} as a Fortran statement.
+Prints @mvar{expr} as a Fortran statement.
 The output line is indented with spaces.
 If the line is too long, @code{fortran} prints continuation lines.
 @code{fortran} prints the exponentiation operator @code{^} as @code{**},
 and prints a complex number @code{a + b %i} in the form @code{(a,b)}.
 
-@var{expr} may be an equation.  If so, @code{fortran} prints an assignment
+@mvar{expr} may be an equation.  If so, @code{fortran} prints an assignment
 statement, assigning the right-hand side of the equation to the left-hand side.
-In particular, if the right-hand side of @var{expr} is the name of a matrix,
+In particular, if the right-hand side of @mvar{expr} is the name of a matrix,
 then @code{fortran} prints an assignment statement for each element of the
 matrix.
 
-If @var{expr} is not something recognized by @code{fortran},
+If @mvar{expr} is not something recognized by @code{fortran},
 the expression is printed in @mref{grind} format without complaint.
 @code{fortran} does not know about lists, arrays, or functions.
 

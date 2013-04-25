@@ -66,7 +66,7 @@ Se voc@^{e} quer uma seq@"{u}@^{e}ncia de express@~{o}es, voc@^{e} faz
 f(x) := (expr1, expr2, ...., exprn);
 @end example
 
-e o valor de @var{exprn} @'{e} que @'{e} retornado pela fun@value{cedilha}@~{a}o.
+e o valor de @mvar{exprn} @'{e} que @'{e} retornado pela fun@value{cedilha}@~{a}o.
 
 Se voc@^{e} deseja fazer um @code{return} de alguma express@~{a}o dentro da
 fun@value{cedilha}@~{a}o ent@~{a}o voc@^{e} deve usar @code{block} e @code{return}.
@@ -149,49 +149,49 @@ an@'{a}logamente a @code{funmake} para fun@value{cedilha}@~{o}es comuns.
 O comando @code{arrayapply} aplica uma fun@value{cedilha}@~{a}o de array a seus argmentos,
 an@'{a}logamente a @code{apply} para fun@value{cedilha}@~{o}es comuns.
 N@~{a}o existe nada exatamente an@'{a}logo a @code{map} para fun@value{cedilha}@~{o}es de array,
-embora @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} ou
-@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, onde @var{L} @'{e} uma lista,
+embora @code{map(lambda([@mvar{x}], @mvar{a}[@mvar{x}]), @mvar{L})} ou
+@code{makelist(@mvar{a}[@mvar{x}], @mvar{x}, @mvar{L})}, onde @mvar{L} @'{e} uma lista,
 n@~{a}o estejam t@~{a}o longe disso.
 
 O comando @code{remarray} remove uma defini@value{cedilha}@~{a}o de fun@value{cedilha}@~{a}o de array (incluindo qualquer valor armazenado pela fun@value{cedilha}@~{a}o removida),
 an@'{a}logo a @code{remfunction} para fun@value{cedilha}@~{o}es comuns.
 
-o comando @code{kill(@var{a}[@var{x}])} remove o valor da fun@value{cedilha}@~{a}o de array @var{a}
-armazenado para o argumento @var{x};
-a pr@'{o}xima vez que @var{a} foor chamada com o argumento @var{x},
+o comando @code{kill(@mvar{a}[@mvar{x}])} remove o valor da fun@value{cedilha}@~{a}o de array @mvar{a}
+armazenado para o argumento @mvar{x};
+a pr@'{o}xima vez que @mvar{a} foor chamada com o argumento @mvar{x},
 o valor da fun@value{cedilha}@~{a}o @'{e} recomputado.
 Todavia, n@~{a}o exite caminho para remover todos os valores armazenados de uma vez,
-exceto para @code{kill(@var{a})} ou @code{remarray(@var{a})},
+exceto para @code{kill(@mvar{a})} ou @code{remarray(@mvar{a})},
 o qual remove tamb@'{e}m remove a defini@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o de array.
 
 @node Macros, Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Fun@value{cedilha}@~{a}o, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 @section Macros
 
-@deffn {Fun@value{cedilha}@~{a}o} buildq (@var{L}, @var{expr})
-Substitue vari@'{a}veis nomeadas pela lista @var{L} dentro da express@~{a}o @var{expr},
+@deffn {Fun@value{cedilha}@~{a}o} buildq (@mvar{L}, @mvar{expr})
+Substitue vari@'{a}veis nomeadas pela lista @mvar{L} dentro da express@~{a}o @mvar{expr},
 paralelamente,
-sem avaliar @var{expr}.
+sem avaliar @mvar{expr}.
 A express@~{a}o resultante @'{e} simplificada,
 mas n@~{a}o avaliada,
 ap@'{o}s @code{buildq} realizar a substitui@value{cedilha}@~{a}o.
 
-Os elementos de @var{L} s@~{a}o s@'{i}mbolos ou express@~{o}es de atribui@value{cedilha}@~{a}o @code{@var{s@'{i}mbolo}: @var{valor}},
+Os elementos de @mvar{L} s@~{a}o s@'{i}mbolos ou express@~{o}es de atribui@value{cedilha}@~{a}o @code{@mvar{s@'{i}mbolo}: @mvar{valor}},
 avaliadas paralelamente.
 Isto @'{e}, a associa@value{cedilha}@~{a}o de uma vari@'{a}vel sobre o lado direito de uma atribui@value{cedilha}@~{a}o
 @'{e} a associa@value{cedilha}@~{a}o daquela vari@'{a}vel no contexto do qual @code{buildq} for chamada,
-n@~{a}o a associa@value{cedilha}@~{a}o daquela vari@'{a}vel na lista @var{L} de vari@'{a}veis.
-Se alguma vari@'{a}vel em @var{L} n@~{a}o dada como uma atribui@value{cedilha}@~{a}o expl@'{i}cita,
+n@~{a}o a associa@value{cedilha}@~{a}o daquela vari@'{a}vel na lista @mvar{L} de vari@'{a}veis.
+Se alguma vari@'{a}vel em @mvar{L} n@~{a}o dada como uma atribui@value{cedilha}@~{a}o expl@'{i}cita,
 sua associa@value{cedilha}@~{a}o em @code{buildq} @'{e} a mesma que no contexto no qual @code{buildq} for chamada.
 
-Ent@~{a}o as vari@'{a}veis nomeadas em @var{L} s@~{a}o substituidas em @var{expr} paralelamente.
+Ent@~{a}o as vari@'{a}veis nomeadas em @mvar{L} s@~{a}o substituidas em @mvar{expr} paralelamente.
 Isto @'{e}, a substitui@value{cedilha}@~{a}o para cada vari@'{a}vel @'{e} determinada antes que qualquer substitui@value{cedilha}@~{a}o seja feita,
 ent@~{a}o a substitui@value{cedilha}@~{a}o para uma vari@'{a}vel n@~{a}o tem efeito sobre qualquer outra.
 
-Se qualquer vari@'{a}vel @var{x} aparecer como @code{splice (@var{x})} em @var{expr},
-ent@~{a}o @var{x} deve estar associada para uma lista,
-e a lista recebe uma aplica@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{splice} (@'{e} interpolada) na @var{expr} em lugar de substitu@'{i}da.
+Se qualquer vari@'{a}vel @mvar{x} aparecer como @code{splice (@mvar{x})} em @mvar{expr},
+ent@~{a}o @mvar{x} deve estar associada para uma lista,
+e a lista recebe uma aplica@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{splice} (@'{e} interpolada) na @mvar{expr} em lugar de substitu@'{i}da.
 
-Quaisquer vari@'{a}veis em @var{expr} n@~{a}o aparecendo em @var{L} s@~{a}o levados no resultado tal como foram escritos,
+Quaisquer vari@'{a}veis em @mvar{expr} n@~{a}o aparecendo em @mvar{L} s@~{a}o levados no resultado tal como foram escritos,
 mesmo se elas tiverem associa@value{cedilha}@~{o}es no contexto do qual @code{buildq} tiver sido chamada.
 
 Exemplos
@@ -241,7 +241,7 @@ Se a simplifica@value{cedilha}@~{a}o for aplicada antes da substitui@value{cedil
 (%o2)                        2 a b c
 @end example
 
-As vari@'{a}veis em @var{L} s@~{a}o associadas em paralelo; se associadas seq@"{u}@^{e}ncialmente,
+As vari@'{a}veis em @mvar{L} s@~{a}o associadas em paralelo; se associadas seq@"{u}@^{e}ncialmente,
 o primeiro resultado pode ser @code{foo (b, b)}.
 Substitui@value{cedilha}@~{o}es s@~{a}o realizadas em paralelo;
 compare o segundo resultado com o resultado de @code{subst},
@@ -283,12 +283,12 @@ e seus valores sobre o lado direito.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} macroexpand (@var{expr})
-Retorna a expans@~{a}o da macro de @var{expr} sem avaliar a express@~{a}o,
+@deffn {Fun@value{cedilha}@~{a}o} macroexpand (@mvar{expr})
+Retorna a expans@~{a}o da macro de @mvar{expr} sem avaliar a express@~{a}o,
 quando @code{expr} for uma chamada de fun@value{cedilha}@~{a}o de macro.
-De outra forma, @code{macroexpand} retorna @var{expr}.
+De outra forma, @code{macroexpand} retorna @mvar{expr}.
 
-Se a expans@~{a}o de @var{expr} retorna outra chamada de fun@value{cedilha}@~{a}o de macro,
+Se a expans@~{a}o de @mvar{expr} retorna outra chamada de fun@value{cedilha}@~{a}o de macro,
 aquela chamada de fun@value{cedilha}@~{a}o de macro @'{e} tamb@'{e}m expandida.
 
 @code{macroexpand} coloca ap@'{o}strofo em seus argumentos, isto @'{e}, n@~{a}o os avalia.
@@ -327,16 +327,16 @@ Exemplos
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} macroexpand1 (@var{expr})
-Retorna a expans@~{a}o de macro de @var{expr} sem avaliar a express@~{a}o,
+@deffn {Fun@value{cedilha}@~{a}o} macroexpand1 (@mvar{expr})
+Retorna a expans@~{a}o de macro de @mvar{expr} sem avaliar a express@~{a}o,
 quando @code{expr} for uma chamada de fun@value{cedilha}@~{a}o de macro.
-De outra forma, @code{macroexpand1} retorna @var{expr}.
+De outra forma, @code{macroexpand1} retorna @mvar{expr}.
 
 @code{macroexpand1} n@~{a}o avalia seus argumentos.
 Todavia, se a expans@~{a}o de uma chamada de fun@value{cedilha}@~{a}o de macro tiver algum efeito,
 esse efeito colateral @'{e} executado.
 
-Se a expans@~{a}o de @var{expr} retornar outra chamada de fun@value{cedilha}@~{a}o de macro,
+Se a expans@~{a}o de @mvar{expr} retornar outra chamada de fun@value{cedilha}@~{a}o de macro,
 aquela chamada de fun@value{cedilha}@~{a}o de macro n@~{a}o @'{e} expandida.
 
 Veja tamb@'{e}m @code{::=}, @code{macros}, e @code{macroexpand}.
@@ -380,20 +380,20 @@ Veja tamb@'{e}m @code{infolists}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} splice (@var{a})
-Une como se fosse um elo de liga@value{cedilha}@~{a}o (interpola) a lista nomeada atrav@'{e}s do @'{a}tomo @var{a} em uma express@~{a}o,
+@deffn {Fun@value{cedilha}@~{a}o} splice (@mvar{a})
+Une como se fosse um elo de liga@value{cedilha}@~{a}o (interpola) a lista nomeada atrav@'{e}s do @'{a}tomo @mvar{a} em uma express@~{a}o,
 mas somente se @code{splice} aparecer dentro de @code{buildq};
 de outra forma, @code{splice} @'{e} tratada como uma fun@value{cedilha}@~{a}o indefinida.
-Se aparecer dentro de @code{buildq} com @var{a} sozinho (sem @code{splice}),
-@var{a} @'{e} substituido (n@~{a}o interpolado) como uma lista no resultado.
+Se aparecer dentro de @code{buildq} com @mvar{a} sozinho (sem @code{splice}),
+@mvar{a} @'{e} substituido (n@~{a}o interpolado) como uma lista no resultado.
 O argumento de @code{splice} pode somente ser um @'{a}tomo;
 n@~{a}o pode ser uma lista lateral ou uma express@~{a}o que retorna uma lista.
 
 Tipicamente @code{splice} fornece os argumentos para uma fun@value{cedilha}@~{a}o ou operador.
-Para uma fun@value{cedilha}@~{a}o @code{f}, a express@~{a}o @code{f (splice (@var{a}))} dentro de @code{buildq}
-expande para @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
-Para um operador @code{o}, a express@~{a}o @code{"o" (splice (@var{a})} dentro de @code{buildq}
-expande para @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
+Para uma fun@value{cedilha}@~{a}o @code{f}, a express@~{a}o @code{f (splice (@mvar{a}))} dentro de @code{buildq}
+expande para @code{f (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)}.
+Para um operador @code{o}, a express@~{a}o @code{"o" (splice (@mvar{a})} dentro de @code{buildq}
+expande para @code{"o" (@mvar{a}[1], @mvar{a}[2], @mvar{a}[3], ...)},
 onde @code{o} pode ser qualquer tipo de operador (tipicamente um que toma multiplos argumentos).
 Note que o operador deve ser contido dentro de aspas duplas @code{"}.
 
@@ -427,12 +427,12 @@ Exemplos
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o,  , Macros, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 
-@deffn {Fun@value{cedilha}@~{a}o} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
-Constr@'{o}i e avalia uma express@~{a}p @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+@deffn {Fun@value{cedilha}@~{a}o} apply (@mvar{F}, [@mvar{x_1}, ..., @mvar{x_n}])
+Constr@'{o}i e avalia uma express@~{a}p @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
 
 @code{apply} n@~{a}o tenta distinguir fun@value{cedilha}@~{o}es de array de fun@value{cedilha}@~{o}es comuns;
-quando @var{F} for o nome de uma fun@value{cedilha}@~{a}o de array,
-@code{apply} avalia @code{@var{F}(...)}
+quando @mvar{F} for o nome de uma fun@value{cedilha}@~{a}o de array,
+@code{apply} avalia @code{@mvar{F}(...)}
 (isto @'{e}, uma chamada de fun@value{cedilha}@~{a}o com par@^{e}ntesis em lugar de colch@^{e}tes).
 @code{arrayapply} avalia uma chamada de fun@value{cedilha}@~{a}o com colch@^{e}tes nesse caso.
 
@@ -452,7 +452,7 @@ Nesse exemplo, @code{min} @'{e} aplicado a @code{L}.
 (%o2)                        - 10.2
 @end example
 
-@code{apply} avalia argumentos, mesmo se a fun@value{cedilha}@~{a}o @var{F} disser que os argumentos n@~{a}o devem ser avaliados.
+@code{apply} avalia argumentos, mesmo se a fun@value{cedilha}@~{a}o @mvar{F} disser que os argumentos n@~{a}o devem ser avaliados.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -485,7 +485,7 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-@code{apply} avalia o nome de fun@value{cedilha}@~{a}o @var{F}.
+@code{apply} avalia o nome de fun@value{cedilha}@~{a}o @mvar{F}.
 Ap@'{o}strofo @code{'} evita avalia@value{cedilha}@~{a}o.
 @code{demoivre} @'{e} o nome de uma vari@'{a}vel global e tamb@'{e}m de uma fun@value{cedilha}@~{a}o.
 
@@ -511,20 +511,20 @@ Improper name or value in functional position.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Fun@value{cedilha}@~{a}o} block (@var{expr_1}, ..., @var{expr_n})
-@code{block} avalia @var{expr_1}, ..., @var{expr_n} em seq@"{u}@^{e}ncia
+@deffn {Fun@value{cedilha}@~{a}o} block ([@mvar{v_1}, ..., @mvar{v_m}], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Fun@value{cedilha}@~{a}o} block (@mvar{expr_1}, ..., @mvar{expr_n})
+@code{block} avalia @mvar{expr_1}, ..., @mvar{expr_n} em seq@"{u}@^{e}ncia
 e retorna o valor da @'{u}ltima express@~{a}o avaliada.
 A seq@"{u}@^{e}ncia pode ser modificada pelas fun@value{cedilha}@~{o}es @code{go}, @code{throw}, e @code{return}.
-A @'{u}ltima express@~{a}o @'{e} @var{expr_n} a menos que @code{return} ou uma express@~{a}o contendo @code{throw}
+A @'{u}ltima express@~{a}o @'{e} @mvar{expr_n} a menos que @code{return} ou uma express@~{a}o contendo @code{throw}
 seja avaliada.
-Algumas vari@'{a}veis @var{v_1}, ..., @var{v_m} podem ser declaradas locais para o bloco;
+Algumas vari@'{a}veis @mvar{v_1}, ..., @mvar{v_m} podem ser declaradas locais para o bloco;
 essas s@~{a}o distinguidas das vari@'{a}veis globais dos mesmos nomes.
 Se vari@'{a}veis n@~{a}o forem declaradas locais ent@~{a}o a lista pode ser omitida.
 Dentro do bloco,
-qualquer vari@'{a}vel que n@~{a}o @var{v_1}, ..., @var{v_m} @'{e} uma vari@'{a}vel global.
+qualquer vari@'{a}vel que n@~{a}o @mvar{v_1}, ..., @mvar{v_m} @'{e} uma vari@'{a}vel global.
 
-@code{block} salva os valores correntes das vari@'{a}veis @var{v_1}, ..., @var{v_m} (quaisquer valores)
+@code{block} salva os valores correntes das vari@'{a}veis @mvar{v_1}, ..., @mvar{v_m} (quaisquer valores)
 na hora da entrada para o bloco,
 ent@~{a}o libera as vari@'{a}veis dessa forma eles avaliam para si mesmos.
 As vari@'{a}veis locais podem ser associadas a valores arbitr@'{a}rios dentro do bloco mas quando o
@@ -561,8 +561,8 @@ mas podem ser usados em outros lugares tamb@'{e}m.
 @end deffn
 
 @c REPHRASE, NEEDS EXAMPLE
-@deffn {Fun@value{cedilha}@~{a}o} break (@var{expr_1}, ..., @var{expr_n})
-Avalia e imprime @var{expr_1}, ..., @var{expr_n} e ent@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} break (@mvar{expr_1}, ..., @mvar{expr_n})
+Avalia e imprime @mvar{expr_1}, ..., @mvar{expr_n} e ent@~{a}o
 causa uma parada do Maxima nesse ponto e o usu@'{a}rio pode examinar e alterar
 seu ambiente.  Nessa situa@value{cedilha}@~{a}o digite @code{exit;} para que o c@'{a}lculo seja retomado.
 
@@ -570,8 +570,8 @@ seu ambiente.  Nessa situa@value{cedilha}@~{a}o digite @code{exit;} para que o c
 
 @c FOR SOME REASON throw IS IN SOME OTHER FILE.  MOVE throw INTO THIS FILE.
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} catch (@var{expr_1}, ..., @var{expr_n})
-Avalia @var{expr_1}, ..., @var{expr_n} uma por uma; se qualquer avalia@value{cedilha}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} catch (@mvar{expr_1}, ..., @mvar{expr_n})
+Avalia @mvar{expr_1}, ..., @mvar{expr_n} uma por uma; se qualquer avalia@value{cedilha}@~{a}o
 levar a uma avalia@value{cedilha}@~{a}o de uma express@~{a}o da
 forma @code{throw (arg)}, ent@~{a}o o valor de @code{catch} @'{e} o valor de
 @code{throw (arg)}, e express@~{o}es adicionais n@~{a}o s@~{a}o avaliadas.
@@ -580,7 +580,7 @@ aninhar para o mais pr@'{o}ximo contendo @code{catch}.
 Se n@~{a}o existe nenhum @code{catch} contendo um @code{throw}, uma mensagem de erro @'{e} impressa.
 
 Se a avalia@value{cedilha}@~{a}o de argumentos n@~{a}o leva para a avalia@value{cedilha}@~{a}o de qualquer @code{throw}
-ent@~{a}o o valor de @code{catch} @'{e} o valor de @var{expr_n}.
+ent@~{a}o o valor de @code{catch} @'{e} o valor de @mvar{expr_n}.
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -598,16 +598,16 @@ primeiro elemento negativo de @code{l} e "arremessa-o".
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} compfile (@var{nomearquivo}, @var{f_1}, ..., @var{f_n})
-@deffnx {Fun@value{cedilha}@~{a}o} compfile (@var{nomearquivo}, fun@value{cedilha}@~{o}es)
-@deffnx {Fun@value{cedilha}@~{a}o} compfile (@var{nomearquivo}, all)
+@deffn {Fun@value{cedilha}@~{a}o} compfile (@mvar{nomearquivo}, @mvar{f_1}, ..., @mvar{f_n})
+@deffnx {Fun@value{cedilha}@~{a}o} compfile (@mvar{nomearquivo}, fun@value{cedilha}@~{o}es)
+@deffnx {Fun@value{cedilha}@~{a}o} compfile (@mvar{nomearquivo}, all)
 
 Traduz fu@value{cedilha}@~{o}es Maxima para Lisp 
-e escreve o c@'{o}digo traduzido no arquivo @var{nomearquivo}.
+e escreve o c@'{o}digo traduzido no arquivo @mvar{nomearquivo}.
 
-@code{compfile(@var{nomearquivo}, @var{f_1}, ..., @var{f_n})} traduz as
+@code{compfile(@mvar{nomearquivo}, @mvar{f_1}, ..., @mvar{f_n})} traduz as
 fun@value{cedilha}@~{o}es especificadas.
-@code{compfile(@var{nomearquivo}, functions)} e @code{compfile(@var{nomearquivo}, all)}
+@code{compfile(@mvar{nomearquivo}, functions)} e @code{compfile(@mvar{nomearquivo}, all)}
 traduz todas as fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio.
 
 As tradu@value{cedilha}@~{o}es Lisp n@~{a}o s@~{a}o avaliadas, nem @'{e} o arquivo de sa@'{i}da processado pelo compilador Lisp.
@@ -630,10 +630,10 @@ Veja tamb@'{e}m @code{translate}, @code{translate_file}, e @code{compile_file}.
 @c 
 @c @end defvar
 
-@deffn {Fun@value{cedilha}@~{a}o} compile (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} compile (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} compile (fun@value{cedilha}@~{o}es)
 @deffnx {Fun@value{cedilha}@~{a}o} compile (all)
-Traduz fun@value{cedilha}@~{o}es Maxima @var{f_1}, ..., @var{f_n} para Lisp, avalia a tradu@value{cedilha}@~{a}o Lisp,
+Traduz fun@value{cedilha}@~{o}es Maxima @mvar{f_1}, ..., @mvar{f_n} para Lisp, avalia a tradu@value{cedilha}@~{a}o Lisp,
 e chama a fun@value{cedilha}@~{a}o Lisp @code{COMPILE} sobre cada fun@value{cedilha}@~{a}o traduzida.
 @code{compile} retorna uma lista de nomes de fun@value{cedilha}@~{o}es compiladas.
 
@@ -644,25 +644,25 @@ o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@v
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} define (ev (@var{expr_1}), @var{expr_2})
+@deffn {Fun@value{cedilha}@~{a}o} define (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} define (@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}], @mvar{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} define (funmake (@mvar{f}, [@mvar{x_1}, ..., @mvar{x_n}]), @mvar{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} define (arraymake (@mvar{f}, [@mvar{x_1}, ..., @mvar{x_n}]), @mvar{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} define (ev (@mvar{expr_1}), @mvar{expr_2})
 
-Define uma fun@value{cedilha}@~{a}o chamada @var{f} com argumentos @var{x_1}, ..., @var{x_n} e corpo da fun@value{cedilha}@~{a}o @var{expr}.
+Define uma fun@value{cedilha}@~{a}o chamada @mvar{f} com argumentos @mvar{x_1}, ..., @mvar{x_n} e corpo da fun@value{cedilha}@~{a}o @mvar{expr}.
 @code{define} sempre avalia seu segundo argumento (a menos que expl@'{i}citamente receba um apostrofo de forma a evitar a avalia@value{cedilha}@~{a}o).
 A fun@value{cedilha}@~{a}o ent@~{a}o definida pode ser uma fun@value{cedilha}@~{a}o comum do Maxima (com argumentos contidos entre par@^{e}tesis)
 ou uma fun@value{cedilha}@~{a}o de array (com argumentos contidos entre colch@^{e}tes).
 
-Quando o @'{u}ltimo ou @'{u}nico argumento da fun@value{cedilha}@~{a}o @var{x_n} for uma lista de um elemento,
+Quando o @'{u}ltimo ou @'{u}nico argumento da fun@value{cedilha}@~{a}o @mvar{x_n} for uma lista de um elemento,
 a fun@value{cedilha}@~{a}o definida por @code{define} aceita um n@'{u}mero vari@'{a}vel de argumentos.
-Os argumentos atuais s@~{a}o atribu@'{i}dos um a um a argumentos formais @var{x_1}, ..., @var{x_(n - 1)},
-e quaisquer argumentos adicionais atuais, se estiverem presentes, s@~{a}o atribu@'{i}dos a @var{x_n} como uma lista.
+Os argumentos atuais s@~{a}o atribu@'{i}dos um a um a argumentos formais @mvar{x_1}, ..., @mvar{x_(n - 1)},
+e quaisquer argumentos adicionais atuais, se estiverem presentes, s@~{a}o atribu@'{i}dos a @mvar{x_n} como uma lista.
 
 Quando o primeiro argumento de @code{define} for uma express@~{a}o da forma
-@code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
-os argumentos s@~{a}o avaliados mas @var{f} n@~{a}o @'{e} avaliada,
+@code{@mvar{f}(@mvar{x_1}, ..., @mvar{x_n})} or @code{@mvar{f}[@mvar{x_1}, ..., @mvar{x_n}]},
+os argumentos s@~{a}o avaliados mas @mvar{f} n@~{a}o @'{e} avaliada,
 mesmo se j@'{a} existe anteriormente uma fun@value{cedilha}@~{a}o ou vari@'{a}vel com aquele nome.
 
 Quando o primeiro argumento for uma express@~{a}o com operador @code{funmake}, @code{arraymake}, ou @code{ev},
@@ -673,7 +673,7 @@ Todas as defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o aparecem no me
 definindo uma fun@value{cedilha}@~{a}o @code{f} dentro de outra fun@value{cedilha}@~{a}o @code{g}
 n@~{a}o limita o escopo de @code{f} a @code{g}.
 
-Se algum argumento formal @var{x_k} for um s@'{i}mbolo com ap@'{o}strofo (ap@'{o}s ter sido feita uma avalia@value{cedilha}@~{a}o),
+Se algum argumento formal @mvar{x_k} for um s@'{i}mbolo com ap@'{o}strofo (ap@'{o}s ter sido feita uma avalia@value{cedilha}@~{a}o),
 a fun@value{cedilha}@~{a}o definida por @code{define} n@~{a}o avalia o correspondente atual argumento.
 de outra forma todos os argumentos atuais s@~{a}o avaliados.
 
@@ -717,7 +717,7 @@ A fun@value{cedilha}@~{a}o definida por @code{define} pode ser uma fun@value{ced
                        x, y
 @end example
 
-Quando o @'{u}ltimo ou @'{u}nico argumento da fun@value{cedilha}@~{a}o @var{x_n} for uma lista de um @'{u}nico elemento,
+Quando o @'{u}ltimo ou @'{u}nico argumento da fun@value{cedilha}@~{a}o @mvar{x_n} for uma lista de um @'{u}nico elemento,
 a fun@value{cedilha}@~{a}o definida por @code{define} aceita um n@'{u}mero vari@'{a}vel de argumentos.
 
 @c ===beg===
@@ -761,8 +761,8 @@ the first argument is evaluated.
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Fun@value{cedilha}@~{a}o} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
-@deffn {Fun@value{cedilha}@~{a}o} define_variable (@var{name}, @var{default_value}, @var{mode})
+@c @deffn {Fun@value{cedilha}@~{a}o} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode}, @mvar{documentation})
+@deffn {Fun@value{cedilha}@~{a}o} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode})
 
 Introduz uma vari@'{a}vel global dentro do ambiente Maxima.
 @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE USEFUL IN TRANSLATED CODE ??
@@ -772,19 +772,19 @@ Introduz uma vari@'{a}vel global dentro do ambiente Maxima.
 
 @enumerate
 @item
-@code{mode_declare (@var{name}, @var{mode})} declara o modo de @var{name} para o tradutor.
+@code{mode_declare (@mvar{name}, @mvar{mode})} declara o modo de @mvar{name} para o tradutor.
 Veja @code{mode_declare} para uma lista dos modos poss@'{i}veis.
 
 @item
-Se a vari@'{a}vel @'{e} n@~{a}o associada, @var{default_value} @'{e} atribu@'{i}do para @var{name}.
+Se a vari@'{a}vel @'{e} n@~{a}o associada, @mvar{default_value} @'{e} atribu@'{i}do para @mvar{name}.
 
 @item
-@code{declare (@var{name}, special)} declara essa vari@'{a}vel especial.
+@code{declare (@mvar{name}, special)} declara essa vari@'{a}vel especial.
 @c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
 
 @item
-Associa @var{name} com uma fun@value{cedilha}@~{a}o de teste
-para garantir que a @var{name} seja somente atribu@'{i}do valores do modo declarado.
+Associa @mvar{name} com uma fun@value{cedilha}@~{a}o de teste
+para garantir que a @mvar{name} seja somente atribu@'{i}do valores do modo declarado.
 @end enumerate
 
 
@@ -897,9 +897,9 @@ Cannot assign to `baz_quux'.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} dispfun (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} dispfun (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} dispfun (all)
-Mostra a defini@value{cedilha}@~{a}o de fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio @var{f_1}, ..., @var{f_n}.
+Mostra a defini@value{cedilha}@~{a}o de fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio @mvar{f_1}, ..., @mvar{f_n}.
 Cada argumento pode ser o nome de uma macro (definida com @code{::=}),
 uma fun@value{cedilha}@~{a}o comum (definida com @code{:=} ou @code{define}),
 uma fun@value{cedilha}@~{a}o array (definida com @code{:=} ou com @code{define},
@@ -1054,8 +1054,8 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} fundef (@var{f})
-Retorna a defini@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @var{f}.
+@deffn {Fun@value{cedilha}@~{a}o} fundef (@mvar{f})
+Retorna a defini@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @mvar{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 O argumento pode ser o nome de uma macro (definida com @code{::=}),
@@ -1070,21 +1070,21 @@ ou uma fun@value{cedilha}@~{a}o subscrita definida com uma constante subscrita.
 @code{fundef} n@~{a}o avalia seu argumento;
 o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@value{cedilha}@~{a}o.
 
-@code{fundef (@var{f})} retorna a defini@value{cedilha}@~{a}o de @var{f}.
-Em contraste, @code{dispfun (@var{f})} cria um r@'{o}tulo de express@~{a}o intermedi@'{a}ria
+@code{fundef (@mvar{f})} retorna a defini@value{cedilha}@~{a}o de @mvar{f}.
+Em contraste, @code{dispfun (@mvar{f})} cria um r@'{o}tulo de express@~{a}o intermedi@'{a}ria
 e atribui a defini@value{cedilha}@~{a}o para o r@'{o}tulo.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
-Retorna uma express@~{a}o @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+@deffn {Fun@value{cedilha}@~{a}o} funmake (@mvar{F}, [@mvar{arg_1}, ..., @mvar{arg_n}])
+Retorna uma express@~{a}o @code{@mvar{F}(@mvar{arg_1}, ..., @mvar{arg_n})}.
 O valor de retorno @'{e} simplificado, mas n@~{a}o avaliado,
-ent@~{a}o a fun@value{cedilha}@~{a}o @var{F} n@~{a}o @'{e} chamada, mesmo se essa fun@value{cedilha}@~{a}o @var{F} existir.
+ent@~{a}o a fun@value{cedilha}@~{a}o @mvar{F} n@~{a}o @'{e} chamada, mesmo se essa fun@value{cedilha}@~{a}o @mvar{F} existir.
 
 @code{funmake} n@~{a}o tenta distinguir fun@value{cedilha}@~{o}es de array de fun@value{cedilha}@~{o}es comuns;
-quando @var{F} for o nome de uma fun@value{cedilha}@~{a}o de array,
-@code{funmake} retorna @code{@var{F}(...)}
+quando @mvar{F} for o nome de uma fun@value{cedilha}@~{a}o de array,
+@code{funmake} retorna @code{@mvar{F}(...)}
 (isto @'{e}, uma chamada de fun@value{cedilha}@~{a}o com par@^{e}ntesis em lugar de colch@^{e}tes).
 @code{arraymake} retorna uma chamada de fun@value{cedilha}@~{a}o com colch@^{e}tes nesse caso.
 
@@ -1206,18 +1206,18 @@ Maxima simplifica o valor de retorno de @code{funmake}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Fun@value{cedilha}@~{a}o} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Fun@value{cedilha}@~{a}o} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} lambda ([@mvar{x_1}, ..., @mvar{x_m}], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Fun@value{cedilha}@~{a}o} lambda ([[@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Fun@value{cedilha}@~{a}o} lambda ([@mvar{x_1}, ..., @mvar{x_m}, [@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
 Define e retorna uma express@~{a}o lambda (que @'{e}, uma fun@value{cedilha}@~{a}o an@^{o}nima)
-A fun@value{cedilha}@~{a}o pode ter argumentos que sejam necess@'{a}rios @var{x_1}, ..., @var{x_m}
-e/ou argumentos opcionais @var{L}, os quais aparecem dentro do corpo da fun@value{cedilha}@~{a}o como uma lista.
-O valor de retorno da fun@value{cedilha}@~{a}o @'{e} @var{expr_n}.
+A fun@value{cedilha}@~{a}o pode ter argumentos que sejam necess@'{a}rios @mvar{x_1}, ..., @mvar{x_m}
+e/ou argumentos opcionais @mvar{L}, os quais aparecem dentro do corpo da fun@value{cedilha}@~{a}o como uma lista.
+O valor de retorno da fun@value{cedilha}@~{a}o @'{e} @mvar{expr_n}.
 Uma express@~{a}o lambda pode ser atribu@'{i}da para uma vari@'{a}vel e avaliada como uma fun@value{cedilha}@~{a}o comum.
 Uma express@~{a}o lambda pode aparecer em alguns contextos nos quais um nome de fun@value{cedilha}@~{a}o @'{e} esperado.
 
 Quando a fun@value{cedilha}@~{a}o @'{e} avaliada,
-vari@'{a}veis locais n@~{a}o associadas @var{x_1}, ..., @var{x_m} s@~{a}o criadas.
+vari@'{a}veis locais n@~{a}o associadas @mvar{x_1}, ..., @mvar{x_m} s@~{a}o criadas.
 @code{lambda} pode aparecer dentro de @code{block} ou outra fun@value{cedilha}@~{a}o @code{lambda};
 vari@'{a}veis locais s@~{a}o estabelecidas cada vez que outro @code{block} ou fun@value{cedilha}@~{a}o @code{lambda} @'{e} avaliada.
 Vari@'{a}veis locais parecem ser globais para qualquer coisa contendo @code{block} ou @code{lambda}.
@@ -1227,7 +1227,7 @@ de outra forma, seu valor @'{e} o valor da vari@'{a}vel no ambiente global.
 Essa pol@'{i}tica pode coincidir com o entendimento usual de "escopo din@^{a}mico".
 
 Ap@'{o}s vari@'{a}veis locais serem estabelecidas,
-@var{expr_1} at@'{e} @var{expr_n} s@~{a}o avaliadas novamente.
+@mvar{expr_1} at@'{e} @mvar{expr_n} s@~{a}o avaliadas novamente.
 a vari@'{a}vel especial @code{%%}, representando o valor da express@~{a}o precedente,
 @'{e} reconhecida.
 @code{throw} e @code{catch} pode tamb@'{e}m aparecer na lista de express@~{o}es.
@@ -1235,7 +1235,7 @@ a vari@'{a}vel especial @code{%%}, representando o valor da express@~{a}o preced
 @code{return} n@~{a}o pode aparecer em uma express@~{a}o lambda a menos que contendo @code{block},
 nesse caso @code{return} define o valor de retorno do  bloco e n@~{a}o da
 express@~{a}o lambda,
-a menos que o bloco seja @var{expr_n}.
+a menos que o bloco seja @mvar{expr_n}.
 Da mesma forma, @code{go} n@~{a}o pode aparecer em uma express@~{a}o lambda a menos que contendo @code{block}.
 
 @code{lambda} n@~{a}o avalia seus argumentos; 
@@ -1366,7 +1366,7 @@ Tanto uma fun@value{cedilha}@~{a}o pode ser definida via @code{buildq}, como na 
 @itemize @bullet
 @item
 Uma express@~{a}o lambda pode receber um n@'{u}mero vari@'{a}vel de argumentos,
-os quais s@~{a}o indicados por meio de @code{[@var{L}]} como o argumento @'{u}nico ou argumento final.
+os quais s@~{a}o indicados por meio de @code{[@mvar{L}]} como o argumento @'{u}nico ou argumento final.
 Os argumentos aparecem dentro do corpo da fun@value{cedilha}@~{a}o como uma lista.
 @end itemize
 @c ===beg===
@@ -1388,8 +1388,8 @@ Os argumentos aparecem dentro do corpo da fun@value{cedilha}@~{a}o como uma list
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} local (@var{v_1}, ..., @var{v_n})
-Declara as vari@'{a}veis @var{v_1}, ..., @var{v_n} para serem locais com
+@deffn {Fun@value{cedilha}@~{a}o} local (@mvar{v_1}, ..., @mvar{v_n})
+Declara as vari@'{a}veis @mvar{v_1}, ..., @mvar{v_n} para serem locais com
 rela@value{cedilha}@~{a}o a todas as propriedades na declara@value{cedilha}@~{a}o na qual essa fun@value{cedilha}@~{a}o
 @'{e} usada.
 
@@ -1602,7 +1602,7 @@ descritos.
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+@deffn {Fun@value{cedilha}@~{a}o} mode_declare (@mvar{y_1}, @mvar{mode_1}, ..., @mvar{y_n}, @mvar{mode_n})
 @code{mode_declare} @'{e} usado para declarar os modos de vari@'{a}veis e
 fun@value{cedilha}@~{o}es para subseq@"{u}@^{e}nte tradu@value{cedilha}@~{a}o ou compila@value{cedilha}@~{a}o das fun@value{cedilha}@~{o}es.
 @code{mode_declare} @'{e} tipicamente colocada no in@'{i}cio de uma defini@value{cedilha}@~{a}o de
@@ -1661,7 +1661,7 @@ declara que os valores retornados por @code{f_1}, @code{f_2}, ...  s@~{a}o intei
 
 @c WHAT IS THIS ABOUT ??
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} mode_identity (@var{arg_1}, @var{arg_2})
+@deffn {Fun@value{cedilha}@~{a}o} mode_identity (@mvar{arg_1}, @mvar{arg_2})
 Uma forma especial usada com @code{mode_declare} e
 @code{macros} para declarar, e.g., uma lista de listas de n@'{u}meros em ponto flutuante ou outros
 objetos de dados.  O primeiro argumento para @code{mode_identity} @'{e} um valor primitivo
@@ -1701,11 +1701,11 @@ declara@value{cedilha}@~{o}es para fazer o c@'{o}digo traduzido mais adequado pa
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} translate (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@value{cedilha}@~{a}o} translate (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Fun@value{cedilha}@~{a}o} translate (fun@value{cedilha}@~{o}es)
 @deffnx {Fun@value{cedilha}@~{a}o} translate (all)
 Traduz fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio
-@var{f_1}, ..., @var{f_n} da linguagem de Maxima para Lisp
+@mvar{f_1}, ..., @mvar{f_n} da linguagem de Maxima para Lisp
 e avalia a tradu@value{cedilha}@~{a}o Lisp.
 Tipicamente as fun@value{cedilha}@~{o}es traduzidas executam mais r@'{a}pido que as originais.
 
@@ -1722,8 +1722,8 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 @noindent
 
-quando @var{x_1}, @var{x_2}, ...  s@~{a}o par@^{a}metros para a fun@value{cedilha}@~{a}o e
-@var{v_1}, @var{v_2}, ...  s@~{a}o vari@'{a}veis locais.
+quando @mvar{x_1}, @mvar{x_2}, ...  s@~{a}o par@^{a}metros para a fun@value{cedilha}@~{a}o e
+@mvar{v_1}, @mvar{v_2}, ...  s@~{a}o vari@'{a}veis locais.
 
 Os nomes de fun@value{cedilha}@~{o}es traduzidas
 s@~{a}o removidos da lista @code{functions} se @code{savedef} @'{e} @code{false} (veja abaixo)
@@ -1763,8 +1763,8 @@ fun@value{cedilha}@~{o}es traduzidas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} translate_file (@var{maxima_nomearquivo})
-@deffnx {Fun@value{cedilha}@~{a}o} translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} translate_file (@mvar{maxima_nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} translate_file (@mvar{maxima_nomearquivo}, @mvar{lisp_nomearquivo})
 Traduz um arquivo com c@'{o}digo Maxima para um arquivo com c@'{o}digo Lisp.
 @code{translate_file} retorna uma lista de tr@^{e}s nomes de arquivo:
 O nome do arquivo Maxima, o nome do arquivo Lisp, e o nome do arquivo
@@ -1776,15 +1776,15 @@ contendo informa@value{cedilha}@~{o}es adicionais sobre a tradu@value{cedilha}@~
 o uso de @code{'@w{}'} e @code{%}, por exemplo.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-@code{translate_file (@var{maxima_nomearquivo})} traduz um arquivo Maxima @var{maxima_nomearquivo}
+@code{translate_file (@mvar{maxima_nomearquivo})} traduz um arquivo Maxima @mvar{maxima_nomearquivo}
 para um similarmente chamado arquivo Lisp.
 Por exemplo, @code{foo.mac} @'{e} traduzido em @code{foo.LISP}.
 O nome de arquivo Maxima pod incluir nome ou nomes de diret@'{o}rio(s),
 nesse caso o arquivo de sa@'{i}da Lisp @'{e} escrito
 para o mesmo diret@'{o}rio que a entrada Maxima.
 
-@code{translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})} traduz
-um arquivo Maxima @var{maxima_nomearquivo} em um arquivo Lisp @var{lisp_nomearquivo}.
+@code{translate_file (@mvar{maxima_nomearquivo}, @mvar{lisp_nomearquivo})} traduz
+um arquivo Maxima @mvar{maxima_nomearquivo} em um arquivo Lisp @mvar{lisp_nomearquivo}.
 @code{translate_file} ignora a extens@~{a}o do nome do arquivo, se qualquer, de @code{lisp_nomearquivo};
 a extens@~{a}o do arquivo de sa@'{i}da Lisp @'{e} sempre @code{LISP}.
 O nome de arquivo Lisp pode incluir um nome ou nomes de diret@'{o}rios),
@@ -2019,10 +2019,10 @@ vari@'{a}veis globais indefinidas forem vistas.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} compile_file (@var{nomearquivo})
-@deffnx {Fun@value{cedilha}@~{a}o} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado})
-@deffnx {Fun@value{cedilha}@~{a}o} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado}, @var{lisp_nomearquivo})
-Traduz o arquivo Maxima @var{nomearquivo} para Lisp,
+@deffn {Fun@value{cedilha}@~{a}o} compile_file (@mvar{nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} compile_file (@mvar{nomearquivo}, @mvar{nomearquivo_compilado})
+@deffnx {Fun@value{cedilha}@~{a}o} compile_file (@mvar{nomearquivo}, @mvar{nomearquivo_compilado}, @mvar{lisp_nomearquivo})
+Traduz o arquivo Maxima @mvar{nomearquivo} para Lisp,
 executa o compilador Lisp,
 e, se a tradu@value{cedilha}@~{a}o e a compila@value{cedilha}@~{a}o obtiverem sucesso, chama o c@'{o}digo compilado dentro do Maxima.
 
@@ -2051,14 +2051,14 @@ atribui@value{cedilha}@~{o}es para sinalizadores traduzidos (@code{tr_numer}, et
 @c the compilation succeeded.  This @'{e} a bug.  
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@var{nomearquivo} pode n@~{a}o conter declara@value{cedilha}@~{o}es @code{:lisp}.
+@mvar{nomearquivo} pode n@~{a}o conter declara@value{cedilha}@~{o}es @code{:lisp}.
 
 @code{compile_file} avalia seus argumentos.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} declare_translated (@var{f_1}, @var{f_2}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} declare_translated (@mvar{f_1}, @mvar{f_2}, ...)
 Quando traduzindo um arquivo do c@'{o}digo Maxima
 para Lisp, @'{e} importante para o programa tradutor saber quais fun@value{cedilha}@~{o}es
 no arquivo s@~{a}o para serem chamadas como fun@value{cedilha}@~{o}es traduzidas ou compiladas,

@@ -111,13 +111,13 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 
 @end deffn
 
-@deffn {演算子} %if (@var{bool}, @var{a}, @var{b})
+@deffn {演算子} %if (@mvar{bool}, @mvar{a}, @mvar{b})
 @ifinfo
 @fnindex conditional evaluation
 @end ifinfo
 
 演算子 @code{%if}は整理化条件文です。
-@i{条件} @var{bool}はブーリアン値でなければいけません。
+@i{条件} @mvar{bool}はブーリアン値でなければいけません。
 条件がtrueの時、二番目の引数を返します;
 条件がfalseの時、三番目の引数を返します;
 その他の場合、名詞形を返します。
@@ -268,7 +268,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 
 @end deffn
 
-@deffn {関数} complex_number_p (@var{x})
+@deffn {関数} complex_number_p (@mvar{x})
 
 もし引数が
  @code{a + %i * b}, @code{a}, @code{%i b}, @code{%i}のいずれかなら、
@@ -296,10 +296,10 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 
 @end deffn
 
-@deffn {関数} compose_functions (@var{l})
+@deffn {関数} compose_functions (@mvar{l})
 
 関数コール @code{compose_functions(l)}は
-リスト @var{l}の中の関数の合成をラムダ形を返します。
+リスト @mvar{l}の中の関数の合成をラムダ形を返します。
 関数は@i{右}から @i{左}へ適用されます; 例えば
 
 @example
@@ -367,7 +367,7 @@ Maximaはこれらのラムダ形が意味的に等しいことを演繹でき�
 機能は他のMaxima関数にマージされるかもしれません。
 @end deffn
 
-@deffn {関数} dfloat (@var{x})
+@deffn {関数} dfloat (@mvar{x})
 
 関数 @code{dfloat}は
 @code{float}に似ていますが、
@@ -407,7 +407,7 @@ Maximaはこれらのラムダ形が意味的に等しいことを演繹でき�
 
 @end deffn
 
-@deffn {関数} elim (@var{l}, @var{x})
+@deffn {関数} elim (@mvar{l}, @mvar{x})
 
 関数 @code{elim}は
 集合もしくはリスト @code{l}内の等式から
@@ -488,7 +488,7 @@ Maximaがどのアルゴリズムを使うか決めます。
 
 @end deffn
  
-@deffn {関数} elim_allbut (@var{l}, @var{x})
+@deffn {関数} elim_allbut (@mvar{l}, @mvar{x})
 
 この関数は
  @code{elim}に似ています。
@@ -515,7 +515,7 @@ Maximaがどのアルゴリズムを使うか決めます。
 
 @end deffn
 
-@deffn {関数} eliminate_using (@var{l}, @var{e}, @var{x})
+@deffn {関数} eliminate_using (@mvar{l}, @mvar{e}, @mvar{x})
 
 Using @code{e} as the pivot, eliminate the symbol @code{x} from the
 list or set of equations in @code{l}.  The function @code{eliminate_using}
@@ -551,7 +551,7 @@ returns a set.
 
 @end deffn
 
-@deffn {関数} fourier_elim ([@var{eq1}, @var{eq2}, @dots{}], [@var{var1}, @var{var}, @dots{}])
+@deffn {関数} fourier_elim ([@mvar{eq1}, @mvar{eq2}, @dots{}], [@mvar{var1}, @mvar{var}, @dots{}])
 
 Fourier消去は
 Gauss消去の線形inequation(等式か不等式)に関する類似物です。
@@ -644,7 +644,7 @@ Fourier消去コードは
 
 @end deffn
 
-@deffn {関数} isreal_p (@var{e})
+@deffn {関数} isreal_p (@mvar{e})
 
 述語論理 @code{isreal_p}は、
 Maximaが
@@ -776,7 +776,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @end deffn
 
-@deffn {関数} parg (@var{x})
+@deffn {関数} parg (@mvar{x})
 
 関数 @code{parg}は
 複素偏角関数 @code{carg}の整理化バージョンです;
@@ -835,7 +835,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @end deffn
 
-@deffn {関数} real_imagpart_to_conjugate (@var{e})
+@deffn {関数} real_imagpart_to_conjugate (@mvar{e})
 
 関数 @code{real_imagpart_to_conjugate}は
 @code{realpart}と @code{imagpart}をすべて
@@ -858,7 +858,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @end deffn
 
-@deffn {関数} rectform_log_if_constant (@var{e})
+@deffn {関数} rectform_log_if_constant (@mvar{e})
 
 関数 @code{rectform_if_constant}は
 @code{ log(c)}の形の項をすべて
@@ -887,7 +887,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @end deffn
 
-@deffn {関数} simp_inequality (@var{e})
+@deffn {関数} simp_inequality (@mvar{e})
 
 関数 @code{simp_inequality}は
 inequationの論理積と論理和にいくつかの整理を適用します。
@@ -919,7 +919,7 @@ inequationの論理積と論理和にいくつかの整理を適用します。
 
 @end deffn
 
-@deffn {関数} standardize_inverse_trig (@var{e})
+@deffn {関数} standardize_inverse_trig (@mvar{e})
 
 この関数は
 恒等式 @code{cot(x) = atan(1/x), acsc(x) = asin(1/x),}と
@@ -935,7 +935,7 @@ Eqs. 4.4.6 から 4.4.8までと 4.6.4から 4.6.6までを参照してくださ
 機能は他のMaxima関数にマージされるかもしれません。
 @end deffn
 
-@deffn {関数} subst_parallel (@var{l}, @var{e})
+@deffn {関数} subst_parallel (@mvar{l}, @mvar{e})
 
 @code{l}が単一の等式か等式のリストの時、
 それぞれの等式の右辺側を左辺に代入します。
@@ -1004,7 +1004,7 @@ log: encountered log(0).
 
 @end deffn
 
-@deffn {関数} to_poly (@var{e}, @var{l})
+@deffn {関数} to_poly (@mvar{e}, @mvar{l})
 
 関数 @code{to_poly}は
 等式 @code{e}を
@@ -1012,7 +1012,7 @@ inequation制約を伴う多項式系に変換しようとします;
 制約を満たす多項式系の解は
 等式 @code{e}の解です。
 非公式には @code{to_poly}は
-等式 @var{e}を多項式化しようとします; 
+等式 @mvar{e}を多項式化しようとします; 
 例がわかりやすいかもしれません:
 
 @example
@@ -1078,7 +1078,7 @@ inequation制約を伴う多項式系に変換しようとします;
 
 @end deffn
 
-@deffn {関数} to_poly_solve (@var{e}, @var{l}, [options])
+@deffn {関数} to_poly_solve (@mvar{e}, @mvar{l}, [options])
 
 関数 @code{to_poly_solve}は
 等式 @math{e}を

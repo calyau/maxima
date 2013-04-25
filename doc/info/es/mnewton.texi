@@ -30,11 +30,11 @@ V@'ease tambi@'en @code{mnewton}.
 @end defvr
 
 
-@deffn {Funci@'on} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+@deffn {Funci@'on} mnewton (@mvar{FuncList},@mvar{VarList},@mvar{GuessList})
 Resoluci@'on de sistemas de ecuaciones no lineales por el m@'etodo de Newton.
-@var{FuncList} es la lista de ecuaciones a resolver,
-@var{VarList} es la lista con los nombres de las inc@'ognitas y
-@var{GuessList} es la lista de aproximaciones iniciales.
+@mvar{FuncList} es la lista de ecuaciones a resolver,
+@mvar{VarList} es la lista con los nombres de las inc@'ognitas y
+@mvar{GuessList} es la lista de aproximaciones iniciales.
 
 La soluci@'on se devuelve en el mismo formato que lo hace la funci@'on @code{solve()}.
 Si no se le encuentra soluci@'on al sistema, se obtiene @code{[]} como respuesta.

@@ -114,10 +114,10 @@ The functions in the @code{eigen} package are:@*
 
 @c -----------------------------------------------------------------------------
 @anchor{addcol}
-@deffn {Function} addcol (@var{M}, @var{list_1}, @dots{}, @var{list_n})
+@deffn {Function} addcol (@mvar{M}, @mvar{list_1}, @dots{}, @mvar{list_n})
 
 Appends the column(s) given by the one
-or more lists (or matrices) onto the matrix @var{M}.
+or more lists (or matrices) onto the matrix @mvar{M}.
 
 @opencatbox
 @category{Matrices}
@@ -126,10 +126,10 @@ or more lists (or matrices) onto the matrix @var{M}.
 
 @c -----------------------------------------------------------------------------
 @anchor{addrow}
-@deffn {Function} addrow (@var{M}, @var{list_1}, @dots{}, @var{list_n})
+@deffn {Function} addrow (@mvar{M}, @mvar{list_1}, @dots{}, @mvar{list_n})
 
 Appends the row(s) given by the one or
-more lists (or matrices) onto the matrix @var{M}.
+more lists (or matrices) onto the matrix @mvar{M}.
 
 @opencatbox
 @category{Matrices}
@@ -138,10 +138,10 @@ more lists (or matrices) onto the matrix @var{M}.
 
 @c -----------------------------------------------------------------------------
 @anchor{adjoint}
-@deffn {Function} adjoint (@var{M})
+@deffn {Function} adjoint (@mvar{M})
 
-Returns the adjoint of the matrix @var{M}.
-The adjoint matrix is the transpose of the matrix of cofactors of @var{M}.
+Returns the adjoint of the matrix @mvar{M}.
+The adjoint matrix is the transpose of the matrix of cofactors of @mvar{M}.
 
 @opencatbox
 @category{Matrices}
@@ -150,13 +150,13 @@ The adjoint matrix is the transpose of the matrix of cofactors of @var{M}.
 
 @c -----------------------------------------------------------------------------
 @anchor{augcoefmatrix}
-@deffn {Function} augcoefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn {Function} augcoefmatrix ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
 Returns the augmented coefficient
-matrix for the variables @var{x_1}, @dots{}, @var{x_n} of the system of linear
-equations @var{eqn_1}, @dots{}, @var{eqn_m}.  This is the coefficient matrix
+matrix for the variables @mvar{x_1}, @dots{}, @mvar{x_n} of the system of linear
+equations @mvar{eqn_1}, @dots{}, @mvar{eqn_m}.  This is the coefficient matrix
 with a column adjoined for the constant terms in each equation (i.e., those
-terms not dependent upon @var{x_1}, @dots{}, @var{x_n}).
+terms not dependent upon @mvar{x_1}, @dots{}, @mvar{x_n}).
 
 @example
 (%i1) m: [2*x - (a - 1)*y = 5*b, c + b*y + a*x = 0]$
@@ -173,16 +173,16 @@ terms not dependent upon @var{x_1}, @dots{}, @var{x_n}).
 
 @c --- 04.10.2010 --------------------------------------------------------------
 @anchor{cauchy_matrix}
-@deffn  {Function} cauchy_matrix ([@var{x_1}, @var{x_2}, @dots{}, @var{x_m}], [@var{y_1}, @var{y_2}, @dots{}, @var{y_n}])
-@deffnx {Function} cauchy_matrix ([@var{x_1}, @var{x_2}, @dots{}, @var{x_n}])
+@deffn  {Function} cauchy_matrix ([@mvar{x_1}, @mvar{x_2}, @dots{}, @mvar{x_m}], [@mvar{y_1}, @mvar{y_2}, @dots{}, @mvar{y_n}])
+@deffnx {Function} cauchy_matrix ([@mvar{x_1}, @mvar{x_2}, @dots{}, @mvar{x_n}])
 
-Returns a @code{n} by @var{m} Cauchy matrix with the elements @var{a[i,j]} 
-= 1/(@var{x_i}+@var{y_i}).  The second argument of @code{cauchy_matrix} is 
+Returns a @code{n} by @mvar{m} Cauchy matrix with the elements @mvar{a[i,j]} 
+= 1/(@mvar{x_i}+@mvar{y_i}).  The second argument of @code{cauchy_matrix} is 
 optional.  For this case the elements of the Cauchy matrix are  
-@var{a[i,j]} = 1/(@var{x_i}+@var{x_j}).
+@mvar{a[i,j]} = 1/(@mvar{x_i}+@mvar{x_j}).
 
 Remark: In the literature the Cauchy matrix can be found defined in two forms.
-A second definition is @var{a[i,j]} = 1/(@var{x_i}-@var{y_i}).
+A second definition is @mvar{a[i,j]} = 1/(@mvar{x_i}-@mvar{y_i}).
 
 Examples:
 
@@ -219,11 +219,11 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{charpoly}
-@deffn {Function} charpoly (@var{M}, @var{x})
+@deffn {Function} charpoly (@mvar{M}, @mvar{x})
 
-Returns the characteristic polynomial for the matrix @var{M}
-with respect to variable @var{x}.  That is,
-@code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
+Returns the characteristic polynomial for the matrix @mvar{M}
+with respect to variable @mvar{x}.  That is,
+@code{determinant (@mvar{M} - diagmatrix (length (@mvar{M}), @mvar{x}))}.
 
 @example
 (%i1) a: matrix ([3, 1], [2, 4]);
@@ -267,11 +267,11 @@ with respect to variable @var{x}.  That is,
 
 @c -----------------------------------------------------------------------------
 @anchor{coefmatrix}
-@deffn {Function} coefmatrix ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn {Function} coefmatrix ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
 Returns the coefficient matrix for the
-variables @var{x_1}, @dots{}, @var{x_n} of the system of linear equations
-@var{eqn_1}, @dots{}, @var{eqn_m}.
+variables @mvar{x_1}, @dots{}, @mvar{x_n} of the system of linear equations
+@mvar{eqn_1}, @dots{}, @mvar{eqn_m}.
 
 @example
 (%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
@@ -287,9 +287,9 @@ variables @var{x_1}, @dots{}, @var{x_n} of the system of linear equations
 
 @c -----------------------------------------------------------------------------
 @anchor{col}
-@deffn {Function} col (@var{M}, @var{i})
+@deffn {Function} col (@mvar{M}, @mvar{i})
 
-Returns the @var{i}'th column of the matrix @var{M}.
+Returns the @mvar{i}'th column of the matrix @mvar{M}.
 The return value is a matrix.
 @c EXAMPLE HERE
 
@@ -301,11 +301,11 @@ The return value is a matrix.
 @c -----------------------------------------------------------------------------
 @anchor{columnvector}
 @anchor{covect}
-@deffn  {Function} columnvector (@var{L})
-@deffnx {Function} covect (@var{L})
+@deffn  {Function} columnvector (@mvar{L})
+@deffnx {Function} covect (@mvar{L})
 
-Returns a matrix of one column and @code{length (@var{L})} rows,
-containing the elements of the list @var{L}.
+Returns a matrix of one column and @code{length (@mvar{L})} rows,
+containing the elements of the list @mvar{L}.
 
 @code{covect} is a synonym for @code{columnvector}.
 
@@ -340,10 +340,10 @@ Warning - you are redefining the Macsyma function eigenvectors
 
 @c -----------------------------------------------------------------------------
 @anchor{copymatrix}
-@deffn {Function} copymatrix (@var{M})
+@deffn {Function} copymatrix (@mvar{M})
 
-Returns a copy of the matrix @var{M}.  This is the only way
-to make a copy aside from copying @var{M} element by element.
+Returns a copy of the matrix @mvar{M}.  This is the only way
+to make a copy aside from copying @mvar{M} element by element.
 
 Note that an assignment of one matrix to another, as in @code{m2: m1}, does not
 copy @code{m1}.  An assignment @code{m2 [i,j]: x} or @code{setelmx(x, i, j, m2)}
@@ -358,9 +358,9 @@ using assignment creates a separate, modified copy.
 
 @c -----------------------------------------------------------------------------
 @anchor{determinant}
-@deffn {Function} determinant (@var{M})
+@deffn {Function} determinant (@mvar{M})
 
-Computes the determinant of @var{M} by a method similar to
+Computes the determinant of @mvar{M} by a method similar to
 Gaussian elimination.
 
 @c JUST HOW DOES ratmx AFFECT THE RESULT ??
@@ -415,18 +415,18 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{diagmatrix}
-@deffn {Function} diagmatrix (@var{n}, @var{x})
+@deffn {Function} diagmatrix (@mvar{n}, @mvar{x})
 
-Returns a diagonal matrix of size @var{n} by @var{n} with the diagonal elements
-all equal to @var{x}.  @code{diagmatrix (@var{n}, 1)} returns an identity matrix
-(same as @code{ident (@var{n})}).
+Returns a diagonal matrix of size @mvar{n} by @mvar{n} with the diagonal elements
+all equal to @mvar{x}.  @code{diagmatrix (@mvar{n}, 1)} returns an identity matrix
+(same as @code{ident (@mvar{n})}).
 
-@var{n} must evaluate to an integer, otherwise @code{diagmatrix} complains with
+@mvar{n} must evaluate to an integer, otherwise @code{diagmatrix} complains with
 an error message.
 
-@var{x} can be any kind of expression, including another matrix.  If @var{x} is
+@mvar{x} can be any kind of expression, including another matrix.  If @mvar{x} is
 a matrix, it is not copied; all diagonal elements refer to the same instance,
-@var{x}.
+@mvar{x}.
 
 @c NEED EXAMPLE HERE
 @opencatbox
@@ -457,13 +457,13 @@ individual @code{dot} switches govern which operations are performed.
 Default value: @code{true}
 
 When @code{domxexpt} is @code{true},
-a matrix exponential, @code{exp (@var{M})} where @var{M} is a matrix, is
+a matrix exponential, @code{exp (@mvar{M})} where @mvar{M} is a matrix, is
 interpreted as a matrix with element @code{[i,j} equal to @code{exp (m[i,j])}.
-Otherwise @code{exp (@var{M})} evaluates to @code{exp (@var{ev(M)}}.
+Otherwise @code{exp (@mvar{M})} evaluates to @code{exp (@mvar{ev(M)}}.
 
 @code{domxexpt} affects all expressions of the form
-@code{@var{base}^@var{power}} where @var{base} is an expression assumed scalar
-or constant, and @var{power} is a list or matrix.
+@code{@mvar{base}^@mvar{power}} where @mvar{base} is an expression assumed scalar
+or constant, and @mvar{power} is a list or matrix.
 
 Example:
 
@@ -708,11 +708,11 @@ simplifies to @code{SC*A} and @code{A.(SC*B)} simplifies to @code{SC*(A.B)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{echelon}
-@deffn {Function} echelon (@var{M})
+@deffn {Function} echelon (@mvar{M})
 
-Returns the echelon form of the matrix @var{M},
+Returns the echelon form of the matrix @mvar{M},
 as produced by Gaussian elimination.
-The echelon form is computed from @var{M}
+The echelon form is computed from @mvar{M}
 by elementary row operations such that the first
 non-zero element in each row in the resulting matrix is one and the
 column elements under the first one in each row are all zero.
@@ -754,12 +754,12 @@ triangularized matrices.
 @c -----------------------------------------------------------------------------
 @anchor{eigenvalues}
 @anchor{eivals}
-@deffn  {Function} eigenvalues (@var{M})
-@deffnx {Function} eivals (@var{M})
+@deffn  {Function} eigenvalues (@mvar{M})
+@deffnx {Function} eivals (@mvar{M})
 
 @c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; EXTEND THAT TO ALL FUNCTIONS ??
 @c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION ITEM
-Returns a list of two lists containing the eigenvalues of the matrix @var{M}.
+Returns a list of two lists containing the eigenvalues of the matrix @mvar{M}.
 The first sublist of the return value is the list of eigenvalues of the
 matrix, and the second sublist is the list of the
 multiplicities of the eigenvalues in the corresponding order.
@@ -797,12 +797,12 @@ After loading, all functions and variables in the package are available.
 @c -----------------------------------------------------------------------------
 @anchor{eigenvectors}
 @anchor{eivects}
-@deffn  {Function} eigenvectors (@var{M})
-@deffnx {Function} eivects (@var{M})
+@deffn  {Function} eigenvectors (@mvar{M})
+@deffnx {Function} eivects (@mvar{M})
 
-Computes eigenvectors of the matrix @var{M}.
+Computes eigenvectors of the matrix @mvar{M}.
 The return value is a list of two elements.
-The first is a list of the eigenvalues of @var{M}
+The first is a list of the eigenvalues of @mvar{M}
 and a list of the multiplicities of the eigenvalues.
 The second is a list of lists of eigenvectors.
 There is one list of eigenvectors for each eigenvalue.
@@ -933,10 +933,10 @@ A matrix which has two eigenvectors for one eigenvalue (namely 2).
 
 @c -----------------------------------------------------------------------------
 @anchor{ematrix}
-@deffn {Function} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+@deffn {Function} ematrix (@mvar{m}, @mvar{n}, @mvar{x}, @mvar{i}, @mvar{j})
 
-Returns an @var{m} by @var{n} matrix, all elements of which
-are zero except for the @code{[@var{i}, @var{j}]} element which is @var{x}.
+Returns an @mvar{m} by @mvar{n} matrix, all elements of which
+are zero except for the @code{[@mvar{i}, @mvar{j}]} element which is @mvar{x}.
 @c WOW, THAT SEEMS PRETTY SPECIALIZED ...
 
 @opencatbox
@@ -946,15 +946,15 @@ are zero except for the @code{[@var{i}, @var{j}]} element which is @var{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{entermatrix}
-@deffn {Function} entermatrix (@var{m}, @var{n})
+@deffn {Function} entermatrix (@mvar{m}, @mvar{n})
 
-Returns an @var{m} by @var{n} matrix, reading the elements interactively.
+Returns an @mvar{m} by @mvar{n} matrix, reading the elements interactively.
 
-If @var{n} is equal to @var{m}, Maxima prompts for the type of the matrix
+If @mvar{n} is equal to @mvar{m}, Maxima prompts for the type of the matrix
 (diagonal, symmetric, antisymmetric, or general) and for each element.
 Each response is terminated by a semicolon @code{;} or dollar sign @code{$}.
 
-If @var{n} is not equal to @var{m},
+If @mvar{n} is not equal to @mvar{m},
 Maxima prompts for each element.
 
 The elements may be any expressions, which are evaluated.
@@ -994,24 +994,24 @@ Matrix entered.
 
 @c -----------------------------------------------------------------------------
 @anchor{genmatrix}
-@deffn  {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
-@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
-@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+@deffn  {Function} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1}, @mvar{j_1})
+@deffnx {Function} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1})
+@deffnx {Function} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2})
 
-Returns a matrix generated from @var{a}, taking element
-@code{@var{a}[@var{i_1}, @var{j_1}]} as the upper-left element and
-@code{@var{a}[@var{i_2}, @var{j_2}]} as the lower-right element of the matrix.
-Here @var{a} is a declared array (created by @code{array} but not by
+Returns a matrix generated from @mvar{a}, taking element
+@code{@mvar{a}[@mvar{i_1}, @mvar{j_1}]} as the upper-left element and
+@code{@mvar{a}[@mvar{i_2}, @mvar{j_2}]} as the lower-right element of the matrix.
+Here @mvar{a} is a declared array (created by @code{array} but not by
 @mref{make_array}) or an undeclared array, or an array function, or a lambda
 expression of two arguments.  (An array function is created like other functions
 with @mref{:=} or @mrefcomma{define} but arguments are enclosed in square
 brackets instead of parentheses.)
 
-If @var{j_1} is omitted, it is assumed equal to @var{i_1}.
-If both @var{j_1} and @var{i_1} are omitted, both are assumed equal to 1.
+If @mvar{j_1} is omitted, it is assumed equal to @mvar{i_1}.
+If both @mvar{j_1} and @mvar{i_1} are omitted, both are assumed equal to 1.
 
 If a selected element @code{i,j} of the array is undefined,
-the matrix will contain a symbolic element @code{@var{a}[i,j]}.
+the matrix will contain a symbolic element @code{@mvar{a}[i,j]}.
 
 Examples:
 
@@ -1073,20 +1073,20 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{gramschmidt}
-@deffn  {Function} gramschmidt (@var{x})
-@deffnx {Function} gramschmidt (@var{x}, @var{F})
+@deffn  {Function} gramschmidt (@mvar{x})
+@deffnx {Function} gramschmidt (@mvar{x}, @mvar{F})
 
-Carries out the Gram-Schmidt orthogonalization algorithm on @var{x}, which is
-either a matrix or a list of lists.  @var{x} is not modified by
+Carries out the Gram-Schmidt orthogonalization algorithm on @mvar{x}, which is
+either a matrix or a list of lists.  @mvar{x} is not modified by
 @code{gramschmidt}.  The inner product employed by @code{gramschmidt} is
-@var{F}, if present, otherwise the inner product is the function
+@mvar{F}, if present, otherwise the inner product is the function
 @mrefdot{innerproduct}
 
-If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.  If
-@var{x} is a list of lists, the algorithm is applied to the sublists, which must
+If @mvar{x} is a matrix, the algorithm is applied to the rows of @mvar{x}.  If
+@mvar{x} is a list of lists, the algorithm is applied to the sublists, which must
 have equal numbers of elements.  In either case, the return value is a list of
-lists, the sublists of which are orthogonal and span the same space as @var{x}.
-If the dimension of the span of @var{x} is less than the number of rows or
+lists, the sublists of which are orthogonal and span the same space as @mvar{x}.
+If the dimension of the span of @mvar{x} is less than the number of rows or
 sublists, some sublists of the return value are zero.
 
 @mref{factor} is called at each stage of the algorithm to simplify intermediate
@@ -1149,9 +1149,9 @@ Gram-Schmidt algorithm using a specified inner product function.
 
 @c -----------------------------------------------------------------------------
 @anchor{ident}
-@deffn {Function} ident (@var{n})
+@deffn {Function} ident (@mvar{n})
 
-Returns an @var{n} by @var{n} identity matrix.
+Returns an @mvar{n} by @mvar{n} identity matrix.
 
 @opencatbox
 @category{Matrices}
@@ -1161,11 +1161,11 @@ Returns an @var{n} by @var{n} identity matrix.
 @c -----------------------------------------------------------------------------
 @anchor{innerproduct}
 @anchor{inprod}
-@deffn  {Function} innerproduct (@var{x}, @var{y})
-@deffnx {Function} inprod (@var{x}, @var{y})
+@deffn  {Function} innerproduct (@mvar{x}, @mvar{y})
+@deffnx {Function} inprod (@mvar{x}, @mvar{y})
 
 Returns the inner product (also called the scalar product or dot product) of
-@var{x} and @var{y}, which are lists of equal length, or both 1-column or 1-row
+@mvar{x} and @mvar{y}, which are lists of equal length, or both 1-column or 1-row
 matrices of equal length.  The return value is @code{conjugate (x) . y},
 where @code{.} is the noncommutative multiplication operator.
 
@@ -1181,17 +1181,17 @@ where @code{.} is the noncommutative multiplication operator.
 
 @c -----------------------------------------------------------------------------
 @anchor{invert}
-@deffn {Function} invert (@var{M})
+@deffn {Function} invert (@mvar{M})
 
-Returns the inverse of the matrix @var{M}.
+Returns the inverse of the matrix @mvar{M}.
 The inverse is computed via the LU decomposition.
 
 When @mref{ratmx} is @code{true},
-elements of @var{M} are converted to canonical rational expressions (CRE),
+elements of @mvar{M} are converted to canonical rational expressions (CRE),
 and the elements of the return value are also CRE.
 
 When @mref{ratmx} is @code{false},
-elements of @var{M} are not converted to a common representation.
+elements of @mvar{M} are not converted to a common representation.
 In particular, float and bigfloat elements are not converted to rationals.
 
 When @mref{detout} is @code{true}, the determinant is factored out of the inverse.
@@ -1202,10 +1202,10 @@ to prevent the determinant from being absorbed into the inverse.
 @mref{invert} does not apply any simplifications to the elements of the inverse
 apart from the default arithmetic simplifications.
 @mref{ratsimp} and @mref{expand} can apply additional simplifications.
-In particular, when @var{M} has polynomial elements,
-@code{expand(invert(@var{M}))} might be preferable.
+In particular, when @mvar{M} has polynomial elements,
+@code{expand(invert(@mvar{M}))} might be preferable.
 
-@code{invert(@var{M})} is equivalent to @code{@var{M}^^-1}.
+@code{invert(@mvar{M})} is equivalent to @code{@mvar{M}^^-1}.
 
 @c NEED EXAMPLES HERE
 @opencatbox
@@ -1215,9 +1215,9 @@ In particular, when @var{M} has polynomial elements,
 
 @c -----------------------------------------------------------------------------
 @anchor{list_matrix_entries}
-@deffn {Function} list_matrix_entries (@var{M})
+@deffn {Function} list_matrix_entries (@mvar{M})
 
-Returns a list containing the elements of the matrix @var{M}.
+Returns a list containing the elements of the matrix @mvar{M}.
 
 Example:
 
@@ -1261,10 +1261,10 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{matrix}
-@deffn {Function} matrix (@var{row_1}, @dots{}, @var{row_n})
+@deffn {Function} matrix (@mvar{row_1}, @dots{}, @mvar{row_n})
 
-Returns a rectangular matrix which has the rows @var{row_1}, @dots{},
-@var{row_n}.  Each row is a list of expressions.  All rows must be the same
+Returns a rectangular matrix which has the rows @mvar{row_1}, @dots{},
+@mvar{row_n}.  Each row is a list of expressions.  All rows must be the same
 length.
 
 The operations @code{+} (addition), @code{-} (subtraction), @code{*}
@@ -1279,9 +1279,9 @@ including @code{.} (noncommutative multiplication).
 
 Matrix multiplication is represented by the noncommutative multiplication
 operator @code{.}.  The corresponding noncommutative exponentiation operator
-is @code{^^}.  For a matrix @code{@var{A}}, @code{@var{A}.@var{A} = @var{A}^^2}
-and @code{@var{A}^^-1} is the inverse of @var{A}, if it exists.
-@code{@var{A}^^-1} is equivalent to @code{invert(@var{A})}.
+is @code{^^}.  For a matrix @code{@mvar{A}}, @code{@mvar{A}.@mvar{A} = @mvar{A}^^2}
+and @code{@mvar{A}^^-1} is the inverse of @mvar{A}, if it exists.
+@code{@mvar{A}^^-1} is equivalent to @code{invert(@mvar{A})}.
 
 There are switches for controlling simplification of expressions involving dot
 and matrix-list operations.  These are
@@ -1416,7 +1416,7 @@ Noncommutative matrix multiplication.
 @itemize @bullet
 @item
 Noncommutative matrix exponentiation.
-A scalar base @var{b} to a matrix power @var{M}
+A scalar base @mvar{b} to a matrix power @mvar{M}
 is carried out element by element and so @code{b^^m} is the same as @code{b^m}.
 @end itemize
 @example
@@ -1460,9 +1460,9 @@ matrix inverse, if it exists.
 
 @c -----------------------------------------------------------------------------
 @anchor{matrixmap}
-@deffn {Function} matrixmap (@var{f}, @var{M})
+@deffn {Function} matrixmap (@mvar{f}, @mvar{M})
 
-Returns a matrix with element @code{i,j} equal to @code{@var{f}(@var{M}[i,j])}.
+Returns a matrix with element @code{i,j} equal to @code{@mvar{f}(@mvar{M}[i,j])}.
 
 See also @mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{fullmapl} and
 @mrefdot{apply}
@@ -1475,9 +1475,9 @@ See also @mrefcomma{map} @mrefcomma{fullmap} @mrefcomma{fullmapl} and
 
 @c -----------------------------------------------------------------------------
 @anchor{matrixp}
-@deffn {Function} matrixp (@var{expr})
+@deffn {Function} matrixp (@mvar{expr})
 
-Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
+Returns @code{true} if @mvar{expr} is a matrix, otherwise @code{false}.
 
 @opencatbox
 @category{Predicate functions} @category{Matrices}
@@ -1640,10 +1640,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{mattrace}
-@deffn {Function} mattrace (@var{M})
+@deffn {Function} mattrace (@mvar{M})
 
 Returns the trace (that is, the sum of the elements on the main diagonal) of
-the square matrix @var{M}.
+the square matrix @mvar{M}.
 
 @code{mattrace} is called by @mrefcomma{ncharpoly} an alternative to Maxima's
 @mrefdot{charpoly}
@@ -1658,10 +1658,10 @@ the square matrix @var{M}.
 
 @c -----------------------------------------------------------------------------
 @anchor{minor}
-@deffn {Function} minor (@var{M}, @var{i}, @var{j})
+@deffn {Function} minor (@mvar{M}, @mvar{i}, @mvar{j})
 
-Returns the @var{i}, @var{j} minor of the matrix @var{M}.  That is, @var{M}
-with row @var{i} and column @var{j} removed.
+Returns the @mvar{i}, @mvar{j} minor of the matrix @mvar{M}.  That is, @mvar{M}
+with row @mvar{i} and column @mvar{j} removed.
 
 @opencatbox
 @category{Matrices}
@@ -1670,10 +1670,10 @@ with row @var{i} and column @var{j} removed.
 
 @c -----------------------------------------------------------------------------
 @anchor{ncharpoly}
-@deffn {Function} ncharpoly (@var{M}, @var{x})
+@deffn {Function} ncharpoly (@mvar{M}, @mvar{x})
 
-Returns the characteristic polynomial of the matrix @var{M}
-with respect to @var{x}.  This is an alternative to Maxima's @mrefdot{charpoly}
+Returns the characteristic polynomial of the matrix @mvar{M}
+with respect to @mvar{x}.  This is an alternative to Maxima's @mrefdot{charpoly}
 
 @code{ncharpoly} works by computing traces of powers of the given matrix,
 which are known to be equal to sums of powers of the roots of the
@@ -1681,7 +1681,7 @@ characteristic polynomial.  From these quantities the symmetric
 functions of the roots can be calculated, which are nothing more than
 the coefficients of the characteristic polynomial.  @code{charpoly} works by
 @c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
-forming the determinant of @code{@var{x} * ident [n] - a}.  Thus
+forming the determinant of @code{@mvar{x} * ident [n] - a}.  Thus
 @code{ncharpoly} wins, for example, in the case of large dense matrices filled
 with integers, since it avoids polynomial arithmetic altogether.
 
@@ -1694,9 +1694,9 @@ with integers, since it avoids polynomial arithmetic altogether.
 
 @c -----------------------------------------------------------------------------
 @anchor{newdet}
-@deffn {Function} newdet (@var{M})
+@deffn {Function} newdet (@mvar{M})
 
-Computes the determinant of the matrix @var{M} by the Johnson-Gentleman tree 
+Computes the determinant of the matrix @mvar{M} by the Johnson-Gentleman tree 
 minor algorithm.  @code{newdet} returns the result in CRE form.
 
 @opencatbox
@@ -1706,9 +1706,9 @@ minor algorithm.  @code{newdet} returns the result in CRE form.
 
 @c -----------------------------------------------------------------------------
 @anchor{permanent}
-@deffn {Function} permanent (@var{M})
+@deffn {Function} permanent (@mvar{M})
 
-Computes the permanent of the matrix @var{M} by the Johnson-Gentleman tree
+Computes the permanent of the matrix @mvar{M} by the Johnson-Gentleman tree
 minor algorithm.  A permanent is like a determinant but with no sign changes.
 @code{permanent} returns the result in CRE form.
 
@@ -1721,13 +1721,13 @@ See also @code{newdet}.
 
 @c -----------------------------------------------------------------------------
 @anchor{rank}
-@deffn {Function} rank (@var{M})
+@deffn {Function} rank (@mvar{M})
 
-Computes the rank of the matrix @var{M}.  That is, the order of the
-largest non-singular subdeterminant of @var{M}.
+Computes the rank of the matrix @mvar{M}.  That is, the order of the
+largest non-singular subdeterminant of @mvar{M}.
 
 @c STATEMENT NEEDS CLARIFICATION
-@var{rank} may return the
+@mvar{rank} may return the
 wrong answer if it cannot determine that a matrix element that is
 equivalent to zero is indeed so.
 
@@ -1759,9 +1759,9 @@ which might not always be desired.
 
 @c -----------------------------------------------------------------------------
 @anchor{row}
-@deffn {Function} row (@var{M}, @var{i})
+@deffn {Function} row (@mvar{M}, @mvar{i})
 
-Returns the @var{i}'th row of the matrix @var{M}.
+Returns the @mvar{i}'th row of the matrix @mvar{M}.
 The return value is a matrix.
 
 @opencatbox
@@ -1807,11 +1807,11 @@ to scalars.
 
 @c -----------------------------------------------------------------------------
 @anchor{scalefactors}
-@deffn {Function} scalefactors (@var{coordinatetransform})
+@deffn {Function} scalefactors (@mvar{coordinatetransform})
 
-Here the argument @var{coordinatetransform} evaluates to the form
+Here the argument @mvar{coordinatetransform} evaluates to the form
 @code{[[expression1, expression2, ...], indeterminate1, indeterminat2, ...]},
-where the variables @var{indeterminate1}, @var{indeterminate2}, etc. are the
+where the variables @mvar{indeterminate1}, @mvar{indeterminate2}, etc. are the
 curvilinear coordinate variables and where a set of rectangular Cartesian
 components is given in terms of the curvilinear coordinates by
 @code{[expression1, expression2, ...]}.  @code{coordinates} is set to the vector
@@ -1831,13 +1831,13 @@ current coordinate system, there is a function with usage of the form
 
 @c -----------------------------------------------------------------------------
 @anchor{setelmx}
-@deffn {Function} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+@deffn {Function} setelmx (@mvar{x}, @mvar{i}, @mvar{j}, @mvar{M})
 
-Assigns @var{x} to the (@var{i}, @var{j})'th element of the matrix @var{M},
+Assigns @mvar{x} to the (@mvar{i}, @mvar{j})'th element of the matrix @mvar{M},
 and returns the altered matrix.
 
-@code{@var{M} [@var{i}, @var{j}]: @var{x}} has the same effect,
-but returns @var{x} instead of @var{M}.
+@code{@mvar{M} [@mvar{i}, @mvar{j}]: @mvar{x}} has the same effect,
+but returns @mvar{x} instead of @mvar{M}.
 
 @opencatbox
 @category{Matrices}
@@ -1847,15 +1847,15 @@ but returns @var{x} instead of @var{M}.
 @c -----------------------------------------------------------------------------
 @anchor{similaritytransform}
 @anchor{simtran}
-@deffn  {Function} similaritytransform (@var{M})
-@deffnx {Function} simtran (@var{M})
+@deffn  {Function} similaritytransform (@mvar{M})
+@deffnx {Function} simtran (@mvar{M})
 
 @code{similaritytransform} computes a similarity transform of the matrix
 @code{M}.  It returns a list which is the output of the @code{uniteigenvectors}
 command.  In addition if the flag @code{nondiagonalizable} is @code{false} two
 global matrices @code{leftmatrix} and @code{rightmatrix} are computed.  These
-matrices have the property that @code{leftmatrix . @var{M} . rightmatrix} is a
-diagonal matrix with the eigenvalues of @var{M} on the diagonal.  If
+matrices have the property that @code{leftmatrix . @mvar{M} . rightmatrix} is a
+diagonal matrix with the eigenvalues of @mvar{M} on the diagonal.  If
 @code{nondiagonalizable} is @code{true} the left and right matrices are not
 computed.
 
@@ -1864,7 +1864,7 @@ complex conjugate of the transpose of @code{rightmatrix}.  Otherwise
 @code{leftmatrix} is the inverse of @code{rightmatrix}.
 
 @code{rightmatrix} is the matrix the columns of which are the unit
-eigenvectors of @var{M}.  The other flags (see @code{eigenvalues} and
+eigenvectors of @mvar{M}.  The other flags (see @code{eigenvalues} and
 @code{eigenvectors}) have the same effects since
 @code{similaritytransform} calls the other functions in the package in order
 to be able to form @code{rightmatrix}.
@@ -1893,12 +1893,12 @@ When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then
 
 @c -----------------------------------------------------------------------------
 @anchor{submatrix}
-@deffn  {Function} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M}, @var{j_1}, @dots{}, @var{j_n})
-@deffnx {Function} submatrix (@var{i_1}, @dots{}, @var{i_m}, @var{M})
-@deffnx {Function} submatrix (@var{M}, @var{j_1}, @dots{}, @var{j_n})
+@deffn  {Function} submatrix (@mvar{i_1}, @dots{}, @mvar{i_m}, @mvar{M}, @mvar{j_1}, @dots{}, @mvar{j_n})
+@deffnx {Function} submatrix (@mvar{i_1}, @dots{}, @mvar{i_m}, @mvar{M})
+@deffnx {Function} submatrix (@mvar{M}, @mvar{j_1}, @dots{}, @mvar{j_n})
 
-Returns a new matrix composed of the matrix @var{M} with rows @var{i_1},
-@dots{}, @var{i_m} deleted, and columns @var{j_1}, @dots{}, @var{j_n} deleted.
+Returns a new matrix composed of the matrix @mvar{M} with rows @mvar{i_1},
+@dots{}, @mvar{i_m} deleted, and columns @mvar{j_1}, @dots{}, @mvar{j_n} deleted.
 
 @opencatbox
 @category{Matrices}
@@ -1907,18 +1907,18 @@ Returns a new matrix composed of the matrix @var{M} with rows @var{i_1},
 
 @c -----------------------------------------------------------------------------
 @anchor{transpose}
-@deffn {Function} transpose (@var{M})
+@deffn {Function} transpose (@mvar{M})
 
-Returns the transpose of @var{M}.
+Returns the transpose of @mvar{M}.
 
-If @var{M} is a matrix, the return value is another matrix @var{N}
+If @mvar{M} is a matrix, the return value is another matrix @mvar{N}
 such that @code{N[i,j] = M[j,i]}.
 
-If @var{M} is a list, the return value is a matrix @var{N}
+If @mvar{M} is a list, the return value is a matrix @mvar{N}
 of @code{length (m)} rows and 1 column, such that @code{N[i,1] = M[i]}.
 
-Otherwise @var{M} is a symbol,
-and the return value is a noun expression @code{'transpose (@var{M})}.
+Otherwise @mvar{M} is a symbol,
+and the return value is a noun expression @code{'transpose (@mvar{M})}.
 
 @opencatbox
 @category{Matrices}
@@ -1927,7 +1927,7 @@ and the return value is a noun expression @code{'transpose (@var{M})}.
 
 @c -----------------------------------------------------------------------------
 @anchor{triangularize}
-@deffn {Function} triangularize (@var{M})
+@deffn {Function} triangularize (@mvar{M})
 
 Returns the upper triangular form of the matrix @code{M},
 as produced by Gaussian elimination.
@@ -1964,10 +1964,10 @@ triangularized matrices.
 @c -----------------------------------------------------------------------------
 @anchor{uniteigenvectors}
 @anchor{ueivects}
-@deffn  {Function} uniteigenvectors (@var{M})
-@deffnx {Function} ueivects (@var{M})
+@deffn  {Function} uniteigenvectors (@mvar{M})
+@deffnx {Function} ueivects (@mvar{M})
 
-Computes unit eigenvectors of the matrix @var{M}.
+Computes unit eigenvectors of the matrix @mvar{M}.
 The return value is a list of lists, the first sublist of which is the
 output of the @code{eigenvalues} command, and the other sublists of which are
 the unit eigenvectors of the matrix corresponding to those eigenvalues
@@ -2001,11 +2001,11 @@ eigenvectors of which do not span the vector space of the appropriate dimension.
 @c -----------------------------------------------------------------------------
 @anchor{unitvector}
 @anchor{uvect}
-@deffn  {Function} unitvector (@var{x})
-@deffnx {Function} uvect (@var{x})
+@deffn  {Function} unitvector (@mvar{x})
+@deffnx {Function} uvect (@mvar{x})
 
-Returns @math{@var{x}/norm(@var{x})};
-this is a unit vector in the same direction as @var{x}.
+Returns @math{@mvar{x}/norm(@mvar{x})};
+this is a unit vector in the same direction as @mvar{x}.
 
 @code{load ("eigen")} loads this function.
 
@@ -2020,7 +2020,7 @@ this is a unit vector in the same direction as @var{x}.
 
 @c -----------------------------------------------------------------------------
 @anchor{vectorpotential}
-@deffn {Function} vectorpotential (@var{givencurl})
+@deffn {Function} vectorpotential (@mvar{givencurl})
 
 Returns the vector potential of a given curl vector, in the current coordinate
 system.  @code{potentialzeroloc} has a similar role as for @code{potential}, but
@@ -2037,7 +2037,7 @@ of the coordinate variables.
 
 @c -----------------------------------------------------------------------------
 @anchor{vectorsimp}
-@deffn {Function} vectorsimp (@var{expr})
+@deffn {Function} vectorsimp (@mvar{expr})
 
 Applies simplifications and expansions according to the following global flags:
 
@@ -2101,9 +2101,9 @@ When @code{vect_cross} is @code{true}, it allows DIFF(X~Y,T) to work where
 
 @c -----------------------------------------------------------------------------
 @anchor{zeromatrix}
-@deffn {Function} zeromatrix (@var{m}, @var{n})
+@deffn {Function} zeromatrix (@mvar{m}, @mvar{n})
 
-Returns an @var{m} by @var{n} matrix, all elements of which are zero.
+Returns an @mvar{m} by @mvar{n} matrix, all elements of which are zero.
 
 @opencatbox
 @category{Matrices}

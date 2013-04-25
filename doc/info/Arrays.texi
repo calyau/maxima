@@ -15,22 +15,22 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{array}
-@deffn  {Function} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Function} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {Function} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
+@deffn  {Function} array (@mvar{name}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {Function} array (@mvar{name}, @mvar{type}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {Function} array ([@mvar{name_1}, @dots{}, @mvar{name_m}], @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
 Creates an @math{n}-dimensional array.  @math{n} may be less than or equal to 5.
 The subscripts for the @math{i}'th dimension are the integers running from 0 to
-@var{dim_i}.
+@mvar{dim_i}.
 
-@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} creates a general
+@code{array (@mvar{name}, @mvar{dim_1}, ..., @mvar{dim_n})} creates a general
 array.
 
-@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} creates
-an array, with elements of a specified type.  @var{type} can be @code{fixnum}
+@code{array (@mvar{name}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})} creates
+an array, with elements of a specified type.  @mvar{type} can be @code{fixnum}
 for integers of limited size or @code{flonum} for floating-point numbers.
 
-@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+@code{array ([@mvar{name_1}, ..., @mvar{name_m}], @mvar{dim_1}, ..., @mvar{dim_n})}
 creates @math{m} arrays, all of the same dimensions.
 @c SAME TYPE AS WELL ??
 
@@ -55,10 +55,10 @@ array.
 
 @c -----------------------------------------------------------------------------
 @anchor{arrayapply}
-@deffn {Function} arrayapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+@deffn {Function} arrayapply (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}])
 
-Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
-where @var{A} is an array and @var{i_1}, @dots{}, @var{i_n} are integers.
+Evaluates @code{@mvar{A} [@mvar{i_1}, ..., @mvar{i_n}]},
+where @mvar{A} is an array and @mvar{i_1}, @dots{}, @mvar{i_n} are integers.
 
 This is reminiscent of @mrefcomma{apply} except the first argument is an array
 instead of a function.
@@ -70,10 +70,10 @@ instead of a function.
 
 @c -----------------------------------------------------------------------------
 @anchor{arrayinfo}
-@deffn {Function} arrayinfo (@var{A})
+@deffn {Function} arrayinfo (@mvar{A})
 
-Returns information about the array @var{A}.
-The argument @var{A} may be a declared array, an undeclared (hashed) array,
+Returns information about the array @mvar{A}.
+The argument @mvar{A} may be a declared array, an undeclared (hashed) array,
 an array function, or a subscripted function.
 
 For declared arrays, @code{arrayinfo} returns a list comprising the atom
@@ -247,9 +247,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{arraymake}
-@deffn {Function} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
+@deffn {Function} arraymake (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}])
 
-Returns the expression @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
+Returns the expression @code{@mvar{A}[@mvar{i_1}, ..., @mvar{i_n}]}.
 The result is an unevaluated array reference.
 
 @code{arraymake} is reminiscent of @mrefcomma{funmake} except the return value
@@ -401,10 +401,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{arraysetapply}
-@deffn {Function} arraysetapply (@var{A}, [@var{i_1}, @dots{}, @var{i_n}], @var{x})
+@deffn {Function} arraysetapply (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}], @mvar{x})
 
-Assigns @var{x} to @code{@var{A}[@var{i_1}, ..., @var{i_n}]},
-where @var{A} is an array and @var{i_1}, @dots{}, @var{i_n} are integers.
+Assigns @mvar{x} to @code{@mvar{A}[@mvar{i_1}, ..., @mvar{i_n}]},
+where @mvar{A} is an array and @mvar{i_1}, @dots{}, @mvar{i_n} are integers.
 
 @code{arraysetapply} evaluates its arguments.
 
@@ -415,18 +415,18 @@ where @var{A} is an array and @var{i_1}, @dots{}, @var{i_n} are integers.
 
 @c -----------------------------------------------------------------------------
 @anchor{fillarray}
-@deffn {Function} fillarray (@var{A}, @var{B})
+@deffn {Function} fillarray (@mvar{A}, @mvar{B})
 
-Fills array @var{A} from @var{B}, which is a list or an array.
+Fills array @mvar{A} from @mvar{B}, which is a list or an array.
 
-If a specific type was declared for @var{A} when it was created,
+If a specific type was declared for @mvar{A} when it was created,
 it can only be filled with elements of that same type;
 it is an error if an attempt is made to copy an element of a different type.
 
-If the dimensions of the arrays @var{A} and @var{B} are
-different, @var{A} is filled in row-major order.  If there are not enough
-elements in @var{B} the last element is used to fill out the
-rest of @var{A}.  If there are too many, the remaining ones are ignored.
+If the dimensions of the arrays @mvar{A} and @mvar{B} are
+different, @mvar{A} is filled in row-major order.  If there are not enough
+elements in @mvar{B} the last element is used to fill out the
+rest of @mvar{A}.  If there are too many, the remaining ones are ignored.
 
 @code{fillarray} returns its first argument.
 
@@ -521,10 +521,10 @@ Multple-dimension arrays are filled in row-major order.
 
 @c -----------------------------------------------------------------------------
 @anchor{listarray}
-@deffn {Function} listarray (@var{A})
+@deffn {Function} listarray (@mvar{A})
 
-Returns a list of the elements of the array @var{A}.
-The argument @var{A} may be a declared array, an undeclared (hashed) array,
+Returns a list of the elements of the array @mvar{A}.
+The argument @mvar{A} may be a declared array, an undeclared (hashed) array,
 an array function, or a subscripted function.
 
 Elements are listed in row-major order.
@@ -693,13 +693,13 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{make_array}
-@deffn {Function} make_array (@var{type}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn {Function} make_array (@mvar{type}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
-Creates and returns a Lisp array.  @var{type} may
+Creates and returns a Lisp array.  @mvar{type} may
 be @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} or 
 @code{functional}.
 There are @math{n} indices,
-and the @math{i}'th index runs from 0 to @math{@var{dim_i} - 1}.
+and the @math{i}'th index runs from 0 to @math{@mvar{dim_i} - 1}.
 
 The advantage of @code{make_array} over @mref{array} is that the return value
 doesn't have a name, and once a pointer to it goes away, it will also go away.
@@ -797,7 +797,7 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{rearray}
-@deffn {Function} rearray (@var{A}, @var{dim_1}, @dots{}, @var{dim_n})
+@deffn {Function} rearray (@mvar{A}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
 Changes the dimensions of an array.
 The new array will be filled with the elements of the old one in
@@ -814,7 +814,7 @@ changed.
 
 @c -----------------------------------------------------------------------------
 @anchor{remarray}
-@deffn  {Function} remarray (@var{A_1}, @dots{}, @var{A_n})
+@deffn  {Function} remarray (@mvar{A_1}, @dots{}, @mvar{A_n})
 @deffnx {Function} remarray (all)
 
 Removes arrays and array associated functions and frees the storage occupied.
@@ -838,14 +838,14 @@ desired to redefine the values in a hashed array.
 
 @c -----------------------------------------------------------------------------
 @anchor{subvar}
-@deffn {Function} subvar (@var{x}, @var{i})
+@deffn {Function} subvar (@mvar{x}, @mvar{i})
 
-Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
+Evaluates the subscripted expression @code{@mvar{x}[@mvar{i}]}.
 
 @code{subvar} evaluates its arguments.
 
-@code{arraymake (@var{x}, [@var{i}]} constructs the expression
-@code{@var{x}[@var{i}]}, but does not evaluate it.
+@code{arraymake (@mvar{x}, [@mvar{i}]} constructs the expression
+@code{@mvar{x}[@mvar{i}]}, but does not evaluate it.
 
 Examples:
 
@@ -891,9 +891,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{subvarp}
-@deffn {Function} subvarp (@var{expr})
+@deffn {Function} subvarp (@mvar{expr})
 
-Returns @code{true} if @var{expr} is a subscripted variable, for example
+Returns @code{true} if @mvar{expr} is a subscripted variable, for example
 @code{a[i]}.
 
 @opencatbox

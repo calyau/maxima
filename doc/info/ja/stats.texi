@@ -28,7 +28,7 @@
 パッケージ@code{stats}は、パッケージ@code{descriptive}, @code{distrib}, 
 @code{inference_result}をロードします。
 
-コメント、バグ、提案は、作者@var{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
+コメント、バグ、提案は、作者@mvar{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
 
 @opencatbox
 @category{Statistical inference} @category{Share packages} @category{Package stats}
@@ -37,14 +37,14 @@
 @node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
 @section Functions and Variables for inference_result
 
-@deffn {関数} inference_result (@var{title}, @var{values}, @var{numbers})
+@deffn {関数} inference_result (@mvar{title}, @mvar{values}, @mvar{numbers})
 
 statsの関数が返す型の @code{inference_result}オブジェクトを構成します。
-引数 @var{title}は手続き名の文字列です;
-@var{values}は形式 @code{symbol = value}の要素を持つリストであり、
-@var{numbers}は
+引数 @mvar{title}は手続き名の文字列です;
+@mvar{values}は形式 @code{symbol = value}の要素を持つリストであり、
+@mvar{numbers}は
 どの値がデフォルトで表示されるか示している
-1から @code{length(@var{values})}までの範囲の正の整数のリストです。
+1から @code{length(@mvar{values})}までの範囲の正の整数のリストです。
 
 例:
 
@@ -107,9 +107,9 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} inferencep (@var{obj})
+@deffn {関数} inferencep (@mvar{obj})
 
-@var{obj}が @code{inference_result}オブジェクトか否かに依存して、
+@mvar{obj}が @code{inference_result}オブジェクトか否かに依存して、
 @code{true}か @code{false}を返します。
 
 @opencatbox
@@ -123,10 +123,10 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} items_inference (@var{obj})
+@deffn {関数} items_inference (@mvar{obj})
 
-@var{obj}に格納された項目名のリストを返します。
-@var{obj}は @code{inference_result}オブジェクトでなければいけません。
+@mvar{obj}に格納された項目名のリストを返します。
+@mvar{obj}は @code{inference_result}オブジェクトでなければいけません。
 
 例:
 
@@ -163,13 +163,13 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} take_inference (@var{n}, @var{obj})
-@deffnx {関数} take_inference (@var{name}, @var{obj})
-@deffnx {関数} take_inference (@var{list}, @var{obj})
+@deffn {関数} take_inference (@mvar{n}, @mvar{obj})
+@deffnx {関数} take_inference (@mvar{name}, @mvar{obj})
+@deffnx {関数} take_inference (@mvar{list}, @mvar{obj})
 
-もし @var{n}が正の整数なら、
-@var{obj}に格納された @var{n}番目の値を返します。
-もし @var{name}が項目名なら、そう名付けられた項目を返します。
+もし @mvar{n}が正の整数なら、
+@mvar{obj}に格納された @mvar{n}番目の値を返します。
+もし @mvar{name}が項目名なら、そう名付けられた項目を返します。
 もし一番目の引数が数やシンボルのリストなら、
 関数 @code{take_inference}は対応する結果のリストを返します。
 
@@ -259,11 +259,11 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} test_mean (@var{x})
-@deffnx {関数} test_mean (@var{x}, @var{options} ...)
+@deffn {関数} test_mean (@mvar{x})
+@deffnx {関数} test_mean (@mvar{x}, @mvar{options} ...)
 
 これは平均t検定です。
-引数 @var{x}は1次元標本を含むリストか列行列です。
+引数 @mvar{x}は1次元標本を含むリストか列行列です。
 もしオプション @code{'asymptotic}が @code{true}なら、
 @i{中心極限定理}に基づいた漸近検定も実行します。
 
@@ -326,7 +326,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 例:
 
-未知の分散で正確確率 @var{t}検定を実行します。
+未知の分散で正確確率 @mvar{t}検定を実行します。
 片側対立 @math{H_1: mean<50}に対して
 帰無仮説は @math{H_0: mean=50}です;
 結果に従うと、@math{p}値が大きすぎ、
@@ -414,11 +414,11 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} test_means_difference (@var{x1}, @var{x2})
-@deffnx {関数} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {関数} test_means_difference (@mvar{x1}, @mvar{x2})
+@deffnx {関数} test_means_difference (@mvar{x1}, @mvar{x2}, @mvar{options} ...)
 
-これは2つの標本の平均の差 @var{t}検定です。
-引数 @var{x1}と @var{x2}は2つの独立標本を含むリストか列行列です。
+これは2つの標本の平均の差 @mvar{t}検定です。
+引数 @mvar{x1}と @mvar{x2}は2つの独立標本を含むリストか列行列です。
 異なる未知の分散の場合
 (以下のオプション @code{'dev1}, @code{'dev2}, @code{'varequal}を参照してください)、
 自由度の次数はWelch近似を使って計算されます。
@@ -437,12 +437,12 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 @item
 @code{'dev1}, デフォルト @code{'unknown},
-既知の時、これは@var{x1}標本の標準偏差値です;
+既知の時、これは@mvar{x1}標本の標準偏差値です;
 有効な値は次の通りです: @code{'unknown}もしくは正の式。
 
 @item
 @code{'dev2}, デフォルト @code{'unknown}, 
-既知の時、これは@var{x2}標本の標準偏差値です;
+既知の時、これは@mvar{x2}標本の標準偏差値です;
 有効な値は次の通りです: @code{'unknown}もしくは正の式。
 
 @item
@@ -459,7 +459,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 @item
 @code{'asymptotic}, デフォルト @code{false},
-正確確率 @var{t}検定か
+正確確率 @mvar{t}検定か
 @i{中心極限定理}に基づく漸近検定どちらを実行するかを示します;
 有効な値は @code{true}と @code{false}です。
 
@@ -499,7 +499,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 例:
 
 母平均 @math{m_1}と @math{m_2}で対立 @math{H_1: m_1>m_2}に対して
-2つの小さな標本 @var{x} @var{y}で平均が等しいか検定します;
+2つの小さな標本 @mvar{x} @mvar{y}で平均が等しいか検定します;
 分散は未知で異なると仮定されます。
 
 @c equivalent code for R:
@@ -589,11 +589,11 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} test_variance (@var{x})
-@deffnx {関数} test_variance (@var{x}, @var{options}, ...)
+@deffn {関数} test_variance (@mvar{x})
+@deffnx {関数} test_variance (@mvar{x}, @mvar{options}, ...)
 
-これは分散 @var{chi^2}検定です。
-引数 @var{x}は
+これは分散 @mvar{chi^2}検定です。
+引数 @mvar{x}は
 正規母集団から取られた1次元標本を含む
 リストか列行列です。
 
@@ -697,11 +697,11 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {関数} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {関数} test_variance_ratio (@mvar{x1}, @mvar{x2})
+@deffnx {関数} test_variance_ratio (@mvar{x1}, @mvar{x2}, @mvar{options} ...)
 
-これは2つの正規母集団の分散比 @var{F}検定です。
-引数 @var{x1}と @var{x2}は
+これは2つの正規母集団の分散比 @mvar{F}検定です。
+引数 @mvar{x1}と @mvar{x2}は
 2つの独立標本を含むリストか列行列です。
 
 オプション:
@@ -715,11 +715,11 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 @item
 @code{'mean1}, デフォルト @code{'unknown},
-既知の時、これは@var{x1}が取られた母集団の平均です。
+既知の時、これは@mvar{x1}が取られた母集団の平均です。
 
 @item
 @code{'mean2}, デフォルト @code{'unknown},
-既知の時、これは@var{x2}が取られた母集団の平均です。
+既知の時、これは@mvar{x2}が取られた母集団の平均です。
 
 @item
 @code{'conflevel}, デフォルト @code{95/100},
@@ -809,12 +809,12 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 
 
-@deffn {関数} test_proportion (@var{x}, @var{n})
-@deffnx {関数} test_proportion (@var{x}, @var{n}, @var{options} ...)
+@deffn {関数} test_proportion (@mvar{x}, @mvar{n})
+@deffnx {関数} test_proportion (@mvar{x}, @mvar{n}, @mvar{options} ...)
 
 出現率推定。
-引数 @var{x}は
-未知の確率でのBernoulli実験の@var{n}回試行での成功回数です。
+引数 @mvar{x}は
+未知の確率でのBernoulli実験の@mvar{n}回試行での成功回数です。
 
 オプション:
 
@@ -836,7 +836,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 
 @item
 @code{'asymptotic}, デフォルト @code{false},
-二項分布に基づく正確確率 @var{t}検定か
+二項分布に基づく正確確率 @mvar{t}検定か
 @i{中心極限定理}に基づく漸近検定どちらを実行するかを示します;
 有効な値は @code{true}と @code{false}です。
 
@@ -953,14 +953,14 @@ The output of function
 
 
 
-@deffn {関数} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
-@deffnx {関数} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+@deffn {関数} test_proportions_difference (@mvar{x1}, @mvar{n1}, @mvar{x2}, @mvar{n2})
+@deffnx {関数} test_proportions_difference (@mvar{x1}, @mvar{n1}, @mvar{x2}, @mvar{n2}, @mvar{options} ...)
 
 2つの出現率の差の推定。
-引数 @var{x1}は
+引数 @mvar{x1}は
 一番目の母集団でのBernoulli実験の
-@var{n1}回の試行での成功回数であり、
-@var{x2}と @var{n2}は
+@mvar{n1}回の試行での成功回数であり、
+@mvar{x2}と @mvar{n2}は
 二番目の母集団での対応する値です。
 標本は独立で、検定は漸近です。
 
@@ -1092,11 +1092,11 @@ p値に従うと、対立を受け入れる十分な証拠はありません。
 
 
 
-@deffn {関数} test_sign (@var{x})
-@deffnx {関数} test_sign (@var{x}, @var{options} ...)
+@deffn {関数} test_sign (@mvar{x})
+@deffnx {関数} test_sign (@mvar{x}, @mvar{options} ...)
 
 これは連続母集団のメジアンに関するノンパラメトリック符号検定です。
-引数 @var{x}は1次元標本を含むリストか列行列です。
+引数 @mvar{x}は1次元標本を含むリストか列行列です。
 
 オプション:
 
@@ -1181,13 +1181,13 @@ p値に従うと、対立を受け入れる十分な証拠はありません。
 
 
 
-@deffn {関数} test_signed_rank (@var{x})
-@deffnx {関数} test_signed_rank (@var{x}, @var{options} ...)
+@deffn {関数} test_signed_rank (@mvar{x})
+@deffnx {関数} test_signed_rank (@mvar{x}, @mvar{options} ...)
 
 これは
 連続母集団のメジアンに関する推定を行う
 Wilcoxonの符号順位検定です。
-引数 @var{x}は
+引数 @mvar{x}は
 1次元標本を含む
 リストか列行列です。
 もし標本サイズが20より大きいか、複数の零すなわち引き分けがあれば、
@@ -1314,12 +1314,12 @@ since there are ties.
 
 
 
-@deffn {関数} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {関数} test_rank_sum (@var{x1}, @var{x2}, @var{option})
+@deffn {関数} test_rank_sum (@mvar{x1}, @mvar{x2})
+@deffnx {関数} test_rank_sum (@mvar{x1}, @mvar{x2}, @mvar{option})
 
 これは
 2つの連続母集団のメジアンを比較するWilcoxon-Mann-Whitney検定です。
-最初の2つの引数 @var{x1}と @var{x2}は
+最初の2つの引数 @mvar{x1}と @mvar{x2}は
 2つの独立標本のデータを持つリストか列行列です。
 もし標本サイズのいずれかが10より大きいか、
 引き分けがあるなら、
@@ -1440,10 +1440,10 @@ The output of function
 
 
 
-@deffn {関数} test_normality (@var{x})
+@deffn {関数} test_normality (@mvar{x})
 
 正規性のShapiro-Wilk検定。
-引数 @var{x}は
+引数 @mvar{x}は
 数のリストであり、
 標本サイズは2より大きく、5000以下でなければいけません。
 そうでないなら、関数 @code{test_normality}はエラーメッセージをシグナルします。
@@ -1459,7 +1459,7 @@ The output of function
 @enumerate
 
 @item
-@code{'statistic}: @var{W}統計値
+@code{'statistic}: @mvar{W}統計値
 
 @item
 @code{'p_value}: 正規仮定の@math{p}値。
@@ -1504,12 +1504,12 @@ The output of function
 
 
 
-@deffn {関数} simple_linear_regression (@var{x})
-@deffnx {関数} simple_linear_regression (@var{x} @var{option})
+@deffn {関数} simple_linear_regression (@mvar{x})
+@deffnx {関数} simple_linear_regression (@mvar{x} @mvar{option})
 
 単回帰 @math{y_i=a+b x_i+e_i}。
 ここで、 @math{e_i}は @math{N(0,sigma)}の独立確率変数です
-引数 @var{x}は2つの列行列か対のリストでなければいけません。
+引数 @mvar{x}は2つの列行列か対のリストでなければいけません。
 
 オプション:
 
@@ -1550,19 +1550,19 @@ The output of function
 @code{'adc}: 調整済み決定係数。
 
 @item
-@code{'a_estimation}: パラメータ @var{a}の推定。
+@code{'a_estimation}: パラメータ @mvar{a}の推定。
 
 @item
-@code{'a_conf_int}: パラメータ @var{a}の信頼区間。
+@code{'a_conf_int}: パラメータ @mvar{a}の信頼区間。
 
 @item
-@code{'b_estimation}: パラメータ @var{b}の推定。
+@code{'b_estimation}: パラメータ @mvar{b}の推定。
 
 @item
-@code{'b_conf_int}:　パラメータ @var{b}の信頼区間。
+@code{'b_conf_int}:　パラメータ @mvar{b}の信頼区間。
 
 @item
-@code{'hypotheses}: パラメータ @var{b}について検定される帰無、対立仮説。
+@code{'hypotheses}: パラメータ @mvar{b}について検定される帰無、対立仮説。
 
 @item
 @code{'statistic}: 帰無仮説を検定するのに使われる標本統計値。
@@ -1571,7 +1571,7 @@ The output of function
 @code{'distribution}: パラメータを伴う標本統計分布。
 
 @item
-@code{'p_value}: @var{b}についての検定の@math{p}値。
+@code{'p_value}: @mvar{b}についての検定の@math{p}値。
 
 @item
 @code{'v_estimation}: 不偏分散推定もしくは残差分散。
@@ -1672,10 +1672,10 @@ Only items
 @section Functions and Variables for special distributions
 
 
-@deffn {関数} pdf_signed_rank (@var{x}, @var{n})
+@deffn {関数} pdf_signed_rank (@mvar{x}, @mvar{n})
 符号順位統計の正確確率分布の確率密度関数。
-引数 @var{x}は実数であり、
-@var{n}は正の整数です。
+引数 @mvar{x}は実数であり、
+@mvar{n}は正の整数です。
 
 @code{test_signed_rank}も参照してください。
 
@@ -1685,10 +1685,10 @@ Only items
 
 @end deffn
 
-@deffn {関数} cdf_signed_rank (@var{x}, @var{n})
+@deffn {関数} cdf_signed_rank (@mvar{x}, @mvar{n})
 符号順位統計の正確確率分布の累積密度関数。
-引数 @var{x}は実数であり、
-@var{n}は正の整数です。
+引数 @mvar{x}は実数であり、
+@mvar{n}は正の整数です。
 
 @code{test_signed_rank}も参照してください。
 
@@ -1698,10 +1698,10 @@ Only items
 
 @end deffn
 
-@deffn {関数} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {関数} pdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
 順位和統計の正確確率分布の確率密度関数。
-引数 @var{x}は実数であり、
-@var{n}と @var{m}はともに正の整数です。
+引数 @mvar{x}は実数であり、
+@mvar{n}と @mvar{m}はともに正の整数です。
 
 @code{test_rank_sum}も参照してください。
 
@@ -1711,10 +1711,10 @@ Only items
 
 @end deffn
 
-@deffn {関数} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {関数} cdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
 順位和統計の正確確率分布の累積密度関数。
-引数 @var{x}は実数であり、
-@var{n}と @var{m}はともに正の整数です。
+引数 @mvar{x}は実数であり、
+@mvar{n}と @mvar{m}はともに正の整数です。
 
 @code{test_rank_sum}も参照してください。
 

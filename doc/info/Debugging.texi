@@ -312,11 +312,11 @@ See also @code{setcheck} and @code{setcheckbreak}.
 
 @c -----------------------------------------------------------------------------
 @anchor{timer}
-@deffn  {Function} timer (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Function} timer (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Function} timer (all)
 @deffnx {Function} timer ()
 
-Given functions @var{f_1}, @dots{}, @var{f_n}, @code{timer} puts each one on the
+Given functions @mvar{f_1}, @dots{}, @mvar{f_n}, @code{timer} puts each one on the
 list of functions for which timing statistics are collected.
 @code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list;
 the list accumulates from one call to the next.
@@ -348,10 +348,10 @@ See also @code{timer_devalue}.
 
 @c -----------------------------------------------------------------------------
 @anchor{untimer}
-@deffn  {Function} untimer (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Function} untimer (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Function} untimer ()
 
-Given functions @var{f_1}, @dots{}, @var{f_n},
+Given functions @mvar{f_1}, @dots{}, @mvar{f_n},
 @code{untimer} removes each function from the timer list.
 
 With no arguments, @code{untimer} removes all functions currently on the timer
@@ -389,10 +389,10 @@ See also @code{timer} and @code{timer_info}.
 
 @c -----------------------------------------------------------------------------
 @anchor{timer_info}
-@deffn {Function} timer_info (@var{f_1}, ..., @var{f_n})
+@deffn {Function} timer_info (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} timer_info ()
 
-Given functions @var{f_1}, ..., @var{f_n}, @code{timer_info} returns a matrix
+Given functions @mvar{f_1}, ..., @mvar{f_n}, @code{timer_info} returns a matrix
 containing timing information for each function.
 With no arguments, @code{timer_info} returns timing information for
 all functions currently on the timer list.
@@ -418,11 +418,11 @@ See also @code{timer}.
 
 @c -----------------------------------------------------------------------------
 @anchor{trace}
-@deffn  {Function} trace (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Function} trace (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Function} trace (all)
 @deffnx {Function} trace ()
 
-Given functions @var{f_1}, @dots{}, @var{f_n}, @code{trace} instructs Maxima to
+Given functions @mvar{f_1}, @dots{}, @mvar{f_n}, @code{trace} instructs Maxima to
 print out debugging information whenever those functions are called.
 @code{trace(f)$ trace(g)$} puts @code{f} and then @code{g} onto the list of
 functions to be traced; the list accumulates from one call to the next.
@@ -453,15 +453,15 @@ If @code{timer (f)} is in effect, then @code{trace (f)} has no effect;
 
 @c -----------------------------------------------------------------------------
 @anchor{trace_options}
-@deffn  {Function} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n})
-@deffnx {Function} trace_options (@var{f})
+@deffn  {Function} trace_options (@mvar{f}, @mvar{option_1}, @dots{}, @mvar{option_n})
+@deffnx {Function} trace_options (@mvar{f})
 
-Sets the trace options for function @var{f}.
+Sets the trace options for function @mvar{f}.
 Any previous options are superseded.
-@code{trace_options (@var{f}, ...)} has no effect unless @code{trace (@var{f})}
+@code{trace_options (@mvar{f}, ...)} has no effect unless @code{trace (@mvar{f})}
 is also called (either before or after @code{trace_options}).
 
-@code{trace_options (@var{f})} resets all options to their default values.
+@code{trace_options (@mvar{f})} resets all options to their default values.
 
 The option keywords are:
 
@@ -487,8 +487,8 @@ retry the function call, or specify a return value.
 
 Trace options are specified in two forms.  The presence of the option 
 keyword alone puts the option into effect unconditionally.
-(Note that option @var{foo} is not put into effect by specifying 
-@code{@var{foo}: true} or a similar form; note also that keywords need not
+(Note that option @mvar{foo} is not put into effect by specifying 
+@code{@mvar{foo}: true} or a similar form; note also that keywords need not
 be quoted.) Specifying the option keyword with a predicate
 function makes the option conditional on the predicate.
 
@@ -529,10 +529,10 @@ on a predicate:
 
 @c -----------------------------------------------------------------------------
 @anchor{untrace}
-@deffn  {Function} untrace (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Function} untrace (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Function} untrace ()
 
-Given functions @var{f_1}, @dots{}, @var{f_n},
+Given functions @mvar{f_1}, @dots{}, @mvar{f_n},
 @code{untrace} disables tracing enabled by the @code{trace} function.
 With no arguments, @code{untrace} disables tracing for all functions.
 

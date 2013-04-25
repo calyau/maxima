@@ -63,15 +63,15 @@ elimina o elemento redundante.
 (%o8)                       @{a, [b]@}
 @end example
 
-Dois elementos @var{x} e @var{y} s@~ao redundantes (nomeadamente,
+Dois elementos @mvar{x} e @mvar{y} s@~ao redundantes (nomeadamente,
 considerados o mesmo para prop@'osito de constru@value{cedilha}@~ao de
-conjuntos) se e somente se @code{is(@var{x} = @var{y})} retornar
+conjuntos) se e somente se @code{is(@mvar{x} = @mvar{y})} retornar
 @code{true}.
 @c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-Note que @code{is(equal(@var{x}, @var{y}))} pode retornar @code{true}
-enquanto @code{is(@var{x} = @var{y})} retorna @code{false}; nesse caso
-os elementos @var{x} e @var{y} s@~ao considerados distintos.
+Note que @code{is(equal(@mvar{x}, @mvar{y}))} pode retornar @code{true}
+enquanto @code{is(@mvar{x} = @mvar{y})} retorna @code{false}; nesse caso
+os elementos @mvar{x} e @mvar{y} s@~ao considerados distintos.
 
 @c ===beg===
 @c x: a/c + b/c;
@@ -262,7 +262,7 @@ de conjuntos. Uma forma @'e usar @code{map}; por exemplo:
 (%o1)                  @{f(a), f(b), f(c)@}
 @end example
 
-A outra forma consiste em usar @code{for @var{x} in @var{s} do}
+A outra forma consiste em usar @code{for @mvar{x} in @mvar{s} do}
 
 @c ===beg===
 @c s: {a, b, c};
@@ -441,13 +441,13 @@ documenta@value{cedilha}@~ao.
 @section Defini@value{cedilha}@~oes para Conjuntos
 
 @anchor{adjoin}
-@deffn {Fun@value{cedilha}@~ao} adjoin (@var{x}, @var{a}) 
+@deffn {Fun@value{cedilha}@~ao} adjoin (@mvar{x}, @mvar{a}) 
 
-Calcula a uni@~ao do conjunto @var{a} com @code{@{@var{x}@}}.
+Calcula a uni@~ao do conjunto @mvar{a} com @code{@{@mvar{x}@}}.
 
-@code{adjoin} falha se @var{a} n@~ao for um conjunto literal.
+@code{adjoin} falha se @mvar{a} n@~ao for um conjunto literal.
 
-@code{adjoin(@var{x}, @var{a})} e @code{union(set(@var{x}), @var{a})}
+@code{adjoin(@mvar{x}, @mvar{a})} e @code{union(set(@mvar{x}), @mvar{a})}
 s@~ao equivalentes; contudo, @code{adjoin} pode ser um pouco mais
 r@'apida que @code{union}.
 
@@ -469,13 +469,13 @@ Exemplos:
 @end deffn
 
 @anchor{belln}
-@deffn {Fun@value{cedilha}@~ao} belln (@var{n})
+@deffn {Fun@value{cedilha}@~ao} belln (@mvar{n})
 
 Representa o @math{n}-@'esimo n@'umero de Bell.  @code{belln(n)} @'e o
-n@'umero de parti@value{cedilha}@~oes de um conjunto de @var{n}
+n@'umero de parti@value{cedilha}@~oes de um conjunto de @mvar{n}
 elementos.
 
-Para inteiros n@~ao negativos @var{n}, @code{belln(@var{n})} simplifica
+Para inteiros n@~ao negativos @mvar{n}, @code{belln(@mvar{n})} simplifica
 para o @math{n}-@'esimo n@'umero de Bell.  @code{belln} n@~ao simplifica
 para qualquer outro tipo de argumento.
 
@@ -513,9 +513,9 @@ Exemplos:
 @end deffn
 
 @anchor{cardinality}
-@deffn {Fun@value{cedilha}@~ao} cardinality (@var{a})
+@deffn {Fun@value{cedilha}@~ao} cardinality (@mvar{a})
 
-Calcula o n@'umero de elementos distintos do conjunto @var{a}.
+Calcula o n@'umero de elementos distintos do conjunto @mvar{a}.
 
 @code{cardinality} ignora elementos redundantes mesmo quando a
 simplifica@value{cedilha}@~ao n@~ao estiver habilitada.
@@ -542,10 +542,10 @@ Exemplos:
 @end deffn
 
 @anchor{cartesian_product}
-@deffn {Fun@value{cedilha}@~ao} cartesian_product (@var{b_1}, ... , @var{b_n})
-Retorna um conjunto de listas da forma @code{[@var{x_1}, ...,
-@var{x_n}]}, onde @var{x_1}, ..., @var{x_n} s@~ao elementos dos
-conjuntos @var{b_1}, ... , @var{b_n}, respectivamente.
+@deffn {Fun@value{cedilha}@~ao} cartesian_product (@mvar{b_1}, ... , @mvar{b_n})
+Retorna um conjunto de listas da forma @code{[@mvar{x_1}, ...,
+@mvar{x_n}]}, onde @mvar{x_1}, ..., @mvar{x_n} s@~ao elementos dos
+conjuntos @mvar{b_1}, ... , @mvar{b_n}, respectivamente.
 
 @code{cartesian_product} falha se qualquer argumento n@~ao for um
 conjunto literal.
@@ -572,15 +572,15 @@ Exemplos:
 
 
 @anchor{disjoin}
-@deffn {Fun@value{cedilha}@~ao} disjoin (@var{x}, @var{a})
-Retorna o conjunto @var{a} sem o elemento @var{x}.  Se @var{x} n@~ao for
-um elemento de @var{a}, retorna @var{a} sem
+@deffn {Fun@value{cedilha}@~ao} disjoin (@mvar{x}, @mvar{a})
+Retorna o conjunto @mvar{a} sem o elemento @mvar{x}.  Se @mvar{x} n@~ao for
+um elemento de @mvar{a}, retorna @mvar{a} sem
 modifica@value{cedilha}@~oes.
 
-@code{disjoin} reclama se @var{a} n@~ao for um conjunto literal.
+@code{disjoin} reclama se @mvar{a} n@~ao for um conjunto literal.
 
-@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})}, e
-@code{setdifference(@var{a}, set(@var{x}))} s@~ao todos equivalentes.
+@code{disjoin(@mvar{x}, @mvar{a})}, @code{delete(@mvar{x}, @mvar{a})}, e
+@code{setdifference(@mvar{a}, set(@mvar{x}))} s@~ao todos equivalentes.
 Desses, @code{disjoin} @'e geralmente mais r@'apido que os outros.
 
 Exemplos:
@@ -602,11 +602,11 @@ Exemplos:
 @end deffn
 
 @anchor{disjointp}
-@deffn {Fun@value{cedilha}@~ao} disjointp (@var{a}, @var{b}) 
-Retorna @code{true} se e somente se os conjuntos @var{a} e @var{b} forem
+@deffn {Fun@value{cedilha}@~ao} disjointp (@mvar{a}, @mvar{b}) 
+Retorna @code{true} se e somente se os conjuntos @mvar{a} e @mvar{b} forem
 disjuntos.
 
-@code{disjointp} falha se ou @var{a} ou @var{b} n@~ao forem conjuntos
+@code{disjointp} falha se ou @mvar{a} ou @mvar{b} n@~ao forem conjuntos
 literais.
 
 Exemplos:
@@ -625,13 +625,13 @@ Exemplos:
 @end deffn
 
 @anchor{divisors}
-@deffn {Fun@value{cedilha}@~ao} divisors (@var{n})
+@deffn {Fun@value{cedilha}@~ao} divisors (@mvar{n})
 
-Representa o conjunto dos divisores de @var{n}.
+Representa o conjunto dos divisores de @mvar{n}.
 
-@code{divisors(@var{n})} produz um conjunto de divisores inteiros quando
-@var{n} for um inteiro n@~ao nulo. O conjunto dos divisores inclui os
-elementos 1 e @var{n}. Os divisores de um inteiro negativo s@~ao os
+@code{divisors(@mvar{n})} produz um conjunto de divisores inteiros quando
+@mvar{n} for um inteiro n@~ao nulo. O conjunto dos divisores inclui os
+elementos 1 e @mvar{n}. Os divisores de um inteiro negativo s@~ao os
 divisores do seu valor absoluto.
 
 @code{divisors}, aplicada a equa@value{cedilha}@~oes, listas, matrizes
@@ -694,11 +694,11 @@ e conjuntos, @'e calculada em forma distributiva.
 @end deffn
 
 @anchor{elementp}
-@deffn {Fun@value{cedilha}@~ao} elementp (@var{x}, @var{a})
-Retorna @code{true} se e somente se @var{x} for um elemento do conjunto
-@var{a}.
+@deffn {Fun@value{cedilha}@~ao} elementp (@mvar{x}, @mvar{a})
+Retorna @code{true} se e somente se @mvar{x} for um elemento do conjunto
+@mvar{a}.
 
-@code{elementp} falha se @var{a} n@~ao for um conjunto literal.
+@code{elementp} falha se @mvar{a} n@~ao for um conjunto literal.
 
 Exemplos:
 
@@ -716,8 +716,8 @@ Exemplos:
 @end deffn
 
 @anchor{emptyp}
-@deffn {Fun@value{cedilha}@~ao} emptyp (@var{a})
-Retorna @code{true} se e somente se @var{a} for o conjunto vazio ou uma
+@deffn {Fun@value{cedilha}@~ao} emptyp (@mvar{a})
+Retorna @code{true} se e somente se @mvar{a} for o conjunto vazio ou uma
 lista vazia.
 
 Exemplos:
@@ -735,23 +735,23 @@ Exemplos:
 @end deffn
        
 @anchor{equiv_classes}
-@deffn {Fun@value{cedilha}@~ao} equiv_classes (@var{s}, @var{F})
-Retorna um conjunto das classes de equival@^encias do conjunto @var{s}
+@deffn {Fun@value{cedilha}@~ao} equiv_classes (@mvar{s}, @mvar{F})
+Retorna um conjunto das classes de equival@^encias do conjunto @mvar{s}
 com rela@value{cedilha}@~ao @`a rela@value{cedilha}@~ao de
-equival@^encia @var{F}.
+equival@^encia @mvar{F}.
 
-@var{F} @'e uma fun@value{cedilha}@~ao de duas vari@'aveis definida
-sobre o produto cartesiano @var{s} por @var{s}.  O valor de retorno de
-@var{F} @'e ou @code{true} ou @code{false}, ou uma express@~ao
-@var{expr} tal que @code{is(@var{expr})} @'e ou @code{true} ou
+@mvar{F} @'e uma fun@value{cedilha}@~ao de duas vari@'aveis definida
+sobre o produto cartesiano @mvar{s} por @mvar{s}.  O valor de retorno de
+@mvar{F} @'e ou @code{true} ou @code{false}, ou uma express@~ao
+@mvar{expr} tal que @code{is(@mvar{expr})} @'e ou @code{true} ou
 @code{false}.
 
-Quando @var{F} n@~o for uma rela@value{cedilha}@~ao de equival@^encia,
+Quando @mvar{F} n@~o for uma rela@value{cedilha}@~ao de equival@^encia,
 @code{equiv_classes} aceita-a sem reclama@value{cedilha}@~ao,
 mas o resultado @'e geralmente incorrecto nesse caso.
 
 @c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
-@c @var{F} may be a relational operator (built-in or user-defined),
+@c @mvar{F} may be a relational operator (built-in or user-defined),
 @c an ordinary Maxima function, a Lisp function, a lambda expression,
 @c a macro, or a subscripted function.
 
@@ -793,36 +793,36 @@ de 3.
 @end deffn
 
 @anchor{every}
-@deffn {Fun@value{cedilha}@~ao} every (@var{f}, @var{s})
-@deffnx {Fun@value{cedilha}@~ao} every (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Fun@value{cedilha}@~ao} every (@mvar{f}, @mvar{s})
+@deffnx {Fun@value{cedilha}@~ao} every (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 
-Retorna @code{true} se o predicado @var{f} for @code{true} para todos os
+Retorna @code{true} se o predicado @mvar{f} for @code{true} para todos os
 argumentos fornecidos.
 
-Dado um conjunto como segundo argumento, @code{every(@var{f}, @var{s})}
-retorna @code{true} se @code{is(@var{f}(@var{a_i}))} retornar
-@code{true} para todos os @var{a_i} em @var{s}.  @code{every} pode ou
-n@~ao avaliar @var{f} para todos os @var{a_i} em @var{s}. Uma vez que
+Dado um conjunto como segundo argumento, @code{every(@mvar{f}, @mvar{s})}
+retorna @code{true} se @code{is(@mvar{f}(@mvar{a_i}))} retornar
+@code{true} para todos os @mvar{a_i} em @mvar{s}.  @code{every} pode ou
+n@~ao avaliar @mvar{f} para todos os @mvar{a_i} em @mvar{s}. Uma vez que
 os conjuntos s@~ao desordenados, @code{every} pode avaliar
-@code{@var{f}(@var{a_i})} em qualquer ordem.
+@code{@mvar{f}(@mvar{a_i})} em qualquer ordem.
 
-Dada uma ou mais listas como argumentos, @code{every(@var{f}, @var{L_1},
-..., @var{L_n})} retorna @code{true} se @code{is(@var{f}(@var{x_1}, ...,
-@var{x_n}))} retornar @code{true} para todos os @var{x_1}, ...,
-@var{x_n} em @var{L_1}, ..., @var{L_n}, respectivamente. @code{every}
-pode ou n@~ao avaliar @var{f} para toda combina@value{cedilha}@~ao
-@var{x_1}, ..., @var{x_n}.  @code{every} avalia listas na ordem de
+Dada uma ou mais listas como argumentos, @code{every(@mvar{f}, @mvar{L_1},
+..., @mvar{L_n})} retorna @code{true} se @code{is(@mvar{f}(@mvar{x_1}, ...,
+@mvar{x_n}))} retornar @code{true} para todos os @mvar{x_1}, ...,
+@mvar{x_n} em @mvar{L_1}, ..., @mvar{L_n}, respectivamente. @code{every}
+pode ou n@~ao avaliar @mvar{f} para toda combina@value{cedilha}@~ao
+@mvar{x_1}, ..., @mvar{x_n}.  @code{every} avalia listas na ordem de
 incremento do @'{@dotless{i}}ndice.
 
 Dado um conjunto vazio @code{@{@}} ou uma lista vazia @code{[]} como
 argumentos, @code{every} retorna @code{false}.
 
 Quando o sinalizador global @code{maperror} for @code{true}, todas as
-listas @var{L_1}, ..., @var{L_n} dever@~ao ter o mesmo comprimento.
+listas @mvar{L_1}, ..., @mvar{L_n} dever@~ao ter o mesmo comprimento.
 Quando @code{maperror} for falso, as listas dadas como argumentos
 ser@~ao efectivamente truncadas para o comprimento da menor lista.
 
-Os resultados do predicado @var{f} que avaliarem (via @code{is}) para
+Os resultados do predicado @mvar{f} que avaliarem (via @code{is}) para
 algo diferente de @code{true} ou @code{false} s@~ao governados atrav@'es
 da vari@'avel global @code{prederror}. Quando @code{prederror} for
 @code{true}, tais valores s@~ao tratados como @code{false}, e o valor de
@@ -860,7 +860,7 @@ fun@value{cedilha}@~ao de dois argumentos.
 (%o2)                         false
 @end example
 
-Predicado @var{f} que produz resultados diferentes de @code{true} ou
+Predicado @mvar{f} que produz resultados diferentes de @code{true} ou
 @code{false}, governados por meio da vari@'avel global @code{prederror}.
 
 @c ===beg===
@@ -886,19 +886,19 @@ Predicado @var{f} que produz resultados diferentes de @code{true} ou
 @end deffn
  
 @anchor{extremal_subset}
-@deffn {Fun@value{cedilha}@~ao} extremal_subset (@var{s}, @var{f}, max)
-@deffnx {Fun@value{cedilha}@~ao} extremal_subset (@var{s}, @var{f}, min)
+@deffn {Fun@value{cedilha}@~ao} extremal_subset (@mvar{s}, @mvar{f}, max)
+@deffnx {Fun@value{cedilha}@~ao} extremal_subset (@mvar{s}, @mvar{f}, min)
 
-Encontra o subconjunto de @var{s} para o qual a fun@value{cedilha}@~ao
-@var{f} toma valores m@'aximos ou m@'{@dotless{i}}nimos.
+Encontra o subconjunto de @mvar{s} para o qual a fun@value{cedilha}@~ao
+@mvar{f} toma valores m@'aximos ou m@'{@dotless{i}}nimos.
 
-@code{extremal_subset(@var{s}, @var{f}, max)} encontra o subconjunto do
-conjunto ou lista @var{s} para os quais a fun@value{cedilha}@~ao real
-@var{f} assume um valor m@'aximo.
+@code{extremal_subset(@mvar{s}, @mvar{f}, max)} encontra o subconjunto do
+conjunto ou lista @mvar{s} para os quais a fun@value{cedilha}@~ao real
+@mvar{f} assume um valor m@'aximo.
 
-@code{extremal_subset(@var{s}, @var{f}, min)} encontra o subconjunto do
-conjunto ou lista @var{s} para a qual a fun@value{cedilha}@~ao real
-@var{f} assume um valor m@'{@dotless{i}}nimo.
+@code{extremal_subset(@mvar{s}, @mvar{f}, min)} encontra o subconjunto do
+conjunto ou lista @mvar{s} para a qual a fun@value{cedilha}@~ao real
+@mvar{f} assume um valor m@'{@dotless{i}}nimo.
 
 Exemplos:
 
@@ -915,10 +915,10 @@ Exemplos:
 @end deffn
 
 @anchor{flatten}
-@deffn {Fun@value{cedilha}@~ao} flatten (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} flatten (@mvar{expr})
 
 Colecta argumentos de subexpress@~oes que possuem o mesmo operador que
-@var{expr} e constr@'oi uma express@~ao a partir desses argumentos
+@mvar{expr} e constr@'oi uma express@~ao a partir desses argumentos
 colectados.
 
 Subexpress@~oes nas quais o operador @'e diferente do operador principal
@@ -1015,8 +1015,8 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{full_listify}
-@deffn {Fun@value{cedilha}@~ao} full_listify (@var{a})
-Substitui todo operador de conjunto em @var{a} por um operador de lista,
+@deffn {Fun@value{cedilha}@~ao} full_listify (@mvar{a})
+Substitui todo operador de conjunto em @mvar{a} por um operador de lista,
 e retorna o resultado. @code{fullt_listify} substitui operadores de
 conjunto em subexpress@~oes aninhadas, mesmo se o operador principal
 n@~ao for (@code{set}).
@@ -1039,11 +1039,11 @@ Exemplos:
 @end deffn
 
 @anchor{fullsetify}
-@deffn {Fun@value{cedilha}@~ao} fullsetify (@var{a})
-Quando @var{a} for uma lista, substitui o operador de lista por um
+@deffn {Fun@value{cedilha}@~ao} fullsetify (@mvar{a})
+Quando @mvar{a} for uma lista, substitui o operador de lista por um
 operador de conjunto, e aplica @code{fullsetify} a cada elemento que for
-um conjunto.  Quando @var{a} n@~ao for uma lista, o resultado @'e
-@var{a} na sua forma original e sem modifica@value{cedilha}@~oes.
+um conjunto.  Quando @mvar{a} n@~ao for uma lista, o resultado @'e
+@mvar{a} na sua forma original e sem modifica@value{cedilha}@~oes.
 
 @code{setify} substitui unicamente o operador principal.
 
@@ -1067,9 +1067,9 @@ lista.
 @end deffn
 
 @anchor{identity}
-@deffn {Fun@value{cedilha}@~ao} identity (@var{x})
+@deffn {Fun@value{cedilha}@~ao} identity (@mvar{x})
 
-Retorna @var{x} para qualquer argumento @var{x}.
+Retorna @mvar{x} para qualquer argumento @mvar{x}.
 
 Exemplos:
 
@@ -1086,21 +1086,21 @@ forem valores Booleanos.
 @end deffn
 
 @anchor{integer_partitions}
-@deffn {Fun@value{cedilha}@~ao} integer_partitions (@var{n})
-@deffnx {Fun@value{cedilha}@~ao} integer_partitions (@var{n}, @var{len})
+@deffn {Fun@value{cedilha}@~ao} integer_partitions (@mvar{n})
+@deffnx {Fun@value{cedilha}@~ao} integer_partitions (@mvar{n}, @mvar{len})
 
-Calcula parti@value{cedilha}@~oes inteiras de @var{n}, isto @'e, listas
-de inteiros cuja soma dos elementos de cada lista @'e @var{n}.
+Calcula parti@value{cedilha}@~oes inteiras de @mvar{n}, isto @'e, listas
+de inteiros cuja soma dos elementos de cada lista @'e @mvar{n}.
 
-@code{integer_partitions(@var{n})} encontra o conjunto de todas as
-parti@value{cedilha}@~oes do inteiro @var{n}. Cada
+@code{integer_partitions(@mvar{n})} encontra o conjunto de todas as
+parti@value{cedilha}@~oes do inteiro @mvar{n}. Cada
 parti@value{cedilha}@~ao @'e uma lista ordenada do maior para o menor.
 
-@code{integer_partitions(@var{n}, @var{len})} encontra todas as
-parti@value{cedilha}@~oes com comprimento @var{len} ou menor; nesse
+@code{integer_partitions(@mvar{n}, @mvar{len})} encontra todas as
+parti@value{cedilha}@~oes com comprimento @mvar{len} ou menor; nesse
 caso, ser@~ao adicionados zeros ao final de cada
-parti@value{cedilha}@~ao de comprimento menor que @var{len}, para fazer
-com que todas as parti@,{c}@~oes tenham exactamente @var{len} termos.
+parti@value{cedilha}@~ao de comprimento menor que @mvar{len}, para fazer
+com que todas as parti@,{c}@~oes tenham exactamente @mvar{len} termos.
 Cada parti@value{cedilha}@~ao @'e uma lista ordenada do maior para o
 menor.
 
@@ -1156,16 +1156,16 @@ de 10 cujos elementos da lista s@~ao n@'umeros primos.
 @end deffn
 
 @anchor{intersect}
-@deffn {Fun@value{cedilha}@~ao} intersect (@var{a_1}, ..., @var{a_n})
+@deffn {Fun@value{cedilha}@~ao} intersect (@mvar{a_1}, ..., @mvar{a_n})
 
 @code{intersect} @'e o mesmo que @code{intersection}, como veremos.
 
 @end deffn
 
 @anchor{intersection}
-@deffn {Fun@value{cedilha}@~ao} intersection (@var{a_1}, ..., @var{a_n})
+@deffn {Fun@value{cedilha}@~ao} intersection (@mvar{a_1}, ..., @mvar{a_n})
 Retorna um conjunto contendo os elementos que s@~ao comuns aos conjuntos
-@var{a_1} at@'e @var{a_n}.
+@mvar{a_1} at@'e @mvar{a_n}.
 
 @code{intersection} falha se qualquer dos argumentos n@~ao for um
 conjunto literal.
@@ -1203,38 +1203,38 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} kron_delta (@var{x}, @var{y})
+@deffn {Fun@value{cedilha}@~ao} kron_delta (@mvar{x}, @mvar{y})
 
 Representa a fun@value{cedilha}@~ao delta de Kronecker.
 
-@code{kron_delta} simplifica para 1 quando @var{x} e @var{y} forem
-id@^enticos ou equivalentes, e simplifica para 0 quando @var{x} e
-@var{y} n@~ao forem equivalentes. De outra forma, se n@~ao for certo que
-@var{x} e @var{y} s@~ao equivalentes, @code{kron_delta} simplificar@'a
+@code{kron_delta} simplifica para 1 quando @mvar{x} e @mvar{y} forem
+id@^enticos ou equivalentes, e simplifica para 0 quando @mvar{x} e
+@mvar{y} n@~ao forem equivalentes. De outra forma, se n@~ao for certo que
+@mvar{x} e @mvar{y} s@~ao equivalentes, @code{kron_delta} simplificar@'a
 para uma express@~ao substantiva. @code{kron_delta} implementa uma
 pol@'{@dotless{i}}tica de seguran@value{cedilha}a para express@~oes em
-ponto flutuante: se a diferen@value{cedilha}a @code{@var{x} - @var{y}}
+ponto flutuante: se a diferen@value{cedilha}a @code{@mvar{x} - @mvar{y}}
 for um n@'umero em ponto flutuante, @code{kron_delta} simplifica para
-uma express@~ao substantiva quando @var{x} for aparentemente equivalente
-a @var{y}.
+uma express@~ao substantiva quando @mvar{x} for aparentemente equivalente
+a @mvar{y}.
 
-Especificamente, @code{kron_delta(@var{x}, @var{y})} simplifica para 1
+Especificamente, @code{kron_delta(@mvar{x}, @mvar{y})} simplifica para 1
 quando @code{is(x = y)} for @code{true}. @code{kron_delta} tamb@'em
-simplifica para 1 quando @code{sign(abs(@var{x} - @var{y}))} for
-@code{zero} e @code{@var{x} - @var{y}} n@~ao for um n@'umero em ponto
+simplifica para 1 quando @code{sign(abs(@mvar{x} - @mvar{y}))} for
+@code{zero} e @code{@mvar{x} - @mvar{y}} n@~ao for um n@'umero em ponto
 flutuante (e tamb@'em n@~ao for um n@'umero de precis@~ao simples em
 ponto flutuante nem um n@'umero de precis@~ao dupla em poto flutuante,
 isto @'e, n@~ao for um bigfloat). @code{kron_delta} simplifica para 0
-quando @code{sign(abs(@var{x} - @var{y}))} for @code{pos}.
+quando @code{sign(abs(@mvar{x} - @mvar{y}))} for @code{pos}.
 
-Caso contr@'ario, @code{sign(abs(@var{x} - @var{y}))} @'e diferente de
-@code{pos} ou @code{zero}, ou @'e @code{zero} e @code{@var{x} - @var{y}}
+Caso contr@'ario, @code{sign(abs(@mvar{x} - @mvar{y}))} @'e diferente de
+@code{pos} ou @code{zero}, ou @'e @code{zero} e @code{@mvar{x} - @mvar{y}}
 @'e um n@'umero em ponto flutuante. Nesses casos, @code{kron_delta}
 retorna um express@~ao substantiva.
 
 @code{kron_delta} @'e declarada como sendo sim@'etrica. Isto @'e,
-@code{kron_delta(@var{x}, @var{y})} @'e igual a
-@code{kron_delta(@var{y}, @var{x})}.
+@code{kron_delta(@mvar{x}, @mvar{y})} @'e igual a
+@code{kron_delta(@mvar{y}, @mvar{x})}.
 
 Exemplos:
 
@@ -1363,12 +1363,12 @@ Warning:  Float to bigfloat conversion of 0.25
 @end deffn
 
 @anchor{listify}
-@deffn {Fun@value{cedilha}@~ao} listify (@var{a})
+@deffn {Fun@value{cedilha}@~ao} listify (@mvar{a})
 
-Retorna uma lista contendo os elementos de @var{a} quando @var{a} for um
-conjunto. De outra forma, @code{listify} retorna @var{a}.
+Retorna uma lista contendo os elementos de @mvar{a} quando @mvar{a} for um
+conjunto. De outra forma, @code{listify} retorna @mvar{a}.
 
-@code{full_listify} substitui todos os operadores de conjunto em @var{a}
+@code{full_listify} substitui todos os operadores de conjunto em @mvar{a}
 por operadores de lista.
 
 Exemplos:
@@ -1387,19 +1387,19 @@ Exemplos:
 @end deffn
 
 @anchor{lreduce}
-@deffn {Fun@value{cedilha}@~ao} lreduce (@var{F}, @var{s})
-@deffnx {Fun@value{cedilha}@~ao} lreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Fun@value{cedilha}@~ao} lreduce (@mvar{F}, @mvar{s})
+@deffnx {Fun@value{cedilha}@~ao} lreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
-Extende a fun@value{cedilha}@~ao de dois argumentos @var{F} para uma
+Extende a fun@value{cedilha}@~ao de dois argumentos @mvar{F} para uma
 fun@value{cedilha}@~ao de @code{n} argumentos, usando
-composi@value{cedilha}@~ao, onde @var{s} @'e uma lista.
+composi@value{cedilha}@~ao, onde @mvar{s} @'e uma lista.
 
-@code{lreduce(@var{F}, @var{s})} retorna @code{F(... F(F(s_1, s_2),
-s_3), ... s_n)}.  Quando o argumento opcional @var{s_0} estiver
-presente, o resultado @'e equivalente a @code{lreduce(@var{F},
-cons(@var{s_0}, @var{s}))}.
+@code{lreduce(@mvar{F}, @mvar{s})} retorna @code{F(... F(F(s_1, s_2),
+s_3), ... s_n)}.  Quando o argumento opcional @mvar{s_0} estiver
+presente, o resultado @'e equivalente a @code{lreduce(@mvar{F},
+cons(@mvar{s_0}, @mvar{s}))}.
 
-A fun@value{cedilha}@~ao @var{F} @'e aplicada primeiro aos elementos
+A fun@value{cedilha}@~ao @mvar{F} @'e aplicada primeiro aos elementos
 mais @`a @emph{esquerda} de lista; da@'{@dotless{i}} o nome "lreduce".
 
 Veja tamb@'em @code{rreduce}, @code{xreduce}, e @code{tree_reduce}.
@@ -1449,23 +1449,23 @@ Exemplos:
 @end deffn
 
 @anchor{makeset}
-@deffn {Fun@value{cedilha}@~ao} makeset (@var{expr}, @var{x}, @var{s})
+@deffn {Fun@value{cedilha}@~ao} makeset (@mvar{expr}, @mvar{x}, @mvar{s})
 
 Retorna um conjunto com elementos gerados a partir da express@~ao
-@var{expr}, onde @var{x} @'e uma lista de vari@'aveis em @var{expr}, e
-@var{s}@'e um conjunto ou lista de listas.  Para gerar cada elemento do
-conjunto, @var{expr} @'e avaliada com as vari@'aveis @var{x}
-substitu@'{@dotless{i}}das, em paralelo, por elementos de @var{s}.
+@mvar{expr}, onde @mvar{x} @'e uma lista de vari@'aveis em @mvar{expr}, e
+@mvar{s}@'e um conjunto ou lista de listas.  Para gerar cada elemento do
+conjunto, @mvar{expr} @'e avaliada com as vari@'aveis @mvar{x}
+substitu@'{@dotless{i}}das, em paralelo, por elementos de @mvar{s}.
 
-Cada elemento de @var{s} deve ter o mesmo comprimento que @var{x}.  A
-lista de vari@'aveis @var{x} deve ser uma lista de
+Cada elemento de @mvar{s} deve ter o mesmo comprimento que @mvar{x}.  A
+lista de vari@'aveis @mvar{x} deve ser uma lista de
 s@'{@dotless{i}}mbolos, sem @'{@dotless{i}}ndices.  Mesmo se existir
-somente um s@'{@dotless{i}}mbolo, @var{x} deve ser uma lista de um
-elemento, e cada elemento de @var{s} deve ser uma lista de um elemento.
+somente um s@'{@dotless{i}}mbolo, @mvar{x} deve ser uma lista de um
+elemento, e cada elemento de @mvar{s} deve ser uma lista de um elemento.
 
 @c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
-@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
-@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
+@c @code{makeset(@mvar{expr}, @mvar{x}, @mvar{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@mvar{x}, L), ''@mvar{expr})), args(@mvar{s})))}.
 
 Veja tamb@'em @code{makelist}.
 
@@ -1500,13 +1500,13 @@ Exemplos:
 @end deffn
 
 @anchor{moebius}
-@deffn {Fun@value{cedilha}@~ao} moebius (@var{n})
+@deffn {Fun@value{cedilha}@~ao} moebius (@mvar{n})
 
 Representa a fun@value{cedilha}@~ao de Moebius.
 
-Quando @var{n} for o produto de @math{k} primos distintos,
-@code{moebius(@var{n})} simplifica para @math{(-1)^k}; quando
-@math{@var{n} = 1}, simplifica para 1; e simplifica para 0 para todos os
+Quando @mvar{n} for o produto de @math{k} primos distintos,
+@code{moebius(@mvar{n})} simplifica para @math{(-1)^k}; quando
+@math{@mvar{n} = 1}, simplifica para 1; e simplifica para 0 para todos os
 outros inteiros positivos.
 
 @code{moebius}, aplicada a equa@value{cedilha}@~oes, listas, matrizes
@@ -1551,17 +1551,17 @@ Exemplos:
 @end deffn
  
 @anchor{multinomial_coeff}
-@deffn {Fun@value{cedilha}@~ao} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffn {Fun@value{cedilha}@~ao} multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {Fun@value{cedilha}@~ao} multinomial_coeff ()
 
 Calcula o coeficiente multinomial.
 
-Quando cada @var{a_k} for um inteiro n@~ao negativo, o coeficiente
+Quando cada @mvar{a_k} for um inteiro n@~ao negativo, o coeficiente
 multinomial indica o n@'umero de formas poss@'{@dotless{i}}veis de
-colocar @code{@var{a_1} + ... + @var{a_n}} objectos distintos em
-@math{n} caixas com @var{a_k} elementos na @math{k}'@'esima caixa. Em
-geral, @code{multinomial_coeff (@var{a_1}, ..., @var{a_n})} calcula
-@code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
+colocar @code{@mvar{a_1} + ... + @mvar{a_n}} objectos distintos em
+@math{n} caixas com @mvar{a_k} elementos na @math{k}'@'esima caixa. Em
+geral, @code{multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})} calcula
+@code{(@mvar{a_1} + ... + @mvar{a_n})!/(@mvar{a_1}! ... @mvar{a_n}!)}.
 
 @code{multinomial_coeff()} (sem argumentos) produz 1.
 
@@ -1595,19 +1595,19 @@ Exemplos:
 @end deffn
 
 @anchor{num_distinct_partitions}
-@deffn {Fun@value{cedilha}@~ao} num_distinct_partitions (@var{n})
-@deffnx {Fun@value{cedilha}@~ao} num_distinct_partitions (@var{n}, list)
+@deffn {Fun@value{cedilha}@~ao} num_distinct_partitions (@mvar{n})
+@deffnx {Fun@value{cedilha}@~ao} num_distinct_partitions (@mvar{n}, list)
 
-Calcula o n;umero de parti@value{cedilha}@~oes de inteiros distintos de @var{n}
-quando @var{n} for um inteiro n@~ao negativo.
+Calcula o n;umero de parti@value{cedilha}@~oes de inteiros distintos de @mvar{n}
+quando @mvar{n} for um inteiro n@~ao negativo.
 De outra forma, @code{num_distinct_partitions} retorna uma express@~ao substantiva.
 
-@code{num_distinct_partitions(@var{n}, list)} retorna uma 
-lista do n@'umero de parti@value{cedilha}@~oes distintas de 1, 2, 3, ..., @var{n}. 
+@code{num_distinct_partitions(@mvar{n}, list)} retorna uma 
+lista do n@'umero de parti@value{cedilha}@~oes distintas de 1, 2, 3, ..., @mvar{n}. 
 
-Uma parti@value{cedilha}@~ao distinta de @var{n} @'e
+Uma parti@value{cedilha}@~ao distinta de @mvar{n} @'e
 uma lista de inteiros positivos distintos @math{k_1}, ..., @math{k_m}
-tais que @math{@var{n} = k_1 + ... + k_m}.
+tais que @math{@mvar{n} = k_1 + ... + k_m}.
 
 Exemplos:
 
@@ -1628,18 +1628,18 @@ Exemplos:
 @end deffn
 
 @anchor{num_partitions}
-@deffn {Fun@value{cedilha}@~ao} num_partitions (@var{n})
-@deffnx {Fun@value{cedilha}@~ao} num_partitions (@var{n}, list)
+@deffn {Fun@value{cedilha}@~ao} num_partitions (@mvar{n})
+@deffnx {Fun@value{cedilha}@~ao} num_partitions (@mvar{n}, list)
 
-Calcula o n@'umero das parti@value{cedilha}@~oes inteiras de @var{n}
-quando @var{n} for um inteiro n@~ao negativo.  De outra forma,
+Calcula o n@'umero das parti@value{cedilha}@~oes inteiras de @mvar{n}
+quando @mvar{n} for um inteiro n@~ao negativo.  De outra forma,
 @code{num_partitions} retorna uma express@~ao substantiva.
 
-@code{num_partitions(@var{n}, list)} retorna uma
-lista do n@'umero de parti@value{cedilha}@~oes inteiras de 1, 2, 3, ..., @var{n}.
+@code{num_partitions(@mvar{n}, list)} retorna uma
+lista do n@'umero de parti@value{cedilha}@~oes inteiras de 1, 2, 3, ..., @mvar{n}.
 
-Para um inteiro n@~ao negativo @var{n}, @code{num_partitions(@var{n})} @'e igual a
-@code{cardinality(integer_partitions(@var{n}))}; todavia, @code{num_partitions} 
+Para um inteiro n@~ao negativo @mvar{n}, @code{num_partitions(@mvar{n})} @'e igual a
+@code{cardinality(integer_partitions(@mvar{n}))}; todavia, @code{num_partitions} 
 n@~ao constr@'oi actualmente o conjunto das parti@value{cedilha}@~oes, nesse sentido @code{num_partitions} @'e mais r@'apida.
 
 Exemplos:
@@ -1663,16 +1663,16 @@ Exemplos:
 
 
 @anchor{partition_set}
-@deffn {Fun@value{cedilha}@~ao} partition_set (@var{a}, @var{f})
+@deffn {Fun@value{cedilha}@~ao} partition_set (@mvar{a}, @mvar{f})
 
-Parti@value{cedilha}@~oes do conjunto @var{a} que satisfazem o predicado @var{f}.
+Parti@value{cedilha}@~oes do conjunto @mvar{a} que satisfazem o predicado @mvar{f}.
 
 @code{partition_set} retorna uma lista de dois conjuntos.
-O primeiro conjunto compreende os elementos de @var{a} para os quais @var{f} avalia para @code{false},
-e o segundo conjunto compreende quaisquer outros elementos de @var{a}.
-@code{partition_set} n@~ao aplica @code{is} ao valor de retorno de @var{f}.
+O primeiro conjunto compreende os elementos de @mvar{a} para os quais @mvar{f} avalia para @code{false},
+e o segundo conjunto compreende quaisquer outros elementos de @mvar{a}.
+@code{partition_set} n@~ao aplica @code{is} ao valor de retorno de @mvar{f}.
 
-@code{partition_set} reclama se @var{a} n@~ao for um conjunto literal.
+@code{partition_set} reclama se @mvar{a} n@~ao for um conjunto literal.
 
 Veja tamb@'em @code{subset}.
 
@@ -1691,15 +1691,15 @@ Exemplos:
 @end deffn
 
 @anchor{permutations}
-@deffn {Fun@value{cedilha}@~ao} permutations (@var{a})
+@deffn {Fun@value{cedilha}@~ao} permutations (@mvar{a})
 
 Retorna um conjunto todas as permuta@value{cedilha}@~oes distintas dos elementos da 
-lista ou do conjunto @var{a}. Cada permuta@value{cedilha}@~ao @'e uma lista, n@~ao um conjunto. 
+lista ou do conjunto @mvar{a}. Cada permuta@value{cedilha}@~ao @'e uma lista, n@~ao um conjunto. 
 
-Quando @var{a} for uma lista, elementos duplicados de @var{a} s@~ao inclu@'{@dotless{i}}dos
+Quando @mvar{a} for uma lista, elementos duplicados de @mvar{a} s@~ao inclu@'{@dotless{i}}dos
 nas permuta@value{cedilha}@~oes.
 
-@code{permutations} reclama se @var{a} n@~ao for um conjunto literal ou uma lista literal.
+@code{permutations} reclama se @mvar{a} n@~ao for um conjunto literal ou uma lista literal.
 
 Exemplos:
 
@@ -1717,19 +1717,19 @@ Exemplos:
 @end deffn
 
 @anchor{powerset}
-@deffn {Fun@value{cedilha}@~ao} powerset (@var{a})
-@deffnx {Fun@value{cedilha}@~ao} powerset (@var{a}, @var{n})
+@deffn {Fun@value{cedilha}@~ao} powerset (@mvar{a})
+@deffnx {Fun@value{cedilha}@~ao} powerset (@mvar{a}, @mvar{n})
 
-Retorna o conjunto de todos os dubconjuntos de @var{a}, ou um subconjunto de @var{a}.
+Retorna o conjunto de todos os dubconjuntos de @mvar{a}, ou um subconjunto de @mvar{a}.
 
-@code{powerset(@var{a})} retorna o conjunto de todos os subconjuntos do conjunto @var{a}.
-@code{powerset(@var{a})} tem @code{2^cardinality(@var{a})} elementos.
+@code{powerset(@mvar{a})} retorna o conjunto de todos os subconjuntos do conjunto @mvar{a}.
+@code{powerset(@mvar{a})} tem @code{2^cardinality(@mvar{a})} elementos.
 
-@code{powerset(@var{a}, @var{n})} retorna o conjunto de todos os subconjuntos de @var{a} que possuem 
-cardinalidade @var{n}.
+@code{powerset(@mvar{a}, @mvar{n})} retorna o conjunto de todos os subconjuntos de @mvar{a} que possuem 
+cardinalidade @mvar{n}.
 
-@code{powerset} reclama se @var{a} n@~ao for um conjunto literal,
-ou se @var{n} n@~ao for um inteiro n@~ao negativo.
+@code{powerset} reclama se @mvar{a} n@~ao for um conjunto literal,
+ou se @mvar{n} n@~ao for um inteiro n@~ao negativo.
 
 Exemplos:
 
@@ -1759,17 +1759,17 @@ Exemplos:
 @end deffn
 
 @anchor{rreduce}
-@deffn {Fun@value{cedilha}@~ao} rreduce (@var{F}, @var{s})
-@deffnx {Fun@value{cedilha}@~ao} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+@deffn {Fun@value{cedilha}@~ao} rreduce (@mvar{F}, @mvar{s})
+@deffnx {Fun@value{cedilha}@~ao} rreduce (@mvar{F}, @mvar{s}, @mvar{s_@{n + 1@}})
 
-Extende a fun@value{cedilha}@~ao de dois argumentos @var{F} para uma fun@value{cedilha}@~ao de @var{n} argumentos usando composi@value{cedilha}@~ao de fun@value{cedilha}@~oes,
-onde @var{s} @'e uma lista.
+Extende a fun@value{cedilha}@~ao de dois argumentos @mvar{F} para uma fun@value{cedilha}@~ao de @mvar{n} argumentos usando composi@value{cedilha}@~ao de fun@value{cedilha}@~oes,
+onde @mvar{s} @'e uma lista.
 
-@code{rreduce(@var{F}, @var{s})} retorna @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
-Quando o argumento opcional @var{s_@{n + 1@}} estiver presente,
-o resultado @'e equivalente a @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
+@code{rreduce(@mvar{F}, @mvar{s})} retorna @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
+Quando o argumento opcional @mvar{s_@{n + 1@}} estiver presente,
+o resultado @'e equivalente a @code{rreduce(@mvar{F}, endcons(@mvar{s_@{n + 1@}}, @mvar{s}))}.
 
-A fun@value{cedilha}@~ao @var{F} @'e primeiro aplicada @`a
+A fun@value{cedilha}@~ao @mvar{F} @'e primeiro aplicada @`a
 lista de elementos @i{mais @`a direita - rightmost}, da@'{@dotless{i}} o nome "rreduce". 
 
 Veja tamb@'em @code{lreduce}, @code{tree_reduce}, e @code{xreduce}.
@@ -1821,12 +1821,12 @@ Exemplos:
 @end deffn
 
 @anchor{setdifference}
-@deffn {Fun@value{cedilha}@~ao}  setdifference (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~ao}  setdifference (@mvar{a}, @mvar{b})
 
-Retorna um conjunto contendo os elementos no conjunto @var{a} que
-n@~ao est@~aono conjunto @var{b}.
+Retorna um conjunto contendo os elementos no conjunto @mvar{a} que
+n@~ao est@~aono conjunto @mvar{b}.
 
-@code{setdifference} reclama se ou @var{a} ou @var{b} n@~ao for um conjunto literal.
+@code{setdifference} reclama se ou @mvar{a} ou @mvar{b} n@~ao for um conjunto literal.
 
 Exemplos:
 
@@ -1859,14 +1859,14 @@ Exemplos:
 @end deffn
 
 @anchor{setequalp}
-@deffn {Fun@value{cedilha}@~ao} setequalp (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~ao} setequalp (@mvar{a}, @mvar{b})
 
-Retorna @code{true} se os conjuntos @var{a} e @var{b} possuirem o mesmo n@'umero de elementos
+Retorna @code{true} se os conjuntos @mvar{a} e @mvar{b} possuirem o mesmo n@'umero de elementos
 @c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-e @code{is(@var{x} = @var{y})} for @code{true}
-para @code{x} nos elementos de @var{a}
-e @code{y} nos elementos de @var{b},
+e @code{is(@mvar{x} = @mvar{y})} for @code{true}
+para @code{x} nos elementos de @mvar{a}
+e @code{y} nos elementos de @mvar{b},
 considerados na ordem determinada por @code{listify}.
 De outra forma, @code{setequalp} retorna @code{false}.
 
@@ -1889,13 +1889,13 @@ Exemplos:
 @end deffn
 
 @anchor{setify}
-@deffn {Fun@value{cedilha}@~ao} setify (@var{a})
+@deffn {Fun@value{cedilha}@~ao} setify (@mvar{a})
 
-Constr@'oi um conjunto de elementos a partir da lista @var{a}. Elementos
-duplicados da lista @var{a} s@~ao apagados e os elementos
+Constr@'oi um conjunto de elementos a partir da lista @mvar{a}. Elementos
+duplicados da lista @mvar{a} s@~ao apagados e os elementos
 s@~ao ordenados de acordo com o predicado @code{orderlessp}.
 
-@code{setify} reclama se @var{a} n@~ao for uma lista literal.
+@code{setify} reclama se @mvar{a} n@~ao for uma lista literal.
 
 Exemplos:
 
@@ -1916,9 +1916,9 @@ Exemplos:
 @end deffn
 
 @anchor{setp}
-@deffn {Fun@value{cedilha}@~ao} setp (@var{a})
+@deffn {Fun@value{cedilha}@~ao} setp (@mvar{a})
 
-Retorna @code{true} se e somente se @var{a} for um conjunto na interpreta@value{cedilha}@~ao do Maxima.
+Retorna @code{true} se e somente se @mvar{a} for um conjunto na interpreta@value{cedilha}@~ao do Maxima.
 
 @code{setp} retorna @code{true} para conjuntos n@~ao simplificados (isto @'e, conjuntos com elementos redundantes)
 e tamb@'em para conjuntos simplificados.
@@ -1946,15 +1946,15 @@ Exemplos:
 @end deffn
 
 @anchor{set_partitions}
-@deffn {Fun@value{cedilha}@~ao} set_partitions (@var{a})
-@deffnx {Fun@value{cedilha}@~ao} set_partitions (@var{a}, @var{n})
+@deffn {Fun@value{cedilha}@~ao} set_partitions (@mvar{a})
+@deffnx {Fun@value{cedilha}@~ao} set_partitions (@mvar{a}, @mvar{n})
 
-Retorna o conjunto de todas as parti@value{cedilha}@~oes de @var{a}, ou um subconjunto daquele conjunto de parti@value{cedilha}@~oes.
+Retorna o conjunto de todas as parti@value{cedilha}@~oes de @mvar{a}, ou um subconjunto daquele conjunto de parti@value{cedilha}@~oes.
 
-@code{set_partitions(@var{a}, @var{n})} retorna um conjunto de todas as
-decomposi@value{cedilha}@~oes de @var{a} em @var{n} subconjutnos disjuntos n@~ao vazios.
+@code{set_partitions(@mvar{a}, @mvar{n})} retorna um conjunto de todas as
+decomposi@value{cedilha}@~oes de @mvar{a} em @mvar{n} subconjutnos disjuntos n@~ao vazios.
 
-@code{set_partitions(@var{a})} retorna o conjunto de todas as parti@value{cedilha}@~oes.
+@code{set_partitions(@mvar{a})} retorna o conjunto de todas as parti@value{cedilha}@~oes.
 
 @code{stirling2} retorna a cardinalidade de um conjuntode parti@value{cedilha}@~oes de um conjunto.
 
@@ -1995,7 +1995,7 @@ A cardinalidade do conjunto de parti@value{cedilha}@~oes de um conjunto pode ser
 (%o3)                        90 = 90
 @end example
 
-Cada elemento de @code{p} pode ter @var{n} = 3 elementos; vamos verificar.
+Cada elemento de @code{p} pode ter @mvar{n} = 3 elementos; vamos verificar.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
@@ -2026,35 +2026,35 @@ igua a @code{s}; novamente vamos comprovar.
 @end deffn
 
 @anchor{some}
-@deffn {Fun@value{cedilha}@~ao} some (@var{f}, @var{a})
-@deffnx {Fun@value{cedilha}@~ao} some (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {Fun@value{cedilha}@~ao} some (@mvar{f}, @mvar{a})
+@deffnx {Fun@value{cedilha}@~ao} some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 
-Retorna @code{true} se o predicado @var{f} for @code{true} para um ou mais argumentos dados.
+Retorna @code{true} se o predicado @mvar{f} for @code{true} para um ou mais argumentos dados.
 
 Given one set as the second argument, 
-@code{some(@var{f}, @var{s})} returns @code{true}
-if @code{is(@var{f}(@var{a_i}))} returns @code{true} for one or more @var{a_i} in @var{s}.
-@code{some} may or may not evaluate @var{f} for all @var{a_i} in @var{s}.
+@code{some(@mvar{f}, @mvar{s})} returns @code{true}
+if @code{is(@mvar{f}(@mvar{a_i}))} returns @code{true} for one or more @mvar{a_i} in @mvar{s}.
+@code{some} may or may not evaluate @mvar{f} for all @mvar{a_i} in @mvar{s}.
 Since sets are unordered,
-@code{some} may evaluate @code{@var{f}(@var{a_i})} in any order.
+@code{some} may evaluate @code{@mvar{f}(@mvar{a_i})} in any order.
 
 Dadas uma ou mais listas como argumentos,
-@code{some(@var{f}, @var{L_1}, ..., @var{L_n})} retorna @code{true}
-se @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} retornar @code{true} 
-para um ou mais @var{x_1}, ..., @var{x_n} em @var{L_1}, ..., @var{L_n}, respectivamente.
+@code{some(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})} retorna @code{true}
+se @code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))} retornar @code{true} 
+para um ou mais @mvar{x_1}, ..., @mvar{x_n} em @mvar{L_1}, ..., @mvar{L_n}, respectivamente.
 @code{some} pode ou n@~ao avaliar 
-@var{f} para algumas combina@value{cedilha}@~oes @var{x_1}, ..., @var{x_n}.
+@mvar{f} para algumas combina@value{cedilha}@~oes @mvar{x_1}, ..., @mvar{x_n}.
 @code{some} avalia listas na ordem do @'{@dotless{i}}ndice de incremento.
 
 Dado um conjunto vazio @code{@{@}} ou uma lista vazia @code{[]} como argumentos,
 @code{some} retorna @code{false}.
 
 Quando o sinalizador global @code{maperror} for @code{true}, todas as listas
-@var{L_1}, ..., @var{L_n} devem ter obrigat@'oriamente comprimentos iguais.
+@mvar{L_1}, ..., @mvar{L_n} devem ter obrigat@'oriamente comprimentos iguais.
 Quando @code{maperror} for @code{false}, argumentos do tipo lista s@~ao
 efectivamente truncados para o comprimento da menor lista. 
 
-Retorna o valor de um predicado @var{f} o qual avalia (por meio de @code{is})
+Retorna o valor de um predicado @mvar{f} o qual avalia (por meio de @code{is})
 para alguma coisa outra que n@~ao @code{true} ou @code{false}
 e s@~ao governados pelo sinalizador global @code{prederror}.
 Quando @code{prederror} for @code{true},
@@ -2092,7 +2092,7 @@ O predicado @'e uma fun@value{cedilha}@~ao de dois argumentos.
 (%o2)                         false
 @end example
 
-Retorna o valor do predicado @var{f} o qual avalia
+Retorna o valor do predicado @mvar{f} o qual avalia
 para alguma coisa que n@~ao @code{true} ou @code{false}
 e s@~ao governados atrav@'es do sinalizador global @code{prederror}.
 
@@ -2124,16 +2124,16 @@ e s@~ao governados atrav@'es do sinalizador global @code{prederror}.
 @end deffn
 
 @anchor{stirling1}
-@deffn {Fun@value{cedilha}@~ao} stirling1 (@var{n}, @var{m})
+@deffn {Fun@value{cedilha}@~ao} stirling1 (@mvar{n}, @mvar{m})
 
 Representa o n@'umero de Stirling de primeiro tipo.
 
-Quando @var{n} e @var{m} forem n@~ao negativos 
-inteiros, a magnitude de @code{stirling1 (@var{n}, @var{m})} @'e o n@'umero de 
-permuta@value{cedilha}@~oes de um conjunto com @var{n} elementos que possui @var{m} ciclos.
+Quando @mvar{n} e @mvar{m} forem n@~ao negativos 
+inteiros, a magnitude de @code{stirling1 (@mvar{n}, @mvar{m})} @'e o n@'umero de 
+permuta@value{cedilha}@~oes de um conjunto com @mvar{n} elementos que possui @mvar{m} ciclos.
 Para detalhes, veja Graham, Knuth e Patashnik @i{Concrete Mathematics}.
-Maxima utiliza uma rela@value{cedilha}@~ao recursiva para definir @code{stirling1 (@var{n}, @var{m})} para
-@var{m} menor que 0; @code{stirling1} n@~ao @'e definida para @var{n} menor que 0 e para argumentos
+Maxima utiliza uma rela@value{cedilha}@~ao recursiva para definir @code{stirling1 (@mvar{n}, @mvar{m})} para
+@mvar{m} menor que 0; @code{stirling1} n@~ao @'e definida para @mvar{n} menor que 0 e para argumentos
 n@~ao inteiros.
 
 @code{stirling1} @'e uma fun@value{cedilha}@~ao de simplifica@value{cedilha}@~ao.
@@ -2209,15 +2209,15 @@ Maxima aplica identidades a @code{stirling1}.
 @end deffn
 
 @anchor{stirling2}
-@deffn {Fun@value{cedilha}@~ao} stirling2 (@var{n}, @var{m})
+@deffn {Fun@value{cedilha}@~ao} stirling2 (@mvar{n}, @mvar{m})
 
 Representa o n@'umero de Stirling de segundo tipo.
 
-Quando @var{n} e @var{m} forem inteiros
-n@~ao negativos, @code{stirling2 (@var{n}, @var{m})} @'e o n@'umero de maneiras atrav@'es dos quais um conjunto com
-cardinalidade @var{n} pode ser particionado em @var{m} subconjuntos disjuntos.
-Maxima utiliza uma rela@value{cedilha}@~ao recursiva para definir @code{stirling2 (@var{n}, @var{m})} para
-@var{m} menor que 0; @code{stirling2} @'e indefinida para @var{n} menor que 0 e para argumentos
+Quando @mvar{n} e @mvar{m} forem inteiros
+n@~ao negativos, @code{stirling2 (@mvar{n}, @mvar{m})} @'e o n@'umero de maneiras atrav@'es dos quais um conjunto com
+cardinalidade @mvar{n} pode ser particionado em @mvar{m} subconjuntos disjuntos.
+Maxima utiliza uma rela@value{cedilha}@~ao recursiva para definir @code{stirling2 (@mvar{n}, @mvar{m})} para
+@mvar{m} menor que 0; @code{stirling2} @'e indefinida para @mvar{n} menor que 0 e para argumentos
 n@~ao inteiros.
 
 @code{stirling2} @'e uma fun@value{cedilha}@~ao de simplifica@value{cedilha}@~ao.
@@ -2303,15 +2303,15 @@ Maxima aplica identidades a @code{stirling2}.
 @end deffn
 
 @anchor{subset}
-@deffn {Fun@value{cedilha}@~ao} subset (@var{a}, @var{f})
+@deffn {Fun@value{cedilha}@~ao} subset (@mvar{a}, @mvar{f})
 
-Retorna o subconjuntode um conjunto @var{a} que satisfaz o predicado @var{f}. 
+Retorna o subconjuntode um conjunto @mvar{a} que satisfaz o predicado @mvar{f}. 
 
-@code{subset} returns um conjunto which comprises the elements of @var{a}
-for which @var{f} returns anything other than @code{false}.
-@code{subset} does not apply @code{is} to the return value of @var{f}.
+@code{subset} returns um conjunto which comprises the elements of @mvar{a}
+for which @mvar{f} returns anything other than @code{false}.
+@code{subset} does not apply @code{is} to the return value of @mvar{f}.
 
-@code{subset} reclama se @var{a} n@~ao for um conjunto literal.
+@code{subset} reclama se @mvar{a} n@~ao for um conjunto literal.
 
 See also @code{partition_set}.
 
@@ -2331,11 +2331,11 @@ Exemplos:
 @end deffn
 
 @anchor{subsetp}
-@deffn {Fun@value{cedilha}@~ao} subsetp (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~ao} subsetp (@mvar{a}, @mvar{b})
 
-Retorna @code{true} se e somente se o conjunto @var{a} for um subconjunto de @var{b}.
+Retorna @code{true} se e somente se o conjunto @mvar{a} for um subconjunto de @mvar{b}.
 
-@code{subsetp} reclama se ou @var{a} ou @var{b} n@~ao forem um conjunto literal.
+@code{subsetp} reclama se ou @mvar{a} ou @mvar{b} n@~ao forem um conjunto literal.
 
 Exemplos:
 
@@ -2353,13 +2353,13 @@ Exemplos:
 @end deffn
 
 @anchor{symmdifference}
-@deffn {Fun@value{cedilha}@~ao} symmdifference (@var{a_1}, ..., @var{a_n})
+@deffn {Fun@value{cedilha}@~ao} symmdifference (@mvar{a_1}, ..., @mvar{a_n})
 
 Retorna a diferen@value{cedilha}a sim@'etrica, isto @'e,
-o conjunto dos elemetnos que ocorrem em exactamente um conjunto @var{a_k}.
+o conjunto dos elemetnos que ocorrem em exactamente um conjunto @mvar{a_k}.
 
-Given two arguments, @code{symmdifference(@var{a}, @var{b})} is
-the same as @code{union(setdifference(@var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
+Given two arguments, @code{symmdifference(@mvar{a}, @mvar{b})} is
+the same as @code{union(setdifference(@mvar{a}, @mvar{b}), setdifference(@mvar{b}, @mvar{a}))}.
 
 @code{symmdifference} reclama se any argument n@~ao for um conjunto literal.
 
@@ -2398,26 +2398,26 @@ Exemplos:
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{tree_reduce}
-@deffn {Fun@value{cedilha}@~ao} tree_reduce (@var{F}, @var{s})
-@deffnx {Fun@value{cedilha}@~ao} tree_reduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Fun@value{cedilha}@~ao} tree_reduce (@mvar{F}, @mvar{s})
+@deffnx {Fun@value{cedilha}@~ao} tree_reduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
-Extende a fun@value{cedilha}@~ao bin@'aria @var{F} a uma fun@value{cedilha}@~ao en@'aria atrav@'es de composi@value{cedilha}@~ao,
-onde @var{s} @'e um conjunto ou uma lista.
+Extende a fun@value{cedilha}@~ao bin@'aria @mvar{F} a uma fun@value{cedilha}@~ao en@'aria atrav@'es de composi@value{cedilha}@~ao,
+onde @mvar{s} @'e um conjunto ou uma lista.
 
 @code{tree_reduce} @'e equivalente ao seguinte:
-Aplicar @var{F} a sucessivos pares de elementos
-para formar uma nova lista @code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]},
+Aplicar @mvar{F} a sucessivos pares de elementos
+para formar uma nova lista @code{[@mvar{F}(@mvar{s_1}, @mvar{s_2}), @mvar{F}(@mvar{s_3}, @mvar{s_4}), ...]},
 mantendo o elemento final inalterado caso haja um n@'umero @'{@dotless{i}}mpar de elementos.
 Repetindo ent@~ao o processo at@'e que a lista esteja reduzida a um elemento simples, o qual @'e o valor de retorno da fun@value{cedilha}@~ao.
 
-Quando o argumento opcional @var{s_0} estiver presente,
-o resultado @'e equivalente a @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+Quando o argumento opcional @mvar{s_0} estiver presente,
+o resultado @'e equivalente a @code{tree_reduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s})}.
 
 Para adi@value{cedilha}@~oes em ponto flutuante,
 @code{tree_reduce} pode retornar uma soma que possui um menor ero de arredondamento
 que @code{rreduce} ou @code{lreduce}.
 
-Os elementos da lista @var{s} e os resultados parciais podem ser arranjados em uma @'arvore bin@'aria de profundidade m@'{@dotless{i}}nima,
+Os elementos da lista @mvar{s} e os resultados parciais podem ser arranjados em uma @'arvore bin@'aria de profundidade m@'{@dotless{i}}nima,
 da@'{@dotless{i}} o nome "tree_reduce".
 
 Exemplos:
@@ -2445,8 +2445,8 @@ Exemplos:
 @end deffn
 
 @anchor{union}
-@deffn {Fun@value{cedilha}@~ao} union (@var{a_1}, ..., @var{a_n})
-Retorna a uni@~ao dos conjuntos de @var{a_1} a @var{a_n}. 
+@deffn {Fun@value{cedilha}@~ao} union (@mvar{a_1}, ..., @mvar{a_n})
+Retorna a uni@~ao dos conjuntos de @mvar{a_1} a @mvar{a_n}. 
 
 @code{union()} (sem argumentos) retorna o conjunto vazio.
 
@@ -2487,28 +2487,28 @@ Exemplos:
 
 @c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{xreduce}
-@deffn {Fun@value{cedilha}@~ao} xreduce (@var{F}, @var{s})
-@deffnx {Fun@value{cedilha}@~ao} xreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {Fun@value{cedilha}@~ao} xreduce (@mvar{F}, @mvar{s})
+@deffnx {Fun@value{cedilha}@~ao} xreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
-Extendendo a fun@value{cedilha}@~ao @var{F} para uma fun@value{cedilha}@~ao en@'aria por composi@value{cedilha}@~ao,
-ou, se @var{F} j@'a for en@'aria, aplica-se @var{F} a @var{s}.
-Quando @var{F} n@~ao for en@'aria, @code{xreduce} funciona da mesma forma que @code{lreduce}.
-O argumento @var{s} @'e uma lista.
+Extendendo a fun@value{cedilha}@~ao @mvar{F} para uma fun@value{cedilha}@~ao en@'aria por composi@value{cedilha}@~ao,
+ou, se @mvar{F} j@'a for en@'aria, aplica-se @mvar{F} a @mvar{s}.
+Quando @mvar{F} n@~ao for en@'aria, @code{xreduce} funciona da mesma forma que @code{lreduce}.
+O argumento @mvar{s} @'e uma lista.
 
 Fun@value{cedilha}@~oes sabidamente en@'arias inclui
 adi@value{cedilha}@~ao @code{+}, multiplica@value{cedilha}@~ao @code{*}, @code{and}, @code{or}, @code{max},
 @code{min}, e @code{append}.
-Fun@value{cedilha}@~oes podem tamb@'em serem declaradas en@'arias por meio de @code{declare(@var{F}, nary)}.
+Fun@value{cedilha}@~oes podem tamb@'em serem declaradas en@'arias por meio de @code{declare(@mvar{F}, nary)}.
 Para essas fun@value{cedilha}@~oes,
 @'e esperado que @code{xreduce} seja mais r@'apida que ou @code{rreduce} ou @code{lreduce}.
 
-Quando o argumento opcional @var{s_0} estiver presente,
-o resultado @'e equivalente a @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
+Quando o argumento opcional @mvar{s_0} estiver presente,
+o resultado @'e equivalente a @code{xreduce(@mvar{s}, cons(@mvar{s_0}, @mvar{s}))}.
 
 @c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
 @c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
 Adi@value{cedilha}@~oes em ponto flutuante n@~ao s@~ao exactamente associativas; quando a associatividade ocorrer,
-@code{xreduce} aplica a adi@value{cedilha}@~ao en@'aria do Maxima quando @var{s} contiver n@'umeros em ponto flutuante.
+@code{xreduce} aplica a adi@value{cedilha}@~ao en@'aria do Maxima quando @mvar{s} contiver n@'umeros em ponto flutuante.
 
 Exemplos:
 

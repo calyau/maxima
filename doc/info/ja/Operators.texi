@@ -125,8 +125,8 @@ Operator   lbp     rbp
 @end example
 
 @mref{remove}と @mref{kill}は演算子プロパティをアトムから削除します。
-@code{remove ("@var{a}", op)}は @var{a}の演算子プロパティだけを削除します。
-@code{kill ("@var{a}")}は 演算子プロパティを含む@var{a}のすべてのロパティを削除します。
+@code{remove ("@mvar{a}", op)}は @mvar{a}の演算子プロパティだけを削除します。
+@code{kill ("@mvar{a}")}は 演算子プロパティを含む@mvar{a}のすべてのロパティを削除します。
 演算子名はクォーテーションマークで括らないといけないことに注意してください。
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
@@ -724,9 +724,9 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 構文的等号@code{=}の否定を表します。
 
 述語論理式の評価のルールのため
-（特に @code{not @var{expr}}は @var{expr}の評価を伴うので）、
-@code{not @var{a} = @var{b}}は、 @code{@var{a} # @var{b}}ではなく、
-@code{is(@var{a} # @var{b})}と同値です。
+（特に @code{not @mvar{expr}}は @mvar{expr}の評価を伴うので）、
+@code{not @mvar{a} = @mvar{b}}は、 @code{@mvar{a} # @mvar{b}}ではなく、
+@code{is(@mvar{a} # @mvar{b})}と同値です。
 
 例:
 
@@ -768,32 +768,32 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 
 等式演算子。
 
-式@code{@var{a} = @var{b}}は、それ自身、未評価の等式を表します。
+式@code{@mvar{a} = @mvar{b}}は、それ自身、未評価の等式を表します。
 等式は成り立つかもしれませんし、成り立たないかもしれません。
 未評価の等式は、@mref{solve}や@mref{algsys}や他の関数の引数として用いられます。
 
 関数@mref{is}は、@code{=}をブーリアン値に評価します。
-@code{is(@var{a} = @var{b})}は、@var{a}と@var{b}が同一のとき、
-@code{@var{a} = @var{b}}を@code{true}に評価します。
-すなわち、@var{a}と@var{b}が同一のアトムであるか、もしくは、それらはアトムではなく、
+@code{is(@mvar{a} = @mvar{b})}は、@mvar{a}と@mvar{b}が同一のとき、
+@code{@mvar{a} = @mvar{b}}を@code{true}に評価します。
+すなわち、@mvar{a}と@mvar{b}が同一のアトムであるか、もしくは、それらはアトムではなく、
 それらの演算子が同一で、演算子の引数が同一です。
-そうでなければ、@code{is(@var{a} = @var{b})}は@code{false}に評価されます;
+そうでなければ、@code{is(@mvar{a} = @mvar{b})}は@code{false}に評価されます;
 決して、@code{unknown}には評価されません。
-@code{is(@var{a} = @var{b})}が@code{true}の時、
-@var{a}と@var{b}は、同値の式と対照的に、構文法的に等しいと言われます。
-同値の式は、@code{is(equal(@var{a}, @var{b}))}が@code{true}の式です。
+@code{is(@mvar{a} = @mvar{b})}が@code{true}の時、
+@mvar{a}と@mvar{b}は、同値の式と対照的に、構文法的に等しいと言われます。
+同値の式は、@code{is(equal(@mvar{a}, @mvar{b}))}が@code{true}の式です。
 式は、同値だが構文法的に等しくないことが起こりえます。
 
 @code{=}の否定は、@mref{#}で表されます。
-@code{=}と同様、式@code{@var{a} # @var{b}}は、それ自身、評価されません。
-@code{is(@var{a} # @var{b})}は、@code{@var{a} # @var{b}}を@code{true}もしくは@code{false}に評価します。
+@code{=}と同様、式@code{@mvar{a} # @mvar{b}}は、それ自身、評価されません。
+@code{is(@mvar{a} # @mvar{b})}は、@code{@mvar{a} # @mvar{b}}を@code{true}もしくは@code{false}に評価します。
 
 @code{is}に加えて、他のいくつかの演算子が@code{=}と@code{#}を@code{true}もしくは@code{false}に評価します。@mref{if}, @mref{and}, @mref{or}, @mref{not}という演算子です。
 
 述語論理式の評価規則のため
-（特に、@code{not @var{expr}}は@var{expr}の評価を起こすため）、
-@code{not @var{a} = @var{b}}は、@code{@var{a} # @var{b}}ではなく、
-@code{is(@var{a} # @var{b})}と同値になります。
+（特に、@code{not @mvar{expr}}は@mvar{expr}の評価を起こすため）、
+@code{not @mvar{a} = @mvar{b}}は、@code{@mvar{a} # @mvar{b}}ではなく、
+@code{is(@mvar{a} # @mvar{b})}と同値になります。
 
 @mref{rhs}と@mref{lhs}は、それぞれ、等式、不等式の右辺と左辺を返します。
 
@@ -801,7 +801,7 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 
 例:
 
-式@code{@var{a} = @var{b}}は、それ自身、未評価の等式であり、成り立つことも成り立たないこともあります。
+式@code{@mvar{a} = @mvar{b}}は、それ自身、未評価の等式であり、成り立つことも成り立たないこともあります。
 
 @c ===beg===
 @c eq_1 : a * x - 5 * y = 17;
@@ -830,8 +830,8 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 (%o5)                  [17 = 17, 29 = 29]
 @end example
 
-@code{is(@var{a} = @var{b})}は、
-@var{a}と@var{b}が構文法的に等しい（すなわち、同一の）時
+@code{is(@mvar{a} = @mvar{b})}は、
+@mvar{a}と@mvar{b}が構文法的に等しい（すなわち、同一の）時
 式は、同値だが構文法的に等しくないことがありえます。
 
 @c ===beg===
@@ -874,8 +874,8 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 (%o4)                  [false, true, true]
 @end example
 
-@code{not @var{expr}}は@var{expr}の評価をするので、
-@code{not @var{a} = @var{b}}は、@code{is(@var{a} # @var{b})}と同値です。
+@code{not @mvar{expr}}は@mvar{expr}の評価をするので、
+@code{not @mvar{a} = @mvar{b}}は、@code{is(@mvar{a} # @mvar{b})}と同値です。
 
 @c ===beg===
 @c [2 * x # 3 * x, not (2 * x = 3 * x)];
@@ -1194,20 +1194,20 @@ x is equal to 1234 - 1729 w
 @end ifinfo
 
 関数定義の演算子。
-@code{f(@var{x_1}, .., @var{x_n}) := @var{expr}}は、
-引数が@var{x_1}, ..., @var{x_n}で関数本体が@var{expr}の、@var{f}という名前の関数を定義します。
+@code{f(@mvar{x_1}, .., @mvar{x_n}) := @mvar{expr}}は、
+引数が@mvar{x_1}, ..., @mvar{x_n}で関数本体が@mvar{expr}の、@mvar{f}という名前の関数を定義します。
 @code{:=}は（クォートクォート@code{`@w{}`}で陽に評価されない限り）関数本体は評価しません。
 定義される関数は（引数をかっこでくくる）通常のMaxima関数か、（引数をかぎかっこでくくる）配列関数です。
 
-最後の引数@var{x_n}が要素１つのリストの時、@code{:=}で定義された関数は可変の数の引数をとります。
-実際の引数は、形式的な引数@var{x_1}, @dots{}, @var{x_(n - 1)}に一対一に割り当てられ、
-さらに引数があれば、@var{x_n}にリストとして割り当てられます。
+最後の引数@mvar{x_n}が要素１つのリストの時、@code{:=}で定義された関数は可変の数の引数をとります。
+実際の引数は、形式的な引数@mvar{x_1}, @dots{}, @mvar{x_(n - 1)}に一対一に割り当てられ、
+さらに引数があれば、@mvar{x_n}にリストとして割り当てられます。
 
 関数定義すべては、同じ名前空間を使います;
 別の関数@code{g}の中で関数@code{f}を定義することは、@code{f}のスコープを@code{g}に限定しません。
 しかし、@code{local(f)}は、関数@code{f}の定義を@mref{local}が現れたブロックや他の合成式内に限定します。
 
-もしある形式引数@var{x_k}がクォートされたシンボルなら、@code{:=}で定義された関数は対応する実際の引数を評価しません。
+もしある形式引数@mvar{x_k}がクォートされたシンボルなら、@code{:=}で定義された関数は対応する実際の引数を評価しません。
 それ以外の場合、実際の引数はすべて評価されます。
 
 @mref{define}や@mref{::=}も参照してください。
@@ -1250,7 +1250,7 @@ x is equal to 1234 - 1729 w
                        x, y
 @end example
 
-最後の引数@var{x_n}が要素１つのリストの時、
+最後の引数@mvar{x_n}が要素１つのリストの時、
 @code{:=}で定義された関数は、可変の数の引数を取ります。
 
 @c ===beg===
@@ -1295,28 +1295,28 @@ x is equal to 1234 - 1729 w
 
 @c -----------------------------------------------------------------------------
 @anchor{infix}
-@deffn  {関数} infix (@var{op})
-@deffnx {関数} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {関数} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn  {関数} infix (@mvar{op})
+@deffnx {関数} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})
+@deffnx {関数} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})
 
-@var{op}を中置演算子に宣言します。
+@mvar{op}を中置演算子に宣言します。
 中置演算子は２つの引数の関数で、引数の間に関数名が来ます。
 例えば、引き算演算子@code{-}は中置演算子です。
 
-@code{infix (@var{op})}は、デフォルトの結合力（左右両方とも180）と品詞
-（左右両方とも@code{any})に等しい）で@var{op}を中置演算子に宣言します。
+@code{infix (@mvar{op})}は、デフォルトの結合力（左右両方とも180）と品詞
+（左右両方とも@code{any})に等しい）で@mvar{op}を中置演算子に宣言します。
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp})}は、
+@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})}は、
 記述された左右の結合力
 とデフォルトの品詞（左右両方とも@code{any})に等しい）で、
-@var{op}を中置演算子に宣言します。
+@mvar{op}を中置演算子に宣言します。
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}は、
+@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})}は、
 記述された左右の結合力と、
 左オペランド、右オペランド、演算子結果それぞれについて、
-品詞を@var{lpos}, @var{rpos}, @var{pos}に設定して、
-@var{op}を中置演算子に宣言します。
+品詞を@mvar{lpos}, @mvar{rpos}, @mvar{pos}に設定して、
+@mvar{op}を中置演算子に宣言します。
 
 （演算子宣言に関係して）「品詞」は、式のタイプを意味します。
 ３つのタイプが認識されます; @code{expr}, @code{clause}, @code{any}。それぞれは、
@@ -1324,28 +1324,28 @@ x is equal to 1234 - 1729 w
 Maximaは、宣言された品詞を実際の式に比較することで、
 いくつかの構文法エラーを検出します。
 
-他の演算子に関する@var{op}の優先順位は、問題となっている演算子の左右結合力から演繹されます。
-もし@var{op}の左右結合力のどちらもある他の演算子の左右結合力より大きいなら、
-@var{op}は、他の演算子より高い優先順位をとります。
+他の演算子に関する@mvar{op}の優先順位は、問題となっている演算子の左右結合力から演繹されます。
+もし@mvar{op}の左右結合力のどちらもある他の演算子の左右結合力より大きいなら、
+@mvar{op}は、他の演算子より高い優先順位をとります。
 もし結合力がどちらも大きくも、どちらも小さくもなければ、
 あるもっと複雑な関係が成り立ちます。
 
-@var{op}の結合性は結合力に依存します。
-より大きな左結合力(@var{lbp})は、@var{op}のインスタンスが
+@mvar{op}の結合性は結合力に依存します。
+より大きな左結合力(@mvar{lbp})は、@mvar{op}のインスタンスが
 式の中で左にある他の演算子の前に評価されることを示し、
-より大きな右結合力(@var{rbp})は、@var{op}のインスタンスが
+より大きな右結合力(@mvar{rbp})は、@mvar{op}のインスタンスが
 式の中で右にある他の演算子の前に評価されることを示します。
-このように、より大きな@var{lbp}は@var{op}を右結合にし、
-より大きな@var{rbp}は@var{op}を左結合にします。
-もし@var{lbp}が@var{rbp}と等しいなら、
-@var{op}は左結合です。
+このように、より大きな@mvar{lbp}は@mvar{op}を右結合にし、
+より大きな@mvar{rbp}は@mvar{op}を左結合にします。
+もし@mvar{lbp}が@mvar{rbp}と等しいなら、
+@mvar{op}は左結合です。
 
 @code{Syntax}も参照してください。
 
 例:
 
-もし@var{op}左右結合力それぞれが、他の演算子のそれより大きいなら、
-@var{op}は他の演算子より高い優先順位をとります。
+もし@mvar{op}左右結合力それぞれが、他の演算子のそれより大きいなら、
+@mvar{op}は他の演算子より高い優先順位をとります。
 
 @c ===beg===
 @c :lisp (get '$+ 'lbp)
@@ -1373,8 +1373,8 @@ Maximaは、宣言された品詞を実際の式に比較することで、
 (%o5)                       (a+1,b+2)
 @end example
 
-より大きな@var{lbp}は@var{op}を右結合にし、
-より大きな@var{rbp}は@var{op}を左結合にします。
+より大きな@mvar{lbp}は@mvar{op}を右結合にし、
+より大きな@mvar{rbp}は@mvar{op}を左結合にします。
 
 @c ===beg===
 @c infix ("##", 100, 99);
@@ -1426,10 +1426,10 @@ if x ## y then
 
 @c -----------------------------------------------------------------------------
 @anchor{matchfix}
-@deffn  {関数} matchfix (@var{ldelimiter}, @var{rdelimiter})
-@deffnx {関数} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+@deffn  {関数} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter})
+@deffnx {関数} matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos}, @mvar{pos})
 
-左と右の区切り記号@var{ldelimiter}と@var{rdelimiter}を持つ
+左と右の区切り記号@mvar{ldelimiter}と@mvar{rdelimiter}を持つ
 matchfix演算子を宣言します
 区切り記号は文字列として指定されます。
 
@@ -1451,10 +1451,10 @@ matchfix演算子として再宣言することができます。
 matchfixに宣言されることが可能ですが、
 演算子関数は組み込み演算子に関して定義できません。
 
-コマンド@code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos},
-@var{pos})} は、
-引数品詞@var{arg_pos}と結果品詞@var{pos}、区切り記号
-@var{ldelimiter}と@var{rdelimiter}を宣言します。
+コマンド@code{matchfix (@mvar{ldelimiter}, @mvar{rdelimiter}, @mvar{arg_pos},
+@mvar{pos})} は、
+引数品詞@mvar{arg_pos}と結果品詞@mvar{pos}、区切り記号
+@mvar{ldelimiter}と@mvar{rdelimiter}を宣言します。
 
 演算子宣言に関して、「品詞」は式のタイプを意味します。
 ３つのタイプが認識されます: 
@@ -1477,14 +1477,14 @@ matchfix演算を実行する関数は通常のユーザー定義関数です。
 普通の方法で定義されます。
 引数は、区切り記号の間に書かれるか、
 クォートされた文字列としての左区切り記号と括弧の中で続く引数を使って書かれます。
-@code{dispfun (@var{ldelimiter})}は関数定義を表示します。
+@code{dispfun (@mvar{ldelimiter})}は関数定義を表示します。
 
 唯一の組み込みmatchfix演算子はリスト構成子@code{[ ]}です。
 括弧@code{( )}とダブルクォート@code{" "}はmatchfix演算子のように振る舞いますが、
 Maximaパーサによってそのようには扱われません。
 
 @code{matchfix}は引数を評価します。
-@code{matchfix}は最初の引数@var{ldelimiter}を返します。
+@code{matchfix}は最初の引数@mvar{ldelimiter}を返します。
 @c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
 
 例:
@@ -1559,8 +1559,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 
 @c -----------------------------------------------------------------------------
 @anchor{operator_nary}
-@deffn  {関数} nary (@var{op})
-@deffnx {関数} nary (@var{op}, @var{bp}, @var{arg_pos}, @var{pos})
+@deffn  {関数} nary (@mvar{op})
+@deffnx {関数} nary (@mvar{op}, @mvar{bp}, @mvar{arg_pos}, @mvar{pos})
 
 @code{nary}演算子は
 任意の数の引数の関数を示すのに使われます。
@@ -1581,8 +1581,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 
 @c -----------------------------------------------------------------------------
 @anchor{nofix}
-@deffn  {関数} nofix (@var{op})
-@deffnx {関数} nofix (@var{op}, @var{pos})
+@deffn  {関数} nofix (@mvar{op})
+@deffnx {関数} nofix (@mvar{op}, @mvar{pos})
 
 @code{nofix}演算子は引数のない関数を示すのに使われます。
 コマンドにそんな演算子が存在すると、
@@ -1601,8 +1601,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 
 @c -----------------------------------------------------------------------------
 @anchor{postfix}
-@deffn  {関数} postfix (@var{op})
-@deffnx {関数} postfix (@var{op}, @var{lbp}, @var{lpos}, @var{pos})
+@deffn  {関数} postfix (@mvar{op})
+@deffnx {関数} postfix (@mvar{op}, @mvar{lbp}, @mvar{lpos}, @mvar{pos})
 
 @code{prefix}変種のような@code{postfix}演算子は引数一つの関数を示しますが、
 この場合、例えば3!のように、入力文字列の中で引数が演算子に先行します。
@@ -1617,8 +1617,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 
 @c -----------------------------------------------------------------------------
 @anchor{prefix}
-@deffn  {関数} prefix (@var{op})
-@deffnx {関数} prefix (@var{op}, @var{rbp}, @var{rpos}, @var{pos})
+@deffn  {関数} prefix (@mvar{op})
+@deffnx {関数} prefix (@mvar{op}, @mvar{rbp}, @mvar{rpos}, @mvar{pos})
 
 @code{prefix}演算子は引数一つの関数であり、
 その引数は演算子のすぐ後ろに置かれます。

@@ -7,13 +7,13 @@
 @node Defini@value{cedilha}@~oes para opsubst,  , opsubst, opsubst
 @section Defini@value{cedilha}@~oes para  opsubst
 
-@deffn {Fun@value{cedilha}@~ao} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Fun@value{cedilha}@~ao} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Fun@value{cedilha}@~ao} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+@deffn {Fun@value{cedilha}@~ao} opsubst (@mvar{f},@mvar{g},@mvar{e})
+@deffnx {Fun@value{cedilha}@~ao} opsubst (@mvar{g}=@mvar{f},@mvar{e})
+@deffnx {Fun@value{cedilha}@~ao} opsubst ([@mvar{g1}=@mvar{f1},@mvar{g2}=@mvar{f2},..., @mvar{gn}=@mvar{fn}],@mvar{e})
 A fun@value{cedilha}@~ao @code{opsubst}  similar @`a fun@value{cedilha}@~ao @code{subst}, excepto que
 @code{opsubst} somente faz substitui@value{cedilha}@~oes para as opera@value{cedilha}@~oes em uma express@~oes. Em geral, 
-quando @var{f} for um operador em uma express@~ao @var{e}, substitui @var{g} 
-por @var{f} na express@~ao @var{e}.
+quando @mvar{f} for um operador em uma express@~ao @mvar{e}, substitui @mvar{g} 
+por @mvar{f} na express@~ao @mvar{e}.
 
 Para determinar o operador, @code{opsubst} escolhe @code{inflag} para verdadeiro ( true ). Isso significa que
 @code{opsubst} substitui para a forma de operador interna, n@~ao para a mostrada,

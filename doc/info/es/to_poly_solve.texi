@@ -114,12 +114,12 @@ V@'eanse tambi@'en @code{%or}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
 
 
-@deffn {Operador} %if ( @var{bool}, @var{a}, @var{b})
+@deffn {Operador} %if ( @mvar{bool}, @mvar{a}, @mvar{b})
 @ifinfo
 @fnindex Evaluaci@'on condicionada
 @end ifinfo
 
-El operador @code{%if} es un condicional. La condici@'on @var{bool}
+El operador @code{%if} es un condicional. La condici@'on @mvar{bool}
 debe tomar un valor l@'ogico; cuando sea @code{true}, se devolver@'a
 el segundo argumento, y cuando valga @code{false}, el segundo. En
 cualquier otro caso, se obtiene una forma nominal.
@@ -254,7 +254,7 @@ V@'eanse tambi@'en @code{%and}, @code{%if}, @code{and}, @code{or} y @code{not}.
 
 
 
-@deffn {Funci@'on} complex_number_p (@var{x})
+@deffn {Funci@'on} complex_number_p (@mvar{x})
 
 La funci@'on @code{complex_number_p} devuelve @code{true} si su
 argumento es de cualquiera de las formas @code{a + %i * b}, @code{a}, @code{%i b} o
@@ -283,10 +283,10 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} compose_functions (@var{l})
+@deffn {Funci@'on} compose_functions (@mvar{l})
 
 La funci@'on @code{compose_functions(l)} devuelve una expresi@'on lambda
-que es la composici@'on de las funciones presentes en la lista @var{l}.
+que es la composici@'on de las funciones presentes en la lista @mvar{l}.
 Las funciones se aplican de derecha a izquierda.
 
 Ejemplo:
@@ -348,7 +348,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} dfloat (@var{x})
+@deffn {Funci@'on} dfloat (@mvar{x})
 
 La funci@'on @code{dfloat} es similar a @code{float}, pero @code{dfloat} 
 aplica @code{rectform} cuando @code{float} no puede evaluar a un n@'umero
@@ -383,7 +383,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} elim (@var{l}, @var{x})
+@deffn {Funci@'on} elim (@mvar{l}, @mvar{x})
 
 La funci@'on @code{elim} elimina las variables que se indican en el conjunto
 o lista @code{x} del conjunto o lista de ecuaciones en @code{l}. Cada
@@ -461,7 +461,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly)}.
 
 
 
-@deffn {Funci@'on} elim_allbut (@var{l}, @var{x})
+@deffn {Funci@'on} elim_allbut (@mvar{l}, @mvar{x})
 
 Es similar a @code{elim}, excepto por el hecho de que elimina todas las variables
 que aparecen en la lista de ecuaciones @code{l} que no est@'an en @code{x}.
@@ -486,7 +486,7 @@ y @code{resultant}.
 
 
 
-@deffn {Funci@'on} eliminate_using (@var{l}, @var{e}, @var{x})
+@deffn {Funci@'on} eliminate_using (@mvar{l}, @mvar{e}, @mvar{x})
 
 Elmina el s@'{@dotless{i}}mbolo @code{x} de la lista o conjunto de ecuaciones
 @code{l} haciendo uso del pivote @code{e}.
@@ -523,7 +523,7 @@ y @code{resultant}.
 
 
 
-@deffn {Funci@'on} fourier_elim ([@var{eq1}, @var{eq2}, ...], [@var{var1}, @var{var}, ...])
+@deffn {Funci@'on} fourier_elim ([@mvar{eq1}, @mvar{eq2}, ...], [@mvar{var1}, @mvar{var}, ...])
 
 La instrucci@'on @code{fourier_elim([eq1,eq2,...], [var1,var2,...]} aplica el
 algoritmo de eliminaci@'on de Fourier para resolver el sistema de inecuaciones 
@@ -616,7 +616,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(fourier_elim)}.
 
 
 
-@deffn {Funci@'on} isreal_p (@var{e})
+@deffn {Funci@'on} isreal_p (@mvar{e})
 
 El predicado @code{isreal_p} devuelve @code{true} si @code{e} representa un
 n@'umero real y @code{false} si no representa un punto de la recta; en cualquier
@@ -664,16 +664,16 @@ V@'ease tambi@'en @code{complex_number_p}.
 
 
 
-@deffn {Funci@'on} new_variable (@var{type})
+@deffn {Funci@'on} new_variable (@mvar{type})
 
 Devuelve un s@'{@dotless{i}}mbolo de la forma @code{%[z,n,r,c,g]k},
-siendo @code{k} un n@'umero entero. Los valores admisibles para @var{type}
+siendo @code{k} un n@'umero entero. Los valores admisibles para @mvar{type}
 son @code{integer}, @code{natural_number}, @code{real}, @code{natural_number}
 y @code{general}. Por n@'umero natural se entiende @i{entero negativo}, de 
 manera que el ceero es un n@'umero natural.
 
-Cuando @var{type} no es de ninguno de los tipos indicados m@'as arriba,
-@var{type} toma por defecto el valor @code{general}. Para enteros, n@'umeros
+Cuando @mvar{type} no es de ninguno de los tipos indicados m@'as arriba,
+@mvar{type} toma por defecto el valor @code{general}. Para enteros, n@'umeros
 naturales y n@'umeros complejos, Maxima a@~nade esta informaci@'on a la base de
 datos de forma autom@'atica.
 
@@ -742,7 +742,7 @@ V@'ease tambi@'en @code{new_variable}.
 
 
 
-@deffn {Funci@'on} parg (@var{x})
+@deffn {Funci@'on} parg (@mvar{x})
 
 La funci@'on @code{parg} es una versi@'on con capacidades simplificadoras
 de la funci@'on de argumento complejo @code{carg}:
@@ -795,7 +795,7 @@ V@'eanse tambi@'en @code{carg}, @code{isreal_p}.
 
 
 
-@deffn {Funci@'on} real_imagpart_to_conjugate (@var{e})
+@deffn {Funci@'on} real_imagpart_to_conjugate (@mvar{e})
 
 La funci@'on @code{real_imagpart_to_conjugate} reemplaza todas las
 llamadas a @code{realpart} y @code{imagpart} presentes en una expresi@'on 
@@ -818,7 +818,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} rectform_log_if_constant (@var{e})
+@deffn {Funci@'on} rectform_log_if_constant (@mvar{e})
 
 La funci@'on @code{rectform_if_constant} convierte todos los t@'erminos
 de la forma @code{log(c)} a @code{rectform(log(c))}, siendo @code{c} 
@@ -846,7 +846,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} simp_inequality (@var{e})
+@deffn {Funci@'on} simp_inequality (@mvar{e})
 
 La funci@'on @code{simp_inequality} aplica ciertas simplificaciones
 a conjunciones y disyunciones de inecuaciones.
@@ -877,7 +877,7 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(fourier_elim)}.
 
 
 
-@deffn {Funci@'on} standardize_inverse_trig (@var{e})
+@deffn {Funci@'on} standardize_inverse_trig (@mvar{e})
 
 Esta funci@'on aplica las identidades @code{cot(x) = atan(1/x)} y
 @code{acsc(x) = asin(1/x)} y similares con @code{asec}, @code{acoth}
@@ -892,10 +892,10 @@ Para hacer uso de esta funci@'on, ejec@'utese @code{load(to_poly_solve)}.
 
 
 
-@deffn {Funci@'on} subst_parallel (@var{l}, @var{e})
+@deffn {Funci@'on} subst_parallel (@mvar{l}, @mvar{e})
 
-Dada la ecuaci@'on o lista de ecuaciones @var{l} y la expresi@'on
-@var{e}, sustituye @i{en paralelo} en @var{e} los miembros izquierdos
+Dada la ecuaci@'on o lista de ecuaciones @mvar{l} y la expresi@'on
+@mvar{e}, sustituye @i{en paralelo} en @mvar{e} los miembros izquierdos
 de las ecuaciones por los derechos:
 
 @example
@@ -961,14 +961,14 @@ V@'eanse tambi@'en @code{subst}, @code{sublis} y @code{ratsubst}.
 
 
 
-@deffn {Funci@'on} to_poly (@var{e}, @var{l})
+@deffn {Funci@'on} to_poly (@mvar{e}, @mvar{l})
 
-La funci@'on @code{to_poly} intenta convertir la ecuaci@'on @var{e}
+La funci@'on @code{to_poly} intenta convertir la ecuaci@'on @mvar{e}
 en un sistema de polinomios, junto con restricciones en forma de
 desigualdades. Las soluciones del sistema polin@'omico que cumplan
-las restricciones son, a su vez, las soluciones de la ecuaci@'on @var{e}.
+las restricciones son, a su vez, las soluciones de la ecuaci@'on @mvar{e}.
 Dicho de manera informal, @code{to_poly} intenta pasar a forma de
-polinomio la ecuaci@'on @var{e}; un ejemplo ayudar@'a a aclarar su
+polinomio la ecuaci@'on @mvar{e}; un ejemplo ayudar@'a a aclarar su
 comportamiento:
 
 @example
@@ -1032,13 +1032,13 @@ V@'ease tambi@'en @code{to_poly_solve}.
 
 
 
-@deffn {Funci@'on} to_poly_solve (@var{e}, @var{l}, [options])
+@deffn {Funci@'on} to_poly_solve (@mvar{e}, @mvar{l}, [options])
 
-La funci@'on @code{to_poly_solve} intenta resolver las ecuaciones @var{e}
-de inc@'ognitas @var{l}. El argumento @var{e} puede ser una @'unica ecuaci@'on,
-o una lista o conjunto de ecuaciones; de forma similar, @var{l} puede ser un
+La funci@'on @code{to_poly_solve} intenta resolver las ecuaciones @mvar{e}
+de inc@'ognitas @mvar{l}. El argumento @mvar{e} puede ser una @'unica ecuaci@'on,
+o una lista o conjunto de ecuaciones; de forma similar, @mvar{l} puede ser un
 s@'{@dotless{i}}mbolo o una lista o conjunto de s@'{@dotless{i}}mbolos. Cuando
-uno de los elementos de @var{e} no sea una igualdad, como @math{x^2 -1},
+uno de los elementos de @mvar{e} no sea una igualdad, como @math{x^2 -1},
 se supodr@'a que es igual a cero.
 
 La estrategia b@'asica de @code{to_poly_solve} consiste en utilizar

@@ -7,13 +7,13 @@
 @section Funciones y variables para opsubst
 
 
-@deffn {Funci@'on} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Funci@'on} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Funci@'on} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+@deffn {Funci@'on} opsubst (@mvar{f},@mvar{g},@mvar{e})
+@deffnx {Funci@'on} opsubst (@mvar{g}=@mvar{f},@mvar{e})
+@deffnx {Funci@'on} opsubst ([@mvar{g1}=@mvar{f1},@mvar{g2}=@mvar{f2},..., @mvar{gn}=@mvar{fn}],@mvar{e})
 La funci@'on @code{opsubst} es similar a la funci@'on @code{subst},
 excepto por el hecho de que @code{opsubst}  tan solo hace sustituciones
-de operadores en las expresiones. En general, si @var{f} es un operador en
-la expresi@'on @var{e}, lo cambia por @var{g} en la expresi@'on @var{e}.
+de operadores en las expresiones. En general, si @mvar{f} es un operador en
+la expresi@'on @mvar{e}, lo cambia por @mvar{g} en la expresi@'on @mvar{e}.
 
 Para determinar el operador, @code{opsubst} asigna a @code{inflag} 
 el valor @code{true}, lo cual significa que @code{opsubst} sustituye

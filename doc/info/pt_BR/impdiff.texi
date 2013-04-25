@@ -7,11 +7,11 @@
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para impdiff,  , impdiff, impdiff
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para impdiff
 
-@deffn {Fun@value{cedilha}@~{a}o} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+@deffn {Fun@value{cedilha}@~{a}o} implicit_derivative (@mvar{f},@mvar{indvarlist},@mvar{orderlist},@mvar{depvar})
 Essa subrotina calcula derivadas impl@'{i}citas de fun@value{cedilha}@~{o}es de v@'{a}rias vari@'{a}veis.
-@var{f} @'{e} uma fun@value{cedilha}@~{a}o do tipo array, os @'{i}ndices s@~{a}o o grau da derivada na ordem @var{indvarlist};
-@var{indvarlist} @'{e} a lista de vari@'{a}veis independentes; @var{orderlist} @'{e} a ordem desejada; e 
-@var{depvar} @'{e} a vari@'{a}vel dependente.
+@mvar{f} @'{e} uma fun@value{cedilha}@~{a}o do tipo array, os @'{i}ndices s@~{a}o o grau da derivada na ordem @mvar{indvarlist};
+@mvar{indvarlist} @'{e} a lista de vari@'{a}veis independentes; @mvar{orderlist} @'{e} a ordem desejada; e 
+@mvar{depvar} @'{e} a vari@'{a}vel dependente.
 
 Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("impdiff")}.
 @end deffn

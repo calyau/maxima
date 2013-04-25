@@ -358,13 +358,13 @@ Garbage collection is currently enabled.
 
 @c --- 09.12.2011 DK -----------------------------------------------------------
 @anchor{sstatus}
-@deffn {Funktion} sstatus (@var{keyword}, @var{item})
+@deffn {Funktion} sstatus (@mvar{keyword}, @mvar{item})
 
-Hat das Argument @var{keyword} den Wert @code{feature}, wird das Argument
-@var{item} der internen Lisp-Eigenschaftsliste @code{*features*} hinzugef@"ugt.
+Hat das Argument @mvar{keyword} den Wert @code{feature}, wird das Argument
+@mvar{item} der internen Lisp-Eigenschaftsliste @code{*features*} hinzugef@"ugt.
 Das Kommando @code{status(feature, item)} hat dann das Ergebnis @code{true}.
-Hat das Argument @var{keyword} den Wert @code{nofeature}, wird das Argument
-@var{item} von der internen Lisp-Eigenschaftsliste @code{*features*} entfernt.
+Hat das Argument @mvar{keyword} den Wert @code{nofeature}, wird das Argument
+@mvar{item} von der internen Lisp-Eigenschaftsliste @code{*features*} entfernt.
 
 Siehe auch die Funktion @mrefdot{status}
 @end deffn
@@ -372,14 +372,14 @@ Siehe auch die Funktion @mrefdot{status}
 @c --- 09.12.2011 DK -----------------------------------------------------------
 @anchor{status}
 @deffn  {Funktion} status (@code{feature})
-@deffnx {Funktion} status (@code{feature}, @var{item})
+@deffnx {Funktion} status (@code{feature}, @mvar{item})
 
 Das Kommando @code{status(feature)} gibt die interne Lisp-Eigenschaftsliste
 @code{*features*} zur@"uck.  @code{status(feature,item)} gibt @code{true}
-zur@"uck, wenn das Argument @var{item} in der internen Lisp-Eigenschaftsliste
+zur@"uck, wenn das Argument @mvar{item} in der internen Lisp-Eigenschaftsliste
 @code{*features*} enthalten ist.  Ansonsten ist die R@"uckgabe @code{false}.
 @code{status} wertet die Argumente nicht aus.  Eine Systemeigenschaft
-@var{item}, die Sonderzeichen wie @code{-} oder @code{*} enth@"alt, muss als
+@mvar{item}, die Sonderzeichen wie @code{-} oder @code{*} enth@"alt, muss als
 Zeichenkette angegeben werden.
 
 Siehe auch die Funktion @mrefdot{sstatus}
@@ -405,9 +405,9 @@ cltl2, ansi-cl, common-lisp, sbcl, ...]
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{system}
-@deffn {Funktion} system (@var{command})
+@deffn {Funktion} system (@mvar{command})
  
-@code{system(command)} f@"uhrt das Kommando @var{command} in einem eigenen 
+@code{system(command)} f@"uhrt das Kommando @mvar{command} in einem eigenen 
 Prozess aus.  Das Kommando wird an die Standard-Shell @"ubergeben.
 @code{system} wird nicht von allen Betriebssystemen unterst@"utzt, steht aber im
 Allgemeinen unter Unix oder Unix @"ahnlichen Betriebssystemen zur Verf@"ugung.

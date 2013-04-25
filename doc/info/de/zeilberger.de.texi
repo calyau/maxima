@@ -118,7 +118,7 @@ For example:
 
 @c -----------------------------------------------------------------------------
 @anchor{AntiDifference}
-@deffn {Function} AntiDifference (@math{F_k}, @var{k})
+@deffn {Function} AntiDifference (@math{F_k}, @mvar{k})
 
 Returns the hypergeometric anti-difference of @math{F_k}, if it exists.
 
@@ -127,7 +127,7 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
 @c -----------------------------------------------------------------------------
 @anchor{Gosper}
-@deffn {Function} Gosper (@math{F_k}, @var{k})
+@deffn {Function} Gosper (@math{F_k}, @mvar{k})
 
 Returns the rational certificate @math{R(k)} for @math{F_k}, that is, a
 rational function such that
@@ -142,10 +142,10 @@ if it exists.  Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
 @c -----------------------------------------------------------------------------
 @anchor{GosperSum}
-@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b})
+@deffn {Function} GosperSum (@mvar{F_k}, @mvar{k}, @mvar{a}, @mvar{b})
 
-Returns the summmation of @math{F_k} from @math{@var{k} = @var{a}} to 
-@math{@var{k} = @var{b}} if @math{F_k} has a hypergeometric anti-difference.
+Returns the summmation of @math{F_k} from @math{@mvar{k} = @mvar{a}} to 
+@math{@mvar{k} = @mvar{b}} if @math{F_k} has a hypergeometric anti-difference.
 Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 
 Examples:
@@ -205,9 +205,9 @@ Dependent equations eliminated:  (1)
 
 @c -----------------------------------------------------------------------------
 @anchor{parGosper}
-@deffn {Function} parGosper (@var{F_(n,k)}, @var{k}, @var{n}, @var{d})
+@deffn {Function} parGosper (@mvar{F_(n,k)}, @mvar{k}, @mvar{n}, @mvar{d})
 
-Attempts to find a @var{d}-th order recurrence for
+Attempts to find a @mvar{d}-th order recurrence for
 @tex
 $F_{n,k}$.
 @end tex
@@ -230,7 +230,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 
 @c -----------------------------------------------------------------------------
 @anchor{Zeilberger}
-@deffn {Function} Zeilberger (@var{F_(n,k)}, @var{k}, @var{n})
+@deffn {Function} Zeilberger (@mvar{F_(n,k)}, @mvar{k}, @mvar{n})
 
 Attempts to compute the indefinite hypergeometric summation of
 @tex
@@ -345,7 +345,7 @@ in @mrefdot{parGosper}
 @defvr {Global variable} ev_point
 Default value: @code{big_primes[10]}
 
-@code{ev_point} is the value at which the variable @var{n} is evaluated
+@code{ev_point} is the value at which the variable @mvar{n} is evaluated
 when executing the modular test in @mrefdot{parGosper}
 @end defvr
 

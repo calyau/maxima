@@ -9,9 +9,9 @@
 これは金融パッケージ(第0.1版)です。
 
 すべての関数において、
-@var{rate}は複利率であり、
-@var{num}は期間で正でなくてはいけません。
-また、@var{flow}はキャッシュフローを示すので、
+@mvar{rate}は複利率であり、
+@mvar{num}は期間で正でなくてはいけません。
+また、@mvar{flow}はキャッシュフローを示すので、
 産出はフローが負になり、投入は正になります。
 
 このパッケージで定義された関数を使う前に、
@@ -24,7 +24,7 @@
 @section Functions and Variables for finance
 
 
-@deffn {関数} days360 (@var{year1},@var{month1},@var{day1},@var{year2},@var{month2},@var{day2})
+@deffn {関数} days360 (@mvar{year1},@mvar{month1},@mvar{day1},@mvar{year2},@mvar{month2},@mvar{day2})
 
 2つの日付の距離を、
 1年が360日、1月は30日と仮定して計算します。
@@ -44,11 +44,11 @@
 @end deffn
 
 
-@deffn {関数} fv (@var{rate},@var{PV},@var{num})
+@deffn {関数} fv (@mvar{rate},@mvar{PV},@mvar{num})
 
 ある利率を与えられたとして、現在価値の将来価値を計算します。
-@var{rate}は利率で、@var{PV}は現在価値、
-@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{PV}は現在価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -65,11 +65,11 @@
 @end deffn
 
 
-@deffn {関数} pv (@var{rate},@var{FV},@var{num})
+@deffn {関数} pv (@mvar{rate},@mvar{FV},@mvar{num})
 
 ある利率を与えられたとして、将来価値の現在価値を計算します。
-@var{rate}は利率で、@var{PV}は現在価値、
-@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{PV}は現在価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -86,13 +86,13 @@
 @end deffn
 
 
-@deffn {関数} graph_flow (@var{val})
+@deffn {関数} graph_flow (@mvar{val})
 
 時間順でマネーフローを、
 正の値は青で上に、負の値は赤で下に
 プロットします。
 フローの向きは値の符号で与えられます。
-@var{val}はフローの値のリストです。
+@mvar{val}はフローの値のリストです。
 
 例:
 
@@ -108,12 +108,12 @@
 @end deffn
 
 
-@deffn {関数} annuity_pv (@var{rate},@var{PV},@var{num})
+@deffn {関数} annuity_pv (@mvar{rate},@mvar{PV},@mvar{num})
 
 (総額のような)現在価値がわかっている年金を計算できます。
 年金は一定で定期払いです。
-@var{rate}は利率で、@var{PV}は現在価値、
-@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{PV}は現在価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -130,12 +130,12 @@
 @end deffn
 
 
-@deffn {関数} annuity_fv (@var{rate},@var{FV},@var{num})
+@deffn {関数} annuity_fv (@mvar{rate},@mvar{FV},@mvar{num})
 
 要望価値(将来価値)がわかっている年金を計算できます。
 年金は一定で定期払いです。
-@var{rate}は利率で、@var{PV}は将来価値、
-@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{PV}は将来価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -152,12 +152,12 @@
 @end deffn
 
 
-@deffn {関数} geo_annuity_pv (@var{rate},@var{growing_rate},@var{PV},@var{num})
+@deffn {関数} geo_annuity_pv (@mvar{rate},@mvar{growing_rate},@mvar{PV},@mvar{num})
 
 (総額のような)現在価値がわかっている年金を計算できます。
 年金は割増定期払いです。
-@var{rate}は利率で、@var{growing_rate}は成長率、
-@var{PV}は現在価値、@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{growing_rate}は成長率、
+@mvar{PV}は現在価値、@mvar{num}は期間です。
 
 例:
 
@@ -174,12 +174,12 @@
 @end deffn
 
 
-@deffn {関数} geo_annuity_fv (@var{rate},@var{growing_rate},@var{FV},@var{num})
+@deffn {関数} geo_annuity_fv (@mvar{rate},@mvar{growing_rate},@mvar{FV},@mvar{num})
 
 要望価値(将来価値)がわかっている年金を計算できます。
 年金は割増定期払いです。
-@var{rate}は利率で、@var{growing_rate}は成長率、
-@var{FV}は将来価値、@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{growing_rate}は成長率、
+@mvar{FV}は将来価値、@mvar{num}は期間です。
 
 例:
 
@@ -195,11 +195,11 @@
 
 @end deffn
 
-@deffn {関数} amortization (@var{rate},@var{ammount},@var{num})
+@deffn {関数} amortization (@mvar{rate},@mvar{ammount},@mvar{num})
 
 特定率で決定された償却表。
-@var{rate}は利率で、@var{ammount}は総価値、
-@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{ammount}は総価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -229,13 +229,13 @@
 @end deffn
 
 
-@deffn {関数} arit_amortization (@var{rate},@var{increment},@var{ammount},@var{num})
+@deffn {関数} arit_amortization (@mvar{rate},@mvar{increment},@mvar{ammount},@mvar{num})
 
 @code{arit_amortization}によって、特定率で決定された割増払いの償却表を計算することができます。
 支払いは一定ではなく、算術級数的成長を示し、
 増分は"Payment"列の連続する2行の差であることに注意してください。
-@var{rate}は利率で、@var{increment}は増分、@var{ammount}は総価値、
-@var{num}は期間です。
+@mvar{rate}は利率で、@mvar{increment}は増分、@mvar{ammount}は総価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -265,14 +265,14 @@
 @end deffn
 
 
-@deffn {関数} geo_amortization (@var{rate},@var{growing_rate},@var{ammount},@var{num})
+@deffn {関数} geo_amortization (@mvar{rate},@mvar{growing_rate},@mvar{ammount},@mvar{num})
 
 @code{geo_amortization}によって、ある率、ある総額、ある期間で決定された償却表を見つけることができます。
 
 支払いは一定ではなく、幾何級数的成長を示し、
-@var{growing_rate}は"Payment"列の連続する2行の比率であることに注意してください。
-@var{rate}は利率で、@var{ammount}は総価値、
-@var{num}は期間です。
+@mvar{growing_rate}は"Payment"列の連続する2行の比率であることに注意してください。
+@mvar{rate}は利率で、@mvar{ammount}は総価値、
+@mvar{num}は期間です。
 
 例:
 
@@ -302,10 +302,10 @@
 @end deffn
 
 
-@deffn {関数} saving (@var{rate},@var{ammount},@var{num})
+@deffn {関数} saving (@mvar{rate},@mvar{ammount},@mvar{num})
 
 @code{saving}によって、定額預金での価値を表すテーブルを見つけることができます。
-@var{ammount}は要望量を、@var{num}は預金の期間を表します。
+@mvar{ammount}は要望量を、@mvar{num}は預金の期間を表します。
 
 例:
 
@@ -338,10 +338,10 @@
 @end deffn
 
 
-@deffn {関数} npv (@var{rate},@var{val})
+@deffn {関数} npv (@mvar{rate},@mvar{val})
 
 プロジェクトに関する存続可能性を評価するために、価値系列の正味現在価値を計算します。
-@var{flowValues} es una lista con los valores para cada periodo.
+@mvar{flowValues} es una lista con los valores para cada periodo.
 
 例:
 
@@ -358,11 +358,11 @@
 @end deffn
 
 
-@deffn {関数} irr (@var{val},@var{IO})
+@deffn {関数} irr (@mvar{val},@mvar{IO})
 
 IRR (内部利益率)は正味現在価値をゼロにする割引率の値です。
-@var{flowValues} los valores para cada periodo (para periodos mayores a 0) y
-@var{I0} el valor para el periodo cero.
+@mvar{flowValues} los valores para cada periodo (para periodos mayores a 0) y
+@mvar{I0} el valor para el periodo cero.
 
 例:
 
@@ -380,16 +380,16 @@ IRR (内部利益率)は正味現在価値をゼロにする割引率の値で�
 @end deffn
 
 
-@deffn {関数} benefit_cost (@var{rate},@var{input},@var{output})
+@deffn {関数} benefit_cost (@mvar{rate},@mvar{input},@mvar{output})
 
 便益コスト比を計算します。
 便益は投入の正味現在価値(NPV)で、
 コストは産出の正味現在価値(NPV)です。
 もし特定の期間に関して投入価値か産出価値がゼロなら、
 投入/産出比はその期間で0となることに注意してください。
-@var{rate}は利率であり、
-@var{input}は投入価値のリスト、
-@var{output}は産出価値のリストです。
+@mvar{rate}は利率であり、
+@mvar{input}は投入価値のリスト、
+@mvar{output}は産出価値のリストです。
 
 例:
 

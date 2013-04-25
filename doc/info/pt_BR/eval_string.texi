@@ -8,12 +8,12 @@
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para eval_string
 
 
-@deffn {Fun@value{cedilha}@~{a}o} eval_string (@var{str})
-Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima e a avalia.
-@var{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
+@deffn {Fun@value{cedilha}@~{a}o} eval_string (@mvar{str})
+Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @mvar{str} como uma express@~{a}o do Maxima e a avalia.
+@mvar{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
 Somente a primeira express@~{a}o @'{e} entregue e avaliada, se ouver mais de uma.
 
-Reclama se @var{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
+Reclama se @mvar{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
 Exemplos:
 @example
@@ -27,12 +27,12 @@ Veja tamb@'{e}m @code{parse_string}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} parse_string (@var{str})
-Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima (sem fazer nenhuma avalia@value{cedilha}@~{a}o dessa express@~{a}o).
-@var{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
+@deffn {Fun@value{cedilha}@~{a}o} parse_string (@mvar{str})
+Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @mvar{str} como uma express@~{a}o do Maxima (sem fazer nenhuma avalia@value{cedilha}@~{a}o dessa express@~{a}o).
+@mvar{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
 Somente a primeira express@~{a}o @'{e} entregue e avaliada, se ouver mais de uma.
 
-Reclama se @var{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
+Reclama se @mvar{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
 Exemplos:
 @example

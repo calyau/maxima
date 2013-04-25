@@ -18,48 +18,48 @@
 @node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
 @section Definitions for Matrices and Linear Algebra
 
-@deffn {Function} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
+@deffn {Function} addcol (@mvar{M}, @mvar{list_1}, ..., @mvar{list_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} addrow (@var{M}, @var{list_1}, ..., @var{list_n})
+@deffn {Function} addrow (@mvar{M}, @mvar{list_1}, ..., @mvar{list_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} adjoint (@var{M})
+@deffn {Function} adjoint (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} augcoefmatrix ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} charpoly (@var{M}, @var{x})
+@deffn {Function} charpoly (@mvar{M}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} coefmatrix ([@mvar{eqn_1}, ..., @mvar{eqn_m}], [@mvar{x_1}, ..., @mvar{x_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} col (@var{M}, @var{i})
+@deffn {Function} col (@mvar{M}, @mvar{i})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} columnvector (@var{L})
-@deffnx {Function} covect (@var{L})
+@deffn {Function} columnvector (@mvar{L})
+@deffnx {Function} covect (@mvar{L})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} conjugate (@var{x})
+@deffn {Function} conjugate (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} copymatrix (@var{M})
+@deffn {Function} copymatrix (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} determinant (@var{M})
+@deffn {Function} determinant (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -67,7 +67,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} diagmatrix (@var{n}, @var{x})
+@deffn {Function} diagmatrix (@mvar{n}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -135,48 +135,48 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} echelon (@var{M})
+@deffn {Function} echelon (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} eigenvalues (@var{M})
-@deffnx {Function} eivals (@var{M})
+@deffn {Function} eigenvalues (@mvar{M})
+@deffnx {Function} eivals (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} eigenvectors (@var{M})
-@deffnx {Function} eivects (@var{M})
+@deffn {Function} eigenvectors (@mvar{M})
+@deffnx {Function} eivects (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+@deffn {Function} ematrix (@mvar{m}, @mvar{n}, @mvar{x}, @mvar{i}, @mvar{j})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} entermatrix (@var{m}, @var{n})
+@deffn {Function} entermatrix (@mvar{m}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
-@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
-@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+@deffn {Function} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1}, @mvar{j_1})
+@deffnx {Function} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2}, @mvar{i_1})
+@deffnx {Function} genmatrix (@mvar{a}, @mvar{i_2}, @mvar{j_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gramschmidt (@var{x})
+@deffn {Function} gramschmidt (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ident (@var{n})
+@deffn {Function} ident (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} innerproduct (@var{x}, @var{y})
-@deffnx {Function} inprod (@var{x}, @var{y})
+@deffn {Function} innerproduct (@mvar{x}, @mvar{y})
+@deffnx {Function} inprod (@mvar{x}, @mvar{y})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} invert (@var{M})
+@deffn {Function} invert (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -184,15 +184,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} matrix (@var{row_1}, ..., @var{row_n})
+@deffn {Function} matrix (@mvar{row_1}, ..., @mvar{row_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} matrixmap (@var{f}, @var{M})
+@deffn {Function} matrixmap (@mvar{f}, @mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} matrixp (@var{expr})
+@deffn {Function} matrixp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -208,23 +208,23 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} mattrace (@var{M})
+@deffn {Function} mattrace (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} minor (@var{M}, @var{i}, @var{j})
+@deffn {Function} minor (@mvar{M}, @mvar{i}, @mvar{j})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ncexpt (@var{a}, @var{b})
+@deffn {Function} ncexpt (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} ncharpoly (@var{M}, @var{x})
+@deffn {Function} ncharpoly (@mvar{M}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} newdet (@var{M}, @var{n})
+@deffn {Function} newdet (@mvar{M}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -232,15 +232,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} nonscalarp (@var{expr})
+@deffn {Function} nonscalarp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} permanent (@var{M}, @var{n})
+@deffn {Function} permanent (@mvar{M}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rank (@var{M})
+@deffn {Function} rank (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -248,7 +248,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} row (@var{M}, @var{i})
+@deffn {Function} row (@mvar{M}, @mvar{i})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -256,16 +256,16 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} scalefactors (@var{coordinatetransform})
+@deffn {Function} scalefactors (@mvar{coordinatetransform})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+@deffn {Function} setelmx (@mvar{x}, @mvar{i}, @mvar{j}, @mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} similaritytransform (@var{M})
-@deffnx {Function} simtran (@var{M})
+@deffn {Function} similaritytransform (@mvar{M})
+@deffnx {Function} simtran (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -273,31 +273,31 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
-@deffnx {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
-@deffnx {Function} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
+@deffn {Function} submatrix (@mvar{i_1}, ..., @mvar{i_m}, @mvar{M}, @mvar{j_1}, ..., @mvar{j_n})
+@deffnx {Function} submatrix (@mvar{i_1}, ..., @mvar{i_m}, @mvar{M})
+@deffnx {Function} submatrix (@mvar{M}, @mvar{j_1}, ..., @mvar{j_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} transpose (@var{M})
+@deffn {Function} transpose (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} triangularize (@var{M})
+@deffn {Function} triangularize (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} uniteigenvectors (@var{M})
-@deffnx {Function} ueivects (@var{M})
+@deffn {Function} uniteigenvectors (@mvar{M})
+@deffnx {Function} ueivects (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} unitvector (@var{x})
-@deffnx {Function} uvect (@var{x})
+@deffn {Function} unitvector (@mvar{x})
+@deffnx {Function} uvect (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} vectorsimp (@var{expr})
+@deffn {Function} vectorsimp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -305,7 +305,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} zeromatrix (@var{m}, @var{n})
+@deffn {Function} zeromatrix (@mvar{m}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

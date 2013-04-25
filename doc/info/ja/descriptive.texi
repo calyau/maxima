@@ -16,7 +16,7 @@
 どんな統計マニュアルでも使うことができます。
 
 コメント、バグ、提案は、
-@var{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
+@mvar{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
 
 以下は、
 @code{descriptive}の中の記述関数が
@@ -150,7 +150,7 @@ Maximaでこれらの桁をロードするためには、
 アイルランド共和国の５つの気象台の毎日の平均風速を含みます。
 (これは１２の気象台で取得されたデータセットの一部です。
 元のファイルはStatLib Data Repositoryから無料でダウンロードでき、
-その分析はHaslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50
+その分析はHaslett, J., Raftery, A. E. (1989) @mvar{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50
 で議論されてます。)
 以下ではデータをロードします:
 
@@ -223,15 +223,15 @@ Maximaでこれらの桁をロードするためには、
 
 
 
-@deffn {関数} continuous_freq (@var{list})
-@deffnx {関数} continuous_freq (@var{list}, @var{m})
+@deffn {関数} continuous_freq (@mvar{list})
+@deffnx {関数} continuous_freq (@mvar{list}, @mvar{m})
 @code{continuous_freq}の引数は数のリストでなければいけません。
 範囲を区間に分割し、それらの中に値がいくつあるか数えます。
 二番目の引数はオプションで、
 欲しいクラス数(デフォルトが10)か、
 クラス境界と欲しいクラスを含むリストか
 境界だけ含むリストのいずれかです。
-引数 @var{list}は(2個か3個の)実数のリストでなければいけません。
+引数 @mvar{list}は(2個か3個の)実数のリストでなければいけません。
 もしサンプル値がすべて等しいなら、この関数は振幅2の1クラスだけ返します。
 
 例:
@@ -291,7 +291,7 @@ Maximaでこれらの桁をロードするためには、
 
 
 
-@deffn {関数} discrete_freq (@var{list})
+@deffn {関数} discrete_freq (@mvar{list})
 数値的、記述的両方の離散標本の中の絶対頻度を数えます。
 唯一の引数はリストです。
 
@@ -320,15 +320,15 @@ Maximaでこれらの桁をロードするためには、
 
 
 
-@deffn {関数} subsample (@var{data_matrix}, @var{predicate_function})
-@deffnx {関数} subsample (@var{data_matrix}, @var{predicate_function}, @var{col_num1}, @var{col_num2}, ...)
+@deffn {関数} subsample (@mvar{data_matrix}, @mvar{predicate_function})
+@deffnx {関数} subsample (@mvar{data_matrix}, @mvar{predicate_function}, @mvar{col_num1}, @mvar{col_num2}, ...)
 これはMaxima @code{submatrix}関数の変形の一種です。
 最初の引数はデータ行列であり、二番目は述語関数であり、
 オプションの付加引数は返す列の番号です。
 その振る舞いは例を使ってよりよく理解されます。
 
 以下は最初の測候所での風速が18より大きかった多変量レコードです。
-ラムダ式の中で@var{i}番目の成分は@code{v[i]}として参照されることを参考にしてください。
+ラムダ式の中で@mvar{i}番目の成分は@code{v[i]}として参照されることを参考にしてください。
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -463,7 +463,7 @@ Maximaでこれらの桁をロードするためには、
 四番目と最後の値はある奇妙な振る舞いを示しています。
 これは、
 This is because symbol 
-シンボル@code{NA}が@var{non available}データを示すようにここで使われているからで、
+シンボル@code{NA}が@mvar{non available}データを示すようにここで使われているからで、
 二つの平均は無意味です。
 情報のある種の喪失を意味しますが、
 可能な解は@code{NA}シンボルを持つ行を行列から取り除くことです。
@@ -497,8 +497,8 @@ This is because symbol
 
 
 
-@deffn {関数} mean (@var{list})
-@deffnx {関数} mean (@var{matrix})
+@deffn {関数} mean (@mvar{list})
+@deffnx {関数} mean (@mvar{matrix})
 これは標本平均です。以下のように定義されます。
 @ifnottex
 @example
@@ -552,8 +552,8 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 
 
 
-@deffn {関数} var (@var{list})
-@deffnx {関数} var (@var{matrix})
+@deffn {関数} var (@mvar{list})
+@deffnx {関数} var (@mvar{matrix})
 これは標本分散です。以下のように定義されます。
 @ifnottex
 @example
@@ -597,8 +597,8 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 
 
 
-@deffn {関数} var1 (@var{list})
-@deffnx {関数} var1 (@var{matrix})
+@deffn {関数} var1 (@mvar{list})
+@deffnx {関数} var1 (@mvar{matrix})
 これは標本分散です。以下のように定義されます。
 @ifnottex
 @example
@@ -650,8 +650,8 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 
 
-@deffn {関数} std (@var{list})
-@deffnx {関数} std (@var{matrix})
+@deffn {関数} std (@mvar{list})
+@deffnx {関数} std (@mvar{matrix})
 これは分母@math{n}の分散である関数@code{var}の平方根です。
 
 例:
@@ -687,8 +687,8 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 
 
-@deffn {関数} std1 (@var{list})
-@deffnx {関数} std1 (@var{matrix})
+@deffn {関数} std1 (@mvar{list})
+@deffnx {関数} std1 (@mvar{matrix})
 これは分母@math{n-1}の分散である関数@code{var1}の平方根です。
 
 例:
@@ -724,8 +724,8 @@ See also functions @code{var1} and @code{std}.
 
 
 
-@deffn {関数} noncentral_moment (@var{list}, @var{k})
-@deffnx {関数} noncentral_moment (@var{matrix}, @var{k})
+@deffn {関数} noncentral_moment (@mvar{list}, @mvar{k})
+@deffnx {関数} noncentral_moment (@mvar{matrix}, @mvar{k})
 次数@math{k}の非中心モーメントです。以下のように定義されます。
 @ifnottex
 @example
@@ -779,8 +779,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 
 
 
-@deffn {関数} central_moment (@var{list}, @var{k})
-@deffnx {関数} central_moment (@var{matrix}, @var{k})
+@deffn {関数} central_moment (@mvar{list}, @mvar{k})
+@deffnx {関数} central_moment (@mvar{matrix}, @mvar{k})
 次数@math{k}の中心モーメントです。以下のように定義されます。
 @ifnottex
 @example
@@ -832,8 +832,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {関数} cv (@var{list})
-@deffnx {関数} cv (@var{matrix})
+@deffn {関数} cv (@mvar{list})
+@deffnx {関数} cv (@mvar{matrix})
 変動係数は標本標準偏差(@code{std})を平均@code{mean}で割った商です。
 @c ===beg===
 @c load (descriptive)$
@@ -866,9 +866,9 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 
 
-@deffn {関数} smin (@var{list})
-@deffnx {関数} smin (@var{matrix})
-これは標本@var{list}の最小値です。
+@deffn {関数} smin (@mvar{list})
+@deffnx {関数} smin (@mvar{matrix})
+これは標本@mvar{list}の最小値です。
 引数が行列の時、
 @code{smin}は
 統計変数に関連付けられた列の最小値を含むリストを返します。
@@ -903,9 +903,9 @@ See also function @code{smax}.
 
 
 
-@deffn {関数} smax (@var{list})
-@deffnx {関数} smax (@var{matrix})
-これは標本@var{list}の最大値です。
+@deffn {関数} smax (@mvar{list})
+@deffnx {関数} smax (@mvar{matrix})
+これは標本@mvar{list}の最大値です。
 引数が行列の時、
 @code{smax}は
 統計変数に関連付けられた列の最大値を含むリストを返します。
@@ -940,8 +940,8 @@ See also function @code{smax}.
 
 
 
-@deffn {関数} range (@var{list})
-@deffnx {関数} range (@var{matrix})
+@deffn {関数} range (@mvar{list})
+@deffnx {関数} range (@mvar{matrix})
 範囲は極値の差です。
 
 例:
@@ -974,11 +974,11 @@ See also function @code{smax}.
 
 
 
-@deffn {関数} quantile (@var{list}, @var{p})
-@deffnx {関数} quantile (@var{matrix}, @var{p})
-これは標本@var{list}の@var{p}分位数です。@var{p}は@math{[0, 1]}の範囲の数です。
+@deffn {関数} quantile (@mvar{list}, @mvar{p})
+@deffnx {関数} quantile (@mvar{matrix}, @mvar{p})
+これは標本@mvar{list}の@mvar{p}分位数です。@mvar{p}は@math{[0, 1]}の範囲の数です。
 標本分位数にはいくつかの定義がありますが
-(Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365)、
+(Hyndman, R. J., Fan, Y. (1996) @mvar{Sample quantiles in statistical packages}. American Statistician, 50, 361-365)、
 パッケージ@code{descriptive}では線形内挿に基づいたものが実装されています。
 
 例:
@@ -1013,8 +1013,8 @@ See also function @code{smax}.
 
 
 
-@deffn {関数} median (@var{list})
-@deffnx {関数} median (@var{matrix})
+@deffn {関数} median (@mvar{list})
+@deffnx {関数} median (@mvar{matrix})
 一旦標本が順に並べられると、
 もし標本サイズが奇数ならメジアンは中央値であり、
 そうでなければ2つの中央値の平均です。
@@ -1055,11 +1055,11 @@ See also function @code{smax}.
 
 
 
-@deffn {関数} qrange (@var{list})
-@deffnx {関数} qrange (@var{matrix})
+@deffn {関数} qrange (@mvar{list})
+@deffnx {関数} qrange (@mvar{matrix})
 四分位範囲は
 三番目と一番目の分位数の差
-@code{quantile(@var{list},3/4) - quantile(@var{list},1/4)}
+@code{quantile(@mvar{list},3/4) - quantile(@mvar{list},1/4)}
 です。
 
 @c ===beg===
@@ -1095,8 +1095,8 @@ See also function @code{smax}.
 
 
 
-@deffn {関数} mean_deviation (@var{list})
-@deffnx {関数} mean_deviation (@var{matrix})
+@deffn {関数} mean_deviation (@mvar{list})
+@deffnx {関数} mean_deviation (@mvar{matrix})
 平均偏差です。以下のように定義されます。
 @ifnottex
 @example
@@ -1150,8 +1150,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 
 
 
-@deffn {関数} median_deviation (@var{list})
-@deffnx {関数} median_deviation (@var{matrix})
+@deffn {関数} median_deviation (@mvar{list})
+@deffnx {関数} median_deviation (@mvar{matrix})
 メジアン偏差です。以下のように定義されます。
 @ifnottex
 @example
@@ -1169,7 +1169,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
-ここで@code{med}は@var{list}のメジアンです。
+ここで@code{med}は@mvar{list}のメジアンです。
 
 例:
 
@@ -1205,8 +1205,8 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 
 
 
-@deffn {関数} harmonic_mean (@var{list})
-@deffnx {関数} harmonic_mean (@var{matrix})
+@deffn {関数} harmonic_mean (@mvar{list})
+@deffnx {関数} harmonic_mean (@mvar{matrix})
 調和平均です。以下のように定義されます。
 @ifnottex
 @example
@@ -1261,8 +1261,8 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 
 
 
-@deffn {関数} geometric_mean (@var{list})
-@deffnx {関数} geometric_mean (@var{matrix})
+@deffn {関数} geometric_mean (@mvar{list})
+@deffnx {関数} geometric_mean (@mvar{matrix})
 幾何平均です。以下のように定義されます。
 @ifnottex
 @example
@@ -1314,8 +1314,8 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 
 
 
-@deffn {関数} kurtosis (@var{list})
-@deffnx {関数} kurtosis (@var{matrix})
+@deffn {関数} kurtosis (@mvar{list})
+@deffnx {関数} kurtosis (@mvar{matrix})
 尖度係数です。以下のように定義されます。
 @ifnottex
 @example
@@ -1367,8 +1367,8 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 
 
 
-@deffn {関数} skewness (@var{list})
-@deffnx {関数} skewness (@var{matrix})
+@deffn {関数} skewness (@mvar{list})
+@deffnx {関数} skewness (@mvar{matrix})
 歪度係数です。以下のように定義されます。
 @ifnottex
 @example
@@ -1420,8 +1420,8 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 
 
 
-@deffn {関数} pearson_skewness (@var{list})
-@deffnx {関数} pearson_skewness (@var{matrix})
+@deffn {関数} pearson_skewness (@mvar{list})
+@deffnx {関数} pearson_skewness (@mvar{matrix})
 Pearsonの歪度係数です。以下のように定義されます。
 @ifnottex
 @example
@@ -1436,7 +1436,7 @@ Pearsonの歪度係数です。以下のように定義されます。
 @tex
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
-ここで @var{med}は@var{list}のメジアンです。
+ここで @mvar{med}は@mvar{list}のメジアンです。
 
 例:
 
@@ -1471,8 +1471,8 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 
 
 
-@deffn {関数} quartile_skewness (@var{list})
-@deffnx {関数} quartile_skewness (@var{matrix})
+@deffn {関数} quartile_skewness (@mvar{list})
+@deffnx {関数} quartile_skewness (@mvar{matrix})
 分位歪度係数です。以下のように定義されます。
 @ifnottex
 @example
@@ -1489,7 +1489,7 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
 @end tex
-ここで@math{c_p}は標本@var{list}の@var{p}分位数です。
+ここで@math{c_p}は標本@mvar{list}の@mvar{p}分位数です。
 
 例:
 
@@ -1524,7 +1524,7 @@ $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
 
 
 
-@deffn {関数} cov (@var{matrix})
+@deffn {関数} cov (@mvar{matrix})
 多変量標本の共分散行列です。以下のように定義されます。
 @ifnottex
 @example
@@ -1579,7 +1579,7 @@ $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 
 
-@deffn {関数} cov1 (@var{matrix})
+@deffn {関数} cov1 (@mvar{matrix})
 多変量標本の共分散行列です。以下のように定義されます。
 @ifnottex
 @example
@@ -1634,25 +1634,25 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 
 
-@deffn {関数} global_variances (@var{matrix})
-@deffnx {関数} global_variances (@var{matrix}, @var{logical_value})
+@deffn {関数} global_variances (@mvar{matrix})
+@deffnx {関数} global_variances (@mvar{matrix}, @mvar{logical_value})
 関数@code{global_variances}は大域分散尺度のリストを返します:
 
 @itemize @bullet
 @item
-@var{total variance}: @code{trace(S_1)},
+@mvar{total variance}: @code{trace(S_1)},
 @item
-@var{mean variance}: @code{trace(S_1)/p},
+@mvar{mean variance}: @code{trace(S_1)/p},
 @item
-@var{generalized variance}: @code{determinant(S_1)},
+@mvar{generalized variance}: @code{determinant(S_1)},
 @item
-@var{generalized standard deviation}: @code{sqrt(determinant(S_1))},
+@mvar{generalized standard deviation}: @code{sqrt(determinant(S_1))},
 @item
-@var{efective variance} @code{determinant(S_1)^(1/p)}, (以下の文献で定義されています: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@mvar{efective variance} @code{determinant(S_1)^(1/p)}, (以下の文献で定義されています: Pe@~na, D. (2002) @mvar{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@var{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
+@mvar{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
-ここで@var{p}は多変量確率変数の次元であり、
+ここで@mvar{p}は多変量確率変数の次元であり、
 @math{S_1}は@code{cov1}が返す共分散行列です。
 
 例:
@@ -1704,8 +1704,8 @@ Maximaに@code{x}がデータ行列であることを伝え、@code{global_varia
 
 
 
-@deffn {関数} cor (@var{matrix})
-@deffnx {関数} cor (@var{matrix}, @var{logical_value})
+@deffn {関数} cor (@mvar{matrix})
+@deffnx {関数} cor (@mvar{matrix}, @mvar{logical_value})
 多変量標本の相関行列です。
 
 例:
@@ -1775,14 +1775,14 @@ Maximaに@code{x}がデータ行列であることを伝え、@code{cor(x)}と�
 
 
 
-@deffn {関数} list_correlations (@var{matrix})
-@deffnx {関数} list_correlations (@var{matrix}, @var{logical_value})
+@deffn {関数} list_correlations (@mvar{matrix})
+@deffnx {関数} list_correlations (@mvar{matrix}, @mvar{logical_value})
 関数@code{list_correlations}は相関尺度のリストを返します:
 
 @itemize @bullet
 
 @item
-@var{precision matrix}: 共分散行列@math{S_1}の逆行列,
+@mvar{precision matrix}: 共分散行列@math{S_1}の逆行列,
 @ifnottex
 @example
 @group
@@ -1797,7 +1797,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)},
+@mvar{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)},
 @ifnottex
 @example
 @group
@@ -1816,7 +1816,7 @@ $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 これらは@math{X_i}上の線形多変量回帰モデルの適合度の指標です。
 
 @item
-@var{partial correlation matrix}: @math{(i, j)}成分が以下の行列
+@mvar{partial correlation matrix}: @math{(i, j)}成分が以下の行列
 @ifnottex
 @example
 @group
@@ -1902,13 +1902,13 @@ Maximaに@code{x}がデータ行列であることを伝え、
 
 
 
-@deffn  {関数} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
+@deffn  {関数} barsplot (@mvar{data1}, @mvar{data2}, @dots{}, @mvar{option_1}, @mvar{option_2}, @dots{})
 @deffnx {関数} barsplot_description (@dots{})
 
 1変量、多変量どちらの標本でも離散統計変数の棒グラフをプロットします
 
-@var{data}は1標本を意味する結果のリストかもしれませんし、
-それぞれサイズ@var{m}の@var{n}個の標本を意味する@var{m}行@var{n}列の行列かもしれません。
+@mvar{data}は1標本を意味する結果のリストかもしれませんし、
+それぞれサイズ@mvar{m}の@mvar{n}個の標本を意味する@mvar{m}行@mvar{n}列の行列かもしれません。
 
 利用可能なオプションは以下のものです:
 
@@ -1917,38 +1917,38 @@ Maximaに@code{x}がデータ行列であることを伝え、
 @item
 @code{draw}パッケージで定義されたもの。
 @item
-@var{box_width} (デフォルト, @code{3/4}): 長方形の相対幅。
+@mvar{box_width} (デフォルト, @code{3/4}): 長方形の相対幅。
 値は範囲@code{[0,1]}内でなければいけません。
 
 @item
-@var{grouping} (デフォルト, @code{clustered}):
+@mvar{grouping} (デフォルト, @code{clustered}):
 複数の標本をいかに表示するか示します。
 有効な値: @code{clustered}と @code{stacked}。
 
 @item
-@var{groups_gap} (デフォルト, @code{1}): 棒の2つの隣り合うグループの隙間を表す正の整数。
+@mvar{groups_gap} (デフォルト, @code{1}): 棒の2つの隣り合うグループの隙間を表す正の整数。
 
 @item
-@var{bars_colors} (デフォルト, @code{[]}): 複数の標本のための色のリスト。
+@mvar{bars_colors} (デフォルト, @code{[]}): 複数の標本のための色のリスト。
 指定された色よりもたくさん標本がある時は、
 追加で必要な色はランダムに選ばれます。
 更に詳しくは@code{color}を参照してください。
 
 @item
-@var{frequency} (デフォルト, @code{absolute}): 縦座標のスケールを示します。
+@mvar{frequency} (デフォルト, @code{absolute}): 縦座標のスケールを示します。
 可能な値: @code{absolute}, @code{relative}, @code{percent}。
 
 @item
-@var{ordering} (デフォルト, @code{orderlessp}): 可能な値は@code{orderlessp}か@code{ordergreatp}です。
-統計的結果がどちら向きに@var{x}軸に並んでいるかを示します。
+@mvar{ordering} (デフォルト, @code{orderlessp}): 可能な値は@code{orderlessp}か@code{ordergreatp}です。
+統計的結果がどちら向きに@mvar{x}軸に並んでいるかを示します。
 
 @item
-@var{sample_keys} (デフォルト, @code{[]}): 凡例に使われる文字列のリスト。
+@mvar{sample_keys} (デフォルト, @code{[]}): 凡例に使われる文字列のリスト。
 リストの長さが0か標本の長さ以外なら、
 エラーメッセージを返します。
 
 @item
-@var{start_at} (デフォルト, @code{0}): x軸上のどこからプロットされるか示します。
+@mvar{start_at} (デフォルト, @code{0}): x軸上のどこからプロットされるか示します。
 
 @item
 @code{barsplot}が内部で割り当てる
@@ -2120,12 +2120,12 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @closecatbox
 @end deffn
 
-@deffn  {関数} boxplot (@var{data})
-@deffnx {関数} boxplot (@var{data}, @var{option_1}, @var{option_2}, @dots{})
+@deffn  {関数} boxplot (@mvar{data})
+@deffnx {関数} boxplot (@mvar{data}, @mvar{option_1}, @mvar{option_2}, @dots{})
 @deffnx {関数} boxplot_description ( @dots{})
 
 この関数は箱ひげ図をプロットします。
-引数@var{data}はリストだったり行列だったりします。
+引数@mvar{data}はリストだったり行列だったりします。
 箱ひげ図は主に異なる標本の比較に使われるので、リストはあまり興味深くありません。
 行列の場合には多変量統計変数の複数成分おw比較することが可能です。
 しかし、できる限り異なる標本サイズの標本のリストも許すようにしています。
@@ -2137,11 +2137,11 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @itemize @bullet
 
 @item
-@var{box_width} (デフォルト, @code{3/4}): 箱の相対幅。
+@mvar{box_width} (デフォルト, @code{3/4}): 箱の相対幅。
 この値は範囲@code{[0,1]}内でなければいけません。
 
 @item
-@var{box_orientation} (デフォルト, @code{vertical}): 可能な値: @code{vertical}
+@mvar{box_orientation} (デフォルト, @code{vertical}): 可能な値: @code{vertical}
 と @code{horizontal}。
 
 @item
@@ -2218,12 +2218,12 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 
 
 
-@deffn  {関数} histogram (@var{list})
-@deffnx {関数} histogram (@var{list}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {関数} histogram (@var{one_column_matrix})
-@deffnx {関数} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {関数} histogram (@var{one_row_matrix})
-@deffnx {関数} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffn  {関数} histogram (@mvar{list})
+@deffnx {関数} histogram (@mvar{list}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffnx {関数} histogram (@mvar{one_column_matrix})
+@deffnx {関数} histogram (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffnx {関数} histogram (@mvar{one_row_matrix})
+@deffnx {関数} histogram (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
 @deffnx {関数} histogram_description (@dots{})
 この関数は一連の標本からヒストグラムをプロットします。
 標本データは数のリストか一次元行列に保存しなければいけません。
@@ -2233,15 +2233,15 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @itemize @bullet
 
 @item
-@var{nclasses} (デフォルト, @code{10}): ヒストグラムのクラス数、もしくは
+@mvar{nclasses} (デフォルト, @code{10}): ヒストグラムのクラス数、もしくは
 クラスの境界と数か境界だけを含むリスト。
 
 @item
-@var{frequency} (デフォルト, @code{absolute}): 縦座標のスケールを示します。
+@mvar{frequency} (デフォルト, @code{absolute}): 縦座標のスケールを示します。
 可能な値: @code{absolute}, @code{relative}, @code{percent}。
 
 @item
-@var{htics} (デフォルト, @code{auto}): ヒストグラムチックのフォーマット。
+@mvar{htics} (デフォルト, @code{auto}): ヒストグラムチックのフォーマット。
 可能な値: @code{auto}, @code{endpoints}, @code{intervals}, かラベルのリスト。
 
 @item
@@ -2335,12 +2335,12 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 
 
 
-@deffn {関数} piechart (@var{list})
-@deffnx {関数} piechart (@var{list}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {関数} piechart (@var{one_column_matrix})
-@deffnx {関数} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {関数} piechart (@var{one_row_matrix})
-@deffnx {関数} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffn {関数} piechart (@mvar{list})
+@deffnx {関数} piechart (@mvar{list}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffnx {関数} piechart (@mvar{one_column_matrix})
+@deffnx {関数} piechart (@mvar{one_column_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffnx {関数} piechart (@mvar{one_row_matrix})
+@deffnx {関数} piechart (@mvar{one_row_matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
 @deffnx {関数} piechart_description (@dots{})
 
 @code{barsplot}に似ていますが、長方形の代わりに扇をプロットします。
@@ -2350,15 +2350,15 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @itemize @bullet
 
 @item
-@var{sector_colors} (デフォルト, @code{[]}): セクタの色のリスト。
+@mvar{sector_colors} (デフォルト, @code{[]}): セクタの色のリスト。
 指定した色よりも多くセクタがあるときは、必要な色の超過分がランダムに選ばれます。
 それらについて更に知るには @code{color}を参照してください。
 
 @item
-@var{pie_center} (デフォルト, @code{[0,0]}): 円グラフの中心。
+@mvar{pie_center} (デフォルト, @code{[0,0]}): 円グラフの中心。
 
 @item
-@var{pie_radius}　(デフォルト, @code{1}): 円グラフの半径。
+@mvar{pie_radius}　(デフォルト, @code{1}): 円グラフの半径。
 
 @item
 @code{piechart}が内部で割り当てる@code{key}を除いたすべてのグローバル @code{draw}オプション。
@@ -2407,13 +2407,13 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 
 
 
-@deffn  {関数} scatterplot (@var{list})
-@deffnx {関数} scatterplot (@var{list}, @var{option_1}, @var{option_2}, @dots{})
-@deffnx {関数} scatterplot (@var{matrix})
-@deffnx {関数} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, @dots{})
+@deffn  {関数} scatterplot (@mvar{list})
+@deffnx {関数} scatterplot (@mvar{list}, @mvar{option_1}, @mvar{option_2}, @dots{})
+@deffnx {関数} scatterplot (@mvar{matrix})
+@deffnx {関数} scatterplot (@mvar{matrix}, @mvar{option_1}, @mvar{option_2}, @dots{})
 @deffnx {関数} scatterplot_description (@dots{})
 
-1変量(@var{list})や多変量(@var{matrix})の標本の散布図をプロットします。
+1変量(@mvar{list})や多変量(@mvar{matrix})の標本の散布図をプロットします。
 
 利用可能なオプションは @code{histogram}が許すものと同じです。
 
@@ -2521,41 +2521,41 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @closecatbox
 @end deffn
 
-@deffn {関数} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
+@deffn {関数} starplot (@mvar{data1}, @mvar{data2}, @dots{}, @mvar{option_1}, @mvar{option_2}, @dots{})
 @deffnx {関数} starplot_description (@dots{})
 
 1変量、多変量どちらの標本でも離散統計変数のスターダイアグラムをプロットします
 
-@var{data}は1標本を意味する結果のリストかもしれませんし、
-それぞれサイズ@var{m}の@var{n}個の標本を意味する@var{m}行@var{n}列の行列かもしれません。
+@mvar{data}は1標本を意味する結果のリストかもしれませんし、
+それぞれサイズ@mvar{m}の@mvar{n}個の標本を意味する@mvar{m}行@mvar{n}列の行列かもしれません。
 
 利用可能なオプションは以下のものです:
 
 @itemize @bullet
 
 @item
-@var{stars_colors} (デフォルト, @code{[]}): 多変量標本の色のリスト。
+@mvar{stars_colors} (デフォルト, @code{[]}): 多変量標本の色のリスト。
 指定した色よりも多くセクタがあるときは、必要な色の超過分がランダムに選ばれます。
 それらについて更に知るには @code{color}を参照してください。
 
 @item
-@var{frequency} (デフォルト, @code{absolute}): 半径のスケールを示します。
+@mvar{frequency} (デフォルト, @code{absolute}): 半径のスケールを示します。
 可能な値: @code{absolute}, @code{relative}, @code{percent}。
 
 @item
-@var{ordering} (デフォルト, @code{orderlessp}): 可能な値は@code{orderlessp}か@code{ordergreatp}です。
-統計的結果がどちら向きに@var{x}軸に並んでいるかを示します。
+@mvar{ordering} (デフォルト, @code{orderlessp}): 可能な値は@code{orderlessp}か@code{ordergreatp}です。
+統計的結果がどちら向きに@mvar{x}軸に並んでいるかを示します。
 
 @item
-@var{sample_keys} (デフォルト, @code{[]}): 凡例に使われる文字列のリスト。
+@mvar{sample_keys} (デフォルト, @code{[]}): 凡例に使われる文字列のリスト。
 リストの長さが0か標本の長さ以外なら、
 エラーメッセージを返します。
 
 @item
-@var{star_center} (デフォルト, @code{[0,0]}): ダイアグラムの中心。
+@mvar{star_center} (デフォルト, @code{[0,0]}): ダイアグラムの中心。
 
 @item
-@var{star_radius} (デフォルト, @code{1}): ダイアグラムの半径。
+@mvar{star_radius} (デフォルト, @code{1}): ダイアグラムの半径。
 
 @item
 @code{starplot}が内部で割り当てる@code{points_joined}, @code{point_type}, @code{key}を除いたすべてのグローバル @code{draw}オプション。
@@ -2600,8 +2600,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @end deffn
 
 
-@deffn {関数} stemplot (@var{data})
-@deffnx {関数} stemplot (@var{data}, @var{option})
+@deffn {関数} stemplot (@mvar{data})
+@deffnx {関数} stemplot (@mvar{data}, @mvar{option})
 
 幹葉図をプロットします。
 
@@ -2610,7 +2610,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @itemize @bullet
 
 @item
-@var{leaf_unit} (デフォルト, @code{1}): 葉の単位を示します;
+@mvar{leaf_unit} (デフォルト, @code{1}): 葉の単位を示します;
 10のべきでなければいけません。
 
 @end itemize

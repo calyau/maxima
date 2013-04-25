@@ -82,7 +82,7 @@ units.
 @node Functions and Variables for Units,  , Introduction to Units, unit
 @section Functions and Variables for Units
 
-@deffn {Function} setunits (@var{list})
+@deffn {Function} setunits (@mvar{list})
 By default, the @emph{unit} package does not use any derived dimensions, but will
 convert all units to the seven fundamental dimensions using MKS units.
 @example
@@ -247,7 +247,7 @@ See also @code{uforget}. To use this function write first @code{load("unit")}.
 
 @end deffn
 
-@deffn {Function} uforget (@var{list})
+@deffn {Function} uforget (@mvar{list})
 By default, the @emph{unit} package converts all units to the
 seven fundamental dimensions using MKS units. This behavior can
 be changed with the @code{setunits} command. After that, the
@@ -290,7 +290,7 @@ See also @code{setunits}. To use this function write first @code{load("unit")}.
 
 @end deffn
 
-@deffn {Function} convert (@var{expr}, @var{list})
+@deffn {Function} convert (@mvar{expr}, @mvar{list})
 When resetting the global environment is overkill, there is the @code{convert}
 command, which allows one time conversions.  It can accept either a single
 argument or a list of units to use in conversion.  When a convert operation is
@@ -685,9 +685,9 @@ control over their working environment.
 @end defvr
 
 
-@deffn {Function} metricexpandall (@var{x})
+@deffn {Function} metricexpandall (@mvar{x})
 Rebuilds global unit lists automatically creating all desired metric units.
-@var{x} is a numerical argument which is used to specify how many metric
+@mvar{x} is a numerical argument which is used to specify how many metric
 prefixes the user wishes defined.  The arguments are as follows, with each
 higher number defining all lower numbers' units:
 @example
@@ -704,7 +704,7 @@ higher number defining all lower numbers' units:
 Normally, Maxima will not define the full expansion since this results in a
 very large number of units, but @code{metricexpandall} can be used to
 rebuild the list in a more or less complete fashion. The relevant variable
-in the @emph{unit.mac} file is @var{%unitexpand}.
+in the @emph{unit.mac} file is @mvar{%unitexpand}.
 @c This should be made configurable as a maxima-init.mac controllable option.
 
 @opencatbox
@@ -726,7 +726,7 @@ of @emph{unit}.
 @end defvr
 
 
-@c @deffn {Function} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
+@c @deffn {Function} functionname (@mvar{arg1}, @mvar{arg2}, ..., @mvar{argn})
 @c @end deffn
 
 @c @defvr {Optional variable} variablename

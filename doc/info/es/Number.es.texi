@@ -7,8 +7,8 @@
 @section Funciones y variables para teor@'{@dotless{i}}a de n@'umeros
 
 
-@deffn {Funci@'on} bern (@var{n})
-Devuelve el @var{n}-@'esimo n@'umero de Bernoulli del entero @var{n}.
+@deffn {Funci@'on} bern (@mvar{n})
+Devuelve el @mvar{n}-@'esimo n@'umero de Bernoulli del entero @mvar{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
 Los n@'umeros de Bernoulli iguales a cero son suprimidos si @code{zerobern} vale @code{false}.
@@ -30,21 +30,21 @@ V@'ease tambi@'en @code{burn}.
 
 @end deffn
 
-@deffn {Funci@'on} bernpoly (@var{x}, @var{n})
-Devuelve el @var{n}-@'esimo polinomio de Bernoulli de variable @var{x}.
+@deffn {Funci@'on} bernpoly (@mvar{x}, @mvar{n})
+Devuelve el @mvar{n}-@'esimo polinomio de Bernoulli de variable @mvar{x}.
 
 @end deffn
 
-@deffn {Funci@'on} bfzeta (@var{s}, @var{n})
-Devuelve la funci@'on zeta de Riemann para el argumento @var{s}. El valor que devuelve es del tipo "big float" (bfloat) y 
-@var{n}  es su n@'umero de d@'{@dotless{i}}gitos.
+@deffn {Funci@'on} bfzeta (@mvar{s}, @mvar{n})
+Devuelve la funci@'on zeta de Riemann para el argumento @mvar{s}. El valor que devuelve es del tipo "big float" (bfloat) y 
+@mvar{n}  es su n@'umero de d@'{@dotless{i}}gitos.
 
 Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
 
 @end deffn
 
-@deffn {Funci@'on} bfhzeta (@var{s}, @var{h}, @var{n})
-Devuelve la funci@'on zeta de Hurwitz para los argumentos @var{s} y @var{h}. El valor que devuelve es del tipo "big float" (bfloat) y @var{n}  es su n@'umero de d@'{@dotless{i}}gitos.
+@deffn {Funci@'on} bfhzeta (@mvar{s}, @mvar{h}, @mvar{n})
+Devuelve la funci@'on zeta de Hurwitz para los argumentos @mvar{s} y @mvar{h}. El valor que devuelve es del tipo "big float" (bfloat) y @mvar{n}  es su n@'umero de d@'{@dotless{i}}gitos.
 
 La funci@'on zeta de Hurwitz se define como
 
@@ -70,9 +70,9 @@ Ejec@'utese @code{load (bffac)} antes de hacer uso de esta funci@'on.
 
 
 
-@deffn {Funci@'on} burn (@var{n})
-Siendo @var{n} entero, Devuelve un n@'umero racional que aproxima el 
-@var{n}-@'esimo n@'umero de Bernoulli. La funci@'on @code{burn} aprovecha
+@deffn {Funci@'on} burn (@mvar{n})
+Siendo @mvar{n} entero, Devuelve un n@'umero racional que aproxima el 
+@mvar{n}-@'esimo n@'umero de Bernoulli. La funci@'on @code{burn} aprovecha
 el hecho de que los n@'umeros de Bernoulli racionales se pueden aproximar
 con notable precisi@'on gracias a 
 
@@ -85,10 +85,10 @@ con notable precisi@'on gracias a
 @end example
 
 La funci@'on @code{burn} puede ser m@'as eficiente que @code{bern} cuando 
-@var{n} es un n@'umero grande, ya que @code{bern} calcula todos los n@'umeros
-de Bernoulli hasta el @var{n}-@'esimo. Por el contrario, @code{burn} hace 
-uso de la aproximaci@'on para enteros pares @var{n} > 255. En caso de
-enteros impares y @var{n} <= 255, se hace uso de la funci@'on @code{bern}.
+@mvar{n} es un n@'umero grande, ya que @code{bern} calcula todos los n@'umeros
+de Bernoulli hasta el @mvar{n}-@'esimo. Por el contrario, @code{burn} hace 
+uso de la aproximaci@'on para enteros pares @mvar{n} > 255. En caso de
+enteros impares y @mvar{n} <= 255, se hace uso de la funci@'on @code{bern}.
 
 Para utilizar esta funci@'on hay que cargarla antes en memoria escribiendo
 @code{load ("bffac")}. V@'ease tambi@'en @code{bern}.
@@ -97,10 +97,10 @@ Para utilizar esta funci@'on hay que cargarla antes en memoria escribiendo
 
 
 
-@deffn {Funci@'on} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+@deffn {Funci@'on} chinese ([@mvar{r_1}, @dots{}, @mvar{r_n}], [@mvar{m_1}, @dots{}, @mvar{m_n}])
 
 Resulve el sistema de congruencias @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
-Los restos @var{r_n} pueden ser enteros arbitrarios, mientras que los m@'odulos @var{m_n}
+Los restos @mvar{r_n} pueden ser enteros arbitrarios, mientras que los m@'odulos @mvar{m_n}
 deben ser positivos y primos dos a dos. 
 
 @example
@@ -123,9 +123,9 @@ deben ser positivos y primos dos a dos.
 
 
 
-@deffn {Funci@'on} cf (@var{expr})
+@deffn {Funci@'on} cf (@mvar{expr})
 
-Calcula aproximaciones con fracciones continuas. @var{expr} es una expresi@'on
+Calcula aproximaciones con fracciones continuas. @mvar{expr} es una expresi@'on
 que contiene fracciones continuas, ra@'{@dotless{i}}ces cuadradas de enteros,
 y n@'umeros reales (enteros, racionales, decimales en coma flotante y decimales de
 precisi@'on arbitraria). @code{cf} calcula expansiones exactas de n@'umeros 
@@ -143,7 +143,7 @@ continua en forma de lista.
 
 Una fracci@'on continua @code{a + 1/(b + 1/(c + ...))} se representa como la
 lista @code{[a, b, c, ...]}, donde los elementos @code{a}, @code{b}, @code{c}, ... 
-se eval@'uan como enteros. La expresi@'on @var{expr} puede contener tambi@'en  
+se eval@'uan como enteros. La expresi@'on @mvar{expr} puede contener tambi@'en  
 @code{sqrt (n)} donde @code{n} es un entero; en tal caso, @code{cf} devolver@'a 
 tantos t@'erminos de la fracci@'on continua como indique el valor de la variable 
 @code{cflength} multiplicado por el per@'{@dotless{i}}odo.
@@ -158,7 +158,7 @@ Ejemplos:
 
 @itemize @bullet
 @item
-La expresi@'on @var{expr} contiene fracciones continuas y ra@'{@dotless{i}}ces
+La expresi@'on @mvar{expr} contiene fracciones continuas y ra@'{@dotless{i}}ces
 cuadradas de enteros.
 
 @example
@@ -212,7 +212,7 @@ la funci@'on @code{cf}.
 
 
 
-@deffn {Funci@'on} cfdisrep (@var{lista})
+@deffn {Funci@'on} cfdisrep (@mvar{lista})
 Construye y devuelve una expresi@'on aritm@'etica ordinaria de la forma  @code{a + 1/(b + 1/(c + ...))} a partir de la representaci@'on en formato lista de la fracci@'on continua  @code{[a, b, c, ...]}.
 
 @example
@@ -233,8 +233,8 @@ Construye y devuelve una expresi@'on aritm@'etica ordinaria de la forma  @code{a
 
 
 
-@deffn {Funci@'on} cfexpand (@var{x})
-Devuelve la matriz con los numeradores y denominadores de la @'ultima (columna 1) y pen@'ultima (columna 2) convergentes de la fracci@'on continua @var{x}.
+@deffn {Funci@'on} cfexpand (@mvar{x})
+Devuelve la matriz con los numeradores y denominadores de la @'ultima (columna 1) y pen@'ultima (columna 2) convergentes de la fracci@'on continua @mvar{x}.
 
 @example
 (%i1) cf (rat (ev (%pi, numer)));
@@ -273,12 +273,12 @@ La variable @code{cflength} controla el n@'umero de t@'erminos de la fracci@'on 
 
 
 
-@deffn {Funci@'on} divsum (@var{n}, @var{k})
-@deffnx {Funci@'on} divsum (@var{n})
+@deffn {Funci@'on} divsum (@mvar{n}, @mvar{k})
+@deffnx {Funci@'on} divsum (@mvar{n})
 
-La llamada @code{divsum (@var{n}, @var{k})} devuelve la suma de los divisores de @var{n} elevados a la @var{k}-@'esima potencia.
+La llamada @code{divsum (@mvar{n}, @mvar{k})} devuelve la suma de los divisores de @mvar{n} elevados a la @mvar{k}-@'esima potencia.
 
-La llamada @code{divsum (@var{n})} devuelve la suma de los divisores de @var{n}.
+La llamada @code{divsum (@mvar{n})} devuelve la suma de los divisores de @mvar{n}.
 
 @example
 (%i1) divsum (12);
@@ -294,8 +294,8 @@ La llamada @code{divsum (@var{n})} devuelve la suma de los divisores de @var{n}.
 @end deffn
 
 
-@deffn {Funci@'on} euler (@var{n})
-Devuelve el @var{n}-@'esimo n@'umero de Euler del entero no negativo @var{n}.
+@deffn {Funci@'on} euler (@mvar{n})
+Devuelve el @mvar{n}-@'esimo n@'umero de Euler del entero no negativo @mvar{n}.
 
 Para la constante de Euler-Mascheroni, v@'ease @code{%gamma}.
 
@@ -321,11 +321,11 @@ Para ejemplos, v@'ease @code{ifactors}.
 
 
 
-@deffn {Funci@'on} fib (@var{n})
-Devuelve el @var{n}-@'esimo n@'umero de Fibonacci. La llamada @code{fib(0)} es igual a 0, @code{fib(1)} devuelve 1 y
-@code{fib (-@var{n})} es igual a @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+@deffn {Funci@'on} fib (@mvar{n})
+Devuelve el @mvar{n}-@'esimo n@'umero de Fibonacci. La llamada @code{fib(0)} es igual a 0, @code{fib(1)} devuelve 1 y
+@code{fib (-@mvar{n})} es igual a @code{(-1)^(@mvar{n} + 1) * fib(@mvar{n})}.
 
-Despu@'es de llamar a @code{fib}, la variable @code{prevfib} toma el valor @code{fib (@var{x} - 1)}, que es el n@'umero de Fibonacci que precede al @'ultimo calculado.
+Despu@'es de llamar a @code{fib}, la variable @code{prevfib} toma el valor @code{fib (@mvar{x} - 1)}, que es el n@'umero de Fibonacci que precede al @'ultimo calculado.
 
 @example
 (%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -334,8 +334,8 @@ Despu@'es de llamar a @code{fib}, la variable @code{prevfib} toma el valor @code
 
 @end deffn
 
-@deffn {Funci@'on} fibtophi (@var{expr})
-Expresa los n@'umeros de Fibonacci en @var{expr} en t@'erminos de la raz@'on @'aurea @code{%phi},
+@deffn {Funci@'on} fibtophi (@mvar{expr})
+Expresa los n@'umeros de Fibonacci en @mvar{expr} en t@'erminos de la raz@'on @'aurea @code{%phi},
 que es @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
 
 Ejemplos:
@@ -372,9 +372,9 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} ifactors (@var{n})
-Devuelve la factorizaci@'on del entero positivo @var{n}. Si @code{n=p1^e1..pk^nk} es
-la descomposici@'on de @var{n} en n@'umeros primos, @code{ifactors} devuelve 
+@deffn {Funci@'on} ifactors (@mvar{n})
+Devuelve la factorizaci@'on del entero positivo @mvar{n}. Si @code{n=p1^e1..pk^nk} es
+la descomposici@'on de @mvar{n} en n@'umeros primos, @code{ifactors} devuelve 
 @code{[[p1, e1], ... , [pk, ek]]}.
 
 Los m@'etodos de factorizaci@'on se basan en divisiones tentativas con n@'umeros primos
@@ -399,12 +399,12 @@ de factores primos.
 
 
 
-@deffn {Funci@'on} igcdex (@var{n}, @var{k})
+@deffn {Funci@'on} igcdex (@mvar{n}, @mvar{k})
 
-Devuelve la lista @code{[@var{a}, @var{b}, @var{u}]}, donde @var{u} es
-el m@'aximo com@'un divisor de @var{n} y @var{k}, siendo @var{u}
-igual a @code{@var{a} @var{n} + @var{b} @var{k}}. Los argumentos
-@var{n} y @var{k} deben ser enteros.
+Devuelve la lista @code{[@mvar{a}, @mvar{b}, @mvar{u}]}, donde @mvar{u} es
+el m@'aximo com@'un divisor de @mvar{n} y @mvar{k}, siendo @mvar{u}
+igual a @code{@mvar{a} @mvar{n} + @mvar{b} @mvar{k}}. Los argumentos
+@mvar{n} y @mvar{k} deben ser enteros.
 
 @code{igcdex} implementa el algoritmo de Euclides. V@'ease tambi@'en @code{gcdex}.
 
@@ -428,8 +428,8 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} inrt (@var{x}, @var{n})
-Devuelve la ra@'{@dotless{i}}z entera @var{n}-@'esima del valor absoluto de  @var{x}.
+@deffn {Funci@'on} inrt (@mvar{x}, @mvar{n})
+Devuelve la ra@'{@dotless{i}}z entera @mvar{n}-@'esima del valor absoluto de  @mvar{x}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -439,10 +439,10 @@ Devuelve la ra@'{@dotless{i}}z entera @var{n}-@'esima del valor absoluto de  @va
 
 @end deffn
 
-@deffn {Funci@'on} inv_mod (@var{n}, @var{m})
-Calcula el inverso de @var{n} m@'odulo @var{m}. 
+@deffn {Funci@'on} inv_mod (@mvar{n}, @mvar{m})
+Calcula el inverso de @mvar{n} m@'odulo @mvar{m}. 
 La llamada @code{inv_mod (n,m)} devuelve @code{false}
-si @var{n} es un divisor nulo m@'odulo @var{m}.
+si @mvar{n} es un divisor nulo m@'odulo @mvar{m}.
 
 @example
 (%i1) inv_mod(3, 41);
@@ -456,17 +456,17 @@ si @var{n} es un divisor nulo m@'odulo @var{m}.
 @end deffn
 
 
-@deffn {Funci@'on} isqrt (@var{x})
+@deffn {Funci@'on} isqrt (@mvar{x})
 Devuelve la "ra@'{@dotless{i}}z cuadrada entera"
-del valor absoluto de @var{x},
+del valor absoluto de @mvar{x},
 el cual debe ser un entero.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} jacobi (@var{p}, @var{q})
-Devuelve el s@'{@dotless{i}}mbolo de Jacobi para @var{p} y @var{q}.
+@deffn {Funci@'on} jacobi (@mvar{p}, @mvar{q})
+Devuelve el s@'{@dotless{i}}mbolo de Jacobi para @mvar{p} y @mvar{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -476,7 +476,7 @@ Devuelve el s@'{@dotless{i}}mbolo de Jacobi para @var{p} y @var{q}.
 
 @end deffn
 
-@deffn {Funci@'on} lcm (@var{expr_1}, ..., @var{expr_n})
+@deffn {Funci@'on} lcm (@mvar{expr_1}, ..., @mvar{expr_n})
 Devuelve el m@'{@dotless{i}}nimo com@'un m@'ultiplo de sus argumentos. Los argumentos pueden ser tanto expresiones en general como enteros.
 
 Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
@@ -486,18 +486,18 @@ Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
 
 
 
-@deffn {Funci@'on} mod (@var{x}, @var{y})
+@deffn {Funci@'on} mod (@mvar{x}, @mvar{y})
 
-Si @var{x} e @var{y} son n@'umeros reales e @var{y} es distinto de cero,
-devuelve @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Para todos los reales @var{x}, se tiene @code{mod (@var{x}, 0) = @var{x}}. Para informaci@'on sobre la definici@'on de  @code{mod (@var{x}, 0) = @var{x}}, v@'ease la secci@'on 3.4 de "Concrete Mathematics", 
-by Graham, Knuth, and Patashnik. La funci@'on @code{mod (@var{x}, 1)} es de diente de sierra con periodo unidad y con @code{mod (1, 1) = 0} y @code{mod (0, 1) = 0}.
+Si @mvar{x} e @mvar{y} son n@'umeros reales e @mvar{y} es distinto de cero,
+devuelve @code{@mvar{x} - @mvar{y} * floor(@mvar{x} / @mvar{y})}.
+Para todos los reales @mvar{x}, se tiene @code{mod (@mvar{x}, 0) = @mvar{x}}. Para informaci@'on sobre la definici@'on de  @code{mod (@mvar{x}, 0) = @mvar{x}}, v@'ease la secci@'on 3.4 de "Concrete Mathematics", 
+by Graham, Knuth, and Patashnik. La funci@'on @code{mod (@mvar{x}, 1)} es de diente de sierra con periodo unidad y con @code{mod (1, 1) = 0} y @code{mod (0, 1) = 0}.
 
-Para encontrar el argumento principal (un n@'umero del intervalo @code{(-%pi, %pi]}) de un n@'umero complejo, h@'agase uso de la funci@'on @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, donde @var{x} es un argumento.
+Para encontrar el argumento principal (un n@'umero del intervalo @code{(-%pi, %pi]}) de un n@'umero complejo, h@'agase uso de la funci@'on @code{@mvar{x} |-> %pi - mod (%pi - @mvar{x}, 2*%pi)}, donde @mvar{x} es un argumento.
 
-Si @var{x} e @var{y} son expresiones constantes (por ejemplo, @code{10 * %pi}), @code{mod} utiliza el mismo esquema de evaluaci@'on basado en n@'umeros grandes en coma flotante (big floats) que @code{floor} y @code{ceiling}. Tambi@'en es posible, pero improbable, que @code{mod} pueda retornar un valor err@'oneo en tales casos.
+Si @mvar{x} e @mvar{y} son expresiones constantes (por ejemplo, @code{10 * %pi}), @code{mod} utiliza el mismo esquema de evaluaci@'on basado en n@'umeros grandes en coma flotante (big floats) que @code{floor} y @code{ceiling}. Tambi@'en es posible, pero improbable, que @code{mod} pueda retornar un valor err@'oneo en tales casos.
 
-Para argumentos no num@'ericos @var{x} o @var{y}, @code{mod} aplica algunas reglas de simplificaci@'on:
+Para argumentos no num@'ericos @mvar{x} o @mvar{y}, @code{mod} aplica algunas reglas de simplificaci@'on:
 
 @c ===beg===
 @c mod (x, 0);
@@ -516,8 +516,8 @@ Para argumentos no num@'ericos @var{x} o @var{y}, @code{mod} aplica algunas regl
 
 
 
-@deffn {Funci@'on} next_prime (@var{n})
-Devuelve el menor de los primos mayores que @var{n}.
+@deffn {Funci@'on} next_prime (@mvar{n})
+Devuelve el menor de los primos mayores que @mvar{n}.
 
 @example
 (%i1) next_prime(27);
@@ -527,8 +527,8 @@ Devuelve el menor de los primos mayores que @var{n}.
 @end deffn
 
 
-@deffn {Funci@'on} partfrac (@var{expr}, @var{var})
-Expande la expresi@'on @var{expr} en fracciones parciales respecto de la variable principal @var{var}. La funci@'on @code{partfrac} hace una descomposici@'on completa en fracciones parciales. El algoritmo que se utiliza se basa en el hecho de que los denominadores de la expansi@'on en fracciones parciales (los factores del denominador original) son primos relativos. Los numeradores se pueden escribir como combinaciones lineales de los denominadores.
+@deffn {Funci@'on} partfrac (@mvar{expr}, @mvar{var})
+Expande la expresi@'on @mvar{expr} en fracciones parciales respecto de la variable principal @mvar{var}. La funci@'on @code{partfrac} hace una descomposici@'on completa en fracciones parciales. El algoritmo que se utiliza se basa en el hecho de que los denominadores de la expansi@'on en fracciones parciales (los factores del denominador original) son primos relativos. Los numeradores se pueden escribir como combinaciones lineales de los denominadores.
 
 @example
 (%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
@@ -553,10 +553,10 @@ Expande la expresi@'on @var{expr} en fracciones parciales respecto de la variabl
 
 
 
-@deffn {Funci@'on} power_mod (@var{a}, @var{n}, @var{m})
+@deffn {Funci@'on} power_mod (@mvar{a}, @mvar{n}, @mvar{m})
 Utiliza un algoritmo modular para calcular @code{a^n mod m},
-siendo @var{a} y @var{n} enteros cualesquiera y @var{m} un entero positivo.
-Si @var{n} es negativo, se utilizar@'a @code{inv_mod} para encontrar el
+siendo @mvar{a} y @mvar{n} enteros cualesquiera y @mvar{m} un entero positivo.
+Si @mvar{n} es negativo, se utilizar@'a @code{inv_mod} para encontrar el
 inverso modular.
 
 @example
@@ -572,22 +572,22 @@ inverso modular.
 
 @end deffn
 
-@deffn {Funci@'on} primep (@var{n})
-Comprueba si el n@'umero entero @var{n} es o no primo, devolviendo @code{true}
+@deffn {Funci@'on} primep (@mvar{n})
+Comprueba si el n@'umero entero @mvar{n} es o no primo, devolviendo @code{true}
 o @code{false} seg@'un el caso.
 
-Cuando el resultado de @code{primep (@var{n})} es @code{false}, @var{n} es un
-n@'umero compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
+Cuando el resultado de @code{primep (@mvar{n})} es @code{false}, @mvar{n} es un
+n@'umero compuesto, y si es @code{true}, @mvar{n} es primo con alta probabilidad.
 
-Si @var{n} es menor que 341550071728321, se utiliza una versi@'on 
+Si @mvar{n} es menor que 341550071728321, se utiliza una versi@'on 
 determin@'{@dotless{i}}stica de la prueba de Miller-Rabin. En tal caso,
-si @code{primep (@var{n})} devuelve @code{true}, entonces @var{n} es un n@'umero primo.
+si @code{primep (@mvar{n})} devuelve @code{true}, entonces @mvar{n} es un n@'umero primo.
 
-Para @var{n} mayor que 341550071728321 @code{primep} realiza 
+Para @mvar{n} mayor que 341550071728321 @code{primep} realiza 
 @code{primep_number_of_tests} pruebas de seudo-primalidad de Miller-Rabin y una 
 prueba de seudo-primalidad de Lucas. La probabilidad de que un n@'umero compuesto 
-@var{n} pase una prueba de Miller-Rabin es menor que 1/4. Con el valor por defecto de 
-@code{primep_number_of_tests}, que es 25, la probabilidad de que @var{n}
+@mvar{n} pase una prueba de Miller-Rabin es menor que 1/4. Con el valor por defecto de 
+@code{primep_number_of_tests}, que es 25, la probabilidad de que @mvar{n}
 sea compuesto es menor que 10^-15.
 
 @end deffn
@@ -601,8 +601,8 @@ Valor por defecto: 25
 N@'umero de pruebas de Miller-Rabin a realizar por @code{primep}.
 @end defvr
 
-@deffn {Funci@'on} prev_prime (@var{n})
-Devuelve el mayor de los primos menores que @var{n}.
+@deffn {Funci@'on} prev_prime (@mvar{n})
+Devuelve el mayor de los primos menores que @mvar{n}.
 
 @example
 (%i1) prev_prime(27);
@@ -611,8 +611,8 @@ Devuelve el mayor de los primos menores que @var{n}.
 @end deffn
 
 
-@deffn {Funci@'on} qunit (@var{n})
-Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero; consiste en la resoluci@'on de la ecuaci@'on de Pell  @code{a^2 - @var{n} b^2 = 1}.
+@deffn {Funci@'on} qunit (@mvar{n})
+Devuelve la unidad principal de @code{sqrt (@mvar{n})}, siendo @mvar{n} un entero; consiste en la resoluci@'on de la ecuaci@'on de Pell  @code{a^2 - @mvar{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -625,8 +625,8 @@ Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero;
 
 
 
-@deffn {Funci@'on} totient (@var{n})
-Devuelve el n@'umero de enteros menores o iguales a @var{n} que son primos relativos con @var{n}.
+@deffn {Funci@'on} totient (@mvar{n})
+Devuelve el n@'umero de enteros menores o iguales a @mvar{n} que son primos relativos con @mvar{n}.
 @end deffn
 
 @defvr {Variable opcional} zerobern
@@ -640,15 +640,15 @@ V@'ease @code{bern} y @code{euler}.
 
 
 
-@deffn {Funci@'on} zeta (@var{n})
-Devuelve la funci@'on zeta de Riemann. Si @var{n} es entero negativo,
+@deffn {Funci@'on} zeta (@mvar{n})
+Devuelve la funci@'on zeta de Riemann. Si @mvar{n} es entero negativo,
 0 o n@'umero par positivo, la funci@'on zeta de Riemann devuelve un
 valor exacto; en el caso de n@'umero par positivo, la variable opcional
 @code{zeta%pi}, adem@'as, tiene que tener el valor @code{true} 
 (v@'ease @code{zeta%pi}). 
 Cuando el argumento es un n@'umero decimal o bigfloat,
 entonces la funci@'on zeta de Riemann se calcula num@'ericamente.
-Maxima devuelve una forma nominal @code{zeta (@var{n})} para
+Maxima devuelve una forma nominal @code{zeta (@mvar{n})} para
 cualesquiera otros argumentos, incluidos los racionales no enteros,
 los n@'umeros complejos y los enteros pares si @code{zeta%pi} vale
 @code{false}.

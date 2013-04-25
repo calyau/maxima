@@ -23,9 +23,9 @@ Maximaは構造体と呼ばれる簡単なデータ集合体を提供します�
 グローバル変数@code{structures}はユーザー定義の構造体のリストです。
 関数@code{new}は構造体のインスタンスを生成します。
 @code{@@}演算子はフィールドを参照します。
-@code{kill(@var{S})}は構造体定義@var{S}を取り除き、
-@code{kill(@var{x}@@ @var{a})}は
-構造体インスタンス@var{x}のフィールド@var{a}をアンバインドします。
+@code{kill(@mvar{S})}は構造体定義@mvar{S}を取り除き、
+@code{kill(@mvar{x}@@ @mvar{a})}は
+構造体インスタンス@mvar{x}のフィールド@mvar{a}をアンバインドします。
 
 (@code{display2d}を@code{true}で使う)プリティプリンティングのコンソール表示では、
 構造体インスタンスは、
@@ -58,25 +58,25 @@ Maximaは構造体と呼ばれる簡単なデータ集合体を提供します�
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} defstruct (@var{S}(@var{a_1}, @dots{}, @var{a_n}))
-@deffnx {関数} defstruct (@var{S}(@var{a_1} = @var{v_1}, @dots{}, @var{a_n} = @var{v_n}))
+@deffn  {関数} defstruct (@mvar{S}(@mvar{a_1}, @dots{}, @mvar{a_n}))
+@deffnx {関数} defstruct (@mvar{S}(@mvar{a_1} = @mvar{v_1}, @dots{}, @mvar{a_n} = @mvar{v_n}))
 
 構造体を定義します。
-構造体はシンボル@var{S}と関連付けられた名前フィールドのリスト@var{a_1}, @dots{}, @var{a_n}です。
+構造体はシンボル@mvar{S}と関連付けられた名前フィールドのリスト@mvar{a_1}, @dots{}, @mvar{a_n}です。
 
-構造体のインスタンスは演算子@var{S}と正確に@code{n}個の引数を持つただの式です。
-@code{new(@var{S})}は構造体@var{S}の新しいインスタンスを生成します。
+構造体のインスタンスは演算子@mvar{S}と正確に@code{n}個の引数を持つただの式です。
+@code{new(@mvar{S})}は構造体@mvar{S}の新しいインスタンスを生成します。
 
-ただのシンボル@var{a}である引数はフィールド名を指定します。
-等式@code{@var{a} = @var{v}}である引数は
-フィールド名@var{a}とデフォルト値@var{v}を指定します。
+ただのシンボル@mvar{a}である引数はフィールド名を指定します。
+等式@code{@mvar{a} = @mvar{v}}である引数は
+フィールド名@mvar{a}とデフォルト値@mvar{v}を指定します。
 デフォルト値は任意の式を取り得ます。
 
 @code{defstruct}は
-ユーザー定義の構造体のリスト@code{structures}上に@var{S}を入れます。
+ユーザー定義の構造体のリスト@code{structures}上に@mvar{S}を入れます。
 
-@code{kill(@var{S})}は
-ユーザー定義の構造体のリストから@var{S}を取り除き、構造体定義を取り除きます。
+@code{kill(@mvar{S})}は
+ユーザー定義の構造体のリストから@mvar{S}を取り除き、構造体定義を取り除きます。
 
 例:
 
@@ -115,19 +115,19 @@ Maximaは構造体と呼ばれる簡単なデータ集合体を提供します�
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} new (@var{S})
-@deffnx {関数} new (@var{S} (@var{v_1}, @dots{}, @var{v_n}))
+@deffn  {関数} new (@mvar{S})
+@deffnx {関数} new (@mvar{S} (@mvar{v_1}, @dots{}, @mvar{v_n}))
 
 @code{new}は構造体の新しいインスタンスを生成します。
 
-@code{new(@var{S})}は
-構造体@var{S}の新しいインスタンスを生成します。
+@code{new(@mvar{S})}は
+構造体@mvar{S}の新しいインスタンスを生成します。
 それぞれのフィールドは、もしデフォルト値があればデフォルト値を割り当てられ、
 もしデフォルト値が構造体定義で指定されなかったなら、割り当てなしになります。
 
-@code{new(@var{S}(@var{v_1}, ..., @var{v_n}))}は
-フィールドが値@var{v_1}, @dots{}, @var{v_n}に割り当てられた
-構造体@var{S}の新しいインスタンスを生成します。
+@code{new(@mvar{S}(@mvar{v_1}, ..., @mvar{v_n}))}は
+フィールドが値@mvar{v_1}, @dots{}, @mvar{v_n}に割り当てられた
+構造体@mvar{S}の新しいインスタンスを生成します。
 
 例:
 
@@ -154,15 +154,15 @@ Maximaは構造体と呼ばれる簡単なデータ集合体を提供します�
 @deffn {演算子} @@
 
 @code{@@}構造体フィールドアクセス演算子です。
-式@code{@var{x}@@ @var{a}}は
-構造体インスタンス@var{x}のフィールド@var{a}の値を参照します。
+式@code{@mvar{x}@@ @mvar{a}}は
+構造体インスタンス@mvar{x}のフィールド@mvar{a}の値を参照します。
 フィールド名は評価されません。
 
-もし@var{x}のフィールド@var{a}が値を割り当てられていないなら、
-@code{@var{x}@@ @var{a}}はそれ自身に評価されます。
+もし@mvar{x}のフィールド@mvar{a}が値を割り当てられていないなら、
+@code{@mvar{x}@@ @mvar{a}}はそれ自身に評価されます。
 
-@code{kill(@var{x}@@ @var{a})}は
-@var{x}のフィールド値@var{a}を値を取り除きます。
+@code{kill(@mvar{x}@@ @mvar{a})}は
+@mvar{x}のフィールド値@mvar{a}を値を取り除きます。
 
 例:
 

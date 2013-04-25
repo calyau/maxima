@@ -97,13 +97,13 @@ Presenta una descrpci@'on del estado de almacenamiento y gesti@'on de la pila en
 
 @end deffn
 
-@deffn {Funci@'on} sstatus (@var{keyword}, @var{item})
+@deffn {Funci@'on} sstatus (@mvar{keyword}, @mvar{item})
 
-Si @var{keyword} es el s@'{@dotless{i}}mbolo @code{feature}, @var{item}
+Si @mvar{keyword} es el s@'{@dotless{i}}mbolo @code{feature}, @mvar{item}
 ser@'a colocado en la lista de propiedades del sistema. Una vez ejecutado
 @code{sstatus (keyword, item)}, @code{status (feature, item)} devuelve
-@code{true}. Si @var{keyword} es el s@'{@dotless{i}}mbolo @code{nofeature},
-@var{item} se borrar@'a de la lista de propiedades del sistema.
+@code{true}. Si @mvar{keyword} es el s@'{@dotless{i}}mbolo @code{nofeature},
+@mvar{item} se borrar@'a de la lista de propiedades del sistema.
 Esto puede ser de utilidad para los autores de paquetes, permitiendo
 mantener el control sobre las propiedades que se han ido estableciendo.
 
@@ -113,7 +113,7 @@ V@'ease tambi@'en @code{status}.
 
 
 @deffn {Funci@'on} status (@code{feature})
-@deffnx {Funci@'on} status (@code{feature}, @var{item})
+@deffnx {Funci@'on} status (@code{feature}, @mvar{item})
 
 Devuelve informaci@'on sobre la presencia o ausencia de ciertas
 propiedades dependientes del sistema.
@@ -125,10 +125,10 @@ del sistema. @'Estas incluyen la versi@'on de Lisp, tipo de sistema
 operativo, etc. La lista puede variar de un Lisp a otro.
 
 @item
-@code{status (feature, item)} devuelve @code{true} si @var{item}
+@code{status (feature, item)} devuelve @code{true} si @mvar{item}
 est@'a en la lista de elementos retornados por @code{status (feature)}
 y @code{false} en otro caso.
-La funci@'on @code{status} no eval@'ua el argumento @var{item}. El operador
+La funci@'on @code{status} no eval@'ua el argumento @mvar{item}. El operador
 de doble comilla simple, @code{'@w{}'}, permite la evaluaci@'on. Una 
 propiedad cuyo nombre contenga un car@'acter especial debe ser suministrada
 como un argumento del tipo cadena. Por ejemplo,
@@ -146,8 +146,8 @@ para m@'as informaci@'on.
 
 
 
-@deffn {Funci@'on} system (@var{command})
-Ejecuta la instrucci@'on @var{command} como un proceso independiente de Maxima.
+@deffn {Funci@'on} system (@mvar{command})
+Ejecuta la instrucci@'on @mvar{command} como un proceso independiente de Maxima.
 La instrucci@'on se le pasa a la consola del sistema para su ejecuci@'on.
 La funci@'on @code{system} no est@'a soportada por todos los sistemas operativos, pero suele estarlo en todos los entornos  Unix y similares.
 
@@ -179,7 +179,7 @@ H@'agase @code{showtime: true} para que Maxima devuelva el tiempo de ejecuci@'on
 @end deffn
 
 @deffn {Funci@'on} timedate ()
-@deffnx {Funci@'on} timedate (@var{T})
+@deffnx {Funci@'on} timedate (@mvar{T})
 
 Sin argumento, @code{timedate} devuelve una cadena que 
 representa la hora y fecha actuales. La cadena tiene el
@@ -188,9 +188,9 @@ los campos indicados son: a@~no, mes, d@'{@dotless{i}}a,
 horas, minutos, segundos y n@'umero de horas de diferencia
 con respecto a la hora GMT.
 
-Con argumento, @code{timedate(@var{T})} devuelve la hora
-@var{T} como una cadena con formato @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
-@var{T} se interpreta como el n@'umero de segundos transcurridos
+Con argumento, @code{timedate(@mvar{T})} devuelve la hora
+@mvar{T} como una cadena con formato @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
+@mvar{T} se interpreta como el n@'umero de segundos transcurridos
 desde la medianoche del uno de enero de 1900, tal como lo devuelve
 @code{absolute_real_time}.
 

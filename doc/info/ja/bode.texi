@@ -6,7 +6,7 @@
 @section Functions and Variables for bode
 
 
-@deffn {関数} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+@deffn {関数} bode_gain (@mvar{H}, @mvar{range}, ...@mvar{plot_opts}...)
 Bodeのゲイン線図を描く関数。
 
 例 (1から7までは
@@ -62,7 +62,7 @@ Bodeのゲイン線図を描く関数。
 @end deffn
 
 
-@deffn {関数} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+@deffn {関数} bode_phase (@mvar{H}, @mvar{range}, ...@mvar{plot_opts}...)
 Bodeの位相線図を描く関数。
 
 例 (1から7までは

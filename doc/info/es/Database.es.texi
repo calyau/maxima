@@ -104,8 +104,8 @@ los hechos almacenados, pudiendo ser posteriormente reactivado con la funci@'on
 @defvr {Propiedad} alphabetic
 
 @code{alphabetic} es un tipo de propiedad reconocida por @code{declare}.
-La expresi@'on @code{declare(@var{s}, alphabetic)} le indica a Maxima que reconozca
-como alfab@'eticos todos los caracteres que haya en @var{s}, que debe ser una cadena de texto.
+La expresi@'on @code{declare(@mvar{s}, alphabetic)} le indica a Maxima que reconozca
+como alfab@'eticos todos los caracteres que haya en @mvar{s}, que debe ser una cadena de texto.
 
 V@'ease tambi@'en @code{Identifiers}.
 
@@ -130,8 +130,8 @@ Ejemplo:
 @end defvr
 
 @defvr {Propiedad} bindtest
-La sentencia @code{declare(@var{x}, bindtest} le indica a Maxima que devuelva un mensaje
-de error cuando el s@'{@dotless{i}}mbolo @var{x} no tenga asociado valor alguno.
+La sentencia @code{declare(@mvar{x}, bindtest} le indica a Maxima que devuelva un mensaje
+de error cuando el s@'{@dotless{i}}mbolo @mvar{x} no tenga asociado valor alguno.
 
 Ejemplo:
 
@@ -159,7 +159,7 @@ aa unbound variable
 
 
 @deffn {Propiedad} constant
-@code{declare(@var{a}, constant)} declara @var{a} como constante.  La declaraci@'on
+@code{declare(@mvar{a}, constant)} declara @mvar{a} como constante.  La declaraci@'on
 de un s@'{@dotless{i}}mbolo como constante no impide que se le asigne un valor no
 constante al s@'{@dotless{i}}mbolo.
 
@@ -181,8 +181,8 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} constantp (@var{expr})
-Devuelve @code{true} si @var{expr} es una expresi@'on constante y
+@deffn {Funci@'on} constantp (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} es una expresi@'on constante y
 @code{false} en caso contrario.
 
 Una expresi@'on se considera constante si sus argumentos son n@'umeros 
@@ -226,17 +226,17 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
-Asigna al @'atomo o lista de @'atomos @var{a_i} la propiedad o lista de 
-propiedades@var{p_i}. Si @var{a_i} y/o @var{p_i} son listas, cada uno de
+@deffn {Funci@'on} declare (@mvar{a_1}, @mvar{f_1}, @mvar{a_2}, @mvar{f_2}, ...)
+Asigna al @'atomo o lista de @'atomos @mvar{a_i} la propiedad o lista de 
+propiedades@mvar{p_i}. Si @mvar{a_i} y/o @mvar{p_i} son listas, cada uno de
 los @'atomos adquiere todas las propiedades.
 
 La funci@'on @code{declare} no eval@'ua sus argumentos y siempre devuelve la
 expresi@'on @code{done}.
 
-La llamada @code{featurep (@var{object}, @var{feature})} devuelve @code{true}
-si @var{object} ha sido previamente declarado como poseedor de la propiedad
-@var{feature}.
+La llamada @code{featurep (@mvar{object}, @mvar{feature})} devuelve @code{true}
+si @mvar{object} ha sido previamente declarado como poseedor de la propiedad
+@mvar{feature}.
 
 V@'ease tambi@'en @code{features}.
 
@@ -244,79 +244,79 @@ La funci@'on @code{declare} reconoce las siguientes propiedades:
 
 @table @code
 @item additive
-      Hace que Maxima simplifique las expresiones @var{a_i}
+      Hace que Maxima simplifique las expresiones @mvar{a_i}
       haciendo uso de la sustituci@'on 
-      @code{@var{a_i}(x + y + z + ...)} @code{-->}
-      @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+      @code{@mvar{a_i}(x + y + z + ...)} @code{-->}
+      @code{@mvar{a_i}(x) + @mvar{a_i}(y) + @mvar{a_i}(z) + ...}.
       Tal sustituci@'on se aplica @'unicamente al primer argumento.
 
 @item alphabetic
       Indica a Maxima que reconozca todos los caracteres de la cadena alfanum@'erica
-      @var{a_i} como caracteres alfab@'eticos.
+      @mvar{a_i} como caracteres alfab@'eticos.
 
 @item antisymmetric, commutative, symmetric
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on sim@'etrica o
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on sim@'etrica o
       antisim@'etrica. La propiedad @code{commutative} equivale a @code{symmetric}.
 
 @item bindtest
-      Hace que Maxima env@'{@dotless{i}}e un error si @var{a_i} es evaluado sin hab@'ersele
+      Hace que Maxima env@'{@dotless{i}}e un error si @mvar{a_i} es evaluado sin hab@'ersele
       asignado un valor.
 
 @item constant
-      Hace que Maxima considere a @var{a_i} como una constante
+      Hace que Maxima considere a @mvar{a_i} como una constante
       simb@'olica.
 
 @item even, odd
-      Hace que Maxima reconozca a @var{a_i} como una variable entera par o impar.
+      Hace que Maxima reconozca a @mvar{a_i} como una variable entera par o impar.
 
 @item evenfun, oddfun
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on par o impar.
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on par o impar.
 
 @item evflag
-      Hace que @var{a_i} sea reconocida por @code{ev}, de manera que a @var{a_i} se le
-      asigne el valor @code{true} durante la ejecuci@'on de @code{ev} cuando @var{a_i} 
+      Hace que @mvar{a_i} sea reconocida por @code{ev}, de manera que a @mvar{a_i} se le
+      asigne el valor @code{true} durante la ejecuci@'on de @code{ev} cuando @mvar{a_i} 
       aparezca como argumento de control de @code{ev}. V@'ease tambi@'en @code{evflag}.
 
 @item evfun
-      Hace que @var{a_i} sea reconocida por @code{ev}, de manera que la funci@'on
-      nombrada por @var{a_i} se aplique cuando @var{a_i} aparezca como argumento
+      Hace que @mvar{a_i} sea reconocida por @code{ev}, de manera que la funci@'on
+      nombrada por @mvar{a_i} se aplique cuando @mvar{a_i} aparezca como argumento
       de control de @code{ev}. V@'ease tambi@'en @code{evfun}.
 
 @item feature
-      Hace que Maxima considere a @var{a_i} como el nombre de una propiedad.
+      Hace que Maxima considere a @mvar{a_i} como el nombre de una propiedad.
       Otros @'atomos podr@'an ser declarados entonces como poseedores de
-      la propiedad @var{a_i}.
+      la propiedad @mvar{a_i}.
 
 @item increasing, decreasing
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on creciente o decreciente.
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on creciente o decreciente.
 
 @item integer, noninteger
-      Hace que Maxima reconozca a @var{a_i} como una variable entera o no entera.
+      Hace que Maxima reconozca a @mvar{a_i} como una variable entera o no entera.
 
 @item integervalued
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on de valor entero.
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on de valor entero.
 
 @item lassociative, rassociative
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on asociativa por la derecha o
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on asociativa por la derecha o
       por la izquierda.
 
 @item linear
-      Equivale a declarar @var{a_i} conjuntamente como @code{outative} y @code{additive}.
+      Equivale a declarar @mvar{a_i} conjuntamente como @code{outative} y @code{additive}.
 
 @item mainvar
-      Hace que Maxima considere a @var{a_i} como una "variable principal",
+      Hace que Maxima considere a @mvar{a_i} como una "variable principal",
       d@'andole prioridad frente a cualesquiera otras constantes o
       variables en la ordenaci@'on can@'onica de expresiones de Maxima,
       tal como determina @code{ordergreatp}.
 
 @item multiplicative
-      Hace que Maxima simplifique las expresiones @var{a_i}
+      Hace que Maxima simplifique las expresiones @mvar{a_i}
       haciendo uso de la sustituci@'on 
-      @code{@var{a_i}(x * y * z * ...)} @code{-->} @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+      @code{@mvar{a_i}(x * y * z * ...)} @code{-->} @code{@mvar{a_i}(x) * @mvar{a_i}(y) * @mvar{a_i}(z) * ...}.
       Tal sustituci@'on se aplica @'unicamente al primer argumento.
 
 @item nary
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on n-aria.
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on n-aria.
 
       La declaraci@'on @code{nary} no es equivalente a la funci@'on @code{nary}.
       El @'unico efecto de @code{declare(foo, nary)} consiste en hacer que
@@ -324,42 +324,42 @@ La funci@'on @code{declare} reconoce las siguientes propiedades:
       para transformar @code{foo(x, foo(y, z))} a @code{foo(x, y, z)}.
 
 @item nonarray
-      Indica que Maxima no debe considerar @var{a_i} como un array. Esta declaraci@'on
+      Indica que Maxima no debe considerar @mvar{a_i} como un array. Esta declaraci@'on
       evita la evaluaci@'on m@'ultiple de variables subindicadas.
 
 @item nonscalar
-      Hace que Maxima considere a @var{a_i} como una variable no escalar.
+      Hace que Maxima considere a @mvar{a_i} como una variable no escalar.
       Se aplica com@'unmente para declarar una variable como un vector simb@'olico
       o una matriz simb@'olica.
 
 @item noun
-      Hace que Maxima considere a @var{a_i} como un nombre. El efecto
-      que se obtiene es que se reemplazan todas las expresiones @var{a_i}
-      por @code{'@var{a_i}} o @code{nounify (@var{a_i})},
+      Hace que Maxima considere a @mvar{a_i} como un nombre. El efecto
+      que se obtiene es que se reemplazan todas las expresiones @mvar{a_i}
+      por @code{'@mvar{a_i}} o @code{nounify (@mvar{a_i})},
       dependiendo del contexto.
 
 @item outative
-      Hace que Maxima simplifique las expresiones @var{a_i}
+      Hace que Maxima simplifique las expresiones @mvar{a_i}
       extrayendo los factores constantes del primer argumento.
 
-      Cuando @var{a_i} tenga un @'unico argumento, un factor se considerar@'a constante
+      Cuando @mvar{a_i} tenga un @'unico argumento, un factor se considerar@'a constante
       si es una constante literal o declarada.
 
-      Cuando @var{a_i} tenga dos o m@'as argumentos, un factor se considerar@'a constante
+      Cuando @mvar{a_i} tenga dos o m@'as argumentos, un factor se considerar@'a constante
       si el segundo argumento es un s@'{@dotless{i}}mbolo y el factor no contiene al
       segundo argumento.
 
 @item posfun
-      Hace que Maxima reconozca a @var{a_i} como una funci@'on positiva.
+      Hace que Maxima reconozca a @mvar{a_i} como una funci@'on positiva.
 
 @item rational, irrational
-      Hace que Maxima reconozca a @var{a_i} como una variable real racional o irracional.
+      Hace que Maxima reconozca a @mvar{a_i} como una variable real racional o irracional.
 
 @item real, imaginary, complex
-      Hace que Maxima reconozca a @var{a_i} como una variable real, imaginaria o compleja.
+      Hace que Maxima reconozca a @mvar{a_i} como una variable real, imaginaria o compleja.
 
 @item scalar
-      Hace que Maxima considere a @var{a_i} como una variable escalar.
+      Hace que Maxima considere a @mvar{a_i} como una variable escalar.
 
 @end table
 
@@ -372,9 +372,9 @@ documentaci@'on correspondiente a cada propiedad por separado.
 @defvr  {Propiedad} decreasing
 @defvrx {Propiedad} increasing
 
-Las instrucciones @code{declare(@var{f}, decreasing)} y
-@code{declare(@var{f}, increasing} le indican a Maxima que reconozca la funci@'on
-@var{f} como una funci@'on decreciente o creciente.
+Las instrucciones @code{declare(@mvar{f}, decreasing)} y
+@code{declare(@mvar{f}, increasing} le indican a Maxima que reconozca la funci@'on
+@mvar{f} como una funci@'on decreciente o creciente.
 
 V@'ease tambi@'en @code{declare} para m@'as propiedades.
 
@@ -396,8 +396,8 @@ Ejemplo:
 @defvr  {Propiedad} even
 @defvrx {Propiedad} odd
 
-@code{declare(@var{a}, even)} y @code{declare(@var{a}, odd)} le indican a Maxima
-que reconozca el s@'{@dotless{i}}mbolo @var{a} como entero par o impar.  Las
+@code{declare(@mvar{a}, even)} y @code{declare(@mvar{a}, odd)} le indican a Maxima
+que reconozca el s@'{@dotless{i}}mbolo @mvar{a} como entero par o impar.  Las
 propiedades @code{even} y @code{odd} no son reconocidas por las funciones 
 @code{evenp}, @code{oddp} y @code{integerp}.
 
@@ -430,14 +430,14 @@ informaci@'on sobre propiedades del sistema, as@'{@dotless{i}} como
 @end defvr
 
 
-@deffn {Funci@'on} featurep (@var{a}, @var{f})
+@deffn {Funci@'on} featurep (@mvar{a}, @mvar{f})
 
-Intenta determinar si el objeto @var{a} tiene la propiedad @var{f} en base a los
+Intenta determinar si el objeto @mvar{a} tiene la propiedad @mvar{f} en base a los
 hechos almacenados en la base de datos. En caso afirmativo, devuelve @code{true},
 o @code{false} en caso contrario.
 
 N@'otese que @code{featurep} devuelve @code{false} cuando no se puedan verificar ni
-@var{f} ni su negaci@'on.
+@mvar{f} ni su negaci@'on.
 
 @code{featurep} eval@'ua su argumento.
 
@@ -457,14 +457,14 @@ Ejemplos:
 @defvr {Declaraci@'on} features
 Maxima reconoce ciertas propiedades matem@'aticas sobre funciones y variables.
 
-La llamada @code{declare (@var{x}, @var{foo})} asocia la propiedad @var{foo} a la funci@'on o variable @var{x}.
+La llamada @code{declare (@mvar{x}, @mvar{foo})} asocia la propiedad @mvar{foo} a la funci@'on o variable @mvar{x}.
 
-La llamada @code{declare (@var{foo}, feature)} declara una nueva propiedad @var{foo}. 
+La llamada @code{declare (@mvar{foo}, feature)} declara una nueva propiedad @mvar{foo}. 
 Por ejemplo, @code{declare ([rojo, verde, azul], feature)} declara tres nuevas propiedades, 
 @code{rojo}, @code{verde} y @code{azul}.
 
-El predicado @code{featurep (@var{x}, @var{foo})}
-devuelve @code{true} si @var{x} goza de la propiedad @var{foo}, y @code{false} en caso contrario.
+El predicado @code{featurep (@mvar{x}, @mvar{foo})}
+devuelve @code{true} si @mvar{x} goza de la propiedad @mvar{foo}, y @code{false} en caso contrario.
 
 La lista @code{features} contiene las propiedades que reconoce Maxima; a saber,
 
@@ -502,10 +502,10 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} get (@var{a}, @var{i})
+@deffn {Funci@'on} get (@mvar{a}, @mvar{i})
 
-Recupera la propiedad de usuario indicada por @var{i} asociada al @'atomo @var{a} 
-o devuelve @code{false} si @var{a} no tiene la propiedad @var{i}.
+Recupera la propiedad de usuario indicada por @mvar{i} asociada al @'atomo @mvar{a} 
+o devuelve @code{false} si @mvar{a} no tiene la propiedad @mvar{i}.
 
 La funci@'on @code{get} eval@'ua sus argumentos.
 
@@ -551,8 +551,8 @@ x is not numeric.
 @defvr  {Propiedad} integer
 @defvrx {Propiedad} noninteger
 
-@code{declare(@var{a}, integer)} o @code{declare(@var{a}, noninteger)} indica a
-Maxima que reconozca @var{a} como una variable entera o no entera.
+@code{declare(@mvar{a}, integer)} o @code{declare(@mvar{a}, noninteger)} indica a
+Maxima que reconozca @mvar{a} como una variable entera o no entera.
 
 V@'ease tambi@'en @code{declare}.
 
@@ -572,7 +572,7 @@ Ejemplo:
 
 @defvr {Propiedad} integervalued
 
-@code{declare(@var{f}, integervalued)} indica a MAxima que reconozca @var{f} como
+@code{declare(@mvar{f}, integervalued)} indica a MAxima que reconozca @mvar{f} como
 una funci@'on que toma valores enteros.
 
 V@'ease tambi@'en @code{declare}.
@@ -596,8 +596,8 @@ Ejemplo:
 @deffn {Propiedad} nonarray
 
 La instrucci@'on @code{declare(a, nonarray)} le indica a Maxima que
-no considere @var{a} como un array. Esta declaraci@'on evita la 
-evaluaci@'on m@'ultiple de @var{a}, si @'esta es una variable subindicada.
+no considere @mvar{a} como un array. Esta declaraci@'on evita la 
+evaluaci@'on m@'ultiple de @mvar{a}, si @'esta es una variable subindicada.
 
 V@'ease tambi@'en @code{declare}.
 
@@ -632,8 +632,8 @@ V@'ease tambi@'en @code{declare}.
 @end defvr
 
 
-@deffn {Funci@'on} nonscalarp (@var{expr})
-Devuelve @code{true} si @var{expr} no es escalar, es decir, 
+@deffn {Funci@'on} nonscalarp (@mvar{expr})
+Devuelve @code{true} si @mvar{expr} no es escalar, es decir, 
 si contiene @'atomos declarados como no escalares, listas o matrices. 
 @end deffn
 
@@ -647,11 +647,11 @@ V@'ease tambi@'en @code{declare}.
 @end defvr
 
 
-@deffn {Funci@'on} printprops (@var{a}, @var{i})
-@deffnx {Funci@'on} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@deffnx {Funci@'on} printprops (all, @var{i})
-Muestra la propiedad con el indicador @var{i} asociado 
-con el @'atomo @var{a}. @var{a} puede ser tambi@'en una lista de
+@deffn {Funci@'on} printprops (@mvar{a}, @mvar{i})
+@deffnx {Funci@'on} printprops ([@mvar{a_1}, ..., @mvar{a_n}], @mvar{i})
+@deffnx {Funci@'on} printprops (all, @mvar{i})
+Muestra la propiedad con el indicador @mvar{i} asociado 
+con el @'atomo @mvar{a}. @mvar{a} puede ser tambi@'en una lista de
 @'atomos o el @'atomo @code{all} en cuyo caso todos los @'atomos a los cuales se les haya dado esa propiedad ser@'an usados. 
 Por ejemplo, @code{printprops ([f, g], atvalue)}. @code{printprops} es 
 para propiedades que no pueden ser mostradas de otra manera, i.e. para
@@ -660,9 +660,9 @@ para propiedades que no pueden ser mostradas de otra manera, i.e. para
 @end deffn
 
 
-@deffn {Funci@'on} properties (@var{a})
+@deffn {Funci@'on} properties (@mvar{a})
 Devuelve una lista con los nombres de todas las propiedades asociadas
-al @'tomo @var{a}.
+al @'tomo @mvar{a}.
 @end deffn
 
 
@@ -677,23 +677,23 @@ especificadas por @code{atvalue}, @code{matchdeclare} y la funci@'on
 
 
 
-@deffn {Funci@'on} propvars (@var{prop})
+@deffn {Funci@'on} propvars (@mvar{prop})
 
 Devuelve la lista con los @'atomos de la lista @code{props} que tienen
-la propiedad indicada por @var{prop}. As@'{@dotless{i}}, @code{propvars (atvalue)} 
+la propiedad indicada por @mvar{prop}. As@'{@dotless{i}}, @code{propvars (atvalue)} 
 devuelve la lista con los @'atomos a los que se les ha asociado valores con
 @code{atvalue}.
 @end deffn
 
 
-@deffn {Funci@'on} put (@var{@'atomo}, @var{valor}, @var{indicador})
+@deffn {Funci@'on} put (@mvar{@'atomo}, @mvar{valor}, @mvar{indicador})
 
-Asigna el @var{valor} a la propiedad  (especificada por @var{indicador}) de @var{@'atomo};
-@var{indicador} puede ser el nombre de cualquier propiedad y no solamente de aquellas definidas por el sistema.
+Asigna el @mvar{valor} a la propiedad  (especificada por @mvar{indicador}) de @mvar{@'atomo};
+@mvar{indicador} puede ser el nombre de cualquier propiedad y no solamente de aquellas definidas por el sistema.
 
 @code{rem} deshace la asignaci@'on realizada por @code{put}.
 
-La funci@'on @code{put} eval@'ua sus argumentos y devuelve @var{valor}.
+La funci@'on @code{put} eval@'ua sus argumentos y devuelve @mvar{valor}.
 
 Ejemplos:
 
@@ -716,9 +716,9 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} qput (@var{@'atomo}, @var{valor}, @var{indicador})
+@deffn {Funci@'on} qput (@mvar{@'atomo}, @mvar{valor}, @mvar{indicador})
 
-Asigna @var{valor} a la propiedad de @var{@'atomo} que especifique @var{indicador}.
+Asigna @mvar{valor} a la propiedad de @mvar{@'atomo} que especifique @mvar{indicador}.
 Act@'ua del mismo modeo que @code{put}, excepto que sus argumentos no son evaluados.
 
 V@'ease tambi@'en @code{get}.
@@ -750,8 +750,8 @@ Ejemplo:
 @defvr  {Propiedad} rational
 @defvrx {Propiedad} irrational
 
-@code{declare(@var{a}, rational)} o @code{declare(@var{a}, irrational)} indica a
-Maxima que reconozca @var{a} como una variable real racional o irracional.
+@code{declare(@mvar{a}, rational)} o @code{declare(@mvar{a}, irrational)} indica a
+Maxima que reconozca @mvar{a} como una variable real racional o irracional.
 
 V@'ease tambi@'en @code{declare}.
 @end defvr
@@ -762,8 +762,8 @@ V@'ease tambi@'en @code{declare}.
 @defvrx {Propiedad} imaginary
 @defvrx {Propiedad} complex
 
-@code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)} o
-@code{declare(@var{a}, complex)} indican a Maxima que reconozca @var{a} como variable real,
+@code{declare(@mvar{a}, real)}, @code{declare(@mvar{a}, imaginary)} o
+@code{declare(@mvar{a}, complex)} indican a Maxima que reconozca @mvar{a} como variable real,
 imaginaria puro o compleja, respectivamente.
 
 V@'ease tambi@'en @code{declare}.
@@ -771,40 +771,40 @@ V@'ease tambi@'en @code{declare}.
 
 
 
-@deffn {Funci@'on} rem (@var{@'atomo}, @var{indicador})
+@deffn {Funci@'on} rem (@mvar{@'atomo}, @mvar{indicador})
 
-Elimina del @var{@'atomo} la propiedad indicada por @var{indicador}.
+Elimina del @mvar{@'atomo} la propiedad indicada por @mvar{indicador}.
 @code{rem} deshace la asignaci@'on realizada por @code{put}.
 
-@code{rem} devuelve @code{done} si @var{@'atomo} ten@'{@dotless{i}}a la 
-propiedad @var{indicador} cuando @code{rem} fue invocado, devolviendo
+@code{rem} devuelve @code{done} si @mvar{@'atomo} ten@'{@dotless{i}}a la 
+propiedad @mvar{indicador} cuando @code{rem} fue invocado, devolviendo
 @code{false} si carec@'{@dotless{i}}a tal propiedad.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Funci@'on} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
-@deffnx {Funci@'on} remove ("@var{a}", operator)
-@deffnx {Funci@'on} remove (@var{a}, transfun)
-@deffnx {Funci@'on} remove (all, @var{p})
+@deffn {Funci@'on} remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})
+@deffnx {Funci@'on} remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)
+@deffnx {Funci@'on} remove ("@mvar{a}", operator)
+@deffnx {Funci@'on} remove (@mvar{a}, transfun)
+@deffnx {Funci@'on} remove (all, @mvar{p})
 
 Elimina propiedades asociadas con @'atomos.
 
-La llamada @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+La llamada @code{remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})}
 elimina la propiedad @code{p_k} del @'atomo @code{a_k}.
 
-La llamada @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-elimina las propiedades @code{@var{p_1}, ..., @var{p_n}} de los @'atomos @var{a_1}, ..., @var{a_m}. Puede tener m@'as de un par de listas.
+La llamada @code{remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)}
+elimina las propiedades @code{@mvar{p_1}, ..., @mvar{p_n}} de los @'atomos @mvar{a_1}, ..., @mvar{a_m}. Puede tener m@'as de un par de listas.
 
-La llamada @code{remove (all, @var{p})} elimina la propiedad @var{p} de todos los @'atomos que la tengan.
+La llamada @code{remove (all, @mvar{p})} elimina la propiedad @mvar{p} de todos los @'atomos que la tengan.
 
 Las propiedades eliminadas pueden ser de las que define el sistema, como 
 @code{function}, @code{macro} o @code{mode_declare}; @code{remove} no elimina
 las propiedades definidas por @code{put}.
 
-La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
+La llamada @code{remove ("@mvar{a}", operator)} o su equivalente @code{remove ("@mvar{a}", op)} elimina de  @mvar{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
 
 La funci@'on @code{remove} devuelve siempre @code{done} independientemente que haya alg@'un @'atomo con la propiedad especificada.
 
@@ -814,7 +814,7 @@ La funci@'on @code{remove} no eval@'ua sus argumentos.
 
 @defvr {Propiedad} scalar
 
-@code{declare(@var{a}, scalar)} indica a Maxima que considere a @var{a} como
+@code{declare(@mvar{a}, scalar)} indica a Maxima que considere a @mvar{a} como
 una variable escalar.
 
 V@'ease tambi@'en @code{declare}.
@@ -822,9 +822,9 @@ V@'ease tambi@'en @code{declare}.
 
 
 
-@deffn {Funci@'on} scalarp (@var{expr})
+@deffn {Funci@'on} scalarp (@mvar{expr})
 
-Devuelve @code{true} si @var{expr} es un n@'umero, constante  o variable 
+Devuelve @code{true} si @mvar{expr} es un n@'umero, constante  o variable 
 declarada como @code{scalar} con @code{declare}, o compuesta completamente de tales 
 n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
 @end deffn
@@ -839,8 +839,8 @@ n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
 @section Funciones y variables para los hechos
 
 
-@deffn {Funci@'on} activate (@var{context_1}, ..., @var{context_n})
-Activa los contextos @var{context_1}, ..., @var{context_n}.
+@deffn {Funci@'on} activate (@mvar{context_1}, ..., @mvar{context_n})
+Activa los contextos @mvar{context_1}, ..., @mvar{context_n}.
 Los hechos en estos contextos est@'an disponibles para hacer deducciones y extraer informaci@'on.
 Los hechos en estos contextos no se listan al invocar @code{facts ()}.
 
@@ -863,24 +863,24 @@ La variable @code{activecontexts} es la lista de contextos que se han activado p
 
 
 
-@deffn {Funci@'on} askinteger (@var{expr}, integer)
-@deffnx {Funci@'on} askinteger (@var{expr})
-@deffnx {Funci@'on} askinteger (@var{expr}, even)
-@deffnx {Funci@'on} askinteger (@var{expr}, odd)
+@deffn {Funci@'on} askinteger (@mvar{expr}, integer)
+@deffnx {Funci@'on} askinteger (@mvar{expr})
+@deffnx {Funci@'on} askinteger (@mvar{expr}, even)
+@deffnx {Funci@'on} askinteger (@mvar{expr}, odd)
 
-La llamada @code{askinteger (@var{expr}, integer)} intenta determinar a partir de la base de datos de @code{assume} si @var{expr} es un entero. La funci@'on @code{askinteger} pide m@'as informaci@'on al usuario si no encuentra la respuesta,
+La llamada @code{askinteger (@mvar{expr}, integer)} intenta determinar a partir de la base de datos de @code{assume} si @mvar{expr} es un entero. La funci@'on @code{askinteger} pide m@'as informaci@'on al usuario si no encuentra la respuesta,
 @c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume DATABASE !!!
 tratando de almacenar la nueva informaci@'on en la base de datos si es posible. La llamada 
-@code{askinteger (@var{expr})} equivale a @code{askinteger (@var{expr}, integer)}.
+@code{askinteger (@mvar{expr})} equivale a @code{askinteger (@mvar{expr}, integer)}.
 
-La llamadas @code{askinteger (@var{expr}, even)} ay @code{askinteger (@var{expr}, odd)} intentan determinar si @var{expr} es un entero par o impar, respectivamente.
+La llamadas @code{askinteger (@mvar{expr}, even)} ay @code{askinteger (@mvar{expr}, odd)} intentan determinar si @mvar{expr} es un entero par o impar, respectivamente.
 
 @end deffn
 
 
 
 
-@deffn {Funci@'on} asksign (@var{expr})
+@deffn {Funci@'on} asksign (@mvar{expr})
 Primero intenta determinar si la expresi@'on especificada es positiva, negativa o cero.  Si no lo consigue, plantear@'a al usuario preguntas que le ayuden a conpletar la deducci@'on. Las respuestas del usuario son almacenadas en la base de datos durante el tiempo que dure este c@'alculo. El valor que al final devuelva @code{asksign} ser@'a @code{pos}, @code{neg} o @code{zero}.
 
 @end deffn
@@ -888,8 +888,8 @@ Primero intenta determinar si la expresi@'on especificada es positiva, negativa 
 
 
 
-@deffn {Funci@'on} assume (@var{pred_1}, ..., @var{pred_n})
-A@~nade los predicados @var{pred_1}, ..., @var{pred_n} al contexto actual.
+@deffn {Funci@'on} assume (@mvar{pred_1}, ..., @mvar{pred_n})
+A@~nade los predicados @mvar{pred_1}, ..., @mvar{pred_n} al contexto actual.
 Si un predicado es inconsistente o redundante con los otros predicados
 del contexto actual, entonces no es a@~nadido al contexto. 
 El contexto va acumulando predicados con cada llamada a @code{assume}.
@@ -898,18 +898,18 @@ La funci@'on @code{assume} devuelve una lista cuyos miembros son los
 predicados que han sido a@~nadidos al contexto, o los @'atomos 
 @code{redundant} o @code{inconsistent} si fuere necesario.
 
-Los predicados @var{pred_1}, ..., @var{pred_n} tan solo pueden ser
+Los predicados @mvar{pred_1}, ..., @mvar{pred_n} tan solo pueden ser
 expresiones formadas con los operadores relacionales @code{< <= equal notequal >=}
 y @code{>}. Los predicados no pueden estar formados por expresiones que sean del
 tipo igualdad @code{=} ni del tipo desigualdad @code{#}, ni tampoco pueden ser
 funciones de predicado como @code{integerp}.
 
 En cambio, s@'{@dotless{i}} se reconocen predicados compuestos de la forma 
-@code{@var{pred_1} and ... and @var{pred_n}}, pero no 
-@code{@var{pred_1} or ... or @var{pred_n}}.
-Tambi@'en se reconoce @code{not @var{pred_k}} si @var{pred_k} es un
-predicado relacional. Expresiones de la forma @code{not (@var{pred_1} and @var{pred_2})}
-y @code{not (@var{pred_1} or @var{pred_2})} no son reconocidas.
+@code{@mvar{pred_1} and ... and @mvar{pred_n}}, pero no 
+@code{@mvar{pred_1} or ... or @mvar{pred_n}}.
+Tambi@'en se reconoce @code{not @mvar{pred_k}} si @mvar{pred_k} es un
+predicado relacional. Expresiones de la forma @code{not (@mvar{pred_1} and @mvar{pred_2})}
+y @code{not (@mvar{pred_1} or @mvar{pred_2})} no son reconocidas.
 
 El mecanismo deductivo de Maxima no es muy potente; existen muchas 
 consecuencias que, siendo obvias, no pueden ser obtenidas por @code{is}.
@@ -984,17 +984,17 @@ Si @code{assumescalar} vale @code{all}, la expresi@'on se comportar@'a como un e
 @defvr {Variable opcional} assume_pos
 Valor por defecto: @code{false}
 
-Si @code{assume_pos} vale @code{true} y el signo de un par@'ametro @var{x} no puede ser determinado a partir del contexto actual o de otras consideraciones, @code{sign} y @code{asksign (@var{x})} devolver@'an @code{true}. Con esto se pueden evitar algunas preguntas al usuario que se generan autom@'aticamente, como las que hacen @code{integrate} y otras funciones.
+Si @code{assume_pos} vale @code{true} y el signo de un par@'ametro @mvar{x} no puede ser determinado a partir del contexto actual o de otras consideraciones, @code{sign} y @code{asksign (@mvar{x})} devolver@'an @code{true}. Con esto se pueden evitar algunas preguntas al usuario que se generan autom@'aticamente, como las que hacen @code{integrate} y otras funciones.
 
-By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
-or @code{subvarp (@var{x})}.
+By default, a parameter is @mvar{x} such that @code{symbolp (@mvar{x})}
+or @code{subvarp (@mvar{x})}.
 
-Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (@var{x})} o @code{subvarp (@var{x})} devuelven @code{true}.
+Por defecto, un par@'ametro @mvar{x} es aquel para el que @code{symbolp (@mvar{x})} o @code{subvarp (@mvar{x})} devuelven @code{true}.
 La clase de expresiones que se consideran par@'ametros se puede extender mediante la utilizaci@'on de la variable @code{assume_pos_pred}.
 
 Las funciones @code{sign} y @code{asksign} intentan deducir el signo de una expresi@'on a partir de los signos de los operandos que contiene. Por ejemplo, si @code{a} y @code{b} son ambos positivos, entonces @code{a + b} tambi@'en es positivo.
 
-Sin embargo, no es posible obviar todas las preguntas que hace @code{asksign}. En particular, cuando el argumento de @code{asksign} es una diferencia @code{@var{x} - @var{y}} o un logaritmo @code{log(@var{x})}, @code{asksign} siempre solicita una respuesta por parte del usuario, incluso cuando @code{assume_pos} vale @code{true} y @code{assume_pos_pred} es una funci@'on que devuelve @code{true} para todos los argumentos.
+Sin embargo, no es posible obviar todas las preguntas que hace @code{asksign}. En particular, cuando el argumento de @code{asksign} es una diferencia @code{@mvar{x} - @mvar{y}} o un logaritmo @code{log(@mvar{x})}, @code{asksign} siempre solicita una respuesta por parte del usuario, incluso cuando @code{assume_pos} vale @code{true} y @code{assume_pos_pred} es una funci@'on que devuelve @code{true} para todos los argumentos.
 
 @c NEED EXAMPLES HERE
 @end defvr
@@ -1004,12 +1004,12 @@ Sin embargo, no es posible obviar todas las preguntas que hace @code{asksign}. E
 @defvr {Variable opcional} assume_pos_pred
 Valor por defecto: @code{false}
 
-Cuando a @code{assume_pos_pred} se le asigna el nombre de una funci@'on o una expresi@'on lambda de un @'unico argumento @var{x}, @'esta ser@'a invocada para determinar si @var{x} se considera un par@'ametro por @code{assume_pos}. La variable 
+Cuando a @code{assume_pos_pred} se le asigna el nombre de una funci@'on o una expresi@'on lambda de un @'unico argumento @mvar{x}, @'esta ser@'a invocada para determinar si @mvar{x} se considera un par@'ametro por @code{assume_pos}. La variable 
 @code{assume_pos_pred} se ignora cuando @code{assume_pos} vale @code{false}.
 
-La funci@'on @code{assume_pos_pred} es invocada por  @code{sign} y por @code{asksign} con un argumento @var{x}, el cual puede ser un @'atomo, una variable subindicada o una expresi@'on de llamada a una funci@'on. Si la funci@'on @code{assume_pos_pred} devuelve @code{true}, @var{x} ser@'a considerada como un par@'ametro por @code{assume_pos}.
+La funci@'on @code{assume_pos_pred} es invocada por  @code{sign} y por @code{asksign} con un argumento @mvar{x}, el cual puede ser un @'atomo, una variable subindicada o una expresi@'on de llamada a una funci@'on. Si la funci@'on @code{assume_pos_pred} devuelve @code{true}, @mvar{x} ser@'a considerada como un par@'ametro por @code{assume_pos}.
 
-Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (@var{x})} o @code{subvarp (@var{x})} devuelven @code{true}.
+Por defecto, un par@'ametro @mvar{x} es aquel para el que @code{symbolp (@mvar{x})} o @code{subvarp (@mvar{x})} devuelven @code{true}.
 
 V@'eanse tambi@'en @code{assume} y @code{assume_pos}.
 
@@ -1084,7 +1084,7 @@ p;
 Valor por defecto: @code{initial}
 
 La variable @code{context} da nombre al conjunto de hechos establecidos desde @code{assume} y @code{forget}. La funci@'on @code{assume} a@~nade nuevos hechos al conjunto nombrado por @code{context}, mientras que @code{forget} los va eliminando.
-Asignando a @code{context} un nuevo nombre @var{foo} cambia el contexto actual a @var{foo}. Si el contexto @var{foo} no existe todav@'{@dotless{i}}a, se crea autom@'aticamente mediante una llamada a @code{newcontext}.
+Asignando a @code{context} un nuevo nombre @mvar{foo} cambia el contexto actual a @mvar{foo}. Si el contexto @mvar{foo} no existe todav@'{@dotless{i}}a, se crea autom@'aticamente mediante una llamada a @code{newcontext}.
 
 V@'ease @code{contexts} para una descripci@'on general del mecanismo que siguen los contextos.
 
@@ -1109,19 +1109,19 @@ V@'eanse tambi@'en @code{facts}, @code{newcontext}, @code{supcontext}, @code{kil
 
 
 
-@deffn {Funci@'on} deactivate (@var{contexto_1}, ..., @var{contexto_n})
-Desactiva los contextos especificados @var{contexto_1}, ..., @var{contexto_n}.
+@deffn {Funci@'on} deactivate (@mvar{contexto_1}, ..., @mvar{contexto_n})
+Desactiva los contextos especificados @mvar{contexto_1}, ..., @mvar{contexto_n}.
 
 @end deffn
 
-@deffn {Funci@'on} facts (@var{item})
+@deffn {Funci@'on} facts (@mvar{item})
 @deffnx {Funci@'on} facts ()
-Si @var{item} es el nombre de un contexto,
-@code{facts (@var{item})} devuelve una lista
+Si @mvar{item} es el nombre de un contexto,
+@code{facts (@mvar{item})} devuelve una lista
 con los hechos asociados al contexto especificado.
 
-Si @var{item} no es el nombre de un contexto,
-@code{facts (@var{item})} devuelve una lista con los hechos conocidos acerca de @var{item} en el contexto actual. Los hechos que est@'en activos en contextos diferentes no aparecen en la lista.
+Si @mvar{item} no es el nombre de un contexto,
+@code{facts (@mvar{item})} devuelve una lista con los hechos conocidos acerca de @mvar{item} en el contexto actual. Los hechos que est@'en activos en contextos diferentes no aparecen en la lista.
 
 La llamada @code{facts ()}, sin argumentos, muestra el contexto actual.
 
@@ -1130,18 +1130,18 @@ La llamada @code{facts ()}, sin argumentos, muestra el contexto actual.
 
 
 
-@deffn {Funci@'on} forget (@var{pred_1}, ..., @var{pred_n})
-@deffnx {Funci@'on} forget (@var{L})
+@deffn {Funci@'on} forget (@mvar{pred_1}, ..., @mvar{pred_n})
+@deffnx {Funci@'on} forget (@mvar{L})
 Borra los predicados establecidos por @code{assume}. Los predicados pueden ser expresiones equivalentes, pero no necesariamente id@'enticas, a las establecidas por @code{assume}.
 
-La llamada @code{forget (@var{L})}, siendo @var{L} una lista de predicados, borra todos los predicados contenidos en ella.
+La llamada @code{forget (@mvar{L})}, siendo @mvar{L} una lista de predicados, borra todos los predicados contenidos en ella.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} is (@var{expr})
-Intenta determinar si el predicado @var{expr}  se puede deducir de los hechos almacenados en la base de datos gestionada por @code{assume}.
+@deffn {Funci@'on} is (@mvar{expr})
+Intenta determinar si el predicado @mvar{expr}  se puede deducir de los hechos almacenados en la base de datos gestionada por @code{assume}.
 
 Si el predicado se reduce a @code{true} o @code{false},
 @code{is} devuelve @code{true} o @code{false}, respectivamente.
@@ -1149,9 +1149,9 @@ En otro caso, el valor devuelto est@'a controlado por la variable global @code{p
 Si @code{prederror} vale @code{true}, @code{is} emite un mensaje de error;
 en caso contrario, @code{is} devuelve @code{unknown}.
 
-La instrucci@'on @code{ev(@var{expr}, pred)}
-(que puede escribirse como @code{@var{expr}, pred} en el
-modo interactivo) equivale a @code{is(@var{expr})}.
+La instrucci@'on @code{ev(@mvar{expr}, pred)}
+(que puede escribirse como @code{@mvar{expr}, pred} en el
+modo interactivo) equivale a @code{is(@mvar{expr})}.
 
 V@'eanse tambi@'en @code{assume}, @code{facts} y @code{maybe}.
 
@@ -1220,8 +1220,8 @@ a > 0
 @end deffn
 
 
-@deffn {Funci@'on} killcontext (@var{contexto_1}, ..., @var{contexto_n})
-Elimina los contextos @var{contexto_1}, ..., @var{contexto_n}.
+@deffn {Funci@'on} killcontext (@mvar{contexto_1}, ..., @mvar{contexto_n})
+Elimina los contextos @mvar{contexto_1}, ..., @mvar{contexto_n}.
 
 Si alguno de estos contextos es el actual, el nuevo contexto activo ser@'a el primer subcontexto disponible del actual que no haya sido eliminado. Si el primer contexto no eliminado disponible es @code{global} entonces @code{initial} ser@'a usado en su lugar.  Si el contexto @code{initial} es eliminado, se crear@'a un nuevo contexto @code{initial} completamente vac@'{@dotless{i}}o.
 
@@ -1234,8 +1234,8 @@ La funci@'on @code{killcontext} eval@'ua sus argumentos y devuelve @code{done}.
 
 
 
-@deffn {Funci@'on} maybe (@var{expr})
-Intenta determinar si el predicado @var{expr}  se puede deducir de los hechos almacenados en la base de datos gestionada por @code{assume}.
+@deffn {Funci@'on} maybe (@mvar{expr})
+Intenta determinar si el predicado @mvar{expr}  se puede deducir de los hechos almacenados en la base de datos gestionada por @code{assume}.
 
 Si el predicado se reduce a @code{true} o @code{false},
 @code{maybe} devuelve @code{true} o @code{false}, respectivamente.
@@ -1266,17 +1266,17 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} newcontext (@var{nombre})
-Crea un nuevo contexto vac@'{@dotless{i}}o @var{nombre}, el cual tiene a @code{global} como su @'unico subcontexto. El reci@'en creado contexto pasa a ser el contexto actualmente activo.
+@deffn {Funci@'on} newcontext (@mvar{nombre})
+Crea un nuevo contexto vac@'{@dotless{i}}o @mvar{nombre}, el cual tiene a @code{global} como su @'unico subcontexto. El reci@'en creado contexto pasa a ser el contexto actualmente activo.
 
-La funci@'on @code{newcontext} eval@'ua sus argumentos y devuelve @var{nombre}.
+La funci@'on @code{newcontext} eval@'ua sus argumentos y devuelve @mvar{nombre}.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} sign (@var{expr})
-Intenta determinar el signo de @var{expr} en base a los hechos almacenados en la base de datos. Devuelve una de las siguientes respuestas: @code{pos} (positivo), @code{neg} (negativo), @code{zero} (cero), @code{pz}
+@deffn {Funci@'on} sign (@mvar{expr})
+Intenta determinar el signo de @mvar{expr} en base a los hechos almacenados en la base de datos. Devuelve una de las siguientes respuestas: @code{pos} (positivo), @code{neg} (negativo), @code{zero} (cero), @code{pz}
 (positivo o cero), @code{nz} (negativo o cero), @code{pn} (positivo o negativo),
 o @code{pnz} (positivo, negativo o cero, lo que significa que el signo es desconocido).
 
@@ -1284,12 +1284,12 @@ o @code{pnz} (positivo, negativo o cero, lo que significa que el signo es descon
 
 
 
-@deffn {Funci@'on} supcontext (@var{nombre}, @var{contexto})
-@deffnx {Funci@'on} supcontext (@var{nombre})
-Crea un nuevo contexto @var{nombre}, que tiene a @var{contexto} como subcontexto. El argumento
-@var{contexto} debe existir ya.
+@deffn {Funci@'on} supcontext (@mvar{nombre}, @mvar{contexto})
+@deffnx {Funci@'on} supcontext (@mvar{nombre})
+Crea un nuevo contexto @mvar{nombre}, que tiene a @mvar{contexto} como subcontexto. El argumento
+@mvar{contexto} debe existir ya.
 
-Si no se especifica @var{context}, se tomar@'a como tal el actual.
+Si no se especifica @mvar{context}, se tomar@'a como tal el actual.
 
 @end deffn
 
@@ -1305,9 +1305,9 @@ Si no se especifica @var{context}, se tomar@'a como tal el actual.
 @section Funciones y variables para los predicados
 
 
-@deffn {Funci@'on} charfun (@var{p})
+@deffn {Funci@'on} charfun (@mvar{p})
 
-Devuelve 0 cuando el predicado @var{p} toma el valor @code{false}, y devuelve
+Devuelve 0 cuando el predicado @mvar{p} toma el valor @code{false}, y devuelve
 1 cuando vale @code{true}.  Si el predicado toma un valor diferente de @code{true} y @code{false} (desconocido), 
 entonces devuelve una forma nominal.
 
@@ -1334,13 +1334,13 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} compare (@var{x}, @var{y})
+@deffn {Funci@'on} compare (@mvar{x}, @mvar{y})
 
-Devuelve un operador de comparaci@'on @var{op}
+Devuelve un operador de comparaci@'on @mvar{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=} o @code{#}) de manera que
-@code{is (@var{x} @var{op} @var{y})} tome el valor @code{true};
-cuando tanto @var{x} como @var{y} dependan de @code{%i} y
-@code{@var{x} # @var{y}}, devuelve @code{notcomparable};
+@code{is (@mvar{x} @mvar{op} @mvar{y})} tome el valor @code{true};
+cuando tanto @mvar{x} como @mvar{y} dependan de @code{%i} y
+@code{@mvar{x} # @mvar{y}}, devuelve @code{notcomparable};
 cuando no exista tal operador o Maxima sea incapaz de determinarlo, devolver@'a @code{unknown}.
 
 Ejemplos:
@@ -1384,15 +1384,15 @@ Aqu@'{@dotless{i}}, el dominio real de @code{acos (x^2 + 1)} es el conjunto vac@
 
 
 
-@deffn {Funci@'on} equal (@var{a}, @var{b})
+@deffn {Funci@'on} equal (@mvar{a}, @mvar{b})
 Representa la equivalencia, esto es, la igualdad de los valores.
 
 Por s@'{@dotless{i}} misma, @code{equal} no eval@'ua ni simplifica.
 La funci@'on @code{is} intenta evaluar @code{equal} a un resultado
-booleano. La instrucci@'on @code{is(equal(@var{a}, @var{b}))}
+booleano. La instrucci@'on @code{is(equal(@mvar{a}, @mvar{b}))}
 devuelve @code{true} (o @code{false}) si y s@'olo si
-@var{a} y @var{b} son iguales (o no iguales) para todos los posibles
-valores de sus variables, tal como lo determina @code{ratsimp(@var{a} - @var{b})};
+@mvar{a} y @mvar{b} son iguales (o no iguales) para todos los posibles
+valores de sus variables, tal como lo determina @code{ratsimp(@mvar{a} - @mvar{b})};
 si @code{ratsimp} devuelve 0, las dos expresiones se consideran
 equivalentes. Dos expresiones pueden ser equivalentes  sin
 ser sint@'acticamente iguales (es decir, id@'enticas).
@@ -1427,8 +1427,8 @@ Por s@'{@dotless{i}} misma, @code{equal} no eval@'ua ni simplifica.
 @end example
 
 La funci@'on @code{is} intenta evaluar @code{equal} a un resultado
-booleano. La instrucci@'on @code{is(equal(@var{a}, @var{b}))}
-devuelve @code{true} si @code{ratsimp(@var{a} - @var{b})}
+booleano. La instrucci@'on @code{is(equal(@mvar{a}, @mvar{b}))}
+devuelve @code{true} si @code{ratsimp(@mvar{a} - @mvar{b})}
 devuelve 0. Dos expresiones pueden ser equivalentes  sin
 ser sint@'acticamente iguales (es decir, id@'enticas).
 
@@ -1515,9 +1515,9 @@ a  @code{true} o @code{false}.
 (%o4)                  [false, true, true]
 @end example
 
-Debido a que @code{not @var{expr}}
-obliga a la evaluaci@'on previa de @var{expr}, 
-@code{not equal(@var{a}, @var{b})} equivale a @code{is(notequal(@var{a}, @var{b}))}.
+Debido a que @code{not @mvar{expr}}
+obliga a la evaluaci@'on previa de @mvar{expr}, 
+@code{not equal(@mvar{a}, @mvar{b})} equivale a @code{is(notequal(@mvar{a}, @mvar{b}))}.
 
 @c ===beg===
 @c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
@@ -1534,8 +1534,8 @@ obliga a la evaluaci@'on previa de @var{expr},
 
 
 
-@deffn {Funci@'on} notequal (@var{a}, @var{b})
-Representa la negaci@'on de @code{equal (@var{a}, @var{b})}.
+@deffn {Funci@'on} notequal (@mvar{a}, @mvar{b})
+Representa la negaci@'on de @code{equal (@mvar{a}, @mvar{b})}.
 
 Ejemplos:
 
@@ -1578,15 +1578,15 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} unknown (@var{expr})
-Devuelve @code{true} si y s@'olo si @var{expr} contiene un operador o funci@'on no reconocido por el simplificador de Maxima.
+@deffn {Funci@'on} unknown (@mvar{expr})
+Devuelve @code{true} si y s@'olo si @mvar{expr} contiene un operador o funci@'on no reconocido por el simplificador de Maxima.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} zeroequiv (@var{expr}, @var{v})
-Analiza si la expresi@'on @var{expr} de variable @var{v} equivale a cero, devolviendo @code{true}, @code{false} o
+@deffn {Funci@'on} zeroequiv (@mvar{expr}, @mvar{v})
+Analiza si la expresi@'on @mvar{expr} de variable @mvar{v} equivale a cero, devolviendo @code{true}, @code{false} o
 @code{dontknow}.
 
 La funci@'on @code{zeroequiv} tiene estas restricciones:

@@ -41,8 +41,8 @@ das fun@value{cedilha}@~{o}es @code{alias}, @code{ordergreat}, @code{orderless} 
 
 @defvr {Declara@value{cedilha}@~{a}o} alphabetic
 @code{alphabetic} @'{e} uma declara@value{cedilha}@~{a}o reconhecida por @code{declare}.
-A express@~{a}o @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
-como alfab@'{e}tico todos os caracteres em @var{s}, que deve ser uma seq@"{u}@^{e}ncia de caracteres.
+A express@~{a}o @code{declare(@mvar{s}, alphabetic)} diz ao Maxima para reconhecer
+como alfab@'{e}tico todos os caracteres em @mvar{s}, que deve ser uma seq@"{u}@^{e}ncia de caracteres.
  
 Veja tamb@'{e}m @ref{Identificadores}.
 
@@ -70,8 +70,8 @@ Exemplo:
 
 @c REPHRASE
 @c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
-@deffn {Fun@value{cedilha}@~{a}o} apropos (@var{string})
-Procura por nomes Maxima que possuem @var{string} aparecendo em qualquer lugar dentro
+@deffn {Fun@value{cedilha}@~{a}o} apropos (@mvar{string})
+Procura por nomes Maxima que possuem @mvar{string} aparecendo em qualquer lugar dentro
 de seu nome.  Dessa forma, @code{apropos (exp)} retorna uma lista de todos os sinalizadores
 e fun@value{cedilha}@~{o}es que possuem @code{exp} como parte de seus nomes, tais como @code{expand},
 @code{exp}, e @code{exponentialize}.  Dessa forma voc@^{e} pode somente lembra parte do nome
@@ -81,7 +81,7 @@ comutadores relatando para o tradutor, muitos dos quais come@value{cedilha}am co
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} args (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} args (@mvar{expr})
 Retorna a lista de argumentos de @code{expr},
 que pode ser de qualquer tipo de express@~{a}o outra como um @'{a}tomo.
 Somente os argumentos do operador de n@'{i}vel mais alto s@~{a}o extra@'{i}dos;
@@ -90,7 +90,7 @@ da lista de argumentos.
 
 A ordem dos @'{i}tens na lista pode depender do sinalizador global @code{inflag}.
 
-@code{args (@var{expr})} @'{e} equivalente a @code{substpart ("[", @var{expr}, 0)}.
+@code{args (@mvar{expr})} @'{e} equivalente a @code{substpart ("[", @mvar{expr}, 0)}.
 Veja tamb@'{e}m @code{substpart} e @code{op}.
 
 @c NEEDS EXAMPLES
@@ -186,8 +186,8 @@ um n@~{a}o est@'{a} explicitamente escolhido pelo usu@'{a}rio.)
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} integerp (@var{expr})
-Retorna @code{true} se @var{expr} @'{e} um inteiro num@'{e}rico literal, de outra forma retorna @code{false}.
+@deffn {Fun@value{cedilha}@~{a}o} integerp (@mvar{expr})
+Retorna @code{true} se @mvar{expr} @'{e} um inteiro num@'{e}rico literal, de outra forma retorna @code{false}.
 
 @code{integerp} retorna @code{false} se seu argumento for um s@'{i}mbolo,
 mesmo se o argumento for declarado inteiro.
@@ -239,8 +239,8 @@ m1pbranch:false          m1pbranch:true
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} numberp (@var{expr})
-Retorna @code{true} se @var{expr} for um inteiro literal, n@'{u}mero racional, 
+@deffn {Fun@value{cedilha}@~{a}o} numberp (@mvar{expr})
+Retorna @code{true} se @mvar{expr} for um inteiro literal, n@'{u}mero racional, 
 n@'{u}mero em ponto flutuante, ou um grande n@'{u}mero em ponto flutuante, de outra forma retorna @code{false}.
 
 @code{numberp} retorna @code{false} se seu argumento for um s@'{i}mbolo,
@@ -273,9 +273,9 @@ Exemplos:
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} properties (@var{a})
+@deffn {Fun@value{cedilha}@~{a}o} properties (@mvar{a})
 Retorna uma lista de nomes de todas as
-propriedades associadas com o @'{a}tomo @var{a}.
+propriedades associadas com o @'{a}tomo @mvar{a}.
 
 @end deffn
 
@@ -291,9 +291,9 @@ e tamb@'{e}m propriedades especificadas na fun@value{cedilha}@~{a}o @code{declar
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} propvars (@var{prop})
+@deffn {Fun@value{cedilha}@~{a}o} propvars (@mvar{prop})
 Retorna uma lista desses @'{a}tomos sobre a lista @code{props} que
-possui a propriedade indicada atrav@'{e}s de @var{prop}.  Dessa forma @code{propvars (atvalue)}
+possui a propriedade indicada atrav@'{e}s de @mvar{prop}.  Dessa forma @code{propvars (atvalue)}
 retorna uma lista de @'{a}tomos que possuem atvalues.
 
 @end deffn
@@ -302,12 +302,12 @@ retorna uma lista de @'{a}tomos que possuem atvalues.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
 @c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
-@deffn {Fun@value{cedilha}@~{a}o} put (@var{@'{a}tomo}, @var{valor}, @var{indicador})
-Atribui @var{valor} para a propriedade (especificada atrav@'{e}s de @var{indicador}) do @var{@'{a}tomo}.
-@var{indicador} pode ser o nome de qualquer propriedade, n@~{a}o apenas uma propriedade definida pelo sistema.
+@deffn {Fun@value{cedilha}@~{a}o} put (@mvar{@'{a}tomo}, @mvar{valor}, @mvar{indicador})
+Atribui @mvar{valor} para a propriedade (especificada atrav@'{e}s de @mvar{indicador}) do @mvar{@'{a}tomo}.
+@mvar{indicador} pode ser o nome de qualquer propriedade, n@~{a}o apenas uma propriedade definida pelo sistema.
 
 @code{put} avalia seus argumentos. 
-@code{put} retorna @var{valor}.
+@code{put} retorna @mvar{valor}.
 
 Exemplos:
 
@@ -328,8 +328,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} qput (@var{@'{a}tomo}, @var{valor}, @var{indicador})
-Atribui @var{valor} para a propriedade (especificada atrav@'{e}s de @var{indicador}) do @var{@'{a}tomo}.
+@deffn {Fun@value{cedilha}@~{a}o} qput (@mvar{@'{a}tomo}, @mvar{valor}, @mvar{indicador})
+Atribui @mvar{valor} para a propriedade (especificada atrav@'{e}s de @mvar{indicador}) do @mvar{@'{a}tomo}.
 Isso @'{e} o mesmo que @code{put},
 exceto que os argumentos n@~{a} s@~{a}o avaliados.
 
@@ -359,8 +359,8 @@ Exemplo:
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM remove ??
-@deffn {Fun@value{cedilha}@~{a}o} rem (@var{@'{a}tomo}, @var{indicador})
-Remove a propriedade indicada atrav@'{e}s de @var{indicador} do @var{@'{a}tomo}.
+@deffn {Fun@value{cedilha}@~{a}o} rem (@mvar{@'{a}tomo}, @mvar{indicador})
+Remove a propriedade indicada atrav@'{e}s de @mvar{indicador} do @mvar{@'{a}tomo}.
 
 @end deffn
 
@@ -368,23 +368,23 @@ Remove a propriedade indicada atrav@'{e}s de @var{indicador} do @var{@'{a}tomo}.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM rem ??
-@deffn {Fun@value{cedilha}@~{a}o} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Fun@value{cedilha}@~{a}o} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
-@deffnx {Fun@value{cedilha}@~{a}o} remove ("@var{a}", operator)
-@deffnx {Fun@value{cedilha}@~{a}o} remove (@var{a}, transfun)
-@deffnx {Fun@value{cedilha}@~{a}o} remove (all, @var{p})
+@deffn {Fun@value{cedilha}@~{a}o} remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})
+@deffnx {Fun@value{cedilha}@~{a}o} remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)
+@deffnx {Fun@value{cedilha}@~{a}o} remove ("@mvar{a}", operator)
+@deffnx {Fun@value{cedilha}@~{a}o} remove (@mvar{a}, transfun)
+@deffnx {Fun@value{cedilha}@~{a}o} remove (all, @mvar{p})
 Remove propriedades associadas a @'{a}tomos.
 
-@code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+@code{remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})}
 remove a propriedade @code{p_k} do @'{a}tomo @code{a_k}.
 
-@code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-remove as propriedades @code{@var{p_1}, ..., @var{p_n}}
-dos @'{a}tomos @var{a_1}, ..., @var{a_m}.
+@code{remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)}
+remove as propriedades @code{@mvar{p_1}, ..., @mvar{p_n}}
+dos @'{a}tomos @mvar{a_1}, ..., @mvar{a_m}.
 Pode existir mais que um par de listas.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-@code{remove (all, @var{p})} remove a propriedade @var{p} de todos os @'{a}tomos que a possuem.
+@code{remove (all, @mvar{p})} remove a propriedade @mvar{p} de todos os @'{a}tomos que a possuem.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 A propriedade removida pode ser definida pelo sistema tal como
@@ -397,8 +397,8 @@ a vers@~{a}o traduzida Lisp de uma fun@value{cedilha}@~{a}o.
 Ap@'{o}s executar isso, a vers@~{a}o Maxima da fun@value{cedilha}@~{a}o @'{e} executada
 em lugar da vers@~{a}o traduzida.
 
-@code{remove ("@var{a}", operator)} ou, equivalentemente, @code{remove ("@var{a}", op)}
-remove de @var{a} as propriedades @code{operator} declaradas atrav@'{e}s de
+@code{remove ("@mvar{a}", operator)} ou, equivalentemente, @code{remove ("@mvar{a}", op)}
+remove de @mvar{a} as propriedades @code{operator} declaradas atrav@'{e}s de
 @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, ou @code{nofix}.
 Note que o nome do operador deve ser escrito como uma seq@"{u}@^{e}ncia de caracteres com ap@'{o}stofo.
 
@@ -410,9 +410,9 @@ Esse comportamento @'{e} diferente das fun@value{cedilha}@~{o}es remove mais esp
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} remvalue (@var{nome_1}, ..., @var{nome_n})
+@deffn {Fun@value{cedilha}@~{a}o} remvalue (@mvar{nome_1}, ..., @mvar{nome_n})
 @deffnx {Fun@value{cedilha}@~{a}o} remvalue (all)
-Remove os valores de Vari@'{a}veis de usu@'{a}rio @var{nome_1}, ..., @var{nome_n}
+Remove os valores de Vari@'{a}veis de usu@'{a}rio @mvar{nome_1}, ..., @mvar{nome_n}
 (que podem ser subscritas) do sistema.
 
 @code{remvalue (all)} remove os valores de todas as vari@'{a}veis em @code{values},
@@ -424,8 +424,8 @@ Veja tamb@'{e}m @code{values}.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} rncombine (@var{expr})
-Transforma @var{expr} combinando todos os termos de @var{expr} que possuem
+@deffn {Fun@value{cedilha}@~{a}o} rncombine (@mvar{expr})
+Transforma @mvar{expr} combinando todos os termos de @mvar{expr} que possuem
 denominadores id@^{e}nticos ou denominadores que diferem de cada um dos outros apenas por
 fatores num@'{e}ricos somente.  Isso @'{e} ligeiramente diferente do comportamento de
 de @code{combine}, que coleta termos que possuem denominadores id@^{e}nticos.
@@ -440,18 +440,18 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load(rncomb)}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} scalarp (@var{expr})
-Retorna @code{true} se @var{expr} for um n@'{u}mero, constante, ou vari@'{a}vel
+@deffn {Fun@value{cedilha}@~{a}o} scalarp (@mvar{expr})
+Retorna @code{true} se @mvar{expr} for um n@'{u}mero, constante, ou vari@'{a}vel
 declarada @code{scalar} com @code{declare}, ou composta inteiramente de n@'{u}meros, constantes, e tais
 Vari@'{a}veis, bmas n@~{a}o contendo matrizes ou listas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} setup_autoload (@var{nomearquivo}, @var{fun@value{cedilha}@~{a}o_1}, ..., @var{fun@value{cedilha}@~{a}o_n})
+@deffn {Fun@value{cedilha}@~{a}o} setup_autoload (@mvar{nomearquivo}, @mvar{fun@value{cedilha}@~{a}o_1}, ..., @mvar{fun@value{cedilha}@~{a}o_n})
 Especifica que
-se qualquer entre @var{fun@value{cedilha}@~{a}o_1}, ..., @var{fun@value{cedilha}@~{a}o_n} for referenciado e n@~{a}o ainda definido,
-@var{nomedeqrquivo} @'{e} chamado via @code{load}.
-@var{nomearquivo} usualmente cont@'{e}m defini@value{cedilha}@~{o}es para as fun@value{cedilha}@~{o}es especificadas,
+se qualquer entre @mvar{fun@value{cedilha}@~{a}o_1}, ..., @mvar{fun@value{cedilha}@~{a}o_n} for referenciado e n@~{a}o ainda definido,
+@mvar{nomedeqrquivo} @'{e} chamado via @code{load}.
+@mvar{nomearquivo} usualmente cont@'{e}m defini@value{cedilha}@~{o}es para as fun@value{cedilha}@~{o}es especificadas,
 embora isso n@~{a}o seja obrigat@'{o}rio.
 
 @code{setup_autoload} n@~{a}o trabalha para fun@value{cedilha}@~{o}es array.

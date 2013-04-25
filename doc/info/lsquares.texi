@@ -20,11 +20,11 @@ to estimate parameters for a model from numerical data.
 @section Functions and Variables for lsquares
 @c -----------------------------------------------------------------------------
 
-@deffn {Function} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a})
-@deffnx {Function} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {Function} lsquares_estimates (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a})
+@deffnx {Function} lsquares_estimates (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a}, initial = @mvar{L}, tol = @mvar{t})
 
-Estimate parameters @var{a} to best fit the equation @var{e}
-in the variables @var{x} and @var{a} to the data @var{D},
+Estimate parameters @mvar{a} to best fit the equation @mvar{e}
+in the variables @mvar{x} and @mvar{a} to the data @mvar{D},
 as determined by the method of least squares.
 @code{lsquares_estimates} first seeks an exact solution,
 and if that fails, then seeks an approximate solution.
@@ -32,15 +32,15 @@ and if that fails, then seeks an approximate solution.
 The return value is a list of lists of equations of the form @code{[a = ..., b = ..., c = ...]}.
 Each element of the list is a distinct, equivalent minimum of the mean square error.
 
-The data @var{D} must be a matrix.
+The data @mvar{D} must be a matrix.
 Each row is one datum (which may be called a `record' or `case' in some contexts),
 and each column contains the values of one variable across all data.
-The list of variables @var{x} gives a name for each column of @var{D},
+The list of variables @mvar{x} gives a name for each column of @mvar{D},
 even the columns which do not enter the analysis.
-The list of parameters @var{a} gives the names of the parameters for which
+The list of parameters @mvar{a} gives the names of the parameters for which
 estimates are sought.
-The equation @var{e} is an expression or equation in the variables @var{x} and @var{a};
-if @var{e} is not an equation, it is treated the same as @code{@var{e} = 0}.
+The equation @mvar{e} is an expression or equation in the variables @mvar{x} and @mvar{a};
+if @mvar{e} is not an equation, it is treated the same as @code{@mvar{e} = 0}.
 
 Additional arguments to @code{lsquares_estimates}
 are specified as equations and passed on verbatim to the function @code{lbfgs}
@@ -48,9 +48,9 @@ which is called to find estimates by a numerical method
 when an exact result is not found.
 
 If some exact solution can be found (via @code{solve}),
-the data @var{D} may contain non-numeric values.
+the data @mvar{D} may contain non-numeric values.
 However, if no exact solution is found,
-each element of @var{D} must have a numeric value.
+each element of @mvar{D} must have a numeric value.
 This includes numeric constants such as @code{%pi} and @code{%e} as well as literal numbers
 (integers, rationals, ordinary floats, and bigfloats).
 Numerical calculations are carried out with ordinary floating-point arithmetic,
@@ -139,11 +139,11 @@ so @code{lsquares_estimates} resorts to numerical approximation.
 
 @end deffn
 
-@deffn {Function} lsquares_estimates_exact (@var{MSE}, @var{a})
+@deffn {Function} lsquares_estimates_exact (@mvar{MSE}, @mvar{a})
 
-Estimate parameters @var{a} to minimize the mean square error @var{MSE},
+Estimate parameters @mvar{a} to minimize the mean square error @mvar{MSE},
 by constructing a system of equations and attempting to solve them symbolically via @code{solve}.
-The mean square error is an expression in the parameters @var{a},
+The mean square error is an expression in the parameters @mvar{a},
 such as that returned by @code{lsquares_mse}.
 
 The return value is a list of lists of equations of the form @code{[a = ..., b = ..., c = ...]}.
@@ -206,11 +206,11 @@ Example:
 
 @end deffn
 
-@deffn {Function} lsquares_estimates_approximate (@var{MSE}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {Function} lsquares_estimates_approximate (@mvar{MSE}, @mvar{a}, initial = @mvar{L}, tol = @mvar{t})
 
-Estimate parameters @var{a} to minimize the mean square error @var{MSE},
+Estimate parameters @mvar{a} to minimize the mean square error @mvar{MSE},
 via the numerical minimization function @code{lbfgs}.
-The mean square error is an expression in the parameters @var{a},
+The mean square error is an expression in the parameters @mvar{a},
 such as that returned by @code{lsquares_mse}.
 
 The solution returned by @code{lsquares_estimates_approximate} is a local (perhaps global) minimum
@@ -222,8 +222,8 @@ namely a list of equations of the form @code{[a = ..., b = ..., c = ...]}.
 Additional arguments to @code{lsquares_estimates_approximate}
 are specified as equations and passed on verbatim to the function @code{lbfgs}.
 
-@var{MSE} must evaluate to a number when the parameters are assigned numeric values.
-This requires that the data from which @var{MSE} was constructed
+@mvar{MSE} must evaluate to a number when the parameters are assigned numeric values.
+This requires that the data from which @mvar{MSE} was constructed
 comprise only numeric constants such as @code{%pi} and @code{%e} and literal numbers
 (integers, rationals, ordinary floats, and bigfloats).
 Numerical calculations are carried out with ordinary floating-point arithmetic,
@@ -287,10 +287,10 @@ Example:
 
 @end deffn
 
-@deffn {Function} lsquares_mse (@var{D}, @var{x}, @var{e})
+@deffn {Function} lsquares_mse (@mvar{D}, @mvar{x}, @mvar{e})
 
-Returns the mean square error (MSE), a summation expression, for the equation @var{e}
-in the variables @var{x}, with data @var{D}.
+Returns the mean square error (MSE), a summation expression, for the equation @mvar{e}
+in the variables @mvar{x}, with data @mvar{D}.
 
 The MSE is defined as:
 
@@ -309,8 +309,8 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @end example
 @end ifnottex
 
-where @var{n} is the number of data and @code{@var{e}[i]} is the equation @var{e}
-evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]}.
+where @mvar{n} is the number of data and @code{@mvar{e}[i]} is the equation @mvar{e}
+evaluated with the variables in @mvar{x} assigned values from the @code{i}-th datum, @code{@mvar{D}[i]}.
 
 @code{load(lsquares)} loads this function.
 
@@ -386,15 +386,15 @@ Example:
 
 @end deffn
 
-@deffn {Function} lsquares_residuals (@var{D}, @var{x}, @var{e}, @var{a})
+@deffn {Function} lsquares_residuals (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a})
 
-Returns the residuals for the equation @var{e}
-with specified parameters @var{a} and data @var{D}.
+Returns the residuals for the equation @mvar{e}
+with specified parameters @mvar{a} and data @mvar{D}.
 
-@var{D} is a matrix, @var{x} is a list of variables,
-@var{e} is an equation or general expression;
-if not an equation, @var{e} is treated as if it were @code{@var{e} = 0}.
-@var{a} is a list of equations which specify values for any free parameters in @var{e} aside from @var{x}.
+@mvar{D} is a matrix, @mvar{x} is a list of variables,
+@mvar{e} is an equation or general expression;
+if not an equation, @mvar{e} is treated as if it were @code{@mvar{e} = 0}.
+@mvar{a} is a list of equations which specify values for any free parameters in @mvar{e} aside from @mvar{x}.
 
 The residuals are defined as:
 
@@ -408,9 +408,9 @@ $${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
 @end example
 @end ifnottex
 
-where @code{@var{e}[i]} is the equation @var{e}
-evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]},
-and assigning any remaining free variables from @var{a}.
+where @code{@mvar{e}[i]} is the equation @mvar{e}
+evaluated with the variables in @mvar{x} assigned values from the @code{i}-th datum, @code{@mvar{D}[i]},
+and assigning any remaining free variables from @mvar{a}.
 
 @code{load(lsquares)} loads this function.
 
@@ -460,10 +460,10 @@ Example:
 
 @end deffn
 
-@deffn {Function} lsquares_residual_mse (@var{D}, @var{x}, @var{e}, @var{a})
+@deffn {Function} lsquares_residual_mse (@mvar{D}, @mvar{x}, @mvar{e}, @mvar{a})
 
-Returns the residual mean square error (MSE) for the equation @var{e}
-with specified parameters @var{a} and data @var{D}.
+Returns the residual mean square error (MSE) for the equation @mvar{e}
+with specified parameters @mvar{a} and data @mvar{D}.
 
 The residual MSE is defined as:
 
@@ -482,9 +482,9 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @end example
 @end ifnottex
 
-where @code{@var{e}[i]} is the equation @var{e}
-evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]},
-and assigning any remaining free variables from @var{a}.
+where @code{@mvar{e}[i]} is the equation @mvar{e}
+evaluated with the variables in @mvar{x} assigned values from the @code{i}-th datum, @code{@mvar{D}[i]},
+and assigning any remaining free variables from @mvar{a}.
 
 @code{load(lsquares)} loads this function.
 
@@ -535,13 +535,13 @@ Example:
 
 @end deffn
 
-@deffn {Function} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+@deffn {Function} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars})
+@deffnx {Function} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars},@mvar{maxexpon})
+@deffnx {Function} plsquares (@mvar{Mat},@mvar{VarList},@mvar{depvars},@mvar{maxexpon},@mvar{maxdegree})
 Multivariable polynomial adjustment of a data table by the "least squares"
-method. @var{Mat} is a matrix containing the data, @var{VarList} is a list of variable names (one for each Mat column, but use "-" instead of varnames to ignore Mat columns), @var{depvars} is the name of a dependent variable or a list with one or more names of dependent variables (which names should be in @var{VarList}), @var{maxexpon} is the optional maximum exponent for each independent variable (1 by default), and @var{maxdegree} is the optional maximum polynomial degree (@var{maxexpon} by default); note that the sum of exponents of each term must be equal or smaller than @var{maxdegree}, and if @code{maxdgree = 0} then no limit is applied.
+method. @mvar{Mat} is a matrix containing the data, @mvar{VarList} is a list of variable names (one for each Mat column, but use "-" instead of varnames to ignore Mat columns), @mvar{depvars} is the name of a dependent variable or a list with one or more names of dependent variables (which names should be in @mvar{VarList}), @mvar{maxexpon} is the optional maximum exponent for each independent variable (1 by default), and @mvar{maxdegree} is the optional maximum polynomial degree (@mvar{maxexpon} by default); note that the sum of exponents of each term must be equal or smaller than @mvar{maxdegree}, and if @code{maxdgree = 0} then no limit is applied.
 
-If @var{depvars} is the name of a dependent variable (not in a list), @code{plsquares} returns the adjusted polynomial. If @var{depvars} is a list of one or more dependent variables, @code{plsquares} returns a list with the adjusted polynomial(s). The Coefficients of Determination  are displayed in order to inform about the goodness of fit, which ranges from 0 (no correlation) to 1 (exact correlation). These values are also stored in the global variable @var{DETCOEF} (a list if @var{depvars} is a list).
+If @mvar{depvars} is the name of a dependent variable (not in a list), @code{plsquares} returns the adjusted polynomial. If @mvar{depvars} is a list of one or more dependent variables, @code{plsquares} returns a list with the adjusted polynomial(s). The Coefficients of Determination  are displayed in order to inform about the goodness of fit, which ranges from 0 (no correlation) to 1 (exact correlation). These values are also stored in the global variable @mvar{DETCOEF} (a list if @mvar{depvars} is a list).
 
 
 A simple example of multivariable linear adjustment:

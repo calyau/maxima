@@ -5,19 +5,19 @@
 @node Functions and Variables for implicit_plot,  , implicit_plot, implicit_plot
 @section Functions and Variables for implicit_plot
 
-@deffn {関数} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {関数} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffn {関数} implicit_plot (@mvar{expr}, @mvar{x_range}, @mvar{y_range})
+@deffnx {関数} implicit_plot ([@mvar{expr_1}, ..., @mvar{expr_n}], @mvar{x_range}, @mvar{y_range})
 
 １つ以上の式のプロットを陰形式で表示します。
-@var{expr}はプロットされる式で、
-@var{x_range}は水平軸の範囲、
-@var{y_range}は垂直軸の範囲です。
+@mvar{expr}はプロットされる式で、
+@mvar{x_range}は水平軸の範囲、
+@mvar{y_range}は垂直軸の範囲です。
 @code{implicit_plot}は
-@var{set_plot_option}関数が設定するgnuplotドライバのグローバル設定を考慮します。
+@mvar{set_plot_option}関数が設定するgnuplotドライバのグローバル設定を考慮します。
 オプションはオプション引数として@code{implicit_plot}関数にも渡されることができます。
 
 @code{implicit_plot}は
-@var{x_range}と@var{y_range}で与えられる領域上で符号の変化を辿ることで機能し、
+@mvar{x_range}と@mvar{y_range}で与えられる領域上で符号の変化を辿ることで機能し、
 複雑な式では失敗する可能性があります。
 
 @code{load(implicit_plot)}はこの関数をロードします。

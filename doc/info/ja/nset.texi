@@ -62,17 +62,17 @@ Maximaは、クロネッカーのデルタ関数も定義します。
 (%o8)                       @{a, [b]@}
 @end example
 
-２つの要素志望@var{x}と@var{y}は、
-@code{is(@var{x} = @var{y})}が@code{true}をもたらす
+２つの要素志望@mvar{x}と@mvar{y}は、
+@code{is(@mvar{x} = @mvar{y})}が@code{true}をもたらす
 (すなわち、集合構成の目的で同じと見なされる)
 時だけ
 冗長です。
 @c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
-@code{is(@var{x} = @var{y})}が@code{false}をもたらす一方、
-@code{is(equal(@var{x}, @var{y}))}は、@code{true}をもたらす可能性があることに
+@code{is(@mvar{x} = @mvar{y})}が@code{false}をもたらす一方、
+@code{is(equal(@mvar{x}, @mvar{y}))}は、@code{true}をもたらす可能性があることに
 注意してください;
-その場合、要素@var{x}と@var{y}は異なったものと見なされます。
+その場合、要素@mvar{x}と@mvar{y}は異なったものと見なされます。
 
 @c ===beg===
 @c x: a/c + b/c;
@@ -271,7 +271,7 @@ Maximaの集合関数の完全なリストを持ちます。
 @end example
 
 他の方法は、
-@code{for @var{x} in @var{s} do}を使うことです。
+@code{for @mvar{x} in @mvar{s} do}を使うことです。
 
 @c ===beg===
 @c s: {a, b, c};
@@ -450,14 +450,14 @@ Maximaの集合関数とそれらのドキュメンテーションを書きま�
 @section Functions and Variables for Sets
 
 @anchor{adjoin}
-@deffn {関数} adjoin (@var{x}, @var{a}) 
+@deffn {関数} adjoin (@mvar{x}, @mvar{a}) 
 
-集合@var{a}に要素@code{@{@var{x}@}}を加えた集合を返します。
+集合@mvar{a}に要素@code{@{@mvar{x}@}}を加えた集合を返します。
 
-もし@var{a}が集合リテラルでないなら、
+もし@mvar{a}が集合リテラルでないなら、
 @code{adjoin}は文句を言います。
 
-@code{adjoin(@var{x}, @var{a})}と@code{union(set(@var{x}), @var{a})}は同値です;
+@code{adjoin(@mvar{x}, @mvar{a})}と@code{union(set(@mvar{x}), @mvar{a})}は同値です;
 しかしながら、@code{adjoin}は@code{union}より幾分早いかもしれません。
 
 @code{disjoin}も参照してください。
@@ -482,13 +482,13 @@ Maximaの集合関数とそれらのドキュメンテーションを書きま�
 @end deffn
 
 @anchor{belln}
-@deffn {関数} belln (@var{n})
+@deffn {関数} belln (@mvar{n})
 
 @math{n}番目のベル数を返します。
-@code{belln(n)}は@var{n}個のメンバーを持つ集合の分割の数です。
+@code{belln(n)}は@mvar{n}個のメンバーを持つ集合の分割の数です。
 
-非負整数@var{n}に対して、
-@code{belln(@var{n})}は@math{n}番目のベル数に整理されます。
+非負整数@mvar{n}に対して、
+@code{belln(@mvar{n})}は@math{n}番目のベル数に整理されます。
 @code{belln}は他のいかなる引数に関して整理されません。
 
 @code{belln}は等式、リスト、行列、集合上に分配されます。
@@ -530,9 +530,9 @@ Maximaの集合関数とそれらのドキュメンテーションを書きま�
 @end deffn
 
 @anchor{cardinality}
-@deffn {関数} cardinality (@var{a})
+@deffn {関数} cardinality (@mvar{a})
 
-集合@var{a}の異なる要素の数を返します。
+集合@mvar{a}の異なる要素の数を返します。
 
 整理がディセーブルされた時でも、
 @code{cardinality}は冗長な要素を無視します。
@@ -563,11 +563,11 @@ Maximaの集合関数とそれらのドキュメンテーションを書きま�
 @end deffn
 
 @anchor{cartesian_product}
-@deffn {関数} cartesian_product (@var{b_1}, ... , @var{b_n})
+@deffn {関数} cartesian_product (@mvar{b_1}, ... , @mvar{b_n})
 Returns a set of lists of the form 
-形式@code{[@var{x_1}, ..., @var{x_n}]}のリストの集合を返します。
-ここで、@var{x_1}, ..., @var{x_n}はそれぞれ、
-集合@var{b_1}, ... , @var{b_n}の要素です。
+形式@code{[@mvar{x_1}, ..., @mvar{x_n}]}のリストの集合を返します。
+ここで、@mvar{x_1}, ..., @mvar{x_n}はそれぞれ、
+集合@mvar{b_1}, ... , @mvar{b_n}の要素です。
 
 もし任意の引数が集合リテラルでないなら、
 @code{cartesian_product}は文句を言います。
@@ -599,16 +599,16 @@ Returns a set of lists of the form
 
 
 @anchor{disjoin}
-@deffn {関数} disjoin (@var{x}, @var{a})
-元@var{x}を持たない集合@var{a}を返します。
-もし@var{x}が@var{a}のメンバーでないなら、
-変更なしに@var{a}を返します。
+@deffn {関数} disjoin (@mvar{x}, @mvar{a})
+元@mvar{x}を持たない集合@mvar{a}を返します。
+もし@mvar{x}が@mvar{a}のメンバーでないなら、
+変更なしに@mvar{a}を返します。
 
-もし@var{a}が集合リテラルでないなら、
+もし@mvar{a}が集合リテラルでないなら、
 @code{disjoin}は文句を言います。
 
-@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})},
-@code{setdifference(@var{a}, set(@var{x}))}はすべて同値です。
+@code{disjoin(@mvar{x}, @mvar{a})}, @code{delete(@mvar{x}, @mvar{a})},
+@code{setdifference(@mvar{a}, set(@mvar{x}))}はすべて同値です。
 これらの中で、
 @code{disjoin}は一般的に他より速いです。
 
@@ -635,12 +635,12 @@ Returns a set of lists of the form
 @end deffn
 
 @anchor{disjointp}
-@deffn {関数} disjointp (@var{a}, @var{b}) 
+@deffn {関数} disjointp (@mvar{a}, @mvar{b}) 
 
-集合@var{a}と@var{b}がばらばらなら、
+集合@mvar{a}と@mvar{b}がばらばらなら、
 @code{true}を返します。
 
-もし@var{a}か@var{b}が集合リテラルでないなら、
+もし@mvar{a}か@mvar{b}が集合リテラルでないなら、
 @code{disjointp}は文句を言います。
 
 例:
@@ -663,13 +663,13 @@ Returns a set of lists of the form
 @end deffn
 
 @anchor{divisors}
-@deffn {関数} divisors (@var{n})
+@deffn {関数} divisors (@mvar{n})
 
-@var{n}の約数の集合を表します。
+@mvar{n}の約数の集合を表します。
 
-@var{n}がゼロでない整数の時、
-@code{divisors(@var{n})}は整数の集合に整理されます。
-約数の集合は元1と@var{n}を含みます。
+@mvar{n}がゼロでない整数の時、
+@code{divisors(@mvar{n})}は整数の集合に整理されます。
+約数の集合は元1と@mvar{n}を含みます。
 負の整数の約数は、その絶対値の約数です。
 
 @code{divisors}は、等式、リスト、行列、集合上に分配されます。
@@ -733,10 +733,10 @@ Returns a set of lists of the form
 @end deffn
 
 @anchor{elementp}
-@deffn {関数} elementp (@var{x}, @var{a})
-@var{x}が集合@var{a}の元の時だけ@code{true}を返します。
+@deffn {関数} elementp (@mvar{x}, @mvar{a})
+@mvar{x}が集合@mvar{a}の元の時だけ@code{true}を返します。
 
-もし@var{a}が集合リテラルでないなら、
+もし@mvar{a}が集合リテラルでないなら、
 @code{elementp}は文句を言います。
 
 例:
@@ -759,9 +759,9 @@ Returns a set of lists of the form
 @end deffn
 
 @anchor{emptyp}
-@deffn {関数} emptyp (@var{a})
+@deffn {関数} emptyp (@mvar{a})
 
-@var{a}が空の集合か空のリストの時だけ、@code{true}を返します。
+@mvar{a}が空の集合か空のリストの時だけ、@code{true}を返します。
 
 例:
 
@@ -783,23 +783,23 @@ Returns a set of lists of the form
 @end deffn
        
 @anchor{equiv_classes}
-@deffn {関数} equiv_classes (@var{s}, @var{F})
-集合@var{s}の
-同値関係@var{F}に関する
+@deffn {関数} equiv_classes (@mvar{s}, @mvar{F})
+集合@mvar{s}の
+同値関係@mvar{F}に関する
 同値クラスの集合を返します。
 
-@var{F}は@var{s}の@var{s}との直積集合上の２変数関数です。
+@mvar{F}は@mvar{s}の@mvar{s}との直積集合上の２変数関数です。
 The return value of 
-@var{F}の戻り値は、@code{true}か@code{false}、もしくは、
-@code{is(@var{expr})}が@code{true}か@code{false}のような
-式@var{expr}です。
+@mvar{F}の戻り値は、@code{true}か@code{false}、もしくは、
+@code{is(@mvar{expr})}が@code{true}か@code{false}のような
+式@mvar{expr}です。
 
-@var{F}が同値関数でない時、
+@mvar{F}が同値関数でない時、
 @code{equiv_classes}は不平なくそれを受け入れますが、
 その場合、結果は、一般に正しくありません。
 
 @c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
-@c @var{F} may be a relational operator (built-in or user-defined),
+@c @mvar{F} may be a relational operator (built-in or user-defined),
 @c an ordinary Maxima function, a Lisp function, a lambda expression,
 @c a macro, or a subscripted function.
 
@@ -848,41 +848,41 @@ The return value of
 @end deffn
 
 @anchor{every}
-@deffn {関数} every (@var{f}, @var{s})
-@deffnx {関数} every (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {関数} every (@mvar{f}, @mvar{s})
+@deffnx {関数} every (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 
-もし述語論理@var{f}が与えられた引数すべてで@code{true}なら、
+もし述語論理@mvar{f}が与えられた引数すべてで@code{true}なら、
 @code{true}を返します。
 
 ある集合が二番目の引数として与えられたとして、
-もし@code{is(@var{f}(@var{a_i}))}が
-@var{s}の中の@var{a_i}すべてに関して
+もし@code{is(@mvar{f}(@mvar{a_i}))}が
+@mvar{s}の中の@mvar{a_i}すべてに関して
 @code{true}を返すなら
-@code{every(@var{f}, @var{s})}は@code{true}です。
+@code{every(@mvar{f}, @mvar{s})}は@code{true}です。
 @code{every}は、
-@var{s}の中の@var{a_i}すべてに関して@var{f}を評価するかもしれないししないかもしれません。
+@mvar{s}の中の@mvar{a_i}すべてに関して@mvar{f}を評価するかもしれないししないかもしれません。
 集合は順序付けされていないので、
-@code{every}は任意の順序で@code{@var{f}(@var{a_i})}を評価します。
+@code{every}は任意の順序で@code{@mvar{f}(@mvar{a_i})}を評価します。
 
 非キスとして１つか複数のリストが与えられたとして、
-もし@code{is(@var{f}(@var{x_1}, ..., @var{x_n}))}が
-@var{L_1}, ..., @var{L_n}それぞれの中の@var{x_1}, ..., @var{x_n}すべてに対して
+もし@code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))}が
+@mvar{L_1}, ..., @mvar{L_n}それぞれの中の@mvar{x_1}, ..., @mvar{x_n}すべてに対して
 @code{true}を返すなら、
-@code{every(@var{f}, @var{L_1}, ..., @var{L_n})}は@code{true}を返します。
+@code{every(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})}は@code{true}を返します。
 @code{every}は、
-@var{x_1}, ..., @var{x_n}のすべての組み合わせに対して@var{f}を評価するかもしれないししないかもしれません。
+@mvar{x_1}, ..., @mvar{x_n}のすべての組み合わせに対して@mvar{f}を評価するかもしれないししないかもしれません。
 @code{every}はインデックスを増やす順序でリストを評価します。
 
 空の集合@code{@{@}}または空のリスト@code{[]}が引数として与えられたとして、
 @code{every}は@code{false}を返します。
 
 グローバルフラグ@code{maperror}が@code{true}の時、
-リスト@var{L_1}, ..., @var{L_n}すべては等しい長さを持たなければいけません。
+リスト@mvar{L_1}, ..., @mvar{L_n}すべては等しい長さを持たなければいけません。
 @code{maperror}が@code{false}の時、
 リスト引数は、最短のリストの長さに効果的に切り詰められます。
 
 (@code{is}を介して)
-@code{true}か@code{false}以外の何かに評価される述語論理@var{f}の戻り値は、
+@code{true}か@code{false}以外の何かに評価される述語論理@mvar{f}の戻り値は、
 @code{prederror}によって決定されます。
 @code{prederror}が@code{true}の時、
 そんな値は@code{false}として扱われ、
@@ -922,7 +922,7 @@ The return value of
 @end example
 
 @code{true}か@code{false}以外の何かに評価される
-述語論理@var{f}の戻り値は、
+述語論理@mvar{f}の戻り値は、
 グローバルフラグ@code{prederror}によって決定されます。
 
 @c ===beg===
@@ -954,19 +954,19 @@ The return value of
 @end deffn
  
 @anchor{extremal_subset}
-@deffn {関数} extremal_subset (@var{s}, @var{f}, max)
-@deffnx {関数} extremal_subset (@var{s}, @var{f}, min)
+@deffn {関数} extremal_subset (@mvar{s}, @mvar{f}, max)
+@deffnx {関数} extremal_subset (@mvar{s}, @mvar{f}, min)
 
-関数@var{f}が最大または最小値を取る、
-@var{s}の部分集合を返します。
+関数@mvar{f}が最大または最小値を取る、
+@mvar{s}の部分集合を返します。
 
-@code{extremal_subset(@var{s}, @var{f}, max)}は、
-実数値関数@var{f}が最大値を取る、
-集合またはリスト@var{s}の部分集合を返します。
+@code{extremal_subset(@mvar{s}, @mvar{f}, max)}は、
+実数値関数@mvar{f}が最大値を取る、
+集合またはリスト@mvar{s}の部分集合を返します。
 
-@code{extremal_subset(@var{s}, @var{f}, min)}は、
-実数値関数@var{f}が最小値を取る、
-集合またはリスト@var{s}の部分集合を返します。
+@code{extremal_subset(@mvar{s}, @mvar{f}, min)}は、
+実数値関数@mvar{f}が最小値を取る、
+集合またはリスト@mvar{s}の部分集合を返します。
 
 例:
 
@@ -988,9 +988,9 @@ The return value of
 @end deffn
 
 @anchor{flatten}
-@deffn {関数} flatten (@var{expr})
+@deffn {関数} flatten (@mvar{expr})
 
-@var{expr}と同じ演算子を持つ部分式の引数を集め、
+@mvar{expr}と同じ演算子を持つ部分式の引数を集め、
 これらの集めた引数から式を構成します。
 
 @code{expr}の主演算子と違った演算子の部分式は、
@@ -1085,8 +1085,8 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{full_listify}
-@deffn {関数} full_listify (@var{a})
-@var{a}の中のすべての集合演算子をリスト演算子で置き換え、
+@deffn {関数} full_listify (@mvar{a})
+@mvar{a}の中のすべての集合演算子をリスト演算子で置き換え、
 結果を返します。
 @code{full_listify}は、
 たとえ主演算子が@code{set}でなくても
@@ -1114,11 +1114,11 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{fullsetify}
-@deffn {関数} fullsetify (@var{a})
-@var{a}がリストの時、
+@deffn {関数} fullsetify (@mvar{a})
+@mvar{a}がリストの時、
 リスト演算子を集合演算子で置き換え、
 @code{fullsetify}を集合であるメンバーそれぞれに適用します。
-@var{a}がリストでない時、変更なしで返します。
+@mvar{a}がリストでない時、変更なしで返します。
 
 @code{setify}は主演算子だけを置き換えます。
 
@@ -1147,9 +1147,9 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{identity}
-@deffn {関数} identity (@var{x})
+@deffn {関数} identity (@mvar{x})
 
-任意の引数@var{x}に対して@var{x}を返します。
+任意の引数@mvar{x}に対して@mvar{x}を返します。
 
 例:
 
@@ -1167,21 +1167,21 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{integer_partitions}
-@deffn {関数} integer_partitions (@var{n})
-@deffnx {関数} integer_partitions (@var{n}, @var{len})
+@deffn {関数} integer_partitions (@mvar{n})
+@deffnx {関数} integer_partitions (@mvar{n}, @mvar{len})
 
-@var{n}の整数分割を返します。
-すなわち、和が@var{n}になる整数のリストです。
+@mvar{n}の整数分割を返します。
+すなわち、和が@mvar{n}になる整数のリストです。
 
-@code{integer_partitions(@var{n})}は、
-整数@var{n}の分割すべての集合を返します。
+@code{integer_partitions(@mvar{n})}は、
+整数@mvar{n}の分割すべての集合を返します。
 分割それぞれは、大きい順に並べられたリストです。
 
-@code{integer_partitions(@var{n}, @var{len})}は、
-長さ@var{len}以下の分割すべてを返します;
+@code{integer_partitions(@mvar{n}, @mvar{len})}は、
+長さ@mvar{len}以下の分割すべてを返します;
 この場合、
-@var{len}より少ない項を持つ分割それぞれには、
-厳密に@var{len}項持つ分割にするように、ゼロが足されます。
+@mvar{len}より少ない項を持つ分割それぞれには、
+厳密に@mvar{len}項持つ分割にするように、ゼロが足されます。
 分割それぞれは、大きい順に並べられたリストです。
 
 リスト@math{[a_1, ..., a_m]}は、
@@ -1240,7 +1240,7 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{intersect}
-@deffn {関数} intersect (@var{a_1}, ..., @var{a_n})
+@deffn {関数} intersect (@mvar{a_1}, ..., @mvar{a_n})
 
 @code{intersect}は、以下に見る@code{intersection}と同じです。
 
@@ -1251,8 +1251,8 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{intersection}
-@deffn {関数} intersection (@var{a_1}, ..., @var{a_n})
-集合@var{a_1}から@var{a_n}までに共通な
+@deffn {関数} intersection (@mvar{a_1}, ..., @mvar{a_n})
+集合@mvar{a_1}から@mvar{a_n}までに共通な
 要素を含む
 集合を返します。
 
@@ -1296,14 +1296,14 @@ Wrong number of arguments to mod
 
 @end deffn
 
-@deffn {関数} kron_delta (@var{x}, @var{y}, @dots{}, @var{xp})
+@deffn {関数} kron_delta (@mvar{x}, @mvar{y}, @dots{}, @mvar{xp})
 
 クロネッカーのデルタ関数を表します。
 
 @code{kron_delta}は、
-@var{xi}と@var{yj}が引数のすべての対で等しい時
+@mvar{xi}と@mvar{yj}が引数のすべての対で等しい時
 1に整理され、
-@var{xi}と@var{yj}が引数のある対で等しくない時
+@mvar{xi}と@mvar{yj}が引数のある対で等しくない時
 0に整理されます。
 等号は@code{is(equal(xi,j))}を使って決定され、
 不等号は@code{is(notsqual(xi,xj))}を使って決定されます。
@@ -1335,15 +1335,15 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{listify}
-@deffn {関数} listify (@var{a})
+@deffn {関数} listify (@mvar{a})
 
-@var{a}が集合の時、
-@var{a}の元を含む
+@mvar{a}が集合の時、
+@mvar{a}の元を含む
 リストを返します。
-そうでなければ、@code{listify}は@var{a}を返します。
+そうでなければ、@code{listify}は@mvar{a}を返します。
 
 @code{full_listify}は
-@var{a}の中の集合演算子をリスト演算子に置き換えます。
+@mvar{a}の中の集合演算子をリスト演算子に置き換えます。
 
 例:
 
@@ -1365,18 +1365,18 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{lreduce}
-@deffn {関数} lreduce (@var{F}, @var{s})
-@deffnx {関数} lreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {関数} lreduce (@mvar{F}, @mvar{s})
+@deffnx {関数} lreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
-二項関数@var{F}を合成によってn項関数に拡張します。
-ここで@var{s}はリストです。
+二項関数@mvar{F}を合成によってn項関数に拡張します。
+ここで@mvar{s}はリストです。
 
-@code{lreduce(@var{F}, @var{s})}は@code{F(... F(F(s_1, s_2), s_3), ... s_n)}を返します。
+@code{lreduce(@mvar{F}, @mvar{s})}は@code{F(... F(F(s_1, s_2), s_3), ... s_n)}を返します。
 
-オプション引数@var{s_0}が存在する時、
-結果は@code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}と同値です。
+オプション引数@mvar{s_0}が存在する時、
+結果は@code{lreduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s}))}と同値です。
 
-関数@var{F}は、最初の@i{leftmost}の元に適用されます。
+関数@mvar{F}は、最初の@i{leftmost}の元に適用されます。
 だから、"lreduce"と名付けられています。
 
 @code{rreduce}, @code{xreduce}, @code{tree_reduce}も参照してください。
@@ -1430,24 +1430,24 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{makeset}
-@deffn {関数} makeset (@var{expr}, @var{x}, @var{s})
+@deffn {関数} makeset (@mvar{expr}, @mvar{x}, @mvar{s})
 
-式@var{expr}から生成された元を持つ集合を返します。
-ここで、@var{x}は@var{expr}の中の変数のリストであり、
-@var{s}はリストの集合かリストです。
+式@mvar{expr}から生成された元を持つ集合を返します。
+ここで、@mvar{x}は@mvar{expr}の中の変数のリストであり、
+@mvar{s}はリストの集合かリストです。
 集合の元それぞれを生成するために、
-@var{expr}は、
-@var{s}の元に並列にバインドされた変数@var{x}で評価されます。
+@mvar{expr}は、
+@mvar{s}の元に並列にバインドされた変数@mvar{x}で評価されます。
 
-@var{s}の元それぞれは
-@var{x}と同じ長さを持たなければいけません。
-変数@var{x}のリストは、添字の付かないシンボルのリストでなければいけません。
-たとえシンボルが１つしかない場合でも、@var{x}は１要素のリストでなければいけなく、
-@var{s}の元それぞれは１要素のリストでなければいけません。
+@mvar{s}の元それぞれは
+@mvar{x}と同じ長さを持たなければいけません。
+変数@mvar{x}のリストは、添字の付かないシンボルのリストでなければいけません。
+たとえシンボルが１つしかない場合でも、@mvar{x}は１要素のリストでなければいけなく、
+@mvar{s}の元それぞれは１要素のリストでなければいけません。
 
 @c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
-@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
-@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
+@c @code{makeset(@mvar{expr}, @mvar{x}, @mvar{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@mvar{x}, L), ''@mvar{expr})), args(@mvar{s})))}.
 
 @code{makelist}も参照してください。
 
@@ -1487,13 +1487,13 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{moebius}
-@deffn {関数} moebius (@var{n})
+@deffn {関数} moebius (@mvar{n})
 
 メビウス関数を表します。
 
-@var{n}が@math{k}個の異なる素数の積の時、
-@code{moebius(@var{n})}は@math{(-1)^k}に整理されます;
-@math{@var{n} = 1}の時、1に整理されます;
+@mvar{n}が@math{k}個の異なる素数の積の時、
+@code{moebius(@mvar{n})}は@math{(-1)^k}に整理されます;
+@math{@mvar{n} = 1}の時、1に整理されます;
 他の正の数すべてに対して、0に整理されます。
 
 @code{moebius}は等式、リスト、行列、集合上に分配されます。
@@ -1541,18 +1541,18 @@ Wrong number of arguments to mod
 @end deffn
  
 @anchor{multinomial_coeff}
-@deffn {関数} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffn {関数} multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {関数} multinomial_coeff ()
 
 多項係数を返します。
 
-@var{a_k}それぞれが非負の整数の時、
+@mvar{a_k}それぞれが非負の整数の時、
 多項係数は、
-@code{@var{a_1} + ... + @var{a_n}}個の別々のオブジェクトを
-@math{k}番目の枠の中に@var{a_k}の要素を持つ@math{n}個の枠に置く方法の数を与えます。
+@code{@mvar{a_1} + ... + @mvar{a_n}}個の別々のオブジェクトを
+@math{k}番目の枠の中に@mvar{a_k}の要素を持つ@math{n}個の枠に置く方法の数を与えます。
 
-一般に、@code{multinomial_coeff (@var{a_1}, ..., @var{a_n})}は
-@code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}と同値です。
+一般に、@code{multinomial_coeff (@mvar{a_1}, ..., @mvar{a_n})}は
+@code{(@mvar{a_1} + ... + @mvar{a_n})!/(@mvar{a_1}! ... @mvar{a_n}!)}と同値です。
 
 @code{multinomial_coeff()} (引数なし)は1に評価されます。
 
@@ -1590,18 +1590,18 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{num_distinct_partitions}
-@deffn {関数} num_distinct_partitions (@var{n})
-@deffnx {関数} num_distinct_partitions (@var{n}, list)
+@deffn {関数} num_distinct_partitions (@mvar{n})
+@deffnx {関数} num_distinct_partitions (@mvar{n}, list)
 
-@var{n}が非負の整数の時、
-@var{n}の異なる整数分割の数を返します。
+@mvar{n}が非負の整数の時、
+@mvar{n}の異なる整数分割の数を返します。
 そうでなければ、@code{num_distinct_partitions}は名詞形を返します。
 
-@code{num_distinct_partitions(@var{n}, list)}は、
-1, 2, 3, ..., @var{n}の異なる分割の数のリストを返します。
+@code{num_distinct_partitions(@mvar{n}, list)}は、
+1, 2, 3, ..., @mvar{n}の異なる分割の数のリストを返します。
 
-@var{n}の異なる分割は、
-@math{@var{n} = k_1 + ... + k_m}となるような
+@mvar{n}の異なる分割は、
+@math{@mvar{n} = k_1 + ... + k_m}となるような
 異なる正の整数@math{k_1}, ..., @math{k_m}のリストです。
 
 例:
@@ -1627,19 +1627,19 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{num_partitions}
-@deffn {関数} num_partitions (@var{n})
-@deffnx {関数} num_partitions (@var{n}, list)
+@deffn {関数} num_partitions (@mvar{n})
+@deffnx {関数} num_partitions (@mvar{n}, list)
 
-@var{n}が非負の整数の時、
-@var{n}の整数分割の数を返します。
+@mvar{n}が非負の整数の時、
+@mvar{n}の整数分割の数を返します。
 そうでなければ、@code{num_partitions}は名詞式を返します。
 
-@code{num_partitions(@var{n}, list)}は、
-1, 2, 3, ..., @var{n}の整数分割の数のリストを返します。
+@code{num_partitions(@mvar{n}, list)}は、
+1, 2, 3, ..., @mvar{n}の整数分割の数のリストを返します。
 
-非負の整数@var{n}に対して、
-@code{num_partitions(@var{n})}は
-@code{cardinality(integer_partitions(@var{n}))}と等しいです;
+非負の整数@mvar{n}に対して、
+@code{num_partitions(@mvar{n})}は
+@code{cardinality(integer_partitions(@mvar{n}))}と等しいです;
 しかしながら、@code{num_partitions}は、
 分割の集合を実際には構成しないので、はるかに速いです。
 
@@ -1668,19 +1668,19 @@ Wrong number of arguments to mod
 
 
 @anchor{partition_set}
-@deffn {関数} partition_set (@var{a}, @var{f})
+@deffn {関数} partition_set (@mvar{a}, @mvar{f})
 
-集合@var{a}を述語論理@var{f}に従って分割します。
+集合@mvar{a}を述語論理@mvar{f}に従って分割します。
 
 @code{partition_set}は２つの集合のリストを返します。
 最初の集合は
-@var{f}が@code{false}に評価される
-@var{a}の要素から成り、
-二番目は@var{a}の他の要素すべてから成ります。
+@mvar{f}が@code{false}に評価される
+@mvar{a}の要素から成り、
+二番目は@mvar{a}の他の要素すべてから成ります。
 @code{partition_set}は
-@code{is}を@var{f}の戻り値に適用しません。
+@code{is}を@mvar{f}の戻り値に適用しません。
 
-もし@var{a}が集合リテラルなら
+もし@mvar{a}が集合リテラルなら
 @code{partition_set}は文句を言います。
 
 @code{subset}も参照してください。
@@ -1707,15 +1707,15 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{permutations}
-@deffn {関数} permutations (@var{a})
+@deffn {関数} permutations (@mvar{a})
 
-リストまたは集合@var{a}の元の異なる順列すべての集合を返します。
+リストまたは集合@mvar{a}の元の異なる順列すべての集合を返します。
 順列それぞれは、集合でなくリストです。
 
-@var{a}がリストの時、
-@var{a}の重複した元が順列の中に含まれます。
+@mvar{a}がリストの時、
+@mvar{a}の重複した元が順列の中に含まれます。
 
-もし@var{a}がリストリテラルや集合リテラルでないなら、
+もし@mvar{a}がリストリテラルや集合リテラルでないなら、
 @code{permutations}は文句を言います。
 
 @code{random_permutation}も参照してください。
@@ -1740,20 +1740,20 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{powerset}
-@deffn {関数} powerset (@var{a})
-@deffnx {関数} powerset (@var{a}, @var{n})
+@deffn {関数} powerset (@mvar{a})
+@deffnx {関数} powerset (@mvar{a}, @mvar{n})
 
-@var{a}の部分集合すべての集合、または、その集合の部分集合を返します。
+@mvar{a}の部分集合すべての集合、または、その集合の部分集合を返します。
 
-@code{powerset(@var{a})}は
-集合@var{a}の部分集合すべての集合を返します。
-@code{powerset(@var{a})}は@code{2^cardinality(@var{a})}個の元を持ちます。
+@code{powerset(@mvar{a})}は
+集合@mvar{a}の部分集合すべての集合を返します。
+@code{powerset(@mvar{a})}は@code{2^cardinality(@mvar{a})}個の元を持ちます。
 
-@code{powerset(@var{a}, @var{n})}は、
-濃度@var{n}を持つ@var{a}の部分集合すべての集合を返します。
+@code{powerset(@mvar{a}, @mvar{n})}は、
+濃度@mvar{n}を持つ@mvar{a}の部分集合すべての集合を返します。
 
-もし@var{a}が集合リテラルでないか、
-@var{n}が非負の整数でないなら、
+もし@mvar{a}が集合リテラルでないか、
+@mvar{n}が非負の整数でないなら、
 @code{powerset}は文句を言います。
 
 例:
@@ -1787,10 +1787,10 @@ Wrong number of arguments to mod
 
 @end deffn
 
-@deffn {関数} random_permutation (@var{a})
+@deffn {関数} random_permutation (@mvar{a})
 
 クヌースのシャッフルアルゴリズムで構成されるような、
-集合またはリスト@var{a}のランダムな順列を返します。
+集合またはリスト@mvar{a}のランダムな順列を返します。
 
 戻り値は、たとえ要素すべてが偶然同じでも
 引数とは別の新しいリストです。
@@ -1822,19 +1822,19 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{rreduce}
-@deffn {関数} rreduce (@var{F}, @var{s})
-@deffnx {関数} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+@deffn {関数} rreduce (@mvar{F}, @mvar{s})
+@deffnx {関数} rreduce (@mvar{F}, @mvar{s}, @mvar{s_@{n + 1@}})
 
-合成によって二項関数@var{F}をn項関数に拡張します。
-ここで、@var{s}はリストです。
+合成によって二項関数@mvar{F}をn項関数に拡張します。
+ここで、@mvar{s}はリストです。
 
-@code{rreduce(@var{F}, @var{s})}は
+@code{rreduce(@mvar{F}, @mvar{s})}は
 @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}を返します。
-オプション引数@var{s_@{n + 1@}}が存在する時、
-結果は、@code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}
+オプション引数@mvar{s_@{n + 1@}}が存在する時、
+結果は、@code{rreduce(@mvar{F}, endcons(@mvar{s_@{n + 1@}}, @mvar{s}))}
 と同値です。
 
-関数@var{F}は、最初@i{rightmost}のリスト要素に適用されます。
+関数@mvar{F}は、最初@i{rightmost}のリスト要素に適用されます。
 だから名前が"rreduce"です。
 
 @code{lreduce}, @code{tree_reduce}, @code{xreduce}も参照してください。
@@ -1890,11 +1890,11 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{setdifference}
-@deffn {関数}  setdifference (@var{a}, @var{b})
+@deffn {関数}  setdifference (@mvar{a}, @mvar{b})
 
-集合@var{a}の中の、集合@var{b}にない要素を含む集合を返します。
+集合@mvar{a}の中の、集合@mvar{b}にない要素を含む集合を返します。
 
-もし@var{a}か@var{b}が集合リテラルでないなら、
+もし@mvar{a}か@mvar{b}が集合リテラルでないなら、
 @code{setdifference}は文句を言います。
 
 例:
@@ -1932,15 +1932,15 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{setequalp}
-@deffn {関数} setequalp (@var{a}, @var{b})
+@deffn {関数} setequalp (@mvar{a}, @mvar{b})
 
-集合@var{a}と@var{b}が同じ要素数を持ち、
+集合@mvar{a}と@mvar{b}が同じ要素数を持ち、
 @c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
 @code{listify}が決定した順序で考えて
-@var{a}の要素の中の@code{x}と
-@var{b}の要素の中の@code{y}に対して
-@code{is(@var{x} = @var{y})}が@code{true}なら、
+@mvar{a}の要素の中の@code{x}と
+@mvar{b}の要素の中の@code{y}に対して
+@code{is(@mvar{x} = @mvar{y})}が@code{true}なら、
 @code{true}を返します。
 そうでなければ、@code{setequalp}は@code{false}を返します。
 
@@ -1967,13 +1967,13 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{setify}
-@deffn {関数} setify (@var{a})
+@deffn {関数} setify (@mvar{a})
 
-リスト@var{a}の要素から集合を構成します。
-リスト@var{a}の重複した要素は削除され、
+リスト@mvar{a}の要素から集合を構成します。
+リスト@mvar{a}の重複した要素は削除され、
 要素は、述語論理@code{orderlessp}に従って並び替えられます。
 
-もし@var{a}が集合リテラルでないなら、
+もし@mvar{a}が集合リテラルでないなら、
 @code{setify}は文句を言います。
 
 例:
@@ -1999,9 +1999,9 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{setp}
-@deffn {関数} setp (@var{a})
+@deffn {関数} setp (@mvar{a})
 
-@var{a}がMaximaの集合の時だけ、@code{true}を返します。
+@mvar{a}がMaximaの集合の時だけ、@code{true}を返します。
 
 @code{setp}は、
 整理された集合はもちろん、未整理の集合(すなわち、冗長な元を持つ集合)に対して、
@@ -2035,16 +2035,16 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{set_partitions}
-@deffn {関数} set_partitions (@var{a})
-@deffnx {関数} set_partitions (@var{a}, @var{n})
+@deffn {関数} set_partitions (@mvar{a})
+@deffnx {関数} set_partitions (@mvar{a}, @mvar{n})
 
-@var{a}の分割すべての集合、または、その集合の部分集合を返します。
+@mvar{a}の分割すべての集合、または、その集合の部分集合を返します。
 
-@code{set_partitions(@var{a}, @var{n})}は
-@var{n}個の空でないばらばらの部分集合への
-@var{a}の分解すべての集合を返します。
+@code{set_partitions(@mvar{a}, @mvar{n})}は
+@mvar{n}個の空でないばらばらの部分集合への
+@mvar{a}の分解すべての集合を返します。
 
-@code{set_partitions(@var{a})}は分割すべての集合を返します。
+@code{set_partitions(@mvar{a})}は分割すべての集合を返します。
 
 @code{stirling2}は集合の分割の集合の濃度を返します。
 
@@ -2089,7 +2089,7 @@ Wrong number of arguments to mod
 @end example
 
 @code{p}の元それぞれは
-@var{n} = 3個の元を持たなければいけません;
+@mvar{n} = 3個の元を持たなければいけません;
 チェックしましょう。
 
 @c ===beg===
@@ -2128,43 +2128,43 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{some}
-@deffn {関数} some (@var{f}, @var{a})
-@deffnx {関数} some (@var{f}, @var{L_1}, ..., @var{L_n})
+@deffn {関数} some (@mvar{f}, @mvar{a})
+@deffnx {関数} some (@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})
 
-もし与えられた引数のうち１つ以上で述語論理@var{f}が@code{true}なら
+もし与えられた引数のうち１つ以上で述語論理@mvar{f}が@code{true}なら
 @code{true}を返します。
 
 二番目の引数として集合１つが与えられたとして、
 もし
-@var{s}の中の１つ以上の@var{a_i}に対して
-@code{is(@var{f}(@var{a_i}))}が@code{true}を返すなら、
-@code{some(@var{f}, @var{s})}は@code{true}を返します。
+@mvar{s}の中の１つ以上の@mvar{a_i}に対して
+@code{is(@mvar{f}(@mvar{a_i}))}が@code{true}を返すなら、
+@code{some(@mvar{f}, @mvar{s})}は@code{true}を返します。
 @code{some}は
-@var{s}の中の@var{a_i}すべてに対して
-@var{f}を評価するかどうかわかりません。
+@mvar{s}の中の@mvar{a_i}すべてに対して
+@mvar{f}を評価するかどうかわかりません。
 集合は順序がないので、
-@code{some}は任意の順序で@code{@var{f}(@var{a_i})}評価するかもしれません。
+@code{some}は任意の順序で@code{@mvar{f}(@mvar{a_i})}評価するかもしれません。
 
 引数として２つ以上のリストが与えられたとして、
-@code{some(@var{f}, @var{L_1}, ..., @var{L_n})}は@code{true}を返します。
+@code{some(@mvar{f}, @mvar{L_1}, ..., @mvar{L_n})}は@code{true}を返します。
 もし
-@var{L_1}, ..., @var{L_n}それぞれの中の１つ以上の@var{x_1}, ..., @var{x_n}で
-@code{is(@var{f}(@var{x_1}, ..., @var{x_n}))}が@code{true}を返すなら、
+@mvar{L_1}, ..., @mvar{L_n}それぞれの中の１つ以上の@mvar{x_1}, ..., @mvar{x_n}で
+@code{is(@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}))}が@code{true}を返すなら、
 @code{some}は
-いくつかの組み合わせ@var{x_1}, ..., @var{x_n}に対して
-@var{f}を評価するかどうかわかりません。
+いくつかの組み合わせ@mvar{x_1}, ..., @mvar{x_n}に対して
+@mvar{f}を評価するかどうかわかりません。
 @code{some}はインデックスを増加する順序でリストを評価します。
 
 引数として空集合@code{@{@}}または空のリスト@code{[]}が与えられたとして、
 @code{some}は@code{false}を返します。
 
 グローバルフラグ@code{maperror}が@code{true}の時、
-すべてのリスト@var{L_1}, ..., @var{L_n}は同じ長さを持たなければいけません。
+すべてのリスト@mvar{L_1}, ..., @mvar{L_n}は同じ長さを持たなければいけません。
 @code{maperror}が@code{false}の時、
 リスト引数は、最短のリストの長さに効果的に切り詰められます。
 
 (@code{is}を介して)@code{true}か@code{false}以外の何かに評価される
-述語論理@var{f}の戻り値は、
+述語論理@mvar{f}の戻り値は、
 グローバルフラグ@code{prederror}によって決定されます。
 @code{prederror}が@code{true}の時、
 そんな値は@code{false}として扱われます。
@@ -2201,7 +2201,7 @@ Wrong number of arguments to mod
 (%o2)                         false
 @end example
 
-@code{true}か@code{false}以外の何かに評価される述語論理@var{f}の戻り値は、
+@code{true}か@code{false}以外の何かに評価される述語論理@mvar{f}の戻り値は、
 グローバルフラグ@code{prederror}によって決定されます。
 
 @c ===beg===
@@ -2239,19 +2239,19 @@ Wrong number of arguments to mod
 @end deffn
 
 @anchor{stirling1}
-@deffn {関数} stirling1 (@var{n}, @var{m})
+@deffn {関数} stirling1 (@mvar{n}, @mvar{m})
 
 第一種のスターリング数を表します。
 
-@var{n}と@var{m}が非負の整数の時、
-@code{stirling1 (@var{n}, @var{m})}の大きさは
-@var{m}個の巡回置換を持つ@var{n}個の元を持つ集合の順列の数です。
+@mvar{n}と@mvar{m}が非負の整数の時、
+@code{stirling1 (@mvar{n}, @mvar{m})}の大きさは
+@mvar{m}個の巡回置換を持つ@mvar{n}個の元を持つ集合の順列の数です。
 詳細はGraham, Knuth and Patashnik @i{Concrete Mathematics}を参照してください。
 Maximaは、
-0より小さい@var{m}に対して
-@code{stirling1 (@var{n}, @var{m})}を定義するために
+0より小さい@mvar{m}に対して
+@code{stirling1 (@mvar{n}, @mvar{m})}を定義するために
 再帰関係を使います;
-0より小さい@var{n}と非整数引数に対して未定義です。
+0より小さい@mvar{n}と非整数引数に対して未定義です。
 
 @code{stirling1}は整理関数です。
 Maximaは以下の恒等式を知っています。
@@ -2334,18 +2334,18 @@ Maximaは
 @end deffn
 
 @anchor{stirling2}
-@deffn {関数} stirling2 (@var{n}, @var{m})
+@deffn {関数} stirling2 (@mvar{n}, @mvar{m})
 
 第二種スターリング数を表します。
 
-@var{n}と@var{m}が非負の整数の時、
-@code{stirling2 (@var{n}, @var{m})}は、
-濃度@var{n}の集合が@var{m}個のばらばらの部分集合に分割できる方法の数です。
+@mvar{n}と@mvar{m}が非負の整数の時、
+@code{stirling2 (@mvar{n}, @mvar{m})}は、
+濃度@mvar{n}の集合が@mvar{m}個のばらばらの部分集合に分割できる方法の数です。
 Maximaは、
-0より小さい@var{m}に対して
-@code{stirling2 (@var{n}, @var{m})}を定義するために
+0より小さい@mvar{m}に対して
+@code{stirling2 (@mvar{n}, @mvar{m})}を定義するために
 再帰関係を使います;
-0より小さい@var{n}と非整数の引数に対して未定義です。
+0より小さい@mvar{n}と非整数の引数に対して未定義です。
 
 @code{stirling2}は整理関数です。
 Maximaは以下の恒等式を知っています。
@@ -2436,17 +2436,17 @@ Maximaは
 @end deffn
 
 @anchor{subset}
-@deffn {関数} subset (@var{a}, @var{f})
+@deffn {関数} subset (@mvar{a}, @mvar{f})
 
-述語論理@var{f}を満たす
-集合@var{a}の部分集合を返します。
+述語論理@mvar{f}を満たす
+集合@mvar{a}の部分集合を返します。
 
 @code{subset}は、
-@var{f}が@code{false}以外の何かを返す、@var{a}の要素から成る集合を返します。
+@mvar{f}が@code{false}以外の何かを返す、@mvar{a}の要素から成る集合を返します。
 @code{subset}は
-@code{is}を@var{f}の戻り値に適用しません。
+@code{is}を@mvar{f}の戻り値に適用しません。
 
-もし@var{a}が集合リテラルでないなら
+もし@mvar{a}が集合リテラルでないなら
 @code{subset}は文句を言います。
 
 @code{partition_set}も参照してください。
@@ -2471,12 +2471,12 @@ Maximaは
 @end deffn
 
 @anchor{subsetp}
-@deffn {関数} subsetp (@var{a}, @var{b})
+@deffn {関数} subsetp (@mvar{a}, @mvar{b})
 
-集合@var{a}が@var{b}の部分集合の時だけ、
+集合@mvar{a}が@mvar{b}の部分集合の時だけ、
 @code{true}を返します。
 
-もし@var{a}か@var{b}のいずれかが集合リテラルでないなら、
+もし@mvar{a}か@mvar{b}のいずれかが集合リテラルでないなら、
 @code{subsetp}は文句を言います。
 
 例:
@@ -2499,13 +2499,13 @@ Maximaは
 @end deffn
 
 @anchor{symmdifference}
-@deffn {関数} symmdifference (@var{a_1}, @dots{}, @var{a_n})
+@deffn {関数} symmdifference (@mvar{a_1}, @dots{}, @mvar{a_n})
 
-集合@var{a_1}, @dots{}, @var{a_n}の対称差を返します。
+集合@mvar{a_1}, @dots{}, @mvar{a_n}の対称差を返します。
 
 ２つの引数が与えられたとして、
-@code{symmdifference ( @var{a}, @var{b})}は
-@code{union (setdifference ( @var{a}, @var{b}), setdifference (@var{b}, @var{a}))}と同じです。
+@code{symmdifference ( @mvar{a}, @mvar{b})}は
+@code{union (setdifference ( @mvar{a}, @mvar{b}), setdifference (@mvar{b}, @mvar{a}))}と同じです。
 
 もし引数が集合リテラルでないなら、
 @code{symmdifference}は文句を言います。
@@ -2549,28 +2549,28 @@ Maximaは
 
 @c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{tree_reduce}
-@deffn {関数} tree_reduce (@var{F}, @var{s})
-@deffnx {関数} tree_reduce (@var{F}, @var{s}, @var{s_0})
+@deffn {関数} tree_reduce (@mvar{F}, @mvar{s})
+@deffnx {関数} tree_reduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
-合成によって二項関数@var{F}をn項関数に拡張します。
-ここで@var{s}は集合かリストです。
+合成によって二項関数@mvar{F}をn項関数に拡張します。
+ここで@mvar{s}は集合かリストです。
 
 @code{tree_reduce}は以下と同値です:
-新しいリスト@code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]}を形成するために
-@var{F}を要素の連続する対に適用します。
+新しいリスト@code{[@mvar{F}(@mvar{s_1}, @mvar{s_2}), @mvar{F}(@mvar{s_3}, @mvar{s_4}), ...]}を形成するために
+@mvar{F}を要素の連続する対に適用します。
 もし奇数個の要素があるなら、
 最後の要素は変化なしに通過させます。
 そして、リストが１つの要素になるまで繰り返します。１つの要素になった時、それが戻り値です。
 
-オプションの引数@var{s_0}がある時，
+オプションの引数@mvar{s_0}がある時，
 結果は
-@code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}と同値です。
+@code{tree_reduce(@mvar{F}, cons(@mvar{s_0}, @mvar{s})}と同値です。
 
 浮動小数点数の足し算に関して、
 @code{tree_reduce}は、
 @code{rreduce}や@code{lreduce}よりも小さな丸め誤差を持つ和を返します。
 
-@var{s}の要素と部分的な結果は
+@mvar{s}の要素と部分的な結果は
 最小深度の二項木の中に配列されます。
 だから名前が"tree_reduce"です。
 
@@ -2603,8 +2603,8 @@ Maximaは
 @end deffn
 
 @anchor{union}
-@deffn {関数} union (@var{a_1}, ..., @var{a_n})
-集合@var{a_1}から@var{a_n}の和集合を返します。
+@deffn {関数} union (@mvar{a_1}, ..., @mvar{a_n})
+集合@mvar{a_1}から@mvar{a_n}の和集合を返します。
 
 @code{union()} (引数なし)は空集合を返します。
 
@@ -2650,32 +2650,32 @@ Maximaは
 
 @c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
 @anchor{xreduce}
-@deffn {関数} xreduce (@var{F}, @var{s})
-@deffnx {関数} xreduce (@var{F}, @var{s}, @var{s_0})
+@deffn {関数} xreduce (@mvar{F}, @mvar{s})
+@deffnx {関数} xreduce (@mvar{F}, @mvar{s}, @mvar{s_0})
 
-合成によって関数@var{F}をn項関数に拡張します。
-または、もし@var{F}が既にn項関数なら@var{F}を@var{s}に適用します。
-@var{F}がn項関数でない時、
+合成によって関数@mvar{F}をn項関数に拡張します。
+または、もし@mvar{F}が既にn項関数なら@mvar{F}を@mvar{s}に適用します。
+@mvar{F}がn項関数でない時、
 @code{xreduce}は@code{lreduce}と同じです。
-引数@var{s}はリストです。
+引数@mvar{s}はリストです。
 
 n項関数として知られている関数は、
 足し算@code{+}, 掛け算@code{*}, @code{and}, @code{or}, @code{max},
 @code{min}, @code{append}を含みます。
 関数は、
-@code{declare(@var{F}, nary)}によってもn項と宣言されるかもしれません。
+@code{declare(@mvar{F}, nary)}によってもn項と宣言されるかもしれません。
 これらの関数に対して、
 @code{xreduce}は
 @code{rreduce}や@code{lreduce}よりも速いことが期待されます。
 
-オプション引数@var{s_0}がある時、
-結果は、@code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}と同値です。
+オプション引数@mvar{s_0}がある時、
+結果は、@code{xreduce(@mvar{s}, cons(@mvar{s_0}, @mvar{s}))}と同値です。
 
 @c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
 @c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
 浮動小数点の足し算は、厳密には結合的ではありません;
 そうはそうかもしれませんが、
-@var{s}が浮動小数点を含む時、
+@mvar{s}が浮動小数点を含む時、
 @code{xreduce}はMaximaのn項足し算を適用します。
 
 例:

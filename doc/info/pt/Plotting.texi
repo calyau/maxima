@@ -23,48 +23,48 @@ sobre @code{plot2d}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} plot2d (@var{expr}, @var{intervalo_x}, ..., @var{op@,{c}@~oes}, ...)
-@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{op@,{c}@~oes}, ...)
-@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{intervalo_x},..., @var{op@,{c}@~oes}, ...)
+@deffn {Fun@,{c}@~ao} plot2d (@mvar{expr}, @mvar{intervalo_x}, ..., @mvar{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot2d ([@mvar{expr_1}, ..., @mvar{expr_n}], ..., @mvar{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot2d ([@mvar{expr_1}, ..., @mvar{expr_n}], @mvar{intervalo_x},..., @mvar{op@,{c}@~oes}, ...)
 
-Onde @var{expr}, @var{expr_1}, ..., @var{expr_n} podem ser
+Onde @mvar{expr}, @mvar{expr_1}, ..., @mvar{expr_n} podem ser
 express@~oes, fun@,{c}@~oes ou operadores do Maxima ou do Lisp, ou ainda
-uma lista da forma @code{[discrete, [@var{x1}, ..., @var{xn}],
-[@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
-..., [@var{xn}, ..., @var{yn}]]} ou @code{[parametric, @var{expr_x},
-@var{expr_y}, @var{intervalo_t}]}.
+uma lista da forma @code{[discrete, [@mvar{x1}, ..., @mvar{xn}],
+[@mvar{y1}, ..., @mvar{yn}]]}, @code{[discrete, [[@mvar{x1}, @mvar{y1}],
+..., [@mvar{xn}, ..., @mvar{yn}]]} ou @code{[parametric, @mvar{expr_x},
+@mvar{expr_y}, @mvar{intervalo_t}]}.
 
 Mostra o gr@'afico de uma ou mais express@~oes em fun@,{c}@~ao de uma
 vari@'avel.
 
-@code{plot2d} produz o gr@'afico de uma express@~ao @var{expr} ou de
-v@'arias express@~oes @code{[@var{expr_1}, ..., @var{expr_n}]}. As
+@code{plot2d} produz o gr@'afico de uma express@~ao @mvar{expr} ou de
+v@'arias express@~oes @code{[@mvar{expr_1}, ..., @mvar{expr_n}]}. As
 express@~oes que n@~ao forem do tipo param@'etrico ou discreto, dever@~ao
-depender todas de uma @'unica vari@'avel @var{var} e ser@'a
-obrigat@'orio usar @var{intervalo_x} para indicar o nome dessa
+depender todas de uma @'unica vari@'avel @mvar{var} e ser@'a
+obrigat@'orio usar @mvar{intervalo_x} para indicar o nome dessa
 vari@'avel, e os seus valores m@'{@dotless{i}}nimo e m@'aximo, usando a
-sintaxe: @code{[@var{var}, @var{min}, @var{max}]}. O gr@'afico
-mostrar@'a o eixo horizontal delimitado pelos valores @var{min} e
-@var{max}.
+sintaxe: @code{[@mvar{var}, @mvar{min}, @mvar{max}]}. O gr@'afico
+mostrar@'a o eixo horizontal delimitado pelos valores @mvar{min} e
+@mvar{max}.
 
 Uma express@~ao a ser representada no gr@'afico pode ser dada tamb@'em
 na forma discreta, ou param@'etrica. Nomeadamente, por meio de uma lista
 a come@,{c}ar pela palavra ``discrete'' ou ``parametric''. A palavra
-chave @var{discrete} dever@'a ir seguida por duas listas, ambas do mesmo
+chave @mvar{discrete} dever@'a ir seguida por duas listas, ambas do mesmo
 comprimento, que ser@~ao as coordenadas horizontais e verticais de um
 conjunto de pontos; em alternativa, as coordenadas de cada ponto podem
 ser colocadas numa lista de dois valores, e todas essas coordenadas
-dever@~ao estar dentro de outra lista. A palavra chave @var{parametric}
-dever@'a ir seguida por duas express@~oes @var{expr_x} e @var{expr_y}, e
-um intervalo @var{intervalo_t} da forma @code{[@var{param}, @var{min},
-@var{max}]}. As duas express@~oes dever@~ao depender unicamente no
-par@^ametro @var{param}, e o gr@'afico mostrar@'a o percurso seguido
-pelo ponto com coordenadas (@var{expr_x}, @var{expr_y}) @`a medida que
-@var{param} aumenta desde @var{min} at@'e @var{max}.
+dever@~ao estar dentro de outra lista. A palavra chave @mvar{parametric}
+dever@'a ir seguida por duas express@~oes @mvar{expr_x} e @mvar{expr_y}, e
+um intervalo @mvar{intervalo_t} da forma @code{[@mvar{param}, @mvar{min},
+@mvar{max}]}. As duas express@~oes dever@~ao depender unicamente no
+par@^ametro @mvar{param}, e o gr@'afico mostrar@'a o percurso seguido
+pelo ponto com coordenadas (@mvar{expr_x}, @mvar{expr_y}) @`a medida que
+@mvar{param} aumenta desde @mvar{min} at@'e @mvar{max}.
 
 O intervalo de valores no eixo vertical n@~ao @'e obrigat@'orio. @'E
 mais uma das op@,{c}@~oes do comando, com a sintaxe: @code{[y,
-@var{min}, @var{max}]}. Se essa op@,{c}@~ao for usada, o gr@'afico
+@mvar{min}, @mvar{max}]}. Se essa op@,{c}@~ao for usada, o gr@'afico
 apresentar@'a esse intervalo completo, inclusivamente quando as
 express@~oes n@~ao cheguem a atingir esses valores. De outra forma, se
 n@~ao for indicado um intervalo no eixo vertical por meio de
@@ -72,45 +72,45 @@ n@~ao for indicado um intervalo no eixo vertical por meio de
 seleccionadas automaticamente.
 
 Todas as outras op@,{c}@~oes dever@~ao ser listas, a come@,{c}ar pelo
-nome da op@,{c}@~ao. A op@,{c}@~ao @var{xlabel} pode ser usada para dar
+nome da op@,{c}@~ao. A op@,{c}@~ao @mvar{xlabel} pode ser usada para dar
 um texto que identificar@'a o eixo horizontal; se essa op@,{c}@~ao n@~ao for
 usada, o eixo ser@'a identificado com o nome da vari@'avel indicada em
-@var{intervalo_x}, ou com a express@~ao @var{expr_x}, se houver
+@mvar{intervalo_x}, ou com a express@~ao @mvar{expr_x}, se houver
 unicamente uma express@~ao param@'etrica, ou caso contr@'ario ficar@'a
 em branco.
 
 O texto para identificar o eixo vertical pode ser indicado com a
-op@,{c}@~ao @var{ylabel}. Se s@'o houver uma @'unica express@~ao a ser
-representada, e a op@,{c}@~ao @var{ylabel} n@~ao tiver sido usada, o
+op@,{c}@~ao @mvar{ylabel}. Se s@'o houver uma @'unica express@~ao a ser
+representada, e a op@,{c}@~ao @mvar{ylabel} n@~ao tiver sido usada, o
 eixo vertical ser@'a identificado com essa express@~ao, a menos que for
-muito comprido, ou com a express@~ao @var{expr_y}, se a express@~ao for
+muito comprido, ou com a express@~ao @mvar{expr_y}, se a express@~ao for
 param@'etrica, ou com o texto ``discrete data'' se a express@~ao for
 discreta.
 
-As op@,{c}@~oes @var{logx} e @var{logy} n@~ao precisam de quaisquer
+As op@,{c}@~oes @mvar{logx} e @mvar{logy} n@~ao precisam de quaisquer
 para@^ametros. Fazem com que os eixos horizontal e vertical sejam
 apresentados em forma logar@'{@dotless{i}}tmica.
 
 Se houver v@'a rias express@~oes a serem representadas, ser@'a escrita
 uma legenda para identificar cada uma dessas express@~oes. O texto que
 dever@'a ser usado nessa legenda pode ser indicado por meio da
-op@,{c}@~ao @var{legend}. Se essa op@,{c}@~ao n@~ao for usada, Maxima
+op@,{c}@~ao @mvar{legend}. Se essa op@,{c}@~ao n@~ao for usada, Maxima
 criar@'a textos para identificar cada express@~ao.
 
 Por omiss@~ao, as express@~oes dadas ser@~ao representadas por pequenos
 segmentos de recta a ligarem pontos adjacentes num conjunto de pontos
-que, ou @'e dado usando a forma @var{discrete}, ou @'e calculado
+que, ou @'e dado usando a forma @mvar{discrete}, ou @'e calculado
 automaticamente a partir das express@~oes dadas, por meio de um
 algoritmo com ajuste autom@'atico dos intervalos entre pontos, usando
 como estimativa inicial do n@'umero de pontos o valor indicado pela
-op@,{c}@~ao @var{nticks}. A op@,{c}@~ao @var{style} serve para fazer com
+op@,{c}@~ao @mvar{nticks}. A op@,{c}@~ao @mvar{style} serve para fazer com
 que alguma das express@~oes seja representada por pontos isolados ou por
 pontos mais segmentos de recta.
  
 Existem v@'arias op@,{c}@~oes globais, armazenadas na lista
-@var{plot_options}, quu podem ser modificadas usando a fun@,{c}@~ao
+@mvar{plot_options}, quu podem ser modificadas usando a fun@,{c}@~ao
 @code{set_plot_option}; qualquer uma dessad op@,{c}@~oes pode ser
-contrariada pelos valores locais dados no comando @var{plot2d}.
+contrariada pelos valores locais dados no comando @mvar{plot2d}.
 
 Uma fun@,{c}@~ao a ser representada poder@'a ser identificada pelo nome
 de uma fun@,{c}@~ao ou operador do Maxima ou do Lisp, por meio duma
@@ -166,12 +166,12 @@ $g
 @end ifnotinfo
 
 Podemos representar um c@'{@dotless{i}}rculo por meio de um gr@'afico
-param@'etrico com um par@^ametro @var{t}. No caso dos gr@'aficos
+param@'etrico com um par@^ametro @mvar{t}. No caso dos gr@'aficos
 param@'etricos n@~ao @'e necess@'ario indicar o intervalo da vari@'avel
-na horizontal, j@'a que o intervalo do par@^ametro @var{t} determina o
+na horizontal, j@'a que o intervalo do par@^ametro @mvar{t} determina o
 dom@'{@dotless{i}}nio. No entanto, como os gr@'aficos s@~ao
 representados numa propor@,{c}@~ao de 4 para 3 entre os eixos horizontal
-e vertical, usaremos a op@,{c}@~ao @var{xrange} para obter a mesma
+e vertical, usaremos a op@,{c}@~ao @mvar{xrange} para obter a mesma
 escala nos dois eixos:
 
 @c ===beg===
@@ -280,7 +280,7 @@ fun@,{c}@~oes gr@'aficas e mostra mais exemplos.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  xgraph_curves (@var{lista})
+@deffn {Fun@,{c}@~ao}  xgraph_curves (@mvar{lista})
 Desenha o gr@'afico da lista de `grupos de pontos' dados em lista,
 usando xgraph. Se o programa externo xgraph n@~ao estiver instalado, o
 comando falha.
@@ -436,8 +436,8 @@ Op@,{c}@~ao: @code{plot_realpart}
 
 Quando @code{plot_realpart} for @code{true}, nos pontos onde o valor a
 ser representado no eixo vertical for complexo, ser@'a apresentada a
-sua parte real @var{x}; isso @'e equivalente a mostrar
-@code{realpart(@var{x})} em lugar de @var{x}. De outra forma, somente
+sua parte real @mvar{x}; isso @'e equivalente a mostrar
+@code{realpart(@mvar{x})} em lugar de @mvar{x}. De outra forma, somente
 valores com a parte imagin@'aria igual a 0 s@~ao mostrados no
 gr@'afico, e os valores complexos ser@~ao ignorados.
 
@@ -525,23 +525,23 @@ Exemplo:
 Op@,{c}@~ao: @code{style}
 
 Os estilos que ser@~ao usados para as diversas fun@,{c}@~oes ou
-conjuntos discretos de pontos, num gr@'afico a 2d. A palavra @var{style}
+conjuntos discretos de pontos, num gr@'afico a 2d. A palavra @mvar{style}
 dever@'a ir seguida por um ou mais estilos. Se houver mais fun@,{c}@~oes
 e conjuntos de dados do que os estilos definidos, ser@~ao repetidos
-estilos. Cada estilo poder@'a ser @var{lines} para segmentos de recta,
-@var{points} para pontos isolados, @var{linespoints} para segmentos e
-pontos, ou @var{dots} para pequenos pontos isolados. O Gnuplot tamb@'em
-aceita o estilo @var{impulses}.
+estilos. Cada estilo poder@'a ser @mvar{lines} para segmentos de recta,
+@mvar{points} para pontos isolados, @mvar{linespoints} para segmentos e
+pontos, ou @mvar{dots} para pequenos pontos isolados. O Gnuplot tamb@'em
+aceita o estilo @mvar{impulses}.
 
 Cada um dos estilos poder@'a ser incorporado numa lista, seguido de
-alguns par@^ametros adicionais. @var{lines} admite um ou dois n@'umeros:
-a largura da linha e um inteiro que identifica uma cor. @var{points}
+alguns par@^ametros adicionais. @mvar{lines} admite um ou dois n@'umeros:
+a largura da linha e um inteiro que identifica uma cor. @mvar{points}
 admite um ou dois n@'umeros; o primeiro n@'umero @'e o raio dos pontos,
 e o segundo n@'umero @'e um inteiro que no Gnuplot permite seleccionar
 diferentes formas e cores para os pontos e no Openmath muda a cor dos
-pontos usados. @var{linesdots} admite at@'e quatro n@'umeros; os dois
-primeiros s@~ao os mesmos do que para @var{lines} e os dois @'ultimos
-s@~ao os mesmos do que para @var{points}.
+pontos usados. @mvar{linesdots} admite at@'e quatro n@'umeros; os dois
+primeiros s@~ao os mesmos do que para @mvar{lines} e os dois @'ultimos
+s@~ao os mesmos do que para @mvar{points}.
 
 Exemplo:
 @example
@@ -641,8 +641,8 @@ exemplo @code{[gnuplot_term,png]} cria gr@'aficos no formato PNG
 1000,1000"]} cria gr@'aficos no formato PNG com tamanho de 1000x1000
 pixels. Se @`a op@,{c}@~ao @code{gnuplot_out_file} for dado o nome de um
 ficheiro, gnuplot gravar@'a o gra@'afico nesse ficheiro. De outra forma,
-o gr@'afico @'e gravado no ficheiro @code{maxplot.@var{term}}, onde
-@var{term} @'e o nome do terminal do gnuplot.
+o gr@'afico @'e gravado no ficheiro @code{maxplot.@mvar{term}}, onde
+@mvar{term} @'e o nome do terminal do gnuplot.
 
 @end itemize
 
@@ -657,7 +657,7 @@ Valor por omiss@~ao: @code{false}
 
 Nenhum ficheiro de sa@'{@dotless{i}}da especificado.
 @item
-Valor: @var{filename}
+Valor: @mvar{filename}
 
 Exemplo: @code{[gnuplot_out_file, "myplot.ps"]}
 Quando usada em conjunto com o terminal PostScript do gnuplot, neste
@@ -703,7 +703,7 @@ padr@~ao @'e @code{[default]}, que escolhe automaticamente um
 t@'{@dotless{i}}tulo para fun@,{c}@~ao cujo gr@'afico est@'a a ser
 desenhado. Se n@~ao for igual a @code{[default]},
 @code{gnuplot_curve_titles} poder@'a conter uma lista de sequ@^encias de
-caracteres, cada uma das quais @'e @code{"title '@var{nome}'"}.  (Para
+caracteres, cada uma das quais @'e @code{"title '@mvar{nome}'"}.  (Para
 desabilitar a legenda do gr@'afico, adicione @code{"set nokey"} a
 @code{gnuplot_preamble}.)
 
@@ -765,7 +765,7 @@ de @code{set term postscript} no manual do gnuplot.
 
 Exemplo:
 
-Toda as figuras nos exemplos para a fun@,{c}@~ao @var{plot2d} neste
+Toda as figuras nos exemplos para a fun@,{c}@~ao @mvar{plot2d} neste
 manual forma obtidas a partir de ficheiros Postscript que foram
 produzidos ap@'os ter mudado @code{gnuplot_ps_term_command} par:
 
@@ -892,11 +892,11 @@ n@~ao pode ter qualquer quebra de linha.)
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
-@deffnx {Fun@,{c}@~ao} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
-@deffnx {Fun@,{c}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
-@deffnx {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
-@deffnx {Fun@,{c}@~ao} plot3d ([@var{nome_1}, @var{nome_2}, @var{nome_3}], @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffn {Fun@,{c}@~ao} plot3d ([@mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}], @mvar{x_range}, @mvar{y_range}, ..., @mvar{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@mvar{expr}, @mvar{x_range}, @mvar{y_range}, ..., @mvar{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@mvar{name}, @mvar{x_range}, @mvar{y_range}, ..., @mvar{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d ([@mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}], @mvar{x_rge}, @mvar{y_rge})
+@deffnx {Fun@,{c}@~ao} plot3d ([@mvar{nome_1}, @mvar{nome_2}, @mvar{nome_3}], @mvar{x_range}, @mvar{y_range}, ..., @mvar{op@,{c}@~oes}, ...)
 
 Mostra o gr@'afico de uma ou tr@^es express@~oes como fun@,{c}@~oes
 de duas vari@'aveis.
@@ -911,7 +911,7 @@ de duas vari@'aveis.
 
 desenha o gr@'afico de @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v}
 a variar nos intervalos fechados [-3,3] e [-2,2], respectivamente, e
-com @var{u} sobre o eixo x, e @code{v} sobre o eixo y.
+com @mvar{u} sobre o eixo x, e @code{v} sobre o eixo y.
 
 O mesmo gr@'afico pode ser visualizado usando openmath (se Xmaxima
 estiver instalado):
@@ -1015,7 +1015,7 @@ Veja @code{plot_options} para mais exemplos.
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao}  make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
+@deffn {Fun@,{c}@~ao}  make_transform (@mvar{vars}, @mvar{fx}, @mvar{fy}, @mvar{fz})
 Produz uma fun@,{c}@~ao adequada para a fun@,{c}@~ao
 transforma@,{c}@~ao em plot3d. Usa-se conjuntamente com a op@,{c}@~ao
 gr@'afica @code{transform_xy}.
@@ -1025,9 +1025,9 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @'e uma transforma@value{cedilha}@~ao para coordenadas polares.
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
+@deffn {Fun@,{c}@~ao}  set_plot_option (@mvar{op@,{c}@~ao})
 Atribui valores @`as op@,{c}@~oes globais para impress@~ao.
-@var{op@,{c}@~ao} @'e especificada como uma lista de dois ou mais
+@mvar{op@,{c}@~ao} @'e especificada como uma lista de dois ou mais
 elementos, na qual o primeiro elemeto @'e uma das palavras chave
 dentro da lista @code{plot_options}.
 

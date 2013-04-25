@@ -14,7 +14,7 @@ Variable opcional para la funci@'on @code{ggf}.
 
 Cuando se calcula la fracci@'on continua de la funci@'on
 generatriz, si un cociente parcial tiene grado estrictamente
-mayor que @var{GGFINFINITY} ser@'a descartado y la convergencia
+mayor que @mvar{GGFINFINITY} ser@'a descartado y la convergencia
 alcanzada hasta ese momento ser@'a considerada como exacta para
 la funci@'on generatriz. Lo m@'as frecuente es que el grado de
 todos los cocientes parciales sea 0 @'o 1, de modo que si se
@@ -32,17 +32,17 @@ Variable opcional para la funci@'on @code{ggf}.
 
 Cuando se calcula la fracci@'on continua de la funci@'on
 generatriz, si no se ha encontrado un resultado aceptable
-(v@'ease la variable @var{GGFINFINITY}) despu@'es de haber 
-calculado @var{GGFCFMAX} cocientes parciales, la funci@'on
+(v@'ease la variable @mvar{GGFINFINITY}) despu@'es de haber 
+calculado @mvar{GGFCFMAX} cocientes parciales, la funci@'on
 generatriz ser@'a considerada no equivalente a una fracci@'on
 racional y la funci@'on @code{ggf} se detendr@'a. Puede
-asign@'arsele a @var{GGFCFMAX} un valor mayor para funciones
+asign@'arsele a @mvar{GGFCFMAX} un valor mayor para funciones
 generatrices m@'as complicadas.
 
 V@'ease tambi@'en @code{ggf}.
 @end defvr
 
-@deffn {Funci@'on} ggf (@var{l})
+@deffn {Funci@'on} ggf (@mvar{l})
 Calcula la funci@'on generatriz de una sucesi@'on de la que
 se suministran tan solo los primeros valores y cuyo t@'ermino
 general es una fracci@'on algebraica (cociente de dos
@@ -53,7 +53,7 @@ En caso de no poder encontrar una soluci@'on, se devuelve
 @code{done}.
 
 Esta funci@'on est@'a controlada por las variables globales 
-@var{GGFINFINITY} y @var{GGFCFMAX}. V@'eanse tambi@'en @var{GGFINFINITY} y @var{GGFCFMAX}.
+@mvar{GGFINFINITY} y @mvar{GGFCFMAX}. V@'eanse tambi@'en @mvar{GGFINFINITY} y @mvar{GGFCFMAX}.
 
 Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("ggf")}.
 @end deffn

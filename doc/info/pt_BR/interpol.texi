@@ -13,7 +13,7 @@ splines c@'{u}bicos para interpola@value{cedilha}@~{a}o polinomial.
 
 
 
-Coment@'{a}rios, corre@value{cedilha}@~{o}es e sugest@~{o}es, por favor contacte-me em @var{'mario AT edu DOT xunta DOT es'}.
+Coment@'{a}rios, corre@value{cedilha}@~{o}es e sugest@~{o}es, por favor contacte-me em @mvar{'mario AT edu DOT xunta DOT es'}.
 
 
 
@@ -21,9 +21,9 @@ Coment@'{a}rios, corre@value{cedilha}@~{o}es e sugest@~{o}es, por favor contacte
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para interpol
 
 
-@deffn {Fun@value{cedilha}@~{a}o} lagrange (@var{pontos})
-@deffnx {Fun@value{cedilha}@~{a}o} lagrange (@var{pontos}, @var{op@value{cedilha}@~{a}o})
-Calcula a interpola@value{cedilha}@~{a}o polinomial atrav@'{e}s do m@'{e}todo Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
+@deffn {Fun@value{cedilha}@~{a}o} lagrange (@mvar{pontos})
+@deffnx {Fun@value{cedilha}@~{a}o} lagrange (@mvar{pontos}, @mvar{op@value{cedilha}@~{a}o})
+Calcula a interpola@value{cedilha}@~{a}o polinomial atrav@'{e}s do m@'{e}todo Lagrangiano. O argumento @mvar{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -36,7 +36,7 @@ uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o s
 
 Nos dois primeiros casos os pares s@~{a}o ordenados em rela@value{cedilha}@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
 
-Com o argumento @var{op@value{cedilha}@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @mvar{op@value{cedilha}@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Exemplos:
 
@@ -79,14 +79,14 @@ Exemplos:
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} charfun2 (@var{x}, @var{a}, @var{b})
-Retorna @code{true}, i. e., verdadeiro se o n@'{u}mero @var{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contr@'{a}rio.
+@deffn {Fun@value{cedilha}@~{a}o} charfun2 (@mvar{x}, @mvar{a}, @mvar{b})
+Retorna @code{true}, i. e., verdadeiro se o n@'{u}mero @mvar{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contr@'{a}rio.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} linearinterpol (@var{pontos})
-@deffnx {Fun@value{cedilha}@~{a}o} linearinterpol (@var{pontos}, @var{op@value{cedilha}@~{a}o})
-Calcula a interpola@value{cedilha}@~{a}o polinomial atrav@'{e}s do m@'{e}todo linear. O argumento @var{pontos} deve ser um dos seguintes:
+@deffn {Fun@value{cedilha}@~{a}o} linearinterpol (@mvar{pontos})
+@deffnx {Fun@value{cedilha}@~{a}o} linearinterpol (@mvar{pontos}, @mvar{op@value{cedilha}@~{a}o})
+Calcula a interpola@value{cedilha}@~{a}o polinomial atrav@'{e}s do m@'{e}todo linear. O argumento @mvar{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -99,7 +99,7 @@ uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o s
 
 Nos dois primeiros casos os pares s@~{a}o ordenados em rela@value{cedilha}@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
 
-Com o argumento @var{op@value{cedilha}@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @mvar{op@value{cedilha}@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Examples:
 @example
@@ -148,9 +148,9 @@ Examples:
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} cspline (@var{pontos})
-@deffnx {Fun@value{cedilha}@~{a}o} cspline (@var{pontos}, @var{op@value{cedilha}@~{a}o1}, @var{op@value{cedilha}@~{a}o2}, ...)
-Calcula a interpola@value{cedilha}@~{a}o polnomial pelo m@'{e}todo de splines ( polin@^{o}mios de ordem k que interpolam os dados e t@^{e}m k-1 derivadas cont@'{i}nuas em todo o intervalo ) c@'{u}bicos. O argumento @var{pontos} deve ser um dos seguintes:
+@deffn {Fun@value{cedilha}@~{a}o} cspline (@mvar{pontos})
+@deffnx {Fun@value{cedilha}@~{a}o} cspline (@mvar{pontos}, @mvar{op@value{cedilha}@~{a}o1}, @mvar{op@value{cedilha}@~{a}o2}, ...)
+Calcula a interpola@value{cedilha}@~{a}o polnomial pelo m@'{e}todo de splines ( polin@^{o}mios de ordem k que interpolam os dados e t@^{e}m k-1 derivadas cont@'{i}nuas em todo o intervalo ) c@'{u}bicos. O argumento @mvar{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item

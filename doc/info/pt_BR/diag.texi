@@ -8,8 +8,8 @@
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para diag
 
 
-@deffn {Fun@value{cedilha}@~{a}o} diag (@var{lm})
-Constr@'{o}i a matriz quadrada com as matrizes de @var{lm} na diagonal. @var{lm} @'{e} uma lista de matrizes ou escalares.
+@deffn {Fun@value{cedilha}@~{a}o} diag (@mvar{lm})
+Constr@'{o}i a matriz quadrada com as matrizes de @mvar{lm} na diagonal. @mvar{lm} @'{e} uma lista de matrizes ou escalares.
 
 Exemplo:
 @example
@@ -37,8 +37,8 @@ Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("diag")
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} JF (@var{lambda},@var{n})
-Retorna a c@'{e}lula de Jordan de ordem @var{n} com autovalor @var{lambda}.
+@deffn {Fun@value{cedilha}@~{a}o} JF (@mvar{lambda},@mvar{n})
+Retorna a c@'{e}lula de Jordan de ordem @mvar{n} com autovalor @mvar{lambda}.
 
 Exemplo:
 @example
@@ -64,8 +64,8 @@ Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("diag")
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} jordan (@var{mat})
-Retorna a forma de Jordan da matriz @var{mat}, mas codificada em uma lista do Maxima.
+@deffn {Fun@value{cedilha}@~{a}o} jordan (@mvar{mat})
+Retorna a forma de Jordan da matriz @mvar{mat}, mas codificada em uma lista do Maxima.
 Para pegar a matriz correspondente @`a codifica@value{cedilha}@~{a}o, chame a fun@value{cedilha}@~{a}o @code{dispJordan} sando como argumento
 a sa@'{i}da de @code{JF}.
 
@@ -106,8 +106,8 @@ Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("diag")
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} dispJordan (@var{l})
-Retorna a matriz de Jordan associada @`a codifica@value{cedilha}@~{a}o fornecida pela lista do Maxima @var{l}, que @'{e} a sa@'{i}da fornecida pela fun@value{cedilha}@~{a}o @code{jordan}.
+@deffn {Fun@value{cedilha}@~{a}o} dispJordan (@mvar{l})
+Retorna a matriz de Jordan associada @`a codifica@value{cedilha}@~{a}o fornecida pela lista do Maxima @mvar{l}, que @'{e} a sa@'{i}da fornecida pela fun@value{cedilha}@~{a}o @code{jordan}.
 
 Exemplo:
 @example
@@ -137,8 +137,8 @@ Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("diag")
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} minimalPoly (@var{l})
-Retorna o menor polin@^{o}mio associado @`a codifica@value{cedilha}@~{a}o fornecida pela lista do Maxima @var{l}, que @'{e} a sa@'{i}da fornecida pela fun@value{cedilha}@~{a}o @code{jordan}.
+@deffn {Fun@value{cedilha}@~{a}o} minimalPoly (@mvar{l})
+Retorna o menor polin@^{o}mio associado @`a codifica@value{cedilha}@~{a}o fornecida pela lista do Maxima @mvar{l}, que @'{e} a sa@'{i}da fornecida pela fun@value{cedilha}@~{a}o @code{jordan}.
 
 Exemplo:
 @example
@@ -159,8 +159,8 @@ Exemplo:
 Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("diag")}. Veja tamb@'{e}m @code{jordan} e @code{dispJordan}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ModeMatrix (@var{A},@var{l})
-Retorna a matriz @var{M} tal que @math{(M^^-1).A.M=J}, onde @var{J} @'{e} a forma de Jordan de @var{A}. A lista do Maxima @var{l} @'{e} a codifica@value{cedilha}@~{a}o da forma de Jordan como retornado pela fun@value{cedilha}@~{a}o @code{jordan}.
+@deffn {Fun@value{cedilha}@~{a}o} ModeMatrix (@mvar{A},@mvar{l})
+Retorna a matriz @mvar{M} tal que @math{(M^^-1).A.M=J}, onde @mvar{J} @'{e} a forma de Jordan de @mvar{A}. A lista do Maxima @mvar{l} @'{e} a codifica@value{cedilha}@~{a}o da forma de Jordan como retornado pela fun@value{cedilha}@~{a}o @code{jordan}.
 
 Exemplo:
 @example
@@ -196,8 +196,8 @@ Para usa essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("diag")}
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} mat_function (@var{f},@var{mat})
-Retorna @math{f(mat)}, onde @var{f} @'{e} uma fun@value{cedilha}@~{a}o anal@'{i}tica e @var{mat}
+@deffn {Fun@value{cedilha}@~{a}o} mat_function (@mvar{f},@mvar{mat})
+Retorna @math{f(mat)}, onde @mvar{f} @'{e} uma fun@value{cedilha}@~{a}o anal@'{i}tica e @mvar{mat}
 uma matriz. Essa computa@value{cedilha}@~{a}o @'{e} baseada na f@'{o}rmula da integral de Cauchy, que estabelece que
 se @code{f(x)} for anal@'{i}tica e
 

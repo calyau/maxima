@@ -82,7 +82,7 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @c WHAT IS THIS ABOUT EXACTLY ??
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} bezout (@var{p1}, @var{p2}, @var{x})
+@deffn {関数} bezout (@mvar{p1}, @mvar{p2}, @mvar{x})
 
 @code{resultant}コマンドの代替。
 行列を返します。
@@ -96,14 +96,14 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @c REWORD THIS ITEM -- COULD BE MORE CONCISE
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} bothcoef (@var{expr}, @var{x})
+@deffn {関数} bothcoef (@mvar{expr}, @mvar{x})
 
-最初のメンバーが@var{expr}の中の@var{x}の
-（もし@var{expr}がCRE形なら@code{ratcoef}が見つけるような）
+最初のメンバーが@mvar{expr}の中の@mvar{x}の
+（もし@mvar{expr}がCRE形なら@code{ratcoef}が見つけるような）
 係数であり、
-２番目のメンバーが@var{expr}の残りの部分であるリストを返します。
+２番目のメンバーが@mvar{expr}の残りの部分であるリストを返します。
 例えば、
-@code{@var{expr} = A*@var{x} + B}の@code{[A, B]}。
+@code{@mvar{expr} = A*@mvar{x} + B}の@code{[A, B]}。
 
 例:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -126,28 +126,28 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} coeff (@var{expr}, @var{x}, @var{n})
-@deffnx {関数} coeff (@var{expr}, @var{x})
+@deffn  {関数} coeff (@mvar{expr}, @mvar{x}, @mvar{n})
+@deffnx {関数} coeff (@mvar{expr}, @mvar{x})
 
-@var{expr}の@code{@var{x}^@var{n}}の係数を返します。
-ここで、@var{expr}は@var{x}の多項式か単項式です。
+@mvar{expr}の@code{@mvar{x}^@mvar{n}}の係数を返します。
+ここで、@mvar{expr}は@mvar{x}の多項式か単項式です。
 
-@code{coeff(@var{expr}, @var{x}^@var{n})}は
-@code{coeff(@var{expr}, @var{x}, @var{n})}と同値です。
-@code{coeff(@var{expr}, @var{x}, 0)}は
-@var{x}を含まない@var{expr}の剰余項を返します。
-もし省略されたら、@var{n}は1が仮定されます。
+@code{coeff(@mvar{expr}, @mvar{x}^@mvar{n})}は
+@code{coeff(@mvar{expr}, @mvar{x}, @mvar{n})}と同値です。
+@code{coeff(@mvar{expr}, @mvar{x}, 0)}は
+@mvar{x}を含まない@mvar{expr}の剰余項を返します。
+もし省略されたら、@mvar{n}は1が仮定されます。
 
-@var{x}は単純変数か添字付き変数か、演算子1つとその引数のすべてから構成されるexprの部分式です。
+@mvar{x}は単純変数か添字付き変数か、演算子1つとその引数のすべてから構成されるexprの部分式です。
 
 @code{expand}か@code{factor}を適用することで、
-@var{expr}と同値な式の係数を計算することが可能かもしれません。
+@mvar{expr}と同値な式の係数を計算することが可能かもしれません。
 @code{coeff}自身は@code{expand}や@code{factor}や他のいかなる関数も
 適用しません。
 
 例:
 
-@code{coeff}は@var{expr}の@code{@var{x}^@var{n}}の係数を返します。
+@code{coeff}は@mvar{expr}の@code{@mvar{x}^@mvar{n}}の係数を返します。
 
 @c ===beg===
 @c coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
@@ -158,8 +158,8 @@ Kroneckerの因数分解アルゴリズムが使われます。
 (%o1)                          b
 @end example
 
-@code{coeff(@var{expr}, @var{x}^@var{n})}は
-@code{coeff(@var{expr}, @var{x}, @var{n})}と同値です。
+@code{coeff(@mvar{expr}, @mvar{x}^@mvar{n})}は
+@code{coeff(@mvar{expr}, @mvar{x}, @mvar{n})}と同値です。
 
 @c ===beg===
 @c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
@@ -174,8 +174,8 @@ Kroneckerの因数分解アルゴリズムが使われます。
                                  3
 @end example
 
-@code{coeff(@var{expr}, @var{x}, 0)}は
-@var{expr}の@var{x}を含まない剰余項です。
+@code{coeff(@mvar{expr}, @mvar{x}, 0)}は
+@mvar{expr}の@mvar{x}を含まない剰余項です。
 
 @c ===beg===
 @c coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
@@ -186,7 +186,7 @@ Kroneckerの因数分解アルゴリズムが使われます。
 (%o1)                      c  u  + a u
 @end example
 
-@var{x}は単純変数か添字付き変数か、演算子1つとその引数のすべてから構成されるexprの部分式です。
+@mvar{x}は単純変数か添字付き変数か、演算子1つとその引数のすべてから構成されるexprの部分式です。
 
 @c ===beg===
 @c coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
@@ -259,10 +259,10 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} content (@var{p_1}, @var{x_1}, @dots{}, @var{x_n})
-最初のメンバーが、多項式変数@var{p_1}の@var{x_n}
+@deffn {関数} content (@mvar{p_1}, @mvar{x_1}, @dots{}, @mvar{x_n})
+最初のメンバーが、多項式変数@mvar{p_1}の@mvar{x_n}
 に関する項の係数（これが中身です）の最大公約数であり、
-２番目のメンバーが中身で多項式@var{p_1}を割ったものであるリストを返します。
+２番目のメンバーが中身で多項式@mvar{p_1}を割ったものであるリストを返します。
 @c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
 @c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
 
@@ -284,9 +284,9 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} denom (@var{expr})
+@deffn {関数} denom (@mvar{expr})
 
-有理式@var{expr}の分母を返します。
+有理式@mvar{expr}の分母を返します。
 
 @opencatbox
 @category{Expressions}
@@ -294,10 +294,10 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} divide (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {関数} divide (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
-メインの多項式変数@var{x_n}に関して、
-多項式@var{p_2}で割った多項式@var{p_1}の商と余りを計算します。
+メインの多項式変数@mvar{x_n}に関して、
+多項式@mvar{p_2}で割った多項式@mvar{p_1}の商と余りを計算します。
 @c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
 他の変数は、@code{ratvars}関数の中でようなものです。
 結果は、最初の要素が商で、２番目の要素が余りのリストです。
@@ -323,15 +323,15 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} eliminate ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_k}])
+@deffn {関数} eliminate ([@mvar{eqn_1}, @dots{}, @mvar{eqn_n}], [@mvar{x_1}, @dots{}, @mvar{x_k}])
 
 連続する結果を取ることによって、式（もしくは0に等しいと仮定された式）から変数を消去します。
-これは、@var{k}個の変数@var{x_1}, ..., @var{x_k}が消去された
-@code{@var{n} - @var{k}}個の式のリストを返します。
-最初、@var{x_1}が消去され、@code{@var{n} - 1}個の式をもたらし、
-そして、変数@var{x_2}が消去され、などなど。
-もし@code{@var{k} = @var{n}}なら、
-変数@var{x_1}, ..., @var{x_k}に依らないリストの中の単一式が返されます。
+これは、@mvar{k}個の変数@mvar{x_1}, ..., @mvar{x_k}が消去された
+@code{@mvar{n} - @mvar{k}}個の式のリストを返します。
+最初、@mvar{x_1}が消去され、@code{@mvar{n} - 1}個の式をもたらし、
+そして、変数@mvar{x_2}が消去され、などなど。
+もし@code{@mvar{k} = @mvar{n}}なら、
+変数@mvar{x_1}, ..., @mvar{x_k}に依らないリストの中の単一式が返されます。
 この場合、最後の変数について最後の結果を解くため、@code{solve}がコールされます。
 
 例:
@@ -365,8 +365,8 @@ Kroneckerの因数分解アルゴリズムが使われます。
 
 @c -----------------------------------------------------------------------------
 @anchor{ezgcd}
-@deffn {関数} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, @dots{})
-最初の要素が、多項式@var{p_1}, @var{p_2}, @var{p_3}, @dots{}の最大公約数で、
+@deffn {関数} ezgcd (@mvar{p_1}, @mvar{p_2}, @mvar{p_3}, @dots{})
+最初の要素が、多項式@mvar{p_1}, @mvar{p_2}, @mvar{p_3}, @dots{}の最大公約数で、
 残りの要素が、多項式を最大公約数で割ったものであるリストを返します。
 これはいつも@code{ezgcd}アルゴリズムを使います。
 
@@ -416,12 +416,12 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 
 @c -----------------------------------------------------------------------------
 @anchor{factor}
-@deffn  {関数} factor (@var{expr})
-@deffnx {関数} factor (@var{expr}, @var{p})
+@deffn  {関数} factor (@mvar{expr})
+@deffnx {関数} factor (@mvar{expr}, @mvar{p})
 
-任意の数の変数と関数を含んだ式@var{expr}を整数上既約な因子に因数分解します。
-@code{factor (@var{expr}, @var{p})}は@var{expr}を、
-有理数体上で、最小多項式が@var{p}である要素で因数分解します。
+任意の数の変数と関数を含んだ式@mvar{expr}を整数上既約な因子に因数分解します。
+@code{factor (@mvar{expr}, @mvar{p})}は@mvar{expr}を、
+有理数体上で、最小多項式が@mvar{p}である要素で因数分解します。
 
 @code{factor}は、整数を素因数分解するのに@code{ifactor}関数を使います。
 
@@ -582,11 +582,11 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} factorout (@var{expr}, @var{x_1}, @var{x_2}, @dots{})
+@deffn {関数} factorout (@mvar{expr}, @mvar{x_1}, @mvar{x_2}, @dots{})
 
-和@var{expr}を
-形式@code{f (@var{x_1}, @var{x_2}, @dots{})*g}の項の和に再整理します。
-ここで、@code{g}は、いかなる@var{x_i}も含まない式の積で、@code{f}は因数分解されています。
+和@mvar{expr}を
+形式@code{f (@mvar{x_1}, @mvar{x_2}, @dots{})*g}の項の和に再整理します。
+ここで、@code{g}は、いかなる@mvar{x_i}も含まない式の積で、@code{f}は因数分解されています。
 
 オプション変数@code{keepfloat}は@code{factorout}に無視されることに注意してください。
 
@@ -612,9 +612,9 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} factorsum (@var{expr})
+@deffn {関数} factorsum (@mvar{expr})
 
-@var{expr}の因子（それらは和です）の中の項を
+@mvar{expr}の因子（それらは和です）の中の項を
 それらの和が因数分解可能な項のグループにグループ化しようとします。
 @code{factorsum}は、
 @code{expand ((x + y)^2 + (z + w)^2)}の結果を回復できますが、
@@ -644,10 +644,10 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} fasttimes (@var{p_1}, @var{p_2})
+@deffn {関数} fasttimes (@mvar{p_1}, @mvar{p_2})
 
 多項式の掛け算のための特殊なアルゴリズムを使って、
-多項式@var{p_1}と@var{p_2}の積を返します。
+多項式@mvar{p_1}と@mvar{p_2}の積を返します。
 @code{p_1}と@code{p_2}は、
 多変数で、密で、ほぼ同じサイズであるべきです。
 @code{n_1}が@code{p_1}の次数で、
@@ -662,7 +662,7 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} fullratsimp (@var{expr})
+@deffn {関数} fullratsimp (@mvar{expr})
 
 @code{fullratsimp}は、ratsimpと式の非有理的整理を、式変形されなくなるまで繰り返し適応し、結果を返します。
 
@@ -671,7 +671,7 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 時々、複数回のコールが必要とされます。
 @code{fullratsimp}はこのプロセスを楽にしてくれます。
 
-@code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}は@code{ratsimp}や@code{rat}と同様
+@code{fullratsimp (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}は@code{ratsimp}や@code{rat}と同様
 複数の引数を取ります。
 
 例:
@@ -714,7 +714,7 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} fullratsubst (@var{a}, @var{b}, @var{c})
+@deffn {関数} fullratsubst (@mvar{a}, @mvar{b}, @mvar{c})
 
 結果が変わらなくなるまで、自身を再帰的にコールすることを除いて、
 @code{ratsubst}と同じです。
@@ -810,19 +810,19 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @c THIS ITEM NEEDS A LOT OF WORK
 @c -----------------------------------------------------------------------------
 @anchor{gcd}
-@deffn {関数} gcd (@var{p_1}, @var{p_2}, @var{x_1}, @dots{})
+@deffn {関数} gcd (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{})
 
-@var{p_1}と@var{p_2}の最大公約数を返します。
+@mvar{p_1}と@mvar{p_2}の最大公約数を返します。
 フラグ@code{gcd}は、どのアルゴリズムを利用するか決めます。
 @code{gcd}を@code{ez}, @code{subres}, @code{red}, もしくは@code{spmod}
 設定することは、それぞれ、@code{ezgcd}, 部分終結式@code{prs}, 被約, もしくはモジュラーアルゴリズムを選択します。
 もし@code{gcd}が@code{false}なら、
-@code{gcd (@var{p_1}, @var{p_2}, @var{x})}は、すべての@var{x}に関していつも1を返します。
+@code{gcd (@mvar{p_1}, @mvar{p_2}, @mvar{x})}は、すべての@mvar{x}に関していつも1を返します。
 （例えば、@code{ratsimp}, @code{factor}, など）多くの関数は、
 陰にgcdを計算します。
 斉次多項式に関して、
 @code{subres}に等しい@code{gcd}を使うことが推奨されます。
-例えば、@code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}のように、代数的数が含まれる時
+例えば、@code{gcd (@mvar{x}^2 - 2*sqrt(2)*@mvar{x} + 2, @mvar{x} - sqrt(2))}のように、代数的数が含まれる時
  @code{algebraic}は@code{true}でなくてはいけません。また、@code{gcd}は@code{ez}であってはいけません。
 
 @code{gcd}フラグ―デフォルトは@code{spmod}―は、
@@ -852,7 +852,7 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end example
 
 @mref{ezgcd}は
-一番目の要素が多項式 @var{p_1}と @var{p_2}の最大公約数で、
+一番目の要素が多項式 @mvar{p_1}と @mvar{p_2}の最大公約数で、
 残りの要素が最大公約数で多項式を割ったもので構成されるリストを返します。
 
 @example
@@ -870,23 +870,23 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 
 @c -----------------------------------------------------------------------------
 @anchor{gcdex}
-@deffn  {関数} gcdex (@var{f}, @var{g})
-@deffnx {関数} gcdex (@var{f}, @var{g}, @var{x})
+@deffn  {関数} gcdex (@mvar{f}, @mvar{g})
+@deffnx {関数} gcdex (@mvar{f}, @mvar{g}, @mvar{x})
 
-リスト@code{[@var{a}, @var{b}, @var{u}]}を返します。
-ここで、@var{u}は@var{f}と@var{g}の最大公約数(gcd)であり、
-かつ、@code{@var{a} @var{f} + @var{b} @var{g}}は@var{u}に等しいです。
-引数@var{f}と@var{g}は、１変数多項式であるか、
-そうでなければ、指定された@b{主}変数@var{x}の多項式でなければいけません。
+リスト@code{[@mvar{a}, @mvar{b}, @mvar{u}]}を返します。
+ここで、@mvar{u}は@mvar{f}と@mvar{g}の最大公約数(gcd)であり、
+かつ、@code{@mvar{a} @mvar{f} + @mvar{b} @mvar{g}}は@mvar{u}に等しいです。
+引数@mvar{f}と@mvar{g}は、１変数多項式であるか、
+そうでなければ、指定された@b{主}変数@mvar{x}の多項式でなければいけません。
 これが機能するには単項イデアル整域にある必要があるからです。
-gcdは、他の変数の有理関数係数を持つ１変数多項式としての@var{f}と@var{g}に関するgcdを意味します。
+gcdは、他の変数の有理関数係数を持つ１変数多項式としての@mvar{f}と@mvar{g}に関するgcdを意味します。
 
 @code{gcdex}は、ユークリッドのアルゴリズムを実行します。
 すべてが@code{[f, g, -1]}に直角の@code{L[i]: [a[i], b[i], r[i]]}の列を持ち、
 @code{q = quotient(r[i]/r[i+1])}なら@code{L[i+2]: L[i] - q L[i+1]}となるように次を組み立て、
 余り@code{r[i+2]}がゼロの時、@code{L[i+1]}で終了します。
 
-引数 @var{f}と @var{g}は整数であり得ます。
+引数 @mvar{f}と @mvar{g}は整数であり得ます。
 この場合、@code{gcdex}は関数 @mref{igcdex}を呼び出します。
 
 @mref{ezgcd}, @mref{gcd}, @mref{gcdivide}, @mref{poly_gcd}も参照してください。
@@ -936,13 +936,13 @@ gcdは、他の変数の有理関数係数を持つ１変数多項式として�
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} gcfactor (@var{n})
+@deffn {関数} gcfactor (@mvar{n})
 
 ガウス整数
-すなわち、@var{a}と@var{b}が有理整数(元々の整数)
-である形式@code{@var{a} + @var{b} @code{%i}}
-の数、@var{n}をガウス整数上に因数分解します。
-因子は、@var{a}と@var{b}を非負にすることによって正規化されます。
+すなわち、@mvar{a}と@mvar{b}が有理整数(元々の整数)
+である形式@code{@mvar{a} + @mvar{b} @code{%i}}
+の数、@mvar{n}をガウス整数上に因数分解します。
+因子は、@mvar{a}と@mvar{b}を非負にすることによって正規化されます。
 @c NEED EXAMPLES HERE
 
 @opencatbox
@@ -953,11 +953,11 @@ gcdは、他の変数の有理関数係数を持つ１変数多項式として�
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} gfactor (@var{expr})
+@deffn {関数} gfactor (@mvar{expr})
 
-多項式@var{expr}をガウス整数（虚数単位@code{%i}を付け加えた整数）上で因数分解します。
+多項式@mvar{expr}をガウス整数（虚数単位@code{%i}を付け加えた整数）上で因数分解します。
 @c "This is like" -- IS IT THE SAME OR NOT ??
-@var{a}が@code{%i}となる@code{factor (@var{expr}, @var{a}^2+1)}ようなものです。
+@mvar{a}が@code{%i}となる@code{factor (@mvar{expr}, @mvar{a}^2+1)}ようなものです。
 
 例:
 
@@ -977,7 +977,7 @@ gcdは、他の変数の有理関数係数を持つ１変数多項式として�
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} gfactorsum (@var{expr})
+@deffn {関数} gfactorsum (@mvar{expr})
 
 @code{factorsum}に似ていますが、
 @code{factor}の代わりに@code{gfactor}を適用します。
@@ -988,16 +988,16 @@ gcdは、他の変数の有理関数係数を持つ１変数多項式として�
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} hipow (@var{expr}, @var{x})
+@deffn {関数} hipow (@mvar{expr}, @mvar{x})
 
-@var{expr}の中で、@var{x}の、陽に示された最も大きな指数を返します。
-@var{x}は変数もしくは一般式です。
-もし@var{x}が@var{expr}の中に現れないなら、
+@mvar{expr}の中で、@mvar{x}の、陽に示された最も大きな指数を返します。
+@mvar{x}は変数もしくは一般式です。
+もし@mvar{x}が@mvar{expr}の中に現れないなら、
 @code{hipow}は@code{0}を返します。
 
 @code{hipow}は、@code{expr}に等価な式を考慮しません。
 特に、@code{hipow}は、@code{expr}を展開しないので、
-@code{hipow (@var{expr}, @var{x})}と@code{hipow (expand (@var{expr}, @var{x}))}
+@code{hipow (@mvar{expr}, @mvar{x})}と@code{hipow (expand (@mvar{expr}, @mvar{x}))}
 は、違った結果をもたらすかもしれません。
 
 例:
@@ -1098,9 +1098,9 @@ Maximaは、整数の素因素分解をあきらめ、素因数分解は完了�
 
 @c -----------------------------------------------------------------------------
 @anchor{lowpow}
-@deffn {関数} lopow (@var{expr}, @var{x})
+@deffn {関数} lopow (@mvar{expr}, @mvar{x})
 
-@var{expr}の中に陽に現れる@var{x}の最小の指数を返します。
+@mvar{expr}の中に陽に現れる@mvar{x}の最小の指数を返します。
 例えば、
 
 @example
@@ -1117,10 +1117,10 @@ Maximaは、整数の素因素分解をあきらめ、素因数分解は完了�
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} lratsubst (@var{L}, @var{expr})
+@deffn {関数} lratsubst (@mvar{L}, @mvar{expr})
 
 @code{subst}の代わりに@code{ratsubst}を使うことを除いて、
-@code{subst (@var{L}, @var{expr})}に類似しています。
+@code{subst (@mvar{L}, @mvar{expr})}に類似しています。
 
 @code{lratsubst}の最初の引数は、
 @code{subst}が受け付けるそれと同一のフォーマットの等式もしくは等式のリストです。
@@ -1169,24 +1169,24 @@ Maximaは、整数の素因素分解をあきらめ、素因数分解は完了�
 @defvr {オプション変数} modulus
 デフォルト値: @code{false}
 
-@code{modulus}が正の数@var{p}の時、
+@code{modulus}が正の数@mvar{p}の時、
 （@code{rat}や関連の関数が返すように）有理数上の演算は、
 「バランスさせた」モジュラス系と呼ばれるものを使って、
-@var{p}を法とする合同変換が実行されます。
+@mvar{p}を法とする合同変換が実行されます。
 「バランスさせた」モジュラス系では、
-@code{@var{n} modulo @var{p}}は、
-@code{@var{a} @var{p} + @var{k}}が@var{n}に等しくなるようなある整数@var{a}が存在するような整数@var{k}と定義され、@var{k}は、
-@var{p}が奇数の時、
-@code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}の中から、
-@var{p}が偶数の時、@code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]}の中から
+@code{@mvar{n} modulo @mvar{p}}は、
+@code{@mvar{a} @mvar{p} + @mvar{k}}が@mvar{n}に等しくなるようなある整数@mvar{a}が存在するような整数@mvar{k}と定義され、@mvar{k}は、
+@mvar{p}が奇数の時、
+@code{[-(@mvar{p}-1)/2, ..., 0, ..., (@mvar{p}-1)/2]}の中から、
+@mvar{p}が偶数の時、@code{[-(@mvar{p}/2 - 1), ..., 0, ...., @mvar{p}/2]}の中から
 選ばれます。
 @c NEED EXAMPLES OF "BALANCED MODULUS" HERE
 
 @c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
 @c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
-@code{modulus}が再設定された時、もし@var{expr}が既に標準有理式(CRE)形なら、
+@code{modulus}が再設定された時、もし@mvar{expr}が既に標準有理式(CRE)形なら、
 正しい結果を得るためには、
-例えば@code{expr: rat (ratdisrep (expr))}というように、@var{expr}を再ratする必要があるかもしれません。
+例えば@code{expr: rat (ratdisrep (expr))}というように、@mvar{expr}を再ratする必要があるかもしれません。
 
 典型的には、@code{modulus}は素数が設定されます。
 もし@code{modulus}が正の合成数に設定されたら、
@@ -1213,10 +1213,10 @@ Maximaは、ゼロや負の整数が@code{modulus}に割り当てられるのを
 @c @end defvar
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} num (@var{expr})
+@deffn {関数} num (@mvar{expr})
 
-もし@var{expr}が比なら、その分子を返します。
-もし@var{expr}が比でないなら、@var{expr}が返されます。
+もし@mvar{expr}が比なら、その分子を返します。
+もし@mvar{expr}が比でないなら、@mvar{expr}が返されます。
 
 @code{num}は引数を評価します。
 
@@ -1228,9 +1228,9 @@ Maximaは、ゼロや負の整数が@code{modulus}に割り当てられるのを
 
 @c -----------------------------------------------------------------------------
 @anchor{polydecomp}
-@deffn {関数} polydecomp (@var{p}, @var{x})
+@deffn {関数} polydecomp (@mvar{p}, @mvar{x})
 
-変数@var{x}の多項式@var{p}を@var{x}の多項式の関数合成に分解します。
+変数@mvar{x}の多項式@mvar{p}を@mvar{x}の多項式の関数合成に分解します。
 @code{polydecomp}は、
 
 @example
@@ -1238,8 +1238,8 @@ lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x))
   ...))
 @end example
 
-が@var{p}に等しいようなリスト@code{[@var{p_1}, ..., @var{p_n}]}を返します。
-@var{n}より小さい@var{i}について@var{p_i}の次数は1より大きいです。
+が@mvar{p}に等しいようなリスト@code{[@mvar{p_1}, ..., @mvar{p_n}]}を返します。
+@mvar{n}より小さい@mvar{i}について@mvar{p_i}の次数は1より大きいです。
 
 このような分解は一意的ではありません。
 
@@ -1286,10 +1286,10 @@ compose (L, x) :=
 (%o3)                 [x  - a, x  - x - 1]
 @end example
 
-@code{compose (polydecomp (@var{p}, @var{x}), @var{x})}はいつも
-（展開されていない）@var{p}を返しますが、
-@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})}は、
-必ずしも@code{[@var{p_1}, ..., @var{p_n}]}を返さ@i{ない}ことに注意してください。
+@code{compose (polydecomp (@mvar{p}, @mvar{x}), @mvar{x})}はいつも
+（展開されていない）@mvar{p}を返しますが、
+@code{polydecomp (compose ([@mvar{p_1}, ..., @mvar{p_n}], @mvar{x}), @mvar{x})}は、
+必ずしも@code{[@mvar{p_1}, ..., @mvar{p_n}]}を返さ@i{ない}ことに注意してください。
 
 @c ===beg===
 @c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
@@ -1313,13 +1313,13 @@ compose (L, x) :=
 
 @c -----------------------------------------------------------------------------
 @anchor{polymod}
-@deffn  {関数} polymod (@var{p})
-@deffnx {関数} polymod (@var{p}, @var{m})
+@deffn  {関数} polymod (@mvar{p})
+@deffnx {関数} polymod (@mvar{p}, @mvar{m})
 
-多項式@var{p}を、変数@code{modulus}の値である現在の法に関してモジュラー表現に変換します。
+多項式@mvar{p}を、変数@code{modulus}の値である現在の法に関してモジュラー表現に変換します。
 
-@code{polymod (@var{p}, @var{m})}は、
-@code{modulus}の現在値の代わりに法@var{m}を使うように指定します。
+@code{polymod (@mvar{p}, @mvar{m})}は、
+@code{modulus}の現在値の代わりに法@mvar{m}を使うように指定します。
 
 @code{modulus}を参照してください。
 
@@ -1333,9 +1333,9 @@ compose (L, x) :=
 
 @c -----------------------------------------------------------------------------
 @anchor{powers}
-@deffn {関数} powers (@var{expr}, @var{x})
+@deffn {関数} powers (@mvar{expr}, @mvar{x})
 
-@var{expr}に現れる@var{x}のべきを返します。
+@mvar{expr}に現れる@mvar{x}のべきを返します。
 
 @code{load (powers)} loads this function.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
@@ -1359,11 +1359,11 @@ compose (L, x) :=
 
 @c -----------------------------------------------------------------------------
 @anchor{quotient}
-@deffn  {関数} quotient (@var{p_1}, @var{p_2})
-@deffnx {関数} quotient (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {関数} quotient (@mvar{p_1}, @mvar{p_2})
+@deffnx {関数} quotient (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
-多項式@var{p_1}を多項式@var{p_2}で割った結果を返します。
-引数@var{x_1}, @dots{}, @var{x_n}は、@code{ratvars}と同様に解釈されます。
+多項式@mvar{p_1}を多項式@mvar{p_2}で割った結果を返します。
+引数@mvar{x_1}, @dots{}, @mvar{x_n}は、@code{ratvars}と同様に解釈されます。
 
 @code{quotient}は、@code{divide}が返す２要素リストの最初の要素を返します。
 
@@ -1376,12 +1376,12 @@ compose (L, x) :=
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} rat (@var{expr})
-@deffnx {関数} rat (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {関数} rat (@mvar{expr})
+@deffnx {関数} rat (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
-@var{expr}を標準有理式(CRE)形式に変換します。
+@mvar{expr}を標準有理式(CRE)形式に変換します。
 展開し、共通の分母上ですべての項を結合し、通分し、@code{ratepsilon}の許容誤差内で浮動小数点を有理数に変換します。
-変数は、もし指定されたなら、@code{ratvars}のように@var{x_1}, @dots{}, @var{x_n}に従って並び替えられます。
+変数は、もし指定されたなら、@code{ratvars}のように@mvar{x_1}, @dots{}, @mvar{x_n}に従って並び替えられます。
 
 @code{rat}は一般に、加算@code{+}, 減算@code{-}, 乗算@code{*}, 除算@code{/}と整数べきの指数を除いた関数を
 整理しません。
@@ -1451,11 +1451,11 @@ CRE形式の中のアトム(数と変数）は一般形式でのそれと同じ�
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} ratcoef (@var{expr}, @var{x}, @var{n})
-@deffnx {関数} ratcoef (@var{expr}, @var{x})
+@deffn  {関数} ratcoef (@mvar{expr}, @mvar{x}, @mvar{n})
+@deffnx {関数} ratcoef (@mvar{expr}, @mvar{x})
 
-式@var{expr}の中の式@code{@var{x}^@var{n}}の係数を返します。
-@var{n}を省略した場合、@var{n}は1が仮定されます。
+式@mvar{expr}の中の式@code{@mvar{x}^@mvar{n}}の係数を返します。
+@mvar{n}を省略した場合、@mvar{n}は1が仮定されます。
 
 戻り値は、（非有理な意味で可能な場合を除いて、）xの中の変数の制約を受けません。
 このタイプの係数が存在しなければ、0を返します。
@@ -1465,13 +1465,13 @@ CRE形式の中のアトム(数と変数）は一般形式でのそれと同じ�
 @c MOVE THIS TO EXAMPLES SECTION
 このように、@code{ratcoef ((x + 1)/y + x, x)}は@code{(y + 1)/y}を返しますが、@code{coeff}は1を返します。
 
-@code{ratcoef (@var{expr}, @var{x}, 0)}は、@var{expr}をsumとして見て、
-@var{x}を含まない項の和を返します。
+@code{ratcoef (@mvar{expr}, @mvar{x}, 0)}は、@mvar{expr}をsumとして見て、
+@mvar{x}を含まない項の和を返します。
 @c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
-ゆえに、もし@var{x}の負のべき乗が存在するなら、@var{ratcoef}を使うべきではありません。
+ゆえに、もし@mvar{x}の負のべき乗が存在するなら、@mvar{ratcoef}を使うべきではありません。
 
 @c WHAT IS THE INTENT HERE ??
-@var{expr}は検査される前に有理的に整理されるので、
+@mvar{expr}は検査される前に有理的に整理されるので、
 係数は、想像された形とは全く違って現れることがあります。
 
 例:
@@ -1492,15 +1492,15 @@ CRE形式の中のアトム(数と変数）は一般形式でのそれと同じ�
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratdenom (@var{expr})
+@deffn {関数} ratdenom (@mvar{expr})
 
-@var{expr}を標準有理式(CRE)に強制した後、@var{expr}の分母を返します。
+@mvar{expr}を標準有理式(CRE)に強制した後、@mvar{expr}の分母を返します。
 戻り値はCREです。
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr}は、もしまだCREでないなら、@code{rat}によってCREに強制的に変換されます。
+@mvar{expr}は、もしまだCREでないなら、@code{rat}によってCREに強制的に変換されます。
 この変換は、すべての項を共通の分母上に置くことによって、
-@var{expr}の形式を変えます。
+@mvar{expr}の形式を変えます。
 
 @code{denom}は似ていますが、
 CREではなく通常の式を返します。
@@ -1565,11 +1565,11 @@ CREではなく通常の式を返します。
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratdiff (@var{expr}, @var{x})
+@deffn {関数} ratdiff (@mvar{expr}, @mvar{x})
 
-有理式@var{expr}を@var{x}に関して微分します。
-@var{expr}は@var{x}の多項式もしくは多項式の商でなければなりません。
-引数@var{x}は@var{expr}の変数もしくは部分式を取り得ます。
+有理式@mvar{expr}を@mvar{x}に関して微分します。
+@mvar{expr}は@mvar{x}の多項式もしくは多項式の商でなければなりません。
+引数@mvar{x}は@mvar{expr}の変数もしくは部分式を取り得ます。
 @c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
 @c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
 @c HOW TO DESCRIBE THAT ??
@@ -1577,10 +1577,10 @@ CREではなく通常の式を返します。
 たぶん違った形式になりますが、結果は、@code{diff}と同値です。
 有理式の場合、@code{ratdiff}は@code{diff}より速いでしょう。
 
-@code{ratdiff}は、もし@var{expr}が標準有理式(CRE)なら、標準有理式を返します。
+@code{ratdiff}は、もし@mvar{expr}が標準有理式(CRE)なら、標準有理式を返します。
 そうでなければ、一般式を返します。
 
-@code{ratdiff}は、@var{expr}の@var{x}への依存のみを考慮し、@code{depends}で規定された依存性は無視します。
+@code{ratdiff}は、@mvar{expr}の@mvar{x}への依存のみを考慮し、@code{depends}で規定された依存性は無視します。
 
 @c WHAT THIS IS ABOUT -- ratdiff (rat (factor (expr)), x) AND ratdiff (factor (rat (expr)), x) BOTH SUCCEED
 @c COMMENTING THIS OUT UNTIL SOMEONE CAN ESTABLISH SOME CRE'S FOR WHICH ratdiff FAILS
@@ -1629,10 +1629,10 @@ CREではなく通常の式を返します。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratdisrep (@var{expr})
+@deffn {関数} ratdisrep (@mvar{expr})
 
 一般式として引数を返します。
-もし@var{expr}が一般式なら、戻り値は引数から変わりません。
+もし@mvar{expr}が一般式なら、戻り値は引数から変わりません。
 
 典型的には、@code{ratdisrep}は、
 標準有理式(CRE)を一般式に変換するためにコールされます。
@@ -1648,13 +1648,13 @@ CREではなく通常の式を返します。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} ratexpand (@var{expr})
+@deffn  {関数} ratexpand (@mvar{expr})
 @deffnx {オプション変数} ratexpand
 
-@var{expr}を展開します。
+@mvar{expr}を展開します。
 指数和や和の積を展開し、共通分母上の分数を結合し、通分し、（もし和なら）分子を分母で割ったそれぞれの項に分割します。
 
-たとえ@var{expr}が標準有理式(CRE)でも、@code{ratexpand}の戻り値は一般式です。
+たとえ@mvar{expr}が標準有理式(CRE)でも、@code{ratexpand}の戻り値は一般式です。
 
 @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
 スイッチ@code{ratexpand}が@code{true}なら、CRE式は、一般式や表示形式に変換された時フルに展開されます。
@@ -1736,16 +1736,16 @@ CREではなく通常の式を返します。
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratnumer (@var{expr})
+@deffn {関数} ratnumer (@mvar{expr})
 
-@var{expr}を標準有理式(CRE)に強制変換した後、その分子を返します。
+@mvar{expr}を標準有理式(CRE)に強制変換した後、その分子を返します。
 戻り値はCREです。
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-もしまだCREでないなら、@var{expr}は、@code{rat}によってCREに強制変換されます。
+もしまだCREでないなら、@mvar{expr}は、@code{rat}によってCREに強制変換されます。
 この変換は、
 共通の分母上にすべての項を置くことによって、
-@var{expr}の形式を変えるかもしれません。
+@mvar{expr}の形式を変えるかもしれません。
 
 @code{num}は似ていますが、
 CREではなく通常の式を返します。
@@ -1759,9 +1759,9 @@ CREではなく通常の式を返します。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratp (@var{expr})
+@deffn {関数} ratp (@mvar{expr})
 
-もし@var{expr}が標準有理式(CRE)もしくは拡張CREなら、@code{true}を返し、
+もし@mvar{expr}が標準有理式(CRE)もしくは拡張CREなら、@code{true}を返し、
 そうでなければ、@code{false}を返します。
 
 CREは、@code{rat}と関連関数によって生成されます。
@@ -1786,15 +1786,15 @@ CREは、@code{rat}と関連関数によって生成されます。
 
 @c -----------------------------------------------------------------------------
 @anchor{ratsimp}
-@deffn  {関数} ratsimp (@var{expr})
-@deffnx {関数} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn  {関数} ratsimp (@mvar{expr})
+@deffnx {関数} ratsimp (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
 
-式@var{exp}とその部分式の全てを有理的に整理します（非有理的関数の引数も含みます）。
+式@mvar{exp}とその部分式の全てを有理的に整理します（非有理的関数の引数も含みます）。
 結果は二つの多項式の商として、再帰的形式—主変数の係数が他の変数の多項式である形式—で返されます。
 変数は(例えば、@code{sin(z^2+1)}のような)非有理関数を含むかもしれませんが、
 どんな非有理関数の引数もまた、有理的に整理されます。
 
-@code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}は、@code{ratvars}で指定した場合と同様に、
+@code{ratsimp (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})}は、@code{ratvars}で指定した場合と同様に、
 変数の順序指定に従って有理的に整理します。
 
 @code{ratsimpexpons}が@code{true}の時、
@@ -1879,11 +1879,11 @@ CREは、@code{rat}と関連関数によって生成されます。
 @c -----------------------------------------------------------------------------
 @anchor{ratsubst}
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratsubst (@var{a}, @var{b}, @var{c})
+@deffn {関数} ratsubst (@mvar{a}, @mvar{b}, @mvar{c})
 
-@var{c}の中の@var{b}に@var{a}を代入し、結果の式を返します。
+@mvar{c}の中の@mvar{b}に@mvar{a}を代入し、結果の式を返します。
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
-@var{b}はsumでもproductでもpowerなどでも問題ありません。
+@mvar{b}はsumでもproductでもpowerなどでも問題ありません。
 
 @c WHAT, EXACTLY, DOES ratsubst KNOW ??
 @code{subst}は純粋に構文法的代入ですが、@code{ratsubst}は式の意味の何かを知っています。
@@ -1939,18 +1939,18 @@ CREは、@code{rat}と関連関数によって生成されます。
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} ratvars (@var{x_1}, @dots{}, @var{x_n})
+@deffn  {関数} ratvars (@mvar{x_1}, @dots{}, @mvar{x_n})
 @deffnx {関数} ratvars ()
 @deffnx {システム変数} ratvars
 
-有理式に関して主変数@var{x_1}, ..., @var{x_n}を宣言します。
-もし有理式の中に存在するなら、@var{x_n}は主変数と見なされます。
-そうでなければ、もし存在すれば、@var{x_[n-1]}が主変数と見なされます。
-と、先行する変数を通して@var{x_1}まで続きます。
-@var{x_1}は、続く変数が存在しなかった時だけ主変数と見なされます。
+有理式に関して主変数@mvar{x_1}, ..., @mvar{x_n}を宣言します。
+もし有理式の中に存在するなら、@mvar{x_n}は主変数と見なされます。
+そうでなければ、もし存在すれば、@mvar{x_[n-1]}が主変数と見なされます。
+と、先行する変数を通して@mvar{x_1}まで続きます。
+@mvar{x_1}は、続く変数が存在しなかった時だけ主変数と見なされます。
 
 もし有理式の中の変数が@code{ratvars}リストの中に存在しなかったら、
-その変数には、@var{x_1}よりも低い優先順位が与えられます。
+その変数には、@mvar{x_1}よりも低い優先順位が与えられます。
 
 @code{ratvars}の引数は、変数もしくは@code{sin(x)}のような非有理関数であり得ます。
 
@@ -2040,10 +2040,10 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} ratweight (@var{x_1}, @var{w_1}, @dots{}, @var{x_n}, @var{w_n})
+@deffn {関数} ratweight (@mvar{x_1}, @mvar{w_1}, @dots{}, @mvar{x_n}, @mvar{w_n})
 @deffnx {関数} ratweight ()
 
-重み@var{w_i}を変数@var{x_i}に割り当てます。
+重み@mvar{w_i}を変数@mvar{x_i}に割り当てます。
 これは、もし重みが変数@code{ratwtlvl}の値を越えるなら、項を0に置き換えるようにします。
 （デフォルトでは切り詰めはもたらしません。）
 項の重みは、項の中の変数の重みの積の和に変数の指数を掛けたものです。
@@ -2112,11 +2112,11 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} remainder (@var{p_1}, @var{p_2})
-@deffnx {関数} remainder (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
+@deffn  {関数} remainder (@mvar{p_1}, @mvar{p_2})
+@deffnx {関数} remainder (@mvar{p_1}, @mvar{p_2}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
-多項式@var{p_1}を多項式@var{p_2}で割った余りを返します。
-引数@var{x_1}, ..., @var{x_n}は、@code{ratvars}と同様に解釈されます。
+多項式@mvar{p_1}を多項式@mvar{p_2}で割った余りを返します。
+引数@mvar{x_1}, ..., @mvar{x_n}は、@code{ratvars}と同様に解釈されます。
 
 @code{remainder}は、@code{divide}が返す２要素リストの２番目の要素を返します。
 
@@ -2129,14 +2129,14 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @c CAN PROBABLY BE CLARIFIED
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffn {関数} resultant (@mvar{p_1}, @mvar{p_2}, @mvar{x})
 @deffnx {変数} resultant
 
-変数@var{x}を消去して、２つの多項式@var{p_1}と@var{p_2}の終結式を計算します。
-終結式は@var{p_1}と@var{p_2}の中の@var{x}の係数の判別式です。
-それは、@var{p_1}と@var{p_2}が共通に定数でない因子を持つ時だけゼロに等しいです。
+変数@mvar{x}を消去して、２つの多項式@mvar{p_1}と@mvar{p_2}の終結式を計算します。
+終結式は@mvar{p_1}と@mvar{p_2}の中の@mvar{x}の係数の判別式です。
+それは、@mvar{p_1}と@mvar{p_2}が共通に定数でない因子を持つ時だけゼロに等しいです。
 
-もし@var{p_1}もしくは@var{p_2}が因数分解できるなら、
+もし@mvar{p_1}もしくは@mvar{p_2}が因数分解できるなら、
 @code{resultant}をコールする前に@code{factor}をコールするのが望ましいかもしれません。
 
 変数@code{resultant}は、
@@ -2172,7 +2172,7 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} showratvars (@var{expr})
+@deffn {関数} showratvars (@mvar{expr})
 式@code{expr}の中の標準有理式 (CRE)変数のリストを返します。
 
 @code{ratvars}も参照してください。
@@ -2187,7 +2187,7 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 
 @c -----------------------------------------------------------------------------
 @anchor{sqfr}
-@deffn {関数} sqfr (@var{expr})
+@deffn {関数} sqfr (@mvar{expr})
 
 多項式因子が「平方にならない」ことを除いて、
 @code{factor}に似ています。
@@ -2215,15 +2215,15 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @c THIS ITEM STILL NEEDS WORK
 
 @c -----------------------------------------------------------------------------
-@deffn  {関数} tellrat (@var{p_1}, ..., @var{p_n})
+@deffn  {関数} tellrat (@mvar{p_1}, ..., @mvar{p_n})
 @deffnx {関数} tellrat ()
 
-多項式@var{p_1}, ..., @var{p_n}の解である要素を
+多項式@mvar{p_1}, ..., @mvar{p_n}の解である要素を
 Maximaに知られている代数的整数の環に加えます。
-それぞれの引数@var{p_i}は、整数係数の多項式です。
+それぞれの引数@mvar{p_i}は、整数係数の多項式です。
 
-@code{tellrat (@var{x})}は、実際には、
-有理関数の中で@var{x}に0を代入することを意味します。
+@code{tellrat (@mvar{x})}は、実際には、
+有理関数の中で@mvar{x}に0を代入することを意味します。
 
 @code{tellrat ()}は、現在の代入のリストを返します。
 
@@ -2236,12 +2236,12 @@ Maximaは、起動の際には、虚数単位と整数の根すべてについ�
 
 例えば、@code{tellrat (x^2 - y^2)}のように、
 多変数多項式を@code{tellrat}する時、
-@code{@var{y}^2}を@code{@var{x}^2}に代入するのか逆なのかといった
+@code{@mvar{y}^2}を@code{@mvar{x}^2}に代入するのか逆なのかといった
 あいまいさがあります。
 Maximaは、特定の順序付けを選びますが、
 もしユーザーがどちらか指定したいなら、
 例えば，@code{tellrat (y^2 = x^2)}は
-@code{@var{y}^2}を@code{@var{x}^2}で置き換えることを示す構文法を供給します。
+@code{@mvar{y}^2}を@code{@mvar{x}^2}で置き換えることを示す構文法を供給します。
 
 @c CAN'T TELL WHAT THIS IS ABOUT -- tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
 @c DOES NOT YIELD AN ERROR, SO WHAT IS THE POINT ABOUT ratalgdenom ??
@@ -2290,11 +2290,11 @@ Maximaは、特定の順序付けを選びますが、
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} totaldisrep (@var{expr})
+@deffn {関数} totaldisrep (@mvar{expr})
 
-@var{expr}のすべての部分式を標準有理式(CRE)から一般形に変換して、
+@mvar{expr}のすべての部分式を標準有理式(CRE)から一般形に変換して、
 結果を返します。
-もし@var{expr}がそれ自身CRE形なら、@code{totaldisrep}は、@code{ratdisrep}と同一です。
+もし@mvar{expr}がそれ自身CRE形なら、@code{totaldisrep}は、@code{ratdisrep}と同一です。
 
 @code{totaldisrep}は、
 CRE形の部分式を持つ等式やリストや行列などの式をratdisrepするために役に立つかもしれません。
@@ -2306,8 +2306,8 @@ CRE形の部分式を持つ等式やリストや行列などの式をratdisrep�
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {関数} untellrat (@var{x_1}, @dots{}, @var{x_n})
-@var{x_1}, @dots{}, @var{x_n}から
+@deffn {関数} untellrat (@mvar{x_1}, @dots{}, @mvar{x_n})
+@mvar{x_1}, @dots{}, @mvar{x_n}から
 @code{tellrat}プロパティを
 削除します。
 

@@ -38,9 +38,9 @@ the form:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-and the function @var{F} should be given as the argument for
-@code{drawdf}. If the independent and dependent variables are not @var{x},
-and @var{y}, as in the equation above, then those two variables should
+and the function @mvar{F} should be given as the argument for
+@code{drawdf}. If the independent and dependent variables are not @mvar{x},
+and @mvar{y}, as in the equation above, then those two variables should
 be named explicitly in a list given as an argument to the drawdf command
 (see the examples).
 
@@ -58,11 +58,11 @@ $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
 and the argument for @code{drawdf} should be a list with the two
-functions @var{G} and @var{F}, in that order; namely, the first
+functions @mvar{G} and @mvar{F}, in that order; namely, the first
 expression in the list will be taken to be the time derivative of the
 variable represented on the horizontal axis, and the second expression
 will be the time derivative of the variable represented on the vertical
-axis. Those two variables do not have to be @var{x} and @var{y}, but if
+axis. Those two variables do not have to be @mvar{x} and @mvar{y}, but if
 they are not, then the second argument given to drawdf must be another
 list naming the two variables, first the one on the horizontal axis and
 then the one on the vertical axis.
@@ -86,28 +86,28 @@ equation into a system of two autonomous equations.
 
 @c -----------------------------------------------------------------------------
 @anchor{function_drawdf}
-@deffn  {Function} drawdf (@var{dydx}, ...options and objects...)
-@deffnx {Function} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options and objects...)
-@deffnx {Function} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...options and objects...)
+@deffn  {Function} drawdf (@mvar{dydx}, ...options and objects...)
+@deffnx {Function} drawdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options and objects...)
+@deffnx {Function} drawdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}, @code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}, ...options and objects...)
+@deffnx {Function} drawdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]}, ...options and objects...)
+@deffnx {Function} drawdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options and objects...)
+@deffnx {Function} drawdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]}, @code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}, ...options and objects...)
 
 Function @code{drawdf} draws a 2D direction field with optional
 solution curves and other graphics using the @code{draw} package.
 
 The first argument specifies the derivative(s), and must be either an
-expression or a list of two expressions.  @var{dydx}, @var{dxdt} and
-@var{dydt} are expressions that depend on @var{x} and @var{y}.
-@var{dvdu}, @var{dudt} and @var{dvdt} are expressions that depend on
-@var{u} and @var{v}.
+expression or a list of two expressions.  @mvar{dydx}, @mvar{dxdt} and
+@mvar{dydt} are expressions that depend on @mvar{x} and @mvar{y}.
+@mvar{dvdu}, @mvar{dudt} and @mvar{dvdt} are expressions that depend on
+@mvar{u} and @mvar{v}.
 
-If the independent and dependent variables are not @var{x} and
-@var{y}, then their names must be specified immediately following the
+If the independent and dependent variables are not @mvar{x} and
+@mvar{y}, then their names must be specified immediately following the
 derivative(s), either as a list of two names
-@code{[}@var{u},@var{v}@code{]}, or as two lists of the form
-@code{[}@var{u},@var{umin},@var{umax}@code{]} and
-@code{[}@var{v},@var{vmin},@var{vmax}@code{]}.
+@code{[}@mvar{u},@mvar{v}@code{]}, or as two lists of the form
+@code{[}@mvar{u},@mvar{umin},@mvar{umax}@code{]} and
+@code{[}@mvar{v},@mvar{vmin},@mvar{vmax}@code{]}.
 
 The remaining arguments are @i{graphic options}, @i{graphic objects},
 or lists containing graphic options and objects, nested to arbitrary
@@ -184,7 +184,7 @@ enhanced 4th-order Runge Kutta numerical integrator.
 
 @code{field_degree=2} causes the field to be composed of quadratic
 splines, based on the first and second derivatives at each grid point.
-@code{field_grid=[}@var{COLS},@var{ROWS}@code{]} specifies the number
+@code{field_grid=[}@mvar{COLS},@mvar{ROWS}@code{]} specifies the number
 of columns and rows in the grid.
 
 @example

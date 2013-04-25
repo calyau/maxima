@@ -122,11 +122,11 @@ Ejemplo:
 @node Funciones y variables para linearalgebra,  , Introducci@'on a linearalgebra, linearalgebra
 @section Funciones y variables para linearalgebra
 
-@deffn {Funci@'on} addmatrices (@var{f}, @var{M_1}, @dots{}, @var{M_n})
+@deffn {Funci@'on} addmatrices (@mvar{f}, @mvar{M_1}, @dots{}, @mvar{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
-Utiliza la funci@'on @var{f} como una funci@'on aditiva, devolviendo la
-suma de las matrices @var{M_1}, @dots{}, @var{M_n}. La funci@'on @var{f} debe
+Utiliza la funci@'on @mvar{f} como una funci@'on aditiva, devolviendo la
+suma de las matrices @mvar{M_1}, @dots{}, @mvar{M_n}. La funci@'on @mvar{f} debe
 ser tal que acepte un n@'umero arbitrario de argumentos; en otras palabras,
 ser@'a una funci@'on n-aria de Maxima.
 
@@ -149,43 +149,43 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} blockmatrixp (@var{M})
+@deffn {Funci@'on} blockmatrixp (@mvar{M})
 
-Devuelve el valor @code{true} si y solo si @var{M} es una matriz
+Devuelve el valor @code{true} si y solo si @mvar{M} es una matriz
 cuyos elementos son a su vez matrices.
 
 @end deffn
 
-@deffn {Funci@'on} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
+@deffn {Funci@'on} columnop (@mvar{M}, @mvar{i}, @mvar{j}, @mvar{theta})
 
-Si @var{M} es una matriz, devuelve la matriz que resulta de hacer la
-operaci@'on columna @code{C_i <- C_i - @var{theta} * C_j}. Si @var{M}
-carece de cualquiera de las filas @var{i} o @var{j}, devuelve un mensaje
+Si @mvar{M} es una matriz, devuelve la matriz que resulta de hacer la
+operaci@'on columna @code{C_i <- C_i - @mvar{theta} * C_j}. Si @mvar{M}
+carece de cualquiera de las filas @mvar{i} o @mvar{j}, devuelve un mensaje
 de error.
 
 @end deffn
 
-@deffn {Funci@'on} columnswap (@var{M}, @var{i}, @var{j})
+@deffn {Funci@'on} columnswap (@mvar{M}, @mvar{i}, @mvar{j})
 
-Si @var{M} es una matriz, intercambia las columnas @var{i} y @var{j}.
-Si @var{M} carece de cualquiera de las filas @var{i} o @var{j}, devuelve 
+Si @mvar{M} es una matriz, intercambia las columnas @mvar{i} y @mvar{j}.
+Si @mvar{M} carece de cualquiera de las filas @mvar{i} o @mvar{j}, devuelve 
 un mensaje de error.
 
 @end deffn
 
-@deffn {Funci@'on} columnspace (@var{M})
+@deffn {Funci@'on} columnspace (@mvar{M})
 
-Si @var{M} es una matriz, devuelve @code{span (v_1, ..., v_n)}, donde
+Si @mvar{M} es una matriz, devuelve @code{span (v_1, ..., v_n)}, donde
 el conjunto @code{@{v_1, ..., v_n@}} es la base del espacio generado por
-las columnas de @var{M}.
+las columnas de @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} copy (@var{e})
+@deffn {Funci@'on} copy (@mvar{e})
 
-Devuelve una copia de la expresi@'on @var{e} de Maxima. Aunque @var{e}
+Devuelve una copia de la expresi@'on @mvar{e} de Maxima. Aunque @mvar{e}
 puede ser cualquier expresi@'on de Maxima, la funci@'on @code{copy} es
-especialmente @'util cuando @var{e} es una lista o una matriz. 
+especialmente @'util cuando @mvar{e} es una lista o una matriz. 
 Consid@'erese el siguiente ejemplo:
 
 @c ===beg===
@@ -204,7 +204,7 @@ Consid@'erese el siguiente ejemplo:
 (%i5) mm;
 (%o5)                      [1,[x,3]]
 @end example
-Veamos el mismo ejemplo siendo ahora @var{mm} una copia de @var{m}
+Veamos el mismo ejemplo siendo ahora @mvar{mm} una copia de @mvar{m}
 @c ===beg===
 @c m : [1,[2,3]]$
 @c mm : copy(m)$
@@ -221,32 +221,32 @@ Veamos el mismo ejemplo siendo ahora @var{mm} una copia de @var{m}
 (%i10) mm;
 (%o10)                    [1,[x,3]]
 @end example
-En esta ocasi@'on, la asignaci@'on a @var{mm} no cambia el valor de @var{m}.
+En esta ocasi@'on, la asignaci@'on a @mvar{mm} no cambia el valor de @mvar{m}.
 
 @end deffn
 
-@deffn {Funci@'on} cholesky (@var{M})
-@deffnx {Funci@'on} cholesky (@var{M}, @var{field})
+@deffn {Funci@'on} cholesky (@mvar{M})
+@deffnx {Funci@'on} cholesky (@mvar{M}, @mvar{field})
 
 Devuelve la factorizaci@'on de Cholesky de la matriz autoadjunta 
-(o herm@'{@dotless{i}}tica) @var{M}. El valor por defecto del segundo argumento
+(o herm@'{@dotless{i}}tica) @mvar{M}. El valor por defecto del segundo argumento
 es @code{generalring}. Para una descripci@'on de los posibles valores para
-@var{field}, v@'ease @code{lu_factor}.
+@mvar{field}, v@'ease @code{lu_factor}.
 
 @end deffn
 
-@deffn {Funci@'on} ctranspose (@var{M})
+@deffn {Funci@'on} ctranspose (@mvar{M})
 
-Devuelve la transpuesta compleja conjugada de la matriz @var{M}. La funci@'on
+Devuelve la transpuesta compleja conjugada de la matriz @mvar{M}. La funci@'on
 @code{ctranspose} utiliza @code{matrix_element_transpose} para transponer
 cada elemento de la matriz.
 
 @end deffn
 
-@deffn {Funci@'on} diag_matrix (@var{d_1}, @var{d_2}, @dots{}, @var{d_n})
+@deffn {Funci@'on} diag_matrix (@mvar{d_1}, @mvar{d_2}, @dots{}, @mvar{d_n})
 
 Devuelve una matriz diagonal con los elementos de la diagonal iguales a
-@var{d_1}, @var{d_2}, @dots{}, @var{d_n}; cuando @'estos son matrices, los
+@mvar{d_1}, @mvar{d_2}, @dots{}, @mvar{d_n}; cuando @'estos son matrices, los
 elementos nulos de la matriz devuelta son matrices nulas de tama@~no 
 apropiado. Por ejemplo:
 
@@ -272,30 +272,30 @@ apropiado. Por ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} dotproduct (@var{u}, @var{v})
+@deffn {Funci@'on} dotproduct (@mvar{u}, @mvar{v})
 
-Devuelve el producto escalar de los vectores @var{u} y @var{v}. Equivale
-a @code{conjugate (transpose (@var{u})) . @var{v}}. Los argumentos @var{u} y @var{v}
+Devuelve el producto escalar de los vectores @mvar{u} y @mvar{v}. Equivale
+a @code{conjugate (transpose (@mvar{u})) . @mvar{v}}. Los argumentos @mvar{u} y @mvar{v}
 deben ser vectores columna.
 
 @end deffn
 
 
 
-@deffn {Funci@'on} eigens_by_jacobi (@var{A})
-@deffnx {Funci@'on} eigens_by_jacobi (@var{A}, @var{field_type})
+@deffn {Funci@'on} eigens_by_jacobi (@mvar{A})
+@deffnx {Funci@'on} eigens_by_jacobi (@mvar{A}, @mvar{field_type})
 
-Calcula los valores y vectores propios de @var{A} por el m@'etodo de
-las rotaciones de Jacobi. @var{A} debe ser una matriz sim@'etrica
+Calcula los valores y vectores propios de @mvar{A} por el m@'etodo de
+las rotaciones de Jacobi. @mvar{A} debe ser una matriz sim@'etrica
 (aunque no necesariamente definida o semidefinida positiva).
-El argumento @var{field_type} indica el tipo num@'erico sobre el
+El argumento @mvar{field_type} indica el tipo num@'erico sobre el
 que se realizan los c@'alculos, que puede ser tanto @code{floatfield}
-como @code{bigfloatfield}. En caso de que no se especifique @var{field_type},
+como @code{bigfloatfield}. En caso de que no se especifique @mvar{field_type},
 su valor por defecto ser@'a @code{floatfield}.
 
-Los elementos de @var{A} deben ser n@'umeros o expresiones reducibles
+Los elementos de @mvar{A} deben ser n@'umeros o expresiones reducibles
 a n@'umeros mediante la ejecuci@'on de @code{float} o @code{bfloat},
-seg@'un sea el valor de @var{field_type}.
+seg@'un sea el valor de @mvar{field_type}.
 
 Ejemplos:
 @c ===beg===
@@ -358,30 +358,30 @@ number of rotations: 1
 
 
 
-@deffn {Funci@'on} get_lu_factors (@var{x}) 
+@deffn {Funci@'on} get_lu_factors (@mvar{x}) 
 
-Cuando @code{@var{x} = lu_factor (@var{A})}, entonces @code{get_lu_factors}
-devuelve una lista de la forma @code{[P, L, U]}, donde @var{P} es una matriz
-permutaci@'on, @var{L} es triangular inferior con unos en la diagonal y @var{U}
-es triangular superior, verific@'andose que @code{@var{A} = @var{P} @var{L} @var{U}}.
-
-@end deffn
-
-@deffn {Funci@'on} hankel (@var{col})
-@deffnx {Funci@'on} hankel (@var{col}, @var{row})
-
-Devuelve la matriz de Hankel @var{H}. La primera columna de @var{H} coincide
-con @var{col}, excepto en el primer elemento, la @'ultima fila de @var{H} es
-@var{row}. El valor por defecto para @var{row} es el vector nulo con igual
-n@'umero de elementos que @var{col}.
+Cuando @code{@mvar{x} = lu_factor (@mvar{A})}, entonces @code{get_lu_factors}
+devuelve una lista de la forma @code{[P, L, U]}, donde @mvar{P} es una matriz
+permutaci@'on, @mvar{L} es triangular inferior con unos en la diagonal y @mvar{U}
+es triangular superior, verific@'andose que @code{@mvar{A} = @mvar{P} @mvar{L} @mvar{U}}.
 
 @end deffn
 
-@deffn {Funci@'on} hessian (@var{f}, @var{x})
+@deffn {Funci@'on} hankel (@mvar{col})
+@deffnx {Funci@'on} hankel (@mvar{col}, @mvar{row})
 
-Devuelve la matriz hessiana de @var{f} con respecto de la lista de variables
-@var{x}. El elemento @code{(i, j)}-@'esimo de la matriz
-hessiana es @code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}.
+Devuelve la matriz de Hankel @mvar{H}. La primera columna de @mvar{H} coincide
+con @mvar{col}, excepto en el primer elemento, la @'ultima fila de @mvar{H} es
+@mvar{row}. El valor por defecto para @mvar{row} es el vector nulo con igual
+n@'umero de elementos que @mvar{col}.
+
+@end deffn
+
+@deffn {Funci@'on} hessian (@mvar{f}, @mvar{x})
+
+Devuelve la matriz hessiana de @mvar{f} con respecto de la lista de variables
+@mvar{x}. El elemento @code{(i, j)}-@'esimo de la matriz
+hessiana es @code{diff(@mvar{f}, @mvar{x}[i], 1, @mvar{x}[j], 1)}.
 
 Ejemplos:
 
@@ -412,23 +412,23 @@ Ejemplos:
 @end example
 @end deffn
 
-@deffn {Funci@'on} hilbert_matrix (@var{n})
+@deffn {Funci@'on} hilbert_matrix (@mvar{n})
 
-Devuelve la matriz de Hilbert @var{n} por @var{n}. Si @var{n} no es
+Devuelve la matriz de Hilbert @mvar{n} por @mvar{n}. Si @mvar{n} no es
 un entero positivo, emite un mensaje de error.
 
 @end deffn
 
-@deffn {Funci@'on} identfor (@var{M})
-@deffnx {Funci@'on} identfor (@var{M}, @var{fld})
+@deffn {Funci@'on} identfor (@mvar{M})
+@deffnx {Funci@'on} identfor (@mvar{M}, @mvar{fld})
 
 Devuelve una matriz identidad con la misma forma que la matriz
-@var{M}. Los elementos de la diagonal de la matriz identidad son
-la identidad multiplicativa del campo @var{fld}; el valor por
-defecto para @var{fld} es @var{generalring}.
+@mvar{M}. Los elementos de la diagonal de la matriz identidad son
+la identidad multiplicativa del campo @mvar{fld}; el valor por
+defecto para @mvar{fld} es @mvar{generalring}.
 
-El primer argumento @var{M} debe ser una matriz cuadrada o no ser
-matriz en absoluto. Si @var{M} es una matriz, sus elementos pueden
+El primer argumento @mvar{M} debe ser una matriz cuadrada o no ser
+matriz en absoluto. Si @mvar{M} es una matriz, sus elementos pueden
 ser matrices cuadradas. La matriz puede tener bloques a cualquier nivel
 finito de profundidad.
 
@@ -436,19 +436,19 @@ V@'ease tambi@'en @code{zerofor}
 
 @end deffn
 
-@deffn {Funci@'on} invert_by_lu (@var{M}, @var{(rng generalring)})
+@deffn {Funci@'on} invert_by_lu (@mvar{M}, @mvar{(rng generalring)})
 
-Invierte la matriz @var{M} mediante la factorizaci@'on LU, la cual
-se hace utilizando el anillo @var{rng}.
+Invierte la matriz @mvar{M} mediante la factorizaci@'on LU, la cual
+se hace utilizando el anillo @mvar{rng}.
 
 @end deffn
 
 
-@deffn {Funci@'on} jacobian (@var{f}, @var{x})
+@deffn {Funci@'on} jacobian (@mvar{f}, @mvar{x})
 
-Devuelve la matriz jacobiana de la lista de funciones @var{f} respecto
-de la lista de variables @var{x}. El elemento @code{(i, j)}-@'esimo de
-la matriz jacobiana es @code{diff(@var{f}[i], @var{x}[j])}.
+Devuelve la matriz jacobiana de la lista de funciones @mvar{f} respecto
+de la lista de variables @mvar{x}. El elemento @code{(i, j)}-@'esimo de
+la matriz jacobiana es @code{diff(@mvar{f}[i], @mvar{x}[j])}.
 
 Ejemplos:
 
@@ -476,88 +476,88 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} kronecker_product (@var{A}, @var{B})
+@deffn {Funci@'on} kronecker_product (@mvar{A}, @mvar{B})
 
-Devuelve el producto de Kroneckerde las matrices @var{A} y @var{B}.
+Devuelve el producto de Kroneckerde las matrices @mvar{A} y @mvar{B}.
 
 @end deffn
 
-@deffn {Funci@'on} listp (@var{e}, @var{p})
-@deffnx {Funci@'on} listp (@var{e})
+@deffn {Funci@'on} listp (@mvar{e}, @mvar{p})
+@deffnx {Funci@'on} listp (@mvar{e})
 
-Dado el argumento opcional @var{p}, devuelve @code{true} si @var{e} es
-una lista de Maxima y @var{p} toma el valor @code{true} al aplicarlo
+Dado el argumento opcional @mvar{p}, devuelve @code{true} si @mvar{e} es
+una lista de Maxima y @mvar{p} toma el valor @code{true} al aplicarlo
 a cada elemento de la lista. Si a @code{listp} no se le suministra el
-argumento opcional, devuelve @code{true} si @var{e} es una lista de Maxima.
+argumento opcional, devuelve @code{true} si @mvar{e} es una lista de Maxima.
 En cualquier otro caso, el resultado es @code{false}.
 
 @end deffn
 
-@deffn {Funci@'on} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
+@deffn {Funci@'on} locate_matrix_entry (@mvar{M}, @mvar{r_1}, @mvar{c_1}, @mvar{r_2}, @mvar{c_2}, @mvar{f}, @mvar{rel})
 
 El primer argumento debe ser una matriz, mientras que los argumentos
-desde @var{r_1} hasta @var{c_2} determinan la submatriz de @var{M} tomando
-las filas desde @var{r_1} hasta @var{r_2} y las columnas desde @var{c_1}
-hasta @var{c_2}.
+desde @mvar{r_1} hasta @mvar{c_2} determinan la submatriz de @mvar{M} tomando
+las filas desde @mvar{r_1} hasta @mvar{r_2} y las columnas desde @mvar{c_1}
+hasta @mvar{c_2}.
 
-La funci@'on @code{locate_matrix_entry} busca en la submatriz de @var{M}
+La funci@'on @code{locate_matrix_entry} busca en la submatriz de @mvar{M}
 un elemento que satisfaga cierta propiedad. hay tres posibilidades:
 
-(1) @code{@var{rel} = 'bool} y @var{f} es un predicado: 
+(1) @code{@mvar{rel} = 'bool} y @mvar{f} es un predicado: 
 
 Rastrea la submatriz de izquierda a derecha y de arriba hacia abajo,
 devolviendo el @'{@dotless{i}}ndice del primer elemento que 
-satisface el predicado @var{f}; si ning@'un elemento lo satisface,
+satisface el predicado @mvar{f}; si ning@'un elemento lo satisface,
 el resultado es @code{false}.
 
-(2) @code{@var{rel} = 'max} y @var{f} una funci@'on real:
+(2) @code{@mvar{rel} = 'max} y @mvar{f} una funci@'on real:
 
-Rastrea la submatriz buscando el elemento que maximice @var{f},
+Rastrea la submatriz buscando el elemento que maximice @mvar{f},
 devolviendo el @'{@dotless{i}}ndice correspondiente.
 
-(3) @code{@var{rel} = 'min} y @var{f} una funci@'on real:
+(3) @code{@mvar{rel} = 'min} y @mvar{f} una funci@'on real:
 
-Rastrea la submatriz buscando el elemento que minimice @var{f},
+Rastrea la submatriz buscando el elemento que minimice @mvar{f},
 devolviendo el @'{@dotless{i}}ndice correspondiente.
 
 @end deffn
 
-@deffn {Funci@'on} lu_backsub (@var{M}, @var{b})
+@deffn {Funci@'on} lu_backsub (@mvar{M}, @mvar{b})
 
-Si @code{@var{M} = lu_factor (@var{A}, @var{field})}, entonces
-@code{lu_backsub (@var{M}, @var{b})} resuelve el sistema de ecuaciones
-lineales @code{@var{A} @var{x} = @var{b}}.
+Si @code{@mvar{M} = lu_factor (@mvar{A}, @mvar{field})}, entonces
+@code{lu_backsub (@mvar{M}, @mvar{b})} resuelve el sistema de ecuaciones
+lineales @code{@mvar{A} @mvar{x} = @mvar{b}}.
 
 @end deffn
 
-@deffn {Funci@'on} lu_factor (@var{M}, @var{field})
+@deffn {Funci@'on} lu_factor (@mvar{M}, @mvar{field})
 
-Devuelve una lista de la forma @code{[@var{LU}, @var{perm}, @var{fld}]},
-o @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, donde
+Devuelve una lista de la forma @code{[@mvar{LU}, @mvar{perm}, @mvar{fld}]},
+o @code{[@mvar{LU}, @mvar{perm}, @mvar{fld}, @mvar{lower-cnd} @mvar{upper-cnd}]}, donde
 
 
 @itemize @bullet
 @item
-La matriz @var{LU} contiene la factorizaci@'on de @var{M} de forma empaquetada, lo
-que significa tres cosas. En primer lugar, que las filas de @var{LU} est@'an permutadas de
-acuerdo con la lista @var{perm}; por ejemplo, si @var{perm} es la lista @code{[3,2,1]},
-la primera fila de la factorizaci@'on @var{LU} es la tercera fila de la matriz @var{LU}.
-En segundo lugar, el factor triangular inferior de @var{M} es la parte triangular inferior
-de @var{LU} con los elementos de la diagonal sustituidos por unos. Por @'ultimo, el factor
-triangular superior de @var{M} es la parte triangular superior de @var{LU}.
+La matriz @mvar{LU} contiene la factorizaci@'on de @mvar{M} de forma empaquetada, lo
+que significa tres cosas. En primer lugar, que las filas de @mvar{LU} est@'an permutadas de
+acuerdo con la lista @mvar{perm}; por ejemplo, si @mvar{perm} es la lista @code{[3,2,1]},
+la primera fila de la factorizaci@'on @mvar{LU} es la tercera fila de la matriz @mvar{LU}.
+En segundo lugar, el factor triangular inferior de @mvar{M} es la parte triangular inferior
+de @mvar{LU} con los elementos de la diagonal sustituidos por unos. Por @'ultimo, el factor
+triangular superior de @mvar{M} es la parte triangular superior de @mvar{LU}.
 
 @item
-Si el campo es @code{floatfield} o @code{complexfield}, los n@'umeros @var{lower-cnd} y
-@var{upper-cnd} son las cotas inferior y superior del n@'umero de condici@'on de la norma
-infinita de @var{M}. El n@'umero de condici@'on no se puede estimar para todos los campos,
+Si el campo es @code{floatfield} o @code{complexfield}, los n@'umeros @mvar{lower-cnd} y
+@mvar{upper-cnd} son las cotas inferior y superior del n@'umero de condici@'on de la norma
+infinita de @mvar{M}. El n@'umero de condici@'on no se puede estimar para todos los campos,
 en cuyo caso @code{lu_factor} devuelve una lista de dos elementos. Tanto la cota inferior
 como la superior pueden diferir de sus valores verdaderos. V@'ease tambi@'en @code{mat_cond}.
 
 @end itemize
 
-El argumento @var{M} debe ser una matriz cuadrada.
+El argumento @mvar{M} debe ser una matriz cuadrada.
 
-El argumento opcional @var{fld} debe ser un s@'{@dotless{i}}mbolo que determine un anillo o
+El argumento opcional @mvar{fld} debe ser un s@'{@dotless{i}}mbolo que determine un anillo o
 un campo. Los anillos y campos predefinidos son:
 
 @enumerate a
@@ -592,7 +592,7 @@ La suma aritm@'etica en coma flotante no es asociativa, por lo que el
 significado de 'campo' no coincide exactamente con su definici@'on matem@'atica.
 
 Un elemento del campo @code{runningerror} consiste en una lista de Maxima
-de la forma @code{[x,n]}, donde @var{x} es un n@'umero decimal en coma flotante 
+de la forma @code{[x,n]}, donde @mvar{x} es un n@'umero decimal en coma flotante 
 y @code{n} un enetro. La diferencia relativa entre el valor real de @code{x} y 
 @code{x} est@'a aproximadamente acotado por el valor epsilon de la m@'aquina 
 multiplicado por @code{n}. 
@@ -668,12 +668,12 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @end deffn
 
-@deffn {Funci@'on} mat_cond (@var{M}, 1)
-@deffnx {Funci@'on} mat_cond (@var{M}, inf)
+@deffn {Funci@'on} mat_cond (@mvar{M}, 1)
+@deffnx {Funci@'on} mat_cond (@mvar{M}, inf)
 
-Devuelve el n@'umero de condici@'on de la @var{p}-norma de la matriz
-@var{M}. Los valores admisibles para  @var{p} son 1 y @var{inf}. Esta
-funci@'on utiliza la factorizaci@'on LU para invertir la matriz @var{M},
+Devuelve el n@'umero de condici@'on de la @mvar{p}-norma de la matriz
+@mvar{M}. Los valores admisibles para  @mvar{p} son 1 y @mvar{inf}. Esta
+funci@'on utiliza la factorizaci@'on LU para invertir la matriz @mvar{M},
 por lo que el tiempo de ejecuci@'on de @code{mat_cond} es proporcional al
 cubo del tama@~no de la matriz; @code{lu_factor} determina las cotas inferior
 y superior para el n@'umero de condici@'on de la norma infinita en un tiempo
@@ -681,58 +681,58 @@ proporcional al cuadrado del tama@~no de la matriz.
 
 @end deffn
 
-@deffn {Funci@'on} mat_norm (@var{M}, 1)
-@deffnx {Funci@'on} mat_norm (@var{M}, inf)
-@deffnx {Funci@'on} mat_norm (@var{M}, frobenius)
+@deffn {Funci@'on} mat_norm (@mvar{M}, 1)
+@deffnx {Funci@'on} mat_norm (@mvar{M}, inf)
+@deffnx {Funci@'on} mat_norm (@mvar{M}, frobenius)
 
-Devuelve la @var{p}-norma de la matriz @var{M}. Los valores admisibles
-para @var{p} son 1, @code{inf} y @code{frobenius} (la norma matricial de Frobenius).
-La matriz @var{M} no debe contener bloques.
+Devuelve la @mvar{p}-norma de la matriz @mvar{M}. Los valores admisibles
+para @mvar{p} son 1, @code{inf} y @code{frobenius} (la norma matricial de Frobenius).
+La matriz @mvar{M} no debe contener bloques.
 @end deffn
 
-@deffn {Funci@'on} matrixp (@var{e}, @var{p})
-@deffnx {Funci@'on} matrixp (@var{e})
+@deffn {Funci@'on} matrixp (@mvar{e}, @mvar{p})
+@deffnx {Funci@'on} matrixp (@mvar{e})
 
-Dado el argumento opcional @var{p}, devuelve @code{true} si @var{e} es
-una matriz y @var{p} toma el valor @code{true} al aplicarlo
+Dado el argumento opcional @mvar{p}, devuelve @code{true} si @mvar{e} es
+una matriz y @mvar{p} toma el valor @code{true} al aplicarlo
 a cada elemento de la matriz. Si a @code{matrixp} no se le suministra el
-argumento opcional, devuelve @code{true} si @var{e} es una matriz.
+argumento opcional, devuelve @code{true} si @mvar{e} es una matriz.
 En cualquier otro caso, el resultado es @code{false}.
 
 V@'ease tambi@'en @code{blockmatrixp}
 
 @end deffn
 
-@deffn {Funci@'on} matrix_size (@var{M})
+@deffn {Funci@'on} matrix_size (@mvar{M})
 
-Devuelve una lista con el n@'umero de filas y columnas de la matriz @var{M}.
-
-@end deffn
-
-@deffn {Funci@'on} mat_fullunblocker (@var{M})
-
-Si @var{M} es una matriz de bloques, transforma la matriz llevando todos
-los elementos de los bloques al primer nivel. Si @var{M} es una matriz,
-devuelve @var{M}; en cualquier otro caso, env@'{@dotless{i}}a un mensaje de error.  
+Devuelve una lista con el n@'umero de filas y columnas de la matriz @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} mat_trace (@var{M})
+@deffn {Funci@'on} mat_fullunblocker (@mvar{M})
 
-Calcula la traza de la matriz @var{M}. Si @var{M} no es una matriz, devuelve
-una forma nominal. Si @var{M} es una matriz de bloques, @code{mat_trace(M)}
+Si @mvar{M} es una matriz de bloques, transforma la matriz llevando todos
+los elementos de los bloques al primer nivel. Si @mvar{M} es una matriz,
+devuelve @mvar{M}; en cualquier otro caso, env@'{@dotless{i}}a un mensaje de error.  
+
+@end deffn
+
+@deffn {Funci@'on} mat_trace (@mvar{M})
+
+Calcula la traza de la matriz @mvar{M}. Si @mvar{M} no es una matriz, devuelve
+una forma nominal. Si @mvar{M} es una matriz de bloques, @code{mat_trace(M)}
 calcula el mismo valor que @code{mat_trace(mat_unblocker(m))}.
 
 @end deffn
 
-@deffn {Funci@'on} mat_unblocker (@var{M})
+@deffn {Funci@'on} mat_unblocker (@mvar{M})
 
-Si @var{M} es una matriz de bloques, deshace los bloques de un nivel. Si @var{M}
-es una matriz, @code{mat_unblocker (M)} devuelve @var{M}; en cualquier otro caso, 
+Si @mvar{M} es una matriz de bloques, deshace los bloques de un nivel. Si @mvar{M}
+es una matriz, @code{mat_unblocker (M)} devuelve @mvar{M}; en cualquier otro caso, 
 env@'{@dotless{i}}a un mensaje de error.
 
-Si todos los elementos de @var{M} son matrices, @code{mat_unblocker (M)} devuelve
-una matriz sin bloques, pero si los elementos de @var{M} son a su vez matrices de
+Si todos los elementos de @mvar{M} son matrices, @code{mat_unblocker (M)} devuelve
+una matriz sin bloques, pero si los elementos de @mvar{M} son a su vez matrices de
 bloques, @code{mat_unblocker (M)} devuelve una matriz con el nivel de bloques
 disminuido en uno.
 
@@ -773,21 +773,21 @@ Ejemplo:
 
 
 
-@deffn {Funci@'on} nullspace (@var{M})
+@deffn {Funci@'on} nullspace (@mvar{M})
 
-Si @var{M} es una matriz, devuelve @code{span (v_1, ..., v_n)}, siendo 
-@code{@{v_1, ..., v_n@}} la base del espacio nulo de @var{M}. Si el 
+Si @mvar{M} es una matriz, devuelve @code{span (v_1, ..., v_n)}, siendo 
+@code{@{v_1, ..., v_n@}} la base del espacio nulo de @mvar{M}. Si el 
 espacio nulo contiene un @'unico elemento, devuelve @code{span ()}.
 
 @end deffn
 
-@deffn {Funci@'on} nullity (@var{M})
+@deffn {Funci@'on} nullity (@mvar{M})
 
-Si @var{M} es una matriz, devuelve la dimensi@'on del espacio nulo de @var{M}.
+Si @mvar{M} es una matriz, devuelve la dimensi@'on del espacio nulo de @mvar{M}.
 
 @end deffn
 
-@deffn {Funci@'on} orthogonal_complement (@var{v_1}, @dots{}, @var{v_n})
+@deffn {Funci@'on} orthogonal_complement (@mvar{v_1}, @dots{}, @mvar{v_n})
 
 Devuelve @code{span (u_1, ..., u_m)}, siendo @code{@{u_1, ..., u_m@}} la base
 del complemento ortogonal del conjunto @code{(v_1, ..., v_n)}, cuyos elementos
@@ -795,23 +795,23 @@ deben ser vectores columna.
 
 @end deffn
 
-@deffn {Funci@'on} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
-@deffnx {Funci@'on} polynomialp (@var{p}, @var{L}, @var{coeffp})
-@deffnx {Funci@'on} polynomialp (@var{p}, @var{L})
+@deffn {Funci@'on} polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp}, @mvar{exponp})
+@deffnx {Funci@'on} polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp})
+@deffnx {Funci@'on} polynomialp (@mvar{p}, @mvar{L})
 
-Devuelve @code{true} si @var{p} es un polinomio cuyas variables son las
-de la lista @var{L}, el predicado @var{coeffp} toma el valor @code{true} al
-aplicarlo a cada coeficiente y el predicado @var{exponp} tambi@'en alcanza el
+Devuelve @code{true} si @mvar{p} es un polinomio cuyas variables son las
+de la lista @mvar{L}, el predicado @mvar{coeffp} toma el valor @code{true} al
+aplicarlo a cada coeficiente y el predicado @mvar{exponp} tambi@'en alcanza el
 valor @code{true} al ser aplicado a los exponentes de las variables listadas en
-@var{L}. En caso de necesitar que @var{exponp} no sea un predicado por defecto,
-se deber@'a especificar tambi@'en el predicado @var{coeffp}, aunque aqu@'{@dotless{i}}
+@mvar{L}. En caso de necesitar que @mvar{exponp} no sea un predicado por defecto,
+se deber@'a especificar tambi@'en el predicado @mvar{coeffp}, aunque aqu@'{@dotless{i}}
 se desee su comportamiento por defecto.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-La instrucci@'on @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} equivale a
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}, al tiempo que
-@code{polynomialp (@var{p}, @var{L})} equivale a
-@code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
+La instrucci@'on @code{polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp})} equivale a
+@code{polynomialp (@mvar{p}, @mvar{L}, @mvar{coeffp}, 'nonnegintegerp)}, al tiempo que
+@code{polynomialp (@mvar{p}, @mvar{L})} equivale a
+@code{polynomialp (@mvar{p}, L@mvar{,} 'constantp, 'nonnegintegerp)}.
 
 No es necesario expandir el polinomio:
 
@@ -827,7 +827,7 @@ No es necesario expandir el polinomio:
 @end example
 
 Un ejemplo utilizando valores distintos a los utilizados por defecto en 
-@var{coeffp} y en @var{exponp}:
+@mvar{coeffp} y en @mvar{exponp}:
 
 @c ===beg===
 @c polynomialp ((x + 1)*(x + 2)^(3/2), [x],
@@ -859,48 +859,48 @@ Polinomios con dos variables:
 
 @end deffn
 
-@deffn {Funci@'on} polytocompanion (@var{p}, @var{x})
+@deffn {Funci@'on} polytocompanion (@mvar{p}, @mvar{x})
 
-Si @var{p} es un polinomio en @var{x}, devuelve la matriz compa@~nera de @var{p}. Para
-un polinomio m@'onico @var{p} de grado @var{n} se tiene
-@code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
+Si @mvar{p} es un polinomio en @mvar{x}, devuelve la matriz compa@~nera de @mvar{p}. Para
+un polinomio m@'onico @mvar{p} de grado @mvar{n} se tiene
+@code{@mvar{p} = (-1)^@mvar{n} charpoly (polytocompanion (@mvar{p}, @mvar{x}))}.
 
-Si @var{p} no es un polinomio en  @var{x}, se devuelve un mensaje de error.
+Si @mvar{p} no es un polinomio en  @mvar{x}, se devuelve un mensaje de error.
 
 @end deffn
 
-@deffn {Funci@'on} ptriangularize (@var{M}, @var{v})
+@deffn {Funci@'on} ptriangularize (@mvar{M}, @mvar{v})
 
-Si @var{M} es una matriz en la que sus elementos son polinomios en @var{v},
-devuelve una matriz @var{M2} tal que
+Si @mvar{M} es una matriz en la que sus elementos son polinomios en @mvar{v},
+devuelve una matriz @mvar{M2} tal que
 
 @enumerate
 @item
-@var{M2} es triangular superior,
+@mvar{M2} es triangular superior,
 
 @item
-@code{@var{M2} = @var{E_n} ... @var{E_1} @var{M}}, donde @var{E_1}, ...,
-@var{E_n} son matrices elementales cuyos elementos son polinomios en @var{v},
+@code{@mvar{M2} = @mvar{E_n} ... @mvar{E_1} @mvar{M}}, donde @mvar{E_1}, ...,
+@mvar{E_n} son matrices elementales cuyos elementos son polinomios en @mvar{v},
 
 @item
-@code{|det (@var{M})| = |det (@var{M2})|},
+@code{|det (@mvar{M})| = |det (@mvar{M2})|},
 @end enumerate
 
 Nota: esta funci@'on no comprueba si los elementos de la matriz son
-polinomios en @var{v}.
+polinomios en @mvar{v}.
 @end deffn
 
-@deffn {Funci@'on} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
+@deffn {Funci@'on} rowop (@mvar{M}, @mvar{i}, @mvar{j}, @mvar{theta})
 
-Si @var{M} es una matriz, devuelve la matriz que resulta de relizar la
+Si @mvar{M} es una matriz, devuelve la matriz que resulta de relizar la
 transformaci@'on @code{R_i <- R_i - theta * R_j} con las filas @code{R_i} y 
-@code{R_j}. Si @var{M} no tiene estas filas, devuelve un mensaje de error.
+@code{R_j}. Si @mvar{M} no tiene estas filas, devuelve un mensaje de error.
 
 @end deffn
 
-@deffn {Funci@'on} rank (@var{M})
+@deffn {Funci@'on} rank (@mvar{M})
 
-Calcula el rango de la matriz @var{M}. El rango es la dimensi@'on del 
+Calcula el rango de la matriz @mvar{M}. El rango es la dimensi@'on del 
 espacio columna. Ejemplo:
 @c ===beg===
 @c rank(matrix([1,2],[2,4]));
@@ -917,19 +917,19 @@ Proviso:  @{d - b c # 0@}
 @end deffn
 
 
-@deffn {Funci@'on} rowswap (@var{M}, @var{i}, @var{j})
+@deffn {Funci@'on} rowswap (@mvar{M}, @mvar{i}, @mvar{j})
 
-Si @var{M} es una matriz, intercambia las filas  @var{i} y @var{j}. Si @var{M}
+Si @mvar{M} es una matriz, intercambia las filas  @mvar{i} y @mvar{j}. Si @mvar{M}
 carece de estas filas, devuelve un mensaje de error.
 
 @end deffn
 
-@deffn {Funci@'on} toeplitz (@var{col})
-@deffnx {Funci@'on} toeplitz (@var{col}, @var{row})
+@deffn {Funci@'on} toeplitz (@mvar{col})
+@deffnx {Funci@'on} toeplitz (@mvar{col}, @mvar{row})
 
-Devuelve una  matriz de Toeplitz @var{T}. La primera columna de @var{T} es @var{col},
-excepto su primer elemento. La primera fila de @var{T} es @var{row}. El valor por
-defecto para @var{row} es el complejo conjugado de @var{col}. Ejemplo:
+Devuelve una  matriz de Toeplitz @mvar{T}. La primera columna de @mvar{T} es @mvar{col},
+excepto su primer elemento. La primera fila de @mvar{T} es @mvar{row}. El valor por
+defecto para @mvar{row} es el complejo conjugado de @mvar{col}. Ejemplo:
 @c ===beg===
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
@@ -954,34 +954,34 @@ defecto para @var{row} es el complejo conjugado de @var{col}. Ejemplo:
 
 @end deffn
 
-@deffn {Funci@'on} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
+@deffn {Funci@'on} vandermonde_matrix ([@mvar{x_1}, ..., @mvar{x_n}])
 
-Devuelve una matriz @var{n} por @var{n}, cuya @var{i}-@'esima fila es
-@code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}. 
+Devuelve una matriz @mvar{n} por @mvar{n}, cuya @mvar{i}-@'esima fila es
+@code{[1, @mvar{x_i}, @mvar{x_i}^2, ... @mvar{x_i}^(@mvar{n}-1)]}. 
 
 @end deffn
 
-@deffn {Funci@'on} zerofor (@var{M})
-@deffnx {Funci@'on}  zerofor (@var{M}, @var{fld})
+@deffn {Funci@'on} zerofor (@mvar{M})
+@deffnx {Funci@'on}  zerofor (@mvar{M}, @mvar{fld})
 
-Devuelve la matriz nula con la misma estructura que la matriz @var{M}.
-Cada elemento de la matriz nula es la identidad aditiva del campo @var{fld};
-el valor por defecto de @var{fld} es @var{generalring}.
+Devuelve la matriz nula con la misma estructura que la matriz @mvar{M}.
+Cada elemento de la matriz nula es la identidad aditiva del campo @mvar{fld};
+el valor por defecto de @mvar{fld} es @mvar{generalring}.
 
-El primer argumento de @var{M} debe ser una matriz cuadrada o no ser matriz en
-absoluto. Si @var{M} es una matriz, cada uno de sus elementos puede ser una 
-matriz cuadrada, por lo que @var{M} puede ser una matriz de Maxima definida por
+El primer argumento de @mvar{M} debe ser una matriz cuadrada o no ser matriz en
+absoluto. Si @mvar{M} es una matriz, cada uno de sus elementos puede ser una 
+matriz cuadrada, por lo que @mvar{M} puede ser una matriz de Maxima definida por
 bloques.
 
 V@'ease tambi@'en @code{identfor}.
 
 @end deffn
 
-@deffn {Funci@'on} zeromatrixp (@var{M})
+@deffn {Funci@'on} zeromatrixp (@mvar{M})
 
-Si @var{M} no es una matriz definida por bloques, devuelve @code{true} si
- @code{is (equal (@var{e}, 0))} es verdadero para todo elemento @var{e} de
-@var{M}. Si @var{M} es una matriz por bloques, devuelve @code{true} si
-@code{zeromatrixp} devuelve a su vez @code{true} para cada elemento de @var{e}.
+Si @mvar{M} no es una matriz definida por bloques, devuelve @code{true} si
+ @code{is (equal (@mvar{e}, 0))} es verdadero para todo elemento @mvar{e} de
+@mvar{M}. Si @mvar{M} es una matriz por bloques, devuelve @code{true} si
+@code{zeromatrixp} devuelve a su vez @code{true} para cada elemento de @mvar{e}.
 
 @end deffn

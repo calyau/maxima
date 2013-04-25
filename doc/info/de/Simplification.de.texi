@@ -194,7 +194,7 @@ Beispiel:
 
 @c --- 11.12.2010 DK -----------------------------------------------------------
 @anchor{combine}
-@deffn {Funktion} combine (@var{expr})
+@deffn {Funktion} combine (@mvar{expr})
 
 Terme einer rationalen Funktion, die denselben Nenner haben, werden 
 zusammengefasst.
@@ -228,10 +228,10 @@ Siehe auch die Funktion @mrefdot{declare}
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
 @anchor{demoivre}
-@deffn  {Funktion} demoivre (@var{expr})
+@deffn  {Funktion} demoivre (@mvar{expr})
 @deffnx {Optionsvariable} demoivre
 
-Die Funktion @code{demoivre(expr)} konvertiert den Ausdruck @var{expr}, ohne
+Die Funktion @code{demoivre(expr)} konvertiert den Ausdruck @mvar{expr}, ohne
 die Optionsvariable @code{demoivre} zu setzen.
 
 Hat die Optionsvariable @code{demoivre} den Wert @code{true}, werden komplexe
@@ -250,7 +250,7 @@ hyperbolische Funktionen in eine Exponentialform zu konvertieren.
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
 @anchor{function_distrib}
-@deffn {Funktion} distrib (@var{expr})
+@deffn {Funktion} distrib (@mvar{expr})
 
 Summen werden ausmultipliziert.  Im Unterschied zu der Funktion
 @mref{expand} wird @code{distrib} nur auf der obersten Ebene eines Ausdruckes
@@ -365,10 +365,10 @@ Beispiele:
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
 @anchor{expand}
-@deffn  {Funktion} expand (@var{expr})
-@deffnx {Funktion} expand (@var{expr}, @var{p}, @var{n})
+@deffn  {Funktion} expand (@mvar{expr})
+@deffnx {Funktion} expand (@mvar{expr}, @mvar{p}, @mvar{n})
 
-Expandiert den Ausdruck @var{expr}.  Produkte von Summen und Potenzen von Summen
+Expandiert den Ausdruck @mvar{expr}.  Produkte von Summen und Potenzen von Summen
 werden ausmultipliziert.  Die Nenner von rationalen Ausdr@"ucken, die Summen 
 sind, werden in ihre Terme aufgespalten.  Produkte (kommutative und 
 nicht-kommutative) werden in Summen herein multipliziert.
@@ -379,8 +379,8 @@ f@"ur diesen Fall einen effizienteren Algorithmus hat.
 @mref{maxnegex} und @mref{maxposex} kontrollieren den maximalen negativen und
 positiven Exponenten, f@"ur die ein Ausdruck expandiert wird.
 
-@code{expand(@var{expr}, @var{p}, @var{n})} expandiert @var{expr}, wobei 
-@code{maxposex} den Wert @var{p} und @code{maxnegex} den Wert @var{n} erhalten.
+@code{expand(@mvar{expr}, @mvar{p}, @mvar{n})} expandiert @mvar{expr}, wobei 
+@code{maxposex} den Wert @mvar{p} und @code{maxnegex} den Wert @mvar{n} erhalten.
 
 @mref{expon} ist der gr@"o@ss{}te negative Exponent, f@"ur den ein Ausdruck
 automatisch expandiert wird.  Hat zum Beispiel @code{expon} den Wert 4, wird 
@@ -394,7 +394,7 @@ gr@"o@ss{}er als @code{expop} ist, dann ist dies nur m@"oglich, wenn @code{n}
 kleiner als @code{maxposex} ist.
 
 @code{expand(expr,0,0)} bewirkt eine erneuerte vollst@"andige Vereinfachung 
-des Ausdrucks @var{expr}.  Der Ausdruck wird nicht erneuert ausgewertet.  Im 
+des Ausdrucks @mvar{expr}.  Der Ausdruck wird nicht erneuert ausgewertet.  Im 
 Unterschied zum Kommando @code{ev(expr, noeval)} wird eine spezielle Darstellung
 (zum Beispiel eine CRE-Form) nicht entfernt.  Siehe auch @mrefdot{ev}
 
@@ -463,12 +463,12 @@ Vereinfache einen Ausdruck erneut:
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
 @anchor{expandwrt}
-@deffn {Funktion} expandwrt (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {Funktion} expandwrt (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
-Expandiert den Ausdruck @code{expr} in Bezug auf die Variablen @var{x_1}, 
-@dots{}, @var{x_n}.  Alle Produkte, die die Variablen enthalten, werden 
+Expandiert den Ausdruck @code{expr} in Bezug auf die Variablen @mvar{x_1}, 
+@dots{}, @mvar{x_n}.  Alle Produkte, die die Variablen enthalten, werden 
 ausmultipliziert.  Das Ergebnis ist frei von Produkten von Summen, die nicht 
-frei von den Variablen sind.  @var{x_1}, @dots{}, @var{x_n} k@"onnen Variable, 
+frei von den Variablen sind.  @mvar{x_1}, @dots{}, @mvar{x_n} k@"onnen Variable, 
 Operatoren oder Ausdr@"ucke sein.
 
 Standardm@"a@ss{}ig wird der Nenner eines rationalen Ausdrucks nicht expandiert.
@@ -491,12 +491,12 @@ Z@"ahler und der Nenner eines rationalen Ausdrucks expandiert.  Ist der Wert
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
 @anchor{expandwrt_factored}
-@deffn {Funktion} expandwrt_factored (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
+@deffn {Funktion} expandwrt_factored (@mvar{expr}, @mvar{x_1}, @dots{}, @mvar{x_n})
 
 Ist vergleichbar mit der Funktion @mref{expandwrt}, behandelt aber Ausdr@"ucke 
 verschieden, die Produkte enthalten.  @code{expandwrt_factored} expandiert nur
-die Faktoren im Ausdruck @code{expr}, die die Variablen @var{x_1}, @dots{},
-@var{x_n} enthalten.
+die Faktoren im Ausdruck @code{expr}, die die Variablen @mvar{x_1}, @dots{},
+@mvar{x_n} enthalten.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
@@ -511,11 +511,11 @@ automatisch expandiert wird.  Hat zum Beispiel @code{expon} den Wert 4, wird
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
 @anchor{exponentialize}
-@deffn  {Funktion} exponentialize (@var{expr})
+@deffn  {Funktion} exponentialize (@mvar{expr})
 @deffnx {Optionsvariable} exponentialize
 
 Die Funktion @code{exponentialize} konvertiert trigonometrische und
-hyperbolische Funktion die in dem Ausdruck @var{expr} auftreten in 
+hyperbolische Funktion die in dem Ausdruck @mvar{expr} auftreten in 
 Exponentialfunktionen, ohne dass die Optionsvariable @code{exponentialize}
 gesetzt wird.
 
@@ -645,8 +645,8 @@ Beispiel:
 
 @c -----------------------------------------------------------------------------
 @anchor{multthru}
-@deffn  {Funktion} multthru (@var{expr})
-@deffnx {Funktion} multthru (@var{expr_1}, @var{expr_2})
+@deffn  {Funktion} multthru (@mvar{expr})
+@deffnx {Funktion} multthru (@mvar{expr_1}, @mvar{expr_2})
 
 Multipliziert einen oder mehrere Faktoren in eine Summe herein.  @code{multthru}
 expandiert keine Potenzen von Summen.  @code{multthru} ist die effizienteste
@@ -654,8 +654,8 @@ Methode, um Produkte von Summen auszumultiplizieren.  Da Maxima intern die
 Division als ein Produkt darstellt, kann @code{multthru} auch angewendet werden,
 um einen Nenner in eine Summe hereinzumultiplizieren.
 
-@code{multthru(@var{expr_1}, @var{expr_2})} multipliziert jeden Term des
-Ausdrucks @var{expr_2} mit @var{expr_1}.  Der Ausdruck @var{expr_2} kann dabei 
+@code{multthru(@mvar{expr_1}, @mvar{expr_2})} multipliziert jeden Term des
+Ausdrucks @mvar{expr_2} mit @mvar{expr_1}.  Der Ausdruck @mvar{expr_2} kann dabei 
 eine Summe oder eine Gleichung sein.
 
 Siehe auch die Funktionen @mref{expand} und @mrefdot{function_distrib}
@@ -790,9 +790,9 @@ Beispiel:
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
 @anchor{radcan}
-@deffn {Funktion} radcan (@var{expr})
+@deffn {Funktion} radcan (@mvar{expr})
 
-@c Simplifies @var{expr}, which can contain logs, exponentials, and radicals, by 
+@c Simplifies @mvar{expr}, which can contain logs, exponentials, and radicals, by 
 @c converting it into a form which is canonical over a large class of
 @c expressions and a given ordering of variables; that is, all functionally
 @c equivalent forms are mapped into a unique form.  For a somewhat larger class
@@ -871,12 +871,12 @@ Siehe auch die Eigenschaft @mref{lassociative} und die Funktion
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{scsimp}
-@deffn {Funktion} scsimp (@var{expr}, @var{rule_1}, @dots{}, @var{rule_n})
+@deffn {Funktion} scsimp (@mvar{expr}, @mvar{rule_1}, @dots{}, @mvar{rule_n})
 
 Sequential Comparative Simplification (Methode nach Stoute).
 
-@code{scsimp} versucht den Ausdruck @var{expr} mit Hilfe der Regeln 
-@var{rule_1}, @dots{}, @var{rule_n} zu vereinfachen.  Die Regeln werden 
+@code{scsimp} versucht den Ausdruck @mvar{expr} mit Hilfe der Regeln 
+@mvar{rule_1}, @dots{}, @mvar{rule_n} zu vereinfachen.  Die Regeln werden 
 nacheinander solange angewendet, bis sich der Ausdruck nicht weiter vereinfacht.
 F@"uhrt keine der Regeln zu einem Erfolg, wird der urspr@"ungliche Ausdruck
 zur@"uckgegeben.
@@ -955,9 +955,9 @@ Beispiel:
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
 @anchor{xthru}
-@deffn {Funktion} xthru (@var{expr})
+@deffn {Funktion} xthru (@mvar{expr})
 
-Die Terme einer Summe des Ausdrucks @var{expr} werden so zusammengefasst, dass
+Die Terme einer Summe des Ausdrucks @mvar{expr} werden so zusammengefasst, dass
 sie einen gemeinsamen Nenner haben.  Produkte und Potenzen von Summen werden
 dabei nicht expandiert.  Gemeinsame Faktoren im Z@"ahler und Nenner werden
 gek@"urzt.

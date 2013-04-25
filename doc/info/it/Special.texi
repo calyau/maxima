@@ -13,23 +13,23 @@
 @node Definitions for Special Functions,  , specint, Special Functions
 @section Definitions for Special Functions
 
-@deffn {Function} airy (@var{x})
+@deffn {Function} airy (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} airy_ai (@var{x})
+@deffn {Function} airy_ai (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} airy_dai (@var{x})
+@deffn {Function} airy_dai (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} airy_bi (@var{x})
+@deffn {Function} airy_bi (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} airy_dbi (@var{x})
+@deffn {Function} airy_dbi (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -37,23 +37,23 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bessel (@var{z}, @var{a}) 
+@deffn {Function} bessel (@mvar{z}, @mvar{a}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bessel_j (@var{v}, @var{z})
+@deffn {Function} bessel_j (@mvar{v}, @mvar{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bessel_y (@var{v}, @var{z})
+@deffn {Function} bessel_y (@mvar{v}, @mvar{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bessel_i (@var{v}, @var{z})
+@deffn {Function} bessel_i (@mvar{v}, @mvar{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} bessel_k (@var{v}, @var{z})
+@deffn {Function} bessel_k (@mvar{v}, @mvar{z})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -61,23 +61,23 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
+@deffn {Function} scaled_bessel_i (@mvar{v}, @mvar{z}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} scaled_bessel_i0 (@var{z}) 
+@deffn {Function} scaled_bessel_i0 (@mvar{z}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} scaled_bessel_i1 (@var{z}) 
+@deffn {Function} scaled_bessel_i1 (@mvar{z}) 
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} beta (@var{x}, @var{y})
+@deffn {Function} beta (@mvar{x}, @mvar{y})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gamma (@var{x})
+@deffn {Function} gamma (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -85,35 +85,35 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} intopois (@var{a})
+@deffn {Function} intopois (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} makefact (@var{expr})
+@deffn {Function} makefact (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} makegamma (@var{expr})
+@deffn {Function} makegamma (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} numfactor (@var{expr})
+@deffn {Function} numfactor (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} outofpois (@var{a})
+@deffn {Function} outofpois (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} poisdiff (@var{a}, @var{b})
+@deffn {Function} poisdiff (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} poisexpt (@var{a}, @var{b})
+@deffn {Function} poisexpt (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} poisint (@var{a}, @var{b})
+@deffn {Function} poisint (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -121,15 +121,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+@deffn {Function} poismap (@mvar{series}, @mvar{sinfn}, @mvar{cosfn})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} poisplus (@var{a}, @var{b})
+@deffn {Function} poisplus (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} poissimp (@var{a})
+@deffn {Function} poissimp (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -137,11 +137,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} poissubst (@var{a}, @var{b}, @var{c})
+@deffn {Function} poissubst (@mvar{a}, @mvar{b}, @mvar{c})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} poistimes (@var{a}, @var{b})
+@deffn {Function} poistimes (@mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -149,11 +149,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} printpois (@var{a})
+@deffn {Function} printpois (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} psi [@var{n}](@var{x})
+@deffn {Function} psi [@mvar{n}](@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

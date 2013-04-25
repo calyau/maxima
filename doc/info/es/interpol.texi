@@ -10,7 +10,7 @@
 El paquete @code{interpol} desarrolla los m@'etodos de interpolaci@'on polin@'omica de Lagrange, lineal y de @i{splines} c@'ubicos.
 
 
-Para comentarios, fallos o sugerencias, contactar con @var{'mario ARROBA edu PUNTO xunta PUNTO es'}.
+Para comentarios, fallos o sugerencias, contactar con @mvar{'mario ARROBA edu PUNTO xunta PUNTO es'}.
 
 
 
@@ -18,9 +18,9 @@ Para comentarios, fallos o sugerencias, contactar con @var{'mario ARROBA edu PUN
 @section Funciones y variables para interpol
 
 
-@deffn {Funci@'on} lagrange (@var{points})
-@deffnx {Funci@'on} lagrange (@var{points}, @var{option})
-Calcula el polinomio de interpolaci@'on por el m@'etodo de Lagrange. El argumento @var{points} debe ser:
+@deffn {Funci@'on} lagrange (@mvar{points})
+@deffnx {Funci@'on} lagrange (@mvar{points}, @mvar{option})
+Calcula el polinomio de interpolaci@'on por el m@'etodo de Lagrange. El argumento @mvar{points} debe ser:
 
 @itemize @bullet
 @item
@@ -33,7 +33,7 @@ una lista de n@'umeros, @code{p: [4,6,3]}, en cuyo caso las abscisas se asignar@
 
 En los dos primeros casos los pares se ordenan con respecto a la primera coordenada antes de proceder a los c@'alculos.
 
-Mediante el argumento @var{option} es posible seleccionar el nombre de la variable independiente, que por defecto es @code{'x}; para definir otra, escr@'{@dotless{i}}base algo como @code{varname='z}.
+Mediante el argumento @mvar{option} es posible seleccionar el nombre de la variable independiente, que por defecto es @code{'x}; para definir otra, escr@'{@dotless{i}}base algo como @code{varname='z}.
 
 T@'engase en cuenta que cuando se trabaja con polinomios de grado alto, los
 c@'alculos con n@'umeros decimales en coma flotante pueden ser muy inestables.
@@ -120,14 +120,14 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} charfun2 (@var{x}, @var{a}, @var{b})
-Devuelve @code{true} si el n@'umero @var{x} pertenece al intervalo @math{[a, b)}, y @code{false} en caso contrario.
+@deffn {Funci@'on} charfun2 (@mvar{x}, @mvar{a}, @mvar{b})
+Devuelve @code{true} si el n@'umero @mvar{x} pertenece al intervalo @math{[a, b)}, y @code{false} en caso contrario.
 @end deffn
 
 
-@deffn {Funci@'on} linearinterpol (@var{points})
-@deffnx {Funci@'on} linearinterpol (@var{points}, @var{option})
-Calcula rectas de interpolaci@'on. El argumento @var{points} debe ser:
+@deffn {Funci@'on} linearinterpol (@mvar{points})
+@deffnx {Funci@'on} linearinterpol (@mvar{points}, @mvar{option})
+Calcula rectas de interpolaci@'on. El argumento @mvar{points} debe ser:
 
 @itemize @bullet
 @item
@@ -140,7 +140,7 @@ una lista de n@'umeros, @code{p: [4,6,3]}, en cuyo caso las abscisas se asignar@
 
 En los dos primeros casos los pares se ordenan con respecto a la primera coordenada antes de proceder a los c@'alculos.
 
-Mediante el argumento @var{option} es posible seleccionar el nombre de la variable independiente, que por defecto es @code{'x}; para definir otra, escr@'{@dotless{i}}base algo como @code{varname='z}.
+Mediante el argumento @mvar{option} es posible seleccionar el nombre de la variable independiente, que por defecto es @code{'x}; para definir otra, escr@'{@dotless{i}}base algo como @code{varname='z}.
 
 V@'eanse tambi@'en @code{lagrange}, @code{cspline} y @code{ratinterpol}.
 
@@ -198,9 +198,9 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} cspline (@var{points})
-@deffnx {Funci@'on} cspline (@var{points}, @var{option1}, @var{option2}, ...)
-Calcula el polinomio de interpolaci@'on por el m@'etodo de los @i{splines} c@'ubicos. El argumento @var{points} debe ser:
+@deffn {Funci@'on} cspline (@mvar{points})
+@deffnx {Funci@'on} cspline (@mvar{points}, @mvar{option1}, @mvar{option2}, ...)
+Calcula el polinomio de interpolaci@'on por el m@'etodo de los @i{splines} c@'ubicos. El argumento @mvar{points} debe ser:
 
 @itemize @bullet
 @item
@@ -303,11 +303,11 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Funci@'on} ratinterpol (@var{points}, @var{numdeg})
-@deffnx {Funci@'on} ratinterpol (@var{points}, @var{numdeg}, @var{option1})
-Genera el interpolador racional para los datos dados por @var{points} y con
-grado @var{numdeg} en el numerador; el grado del denominador se calcula
-autom@'aticamente. El argumento @var{points} debe ser:
+@deffn {Funci@'on} ratinterpol (@mvar{points}, @mvar{numdeg})
+@deffnx {Funci@'on} ratinterpol (@mvar{points}, @mvar{numdeg}, @mvar{option1})
+Genera el interpolador racional para los datos dados por @mvar{points} y con
+grado @mvar{numdeg} en el numerador; el grado del denominador se calcula
+autom@'aticamente. El argumento @mvar{points} debe ser:
 
 @itemize @bullet
 @item

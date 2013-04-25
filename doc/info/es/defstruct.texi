@@ -22,9 +22,9 @@ campos pueden ser expresiones cualesquiera.
 Una estructura se define con la funci@'on @code{defstruct}, guardando la
 variable @code{structures} la lista de todas las estructuras definidas
 por el usuario. El operador @code{@@} permite hacer referencias a los
-campos de la estructura. Con @code{kill(@var{S})} se borra la estructura
-@var{S} completa y @code{kill(@var{x}@@ @var{a})} elimina la asignaci@'on
-actual del campo @var{a} en la estructura @var{x}.
+campos de la estructura. Con @code{kill(@mvar{S})} se borra la estructura
+@mvar{S} completa y @code{kill(@mvar{x}@@ @mvar{a})} elimina la asignaci@'on
+actual del campo @mvar{a} en la estructura @mvar{x}.
 
 En la impresi@'on por consola (con @code{display2d} igual a @code{true}),
 las estructuras se representan con las asignaciones de los campos en forma de ecuaci@'on,
@@ -54,24 +54,24 @@ son siempre visibles.
 
 
 
-@deffn {Funci@'on} defstruct (@var{S}(@var{a_1}, ..., @var{a_n}))
-@deffnx {Funci@'on} defstruct (@var{S}(@var{a_1} = @var{v_1}, ..., @var{a_n} = @var{v_n}))
+@deffn {Funci@'on} defstruct (@mvar{S}(@mvar{a_1}, ..., @mvar{a_n}))
+@deffnx {Funci@'on} defstruct (@mvar{S}(@mvar{a_1} = @mvar{v_1}, ..., @mvar{a_n} = @mvar{v_n}))
 
-Define una estructura, la cual es una lista de nombres de campos @var{a_1}, ..., @var{a_n}
-asociados a un s@'{@dotless{i}}mbolo @var{S}.
-Todo individuo de una estructura dada consiste en una expresi@'on con operador @var{S}
-y exactamente @code{n} argumentos. La sentencia @code{new(@var{S})} crea un nuevo
-individuo con estructura @var{S}.
+Define una estructura, la cual es una lista de nombres de campos @mvar{a_1}, ..., @mvar{a_n}
+asociados a un s@'{@dotless{i}}mbolo @mvar{S}.
+Todo individuo de una estructura dada consiste en una expresi@'on con operador @mvar{S}
+y exactamente @code{n} argumentos. La sentencia @code{new(@mvar{S})} crea un nuevo
+individuo con estructura @mvar{S}.
 
-Un argumento consistente en un s@'{@dotless{i}}mbolo @var{a} especifica el nombre de
-un campo. Un argumento consistente en una ecuaci@'on @code{@var{a} = @var{v}} especifica
-el nombre del campo @var{a} junto con su valor por defecto @var{v}. El valor por
+Un argumento consistente en un s@'{@dotless{i}}mbolo @mvar{a} especifica el nombre de
+un campo. Un argumento consistente en una ecuaci@'on @code{@mvar{a} = @mvar{v}} especifica
+el nombre del campo @mvar{a} junto con su valor por defecto @mvar{v}. El valor por
 defecto puede ser cualquier tipo de expresi@'on.
 
-La llamada a @code{defstruct} a@~nade @var{S} a la lista de estructuras definidas
+La llamada a @code{defstruct} a@~nade @mvar{S} a la lista de estructuras definidas
 por el usuario, @code{structures}.
 
-La sentencia @code{kill(@var{S})} borra @var{S} de la lista de estructuras
+La sentencia @code{kill(@mvar{S})} borra @mvar{S} de la lista de estructuras
 definidas por el usuario y elimina la definici@'on de la estructura.
 
 Ejemplos:
@@ -107,19 +107,19 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} new (@var{S})
-@deffnx {Funci@'on} new (@var{S} (@var{v_1}, ..., @var{v_n}))
+@deffn {Funci@'on} new (@mvar{S})
+@deffnx {Funci@'on} new (@mvar{S} (@mvar{v_1}, ..., @mvar{v_n}))
 
 @code{new} crea nuevos individuos de estructuras declaradas.
 
-La sentencia @code{new(@var{S})} crea un nuevo individuo de 
-estructura @var{S} en el que cada campo toma su valor por defecto,
+La sentencia @code{new(@mvar{S})} crea un nuevo individuo de 
+estructura @mvar{S} en el que cada campo toma su valor por defecto,
 si este fue definido, o sin valor alguno en caso de que no se haya
 fijado un valor por defecto en la definici@'on de la estructura.
 
-La sentencia @code{new(@var{S}(@var{v_1}, ..., @var{v_n}))}
-crea un nuevo individuo de estructura @var{S} en el que los campos
-adquieren los valores @var{v_1}, ..., @var{v_n}.
+La sentencia @code{new(@mvar{S}(@mvar{v_1}, ..., @mvar{v_n}))}
+crea un nuevo individuo de estructura @mvar{S} en el que los campos
+adquieren los valores @mvar{v_1}, ..., @mvar{v_n}.
 
 Ejemplos:
 
@@ -143,14 +143,14 @@ Ejemplos:
 
 @code{@@} es el operador para acceder a los campos de las estructuras.
 
-La expresi@'on @code{@var{x}@@ @var{a}} hace referencia al valor del
-campo @var{a} del individuo @var{x} de una estructura dada. El nombre del campo no se eval@'ua.
+La expresi@'on @code{@mvar{x}@@ @mvar{a}} hace referencia al valor del
+campo @mvar{a} del individuo @mvar{x} de una estructura dada. El nombre del campo no se eval@'ua.
 
-Si el campo @var{a} de @var{x} no tiene valor asignado, @code{@var{x}@@ @var{a}}
+Si el campo @mvar{a} de @mvar{x} no tiene valor asignado, @code{@mvar{x}@@ @mvar{a}}
 se eval@'ua a s@'{@dotless{i}} mismo; es decir, devuelve la propia expresi@'on
-@code{@var{x}@@ @var{a}} tal cual.
+@code{@mvar{x}@@ @mvar{a}} tal cual.
 
-La sentencia @code{kill(@var{x}@@ @var{a})} elimina el valor del campo @var{a} de @var{x}.
+La sentencia @code{kill(@mvar{x}@@ @mvar{a})} elimina el valor del campo @mvar{a} de @mvar{x}.
 
 Ejemplos:
 

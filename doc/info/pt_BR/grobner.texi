@@ -174,8 +174,8 @@ s@~{a}o as opera@value{cedilha}@~{o}es aritm@'{e}ticas sobre polin@^{o}mios.
 Elas s@~{a}o executadas usando representa@value{cedilha}@~{a}o interna, mas os resultados s@~{a}o convertidos de volta @`{a}
 forma geral do @emph{maxima}.
 
-@deffn {Fun@value{cedilha}@~ao} poly_add (@var{poli1}, @var{poli2}, @var{varlist})
-Adiciona dois polin@^{o}mios @var{poli1} e @var{poli2}.
+@deffn {Fun@value{cedilha}@~ao} poly_add (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Adiciona dois polin@^{o}mios @mvar{poli1} e @mvar{poli2}.
 @example
 
 (%i1) poly_add(z+x^2*y,x-z,[x,y,z]);
@@ -185,8 +185,8 @@ Adiciona dois polin@^{o}mios @var{poli1} e @var{poli2}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_subtract (@var{poli1}, @var{poli2}, @var{varlist})
-Subtrai o polin@^{o}mio @var{poli2} do polin@^{o}mio @var{poli1}.
+@deffn {Fun@value{cedilha}@~ao} poly_subtract (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Subtrai o polin@^{o}mio @mvar{poli2} do polin@^{o}mio @mvar{poli1}.
 @example
 
 (%i1) poly_subtract(z+x^2*y,x-z,[x,y,z]);
@@ -195,8 +195,8 @@ Subtrai o polin@^{o}mio @var{poli2} do polin@^{o}mio @var{poli1}.
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_multiply (@var{poli1}, @var{poli2}, @var{varlist})
-Retorna o produto dos polin@^{o}mios @var{poli1} e @var{poli2}.
+@deffn {Fun@value{cedilha}@~ao} poly_multiply (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Retorna o produto dos polin@^{o}mios @mvar{poli1} e @mvar{poli2}.
 @example
 
 (%i2) poly_multiply(z+x^2*y,x-z,[x,y,z])-(z+x^2*y)*(x-z),expand;
@@ -204,12 +204,12 @@ Retorna o produto dos polin@^{o}mios @var{poli1} e @var{poli2}.
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_s_polynomial (@var{poli1}, @var{poli2}, @var{varlist})
-Retorna o @emph{polin@^{o}mio syzygy} (@emph{S-polinomial}) de dois polin@^{o}mios @var{poli1} e @var{poli2}.
+@deffn {Fun@value{cedilha}@~ao} poly_s_polynomial (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Retorna o @emph{polin@^{o}mio syzygy} (@emph{S-polinomial}) de dois polin@^{o}mios @mvar{poli1} e @mvar{poli2}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_primitive_part (@var{poli1}, @var{varlist})
-Retorna o polin@^{o}mio @var{poli} dividido pelo MDC entre seus coeficientes. 
+@deffn {Fun@value{cedilha}@~ao} poly_primitive_part (@mvar{poli1}, @mvar{varlist})
+Retorna o polin@^{o}mio @mvar{poli} dividido pelo MDC entre seus coeficientes. 
 
 @example
 (%i1) poly_primitive_part(35*y+21*x,[x,y]);
@@ -217,19 +217,19 @@ Retorna o polin@^{o}mio @var{poli} dividido pelo MDC entre seus coeficientes.
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_normalize (@var{poli}, @var{varlist})
-Retorna o polin@^{o}mio @var{poli} dividido pelo coeficiente lider.
+@deffn {Fun@value{cedilha}@~ao} poly_normalize (@mvar{poli}, @mvar{varlist})
+Retorna o polin@^{o}mio @mvar{poli} dividido pelo coeficiente lider.
 @code{poly_normalize} assume que a divis@~{a}o @'{e} poss@'{i}vel, o que nem sempre ocorre
 em an@'{e}is que n@~{a}o s@~{a}o corpos (fields).
 @end deffn
 
 @subsection Outras fun@value{cedilha}@~{o}es em grobner
 
-@deffn {Fun@value{cedilha}@~ao} poly_expand (@var{poli}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_expand (@mvar{poli}, @mvar{varlist})
 Essa fun@value{cedilha}@~{a}o transforma polin@^{o}mios para a forma interna e da forma interna para a forma geral. @code{poly_expand}
-@'{e} equivalente a @code{expand(poly)} se @var{poli} passa corretamente para
+@'{e} equivalente a @code{expand(poly)} se @mvar{poli} passa corretamente para
 um polin@^{o}mio. Se a representa@value{cedilha}@~{a}o n@~{a}o for compat@'{i}vel com um
-polin@^{o}mio nas vari@'{a}veis @var{varlist}, o resultado @'{e} um erro.
+polin@^{o}mio nas vari@'{a}veis @mvar{varlist}, o resultado @'{e} um erro.
 Esse resultado em erro pode ser usado para testar se uma express@~{a}o transforma-se corretamente para a
 representa@value{cedilha}@~{a}o interna. Os seguintes exemplos ilustra que
 vari@'{a}veis de fun@value{cedilha}@~{o}es indexadas e transcendentes s@~{a}o permitidas.
@@ -257,8 +257,8 @@ vari@'{a}veis de fun@value{cedilha}@~{o}es indexadas e transcendentes s@~{a}o pe
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_expt (@var{poli}, @var{n@'{u}mero}, @var{varlist})
-eleva @var{poli} a um inteiro positivo @var{n@'{u}mero}. If @var{n@'{u}mero} n@~{a}o for um inteiro positivo um erro ir@'{a} ser mostrado.
+@deffn {Fun@value{cedilha}@~ao} poly_expt (@mvar{poli}, @mvar{n@'{u}mero}, @mvar{varlist})
+eleva @mvar{poli} a um inteiro positivo @mvar{n@'{u}mero}. If @mvar{n@'{u}mero} n@~{a}o for um inteiro positivo um erro ir@'{a} ser mostrado.
 @example
 
 (%i1) poly_expt(x-y,3,[x,y])-(x-y)^3,expand;
@@ -266,7 +266,7 @@ eleva @var{poli} a um inteiro positivo @var{n@'{u}mero}. If @var{n@'{u}mero} n@~
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_content (@var{poli}. @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_content (@mvar{poli}. @mvar{varlist})
 @code{poly_content} extrai o MDC entre seus coeficientes
 @example
 
@@ -275,11 +275,11 @@ eleva @var{poli} a um inteiro positivo @var{n@'{u}mero}. If @var{n@'{u}mero} n@~
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_pseudo_divide (@var{poli}, @var{polilist}, @var{varlist})
-Realiza a divis@~{a}o falsa do polin@^{o}mio @var{poli} pela lista de @math{n} polin@^{o}mios @var{polilist}. Retorna
+@deffn {Fun@value{cedilha}@~ao} poly_pseudo_divide (@mvar{poli}, @mvar{polilist}, @mvar{varlist})
+Realiza a divis@~{a}o falsa do polin@^{o}mio @mvar{poli} pela lista de @math{n} polin@^{o}mios @mvar{polilist}. Retorna
 multiplos valores. O primeiro valor @'{e} uma lista de quocientes @math{a}. O
 segundo valor @'{e} o resto @math{r}. O terceiro argumento @'{e} um coeficiente
-escalar @math{c}, tal que @math{c*poli} pode ser dividido por@var{polilist} dentro do anel
+escalar @math{c}, tal que @math{c*poli} pode ser dividido por@mvar{polilist} dentro do anel
 dos coeficientes, que n@~{a}o @'{e} necess@'{a}riamente corpo. Finalmente, o
 quarto valor @'{e} um contador inteiro do n@'{u}mero de redu@value{cedilha}@~{o}es
 realizadas. O objetos resultantes satisfazem @`{a} equa@value{cedilha}@~{a}o:
@@ -294,25 +294,25 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 @end ifnottex
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_exact_divide (@var{poli1}, @var{poli2}, @var{varlist})
-Divide um polin@^{o}mio @var{poli1} por outro polin@^{o}mio @var{poli2}. Assume que a divis@~{a}o
+@deffn {Fun@value{cedilha}@~ao} poly_exact_divide (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Divide um polin@^{o}mio @mvar{poli1} por outro polin@^{o}mio @mvar{poli2}. Assume que a divis@~{a}o
 exata (sem resto) @'{e} poss@'{i}vel. Retorna o quociente.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_normal_form (@var{poli}, @var{polilist}, @var{varlist})
-@code{poly_normal_form} encontra a forma normal de um polin@^{o}mio @var{poli} com rela@value{cedilha}@~{a}o a
-um conjunto de polin@^{o}mios @var{polilist}.
+@deffn {Fun@value{cedilha}@~ao} poly_normal_form (@mvar{poli}, @mvar{polilist}, @mvar{varlist})
+@code{poly_normal_form} encontra a forma normal de um polin@^{o}mio @mvar{poli} com rela@value{cedilha}@~{a}o a
+um conjunto de polin@^{o}mios @mvar{polilist}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_buchberger_criterion (@var{polilist}, @var{varlist})
-Returns @code{true} if @var{polilist} is a Groebner basis with respect to the current term
+@deffn {Fun@value{cedilha}@~ao} poly_buchberger_criterion (@mvar{polilist}, @mvar{varlist})
+Returns @code{true} if @mvar{polilist} is a Groebner basis with respect to the current term
 order, by using the Buchberger
-criterion: for every two polynomials @math{h1} and @math{h2} in @var{polilist} the
-S-polynomial @math{S(h1,h2)} reduces to 0 @math{modulo} @var{polilist}.
+criterion: for every two polynomials @math{h1} and @math{h2} in @mvar{polilist} the
+S-polynomial @math{S(h1,h2)} reduces to 0 @math{modulo} @mvar{polilist}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_buchberger (@var{polilist_fl} @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_buchberger (@mvar{polilist_fl} @mvar{varlist})
 @code{poly_buchberger} realiza o algor@'{i}tmo de Buchberger sobre uma lista de
 polin@^{o}mios e retorna a base de Grobner resultante.
 
@@ -357,48 +357,48 @@ O @emph{ideal radical} @math{sqrt(I)} @'{e} o ideal
 @end ifnottex
 
 @noindent
-@deffn {Fun@value{cedilha}@~ao} poly_reduction (@var{polilist}, @var{varlist})
-@code{poly_reduction} reduz uma lista de polin@^{o}mios @var{polilist}, de forma que
+@deffn {Fun@value{cedilha}@~ao} poly_reduction (@mvar{polilist}, @mvar{varlist})
+@code{poly_reduction} reduz uma lista de polin@^{o}mios @mvar{polilist}, de forma que
 cada poin@^{o}mio @'{e} completametne reduzido com rela@value{cedilha}@~{a}o a outros polin@^{o}mios.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_minimization (@var{polilist}, @var{varlist})
-Retorna uma sublista da lista de polin@^{o}mios @var{polilist} gerando o mesmo
-ideal de mon@^{o}mio que @var{polilist} mas minimo, i.e. nenhum mon@^{o}mio l@'{i}der
+@deffn {Fun@value{cedilha}@~ao} poly_minimization (@mvar{polilist}, @mvar{varlist})
+Retorna uma sublista da lista de polin@^{o}mios @mvar{polilist} gerando o mesmo
+ideal de mon@^{o}mio que @mvar{polilist} mas minimo, i.e. nenhum mon@^{o}mio l@'{i}der
 de um polin@^{o}mio na sublista divide o mon@^{o}mio l@'{i}der
 de outro polin@^{o}mio.
 
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} poly_normalize_list (@var{polilist}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_normalize_list (@mvar{polilist}, @mvar{varlist})
 @code{poly_normalize_list} aplica @code{poly_normalize} a cada polin@^{o}mio na lista.
-Que significa que @code{poly_normalize_list} divide todo polin@^{o}mio em uma lista @var{polilist} por seu coeficiente l@'{i}der.
+Que significa que @code{poly_normalize_list} divide todo polin@^{o}mio em uma lista @mvar{polilist} por seu coeficiente l@'{i}der.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_grobner (@var{polilist}, @var{varlist})
-Retorna uma base de Groebner do ideal gerado pelos polin@^{o}mios @var{polilist}. Afetado pelos sinalizadores globais.
+@deffn {Fun@value{cedilha}@~ao} poly_grobner (@mvar{polilist}, @mvar{varlist})
+Retorna uma base de Groebner do ideal gerado pelos polin@^{o}mios @mvar{polilist}. Afetado pelos sinalizadores globais.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_reduced_grobner (@var{polilist}, @var{varlist})
-Retorna uma base de Groebner reduzida do ideal gerado pelos polin@^{o}mios @var{polilist}. Afetado pelos sinalizadores globais.
-@end deffn
-
-
-@deffn {Fun@value{cedilha}@~ao} poly_depends_p (@var{poli}, @var{var}, @var{varlist})
-@code{poly_depends} testa se um polin@^{o}mio depende da vari@'{a}vel @var{var}.
+@deffn {Fun@value{cedilha}@~ao} poly_reduced_grobner (@mvar{polilist}, @mvar{varlist})
+Retorna uma base de Groebner reduzida do ideal gerado pelos polin@^{o}mios @mvar{polilist}. Afetado pelos sinalizadores globais.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} poly_elimination_ideal (@var{polilist}, @var{num}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_depends_p (@mvar{poli}, @mvar{var}, @mvar{varlist})
+@code{poly_depends} testa se um polin@^{o}mio depende da vari@'{a}vel @mvar{var}.
+@end deffn
+
+
+@deffn {Fun@value{cedilha}@~ao} poly_elimination_ideal (@mvar{polilist}, @mvar{num}, @mvar{varlist})
 
 
 @code{poly_elimination_ideal} retorna a base de grobner do @math{num}-@'{e}simo ideal de elimina@value{cedilha}@~{a}o de um
 ideal especificado como uma lista de polin@^{o}mios geradores (n@~{a}o necess@'{a}riamente base de Groebner)
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_colon_ideal (@var{polilist1}, @var{polilist2}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_colon_ideal (@mvar{polilist1}, @mvar{polilist2}, @mvar{varlist})
 
 Retorna a base reduzida de Groebner do ideal quociente 
 
@@ -408,23 +408,23 @@ Retorna a base reduzida de Groebner do ideal quociente
 onde @math{polilist1} e @math{polilist2} s@~{a}o duas listas de polin@^{o}mios.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_ideal_intersection (@var{polilist1}, @var{polilist2}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_ideal_intersection (@mvar{polilist1}, @mvar{polilist2}, @mvar{varlist})
 
 @code{poly_ideal_intersection} retorna a intersec@value{cedilha}@~{a}o entre dois ideais.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} poly_lcm (@var{poli1}, @var{poli2}, @var{varlist})
-Retorna o m@'{i}nimo m@'{u}ltiplo comum entre @var{poli1} e @var{poli2}.
+@deffn {Fun@value{cedilha}@~ao} poly_lcm (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Retorna o m@'{i}nimo m@'{u}ltiplo comum entre @mvar{poli1} e @mvar{poli2}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_gcd (@var{poli1}, @var{poli2}, @var{varlist})
-Retorna m@'{a}ximo divisor comum de @var{poli1} e @var{poli2}.
+@deffn {Fun@value{cedilha}@~ao} poly_gcd (@mvar{poli1}, @mvar{poli2}, @mvar{varlist})
+Retorna m@'{a}ximo divisor comum de @mvar{poli1} e @mvar{poli2}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_grobner_equal (@var{polilist1}, @var{polilist2}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_grobner_equal (@mvar{polilist1}, @mvar{polilist2}, @mvar{varlist})
 @code{poly_grobner_equal} testa se duas bases de Groebner geram o mesmo ideal.
-Retorna @code{true} se as duas listas de polin@^{o}mios @var{polilist1} e @var{polilist2}, assumidas serem bases de Groebner,
+Retorna @code{true} se as duas listas de polin@^{o}mios @mvar{polilist1} e @mvar{polilist2}, assumidas serem bases de Groebner,
 geram o mesmo ideal, e @code{false} de outra forma.
 Isso @'{e} equivalente a verificar que todo polin@^{o}mio da primeira base @'{e} reduzido a 0
 m@'{o}dulo a segunda base e vice-versa. Note que no exemplo abaixo a
@@ -437,23 +437,23 @@ primeira lista n@~{a}o @'{e} uma base de Groebner, e dessa forma o resultado @'{
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_grobner_subsetp (@var{polilist1}, @var{polilist2}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_grobner_subsetp (@mvar{polilist1}, @mvar{polilist2}, @mvar{varlist})
 
-@code{poly_grobner_subsetp} testa se um ideal gerado pela @var{polilist1}
-est@'{a} contido em um ideal gerado pela @var{polilist2}. Para esse teste sempre tenha sucesso,
-@var{polilist2} deve ser uma base de Groebner.
+@code{poly_grobner_subsetp} testa se um ideal gerado pela @mvar{polilist1}
+est@'{a} contido em um ideal gerado pela @mvar{polilist2}. Para esse teste sempre tenha sucesso,
+@mvar{polilist2} deve ser uma base de Groebner.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_grobner_member (@var{poli}, @var{polilist}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_grobner_member (@mvar{poli}, @mvar{polilist}, @mvar{varlist})
 
-Retorna @code{true} se um polin@^{o}mio @var{poli} pertence ao ideal gerado pela
-lista polinomial @var{polilist}, que @'{e} assumida como sendouma base de Groebner. Retorna @code{false} de outra forma.
+Retorna @code{true} se um polin@^{o}mio @mvar{poli} pertence ao ideal gerado pela
+lista polinomial @mvar{polilist}, que @'{e} assumida como sendouma base de Groebner. Retorna @code{false} de outra forma.
 
 @code{poly_grobner_member} testa se um polin@^{o}mio pertence a um ideal gerado por uma lista de polin@^{o}mios,
 que @'{e} assumida ser uma base de Groebner. Equivale a @code{normal_form} sendo 0. 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_ideal_saturation1 (@var{polilist}, @var{poli}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_ideal_saturation1 (@mvar{polilist}, @mvar{poli}, @mvar{varlist})
 Retorna abase de Groebner reduzida da satura@value{cedilha}@~{a}o do ideal
 @iftex
 @tex
@@ -467,11 +467,11 @@ I(polylist):poly^inf
 
 @noindent
 Geometricamente, sobre um corpo algebricamente fechado, esse @'{e} um conjunto
-de polinmios no ideal gerado por @var{polilist} que n@~{a}o tende identicamente a
-zero sobre a varia@value{cedilha}@~{a}o de @var{poli}.
+de polinmios no ideal gerado por @mvar{polilist} que n@~{a}o tende identicamente a
+zero sobre a varia@value{cedilha}@~{a}o de @mvar{poli}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_ideal_saturation (@var{polilist1}, @var{polilist2}, @var{varlist})
+@deffn {Fun@value{cedilha}@~ao} poly_ideal_saturation (@mvar{polilist1}, @mvar{polilist2}, @mvar{varlist})
 Retorna a base de Groebner reduzida da satura@value{cedilha}@~{a}o do ideal
 @iftex
 @tex
@@ -485,13 +485,13 @@ I(polylist1):I(polylist2)^inf
 
 @noindent
 Geometricamente, sobre um corpo algebricamente fechado, esse @'{e} um conjunto
-de polinmios no ideal gerado por @var{polilist1} que n@~{a}o tende identicamente a
-zero sobre a varia@value{cedilha}@~{a}o de @var{polilist2}.
+de polinmios no ideal gerado por @mvar{polilist1} que n@~{a}o tende identicamente a
+zero sobre a varia@value{cedilha}@~{a}o de @mvar{polilist2}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_ideal_polysaturation1 (@var{polilist1}, @var{polilist2}, @var{varlist})
-@var{polilist2} ist a list of n polynomials @code{[poly1,...,polyn]}.
+@deffn {Fun@value{cedilha}@~ao} poly_ideal_polysaturation1 (@mvar{polilist1}, @mvar{polilist2}, @mvar{varlist})
+@mvar{polilist2} ist a list of n polynomials @code{[poly1,...,polyn]}.
 Retorna a base de Groebner reduzida do ideal
 @iftex
 @tex
@@ -506,12 +506,12 @@ I(polylist):poly1^inf:...:polyn^inf
 @noindent
 obtido por uma
 seq@"{u}@^{e}ncia de sucessivas satura@value{cedilha}@~{o}es nos polin@^{o}mios
-da lista  polin@^{o}mial @var{polilist2} do ideal gerado pela
-lista polinomial @var{polilist1}.
+da lista  polin@^{o}mial @mvar{polilist2} do ideal gerado pela
+lista polinomial @mvar{polilist1}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_ideal_polysaturation (@var{polilist}, @var{polilistlist}, @var{varlist})
-@var{polilistlist} is a list of n list of polynomials @code{[polylist1,...,polylistn]}.
+@deffn {Fun@value{cedilha}@~ao} poly_ideal_polysaturation (@mvar{polilist}, @mvar{polilistlist}, @mvar{varlist})
+@mvar{polilistlist} is a list of n list of polynomials @code{[polylist1,...,polylistn]}.
 Retorna a base reduzida de Groebner da satura@value{cedilha}@~{a}o do ideal
 @iftex
 @tex
@@ -524,7 +524,7 @@ I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
 @end ifnottex
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} poly_saturation_extension (@var{poli}, @var{polilist}, @var{varlist1}, @var{varlist2})
+@deffn {Fun@value{cedilha}@~ao} poly_saturation_extension (@mvar{poli}, @mvar{polilist}, @mvar{varlist1}, @mvar{varlist2})
 
 @code{poly_saturation_extension} implementa o famoso artif@'{i}cio de Rabinowitz.
 @end deffn

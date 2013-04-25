@@ -29,12 +29,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} timer (@var{f_1}, ..., @var{f_n})
+@deffn {Function} timer (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} timer ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} untimer (@var{f_1}, ..., @var{f_n})
+@deffn {Function} untimer (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} untimer ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -43,22 +43,22 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} timer_info (@var{f_1}, ..., @var{f_n})
+@deffn {Function} timer_info (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} timer_info ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} trace (@var{f_1}, ..., @var{f_n})
+@deffn {Function} trace (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} trace ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@deffnx {Function} trace_options (@var{f})
+@deffn {Function} trace_options (@mvar{f}, @mvar{option_1}, ..., @mvar{option_n})
+@deffnx {Function} trace_options (@mvar{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} untrace (@var{f_1}, ..., @var{f_n})
+@deffn {Function} untrace (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} untrace ()
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

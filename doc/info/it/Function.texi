@@ -14,15 +14,15 @@
 @node Macros, Definitions for Function Definition, Function, Function Definition
 @section Macros
 
-@deffn {Function} buildq (@var{L}, @var{expr})
+@deffn {Function} buildq (@mvar{L}, @mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} macroexpand (@var{expr})
+@deffn {Function} macroexpand (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} macroexpand1 (@var{expr})
+@deffn {Function} macroexpand1 (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -30,49 +30,49 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} splice (@var{a})
+@deffn {Function} splice (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
 @node Definitions for Function Definition,  , Macros, Function Definition
 @section Definitions for Function Definition
 
-@deffn {Function} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} apply (@mvar{F}, [@mvar{x_1}, ..., @mvar{x_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Function} block (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} block ([@mvar{v_1}, ..., @mvar{v_m}], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Function} block (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} break (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} break (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} catch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} catch (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffn {Function} compfile (@mvar{filename}, @mvar{f_1}, ..., @mvar{f_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} compile (@var{f_1}, ..., @var{f_n})
+@deffn {Function} compile (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} compile (functions)
 @deffnx {Function} compile (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffn {Function} define (@mvar{f}(@mvar{x_1}, ..., @mvar{x_n}), @mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode})
+@deffn {Function} define_variable (@mvar{name}, @mvar{default_value}, @mvar{mode})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} dispfun (@var{f_1}, ..., @var{f_n})
+@deffn {Function} dispfun (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} dispfun (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -81,21 +81,21 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} fundef (@var{f})
+@deffn {Function} fundef (@mvar{f})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+@deffn {Function} funmake (@mvar{F}, [@mvar{arg_1}, ..., @mvar{arg_n}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Function} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} lambda ([@mvar{x_1}, ..., @mvar{x_m}], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Function} lambda ([[@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
+@deffnx {Function} lambda ([@mvar{x_1}, ..., @mvar{x_m}, [@mvar{L}]], @mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} local (@var{v_1}, ..., @var{v_n})
+@deffn {Function} local (@mvar{v_1}, ..., @mvar{v_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -115,11 +115,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+@deffn {Function} mode_declare (@mvar{y_1}, @mvar{mode_1}, ..., @mvar{y_n}, @mvar{mode_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
+@deffn {Function} mode_identity (@mvar{arg_1}, @mvar{arg_2})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -127,14 +127,14 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} translate (@var{f_1}, ..., @var{f_n})
+@deffn {Function} translate (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Function} translate (functions)
 @deffnx {Function} translate (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} translate_file (@var{maxima_filename})
-@deffnx {Function} translate_file (@var{maxima_filename}, @var{lisp_filename})
+@deffn {Function} translate_file (@mvar{maxima_filename})
+@deffnx {Function} translate_file (@mvar{maxima_filename}, @mvar{lisp_filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -206,13 +206,13 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} compile_file (@var{filename})
-@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
-@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+@deffn {Function} compile_file (@mvar{filename})
+@deffnx {Function} compile_file (@mvar{filename}, @mvar{compiled_filename})
+@deffnx {Function} compile_file (@mvar{filename}, @mvar{compiled_filename}, @mvar{lisp_filename})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} declare_translated (@var{f_1}, @var{f_2}, ...)
+@deffn {Function} declare_translated (@mvar{f_1}, @mvar{f_2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

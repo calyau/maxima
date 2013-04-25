@@ -6,7 +6,7 @@
 @node Funciones y variables para Bernstein,  , Bernstein, Bernstein
 @section Funciones y variables para Bernstein
 
-@deffn {Funci@'on} bernstein_poly (@var{k}, @var{n}, @var{x})
+@deffn {Funci@'on} bernstein_poly (@mvar{k}, @mvar{n}, @mvar{x})
 
 Si @code{k} no es un entero negativo, los polinomios de Bernstein se 
 definen como @code{bernstein_poly(k,n,x) = binomial(n,k) x^k (1-x)^(n-k)}; 
@@ -80,9 +80,9 @@ expande siempre a su forma expl@'{@dotless{i}}cita.
 
 
 
-@deffn {Funci@'on} multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})
+@deffn {Funci@'on} multibernstein_poly (@mvar{[k1,k2,...,kp]},@mvar{[n1,n2,..., np]},@mvar{[x1,x2,..., xp]})
 
-La sentencia @code{multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})}
+La sentencia @code{multibernstein_poly (@mvar{[k1,k2,...,kp]},@mvar{[n1,n2,..., np]},@mvar{[x1,x2,..., xp]})}
 es el producto de polinomios de Bernstein 
 @code{bernstein_poly(k1,n1,x1) bernstein_poly(k2,n2,x2) ... bernstein_poly(kp,np,xp)}.
 
@@ -92,7 +92,7 @@ Para hacer uso de @code{multibernstein_poly}, ejec@'utese primero @code{load("be
 
 
 
-@deffn {Funci@'on} bernstein_approx (@var{f},@var{[x1,x1,...,xn]},n)
+@deffn {Funci@'on} bernstein_approx (@mvar{f},@mvar{[x1,x1,...,xn]},n)
 
 Devuelve el polinomio de Bernstein uniforme de @code{n}-@'esimo orden que aproxima 
 la funci@'on @code{(x1,x2,..xn) |--> f}.
@@ -125,7 +125,7 @@ Para hacer uso de @code{bernstein_approx}, ejec@'utese primero @code{load("berns
 
 
 
-@deffn {Funci@'on} bernstein_expand (@var{e}, @var{[x1,x1,...,xn]})
+@deffn {Funci@'on} bernstein_expand (@mvar{e}, @mvar{[x1,x1,...,xn]})
 
 Expresa el polinomio @code{e} como una combinaci@'on lineal de polinomios de
 Bernstein multivariantes.

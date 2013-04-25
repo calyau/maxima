@@ -20,8 +20,8 @@
 @defvr {Property} alphabetic
 
 @code{alphabetic} is a property type recognized by @mrefdot{declare}@w{}
-The expression @code{declare(@var{s}, alphabetic)} tells Maxima to recognize
-as alphabetic all of the characters in @var{s}, which must be a string.
+The expression @code{declare(@mvar{s}, alphabetic)} tells Maxima to recognize
+as alphabetic all of the characters in @mvar{s}, which must be a string.
 
 See also @ref{Identifiers}.
 
@@ -53,8 +53,8 @@ Example:
 @anchor{bindtest}
 @defvr {Property} bindtest
 
-The command @code{declare(@var{x}, bindtest} tells Maxima to trigger an error
-when the symbol @var{x} is evaluated unbound.
+The command @code{declare(@mvar{x}, bindtest} tells Maxima to trigger an error
+when the symbol @mvar{x} is evaluated unbound.
 
 @c ===beg===
 @c aa + bb;
@@ -85,7 +85,7 @@ aa unbound variable
 @anchor{constant}
 @deffn {Property} constant
 
-@code{declare(@var{a}, constant)} declares @var{a} to be a constant.  The
+@code{declare(@mvar{a}, constant)} declares @mvar{a} to be a constant.  The
 declaration of a symbol to be constant does not prevent the assignment of a
 nonconstant value to the symbol.
 
@@ -112,9 +112,9 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{constantp}
-@deffn {Function} constantp (@var{expr})
+@deffn {Function} constantp (@mvar{expr})
 
-Returns @code{true} if @var{expr} is a constant expression, otherwise returns
+Returns @code{true} if @mvar{expr} is a constant expression, otherwise returns
 @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
@@ -169,17 +169,17 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{declare}
-@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, @dots{})
+@deffn {Function} declare (@mvar{a_1}, @mvar{p_1}, @mvar{a_2}, @mvar{p_2}, @dots{})
 
-Assigns the atom or list of atoms @var{a_i} the property or list of properties
-@var{p_i}.  When @var{a_i} and/or @var{p_i} are lists, each of the atoms gets
+Assigns the atom or list of atoms @mvar{a_i} the property or list of properties
+@mvar{p_i}.  When @mvar{a_i} and/or @mvar{p_i} are lists, each of the atoms gets
 all of the properties.
 
 @code{declare} quotes its arguments.  @code{declare} always returns @code{done}.
 
 As noted in the description for each declaration flag, for some flags
-@code{featurep(@var{object}, @var{feature})} returns @code{true} if @var{object}
-has been declared to have @var{feature}.
+@code{featurep(@mvar{object}, @mvar{feature})} returns @code{true} if @mvar{object}
+has been declared to have @mvar{feature}.
 
 For more information about the features system, see @mrefdot{features} To
 remove a property from an atom, use @mrefdot{remove}
@@ -188,82 +188,82 @@ remove a property from an atom, use @mrefdot{remove}
 
 @table @code
 @item additive
-      Tells Maxima to simplify @var{a_i} expressions by the substitution
-      @code{@var{a_i}(x + y + z + ...)} @code{-->}
-      @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+      Tells Maxima to simplify @mvar{a_i} expressions by the substitution
+      @code{@mvar{a_i}(x + y + z + ...)} @code{-->}
+      @code{@mvar{a_i}(x) + @mvar{a_i}(y) + @mvar{a_i}(z) + ...}.
       The substitution is carried out on the first argument only.
 
 @item alphabetic
-      Tells Maxima to recognize all characters in @var{a_i} (which must be a
+      Tells Maxima to recognize all characters in @mvar{a_i} (which must be a
       string) as alphabetic characters.
 
 @item antisymmetric, commutative, symmetric
-      Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric
+      Tells Maxima to recognize @mvar{a_i} as a symmetric or antisymmetric
       function.  @mref{commutative} is the same as @code{symmetric}.
 
 @item bindtest
-      Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
+      Tells Maxima to trigger an error when @mvar{a_i} is evaluated unbound.
 
 @item constant
-      Tells Maxima to consider @var{a_i} a symbolic constant.
+      Tells Maxima to consider @mvar{a_i} a symbolic constant.
       @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
       @c DUNNO IF WE WANT TO GET INTO DETAILS HERE.
       @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
 @item even, odd
-      Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
+      Tells Maxima to recognize @mvar{a_i} as an even or odd integer variable.
 
 @item evenfun, oddfun
-      Tells Maxima to recognize @var{a_i} as an odd or even function.
+      Tells Maxima to recognize @mvar{a_i} as an odd or even function.
 
 @item evflag
-      Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound
-      to @code{true} during the execution of @code{ev} when @var{a_i} appears as
+      Makes @mvar{a_i} known to the @code{ev} function so that @mvar{a_i} is bound
+      to @code{true} during the execution of @code{ev} when @mvar{a_i} appears as
       a flag argument of @code{ev}.  See @mrefdot{evflag}
 
 @item evfun
-      Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
-      is applied when @var{a_i} appears as a flag argument of @code{ev}.
+      Makes @mvar{a_i} known to @code{ev} so that the function named by @mvar{a_i}
+      is applied when @mvar{a_i} appears as a flag argument of @code{ev}.
       See @mrefdot{evfun}
 
 @item feature
-      Tells Maxima to recognize @var{a_i} as the name of a feature.
-      Other atoms may then be declared to have the @var{a_i} property.
+      Tells Maxima to recognize @mvar{a_i} as the name of a feature.
+      Other atoms may then be declared to have the @mvar{a_i} property.
 
 @item increasing, decreasing
-      Tells Maxima to recognize @var{a_i} as an increasing or decreasing
+      Tells Maxima to recognize @mvar{a_i} as an increasing or decreasing
       function.
       @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
       @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
       @c REPORTED AS SF BUG # 1483194
 
 @item integer, noninteger
-      Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
+      Tells Maxima to recognize @mvar{a_i} as an integer or noninteger variable.
 
 @item integervalued
-      Tells Maxima to recognize @var{a_i} as an integer-valued function.
+      Tells Maxima to recognize @mvar{a_i} as an integer-valued function.
 
 @item lassociative, rassociative
-      Tells Maxima to recognize @var{a_i} as a right-associative or
+      Tells Maxima to recognize @mvar{a_i} as a right-associative or
       left-associative function.
 
 @item linear
-      Equivalent to declaring @var{a_i} both @code{outative} and
+      Equivalent to declaring @mvar{a_i} both @code{outative} and
       @code{additive}.
 
 @item mainvar
-      Tells Maxima to consider @var{a_i} a "main variable".  A main variable
+      Tells Maxima to consider @mvar{a_i} a "main variable".  A main variable
       succeeds all other constants and variables in the canonical ordering of
       Maxima expressions, as determined by @code{ordergreatp}.
 
 @item multiplicative
-      Tells Maxima to simplify @var{a_i} expressions by the substitution
-      @code{@var{a_i}(x * y * z * ...)} @code{-->} 
-      @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+      Tells Maxima to simplify @mvar{a_i} expressions by the substitution
+      @code{@mvar{a_i}(x * y * z * ...)} @code{-->} 
+      @code{@mvar{a_i}(x) * @mvar{a_i}(y) * @mvar{a_i}(z) * ...}.
       The substitution is carried out on the first argument only.
 
 @item nary
-      Tells Maxima to recognize @var{a_i} as an n-ary function.
+      Tells Maxima to recognize @mvar{a_i} as an n-ary function.
 
       The @code{nary} declaration is not the same as calling the @code{nary}
       function.  The sole effect of @code{declare(foo, nary)} is to instruct the
@@ -271,42 +271,42 @@ remove a property from an atom, use @mrefdot{remove}
       @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
 
 @item nonarray
-      Tells Maxima to consider @var{a_i} not an array.  This declaration
+      Tells Maxima to consider @mvar{a_i} not an array.  This declaration
       prevents multiple evaluation of a subscripted variable name.
 
 @item nonscalar
-      Tells Maxima to consider @var{a_i} a nonscalar variable.  The usual
+      Tells Maxima to consider @mvar{a_i} a nonscalar variable.  The usual
       application is to declare a variable as a symbolic vector or matrix.
 
 @item noun
-      Tells Maxima to parse @var{a_i} as a noun.  The effect of this is to
-      replace instances of @var{a_i} with @code{'@var{a_i}} or
-      @code{nounify(@var{a_i})}, depending on the context.
+      Tells Maxima to parse @mvar{a_i} as a noun.  The effect of this is to
+      replace instances of @mvar{a_i} with @code{'@mvar{a_i}} or
+      @code{nounify(@mvar{a_i})}, depending on the context.
 
 @item outative
-      Tells Maxima to simplify @var{a_i} expressions by pulling constant factors
+      Tells Maxima to simplify @mvar{a_i} expressions by pulling constant factors
       out of the first argument.
 
-      When @var{a_i} has one argument, a factor is considered constant if it is
+      When @mvar{a_i} has one argument, a factor is considered constant if it is
       a literal or declared constant.
 
-      When @var{a_i} has two or more arguments, a factor is considered constant
+      When @mvar{a_i} has two or more arguments, a factor is considered constant
       if the second argument is a symbol and the factor is free of the second
       argument.
 
 @item posfun
-      Tells Maxima to recognize @var{a_i} as a positive function.
+      Tells Maxima to recognize @mvar{a_i} as a positive function.
 
 @item rational, irrational
-      Tells Maxima to recognize @var{a_i} as a rational or irrational real
+      Tells Maxima to recognize @mvar{a_i} as a rational or irrational real
       variable.
 
 @item real, imaginary, complex
-      Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex
+      Tells Maxima to recognize @mvar{a_i} as a real, pure imaginary, or complex
       variable.
 
 @item scalar
-      Tells Maxima to consider @var{a_i} a scalar variable.
+      Tells Maxima to consider @mvar{a_i} a scalar variable.
 
 @c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
@@ -326,9 +326,9 @@ for each separate description of a property.
 @defvr  {Property} decreasing
 @defvrx {Property} increasing
 
-The commands @code{declare(@var{f}, decreasing)} or
-@code{declare(@var{f}, increasing} tell Maxima to recognize the function
-@var{f} as an decreasing or increasing function.
+The commands @code{declare(@mvar{f}, decreasing)} or
+@code{declare(@mvar{f}, increasing} tell Maxima to recognize the function
+@mvar{f} as an decreasing or increasing function.
 
 See also @mref{declare} for more properties.
 
@@ -356,8 +356,8 @@ Example:
 @defvr  {Property} even
 @defvrx {Property} odd
 
-@code{declare(@var{a}, even)} or @code{declare(@var{a}, odd)} tells Maxima to
-recognize the symbol @var{a} as an even or odd integer variable.  The
+@code{declare(@mvar{a}, even)} or @code{declare(@mvar{a}, odd)} tells Maxima to
+recognize the symbol @mvar{a} as an even or odd integer variable.  The
 properties @code{even} and @code{odd} are not recognized by the functions
 @mrefcomma{evenp} @mrefcomma{oddp} and @mrefdot{integerp}
 
@@ -402,14 +402,14 @@ information about mathematical features.
 
 @c -----------------------------------------------------------------------------
 @anchor{featurep}
-@deffn {Function} featurep (@var{a}, @var{f})
+@deffn {Function} featurep (@mvar{a}, @mvar{f})
 
-Attempts to determine whether the object @var{a} has the feature @var{f} on the
+Attempts to determine whether the object @mvar{a} has the feature @mvar{f} on the
 basis of the facts in the current database.  If so, it returns @code{true},
 else @code{false}.
 
-Note that @code{featurep} returns @code{false} when neither @var{f}
-nor the negation of @var{f} can be established.
+Note that @code{featurep} returns @code{false} when neither @mvar{f}
+nor the negation of @mvar{f} can be established.
 
 @code{featurep} evaluates its argument.
 
@@ -433,16 +433,16 @@ See also @mref{declare} and @mrefdot{features}
 Maxima recognizes certain mathematical properties of functions and variables.
 These are called "features".
 
-@code{declare (@var{x}, @var{foo})} gives the property @var{foo}
-to the function or variable @var{x}.
+@code{declare (@mvar{x}, @mvar{foo})} gives the property @mvar{foo}
+to the function or variable @mvar{x}.
 
-@code{declare (@var{foo}, feature)} declares a new feature @var{foo}.
+@code{declare (@mvar{foo}, feature)} declares a new feature @mvar{foo}.
 For example,
 @code{declare ([red, green, blue], feature)}
 declares three new features, @code{red}, @code{green}, and @code{blue}.
 
-The predicate @code{featurep (@var{x}, @var{foo})}
-returns @code{true} if @var{x} has the @var{foo} property,
+The predicate @code{featurep (@mvar{x}, @mvar{foo})}
+returns @code{true} if @mvar{x} has the @mvar{foo} property,
 and @code{false} otherwise.
 
 The infolist @code{features} is a list of known features.  These are
@@ -485,10 +485,10 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{get}
-@deffn {Function} get (@var{a}, @var{i})
+@deffn {Function} get (@mvar{a}, @mvar{i})
 
-Retrieves the user property indicated by @var{i} associated with
-atom @var{a} or returns @code{false} if @var{a} doesn't have property @var{i}.
+Retrieves the user property indicated by @mvar{i} associated with
+atom @mvar{a} or returns @code{false} if @mvar{a} doesn't have property @mvar{i}.
 
 @code{get} evaluates its arguments.
 
@@ -540,8 +540,8 @@ x is not numeric.
 @defvr  {Property} integer
 @defvrx {Property} noninteger
 
-@code{declare(@var{a}, integer)} or @code{declare(@var{a}, noninteger)} tells
-Maxima to recognize @var{a} as an integer or noninteger variable.
+@code{declare(@mvar{a}, integer)} or @code{declare(@mvar{a}, noninteger)} tells
+Maxima to recognize @mvar{a} as an integer or noninteger variable.
 
 See also @mrefdot{declare}
 
@@ -565,7 +565,7 @@ Example:
 @anchor{integervalued}
 @defvr {Property} integervalued
 
-@code{declare(@var{f}, integervalued)} tells Maxima to recognize @var{f} as an
+@code{declare(@mvar{f}, integervalued)} tells Maxima to recognize @mvar{f} as an
 integer-valued function.
 
 See also @mrefdot{declare}
@@ -592,8 +592,8 @@ Example:
 @anchor{nonarray}
 @deffn {Property} nonarray
 
-The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not
-an array.  This declaration prevents multiple evaluation, if @var{a} is a
+The command @code{declare(a, nonarray)} tells Maxima to consider @mvar{a} not
+an array.  This declaration prevents multiple evaluation, if @mvar{a} is a
 subscripted variable.
 
 See also @mrefdot{declare}
@@ -641,9 +641,9 @@ See also @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{nonscalarp}
-@deffn {Function} nonscalarp (@var{expr})
+@deffn {Function} nonscalarp (@mvar{expr})
 
-Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains
+Returns @code{true} if @mvar{expr} is a non-scalar, i.e., it contains
 atoms declared as non-scalars, lists, or matrices.
 
 See also the predicate function @mref{scalarp} and @mrefdot{declare}
@@ -674,12 +674,12 @@ See also @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{printprops}
-@deffn  {Function} printprops (@var{a}, @var{i})
-@deffnx {Function} printprops ([@var{a_1}, @dots{}, @var{a_n}], @var{i})
-@deffnx {Function} printprops (all, @var{i})
+@deffn  {Function} printprops (@mvar{a}, @mvar{i})
+@deffnx {Function} printprops ([@mvar{a_1}, @dots{}, @mvar{a_n}], @mvar{i})
+@deffnx {Function} printprops (all, @mvar{i})
 
-Displays the property with the indicator @var{i} associated with the atom
-@var{a}.  @var{a} may also be a list of atoms or the atom @code{all} in which
+Displays the property with the indicator @mvar{i} associated with the atom
+@mvar{a}.  @mvar{a} may also be a list of atoms or the atom @code{all} in which
 case all of the atoms with the given property will be used.  For example,
 @code{printprops ([f, g], atvalue)}.  @code{printprops} is for properties that
 cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
@@ -695,10 +695,10 @@ cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{properties}
-@deffn {Function} properties (@var{a})
+@deffn {Function} properties (@mvar{a})
 
 Returns a list of the names of all the properties associated with the atom
-@var{a}.
+@mvar{a}.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -729,10 +729,10 @@ mentioned in @mrefcomma{infolists} such as specified by @mrefcomma{atvalue}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{propvars}
-@deffn {Function} propvars (@var{prop})
+@deffn {Function} propvars (@mvar{prop})
 
 Returns a list of those atoms on the @mref{props} list which
-have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
+have the property indicated by @mvar{prop}.  Thus @code{propvars (atvalue)}
 returns a list of atoms which have atvalues.
 
 @opencatbox
@@ -747,16 +747,16 @@ returns a list of atoms which have atvalues.
 
 @c -----------------------------------------------------------------------------
 @anchor{put}
-@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} put (@mvar{atom}, @mvar{value}, @mvar{indicator})
 
-Assigns @var{value} to the property (specified by @var{indicator}) of
-@var{atom}.  @var{indicator} may be the name of any property, not just a
+Assigns @mvar{value} to the property (specified by @mvar{indicator}) of
+@mvar{atom}.  @mvar{indicator} may be the name of any property, not just a
 system-defined property.
 
 @mref{rem} reverses the effect of @code{put}.
 
 @code{put} evaluates its arguments.
-@code{put} returns @var{value}.
+@code{put} returns @mvar{value}.
 
 See also @mref{qput} and @mrefdot{get}
 
@@ -784,10 +784,10 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{qput}
-@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} qput (@mvar{atom}, @mvar{value}, @mvar{indicator})
 
-Assigns @var{value} to the property (specified by @var{indicator}) of
-@var{atom}.  This is the same as @mrefcomma{put} except that the arguments are
+Assigns @mvar{value} to the property (specified by @mvar{indicator}) of
+@mvar{atom}.  This is the same as @mrefcomma{put} except that the arguments are
 quoted.
 
 See also @mrefdot{get}
@@ -823,8 +823,8 @@ Example:
 @defvr  {Property} rational
 @defvrx {Property} irrational
 
-@code{declare(@var{a}, rational)} or @code{declare(@var{a}, irrational)} tells
-Maxima to recognize @var{a} as a rational or irrational real variable.
+@code{declare(@mvar{a}, rational)} or @code{declare(@mvar{a}, irrational)} tells
+Maxima to recognize @mvar{a} as a rational or irrational real variable.
 
 See also @mrefdot{declare}
 
@@ -841,8 +841,8 @@ See also @mrefdot{declare}
 @defvrx {Property} imaginary
 @defvrx {Property} complex
 
-@code{declare(@var{a}, real)}, @code{declare(@var{a}, imaginary)}, or
-@code{declare(@var{a}, complex)} tells Maxima to recognize @var{a} as a real,
+@code{declare(@mvar{a}, real)}, @code{declare(@mvar{a}, imaginary)}, or
+@code{declare(@mvar{a}, complex)} tells Maxima to recognize @mvar{a} as a real,
 pure imaginary, or complex variable.
 
 See also @mrefdot{declare}
@@ -859,12 +859,12 @@ See also @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{rem}
-@deffn {Function} rem (@var{atom}, @var{indicator})
+@deffn {Function} rem (@mvar{atom}, @mvar{indicator})
 
-Removes the property indicated by @var{indicator} from @var{atom}.
+Removes the property indicated by @mvar{indicator} from @mvar{atom}.
 @code{rem} reverses the effect of @mrefdot{put}
 
-@code{rem} returns @code{done} if @var{atom} had an @var{indicator} property
+@code{rem} returns @code{done} if @mvar{atom} had an @mvar{indicator} property
 when @code{rem} was called, or @code{false} if it had no such property.
 
 @opencatbox
@@ -879,24 +879,24 @@ when @code{rem} was called, or @code{false} if it had no such property.
 
 @c -----------------------------------------------------------------------------
 @anchor{remove}
-@deffn  {Function} remove (@var{a_1}, @var{p_1}, @dots{}, @var{a_n}, @var{p_n})
-@deffnx {Function} remove ([@var{a_1}, @dots{}, @var{a_m}], [@var{p_1}, @dots{}, @var{p_n}], @dots{})
-@deffnx {Function} remove ("@var{a}", operator)
-@deffnx {Function} remove (@var{a}, transfun)
-@deffnx {Function} remove (all, @var{p})
+@deffn  {Function} remove (@mvar{a_1}, @mvar{p_1}, @dots{}, @mvar{a_n}, @mvar{p_n})
+@deffnx {Function} remove ([@mvar{a_1}, @dots{}, @mvar{a_m}], [@mvar{p_1}, @dots{}, @mvar{p_n}], @dots{})
+@deffnx {Function} remove ("@mvar{a}", operator)
+@deffnx {Function} remove (@mvar{a}, transfun)
+@deffnx {Function} remove (all, @mvar{p})
 
 Removes properties associated with atoms.
 
-@code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+@code{remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})}
 removes property @code{p_k} from atom @code{a_k}.
 
-@code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
-removes properties @code{@var{p_1}, ..., @var{p_n}}
-from atoms @var{a_1}, @dots{}, @var{a_m}.
+@code{remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)}
+removes properties @code{@mvar{p_1}, ..., @mvar{p_n}}
+from atoms @mvar{a_1}, @dots{}, @mvar{a_m}.
 There may be more than one pair of lists.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-@code{remove (all, @var{p})} removes the property @var{p} from all atoms which
+@code{remove (all, @mvar{p})} removes the property @mvar{p} from all atoms which
 have it.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
@@ -911,8 +911,8 @@ the translated Lisp version of a function.
 After executing this, the Maxima version of the function is executed
 rather than the translated version.
 
-@code{remove ("@var{a}", operator)} or, equivalently,
-@code{remove ("@var{a}", op)} removes from @var{a} the operator properties
+@code{remove ("@mvar{a}", operator)} or, equivalently,
+@code{remove ("@mvar{a}", op)} removes from @mvar{a} the operator properties
 declared by @mrefcomma{prefix} @mrefcomma{infix}@w{}
 @mxrefcomma{function_nary, nary} @mrefcomma{postfix} @mrefcomma{matchfix} or
 @mrefdot{nofix}  Note that the name of the operator must be written as a quoted
@@ -935,7 +935,7 @@ property.  This behavior is unlike the more specific remove functions
 @anchor{scalar}
 @defvr {Property} scalar
 
-@code{declare(@var{a}, scalar)} tells Maxima to consider @var{a} a scalar
+@code{declare(@mvar{a}, scalar)} tells Maxima to consider @mvar{a} a scalar
 variable.
 
 See also @mrefdot{declare}
@@ -949,9 +949,9 @@ See also @mrefdot{declare}
 
 @c -----------------------------------------------------------------------------
 @anchor{scalarp}
-@deffn {Function} scalarp (@var{expr})
+@deffn {Function} scalarp (@mvar{expr})
 
-Returns @code{true} if @var{expr} is a number, constant, or variable declared
+Returns @code{true} if @mvar{expr} is a number, constant, or variable declared
 @mref{scalar} with @mrefcomma{declare} or composed entirely of numbers,
 constants, and such variables, but not containing matrices or lists.
 
@@ -969,9 +969,9 @@ See also the predicate function @mrefdot{nonscalarp}
 
 @c -----------------------------------------------------------------------------
 @anchor{activate}
-@deffn {Function} activate (@var{context_1}, @dots{}, @var{context_n})
+@deffn {Function} activate (@mvar{context_1}, @dots{}, @mvar{context_n})
 
-Activates the contexts @var{context_1}, @dots{}, @var{context_n}.
+Activates the contexts @mvar{context_1}, @dots{}, @mvar{context_n}.
 The facts in these contexts are then available to
 make deductions and retrieve information.
 The facts in these contexts are not listed by @code{facts ()}.
@@ -1002,22 +1002,22 @@ they are subcontexts of the current context.
 
 @c -----------------------------------------------------------------------------
 @anchor{askinteger}
-@deffn  {Function} askinteger (@var{expr}, integer)
-@deffnx {Function} askinteger (@var{expr})
-@deffnx {Function} askinteger (@var{expr}, even)
-@deffnx {Function} askinteger (@var{expr}, odd)
+@deffn  {Function} askinteger (@mvar{expr}, integer)
+@deffnx {Function} askinteger (@mvar{expr})
+@deffnx {Function} askinteger (@mvar{expr}, even)
+@deffnx {Function} askinteger (@mvar{expr}, odd)
 
-@code{askinteger (@var{expr}, integer)} attempts to determine from the
-@code{assume} database whether @var{expr} is an integer.
+@code{askinteger (@mvar{expr}, integer)} attempts to determine from the
+@code{assume} database whether @mvar{expr} is an integer.
 @code{askinteger} prompts the user if it cannot tell otherwise,
 @c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume
 @c DATABASE !!!
 and attempt to install the information in the database if possible.
-@code{askinteger (@var{expr})} is equivalent to
-@code{askinteger (@var{expr}, integer)}.
+@code{askinteger (@mvar{expr})} is equivalent to
+@code{askinteger (@mvar{expr}, integer)}.
 
-@code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
-likewise attempt to determine if @var{expr} is an even integer or odd integer,
+@code{askinteger (@mvar{expr}, even)} and @code{askinteger (@mvar{expr}, odd)}
+likewise attempt to determine if @mvar{expr} is an even integer or odd integer,
 respectively.
 
 @opencatbox
@@ -1029,7 +1029,7 @@ respectively.
 
 @c -----------------------------------------------------------------------------
 @anchor{asksign}
-@deffn {Function} asksign (@var{expr})
+@deffn {Function} asksign (@mvar{expr})
 
 First attempts to determine whether the specified
 expression is positive, negative, or zero.  If it cannot, it asks the
@@ -1045,9 +1045,9 @@ computation.  The return value of @code{asksign} is one of @code{pos},
 
 @c -----------------------------------------------------------------------------
 @anchor{assume}
-@deffn {Function} assume (@var{pred_1}, @dots{}, @var{pred_n})
+@deffn {Function} assume (@mvar{pred_1}, @dots{}, @mvar{pred_n})
 
-Adds predicates @var{pred_1}, @dots{}, @var{pred_n} to the current context.
+Adds predicates @mvar{pred_1}, @dots{}, @mvar{pred_n} to the current context.
 If a predicate is inconsistent or redundant with the predicates in the current
 context, it is not added to the context.  The context accumulates predicates
 from each call to @code{assume}.
@@ -1055,16 +1055,16 @@ from each call to @code{assume}.
 @code{assume} returns a list whose elements are the predicates added to the
 context or the atoms @code{redundant} or @code{inconsistent} where applicable.
 
-The predicates @var{pred_1}, @dots{}, @var{pred_n} can only be expressions
+The predicates @mvar{pred_1}, @dots{}, @mvar{pred_n} can only be expressions
 with the relational operators @code{< <= equal notequal >=} and @code{>}.
 Predicates cannot be literal equality @code{=} or literal inequality @code{#}
 expressions, nor can they be predicate functions such as @code{integerp}.
 
-Compound predicates of the form @code{@var{pred_1} and ... and @var{pred_n}}
-are recognized, but not @code{@var{pred_1} or ... or @var{pred_n}}.
-@code{not @var{pred_k}} is recognized if @var{pred_k} is a relational predicate.
-Expressions of the form @code{not (@var{pred_1} and @var{pred_2})}
-and @code{not (@var{pred_1} or @var{pred_2})} are not recognized.
+Compound predicates of the form @code{@mvar{pred_1} and ... and @mvar{pred_n}}
+are recognized, but not @code{@mvar{pred_1} or ... or @mvar{pred_n}}.
+@code{not @mvar{pred_k}} is recognized if @mvar{pred_k} is a relational predicate.
+Expressions of the form @code{not (@mvar{pred_1} and @mvar{pred_2})}
+and @code{not (@mvar{pred_1} or @mvar{pred_2})} are not recognized.
 
 Maxima's deduction mechanism is not very strong;
 there are many obvious consequences which cannot be determined by @mrefdot{is}
@@ -1157,16 +1157,16 @@ scalars for all the operators listed above.
 @defvr {Option variable} assume_pos
 Default value: @code{false}
 
-When @code{assume_pos} is @code{true} and the sign of a parameter @var{x}
+When @code{assume_pos} is @code{true} and the sign of a parameter @mvar{x}
 cannot be determined from the current context
 @c WHAT ARE THOSE OTHER CONSIDERATIONS ??
 or other considerations,
-@code{sign} and @code{asksign (@var{x})} return @code{true}.
+@code{sign} and @code{asksign (@mvar{x})} return @code{true}.
 This may forestall some automatically-generated @code{asksign} queries,
 such as may arise from @code{integrate} or other computations.
 
-By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
-or @code{subvarp (@var{x})}.
+By default, a parameter is @mvar{x} such that @code{symbolp (@mvar{x})}
+or @code{subvarp (@mvar{x})}.
 The class of expressions considered parameters can be modified to some extent
 via the variable @code{assume_pos_pred}.
 
@@ -1177,7 +1177,7 @@ then @code{a + b} is also positive.
 
 However, there is no way to bypass all @code{asksign} queries.
 In particular, when the @code{asksign} argument is a
-difference @code{@var{x} - @var{y}} or a logarithm @code{log(@var{x})},
+difference @code{@mvar{x} - @mvar{y}} or a logarithm @code{log(@mvar{x})},
 @code{asksign} always requests an input from the user,
 even when @code{assume_pos} is @code{true} and @code{assume_pos_pred} is
 a function which returns @code{true} for all arguments.
@@ -1194,19 +1194,19 @@ a function which returns @code{true} for all arguments.
 Default value: @code{false}
 
 When @code{assume_pos_pred} is assigned the name of a function
-or a lambda expression of one argument @var{x},
+or a lambda expression of one argument @mvar{x},
 that function is called to determine
-whether @var{x} is considered a parameter for the purpose of @code{assume_pos}.
+whether @mvar{x} is considered a parameter for the purpose of @code{assume_pos}.
 @code{assume_pos_pred} is ignored when @code{assume_pos} is @code{false}.
 
 The @code{assume_pos_pred} function is called by @code{sign} and @code{asksign}
-with an argument @var{x}
+with an argument @mvar{x}
 which is either an atom, a subscripted variable, or a function call expression.
 If the @code{assume_pos_pred} function returns @code{true},
-@var{x} is considered a parameter for the purpose of @code{assume_pos}.
+@mvar{x} is considered a parameter for the purpose of @code{assume_pos}.
 
-By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
-or @code{subvarp (@var{x})}.
+By default, a parameter is @mvar{x} such that @code{symbolp (@mvar{x})}
+or @code{subvarp (@mvar{x})}.
 
 See also @mref{assume} and @mrefdot{assume_pos}
 
@@ -1288,8 +1288,8 @@ Default value: @code{initial}
 @mrefdot{forget}  @code{assume} adds facts to the collection named by
 @code{context}, while @code{forget} removes facts.
 
-Binding @code{context} to a name @var{foo} changes the current context to
-@var{foo}.  If the specified context @var{foo} does not yet exist,
+Binding @code{context} to a name @mvar{foo} changes the current context to
+@mvar{foo}.  If the specified context @mvar{foo} does not yet exist,
 it is created automatically by a call to @mrefdot{newcontext}
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
 The specified context is activated automatically.
@@ -1343,9 +1343,9 @@ See also @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@w{}
 
 @c -----------------------------------------------------------------------------
 @anchor{deactivate}
-@deffn {Function} deactivate (@var{context_1}, @dots{}, @var{context_n})
+@deffn {Function} deactivate (@mvar{context_1}, @dots{}, @mvar{context_n})
 
-Deactivates the specified contexts @var{context_1}, @dots{}, @var{context_n}.
+Deactivates the specified contexts @mvar{context_1}, @dots{}, @mvar{context_n}.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -1354,14 +1354,14 @@ Deactivates the specified contexts @var{context_1}, @dots{}, @var{context_n}.
 
 @c -----------------------------------------------------------------------------
 @anchor{facts}
-@deffn  {Function} facts (@var{item})
+@deffn  {Function} facts (@mvar{item})
 @deffnx {Function} facts ()
 
-If @var{item} is the name of a context, @code{facts (@var{item})} returns a
+If @mvar{item} is the name of a context, @code{facts (@mvar{item})} returns a
 list of the facts in the specified context.
 
-If @var{item} is not the name of a context, @code{facts (@var{item})} returns a
-list of the facts known about @var{item} in the current context.  Facts that
+If @mvar{item} is not the name of a context, @code{facts (@mvar{item})} returns a
+list of the facts known about @mvar{item} in the current context.  Facts that
 are active, but in a different context, are not listed.
 
 @code{facts ()} (i.e., without an argument) lists the current context.
@@ -1373,14 +1373,14 @@ are active, but in a different context, are not listed.
 
 @c -----------------------------------------------------------------------------
 @anchor{forget}
-@deffn  {Function} forget (@var{pred_1}, @dots{}, @var{pred_n})
-@deffnx {Function} forget (@var{L})
+@deffn  {Function} forget (@mvar{pred_1}, @dots{}, @mvar{pred_n})
+@deffnx {Function} forget (@mvar{L})
 
 Removes predicates established by @mrefdot{assume}
 The predicates may be expressions equivalent to (but not necessarily identical
 to) those previously assumed.
 
-@code{forget (@var{L})}, where @var{L} is a list of predicates,
+@code{forget (@mvar{L})}, where @mvar{L} is a list of predicates,
 forgets each item on the list.
 
 @opencatbox
@@ -1390,9 +1390,9 @@ forgets each item on the list.
 
 @c -----------------------------------------------------------------------------
 @anchor{is}
-@deffn {Function} is (@var{expr})
+@deffn {Function} is (@mvar{expr})
 
-Attempts to determine whether the predicate @var{expr} is provable from the
+Attempts to determine whether the predicate @mvar{expr} is provable from the
 facts in the @code{assume} database.
 
 If the predicate is provably @code{true} or @code{false}, @code{is} returns
@@ -1401,8 +1401,8 @@ governed by the global flag @mrefdot{prederror}  When @code{prederror} is
 @code{true}, @code{is} complains with an error message.  Otherwise, @code{is}
 returns @code{unknown}.
 
-@code{ev(@var{expr}, pred)} (which can be written  @code{@var{expr}, pred} at
-the interactive prompt) is equivalent to @code{is(@var{expr})}.
+@code{ev(@mvar{expr}, pred)} (which can be written  @code{@mvar{expr}, pred} at
+the interactive prompt) is equivalent to @code{is(@mvar{expr})}.
 
 See also @mrefcomma{assume} @mrefcomma{facts} and @mrefdot{maybe}
 
@@ -1473,9 +1473,9 @@ a > 0
 
 @c -----------------------------------------------------------------------------
 @anchor{killcontext}
-@deffn {Function} killcontext (@var{context_1}, @dots{}, @var{context_n})
+@deffn {Function} killcontext (@mvar{context_1}, @dots{}, @mvar{context_n})
 
-Kills the contexts @var{context_1}, @dots{}, @var{context_n}.
+Kills the contexts @mvar{context_1}, @dots{}, @mvar{context_n}.
 
 If one of the contexts is the current context, the new current context will
 become the first available subcontext of the current context which has not been
@@ -1497,9 +1497,9 @@ context, or by use of the function @mrefdot{activate}
 
 @c -----------------------------------------------------------------------------
 @anchor{maybe}
-@deffn {Function} maybe (@var{expr})
+@deffn {Function} maybe (@mvar{expr})
 
-Attempts to determine whether the predicate @var{expr} is provable from the
+Attempts to determine whether the predicate @mvar{expr} is provable from the
 facts in the @code{assume} database.
 
 If the predicate is provably @code{true} or @code{false}, @code{maybe} returns
@@ -1535,14 +1535,14 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{newcontext}
-@deffn {Function} newcontext (@var{name})
+@deffn {Function} newcontext (@mvar{name})
 
-Creates a new, empty context, called @var{name}, which
+Creates a new, empty context, called @mvar{name}, which
 has @code{global} as its only subcontext.  The newly-created context
 becomes the currently active context.
 
 @code{newcontext} evaluates its argument.
-@code{newcontext} returns @var{name}.
+@code{newcontext} returns @mvar{name}.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -1551,9 +1551,9 @@ becomes the currently active context.
 
 @c -----------------------------------------------------------------------------
 @anchor{sign}
-@deffn {Function} sign (@var{expr})
+@deffn {Function} sign (@mvar{expr})
 
-Attempts to determine the sign of @var{expr} on the basis of the facts in the
+Attempts to determine the sign of @mvar{expr} on the basis of the facts in the
 current data base.  It returns one of the following answers: @code{pos}
 (positive), @code{neg} (negative), @code{zero}, @code{pz} (positive or zero),
 @code{nz} (negative or zero), @code{pn} (positive or negative), or @code{pnz}
@@ -1566,13 +1566,13 @@ current data base.  It returns one of the following answers: @code{pos}
 
 @c -----------------------------------------------------------------------------
 @anchor{supcontext}
-@deffn  {Function} supcontext (@var{name}, @var{context})
-@deffnx {Function} supcontext (@var{name})
+@deffn  {Function} supcontext (@mvar{name}, @mvar{context})
+@deffnx {Function} supcontext (@mvar{name})
 
-Creates a new context, called @var{name}, which has @var{context} as a
-subcontext.  @var{context} must exist.
+Creates a new context, called @mvar{name}, which has @mvar{context} as a
+subcontext.  @mvar{context} must exist.
 
-If @var{context} is not specified, the current context is assumed.
+If @mvar{context} is not specified, the current context is assumed.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -1586,9 +1586,9 @@ If @var{context} is not specified, the current context is assumed.
 
 @c -----------------------------------------------------------------------------
 @anchor{charfun}
-@deffn {Function} charfun (@var{p})
+@deffn {Function} charfun (@mvar{p})
 
-Return 0 when the predicate @var{p} evaluates to @code{false}; return 1 when
+Return 0 when the predicate @mvar{p} evaluates to @code{false}; return 1 when
 the predicate evaluates to @code{true}.  When the predicate evaluates to
 something other than @code{true} or @code{false} (unknown),  return a noun form.
 
@@ -1617,12 +1617,12 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{compare}
-@deffn {Function} compare (@var{x}, @var{y})
+@deffn {Function} compare (@mvar{x}, @mvar{y})
 
-Return a comparison operator @var{op} (@code{<}, @code{<=}, @code{>}, @code{>=},
-@code{=}, or @code{#}) such that @code{is (@var{x} @var{op} @var{y})} evaluates
-to @code{true}; when either @var{x} or @var{y} depends on @code{%i} and
-@code{@var{x} # @var{y}}, return @code{notcomparable}; when there is no such
+Return a comparison operator @mvar{op} (@code{<}, @code{<=}, @code{>}, @code{>=},
+@code{=}, or @code{#}) such that @code{is (@mvar{x} @mvar{op} @mvar{y})} evaluates
+to @code{true}; when either @mvar{x} or @mvar{y} depends on @code{%i} and
+@code{@mvar{x} # @mvar{y}}, return @code{notcomparable}; when there is no such
 operator or Maxima isn't able to determine the operator, return @code{unknown}.
 
 Examples:
@@ -1671,16 +1671,16 @@ The real domain of @code{acos (x^2 + 1)} is empty.
 
 @c -----------------------------------------------------------------------------
 @anchor{equal}
-@deffn {Function} equal (@var{a}, @var{b})
+@deffn {Function} equal (@mvar{a}, @mvar{b})
 
 Represents equivalence, that is, equal value.
 
 By itself, @code{equal} does not evaluate or simplify.
 The function @mref{is} attempts to evaluate @code{equal} to a Boolean value.
-@code{is(equal(@var{a}, @var{b}))} returns @code{true} (or @code{false}) if
-and only if @var{a} and @var{b} are equal (or not equal) for all possible
+@code{is(equal(@mvar{a}, @mvar{b}))} returns @code{true} (or @code{false}) if
+and only if @mvar{a} and @mvar{b} are equal (or not equal) for all possible
 values of their variables, as determined by evaluating
-@code{ratsimp(@var{a} - @var{b})}; if @mref{ratsimp} returns 0, the two
+@code{ratsimp(@mvar{a} - @mvar{b})}; if @mref{ratsimp} returns 0, the two
 expressions are considered equivalent.  Two expressions may be equivalent even
 if they are not syntactically equal (i.e., identical).
 
@@ -1695,7 +1695,7 @@ In addition to @code{is}, some other operators evaluate @code{equal} and
 
 @c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE CORRECT
 @c Declarations (integer, complex, etc)
-@c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
+@c for variables appearing in @mvar{a} and @mvar{b} are ignored by @code{equal}.
 @c All variables are effectively assumed to be real-valued.
 
 The negation of @code{equal} is @mrefdot{notequal}
@@ -1720,8 +1720,8 @@ By itself, @code{equal} does not evaluate or simplify.
 @end example
 
 The function @code{is} attempts to evaluate @code{equal} to a Boolean value.
-@code{is(equal(@var{a}, @var{b}))} returns @code{true} when
-@code{ratsimp(@var{a} - @var{b})} returns 0.  Two expressions may be equivalent
+@code{is(equal(@mvar{a}, @mvar{b}))} returns @code{true} when
+@code{ratsimp(@mvar{a} - @mvar{b})} returns 0.  Two expressions may be equivalent
 even if they are not syntactically equal (i.e., identical).
 
 @c ===beg===
@@ -1807,9 +1807,9 @@ Some operators evaluate @code{equal} and @code{notequal} to @code{true} or
 (%o4)                  [false, true, true]
 @end example
 
-Because @code{not @var{expr}} causes evaluation of @var{expr},
-@code{not equal(@var{a}, @var{b})} is equivalent to
-@code{is(notequal(@var{a}, @var{b}))}.
+Because @code{not @mvar{expr}} causes evaluation of @mvar{expr},
+@code{not equal(@mvar{a}, @mvar{b})} is equivalent to
+@code{is(notequal(@mvar{a}, @mvar{b}))}.
 
 @c ===beg===
 @c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
@@ -1829,9 +1829,9 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 
 @c -----------------------------------------------------------------------------
 @anchor{notequal}
-@deffn {Function} notequal (@var{a}, @var{b})
+@deffn {Function} notequal (@mvar{a}, @mvar{b})
 
-Represents the negation of @code{equal(@var{a}, @var{b})}.
+Represents the negation of @code{equal(@mvar{a}, @mvar{b})}.
 
 Examples:
 
@@ -1877,9 +1877,9 @@ Examples:
 
 @c -----------------------------------------------------------------------------
 @anchor{unknown}
-@deffn {Function} unknown (@var{expr})
+@deffn {Function} unknown (@mvar{expr})
 
-Returns @code{true} if and only if @var{expr} contains an operator or function
+Returns @code{true} if and only if @mvar{expr} contains an operator or function
 not recognized by the Maxima simplifier.
 
 @opencatbox
@@ -1892,9 +1892,9 @@ not recognized by the Maxima simplifier.
 
 @c -----------------------------------------------------------------------------
 @anchor{zeroequiv}
-@deffn {Function} zeroequiv (@var{expr}, @var{v})
+@deffn {Function} zeroequiv (@mvar{expr}, @mvar{v})
 
-Tests whether the expression @var{expr} in the variable @var{v} is equivalent
+Tests whether the expression @mvar{expr} in the variable @mvar{v} is equivalent
 to zero, returning @code{true}, @code{false}, or @code{dontknow}.
 
 @code{zeroequiv} has these restrictions:

@@ -9,11 +9,11 @@
 @node Definitions for solve_rec,  , Introduction to solve_rec, solve_rec
 @section Definitions for solve_rec
 
-@deffn {Function} closed_form (@var{expr})
+@deffn {Function} closed_form (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {Function} reduce_order (@mvar{rec}, @mvar{sol}, @mvar{var})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -21,11 +21,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Function} solve_rec (@mvar{eqn}, @mvar{var}, [@mvar{init}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Function} solve_rec_rat (@mvar{eqn}, @mvar{var}, [@mvar{init}])
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -33,8 +33,8 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {Function} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {Function} summand_to_rec (@mvar{summand}, @mvar{k}, @mvar{n})
+@deffnx {Function} summand_to_rec (@mvar{summand}, [@mvar{k}, @mvar{lo}, @mvar{hi}], @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

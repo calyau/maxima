@@ -22,18 +22,18 @@ Starting with Maxima 5.12, the dynamics package now uses the function
 any options of @code{plot2d}, including the option to change among the
 various graphical interfaces, using different plot styles and colors,
 and representing one or both axes in a logarithmic scale. The old
-options @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
-@var{ycenter}, @var{yradius}, @var{xaxislabel} and @var{yaxislabel}
+options @mvar{domain}, @mvar{pointsize}, @mvar{xcenter}, @mvar{xradius},
+@mvar{ycenter}, @mvar{yradius}, @mvar{xaxislabel} and @mvar{yaxislabel}
 are not accepted in this new version.
 
-All programs will now accept any variables names, and not just @var{x}
-and @var{y} as in the older versions. Two required parameters have
+All programs will now accept any variables names, and not just @mvar{x}
+and @mvar{y} as in the older versions. Two required parameters have
 changes in two of the programs: @code{evolution2d} now requires a list
 naming explicitely the two independent variables, and the horizontal
 range for @code{orbits} no longer requires a step size; the range
 should only specify the variable name, and the minimum and maximum
 values; the number of steps can now be changed with the option
-@var{nticks}.
+@mvar{nticks}.
 
 @opencatbox
 @category{Dynamical systems} @category{Share packages} @category{Package dynamics}
@@ -42,15 +42,15 @@ values; the number of steps can now be changed with the option
 @node Functions and Variables for dynamics,  , Introduction to dynamics, dynamics
 @section Functions and Variables for dynamics
 
-@deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ..., options, ...);
+@deffn {Function} chaosgame (@code{[[}@mvar{x1}, @mvar{y1}@code{]}...@code{[}@mvar{xm}, @mvar{ym}@code{]]}, @code{[}@mvar{x0}, @mvar{y0}@code{]}, @mvar{b}, @mvar{n}, ..., options, ...);
 
-Implements the so-called chaos game: the initial point (@var{x0},
-@var{y0}) is plotted and then one of the @var{m} points
-@code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
+Implements the so-called chaos game: the initial point (@mvar{x0},
+@mvar{y0}) is plotted and then one of the @mvar{m} points
+@code{[}@mvar{x1}, @mvar{y1}@code{]}...@code{[}@mvar{xm}, @mvar{ym}@code{]}
 will be selected at random. The next point plotted will be on the
 segment from the previous point plotted to the point chosen randomly, at a
-distance from the random point which will be @var{b} times that segment's
-length. The procedure is repeated @var{n} times.
+distance from the random point which will be @mvar{b} times that segment's
+length. The procedure is repeated @mvar{n} times.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -58,11 +58,11 @@ length. The procedure is repeated @var{n} times.
 
 @end deffn
 
-@deffn {Function} evolution (@var{F}, @var{y0}, @var{n}, ..., options, ...);
+@deffn {Function} evolution (@mvar{F}, @mvar{y0}, @mvar{n}, ..., options, ...);
 
-Draws @var{n+1} points in a two-dimensional graph, where the horizontal
-coordinates of the points are the integers 0, 1, 2, ..., @var{n}, and
-the vertical coordinates are the corresponding values @var{y(n)} of the
+Draws @mvar{n+1} points in a two-dimensional graph, where the horizontal
+coordinates of the points are the integers 0, 1, 2, ..., @mvar{n}, and
+the vertical coordinates are the corresponding values @mvar{y(n)} of the
 sequence defined by the recurrence relation
 @ifnottex
 @example
@@ -73,10 +73,10 @@ sequence defined by the recurrence relation
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-With initial value @var{y(0)} equal to @var{y0}. @var{F} must be an
+With initial value @mvar{y(0)} equal to @mvar{y0}. @mvar{F} must be an
 expression that depends only on one variable (in the example, it
-depend on @var{y}, but any other variable can be used),
-@var{y0} must be a real number and @var{n} must be a positive integer.
+depend on @mvar{y}, but any other variable can be used),
+@mvar{y0} must be a real number and @mvar{n} must be a positive integer.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -84,9 +84,9 @@ depend on @var{y}, but any other variable can be used),
 
 @end deffn
 
-@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
+@deffn {Function} evolution2d (@code{[}@mvar{F}, @mvar{G}@code{]}, @code{[}@mvar{u}, @mvar{v}@code{]}, @code{[}@mvar{u0}, @mvar{y0}@code{]}, @mvar{n}, ..., options, ...);
 
-Shows, in a two-dimensional plot, the first @var{n+1} points in the
+Shows, in a two-dimensional plot, the first @mvar{n+1} points in the
 sequence of points defined by the two-dimensional discrete dynamical
 system with recurrence relations
 @ifnottex
@@ -98,9 +98,9 @@ system with recurrence relations
 $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @end tex
 
-With initial values @var{u0} and @var{v0}. @var{F} and @var{G} must be
-two expressions that depend only on two variables, @var{u} and
-@var{v}, which must be named explicitely in a list. 
+With initial values @mvar{u0} and @mvar{v0}. @mvar{F} and @mvar{G} must be
+two expressions that depend only on two variables, @mvar{u} and
+@mvar{v}, which must be named explicitely in a list. 
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -108,18 +108,18 @@ two expressions that depend only on two variables, @var{u} and
 
 @end deffn
 
-@deffn {Function} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
+@deffn {Function} ifs (@code{[}@mvar{r1}, ..., @mvar{rm}@code{]}, @code{[}@mvar{A1}, ..., @mvar{Am}@code{]}, @code{[[}@mvar{x1}, @mvar{y1}@code{]}, ..., @code{[}@mvar{xm}, @mvar{ym}@code{]]}, @code{[}@mvar{x0}, @mvar{y0}@code{]}, @mvar{n}, ..., options, ...);
 
 Implements the Iterated Function System method. This method is similar
 to the method described in the function @code{chaosgame}, but instead of
 shrinking the segment from the current point to the randomly chosen
 point, the 2 components of that segment will be multiplied by the 2 by 2
-matrix @var{Ai} that corresponds to the point chosen randomly.
+matrix @mvar{Ai} that corresponds to the point chosen randomly.
 
-The random choice of one of the @var{m} attractive points can be made with
+The random choice of one of the @mvar{m} attractive points can be made with
 a non-uniform probability distribution defined by the weights
-@var{r1},...,@var{rm}. Those weights are given in cumulative form; for instance if there are 3 points with probabilities 0.2, 0.5 and
-0.3, the weights @var{r1}, @var{r2} and @var{r3} could be 2, 7 and 10.
+@mvar{r1},...,@mvar{rm}. Those weights are given in cumulative form; for instance if there are 3 points with probabilities 0.2, 0.5 and
+0.3, the weights @mvar{r1}, @mvar{r2} and @mvar{r3} could be 2, 7 and 10.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -127,10 +127,10 @@ a non-uniform probability distribution defined by the weights
 
 @end deffn
 
-@deffn {Function} julia (@var{x}, @var{y}, ...@var{options}...)
+@deffn {Function} julia (@mvar{x}, @mvar{y}, ...@mvar{options}...)
 
 Creates a graphics file with the representation of the Julia set for the
-complex number (@var{x} + i @var{y}). The parameters @var{x} and @var{y}
+complex number (@mvar{x} + i @mvar{y}). The parameters @mvar{x} and @mvar{y}
 must be real. The file is created in the current directory or in the user's
 directory, using the XPM graphics format. The program may take several
 seconds to run and after it is finished, a message will be printed with
@@ -139,17 +139,17 @@ the name of the file created.
 The points which do not belong to the Julia set are assigned different
 colors, according to the number of iterations it takes the sequence
 starting at that point to move out of the convergence circle of radius
-2. The maximum number of iterations is set with the option @var{levels};
+2. The maximum number of iterations is set with the option @mvar{levels};
 after that number of iterations, if the sequence is still inside the
 convergence circle, the point will be painted with the color defined by
-the option @var{color}.
+the option @mvar{color}.
 
 All the colors used for the points that do not belong to the Julia set
-will have the same @var{saturation} and @var{value}, but with different
-hue angles distributed uniformly between @var{hue} and (@var{hue} +
-@var{huerange}).
+will have the same @mvar{saturation} and @mvar{value}, but with different
+hue angles distributed uniformly between @mvar{hue} and (@mvar{hue} +
+@mvar{huerange}).
 
-@var{options} is an optional sequence of options. The list of accepted
+@mvar{options} is an optional sequence of options. The list of accepted
 options is given in a section below.
 
 @opencatbox
@@ -158,7 +158,7 @@ options is given in a section below.
 
 @end deffn
 
-@deffn {Function} mandelbrot (@var{options})
+@deffn {Function} mandelbrot (@mvar{options})
 
 Creates a graphics file with the representation of the Mandelbrot
 set. The file is created in the current directory or in the user's
@@ -170,16 +170,16 @@ The points which do not belong to the Mandelbrot set are
 assigned different colors, according to the number of iterations it
 takes the sequence generated with that point to move out of the
 convergence circle o radius 2. The maximum number of iterations is set with
-the option @var{levels}; after that number of iterations, if the
+the option @mvar{levels}; after that number of iterations, if the
 sequence is still inside the convergence circle, the point will be
-painted with the color defined by the option @var{color}.
+painted with the color defined by the option @mvar{color}.
 
 All the colors used for the points that do not belong to the Mandelbrot
-set will have the same @var{saturation} and @var{value}, but with
-different hue angles distributed uniformly between @var{hue} and
-(@var{hue} + @var{huerange}).
+set will have the same @mvar{saturation} and @mvar{value}, but with
+different hue angles distributed uniformly between @mvar{hue} and
+(@mvar{hue} + @mvar{huerange}).
 
-@var{options} is an optional sequence of options. The list of accepted
+@mvar{options} is an optional sequence of options. The list of accepted
 options is given in a section below.
 
 @opencatbox
@@ -188,21 +188,21 @@ options is given in a section below.
 
 @end deffn
 
-@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
+@deffn {Function} orbits (@mvar{F}, @mvar{y0}, @mvar{n1}, @mvar{n2}, [@mvar{x}, @mvar{x0}, @mvar{xf}, @mvar{xstep}], ...options...);
 
 Draws the orbits diagram for a family of one-dimensional
-discrete dynamical systems, with one parameter @var{x}; that kind of
+discrete dynamical systems, with one parameter @mvar{x}; that kind of
 diagram is used to study the bifurcations of a one-dimensional discrete
 system.
 
-The function @var{F(y)} defines a sequence with a starting value of
-@var{y0}, as in the case of the function @code{evolution}, but in this
-case that function will also depend on a parameter @var{x} that will
-take values in the interval from @var{x0} to @var{xf} with increments of
-@var{xstep}. Each value used for the parameter @var{x} is shown on the
-horizontal axis. The vertical axis will show the @var{n2} values
-of the sequence @var{y(n1+1)},..., @var{y(n1+n2+1)} obtained after letting
-the sequence evolve @var{n1} iterations.
+The function @mvar{F(y)} defines a sequence with a starting value of
+@mvar{y0}, as in the case of the function @code{evolution}, but in this
+case that function will also depend on a parameter @mvar{x} that will
+take values in the interval from @mvar{x0} to @mvar{xf} with increments of
+@mvar{xstep}. Each value used for the parameter @mvar{x} is shown on the
+horizontal axis. The vertical axis will show the @mvar{n2} values
+of the sequence @mvar{y(n1+1)},..., @mvar{y(n1+n2+1)} obtained after letting
+the sequence evolve @mvar{n1} iterations.
 
 @opencatbox
 @category{Package dynamics} @category{Plotting}
@@ -211,7 +211,7 @@ the sequence evolve @var{n1} iterations.
 @end deffn
 
 
-@deffn {Function} staircase (@var{F}, @var{y0}, @var{n}, ...options...);
+@deffn {Function} staircase (@mvar{F}, @mvar{y0}, @mvar{n}, ...options...);
 
 Draws a staircase diagram for the sequence defined by the recurrence
 relation
@@ -226,12 +226,12 @@ $$y_{n+1} = F(y_n)$$
 
 The interpretation and allowed values of the input parameters is the
 same as for the function @code{evolution}. A staircase diagram consists
-of a plot of the function @var{F(y)}, together with the line
-@var{G(y)} @code{=} @var{y}. A vertical segment is drawn from the
-point (@var{y0}, @var{y0}) on that line until the point where it
-intersects the function @var{F}. From that point a horizontal segment is
-drawn until it reaches the point (@var{y1}, @var{y1}) on the line, and
-the procedure is repeated @var{n} times until the point (@var{yn}, @var{yn})
+of a plot of the function @mvar{F(y)}, together with the line
+@mvar{G(y)} @code{=} @mvar{y}. A vertical segment is drawn from the
+point (@mvar{y0}, @mvar{y0}) on that line until the point where it
+intersects the function @mvar{F}. From that point a horizontal segment is
+drawn until it reaches the point (@mvar{y1}, @mvar{y1}) on the line, and
+the procedure is repeated @mvar{n} times until the point (@mvar{yn}, @mvar{yn})
 is reached.
 
 @opencatbox
@@ -248,7 +248,7 @@ of the option, and the remainder comprises the arguments for the option.
 The options accepted by the functions @code{evolution}, @code{evolution2d},
 @code{staircase}, @code{orbits}, @code{ifs} and @code{chaosgame} are the same as the options for
 @code{plot2d}. In addition to those options, @code{orbits} accepts and
-extra option @var{pixels} that sets up the maximum number of different
+extra option @mvar{pixels} that sets up the maximum number of different
 points that will be represented in the vertical direction.
 
 The following options are accepted by the functions @code{julia} and @code{mandelbrot}:
@@ -280,7 +280,7 @@ iterations increases.
 points which do not belong to the set. Its default value is 300 degrees,
 which corresponds to magenta; the values for other standard colors are 0
 for red, 45 for orange, 60 for yellow, 120 for green, 180 for cyan and
-240 for blue. See also option @var{huerange}.
+240 for blue. See also option @mvar{huerange}.
 
 @item
 @dfn{saturation} sets the value of the saturation used for points not
@@ -296,7 +296,7 @@ brighter the colors. The default is 0.96
 saturation and value, for the color used to represent the points of the
 set. The default value is 0 for the three parameters, which corresponds
 to black. For an explanation of the range of allowed values, see options
-@var{hue}, @var{saturation} and @var{value}.
+@mvar{hue}, @mvar{saturation} and @mvar{value}.
 
 @item
 @dfn{center} must be followed by two real parameters, which give the
@@ -337,9 +337,9 @@ Graphical representation and staircase diagram for the sequence:
 If your system is slow, you'll have to reduce the number of iterations in
 the following examples. And if the dots appear too small in your
 monitor, you might want to try a different style, such as
-@code{[}@var{style},@code{[}@var{points},0.8@code{]]}.
+@code{[}@mvar{style},@code{[}@mvar{points},0.8@code{]]}.
 
-Orbits diagram for the quadratic map, with a parameter @var{a}.
+Orbits diagram for the quadratic map, with a parameter @mvar{a}.
 @ifnottex
 @example
         x(n+1) = a + x(n)^2

@@ -238,7 +238,7 @@ Beispiele:
 @end ifinfo
 
 W@"ahrend einer laufenden Auswertung enth@"alt die Systemvariable @code{__} den
-zuletzt vom Parser eingelesenen Ausdruck @var{expr}.  Der Ausdruck @var{expr}
+zuletzt vom Parser eingelesenen Ausdruck @mvar{expr}.  Der Ausdruck @mvar{expr}
 wird der Systemvariablen @code{__} vor der Auswertung und Vereinfachung
 zugewiesen.
 
@@ -247,7 +247,7 @@ Die Systemvariable @code{__} wird von den Funktionen @mref{batch} und
 ausgef@"uhrt, hat @code{__} dieselbe Bedeutung wie bei der Eingabe in einer 
 Kommandozeile.  Wird eine Datei mit dem Namen @code{filename} mit der Funktion 
 @code{load} geladen, enth@"alt @code{__} den Ausdruck 
-@code{load(@var{filename})}.  Das ist die letzte Eingabe in der Kommandozeile.
+@code{load(@mvar{filename})}.  Das ist die letzte Eingabe in der Kommandozeile.
 
 Siehe auch die Systemvariablen @mref{_} und @mrefdot{%}
 
@@ -278,7 +278,7 @@ Current input expression = --------------
 @end ifinfo
 
 Die Systemvariable @code{_} enth@"alt den zuletzt eingegebenen Ausdruck 
-@var{expr}.  Der Ausdruck @var{expr} wird der Systemvariablen @code{_} vor der 
+@mvar{expr}.  Der Ausdruck @mvar{expr} wird der Systemvariablen @code{_} vor der 
 Auswertung und Vereinfachung zugewiesen.
 
 Die Systemvariable @code{_} wird von den Funktionen @mref{batch} und
@@ -350,8 +350,8 @@ Siehe auch die Systemvariablen @mrefcomma{_} @mref{__} und @mrefdot{%th}
 @end ifinfo
 
 In zusammengesetzten Ausdr@"ucken, wie in Ausdr@"ucken mit @mref{block} oder
-@mref{lambda} oder in Ausdr@"ucken der Gestalt @code{(@var{s_1}, ...,
-@var{s_n})}, enth@"alt die Systemvariable @code{%%} das Ergebnis des 
+@mref{lambda} oder in Ausdr@"ucken der Gestalt @code{(@mvar{s_1}, ...,
+@mvar{s_n})}, enth@"alt die Systemvariable @code{%%} das Ergebnis des 
 vorhergehenden Ausdrucks.  F@"ur den ersten Ausdruck oder au@ss{}erhalb eines
 zusammengesetzten Ausdrucks ist @code{%%} nicht definiert.
 
@@ -399,7 +399,7 @@ _
 
 @c --- 29.12.2010 DK -----------------------------------------------------------
 @anchor{%th}
-@deffn {Funktion} %th (@var{n})
+@deffn {Funktion} %th (@mvar{n})
 @ifinfo
 @fnindex n-te vorhergehende Ausgabe
 @end ifinfo
@@ -561,19 +561,19 @@ Enth@"alt die vom Nutzer definierten @mref{let}-Regeln.
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{kill}
-@deffn  {Funktion} kill (@var{a_1}, @dots{}, @var{a_n})
+@deffn  {Funktion} kill (@mvar{a_1}, @dots{}, @mvar{a_n})
 @deffnx {Funktion} kill (labels)
 @deffnx {Funktion} kill (inlabels, outlabels, linelabels)
-@deffnx {Funktion} kill (@var{n})
-@deffnx {Funktion} kill ([@var{m}, @var{n}])
+@deffnx {Funktion} kill (@mvar{n})
+@deffnx {Funktion} kill ([@mvar{m}, @mvar{n}])
 @deffnx {Funktion} kill (values, functions, arrays, @dots{})
 @deffnx {Funktion} kill (all)
-@deffnx {Funktion} kill (allbut (@var{a_1}, @dots{}, @var{a_n}))
+@deffnx {Funktion} kill (allbut (@mvar{a_1}, @dots{}, @mvar{a_n}))
 
 Die Funktion @code{kill} entfernt alle Zuweisungen (Werte, Funktionen, Arrays 
-oder Regeln) und Eigenschaften von den Argumenten @var{a_1}, @dots{}, @var{a_n}.
-Ein Argument @var{a_k} kann ein Symbol oder ein einzelnes Array-Element sein.
-Ist @var{a_k} ein einzelnes Array-Element, entfernt @code{kill} die Zuweisungen
+oder Regeln) und Eigenschaften von den Argumenten @mvar{a_1}, @dots{}, @mvar{a_n}.
+Ein Argument @mvar{a_k} kann ein Symbol oder ein einzelnes Array-Element sein.
+Ist @mvar{a_k} ein einzelnes Array-Element, entfernt @code{kill} die Zuweisungen
 an dieses Element, ohne die anderen Elemente des Arrays zu beeinflussen.
 
 @code{kill} kennt verschiedene spezielle Argumente, die auch kombiniert werden 
@@ -587,14 +587,14 @@ Ausgabemarken, die mit dem aktuellen Wert von @mref{outchar} beginnen und
 @code{kill(linelabels)} die Zuweisungen an die Zwischenmarken, die mit dem
 aktuellen Wert von @mref{linechar} beginnen.
 
-@code{kill(@var{n})}, wobei @var{n} eine ganze Zahl ist, entfernt die 
-Zuweisungen an die @var{n} letzten Eingabe- und Ausgabemarken.
-@code{kill([@var{m}, @var{n}])} entfernt die Zuweisungen an die Eingabe- und 
-Ausgabemarken mit den Nummern von @var{m} bis @var{n}.
+@code{kill(@mvar{n})}, wobei @mvar{n} eine ganze Zahl ist, entfernt die 
+Zuweisungen an die @mvar{n} letzten Eingabe- und Ausgabemarken.
+@code{kill([@mvar{m}, @mvar{n}])} entfernt die Zuweisungen an die Eingabe- und 
+Ausgabemarken mit den Nummern von @mvar{m} bis @mvar{n}.
 
-@code{kill(@var{infolist})}, wobei @var{infolist} eine Informationsliste wie zum
+@code{kill(@mvar{infolist})}, wobei @mvar{infolist} eine Informationsliste wie zum
 Beispiel @mrefcomma{values} @mref{functions} oder @mref{arrays} ist, entfernt
-die Zuweisungen an allen Eintr@"agen der Liste @var{infolist}.  Siehe auch
+die Zuweisungen an allen Eintr@"agen der Liste @mvar{infolist}.  Siehe auch
 @mrefdot{infolists}
 
 @code{kill(all)} entfernt die Zuweisungen an die Eintr@"age in s@"amtlichen
@@ -602,13 +602,13 @@ Informationslisten.  @code{kill(all)} setzt keine Optionsvariablen auf ihre
 Standardwerte zur@"uck.  Siehe die Funktion @mrefcomma{reset} um
 Optionsvariablen auf ihre Standwerte zur@"uckzusetzen.
 
-@code{kill(allbut(@var{a_1}, ..., @var{a_n}))} entfernt alle Zuweisungen bis 
-auf Zuweisungen an die Variablen @var{a_1}, @dots{}, @var{a_n}.
-@code{kill(allbut(@var{infolist}))} entfernt alle Zuweisungen bis auf denen in 
-der Informationsliste @var{infolist}.
+@code{kill(allbut(@mvar{a_1}, ..., @mvar{a_n}))} entfernt alle Zuweisungen bis 
+auf Zuweisungen an die Variablen @mvar{a_1}, @dots{}, @mvar{a_n}.
+@code{kill(allbut(@mvar{infolist}))} entfernt alle Zuweisungen bis auf denen in 
+der Informationsliste @mvar{infolist}.
 
-@code{kill(@var{symbol})} entfernt s@"amtliche Zuweisungen und Eigenschaften
-des Symbols @w{@var{symbol}}.  Im Gegensatz dazu entfernen
+@code{kill(@mvar{symbol})} entfernt s@"amtliche Zuweisungen und Eigenschaften
+des Symbols @w{@mvar{symbol}}.  Im Gegensatz dazu entfernen
 @mrefcomma{remvalue} @mrefcomma{remfunction} @mref{remarray} und
 @mref{remrule} jeweils eine spezielle Eigenschaft eines Symbols.
 
@@ -619,17 +619,17 @@ des Symbols @w{@var{symbol}}.  Im Gegensatz dazu entfernen
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{labels}
-@deffn  {Funktion} labels (@var{symbol})
+@deffn  {Funktion} labels (@mvar{symbol})
 @deffnx {Systemvariable} labels
 
 Die Funktion @code{labels} gibt eine Liste der Eingabe-, Ausgabe- und 
-Zwischenmarken zur@"uck, die mit dem Argument @var{symbol} beginnen.
-Typischerweise ist @var{symbol} der Wert von
+Zwischenmarken zur@"uck, die mit dem Argument @mvar{symbol} beginnen.
+Typischerweise ist @mvar{symbol} der Wert von
 @mrefcomma{inchar} @mref{outchar} oder @mrefdot{linechar}  Dabei kann das
 Prozentzeichen fortgelassen werden.  So haben zum Beispiel die Kommandos
 @code{labels(i)} und @code{labels(%i)} dasselbe Ergebnis.
 
-Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste 
+Wenn keine Marke mit @mvar{symbol} beginnt, gibt @code{labels} eine leere Liste 
 zur@"uck.
 
 Die Funktion @code{labels} wertet das Argument nicht aus.  Mit dem
@@ -768,9 +768,9 @@ Beispiele:
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{playback}
 @deffn  {Funktion} playback ()
-@deffnx {Funktion} playback (@var{n})
-@deffnx {Funktion} playback ([@var{m}, @var{n}])
-@deffnx {Funktion} playback ([@var{m}])
+@deffnx {Funktion} playback (@mvar{n})
+@deffnx {Funktion} playback ([@mvar{m}, @mvar{n}])
+@deffnx {Funktion} playback ([@mvar{m}])
 @deffnx {Funktion} playback (input)
 @deffnx {Funktion} playback (slow)
 @deffnx {Funktion} playback (time)
@@ -786,12 +786,12 @@ Siehe auch @mrefdot{labels}
 erzeugt wurden.  Ein Ergebnis wird auch dann angezeigt, wenn die Ausgabe mit 
 @mref{$} unterdr@"uckt war.
 
-@code{playback(@var{n})} zeigt die letzten @var{n} Ausdr@"ucke an.  Jeder 
+@code{playback(@mvar{n})} zeigt die letzten @mvar{n} Ausdr@"ucke an.  Jeder 
 Eingabe-, Ausgabe- und Zwischenausdruck z@"ahlt dabei als ein Ausdruck.
-@code{playback([@var{m}, @var{n}])} zeigt die Eingabe-, Ausgabe- und 
-Zwischenausdr@"ucke mit den Zahlen von @var{m} bis einschlie@ss{}lich @var{n} 
-an.  @code{playback([@var{m}])} ist @"aquivalent zu @code{playback([@var{m}, 
-@var{m}])}.  Die Ausgabe ist ein Paar von Ein- und Ausgabeausdr@"ucken.
+@code{playback([@mvar{m}, @mvar{n}])} zeigt die Eingabe-, Ausgabe- und 
+Zwischenausdr@"ucke mit den Zahlen von @mvar{m} bis einschlie@ss{}lich @mvar{n} 
+an.  @code{playback([@mvar{m}])} ist @"aquivalent zu @code{playback([@mvar{m}, 
+@mvar{m}])}.  Die Ausgabe ist ein Paar von Ein- und Ausgabeausdr@"ucken.
 
 @code{playback(input)} zeigt s@"amtliche Eingabeausdr@"ucke an, die bis dahin 
 erzeugt wurden.
@@ -838,9 +838,9 @@ Siehe @ref{Fehlersuche}.
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{read}
-@deffn {Funktion} read (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} read (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Gibt die Ausdr@"ucke @var{expr_1}, @dots{} @var{expr_n} auf der Konsole aus, 
+Gibt die Ausdr@"ucke @mvar{expr_1}, @dots{} @mvar{expr_n} auf der Konsole aus, 
 liest sodann einen Ausdruck von der Konsole ein und wertet diesen aus.  Die 
 Eingabe des Ausdrucks wird mit den Zeichen @mref{;} oder @mref{$} beendet.
 
@@ -861,9 +861,9 @@ foo is 42  -- enter new value.
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{readonly}
-@deffn {Funktion} readonly (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} readonly (@mvar{expr_1}, @dots{}, @mvar{expr_n})
  
-Gibt die Ausdr@"ucke @var{expr_1}, @dots{} @var{expr_n} auf der Konsole aus, 
+Gibt die Ausdr@"ucke @mvar{expr_1}, @dots{} @mvar{expr_n} auf der Konsole aus, 
 liest sodann einen Ausdruck von der Konsole ein und gibt den eingelesenen 
 Ausdruck zur@"uck ohne diesen auszuwerten.  Die Eingabe des Ausdrucks wird mit 
 den Zeichen @mref{;} oder @mref{$} beendet.
@@ -897,8 +897,8 @@ werden auf ihre Standardwerte zur@"uckgesetzt.  Nicht alle globalen Variablen
 sind mit ihren Standwerten in diese Liste eingetragen.  Daher kann @code{reset} 
 die Anfangswerte stets nur unvollst@"andig wiederherstellen.
 
-@code{reset(@var{arg_1, ..., arg_n})} setzt die Variablen @var{arg_1}, @dots{}, 
-@var{arg_n} auf ihren Standardwert zur@"uck.
+@code{reset(@mvar{arg_1, ..., arg_n})} setzt die Variablen @mvar{arg_1}, @dots{}, 
+@mvar{arg_n} auf ihren Standardwert zur@"uck.
 
 @code{reset} gibt eine Liste mit den Variablen zur@"uck, die auf ihren
 Standardwert zur@"uckgesetzt wurden.  Ist die Liste leer, wurden keine Variablen
@@ -910,7 +910,7 @@ Siehe auch @mrefdot{reset_verbosely}
 @c --- 08.09.2010 DK -----------------------------------------------------------
 @anchor{reset_verbosely}
 @deffn  {Funktion} reset_verbosely ()
-@deffnx {Funktion} reset_verbosely (@var{arg_1}, @dots{}, @var{arg_n})
+@deffnx {Funktion} reset_verbosely (@mvar{arg_1}, @dots{}, @mvar{arg_n})
 
 Entspricht der Funktion @code{reset}.  Im Unterschied zu @code{reset} wird zu
 jeder Variable, die zur@"uckgesetzt wird, zus@"atzlich der Standardwert
@@ -1052,11 +1052,11 @@ Beispiel:
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{disp}
-@deffn {Funktion} disp (@var{expr_1}, @var{expr_2}, @dots{})
+@deffn {Funktion} disp (@mvar{expr_1}, @mvar{expr_2}, @dots{})
 
 Ist @"ahnlich wie die Funktion @mrefdot{display}  Die Funktion @code{disp}
 zeigt jedoch keine Gleichungen sondern nur die Ergebnisse der Ausdr@"ucke
-@var{expr_1}, @var{expr_2}, @dots{} an.
+@mvar{expr_1}, @mvar{expr_2}, @dots{} an.
 
 Siehe auch die Funktionen @mrefcomma{ldisp} @mref{display} und @mrefdot{print}
 
@@ -1079,11 +1079,11 @@ Beispiele:
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{display}
-@deffn {Funktion} display (@var{expr_1}, @var{expr_2}, @dots{})
+@deffn {Funktion} display (@mvar{expr_1}, @mvar{expr_2}, @dots{})
 
-Die Variablen oder Ausdr@"ucke @var{expr_i} werden als eine Gleichung 
+Die Variablen oder Ausdr@"ucke @mvar{expr_i} werden als eine Gleichung 
 ausgegeben.  Die linke Seite der Gleichung ist die Variable oder der Ausdruck 
-@var{expr_i} und die rechte Seite der Wert der Variablen oder das Ergebnis des 
+@mvar{expr_i} und die rechte Seite der Wert der Variablen oder das Ergebnis des 
 Ausdrucks.  Die Argumente k@"onnen Variable, indizierte Variable oder Funktionen
 sein.
 
@@ -1148,10 +1148,10 @@ der internen und der externen Darstellung zeigen.
 
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{dispterms}
-@deffn {Funktion} dispterms (@var{expr})
+@deffn {Funktion} dispterms (@mvar{expr})
 
-Der Ausdruck @var{expr} wird zeilenweise ausgegeben.  Auf der ersten Zeile wird
-der Operator des Ausdrucks @var{expr} ausgegeben.  Dann werden die Argumente des
+Der Ausdruck @mvar{expr} wird zeilenweise ausgegeben.  Auf der ersten Zeile wird
+der Operator des Ausdrucks @mvar{expr} ausgegeben.  Dann werden die Argumente des
 Operators zeilenweise ausgegeben.  Dies kann n@"utzlich sein, wenn ein Ausdruck 
 sehr lang ist.
 
@@ -1174,12 +1174,12 @@ Beispiel:
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{expt}
 @anchor{ncexpt}
-@defvr  {Spezielles Symbol} expt (@var{a}, @var{b})
-@defvrx {Spezielles Symbol} ncexpt (@var{a}, @var{b})
+@defvr  {Spezielles Symbol} expt (@mvar{a}, @mvar{b})
+@defvrx {Spezielles Symbol} ncexpt (@mvar{a}, @mvar{b})
 
-Ist ein Exponentialausdruck zu lang, um ihn als @code{@var{a}^@var{b}} 
-anzuzeigen, wird stattdessen @code{expt(@var{a}, @var{b})} angezeigt.
-Entsprechend wird statt @code{@var{a}^^@var{b}}, @code{ncexpt(@var{a}, @var{b})}
+Ist ein Exponentialausdruck zu lang, um ihn als @code{@mvar{a}^@mvar{b}} 
+anzuzeigen, wird stattdessen @code{expt(@mvar{a}, @mvar{b})} angezeigt.
+Entsprechend wird statt @code{@mvar{a}^^@mvar{b}}, @code{ncexpt(@mvar{a}, @mvar{b})}
 angezeigt.  @code{expt} und @code{ncexpt} sind keine Funktionen und erscheinen 
 nur in der Ausgabe.
 @end defvr
@@ -1213,14 +1213,14 @@ Beispiele:
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
 @anchor{grind}
-@deffn {Funktion} grind (@var{expr})
+@deffn {Funktion} grind (@mvar{expr})
 @deffnx {Optionsvariable} grind
 
-Die Funktion @code{grind} gibt den Ausdruck @var{expr} auf der Konsole in einer
+Die Funktion @code{grind} gibt den Ausdruck @mvar{expr} auf der Konsole in einer
 Form aus, die f@"ur die Eingabe in Maxima geeignet ist.  @code{grind} gibt 
 @code{done} zur@"uck.
 
-Ist @var{expr} der Name einer Funktion oder eines Makros, gibt @code{grind}
+Ist @mvar{expr} der Name einer Funktion oder eines Makros, gibt @code{grind}
 die Definition der Funktion oder des Makros aus.
 
 Siehe auch die Funktion @mrefcomma{string} die einen Ausdruck als eine
@@ -1362,9 +1362,9 @@ Gleitkommazahl interpretiert.
 
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{ldisp}
-@deffn {Funktion} ldisp (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} ldisp (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} werden auf der Konsole 
+Die Ausdr@"ucke @mvar{expr_1}, @dots{}, @mvar{expr_n} werden auf der Konsole 
 ausgegeben.  Dabei wird jedem Ausdruck eine Zwischenmarke zugewiesen.  Die Liste
 der Zwischenmarken wird als Ergebnis zur@"uckgegeben.
 
@@ -1398,9 +1398,9 @@ Siehe auch die Funktionen @mrefcomma{disp} @mref{display} und @mrefdot{ldisplay}
 
 @c --- 23.10.2010 --------------------------------------------------------------
 @anchor{ldisplay}
-@deffn {Funktion} ldisplay (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} ldisplay (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Die Ausdr@"ucke @var{expr_1}, @dots{}, @var{expr_n} werden als eine Gleichung
+Die Ausdr@"ucke @mvar{expr_1}, @dots{}, @mvar{expr_n} werden als eine Gleichung
 der Form @code{lhs = rhs} ausgegeben.  @code{lhs} ist eines der Argumente der
 Funktion @code{ldisplay} und @code{rhs} ist der Wert oder das Ergebnis des
 Argumentes.  Im Unterschied zur Funktion @code{display} wird jeder Gleichung
@@ -1596,9 +1596,9 @@ Beispiele:
 
 @c --- 23.10.2010 DK -----------------------------------------------------------
 @anchor{print}
-@deffn {Funktion} print (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Funktion} print (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Wertet die Argumente @var{expr_1}, @dots{}, @var{expr_n} nacheinander von links 
+Wertet die Argumente @mvar{expr_1}, @dots{}, @mvar{expr_n} nacheinander von links 
 nach rechts aus und zeigt die Ergebnisse an.  @code{print} gibt das Ergebnis des 
 letzten Arguments als Ergebnis zur@"uck.  @code{print} erzeugt keine 
 Zwischenmarken.

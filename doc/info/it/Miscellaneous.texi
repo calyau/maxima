@@ -21,11 +21,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} apropos (@var{string})
+@deffn {Function} apropos (@mvar{string})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} args (@var{expr})
+@deffn {Function} args (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -49,7 +49,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} integerp (@var{expr})
+@deffn {Function} integerp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -57,11 +57,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} numberp (@var{expr})
+@deffn {Function} numberp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} properties (@var{a})
+@deffn {Function} properties (@mvar{a})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -69,44 +69,44 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} propvars (@var{prop})
+@deffn {Function} propvars (@mvar{prop})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} put (@mvar{atom}, @mvar{value}, @mvar{indicator})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} qput (@mvar{atom}, @mvar{value}, @mvar{indicator})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rem (@var{atom}, @var{indicator})
+@deffn {Function} rem (@mvar{atom}, @mvar{indicator})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Function} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
-@deffnx {Function} remove ("@var{a}", operator)
-@deffnx {Function} remove (@var{a}, transfun)
-@deffnx {Function} remove (all, @var{p})
+@deffn {Function} remove (@mvar{a_1}, @mvar{p_1}, ..., @mvar{a_n}, @mvar{p_n})
+@deffnx {Function} remove ([@mvar{a_1}, ..., @mvar{a_m}], [@mvar{p_1}, ..., @mvar{p_n}], ...)
+@deffnx {Function} remove ("@mvar{a}", operator)
+@deffnx {Function} remove (@mvar{a}, transfun)
+@deffnx {Function} remove (all, @mvar{p})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} remvalue (@var{name_1}, ..., @var{name_n})
+@deffn {Function} remvalue (@mvar{name_1}, ..., @mvar{name_n})
 @deffnx {Function} remvalue (all)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rncombine (@var{expr})
+@deffn {Function} rncombine (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} scalarp (@var{expr})
+@deffn {Function} scalarp (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
+@deffn {Function} setup_autoload (@mvar{filename}, @mvar{function_1}, ..., @mvar{function_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

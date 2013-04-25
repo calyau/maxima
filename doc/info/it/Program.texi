@@ -10,7 +10,7 @@
 @section Definitions for Program Flow
 
 @deffn {Function} backtrace ()
-@deffnx {Function} backtrace (@var{n})
+@deffnx {Function} backtrace (@mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -18,11 +18,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} errcatch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} errcatch (@mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} error (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} error (@mvar{expr_1}, ..., @mvar{expr_n})
 @deffnx {System variable} error
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -35,7 +35,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} go (@var{tag})
+@deffn {Function} go (@mvar{tag})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -43,11 +43,11 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} map (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} mapatom (@var{expr})
+@deffn {Function} mapatom (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -55,7 +55,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} maplist (@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -67,16 +67,16 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} scanmap (@var{f}, @var{expr})
-@deffnx {Function} scanmap (@var{f}, @var{expr}, bottomup)
+@deffn {Function} scanmap (@mvar{f}, @mvar{expr})
+@deffnx {Function} scanmap (@mvar{f}, @mvar{expr}, bottomup)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} throw (@var{expr})
+@deffn {Function} throw (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
+@deffn {Function} outermap (@mvar{f}, @mvar{a_1}, ..., @mvar{a_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

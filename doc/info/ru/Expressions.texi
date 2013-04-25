@@ -447,8 +447,8 @@ Operator   lbp     rbp
 @end example
 
 @code{remove} и @code{kill} удаляют свойства оператора из атома.
-@code{remove ("@var{a}", op)} удаляет только свойства оператора @var{a}.
-@code{kill ("@var{a}")} удаляет все свойства @var{a}, включая свойства
+@code{remove ("@mvar{a}", op)} удаляет только свойства оператора @mvar{a}.
+@code{kill ("@mvar{a}")} удаляет все свойства @mvar{a}, включая свойства
 оператора.
 Заметим, что имя оператора должно быть взято в кавычки.
 
@@ -499,11 +499,11 @@ Incorrect syntax: @@ is not an infix operator
 @node Функции и переменные для выражений,  , Синтаксис, Выражения
 @section Функции и переменные для выражений
 
-@deffn {Функция} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
-@deffnx {Функция} at (@var{expr}, @var{eqn})
-Вычисляет выражение @var{expr}, предполагая значения для переменных,
+@deffn {Функция} at (@mvar{expr}, [@mvar{eqn_1}, ..., @mvar{eqn_n}])
+@deffnx {Функция} at (@mvar{expr}, @mvar{eqn})
+Вычисляет выражение @mvar{expr}, предполагая значения для переменных,
 заданные в списке 
-уравнений @code{[@var{eqn_1}, ..., @var{eqn_n}]} или одном уравнении @var{eqn}.
+уравнений @code{[@mvar{eqn_1}, ..., @mvar{eqn_n}]} или одном уравнении @mvar{eqn}.
 
 Если подвыражение зависит от переменных, для которых заданы значения, 
 но нет, заданного при помощи @code{atvalue} значения, или оно не может быть вычислено
@@ -561,15 +561,15 @@ Incorrect syntax: @@ is not an infix operator
 @category{Вычисление} @category{Дифференциальные уравнения}
 @closecatbox
 
-@deffn {Функция} box (@var{expr})
-@deffnx {Функция} box (@var{expr}, @var{a})
-Возвращает @var{expr}, заключенное в бокс (box).
+@deffn {Функция} box (@mvar{expr})
+@deffnx {Функция} box (@mvar{expr}, @mvar{a})
+Возвращает @mvar{expr}, заключенное в бокс (box).
 Возвращаемое значение есть выражение с @code{box} в качестве оператора и 
-@var{expr} как аргумент.
+@mvar{expr} как аргумент.
 Бокс изображается при выводе, когда @code{display2d} есть @code{true}.
 
-@code{box (@var{expr}, @var{a})}
-заключает @var{expr} в бокс, обозначенный символом @var{a}.
+@code{box (@mvar{expr}, @mvar{a})}
+заключает @mvar{expr} в бокс, обозначенный символом @mvar{a}.
 Эта метка обрезается, если она длиннее чем ширина бокса.
 
 @code{box} вычисляет свои аргументы.
@@ -644,11 +644,11 @@ Incorrect syntax: @@ is not an infix operator
 
 @end defvr
 
-@deffn {Функция} carg (@var{z})
-Возвращает комплексный аргумент @var{z}.
+@deffn {Функция} carg (@mvar{z})
+Возвращает комплексный аргумент @mvar{z}.
 Этот комплексный аргумент есть угол @code{theta} в пределах @code{(-%pi, %pi]}
-такой что @code{r exp (theta %i) = @var{z}}, где @code{r} есть модуль 
-@var{z}.
+такой что @code{r exp (theta %i) = @mvar{z}}, где @code{r} есть модуль 
+@mvar{z}.
 @c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
 
 @code{carg} есть вычислительная функция,
@@ -656,8 +656,8 @@ Incorrect syntax: @@ is not an infix operator
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-@code{carg} игнорирует декларацию @code{declare (@var{x}, complex)}
-и рассматривает @var{x} как вещественную переменную.
+@code{carg} игнорирует декларацию @code{declare (@mvar{x}, complex)}
+и рассматривает @mvar{x} как вещественную переменную.
 Это ошибка. @c SEE SF BUG REPORT # 620246
 
 См. также @code{abs} (комплексный модуль), @code{polarform}, @code{rectform},
@@ -702,7 +702,7 @@ Incorrect syntax: @@ is not an infix operator
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
 @deffn {Специальный оператор} constant
-@code{declare (@var{a}, constant)} объявляет @var{a} как константу.
+@code{declare (@mvar{a}, constant)} объявляет @mvar{a} как константу.
 См. @code{declare}.
 @c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
 
@@ -712,8 +712,8 @@ Incorrect syntax: @@ is not an infix operator
 
 @end deffn
 
-@deffn {Функция} constantp (@var{expr})
-Возвращает @code{true}, если @var{expr} есть константное выражение,
+@deffn {Функция} constantp (@mvar{expr})
+Возвращает @code{true}, если @mvar{expr} есть константное выражение,
 иначе возвращает @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
@@ -766,9 +766,9 @@ Incorrect syntax: @@ is not an infix operator
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-@deffn {Функция} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
-Присваивает атому или списку атомов @var{a_i} свойство или список свойств @var{p_i}.
-Когда @var{a_i} и/или @var{p_i} есть списки,
+@deffn {Функция} declare (@mvar{a_1}, @mvar{p_1}, @mvar{a_2}, @mvar{p_2}, ...)
+Присваивает атому или списку атомов @mvar{a_i} свойство или список свойств @mvar{p_i}.
+Когда @mvar{a_i} и/или @mvar{p_i} есть списки,
 каждый из атомом получает все свойства.
 
 @code{declare} не вычисляет свои аргументы.
@@ -776,8 +776,8 @@ Incorrect syntax: @@ is not an infix operator
 
 Как отмечено в описании для каждого флага декларации,
 для некоторых флагов
-@code{featurep(@var{object}, @var{feature})}
-возвращает @code{true}, если @var{object} был объявлен, как имеющий @var{feature}.
+@code{featurep(@mvar{object}, @mvar{feature})}
+возвращает @code{true}, если @mvar{object} был объявлен, как имеющий @mvar{feature}.
 Однако, @code{featurep} не распознает некоторые флаги. Это ошибка.
 
 См. также @code{features}.
@@ -786,14 +786,14 @@ Incorrect syntax: @@ is not an infix operator
 
 @table @asis
 @item @code{evfun}
-Делает @var{a_i} известным для @code{ev} так, что эта функция названная как @var{a_i},
-применяется когда @var{a_i} появляется как флаговый аргумент @code{ev}.
+Делает @mvar{a_i} известным для @code{ev} так, что эта функция названная как @mvar{a_i},
+применяется когда @mvar{a_i} появляется как флаговый аргумент @code{ev}.
 См. @code{evfun}.
 
 @item @code{evflag}
-Делает @var{a_i} известным для функции @code{ev} так, что @var{a_i} 
+Делает @mvar{a_i} известным для функции @code{ev} так, что @mvar{a_i} 
 связывается с @code{true}
-во время выполнение @code{ev}, когда @var{a_i} появляется как флаговый аргумент  @code{ev}.
+во время выполнение @code{ev}, когда @mvar{a_i} появляется как флаговый аргумент  @code{ev}.
 См. @code{evflag}.
 
 @c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
@@ -801,44 +801,44 @@ Incorrect syntax: @@ is not an infix operator
 @c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
 @item @code{bindtest}
-Указывает Maxima то, что следует вызвать ошибку, когда при вычислении значение @var{a_i} не определено.
+Указывает Maxima то, что следует вызвать ошибку, когда при вычислении значение @mvar{a_i} не определено.
 
 @item @code{noun}
-Указывает Maxima считать @var{a_i} невычисляемой формой. 
-Эффект состоит в замене @var{a_i} на @code{'@var{a_i}}
-или @code{nounify(@var{a_i})}, в зависимости от контекста.
+Указывает Maxima считать @mvar{a_i} невычисляемой формой. 
+Эффект состоит в замене @mvar{a_i} на @code{'@mvar{a_i}}
+или @code{nounify(@mvar{a_i})}, в зависимости от контекста.
 
 @item @code{constant}
-Указывает Maxima рассматривать @var{a_i} как символьную константу.
+Указывает Maxima рассматривать @mvar{a_i} как символьную константу.
 @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
 @c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
 @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
 @item @code{scalar}
-Указывает Maxima рассматривать @var{a_i} как скалярную переменную.
+Указывает Maxima рассматривать @mvar{a_i} как скалярную переменную.
 
 @item @code{nonscalar}
-Указывает Maxima рассматривать @var{a_i} как нескалярную переменную.
+Указывает Maxima рассматривать @mvar{a_i} как нескалярную переменную.
 Обычное применение состоит в том, чтобы объявлять переменная как символьный вектор или матрицу.
 
 @item @code{mainvar}
-Указывает Maxima рассматривать @var{a_i} как "главную переменную" (@code{mainvar}).
+Указывает Maxima рассматривать @mvar{a_i} как "главную переменную" (@code{mainvar}).
 @code{ordergreatp} определяет упорядочивание атомов таким образом:
 
 (главные переменные) > (другие переменные) > (скалярный переменные) > (константы) > (числа)
 
 @item @code{alphabetic}
-Указывает Maxima рассматривать @var{a_i} как алфавитный символ.
+Указывает Maxima рассматривать @mvar{a_i} как алфавитный символ.
 
 @item @code{feature}
-Указывает Maxima рассматривать @var{a_i} как имя свойства.
-Тогда другие атомы могут иметь свойство @var{a_i}.
+Указывает Maxima рассматривать @mvar{a_i} как имя свойства.
+Тогда другие атомы могут иметь свойство @mvar{a_i}.
 
 @item @code{rassociative}, @code{lassociative}
-Указывает Maxima рассматривать @var{a_i} как право-ассоциативную или лево-ассоциативную функцию.
+Указывает Maxima рассматривать @mvar{a_i} как право-ассоциативную или лево-ассоциативную функцию.
 
 @item @code{nary}
-Указывает Maxima рассматривать @var{a_i} как n-арную функцию.
+Указывает Maxima рассматривать @mvar{a_i} как n-арную функцию.
 
 Декларация @code{nary} это не тоже, что вызов функции @code{nary}.
 Единственный эффект @code{declare(foo, nary)} состоит в том, чтобы обучить упрощатель Maxima
@@ -846,64 +846,64 @@ Incorrect syntax: @@ is not an infix operator
 например, чтобы @code{foo(x, foo(y, z))} упрощалось до @code{foo(x, y, z)}.
 
 @item @code{symmetric}, @code{antisymmetric}, @code{commutative}
-Указывает Maxima рассматривать @var{a_i} как симметричную или антисимметричную функцию.
+Указывает Maxima рассматривать @mvar{a_i} как симметричную или антисимметричную функцию.
 @code{commutative} это тоже самое, что @code{symmetric}.
 
 @item @code{oddfun}, @code{evenfun}
-Указывает Maxima рассматривать @var{a_i} как нечетную или четную функцию.
+Указывает Maxima рассматривать @mvar{a_i} как нечетную или четную функцию.
 
 @item @code{outative}
-Указывает Maxima упрощать выражения с  @var{a_i}
+Указывает Maxima упрощать выражения с  @mvar{a_i}
 путем выноса константных множителей за пределы первого аргумента.
 
-Когда @var{a_i} имеет один аргумент,
+Когда @mvar{a_i} имеет один аргумент,
 множитель рассматривается константным, если он есть литерал или объявлен константой.
 
-Когда @var{a_i} имеет два или более аргументов,
+Когда @mvar{a_i} имеет два или более аргументов,
 множитель рассматривается константой,
 если второй аргумент есть символ
 и этот множитель свободен от этого второго аргумента.
 
 @item @code{multiplicative}
-Указывает Maxima упрощать выражения @var{a_i} 
-путем подстановки @code{@var{a_i}(x * y * z * ...)} @code{-->}
-@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+Указывает Maxima упрощать выражения @mvar{a_i} 
+путем подстановки @code{@mvar{a_i}(x * y * z * ...)} @code{-->}
+@code{@mvar{a_i}(x) * @mvar{a_i}(y) * @mvar{a_i}(z) * ...}.
 Эта подстановка выполняется только для первого аргумента.
 
 @item @code{additive}
-Указывает Maxima упрощать @var{a_i} выражения
-путем подстановки @code{@var{a_i}(x + y + z + ...)} @code{-->}
-@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+Указывает Maxima упрощать @mvar{a_i} выражения
+путем подстановки @code{@mvar{a_i}(x + y + z + ...)} @code{-->}
+@code{@mvar{a_i}(x) + @mvar{a_i}(y) + @mvar{a_i}(z) + ...}.
 Эта подстановка выполняется только для первого аргумента.
 
 @item @code{linear}
-Эквивалентно объявлению @var{a_i} совместно @code{outative} и @code{additive}.
+Эквивалентно объявлению @mvar{a_i} совместно @code{outative} и @code{additive}.
 
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
 @item @code{integer}, @code{noninteger}
-Указывает Maxima рассматривать @var{a_i} как целую или нецелую переменную.
+Указывает Maxima рассматривать @mvar{a_i} как целую или нецелую переменную.
 
 @item @code{even}, @code{odd}
-Указывает Maxima рассматривать @var{a_i} как четную или нечетную целую переменную.
+Указывает Maxima рассматривать @mvar{a_i} как четную или нечетную целую переменную.
 
 @item @code{rational}, @code{irrational}
-Указывает Maxima рассматривать @var{a_i} как рациональную или иррациональную вещественную переменную.
+Указывает Maxima рассматривать @mvar{a_i} как рациональную или иррациональную вещественную переменную.
 
 @item @code{real}, @code{imaginary}, @code{complex}
-Указывает Maxima рассматривать @var{a_i} как вещественную, чисто мнимую или комплексную переменную.
+Указывает Maxima рассматривать @mvar{a_i} как вещественную, чисто мнимую или комплексную переменную.
 
 @item @code{increasing}, @code{decreasing}
-Указывает Maxima рассматривать @var{a_i} как растущую или убывающую функцию.
+Указывает Maxima рассматривать @mvar{a_i} как растущую или убывающую функцию.
 @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
 @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
 @c REPORTED AS SF BUG # 1483194
 
 @item @code{posfun}
-Указывает Maxima рассматривать @var{a_i} как положительную функцию.
+Указывает Maxima рассматривать @mvar{a_i} как положительную функцию.
 
 @item @code{integervalued}
-Указывает Maxima рассматривать @var{a_i} как целочисленную функцию.
+Указывает Maxima рассматривать @mvar{a_i} как целочисленную функцию.
 
 @end table
 
@@ -1181,8 +1181,8 @@ aa unbound variable
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
-аналогична @code{isolate (@var{expr}, @var{x})},
+@deffn {Функция} disolate (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
+аналогична @code{isolate (@mvar{expr}, @mvar{x})},
 за исключением того, что она дает возможность пользователю изолировать
 более чем одну переменную одновременно. Это может быть полезно, например, 
 если пользователь пытается заменить переменные в многократном
@@ -1198,12 +1198,12 @@ aa unbound variable
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} dispform (@var{expr})
-Возвращает внешнее представление @var{expr} по отношению к его
+@deffn {Функция} dispform (@mvar{expr})
+Возвращает внешнее представление @mvar{expr} по отношению к его
 главному оператору. Это может быть полезно в сочетании с @code{part}, которая
-также имеет дело с внешним представлением. Предположим @var{expr} есть -A.
-Тогда внутреннее представление @var{expr} есть "*"(-1,A), в то время как
-внешнее представление есть "-"(A). @code{dispform (@var{expr}, all)} конвертирует 
+также имеет дело с внешним представлением. Предположим @mvar{expr} есть -A.
+Тогда внутреннее представление @mvar{expr} есть "*"(-1,A), в то время как
+внешнее представление есть "-"(A). @code{dispform (@mvar{expr}, all)} конвертирует 
 все выражение (не только верхний уровень) в внешний формат. Например,
 если @code{expr: sin (sqrt (x))}, то @code{freeof (sqrt, expr)} и
 @code{freeof (sqrt, dispform (expr))} дают @code{true}, в то время как
@@ -1216,7 +1216,7 @@ aa unbound variable
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} distrib (@var{expr})
+@deffn {Функция} distrib (@mvar{expr})
 Распространяет суммы над произведениями. Она отличается от @code{expand}
 тем, что она работает только на самом верхнем уровне выражения, то есть она не
 рекурсивная и работает быстрее чем @code{expand}. Она отличается от @code{multthru} тем, 
@@ -1246,7 +1246,7 @@ aa unbound variable
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Функция} dpart (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
 Выбирает тоже подвыражение что и @code{part}, но
 вместо только возвращения этого подвыражения как значения, она возвращает
 все выражение с выбранным подвыражением, изображенным внутри
@@ -1269,9 +1269,9 @@ aa unbound variable
 @end deffn
 
 @c PROBABLY MORE TO BE SAID HERE
-@deffn {Функция} exp (@var{x})
+@deffn {Функция} exp (@mvar{x})
 Представляет собой экспоненциальную функцию.
-Все экземпляры @code{exp (@var{x})} при вводе упрощаются до @code{%e^@var{x}}.
+Все экземпляры @code{exp (@mvar{x})} при вводе упрощаются до @code{%e^@mvar{x}}.
 @code{exp} не присутствует в упрощенных выражениях.
 
 Если @code{demoivre} равно @code{true}, то @code{%e^(a + b %i)} упрощается до 
@@ -1364,25 +1364,25 @@ aa unbound variable
 
 @end defvr
 
-@deffn {Функция} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
-@code{freeof (@var{x_1}, @var{expr})}
-Возвращает @code{true}, если никакое подвыражение @var{expr} не равно @var{x_1}
-или если @var{x_1} возникает только как немая переменная в
-@var{expr}, иначе возвращает @code{false}.
+@deffn {Функция} freeof (@mvar{x_1}, ..., @mvar{x_n}, @mvar{expr})
+@code{freeof (@mvar{x_1}, @mvar{expr})}
+Возвращает @code{true}, если никакое подвыражение @mvar{expr} не равно @mvar{x_1}
+или если @mvar{x_1} возникает только как немая переменная в
+@mvar{expr}, иначе возвращает @code{false}.
 
-@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
-эквивалентно @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+@code{freeof (@mvar{x_1}, ..., @mvar{x_n}, @mvar{expr})}
+эквивалентно @code{freeof (@mvar{x_1}, @mvar{expr}) and ... and freeof (@mvar{x_n}, @mvar{expr})}.
 
-Аргументы @var{x_1}, ..., @var{x_n} 
+Аргументы @mvar{x_1}, ..., @mvar{x_n} 
 могут быть именами функций или переменных, именами с индексами,
 операторами (заключенными в двойные кавычки) или выражениями общего вида.
 @code{freeof} вычисляет свои аргументы.
 
-@code{freeof} действует только на @var{expr} в том виде, в как оно есть, 
+@code{freeof} действует только на @mvar{expr} в том виде, в как оно есть, 
 (после упрощения и вычисления) и
 не пытается определить, может ли некоторое эквивалентное выражение дать другой результат.
 В частности, упрощение может давать эквивалентное, но другое выражение, которое
-содержит некоторые различные элементы чем исходная форма @var{expr}.
+содержит некоторые различные элементы чем исходная форма @mvar{expr}.
 
 Переменная является немой переменной в некотором выражении, если она не имеет значения за пределами выражения.
 Немые переменные, распознаваемые @code{freeof}, есть
@@ -1474,9 +1474,9 @@ aa unbound variable
 @end deffn
 
 @c IS THIS DEFINITION CORRECT ??
-@deffn {Функция} genfact (@var{x}, @var{y}, @var{z})
+@deffn {Функция} genfact (@mvar{x}, @mvar{y}, @mvar{z})
 Возвращает обобщенный факториал, заданный как
-@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}. Таким образом, для целого @var{x},
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}. Таким образом, для целого @mvar{x},
 @code{genfact (x, x, 1) = x!} и @code{genfact (x, x/2, 2) = x!!}.
 
 @opencatbox
@@ -1485,8 +1485,8 @@ aa unbound variable
 
 @end deffn
 
-@deffn {Функция} imagpart (@var{expr})
-Возвращает мнимую часть выражения @var{expr}.
+@deffn {Функция} imagpart (@mvar{expr})
+Возвращает мнимую часть выражения @mvar{expr}.
 
 @code{imagpart} есть вычислительная функция,
 а не функция упрощения.
@@ -1504,26 +1504,26 @@ aa unbound variable
 
 @end deffn
 
-@deffn {Функция} infix (@var{op})
-@deffnx {Функция} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Функция} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
-Объявляет @var{op} инфиксным оператором.
+@deffn {Функция} infix (@mvar{op})
+@deffnx {Функция} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})
+@deffnx {Функция} infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})
+Объявляет @mvar{op} инфиксным оператором.
 Инфиксный оператор есть функция двух аргументов,
 с именем функции, записанным между этими аргументами.
 Например, оператор вычитания @code{-} есть инфиксный оператор.
 
-@code{infix (@var{op})} объявляет @var{op} инфиксным оператором
+@code{infix (@mvar{op})} объявляет @mvar{op} инфиксным оператором
 со степенями связывания по умолчанию (левая и правая, обе равны 180)
 и частями речи по умолчанию (левая и правая, обе равны @code{any}).
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp})} объявляет @var{op} инфиксным оператором
+@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp})} объявляет @mvar{op} инфиксным оператором
 с указанными левой и правой степени связывания 
 и частями речи по умолчанию (левая и правая, обе равны @code{any}).
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})} объявляет @var{op} инфиксным оператором
+@code{infix (@mvar{op}, @mvar{lbp}, @mvar{rbp}, @mvar{lpos}, @mvar{rpos}, @mvar{pos})} объявляет @mvar{op} инфиксным оператором
 с указанными левой и правой степенями связывания и частями речи
-@var{lpos}, @var{rpos} и @var{pos} для левого операнда, правого операнда и результата
+@mvar{lpos}, @mvar{rpos} и @mvar{pos} для левого операнда, правого операнда и результата
 соответственно.
 
 Термин "часть речи" по отношению к объявлению операторов, означает тип выражения.
@@ -1533,22 +1533,22 @@ aa unbound variable
 Maxima может обнаружить некоторые синтаксические ошибки, сравнивая
 объявленные для оператора части речи с актуальными выражениями.
 
-Приоритет @var{op} по отношению к другим операторам
+Приоритет @mvar{op} по отношению к другим операторам
 выводится из левой и правой степеней связывания рассматриваемых операторов.
-Если левые и правые степени связывания @var{op} обе больше
+Если левые и правые степени связывания @mvar{op} обе больше
 левых и правых степеней связывания другого оператора,
-то @var{op} имеет более высокий приоритет чем этот оператор.
+то @mvar{op} имеет более высокий приоритет чем этот оператор.
 Если степени связывания обе не больше или меньше,
 то имеют место некоторые более сложные соотношения.
 
-Ассоциативность @var{op} зависит от его степени связывания.
-Большая левая степень связывания (@var{lbp}) означает, что  
-@var{op} вычисляется до других операторов, стоящих слева от него в выражении,
-в то время как большая правая степень связывания (@var{rbp}) означает, что 
-@var{op} вычисляется до других операторов, стоящих справа от него в выражении.
-Таким образом, большее @var{lbp} делает @var{op} право-ассоциативным,
-в то время как большее @var{rbp} делает @var{op} лево-ассоциативным.
-Если @var{lbp} равно @var{rbp}, то @var{op} является лево-ассоциативный.
+Ассоциативность @mvar{op} зависит от его степени связывания.
+Большая левая степень связывания (@mvar{lbp}) означает, что  
+@mvar{op} вычисляется до других операторов, стоящих слева от него в выражении,
+в то время как большая правая степень связывания (@mvar{rbp}) означает, что 
+@mvar{op} вычисляется до других операторов, стоящих справа от него в выражении.
+Таким образом, большее @mvar{lbp} делает @mvar{op} право-ассоциативным,
+в то время как большее @mvar{rbp} делает @mvar{op} лево-ассоциативным.
+Если @mvar{lbp} равно @mvar{rbp}, то @mvar{op} является лево-ассоциативный.
 
 См. также @code{Syntax}.
 
@@ -1556,9 +1556,9 @@ Maxima может обнаружить некоторые синтаксические ошибки, сравнивая
 
 @itemize @bullet
 @item
-Если левые и правые степени связывания @var{op} обе больше
+Если левые и правые степени связывания @mvar{op} обе больше
 левых и правых степеней связывания другого оператора,
-то @var{op} имеет более высокий приоритет чем этот оператор.
+то @mvar{op} имеет более высокий приоритет чем этот оператор.
 @end itemize
 @example
 (%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
@@ -1576,8 +1576,8 @@ Maxima может обнаружить некоторые синтаксические ошибки, сравнивая
 
 @itemize @bullet
 @item
-Большее @var{lbp} делает @var{op} право-ассоциативным,
-в том время как большее @var{rbp} делает @var{op} лево-ассоциативным.
+Большее @mvar{lbp} делает @mvar{op} право-ассоциативным,
+в том время как большее @mvar{rbp} делает @mvar{op} лево-ассоциативным.
 @end itemize
 @example
 (%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
@@ -1645,7 +1645,7 @@ if x ## y then
 @end defvr
 
 @c NEEDS WORK
-@deffn {Функция} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Функция} inpart (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
 аналогична @code{part}, но работает с внутренним
 представлением выражения, а не с выводимой формой, и,
 таким образом, может быть быстрее, так как форматирование не выполняется.
@@ -1682,9 +1682,9 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} isolate (@var{expr}, @var{x})
-Возвращает @var{expr} с подвыражениями, которые есть суммы, и
-которые не содержат переменную @var{var}, замененные метками промежуточных выражений
+@deffn {Функция} isolate (@mvar{expr}, @mvar{x})
+Возвращает @mvar{expr} с подвыражениями, которые есть суммы, и
+которые не содержат переменную @mvar{var}, замененные метками промежуточных выражений
 (атомарными символами, такими как @code{%t1}, @code{%t2}, ...).  Это часто бывает полезно, 
 чтобы избежать ненужного раскрытия подвыражений, которые не содержат
 интересующих переменных. Так как данные метки промежуточных выражений имеют подвыражения
@@ -1693,7 +1693,7 @@ if x ## y then
 
 Если @code{exptisolate} (значение по умолчанию: @code{false}) равно @code{true},  
 то @code{isolate} исследует показатели атомов (таких как @code{%e}), 
-которые содержат переменную @var{var}.
+которые содержат переменную @mvar{var}.
 
 Если @code{isolate_wrt_times} равно @code{true}, то @code{isolate} изолирует 
 также по отношению к произведениям. См. @code{isolate_wrt_times}.
@@ -1783,8 +1783,8 @@ if x ## y then
 @end defvr
 
 @c NEEDS WORK
-@deffn {Функция} listofvars (@var{expr})
-Возвращает список переменных в @var{expr}.
+@deffn {Функция} listofvars (@mvar{expr})
+Возвращает список переменных в @mvar{expr}.
 
 Когда @code{listconstvars} есть @code{true}, то в список,
 возвращаемый @code{listofvars}, включаются @code{%e}, @code{%pi}, @code{%i} и
@@ -1804,8 +1804,8 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} lfreeof (@var{list}, @var{expr})
-Для каждого члена @var{m} списка @var{list}, вызывает @code{freeof (@var{m}, @var{expr})}.
+@deffn {Функция} lfreeof (@mvar{list}, @mvar{expr})
+Для каждого члена @mvar{m} списка @mvar{list}, вызывает @code{freeof (@mvar{m}, @mvar{expr})}.
 Возвращает @code{false}, если какой либо из вызовов @code{freeof} дает @code{false}, 
 иначе возвращает @code{true}.
 
@@ -1815,9 +1815,9 @@ if x ## y then
 
 @end deffn
 
-@deffn {Функция} lopow (@var{expr}, @var{x})
-Возвращает наименьший показатель степени @var{x}, который явно присутствует 
-в @var{expr}. Таким образом,
+@deffn {Функция} lopow (@mvar{expr}, @mvar{x})
+Возвращает наименьший показатель степени @mvar{x}, который явно присутствует 
+в @mvar{expr}. Таким образом,
 
 @example
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
@@ -1831,7 +1831,7 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Функция} lpart (@mvar{label}, @mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
 Аналогично @code{dpart}, но использует 
 помеченный бокс. Помеченный бокс аналогичен боксу сделанному с помощью 
 @code{dpart}, но имеет имя в верхней строке.
@@ -1843,25 +1843,25 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} multthru (@var{expr})
-@deffnx {Функция} multthru (@var{expr_1}, @var{expr_2})
-Умножает множитель @var{expr} (который должен быть суммой) на
-другие множители @var{expr}. То есть, @var{expr} есть 
-@code{@var{f_1} @var{f_2} ... @var{f_n}},
+@deffn {Функция} multthru (@mvar{expr})
+@deffnx {Функция} multthru (@mvar{expr_1}, @mvar{expr_2})
+Умножает множитель @mvar{expr} (который должен быть суммой) на
+другие множители @mvar{expr}. То есть, @mvar{expr} есть 
+@code{@mvar{f_1} @mvar{f_2} ... @mvar{f_n}},
 где по крайней мере
-один множитель, скажем @var{f_i}, есть сумма членов.  Каждый член 
+один множитель, скажем @mvar{f_i}, есть сумма членов.  Каждый член 
 в той сумме умножается на остальные множители в этом произведении. 
-(А именно на все множители, за исключением @var{f_i}).  @code{multthru} 
+(А именно на все множители, за исключением @mvar{f_i}).  @code{multthru} 
 не раскрывает суммы, возведенные в степень.
 Эта функция есть самый быстрый способ распространять произведения (коммутативные
 или некоммутативные) на суммы. Так как дроби представляются как
 произведения, то @code{multthru} может также использоваться для деления сумм 
 на произведения.
 
-@code{multthru (@var{expr_1}, @var{expr_2})} умножает каждый член в @var{expr_2} 
-(который должен быть суммой или уравнением) на @var{expr_1}.
-Если @var{expr_1} сам по себе не является суммой, то эта
-форма эквивалентна @code{multthru (@var{expr_1}*@var{expr_2})}.
+@code{multthru (@mvar{expr_1}, @mvar{expr_2})} умножает каждый член в @mvar{expr_2} 
+(который должен быть суммой или уравнением) на @mvar{expr_1}.
+Если @mvar{expr_1} сам по себе не является суммой, то эта
+форма эквивалентна @code{multthru (@mvar{expr_1}*@mvar{expr_2})}.
 
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
@@ -1900,8 +1900,8 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} nounify (@var{f})
-Возвращает невычисляемую форму функции с именем @var{f}. Это 
+@deffn {Функция} nounify (@mvar{f})
+Возвращает невычисляемую форму функции с именем @mvar{f}. Это 
 необходимо, если требуется представить имя вычисляемой функции так, 
 если бы она была невычисляемой.  Заметим, что некоторые вычисляемые функции  
 возвращают их невычисляемые формы,
@@ -1915,11 +1915,11 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} nterms (@var{expr})
-Возвращает число членов, которое выражение @var{expr} имело бы, если оно было бы
+@deffn {Функция} nterms (@mvar{expr})
+Возвращает число членов, которое выражение @mvar{expr} имело бы, если оно было бы
 полностью раскрыто и не возникло бы сокращений или комбинаций членов.
-Заметим, что выражения такие как @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})} и др.
-считаются только как один член, вне независимости от того, как много членов @var{expr} имеет (если оно сумма).
+Заметим, что выражения такие как @code{sin (@mvar{expr})}, @code{sqrt (@mvar{expr})}, @code{exp (@mvar{expr})} и др.
+считаются только как один член, вне независимости от того, как много членов @mvar{expr} имеет (если оно сумма).
 
 @opencatbox
 @category{Выражения}
@@ -1928,9 +1928,9 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} op (@var{expr})
-Возвращает главный оператор выражения @var{expr}.
-@code{op (@var{expr})} эквивалентно @code{part (@var{expr}, 0)}. 
+@deffn {Функция} op (@mvar{expr})
+Возвращает главный оператор выражения @mvar{expr}.
+@code{op (@mvar{expr})} эквивалентно @code{part (@mvar{expr}, 0)}. 
 
 @code{op} возвращает строку, если главный оператор 
 встроенный или определенный пользователем префиксный, 
@@ -1991,14 +1991,14 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} operatorp (@var{expr}, @var{op})
-@deffnx {Функция} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+@deffn {Функция} operatorp (@mvar{expr}, @mvar{op})
+@deffnx {Функция} operatorp (@mvar{expr}, [@mvar{op_1}, ..., @mvar{op_n}])
 
-@code{operatorp (@var{expr}, @var{op})} возвращает @code{true},
-если @var{op} равен оператору @var{expr}.
+@code{operatorp (@mvar{expr}, @mvar{op})} возвращает @code{true},
+если @mvar{op} равен оператору @mvar{expr}.
 
-@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} возвращает @code{true},
-если какой-нибудь элемент @var{op_1}, ..., @var{op_n} равен оператору @var{expr}.
+@code{operatorp (@mvar{expr}, [@mvar{op_1}, ..., @mvar{op_n}])} возвращает @code{true},
+если какой-нибудь элемент @mvar{op_1}, ..., @mvar{op_n} равен оператору @mvar{expr}.
 
 @opencatbox
 @category{Функции предикаты} @category{Операторы}
@@ -2007,9 +2007,9 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} optimize (@var{expr})
+@deffn {Функция} optimize (@mvar{expr})
 Возвращает выражение, которое выдает тоже самое значение и
-побочные эффекты, как и @var{expr}, но выполняется более 
+побочные эффекты, как и @mvar{expr}, но выполняется более 
 эффективно за счет устранения лишних повторных вычислений
 общих подвыражений. @code{optimize} также имеет побочный 
 эффект "сворачивания" своего аргумента так что все общие
@@ -2036,10 +2036,10 @@ if x ## y then
 
 @c NEEDS WORK
 @c WHAT DOES ">" MEAN IN THIS CONTEXT ??
-@deffn {Функция} ordergreat (@var{v_1}, ..., @var{v_n})
-Устанавливает синонимы для переменных @var{v_1}, ..., @var{v_n},
-такие, что @var{v_1} > @var{v_2} > ...  > @var{v_n},
-и @var{v_n} > любой другой переменной, не включенной в аргументы.
+@deffn {Функция} ordergreat (@mvar{v_1}, ..., @mvar{v_n})
+Устанавливает синонимы для переменных @mvar{v_1}, ..., @mvar{v_n},
+такие, что @mvar{v_1} > @mvar{v_2} > ...  > @mvar{v_n},
+и @mvar{v_n} > любой другой переменной, не включенной в аргументы.
 
 См. также @code{orderless}.
 
@@ -2051,8 +2051,8 @@ if x ## y then
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Функция} ordergreatp (@var{expr_1}, @var{expr_2})
-Возвращает @code{true}, если @var{expr_2} предшествует @var{expr_1} в 
+@deffn {Функция} ordergreatp (@mvar{expr_1}, @mvar{expr_2})
+Возвращает @code{true}, если @mvar{expr_2} предшествует @mvar{expr_1} в 
 упорядочивании, установленном с помощью функции @code{ordergreat}.
 
 @opencatbox
@@ -2063,10 +2063,10 @@ if x ## y then
 
 @c NEEDS WORK
 @c WHAT DOES "<" MEAN IN THIS CONTEXT
-@deffn {Функция} orderless (@var{v_1}, ..., @var{v_n})
-Устанавливает синонимы для переменных @var{v_1}, ..., @var{v_n},
-такие, что @var{v_1} < @var{v_2} < ...  < @var{v_n},
-и @var{v_n} < любой другой переменная, не включенной в аргументы.
+@deffn {Функция} orderless (@mvar{v_1}, ..., @mvar{v_n})
+Устанавливает синонимы для переменных @mvar{v_1}, ..., @mvar{v_n},
+такие, что @mvar{v_1} < @mvar{v_2} < ...  < @mvar{v_n},
+и @mvar{v_n} < любой другой переменная, не включенной в аргументы.
 
 @c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
 Таким образом, полная шкала упорядочивания такова: 
@@ -2086,8 +2086,8 @@ if x ## y then
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Функция} orderlessp (@var{expr_1}, @var{expr_2})
-Возвращает @code{true}, если @var{expr_1} предшествует @var{expr_2} в 
+@deffn {Функция} orderlessp (@mvar{expr_1}, @mvar{expr_2})
+Возвращает @code{true}, если @mvar{expr_1} предшествует @mvar{expr_2} в 
 упорядочивании, установленном командой @code{orderless}.
 
 @opencatbox
@@ -2097,13 +2097,13 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Функция} part (@mvar{expr}, @mvar{n_1}, ..., @mvar{n_k})
 Возвращает части внешней формы @code{expr}. Функция
-получает часть @code{expr}, которая определена индексами @var{n_1}, ..., @var{n_k}.  
+получает часть @code{expr}, которая определена индексами @mvar{n_1}, ..., @mvar{n_k}.  
 Когда первая
-часть @var{n_1} @code{expr} взята, берется часть @var{n_2} от нее и т.д. 
+часть @mvar{n_1} @code{expr} взята, берется часть @mvar{n_2} от нее и т.д. 
 Результат есть
-часть @var{n_k} от ... части @var{n_2}, от части @var{n_1} выражения @code{expr}.
+часть @mvar{n_k} от ... части @mvar{n_2}, от части @mvar{n_1} выражения @code{expr}.
 
 @code{part} может быть использована для того, чтобы получить элемент списка,
 строку матрицы и т.п.
@@ -2136,11 +2136,11 @@ if x ## y then
 @end deffn
 
 @c NEEDS WORK
-@deffn {Функция} partition (@var{expr}, @var{x})
+@deffn {Функция} partition (@mvar{expr}, @mvar{x})
 Возвращает список из двух выражений.  Они есть (1)
-множители @var{expr} (если оно произведение), члены @var{expr} 
+множители @mvar{expr} (если оно произведение), члены @mvar{expr} 
 (если оно является суммой), или список (если оно является списком), которые 
-не содержит @var{x} и, (2) те множители, члены или список, которые  содержат.
+не содержит @mvar{x} и, (2) те множители, члены или список, которые  содержат.
 
 @example
 (%i1) partition (2*a*x*f(x), x);
@@ -2171,12 +2171,12 @@ if x ## y then
 
 @end defvr
 
-@deffn {Функция} pickapart (@var{expr}, @var{n})
+@deffn {Функция} pickapart (@mvar{expr}, @mvar{n})
 Присваивает меткам промежуточных выражений все подвыражения 
-@var{expr} глубины @var{n} (целое число).
+@mvar{expr} глубины @mvar{n} (целое число).
 Подвыражения большей или меньшей глубин меткам не присваиваются.
 @code{pickapart} возвращает выражение в терминах промежуточных выражений
-эквивалентное исходному @var{expr}.
+эквивалентное исходному @mvar{expr}.
 
 См. также @code{part}, @code{dpart}, @code{lpart}, @code{inpart} и @code{reveal}.
 
@@ -2282,8 +2282,8 @@ if x ## y then
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Функция} polarform (@var{expr})
-Возвращает выражение @code{r %e^(%i theta)} эквивалентное @var{expr},
+@deffn {Функция} polarform (@mvar{expr})
+Возвращает выражение @code{r %e^(%i theta)} эквивалентное @mvar{expr},
 такое, что @code{r} и @code{theta} чисто вещественные.
 
 @opencatbox
@@ -2294,8 +2294,8 @@ if x ## y then
 
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
-@deffn {Функция} powers (@var{expr}, @var{x})
-Выдает степени @var{x}, встречающиеся в @var{expr}.
+@deffn {Функция} powers (@mvar{expr}, @mvar{x})
+Выдает степени @mvar{x}, встречающиеся в @mvar{expr}.
 
 @code{load (powers)} загружает эту функцию.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
@@ -2318,16 +2318,16 @@ if x ## y then
 
 @end deffn
 
-@deffn {Функция} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Представляет произведение значений @var{expr} с
-индексом @var{i}, меняющимся от @var{i_0} до @var{i_1}.
+@deffn {Функция} product (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
+Представляет произведение значений @mvar{expr} с
+индексом @mvar{i}, меняющимся от @mvar{i_0} до @mvar{i_1}.
 Невычисляемая форма @code{'product} изображается как заглавная буква пи.
 
-@code{product} вычисляет @var{expr} и нижний и верхний пределы @var{i_0} и @var{i_1},
-@code{product} не вычисляет индекс @var{i}.
+@code{product} вычисляет @mvar{expr} и нижний и верхний пределы @mvar{i_0} и @mvar{i_1},
+@code{product} не вычисляет индекс @mvar{i}.
 
 Если верхний и нижний пределы различаются на целое число,
-@var{expr} вычисляется для каждого значения индекса @var{i},
+@mvar{expr} вычисляется для каждого значения индекса @mvar{i},
 и результат есть точное произведение.
 
 Иначе, диапазон индекса является неопределенным.
@@ -2398,8 +2398,8 @@ if x ## y then
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Функция} realpart (@var{expr})
-Возвращает вещественную часть @var{expr}. @code{realpart} и @code{imagpart} 
+@deffn {Функция} realpart (@mvar{expr})
+Возвращает вещественную часть @mvar{expr}. @code{realpart} и @code{imagpart} 
 будут работать для выражений, включающих тригонометрические и гипергеометрические функции,
 также как и квадратный корень, логарифм и возведение в степень.
 
@@ -2410,9 +2410,9 @@ if x ## y then
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Функция} rectform (@var{expr})
-Возвращает выражение @code{a + b %i}, эквивалентное @var{expr},
-такое, что @var{a} и @var{b} чисто вещественные.
+@deffn {Функция} rectform (@mvar{expr})
+Возвращает выражение @code{a + b %i}, эквивалентное @mvar{expr},
+такое, что @mvar{a} и @mvar{b} чисто вещественные.
 
 @opencatbox
 @category{Комплексные числа}
@@ -2420,16 +2420,16 @@ if x ## y then
 
 @end deffn
 
-@deffn {Функция} rembox (@var{expr}, unlabelled)
-@deffnx {Функция} rembox (@var{expr}, @var{label})
-@deffnx {Функция} rembox (@var{expr})
-Удаляет боксы из @var{expr}.
+@deffn {Функция} rembox (@mvar{expr}, unlabelled)
+@deffnx {Функция} rembox (@mvar{expr}, @mvar{label})
+@deffnx {Функция} rembox (@mvar{expr})
+Удаляет боксы из @mvar{expr}.
 
-@code{rembox (@var{expr}, unlabelled)} удаляет все непомеченные боксы из @var{expr}.
+@code{rembox (@mvar{expr}, unlabelled)} удаляет все непомеченные боксы из @mvar{expr}.
 
-@code{rembox (@var{expr}, @var{label})} удаляет только боксы, содержащие @var{label}.
+@code{rembox (@mvar{expr}, @mvar{label})} удаляет только боксы, содержащие @mvar{label}.
 
-@code{rembox (@var{expr})} удаляет все боксы, помеченные и непомеченные.
+@code{rembox (@mvar{expr})} удаляет все боксы, помеченные и непомеченные.
 
 Боксы рисуются функциями @code{box}, @code{dpart} и @code{lpart}.
 
@@ -2503,16 +2503,16 @@ if x ## y then
 
 @end deffn
 
-@deffn {Функция} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Представляет собой суммирование значений @var{expr} для
-индекса @var{i}, изменяющегося от @var{i_0} до @var{i_1}.
+@deffn {Функция} sum (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
+Представляет собой суммирование значений @mvar{expr} для
+индекса @mvar{i}, изменяющегося от @mvar{i_0} до @mvar{i_1}.
 Невычисляемая форма @code{'sum} изображается как заглавная буква сигма.
 
-@code{sum} вычисляет свое слагаемое @var{expr} и нижний и верхний пределы @var{i_0} и @var{i_1},
-@code{sum} не вычисляет индекс @var{i}.
+@code{sum} вычисляет свое слагаемое @mvar{expr} и нижний и верхний пределы @mvar{i_0} и @mvar{i_1},
+@code{sum} не вычисляет индекс @mvar{i}.
 
 Если верхний и нижний пределы отличаются на целое число,
-слагаемое @var{expr} вычисляется для каждого значения индекса суммирования  @var{i}, 
+слагаемое @mvar{expr} вычисляется для каждого значения индекса суммирования  @mvar{i}, 
 и результат есть точная сумма.
 
 Иначе, диапазон индекса является неопределенным.
@@ -2630,11 +2630,11 @@ if x ## y then
 
 @end deffn
 
-@deffn {Функция} lsum (@var{expr}, @var{x}, @var{L})
-Представляет собой сумму @var{expr} для каждого элемента @var{x} в @var{L}.
+@deffn {Функция} lsum (@mvar{expr}, @mvar{x}, @mvar{L})
+Представляет собой сумму @mvar{expr} для каждого элемента @mvar{x} в @mvar{L}.
 
 Невычисляемая форма @code{'lsum} возвращается,
-если аргумент @var{L} не вычисляется до списка.
+если аргумент @mvar{L} не вычисляется до списка.
 
 Примеры:
 
@@ -2662,8 +2662,8 @@ if x ## y then
 
 @end deffn
 
-@deffn {Функция} verbify (@var{f})
-Возвращает вычисляемую форму функции с именем @var{f}.
+@deffn {Функция} verbify (@mvar{f})
+Возвращает вычисляемую форму функции с именем @mvar{f}.
 
 См. также @code{verb}, @code{noun} и @code{nounify}.
 

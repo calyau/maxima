@@ -9,15 +9,15 @@
 @node Definitions for Units,  , Introduction to Units, unit
 @section Definitions for Units
 
-@deffn {Function} setunits (@var{list})
+@deffn {Function} setunits (@mvar{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} uforget (@var{list})
+@deffn {Function} uforget (@mvar{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} convert (@var{expr}, @var{list})
+@deffn {Function} convert (@mvar{expr}, @mvar{list})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -25,7 +25,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} metricexpandall (@var{x})
+@deffn {Function} metricexpandall (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

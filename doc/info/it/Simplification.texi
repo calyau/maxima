@@ -12,18 +12,18 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} askinteger (@var{expr}, integer)
-@deffnx {Function} askinteger (@var{expr})
-@deffnx {Function} askinteger (@var{expr}, even)
-@deffnx {Function} askinteger (@var{expr}, odd)
+@deffn {Function} askinteger (@mvar{expr}, integer)
+@deffnx {Function} askinteger (@mvar{expr})
+@deffnx {Function} askinteger (@mvar{expr}, even)
+@deffnx {Function} askinteger (@mvar{expr}, odd)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} asksign (@var{expr})
+@deffn {Function} asksign (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} demoivre (@var{expr})
+@deffn {Function} demoivre (@mvar{expr})
 @deffnx {Option variable} demoivre
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -32,12 +32,12 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} expand (@var{expr})
-@deffnx {Function} expand (@var{expr}, @var{p}, @var{n})
+@deffn {Function} expand (@mvar{expr})
+@deffnx {Function} expand (@mvar{expr}, @mvar{p}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} expandwrt (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -45,7 +45,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} expandwrt_factored (@mvar{expr}, @mvar{x_1}, ..., @mvar{x_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -53,7 +53,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} exponentialize (@var{expr})
+@deffn {Function} exponentialize (@mvar{expr})
 @deffnx {Option variable} exponentialize
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
@@ -66,7 +66,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} intosum (@var{expr})
+@deffn {Function} intosum (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -130,7 +130,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+@deffn {Function} numerval (@mvar{x_1}, @mvar{expr_1}, ..., @mvar{var_n}, @mvar{expr_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -150,7 +150,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} radcan (@var{expr})
+@deffn {Function} radcan (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -166,7 +166,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Function} scsimp (@mvar{expr}, @mvar{rule_1}, ..., @mvar{rule_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -174,7 +174,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} sumcontract (@var{expr})
+@deffn {Function} sumcontract (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -190,7 +190,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} unknown (@var{expr})
+@deffn {Function} unknown (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

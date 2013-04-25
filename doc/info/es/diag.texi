@@ -7,9 +7,9 @@
 @section Funciones y variables para diag
 
 
-@deffn {Funci@'on} diag (@var{lm})
-Genera una matriz cuadrada con las matrices de @var{lm}
-en la diagonal, siendo @var{lm} una lista de matrices o de
+@deffn {Funci@'on} diag (@mvar{lm})
+Genera una matriz cuadrada con las matrices de @mvar{lm}
+en la diagonal, siendo @mvar{lm} una lista de matrices o de
 escalares.
 
 Ejemplo:
@@ -38,9 +38,9 @@ Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
 @end deffn
 
 
-@deffn {Funci@'on} JF (@var{lambda},@var{n})
-Devuelve la c@'elula de Jordan de orden  @var{n} con
-valor propio @var{lambda}.
+@deffn {Funci@'on} JF (@mvar{lambda},@mvar{n})
+Devuelve la c@'elula de Jordan de orden  @mvar{n} con
+valor propio @mvar{lambda}.
 
 Ejemplo:
 @example
@@ -66,8 +66,8 @@ Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
 @end deffn
 
 
-@deffn {Funci@'on} jordan (@var{mat})
-Devuelve la forma de Jordan de la matriz @var{mat}, pero
+@deffn {Funci@'on} jordan (@mvar{mat})
+Devuelve la forma de Jordan de la matriz @mvar{mat}, pero
 en formato de lista de Maxima. Para obtener la matriz
 correspondiente, ll@'amese a la funci@'on @code{dispJordan}
 utilizando como argumento la salida de @code{jordan}.
@@ -110,9 +110,9 @@ V@'eanse tambi@'en @code{dispJordan} y @code{minimalPoly}.
 @end deffn
 
 
-@deffn {Funci@'on} dispJordan (@var{l})
+@deffn {Funci@'on} dispJordan (@mvar{l})
 Devuelve la matriz de Jordan asociada a la codificaci@'on
-dada por la lista @var{l}, que habitualmente ser@'a la salida
+dada por la lista @mvar{l}, que habitualmente ser@'a la salida
 de la funci@'on @code{jordan}.
 
 Ejemplo:
@@ -144,9 +144,9 @@ V@'eanse tambi@'en @code{jordan} y @code{minimalPoly}.
 @end deffn
 
 
-@deffn {Funci@'on} minimalPoly (@var{l})
+@deffn {Funci@'on} minimalPoly (@mvar{l})
 Devuelve el polinomio m@'{@dotless{i}}nimo asociado a la
-codificaci@'on dada por la lista @var{l}, que habitualmente
+codificaci@'on dada por la lista @mvar{l}, que habitualmente
 ser@'a la salida de la funci@'on @code{jordan}.
 
 Ejemplo:
@@ -169,9 +169,9 @@ Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
 V@'eanse tambi@'en @code{jordan} y @code{dispJordan}.
 @end deffn
 
-@deffn {Funci@'on} ModeMatrix (@var{A},@var{l})
-Devuelve la matriz @var{M} tal que @math{(M^^-1).A.M=J}, 
-donde @var{J} es la forma de Jordan de @var{A}. La lista @var{l} 
+@deffn {Funci@'on} ModeMatrix (@mvar{A},@mvar{l})
+Devuelve la matriz @mvar{M} tal que @math{(M^^-1).A.M=J}, 
+donde @mvar{J} es la forma de Jordan de @mvar{A}. La lista @mvar{l} 
 es la forma codificada de la forma de Jordan tal como la
 devuelve la funci@'on @code{jordan}.
 
@@ -210,9 +210,9 @@ V@'eanse tambi@'en @code{jordan} y @code{dispJordan}.
 @end deffn
 
 
-@deffn {Funci@'on} mat_function (@var{f},@var{mat})
-Devuelve  @math{f(mat)}, siendo @var{f} una funci@'on anal@'{@dotless{i}}tica
-y @var{mat} una matriz. Este c@'alculo se basa en la f@'ormula integral
+@deffn {Funci@'on} mat_function (@mvar{f},@mvar{mat})
+Devuelve  @math{f(mat)}, siendo @mvar{f} una funci@'on anal@'{@dotless{i}}tica
+y @mvar{mat} una matriz. Este c@'alculo se basa en la f@'ormula integral
 de Cauchy, que establece que si @code{f(x)} es anal@'{@dotless{i}}tica y
 @example
 mat=diag([JF(m1,n1),...,JF(mk,nk)]),

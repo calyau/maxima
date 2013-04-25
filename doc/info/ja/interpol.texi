@@ -9,7 +9,7 @@
 パッケージ@code{interpol}は
 多項式内挿のためのLagrange、線形、三次スプライン法を定義します。
 
-コメント、バグ、提案は@var{'mario AT edu DOT xunta DOT es'}にコンタクトを取ってください。
+コメント、バグ、提案は@mvar{'mario AT edu DOT xunta DOT es'}にコンタクトを取ってください。
 
 @opencatbox
 @category{Numerical methods} @category{Share packages} @category{Package interpol}
@@ -19,10 +19,10 @@
 @section Functions and Variables for interpol
 
 
-@deffn {関数} lagrange (@var{points})
-@deffnx {関数} lagrange (@var{points}, @var{option})
+@deffn {関数} lagrange (@mvar{points})
+@deffnx {関数} lagrange (@mvar{points}, @mvar{option})
 Lagrange法で多項式内挿を計算します。
-引数 @var{points}は以下のいずれかでなければいけません:
+引数 @mvar{points}は以下のいずれかでなければいけません:
 
 @itemize @bullet
 @item
@@ -37,7 +37,7 @@ Lagrange法で多項式内挿を計算します。
 最初の2つの場合には、
 計算を行う前に、対は最初の座標に関して並び替えられます。
 
-@var{option}引数を使って、
+@mvar{option}引数を使って、
 独立変数の名前を選択することが可能です。
 デフォルトでは @code{'x}です;
 別のものを定義するには、 @code{varname='z}のようなものを書いてください。
@@ -128,8 +128,8 @@ Lagrange法で多項式内挿を計算します。
 @end deffn
 
 
-@deffn {関数} charfun2 (@var{x}, @var{a}, @var{b})
-もし数 @var{x}が区間 @math{[a, b)}に属するなら、@code{true}を返し、
+@deffn {関数} charfun2 (@mvar{x}, @mvar{a}, @mvar{b})
+もし数 @mvar{x}が区間 @math{[a, b)}に属するなら、@code{true}を返し、
 そうでないなら、 @code{false}を返します。
 
 @opencatbox
@@ -139,10 +139,10 @@ Lagrange法で多項式内挿を計算します。
 @end deffn
 
 
-@deffn {関数} linearinterpol (@var{points})
-@deffnx {関数} linearinterpol (@var{points}, @var{option})
+@deffn {関数} linearinterpol (@mvar{points})
+@deffnx {関数} linearinterpol (@mvar{points}, @mvar{option})
 線形法で多項式内挿を計算します。
-引数 @var{points}は以下のいずれかでなければいけません:
+引数 @mvar{points}は以下のいずれかでなければいけません:
 
 @itemize @bullet
 @item
@@ -157,7 +157,7 @@ Lagrange法で多項式内挿を計算します。
 最初の2つの場合には、
 計算を行う前に、対は最初の座標に関して並び替えられます。
 
-@var{option}引数を使って、
+@mvar{option}引数を使って、
 独立変数の名前を選択することが可能です。
 デフォルトでは @code{'x}です;
 別のものを定義するには、 @code{varname='z}のようなものを書いてください。
@@ -219,10 +219,10 @@ Lagrange法で多項式内挿を計算します。
 
 
 
-@deffn {関数} cspline (@var{points})
-@deffnx {関数} cspline (@var{points}, @var{option1}, @var{option2}, ...)
+@deffn {関数} cspline (@mvar{points})
+@deffnx {関数} cspline (@mvar{points}, @mvar{option1}, @mvar{option2}, ...)
 三次スプライン法で多項式内挿を計算します。
-引数 @var{points}は以下のいずれかでなければいけません:
+引数 @mvar{points}は以下のいずれかでなければいけません:
 
 @itemize @bullet
 @item
@@ -336,12 +336,12 @@ Lagrange法で多項式内挿を計算します。
 
 @end deffn
 
-@deffn {関数} ratinterpol (@var{points}, @var{numdeg})
-@deffnx {関数} ratinterpol (@var{points}, @var{numdeg}, @var{option1}, @var{option2}, ...)
- @var{points}で与えられたデータと@var{numdeg}に等しい分子の次数の関して、
+@deffn {関数} ratinterpol (@mvar{points}, @mvar{numdeg})
+@deffnx {関数} ratinterpol (@mvar{points}, @mvar{numdeg}, @mvar{option1}, @mvar{option2}, ...)
+ @mvar{points}で与えられたデータと@mvar{numdeg}に等しい分子の次数の関して、
 有理形内挿を生成します;
 分子の次数は自動的に計算されます。
-引数 @var{points}は以下のいずれかでなければいけません:
+引数 @mvar{points}は以下のいずれかでなければいけません:
 
 @itemize @bullet
 @item

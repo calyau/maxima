@@ -23,12 +23,12 @@ rule is used in @code{limit}.  This prevents infinite looping in cases like
 
 @c -----------------------------------------------------------------------------
 @anchor{limit}
-@deffn  {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} limit (@var{expr})
+@deffn  {Function} limit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Function} limit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Function} limit (@mvar{expr})
 
-Computes the limit of @var{expr} as the real variable @var{x} approaches the
-value @var{val} from the direction @var{dir}.  @var{dir} may have the value
+Computes the limit of @mvar{expr} as the real variable @mvar{x} approaches the
+value @mvar{val} from the direction @mvar{dir}.  @mvar{dir} may have the value
 @code{plus} for a limit from above, @code{minus} for a limit from below, or
 may be omitted (implying a two-sided limit is to be computed).
 
@@ -89,9 +89,9 @@ to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
 
 @c -----------------------------------------------------------------------------
 @anchor{tlimit}
-@deffn  {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} tlimit (@var{expr})
+@deffn  {Function} tlimit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Function} tlimit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Function} tlimit (@mvar{expr})
 
 Take the limit of the Taylor series expansion of @code{expr} in @code{x}
 at @code{val} from direction @code{dir}.

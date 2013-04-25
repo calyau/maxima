@@ -38,10 +38,10 @@ Voce precisar@'{a} do Gnuplot 4.2 para executar este programa.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xrange
 Valor padr@~{a}o: @code{false}
 
-Se @code{xrange} for @code{false}, o intevalo para a coordenada @var{x} @'{e}
+Se @code{xrange} for @code{false}, o intevalo para a coordenada @mvar{x} @'{e}
 calculado automaticamente.
 
-Caso o usu@'{a}rio deseje um intervalo espec@'{i}fico para @var{x}, esse intervalo deve ser fornecido como uma 
+Caso o usu@'{a}rio deseje um intervalo espec@'{i}fico para @mvar{x}, esse intervalo deve ser fornecido como uma 
 lista da forma definida pelo Maxima, como em @code{xrange=[-2, 3]}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -63,10 +63,10 @@ Veja tamb@'{e}m @code{yrange} e @code{zrange}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} yrange
 Valor padr@~{a}o: @code{false}
 
-Se @code{yrange} for @code{false}, the range for the @var{y} coordinate is
+Se @code{yrange} for @code{false}, the range for the @mvar{y} coordinate is
 computed automatically.
 
-Se o usu@'{a}rio sesejar um intervalo espec@'{i}fico para @var{y}, esse intervalo deve ser fornecido como uma 
+Se o usu@'{a}rio sesejar um intervalo espec@'{i}fico para @mvar{y}, esse intervalo deve ser fornecido como uma 
 lista da forma definida pelo Maxima, como em @code{yrange=[-2, 3]}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -89,10 +89,10 @@ Veja tamb@'{e}m @code{xrange} e @code{zrange}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} zrange
 Valor padr@~{a}o: @code{false}
 
-Se @code{zrange} for @code{false}, o intervalo para a coordenada @var{z} @'{e}
+Se @code{zrange} for @code{false}, o intervalo para a coordenada @mvar{z} @'{e}
 calculado automaticamente.
 
-Se o usu@'{a}rio sesejar um intervalo espec@'{i}fico para @var{z}, esse intervalo deve ser fornecido como uma 
+Se o usu@'{a}rio sesejar um intervalo espec@'{i}fico para @mvar{z}, esse intervalo deve ser fornecido como uma 
 lista da forma definida pelo Maxima, como em @code{zrange=[-2, 3]}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -116,7 +116,7 @@ Veja tamb@'{e}m @code{yrange} e @code{zrange}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} logx
 Valor padr@~{a}o: @code{false}
 
-Se @code{logx} for @code{true}, o eixo @var{x}ser@'{a} desenhado em
+Se @code{logx} for @code{true}, o eixo @mvar{x}ser@'{a} desenhado em
 escala logar@'{i}tmica.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -138,7 +138,7 @@ Veja tamb@'{e}m @code{logy} e @code{logz}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} logy
 Valor padr@~{a}o: @code{false}
 
-Se @code{logy} for @code{true}, o eixo @var{y}ser@'{a} desenhado em
+Se @code{logy} for @code{true}, o eixo @mvar{y}ser@'{a} desenhado em
 escala logar@'{i}tmica.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -160,7 +160,7 @@ Veja tamb@'{e}m @code{logx} e @code{logz}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} logz
 Valor padr@~{a}o: @code{false}
 
-Se @code{logz} for @code{true}, o eixo @var{z}ser@'{a} desenhado em
+Se @code{logz} for @code{true}, o eixo @mvar{z}ser@'{a} desenhado em
 escala logar@'{i}tmica.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -217,7 +217,7 @@ Veja tamb@'{e}m @code{file_name}, @code{pic_width}, e @code{pic_height}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} grid
 Valor padr@~{a}o: @code{false}
 
-Se @code{grid} for @code{true}, uma malha ser@'{a} desenhada sobre o plano @var{xy}.
+Se @code{grid} for @code{true}, uma malha ser@'{a} desenhada sobre o plano @mvar{xy}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
 n@~{a}o @'{e} importante.
@@ -256,7 +256,7 @@ Exemplo:
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xlabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-A op@value{cedilha}@~ao @code{xlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{x}.
+A op@value{cedilha}@~ao @code{xlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @mvar{x}.
 Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -279,7 +279,7 @@ Veja tamb@'{e}m @code{ylabel}, e @code{zlabel}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ylabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-A op@value{cedilha}@~ao @code{ylabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{y}.
+A op@value{cedilha}@~ao @code{ylabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @mvar{y}.
 Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -302,7 +302,7 @@ Veja tamb@'{e}m @code{xlabel}, e @code{zlabel}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} zlabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-A op@value{cedilha}@~ao @code{zlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{z}.
+A op@value{cedilha}@~ao @code{zlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @mvar{z}.
 Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
@@ -326,7 +326,7 @@ Veja tamb@'{e}m @code{xlabel}, e @code{ylabel}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xtics
 Valor padr@~{a}o: @code{true}
 
-Se @code{xtics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{x}.
+Se @code{xtics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @mvar{x}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
 n@~{a}o @'{e} importante.
@@ -348,7 +348,7 @@ Veja tamb@'{e}m @code{ytics}, e @code{ztics}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ytics
 Valor padr@~{a}o: @code{true}
 
-Se @code{ytics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{y}.
+Se @code{ytics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @mvar{y}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
 n@~{a}o @'{e} importante.
@@ -370,7 +370,7 @@ Veja tamb@'{e}m @code{xtics}, e @code{ztics}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ztics
 Valor padr@~{a}o: @code{true}
 
-Se @code{ztics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{z}.
+Se @code{ztics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @mvar{z}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
 n@~{a}o @'{e} importante.
@@ -393,7 +393,7 @@ Veja tamb@'{e}m @code{xtics}, e @code{ytics}.
 Valor padr@~{a}o: 60
 
 @code{rot_vertical} @'{e} o @^{a}ngulo (em graus) da rota@value{cedilha}@~{a}o vertical (em torno 
-do eixo @var{x}) para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
+do eixo @mvar{x}) para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
 
 O @^{a}ngulo @'{e} associado ao intervalo @math{[0, 180]}.
 
@@ -417,7 +417,7 @@ Veja tamb@'{e}m @code{rot_horizontal}.
 Valor padr@~{a}o: 30
 
 @code{rot_horizontal} @'{e} o @^{a}ngulo (em graus) da rota@value{cedilha}@~{a}o horizontal (em torno 
-do eixo @var{z})  para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
+do eixo @mvar{z})  para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
 
 O @^{a}ngulo @'{e} associado ao intervalo @math{[0, 180]}.
 
@@ -680,7 +680,7 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} axis_3d
 Valor padr@~{a}o: @code{true}
 
-Se @code{axis_3d} for @code{true}, os eixos @var{x}, @var{y} e @var{z} s@~{a}o mostrados em fundos gr@'{a}ficos tridimensionais.
+Se @code{axis_3d} for @code{true}, os eixos @mvar{x}, @mvar{y} e @mvar{z} s@~{a}o mostrados em fundos gr@'{a}ficos tridimensionais.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
 n@~{a}o @'{e} importante.
@@ -1013,7 +1013,7 @@ Veja tamb@'{e}m @code{head_length}, @code{head_angle}, e @code{head_type}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} head_length
 Valor padr@~{a}o: 2
 
-@code{head_length} indica, em unidades do eixo @var{x}, o comprimento da ponta da seta do vetor.
+@code{head_length} indica, em unidades do eixo @mvar{x}, o comprimento da ponta da seta do vetor.
 
 Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
 
@@ -1554,7 +1554,7 @@ Essa op@value{cedilha}@~{a}o @'{e} relevante somente para @code{implicit} object
 
 
 
-@deffn {Construtor de fundo gr@'{a}fico} gr2d (@var{op@value{cedilha}@~{a}o gr@'{a}fica}, ..., @var{objeto gr@'{a}fico}, ...)
+@deffn {Construtor de fundo gr@'{a}fico} gr2d (@mvar{op@value{cedilha}@~{a}o gr@'{a}fica}, ..., @mvar{objeto gr@'{a}fico}, ...)
 
 A fun@value{cedilha}@~{a}o @code{gr2d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fico em duas dimens@~{o}es. Arguments are
 @i{op@value{cedilha}@~{o}es gr@'{a}ficas} e @i{objetos gr@'{a}ficos}. Esse fundo gr@'{a}fico @'{e} interpretado
@@ -1893,7 +1893,7 @@ e @code{axis_right}.
 
 
 
-@deffn {Scene constructor} gr3d (@var{op@value{cedilha}@~{a}o gr@'{a}fica}, ..., @var{objeto gr@'{a}fico}, ...)
+@deffn {Scene constructor} gr3d (@mvar{op@value{cedilha}@~{a}o gr@'{a}fica}, ..., @mvar{objeto gr@'{a}fico}, ...)
 
 A fun@value{cedilha}@~{a}o @code{gr3d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fico tridimensional. Argumentos s@~{a}o
 @i{op@value{cedilha}@~{o}es gr@'{a}ficas} e @i{objetos gr@'{a}ficos}. Esse fundo gr@'{a}fico @'{e} interpretado
@@ -2076,7 +2076,7 @@ e @code{enhanced3d}.
 
 
 
-@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{op@value{cedilha}@~{o}es}, ...)
+@deffn {Function} draw (@mvar{gr2d}, ..., @mvar{gr3d}, ..., @mvar{op@value{cedilha}@~{o}es}, ...)
 
 Monta o fundo de uma s@'{e}rie de gr@'{a}ficos; seus argumentos s@~{a}o objetos @code{gr2d} e
 @code{gr3d}, juntamente com algumas op@value{cedilha}@~{o}es. Por padr@~{a}o, o fundos gr@'{a}ficos s@~{a}o colocados juntos
@@ -2104,10 +2104,10 @@ Exemplo:
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} draw2d (@var{op@value{cedilha}@~{a}o}, @var{objeto gr@'{a}fico}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} draw2d (@mvar{op@value{cedilha}@~{a}o}, @mvar{objeto gr@'{a}fico}, ...)
 
 Essa fun@value{cedilha}@~{a}o @'{e} um atalho para
-@code{draw2d(gr2d(@var{op@value{cedilha}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
+@code{draw2d(gr2d(@mvar{op@value{cedilha}@~{o}es}, ..., @mvar{objeto gr@'{a}fico}, ...))}.
 
 Pode ser usada para montar gr@'{a}fico de um @'{u}nico fundo bidimensional.
 
@@ -2116,10 +2116,10 @@ Para fazer uso dessa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(d
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} draw3d (@var{op@value{cedilha}@~{a}o}, @var{graphic object}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} draw3d (@mvar{op@value{cedilha}@~{a}o}, @mvar{graphic object}, ...)
 
 Essa fun@value{cedilha}@~{a}o @'{e} um atalho para
-@code{draw3d(gr3d(@var{op@value{cedilha}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
+@code{draw3d(gr3d(@mvar{op@value{cedilha}@~{o}es}, ..., @mvar{objeto gr@'{a}fico}, ...))}.
 
 Pode ser usada para montar o fundo gr@'{a}fico @'{u}nico tridmensional.
 

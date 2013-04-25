@@ -30,52 +30,52 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
 @section Functions and Variables for lbfgs
 
-@deffn {Function} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
-@deffnx {Function} lbfgs ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Function} lbfgs (@mvar{FOM}, @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
+@deffnx {Function} lbfgs ([@mvar{FOM}, @mvar{grad}] @mvar{X}, @mvar{X0}, @mvar{epsilon}, @mvar{iprint})
 
-Finds an approximate solution of the unconstrained minimization of the figure of merit @var{FOM}
-over the list of variables @var{X},
-starting from initial estimates @var{X0},
+Finds an approximate solution of the unconstrained minimization of the figure of merit @mvar{FOM}
+over the list of variables @mvar{X},
+starting from initial estimates @mvar{X0},
 such that @math{norm(grad(FOM)) < epsilon*max(1, norm(X))}.
 
-@var{grad}, if present, is the gradient of @var{FOM} with respect to the variables @var{X}.
-@var{grad} is a list, with one element for each element of @var{X}.
+@mvar{grad}, if present, is the gradient of @mvar{FOM} with respect to the variables @mvar{X}.
+@mvar{grad} is a list, with one element for each element of @mvar{X}.
 If not present, the gradient is computed automatically by symbolic differentiation.
 
 The algorithm applied is a limited-memory quasi-Newton (BFGS) algorithm [1].
 It is called a limited-memory method because a low-rank approximation of the
 Hessian matrix inverse is stored instead of the entire Hessian inverse.
 Each iteration of the algorithm is a line search, that is,
-a search along a ray in the variables @var{X},
+a search along a ray in the variables @mvar{X},
 with the search direction computed from the approximate Hessian inverse.
 The FOM is always decreased by a successful line search.
 Usually (but not always) the norm of the gradient of FOM also decreases.
 
-@var{iprint} controls progress messages printed by @code{lbfgs}.
+@mvar{iprint} controls progress messages printed by @code{lbfgs}.
 
 @table @code
 @item iprint[1]
-@code{@var{iprint}[1]} controls the frequency of progress messages.
+@code{@mvar{iprint}[1]} controls the frequency of progress messages.
 @table @code
 @item iprint[1] < 0
 No progress messages.
 @item iprint[1] = 0
 Messages at the first and last iterations.
 @item iprint[1] > 0
-Print a message every @code{@var{iprint}[1]} iterations.
+Print a message every @code{@mvar{iprint}[1]} iterations.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controls the verbosity of progress messages.
+@code{@mvar{iprint}[2]} controls the verbosity of progress messages.
 @table @code
 @item iprint[2] = 0
-Print out iteration count, number of evaluations of @var{FOM}, value of @var{FOM},
-norm of the gradient of @var{FOM}, and step length.
+Print out iteration count, number of evaluations of @mvar{FOM}, value of @mvar{FOM},
+norm of the gradient of @mvar{FOM}, and step length.
 @item iprint[2] = 1
-Same as @code{@var{iprint}[2] = 0}, plus @var{X0} and the gradient of @var{FOM} evaluated at @var{X0}.
+Same as @code{@mvar{iprint}[2] = 0}, plus @mvar{X0} and the gradient of @mvar{FOM} evaluated at @mvar{X0}.
 @item iprint[2] = 2
-Same as @code{@var{iprint}[2] = 1}, plus values of @var{X} at each iteration.
+Same as @code{@mvar{iprint}[2] = 1}, plus values of @mvar{X} at each iteration.
 @item iprint[2] = 3
-Same as @code{@var{iprint}[2] = 2}, plus the gradient of @var{FOM} at each iteration.
+Same as @code{@mvar{iprint}[2] = 2}, plus the gradient of @mvar{FOM} at each iteration.
 @end table
 @end table
 

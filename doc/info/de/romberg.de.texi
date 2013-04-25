@@ -20,21 +20,21 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{function_romberg}
-@deffn  {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Function} romberg (@var{F}, @var{a}, @var{b})
+@deffn  {Function} romberg (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})
+@deffnx {Function} romberg (@mvar{F}, @mvar{a}, @mvar{b})
 
 Computes a numerical integration by Romberg's method.
 
-@code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})} returns an estimate of
-the integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
-@var{expr} must be an expression which evaluates to a floating point value
-when @var{x} is bound to a floating point value.
+@code{romberg(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})} returns an estimate of
+the integral @code{integrate(@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{b})}.
+@mvar{expr} must be an expression which evaluates to a floating point value
+when @mvar{x} is bound to a floating point value.
 
-@code{romberg(@var{F}, @var{a}, @var{b})} returns an estimate of the integral
-@code{integrate(@var{F}(x), x, @var{a}, @var{b})} where @code{x} represents the
-unnamed, sole argument of @var{F}; the actual argument is not named @code{x}.
-@var{F} must be a Maxima or Lisp function which returns a floating point value
-when the argument is a floating point value.  @var{F} may name a translated or
+@code{romberg(@mvar{F}, @mvar{a}, @mvar{b})} returns an estimate of the integral
+@code{integrate(@mvar{F}(x), x, @mvar{a}, @mvar{b})} where @code{x} represents the
+unnamed, sole argument of @mvar{F}; the actual argument is not named @code{x}.
+@mvar{F} must be a Maxima or Lisp function which returns a floating point value
+when the argument is a floating point value.  @mvar{F} may name a translated or
 compiled Maxima function.
 
 The accuracy of @code{romberg} is governed by the global variables

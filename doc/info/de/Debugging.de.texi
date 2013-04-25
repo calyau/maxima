@@ -470,17 +470,17 @@ Siehe auch @mref{setcheck} und @mrefdot{setcheckbreak}
 
 @c -----------------------------------------------------------------------------
 @anchor{timer}
-@deffn  {Funktion} timer (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} timer (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} timer (all)
 @deffnx {Funktion} timer ()
 
-@c Given functions @var{f_1}, ..., @var{f_n}, @code{timer} puts each one on the 
+@c Given functions @mvar{f_1}, ..., @mvar{f_n}, @code{timer} puts each one on the 
 @c list of functions for which timing statistics are collected.
 @c @code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list; the 
 @c list accumulates from one call to the next.
 
 Sammelt Statistiken @"uber die Ausf@"uhrungszeiten von Funktionen.  Die 
-Argumente @var{f_1}, @dots{}, @var{f_n} sind die Namen von Funktionen zu denen 
+Argumente @mvar{f_1}, @dots{}, @mvar{f_n} sind die Namen von Funktionen zu denen 
 Statistiken gesammelt werden.  @code{time(g)} f@"ugt die Funktion @code{g} der 
 Liste an Funktionen hinzu, zu denen Informationen gesammelt werden.
 
@@ -537,14 +537,14 @@ Siehe auch @mrefdot{timer_devalue}
 
 @c --- 23.12.2010 DK -----------------------------------------------------------
 @anchor{untimer}
-@deffn  {Funktion} untimer (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} untimer (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} untimer ()
 
-@c Given functions @var{f_1}, ..., @var{f_n}, @code{untimer} removes each 
+@c Given functions @mvar{f_1}, ..., @mvar{f_n}, @code{untimer} removes each 
 @c function from the timer list.
 
 @code{untimer} beendet die Aufzeichnung von Informationen zur Ausf@"uhrungszeit
-f@"ur die Funktionen @var{f_1}, @dots{}, @var{f_n}.
+f@"ur die Funktionen @mvar{f_1}, @dots{}, @mvar{f_n}.
 
 @c With no arguments, @code{untimer} removes all functions currently on the 
 @c timer list.
@@ -597,16 +597,16 @@ Siehe auch @mref{timer} und @mrefdot{timer_info}
 
 @c -----------------------------------------------------------------------------
 @anchor{timer_info}
-@deffn  {Funktion} timer_info (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} timer_info (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} timer_info ()
 
-@c Given functions @var{f_1}, ..., @var{f_n}, @code{timer_info} returns a matrix
+@c Given functions @mvar{f_1}, ..., @mvar{f_n}, @code{timer_info} returns a matrix
 @c containing timing information for each function. With no arguments, 
 @c @code{timer_info} returns timing information for all functions currently on 
 @c the timer list.
 
 Gibt eine Tabelle mit den aufgezeichneten Informationen @"uber die 
-Ausf@"uhrungszeiten der Funktionen @var{f_1}, @dots{}, @var{f_n} zur@"uck.  Wird 
+Ausf@"uhrungszeiten der Funktionen @mvar{f_1}, @dots{}, @mvar{f_n} zur@"uck.  Wird 
 kein Argument angegeben, werden Informationen f@"ur alle Funktionen angezeigt, 
 zu denen Informationen aufgezeichnet sind.
 
@@ -641,16 +641,16 @@ Siehe auch @mrefdot{timer}
 
 @c -----------------------------------------------------------------------------
 @anchor{trace}
-@deffn  {Funktion} trace (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} trace (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} trace (all)
 @deffnx {Funktion} trace ()
 
-@c Given functions @var{f_1}, ..., @var{f_n}, @code{trace} instructs Maxima to 
+@c Given functions @mvar{f_1}, ..., @mvar{f_n}, @code{trace} instructs Maxima to 
 @c print out debugging information whenever those functions are called.
 @c @code{trace(f)$ trace(g)$} puts @code{f} and then @code{g} onto the list of 
 @c functions to be traced; the list accumulates from one call to the next.
 
-Startet die Ablaufverfolgung f@"ur die Funktionen @var{f_1}, @dots{}, @var{f_n}. 
+Startet die Ablaufverfolgung f@"ur die Funktionen @mvar{f_1}, @dots{}, @mvar{f_n}. 
 Mit dem Kommando @code{trace(g)} kann eine weitere Funktion hinzugef@"ugt 
 werden.
 
@@ -696,20 +696,20 @@ wenn f@"ur die Funktion bereits mit der Funktion @code{timer} Informationen
 
 @c --- 23.12.2010 DK -----------------------------------------------------------
 @anchor{trace_options}
-@deffn  {Funktion} trace_options (@var{f}, @var{option_1}, @dots{}, @var{option_n})
-@deffnx {Funktion} trace_options (@var{f})
+@deffn  {Funktion} trace_options (@mvar{f}, @mvar{option_1}, @dots{}, @mvar{option_n})
+@deffnx {Funktion} trace_options (@mvar{f})
 
-@c Sets the trace options for function @var{f}. Any previous options are 
-@c superseded. @code{trace_options (@var{f}, ...)} has no effect unless
-@c @code{trace (@var{f})} is also called (either before or after 
+@c Sets the trace options for function @mvar{f}. Any previous options are 
+@c superseded. @code{trace_options (@mvar{f}, ...)} has no effect unless
+@c @code{trace (@mvar{f})} is also called (either before or after 
 @c @code{trace_options}). 
 
-Setzt Optionen f@"ur die Ablaufverfolgung einer Funktion @var{f}.  Bereits 
+Setzt Optionen f@"ur die Ablaufverfolgung einer Funktion @mvar{f}.  Bereits 
 vorliegende Optionen werden ersetzt.
 
-@c @code{trace_options (@var{f})} resets all options to their default values.
+@c @code{trace_options (@mvar{f})} resets all options to their default values.
 
-@code{trace_options(@var{f})} setzt alle Optionen auf die Standardwerte 
+@code{trace_options(@mvar{f})} setzt alle Optionen auf die Standardwerte 
 zur@"uck.
 
 @c The option keywords are:
@@ -754,7 +754,7 @@ Gebe @code{-> true} beim Eintritt in und Austritt aus einer Funktion aus.
 
 @c Trace options are specified in two forms. The presence of the option keyword 
 @c alone puts the option into effect unconditionally. (Note that option 
-@c @var{foo} is not put into effect by specifying @code{@var{foo}: true} or a 
+@c @mvar{foo} is not put into effect by specifying @code{@mvar{foo}: true} or a 
 @c similar form; note also that keywords need not be quoted.) Specifying the 
 @c option keyword with a predicate function makes the option conditional on the 
 @c predicate.
@@ -808,14 +808,14 @@ angegeben:
 
 @c --- 23.12.2010 DK -----------------------------------------------------------
 @anchor{untrace}
-@deffn  {Funktion} untrace (@var{f_1}, @dots{}, @var{f_n})
+@deffn  {Funktion} untrace (@mvar{f_1}, @dots{}, @mvar{f_n})
 @deffnx {Funktion} untrace ()
 
-@c Given functions @var{f_1}, ..., @var{f_n}, @code{untrace} disables tracing 
+@c Given functions @mvar{f_1}, ..., @mvar{f_n}, @code{untrace} disables tracing 
 @c enabled by the @code{trace} function. With no arguments, @code{untrace} 
 @c disables tracing for all functions.
 
-Beendet die Ablaufverfolgung f@"ur die Funktionen @var{f_1}, @dots{}, @var{f_n}. 
+Beendet die Ablaufverfolgung f@"ur die Funktionen @mvar{f_1}, @dots{}, @mvar{f_n}. 
 Das Kommando @code{untrace()} beendet die Ablaufverfolgung f@"ur alle 
 Funktionen.
 

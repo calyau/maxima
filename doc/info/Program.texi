@@ -82,8 +82,8 @@ Lisp @code{|$Foo|} corresponds to Maxima @code{Foo}.
 @end enumerate
 
 The @code{#$} Lisp macro allows the use of Maxima expressions in Lisp code.
-@code{#$@var{expr}$} expands to a Lisp expression equivalent to the Maxima
-expression @var{expr}.
+@code{#$@mvar{expr}$} expands to a Lisp expression equivalent to the Maxima
+expression @mvar{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -172,14 +172,14 @@ constructs such as @code{go}.
 @c -----------------------------------------------------------------------------
 @anchor{backtrace}
 @deffn  {Function} backtrace ()
-@deffnx {Function} backtrace (@var{n})
+@deffnx {Function} backtrace (@mvar{n})
 
 Prints the call stack, that is, the list of functions which
 called the currently active function.
 
 @code{backtrace()} prints the entire call stack.
 
-@code{backtrace (@var{n})} prints the @var{n} most recent 
+@code{backtrace (@mvar{n})} prints the @mvar{n} most recent 
 functions, including the currently active function.
 
 @c IS THIS STATMENT REALLY NEEDED ?? 
@@ -211,7 +211,7 @@ Examples:
 
 @itemize @bullet
 @item
-@code{backtrace (@var{n})} prints the @var{n} most recent 
+@code{backtrace (@mvar{n})} prints the @mvar{n} most recent 
 functions, including the currently active function.
 
 @example
@@ -250,29 +250,29 @@ terminating conditions.  They are:
 
 @itemize @bullet
 @item
-@code{for @var{variable}: @var{initial_value} step @var{increment}
-      thru @var{limit} do @var{body}}
+@code{for @mvar{variable}: @mvar{initial_value} step @mvar{increment}
+      thru @mvar{limit} do @mvar{body}}
 @item
-@code{for @var{variable}: @var{initial_value} step @var{increment}
-      while @var{condition} do @var{body}}
+@code{for @mvar{variable}: @mvar{initial_value} step @mvar{increment}
+      while @mvar{condition} do @mvar{body}}
 @item
-@code{for @var{variable}: @var{initial_value} step @var{increment}
-      unless @var{condition} do @var{body}}
+@code{for @mvar{variable}: @mvar{initial_value} step @mvar{increment}
+      unless @mvar{condition} do @mvar{body}}
 @end itemize
 
 @c UGH. DO WE REALLY NEED TO MENTION THIS??
 (Alternatively, the @code{step} may be given after the termination condition
 or limit.)
 
-@var{initial_value}, @var{increment}, @var{limit}, and @var{body} can be any
+@mvar{initial_value}, @mvar{increment}, @mvar{limit}, and @mvar{body} can be any
 expressions.  If the increment is 1 then "@code{step 1}" may be omitted.
 
 The execution of the @code{do} statement proceeds by first assigning
-the @var{initial_value} to the @var{variable} (henceforth called the
+the @mvar{initial_value} to the @mvar{variable} (henceforth called the
 control-variable).  Then: (1) If the control-variable has exceeded the
 limit of a @code{thru} specification, or if the condition of the
 @code{unless} is @code{true}, or if the condition of the @code{while}
-is @code{false} then the @code{do} terminates.  (2) The @var{body} is
+is @code{false} then the @code{do} terminates.  (2) The @mvar{body} is
 evaluated.  (3) The increment is added to the control-variable.  The
 process from (1) to (3) is performed repeatedly until the termination
 condition is satisfied.  One may also give several termination
@@ -280,26 +280,26 @@ conditions in which case the @code{do} terminates when any of them is
 satisfied.
 
 In general the @code{thru} test is satisfied when the control-variable
-is greater than the @var{limit} if the @var{increment} was
+is greater than the @mvar{limit} if the @mvar{increment} was
 non-negative, or when the control-variable is less than the
-@var{limit} if the @var{increment} was negative.  The
-@var{increment} and @var{limit} may be non-numeric expressions as
+@mvar{limit} if the @mvar{increment} was negative.  The
+@mvar{increment} and @mvar{limit} may be non-numeric expressions as
 long as this inequality can be determined.  However, unless the
-@var{increment} is syntactically negative (e.g. is a negative number)
+@mvar{increment} is syntactically negative (e.g. is a negative number)
 at the time the @code{do} statement is input, Maxima assumes it will
 be positive when the @code{do} is executed.  If it is not positive,
 then the @code{do} may not terminate properly.
 
-Note that the @var{limit}, @var{increment}, and termination condition are
+Note that the @mvar{limit}, @mvar{increment}, and termination condition are
 evaluated each time through the loop.  Thus if any of these involve
 much computation, and yield a result that does not change during all
-the executions of the @var{body}, then it is more efficient to set a
+the executions of the @mvar{body}, then it is more efficient to set a
 variable to their value prior to the @code{do} and use this variable in the
 @code{do} form.
 
 The value normally returned by a @code{do} statement is the atom
 @code{done}.  However, the function @code{return} may be used inside
-the @var{body} to exit the @code{do} prematurely and give it any
+the @mvar{body} to exit the @code{do} prematurely and give it any
 desired value.  Note however that a @code{return} within a @code{do}
 that occurs in a @code{block} will exit only the @code{do} and not the
 @code{block}.  Note also that the @code{go} function may not be used
@@ -370,9 +370,9 @@ criterion not been met the value returned would have been @code{done}.
 
 Instead of always adding a quantity to the control-variable one
 may sometimes wish to change it in some other way for each iteration.
-In this case one may use @code{next @var{expression}} instead of
-@code{step @var{increment}}.  This will cause the control-variable to be set to
-the result of evaluating @var{expression} each time through the loop.
+In this case one may use @code{next @mvar{expression}} instead of
+@code{step @mvar{increment}}.  This will cause the control-variable to be set to
+the result of evaluating @mvar{expression} each time through the loop.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -384,11 +384,11 @@ the result of evaluating @var{expression} each time through the loop.
 @end example
 
 @c UGH. DO WE REALLY NEED TO MENTION THIS??
-As an alternative to @code{for @var{variable}: @var{value} ...do...}
-the syntax @code{for @var{variable} from @var{value} ...do...}  may be
-used.  This permits the @code{from @var{value}} to be placed after the
+As an alternative to @code{for @mvar{variable}: @mvar{value} ...do...}
+the syntax @code{for @mvar{variable} from @mvar{value} ...do...}  may be
+used.  This permits the @code{from @mvar{value}} to be placed after the
 @code{step} or @code{next} value or after the termination condition.
-If @code{from @var{value}} is omitted then 1 is used as the initial
+If @code{from @mvar{value}} is omitted then 1 is used as the initial
 value.
 
 Sometimes one may be interested in performing an iteration where
@@ -407,8 +407,8 @@ square-root of 5 using a poor initial guess.
 @end example
 
 If it is desired one may even omit the termination conditions entirely
-and just give @code{do @var{body}} which will continue to evaluate the
-@var{body} indefinitely.  In this case the function @code{return}
+and just give @code{do @mvar{body}} which will continue to evaluate the
+@mvar{body} indefinitely.  In this case the function @code{return}
 should be used to terminate execution of the @code{do}.
 
 @example
@@ -429,15 +429,15 @@ value of the @code{do} is returned as the value of the @code{block} because the
 One other form of the @code{do} is available in Maxima.  The syntax is:
 
 @example
-for @var{variable} in @var{list} @var{end_tests} do @var{body}
+for @mvar{variable} in @mvar{list} @mvar{end_tests} do @mvar{body}
 @end example
 
-The elements of @var{list} are any expressions which will successively
+The elements of @mvar{list} are any expressions which will successively
 be assigned to the @code{variable} on each iteration of the
-@var{body}.  The optional termination tests @var{end_tests} can be
+@mvar{body}.  The optional termination tests @mvar{end_tests} can be
 used to terminate execution of the @code{do}; otherwise it will
-terminate when the @var{list} is exhausted or when a @code{return} is
-executed in the @var{body}.  (In fact, @code{list} may be any
+terminate when the @mvar{list} is exhausted or when a @code{return} is
+executed in the @mvar{body}.  (In fact, @code{list} may be any
 non-atomic expression, and successive parts are taken.)
 
 @example
@@ -458,10 +458,10 @@ non-atomic expression, and successive parts are taken.)
 
 @c -----------------------------------------------------------------------------
 @anchor{errcatch}
-@deffn {Function} errcatch (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Function} errcatch (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Evaluates @var{expr_1}, @dots{}, @var{expr_n} one by one and
-returns @code{[@var{expr_n}]} (a list) if no error occurs.  If an
+Evaluates @mvar{expr_1}, @dots{}, @mvar{expr_n} one by one and
+returns @code{[@mvar{expr_n}]} (a list) if no error occurs.  If an
 error occurs in the evaluation of any argument, @code{errcatch} 
 prevents the error from propagating and
 returns the empty list @code{[]} without evaluating any more arguments.
@@ -477,16 +477,16 @@ would terminate the @code{batch} if the error weren't caught.
 
 @c -----------------------------------------------------------------------------
 @anchor{error}
-@deffn  {Function} error (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn  {Function} error (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 @deffnx {System variable} error
 
-Evaluates and prints @var{expr_1}, @dots{}, @var{expr_n},
+Evaluates and prints @mvar{expr_1}, @dots{}, @mvar{expr_n},
 and then causes an error return to top level Maxima
 or to the nearest enclosing @code{errcatch}.
 
 The variable @code{error} is set to a list describing the error.
 The first element of @code{error} is a format string, which merges all the
-strings among the arguments @var{expr_1}, @dots{}, @var{expr_n},
+strings among the arguments @mvar{expr_1}, @dots{}, @mvar{expr_n},
 and the remaining elements are the values of any non-string arguments.
 
 @code{errormsg()} formats and prints @code{error}.
@@ -567,8 +567,8 @@ the list @code{error_syms}.  The first too-large expression is replaced by
 @code{error_syms[1]}, the second by @code{error_syms[2]}, and so on.
 
 If there are more too-large expressions than there are elements of
-@code{error_syms}, symbols are constructed automatically, with the @var{n}-th
-symbol equivalent to @code{concat ('errexp, @var{n})}.
+@code{error_syms}, symbols are constructed automatically, with the @mvar{n}-th
+symbol equivalent to @code{concat ('errexp, @mvar{n})}.
 
 See also @code{error} and @code{error_size}.
 
@@ -665,7 +665,7 @@ Maxima's iteration facilities.
 
 @c -----------------------------------------------------------------------------
 @anchor{go}
-@deffn {Function} go (@var{tag})
+@deffn {Function} go (@mvar{tag})
 
 is used within a @code{block} to transfer control to the statement
 of the block which is tagged with the argument to @code{go}.  To tag a
@@ -695,29 +695,29 @@ other than the one containing the @code{go}.
 Represents conditional evaluation.  Various forms of @code{if} expressions are
 recognized.
 
-@code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
-eva@-lu@-ates to @var{expr_1} if @var{cond_1} evaluates to @code{true},
-otherwise the expression evaluates to @var{expr_0}.
+@code{if @mvar{cond_1} then @mvar{expr_1} else @mvar{expr_0}}
+eva@-lu@-ates to @mvar{expr_1} if @mvar{cond_1} evaluates to @code{true},
+otherwise the expression evaluates to @mvar{expr_0}.
 
-The command @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then
-@var{expr_2} elseif ... else @var{expr_0}} evaluates to @var{expr_k} if
-@var{cond_k} is @code{true} and all preceding conditions are @code{false}.  If
+The command @code{if @mvar{cond_1} then @mvar{expr_1} elseif @mvar{cond_2} then
+@mvar{expr_2} elseif ... else @mvar{expr_0}} evaluates to @mvar{expr_k} if
+@mvar{cond_k} is @code{true} and all preceding conditions are @code{false}.  If
 none of the conditions are @code{true}, the expression evaluates to
 @code{expr_0}.
 
 A trailing @code{else false} is assumed if @code{else} is missing.  That is,
-the command @code{if @var{cond_1} then @var{expr_1}} is equivalent to
-@code{if @var{cond_1} then @var{expr_1} else false}, and the command
-@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then
-@var{expr_n}} is equivalent to @code{if @var{cond_1} then @var{expr_1} elseif 
-... elseif @var{cond_n} then @var{expr_n} else false}.
+the command @code{if @mvar{cond_1} then @mvar{expr_1}} is equivalent to
+@code{if @mvar{cond_1} then @mvar{expr_1} else false}, and the command
+@code{if @mvar{cond_1} then @mvar{expr_1} elseif ... elseif @mvar{cond_n} then
+@mvar{expr_n}} is equivalent to @code{if @mvar{cond_1} then @mvar{expr_1} elseif 
+... elseif @mvar{cond_n} then @mvar{expr_n} else false}.
 
-The alternatives @var{expr_0}, @dots{}, @var{expr_n} may be any Maxima
+The alternatives @mvar{expr_0}, @dots{}, @mvar{expr_n} may be any Maxima
 expressions, including nested @code{if} expressions.  The alternatives are
 neither simplified nor evaluated unless the corresponding condition is
 @code{true}.
 
-The conditions @var{cond_1}, @dots{}, @var{cond_n} are expressions which
+The conditions @mvar{cond_1}, @dots{}, @mvar{cond_n} are expressions which
 potentially or actually evaluate to @code{true} or @code{false}.
 When a condition does not actually evaluate to @code{true} or @code{false},
 the behavior of @code{if} is governed by the global flag @code{prederror}.
@@ -759,19 +759,19 @@ not                  not         logical prefix
 
 @c -----------------------------------------------------------------------------
 @anchor{map}
-@deffn {Function} map (@var{f}, @var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Function} map (@mvar{f}, @mvar{expr_1}, @dots{}, @mvar{expr_n})
 
 Returns an expression whose leading operator is the same as that of the
-expressions @var{expr_1}, @dots{}, @var{expr_n} but whose subparts are the
-results of applying @var{f} to the corresponding subparts of the expressions.
-@var{f} is either the name of a function of @math{n} arguments or is a
+expressions @mvar{expr_1}, @dots{}, @mvar{expr_n} but whose subparts are the
+results of applying @mvar{f} to the corresponding subparts of the expressions.
+@mvar{f} is either the name of a function of @math{n} arguments or is a
 @code{lambda} form of @math{n} arguments.
 
 @code{maperror} - if @code{false} will cause all of the mapping
 functions to (1) stop when they finish going down the shortest
-@var{expr_i} if not all of the @var{expr_i} are of the same length and
-(2) apply @var{f} to [@var{expr_1}, @var{expr_2}, @dots{}]  if the
-@var{expr_i} are not all the same type of object.  If @code{maperror}
+@mvar{expr_i} if not all of the @mvar{expr_i} are of the same length and
+(2) apply @mvar{f} to [@mvar{expr_1}, @mvar{expr_2}, @dots{}]  if the
+@mvar{expr_i} are not all the same type of object.  If @code{maperror}
 is @code{true} then an error message will be given in the above two
 instances.
 
@@ -807,9 +807,9 @@ exhaustion of list storage space in the course of the computation.
 
 @c -----------------------------------------------------------------------------
 @anchor{mapatom}
-@deffn {Function} mapatom (@var{expr})
+@deffn {Function} mapatom (@mvar{expr})
 
-Returns @code{true} if and only if @var{expr} is treated by the mapping
+Returns @code{true} if and only if @mvar{expr} is treated by the mapping
 routines as an atom.  "Mapatoms" are atoms, numbers
 (including rational numbers), and subscripted variables.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
@@ -830,12 +830,12 @@ When @code{maperror} is @code{false}, causes all of the mapping functions,
 for example
 
 @example
-map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
+map (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, ...)
 @end example
 
-to (1) stop when they finish going down the shortest @var{expr_i} if
-not all of the @var{expr_i} are of the same length and (2) apply
-@var{f} to [@var{expr_1}, @var{expr_2}, @dots{}] if the @var{expr_i} are
+to (1) stop when they finish going down the shortest @mvar{expr_i} if
+not all of the @mvar{expr_i} are of the same length and (2) apply
+@mvar{f} to [@mvar{expr_1}, @mvar{expr_2}, @dots{}] if the @mvar{expr_i} are
 not all the same type of object.
 
 If @code{maperror} is @code{true} then an error message
@@ -867,14 +867,14 @@ If @code{mapprint} is @code{false}, these messages are suppressed.
 
 @c -----------------------------------------------------------------------------
 @anchor{maplist}
-@deffn {Function} maplist (@var{f}, @var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Function} maplist (@mvar{f}, @mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Returns a list of the applications of @var{f} to the parts of the expressions
-@var{expr_1}, @dots{}, @var{expr_n}.  @var{f} is the name of a function, or a
+Returns a list of the applications of @mvar{f} to the parts of the expressions
+@mvar{expr_1}, @dots{}, @mvar{expr_n}.  @mvar{f} is the name of a function, or a
 lambda expression.
 
-@code{maplist} differs from @code{map(@var{f}, @var{expr_1}, ..., @var{expr_n})}
-which returns an expression with the same main operator as @var{expr_i} has
+@code{maplist} differs from @code{map(@mvar{f}, @mvar{expr_1}, ..., @mvar{expr_n})}
+which returns an expression with the same main operator as @mvar{expr_i} has
 (except for simplifications and the case where @code{map} does an @code{apply}).
 
 @opencatbox
@@ -906,7 +906,7 @@ See also @code{is} and @code{maybe}.
 
 @end defvr
 
-@deffn {Function} return (@var{value})
+@deffn {Function} return (@mvar{value})
 May be used to exit explicitly from a block, bringing
 its argument.  See @code{block} for more information.
 
@@ -916,9 +916,9 @@ its argument.  See @code{block} for more information.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Function} scanmap (@var{f}, @var{expr})
-@deffnx {Function} scanmap (@var{f}, @var{expr}, bottomup)
-Recursively applies @var{f} to @var{expr}, in a top
+@deffn {Function} scanmap (@mvar{f}, @mvar{expr})
+@deffnx {Function} scanmap (@mvar{f}, @mvar{expr}, bottomup)
+Recursively applies @mvar{f} to @mvar{expr}, in a top
 down manner.  This is most useful when complete factorization is
 desired, for example:
 
@@ -930,8 +930,8 @@ desired, for example:
 @end example
 
 Note the way in which @code{scanmap} applies the given function
-@code{factor} to the constituent subexpressions of @var{expr}; if
-another form of @var{expr} is presented to @code{scanmap} then the
+@code{factor} to the constituent subexpressions of @mvar{expr}; if
+another form of @mvar{expr} is presented to @code{scanmap} then the
 result may be different.  Thus, @code{%o2} is not recovered when
 @code{scanmap} is applied to the expanded form of @code{exp}:
 
@@ -951,7 +951,7 @@ applies a given function to all subexpressions, including exponents:
 (%o5) f(f(f(u) f(f(v)                      )) + f(c))
 @end example
 
-@code{scanmap (@var{f}, @var{expr}, bottomup)} applies @var{f} to @var{expr} in a
+@code{scanmap (@mvar{f}, @mvar{expr}, bottomup)} applies @mvar{f} to @mvar{expr} in a
 bottom-up manner.  E.g., for undefined @code{f},
 
 @example
@@ -972,9 +972,9 @@ ways.
 
 @c -----------------------------------------------------------------------------
 @anchor{throw}
-@deffn {Function} throw (@var{expr})
+@deffn {Function} throw (@mvar{expr})
 
-Evaluates @var{expr} and throws the value back to the most recent
+Evaluates @mvar{expr} and throws the value back to the most recent
 @code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
 
@@ -1000,28 +1000,28 @@ See @code{do}.
 
 @c -----------------------------------------------------------------------------
 @anchor{outermap}
-@deffn {Function} outermap (@var{f}, @var{a_1}, @dots{}, @var{a_n})
+@deffn {Function} outermap (@mvar{f}, @mvar{a_1}, @dots{}, @mvar{a_n})
 
-Applies the function @var{f} to each one of the elements of the outer product
-@var{a_1} cross @var{a_2} @dots{} cross @var{a_n}.
+Applies the function @mvar{f} to each one of the elements of the outer product
+@mvar{a_1} cross @mvar{a_2} @dots{} cross @mvar{a_n}.
 
-@var{f} is the name of a function of @math{n} arguments or a lambda expression
-of @math{n} arguments.  Each argument @var{a_k} may be a list or nested list,
+@mvar{f} is the name of a function of @math{n} arguments or a lambda expression
+of @math{n} arguments.  Each argument @mvar{a_k} may be a list or nested list,
 or a matrix, or any other kind of expression.
 
-The @code{outermap} return value is a nested structure.  Let @var{x} be the
-return value.  Then @var{x} has the same structure as the first list, nested
-list, or matrix argument, @code{@var{x}[i_1]...[i_m]} has the same structure as
+The @code{outermap} return value is a nested structure.  Let @mvar{x} be the
+return value.  Then @mvar{x} has the same structure as the first list, nested
+list, or matrix argument, @code{@mvar{x}[i_1]...[i_m]} has the same structure as
 the second list, nested list, or matrix argument,
-@code{@var{x}[i_1]...[i_m][j_1]...[j_n]} has the same structure as the third
-list, nested list, or matrix argument, and so on, where @var{m}, @var{n},
+@code{@mvar{x}[i_1]...[i_m][j_1]...[j_n]} has the same structure as the third
+list, nested list, or matrix argument, and so on, where @mvar{m}, @mvar{n},
 @dots{} are the numbers of indices required to access the elements of each
 argument (one for a list, two for a matrix, one or more for a nested list).
 Arguments which are not lists or matrices have no effect on the structure of
 the return value.
 
 Note that the effect of @code{outermap} is different from that of applying
-@var{f} to each one of the elements of the outer product returned by
+@mvar{f} to each one of the elements of the outer product returned by
 @code{cartesian_product}.  @code{outermap} preserves the structure of the
 arguments in the return value, while @code{cartesian_product} does not.
 

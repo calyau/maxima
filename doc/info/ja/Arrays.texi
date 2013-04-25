@@ -15,24 +15,24 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{array}
-@deffn  {関数} array (@var{name}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {関数} array (@var{name}, @var{type}, @var{dim_1}, @dots{}, @var{dim_n})
-@deffnx {関数} array ([@var{name_1}, @dots{}, @var{name_m}], @var{dim_1}, @dots{}, @var{dim_n})
+@deffn  {関数} array (@mvar{name}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {関数} array (@mvar{name}, @mvar{type}, @mvar{dim_1}, @dots{}, @mvar{dim_n})
+@deffnx {関数} array ([@mvar{name_1}, @dots{}, @mvar{name_m}], @mvar{dim_1}, @dots{}, @mvar{dim_n})
 
 @math{n}次元の配列を生成します。
 @math{n}は5以下を取り得ます。
-@math{i}番目の次元のための添字は0から@var{dim_i}まで動く整数です。
+@math{i}番目の次元のための添字は0から@mvar{dim_i}まで動く整数です。
 
-@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})}は
+@code{array (@mvar{name}, @mvar{dim_1}, ..., @mvar{dim_n})}は
 一般的な配列を生成します。
 
-@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})}は
+@code{array (@mvar{name}, @mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})}は
 指定されたタイプの要素を持つ配列を生成します。
-@var{type}には
+@mvar{type}には
 制限されたサイズの整数には@code{fixnum}が使え、
 また、浮動小数点には@code{flonum}が使えます。
 
-@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+@code{array ([@mvar{name_1}, ..., @mvar{name_m}], @mvar{dim_1}, ..., @mvar{dim_n})}
 は同じ次元の@math{m}個の配列を生成します。
 @c SAME TYPE AS WELL ??
 
@@ -57,9 +57,9 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{arrayapply}
-@deffn {関数} arrayapply (@var{A}, [@var{i_1}, @dots{} @var{i_n}])
-@code{@var{A} [@var{i_1}, ..., @var{i_n}]}を評価します。
-ここで、@var{A}は配列、@var{i_1}, @dots{}, @var{i_n}は整数です。
+@deffn {関数} arrayapply (@mvar{A}, [@mvar{i_1}, @dots{} @mvar{i_n}])
+@code{@mvar{A} [@mvar{i_1}, ..., @mvar{i_n}]}を評価します。
+ここで、@mvar{A}は配列、@mvar{i_1}, @dots{}, @mvar{i_n}は整数です。
 
 これは、最初の引数が関数の代わりに配列だということを除いて、
 @mref{apply}を連想させます。
@@ -71,10 +71,10 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{arrayinfo}
-@deffn {関数} arrayinfo (@var{A})
+@deffn {関数} arrayinfo (@mvar{A})
 
-配列@var{A}に関する情報を返します。
-引数@var{A}は、宣言配列、未宣言(ハッシュド)配列、配列関数、または添字付き関数を取り得ます。
+配列@mvar{A}に関する情報を返します。
+引数@mvar{A}は、宣言配列、未宣言(ハッシュド)配列、配列関数、または添字付き関数を取り得ます。
 
 宣言配列では、
 @code{arrayinfo}は、
@@ -250,8 +250,8 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{arraymake}
-@deffn {関数} arraymake (@var{A}, [@var{i_1}, @dots{}, @var{i_n}])
-式@code{@var{A}[@var{i_1}, ..., @var{i_n}]}を返します。
+@deffn {関数} arraymake (@mvar{A}, [@mvar{i_1}, @dots{}, @mvar{i_n}])
+式@code{@mvar{A}[@mvar{i_1}, ..., @mvar{i_n}]}を返します。
 結果は未評価の配列参照です。
 
 @code{arraymake}は、
@@ -402,19 +402,19 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{fillarray}
-@deffn {関数} fillarray (@var{A}, @var{B})
+@deffn {関数} fillarray (@mvar{A}, @mvar{B})
 
-配列@var{A}を@var{B}から埋めます。
-ここで、@var{B}はリストか配列です。
+配列@mvar{A}を@mvar{B}から埋めます。
+ここで、@mvar{B}はリストか配列です。
 
-もし生成時に特定のタイプが@var{A}のために宣言されたら、
+もし生成時に特定のタイプが@mvar{A}のために宣言されたら、
 その同じタイプの要素でだけ埋めることができます;
 もし違ったタイプの要素をコピーする試みがなされたらエラーです。
 
-もし配列@var{A}と@var{B}の次元が違ったら、
-@var{A}は行優先順で埋められます。
-もし@var{B}の中の要素が十分でないなら、
-@var{A}の残りを埋めるのに最後の要素が使われます。
+もし配列@mvar{A}と@mvar{B}の次元が違ったら、
+@mvar{A}は行優先順で埋められます。
+もし@mvar{B}の中の要素が十分でないなら、
+@mvar{A}の残りを埋めるのに最後の要素が使われます。
 もし多すぎるなら、残りは無視されます。
 
 @code{fillarray}は最初の引数を返します。
@@ -509,10 +509,10 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{listarray}
-@deffn {関数} listarray (@var{A})
+@deffn {関数} listarray (@mvar{A})
 
-配列@var{A}の要素のリストを返します。
-引数@var{A}は、宣言配列、未宣言(ハッシュド)配列、配列関数、添字付き関数を取り得ます。
+配列@mvar{A}の要素のリストを返します。
+引数@mvar{A}は、宣言配列、未宣言(ハッシュド)配列、配列関数、添字付き関数を取り得ます。
 
 要素は行優先順にリストされます。
 すなわち、要素は、最初のインデックスに従って振り分けられ、次に二番目のインデックスに従って、などなど。
@@ -678,13 +678,13 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{make_array}
-@deffn {関数} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffn {関数} make_array (@mvar{type}, @mvar{dim_1}, ..., @mvar{dim_n})
 
 Lisp配列を生成し、返します。
-@var{type}は、@code{any}, @code{flonum}, @code{fixnum}, @code{hashed}, 
+@mvar{type}は、@code{any}, @code{flonum}, @code{fixnum}, @code{hashed}, 
 @code{functional}を取り得ます。
 @math{n}個のインデックスがあり、
-@math{i}番目のインデックスは0から@math{@var{dim_i} - 1}まで動きます。
+@math{i}番目のインデックスは0から@math{@mvar{dim_i} - 1}まで動きます。
 
 @code{make_array}の@mref{array}に対する利点は、
 戻り値が名前を持たないことであり、
@@ -783,7 +783,7 @@ Lisp配列を生成し、返します。
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
 @c -----------------------------------------------------------------------------
 @anchor{rearray}
-@deffn {関数} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+@deffn {関数} rearray (@mvar{A}, @mvar{dim_1}, ..., @mvar{dim_n})
 
 配列の次元を変えます。
 新しい配列は
@@ -801,7 +801,7 @@ Lisp配列を生成し、返します。
 
 @c -----------------------------------------------------------------------------
 @anchor{remarray}
-@deffn {関数} remarray (@var{A_1}, ..., @var{A_n})
+@deffn {関数} remarray (@mvar{A_1}, ..., @mvar{A_n})
 @deffnx {関数} remarray (all)
 
 配列と関数に関連づけられた配列を削除し、占められた領域を開放します。
@@ -824,14 +824,14 @@ Lisp配列を生成し、返します。
 
 @c -----------------------------------------------------------------------------
 @anchor{subvar}
-@deffn {関数} subvar (@var{x}, @var{i})
+@deffn {関数} subvar (@mvar{x}, @mvar{i})
 
-添字付き式@code{@var{x}[@var{i}]}を評価します。
+添字付き式@code{@mvar{x}[@mvar{i}]}を評価します。
 
 @code{subvar}は引数を評価します。
 
-@code{arraymake (@var{x}, [@var{i}]}は
-式@code{@var{x}[@var{i}]}を構成しますが、
+@code{arraymake (@mvar{x}, [@mvar{i}]}は
+式@code{@mvar{x}[@mvar{i}]}を構成しますが、
 それを評価はしません。
 
 例:
@@ -878,9 +878,9 @@ Lisp配列を生成し、返します。
 
 @c -----------------------------------------------------------------------------
 @anchor{subvarp}
-@deffn {関数} subvarp (@var{expr})
+@deffn {関数} subvarp (@mvar{expr})
 
-もし@var{expr}が例えば@code{a[i]}のように添字された変数なら、@code{true}を返します。
+もし@mvar{expr}が例えば@code{a[i]}のように添字された変数なら、@code{true}を返します。
 
 @opencatbox
 @category{Predicate functions}

@@ -235,7 +235,7 @@ To use @code{load(abs_integrate)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{intfudu}
-@deffn {Function} intfudu (@var{e}, @var{x})
+@deffn {Function} intfudu (@mvar{e}, @mvar{x})
 
 This function uses the derivative divides rule for integrands of the
 form @math{f(w(x)) * diff(w(x),x)}.  When @code{infudu} is unable to find
@@ -307,7 +307,7 @@ Related functions @mrefdot{intfugudu}
 
 @c -----------------------------------------------------------------------------
 @anchor{intfugudu}
-@deffn {Function} intfugudu (@var{e}, @var{x})
+@deffn {Function} intfugudu (@mvar{e}, @mvar{x})
 
 This function uses the derivative divides rule for integrands of the
 form @math{f(w(x)) * g(w(x)) * diff(w(x),x)}.  When @code{infugudu} is
@@ -344,7 +344,7 @@ Related functions @mrefdot{intfudu}
 
 @c -----------------------------------------------------------------------------
 @anchor{signum_to_abs}
-@deffn {Function} signum_to_abs (@var{e})
+@deffn {Function} signum_to_abs (@mvar{e})
  
 This function replaces subexpressions of the form @math{q signum(q)} by
 @math{abs(q)}.  Before it does these substitutions, it replaces
@@ -365,7 +365,7 @@ To use @code{load(abs_integrate)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{simp_assuming}
-@deffn {Macro} simp_assuming (@var{e}, @var{f_1}, @var{f_2}, @dots{}, @var{f_n})
+@deffn {Macro} simp_assuming (@mvar{e}, @mvar{f_1}, @mvar{f_2}, @dots{}, @mvar{f_n})
 
 Appended the facts @math{f_1, f_2, @dots{}, f_n} to the current context and
 simplify @math{e}.  The facts are removed before returning the simplified
@@ -398,7 +398,7 @@ To use @code{load(abs_integrate)}.
 
 @c -----------------------------------------------------------------------------
 @anchor{conditional_integrate}
-@deffn {Function} conditional_integrate (@var{e}, @var{x})
+@deffn {Function} conditional_integrate (@mvar{e}, @mvar{x})
 
 For an integrand with one or more parameters, this function tries to determine
 an antiderivative that is valid for all parameter values.  When successful, this
@@ -444,7 +444,7 @@ sin(2 x) + 2 x
 
 @c -----------------------------------------------------------------------------
 @anchor{convert_to_signum}
-@deffn {Function} convert_to_signum (@var{e})
+@deffn {Function} convert_to_signum (@mvar{e})
 
 This function replaces subexpressions of the form @code{abs(q), unit_step(q),
 min(q1, q2, ..., qn)} and @code{max(q1, q2, ..., qn)} by equivalent

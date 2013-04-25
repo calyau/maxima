@@ -29,7 +29,7 @@ Package @code{stats} loads packages @code{descriptive}, @code{distrib} and
 
 For comments, bugs or suggestions, please contact the author at
 
-@var{'mario AT edu DOT xunta DOT es'}.
+@mvar{'mario AT edu DOT xunta DOT es'}.
 
 @opencatbox
 @category{Statistical inference} @category{Share packages} @category{Package stats}
@@ -38,13 +38,13 @@ For comments, bugs or suggestions, please contact the author at
 @node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
 @section Functions and Variables for inference_result
 
-@deffn {Function} inference_result (@var{title}, @var{values}, @var{numbers})
+@deffn {Function} inference_result (@mvar{title}, @mvar{values}, @mvar{numbers})
 
 Constructs an @code{inference_result} object of the type returned by the
-stats functions. Argument @var{title} is a
-string with the name of the procedure; @var{values} is a list with
-elements of the form @code{symbol = value} and @var{numbers} is a list
-with positive integer numbers ranging from one to @code{length(@var{values})},
+stats functions. Argument @mvar{title} is a
+string with the name of the procedure; @mvar{values} is a list with
+elements of the form @code{symbol = value} and @mvar{numbers} is a list
+with positive integer numbers ranging from one to @code{length(@mvar{values})},
 indicating which values will be shown by default.
 
 Example:
@@ -104,9 +104,9 @@ See also @code{take_inference}.
 
 
 
-@deffn {Function} inferencep (@var{obj})
+@deffn {Function} inferencep (@mvar{obj})
 
-Returns @code{true} or @code{false}, depending on whether @var{obj} is an
+Returns @code{true} or @code{false}, depending on whether @mvar{obj} is an
 @code{inference_result} object or not.
 
 @opencatbox
@@ -120,9 +120,9 @@ Returns @code{true} or @code{false}, depending on whether @var{obj} is an
 
 
 
-@deffn {Function} items_inference (@var{obj})
+@deffn {Function} items_inference (@mvar{obj})
 
-Returns a list with the names of the items stored in @var{obj}, which must
+Returns a list with the names of the items stored in @mvar{obj}, which must
 be an @code{inference_result} object.
 
 Example:
@@ -158,12 +158,12 @@ of all items, no matter they are displayed or not.
 
 
 
-@deffn {Function} take_inference (@var{n}, @var{obj})
-@deffnx {Function} take_inference (@var{name}, @var{obj})
-@deffnx {Function} take_inference (@var{list}, @var{obj})
+@deffn {Function} take_inference (@mvar{n}, @mvar{obj})
+@deffnx {Function} take_inference (@mvar{name}, @mvar{obj})
+@deffnx {Function} take_inference (@mvar{list}, @mvar{obj})
 
-Returns the @var{n}-th value stored in @var{obj} if @var{n} is a positive integer,
-or the item named @var{name} if this is the name of an item. If the first
+Returns the @mvar{n}-th value stored in @mvar{obj} if @mvar{n} is a positive integer,
+or the item named @mvar{name} if this is the name of an item. If the first
 argument is a list of numbers and/or symbols, function @code{take_inference} returns
 a list with the corresponding results.
 
@@ -251,10 +251,10 @@ results are given in symbolic and rational format.
 
 
 
-@deffn {Function} test_mean (@var{x})
-@deffnx {Function} test_mean (@var{x}, @var{options} ...)
+@deffn {Function} test_mean (@mvar{x})
+@deffnx {Function} test_mean (@mvar{x}, @mvar{options} ...)
 
-This is the mean @var{t}-test. Argument @var{x} is a list or a column matrix
+This is the mean @mvar{t}-test. Argument @mvar{x} is a list or a column matrix
 containing a one dimensional sample. It also performs an asymptotic test
 based on the @i{Central Limit Theorem} if option @code{'asymptotic} is
 @code{true}.
@@ -279,7 +279,7 @@ known; valid values are: @code{'unknown} or a positive expression.
 be an expression which takes a value in (0,1).
 
 @item
-@code{'asymptotic}, default @code{false}, indicates whether it performs an exact @var{t}-test or
+@code{'asymptotic}, default @code{false}, indicates whether it performs an exact @mvar{t}-test or
 an asymptotic one based on the @i{Central Limit Theorem};
 valid values are @code{true} and @code{false}.
 
@@ -318,7 +318,7 @@ showing the following results:
 
 Examples:
 
-Performs an exact @var{t}-test with unknown variance. The null hypothesis
+Performs an exact @mvar{t}-test with unknown variance. The null hypothesis
 is @math{H_0: mean=50} against the one sided alternative @math{H_1: mean<50};
 according to the results, the @math{p}-value is too great, there are no
 evidence for rejecting @math{H_0}.
@@ -401,11 +401,11 @@ this procedure should be applied to large samples.
 
 
 
-@deffn {Function} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Function} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Function} test_means_difference (@mvar{x1}, @mvar{x2})
+@deffnx {Function} test_means_difference (@mvar{x1}, @mvar{x2}, @mvar{options} ...)
 
-This is the difference of means @var{t}-test for two samples.
-Arguments @var{x1} and @var{x2} are lists or column matrices
+This is the difference of means @mvar{t}-test for two samples.
+Arguments @mvar{x1} and @mvar{x2} are lists or column matrices
 containing two independent samples. In case of different unknown variances
 (see options @code{'dev1}, @code{'dev2} and @code{'varequal} bellow),
 the degrees of freedom are computed by means of the Welch approximation.
@@ -425,11 +425,11 @@ valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
 
 @item
 @code{'dev1}, default @code{'unknown}, this is the value of the standard deviation
-of the @var{x1} sample when it is known; valid values are: @code{'unknown} or a positive expression.
+of the @mvar{x1} sample when it is known; valid values are: @code{'unknown} or a positive expression.
 
 @item
 @code{'dev2}, default @code{'unknown}, this is the value of the standard deviation
-of the @var{x2} sample when it is known; valid values are: @code{'unknown} or a positive expression.
+of the @mvar{x2} sample when it is known; valid values are: @code{'unknown} or a positive expression.
 
 @item
 @code{'varequal}, default @code{false}, whether variances should be considered to be equal or not;
@@ -440,7 +440,7 @@ this option takes effect only when @code{'dev1} and/or @code{'dev2} are  @code{'
 be an expression which takes a value in (0,1).
 
 @item
-@code{'asymptotic}, default @code{false}, indicates whether it performs an exact @var{t}-test or
+@code{'asymptotic}, default @code{false}, indicates whether it performs an exact @mvar{t}-test or
 an asymptotic one based on the @i{Central Limit Theorem};
 valid values are @code{true} and @code{false}.
 
@@ -479,7 +479,7 @@ showing the following results:
 
 Examples:
 
-The equality of means is tested with two small samples @var{x} and @var{y},
+The equality of means is tested with two small samples @mvar{x} and @mvar{y},
 against the alternative @math{H_1: m_1>m_2}, being @math{m_1} and @math{m_2}
 the populations means; variances are unknown and supposed to be different.
 
@@ -570,10 +570,10 @@ equal.
 
 
 
-@deffn {Function} test_variance (@var{x})
-@deffnx {Function} test_variance (@var{x}, @var{options}, ...)
+@deffn {Function} test_variance (@mvar{x})
+@deffnx {Function} test_variance (@mvar{x}, @mvar{options}, ...)
 
-This is the variance @var{chi^2}-test. Argument @var{x} is a list or a column matrix
+This is the variance @mvar{chi^2}-test. Argument @mvar{x} is a list or a column matrix
 containing a one dimensional sample taken from a normal population.
 
 Options:
@@ -672,11 +672,11 @@ is equal to or greater than 200.
 
 
 
-@deffn {Function} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Function} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Function} test_variance_ratio (@mvar{x1}, @mvar{x2})
+@deffnx {Function} test_variance_ratio (@mvar{x1}, @mvar{x2}, @mvar{options} ...)
 
-This is the variance ratio @var{F}-test for two normal populations.
-Arguments @var{x1} and @var{x2} are lists or column matrices
+This is the variance ratio @mvar{F}-test for two normal populations.
+Arguments @mvar{x1} and @mvar{x2} are lists or column matrices
 containing two independent samples.
 
 Options:
@@ -689,11 +689,11 @@ valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
 
 @item
 @code{'mean1}, default @code{'unknown}, when it is known, this is the mean of
-the population from which @var{x1} was taken.
+the population from which @mvar{x1} was taken.
 
 @item
 @code{'mean2}, default @code{'unknown}, when it is known, this is the mean of
-the population from which @var{x2} was taken.
+the population from which @mvar{x2} was taken.
 
 @item
 @code{'conflevel}, default @code{95/100}, confidence level for the confidence interval of the
@@ -782,11 +782,11 @@ against the alternative that the first is greater than the second.
 
 
 
-@deffn {Function} test_proportion (@var{x}, @var{n})
-@deffnx {Function} test_proportion (@var{x}, @var{n}, @var{options} ...)
+@deffn {Function} test_proportion (@mvar{x}, @mvar{n})
+@deffnx {Function} test_proportion (@mvar{x}, @mvar{n}, @mvar{options} ...)
 
-Inferences on a proportion. Argument @var{x} is the number of successes
-in @var{n} trials in a Bernoulli experiment with unknown probability.
+Inferences on a proportion. Argument @mvar{x} is the number of successes
+in @mvar{n} trials in a Bernoulli experiment with unknown probability.
 
 Options:
 
@@ -917,11 +917,11 @@ A two sided asymptotic test. Confidence level is 99/100.
 
 
 
-@deffn {Function} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
-@deffnx {Function} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+@deffn {Function} test_proportions_difference (@mvar{x1}, @mvar{n1}, @mvar{x2}, @mvar{n2})
+@deffnx {Function} test_proportions_difference (@mvar{x1}, @mvar{n1}, @mvar{x2}, @mvar{n2}, @mvar{options} ...)
 
-Inferences on the difference of two proportions. Argument @var{x1} is the number of successes
-in @var{n1} trials in a Bernoulli experiment in the first population, and @var{x2} and @var{n2}
+Inferences on the difference of two proportions. Argument @mvar{x1} is the number of successes
+in @mvar{n1} trials in a Bernoulli experiment in the first population, and @mvar{x2} and @mvar{n2}
 are the corresponding values in the second population. Samples are independent and the test
 is asymptotic.
 
@@ -1048,11 +1048,11 @@ distribution when the data are unknown.
 
 
 
-@deffn {Function} test_sign (@var{x})
-@deffnx {Function} test_sign (@var{x}, @var{options} ...)
+@deffn {Function} test_sign (@mvar{x})
+@deffnx {Function} test_sign (@mvar{x}, @mvar{options} ...)
 
 This is the non parametric sign test for the median of a continuous population.
-Argument @var{x} is a list or a column matrix containing a one dimensional sample.
+Argument @mvar{x} is a list or a column matrix containing a one dimensional sample.
 
 Options:
 
@@ -1135,11 +1135,11 @@ against the alternative @math{H_1: median > 6}.
 
 
 
-@deffn {Function} test_signed_rank (@var{x})
-@deffnx {Function} test_signed_rank (@var{x}, @var{options} ...)
+@deffn {Function} test_signed_rank (@mvar{x})
+@deffnx {Function} test_signed_rank (@mvar{x}, @mvar{options} ...)
 
 This is the Wilcoxon signed rank test to make inferences about the median of a
-continuous population. Argument @var{x} is a list or a column matrix
+continuous population. Argument @mvar{x} is a list or a column matrix
 containing a one dimensional sample. Performs normal approximation if the
 sample size is greater than 20, or if there are zeroes or ties.
 
@@ -1261,11 +1261,11 @@ since there are ties.
 
 
 
-@deffn {Function} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Function} test_rank_sum (@var{x1}, @var{x2}, @var{option})
+@deffn {Function} test_rank_sum (@mvar{x1}, @mvar{x2})
+@deffnx {Function} test_rank_sum (@mvar{x1}, @mvar{x2}, @mvar{option})
 
 This is the Wilcoxon-Mann-Whitney test for comparing the medians of two
-continuous populations. The first two arguments @var{x1} and @var{x2} are lists
+continuous populations. The first two arguments @mvar{x1} and @mvar{x2} are lists
 or column matrices with the data of two independent samples. Performs normal
 approximation if any of the sample sizes is greater than 10, or if there are ties.
 
@@ -1380,9 +1380,9 @@ normal approximation. The alternative hypothesis is
 
 
 
-@deffn {Function} test_normality (@var{x})
+@deffn {Function} test_normality (@mvar{x})
 
-Shapiro-Wilk test for normality. Argument @var{x} is a list of numbers, and sample
+Shapiro-Wilk test for normality. Argument @mvar{x} is a list of numbers, and sample
 size must be greater than 2 and less or equal than 5000, otherwise, function
 @code{test_normality} signals an error message.
 
@@ -1396,7 +1396,7 @@ with the following results:
 @enumerate
 
 @item
-@code{'statistic}: value of the @var{W} statistic.
+@code{'statistic}: value of the @mvar{W} statistic.
 
 @item
 @code{'p_value}: @math{p}-value under normal assumption.
@@ -1440,13 +1440,13 @@ Checks for the normality of a population, based on a sample of size 9.
 
 
 
-@deffn {Function} linear_regression (@var{x})
-@deffnx {Function} linear_regression (@var{x} @var{option})
+@deffn {Function} linear_regression (@mvar{x})
+@deffnx {Function} linear_regression (@mvar{x} @mvar{option})
 
 Multivariate linear regression, 
 @math{y_i = b0 + b1*x_1i + b2*x_2i + ... + bk*x_ki + u_i},
 where @math{u_i} are @math{N(0,sigma)} independent random variables.
-Argument @var{x} must be a matrix with more than one column. The
+Argument @mvar{x} must be a matrix with more than one column. The
 last column is considered as the responses (@math{y_i}).
 
 Option:
@@ -1591,10 +1591,10 @@ v_distribution, residuals, adc, aic, bic]
 @section Functions and Variables for special distributions
 
 
-@deffn {Function} pdf_signed_rank (@var{x}, @var{n})
+@deffn {Function} pdf_signed_rank (@mvar{x}, @mvar{n})
 Probability density function of the exact distribution of the
-signed rank statistic. Argument @var{x} is a real
-number and @var{n} a positive integer.
+signed rank statistic. Argument @mvar{x} is a real
+number and @mvar{n} a positive integer.
 
 See also @code{test_signed_rank}.
 
@@ -1604,10 +1604,10 @@ See also @code{test_signed_rank}.
 
 @end deffn
 
-@deffn {Function} cdf_signed_rank (@var{x}, @var{n})
+@deffn {Function} cdf_signed_rank (@mvar{x}, @mvar{n})
 Cumulative density function of the exact distribution of the
-signed rank statistic. Argument @var{x} is a real
-number and @var{n} a positive integer. 
+signed rank statistic. Argument @mvar{x} is a real
+number and @mvar{n} a positive integer. 
 
 See also @code{test_signed_rank}.
 
@@ -1617,10 +1617,10 @@ See also @code{test_signed_rank}.
 
 @end deffn
 
-@deffn {Function} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {Function} pdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
 Probability density function of the exact distribution of the
-rank sum statistic. Argument @var{x} is a real
-number and @var{n} and @var{m} are both positive integers. 
+rank sum statistic. Argument @mvar{x} is a real
+number and @mvar{n} and @mvar{m} are both positive integers. 
 
 See also @code{test_rank_sum}.
 
@@ -1630,10 +1630,10 @@ See also @code{test_rank_sum}.
 
 @end deffn
 
-@deffn {Function} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {Function} cdf_rank_sum (@mvar{x}, @mvar{n}, @mvar{m})
 Cumulative density function of the exact distribution of the
-rank sum statistic. Argument @var{x} is a real
-number and @var{n} and @var{m} are both positive integers. 
+rank sum statistic. Argument @mvar{x} is a real
+number and @mvar{n} and @mvar{m} are both positive integers. 
 
 See also @code{test_rank_sum}.
 

@@ -18,8 +18,8 @@ O comando @code{logcontract} "contrai" express@~{o}es contendo @code{log}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} li [@var{s}] (@var{z})
-Representa a fun@value{cedilha}@~{a}o polilogar@'{i}tmo de ordem @var{s} e argumento @var{z},
+@deffn {Fun@value{cedilha}@~{a}o} li [@mvar{s}] (@mvar{z})
+Representa a fun@value{cedilha}@~{a}o polilogar@'{i}tmo de ordem @mvar{s} e argumento @mvar{z},
 definida por meio de s@'{e}ries infinitas
 
 @example
@@ -37,11 +37,11 @@ definida por meio de s@'{e}ries infinitas
 
 Quando a ordem for 1, o polilogar@'{i}tmo simplifica para @code{- log (1 - z)},
 o qual por sua vez simplifica para um valor num@'{e}rico
-se @var{z} for um n@'{u}mero em ponto flutuante real ou complexo ou o sinalizador de avalia@value{cedilha}@~{a}o @code{numer} estiver presente.
+se @mvar{z} for um n@'{u}mero em ponto flutuante real ou complexo ou o sinalizador de avalia@value{cedilha}@~{a}o @code{numer} estiver presente.
 
 Quando a ordem for 2 ou 3,
 o polilogar@'{i}tmo simplifica para um valor num@'{e}rico
-se @var{z} for um n@'{u}mero real em ponto flutuante
+se @mvar{z} for um n@'{u}mero real em ponto flutuante
 ou o sinalizador de avalia@value{cedilha}@~{a}o @code{numer} estiver presente.
 
 Exemplos:
@@ -93,8 +93,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} log (@var{x})
-Representa o logar@'{i}tmo natural (base @math{e}) de @var{x}.
+@deffn {Fun@value{cedilha}@~{a}o} log (@mvar{x})
+Representa o logar@'{i}tmo natural (base @math{e}) de @mvar{x}.
 
 Maxima n@~{a}o possui uma fun@value{cedilha}@~{a}o interna para logar@'{i}tmo de base 10 ou de outras bases.
 @code{log10(x) := log(x) / log(10)} @'{e} uma defini@value{cedilha}@~{a}o @'{u}til.
@@ -140,15 +140,15 @@ extremos @'{e} muitas vezes necess@'{a}ria.
 
 @c NEEDS EXAMPLES
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} logarc
-@defvrx {Fun@value{cedilha}@~{a}o} logarc (@var{expr})
+@defvrx {Fun@value{cedilha}@~{a}o} logarc (@mvar{expr})
 
 Quando a vari@'{a}vel global @code{logarc} for @code{true},
 fun@value{cedilha}@~{o}es circulares inversas e fun@value{cedilha}@~{o}es hiperb@'{o}licas ser@~{a}o convertidas
 em fun@value{cedilha}@~{o}es logar@'{i}timicas equivalentes.
 O valor padr@~{a}o de @code{logarc} @'{e} @code{false}.
 
-A fun@value{cedilha}@~{a}o @code{logarc(@var{expr})} realiza aquela substitu@'{i}@value{cedilha}@~{a}o para
-uma express@~{a}o @var{expr}
+A fun@value{cedilha}@~{a}o @code{logarc(@mvar{expr})} realiza aquela substitu@'{i}@value{cedilha}@~{a}o para
+uma express@~{a}o @mvar{expr}
 sem modificar o valor da vari@'{a}vel global @code{logarc}.
 
 @end defvr
@@ -165,8 +165,8 @@ logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  Ent@~{a}o
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} logcontract (@var{expr})
-Recursivamente examina a express@~{a}o @var{expr}, transformando
+@deffn {Fun@value{cedilha}@~{a}o} logcontract (@mvar{expr})
+Recursivamente examina a express@~{a}o @mvar{expr}, transformando
 subexpress@~{o}es da forma @code{a1*log(b1) + a2*log(b2) + c} em
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
@@ -232,9 +232,9 @@ expoente contendo @code{log}'s @'{e} conclu@'{i}da.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} plog (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} plog (@mvar{x})
 Representa o principal ramo logar@'{i}tmos naturais avaliados para
-complexos com @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
+complexos com @code{-%pi} < @code{carg(@mvar{x})} <= @code{+%pi} .
 
 @end deffn
 

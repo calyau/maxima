@@ -9,9 +9,9 @@
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} limit (@var{expr})
+@deffn {Function} limit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Function} limit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Function} limit (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -19,9 +19,9 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} tlimit (@var{expr})
+@deffn {Function} tlimit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Function} tlimit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Function} tlimit (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

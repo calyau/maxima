@@ -7,8 +7,8 @@
 @section Defini@value{cedilha}@~oes para diag
 
 
-@deffn {Fun@value{cedilha}@~ao} diag (@var{lm})
-Constr@'oi a matriz quadrada com as matrizes de @var{lm} na diagonal. @var{lm} @'e uma lista de matrizes ou escalares.
+@deffn {Fun@value{cedilha}@~ao} diag (@mvar{lm})
+Constr@'oi a matriz quadrada com as matrizes de @mvar{lm} na diagonal. @mvar{lm} @'e uma lista de matrizes ou escalares.
 
 Exemplo:
 @example
@@ -36,8 +36,8 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} JF (@var{lambda},@var{n})
-Retorna a c@'elula de Jordan de ordem @var{n} com autovalor @var{lambda}.
+@deffn {Fun@value{cedilha}@~ao} JF (@mvar{lambda},@mvar{n})
+Retorna a c@'elula de Jordan de ordem @mvar{n} com autovalor @mvar{lambda}.
 
 Exemplo:
 @example
@@ -63,8 +63,8 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} jordan (@var{mat})
-Retorna a forma de Jordan da matriz @var{mat}, mas codificada em uma lista do Maxima.
+@deffn {Fun@value{cedilha}@~ao} jordan (@mvar{mat})
+Retorna a forma de Jordan da matriz @mvar{mat}, mas codificada em uma lista do Maxima.
 Para pegar a matriz correspondente @`a codifica@value{cedilha}@~ao, chame a fun@value{cedilha}@~ao @code{dispJordan} sando como argumento
 a sa@'{@dotless{i}}da de @code{JF}.
 
@@ -105,8 +105,8 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} dispJordan (@var{l})
-Retorna a matriz de Jordan associada @`a codifica@value{cedilha}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'{@dotless{i}}da fornecida pela fun@value{cedilha}@~ao @code{jordan}.
+@deffn {Fun@value{cedilha}@~ao} dispJordan (@mvar{l})
+Retorna a matriz de Jordan associada @`a codifica@value{cedilha}@~ao fornecida pela lista do Maxima @mvar{l}, que @'e a sa@'{@dotless{i}}da fornecida pela fun@value{cedilha}@~ao @code{jordan}.
 
 Exemplo:
 @example
@@ -136,8 +136,8 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} minimalPoly (@var{l})
-Retorna o menor polin@'omio associado @`a codifica@value{cedilha}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'{@dotless{i}}da fornecida pela fun@value{cedilha}@~ao @code{jordan}.
+@deffn {Fun@value{cedilha}@~ao} minimalPoly (@mvar{l})
+Retorna o menor polin@'omio associado @`a codifica@value{cedilha}@~ao fornecida pela lista do Maxima @mvar{l}, que @'e a sa@'{@dotless{i}}da fornecida pela fun@value{cedilha}@~ao @code{jordan}.
 
 Exemplo:
 @example
@@ -158,8 +158,8 @@ Exemplo:
 Para usar essa fun@value{cedilha}@~ao escreva prmeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} e @code{dispJordan}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ModeMatrix (@var{A},@var{l})
-Retorna a matriz @var{M} tal que @math{(M^^-1).A.M=J}, onde @var{J} @'e a forma de Jordan de @var{A}. A lista do Maxima @var{l} @'e a codifica@value{cedilha}@~ao da forma de Jordan como retornado pela fun@value{cedilha}@~ao @code{jordan}.
+@deffn {Fun@value{cedilha}@~ao} ModeMatrix (@mvar{A},@mvar{l})
+Retorna a matriz @mvar{M} tal que @math{(M^^-1).A.M=J}, onde @mvar{J} @'e a forma de Jordan de @mvar{A}. A lista do Maxima @mvar{l} @'e a codifica@value{cedilha}@~ao da forma de Jordan como retornado pela fun@value{cedilha}@~ao @code{jordan}.
 
 Exemplo:
 @example
@@ -195,8 +195,8 @@ Para usa essa fun@value{cedilha}@~ao escreva primeiramente @code{load("diag")}. 
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} mat_function (@var{f},@var{mat})
-Retorna @math{f(mat)}, onde @var{f} @'e uma fun@value{cedilha}@~ao anal@'{@dotless{i}}tica e @var{mat}
+@deffn {Fun@value{cedilha}@~ao} mat_function (@mvar{f},@mvar{mat})
+Retorna @math{f(mat)}, onde @mvar{f} @'e uma fun@value{cedilha}@~ao anal@'{@dotless{i}}tica e @mvar{mat}
 uma matriz. Essa computa@value{cedilha}@~ao @'e baseada na f@'ormula da integral de Cauchy, que estabelece que
 se @code{f(x)} for anal@'{@dotless{i}}tica e
 

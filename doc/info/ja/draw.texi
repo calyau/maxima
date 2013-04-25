@@ -35,7 +35,7 @@ Maximaレベルで使われる３つの主な関数があります:
 @subsection Scenes
 
 
-@deffn {シーン構成子} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
+@deffn {シーン構成子} gr2d (@mvar{graphic option}, ..., @mvar{graphic object}, ...)
 
 関数@code{gr2d}は
 2Dシーンを記述するオブジェクトを作ります。
@@ -62,7 +62,7 @@ Maximaレベルで使われる３つの主な関数があります:
 @end deffn
 
 
-@deffn {シーン構成子} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
+@deffn {シーン構成子} gr3d (@mvar{graphic option}, ..., @mvar{graphic object}, ...)
 
 関数@code{gr3d}は3dシーンを記述するオブジェクトを作ります。
 引数は@i{グラフィックオプション}、@i{グラフィックオブジェクト}、または
@@ -97,7 +97,7 @@ Maximaレベルで使われる３つの主な関数があります:
 
 
 
-@deffn {関数} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+@deffn {関数} draw (@mvar{gr2d}, ..., @mvar{gr3d}, ..., @mvar{options}, ...)
 
 一連のシーンをプロットします;
 引数は@code{gr2d}や@code{gr3d}のオブジェクトといくつかのオプションです。
@@ -160,9 +160,9 @@ End of animation sequence
 
 
 
-@deffn {関数} draw2d (@var{option}, @var{graphic_object}, ...)
+@deffn {関数} draw2d (@mvar{option}, @mvar{graphic_object}, ...)
 この関数は
-@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr2d(@mvar{options}, ..., @mvar{graphic_object}, ...))}.
 のショートカットです。
 
 2dで唯一のシーンをプロットするのに使うことができます。
@@ -179,9 +179,9 @@ End of animation sequence
 
 
 
-@deffn {関数} draw3d (@var{option}, @var{graphic_object}, ...)
+@deffn {関数} draw3d (@mvar{option}, @mvar{graphic_object}, ...)
 この関数は
-@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}
+@code{draw(gr3d(@mvar{options}, ..., @mvar{graphic_object}, ...))}
 のショートカットです。
 
 3dでユニークなシーンをプロットするのに使うことができます。
@@ -197,7 +197,7 @@ End of animation sequence
 
 
 
-@deffn {関数} draw_file (@var{graphic option}, ..., @var{graphic object}, ...)
+@deffn {関数} draw_file (@mvar{graphic option}, ..., @mvar{graphic object}, ...)
 
 現在のプロットをファイルに保存します。
 受け付けられるグラフィックオプションは以下です:
@@ -221,9 +221,9 @@ End of animation sequence
 
 
 
-@deffn {関数} multiplot_mode (@var{term})
+@deffn {関数} multiplot_mode (@mvar{term})
 この関数を使って、Maximaは
-端末@var{term}で1ウィンドウマルチプロットモードで機能することができます;
+端末@mvar{term}で1ウィンドウマルチプロットモードで機能することができます;
 この関数が受け入れる引数は、@code{screen}, 
 @code{wxt}, @code{aquaterm}, @code{none}です。
 
@@ -262,7 +262,7 @@ End of animation sequence
 
 
 
-@deffn {関数} set_draw_defaults (@var{graphic option}, ..., @var{graphic object}, ...)
+@deffn {関数} set_draw_defaults (@mvar{graphic option}, ..., @mvar{graphic object}, ...)
 
 ユーザーグラフィックオプションを設定します。
 この関数は
@@ -318,7 +318,7 @@ End of animation sequence
 デフォルト値: @code{true}
 
 もし@code{axis_3d}が@code{true}なら、
-@var{x}, @var{y} @var{z}軸が3dシーンで表示されます。
+@mvar{x}, @mvar{y} @mvar{z}軸が3dシーンで表示されます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題なりません。
@@ -745,8 +745,8 @@ dark_violet      plum             purple
 
 @itemize @bullet
 @item
-オプション@code{contour_levels}が正の整数@var{n}にバインド(bounded)されている時、
-@var{n}この等高線が等しい間隔で描かれます。
+オプション@code{contour_levels}が正の整数@mvar{n}にバインド(bounded)されている時、
+@mvar{n}この等高線が等しい間隔で描かれます。
 デフォルトでは、
 5つの等しく間隔の空けられた等高線がプロットされます。
 
@@ -1245,7 +1245,7 @@ Gnuplotで処理される必要なコマンドを含む
 デフォルト値: @code{false}
 
 もし@code{grid}が@code{true}なら、
-@var{xy}平面上に格子が描かれます。
+@mvar{xy}平面上に格子が描かれます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -1341,7 +1341,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 @defvr {グラフィックオプション} head_length
 デフォルト値: 2
 
-@code{head_length}は矢印の頭の長さを@var{x}-軸の単位で示します。
+@code{head_length}は矢印の頭の長さを@mvar{x}-軸の単位で示します。
 
 このオプションは@code{vector}オブジェクトに対してだけ有効です。
 
@@ -1645,7 +1645,7 @@ See also @code{line_width}.
 デフォルト値: @code{false}
 
 もし@code{logx}が@code{true}なら、
-@var{x}軸は対数スケールで描かれます。
+@mvar{x}軸は対数スケールで描かれます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -1672,7 +1672,7 @@ See also @code{line_width}.
 デフォルト値: @code{false}
 
 もし@code{logy}が@code{true}なら、
-@var{y}軸は対数スケールで描かれます。
+@mvar{y}軸は対数スケールで描かれます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -1699,7 +1699,7 @@ See also @code{line_width}.
 デフォルト値: @code{false}
 
 もし@code{logz}が@code{true}なら、
-@var{z}軸は対数スケールで描かれます。
+@mvar{z}軸は対数スケールで描かれます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -2325,8 +2325,8 @@ Gnuplotの振る舞いを微調整することができます。
 デフォルト値: @code{[60,30]}
 
 3Dシーンでビュー方向を示す度数で測られた角度の対。
-最初の角度は@var{x}軸回りの垂直回転であり、@math{[0, 180]}の範囲です。
-二番目は@var{z}回りの水平回転であり、@math{[0, 360]}の範囲です。
+最初の角度は@mvar{x}軸回りの垂直回転であり、@math{[0, 180]}の範囲です。
+二番目は@mvar{z}回りの水平回転であり、@math{[0, 360]}の範囲です。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題なりません。
@@ -2366,7 +2366,7 @@ x方向のボクセルの数です。
 デフォルト値: @code{false}
 
 もし@code{xaxis}が@code{true}なら、
-@var{x}軸が描かれます。
+@mvar{x}軸が描かれます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -2392,7 +2392,7 @@ x方向のボクセルの数です。
 @defvr {グラフィックオプション} xaxis_color
 デフォルト値: @code{"black"}
 
-@code{xaxis_color}は@var{x}軸の色を指定します。
+@code{xaxis_color}は@mvar{x}軸の色を指定します。
 いかに色が定義されるかを知るには@code{color}を参照してください。
 
 これはグローバルグラフィックスオプションなので、
@@ -2421,8 +2421,8 @@ x方向のボクセルの数です。
 デフォルト値: @code{false}
 
 もし@code{xaxis_secondary}が@code{true}なら、
-関数値が、二番目の@var{x}軸に関してプロットされるかもしれません。
-二番目の@var{x}軸はシーンのトップに描かれます。
+関数値が、二番目の@mvar{x}軸に関してプロットされるかもしれません。
+二番目の@mvar{x}軸はシーンのトップに描かれます。
 
 これは、2dプロットにだけ影響する局所的なグラフィックオプションであることに注意してください。
 
@@ -2453,7 +2453,7 @@ x方向のボクセルの数です。
 @defvr {グラフィックオプション} xaxis_type
 デフォルト値: @code{dots}
 
-@code{xaxis_type}は@var{x}軸がいかに表示されるかを示します;
+@code{xaxis_type}は@mvar{x}軸がいかに表示されるかを示します;
 可能な値は@code{solid}と@code{dots}です。
 
 これはグローバルグラフィックスオプションなので、
@@ -2482,7 +2482,7 @@ x方向のボクセルの数です。
 @defvr {グラフィックオプション} xaxis_width
 デフォルト値: 1
 
-@code{xaxis_width}は@var{x}軸の幅です。
+@code{xaxis_width}は@mvar{x}軸の幅です。
 その値は正数でなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -2511,7 +2511,7 @@ x方向のボクセルの数です。
 デフォルト値: @code{""} (empty string)
 
 オプション@code{xlabel}、文字列は
-@var{x}軸のラベルです。
+@mvar{x}軸のラベルです。
 デフォルトでは、ラベルは書かれません。
 
 これはグローバルグラフィックスオプションなので、
@@ -2538,10 +2538,10 @@ x方向のボクセルの数です。
 デフォルト値: @code{auto}
 
 もし@code{xrange}が@code{auto}なら、
-@var{x}座標の範囲は自動的に計算されます。
+@mvar{x}座標の範囲は自動的に計算されます。
 
 もしユーザーが
-@var{x}に関して特定の区間が欲しいなら、
+@mvar{x}に関して特定の区間が欲しいなら、
 @code{xrange=[-2, 3]}のように、Maximaリストとして与えられなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -2568,10 +2568,10 @@ x方向のボクセルの数です。
 デフォルト値: @code{auto}
 
 もし@code{xrange_secondary}が@code{auto}なら、
-二番目の@var{x}軸の範囲は自動的に計算されます。
+二番目の@mvar{x}軸の範囲は自動的に計算されます。
 
 もしユーザーが
-二番目の@var{x}軸の特定した区間が欲しいなら、
+二番目の@mvar{x}軸の特定した区間が欲しいなら、
 @code{xrange_secondary=[-2, 3]}のように、Maximaリストとして与えられなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -2588,15 +2588,15 @@ x方向のボクセルの数です。
 デフォルト値: @code{auto}
 
 このグラフィックオプション制御は
-チックマークを@var{x}軸上に描く方法を制御します。
+チックマークを@mvar{x}軸上に描く方法を制御します。
 
 @itemize @bullet
 @item
-オプション@code{xtics}がシンボル@var{auto}にバインドされている時
+オプション@code{xtics}がシンボル@mvar{auto}にバインドされている時
 チックマークは自動的に描かれます。
 
 @item
-オプション@code{xtics}がシンボル@var{none}にバインドされている時
+オプション@code{xtics}がシンボル@mvar{none}にバインドされている時
 チックマークは描かれません。
 
 @item
@@ -2679,7 +2679,7 @@ x方向のボクセルの数です。
 
 もし@code{xtics_axis}が@code{true}なら、
 チックマークとそれらのラベルが
-@var{x}軸に沿ってだけプロットされます。
+@mvar{x}軸に沿ってだけプロットされます。
 もし@code{false}なら、チックは境界上にプロットされます。
 
 これはグローバルグラフィックスオプションなので、
@@ -2695,7 +2695,7 @@ x方向のボクセルの数です。
 デフォルト値: @code{false}
 
 もし@code{xtics_rotate}が@code{true}なら、
-@var{x}軸上のチックマークが90度回転されます。
+@mvar{x}軸上のチックマークが90度回転されます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -2710,7 +2710,7 @@ x方向のボクセルの数です。
 デフォルト値: @code{false}
 
 もし@code{xtics_rotate_secondary}が@code{true}なら、
-補助的な@var{x}軸上のチックマークが90度回転されます。
+補助的な@mvar{x}軸上のチックマークが90度回転されます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -2725,7 +2725,7 @@ x方向のボクセルの数です。
 デフォルト値: @code{auto}
 
 このグラフィックオプションは、
-二番目の@var{x}軸上にチックマークを描く方法を制御します。
+二番目の@mvar{x}軸上にチックマークを描く方法を制御します。
 
 完全な記述に関しては、@code{xtics}を参照してください。
 
@@ -2741,7 +2741,7 @@ x方向のボクセルの数です。
 デフォルト値: @code{false}
 
 もし@code{xtics_secondary_axis}が@code{true}なら、
-チックマークとそれらのラベルは補助的な@var{x}軸に沿ってだけプロットされ、
+チックマークとそれらのラベルは補助的な@mvar{x}軸に沿ってだけプロットされ、
 もし@code{false}なら、境界上にプロットされます。
 
 これはグローバルグラフィックスオプションなので、
@@ -2848,7 +2848,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} yaxis
 デフォルト値: @code{false}
 
-もし@code{yaxis}が@code{true}なら、@var{y}軸が描かれます。
+もし@code{yaxis}が@code{true}なら、@mvar{y}軸が描かれます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題なりません。
@@ -2873,7 +2873,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} yaxis_color
 デフォルト値: @code{"black"}
 
-@code{yaxis_color}は@var{y}軸の色を指定します。
+@code{yaxis_color}は@mvar{y}軸の色を指定します。
 色がどのように定義されているか知るには
 @code{color}を参照してください。
 
@@ -2904,8 +2904,8 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{yaxis_secondary}が@code{true}なら、
-関数値は二番目の@var{y}軸に関してプロットされるかもしれません。
-二番目の@var{y}軸はシーンの右側に描かれます。
+関数値は二番目の@mvar{y}軸に関してプロットされるかもしれません。
+二番目の@mvar{y}軸はシーンの右側に描かれます。
 
 これは、2dプロットにだけ影響する局所的なグラフィックオプションであることに注意してください。
 
@@ -2933,7 +2933,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} yaxis_type
 デフォルト値: @code{dots}
 
-@code{yaxis_type}は@var{y}軸がどのように表示されるか示します; 
+@code{yaxis_type}は@mvar{y}軸がどのように表示されるか示します; 
 可能な値は@code{solid}と@code{dots}です。
 
 これはグローバルグラフィックスオプションなので、
@@ -2962,7 +2962,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} yaxis_width
 デフォルト値: 1
 
-@code{yaxis_width}は@var{y}軸の幅です。
+@code{yaxis_width}は@mvar{y}軸の幅です。
 その値は正の数でなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -2992,7 +2992,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{""} (empty string)
 
 オプション@code{ylabel}、文字列は
-@var{y}軸のラベルです。
+@mvar{y}軸のラベルです。
 デフォルトでは、ラベルは書かれません。
 
 これはグローバルグラフィックスオプションなので、
@@ -3019,9 +3019,9 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{auto}
 
 もし@code{yrange}が@code{auto}なら、
-@var{y}座標の範囲は自動的に計算されます。
+@mvar{y}座標の範囲は自動的に計算されます。
 
-もしユーザーが@var{y}の特定の区間が欲しいなら、
+もしユーザーが@mvar{y}の特定の区間が欲しいなら、
 @code{yrange=[-2, 3]}のように、Maximaリストとして与えられなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -3050,9 +3050,9 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{auto}
 
 もし@code{yrange_secondary}が@code{auto}なら、
-二番目の@var{y}軸の範囲は自動的に計算されます。
+二番目の@mvar{y}軸の範囲は自動的に計算されます。
 
-もしユーザーが二番目の@var{y}軸の特定の区間が欲しいなら、
+もしユーザーが二番目の@mvar{y}軸の特定の区間が欲しいなら、
 @code{yrange_secondary=[-2, 3]}のように、Maximaリストとして与えられなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -3083,7 +3083,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{auto}
 
 このグラフィックオプションは、
-@var{y}軸上にチックマークを描く方法を制御します。
+@mvar{y}軸上にチックマークを描く方法を制御します。
 
 完全な記述に関しては、@code{xtics}を参照してください。
 
@@ -3097,7 +3097,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{ytics_axis}が@code{true}なら、
-チックマークとそれらのラベルは@var{y}軸に沿ってだけプロットされ、
+チックマークとそれらのラベルは@mvar{y}軸に沿ってだけプロットされ、
 もし@code{false}なら、境界上にプロットされます。
 
 これはグローバルグラフィックスオプションなので、
@@ -3113,7 +3113,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{ytics_rotate}が@code{true}なら、
-@var{y}軸上のチックマークが90度回転されます。
+@mvar{y}軸上のチックマークが90度回転されます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -3129,7 +3129,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{ytics_rotate_secondary}が@code{true}なら、
-補助的な@var{y}軸上のチックマークが90度回転されます。
+補助的な@mvar{y}軸上のチックマークが90度回転されます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -3144,7 +3144,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{auto}
 
 このグラフィックオプションは、
-二番目の@var{y}軸上にチックマークを描く方法を制御します。
+二番目の@mvar{y}軸上にチックマークを描く方法を制御します。
 
 完全な記述に関しては、@code{xtics}を参照してください。
 
@@ -3158,7 +3158,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{ytics_secondary_axis}が@code{true}なら、
-チックマークとそれらのラベルは補助的な@var{y}軸に沿ってだけプロットされ、
+チックマークとそれらのラベルは補助的な@mvar{y}軸に沿ってだけプロットされ、
 もし@code{false}なら、境界上にプロットされます。
 
 これはグローバルグラフィックスオプションなので、
@@ -3218,7 +3218,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} zaxis
 デフォルト値: @code{false}
 
-もし@code{zaxis}が@code{true}なら、3Dプロットで@var{z}軸が描かれます。
+もし@code{zaxis}が@code{true}なら、3Dプロットで@mvar{z}軸が描かれます。
 このオプションは2Dシーンでは効果を持ちません。
 
 これはグローバルグラフィックスオプションなので、
@@ -3246,7 +3246,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} zaxis_color
 デフォルト値: @code{"black"}
 
-@code{zaxis_color}は@var{z}軸の色を指定します。
+@code{zaxis_color}は@mvar{z}軸の色を指定します。
 色がどのように定義されているか知るには@code{color}を参照してください。
 このオプションは2Dシーンでは効果を持ちません。
 
@@ -3277,7 +3277,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} zaxis_type
 デフォルト値: @code{dots}
 
-@code{zaxis_type}は@var{z}軸がどのように表示されるか示します;
+@code{zaxis_type}は@mvar{z}軸がどのように表示されるか示します;
 可能な値は@code{solid}と@code{dots}です。
 このオプションは2Dシーンでは効果を持ちません。
 
@@ -3306,7 +3306,7 @@ xy平面は自動的に置かれます;
 @defvr {グラフィックオプション} zaxis_width
 デフォルト値: 1
 
-@code{zaxis_width}は@var{z}軸の幅です。
+@code{zaxis_width}は@mvar{z}軸の幅です。
 その値は正の数でなければいけません。
 このオプションは2Dシーンでは効果を持ちません。
 
@@ -3337,7 +3337,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{""} (empty string)
 
 オプション@code{zlabel}文字列は
-@var{z}軸のラベルです。
+@mvar{z}軸のラベルです。
 デフォルトでは、ラベルは書かれません。
 
 これはグローバルグラフィックスオプションなので、
@@ -3367,10 +3367,10 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{auto}
 
 もし@code{zrange}が@code{auto}なら、
-@var{z}座標の範囲は自動的に計算されます。
+@mvar{z}座標の範囲は自動的に計算されます。
 
 もしユーザーが
-@var{z}の特定の区間が欲しいなら、
+@mvar{z}の特定の区間が欲しいなら、
 @code{zrange=[-2, 3]}のようにMaximaリストとして与えられなければいけません。
 
 これはグローバルグラフィックスオプションなので、
@@ -3399,7 +3399,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{auto}
 
 このグラフィックオプションは、
-@var{z}軸上にチックマークを描く方法を制御します。
+@mvar{z}軸上にチックマークを描く方法を制御します。
 
 完全な記述に関しては、@code{xtics}を参照してください。
 
@@ -3415,7 +3415,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{ztics_secondary_axis}が@code{true}なら、
-チックマークとそれらのラベルは補助的な@var{z}軸に沿ってだけプロットされ、
+チックマークとそれらのラベルは補助的な@mvar{z}軸に沿ってだけプロットされ、
 もし@code{false}なら、境界上にプロットされます。
 
 これはグローバルグラフィックスオプションなので、
@@ -3433,7 +3433,7 @@ xy平面は自動的に置かれます;
 デフォルト値: @code{false}
 
 もし@code{ztics_rotate}が@code{true}なら、
-@var{z}軸上のチックマークが90度回転されます。
+@mvar{z}軸上のチックマークが90度回転されます。
 
 これはグローバルグラフィックスオプションなので、
 シーン記述の位置は問題になりません。
@@ -3447,14 +3447,14 @@ xy平面は自動的に置かれます;
 
 @subsection Graphics objects
 
-@deffn  {グラフィックオブジェクト} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
+@deffn  {グラフィックオブジェクト} bars ([@mvar{x1},@mvar{h1},@mvar{w1}], [@mvar{x2},@mvar{h2},@mvar{w2}, ...])
 2D内に垂直バーを描画します。
 
 @b{2D}
 
-@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
+@code{bars ([@mvar{x1},@mvar{h1},@mvar{w1}], [@mvar{x2},@mvar{h2},@mvar{w2}, ...])} 
 は
-値@var{x1}, @var{x2}, ...に中心を持ち、高さ@var{h1}, @var{h2}, ...と幅@var{w1}, @var{w2}, ...を持つバーを描画します。
+値@mvar{x1}, @mvar{x2}, ...に中心を持ち、高さ@mvar{h1}, @mvar{h2}, ...と幅@mvar{w1}, @mvar{w2}, ...を持つバーを描画します。
 
 このオブジェクトは以下の@i{graphic options}に影響されます: @code{key}, 
 @code{fill_color}, @code{fill_density}, @code{line_width}.
@@ -3477,16 +3477,16 @@ xy平面は自動的に置かれます;
 @end example
 @end deffn
 
-@deffn  {グラフィックオブジェクト} cylindrical (@var{radius}, @var{z}, @var{minz}, @var{maxz}, @var{azi}, @var{minazi}, @var{maxazi})
+@deffn  {グラフィックオブジェクト} cylindrical (@mvar{radius}, @mvar{z}, @mvar{minz}, @mvar{maxz}, @mvar{azi}, @mvar{minazi}, @mvar{maxazi})
 円柱座標で定義された3D関数を描画します。
 
 @b{3D}
 
-@code{cylindrical (@var{radius}, @var{z}, @var{minz}, @var{maxz}, @var{azi},
-@var{minazi}, @var{maxazi})}は
-@var{minz}から@var{maxz}までの値を取る@var{z}と
-@var{minazi}から@var{maxazi}まで値を取る@i{方位角} @var{azi}を伴う
-円柱座標で定義された関数@code{@var{radius}(@var{z},@var{azi})}
+@code{cylindrical (@mvar{radius}, @mvar{z}, @mvar{minz}, @mvar{maxz}, @mvar{azi},
+@mvar{minazi}, @mvar{maxazi})}は
+@mvar{minz}から@mvar{maxz}までの値を取る@mvar{z}と
+@mvar{minazi}から@mvar{maxazi}まで値を取る@i{方位角} @mvar{azi}を伴う
+円柱座標で定義された関数@code{@mvar{radius}(@mvar{z},@mvar{azi})}
 をプロットします。
 
 このオブジェクトは以下の@i{グラフィックオプション}に影響されます:
@@ -3506,12 +3506,12 @@ xy平面は自動的に置かれます;
 
 @end deffn
 
-@deffn  {グラフィックオブジェクト} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
+@deffn  {グラフィックオブジェクト} elevation_grid (@mvar{mat},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})
 
-3D空間に行列@var{mat}を描画します。
-@var{x0}から@math{@var{x0} + @var{width}}までの横座標範囲と
-@var{y0}から@math{@var{y0} + @var{height}}までの縦座標範囲で、
-@var{z}値は@var{mat}から取られます。
+3D空間に行列@mvar{mat}を描画します。
+@mvar{x0}から@math{@mvar{x0} + @mvar{width}}までの横座標範囲と
+@mvar{y0}から@math{@mvar{y0} + @mvar{height}}までの縦座標範囲で、
+@mvar{z}値は@mvar{mat}から取られます。
 要素@math{a(1,1)}は点@math{(x0,y0+height)}上に射影され、
 @math{a(1,n)}は@math{(x0+width,y0+height)}上に射影され、
 @math{a(m,1)}は@math{(x0,y0)}上に射影され、
@@ -3545,15 +3545,15 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
+@deffn  {グラフィックオブジェクト} ellipse (@mvar{xc}, @mvar{yc}, @mvar{a}, @mvar{b}, @mvar{ang1}, @mvar{ang2})
 2D内で楕円や円を描画します。
 
 
 @b{2D}
 
-@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
+@code{ellipse (@mvar{xc}, @mvar{yc}, @mvar{a}, @mvar{b}, @mvar{ang1}, @mvar{ang2})}
 は
-@code{[@var{xc}, @var{yc}]}を中心とし、水平と垂直半軸にそれぞれ@var{a}と@var{b}を持ち、角度@var{ang1}から始まり、角度@var{ang2}に等しい振幅を持つ
+@code{[@mvar{xc}, @mvar{yc}]}を中心とし、水平と垂直半軸にそれぞれ@mvar{a}と@mvar{b}を持ち、角度@mvar{ang1}から始まり、角度@mvar{ang2}に等しい振幅を持つ
 楕円をプロットします。
 
 このオブジェクトは以下の@i{graphic options}に影響されます:
@@ -3587,7 +3587,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} errors ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
+@deffn  {グラフィックオブジェクト} errors ([@mvar{x1}, @mvar{x2}, @dots{}], [@mvar{y1}, @mvar{y2}, @dots{}])
 オプション@code{error_type}の値に依存して、
 水平、垂直もしくは両方のエラーバーと共に点を描きます。
 
@@ -3641,15 +3641,15 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 
 
 
-@deffn  {グラフィックオブジェクト} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
-@deffnx {グラフィックオブジェクト} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {グラフィックオブジェクト} explicit (@mvar{fcn},@mvar{var},@mvar{minval},@mvar{maxval})
+@deffnx {グラフィックオブジェクト} explicit (@mvar{fcn},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})
 2Dおよび3Dにて陽関数を描画します。
 
 @b{2D}
 
-@code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})}は
-@var{minval}から@var{maxval}まで値を取る変数@var{var}を伴う
-陽関数@var{fcn}をプロットします。
+@code{explicit(@mvar{fcn},@mvar{var},@mvar{minval},@mvar{maxval})}は
+@mvar{minval}から@mvar{maxval}まで値を取る変数@mvar{var}を伴う
+陽関数@mvar{fcn}をプロットします。
 
 このオブジェクトは以下の@i{graphic options}に影響されます:
 @code{nticks}, 
@@ -3670,11 +3670,11 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 
 @b{3D}
 
-@code{explicit(@var{fcn}, @var{var1}, @var{minval1}, @var{maxval1}, @var{var2},
-@var{minval2}, @var{maxval2})}は
-@var{minval1}から @var{maxval1}まで値を取る変数 @var{var1}と
-@var{minval2}から @var{maxval2}まで値を取る変数 @var{var2}を伴う
-陽関数 @var{fcn}をプロットします。
+@code{explicit(@mvar{fcn}, @mvar{var1}, @mvar{minval1}, @mvar{maxval1}, @mvar{var2},
+@mvar{minval2}, @mvar{maxval2})}は
+@mvar{minval1}から @mvar{maxval1}まで値を取る変数 @mvar{var1}と
+@mvar{minval2}から @mvar{maxval2}まで値を取る変数 @mvar{var2}を伴う
+陽関数 @mvar{fcn}をプロットします。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}, @code{color}.
@@ -3702,18 +3702,18 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
+@deffn  {グラフィックオブジェクト} image (@mvar{im},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})
 2Dにてイメージを描写します。
 
 @b{2D}
 
-@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})}は
+@code{image (@mvar{im},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})}は
 実平面上の
-頂点@code{(@var{x0},@var{y0})}から@code{(x0+@var{width},y0+@var{height})}までの長方形領域に
-イメージ@var{im}をプロットします。
-引数@var{im}は実数の行列、長さ3のベクトルの行列もしくは@var{picture}オブジェクトでなければいけません。
+頂点@code{(@mvar{x0},@mvar{y0})}から@code{(x0+@mvar{width},y0+@mvar{height})}までの長方形領域に
+イメージ@mvar{im}をプロットします。
+引数@mvar{im}は実数の行列、長さ3のベクトルの行列もしくは@mvar{picture}オブジェクトでなければいけません。
 
-もし@var{im}が実数の行列か@var{levels picture}オブジェクトなら、
+もし@mvar{im}が実数の行列か@mvar{levels picture}オブジェクトなら、
 ピクセル値は
 -36から+36に広がる成分を持つ長さ3のベクトルである
 グラフィックオプション@code{palette}に従って解釈されます;
@@ -3740,12 +3740,12 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 それぞれ、
 @code{palette = [3,3,3]}と@code{palette = [7,5,15]}へのショートカットです。
 
-もし@var{im}が長さ3のベクトルの行列か@var{rgb picture}オブジェクトなら、
+もし@mvar{im}が長さ3のベクトルの行列か@mvar{rgb picture}オブジェクトなら、
 それらは赤、緑、青の色成分として解釈されます。
 
 例:
 
-もし@var{im}が実数の行列なら、ピクセル値は
+もし@mvar{im}が実数の行列なら、ピクセル値は
 グラフィックオプション@code{palette}に従って解釈されます。
 @example
 (%i1) load(draw)$
@@ -3762,7 +3762,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 
 @code{colorbox}も参照してください。
 
-もし@var{im}が長さ3のベクトルの行列なら、
+もし@mvar{im}が長さ3のベクトルの行列なら、
 それらは赤、緑、青の色成分として解釈されます。
 @example
 (%i1) load(draw)$
@@ -3806,16 +3806,16 @@ xpmファイルが読み込まれ、描写されます。
 
 @end deffn
 
-@deffn  {グラフィックオブジェクト} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
-@deffnx {グラフィックオブジェクト} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+@deffn  {グラフィックオブジェクト} implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax})
+@deffnx {グラフィックオブジェクト} implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax},@mvar{z},@mvar{zmin},@mvar{zmax})
 2Dおよび3Dにて陰関数を描画します。
 
 @b{2D}
 
-@code{implicit(@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}は
-@var{xmin}から@var{xmax}までの値を取る変数@var{x}と
-@var{ymin}から@var{ymax}までの値を取る変数@var{y}を伴う
-@var{fcn}で定義された陰関数をプロットします。
+@code{implicit(@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax},@mvar{y},@mvar{ymin},@mvar{ymax})}は
+@mvar{xmin}から@mvar{xmax}までの値を取る変数@mvar{x}と
+@mvar{ymin}から@mvar{ymax}までの値を取る変数@mvar{y}を伴う
+@mvar{fcn}で定義された陰関数をプロットします。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
 @code{ip_grid}, 
@@ -3839,11 +3839,11 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}は
-@var{xmin}から@var{xmax}までの値を取る変数@var{x}と
-@var{ymin}から@var{ymax}までの値を取る変数@var{y}と
-@var{zmin}から@var{zmax}までの値を取る変数@var{z}を伴う
-@var{fcn}で定義された陰表面をプロットします。
+@code{implicit (@mvar{fcn},@mvar{x},@mvar{xmin},@mvar{xmax}, @mvar{y},@mvar{ymin},@mvar{ymax}, @mvar{z},@mvar{zmin},@mvar{zmax})}は
+@mvar{xmin}から@mvar{xmax}までの値を取る変数@mvar{x}と
+@mvar{ymin}から@mvar{ymax}までの値を取る変数@mvar{y}と
+@mvar{zmin}から@mvar{zmax}までの値を取る変数@mvar{z}を伴う
+@mvar{fcn}で定義された陰表面をプロットします。
 このオブジェクトは@i{マーチングキューブアルゴリズム}を実装します。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
@@ -3867,8 +3867,8 @@ xpmファイルが読み込まれ、描写されます。
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} label ([@var{string},@var{x},@var{y}],...)
-@deffnx {グラフィックオブジェクト} label ([@var{string},@var{x},@var{y},@var{z}],...)
+@deffn  {グラフィックオブジェクト} label ([@mvar{string},@mvar{x},@mvar{y}],...)
+@deffnx {グラフィックオブジェクト} label ([@mvar{string},@mvar{x},@mvar{y},@mvar{z}],...)
 2Dと3D内でラベルを書きます。
 
 色付けられたラベルはGnuplot 4.3でだけ機能します。
@@ -3880,8 +3880,8 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{2D}
 
-@code{label([@var{string},@var{x},@var{y}])}は
-点@code{[@var{x},@var{y}]}に@var{string}を書きます。
+@code{label([@mvar{string},@mvar{x},@mvar{y}])}は
+点@code{[@mvar{x},@mvar{y}]}に@mvar{string}を書きます。
 
 
 例:
@@ -3900,8 +3900,8 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{label([@var{string},@var{x},@var{y},@var{z}])}は、
-点@code{[@var{x},@var{y},@var{z}]}に@var{string}を書きます。
+@code{label([@mvar{string},@mvar{x},@mvar{y},@mvar{z}])}は、
+点@code{[@mvar{x},@mvar{y},@mvar{z}]}に@mvar{string}を書きます。
 
 例:
 
@@ -3920,11 +3920,11 @@ xpmファイルが読み込まれ、描写されます。
 
 @end deffn
 
-@deffn  {グラフィックオブジェクト} mesh (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
-3D空間内に行列@var{mat}を描画します。
-@var{z}値は@var{mat}から取られます。
-横座標範囲は@var{x0}から@math{@var{x0} + @var{width}}までを取り、
-座標は@var{y0}から@math{@var{y0} + @var{height}}までを取ります。
+@deffn  {グラフィックオブジェクト} mesh (@mvar{mat},@mvar{x0},@mvar{y0},@mvar{width},@mvar{height})
+3D空間内に行列@mvar{mat}を描画します。
+@mvar{z}値は@mvar{mat}から取られます。
+横座標範囲は@mvar{x0}から@math{@mvar{x0} + @mvar{width}}までを取り、
+座標は@mvar{y0}から@math{@mvar{y0} + @mvar{height}}までを取ります。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
 @code{line_type},
@@ -3954,8 +3954,8 @@ xpmファイルが読み込まれ、描写されます。
 
 @end deffn
 
-@deffn  {グラフィックオブジェクト} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
-@deffnx {グラフィックオブジェクト} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+@deffn  {グラフィックオブジェクト} parametric (@mvar{xfun},@mvar{yfun},@mvar{par},@mvar{parmin},@mvar{parmax})
+@deffnx {グラフィックオブジェクト} parametric (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{par},@mvar{parmin},@mvar{parmax})
 2Dおよび3Dにてパラメトリック関数を描画します。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
@@ -3964,10 +3964,10 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{2D}
 
-コマンド @code{parametric(@var{xfun}, @var{yfun}, @var{par}, @var{parmin},
-@var{parmax})}は
-@var{parmin}から@var{parmax}まで値を取るパラメータ@var{par}を伴う
-パラメトリック関数@code{[@var{xfun}, @var{yfun}]}をプロットします。
+コマンド @code{parametric(@mvar{xfun}, @mvar{yfun}, @mvar{par}, @mvar{parmin},
+@mvar{parmax})}は
+@mvar{parmin}から@mvar{parmax}まで値を取るパラメータ@mvar{par}を伴う
+パラメトリック関数@code{[@mvar{xfun}, @mvar{yfun}]}をプロットします。
 
 例:
 
@@ -3981,11 +3981,11 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{parametric (@var{xfun}, @var{yfun}, @var{zfun}, @var{par}, @var{parmin},
-@var{parmax})}は
-@var{parmin}から@var{parmax}まで値を取るパラメータ@var{par}を伴う
+@code{parametric (@mvar{xfun}, @mvar{yfun}, @mvar{zfun}, @mvar{par}, @mvar{parmin},
+@mvar{parmax})}は
+@mvar{parmin}から@mvar{parmax}まで値を取るパラメータ@mvar{par}を伴う
 パラメトリック曲線
-@code{[@var{xfun}, @var{yfun}, @var{zfun}]}をプロットします。
+@code{[@mvar{xfun}, @mvar{yfun}, @mvar{zfun}]}をプロットします。
 
 例:
 
@@ -4009,17 +4009,17 @@ xpmファイルが読み込まれ、描写されます。
 
 
 
-@deffn  {グラフィックオブジェクト} parametric_surface (@var{xfun}, @var{yfun}, @var{zfun}, @var{par1}, @var{par1min}, @var{par1max}, @var{par2}, @var{par2min}, @var{par2max})
+@deffn  {グラフィックオブジェクト} parametric_surface (@mvar{xfun}, @mvar{yfun}, @mvar{zfun}, @mvar{par1}, @mvar{par1min}, @mvar{par1max}, @mvar{par2}, @mvar{par2min}, @mvar{par2max})
 3Dにおいてパラメトリックな表面を描画します。
 
 @b{3D}
 
-コマンド @code{parametric_surface (@var{xfun}, @var{yfun}, @var{zfun},
-@var{par1}, @var{par1min}, @var{par1max}, @var{par2}, @var{par2min},
-@var{par2max})}は
-@var{par1min}から @var{par1max}までを値として取るパラメータ @var{par1}と
-@var{par2min}から @var{par2max}までを値として取るパラメータ @var{par2}を伴う
-パラメトリックな表面 @code{[@var{xfun}, @var{yfun}, @var{zfun}]}を
+コマンド @code{parametric_surface (@mvar{xfun}, @mvar{yfun}, @mvar{zfun},
+@mvar{par1}, @mvar{par1min}, @mvar{par1max}, @mvar{par2}, @mvar{par2min},
+@mvar{par2max})}は
+@mvar{par1min}から @mvar{par1max}までを値として取るパラメータ @mvar{par1}と
+@mvar{par2min}から @mvar{par2max}までを値として取るパラメータ @mvar{par2}を伴う
+パラメトリックな表面 @code{[@mvar{xfun}, @mvar{yfun}, @mvar{zfun}]}を
 プロットします。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
@@ -4047,17 +4047,17 @@ xpmファイルが読み込まれ、描写されます。
 
 @end deffn
 
-@deffn  {グラフィックオブジェクト} points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
-@deffnx {グラフィックオブジェクト} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
-@deffnx {グラフィックオブジェクト} points ([@var{y1},@var{y2},...])
-@deffnx {グラフィックオブジェクト} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
-@deffnx {グラフィックオブジェクト} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
-@deffnx {グラフィックオブジェクト} points (@var{matrix})
-@deffnx {グラフィックオブジェクト} points (@var{1d_y_array})
-@deffnx {グラフィックオブジェクト} points (@var{1d_x_array}, @var{1d_y_array})
-@deffnx {グラフィックオブジェクト} points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})
-@deffnx {グラフィックオブジェクト} points (@var{2d_xy_array})
-@deffnx {グラフィックオブジェクト} points (@var{2d_xyz_array})
+@deffn  {グラフィックオブジェクト} points ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])
+@deffnx {グラフィックオブジェクト} points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])
+@deffnx {グラフィックオブジェクト} points ([@mvar{y1},@mvar{y2},...])
+@deffnx {グラフィックオブジェクト} points ([[@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}],...])
+@deffnx {グラフィックオブジェクト} points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...], [@mvar{z1},@mvar{z2},...])
+@deffnx {グラフィックオブジェクト} points (@mvar{matrix})
+@deffnx {グラフィックオブジェクト} points (@mvar{1d_y_array})
+@deffnx {グラフィックオブジェクト} points (@mvar{1d_x_array}, @mvar{1d_y_array})
+@deffnx {グラフィックオブジェクト} points (@mvar{1d_x_array}, @mvar{1d_y_array}, @mvar{1d_z_array})
+@deffnx {グラフィックオブジェクト} points (@mvar{2d_xy_array})
+@deffnx {グラフィックオブジェクト} points (@mvar{2d_xyz_array})
 
 2Dや3Dの中で点を描画します。
 
@@ -4069,25 +4069,25 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{2D}
 
-@code{points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])}や
-@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}は
+@code{points ([[@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}],...])}や
+@code{points ([@mvar{x1},@mvar{x2},...], [@mvar{y1},@mvar{y2},...])}は
 点@code{[x1,y1]}, @code{[x2,y2]},などをプロットします。
 もし横座標が与えられないなら、
 それらは連続する正の整数に設定されます。
 だから、
-@code{points ([@var{y1},@var{y2},...])}は、点@code{[1,@var{y1}]}, @code{[2,@var{y2}]}などを描画します。
-もし@var{matrix}が2列または2行行列なら、
-@code{points (@var{matrix})}は関連した点を描画します。
-もし@var{matrix}が1列または1行行列なら、
+@code{points ([@mvar{y1},@mvar{y2},...])}は、点@code{[1,@mvar{y1}]}, @code{[2,@mvar{y2}]}などを描画します。
+もし@mvar{matrix}が2列または2行行列なら、
+@code{points (@mvar{matrix})}は関連した点を描画します。
+もし@mvar{matrix}が1列または1行行列なら、
 横座標が自動的に割り当てられます。
 
-もし@var{1d_y_array}が数の1Dのlisp配列なら、
-@code{points (@var{1d_y_array})}は
+もし@mvar{1d_y_array}が数の1Dのlisp配列なら、
+@code{points (@mvar{1d_y_array})}は
 横座標を連続する正の整数に設定してそれらをプロットします。
-@code{points (@var{1d_x_array}, @var{1d_y_array})}は
+@code{points (@mvar{1d_x_array}, @mvar{1d_y_array})}は
 引数として渡された2つの配列から取られた座標を持つ点をプロットします。
-もし@var{2d_xy_array}が2列の2D配列なら、
-@code{points (@var{2d_xy_array})}は平面上に対応する点をプロットします。
+もし@mvar{2d_xy_array}が2列の2D配列なら、
+@code{points (@mvar{2d_xy_array})}は平面上に対応する点をプロットします。
 
 例:
 
@@ -4157,19 +4157,19 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{points([[@var{x1}, @var{y1}, @var{z1}], [@var{x2}, @var{y2}, @var{z2}],
+@code{points([[@mvar{x1}, @mvar{y1}, @mvar{z1}], [@mvar{x2}, @mvar{y2}, @mvar{z2}],
 ...])} や
-@code{points([@var{x1}, @var{x2}, ...], [@var{y1}, @var{y2}, ...],
-[@var{z1}, @var{z2}, ...])}は
-点@code{[@var{x1}, @var{y1}, @var{z1}]}, @code{[@var{x2}, @var{y2}, @var{z2}]}などをプロットします。
-もし @var{matrix}が3列または3行行列なら、
-@code{points (@var{matrix})}は関連した点を描画します。
+@code{points([@mvar{x1}, @mvar{x2}, ...], [@mvar{y1}, @mvar{y2}, ...],
+[@mvar{z1}, @mvar{z2}, ...])}は
+点@code{[@mvar{x1}, @mvar{y1}, @mvar{z1}]}, @code{[@mvar{x2}, @mvar{y2}, @mvar{z2}]}などをプロットします。
+もし @mvar{matrix}が3列または3行行列なら、
+@code{points (@mvar{matrix})}は関連した点を描画します。
 
 引数がlisp配列の時、
-@code{points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})}は
+@code{points (@mvar{1d_x_array}, @mvar{1d_y_array}, @mvar{1d_z_array})}は
 3つの1D配列から座標を取ります。
-もし@var{2d_xyz_array}が3列または3行を持つ2D配列なら、
-@code{points (@var{2d_xyz_array})}は対応する点をプロットします。
+もし@mvar{2d_xyz_array}が3列または3行を持つ2D配列なら、
+@code{points (@mvar{2d_xyz_array})}は対応する点をプロットします。
 
 例:
 
@@ -4244,15 +4244,15 @@ xpmファイルが読み込まれ、描写されます。
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
+@deffn  {グラフィックオブジェクト} polar (@mvar{radius},@mvar{ang},@mvar{minang},@mvar{maxang})
 極座標で定義された2D関数を描画します。
 
 @b{2D}
 
-@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})}は
-@var{minang}から@var{maxang}まで値を取る変数@var{ang}を伴う
+@code{polar (@mvar{radius},@mvar{ang},@mvar{minang},@mvar{maxang})}は
+@mvar{minang}から@mvar{maxang}まで値を取る変数@mvar{ang}を伴う
 極座標で定義された関数
-@code{@var{radius}(@var{ang})}
+@code{@mvar{radius}(@mvar{ang})}
 をプロットします。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
@@ -4280,15 +4280,15 @@ xpmファイルが読み込まれ、描写されます。
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} polygon ([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}], @dots{}])
-@deffnx {グラフィックオブジェクト} polygon ([@var{x1}, @var{x2}, @dots{}], [@var{y1}, @var{y2}, @dots{}])
+@deffn  {グラフィックオブジェクト} polygon ([[@mvar{x1}, @mvar{y1}], [@mvar{x2}, @mvar{y2}], @dots{}])
+@deffnx {グラフィックオブジェクト} polygon ([@mvar{x1}, @mvar{x2}, @dots{}], [@mvar{y1}, @mvar{y2}, @dots{}])
 2D内でポリゴンを描画します。
 
 @b{2D}
 
-コマンド @code{polygon ([[@var{x1}, @var{y1}], [@var{x2}, @var{y2}],...])}や
-@code{polygon ([@var{x1}, @var{x2},...], [@var{y1}, @var{y2},...])}は
-頂点@code{[@var{x1}, @var{y1}]}, @code{[@var{x2}, @var{y2}]}などを持つポリゴンを
+コマンド @code{polygon ([[@mvar{x1}, @mvar{y1}], [@mvar{x2}, @mvar{y2}],...])}や
+@code{polygon ([@mvar{x1}, @mvar{x2},...], [@mvar{y1}, @mvar{y2},...])}は
+頂点@code{[@mvar{x1}, @mvar{y1}]}, @code{[@mvar{x2}, @mvar{y2}]}などを持つポリゴンを
 平面上にプロットします。
 
 このオブジェクトは以下の
@@ -4316,15 +4316,15 @@ xpmファイルが読み込まれ、描写されます。
 @end deffn
 
 
-@deffn  {グラフィックオブジェクト} quadrilateral (@var{point_1}, @var{point_2}, @var{point_3}, @var{point_4})
+@deffn  {グラフィックオブジェクト} quadrilateral (@mvar{point_1}, @mvar{point_2}, @mvar{point_3}, @mvar{point_4})
 四辺形を描画します。
 
 @b{2D}
 
-@code{quadrilateral ([@var{x1}, @var{y1}], [@var{x2}, @var{y2}],
-[@var{x3}, @var{y3}], [@var{x4}, @var{y4}])}は
-頂点@code{[@var{x1}, @var{y1}]}, @code{[@var{x2}, @var{y2}]},
-@code{[@var{x3}, @var{y3}]}, @code{[@var{x4}, @var{y4}]}を持つ四辺形を描画します。
+@code{quadrilateral ([@mvar{x1}, @mvar{y1}], [@mvar{x2}, @mvar{y2}],
+[@mvar{x3}, @mvar{y3}], [@mvar{x4}, @mvar{y4}])}は
+頂点@code{[@mvar{x1}, @mvar{y1}]}, @code{[@mvar{x2}, @mvar{y2}]},
+@code{[@mvar{x3}, @mvar{y3}]}, @code{[@mvar{x4}, @mvar{y4}]}を持つ四辺形を描画します。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:@*
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width},
@@ -4341,10 +4341,10 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{quadrilateral([@var{x1}, @var{y1}, @var{z1}], [@var{x2}, @var{y2},
-@var{z2}], [@var{x3}, @var{y3}, @var{z3}], [@var{x4}, @var{y4}, @var{z4}])}は
-頂点@code{[@var{x1}, @var{y1}, @var{z1}]}, @code{[@var{x2}, @var{y2}, @var{z2}]},
-@code{[@var{x3}, @var{y3}, @var{z3}]}, @code{[@var{x4}, @var{y4}, @var{z4}]}を持つ
+@code{quadrilateral([@mvar{x1}, @mvar{y1}, @mvar{z1}], [@mvar{x2}, @mvar{y2},
+@mvar{z2}], [@mvar{x3}, @mvar{y3}, @mvar{z3}], [@mvar{x4}, @mvar{y4}, @mvar{z4}])}は
+頂点@code{[@mvar{x1}, @mvar{y1}, @mvar{z1}]}, @code{[@mvar{x2}, @mvar{y2}, @mvar{z2}]},
+@code{[@mvar{x3}, @mvar{y3}, @mvar{z3}]}, @code{[@mvar{x4}, @mvar{y4}, @mvar{z4}]}を持つ
 四辺形を描画します。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます: @code{line_type}, 
@@ -4355,14 +4355,14 @@ xpmファイルが読み込まれ、描写されます。
 @closecatbox
 @end deffn
 
-@deffn  {グラフィックオブジェクト} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
+@deffn  {グラフィックオブジェクト} rectangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}])
 2D内で長方形を描画します。
 
 @b{2D}
 
-@code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])}は、
+@code{rectangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}])}は、
 対角頂点
-@code{[@var{x1},@var{y1}]}と@code{[@var{x2},@var{y2}]}
+@code{[@mvar{x1},@mvar{y1}]}と@code{[@mvar{x2},@mvar{y2}]}
 を持つ長方形を描画します。
 
 このオブジェクトは以下の
@@ -4398,13 +4398,13 @@ xpmファイルが読み込まれ、描写されます。
 
 
 
-@deffn  {グラフィックオブジェクト} region (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+@deffn  {グラフィックオブジェクト} region (@mvar{expr},@mvar{var1},@mvar{minval1},@mvar{maxval1},@mvar{var2},@mvar{minval2},@mvar{maxval2})
 平面上に不等式で定義された領域を描画します。
 
 @b{2D}
-@var{expr}は不等式とブーリアン演算子@code{and}, @code{or}, @code{not}で形成された式です。
+@mvar{expr}は不等式とブーリアン演算子@code{and}, @code{or}, @code{not}で形成された式です。
 領域は
-@math{[@var{minval1}, @var{maxval1}]}と@math{[@var{minval2}, @var{maxval2}]}で
+@math{[@mvar{minval1}, @mvar{maxval1}]}と@math{[@mvar{minval2}, @mvar{maxval2}]}で
 定義された長方形で区切られています。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます: @code{fill_color}, 
@@ -4425,16 +4425,16 @@ xpmファイルが読み込まれ、描写されます。
 
 
 
-@deffn  {グラフィックオブジェクト} spherical (@var{radius}, @var{azi}, @var{minazi}, @var{maxazi}, @var{zen}, @var{minzen}, @var{maxzen})
+@deffn  {グラフィックオブジェクト} spherical (@mvar{radius}, @mvar{azi}, @mvar{minazi}, @mvar{maxazi}, @mvar{zen}, @mvar{minzen}, @mvar{maxzen})
 球座標で定義された3D関数を描画します。
 
 @b{3D}
 
-@code{spherical(@var{radius}, @var{azi}, @var{minazi}, @var{maxazi}, @var{zen},
-@var{minzen}, @var{maxzen})}は
-@var{minazi}から @var{maxazi}まで値を取る @i{方位角} @var{azi}と
-@var{minzen}から @var{maxzen}まで値を取る @i{天頂角} @var{zen}を伴う
-球座標で定義された関数 @code{@var{radius}(@var{azi}, @var{zen})}
+@code{spherical(@mvar{radius}, @mvar{azi}, @mvar{minazi}, @mvar{maxazi}, @mvar{zen},
+@mvar{minzen}, @mvar{maxzen})}は
+@mvar{minazi}から @mvar{maxazi}まで値を取る @i{方位角} @mvar{azi}と
+@mvar{minzen}から @mvar{maxzen}まで値を取る @i{天頂角} @mvar{zen}を伴う
+球座標で定義された関数 @code{@mvar{radius}(@mvar{azi}, @mvar{zen})}
 を描画します。
 
 
@@ -4457,12 +4457,12 @@ xpmファイルが読み込まれ、描写されます。
 
 
 
-@deffn  {グラフィックオブジェクト} triangle (@var{point_1}, @var{point_2}, @var{point_3})
+@deffn  {グラフィックオブジェクト} triangle (@mvar{point_1}, @mvar{point_2}, @mvar{point_3})
 三角形を描画します。
 
 @b{2D}
 
-@code{triangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}])}は、頂点@code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, @code{[@var{x3},@var{y3}]}を持つ三角形を描画します。
+@code{triangle ([@mvar{x1},@mvar{y1}], [@mvar{x2},@mvar{y2}], [@mvar{x3},@mvar{y3}])}は、頂点@code{[@mvar{x1},@mvar{y1}]}, @code{[@mvar{x2},@mvar{y2}]}, @code{[@mvar{x3},@mvar{y3}]}を持つ三角形を描画します。
 
 このオブジェクトは、
 以下の@i{グラフィックオプション}に影響されます:@*
@@ -4480,9 +4480,9 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{triangle ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}])}は
-頂点@code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]},
-@code{[@var{x3},@var{y3},@var{z3}]}を持つ三角形を描画します。
+@code{triangle ([@mvar{x1},@mvar{y1},@mvar{z1}], [@mvar{x2},@mvar{y2},@mvar{z2}], [@mvar{x3},@mvar{y3},@mvar{z3}])}は
+頂点@code{[@mvar{x1},@mvar{y1},@mvar{z1}]}, @code{[@mvar{x2},@mvar{y2},@mvar{z2}]},
+@code{[@mvar{x3},@mvar{y3},@mvar{z3}]}を持つ三角形を描画します。
 
 このオブジェクトは以下の@i{グラフィックオプション}に影響されます:
 @code{line_type}, @code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, @code{transform}.
@@ -4493,16 +4493,16 @@ xpmファイルが読み込まれ、描写されます。
 
 @end deffn
 
-@deffn  {グラフィックオブジェクト} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
+@deffn  {グラフィックオブジェクト} tube (@mvar{xfun},@mvar{yfun},@mvar{zfun},@mvar{rfun},@mvar{p},@mvar{pmin},@mvar{pmax})
 3Dにおいて
 径が変化する管を描画します。
 
 @b{3D}
 
-@code{[@var{xfun},@var{yfun},@var{zfun}]}は
-@var{pmin}から@var{pmax}まで値を取るパラメータ@var{p}を伴う
+@code{[@mvar{xfun},@mvar{yfun},@mvar{zfun}]}は
+@mvar{pmin}から@mvar{pmax}まで値を取るパラメータ@mvar{p}を伴う
 パラメトリックな曲線です。
-パラメトリックな曲線上に中心を持ち、曲線と垂直な半径@var{rfun}の円が置かれます。
+パラメトリックな曲線上に中心を持ち、曲線と垂直な半径@mvar{rfun}の円が置かれます。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
 @code{xu_grid}, 
@@ -4528,8 +4528,8 @@ xpmファイルが読み込まれ、描写されます。
 
 
 
-@deffn  {グラフィックオブジェクト} vector ([@var{x},@var{y}], [@var{dx},@var{dy}])
-@deffnx {グラフィックオブジェクト} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+@deffn  {グラフィックオブジェクト} vector ([@mvar{x},@mvar{y}], [@mvar{dx},@mvar{dy}])
+@deffnx {グラフィックオブジェクト} vector ([@mvar{x},@mvar{y},@mvar{z}], [@mvar{dx},@mvar{dy},@mvar{dz}])
 2Dおよび3D内でベクトルを描画します。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
@@ -4539,8 +4539,8 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{2D}
 
-@code{vector([@var{x},@var{y}], [@var{dx},@var{dy}])}は
-@code{[@var{x},@var{y}]}を原点とするベクトル@code{[@var{dx},@var{dy}]}を
+@code{vector([@mvar{x},@mvar{y}], [@mvar{dx},@mvar{dy}])}は
+@code{[@mvar{x},@mvar{y}]}を原点とするベクトル@code{[@mvar{dx},@mvar{dy}]}を
 プロットします。
 
 例:
@@ -4561,9 +4561,9 @@ xpmファイルが読み込まれ、描写されます。
 
 @b{3D}
 
-@code{vector([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])}は
-@code{[@var{x},@var{y},@var{z}]}を原点とする
-ベクトル@code{[@var{dx},@var{dy},@var{dz}]}をプロットします。
+@code{vector([@mvar{x},@mvar{y},@mvar{z}], [@mvar{dx},@mvar{dy},@mvar{dz}])}は
+@code{[@mvar{x},@mvar{y},@mvar{z}]}を原点とする
+ベクトル@code{[@mvar{dx},@mvar{dy},@mvar{dz}]}をプロットします。
 
 例:
 
@@ -4585,9 +4585,9 @@ xpmファイルが読み込まれ、描写されます。
 @node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, draw
 @section Functions and Variables for pictures
 
-@deffn  {関数} get_pixel (@var{pic},@var{x},@var{y})
+@deffn  {関数} get_pixel (@mvar{pic},@mvar{x},@mvar{y})
 ピクチャからピクセルを返します。
-座標@var{x}と@var{y}は
+座標@mvar{x}と@mvar{y}は
 0からそれぞれ@code{width-1}と@code{height-1}までの範囲を取ります。
 
 
@@ -4598,24 +4598,24 @@ xpmファイルが読み込まれ、描写されます。
 @end deffn
 
 
-@deffn  {関数} make_level_picture (@var{data})
-@deffnx {関数} make_level_picture (@var{data},@var{width},@var{height})
-レベル@var{picture}オブジェクトを返します。
-@code{make_level_picture (@var{data})}は
-行列@var{data}から
-@var{picture}オブジェクトを作ります。
-@code{make_level_picture (@var{data},@var{width},@var{height})}は
+@deffn  {関数} make_level_picture (@mvar{data})
+@deffnx {関数} make_level_picture (@mvar{data},@mvar{width},@mvar{height})
+レベル@mvar{picture}オブジェクトを返します。
+@code{make_level_picture (@mvar{data})}は
+行列@mvar{data}から
+@mvar{picture}オブジェクトを作ります。
+@code{make_level_picture (@mvar{data},@mvar{width},@mvar{height})}は
 数のリストからオブジェクトを作ります;
-この場合、@var{width}と@var{height}両方を与えなければいけません。
+この場合、@mvar{width}と@mvar{height}両方を与えなければいけません。
 
-返された@var{picture}オブジェクトは以下の4つの部分を含みます:
+返された@mvar{picture}オブジェクトは以下の4つの部分を含みます:
 
 @enumerate
 @item シンボル @code{level}
 @item イメージの幅
 @item イメージの高さ
 @item 0から255までの範囲のピクセルデータを持つ整数配列
-引数@var{data}は0から255までの数のみを含まなければいけません;
+引数@mvar{data}は0から255までの数のみを含まなければいけません;
 負の数は0に置き換えられ、255よりも大きな数は255に設定されます。
 @end enumerate
 
@@ -4641,17 +4641,17 @@ xpmファイルが読み込まれ、描写されます。
 
 @end deffn
 
-@deffn  {関数} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
-rgb色付けされた@var{picture}オブジェクトを返します。
+@deffn  {関数} make_rgb_picture (@mvar{redlevel},@mvar{greenlevel},@mvar{bluelevel})
+rgb色付けされた@mvar{picture}オブジェクトを返します。
 3つ引数すべては赤、緑、青のレベルを持つレベルピクチャでなければいけません;
 
-返された@var{picture}オブジェクトは以下の4つの部分を含みます:
+返された@mvar{picture}オブジェクトは以下の4つの部分を含みます:
 
 @enumerate
 @item シンボル @code{rgb}
 @item イメージの幅
 @item イメージの高さ
-@item 0から255までの範囲のピクセルデータを持つ長さ@var{3*width*height}の整数配列。
+@item 0から255までの範囲のピクセルデータを持つ長さ@mvar{3*width*height}の整数配列。
 それぞれのピクセルは。3つの連続する数 (赤、緑、青)で表現されます。
 @end enumerate
 
@@ -4676,8 +4676,8 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 
 @end deffn
 
-@deffn  {関数} negative_picture (@var{pic})
-(@var{level}または@var{rgb})ピクチャの反転を返します。
+@deffn  {関数} negative_picture (@mvar{pic})
+(@mvar{level}または@mvar{rgb})ピクチャの反転を返します。
 
 @opencatbox
 @category{Package draw}
@@ -4685,7 +4685,7 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 @end deffn
 
 
-@deffn  {関数} picture_equalp (@var{x},@var{y})
+@deffn  {関数} picture_equalp (@mvar{x},@mvar{y})
 等しいピクチャの場合@code{true}を、そうでなければ@code{false}
 を返します。
 
@@ -4695,7 +4695,7 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 
 @end deffn
 
-@deffn  {関数} picturep (@var{x})
+@deffn  {関数} picturep (@mvar{x})
 もし引数が適正なイメージなら
 @code{true}を、そうでなければ@code{false}を返します。
 
@@ -4705,7 +4705,7 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 
 @end deffn
 
-@deffn  {関数} read_xpm (@var{xpm_file})
+@deffn  {関数} read_xpm (@mvar{xpm_file})
 xpm形式のファイルを読み、ピクチャオブジェクトを返します。
 
 @opencatbox
@@ -4716,9 +4716,9 @@ xpm形式のファイルを読み、ピクチャオブジェクトを返しま�
 
 
 
-@deffn  {関数} rgb2level (@var{pic})
-@var{rgb}ピクチャを
-赤、緑、青チャンネルを平均することで@var{level}の１つに変換します。
+@deffn  {関数} rgb2level (@mvar{pic})
+@mvar{rgb}ピクチャを
+赤、緑、青チャンネルを平均することで@mvar{level}の１つに変換します。
 
 @opencatbox
 @category{Package draw}
@@ -4729,10 +4729,10 @@ xpm形式のファイルを読み、ピクチャオブジェクトを返しま�
 
 
 
-@deffn  {関数} take_channel (@var{im},@var{color})
-もし引数@var{color}が@code{red}, @code{green}または@code{blue}なら、
+@deffn  {関数} take_channel (@mvar{im},@mvar{color})
+もし引数@mvar{color}が@code{red}, @code{green}または@code{blue}なら、
 関数@code{take_channel}は
-ピクチャ@var{im}の対応する色チャンネルを返します。
+ピクチャ@mvar{im}の対応する色チャンネルを返します。
 例:
 
 @example
@@ -4785,7 +4785,7 @@ Each component of
 @end defvr
 
 
-@deffn  {関数} numbered_boundaries (@var{nlist})
+@deffn  {関数} numbered_boundaries (@mvar{nlist})
 その数(@code{boundaries_array}座標)でラベルされた
 多角形セグメント(境界)のリストを描画します。
 これは新しい地理的なものを作る時に非常に役立ちます。
@@ -4807,8 +4807,8 @@ Each component of
 @end deffn
 
 
-@deffn  {関数} make_poly_continent (@var{continent_name})
-@deffnx  {関数} make_poly_continent (@var{country_list})
+@deffn  {関数} make_poly_continent (@mvar{continent_name})
+@deffnx  {関数} make_poly_continent (@mvar{country_list})
 色付けられた大陸や国のリストを描画するのに必要なポリゴンを作ります。
 
 例:
@@ -4831,7 +4831,7 @@ Each component of
 
 
 
-@deffn  {関数} make_poly_country (@var{country_name})
+@deffn  {関数} make_poly_country (@mvar{country_name})
 色付けられた国を描画するのに必要なポリゴンを作ります。
 もし島が存在するなら、1つの国はただ1つ以上のポリゴンで定義され得ます。
 
@@ -4850,9 +4850,9 @@ Each component of
 @end deffn
 
 
-@deffn  {関数} make_polygon (@var{nlist})
+@deffn  {関数} make_polygon (@mvar{nlist})
 境界添字から@code{polygon}オブジェクトを返します。
-引数@var{nlist}は@code{boundaries_array}の成分のリストです。
+引数@mvar{nlist}は@code{boundaries_array}の成分のリストです。
 
 例:
 
@@ -4913,8 +4913,8 @@ appends arrays of coordinates
 
 @end deffn
 
-@deffn  {関数} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
-頂点(@var{x1},@var{y1}) -左上- と(@var{x2},@var{y2}) -右下-の長方形に完全に含まれる
+@deffn  {関数} region_boundaries (@mvar{x1},@mvar{y1},@mvar{x2},@mvar{y2})
+頂点(@mvar{x1},@mvar{y1}) -左上- と(@mvar{x2},@mvar{y2}) -右下-の長方形に完全に含まれる
 グローバル変数@code{boundaries_array}の多角形セグメント検出します。
 
 
@@ -4935,8 +4935,8 @@ appends arrays of coordinates
 @end deffn
 
 
-@deffn  {関数} region_boundaries_plus (@var{x1},@var{y1},@var{x2},@var{y2})
-頂点(@var{x1},@var{y1}) -左上- と(@var{x2},@var{y2}) -右下-で定義された長方形に少なくとも1つ頂点を含まれる
+@deffn  {関数} region_boundaries_plus (@mvar{x1},@mvar{y1},@mvar{x2},@mvar{y2})
+頂点(@mvar{x1},@mvar{y1}) -左上- と(@mvar{x2},@mvar{y2}) -右下-で定義された長方形に少なくとも1つ頂点を含まれる
 グローバル変数@code{boundaries_array}の多角形セグメント検出します。
 多角形セグメント検出します。
 
@@ -4959,15 +4959,15 @@ appends arrays of coordinates
 @subsection Graphic objects
 
 
-@deffn  {グラフィックオブジェクト} geomap (@var{numlist})
-@deffnx {グラフィックオブジェクト} geomap (@var{numlist},@var{3Dprojection})
+@deffn  {グラフィックオブジェクト} geomap (@mvar{numlist})
+@deffnx {グラフィックオブジェクト} geomap (@mvar{numlist},@mvar{3Dprojection})
 2Dと3Dに関して地図を描画します。
 
 @b{2D}
 
 この関数はグローバル変数@code{boundaries_array}と一緒に機能します。
 
-引数@var{numlist}は
+引数@mvar{numlist}は
 数や数のリストを含むリストです。
 これらすべての数は、
 グローバル配列@code{boundaries_array}の成分を表す
@@ -4977,7 +4977,7 @@ Each component of
 @code{boundaries_array}のそれぞれの成分は
 浮動小数点量の配列であり、多角形セグメントやマップ境界の座標です。
 
-@code{geomap (@var{numlist})}は
+@code{geomap (@mvar{numlist})}は
 引数を平坦化し、@code{boundaries_array}の中に関連した境界を描画します。
 
 このオブジェクトは以下の@i{グラフィックオプション}の影響を受けます:
@@ -5066,18 +5066,18 @@ Each component of
 
 @b{3D}
 
-@code{geomap (@var{numlist})}は地図境界を
+@code{geomap (@mvar{numlist})}は地図境界を
 中心が(0,0,0)で半径1の球上に射影します。
-@code{geomap (@var{numlist},@var{3Dprojection})}を使うことで、
+@code{geomap (@mvar{numlist},@mvar{3Dprojection})}を使うことで、
 球や射影タイプを変えることが可能です。
 
 利用可能な3D射影:
 
 @itemize @bullet
 @item
-@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}:
+@code{[spherical_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r}]}:
 地図境界を
-中心(@var{x},@var{y},@var{z})、半径@var{r}の球上に
+中心(@mvar{x},@mvar{y},@mvar{z})、半径@mvar{r}の球上に
 射影します。
 
 @example
@@ -5088,10 +5088,10 @@ Each component of
 @end example
 
 @item
-@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}:
+@code{[cylindrical_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r},@mvar{rc}]}:
 球地図境界を
-中心(@var{x},@var{y},@var{z})の半径@var{r}の地球の極を通る軸を持ち
-半径@var{rc}の円柱に再射影します。
+中心(@mvar{x},@mvar{y},@mvar{z})の半径@mvar{r}の地球の極を通る軸を持ち
+半径@mvar{rc}の円柱に再射影します。
 
 @example
 (%i1) load(worldmap)$
@@ -5100,10 +5100,10 @@ Each component of
 @end example
 
 @item
-@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}:
+@code{[conic_projection,@mvar{x},@mvar{y},@mvar{z},@mvar{r},@mvar{alpha}]}:
 球地図境界を
-中心(@var{x},@var{y},@var{z})の半径@var{r}の地球の極を通る軸を持ち
-角度@var{alpha}の円錐上に
+中心(@mvar{x},@mvar{y},@mvar{z})の半径@mvar{r}の地球の極を通る軸を持ち
+角度@mvar{alpha}の円錐上に
 再射影します。
 北円錐と南円錐両方が球に接触します。
 

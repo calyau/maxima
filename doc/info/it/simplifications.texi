@@ -9,7 +9,7 @@
 @node Definitions for simplification,  , Introduction to simplification, simplification
 @section Definitions for simplification
 
-@deffn {Function} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Function} facsum (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -21,23 +21,23 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end defvr
 
-@deffn {Function} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
+@deffn {Function} factorfacsum (@mvar{expr}, @mvar{arg_1}, ... @mvar{arg_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} collectterms (@var{arg_1}, ..., @var{arg_n})
+@deffn {Function} collectterms (@mvar{arg_1}, ..., @mvar{arg_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} rempart (@var{expr}, @var{n})
+@deffn {Function} rempart (@mvar{expr}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
+@deffn {Function} wronskian ([@mvar{f_1}, ..., @mvar{f_n}], @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} tracematrix (@var{M})
+@deffn {Function} tracematrix (@mvar{M})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
@@ -57,83 +57,83 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} nonzeroandfreeof (@var{x}, @var{expr})
+@deffn {Function} nonzeroandfreeof (@mvar{x}, @mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} linear (@var{expr}, @var{x})
+@deffn {Function} linear (@mvar{expr}, @mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gcdivide (@var{p}, @var{q})
+@deffn {Function} gcdivide (@mvar{p}, @mvar{q})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} arithmetic (@var{a}, @var{d}, @var{n})
+@deffn {Function} arithmetic (@mvar{a}, @mvar{d}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} geometric (@var{a}, @var{r}, @var{n})
+@deffn {Function} geometric (@mvar{a}, @mvar{r}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
+@deffn {Function} harmonic (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} arithsum (@var{a}, @var{d}, @var{n})
+@deffn {Function} arithsum (@mvar{a}, @mvar{d}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} geosum (@var{a}, @var{r}, @var{n})
+@deffn {Function} geosum (@mvar{a}, @mvar{r}, @mvar{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gaussprob (@var{x})
+@deffn {Function} gaussprob (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gd (@var{x})
+@deffn {Function} gd (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} agd (@var{x})
+@deffn {Function} agd (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} vers (@var{x})
+@deffn {Function} vers (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} covers (@var{x})
+@deffn {Function} covers (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} exsec (@var{x})
+@deffn {Function} exsec (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} hav (@var{x})
+@deffn {Function} hav (@mvar{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} combination (@var{n}, @var{r})
+@deffn {Function} combination (@mvar{n}, @mvar{r})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} permutation (@var{n}, @var{r})
+@deffn {Function} permutation (@mvar{n}, @mvar{r})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} reduce_consts (@var{expr})
+@deffn {Function} reduce_consts (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} gcfac (@var{expr})
+@deffn {Function} gcfac (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} sqrtdenest (@var{expr})
+@deffn {Function} sqrtdenest (@mvar{expr})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

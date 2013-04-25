@@ -152,8 +152,8 @@
 Оператор "кавычка-кавычка"  @code{'@w{}'} (две одиночные кавычки) изменяет
 вычисление вводимого выражения.
 
-Примененный к выражению общего вида @var{expr}, кавычка-кавычка вызывает подстановку значения @var{expr}
-вместо @var{expr} в вводимом выражении.
+Примененный к выражению общего вида @mvar{expr}, кавычка-кавычка вызывает подстановку значения @mvar{expr}
+вместо @mvar{expr} в вводимом выражении.
 
 Примененный к оператору в выражении,
 кавычка-кавычка изменяет невычисляемую форму оператора на вычисляемую (если она не является таковой).
@@ -169,8 +169,8 @@
 
 Примеры:
 
-Примененный к выражению общего вида @var{expr}, кавычка-кавычка вызывает подстановку значения @var{expr}
-вместо @var{expr} в вводимом выражении.
+Примененный к выражению общего вида @mvar{expr}, кавычка-кавычка вызывает подстановку значения @mvar{expr}
+вместо @mvar{expr} в вводимом выражении.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -345,7 +345,7 @@
 @section Функции и переменные для работы в командной строке
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@deffn {Функция} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+@deffn {Функция} alias (@mvar{new_name_1}, @mvar{old_name_1}, ..., @mvar{new_name_n}, @mvar{old_name_n})
 создает альтернативное имя для пользовательской или системной
 функции, переменной, массива и т.п.
 Данная функция может иметь любое число парных аргументов.
@@ -376,9 +376,9 @@
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
-@deffn {Функция} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
-Вычисляет выражение @var{expr} в окружении определяемом аргументами
-@var{arg_1}, ..., @var{arg_n}.  Данные аргументы могут быть
+@deffn {Функция} ev (@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n})
+Вычисляет выражение @mvar{expr} в окружении определяемом аргументами
+@mvar{arg_1}, ..., @mvar{arg_n}.  Данные аргументы могут быть
 переключателями (логические флаги), присваиваниями, уравнениями и функциями.
 @code{ev} возвращает результат вычисления (выражение).
 
@@ -391,31 +391,31 @@
 
 @itemize @bullet
 @item
-@code{simp} вызывает упрощение выражения @var{expr} вне зависимости
+@code{simp} вызывает упрощение выражения @mvar{expr} вне зависимости
 от текущего значения переключателя @code{simp} (отключает упрощение
 если равен @code{false}).
 @item
 @code{noeval} отключает вычисление для данной стадии @code{ev}
 (см. шаг (4) ниже).  Это может быть полезно в комбинации с другими
-переключателями и вызывает повторное упрощение @var{expr} без
+переключателями и вызывает повторное упрощение @mvar{expr} без
 перевычисления.
 @item
 @code{nouns} вызывает вычисление невычисляемых (noun) форм
 (обычно это невычисляемые функции, такие как @code{'integrate}
-или @code{'diff}) в @var{expr}.
+или @code{'diff}) в @mvar{expr}.
 @item
 @code{expand} вызывает раскрытие скобок.
 @item
-@code{expand (@var{m},@var{n})} вызывает раскрытие скобок при  @code{maxposex} и
-@code{maxnegex} равным  @var{m} и @var{n} соответственно.
+@code{expand (@mvar{m},@mvar{n})} вызывает раскрытие скобок при  @code{maxposex} и
+@code{maxnegex} равным  @mvar{m} и @mvar{n} соответственно.
 @item
-@code{detout} при вычислении обратных матриц в @var{expr}, сохраняет
+@code{detout} при вычислении обратных матриц в @mvar{expr}, сохраняет
 определитель матрицы как общий множитель вместо того чтобы делить
 на него каждый элемент матрицы в отдельности.
 @item
-@code{diff} вызывает вычисление всех производных в @var{expr}.
+@code{diff} вызывает вычисление всех производных в @mvar{expr}.
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} вызовет вычисление
+@code{derivlist (@mvar{x}, @mvar{y}, @mvar{z}, ...)} вызовет вычисление
 производных только относительно указанных переменных.
 @item
 @code{float} вызывает преобразование нецелых рациональных чисел
@@ -430,33 +430,33 @@
 @code{pred} вызывает вычисление предикатов (выражений, значение
 которых @code{true} или @code{false}).
 @item
-@code{eval} вызывает дополнительное пост-вычисление @var{expr}
+@code{eval} вызывает дополнительное пост-вычисление @mvar{expr}
 (см. шаг (5) ниже).
 @code{eval} может встречаться несколько раз.
 Для каждого @code{eval} выражение вычисляется еще раз.
 @item
 @code{A}, где @code{A} есть атом, являющийся флагом вычисления (см. @code{evflag}),
 устанавливает значение @code{A} равным @code{true} в процессе
-вычисления @var{expr}.
+вычисления @mvar{expr}.
 @item
 @code{V: expression} (или альтернативно @code{V=expression})
 присваивает @code{V} значение  @code{expression} в процессе вычисления
-@var{expr}.  Если @code{V} является управляющей переменной (опцией)
+@mvar{expr}.  Если @code{V} является управляющей переменной (опцией)
 Maxima, тогда значение @code{expression} используется в качестве
-значения опции в процессе вычисления @var{expr}.  Если имеется более
+значения опции в процессе вычисления @mvar{expr}.  Если имеется более
 одного аргумента @code{ev} данного типа, то присваивание осуществляется
 параллельно.  Если @code{V} является не атомарным выражением, то
 вместо присваивания осуществляется подстановка.
 @item
 @code{F}, где @code{F} есть имя функции, являющейся функцией
-вычисления (см. @code{evfun}) вызывает применение @code{F} к @var{expr}.
+вычисления (см. @code{evfun}) вызывает применение @code{F} к @mvar{expr}.
 @item
 Любые другие имена функций (скажем @code{sum}) вызывают вычисление
-этих функций в @var{expr}, так как если бы они имели
+этих функций в @mvar{expr}, так как если бы они имели
 вычисляемую форму.
 @item
-Кроме того, встречающаяся в @var{expr} функция (скажем @code{F(x)})
-может быть локально определена для вычисления @var{expr}, путем
+Кроме того, встречающаяся в @mvar{expr} функция (скажем @code{F(x)})
+может быть локально определена для вычисления @mvar{expr}, путем
 задания аргумента в форме @code{F(x) := expression}.
 @item
 Если в качестве аргумента указан любой, не указанный выше атом, или
@@ -474,14 +474,14 @@ Maxima, тогда значение @code{expression} используется в качестве
 Аргументы @code{ev} могут быть указаны в произвольном порядке за
 исключением уравнений, которые выполняются последовательно слева
 направо, и составных вычисляющих функций (например
-@code{ev (@var{expr}, ratsimp, realpart)} выполняется как
-@code{realpart (ratsimp (@var{expr}))}).
+@code{ev (@mvar{expr}, ratsimp, realpart)} выполняется как
+@code{realpart (ratsimp (@mvar{expr}))}).
 
 Переключатели @code{simp}, @code{numer}, @code{float} и @code{pred}
 могут быть установлены локально в блоке, или глобально.
 В последнем случае они будут действовать до переопределения.
 
-Если выражение @var{expr} является каноническим рациональным
+Если выражение @mvar{expr} является каноническим рациональным
 выражением (КРВ, canonical rational expression (CRE)), тогда
 результатом @code{ev} тоже является КРВ, если только переключатели
 @code{numer} и @code{float} оба не равны @code{true}.
@@ -491,9 +491,9 @@ Maxima, тогда значение @code{expression} используется в качестве
 переменных входящих в левые части аргументов, являющихся уравнениями,
 или в значения аргументов, если эти значения являются уравнениями.
 Переменные (индексированные, которые не имеют соответствующих
-функций массивов, и не-индексированные) в выражении @var{expr}
+функций массивов, и не-индексированные) в выражении @mvar{expr}
 заменяются на свои глобальные значения, за исключением тех,
-которые входят в вышеуказанный список.   Обычно, @var{expr} это просто
+которые входят в вышеуказанный список.   Обычно, @mvar{expr} это просто
 метка @code{%} (как @code{%i2} в примере ниже), так что на данном шаге
 просто получается выражение, обозначаемое данной меткой.
 
@@ -503,7 +503,7 @@ Maxima, тогда значение @code{expression} используется в качестве
 @item
 Полученное выражение снова вычисляется (если одним из аргументов не
 является @code{noeval}) и упрощается в соответствии с заданными
-аргументами.  Все вызовы функций в @var{expr} выполняются после
+аргументами.  Все вызовы функций в @mvar{expr} выполняются после
 вычисления переменных.  Таким образом @code{ev(F(x))} трактуется
 как @code{F(ev(x))}.
 
@@ -529,7 +529,7 @@ Maxima, тогда значение @code{expression} используется в качестве
 написать
 
 @example
-@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n}
 @end example
 
 Такая конструкция недопустима как часть другого выражения,
@@ -574,13 +574,13 @@ Solution
 @end deffn
 
 @defvr {Свойство} evflag
-Если символ @var{x} имеет свойство @code{evflag},
-то выражения @code{ev(@var{expr}, @var{x})} и @code{@var{expr}, @var{x}}
-(в интерактивной командной строке) эквивалентны @code{ev(@var{expr}, @var{x} = true)}.
-Т.е. @var{x} имеет значение @code{true} в процессе вычисления @var{expr}.
+Если символ @mvar{x} имеет свойство @code{evflag},
+то выражения @code{ev(@mvar{expr}, @mvar{x})} и @code{@mvar{expr}, @mvar{x}}
+(в интерактивной командной строке) эквивалентны @code{ev(@mvar{expr}, @mvar{x} = true)}.
+Т.е. @mvar{x} имеет значение @code{true} в процессе вычисления @mvar{expr}.
 
-Выражение @code{declare(@var{x}, evflag)}
-устанавливает свойство @code{evflag} для переменной @var{x}.
+Выражение @code{declare(@mvar{x}, evflag)}
+устанавливает свойство @code{evflag} для переменной @mvar{x}.
 
 Следующие переключатели имеют по умолчанию свойство @code{evflag}:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
@@ -679,16 +679,16 @@ Solution
 @end defvr
 
 @defvr {Свойство} evfun
-Если функция @var{F} имеет свойство @code{evfun},
-то выражения @code{ev(@var{expr}, @var{F})} и @code{@var{expr}, @var{F}}
+Если функция @mvar{F} имеет свойство @code{evfun},
+то выражения @code{ev(@mvar{expr}, @mvar{F})} и @code{@mvar{expr}, @mvar{F}}
 (в интерактивной командной строке)
-эквивалентны @code{@var{F}(ev(@var{expr}))}.
+эквивалентны @code{@mvar{F}(ev(@mvar{expr}))}.
 
-Если заданы две или более @code{evfun} функций @var{F}, @var{G}, то
+Если заданы две или более @code{evfun} функций @mvar{F}, @mvar{G}, то
 функции применяются в порядке задания.
 
-Выражение @code{declare(@var{F}, evfun)}
-устанавливает свойство @code{evfun} для функции @var{F}.
+Выражение @code{declare(@mvar{F}, evfun)}
+устанавливает свойство @code{evfun} для функции @mvar{F}.
 
 Следующие функции имеют по умолчанию свойство @code{evfun}:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
@@ -797,18 +797,18 @@ Solution
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Функция} kill (@var{a_1}, ..., @var{a_n})
+@deffn {Функция} kill (@mvar{a_1}, ..., @mvar{a_n})
 @deffnx {Функция} kill (labels)
 @deffnx {Функция} kill (inlabels, outlabels, linelabels)
-@deffnx {Функция} kill (@var{n})
-@deffnx {Функция} kill ([@var{m}, @var{n}])
+@deffnx {Функция} kill (@mvar{n})
+@deffnx {Функция} kill ([@mvar{m}, @mvar{n}])
 @deffnx {Функция} kill (values, functions, arrays, ...)
 @deffnx {Функция} kill (all)
-@deffnx {Функция} kill (allbut (@var{a_1}, ..., @var{a_n}))
+@deffnx {Функция} kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))
 
-Удаляет все связи (значение, функцию, массив или правило) аргументов @var{a_1}, ..., @var{a_n}.
-Аргумент @var{a_k} может быть символом или отдельным элементом массива.
-Если @var{a_k} является отдельным элементом массива, то @code{kill} удаляет
+Удаляет все связи (значение, функцию, массив или правило) аргументов @mvar{a_1}, ..., @mvar{a_n}.
+Аргумент @mvar{a_k} может быть символом или отдельным элементом массива.
+Если @mvar{a_k} является отдельным элементом массива, то @code{kill} удаляет
 значение одного этого элемента и не затрагивает другие элементы массива.
 
 Распознается несколько специальных форм аргументов.  При
@@ -825,16 +825,16 @@ Solution
 и @code{kill (linelabels)} очищает значение меток промежуточных
 выражений, имена которых начинаются с текущего значения @code{linechar}.
 
-@code{kill (@var{n})}, где @var{n} является целым числом,
-очищает значение @var{n} первых меток ввода и результата.
+@code{kill (@mvar{n})}, где @mvar{n} является целым числом,
+очищает значение @mvar{n} первых меток ввода и результата.
 
-@code{kill ([@var{m}, @var{n}])} очищает метки ввода и результата
-с номерами от @var{m} до @var{n} включительно.
+@code{kill ([@mvar{m}, @mvar{n}])} очищает метки ввода и результата
+с номерами от @mvar{m} до @mvar{n} включительно.
 
-@code{kill (@var{infolist})}, где @var{infolist} есть один из
+@code{kill (@mvar{infolist})}, где @mvar{infolist} есть один из
 информационных списков @code{infolists} (например @code{values}, @code{functions}
 или @code{arrays}), очищает значение всех элементов в
-@var{infolist}.  См. также @code{infolists}.
+@mvar{infolist}.  См. также @code{infolists}.
 
 @code{kill (all)} очищает значения всех элементов во всех
 информационных списках (infolists).
@@ -842,11 +842,11 @@ Solution
 переменных.  См. @code{reset} по поводу восстановления стандартных
 значений глобальных переменных.
 
-@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
-очищает все элементы во всех информационных списках кроме  @var{a_1}, ..., @var{a_n}.
-@code{kill (allbut (@var{infolist}))} очищает все элементы кроме тех,
-которые принадлежат информационному списку @var{infolist},
-где @var{infolist} есть @code{values}, @code{functions}, @code{arrays}
+@code{kill (allbut (@mvar{a_1}, ..., @mvar{a_n}))}
+очищает все элементы во всех информационных списках кроме  @mvar{a_1}, ..., @mvar{a_n}.
+@code{kill (allbut (@mvar{infolist}))} очищает все элементы кроме тех,
+которые принадлежат информационному списку @mvar{infolist},
+где @mvar{infolist} есть @code{values}, @code{functions}, @code{arrays}
 и т.д.
 
 Отметим, что для освобождения памяти, занимаемой значением символа,
@@ -857,7 +857,7 @@ Solution
 Функция @code{kill} не вычисляет свои аргументы.
 Для их вычисления можно использовать оператор кавычка-кавычка @code{'@w{}'}.
 
-@code{kill (@var{symbol})} очищает все свойства символа @var{symbol} в
+@code{kill (@mvar{symbol})} очищает все свойства символа @mvar{symbol} в
 отличии от @code{remvalue}, @code{remfunction}, @code{remarray} и
 @code{remrule}, которые очищают только определенное свойство.
 
@@ -869,15 +869,15 @@ Solution
 @closecatbox
 @end deffn
 
-@deffn {Функция} labels (@var{symbol})
+@deffn {Функция} labels (@mvar{symbol})
 @deffnx {Системная переменная} labels
 Возвращает список меток ввода, результата или меток промежуточных
-выражений, имена которых начинаются с символа @var{symbol}.
-Обычно @var{symbol} это значение @code{inchar}, @code{outchar} или @code{linechar}.
-Значение @var{symbol} может быть указано с или без знака процента,
+выражений, имена которых начинаются с символа @mvar{symbol}.
+Обычно @mvar{symbol} это значение @code{inchar}, @code{outchar} или @code{linechar}.
+Значение @mvar{symbol} может быть указано с или без знака процента,
 например @code{i} и @code{%i} дадут одинаковый результат.
 
-Если ни одна из меток не начинается с @var{symbol}, то возвращается
+Если ни одна из меток не начинается с @mvar{symbol}, то возвращается
 пустой список.
 
 Функция @code{labels} не вычисляет свои аргументы.
@@ -980,9 +980,9 @@ Solution
 @end defvr
 
 @deffn {Функция} playback ()
-@deffnx {Функция} playback (@var{n})
-@deffnx {Функция} playback ([@var{m}, @var{n}])
-@deffnx {Функция} playback ([@var{m}])
+@deffnx {Функция} playback (@mvar{n})
+@deffnx {Функция} playback ([@mvar{m}, @mvar{n}])
+@deffnx {Функция} playback ([@mvar{m}])
 @deffnx {Функция} playback (input)
 @deffnx {Функция} playback (slow)
 @deffnx {Функция} playback (time)
@@ -1003,15 +1003,15 @@ Solution
 когда во время первоначальных вычислений использовался @code{$} для
 подавления печати результата.
 
-@code{playback (@var{n})} печатает @var{n} последних выражений.
+@code{playback (@mvar{n})} печатает @mvar{n} последних выражений.
 Каждое входное, результирующее и промежуточное выражение
 считается за одно.
 
-@code{playback ([@var{m}, @var{n}])} печатает входные, результирующие
-и промежуточные выражения с номерами от @var{m} до @var{n} включительно.
+@code{playback ([@mvar{m}, @mvar{n}])} печатает входные, результирующие
+и промежуточные выражения с номерами от @mvar{m} до @mvar{n} включительно.
 
-@code{playback ([@var{m}])} эквивалентно
-@code{playback ([@var{m}, @var{m}])} и обычно печатает
+@code{playback ([@mvar{m}])} эквивалентно
+@code{playback ([@mvar{m}, @mvar{m}])} и обычно печатает
 одну пару из входного и результирующего выражений.
 
 @code{playback (input)} печатает все входные выражения.
@@ -1043,11 +1043,11 @@ Solution
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
-@deffn {Функция} printprops (@var{a}, @var{i})
-@deffnx {Функция} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@deffnx {Функция} printprops (all, @var{i})
-Печатает свойство с именем @var{i}, ассоциированное с атомом
-@var{a}.  @var{a} может быть списком атомов или @code{all}.
+@deffn {Функция} printprops (@mvar{a}, @mvar{i})
+@deffnx {Функция} printprops ([@mvar{a_1}, ..., @mvar{a_n}], @mvar{i})
+@deffnx {Функция} printprops (all, @mvar{i})
+Печатает свойство с именем @mvar{i}, ассоциированное с атомом
+@mvar{a}.  @mvar{a} может быть списком атомов или @code{all}.
 В последнем случае будут использованы все атомы имеющие данное свойство.
 Например, @code{printprops ([f, g], atvalue)}.  Функция
 @code{printprops} предназначена для свойств, которые не могут быть
@@ -1088,10 +1088,10 @@ Solution
 @closecatbox
 @end deffn
 
-@deffn {Функция} remfunction (@var{f_1}, ..., @var{f_n})
+@deffn {Функция} remfunction (@mvar{f_1}, ..., @mvar{f_n})
 @deffnx {Функция} remfunction (all)
 @c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
-Удаляет определенные пользователем функции @var{f_1}, ..., @var{f_n}.
+Удаляет определенные пользователем функции @mvar{f_1}, ..., @mvar{f_n}.
 Аргументы могут быть именами обычных функций, созданных при помощи
 @code{:=} или @code{define}, или макро функций, созданных при помощи
 @code{::=}.
@@ -1150,10 +1150,10 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@deffn {Функция} sstatus (@var{feature}, @var{package})
-Устанавливает статус @var{feature} в @var{package}.
-После выполнения @code{sstatus (@var{feature}, @var{package})},
-@code{status (@var{feature}, @var{package})} возвращает @code{true}.
+@deffn {Функция} sstatus (@mvar{feature}, @mvar{package})
+Устанавливает статус @mvar{feature} в @mvar{package}.
+После выполнения @code{sstatus (@mvar{feature}, @mvar{package})},
+@code{status (@mvar{feature}, @mvar{package})} возвращает @code{true}.
 Этот механизм может быть полезен при работе с пакетами для того, чтобы
 иметь возможность проверять какие опции пакета загружены.
 

@@ -27,8 +27,8 @@ plotdfを使ってみる前にXmaximaをインストールしたことを確認�
 $${{dy}¥over{dx}} = F(x,y)$$
 @end tex
 
-そして関数@var{F}を@code{plotdf}の引数に与えなければいけません。
-もし独立変数と従属変数が、上の式のように@var{x}と@var{y}でないなら、
+そして関数@mvar{F}を@code{plotdf}の引数に与えなければいけません。
+もし独立変数と従属変数が、上の式のように@mvar{x}と@mvar{y}でないなら、
 plotdfコマンドへの引数として与えられるリストの中に明示的に
 それら2つの変数を指名しなければいけません。
 (例を見てください。)
@@ -46,11 +46,11 @@ plotdfコマンドへの引数として与えられるリストの中に明示�
 $${{dx}¥over{dt}} = G(x,y) ¥qquad {{dy}¥over{dt}} = F(x,y)$$
 @end tex
 
-そして@code{plotdf}の引数は2つの関数@var{G}と@var{F}を
+そして@code{plotdf}の引数は2つの関数@mvar{G}と@mvar{F}を
 その順に持つリストでなければいけません;
 すなわち、リストの最初の式は水平軸上に表された変数の時間導関数であり、
 二番目の式は垂直軸上に表された変数の時間導関数です。
-それら2つの変数は@var{x}と@var{y}である必要はありませんが、
+それら2つの変数は@mvar{x}と@mvar{y}である必要はありませんが、
 もしそうでないなら、
 plotdfに与えられる二番目の引数は
 2つの変数を、最初のものが水平軸上のものを、その後垂直軸上のものを指定する別のリストでなければいけません。
@@ -67,19 +67,19 @@ plotdfに与えられる二番目の引数は
 @node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
 @section Functions and Variables for plotdf
 
-@deffn {関数} plotdf (@var{dydx}, ...options...)
-@deffnx {関数} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
-@deffnx {関数} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
-@deffnx {関数} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffn {関数} plotdf (@mvar{dydx}, ...options...)
+@deffnx {関数} plotdf (@mvar{dvdu}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options...)
+@deffnx {関数} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]}, ...options...)
+@deffnx {関数} plotdf (@code{[}@mvar{dudt},@mvar{dvdt}@code{]}, @code{[}@mvar{u},@mvar{v}@code{]}, ...options...)
 
-2次元@var{x}と@var{y}に方向場を表示します。
+2次元@mvar{x}と@mvar{y}に方向場を表示します。
 
 最初の引数は導関数を指定し、式か2つの式のリストでなければいけません。
-@var{dydx}, @var{dxdt}, @var{dydt}は@var{x}と@var{y}に依存する式です。
-@var{dvdu}, @var{dudt}, @var{dvdt}は@var{u}と@var{v}に依存する式です。
+@mvar{dydx}, @mvar{dxdt}, @mvar{dydt}は@mvar{x}と@mvar{y}に依存する式です。
+@mvar{dvdu}, @mvar{dudt}, @mvar{dvdt}は@mvar{u}と@mvar{v}に依存する式です。
 それら2つの変数に加えて、
 @code{parameters}オプションで与えられる数値を持つか(オプション構文法は以下に与えられます)、
-@var{sliders}オプションで指定される許される値の範囲の
+@mvar{sliders}オプションで指定される許される値の範囲の
 パラメータ一式にも、式は依存するかもしれません。
 
 コマンド内やメニューで選択して、いくつかの他のオプションを与えることができます。
@@ -117,7 +117,7 @@ plotdfに与えられる二番目の引数は
 
 右マウスボタンを押しながらカーソルを動かすと、
 プロットを横や上下にドラッグできます。
-ステップ数や@var{t}の初期値、x, yの中心や範囲のような追加パラメータは、
+ステップ数や@mvar{t}の初期値、x, yの中心や範囲のような追加パラメータは、
 Configメニューで設定できます。
 
 プロットのコピーは、メニューオプション@emph{Save}を使って、
@@ -134,10 +134,10 @@ Configメニューで設定できます。
 
 @itemize @bullet
 @item
-@dfn{tstep}は、独立変数@var{t}に関する増分の長さを定義します。
+@dfn{tstep}は、独立変数@mvar{t}に関する増分の長さを定義します。
 積分曲線を計算するのに使われます。
-もしただ1つの式@var{dydx}が@code{plotdf}に与えられたら、
-@var{x}変数は@var{t}に直接比例することになります。
+もしただ1つの式@mvar{dydx}が@code{plotdf}に与えられたら、
+@mvar{x}変数は@mvar{t}に直接比例することになります。
 デフォルト値は0.1です。
 
 @item
@@ -159,14 +159,14 @@ Configメニューで設定できます。
 
 @item
 @dfn{tinitial}は
-積分曲線を計算するために使われる変数@var{t}の初期値です。
+積分曲線を計算するために使われる変数@mvar{t}の初期値です。
 微分方程式が自励なので、
-その設定は@var{t}の関数として曲線のプロットでだけ現れます。
+その設定は@mvar{t}の関数として曲線のプロットでだけ現れます。
 デフォルト値は0です。
 
 @item
 @dfn{versus_t}は
-独立変数@var{t}の2つの関数@var{x}, @var{y}としての
+独立変数@mvar{t}の2つの関数@mvar{x}, @mvar{y}としての
 積分曲線のプロットを使って二番目のプロットウィンドウを生成するために
 使われます。
 もし@code{versus_t}が0と異なる任意の値を与えられたら、
@@ -177,7 +177,7 @@ Configメニューで設定できます。
 
 @item
 @dfn{trajectory_at}は
-積分曲線の開始点のための座標@var{xinitial}と@var{yinitial}を定義します。
+積分曲線の開始点のための座標@mvar{xinitial}と@mvar{yinitial}を定義します。
 オプションはデフォルトで空です。
 
 @item
@@ -195,20 +195,20 @@ Configメニューで設定できます。
 
 @item
 @dfn{xfun}は
-方向場の上にセミコロンで分離された表示される@var{x}の関数の列を持つ文字列を定義します。
+方向場の上にセミコロンで分離された表示される@mvar{x}の関数の列を持つ文字列を定義します。
 これらの関数はMaximaではなくTclでパースされます。
 
 @item
 @dfn{x}には2つの数が続かなければいけません。
 2つの数は水平軸上で表示される最小値と最大値を設定します。
-もし水平軸上の変数が@var{x}でないなら、
+もし水平軸上の変数が@mvar{x}でないなら、
 このオプションは水平軸上の変数名を持たなければいけません。
 デフォルトの水平範囲は-10から10です。
 
 @item
 @dfn{y}には2つの数が続かなければいけません。
 2つの数は垂直軸上で表示される最小値と最大値を設定します。
-もし垂直軸上の変数が@var{y}でないなら、
+もし垂直軸上の変数が@mvar{y}でないなら、
 このオプションは垂直軸上の変数名を持たなければいけません。
 デフォルトの垂直範囲は-10から10です。
 @end itemize

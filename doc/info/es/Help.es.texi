@@ -49,10 +49,10 @@ y salidas adicionales.
 
 
 
-@deffn {Funci@'on} apropos (@var{string})
+@deffn {Funci@'on} apropos (@mvar{string})
 
 Busca los s@'{@dotless{i}}mbolos de Maxima en los cuales aparezca 
-@var{cadena} en cualquier lugar dentro de su nombre. As@'{@dotless{i}}, 
+@mvar{cadena} en cualquier lugar dentro de su nombre. As@'{@dotless{i}}, 
 @code{apropos (exp)} devuelve una lista con todas las variables y 
 funciones que tengan  @code{exp} formando parte de sus nombres, 
 como  @code{expand}, @code{exp} y @code{exponentialize}. 
@@ -89,8 +89,8 @@ gamma_incomplete_generalized_regularized]
 
 
 
-@deffn {Funci@'on} demo (@var{archivo})
-Evalua las expresiones Maxima contenidas en @var{archivo} y muestra los resultados. 
+@deffn {Funci@'on} demo (@mvar{archivo})
+Evalua las expresiones Maxima contenidas en @mvar{archivo} y muestra los resultados. 
 @code{demo} hace pausas despu@'es de evaluar  cada expresi@'on
 y continua despu@'es de que el usuario ingrese un retorno de carro. 
 (Si se ejecuta en Xmaxima, @code{demo} puede que necesite un punto y coma
@@ -179,20 +179,20 @@ _
 @end deffn
 
 
-@deffn {Funci@'on} describe (@var{string})
-@deffnx {Funci@'on} describe (@var{string}, exact)
-@deffnx {Funci@'on} describe (@var{string}, inexact)
+@deffn {Funci@'on} describe (@mvar{string})
+@deffnx {Funci@'on} describe (@mvar{string}, exact)
+@deffnx {Funci@'on} describe (@mvar{string}, inexact)
 @ifinfo
 @fnindex Ayuda
 @end ifinfo
-La sentencia @code{describe(@var{string})} equivale a @code{describe(@var{string}, exact)}.
+La sentencia @code{describe(@mvar{string})} equivale a @code{describe(@mvar{string}, exact)}.
 
-La sentencia @code{describe(@var{string}, exact)} encuentra el elemento, si
-existe, cuyo t@'{@dotless{i}}tulo coincide exactamente con @var{string}
+La sentencia @code{describe(@mvar{string}, exact)} encuentra el elemento, si
+existe, cuyo t@'{@dotless{i}}tulo coincide exactamente con @mvar{string}
 (ignorando la diferencia entre may@'usculas y min@'usculas).
 
-La sentencia @code{describe(@var{string}, inexact)} encuentra todos los elementos
-documentados que contengan @var{string} en sus t@'{@dotless{i}}tulos.
+La sentencia @code{describe(@mvar{string}, inexact)} encuentra todos los elementos
+documentados que contengan @mvar{string} en sus t@'{@dotless{i}}tulos.
 
 Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
 seleccione las opciones que desee consultar.
@@ -257,10 +257,10 @@ Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
 
 
 
-@deffn {Funci@'on} example (@var{topic})
+@deffn {Funci@'on} example (@mvar{topic})
 @deffnx {Funci@'on} example ()
 
-@code{example (@var{topic})} muestra algunos ejemplos sobre @var{topic},
+@code{example (@mvar{topic})} muestra algunos ejemplos sobre @mvar{topic},
 el cual debe ser un s@'{@dotless{i}}mbolo o cadena de texto. Para ver
 ejemplos sobre operadores como @code{if}, @code{do} o @code{lambda}
 el argumento debe ser necesariamente una cadena de texto, como

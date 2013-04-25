@@ -27,11 +27,11 @@ Veja tamb@'{e}m @code{mnewton}.
 @end defvr
 
 
-@deffn {Fun@value{cedilha}@~{a}o} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+@deffn {Fun@value{cedilha}@~{a}o} mnewton (@mvar{FuncList},@mvar{VarList},@mvar{GuessList})
 Solu@value{cedilha}@~{a}o de multiplas fun@value{cedilha}@~{o}es n@~{a}o lineares usando o m@'{e}todo de Newton.
-@var{FuncList} @'{e} a lista de fun@value{cedilha}@~{o}es a serem resolvidas,
-@var{VarList} @'{e} a lista dos nomes de vari@'{a}veis, e
-@var{GuessList} @'{e} a lista de aproxima@value{cedilha}@~{o}es iniciais.
+@mvar{FuncList} @'{e} a lista de fun@value{cedilha}@~{o}es a serem resolvidas,
+@mvar{VarList} @'{e} a lista dos nomes de vari@'{a}veis, e
+@mvar{GuessList} @'{e} a lista de aproxima@value{cedilha}@~{o}es iniciais.
 
 A solu@value{cedilha}@~{a}o @'{e} retornada no mesmo formato retornado pela fun@value{cedilha}@~{a}o @code{solve()}.
 Caso a solu@value{cedilha}@~{a}o n@~{a}o seja encontrada, @code{[]} @'{e} retornado.

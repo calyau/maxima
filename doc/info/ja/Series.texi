@@ -12,14 +12,14 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{bashindices}
-@deffn {関数} bashindices (@var{expr})
+@deffn {関数} bashindices (@mvar{expr})
 それぞれの和や積に独自のインデックスを与えることで、
-式@var{expr}を変換します。
+式@mvar{expr}を変換します。
 これは、
 和や積と一緒に機能する時
 @code{changevar}によりよい精度を与えます。
-独自のインデックスの形式は@code{j@var{number}}です。
-量@var{number}は、@code{gensumnum}に参照することで決定されます。
+独自のインデックスの形式は@code{j@mvar{number}}です。
+量@mvar{number}は、@code{gensumnum}に参照することで決定されます。
 これを、ユーザーは変更することができます。
 例えば、@code{gensumnum:0$}はそれを再設定します。
 
@@ -30,10 +30,10 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{lsum}
-@deffn {関数} lsum (@var{expr}, @var{x}, @var{L})
+@deffn {関数} lsum (@mvar{expr}, @mvar{x}, @mvar{L})
 
-@var{L}の中のそれぞれの要素@var{x}に関する@var{expr}の和を表します。
-もし引数@var{L}がリストに評価されなければ、名詞形@code{'lsum}が返されます。
+@mvar{L}の中のそれぞれの要素@mvar{x}に関する@mvar{expr}の和を表します。
+もし引数@mvar{L}がリストに評価されなければ、名詞形@code{'lsum}が返されます。
 
 例:
 
@@ -66,7 +66,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{intosum}
-@deffn {関数} intosum (@var{expr})
+@deffn {関数} intosum (@mvar{expr})
 
 和の外側の掛け算因子を内側に移動します。
 もし外側の式でインデックスが使われているなら、
@@ -76,7 +76,7 @@
 
 @c WHAT ARE THESE CASES ??
 いくつかの場合、
-@code{intosum}の前に、@code{scanmap (multthru, @var{expr})}が必要になるかもしれません。
+@code{intosum}の前に、@code{scanmap (multthru, @mvar{expr})}が必要になるかもしれません。
 
 @opencatbox
 @category{Expressions}
@@ -85,16 +85,16 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{product}
-@deffn {関数} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {関数} product (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
 
-インデックス@var{i}が@var{i_0}から@var{i_1}まで変えた@var{expr}の値の積を返します。
+インデックス@mvar{i}が@mvar{i_0}から@mvar{i_1}まで変えた@mvar{expr}の値の積を返します。
 名詞形@code{'product}は、大文字Πとして表示されます。
 
-@code{product}は、@var{expr}と下限上限@var{i_0}、@var{i_1}を評価し、
-@code{product}は、インデックス@var{i}をクォートします（評価しません）。
+@code{product}は、@mvar{expr}と下限上限@mvar{i_0}、@mvar{i_1}を評価し、
+@code{product}は、インデックス@mvar{i}をクォートします（評価しません）。
 
 もし上限と下限が整数差だけ違うなら、
-@var{expr}は、インデックス@var{i}のそれぞれの値に関して評価され、
+@mvar{expr}は、インデックス@mvar{i}のそれぞれの値に関して評価され、
 結果は陽な積です。
 
 そうでなければ、インデックスの範囲は不定です。
@@ -183,16 +183,16 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{sum}
-@deffn {関数} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {関数} sum (@mvar{expr}, @mvar{i}, @mvar{i_0}, @mvar{i_1})
 
-インデックス@var{i}が@var{i_0}から@var{i_1}まで変えた@var{expr}の値の和を返します。
+インデックス@mvar{i}が@mvar{i_0}から@mvar{i_1}まで変えた@mvar{expr}の値の和を返します。
 名詞形@code{'sum}は、大文字Σとして表示されます。
 
-@code{sum}は、被和@var{expr}と下限上限@var{i_0}、@var{i_1}を評価し、
-@code{sum}は、インデックス@var{i}をクォートします（評価しません）。
+@code{sum}は、被和@mvar{expr}と下限上限@mvar{i_0}、@mvar{i_1}を評価し、
+@code{sum}は、インデックス@mvar{i}をクォートします（評価しません）。
 
 もし上限と下限が整数差だけ違うなら、
-被和@var{expr}は、インデックス@var{i}のそれぞれの値に関して評価され、
+被和@mvar{expr}は、インデックス@mvar{i}のそれぞれの値に関して評価され、
 結果は陽な和です。
 
 そうでなければ、インデックスの範囲は不定です。
@@ -309,7 +309,7 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{sumcontract}
-@deffn {関数} sumcontract (@var{expr})
+@deffn {関数} sumcontract (@mvar{expr})
 定数だけ異なる上限と下限を持つ足し算の和すべてを結合します。
 結果は、
 そんな和のそれぞれの集合が、この和を形成するよう抽出されなければならないすべての適切な余分の項に加えられた１つの和を含む式です。
@@ -317,7 +317,7 @@
 可能なら和の１つからインデックスの１つを使い、もし供給されたどれもが使えないなら、合理的なインデックスを形成するよう試みます。
 
 @c WHEN IS intosum NECESSARY BEFORE sumcontract ??
-@code{sumcontract}の前に、@code{intosum (@var{expr})}を実行する必要があるかもしれません。
+@code{sumcontract}の前に、@code{intosum (@mvar{expr})}を実行する必要があるかもしれません。
 
 @opencatbox
 @category{Sums and products}
@@ -425,19 +425,19 @@ Cauchy積では、
 
 @c -----------------------------------------------------------------------------
 @anchor{deftaylor}
-@deffn {関数} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, @dots{}, @var{f_n}(@var{x_n}), @var{expr_n})
+@deffn {関数} deftaylor (@mvar{f_1}(@mvar{x_1}), @mvar{expr_1}, @dots{}, @mvar{f_n}(@mvar{x_n}), @mvar{expr_n})
 
 @code{deftaylor}は、
-ある変数@var{x_i}の関数@var{f_i}それぞれに関して、
-@var{expr_i}をゼロの回りのTaylor級数と定義します。
-@var{expr_i}は、典型的には、@var{x_i}の多項式か和です;
+ある変数@mvar{x_i}の関数@mvar{f_i}それぞれに関して、
+@mvar{expr_i}をゼロの回りのTaylor級数と定義します。
+@mvar{expr_i}は、典型的には、@mvar{x_i}の多項式か和です;
 @code{deftaylor}は、もっと一般的な式も問題なく受け付けます。
 
-@code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)}は、
+@code{powerseries (@mvar{f_i}(@mvar{x_i}), @mvar{x_i}, 0)}は、
 @code{deftaylor}で定義された級数を返します。
 
 @code{deftaylor}は、
-関数@var{f_1}, ..., @var{f_n}のリストを返します。
+関数@mvar{f_1}, ..., @mvar{f_n}のリストを返します。
 @code{deftaylor}は、引数を評価します。
 
 例:
@@ -482,9 +482,9 @@ Cauchy積では、
 
 @c -----------------------------------------------------------------------------
 @anchor{niceindices}
-@deffn {関数} niceindices (@var{expr})
+@deffn {関数} niceindices (@mvar{expr})
 
-@var{expr}の中の和や積のインデックスを改名します。
+@mvar{expr}の中の和や積のインデックスを改名します。
 @code{niceindices}は、
 その名前が被加数や非積数の中に現れないなら、
 インデックスそれぞれを@code{niceindicespref[1]}の値に改名しようとします。
@@ -572,11 +572,11 @@ The elements of
 
 @c -----------------------------------------------------------------------------
 @anchor{nusum}
-@deffn {関数} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+@deffn {関数} nusum (@mvar{expr}, @mvar{x}, @mvar{i_0}, @mvar{i_1})
 
 R.W. Gosperによる決定手続きを使って、
-@var{x}に関する@var{expr}の不定超幾何総和を実行します。
-@var{expr}と結果は、
+@mvar{x}に関する@mvar{expr}の不定超幾何総和を実行します。
+@mvar{expr}と結果は、
 整数べき、階乗、二項式、有理関数の積として表現可能でなければいけません。
 
 @c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
@@ -636,23 +636,23 @@ Dependent equations eliminated:  (2 3)
 
 @c -----------------------------------------------------------------------------
 @anchor{pade}
-@deffn {関数} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {関数} pade (@mvar{taylor_series}, @mvar{numer_deg_bound}, @mvar{denom_deg_bound})
 
 分子と分母の次数の和がべき級数の切り詰めレベル以下の
 与えられたTaylor級数展開、すなわち、「最良」近似を持ち
 加えて指定された次数範囲を満たす、有理関数すべてのリストを返します。
 
-@var{taylor_series}は１変数Taylor級数です。
-@var{numer_deg_bound}と@var{denom_deg_bound}は、
+@mvar{taylor_series}は１変数Taylor級数です。
+@mvar{numer_deg_bound}と@mvar{denom_deg_bound}は、
 分子と分母上の次数範囲を指定する
 正の整数です。
 
-@var{taylor_series}は
+@mvar{taylor_series}は
 Laurent級数も可能です。
 次数範囲は、@code{inf}も可能で、
 総次数が、冪級数の長さ以下の有理関数すべてを返すことになります。
 総次数は
-@code{@var{numer_deg_bound} + @var{denom_deg_bound}}として定義されます。
+@code{@mvar{numer_deg_bound} + @mvar{denom_deg_bound}}として定義されます。
 べき級数の長さは
 @code{"truncation level" + 1 - min(0, "order of series")}として定義されます。
 
@@ -710,11 +710,11 @@ Laurent級数も可能です。
 
 @c -----------------------------------------------------------------------------
 @anchor{powerseries}
-@deffn {関数} powerseries (@var{expr}, @var{x}, @var{a})
+@deffn {関数} powerseries (@mvar{expr}, @mvar{x}, @mvar{a})
 
-変数@var{x}に関する点@var{a}
+変数@mvar{x}に関する点@mvar{a}
  (無限大のためには@code{inf}かもしれません)
-の回りの@var{expr}のべき級数展開の一般形式を返します:
+の回りの@mvar{expr}のべき級数展開の一般形式を返します:
 @example
 @group
            inf
@@ -727,7 +727,7 @@ Laurent級数も可能です。
 @end group
 @end example
 
-もし@code{powerseries}が@var{expr}を展開することができないなら、
+もし@code{powerseries}が@mvar{expr}を展開することができないなら、
 @code{taylor}が、級数の最初のいくつかの項を与えることができます。
 
 @code{verbose}が@code{true}の時、
@@ -792,14 +792,14 @@ in the first simplification we have returned:
 
 @c -----------------------------------------------------------------------------
 @anchor{revert}
-@deffn  {関数} revert (@var{expr}, @var{x})
-@deffnx {関数} revert2 (@var{expr}, @var{x}, @var{n})
+@deffn  {関数} revert (@mvar{expr}, @mvar{x})
+@deffnx {関数} revert2 (@mvar{expr}, @mvar{x}, @mvar{n})
 これらの関数は、
-変数@var{x}に関するゼロの回りのTaylor級数@var{expr}の反転を返します。
+変数@mvar{x}に関するゼロの回りのTaylor級数@mvar{expr}の反転を返します。
 @code{revert}は、
-@var{expr}の最高次数と等しい次数の多項式を返します。
-@code{revert2}は、次数@var{n}の多項式を返します。
-@var{n}は、@var{expr}の次数よりも大きい値も小さい値も同じ値も取り得ます。
+@mvar{expr}の最高次数と等しい次数の多項式を返します。
+@code{revert2}は、次数@mvar{n}の多項式を返します。
+@mvar{n}は、@mvar{expr}の次数よりも大きい値も小さい値も同じ値も取り得ます。
 
 @code{load ("revert")}はこれらの関数をロードします。
 
@@ -843,39 +843,39 @@ in the first simplification we have returned:
 
 @c -----------------------------------------------------------------------------
 @anchor{taylor}
-@deffn  {関数} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {関数} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {関数} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {関数} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@deffnx {関数} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@deffn  {関数} taylor (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{n})
+@deffnx {関数} taylor (@mvar{expr}, [@mvar{x_1}, @mvar{x_2}, ...], @mvar{a}, @mvar{n})
+@deffnx {関数} taylor (@mvar{expr}, [@mvar{x}, @mvar{a}, @mvar{n}, 'asymp])
+@deffnx {関数} taylor (@mvar{expr}, [@mvar{x_1}, @mvar{x_2}, ...], [@mvar{a_1}, @mvar{a_2}, ...], [@mvar{n_1}, @mvar{n_2}, ...])
+@deffnx {関数} taylor (@mvar{expr}, [@mvar{x_1}, @mvar{a_1}, @mvar{n_1}], [@mvar{x_2}, @mvar{a_2}, @mvar{n_2}], ...)
 
-@code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})}は、
-式@var{expr}を、変数@var{x}の@var{a}の周りのTaylorもしくはLaurent級数を
-@code{(@var{x} - @var{a})^@var{n}}まで展開します。
+@code{taylor (@mvar{expr}, @mvar{x}, @mvar{a}, @mvar{n})}は、
+式@mvar{expr}を、変数@mvar{x}の@mvar{a}の周りのTaylorもしくはLaurent級数を
+@code{(@mvar{x} - @mvar{a})^@mvar{n}}まで展開します。
 
-もし@var{expr}が形式@code{@var{f}(@var{x})/@var{g}(@var{x})} の形であり、
-@code{@var{g}(@var{x})}が@var{n}次まで項を持たないなら、
-@code{taylor}は@code{@var{g}(@var{x})}を@code{2 @var{n}}次まで展開しようとします。
+もし@mvar{expr}が形式@code{@mvar{f}(@mvar{x})/@mvar{g}(@mvar{x})} の形であり、
+@code{@mvar{g}(@mvar{x})}が@mvar{n}次まで項を持たないなら、
+@code{taylor}は@code{@mvar{g}(@mvar{x})}を@code{2 @mvar{n}}次まで展開しようとします。
 もしまだ0でない項がないなら、
-@code{taylor}は、展開の次数が@code{@var{n} 2^taylordepth}以下である限り
-@code{@var{g}(@var{x})}の展開の次数を倍にしていきます。
+@code{taylor}は、展開の次数が@code{@mvar{n} 2^taylordepth}以下である限り
+@code{@mvar{g}(@mvar{x})}の展開の次数を倍にしていきます。
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})}
-は、すべての変数@var{x_1}, @var{x_2}, ...について
-点@code{(@var{a}, @var{a}, , ...)}の周りで@var{n}次までのべき級数を返します。
+@code{taylor (@mvar{expr}, [@mvar{x_1}, @mvar{x_2}, ...], @mvar{a}, @mvar{n})}
+は、すべての変数@mvar{x_1}, @mvar{x_2}, ...について
+点@code{(@mvar{a}, @mvar{a}, , ...)}の周りで@mvar{n}次までのべき級数を返します。
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)}は、変数@var{x_1}, @var{x_2}, ...について
-点@code{(@var{a_1}, @var{a_2}, ...)}の回りで
-@var{n_1}次, @var{n_2}次, ....まで展開したべき級数を返します。
+@code{taylor (@mvar{expr}, [@mvar{x_1}, @mvar{a_1}, @mvar{n_1}], [@mvar{x_2}, @mvar{a_2}, @mvar{n_2}], ...)}は、変数@mvar{x_1}, @mvar{x_2}, ...について
+点@code{(@mvar{a_1}, @mvar{a_2}, ...)}の回りで
+@mvar{n_1}次, @mvar{n_2}次, ....まで展開したべき級数を返します。
 
-@code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])}は、
-変数@var{x_1}, @var{x_2}, ...について、
-点@code{(@var{a_1}, @var{a_2}, ...)}の回りで
-@var{n_1}次, @var{n_2}次, ....まで展開したべき級数を返します。
+@code{taylor (@mvar{expr}, [@mvar{x_1}, @mvar{x_2}, ...], [@mvar{a_1}, @mvar{a_2}, ...], [@mvar{n_1}, @mvar{n_2}, ...])}は、
+変数@mvar{x_1}, @mvar{x_2}, ...について、
+点@code{(@mvar{a_1}, @mvar{a_2}, ...)}の回りで
+@mvar{n_1}次, @mvar{n_2}次, ....まで展開したべき級数を返します。
 
-@code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])}は、
-@var{expr}の@code{@var{x} - @var{a}}の負のべき乗展開を返します。
-最高次の項は@code{(@var{x} - @var{a})^@var{-n}}です。
+@code{taylor (@mvar{expr}, [@mvar{x}, @mvar{a}, @mvar{n}, 'asymp])}は、
+@mvar{expr}の@code{@mvar{x} - @mvar{a}}の負のべき乗展開を返します。
+最高次の項は@code{(@mvar{x} - @mvar{a})^@mvar{-n}}です。
 
 @code{maxtaylorder}が@code{true}の時、
 （丸められた）Taylor級数の代数操作の間、
@@ -1033,9 +1033,9 @@ in the first simplification we have returned:
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
 もしまだ非ゼロ項がないなら、
-展開の次数が@code{@var{n} 2^taylordepth}以下である限り、
+展開の次数が@code{@mvar{n} 2^taylordepth}以下である限り、
 @code{taylor}は、
-@code{@var{g}(@var{x})}の展開の次数を倍にします。
+@code{@mvar{g}(@mvar{x})}の展開の次数を倍にします。
 
 @opencatbox
 @category{Power series}
@@ -1044,13 +1044,13 @@ in the first simplification we have returned:
 
 @c -----------------------------------------------------------------------------
 @anchor{taylorinfo}
-@deffn {関数} taylorinfo (@var{expr})
+@deffn {関数} taylorinfo (@mvar{expr})
 
-Taylor級数@var{expr}についての情報を返します。
+Taylor級数@mvar{expr}についての情報を返します。
 戻り値はリストのリストです。
 リストそれぞれは、変数名、展開点、展開次数から成ります。
 
-もし@var{expr}がTaylor級数でないなら、
+もし@mvar{expr}がTaylor級数でないなら、
 @code{taylorinfo}は@code{false}を返します。
 
 例:
@@ -1079,9 +1079,9 @@ Taylor級数@var{expr}についての情報を返します。
 
 @c -----------------------------------------------------------------------------
 @anchor{taylorp}
-@deffn {関数} taylorp (@var{expr})
+@deffn {関数} taylorp (@mvar{expr})
 
-もし@var{expr}がTaylor級数なら、@code{true}を、
+もし@mvar{expr}がTaylor級数なら、@code{true}を、
 そうでないなら、@code{false}を返します。
 
 @opencatbox
@@ -1135,9 +1135,9 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{taylor_simplifier}
-@deffn {関数} taylor_simplifier (@var{expr})
+@deffn {関数} taylor_simplifier (@mvar{expr})
 
-べき級数@var{expr}の係数を整理します。
+べき級数@mvar{expr}の係数を整理します。
 @code{taylor}はこの関数をコールします。
 
 @opencatbox
@@ -1166,10 +1166,10 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{taytorat}
-@deffn {関数} taytorat (@var{expr})
+@deffn {関数} taytorat (@mvar{expr})
 @code{taylor}形式から標準有理式(CRE)形式に
-@var{expr}を変換します。
-効果は@code{rat (ratdisrep (@var{expr}))}と同じですが、より速いです。
+@mvar{expr}を変換します。
+効果は@code{rat (ratdisrep (@mvar{expr}))}と同じですが、より速いです。
 
 @opencatbox
 @category{Power series} @category{Rational expressions}
@@ -1178,10 +1178,10 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{trunc}
-@deffn {関数} trunc (@var{expr})
+@deffn {関数} trunc (@mvar{expr})
 
-一般式@var{expr}の内部表現をアノテートするので、まるでその和が切り詰められたTaylor級数かのように表示されます。
-@var{expr}は別に変更されません。
+一般式@mvar{expr}の内部表現をアノテートするので、まるでその和が切り詰められたTaylor級数かのように表示されます。
+@mvar{expr}は別に変更されません。
 
 例:
 
@@ -1203,9 +1203,9 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{unsum}
-@deffn {関数} unsum (@var{f}, @var{n})
+@deffn {関数} unsum (@mvar{f}, @mvar{n})
 
-最初の後方差@code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}を返します。
+最初の後方差@code{@mvar{f}(@mvar{n}) - @mvar{f}(@mvar{n} - 1)}を返します。
 従って、
 @code{unsum}は、ある意味、@code{sum}の逆です。
 
@@ -1269,8 +1269,8 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{intopois}
-@deffn {関数} intopois (@var{a})
-@var{a}をPoisson符号に変換します。
+@deffn {関数} intopois (@mvar{a})
+@mvar{a}をPoisson符号に変換します。
 
 @opencatbox
 @category{Poisson series}
@@ -1281,12 +1281,12 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{outopois}
-@deffn {関数} outofpois (@var{a})
+@deffn {関数} outofpois (@mvar{a})
 
-@var{a}をPoisson符号から一般表現に変換します。
-もし@var{a}がPoisson形式でないなら、
+@mvar{a}をPoisson符号から一般表現に変換します。
+もし@mvar{a}がPoisson形式でないなら、
 @code{outofpois}は変換を実行し、
-すなわち、その戻り値は、@code{outofpois (intopois (@var{a}))}です。
+すなわち、その戻り値は、@code{outofpois (intopois (@mvar{a}))}です。
 例えば、この関数は、
 特定のタイプのサインやコサイン項のべきの和に関する
 標準整理器です。
@@ -1301,10 +1301,10 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poisdiff}
-@deffn {関数} poisdiff (@var{a}, @var{b})
+@deffn {関数} poisdiff (@mvar{a}, @mvar{b})
 
-@var{a}を@var{b}に関して微分します。
-@var{b}は三角関数の引数の中だけ、または係数の中だけにいなければいけません。
+@mvar{a}を@mvar{b}に関して微分します。
+@mvar{b}は三角関数の引数の中だけ、または係数の中だけにいなければいけません。
 
 @opencatbox
 @category{Poisson series}
@@ -1317,10 +1317,10 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poisexpt}
-@deffn {関数} poisexpt (@var{a}, @var{b})
+@deffn {関数} poisexpt (@mvar{a}, @mvar{b})
 
-関数的に@code{intopois (@var{a}^@var{b})}と同一です。
-@var{b}は正の整数でなければいけません。
+関数的に@code{intopois (@mvar{a}^@mvar{b})}と同一です。
+@mvar{b}は正の整数でなければいけません。
 
 @opencatbox
 @category{Poisson series}
@@ -1331,11 +1331,11 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poisint}
-@deffn {関数} poisint (@var{a}, @var{b})
+@deffn {関数} poisint (@mvar{a}, @mvar{b})
 
 (@code{poisdiffと})似て制限された意味で積分します。
-もし@var{b}が三角関数の引数の中にあるなら、
-@var{b}の中の非周期的項は落とされます。
+もし@mvar{b}が三角関数の引数の中にあるなら、
+@mvar{b}の中の非周期的項は落とされます。
 
 @opencatbox
 @category{Poisson series}
@@ -1361,12 +1361,12 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poismap}
-@deffn {関数} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+@deffn {関数} poismap (@mvar{series}, @mvar{sinfn}, @mvar{cosfn})
 
-関数@var{sinfn}を与えられたPoisson級数のサイン項に、
-@var{cosfn}をコサイン項に
+関数@mvar{sinfn}を与えられたPoisson級数のサイン項に、
+@mvar{cosfn}をコサイン項に
 マップします。
-@var{sinfn}と @var{cosfn}は、２引数関数です。
+@mvar{sinfn}と @mvar{cosfn}は、２引数関数です。
 引数それぞれは、級数の中の項の係数と三角関数部です。
 
 @opencatbox
@@ -1378,7 +1378,7 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poisplus}
-@deffn {関数} poisplus (@var{a}, @var{b})
+@deffn {関数} poisplus (@mvar{a}, @mvar{b})
 
 関数的に@code{intopois (a + b)}と同一です。
 
@@ -1389,9 +1389,9 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poissimp}
-@deffn {関数} poissimp (@var{a})
+@deffn {関数} poissimp (@mvar{a})
 
-@var{a}を、一般表現の@var{a}に関するPoisson級数に変換します。
+@mvar{a}を、一般表現の@mvar{a}に関するPoisson級数に変換します。
 
 @opencatbox
 @category{Poisson series}
@@ -1413,25 +1413,25 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poissubst}
-@deffn {関数} poissubst (@var{a}, @var{b}, @var{c})
+@deffn {関数} poissubst (@mvar{a}, @mvar{b}, @mvar{c})
 
-@var{a}を@var{c}の中の@var{b}に代入します。
-@var{c}はPoisson級数です。
+@mvar{a}を@mvar{c}の中の@mvar{b}に代入します。
+@mvar{c}はPoisson級数です。
 
-(1) @var{b}が変数@var{u}, @var{v}, @var{w}, @var{x}, @var{y}, @var{z}のいずれかの場合、
-@var{a}はそれらの変数に関して線形の式(例えば、@code{6*u + 4*v})でなければいけません。
+(1) @mvar{b}が変数@mvar{u}, @mvar{v}, @mvar{w}, @mvar{x}, @mvar{y}, @mvar{z}のいずれかの場合、
+@mvar{a}はそれらの変数に関して線形の式(例えば、@code{6*u + 4*v})でなければいけません。
 
-(2) @var{b}はそれらの変数以外の場合、
-@var{a}もまたそれらの変数を含んではいけなく、さらに、サインもコサインも含んではいけません。
+(2) @mvar{b}はそれらの変数以外の場合、
+@mvar{a}もまたそれらの変数を含んではいけなく、さらに、サインもコサインも含んではいけません。
 
-@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})}は、
-上のタイプ(1)のように@var{a}と@var{b}に関して演算しますが、
-@var{d}がPoisson級数の場合、
-@var{c}の中で@var{b}に@code{@var{a} + @var{d}}を代入した結果を供給するために、
-@code{cos(@var{d})}と@code{sin(@var{d})}を次数@var{n}に展開する
+@code{poissubst (@mvar{a}, @mvar{b}, @mvar{c}, @mvar{d}, @mvar{n})}は、
+上のタイプ(1)のように@mvar{a}と@mvar{b}に関して演算しますが、
+@mvar{d}がPoisson級数の場合、
+@mvar{c}の中で@mvar{b}に@code{@mvar{a} + @mvar{d}}を代入した結果を供給するために、
+@code{cos(@mvar{d})}と@code{sin(@mvar{d})}を次数@mvar{n}に展開する
 特殊なタイプの代入です。
 アイデアは、
-@var{d}が小さなパラメータの項に関する展開だということです。
+@mvar{d}が小さなパラメータの項に関する展開だということです。
 例えば、
 @code{poissubst (u, v, cos(v), %e, 3)}は@code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}をもたらします。
 
@@ -1444,9 +1444,9 @@ Taylor級数の係数は標準に順序付けられます。
 
 @c -----------------------------------------------------------------------------
 @anchor{poistimes}
-@deffn {関数} poistimes (@var{a}, @var{b})
+@deffn {関数} poistimes (@mvar{a}, @mvar{b})
 
-@code{intopois (@var{a}*@var{b})}と同じ機能です。
+@code{intopois (@mvar{a}*@mvar{b})}と同じ機能です。
 
 @opencatbox
 @category{Poisson series}
@@ -1461,7 +1461,7 @@ Taylor級数の係数は標準に順序付けられます。
 
 (もしユーザーがそれを定義したら)
 Poisson乗算の間、適用する予約関数です。
-項の中の@var{u}, @var{v}, ..., @var{z}の係数を引数とする６引数の述語論理関数です。
+項の中の@mvar{u}, @mvar{v}, ..., @mvar{z}の係数を引数とする６引数の述語論理関数です。
  (この項の係数に関して)@code{poistrim}が@code{true}の項は、
 乗算の間に消去されます。
 
@@ -1472,11 +1472,11 @@ Poisson乗算の間、適用する予約関数です。
 
 @c -----------------------------------------------------------------------------
 @anchor{printpois}
-@deffn {関数} printpois (@var{a})
+@deffn {関数} printpois (@mvar{a})
 
 可読フォーマットでPoisson級数を印字します。
 @code{outofpois}と共通で、
-もし必要なら、@var{a}を最初にPoisson符号に変換します。
+もし必要なら、@mvar{a}を最初にPoisson符号に変換します。
 
 @opencatbox
 @category{Poisson series} @category{Display functions}

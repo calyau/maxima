@@ -28,8 +28,8 @@ Standardwert: @code{0}
 
 Wenn notwendig erzeugen die Funktionen @mref{solve} und @mref{algsys} freie
 Parameter, die in die L@"osungen eingesetzt werden.  Die Parameter haben den 
-Namen @code{%r<@var{num}>}.  Die Optionsvariable @code{%rnum} enth@"alt die
-Nummer @var{num}, die an den Pr@"afix @code{%r} angeh@"angt wird.  Maxima
+Namen @code{%r<@mvar{num}>}.  Die Optionsvariable @code{%rnum} enth@"alt die
+Nummer @mvar{num}, die an den Pr@"afix @code{%r} angeh@"angt wird.  Maxima
 erh@"oht @code{%rnum} automatisch.  Siehe auch die Systemvariable
 @mref{%rnum_list} f@"ur eine Liste der Parameter einer L@"osung.
 @end defvr
@@ -216,17 +216,17 @@ auch die komplexen L@"osungen gesucht werden.
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{algsys}
-@deffn  {Funktion} algsys ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
-@deffnx {Funktion} algsys ([@var{eqn_1}, @dots{}, @var{eqn_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn  {Funktion} algsys ([@mvar{expr_1}, @dots{}, @mvar{expr_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
+@deffnx {Funktion} algsys ([@mvar{eqn_1}, @dots{}, @mvar{eqn_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
-L@"ost ein Gleichungssystem mit den Polynomen @var{expr_1}, @dots{},
-@var{expr_m} oder den Gleichungen @var{eqn_1}, @dots{}, @var{eqn_m} f@"ur die
-Variablen @var{x_1}, @dots{}, @var{x_n}.  Werden Polynome @var{expr_i} als
+L@"ost ein Gleichungssystem mit den Polynomen @mvar{expr_1}, @dots{},
+@mvar{expr_m} oder den Gleichungen @mvar{eqn_1}, @dots{}, @mvar{eqn_m} f@"ur die
+Variablen @mvar{x_1}, @dots{}, @mvar{x_n}.  Werden Polynome @mvar{expr_i} als
 Argument @"ubergeben, werden diese als Gleichungen @code{expr_i = 0}
 interpretiert.  Die Anzahl der Gleichungen und Variablen kann verschieden sein.
 
 @code{algsys} gibt eine Liste mit den L@"osungen zur@"uck.  Jede L@"osung ist
-wiederum eine Liste mit den L@"osungen f@"ur die einzelnen Variablen @var{x_i},
+wiederum eine Liste mit den L@"osungen f@"ur die einzelnen Variablen @mvar{x_i},
 die als Gleichungen angegeben sind.  Kann @code{algsys} keine L@"osung finden,
 wird eine leere Liste @code{[]} zur@"uckgegeben.
 
@@ -239,15 +239,15 @@ eines Gleichungssystems zu finden:
 
 @enumerate
 @item
-Die Gleichungen werden faktorisiert und in Teilsysteme @var{S_i} aufgeteilt.
+Die Gleichungen werden faktorisiert und in Teilsysteme @mvar{S_i} aufgeteilt.
 
 @item
-F@"ur jedes Teilsystem @var{S_i} werden eine Gleichung @var{E}, die den
-niedrigsten von Null verschiedenen Grad hat und eine Variable @var{x}
-ausgew@"ahlt.  Dann wird die Resultante der Gleichungen @var{E} und @var{E_j}
-f@"ur die Variable @var{x} sowie allen verbleibenden Gleichungen @var{E_j} des
-Teilsystems @var{S_i} berechnet.  Dieses Verfahren eliminiert die Variable
-@var{x} und hat ein neues Teilsystem @var{S_i'} als Ergebnis.  Der Algorithmus
+F@"ur jedes Teilsystem @mvar{S_i} werden eine Gleichung @mvar{E}, die den
+niedrigsten von Null verschiedenen Grad hat und eine Variable @mvar{x}
+ausgew@"ahlt.  Dann wird die Resultante der Gleichungen @mvar{E} und @mvar{E_j}
+f@"ur die Variable @mvar{x} sowie allen verbleibenden Gleichungen @mvar{E_j} des
+Teilsystems @mvar{S_i} berechnet.  Dieses Verfahren eliminiert die Variable
+@mvar{x} und hat ein neues Teilsystem @mvar{S_i'} als Ergebnis.  Der Algorithmus
 wiederholt dann den 1. Schritt.
 
 @item
@@ -327,18 +327,18 @@ Beispiele:
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{allroots}
-@deffn  {Funktion} allroots (@var{expr})
-@deffnx {Funktion} allroots (@var{eqn})
+@deffn  {Funktion} allroots (@mvar{expr})
+@deffnx {Funktion} allroots (@mvar{eqn})
 
 Berechnet numerische N@"aherungen der reellen und komplexen Wurzeln 
-des Polynoms @var{expr} oder der Polynomgleichung @var{eqn} mit einer Variablen.
+des Polynoms @mvar{expr} oder der Polynomgleichung @mvar{eqn} mit einer Variablen.
 
 Hat der Schalter @mref{polyfactor} den Wert @code{true}, wird das Polynom
 @"uber die reellen oder komplexen Zahlen faktorisiert.
 
 F@"ur den Fall mehrfacher Wurzeln kann @code{allroots} ungenaue Ergebnisse 
-liefern.  Ist das Polynom reell, kann es sein, dass @code{allroots(%i*@var{p})})
-genauere Approximationen liefern als @code{allroots (@var{p})}, da
+liefern.  Ist das Polynom reell, kann es sein, dass @code{allroots(%i*@mvar{p})})
+genauere Approximationen liefern als @code{allroots (@mvar{p})}, da
 @code{allroots} in diesem Fall einen anderen Algorithmus verwendet.
 
 Der Z@"ahler des Arguments der Funktion @code{allroots} muss nach Anwendung der
@@ -392,11 +392,11 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{bfallroots}
-@deffn  {Funktion} bfallroots (@var{expr})
-@deffnx {Funktion} bfallroots (@var{eqn})
+@deffn  {Funktion} bfallroots (@mvar{expr})
+@deffnx {Funktion} bfallroots (@mvar{eqn})
 
 Berechnet numerische N@"aherungen der reellen und komplexen Wurzeln des Polynoms 
-@var{expr} oder der Polynomgleichung @var{eqn} in einer Variable.
+@mvar{expr} oder der Polynomgleichung @mvar{eqn} in einer Variable.
 
 @code{bfallroots} entspricht der Funktion @code{allroots} mit dem Unterschied,
 dass die Funktion @code{bfallroots} die N@"aherungen mit gro@ss{}en
@@ -530,8 +530,8 @@ Solution:
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{dimension}
-@deffn  {Funktion} dimension (@var{eqn})
-@deffnx {Funktion} dimension (@var{eqn_1}, @dots{}, @var{eqn_n})
+@deffn  {Funktion} dimension (@mvar{eqn})
+@deffnx {Funktion} dimension (@mvar{eqn_1}, @dots{}, @mvar{eqn_n})
 
 @code{dimen} ist ein Paket f@"ur die Dimensionsanalyse.  @code{load(dimen)}
 l@"adt dieses Paket.  @code{demo(dimen)} zeigt eine kleine Demonstration.
@@ -556,12 +556,12 @@ Hat @code{dispflag} den Wert @code{false}, werden Ausgaben der Funktion
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{funcsolve}
-@deffn {Funktion} funcsolve (@var{eqn}, @var{g}(@var{t}))
+@deffn {Funktion} funcsolve (@mvar{eqn}, @mvar{g}(@mvar{t}))
 
-Das Argument @var{eqn} ist eine Gleichung, die ein Polynom erster Ordnung in den
-Funktionen @code{@var{g}(@var{t})} und @code{@var{g}(@var{t+1})} ist.
-@code{funcsolve} sucht die rationale Funktion @code{@var{g}(@var{t})}, die
-L@"osung der Gleichung @var{eqn} ist.
+Das Argument @mvar{eqn} ist eine Gleichung, die ein Polynom erster Ordnung in den
+Funktionen @code{@mvar{g}(@mvar{t})} und @code{@mvar{g}(@mvar{t+1})} ist.
+@code{funcsolve} sucht die rationale Funktion @code{@mvar{g}(@mvar{t})}, die
+L@"osung der Gleichung @mvar{eqn} ist.
 
 Warnung: Die Funktion ist nur sehr rudiment@"ar implementiert.  Offensichtliche
 Verallgemeinerungen fehlen.
@@ -644,7 +644,7 @@ Solution
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{ieqn}
-@deffn {Funktion} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
+@deffn {Funktion} ieqn (@mvar{ie}, @mvar{unk}, @mvar{tech}, @mvar{n}, @mvar{guess})
 
 @code{inteqn} ist ein Paket zur L@"osung von Integralgleichungen zweiter 
 Art der Form
@@ -675,27 +675,27 @@ und von Integralgleichungen erster Art der Form
 
 Das Kommando @code{load(inteqn)} l@"adt das Paket.
 
-Das erste Argument @var{ie} ist die Integralgleichung und das Argument @var{unk}
-die unbekannte Funktion.  Mit dem Argument @var{tech} wird die Methode
+Das erste Argument @mvar{ie} ist die Integralgleichung und das Argument @mvar{unk}
+die unbekannte Funktion.  Mit dem Argument @mvar{tech} wird die Methode
 angegeben, die zur L@"osung der Integralgleichung angewendet werden soll.
-Erh@"alt das Argument @var{tech} den Wert @code{first}, wird das Ergebnis der
+Erh@"alt das Argument @mvar{tech} den Wert @code{first}, wird das Ergebnis der
 ersten erfolgreichen Methode zur@"uckgegeben.  Mit @code{all} werden alle
-Methoden angewendet.  Das Argument @var{n} gibt die maximale Anzahl an Termen
+Methoden angewendet.  Das Argument @mvar{n} gibt die maximale Anzahl an Termen
 an, die von den Methoden @code{taylor}, @code{neumann}, @code{firstkindseries}
-oder @code{fredseries} verwendet werden.  @var{n} ist auch die maximale Tiefe
-der Rekursion f@"ur der Differentiationsmethode.  Das Argument @var{guess} ist
+oder @code{fredseries} verwendet werden.  @mvar{n} ist auch die maximale Tiefe
+der Rekursion f@"ur der Differentiationsmethode.  Das Argument @mvar{guess} ist
 der Startwert der Methoden @code{neumann} oder @code{firstkindseries}.
 
 Die Standardwerte der Argumente sind:
 
 @table @var
 @item unk 
-@code{@var{p}(@var{x})}, wobei @var{p} die erste im Integranden aufgefundene
-Funktion ist, die Maxima unbekannt ist, und @var{x} die Variable ist, die im
+@code{@mvar{p}(@mvar{x})}, wobei @mvar{p} die erste im Integranden aufgefundene
+Funktion ist, die Maxima unbekannt ist, und @mvar{x} die Variable ist, die im
 Falle einer Integralgleichung der zweiten Art als Argument der Funktion
-@var{p} au@ss{}erhalb des Integrals vorgefunden wird, oder im Falle einer 
+@mvar{p} au@ss{}erhalb des Integrals vorgefunden wird, oder im Falle einer 
 Integralgleichung der ersten Art die einzige andere Variable neben der 
-Integrationsvariable ist.  Wenn der Versuch fehlschl@"agt, die Variable @var{x}
+Integrationsvariable ist.  Wenn der Versuch fehlschl@"agt, die Variable @mvar{x}
 zu finden, wird der Nutzer nach der unabh@"angigen Variablen gefragt.
 
 @item tech
@@ -705,7 +705,7 @@ zu finden, wird der Nutzer nach der unabh@"angigen Variablen gefragt.
 @code{1}
 
 @item guess
-@code{none}, bewirkt, dass der Ansatz @code{@var{f}(@var{x})} als Startwert
+@code{none}, bewirkt, dass der Ansatz @code{@mvar{f}(@mvar{x})} als Startwert
 der L@"osungsmethoden @code{neumann} und @code{firstkindseries} verwendet wird.
 @end table
 
@@ -720,28 +720,28 @@ Standardwert: @code{true}
 @code{ieqnprint} kontrolliert die Ausgabe des Ergebnisses der Funktion 
 @mrefdot{ieqn}  Hat die Optionsvariable @code{ieqnprint} den Wert @code{true},
 dann hat das Ergebnis der Funktion @code{ieqn} die Form
-@code{[@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]}.
-Ist die L@"osung exakt, tritt das Element @code{@var{flag}} nicht auf.
-Ansonsten erh@"alt das Element @code{@var{flag}} den Wert @code{approximate}
+@code{[@mvar{solution}, @mvar{technique used}, @mvar{nterms}, @mvar{flag}]}.
+Ist die L@"osung exakt, tritt das Element @code{@mvar{flag}} nicht auf.
+Ansonsten erh@"alt das Element @code{@mvar{flag}} den Wert @code{approximate}
 f@"ur eine nicht exakte L@"osung und den Wert @code{incomplete} f@"ur eine nicht
 geschlossene L@"osung.  Wurde die L@"osung mit einer Methode gefunden, die einen
-Reihenansatz verwendet, enth@"alt @var{nterms} die Anzahl der Terme der
+Reihenansatz verwendet, enth@"alt @mvar{nterms} die Anzahl der Terme der
 Entwicklung.
 @end defvr
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{lhs}
-@deffn {Funktion} lhs (@var{expr})
+@deffn {Funktion} lhs (@mvar{expr})
 
-Gibt die linke Seite des Ausdrucks @var{expr} zur@"uck, wenn der Operator von
-@var{expr} einer der relationalen Operatoren
+Gibt die linke Seite des Ausdrucks @mvar{expr} zur@"uck, wenn der Operator von
+@mvar{expr} einer der relationalen Operatoren
 @code{< <= = # equal notequal >= >}, einer der Zuweisungsoperatoren
 @code{:= ::= : ::} oder ein nutzerdefinierter bin@"arer Infix-Operator ist, der
 mit der Funktion @mref{infix} deklariert wurde.  Die linke Seite des Ausdrucks
 ist f@"ur die hier genannten Operatoren das erste Argument.
 
-Wenn @var{expr} ein Atom ist oder sein Operator ein anderer als oben 
-aufgelistet, gibt @code{lhs} den Ausdruck @var{expr} zur@"uck.  Siehe auch 
+Wenn @mvar{expr} ein Atom ist oder sein Operator ein anderer als oben 
+aufgelistet, gibt @code{lhs} den Ausdruck @mvar{expr} zur@"uck.  Siehe auch 
 @mrefdot{rhs}
 
 Beispiele:
@@ -780,11 +780,11 @@ Beispiele:
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{linsolve}
-@deffn {Funktion} linsolve ([@var{expr_1}, @dots{}, @var{expr_m}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn {Funktion} linsolve ([@mvar{expr_1}, @dots{}, @mvar{expr_m}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
 L@"ost das lineare Gleichungssystem mit den Gleichungen oder Polynomen
-[@var{expr_1}, @dots{}, @var{expr_m}] und den Variablen [@var{x_1}, @dots{}, 
-@var{x_n}].  Jede Gleichung muss ein Polynom in den angegebenen Variablen sein.
+[@mvar{expr_1}, @dots{}, @mvar{expr_m}] und den Variablen [@mvar{x_1}, @dots{}, 
+@mvar{x_n}].  Jede Gleichung muss ein Polynom in den angegebenen Variablen sein.
 
 Hat die Optionsvariable @mref{globalsolve} den Wert @code{true}, werden die
 L@"osungen des Gleichungssystems den angegebenen Variablen zugewiesen.
@@ -897,10 +897,10 @@ Beispiel:
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{nroots}
-@deffn {Funktion} nroots (@var{p}, @var{low}, @var{high})
+@deffn {Funktion} nroots (@mvar{p}, @mvar{low}, @mvar{high})
 
-Gibt die Anzahl der reellen Wurzeln des reellen univariaten Polynoms @var{p} im 
-halboffenen Intervall @code{(@var{low}, @var{high}]} zur@"uck.
+Gibt die Anzahl der reellen Wurzeln des reellen univariaten Polynoms @mvar{p} im 
+halboffenen Intervall @code{(@mvar{low}, @mvar{high}]} zur@"uck.
 Die Grenzen des Intervalls k@"onnen auch negativ unendlich @code{minf} oder 
 positiv unendlich @code{inf} sein.
 
@@ -917,17 +917,17 @@ Beispiel:
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{nthroot}
-@deffn {Funktion} nthroot (@var{p}, @var{n})
+@deffn {Funktion} nthroot (@mvar{p}, @mvar{n})
 
 @c where p is a polynomial with integer coefficients and n is a positive integer
 @c returns q, a polynomial over the integers, such that q^n=p or prints an error
 @c message indicating that p is not a perfect nth power. This routine is much 
 @c faster than @code{factor} or even @code{sqfr}.
 
-Das Argument @var{p} ist ein Polynom mit ganzzahligen Koeffizienten und das
-Argument @var{n} eine positive ganze Zahl.  @code{nthroot} gibt ein Polynom 
+Das Argument @mvar{p} ist ein Polynom mit ganzzahligen Koeffizienten und das
+Argument @mvar{n} eine positive ganze Zahl.  @code{nthroot} gibt ein Polynom 
 @math{q} @"uber die ganzen Zahlen zur@"uck, so dass @math{q^n = p} gilt.
-Existiert kein derartiges Polynom @var{q} gibt Maxima eine Fehlermeldung aus.
+Existiert kein derartiges Polynom @mvar{q} gibt Maxima eine Fehlermeldung aus.
 @code{nthroot} ist wesentlich schneller als die Funktionen @mref{factor} oder
 @mrefdot{sqfr}
 @end deffn
@@ -973,14 +973,14 @@ zur@"uck, die nicht die imagin@"are Einheit @code{%i} enthalten.
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{realroots}
-@deffn  {Funktion} realroots (@var{expr}, @var{bound})
-@deffnx {Funktion} realroots (@var{eqn}, @var{bound})
-@deffnx {Funktion} realroots (@var{expr})
-@deffnx {Funktion} realroots (@var{eqn})
+@deffn  {Funktion} realroots (@mvar{expr}, @mvar{bound})
+@deffnx {Funktion} realroots (@mvar{eqn}, @mvar{bound})
+@deffnx {Funktion} realroots (@mvar{expr})
+@deffnx {Funktion} realroots (@mvar{eqn})
 
-Computes rational approximations of the real roots of the polynomial @var{expr}
-or polynomial equation @var{eqn} of one variable, to within a tolerance of 
-@var{bound}.  Coefficients of @var{expr} or @var{eqn} must be literal numbers;
+Computes rational approximations of the real roots of the polynomial @mvar{expr}
+or polynomial equation @mvar{eqn} of one variable, to within a tolerance of 
+@mvar{bound}.  Coefficients of @mvar{expr} or @mvar{eqn} must be literal numbers;
 symbol constants such as @code{%pi} are rejected.
 
 @code{realroots} assigns the multiplicities of the roots it finds to the global 
@@ -993,12 +993,12 @@ out by exact rational arithmetic.  Even if some coefficients are floating-point
 numbers, the results are rational (unless coerced to floats by the @code{float} 
 or @code{numer} flags).
 
-When @var{bound} is less than 1, all integer roots are found exactly.  When 
-@var{bound} is unspecified, it is assumed equal to the global variable 
+When @mvar{bound} is less than 1, all integer roots are found exactly.  When 
+@mvar{bound} is unspecified, it is assumed equal to the global variable 
 @code{rootsepsilon}.
 
 When the global variable @code{programmode} is @code{true}, @code{realroots} 
-returns a list of the form @code{[x = @var{x_1}, x = @var{x_2}, ...]}.  When 
+returns a list of the form @code{[x = @mvar{x_1}, x = @mvar{x_2}, ...]}.  When 
 @code{programmode} is @code{false}, @code{realroots} creates intermediate 
 expression labels @code{%t1}, @code{%t2}, ..., assigns the results to them, and 
 returns the list of labels.
@@ -1026,16 +1026,16 @@ Examples:
 
 @c --- 30.11.2010 DK -----------------------------------------------------------
 @anchor{rhs}
-@deffn {Funktion} rhs (@var{expr})
+@deffn {Funktion} rhs (@mvar{expr})
 
-Gibt die rechte Seite des Ausdrucks @var{expr} 
-zur@"uck, wenn der Operator von @var{expr} einer der relationalen Operatoren
+Gibt die rechte Seite des Ausdrucks @mvar{expr} 
+zur@"uck, wenn der Operator von @mvar{expr} einer der relationalen Operatoren
 @code{< <= = # equal notequal >= >}, einer der Zuweisungsoperatoren 
 @code{:= ::= : ::} oder ein nutzerdefinierter bin@"arer Infixoperator ist, der
 mit der Funktion @code{infix} deklariert wurde.  Die rechte Seite des Ausdrucks
 ist f@"ur die hier genannten Operatoren das zweite Argument.
 
-Ist @var{expr} ein Atom oder hat der Ausdruck @var{expr} einen anderen Operator
+Ist @mvar{expr} ein Atom oder hat der Ausdruck @mvar{expr} einen anderen Operator
 als oben angegeben, dann ist das Ergebnis @code{0}.  Siehe auch @mrefdot{lhs}
 
 Beispiele:
@@ -1083,39 +1083,39 @@ der Funktion @mref{realroots} gefundenen Wurzeln festsetzt.
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{solve}
-@deffn  {Funktion} solve (@var{expr}, @var{x})
-@deffnx {Funktion} solve (@var{expr})
-@deffnx {Funktion} solve ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_n}])
+@deffn  {Funktion} solve (@mvar{expr}, @mvar{x})
+@deffnx {Funktion} solve (@mvar{expr})
+@deffnx {Funktion} solve ([@mvar{eqn_1}, @dots{}, @mvar{eqn_n}], [@mvar{x_1}, @dots{}, @mvar{x_n}])
 
-L@"ost eine algebraische Gleichung @var{expr} nach der Variablen @var{x} auf.
-Wenn @var{expr} keine Gleichung ist, wird die Gleichung @code{@var{expr} = 0} 
-angenommen.  @var{x} kann eine Funktion wie zum Beispiel @code{f(x)}) sein oder
+L@"ost eine algebraische Gleichung @mvar{expr} nach der Variablen @mvar{x} auf.
+Wenn @mvar{expr} keine Gleichung ist, wird die Gleichung @code{@mvar{expr} = 0} 
+angenommen.  @mvar{x} kann eine Funktion wie zum Beispiel @code{f(x)}) sein oder
 ein allgemeiner Ausdruck.  Ausgenommen sind Summen und Produkte.  Hat die 
 Gleichung nur eine Variable, braucht diese nicht angegeben zu werden.
-@var{expr} kann ein rationaler Ausdruck sein und trigonometrische Funktionen, 
+@mvar{expr} kann ein rationaler Ausdruck sein und trigonometrische Funktionen, 
 Exponentialfunktionen und andere Funktionen enthalten.  Zur L@"osung wird die
 folgende Methode verwendet:
 
 @enumerate
 @item
-Sei @var{E} ein Ausdruck und @var{X} die Variable.  Ist @var{E} linear in 
-@var{X}, dann kann die Gleichung sofort nach der Variablen @code{X} aufgel@"ost 
-werden.  Hat @var{E} die Form @code{A*X^N + B}, dann ist das Ergebnis 
+Sei @mvar{E} ein Ausdruck und @mvar{X} die Variable.  Ist @mvar{E} linear in 
+@mvar{X}, dann kann die Gleichung sofort nach der Variablen @code{X} aufgel@"ost 
+werden.  Hat @mvar{E} die Form @code{A*X^N + B}, dann ist das Ergebnis 
 @code{(-B/A)^1/N)} multipliziert mit der @code{N}-ten Einheitswurzel.
 
 @item
-Ist @var{E} nicht linear in @var{X}, wird der gr@"o@ss{}te gemeinsame Teiler 
-@var{N} der Exponenten der Variable @var{X} bestimmt.  Die Exponenten der 
-Variablen werden durch @var{N} dividiert und die Multiplizit@"at der L@"osungen 
-mit @var{N} multipliziert.  @code{solve} wird erneut f@"ur den Ausdruck 
-aufgerufen.  Kann @var{E} faktorisiert werden, wird @code{solve} f@"ur jeden 
+Ist @mvar{E} nicht linear in @mvar{X}, wird der gr@"o@ss{}te gemeinsame Teiler 
+@mvar{N} der Exponenten der Variable @mvar{X} bestimmt.  Die Exponenten der 
+Variablen werden durch @mvar{N} dividiert und die Multiplizit@"at der L@"osungen 
+mit @mvar{N} multipliziert.  @code{solve} wird erneut f@"ur den Ausdruck 
+aufgerufen.  Kann @mvar{E} faktorisiert werden, wird @code{solve} f@"ur jeden 
 Faktor aufgerufen.  Zuletzt pr@"uft @code{solve}, ob einer der Algorithmen f@"ur
 quadratische, kubische oder quartische Gleichungen angewendet werden kann.
 
 @item
-Ist @var{E} ein Polynom in einer Funktion @code{F(X)} mit @var{X} als der
+Ist @mvar{E} ein Polynom in einer Funktion @code{F(X)} mit @mvar{X} als der
 Variablen, wird zun@"achst die L@"osung des Polynoms f@"ur @code{F(X)} gesucht.
-Ist @var{C} eine solche L@"osung, kann die Gleichung @code{F(X)=C} gel@"ost 
+Ist @mvar{C} eine solche L@"osung, kann die Gleichung @code{F(X)=C} gel@"ost 
 werden, wenn die Umkehrfunktion zu @code{F(X)} bekannt ist.
 @end enumerate
 
@@ -1126,7 +1126,7 @@ Teilausdr@"ucke zerlegt.
 Die Systemvariable @mref{multiplicities} enth@"alt eine Liste mit den
 Vielfachheiten der einzelnen L@"osungen.
 
-@c @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
+@c @code{solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])}
 @c solves a system of simultaneous (linear or non-linear) polynomial equations 
 @c by calling @code{linsolve} or @code{algsys} and returns a list of the 
 @c solution lists in the variables.  In the case of @code{linsolve} this list 
@@ -1136,9 +1136,9 @@ Vielfachheiten der einzelnen L@"osungen.
 @c the equations is equal to the number of equations, the second argument-list 
 @c may be omitted.
 
-@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
-l@"ost ein Gleichungssystem mit den Polynomen @var{eqn_1}, @dots{}, @var{eqn_n} 
-f@"ur die Variablen @var{x_1}, @dots{}, @var{x_n}.  Die Polynome k@"onnen linear 
+@code{solve ([@mvar{eqn_1}, ..., @mvar{eqn_n}], [@mvar{x_1}, ..., @mvar{x_n}])}
+l@"ost ein Gleichungssystem mit den Polynomen @mvar{eqn_1}, @dots{}, @mvar{eqn_n} 
+f@"ur die Variablen @mvar{x_1}, @dots{}, @mvar{x_n}.  Die Polynome k@"onnen linear 
 oder nichtlinear sein.  Um das System zu l@"osen, werden die Funktionen 
 @mref{linsolve} oder @mref{algsys} aufgerufen.  Das Ergebnis ist eine Liste mit 
 den L@"osungen.  Ist die Anzahl der Gleichungen gleich der Anzahl der Variablen 

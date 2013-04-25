@@ -76,8 +76,8 @@ trabajo depende del sistema operativo y de la instalaci@'on.
 @section Funciones y variables para lectura y escritura
 
 
-@deffn {Funci@'on} appendfile (@var{filename})
-A@~nade informaci@'on de la consola a @var{filename}, de igual manera que lo hace @code{writefile}, pero con la salvedad de que si el archivo ya existe la informaci@'on queda a@~nadida al final de su contenido.
+@deffn {Funci@'on} appendfile (@mvar{filename})
+A@~nade informaci@'on de la consola a @mvar{filename}, de igual manera que lo hace @code{writefile}, pero con la salvedad de que si el archivo ya existe la informaci@'on queda a@~nadida al final de su contenido.
 
 La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
 
@@ -85,21 +85,21 @@ La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile}
 
 
 
-@deffn {Funci@'on} batch (@var{filename})
-@deffnx {Function} batch (@var{filename}, @code{option})
+@deffn {Funci@'on} batch (@mvar{filename})
+@deffnx {Function} batch (@mvar{filename}, @code{option})
 
-@code{batch(@var{filename})} lee expresiones de Maxima desde @var{filename} y 
-las eval@'ua. La funci@'on @code{batch} busca @var{filename} en la lista 
+@code{batch(@mvar{filename})} lee expresiones de Maxima desde @mvar{filename} y 
+las eval@'ua. La funci@'on @code{batch} busca @mvar{filename} en la lista 
 @code{file_search_maxima}. V@'ease @code{file_search}.
 
-@code{batch(@var{filename}, @code{test})} es como @code{run_testsuite} con la
-opci@'on @code{display_all=true}. En este caso @code{batch} busca @var{filename} 
+@code{batch(@mvar{filename}, @code{test})} es como @code{run_testsuite} con la
+opci@'on @code{display_all=true}. En este caso @code{batch} busca @mvar{filename} 
 en la lista @code{file_search_maxima} y no en @code{file_search_tests} como hace
 @code{run_testsuite}. Adem@'as, @code{run_testsuite} ejecuta tests que est@'an
 en la lista @code{testsuite_files}. Con @code{batch} es posible ejecutar
 cualquier fichero que se encuentre en @code{file_search_maxima} en modo de prueba.
 
-El contenido de @var{filename} debe ser una secuencia de expresiones de Maxima,
+El contenido de @mvar{filename} debe ser una secuencia de expresiones de Maxima,
 cada una de las cuales termina en @code{;} o @code{$}.
 La variable especial @code{%} y la funci@'on @code{%th}
 se refieren a resultados previos dentro del archivo.
@@ -108,7 +108,7 @@ Espacios, tabulaciones y saltos de l@'{@dotless{i}}nea en el archivo se ignoran.
 Un archivo de entrada v@'alido puede crearse con un editor de texto o con la 
 funci@'on @code{stringout}.
 
-La funci@'on @code{batch} lee las expresiones del archivo @var{filename}, 
+La funci@'on @code{batch} lee las expresiones del archivo @mvar{filename}, 
 muestra las entradas en la consola, realiza los c@'alculos solicitados y 
 muestra las expresiones de los resultados.
 A las expresiones de entrada se les asignan etiquetas, as@'{@dotless{i}} 
@@ -126,21 +126,21 @@ libres de errores o ayudar a organizar el trabajo del usuario en la resoluci@'on
 de problemas complejos.
 
 La funci@'on @code{batch} eval@'ua su argumento y devuelve la ruta hacia
-@var{filename} en formato cadena cuando es invocada sin segundo argumento
+@mvar{filename} en formato cadena cuando es invocada sin segundo argumento
 o con la opci@'on @code{demo}. Cuando es llamada con la opci@'on @code{test}, 
-devuelve la lista vac@'{@dotless{i}}a @code{[]} o una lista con @var{filename}
+devuelve la lista vac@'{@dotless{i}}a @code{[]} o una lista con @mvar{filename}
 y los n@'umeros de tests que han fallado.
 
 V@'eanse tambi@'en  @code{load}, @code{batchload} y @code{demo}.
 
 @end deffn
 
-@deffn {Funci@'on} batchload (@var{filename})
-Lee expresiones de Maxima desde @var{filename} y las eval@'ua sin mostrar las entradas ni las salidas y sin asignarles etiquetas. Sin embargo, las salidas producidas por  @code{print} o @code{describe} s@'{@dotless{i}} se muestran.
+@deffn {Funci@'on} batchload (@mvar{filename})
+Lee expresiones de Maxima desde @mvar{filename} y las eval@'ua sin mostrar las entradas ni las salidas y sin asignarles etiquetas. Sin embargo, las salidas producidas por  @code{print} o @code{describe} s@'{@dotless{i}} se muestran.
 
 La variable especial @code{%} y la funci@'on @code{%th} se refieren a resultados previos del int@'erprete interactivo, no a los del propio archivo. El archivo no puede incluir construcciones del tipo @code{:lisp}.
 
-La funci@'on @code{batchload} devuelve la ruta de @var{filename} en formato de cadena.
+La funci@'on @code{batchload} devuelve la ruta de @mvar{filename} en formato de cadena.
 
 La funci@'on @code{batchload} eval@'ua sus argumentos.
 
@@ -169,28 +169,28 @@ Las funciones @code{save}, @code{stringout} y @code{with_stdout} se ven afectada
 
 
 
-@deffn {Funci@'on} filename_merge (@var{path}, @var{filename})
-Construye una ruta modificada a partir de @var{path} y @var{filename}.
-Si la componente final de @var{path} es de la forma @code{###.@var{something}},
-la componente se reemplaza con @code{@var{filename}.@var{something}}.
-En otro caso, la componente final se reemplaza simplemente por @var{filename}.
+@deffn {Funci@'on} filename_merge (@mvar{path}, @mvar{filename})
+Construye una ruta modificada a partir de @mvar{path} y @mvar{filename}.
+Si la componente final de @mvar{path} es de la forma @code{###.@mvar{something}},
+la componente se reemplaza con @code{@mvar{filename}.@mvar{something}}.
+En otro caso, la componente final se reemplaza simplemente por @mvar{filename}.
 
 El resultado es un objeto Lisp de tipo @i{pathname}.
 @end deffn
 
 
 
-@deffn {Funci@'on} file_search (@var{filename})
-@deffnx {Funci@'on} file_search (@var{filename}, @var{pathlist})
+@deffn {Funci@'on} file_search (@mvar{filename})
+@deffnx {Funci@'on} file_search (@mvar{filename}, @mvar{pathlist})
 
-La funci@'on @code{file_search} busca el archivo @var{filename} y devuelve su ruta como una cadena; si no lo encuentra,  @code{file_search} devuelve @code{false}. La llamada 
-@code{file_search (@var{filename})} busca en los directorios de b@'usqueda por defecto,
+La funci@'on @code{file_search} busca el archivo @mvar{filename} y devuelve su ruta como una cadena; si no lo encuentra,  @code{file_search} devuelve @code{false}. La llamada 
+@code{file_search (@mvar{filename})} busca en los directorios de b@'usqueda por defecto,
 que son los especificados por las variables @code{file_search_maxima}, @code{file_search_lisp} y @code{file_search_demo}.
 
 La funci@'on @code{file_search} analiza primero si el nombre del argumento existe antes de hacerlo coincidir con los comodines de los patrones de b@'usqueda de archivos.
 V@'ease @code{file_search_maxima} para m@'as informaci@'on sobre patrones de b@'usqueda de archivos.
 
-El argumento @var{filename} puede ser una ruta con nombre de archivo,
+El argumento @mvar{filename} puede ser una ruta con nombre de archivo,
 o simplemente el nombre del archivo, o, si el directorio de b@'usqueda de archivo incluye un patr@'on de b@'usqueda, es suficiente con el nombre de archivo sin extensi@'on.
 Por ejemplo,
 
@@ -203,9 +203,9 @@ file_search ("zeta");
 todos buscan el mismo archivo, dando por hecho que el archivo existe y que @code{/home/wfs/special/###.mac}
 est@'a en @code{file_search_maxima}.
 
-La llamada @code{file_search (@var{filename}, @var{pathlist})} busca solamente en los directorios especificados por @var{pathlist}, que es una lista de cadenas.
-El argumento @var{pathlist} ignora los directorios de b@'usqueda por defecto, de manera que si se da la lista de rutas, @code{file_search} busca solamente en ellas y no en los directorios por defecto.
-Incluso si hay un @'unico directorio en @var{pathlist}, debe ser suministrado como una lista de un @'unico elemento.
+La llamada @code{file_search (@mvar{filename}, @mvar{pathlist})} busca solamente en los directorios especificados por @mvar{pathlist}, que es una lista de cadenas.
+El argumento @mvar{pathlist} ignora los directorios de b@'usqueda por defecto, de manera que si se da la lista de rutas, @code{file_search} busca solamente en ellas y no en los directorios por defecto.
+Incluso si hay un @'unico directorio en @mvar{pathlist}, debe ser suministrado como una lista de un @'unico elemento.
 
 El usuario puede modificar los directorios de b@'usqueda por defecto; v@'ease para ello See @code{file_search_maxima}.
 
@@ -251,8 +251,8 @@ se interpreta como @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 @end defvr
 
 
-@deffn {Funci@'on} file_type (@var{filename})
-Devuelve una descripci@'on del contenido de @var{filename} basada en la 
+@deffn {Funci@'on} file_type (@mvar{filename})
+Devuelve una descripci@'on del contenido de @mvar{filename} basada en la 
 extensi@'on, sin intentar abrir el archivo para inspeccionar su contenido.
 
 El valor devuelto es un s@'{@dotless{i}}mbolo @code{object}, @code{lisp} o 
@@ -299,11 +299,11 @@ V@'ease tambi@'en @code{file_type}
 
 
 
-@deffn {Funci@'on} load (@var{filename})
-Eval@'ua las expresiones del archivo @var{filename}, trayendo variables,
+@deffn {Funci@'on} load (@mvar{filename})
+Eval@'ua las expresiones del archivo @mvar{filename}, trayendo variables,
 funciones y otros objetos a Maxima. Una asignaci@'on hecha previamente a 
 una variable en Maxima ser@'a destruida por otra asignaci@'on que se le 
-haga en @var{filename}. Para encontrar el fichero, @code{load} llama a 
+haga en @mvar{filename}. Para encontrar el fichero, @code{load} llama a 
 @code{file_search} con @code{file_search_maxima} y @code{file_search_lisp} 
 como directorios de b@'usqueda. Si la llamada a @code{load} funciona correctamente, 
 devuelve el nombre del fichero; en caso contrario, @code{load} muestra un mensaje de error.
@@ -315,7 +315,7 @@ pueden ser procesados por @code{load}. La funci@'on @code{load} llama a @code{lo
 para cargar archivos en Lisp y a  @code{batchload} para cargar archivos en Maxima.
 
 La funci@'on @code{load} no reconoce las construcciones de tipo @code{:lisp} en
-ficheros de Maxima. Adem@'as, mientras se est@'a procesando @var{filename},
+ficheros de Maxima. Adem@'as, mientras se est@'a procesando @mvar{filename},
 las variables globales @code{_}, @code{__}, @code{%} y @code{%th} mantienen los
 valores que ten@'{@dotless{i}}an cuando se realiz@'o la llamada a @code{load}.
 
@@ -363,8 +363,8 @@ End of batchfile
 @end defvr
 
 
-@deffn {Funci@'on} loadfile (@var{filename})
-Eval@'ua las expresiones Lisp del archivo @var{filename}. La funci@'on
+@deffn {Funci@'on} loadfile (@mvar{filename})
+Eval@'ua las expresiones Lisp del archivo @mvar{filename}. La funci@'on
 @code{loadfile} no llama a @code{file_search}, de manera que @code{filename} debe incluir la extensi@'on del archivo y su ruta completa.
 
 La funci@'on @code{loadfile} puede procesar ficheros creados por  @code{save}, @code{translate_file} y @code{compile_file}.
@@ -404,11 +404,11 @@ listas de informaci@'on de Maxima, como @code{values} o @code{functions}.
 
 
 
-@deffn  {Funci@'on} pathname_directory (@var{pathname})
-@deffnx {Funci@'on} pathname_name (@var{pathname})
-@deffnx {Funci@'on} pathname_type (@var{pathname})
+@deffn  {Funci@'on} pathname_directory (@mvar{pathname})
+@deffnx {Funci@'on} pathname_name (@mvar{pathname})
+@deffnx {Funci@'on} pathname_type (@mvar{pathname})
 
-Estas funciones devuelven las componentes de @var{pathname}.
+Estas funciones devuelven las componentes de @mvar{pathname}.
 
 Ejemplos:
 
@@ -430,15 +430,15 @@ Ejemplos:
 
 
 
-@deffn {Funci@'on} printfile (@var{path})
+@deffn {Funci@'on} printfile (@mvar{path})
 
-Env@'{@dotless{i}}a el fichero al que hace referncia la ruta @var{path}
-a la consola. @var{path} puede ser una cadena o un s@'{@dotless{i}}mbolo,
+Env@'{@dotless{i}}a el fichero al que hace referncia la ruta @mvar{path}
+a la consola. @mvar{path} puede ser una cadena o un s@'{@dotless{i}}mbolo,
 en cuyo caso se convertir@'a en una cadena.
 
-Si @var{path} hace referencia a un fichero accesible desde el directorio
+Si @mvar{path} hace referencia a un fichero accesible desde el directorio
 actual de trabajo, entonces se enviar@'a a la consola; en caso contrario,
-@code{printfile} intentar@'a localizar el fichero a@~nadi@'endole @var{path}
+@code{printfile} intentar@'a localizar el fichero a@~nadi@'endole @mvar{path}
 a cada uno de los elementos de @code{file_search_usage} a trav@'es de 
 @code{filename_merge}.
 
@@ -449,67 +449,67 @@ a cada uno de los elementos de @code{file_search_usage} a trav@'es de
 
 
 
-@deffn {Funci@'on} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Funci@'on} save (@var{filename}, values, functions, labels, ...)
-@deffnx {Funci@'on} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
-@deffnx {Funci@'on} save (@var{filename}, all)
-@deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+@deffn {Funci@'on} save (@mvar{filename}, @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, ...)
+@deffnx {Funci@'on} save (@mvar{filename}, values, functions, labels, ...)
+@deffnx {Funci@'on} save (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Funci@'on} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, ...)
+@deffnx {Funci@'on} save (@mvar{filename}, all)
+@deffnx {Funci@'on} save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, @mvar{name_2}=@mvar{expr_2}, ...)
 
-Alamacena los valores actuales de @var{name_1}, @var{name_2}, @var{name_3}, ..., 
-en el archivo @var{filename}. Los argumentos son nombres de variables, funciones 
+Alamacena los valores actuales de @mvar{name_1}, @mvar{name_2}, @mvar{name_3}, ..., 
+en el archivo @mvar{filename}. Los argumentos son nombres de variables, funciones 
 u otros objetos. Si un nombre no tiene un valor o una funci@'on asociado a @'el, 
 entonces se ignora.
 
-La funci@'on @code{save} devuelve @var{filename}.
+La funci@'on @code{save} devuelve @mvar{filename}.
 
 La funci@'on @code{save} almacena datos en forma de expresiones Lisp.
-Los datos almacenados por @code{save} pueden recuperarse con @code{load (@var{filename})}.
-El resultado de ejecutar  @code{save} cuando @var{filename} ya existe depende 
+Los datos almacenados por @code{save} pueden recuperarse con @code{load (@mvar{filename})}.
+El resultado de ejecutar  @code{save} cuando @mvar{filename} ya existe depende 
 del soporte Lisp implementado; el archivo puede ser sobreescrito o que @code{save} 
 env@'{@dotless{i}}e un mesaje de error.
 
-La llamada @code{save (@var{filename}, values, functions, labels, ...)}
+La llamada @code{save (@mvar{filename}, values, functions, labels, ...)}
 almacena los elementos cuyos nombres son @code{values}, @code{functions}, 
 @code{labels}, etc. Los nombres pueden ser cualesquiera de los especificados 
 por la variable @code{infolists}; @code{values} incluye todas las variables 
 definidas por el usuario.
 
-La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacena los valores 
-de las etiquetas de entrada y salida desde @var{m} hasta @var{n}. N@'otese que 
-@var{m} y @var{n} deben ser n@'umeros. Las etiquetas de entrada y salida 
+La llamada @code{save (@mvar{filename}, [@mvar{m}, @mvar{n}])} almacena los valores 
+de las etiquetas de entrada y salida desde @mvar{m} hasta @mvar{n}. N@'otese que 
+@mvar{m} y @mvar{n} deben ser n@'umeros. Las etiquetas de entrada y salida 
 tambi@'en se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
-La llamada @code{save (@var{filename}, labels)} almacena todas las etiquetas de 
+La llamada @code{save (@mvar{filename}, labels)} almacena todas las etiquetas de 
 entrada y salida. Cuando las etiquetas almacenadas en el archivo sean posteriormente 
 recuperadas, se sobreescribir@'an las activas en ese momento.
 
-La llamada @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
-almacena los valores de @var{expr_1}, @var{expr_2}, ...,
-con los nombres @var{name_1}, @var{name_2}, ....
+La llamada @code{save (@mvar{filename}, @mvar{name_1}=@mvar{expr_1}, @mvar{name_2}=@mvar{expr_2}, ...)}
+almacena los valores de @mvar{expr_1}, @mvar{expr_2}, ...,
+con los nombres @mvar{name_1}, @mvar{name_2}, ....
 Es @'util hacer este tipo de llamada para con etiquetas de entrada y salida, por ejemplo, @code{save ("foo.1", aa=%o88)}.
 El miembro derecho de la igualdad puede ser cualquier expresi@'on, que ser@'a evaluada.
 Esta llamada a la funci@'on @code{save} no incorpora nuevos nombres a la sesi@'on actual de Maxima,
-simplemente los almacena en el archivo @var{filename}.
+simplemente los almacena en el archivo @mvar{filename}.
 
 Todas estas formas de llamar a la funci@'on @code{save} se pueden combinar a voluntad.
-Por ejemplo, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
+Por ejemplo, @code{save (@mvar{filename}, aa, bb, cc=42, functions, [11, 17])}.
 
-La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima, 
+La llamada @code{save (@mvar{filename}, all)} almacena el estado actual de Maxima, 
 lo que incluye todas las variables definidas por el usuario, funciones, arreglos, etc., 
 as@'{@dotless{i}} como algunos objetos definidos autom@'aticamente.
 Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o 
 @code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
 
-@code{save} eval@'ua @var{filename} pero no el resto de argumentos.
+@code{save} eval@'ua @mvar{filename} pero no el resto de argumentos.
 @end deffn
 
 
 
-@deffn {Funci@'on} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Funci@'on} stringout (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Funci@'on} stringout (@var{filename}, input)
-@deffnx {Funci@'on} stringout (@var{filename}, functions)
-@deffnx {Funci@'on} stringout (@var{filename}, values)
+@deffn {Funci@'on} stringout (@mvar{filename}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+@deffnx {Funci@'on} stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])
+@deffnx {Funci@'on} stringout (@mvar{filename}, input)
+@deffnx {Funci@'on} stringout (@mvar{filename}, functions)
+@deffnx {Funci@'on} stringout (@mvar{filename}, values)
 
 La funci@'on @code{stringout} escribe expresiones en un archivo de la misma forma en 
 que se escribir@'{@dotless{i}}an como expresiones de entrada. El archivo puede ser 
@@ -525,16 +525,16 @@ escribir@'a el valor de la variable y no el nombre de @'esta. Como caso especial
 Si @code{grind} vale @code{true}, @code{stringout} formatea la salida utilizando @code{grind}. 
 En caso contrario, se utilizar@'a el formato @code{string}. V@'eanse @code{grind} y @code{string}.
 
-La forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escribe los valores 
+La forma especial @code{stringout (@mvar{filename}, [@mvar{m}, @mvar{n}])} escribe los valores 
 de las etiquetas de entrada desde la m hasta la n, ambas inclusive. 
 
-La forma especial @code{stringout (@var{filename}, input)} escribe todas las etiquetas de
+La forma especial @code{stringout (@mvar{filename}, input)} escribe todas las etiquetas de
 entrada en el archivo.
 
-La forma especial @code{stringout (@var{filename}, functions)} escribe todas las funciones 
+La forma especial @code{stringout (@mvar{filename}, functions)} escribe todas las funciones 
 definidas por el usuario, contenidas en la lista global @code{functions}, en el archivo.
 
-La forma especial @code{stringout (@var{filename}, values)} escribe todas las variables 
+La forma especial @code{stringout (@mvar{filename}, values)} escribe todas las variables 
 asignadas por el usuario, contenidas en la lista global @code{values}, en el archivo. 
 Cada variable se escribe como una sentencia de asignaci@'on, con el nombre de la variable 
 seguida de dos puntos y a continuaci@'on su valor. N@'otese que la forma general de 
@@ -542,15 +542,15 @@ seguida de dos puntos y a continuaci@'on su valor. N@'otese que la forma general
 @end deffn
 
 
-@deffn {Funci@'on} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Funci@'on} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-Eval@'ua  @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
-y escribe los resultados en el fichero @var{f} o flujo de salida @var{s}.
+@deffn {Funci@'on} with_stdout (@mvar{f}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+@deffnx {Funci@'on} with_stdout (@mvar{s}, @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...)
+Eval@'ua  @mvar{expr_1}, @mvar{expr_2}, @mvar{expr_3}, ...
+y escribe los resultados en el fichero @mvar{f} o flujo de salida @mvar{s}.
 Las expresiones que se eval@'uan no se escriben. La salida puede generarse por medio
 de @code{print}, @code{display}, @code{grind} entre otras funciones.
 
 La variable global @code{file_output_append} controla si @code{with_stdout}
-a@~nade o reinicia el contenido del fichero de salida @var{f}.
+a@~nade o reinicia el contenido del fichero de salida @mvar{f}.
 Si @code{file_output_append} vale @code{true}, @code{with_stdout} a@~nade
 contenido al fichero de salida. En cualquier caso, @code{with_stdout}
 crea el fichero si @'este no existe.
@@ -590,14 +590,14 @@ V@'ease tambi@'en @code{writefile}.
 
 
 
-@deffn {Funci@'on} writefile (@var{filename})
-Comienza escribiendo una transcripci@'on de la sesi@'on de Maxima en el archivo @var{filename}.
+@deffn {Funci@'on} writefile (@mvar{filename})
+Comienza escribiendo una transcripci@'on de la sesi@'on de Maxima en el archivo @mvar{filename}.
 Cualquier interacci@'on entre Maxima y el usuario se almacena tambi@'en en este archivo, tal como aparece en la consola.
 
 Puesto que la transcripci@'on se escribe en el formato de salida a la consola, su contenido no es interpretable por Maxima.
 Para hacer un archivo que contenga expresiones que puedan ser nuevamente cargadas en Maxima, v@'eanse @code{save} y @code{stringout}; la funci@'on @code{save} almacena expresiones en formato Lisp, mientras que @code{stringout} lo hace en formato Maxima.
 
-El resultado de ejecutar @code{writefile} cuando el archivo @var{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesi@'on actual. La funci@'on @code{appendfile} siempre a@~nade la sesi@'on al contenido actual.
+El resultado de ejecutar @code{writefile} cuando el archivo @mvar{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesi@'on actual. La funci@'on @code{appendfile} siempre a@~nade la sesi@'on al contenido actual.
 
 Puede ser @'util ejecutar @code{playback} despu@'es de @code{writefile} para guardar las interacciones previas de la sesi@'on. Puesto que  @code{playback} muestra solamente las variables de entrada y salida (@code{%i1}, @code{%o1}, etc.),
 cualquier salida generada por una sentencia de impresi@'on desde dentro de una funci@'on no es mostrada por @code{playback}.
@@ -612,33 +612,33 @@ La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} 
 @section Funciones y variables para salida TeX
 
 
-@deffn {Funci@'on} tex (@var{expr})
-@deffnx {Funci@'on} tex (@var{expr}, @var{destination})
-@deffnx {Funci@'on} tex (@var{expr}, false)
-@deffnx {Funci@'on} tex (@var{label})
-@deffnx {Funci@'on} tex (@var{label}, @var{destination})
-@deffnx {Funci@'on} tex (@var{label}, false)
+@deffn {Funci@'on} tex (@mvar{expr})
+@deffnx {Funci@'on} tex (@mvar{expr}, @mvar{destination})
+@deffnx {Funci@'on} tex (@mvar{expr}, false)
+@deffnx {Funci@'on} tex (@mvar{label})
+@deffnx {Funci@'on} tex (@mvar{label}, @mvar{destination})
+@deffnx {Funci@'on} tex (@mvar{label}, false)
 
 Devuelve la expresi@'on en un formato apropiado para para ser 
 incorporado a un documento basado en TeX. El resultado que se 
 obtiene es un fragmento de c@'odigo que puede incluirse en un documento mayor, pero que
 no puede ser procesado aisladamente.
 
-La instrucci@'on @code{tex (@var{expr})} imprime en la consola 
-la representaci@'on en TeX de @var{expr}.
+La instrucci@'on @code{tex (@mvar{expr})} imprime en la consola 
+la representaci@'on en TeX de @mvar{expr}.
 
-La instrucci@'on @code{tex (@var{label})} imprime en la consola la 
+La instrucci@'on @code{tex (@mvar{label})} imprime en la consola la 
 representaci@'on en TeX de la expresi@'on a la que hace referencia la 
-etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on 
+etiqueta @mvar{label}, asign@'andole a su vez una etiqueta de ecuaci@'on 
 que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la 
 expresi@'on en TeX es la misma que la de Maxima.
 
-@var{destination} puede ser tanto un flujo de salida como el nombre de un fichero.
+@mvar{destination} puede ser tanto un flujo de salida como el nombre de un fichero.
 
-Si @var{destination} es el nombre de un fichero, @code{tex} a@~nade la salida al fichero.
+Si @mvar{destination} es el nombre de un fichero, @code{tex} a@~nade la salida al fichero.
 Las funciones @code{openw} y @code{opena} crean flujos de salida.
 
-Las instrucciones @code{tex (@var{expr}, false)} y @code{tex (@var{label}, false)}
+Las instrucciones @code{tex (@mvar{expr}, false)} y @code{tex (@mvar{label}, false)}
 devuelven el c@'odigo TeX en formato de cadena.
 
 La funci@'on @code{tex} eval@'ua su primer argumento tras
@@ -668,7 +668,7 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
-@code{tex (@var{expr}, false)} devuelve el c@'odigo TeX en formato de cadena.
+@code{tex (@mvar{expr}, false)} devuelve el c@'odigo TeX en formato de cadena.
 
 @c ===beg===
 @c S : tex (x * y * z, false);
@@ -685,8 +685,8 @@ $$-\cos x$$
 
 
 
-@deffn {Funci@'on} tex1 (@var{e})
-Devuelve una cadena con el c@'odigo TeX de la expresi@'on @var{e}.
+@deffn {Funci@'on} tex1 (@mvar{e})
+Devuelve una cadena con el c@'odigo TeX de la expresi@'on @mvar{e}.
 El c@'odigo TeX no se encierra entre delimitadores para una ecuaci@'on
 ni cualesquiera otros entornos.
 
@@ -702,40 +702,40 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} texput (@var{a}, @var{s})
-@deffnx {Funci@'on} texput (@var{a}, @var{f})
-@deffnx {Funci@'on} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn {Funci@'on} texput (@mvar{a}, @mvar{s})
+@deffnx {Funci@'on} texput (@mvar{a}, @mvar{f})
+@deffnx {Funci@'on} texput (@mvar{a}, @mvar{s}, @mvar{operator_type})
+@deffnx {Funci@'on} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)
+@deffnx {Funci@'on} texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}], matchfix)
 
-Establece el formato en TeX del @'atomo @var{a}, el cual puede ser un
+Establece el formato en TeX del @'atomo @mvar{a}, el cual puede ser un
 s@'{@dotless{i}}mbolo o el nombre de un operador.
 
-La instrucci@'on @code{texput (@var{a}, @var{s})} hace que la funci@'on
-@code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}.
+La instrucci@'on @code{texput (@mvar{a}, @mvar{s})} hace que la funci@'on
+@code{tex} introduzca @mvar{s} en la salida TeX en el lugar de @mvar{a}.
 
-La instrucci@'on @code{texput (@var{a}, @var{f})} hace que @code{tex} llame
-a la funci@'on @var{f} para que genere c@'odigo TeX. La funci@'on @var{f} 
+La instrucci@'on @code{texput (@mvar{a}, @mvar{f})} hace que @code{tex} llame
+a la funci@'on @mvar{f} para que genere c@'odigo TeX. La funci@'on @mvar{f} 
 debe aceptar un @'unico argumento, el cual es una expresi@'on que tenga como
-operador @var{a} y que devuelva una cadena con el c@'odigo TeX. Esta funci@'on
+operador @mvar{a} y que devuelva una cadena con el c@'odigo TeX. Esta funci@'on
 puede llamar a @code{tex1} para generar el c@'odigo TeX para los argumentos
 de la expresi@'on de entrada.
 
-La instrucci@'on @code{texput (@var{a}, @var{s}, @var{operator_type})},
-en la que @var{operator_type} es @code{prefix}, @code{infix} o
+La instrucci@'on @code{texput (@mvar{a}, @mvar{s}, @mvar{operator_type})},
+en la que @mvar{operator_type} es @code{prefix}, @code{infix} o
 @code{postfix}, @code{nary} o @code{nofix},hace que la funci@'on
-@code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a},
+@code{tex} introduzca @mvar{s} en la salida TeX en el lugar de @mvar{a},
 coloc@'andolo en el lugar correcto.
 
-La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
-hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la
-salida TeX a los lados de los argumentos de @var{a}. Si son m@'as de uno,
+La instrucci@'on @code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}], matchfix)}
+hace que la funci@'on @code{tex} introduzca @mvar{s_1} y @mvar{s_2} en la
+salida TeX a los lados de los argumentos de @mvar{a}. Si son m@'as de uno,
 los argumentos se separan por comas.
 
-La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}],
-matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y
-@var{s_2} en la salida TeX a los lados de los argumentos de @var{a},
-con @var{s_3} separando los argumentos.
+La instrucci@'on @code{texput (@mvar{a}, [@mvar{s_1}, @mvar{s_2}, @mvar{s_3}],
+matchfix)} hace que la funci@'on @code{tex} introduzca @mvar{s_1} y
+@mvar{s_2} en la salida TeX a los lados de los argumentos de @mvar{a},
+con @mvar{s_3} separando los argumentos.
 
 Ejemplos:
 
@@ -909,17 +909,17 @@ $$ \langle a \, | \,b \rangle $$
 
 
 
-@deffn {Funci@'on} get_tex_environment (@var{op})
-@deffnx {Funci@'on} set_tex_environment (@var{op}, @var{before}, @var{after})
+@deffn {Funci@'on} get_tex_environment (@mvar{op})
+@deffnx {Funci@'on} set_tex_environment (@mvar{op}, @mvar{before}, @mvar{after})
 
 Gestiona el entorno de las salidas TeX que se obtienen de la funci@'on @code{tex}.
 El entorno TeX est@'a formado por dos cadenas: una que se escribe antes que
 cualquier salida en TeX, y otra que se escribe despu@'es.
 
-@code{get_tex_environment} devuelve el entorno TeX que se aplica al operador @var{op}.
+@code{get_tex_environment} devuelve el entorno TeX que se aplica al operador @mvar{op}.
 Si no se ha asignado ning@'un entorno, devolver@'a el que tenga por defecto.
 
-@code{set_tex_environment} asigna el entorno TeX al operador @var{op}.
+@code{set_tex_environment} asigna el entorno TeX al operador @mvar{op}.
 
 Ejemplos:
 
@@ -952,7 +952,7 @@ $$f(x):=1-x$$
 @end deffn
 
 @deffn {Funci@'on} get_tex_environment_default ()
-@deffnx {Funci@'on} set_tex_environment_default (@var{before}, @var{after})
+@deffnx {Funci@'on} set_tex_environment_default (@mvar{before}, @mvar{after})
 
 Gestiona el entorno de las salidas TeX que se obtienen de la funci@'on @code{tex}.
 El entorno TeX est@'a formado por dos cadenas: una que se escribe antes que
@@ -1008,12 +1008,12 @@ de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a
 
 
 
-@deffn {Funci@'on} fortran (@var{expr})
-Escribe @var{expr} en c@'odigo Fortran. La salida se escribe con m@'argenes, y si @'esta es demasiado larga @code{fortran} sigue escribiendo en l@'{@dotless{i}}neas sucesivas. La funci@'on @code{fortran} escribe el operador de exponenciaci@'on @code{^} como @code{**}, e imprime un n@'umero complejo @code{a + b %i} como @code{(a,b)}.
+@deffn {Funci@'on} fortran (@mvar{expr})
+Escribe @mvar{expr} en c@'odigo Fortran. La salida se escribe con m@'argenes, y si @'esta es demasiado larga @code{fortran} sigue escribiendo en l@'{@dotless{i}}neas sucesivas. La funci@'on @code{fortran} escribe el operador de exponenciaci@'on @code{^} como @code{**}, e imprime un n@'umero complejo @code{a + b %i} como @code{(a,b)}.
 
-El argumento @var{expr} puede ser una ecuaci@'on. En tal caso, @code{fortran} escribe una sentencia de asignaci@'on, d@'andole el valor del miembro derecho de la expresi@'on al miembro izquierdo. En particular, si el miembro derecho de @var{expr} es el nombre de una matriz, entonces @code{fortran} escribe una sentencia de asignaci@'on para cada elemento de la matriz.
+El argumento @mvar{expr} puede ser una ecuaci@'on. En tal caso, @code{fortran} escribe una sentencia de asignaci@'on, d@'andole el valor del miembro derecho de la expresi@'on al miembro izquierdo. En particular, si el miembro derecho de @mvar{expr} es el nombre de una matriz, entonces @code{fortran} escribe una sentencia de asignaci@'on para cada elemento de la matriz.
 
-Si @var{expr} no es reconozida por @code{fortran}, la expresi@'on se escribe en formato @code{grind} sin avisos. La funci@'on @code{fortran} no reconoce listas, arreglos ni funciones.
+Si @mvar{expr} no es reconozida por @code{fortran}, la expresi@'on se escribe en formato @code{grind} sin avisos. La funci@'on @code{fortran} no reconoce listas, arreglos ni funciones.
 
 La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
 

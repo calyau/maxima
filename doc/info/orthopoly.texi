@@ -55,7 +55,7 @@ To find the third-order Legendre polynomial,
                  2             2
 @end example
 
-To express this as a sum of powers of @var{x}, apply @var{ratsimp} or @var{rat}
+To express this as a sum of powers of @mvar{x}, apply @mvar{ratsimp} or @mvar{rat}
 to the result.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
@@ -95,8 +95,8 @@ to estimate an upper bound for the error. For example,
 (%o1) interval(- 0.062017037936715, 1.533267919277521E-11)
 @end example
 
-Intervals have the form @code{interval (@var{c}, @var{r})}, where @var{c} is the
-center and @var{r} is the radius of the interval. Since Maxima
+Intervals have the form @code{interval (@mvar{c}, @mvar{r})}, where @mvar{c} is the
+center and @mvar{r} is the radius of the interval. Since Maxima
 does not support arithmetic on intervals, in some situations, such
 as graphics, you want to suppress the error and output only the 
 center of the interval. To do this, set the option
@@ -134,7 +134,7 @@ Most functions in @code{orthopoly} have a @code{gradef} property; thus
 @end example
 
 The unit step function in the second example prevents an error that would
-otherwise arise by evaluating with @var{n} equal to 0.
+otherwise arise by evaluating with @mvar{n} equal to 0.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -248,7 +248,7 @@ When an expression involves several orthogonal polynomials with
 symbolic orders, it's possible that the expression actually
 vanishes, yet Maxima is unable to simplify it to zero. If you
 divide by such a quantity, you'll be in trouble. For example,
-the following expression vanishes for integers @var{n} greater than 1, yet Maxima
+the following expression vanishes for integers @mvar{n} greater than 1, yet Maxima
 is unable to simplify it to zero.
 
 @c ===beg===
@@ -262,7 +262,7 @@ is unable to simplify it to zero.
                   n - 1           n               n - 2
 @end example
 
-For a specific @var{n}, we can reduce the expression to zero.
+For a specific @mvar{n}, we can reduce the expression to zero.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -354,7 +354,7 @@ exceed @code{pochhammer_max_index} can be troublesome; consider
                                  10
 @end example
 
-Applying @code{float} doesn't evaluate @var{x} to a float
+Applying @code{float} doesn't evaluate @mvar{x} to a float
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -366,8 +366,8 @@ Applying @code{float} doesn't evaluate @var{x} to a float
                                  10.0
 @end example
 
-To evaluate @var{x} to a float, you'll need to bind
-@code{pochhammer_max_index} to 11 or greater and apply @code{float} to @var{x}.
+To evaluate @mvar{x} to a float, you'll need to bind
+@code{pochhammer_max_index} to 11 or greater and apply @code{float} to @mvar{x}.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -426,8 +426,8 @@ in the machine epsilon (also known as unit roundoff). It also
 ignores a few other errors. It's possible (although unlikely) 
 that the actual error exceeds the estimate.
 
-Intervals have the form @code{interval (@var{c}, @var{r})}, where @var{c} is the 
-center of the interval and @var{r} is its radius. The 
+Intervals have the form @code{interval (@mvar{c}, @mvar{r})}, where @mvar{c} is the 
+center of the interval and @mvar{r} is its radius. The 
 center of an interval can be a complex number, and the radius is always a positive real number.
 
 Here is an example.
@@ -555,7 +555,7 @@ a Legendre polynomial.
 @end ifnotinfo
 
 The @i{entire} expression @code{legendre_p (5, x)} is quoted; this is 
-different than just quoting the function name using @code{'legendre_p (5, @var{x})}.
+different than just quoting the function name using @code{'legendre_p (5, @mvar{x})}.
 
 @opencatbox
 @category{Plotting}
@@ -604,9 +604,9 @@ function.
 @end example
 
 You need to be careful with the expression in (%o1); the difference of the
-@code{psi} functions has polynomials when @code{@var{x} = -1, -2, .., -@var{n}}. These polynomials
-cancel with factors in @code{pochhammer (@var{x}, @var{n})} making the derivative a degree
-@code{@var{n} - 1} polynomial when @var{n} is a positive integer.
+@code{psi} functions has polynomials when @code{@mvar{x} = -1, -2, .., -@mvar{n}}. These polynomials
+cancel with factors in @code{pochhammer (@mvar{x}, @mvar{n})} making the derivative a degree
+@code{@mvar{n} - 1} polynomial when @mvar{n} is a positive integer.
 
 The Pochhammer symbol is defined for negative orders through its
 representation as a quotient of gamma functions. Consider
@@ -687,9 +687,9 @@ the half-integer Bessel functions are evaluated using the SLATEC code.
 @node Functions and Variables for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
 @section Functions and Variables for orthogonal polynomials
 
-@deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
-The associated Legendre function of the first kind of degree @var{n} and
-order @var{m}.
+@deffn {Function} assoc_legendre_p (@mvar{n}, @mvar{m}, @mvar{x})
+The associated Legendre function of the first kind of degree @mvar{n} and
+order @mvar{m}.
 
 Reference: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 (second equation), page 334, and 8.2.5, page 333.
@@ -700,9 +700,9 @@ Reference: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 
 @end deffn
 
-@deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
-The associated Legendre function of the second kind of degree @var{n}
-and order @var{m}.
+@deffn {Function} assoc_legendre_q (@mvar{n}, @mvar{m}, @mvar{x})
+The associated Legendre function of the second kind of degree @mvar{n}
+and order @mvar{m}.
 
 Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 
@@ -712,7 +712,7 @@ Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 
 @end deffn
 
-@deffn {Function} chebyshev_t (@var{n}, @var{x})
+@deffn {Function} chebyshev_t (@mvar{n}, @mvar{x})
 The Chebyshev function of the first kind.
 
 Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
@@ -723,7 +723,7 @@ Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
 
 @end deffn
 
-@deffn {Function} chebyshev_u (@var{n}, @var{x})
+@deffn {Function} chebyshev_u (@mvar{n}, @mvar{x})
 The Chebyshev function of the second kind.
 
 Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
@@ -734,8 +734,8 @@ Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
 
 @end deffn
 
-@deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
-The generalized Laguerre polynomial of degree @var{n}.
+@deffn {Function} gen_laguerre (@mvar{n}, @mvar{a}, @mvar{x})
+The generalized Laguerre polynomial of degree @mvar{n}.
 
 Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 
@@ -745,7 +745,7 @@ Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 
 @end deffn
 
-@deffn {Function} hermite (@var{n}, @var{x})
+@deffn {Function} hermite (@mvar{n}, @mvar{x})
 The Hermite polynomial.
 
 Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
@@ -756,7 +756,7 @@ Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
 
 @end deffn
 
-@deffn {Function} intervalp (@var{e})
+@deffn {Function} intervalp (@mvar{e})
 Return @code{true} if the input is an interval and return false if it isn't. 
 
 @opencatbox
@@ -765,13 +765,13 @@ Return @code{true} if the input is an interval and return false if it isn't.
 
 @end deffn
 
-@deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+@deffn {Function} jacobi_p (@mvar{n}, @mvar{a}, @mvar{b}, @mvar{x})
 The Jacobi polynomial.
 
 The Jacobi polynomials are actually defined for all
-@var{a} and @var{b}; however, the Jacobi polynomial
-weight @code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}} isn't integrable for @code{@var{a} <= -1} or
-@code{@var{b} <= -1}. 
+@mvar{a} and @mvar{b}; however, the Jacobi polynomial
+weight @code{(1 - @mvar{x})^@mvar{a} (1 + @mvar{x})^@mvar{b}} isn't integrable for @code{@mvar{a} <= -1} or
+@code{@mvar{b} <= -1}. 
 
 Reference: Abramowitz and Stegun, equation 22.5.42, page 779.
 
@@ -781,7 +781,7 @@ Reference: Abramowitz and Stegun, equation 22.5.42, page 779.
 
 @end deffn
 
-@deffn {Function} laguerre (@var{n}, @var{x})
+@deffn {Function} laguerre (@mvar{n}, @mvar{x})
 The Laguerre polynomial.
 
 Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
@@ -792,7 +792,7 @@ Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
 
 @end deffn
 
-@deffn {Function} legendre_p (@var{n}, @var{x})
+@deffn {Function} legendre_p (@mvar{n}, @mvar{x})
 The Legendre polynomial of the first kind.
 
 Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
@@ -803,7 +803,7 @@ Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
 
 @end deffn
 
-@deffn {Function} legendre_q (@var{n}, @var{x})
+@deffn {Function} legendre_q (@mvar{n}, @mvar{x})
 The Legendre polynomial of the first kind.
 
 Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
@@ -814,9 +814,9 @@ Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
 
 @end deffn
 
-@deffn {Function} orthopoly_recur (@var{f}, @var{args})
+@deffn {Function} orthopoly_recur (@mvar{f}, @mvar{args})
 Returns a recursion relation for the orthogonal function family
-@var{f} with arguments @var{args}. The recursion is with 
+@mvar{f} with arguments @mvar{args}. The recursion is with 
 respect to the polynomial degree.
 
 @c ===beg===
@@ -831,7 +831,7 @@ respect to the polynomial degree.
 @end example
 
 The second argument to @code{orthopoly_recur} must be a list with the 
-correct number of arguments for the function @var{f}; if it isn't, 
+correct number of arguments for the function @mvar{f}; if it isn't, 
 Maxima signals an error.
 
 @c ===beg===
@@ -844,7 +844,7 @@ Function jacobi_p needs 4 arguments, instead it received 2
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-Additionally, when @var{f} isn't the name of one of the 
+Additionally, when @mvar{f} isn't the name of one of the 
 families of orthogonal polynomials, an error is signalled.
 
 @c ===beg===
@@ -867,8 +867,8 @@ A recursion relation for foo isn't known to Maxima
 Default value: @code{true}
 
 When @code{orthopoly_returns_intervals} is @code{true}, floating point results are returned in
-the form @code{interval (@var{c}, @var{r})}, where @var{c} is the center of an interval
-and @var{r} is its radius. The center can be a complex number; in that
+the form @code{interval (@mvar{c}, @mvar{r})}, where @mvar{c} is the center of an interval
+and @mvar{r} is its radius. The center can be a complex number; in that
 case, the interval is a disk in the complex plane.
 
 @opencatbox
@@ -877,11 +877,11 @@ case, the interval is a disk in the complex plane.
 
 @end defvr
 
-@deffn {Function} orthopoly_weight (@var{f}, @var{args})
+@deffn {Function} orthopoly_weight (@mvar{f}, @mvar{args})
 
 Returns a three element list; the first element is 
 the formula of the weight for the orthogonal polynomial family
-@var{f} with arguments given by the list @var{args}; the 
+@mvar{f} with arguments given by the list @mvar{args}; the 
 second and third elements give the lower and upper endpoints
 of the interval of orthogonality. For example,
 
@@ -898,7 +898,7 @@ of the interval of orthogonality. For example,
 (%o2)                           0
 @end example
 
-The main variable of @var{f} must be a symbol; if it isn't, Maxima
+The main variable of @mvar{f} must be a symbol; if it isn't, Maxima
 signals an error. 
 
 @opencatbox
@@ -907,13 +907,13 @@ signals an error.
 
 @end deffn
 
-@deffn {Function} pochhammer (@var{n}, @var{x})
-The Pochhammer symbol. For nonnegative integers @var{n} with
-@code{@var{n} <= pochhammer_max_index}, the expression @code{pochhammer (@var{x}, @var{n})} 
-evaluates to the product @code{@var{x} (@var{x} + 1) (@var{x} + 2) ... (@var{x} + n - 1)}
-when @code{@var{n} > 0} and
-to 1 when @code{@var{n} = 0}. For negative @var{n},
-@code{pochhammer (@var{x}, @var{n})} is defined as @code{(-1)^@var{n} / pochhammer (1 - @var{x}, -@var{n})}.
+@deffn {Function} pochhammer (@mvar{n}, @mvar{x})
+The Pochhammer symbol. For nonnegative integers @mvar{n} with
+@code{@mvar{n} <= pochhammer_max_index}, the expression @code{pochhammer (@mvar{x}, @mvar{n})} 
+evaluates to the product @code{@mvar{x} (@mvar{x} + 1) (@mvar{x} + 2) ... (@mvar{x} + n - 1)}
+when @code{@mvar{n} > 0} and
+to 1 when @code{@mvar{n} = 0}. For negative @mvar{n},
+@code{pochhammer (@mvar{x}, @mvar{n})} is defined as @code{(-1)^@mvar{n} / pochhammer (1 - @mvar{x}, -@mvar{n})}.
 Thus
 
 @c ===beg===
@@ -942,7 +942,7 @@ To convert a Pochhammer symbol into a quotient of gamma functions,
                             gamma(x)
 @end example
 
-When @var{n} exceeds @code{pochhammer_max_index} or when @var{n} 
+When @mvar{n} exceeds @code{pochhammer_max_index} or when @mvar{n} 
 is symbolic, @code{pochhammer} returns a noun form.
 
 @c ===beg===
@@ -963,8 +963,8 @@ is symbolic, @code{pochhammer} returns a noun form.
 @defvr {Variable} pochhammer_max_index
 Default value: 100
 
-@code{pochhammer (@var{n}, @var{x})} expands to a product if and only if
-@code{@var{n} <= pochhammer_max_index}.
+@code{pochhammer (@mvar{n}, @mvar{x})} expands to a product if and only if
+@code{@mvar{n} <= pochhammer_max_index}.
 
 Examples:
 
@@ -988,7 +988,7 @@ Reference: Abramowitz and Stegun, equation 6.1.16, page 256.
 
 @end defvr
 
-@deffn {Function} spherical_bessel_j (@var{n}, @var{x})
+@deffn {Function} spherical_bessel_j (@mvar{n}, @mvar{x})
 The spherical Bessel function of the first kind.
 
 Reference: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
@@ -999,7 +999,7 @@ Reference: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 4
 
 @end deffn
 
-@deffn {Function} spherical_bessel_y (@var{n}, @var{x})
+@deffn {Function} spherical_bessel_y (@mvar{n}, @mvar{x})
 The spherical Bessel function of the second kind. 
 
 Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
@@ -1010,7 +1010,7 @@ Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 4
 
 @end deffn
 
-@deffn {Function} spherical_hankel1 (@var{n}, @var{x})
+@deffn {Function} spherical_hankel1 (@mvar{n}, @mvar{x})
 The spherical Hankel function of the
 first kind.
 
@@ -1022,7 +1022,7 @@ Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
 
 @end deffn
 
-@deffn {Function} spherical_hankel2 (@var{n}, @var{x})
+@deffn {Function} spherical_hankel2 (@mvar{n}, @mvar{x})
 The spherical Hankel function of the second kind.
 
 Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
@@ -1033,7 +1033,7 @@ Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
 
 @end deffn
 
-@deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+@deffn {Function} spherical_harmonic (@mvar{n}, @mvar{m}, @mvar{x}, @mvar{y})
 The spherical harmonic function.
 
 Reference: Merzbacher 9.64.
@@ -1044,13 +1044,13 @@ Reference: Merzbacher 9.64.
 
 @end deffn
 
-@deffn {Function} unit_step (@var{x})
+@deffn {Function} unit_step (@mvar{x})
 The left-continuous unit step function; thus
-@code{unit_step (@var{x})} vanishes for @code{@var{x} <= 0} and equals
-1 for @code{@var{x} > 0}.
+@code{unit_step (@mvar{x})} vanishes for @code{@mvar{x} <= 0} and equals
+1 for @code{@mvar{x} > 0}.
 
 If you want a unit step function that
-takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
+takes on the value 1/2 at zero, use @code{(1 + signum (@mvar{x}))/2}.
 
 @opencatbox
 @category{Package orthopoly} @category{Mathematical functions}
@@ -1058,7 +1058,7 @@ takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
 
 @end deffn
 
-@deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
+@deffn {Function} ultraspherical (@mvar{n}, @mvar{a}, @mvar{x})
 The ultraspherical polynomial (also known as the Gegenbauer polynomial).
 
 Reference: Abramowitz and Stegun, equation 22.5.46, page 779.

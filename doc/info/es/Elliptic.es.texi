@@ -117,99 +117,99 @@ El paquete para funciones e integrales el@'{@dotless{i}}pticas fue programado po
 
 @section Funciones y variables para funciones el@'{@dotless{i}}pticas
 
-@deffn {Funci@'on} jacobi_sn (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_sn (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_cn (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_cn (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_dn (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_dn (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_ns (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_ns (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{ns(u,m) = 1/sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_sc (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_sc (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_sd (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_sd (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_nc (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_nc (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_cs (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_cs (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_cd (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_cd (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_nd (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_nd (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_ds (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_ds (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} jacobi_dc (@var{u}, @var{m})
+@deffn {Funci@'on} jacobi_dc (@mvar{u}, @mvar{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_sn (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_sn (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_cn (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_cn (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_dn (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_dn (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_ns (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_ns (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{ns(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_sc (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_sc (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{sc(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_sd (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_sd (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{sd(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_nc (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_nc (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_cs (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_cs (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{cs(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_cd (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_cd (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{cd(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_nd (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_nd (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_ds (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_ds (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{ds(u,m)}.
 @end deffn
 
-@deffn {Funci@'on} inverse_jacobi_dc (@var{u}, @var{m})
+@deffn {Funci@'on} inverse_jacobi_dc (@mvar{u}, @mvar{m})
 Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{dc(u,m)}.
 @end deffn
 
@@ -220,7 +220,7 @@ Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{dc(u,m)}.
 @section Funciones y variables para integrales el@'{@dotless{i}}pticas
 
 
-@deffn {Funci@'on} elliptic_f (@var{phi}, @var{m})
+@deffn {Funci@'on} elliptic_f (@mvar{phi}, @mvar{m})
 Integral el@'{@dotless{i}}ptica incompleta de primera especie, definida como
 
 @ifhtml
@@ -239,7 +239,7 @@ V@'eanse tambi@'en @code{elliptic_e} y @code{elliptic_kc}.
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_e (@var{phi}, @var{m})
+@deffn {Funci@'on} elliptic_e (@mvar{phi}, @mvar{m})
 Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
 
 @ifhtml
@@ -257,7 +257,7 @@ V@'eanse tambi@'en @code{elliptic_e} y @code{elliptic_ec}.
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_eu (@var{u}, @var{m})
+@deffn {Funci@'on} elliptic_eu (@mvar{u}, @mvar{m})
 Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
 
 @ifhtml
@@ -293,7 +293,7 @@ donde $\phi = \sin^{-1} {\rm sn}(u, m)$.
 V@'ease tambi@'en @code{elliptic_e}.
 @end deffn
 
-@deffn {Funci@'on} elliptic_pi (@var{n}, @var{phi}, @var{m})
+@deffn {Funci@'on} elliptic_pi (@mvar{n}, @mvar{phi}, @mvar{m})
 Integral el@'{@dotless{i}}ptica incompleta de tercera especie, definida como
 
 @ifhtml
@@ -310,7 +310,7 @@ Maxima s@'olo conoce la derivada respecto de @math{phi}.
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_kc (@var{m})
+@deffn {Funci@'on} elliptic_kc (@mvar{m})
 Integral el@'{@dotless{i}}ptica completa de primera especie, definida como
 
 @ifhtml
@@ -328,7 +328,7 @@ Para algunos valores de @math{m}, se conoce el valor de la integral en t@'ermino
 @end deffn
 
 
-@deffn {Funci@'on} elliptic_ec (@var{m})
+@deffn {Funci@'on} elliptic_ec (@mvar{m})
 Integral el@'{@dotless{i}}ptica completa de segunda especie, definida como
 
 @ifhtml

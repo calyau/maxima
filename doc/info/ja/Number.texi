@@ -9,9 +9,9 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{bern}
-@deffn {関数} bern (@var{n})
+@deffn {関数} bern (@mvar{n})
 
-整数@var{n}について@var{n}番目のBernoulli数を返します。
+整数@mvar{n}について@mvar{n}番目のBernoulli数を返します。
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
 もし@code{zerobern}が@code{false}なら
@@ -39,9 +39,9 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{bernpoly}
-@deffn {関数} bernpoly (@var{x}, @var{n})
+@deffn {関数} bernpoly (@mvar{x}, @mvar{n})
 
-変数@var{x}に関する@var{n}番目のBernoulli多項式を返します。
+変数@mvar{x}に関する@mvar{n}番目のBernoulli多項式を返します。
 
 @opencatbox
 @category{Number theory}
@@ -50,11 +50,11 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{bfzeta}
-@deffn {関数} bfzeta (@var{s}, @var{n})
+@deffn {関数} bfzeta (@mvar{s}, @mvar{n})
 
-引数@var{s}に関するRiemannのゼータ関数を返します。
+引数@mvar{s}に関するRiemannのゼータ関数を返します。
 戻り値は多倍長浮動小数点(bfloat)です;
-@var{n}は戻り値の小数点以下の桁数です。
+@mvar{n}は戻り値の小数点以下の桁数です。
 
 @opencatbox
 @category{Number theory} @category{Numerical evaluation}
@@ -63,11 +63,11 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{bfhzeta}
-@deffn {関数} bfhzeta (@var{s}, @var{h}, @var{n})
+@deffn {関数} bfhzeta (@mvar{s}, @mvar{h}, @mvar{n})
 
-引数@var{s}と@var{h}に関するHurwitzのゼータ関数を返します。
+引数@mvar{s}と@mvar{h}に関するHurwitzのゼータ関数を返します。
 戻り値は多倍長浮動小数点(bfloat)です;
-@var{n}は戻り値の小数点以下の桁数です。
+@mvar{n}は戻り値の小数点以下の桁数です。
 
 Hurwitzゼータ関数は以下のように定義されます。
 
@@ -95,9 +95,9 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 
 @c -----------------------------------------------------------------------------
 @anchor{burn}
-@deffn {関数} burn (@var{n})
+@deffn {関数} burn (@mvar{n})
 
-@var{n}番目のBernoulli数の近似の有理数をを返します。
+@mvar{n}番目のBernoulli数の近似の有理数をを返します。
 @code{burn}は、(有理)Bernoulli数が
 まあまあの効率で(超越的)ゼータによって近似できるという観察を利用します。
 
@@ -109,11 +109,11 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
                              %pi
 @end example
 
-@code{bern}は、返す前にインデックス@var{n}までのBernoulli数すべてを計算するので、
-@code{burn}は、大きな、孤立した@var{n}(たぶん105以上の@var{n})
+@code{bern}は、返す前にインデックス@mvar{n}までのBernoulli数すべてを計算するので、
+@code{burn}は、大きな、孤立した@mvar{n}(たぶん105以上の@mvar{n})
 に対して@code{bern}より効率的かもしれません。
-@code{burn}は、255よりおおきな偶数@var{n}に対して近似を呼び出します。
-奇数と255以下の@var{n}に対しては、関数@code{bern}が呼び出されます。
+@code{burn}は、255よりおおきな偶数@mvar{n}に対して近似を呼び出します。
+奇数と255以下の@mvar{n}に対しては、関数@code{bern}が呼び出されます。
 
 @code{load ("bffac")}はこの関数をロードします。@code{bern}も参照してください。
 
@@ -124,10 +124,10 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 
 @c -----------------------------------------------------------------------------
 @anchor{cf}
-@deffn {関数} cf (@var{expr})
+@deffn {関数} cf (@mvar{expr})
 
-@var{expr}を連分数に変換します。
-@var{expr}は、
+@mvar{expr}を連分数に変換します。
+@mvar{expr}は、
 連分数と整数の平方根から成る式です。
 式の中のオペランドは　代数演算子を組み合わせられます。
 連分数と平方根は別にして、式の中の因子は整数か有理数でなければいけません。
@@ -142,7 +142,7 @@ Maximaは、
 リスト@code{[a, b, c, ...]}で表現されます。
 リストの要素@code{a}, @code{b}, @code{c}, ...は、
 整数に評価されなければいけません。
-@var{expr}は、 may also contain 
+@mvar{expr}は、 may also contain 
 @code{sqrt (n)}も含むかもしれません。@code{n}は整数です。
 この場合、@code{cf}は、
 変数@code{cflength}の値掛ける周期と同じ数の連分数の項を与えます。
@@ -159,7 +159,7 @@ Maximaは、
 
 @itemize @bullet
 @item
-@var{expr}は、連分数と整数の平方根から成る式です。
+@mvar{expr}は、連分数と整数の平方根から成る式です。
 
 @example
 (%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
@@ -217,7 +217,7 @@ Maximaは、
 
 @c -----------------------------------------------------------------------------
 @anchor{cfdisrep}
-@deffn {関数} cfdisrep (@var{list})
+@deffn {関数} cfdisrep (@mvar{list})
 
 連分数@code{[a, b, c, ...]}のリスト表現から、
 形式@code{a + 1/(b + 1/(c + ...))}の通常の代数式を構成し返します。
@@ -242,9 +242,9 @@ Maximaは、
 
 @c -----------------------------------------------------------------------------
 @anchor{cfexpand}
-@deffn {関数} cfexpand (@var{x})
+@deffn {関数} cfexpand (@mvar{x})
 
-連分数@var{x}のコンバージェントの
+連分数@mvar{x}のコンバージェントの
 最後(列1)とその１つ前(列2)の
 分子と分母の行列を返します。
 
@@ -295,14 +295,14 @@ Maximaは、
 
 @c -----------------------------------------------------------------------------
 @anchor{divsum}
-@deffn {関数} divsum (@var{n}, @var{k})
-@deffnx {関数} divsum (@var{n})
+@deffn {関数} divsum (@mvar{n}, @mvar{k})
+@deffnx {関数} divsum (@mvar{n})
 
-@code{divsum (@var{n}, @var{k})}は、
-@var{n}の約数の@var{k}乗した和を返します。
+@code{divsum (@mvar{n}, @mvar{k})}は、
+@mvar{n}の約数の@mvar{k}乗した和を返します。
 
-@code{divsum (@var{n})}は
-@var{n}の約数の和を返します。
+@code{divsum (@mvar{n})}は
+@mvar{n}の約数の和を返します。
 
 @example
 (%i1) divsum (12);
@@ -322,10 +322,10 @@ Maximaは、
 
 @c -----------------------------------------------------------------------------
 @anchor{euler}
-@deffn {関数} euler (@var{n})
+@deffn {関数} euler (@mvar{n})
 
-非負の整数@var{n}に対して
-@var{n}番目のEuler数を返します。
+非負の整数@mvar{n}に対して
+@mvar{n}番目のEuler数を返します。
 
 Euler-Mascheroni定数に関しては、@code{%gamma}を参照してください。
 
@@ -341,13 +341,13 @@ Euler-Mascheroni定数に関しては、@code{%gamma}を参照してください
 
 @c -----------------------------------------------------------------------------
 @anchor{fib}
-@deffn {関数} fib (@var{n})
-第@var{n}項のFibonacci数を返します。
+@deffn {関数} fib (@mvar{n})
+第@mvar{n}項のFibonacci数を返します。
 @code{fib(0)}は0に等しく、@code{fib(1)}は1に等しく、
-@code{fib (-@var{n})}は@code{(-1)^(@var{n} + 1) * fib(@var{n})}に等しい。
+@code{fib (-@mvar{n})}は@code{(-1)^(@mvar{n} + 1) * fib(@mvar{n})}に等しい。
 
 @code{fib}をコールした後，
-@code{prevfib}は@code{fib (@var{x} - 1)}、
+@code{prevfib}は@code{fib (@mvar{x} - 1)}、
 計算された最後の１つ前のFibonacci数に等しい。
 
 @example
@@ -362,9 +362,9 @@ Euler-Mascheroni定数に関しては、@code{%gamma}を参照してください
 
 @c -----------------------------------------------------------------------------
 @anchor{fibtophi}
-@deffn {関数} fibtophi (@var{expr})
+@deffn {関数} fibtophi (@mvar{expr})
 
-@var{expr}に関するFibonacci数を
+@mvar{expr}に関するFibonacci数を
 定数@code{%phi}を使って表現します。
 @code{%phi}は、@code{(1 + sqrt(5))/2}, 近似的に1.61803399です。
 
@@ -404,12 +404,12 @@ Euler-Mascheroni定数に関しては、@code{%gamma}を参照してください
 
 @c -----------------------------------------------------------------------------
 @anchor{ifactors}
-@deffn {関数} ifactors (@var{n})
+@deffn {関数} ifactors (@mvar{n})
 
-正の整数@var{n}に対して、
-@var{n}の素因数分解を返します。
+正の整数@mvar{n}に対して、
+@mvar{n}の素因数分解を返します。
 もし@code{n=p1^e1..pk^nk}が
-@var{n}の素因数への分解なら、
+@mvar{n}の素因数への分解なら、
 ifactorsは@code{[[p1, e1], ... , [pk, ek]]}を返します。
 
 使われる素因数分解法は9973までの素数による試行除算と、
@@ -429,12 +429,12 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{igcdex}
-@deffn {関数} igcdex (@var{n}, @var{k})
+@deffn {関数} igcdex (@mvar{n}, @mvar{k})
 
-リスト @code{[@var{a}, @var{b}, @var{u}]}を返します。
-ここで、 @var{u}は@var{n}と @var{k}の最大公約数で、
-@var{u}は @code{@var{a} @var{n} + @var{b} @var{k}}に等しいです。
-引数 @var{n}と @var{k}は整数でなければいけません。
+リスト @code{[@mvar{a}, @mvar{b}, @mvar{u}]}を返します。
+ここで、 @mvar{u}は@mvar{n}と @mvar{k}の最大公約数で、
+@mvar{u}は @code{@mvar{a} @mvar{n} + @mvar{b} @mvar{k}}に等しいです。
+引数 @mvar{n}と @mvar{k}は整数でなければいけません。
 
 @code{igcdex}はユークリッドのアルゴリズムを実装します。
 @mrefdot{gcdex}も参照してください。
@@ -461,9 +461,9 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{inrt}
-@deffn {関数} inrt (@var{x}, @var{n})
+@deffn {関数} inrt (@mvar{x}, @mvar{n})
 
-@var{x}の絶対値の整数@var{n}乗根を返します。
+@mvar{x}の絶対値の整数@mvar{n}乗根を返します。
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -478,10 +478,10 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{inv_mod}
-@deffn {関数} inv_mod (@var{n}, @var{m})
+@deffn {関数} inv_mod (@mvar{n}, @mvar{m})
 
-@var{m}を法とする@var{n}の逆元を計算します。
-もし@var{n}が@var{m}を法とするゼロ因子なら、
+@mvar{m}を法とする@mvar{n}の逆元を計算します。
+もし@mvar{n}が@mvar{m}を法とするゼロ因子なら、
 @code{inv_mod (n,m)}は@code{false}を返します。
 
 @example
@@ -500,9 +500,9 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{isqrt}
-@deffn {関数} isqrt (@var{x})
+@deffn {関数} isqrt (@mvar{x})
 
-整数 @var{x}の絶対値の「整数平方根」を返します。
+整数 @mvar{x}の絶対値の「整数平方根」を返します。
 
 @opencatbox
 @category{Mathematical functions}
@@ -511,9 +511,9 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{jacobi}
-@deffn {関数} jacobi (@var{p}, @var{q})
+@deffn {関数} jacobi (@mvar{p}, @mvar{q})
 
-@var{p}と@var{q}のJacobi記号を返します。
+@mvar{p}と@mvar{q}のJacobi記号を返します。
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -528,7 +528,7 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{lcm}
-@deffn {関数} lcm (@var{expr_1}, ..., @var{expr_n})
+@deffn {関数} lcm (@mvar{expr_1}, ..., @mvar{expr_n})
 
 引数の最小公倍数を返します。
 引数は、整数はもちろん一般式を取り得ます。
@@ -542,25 +542,25 @@ Pollardのロー法、楕円曲線法です。
 
 @c -----------------------------------------------------------------------------
 @anchor{mod}
-@deffn {関数} mod (@var{x}, @var{y})
+@deffn {関数} mod (@mvar{x}, @mvar{y})
 
-もし@var{x}と@var{y}が実数で、@var{y}がゼロでないなら、
-@code{@var{x} - @var{y} * floor(@var{x} / @var{y})}を返します。
-さらにすべての実数@var{x}に関して、@code{mod (@var{x}, 0) = @var{x}}が成り立ちます。
-定義@code{mod (@var{x}, 0) = @var{x}}の議論に関しては、
+もし@mvar{x}と@mvar{y}が実数で、@mvar{y}がゼロでないなら、
+@code{@mvar{x} - @mvar{y} * floor(@mvar{x} / @mvar{y})}を返します。
+さらにすべての実数@mvar{x}に関して、@code{mod (@mvar{x}, 0) = @mvar{x}}が成り立ちます。
+定義@code{mod (@mvar{x}, 0) = @mvar{x}}の議論に関しては、
 Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参照してください。
-関数@code{mod (@var{x}, 1)} は、周期が1で@code{mod (1, 1) = 0}、@code{mod (0, 1) = 0}ののこぎり波関数です。
+関数@code{mod (@mvar{x}, 1)} は、周期が1で@code{mod (1, 1) = 0}、@code{mod (0, 1) = 0}ののこぎり波関数です。
 
 複素数の偏角の主値（区間@code{(-%pi, %pi]}での数）を見つけるためには、
-関数@code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}を使います。
-@var{x}は引数です。
+関数@code{@mvar{x} |-> %pi - mod (%pi - @mvar{x}, 2*%pi)}を使います。
+@mvar{x}は引数です。
 
-@var{x}と@var{y}が定数式(例えば、@code{10 * %pi})の時、
+@mvar{x}と@mvar{y}が定数式(例えば、@code{10 * %pi})の時、
 @code{mod}は、@code{floor}や@code{ceiling}が使うのと同じ多倍長浮動小数点評価スキームを
 使います。
 再び同様に、まれですが、@code{mod}は間違った値を返すことがありえます。
 
-数値でない引数@var{x}や@var{y}に関して,@code{mod}は、いくつかの式整理規則を知っています:
+数値でない引数@mvar{x}や@mvar{y}に関して,@code{mod}は、いくつかの式整理規則を知っています:
 
 
 @c ===beg===
@@ -584,9 +584,9 @@ Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参�
 
 @c -----------------------------------------------------------------------------
 @anchor{next_prime}
-@deffn {関数} next_prime (@var{n})
+@deffn {関数} next_prime (@mvar{n})
 
-@var{n}よりも大きな最も小さな素数を返します。
+@mvar{n}よりも大きな最も小さな素数を返します。
 
 @example
 (%i1) next_prime(27);
@@ -600,9 +600,9 @@ Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参�
 
 @c -----------------------------------------------------------------------------
 @anchor{partfrac}
-@deffn {関数} partfrac (@var{expr}, @var{var})
+@deffn {関数} partfrac (@mvar{expr}, @mvar{var})
 
-主変数@var{var}に関する部分分数式@var{expr}を展開します。
+主変数@mvar{var}に関する部分分数式@mvar{expr}を展開します。
 @code{partfrac}は、完全な部分分数分解を行います。
 利用したアルゴリズムは、
 部分分数展開(元の分母の因子)の分母は互いに素であるという事実に基づいています。
@@ -629,12 +629,12 @@ Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参�
 
 @c -----------------------------------------------------------------------------
 @anchor{power_mod}
-@deffn {関数} power_mod (@var{a}, @var{n}, @var{m})
+@deffn {関数} power_mod (@mvar{a}, @mvar{n}, @mvar{m})
 
 @code{a^n mod m}を計算するために
 剰余アルゴリズムを使います。
-ここで、@var{a}と@var{n}は整数で、@var{m}は正の整数です。
-もし@var{n}が負なら、@code{inv_mod}が剰余逆元を見つけるために使われます。
+ここで、@mvar{a}と@mvar{n}は整数で、@mvar{m}は正の整数です。
+もし@mvar{n}が負なら、@code{inv_mod}が剰余逆元を見つけるために使われます。
 
 @example
 (%i1) power_mod(3, 15, 5);
@@ -654,26 +654,26 @@ Graham, Knuth, Patashnik著の「コンピュータの数学」の3.4節を参�
 
 @c -----------------------------------------------------------------------------
 @anchor{primep}
-@deffn {関数} primep (@var{n})
+@deffn {関数} primep (@mvar{n})
 
 素数テスト。
-もし@code{primep (@var{n})}が@code{false}を返すなら、
-@var{n}は合成数であり、
-もし@code{true}を返すなら、@var{n}は非常に高い確立で素数です。
+もし@code{primep (@mvar{n})}が@code{false}を返すなら、
+@mvar{n}は合成数であり、
+もし@code{true}を返すなら、@mvar{n}は非常に高い確立で素数です。
 
-341550071728321より小さな@var{n}に対して、
+341550071728321より小さな@mvar{n}に対して、
 Miller-Rabinのテストの決定的バージョンが使われます。
-もし@code{primep (@var{n})}が@code{true}を返すなら、
-@var{n}は素数です。
+もし@code{primep (@mvar{n})}が@code{true}を返すなら、
+@mvar{n}は素数です。
 
-341550071728321よりの大きな@var{n}に対して、
+341550071728321よりの大きな@mvar{n}に対して、
 @code{primep}は、
 @code{primep_number_of_tests}個のMiller-Rabinの疑似素数テストと
 1つのLucasの疑似素数テストを使います。
-@var{n}がMiller-Rabinのテスト１つを通過する確率は
+@mvar{n}がMiller-Rabinのテスト１つを通過する確率は
 1/4より小さいです。
 @code{primep_number_of_tests}に関してデフォルト値25を使うと、
-通過した@var{n}が合成である確率は
+通過した@mvar{n}が合成である確率は
 10^-15よりもはるかに小さいです。
 
 @opencatbox
@@ -696,9 +696,9 @@ Miller-Rabinのテストの決定的バージョンが使われます。
 
 @c -----------------------------------------------------------------------------
 @anchor{prev_time}
-@deffn {関数} prev_prime (@var{n})
+@deffn {関数} prev_prime (@mvar{n})
 
-@var{n}よりも小さな最大の素数を返します。
+@mvar{n}よりも小さな最大の素数を返します。
 
 @example
 (%i1) prev_prime(27);
@@ -712,12 +712,12 @@ Miller-Rabinのテストの決定的バージョンが使われます。
 
 @c -----------------------------------------------------------------------------
 @anchor{qunit}
-@deffn {関数} qunit (@var{n})
+@deffn {関数} qunit (@mvar{n})
 
-実二次数体@code{sqrt (@var{n})}の基本単数、
+実二次数体@code{sqrt (@mvar{n})}の基本単数、
 すなわち、ノルムが1の要素を返します。
-ここで、@var{n}は整数です。
-これは、結果的にペル方程式@code{a^2 - @var{n} b^2 = 1}を解くことになります。
+ここで、@mvar{n}は整数です。
+これは、結果的にペル方程式@code{a^2 - @mvar{n} b^2 = 1}を解くことになります。
 
 @example
 (%i1) qunit (17);
@@ -733,10 +733,10 @@ Miller-Rabinのテストの決定的バージョンが使われます。
 
 @c -----------------------------------------------------------------------------
 @anchor{totient}
-@deffn {関数} totient (@var{n})
+@deffn {関数} totient (@mvar{n})
 
-@var{n}以下の、
-@var{n}と互いに素な整数の数を返します。
+@mvar{n}以下の、
+@mvar{n}と互いに素な整数の数を返します。
 
 @opencatbox
 @category{Number theory}
@@ -759,10 +759,10 @@ Miller-Rabinのテストの決定的バージョンが使われます。
 
 @c -----------------------------------------------------------------------------
 @anchor{zeta}
-@deffn {関数} zeta (@var{n})
+@deffn {関数} zeta (@mvar{n})
 
 Riemannのゼータ関数を返します。
-もし@var{x}が負の整数、0, 1,または、正の偶数なら、
+もし@mvar{x}が負の整数、0, 1,または、正の偶数なら、
 Reimannのゼータ関数は厳密な値に整理されます。
 正の偶数に対しては、
 加えて、オプション変数@code{zeta%pi}は@code{true}でなければいけません。
@@ -771,7 +771,7 @@ Reimannのゼータ関数は厳密な値に整理されます。
 Maximaは、
 有理非整数、浮動小数点数、複素数の引数を含む
 他の引数すべてに対して、また、もし@code{zeta%pi}が値@code{false}なら偶数に対して、
-名詞形@code{zeta (@var{n})}を返します。
+名詞形@code{zeta (@mvar{n})}を返します。
 
 @code{zeta(1)}は未定義ですが、
 Maximaは上からと下からの極限@code{limit(zeta(x), x, ,1)}を知っています。

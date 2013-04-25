@@ -153,7 +153,7 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 @end ifinfo
 クォートクォート演算子@code{'@w{}'}(シングルクォートマーク２つ）は、入力式の中の評価を部分修正します。
 
-一般式@var{expr}にクォートクォートを用いると、入力式の中の@var{expr}に@var{expr}の値を代入します。
+一般式@mvar{expr}にクォートクォートを用いると、入力式の中の@mvar{expr}に@mvar{expr}の値を代入します。
 
 式の演算子にクォートクォートを用いると、（もし動詞でないなら）演算子は名詞から動詞に変わります。
 
@@ -169,7 +169,7 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 
 例:
 
-一般式@var{expr}にクォートクォートを用いると、入力式の中の@var{expr}に@var{expr}の値を代入します。
+一般式@mvar{expr}にクォートクォートを用いると、入力式の中の@mvar{expr}に@mvar{expr}の値を代入します。
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -337,7 +337,7 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 @section Functions and Variables for Command Line
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@deffn {関数} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+@deffn {関数} alias (@mvar{new_name_1}, @mvar{old_name_1}, ..., @mvar{new_name_n}, @mvar{old_name_n})
 (利用者もしくはシステム)関数や変数、配列等に対して別名を与えます。
 任意の偶数個の引数を取ります。
 
@@ -351,13 +351,13 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 
 @c -----------------------------------------------------------------------------
 @anchor{ev}
-@deffn {関数} ev (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
+@deffn {関数} ev (@mvar{expr}, @mvar{arg_1}, @dots{}, @mvar{arg_n})
 
-引数@var{arg_1}, @dots{}, @var{arg_n}で指定された環境下で
-式@var{expr}を評価します。
+引数@mvar{arg_1}, @dots{}, @mvar{arg_n}で指定された環境下で
+式@mvar{expr}を評価します。
 引数は、スイッチ（ブーリアンフラグ）だったり、割り当てだったり、
 等式だったり、関数だったりします。
-@var{ev}は評価の結果（別の式）を返します。
+@mvar{ev}は評価の結果（別の式）を返します。
 
 評価は以下のようにステップを追って実行されます。
 
@@ -367,59 +367,59 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 
 @itemize @bullet
 @item
-@mref{simp}を引数に指定すると@var{expr}を整理します。@code{false}なら整理を抑制するスイッチ@code{simp}の設定に関わらずです。
+@mref{simp}を引数に指定すると@mvar{expr}を整理します。@code{false}なら整理を抑制するスイッチ@code{simp}の設定に関わらずです。
 @item
 @mref{noeval}を引数に指定すると@code{ev}の評価フェイズを抑制します。
 （以下のステップ(4)を参照してください。）
-これは、他のスイッチとの連携時や、@var{expr}を再評価せずに再整理をさせる時に役に立ちます。
+これは、他のスイッチとの連携時や、@mvar{expr}を再評価せずに再整理をさせる時に役に立ちます。
 @item
-@mref{nouns}を引数に指定すると@var{expr}の中の名詞形式
+@mref{nouns}を引数に指定すると@mvar{expr}の中の名詞形式
 （典型的には、@code{'integrate}や@code{'diff}のような未評価関数）を評価します。
 @item
 @mref{expand}を引数に指定すると展開します。
 @item
-@code{expand (@var{m}, @var{n})}を引数に指定すると、
-@mref{maxposex}と@mref{maxnegex}の値をそれぞれ@var{m}と@var{n}に設定して、展開します。
+@code{expand (@mvar{m}, @mvar{n})}を引数に指定すると、
+@mref{maxposex}と@mref{maxnegex}の値をそれぞれ@mvar{m}と@mvar{n}に設定して、展開します。
 @item
-@mref{detout}を引数に指定すると、@var{expr}の中で計算されるどんな逆行列も、逆行列の外側に行列式を保つようにします。
+@mref{detout}を引数に指定すると、@mvar{expr}の中で計算されるどんな逆行列も、逆行列の外側に行列式を保つようにします。
 @item
-@mref{diff}を引数に指定すると@var{expr}の中のすべての微分を実行します。
+@mref{diff}を引数に指定すると@mvar{expr}の中のすべての微分を実行します。
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)}を引数に指定すると指定された変数に関する微分のみを実行します。
+@code{derivlist (@mvar{x}, @mvar{y}, @mvar{z}, ...)}を引数に指定すると指定された変数に関する微分のみを実行します。
 @item
 @code{risch}を引数に指定すると
-@var{expr}の中の積分をRischアルゴリズムを使って評価します。
+@mvar{expr}の中の積分をRischアルゴリズムを使って評価します。
 @mref{risch}を参照してください。
 特殊なシンボル@mref{nouns}を使った時には標準の積分ルーチンが呼び出されます。
 @item
 @mref{float}を引数に指定すると非整数有理数を浮動小数点に変換します。
 @item
 @mref{numer}を引数に指定すると数値引数が指定された（指数関数を含む）いくつかの数学関数を浮動小数点に評価します。
-また、@var{expr}の中の numerval宣言された変数は、宣言された値に置き換えられます。
+また、@mvar{expr}の中の numerval宣言された変数は、宣言された値に置き換えられます。
 また、@mref{float}スイッチをオンにします。
 @item
 @mref{pred}を引数に指定すると述語（@code{true}もしくは@code{false}に評価される式）を評価します。
 @item
-@mref{eval}を引数に指定すると@var{expr}の特別な後評価をします。（ステップ(5)を参照。）
+@mref{eval}を引数に指定すると@mvar{expr}の特別な後評価をします。（ステップ(5)を参照。）
 @code{eval}は複数回起こるかもしれません。@code{eval}のそれぞれのインスタンスのために、式は再評価されます。
 @item
 評価フラグ（@mref{evflag}を参照）として宣言されたアトム@code{A}を引数に指定すると、
-@var{expr}の評価の最中、@code{A}が@code{true}にバインドされます。
+@mvar{expr}の評価の最中、@code{A}が@code{true}にバインドされます。
 @item
 @code{V: expression}（もしくは代わりに@code{V=expression}）を引数に指定すると、
-@var{expr}の評価の最中、@code{V}が@code{expression}の値にバインドされます。
-もし@code{V}がMaximaオプションなら、@var{expr}の評価の最中、@code{V}の値に@code{expression}が使われることに注意してください。
+@mvar{expr}の評価の最中、@code{V}が@code{expression}の値にバインドされます。
+もし@code{V}がMaximaオプションなら、@mvar{expr}の評価の最中、@code{V}の値に@code{expression}が使われることに注意してください。
 もし@code{ev}の複数の引数がこのタイプの場合、並列してバインドされます。
 もし@code{V}が非アトムの式なら、バインドではなく、代入が実行されます。
 @item
 関数名 @code{F}が評価関数(@mref{evfun}参照)として宣言されている場合、
-@code{F}を引数に指定すると @code{F}が @var{expr}に適用されます。
+@code{F}を引数に指定すると @code{F}が @mvar{expr}に適用されます。
 @item
 他のどんな関数名（例えば、@mref{sum})でも引数に指定すると、
-@var{expr}の中にそれらの名前が現れた時それらが動詞であるかのように評価します。
+@mvar{expr}の中にそれらの名前が現れた時それらが動詞であるかのように評価します。
 @item
 加えて、exprの中で出現する関数（@code{F(x)}としましょう）を、
-@var{expr}の今回の評価の目的のため、
+@mvar{expr}の今回の評価の目的のため、
 @code{F(X) := expression}を@code{ev}の引数に与えて、局所的に定義することができます。
 @item
 もし以上で言及しなかったアトム、添字付き変数、または、添字付き式が引数として与えられたら、
@@ -433,20 +433,20 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 
 @code{ev}の引数は、代入等式と評価関数以外はどんな順序で与えてもかまいません。
 代入等式は左から右へ順に扱われ、
-評価関数は、例えば、 @code{ev (@var{expr}, ratsimp, realpart)}は
-@code{realpart (ratsimp (@var{expr}))}と扱われるように、合成されます。
+評価関数は、例えば、 @code{ev (@mvar{expr}, ratsimp, realpart)}は
+@code{realpart (ratsimp (@mvar{expr}))}と扱われるように、合成されます。
 
 @mref{simp}, @mref{numer}, @mref{float}スイッチは、ブロックの中でローカルにも、
 またMaximaの中でグローバルにも設定でき、その場合，リセットされるまで効果を保ちます。
 
 @code{numer}と@code{float}スイッチがともに@code{true}でない場合、
-もし@var{expr}が標準有理式(CRE)なら、@code{ev}が返す式もまたCREです。
+もし@mvar{expr}が標準有理式(CRE)なら、@code{ev}が返す式もまたCREです。
 
 @item
 step (1)の最中に、引数の中のもしくは引数の値の、等式の左辺に現れる添字なしの変数のリストを作ります。
-@var{expr}の中の変数（添字なし変数や配列関数に関連づけられていない添字付き変数）は、
+@mvar{expr}の中の変数（添字なし変数や配列関数に関連づけられていない添字付き変数）は、
 先のリストに現れるものを除いて、グローバルな値に置き換えられます。
-普通、 @var{expr}は、ただのラベルだったり
+普通、 @mvar{expr}は、ただのラベルだったり
 (以下の例の @code{%i2}のように） @code{%}だったりするので、
 その場合，このステップは単にラベルされた式を取り出し、
 @code{ev}はその式に対して機能することになります。
@@ -457,7 +457,7 @@ step (1)の最中に、引数の中のもしくは引数の値の、等式の左
 @item
 （引数で@mref{noeval}が指定されていない限り）結果の式は再評価され、
 引数に従って整理されます。
-@var{expr}の中のどんな関数コールもその中の変数が評価された後実行されること、
+@mvar{expr}の中のどんな関数コールもその中の変数が評価された後実行されること、
 @code{ev(F(x))}は @code{F(ev(x))}のように振る舞うことに注意してください。
 
 @item
@@ -485,7 +485,7 @@ step (1)の最中に、引数の中のもしくは引数の値の、等式の左
 すなわち、単に以下のように書けます。
 
 @example
-@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@mvar{expr}, @mvar{arg_1}, ..., @mvar{arg_n}
 @end example
 
 これは、例えば、関数やブロックの中など、他の式の一部としては許されません。
@@ -531,9 +531,9 @@ Solution
 @anchor{eval}
 @defvr {特殊シンボル} eval
 
-@code{ev (@var{expr})}のコールの引数として、
+@code{ev (@mvar{expr})}のコールの引数として、
 @code{eval}は
-@var{expr}の追加の評価をもたらします。
+@mvar{expr}の追加の評価をもたらします。
 @mref{ev}を参照してください。
 
 例:
@@ -568,11 +568,11 @@ Solution
 @defvr {プロパティ} evflag
 
 シンボル@code{x}が@code{evflag}プロパティを持つ時、
-式@code{ev(@var{expr}, @var{x})}や対話プロンプトでの@code{@var{expr}, @var{x}}は、
-@code{ev(@var{expr}, @var{x} = true)}と同値です。
-すなわち、@var{expr}が評価される間、@var{x}は@code{true}にバインドされます。
+式@code{ev(@mvar{expr}, @mvar{x})}や対話プロンプトでの@code{@mvar{expr}, @mvar{x}}は、
+@code{ev(@mvar{expr}, @mvar{x} = true)}と同値です。
+すなわち、@mvar{expr}が評価される間、@mvar{x}は@code{true}にバインドされます。
 
-式@code{declare(@var{x}, evflag)}は、変数@var{x}に@code{evflag}プロパティを与えます。
+式@code{declare(@mvar{x}, evflag)}は、変数@mvar{x}に@code{evflag}プロパティを与えます。
 
 デフォルトで@code{evflag}プロパティを持つフラグは以下の通りです:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
@@ -656,13 +656,13 @@ Solution
 @anchor{evfun}
 @defvr {プロパティ} evfun
 
-関数@var{F}が@code{evfun}プロパティを持つ時、
-式@code{ev(@var{expr}, @var{F})}や（対話プロンプトでの）@code{@var{expr}, @var{F}}は、
-@code{@var{F}(ev(@var{expr}))}と同値です。
+関数@mvar{F}が@code{evfun}プロパティを持つ時、
+式@code{ev(@mvar{expr}, @mvar{F})}や（対話プロンプトでの）@code{@mvar{expr}, @mvar{F}}は、
+@code{@mvar{F}(ev(@mvar{expr}))}と同値です。
 
-もし２つ以上の@code{evfun}関数@var{F}, @var{G}などが指定されたなら、関数は指定された順に適用されます。
+もし２つ以上の@code{evfun}関数@mvar{F}, @mvar{G}などが指定されたなら、関数は指定された順に適用されます。
 
-式@code{declare(@var{F}, evfun)}は、関数@var{F}に@code{evfun}プロパティを与えます。
+式@code{declare(@mvar{F}, evfun)}は、関数@mvar{F}に@code{evfun}プロパティを与えます。
 
 デフォルトで@code{evfun}プロパティを持つ関数は以下の通りです:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
@@ -803,7 +803,7 @@ Solution
 @anchor{pred}
 @defvr {特殊シンボル} pred
 
-@code{ev (@var{expr})}のコールでの引数として、
+@code{ev (@mvar{expr})}のコールでの引数として、
 @code{pred}は、
 述語論理(@code{true}または@code{false}に評価される式)を評価するようにします。
 @mref{ev}を参照してください。

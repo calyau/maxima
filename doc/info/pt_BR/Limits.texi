@@ -16,11 +16,11 @@ L'Hospital @'{e} usada em @code{limit}.  Isso evita ciclos infinitos em casos co
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Fun@value{cedilha}@~{a}o} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Fun@value{cedilha}@~{a}o} limit (@var{expr})
-Calcula o limite de @var{expr} com a vari@'{a}vel real
-@var{x} aproximando-se do valor @var{val} pela dire@value{cedilha}@~{a}o @var{dir}.  @var{dir} pode ter o
+@deffn {Fun@value{cedilha}@~{a}o} limit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Fun@value{cedilha}@~{a}o} limit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Fun@value{cedilha}@~{a}o} limit (@mvar{expr})
+Calcula o limite de @mvar{expr} com a vari@'{a}vel real
+@mvar{x} aproximando-se do valor @mvar{val} pela dire@value{cedilha}@~{a}o @mvar{dir}.  @mvar{dir} pode ter o
 valor @code{plus} para um limite pela direita, @code{minus} para um limite pela esquerda, ou
 pode ser omitido (implicando em um limite em ambos os lados @'{e} para ser computado).
 
@@ -60,9 +60,9 @@ substitui@value{cedilha}@~{o}es.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Fun@value{cedilha}@~{a}o} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Fun@value{cedilha}@~{a}o} tlimit (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} tlimit (@mvar{expr}, @mvar{x}, @mvar{val}, @mvar{dir})
+@deffnx {Fun@value{cedilha}@~{a}o} tlimit (@mvar{expr}, @mvar{x}, @mvar{val})
+@deffnx {Fun@value{cedilha}@~{a}o} tlimit (@mvar{expr})
 Retorna @code{limit} com @code{tlimswitch} escolhido para @code{true}.
 
 @end deffn

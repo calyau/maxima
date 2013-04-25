@@ -78,7 +78,7 @@ unidades.
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Units,  , Introdu@value{cedilha}@~{a}o a Units, unit
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Units
 
-@deffn {Fun@value{cedilha}@~{a}o} setunits (@var{list})
+@deffn {Fun@value{cedilha}@~{a}o} setunits (@mvar{list})
 Por padr@~{a}o, o pacote @emph{unit} n@~{a}o usa qualquer dimens@~{o}es derivadas, mas ir@'{a}
 converter todas as unidades nas sete fundamentais do sistema MKS.
 @example
@@ -194,7 +194,7 @@ Isso pode trabalhar igualmente bem com @code{uforget(N)} ou
 Veja tamb@'{e}m @code{uforget}. Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("unit")}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} uforget (@var{list})
+@deffn {Fun@value{cedilha}@~{a}o} uforget (@mvar{list})
 Por padr@~{a}o, o pacote @emph{unit} converte todas as unidades para as
 sete unidaes fundamentais do sitema MKS de unidades. Ess comportamento pode
 ser mudado com o comando @code{setunits}. Ap@'{o}s o qual, o
@@ -224,7 +224,7 @@ pr@'{o}pia dimens@~{a}o @'{e} tamb@'{e}m um argumento legal.
 Veja tamb@'{e}m @code{setunits}. To use this function write first @code{load("unit")}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} convert (@var{expr}, @var{list})
+@deffn {Fun@value{cedilha}@~{a}o} convert (@mvar{expr}, @mvar{list})
 Quando do restabelecimento dos valores padr@~{a}o o ambiente global @'{e} destru@'{i}do, existe o comando
 @code{convert}, que permite convers@~{o}es imediatas.  @code{convert} pode aceitar  um argumetno
 simples ou uma lista de unidades a serem usadas na convers@~{a}o.  Quando uma opera@value{cedilha}@~{a}o de convers@~{a}o for
@@ -485,9 +485,9 @@ controle sobre seu ambiente de trabalho.
 @end defvr
 
 
-@deffn {Fun@value{cedilha}@~{a}o} metricexpandall (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} metricexpandall (@mvar{x})
 Reconstr@'{o}i listas de unidades globais automaticamente criando todas as unidades m@'{e}tricas desejadas.
-@var{x} @'{e} um argumento num@'{e}rico que @'{e} usado para especificar quantos prefixos
+@mvar{x} @'{e} um argumento num@'{e}rico que @'{e} usado para especificar quantos prefixos
 m@'{e}tricos o usu@'{a}rio deseja que seja definido.  Os argumentos s@~{a}o os seguintes, com cada
 maior n@'{u}mero definindo todos os menores n@'{u}meros de unidade:
 @example
@@ -502,7 +502,7 @@ maior n@'{u}mero definindo todos os menores n@'{u}meros de unidade:
 Normalmente, Maxima n@~{a}o ir@'{a} definir a expans@~{a}o completa desses resultados em uma
 grande n@'{u}mero de unidades, mas @code{metricexpandall} pode ser usada para
 reconstruir a lista em um estilo mais ou menos completo. A vari@'{a}vel relevante
-no arquivo @emph{unit.mac} @'{e} @var{%unitexpand}.
+no arquivo @emph{unit.mac} @'{e} @mvar{%unitexpand}.
 @c This should be made configurable as a maxima-init.mac controllable option.
 @end deffn
 
@@ -515,7 +515,7 @@ de @emph{unit}.
 @end defvr
 
 
-@c @deffn {Fun@value{cedilha}@~{a}o} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
+@c @deffn {Fun@value{cedilha}@~{a}o} functionname (@mvar{arg1}, @mvar{arg2}, ..., @mvar{argn})
 @c @end deffn
 
 @c @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} variablename

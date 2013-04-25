@@ -146,9 +146,9 @@ Funktionen f@"ur komplexe Zahlen:
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
 @anchor{bfloat}
-@deffn {Funktion} bfloat (@var{expr})
+@deffn {Funktion} bfloat (@mvar{expr})
 
-Konvertiert alle Zahlen im Ausdruck @var{expr} in gro@ss{}e Gleitkommazahlen.
+Konvertiert alle Zahlen im Ausdruck @mvar{expr} in gro@ss{}e Gleitkommazahlen.
 Die Anzahl der Stellen wird durch die Optionsvariable 
 @mref{fpprec} spezifiziert.
 
@@ -174,9 +174,9 @@ Beispiele:
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
 @anchor{bfloatp}
-@deffn {Funktion} bfloatp (@var{number})
+@deffn {Funktion} bfloatp (@mvar{number})
 
-Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine
+Gibt den Wert @code{true} zur@"uck, wenn das Argument @mvar{number} eine
 gro@ss{}e Gleitkommazahl ist, ansonsten den Wert @code{false}.
 
 Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{floatnump}@w{}
@@ -253,9 +253,9 @@ Beispiele:
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
 @anchor{evenp}
-@deffn {Funktion} evenp (@var{expr})
+@deffn {Funktion} evenp (@mvar{expr})
 
-Ist das Argument @var{expr} eine gerade ganze Zahl, wird @code{true}
+Ist das Argument @mvar{expr} eine gerade ganze Zahl, wird @code{true}
 zur@"uckgegeben.  In allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
 @code{evenp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
@@ -282,11 +282,11 @@ Beispiele:
 
 @c --- 08.03.2011 DK -----------------------------------------------------------
 @anchor{float}
-@deffn  {Funktion} float (@var{expr})
+@deffn  {Funktion} float (@mvar{expr})
 @deffnx {Optionsvariable} float
 
 Die Funktion @code{float} konvertiert ganze, rationale und gro@ss{}e
-Gleitkommazahlen, die im Argument @var{expr} enthalten sind, in Gleitkommazahlen
+Gleitkommazahlen, die im Argument @mvar{expr} enthalten sind, in Gleitkommazahlen
 mit doppelter Genauigkeit.
 
 @code{float} ist auch eine Optionsvariable mit dem Standardwert @code{false} und
@@ -349,11 +349,11 @@ bfloat: converting float 1.5 to bigfloat.
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
 @anchor{floatnump}
-@deffn {Funktion} floatnump (@var{number})
+@deffn {Funktion} floatnump (@mvar{number})
 
-Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine 
+Gibt den Wert @code{true} zur@"uck, wenn das Argument @mvar{number} eine 
 Gleitkommazahl ist.  Ansonsten wird @code{false} zur@"uckgegeben.  Auch wenn 
-@var{number} eine gro@ss{}e Gleitkommazahl ist, ist das Ergebnis @code{false}.
+@mvar{number} eine gro@ss{}e Gleitkommazahl ist, ist das Ergebnis @code{false}.
 
 Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{bfloatp}@w{}
 @mref{ratnump} und @mrefdot{integerp}
@@ -444,9 +444,9 @@ Beispiele:
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{integerp}
-@deffn {Funktion} integerp (@var{number})
+@deffn {Funktion} integerp (@mvar{number})
 
-Hat den R@"uckgabewert @code{true}, wenn das Argument @var{number} eine ganze 
+Hat den R@"uckgabewert @code{true}, wenn das Argument @mvar{number} eine ganze 
 Zahl ist.  In allen anderen F@"allen gibt @code{integerp} den Wert @code{false} 
 zur@"uck.
 
@@ -503,7 +503,7 @@ Siehe auch die Optionsvariable @mrefdot{numer_pbranch}
 
 @c --- 17.02.2011 DK -----------------------------------------------------------
 @anchor{nonnegintegerp}
-@deffn {Funktion} nonnegintegerp (@var{number})
+@deffn {Funktion} nonnegintegerp (@mvar{number})
 
 Gibt den Wert @code{true} zur@"uck, wenn @code{number} eine ganze positive Zahl
 oder Null ist.  Siehe auch @mrefdot{integerp}
@@ -520,9 +520,9 @@ Beispiele:
 
 @c --- 21.08.2010 --------------------------------------------------------------
 @anchor{numberp}
-@deffn {Funktion} numberp (@var{number})
+@deffn {Funktion} numberp (@mvar{number})
 
-Hat das Ergebnis @code{true}, wenn @var{number} eine ganze, rationale, eine
+Hat das Ergebnis @code{true}, wenn @mvar{number} eine ganze, rationale, eine
 Gleitkommazahl oder eine gro@ss{}e Gleitkommazahl ist.  Ansonsten ist das 
 Ergebnis @code{false}.
 
@@ -642,14 +642,14 @@ Beispiele:
 
 @c --- 08.03.2011 DK -----------------------------------------------------------
 @anchor{numerval}
-@deffn {Funktion} numerval (@var{x_1}, @var{val_1}, @dots{}, @var{var_n}, @var{val_n})
+@deffn {Funktion} numerval (@mvar{x_1}, @mvar{val_1}, @dots{}, @mvar{var_n}, @mvar{val_n})
 
-Die Variablen @var{x_1}, @dots{}, @var{x_n} erhalten die numerischen Werte
-@var{val_1}, @dots{}, @code{val_n}.  Die numerischen Werte werden immer dann
+Die Variablen @mvar{x_1}, @dots{}, @mvar{x_n} erhalten die numerischen Werte
+@mvar{val_1}, @dots{}, @code{val_n}.  Die numerischen Werte werden immer dann
 f@"ur die Variablen in Ausdr@"ucke eingesetzt, wenn die Optionsvariable 
 @mref{numer} den Wert @code{true} hat.  Siehe auch @mrefdot{ev}
 
-Die Argumente @var{val_1}, @dots{}, @var{val_n} k@"onnen auch beliebige 
+Die Argumente @mvar{val_1}, @dots{}, @mvar{val_n} k@"onnen auch beliebige 
 Ausdr@"ucke sein, die wie numerische Werte f@"ur Variablen eingesetzt werden.
 
 Beispiele:
@@ -669,9 +669,9 @@ Beispiele:
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
 @anchor{oddp}
-@deffn {Funktion} oddp (@var{expr})
+@deffn {Funktion} oddp (@mvar{expr})
 
-Gibt @code{true} zur@"uck, wenn das Argument @var{expr} eine ungerade ganze Zahl
+Gibt @code{true} zur@"uck, wenn das Argument @mvar{expr} eine ungerade ganze Zahl
 ist.  In allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
 @code{oddp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
@@ -709,10 +709,10 @@ siehe die Optionsvariable @mrefdot{bftorat}
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
 @anchor{rationalize}
-@deffn {Funktion} rationalize (@var{expr})
+@deffn {Funktion} rationalize (@mvar{expr})
 
 Konvertiert alle Gleitkommazahlen einschlie@ss{}lich gro@ss{}er 
-Gleitkommazahlen, die in dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
+Gleitkommazahlen, die in dem Ausdruck @mvar{expr} auftreten, in rationale Zahlen.
 
 Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht das Ergebnis
 @code{1/10} hat.  Dies ist nicht speziell f@"ur Maxima.  Ursache ist, dass die 
@@ -759,9 +759,9 @@ Beispiele:
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
 @anchor{ratnump}
-@deffn {Funktion} ratnump (@var{number})
+@deffn {Funktion} ratnump (@mvar{number})
 
-Gibt @code{true} zur@"uck, wenn @var{number} eine ganze oder rationale Zahl ist.
+Gibt @code{true} zur@"uck, wenn @mvar{number} eine ganze oder rationale Zahl ist.
 In allen anderen F@"allen ist das Ergebnis @code{false}.
 
 Siehe auch die Funktionen @mrefcomma{numberp} @mrefcomma{integerp}@w{}
@@ -862,9 +862,9 @@ this string.";
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{concat}
-@deffn {Funktion} concat (@var{arg_1}, @var{arg_2}, @dots{})
+@deffn {Funktion} concat (@mvar{arg_1}, @mvar{arg_2}, @dots{})
 
-Verkettet die Argumente @var{arg_1}, @var{arg_2}, @dots{} zu einer Zeichenkette 
+Verkettet die Argumente @mvar{arg_1}, @mvar{arg_2}, @dots{} zu einer Zeichenkette 
 oder einem Symbol.  Die Argumente m@"ussen sich zu einem Atom auswerten lassen.
 Der R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist.
 Ansonsten wird eine Zeichenkette zur@"uckgegeben.
@@ -914,9 +914,9 @@ werden und es kann in Ausdr@"ucken auftreten.
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{sconcat}
-@deffn {Funktion} sconcat (@var{arg_1}, @var{arg_2}, @dots{})
+@deffn {Funktion} sconcat (@mvar{arg_1}, @mvar{arg_2}, @dots{})
 
-Verkettet die Argumente @var{arg_1}, @var{arg_2}, @dots{} zu einer Zeichenkette.
+Verkettet die Argumente @mvar{arg_1}, @mvar{arg_2}, @dots{} zu einer Zeichenkette.
 Im Unterschied zu der Funktion @mref{concat} m@"ussen die Argumente @i{nicht} 
 Atome sein.  Der R@"uckgabewert ist eine Zeichenkette.
 
@@ -930,7 +930,7 @@ Beispiel:
 
 @c --- 18.02.2011 DK -----------------------------------------------------------
 @anchor{string}
-@deffn {Funktion} string (@var{expr})
+@deffn {Funktion} string (@mvar{expr})
 
 Konvertiert das Argument @code{expr} in eine lineare Darstellung, wie sie auch
 vom Parser von der Eingabe eingelesen wird.  Die R@"uckgabe von @code{string}

@@ -19,10 +19,10 @@
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} diag (@var{lm})
+@deffn {Function} diag (@mvar{lm})
 
-Constructs a square matrix with the matrices of @var{lm} in the diagonal. 
-@var{lm} is a list of matrices or scalars.
+Constructs a square matrix with the matrices of @mvar{lm} in the diagonal. 
+@mvar{lm} is a list of matrices or scalars.
 
 Example:
 
@@ -52,9 +52,9 @@ To use this function write first @code{load("diag")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} JF (@var{lambda}, @var{n})
+@deffn {Function} JF (@mvar{lambda}, @mvar{n})
 
-Returns the Jordan cell of order @var{n} with eigenvalue @var{lambda}.
+Returns the Jordan cell of order @mvar{n} with eigenvalue @mvar{lambda}.
 
 Example:
 
@@ -88,9 +88,9 @@ To use this function write first @code{load("diag")}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} jordan (@var{mat})
+@deffn {Function} jordan (@mvar{mat})
 
-Returns the Jordan form of matrix @var{mat}, but codified in a Maxima list.
+Returns the Jordan form of matrix @mvar{mat}, but codified in a Maxima list.
 To get the corresponding matrix, call function @code{dispJordan} using as 
 argument the output of @code{jordan}.
 
@@ -131,10 +131,10 @@ and @code{minimalPoly}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} dispJordan (@var{l})
+@deffn {Function} dispJordan (@mvar{l})
 
 Returns the Jordan matrix associated to the codification given by the Maxima 
-list @var{l}, which is the output given by function @code{jordan}.
+list @mvar{l}, which is the output given by function @code{jordan}.
 
 Example:
 
@@ -164,10 +164,10 @@ and @code{minimalPoly}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} minimalPoly (@var{l})
+@deffn {Function} minimalPoly (@mvar{l})
 
 Returns the minimal polynomial associated to the codification given by the 
-Maxima list @var{l}, which is the output given by function @code{jordan}.
+Maxima list @mvar{l}, which is the output given by function @code{jordan}.
 
 Example:
 
@@ -189,10 +189,10 @@ and @code{dispJordan}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} ModeMatrix (@var{A},@var{l})
+@deffn {Function} ModeMatrix (@mvar{A},@mvar{l})
 
-Returns the matrix @var{M} such that @math{(M^^-1).A.M=J}, where @var{J} is 
-the Jordan form of @var{A}. The Maxima list @var{l} is the codified form of 
+Returns the matrix @mvar{M} such that @math{(M^^-1).A.M=J}, where @mvar{J} is 
+the Jordan form of @mvar{A}. The Maxima list @mvar{l} is the codified form of 
 the Jordan form as returned by function @code{jordan}.
 
 Example:
@@ -237,9 +237,9 @@ and @code{dispJordan}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} mat_function (@var{f},@var{mat})
+@deffn {Function} mat_function (@mvar{f},@mvar{mat})
 
-Returns @math{f(mat)}, where @var{f} is an analytic function and @var{mat}
+Returns @math{f(mat)}, where @mvar{f} is an analytic function and @mvar{mat}
 a matrix. This computation is based on Cauchy's integral formula, which states 
 that if @code{f(x)} is analytic and
 @code{mat = diag([JF(m1,n1), ..., JF(mk,nk)])}, then @code{f(mat) = 

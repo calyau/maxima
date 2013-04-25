@@ -9,9 +9,9 @@
 
 @c -----------------------------------------------------------------------------
 @anchor{function_f90}
-@deffn {Function} f90 (@var{expr_1}, @dots{}, @var{expr_n})
+@deffn {Function} f90 (@mvar{expr_1}, @dots{}, @mvar{expr_n})
 
-Prints one or more expressions @var{expr_1}, @dots{}, @var{expr_n}
+Prints one or more expressions @mvar{expr_1}, @dots{}, @mvar{expr_n}
 as a Fortran 90 program.
 Output is printed to the standard output.
 

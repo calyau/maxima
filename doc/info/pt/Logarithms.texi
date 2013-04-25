@@ -19,9 +19,9 @@ contendo @code{log}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} li [@var{s}] (@var{z})
-Representa a fun@,{c}@~ao polilogaritmo de ordem @var{s}
-e argumento @var{z}, definida por meio da s@'erie infinita
+@deffn {Fun@,{c}@~ao} li [@mvar{s}] (@mvar{z})
+Representa a fun@,{c}@~ao polilogaritmo de ordem @mvar{s}
+e argumento @mvar{z}, definida por meio da s@'erie infinita
 
 @example
                                  inf
@@ -39,12 +39,12 @@ trilogaritmo, respectivamente.
 
 Quando a ordem for 1, o polilogaritmo simplifica para
 @code{- log (1 - z)}, o qual por sua vez simplifica para um valor
-num@'erico se @var{z} for um n@'umero em ponto flutuante real ou
+num@'erico se @mvar{z} for um n@'umero em ponto flutuante real ou
 complexo ou o sinalizador de avalia@,{c}@~ao @code{numer} estiver
 presente.
 
 Quando a ordem for 2 ou 3, o polilogaritmo simplifica
-para um valor num@'erico se @var{z} for um n@'umero real em ponto
+para um valor num@'erico se @mvar{z} for um n@'umero real em ponto
 flutuante ou o sinalizador de avalia@,{c}@~ao @code{numer} estiver
 presente.
 
@@ -97,9 +97,9 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} log (@var{x})
+@deffn {Fun@,{c}@~ao} log (@mvar{x})
 Representa o logaritmo natural (base @math{e}) de
-@var{x}.
+@mvar{x}.
 
 Maxima n@~ao possui uma fun@,{c}@~ao interna para
 logaritmo de base 10 ou de outras bases. @code{log10(x)
@@ -160,7 +160,7 @@ calcular a primitiva nos extremos.
 
 @c NEEDS EXAMPLES
 @defvr {Vari@'avel de op@,{c}@~ao} logarc
-@defvrx {Fun@,{c}@~ao} logarc (@var{expr})
+@defvrx {Fun@,{c}@~ao} logarc (@mvar{expr})
 
 Quando a vari@'avel global @code{logarc} for igual a @code{true}, as
 fun@,{c}@~oes trigononom@'etricas inversas, circulares e
@@ -168,8 +168,8 @@ hiperb@'olicas, ser@~ao substitu@'{@dotless{i}}das por suas
 fun@,{c}@~oes logar@'{@dotless{i}}tmicas equivalentes. O valor
 padr@~ao de @code{logarc} @'e @code{false}.
 
-A fun@,{c}@~ao @code{logarc(@var{expr})} realiza essa
-substitui@,{c}@~ao para uma express@~ao @var{expr} sem modificar o
+A fun@,{c}@~ao @code{logarc(@mvar{expr})} realiza essa
+substitui@,{c}@~ao para uma express@~ao @mvar{expr} sem modificar o
 valor da vari@'avel global @code{logarc}.
 
 @end defvr
@@ -186,8 +186,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}. E assim,
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} logcontract (@var{expr})
-Examina recursivamente a express@~ao @var{expr}, transformando
+@deffn {Fun@,{c}@~ao} logcontract (@mvar{expr})
+Examina recursivamente a express@~ao @mvar{expr}, transformando
 subexpress@~oes da forma @code{a1*log(b1) + a2*log(b2) + c} em
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
@@ -260,9 +260,9 @@ simplifica@,{c}@~ao de @code{%e} para um expoente contendo
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} plog (@var{x})
+@deffn {Fun@,{c}@~ao} plog (@mvar{x})
 Representa o ramo principal dos logaritmos naturais no
-plano complexo, com @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi}.
+plano complexo, com @code{-%pi} < @code{carg(@mvar{x})} <= @code{+%pi}.
 
 @end deffn
 

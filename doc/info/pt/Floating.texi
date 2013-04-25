@@ -18,7 +18,7 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@deffn {Fun@value{cedilha}@~ao} bffac (@var{expr}, @var{n})
+@deffn {Fun@value{cedilha}@~ao} bffac (@mvar{expr}, @mvar{n})
 Vers@~ao para grandes n@'umeros em ponto flutuante da fun@value{cedilha}@~ao
 @code{factorial} (usa o artif@'{@dotless{i}}cio gamma).  O segundo argumento informa quantos d@'{@dotless{i}}gitos reter e retornar,
 isso @'e uma boa id@'eia para requisitar precis@~ao adicional.
@@ -35,8 +35,8 @@ Valor por omiss@~ao: 10^8
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} bfloat (@var{expr})
-Converte todos os n@'umeros e fun@value{cedilha}@~oes de n@'umeros em @var{expr} para grandes n@'umeros em 
+@deffn {Fun@value{cedilha}@~ao} bfloat (@mvar{expr})
+Converte todos os n@'umeros e fun@value{cedilha}@~oes de n@'umeros em @mvar{expr} para grandes n@'umeros em 
 ponto flutuante (bigfloat).  O n@'umero de algarismos significativos no grande n@'umero em ponto flutuante resultante @'e especificado atrav@'es da vari@'avel global @code{fpprec}.
 
 Quando @code{float2bf} for @code{false} uma mensagem de alerta @'e mostrada quando
@@ -45,19 +45,19 @@ isso pode resultar em perda de precis@~ao).
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bfloatp (@var{expr})
-Retorna @code{true} se a avalia@value{cedilha}@~ao da @var{expr} resultar em um grande n@'umero em ponto flutuante, de outra forma retorna @code{false}.
+@deffn {Fun@value{cedilha}@~ao} bfloatp (@mvar{expr})
+Retorna @code{true} se a avalia@value{cedilha}@~ao da @mvar{expr} resultar em um grande n@'umero em ponto flutuante, de outra forma retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Fun@value{cedilha}@~ao} bfpsi0 (@var{z}, @var{fpprec})
-@code{bfpsi} @'e a fun@value{cedilha}@~ao @code{polygamma} de argumentos reais @var{z} e ordem de inteiro @var{n}.
+@deffn {Fun@value{cedilha}@~ao} bfpsi (@mvar{n}, @mvar{z}, @mvar{fpprec})
+@deffnx {Fun@value{cedilha}@~ao} bfpsi0 (@mvar{z}, @mvar{fpprec})
+@code{bfpsi} @'e a fun@value{cedilha}@~ao @code{polygamma} de argumentos reais @mvar{z} e ordem de inteiro @mvar{n}.
 @code{bfpsi0} @'e a fun@value{cedilha}@~ao @code{digamma}. 
-@code{bfpsi0 (@var{z}, @var{fpprec})} @'e equivalente a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+@code{bfpsi0 (@mvar{z}, @mvar{fpprec})} @'e equivalente a @code{bfpsi (0, @mvar{z}, @mvar{fpprec})}.
 
 Essas fun@value{cedilha}@~oes retornam valores em grandes n@'umeros em ponto flutuante.
-@var{fpprec} @'e a precis@~ao do valor de retorno dos grandes n@'umeros em ponto flutuante.
+@mvar{fpprec} @'e a precis@~ao do valor de retorno dos grandes n@'umeros em ponto flutuante.
 
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
@@ -92,15 +92,15 @@ ser@'a mostrado como @code{1.000000000000000B0}. De outra forma, ser@'a mostrado
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} cbffac (@var{z}, @var{fpprec})
+@deffn {Fun@value{cedilha}@~ao} cbffac (@mvar{z}, @mvar{fpprec})
 Factorial complexo de grandes n@'umeros em ponto flutuante.
 
 @code{load ("bffac")} chama essa fun@value{cedilha}@~ao.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} float (@var{expr})
-Converte inteiros, n@'umeros racionais e grandes n@'umeros em ponto flutuante em @var{expr}
+@deffn {Fun@value{cedilha}@~ao} float (@mvar{expr})
+Converte inteiros, n@'umeros racionais e grandes n@'umeros em ponto flutuante em @mvar{expr}
 para n@'umeros em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
 n@'umeros racionais n@~ao-inteiros e grandes n@'umeros em ponto flutuante sejam convertidos para
 ponto flutuante.
@@ -116,8 +116,8 @@ isso pode resultar em perda de precis@~ao).
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} floatnump (@var{expr})
-Retorna @code{true} se @var{expr} for um n@'umero em ponto flutuante, de outra forma retorna @code{false}.
+@deffn {Fun@value{cedilha}@~ao} floatnump (@mvar{expr})
+Retorna @code{true} se @mvar{expr} for um n@'umero em ponto flutuante, de outra forma retorna @code{false}.
 
 @end deffn
 

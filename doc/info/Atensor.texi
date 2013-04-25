@@ -106,10 +106,10 @@ simplifications.
 
 @section Functions and Variables for atensor
 
-@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Function} init_atensor (@var{alg_type})
+@deffn {Function} init_atensor (@mvar{alg_type}, @mvar{opt_dims})
+@deffnx {Function} init_atensor (@mvar{alg_type})
 
-Initializes the @code{atensor} package with the specified algebra type. @var{alg_type}
+Initializes the @code{atensor} package with the specified algebra type. @mvar{alg_type}
 can be one of the following:
 
 @code{universal}: The universal algebra has no commutation rules.
@@ -119,10 +119,10 @@ relation @code{u.v+v.u=0}.
 
 @code{clifford}: The Clifford algebra is defined by the commutation
 relation @code{u.v+v.u=-2*sf(u,v)} where @code{sf} is a symmetric
-scalar-valued function. For this algebra, @var{opt_dims} can be up
+scalar-valued function. For this algebra, @mvar{opt_dims} can be up
 to three nonnegative integers, representing the number of positive,
 degenerate, and negative dimensions of the algebra, respectively. If
-any @var{opt_dims} values are supplied, @code{atensor} will configure the
+any @mvar{opt_dims} values are supplied, @code{atensor} will configure the
 values of @code{adim} and @code{aform} appropriately. Otherwise,
 @code{adim} will default to 0 and @code{aform} will not be defined.
 
@@ -131,9 +131,9 @@ relation @code{u.v-v.u=0}.
 
 @code{symplectic}: The symplectic algebra is defined by the commutation
 relation @code{u.v-v.u=2*af(u,v)} where @code{af} is an antisymmetric
-scalar-valued function. For the symplectic algebra, @var{opt_dims} can
+scalar-valued function. For the symplectic algebra, @mvar{opt_dims} can
 be up to two nonnegative integers, representing the nondegenerate and
-degenerate dimensions, respectively. If any @var{opt_dims} values are
+degenerate dimensions, respectively. If any @mvar{opt_dims} values are
 supplied, @code{atensor} will configure the values of @code{adim} and @code{aform}
 appropriately. Otherwise, @code{adim} will default to 0 and @code{aform}
 will not be defined.
@@ -167,9 +167,9 @@ Cl(3,1). A call to @code{init_atensor(dirac)} is equivalent to
 @end deffn
 
 
-@deffn {Function} atensimp (@var{expr})
+@deffn {Function} atensimp (@mvar{expr})
 
-Simplifies an algebraic tensor expression @var{expr} according to the rules
+Simplifies an algebraic tensor expression @mvar{expr} according to the rules
 configured by a call to @code{init_atensor}. Simplification includes
 recursive application of commutation relations and resolving calls
 to @code{sf}, @code{af}, and @code{av} where applicable. A
@@ -228,7 +228,7 @@ The symbol for base vectors.
 
 @end defvr
 
-@deffn {Function} sf (@var{u}, @var{v})
+@deffn {Function} sf (@mvar{u}, @mvar{v})
 
 A symmetric scalar function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
@@ -241,7 +241,7 @@ corresponding value from the matrix @code{aform}.
 
 @end deffn
 
-@deffn {Function} af (@var{u}, @var{v})
+@deffn {Function} af (@mvar{u}, @mvar{v})
 
 An antisymmetric scalar function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
@@ -254,7 +254,7 @@ corresponding value from the matrix @code{aform}.
 
 @end deffn
 
-@deffn {Function} av (@var{u}, @var{v})
+@deffn {Function} av (@mvar{u}, @mvar{v})
 
 An antisymmetric function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
@@ -288,7 +288,7 @@ For instance:
 @end deffn
 
 
-@deffn {Function} abasep (@var{v})
+@deffn {Function} abasep (@mvar{v})
 
 Checks if its argument is an @code{atensor} base vector. That is, if it is
 an indexed symbol, with the symbol being the same as the value of

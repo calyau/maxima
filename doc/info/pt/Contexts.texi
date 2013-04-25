@@ -7,8 +7,8 @@
 @node Defini@value{cedilha}@~oes para Contextos,  , Contextos, Contextos
 @section Defini@value{cedilha}@~oes para Contextos
 
-@deffn {Fun@value{cedilha}@~ao} activate (@var{context_1}, ..., @var{context_n})
-Ativa os contextos @var{context_1}, ..., @var{context_n}.
+@deffn {Fun@value{cedilha}@~ao} activate (@mvar{context_1}, ..., @mvar{context_n})
+Ativa os contextos @mvar{context_1}, ..., @mvar{context_n}.
 Os factos nesses contextos est@~ao ent@~ao dispon@'{@dotless{i}}veis para
 fazer dedu@value{cedilha}@~oes e recuperar informa@value{cedilha}@~ao.
 Os factos nesses contextos n@~ao s@~ao listadas atrav@'es de @code{facts ()}.
@@ -27,8 +27,8 @@ eles s@~ao subcontextos do contexto corrente.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} assume (@var{pred_1}, ..., @var{pred_n})
-Adiciona predicados @var{pred_1}, ..., @var{pred_n} ao contexto corrente.
+@deffn {Fun@value{cedilha}@~ao} assume (@mvar{pred_1}, ..., @mvar{pred_n})
+Adiciona predicados @mvar{pred_1}, ..., @mvar{pred_n} ao contexto corrente.
 Se um predicado for incossistente ou redundante 
 com os predicados no contexto corrente,
 esses predicados n@~ao s@~ao adicionados ao contexto.
@@ -37,17 +37,17 @@ O contexto acumula predicados de cada chamada a @code{assume}.
 @code{assume} retorna uma lista cujos elementos s@~ao os predicados adicionados ao contexto
 ou os @'atomos @code{redundant} ou @code{inconsistent} onde for aplic@'avel.
 
-Os predicados @var{pred_1}, ..., @var{pred_n} podem somente ser express@~oes
+Os predicados @mvar{pred_1}, ..., @mvar{pred_n} podem somente ser express@~oes
 com os operadores relacionais @code{< <= equal notequal >=} e @code{>}.
 Predicados n@~ao podem ser express@~oes de igualdades literais @code{=} ou express@~oes de desigualdades literais @code{#},
 nem podem elas serem fun@value{cedilha}@~oes de predicado tais como @code{integerp}.
 
-Predicados combinados da forma @code{@var{pred_1} and ... and @var{pred_n}}
+Predicados combinados da forma @code{@mvar{pred_1} and ... and @mvar{pred_n}}
 s@~ao reconhecidos,
-mas n@~ao @code{@var{pred_1} or ... or @var{pred_n}}.
-@code{not @var{pred_k}} @'e reconhecidos se @var{pred_k} for um predicado relacional.
-Express@~oes da forma @code{not (@var{pred_1} e @var{pred_2})}
-and @code{not (@var{pred_1} or @var{pred_2})}
+mas n@~ao @code{@mvar{pred_1} or ... or @mvar{pred_n}}.
+@code{not @mvar{pred_k}} @'e reconhecidos se @mvar{pred_k} for um predicado relacional.
+Express@~oes da forma @code{not (@mvar{pred_1} e @mvar{pred_2})}
+and @code{not (@mvar{pred_1} or @mvar{pred_2})}
 n@~ao s@~ao reconhecidas.
 
 O mecanismo de dedu@value{cedilha}@~ao do Maxima n@~ao @'e muito forte;
@@ -130,14 +130,14 @@ acima.
 Valor por omiss@~ao: @code{false}
 
 Quando @code{assume_pos} for @code{true}
-e o sinal de um par@^ametro @var{x} n@~ao pode ser determinado a partir do contexto corrente
+e o sinal de um par@^ametro @mvar{x} n@~ao pode ser determinado a partir do contexto corrente
 ou outras considera@value{cedilha}@~oes,
-@code{sign} e @code{asksign (@var{x})} retornam @code{true}.
+@code{sign} e @code{asksign (@mvar{x})} retornam @code{true}.
 Isso pode impedir algum questionamento de @code{asksign} gerado automaticamente,
 tal como pode surgir de @code{integrate} ou de outros c@'alculos.
 
-Por padr@~ao, um par@^ametro @'e @var{x} tal como @code{symbolp (@var{x})}
-or @code{subvarp (@var{x})}.
+Por padr@~ao, um par@^ametro @'e @mvar{x} tal como @code{symbolp (@mvar{x})}
+or @code{subvarp (@mvar{x})}.
 A classe de express@~oes consideradas par@^ametros pode ser modificada para alguma abrang@^encia
 atrav@'es da vari@'avel @code{assume_pos_pred}.
 
@@ -148,7 +148,7 @@ ent@~ao @code{a + b} @'e tamb@'em positivo.
 
 Todavia, n@~ao existe caminho para desviar todos os questionamentos de @code{asksign}.
 Particularmente, quando o argumento de @code{asksign} for uma
-diferen@value{cedilha}a @code{@var{x} - @var{y}} ou um logaritmo @code{log(@var{x})},
+diferen@value{cedilha}a @code{@mvar{x} - @mvar{y}} ou um logaritmo @code{log(@mvar{x})},
 @code{asksign} sempre solicita uma entrada ao utilizador,
 mesmo quando @code{assume_pos} for @code{true} e @code{assume_pos_pred} for
 uma fun@value{cedilha}@~ao que retorna @code{true} para todos os argumentos.
@@ -161,18 +161,18 @@ uma fun@value{cedilha}@~ao que retorna @code{true} para todos os argumentos.
 Valor por omiss@~ao: @code{false}
 
 Quando @code{assume_pos_pred} for atribu@'{@dotless{i}}do o nome de uma fun@value{cedilha}@~ao
-ou uma express@~ao lambda de um argumento @var{x},
+ou uma express@~ao lambda de um argumento @mvar{x},
 aquela fun@value{cedilha}@~ao @'e chamada para determinar
-se @var{x} @'e considerado um par@^ametro para o prop@'osito de @code{assume_pos}.
+se @mvar{x} @'e considerado um par@^ametro para o prop@'osito de @code{assume_pos}.
 @code{assume_pos_pred} @'e ignorado quando @code{assume_pos} for @code{false}.
 
 A fun@value{cedilha}@~ao @code{assume_pos_pred} @'e chamada atrav@'es de @code{sign} e de @code{asksign}
-com um argumento @var{x}
+com um argumento @mvar{x}
 que @'e ou um @'atomo, uma vari@'avel subscrita, ou uma express@~ao de chamada de fun@value{cedilha}@~ao.
 Se a fun@value{cedilha}@~ao @code{assume_pos_pred} retorna @code{true},
-@var{x} @'e considerado um par@^ametro para o prop@'osito de @code{assume_pos}.
+@mvar{x} @'e considerado um par@^ametro para o prop@'osito de @code{assume_pos}.
 
-Por padr@~ao, um par@^ametro @'e @var{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
+Por padr@~ao, um par@^ametro @'e @mvar{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
 
 Veja tamb@'em @code{assume} e @code{assume_pos}.
 
@@ -249,8 +249,8 @@ Valor por omiss@~ao: @code{initial}
 @code{assume} adiciona factos @`a colec@,{c}@~ao nomeada atrav@'es de @code{context},
 enquanto @code{forget} remove factos.
 
-Associando @code{context} para um nome @var{foo} altera o contexto corrente para @var{foo}.
-Se o contexto especificado @var{foo} n@~ao existe ainda,
+Associando @code{context} para um nome @mvar{foo} altera o contexto corrente para @mvar{foo}.
+Se o contexto especificado @mvar{foo} n@~ao existe ainda,
 ele @'e criado automaticamente atrav@'es de uma chamada a @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
 O contexto especificado @'e activado automaticamente.
@@ -292,19 +292,19 @@ Veja tamb@'em @code{facts}, @code{newcontext},
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} deactivate (@var{context_1}, ..., @var{context_n})
-Desativa os contextos especificados @var{context_1}, ..., @var{context_n}.
+@deffn {Fun@value{cedilha}@~ao} deactivate (@mvar{context_1}, ..., @mvar{context_n})
+Desativa os contextos especificados @mvar{context_1}, ..., @mvar{context_n}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} facts (@var{item})
+@deffn {Fun@value{cedilha}@~ao} facts (@mvar{item})
 @deffnx {Fun@value{cedilha}@~ao} facts ()
-Se @var{item} for o nome de um contexto,
-@code{facts (@var{item})} retorna uma lista
+Se @mvar{item} for o nome de um contexto,
+@code{facts (@mvar{item})} retorna uma lista
 de factos no contexto especificado.
 
-Se @var{item} n@~ao for o nome de um contexto,
-@code{facts (@var{item})} retorna uma lista de factos conhecidos sobre @var{item} no contexto
+Se @mvar{item} n@~ao for o nome de um contexto,
+@code{facts (@mvar{item})} retorna uma lista de factos conhecidos sobre @mvar{item} no contexto
 actual.  Fatos que est@~ao atuvos, mas em um diferente contexto, n@~ao s@~ao listados.
 
 @code{facts ()} (i.e., sem argumento) lista o contexto actual.
@@ -315,15 +315,15 @@ actual.  Fatos que est@~ao atuvos, mas em um diferente contexto, n@~ao s@~ao lis
 Maxima recnhece ceertas propriedades matem@'aticas de fun@value{cedilha}@~oes e vari@'aveis.
 Essas s@~ao chamadas "recursos".
 
-@code{declare (@var{x}, @var{foo})} fornece a propriedade @var{foo} para a fun@value{cedilha}@~ao ou vari@'avel @var{x}.
+@code{declare (@mvar{x}, @mvar{foo})} fornece a propriedade @mvar{foo} para a fun@value{cedilha}@~ao ou vari@'avel @mvar{x}.
 
-@code{declare (@var{foo}, recurso)} declara um novo recurso @var{foo}.
+@code{declare (@mvar{foo}, recurso)} declara um novo recurso @mvar{foo}.
 Por exemplo,
 @code{declare ([red, green, blue], feature)}
 declara tr@^es novos recursos, @code{red}, @code{green}, e @code{blue}.
 
-O predicado @code{featurep (@var{x}, @var{foo})}
-retorna @code{true} se @var{x} possui a propriedade @var{foo},
+O predicado @code{featurep (@mvar{x}, @mvar{foo})}
+retorna @code{true} se @mvar{x} possui a propriedade @mvar{foo},
 e @code{false} de outra forma.
 
 A infolista @code{features} @'e uma lista de recursos conhecidos.
@@ -340,19 +340,19 @@ Existe tamb@'em uma lista de recursos n@~ao matem@'aticos, recursos dependentes 
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} forget (@var{pred_1}, ..., @var{pred_n})
-@deffnx {Fun@value{cedilha}@~ao} forget (@var{L})
+@deffn {Fun@value{cedilha}@~ao} forget (@mvar{pred_1}, ..., @mvar{pred_n})
+@deffnx {Fun@value{cedilha}@~ao} forget (@mvar{L})
 Remove predicados estabelecidos atrav@'es de @code{assume}.
 Os predicados podem ser express@~oes equivalentes a (mas n@~ao necess@'ariamente id@^enticas a)
 esses prevamentes assumidos.
 
-@code{forget (@var{L})}, onde @var{L} @'e uma lista de predicados,
+@code{forget (@mvar{L})}, onde @mvar{L} @'e uma lista de predicados,
 esquece cada item da lista.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} killcontext (@var{context_1}, ..., @var{context_n})
-Mata os contextos @var{context_1}, ..., @var{context_n}.
+@deffn {Fun@value{cedilha}@~ao} killcontext (@mvar{context_1}, ..., @mvar{context_n})
+Mata os contextos @mvar{context_1}, ..., @mvar{context_n}.
 
 Se um dos contextos estiver for o contexto actual, o novo contexto
 actual ir@'a tornar-se o primeiro subcontexto dispon@'{@dotless{i}}vel do contexto
@@ -369,22 +369,22 @@ actual, ou atrav@'es do uso da fun@value{cedilha}@~ao @code{activate}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} newcontext (@var{nome})
-Cria um novo contexto, por@'em vazio, chamado @var{nome}, que
+@deffn {Fun@value{cedilha}@~ao} newcontext (@mvar{nome})
+Cria um novo contexto, por@'em vazio, chamado @mvar{nome}, que
 tem @code{global} como seu @'unico subcontexto.  O contexto recentemente criado
 torna-se o contexto activo actualmente.
 
 @code{newcontext} avalia seu argumento.
-@code{newcontext} retorna @var{nome}.
+@code{newcontext} retorna @mvar{nome}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} supcontext (@var{nome}, @var{context})
-@deffnx {Fun@value{cedilha}@~ao} supcontext (@var{nome})
-Cria um novo contexto, chamado @var{nome},
-que tem @var{context} como um subcontexto.
-@var{context} deve existir.
+@deffn {Fun@value{cedilha}@~ao} supcontext (@mvar{nome}, @mvar{context})
+@deffnx {Fun@value{cedilha}@~ao} supcontext (@mvar{nome})
+Cria um novo contexto, chamado @mvar{nome},
+que tem @mvar{context} como um subcontexto.
+@mvar{context} deve existir.
 
-Se @var{context} n@~ao for especificado, o contexto actual @'e assumido.
+Se @mvar{context} n@~ao for especificado, o contexto actual @'e assumido.
 
 @end deffn

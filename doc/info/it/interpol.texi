@@ -9,22 +9,22 @@
 @node Definitions for interpol,  , Introduction to interpol, interpol
 @section Definitions for interpol
 
-@deffn {Function} lagrange (@var{points})
-@deffnx {Function} lagrange (@var{points}, @var{option})
+@deffn {Function} lagrange (@mvar{points})
+@deffnx {Function} lagrange (@mvar{points}, @mvar{option})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} charfun2 (@var{x}, @var{a}, @var{b})
+@deffn {Function} charfun2 (@mvar{x}, @mvar{a}, @mvar{b})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} linearinterpol (@var{points})
-@deffnx {Function} linearinterpol (@var{points}, @var{option})
+@deffn {Function} linearinterpol (@mvar{points})
+@deffnx {Function} linearinterpol (@mvar{points}, @mvar{option})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} cspline (@var{points})
-@deffnx {Function} cspline (@var{points}, @var{option1}, @var{option2}, ...)
+@deffn {Function} cspline (@mvar{points})
+@deffnx {Function} cspline (@mvar{points}, @mvar{option1}, @mvar{option2}, ...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

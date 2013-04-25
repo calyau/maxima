@@ -9,8 +9,8 @@
 @node Definitions for plotdf,  , Introduction to plotdf, plotdf
 @section Definitions for plotdf
 
-@deffn {Function} plotdf (@var{dydx},...options...)
-@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...options...)
+@deffn {Function} plotdf (@mvar{dydx},...options...)
+@deffnx {Function} plotdf (@code{[}@mvar{dxdt},@mvar{dydt}@code{]},...options...)
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
