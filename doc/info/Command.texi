@@ -384,7 +384,7 @@ All atoms which have a user-defined alias, created by the @mrefcomma{alias}@w{}
 @mref{noun} with @mrefdot{declare}
 @item dependencies
 All atoms which have functional dependencies, created by the
-@mref{depends} or @mref{gradef} functions.
+@mref{depends}, @mref{dependencies}, or @mref{gradef} functions.
 @item gradefs
 All functions which have user-defined derivatives, created by the
 @mref{gradef} function.
