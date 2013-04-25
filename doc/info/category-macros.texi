@@ -1,90 +1,117 @@
 @macro opencatbox {}
+@c This comment, and other similar ones below, force @ifhtml to appear
+@c on a newline, but doesn't generate a blank line, which would cause
+@c a new paragraph in whoever called the macro.
+@c *****
 @ifhtml
 @html
 <div class=categorybox>
 @end html
 @end ifhtml
+@c This comment, on the other hand, makes sure that the previous line
+@c ends here. Otherwise a line containing ``@mymacro{} foo'' makes
+@c Texinfo think that we're passing foo as a second parameter to
+@c @end. Grr.
+@c *****
 @end macro
 
 @macro category {name}
+@c *****
 @ifhtml
 @html
 &middot;
 @end html
 @ref{Category: \name\}
 @end ifhtml
+@c *****
 @end macro
 
 @macro closecatbox {}
+@c *****
 @ifhtml
 @html
 </div>
 @end html
 @end ifhtml
+@c *****
 @end macro
 
 @c Macros for cross references
 
 @macro mref {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}}
 @end ifhtml
 @ifnothtml
 @code{\nodename\}
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mxref {nodename, text}
+@c *****
 @ifhtml
 @code{@ref{\nodename\, \text\}}
 @end ifhtml
 @ifnothtml
 @code{\text\}
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mrefdot {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}}.
 @end ifhtml
 @ifnothtml
 @code{\nodename\}.
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mxrefdot {nodename, text}
+@c *****
 @ifhtml
 @code{@ref{\nodename\, \text\}}.
 @end ifhtml
 @ifnothtml
 @code{\text\}.
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mrefcomma {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}},
 @end ifhtml
 @ifnothtml
 @code{\nodename\},
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mxrefcomma {nodename, text}
+@c *****
 @ifhtml
 @code{@ref{\nodename\, \text\}},
 @end ifhtml
 @ifnothtml
 @code{\text\},
 @end ifnothtml
+@c *****
 @end macro
 
 @macro mrefparen {nodename}
+@c *****
 @ifhtml
 @code{@ref{\nodename\}})
 @end ifhtml
 @ifnothtml
 @code{\nodename\})
 @end ifnothtml
+@c *****
 @end macro
 
