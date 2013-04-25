@@ -18,14 +18,14 @@ indefinidos.
 
 @code{load (zeilberger)} torna esse pacote dispon@'{@dotless{i}}vel para uso.
 
-@subsubsection O problema dos somat@'orios hipergeom@'etricos indefinidos
+@subsection O problema dos somat@'orios hipergeom@'etricos indefinidos
 
 @code{zeilberger} implementa o algoritmo de Gosper
 para somat@'orio hipergeom@'etrico indefinido.
 Dado um termo hipergeom@'etrico @math{F_k} em @math{k} queremos encontrar sua anti-diferen@value{cedilha}a
 hipergeom@'etrica, isto @'e, um termo hipergeom@'etrico @math{f_k} tal que @math{F_k = f_(k+1) - f_k}.
 
-@subsubsection O problema dos somat@'orios hipergeom@'etricos definidos
+@subsection O problema dos somat@'orios hipergeom@'etricos definidos
 
 @code{zeilberger} implementa o algoritmo de Zeilberger
 para somat@'orio hipergeom@'etrico definido.

@@ -18,7 +18,7 @@ Antes de hacer uso de las funciones aqu@'{@dotless{i}} definidas,
 ejec@'utese la sentencia @code{load (zeilberger)}.
 
 
-@subsubsection El problema de la suma indefinida
+@subsection El problema de la suma indefinida
 
 El paquete @code{zeilberger} implementa el algoritmo de Gosper
 para la suma hipergeom@'etrica indefinida.
@@ -34,7 +34,7 @@ $$F_k = f_{k+1} - f_k.$$
 @math{F_k = f_(k+1) - f_k}.
 @end ifnottex
 
-@subsubsection El problema de la suma definida
+@subsection El problema de la suma definida
 
 El paquete @code{zeilberger} implementa el algoritmo de Zeilberger
 para la suma hipergeom@'etrica definida.

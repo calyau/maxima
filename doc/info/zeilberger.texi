@@ -21,7 +21,7 @@ summation.
 @category{Sums and products} @category{Share packages} @category{Package zeilberger}
 @closecatbox
 
-@subsubsection The indefinite summation problem
+@subsection The indefinite summation problem
 
 @code{zeilberger} implements Gosper's algorithm for indefinite hypergeometric summation.
 Given a hypergeometric term @math{F_k} in @math{k} we want to find its hypergeometric
@@ -34,7 +34,7 @@ $$F_k = f_{k+1} - f_k.$$
 @math{F_k = f_(k+1) - f_k}.
 @end ifnottex
 
-@subsubsection The definite summation problem
+@subsection The definite summation problem
 
 @code{zeilberger} implements Zeilberger's algorithm for definite hypergeometric summation.
 Given a proper hypergeometric term (in @math{n} and @math{k})
